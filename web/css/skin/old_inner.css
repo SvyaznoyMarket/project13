@@ -3198,16 +3198,7 @@ border-radius: 5px;
     text-decoration: none;
 		}
 
-.bListVariants{
-    color: #434343;
-    cursor: pointer;
-    margin-right: 10px;
-    border: 1px solid #d9d9d9;
-    padding: 10px 24px 10px 38px;
-    font: 11px Tahoma, sans-serif;
-    background: url('img/bVariation.png') 7px 10px no-repeat;
-}
-.bListVariants span {
+/*.bListVariants span {
     color: #434343;
     font: 11px Tahoma,sans-serif;
 }
@@ -3227,7 +3218,7 @@ border-radius: 5px;
 .bListVariants.mShort{
     margin-right: 0;
     padding: 10px 5px 10px 35px;
-}
+}*/
 
 .bCityPopup{
 	z-index: 100;

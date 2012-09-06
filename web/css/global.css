@@ -2133,6 +2133,15 @@ label.checked {
   background: #000000 url("/css/catalog/img/catalogSprite.png") no-repeat 1px -101px;
   border-color: #000;
 }
+.bListVariants {
+  color: #434343;
+  cursor: pointer;
+  margin-right: 10px;
+  border: 1px solid #d9d9d9;
+  padding: 10px 24px 10px 38px;
+  font: 11px Tahoma, sans-serif;
+  background: url('/css/catalog/img/catalogSprite.png') -110px -25px no-repeat;
+}
 /*---END---СТИЛИ КАТАЛОГА---*/
 /*-----СТИЛИ ЛАЙТБОКСА-----*/
 .lightbox {
