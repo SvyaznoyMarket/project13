@@ -980,7 +980,7 @@
   float: right;
 }
 .topbar .hBasket {
-  background: url("/css/skin/img/h_basket.png") no-repeat;
+  background: url("/css/header/img/h_basket.png") no-repeat;
   padding: 9px 0px 3px 30px;
 }
 #header {
