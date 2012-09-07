@@ -7,7 +7,7 @@ class FillerLayout extends FillerObject
     public function run()
     {
         $wpRequest = new \WPRequest();
-        $wpRequest->setUrl(WP_URL);
+        $wpRequest->setUrl(Config::get('wpUrl'));
         $wpResponse = @$wpRequest->send('footer_default', array('shop_count' => App::getCoreV2()->query('shop/get-quantity')));
 
         $renderer = App::getHtmlRenderer();
@@ -42,7 +42,5 @@ class FillerLayout extends FillerObject
 
         $regionTopList = App::getRegion()->getShopAvailable();
         $renderer->addParameter('regionTopList', $regionTopList);
-
-        $renderer->addParameter('pageTitle', 'Test page title (filled in layout filler)');
     }
 }

@@ -7,9 +7,9 @@ namespace light;
  * Time: 12:51
  * To change this template use File | Settings | File Templates.
  */
-require_once(ROOT_PATH.'system/App.php');
-require_once(ROOT_PATH.'lib/TimeDebug.php');
-require_once(VIEW_PATH.'dataObject/CategoryShortData.php');
+require_once(Config::get('rootPath').'system/App.php');
+require_once(Config::get('rootPath').'lib/TimeDebug.php');
+require_once(Config::get('viewPath').'dataObject/CategoryShortData.php');
 
 class CategoryModel
 {

@@ -1,9 +1,9 @@
 <?php
 namespace light;
 
-require_once(ROOT_PATH.'system/App.php');
-require_once(ROOT_PATH.'lib/TimeDebug.php');
-require_once(ROOT_PATH.'lib/MainMenuBuilder.php');
+require_once(Config::get('rootPath').'system/App.php');
+require_once(Config::get('rootPath').'lib/TimeDebug.php');
+require_once(Config::get('rootPath').'lib/MainMenuBuilder.php');
 
 class serviceController
 {
@@ -29,12 +29,12 @@ class serviceController
       $categoryTree = App::getService()->getCategoryRootTree(3);
       $category = App::getService()->getCategoryTreeByToken($_REQUEST['category']);
 
-      #$this->forward404If($category->getLevel()<2);
+      App::forward404If($category->getLevel()<2);
 
       if($category->getLevel()==2){
           $category = $category->getFirstChild();
       }
-      #$this->forward404If($category === null);
+      App::forward404If($category === null);
 
       $categoryList = $category->getChildren();
       App::getService()->loadServiceList($categoryList);
@@ -62,7 +62,6 @@ class serviceController
       $renderer->addParameter('pageTitle', $service->getName());
       $renderer->addParameter('breadCrumbList', $service->getNavigation());
 
-      #include_component('default', 'navigation', array('list' => $service->getNavigation()));
       $renderer->setPage('service/show');
       $response->setContent($renderer->render());
   }

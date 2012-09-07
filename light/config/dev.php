@@ -1,36 +1,31 @@
 <?php
 namespace light;
 
+$baseConfig = require 'main.php';
+
 if(!class_exists('symfonyConfig')){
-  require_once(ROOT_PATH.'lib/symfonyConfig.php');
+    require_once($baseConfig['rootPath'].'lib/symfonyConfig.php');
 }
-global $appConfig;
+
 $appConfig = symfonyConfig::parseConfig('app.yml', 'dev');
 $coreConfig = $appConfig->get('app_core_config');
 $onlineCall = $appConfig->get('app_online_call');
 
-define('CORE_V2_USERAPI_URL', $coreConfig['userapi_url']);
-define('CORE_V2_USERAPI_CLIENT_CODE', $coreConfig['client_code']);
+$developmentConfig = array(
+    'coreV2UserAPIUrl' => $coreConfig['userapi_url'],
+    'coreV2UserAPIClientCode' => $coreConfig['client_code'],
+    'coreV1APIUrl' => $coreConfig['api_url'],
+    'coreV1ConsumerKey' => $coreConfig['consumer_key'],
+    'coreV1Signature' => $coreConfig['signature'],
+    'onlineCallEnabled' => $onlineCall['enabled'],
+    'isProduction' => False,
+    'wpUrl' => 'http://content.enter.n/',
+    'db' => array(
+        'host' => 'localhost',
+        'name' => 'enter',
+        'user' => 'root',
+        'passworf' => 'qazwsxedc'
+    )
+);
 
-define('CORE_V1_API_URL', $coreConfig['api_url']);
-define('CORE_V1_CONSUMER_KEY', $coreConfig['consumer_key']);
-define('CORE_V1_SIGNATURE', $coreConfig['signature']);
-
-define('ONLINE_CALL_ENABLED', $onlineCall['enabled']);
-
-define('DB_HOST', 'localhost');
-define('DB_NAME', 'enter');
-define('DB_USERNAME', 'root');
-define('DB_PASSWORD', 'qazwsxedc');
-
-define('IS_PRODUCTION', False);
-define('WP_URL', 'http://content.enter.n/');
-
-/**
- * Owned ^^
- */
-function getOpenAuthProvider()
-{
-    global $appConfig;
-    return $appConfig->get('app_open_auth_provider');
-}
+return array_merge($baseConfig, $developmentConfig);

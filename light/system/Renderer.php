@@ -10,8 +10,8 @@ use Logger;
  * To change this template use File | Settings | File Templates.
  */
 
-require_once(ROOT_PATH.'system/App.php');
-require_once(ROOT_PATH.'lib/log4php/Logger.php');
+require_once(Config::get('rootPath').'system/App.php');
+require_once(Config::get('rootPath').'lib/log4php/Logger.php');
 
 class Renderer
 {
@@ -34,7 +34,7 @@ class Renderer
   }
 
   protected function __construct(){
-    $this->templatePath = VIEW_PATH.'template/';
+    $this->templatePath = Config::get('viewPath').'template/';
   }
 
  /**
@@ -142,7 +142,7 @@ class HtmlRenderer extends Renderer{
    * @return string
    */
   public function getTitle(){
-    return !is_null($this->title) ? htmlspecialchars($this->title) : DEFAULT_PAGE_TITLE;
+    return !is_null($this->title) ? htmlspecialchars($this->title) : Config::get('defaultPagetTitle');
   }
 
   /**
@@ -159,7 +159,7 @@ class HtmlRenderer extends Renderer{
    * @return string
    */
   public function getDescription(){
-    return !is_null($this->description) ? htmlspecialchars($this->description) : DEFAULT_PAGE_DESCRIPTION;
+    return !is_null($this->description) ? htmlspecialchars($this->description) : Config::get('defaultPageDescription');
   }
 
   /**

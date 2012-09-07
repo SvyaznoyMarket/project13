@@ -65,7 +65,7 @@
 <script src="/js/loadjs.js" type="text/javascript"></script>
 <?php echo $this->renderFile('default/_auth'/*, array('oAuthProviderList' => $oAuthProviderList)*/); ?>
 
-<?php if (IS_PRODUCTION): ?>
+<?php if (\light\Config::get('isProduction')): ?>
     <?php $this->renderFile('default/_yandexMetrika') ?>
 <div id="adblender" class="jsanalytics"></div>
 <?php endif ?>

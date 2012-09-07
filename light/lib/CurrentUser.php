@@ -8,12 +8,12 @@ use Logger;
  * Time: 14:41
  * To change this template use File | Settings | File Templates.
  */
-require_once(ROOT_PATH.'system/App.php');
-require_once(ROOT_PATH.'lib/cart/Cart.php');
-require_once(ROOT_PATH.'lib/cart/SessionCartContainer.php');
-require_once(ROOT_PATH.'lib/cart/V2CartPriceContainer.php');
+require_once(Config::get('rootPath').'system/App.php');
+require_once(Config::get('rootPath').'lib/cart/Cart.php');
+require_once(Config::get('rootPath').'lib/cart/SessionCartContainer.php');
+require_once(Config::get('rootPath').'lib/cart/V2CartPriceContainer.php');
 
-require_once(VIEW_PATH.'dataObject/UserData.php');
+require_once(Config::get('viewPath').'dataObject/UserData.php');
 
 
 class CurrentUser
@@ -68,11 +68,11 @@ class CurrentUser
         return null;
       }
 
-      if (!($conn = mysql_connect(DB_HOST, DB_USERNAME, DB_PASSWORD))) {
-        throw new \Exception('cant connect to db "' . DB_HOST . '"');
+      if (!($conn = mysql_connect(Config::get('db.host'), Config::get('db.user'), Config::get('db.password')))) {
+        throw new \Exception('cant connect to db "' . Config::get('db.host') . '"');
       }
-      if (!mysql_select_db(DB_NAME, $conn)) {
-        throw new \Exception('cant select db "' . DB_NAME . '"');
+      if (!mysql_select_db(Config::get('db.name'), $conn)) {
+        throw new \Exception('cant select db "' . Config::get('db.name') . '"');
       }
 
       $query = 'SELECT first_name,last_name, middle_name  FROM guard_user WHERE id="' . $user_id . '"';

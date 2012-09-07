@@ -2,38 +2,45 @@
 namespace light;
 use Logger;
 
-//session_start();
-/**
- * Created by JetBrains PhpStorm.
- * User: Kuznetsov
- * Date: 24.04.12
- * Time: 10:46
- * To change this template use File | Settings | File Templates.
- */
+require dirname(__FILE__) . '/../light/lib/Config.php';
 
-require_once('../light/config/main.php');
-require_once(ROOT_PATH.'lib/TimeDebug.php');
-require_once(ROOT_PATH.'lib/log4php/Logger.php');
-require_once(ROOT_PATH.'system/App.php');
-require_once(ROOT_PATH.'system/Controller.php');
+$httpHost = isset($_SERVER['HTTP_HOST'])?$_SERVER['HTTP_HOST']:'localhost';
+
+if(in_array($httpHost, array(
+    'enter.ru',
+    'test.enter.ru',
+    'nocache.enter.ru',
+    'www.enter.ru',
+    'demo.enter.ru'
+)))
+{
+    $parameterList = require_once('../light/config/prod.php');
+    $configLogMess = 'production config in use';
+}
+else
+{
+    $parameterList = require_once('../light/config/dev.php');
+    $configLogMess = 'dev config in use';
+}
+
+Config::init($parameterList);
+
+require_once(Config::get('rootPath').'lib/TimeDebug.php');
+require_once(Config::get('rootPath').'lib/log4php/Logger.php');
+require_once(Config::get('rootPath').'system/App.php');
+require_once(Config::get('rootPath').'system/Controller.php');
 
 TimeDebug::start('Total');
 TimeDebug::start('Configure');
 
-if(HTTP_HOST == 'enter.ru' || HTTP_HOST == 'test.enter.ru' || HTTP_HOST == 'nocache.enter.ru' || HTTP_HOST == 'www.enter.ru' || HTTP_HOST == 'demo.enter.ru'){
-  require_once('../light/config/prod.php');
-  $configLogMess = 'production config in use';
-}
-else{
-  require_once('../light/config/dev.php');
-  $configLogMess = 'dev config in use';
-}
+
+
 
 App::init();
 Logger::getLogger('Settings')->debug($configLogMess);
 
-Logger::getLogger('Settings')->info('core v2 url: '.CORE_V2_USERAPI_URL);
-Logger::getLogger('Settings')->info('core v1 url: '.CORE_V1_API_URL);
+Logger::getLogger('Settings')->info('core v2 url: '.Config::get('coreV2UserAPIUrl'));
+Logger::getLogger('Settings')->info('core v1 url: '.Config::get('coreV1APIUrl'));
 TimeDebug::end('Configure');
 
 try{

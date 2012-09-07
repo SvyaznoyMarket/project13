@@ -360,7 +360,7 @@ class ServiceInfo
   {
     $path = $this->getMediaImage();
     if($path){
-      $urls = getServicePhotoUrlList();
+      $urls = Config::get('servicePhotoUrlList');
       return $urls[$viewId] . $path;
     }
     else

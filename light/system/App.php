@@ -1,11 +1,11 @@
 <?php
 namespace light;
 use Logger;
-require_once(ROOT_PATH.'lib/coreClient/CoreClient.php');
-require_once(ROOT_PATH.'lib/WPRequest.php');
-require_once(ROOT_PATH.'system/Response.php');
-require_once(ROOT_PATH.'system/Request.php');
-require_once(ROOT_PATH.'lib/log4php/Logger.php');
+require_once(Config::get('rootPath').'lib/coreClient/CoreClient.php');
+require_once(Config::get('rootPath').'lib/WPRequest.php');
+require_once(Config::get('rootPath').'system/Response.php');
+require_once(Config::get('rootPath').'system/Request.php');
+require_once(Config::get('rootPath').'lib/log4php/Logger.php');
 require_once 'filler.php';
 
 class App{
@@ -28,10 +28,10 @@ class App{
     $cookieDefaults = session_get_cookie_params();
 
     $options = array(
-      'session_name'            => SESSION_NAME,
+      'session_name'            => Config::get('sessionName'),
       'session_id'              => null,
       'auto_start'              => true,
-      'session_cookie_lifetime' => is_null(SESSION_COOKIE_LIFETIME)? $cookieDefaults['lifetime'] : SESSION_COOKIE_LIFETIME,
+      'session_cookie_lifetime' => is_null(Config::get('sessionCookieLifeTime'))? $cookieDefaults['lifetime'] : Config::get('sessionCookieLifeTime'),
       'session_cookie_path'     => $cookieDefaults['path'],
       'session_cookie_domain'   => $cookieDefaults['domain'],
       'session_cookie_secure'   => $cookieDefaults['secure'],
@@ -57,10 +57,10 @@ class App{
       self::$sessionStarted = true;
     }
 
-    Logger::configure(LOGGER_CONFIG_PATH); //В отдельную константу вынесено - что бы можно было иметь разные конфиги для dev и prod
+    Logger::configure(Config::get('loggerConfigPath')); //В отдельную константу вынесено - что бы можно было иметь разные конфиги для dev и prod
 
     $filler = Filler::getInstance();
-    $filler->setFilePath(VIEW_PATH . 'filler');
+    $filler->setFilePath(Config::get('viewPath') . 'filler');
     self::$filler = $filler;
   }
 
@@ -123,9 +123,9 @@ class App{
       return self::$Router;
     }
 
-    require_once(ROOT_PATH.'system/Router.php');
+    require_once(Config::get('rootPath').'system/Router.php');
 
-    self::$Router = Router::fromArray(require(ROOT_PATH.'config/routes.php'));
+    self::$Router = Router::fromArray(require(Config::get('rootPath').'config/routes.php'));
     return self::$Router;
   }
 
@@ -151,7 +151,7 @@ class App{
    */
   public static function getRenderer(){
     if(!class_exists('Renderer')){
-      require_once(ROOT_PATH.'system/Renderer.php');
+      require_once(Config::get('rootPath').'system/Renderer.php');
     }
 
     return Renderer::getInstance();
@@ -163,7 +163,7 @@ class App{
    */
   public static function getHtmlRenderer(){
     if(!class_exists('HtmlRenderer')){
-      require_once(ROOT_PATH.'system/Renderer.php');
+      require_once(Config::get('rootPath').'system/Renderer.php');
     }
 
     return HtmlRenderer::getInstance();
@@ -190,7 +190,7 @@ class App{
    * @return CurrentUser
    */
   public static function getCurrentUser(){
-    require_once(ROOT_PATH.'lib/CurrentUser.php');
+    require_once(Config::get('rootPath').'lib/CurrentUser.php');
     return CurrentUser::getInstance();
   }
 
@@ -198,8 +198,8 @@ class App{
     $fileName = $className;
     $className = "light\\".$className;
     if(!class_exists($className)){
-      if(file_exists(ROOT_PATH.'model/'.$fileName.'.php')){
-        require_once(ROOT_PATH.'model/'.$fileName.'.php');
+      if(file_exists(Config::get('rootPath').'model/'.$fileName.'.php')){
+        require_once(Config::get('rootPath').'model/'.$fileName.'.php');
         if(!class_exists($className)){
           throw new \RuntimeException('class '.$className.' not exists');
         }
@@ -218,5 +218,17 @@ class App{
   public static function getFiller($fillerName)
   {
       return self::$filler->get($fillerName);
+  }
+
+  public static function forward404if($condition)
+  {
+      if($condition)
+      {
+          self::getResponse()->setStatusCode(404);
+          self::getResponse()->setContent(self::getRenderer()->renderFile('404'));
+          echo self::getResponse()->getContent();
+
+          exit;
+      }
   }
 }

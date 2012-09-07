@@ -8,7 +8,7 @@ namespace light;
  * To change this template use File | Settings | File Templates.
  */
 
-require_once(ROOT_PATH.'system/App.php');
+require_once(Config::get('rootPath').'system/App.php');
 
 class Controller {
 
@@ -22,10 +22,10 @@ class Controller {
     $classPath = $className;
     $className = 'light\\'.$className.'Controller';
     if(!class_exists($className)){
-      if(!file_exists(ROOT_PATH.'controller/'.$classPath.'.php')){
+      if(!file_exists(Config::get('rootPath').'controller/'.$classPath.'.php')){
         throw new \RuntimeException('request to run unknown Controller '.$className);
       }
-      include_once(ROOT_PATH.'controller/'.$classPath.'.php');
+      include_once(Config::get('rootPath').'controller/'.$classPath.'.php');
     }
     if(!class_exists($className)){
       throw new \RuntimeException('request to run unknown Controller '.$className);

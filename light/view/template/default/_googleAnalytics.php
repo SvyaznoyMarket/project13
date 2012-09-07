@@ -1,4 +1,4 @@
-<?php if (IS_PRODUCTION): ?>
+<?php if (\light\Config::get('isProduction')): ?>
   <script type="text/javascript">
       var _gaq = _gaq || [];
       _gaq.push(['_setAccount', 'UA-25485956-1']);

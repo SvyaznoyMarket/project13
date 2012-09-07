@@ -543,25 +543,25 @@ cart_service_delete:
   requirements:
     product: \d+
     service: \d+
-# @core
-# @service
-#service_index:
-#  url:      /f1
-#  param:    { module: service, action: index}
-# @core
-# @service
-#service_category:
-#  url:      /f1/:category
-#  param:    { module: service, action: category }
-#  requirements:
-#    category: '([\w\-]+)'
-# @core
-# @service
-#service_show:
-#  url:      /f1/show/:service
-#  param:    { module: service, action: show }
-#  requirements:
-#      service: '([\w\-]+)'
+
+# MOVED TO PLAIN PHP service index
+service_index:
+  url:      /f1
+  param:    { module: service, action: index}
+
+# MOVED TO PLAIN PHP service category
+service_category:
+  url:      /f1/:category
+  param:    { module: service, action: category }
+  requirements:
+    category: '([\w\-]+)'
+
+# MOVED TO PLAIN PHP service show
+service_show:
+  url:      /f1/show/:service
+  param:    { module: service, action: show }
+  requirements:
+      service: '([\w\-]+)'
 #
 # region autocomplete
 region_autocomplete:
