@@ -22,7 +22,7 @@
   <?php require '_leftCategoryList_.php' ?>
   <?php require '_filter_.php' ?>
   <?php require APP_MAIN_MODULES_PATH.'/default/templates/_banner_left.php' ?>
-  <?php //include_component('productCatalog_', 'article_seo', array('productCategory' => $productCategory, 'productPager' => $productPager)) ?>
+  <?php include_component('productCatalog_', 'article_seo', array('productCategory' => $productCategory, 'productPager' => $productPager)) ?>
 <?php end_slot() ?>
 
 <?php require '_plugs/for_tag.php' ?>

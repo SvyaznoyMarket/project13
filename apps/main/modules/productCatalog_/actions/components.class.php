@@ -103,6 +103,10 @@ class productCatalog_Components extends myComponents
    */
   public function executeArticle_seo()
   {
+    if ($this->getRequest()->getParameter('page', 1) > 1) {
+      return sfView::NONE;
+    }
+
     // title
     if (!$this->productCategory->getSeoTitle()) {
       $this->productCategory->setSeoTitle(''
