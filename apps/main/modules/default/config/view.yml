@@ -4,7 +4,8 @@ all:
 
   stylesheets:
     - -*
-    - skin/inner.css
+#    - skin/inner.css
+    - global.css
 
   javascripts:
     - -*
@@ -26,6 +27,6 @@ welcomeSuccess:
 
   stylesheets:
     - -*
-    - skin/entry.css
+#    - skin/entry.css
 
   layout: welcome
