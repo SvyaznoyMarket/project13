@@ -52,7 +52,7 @@ if (!$showAccessoryUpper && count($product->getAccessoryList())){
   ));
 }
 
-if (!$showRelatedUpper && count($product->getRelatedList())){
+if (false && !$showRelatedUpper && count($product->getRelatedList())){
   render_partial('product_/templates/_product_related.php', array(
     'item' => $product,
     'relatedPagesNum' => $relatedPagesNum,
