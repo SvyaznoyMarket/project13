@@ -1,0 +1,86 @@
+@f1popupSprite-url:"@{base-url}/f1popup/img/f1popupSprite.png";
+.hideblock {
+  .rounded(5px);
+  .box-shadow(0px 0px 7px #616161);
+  background: #fff;
+  border: 2px solid #eaeaea;
+  color: #000;
+  display: none;
+  font-size: 12px;
+  padding: 15px 20px;
+  position: absolute;
+  text-align: left;
+  z-index: 10;
+  .close {
+    background: url("@{f1popupSprite-url}") no-repeat 0 0;
+    cursor: pointer;
+    display: block;
+    height: 26px;
+    position: absolute;
+    right: 0;
+    text-indent: -10000px;
+    top: 0;
+    width: 26px;
+  }
+}
+.bF1Block {
+  background: #fff url("@{f1popupSprite-url}") -27px 0px no-repeat;
+  display: block;
+  left: 140px;
+  min-height: 60px;
+  padding: 10px 20px 20px 75px;
+  top: 350px;
+  &.mGoods {
+    left: 170px;
+    top: 415px;
+    div {
+      max-height: 320px;
+      overflow-y: scroll;
+    }
+  }
+  h2 {
+    color: #4fcbf4;
+    font: bold 16px Tahoma, sans-serif;
+    margin: 0px 0px 10px;
+  }
+  table {
+    width: 650px;
+  }
+  th {
+    font: 12px Tahoma, sans-serif;
+    text-align: right;
+    text-decoration: underline;
+  }
+}
+.bF1Block_eInfo {
+  border-top: 1px solid #e6e6e6;
+  font: 16px Tahoma, sans-serif;
+  padding: 15px 50px 15px 0px;
+  vertical-align: top;
+  a {
+    color: #a6a6a6;
+    font-size:12px;
+    font-family:Tahoma, sans-serif;
+    line-height:20px;
+    text-decoration: underline;
+  }
+}
+.bF1Block_ePrice {
+  *display: inline;
+  display: inline-block;
+  font: bold 16px Tahoma, sans-serif;
+  vertical-align: middle;
+  width: 100px;
+  zoom: 1;
+}
+.bF1Block_eBuy {
+  border-top: 1px solid #e6e6e6;
+  padding: 15px 0px;
+  vertical-align: top;
+  width: 248px;
+}
+.bF1Block__eInShop {
+  font-size:12px;
+  font-family:Tahoma, sans-serif;
+  line-height:20px;
+}

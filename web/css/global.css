@@ -2165,6 +2165,436 @@ label.checked {
   background: url('/css/catalog/img/catalogSprite.png') -140px 10px no-repeat;
 }
 /*---END---СТИЛИ КАТАЛОГА---*/
+/*-------СТИЛИ КАРТОЧКИ ТОВАРА-----*/
+.goodsphoto {
+  float: left;
+  padding-bottom: 10px;
+  position: relative;
+  width: 500px;
+}
+.bGood__eArticle {
+  border-bottom: 1px solid #dfdfdf;
+  font-size: 12px;
+  font-family: Tahoma, sans-serif;
+  margin: 0px 0px 15px;
+  padding: 0px 0px 10px;
+}
+.bGood__eArticle a,
+.bGood__eArticle img,
+.bGood__eArticle span {
+  vertical-align: middle;
+}
+.bGood__eArticle img {
+  padding-right: 5px;
+}
+.bGood__eArticle img.rating {
+  padding: 0px;
+}
+.bGood__eArticle span {
+  font-size: 14px;
+}
+.bGood .goodsbarbig {
+  margin-bottom: 14px;
+  margin-top: 3px;
+}
+.goodsinfo {
+  float: left;
+  padding: 0px 0px 40px 20px;
+  width: 400px;
+}
+.goodsbarbig {
+  height: 31px;
+  margin: 26px 0px 17px;
+  position: relative;
+  width: 137px !important;
+}
+.goodsbarbig a {
+  display: block;
+  height: 31px;
+}
+.goodsbarbig.mSmallBtns {
+  *display: inline;
+  display: inline-block;
+  width: 137px;
+  zoom: 1;
+}
+.goodsbarbig.mSmallBtns a.link1 {
+  background: url("/css/item/img/itemSprite.png") 0px 0px no-repeat;
+  height: 31px;
+  width: 137px;
+}
+.goodsbarbig.mSmallBtns a.link1:hover {
+  background: url("/css/item/img/itemSprite.png") 0px -31px no-repeat;
+}
+.goodsbarbig.mSmallBtns a.link1.active {
+  background: url("/css/item/img/itemSprite.png") 0px -62px no-repeat;
+}
+.goodsbarbig.mSmallBtns a.link1.disabled {
+  background: url("/css/item/img/itemSprite.png") 0px -93px no-repeat;
+  cursor: default;
+}
+.bCountSet {
+  *display: inline;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  color: #959595;
+  display: inline-block;
+  left: -90px;
+  margin: 0px 5px 0px 0px;
+  position: absolute;
+  top: 0px;
+  zoom: 1;
+}
+.bCountSet a {
+  *display: inline;
+  color: #959595;
+  cursor: pointer;
+  display: inline-block;
+  height: auto;
+  padding: 7px 1px;
+  text-align: center;
+  text-decoration: none;
+  vertical-align: middle;
+  width: 14px;
+  zoom: 1;
+}
+.bCountSet span {
+  *display: inline;
+  display: inline-block;
+  margin: 7px 1px;
+  vertical-align: middle;
+  zoom: 1;
+}
+.bCountSet .bCountSet__eM {
+  background: url("/css/item/img/itemSprite.png") no-repeat -185px 0px;
+  float: left;
+  margin: 0px 5px 0px 2px;
+}
+.bCountSet .bCountSet__eP {
+  background: url("/css/item/img/itemSprite.png") no-repeat -200px 0px;
+  float: right;
+  margin: 0px 2px 0px 5px;
+}
+.bDeliver2 {
+  padding: 0px 10px 10px 0px;
+}
+.bDeliver2 h4 {
+  font-size: 14px;
+  font-family: Tahoma, sans-serif;
+  font-weight: bold;
+  margin: 0px 0px 15px;
+  padding: 0px;
+}
+.bDeliver2 h5 {
+  font-size: 12px;
+  font-family: Tahoma, sans-serif;
+  margin: 5px 0px;
+  padding: 0px;
+}
+.bDeliver2 li {
+  margin-bottom: 15px;
+}
+.bDeliver2 li div {
+  font-size: 12px;
+  font-family: Tahoma, sans-serif;
+  margin: 5px 0px 5px 10px;
+}
+.bDeliver2 li div a {
+  font-size: 12px;
+  font-family: Tahoma, sans-serif;
+  text-decoration: underline;
+}
+.bF1Info {
+  min-height: 66px;
+}
+.bF1Info h3 {
+  color: #4fcbf4;
+  font: bold 14px Tahoma, sans-serif;
+  margin: 0px 0px 7px;
+}
+.bF1Info div {
+  font-size: 14px;
+  font-family: Tahoma, sans-serif;
+  margin-bottom: 10px;
+}
+.bF1Info .link1 {
+  color: #4fcbf4;
+}
+.bF1Info .link1:hover {
+  text-decoration: none;
+}
+.bF1Info_Logo {
+  cursor: pointer;
+  float: left;
+  padding-right: 18px;
+}
+.previewlist li {
+  float: left;
+  height: 48px;
+  margin: 0px 6px 6px 0px;
+  position: relative;
+  width: 48px;
+}
+.previewlist b {
+  background: url("/css/item/img/itemSprite.png") no-repeat -137px -53px;
+  display: block;
+  height: 48px;
+  left: 0px;
+  position: absolute;
+  top: 0px;
+  width: 48px;
+  z-index: 1;
+}
+.previewlist b:hover,
+.previewlist b.current {
+  background-position: -137px 0px;
+  cursor: pointer;
+}
+.bDropWrap {
+  margin: 0px 10px 20px 0px;
+  width: 180px;
+}
+.bDropWrap h5 {
+  color: #a6a6a6;
+  font-size: 12px;
+  font-family: Tahoma, sans-serif;
+  margin: 0px 0px 3px;
+  padding: 0px;
+}
+.bDropWrap,
+.bDropMenu,
+.bDropMenu div,
+.bDropMenu:hover div {
+  *display: block;
+  display: inline-block;
+  vertical-align: top;
+  zoom: 1;
+}
+.bDropMenu,
+.bDropMenu div,
+.bDropMenu div span:first-child:hover {
+  -webkit-border-radius: 7px;
+  -moz-border-radius: 7px;
+  border-radius: 7px;
+}
+.bDropMenu {
+  background: #f5f5f5 url("/css/item/img/itemSprite.png") 100% -112px no-repeat;
+  border: 2px solid #e7e7e7;
+  color: #010101;
+  padding: 5px 40px 5px 10px;
+  position: relative;
+}
+.bDropMenu div {
+  -webkit-box-shadow: 0px 0px 5px #bbbbbb;
+  -moz-box-shadow: 0px 0px 5px #bbbbbb;
+  box-shadow: 0px 0px 5px #bbbbbb;
+  background: #fff;
+  border: 1px solid #aeaeae;
+  display: none;
+  left: -11px;
+  min-width: 85px;
+  padding-bottom: 7px;
+  position: absolute;
+  top: -1px;
+  z-index: 100;
+}
+.bDropMenu div span {
+  cursor: pointer;
+  display: block;
+  margin: 0px 10px;
+  padding: 5px 10px;
+}
+.bDropMenu div span a {
+  *display: inline;
+  cursor: pointer;
+  display: inline-block;
+  height: 100%;
+  text-decoration: none;
+  width: 100%;
+  zoom: 1;
+}
+.bDropMenu div span:first-child {
+  background: url("/css/item/img/itemSprite.png") 100% -112px no-repeat;
+  padding: 5px 10px 10px;
+}
+.bDropMenu div span:hover {
+  background: #e6e6e6;
+}
+.bDropMenu div span:first-child:hover {
+  background: #ffffff url("/css/item/img/itemSprite.png") 100% -112px no-repeat;
+  cursor: default;
+}
+.bigcarousel {
+  float: left;
+  margin-right: -15px;
+  width: 935px;
+}
+.bigcarousel .goodsbox {
+  background-color: #fff;
+  margin-bottom: 14px;
+  margin-right: 20px;
+  padding: 10px;
+  position: relative;
+  width: 147px;
+}
+.bigcarousel .goodsbox:hover .boxhover {
+  display: block;
+}
+.bigcarousel .goodsbox .buy {
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  background-color: #ffa901;
+  color: #fff;
+  font-size: 11px;
+  left: 0px;
+  padding: 3px 6px 4px;
+  position: absolute;
+  top: 0px;
+}
+.bigcarousel .boxhover {
+  width: 167px;
+}
+.bigcarousel .goodsrating {
+  color: #a6a6a6;
+  display: block;
+  font-size: 10px;
+  padding-bottom: 5px;
+}
+.bigcarousel .ratingview {
+  display: inline-block;
+  margin: 0px 5px 0px 0px;
+  vertical-align: -1px;
+  width: 63px;
+}
+.bigcarousel .goodsbar {
+  margin-top: 10px;
+}
+.descriptionlist .point {
+  float: left;
+  padding-bottom: 15px;
+  width: 100%;
+}
+.descriptionlist .point .title {
+  border-bottom: 1px solid #e6e6e6;
+  float: left;
+  width: 320px;
+}
+.descriptionlist .point .title h3 {
+  background-color: #FFFFFF;
+  display: inline-block;
+  float: left;
+  font-size: 12px;
+  font-weight: normal;
+  margin: 0 0 -5px;
+  padding-right: 10px;
+}
+.descriptionlist .point .description {
+  float: left;
+  padding-left: 20px;
+  width: 580px;
+}
+.mBuyButtonBottom {
+  padding: 20px 120px 0px 0px;
+}
+.mBuyButtonBottom.onleft {
+  padding: 30px 10px 0px 0px;
+  width: 470px;
+}
+/*---END---СТИЛИ КАРТОЧКИ ТОВАРА---*/
+/*-------СТИЛИ F1 всплывающего блока-----*/
+.hideblock {
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  -webkit-box-shadow: 0px 0px 7px #616161;
+  -moz-box-shadow: 0px 0px 7px #616161;
+  box-shadow: 0px 0px 7px #616161;
+  background: #fff;
+  border: 2px solid #eaeaea;
+  color: #000;
+  display: none;
+  font-size: 12px;
+  padding: 15px 20px;
+  position: absolute;
+  text-align: left;
+  z-index: 10;
+}
+.hideblock .close {
+  background: url("/css/f1popup/img/f1popupSprite.png") no-repeat 0 0;
+  cursor: pointer;
+  display: block;
+  height: 26px;
+  position: absolute;
+  right: 0;
+  text-indent: -10000px;
+  top: 0;
+  width: 26px;
+}
+.bF1Block {
+  background: #ffffff url("/css/f1popup/img/f1popupSprite.png") -27px 0px no-repeat;
+  display: block;
+  left: 140px;
+  min-height: 60px;
+  padding: 10px 20px 20px 75px;
+  top: 350px;
+}
+.bF1Block.mGoods {
+  left: 170px;
+  top: 415px;
+}
+.bF1Block.mGoods div {
+  max-height: 320px;
+  overflow-y: scroll;
+}
+.bF1Block h2 {
+  color: #4fcbf4;
+  font: bold 16px Tahoma, sans-serif;
+  margin: 0px 0px 10px;
+}
+.bF1Block table {
+  width: 650px;
+}
+.bF1Block th {
+  font: 12px Tahoma, sans-serif;
+  text-align: right;
+  text-decoration: underline;
+}
+.bF1Block_eInfo {
+  border-top: 1px solid #e6e6e6;
+  font: 16px Tahoma, sans-serif;
+  padding: 15px 50px 15px 0px;
+  vertical-align: top;
+}
+.bF1Block_eInfo a {
+  color: #a6a6a6;
+  font-size: 12px;
+  font-family: Tahoma, sans-serif;
+  line-height: 20px;
+  text-decoration: underline;
+}
+.bF1Block_ePrice {
+  *display: inline;
+  display: inline-block;
+  font: bold 16px Tahoma, sans-serif;
+  vertical-align: middle;
+  width: 100px;
+  zoom: 1;
+}
+.bF1Block_eBuy {
+  border-top: 1px solid #e6e6e6;
+  padding: 15px 0px;
+  vertical-align: top;
+  width: 248px;
+}
+.bF1Block__eInShop {
+  font-size: 12px;
+  font-family: Tahoma, sans-serif;
+  line-height: 20px;
+}
+/*---END---F1 всплывающего блока---*/
 /*-----СТИЛИ ЛАЙТБОКСА-----*/
 .lightbox {
   bottom: 0px;

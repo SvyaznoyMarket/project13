@@ -1,0 +1,337 @@
+@itemSprite-url:"@{base-url}/item/img/itemSprite.png";
+.goodsphoto {
+  float: left;
+  padding-bottom: 10px;
+  position: relative;
+  width: 500px;
+}
+.bGood__eArticle {
+  border-bottom: 1px solid #dfdfdf;
+  font-size:12px;
+  font-family:Tahoma, sans-serif;
+  margin: 0px 0px 15px;
+  padding: 0px 0px 10px;
+  a, img, span{
+    vertical-align: middle;
+  }
+  img{
+    padding-right: 5px;
+    &.rating {
+    padding: 0px;
+    }
+  }
+  span {
+    font-size: 14px;
+  }
+}
+.bGood .goodsbarbig {
+  margin-bottom: 14px;
+  margin-top: 3px;
+}
+.goodsinfo {
+  float: left;
+  padding: 0px 0px 40px 20px;
+  width: 400px;
+}
+.goodsbarbig {
+  height: 31px;
+  margin: 26px 0px 17px;
+  position: relative;
+  width: 137px !important;
+  a {
+    display: block;
+    height: 31px;
+  }
+  &.mSmallBtns {
+    *display: inline;
+    display: inline-block;
+    width: 137px;
+    zoom: 1;
+    a{
+      &.link1{
+        background: url("@{itemSprite-url}") 0px 0px no-repeat;
+        height: 31px;
+        width: 137px;
+        &:hover {
+          background: url("@{itemSprite-url}") 0px -31px no-repeat;
+        }
+        &.active {
+          background: url("@{itemSprite-url}") 0px -62px no-repeat;
+        }
+        &.disabled {
+          background: url("@{itemSprite-url}") 0px -93px no-repeat;
+          cursor: default;
+        }
+      }
+    }
+  }
+}
+.bCountSet {
+  *display: inline;
+  .rounded(5px);
+  border: 1px solid #ddd;
+  color: #959595;
+  display: inline-block;
+  left: -90px;
+  margin: 0px 5px 0px 0px;
+  position: absolute;
+  top: 0px;
+  zoom: 1;
+  a {
+    *display: inline;
+    color: #959595;
+    cursor: pointer;
+    display: inline-block;
+    height: auto;
+    padding: 7px 1px;
+    text-align: center;
+    text-decoration: none;
+    vertical-align: middle;
+    width: 14px;
+    zoom: 1;
+  }
+  span {
+    *display: inline;
+    display: inline-block;
+    margin: 7px 1px;
+    vertical-align: middle;
+    zoom: 1;
+  }
+  .bCountSet__eM {
+    background: url("@{itemSprite-url}") no-repeat -185px 0px;
+    float: left;
+    margin: 0px 5px 0px 2px;
+  }
+  .bCountSet__eP {
+    background: url("@{itemSprite-url}") no-repeat -200px 0px;
+    float: right;
+    margin: 0px 2px 0px 5px;
+  }
+}
+.bDeliver2 {
+  padding: 0px 10px 10px 0px;
+  h4 {
+    font-size:14px;
+    font-family:Tahoma, sans-serif;
+    font-weight:bold;
+    margin: 0px 0px 15px;
+    padding: 0px;
+  }
+  h5 {
+    font-size:12px;
+    font-family:Tahoma, sans-serif;
+    margin: 5px 0px;
+    padding: 0px;
+  }
+  li {
+    margin-bottom: 15px;
+    div {
+      font-size:12px;
+      font-family:Tahoma, sans-serif;
+      margin: 5px 0px 5px 10px;
+      a {
+        font-size:12px;
+        font-family:Tahoma, sans-serif;
+        text-decoration: underline;
+      }
+    }
+  }
+}
+.bF1Info {
+  min-height: 66px;
+  h3 {
+    color: #4fcbf4;
+    font: bold 14px Tahoma, sans-serif;
+    margin: 0px 0px 7px;
+  }
+  div {
+    font-size: 14px;
+    font-family:Tahoma, sans-serif;
+    margin-bottom: 10px;
+  }
+  .link1 {
+    color: #4fcbf4;
+    &:hover {
+      text-decoration: none;
+    }
+  }
+}
+.bF1Info_Logo {
+  cursor: pointer;
+  float: left;
+  padding-right: 18px;
+}
+
+.previewlist{
+  li {
+    float: left;
+    height: 48px;
+    margin: 0px 6px 6px 0px;
+    position: relative;
+    width: 48px;
+  }
+  b {
+    background: url("@{itemSprite-url}") no-repeat -137px -53px;
+    display: block;
+    height: 48px;
+    left: 0px;
+    position: absolute;
+    top: 0px;
+    width: 48px;
+    z-index: 1;
+    &:hover,
+    &.current{
+      background-position: -137px 0px;
+      cursor: pointer;
+    }
+  }
+  
+}
+.bDropWrap {
+  margin: 0px 10px 20px 0px;
+  width: 180px;
+  h5 {
+    color: #a6a6a6;
+    font-size: 12px; 
+    font-family:Tahoma, sans-serif;
+    margin: 0px 0px 3px;
+    padding: 0px;
+  }
+}
+.bDropWrap,
+.bDropMenu,
+.bDropMenu div,
+.bDropMenu:hover div {
+  *display: block;
+  display: inline-block;
+  vertical-align: top;
+  zoom: 1;
+}
+.bDropMenu,
+.bDropMenu div,
+.bDropMenu div span:first-child:hover {
+  .rounded(7px);
+}
+.bDropMenu {
+  background: #f5f5f5 url("@{itemSprite-url}") 100% -112px no-repeat;
+  border: 2px solid #e7e7e7;
+  color: #010101;
+  padding: 5px 40px 5px 10px;
+  position: relative;
+  div {
+    .box-shadow(0px 0px 5px #bbb);
+    background: #fff;
+    border: 1px solid #aeaeae;
+    display: none;
+    left: -11px;
+    min-width: 85px;
+    padding-bottom: 7px;
+    position: absolute;
+    top: -1px;
+    z-index: 100;
+    span {
+      cursor: pointer;
+      display: block;
+      margin: 0px 10px;
+      padding: 5px 10px;
+      a {
+        *display: inline;
+        cursor: pointer;
+        display: inline-block;
+        height: 100%;
+        text-decoration: none;
+        width: 100%;
+        zoom: 1;
+      }
+      &:first-child {
+        background: url("@{itemSprite-url}") 100% -112px no-repeat;
+        padding: 5px 10px 10px;
+      }
+      &:hover {
+        background: #e6e6e6;
+      }
+      &:first-child:hover {
+        background: #fff url("@{itemSprite-url}") 100% -112px no-repeat;
+        cursor: default;
+      }
+    }
+  }
+}
+.bigcarousel {
+  float: left;
+  margin-right: -15px;
+  width: 935px;
+  .goodsbox {
+    background-color: #fff;
+    margin-bottom: 14px;
+    margin-right: 20px;
+    padding: 10px;
+    position: relative;
+    width: 147px;
+    &:hover .boxhover {
+      display: block;
+    }
+    .buy {
+      .rounded(5px);
+      background-color: #ffa901;
+      color: #fff;
+      font-size: 11px;
+      left: 0px;
+      padding: 3px 6px 4px;
+      position: absolute;
+      top: 0px;
+    }
+  }
+  .boxhover {
+    width: 167px;
+  }
+  .goodsrating {
+    color: #a6a6a6;
+    display: block;
+    font-size: 10px;
+    padding-bottom: 5px;
+  }
+  .ratingview {
+    display: inline-block;
+    margin: 0px 5px 0px 0px;
+    vertical-align: -1px;
+    width: 63px;
+  }
+  .goodsbar {
+    margin-top: 10px;
+  }
+}
+.descriptionlist{
+  .point {
+    float: left;
+    padding-bottom: 15px;
+    width: 100%;
+    .title {
+      border-bottom: 1px solid #e6e6e6;
+      float: left;
+      width: 320px;
+      h3 {
+        background-color: #FFFFFF;
+        display: inline-block;
+        float: left;
+        font-size: 12px;
+        font-weight: normal;
+        margin: 0 0 -5px;
+        padding-right: 10px;
+      }
+    }
+    .description {
+      float: left;
+      padding-left: 20px;
+      width: 580px;
+    }
+  }
+}
+.mBuyButtonBottom {
+  padding: 20px 120px 0px 0px;
+  &.onleft {
+    padding: 30px 10px 0px 0px;
+    width: 470px;
+  }
+}
+
