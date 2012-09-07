@@ -1449,7 +1449,7 @@ border-radius: 5px;
 
 .infoblock { background: url('/css/skin/img/bg_info_article.gif') no-repeat; width: 350px; height: 73px; padding: 15px 15px 10px 35px; }
 
-.servicebanner {clear:both; width:320px; height:131px; padding:33px 0 0 600px; background:#4fcbf4 url(img/bg_service.jpg) no-repeat 0 0; color:#fff; font-size:14px; line-height:14px; margin-bottom:25px}
+.servicebanner {clear:both; width:320px; height:178px; padding:33px 0 0 600px; background:#4fcbf4 url(/css/skin/img/bg_service2.jpg) no-repeat 0 0; color:#fff; font-size:14px; line-height:14px; margin-bottom:25px}
 .servicebanner DIV {font-size:24px; line-height:24px; padding-bottom:5px}
 
 .slogan {color:#4fcbf4; margin-bottom:30px; font-size:14px}
