@@ -29,6 +29,7 @@ class SmartengineClient
       'api_key'          => null,
       'tenantid'         => null,
       'log_file'         => null,
+      'cert'             => null,
       'log_enabled'      => false,
       'log_data_enabled' => false,
     ), $config);
@@ -100,8 +101,8 @@ class SmartengineClient
 
     $connection = curl_init();
     curl_setopt($connection, CURLOPT_SSL_VERIFYPEER, true);
-    if (defined('SMARTENGINE_CERT') && SMARTENGINE_CERT) {
-      curl_setopt($connection, CURLOPT_CAINFO, SMARTENGINE_CERT);
+    if ($this->config['cert']) {
+      curl_setopt($connection, CURLOPT_CAINFO, $this->config['cert']);
     }
     curl_setopt($connection, CURLOPT_HEADER, 0);
     curl_setopt($connection, CURLOPT_RETURNTRANSFER, true);
