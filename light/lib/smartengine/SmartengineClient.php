@@ -75,12 +75,9 @@ class SmartengineClient
     ;
 
     $connection = curl_init();
-    if (defined('SMARTENGINE_CERT_PATH') && SMARTENGINE_CERT_PATH) {
-      curl_setopt($connection, CURLOPT_SSL_VERIFYPEER, true);
-      curl_setopt($connection, CURLOPT_CAINFO, SMARTENGINE_CERT_PATH);
-    }
-    else {
-      curl_setopt($connection, CURLOPT_SSL_VERIFYPEER, false);
+    curl_setopt($connection, CURLOPT_SSL_VERIFYPEER, true);
+    if (defined('SMARTENGINE_CERT') && SMARTENGINE_CERT) {
+      curl_setopt($connection, CURLOPT_CAINFO, SMARTENGINE_CERT);
     }
     curl_setopt($connection, CURLOPT_HEADER, 0);
     curl_setopt($connection, CURLOPT_RETURNTRANSFER, true);

@@ -108,7 +108,7 @@ class queueController
         }
 
         $r = $client->query('view', $params);
-        //print_r($r);
+        print_r($r);
         if (isset($r['error'])) $this->logger->error('Smartengine: error #'.$r['error']['@code'].' '.$r['error']['@message']);
       }
     } catch(\Exception $e) {
@@ -118,7 +118,7 @@ class queueController
 
     $ids = array_keys($data);
     if ($ids) {
-      $this->dbh->exec("DELETE FROM `queue` WHERE id IN (".implode(',', $ids).")");
+//      $this->dbh->exec("DELETE FROM `queue` WHERE id IN (".implode(',', $ids).")");
     }
   }
 
