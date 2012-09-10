@@ -245,12 +245,13 @@ live:
         key:  %SF_DATA_DIR%/keys/live.privkey.pem
 
   smartengine:
-    api_url: 'https://selightprod.smartengine.at/se-light/api/1.0/json/'
-    push: true  # отправлять данные на сервер smartengine
+    push: false # отправлять данные на сервер smartengine
     pull: false # запрашивать данные с сервера smartengine
-    cert: %SF_DATA_DIR%/cert/smartengine-server2.crt
-    log_enabled: false
-    log_data_enabled: false
+    config:
+      api_url: 'https://selightprod.smartengine.at/se-light/api/1.0/json/'
+      cert: %SF_DATA_DIR%/cert/smartengine-server2.crt
+      log_enabled: false
+      log_data_enabled: false
 
   rediska:
     default:
