@@ -27,6 +27,7 @@ return array(
   array('/region/init'                              , 'region.getShopAvailable'),
   array('/'                                         , 'staticPage.mainPage'),
   array('/product-view/<productId>'          , 'smartengine.view'),
+  array('/product-buy/<product>'             , 'smartengine.buy'),
   array('/orders/new'                        , 'order.new'), //@TODO реализовать, пока для генерации урлов
   array('/product/<productToken>'            , 'product.show'), //@TODO реализовать, пока для генерации урлов
   array('/catalog/<categoryToken>/'          , 'catalog.showCategory'), //@TODO реализовать, пока для генерации урлов

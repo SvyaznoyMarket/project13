@@ -67,6 +67,8 @@ class queueController
   }
 
   private function processSmartengineView($data) {
+    echo "Process smartengine.view with: ".count($data)." items ...\n";
+
     require_once ROOT_PATH.'lib/smartengine/SmartengineClient.php';
     $client = new SmartengineClient(array(
       'api_url'  => SMARTENGINE_API_URL,
@@ -113,6 +115,7 @@ class queueController
       }
     } catch(\Exception $e) {
       $this->logger->error($e->getMessage());
+      echo "Error {$e->getMessage()} ...\n";
     }
 
     $ids = array_keys($data);
