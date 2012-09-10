@@ -56,8 +56,9 @@ class order_Components extends myComponents
    */
   public function executeField_payment_method_id()
   {
-    $sum =$this->getUser()->getCart()->getTotal();
-    if ($sum < ProductEntity::MIN_CREDIT_PRICE) {
+    $sum =$this->getUser()->getCart()->getProductsPrice();
+
+    if ($sum < ProductEntity::MIN_CREDIT_PRICE || !sfConfig::get('app_payment_credit_enabled', true)) {
         $showCreditMethod = false;
     } else {
         $showCreditMethod = true;

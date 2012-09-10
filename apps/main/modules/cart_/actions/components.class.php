@@ -19,6 +19,7 @@ class cart_Components extends myComponents
     $list = $this->getProductServiceList($this->getUser()->getCart());
 
     $dataForCredit = array();
+    $totalProductPrice =0;
     foreach($list as $product){
       if($product['type'] == 'product'){
         /** @var $obj ProductEntity */
@@ -38,11 +39,13 @@ class cart_Components extends myComponents
           'price' => $product['price'],
           'type' => CreditBankRepository::getCreditTypeByCategoryToken($rootCategoryToken),
         );
+        $totalProductPrice += ($product['price'] * $product['quantity']);
       }
     }
 
     $this->setVar('list', $list, true);
     $this->setVar('dataForCredit', json_encode($dataForCredit));
+    $this->setVar('totalProductPrice', $totalProductPrice);
   }
 
   /**

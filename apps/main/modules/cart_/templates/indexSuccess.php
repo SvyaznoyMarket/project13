@@ -11,10 +11,11 @@
   <?php include_component('cart_', 'show') ?>
 
 <div class="fl width345 font14">
+  <?php if (($cart->getProductsPrice() >= ProductEntity::MIN_CREDIT_PRICE ) && sfConfig::get('app_payment_credit_enabled', true)) : ?>
   <div id="creditFlag" style="display:none">
     <label class="bigcheck <?php if ($selectCredit) echo 'checked'; ?>" for="selectCredit">
       <b></b>Выбранные товары купить в кредит
-      <input autocomplete="off" class="" type="checkbox" id="selectCredit" <?php if ($selectCredit) echo 'checked="checked"'; ?>
+      <input autocomplete="off" class="" type="checkbox" id="selectCredit" <?php if ($selectCredit){ echo 'checked="checked"'; }?>
              name="selectCredit"/>
     </label>
 
@@ -23,10 +24,12 @@
       и в течение нескольких минут получаете СМС о решении банка. Оригиналы документов мы привезем вместе с выбранными товарами!
     </div>
   </div>
+  <?php endif; ?>
 
 </div>
 <div id="total" class="fr">
   <div class="left">
+    <?php if (($cart->getProductsPrice() >= ProductEntity::MIN_CREDIT_PRICE ) && sfConfig::get('app_payment_credit_enabled', true)) : ?>
     <div id="creditSum" data-minsum="<?php echo ProductEntity::MIN_CREDIT_PRICE ?>" style="display:none">
       <div class="font14 width370 creditInfo pb10 grayUnderline">
         <div class="leftTitle">Сумма заказа:</div>
@@ -51,6 +54,7 @@
         </div>
       </div>    
     </div>
+    <?php endif; ?>
 
     <div id="commonSum">
       <div class="font14">

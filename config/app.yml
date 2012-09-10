@@ -112,6 +112,7 @@ all:
   payment:
     enabled: true
     default_provider: psbank
+    credit_enabled: true
     provider:
       psbank:
         terminal: '79036768'

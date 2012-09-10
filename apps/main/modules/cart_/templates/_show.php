@@ -26,7 +26,9 @@
   </tr>
 </script>
 
+<?php if (($totalProductPrice >= ProductEntity::MIN_CREDIT_PRICE ) && sfConfig::get('app_payment_credit_enabled', true)) : ?>
 <div id="tsCreditCart" data-value="<?php echo $dataForCredit ?>" ></div>
+<?php endif; ?>
 <?php foreach ($list as $item): ?>
 
 <?php if ($item['type'] == 'product'): ?>

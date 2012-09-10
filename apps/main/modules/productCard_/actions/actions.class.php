@@ -99,7 +99,7 @@ class productCard_Actions extends myActions
           'product_type' => $productType,
           'session_id' => session_id()
       );
-      $result['creditIsAllowed'] = true;
+      $result['creditIsAllowed'] = (bool) (($product->getPrice() * $product->getCartQuantity()) > ProductEntity::MIN_CREDIT_PRICE );
       $result['creditData'] = json_encode($dataForCredit);
       return $result;
   }
