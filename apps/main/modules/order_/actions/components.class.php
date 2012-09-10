@@ -57,6 +57,7 @@ class order_Components extends myComponents
   public function executeField_payment_method_id()
   {
     $sum =$this->getUser()->getCart()->getProductsPrice();
+    $config = sfConfig::get('app_payment_provider');
 
     if ($sum < ProductEntity::MIN_CREDIT_PRICE || !sfConfig::get('app_payment_credit_enabled', true)) {
         $showCreditMethod = false;
@@ -69,7 +70,10 @@ class order_Components extends myComponents
         unset($paymentMethodList[$key]);
         continue;
       }
-      if(($method->getId() == 5) && !sfConfig::get('app_payment_enabled')){
+      if(($method->getId() == 5) && (!sfConfig::get('app_payment_enabled') || !$config['psbank']['enabled'])){ //Онлайн оплата
+        unset($paymentMethodList[$key]);
+      }
+      if(($method->getId() == 8) && (!sfConfig::get('app_payment_enabled') || !$config['psbank_invoice']['enabled'])){ //e-invoicing
         unset($paymentMethodList[$key]);
       }
     }

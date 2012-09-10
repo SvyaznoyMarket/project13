@@ -297,9 +297,6 @@ class order_Actions extends myActions
       ));
     }
 
-    //dump($result);
-    //dump($orderIds);
-
     if (empty($orderIds))
     {
       $this->redirect('cart');
@@ -307,13 +304,17 @@ class order_Actions extends myActions
 
     $user->setFlash('complete_orders', $orderIds);
 
-
     //myDebug::dump($result);
     if (!$result)
     {
       $this->getLogger()->err('{Order} get list: empty response from core');
     }
     $orders = $result;
+
+    // Инвойсинг
+    if (8 == $orders[0]['payment_id']) {
+      $this->paymentProvider = $this->getPaymentProvider('psbank_invoice');
+    }
 
     $gaItems = array();
 
@@ -426,7 +427,7 @@ class order_Actions extends myActions
       $paymentMethod = RepositoryManager::getPaymentMethod()->getById($order['payment_id']);
 
       $isCredit = false;
-      if ($paymentMethod->getIsOnline()) {
+      if ($paymentMethod->getIsOnline() || in_array($paymentMethod->getId(), array(5, 8))) { //'online', 'invoice'
         $provider = $this->getPaymentProvider();
         $this->paymentForm = $this->paymentProvider->getForm($order);
 

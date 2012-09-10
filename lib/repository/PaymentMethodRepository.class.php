@@ -56,7 +56,7 @@ class PaymentMethodRepository
    * @return int[]
    */
   public function getAcceptedList(){
-    return array(1, 2, 5, 6);
+    return array(1, 2, 5, 6, 8);
   }
 
 }
