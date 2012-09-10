@@ -4,6 +4,8 @@
  * @var $relatedPagesNum int
  */
 ?>
+<?php if (sfConfig::get('app_related_product_additional')): ?>
+
 <div class="carouseltitle carbig">
   <div class="rubrictitle"><h3>С этим товаром также покупают</h3></div>
   <?php if ($relatedPagesNum > 1) { ?>
@@ -37,3 +39,5 @@
 </div>
 
 <div class="clear"></div>
+
+<?php endif ?>
