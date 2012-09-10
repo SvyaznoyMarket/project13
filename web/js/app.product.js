@@ -24,8 +24,7 @@ $(document).ready(function() {
 					$(this).toggleClass('checked')
 					self.toggleCookie( $(this).hasClass('checked') )
 				})
-
-				if( this.getState() ) {
+				if( this.getState() == 1) {
 					$('.creditbox label').addClass('checked')
 				}
 				
