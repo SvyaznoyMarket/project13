@@ -17,6 +17,7 @@ class smartengineActions extends myActions
    */
   public function executeView(sfWebRequest $request)
   {
+    /*
     $product = RepositoryManager::getProduct()->getById($request['product'], true);
     $this->forward404If(!$product);
 
@@ -41,6 +42,24 @@ class smartengineActions extends myActions
     }
 
     return $this->renderText('');
+    */
+
+    $data = array(
+      'host'       => $request->getHost(),
+      'time'       => date('d_m_Y_H_i_s'),
+      'sessionid'  => session_id(),
+      'product_id' => $request['product'],
+    );
+    if ($this->getUser()->isAuthenticated()) {
+      $data['user_id'] = $this->getUser()->getGuardUser()->getId();
+    }
+
+    /** @var $dbh \PDO */
+    $dbh = $this->getContext()->getDatabaseManager()->getDatabase('doctrine')->getConnection();
+    $dbh->exec("INSERT INTO `queue` (`name`, `body`) VALUES ('smartengine.view', '".json_encode($data)."')");
+    print_r($dbh->errorInfo());
+
+    return sfView::NONE;
   }
 
   /**
@@ -95,14 +114,15 @@ class smartengineActions extends myActions
     $client = SmartengineClient::getInstance();
 
     $params = array(
-      'sessionid' => session_id(),
-      'itemid'    => $product->getId(),
+      'sessionid'         => session_id(),
+      'itemid'            => $product->getId(),
     );
     if ($this->getUser()->isAuthenticated()) {
       $params['userid'] = $this->getUser()->getGuardUser()->getId();
     }
     if ($product->getMainCategory()) {
       $params['itemtype'] = $product->getMainCategory()->getId();
+      $params['requesteditemtype'] = $product->getMainCategory()->getId();
     }
     $r = $client->query('otherusersalsoviewed', $params);
 
@@ -112,15 +132,24 @@ class smartengineActions extends myActions
       return $this->renderText('');
     }
 
-    $ids = array_map(function($item) { return $item['id']; }, isset($r['recommendeditems']['item']) ? $r['recommendeditems']['item'] : array());
+    $ids =
+      array_key_exists('id', $r['recommendeditems']['item'])
+      ? array($r['recommendeditems']['item']['id'])
+      : array_map(function($item) { return $item['id']; }, isset($r['recommendeditems']['item']) ? $r['recommendeditems']['item'] : array());
     if (!count($ids)) {
       return $this->renderText('');
     }
 
     $products = RepositoryManager::getProduct()->getListById($ids, true);
+    foreach ($products as $i => $product) {
+      if (!$product->getIsBuyable()) unset($products[$i]);
+    }
+    if (!count($products)) {
+      return $this->renderText('');
+    }
 
     return $this->renderPartial($this->getModuleName().'/product_list', array(
-      'title'    => 'Also viewed',
+      'title'    => 'С этим товаром также смотрят',
       'products' => $products,
     ));
   }
@@ -146,6 +175,7 @@ class smartengineActions extends myActions
     }
     if ($product->getMainCategory()) {
       $params['itemtype'] = $product->getMainCategory()->getId();
+      $params['requesteditemtype'] = $product->getMainCategory()->getId();
     }
     $r = $client->query('otherusersalsobought', $params);
 
@@ -155,12 +185,21 @@ class smartengineActions extends myActions
       return $this->renderText('');
     }
 
-    $ids = array_map(function($item) { return $item['id']; }, isset($r['recommendeditems']['item']) ? $r['recommendeditems']['item'] : array());
+    $ids =
+      array_key_exists('id', $r['recommendeditems']['item'])
+        ? array($r['recommendeditems']['item']['id'])
+        : array_map(function($item) { return $item['id']; }, isset($r['recommendeditems']['item']) ? $r['recommendeditems']['item'] : array());
     if (!count($ids)) {
       return $this->renderText('');
     }
 
     $products = RepositoryManager::getProduct()->getListById($ids, true);
+    foreach ($products as $i => $product) {
+      if (!$product->getIsBuyable()) unset($products[$i]);
+    }
+    if (!count($products)) {
+      return $this->renderText('');
+    }
 
     return $this->renderPartial($this->getModuleName().'/product_list', array(
       'title'    => 'Also bought',

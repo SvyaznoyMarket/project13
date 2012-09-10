@@ -17,6 +17,7 @@ Options +FollowSymLinks +ExecCGI
   RewriteRule ^cart/delete.* index.light.php [L]
   RewriteRule ^cart/clear.* index.light.php [L]
   RewriteRule ^category/main_menu/? index.light.php [L]
+  RewriteRule ^product-view/.* index.light.php [L]
 
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteRule ^wp-admin/$ /content/wp-admin/index.php [L]
