@@ -100,7 +100,7 @@ class queueController
           'itemurl'         => 'http://'.$item['host'].$product->getLink(),
           'actiontime'      => $item['time'],
         );
-        if ($item['user_id']) {
+        if (!empty($item['user_id'])) {
           $params['userid'] = $item['user_id'];
         }
         if ($product->getMainCategory()) {

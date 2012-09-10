@@ -73,10 +73,12 @@ class SmartengineClient
       . str_replace('.', '/', $action)
       . '?' . http_build_query($params)
     ;
-    //var_dump($query);
 
     $connection = curl_init();
-    curl_setopt($connection, CURLOPT_SSL_VERIFYPEER, false); // временный фикс
+    curl_setopt($connection, CURLOPT_SSL_VERIFYPEER, true);
+    if (defined('SMARTENGINE_CERT') && SMARTENGINE_CERT) {
+      curl_setopt($connection, CURLOPT_CAINFO, SMARTENGINE_CERT);
+    }
     curl_setopt($connection, CURLOPT_HEADER, 0);
     curl_setopt($connection, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($connection, CURLOPT_URL, $query);

@@ -50,9 +50,8 @@ try {
   call_user_func_array(array($controllerInstance, $action), array_slice($argv, 3));
 }
 catch(Exception $e) {
-  Logger::getRootLogger()->warn('Exception: '.$e->getMessage());
-
   echo "\n{$e->getMessage()}\n";
+  Logger::getRootLogger()->warn('Exception: '.$e->getMessage());
 }
 TimeDebug::end('Total');
 Logger::getLogger('Timer')->debug(TimeDebug::getAll());

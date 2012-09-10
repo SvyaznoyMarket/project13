@@ -137,7 +137,6 @@
 				.wait()
 				.script( getWithVersion('app.product.js') )
 				.script( getWithVersion('app.oneclick.js') )
-				.script('app.product.related.js')
 			}).runQueue()
 			break
 		case 'product_comment':
