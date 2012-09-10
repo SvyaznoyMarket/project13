@@ -57,6 +57,9 @@ class queueController
         case 'smartengine.view':
           $this->processSmartengineView($data);
           break;
+        case 'smartengine.buy':
+          $this->processSmartengineBuy($data);
+          break;
       }
     }
 
@@ -69,12 +72,7 @@ class queueController
   private function processSmartengineView($data) {
     echo "Process smartengine.view with: ".count($data)." items ...\n";
 
-    require_once ROOT_PATH.'lib/smartengine/SmartengineClient.php';
-    $client = new SmartengineClient(array(
-      'api_url'  => SMARTENGINE_API_URL,
-      'api_key'  => SMARTENGINE_API_KEY,
-      'tenantid' => SMARTENGINE_TENANTID,
-    ));
+    $client = $this->getClient();
 
     $productIds = array();
     foreach ($data as $item) {
@@ -124,6 +122,63 @@ class queueController
     }
   }
 
+  private function processSmartengineBuy($data) {
+    echo "Process smartengine.buy with: ".count($data)." items ...\n";
+
+    $client = $this->getClient();
+
+    $productIds = array();
+    foreach ($data as $item) {
+      foreach ($item['product_ids'] as $productId) {
+        $productIds[$productId] = null;
+      }
+    }
+    $productIds = array_keys($productIds);
+
+    if (!(bool)$productIds) return;
+
+    /** @var $productsById \light\ProductData[] */
+    $productsById = array();
+    foreach (App::getProduct()->getProductsByIdList($productIds) as $product) {
+      $productsById[$product->getId()] = $product;
+    }
+
+    try {
+      foreach ($data as $item) {
+        foreach ($item['product_ids'] as $productId) {
+          $product = isset($productsById[$productId]) ? $productsById[$productId] : null;
+          if (!$product) continue;
+
+          $params = array(
+            'sessionid'       => $item['sessionid'],
+            'itemid'          => $product->getId(),
+            'itemdescription' => $product->getName(),
+            'itemurl'         => 'http://'.$item['host'].$product->getLink(),
+            'actiontime'      => $item['time'],
+          );
+          if ($item['user_id']) {
+            $params['userid'] = $item['user_id'];
+          }
+          if ($product->getMainCategory()) {
+            $params['itemtype'] = $product->getMainCategory()->getId();
+          }
+
+          $r = $client->query('buy', $params);
+          //print_r($r);
+          if (isset($r['error'])) $this->logger->error('Smartengine: error #'.$r['error']['@code'].' '.$r['error']['@message']);
+        }
+      }
+    } catch(\Exception $e) {
+      $this->logger->error($e->getMessage());
+      echo "Error {$e->getMessage()} ...\n";
+    }
+
+    $ids = array_keys($data);
+    if ($ids) {
+      $this->dbh->exec("DELETE FROM `queue` WHERE id IN (".implode(',', $ids).")");
+    }
+  }
+
   private function touchWorkerNum($num) {
     // проверка на количество одновременно запущенных воркеров
     $file = QUEUE_PID_FILE;
@@ -135,5 +190,15 @@ class queueController
       throw new \Exception('Превышен лимит запущенных воркеров.');
     }
     file_put_contents($file, $workerNum);
+  }
+
+  private function getClient() {
+    require_once ROOT_PATH.'lib/smartengine/SmartengineClient.php';
+
+    return new SmartengineClient(array(
+      'api_url'  => SMARTENGINE_API_URL,
+      'api_key'  => SMARTENGINE_API_KEY,
+      'tenantid' => SMARTENGINE_TENANTID,
+    ));
   }
 }
