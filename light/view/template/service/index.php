@@ -19,6 +19,17 @@ foreach($categoryTree->getChildren() as $item): ?>
             <i class="<?php echo $item->getIconClass() ?>"></i>
             <strong class="font16"><?php echo $item->getName() ?></strong>
             <?php echo $item->getDescriptionByIcon(); ?>
+
+            <br />
+            <div style="text-align: right; ">
+                <a href="<?php echo $item->getLink(); ?>">
+                    <strong>
+                        <font color="#4FCBF4">
+                            выбрать услуги >
+                        </font>
+                    </strong>
+                </a>
+            </div>
         </div>
     </a>
     <div class="serviceboxbottom"></div>
