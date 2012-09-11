@@ -1284,10 +1284,10 @@
   margin: 15px 0px;
 }
 .bFooterF1 a {
-  *display: block;
   color: #fff;
   cursor: pointer;
   display: inline-block;
+  *display: block;
   height: 45px;
   padding-left: 70px;
   text-decoration: none;
@@ -1901,7 +1901,7 @@ label.checked {
   left: -1px;
   padding: 9px 0 0;
   position: absolute;
-  top: -3px;
+  top: -2px;
   width: 100%;
   z-index: 3;
 }
@@ -2193,8 +2193,8 @@ label.checked {
   height: 31px;
 }
 .goodsbarbig.mSmallBtns {
-  *display: inline;
   display: inline-block;
+  *display: inline;
   width: 137px;
   zoom: 1;
 }
@@ -2214,13 +2214,13 @@ label.checked {
   cursor: default;
 }
 .bCountSet {
-  *display: inline;
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   border-radius: 5px;
   border: 1px solid #ddd;
   color: #959595;
   display: inline-block;
+  *display: inline;
   left: -90px;
   margin: 0px 5px 0px 0px;
   position: absolute;
@@ -2228,10 +2228,10 @@ label.checked {
   zoom: 1;
 }
 .bCountSet a {
-  *display: inline;
   color: #959595;
   cursor: pointer;
   display: inline-block;
+  *display: inline;
   height: auto;
   padding: 7px 1px;
   text-align: center;
@@ -2241,8 +2241,8 @@ label.checked {
   zoom: 1;
 }
 .bCountSet span {
-  *display: inline;
   display: inline-block;
+  *display: inline;
   margin: 7px 1px;
   vertical-align: middle;
   zoom: 1;
@@ -2347,8 +2347,8 @@ label.checked {
 .bDropMenu,
 .bDropMenu div,
 .bDropMenu:hover div {
-  *display: block;
   display: inline-block;
+  *display: block;
   vertical-align: top;
   zoom: 1;
 }
@@ -2387,9 +2387,9 @@ label.checked {
   padding: 5px 10px;
 }
 .bDropMenu div span a {
-  *display: inline;
   cursor: pointer;
   display: inline-block;
+  *display: inline;
   height: 100%;
   text-decoration: none;
   width: 100%;
@@ -2556,8 +2556,8 @@ label.checked {
   text-decoration: underline;
 }
 .bF1Block_ePrice {
-  *display: inline;
   display: inline-block;
+  *display: inline;
   font: bold 16px Tahoma, sans-serif;
   vertical-align: middle;
   width: 100px;
@@ -2816,8 +2816,8 @@ label.checked {
   width: 100%;
 }
 .bCarousel {
-  *display: inline;
   display: inline-block;
+  *display: inline;
   height: 300px;
   position: relative;
   vertical-align: bottom;
