@@ -108,16 +108,31 @@
           'order_id' => $order['number'],
           'order_total' => $order['sum'],
           'product_quantity' => implode(',', array_map(function($i) { return $i['quantity']; }, $order['product'])),
-      );  ?>
-      
+      );  
+      $jsonMyThings = array (
+        'order_id' => $order['number'],
+        'order_total' => $order['sum'],
+        'products' => array()
+      );
+
+      foreach($order['product'] as $orderProduct){
+          $jsonMyThings['products'][] = array(
+            'ProductID' => $orderProduct['id'],
+            'price' => $orderProduct['price'],
+            'qty' => $orderProduct['quantity']
+        );
+      }
+      ?>
       <div id="heiasComplete" data-vars='<?php echo json_encode( $jsonOrdr ) ?>' class="jsanalytics"></div>
 
       <div id="adriverOrder" data-vars='<?php echo json_encode( $jsonOrdr ) ?>' class="jsanalytics"></div>
 
+      <div id="myThingsFin" data-vars='<?php echo json_encode( $jsonMyThings ) ?>' class="jsanalytics"></div>
   <!-- Efficient Frontiers -->
       <img src='http://pixel.everesttech.net/3252/t?ev_Orders=1&amp;ev_Revenue=<?php echo $order['sum'] ?>&amp;ev_Quickorders=0&amp;ev_Quickrevenue=0&amp;ev_transid=<?php echo $order['number'] ?>' width='1' height='1'/>
 
     <?php endforeach ?>
+
 
 
 

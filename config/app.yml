@@ -87,7 +87,8 @@ all:
     enabled: false
 
   related_product:
-    additional: true
+    additional: true # отображать смежные товары из ядра
+    accessory: true # отображать аксессуары из ядра
 
 
   core:
