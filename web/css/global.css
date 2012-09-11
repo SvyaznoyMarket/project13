@@ -1205,8 +1205,8 @@
 .bFooter__eLeft a,
 .bFooter__eLeft span,
 .bFooter__eRight .mFDiv {
-  *display: inline;
   display: inline-block;
+  *display: inline;
   vertical-align: top;
   zoom: 1;
 }
