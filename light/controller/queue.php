@@ -34,7 +34,7 @@ class queueController
     $this->dbh->beginTransaction();
 
     // (незаблокированные или вылетившие по таймауту) и с именем {$queueName}
-    $clause = '(locked_at = NULL OR TIMESTAMPDIFF(SECOND, locked_at, NOW()) > '.QUEUE_MAX_LOCK_TIME.') AND name'.(false === strpos($queueName, ',') ? " = '{$queueName}'" : " IN ($queueName)");
+    $clause = '(locked_at IS NULL OR TIMESTAMPDIFF(SECOND, locked_at, NOW()) > '.QUEUE_MAX_LOCK_TIME.') AND name'.(false === strpos($queueName, ',') ? " = '{$queueName}'" : " IN ($queueName)");
     $sth = $this->dbh->query("SELECT id, name, body FROM `queue` WHERE {$clause} LIMIT {$limit}");
     $sth->execute();
 
