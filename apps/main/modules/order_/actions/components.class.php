@@ -58,13 +58,28 @@ class order_Components extends myComponents
   {
     $choices = array();
 
+    $config = sfConfig::get('app_payment_provider');
     foreach (PaymentMethodTable::getInstance()->getList() as $paymentMethod)
     {
       // если метод оплаты неактивен, то пропустить
       if (!$paymentMethod->is_active) continue;
 
       // если онлайн оплата и онная отключена в настройках, то пропустить
-      if (('online' === $paymentMethod->token) && !sfConfig::get('app_payment_enabled')) continue;
+      if (
+        ('online' === $paymentMethod->token)
+        && (
+          !sfConfig::get('app_payment_enabled') // общий переключатель неактивен
+          || !$config['psbank']['enabled']      // переключатель для psb неактивен
+        )
+      ) continue;
+
+      if (
+        ('invoice' === $paymentMethod->token)
+        && (
+          !sfConfig::get('app_payment_enabled')    // общий переключатель неактивен
+          || !$config['psbank_invoice']['enabled'] // переключатель для psb-invoice неактивен
+        )
+      ) continue;
 
       $choices[$paymentMethod->id] = array(
         'id'          => strtr($this->name, array('[' => '_', ']' => '_')).$paymentMethod->id,

@@ -98,7 +98,6 @@
 				.wait()
 				.script(getWithVersion('app.order.js'))
 				.script(getWithVersion('main.js'))
-                .script(getWithVersion('app.product.related.js'))
 			}).runQueue()
 			break
         case 'order_error':
@@ -135,7 +134,6 @@
 				.wait()
 				.script( getWithVersion('app.product.js') )
 				.script( getWithVersion('app.oneclick.js') )
-				.script('app.product.related.js')
 			}).runQueue()
 			break
 		case 'product_comment':
