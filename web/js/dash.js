@@ -130,7 +130,8 @@ $(document).ready(function(){
 					var h = im.attr('height')*1
 					$('.boxhover .mainImg', $(self)).css({'width': w + 3, 'height': h + 3 , 'top':'-1px'})
 					$(self).css( {'position':'relative', 'z-index':2 })
-					$(self).children().fadeOut()
+					//$(self).children().fadeOut()
+					$(self).find('.goodsbar.mSmallBtns.mR').fadeIn();
 					$('.boxhover', self).fadeIn(200)
 				}
 			}
@@ -149,8 +150,8 @@ $(document).ready(function(){
 				var h = im.attr('height')*1
 				$('.boxhover .mainImg', self).css({'width': w + 3, 'height': h + 3})
 				$(self).css( 'z-index',1 )
-
-				$(self).children().not('.boxhover').fadeIn()
+				//$(self).children().not('.boxhover').fadeIn()
+				$(self).find('.goodsbar.mSmallBtns.mR').fadeOut();
 				$('.boxhover', self).fadeOut('slow')
 			}
 			//currentItem = 0
@@ -158,7 +159,7 @@ $(document).ready(function(){
 	})
 	/* ---- */
 
-	$('.boxhover .lt').live('click', function(e) {
+	$('.goodsbox').live('click', function(e) {
 		if( $(this).attr('data-url') )
 			window.location.href = $(this).attr('data-url')
 	})
