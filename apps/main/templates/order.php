@@ -21,7 +21,7 @@
     <div class="basketheader">
       <div class="bNLogo"><?php include_slot('title') ?></div>
       <div class="headerright mNLogo">
-        <h2>Круглосуточный контакт сEnter</h2>
+        <h2>Круглосуточный Контакт-сEnter</h2>
         <div>8 (800) 700-00-09</div>
 
         <span>Звонок бесплатный. Радость в подарок :)</span>
@@ -60,7 +60,11 @@
 <script src="/js/jquery-1.6.4.min.js" type="text/javascript"></script>
 <script src="/js/LAB.min.js" type="text/javascript"></script>
 <script src="/js/loadjs.js" type="text/javascript"></script>
-
+<script type="text/javascript">
+  var mtHost = (("https:" == document.location.protocol) ? "https://rainbowx" : "http://rainbowx") + ".mythings.com";
+  var mtAdvertiserToken = "1989-100-ru";
+  document.write(unescape("%3Cscript src='" + mtHost + "/c.aspx?atok=" + mtAdvertiserToken + "' type='text/javascript'%3E%3C/script%3E")); 
+</script>
 <?php if (!include_slot('auth')) include_partial('default/auth') ?>
 
 <?php include_partial('region/select') ?>
@@ -75,6 +79,7 @@
   <?php include_slot('seo_counters_advance') ?>
   <?php endif ?>
 <?php include_component('default', 'adriver') ?>
+<div id="luxupTracker" class="jsanalytics"></div>
 
 </body>
 </html>
