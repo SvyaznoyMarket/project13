@@ -27,3 +27,4 @@ define('BANNER_TIMEOUT', 6000);
 
 define('QUEUE_PID_FILE', (sys_get_temp_dir() ?: '/tmp').'/enter-queue.pid'); // sys_get_temp_dir() returns "/tmp"
 define('QUEUE_WORKER_LIMIT', 10); // количество одновременно запущенных воркеров
+define('QUEUE_MAX_LOCK_TIME', 600); // максимальное количество секунд блокировки для задачи

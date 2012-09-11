@@ -33,7 +33,8 @@ class queueController
 
     $this->dbh->beginTransaction();
 
-    $clause = 'is_locked = 0 AND name'.(false === strpos($queueName, ',') ? " = '{$queueName}'" : " IN ($queueName)");
+    // (незаблокированные или вылетившие по таймауту) и с именем {$queueName}
+    $clause = '(locked_at IS NULL OR TIMESTAMPDIFF(SECOND, locked_at, NOW()) > '.QUEUE_MAX_LOCK_TIME.') AND name'.(false === strpos($queueName, ',') ? " = '{$queueName}'" : " IN ($queueName)");
     $sth = $this->dbh->query("SELECT id, name, body FROM `queue` WHERE {$clause} LIMIT {$limit}");
     $sth->execute();
 
@@ -48,7 +49,7 @@ class queueController
     }
 
     if ($ids) {
-      $this->dbh->exec("UPDATE `queue` SET is_locked = 1 WHERE id IN (".implode(',', $ids).")");
+      $this->dbh->exec("UPDATE `queue` SET locked_at = NOW() WHERE id IN (".implode(',', $ids).")");
     }
     $this->dbh->commit();
 
