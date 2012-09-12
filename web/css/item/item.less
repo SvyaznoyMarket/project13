@@ -98,12 +98,12 @@
     zoom: 1;
   }
   .bCountSet__eM {
-    background: url("@{itemSprite-url}") no-repeat -185px 0px;
+    background: url("@{itemSprite-url}") no-repeat -137px 0px;
     float: left;
     margin: 0px 5px 0px 2px;
   }
   .bCountSet__eP {
-    background: url("@{itemSprite-url}") no-repeat -200px 0px;
+    background: url("@{itemSprite-url}") no-repeat -152px 0px;
     float: right;
     margin: 0px 2px 0px 5px;
   }
@@ -171,17 +171,18 @@
     width: 48px;
   }
   b {
-    background: url("@{itemSprite-url}") no-repeat -137px -53px;
+    border: 2px solid #E7E7E7;
+    .rounded(7px);
     display: block;
-    height: 48px;
-    left: 0px;
+    height: 47px;
+    left: -1px;
     position: absolute;
-    top: 0px;
-    width: 48px;
+    top: -1px;
+    width: 47px;
     z-index: 1;
     &:hover,
     &.current{
-      background-position: -137px 0px;
+      border: 2px solid #FFB015;
       cursor: pointer;
     }
   }
@@ -213,7 +214,7 @@
   .rounded(7px);
 }
 .bDropMenu {
-  background: #f5f5f5 url("@{itemSprite-url}") 100% -112px no-repeat;
+  background: #f5f5f5 url("@{itemSprite-url}") 100% -135px no-repeat;
   border: 2px solid #e7e7e7;
   color: #010101;
   padding: 5px 40px 5px 10px;
@@ -244,14 +245,14 @@
         zoom: 1;
       }
       &:first-child {
-        background: url("@{itemSprite-url}") 100% -112px no-repeat;
+        background: url("@{itemSprite-url}") 100% -135px no-repeat;
         padding: 5px 10px 10px;
       }
       &:hover {
         background: #e6e6e6;
       }
       &:first-child:hover {
-        background: #fff url("@{itemSprite-url}") 100% -112px no-repeat;
+        background: #fff url("@{itemSprite-url}") 100% -135px no-repeat;
         cursor: default;
       }
     }

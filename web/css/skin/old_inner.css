@@ -506,15 +506,6 @@ border-radius:5px;
 .yellowbuttonactive, .yellowbuttonactive:hover {background-color:#f79200; background-position:0 -64px}
 .yellowbuttondisabled {background-color:#ececec; background-position:0 -96px; border-color:#e4e4e4; color:#e1e1e1}*/
 
-.popup_leftpanel A.link1 { overflow:visible; display:block; background:url(/css/skin/img/bg_buttons.png) repeat-x; border:1px solid; height:16px; padding:3px 7px 3px 7px; font-weight:bold; background-color:#ffaa01; border-color:#f28900; width: 70px; text-align: center; font-size: 11px; color: #fff;
-border-radius:5px;
--moz-border-radius:5px;
--webkit-border-radius:5px
-}
-.popup_leftpanel A.link1:hover {background-color:#f79200; background-position:0 -32px; text-decoration:none;}
-.popup_leftpanel A.link1.active {background-color:#f79200; background-position:0 -64px}
-.popup_leftpanel A.link1.disabled {background-color:#ececec; background-position:0 -96px; border-color:#e4e4e4; color:#e1e1e1}
-
 .share {display:inline-block; width:105px; height:25px; background:url(/css/common/img/bg_inner.png) no-repeat -668px -218px; vertical-align:middle; text-indent:-10000px}
 .marklist {font-size:11px; position:relative}
 .marklist SPAN {margin:0 3px}
@@ -528,11 +519,8 @@ border-radius:5px;
 .f1links LI {padding-bottom:7px}
 
 
-#bigpopup .previewlist .viewstock B {position:absolute; z-index:1; left:0; top:0; display:block; width:48px; height:48px; background:url(/css/skin/img/cover_media.png) no-repeat 0 -53px}
-#bigpopup .previewlist B:hover, .previewlist B.current {background-position:0 0; cursor:pointer}
-.previewlist A {display:block; width:48px; height:48px; cursor:pointer; text-indent:-10000px}
-.previewlist .axonometric {background:url(/css/common/img/bg_inner.png) no-repeat -830px -238px}
-.previewlist .videolink {background:url(/css/common/img/bg_inner.png) no-repeat -778px -238px}
+
+/*.previewlist .videolink {background:url(/css/common/img/bg_inner.png) no-repeat -778px -238px}*/
 
 .colorlist {float:left; width:100%; padding-bottom:8px}
 .colorlist LI {float:left; width:29px; height:29px; margin:0 5px 5px 0}
@@ -705,30 +693,11 @@ box-shadow:0 0 7px #616161;
 .pouptitle {float:left; width:560px; margin:0; font-size:30px; font-family:"Enter"; text-transform:uppercase}
 
 
-.mediablock {margin: 0 50px; height:724px; background:#fff url(/css/skin/img/bg_mediablock.gif) repeat-y 0 0}
-.mediablock .leftpanel {float:left; width:180px; padding:0 10px 10px 10px}
-.logobox {width:85px; height:95px; background:url(/css/common/img/bg_inner.png) no-repeat -538px -284px; text-indent:-10000px; margin-bottom:20px}
-.mediablock .topblock {height:530px; padding:19px 9px 0 9px}
-
-.scalepanel {float:right; width:54px; padding:30px 0 0 26px; background-color:#fff}
-.scalepanel .versioncontrol {display:none;  position:absolute; bottom:15px; right: 5px; text-align:center; width: 54px;}
-.zoom {visibility:hidden; width:26px; height:25px; background:url(/css/common/img/bg_inner.png) no-repeat -117px -158px; cursor:pointer; margin-bottom:30px}
-.scale {width:26px; height:217px; background:url(/css/common/img/bg_inner.png) no-repeat -925px 0}
-.scale b{display:block; cursor:pointer}
-.scale .plus, .scale .minus {width:26px; height:26px}
-.scale div{position:relative; width:26px; height:71px}
-.scale div b{position:absolute; left:2px; width:22px; height:20px; background:url(/css/common/img/bg.png) no-repeat -187px -77px}
-
-.photoview {margin:0 80px 0 200px; height:1000px; position:relative}
-.photobox {float:left; width:100%; height:100%; overflow:hidden; position:relative}
-.photobox img{position:relative}
-.scrollbox {display:none; position:absolute; z-index:10; bottom:0; left:50%; width:354px; height:71px; margin-left:-183px; background:url(/css/skin/img/podlogka.png) no-repeat 0 0}
-.scrollbox div{width:176px; height:54px; margin:10px 0 0 94px; position:relative}
-.scrollbox div b{position:absolute; top:28px; left:110px;display:block; width:26px; height:26px; background:url(/css/common/img/bg.png) no-repeat -168px -102px; cursor:pointer}
-
+/*
 .videoview {margin:0 26px 0 220px; padding-top:30px; height:694px; position:relative}
 .videoview .zoom {margin:0}
 .videobox {float:left; width:100%; padding-top:10px; overflow:hidden; text-align:center}
+*/
 
 .articlecard {position:relative; display:none; z-index:1000; width:897px; height:auto; padding:10px; background:#fff}
 .articlecard .goodsphoto {padding:0}
@@ -1059,14 +1028,7 @@ border-radius: 5px;
 	}
 /* ----------- /feedback form ------------- */
 
-  .bPopupWrap {
-    left: 0;
-    margin-top: 200px;
-    position: relative;
-    top: 0;
-    width: 100%;
-    z-index: 1003;
-}
+
 
 /* ----------- map info ------------- */
 .bMap{
