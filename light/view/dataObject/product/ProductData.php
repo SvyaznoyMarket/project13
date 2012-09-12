@@ -9,6 +9,7 @@ namespace light;
  * To change this template use File | Settings | File Templates.
  */
 require_once('ProductKitData.php');
+require_once(__DIR__.'/../CategoryShortData.php');
 
 class ProductData
 {
@@ -90,6 +91,9 @@ class ProductData
   /** @var ProductKitData[]  */
   private $kitList;
 
+  /** @var CategoryShortData[]  */
+  private $categoryList;
+
   public function __construct(array $data = array())
   {
     if (array_key_exists('id', $data))              $this->id            = (int)$data['id'];
@@ -123,6 +127,12 @@ class ProductData
         $this->addKit(new ProductKitData($kit));
       }
     }
+
+    if (array_key_exists('category', $data)){
+      foreach($data['category'] as $category){
+        $this->addCategory(new CategoryShortData($category));
+      }
+    }
   }
 
   /**
@@ -132,6 +142,14 @@ class ProductData
   {
     $kit->setRelatedProductId($this->id);
     $this->kitList[] = $kit;
+  }
+
+  /**
+   * @param CategoryShortData $category
+   */
+  public function addCategory(CategoryShortData $category)
+  {
+    $this->categoryList[] = $category;
   }
 
   /**
@@ -347,5 +365,12 @@ class ProductData
   public function getTypeId()
   {
     return $this->typeId;
+  }
+
+  /**
+   * @return \light\CategoryShortData
+   */
+  public function getMainCategory() {
+    return reset($this->categoryList);
   }
 }

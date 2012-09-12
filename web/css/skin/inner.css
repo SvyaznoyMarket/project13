@@ -1496,8 +1496,8 @@ border-radius: 5px;
 #plus10{cursor:pointer;}
 
 .infoblock { background: url('/css/skin/img/bg_info_article.gif') no-repeat; width: 350px; height: 73px; padding: 15px 15px 10px 35px; }
-
-.servicebanner {clear:both; width:320px; height:131px; padding:33px 0 0 600px; background:#4fcbf4 url(img/bg_service.jpg) no-repeat 0 0; color:#fff; font-size:14px; line-height:14px; margin-bottom:25px}
+.servicebanner {clear:both; width:320px; height:178px; padding:33px 0 0 600px; background:#4fcbf4 url(/css/skin/img/bg_service2.jpg) no-repeat 0 0; color:#fff; font-size:14px; line-height:14px; margin-bottom:25px}
+/* .servicebanner {clear:both; width:320px; height:131px; padding:33px 0 0 600px; background:#4fcbf4 url(img/bg_service.jpg) no-repeat 0 0; color:#fff; font-size:14px; line-height:14px; margin-bottom:25px} */
 .servicebanner DIV {font-size:24px; line-height:24px; padding-bottom:5px}
 
 .slogan {color:#4fcbf4; margin-bottom:30px; font-size:14px}
@@ -5020,6 +5020,9 @@ a[title="vkontakte"]{ background: url('img/icon_vkontakte_color.png'); }
 .bBuyingInfo h2{
     font: 18px Tahoma, sans-serif;
 }
+.bBuyingInfo span{
+    font: 14px Tahoma, sans-serif;
+}
 
 
 .bBuyingLine{
@@ -5853,6 +5856,16 @@ div.mSportFont{ color: #e8303c; }
     margin-right: 10px;
     text-decoration: underline;
 }
+.bFooterBottom .copyright{
+    /*font-weight: bold;*/
+    font-family: "Times New Roman", Times, serif;
+    font-size: 12px;
+    color: #000000;
+}
+
+.bLabels{ left: 0; display: block; position: absolute; top: 10px !important; }
+.bLabelsQuantity{ width: 50px; height: 27px; padding-top: 6px; background: url('/images/quantity_shild.png') no-repeat; left: 0; display: block; position: absolute; bottom: 10px !important; }
+
 
 .bRegion .bCall{ display: inline-block; *display: inline; zoom: 1; height: 16px; background: url('img/bCall.png') no-repeat; padding-left: 20px; padding-right: 10px; }
 

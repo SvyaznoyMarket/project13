@@ -34,7 +34,16 @@ class CategoryShortData
    */
   private $position;
 
-  /**
+  public function __construct(array $data = array())
+  {
+    if (array_key_exists('id', $data))       $this->id       = (int)$data['id'];
+    if (array_key_exists('name', $data))     $this->name     = (string)$data['name'];
+    if (array_key_exists('link', $data))     $this->link     = (string)$data['link'];
+    if (array_key_exists('token', $data))    $this->token    = (string)$data['token'];
+    if (array_key_exists('position', $data)) $this->position = (int)$data['position'];
+  }
+
+    /**
    * @param int $id
    */
   public function setId($id)

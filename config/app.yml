@@ -86,6 +86,11 @@ all:
   online_call:
     enabled: false
 
+  related_product:
+    additional: true # отображать смежные товары из ядра
+    accessory: true # отображать аксессуары из ядра
+
+
   core:
     config:
       api_url: 'http://core.ent3.ru/v1/json'
@@ -134,12 +139,18 @@ all:
         result_url: 'https://wpay.uniteller.ru/results/'
         shop_id: '35974-134'
         return_url: '@payment_callback'
+      psbank_invoice:
+        enabled: true
+        contractor_id: 14
+        url: 'https://retail.payment.ru/invoice.aspx'
+        key:  %SF_DATA_DIR%/keys/live.privkey.pem
 
   smartengine:
-    push: true # отправлять данные на сервер smartengine
-    pull: true  # запрашивать данные с сервера smartengine
+    push: false # отправлять данные на сервер smartengine
+    pull: false # запрашивать данные с сервера smartengine
     config:
-      api_url: 'https://selightstage.smartengine.at/se-light/api/1.0/json/'
+      api_url: 'https://selightprod.smartengine.at/se-light/api/1.0/json/'
+      # api_url: 'https://selightstage.smartengine.at/se-light/api/1.0/json/' # для demo
       api_key: 'c41851b19511c20acc84f47b7816fb8e'
       tenantid: 'ENojUTRcD8'
       log_file: %SF_LOG_DIR%/smartengine.log
@@ -241,17 +252,15 @@ live:
         merchant_name: 'Enter'
         key: 'FD5AAE47574BB8EEFBF8C6C14CBCA453'
         url: 'https://3ds.payment.ru/cgi-bin/cgi_link'
-      psbank_invoice:
-        enabled: true
-        contractor_id: 14
-        url: 'https://retail.payment.ru/invoice.aspx'
-        key:  %SF_DATA_DIR%/keys/live.privkey.pem
 
   smartengine:
     push: true  # отправлять данные на сервер smartengine
     pull: false # запрашивать данные с сервера smartengine
-    log_enabled: false
-    log_data_enabled: false
+    config:
+      api_url: 'https://selightprod.smartengine.at/se-light/api/1.0/json/'
+      cert: %SF_DATA_DIR%/cert/smartengine-server2.crt
+      log_enabled: false
+      log_data_enabled: false
 
   rediska:
     default:

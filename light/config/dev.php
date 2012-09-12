@@ -21,3 +21,8 @@ define('DB_HOST', 'localhost');
 define('DB_NAME', 'enter');
 define('DB_USERNAME', 'root');
 define('DB_PASSWORD', 'qazwsxedc');
+
+define('SMARTENGINE_API_URL', 'https://selightstage.smartengine.at/se-light/api/1.0/json/');
+define('SMARTENGINE_API_KEY', 'c41851b19511c20acc84f47b7816fb8e');
+define('SMARTENGINE_TENANTID', 'ENojUTRcD8');
+define('SMARTENGINE_CERT', null);

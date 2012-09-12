@@ -1,0 +1,37 @@
+﻿Some Links For Direct SE-LIGHT calls
+====================================
+
+Buy
+----
+https:/selight1.smartengine.at/se-light/api/1.0/buy?apikey=8ab9dc3ffcdac576d0f298043a60517a&tenantid=enterru&sessionid=1234567890ABC&itemid=18101082160&itemdescription=Кровать%20Yoko%2018.101.0.82.160&itemurl=/product/furniture/krovat-yoko-18101082160-2010207002224&itemimageurl=http://fs01.enter.ru/1/1/163/34/29393.jpg&userid=0000-015633&itemtype=FURNITURE&quantity=1&unitprice=23980,00
+
+
+AlsoBought
+----------
+https://selight1.smartengine.at/se-light/api/1.0/otherusersalsobought?apikey=8ab9dc3ffcdac576d0f298043a60517a&tenantid=enterru&sessionid=1234567890ABC&itemid=2010101000005&itemtype=FOR_CHILDREN
+
+MostBought
+----------
+https://selight1.smartengine.at/se-light/api/1.0/mostboughtitems?apikey=8ab9dc3ffcdac576d0f298043a60517a&tenantid=enterru&sessionid=1234567890ABC&numberOfResults=10&timeRange=ALL
+
+Personalized Rec
+----------------
+https://selight1.smartengine.at/se-light/api/1.0/recommendationsforuser?apikey=8ab9dc3ffcdac576d0f298043a60517a&tenantid=enterru&sessionid=1234567890ABC&userid=0000-000783&actiontype=BUY
+
+
+
+Itemtypes
+---------
+FURNITURE
+HOUSEHOLD_APPLIANCES
+HEALTH_BEAUTY
+HOMEWARE
+FOR_CHILDREN
+ZOO
+DO_IT_YOURSELF
+ELECTRONICS
+JEWELRY
+SPORT_AND_RECREATION
+GIFT_AND_HOBBY
+GARDENING
+ITEM

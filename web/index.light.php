@@ -24,6 +24,10 @@ if(HTTP_HOST == 'enter.ru' || HTTP_HOST == 'test.enter.ru' || HTTP_HOST == 'noca
   require_once('../light/config/prod.php');
   $configLogMess = 'production config in use';
 }
+else if ('enter.loc' == HTTP_HOST) {
+  require_once('../light/config/loc.php');
+  $configLogMess = 'loc config in use';
+}
 else{
   require_once('../light/config/dev.php');
   $configLogMess = 'dev config in use';

@@ -375,11 +375,14 @@ $(document).ready(function(){
 
 	} // object BuyBottons
 
-	// analytics has us
+	// analytics HAS YOU
 	if( 'ANALYTICS' in window ) {
-		PubSub.subscribe( 'productBought', function(){
+		PubSub.subscribe( 'productBought', function() {
 			if( 'gooReMaBuy' in ANALYTICS ) {
 				ANALYTICS.gooReMaBuy()
+			}
+			if( 'myThingsBuy' in ANALYTICS ) {
+				ANALYTICS.myThingsBuy( arguments[1] )
 			}
 		})
 	}
