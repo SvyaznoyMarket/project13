@@ -204,7 +204,7 @@ class queueController
 
       $count = $count + $num;
 
-      file_put_contents($file, $count ?: 0);
+      file_put_contents($file, $count >= 0 ? $count: 0);
       fclose($fp);
     }
     else {
