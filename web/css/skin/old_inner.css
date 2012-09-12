@@ -249,7 +249,7 @@ H2.bold {font-weight:bold}
 
 .bBlueButton .link1,
 .bSet__ePrice .link1,
-.button {overflow:visible; background-image:url(/css/skin/img/bg_buttons.png); background-repeat:repeat-x; border:1px solid; font-weight:bold; cursor:pointer;
+.button {overflow:visible; background-image:url(/css/common/img/bg_buttons.png); background-repeat:repeat-x; border:1px solid; font-weight:bold; cursor:pointer;
 border-radius:5px;
 -moz-border-radius:5px;
 -webkit-border-radius:5px
@@ -495,7 +495,7 @@ zoom: 1;
     padding: 32px 0 0 0;
 }*/
 
-/*.button {overflow:visible; background-image:url(/css/skin/img/bg_buttons.png); background-repeat:repeat-x; border:1px solid; font-weight:bold; cursor:pointer;
+/*.button {overflow:visible; background-image:url(/css/common/img/bg_buttons.png); background-repeat:repeat-x; border:1px solid; font-weight:bold; cursor:pointer;
 border-radius:5px;
 -moz-border-radius:5px;
 -webkit-border-radius:5px
@@ -717,7 +717,7 @@ border-radius:5px;
 .graylist li{list-style-type:disc; color:#a6a6a6; margin-left:14px}
 .blacklist li{list-style-type:disc; color:#010101; margin-left:14px}
 
-.selectbox {height:22px; padding:0 10px; line-height:22px; position:relative; background:#e3e3e3 url(/css/skin/img/bg_buttons.png) repeat-x 0 -128px; border:1px solid #c9c9c9;
+.selectbox {height:22px; padding:0 10px; line-height:22px; position:relative; background:#e3e3e3 url(/css/common/img/bg_buttons.png) repeat-x 0 -128px; border:1px solid #c9c9c9;
 border-radius: 5px;
 -moz-border-radius:5px;
 -webkit-border-radius:5px

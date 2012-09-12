@@ -1,3 +1,5 @@
+@bigPopupSprite-url:"@{base-url}/bigPopup/img/bigPopupSprite.png";
+
 .bPopupWrap {
   left: 0px;
   margin-top: 200px;
@@ -6,25 +8,25 @@
   width: 100%;
   z-index: 1003;
 }
-#bigpopup .previewlist .viewstock B {
+#bigpopup .previewlist .viewstock b {
   border: 2px solid #E7E7E7;
   .rounded(7px);
   display: block;
-  height: 47px;
+  height: 48px;
   left: -2px;
   position: absolute;
   top: -2px;
-  width: 47px;
+  width: 48px;
   z-index: 1;
 }
-#bigpopup .previewlist B:hover,
-.previewlist B.current {
+#bigpopup .previewlist b:hover,
+.previewlist b.current {
   border: 2px solid #FFB015;
 }
 .previewlist .axonometric {
-  background: url("/css/common/img/bg_inner.png") no-repeat -830px -238px;
+  background: url("@{bigPopupSprite-url}") no-repeat -30px -72px;
 }
-.previewlist A {
+.previewlist a {
   cursor: pointer;
   display: block;
   height: 48px;
@@ -32,7 +34,7 @@
   width: 48px;
 }
 .scrollbox {
-  background: url("/css/skin/img/podlogka.png") no-repeat 0px 0px;//uniq
+  background: url("@{bigPopupSprite-url}") no-repeat 0px 0px;
   bottom: 0px;
   display: none;
   height: 71px;
@@ -47,7 +49,7 @@
     position: relative;
     width: 176px;
     b {
-      background: url("/css/common/img/bg.png") no-repeat -168px -102px;
+      background: url("@{bigPopupSprite-url}") no-repeat 0 -71px;
       cursor: pointer;
       display: block;
       height: 26px;
@@ -74,11 +76,12 @@
   }
 }
 .mediablock {
-  background: #fff url("/css/skin/img/bg_mediablock.gif") repeat-y 0px 0px;//uniq
   height: 724px;
   margin: 0px 50px;
   .leftpanel {
+    background:#EFEFEF;
     float: left;
+    height:100%;
     padding: 0px 10px 10px;
     width: 180px;
   }
@@ -88,7 +91,7 @@
   }
 }
 .logobox {
-  background: url("/css/common/img/bg_inner.png") no-repeat -538px -284px;
+  background: url("@{bigPopupSprite-url}") no-repeat -239px -73px;
   height: 95px;
   margin-bottom: 20px;
   text-indent: -10000px;
@@ -109,7 +112,7 @@
   }
 }
 .zoom {
-  background: url("/css/common/img/bg_inner.png") no-repeat -117px -158px;
+  /*background: url("/css/common/img/bg_inner.png") no-repeat -117px -158px;*/
   cursor: pointer;
   height: 25px;
   margin-bottom: 30px;
@@ -117,19 +120,19 @@
   width: 26px;
 }
 .scale {
-  background: url("/css/common/img/bg_inner.png") no-repeat -925px 0px;
+  background: url("@{bigPopupSprite-url}") no-repeat -327px -72px;
   height: 217px;
   width: 26px;
-}
-.scale b {
-  cursor: pointer;
-  display: block;
+  b {
+    cursor: pointer;
+    display: block;
+  }
   div {
     height: 71px;
     position: relative;
     width: 26px;
     b {
-      background: url("/css/common/img/bg.png") no-repeat -187px -77px;
+      background: url("@{bigPopupSprite-url}") no-repeat -82px -73px;
       height: 20px;
       left: 2px;
       position: absolute;
@@ -142,10 +145,10 @@
   height: 26px;
   width: 26px;
 }
-.popup_leftpanel A.link1 {
+.popup_leftpanel a.link1 {
   .rounded(5px);
   background-color: #ffaa01;
-  background: url("/css/skin/img/bg_buttons.png") repeat-x;
+  background: url("/css/common/img/bg_buttons.png") repeat-x;
   border-color: #f28900;
   border: 1px solid;
   color: #fff;

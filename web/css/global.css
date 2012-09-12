@@ -2496,27 +2496,27 @@ label.checked {
   width: 100%;
   z-index: 1003;
 }
-#bigpopup .previewlist .viewstock B {
+#bigpopup .previewlist .viewstock b {
   border: 2px solid #E7E7E7;
   -webkit-border-radius: 7px;
   -moz-border-radius: 7px;
   border-radius: 7px;
   display: block;
-  height: 47px;
+  height: 48px;
   left: -2px;
   position: absolute;
   top: -2px;
-  width: 47px;
+  width: 48px;
   z-index: 1;
 }
-#bigpopup .previewlist B:hover,
-.previewlist B.current {
+#bigpopup .previewlist b:hover,
+.previewlist b.current {
   border: 2px solid #FFB015;
 }
 .previewlist .axonometric {
-  background: url("/css/common/img/bg_inner.png") no-repeat -830px -238px;
+  background: url("/css/bigPopup/img/bigPopupSprite.png") no-repeat -30px -72px;
 }
-.previewlist A {
+.previewlist a {
   cursor: pointer;
   display: block;
   height: 48px;
@@ -2524,7 +2524,7 @@ label.checked {
   width: 48px;
 }
 .scrollbox {
-  background: url("/css/skin/img/podlogka.png") no-repeat 0px 0px;
+  background: url("/css/bigPopup/img/bigPopupSprite.png") no-repeat 0px 0px;
   bottom: 0px;
   display: none;
   height: 71px;
@@ -2541,7 +2541,7 @@ label.checked {
   width: 176px;
 }
 .scrollbox div b {
-  background: url("/css/common/img/bg.png") no-repeat -168px -102px;
+  background: url("/css/bigPopup/img/bigPopupSprite.png") no-repeat 0 -71px;
   cursor: pointer;
   display: block;
   height: 26px;
@@ -2566,12 +2566,13 @@ label.checked {
   position: relative;
 }
 .mediablock {
-  background: #ffffff url("/css/skin/img/bg_mediablock.gif") repeat-y 0px 0px;
   height: 724px;
   margin: 0px 50px;
 }
 .mediablock .leftpanel {
+  background: #EFEFEF;
   float: left;
+  height: 100%;
   padding: 0px 10px 10px;
   width: 180px;
 }
@@ -2580,7 +2581,7 @@ label.checked {
   padding: 19px 9px 0px;
 }
 .logobox {
-  background: url("/css/common/img/bg_inner.png") no-repeat -538px -284px;
+  background: url("/css/bigPopup/img/bigPopupSprite.png") no-repeat -239px -73px;
   height: 95px;
   margin-bottom: 20px;
   text-indent: -10000px;
@@ -2601,7 +2602,8 @@ label.checked {
   width: 54px;
 }
 .zoom {
-  background: url("/css/common/img/bg_inner.png") no-repeat -117px -158px;
+  /*background: url("/css/common/img/bg_inner.png") no-repeat -117px -158px;*/
+
   cursor: pointer;
   height: 25px;
   margin-bottom: 30px;
@@ -2609,7 +2611,7 @@ label.checked {
   width: 26px;
 }
 .scale {
-  background: url("/css/common/img/bg_inner.png") no-repeat -925px 0px;
+  background: url("/css/bigPopup/img/bigPopupSprite.png") no-repeat -327px -72px;
   height: 217px;
   width: 26px;
 }
@@ -2617,13 +2619,13 @@ label.checked {
   cursor: pointer;
   display: block;
 }
-.scale b div {
+.scale div {
   height: 71px;
   position: relative;
   width: 26px;
 }
-.scale b div b {
-  background: url("/css/common/img/bg.png") no-repeat -187px -77px;
+.scale div b {
+  background: url("/css/bigPopup/img/bigPopupSprite.png") no-repeat -82px -73px;
   height: 20px;
   left: 2px;
   position: absolute;
@@ -2634,12 +2636,12 @@ label.checked {
   height: 26px;
   width: 26px;
 }
-.popup_leftpanel A.link1 {
+.popup_leftpanel a.link1 {
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   border-radius: 5px;
   background-color: #ffaa01;
-  background: url("/css/skin/img/bg_buttons.png") repeat-x;
+  background: url("/css/common/img/bg_buttons.png") repeat-x;
   border-color: #f28900;
   border: 1px solid;
   color: #fff;
@@ -2652,16 +2654,16 @@ label.checked {
   text-align: center;
   width: 70px;
 }
-.popup_leftpanel A.link1:hover {
+.popup_leftpanel a.link1:hover {
   background-color: #f79200;
   background-position: 0px -32px;
   text-decoration: none;
 }
-.popup_leftpanel A.link1.active {
+.popup_leftpanel a.link1.active {
   background-color: #f79200;
   background-position: 0px -64px;
 }
-.popup_leftpanel A.link1.disabled {
+.popup_leftpanel a.link1.disabled {
   background-color: #ececec;
   background-position: 0px -96px;
   border-color: #e4e4e4;
