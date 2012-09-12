@@ -23,45 +23,49 @@ class queueController
 
     $this->touchWorkerNum(1);
 
-    $limit = abs($limit);
+    try {
+      $limit = abs($limit);
 
-    if (!$queueName) {
-      throw new \LogicException('Не указано имя задачи.');
-    }
-
-    $this->dbh = new \PDO(sprintf('mysql:dbname=%s;host=%s', DB_NAME, DB_HOST), DB_USERNAME, DB_PASSWORD);
-
-    $this->dbh->beginTransaction();
-
-    // (незаблокированные или вылетившие по таймауту) и с именем {$queueName}
-    $clause = '(locked_at IS NULL OR TIMESTAMPDIFF(SECOND, locked_at, NOW()) > '.QUEUE_MAX_LOCK_TIME.') AND name'.(false === strpos($queueName, ',') ? " = '{$queueName}'" : " IN ($queueName)");
-    $sth = $this->dbh->query("SELECT id, name, body FROM `queue` WHERE {$clause} LIMIT {$limit}");
-    $sth->execute();
-
-    $ids = array(); // идентификаторы заданий
-    $calls = array(); // вызовы обработчиков
-    while ($row = $sth->fetch(\PDO::FETCH_ASSOC)) {
-      $ids[] = $row['id'];
-      if (!isset($calls[$row['name']])) {
-        $calls[$row['name']] = array();
+      if (!$queueName) {
+        throw new \LogicException('Не указано имя задачи.');
       }
-      $calls[$row['name']][$row['id']] = json_decode($row['body'], true);
-    }
 
-    if ($ids) {
-      $this->dbh->exec("UPDATE `queue` SET locked_at = NOW() WHERE id IN (".implode(',', $ids).")");
-    }
-    $this->dbh->commit();
+      $this->dbh = new \PDO(sprintf('mysql:dbname=%s;host=%s', DB_NAME, DB_HOST), DB_USERNAME, DB_PASSWORD);
 
-    foreach ($calls as $name => $data) {
-      switch ($name) {
-        case 'smartengine.view':
-          $this->processSmartengineView($data);
-          break;
-        case 'smartengine.buy':
-          $this->processSmartengineBuy($data);
-          break;
+      $this->dbh->beginTransaction();
+
+      // (незаблокированные или вылетившие по таймауту) и с именем {$queueName}
+      $clause = '(locked_at IS NULL OR TIMESTAMPDIFF(SECOND, locked_at, NOW()) > '.QUEUE_MAX_LOCK_TIME.') AND name'.(false === strpos($queueName, ',') ? " = '{$queueName}'" : " IN ($queueName)");
+      $sth = $this->dbh->query("SELECT id, name, body FROM `queue` WHERE {$clause} LIMIT {$limit}");
+      $sth->execute();
+
+      $ids = array(); // идентификаторы заданий
+      $calls = array(); // вызовы обработчиков
+      while ($row = $sth->fetch(\PDO::FETCH_ASSOC)) {
+        $ids[] = $row['id'];
+        if (!isset($calls[$row['name']])) {
+          $calls[$row['name']] = array();
+        }
+        $calls[$row['name']][$row['id']] = json_decode($row['body'], true);
       }
+
+      if ($ids) {
+        $this->dbh->exec("UPDATE `queue` SET locked_at = NOW() WHERE id IN (".implode(',', $ids).")");
+      }
+      $this->dbh->commit();
+
+      foreach ($calls as $name => $data) {
+        switch ($name) {
+          case 'smartengine.view':
+            $this->processSmartengineView($data);
+            break;
+          case 'smartengine.buy':
+            $this->processSmartengineBuy($data);
+            break;
+        }
+      }
+    } catch (\Exception $e) {
+      echo "{$e->getMessage()}\n";
     }
 
     $this->touchWorkerNum(-1);
@@ -112,7 +116,7 @@ class queueController
         //print_r($r);
         if (isset($r['error'])) $this->logger->error('Smartengine: error #'.$r['error']['@code'].' '.$r['error']['@message']);
       }
-    } catch(\Exception $e) {
+    } catch(\light\SmartengineClientException $e) {
       $this->logger->error($e->getMessage());
       echo "Error {$e->getMessage()} ...\n";
     }
@@ -169,7 +173,7 @@ class queueController
           if (isset($r['error'])) $this->logger->error('Smartengine: error #'.$r['error']['@code'].' '.$r['error']['@message']);
         }
       }
-    } catch(\Exception $e) {
+    } catch(\light\SmartengineClientException $e) {
       $this->logger->error($e->getMessage());
       echo "Error {$e->getMessage()} ...\n";
     }
@@ -183,14 +187,29 @@ class queueController
   private function touchWorkerNum($num) {
     // проверка на количество одновременно запущенных воркеров
     $file = QUEUE_PID_FILE;
-    if (!file_exists($file)) {
-      file_put_contents($file, '0');
+
+    $fp = fopen($file, 'c+');
+    if (!$fp) {
+      $pause = rand(100000, 3000000);
+      echo "\nКажется, файл заблокирован. Жду $pause ".($pause / 1000)."ms...";
+      usleep($pause);
+      $fp = fopen($file, 'c+');
     }
-    $workerNum = (int)file_get_contents($file) + $num;
-    if ($workerNum > QUEUE_WORKER_LIMIT) {
-      throw new \Exception('Превышен лимит запущенных воркеров.');
+
+    if ($fp) {
+      $count = (int)file_get_contents($file);
+      if (($num > 0) && ($count > QUEUE_WORKER_LIMIT)) {
+        throw new \Exception('Превышен лимит запущенных воркеров.');
+      }
+
+      $count = $count + $num;
+
+      file_put_contents($file, $count ?: 0);
+      fclose($fp);
     }
-    file_put_contents($file, $workerNum);
+    else {
+      echo "Не удалось открыть файл.\n";
+    }
   }
 
   private function getClient() {
