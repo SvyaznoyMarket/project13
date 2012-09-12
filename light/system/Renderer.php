@@ -67,6 +67,11 @@ class Renderer
 
 class HtmlRenderer extends Renderer{
 
+    /**
+     * @var array
+     */
+    private $js = array();
+
   /**
    * @var array
    */
@@ -127,6 +132,22 @@ class HtmlRenderer extends Renderer{
       echo '<link rel="stylesheet" type="text/css" media="screen" href="/css/'.$css.'" />'."\r\n";
     }
   }
+
+    public function addJS($filePath)
+    {
+        if(!in_array($filePath, $this->js))
+        {
+            $this->js[] = $filePath;
+        }
+    }
+
+    public function showJS()
+    {
+        foreach($this->js as $js)
+        {
+            echo '<script src="/js/'.$js.'"></script>';
+        }
+    }
 
   /**
    * @param string $title
@@ -199,11 +220,22 @@ class HtmlRenderer extends Renderer{
       $this->layout = $layout;
   }
 
-  public function render()
+    /**
+     * Owned.
+     */
+    public function renderFile($filePath, $data=array())
   {
-      $filler = App::getFiller($this->layout);
+      $filePathPartList = explode('/', $filePath);
+      $fillerName = $filePathPartList[count($filePathPartList) - 1];
+
+      $filler = App::getFiller($fillerName);
       $filler?$filler->run():Null;
 
+      return parent::renderFile($filePath, array_merge($data, $this->parameterList));
+  }
+
+  public function render()
+  {
       $this->parameterList['page'] = $this->page;
 
       return $this->renderFile($this->layoutPath . $this->layout, $this->parameterList);

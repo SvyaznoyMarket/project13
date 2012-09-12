@@ -9,6 +9,7 @@
     <meta name="description" content="<?php echo $this->getDescription(); ?>" />
     <link rel="shortcut icon" href="/favicon.ico" />
     <?php $this->showCss() ?>
+    <?php $this->showJS() ?>
 
     <?php if ($show_link) { ?>
     <link rel="canonical" href="<?php echo $rel_href; ?>" />
@@ -20,6 +21,14 @@
 </head>
 
 <body data-template="<?php echo isset($_template)?$_template:'default' ?>">
+
+<?php
+    if(\light\Config::get('debug'))
+    {
+        echo $this->renderFile('debug');
+    }
+?>
+
 <div class="allpage" id="page">
     <div class="adfoxWrapper" id="adfoxbground"></div>
 

@@ -6,6 +6,7 @@ require_once(Config::get('rootPath').'lib/WPRequest.php');
 require_once(Config::get('rootPath').'system/Response.php');
 require_once(Config::get('rootPath').'system/Request.php');
 require_once(Config::get('rootPath').'lib/log4php/Logger.php');
+require_once(Config::get('rootPath').'lib/log4php/appenders/LoggerAppenderBuffer.php');
 require_once 'filler.php';
 
 class App{
@@ -58,6 +59,20 @@ class App{
     }
 
     Logger::configure(Config::get('loggerConfigPath')); //В отдельную константу вынесено - что бы можно было иметь разные конфиги для dev и prod
+
+    if(Config::get('debug'))
+    {
+        Logger::getRootLogger()->addAppender(new \LoggerAppenderBuffer());
+        Logger::getLogger('CoreClient')->addAppender(new \LoggerAppenderBuffer());
+
+        $loggers = Logger::getCurrentLoggers();
+        foreach($loggers as $logger)
+        {
+            $logger->setLevel('debug');
+        }
+    }
+
+
 
     $filler = Filler::getInstance();
     $filler->setFilePath(Config::get('viewPath') . 'filler');

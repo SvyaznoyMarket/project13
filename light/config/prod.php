@@ -24,7 +24,7 @@ $productionConfig = array(
         'host' => '10.20.33.2',
         'name' => 'enter',
         'user' => 'root',
-        'passworf' => 'qazwsxedc'
+        'password' => 'qazwsxedc'
     )
 );
 

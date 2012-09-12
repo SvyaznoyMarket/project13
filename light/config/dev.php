@@ -24,8 +24,9 @@ $developmentConfig = array(
         'host' => 'localhost',
         'name' => 'enter',
         'user' => 'root',
-        'passworf' => 'qazwsxedc'
-    )
+        'password' => 'qazwsxedc'
+    ),
+    'debug' => True
 );
 
 return array_merge($baseConfig, $developmentConfig);

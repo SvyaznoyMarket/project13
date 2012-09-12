@@ -2,7 +2,7 @@
 
 namespace light;
 
-class FillerLayout extends FillerObject
+class FillerLayout implements IFiller
 {
     public function run()
     {
@@ -17,6 +17,8 @@ class FillerLayout extends FillerObject
         $renderer->addCss('jquery-ui-1.8.20.custom.css');
         $renderer->addCss('navy.css');
         $renderer->addCss('skin/inner.css');
+
+        $renderer->addJS('jquery-1.6.4.min.js');
 
         $renderer->addParameter('_template', 'product_catalog');
 

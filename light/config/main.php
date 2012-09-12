@@ -17,5 +17,6 @@ return array(
         'http://fs01.enter.ru/11/1/500/',
         'http://fs01.enter.ru/11/1/160/',
         'http://fs01.enter.ru/11/1/120/'
-    )
+    ),
+    'debug' => False
 );

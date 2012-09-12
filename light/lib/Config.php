@@ -25,20 +25,25 @@ class Config
         }
     }
 
-    public static function get($index)
+    public static function get($index = Null)
     {
-        $indexPartList = explode('.', $index);
         $value = self::$instance->parameterList;
 
-        foreach($indexPartList as $indexPart)
+        if(!empty($index))
         {
-            if(!in_array($indexPart, array_keys($value)))
-            {
-                throw new \Exception('Config parameter "' . $index . '" does not exists');
-            }
+            $indexPartList = explode('.', $index);
 
-            $value = $value[$indexPart];
+            foreach($indexPartList as $indexPart)
+            {
+                if(!in_array($indexPart, array_keys($value)))
+                {
+                    throw new \Exception('Config parameter "' . $index . '" does not exists');
+                }
+
+                $value = $value[$indexPart];
+            }
         }
+
 
         return $value;
     }

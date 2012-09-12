@@ -2,7 +2,7 @@
 
 namespace light;
 
-require_once 'aFillerObject.php';
+require_once 'iFiller.php';
 
 class Filler
 {
@@ -35,6 +35,6 @@ class Filler
             require_once $this->filePath . '/' . $fillerName . '.php';
         }
 
-        return class_exists($className)?forward_static_call(array($className, 'getInstance')):Null;
+        return class_exists($className)?new $className:Null;
     }
 }
