@@ -61,9 +61,10 @@
   }
 }
 .photoview {
-  height: 1000px;
+  height: 100%;
   margin: 0px 80px 0px 200px;
-  position: relative;
+  min-height:100%;
+  position: static;
 }
 .photobox {
   float: left;
@@ -148,7 +149,7 @@
 .popup_leftpanel a.link1 {
   .rounded(5px);
   background-color: #ffaa01;
-  background: url("/css/common/img/bg_buttons.png") repeat-x;
+  background: url("@{base-url}/common/img/bg_buttons.png") repeat-x;
   border-color: #f28900;
   border: 1px solid;
   color: #fff;
