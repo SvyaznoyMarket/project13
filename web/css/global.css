@@ -2219,36 +2219,26 @@ label.checked {
   border-radius: 5px;
   border: 1px solid #ddd;
   color: #959595;
-  display: inline;
-  /**display: inline;*/
-
   left: -90px;
   margin: 0px 5px 0px 0px;
   position: absolute;
+  text-align: center;
   top: 0px;
-  width: 77px;
+  width: 78px;
   zoom: 1;
 }
 .bCountSet a {
   color: #959595;
   cursor: pointer;
-  display: inline;
-  /**display: inline;*/
-
   height: auto;
-  padding: 7px 1px;
+  line-height: 30px;
   text-align: center;
   text-decoration: none;
-  vertical-align: middle;
   width: 14px;
-  zoom: 1;
 }
 .bCountSet span {
-  display: inline-block;
-  *display: inline;
-  margin: 7px 1px;
-  vertical-align: middle;
-  zoom: 1;
+  line-height: 30px;
+  text-align: center;
 }
 .bCountSet .bCountSet__eM {
   background: url("/css/item/img/itemSprite.png") no-repeat -137px 0px;
