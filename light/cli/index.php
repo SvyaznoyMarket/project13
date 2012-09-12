@@ -40,18 +40,14 @@ Logger::getLogger('Settings')->info('core v2 url: '.CORE_V2_USERAPI_URL);
 Logger::getLogger('Settings')->info('core v1 url: '.CORE_V1_API_URL);
 TimeDebug::end('Configure');
 
-try {
-  list($controller, $action) = explode('/', $path);
+list($controller, $action) = explode('/', $path);
 
-  require_once ROOT_PATH.'/controller/'.$controller.'.php';
-  $controllerClass = '\\light\\'.$controller.'Controller';
-  $controllerInstance = new $controllerClass();
+require_once ROOT_PATH.'/controller/'.$controller.'.php';
+$controllerClass = '\\light\\'.$controller.'Controller';
+$controllerInstance = new $controllerClass();
 
-  call_user_func_array(array($controllerInstance, $action), array_slice($argv, 3));
-}
-catch(Exception $e) {
-  echo "\n{$e->getMessage()}\n";
-  Logger::getRootLogger()->warn('Exception: '.$e->getMessage());
-}
+call_user_func_array(array($controllerInstance, $action), array_slice($argv, 3));
+
+
 TimeDebug::end('Total');
 Logger::getLogger('Timer')->debug(TimeDebug::getAll());
