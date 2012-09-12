@@ -8,7 +8,20 @@ class myDoctrineTable extends Doctrine_Table
 
     if ('region' == $name)
     {
-      $value = sfContext::hasInstance() ? RegionTable::getInstance()->findOneBy('core_id', sfContext::getInstance()->getUser()->getRegion('id')) : false;
+      if (sfContext::hasInstance() && $region = sfContext::getInstance()->getUser()->getRegion()) {
+        $value = new Region();
+        $value->fromArray(array(
+          'level'          => $region['region']->getLevel(),
+          'lft'            => $region['region']->getLft(),
+          'rgt'            => $region['region']->getRgt(),
+          'token'          => $region['region']->getToken(),
+          'is_active'      => $region['region']->getIsActive(),
+          'core_id'        => $region['region']->getId(),
+          'core_parent_id' => $region['region']->getParentId(),
+          'latitude'       => $region['latitude'],
+          'longitude'      => $region['longitude'],
+        ));
+      }
     }
     else{
       $value = false;
