@@ -247,7 +247,7 @@ live:
 
   smartengine:
     push: true  # отправлять данные на сервер smartengine
-    pull: false # запрашивать данные с сервера smartengine
+    pull: true  # запрашивать данные с сервера smartengine
     config:
       api_url: 'https://selightprod.smartengine.at/se-light/api/1.0/json/'
       cert: %SF_DATA_DIR%/cert/smartengine-server2.crt
