@@ -211,11 +211,7 @@ TABLE {border-collapse:collapse}
 .paysystem .f {width:36px; background-position:0 -54px}
 .paysystem .jsb {width:23px; background-position:0 -81px}
 
-.pagehead {float:left; width:100%; padding-bottom:20px}
-.breadcrumbs {float:left; padding-bottom:9px; font-size:11px; color:#a6a6a6}
-.breadcrumbs A {color:#a6a6a6}
-.breadcrumbs-footer {padding:0px 0px 14px 10px; font-size:11px; color:#a6a6a6}
-.breadcrumbs-footer A {color:#a6a6a6}
+
 
 .searchnumber {float:right; padding-bottom:9px; font-size:11px; color:#a6a6a6; white-space:nowrap}
 .searchtitle {clear:both; font-size:16px; font-weight:bold;  padding:7px 0}
@@ -233,16 +229,6 @@ H2.bold {font-weight:bold}
 .avatar {display:inline-block; width:54px; height:54px; position:relative}
 .avatar B {position:absolute; left:0; top:0; display:block; width:54px; height:54px; background:url(/css/skin/img/avatar_cover.png) no-repeat 0 0}
 .avatar B.current {background-position:0 -59px}
-
-.searchtext {float:left; height:26px; line-height:26px; padding:0 5px; background:#fff; border:1px solid #c9c9c9;
-	border-radius:5px;
-	-moz-border-radius:5px;
-	-webkit-border-radius:5px;
-}
-.searchbutton {float:left; width:39px; height:28px; border:0; margin-left:-5px; background:url(/css/common/img/bg_inner.png) no-repeat 0 -179px; text-indent:-10000px; cursor:pointer}
-
-.searchbox {float:right; width:343px; height:28px; margin-top:2px}
-.searchbox .searchtext {width:297px}
 
 .column215 {float:left; width:215px; margin-left:-100%; position:relative; z-index:5;}
 .column685 {margin:0 0 0 235px; position:relative; z-index:1;}
