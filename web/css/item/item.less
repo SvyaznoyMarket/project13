@@ -133,7 +133,7 @@
 .bF1Info {
   min-height: 66px;
   h3 {
-    color: #4fcbf4;
+    color: @firmBlue;
     font: bold 14px Tahoma, sans-serif;
     margin: 0px 0px 7px;
   }
@@ -143,7 +143,7 @@
     margin-bottom: 10px;
   }
   .link1 {
-    color: #4fcbf4;
+    color: @firmBlue;
     &:hover {
       text-decoration: none;
     }
@@ -164,7 +164,7 @@
     width: 48px;
   }
   b {
-    border: 2px solid #E7E7E7;
+    border: 2px solid @typLightGray;
     .rounded(7px);
     display: block;
     height: 47px;
@@ -175,7 +175,7 @@
     z-index: 1;
     &:hover,
     &.current{
-      border: 2px solid #FFB015;
+      border: 2px solid @firmOrange;
       cursor: pointer;
     }
   }
@@ -185,7 +185,7 @@
   margin: 0px 10px 20px 0px;
   width: 180px;
   h5 {
-    color: #a6a6a6;
+    color: @typGray;
     font-size: 12px; 
     font-family:Tahoma, sans-serif;
     margin: 0px 0px 3px;
@@ -208,13 +208,13 @@
 }
 .bDropMenu {
   background: #f5f5f5 url("@{itemSprite-url}") 100% -135px no-repeat;
-  border: 2px solid #e7e7e7;
+  border: 2px solid @typLightGray;
   color: #010101;
   padding: 5px 40px 5px 10px;
   position: relative;
   div {
     .box-shadow(0px 0px 5px #bbb);
-    background: #fff;
+    background: @white;
     border: 1px solid #aeaeae;
     display: none;
     left: -11px;
@@ -242,10 +242,10 @@
         padding: 5px 10px 10px;
       }
       &:hover {
-        background: #e6e6e6;
+        background: @typLightGray;
       }
       &:first-child:hover {
-        background: #fff url("@{itemSprite-url}") 100% -135px no-repeat;
+        background: @white url("@{itemSprite-url}") 100% -135px no-repeat;
         cursor: default;
       }
     }
@@ -256,7 +256,7 @@
   margin-right: -15px;
   width: 935px;
   .goodsbox {
-    background-color: #fff;
+    background-color: @white;
     margin-bottom: 14px;
     margin-right: 20px;
     padding: 10px;
@@ -267,8 +267,8 @@
     }
     .buy {
       .rounded(5px);
-      background-color: #ffa901;
-      color: #fff;
+      background-color: @firmOrange;
+      color: @white;
       font-size: 11px;
       left: 0px;
       padding: 3px 6px 4px;
@@ -280,7 +280,7 @@
     width: 167px;
   }
   .goodsrating {
-    color: #a6a6a6;
+    color: @typGray;
     display: block;
     font-size: 10px;
     padding-bottom: 5px;
@@ -301,11 +301,11 @@
     padding-bottom: 15px;
     width: 100%;
     .title {
-      border-bottom: 1px solid #e6e6e6;
+      border-bottom: 1px solid @typLightGray;
       float: left;
       width: 320px;
       h3 {
-        background-color: #FFFFFF;
+        background-color: @white;
         display: inline-block;
         float: left;
         font-size: 12px;

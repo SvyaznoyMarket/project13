@@ -1,20 +1,20 @@
 @leftNavSprite-url:"@{base-url}/leftNav/img/leftNavSprite.png";
 .bCtg {
-  border-bottom: 1px solid #e6e6e6;
+  border-bottom: 1px solid @typLightGray;
   font: 13px Tahoma, sans-serif;
   padding: 14px 0px;
   a {
     text-decoration: none;
   }
   b {
-    color: #a6a6a6;
+    color: @typGray;
     font: 14px Tahoma, sans-serif;
   }
   li {
     cursor: pointer;
     margin: 2px 0px;
     &:hover a {
-      color: #ffa901;
+      color: @firmOrange;
     }
   }
 }
@@ -26,22 +26,22 @@
   padding: 1px 0px 2px;
 }
 .mSelected span {
-  background: #ffa901;
-  color: #fff;
+  background: @firmOrange;
+  color: @white;
   padding: 0px 5px;
 }
 .bCtg.mHeight18 li {
   margin: 7px 0px;
 }
 dt.bCtg__eOrange {
-  color: #ffa901;
+  color: @firmOrange;
   font: bold 18px Tahoma, sans-serif;
 }
 .bCtg__eMore {
   margin-top: 6px;
   a {
     background: #cbcbcb;
-    color: #fff;
+    color: @white;
     padding: 2px 8px;
     text-decoration: none;
   }
@@ -89,8 +89,8 @@ dt.bCtg__eOrange {
 }
 .mSelected,
 .mSelected b {
-  background: #ffa901;
-  color: #fff;
+  background: @firmOrange;
+  color: @white;
 }
 .bigfilter {
   margin-bottom: 15px;
@@ -106,7 +106,7 @@ dt.bCtg__eOrange {
   }
   dt {
     background: url("@{leftNavSprite-url}") no-repeat scroll 11px -129px transparent;
-    border-top: 1px solid #e6e6e6;
+    border-top: 1px solid @typLightGray;
     cursor: pointer;
     font-weight: bold;
     padding: 7px 0px 8px;
@@ -136,7 +136,7 @@ dt.bCtg__eOrange {
     margin-bottom: 1px;
     padding: 2px 5px 3px 29px;
     &:hover {
-      background-color: #e6e6e6;
+      background-color: @typLightGray;
     }
     label {
       cursor: pointer;
@@ -152,7 +152,7 @@ dt.bCtg__eOrange {
   h2 {
     .border-radius(2px 2px 0px 0px);
     background-color: #f99b1c;
-    color: #fff;
+    color: @white;
     font: bold 14px Tahoma, sans-serif;
     height: 24px;
     margin: 0px 0px 15px;
@@ -169,7 +169,7 @@ dt.bCtg__eOrange {
     }
   }
   .pb10 {
-    border-top: 1px solid #e6e6e6;
+    border-top: 1px solid @typLightGray;
     margin-bottom: 10px;
     padding: 15px 0px 5px 10px;
   }
@@ -191,7 +191,7 @@ dt.bCtg__eOrange {
   text-align: center;
 }
 .bSlide .pb5 span {
-  /* color: #a6a6a6; */
+  /* color: @typGray; */
   background: none repeat scroll 0px 0px transparent;
   border: 0px none;
   font-size: 11px;
@@ -203,7 +203,7 @@ dt.bCtg__eOrange {
   width: 194px;
 }
 /*.sliderbox span {
-  display: block; padding-top: 8px; font-size: 10px; color: #a6a6a6;
+  display: block; padding-top: 8px; font-size: 10px; color: @typGray;
 }
 */
 .filter-range {
@@ -232,9 +232,9 @@ dt.bCtg__eOrange {
 }
 .filterresult {
   .rounded(5px);
-  .box-shadow(0px 0px 9px #616161);
-  background-color: #fff;
-  border: 2px solid #ffa901;
+  .box-shadow(0px 0px 9px @typBoxShadowColor);
+  background-color: @white;
+  border: 2px solid @firmOrange;
   cursor: auto;
   display: none;
   font-weight: normal;
@@ -257,7 +257,7 @@ dt.bCtg__eOrange {
     width: 15px;
   }
   a {
-    color: #ffa901;
+    color: @firmOrange;
     font-weight: bold;
     text-decoration: underline;
   }
@@ -301,5 +301,5 @@ label.prettyCheckbox span.holder {
   top: 0px;
 }
 label.checked {
-  color: #ffa901;
+  color: @firmOrange;
 }

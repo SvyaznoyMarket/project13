@@ -1,3 +1,4 @@
+@footerSprite:"@{base-url}/footer/img/footerSprite.png";
 /* compact footer */
 .lowfooter {
   height: 66px;
@@ -22,15 +23,14 @@
     text-decoration: underline;
   }
 }
-.mistakeimg {
-  /* margin-top: -4px */
+/*.mistakeimg {
   background: url("@{base-url}/common/img/bg_inner.png") no-repeat 0px -158px;
   display: inline-block;
   height: 17px;
   margin: -8px 5px 0px 0px;
   vertical-align: middle;
   width: 92px;
-}
+}*/
 /* footer default */
 .footer {
   height: 438px;
@@ -40,8 +40,8 @@
 }
 .bFooter {
   .rounded(5px);
-  background: #000;
-  color: #fff;
+  background: @black;
+  color: @white;
 }
 .bFooter__eLeft,
 .bFooter__eRight,
@@ -54,12 +54,12 @@
   zoom: 1;
 }
 .bFooter__eLeft {
-  background: url("@{base-url}/footer/img/footerSprite.png") 0 0 no-repeat;
+  background: url("@{footerSprite}") 0 0 no-repeat;
   min-height: 282px;
   padding: 15px 0px 0px 25px;
   width: 145px;
   a {
-    color: #fff;
+    color: @white;
     font: 14px Tahoma, sans-serif;
     margin: 2px 0px;
   }
@@ -68,7 +68,7 @@
     margin: 20px 0px 10px;
   }
   .bFooter__eLogo {
-    background: url("@{base-url}/footer/img/footerSprite.png") -171px 0 no-repeat;
+    background: url("@{footerSprite}") -171px 0 no-repeat;
     height: 58px;
     padding-bottom: 15px;
     width: 83px;
@@ -78,7 +78,7 @@
   background: url("@{base-url}/footer/img/footer_bottom.png") 0px 32px no-repeat;
   padding-left: 14px;
   dt {
-    color: #ffa901;
+    color: @firmOrange;
     font: 24px 'Enter';
     margin: 12px 0px 5px;
   }
@@ -92,7 +92,7 @@
     }
   }
   h3 {
-    color: #49c7ed;
+    color: @firmBlue;
     font: 21px 'Enter';
     margin: 0px;
   }
@@ -103,7 +103,7 @@
     font: 14px Tahoma, sans-serif;
     padding-bottom: 10px;
     a {
-      color: #fff;
+      color: @white;
       text-decoration: underline;
     }
   }
@@ -121,11 +121,11 @@
   background: url("@{base-url}/footer/img/footer_left2.png") 90% 5px no-repeat;
 }
 .bFooterF1 {
-  background: url("@{base-url}/footer/img/footerSprite.png") -170px -75px no-repeat;
+  background: url("@{footerSprite}") -170px -75px no-repeat;
   height: 45px;
   margin: 15px 0px;
   a{
-    color: #fff;
+    color: @white;
     cursor: pointer;
     display: inline-block;
     *display: block;
@@ -168,7 +168,7 @@
 .bFooterBottom {
   padding: 10px 0px 60px;
   &,a{
-    color: #a6a6a6;
+    color: @typGray;
     font-family:Tahoma, sans-serif;
     font-size:11px;
     line-height:20px;
@@ -179,7 +179,7 @@
   }
   .copyright {
     /* font-weight: bold;*/
-    color: #000;
+    color: @black;
     font-family: "Times New Roman", Times, serif;
     font-size: 12px;
   }

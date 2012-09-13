@@ -9,7 +9,7 @@
   z-index: 1003;
 }
 #bigpopup .previewlist .viewstock b {
-  border: 2px solid #E7E7E7;
+  border: 2px solid @typLightGray;
   .rounded(7px);
   display: block;
   height: 48px;
@@ -21,7 +21,7 @@
 }
 #bigpopup .previewlist b:hover,
 .previewlist b.current {
-  border: 2px solid #FFB015;
+  border: 2px solid @firmOrange;
 }
 .previewlist .axonometric {
   background: url("@{bigPopupSprite-url}") no-repeat -30px -72px;
@@ -99,7 +99,7 @@
   width: 85px;
 }
 .scalepanel {
-  background-color: #fff;
+  background-color: @white;
   float: right;
   padding: 30px 0px 0px 26px;
   width: 54px;
@@ -150,9 +150,8 @@
   .rounded(5px);
   background-color: #ffaa01;
   background: url("@{base-url}/common/img/bg_buttons.png") repeat-x;
-  border-color: #f28900;
-  border: 1px solid;
-  color: #fff;
+  border: 1px solid #f28900;
+  color: @white;
   display: block;
   font-size: 11px;
   font-weight: bold;
@@ -162,12 +161,12 @@
   text-align: center;
   width: 70px;
   &:hover {
-    background-color: #f79200;
+    background-color: @firmOrange;
     background-position: 0px -32px;
     text-decoration: none;
   }
   &.active {
-    background-color: #f79200;
+    background-color: @firmOrange;
     background-position: 0px -64px;
   }
   &.disabled {

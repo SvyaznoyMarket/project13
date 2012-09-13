@@ -1,10 +1,10 @@
 @f1popupSprite-url:"@{base-url}/f1popup/img/f1popupSprite.png";
 .hideblock {
   .rounded(5px);
-  .box-shadow(0px 0px 7px #616161);
-  background: #fff;
+  .box-shadow(0px 0px 7px @typBoxShadowColor);
+  background: @white;
   border: 2px solid #eaeaea;
-  color: #000;
+  color: @black;
   display: none;
   font-size: 12px;
   padding: 15px 20px;
@@ -24,7 +24,7 @@
   }
 }
 .bF1Block {
-  background: #fff url("@{f1popupSprite-url}") -27px 0px no-repeat;
+  background: @white url("@{f1popupSprite-url}") -27px 0px no-repeat;
   display: block;
   left: 140px;
   min-height: 60px;
@@ -39,7 +39,7 @@
     }
   }
   h2 {
-    color: #4fcbf4;
+    color: @firmBlue;
     font: bold 16px Tahoma, sans-serif;
     margin: 0px 0px 10px;
   }
@@ -53,12 +53,12 @@
   }
 }
 .bF1Block_eInfo {
-  border-top: 1px solid #e6e6e6;
+  border-top: 1px solid @typLightGray;
   font: 16px Tahoma, sans-serif;
   padding: 15px 50px 15px 0px;
   vertical-align: top;
   a {
-    color: #a6a6a6;
+    color: @typGray;
     font-size:12px;
     font-family:Tahoma, sans-serif;
     line-height:20px;
@@ -74,7 +74,7 @@
   zoom: 1;
 }
 .bF1Block_eBuy {
-  border-top: 1px solid #e6e6e6;
+  border-top: 1px solid @typLightGray;
   padding: 15px 0px;
   vertical-align: top;
   width: 248px;

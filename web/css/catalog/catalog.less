@@ -1,6 +1,6 @@
 @catalogSprite-url:"@{base-url}/catalog/img/catalogSprite.png";
 .filter {
-  color: #a6a6a6;
+  color: @typGray;
   float: left;
   font-size: 11px;
   padding: 3px 0px 9px;
@@ -24,8 +24,8 @@
 }
 .filterlist{
   .rounded(5px);
-  .box-shadow(0px 0px 7px #616161);
-  background-color: #fff;
+  .box-shadow(0px 0px 7px @typBoxShadowColor);
+  background-color: @white;
   border: 2px solid #eaeaea;
   display: none;
   left: -12px;
@@ -41,8 +41,8 @@
     padding: 4px 10px;
     white-space: nowrap;
     &:hover{
-      background-color: #e6e6e6;
-      color: #000;
+      background-color: @typLightGray;
+      color: @black;
       text-decoration: none;
     }
   }
@@ -52,7 +52,7 @@
   margin-right: 25px;
   padding-bottom: 9px;
   span {
-    color: #a6a6a6;
+    color: @typGray;
     display: block;
     float: left;
     padding: 3px 3px 0px 0px;
@@ -96,26 +96,26 @@
     }
   }
   .current {
-    background-color: #fff;
+    background-color: @white;
     border-right: none;
     margin: 0px 0px 0px -1px;
     padding: 0px 3px;
     a, a:hover{
       .rounded(5px);
-      background-color: #000;
+      background-color: @black;
       border: none;
-      color: #fff;
+      color: @white;
       position: relative;
     }
   }
   span {
-    color: #a6a6a6;
+    color: @typGray;
     display: block;
     float: left;
     padding: 3px 5px 0px 0px;
   }
   a {
-    color: #a6a6a6;
+    color: @typGray;
     display: block;
     float: left;
     font-size: 12px;
@@ -125,7 +125,7 @@
     vertical-align: middle;
     &.borderedR {
       .rounded(5px);
-      border: 1px solid #a6a6a6;
+      border: 1px solid @typGray;
       height: 16px;
       width: 6px;
       span {
@@ -250,7 +250,7 @@
   }
 }
 .bNGB__eArt {
-  color: #000;
+  color: @black;
   font: 12px Tahoma, sans-serif;
   margin: 8px 0px;
   .ratingview {
@@ -265,8 +265,8 @@
   margin: 8px 0px;
 }
 .goodsline {
-  background-color: #fff;
-  border-bottom: 1px solid #e6e6e6;
+  background-color: @white;
+  border-bottom: 1px solid @typLightGray;
   float: left;
   margin-bottom: 0px;
   padding: 10px 0px 10px 10px;
@@ -302,7 +302,7 @@
     padding-bottom: 5px;
   }
   .extrainfo {
-    border-left: 1px solid #e6e6e6;
+    border-left: 1px solid @typLightGray;
     float: left;
     min-height: 160px;
     padding-left: 10px;
@@ -374,13 +374,13 @@
   }
 }
 .srcoll_link {
-  color: #000;
+  color: @black;
   font: 14px Tahoma, sans-serif;
   margin-right: 3px;
   text-decoration: underline;
 }
 .scroll {
-  color: #a6a6a6;
+  color: @typGray;
   float: right;
   font: 14px, Tahoma, sans-serif;
   span {
@@ -419,8 +419,8 @@
 .allpager {
   .rounded(5px);
   background: url("@{catalogSprite-url}") no-repeat 1px -86px;
-  border: 1px solid #a6a6a6;
-  color: #a6a6a6;
+  border: 1px solid @typGray;
+  color: @typGray;
   cursor: pointer;
   display: inline-block;
   height: 10px;
@@ -428,8 +428,8 @@
   padding-bottom: 9px;
   width: 20px;
   &.mChecked {
-    background: #000 url("@{catalogSprite-url}") no-repeat 1px -101px;
-    border-color: #000;
+    background: @black url("@{catalogSprite-url}") no-repeat 1px -101px;
+    border-color: @black;
   }
 }
 .bListVariants{
