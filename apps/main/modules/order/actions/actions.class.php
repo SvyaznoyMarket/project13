@@ -11,6 +11,7 @@
 class orderActions extends myActions
 {
   const LAST_STEP = 1;
+  const ONE_CLICK_PAYMENT_ID = 1;
 
   /**
    * Executes index action
@@ -182,6 +183,7 @@ class orderActions extends myActions
           $order->extra = 'Это быстрый заказ за 1 клик. Уточните параметры заказа у клиента.';
           $data = $order->exportToCore();
           $data['user_id'] = $user->getGuardUser() ? $user->getGuardUser()->getId() : null;
+          $data['payment_id'] = self::ONE_CLICK_PAYMENT_ID;
           $data['delivery_date'] = date_format(new DateTime($data['delivery_date']), 'Y-m-d');
 
           $r = Core::getInstance()->query('order.create-packet', array(), array($data), true);
