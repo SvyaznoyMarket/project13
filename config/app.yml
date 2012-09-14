@@ -117,6 +117,7 @@ all:
   payment:
     enabled: true # общий переключатель для всех видов методов online оплат
     default_provider: psbank
+    credit_enabled: true
     provider:
       psbank:
         enabled: true
@@ -155,6 +156,13 @@ all:
       log_file: %SF_LOG_DIR%/smartengine.log
       log_enabled: true
       log_data_enabled: true
+
+  credit:
+   provider:
+     kupivkredit:
+       partnerId: '1-6ADAEAT'
+       partnerName: 'ООО «Enter»'
+       signature: 'enter-secret-werj7537'
 
   js_combine:
     file:     %SF_WEB_DIR%/js/combine.js

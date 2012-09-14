@@ -871,8 +871,11 @@ function printPrice ( val ) {
 	} else if ( le > 3 ) {
 		out = out.substr( 0, le - 3) + ' ' + out.substr( le - 3, le )
 	}
-	if( floatv.length == 2 && floatv[1]*1 > 0 )
+	if( floatv.length == 2 && floatv[1]*1 > 0 ) {
+        if( floatv[1].length === 1)
+            floatv[1] += '0'
 		out += '.' + floatv[1]
+    }
 	return out
 }
 
@@ -1271,6 +1274,15 @@ function Lightbox( jn, data ){
 			return true
 		else return false
 	}
+
+    this.isCredit = function(){
+        if( 'is_credit' in init ) {
+            if( init.is_credit )
+                return true
+        } 
+        return false
+    }
+
 	// initia
 	this.update()
 	//setTimeout( function () { plashka.fadeIn('slow') }, 2000)
@@ -1682,6 +1694,93 @@ function mediaLib( jn ) {
 	}
 	
 } // mediaLib object
+
+/* Credit Brokers */
+DirectCredit = {
+
+    basketPull : [],
+
+    output : null,
+    input  : null,
+
+    init : function( input, output ) {
+        if( !input || !output )
+            return 'incorrect input data'
+        this.input  = input
+        this.output = output
+        for( var i=0, l=input.length; i < l; i++ ) {
+            var tmp = {
+                id : input[i].id,
+                price : input[i].price,
+                count : input[i].quantity,
+                type : input[i].type
+            }
+            
+            this.basketPull.push( tmp )
+        }
+        this.sendCredit()
+    },
+
+    change : function( message, data ) {
+        self = DirectCredit
+        if( data.q > 0 ) {
+            var item = self.findProduct( self.basketPull, data.id )
+            if( item < 0 ) {
+                PubSub.publish( 'bankAnswered', null ) // hack
+                return
+            }
+            item.count = data.q
+        } else {
+            var key = self.findProductKey( self.basketPull, data.id )
+            if( key < 0 ) {
+                PubSub.publish( 'bankAnswered', null ) // hack
+                return
+            }
+            self.basketPull.splice( key, 1 )
+        }
+        self.sendCredit()
+    },
+
+    findProduct : function( array, id) {
+        for( var key=0, lk=array.length; key < lk; key++ ) {
+            if( array[key].id == id )
+                return array[key]
+        }
+        return -1
+    },
+
+    findProductKey : function( array, id) {
+        for( var key=0, lk=array.length; key < lk; key++ ) {
+            if( array[key].id == id )
+                return key
+        }
+        return -1
+    },
+    
+    sendCredit : function(  ) {
+        var self = this 
+        dc_getCreditForTheProduct(
+            '4427',
+            'none',
+            'getPayment', 
+            { products : self.basketPull },
+            function(result){                       
+                //var creditPrice = 0
+                // for( var i=0, l=self.basketPull.length; i < l; i++ ) {
+                //  var item = self.findProduct( self.basketPull, result.products[i].id )
+                //  if( item ) {
+                //      var itemPrice = item.price
+                //      creditPrice += result.products[i].initial_instalment * itemPrice/100 * item.count
+                //  }
+                    
+                // }               
+                self.output.text( printPrice( Math.ceil( result.payment ) ) )
+                PubSub.publish( 'bankAnswered', null )
+            }
+        )
+    }   
+} // DirectCredit singleton
+
 
 /* Date object upgrade */
 if ( !Date.prototype.toISOString ) {

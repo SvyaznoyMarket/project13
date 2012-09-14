@@ -84,7 +84,8 @@ class userController
             'productsInCart' => array(),
             'servicesInCart' => array(),
             'bingo' => false,
-            'region_id' =>App::getCurrentUser()->getRegion()->getId()
+            'region_id' =>App::getCurrentUser()->getRegion()->getId(),
+            'is_credit' => (array_key_exists('credit_on', $_COOKIE) && ($_COOKIE['credit_on'] == 1))
           )
         );
         $response->setContent(json_encode($responseData));
@@ -115,7 +116,8 @@ class userController
           'productsInCart' => array(),
           'servicesInCart' => array(),
           'bingo' => false,
-          'region_id' =>App::getCurrentUser()->getRegion()->getId()
+          'region_id' =>App::getCurrentUser()->getRegion()->getId(),
+          'is_credit' => (array_key_exists('credit_on', $_COOKIE) && ($_COOKIE['credit_on'] == 1))
         )
       );
 

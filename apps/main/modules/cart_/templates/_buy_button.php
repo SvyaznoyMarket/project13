@@ -28,12 +28,14 @@ $view = (isset($view) && $view === 'add') ? 'add' : 'default';
     <?php if ($disable): ?>
       <a href="#" class="link1 event-click cart cart-add disabled"><?php echo isset($text)? $text : '&nbsp;' ?></a>
     <?php else: ?>
-      <?php echo link_to(
-        isset($text)? $text : '&nbsp;',
-        'cart_add',
-        array('product' => $item->getId(), 'quantity' => $quantity),
-        array('class' => 'link1 event-click cart cart-add', 'data-event' => 'content.update')
-      ) ?>
+      <?php
+      $link = link_to(
+          isset($text)? $text : '&nbsp;',
+          'cart_add',
+          array('product' => $item->getId(), 'quantity' => $quantity),
+          array('class' => 'link1 event-click cart cart-add', 'data-event' => 'content.update')
+      );
+      echo $link; ?>
     <?php endif ?>
   <?php endif; ?>
 <?php endif; ?>
