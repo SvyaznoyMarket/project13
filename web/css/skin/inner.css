@@ -1051,7 +1051,7 @@ border-radius: 5px;
 .answer .avatar IMG {vertical-align:top}
 .answerright {float:right; width:571px; overflow:hidden}
 
-.hideblock {display:none; position:absolute; z-index:10; padding:15px 20px; background:#fff; color:#000; font-size:12px; text-align:left; border:2px solid #eaeaea;
+.hideblock {display:none; position: fixed; z-index:10; padding:15px 20px; background:#fff; color:#000; font-size:12px; text-align:left; border:2px solid #eaeaea;
 border-radius:5px;
 -moz-border-radius:5px;
 -webkit-border-radius:5px;
@@ -2573,7 +2573,8 @@ DT.bCtg__eOrange{
 /* goods info */
 .bF1Block.mGoods{
 	top: 415px;
-	left: 170px;
+	left: 50%;
+	margin-left:-350px;
 	}
 	.bF1Block.mGoods div{
 		max-height: 320px;
@@ -6105,7 +6106,8 @@ div.mSportFont{ color: #e8303c; }
 	background: #fff url('/images/F1_logo_extWarranty.jpg') 0 0 no-repeat;
 	display:none;
 	top: 415px;
-	left: 170px;
+	left: 50%;
+	margin-left:-370px;
 	padding: 10px 20px 20px 75px;
 }
 .hideblock.extWarranty div{

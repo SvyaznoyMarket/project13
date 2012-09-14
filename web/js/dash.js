@@ -256,7 +256,9 @@ $(document).ready(function(){
 			$(this).val('Выбрана').addClass('active')
 			//var extWarr_item = $(this).data()
 			f1lines_extWarr.fadeOut()
-			//$('.link1',look_extWarr)
+			$('.link1',look_extWarr).text('Изменить гарантию')
+			look_extWarr.find('h3').text('Вы выбрали гарантию:')
+			
 		})
 	}
 	/* buy bottons */
