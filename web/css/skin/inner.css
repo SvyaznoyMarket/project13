@@ -6084,3 +6084,13 @@ div.mSportFont{ color: #e8303c; }
 .height220 {
     height: 220px;
 }
+
+/* --- БЛОК ДОПОЛНИТЕЛЬНОЙ ГАРАНТИИ В КАРТОЧКЕ ТОВАРА --- */
+.extWarranty{
+	margin:20px 0;
+}
+/**/
+.bF1Block.mGoods.extWarranty{
+	display: block;
+	background: #fff url('/images/F1_logo_extWarranty.jpg') 0 0 no-repeat;
+}
