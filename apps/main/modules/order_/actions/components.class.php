@@ -369,8 +369,10 @@ class order_Components extends myComponents
       }
     };
 
-    RepositoryManager::getProduct()->getListByIdAsync($prodCb, $prodIdList, true);
-    CoreClient::getInstance()->execute();
+    if(count($prodIdList) > 0){
+      RepositoryManager::getProduct()->getListByIdAsync($prodCb, $prodIdList, true);
+      CoreClient::getInstance()->execute();
+    }
 
     return $list;
   }
