@@ -231,7 +231,7 @@ $(document).ready(function(){
 		})
 	}
 	
-	/* EXT WARRATY */
+	/* EXT WARRANTY */
 	if ( $('div.bBlueButton.extWarranty').length ){
 		var look_extWarr = $('div.bBlueButton.extWarranty')
 		var f1lines_extWarr = $('div.hideblock.extWarranty')
@@ -243,6 +243,13 @@ $(document).ready(function(){
 		//close popup
 		$('.close', f1lines_extWarr).click( function(){
 			f1lines_extWarr.hide()
+		})
+		//add warranty
+		f1lines_extWarr.find('input.button').bind ('click', function() {
+			if( $('input.button',f1lines_extWarr).hasClass('active') ){
+				$('input.button',f1lines_extWarr).val('Выбрать').removeClass('active');
+			}
+			$(this).val('Выбрана').addClass('active')
 		})
 	}
 	/* buy bottons */
