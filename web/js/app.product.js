@@ -1,6 +1,6 @@
 $(document).ready(function() {
 	/* Credit */
-	if( $('.creditbox').length ) {
+	if( ($('.creditbox').length)&&($('.creditbox').is(':visible')) ) {
 		window.creditBox = {
 			cookieTimeout : null,
 			
