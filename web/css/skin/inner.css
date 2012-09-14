@@ -6086,11 +6086,42 @@ div.mSportFont{ color: #e8303c; }
 }
 
 /* --- БЛОК ДОПОЛНИТЕЛЬНОЙ ГАРАНТИИ В КАРТОЧКЕ ТОВАРА --- */
-.extWarranty{
+.bBlueButton.extWarranty{
 	margin:20px 0;
 }
+.bBlueButton.extWarranty h3{
+	color: #4fcbf4;
+	margin: 0 0 7px 0;
+	font: bold 14px Tahoma, sans-serif;
+}
+.bBlueButton.extWarranty .link1{
+	color: #4fcbf4;
+}
+.bBlueButton.extWarranty .link1:hover{
+	text-decoration: none;
+}
 /**/
-.bF1Block.mGoods.extWarranty{
-	display: block;
+.hideblock.extWarranty{
 	background: #fff url('/images/F1_logo_extWarranty.jpg') 0 0 no-repeat;
+	display:none;
+	top: 415px;
+	left: 170px;
+	padding: 10px 20px 20px 75px;
+}
+.hideblock.extWarranty div{
+	max-height: 320px;
+	overflow-y: scroll;
+}
+.hideblock.extWarranty h2{
+	color: #4fcbf4;
+	margin: 0 0 10px 0;
+	font: bold 16px Tahoma, sans-serif;
+}
+.hideblock.extWarranty table{
+	width: 650px;
+}
+.hideblock.extWarranty th{
+	text-align: right;
+	text-decoration: underline;
+	font: 12px Tahoma, sans-serif;
 }

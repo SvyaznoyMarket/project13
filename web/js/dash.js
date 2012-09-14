@@ -230,6 +230,21 @@ $(document).ready(function(){
 			return false
 		})
 	}
+	
+	/* EXT WARRATY */
+	if ( $('div.bBlueButton.extWarranty').length ){
+		var look_extWarr = $('div.bBlueButton.extWarranty')
+		var f1lines_extWarr = $('div.hideblock.extWarranty')
+		//open popup
+		$('.link1',look_extWarr).click( function(){
+			f1lines_extWarr.show()
+			return false
+		})
+		//close popup
+		$('.close', f1lines_extWarr).click( function(){
+			f1lines_extWarr.hide()
+		})
+	}
 	/* buy bottons */
 
 	var markPageButtons = function(){

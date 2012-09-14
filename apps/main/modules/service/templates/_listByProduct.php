@@ -37,7 +37,7 @@ $listInCart = $item->getServiceListInCart();
 <?php endif ?>
 
 <!-- всплывающее окно с выбором доп.гарантии-->
-<div class="hideblock bF1Block mGoods extWarranty">
+<div class="hideblock mGoods extWarranty">
 	<i class="close" title="Закрыть">
 		Закрыть
 	</i>
@@ -104,12 +104,12 @@ $listInCart = $item->getServiceListInCart();
 </div>
 <!-- END всплывающее окно с выбором доп.гарантии-->
 
-<div class="bF1Info bBlueButton extWarranty">
+<div class="bBlueButton extWarranty">
 	<img alt="Улуги F1" class="bF1Info_Logo" src="/images/F1_logo_extWarranty.jpg">
 	<h3>
 		Дополнительная<br />гарантия
 	</h3>
-	<a class="link1" href="">
+	<a class="link1" href="#">
 		Выбрать гарантию
 	</a>
 </div>
