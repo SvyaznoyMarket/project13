@@ -35,3 +35,15 @@ $listInCart = $item->getServiceListInCart();
   </div>
 
 <?php endif ?>
+
+
+<div class="bF1Info bBlueButton">
+	<img alt="Улуги F1" class="bF1Info_Logo" src="/images/f1info.png">
+	<h3>
+		Установка<br>
+		и подключение
+	</h3>
+	<a class="link1" href="">
+		Выбрать услуги
+	</a>
+</div>
