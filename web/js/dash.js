@@ -169,6 +169,8 @@ $(document).ready(function(){
 		var f1lines = $('div.bF1Block')
 		// open popup
 		$('.link1, .bF1Info_Logo', look).click( function(){
+			if( $('div.hideblock.extWarranty').is(':visible') )
+				$('div.hideblock.extWarranty').hide()
 			f1lines.show()	
 			return false
 		})
@@ -237,6 +239,8 @@ $(document).ready(function(){
 		var f1lines_extWarr = $('div.hideblock.extWarranty')
 		//open popup
 		$('.link1',look_extWarr).click( function(){
+			if( $('div.bF1Block').is(':visible') )
+				$('div.bF1Block').hide()
 			f1lines_extWarr.show()
 			return false
 		})
@@ -250,6 +254,9 @@ $(document).ready(function(){
 				$('input.button',f1lines_extWarr).val('Выбрать').removeClass('active');
 			}
 			$(this).val('Выбрана').addClass('active')
+			//var extWarr_item = $(this).data()
+			f1lines_extWarr.fadeOut()
+			//$('.link1',look_extWarr)
 		})
 	}
 	/* buy bottons */
