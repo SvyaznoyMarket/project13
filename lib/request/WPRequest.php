@@ -46,7 +46,7 @@ class WPRequest
 
         if($method == self::methodPost)
         {
-            $optionList['header'] = 'Content-type: application/x-www-form-urlencoded';
+            $optionList['http']['header'] = "Content-Type: application/x-www-form-urlencoded\r\n";
         }
 
         return $optionList;
