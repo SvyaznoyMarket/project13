@@ -192,4 +192,5 @@
 <?php
   include_component('product', 'f1_lightbox', array('f1' => $list, 'product' => $product, 'servListId' => $servListId, 'parentAction' => $this->getActionName()))
   ?>
+  <?php render_partial('product_/templates/_ext_warranty_lightbox.php', array('item' => $product))?>
 <?php endif ?>
