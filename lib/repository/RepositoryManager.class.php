@@ -35,6 +35,39 @@ class RepositoryManager
     return $repo;
   }
 
+    /**
+     * @static
+     * @return CreditBankRepository
+     */
+    public static function getCreditBank()
+    {
+        static $repo;
+        if (!$repo) $repo = new CreditBankRepository();
+        return $repo;
+    }
+
+    /**
+     * @static
+     * @return OrderRepository
+     */
+    public static function getOrder()
+    {
+        static $repo;
+        if (!$repo) $repo = new OrderRepository();
+        return $repo;
+    }
+
+    /**
+     * @static
+     * @return PaymentMethodRepository
+     */
+    public static function getPaymentMethod()
+    {
+        static $repo;
+        if (!$repo) $repo = new PaymentMethodRepository();
+        return $repo;
+    }
+
   /**
    * @static
    * @return ProductLabelRepository
@@ -164,17 +197,6 @@ class RepositoryManager
   {
     static $repo;
     if(!$repo) $repo = new UserRepository();
-    return $repo;
-  }
-
-  /**
-   * @static
-   * @return OrderRepository
-   */
-  public static function getOrder()
-  {
-    static $repo;
-    if(!$repo) $repo = new OrderRepository();
     return $repo;
   }
 }

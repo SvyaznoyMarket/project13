@@ -480,8 +480,8 @@ order_payment:
 #
 # order cancel
 order_cancel:
-  url:   /orders/cancel/:token
-  param: { module: order, action: cancel, token: 0 }
+  url:   /orders/cancel/:core_id
+  param: { module: order, action: cancel, core_id: 0 }
 #
 # order complete
 order_error:
@@ -534,7 +534,7 @@ cart:
 # MOVED TO PLAIN PHP cart add
 cart_add:
   url:   /cart/add/:product/_quantity/:quantity/
-  param: { module: cart, action: add, quantity: 1 }
+  param: { module: cart, action: add, quantity: 1}
   requirements:
     sf_method: [ get, post ]
     product: \d+

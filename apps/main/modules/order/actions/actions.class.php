@@ -11,6 +11,7 @@
 class orderActions extends myActions
 {
   const LAST_STEP = 1;
+  const ONE_CLICK_PAYMENT_ID = 1;
 
   /**
    * Executes index action
@@ -62,7 +63,7 @@ class orderActions extends myActions
 
     $this->order = new Order();
     $this->order->Status = OrderStatusTable::getInstance()->findOneByToken('created');
-    $this->order->PaymentMethod = PaymentMethodTable::getInstance()->findOneByToken('nalichnie');
+    //$this->order->PaymentMethod = PaymentMethodTable::getInstance()->findOneByToken('nalichnie');
     $this->order->shop_id = $this->shop ? $this->shop->id : null;
     $this->order->delivery_type_id = 1;
     $this->order->sum = ProductTable::getInstance()->getRealPrice($this->product) * $quantity; //нужна для правильного отбражения формы заказа
@@ -182,6 +183,7 @@ class orderActions extends myActions
           $order->extra = 'Это быстрый заказ за 1 клик. Уточните параметры заказа у клиента.';
           $data = $order->exportToCore();
           $data['user_id'] = $user->getGuardUser() ? $user->getGuardUser()->getId() : null;
+          $data['payment_id'] = self::ONE_CLICK_PAYMENT_ID;
           $data['delivery_date'] = date_format(new DateTime($data['delivery_date']), 'Y-m-d');
 
           $r = Core::getInstance()->query('order.create-packet', array(), array($data), true);
@@ -367,10 +369,10 @@ class orderActions extends myActions
    */
   public function executeCancel(sfWebRequest $request)
   {
-    $token = $request['token'];
-    if (!$token) $this->redirect($this->getRequest()->getReferer());
+    $coreId = (int) $request['core_id'];
+    if (!$coreId) $this->redirect($this->getRequest()->getReferer());
 
-    $orderL = OrderTable::getInstance()->findBy('token', $token);
+    $orderL = OrderTable::getInstance()->findBy('core_id', $coreId);
     foreach ($orderL as $order) $coreId = $order->core_id;
     //print_r($order->getData());
     $res = Core::getInstance()->query('order.cancel', array('id' => $coreId));

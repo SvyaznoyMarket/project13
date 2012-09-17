@@ -4,12 +4,12 @@ $(document).ready(function() {
 	/* COMMON DESIGN, BEHAVIOUR ONLY */
 
 	/* Custom Selectors */ 
-	$('#OrderView').delegate( '.bSelect', 'click', function() {
+	$('body').delegate( '.bSelect', 'click', function() {
 		if( $(this).hasClass('mDisabled') )
 			return false
 		$(this).find('.bSelect__eDropmenu').toggle()
 	})
-	$('#OrderView').delegate( '.bSelect', 'mouseleave', function() {
+	$('body').delegate( '.bSelect', 'mouseleave', function() {
 		if( $(this).hasClass('mDisabled') )
 			return false
 		var options = $(this).find('.bSelect__eDropmenu')
@@ -40,6 +40,34 @@ $(document).ready(function() {
 	$('body').delegate('.bBuyingLine input:radio, .bBuyingLine input:checkbox', 'click', function(e) {
 		e.stopPropagation()
 	})
+
+	/* Credit */
+    $('body').delegate('input[name="order[payment_method_id]"]', 'click', function() {
+        if( this.id === 'order_payment_method_id_6' )
+            $('#creditInfo').show()
+        else
+            $('#creditInfo').hide()
+    })
+
+    if( $('.bankWrap').length ) {
+        var banks = $('.bankWrap > .bSelect').data('value')
+        var docs  = $('.bankWrap > .creditHref')
+        var options = $('<div>').addClass('bSelect__eDropmenu')
+        for( var id in banks ) {
+            var option = $('<div>').attr('ref', id).append( $('<span>').text( banks[id].name ) )
+            option.click( function() {
+                var thisId = $(this).attr('ref')
+                $('.bankWrap > .bSelect').find('span:first').text( banks[ thisId ].name )
+                $('input[name="order[credit_bank_id]"]').val( thisId )
+                docs.find('a').attr('href', banks[ thisId ].href )
+                docs.find('span').text('(' + banks[ thisId ].name + ')' )
+            })
+            options.append( option )
+        }
+        $('.bankWrap > .bSelect').append( options )
+
+        DirectCredit.init( $('#tsCreditCart').data('value'), $('#creditPrice') )
+    }
 
 	/* Auth Link */
 	PubSub.subscribe( 'authorize', function( m, d ) {
@@ -172,9 +200,11 @@ $(document).ready(function() {
 		}
 		if( data.boxQuantity > 1 ) {
 			// block payment options
-			$('#payment_method_online-field').hide()
+			$('#payment_method_5-field').hide()
+			$('#payment_method_6-field').hide()
 		} else {
-			$('#payment_method_online-field').show()
+			$('#payment_method_5-field').show()
+			$('#payment_method_6-field').show()
 		}
 
 	})
@@ -457,7 +487,7 @@ l2:			for(var i in Model.deliveryTypes) {
 			var data = {
 				'type': 'courier',
 				'boxQuantity': self.dlvrBoxes().length
-			}
+			}		
 			PubSub.publish( 'DeliveryChanged', data )
 		}
 
@@ -467,7 +497,7 @@ l2:			for(var i in Model.deliveryTypes) {
 			var data = {
 				'type': 'shops',
 				'boxQuantity': self.dlvrBoxes().length
-			}			
+			}
 			PubSub.publish( 'DeliveryChanged', data )
 		}
 

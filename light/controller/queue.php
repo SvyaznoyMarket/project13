@@ -189,11 +189,11 @@ class queueController
     $file = QUEUE_PID_FILE;
 
     $fp = fopen($file, 'c+');
-    if (!$fp) {
-      $pause = rand(100000, 3000000);
-      echo "\nКажется, файл заблокирован. Жду $pause ".($pause / 1000)."ms...";
-      usleep($pause);
-      $fp = fopen($file, 'c+');
+    while (!$fp) {
+        $pause = rand(100000, 3000000);
+        echo "\nКажется, файл заблокирован. Жду $pause ".($pause / 1000)."ms...";
+        usleep($pause);
+        $fp = fopen($file, 'c+');
     }
 
     if ($fp) {
@@ -204,7 +204,7 @@ class queueController
 
       $count = $count + $num;
 
-      file_put_contents($file, $count ?: 0);
+      file_put_contents($file, $count >= 0 ? $count: 0);
       fclose($fp);
     }
     else {

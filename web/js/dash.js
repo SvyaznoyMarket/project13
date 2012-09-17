@@ -102,6 +102,9 @@ $(document).ready(function(){
 				}
 			}
 		}
+		// if( lbox.is_credit )
+		// 	if( $('#creditinput').length )
+		// 		$('#creditinput').trigger('click')
 	}
 	/* ---- */
 
@@ -182,6 +185,15 @@ $(document).ready(function(){
 				return false
 			$(this).val('В корзине').addClass('active').attr( 'href', carturl )
 			var f1item = $(this).data()
+			//credit case
+// 			if( 'creditBox' in window ) {
+// //				if( !f1item.url.match(/_quantity\/[0-9]+/) )
+// //					f1item.url += '/1' //quantity
+// 				if( creditBox.getState() )
+// 					f1item.url += '1/1' //credit
+// 				else 	
+// 					f1item.url += '1/0' //no credit
+// 			}			
 			f1lines.fadeOut()
 			$.getJSON( f1item.url, function(data) {
 				if( !data.success )
@@ -231,9 +243,8 @@ $(document).ready(function(){
 		})
 	}
 	/* buy bottons */
-
 	var markPageButtons = function(){
-		
+		var carturl = $('.lightboxinner .point2').attr('href')
 		$('.goodsbarbig .link1').attr('href', carturl ).addClass('active')
 		$('#bigpopup a.link1').attr('href', carturl ).html('в корзине')
 		$('.bSet__ePrice .link1').unbind('click')
@@ -267,7 +278,12 @@ $(document).ready(function(){
 			tmp.effect('transfer',{ to: $('.point2 b') , easing: 'easeInOutQuint', img: tmp.attr('src') }, 500 )
 		}
 		var boughtItem = currentItem
-		$.getJSON( $( button ).attr('href') +'1', function(data) {
+		// is_credit
+		// var ajurl = $( button ).attr('href') +'/1'
+		// if( ltbx.isCredit() )
+		// 	ajurl += '/1'
+		var ajurl = $( button ).attr('href')
+		$.getJSON( ajurl, function(data) {
 			if ( data.success && ltbx ) {
 				var tmpitem = parseItemNode( boughtItem )
 				tmpitem.vitems = data.data.full_quantity
@@ -303,7 +319,6 @@ $(document).ready(function(){
 				return
 			var carturl = $('.lightboxinner .point2').attr('href')
 			$('body').delegate( selector, 'click', function() {
-				//console.info('BuyBottons')
 				var button = $(this)
 				if( !jsond )
 					jsond = button.data('value')
@@ -328,7 +343,15 @@ $(document).ready(function(){
 					ajurl = jsond.url
 				}
 				button.addClass('active').attr('href', carturl)
-
+				//credit case
+				// if( 'creditBox' in window ) { // productCard
+				// 	if( !ajurl.match(/_quantity\/[0-9]+/) )
+				// 		ajurl += '/1' //quantity
+				// 	if( creditBox.getState() )
+				// 		ajurl += '/1' //credit
+				// 	else 	
+				// 		ajurl += '/0' //no credit
+				// }
 				$.getJSON( ajurl, function( data ) {
 					if ( data.success && ltbx ) {
 						var tmpitem = {
