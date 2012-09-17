@@ -7,7 +7,8 @@
     $servListId[] = $service['id'];
   }
   ?>
-<div class="service form bBacketServ mSmall mBR5" <?php if ($selectedNum) echo ' style="display:none;"';  ?> >
+<div class="mBR5 basketServices">
+<div class="service form bBacketServ F1 mSmall" <?php if ($selectedNum) echo ' style="display:none;"';  ?> >
   <table cellspacing="0">
     <tbody>
     <tr>
@@ -31,8 +32,52 @@
     </tbody>
   </table>
 </div>
+<div class="clear"></div>
+<div class="service form bBacketServ extWarr mSmall" style="">
+    <table cellspacing="0">
+        <tbody>
+            <tr>
+                <th colspan="3">
+                    Для этого товара есть дополнительная гарантия:
+                </th>
+            </tr>
+            <tr>
+                <td>
+                    Год гарантии
+                </td>
+                <td class="mPrice"></td>
+                <td class="mEdit"></td>
+            </tr>
+            <tr>
+                <td>
+                    Два года гарантии
+                </td>
+                <td class="mPrice"></td>
+                <td class="mEdit"></td>
+            </tr>
+            <tr>
+                <td>
+                    Три года гарантии
+                </td>
+                <td class="mPrice"></td>
+                <td class="mEdit"></td>
+            </tr>
+            <tr>
+                <td class="bBlueButton">
+                    <a href="" class="link1">
+                        Выбрать услуги
+                    </a>
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+</div>
 <?php if (!$selectedNum) { ?>
-<div class="service form bBacketServ mBig mBR5" style="display:none;">
+<div class="mBR5 basketServices">
+<div class="service form bBacketServ mBig" style="display:none;">
   <table cellspacing="0">
     <tbody>
     <tr>
@@ -46,9 +91,11 @@
     </tbody>
   </table>
 </div>
+</div>
 <?php } ?>
 <?php if ($selectedNum) { ?>
-<div class="service form bBacketServ mBig mBR5">
+<div class="mBR5 basketServices">
+<div class="service form bBacketServ F1 mBig">
   <table cellspacing="0">
     <tbody>
     <tr>
@@ -96,7 +143,50 @@
     </tbody>
   </table>
 </div>
-
+<div class="service form bBacketServ extWarr mBig">
+    <table cellspacing="0">
+        <tbody>
+            <tr>
+                <th colspan="3">
+                    Для этого товара есть гарантия:
+                </th>
+            </tr>
+            <tr ref="utilizatsiya-demontirovannoy-mebeli-2120106000105">
+                <td>
+                    Три года гарантии
+                    <br>
+                    <a class="bBacketServ__eMore" href="/f1/show/utilizatsiya-demontirovannoy-mebeli-2120106000105">
+                        Подробнее об услуге
+                    </a>
+                </td>
+                <td class="mPrice">
+                    <span class="price">
+                        2 920
+                    </span>
+                    &nbsp;<span class="rubl">
+                        p
+                    </span>
+                </td>
+                <td class="mEdit">
+                    
+                    <a class="button whitelink ml5 mInlineBlock mVAMiddle" href="/cart/delete_service/16520/_service/158">
+                        Отменить
+                    </a>
+                </td>
+            </tr>
+            <tr>
+                <td class="bBlueButton">
+                    <a href="" class="link1">
+                        Выбрать услуги
+                    </a>
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+</div>
 <?php } ?>
 
 <?php

@@ -2515,11 +2515,21 @@ DT.bCtg__eOrange{
 
 
 /* backert service */
-
-.bBacketServ{
-	border: 1px solid #e6e6e6;
-	padding: 10px 10px 10px 75px;
+.basketServices{
+	border:1px solid #E6E6E6;
+}
+.bBacketServ.F1{
 	background: url('img/icon_f1service_big.png') 0 0 no-repeat;
+}
+.bBacketServ.extWarr{
+	background: url('/images/F1_logo_extWarranty.jpg') 0 0 no-repeat;
+}
+.basketServices{
+	float:left;
+}
+.bBacketServ{
+	border-bottom: 1px solid #E6E6E6;
+	padding: 10px 10px 10px 75px;
 	}
 	.bBacketServ .whitelink{
 		font-weight: normal;
@@ -2533,6 +2543,9 @@ DT.bCtg__eOrange{
 		*display: inline;
 		zoom: 1;
 		}
+	.bBacketServ.mBig table{
+		width: 100%;
+	}
 	.bBacketServ.mBig table td:first-child{
 		width: 360px;
 		font: bold 14px Tahoma, sans-serif;
@@ -2546,8 +2559,9 @@ DT.bCtg__eOrange{
 		padding-bottom: 5px;
 		}
 	.bBacketServ.mBig .mEdit{
-		padding: 0 0 0 20px;
-		font: 11px Tahoma, sans-serif;
+		float: right;
+	    font: 11px Tahoma,sans-serif;
+	    padding: 5px 0 0 20px;
 		}
 	.bBacketServ.mBig .mEdit span a{
 		margin: 0 2px;
