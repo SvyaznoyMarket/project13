@@ -67,6 +67,15 @@ class WPRequest
             )
         ));
 
-        return $json?json_decode($response, $assoc = True):$response;
+        if($json)
+        {
+            $response = json_decode($response, $assoc = True);
+            if(isset($response['result']))
+            {
+                $response = $response['result'];
+            }
+        }
+
+        return $response;
     }
 }
