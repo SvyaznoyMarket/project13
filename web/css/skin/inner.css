@@ -6095,6 +6095,10 @@ div.mSportFont{ color: #e8303c; }
 	margin: 0 0 7px 0;
 	font: bold 14px Tahoma, sans-serif;
 }
+.bBlueButton.extWarranty div{
+	font: 14px Tahoma, sans-serif;
+	margin-bottom: 10px;
+}
 .bBlueButton.extWarranty .link1{
 	color: #4fcbf4;
 }

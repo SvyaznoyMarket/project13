@@ -184,6 +184,7 @@ $(document).ready(function(){
 				return false
 			$(this).val('В корзине').addClass('active').attr( 'href', carturl )
 			var f1item = $(this).data()
+			console.log(f1item);
 			f1lines.fadeOut()
 			$.getJSON( f1item.url, function(data) {
 				if( !data.success )
@@ -234,7 +235,7 @@ $(document).ready(function(){
 	}
 	
 	/* EXT WARRANTY */
-	if ( $('div.bBlueButton.extWarranty').length ){
+	if ( ($('div.bBlueButton.extWarranty').length)&&($('div.bBlueButton.extWarranty').is(':visible')) ){
 		var look_extWarr = $('div.bBlueButton.extWarranty')
 		var f1lines_extWarr = $('div.hideblock.extWarranty')
 		//open popup
@@ -254,11 +255,32 @@ $(document).ready(function(){
 				$('input.button',f1lines_extWarr).val('Выбрать').removeClass('active');
 			}
 			$(this).val('Выбрана').addClass('active')
-			//var extWarr_item = $(this).data()
+			var extWarr_item = $(this).data()
 			f1lines_extWarr.fadeOut()
 			$('.link1',look_extWarr).text('Изменить гарантию')
 			look_extWarr.find('h3').text('Вы выбрали гарантию:')
-			
+			ew_look = $("#ew_look");
+			ew_look.show();
+			$('.ew_title', ew_look).text(extWarr_item.ewtitle);
+			$('.ew_price', ew_look).text(extWarr_item.ewprice);
+			var tmpitem = {
+				'id'    : $('.goodsbarbig .link1').attr('href'),
+				'title' : $('h1').html(),
+				'vitems': 'quantity',
+				'sum'   : 'price',
+				'link'  : 'link',
+				'price' : $('.goodsinfo .price').html(),
+				'img'   : $('.goodsphoto img.mainImg').attr('src')
+			}
+			tmpitem.f1 = extWarr_item
+			if( isInCart )
+				tmpitem.ext.only = 'yes'
+			ltbx.getBasket( tmpitem )
+			if( !isInCart ) {
+				isInCart = true
+				markPageButtons()
+			}
+			return false
 		})
 	}
 	/* buy bottons */

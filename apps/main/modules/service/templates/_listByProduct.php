@@ -61,7 +61,7 @@ $listInCart = $item->getServiceListInCart();
 								p
 							</span>
 						</span>
-						<input class="button yellowbutton" type="button" value="Выбрать">
+						<input class="button yellowbutton" data-ewid="1" data-ewtitle="Год гарантии" data-ewprice="1500" type="button" value="Выбрать">
 					</td>
 				</tr>
 				<tr>
@@ -78,7 +78,7 @@ $listInCart = $item->getServiceListInCart();
 								p
 							</span>
 						</span>
-						<input class="button yellowbutton" type="button" value="Выбрать">
+						<input class="button yellowbutton" data-ewid="1" data-ewtitle="Два года гарантии" data-ewprice="1950" type="button" value="Выбрать">
 					</td>
 				</tr>
 				<tr>
@@ -95,7 +95,7 @@ $listInCart = $item->getServiceListInCart();
 								p
 							</span>
 						</span>
-						<input class="button yellowbutton" type="button" value="Выбрать">
+						<input class="button yellowbutton" data-ewid="1" data-ewtitle="Три года гарантии" data-ewprice="2120" type="button" value="Выбрать">
 					</td>
 				</tr>
 			</tbody>
@@ -109,6 +109,12 @@ $listInCart = $item->getServiceListInCart();
 	<h3>
 		Дополнительная<br />гарантия
 	</h3>
+	<div id="ew_look" style="display:none;">
+		<span class="ew_title"></span> - <span class="ew_price"></span>&nbsp;
+		<span class="rubl"> p</span>
+		<br>
+		<a class="bBacketServ__eMore" href="<?php echo url_for('cart_service_delete', array('service' => 'EWID', 'product' => $item->getId()));?>">Отменить услугу</a>
+	</div>
 	<a class="link1" href="#">
 		Выбрать гарантию
 	</a>
