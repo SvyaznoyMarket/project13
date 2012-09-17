@@ -100,6 +100,7 @@ foreach ($photo3dList as $photo3d)
 
 
   <div class="fr ar pb15">
+    <?php if ( $item->getState()->getIsBuyable()): ?>
     <div class="goodsbarbig mSmallBtns" ref="<?php echo $item->getToken() ?>" data-value='<?php echo $json ?>'>
 
       <div class='bCountSet'>
@@ -110,10 +111,8 @@ foreach ($photo3dList as $photo3d)
         <?php endif ?>
         <span><?php echo $item->isInCart() ? $item->getCartQuantity() : 1 ?> шт.</span>
       </div>
-
       <?php render_partial('cart_/templates/_buy_button.php', array('item' => $item)) ?>
     </div>
-    <?php if ( $item->getState()->getIsBuyable()): ?>
     <div class="pb5"><strong>
       <a href=""
          data-model='<?php echo $json ?>'
@@ -121,6 +120,8 @@ foreach ($photo3dList as $photo3d)
          link-input='<?php echo url_for('product_delivery_1click') ?>'
          class="red underline order1click-link-new">Купить быстро в 1 клик</a>
     </strong></div>
+    <?php else: ?>
+    <span class="font16 orange">Для покупки товара<br />обратитесь в Контакт-сENTER</span>
     <?php endif ?>
   </div>
 
