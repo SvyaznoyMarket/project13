@@ -224,7 +224,9 @@ $(document).ready(function() {
 				$('input.button',extWarr_popup).val('Выбрать').removeClass('active');
 			}
 			$(this).val('Выбрана').addClass('active')
-			//var extWarr_item = $(this).data()
+			var extWarr_item = $(this).data()
+			console.log('data from extWarr element \/')
+			console.log(extWarr_item)
 			extWarr_popup.fadeOut()
 		})
     }
