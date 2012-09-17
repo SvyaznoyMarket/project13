@@ -2572,7 +2572,7 @@ DT.bCtg__eOrange{
 
 /* goods info */
 .bF1Block.mGoods{
-	top: 415px;
+	top: 250px;
 	left: 50%;
 	margin-left:-350px;
 	}
@@ -2931,12 +2931,6 @@ DT.bCtg__eOrange{
 .mWrap{
 	position: relative;
 	}
-	.mWrap .bF1Block{
-		top: 91px;
-		right: 32px;
-		left: auto;
-		z-index: 100;
-		}
 
 
 
@@ -6109,7 +6103,7 @@ div.mSportFont{ color: #e8303c; }
 .hideblock.extWarranty{
 	background: #fff url('/images/F1_logo_extWarranty.jpg') 0 0 no-repeat;
 	display:none;
-	top: 415px;
+	top: 250px;
 	left: 50%;
 	margin-left:-370px;
 	padding: 10px 20px 20px 75px;
