@@ -29,7 +29,7 @@ class CoreClient
   {
     static $instance;
     if (!$instance) {
-      $instance = new CoreClient(array('userapi_url' => CORE_V2_USERAPI_URL, 'client_code'=> CORE_V2_USERAPI_CLIENT_CODE));
+      $instance = new CoreClient(array('userapi_url' => Config::get('coreV2UserAPIUrl'), 'client_code'=> Config::get('coreV2UserAPIClientCode')));
       $instance->addLogger('CoreClient', Logger::getLogger('CoreClient'));
     }
     return $instance;
@@ -327,7 +327,7 @@ class CoreV1Client
   static public function getInstance()
   {
     if (is_null(self::$instance)) {
-      self::$instance = new CoreV1Client(array('api_url' => CORE_V1_API_URL, 'consumer_key'=> CORE_V1_CONSUMER_KEY, 'signature'=> CORE_V1_SIGNATURE));
+      self::$instance = new CoreV1Client(array('api_url' => Config::get('coreV1APIUrl'), 'consumer_key'=> Config::get('coreV1ConsumerKey'), 'signature'=> Config::get('coreV1Signature')));
     }
     return self::$instance;
   }

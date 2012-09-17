@@ -7,7 +7,7 @@ namespace light;
  * @var $this HtmlRenderer
  */
 
-require_once(ROOT_PATH.'lib/helpers/Counters.php');
+require_once(Config::get('rootPath').'lib/helpers/Counters.php');
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -72,7 +72,7 @@ require_once(ROOT_PATH.'lib/helpers/Counters.php');
         <div class="vcard"><span class="tel">8 (800) 700 00 09</span></div>
         <div class="address">
           Звонок бесплатный. Радость в подарок :)
-          <?php if (ONLINE_CALL_ENABLED): ?>
+          <?php if (Config::get('onlineCallEnabled')): ?>
           <br/>
           <a class="bCall"
              onclick="typeof(_gaq)=='undefined'?'':_gaq.push(['_trackEvent', 'Zingaya', 'ButtonClick']);typeof(_gat)=='undefined'?'':_gat._getTrackerByName()._setAllowLinker(true); window.open(typeof(_gat)=='undefined'?this.href+'?referrer='+escape(window.location.href):_gat._getTrackerByName()._getLinkerUrl(this.href+'?referrer='+escape(window.location.href)), '_blank', 'width=236,height=220,resizable=no,toolbar=no,menubar=no,location=no,status=no'); return false"

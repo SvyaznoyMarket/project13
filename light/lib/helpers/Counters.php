@@ -44,7 +44,7 @@ class Counters
   public static function getBlock($blockName){
     if(!self::$areLoadedTemplates){
       self::$areLoadedTemplates = true;
-      require_once(VIEW_PATH.'template/counters.php');
+      require_once(Config::get('viewPath').'template/counters.php');
     }
 
     if(!array_key_exists($blockName, self::$blocks)){

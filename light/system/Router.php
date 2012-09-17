@@ -187,6 +187,7 @@ class RouteRule
         else if (isset($this->urlParams[$key]))
           $_REQUEST[$key] = $_GET[$key] = $value;
       }
+
       if ($this->routePattern !== null)
         return strtr($this->route, $tr);
       else
@@ -214,12 +215,22 @@ class RouteRule
         return false;
     }
     foreach ($this->urlParams as $key => $value)
-      if (isset($params[$key])) {
-        $tr['<' . $key . '>'] = urlencode($params[$key]);
-        unset($params[$key]);
-      }
-      else
-        return false;
+    {
+        $rawKey = '<' . $key . '>';
+        $value = Null;
+        if(isset($params[$key]))
+        {
+            $value = $params[$key];
+            unset($params[$key]);
+        }
+        else
+        {
+            $rawKey = '/' . $rawKey;
+        }
+
+        $tr[$rawKey] = urlencode($value);
+    }
+
     $url = strtr($this->template, $tr);
     if (empty($params))
       return $url;

@@ -34,6 +34,8 @@ class CategoryShortData
    */
   private $position;
 
+  private $isShownInMenu;
+
   public function __construct(array $data = array())
   {
     if (array_key_exists('id', $data))       $this->id       = (int)$data['id'];
@@ -41,6 +43,7 @@ class CategoryShortData
     if (array_key_exists('link', $data))     $this->link     = (string)$data['link'];
     if (array_key_exists('token', $data))    $this->token    = (string)$data['token'];
     if (array_key_exists('position', $data)) $this->position = (int)$data['position'];
+    if (array_key_exists('is_shown_in_menu', $data)) $this->isShownInMenu = (bool)$data['is_shown_in_menu'];
   }
 
     /**
@@ -121,5 +124,15 @@ class CategoryShortData
   public function getPosition()
   {
     return $this->position;
+  }
+
+  public function setIsShownInMenu($isShownInMenu)
+  {
+      $this->isShownInMenu = $isShownInMenu;
+  }
+
+  public function getIsShownInMenu()
+  {
+      return (bool)$this->isShownInMenu;
   }
 }

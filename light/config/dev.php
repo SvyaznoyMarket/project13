@@ -1,28 +1,39 @@
 <?php
 namespace light;
 
+$baseConfig = require 'main.php';
+
 if(!class_exists('symfonyConfig')){
-  require_once(ROOT_PATH.'lib/symfonyConfig.php');
+    require_once($baseConfig['rootPath'].'lib/symfonyConfig.php');
 }
+
 $appConfig = symfonyConfig::parseConfig('app.yml', 'dev');
 $coreConfig = $appConfig->get('app_core_config');
 $onlineCall = $appConfig->get('app_online_call');
 
-define('CORE_V2_USERAPI_URL', $coreConfig['userapi_url']);
-define('CORE_V2_USERAPI_CLIENT_CODE', $coreConfig['client_code']);
-
-define('CORE_V1_API_URL', $coreConfig['api_url']);
-define('CORE_V1_CONSUMER_KEY', $coreConfig['consumer_key']);
-define('CORE_V1_SIGNATURE', $coreConfig['signature']);
-
-define('ONLINE_CALL_ENABLED', $onlineCall['enabled']);
-
-define('DB_HOST', 'localhost');
-define('DB_NAME', 'enter');
-define('DB_USERNAME', 'root');
-define('DB_PASSWORD', 'qazwsxedc');
-
-define('SMARTENGINE_API_URL', 'https://selightstage.smartengine.at/se-light/api/1.0/json/');
-define('SMARTENGINE_API_KEY', 'c41851b19511c20acc84f47b7816fb8e');
-define('SMARTENGINE_TENANTID', 'ENojUTRcD8');
+$developmentConfig = array(
+    'coreV2UserAPIUrl' => $coreConfig['userapi_url'],
+    'coreV2UserAPIClientCode' => $coreConfig['client_code'],
+    'coreV1APIUrl' => $coreConfig['api_url'],
+    'coreV1ConsumerKey' => $coreConfig['consumer_key'],
+    'coreV1Signature' => $coreConfig['signature'],
+    'onlineCallEnabled' => $onlineCall['enabled'],
+    'isProduction' => False,
+    'wpUrl' => 'http://content.enter.n/',
+    'db' => array(
+        'host' => 'localhost',
+        'name' => 'enter',
+        'user' => 'root',
+        'password' => 'qazwsxedc'
+    ),
+    'debug' => True,
+    'smartEngine' => array(
+        'apiUrl' => 'https://selightstage.smartengine.at/se-light/api/1.0/json/',
+        'apiKey' => 'c41851b19511c20acc84f47b7816fb8e',
+        'tenantid' => 'ENojUTRcD8',
+        'cert' => null,
+    )
+);
 define('SMARTENGINE_CERT', null);
+
+return array_merge($baseConfig, $developmentConfig);
