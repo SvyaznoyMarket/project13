@@ -209,9 +209,23 @@ $(document).ready(function() {
     /* EXTENDED WARRANTY BLOCK*/
     if ( ($('.bBacketServ.extWarr').length)&&($('.bBacketServ.extWarr').is(':visible')) ){
     	var extWarr = $('.bBacketServ.extWarr');
+    	var extWarr_popup = $('.hideblock.mGoods.extWarranty');
     	$('a.link_extWarr',extWarr).click(function(){
-    		console.log('button extWarr click!')
+    		extWarr_popup.show()
     		return false;
     	})
+    	//close popup
+		$('.close', extWarr_popup).click( function(){
+			extWarr_popup.hide()
+		})
+		//add warranty
+		extWarr_popup.find('input.button').bind ('click', function() {
+			if( $('input.button',extWarr_popup).hasClass('active') ){
+				$('input.button',extWarr_popup).val('Выбрать').removeClass('active');
+			}
+			$(this).val('Выбрана').addClass('active')
+			//var extWarr_item = $(this).data()
+			extWarr_popup.fadeOut()
+		})
     }
 })
