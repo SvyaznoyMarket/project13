@@ -64,7 +64,7 @@
             </tr>
             <tr>
                 <td class="bBlueButton">
-                    <a href="" class="link1">
+                    <a href="" class="link_extWarr">
                         Выбрать услуги
                     </a>
                 </td>
@@ -176,7 +176,7 @@
             </tr>
             <tr>
                 <td class="bBlueButton">
-                    <a href="" class="link1">
+                    <a href="" class="link_extWarr">
                         Выбрать услуги
                     </a>
                 </td>

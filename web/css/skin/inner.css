@@ -6139,3 +6139,25 @@ div.mSportFont{ color: #e8303c; }
 	text-decoration: underline;
 	font: 12px Tahoma, sans-serif;
 }
+
+/* --- БЛОК ДОПОЛНИТЕЛЬНОЙ ГАРАНТИИ В КОРЗИНЕ --- */
+.bBacketServ.extWarr a.link_extWarr{	
+	background-color: #E5E5E5;
+    background-image: url("/css/skin/img/bg_buttons.png");
+    background-position: 0 -128px;
+    background-repeat: repeat-x;
+    border: 1px solid;
+    border-radius: 5px 5px 5px 5px;
+    border-color: #C9C9C9;
+    color: #4fcbf4;
+    display: inline-block;
+    font-size: 11px;
+    height: 18px;
+    margin-top: 8px;
+    padding: 4px 10px 0;
+    cursor: pointer;
+    font-weight: bold;
+    overflow: visible;
+}    
+.bBacketServ.extWarr a.link_extWarr:hover {background-color:#c5c5c5; background-position:0 -160px; text-decoration:none}
+

@@ -206,4 +206,12 @@ $(document).ready(function() {
         addLine( $('div.bBacketServ.mBig tr:eq(1)', bline) )
         getTotal()
     }
+    /* EXTENDED WARRANTY BLOCK*/
+    if ( ($('.bBacketServ.extWarr').length)&&($('.bBacketServ.extWarr').is(':visible')) ){
+    	var extWarr = $('.bBacketServ.extWarr');
+    	$('a.link_extWarr',extWarr).click(function(){
+    		console.log('button extWarr click!')
+    		return false;
+    	})
+    }
 })
