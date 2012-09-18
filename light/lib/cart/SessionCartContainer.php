@@ -33,6 +33,10 @@ class SessionCartContainer implements CartContainer
       $_SESSION[$this->sessionName]['serviceList'] = array();
     }
 
+    if(!array_key_exists('warrantyList', $_SESSION[$this->sessionName])){
+      $_SESSION[$this->sessionName]['warrantyList'] = array();
+    }
+
 
     /**
      * Очищаем корзину от продуктов и услуг с количеством меньше 1
@@ -68,37 +72,43 @@ class SessionCartContainer implements CartContainer
         $_SESSION[$this->sessionName]['productList'][$productId] = (int) $quantity;
     }
 
-  public function addService($serviceId, $quantity, $productId=null){
-    if(is_null($productId)){
+  public function addService($serviceId, $quantity, $productId = null)
+  {
+    if (is_null($productId)) {
       $productId = 0;
-    }
-    else{
-      $productId = (int) $productId;
+    } else {
+      $productId = (int)$productId;
     }
 
-    if(!array_key_exists($serviceId, $_SESSION[$this->sessionName]['serviceList'])){
-      $_SESSION[$this->sessionName]['serviceList'][$serviceId] = array($productId => (int) $quantity);
-    }
-    else{
-      if(!array_key_exists($productId, $_SESSION[$this->sessionName]['serviceList'][$serviceId])){
-        $_SESSION[$this->sessionName]['serviceList'][$serviceId][$productId] = (int) $quantity;
-      }
-      else{
-        $_SESSION[$this->sessionName]['serviceList'][$serviceId][$productId] += (int) $quantity;
+    if (!array_key_exists($serviceId, $_SESSION[$this->sessionName]['serviceList'])) {
+      $_SESSION[$this->sessionName]['serviceList'][$serviceId] = array($productId => (int)$quantity);
+    } else {
+      if (!array_key_exists($productId, $_SESSION[$this->sessionName]['serviceList'][$serviceId])) {
+        $_SESSION[$this->sessionName]['serviceList'][$serviceId][$productId] = (int)$quantity;
+      } else {
+        $_SESSION[$this->sessionName]['serviceList'][$serviceId][$productId] += (int)$quantity;
       }
     }
   }
 
-    public function setServiceQuantity($serviceId, $quantity, $productId=null){
-        if(is_null($productId)){
-            $productId = 0;
-        }
-        else{
-            $productId = (int) $productId;
-        }
-
-        $_SESSION[$this->sessionName]['serviceList'][$serviceId][$productId] = (int) $quantity;
+  public function setWarranty($warrantyId, $productId, $quantity = 1) {
+    if (null !== $productId) {
+      $productId = (int)$productId;
     }
+
+    $_SESSION[$this->sessionName]['warrantyList'][$warrantyId] = array('product' => $productId, 'quantity' => (int)$quantity);
+  }
+
+  public function setServiceQuantity($serviceId, $quantity, $productId=null){
+      if(is_null($productId)){
+          $productId = 0;
+      }
+      else{
+          $productId = (int) $productId;
+      }
+
+      $_SESSION[$this->sessionName]['serviceList'][$serviceId][$productId] = (int) $quantity;
+  }
 
   public function removeProduct($productId, $quantity=null){
 

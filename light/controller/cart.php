@@ -104,39 +104,44 @@ class cartController
 
   public function setWarranty(Response $response, $params = array()){
     TimeDebug::start('controller:cart:setWarranty');
-
     $logger = \Logger::getLogger('Cart');
-
     \LoggerNDC::push('setWarranty');
 
-    $result['value'] = true;
-    $result['error'] = "";
-
-    try {
-      $quantity = 1;
-
-      $warrantyId = isset($_GET['warrantyId']) ? (int)$_GET['warrantyId'] : null;
-      if(!$warrantyId){
+    try{
+      if(!array_key_exists('warrantyId', $_GET)){
         $logger->error('Warranty not specified');
-        throw new \Exception("Не указана гарантия");
+        throw new \InvalidArgumentException('Не указано, какую гарантию необходимо добавить в корзину');
+      }
+      $warrantyId = (int)$_GET['warrantyId'];
+
+      if(!$warrantyId){
+        $logger->error('Warranty with id "' . $warrantyId . '" not found');
+        throw new \InvalidArgumentException('Гарантия с Id '. $warrantyId . " не найдена.");
       }
 
-      $productId = isset($_GET['productId']) ? (int)$_GET['productId'] : null;
-      if(!$productId){
-        $logger->error('Product not specified');
-        throw new \Exception("Не указано, к какому товару необходимо добавить гарантию");
+      $quantity  = (array_key_exists('quantity', $_GET))? $_GET['quantity'] : 1;
+      $productId = (array_key_exists('productId', $_GET))? (int)$_GET['productId'] : Null;
+
+      if($productId){
+        //Если продукта нет - добавляем его
+        $productList = App::getProduct()->getProductsByIdList(array($productId));
+        if(count($productList) < 1){
+          $logger->error('Product with id "' . $productId . '" not found');
+          throw new \Exception("невозможно привязать гарантию к несуществующему товару.");
+        }
+
+        $product = $productList[0];
+        $productList = null;
+
+         // Если товара нет в корзине, то добавить
+        if (!App::getCurrentUser()->getCart()->containsProduct($productId)) {
+          $this->executeSetProductQuantity($productId, 1);
+        }
+
+        App::getCurrentUser()->getCart()->setWarranty($warrantyId, $productId, $quantity);
       }
-
-      $productList = App::getProduct()->getProductsByIdList(array($productId));
-      if(!(bool)$productList){
-        $logger->error('Product with id "' . $productId . ' not found on core side');
-        throw new \Exception("Товар с Id" . $productId . " не найден на стороне ядра.");
+      else{
       }
-
-      $product = $productList[0];
-      $productList = null;
-
-      App::getCurrentUser()->getCart()->setWarranty($warrantyId, $productId);
 
       if(App::getRequest()->isXmlHttpRequest()){
         $return = array(
@@ -157,6 +162,7 @@ class cartController
         TimeDebug::end('controller:cart:setWarranty');
         $response->redirect((strlen(App::getRequest()->getReferer()) > 0)? App::getRequest()->getReferer() : '/');
       }
+
     }
     catch(\Exception $e){
       $return = array(
