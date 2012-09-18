@@ -257,8 +257,8 @@ $(document).ready(function(){
 			$(this).val('Выбрана').addClass('active')
 			var extWarr_item = $(this).data()
 			f1lines_extWarr.fadeOut()
-			$.getJSON( extWarr_item.url, function(data) {
-				if( !data.success )
+			$.getJSON( extWarr_item.url, function(ext_data) {
+				if( !ext_data.success )
 					return true
 				$('.link1',look_extWarr).text('Изменить гарантию')
 				look_extWarr.find('h3').text('Вы выбрали гарантию:')
@@ -269,15 +269,15 @@ $(document).ready(function(){
 				var tmpitem = {
 						'id'    : $('.goodsbarbig .link1').attr('href'),
 						'title' : $('h1').html(),
-						'vitems': data.data.full_quantity,
-						'sum'   : data.data.full_price,
-						'link'  : data.data.link,
+						'vitems': ext_data.data.full_quantity,
+						'sum'   : ext_data.data.full_price,
+						'link'  : ext_data.data.link,
 						'price' : $('.goodsinfo .price').html(),
 						'img'   : $('.goodsphoto img.mainImg').attr('src')
 				}
 				tmpitem.f1 = extWarr_item
 				if( isInCart )
-					tmpitem.ext.only = 'yes'
+					tmpitem.f1.only = 'yes'
 				ltbx.getBasket( tmpitem )
 				if( !isInCart ) {
 					isInCart = true
