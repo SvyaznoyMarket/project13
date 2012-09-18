@@ -37,6 +37,9 @@ class ProductEntity
   /** @var ProductLabelEntity[] */
   private $labelList = array();
 
+  /* @var WarrantyEntity[] */
+  private $warrantyList = array();
+
   /* @var string */
   private $name;
   /** @var string */
@@ -118,6 +121,13 @@ class ProductEntity
 
   public function __construct(array $data = array())
   {
+    // test
+    $data['additional_warranty'] = [
+      ['id' => 1, 'name' => 'Год гарантии',      'price' => 900],
+      ['id' => 2, 'name' => 'Два года гарантии', 'price' => 1500],
+      ['id' => 3, 'name' => 'Три года гарантии', 'price' => 2000],
+    ];
+
     if (array_key_exists('id', $data))              $this->id            = (int)$data['id'];
     if (array_key_exists('view_id', $data))         $this->viewId        = (int)$data['view_id'];
     if (array_key_exists('set_id', $data))          $this->setId         = (int)$data['set_id'];
@@ -144,9 +154,9 @@ class ProductEntity
     if (array_key_exists('price_average', $data))   $this->priceAverage  = $data['price_average'];
     if (array_key_exists('price_old', $data))       $this->priceOld      = $data['price_old'];
     if (array_key_exists('connected_products_view_mode', $data))  $this->connectedProductsViewMode  = (int)$data['connected_products_view_mode'];
-
-
-      //echo "<pre>", print_r($this,1), '</pre>';
+    if (array_key_exists('additional_warranty', $data) && is_array($data['additional_warranty'])) $this->setWarrantyList(array_map(function($data) {
+      return new WarrantyEntity($data);
+    }, $data['additional_warranty']));
   }
 
   public function setId($id)
@@ -1032,5 +1042,21 @@ class ProductEntity
   public function getTagList()
   {
     return $this->tagList;
+  }
+
+  /**
+   * @param WarrantyEntity[] $warranty
+   */
+  public function setWarrantyList(array $warranties)
+  {
+    $this->warrantyList = $warranties;
+  }
+
+  /**
+   * @return WarrantyEntity[]
+   */
+  public function getWarrantyList()
+  {
+    return $this->warrantyList;
   }
 }

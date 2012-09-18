@@ -7,7 +7,8 @@
     $servListId[] = $service['id'];
   }
   ?>
-<div class="service form bBacketServ mSmall mBR5" <?php if ($selectedNum) echo ' style="display:none;"';  ?> >
+<div class="mBR5 basketServices">
+<div class="service form bBacketServ F1 mSmall" <?php if ($selectedNum) echo ' style="display:none;"';  ?> >
   <table cellspacing="0">
     <tbody>
     <tr>
@@ -31,8 +32,52 @@
     </tbody>
   </table>
 </div>
+<div class="clear"></div>
+<div class="service form bBacketServ extWarr mSmall" style="">
+    <table cellspacing="0">
+        <tbody>
+            <tr>
+                <th colspan="3">
+                    Для этого товара есть дополнительная гарантия:
+                </th>
+            </tr>
+            <tr>
+                <td>
+                    Год гарантии
+                </td>
+                <td class="mPrice"></td>
+                <td class="mEdit"></td>
+            </tr>
+            <tr>
+                <td>
+                    Два года гарантии
+                </td>
+                <td class="mPrice"></td>
+                <td class="mEdit"></td>
+            </tr>
+            <tr>
+                <td>
+                    Три года гарантии
+                </td>
+                <td class="mPrice"></td>
+                <td class="mEdit"></td>
+            </tr>
+            <tr>
+                <td class="bBlueButton">
+                    <a href="" class="link_extWarr">
+                        Выбрать услуги
+                    </a>
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+</div>
 <?php if (!$selectedNum) { ?>
-<div class="service form bBacketServ mBig mBR5" style="display:none;">
+<div class="mBR5 basketServices">
+<div class="service form bBacketServ mBig" style="display:none;">
   <table cellspacing="0">
     <tbody>
     <tr>
@@ -46,9 +91,12 @@
     </tbody>
   </table>
 </div>
+</div>
 <?php } ?>
+
+<div class="mBR5 basketServices">
 <?php if ($selectedNum) { ?>
-<div class="service form bBacketServ mBig mBR5">
+<div class="service form bBacketServ F1 mBig">
   <table cellspacing="0">
     <tbody>
     <tr>
@@ -96,10 +144,55 @@
     </tbody>
   </table>
 </div>
-
 <?php } ?>
+<div class="service form bBacketServ extWarr mBig">
+    <table cellspacing="0">
+        <tbody>
+            <tr>
+                <th colspan="3">
+                    Для этого товара выбрана дополнительная гарантия:
+                </th>
+            </tr>
+            <tr>
+                <td>
+                    <span class="ew_title">Три года гарантии</span>
+                    <br>
+                    <a class="bBacketServ__eMore" href="#">
+                        Подробнее об услуге
+                    </a>
+                </td>
+                <td class="mPrice">
+                    <span class="price">
+                        2 920
+                    </span>
+                    &nbsp;<span class="rubl">
+                        p
+                    </span>
+                </td>
+                <td class="mEdit">
+                    
+                    <a class="button whitelink ml5 mInlineBlock mVAMiddle" href="#">
+                        Отменить
+                    </a>
+                </td>
+            </tr>
+            <tr>
+                <td class="bBlueButton">
+                    <a href="" class="link_extWarr">
+                        Выбрать услуги
+                    </a>
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+</div>
+
 
 <?php
   include_component('product', 'f1_lightbox', array('f1' => $list, 'product' => $product, 'servListId' => $servListId, 'parentAction' => $this->getActionName()))
   ?>
+  <?php render_partial('product_/templates/_ext_warranty_lightbox.php', array('item' => $product))?>
 <?php endif ?>
