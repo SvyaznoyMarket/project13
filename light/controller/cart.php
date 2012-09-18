@@ -102,6 +102,79 @@ class cartController
     \LoggerNDC::pop();
   }
 
+  public function setWarranty(Response $response, $params = array()){
+    TimeDebug::start('controller:cart:setWarranty');
+
+    $logger = \Logger::getLogger('Cart');
+
+    \LoggerNDC::push('setWarranty');
+
+    $result['value'] = true;
+    $result['error'] = "";
+
+    try {
+      $quantity = 1;
+
+      $warrantyId = isset($_GET['warrantyId']) ? (int)$_GET['warrantyId'] : null;
+      if(!$warrantyId){
+        $logger->error('Warranty not specified');
+        throw new \Exception("Не указана гарантия");
+      }
+
+      $productId = isset($_GET['productId']) ? (int)$_GET['productId'] : null;
+      if(!$productId){
+        $logger->error('Product not specified');
+        throw new \Exception("Не указано, к какому товару необходимо добавить гарантию");
+      }
+
+      $productList = App::getProduct()->getProductsByIdList(array($productId));
+      if(!(bool)$productList){
+        $logger->error('Product with id "' . $productId . ' not found on core side');
+        throw new \Exception("Товар с Id" . $productId . " не найден на стороне ядра.");
+      }
+
+      $product = $productList[0];
+      $productList = null;
+
+      App::getCurrentUser()->getCart()->setWarranty($warrantyId, $productId);
+
+      if(App::getRequest()->isXmlHttpRequest()){
+        $return = array(
+          'success' => true,
+          'data' => array(
+            'quantity' => $quantity,
+            'full_quantity' => $this->getTotalQuantityForShow(),
+            'full_price' => App::getCurrentUser()->getCart()->getTotalPrice(),
+            'link' => App::getRouter()->createUrl('order.new')
+          )
+        );
+
+        $response->setContent(json_encode($return));
+        $response->setContentType('application/json');
+        TimeDebug::end('controller:cart:setWarranty');
+      }
+      else{
+        TimeDebug::end('controller:cart:setWarranty');
+        $response->redirect((strlen(App::getRequest()->getReferer()) > 0)? App::getRequest()->getReferer() : '/');
+      }
+    }
+    catch(\Exception $e){
+      $return = array(
+        'success' => false,
+        'data' => array(
+          'error' => "Не удалось добавить гарантию в корзину",
+          'debug' => $e->getMessage()
+        ),
+      );
+      $response->setContentType('application/json');
+      $response->setContent(json_encode($return));
+      $logger->error('Error: ' . $e->getMessage());
+      TimeDebug::end('controller:cart:setWarranty');
+      return;
+    }
+    \LoggerNDC::pop();
+  }
+
   public function addService(Response $response, $params = array()){
     TimeDebug::start('controller:cart:addService');
     $logger = \Logger::getLogger('Cart');

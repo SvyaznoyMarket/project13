@@ -21,7 +21,7 @@ class SessionCartContainer implements CartContainer
      * Если человек впервые - заводим ему пустую корзину
      */
     if(!array_key_exists($this->sessionName, $_SESSION)){
-      $_SESSION[$this->sessionName] = array('productList' => array(), 'serviceList' => array());
+      $_SESSION[$this->sessionName] = array('productList' => array(), 'serviceList' => array(), 'warrantyList' => array());
       return;
     }
 

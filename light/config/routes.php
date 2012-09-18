@@ -23,6 +23,8 @@ return array(
   array('/cart/add_service/_service/<serviceId>/_quantity/'                      , 'cart.addService'),
   array('/cart/delete_service/<productId>/_service/<serviceId>'                  , 'cart.deleteService'),
   array('/cart/delete_service/_service/<serviceId>'                              , 'cart.deleteService'),
+  array('/cart/warranty/<productId>/set/<warrantyId>'                            , 'cart.setWarranty'),
+  array('/cart/warranty/<productId>/delete/<warrantyId>'                         , 'cart.deleteWarranty'),
   array('/category/main_menu'                       , 'catalog.MainMenu'),
   array('/region/init'                              , 'region.getShopAvailable'),
   array('/'                                         , 'staticPage.mainPage'),

@@ -141,6 +141,16 @@ class Cart
   }
 
   /**
+   * @param int $productId
+   * @param int $quantity
+   */
+  public function setWarranty($warrantyId, $productId){
+    $this->dataContainer->setWarranty($warrantyId, $productId);
+    $this->productWarrantyDataList = null;
+    $this->totalPrice = null;
+  }
+
+  /**
    * @return float
    */
   public function getTotalPrice(){
