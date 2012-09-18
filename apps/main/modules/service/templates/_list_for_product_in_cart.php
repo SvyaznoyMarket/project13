@@ -93,8 +93,9 @@
 </div>
 </div>
 <?php } ?>
-<?php if ($selectedNum) { ?>
+
 <div class="mBR5 basketServices">
+<?php if ($selectedNum) { ?>
 <div class="service form bBacketServ F1 mBig">
   <table cellspacing="0">
     <tbody>
@@ -143,19 +144,20 @@
     </tbody>
   </table>
 </div>
+<?php } ?>
 <div class="service form bBacketServ extWarr mBig">
     <table cellspacing="0">
         <tbody>
             <tr>
                 <th colspan="3">
-                    Для этого товара есть гарантия:
+                    Для этого товара выбрана дополнительная гарантия:
                 </th>
             </tr>
-            <tr ref="utilizatsiya-demontirovannoy-mebeli-2120106000105">
+            <tr>
                 <td>
-                    Три года гарантии
+                    <span class="ew_title">Три года гарантии</span>
                     <br>
-                    <a class="bBacketServ__eMore" href="/f1/show/utilizatsiya-demontirovannoy-mebeli-2120106000105">
+                    <a class="bBacketServ__eMore" href="#">
                         Подробнее об услуге
                     </a>
                 </td>
@@ -169,7 +171,7 @@
                 </td>
                 <td class="mEdit">
                     
-                    <a class="button whitelink ml5 mInlineBlock mVAMiddle" href="/cart/delete_service/16520/_service/158">
+                    <a class="button whitelink ml5 mInlineBlock mVAMiddle" href="#">
                         Отменить
                     </a>
                 </td>
@@ -187,7 +189,7 @@
     </table>
 </div>
 </div>
-<?php } ?>
+
 
 <?php
   include_component('product', 'f1_lightbox', array('f1' => $list, 'product' => $product, 'servListId' => $servListId, 'parentAction' => $this->getActionName()))

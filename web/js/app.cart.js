@@ -208,8 +208,12 @@ $(document).ready(function() {
     }
     /* EXTENDED WARRANTY BLOCK*/
     if ( ($('.bBacketServ.extWarr').length)&&($('.bBacketServ.extWarr').is(':visible')) ){
-    	var extWarr = $('.bBacketServ.extWarr');
-    	var extWarr_popup = $('.hideblock.mGoods.extWarranty');
+    	var extWarr = $('.bBacketServ.extWarr')
+    	var extWarrSmall = $('div.bBacketServ.mSmall.extWarr')
+    	var extWarrBig = $('div.bBacketServ.mBig.extWarr')
+    	var extWarr_popup = $('.hideblock.mGoods.extWarranty')
+    	if (extWarrBig.is(':visible'))
+    		extWarrSmall.hide()
     	$('a.link_extWarr',extWarr).click(function(){
     		extWarr_popup.show()
     		return false;
@@ -228,6 +232,10 @@ $(document).ready(function() {
 			console.log('data from extWarr element \/')
 			console.log(extWarr_item)
 			extWarr_popup.fadeOut()
+			$('.ew_title', extWarrBig).text(extWarr_item.ewtitle)
+			$('.price', extWarrBig).text(extWarr_item.ewprice)
+			extWarrSmall.hide()
+			extWarrBig.show()
 		})
     }
 })

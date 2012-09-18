@@ -2539,9 +2539,9 @@ DT.bCtg__eOrange{
 		margin-top: 8px;
 		}
 	.bBacketServ.mSmall{
-		display: inline-block;
+		/*display: inline-block;
 		*display: inline;
-		zoom: 1;
+		zoom: 1;*/
 		}
 	.bBacketServ.mBig table{
 		width: 100%;
@@ -6141,6 +6141,9 @@ div.mSportFont{ color: #e8303c; }
 }
 
 /* --- БЛОК ДОПОЛНИТЕЛЬНОЙ ГАРАНТИИ В КОРЗИНЕ --- */
+.bBacketServ.extWarr.mBig{
+	display:none;
+} 
 .bBacketServ.extWarr a.link_extWarr{	
 	background-color: #E5E5E5;
     background-image: url("/css/skin/img/bg_buttons.png");
