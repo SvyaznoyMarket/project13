@@ -174,6 +174,27 @@ class ProductRepository extends ObjectRepository
   }
 
   /**
+   * Load ProductEntity by barcode from core.
+   *
+   * @param array $barcodeList
+   * @param bool $loadDynamic is load dynamic data
+   * @return ProductEntity[]
+   */
+  public function getListByBarcode(array $barcodeList, $loadDynamic = false)
+  {
+    if (empty($barcodeList)) return array();
+
+    $result = CoreClient::getInstance()->query('product/get', array(
+      'select_type' => 'bar_code',
+      'bar_code'    => $barcodeList,
+      'geo_id'      => RepositoryManager::getRegion()->getDefaultRegionId(),
+    ));
+
+    return array_map(function($item) { return $this->create($item); }, $result);
+
+  }
+
+  /**
    * Load ProductEntity by id from core.
    *
    * @param $callback
