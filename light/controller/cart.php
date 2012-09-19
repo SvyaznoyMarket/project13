@@ -65,6 +65,16 @@ class cartController
           $quantity = $result['quantity'] = $this->executeSetProductQuantity($productId, $quantity);
       }
 
+      // обновить количество гарантий для товара
+      foreach (App::getCurrentUser()->getCart()->getWarrantyList() as $warrantyId => $warrantiesByProduct) {
+        /** @var $warranty WarrantyCartData */
+        foreach ($warrantiesByProduct as $id => $warranty) {
+          if ($id == $product->getId()) {
+            App::getCurrentUser()->getCart()->setWarranty($warrantyId, $product->getId(), $quantity);
+          }
+        }
+      }
+
       if(App::getRequest()->isXmlHttpRequest()){
         $return = array(
           'success' => true,

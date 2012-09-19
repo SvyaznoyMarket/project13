@@ -15,6 +15,7 @@ require_once('interface/CartContainer.php');
 require_once('interface/CartPriceContainer.php');
 require_once('data/ProductCartData.php');
 require_once('data/ServiceCartData.php');
+require_once('data/WarrantyCartData.php');
 require_once(__DIR__ . '/../log4php/Logger.php');
 
 class Cart
@@ -39,6 +40,11 @@ class Cart
    * @var ServiceCartData[] | null
    */
   private $serviceDataList = null;
+
+  /**
+   * @var WarrantyCartData[] | null
+   */
+  private $warrantyDataList = null;
 
   /**
    * @var null | float
@@ -144,8 +150,8 @@ class Cart
    * @param int $productId
    * @param int $quantity
    */
-  public function setWarranty($warrantyId, $productId){
-    $this->dataContainer->setWarranty($warrantyId, $productId);
+  public function setWarranty($warrantyId, $productId, $quantity = 1){
+    $this->dataContainer->setWarranty($warrantyId, $productId, $quantity);
     $this->productWarrantyDataList = null;
     $this->totalPrice = null;
   }
@@ -221,6 +227,16 @@ class Cart
       $this->fillData();
     }
     return $this->productDataList;
+  }
+
+  /**
+   * @return WarrantyCartData[] key - warrantyId
+   */
+  public function getWarrantyList(){
+    if(is_null($this->warrantyDataList)){
+      $this->fillData();
+    }
+    return $this->warrantyDataList;
   }
 
   /**
@@ -309,9 +325,9 @@ class Cart
    * Наполняет $this->fullData информацией, обращаясь к моделям
    */
   private function fillData(){
-
     // получаем список цен
     $response = $this->priceContainer->getPrices($this->dataContainer);
+    //var_dump($response); exit();
 
     $this->totalPrice = (array_key_exists('price_total', $response))? $response['price_total'] : 0;
 
@@ -332,6 +348,18 @@ class Cart
         $this->serviceDataList[$serviceInfo['id']][$relatedProductId] = new ServiceCartData($serviceInfo);
       }
     }
+
+    $this->warrantyDataList = array();
+    if(array_key_exists('warranty_list', $response)){
+      foreach($response['warranty_list'] as $warrantyInfo){
+        if(!array_key_exists($warrantyInfo['id'], $this->warrantyDataList)){
+          $this->warrantyDataList[$warrantyInfo['id']] = array();
+        }
+        $relatedProductId = (array_key_exists('product_id', $warrantyInfo)) ? intval($warrantyInfo['product_id']) : 0;
+        $this->warrantyDataList[$warrantyInfo['id']][$relatedProductId] = new WarrantyCartData($warrantyInfo);
+      }
+    }
+    //var_dump($this->warrantyDataList); exit();
   }
 
 }

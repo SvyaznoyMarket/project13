@@ -96,7 +96,11 @@ class SessionCartContainer implements CartContainer
       $productId = (int)$productId;
     }
 
-    $_SESSION[$this->sessionName]['warrantyList'][$warrantyId] = array('product' => $productId, 'quantity' => (int)$quantity);
+    if (!array_key_exists($warrantyId, $_SESSION[$this->sessionName]['warrantyList'])) {
+      $_SESSION[$this->sessionName]['warrantyList'][$warrantyId] = array();
+    }
+
+    $_SESSION[$this->sessionName]['warrantyList'][$warrantyId][$productId] = (int)$quantity;
   }
 
   public function setServiceQuantity($serviceId, $quantity, $productId=null){
