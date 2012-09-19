@@ -1208,7 +1208,7 @@ border-radius: 5px;
 .basketright {float:left; width:780px; padding-left:20px}
 .goodstitle {float:left; width:500px}
 .basketinfo {float:right; width:451px}
-.basketinfo .left {float:left; width:115px; margin-right:20px; text-align:right}
+.basketinfo .left {float:left; width:130px; margin-right:20px; text-align:right}
 .basketinfo .right {float:left; width:216px}
 .basketinfo .button {font-weight:bold}
 .basketinfonarrow {width:244px}
@@ -5719,7 +5719,7 @@ div.mSportFont{ color: #e8303c; }
 }
 .banner3 {left:943px; bottom: 0}
 .banner4 {left:-245px; bottom: 0}
-/* стили карусели */
+/* пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ */
 .bCarouselWrap{
 	width: 100%;
     padding: 100px 0 50px;
@@ -5752,7 +5752,7 @@ div.mSportFont{ color: #e8303c; }
 .bCarousel__eBtnL:hover{ background: url('img/c_btn_left_h.png'); }
 .bCarousel__eBtnR:hover{ background: url('img/c_btn_right_h.png'); }
 
-/* стили футера */
+/* пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ */
 #mainPage,
 #mainPage .allpage{
 	background: #000000;
