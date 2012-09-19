@@ -184,7 +184,6 @@ $(document).ready(function(){
 				return false
 			$(this).val('В корзине').addClass('active').attr( 'href', carturl )
 			var f1item = $(this).data()
-			console.log(f1item);
 			f1lines.fadeOut()
 			$.getJSON( f1item.url, function(data) {
 				if( !data.success )
@@ -264,8 +263,8 @@ $(document).ready(function(){
 				look_extWarr.find('h3').text('Вы выбрали гарантию:')
 				ew_look = $("#ew_look");
 				ew_look.show();
-				$('.ew_title', ew_look).text(extWarr_item.ewtitle);
-				$('.ew_price', ew_look).text(extWarr_item.ewprice);
+				$('.ew_title', ew_look).text(extWarr_item.f1title);
+				$('.ew_price', ew_look).text(extWarr_item.f1price);
 				var tmpitem = {
 						'id'    : $('.goodsbarbig .link1').attr('href'),
 						'title' : $('h1').html(),
