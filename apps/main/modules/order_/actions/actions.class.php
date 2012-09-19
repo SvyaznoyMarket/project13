@@ -658,7 +658,6 @@ class order_Actions extends myActions
       $order->mapValue('ServiceItem', array());
       $order->delivery_type_id = null;
       $order->DeliveryType = $deliveryType;
-      $order->User = $user->getGuardUser();
       $order->Status = OrderStatusTable::getInstance()->findOneByToken('created');
       $order->delivered_at = date_format(new DateTime($deliveryTypeData['date']), 'Y-m-d');
       $order->mapValue('delivery_period', !empty($deliveryTypeData['interval']) ? explode(',', $deliveryTypeData['interval']) : null);

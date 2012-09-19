@@ -84,11 +84,6 @@ class myGuardSecurityUser extends sfBasicSecurityUser
       return false;
     }
 
-    if ($this->getGuardUser()->getIsSuperAdmin())
-    {
-      return true;
-    }
-
     return parent::hasCredential($credential, $useAnd);
   }
 
@@ -99,7 +94,7 @@ class myGuardSecurityUser extends sfBasicSecurityUser
    */
   public function isSuperAdmin()
   {
-    return $this->getGuardUser() ? $this->getGuardUser()->getIsSuperAdmin() : false;
+    return false;
   }
 
   /**
