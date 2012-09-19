@@ -96,11 +96,16 @@ class defaultComponents extends myComponents
       $this->view = 'default';
     }
 
+    $tplName = $this->view;
+    if($tplName == 'main'){
+      $tplName = 'main_v2';
+    }
+
     $shopCount = RepositoryManager::getShop()->count();
 
     $wpRequest = new WPRequest();
     $wpRequest->setUrl(sfConfig::get('app_wp_url'));
-    $wpResponse = $wpRequest->send('footer_' . $this->view, array('shop_count' => $shopCount));
+    $wpResponse = $wpRequest->send('footer_' . $tplName, array('shop_count' => $shopCount));
 
     $this->wpFooter = $wpResponse['content'];
   }
