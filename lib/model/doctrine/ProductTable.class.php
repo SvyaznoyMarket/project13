@@ -77,7 +77,7 @@ class ProductTable extends myDoctrineTable
 
     $q = $this->createQuery('product');
 
-    $q->leftJoin('product.State productState WITH productState.region_id = ?', $params['region_id']);
+    //$q->leftJoin('product.State productState WITH productState.region_id = ?', $params['region_id']);
 
     if ('list' == $params['view'])
     {
@@ -150,10 +150,10 @@ class ProductTable extends myDoctrineTable
     // photo
     $q->leftJoin('product.Photo photo');
     // price
-    $q->leftJoin('product.ProductPrice productPrice')
+    /*$q->leftJoin('product.ProductPrice productPrice')
       ->innerJoin('productPrice.PriceList priceList')
       ->innerJoin('priceList.Region region WITH region.id = ?', $params['region_id'])
-    ;
+    ;*/
 
     // properties
     if ($params['with_properties'])
