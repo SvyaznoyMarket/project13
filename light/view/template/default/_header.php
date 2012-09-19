@@ -25,24 +25,14 @@ require_once(\light\Config::get('rootPath') . 'lib/LastModifiedHandler.php');
 <!-- /Topbar -->
 
 <!-- Header -->
-<div class="bHeaderWrap">
-  <div class="bHeader topmenu">
-    <?php LastModifiedHandler::setLastModified();  ?>
-      <a class="bToplogo" href="/">Enter Связной</a>
-
-      <?php foreach ($categoryRootList as $item): ?>
-      <a id="topmenu-root-<?php echo $item->getId() ?>" title="<?php echo $item->getName() ?>"
-         alt="<?php echo $item->getName() ?>" class="bToplink"
-         href="<?php echo $item->getLink() ?>">
-    <span class="category-<?php echo $item->getId() ?>">
-    </span>
-      </a>
-      <?php endforeach ?>
-
-
-
-
-    <div class="bHeader__eLong"></div>
-  </div>
+<div id="header" class="topmenu">
+  <?php LastModifiedHandler::setLastModified();  ?>
+  <a id="topLogo" href="/">Enter Связной</a>
+  <?php //include_partial('default/logo') ?>
+  <?php foreach ($categoryRootList as $item): ?>
+  <a id="topmenu-root-<?php echo $item->getId() ?>" class="bToplink"
+     title="<?php echo $item->getName() ?>"
+     href="<?php echo $item->getLink() ?>"></a>
+  <?php endforeach ?>
 </div>
 <!-- /Header -->
