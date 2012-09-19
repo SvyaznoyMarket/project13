@@ -4281,6 +4281,7 @@ dt.bCtg__eOrange{
 	background: #f89b1c;
 	border: 1px solid #e26500;
 	font: bold 24px Tahoma, sans-serif;
+	text-align:center;
 
 	display: inline-block;
 	*display: inline;
