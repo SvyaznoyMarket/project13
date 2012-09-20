@@ -1,3 +1,19 @@
+<?php /** @var $item ProductEntity */ ?>
+
+<?php
+if ($product instanceof sfOutputEscaperArrayDecorator) $product = $product->getRawValue();
+$item = $product['fullObject'];
+?>
+
+<?php $selectedWarranty = sfContext::getInstance()->getUser()->getCart()->getWarrantyByProduct($item->getId()) ?>
+
+<?php
+$warrantiesById = array();
+foreach ($item->getWarrantyList() as $warranty) {
+  $warrantiesById[$warranty->getId()] = $warranty;
+}
+?>
+
 <?php if (count($list)): ?>
 <?php
   $num = 0;
@@ -8,73 +24,62 @@
   }
   ?>
 <div class="mBR5 basketServices">
-<div class="service form bBacketServ F1 mSmall" <?php if ($selectedNum) echo ' style="display:none;"';  ?> >
-  <table cellspacing="0">
-    <tbody>
-    <tr>
-      <th colspan="3">Для этого товара есть услуги:</th>
-    </tr>
-      <?php foreach ($list as $service): ?>
-      <?php if ($num == 3) break; ?>
-    <tr>
-      <td><?php echo $service['name'] ?></td>
-      <td class="mPrice"></td>
-      <td class="mEdit"></td>
-    </tr>
-      <?php $num++; ?>
-      <?php endforeach; ?>
 
-    <tr>
-      <td class="bBlueButton"><a class="link1" href="">Выбрать услуги</a></td>
-      <td></td>
-      <td></td>
-    </tr>
-    </tbody>
-  </table>
-</div>
-<div class="clear"></div>
-<div class="service form bBacketServ extWarr mSmall" style="">
+  <div class="service form bBacketServ F1 mSmall" <?php if ($selectedNum) echo ' style="display:none;"';  ?> >
     <table cellspacing="0">
-        <tbody>
-            <tr>
-                <th colspan="3">
-                    Для этого товара есть дополнительная гарантия:
-                </th>
-            </tr>
-            <tr>
-                <td>
-                    Год гарантии
-                </td>
-                <td class="mPrice"></td>
-                <td class="mEdit"></td>
-            </tr>
-            <tr>
-                <td>
-                    Два года гарантии
-                </td>
-                <td class="mPrice"></td>
-                <td class="mEdit"></td>
-            </tr>
-            <tr>
-                <td>
-                    Три года гарантии
-                </td>
-                <td class="mPrice"></td>
-                <td class="mEdit"></td>
-            </tr>
-            <tr>
-                <td class="bBlueButton">
-                    <a href="" class="link_extWarr">
-                        Выбрать услуги
-                    </a>
-                </td>
-                <td></td>
-                <td></td>
-            </tr>
-        </tbody>
+      <tbody>
+      <tr>
+        <th colspan="3">Для этого товара есть услуги:</th>
+      </tr>
+        <?php foreach ($list as $service): ?>
+        <?php if ($num == 3) break; ?>
+      <tr>
+        <td><?php echo $service['name'] ?></td>
+        <td class="mPrice"></td>
+        <td class="mEdit"></td>
+      </tr>
+        <?php $num++; ?>
+        <?php endforeach ?>
+
+      <tr>
+        <td class="bBlueButton"><a class="link1" href="">Выбрать услуги</a></td>
+        <td></td>
+        <td></td>
+      </tr>
+      </tbody>
     </table>
+  </div>
+
+  <div class="clear"></div>
+
+  <?php if (!$selectedWarranty && (bool)$item->getWarrantyList()) { ?>
+  <div class="service form bBacketServ extWarr mSmall" style="">
+      <table cellspacing="0">
+          <tbody>
+              <tr>
+                  <th colspan="3">Для этого товара есть дополнительная гарантия:</th>
+              </tr>
+          <?php foreach ($item->getWarrantyList() as $warranty) { ?>
+              <tr>
+                  <td><?php echo $warranty->getName() ?></td>
+                  <td class="mPrice"></td>
+                  <td class="mEdit"></td>
+              </tr>
+          <?php } ?>
+              <tr>
+                  <td class="bBlueButton">
+                      <a href="" class="link_extWarr">Выбрать гарантию</a>
+                  </td>
+                  <td></td>
+                  <td></td>
+              </tr>
+          </tbody>
+      </table>
+  </div>
+  <?php } ?>
+
 </div>
-</div>
+
 <?php if (!$selectedNum) { ?>
 <div class="mBR5 basketServices">
 <div class="service form bBacketServ mBig" style="display:none;">
@@ -145,42 +150,31 @@
   </table>
 </div>
 <?php } ?>
-<div class="service form bBacketServ extWarr mBig">
+
+<?php if ($selectedWarranty) { ?>
+<div class="service form bBacketServ extWarr mBig" style="display: block;">
     <table cellspacing="0">
         <tbody>
             <tr>
-                <th colspan="3">
-                    Для этого товара выбрана дополнительная гарантия:
-                </th>
+                <th colspan="3">Для этого товара выбрана дополнительная гарантия:</th>
             </tr>
             <tr>
                 <td>
-                    <span class="ew_title">Три года гарантии</span>
+                    <span class="ew_title"><?php echo $warrantiesById[$selectedWarranty->getWarrantyId()]->getName() ?></span>
                     <br>
-                    <a class="bBacketServ__eMore" href="#">
-                        Подробнее об услуге
-                    </a>
+                    <a class="bBacketServ__eMore" href="#">Подробнее об услуге</a>
                 </td>
                 <td class="mPrice">
-                    <span class="price">
-                        2 920
-                    </span>
-                    &nbsp;<span class="rubl">
-                        p
-                    </span>
+                    <span class="price"><?php echo $selectedWarranty->getPrice() ?></span>
+                    &nbsp;<span class="rubl">p</span>
                 </td>
                 <td class="mEdit">
-                    
-                    <a class="button whitelink ml5 mInlineBlock mVAMiddle" href="#">
-                        Отменить
-                    </a>
+                    <a class="button whitelink ml5 mInlineBlock mVAMiddle" href="#">Отменить</a>
                 </td>
             </tr>
             <tr>
                 <td class="bBlueButton">
-                    <a href="" class="link_extWarr">
-                        Выбрать услуги
-                    </a>
+                    <a href="" class="link_extWarr">Выбрать гарантию</a>
                 </td>
                 <td></td>
                 <td></td>
@@ -188,6 +182,8 @@
         </tbody>
     </table>
 </div>
+<?php } ?>
+
 </div>
 
   <?php include_component('product', 'f1_lightbox', array('f1' => $list, 'product' => $product, 'servListId' => $servListId, 'parentAction' => $this->getActionName())) ?>

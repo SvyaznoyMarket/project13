@@ -424,7 +424,7 @@ class sfContext implements ArrayAccess
   /**
    * Retrieve the user.
    *
-   * @return sfUser The current sfUser implementation instance.
+   * @return myUser The current sfUser implementation instance.
    */
   public function getUser()
   {
