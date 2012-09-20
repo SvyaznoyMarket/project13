@@ -5701,6 +5701,10 @@ div.mSportFont{ color: #e8303c; }
     line-height: 27px;
     padding: 1px 4px;
 }
+.bBuyingInfo span.placeholder.mRed{
+	border: 1px solid red;
+	border-right:none;
+}
 
 .height220 {
     height: 220px;
