@@ -60,7 +60,7 @@ class App{
 
     Logger::configure(Config::get('loggerConfigPath')); //В отдельную константу вынесено - что бы можно было иметь разные конфиги для dev и prod
 
-    if(Config::get('debug'))
+    if(Config::isDebugMode())
     {
         Logger::getRootLogger()->addAppender(new \LoggerAppenderBuffer());
         Logger::getLogger('CoreClient')->addAppender(new \LoggerAppenderBuffer());

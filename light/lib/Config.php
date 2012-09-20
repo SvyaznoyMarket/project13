@@ -65,4 +65,14 @@ class Config
 
         return $value;
     }
+
+    public static function isDebugMode()
+    {
+        if(isset($_COOKIE['debug']) && $_COOKIE['debug'] == 'site')
+        {
+            return True;
+        }
+
+        return False;
+    }
 }
