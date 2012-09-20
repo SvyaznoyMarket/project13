@@ -47,7 +47,10 @@ class FillerLayout implements IFiller
 
         if(Config::isDebugMode())
         {
-            $renderer->addParameter('debug', True);
+            $renderer->addParameter('debug', true);
+        }
+        else{
+              $renderer->addParameter('debug', false);
         }
     }
 }

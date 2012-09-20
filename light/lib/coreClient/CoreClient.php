@@ -62,9 +62,12 @@ class CoreClient
    */
   public function query($action, array $params = array(), array $data = array())
   {
+    $time_start = microtime(true);
     $params['uid'] = RequestLogger::getInstance()->getId();
     $connection = $this->createCurlResource($action, $params, $data);
     $response = curl_exec($connection);
+    $time_end = microtime(true);
+    $this->log('Request time:' . ($time_end - $time_start), 'info');
     try {
       if (curl_errno($connection) > 0) {
         throw new \RuntimeException(curl_error($connection), curl_errno($connection));
@@ -124,6 +127,7 @@ class CoreClient
     $active = null;
     $error = null;
     try {
+      $time_start = microtime(true);
       do {
         $code = curl_multi_exec($this->multiHandler, $still_executing);
         if ($code == CURLM_OK) {
@@ -150,7 +154,11 @@ class CoreClient
           throw new \RuntimeException("multi_curl failure [$code]");
         }
       } while ($still_executing);
+      $time_end = microtime(true);
+      $this->log('Multi-request time:' . ($time_end - $time_start), 'info');
     } catch (Exception $e) {
+      $time_end = microtime(true);
+      $this->log('Multi-request time:' . ($time_end - $time_start), 'info');
       $error = $e;
     }
     // clear multi container
@@ -201,7 +209,7 @@ class CoreClient
   /**
    * @param $response
    * @return array
-   * @throws RuntimeException
+   * @throws \RuntimeException
    */
   private function decode($response)
   {
@@ -377,8 +385,12 @@ class CoreV1Client
 
     $this->log("Request: ".$data, 'info');
     RequestLogger::getInstance()->addLog($name, $params);
+
+    $time_start = microtime(true);
     $response = $this->send($data);
     $this->log("Response: ".$response, 'debug');
+    $time_end = microtime(true);
+    $this->log('Request time:' . ($time_end - $time_start), 'info');
 
     $response = json_decode($response, true);
 
