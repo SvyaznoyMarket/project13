@@ -23,7 +23,7 @@
 <body data-template="<?php echo isset($_template)?$_template:'default' ?>">
 
 <?php
-    if(\light\Config::get('debug'))
+    if($debug)
     {
         echo $this->renderFile('debug');
     }

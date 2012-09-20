@@ -44,5 +44,10 @@ class FillerLayout implements IFiller
 
         $regionTopList = App::getRegion()->getShopAvailable();
         $renderer->addParameter('regionTopList', $regionTopList);
+
+        if(Config::getEnvironment() == 'dev' && isset($_COOKIE['debug']))
+        {
+            $renderer->addParameter('debug', True);
+        }
     }
 }
