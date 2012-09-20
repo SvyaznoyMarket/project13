@@ -96,6 +96,13 @@ class SessionCartContainer implements CartContainer
       $productId = (int)$productId;
     }
 
+    // удалить ранее установленную гарантию для товара
+    foreach ($_SESSION[$this->sessionName]['warrantyList'] as $i => $warrantiesByProduct) {
+      if (array_key_exists($productId, $warrantiesByProduct)) {
+        unset($_SESSION[$this->sessionName]['warrantyList'][$i][$productId]);
+      }
+    }
+
     if (!array_key_exists($warrantyId, $_SESSION[$this->sessionName]['warrantyList'])) {
       $_SESSION[$this->sessionName]['warrantyList'][$warrantyId] = array();
     }

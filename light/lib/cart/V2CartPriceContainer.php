@@ -30,17 +30,17 @@ class V2CartPriceContainer implements CartPriceContainer
       // MOCK
       $response['warranty_list'] = array(
         array(
-          'id'         => 1,
-          'product_id' => 4696,
-          'quantity'   => 1,
-          'price'      => 900,
+          'warranty_id' => 1,
+          'product_id'  => 4696,
+          'quantity'    => 1,
+          'price'       => 900,
         ),
       );
 
       return (array) $response;
     }
     catch(\Exception $e){
-      return array("product_list" => array(),"service_list" => array(),"price_total" => 0);
+      return array('product_list' => array(), 'service_list' => array(), 'warranty_list' => array(), 'price_total' => 0);
     }
   }
 }

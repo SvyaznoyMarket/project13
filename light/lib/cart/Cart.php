@@ -352,11 +352,11 @@ class Cart
     $this->warrantyDataList = array();
     if(array_key_exists('warranty_list', $response)){
       foreach($response['warranty_list'] as $warrantyInfo){
-        if(!array_key_exists($warrantyInfo['id'], $this->warrantyDataList)){
-          $this->warrantyDataList[$warrantyInfo['id']] = array();
+        if(!array_key_exists($warrantyInfo['warranty_id'], $this->warrantyDataList)){
+          $this->warrantyDataList[$warrantyInfo['warranty_id']] = array();
         }
         $relatedProductId = (array_key_exists('product_id', $warrantyInfo)) ? intval($warrantyInfo['product_id']) : 0;
-        $this->warrantyDataList[$warrantyInfo['id']][$relatedProductId] = new WarrantyCartData($warrantyInfo);
+        $this->warrantyDataList[$warrantyInfo['warranty_id']][$relatedProductId] = new WarrantyCartData($warrantyInfo);
       }
     }
     //var_dump($this->warrantyDataList); exit();

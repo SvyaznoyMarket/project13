@@ -209,6 +209,21 @@ class UserCartNew
     return $this->cart->getServiceList();
   }
 
+  public function getWarranties()
+  {
+    return $this->cart->getWarrantyList();
+  }
+
+  public function getWarrantyByProduct($productId) {
+    foreach ($this->getWarranties() as $warrantiesByProduct) {
+      if (!array_key_exists($productId, $warrantiesByProduct)) continue;
+
+      return $warrantiesByProduct[$productId];
+    }
+
+    return null;
+  }
+
   public function count()
   {
     return $this->cart->getTotalQuantity();

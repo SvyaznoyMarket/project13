@@ -33,7 +33,7 @@ class WarrantyCartData
    * @param array $data
    */
   public function __construct($data = array()){
-    if (array_key_exists('id', $data))         $this->warrantyId   = (int)$data['id'];
+    if (array_key_exists('warranty_id', $data))         $this->warrantyId   = (int)$data['warranty_id'];
     $this->relatedProductId   = (array_key_exists('product_id', $data)) ? (int)$data['product_id'] : Null;
     if (array_key_exists('quantity', $data))   $this->quantity    = (int)$data['quantity'];
     if (array_key_exists('price', $data))      $this->price       = (float)$data['price'];
