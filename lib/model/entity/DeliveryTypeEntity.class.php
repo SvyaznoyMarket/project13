@@ -14,12 +14,15 @@ class DeliveryTypeEntity
   /* @var string */
   private $description;
 
-  /* @var ProductEntity[] */
-  private $product = array();
+  public function __construct($data){
 
-  /* @var ShopEntity[] */
-  private $shop = array();
+    $this->id =          array_key_exists('id', $data) ? (int)$data['id'] : null;
+    $this->id =          array_key_exists('mode_id', $data) ? (int)$data['mode_id'] : null; //@ TODO это малость странно о_О
+    $this->token =       array_key_exists('token', $data) ? (string)$data['token'] : '';
+    $this->name =        array_key_exists('name', $data) ? (string)$data['name'] : '';
+    $this->description = array_key_exists('description', $data) ? (string)$data['description'] : '';
 
+  }
 
   public function __toString()
   {
@@ -72,39 +75,6 @@ class DeliveryTypeEntity
   public function getName()
   {
     return $this->name;
-  }
-
-  public function setProduct(array $product)
-  {
-    $this->product = $product;
-  }
-
-  public function addProduct(ProductEntity $product)
-  {
-    $this->product[] = $product;
-  }
-
-  public function getProduct()
-  {
-    return $this->product;
-  }
-
-  public function setShop(array $shop)
-  {
-    $this->shop = $shop;
-  }
-
-  public function addShop(ShopEntity $shop)
-  {
-    $this->shop[] = $shop;
-  }
-
-  /**
-   * @return ShopEntity
-   */
-  public function getShop()
-  {
-    return $this->shop;
   }
 
   /**

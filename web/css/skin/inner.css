@@ -60,9 +60,7 @@ TABLE {border-collapse:collapse}
 	font-family: Rouble;
 	font-size: 36px;
 }
-<<<<<<< .merge_file_kVC01V
 
-=======
 @font-face {
 	font-family: 'Enter Type';
 	src: url('/css/fonts/enter_type-webfont.eot');
@@ -81,7 +79,7 @@ TABLE {border-collapse:collapse}
 	font-weight: normal;
 	font-style: normal;
 }
->>>>>>> .merge_file_VztjcS
+
 .p0 { padding: 0 !important }
 .pt5 {padding-top:5px}
 .pt7 {padding-top:7px}
@@ -97,6 +95,7 @@ TABLE {border-collapse:collapse}
 .pb30 {padding-bottom:30px}
 .pb40 {padding-bottom:40px}
 .pl20 {padding-left:20px}
+.pl35 {padding-left:35px}
 .pl235 {padding-left:235px}
 
 .mb5 {margin-bottom:5px}
@@ -116,6 +115,7 @@ TABLE {border-collapse:collapse}
 .mr10 {margin-right:10px}
 .mr20 {margin-right:20px}
 .mr110 {margin-right:110px}
+.auto {margin:0 auto}
 
 .font09 {font-size:0.9em}
 .font9 {font-size:9px}
@@ -127,7 +127,9 @@ TABLE {border-collapse:collapse}
 .font18 {font-size:18px}
 .font19 {font-size:19px}
 .font24 {font-size:24px}
+.font30 {font-size:30px}
 .font34 {font-size:34px}
+.font36 {font-size:36px}
 .font48 {font-size:48px}
 
 .lh13 {line-height:1.3em}
@@ -168,6 +170,9 @@ TABLE {border-collapse:collapse}
 
 .mBR5 {
     border-radius: 5px 5px 5px 5px;
+}
+.grayUnderline {
+  border-bottom: 1px solid #E6E6E6;
 }
 /*#auth-link{display:none}*/
 
@@ -300,6 +305,14 @@ zoom: 1;
 }
 .mVAMiddle {
     vertical-align: middle;
+}
+
+.creditInfo > div {
+  display: inline-block;
+}
+.creditInfo > div.leftTitle {
+  width: 200px;
+  padding-right:50px;
 }
 
 .yellowbutton {height:24px; padding:0 7px 3px 7px; background-color:#ffaa01;  background-position:0 0; font-size:11px; color:#fff; border-color:#f28900}
@@ -887,6 +900,7 @@ border-radius:5px;
 .f1links .f1linkslist {float:right; width:301px; padding:0 0 20px 29px}
 .f1links LI {padding-bottom:7px}
 
+.prevphoto LI {float:left; width:48px; height:48px; margin:0 6px 6px 0; position:relative}
 .previewlist LI {float:left; width:48px; height:48px; margin:0 6px 6px 0; position:relative}
 .previewlist B {position:absolute; z-index:1; left:0; top:0; display:block; width:48px; height:48px; background:url(/css/skin/img/cover.png) no-repeat 0 -53px}
 .previewlist B:hover, .previewlist B.current {background-position:0 0; cursor:pointer}
@@ -1115,6 +1129,39 @@ box-shadow:0 0 7px #616161;
 .articlecard h3{font-size:24px; font-weight:normal; margin:0; padding-bottom:10px}
 .articlecard .f1links .f1linkslist {width:274px}
 
+
+.bigpriceblock {padding:10px 20px 0 20px; border:1px solid #ddd; margin-bottom:15px;
+border-radius:5px;
+-moz-border-radius:5px;
+-webkit-border-radius:5px;
+}
+.bigpriceblock .bCountSet {position:relative; right:0; left:auto; margin-top:17px}
+
+.bigpriceblock .goodsbarbig.mSmallBtns{ width: 162px !important; display: inline-block; *display: inline; zoom; 1;}
+.bigpriceblock .goodsbarbig.mSmallBtns a.link1{ width: 162px; height: 39px; background: url('/css/skin/img/bg_inner.png') 0 -350px no-repeat;}
+.bigpriceblock .goodsbarbig.mSmallBtns a.link1:hover{ background: url('/css/skin/img/bg_inner.png') -165px -350px no-repeat; }
+.bigpriceblock .goodsbarbig.mSmallBtns a.link1.active{ background: url('/css/skin/img/bg_inner.png') -330px -350px no-repeat; }
+.bigpriceblock .goodsbarbig.mSmallBtns a.link1.disabled, .bigpriceblock  .goodsbarbig.mSmallBtns a.link1.disabled:hover { background: url('/css/skin/img/buy_buttons.png') 0 -118px no-repeat; cursor:default; }
+.bigpriceblock .goodsbarbig.mSmallBtns a.link1.fr{ floar: right }
+
+.creditbox { display:none; border:1px solid #ddd; margin-bottom:15px;
+border-radius:5px;
+-moz-border-radius:5px;
+-webkit-border-radius:5px;
+}
+.creditboxinner { padding:10px 20px 10px 20px; border-bottom:4px solid #e9e9e9}
+#creditInfo strong span { font-size:160%; color: #000; }
+.bigcheck {display:inline-block; font:bold 14px/24px Tahoma,sans-serif; vertical-align:top; cursor:pointer}
+.bigcheck B {display:inline-block; width:24px; height:24px; margin:0 10px 3px 0; background:url("img/bigcheck.png") no-repeat scroll 0 0 transparent; vertical-align:top; cursor:pointer}
+.bigcheck INPUT {position:absolute; z-index:-1}
+.bigcheck.checked {color:#49c7ed !important}
+.bigcheck.checked B {background-position:0 -81px}
+
+
+#tooltip {position: absolute; z-index: 3000}
+#zoomlink {display: none}
+.zoomlink {width:80px; height:65px; background: url('/css/skin/img/zoom.png') 0 0 no-repeat; }
+
 .articlemenu {float:right; width:215px;  margin-bottom:20px; border:2px solid #dcdcdc;
 border-radius:5px;
 -moz-border-radius:5px;
@@ -1164,11 +1211,13 @@ border-radius: 5px;
 .basketline {float:left; width:100%; padding-bottom:25px; border-bottom:1px solid #e6e6e6; margin-bottom:20px}
 .basketleft {float:left; width:120px}
 .basketright {float:left; width:780px; padding-left:20px}
-.goodstitle {float:left; width:329px}
+.goodstitle {float:left; width:500px}
 .basketinfo {float:right; width:451px}
-.basketinfo .left {float:left; width:215px; margin-right:20px; text-align:right}
+.basketinfo .left {float:left; width:115px; margin-right:20px; text-align:right}
 .basketinfo .right {float:left; width:216px}
 .basketinfo .button {font-weight:bold}
+.basketinfonarrow {width:244px}
+.basketinfonarrow .right {width:109px}
 .numerbox {width:109px; height:25px; background:url(/css/skin/img/bg_inner.png) no-repeat -765px -321px}
 .numerbox b{float:left; display:block; width:27px; height:25px; cursor:pointer}
 .numerbox span{float:left; display:block; width:55px; padding-top:4px; text-align:center}
@@ -1393,9 +1442,9 @@ border-radius: 5px;
 #plus10{cursor:pointer;}
 
 .infoblock { background: url('/css/skin/img/bg_info_article.gif') no-repeat; width: 350px; height: 73px; padding: 15px 15px 10px 35px; }
-
-.servicebanner {clear:both; width:320px; height:131px; padding:33px 0 0 600px; background:#4fcbf4 url(img/bg_service.jpg) no-repeat 0 0; color:#fff; font-size:14px; line-height:14px; margin-bottom:25px}
-.servicebanner div{font-size:24px; line-height:24px; padding-bottom:5px}
+.servicebanner {clear:both; width:320px; height:178px; padding:33px 0 0 600px; background:#4fcbf4 url(/css/skin/img/bg_service2.jpg) no-repeat 0 0; color:#fff; font-size:14px; line-height:14px; margin-bottom:25px}
+/* .servicebanner {clear:both; width:320px; height:131px; padding:33px 0 0 600px; background:#4fcbf4 url(img/bg_service.jpg) no-repeat 0 0; color:#fff; font-size:14px; line-height:14px; margin-bottom:25px} */
+.servicebanner DIV {font-size:24px; line-height:24px; padding-bottom:5px}
 
 .slogan {color:#4fcbf4; margin-bottom:30px; font-size:14px}
 .slogan strong{display:block; font-size:24px; padding-bottom:5px}
@@ -2340,7 +2389,7 @@ dt.bCtg__eOrange{
 
 .bDropWrap{
 	width: 180px;
-	margin: 0 10px 20px 0;
+	margin: 0 40px 20px 0;
 	}
 	.bDropWrap h5{
 		padding: 0;
@@ -3101,6 +3150,17 @@ dt.bCtg__eOrange{
 		width: 137px;
 		vertical-align:top;
 		}
+    .bSelect.mFastInpSmall div{
+        margin: 0px;
+        font-size: 14px;
+        font-weight: normal;
+    }
+    .bSelect.mFastInpSmall span{
+        margin: 0px;
+        font-size: 14px;
+        font-weight: normal;
+        color: #000000;
+    }
 	.bSelect.mFastInpBig{
 		width: 362px;
 		}
@@ -4211,6 +4271,7 @@ dt.bCtg__eOrange{
 	-moz-border-radius: 5px;
 	-ms-border-radius: 5px;
 	-o-border-radius: 5px;
+	text-align:center;
 	}
 	.bBigOrangeButton:hover{
 		color: #ffffff;
@@ -5247,7 +5308,6 @@ div.mSportFont{ color: #e8303c; }
 }
 .error_list{ color:red }
 
-
 .bBottommenu {
     background: none repeat scroll 0 0 #FAFAFA;
     border: 2px solid #DCDCDC;
@@ -5358,13 +5418,13 @@ div.mSportFont{ color: #e8303c; }
 
 
 .bEvent{
-	margin-bottom: 70px;
-	}
-	.bEvent__eImage{
-		position: relative;
-		}
-	.bEvent__eImage a{
-		position: absolute;
+    margin-bottom: 70px;
+}
+.bEvent__eImage{
+    position: relative;
+}
+.bEvent__eImage a{
+    position: absolute;
 
 		display: inline-block;
 		*display: inline;
@@ -5382,6 +5442,7 @@ div.mSportFont{ color: #e8303c; }
 		width: 169px;
 		height: 135px;
 		}
+
 	.bEvent h2{
 		padding: 0;
 		margin: 15px 0;
@@ -5873,3 +5934,24 @@ div.mSportFont{ color: #e8303c; }
 		}
 /* ----------- /bNavLoader ------------- */
 /* ------ END MAIN PAGE ------ */
+
+.fl {
+    float: left;
+}
+.bBuyingLine .creditHref {
+    margin-left: 20px;
+    margin-top: 8px;
+}
+.bBuyingLine .creditHref a {
+    color: #434343;
+    text-decoration: underline;
+}
+.bBuyingLine .creditHref a:hover {
+    color: #434343;
+    text-decoration: none;
+}
+.bankWrap {
+    margin-top: 4px !important;
+    position: relative;
+    width: 600px;
+}

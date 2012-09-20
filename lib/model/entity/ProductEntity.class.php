@@ -2,6 +2,10 @@
 
 class ProductEntity
 {
+  /**
+   * Минимальная цена товара, на который предоставляется кредит
+   */
+  const MIN_CREDIT_PRICE = 3000;
 
   /**
    * Дефолтное отображение связанных товаров - аксессуары сверху, смежные товары в футере
@@ -115,7 +119,6 @@ class ProductEntity
   /** @var boolean */
   private $connectedProductsViewMode;
 
-
   public function __construct(array $data = array())
   {
     if (array_key_exists('id', $data))              $this->id            = (int)$data['id'];
@@ -144,9 +147,6 @@ class ProductEntity
     if (array_key_exists('price_average', $data))   $this->priceAverage  = $data['price_average'];
     if (array_key_exists('price_old', $data))       $this->priceOld      = $data['price_old'];
     if (array_key_exists('connected_products_view_mode', $data))  $this->connectedProductsViewMode  = (int)$data['connected_products_view_mode'];
-
-
-      //echo "<pre>", print_r($this,1), '</pre>';
   }
 
   public function setId($id)

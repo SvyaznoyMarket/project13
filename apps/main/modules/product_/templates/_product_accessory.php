@@ -4,6 +4,8 @@
  * @var $accessoryPagesNum int
  */
 ?>
+<?php if (sfConfig::get('app_related_product_accessory')): ?>
+
 <div class="carouseltitle carbig">
     <div class="rubrictitle"><h3>Аксессуары</h3></div>
     <?php if ($accessoryPagesNum > 1) { ?>
@@ -30,3 +32,5 @@
 </div>
 
 <div class="clear"></div>
+
+<?php endif ?>

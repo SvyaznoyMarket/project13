@@ -5,49 +5,39 @@
  */
 class OrderItemEntity
 {
-  const TYPE_PRODUCT = 'product';
-  const TYPE_SERVICE = 'service';
+  const TYPE_PRODUCT = 1;
+  const TYPE_SERVICE = 2;
 
   /* @var integer */
-  private $id;
+  private $orderId;
 
   /* @var integer */
-  private $type;
-
-  /* @var OrderItem */
-  private $order;
-
-  /* @var ProductEntity */
-  private $product = null;
-
-  /* @var ServiceEntity */
-  private $service = null;
+  private $serviceId;
 
   /* @var integer */
+  private $productId;
+
+  /* @var float */
   private $price;
 
   /* @var integer */
   private $quantity;
 
-  /* @var DateTime */
+  /* @var string example: 2011-10-22 22:24:48 */
   private $createdAt;
 
-  public function __construct(array $data = array())
-  {
-    if (array_key_exists('type', $data))           $this->type             = $data['type'];
-    if (array_key_exists('price', $data))          $this->price            = (int)$data['price'];
-    if (array_key_exists('quantity', $data))       $this->quantity         = (int)$data['quantity'];
+  public function __construct($data = array()){
+    if(array_key_exists('order_id', $data))      $this->orderId    = (int)$data['order_id'];
+    if(array_key_exists('product_id', $data))    $this->productId  = (int)$data['product_id'];
+    if(array_key_exists('service_id', $data))    $this->serviceId  = (int)$data['service_id'];
+    if(array_key_exists('price', $data))         $this->price      = (float)$data['price'];
+    if(array_key_exists('quantity', $data))      $this->quantity   = (int)$data['quantity'];
+    if(array_key_exists('added', $data))         $this->createdAt  = $data['added'];
 
-    if (self::TYPE_PRODUCT == $this->type) {
-      $this->product = new ProductEntity(array('id' => $data['id']));
-    }
-    else if (self::TYPE_SERVICE == $this->type) {
-      $this->service = new ServiceEntity(array('id' => $data['id']));
-    }
   }
 
   /**
-   * @param \DateTime $createdAt
+   * @param string $createdAt
    */
   public function setCreatedAt($createdAt)
   {
@@ -55,7 +45,7 @@ class OrderItemEntity
   }
 
   /**
-   * @return \DateTime
+   * @return string
    */
   public function getCreatedAt()
   {
@@ -63,39 +53,23 @@ class OrderItemEntity
   }
 
   /**
-   * @param int $id
+   * @param int $orderId
    */
-  public function setId($id)
+  public function setOrderId($orderId)
   {
-    $this->id = $id;
+    $this->orderId = $orderId;
   }
 
   /**
    * @return int
    */
-  public function getId()
+  public function getOrderId()
   {
-    return $this->id;
+    return $this->orderId;
   }
 
   /**
-   * @param \OrderItem $order
-   */
-  public function setOrder($order)
-  {
-    $this->order = $order;
-  }
-
-  /**
-   * @return \OrderItem
-   */
-  public function getOrder()
-  {
-    return $this->order;
-  }
-
-  /**
-   * @param int $price
+   * @param float $price
    */
   public function setPrice($price)
   {
@@ -103,7 +77,7 @@ class OrderItemEntity
   }
 
   /**
-   * @return int
+   * @return float
    */
   public function getPrice()
   {
@@ -111,19 +85,19 @@ class OrderItemEntity
   }
 
   /**
-   * @param \ProductEntity $product
+   * @param int $productId
    */
-  public function setProduct($product)
+  public function setProductId($productId)
   {
-    $this->product = $product;
+    $this->productId = $productId;
   }
 
   /**
-   * @return \ProductEntity
+   * @return int
    */
-  public function getProduct()
+  public function getProductId()
   {
-    return $this->product;
+    return $this->productId;
   }
 
   /**
@@ -143,34 +117,18 @@ class OrderItemEntity
   }
 
   /**
-   * @param \ServiceEntity $service
+   * @param int $serviceId
    */
-  public function setService($service)
+  public function setServiceId($serviceId)
   {
-    $this->service = $service;
-  }
-
-  /**
-   * @return \ServiceEntity
-   */
-  public function getService()
-  {
-    return $this->service;
-  }
-
-  /**
-   * @param int $type
-   */
-  public function setType($type)
-  {
-    $this->type = $type;
+    $this->serviceId = $serviceId;
   }
 
   /**
    * @return int
    */
-  public function getType()
+  public function getServiceId()
   {
-    return $this->type;
+    return $this->serviceId;
   }
 }

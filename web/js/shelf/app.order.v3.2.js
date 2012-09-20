@@ -1,23 +1,41 @@
 $(document).ready(function() {
 
-	window.blockScreen = function( text ) {
-		$('<img src="/images/ajaxnoti.gif" />').css('display', 'none').appendTo('body') //preload
-		var noti = $('<div>').addClass('noti').html('<div><img src="/images/ajaxnoti.gif" /></br></br> '+ text +'</div>')
+    function setCookie(name, value, expires, path, domain, secure) {
+        var str = name + '=' + encodeURIComponent(value);
+
+        if (expires) str += '; expires=' + expires.toGMTString();
+        if (path)    str += '; path=' + path;
+        if (domain)  str += '; domain=' + domain;
+        if (secure)  str += '; secure';
+
+        document.cookie = str;
+        return true;
+    }
+
+    function deleteCookie(name) {
+        setCookie(name, null, new Date(0), '/');
+        return true;
+    }
+
+
+    window.blockScreen = function( text ) {
+        $('<img src="/images/ajaxnoti.gif" />').css('display', 'none').appendTo('body') //preload
+        var noti = $('<div>').addClass('noti').html('<div><img src="/images/ajaxnoti.gif" /></br></br> '+ text +'</div>')
         noti.appendTo('body')
         this.block = function() {
-        	if( noti.is(':hidden') )
-			noti.lightbox_me({
-				centered:true,
-				closeClick:false,
-				closeEsc:false
-			})
-		}
-		this.unblock = function() {
-			noti.trigger('close')
-		}
-	}
-	blockDiv = new blockScreen('Ваш заказ оформляется')
-	
+            if( noti.is(':hidden') )
+                noti.lightbox_me({
+                    centered:true,
+                    closeClick:false,
+                    closeEsc:false
+                })
+        }
+        this.unblock = function() {
+            noti.trigger('close')
+        }
+    }
+    blockDiv = new blockScreen('Ваш заказ оформляется')
+
     Templating = {
         assign: function (el, data) {
             $.each(el.data('assign'), function(varName, callback) {
@@ -207,8 +225,6 @@ $(document).ready(function() {
 
             $('#order-submit').removeClass('disable');
 
-            $('#order-message').html('')
-
             // проверка на пустую корзину
             var isEmpty = true
             $.each(data.deliveryTypes, function(deliveryTypeToken, deliveryType) {
@@ -242,21 +258,21 @@ $(document).ready(function() {
                             $.ajax({
                                 url: item.deleteUrl
                             }).done(function(result) {
-                                $.ajax({
-                                    url: item.addUrl
-                                }).done(function() {
-                                    data.items[itemToken].quantity = data.items[itemToken].stock
-                                    DeliveryMap.data(data)
-                                    if ((i +1) == length) dfd.resolve()
+                                    $.ajax({
+                                        url: item.addUrl
+                                    }).done(function() {
+                                            data.items[itemToken].quantity = data.items[itemToken].stock
+                                            DeliveryMap.data(data)
+                                            if ((i +1) == length) dfd.resolve()
+                                        })
                                 })
-                            })
                         }
                         else {
                             $.ajax({
                                 url: item.deleteUrl
                             }).done(function() {
-                                if ((i +1) == length) dfd.resolve()
-                            })
+                                    if ((i +1) == length) dfd.resolve()
+                                })
                         }
 
                         reload = true
@@ -418,24 +434,6 @@ $(document).ready(function() {
                     deliveryTypeHolder.find('.bSelect [data-event="onSelect"]').text('с '+interval.split(',')[0]+' по '+interval.split(',')[1])
                 }
             }
-
-            // активность кнопки "Другой магазин"
-            var button = deliveryTypeHolder.find('.order-shop-button');
-            if (button.length) {
-               if (1 == data.deliveryTypes[deliveryType.token].items.length) {
-                   var shopQuantity = 0
-                   var item = data.items[data.deliveryTypes[deliveryType.token].items[0]]
-                   $.each(item.deliveries, function(k, v) {
-                       if (0 == k.indexOf('self_')) {
-                           shopQuantity++
-                       }
-                   })
-
-                   if (1 == shopQuantity) {
-                       button.replaceWith('<span class="red" style="font: 12px Tahoma,sans-serif"><br />доступен только в этом магазине</span>')
-                   }
-               }
-            }
         },
 
         renderItem: function(itemHolder, data) {
@@ -513,29 +511,7 @@ $(document).ready(function() {
         renderUndeliveredMessage: function(deliveryTypeId) {
             var undeliveredItems = this.getUndeliveredItem(deliveryTypeId)
             if (undeliveredItems.length) {
-                var message = 'Некоторые товары не могут быть получены выбранным способом доставки.'
-
-                if (1 == undeliveredItems.length) {
-                    if ($('.bBuyingLine__eRadio[data-delivery-type="self"]:checked')) {
-                        var message = 'Товара нет в наличии в выбранном магазине.'
-
-                        var itemId = undeliveredItems.shift()
-                        var shopQuantity = 0
-                        var item = DeliveryMap.data().items[itemId]
-                        $.each(item.deliveries, function(k, v) {
-                            if (0 == k.indexOf('self_')) {
-                                shopQuantity++
-                            }
-                        })
-                        if (1 == shopQuantity) {
-                            var message = item.name + ' есть в наличии только в одном магазине.'
-                        }
-                    }
-                    else {
-                        var message = 'Невозможно доставить товар.'
-                    }
-                }
-                $('#order-message').html('<span class="red">'+message+'</span>')
+                $('#order-message').html('<span class="red">Некоторые товары не могут быть получены выбранным способом доставки.</span>')
             }
             else {
                 $('#order-message').html('<span>Отличный выбор!</span>')
@@ -545,7 +521,7 @@ $(document).ready(function() {
         openShopMap: function(deliveryToken) {
             this.onShopSelected =
                 !deliveryToken
-                ? function(deliveryTypeId, shopId) {
+                    ? function(deliveryTypeId, shopId) {
                     $('#order-form-part2').hide()
                     $('#order-loader').clone().appendTo('#order-loader-holder').show()
 
@@ -561,20 +537,20 @@ $(document).ready(function() {
                         DeliveryMap.onDeliveryBlockChange()
                     }, true)
                 }
-                : function(deliveryTypeId, shopId) {
+                    : function(deliveryTypeId, shopId) {
                     var data = DeliveryMap.data()
 
                     var toDeliveryToken = 'self_'+shopId
 
                     var unmoved = DeliveryMap.moveItemBlock(deliveryToken, toDeliveryToken)
                     /*
-                    var unmoved = []
-                    $.each(data.deliveryTypes[deliveryToken].items, function(i, itemToken) {
-                        if (false == DeliveryMap.moveItem(itemToken, deliveryToken, toDeliveryToken)) {
-                            unmoved.push(itemToken)
-                        }
-                    })
-                    */
+                     var unmoved = []
+                     $.each(data.deliveryTypes[deliveryToken].items, function(i, itemToken) {
+                     if (false == DeliveryMap.moveItem(itemToken, deliveryToken, toDeliveryToken)) {
+                     unmoved.push(itemToken)
+                     }
+                     })
+                     */
 
                     if (!data.deliveryTypes[toDeliveryToken].date) {
                         var data = DeliveryMap.data()
@@ -601,15 +577,16 @@ $(document).ready(function() {
         onShopSelected: function() {},
 
         onMapClosed: function(shopId) {
-           
+
             var el = $('.bBuyingLine__eRadio:checked')
- 
+
             regionMap.closePopupMap( function() { $('.mMapPopup').trigger('close') } )
             if( typeof(shopId) === 'object' )
                 shopId = shopId.id
             DeliveryMap.onShopSelected.apply(DeliveryMap, [el.val(), shopId])
             //DeliveryMap.onShopSelected.apply(this, [el.val(), shopId])
-            //console.info('onMapClosed', el.val(), shopId)
+
+//console.info('onMapClosed', el.val(), shopId)
         },
 
         validate: function(el, message) {
@@ -651,14 +628,22 @@ $(document).ready(function() {
         },
 
         onDeliveryBlockChange: function() {
-            //console.info('onDeliveryBlockChange')
+            if ( ! $('.order-delivery-holder:visible').length )
+                return        
             if (1 == $('.order-delivery-holder:visible').length) {
-                $('#payment_method_online-field').show()
+                $('#payment_method_5-field').show()
+                $('#payment_method_6-field').show()
             }
             else {
-                $('#payment_method_online-field').hide()
-                $('#payment_method_online-field').find('input').attr('checked', false)
-                $('#payment_method_online-field').find('.mChecked').removeClass('mChecked')
+                function hidePaymentType( jnode ) {
+                    jnode.hide()
+                    if( jnode.find('input').is(':checked') ) {
+                        jnode.find('input').removeAttr('checked')
+                        jnode.find('.mChecked').removeClass('mChecked')
+                    }
+                }
+                hidePaymentType( $('#payment_method_5-field') )
+                hidePaymentType( $('#payment_method_6-field') )
             }
         },
 
@@ -672,7 +657,7 @@ $(document).ready(function() {
         }
     }
 
-/* <! -- MAP REDESIGN */
+    /* <! -- MAP REDESIGN */
     var shopList      = $('#mapPopup_shopInfo'),
         infoBlockNode = $('#map-info_window-container'),
         shopsStack    = $('#order-delivery_map-data').data().value.shops
@@ -684,7 +669,7 @@ $(document).ready(function() {
 
     for( var i in shopsStack )
         renderShopInfo( shopsStack[i] )
-    
+
     function openMap() {
         $('.mMapPopup').lightbox_me({
             centered: true,
@@ -701,15 +686,15 @@ $(document).ready(function() {
     var hoverTimer = { 'timer': null, 'id': 0 }
 
     shopList.delegate('li', 'hover', function() {
-        
+
         var id = $(this).data('id')
         if( hoverTimer.timer ) {
             clearTimeout( hoverTimer.timer )
         }
-        
+
         if( id && id != hoverTimer.id) {
             hoverTimer.id = id
-            hoverTimer.timer = setTimeout( function() {            
+            hoverTimer.timer = setTimeout( function() {
                 window.regionMap.showInfobox( id )
             }, 500)
         }
@@ -717,7 +702,7 @@ $(document).ready(function() {
 
     function updateI( marker ) {
         infoBlockNode.html( tmpl( 'mapInfoBlock', marker ))
-        hoverTimer.id = marker.id   
+        hoverTimer.id = marker.id
     }
 
     function ShopChoosed( node ) {
@@ -734,11 +719,11 @@ $(document).ready(function() {
 
     window.regionMap.addHandler( '.shopchoose', ShopChoosed )
 
-    window.regionMap.addHandlerMarker( 'mouseover', function( marker ) {        
+    window.regionMap.addHandlerMarker( 'mouseover', function( marker ) {
         window.regionMap.showInfobox( marker.id )
     })
 
-/* MAP REDESIGN --> */
+    /* MAP REDESIGN --> */
 
     $('#order-loader-holder').html('')
 
@@ -822,29 +807,7 @@ $(document).ready(function() {
         $('.order-shop-button:first').hide()
 
         if ('self' == el.data('deliveryType')) {
-            var shops = DeliveryMap.data().shops
-            if (1 == Object.keys(shops).length) {
-                var shopId = Object.keys(shops).shift()
-                var deliveryTypeId = el.val()
-
-                $('#order-form-part2').hide()
-                $('#order-loader').clone().appendTo('#order-loader-holder').show()
-
-                var url = $('#order-form').data('deliveryMapUrl')
-                DeliveryMap.getRemoteData(url, { deliveryTypeId: deliveryTypeId, shopId: shopId }, function(data) {
-
-                    $('#order-loader-holder').html('')
-                    $('#order-form-part2').show('fast')
-
-                    this.render()
-
-                    DeliveryMap.renderUndeliveredMessage(deliveryTypeId)
-                }, true)
-            }
-            else {
-                $('.order-shop-button:first').show()
-            }
-
+            $('.order-shop-button:first').show()
             //$('#addressField').hide()
         }
         else {
@@ -852,7 +815,7 @@ $(document).ready(function() {
 
             //$('#addressField').show()
 
-            DeliveryMap.getRemoteData(url, { deliveryTypeId: el.val() }, function(data) {
+            DeliveryMap.getRemoteData(url, { deliveryTypeId: el.val()}, function(data) {
                 $('#order-loader-holder').html('')
                 $('#order-form-part2').show('fast')
 
@@ -1018,7 +981,7 @@ $(document).ready(function() {
         data.deliveryTypes[elData.deliveryType].interval = elData.value
     })
 
-    if ($('.bBuyingLine__eRadio:checked').length) {
+    if ($('#order-form-part1 .bBuyingLine__eRadio"]:checked').length) {
         DeliveryMap.render()
         $('#order-form-part2').show('fast')
 
@@ -1049,7 +1012,7 @@ $(document).ready(function() {
                 hasError = true
             }
         })
-		
+
         if (hasError) {
             $.scrollTo('.bFormError:first', 300)
         }
@@ -1074,6 +1037,7 @@ $(document).ready(function() {
                     if (result.success) {
                         button.text('Готово!')
                         button.attr('disabled', true)
+                        deleteCookie('credit_on');
                         window.location = result.data.redirect
                     }
                     else if (result.error) {
@@ -1108,12 +1072,12 @@ $(document).ready(function() {
         }
     })
 
-	PubSub.subscribe( 'authorize', function( m, d ) {
-		$('#order_recipient_first_name').val( d.first_name )
-		$('#order_recipient_last_name').val( d.last_name )
-		$('#order_recipient_phonenumbers').val( d.phonenumber + '       ' )
-		$('#user-block').hide()
-	})
+    PubSub.subscribe( 'authorize', function( m, d ) {
+        $('#order_recipient_first_name').val( d.first_name )
+        $('#order_recipient_last_name').val( d.last_name )
+        $('#order_recipient_phonenumbers').val( d.phonenumber + '       ' )
+        $('#user-block').hide()
+    })
 
     $('.auth-link').bind('click', function (e) {
         e.preventDefault()
@@ -1127,94 +1091,121 @@ $(document).ready(function() {
                 $('#auth-block').find('input:first').focus()
             }
             /*,
-            onClose:function () {
-                $.get(link.data('updateUrl'), function (response) {
-                    if (true === response.success) {
-                        var form = $('.order-form')
-                        $('#user-block').replaceWith(response.data.content)
+             onClose:function () {
+             $.get(link.data('updateUrl'), function (response) {
+             if (true === response.success) {
+             var form = $('.order-form')
+             $('#user-block').replaceWith(response.data.content)
 
-                        $.each(response.data.fields, function (name, value) {
-                            var field = form.find('[name="' + name + '"]')
-                            if (field.val().length < 2) {
-                                field.val(value)
-                            }
-                        })
-                    }
-                })
-            }
-            */
+             $.each(response.data.fields, function (name, value) {
+             var field = form.find('[name="' + name + '"]')
+             if (field.val().length < 2) {
+             field.val(value)
+             }
+             })
+             }
+             })
+             }
+             */
         })
     })
 
     if( typeof( $.mask ) !== 'undefined' ) {
-		$.mask.definitions['n'] = "[()0-9\ \-]"
-		$("#order_recipient_phonenumbers").mask("8nnnnnnnnnnnnnnnnn", { placeholder: " ", maxlength: 10 } )
-        var predefPhone = document.getElementById('order_recipient_phonenumbers').getAttribute('value')
-        if( predefPhone && predefPhone != '' )
-            $('#order_recipient_phonenumbers').val( predefPhone + '       ' )
-        else   
-            $("#order_recipient_phonenumbers").val('8')
+        $.mask.definitions['n'] = "[()0-9\ \-]"
+        $("#order_recipient_phonenumbers").mask("8nnnnnnnnnnnnnnnnn", { placeholder: " ", maxlength: 10 } )
+        $("#order_recipient_phonenumbers").val('8')
 
-        
         $.mask.definitions['*'] = "[0-9*]"
         $("#order_sclub_card_number").mask("* ****** ******", { placeholder: "*" } )
-		if( $("#order_sclub_card_number")[0].getAttribute('value') )
-			$("#order_sclub_card_number").val( $("#order_sclub_card_number")[0].getAttribute('value') )
-		$("#order_sclub_card_number").blur( function() {
-			if( $(this).val() === "* ****** ******" ) {
-				$(this).trigger('unmask').val('')
-				$(this).focus( function() {
-					$("#order_sclub_card_number").mask("* ****** ******", { placeholder: "*" } )
-				})
-			}
-        })	
-	}
-	
-	//$('#addressField').find('input').placeholder()
+        if( $("#order_sclub_card_number")[0].getAttribute('value') )
+            $("#order_sclub_card_number").val( $("#order_sclub_card_number")[0].getAttribute('value') )
+        $("#order_sclub_card_number").blur( function() {
+            if( $(this).val() === "* ****** ******" ) {
+                $(this).trigger('unmask').val('')
+                $(this).focus( function() {
+                    $("#order_sclub_card_number").mask("* ****** ******", { placeholder: "*" } )
+                })
+            }
+        })
+    }
 
-    $('.placeholder-input').focus(function(e) {
-        var el = $(e.target)
-        el.prev('.placeholder').css('border-color', '#FFA901');
-    }).focusout(function(e) {
-        var el = $(e.target)
-        el.prev('.placeholder').css('border-color', '#DDDDDD')
+    $('#addressField').find('input').placeholder()
+
+    var ubahn = [ 'Авиамоторная', 'Автозаводская','Академическая','Александровский сад','Алексеевская','Алтуфьево','Аннино','Арбатская (Арбатско-Покровская линия)','Арбатская (Филевская линия','Аэропорт',
+        'Бабушкинская','Багратионовская','Баррикадная','Бауманская','Беговая','Белорусская','Беляево','Бибирево','Библиотека имени Ленина','Битцевский парк','Борисовская',
+        'Боровицкая','Ботанический сад','Братиславская','Бульвар адмирала Ушакова','Бульвар Дмитрия Донского','Бунинская аллея','Варшавская',
+        'ВДНХ','Владыкино','Водный стадион','Войковская','Волгоградский проспект','Волжская','Волоколамская','Воробьевы горы','Выставочная','Выхино','Деловой центр',
+        'Динамо','Дмитровская','Добрынинская','Домодедовская','Достоевская','Дубровка','Жулебино','Зябликово','Измайловская','Калужская','Кантемировская','Каховская','Каширская','Киевская',
+        'Китай-город','Кожуховская','Коломенская','Комсомольская','Коньково','Красногвардейская','Краснопресненская','Красносельская','Красные ворота','Крестьянская застава',
+        'Кропоткинская','Крылатское','Кузнецкий мост','Кузьминки','Кунцевская','Курская','Кутузовская','Ленинский проспект','Лубянка',
+        'Люблино','Марксистская','Марьина роща','Марьино','Маяковская','Медведково','Международная','Менделеевская','Митино',
+        'Молодежная','Мякинино','Нагатинская','Нагорная','Нахимовский проспект','Новогиреево','Новокузнецкая','Новослободская','Новоясеневская','Новые Черемушки','Октябрьская',
+        'Октябрьское поле','Орехово','Отрадное','Охотныйряд','Павелецкая','Парк культуры','Парк Победы','Партизанская',
+        'Первомайская','Перово','Петровско-Разумовская','Печатники','Пионерская','Планерная','Площадь Ильича','Площадь Революции','Полежаевская',
+        'Полянка','Пражская','Преображенская площадь','Пролетарская','Проспект Вернадского','Проспект Мира','Профсоюзная','Пушкинская',
+        'Речной вокзал','Рижская','Римская','Рязанский проспект','Савеловская','Свиблово','Севастопольская','Семеновская','Серпуховская',
+        'Славянский бульвар','Смоленская (Арбатско-Покровская линия)','Смоленская (Филевская линия)','Сокол','Сокольники','Спортивная',
+        'Сретенский бульвар','Строгино','Студенческая','Сухаревская','Сходненская','Таганская','Тверская','Театральная','Текстильщики','ТеплыйСтан','Тимирязевская',
+        'Третьяковская','Трубная','Тульская','Тургеневская','Тушинская','Улица 1905года','Улица Академика Янгеля','Улица Горчакова','Улица Подбельского','Улица Скобелевская','Улица Старокачаловская','Университет','Филевский парк','Фили',
+        'Фрунзенская','Царицыно','Цветной бульвар','Черкизовская','Чертановская','Чеховская','Чистые пруды','Чкаловская','Шаболовская','Шипиловская',
+        'Шоссе Энтузиастов','Щелковская','Щукинская','Электрозаводская','Юго-Западная','Южная','Ясенево'
+    ]
+    $( "#order_address_metro" )
+        .autocomplete({
+            source: ubahn,
+            appendTo: '#metrostations',
+            minLength: 2
+        })
+        .change( function() {
+            for(var i=0, l= ubahn.length; i<l; i++)
+                if( $(this).val() === ubahn[i] )
+                    return true
+            $(this).val('')
+        })
+
+    /* Credit */
+    $('body').delegate('input[name="order[payment_method_id]"]', 'click', function() {
+        if( this.id === 'order_payment_method_id_6' )
+            $('#creditInfo').show()
+        else
+            $('#creditInfo').hide()
     })
 
-    $('.placeholder').click(function(e) {
-        $(this).next('.placeholder-input').focus();
-    })
-	
-	var ubahn = [ 'Авиамоторная', 'Автозаводская','Академическая','Александровский сад','Алексеевская','Алтуфьево','Аннино','Арбатская (Арбатско-Покровская линия)','Арбатская (Филевская линия','Аэропорт',
-'Бабушкинская','Багратионовская','Баррикадная','Бауманская','Беговая','Белорусская','Беляево','Бибирево','Библиотека имени Ленина','Битцевский парк','Борисовская',
-'Боровицкая','Ботанический сад','Братиславская','Бульвар адмирала Ушакова','Бульвар Дмитрия Донского','Бунинская аллея','Варшавская',
-'ВДНХ','Владыкино','Водный стадион','Войковская','Волгоградский проспект','Волжская','Волоколамская','Воробьевы горы','Выставочная','Выхино','Деловой центр',
-'Динамо','Дмитровская','Добрынинская','Домодедовская','Достоевская','Дубровка','Жулебино','Зябликово','Измайловская','Калужская','Кантемировская','Каховская','Каширская','Киевская',
-'Китай-город','Кожуховская','Коломенская','Комсомольская','Коньково','Красногвардейская','Краснопресненская','Красносельская','Красные ворота','Крестьянская застава',
-'Кропоткинская','Крылатское','Кузнецкий мост','Кузьминки','Кунцевская','Курская','Кутузовская','Ленинский проспект','Лубянка',
-'Люблино','Марксистская','Марьина роща','Марьино','Маяковская','Медведково','Международная','Менделеевская','Митино',
-'Молодежная','Мякинино','Нагатинская','Нагорная','Нахимовский проспект','Новогиреево','Новокузнецкая','Новослободская','Новоясеневская','Новые Черемушки','Октябрьская',
-'Октябрьское поле','Орехово','Отрадное','Охотныйряд','Павелецкая','Парк культуры','Парк Победы','Партизанская',
-'Первомайская','Перово','Петровско-Разумовская','Печатники','Пионерская','Планерная','Площадь Ильича','Площадь Революции','Полежаевская',
-'Полянка','Пражская','Преображенская площадь','Пролетарская','Проспект Вернадского','Проспект Мира','Профсоюзная','Пушкинская',
-'Речной вокзал','Рижская','Римская','Рязанский проспект','Савеловская','Свиблово','Севастопольская','Семеновская','Серпуховская',
-'Славянский бульвар','Смоленская (Арбатско-Покровская линия)','Смоленская (Филевская линия)','Сокол','Сокольники','Спортивная',
-'Сретенский бульвар','Строгино','Студенческая','Сухаревская','Сходненская','Таганская','Тверская','Театральная','Текстильщики','ТеплыйСтан','Тимирязевская',
-'Третьяковская','Трубная','Тульская','Тургеневская','Тушинская','Улица 1905года','Улица Академика Янгеля','Улица Горчакова','Улица Подбельского','Улица Скобелевская','Улица Старокачаловская','Университет','Филевский парк','Фили',
-'Фрунзенская','Царицыно','Цветной бульвар','Черкизовская','Чертановская','Чеховская','Чистые пруды','Чкаловская','Шаболовская','Шипиловская',
-'Шоссе Энтузиастов','Щелковская','Щукинская','Электрозаводская','Юго-Западная','Южная','Ясенево'
-		]
-	$( "#order_address_metro" )
-		.autocomplete({
-			source: ubahn,
-			appendTo: '#metrostations',
-			minLength: 2
-		})
-		.change( function() {
-			for(var i=0, l= ubahn.length; i<l; i++)
-				if( $(this).val() === ubahn[i] )
-					return true
-			$(this).val('')
-		})
+    if( $('.bankWrap').length ) {
+        var banks = $('.bankWrap > .bSelect').data('value')
+        var docs  = $('.bankWrap > .creditHref')
+        var options = $('<div>').addClass('bSelect__eDropmenu')
+        for( var id in banks ) {
+            var option = $('<div>').attr('ref', id).append( $('<span>').text( banks[id].name ) )
+            option.click( function() {
+                var thisId = $(this).attr('ref')
+                $('.bankWrap > .bSelect').find('span:first').text( banks[ thisId ].name )
+                $('input[name="order[credit_bank_id]"]').val( thisId )
+                docs.find('a').attr('href', banks[ thisId ].href )
+                docs.find('span').text('(' + banks[ thisId ].name + ')' )
+            })
+            options.append( option )
+        }
+        $('.bankWrap > .bSelect').append( options )
+
+        DirectCredit.init( $('#tsCreditCart').data('value'), $('#creditPrice') )
+    }
+
+    /*fill up*/
+
+//	$('#order_delivery_type_id_1').click()
+//	setTimeout( function() {
+//		$('#order_recipient_first_name').val('TEST')
+//		$('#order_recipient_last_name').val('TEST')
+//		$('#order_recipient_phonenumbers').val('89253333333       ')
+//		$('#payment_method_3-field input').click()
+//            $('input[name="order[credit_bank_id]"]').val('2')
+//		$('#order_agreed').click()
+//		$('#order-submit').click()
+//	}, 2000)
+
+
+
 })
 
 
@@ -1270,7 +1261,7 @@ function array_diff (arr1) {
     // *     example 1: array_diff(['Kevin', 'van', 'Zonneveld'], ['van', 'Zonneveld']);
     // *     returns 1: {0:'Kevin'}
     var retArr = {},
-    argl = arguments.length,
+        argl = arguments.length,
         k1 = '',
         i = 1,
         k = '',
@@ -1327,35 +1318,35 @@ function array_key_exists (key, search) {
 
 /* Object.keys for IE */
 if (!Object.keys) {
-  Object.keys = (function () {
-    var hasOwnProperty = Object.prototype.hasOwnProperty,
-        hasDontEnumBug = !({toString: null}).propertyIsEnumerable('toString'),
-        dontEnums = [
-          'toString',
-          'toLocaleString',
-          'valueOf',
-          'hasOwnProperty',
-          'isPrototypeOf',
-          'propertyIsEnumerable',
-          'constructor'
-        ],
-        dontEnumsLength = dontEnums.length
+    Object.keys = (function () {
+        var hasOwnProperty = Object.prototype.hasOwnProperty,
+            hasDontEnumBug = !({toString: null}).propertyIsEnumerable('toString'),
+            dontEnums = [
+                'toString',
+                'toLocaleString',
+                'valueOf',
+                'hasOwnProperty',
+                'isPrototypeOf',
+                'propertyIsEnumerable',
+                'constructor'
+            ],
+            dontEnumsLength = dontEnums.length
 
-    return function (obj) {
-      if (typeof obj !== 'object' && typeof obj !== 'function' || obj === null) throw new TypeError('Object.keys called on non-object')
+        return function (obj) {
+            if (typeof obj !== 'object' && typeof obj !== 'function' || obj === null) throw new TypeError('Object.keys called on non-object')
 
-      var result = []
+            var result = []
 
-      for (var prop in obj) {
-        if (hasOwnProperty.call(obj, prop)) result.push(prop)
-      }
+            for (var prop in obj) {
+                if (hasOwnProperty.call(obj, prop)) result.push(prop)
+            }
 
-      if (hasDontEnumBug) {
-        for (var i=0; i < dontEnumsLength; i++) {
-          if (hasOwnProperty.call(obj, dontEnums[i])) result.push(dontEnums[i])
+            if (hasDontEnumBug) {
+                for (var i=0; i < dontEnumsLength; i++) {
+                    if (hasOwnProperty.call(obj, dontEnums[i])) result.push(dontEnums[i])
+                }
+            }
+            return result
         }
-      }
-      return result
-    }
-  })()
+    })()
 };

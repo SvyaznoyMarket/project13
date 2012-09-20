@@ -26,10 +26,11 @@
   </tr>
 </script>
 
+<div id="tsCreditCart" data-value="<?php echo $dataForCredit ?>" ></div>
 <?php foreach ($list as $item): ?>
 
   <?php if ($item['type'] == 'product'): ?>
-    <div class="basketline mWrap" ref="<?php echo $item['id'] ?>">
+    <div credit-data-type='<?php echo $item['credit_data_type']; ?>' class="basketline mWrap" ref="<?php echo $item['id'] ?>">
       <div class="basketleft">
         <a href="<?php echo url_for('productCard', array('product' => $item['token_prefix'] . '/' .$item['token'])) ?>">
           <?php if (isset($item['photo'])) echo image_tag($item['photo']) ?>
@@ -40,11 +41,17 @@
           <div class="font24 pb5"><?php echo link_to((string) $item['name'], 'productCard', array('product' => $item['token_prefix'] . '/' .$item['token'])) ?></div>
           <noindex><div class="font11">Есть в наличии</div></noindex>
         </div>
-        <div class="basketinfo pb15">
+        <div class="basketinfo basketinfonarrow pb15">
           <div class="left font11">Цена:<br /><span class="font12"><span class="price"><?php echo $item['priceFormatted'] ?></span> <span class="rubl">p</span></span></div>
-          <div class="right"><div class="numerbox" data-limit="10"><?php echo ($item['quantity'] > 1) ? link_to('<b class="ajaless" title="Уменьшить"></b>', 'cart_add', array('product' => $item['core_id'], 'quantity' => -1,)) : '<b class="ajaless" title="Уменьшить"></b>' ?><span class="ajaquant"><?php echo $item['quantity'] ?> шт.</span><?php echo link_to('<b class="ajamore" title="Увеличить"></b>', 'cart_add', array('product' => $item['core_id'], 'quantity' => 1,)) ?></div></div>
+          <div class="right"><div class="numerbox">
+          	<?php echo link_to('<b class="ajaless" title="Уменьшить"></b>', 'cart_add', array('product' => $item['core_id'], 'quantity' => -1,)) ?>
+          	<span class="ajaquant"><?php echo $item['quantity'] ?> шт.</span>
+              <a href="<?php echo url_for('cart_add', array('product' => $item['core_id'])) . '/1' ?>">
+               <b class="ajamore" title="Увеличить"></b>
+              </a> 
+          </div></div>
         </div>
-        <div class="basketinfo">
+        <div class="basketinfo basketinfonarrow">
           <div class="left font24"><span class="sum"><?php echo ($item['total']) ?></span> <span class="rubl">p</span></div>
           <div class="right"><a href="<?php echo url_for('cart_delete', array('product' => $item['core_id'])) ?>" class="button whitelink mr5">Удалить</a><!--a href="" class="button whitelink">Добавить в список желаний</a--></div>
         </div>
@@ -92,4 +99,7 @@
   <?php endif ?>
 
 <?php endforeach ?>
+
+<div class="clear"></div>
 <!-- /Basket -->
+

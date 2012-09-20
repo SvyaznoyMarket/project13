@@ -1,1 +1,1 @@
-<strong><?php echo $displayValue ?></strong> ( <a id="jsregion" data-url="<?php echo url_for('region_init') ?>" href="<?php echo url_for('region_change', $sf_data->getRaw('region')->core_id) ?>" style="font-weight: normal">изменить</a> )
+<strong><?php echo $displayValue ?></strong> ( <a id="jsregion" data-url="<?php echo url_for('region_init') ?>" href="<?php echo url_for('region_change', array('region' => $sf_data->getRaw('region')->getId())) ?>" style="font-weight: normal">изменить</a> )

@@ -3,7 +3,7 @@
 /**
  * Заказ
  */
-class OrderEntity implements ArrayAccess
+class OrderEntity
 {
   const TYPE_ORDER = 1;
   const TYPE_PREORDER = 2;
@@ -28,16 +28,15 @@ class OrderEntity implements ArrayAccess
   private $id;
 
   /* @var integer */
-  private $type;
+  private $typeId;
 
-  /* @var integer */
-  private $status;
+  /**
+   * @var integer
+   */
+  private $statusId;
 
   /* @var string */
   private $number;
-
-  /* @var UserEntity */
-  private $user;
 
   /* @var string */
   private $lastName;
@@ -49,13 +48,13 @@ class OrderEntity implements ArrayAccess
   private $middleName;
 
   /* @var string */
-  private $phonenumber;
+  private $phoneNumber;
 
   /* @var integer */
-  private $paymentStatus;
+  private $paymentStatusId;
 
   /* @var integer */
-  private $payment;
+  private $paymentId;
 
   /* @var string */
   private $paymentDetail;
@@ -66,14 +65,14 @@ class OrderEntity implements ArrayAccess
   /* @var DeliveryTypeEntity */
   private $deliveryType;
 
-  /* @var DateTime */
-  private $deliveredAt;
-
   /* @var array */
   private $deliveryInterval;
 
-  /* @var integer */
+  /** @var float */
   private $deliveryPrice;
+
+  /** @var string */
+  private $deliveryDate;
 
   /* @var ShopEntity */
   private $shop = null;
@@ -88,75 +87,100 @@ class OrderEntity implements ArrayAccess
   private $isSmsAlert = false;
 
   /* @var string */
-  private $comment;
-
-  /* @var string */
   private $ipAddress;
 
-  /* @var DateTime */
+  /* @var string */
   private $createdAt;
 
-  /* @var DateTime */
-  private $updateAt;
+  /* @var string */
+  private $updatedAt;
 
-  /* @var OrderItem[] */
+  /* @var OrderItemEntity[] */
   private $item;
 
 
-  public function __construct(array $data = array())
-  {
-    if (array_key_exists('id', $data))                $this->id               = (int)$data['id'];
-    if (array_key_exists('type_id', $data))           $this->type             = (int)$data['type_id'];
-    if (array_key_exists('status_id', $data))         $this->status           = (int)$data['status_id'];
-    if (array_key_exists('number', $data))            $this->number           = (string)$data['number'];
-    if (array_key_exists('user', $data))              $this->User             = new UserEntity($data['user']);
-    if (array_key_exists('last_name', $data))         $this->lastName         = (string)$data['last_name'];
-    if (array_key_exists('first_name', $data))        $this->firstName        = (string)$data['first_name'];
-    if (array_key_exists('middle_name', $data))       $this->middleName       = (string)$data['middle_name'];
-    if (array_key_exists('mobile', $data))            $this->phonenumber      = (string)$data['mobile'];
-    if (array_key_exists('payment_status_id', $data)) $this->paymentStatus    = (int)$data['payment_status_id'];
-    if (array_key_exists('payment_id', $data))        $this->payment          = (int)$data['payment_id'];
-    if (array_key_exists('payment_detail', $data))    $this->paymentDetail    = (string)$data['payment_detail'];
-    if (array_key_exists('sum', $data))               $this->sum              = (string)$data['sum'];
-    if (array_key_exists('delivery_type_id', $data))  $this->deliveryType     = new DeliveryTypeEntity(array('id' => $data['delivery_type_id']));
-    if (array_key_exists('delivery_type', $data))     $this->deliveryType     = new DeliveryTypeEntity($data['delivery_type']);
-    if (array_key_exists('delivery_date', $data))     $this->deliveredAt      = (string)$data['delivery_date'];
-    if (array_key_exists('interval', $data))          $this->deliveryInterval = $data['interval'];
-    if (array_key_exists('shop_id', $data))           $this->shop             = new ShopEntity(array('id' => $data['shop_id']));
-    if (array_key_exists('address', $data))           $this->address          = (string)$data['address'];
-    if (array_key_exists('geo', $data))               $this->region           = new RegionEntity($data['geo']);
-    if (array_key_exists('is_receive_sms', $data))    $this->isSmsAlert       = 1 == $data['is_receive_sms'];
-    if (array_key_exists('extra', $data))             $this->comment          = (string)$data['extra'];
-    if (array_key_exists('ip', $data))                $this->ipAddress        = (string)$data['ip'];
-    if (array_key_exists('added', $data))             $this->createdAt        = (string)$data['added'];
-    if (array_key_exists('updated', $data))           $this->updateAt         = (string)$data['updated'];
-    if (array_key_exists('delivery', $data) && count($data['delivery'])) $this->deliveryPrice = (int)$data['delivery'][0]['price'];
+    public function __construct(array $data = array()){
+      if(array_key_exists('id', $data))      $this->id       = (int)$data['id'];
+      if(array_key_exists('type_id', $data))      $this->typeId       = (int)$data['type_id'];
+      if(array_key_exists('status_id', $data))   $this->statusId      = (int)$data['status_id'];
+      if(array_key_exists('number', $data))   $this->number    = $data['number'];
+      if(array_key_exists('last_name', $data))   $this->lastName    = $data['last_name'];
+      if(array_key_exists('first_name', $data))   $this->firstName    = $data['first_name'];
+      if(array_key_exists('middle_name', $data))   $this->middleName    = $data['middle_name'];
+      if(array_key_exists('mobile', $data)){
+        $this->phoneNumber    = $data['mobile'];
+      }
+      elseif(array_key_exists('phone', $data)){
+        $this->phoneNumber    = $data['phone'];
+      }
+      if(array_key_exists('payment_status_id', $data))   $this->paymentStatusId    = $data['payment_status_id'];
+      if(array_key_exists('payment_id', $data))   $this->paymentId    = $data['payment_id'];
+      if(array_key_exists('payment_detail', $data))   $this->paymentDetail    = $data['payment_detail'];
+      if(array_key_exists('sum', $data))   $this->sum    = $data['sum'];
+     // if(array_key_exists('is_delivery', $data))   $this->is    = $data['is_delivery'];
+    //  if(array_key_exists('is_paid_delivery', $data))   $this->i    = $data['is_paid_delivery'];
+      //if(array_key_exists('store_id', $data))   $this->st    = $data['store_id'];
+      if(array_key_exists('shop_id', $data))   $this->shop    = $data['shop_id'];
+      //if(array_key_exists('address_id', $data))   $this->addressId    = $data['address_id'];
+      if(array_key_exists('geo_id', $data))   $this->region    = $data['geo_id'];
+      if(array_key_exists('address', $data))   $this->address    = $data['address'];
+      //if(array_key_exists('zip_code', $data))   $this->z    = $data['zip_code'];
+      if(array_key_exists('ip', $data))   $this->ipAddress    = $data['ip'];
+      if(array_key_exists('added', $data))   $this->createdAt    = $data['added'];
+      if(array_key_exists('updated', $data))   $this->updatedAt    = $data['updated'];
 
-    if (array_key_exists('product', $data)) foreach ($data['product'] as $orderItemData) {
-      $this->item[] = new OrderItemEntity(array_merge($orderItemData, array('type' => OrderItemEntity::TYPE_PRODUCT)));
+      if(array_key_exists('credit_bank', $data)) {
+          foreach ($data['credit_bank'] as $bankData) {
+              $this->credit_bank[] = new CreditBankEntity($bankData);
+          }
+      }
+      if(array_key_exists('product', $data)) {
+        foreach ($data['product'] as $productData) {
+          $itemEntity = new OrderItemEntity($productData);
+          $itemEntity->setCreatedAt($this->createdAt);
+          $itemEntity->setOrderId($this->getId());
+          if(array_key_exists('product_id', $productData)){
+            //V1
+            $itemEntity->setProductId((int) $productData['product_id']);
+          }
+          else{
+            //V2
+            $itemEntity->setProductId((int) $productData['id']);
+          }
+
+          $this->addItem($itemEntity);
+        }
+      }
+      if(array_key_exists('service', $data)) {
+        foreach ($data['service'] as $productData) {
+          $itemEntity = new OrderItemEntity($productData);
+          $itemEntity->setCreatedAt($this->createdAt);
+          $itemEntity->setOrderId($this->getId());
+          $itemEntity->setProductId((int) $productData['product_id']);
+          if(array_key_exists('service_id', $productData)){
+            //V1
+            $itemEntity->setServiceId((int) $productData['service_id']);
+          }
+          else{
+            //V2
+            $itemEntity->setServiceId((int) $productData['id']);
+          }
+          $this->addItem($itemEntity);
+        }
+      }
+
+      if(array_key_exists('delivery_type_id', $data))       $this->deliveryType     = $data['delivery_type_id'];
+      if(array_key_exists('delivery_interval_id', $data))   $this->deliveryInterval = $data['delivery_interval_id'];
+      if(array_key_exists('delivery_date', $data))          $this->deliveryDate     = $data['delivery_date'];
+
+
+
+      if(array_key_exists('delivery', $data) && array_key_exists('price', $data['delivery'])) {
+        $this->deliveryPrice = $data['delivery']['price'];
+      }
     }
 
-    if (array_key_exists('service', $data)) foreach ($data['service'] as $orderItemData) {
-      $this->item[] = new OrderItemEntity(array_merge($orderItemData, array('type' => OrderItemEntity::TYPE_SERVICE)));
-    }
-  }
-
-  public function __get($key){
-
-    return call_user_func(array($this, 'get'.sfInflector::camelize($key)));
-  }
-
-  public function __set($key, $value){
-
-    call_user_func_array(array($this, 'set'.sfInflector::camelize($key)), array($value));
-  }
-
-  public function __toString()
-  {
-    return (string)$this->number;
-  }
-
-  /**
+    /**
    * @param string $address
    */
   public function setAddress($address)
@@ -173,23 +197,7 @@ class OrderEntity implements ArrayAccess
   }
 
   /**
-   * @param string $comment
-   */
-  public function setComment($comment)
-  {
-    $this->comment = $comment;
-  }
-
-  /**
-   * @return string
-   */
-  public function getComment()
-  {
-    return $this->comment;
-  }
-
-  /**
-   * @param DateTime $createdAt
+   * @param string $createdAt
    */
   public function setCreatedAt($createdAt)
   {
@@ -197,27 +205,11 @@ class OrderEntity implements ArrayAccess
   }
 
   /**
-   * @return DateTime
+   * @return string
    */
   public function getCreatedAt()
   {
     return $this->createdAt;
-  }
-
-  /**
-   * @param DateTime $deliveredAt
-   */
-  public function setDeliveredAt($deliveredAt)
-  {
-    $this->deliveredAt = $deliveredAt;
-  }
-
-  /**
-   * @return DateTime
-   */
-  public function getDeliveredAt()
-  {
-    return $this->deliveredAt;
   }
 
   /**
@@ -316,11 +308,17 @@ class OrderEntity implements ArrayAccess
     return $this->isSmsAlert;
   }
 
-  public function setItem($item)
+  /**
+   * @param $item OrderItemEntity
+   */
+  public function addItem($item)
   {
-    $this->item = $item;
+    $this->item[] = $item;
   }
 
+  /**
+   * @return OrderItemEntity[]
+   */
   public function getItem()
   {
     return $this->item;
@@ -377,17 +375,17 @@ class OrderEntity implements ArrayAccess
   /**
    * @param int $payment
    */
-  public function setPayment($payment)
+  public function setPaymentId($payment)
   {
-    $this->payment = $payment;
+    $this->paymentId = $payment;
   }
 
   /**
    * @return int
    */
-  public function getPayment()
+  public function getPaymentId()
   {
-    return $this->payment;
+    return $this->paymentId;
   }
 
   /**
@@ -409,33 +407,33 @@ class OrderEntity implements ArrayAccess
   /**
    * @param int $paymentStatus
    */
-  public function setPaymentStatus($paymentStatus)
+  public function setPaymentStatusId($paymentStatus)
   {
-    $this->paymentStatus = $paymentStatus;
+    $this->paymentStatusId = $paymentStatus;
   }
 
   /**
    * @return int
    */
-  public function getPaymentStatus()
+  public function getPaymentStatusId()
   {
-    return $this->paymentStatus;
+    return $this->paymentStatusId;
   }
 
   /**
    * @param string $phonenumber
    */
-  public function setPhonenumber($phonenumber)
+  public function setPhoneNumber($phoneNumber)
   {
-    $this->phonenumber = $phonenumber;
+    $this->phoneNumber = $phoneNumber;
   }
 
   /**
    * @return string
    */
-  public function getPhonenumber()
+  public function getPhoneNumber()
   {
-    return $this->phonenumber;
+    return $this->phoneNumber;
   }
 
   /**
@@ -503,71 +501,55 @@ class OrderEntity implements ArrayAccess
   }
 
   /**
-   * @param int $type
+   * @param int $typeId
    */
-  public function setType($type)
+  public function setTypeId($typeId)
   {
-    $this->type = $type;
+    $this->typeId = $typeId;
   }
 
   /**
    * @return int
    */
-  public function getType()
+  public function getTypeId()
   {
-    return $this->type;
-  }
-
-  /**
-   * @param UserEntity $user
-   */
-  public function setUser($user)
-  {
-    $this->user = $user;
-  }
-
-  /**
-   * @return UserEntity
-   */
-  public function getUser()
-  {
-    return $this->user;
+    return $this->typeId;
   }
 
   /**
    * @param \DateTime $updateAt
    */
-  public function setUpdateAt($updateAt)
+  public function setUpdatedAt($updatedAt)
   {
-    $this->updateAt = $updateAt;
+    $this->updatedAt = $updatedAt;
   }
 
   /**
    * @return \DateTime
    */
-  public function getUpdateAt()
+  public function getUpdatedAt()
   {
-    return $this->updateAt;
-  }
-
-  public function getToken()
-  {
-    return $this->number;
-  }
-
-  public function getPaymentMethod()
-  {
-    $return = null;
-
-    if ($this->payment) {
-      PaymentMethodTable::getInstance()->find($this->payment);
-    }
-
-    return $return;
+    return $this->updatedAt;
   }
 
   /**
-   * @param int $deliveryPrice
+   * @param int $statusId
+   */
+  public function setStatusId($statusId)
+  {
+    $this->statusId = $statusId;
+  }
+
+  /**
+   * @return int
+   */
+  public function getStatusId()
+  {
+    return $this->statusId;
+  }
+
+  /**
+   * @param float $deliveryPrice
    */
   public function setDeliveryPrice($deliveryPrice)
   {
@@ -575,7 +557,7 @@ class OrderEntity implements ArrayAccess
   }
 
   /**
-   * @return int
+   * @return float
    */
   public function getDeliveryPrice()
   {
@@ -583,47 +565,18 @@ class OrderEntity implements ArrayAccess
   }
 
   /**
-   * Returns true if the request parameter exists (implements the ArrayAccess interface).
-   *
-   * @param  string $name The name of the request parameter
-   *
-   * @return Boolean true if the request parameter exists, false otherwise
+   * @param string $deliveryDate
    */
-  public function offsetExists($name)
+  public function setDeliveryDate($deliveryDate)
   {
-    return method_exists($this, 'get'.sfInflector::camelize($name));
+    $this->deliveryDate = $deliveryDate;
   }
 
   /**
-   * Returns the request parameter associated with the name (implements the ArrayAccess interface).
-   *
-   * @param  string $name  The offset of the value to get
-   *
-   * @return mixed The request parameter if exists, null otherwise
+   * @return string
    */
-  public function offsetGet($name)
+  public function getDeliveryDate()
   {
-    return call_user_func(array($this, 'get'.sfInflector::camelize($name)));
-  }
-
-  /**
-   * Sets the request parameter associated with the offset (implements the ArrayAccess interface).
-   *
-   * @param string $offset The parameter name
-   * @param string $value The parameter value
-   */
-  public function offsetSet($offset, $value)
-  {
-    call_user_func(array($this, 'set'.sfInflector::camelize($offset)), array($value));
-  }
-
-  /**
-   * Removes a request parameter.
-   *
-   * @param string $offset The parameter name
-   */
-  public function offsetUnset($offset)
-  {
-    call_user_func(array($this, 'set'.sfInflector::camelize($offset)), array(null));
+    return $this->deliveryDate;
   }
 }

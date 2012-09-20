@@ -128,7 +128,7 @@ class ProductRepository extends ObjectRepository
   {
     if($limit){
       $idList = array_slice($product->getAccessoryIdList(), 0, $limit);
-      $idList += array_slice($product->getRelatedIdList(), 0, $limit);
+      $idList = array_merge($idList, array_slice($product->getRelatedIdList(), 0, $limit));
     }else{
       $idList = $product->getAccessoryIdList() + $product->getRelatedIdList();
     }
@@ -171,6 +171,27 @@ class ProductRepository extends ObjectRepository
       'id' => $idList,
       'geo_id' => RepositoryManager::getRegion()->getDefaultRegionId(),
     ), $loadDynamic);
+  }
+
+  /**
+   * Load ProductEntity by barcode from core.
+   *
+   * @param array $barcodeList
+   * @param bool $loadDynamic is load dynamic data
+   * @return ProductEntity[]
+   */
+  public function getListByBarcode(array $barcodeList, $loadDynamic = false)
+  {
+    if (empty($barcodeList)) return array();
+
+    $result = CoreClient::getInstance()->query('product/get', array(
+      'select_type' => 'bar_code',
+      'bar_code'    => $barcodeList,
+      'geo_id'      => RepositoryManager::getRegion()->getDefaultRegionId(),
+    ));
+
+    return array_map(function($item) { return $this->create($item); }, $result);
+
   }
 
   /**

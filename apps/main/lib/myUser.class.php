@@ -36,7 +36,7 @@ class myUser extends myGuardSecurityUser
   }
 
   /**
-   * @return UserCart
+   * @return UserCartNew
    */
   public function getCart()
   {

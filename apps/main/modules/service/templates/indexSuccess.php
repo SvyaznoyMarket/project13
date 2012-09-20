@@ -9,11 +9,7 @@
   <?php include_component('default', 'navigation', array('list'=>$categoryTree->getNavigation()));?>
 <?php end_slot() ?>
 
-<div class="servicebanner">
-  Чтобы в квартире появился новый шкаф,
-  <div class="">не нужно просить</div>
-  у соседа шуруповерт.
-</div>
+<div class="servicebanner"></div>
 <div class="slogan">
   <strong>Доставим радость, настроим комфорт!</strong>
   Специалисты F1 привезут и соберут шкаф, повесят телевизор, куда скажете, и установят стиральную машину по всем правилам.
