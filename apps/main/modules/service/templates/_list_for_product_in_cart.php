@@ -169,7 +169,7 @@ foreach ($item->getWarrantyList() as $warranty) {
                     &nbsp;<span class="rubl">p</span>
                 </td>
                 <td class="mEdit">
-                    <a class="button whitelink ml5 mInlineBlock mVAMiddle" href="#">Отменить</a>
+                    <a class="button whitelink ml5 mInlineBlock mVAMiddle" href="<?php echo url_for('cart_warranty_delete', array('warranty' => $warrantiesById[$selectedWarranty->getWarrantyId()]->getId(), 'product' => $item->getId())) ?>">Отменить</a>
                 </td>
             </tr>
             <tr>
