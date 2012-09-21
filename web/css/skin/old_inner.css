@@ -252,9 +252,6 @@ display: inline-block;
 *display: inline;
 zoom: 1;
 }
-.mVAMiddle {
-    vertical-align: middle;
-}
 
 .creditInfo > div {
   display: inline-block;
@@ -785,17 +782,6 @@ border-radius: 5px;
 .selectbox429 .select {width:394px}
 .selectbox429 .styled {width:429px}
 
-.basketline {float:left; width:100%; padding-bottom:25px; border-bottom:1px solid #e6e6e6; margin-bottom:20px}
-.basketleft {float:left; width:120px}
-.basketright {float:left; width:780px; padding-left:20px}
-.goodstitle {float:left; width:329px}
-.basketinfo {float:right; width:451px}
-.basketinfo .left {float:left; width:215px; margin-right:20px; text-align:right}
-.basketinfo .right {float:left; width:216px}
-.basketinfo .button {font-weight:bold}
-.numerbox {width:109px; height:25px; background:url(/css/common/img/bg_inner.png) no-repeat -765px -321px}
-.numerbox b{float:left; display:block; width:27px; height:25px; cursor:pointer}
-.numerbox span{float:left; display:block; width:55px; padding-top:4px; text-align:center}
 .service li{float:left; width:760px; padding:0 0 5px 20px; font-size:11px}
 .service li .pricedata {display:none; float:right; width:451px}
 .service li .pricedata .left {float:left; width:215px; margin-right:20px; text-align:right; font-size:12px}
@@ -1779,61 +1765,6 @@ border-radius: 5px;
 /*----------------- /bSet -------------------*/
 
 
-
-
-/* backert service */
-.bBacketServ{
-	border: 1px solid #e6e6e6;
-	padding: 10px 10px 10px 75px;
-	background: url('img/icon_f1service_big.png') 0 0 no-repeat;
-	}
-	.bBacketServ .whitelink{
-		font-weight: normal;
-		}
-	.bBacketServ .link1{
-		color: #4fcbf4;
-		margin-top: 8px;
-		}
-	.bBacketServ.mSmall{
-		display: inline-block;
-		*display: inline;
-		zoom: 1;
-		}
-	.bBacketServ.mBig table td:first-child{
-		width: 360px;
-		font: bold 14px Tahoma, sans-serif;
-		}
-	.bBacketServ.mBig .mPrice{
-		width: 105px;
-		text-align: right;
-		font: 14px Tahoma, sans-serif;
-		}
-	.bBacketServ.mBig td{
-		padding-bottom: 5px;
-		}
-	.bBacketServ.mBig .mEdit{
-		padding: 0 0 0 20px;
-		font: 11px Tahoma, sans-serif;
-		}
-	.bBacketServ.mBig .mEdit span a{
-		margin: 0 2px;
-		color: #a6a6a6;
-		text-decoration: underline;
-		}
-	.bBacketServ th{
-		color: #4fcbf4;
-		text-align: left;
-		padding-bottom: 5px;
-		font: 14px/20px Tahoma, sans-serif;
-		}
-	.bBacketServ.mSmall td{
-		font: 11px/13px Tahoma, sans-serif;
-		}
-	.bBacketServ__eMore{
-		color: #a6a6a6;
-		text-decoration: underline;
-		font: 11px Tahoma, sans-serif;
-		}
 
 
 .bF1ServiceImg{
@@ -3450,6 +3381,7 @@ border-radius: 5px;
 	background: #f89b1c;
 	border: 1px solid #e26500;
 	font: bold 24px Tahoma, sans-serif;
+	text-align:center;
 
 	display: inline-block;
 	*display: inline;

@@ -2759,6 +2759,129 @@ label.checked {
   line-height: 20px;
 }
 /*---END---F1 всплывающего блока---*/
+/*-------СТИЛИ КОРЗИНЫ-----*/
+.basketline {
+  border-bottom: 1px solid #e6e6e6;
+  float: left;
+  margin-bottom: 20px;
+  padding-bottom: 25px;
+  width: 100%;
+}
+.basketleft {
+  float: left;
+  width: 120px;
+}
+.basketright {
+  float: left;
+  padding-left: 20px;
+  width: 780px;
+}
+.goodstitle {
+  float: left;
+  width: 329px;
+}
+.basketinfo {
+  float: right;
+  width: 451px;
+}
+.basketinfo .left {
+  float: left;
+  margin-right: 20px;
+  text-align: right;
+  width: 215px;
+}
+.basketinfo .right {
+  float: left;
+  width: 216px;
+}
+.basketinfo .button {
+  font-weight: bold;
+}
+.numerbox {
+  background: url("/css/basket/img/basketSprite.png") no-repeat 0 0;
+  height: 25px;
+  width: 109px;
+}
+.numerbox b {
+  cursor: pointer;
+  display: block;
+  float: left;
+  height: 25px;
+  width: 27px;
+}
+.numerbox span {
+  display: block;
+  float: left;
+  padding-top: 4px;
+  text-align: center;
+  width: 55px;
+}
+/* backert service */
+.bBacketServ {
+  background: url("/css/basket/img/basketSprite.png") -109px 0px no-repeat;
+  border: 1px solid #e6e6e6;
+  padding: 10px 10px 10px 75px;
+}
+.bBacketServ .whitelink {
+  font-weight: normal;
+}
+.bBacketServ .link1 {
+  color: #4fcbf4;
+  margin-top: 8px;
+}
+.bBacketServ th {
+  color: #4fcbf4;
+  font-family: Tahoma, sans-serif;
+  font-size: 14px;
+  line-height: 20px;
+  padding-bottom: 5px;
+  text-align: left;
+}
+.bBacketServ.mSmall {
+  display: inline-block;
+  *display: inline;
+  zoom: 1;
+}
+.bBacketServ.mSmall td {
+  font-family: Tahoma, sans-serif;
+  font-size: 11px;
+  line-height: 13px;
+}
+.bBacketServ.mBig td {
+  padding-bottom: 5px;
+}
+.bBacketServ.mBig td:first-child {
+  font-family: Tahoma, sans-serif;
+  font-size: 14px;
+  font-weight: bold;
+  width: 360px;
+}
+.bBacketServ.mBig .mPrice {
+  font-family: Tahoma, sans-serif;
+  font-size: 14px;
+  text-align: right;
+  width: 105px;
+}
+.bBacketServ.mBig .mEdit {
+  font-family: Tahoma, sans-serif;
+  font-size: 11px;
+  padding: 0px 0px 0px 20px;
+}
+.bBacketServ.mBig .mEdit span a {
+  color: #a6a6a6;
+  margin: 0px 2px;
+  text-decoration: underline;
+}
+.bBacketServ__eMore {
+  color: #a6a6a6;
+  font-family: Tahoma, sans-serif;
+  font-size: 11px;
+  text-decoration: underline;
+}
+.mVAMiddle {
+  vertical-align: middle;
+}
+/*---END---СТИЛИ КОРЗИНЫ---*/
 /*-----СТИЛИ ЛАЙТБОКСА-----*/
 .lightbox {
   bottom: 0px;
