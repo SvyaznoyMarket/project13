@@ -95,9 +95,9 @@ class RequestLogger
         $this->_logger->addLogger(new sfFileLogger(new sfEventDispatcher(), array('file' => $file)));
         $fullText = 'Request id: ' . $this->getId() . "\n";
         foreach ($this->_requestList as $log) {
-            $fullText .= $log['time'] . ' ' . $log['text'] . "\n";
+            $fullText .= $log['time'] . ' ' . $log['text'] . " | ";
         }
-        $fullText .= "\n";
+//        $fullText .= "\n";
         $this->_logger->info($fullText);
     }
 }

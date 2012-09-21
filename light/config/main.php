@@ -23,5 +23,4 @@ return array(
     'queuePidFile' => (sys_get_temp_dir() ?: '/tmp').'/enter-queue.pid',
     'queueWorkerLimit' => 10,
     'queueMaxLockTime' => 600,
-    'debug' => False
 );

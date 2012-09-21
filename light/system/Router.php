@@ -50,11 +50,11 @@ class Router
    * Parses a URL based on this rule.
    * @param string $path
    * @return null|string the route that consists of the controller ID and action ID or null
-   * @throws RuntimeException on error found route rule
+   * @throws \RuntimeException on error found route rule
    */
   public function matchUrl($path)
   {
-    $path = '/' . trim($path, '/'); // add root path delimiter
+    $path = '/' . ltrim($path, '/'); // add root path delimiter
     foreach ($this->ruleList as $routeRule) {
       if ($route = $routeRule->matchUrl($path))
         return $route;
@@ -72,7 +72,7 @@ class Router
    * If the name is '#', the corresponding value will be treated as an anchor
    * and will be appended at the end of the URL.
    * @return string the constructed URL
-   * @throws RuntimeException on error found route rule
+   * @throws \RuntimeException on error found route rule
    */
   public function createUrl($route, array $params = array())
   {
@@ -156,7 +156,7 @@ class RouteRule
     // pattern optimization
     $p = rtrim($pattern, '*');
     $this->append = $p !== $pattern;
-    $p = '/' . trim($p, '/'); // add root path delimiter
+    $p = '/' . ltrim($p, '/'); // add root path delimiter
     // render template for generate url
     if ($templateReplaces)
       $this->template = strtr($p, $templateReplaces);
@@ -215,22 +215,12 @@ class RouteRule
         return false;
     }
     foreach ($this->urlParams as $key => $value)
-    {
-        $rawKey = '<' . $key . '>';
-        $value = Null;
-        if(isset($params[$key]))
-        {
-            $value = $params[$key];
-            unset($params[$key]);
-        }
-        else
-        {
-            $rawKey = '/' . $rawKey;
-        }
-
-        $tr[$rawKey] = urlencode($value);
-    }
-
+      if (isset($params[$key])) {
+        $tr['<' . $key . '>'] = urlencode($params[$key]);
+        unset($params[$key]);
+      }
+      else
+        return false;
     $url = strtr($this->template, $tr);
     if (empty($params))
       return $url;

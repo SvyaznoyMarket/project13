@@ -56,7 +56,7 @@
     </logger>
 
     <logger name="RequestLog">
-        <level value="warn" />
+        <level value="info" />
         <appender_ref ref="requestLogFileAppender" />
     </logger>
 

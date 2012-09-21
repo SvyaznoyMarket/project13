@@ -1,8 +1,6 @@
 <?php
 namespace light;
-use Logger;
 use Exception;
-require_once(__DIR__.'/../log4php/Logger.php');
 /**
  * Created by JetBrains PhpStorm.
  * User: Trushina
@@ -29,12 +27,6 @@ class RequestLogger
      * @var array
      */
     private $_requestList = array();
-
-    /**
-     * Объект логера
-     * @var
-     */
-    private $_logger;
 
     /**
      * Получит инстанс для синглтона
@@ -88,17 +80,11 @@ class RequestLogger
         );
     }
 
-    /**
-     * В деструкторе синглтона записываем все собранные данные в лог
-     */
-    public function __destruct() {
-        $this->_logger = Logger::getLogger('RequestLog');
-        $fullText = 'Request id: ' . $this->getId() . "\n";
-        foreach ($this->_requestList as $log) {
-            $fullText .= $log['time'] . ' ' . $log['text'] . "\n";
-        }
-        $fullText .= "\n";
-        $this->_logger->info($fullText);
-
+  public function getStatistics(){
+    $fullText = 'Request id: ' . $this->getId() . " | ";
+    foreach ($this->_requestList as $log) {
+      $fullText .= $log['time'] . ' ' . $log['text'] . " | ";
     }
+    return $fullText;
+  }
 }
