@@ -1372,6 +1372,56 @@ a[title="vkontakte"] {
   background: url('/css/common/img/socIcons.png') no-repeat -52px -26px;
 }
 /*---END---СТИЛИ ФУТЕРА---*/
+/*------СТИЛИ ФУТЕРА ПОКУПОК------*/
+.bBuyingFooter {
+  -webkit-border-radius: 7px;
+  -moz-border-radius: 7px;
+  border-radius: 7px;
+  width: 920px;
+  font-size: 0;
+  padding: 20px 0;
+  margin-top: 50px;
+  background: #f6f6f6;
+  border: 1px solid #dddddd;
+}
+.bBuyingFooter li {
+  width: 160px;
+  padding: 0 12px;
+  vertical-align: top;
+  display: inline-block;
+  *display: inline;
+  zoom: 1;
+}
+.bBuyingFooter div {
+  height: 70px;
+}
+.bBuyingFooter h3 {
+  font: 18px 'Enter';
+}
+.bBuyingFooter span {
+  font-family: Tahoma, sans-serif;
+  font-size: 12px;
+}
+.bBuyingFooter span b {
+  font-size: 18px;
+  font-weight: 100;
+}
+.bBuyingFooter__eEnter {
+  background: url('/css/buyingFooter/img/z_enter.png') 50% 50% no-repeat;
+}
+.bBuyingFooter__eZakaz {
+  background: url('/css/buyingFooter/img/z_zakaz.png') 50% 50% no-repeat;
+}
+.bBuyingFooter__ePeople {
+  background: url('/css/buyingFooter/img/z_people.png') 50% 50% no-repeat;
+}
+.bBuyingFooter__eCar {
+  background: url('/css/buyingFooter/img/z_car.png') 50% 50% no-repeat;
+}
+.bBuyingFooter__eFinger {
+  background: url('/css/buyingFooter/img/z_finger.png') 50% 50% no-repeat;
+}
+/*---END---СТИЛИ ФУТЕРА ПОКУПОК---*/
 /*-----СТИЛИ ЛЕВОЙ НАВИГАЦИИ----*/
 .bCtg {
   border-bottom: 1px solid #e6e6e6;

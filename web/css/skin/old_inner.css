@@ -3939,57 +3939,6 @@ a[title="mastercard"]{
 }
 .bBuyingDates__eEnable.erased, .bBuyingDates__eDisable.erased { display:none }
 
-.bBuyingFooter{
-    width: 920px;
-    font-size:  0;
-    padding: 20px 0;
-    margin-top: 50px;
-    background: #f6f6f6;
-    border: 1px solid #dddddd;
-
-    border-radius: 7px;
-    -webkit-border-radius: 7px;
-    -moz-border-radius: 7px;
-    -o-border-radius: 7px;
-}
-.bBuyingFooter li{
-    width: 160px;
-    padding: 0 12px;
-
-    vertical-align: top;
-    display: inline-block;
-    *display: inline;
-    zoom: 1;
-}
-.bBuyingFooter div{
-    height: 70px;
-}
-.bBuyingFooter h3{
-    font: 18px 'Enter';
-}
-.bBuyingFooter span{
-    font: 12px Tahoma, sans-serif;
-}
-.bBuyingFooter span b{
-    font: 18px Tahoma, sans-serif;
-}
-
-.bBuyingFooter__eEnter{
-    background: url('img/z_enter.png') 50% 50% no-repeat;
-}
-.bBuyingFooter__eZakaz{
-    background: url('img/z_zakaz.png') 50% 50% no-repeat;
-}
-.bBuyingFooter__ePeople{
-    background: url('img/z_people.png') 50% 50% no-repeat;
-}
-.bBuyingFooter__eCar{
-    background: url('img/z_car.png') 50% 50% no-repeat;
-}
-.bBuyingFooter__eFinger{
-    background: url('img/z_finger.png') 50% 50% no-repeat;
-}
-
 .bTooltip{
     padding: 0;
     text-align: center;
