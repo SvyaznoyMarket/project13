@@ -4098,9 +4098,6 @@ div.mSportFont{ color: #e8303c; }
 
 .error_list{ color:red }
 
-.bLabels{ left: 0; display: block; position: absolute; top: 10px !important; }
-.bLabelsQuantity{ width: 50px; height: 27px; padding-top: 6px; background: url('/images/quantity_shild.png') no-repeat; left: 0; display: block; position: absolute; bottom: 10px !important; }
-
 .bRegion .bCall{ display: inline-block; *display: inline; zoom: 1; height: 16px; background: url('img/bCall.png') no-repeat; padding-left: 20px; padding-right: 10px; }
 
 .mOur{ color: #000; font: 12px Tahoma, sans-serif; font-weight: bold; }

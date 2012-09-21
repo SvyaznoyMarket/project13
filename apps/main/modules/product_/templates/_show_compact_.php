@@ -53,10 +53,10 @@ $show_model = (isset($show_model)?$show_model:true) && $item->getModel() && coun
        <div class="photo"> 
           <a href="<?php echo $item->getLink() ?>">
             <?php if (!empty($kit) && $kit->getQuantity()) { ?>
-              <div class="bLabelsQuantity" src="/images/quantity_shild.png"><?php echo $kit->getQuantity(); ?> шт.</div>
+              <!--<div class="bLabelsQuantity" src="/images/quantity_shild.png"><?php echo $kit->getQuantity(); ?> шт.</div>-->
             <?php } ?>
             <?php if ($label = $item->getMainLabel()): ?>
-            <img class="bLabels" src="<?php echo $label->getImageUrl() ?>" alt="<?php echo $label->getName() ?>"/>
+            <!--<img class="bLabels" src="<?php echo $label->getImageUrl() ?>" alt="<?php echo $label->getName() ?>"/>-->
             <?php endif; ?>
             <img class="mainImg" src="<?php echo $item->getMediaImageUrl(2) ?>" alt="<?php echo $title ?>" title="<?php echo $title ?>"
                  width="160" height="160"/>
