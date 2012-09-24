@@ -51,6 +51,7 @@ $view = (isset($view) && $view === 'add') ? 'add' : 'default';
       'jsregionid' => sfContext::getInstance()->getUser()->getRegionCoreId(),
       'jsregionName' => sfContext::getInstance()->getUser()->getRegion('name'),
       'jsstock' => 10,
+      'is_quick_only' => $item->getIsQuickOnly(),
       ));
       ?>
       <a href=""
