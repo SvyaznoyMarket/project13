@@ -3352,6 +3352,12 @@ DT.bCtg__eOrange{
 		.bFast__ePrice div{
 			float: right;
 			}
+	td.newWarehouse{
+		font-size: 15px;
+	}
+	td.newWarehouse img{
+		margin: -21px -3px;
+	}
 
 .bSelect{
 	padding: 0 44px 0 10px;
