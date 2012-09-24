@@ -386,6 +386,55 @@ class cartController
     \LoggerNDC::pop();
   }
 
+  public function deleteWarranty(Response $response, $params = array()){
+    TimeDebug::start('controller:cart:deleteWarranty');
+    $logger = \Logger::getLogger('Cart');
+    \LoggerNDC::push('deleteWarranty');
+    try{
+      if(!array_key_exists('warrantyId', $_GET)){
+        $logger->error('Warranty not specified');
+        throw new \InvalidArgumentException('Не указано, какую гарантию необходимо добавить в корзину');
+      }
+      $warrantyId = (int)$_GET['warrantyId'];
+
+      if(!$warrantyId){
+        $logger->error('Warranty with id "' . $warrantyId . '" not found');
+        throw new \InvalidArgumentException('Гарантия с Id '. $warrantyId . " не найдена.");
+      }
+
+      $productId = (array_key_exists('productId', $_GET))? (int)$_GET['productId'] : 1;
+
+      App::getCurrentUser()->getCart()->removeWarranty($warrantyId, null, $productId);
+
+      TimeDebug::end('controller:cart:deleteWarranty');
+
+      if(App::getRequest()->isXmlHttpRequest()){
+
+        $data = array(
+          'success' => true,
+          'data' => array(
+            'full_quantity' => $this->getTotalQuantityForShow(),
+            'full_price' => App::getCurrentUser()->getCart()->getTotalPrice(),
+            'link' => App::getRouter()->createUrl('order.new')
+          )
+        );
+
+        $response->setContent(json_encode($data));
+        $response->setContentType('application/json');
+      }
+      else{
+        $response->redirect((strlen(App::getRequest()->getReferer()) > 0)? App::getRequest()->getReferer() : '/');
+      }
+    }
+    catch(\Exception $e){
+      $response->setContent(json_encode(array('success' => false, 'debug' => $e->getMessage())));
+      $response->setContentType('application/json');
+      $logger->error('Error: ' . $e->getMessage());
+      TimeDebug::end('controller:cart:deleteWarranty');
+    }
+    \LoggerNDC::pop();
+  }
+
   public function clear(Response $response, $params = array()){
     App::getCurrentUser()->getCart()->clear();
 

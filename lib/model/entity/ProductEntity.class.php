@@ -122,7 +122,7 @@ class ProductEntity
   public function __construct(array $data = array())
   {
     // test
-    $data['additional_warranty'] = array(
+    $data['warranty'] = array(
       array('id' => 1, 'name' => 'Год гарантии',      'price' => 900),
       array('id' => 2, 'name' => 'Два года гарантии', 'price' => 1500),
       array('id' => 3, 'name' => 'Три года гарантии', 'price' => 2000),
@@ -154,9 +154,9 @@ class ProductEntity
     if (array_key_exists('price_average', $data))   $this->priceAverage  = $data['price_average'];
     if (array_key_exists('price_old', $data))       $this->priceOld      = $data['price_old'];
     if (array_key_exists('connected_products_view_mode', $data))  $this->connectedProductsViewMode  = (int)$data['connected_products_view_mode'];
-    if (array_key_exists('additional_warranty', $data) && is_array($data['additional_warranty'])) $this->setWarrantyList(array_map(function($data) {
+    if (array_key_exists('warranty', $data) && is_array($data['warranty'])) $this->setWarrantyList(array_map(function($data) {
       return new WarrantyEntity($data);
-    }, $data['additional_warranty']));
+    }, $data['warranty']));
   }
 
   public function setId($id)

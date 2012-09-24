@@ -156,6 +156,12 @@ class Cart
     $this->totalPrice = null;
   }
 
+  public function removeWarranty($warrantyId, $productId) {
+    $this->dataContainer->removeWarranty($warrantyId, $productId);
+    $this->productWarrantyDataList = null;
+    $this->totalPrice = null;
+  }
+
   /**
    * @return float
    */

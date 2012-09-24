@@ -110,6 +110,14 @@ class SessionCartContainer implements CartContainer
     $_SESSION[$this->sessionName]['warrantyList'][$warrantyId][$productId] = (int)$quantity;
   }
 
+  public function removeWarranty($warrantyId, $productId) {
+    foreach ($_SESSION[$this->sessionName]['warrantyList'] as $i => $warrantiesByProduct) {
+      if (($i == $warrantyId) && array_key_exists($productId, $warrantiesByProduct)) {
+        unset($_SESSION[$this->sessionName]['warrantyList'][$i][$productId]);
+      }
+    }
+  }
+
   public function setServiceQuantity($serviceId, $quantity, $productId=null){
       if(is_null($productId)){
           $productId = 0;
