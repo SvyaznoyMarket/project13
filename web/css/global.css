@@ -1111,6 +1111,15 @@
   text-indent: -1000px;
   width: 130px;
 }
+.extramenu .close {
+  background: url("/css/common/img/closeBtnOrange.png") no-repeat;
+  display: block;
+  height: 26px;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 26px;
+}
 .extramenu .corner {
   /* top: -14px;*/
 
