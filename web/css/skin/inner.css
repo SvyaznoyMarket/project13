@@ -844,12 +844,15 @@ border-radius:5px;
 .goodsbarbig A.link3:hover {background-position:-661px -250px}
 .goodsbarbig A.link3.active {background-position:-156px -280px}
 .goodsbarbig A.link3.disabled {background-position:-830px -288px; margin-left:-1px}
-.goodsbarbig A.link4 {width:105px; background-position:-108px -316px}
-.goodsbarbig A.link4.active {background-position:0 -316px}
-.goodsbarbig A.link4.disabled {background-position:-324px -316px}
+.goodsbarbig A.link10 {width:105px; background-position:-315px -250px}
+.goodsbarbig A.link10:hover {background-position:-509px -250px}
+.goodsbarbig A.link10.disabled {background-position:-311px -283px}
 .goodsbarbig A.link5 {width:105px; background-position:-201px -280px}
 .goodsbarbig A.link5.active {background-position:0 -316px}
 .goodsbarbig A.link5.disabled {background-position:-216px -316px}
+.goodsbarbig A.link10 {width:105px; background-position:-315px -250px}
+.goodsbarbig A.link10:hover {background-position:-509px -250px}
+.goodsbarbig A.link10.disabled {background-position:-311px -283px}
 .goodsbarbig.mSmallBtns{ width: 137px; display: inline-block; *display: inline; zoom; 1;}
 .goodsbarbig.mSmallBtns a.link1{ width: 137px; height: 31px; background: url('/css/skin/img/buy_buttons.png') 0 0 no-repeat;}
 .goodsbarbig.mSmallBtns a.link1:hover{ background: url('/css/skin/img/buy_buttons.png') 0 -31px no-repeat; }
@@ -857,6 +860,10 @@ border-radius:5px;
 .goodsbarbig.mSmallBtns a.link1.active{ background: url('/css/skin/img/buy_buttons.png') 0 -87px no-repeat; }
 .goodsbarbig.mSmallBtns a.link1.disabled, .goodsbarbig.mSmallBtns a.link1.disabled:hover { background: url('/css/skin/img/buy_buttons.png') 0 -118px no-repeat; cursor:default; }
 .goodsbarbig.mSmallBtns a.link1.fr{ floar: right }
+.goodsbarbig.mSmallBtns a.link10{ width: 137px; height: 31px; background: url('/css/skin/img/buy_buttons.png') 0 0 no-repeat;}
+.goodsbarbig.mSmallBtns a.link10:hover{ background: url('/css/skin/img/buy_buttons.png') 0 -31px no-repeat; }
+.goodsbarbig.mSmallBtns a.link10.disabled, .goodsbarbig.mSmallBtns a.link1.disabled:hover { background: url('/css/skin/img/buy_buttons.png') 0 -118px no-repeat; cursor:default; }
+.goodsbarbig.mSmallBtns a.link10.fr{ floar: right }
 
 .goodsbarbig.mSmallBtns {
     display: inline-block;
