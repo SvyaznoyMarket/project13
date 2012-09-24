@@ -35,6 +35,8 @@ $(document).ready(function() {
 				return printPrice( self.price )
 			}, this)
 
+			self.newWarehouse = Model.is_quick_only
+
 			self.formStatus = ko.observable( 'typing' ) // 'process' 'error' 'sending'
 			self.formStatusTxt = ko.computed( function() {
 				var status = ''

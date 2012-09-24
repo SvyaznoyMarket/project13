@@ -110,9 +110,9 @@
             <tr><td colspan=2>
               <a class='bBigOrangeButton' href="" data-bind="css: { disable : noDelivery() },text: formStatusTxt, click: validateForm"></a>
             </td></tr>
-            <tr>
-				<td class="newWarehouse" colspan="2"><img src="/css/skin/img/greenCar.png" alt="green car" />Этот товар живет на новом красивом складе. Мы доставим его отдельным заказом :)</td>
-			</tr>
+            <tr data-bind="if: newWarehouse">
+      				<td class="newWarehouse" colspan="2"><img src="/css/skin/img/greenCar.png" alt="green car" />Этот товар живет на новом красивом складе. Мы доставим его отдельным заказом :)</td>
+      			</tr>
           </table>
         </td>
       </tr>
