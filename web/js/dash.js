@@ -261,10 +261,11 @@ $(document).ready(function(){
 					return true
 				$('.link1',look_extWarr).text('Изменить гарантию')
 				look_extWarr.find('h3').text('Вы выбрали гарантию:')
-				ew_look = $("#ew_look");
-				ew_look.show();
-				$('.ew_title', ew_look).text(extWarr_item.f1title);
-				$('.ew_price', ew_look).text(extWarr_item.f1price);
+				ew_look = $("#ew_look")
+				$('.ew_title', ew_look).text(extWarr_item.f1title)
+				$('.ew_price', ew_look).text(extWarr_item.f1price)
+				$('.bBacketServ__eMore', ew_look).attr('href', extWarr_item.deleteurl)
+				ew_look.show()
 				var tmpitem = {
 						'id'    : $('.goodsbarbig .link1').attr('href'),
 						'title' : $('h1').html(),
@@ -282,6 +283,21 @@ $(document).ready(function(){
 					isInCart = true
 					markPageButtons()
 				}
+			})
+			return false
+		})
+		$('a.bBacketServ__eMore', look_extWarr).live('click', function(){
+			var thislink = this
+			$.getJSON( $(this).attr('href'), function(ext_data) {
+				if( !data.success )
+					return true
+				var line = $(thislink).parent()
+				f1lines_extWarr.find('td[ref='+ line.attr('ref') +']').find('input').val('Купить услугу').removeClass('active')
+				line.hide()
+				ltbx.update({ sum: ext_data.data.full_price })
+	
+				if( !$('a.bBacketServ__eMore', look_extWarr).length )
+					look_extWarr.find('h3').html('Выбирай услуги F1<br/>вместе с этим товаром')
 			})
 			return false
 		})
