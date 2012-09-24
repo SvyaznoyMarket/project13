@@ -13,9 +13,9 @@ class FillerLayout implements IFiller
         $renderer = App::getHtmlRenderer();
         $renderer->addParameter('wpFooter', $wpResponse['content']);
 
-        $renderer->addCss('font.css');
+        // $renderer->addCss('font.css');
         $renderer->addCss('jquery-ui-1.8.20.custom.css');
-        $renderer->addCss('navy.css');
+        // $renderer->addCss('navy.css');
         $renderer->addCss('skin/inner.css');
 
         $renderer->addJS('jquery-1.6.4.min.js');
