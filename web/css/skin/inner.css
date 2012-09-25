@@ -825,6 +825,9 @@ LABEL.checked {color:#ffa901}
 .goodsbarbig a.link5 {width:105px; background-position:-201px -280px}
 .goodsbarbig a.link5.active {background-position:0 -316px}
 .goodsbarbig a.link5.disabled {background-position:-216px -316px}
+.goodsbarbig a.link10 {width:105px; background-position:-315px -250px}
+.goodsbarbig a.link10:hover {background-position:-509px -250px}
+.goodsbarbig a.link10.disabled {background-position:-311px -283px}
 .goodsbarbig.mSmallBtns{ width: 137px; display: inline-block; *display: inline; zoom: 1;}
 .goodsbarbig.mSmallBtns a.link1{ width: 137px; height: 31px; background: url('/css/skin/img/buy_buttons.png') 0 0 no-repeat;}
 .goodsbarbig.mSmallBtns a.link1:hover{ background: url('/css/skin/img/buy_buttons.png') 0 -31px no-repeat; }
@@ -832,6 +835,10 @@ LABEL.checked {color:#ffa901}
 .goodsbarbig.mSmallBtns a.link1.active{ background: url('/css/skin/img/buy_buttons.png') 0 -87px no-repeat; }
 .goodsbarbig.mSmallBtns a.link1.disabled, .goodsbarbig.mSmallBtns a.link1.disabled:hover { background: url('/css/skin/img/buy_buttons.png') 0 -118px no-repeat; cursor:default; }
 .goodsbarbig.mSmallBtns a.link1.fr{ floar: right }
+.goodsbarbig.mSmallBtns a.link10{ width: 137px; height: 31px; background: url('/css/skin/img/buy_buttons.png') 0 0 no-repeat;}
+.goodsbarbig.mSmallBtns a.link10:hover{ background: url('/css/skin/img/buy_buttons.png') 0 -31px no-repeat; }
+.goodsbarbig.mSmallBtns a.link10.disabled, .goodsbarbig.mSmallBtns a.link1.disabled:hover { background: url('/css/skin/img/buy_buttons.png') 0 -118px no-repeat; cursor:default; }
+.goodsbarbig.mSmallBtns a.link10.fr{ floar: right }
 
 .goodsbarbig.mSmallBtns {
     display: inline-block;
@@ -3114,6 +3121,12 @@ dt.bCtg__eOrange{
 		.bFast__ePrice div{
 			float: right;
 			}
+	td.newWarehouse{
+		font-size: 15px;
+	}
+	td.newWarehouse img{
+		margin: -21px -3px;
+	}
 
 .bSelect{
 	padding: 0 44px 0 10px;

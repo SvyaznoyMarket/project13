@@ -21,6 +21,7 @@ $json = json_encode(array (
   'jsregionid' => sfContext::getInstance()->getUser()->getRegionCoreId(),
   'jsregionName' => sfContext::getInstance()->getUser()->getRegion('name'),
   'jsstock' => 10,
+  'is_quick_only' => $item->getIsQuickOnly(),
 ));
 ?>
 <?php

@@ -35,6 +35,8 @@ $(document).ready(function() {
 				return printPrice( self.price )
 			}, this)
 
+			self.newWarehouse = Model.is_quick_only
+
 			self.formStatus = ko.observable( 'typing' ) // 'process' 'error' 'sending'
 			self.formStatusTxt = ko.computed( function() {
 				var status = ''
@@ -377,7 +379,7 @@ $(document).ready(function() {
 						$('.bFast').remove()
 						$('.p0').removeClass('p0')
 						$('.top0').removeClass('top0')
-						$('.order1click-link-new').remove()
+						// $('.order1click-link-new').remove()
 						if( typeof(_gaq) !== 'undefined' && typeof(runAnalitics) !== 'undefined' )
 							runAnalitics()
 						ANALYTICS.parseAllAnalDivs( $('.jsanalytics') )
