@@ -52,7 +52,7 @@ class WPRequest
         return $optionList;
     }
 
-    public function send($actionUri, $parameterList = array(), $method = self::methodPost, $timeout = 30, $json = True)
+    public function send($actionUri, $parameterList = array(), $method = self::methodPost, $timeout = 1, $json = True)
     {
         if($json)
         {
