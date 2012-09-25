@@ -239,9 +239,9 @@ if ($showRelatedUpper && count($item->getRelatedList())){
   <?php echo $description ?>
 </ul>
 <!-- /Information  -->
-<div class="clear"></div>
-<?php endif ?>
 
+<?php endif ?>
+<div class="clear"></div>
 <?php if ('kit' != $item->getView()): ?>
 <!-- Description -->
 <h2 class="bold"><?php echo $item->getName() ?> - Характеристики</h2>
