@@ -15,21 +15,22 @@ class SessionCartContainer implements CartContainer
 
   private $sessionName = 'userCart';
 
-  public function __construct(){
+  public function __construct()
+  {
 
     /**
      * Если человек впервые - заводим ему пустую корзину
      */
-    if(!array_key_exists($this->sessionName, $_SESSION)){
+    if (!array_key_exists($this->sessionName, $_SESSION)) {
       $_SESSION[$this->sessionName] = array('productList' => array(), 'serviceList' => array());
       return;
     }
 
-    if(!array_key_exists('productList', $_SESSION[$this->sessionName])){
+    if (!array_key_exists('productList', $_SESSION[$this->sessionName])) {
       $_SESSION[$this->sessionName]['productList'] = array();
     }
 
-    if(!array_key_exists('serviceList', $_SESSION[$this->sessionName])){
+    if (!array_key_exists('serviceList', $_SESSION[$this->sessionName])) {
       $_SESSION[$this->sessionName]['serviceList'] = array();
     }
 
@@ -37,137 +38,153 @@ class SessionCartContainer implements CartContainer
     /**
      * Очищаем корзину от продуктов и услуг с количеством меньше 1
      */
-    foreach($_SESSION[$this->sessionName]['productList'] as $productId => $quantity){
-      if ($quantity < 1){
+    foreach ($_SESSION[$this->sessionName]['productList'] as $productId => $quantity) {
+      if ($quantity < 1) {
         unset($_SESSION[$this->sessionName]['productList'][$productId]);
       }
     }
 
-    foreach($_SESSION[$this->sessionName]['serviceList'] as $serviceId => $product){
-      foreach($product as $productId => $quantity){
-        if ($quantity < 1){
+    foreach ($_SESSION[$this->sessionName]['serviceList'] as $serviceId => $product) {
+      foreach ($product as $productId => $quantity) {
+        if ($quantity < 1) {
           unset($_SESSION[$this->sessionName]['serviceList'][$serviceId][$productId]);
         }
       }
-      if(count($_SESSION[$this->sessionName]['serviceList'][$serviceId]) < 1){
+      if (count($_SESSION[$this->sessionName]['serviceList'][$serviceId]) < 1) {
         unset($_SESSION[$this->sessionName]['serviceList'][$serviceId]);
       }
     }
   }
 
-  public function addProduct($productId){
-    if(!array_key_exists($productId, $_SESSION[$this->sessionName]['productList'])){
-      $_SESSION[$this->sessionName]['productList'][$productId] = 1;
+  public function shiftProduct()
+  {
+    reset($_SESSION[$this->sessionName]['productList']);
+
+    if ($_SESSION[$this->sessionName]['productList']) {
+      $key = key($_SESSION[$this->sessionName]['productList']);
+      unset($_SESSION[$this->sessionName]['productList'][$key]);
     }
-    else{
+  }
+
+  public function hasProduct($productId)
+  {
+    return array_key_exists($productId, $_SESSION[$this->sessionName]['productList']);
+  }
+
+  public function addProduct($productId)
+  {
+    if (!array_key_exists($productId, $_SESSION[$this->sessionName]['productList'])) {
+      $_SESSION[$this->sessionName]['productList'][$productId] = 1;
+    } else {
       $_SESSION[$this->sessionName]['productList'][$productId] += 1;
     }
   }
 
-    public function setProductQuantity($productId, $quantity){
-        $_SESSION[$this->sessionName]['productList'][$productId] = (int) $quantity;
-    }
+  public function setProductQuantity($productId, $quantity)
+  {
+    $_SESSION[$this->sessionName]['productList'][$productId] = (int)$quantity;
+  }
 
-  public function addService($serviceId, $quantity, $productId=null){
-    if(is_null($productId)){
+  public function addService($serviceId, $quantity, $productId = null)
+  {
+    if (is_null($productId)) {
       $productId = 0;
-    }
-    else{
-      $productId = (int) $productId;
+    } else {
+      $productId = (int)$productId;
     }
 
-    if(!array_key_exists($serviceId, $_SESSION[$this->sessionName]['serviceList'])){
-      $_SESSION[$this->sessionName]['serviceList'][$serviceId] = array($productId => (int) $quantity);
-    }
-    else{
-      if(!array_key_exists($productId, $_SESSION[$this->sessionName]['serviceList'][$serviceId])){
-        $_SESSION[$this->sessionName]['serviceList'][$serviceId][$productId] = (int) $quantity;
-      }
-      else{
-        $_SESSION[$this->sessionName]['serviceList'][$serviceId][$productId] += (int) $quantity;
+    if (!array_key_exists($serviceId, $_SESSION[$this->sessionName]['serviceList'])) {
+      $_SESSION[$this->sessionName]['serviceList'][$serviceId] = array($productId => (int)$quantity);
+    } else {
+      if (!array_key_exists($productId, $_SESSION[$this->sessionName]['serviceList'][$serviceId])) {
+        $_SESSION[$this->sessionName]['serviceList'][$serviceId][$productId] = (int)$quantity;
+      } else {
+        $_SESSION[$this->sessionName]['serviceList'][$serviceId][$productId] += (int)$quantity;
       }
     }
   }
 
-    public function setServiceQuantity($serviceId, $quantity, $productId=null){
-        if(is_null($productId)){
-            $productId = 0;
-        }
-        else{
-            $productId = (int) $productId;
-        }
-
-        $_SESSION[$this->sessionName]['serviceList'][$serviceId][$productId] = (int) $quantity;
+  public function setServiceQuantity($serviceId, $quantity, $productId = null)
+  {
+    if (is_null($productId)) {
+      $productId = 0;
+    } else {
+      $productId = (int)$productId;
     }
 
-  public function removeProduct($productId, $quantity=null){
+    $_SESSION[$this->sessionName]['serviceList'][$serviceId][$productId] = (int)$quantity;
+  }
+
+  public function removeProduct($productId, $quantity = null)
+  {
 
     $logger = \Logger::getLogger('Cart');
     \LoggerNDC::push('removeProduct');
-    if(!array_key_exists($productId, $_SESSION[$this->sessionName]['productList'])){
+    if (!array_key_exists($productId, $_SESSION[$this->sessionName]['productList'])) {
       $logger->error('Product with id "' . $productId . '" not found');
       return;
     }
     \LoggerNDC::pop();
 
-    if(is_null($quantity)){
+    if (is_null($quantity)) {
       //удаляем целиком
       unset ($_SESSION[$this->sessionName]['productList'][$productId]);
-    }
-    else{
-      $_SESSION[$this->sessionName]['productList'][$productId] -= (int) $quantity;
-      if($_SESSION[$this->sessionName]['productList'][$productId] < 1){
+    } else {
+      $_SESSION[$this->sessionName]['productList'][$productId] -= (int)$quantity;
+      if ($_SESSION[$this->sessionName]['productList'][$productId] < 1) {
         unset ($_SESSION[$this->sessionName]['productList'][$productId]);
       }
     }
   }
 
-  public function removeService($serviceId, $quantity=null, $productId=0){
+  public function removeService($serviceId, $quantity = null, $productId = 0)
+  {
 
     $logger = \Logger::getLogger('Cart');
     \LoggerNDC::push('removeService');
-    if(!array_key_exists($serviceId, $_SESSION[$this->sessionName]['serviceList'])){
+    if (!array_key_exists($serviceId, $_SESSION[$this->sessionName]['serviceList'])) {
       $logger->error('Service with id "' . $serviceId . '" not found');
       return;
     }
 
-/*    $productId = (int) $productId;
+    /*    $productId = (int) $productId;
 
     if(!array_key_exists($productId, $_SESSION[$this->sessionName]['serviceList'][$serviceId])){
       $logger->error('Product with id "' . $productId . '" not found');
       return;
     }*/
 
-    if(is_null($quantity)){
+    if (is_null($quantity)) {
       //удаляем целиком
       unset ($_SESSION[$this->sessionName]['serviceList'][$serviceId][$productId]);
-    }
-    else{
-      $_SESSION[$this->sessionName]['serviceList'][$serviceId][$productId] -= (int) $quantity;
-      if($_SESSION[$this->sessionName]['serviceList'][$serviceId][$productId] < 1){
+    } else {
+      $_SESSION[$this->sessionName]['serviceList'][$serviceId][$productId] -= (int)$quantity;
+      if ($_SESSION[$this->sessionName]['serviceList'][$serviceId][$productId] < 1) {
         unset ($_SESSION[$this->sessionName]['serviceList'][$serviceId][$productId]);
       }
     }
     \LoggerNDC::pop();
   }
 
-  public function clear(){
+  public function clear()
+  {
     $_SESSION[$this->sessionName] = array('productList' => array(), 'serviceList' => array());
   }
 
-  public function getProductsQuantity(){
+  public function getProductsQuantity()
+  {
     return count($_SESSION[$this->sessionName]['productList']);
   }
 
-  public function getServicesQuantity($productId=null){
-    if(is_null($productId)){
+  public function getServicesQuantity($productId = null)
+  {
+    if (is_null($productId)) {
       return count($_SESSION[$this->sessionName]['serviceList']);
-    }
-    else{
-      $productId = (int) $productId;
+    } else {
+      $productId = (int)$productId;
       $cnt = 0;
-      foreach($_SESSION[$this->sessionName]['serviceList'] as $service){
-        if(array_key_exists($productId, $service)){
+      foreach ($_SESSION[$this->sessionName]['serviceList'] as $service) {
+        if (array_key_exists($productId, $service)) {
           $cnt++;
         }
       }
@@ -178,14 +195,15 @@ class SessionCartContainer implements CartContainer
   /**
    * @return int
    */
-  public function getTotalQuantity(){
+  public function getTotalQuantity()
+  {
     $total = 0;
-    foreach($_SESSION[$this->sessionName]['serviceList'] as $service){
-      foreach($service as $quantity){
+    foreach ($_SESSION[$this->sessionName]['serviceList'] as $service) {
+      foreach ($service as $quantity) {
         $total += $quantity;
       }
     }
-    foreach($_SESSION[$this->sessionName]['productList'] as $quantity){
+    foreach ($_SESSION[$this->sessionName]['productList'] as $quantity) {
       $total += $quantity;
     }
     return $total;
@@ -196,17 +214,17 @@ class SessionCartContainer implements CartContainer
    * @param int | null $productId
    * @return int
    */
-  public function getServiceQuantity($serviceId, $productId=null){
-    if(!array_key_exists($serviceId, $_SESSION[$this->sessionName]['serviceList'])){
+  public function getServiceQuantity($serviceId, $productId = null)
+  {
+    if (!array_key_exists($serviceId, $_SESSION[$this->sessionName]['serviceList'])) {
       return 0;
     }
     $quantity = 0;
-    foreach($_SESSION[$this->sessionName]['serviceList'][$serviceId] as $prodId => $serviceQuantity){
-      if((int) $serviceQuantity < 1){
+    foreach ($_SESSION[$this->sessionName]['serviceList'][$serviceId] as $prodId => $serviceQuantity) {
+      if ((int)$serviceQuantity < 1) {
         unset($_SESSION[$this->sessionName]['serviceList'][$serviceId][$prodId]);
-      }
-      else{
-        if(is_null($productId) || $productId == $prodId){
+      } else {
+        if (is_null($productId) || $productId == $prodId) {
           $quantity += $serviceQuantity;
         }
       }
@@ -214,7 +232,8 @@ class SessionCartContainer implements CartContainer
     return $quantity;
   }
 
-  public function getProductIdList(){
+  public function getProductIdList()
+  {
     return array_keys($_SESSION[$this->sessionName]['productList']);
   }
 
@@ -222,10 +241,11 @@ class SessionCartContainer implements CartContainer
    * @param $productId
    * @return int
    */
-  public function getProductQuantity($productId){
-    $productId = (int) $productId;
-    if(array_key_exists($productId, $_SESSION[$this->sessionName]['productList'])){
-      if((int) $_SESSION[$this->sessionName]['productList'][$productId] < 1){
+  public function getProductQuantity($productId)
+  {
+    $productId = (int)$productId;
+    if (array_key_exists($productId, $_SESSION[$this->sessionName]['productList'])) {
+      if ((int)$_SESSION[$this->sessionName]['productList'][$productId] < 1) {
         unset($_SESSION[$this->sessionName]['productList'][$productId]);
         return 0;
       }
@@ -234,15 +254,16 @@ class SessionCartContainer implements CartContainer
     return 0;
   }
 
-  public function getServiceIdList($productId=null){
-    if(is_null($productId)){
+  public function getServiceIdList($productId = null)
+  {
+    if (is_null($productId)) {
       return array_keys($_SESSION[$this->sessionName]['serviceList']);
     }
 
     $idList = array();
 
-    foreach($_SESSION[$this->sessionName]['serviceList'] as $serviceId => $service){
-      foreach($service as $productId => $quantity){
+    foreach ($_SESSION[$this->sessionName]['serviceList'] as $serviceId => $service) {
+      foreach ($service as $productId => $quantity) {
         $idList[] = $serviceId;
       }
     }
@@ -250,11 +271,12 @@ class SessionCartContainer implements CartContainer
     return array_unique($idList);
   }
 
-  public function getProductsQuantities(){
+  public function getProductsQuantities()
+  {
     $return = array();
-    foreach($_SESSION[$this->sessionName]['productList'] as $productId => $productQuantity){
+    foreach ($_SESSION[$this->sessionName]['productList'] as $productId => $productQuantity) {
       $return[] = array(
-        'id' => $productId,
+        'id'       => $productId,
         'quantity' => $productQuantity
       );
     }
@@ -262,16 +284,17 @@ class SessionCartContainer implements CartContainer
     return $return;
   }
 
-  public function getServicesQuantities(){
+  public function getServicesQuantities()
+  {
     $return = array();
-    foreach($_SESSION[$this->sessionName]['serviceList'] as $serviceId => $serviceList){
-      foreach($serviceList as $productId => $serviceQuantity){
-        $data =array(
-          'id' => $serviceId,
+    foreach ($_SESSION[$this->sessionName]['serviceList'] as $serviceId => $serviceList) {
+      foreach ($serviceList as $productId => $serviceQuantity) {
+        $data = array(
+          'id'       => $serviceId,
           'quantity' => $serviceQuantity
         );
-        if(intval($productId) > 0){
-          $data['product_id'] = (int) $productId;
+        if (intval($productId) > 0) {
+          $data['product_id'] = (int)$productId;
         }
         $return[] = $data;
       }

@@ -3,8 +3,8 @@
 namespace light;
 use Logger;
 
-require_once(ROOT_PATH.'system/App.php');
-require_once(ROOT_PATH.'lib/TimeDebug.php');
+require_once(Config::get('rootPath').'system/App.php');
+require_once(Config::get('rootPath').'lib/TimeDebug.php');
 
 class queueController
 {
@@ -35,7 +35,7 @@ class queueController
       $this->dbh->beginTransaction();
 
       // (незаблокированные или вылетившие по таймауту) и с именем {$queueName}
-      $clause = '(locked_at IS NULL OR TIMESTAMPDIFF(SECOND, locked_at, NOW()) > '.QUEUE_MAX_LOCK_TIME.') AND name'.(false === strpos($queueName, ',') ? " = '{$queueName}'" : " IN ($queueName)");
+      $clause = '(locked_at IS NULL OR TIMESTAMPDIFF(SECOND, locked_at, NOW()) > '.Config::get('queueMaxLockTime').') AND name'.(false === strpos($queueName, ',') ? " = '{$queueName}'" : " IN ($queueName)");
       $sth = $this->dbh->query("SELECT id, name, body FROM `queue` WHERE {$clause} LIMIT {$limit}");
       $sth->execute();
 
@@ -186,7 +186,7 @@ class queueController
 
   private function touchWorkerNum($num) {
     // проверка на количество одновременно запущенных воркеров
-    $file = QUEUE_PID_FILE;
+    $file = Config::get('queuePidFile');
 
     $fp = fopen($file, 'c+');
     while (!$fp) {
@@ -198,7 +198,7 @@ class queueController
 
     if ($fp) {
       $count = (int)file_get_contents($file);
-      if (($num > 0) && ($count > QUEUE_WORKER_LIMIT)) {
+      if (($num > 0) && ($count > Config::get('queueWorkerLimit'))) {
         throw new \Exception('Превышен лимит запущенных воркеров.');
       }
 
@@ -213,12 +213,12 @@ class queueController
   }
 
   private function getClient() {
-    require_once ROOT_PATH.'lib/smartengine/SmartengineClient.php';
+    require_once Config::get('rootPath').'lib/smartengine/SmartengineClient.php';
 
     return new SmartengineClient(array(
-      'api_url'  => SMARTENGINE_API_URL,
-      'api_key'  => SMARTENGINE_API_KEY,
-      'tenantid' => SMARTENGINE_TENANTID,
+      'api_url'  => Config::get('smartEngine.apiUrl'),
+      'api_key'  => Config::get('smartEngine.apiKey'),
+      'tenantid' => Config::get('smartEngine.tenantid'),
     ));
   }
 }

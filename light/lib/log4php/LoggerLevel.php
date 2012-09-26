@@ -73,7 +73,7 @@ class LoggerLevel {
 	/**
 	 * Compares two logger levels.
 	 *
-	 * @param LoggerLevels $other
+	 * @param \LoggerLevels $other
 	 * @return boolean 
 	 */
 	public function equals($other) {
@@ -191,7 +191,13 @@ class LoggerLevel {
 	 * @return boolean
 	 */
 	public function isGreaterOrEqual($other) {
-		return $this->level >= $other->level;
+    if(is_object($other) && is_a($other, '\LoggerLevel')){
+      $otherLvl = $other->level;
+    }
+    else{
+      $otherLvl = 0;
+    }
+		return $this->level >= $otherLvl;
 	}
 
 	/**

@@ -50,8 +50,6 @@
 			$LAB.queueWait( function() {
 				$LAB.script( getWithVersion('ports.js') )
 				.script( getWithVersion('library.js') )
-				.script('shelf/jquery.countdown.min.js')
-				.script('shelf/jquery.countdown-ru.js?v=2')
 				.wait()
 				.script(getWithVersion('welcome.js'))
 			}).runQueue()
@@ -93,7 +91,7 @@
                 .script( 'http://direct-credit.ru/widget/api_script_utf.js' )
 				.wait()
 				.script(getWithVersion('app.order.v4.js'))
-				.script(getWithVersion('main.js'))
+				.script(getWithVersion('main.js'))				
 			}).runQueue()
 			break
 		case 'order_complete':
@@ -116,7 +114,6 @@
                     .wait()
                     .script(getWithVersion('app.order.js'))
                     .script(getWithVersion('main.js'))
-                    .script(getWithVersion('app.order.error.js'))
             }).runQueue()
             break
 		case 'product_catalog':
@@ -163,7 +160,6 @@
 				.wait()
 				.script( getWithVersion('app.product.js') )
 				.script( getWithVersion('app.product.comment.list.js') )
-				.script( getWithVersion('app.product.comment.new.js') )
 			}).runQueue()
 			break
 		case 'service':

@@ -6,6 +6,23 @@ $(document).ready(function(){
 		docCookies.setItem( false, "admitad_uid", url_s.admitad_uid, 31536e3, '/') // 31536e3 == one year
 	}
 
+	/* Jira */
+	$.ajax({
+	    url: "https://jira.enter.ru/s/en_US-istibo/773/3/1.2.4/_/download/batch/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector.js?collectorId=2e17c5d6",
+	    type: "get",
+	    cache: true,
+	    dataType: "script"
+	});
+
+	 window.ATL_JQ_PAGE_PROPS =  {
+		"triggerFunction": function(showCollectorDialog) {
+			$("#jira").click(function(e) {
+				e.preventDefault()
+				showCollectorDialog()
+			})
+		}
+	}
+
 	/* sclub card number */
 	if( document.location.search.match(/scid/) ) {
 		var url_s = parse_url( document.location.search )
@@ -725,7 +742,7 @@ $(document).ready(function(){
 	/* Top Menu */
 	if( $('.topmenu').length ) {
 		$.get('/category/main_menu', function(data){
-			$('.bHeader').append( data )
+			$('#header').append( data )
 		})
 	}
 
@@ -733,7 +750,7 @@ $(document).ready(function(){
 	var currentMenu = 0 // ref= product ID
 	function showList( self ) {	
 		if(	$(self).data('run') ) {
-			var dmenu = $(self).position().left*1 + $(self).width()*1 / 2 - 15
+			var dmenu = $(self).position().left*1 + $(self).width()*1 / 2 + 5
 			var punkt = $( '#extramenu-root-'+ $(self).attr('id').replace(/\D+/,'') )
 			if( punkt.length && punkt.find('dl').html().replace(/\s/g,'') != '' )
 				punkt.show().find('.corner').css('left', dmenu)

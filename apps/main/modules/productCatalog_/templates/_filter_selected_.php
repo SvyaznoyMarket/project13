@@ -1,6 +1,7 @@
 <?php
 /**
  * @var $productFilter ProductCoreFormFilterSimple
+ * @var $productCategory ProductCategoryEntity
  * @var $sf_data mixed
  */
 $list = $productFilter->getSelectedList();
@@ -18,6 +19,6 @@ if(count($list)):
         <?php endforeach ?>
     </ul>
     <a class="bSpecSel__eReset"
-       href="<?php echo url_for('productCatalog_category', $sf_data->getRaw('productCategory')) ?>">сбросить все</a>
+       href="<?php echo url_for('productCatalog_category', array('productCategory' => $productCategory->getTokenPrefix() ? ($productCategory->getTokenPrefix().'/'.$productCategory->getToken()) : $productCategory->getToken())) ?>">сбросить все</a>
 </div>
 <?php endif; ?>
