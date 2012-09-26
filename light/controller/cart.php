@@ -404,7 +404,7 @@ class cartController
 
       $productId = (array_key_exists('productId', $_GET))? (int)$_GET['productId'] : 1;
 
-      App::getCurrentUser()->getCart()->removeWarranty($warrantyId, null, $productId);
+      App::getCurrentUser()->getCart()->removeWarranty($warrantyId, $productId);
 
       TimeDebug::end('controller:cart:deleteWarranty');
 

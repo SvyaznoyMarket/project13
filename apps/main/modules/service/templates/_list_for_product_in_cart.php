@@ -160,7 +160,7 @@ foreach ($item->getWarrantyList() as $warranty) {
             </tr>
             <tr>
                 <td>
-                    <span class="ew_title"><?php echo $warrantiesById[$selectedWarranty->getWarrantyId()]->getName() ?></span>
+                    <span class="ew_title"><?php echo $warrantiesById[$selectedWarranty->getId()]->getName() ?></span>
                     <br>
                     <a class="bBacketServ__eMore" href="#">Подробнее об услуге</a>
                 </td>
@@ -169,7 +169,7 @@ foreach ($item->getWarrantyList() as $warranty) {
                     &nbsp;<span class="rubl">p</span>
                 </td>
                 <td class="mEdit">
-                    <a class="button whitelink ml5 mInlineBlock mVAMiddle" href="<?php echo url_for('cart_warranty_delete', array('warranty' => $warrantiesById[$selectedWarranty->getWarrantyId()]->getId(), 'product' => $item->getId())) ?>">Отменить</a>
+                    <a class="button whitelink ml5 mInlineBlock mVAMiddle" href="<?php echo url_for('cart_warranty_delete', array('warranty' => $warrantiesById[$selectedWarranty->getId()]->getId(), 'product' => $item->getId())) ?>">Отменить</a>
                 </td>
             </tr>
             <tr>

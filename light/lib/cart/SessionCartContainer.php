@@ -110,14 +110,6 @@ class SessionCartContainer implements CartContainer
     $_SESSION[$this->sessionName]['warrantyList'][$warrantyId][$productId] = (int)$quantity;
   }
 
-  public function removeWarranty($warrantyId, $productId) {
-    foreach ($_SESSION[$this->sessionName]['warrantyList'] as $i => $warrantiesByProduct) {
-      if (($i == $warrantyId) && array_key_exists($productId, $warrantiesByProduct)) {
-        unset($_SESSION[$this->sessionName]['warrantyList'][$i][$productId]);
-      }
-    }
-  }
-
   public function setServiceQuantity($serviceId, $quantity, $productId=null){
       if(is_null($productId)){
           $productId = 0;
@@ -178,6 +170,14 @@ class SessionCartContainer implements CartContainer
       }
     }
     \LoggerNDC::pop();
+  }
+
+  public function removeWarranty($warrantyId, $productId) {
+    foreach ($_SESSION[$this->sessionName]['warrantyList'] as $i => $warrantiesByProduct) {
+      if (($i == $warrantyId) && array_key_exists($productId, $warrantiesByProduct)) {
+        unset($_SESSION[$this->sessionName]['warrantyList'][$i][$productId]);
+      }
+    }
   }
 
   public function clear(){
@@ -305,6 +305,23 @@ class SessionCartContainer implements CartContainer
         $return[] = $data;
       }
     }
+
+    return $return;
+  }
+
+  public function getWarrantiesQuantities(){
+    $return = array();
+    foreach($_SESSION[$this->sessionName]['warrantyList'] as $warrantyId => $warrantiesByProduct) {
+      foreach($warrantiesByProduct as $productId => $warrantyQuantity){
+        $data =array(
+          'id'         => $warrantyId,
+          'quantity'   => $warrantyQuantity,
+          'product_id' => (int)$productId,
+        );
+        $return[] = $data;
+      }
+    }
+
     return $return;
   }
 }

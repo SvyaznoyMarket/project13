@@ -121,13 +121,6 @@ class ProductEntity
 
   public function __construct(array $data = array())
   {
-    // test
-    $data['warranty'] = array(
-      array('id' => 1, 'name' => 'Год гарантии',      'price' => 900),
-      array('id' => 2, 'name' => 'Два года гарантии', 'price' => 1500),
-      array('id' => 3, 'name' => 'Три года гарантии', 'price' => 2000),
-    );
-
     if (array_key_exists('id', $data))              $this->id            = (int)$data['id'];
     if (array_key_exists('view_id', $data))         $this->viewId        = (int)$data['view_id'];
     if (array_key_exists('set_id', $data))          $this->setId         = (int)$data['set_id'];

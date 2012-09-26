@@ -52,12 +52,12 @@ $listInCart = $item->getServiceListInCart();
     <img alt="Дополнительная гарантия" class="bF1Info_Logo" src="/images/F1_logo_extWarranty.jpg">
     <?php if ($warranty = $user->getCart()->getWarrantyByProduct($item->getId())) { ?>
       <h3>Вы выбрали гарантию:</h3>
-      <div id="ew_look" ref="<?php echo $warranty->getWarrantyId() ?>">
-          <span class="ew_title"><?php echo $warrantiesById[$warranty->getWarrantyId()]->getName() ?></span>
+      <div id="ew_look" ref="<?php echo $warranty->getId() ?>">
+          <span class="ew_title"><?php echo $warrantiesById[$warranty->getId()]->getName() ?></span>
           - <span class="ew_price"><?php echo formatPrice($warranty->getPrice()) ?></span>&nbsp;
           <span class="rubl"> p</span>
           <br>
-          <a class="bBacketServ__eMore" href="<?php echo url_for('cart_warranty_delete', array('warranty' => $warranty->getWarrantyId(), 'product' => $item->getId())) ?>">Отменить услугу</a>
+          <a class="bBacketServ__eMore" href="<?php echo url_for('cart_warranty_delete', array('warranty' => $warranty->getId(), 'product' => $item->getId())) ?>">Отменить услугу</a>
       </div>
     <?php } else { ?>
       <h3>Дополнительная<br />гарантия</h3>
