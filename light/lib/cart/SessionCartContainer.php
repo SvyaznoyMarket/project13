@@ -305,6 +305,23 @@ class SessionCartContainer implements CartContainer
         $return[] = $data;
       }
     }
+
+    return $return;
+  }
+
+  public function getWarrantiesQuantities(){
+    $return = array();
+    foreach($_SESSION[$this->sessionName]['warrantyList'] as $warrantyId => $warrantiesByProduct) {
+      foreach($warrantiesByProduct as $productId => $warrantyQuantity){
+        $data =array(
+          'id'         => $warrantyId,
+          'quantity'   => $warrantyQuantity,
+          'product_id' => (int)$productId,
+        );
+        $return[] = $data;
+      }
+    }
+
     return $return;
   }
 }

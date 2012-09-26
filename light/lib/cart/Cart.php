@@ -225,6 +225,10 @@ class Cart
     return $this->dataContainer->getServicesQuantity($productId);
   }
 
+  public function getWarrantiesQuantities() {
+    return $this->dataContainer->getWarrantiesQuantity();
+  }
+
   /**
    * @return ProductCartData[] key - productId
    */

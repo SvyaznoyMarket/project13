@@ -154,6 +154,8 @@ interface CartContainer
    */
   public function getServicesQuantities();
 
+  public function getWarrantiesQuantities();
+
   /**
    * @abstract
    * @param int|null $productId

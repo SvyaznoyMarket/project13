@@ -18,18 +18,11 @@ class SymfonyCartPriceContainer implements \light\CartPriceContainer
       $response = CoreClient::getInstance()->query(
         'cart.get-price',
         array('geo_id' =>$region),
-        array('product_list' => $cart->getProductsQuantities(), 'service_list' => $cart->getServicesQuantities())
-      );
-
-      // MOCK
-      $response['warranty_list'] = array(
         array(
-          'warranty_id' => 1,
-          'product_id'  => 4696,
-          'quantity'    => 1,
-          'price'       => 900,
-        ),
-      );
+          'product_list'  => $cart->getProductsQuantities(),
+          'service_list'  => $cart->getServicesQuantities(),
+          'warranty_list' => $cart->getWarrantiesQuantities(),
+      ));
 
       return (array)$response;
     }
