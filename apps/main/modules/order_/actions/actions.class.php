@@ -552,6 +552,7 @@ class order_Actions extends myActions
 
       $order->mapValue('ProductItem', array());
       $order->mapValue('ServiceItem', array());
+      $order->mapValue('WarrantyItem', array());
       $order->delivery_type_id = null;
       $order->DeliveryType = $deliveryType;
       $order->Status = OrderStatusTable::getInstance()->findOneByToken('created');
@@ -570,7 +571,9 @@ class order_Actions extends myActions
         $order->shop_id = null;
       }
 
-      $productItems = array(); $serviceItems = array();
+      $productItems = array();
+      $serviceItems = array();
+      $warrantyItems = array();
       foreach ($deliveryTypeData['items'] as $itemToken)
       {
         list($itemType, $itemId) = explode('-', $itemToken);
@@ -584,6 +587,16 @@ class order_Actions extends myActions
               'id'       => $cartData->getProductId(),
               'quantity' => $cartData->getQuantity() ,
             );
+
+            // дополнительные гарантии для товара
+            $warrantyData = $user->getCart()->getWarrantyByProduct($cartData->getProductId());
+            if ($warrantyData) {
+              /** @var $warrantyData light\WarrantyCartData */
+              $warrantyItems[] = array(
+                'id'       => $warrantyData->getId(),
+                'quantity' => $warrantyData->getQuantity(),
+              );
+            }
           }
         }
         if ('service' == $itemType)
@@ -633,6 +646,7 @@ class order_Actions extends myActions
 
       $order->ProductItem = $productItems;
       $order->ServiceItem = $serviceItems;
+      $order->WarrantyItem = $warrantyItems;
 
       // расчет доставки: рассчитывается в ядре
       $deliveryPrice = 0;
@@ -650,6 +664,7 @@ class order_Actions extends myActions
       $return['delivery_period'] = $order->delivery_period;
       $return['product'] = $order->ProductItem;
       $return['service'] = $order->ServiceItem;
+      $return['warranty'] = $order->WarrantyItem;
       $return['address_metro'] = $order->address_metro;
       $return['address_street'] = $order->address_street;
       $return['address_number'] = $order->address_number;
@@ -660,7 +675,7 @@ class order_Actions extends myActions
       return $return;
     }, $orders);
     //dump($coreData, 1);
-      $response = Core::getInstance()->query('order.create-packet', array(), $coreData, true);
+    $response = Core::getInstance()->query('order.create-packet', array(), $coreData, true);
     //dump($response, 1);
     if (is_array($response) && array_key_exists('confirmed', $response) && $response['confirmed'])
     {
