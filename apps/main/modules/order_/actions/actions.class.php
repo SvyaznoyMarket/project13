@@ -552,7 +552,6 @@ class order_Actions extends myActions
 
       $order->mapValue('ProductItem', array());
       $order->mapValue('ServiceItem', array());
-      $order->mapValue('WarrantyItem', array());
       $order->delivery_type_id = null;
       $order->DeliveryType = $deliveryType;
       $order->Status = OrderStatusTable::getInstance()->findOneByToken('created');
@@ -573,7 +572,6 @@ class order_Actions extends myActions
 
       $productItems = array();
       $serviceItems = array();
-      $warrantyItems = array();
       foreach ($deliveryTypeData['items'] as $itemToken)
       {
         list($itemType, $itemId) = explode('-', $itemToken);
@@ -583,20 +581,23 @@ class order_Actions extends myActions
           $cartData = $user->getCart()->getProduct($itemId);
           if(!is_null($cartData)){
             /** @var $cartData light\ProductCartData */
-            $productItems[] = array(
+            $productItem = array(
               'id'       => $cartData->getProductId(),
               'quantity' => $cartData->getQuantity() ,
             );
 
             // дополнительные гарантии для товара
-            $warrantyData = $user->getCart()->getWarrantyByProduct($cartData->getProductId());
-            if ($warrantyData) {
+            if ($warrantyData = $user->getCart()->getWarrantyByProduct($cartData->getProductId())) {
               /** @var $warrantyData light\WarrantyCartData */
-              $warrantyItems[] = array(
+              $productItem['additional_warranty'] = array(
+                array(
                 'id'       => $warrantyData->getId(),
                 'quantity' => $warrantyData->getQuantity(),
+                ),
               );
             }
+
+            $productItems[] = $productItem;
           }
         }
         if ('service' == $itemType)
@@ -646,7 +647,6 @@ class order_Actions extends myActions
 
       $order->ProductItem = $productItems;
       $order->ServiceItem = $serviceItems;
-      $order->WarrantyItem = $warrantyItems;
 
       // расчет доставки: рассчитывается в ядре
       $deliveryPrice = 0;
@@ -664,7 +664,6 @@ class order_Actions extends myActions
       $return['delivery_period'] = $order->delivery_period;
       $return['product'] = $order->ProductItem;
       $return['service'] = $order->ServiceItem;
-      $return['warranty'] = $order->WarrantyItem;
       $return['address_metro'] = $order->address_metro;
       $return['address_street'] = $order->address_street;
       $return['address_number'] = $order->address_number;
@@ -842,6 +841,18 @@ class order_Actions extends myActions
           {
             $serviceName .= " + <span class='motton'>{$service['name']} ({$service['quantity']} шт.)</span>";
             $serviceTotal += ($service['price'] * $service['quantity']);
+          }
+        }
+
+        // дополнительные гарантии для товара
+        if ($warrantyData = $user->getCart()->getWarrantyByProduct($coreData['id'])) {
+          // нижеследующее нужно для того, чтобы получить название гарантии
+          $productV2 = RepositoryManager::getProduct()->getById($coreData['id'], true);
+          foreach ($productV2->getWarrantyList() as $w) {
+            if ($w->getId() == $warrantyData->getId()) {
+              $serviceName .= sprintf(' + <span class="motton">%s (%s шт.)</span>', $w->getName(), $warrantyData->getQuantity());
+              $serviceTotal += ($warrantyData->getPrice() * $warrantyData->getQuantity());
+            }
           }
         }
 
