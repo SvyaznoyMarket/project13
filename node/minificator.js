@@ -3,6 +3,7 @@ var fs = require('fs'),
 	when = require('when'),
 	less = require('less')
 
+
 var POINTS = {
 	'jsdir': '../web/js/',
 	'cssdir': '../web/css/',
@@ -11,6 +12,7 @@ var POINTS = {
 	'less': '../web/css/global.less',
 	'css': '../web/css/global2.css'
 }	
+var red   = '\033[31m';
 
 var parser = new(less.Parser)({
     paths: [ POINTS.cssdir ] // Specify search paths for @import directives
@@ -18,10 +20,10 @@ var parser = new(less.Parser)({
 })
 fs.readFile( POINTS.less , 'utf8', function(e, data ) { 
 	parser.parse( data, function (err, tree) {
-		console.log('< CSS >')
+		console.log( '< CSS >')
 	    if (err) { 
 	    	console.log('</ CSS >')
-	    	return console.error('Error processing less file '+err)
+	    	return console.error( red + 'Error processing less file '+err)
 	    }
     	
 	    // console.log( tree.toCSS().length )
@@ -39,7 +41,7 @@ fs.readFile( POINTS.js , 'utf8', function(e, data ) {
 	config = JSON.parse( data.replace(/^(.)*=/,'') )	
 	when( procall( config ), 
 		function yep(){ console.log('all files OK') }, // good
-		function nope(){ console.log('error') } // wrong
+		function nope(){ console.log( red + 'error') } // wrong
 	).then( reconfig )
 })
 
@@ -65,7 +67,7 @@ function procfile( filename ) {
 	fs.exists( path, function(boo) { 
 		
 		if( !boo ) {
-			console.log( 'no such file ', path )
+			console.log( red + 'no such file ', path )
 			deferred.reject(new Error( 'no such file '+ path ))
 			return deferred.promise
 		}
@@ -78,7 +80,7 @@ function procfile( filename ) {
 				    fileIn: path,
 				    fileOut: pathmin,
 				    callback: function(err) {
-				        if(err) console.log(err)
+				        if(err) console.log( red + err)
 				    }
 				})
 				config[''+filename] = b.mtime.getTime()
