@@ -252,6 +252,20 @@ class guardActions extends myActions
   /**
    * Executes register action
    *
+   * @param sfWebRequest $request A request object
+   */
+  public function executeCorporateRegister(sfRequest $request) {
+    $form = new CorporateRegisterForm();
+
+    if ($request->isMethod('register')) {
+      $form->import($request->getPostParameter('form'));
+      var_dump($form);
+    }
+  }
+
+  /**
+   * Executes register action
+   *
    * @param sfRequest $request A request object
    */
   public function executeRegister($request)

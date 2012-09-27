@@ -341,6 +341,11 @@ user_changePasswordSave:
   url:   /private/password/save
   param: { module: guard, action: changePasswordSave }
 #
+# user corporate register
+user_corporateRegister:
+  url:   /corporate-register
+  param: { module: guard, action: corporateRegister }
+#
 # user register
 user_register:
   url:   /register
