@@ -237,6 +237,7 @@ $(document).ready(function(){
 	if ( ($('div.bBlueButton.extWarranty').length)&&($('div.bBlueButton.extWarranty').is(':visible')) ){
 		var look_extWarr = $('div.bBlueButton.extWarranty')
 		var f1lines_extWarr = $('div.hideblock.extWarranty')
+		var ew_look = $("#ew_look")
 		//open popup
 		$('.link1',look_extWarr).click( function(){
 			if( $('div.bF1Block').is(':visible') )
@@ -261,7 +262,7 @@ $(document).ready(function(){
 					return true
 				$('.link1',look_extWarr).text('Изменить гарантию')
 				look_extWarr.find('h3').text('Вы выбрали гарантию:')
-				ew_look = $("#ew_look")
+				
 				$('.ew_title', ew_look).text(extWarr_item.f1title)
 				$('.ew_price', ew_look).text(extWarr_item.f1price)
 				$('.bBacketServ__eMore', ew_look).attr('href', extWarr_item.deleteurl)
@@ -286,16 +287,17 @@ $(document).ready(function(){
 			})
 			return false
 		})
-		$('a.bBacketServ__eMore', look_extWarr).live('click', function(){
+		$('.bBacketServ__eMore', ew_look).live('click', function(e){
+			e.preventDefault()
 			var thislink = this
 			$.getJSON( $(this).attr('href'), function(ext_data) {
-				if( !data.success )
+				if( !ext_data.success )
 					return true
 				var line = $(thislink).parent()
 				f1lines_extWarr.find('td[ref='+ line.attr('ref') +']').find('input').val('Купить услугу').removeClass('active')
 				line.hide()
 				ltbx.update({ sum: ext_data.data.full_price })
-	
+				ew_look.hide()
 				if( !$('a.bBacketServ__eMore', look_extWarr).length )
 					look_extWarr.find('h3').html('Выбирай услуги F1<br/>вместе с этим товаром')
 			})

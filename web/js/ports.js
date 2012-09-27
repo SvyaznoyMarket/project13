@@ -343,7 +343,7 @@ window.ANALYTICS = {
         }
     },
 
-    enable : true
+    enable : false
 }
 
 ANALYTICS.parseAllAnalDivs( $('.jsanalytics') )
