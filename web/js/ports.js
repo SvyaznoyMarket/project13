@@ -34,6 +34,11 @@ window.ANALYTICS = {
 
     heiasOrder : function() {
         var orderArticle = arguments[0];
+
+        HEIAS_T=Math.random(); HEIAS_T=HEIAS_T*10000000000000000000;
+        var HEIAS_SRC='https://ads.heias.com/x/heias.cpa/count.px.v2/?PX=HT|' + HEIAS_T + '|cus|12675|pb|1|order_article|' + a.order_article + '|product_quantity|' + a.product_quantity + '|order_id|' + a.order_id + '|order_total|' + a.order_total + '';
+        document.write('<img width="1" height="1" src="' + HEIAS_SRC + '" />');
+        
         (function(d){
             var HEIAS_PARAMS = [];
             HEIAS_PARAMS.push(['type', 'ppx'], ['ssl', 'auto'], ['n', '12564'], ['cus', '12675']);
@@ -50,10 +55,22 @@ window.ANALYTICS = {
     },
 
     heiasComplete : function() {
-        var a = arguments[0];      
-        HEIAS_T=Math.random(); HEIAS_T=HEIAS_T*10000000000000000000;
-        var HEIAS_SRC='https://ads.heias.com/x/heias.cpa/count.px.v2/?PX=HT|' + HEIAS_T + '|cus|12675|pb|1|order_article|' + a.order_article + '|product_quantity|' + a.product_quantity + '|order_id|' + a.order_id + '|order_total|' + a.order_total + '';
-        document.write('<img width="1" height="1" src="' + HEIAS_SRC + '" />');
+        var a = arguments[0];
+
+        (function(d) {
+            var HEIAS_PARAMS = [];
+            HEIAS_PARAMS.push(['type', 'cpx'], ['ssl', 'force'], ['n', '12564'], ['cus', '14935']);
+            HEIAS_PARAMS.push(['pb', '1']);
+            HEIAS_PARAMS.push(['order_article',  a.order_article ]);
+            HEIAS_PARAMS.push(['order_id', a.order_id ]);
+            HEIAS_PARAMS.push(['order_total', a.order_total ]);
+            HEIAS_PARAMS.push(['product_quantity', a.product_quantity ]);
+            if (typeof window.HEIAS == 'undefined') window.HEIAS = []; window.HEIAS.push(HEIAS_PARAMS);
+            var scr = d.createElement('script');
+            scr.async = true;
+            scr.src = (d.location.protocol === 'https:' ? 'https:' : 'http:') + '//ads.heias.com/x/heias.async/p.min.js'; var elem = d.getElementsByTagName('script')[0];
+            elem.parentNode.insertBefore(scr, elem);
+        }(document));
     },
 
     adblender : function() {
@@ -228,7 +245,79 @@ window.ANALYTICS = {
         +'le = "position:absolute;left:'
         +'-1000px" ></iframe>');
     },
+
+    myThingsMain : function() {
+        if (typeof (MyThings) != "undefined") { 
+                MyThings.Track({ 
+                    EventType: MyThings.Event.Visit,
+                     Action: "200"        
+            });    
+        } 
+    },
     
+    myThingsCat : function() {
+        var category = arguments[0]
+        var breadcrumbs = $('.breadcrumbs').find('a')
+        if( !breadcrumbs.length )
+            return
+        var data = {
+            EventType: MyThings.Event.Visit,
+            Action: "1011"
+        }
+        var ind = 0
+        for( var i=1, l=breadcrumbs.length; i<l; i++ ) {
+            var ind = ( i === 1 ) ? '' : ( i - 1 )
+            data[ 'Category'+ind ] = $(breadcrumbs[i]).text()
+        }
+        if( ind )
+            data[ 'Category'+(ind+1) ] = $('.breadcrumbs strong').text()    
+        if (typeof (MyThings) != "undefined") {
+            MyThings.Track( data );
+        }
+    },
+
+    myThingsProd : function() {
+        var token = arguments[0]
+        if (typeof (MyThings) != "undefined") { 
+            MyThings.Track({
+                EventType: MyThings.Event.Visit,
+                Action: "1010",
+                ProductId: 'token'
+            });
+        }
+    },
+
+    myThingsBuy : function() {
+        var token = arguments[0];
+        if (typeof (token) == "undefined") 
+            return
+        if (typeof (MyThings) != "undefined") {
+           MyThings.Track({
+               EventType: MyThings.Event.Visit,
+               Action: "1013",
+               ProductId: token
+           });
+        }
+   },
+
+    myThingsFin : function() {
+        var a = arguments[0];  
+        // a.products has tmpl { id: "ProductID", price: "24.90", qty: 2 }
+        if (typeof (MyThings) != "undefined") { 
+            MyThings.Track({ 
+                EventType: MyThings.Event.Conversion,
+                 Action: "9902",
+                Products: a.products,
+                TransactionReference: a.order_id +'',
+                 TransactionAmount: a.order_total + ''
+            }); 
+        } 
+    },
+
+    luxupTracker : function() {
+        document.write('<scr'+'ipt type="text/javascript" src="http://luxup.ru/tr_js/20634/59951/'+'?t='+(new Date()).getTime()+(document.referrer?"&r="+encodeURIComponent(document.referrer):'')+(typeof __lx__target !== 'undefined'?'&trg='+encodeURIComponent(__lx__target):'')+'"></scr'+'ipt>');        
+    },
+
     parseAllAnalDivs : function( nodes ) {
         if( !this. enable )
             return

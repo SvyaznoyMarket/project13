@@ -46,13 +46,13 @@ class WPRequest
 
         if($method == self::methodPost)
         {
-            $optionList['header'] = 'Content-type: application/x-www-form-urlencoded';
+            $optionList['http']['header'] = "Content-Type: application/x-www-form-urlencoded\r\n";
         }
 
         return $optionList;
     }
 
-    public function send($actionUri, $parameterList = array(), $method = self::methodPost, $timeout = 30, $json = True)
+    public function send($actionUri, $parameterList = array(), $method = self::methodPost, $timeout = 1, $json = True)
     {
         if($json)
         {
@@ -67,6 +67,15 @@ class WPRequest
             )
         ));
 
-        return $json?json_decode($response, $assoc = True):$response;
+        if($json)
+        {
+            $response = json_decode($response, $assoc = True);
+            if(isset($response['result']))
+            {
+                $response = $response['result'];
+            }
+        }
+
+        return $response;
     }
 }

@@ -144,8 +144,8 @@ EOF;
       foreach ($item['data'] as $packet)
       {
         $action = $this->core->getActions($packet['operation']);
-        $this->task->setContentData('type', $packet['type']);
-        $this->task->setContentData('action', $action);
+        //$this->task->setContentData('type', $packet['type']);
+        //$this->task->setContentData('action', $action);
 
         try
         {

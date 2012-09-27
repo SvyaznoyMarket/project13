@@ -7,11 +7,11 @@ namespace light;
  * Time: 12:40
  * To change this template use File | Settings | File Templates.
  */
-require_once(ROOT_PATH.'system/App.php');
-require_once(ROOT_PATH.'lib/TimeDebug.php');
-require_once(ROOT_PATH.'lib/MainMenuBuilder.php');
-require_once(VIEW_PATH.'dataObject/CategoryShortData.php');
-require_once(VIEW_PATH.'dataObject/pageObject/mainMenuData.php');
+require_once(Config::get('rootPath').'system/App.php');
+require_once(Config::get('rootPath').'lib/TimeDebug.php');
+require_once(Config::get('rootPath').'lib/MainMenuBuilder.php');
+require_once(Config::get('viewPath').'dataObject/CategoryShortData.php');
+require_once(Config::get('viewPath').'dataObject/pageObject/mainMenuData.php');
 
 class catalogController
 {

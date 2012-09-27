@@ -72,7 +72,7 @@ class userActions extends myActions
         'title' => 'cEnter защиты прав потребителей ',
         'list' => array(
           array(
-            'name'   => 'Юридическая помощь',
+            'name'   => 'Адвокат клиента',
             'url'    => '@user_legalConsultation',
             'routes' => array('user_legalConsultation'),
           ),

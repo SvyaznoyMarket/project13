@@ -7,8 +7,8 @@ namespace light;
  * Time: 18:59
  * To change this template use File | Settings | File Templates.
  */
-require_once(ROOT_PATH.'system/App.php');
-require_once(ROOT_PATH.'lib/TimeDebug.php');
+require_once(Config::get('rootPath').'system/App.php');
+require_once(Config::get('rootPath').'lib/TimeDebug.php');
 
 class userController
 {
@@ -84,7 +84,8 @@ class userController
             'productsInCart' => array(),
             'servicesInCart' => array(),
             'bingo' => false,
-            'region_id' =>App::getCurrentUser()->getRegion()->getId()
+            'region_id' =>App::getCurrentUser()->getRegion()->getId(),
+            'is_credit' => (array_key_exists('credit_on', $_COOKIE) && ($_COOKIE['credit_on'] == 1))
           )
         );
         $response->setContent(json_encode($responseData));
@@ -115,7 +116,8 @@ class userController
           'productsInCart' => array(),
           'servicesInCart' => array(),
           'bingo' => false,
-          'region_id' =>App::getCurrentUser()->getRegion()->getId()
+          'region_id' =>App::getCurrentUser()->getRegion()->getId(),
+          'is_credit' => (array_key_exists('credit_on', $_COOKIE) && ($_COOKIE['credit_on'] == 1))
         )
       );
 

@@ -6,6 +6,23 @@ $(document).ready(function(){
 		docCookies.setItem( false, "admitad_uid", url_s.admitad_uid, 31536e3, '/') // 31536e3 == one year
 	}
 
+	/* Jira */
+	$.ajax({
+	    url: "https://jira.enter.ru/s/en_US-istibo/773/3/1.2.4/_/download/batch/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector.js?collectorId=2e17c5d6",
+	    type: "get",
+	    cache: true,
+	    dataType: "script"
+	});
+
+	 window.ATL_JQ_PAGE_PROPS =  {
+		"triggerFunction": function(showCollectorDialog) {
+			$("#jira").click(function(e) {
+				e.preventDefault()
+				showCollectorDialog()
+			})
+		}
+	}
+
 	/* sclub card number */
 	if( document.location.search.match(/scid/) ) {
 		var url_s = parse_url( document.location.search )
@@ -725,7 +742,7 @@ $(document).ready(function(){
 	/* Top Menu */
 	if( $('.topmenu').length ) {
 		$.get('/category/main_menu', function(data){
-			$('.bHeader').append( data )
+			$('#header').append( data )
 		})
 	}
 
@@ -733,7 +750,7 @@ $(document).ready(function(){
 	var currentMenu = 0 // ref= product ID
 	function showList( self ) {	
 		if(	$(self).data('run') ) {
-			var dmenu = $(self).position().left*1 + $(self).width()*1 / 2 - 15
+			var dmenu = $(self).position().left*1 + $(self).width()*1 / 2 + 5
 			var punkt = $( '#extramenu-root-'+ $(self).attr('id').replace(/\D+/,'') )
 			if( punkt.length && punkt.find('dl').html().replace(/\s/g,'') != '' )
 				punkt.show().find('.corner').css('left', dmenu)
@@ -787,7 +804,7 @@ $(document).ready(function(){
 	}
 
 	/* Cards Carousel  */
-	function cardsCarousel ( nodes ) {
+	function cardsCarousel ( nodes, noajax ) {
 		var self = this
 		var current = 1
 
@@ -798,7 +815,7 @@ $(document).ready(function(){
 			var max = $(nodes.times).html() * 1
 		else
 			var max = Math.ceil(wi / viswi)			
-		var buffer = 2
+		var buffer = (noajax) ? 100 : 2 
 		var ajaxflag = false
 
 		this.notify = function() {
@@ -813,7 +830,7 @@ $(document).ready(function(){
 				$(nodes.next).removeClass('disabled')
 		}
 
-		var shiftme = function() {
+		var shiftme = function() {	
 			var boxes = $(nodes.wrap).find('.goodsbox')
 			$(boxes).hide()
 			var le = boxes.length
@@ -852,7 +869,7 @@ $(document).ready(function(){
 						})
 						current++
 						shiftme()
-					} else { // we have new portion as already loaded one
+					} else { // we have new portion as already loaded one			
 						current++
 						shiftme() // TODO repair
 					}
@@ -900,6 +917,32 @@ $(document).ready(function(){
 		}			
 	})
 
+	loadProductRelatedContainer($('#product_view-container'))
+	loadProductRelatedContainer($('#product_also_bought-container'))
+    loadProductRelatedContainer($('#product_user-also_viewed-container'))
+    loadProductRelatedContainer($('#product_buy-container')); // no such element
+    //loadProductRelatedContainer($('#product_user-recommendation-container'));
+
+    function loadProductRelatedContainer(container) {
+        if (container.length) {
+            $.ajax({
+                url: container.data('url'),
+                timeout: 20000
+            }).success(function(result) {
+                    container.html(result)
+                    container.fadeIn()      
+                    var tmpline = new cardsCarousel ({
+                            'prev'  : container.find('.back'),
+                            'next'  : container.find('.forvard'),
+                            'crnt'  : container.find('span:first'),
+                            'times' : container.find('span:eq(1)'),
+                            'width' : container.find('.scroll').data('quantity'),
+                            'wrap'  : container.find('.bigcarousel'),
+                            'viswidth' : 5
+                        }, true )  // true === noajax for carousel                                       
+            })
+        }
+    }
 
 	/* Delivery Ajax */
 	function dlvrajax() {

@@ -28,10 +28,13 @@ class SmartengineClient
       'api_url'          => null,
       'api_key'          => null,
       'tenantid'         => null,
+      'timeout'          => 0.5,
       'log_file'         => null,
+      'cert'             => null,
       'log_enabled'      => false,
       'log_data_enabled' => false,
     ), $config);
+
     $this->logger = new sfAggregateLogger(new sfEventDispatcher());
     $this->logger->addLogger(new sfFileLogger(new sfEventDispatcher(), array('file' => $this->config['log_file'])));
     $this->logger->addLogger(sfContext::getInstance()->getLogger());
@@ -98,9 +101,13 @@ class SmartengineClient
     //var_dump($query);
 
     $connection = curl_init();
-    curl_setopt($connection, CURLOPT_SSL_VERIFYPEER, false); // временный фикс
+    curl_setopt($connection, CURLOPT_SSL_VERIFYPEER, true);
+    if ($this->config['cert']) {
+      curl_setopt($connection, CURLOPT_CAINFO, $this->config['cert']);
+    }
     curl_setopt($connection, CURLOPT_HEADER, 0);
     curl_setopt($connection, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($connection, CURLOPT_TIMEOUT, $this->config['timeout']);
     curl_setopt($connection, CURLOPT_URL, $query);
 
     if ($this->config['log_enabled']) {
@@ -169,4 +176,9 @@ class SmartengineClient
     );
     return $data;
   }
+}
+
+
+class SmartengineClientException extends \Exception {
+
 }

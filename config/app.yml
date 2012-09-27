@@ -86,6 +86,11 @@ all:
   online_call:
     enabled: false
 
+  related_product:
+    additional: true # отображать смежные товары из ядра
+    accessory: true # отображать аксессуары из ядра
+
+
   core:
     config:
       api_url: 'http://core.ent3.ru/v1/json'
@@ -95,6 +100,7 @@ all:
       signature: test
       log_enabled: true
       log_file: %SF_LOG_DIR%/core_client_2.log
+      log_by_request_file: %SF_LOG_DIR%/core_client_2_request.log
       log_response: false # логировать ответ
 
   cache_eraser:
@@ -110,33 +116,54 @@ all:
       prefix: cache
 
   payment:
-    enabled: true
+    enabled: true # общий переключатель для всех видов методов online оплат
     default_provider: psbank
+    credit_enabled: false
     provider:
       psbank:
+        enabled: true
         terminal: '79036768'
         merchant: '790367686219999'
         merchant_name: 'Enter'
         key: 'C50E41160302E0F5D6D59F1AA3925C45'
         url: 'http://193.200.10.117:8080/cgi-bin/cgi_link'
+      psbank_invoice:
+        enabled: true
+        contractor_id: 14
+        url: 'https://retail-tst.payment.ru/dn/Invoices/ReceiveUniversalInvoices.aspx'
+        key:  %SF_DATA_DIR%/keys/privkey.pem
       uniteller:
+        enabled: false
         login: 125
         password: 'OYOTEEl5Fp3YXQSSHKEWeuWM4Gh0IObjAm64RWFHeHtdCsgZ0ChccMmWOpIWNlw0qaa3PshWepTW6WH8'
         pay_url: 'https://wpay.uniteller.ru/pay/'
         result_url: 'https://wpay.uniteller.ru/results/'
         shop_id: '35974-134'
         return_url: '@payment_callback'
+      psbank_invoice:
+        enabled: true
+        contractor_id: 14
+        url: 'https://retail.payment.ru/invoice.aspx'
+        key:  %SF_DATA_DIR%/keys/live.privkey.pem
 
   smartengine:
-    push: true # отправлять данные на сервер smartengine
-    pull: true  # запрашивать данные с сервера smartengine
+    push: false # отправлять данные на сервер smartengine
+    pull: false # запрашивать данные с сервера smartengine
     config:
-      api_url: 'https://selightstage.smartengine.at/se-light/api/1.0/json/'
+      api_url: 'https://selightprod.smartengine.at/se-light/api/1.0/json/'
+      # api_url: 'https://selightstage.smartengine.at/se-light/api/1.0/json/' # для demo
       api_key: 'c41851b19511c20acc84f47b7816fb8e'
       tenantid: 'ENojUTRcD8'
       log_file: %SF_LOG_DIR%/smartengine.log
       log_enabled: true
       log_data_enabled: true
+
+  credit:
+   provider:
+     kupivkredit:
+       partnerId: '1-6ADAEAT'
+       partnerName: 'ООО «Enter»'
+       signature: 'enter-secret-werj7537'
 
   js_combine:
     file:     %SF_WEB_DIR%/js/combine.js
@@ -229,9 +256,12 @@ live:
 
   smartengine:
     push: true  # отправлять данные на сервер smartengine
-    pull: false # запрашивать данные с сервера smartengine
-    log_enabled: false
-    log_data_enabled: false
+    pull: true  # запрашивать данные с сервера smartengine
+    config:
+      api_url: 'https://selightprod.smartengine.at/se-light/api/1.0/json/'
+      cert: %SF_DATA_DIR%/cert/smartengine-server2.crt
+      log_enabled: false
+      log_data_enabled: false
 
   rediska:
     default:

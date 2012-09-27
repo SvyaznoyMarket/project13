@@ -26,15 +26,16 @@ class ProductStateEntity
    */
   public function __construct(array $data = array())
   {
-    if (array_key_exists('status_id', $data))     $this->statusId   = (int)$data['status_id'];
-    if (array_key_exists('is_image', $data))      $this->isImage    = (bool)$data['is_image'];
-    if (array_key_exists('is_price', $data))      $this->isPrice    = (bool)$data['is_price'];
-    if (array_key_exists('is_shop', $data))       $this->isShop     = (bool)$data['is_shop'];
-    if (array_key_exists('is_store', $data))      $this->isStore    = (bool)$data['is_store'];
-    if (array_key_exists('is_supplier', $data))   $this->isSupplier = (bool)$data['is_supplier'];
-    if (array_key_exists('is_view_list', $data))  $this->isViewList = (bool)$data['is_view_list'];
-    if (array_key_exists('is_view_card', $data))  $this->isViewCard = (bool)$data['is_view_card'];
-    if (array_key_exists('is_buyable', $data))    $this->isBuyable  = (bool)$data['is_buyable'];
+    if (array_key_exists('status_id', $data))     $this->statusId    = (int)$data['status_id'];
+    if (array_key_exists('is_image', $data))      $this->isImage     = (bool)$data['is_image'];
+    if (array_key_exists('is_price', $data))      $this->isPrice     = (bool)$data['is_price'];
+    if (array_key_exists('is_shop', $data))       $this->isShop      = (bool)$data['is_shop'];
+    if (array_key_exists('is_store', $data))      $this->isStore     = (bool)$data['is_store'];
+    if (array_key_exists('is_supplier', $data))   $this->isSupplier  = (bool)$data['is_supplier'];
+    if (array_key_exists('is_view_list', $data))  $this->isViewList  = (bool)$data['is_view_list'];
+    if (array_key_exists('is_view_card', $data))  $this->isViewCard  = (bool)$data['is_view_card'];
+    if (array_key_exists('is_buyable', $data))    $this->isBuyable   = (bool)$data['is_buyable'];
+    if (array_key_exists('is_quick_only', $data)) $this->isQuickOnly = (bool)$data['is_quick_only'];
   }
 
   /**
@@ -51,6 +52,22 @@ class ProductStateEntity
   public function getIsBuyable()
   {
     return $this->isBuyable;
+  }
+
+  /**
+   * @param boolean $is_buyable
+   */
+  public function setIsQuickOnly($is_quick_only)
+  {
+    $this->isQuickOnly= (boolean)$is_quick_only;
+  }
+
+  /**
+   * @return boolean
+   */
+  public function getIsQuickOnly()
+  {
+    return $this->isQuickOnly;
   }
 
   /**

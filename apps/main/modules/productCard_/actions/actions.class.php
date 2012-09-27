@@ -66,7 +66,7 @@ class productCard_Actions extends myActions
     $this->forward404If(!$product);
 
     $begin = self::NUM_RELATED_ON_PAGE * ($page - 1);
-    $relatedIdList = array_slice($product->getRelatedList(), $begin, self::NUM_RELATED_ON_PAGE);
+    $relatedIdList = array_slice($product->getRelatedIdList(), $begin, self::NUM_RELATED_ON_PAGE);
     $relatedProductList = RepositoryManager::getProduct()->getListById($relatedIdList, true);
 
     foreach ($relatedProductList as $i => $accessory)
@@ -77,6 +77,31 @@ class productCard_Actions extends myActions
         'ii' => $i
     ));
     return sfView::NONE;
+  }
+
+    /**
+     * Собирает в массив данные, необходимые для плагина online кредитовария
+     *
+     * @param $product
+     * @return array
+     */
+  private function _getDataForCredit($product) {
+      $result = array();
+      $mainCat = $product->getCategoryList();
+      $mainCat = $mainCat[0];
+      $cart = $this->getUser()->getCart();
+      $productType = CreditBankRepository::getCreditTypeByCategoryToken($mainCat->getToken());
+      $dataForCredit = array(
+          'price' => $product->getPrice(),
+          'articul' => $product->getArticle(),
+          'name' => $product->getName(),
+          'count' => $product->getCartQuantity(),
+          'product_type' => $productType,
+          'session_id' => session_id()
+      );
+      $result['creditIsAllowed'] = (bool) (($product->getPrice() * (($product->getCartQuantity() > 0)? $product->getCartQuantity() : 1)) > ProductEntity::MIN_CREDIT_PRICE );
+      $result['creditData'] = json_encode($dataForCredit);
+      return $result;
   }
 
   private function loadProduct($productToken)
@@ -108,6 +133,9 @@ class productCard_Actions extends myActions
         $showRelatedUpper = true;
     }
 
+    $dataForCredit = $this->_getDataForCredit($product);
+
+    $this->setVar('dataForCredit', $dataForCredit);
     $this->setVar('showRelatedUpper', $showRelatedUpper);
     $this->setVar('showAccessoryUpper', !$showRelatedUpper);
     $this->setVar('relatedPagesNum', ceil(count($product->getRelatedIdList()) / self::NUM_RELATED_ON_PAGE));

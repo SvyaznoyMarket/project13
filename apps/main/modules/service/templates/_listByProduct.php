@@ -29,7 +29,7 @@ $listInCart = $item->getServiceListInCart();
         </div>
       <?php endforeach ?>
     <?php } else { ?>
-    <h3>Выбирай услуги F1<br> вместе с этим товаром</h3>
+    <h3>Установка<br />и подключение</h3>
     <?php } ?>
     <a class="link1" href="">Выбрать услуги</a>
   </div>

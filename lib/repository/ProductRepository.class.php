@@ -128,7 +128,7 @@ class ProductRepository extends ObjectRepository
   {
     if($limit){
       $idList = array_slice($product->getAccessoryIdList(), 0, $limit);
-      $idList += array_slice($product->getRelatedIdList(), 0, $limit);
+      $idList = array_merge($idList, array_slice($product->getRelatedIdList(), 0, $limit));
     }else{
       $idList = $product->getAccessoryIdList() + $product->getRelatedIdList();
     }

@@ -1,4 +1,8 @@
-<?php include_partial('order_/header', array('title' => 'Ваш заказ принят, спасибо!')) ?>
+<?php if ($isCredit) { ?>
+    <?php include_partial('order_/header', array('title' => 'Покупка в кредит')) ?>
+<?php } else { ?>
+    <?php include_partial('order_/header', array('title' => 'Ваш заказ принят, спасибо!')) ?>
+<?php } ?>
 
 <?php foreach ($orders as $order): ?>
   <p class="font19">Номер заказа: <?php echo $order['number'] ?></p>
@@ -9,12 +13,14 @@
   <div class="line pb15"></div>
 <?php endforeach ?>
 
-<div class="mt32">
-  В ближайшее время мы вам перезвоним :)
-  <br />Специалист нашего Контакт-cENTERа уточнит, где и когда будет удобно получить заказ.
-</div>
+<?php if (!$isCredit) { ?>
+    <div class="mt32">
+      В ближайшее время мы вам перезвоним :)
+      <br />Специалист нашего Контакт-cENTERа уточнит, где и когда будет удобно получить заказ.
+    </div>
+<?php } ?>
 
-<?php if ($paymentForm): ?>
+<?php if ($paymentForm) { ?>
   <p>Через <span class="timer">5</span> сек. мы автоматически перенаправим Вас на страницу оплаты, если этого не произойдет, пожалуйста, нажмите на кнопку "Оплатить заказ".</p>
   <div class="pt10">
 
@@ -24,12 +30,16 @@
     </form>
 
   </div>
-
-<?php else: ?>
+<?php } else{ ?>
   <div class="mt32" style="text-align: center">
     <a class='bBigOrangeButton' href="<?php echo url_for('homepage') ?>">Продолжить покупки</a>
   </div>
-<?php endif ?>
+<?php } ?>
+
+<?php if ($isCredit) { ?>
+    <div id='credit-widget' data-value='<?php echo $jsCreditData; ?>' ></div>
+<?php } ?>
+
 
 <?php include_partial('order_/footer') ?>
 
@@ -42,7 +52,8 @@
 	<?php foreach ($orders as $order): ?>
 		<div id="adblenderCost" data-vars="<?php echo $order['sum'] ?>" class="jsanalytics"></div>
 	<?php endforeach ?>
-    
+
+<?php if ('live' == sfConfig::get('sf_environment')): ?>    
   <script type="text/javascript">
   <?php foreach ($orders as $order): ?>
 
@@ -95,8 +106,9 @@
     <?php endforeach ?>
     ]
   </script>
+  <?php endif ?>
 
-  <?php include_component('order_','seo_admitad', array('orders' => $orders)) ?>
+  <?php //include_component('order_','seo_admitad', array('orders' => $orders)) ?>
 
     <div id="mixmarket" class="jsanalytics"></div>
     <div id="gooReMaSuccess" class="jsanalytics"></div>
@@ -108,16 +120,31 @@
           'order_id' => $order['number'],
           'order_total' => $order['sum'],
           'product_quantity' => implode(',', array_map(function($i) { return $i['quantity']; }, $order['product'])),
-      );  ?>
-      
+      );  
+      $jsonMyThings = array (
+        'order_id' => $order['number'],
+        'order_total' => $order['sum'],
+        'products' => array()
+      );
+
+      foreach($order['product'] as $orderProduct){
+          $jsonMyThings['products'][] = array(
+            'ProductID' => $orderProduct['id'],
+            'price' => $orderProduct['price'],
+            'qty' => $orderProduct['quantity']
+        );
+      }
+      ?>
       <div id="heiasComplete" data-vars='<?php echo json_encode( $jsonOrdr ) ?>' class="jsanalytics"></div>
 
       <div id="adriverOrder" data-vars='<?php echo json_encode( $jsonOrdr ) ?>' class="jsanalytics"></div>
 
+      <div id="myThingsFin" data-vars='<?php echo json_encode( $jsonMyThings ) ?>' class="jsanalytics"></div>
   <!-- Efficient Frontiers -->
       <img src='http://pixel.everesttech.net/3252/t?ev_Orders=1&amp;ev_Revenue=<?php echo $order['sum'] ?>&amp;ev_Quickorders=0&amp;ev_Quickrevenue=0&amp;ev_transid=<?php echo $order['number'] ?>' width='1' height='1'/>
 
     <?php endforeach ?>
+
 
 
 

@@ -13,7 +13,7 @@
 
   </head>
 
-  <body data-template="main">
+  <body id="mainPage" data-template="main">
     <?php LastModifiedHandler::setLastModified(); ?>
 
     <div class="bannersbox">
@@ -28,17 +28,15 @@
     <div class="allpage">
 	<div class="adfoxWrapper" id="adfox980"></div>
 
-
-      <div class="bHeaderWrap">
-        <div class="bHeader">
-          <a href class='bToplogo'></a>
+      <div id="header">
+          <?php LastModifiedHandler::setLastModified();  ?>
+          <a id="topLogo" href="/">Enter Связной</a>
+          <?php //include_partial('default/logo') ?>
           <?php include_component('productCategory_', 'root_list') ?>
-          <div class="bHeader__eLong"></div>
-        </div>
       </div>
 
       <noindex>
-        <div class="searchbox">
+        <div id="mainPageSearch" class="searchbox">
           <?php render_partial('search/templates/_form.php', array('view' => 'main')) ?>
         </div>
       </noindex>
@@ -57,9 +55,16 @@
 
       <div class="clear"></div>
     </div>
-<script src="/js/jquery-1.6.4.min.js" type="text/javascript"></script>
-<script src="/js/LAB.min.js" type="text/javascript"></script>
-<script src="/js/loadjs.js" type="text/javascript"></script>
+    <script src="/js/jquery-1.6.4.min.js" type="text/javascript"></script>
+    <script src="/js/LAB.min.js" type="text/javascript"></script>
+    <script src="/js/loadjs.js" type="text/javascript"></script>
+    <script type="text/javascript">
+      var mtHost = (("https:" == document.location.protocol) ? "https://rainbowx" : "http://rainbowx") + ".mythings.com";
+      var mtAdvertiserToken = "1989-100-ru";
+      document.write(unescape("%3Cscript src='" + mtHost + "/c.aspx?atok=" + mtAdvertiserToken + "' type='text/javascript'%3E%3C/script%3E")); 
+    </script>
+
+    <div id="myThingsMain" class="jsanalytics"></div>
 
 <?php if ('live' == sfConfig::get('sf_environment')): ?>
     
@@ -72,6 +77,7 @@
     
     <div id="yandexMetrika" class="jsanalytics"></div>
     <div id="heiasMain" class="jsanalytics"></div>
+    <div id="luxupTracker" class="jsanalytics"></div>
 
   <?php include_component('default', 'adriver') ?>
   </body>

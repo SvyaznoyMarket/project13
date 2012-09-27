@@ -25,7 +25,9 @@ return array(
   array('/cart/delete_service/_service/<serviceId>'                              , 'cart.deleteService'),
   array('/category/main_menu'                       , 'catalog.MainMenu'),
   array('/region/init'                              , 'region.getShopAvailable'),
-  array('/'                                         , 'staticPage.mainPage'),
+
+  array('/product-view/<productId>'          , 'smartengine.view'),
+  array('/product-buy/<product>'             , 'smartengine.buy'),
   array('/orders/new'                        , 'order.new'), //@TODO реализовать, пока для генерации урлов
   array('/product/<productToken>'            , 'product.show'), //@TODO реализовать, пока для генерации урлов
   array('/catalog/<categoryToken>/'          , 'catalog.showCategory'), //@TODO реализовать, пока для генерации урлов
@@ -33,5 +35,19 @@ return array(
   array('/search'                            , 'search.form'), //@TODO реализовать, пока для генерации урлов
   array('/shops/<regionToken>'               , 'shop.regionList'), //@TODO реализовать, пока для генерации урлов
   array('/private/'                          , 'user.index'), //@TODO реализовать, пока для генерации урлов
+
+  array('/region/change/<region>'            , 'region.change'), //@TODO реализовать, пока для генерации урлов
+  array('/cart/'                             , 'cart.index'), //@TODO реализовать, пока для генерации урлов
+  array('/login/<provider>'                  , 'user.signin'), //@TODO реализовать, пока для генерации урлов
+  array('/logout'                            , 'user.logout'), //@TODO реализовать, пока для генерации урлов
+  array('/region/autocomplete/<type>'        , 'region.autocomplete'), //@TODO реализовать, пока для генерации урлов
+  array('/region/change/<region>'            , 'region.change'), //@TODO реализовать, пока для генерации урлов
+
+  array('/f1/show/<service>'                 , 'service.show'), //@TODO реализовать, пока для генерации урлов
+  array('/f1/<category>'                     , 'service.category'), //@TODO реализовать, пока для генерации урлов
+  array('/f1'                                , 'service.index'), //@TODO реализовать, пока для генерации урлов
+
+
+  array('/'                                  , 'staticPage.mainPage'),
   array('/<pageToken>'                       , 'staticPage.content'), //@TODO реализовать, пока для генерации урлов
 );

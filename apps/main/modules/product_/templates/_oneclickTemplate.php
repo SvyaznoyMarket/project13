@@ -105,11 +105,13 @@
             </tr>
             <!-- /ko -->
 
-            <tr><td colspan=2>Отправьте заказ и мы вам скоро перезвоним :)<br>
-            Специалист нашего Контакт-cENTERа уточнит, где и когда будет удобно получить заказ.</td></tr>
+            <tr><td colspan=2>Отправьте заказ и оператор подтвердит его (смс или звонком на ваш контактный номер телефона :)</td></tr>
             <tr><td colspan=2>
               <a class='bBigOrangeButton' href="" data-bind="css: { disable : noDelivery() },text: formStatusTxt, click: validateForm"></a>
             </td></tr>
+            <tr data-bind="if: newWarehouse">
+      				<td class="newWarehouse" colspan="2"><img src="/css/skin/img/greenCar.png" alt="green car" />Этот товар живет на новом красивом складе. Мы доставим его отдельным заказом :)</td>
+      			</tr>
           </table>
         </td>
       </tr>

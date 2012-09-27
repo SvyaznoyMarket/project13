@@ -27,6 +27,7 @@
   'accessoryPagesNum' => $accessoryPagesNum,
   'showRelatedUpper' => $showRelatedUpper,
   'showAccessoryUpper' => $showAccessoryUpper,
+  'dataForCredit' => $dataForCredit,
 )) ?>
 
 

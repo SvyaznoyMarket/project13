@@ -50,8 +50,6 @@
 			$LAB.queueWait( function() {
 				$LAB.script( getWithVersion('ports.js') )
 				.script( getWithVersion('library.js') )
-				.script('shelf/jquery.countdown.min.js')
-				.script('shelf/jquery.countdown-ru.js?v=2')
 				.wait()
 				.script(getWithVersion('welcome.js'))
 			}).runQueue()
@@ -74,7 +72,9 @@
 			$LAB.queueWait( function() {
 				$LAB.script( getWithVersion('bigjquery.js') )
 				.script( getWithVersion('ports.js') )
-				.script( getWithVersion('library.js') )
+                .script( getWithVersion('library.js') )
+				.script( 'JsHttpRequest.js' )
+                .script( 'http://direct-credit.ru/widget/api_script_utf.js' )
 				.wait()
 				.script(getWithVersion('main.js'))
 				.script(getWithVersion('app.cart.js'))
@@ -86,11 +86,13 @@
             //.queueScript('http://maps.google.com/maps/api/js?sensor=true')
             .queueScript('http://api-maps.yandex.ru/2.0/?load=package.full&lang=ru-RU')
 			.queueWait( function() {
-				$LAB.script( getWithVersion('ports.js') )
-				.script( getWithVersion('library.js') )
+				$LAB.script( getWithVersion('library.js') )
+				.script( getWithVersion('ports.js') )
+				.script( 'JsHttpRequest.js' )                
+                .script( 'http://direct-credit.ru/widget/api_script_utf.js' )
 				.wait()
 				.script(getWithVersion('app.order.v4.js'))
-				.script(getWithVersion('main.js'))
+				.script(getWithVersion('main.js'))				
 			}).runQueue()
 			break
 		case 'order_complete':
@@ -98,10 +100,13 @@
 				.queueWait( function() {
 				$LAB.script( getWithVersion('ports.js') )
 				.script( getWithVersion('library.js') )
+				// .script( 'JsHttpRequest.js' )
+    //             .script( 'http://direct-credit.ru/widget/api_script_utf.js' )
+    //             .script( 'http://direct-credit.ru/widget/script_utf.js' )
+    //             .script( 'https://kupivkredit-test-fe.tcsbank.ru:8100/widget/vkredit.js' )
 				.wait()
 				.script(getWithVersion('app.order.js'))
 				.script(getWithVersion('main.js'))
-                .script(getWithVersion('app.product.related.js'))
 			}).runQueue()
 			break
         case 'order_error':
@@ -110,7 +115,6 @@
                     .wait()
                     .script(getWithVersion('app.order.js'))
                     .script(getWithVersion('main.js'))
-                    .script(getWithVersion('app.order.error.js'))
             }).runQueue()
             break
 		case 'product_catalog':
@@ -133,6 +137,9 @@
 				.script( getWithVersion('bigjquery.js') )
 				.script( getWithVersion('library.js') )
 				.wait()
+                .script( 'JsHttpRequest.js' )
+                //.script( 'http://direct-credit.ru/widget/dc_script_utf.js' )				
+                .script( 'http://direct-credit.ru/widget/api_script_utf.js' )
 				.script( getWithVersion('main.js') )
 				.wait()
 				.script( getWithVersion('dash.js') )
@@ -140,7 +147,6 @@
 				.wait()
 				.script( getWithVersion('app.product.js') )
 				.script( getWithVersion('app.oneclick.js') )
-				.script('app.product.related.js')
 			}).runQueue()
 			break
 		case 'product_comment':
@@ -156,7 +162,6 @@
 				.wait()
 				.script( getWithVersion('app.product.js') )
 				.script( getWithVersion('app.product.comment.list.js') )
-				.script( getWithVersion('app.product.comment.new.js') )
 			}).runQueue()
 			break
 		case 'service':
