@@ -525,7 +525,7 @@ $(document).ready(function(){
 		var form = $(this)
 		if (form.find('input:[name="q"]').val().length < 2)
 			return
-		if( form.find('input:[name="q"]').val() === 'Поиск среди 25 000 товаров' )
+		if( form.find('input:[name="q"]').val() === 'Поиск среди 30 000 товаров' )
 			return
 		var wholemessage = form.serializeArray()
 		function getSearchResults( response ) {
