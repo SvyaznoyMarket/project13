@@ -469,8 +469,13 @@ levup:			for(var i=0, l=numbers.length; i<l; i++)
 		
 		self.toggleView = function( flag ) {		
 			self.showMap( flag )
-			if( flag )
-				self.showMarkers()	
+			
+			if( flag ) {
+				if( !self.todayShops.length ) {
+					self.toggleTerm( false )
+				} else
+					self.showMarkers()
+			}
 			return false
 		}
 		

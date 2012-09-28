@@ -659,6 +659,7 @@ upi:			for( var item=0, boxitems=self.chosenBox().itemList(); item < boxitems.le
 			}
 
 			for( var tkn in self.dlvrBoxes() ) {
+
 				var dlvr = self.dlvrBoxes()[tkn]
 				var data = {
 					id: Model.deliveryTypes[ dlvr.token ].id,
@@ -675,9 +676,8 @@ upi:			for( var item=0, boxitems=self.chosenBox().itemList(); item < boxitems.le
 					boxitems.push( dlvr.itemList()[i].token )
 				data.items = boxitems
 // console.info(data)
-				ServerModel.deliveryTypes[ dlvr.token ] = data
+				ServerModel.deliveryTypes[ dlvr.token + formateDate( dlvr.chosenDate() ) ] = data
 			}
-
 			return ServerModel
 		}
 
