@@ -969,18 +969,21 @@
  *//*---END--СТИЛИ jQuery UI--*/
 /*------СТИЛИ ХЕАДЕРА------*/
 .topbar {
-  font-size: 11px;
+  font-size: 14px;
+  font-family: Tahoma, sans-serif;
   height: 25px;
   padding-top: 7px;
 }
-.topbar .bRegion {
-  font-size: 14px;
-  font-family: Tahoma, sans-serif;
+.topbar .bRegion,
+.topbar .usermenu {
+  float: left;
 }
-.topbar .bRegion a {
+.topbar .bRegion a,
+.topbar .usermenu a {
   text-decoration: underline;
 }
-.topbar .bRegion b {
+.topbar .bRegion b,
+.topbar .usermenu b {
   padding: 0px 10px;
 }
 .topbar .usermenu {
