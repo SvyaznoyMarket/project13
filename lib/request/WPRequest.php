@@ -33,12 +33,11 @@ class WPRequest
     /**
      * @return array Собирает список опций для создания стрима к сервису
      */
-    private function buildOptionList($method, $parameterList, $timeout)
+    private function buildOptionList($method, $timeout)
     {
         $optionList = array(
             'http' => array(
                 'method' => $method,
-                'content' => http_build_query($parameterList, '', '&'),
                 'timeout' => $timeout
 
             )
@@ -52,25 +51,33 @@ class WPRequest
         return $optionList;
     }
 
-    public function send($actionUri, $parameterList = array(), $method = self::methodPost, $timeout = 1, $json = True)
+    public function send($actionUri, $parameterList = array(), $method = self::methodGet, $timeout = 1, $json = True)
     {
         if($json)
         {
             $parameterList['json'] = True;
         }
 
-        $response = file_get_contents($this->url . $actionUri, false, stream_context_create(
-            $this->buildOptionList(
-                $method,
-                $parameterList,
-                $timeout
-            )
-        ));
+      $params = $this->buildOptionList(
+        $method,
+        $timeout
+      );
+
+      sfContext::getInstance()->getLogger()->info('Trying to get ['.$this->url . $actionUri.'] with params ['.print_r($params, true).']');
+
+      $response = file_get_contents($this->url.$actionUri.'?'.http_build_query($parameterList), false, stream_context_create($params));
 
         if($json)
         {
             $response = json_decode($response, $assoc = True);
-            if(isset($response['result']))
+
+            if (!$response)
+            {
+              sfContext::getInstance()->getLogger()->err('Bad response');
+              sfContext::getInstance()->getLogger()->err($response);
+            }
+
+          if(isset($response['result']))
             {
                 $response = $response['result'];
             }
