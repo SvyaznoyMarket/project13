@@ -1,4 +1,4 @@
-<div class="popup" id="region-block" style="width: 640px;">
+<!--<div class="popup" id="region-block" style="width: 640px;">
   <i title="Закрыть" class="close">Закрыть</i>
   <div class="popupbox width694 height250">
     <h2 class="pouptitle">Привет! Укажите, из какого вы города.</h2>
@@ -14,4 +14,4 @@
     </div>
 
   </div>
-</div>
+</div>-->
