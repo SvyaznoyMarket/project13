@@ -1170,6 +1170,67 @@
   margin-right: 13px;
 }
 /*---END---СТИЛИ ХЕАДЕРА---*/
+/*-----СТИЛИ ОКНА С ВЫБОРОМ ГОРОДОВ-----*/
+.popupRegion {
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  border-radius: 6px;
+  -webkit-box-shadow: 0 0 7px #616161;
+  -moz-box-shadow: 0 0 7px #616161;
+  box-shadow: 0 0 7px #616161;
+  background: #fff;
+  border: 2px solid #ffa901;
+  top: 50px;
+  left: 50%;
+  margin: 0 0 0 -320px;
+  padding: 20px 25px;
+  position: fixed;
+  width: 590px;
+  z-index: 1000;
+}
+.popupRegion .close {
+  background: url("/css/common/img/closeBtnOrange.png") no-repeat 0 0;
+  display: block;
+  height: 26px;
+  position: absolute;
+  right: 0;
+  text-indent: -10000px;
+  top: 0;
+  width: 26px;
+}
+.popupRegion .popuptitle {
+  font-family: "Enter";
+  font-size: 30px;
+  margin: 0;
+  text-transform: uppercase;
+}
+.popupRegion .hidden {
+  display: none;
+}
+.popupRegion .inputClear {
+  color: #A6A6A6;
+  font-size: 14px;
+  margin: 0 10px 0 -18px;
+}
+.popupRegion .cityInline {
+  font-size: 14px;
+  margin: 20px 0 0;
+}
+.popupRegion .colomn {
+  float: left;
+  margin: 20px 0;
+  width: 195px;
+}
+.popupRegion .colomn a {
+  font-size: 16px;
+  font-family: Tahoma, sans-serif;
+  line-height: 26px;
+  display: block;
+}
+.popupRegion .info {
+  font-size: 14px;
+}
+/*--END---СТИЛИ ОКНА С ВЫБОРОМ ГОРОДОВ--*/
 /*------СТИЛИ ФУТЕРА------*/
 /* compact footer */
 .lowfooter {

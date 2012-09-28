@@ -15,3 +15,48 @@
 
   </div>
 </div>-->
+<div class="popupRegion">
+	<a href="#" class="close">Закрыть</a>
+	<h2 class="pouptitle">Привет! Укажите, из какого вы города.</h2>
+	<div class="hidden">
+		<p>скрытый блок</p>
+	</div>
+	<form class="ui-css">
+		<input id="jscity" data-url-autocomplete="<?php echo url_for('region_autocomplete') ?>" placeholder="Введите свой город здесь" class="bBuyingLine__eText mInputLong" /><a class="inputClear" href="#">x</a>
+		<input id="jschangecity" type="submit" value="Сохранить" class="button bigbutton mDisabled" />
+		<div id="jscities" style="position:relative"></div>
+    </form>
+    <div class="cityInline">
+    	<a href="#">Москва</a>
+    	<a href="#">Воронеж</a>
+    	<a href="#">Несколько городов в строчку</a>
+    </div>
+	<div class="colomn">
+		<a href="#">Москва</a>
+		<a href="#">Воронеж</a>
+		<a href="#">Саратов</a>
+		<a href="#">Липецк</a>
+		<a href="#">Хабаровск</a>
+		<a href="#">Владивосток</a>
+	</div>
+	<div class="colomn">
+		<a href="#">Москва</a>
+		<a href="#">Воронеж</a>
+		<a href="#">Саратов</a>
+		<a href="#">Липецк</a>
+		<a href="#">Хабаровск</a>
+		<a href="#">Владивосток</a>
+	</div>
+	<div class="colomn">
+		<a href="#">Москва</a>
+		<a href="#">Воронеж</a>
+		<a href="#">Саратов</a>
+		<a href="#">Липецк</a>
+		<a href="#">Хабаровск</a>
+		<a href="#">Владивосток</a>
+	</div>
+	<div class="clear"></div>
+	<div class="info">
+		<p>блок с неким текстом</p>
+	</div>
+</div>

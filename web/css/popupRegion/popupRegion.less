@@ -1,0 +1,55 @@
+.popupRegion{
+  .rounded(6px);
+  .box-shadow(0 0 7px @typBoxShadowColor);
+  background:#fff;
+  border: 2px solid @firmOrange;
+  top:50px;
+  left: 50%;
+  margin:0 0 0 -320px;
+  padding: 20px 25px;
+  position:fixed;
+  width:590px;
+  z-index:1000;
+  .close{
+    background: url("@{base-url}/common/img/closeBtnOrange.png") no-repeat 0 0 ;
+    display: block;
+    height: 26px;
+    position: absolute;
+    right: 0;
+    text-indent:-10000px;
+    top: 0;
+    width: 26px;
+  }
+  .popuptitle{
+    font-family: "Enter";
+    font-size: 30px;
+    margin: 0;
+    text-transform: uppercase;
+  }
+  .hidden{
+    display:none;
+  }
+  .inputClear{
+    color: #A6A6A6;
+    font-size: 14px;
+    margin: 0 10px 0 -18px;
+  }
+  .cityInline{
+    font-size: 14px;
+    margin: 20px 0 0;
+  }
+  .colomn{
+    float:left;
+    margin: 20px 0;
+    width:195px;
+    a {
+      font-size:16px;
+      font-family: Tahoma, sans-serif;
+      line-height:26px;
+      display:block;
+    }
+  }
+  .info{
+    font-size: 14px;
+  }
+}
