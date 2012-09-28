@@ -1,6 +1,8 @@
 <?php
 
 class CorporateRegisterForm {
+  private $errors = array();
+
   private $firstName;
   private $middleName;
   private $lastName;
@@ -38,7 +40,7 @@ class CorporateRegisterForm {
     if (array_key_exists('corp_real_address', $data)) $this->setCorpRealAddress($data['corp_real_address']);
     if (array_key_exists('corp_inn', $data)) $this->setCorpINN($data['corp_inn']);
     if (array_key_exists('corp_kpp', $data)) $this->setCorpKPP($data['corp_kpp']);
-    if (array_key_exists('corp_acount', $data)) $this->setCorpAccount($data['corp_acount']);
+    if (array_key_exists('corp_account', $data)) $this->setCorpAccount($data['corp_account']);
     if (array_key_exists('corp_korr_acount', $data)) $this->setCorpKorrAccount($data['corp_korr_acount']);
     if (array_key_exists('corp_bik', $data)) $this->setCorpBIK($data['corp_bik']);
     if (array_key_exists('corp_city', $data)) $this->setCorpCity($data['corp_city']);
@@ -46,6 +48,14 @@ class CorporateRegisterForm {
     if (array_key_exists('corp_okved', $data)) $this->setCorpOKVED($data['corp_okved']);
     if (array_key_exists('corp_email', $data)) $this->setCorpEmail($data['corp_email']);
     if (array_key_exists('corp_phone', $data)) $this->setCorpPhone($data['corp_phone']);
+  }
+
+  public function getErrors() {
+    return $this->errors;
+  }
+
+  public function getError($name) {
+    return array_key_exists($name, $this->errors) ? $this->errors[$name] : null;
   }
 
   /**
@@ -238,5 +248,52 @@ class CorporateRegisterForm {
   public function getPhone()
   {
     return $this->phone;
+  }
+  
+  public function validate() {
+    if (!$this->getFirstName()) {
+      $this->errors['first_name'] = 'Укажите имя';
+    }
+    if (!$this->getMiddleName()) {
+      $this->errors['middle_name'] = 'Укажите отчество';
+    }
+    if (!$this->getLastName()) {
+      $this->errors['last_name'] = 'Укажите фамилию';
+    }
+    if (!$this->getEmail()) {
+      $this->errors['email'] = 'Укажите email';
+    }
+    if (!$this->getPhone()) {
+      $this->errors['phone'] = 'Укажите номер телефона';
+    }
+    if (!$this->getCorpName()) {
+      $this->errors['corp_name'] = 'Укажите название организации';
+    }
+    if (!$this->getCorpLegalAddress()) {
+      $this->errors['corp_legal_address'] = 'Укажите юридический адрес';
+    }
+    if (!$this->getCorpRealAddress()) {
+      $this->errors['corp_real_address'] = 'Укажите фактический адрес';
+    }
+    if (!$this->getCorpINN()) {
+      $this->errors['corp_inn'] = 'Укажите ИНН';
+    }
+    if (!$this->getCorpKPP()) {
+      $this->errors['corp_kpp'] = 'Укажите КПП';
+    }
+    if (!$this->getCorpAccount()) {
+      $this->errors['corp_account'] = 'Укажите расчетный счет';
+    }
+    if (!$this->getCorpKorrAccount()) {
+      $this->errors['corp_korr_account'] = 'Укажите корреспондентский счет';
+    }
+    if (!$this->getCorpBIK()) {
+      $this->errors['corp_bik'] = 'Укажите БИК';
+    }
+    if (!$this->getCorpCity()) {
+      $this->errors['corp_city'] = 'Укажите город';
+    }
+
+    return !(bool)$this->errors;
   }
 }

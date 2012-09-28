@@ -1,3 +1,7 @@
+<?php
+/** @var $form CorporateRegisterForm */
+?>
+
 <?php slot('title', 'Регистрация юридического лица') ?>
 
 <form action="<?php echo url_for('user_corporateRegister') ?>" method="post">
@@ -5,92 +9,110 @@
 
     <div class="pb5">Имя:</div>
     <div class="pb5">
-        <input type="text" class="text width315 mb10" name="register[first_name]">
+        <?php include_partial('default/field_errors', array('errors' => $form->getError('first_name'))) ?>
+        <input type="text" class="text width315 mb10" name="register[first_name]" value="<?php echo $form->getFirstName() ?>" />
     </div>
 
     <div class="pb5">Отчество:</div>
     <div class="pb5">
-        <input type="text" class="text width315 mb10" name="register[middle_name]">
+        <?php include_partial('default/field_errors', array('errors' => $form->getError('middle_name'))) ?>
+        <input type="text" class="text width315 mb10" name="register[middle_name]" value="<?php echo $form->getMiddleName() ?>" />
     </div>
 
     <div class="pb5">Фамилия:</div>
     <div class="pb5">
-        <input type="text" class="text width315 mb10" name="register[last_name]">
+        <?php include_partial('default/field_errors', array('errors' => $form->getError('last_name'))) ?>
+        <input type="text" class="text width315 mb10" name="register[last_name]" value="<?php echo $form->getLastName() ?>" />
     </div>
 
     <div class="pb5">Контактный e-mail:</div>
     <div class="pb5">
-        <input type="text" class="text width315 mb10" name="register[email]">
+        <?php include_partial('default/field_errors', array('errors' => $form->getError('email'))) ?>
+        <input type="text" class="text width315 mb10" name="register[email]" value="<?php echo $form->getEmail() ?>" />
     </div>
 
     <div class="pb5">Мобильный телефон:</div>
     <div class="pb5">
-        <input type="text" class="text width315 mb10" name="register[phone]">
+        <?php include_partial('default/field_errors', array('errors' => $form->getError('phone'))) ?>
+        <input type="text" class="text width315 mb10" name="register[phone]" value="<?php echo $form->getPhone() ?>" />
     </div>
 
     <div class="pb5">Наименование организации:</div>
     <div class="pb5">
-        <input type="text" class="text width315 mb10" name="register[corp_name]">
+        <?php include_partial('default/field_errors', array('errors' => $form->getError('corp_name'))) ?>
+        <input type="text" class="text width315 mb10" name="register[corp_name]" value="<?php echo $form->getCorpName() ?>" />
     </div>
 
     <div class="pb5">Юридический адрес:</div>
     <div class="pb5">
-        <input type="text" class="text width315 mb10" name="register[corp_legal_address]">
+        <?php include_partial('default/field_errors', array('errors' => $form->getError('corp_legal_address'))) ?>
+        <input type="text" class="text width315 mb10" name="register[corp_legal_address]" value="<?php echo $form->getCorpLegalAddress() ?>" />
     </div>
 
     <div class="pb5">Фактический адрес:</div>
     <div class="pb5">
-        <input type="text" class="text width315 mb10" name="register[corp_real_address]">
+        <?php include_partial('default/field_errors', array('errors' => $form->getError('corp_real_address'))) ?>
+        <input type="text" class="text width315 mb10" name="register[corp_real_address]" value="<?php echo $form->getCorpRealAddress() ?>" />
     </div>
 
     <div class="pb5">ИНН:</div>
     <div class="pb5">
-        <input type="text" class="text width315 mb10" name="register[corp_inn]">
+        <?php include_partial('default/field_errors', array('errors' => $form->getError('corp_inn'))) ?>
+        <input type="text" class="text width315 mb10" name="register[corp_inn]" value="<?php echo $form->getCorpINN() ?>" />
     </div>
 
     <div class="pb5">КПП:</div>
     <div class="pb5">
-        <input type="text" class="text width315 mb10" name="register[corp_kpp]">
+        <?php include_partial('default/field_errors', array('errors' => $form->getError('corp_kpp'))) ?>
+        <input type="text" class="text width315 mb10" name="register[corp_kpp]" value="<?php echo $form->getCorpKPP() ?>" />
     </div>
 
     <div class="pb5">Расчетный счет:</div>
     <div class="pb5">
-        <input type="text" class="text width315 mb10" name="register[corp_acount]">
+        <?php include_partial('default/field_errors', array('errors' => $form->getError('corp_account'))) ?>
+        <input type="text" class="text width315 mb10" name="register[corp_account]" value="<?php echo $form->getCorpAccount() ?>" />
     </div>
 
     <div class="pb5">Корреспондентский счет:</div>
     <div class="pb5">
-        <input type="text" class="text width315 mb10" name="register[corp_korr_acount]">
+        <?php include_partial('default/field_errors', array('errors' => $form->getError('corp_korr_account'))) ?>
+        <input type="text" class="text width315 mb10" name="register[corp_korr_acount]" value="<?php echo $form->getCorpKorrAccount() ?>" />
     </div>
 
     <div class="pb5">БИК:</div>
     <div class="pb5">
-        <input type="text" class="text width315 mb10" name="register[corp_bik]">
+        <?php include_partial('default/field_errors', array('errors' => $form->getError('corp_bik'))) ?>
+        <input type="text" class="text width315 mb10" name="register[corp_bik]" value="<?php echo $form->getCorpBIK() ?>" />
     </div>
 
     <div class="pb5">Город:</div>
     <div class="pb5">
-        <input type="text" class="text width315 mb10" name="register[corp_city]">
+        <?php include_partial('default/field_errors', array('errors' => $form->getError('corp_city'))) ?>
+        <input type="text" class="text width315 mb10" name="register[corp_city]" value="<?php echo $form->getCorpCity() ?>" />
     </div>
 
+  <?php if (false): ?>
     <div class="pb5">Код ОКПО:</div>
     <div class="pb5">
-        <input type="text" class="text width315 mb10" name="register[corp_okpo]">
+        <input type="text" class="text width315 mb10" name="register[corp_okpo]" />
     </div>
 
     <div class="pb5">Код ОКВЭД:</div>
     <div class="pb5">
-        <input type="text" class="text width315 mb10" name="register[corp_okved]">
+        <input type="text" class="text width315 mb10" name="register[corp_okved]" />
     </div>
 
     <div class="pb5">E-mail:</div>
     <div class="pb5">
-        <input type="text" class="text width315 mb10" name="register[corp_email]">
+        <input type="text" class="text width315 mb10" name="register[corp_email]" />
     </div>
 
     <div class="pb5">Телефон:</div>
     <div class="pb5">
-        <input type="text" class="text width315 mb10" name="register[corp_phone]">
+        <input type="text" class="text width315 mb10" name="register[corp_phone]" />
     </div>
+  <?php endif ?>
+
+    <input type="submit" tabindex="4" value="Регистрация" class="button bigbutton" />
 
 </form>

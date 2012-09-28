@@ -256,11 +256,20 @@ class guardActions extends myActions
    */
   public function executeCorporateRegister(sfRequest $request) {
     $form = new CorporateRegisterForm();
+    $errors = array();
 
-    if ($request->isMethod('register')) {
-      $form->import($request->getPostParameter('form'));
-      var_dump($form);
+    if ($request->isMethod('post')) {
+      $form->import($request->getPostParameter('register'));
+
+      if ($form->validate()) {
+
+      }
+
+      $errors = $form->getErrors();
     }
+
+    $this->setVar('form', $form);
+    $this->setVar('errors', $errors);
   }
 
   /**
