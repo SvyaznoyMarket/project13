@@ -3617,6 +3617,15 @@ label.checked {
 .lightboxmenu li .point2.orangeme b {
   background-position: 0 -160px;
 }
+.lightboxmenu li .point6 b {
+  background-position: -277px -109px;
+}
+.lightboxmenu li .point6:hover {
+  background-position: -3px -246px;
+}
+.lightboxmenu li .point6:hover b {
+  background-position: -277px -159px;
+}
 .lightboxmenu li .orangeme {
   color: #ffa901;
 }
