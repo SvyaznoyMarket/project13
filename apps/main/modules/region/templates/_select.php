@@ -15,21 +15,21 @@
 
   </div>
 </div>-->
-<div class="popupRegion">
+<div class="popupRegion" style="display:none">
 	<a href="#" class="close">Закрыть</a>
 	<h2 class="pouptitle">Привет! Укажите, из какого вы города.</h2>
 	<div class="hidden">
 		<p>скрытый блок</p>
 	</div>
 	<form class="ui-css">
-		<input id="jscity" data-url-autocomplete="<?php echo url_for('region_autocomplete') ?>" placeholder="Введите свой город здесь" class="bBuyingLine__eText mInputLong" /><a class="inputClear" href="#">x</a>
+		<input id="jscity" 
+			data-url-autocomplete="<?php echo url_for('region_autocomplete') ?>" placeholder="Введите свой город" class="bBuyingLine__eText mInputLong" /><a class="inputClear" href="#">x</a>
 		<input id="jschangecity" type="submit" value="Сохранить" class="button bigbutton mDisabled" />
 		<div id="jscities" style="position:relative"></div>
     </form>
     <div class="cityInline">
     	<a href="#">Москва</a>
-    	<a href="#">Воронеж</a>
-    	<a href="#">Несколько городов в строчку</a>
+    	<a href="#">Санкт-Петербург</a>
     </div>
 	<div class="colomn">
 		<a href="#">Москва</a>
@@ -57,6 +57,7 @@
 	</div>
 	<div class="clear"></div>
 	<div class="info">
-		<p>блок с неким текстом</p>
+		<p>Мы доставим вашу покупку в любой регион. 
+			Если в вашем регионе еще нет нашего офиса, доставка будет осуществляться с помощью партнеров.</p>
 	</div>
 </div>

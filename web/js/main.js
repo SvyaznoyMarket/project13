@@ -375,57 +375,11 @@ $(document).ready(function(){
 		}
 	})
 	
-	function getRegionsOld() { //deprecated
-		$.getJSON( '/region/init', function(data) {
-			if( !data.success ) 
-				return false
-			var cities = data.data
-			var cityPopup = $('<div class="bCityPopupWrap">').html(
-				'<div class="hideblock bCityPopup">'+
-					'<i title="Закрыть" class="close">Закрыть</i>'+
-					'<div class="title">Привет! Из какого вы города?</div>'+
-				'</div>'+
-			'</div>')
-			for( var ci = 0, cl = cities.length; ci < cl; ci++ ) {
-				if( typeof( cities[ci].link ) === 'undefined' || typeof( cities[ci].name ) === 'undefined' )
-					continue
-				var cnode = $('<div>').append( $('<a>').attr( 'href', cities[ci].link ).text( cities[ci].name ) )
-				if( typeof( cities[ci].is_active ) !== 'undefined' ) {
-					cnode.addClass('bCityPopup__eCurrent')
-					cityPopup.find('.title').after( cnode )
-				} else {
-					cnode.addClass('bCityPopup__eBlock')
-					cityPopup.find('div:first').append( cnode )
-				}
-			}
-			cityPopup.css('display','none').appendTo( $('body') )
-			paintRegions()
-		})	
-	}
-	
-	function paintRegions() {
-		$('.bCityPopupWrap').lightbox_me({ centered: true })
-		/*$('.graying').show()
-		$('.bCityPopupWrap').show()
-		$('body').delegate( '.bCityPopupWrap .close', 'click', function() {
-			$('.graying').hide()
-			$('.bCityPopupWrap').hide()
-		})
-		*/
-	}
-	/*
-	$('body').delegate('#jsregion, .jsChangeRegion', 'click', function() {
-		if( !$(this).data('run') ) {
-			$(this).data('run', true)
-			getRegions()
-		} else {
-			if( $('.bCityPopupWrap').length )
-				paintRegions()
-		}
-		return false
+	$('.inputClear').bind('click', function(e) {
+		e.preventDefault()
+		$('#jscity').val('')
 	})
-	*/
-	
+
 	$('#jscity').autocomplete( {
 		autoFocus: true,
 		appendTo: '#jscities',
@@ -460,9 +414,13 @@ $(document).ready(function(){
 			$( this ).removeClass( "ui-corner-top" ).addClass( "ui-corner-all" );
 		}
 	})
+
+	// function paintRegions() {
+	// 	$('.bCityPopupWrap').lightbox_me({ centered: true })
+	// }
 	
 	function getRegions() {
-		$('#region-block').lightbox_me( {
+		$('.popupRegion').lightbox_me( {
 			autofocus: true,
 			onClose: function() {			
 				if( !docCookies.hasItem('geoshop') ) {
