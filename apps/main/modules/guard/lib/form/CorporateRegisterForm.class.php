@@ -19,7 +19,6 @@ class CorporateRegisterForm {
   /** @var string Корреспондентский счет */
   private $corpKorrAccount;
   private $corpBIK;
-  private $corpCity;
   private $corpOKPO;
   private $corpOKVED;
   private $corpEmail;
@@ -43,7 +42,6 @@ class CorporateRegisterForm {
     if (array_key_exists('corp_account', $data)) $this->setCorpAccount($data['corp_account']);
     if (array_key_exists('corp_korr_acount', $data)) $this->setCorpKorrAccount($data['corp_korr_acount']);
     if (array_key_exists('corp_bik', $data)) $this->setCorpBIK($data['corp_bik']);
-    if (array_key_exists('corp_city', $data)) $this->setCorpCity($data['corp_city']);
     if (array_key_exists('corp_okpo', $data)) $this->setCorpOKPO($data['corp_okpo']);
     if (array_key_exists('corp_okved', $data)) $this->setCorpOKVED($data['corp_okved']);
     if (array_key_exists('corp_email', $data)) $this->setCorpEmail($data['corp_email']);
@@ -82,16 +80,6 @@ class CorporateRegisterForm {
   public function getCorpBIK()
   {
     return $this->corpBIK;
-  }
-
-  public function setCorpCity($corpCity)
-  {
-    $this->corpCity = (string)$corpCity;
-  }
-
-  public function getCorpCity()
-  {
-    return $this->corpCity;
   }
 
   public function setCorpEmail($corpEmail)
@@ -290,8 +278,8 @@ class CorporateRegisterForm {
     if (!$this->getCorpBIK()) {
       $this->errors['corp_bik'] = 'Укажите БИК';
     }
-    if (!$this->getCorpCity()) {
-      $this->errors['corp_city'] = 'Укажите город';
+    if (!$this->getCorpOKPO()) {
+      $this->errors['corp_okpo'] = 'Укажите ОКПО';
     }
 
     return !(bool)$this->errors;

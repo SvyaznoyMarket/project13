@@ -255,6 +255,8 @@ class guardActions extends myActions
    * @param sfWebRequest $request A request object
    */
   public function executeCorporateRegister(sfRequest $request) {
+    $client = CoreClient::getInstance();
+
     $form = new CorporateRegisterForm();
     $errors = array();
 
@@ -262,10 +264,47 @@ class guardActions extends myActions
       $form->import($request->getPostParameter('register'));
 
       if ($form->validate()) {
+        try {
+          $result = $client->query('user/create-legal', array(), array(
+            'first_name'    => $form->getFirstName(),
+            'last_name'     => $form->getLastName(),
+            'middle_name'   => $form->getMiddleName(),
+            'sex'           => 0,
+            //'birthday'      => null,
+            'email'         => $form->getEmail(),
+            'phone'         => null,
+            'mobile'        => $form->getPhone(),
+            'geo_id'        => $this->getUser()->getRegion('id'),
+            'is_subscribe'  => null,
+            'occupation'    => null,
+            'legal_data'    => array(
+              //'legal_type' => null,
+              //'name'      => null,
+              'name_full'     => $form->getCorpName(),
+              'legal_address' => $form->getCorpLegalAddress(),
+              'real_address'  => $form->getCorpRealAddress(),
+              'okpo'          => $form->getCorpOKPO(),
+              'inn'           => $form->getCorpINN(),
+              'kpp'           => $form->getCorpKPP(),
+              'bik'           => $form->getCorpBIK(),
+              'account'       => $form->getCorpAccount(),
+              'korr_account'  => $form->getCorpKorrAccount(),
+            ),
+          ));
+
+          var_dump($result); exit();
+        } catch (Exception $e) {
+          $errors['common'] = 'Не удалось сохранить форму. '.(sfConfig::get('sf_debug') ? $e->getMessage() : '');
+
+          $error = $client->getError();
+          if (isset($error['code'])) switch ($error['code']) {
+            case 684:
+              $errors['common'] = $error['message'];
+              break;
+          }
+        }
 
       }
-
-      $errors = $form->getErrors();
     }
 
     $this->setVar('form', $form);

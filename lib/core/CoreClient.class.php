@@ -19,6 +19,8 @@ class CoreClient
   private $resources = array();
   private $isOnExecute = false;
 
+  private $error;
+
   /**
    * @return CoreClient
    */
@@ -180,6 +182,10 @@ class CoreClient
     }
   }
 
+  public function getError() {
+    return $this->error;
+  }
+
   /**
    * @param $action
    * @param array $params
@@ -250,6 +256,8 @@ class CoreClient
     }
 
     if (is_array($decoded) && array_key_exists('error', $decoded)) {
+      $this->error = $decoded['error'];
+
       throw new CoreClientException((string)$decoded['error']['message'] . " " . $this->encode($decoded), (int)$decoded['error']['code']);
     }
     if (array_key_exists('result', $decoded)) {
