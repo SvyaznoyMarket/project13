@@ -108,7 +108,7 @@ class ServiceModel
 
     private function createService(array $data)
     {
-        $service = new ServiceData($data);
+        $service = new ServiceInfo($data);
 
         return $service;
     }
