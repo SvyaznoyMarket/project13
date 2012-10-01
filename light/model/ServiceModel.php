@@ -80,7 +80,7 @@ class ServiceModel
     {
         $result = App::getCoreV2()->query('service/get2', array(
             'slug' => (string)$token,
-            'geo_id' => CurrentUser::DEFAULT_REGION_ID,
+            'geo_id' => App::getCurrentUser()->getRegion()->getId(),
         ));
         if (empty($result)) {
             return null;
@@ -95,7 +95,7 @@ class ServiceModel
         }
         $result = App::getCoreV2()->query('service/get2', array(
             'id' => $idList,
-            'geo_id' => CurrentUser::DEFAULT_REGION_ID,
+            'geo_id' => App::getCurrentUser()->getRegion()->getId(),
         ));
 
         $list = array();
@@ -116,7 +116,7 @@ class ServiceModel
     public function getCategoryTreeByToken($token, $max_depth=null){
         $params = array(
             'slug' => (string)$token,
-            'geo_id' => CurrentUser::DEFAULT_REGION_ID,
+            'geo_id' => App::getCurrentUser()->getRegion()->getId(),
         );
         if(!is_null($max_depth)){
             $params['max_depth'] = (int)$max_depth;
@@ -131,9 +131,10 @@ class ServiceModel
 
     public function loadServiceList(array $categoryList){
         foreach($categoryList as $category){
+          /** @var ServiceData $category  */
             App::getCoreV2()->addQuery('service/list', array(
                 'category_id' => $category->getId(),
-                'geo_id' => CurrentUser::DEFAULT_REGION_ID,
+                'geo_id' => App::getCurrentUser()->getRegion()->getId(),
             ), array(), function($data) use($category){
                 $category->setServiceIdList($data['list']);
             });
@@ -147,7 +148,7 @@ class ServiceModel
             $idList = array_unique($idList);
             $result = App::getCoreV2()->query('service/get2', array(
                 'id' => $idList,
-                'geo_id' => CurrentUser::DEFAULT_REGION_ID,
+                'geo_id' => App::getCurrentUser()->getRegion()->getId(),
             ));
             $map = array();
             if (is_array($result))
