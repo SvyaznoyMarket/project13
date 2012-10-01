@@ -2592,7 +2592,7 @@ label.checked {
   padding: 25px 0px;
 }
 .bBuyingHead a {
-  background: url("/css/skin/img/z_logo.png") no-repeat;
+  background: url("/css/order/img/orderSprite.png") no-repeat -55px 0;
   display: inline-block;
   *display: inline;
   float: right;
@@ -2690,7 +2690,7 @@ label.checked {
   zoom: 1;
 }
 .bBuyingLine dt a {
-  border-bottom: 1px solid #000;
+  border-bottom: 1px solid #000000;
   font: 14px Tahoma, sans-serif;
   text-decoration: none;
 }
@@ -2752,7 +2752,7 @@ label.checked {
   zoom: 1;
 }
 .bBuyingLine label b {
-  background: url("/css/skin/img/z_checkbox.png") 0px -48px no-repeat;
+  background: url("/css/order/img/orderSprite.png") 0px -48px no-repeat;
   cursor: pointer;
   display: inline-block;
   *display: inline;
@@ -2786,10 +2786,10 @@ label.checked {
   width: auto;
 }
 .bBuyingLine .mChecked b {
-  background: url("/css/skin/img/z_checkbox.png") 0px 0px no-repeat;
+  background: url("/css/order/img/orderSprite.png") 0px 0px no-repeat;
 }
 .bBuyingLine .mDisabled b {
-  background: url("/css/skin/img/z_checkbox.png") 0px -24px no-repeat;
+  background: url("/css/order/img/orderSprite.png") 0px -24px no-repeat;
   cursor: default;
 }
 .bBuyingLine.mConfirm {
@@ -2889,7 +2889,7 @@ label.checked {
   text-align: right;
 }
 .bBuyingLineWrap__eSum b {
-  color: #000;
+  color: #000000;
   font: 14px Tahoma, sans-serif;
   margin-left: 10px;
 }
@@ -2926,7 +2926,7 @@ label.checked {
   margin: 0px;
 }
 .bSelect.mFastInpSmall span {
-  color: #000;
+  color: #000000;
   font-size: 14px;
   font-weight: normal;
   margin: 0px;
@@ -2951,7 +2951,7 @@ label.checked {
   -o-border-top-right-radius: 5px;
   -webkit-border-bottom-right-radius: 5px;
   -wekit-border-top-right-radius: 5px;
-  background: #f5f5f5 url("/css/skin/img/bCustomSelectArrow.png") 50% 50% no-repeat;
+  background: #f5f5f5 url("/css/order/img/orderSprite.png") -20px -75px no-repeat;
   border-bottom-right-radius: 5px;
   border-left: 1px solid #dadada;
   border-top-right-radius: 5px;
@@ -3042,12 +3042,12 @@ label.checked {
   zoom: 1;
 }
 .bBuyingDates__eLeft span {
-  background: url("/css/skin/img/z_arrows2.png") 0px 0px no-repeat;
+  background: url("/css/order/img/orderSprite.png") -25px 0px no-repeat;
   left: 14px !important;
   right: 0px !important;
 }
 .bBuyingDates__eRight span {
-  background: url("/css/skin/img/z_arrows2.png") -9px 0px no-repeat;
+  background: url("/css/order/img/orderSprite.png") -34px 0px no-repeat;
   left: 14px !important;
   right: 0px !important;
 }
@@ -3072,10 +3072,10 @@ label.checked {
   cursor: default;
 }
 .bBuyingDates__eLeft.mDisabled span {
-  background: url("img/z_arrows2.png") 0px -11px no-repeat;
+  background: url("/css/order/img/orderSprite.png") -25px -11px no-repeat;
 }
 .bBuyingDates__eRight.mDisabled span {
-  background: url("img/z_arrows2.png") 9px -11px no-repeat;
+  background: url("/css/order/img/orderSprite.png") -34px -11px no-repeat;
   left: 12px !important;
 }
 .bBuyingDates__eLeft.mDisabled b {
