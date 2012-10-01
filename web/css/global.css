@@ -1213,8 +1213,15 @@
   margin: 0 10px 0 -18px;
 }
 .popupRegion .cityInline {
-  font-size: 14px;
+  font-size: 16px;
   margin: 20px 0 0;
+  word-spacing: 15px;
+}
+.popupRegion .cityInline a{
+  border-bottom: 1px dashed black;
+}
+.popupRegion .cityInline a:hover{
+  text-decoration: none;
 }
 .popupRegion .colomn {
   float: left;

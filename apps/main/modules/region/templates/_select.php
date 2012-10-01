@@ -29,7 +29,7 @@
     </form>
     <div class="cityInline">
     	<a href="#">Москва</a>
-    	<a href="#">Санкт-Петербург</a>
+    	<a href="#">Город автоопределения</a>
     </div>
 	<div class="colomn">
 		<a href="#">Москва</a>
