@@ -84,6 +84,11 @@
   }
   span {
     font: 14px Tahoma, sans-serif;
+    &.placeholder {
+      color: @black;
+      line-height: 27px;
+      margin-left:10px;
+    }
   }
 }
 .bBuyingLine {
@@ -121,6 +126,7 @@
     zoom: 1;
     div {
       margin: 15px 0px 0px;
+      position:relative;
       &:first-child {
         margin-top: 0px;
       }
@@ -510,41 +516,69 @@
 .bBuyingDates__eDisable.erased {
   display: none;
 }
+#addressField{
+  dd{
+    div{
+      float:left;
+      margin-right: 10px;
+      width:75.5%;
+      input{
+        width:100%;
+      }
+      div{
+        float: none;
+        margin: 0;
+      }
+      &.street{
+        width:390px
+      }
+      &.number{
+        width:90px;
+      }
+      &.building, &.apartament{
+        width:165px;
+      }
+      &.floor{
+        width:140px;
+      }
+    }
+  }
+}
 #order_address_metro,
 #order_address_street,
 #order_address_number,
 #order_address_building,
 #order_address_apartment,
 #order_address_floor {
-  -moz-border-radius-bottomleft: 0px;
-  -moz-border-radius-topleft: 0px;
-  -webkit-border-bottom-left-radius: 0px;
-  -webkit-border-top-left-radius: 0px;
-  border-bottom-left-radius: 0px;
-  border-left: 0px;
-  border-top-left-radius: 0px;
-  padding-left: 10px;
+  .box-sizing(border-box);
+  height: 30px;
+  left: 0;
+  .opacity(0.8);
+  filter: alpha(opacity=80);
+  position: absolute;
+  padding-left:55px;
+  width: 75.5%;
+  &:focus{
+    filter: alpha(opacity=100);
+    .opacity(1);
+    padding-left:10px;
+  }
 }
-.bBuyingInfo span.placeholder {
-  -moz-border-radius-bottomleft: 5px;
-  -moz-border-radius-topleft: 5px;
-  -webkit-border-bottom-left-radius: 5px;
-  -webkit-border-top-left-radius: 5px;
-  border-bottom-left-radius: 5px;
-  border-right: 0px none;
-  border-top-left-radius: 5px;
-  border: 1px solid #ddd;
-  border-right:none;
-  color: #999;
-  display: inline-block;
-  height: 27px;
-  line-height: 27px;
-  padding: 1px 4px;
+#order_address{
+  &_building{
+    padding-left:65px;
+  }
+  &_apartment{
+    padding-left:80px;
+  }
+  &_number{
+    padding-left:45px;
+  }
 }
 .bFormError {
   color: #ec323b;
-  display: inline-block;
-   *display: inline;
+  clear: both;
+  display:block;
   font-size: 14px;
   zoom: 1;
 }
