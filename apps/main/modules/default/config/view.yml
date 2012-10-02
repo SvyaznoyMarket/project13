@@ -4,7 +4,7 @@ all:
 
   stylesheets:
     - -*
-    - skin/inner.css
+    - skin/inner.css?2012-10-01
 
   javascripts:
     - -*
