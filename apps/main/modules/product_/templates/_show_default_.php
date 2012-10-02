@@ -128,14 +128,15 @@ foreach ($photo3dList as $photo3d)
 
 
   <div class="line pb15"></div>
-
-  <div class="creditbox"  <?php if (!$dataForCredit['creditIsAllowed'] || !sfConfig::get('app_payment_credit_enabled', true)) : ?> style="display:none" <?php endif; ?>>
+  <?php if ($dataForCredit['creditIsAllowed'] && sfConfig::get('app_payment_credit_enabled', true)) : ?>
+  <div class="creditbox">
     <div class="creditboxinner">
       от <span class="font24"><span class="price"></span> <span class="rubl">p</span></span> в кредит
       <div class="fr pt5"><label class="bigcheck " for="creditinput"><b></b>Беру в кредит
         <input id="creditinput" type="checkbox" name="creditinput" autocomplete="off"/></label></div>
     </div>
   </div>
+  <?php endif; ?>
 
   <?php if ($dataForCredit['creditIsAllowed'] && sfConfig::get('app_payment_credit_enabled', true)) : ?>
   <input data-model="<?php echo $dataForCredit['creditData'] ?>" id="dc_buy_on_credit_<?php echo $item->getArticle(); ?>" name="dc_buy_on_credit" type="hidden" />
