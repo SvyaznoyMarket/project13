@@ -1584,8 +1584,22 @@ dt.bCtg__eOrange {
   visibility: hidden;
 }
 .catProductNum {
-  font-size: 14px;
+  font-size: 12px;
   padding: 11px 0px 3px;
+}
+.catProductNum a {
+  background: url("/css/leftNav/img/leftNavSprite.png") no-repeat scroll -38px 8px;
+  color: #ffa901;
+  display: block;
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 20px;
+  margin: 5px 0;
+  padding-left: 25px;
+  text-decoration: underline;
+}
+.catProductNum a.hidden {
+  display: none;
 }
 .mSelected,
 .mSelected b {

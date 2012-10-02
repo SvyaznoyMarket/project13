@@ -84,8 +84,22 @@ dt.bCtg__eOrange {
   visibility: hidden;
 }
 .catProductNum {
-  font-size: 14px;
+  font-size: 12px;
   padding: 11px 0px 3px;
+  a{
+    background: url("@{leftNavSprite-url}") no-repeat scroll -38px 8px;
+    color:@firmOrange;
+    display: block;
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 20px;
+    margin: 5px 0;
+    padding-left: 25px;
+    text-decoration: underline;
+    &.hidden{
+      display:none;
+    }
+  }
 }
 .mSelected,
 .mSelected b {
