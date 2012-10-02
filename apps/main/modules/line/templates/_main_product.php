@@ -43,7 +43,7 @@ $json = array(
 
       <?php if (false && $product->getIsBuyable()): ?>
       <div class="pb5"><strong><a onClick="_gaq.push(['_trackEvent', 'QuickOrder', 'Open']);"
-                                  href="<?php echo url_for('order_1click', array('product' => $product->getBarcode())) ?>"
+                                  href="<?php echo url_for('order_1click', array('product' => $product->getToken())) ?>"
                                   class="red underline order1click-link">Купить быстро в 1 клик</a></strong></div>
       <?php endif ?>
     </div>

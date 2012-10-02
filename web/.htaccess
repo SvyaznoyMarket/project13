@@ -20,6 +20,7 @@ Options +FollowSymLinks +ExecCGI
   RewriteRule ^category/main_menu/? index.light.php [L]
   RewriteRule ^product-view/.* index.light.php [L]
   RewriteRule ^product-buy/.* index.light.php [L]
+  RewriteRule ^orders/1click.* index.light.php [L]
 
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteRule ^wp-admin/$ /content/wp-admin/index.php [L]

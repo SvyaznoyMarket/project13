@@ -81,7 +81,7 @@ class App{
 
   /**
    * @static
-   * @throws RuntimeException
+   * @throws \RuntimeException
    * @return DeliveryModel
    */
   public static function getDelivery(){
@@ -90,7 +90,7 @@ class App{
 
   /**
    * @static
-   * @throws RuntimeException
+   * @throws \RuntimeException
    * @return CategoryModel
    */
   public static function getCategory(){
@@ -99,6 +99,7 @@ class App{
 
   /**
    * @static
+   * @throws \RuntimeException
    * @return RegionModel
    */
   public static function getRegion(){
@@ -107,6 +108,25 @@ class App{
 
   /**
    * @static
+   * @throws \RuntimeException
+   * @return ShopModel
+   */
+  public static function getShop(){
+    return self::loadModel('ShopModel');
+  }
+
+  /**
+   * @static
+   * @throws \RuntimeException
+   * @return OrderModel
+   */
+  public static function getOrder(){
+    return self::loadModel('OrderModel');
+  }
+
+  /**
+   * @static
+   * @throws \RuntimeException
    * @return PromoModel
    */
   public static function getPromo(){
@@ -115,6 +135,7 @@ class App{
 
   /**
    * @static
+   * @throws \RuntimeException
    * @return ProductModel
    */
   public static function getProduct(){
@@ -123,10 +144,20 @@ class App{
 
   /**
    * @static
+   * @throws \RuntimeException
    * @return ServiceModel
    */
   public static function getService(){
     return self::loadModel('ServiceModel');
+  }
+
+  /**
+   * @static
+   * @throws \RuntimeException
+   * @return UserModel
+   */
+  public static function getUser(){
+    return self::loadModel('UserModel');
   }
 
   /**

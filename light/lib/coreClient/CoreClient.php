@@ -4,7 +4,7 @@ use Logger;
 use Exception;
 
 require_once(__DIR__.'/../log4php/Logger.php');
-require_once(__DIR__.'/../helpers/RequestLogger.php');
+require_once(__DIR__ . '/../helper/RequestLogger.php');
 
 class CoreClient
 {

@@ -26,6 +26,12 @@ class UserData
   /** @var string */
   private $email;
 
+  /** @var string */
+  private $phone;
+
+  /** @var string */
+  private $mobile;
+
 
   public function __construct($data=array()){
     if(array_key_exists('id', $data)){ $this->setId((int) $data['id']); }
@@ -33,6 +39,8 @@ class UserData
     if(array_key_exists('last_name', $data)){ $this->setLastName((string) $data['last_name']); }
     if(array_key_exists('middle_name', $data)){ $this->setMiddleName((string) $data['middle_name']); }
     if(array_key_exists('email', $data)){ $this->setEmail((string) $data['email']); }
+    if(array_key_exists('phone', $data)){ $this->setPhone((string) $data['phone']); }
+    if(array_key_exists('mobile', $data)){ $this->setMobile((string) $data['mobile']); }
   }
 
   /**
@@ -131,6 +139,38 @@ class UserData
   public function getMiddleName()
   {
     return $this->middleName;
+  }
+
+  /**
+   * @param string $phone
+   */
+  public function setPhone($phone)
+  {
+    $this->phone = $phone;
+  }
+
+  /**
+   * @return string
+   */
+  public function getPhone()
+  {
+    return $this->phone;
+  }
+
+  /**
+   * @param string $mobile
+   */
+  public function setMobile($mobile)
+  {
+    $this->mobile = $mobile;
+  }
+
+  /**
+   * @return string
+   */
+  public function getMobile()
+  {
+    return $this->mobile;
   }
 
 }
