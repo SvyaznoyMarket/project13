@@ -21,6 +21,9 @@ Options +FollowSymLinks +ExecCGI
   RewriteRule ^product-view/.* index.light.php [L]
   RewriteRule ^product-buy/.* index.light.php [L]
 
+  # dark
+  RewriteRule ^search* dark.php [L]
+
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteRule ^wp-admin/$ /content/wp-admin/index.php [L]
   RewriteRule ^wp-admin/(.*)$ /content/wp-admin/$1 [L]
@@ -39,3 +42,7 @@ Options +FollowSymLinks +ExecCGI
   # no, so we redirect to our front web controller
   RewriteRule ^(.*)$ index.php [QSA,L]
 </IfModule>
+
+# php
+php_flag short_open_tag On
+php_value date.timezone "Europe/Moscow"
