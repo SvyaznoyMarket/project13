@@ -753,7 +753,7 @@ $(document).ready(function(){
 			var dmenu = $(self).position().left*1 + $(self).width()*1 / 2 + 5
 			var punkt = $( '#extramenu-root-'+ $(self).attr('id').replace(/\D+/,'') )
 			if( punkt.length && punkt.find('dl').html().replace(/\s/g,'') != '' )
-				punkt.show().find('.corner').css('left', dmenu)
+				punkt.show()//.find('.corner').css('left', dmenu)
 		}
 	}
 	if( clientBrowser.isTouch ) {
