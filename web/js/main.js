@@ -433,6 +433,11 @@ $(document).ready(function(){
 			window.location = $(this).data('url')
 	})
 	
+	$('.inputClear').bind('click', function(e) {
+		e.preventDefault()
+		$('#jscity').val('')	
+  	})
+   
 	/* GEOIP fix */
 	if( !docCookies.hasItem('geoshop') ) {
 		getRegions()
