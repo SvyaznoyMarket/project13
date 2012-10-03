@@ -9,7 +9,11 @@
         <param name="file" value="plainPhp.log" />
         <param name="append" value="true" />
     </appender>
-
+    <appender name="requestLogFileAppender" class="LoggerAppenderFile">
+        <layout class="LoggerLayoutTTCC" />
+        <param name="file" value="requestPlainPhp.log" />
+        <param name="append" value="true" />
+    </appender>
     <appender name="cartFileAppender" class="LoggerAppenderFile">
         <layout class="LoggerLayoutTTCC" />
         <param name="file" value="cart.log" />

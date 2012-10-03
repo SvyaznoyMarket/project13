@@ -1,5 +1,7 @@
 <?php
 
+require_once(dirname(__FILE__).'/../lib/core/RequestLogger.php');
+$x = RequestLogger::getInstance();
 require_once(dirname(__FILE__).'/../config/ProjectConfiguration.class.php');
 
 $env = isset($_SERVER['APPLICATION_ENV']) ? $_SERVER['APPLICATION_ENV'] : 'prod';

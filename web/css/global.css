@@ -510,6 +510,9 @@ ul.lh15 li {
   position: relative;
   width: 100%;
 }
+.error_list {
+  color: red;
+}
 .popup {
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
@@ -541,6 +544,36 @@ ul.lh15 li {
   text-indent: -10000px;
   top: 0px;
   width: 26px;
+}
+.text {
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  border: 1px solid #c9c9c9;
+  height: 22px;
+  padding: 0px 5px;
+}
+.text:hover {
+  border-color: #ffd073;
+}
+.text.active {
+  background-color: #fff3db;
+  border-color: #ffd073;
+}
+.text.textdisabled {
+  border-color: #e4e4e4;
+  color: #a6a6a6;
+}
+.popupbox {
+  padding: 20px 20px 30px;
+}
+.pouptitle {
+  float: left;
+  font-family: "Enter";
+  font-size: 30px;
+  margin: 0px;
+  text-transform: uppercase;
+  width: 560px;
 }
 .mInlineBlock {
   display: inline-block;
@@ -4242,6 +4275,13 @@ label.checked {
   line-height: 20px;
 }
 /*---END---F1 всплывающего блока---*/
+/*-------СТИЛИ ОКНА АВТОРИЗАЦИИ-----*/
+.registerbox .loginForm {
+  border-right: 1px solid #e6e6e6;
+  margin-right: -2px;
+  padding-right: 20px;
+}
+/*---END---СТИЛИ ОКНА АВТОРИЗАЦИИ---*/
 /*-------СТИЛИ КОРЗИНЫ-----*/
 .basketline {
   border-bottom: 1px solid #e6e6e6;
