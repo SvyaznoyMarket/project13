@@ -45,6 +45,17 @@ class FillerLayout implements IFiller
         $regionTopList = App::getRegion()->getShopAvailable();
         $renderer->addParameter('regionTopList', $regionTopList);
 
+        $num_row = 3;
+
+        $columns_count = array();
+        $count = count($regionTopList);
+
+        for ($i = 0; $i < $num_row; $i++)
+        {
+            $columns_count[$i] = (int)floor($count / $num_row) + (($count % $num_row) > $i ? 1 : 0);
+        }
+        $renderer->addParameter('columns_count', $columns_count);
+
         if(Config::isDebugMode())
         {
             $renderer->addParameter('debug', true);
