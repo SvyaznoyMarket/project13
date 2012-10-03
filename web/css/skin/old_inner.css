@@ -926,11 +926,9 @@ border-radius: 5px;
 .cabinethelp {background:url(/css/skin/img/attention.gif) no-repeat 0 0; padding:20px 0 10px 0; font-size:11px}
 
 .errorpage404 {background:#fff url(/css/skin/img/error_404.png) no-repeat 50% 110px}
-.errorpage503 {background:#fff url(/css/skin/img/error_503.png) no-repeat 50% 0}
+
 .errorpage404 .allpage, .errorpage503 .allpage {background:none}
 .errorbox404 {width:430px; margin:0 auto; padding-top:420px}
-.logo503 {padding:61px 0 0 8px}
-.errorbox503 {width:560px; margin:0 auto; padding-top:250px}
 .ui-effects-transfer{ border:1px dashed black; z-index:102;}
 
 .tearmlist {float:left; width:100%}

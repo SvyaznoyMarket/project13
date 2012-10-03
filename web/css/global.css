@@ -3908,6 +3908,19 @@ label.checked {
   vertical-align: middle;
 }
 /*---END---СТИЛИ 404---*/
+/*-------СТИЛИ 503-----*/
+.errorpage503 {
+  background: #ffffff url("/css/503/img/error_503.png") no-repeat 50% 0px;
+}
+.logo503 {
+  padding: 61px 0px 0px 8px;
+}
+.errorbox503 {
+  margin: 0px auto;
+  padding-top: 250px;
+  width: 560px;
+}
+/*---END---СТИЛИ 503---*/
 /*------СТИЛИ ГЛАВНОЙ------*/
 #mainPage {
   background: #000000;

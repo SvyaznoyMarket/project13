@@ -5,7 +5,7 @@
 <title>Enter.ru</title>
 <meta name="description" content="" />
 <meta name="keywords" content="" />
-<link href="/css/skin/inner.css" rel="stylesheet" type="text/css" />
+<link href="/css/global.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body class="errorpage503">
