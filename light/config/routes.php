@@ -10,7 +10,8 @@ namespace light;
 return array(
   array('/user/shortinfo'                           , 'user.getShortInfo'),
   array('/product/delivery1click'                   , 'delivery.ProductDeliveryJson'),
-  array('/product/delivery-info/<productId>'        , 'delivery.ProductListShortDeliveryJson'),
+  array('/orders/1click'                            , 'order.oneClick'),
+  array('/product/delivery-info'                    , 'delivery.ProductListShortDeliveryJson'),
   array('/product/delivery-info'                    , 'delivery.ProductListShortDeliveryJson'),
   array('/cart/clear'                                  , 'cart.clear'),
   array('/cart/add/<productId>/_quantity/<quantity>'   , 'cart.setProductQuantity'),

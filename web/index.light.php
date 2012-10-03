@@ -10,7 +10,7 @@ Config::init($parameterList);
 
 require_once(Config::get('rootPath').'lib/TimeDebug.php');
 require_once(Config::get('rootPath').'lib/log4php/Logger.php');
-require_once(Config::get('rootPath').'lib/helpers/RequestLogger.php');
+require_once(Config::get('helperPath').'RequestLogger.php');
 require_once(Config::get('rootPath').'system/App.php');
 require_once(Config::get('rootPath').'system/Controller.php');
 

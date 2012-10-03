@@ -1,6 +1,7 @@
 <?php
 namespace light;
 use DateTime;
+use Exception;
 /**
  * Created by JetBrains PhpStorm.
  * User: Kuznetsov
@@ -19,7 +20,9 @@ class DateFormatter
   public static function Humanize($date){
     $today = new DateTime();
     $today->settime(0,0,0);
-    $date = new DateTime($date);
+    if(!is_object($date) || !is_a($date, 'DateTime')){
+      $date = new DateTime($date);
+    }
 
     $interval = $today->diff($date);
     if($interval->days == 0){
@@ -55,5 +58,12 @@ class DateFormatter
       }
     }
     return $result;
+  }
+
+  public static function format($date, $format = 'd.m.Y'){
+    if(!is_object($date) || !is_a($date, 'DateTime')){
+      $date = new DateTime($date);
+    }
+    return $date->format($format);
   }
 }
