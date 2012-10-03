@@ -3119,7 +3119,13 @@ dt.bCtg__eOrange{
 		.bFast__ePrice div{
 			float: right;
 			}
-
+	td.newWarehouse{
+		font-size: 15px;
+	}
+	td.newWarehouse img{
+		margin: -21px -3px;
+	}
+	
 .bSelect{
 	padding: 0 44px 0 10px;
 	cursor: pointer;
@@ -3561,7 +3567,35 @@ dt.bCtg__eOrange{
 	.bGrayPopupBlock li a:hover{
 		color: #ffa901;
 		}
-
+		
+	/*from master*/
+.mMapPopup .bMobDownWrapRel{
+	top: 5px;
+	bottom: auto;
+	}
+	.mMapPopup .bMobDown{
+		width: 950px;
+		background: #f1f1f1;
+		}
+	.mMapPopup .bMobDown__eWrap{
+		padding: 20px 0 0 0;
+		}
+	.mMapPopup__eBottom{
+		padding-top: 20px;
+		}
+	.mMapPopup__eBottom .mGray{
+		color: #434343;
+		}
+	.mMapPopup__eBottom div.selectbox{
+		margin-left: 10px;
+		vertical-align: 4px;
+		
+		display: inline-block;
+		*display: inline;
+		zoom: 1;
+		}
+	/*end from master*/
+			
 	.bInShop__eBottom .bMapShops__eMapWrap,	
 	.mMapPopup .bMapShops__eMapWrap,
 	.bFast .bMapShops__eMapWrap{
