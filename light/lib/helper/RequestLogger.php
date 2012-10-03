@@ -22,6 +22,8 @@ class RequestLogger
      */
     private $_id = null;
 
+    private $startTime = null;
+
     /**
      * Список запросов к ядру
      * @var array
@@ -52,39 +54,33 @@ class RequestLogger
     }
 
     private function __construct() {
+      $this->startTime = microtime(true);
     }
 
     public function __clone() {
         return false;
     }
 
-    /**
-     * Добавляет запрос в список запросов от ядра
-     * @param string $log
-     * @param array $getParams
-     */
-    public function addLog($log, $getParams) {
-        $paramsList = array();
-        foreach ($getParams as $key => $value) {
-            if (!$value) {
-                continue;
-            } elseif (is_array($value)) {
-                $value = implode(',', $value);
-            }
-            $paramsList[] = $key . '=' . $value;
-        }
-
+  /**
+   * Добавляет запрос в список запросов от ядра
+   * @param string $url
+   * @param string $postData
+   * @param string $time
+   */
+  public function addLog($url, $postData, $time){
         $this->_requestList[] = array(
-            'time' => date('H:i:s') . ' (' . microtime(true) . ')' ,
-            'text' => $log . ' Params: '. implode(';', $paramsList)
+            'time' => $time ,
+            'url' => $url ,
+            'post' => $postData
         );
     }
 
   public function getStatistics(){
     $fullText = 'Request id: ' . $this->getId() . " | ";
     foreach ($this->_requestList as $log) {
-      $fullText .= $log['time'] . ' ' . $log['text'] . " | ";
+      $fullText .= '{"url":"'.$log['url'].'", "post":"'.$log['post'].'", "time":"'.$log['time'].'"} | ';
     }
+    $fullText .= "response was sent to user after ". (microtime(true) - $this->startTime). " ms.";
     return $fullText;
   }
 }

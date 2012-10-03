@@ -75,11 +75,13 @@ class CoreClient
       $info = curl_getinfo($connection);
       $this->log('Core response resource: ' . $connection ,'debug');
       $this->log('Core response info: ' . $this->encodeInfo($info), 'debug');
+      RequestLogger::getInstance()->addLog($info['url'], print_r($data, true), $info['total_time']);
       if ($info['http_code'] >= 300) {
         throw new \RuntimeException(sprintf("Invalid http code: %d, \nResponse: %s", $info['http_code'], $response));
       }
       $this->log('Core response: ' . $response, 'debug');
-      RequestLogger::getInstance()->addLog($action, $params);
+
+//      RequestLogger::getInstance()->addLog($action, $params);
       $responseDecoded = $this->decode($response);
       curl_close($connection);
       return $responseDecoded;
@@ -105,6 +107,7 @@ class CoreClient
     if (!$this->multiHandler) {
       $this->multiHandler = curl_multi_init();
     }
+    $params['uid'] = RequestLogger::getInstance()->getId();
     $resource = $this->createCurlResource($action, $params, $data);
     curl_multi_add_handle($this->multiHandler, $resource);
     $this->callbacks[(string)$resource] = $callback;
@@ -136,6 +139,9 @@ class CoreClient
             $this->log('Core response done: ' . print_r($done, 1), 'debug');
             $ch = $done['handle'];
             $info = curl_getinfo($ch);
+
+            RequestLogger::getInstance()->addLog($info['url'], "unknown in multi curl", $info['total_time']);
+
             $this->log('Core response resurce: ' . $ch, 'debug');
             $this->log('Core response info: ' . $this->encodeInfo($info), 'debug');
             if (curl_errno($ch) > 0)
@@ -384,10 +390,11 @@ class CoreV1Client
       'data'   => $data), JSON_FORCE_OBJECT);
 
     $this->log("Request: ".$data, 'info');
-    RequestLogger::getInstance()->addLog($name, $params);
 
     $time_start = microtime(true);
     $response = $this->send($data);
+    $info = curl_getinfo($this->connection);
+    RequestLogger::getInstance()->addLog($info['url'], print_r($data, true), $info['total_time']);
     $this->log("Response: ".$response, 'debug');
     $time_end = microtime(true);
     $this->log('Request time:' . ($time_end - $time_start), 'info');
