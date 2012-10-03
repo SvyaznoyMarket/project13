@@ -11,7 +11,7 @@
     <div id="jscities" style="position:relative"></div>
     </form>
     <div class="cityInline">
-      <a href="#">Москва</a>
+      <a href="<?php echo url_for('region_change', array('region' => 14974)) ?>">Москва</a>
       <!--a href="#">Город автоопределения</a -->
     </div>
   <?php $offset = 0; ?>
