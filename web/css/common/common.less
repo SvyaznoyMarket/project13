@@ -1,4 +1,3 @@
-/* CSS Document */
 html {
   font-size: 100.01%;
   height: 100%;
@@ -469,12 +468,18 @@ ul.lh15 li {
 .placeholder {
   color: #ddd;
 }
+.fm{
+  text-align:left;
+}
+.hf{
+  display:none;
+}
 .f1 {
-  background: url("/css/skin/img/icons.png") no-repeat 0px -111px;
+  background: url("@{base-url}/skin/img/icons.png") no-repeat 0px -111px;
   padding: 3px 0px 3px 29px;
 }
 .entry {
-  background: url("/css/skin/img/icons.png") no-repeat 0px -139px;
+  background: url("@{base-url}/skin/img/icons.png") no-repeat 0px -139px;
   padding: 3px 0px 3px 29px;
 }
 .mTah12 {
@@ -491,30 +496,8 @@ ul.lh15 li {
   position: relative;
   width: 100%;
 }
-.bBigOrangeButton {
-  .rounded(5px);
-  background: #f89b1c;
-  border: 1px solid #e26500;
-  color: @white;
-  display: inline-block;
-  *display: inline;
-  font: bold 24px Tahoma, sans-serif;
-  padding: 6px 80px;
-  text-align: center;
-  zoom: 1;
-  &:hover {
-    background: #ee8900;
-    border: 1px solid #cb5b00;
-    color: #fff;
-    text-decoration: none;
-  }
-  &.disable {
-    background: #f4f4f4;
-    border: 1px solid #ddd;
-    color: #cdcdcd;
-    cursor: default;
-    text-decoration: none;
-  }
+.error_list {
+  color: red;
 }
 .popup {
   .rounded(5px);
@@ -543,3 +526,224 @@ ul.lh15 li {
     width: 26px;
   }
 }
+.text {
+  .rounded(5px);
+  border: 1px solid #c9c9c9;
+  height: 22px;
+  padding: 0px 5px;
+  &:hover {
+    border-color: #ffd073;
+  }
+  &.active {
+    background-color: #fff3db;
+    border-color: #ffd073;
+  }
+  &.textdisabled {
+    border-color: #e4e4e4;
+    color: #a6a6a6;
+  }
+}
+.popupbox {
+  padding: 20px 20px 30px;
+}
+.pouptitle {
+  float: left;
+  font-family: "Enter";
+  font-size: 30px;
+  margin: 0px;
+  text-transform: uppercase;
+  width: 560px;
+}
+.mInlineBlock {
+  display: inline-block;
+  *display: inline;
+  zoom: 1;
+}
+/* BUTTONS*/
+.bBigOrangeButton {
+  .rounded(5px);
+  background: #f89b1c;
+  border: 1px solid #e26500;
+  color: @white;
+  display: inline-block;
+  *display: inline;
+  font: bold 24px Tahoma, sans-serif;
+  padding: 6px 80px;
+  text-align: center;
+  zoom: 1;
+  &:hover {
+    background: #ee8900;
+    border: 1px solid #cb5b00;
+    color: #fff;
+    text-decoration: none;
+  }
+  &.disable {
+    background: #f4f4f4;
+    border: 1px solid #ddd;
+    color: #cdcdcd;
+    cursor: default;
+    text-decoration: none;
+  }
+}
+.bBlueButton .link1,
+.bSet__ePrice .link1,
+.button {
+  .rounded(5px);
+  background-image: url("@{base-url}/common/img/bg_buttons.png");
+  background-repeat: repeat-x;
+  border: 1px solid;
+  cursor: pointer;
+  font-weight: bold;
+  overflow: visible;
+}
+.bBlueButton .link1,
+.whitelink {
+  background-color: #e5e5e5;
+  background-position: 0px -128px;
+  border-color: #c9c9c9;
+  color: #010101;
+  display: inline-block;
+  font-size: 11px;
+  height: 18px;
+  padding: 4px 10px 0px;
+}
+.bBlueButton .link1:hover,
+.whitelink:hover {
+  background-color: #c5c5c5;
+  background-position: 0px -160px;
+  text-decoration: none;
+}
+.whitelinkactive,
+.whitelinkactive:hover {
+  background-color: #c4c4c4;
+  background-position: 0px -192px;
+}
+.whitelinkdisabled {
+  background-color: #ececec;
+  background-position: 0px -224px;
+  border-color: #e4e4e4;
+  color: #e1e1e1;
+}
+.yellowbutton {
+  background-color: #ffaa01;
+  background-position: 0px 0px;
+  border-color: #f28900;
+  color: #fff;
+  font-size: 11px;
+  height: 24px;
+  padding: 0px 7px 3px;
+  &:hover {
+    background-color: #f79200;
+    background-position: 0px -32px;
+  }
+}
+.yellowbuttonactive,
+.yellowbuttonactive:hover {
+  background-color: #f79200;
+  background-position: 0px -64px;
+}
+.yellowbuttondisabled {
+  background-color: #ececec;
+  background-position: 0px -96px;
+  border-color: #e4e4e4;
+  color: #e1e1e1;
+}
+.whitebutton {
+  background-color: #e5e5e5;
+  background-position: 0px -128px;
+  border-color: #c9c9c9;
+  color: #010101;
+  font-size: 11px;
+  height: 24px;
+  padding: 0px 7px 3px;
+  &:hover {
+    background-color: #c5c5c5;
+    background-position: 0px -160px;
+  }
+}
+.whitebuttonactive,
+.whitebuttonactive:hover {
+  background-color: #c4c4c4;
+  background-position: 0px -192px;
+}
+.whitebuttondisabled {
+  background-color: #ececec;
+  background-position: 0px -224px;
+  border-color: #e4e4e4;
+  color: #e1e1e1;
+}
+.bigbutton {
+  background-color: @firmOrange;
+  background-position: 0px -256px;
+  border-color: #f28900;
+  color: @white;
+  font-size: 14px;
+  height: 33px;
+  padding: 0px 7px 3px;
+}
+.bSet__ePrice .link1:hover,
+.bigbutton:hover {
+  background-color: #f79200;
+  background-position: 0px -297px;
+}
+.bigbuttonactive,
+.bigbuttonactive:hover {
+  background-color: #f79200;
+  background-position: 0px -338px;
+}
+.bigbuttonlink {
+  background-color: @firmOrange;
+  background-position: 0px -256px;
+  border-color: #f28900;
+  color: @white;
+  display: inline-block;
+  font-size: 14px;
+  height: 26px;
+  padding: 7px 11px 0px;
+  &:hover {
+    background-color: #f79200;
+    background-position: 0px -297px;
+    color: @white;
+    text-decoration: none;
+  }
+}
+.bigbuttonlinkactive,
+.bigbuttonlinkactive:hover {
+  background-color: #f79200;
+  background-position: 0px -338px;
+}
+.bigbuttonlink.width214 {
+  padding: 7px 0px 0px;
+  text-align: center;
+  width: 214px;
+}
+.bigbuttonlink.mDisabled,
+.bigbutton.mDisabled {
+  background: #f9f9f9;
+  border-color: #e4e4e4;
+  color: #dcdcdc;
+  cursor: default;
+}
+.bSet__ePrice .link1 {
+  background-color: @firmOrange;
+  background-position: 0px -256px;
+  border-color: #f28900;
+  color: @white;
+  display: inline-block;
+  font-size: 14px;
+  height: 26px;
+  padding: 7px 11px 0px;
+  &:hover {
+    background-color: #f79200;
+    background-position: 0px -297px;
+    color: @white;
+    text-decoration: none;
+  }
+  &.disabled {
+    background: #f9f9f9;
+    border-color: #e4e4e4;
+    color: #dcdcdc;
+    cursor: default;
+  }
+}
+/* END BUTTONS*/

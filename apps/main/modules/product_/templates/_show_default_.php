@@ -195,7 +195,6 @@ foreach ($photo3dList as $photo3d)
     <?php endif ?>
   </ul>
 </div>
-<div class="clear"></div>
 <?php endif ?>
 <!-- /Photo video -->
 
