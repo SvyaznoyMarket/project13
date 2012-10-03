@@ -12,7 +12,7 @@
     </form>
     <div class="cityInline">
     	<a href="#">Москва</a>
-    	<a href="#">Город автоопределения</a>
+    	<!--a href="#">Город автоопределения</a -->
     </div>
   <?php $offset = 0; ?>
   <?php foreach ($columns_count as $count): ?>
@@ -25,8 +25,8 @@
   </div>
   <?php endforeach; ?>
 	<div class="clear"></div>
-	<div class="info">
+	<!--div class="info">
 		<p>Мы доставим вашу покупку в любой регион. 
 			Если в вашем регионе еще нет нашего офиса, доставка будет осуществляться с помощью партнеров.</p>
-	</div>
+	</div-->
 </div>

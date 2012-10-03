@@ -1,4 +1,3 @@
-/* CSS crunched with Crunch - http://crunchapp.net/ */
 @import "/css/skin/old_inner.css";
 /*-------НЕРАЗОБРАННЫЕ СТИЛИ------*/
 /*---END----НЕРАЗОБРАННЫЕ СТИЛИ---*/
@@ -1217,10 +1216,10 @@
   margin: 20px 0 0;
   word-spacing: 15px;
 }
-.popupRegion a {
+.popupRegion .cityInline a {
   border-bottom: 1px dashed black;
 }
-.popupRegion a:hover {
+.popupRegion .cityInline a:hover {
   text-decoration: none;
 }
 .popupRegion .colomn {
