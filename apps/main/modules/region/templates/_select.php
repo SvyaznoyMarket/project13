@@ -1,20 +1,3 @@
-<!--<div class="popup" id="region-block" style="width: 640px;">
-  <i title="Закрыть" class="close">Закрыть</i>
-  <div class="popupbox width694 height250">
-    <h2 class="pouptitle">Привет! Укажите, из какого вы города.</h2>
-
-    <form class="ui-css">
-      <input id="jscity" data-url-autocomplete="<?php echo url_for('region_autocomplete') ?>" value="" class="bBuyingLine__eText mInputLong" />
-      <input id="jschangecity" type="submit" value="Сохранить" class="button bigbutton mDisabled" />
-      <div id="jscities" style="position:relative"></div>
-    </form>
-
-    <div class="pt10">
-      <?php include_component('region', 'top_list') ?>
-    </div>
-
-  </div>
-</div>-->
 <div class="popupRegion" style="display:none">
 	<a href="#" class="close">Закрыть</a>
 	<h2 class="pouptitle">Привет! Укажите, из какого вы города.</h2>
@@ -31,30 +14,16 @@
     	<a href="#">Москва</a>
     	<a href="#">Город автоопределения</a>
     </div>
+  <?php $offset = 0; ?>
+  <?php foreach ($columns_count as $count): ?>
 	<div class="colomn">
-		<a href="#">Москва</a>
-		<a href="#">Воронеж</a>
-		<a href="#">Саратов</a>
-		<a href="#">Липецк</a>
-		<a href="#">Хабаровск</a>
-		<a href="#">Владивосток</a>
-	</div>
-	<div class="colomn">
-		<a href="#">Москва</a>
-		<a href="#">Воронеж</a>
-		<a href="#">Саратов</a>
-		<a href="#">Липецк</a>
-		<a href="#">Хабаровск</a>
-		<a href="#">Владивосток</a>
-	</div>
-	<div class="colomn">
-		<a href="#">Москва</a>
-		<a href="#">Воронеж</a>
-		<a href="#">Саратов</a>
-		<a href="#">Липецк</a>
-		<a href="#">Хабаровск</a>
-		<a href="#">Владивосток</a>
-	</div>
+    <?php for ($i = 0; $i < $count; $i++): ?>
+    <?php $region = $regions[$offset + $i]; ?>
+    <a href="<?php echo url_for('region_change', array('region' => $region->getId())) ?>"><?php echo $region->getName(); ?></a>
+    <?php endfor ?>
+    <?php $offset += $count; ?>
+  </div>
+  <?php endforeach; ?>
 	<div class="clear"></div>
 	<div class="info">
 		<p>Мы доставим вашу покупку в любой регион. 
