@@ -669,6 +669,11 @@ class ProductEntity
     return $this->getState() && $this->getState()->getIsBuyable();
   }
 
+  public function getIsQuickOnly()
+  {
+    return $this->getState() && $this->getState()->getIsQuickOnly();
+  }
+
   /**
    * @param \ProductLineEntity $line
    */

@@ -1,30 +1,26 @@
 <?php
 namespace light;
-/**
- * содержит часть конфига, общего для продакшн и тест-сред
- */
 
-define('ROOT_PATH', realpath(dirname(__FILE__).DIRECTORY_SEPARATOR.'..').DIRECTORY_SEPARATOR);
-define('HELPER_PATH', realpath(dirname(__FILE__).DIRECTORY_SEPARATOR.'..').DIRECTORY_SEPARATOR.'lib'.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR);
-define('VIEW_PATH', realpath(dirname(__FILE__).DIRECTORY_SEPARATOR.'..').DIRECTORY_SEPARATOR.'view'.DIRECTORY_SEPARATOR);
-define('LOGGER_CONFIG_PATH', realpath(dirname(__FILE__).DIRECTORY_SEPARATOR.'..').DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'log4php.xml');
 define('LOG_FILES_PATH', realpath(dirname(__FILE__).DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..').DIRECTORY_SEPARATOR.'log'.DIRECTORY_SEPARATOR);
-define('SESSION_NAME', 'enter');
-define('SESSION_COOKIE_LIFETIME', Null); //Если Null - то используются настройки php
 
-define('DEFAULT_PAGE_TITLE', 'You can Enter');
-define('DEFAULT_PAGE_DESCRIPTION', 'Enter - новый способ покупать. Любой из 20000 товаров нашего ассортимента можно купить где угодно, как угодно и когда угодно. Наша миссия: дарить время для настоящего. Честно. С любовью. Как для себя.');
-
-if(isset($_SERVER['HTTP_HOST'])){
-  define('HTTP_HOST', $_SERVER['HTTP_HOST']);
-}
-else{
-  define('HTTP_HOST', 'localhost'); //@TODO подумать над этим моментом
-}
-
-define('BANNER_IMAGE_URL', 'http://fs01.enter.ru/4/1/');
-define('BANNER_TIMEOUT', 6000);
-
-define('QUEUE_PID_FILE', (sys_get_temp_dir() ?: '/tmp').'/enter-queue.pid'); // sys_get_temp_dir() returns "/tmp"
-define('QUEUE_WORKER_LIMIT', 10); // количество одновременно запущенных воркеров
-define('QUEUE_MAX_LOCK_TIME', 600); // максимальное количество секунд блокировки для задачи
+return array(
+    'rootPath' => realpath(dirname(__FILE__).DIRECTORY_SEPARATOR.'..').DIRECTORY_SEPARATOR,
+    'helperPath' => realpath(dirname(__FILE__).DIRECTORY_SEPARATOR.'..').DIRECTORY_SEPARATOR.'lib'.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR,
+    'viewPath' => realpath(dirname(__FILE__).DIRECTORY_SEPARATOR.'..').DIRECTORY_SEPARATOR.'view'.DIRECTORY_SEPARATOR,
+    'loggerConfigPath' => realpath(dirname(__FILE__).DIRECTORY_SEPARATOR.'..').DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'log4php.xml',
+    'logFilesPath' => realpath(dirname(__FILE__).DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..').DIRECTORY_SEPARATOR.'log'.DIRECTORY_SEPARATOR,
+    'sessionName' => 'enter',
+    'sessionCookieLifeTime' => Null,
+    'defaultPageTitle' => 'You can Enter',
+    'defaultPageDescription' => 'Enter - новый способ покупать. Любой из 20000 товаров нашего ассортимента можно купить где угодно, как угодно и когда угодно. Наша миссия: дарить время для настоящего. Честно. С любовью. Как для себя.',
+    'bannerImageUrl' => 'http://fs01.enter.ru/4/1/',
+    'bannerTimeout' => 6000,
+    'servicePhotoUrlList' => array(
+        'http://fs01.enter.ru/11/1/500/',
+        'http://fs01.enter.ru/11/1/160/',
+        'http://fs01.enter.ru/11/1/120/'
+    ),
+    'queuePidFile' => (sys_get_temp_dir() ?: '/tmp').'/enter-queue.pid',
+    'queueWorkerLimit' => 10,
+    'queueMaxLockTime' => 600,
+);

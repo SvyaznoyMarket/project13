@@ -2,8 +2,8 @@
 namespace light;
 use Logger;
 
-require_once(ROOT_PATH.'system/App.php');
-require_once(ROOT_PATH.'lib/TimeDebug.php');
+require_once(Config::get('rootPath').'system/App.php');
+require_once(Config::get('rootPath').'lib/TimeDebug.php');
 
 class smartengineController
 {
@@ -48,7 +48,7 @@ class smartengineController
 
   private function getDbh() {
     if (!$this->dbh) {
-      $this->dbh = new \PDO(sprintf('mysql:dbname=%s;host=%s', DB_NAME, DB_HOST), DB_USERNAME, DB_PASSWORD, array(
+      $this->dbh = new \PDO(sprintf('mysql:dbname=%s;host=%s', Config::get('db.name'), Config::get('db.host')), Config::get('db.user'), Config::get('db.password'), array(
         \PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8',
       ));
     }

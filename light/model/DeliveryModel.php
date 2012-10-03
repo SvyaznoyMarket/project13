@@ -8,11 +8,11 @@ namespace light;
  * To change this template use File | Settings | File Templates.
  */
 
-require_once(ROOT_PATH.'system/App.php');
-require_once(ROOT_PATH.'lib/TimeDebug.php');
-require_once(HELPER_PATH.'DateFormatter.php');
-require_once(VIEW_PATH.'dataObject/DeliveryData.php');
-require_once(VIEW_PATH.'dataObject/DeliveryShortData.php');
+require_once(Config::get('rootPath').'system/App.php');
+require_once(Config::get('rootPath').'lib/TimeDebug.php');
+require_once(Config::get('helperPath').'DateFormatter.php');
+require_once(Config::get('viewPath').'dataObject/DeliveryData.php');
+require_once(Config::get('viewPath').'dataObject/DeliveryShortData.php');
 
 class DeliveryModel
 {
@@ -123,9 +123,10 @@ class DeliveryModel
 
     TimeDebug::start('DeliveryModel:getProductDeliveries:dataConvert');
 
-    $productData = array_pop($data['product_list']);
+    $arr = isset($data['product_list'])?$data['product_list']:array();
+    $productData = array_pop($arr);
     $productDeliveryListData = $productData['delivery_mode_list'];
-    foreach($productDeliveryListData as $productDeliveryData)
+    foreach((array)$productDeliveryListData as $productDeliveryData)
     {
         $shopDataList = array();
 

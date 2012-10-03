@@ -15,6 +15,7 @@ class SmartengineClient
       'api_url'  => null,
       'api_key'  => null,
       'tenantid' => null,
+      'timeout'  => 0.5,
     ), $config);
   }
 
@@ -81,6 +82,7 @@ class SmartengineClient
     }
     curl_setopt($connection, CURLOPT_HEADER, 0);
     curl_setopt($connection, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($connection, CURLOPT_TIMEOUT, $this->config['timeout']);
     curl_setopt($connection, CURLOPT_URL, $query);
 
     if ($this->logger) $this->logger->info('Request '.$connection.' '.'get'.': '.$query);

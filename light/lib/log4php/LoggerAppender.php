@@ -246,7 +246,10 @@ abstract class LoggerAppender extends LoggerConfigurable {
 		if($this->threshold === null) {
 			return true;
 		}
-		return $level->isGreaterOrEqual($this->getThreshold());
+    if(is_object($level) && is_a($level, '\LoggerLevel')){
+      return $level->isGreaterOrEqual($this->getThreshold());
+    }
+		return false;
 	}
 
 	/**

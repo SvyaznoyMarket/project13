@@ -19,6 +19,7 @@ require_once(__DIR__ . '/../log4php/Logger.php');
 
 class Cart
 {
+  const PRODUCT_LIMIT = 50; // вместительность корзины
 
   /**
    * @var CartContainer
@@ -48,7 +49,8 @@ class Cart
   /**
    * @param CartContainer $dataContainer
    */
-  public function __construct(CartContainer $dataContainer, CartPriceContainer $priceContainer){
+  public function __construct(CartContainer $dataContainer, CartPriceContainer $priceContainer)
+  {
     $this->dataContainer = $dataContainer;
     $this->priceContainer = $priceContainer;
   }
@@ -57,32 +59,38 @@ class Cart
    * @param int $productId
    * @param int $quantity
    */
-  public function setProductQuantity($productId, $quantity){
+  public function setProductQuantity($productId, $quantity)
+  {
+    $this->checkProductLimit();
+
     //@TODO добавить проверку наличия, когда на ядре реализуют этот функционал
     $this->dataContainer->setProductQuantity($productId, $quantity);
     $this->productDataList = null;
     $this->totalPrice = null;
   }
 
-    public function addProduct($productId){
-        //@TODO добавить проверку наличия, когда на ядре реализуют этот функционал
-        $this->dataContainer->addProduct($productId);
-        $this->productDataList = null;
-        $this->totalPrice = null;
-    }
+  public function addProduct($productId)
+  {
+    $this->checkProductLimit();
+
+    //@TODO добавить проверку наличия, когда на ядре реализуют этот функционал
+    $this->dataContainer->addProduct($productId);
+    $this->productDataList = null;
+    $this->totalPrice = null;
+  }
 
   /**
    * @param int $productId
    * @param int|null $quantity
    */
-  public function removeProduct($productId, $quantity=null){
-    $productId = (int) $productId;
+  public function removeProduct($productId, $quantity = null)
+  {
+    $productId = (int)$productId;
     $this->dataContainer->removeProduct($productId, $quantity);
-    if(!is_null($this->productDataList) && array_key_exists($productId, $this->productDataList)){
-      if($this->dataContainer->getProductQuantity($productId) > 0){
+    if (!is_null($this->productDataList) && array_key_exists($productId, $this->productDataList)) {
+      if ($this->dataContainer->getProductQuantity($productId) > 0) {
         $this->productDataList[$productId]->setQuantity($this->dataContainer->getProductQuantity($productId));
-      }
-      else{
+      } else {
         unset($this->productDataList[$productId]);
       }
     }
@@ -92,11 +100,12 @@ class Cart
   /**
    * @param int $productId
    */
-  public function removeProductServices($productId){
+  public function removeProductServices($productId)
+  {
     $productId = (int)$productId;
     $list = $this->dataContainer->getServiceIdList($productId);
 
-    foreach($list as $serviceId){
+    foreach ($list as $serviceId) {
       $this->removeService($serviceId, null, $productId);
     }
   }
@@ -106,18 +115,20 @@ class Cart
    * @param int $quantity
    * @param int|null $productId
    */
-  public function addService($serviceId, $quantity, $productId=null){
+  public function addService($serviceId, $quantity, $productId = null)
+  {
     //@TODO добавить проверку возможности, когда на ядре реализуют этот функционал
     $this->dataContainer->addService($serviceId, $quantity, $productId);
     $this->serviceDataList = null;
     $this->totalPrice = null;
   }
 
-  public function setServiceQuantity($serviceId, $quantity, $productId=null){
-      //@TODO добавить проверку возможности, когда на ядре реализуют этот функционал
-      $this->dataContainer->setServiceQuantity($serviceId, $quantity, $productId);
-      $this->serviceDataList = null;
-      $this->totalPrice = null;
+  public function setServiceQuantity($serviceId, $quantity, $productId = null)
+  {
+    //@TODO добавить проверку возможности, когда на ядре реализуют этот функционал
+    $this->dataContainer->setServiceQuantity($serviceId, $quantity, $productId);
+    $this->serviceDataList = null;
+    $this->totalPrice = null;
   }
 
   /**
@@ -125,15 +136,15 @@ class Cart
    * @param int|null $quantity
    * @param int $productId
    */
-  public function removeService($serviceId, $quantity=null, $productId=0){
+  public function removeService($serviceId, $quantity = null, $productId = 0)
+  {
     $this->dataContainer->removeService($serviceId, $quantity, $productId);
 
-    if(!is_null($this->serviceDataList) && array_key_exists($serviceId, $this->serviceDataList) && array_key_exists($productId, $this->serviceDataList[$serviceId])){
+    if (!is_null($this->serviceDataList) && array_key_exists($serviceId, $this->serviceDataList) && array_key_exists($productId, $this->serviceDataList[$serviceId])) {
       $newQuantity = $this->dataContainer->getServiceQuantity($serviceId, $productId);
-      if($newQuantity < 1){
+      if ($newQuantity < 1) {
         unset($this->serviceDataList[$serviceId][$productId]);
-      }
-      else{
+      } else {
         $this->serviceDataList[$serviceId][$productId]->setQuantity($newQuantity);
       }
     }
@@ -143,8 +154,9 @@ class Cart
   /**
    * @return float
    */
-  public function getTotalPrice(){
-    if(is_null($this->totalPrice)){
+  public function getTotalPrice()
+  {
+    if (is_null($this->totalPrice)) {
       $this->fillData();
     }
 
@@ -154,7 +166,8 @@ class Cart
   /**
    * Очищает корзину
    */
-  public function clear(){
+  public function clear()
+  {
     $this->dataContainer->clear();
     $this->productDataList = null;
     $this->serviceDataList = null;
@@ -165,7 +178,8 @@ class Cart
    * Ф-я возвращает количество уникальных товаров в корзине
    * @return int
    */
-  public function getProductsQuantity(){
+  public function getProductsQuantity()
+  {
     return $this->dataContainer->getProductsQuantity();
   }
 
@@ -182,7 +196,8 @@ class Cart
    *  )
    * )
    */
-  public function getProductsQuantities(){
+  public function getProductsQuantities()
+  {
     return $this->dataContainer->getProductsQuantities();
   }
 
@@ -190,7 +205,8 @@ class Cart
    * Функция возвращает сумму quantity всех услуг и товаров
    * @return int
    */
-  public function getTotalQuantity(){
+  public function getTotalQuantity()
+  {
     return $this->dataContainer->getTotalQuantity();
   }
 
@@ -199,15 +215,17 @@ class Cart
    * @param int|null $productId //Если null - считается во всех услугах, иначе - только для определенного продукта
    * @return int
    */
-  public function getServicesQuantity($productId=null){
+  public function getServicesQuantity($productId = null)
+  {
     return $this->dataContainer->getServicesQuantity($productId);
   }
 
   /**
    * @return ProductCartData[] key - productId
    */
-  public function getProductList(){
-    if(is_null($this->productDataList)){
+  public function getProductList()
+  {
+    if (is_null($this->productDataList)) {
       $this->fillData();
     }
     return $this->productDataList;
@@ -217,14 +235,15 @@ class Cart
    * @param int $id
    * @return ProductCartData|null
    */
-  public function getProduct($id){
-    if(is_null($this->productDataList)){
+  public function getProduct($id)
+  {
+    if (is_null($this->productDataList)) {
       $this->fillData();
     }
 
-    $id = (int) $id;
+    $id = (int)$id;
 
-    if(!array_key_exists($id, $this->productDataList)){
+    if (!array_key_exists($id, $this->productDataList)) {
       $logger = \Logger::getLogger('Cart');
       \LoggerNDC::push('getProduct');
       $logger->error('Product with id "' . $id . '" not found');
@@ -239,21 +258,22 @@ class Cart
    * @param int $productId
    * @return null | ServiceCartData
    */
-  public function getService($id, $productId=0){
-    if(is_null($this->serviceDataList)){
+  public function getService($id, $productId = 0)
+  {
+    if (is_null($this->serviceDataList)) {
       $this->fillData();
     }
 
-    $id = (int) $id;
-    $productId = (int) $productId;
+    $id = (int)$id;
+    $productId = (int)$productId;
 
     $logger = \Logger::getLogger('Cart');
-      \LoggerNDC::push('getService');
-    if(!array_key_exists($id, $this->serviceDataList)){
+    \LoggerNDC::push('getService');
+    if (!array_key_exists($id, $this->serviceDataList)) {
       $logger->error('Service with id "' . $id . '" not found');
       return null;
     }
-    if(!array_key_exists($productId, $this->serviceDataList[$id])){
+    if (!array_key_exists($productId, $this->serviceDataList[$id])) {
       $logger->error('Product with id "' . $productId . '" not found');
       return null;
     }
@@ -266,20 +286,21 @@ class Cart
    * @param null | int $productId
    * @return array()   array('serviceId' => array('productId'=> ServiceCartData))
    */
-  public function getServiceList($productId=null){
-    if(is_null($this->serviceDataList)){
+  public function getServiceList($productId = null)
+  {
+    if (is_null($this->serviceDataList)) {
       $this->fillData();
     }
 
-    if(is_null($productId)){
+    if (is_null($productId)) {
       return $this->serviceDataList;
     }
 
-    $productId = (int) $productId;
+    $productId = (int)$productId;
     $return = array();
 
-    foreach($this->serviceDataList as $serviceId => $serviceList){
-      if(array_key_exists($productId, $serviceList)){
+    foreach ($this->serviceDataList as $serviceId => $serviceList) {
+      if (array_key_exists($productId, $serviceList)) {
         $return[$serviceId] = $serviceList[$productId];
       }
     }
@@ -291,36 +312,45 @@ class Cart
    * @param int $productId
    * @return bool
    */
-  public function containsProduct($productId){
+  public function containsProduct($productId)
+  {
     return in_array($productId, $this->dataContainer->getProductIdList());
   }
 
   /**
    * Наполняет $this->fullData информацией, обращаясь к моделям
    */
-  private function fillData(){
+  private function fillData()
+  {
 
     // получаем список цен
     $response = $this->priceContainer->getPrices($this->dataContainer);
 
-    $this->totalPrice = (array_key_exists('price_total', $response))? $response['price_total'] : 0;
+    $this->totalPrice = (array_key_exists('price_total', $response)) ? $response['price_total'] : 0;
 
     $this->productDataList = array();
-    if(array_key_exists('product_list', $response)){
-      foreach($response['product_list'] as $productInfo){
+    if (array_key_exists('product_list', $response)) {
+      foreach ($response['product_list'] as $productInfo) {
         $this->productDataList[$productInfo['id']] = new ProductCartData($productInfo);
       }
     }
 
     $this->serviceDataList = array();
-    if(array_key_exists('service_list', $response)){
-      foreach($response['service_list'] as $serviceInfo){
-        if(!array_key_exists($serviceInfo['id'], $this->serviceDataList)){
+    if (array_key_exists('service_list', $response)) {
+      foreach ($response['service_list'] as $serviceInfo) {
+        if (!array_key_exists($serviceInfo['id'], $this->serviceDataList)) {
           $this->serviceDataList[$serviceInfo['id']] = array();
         }
         $relatedProductId = (array_key_exists('product_id', $serviceInfo)) ? intval($serviceInfo['product_id']) : 0;
         $this->serviceDataList[$serviceInfo['id']][$relatedProductId] = new ServiceCartData($serviceInfo);
       }
+    }
+  }
+
+  private function checkProductLimit() {
+    // если корзина не может вместить новый товар
+    if ($this->getProductsQuantity() >= self::PRODUCT_LIMIT) {
+      $this->dataContainer->shiftProduct();
     }
   }
 

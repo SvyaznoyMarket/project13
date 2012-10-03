@@ -10,8 +10,8 @@ use Logger;
  * To change this template use File | Settings | File Templates.
  */
 
-require_once(ROOT_PATH.'system/App.php');
-require_once(ROOT_PATH.'lib/log4php/Logger.php');
+require_once(Config::get('rootPath').'system/App.php');
+require_once(Config::get('rootPath').'lib/log4php/Logger.php');
 
 class Renderer
 {
@@ -34,7 +34,7 @@ class Renderer
   }
 
   protected function __construct(){
-    $this->templatePath = VIEW_PATH.'template/';
+    $this->templatePath = Config::get('viewPath').'template/';
   }
 
  /**
@@ -67,6 +67,11 @@ class Renderer
 
 class HtmlRenderer extends Renderer{
 
+    /**
+     * @var array
+     */
+    private $js = array();
+
   /**
    * @var array
    */
@@ -81,6 +86,13 @@ class HtmlRenderer extends Renderer{
    * @var string
    */
   private $title;
+
+  private $layoutPath = 'layout/';
+  private $layout = 'layout';
+
+  private $parameterList = array();
+
+  private $page;
 
   /**
    * @static
@@ -121,6 +133,22 @@ class HtmlRenderer extends Renderer{
     }
   }
 
+    public function addJS($filePath)
+    {
+        if(!in_array($filePath, $this->js))
+        {
+            $this->js[] = $filePath;
+        }
+    }
+
+    public function showJS()
+    {
+        foreach($this->js as $js)
+        {
+            echo '<script src="/js/'.$js.'"></script>';
+        }
+    }
+
   /**
    * @param string $title
    */
@@ -135,7 +163,7 @@ class HtmlRenderer extends Renderer{
    * @return string
    */
   public function getTitle(){
-    return !is_null($this->title) ? htmlspecialchars($this->title) : DEFAULT_PAGE_TITLE;
+    return !is_null($this->title) ? htmlspecialchars($this->title) : Config::get('defaultPagetTitle');
   }
 
   /**
@@ -152,7 +180,7 @@ class HtmlRenderer extends Renderer{
    * @return string
    */
   public function getDescription(){
-    return !is_null($this->description) ? htmlspecialchars($this->description) : DEFAULT_PAGE_DESCRIPTION;
+    return !is_null($this->description) ? htmlspecialchars($this->description) : Config::get('defaultPageDescription');
   }
 
   /**
@@ -175,6 +203,42 @@ class HtmlRenderer extends Renderer{
       Logger::getLogger('Renderer')->error($e->getMessage());
       return '#';
     }
+  }
+
+  public function addParameter($parameterName, $parameterValue)
+  {
+      $this->parameterList[$parameterName] = $parameterValue;
+  }
+
+  public function setPage($page)
+  {
+      $this->page = $page;
+  }
+
+  public function setLayout($layout)
+  {
+      $this->layout = $layout;
+  }
+
+    /**
+     * Owned.
+     */
+    public function renderFile($filePath, $data=array())
+  {
+      $filePathPartList = explode('/', $filePath);
+      $fillerName = $filePathPartList[count($filePathPartList) - 1];
+
+      $filler = App::getFiller($fillerName);
+      $filler?$filler->run():Null;
+
+      return parent::renderFile($filePath, array_merge($data, $this->parameterList));
+  }
+
+  public function render()
+  {
+      $this->parameterList['page'] = $this->page;
+
+      return $this->renderFile($this->layoutPath . $this->layout, $this->parameterList);
   }
 
 }

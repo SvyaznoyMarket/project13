@@ -66,7 +66,7 @@ class productCard_Actions extends myActions
     $this->forward404If(!$product);
 
     $begin = self::NUM_RELATED_ON_PAGE * ($page - 1);
-    $relatedIdList = array_slice($product->getRelatedList(), $begin, self::NUM_RELATED_ON_PAGE);
+    $relatedIdList = array_slice($product->getRelatedIdList(), $begin, self::NUM_RELATED_ON_PAGE);
     $relatedProductList = RepositoryManager::getProduct()->getListById($relatedIdList, true);
 
     foreach ($relatedProductList as $i => $accessory)
