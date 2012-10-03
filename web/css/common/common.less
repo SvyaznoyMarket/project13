@@ -496,6 +496,9 @@ ul.lh15 li {
   position: relative;
   width: 100%;
 }
+.error_list {
+  color: red;
+}
 .popup {
   .rounded(5px);
   .box-shadow(0px 0px 7px #616161);
@@ -522,6 +525,34 @@ ul.lh15 li {
     top: 0px;
     width: 26px;
   }
+}
+.text {
+  .rounded(5px);
+  border: 1px solid #c9c9c9;
+  height: 22px;
+  padding: 0px 5px;
+  &:hover {
+    border-color: #ffd073;
+  }
+  &.active {
+    background-color: #fff3db;
+    border-color: #ffd073;
+  }
+  &.textdisabled {
+    border-color: #e4e4e4;
+    color: #a6a6a6;
+  }
+}
+.popupbox {
+  padding: 20px 20px 30px;
+}
+.pouptitle {
+  float: left;
+  font-family: "Enter";
+  font-size: 30px;
+  margin: 0px;
+  text-transform: uppercase;
+  width: 560px;
 }
 .mInlineBlock {
   display: inline-block;
