@@ -3639,20 +3639,19 @@ label.checked {
 /*---END---СТИЛИ КОРЗИНЫ---*/
 /*-----СТИЛИ ЛАЙТБОКСА-----*/
 .lightbox {
-  bottom: 0px;
   height: 41px;
-  left: 0px;
-  position: fixed;
   width: 100%;
-  z-index: 100;
 }
 .lightboxinner {
   background: url("/css/lightbox/img/lightboxSprite.png") no-repeat 0px -200px;
+  bottom: 0;
   height: 40px;
-  margin: 0px auto;
+  left: 50%;
+  margin: 0 auto 0 -463px;
   padding-top: 1px;
-  position: relative;
+  position: fixed;
   width: 926px;
+  z-index: 200;
 }
 .lightboxmenu {
   float: left;
@@ -3851,6 +3850,64 @@ label.checked {
   width: 39px;
 }
 /*--END---СТИЛИ ХЛЕБНЫХ КРОШЕК И ХЭДА--*/
+/*-------СТИЛИ 404-----*/
+.b404 {
+  background: #ffffff;
+  position: relative;
+}
+.b404Block,
+.b404__eLogo {
+  display: inline-block;
+  *display: inline;
+  zoom: 1;
+}
+.b404InnerWrap {
+  height: 100%;
+  text-align: center;
+  width: 100%;
+}
+.b404InnerWrap td {
+  vertical-align: middle;
+}
+.b404__eLogo {
+  background: url("/css/404/img/b404Logo.png") no-repeat;
+  height: 87px;
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  width: 95px;
+}
+.b404Block {
+  background: url("/css/404/img/b404.png") no-repeat;
+  height: 305px;
+  padding: 120px 0px 0px 500px;
+  text-align: left;
+}
+.b404Block span {
+  font-size: 16px;
+}
+.b404Block h2 {
+  font-size: 26px;
+  margin: 15px 0px;
+  padding: 0px;
+}
+.b404Block input {
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  font-size: 16px;
+  height: 27px;
+  margin-right: 10px;
+  outline: none;
+  padding-left: 10px;
+  width: 279px;
+}
+.b404Block input,
+.b404Block .bOrangeButton {
+  vertical-align: middle;
+}
+/*---END---СТИЛИ 404---*/
 /*------СТИЛИ ГЛАВНОЙ------*/
 #mainPage {
   background: #000000;
