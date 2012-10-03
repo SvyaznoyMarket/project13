@@ -1,5 +1,3 @@
-
-
 /*
 .header {width:920px; height:132px; background:url(/css/common/img/bg_inner.png) no-repeat 0 0; margin-bottom:18px; position:relative; z-index:11}
 .logo {float:left; width:130px; padding:28px 0 0 24px}
@@ -74,19 +72,6 @@
 .avatar B {position:absolute; left:0; top:0; display:block; width:54px; height:54px; background:url(/css/skin/img/avatar_cover.png) no-repeat 0 0}
 .avatar B.current {background-position:0 -59px}
 
-.bBlueButton .link1,
-.bSet__ePrice .link1,
-.button {overflow:visible; background-image:url(/css/common/img/bg_buttons.png); background-repeat:repeat-x; border:1px solid; font-weight:bold; cursor:pointer;
-border-radius:5px;
--moz-border-radius:5px;
--webkit-border-radius:5px
-}
-.mInlineBlock{
-display: inline-block;
-*display: inline;
-zoom: 1;
-}
-
 .creditInfo > div {
   display: inline-block;
 }
@@ -95,40 +80,22 @@ zoom: 1;
   padding-right:50px;
 }
 
-.yellowbutton {height:24px; padding:0 7px 3px 7px; background-color:#ffaa01;  background-position:0 0; font-size:11px; color:#fff; border-color:#f28900}
-.yellowbutton:hover {background-color:#f79200; background-position:0 -32px}
-.yellowbuttonactive, .yellowbuttonactive:hover {background-color:#f79200; background-position:0 -64px}
-.yellowbuttondisabled {background-color:#ececec; background-position:0 -96px; border-color:#e4e4e4; color:#e1e1e1}
-
-.whitebutton {height:24px; padding:0 7px 3px 7px; background-color:#e5e5e5;  background-position:0 -128px; font-size:11px; color:#010101; border-color:#c9c9c9}
-.whitebutton:hover {background-color:#c5c5c5; background-position:0 -160px}
-.whitebuttonactive, .whitebuttonactive:hover {background-color:#c4c4c4; background-position:0 -192px}
-.whitebuttondisabled {background-color:#ececec; background-position:0 -224px; border-color:#e4e4e4; color:#e1e1e1}
-
-.bBlueButton .link1,
-.whitelink {display:inline-block; height:18px; padding:4px 10px 0 10px; background-color:#e5e5e5;  background-position:0 -128px; font-size:11px; color:#010101; border-color:#c9c9c9}
-.bBlueButton .link1:hover,
-.whitelink:hover {background-color:#c5c5c5; background-position:0 -160px; text-decoration:none}
-.whitelinkactive, .whitelinkactive:hover {background-color:#c4c4c4; background-position:0 -192px}
-.whitelinkdisabled {background-color:#ececec; background-position:0 -224px; border-color:#e4e4e4; color:#e1e1e1}
-.whitelink .leaf {display:inline-block; width:16px; height:14px; background:url(/css/common/img/bg.png) no-repeat -197px -101px; vertical-align:-3px; margin-right:8px}
-.whitelink .map {display:inline-block; width:16px; height:16px; background:url(/css/common/img/bg_inner.png) no-repeat -104px -133px; vertical-align:-5px; margin-right:8px}
-
-.bigbutton {height:33px; padding:0 7px 3px 7px; background-color:#ffa901; background-position:0 -256px; font-size:14px; color:#fff; border-color:#f28900}
-.bSet__ePrice .link1:hover,
-.bigbutton:hover {background-color:#f79200; background-position:0 -297px}
-.bigbuttonactive, .bigbuttonactive:hover {background-color:#f79200; background-position:0 -338px}
-
-.bigbuttonlink {display:inline-block; height:26px; padding:7px 11px 0 11px; background-color:#ffa901; background-position:0 -256px;  font-size:14px; color:#fff;  border-color:#f28900}
-.bigbuttonlink:hover {background-color:#f79200; background-position:0 -297px; color:#fff; text-decoration:none}
-.bigbuttonlinkactive, .bigbuttonlinkactive:hover {background-color:#f79200; background-position:0 -338px}
-.bigbuttonlink.width214 {width:214px; padding:7px 0 0 0; text-align:center}
-.bigbuttonlink.mDisabled, .bigbutton.mDisabled {background: #f9f9f9; border-color:#e4e4e4; color: #dcdcdc; cursor: default;}
-
-.bSet__ePrice .link1{display:inline-block; height:26px; padding:7px 11px 0 11px; background-color:#ffa901; background-position:0 -256px;  font-size:14px; color:#fff;  border-color:#f28900}
-.bSet__ePrice .link1:hover{background-color:#f79200; background-position:0 -297px; color:#fff; text-decoration:none}
-.bSet__ePrice .link1.disabled{background: #f9f9f9; border-color:#e4e4e4; color: #dcdcdc; cursor: default;}
-
+.whitelink .leaf {
+  background: url("/css/common/img/bg.png") no-repeat -197px -101px;
+  display: inline-block;
+  height: 14px;
+  margin-right: 8px;
+  vertical-align: -3px;
+  width: 16px;
+}
+.whitelink .map {
+  background: url("/css/common/img/bg_inner.png") no-repeat -104px -133px;
+  display: inline-block;
+  height: 16px;
+  margin-right: 8px;
+  vertical-align: -5px;
+  width: 16px;
+}
 /*
 .yellowbutton {width:85px; height:25px; padding-bottom:4px; background:#ffb401 url(/css/skin/img/bg_inner.png) no-repeat 0 -186px; border:none; font-size:11px; font-weight:bold; color:#fff; cursor:pointer}
 .yellowbutton72 {width:72px; background-position:-110px -308px}
@@ -145,9 +112,6 @@ zoom: 1;
 .whitebutton120 {width:120px; padding-left:30px; background-position:-545px -216px}
 .whitebutton90 {width:90px; background-position:-186px -308px}
 */
-
-
-
 
 
 .bSpecSel{
@@ -784,8 +748,6 @@ border-radius: 5px;
 .plug8 {height:170px; padding-top:40px; background:url(/images/plug8.jpg) no-repeat 0 0;}
 .plug9 {height:175px; padding-top:35px; background:url(/images/plug9.jpg) no-repeat 0 0;}
 
-.fm{text-align:left;}
-.hf{display:none;}
 #plus10{cursor:pointer;}
 
 .infoblock { background: url('/css/skin/img/bg_info_article.gif') no-repeat; width: 350px; height: 73px; padding: 15px 15px 10px 35px; }
