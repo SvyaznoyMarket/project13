@@ -67,7 +67,7 @@
 </script>
 <?php if (!include_slot('auth')) include_partial('default/auth') ?>
 
-<?php include_partial('region/select') ?>
+<?php include_component('region', 'select') ?>
 
 
 <?php if ('live' == sfConfig::get('sf_environment')): ?>
