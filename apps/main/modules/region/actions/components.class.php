@@ -11,8 +11,18 @@
 class regionComponents extends myComponents
 {
 
-  public function executeTop_list()
+  public function executeSelect()
   {
+    $num_row = 3;
     $this->regions = RepositoryManager::getRegion()->getShopAvailable();
+
+    $this->columns_count = array();
+    $count = count($this->regions);
+
+    for ($i = 0; $i < $num_row; $i++)
+    {
+      $this->columns_count[$i] = (int)floor($count / $num_row) + (($count % $num_row) > $i ? 1 : 0);
+    }
   }
+
 }

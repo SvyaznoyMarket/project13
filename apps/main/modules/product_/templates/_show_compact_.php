@@ -34,8 +34,7 @@ $show_model = (isset($show_model)?$show_model:true) && $item->getModel() && coun
 
   <h3><a href="<?php echo $item->getLink() ?>"><?php echo $item->getName() ?></a></h3>
 
-  <div class="font18 pb10 mSmallBtns"><span class="price"><?php echo formatPrice($item->getPrice()) ?></span> <span
-    class="rubl">p</span></div>
+  <div class="font18 pb10 mSmallBtns"><span class="price"><?php echo formatPrice($item->getPrice()) ?></span> <span class="rubl">p</span></div>
   <?php if ($show_model): ?>
   <a href="<?php echo $item->getLink() ?>">
     <div class="bListVariants">
@@ -72,8 +71,8 @@ $show_model = (isset($show_model)?$show_model:true) && $item->getModel() && coun
         <div class="goodsbar mSmallBtns mR">
           <?php render_partial('cart_/templates/_buy_button.php', array('item' => $item)) ?>
         </div>
-        <div class="font18 pb10 mSmallBtns"><span class="price"><?php echo formatPrice($item->getPrice()) ?></span> <span
-          class="rubl">p</span></div>
+
+        <div class="font18 pb10 mSmallBtns"><span class="price"><?php echo formatPrice($item->getPrice()) ?></span> <span class="rubl">p</span></div>
         <?php if ($show_model): ?>
         <a href="<?php echo $item->getLink() ?>">
           <div class="bListVariants">

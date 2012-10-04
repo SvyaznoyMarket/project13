@@ -2,8 +2,8 @@
 namespace light;
 
 require_once('interface/CartPriceContainer.php');
-require_once(ROOT_PATH.'system/App.php');
-require_once(ROOT_PATH.'lib/TimeDebug.php');
+require_once(Config::get('rootPath').'system/App.php');
+require_once(Config::get('rootPath').'lib/TimeDebug.php');
 
 /**
  * Created by JetBrains PhpStorm.

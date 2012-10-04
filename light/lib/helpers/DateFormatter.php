@@ -22,17 +22,17 @@ class DateFormatter
     $date = new DateTime($date);
 
     $interval = $today->diff($date);
-    if($interval->d == 0){
+    if($interval->days == 0){
       return 'сегодня ('.$date->format('d.m.Y').')';
     }
-    if($interval->d == 1 && $interval->invert == 0){ //если invert = 1 - значит дата уже прошла
+    if($interval->days == 1 && $interval->invert == 0){ //если invert = 1 - значит дата уже прошла
       return 'завтра ('.$date->format('d.m.Y').')';
     }
-    if($interval->d == 2 && $interval->invert == 0){ //если invert = 1 - значит дата уже прошла
+    if($interval->days == 2 && $interval->invert == 0){ //если invert = 1 - значит дата уже прошла
       return 'послезавтра ('.$date->format('d.m.Y').')';
     }
 
-    return 'через '.$interval->d.' '.self::declination($interval->d , 'день дня дней');
+    return 'через '.$interval->days.' '.self::declination($interval->days , 'день дня дней');
 //    return $date->format('d.m.Y');
   }
 

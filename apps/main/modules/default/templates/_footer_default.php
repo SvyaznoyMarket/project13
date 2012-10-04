@@ -76,6 +76,7 @@
     <a href="<?php echo url_for('wordpress', array('page' => 'terms')) ?>">Условия продажи</a>
     <a href="<?php echo url_for('wordpress', array('page' => 'media_info')) ?>">Информация о СМИ</a><br/><br/>
     <span class="copyright">&copy; ООО &laquo;Энтер&raquo; 2011&ndash;<?php echo date("Y") ?>. ENTER<sup>&reg;</sup> ЕНТЕР<sup>&reg;</sup> <span style="color: #FF0000; font:normal 1em tahoma;">Enter<sup>&reg;</sup></span>. Все права защищены.</span>
+    <div><a href="#" id="jira">Сообщить об ошибке</a></div>
   </div>
 </div>
 <!-- /Footer -->

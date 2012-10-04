@@ -82,7 +82,7 @@
     </div>
     <!-- /Lightbox -->
 
-    <?php include_partial('region/select') ?>
+    <?php include_component('region', 'select') ?>
     <script src="/js/jquery-1.6.4.min.js" type="text/javascript"></script>
     <script src="/js/LAB.min.js" type="text/javascript"></script>
     <script src="/js/loadjs.js" type="text/javascript"></script>

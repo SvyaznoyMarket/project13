@@ -181,6 +181,15 @@ class UserCartNew
     return $result;
   }
 
+  public function getProductsPrice(){
+    $productsList = $this->cart->getProductList();
+    $total = 0;
+    foreach($productsList as $product){
+      $total += $product->getTotalPrice();
+    }
+    return $total;
+  }
+
   public function getQuantityById($id)
   {
     $products = $this->cart->getProductsQuantities();

@@ -2,34 +2,49 @@
 
 class DeliveryTypeRepository
 {
-  public function create($data)
-  {
-    $data = array_merge(array(
-      'desc'     => '',
-      'mode_id'  => null,
-      'token'    => null,
-      'name'     => '',
-      'products' => null,
-      'shops'    => null,
-    ), $data);
 
-    $entity = new DeliveryTypeEntity();
-
-    $entity->setDescription($data['desc']);
-    $entity->setId($data['mode_id']);
-    $entity->setToken($data['token']);
-    $entity->setName($data['name']);
-    $entity->setProduct(
-      $data['products']
-      ? array_map(function($i) { return RepositoryManager::getProduct()->create(is_array($i) ? $i : array('id' => $i)); }, $data['products'])
-      : array()
+  /**
+   * @return DeliveryTypeEntity[]
+   */
+  public function getList(){
+    $data = array(
+      array(
+        'id'     => 1,
+        'token'    => 'standart',
+        'name'     => 'курьерская доставка',
+        'description' => '',
+      ),
+      array(
+        'id'     => 2,
+        'token'    => 'express',
+        'name'     => 'экспресс доставка',
+        'description' => '',
+      ),
+      array(
+        'id'     => 3,
+        'token'    => 'self',
+        'name'     => 'самовывоз',
+        'description' => '',
+      ),
+      array(
+        'id'     => 4,
+        'token'    => '',
+        'name'     => 'покупка в магазине',
+        'description' => '',
+      ),
+      array(
+        'id'     => 5,
+        'token'    => '',
+        'name'     => 'Акция!',
+        'description' => 'При оплате банковской картой связной банк - бесплатная доставка.',
+      ),
     );
-    $entity->setShop(
-      $data['shops']
-      ? array_map(function($i) { return RepositoryManager::getShop()->create(is_array($i) ? $i : array('id' => $i)); }, $data['shops'])
-      : array()
-    );
 
-    return $entity;
+    $return = array();
+
+    foreach($data as $val){
+      $return[] = new DeliveryTypeEntity($val);
+    }
+    return $return;
   }
 }

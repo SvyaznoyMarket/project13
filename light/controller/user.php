@@ -7,13 +7,12 @@ namespace light;
  * Time: 18:59
  * To change this template use File | Settings | File Templates.
  */
-require_once(ROOT_PATH . 'system/App.php');
-require_once(ROOT_PATH . 'lib/TimeDebug.php');
+require_once(Config::get('rootPath').'system/App.php');
+require_once(Config::get('rootPath').'lib/TimeDebug.php');
 
 class userController
 {
-  public function getShortInfo(Response $response, $params = array())
-  {
+  public function getShortInfo(Response $response, $params = array()){
     if (!isset($_SERVER['HTTP_X_REQUESTED_WITH']) || $_SERVER['HTTP_X_REQUESTED_WITH'] != 'XMLHttpRequest') {
       $response->setStatusCode(404);
       $response->setContent(App::getRenderer()->renderFile('404'));
@@ -77,18 +76,19 @@ class userController
       if (!count($productIdList) && !count($serviceIdList)) {
         $responseData = array(
           'success' => true,
-          'data'    => array(
-            'name'             => App::getCurrentUser()->isAuthorized() ? App::getCurrentUser()->getUser()->getFullName() : '',
-            'link'             => '/private/', //ссылка на личный кабинет
-            'vitems'           => 0,
-            'sum'              => 0,
-            'vwish'            => 0,
-            'vcomp'            => 0,
-            'productsInCart'   => array(),
-            'servicesInCart'   => array(),
+          'data' => array(
+            'name' => App::getCurrentUser()->isAuthorized()? App::getCurrentUser()->getUser()->getFullName() : '',
+            'link' => '/private/', //ссылка на личный кабинет
+            'vitems' => 0,
+            'sum' => 0,
+            'vwish' => 0,
+            'vcomp' => 0,
+            'productsInCart' => array(),
+            'servicesInCart' => array(),
             'warrantiesInCart' => array(),
-            'bingo'            => false,
-            'region_id'        => App::getCurrentUser()->getRegion()->getId()
+            'bingo' => false,
+            'region_id' =>App::getCurrentUser()->getRegion()->getId(),
+            'is_credit' => (array_key_exists('credit_on', $_COOKIE) && ($_COOKIE['credit_on'] == 1))
           )
         );
         $response->setContent(json_encode($responseData));
@@ -108,18 +108,19 @@ class userController
 
       $responseData = array(
         'success' => true,
-        'data'    => array(
-          'name'             => App::getCurrentUser()->isAuthorized() ? App::getCurrentUser()->getUser()->getFullName() : '',
-          'link'             => '/private/', //ссылка на личный кабинет
-          'vitems'           => ($cart->getProductsQuantity() + $serviceNotRelatedQuantity),
-          'sum'              => $cart->getTotalPrice(),
-          'vwish'            => 0,
-          'vcomp'            => 0,
-          'productsInCart'   => array(),
-          'servicesInCart'   => array(),
+        'data' => array(
+          'name' => App::getCurrentUser()->isAuthorized()? App::getCurrentUser()->getUser()->getFullName() : '',
+          'link' => '/private/', //ссылка на личный кабинет
+          'vitems' => ($cart->getProductsQuantity() + $serviceNotRelatedQuantity),
+          'sum' => $cart->getTotalPrice(),
+          'vwish' => 0,
+          'vcomp' => 0,
+          'productsInCart' => array(),
+          'servicesInCart' => array(),
           'warrantiesInCart' => array(),
-          'bingo'            => false,
-          'region_id'        => App::getCurrentUser()->getRegion()->getId()
+          'bingo' => false,
+          'region_id' =>App::getCurrentUser()->getRegion()->getId(),
+          'is_credit' => (array_key_exists('credit_on', $_COOKIE) && ($_COOKIE['credit_on'] == 1))
         )
       );
 

@@ -71,7 +71,7 @@ class staticPageController
         'imgs'  => App::getPromo()->getImgUrl($promoAction->getImg(), 0),
         'imgb'  => App::getPromo()->getImgUrl($promoAction->getImg(), ($promoAction->getTypeId() == 3) ? 2 : 1),
         'url'   => $link,
-        't'     => (count($promoArray) ? BANNER_TIMEOUT : 10000),
+        't'     => (count($promoArray) ? Config::get('bannerTimeout') : 10000),
         'ga'    => $promoAction->getId() . ' - ' . $promoAction->getName(),
       );
       if ($promoAction->getTypeId() == 3)

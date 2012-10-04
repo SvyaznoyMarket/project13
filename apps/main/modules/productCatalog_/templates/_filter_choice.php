@@ -24,7 +24,7 @@ $values = $productFilterRaw->getValue($filter->getRawValue());
              value="<?php echo $id?>"
         <?php if (in_array($id, $values)) echo 'checked'; ?>
              id="<?php echo $productFilter->getName() ?>_<?php echo $filter->getFilterId()?>_<?php echo $id?>"
-             class="hiddenCheckbox">
+             class="hiddenCheckbox" />
       <label for="<?php echo $productFilter->getName() ?>_<?php echo $filter->getFilterId()?>_<?php echo $id?>"
              class="prettyCheckbox checkbox list">
         <span class="holderWrap" style="width: 13px; height: 13px; "><span class="holder" style="width: 13px; "></span></span>
@@ -32,4 +32,5 @@ $values = $productFilterRaw->getValue($filter->getRawValue());
       </label>
     </li>
     <?php endforeach; ?>
+  </ul>
 </dd>

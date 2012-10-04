@@ -100,6 +100,7 @@ all:
       signature: test
       log_enabled: true
       log_file: %SF_LOG_DIR%/core_client_2.log
+      log_by_request_file: %SF_LOG_DIR%/core_client_2_request.log
       log_response: false # логировать ответ
 
   cache_eraser:
@@ -117,6 +118,7 @@ all:
   payment:
     enabled: true # общий переключатель для всех видов методов online оплат
     default_provider: psbank
+    credit_enabled: false
     provider:
       psbank:
         enabled: true
@@ -155,6 +157,13 @@ all:
       log_file: %SF_LOG_DIR%/smartengine.log
       log_enabled: true
       log_data_enabled: true
+
+  credit:
+   provider:
+     kupivkredit:
+       partnerId: '1-6ADAEAT'
+       partnerName: 'ООО «Enter»'
+       signature: 'enter-secret-werj7537'
 
   js_combine:
     file:     %SF_WEB_DIR%/js/combine.js

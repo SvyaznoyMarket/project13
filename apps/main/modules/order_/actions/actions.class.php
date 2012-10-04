@@ -170,6 +170,8 @@ class order_Actions extends myActions
 
       /* @var $baseOrder Order */
       $baseOrder = $form->updateObject();
+
+      $baseOrder->mapValue('credit_bank_id', $form->getValue('credit_bank_id'));
       /*
       $baseOrder->address = ''
         .($form->getValue('address_metro') ? "метро {$form->getValue('address_metro')}, " : '')
@@ -291,7 +293,7 @@ class order_Actions extends myActions
     else {
       $result = Core::getInstance()->query('order.get', array(
         'id'     => $orderIds,
-        'expand' => array('geo', 'user', 'product', 'service'),
+        'expand' => array('geo', 'user', 'product', 'service', 'credit'),
       ));
     }
 
@@ -421,13 +423,71 @@ class order_Actions extends myActions
     {
       $order = $orders[0];
 
-      $paymentMethod = !empty($order['payment_id']) ? PaymentMethodTable::getInstance()->getByCoreId($order['payment_id']) : null;
-      if (in_array($paymentMethod->token, array('online', 'invoice')))
-      {
+      //$paymentMethod = !empty($order['payment_id']) ? PaymentMethodTable::getInstance()->getByCoreId($order['payment_id']) : null;
+      $paymentMethod = RepositoryManager::getPaymentMethod()->getById($order['payment_id']);
+
+      $isCredit = false;
+      if ($paymentMethod->getIsOnline() || in_array($paymentMethod->getId(), array(5, 8))) { //'online', 'invoice'
+        $provider = $this->getPaymentProvider();
         $this->paymentForm = $this->paymentProvider->getForm($order);
+
+      } elseif ($paymentMethod->isCredit() ) {
+          $isCredit = true;
+          //print_r($order);
+          $creditBank = RepositoryManager::getCreditBank()->getById($order['credit']['credit_bank_id']);
+          $creditProviderId = $creditBank->getProviderId();
+          $jsCreditData = array();
+          if ($creditProviderId == CreditBankEntity::PROVIDER_KUPIVKREDIT) {
+              $kupivkreditData = $this->_getKupivkreditData($order);
+              $jsCreditData['widget'] = 'kupivkredit';
+              //брокеру отпрвляем стоимость только продуктов!
+              $productsSum = 0;
+              foreach ($order['product'] as $product) {
+                $productsSum += $product['quantity'] * $product['price'];
+              }
+              $jsCreditData['vars'] = array(
+                  'sum' => $productsSum,
+                  'order' => $kupivkreditData,
+                  'sig' => $this->_signKupivkreditMessage($kupivkreditData)
+              );
+
+          } elseif ($creditProviderId == CreditBankEntity::PROVIDER_DIRECT_CREDIT) {
+
+              $jsCreditData['widget'] = 'direct-credit';
+              $jsCreditData['vars'] = array(
+                  'number' => $order['number'],
+                  'items' => array()
+              );
+              foreach ($order['product'] as $product) {
+                  //получаем token БЮ
+                  $categoryToken = '';
+                  $productOb = $productsById[$product['product_id']];
+                  if (!empty($productOb)) {
+                      $catList = $productsById[$product['product_id']]->getCategoryList();
+                      if (!empty($catList)) {
+                          $rootCat = reset($catList);
+                          if (!empty($rootCat)) {
+                              $categoryToken = $rootCat->getToken();
+                          }
+                      }
+                  }
+                  $creditDataType = CreditBankRepository::getCreditTypeByCategoryToken($categoryToken);
+
+                  $jsCreditData['vars']['items'][] = array(
+                      'name' => $product['name'],
+                      'quantity' => $product['quantity'],
+                      'price' => $product['price'],
+                      'articul' => $productsById[$product['product_id']]->getArticle(),
+                      'type' => $creditDataType,
+                  );
+              }
+          }
+          $this->setVar('jsCreditArray', $jsCreditData, true);
+          $this->setVar('jsCreditData', json_encode($jsCreditData), true);
       }
     }
 
+    $this->setVar('isCredit', $isCredit, true);
     $this->setVar('orders', $orders, true);
     $this->setVar('gaItems', $gaItems, true);
   }
@@ -445,6 +505,49 @@ class order_Actions extends myActions
 
     $this->paymentProvider = $this->getPaymentProvider();
     $this->paymentForm = $this->paymentProvider->getForm($order);
+  }
+
+  private function _getKupivkreditData($order) {
+
+    $data = array();
+    $data['items'] = array();
+    foreach ($order['product'] as $product) {
+      $data['items'][] = array(
+        'title' => $product['name'],
+        'category' => '',
+        'qty' => $product['quantity'],
+        'price' => $product['price']
+      );
+    }
+    $data['details'] = array(
+      'firstname' => $order['first_name'],
+      'lastname' => $order['last_name'],
+      'middlename' => $order['middle_name'],
+      'email' => '',
+      'cellphone' => $order['mobile'],
+    );
+
+    $kupivkreditConfig = sfConfig::get('app_credit_provider');
+    $kupivkreditConfig = $kupivkreditConfig['kupivkredit'];
+    $data['partnerId'] = $kupivkreditConfig['partnerId'];
+    $data['partnerName'] = $kupivkreditConfig['partnerName'];
+    $data['partnerOrderId'] = $order['number'];
+    $data['deliveryType'] = '';
+
+//      print_r($data);
+//      die();
+    $base64 = base64_encode(json_encode($data));
+    return $base64;
+  }
+
+  private function _signKupivkreditMessage($message, $iterationCount = 1102) {
+    $kupivkreditConfig = sfConfig::get('app_credit_provider');
+    $salt = $kupivkreditConfig['kupivkredit']['signature'];
+    $message = $message.$salt;
+    $result = md5($message).sha1($message);
+    for($i = 0; $i < $iterationCount; $i++)
+      $result = md5($result);
+    return $result;
   }
 
 
@@ -519,7 +622,8 @@ class order_Actions extends myActions
       $deliveryData = DeliveryTypeTable::getInstance()->createQuery()->select('name, description')->where('core_id = ?', $item['mode_id'])->fetchOne(array(), Doctrine_Core::HYDRATE_ARRAY);
       $item['name'] = $deliveryData['name'];
       $item['desc'] = $deliveryData['description'];
-      $deliveryTypes[] = RepositoryManager::getDeliveryType()->create($item);
+      $item['description'] = $deliveryData['description'];
+      $deliveryTypes[] = new DeliveryTypeEntity($item); //RepositoryManager::getDeliveryType()->create($item);
     }
     //myDebug::dump($deliveryTypes, 1);
 
@@ -662,6 +766,8 @@ class order_Actions extends myActions
       $return['user_id'] = $user->getGuardUser() ? $user->getGuardUser()->getId() : null;
       $return['geo_id'] = $user->getRegion('core_id');
       $return['delivery_period'] = $order->delivery_period;
+      $return['payment_id'] =  $order->payment_method_id;
+      $return['credit_bank_id'] =  $order->credit_bank_id;
       $return['product'] = $order->ProductItem;
       $return['service'] = $order->ServiceItem;
       $return['address_metro'] = $order->address_metro;
@@ -671,7 +777,7 @@ class order_Actions extends myActions
       $return['address_apartment'] = $order->address_apartment;
       $return['address_floor'] = $order->address_floor;
 
-      return $return;
+        return $return;
     }, $orders);
     //dump($coreData, 1);
     $response = Core::getInstance()->query('order.create-packet', array(), $coreData, true);
@@ -892,7 +998,7 @@ class order_Actions extends myActions
             $dateView->day = date('j', strtotime($dateData['date']));
             $dateView->dayOfWeek = format_date($dateData['date'], 'EEE', 'ru');
             $dateView->value = date('Y-m-d', strtotime($dateData['date']));
-            $dateView->timestamp =  $dateView->timestamp = strtotime($dateData['date'], 0) * 1000;
+            $dateView->timestamp = strtotime($dateData['date'], 0) * 1000;
 
             foreach ($dateData['interval'] as $intervalData)
             {

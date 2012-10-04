@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<link rel="stylesheet" href="./qunit.css">
+<script src="/js/tests/qunit.js"></script>
+<script src="/js/library.js"></script>
+<script>
+
+module('printPrice function')
+test("pricing 1234", function() {
+    equal( printPrice(1234) , "1 234")
+    equal( printPrice(1234.3) , "1 234.30")
+    equal( printPrice(1234.56) , "1 234.56")    
+    equal( printPrice(12345) , "12 345")
+    equal( printPrice(123456) , "123 456")
+    equal( printPrice(1234567) , "1 234 567")
+})
+module('brwsr object')
+test("brwsr object", function() {
+	var br = new brwsr()
+    equal( br.isAndroid , false, 'isAndroid')
+    equal( br.isTouch , false, 'isTouch')
+})
+module('JSON object')
+test("JSON", function(){
+	var foo = {};  
+	foo.bar = "new property";  
+	foo.baz = 3;  	  
+	var JSONfoo = JSON.stringify(foo);
+	equal( JSONfoo, '{"bar":"new property","baz":3}', 'stringify');
+	var backToJS = JSON.parse(JSONfoo);
+	deepEqual( foo, backToJS, 'parse')
+});
+
+module('Cookie manager')
+test("get-set", function() {
+	var objectFlag = false
+	docCookies.setItem( objectFlag, "test1", "Hello world!")
+	docCookies.setItem( objectFlag, "test2", "Hello world!", new Date(2020, 5, 12))
+	docCookies.setItem( objectFlag, "test3", "Hello world!", new Date(2027, 2, 3), "/hidden")
+	docCookies.setItem( objectFlag, "test4", "Hello world!", "Sun, 06 Nov 2022 21:43:15 GMT")
+	docCookies.setItem( objectFlag, "test5", "Hello world!", "Tue, 06 Dec 2022 13:11:07 GMT", "/hidden")
+	docCookies.setItem( objectFlag, "test6", "Hello world!", 150)
+	docCookies.setItem( objectFlag, "test7", "Hello world!", 245, "/hidden")
+	docCookies.setItem( objectFlag, "test8", "Hello world!", null, null, "hidden.com")
+	docCookies.setItem( objectFlag, "test9", "Hello world!", null, null, null, true)
+	
+	equal( docCookies.getItem("test1"), "Hello world!", 'value only')
+	equal( docCookies.getItem("test2"), "Hello world!", 'expires date')
+	equal( docCookies.getItem("test3"), null, 'expires date plus directory')
+	equal( docCookies.getItem("test4"), "Hello world!", 'expires date in GMT')
+	equal( docCookies.getItem("test5"), null, 'expires date in GMT plus directory')
+	equal( docCookies.getItem("test6"), "Hello world!", 'expires date in secs')	
+	equal( docCookies.getItem("test7"), null, 'expires date in GMT plus directory')
+	equal( docCookies.getItem("test8"), null, 'hidden domain')
+	equal( docCookies.getItem("test9"), null, 'https protocol only')
+})
+test("Object get-set", function() {
+	var objectFlag = true
+	var tmpObj = {a: 'a', b: '99'}
+	docCookies.setItem( objectFlag, "testObj", tmpObj )
+	deepEqual( docCookies.getItem("testObj", objectFlag), tmpObj , 'simple object only')
+})
+
+</script>
+<h1 id="qunit-header">QUnit-based tests</h1>
+<h2 id="qunit-banner"></h2>
+<ol id="qunit-tests"></ol>

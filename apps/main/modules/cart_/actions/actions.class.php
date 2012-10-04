@@ -22,6 +22,8 @@ class cart_Actions extends myActions
   {
     $this->setVar('cart', $this->getUser()->getCart(), true);
 
+    $this->setVar('selectCredit', (bool)(!empty($_COOKIE['credit_on']) && ($_COOKIE['credit_on'] == 1)));
+
     $this->getUser()->setCacheCookie();
   }
 }

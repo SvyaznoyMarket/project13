@@ -28,6 +28,20 @@ interface CartContainer
     public function addProduct($productId);
 
   /**
+   * Удаляет первый товар из корзины
+   *
+   * @abstract
+   */
+  public function shiftProduct();
+
+  /**
+   * @abstract
+   * @param int $productId
+   * @return bool
+   */
+  public function hasProduct($productId);
+
+  /**
    * @abstract
    * @param int $productId
    * @param int|null $quantity если null - удалит все

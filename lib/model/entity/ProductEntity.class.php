@@ -2,6 +2,10 @@
 
 class ProductEntity
 {
+  /**
+   * Минимальная цена товара, на который предоставляется кредит
+   */
+  const MIN_CREDIT_PRICE = 3000;
 
   /**
    * Дефолтное отображение связанных товаров - аксессуары сверху, смежные товары в футере
@@ -117,7 +121,6 @@ class ProductEntity
   private $tagList = array();
   /** @var boolean */
   private $connectedProductsViewMode;
-
 
   public function __construct(array $data = array())
   {
@@ -670,6 +673,11 @@ class ProductEntity
   public function getIsBuyable()
   {
     return $this->getState() && $this->getState()->getIsBuyable();
+  }
+
+  public function getIsQuickOnly()
+  {
+    return $this->getState() && $this->getState()->getIsQuickOnly();
   }
 
   /**

@@ -4,6 +4,7 @@ use Logger;
 use Exception;
 
 require_once(__DIR__.'/../log4php/Logger.php');
+require_once(__DIR__.'/../helpers/RequestLogger.php');
 
 class CoreClient
 {
@@ -28,7 +29,7 @@ class CoreClient
   {
     static $instance;
     if (!$instance) {
-      $instance = new CoreClient(array('userapi_url' => CORE_V2_USERAPI_URL, 'client_code'=> CORE_V2_USERAPI_CLIENT_CODE));
+      $instance = new CoreClient(array('userapi_url' => Config::get('coreV2UserAPIUrl'), 'client_code'=> Config::get('coreV2UserAPIClientCode')));
       $instance->addLogger('CoreClient', Logger::getLogger('CoreClient'));
     }
     return $instance;
@@ -61,8 +62,12 @@ class CoreClient
    */
   public function query($action, array $params = array(), array $data = array())
   {
+    $time_start = microtime(true);
+    $params['uid'] = RequestLogger::getInstance()->getId();
     $connection = $this->createCurlResource($action, $params, $data);
     $response = curl_exec($connection);
+    $time_end = microtime(true);
+    $this->log('Request time:' . ($time_end - $time_start), 'info');
     try {
       if (curl_errno($connection) > 0) {
         throw new \RuntimeException(curl_error($connection), curl_errno($connection));
@@ -74,6 +79,7 @@ class CoreClient
         throw new \RuntimeException(sprintf("Invalid http code: %d, \nResponse: %s", $info['http_code'], $response));
       }
       $this->log('Core response: ' . $response, 'debug');
+      RequestLogger::getInstance()->addLog($action, $params);
       $responseDecoded = $this->decode($response);
       curl_close($connection);
       return $responseDecoded;
@@ -121,6 +127,7 @@ class CoreClient
     $active = null;
     $error = null;
     try {
+      $time_start = microtime(true);
       do {
         $code = curl_multi_exec($this->multiHandler, $still_executing);
         if ($code == CURLM_OK) {
@@ -147,7 +154,11 @@ class CoreClient
           throw new \RuntimeException("multi_curl failure [$code]");
         }
       } while ($still_executing);
+      $time_end = microtime(true);
+      $this->log('Multi-request time:' . ($time_end - $time_start), 'info');
     } catch (Exception $e) {
+      $time_end = microtime(true);
+      $this->log('Multi-request time:' . ($time_end - $time_start), 'info');
       $error = $e;
     }
     // clear multi container
@@ -198,7 +209,7 @@ class CoreClient
   /**
    * @param $response
    * @return array
-   * @throws RuntimeException
+   * @throws \RuntimeException
    */
   private function decode($response)
   {
@@ -324,7 +335,7 @@ class CoreV1Client
   static public function getInstance()
   {
     if (is_null(self::$instance)) {
-      self::$instance = new CoreV1Client(array('api_url' => CORE_V1_API_URL, 'consumer_key'=> CORE_V1_CONSUMER_KEY, 'signature'=> CORE_V1_SIGNATURE));
+      self::$instance = new CoreV1Client(array('api_url' => Config::get('coreV1APIUrl'), 'consumer_key'=> Config::get('coreV1ConsumerKey'), 'signature'=> Config::get('coreV1Signature')));
     }
     return self::$instance;
   }
@@ -356,7 +367,7 @@ class CoreV1Client
 
   public function query($name, array $params = array(), array $data = array())
   {
-
+    $params['uid'] = RequestLogger::getInstance()->getId();
     $action = '/'.str_replace('.', '/', $name).'/';
 
     if (empty($this->coreApiClientId) || empty($this->coreApiToken))
@@ -373,8 +384,13 @@ class CoreV1Client
       'data'   => $data), JSON_FORCE_OBJECT);
 
     $this->log("Request: ".$data, 'info');
+    RequestLogger::getInstance()->addLog($name, $params);
+
+    $time_start = microtime(true);
     $response = $this->send($data);
     $this->log("Response: ".$response, 'debug');
+    $time_end = microtime(true);
+    $this->log('Request time:' . ($time_end - $time_start), 'info');
 
     $response = json_decode($response, true);
 

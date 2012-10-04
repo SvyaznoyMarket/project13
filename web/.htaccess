@@ -9,6 +9,7 @@ Options +FollowSymLinks +ExecCGI
   # getting no_script_name to work
   #RewriteBase /
 
+  RewriteRule ^f1.*$ index.light.php [L]
   RewriteRule ^region/init/$ index.light.php [L]
   RewriteRule ^user/shortinfo/?$ index.light.php [L]
   RewriteRule ^product/delivery1click/? index.light.php [L]
