@@ -12,7 +12,7 @@
     </form>
     <div class="cityInline">
       <a href="<?php echo url_for('region_change', array('region' => 14974)) ?>">Москва</a>
-      <!--a href="#">Город автоопределения</a -->
+      <a href="<?php echo url_for('region_change', array('region' => 108136)) ?>">Санкт-Петербург</a>
     </div>
   <?php $offset = 0; ?>
   <?php foreach ($columns_count as $count): ?>
