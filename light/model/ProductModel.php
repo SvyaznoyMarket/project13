@@ -8,11 +8,11 @@ namespace light;
  * To change this template use File | Settings | File Templates.
  */
 
-require_once(ROOT_PATH.'system/App.php');
-require_once(ROOT_PATH.'lib/TimeDebug.php');
-require_once(VIEW_PATH.'dataObject/product/ProductShortData.php');
-require_once(VIEW_PATH.'dataObject/product/ProductData.php');
-//require_once(VIEW_PATH.'dataObject/PromoData.php');
+require_once(Config::get('rootPath').'system/App.php');
+require_once(Config::get('rootPath').'lib/TimeDebug.php');
+require_once(Config::get('viewPath').'dataObject/product/ProductShortData.php');
+require_once(Config::get('viewPath').'dataObject/product/ProductData.php');
+//require_once(Config::get('viewPath').'dataObject/PromoData.php');
 
 class ProductModel
 {

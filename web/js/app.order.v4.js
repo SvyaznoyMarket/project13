@@ -119,10 +119,12 @@ $(document).ready(function() {
 	// $('#addressField').find('input').placeholder()
 	$('.placeholder-input').focus(function(e) {
         var el = $(e.target)
-        el.prev('.placeholder').css('border-color', '#FFA901');
+        if (!el.prev('.placeholder').hasClass('mRed'))
+        	el.prev('.placeholder').css('border-color', '#FFA901');
     }).focusout(function(e) {
         var el = $(e.target)
-        el.prev('.placeholder').css('border-color', '#DDDDDD')
+        if (!el.prev('.placeholder').hasClass('mRed'))
+        	el.prev('.placeholder').css('border-color', '#DDDDDD')
     })
 
     $('.placeholder').click(function(e) {
@@ -657,6 +659,7 @@ upi:			for( var item=0, boxitems=self.chosenBox().itemList(); item < boxitems.le
 			}
 
 			for( var tkn in self.dlvrBoxes() ) {
+
 				var dlvr = self.dlvrBoxes()[tkn]
 				var data = {
 					id: Model.deliveryTypes[ dlvr.token ].id,
@@ -673,9 +676,8 @@ upi:			for( var item=0, boxitems=self.chosenBox().itemList(); item < boxitems.le
 					boxitems.push( dlvr.itemList()[i].token )
 				data.items = boxitems
 // console.info(data)
-				ServerModel.deliveryTypes[ dlvr.token ] = data
+				ServerModel.deliveryTypes[ dlvr.token + formateDate( dlvr.chosenDate() ) ] = data
 			}
-
 			return ServerModel
 		}
 
@@ -754,6 +756,7 @@ upi:			for( var item=0, boxitems=self.chosenBox().itemList(); item < boxitems.le
 			if( $(this).val().replace(/\s+/g,'') != '' ) {
 				broken--
 				$('input[name="'+field+'"]').removeClass('mRed')
+				$('input[name="'+field+'"]').prev('.placeholder').removeClass('mRed')
 				var line = $('input[name="'+field+'"]').closest('.bBuyingLine')
 				if( !line.find('.mRed').length )
 					line.find('.bFormError').remove()
@@ -764,12 +767,14 @@ upi:			for( var item=0, boxitems=self.chosenBox().itemList(); item < boxitems.le
 		switch( node.attr('type') ) {
 			case 'text':
 				node.addClass('mRed')
+				node.prev('.placeholder').addClass('mRed')
 				var dd = node.parent().parent()
 				if( !dd.find('.bFormError').length )
 					dd.append( '<span class="bFormError mb10 pt5">'+mess+'</span>' ) // AWARE: CUSTOM
 			break
 			default: // radio, checkbox
 				node.addClass('mRed')
+				node.prev('.placeholder').addClass('mRed')
 				node.parent().parent().parent().append( '<span class="bFormError mb10 pt5">'+mess+'</span>' ) // AWARE: CUSTOM
 			break
 		}

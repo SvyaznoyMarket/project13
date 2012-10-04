@@ -52,7 +52,7 @@ if(isset($productFilter)){
     $infinityUrl = url_for('search_ajax', $dataAr);
   } else {
     //страница каталога (любая. возможно, с фильтрами и тегами)
-    $dataAr['sf_subject'] = $sf_data->getRaw('productCategory');
+    $dataAr['productCategory'] = $productCategory->getTokenPrefix() ? ($productCategory->getTokenPrefix().'/'.$productCategory->getToken()) : $productCategory->getToken();
     $infinityUrl = url_for('productCatalog_categoryAjax', $dataAr);
   }
   ?>

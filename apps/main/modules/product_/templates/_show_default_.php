@@ -21,6 +21,7 @@ $json = json_encode(array (
   'jsregionid' => sfContext::getInstance()->getUser()->getRegionCoreId(),
   'jsregionName' => sfContext::getInstance()->getUser()->getRegion('name'),
   'jsstock' => 10,
+  'is_quick_only' => $item->getIsQuickOnly(),
 ));
 ?>
 <?php
@@ -100,6 +101,7 @@ foreach ($photo3dList as $photo3d)
 
 
   <div class="fr ar pb15">
+    <?php if ( $item->getState()->getIsBuyable()): ?>
     <div class="goodsbarbig mSmallBtns" ref="<?php echo $item->getToken() ?>" data-value='<?php echo $json ?>'>
 
       <div class='bCountSet'>
@@ -110,10 +112,8 @@ foreach ($photo3dList as $photo3d)
         <?php endif ?>
         <span><?php echo $item->isInCart() ? $item->getCartQuantity() : 1 ?> шт.</span>
       </div>
-
       <?php render_partial('cart_/templates/_buy_button.php', array('item' => $item)) ?>
     </div>
-    <?php if ( $item->getState()->getIsBuyable()): ?>
     <div class="pb5"><strong>
       <a href=""
          data-model='<?php echo $json ?>'
@@ -121,19 +121,22 @@ foreach ($photo3dList as $photo3d)
          link-input='<?php echo url_for('product_delivery_1click') ?>'
          class="red underline order1click-link-new">Купить быстро в 1 клик</a>
     </strong></div>
+    <?php else: ?>
+    <span class="font16 orange">Для покупки товара<br />обратитесь в Контакт-сENTER</span>
     <?php endif ?>
   </div>
 
 
   <div class="line pb15"></div>
-
-  <div class="creditbox"  <?php if (!$dataForCredit['creditIsAllowed'] || !sfConfig::get('app_payment_credit_enabled', true)) : ?> style="display:none" <?php endif; ?>>
+  <?php if ($dataForCredit['creditIsAllowed'] && sfConfig::get('app_payment_credit_enabled', true)) : ?>
+  <div class="creditbox">
     <div class="creditboxinner">
       от <span class="font24"><span class="price"></span> <span class="rubl">p</span></span> в кредит
       <div class="fr pt5"><label class="bigcheck " for="creditinput"><b></b>Беру в кредит
         <input id="creditinput" type="checkbox" name="creditinput" autocomplete="off"/></label></div>
     </div>
   </div>
+  <?php endif; ?>
 
   <?php if ($dataForCredit['creditIsAllowed'] && sfConfig::get('app_payment_credit_enabled', true)) : ?>
   <input data-model="<?php echo $dataForCredit['creditData'] ?>" id="dc_buy_on_credit_<?php echo $item->getArticle(); ?>" name="dc_buy_on_credit" type="hidden" />
@@ -150,9 +153,6 @@ foreach ($photo3dList as $photo3d)
   </div>
   <?php endif ?>
 
-  <div class="pb15">
-    <a href="http://clck.yandex.ru/redir/dtype=stred/pid=47/cid=1248/*http://market.yandex.ru/grade-shop.xml?shop_id=83048"><img src="http://clck.yandex.ru/redir/dtype=stred/pid=47/cid=1248/*http://img.yandex.ru/market/informer12.png" border="0" alt="Оцените качество магазина на Яндекс.Маркете." /></a>
-  </div>
   <div class="line pb15"></div>
 
   <div style="margin-bottom: 20px;">
@@ -234,15 +234,16 @@ if ($showRelatedUpper && count($item->getRelatedList())){
 <?php $description = $item->getDescription(); ?>
 <?php if (!empty($description)): ?>
 <!-- Information -->
+<div class="clear"></div>
 <h2 class="bold"><?php echo $item->getName() ?> - Информация о товаре</h2>
 <div class="line pb15"></div>
 <ul class="pb10">
   <?php echo $description ?>
 </ul>
 <!-- /Information  -->
-<div class="clear"></div>
-<?php endif ?>
 
+<?php endif ?>
+<div class="clear"></div>
 <?php if ('kit' != $item->getView()): ?>
 <!-- Description -->
 <h2 class="bold"><?php echo $item->getName() ?> - Характеристики</h2>

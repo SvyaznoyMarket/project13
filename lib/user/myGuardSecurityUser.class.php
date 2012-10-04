@@ -366,9 +366,13 @@ class myGuardSecurityUser extends sfBasicSecurityUser
       $token = $this->getAttribute('token', null, 'guard');
 
       if ($token) {
-        $data = CoreClient::getInstance()->query('user/get', array('token' => $token));
-
-        $this->authenticated = isset($data['id']);
+        try {
+          $data = CoreClient::getInstance()->query('user/get', array('token' => $token));
+          $this->authenticated = isset($data['id']);
+        }
+        catch (Exception $e) {
+          $this->signOut();
+        }
       }
       else
       {

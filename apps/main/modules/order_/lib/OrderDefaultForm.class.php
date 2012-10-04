@@ -50,7 +50,7 @@ class OrderDefaultForm extends BaseOrderForm
 
     // recipient_phonenumbers
     $this->widgetSchema['recipient_phonenumbers'] = new sfWidgetFormInputText();
-    $this->validatorSchema['recipient_phonenumbers'] = new sfValidatorString(array('min_length' => 7, 'max_length' => 20, 'required' => true), array('required' => 'Укажите телефон для связи', 'min_length' => 'Неправильный телефонный номер', 'max_length' => 'Неправильный телефонный номер'));
+    $this->validatorSchema['recipient_phonenumbers'] = new sfValidatorString(array('min_length' => 7, 'max_length' => 20, 'required' => true, 'trim' => true), array('required' => 'Укажите телефон для связи', 'min_length' => 'Неправильный телефонный номер', 'max_length' => 'Неправильный телефонный номер'));
     $this->widgetSchema['recipient_phonenumbers']->setLabel('Мобильный телефон для связи:');
 
     // is_receive_sms

@@ -8,12 +8,12 @@ use Logger;
  * Time: 14:41
  * To change this template use File | Settings | File Templates.
  */
-require_once(ROOT_PATH.'system/App.php');
-require_once(ROOT_PATH.'lib/cart/Cart.php');
-require_once(ROOT_PATH.'lib/cart/SessionCartContainer.php');
-require_once(ROOT_PATH.'lib/cart/V2CartPriceContainer.php');
+require_once(Config::get('rootPath').'system/App.php');
+require_once(Config::get('rootPath').'lib/cart/Cart.php');
+require_once(Config::get('rootPath').'lib/cart/SessionCartContainer.php');
+require_once(Config::get('rootPath').'lib/cart/V2CartPriceContainer.php');
 
-require_once(VIEW_PATH.'dataObject/UserData.php');
+require_once(Config::get('viewPath').'dataObject/UserData.php');
 
 
 class CurrentUser

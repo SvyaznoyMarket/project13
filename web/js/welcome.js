@@ -15,10 +15,10 @@ $(document).ready(function () {
     $('.startse').bind({
         'blur':function () {
             if (this.value == '')
-                this.value = 'Поиск среди 25 000 товаров'
+                this.value = 'Поиск среди 30 000 товаров'
         },
         'focus':function () {
-            if (this.value == 'Поиск среди 25 000 товаров')
+            if (this.value == 'Поиск среди 30 000 товаров')
                 this.value = ''
         }
     })

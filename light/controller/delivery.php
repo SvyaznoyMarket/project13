@@ -8,10 +8,10 @@ namespace light;
  * To change this template use File | Settings | File Templates.
  */
 
-//require_once(ROOT_PATH.'model/DeliveryModel.php');
-require_once(ROOT_PATH.'system/App.php');
-require_once(ROOT_PATH.'lib/helpers/DateFormatter.php');
-require_once(ROOT_PATH.'lib/TimeDebug.php');
+//require_once(Config::get('rootPath').'model/DeliveryModel.php');
+require_once(Config::get('rootPath').'system/App.php');
+require_once(Config::get('rootPath').'lib/helpers/DateFormatter.php');
+require_once(Config::get('rootPath').'lib/TimeDebug.php');
 
 class deliveryController
 {
@@ -59,6 +59,11 @@ class deliveryController
 
     $response->setContentType('application/json');
     $response->setContent(json_encode($return));
+
+    #$renderer = App::getHtmlRenderer();
+    #$renderer->setPage('empty');
+    #$response->setContent($renderer->render());
+
     TimeDebug::end('controller:delivery:ProductDeliveryJson');
   }
 
