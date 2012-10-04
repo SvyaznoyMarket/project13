@@ -38,6 +38,7 @@ $listInCart = $item->getServiceListInCart();
 <?php endif ?>
 
 
+<?php if (sfConfig::get('app_warranty_enabled')) { ?>
 <?php $warrantiesById = array(); foreach ($item->getWarrantyList() as $warranty) { $warrantiesById[$warranty->getId()] = $warranty; } ?>
 
 <?php if ((bool)$warrantiesById): ?>
@@ -73,3 +74,4 @@ $listInCart = $item->getServiceListInCart();
     </a>
   </div>
 <?php endif ?>
+<? } ?>

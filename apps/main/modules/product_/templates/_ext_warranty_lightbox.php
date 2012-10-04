@@ -2,6 +2,7 @@
 /** @var $item ProductEntity */
 ?>
 
+<?php if (sfConfig::get('app_warranty_enabled')) { ?>
 <!-- всплывающее окно с выбором доп.гарантии-->
 <div class="hideblock mGoods extWarranty">
 	<i class="close" title="Закрыть">Закрыть</i>
@@ -28,3 +29,4 @@
 	</div>
 </div>
 <!-- END всплывающее окно с выбором доп.гарантии-->
+<? } ?>
