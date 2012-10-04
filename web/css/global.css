@@ -4200,7 +4200,7 @@ label.checked {
   display: none;
   font-size: 12px;
   padding: 15px 20px;
-  position: absolute;
+  position: fixed;
   text-align: left;
   z-index: 10;
 }
@@ -4221,11 +4221,13 @@ label.checked {
   left: 140px;
   min-height: 60px;
   padding: 10px 20px 20px 75px;
+  margin-left: -380px;
   top: 350px;
+  width: 690px;
 }
 .bF1Block.mGoods {
-  left: 170px;
-  top: 415px;
+  left: 50%;
+  top: 200px;
 }
 .bF1Block.mGoods div {
   max-height: 320px;
