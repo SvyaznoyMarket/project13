@@ -280,7 +280,8 @@ zoom: 1;
 .whitelink .leaf {display:inline-block; width:16px; height:14px; background:url(/css/common/img/bg.png) no-repeat -197px -101px; vertical-align:-3px; margin-right:8px}
 .whitelink .map {display:inline-block; width:16px; height:16px; background:url(/css/common/img/bg_inner.png) no-repeat -104px -133px; vertical-align:-5px; margin-right:8px}
 
-.bigbutton {height:33px; padding:0 7px 3px 7px; background-color:#ffa901; background-position:0 -256px; font-size:14px; color:#fff; border-color:#f28900}
+.bigbutton {height:33px; padding:0 7px 3px 7px; background-color:#ffa901; background-position:0 -256px; font-size:14px; color:#fff; border-color:#f28900;-webkit-appearance: none;}
+
 .bSet__ePrice .link1:hover,
 .bigbutton:hover {background-color:#f79200; background-position:0 -297px}
 .bigbuttonactive, .bigbuttonactive:hover {background-color:#f79200; background-position:0 -338px}

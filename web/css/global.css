@@ -1,3 +1,4 @@
+/* CSS crunched with Crunch - http://crunchapp.net/ */
 @import "/css/skin/old_inner.css";
 /*-------НЕРАЗОБРАННЫЕ СТИЛИ------*/
 /*---END----НЕРАЗОБРАННЫЕ СТИЛИ---*/
@@ -1197,6 +1198,9 @@
   top: 0;
   width: 26px;
 }
+.popupRegion .ui-css {
+  width: 610px;
+}
 .popupRegion .popuptitle {
   font-family: "Enter";
   font-size: 30px;
@@ -1208,8 +1212,15 @@
 }
 .popupRegion .inputClear {
   color: #A6A6A6;
+  display: block;
+  float: right;
   font-size: 14px;
-  margin: 0 10px 0 -18px;
+  height: 20px;
+  margin: -28px 128px 0 0;
+  position: relative;
+  text-align: center;
+  width: 20px;
+  z-index: 100;
 }
 .popupRegion .cityInline {
   font-size: 16px;
