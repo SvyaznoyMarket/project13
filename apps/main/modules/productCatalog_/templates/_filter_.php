@@ -16,7 +16,7 @@
       data-action-count="<?php echo url_for('productCatalog_count', array('productCategory' => $productCategory->getTokenPrefix() ? ($productCategory->getTokenPrefix().'/'.$productCategory->getToken()) : $productCategory->getToken())) ?>">
 
   <dl class="bigfilter form bSpec">
-    <h2>Выбираем:<i></i></h2>
+    <dt class="filterHeader">Выбираем:<i></i></dt>
     <?php require '_filter_selected_.php' ?>
     <?php $openNum = 0; ?>
     <?php $i = 0; foreach ($productFilter->getFilterList() as $filter): ?>

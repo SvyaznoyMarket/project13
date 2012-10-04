@@ -149,23 +149,25 @@ dt.bCtg__eOrange {
   .rounded(5px);
   border: 1px solid #f99b1c;
   margin: 15px 0px;
-  h2 {
+  .filterHeader {
     .border-radius(2px 2px 0px 0px);
-    background-color: #f99b1c;
+    border-top:none;
+    background: #f99b1c;
     color: @white;
+    cursor: default;
     font: bold 14px Tahoma, sans-serif;
     height: 24px;
     margin: 0px 0px 15px;
     padding: 6px 0px 0px 10px;
     position: relative;
     i {
-      background: url("@{leftNavSprite-url}") no-repeat -18px -26px;
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      border-top: 6px solid #f99b1c;
       bottom: -6px;
       display: block;
-      height: 6px;
       left: 8px;
       position: absolute;
-      width: 15px;
     }
   }
   .pb10 {

@@ -2385,7 +2385,7 @@ dt.bCtg__eOrange {
   border: 1px solid #f99b1c;
   margin: 15px 0px;
 }
-.bSpec h2 {
+.bSpec .filterHeader {
   -webkit-border-top-right-radius: 2px 2px 0px 0px;
   -webkit-border-bottom-right-radius: 0;
   -webkit-border-bottom-left-radius: 0;
@@ -2398,22 +2398,24 @@ dt.bCtg__eOrange {
   border-bottom-right-radius: 0;
   border-bottom-left-radius: 0;
   border-top-left-radius: 0;
-  background-color: #f99b1c;
+  border-top: none;
+  background: #f99b1c;
   color: #ffffff;
+  cursor: default;
   font: bold 14px Tahoma, sans-serif;
   height: 24px;
   margin: 0px 0px 15px;
   padding: 6px 0px 0px 10px;
   position: relative;
 }
-.bSpec h2 i {
-  background: url("/css/leftNav/img/leftNavSprite.png") no-repeat -18px -26px;
+.bSpec .filterHeader i {
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 6px solid #f99b1c;
   bottom: -6px;
   display: block;
-  height: 6px;
   left: 8px;
   position: absolute;
-  width: 15px;
 }
 .bSpec .pb10 {
   border-top: 1px solid #e6e6e6;
