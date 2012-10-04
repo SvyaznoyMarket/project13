@@ -64,13 +64,13 @@ $(document).ready(function() {
 			if( clearfunction ) 
 				clearfunction()
 			
-			// $.getJSON( drop , function( data ) {
-			// 	$(nodes.drop).data('run',false)
-			// 	if( !data.success ) {
-			// 		location.href = location.href
-			// 	} else
-			// 		getTotal()
-			// })
+			$.getJSON( drop , function( data ) {
+				$(nodes.drop).data('run',false)
+				if( !data.success ) {
+					location.href = location.href
+				} else
+					getTotal()
+			})
 		}
 
 		this.update = function( minimax, delta ) {

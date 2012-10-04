@@ -49,38 +49,11 @@ foreach ($item->getWarrantyList() as $warranty) {
       </tbody>
     </table>
   </div>
-
-  <div class="clear"></div>
-
-  <div class="service form bBacketServ extWarr mSmall" <?php if ($selectedWarranty) echo ' style="display:none;"';  ?>>
-      <table cellspacing="0">
-          <tbody>
-              <tr>
-                  <th colspan="3">Для этого товара есть дополнительная гарантия:</th>
-              </tr>
-          <?php foreach ($item->getWarrantyList() as $warranty) { ?>
-              <tr>
-                  <td><?php echo $warranty->getName() ?></td>
-                  <td class="mPrice"></td>
-                  <td class="mEdit"></td>
-              </tr>
-          <?php } ?>
-              <tr>
-                  <td class="bBlueButton">
-                      <a href="" class="link_extWarr">Выбрать гарантию</a>
-                  </td>
-                  <td></td>
-                  <td></td>
-              </tr>
-          </tbody>
-      </table>
-  </div>
-
 </div>
 
 <?php if (!$selectedNum) { ?>
 <div class="mBR5 basketServices">
-<div class="service form bBacketServ mBig" style="display:none;">
+<div class="service form bBacketServ F1 mBig" style="display:none;">
   <table cellspacing="0">
     <tbody>
     <tr>
@@ -97,8 +70,9 @@ foreach ($item->getWarrantyList() as $warranty) {
 </div>
 <?php } ?>
 
-<div class="mBR5 basketServices">
+
 <?php if ($selectedNum) { ?>
+<div class="mBR5 basketServices">
 <div class="service form bBacketServ F1 mBig">
   <table cellspacing="0">
     <tbody>
@@ -146,7 +120,34 @@ foreach ($item->getWarrantyList() as $warranty) {
     </tbody>
   </table>
 </div>
+</div>
 <?php } ?>
+
+<div class="mBR5 basketServices">  
+  <div class="service form bBacketServ extWarr mSmall" <?php if ($selectedWarranty) echo ' style="display:none;"';  ?>>
+      <table cellspacing="0">
+          <tbody>
+              <tr>
+                  <th colspan="3">Для этого товара есть дополнительная гарантия:</th>
+              </tr>
+          <?php foreach ($item->getWarrantyList() as $warranty) { ?>
+              <tr>
+                  <td><?php echo $warranty->getName() ?></td>
+                  <td class="mPrice"></td>
+                  <td class="mEdit"></td>
+              </tr>
+          <?php } ?>
+              <tr>
+                  <td class="bBlueButton">
+                      <a href="" class="link_extWarr">Выбрать гарантию!</a>
+                  </td>
+                  <td></td>
+                  <td></td>
+              </tr>
+          </tbody>
+      </table>
+  </div>
+</div>
 
 <?php if (!$selectedWarranty) { ?>
 <div class="mBR5 basketServices">
@@ -201,8 +202,6 @@ foreach ($item->getWarrantyList() as $warranty) {
     </table>
 </div>
 <?php } ?>
-
-</div>
 
   <?php include_component('product', 'f1_lightbox', array('f1' => $list, 'product' => $product, 'servListId' => $servListId, 'parentAction' => $this->getActionName())) ?>
   <?php render_partial('product_/templates/_ext_warranty_lightbox.php', array('item' => $product['fullObject']))?>
