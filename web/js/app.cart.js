@@ -33,7 +33,8 @@ $(document).ready(function() {
 		var drop     = $(nodes.drop).attr('href')
 		this.sum     = $(nodes.sum).html().replace(/\s/,'')
 		var limit    = nodes.limit
-		this.quantum = $(nodes.quan).html().replace(/\D/g,'') * 1
+		if( $(nodes.quan).length )
+			this.quantum = $(nodes.quan).html().replace(/\D/g,'') * 1
 
 		var price    = ( self.sum* 1 / self.quantum *1 ).toFixed(2)
 		if( 'price' in nodes )
@@ -63,13 +64,13 @@ $(document).ready(function() {
 			if( clearfunction ) 
 				clearfunction()
 			
-			$.getJSON( drop , function( data ) {
-				$(nodes.drop).data('run',false)
-				if( !data.success ) {
-					location.href = location.href
-				} else
-					getTotal()
-			})
+			// $.getJSON( drop , function( data ) {
+			// 	$(nodes.drop).data('run',false)
+			// 	if( !data.success ) {
+			// 		location.href = location.href
+			// 	} else
+			// 		getTotal()
+			// })
 		}
 
 		this.update = function( minimax, delta ) {
@@ -161,8 +162,8 @@ $(document).ready(function() {
 						})
 		basket.push( tmpline )
 				
-		if( $('div.bBacketServ.mBig', bline).length ) {
-			$('div.bBacketServ.mBig tr', bline).each( function(){
+		if( $('div.bBacketServ.mBig.F1', bline).length ) {
+			$('div.bBacketServ.mBig.F1 tr', bline).each( function(){
 				if( $('.ajaquant', $(this)).length ) {
 					addLine( $(this), bline )
 				}
@@ -175,15 +176,42 @@ $(document).ready(function() {
 			       		f1popup.hide()
 			       })
 			f1popup.find('input.button').click( function() {
-				   		if( $(this).hasClass('active') )
-							return false
-						$(this).val('В корзине').addClass('active')
-						var f1item = $(this).data()
-						$.getJSON( f1item.url, function(data) {
-						})
-						makeWide( bline, f1item )
-				   		f1popup.hide()
-				   })
+		   		if( $(this).hasClass('active') )
+					return false
+				$(this).val('В корзине').addClass('active')
+				var f1item = $(this).data()
+				$.getJSON( f1item.url, function(data) {
+				})
+				makeWide( bline, f1item )
+		   		f1popup.hide()
+		   })
+			return false
+		})
+
+		if( $('div.bBacketServ.mBig.extWarr', bline).length ) {
+			$('div.bBacketServ.mBig.extWarr tr', bline).each( function(){
+				if( $('.mPrice', $(this)).length ) {
+					addLineWrnt( $(this), bline )
+				}
+			})
+		}
+		bline.find('a.link_extWarr').click( function(){
+			
+			var wrntpopup = $('.extWarranty', bline)
+			wrntpopup.show()
+					 .find('.close').click( function() {
+			       		wrntpopup.hide()
+			         })
+			wrntpopup.find('input.button').click( function() {
+		   		if( $(this).hasClass('active') )
+					return false
+				$(this).val('В корзине').addClass('active')
+				var tmpitem = $(this).data()			
+				$.getJSON( tmpitem.url, function(data) { })
+				wrntpopup.hide()
+				makeWideWrnt( bline, tmpitem )
+		   		
+		   })
 			return false
 		})
 	})
@@ -192,7 +220,7 @@ $(document).ready(function() {
 	
 		function checkWide() {
 			var buttons = $('td.bF1Block_eBuy', bline)
-			var mBig = $('div.bBacketServ.mBig', bline)
+			var mBig = $('div.bBacketServ.mBig.F1', bline)		
 			for(var i=0, l = $(buttons).length; i < l; i++) {
 				if( ! $('tr[ref=' + $(buttons[i]).attr('ref') + ']', mBig).length ) {
 					$(buttons[i]).find('input').val('Купить услугу').removeClass('active')
@@ -201,8 +229,8 @@ $(document).ready(function() {
 			}	
 						
 			if ( !$('div.bBacketServ.mBig .ajaquant', bline).length ) {	
-				$('div.bBacketServ.mBig', bline).hide()							
-				$('div.bBacketServ.mSmall', bline).show()
+				$('div.bBacketServ.mBig.F1', bline).hide()							
+				$('div.bBacketServ.mSmall.F1', bline).show()
 			}	
 		}	
 		var tmpline = new basketline({
@@ -218,14 +246,56 @@ $(document).ready(function() {
 	}		
 	
 	function makeWide( bline, f1item ) {
-		$('div.bBacketServ.mSmall', bline).hide()
-		$('div.bBacketServ.mBig', bline).show()		
-		var f1lineshead = $('div.bBacketServ.mBig tr:first', bline)
+		$('div.bBacketServ.mSmall.F1', bline).hide()
+		var bBig = $('div.bBacketServ.mBig.F1', bline)
+		bBig.show()		
+		var f1lineshead = $('tr:first', bBig)
 		var f1linecart = tmpl('f1cartline', f1item)
 		f1linecart = f1linecart.replace(/F1ID/g, f1item.fid ).replace(/F1TOKEN/g, f1item.f1token ).replace(/PRID/g, bline.attr('ref') )
 		f1lineshead.after( f1linecart )
-		addLine( $('div.bBacketServ.mBig tr:eq(1)', bline) )
+		addLine( $('tr:eq(1)', bBig) )
 		getTotal()
+	}
+
+	function addLineWrnt( tr, bline ) {
+	
+		function checkWide() {
+			var buttons = $('.extWarranty .bF1Block_eBuy', bline)
+			var mBig = $('div.bBacketServ.mBig.extWarr', bline)	
+			for(var i=0, l = $(buttons).length; i < l; i++) {
+				if( ! $('tr[ref=' + $(buttons[i]).attr('ref') + ']', mBig).length ) {
+					$(buttons[i]).find('input').val('Выбрать').removeClass('active')
+					//break
+				}	
+			}	
+						
+			if ( !$('div.bBacketServ.mBig.extWarr .mPrice', bline).length ) {
+				$('div.bBacketServ.mBig.extWarr', bline).hide()							
+				$('div.bBacketServ.mSmall.extWarr', bline).show()
+			}	
+		}	
+		var tmpline = new basketline({
+					'line': tr,
+					'less': tr.find('.ajaless'),
+					'more': tr.find('.ajamore'),
+					'quan': tr.find('.ajaquant'),
+					//'price': '.none',
+					'sum': tr.find('.price'),
+					'drop': tr.find('.whitelink')
+					}, checkWide)
+		basket.push( tmpline )
+	}	
+
+	function makeWideWrnt( bline, f1item ) {	
+		$('div.bBacketServ.mSmall:eq(1)', bline).hide()
+		var bBig = $('div.bBacketServ.mBig:eq(1)', bline)
+		bBig.show()	
+		var f1lineshead = $('tr:first', bBig)
+		var f1linecart = tmpl('wrntline', f1item)
+		f1linecart = f1linecart.replace(/WID/g, f1item.ewid ).replace(/PRID/g, bline.attr('ref') )
+		f1lineshead.after( f1linecart )
+		addLineWrnt( $('tr:eq(1)', bBig) )
+		getTotal()	
 	}
 	
 	/* credit */
@@ -290,46 +360,5 @@ $(document).ready(function() {
 		DirectCredit.init( $('#tsCreditCart').data('value'), $('#creditPrice') )
 		PubSub.subscribe( 'quantityChange', DirectCredit.change )
 	} // credit 
-    function makeWide( bline, f1item ) {
-        $('div.bBacketServ.mSmall', bline).hide()
-        $('div.bBacketServ.mBig', bline).show()
-        var f1lineshead = $('div.bBacketServ.mBig tr:first', bline)
-        var f1linecart = tmpl('f1cartline', f1item)
-        f1linecart = f1linecart.replace(/F1ID/g, f1item.fid ).replace(/F1TOKEN/g, f1item.f1token ).replace(/PRID/g, bline.attr('ref') )
-        f1lineshead.after( f1linecart )
-        addLine( $('div.bBacketServ.mBig tr:eq(1)', bline) )
-        getTotal()
-    }
-    /* EXTENDED WARRANTY BLOCK*/
-    if ( ($('.bBacketServ.extWarr').length)&&($('.bBacketServ.extWarr').is(':visible')) ){
-    	var extWarr = $('.bBacketServ.extWarr')
-    	var extWarrSmall = $('div.bBacketServ.mSmall.extWarr')
-    	var extWarrBig = $('div.bBacketServ.mBig.extWarr')
-    	var extWarr_popup = $('.hideblock.mGoods.extWarranty')
-    	if (extWarrBig.is(':visible'))
-    		extWarrSmall.hide()
-    	$('a.link_extWarr',extWarr).click(function(){
-    		extWarr_popup.show()
-    		return false;
-    	})
-    	//close popup
-		$('.close', extWarr_popup).click( function(){
-			extWarr_popup.hide()
-		})
-		//add warranty
-		extWarr_popup.find('input.button').bind ('click', function() {
-			if( $('input.button',extWarr_popup).hasClass('active') ){
-				$('input.button',extWarr_popup).val('Выбрать').removeClass('active');
-			}
-			$(this).val('Выбрана').addClass('active')
-			var extWarr_item = $(this).data()
-			console.log('data from extWarr element \/')
-			console.log(extWarr_item)
-			extWarr_popup.fadeOut()
-			$('.ew_title', extWarrBig).text(extWarr_item.ewtitle)
-			$('.price', extWarrBig).text(extWarr_item.ewprice)
-			extWarrSmall.hide()
-			extWarrBig.show()
-		})
-    }
+    
 })

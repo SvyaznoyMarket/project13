@@ -52,8 +52,7 @@ foreach ($item->getWarrantyList() as $warranty) {
 
   <div class="clear"></div>
 
-  <?php if (!$selectedWarranty && (bool)$item->getWarrantyList()) { ?>
-  <div class="service form bBacketServ extWarr mSmall" style="">
+  <div class="service form bBacketServ extWarr mSmall" <?php if ($selectedWarranty) echo ' style="display:none;"';  ?>>
       <table cellspacing="0">
           <tbody>
               <tr>
@@ -76,7 +75,6 @@ foreach ($item->getWarrantyList() as $warranty) {
           </tbody>
       </table>
   </div>
-  <?php } ?>
 
 </div>
 
@@ -115,8 +113,7 @@ foreach ($item->getWarrantyList() as $warranty) {
         <a class="bBacketServ__eMore"
            href="<?php echo url_for('service_show', array('service' => $service['token'])); ?>">Подробнее об услуге</a>
       </td>
-      <td class="mPrice"><span class="price"><?php echo $service['totalFormatted'] ?></span>&nbsp;<span
-        class="rubl">p</span></td>
+      <td class="mPrice"><span class="price"><?php echo $service['totalFormatted'] ?></span>&nbsp;<span class="rubl">p</span></td>
       <td class="mEdit">
         <div class="numerbox mInlineBlock mVAMiddle">
           <?php if ($service['quantity'] > 1) { ?>
@@ -151,18 +148,39 @@ foreach ($item->getWarrantyList() as $warranty) {
 </div>
 <?php } ?>
 
+<?php if (!$selectedWarranty) { ?>
+<div class="mBR5 basketServices">
+<div class="service form bBacketServ extWarr mBig" style="display:none;">
+  <table cellspacing="0">
+    <tbody>
+    <tr>
+      <th colspan="3">Для этого товара есть дополнительная гарантия:</th>
+    </tr>
+    <tr>
+        <td class="bBlueButton">
+            <a href="" class="link_extWarr">Выбрать гарантию</a>
+        </td>
+        <td></td>
+        <td></td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+</div>
+<?php } ?>
+
 <?php if ($selectedWarranty) { ?>
 <div class="service form bBacketServ extWarr mBig" style="display: block;">
     <table cellspacing="0">
         <tbody>
-            <tr>
+            <tr ref="<?php echo $warrantiesById[$selectedWarranty->getId()]->getId(); ?>">
                 <th colspan="3">Для этого товара выбрана дополнительная гарантия:</th>
             </tr>
             <tr>
                 <td>
                     <span class="ew_title"><?php echo $warrantiesById[$selectedWarranty->getId()]->getName() ?></span>
                     <br>
-                    <a class="bBacketServ__eMore" href="#">Подробнее об услуге</a>
+                    <!--a class="bBacketServ__eMore" href="#">Подробнее об услуге</a-->
                 </td>
                 <td class="mPrice">
                     <span class="price"><?php echo $selectedWarranty->getPrice() ?></span>

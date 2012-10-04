@@ -4,7 +4,7 @@
     <td>
       <%=f1title%>
       <br>
-      <a class="bBacketServ__eMore" href="<?php echo url_for('service_show', array('service' => 'F1ID')); ?>">Подробнее об услуге</a>
+      <a class="bBacketServ__eMore" href="<?php echo url_for('service_show', array('service' => '<%=fid%>')); ?>">Подробнее об услуге</a>
     </td>
     <td class="mPrice">
       <span class="price"><%=f1price%> </span>
@@ -23,6 +23,23 @@
       <a class="button whitelink ml5 mInlineBlock mVAMiddle"
          href="<?php echo url_for('cart_service_delete', array('service' => 'F1ID', 'product' => 'PRID')); ?>">Отменить</a>
     </td>
+  </tr>
+</script>
+
+<script type="text/html" id="wrntline">
+  <tr ref="<%=ewid%>">
+      <td>
+          <span class="ew_title"><%=f1title%></span>
+          <br>
+          <!--a class="bBacketServ__eMore" href="#">Подробнее об услуге</a-->
+      </td>
+      <td class="mPrice">
+          <span class="price"><%=f1price%></span>
+          &nbsp;<span class="rubl">p</span>
+      </td>
+      <td class="mEdit">
+          <a class="button whitelink ml5 mInlineBlock mVAMiddle" href="<?php echo url_for('cart_warranty_delete', array('warranty' => 'WID', 'product' => 'PRID')) ?>">Отменить</a>
+      </td>
   </tr>
 </script>
 
