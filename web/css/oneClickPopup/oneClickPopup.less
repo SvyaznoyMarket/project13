@@ -1,124 +1,124 @@
-.bFast{
+.bFast {
+  font-family: 'EnterTypeRegular';
+  margin: 0px !important;
   width: 100%;
-  margin: 0 !important;
-  font-family: 'EnterTypeRegular' ;
-  }
-  .bFast__eItem{
-    width: 175px;
-    padding-left: 0 !important;
-    padding-top: 20px !important;
-    padding-bottom: 20px !important;
-    border-right: 1px solid #bfbfbf;
-    }
-  .bFast__eItemWrap{
-    width: 100%;
-    height: 100%;
-    position: relative;
-    } 
-  .bFast__eForm{
-    border-left: none;
-    }
-  .bFast__eForm td{
-    padding-right: 10px !important;
-    border-left: none !important;
-    }
-  .bFast__eArrow{
-    top: 50px;
-    right: -39px;
-    width: 19px;
-    height: 46px;
-    position: absolute;
-    background: url('img/leftarrow.png') no-repeat;
-    }
-  .bFast__eNum{
-    font-size: 14px;
-    }
-  .bFast__eTitle{
-    font-size: 16px;
-    }
-  .bFast__eCenter{
-    margin: 10px 0;
+  .bBigOrangeButton {
+    padding-left: 0px;
+    padding-right: 0px;
     text-align: center;
-    }
-  .bFast__eCenter .bCountSet{
+    width: 100%;
+  }
+  .bMapShops__eMapWrap {
+    float: left;
+  }
+}
+.bFast__eItem {
+  border-right: 1px solid #bfbfbf;
+  padding-bottom: 20px !important;
+  padding-left: 0px !important;
+  padding-top: 20px !important;
+  width: 175px;
+}
+.bFast__eItemWrap {
+  height: 100%;
+  position: relative;
+  width: 100%;
+}
+.bFast__eForm {
+  border-left: none;
+  td {
+    border-left: none !important;
+    padding-right: 10px !important;
+  }
+}
+.bFast__eArrow {
+  border-bottom: 20px solid transparent;
+  border-left: 20px solid @typLightGray;
+  border-top: 20px solid transparent;
+  height: 0;
+  position: absolute;
+  right: -40px;
+  top: 50px;
+  width: 0;
+  div{
+    border-bottom: 20px solid transparent;
+    border-left: 20px solid @white;
+    border-top: 20px solid transparent;
+    height: 0;
+    position: absolute;
+    right: 1px;
+    top: -20px;
+    width: 0;
+  }
+}
+.bFast__eNum {
+  font-size: 14px;
+}
+.bFast__eTitle {
+  font-size: 16px;
+}
+.bFast__eCenter {
+  margin: 10px 0px;
+  text-align: center;
+  .bCountSet {
     left: auto;
     position: relative;
-    }
-  .bFast .bBigOrangeButton{
-    width: 100%;
-    padding-left: 0;
-    padding-right: 0;
-    text-align: center;
-    }
-  .bFast__eMapLink{
-    color: #ffa901;
-    text-decoration: underline;
-    }
-  .bFast .bMapShops__eMapWrap{
-    float: left;
-    }
-  .mFastInpSmall{
-    width: 207px;
-    }
-  .mFastInpBig{
-    width: 418px;
-    }
-  
-.bFastInner{
-  width: 100%;
   }
-  .bFastInner th{
-    padding: 0 0 16px 25px;
-    }
-  .bFastInner td{
+}
+.bFast__eMapLink {
+  color: @firmOrange;
+  text-decoration: underline;
+}
+.mFastInpSmall {
+  width: 207px;
+}
+.mFastInpBig {
+  width: 418px;
+}
+.bFastInner {
+  width: 100%;
+  th {
+    padding: 0px 0px 16px 25px;
+  }
+  td {
     font-size: 16px;
     line-height: 30px;
     padding-left: 25px !important;
-    }
-  .bFastInner__eInput{
-    padding: 0 5px;
-    height: 30px !important;
-    border: 1px solid #dedede;
-    
-    border-radius: 5px;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    -ms-border-radius: 5px;
-    -o-border-radius: 5px;
-    
-    box-shadow: none !important;
-    -webkit-box-shadow: none !important;
-    -moz-box-shadow: none !important;
-    -ms-box-shadow: none !important;
-    -o-box-shadow: none !important;
-    }
-    .bFastInner__eInput.mEmpty{
-      border: 1px solid #ed323b;
-      }
-    span.mEmpty{
-      color: #ed323b;
-      }
-    .bFastInner__eSelect,
-    .bFastInner__eSelect option{
-      margin: 0;
-      outline: none;
-      padding: 5px 0;
-      background: none;
-      line-height: 30px;
-      border: 1px solid #9e9e9e;
-      }
-    .bFast__ePrice{
-      margin: 7px 0;
-      /*font: 16px 'EnterTypeRegular';*/
-      font-size:16px;
-      }
-    .bFast__ePrice div{
-      float: right;
-      }
-  td.newWarehouse{
-    font-size: 15px;
   }
-  td.newWarehouse img{
+}
+.bFastInner__eInput {
+  .rounded(5px);
+  .box-shadow(none);
+  border: 1px solid #dedede;
+  height: 30px !important;
+  padding: 0px 5px;
+  .mEmpty {
+    border: 1px solid #ed323b;
+  }
+}
+span.mEmpty {
+  color: #ed323b;
+}
+.bFastInner__eSelect,
+.bFastInner__eSelect option {
+  background: none;
+  border: 1px solid #9e9e9e;
+  line-height: 30px;
+  margin: 0px;
+  outline: none;
+  padding: 5px 0px;
+}
+.bFast__ePrice {
+  /* font: 16px 'EnterTypeRegular';*/
+  font-size: 16px;
+  margin: 7px 0px;
+  div {
+    float: right;
+  }
+}
+td.newWarehouse {
+  font-size: 15px;
+  img {
     margin: -21px -3px;
   }
-  
+}
