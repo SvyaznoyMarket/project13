@@ -267,7 +267,7 @@ live:
       log_data_enabled: false
 
   warranty:
-    enabled: false
+    enabled: true
 
   rediska:
     default:
