@@ -36,6 +36,7 @@
     <div class="pb5">
         <?php include_partial('default/field_errors', array('errors' => $form->getError('phone'))) ?>
         <input type="text" class="text width315 mb10" name="register[phone]" value="<?php echo $form->getPhone() ?>" required="required" />
+        <i>Например, 89081234567</i>
     </div>
 
     <div class="pb5">Наименование организации:</div>
