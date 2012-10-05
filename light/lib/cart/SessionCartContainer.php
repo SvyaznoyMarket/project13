@@ -73,6 +73,10 @@ class SessionCartContainer implements CartContainer
         return array_key_exists($productId, $_SESSION[$this->sessionName]['productList']);
     }
 
+    public function hasWarranty($productId, $warrantyId) {
+        return isset($_SESSION[$this->sessionName]['warrantyList'][$warrantyId][$productId]);
+    }
+
     public function addProduct($productId)
     {
         if (!array_key_exists($productId, $_SESSION[$this->sessionName]['productList'])) {

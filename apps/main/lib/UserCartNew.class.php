@@ -140,6 +140,10 @@ class UserCartNew
     }
   }
 
+  public function hasWarranty($productId, $warrantyId) {
+      return $this->cart->hasWarranty($productId, $warrantyId);
+  }
+
   // legacy Copy-past
   public function getWeight()
   {

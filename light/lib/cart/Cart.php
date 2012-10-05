@@ -173,6 +173,10 @@ class Cart
         $this->totalPrice = null;
     }
 
+    public function hasWarranty($productId, $warrantyId) {
+        return $this->dataContainer->hasWarranty($productId, $warrantyId);
+    }
+
   /**
    * @return float
    */
