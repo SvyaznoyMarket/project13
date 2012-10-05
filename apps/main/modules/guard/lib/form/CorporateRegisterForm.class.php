@@ -56,6 +56,10 @@ class CorporateRegisterForm {
     return array_key_exists($name, $this->errors) ? $this->errors[$name] : null;
   }
 
+  public function setError($name, $message) {
+    $this->errors[$name] = $message;
+  }
+
   /**
    * @param string $corpAccount
    */

@@ -113,3 +113,7 @@
     <input type="submit" tabindex="4" value="Регистрация" class="button bigbutton" />
 
 </form>
+
+<br class="clear" />
+
+<p>&nbsp;</p>
