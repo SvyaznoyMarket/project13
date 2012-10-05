@@ -1,4 +1,7 @@
 @leftNavSprite-url:"@{base-url}/leftNav/img/leftNavSprite.png";
+.product_filter-block{
+  position:relative;
+}
 .bCtg {
   border-bottom: 1px solid @typLightGray;
   font: 13px Tahoma, sans-serif;
@@ -237,26 +240,32 @@ dt.bCtg__eOrange {
   .box-shadow(0px 0px 9px @typBoxShadowColor);
   background-color: @white;
   border: 2px solid @firmOrange;
-  cursor: auto;
+  cursor: pointer;
   display: none;
   font-weight: normal;
-  left: 100%;
-  padding: 9px 12px;
+  left: 215px;
+  margin-top:-12px;
+  padding: 4px;
   position: absolute;
   white-space: nowrap;
   z-index: 10;
   .corner {
-  /* left: -14px;*/
-    background: url("@{leftNavSprite-url}") no-repeat 0 -32px;
-    display: block;
-    font-size: 0px;
-    height: 20px;
-    left: -15px;
-    line-height: 0px;
-    margin-top: -10px;
+    border-bottom: 10px solid transparent;
+    border-right: 10px solid @firmOrange;
+    border-top: 10px solid transparent;
+    height: 0;
+    left: -11px;
     position: absolute;
-    top: 50%;
-    width: 15px;
+    top: 9px;
+    width: 0;
+    div{
+      border-bottom: 9px solid transparent;
+      border-right: 9px solid @white;
+      border-top: 9px solid transparent;
+      position: absolute;
+      top:-9px;
+      left:3px;
+    }
   }
   a {
     color: @firmOrange;
