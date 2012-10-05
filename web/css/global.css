@@ -1977,10 +1977,6 @@ ul.lh15 li {
 /*---END---СТИЛИ ХЕАДЕРА---*/
 /*------СТИЛИ ФУТЕРА------*/
 /* compact footer */
-.lowfooter {
-  height: 66px;
-  margin: -66px auto 0px auto;
-}
 .footerbottom {
   float: left;
   width: 100%;
@@ -2014,6 +2010,10 @@ ul.lh15 li {
   margin: -438px auto 0px;
   position: relative;
   width: 920px;
+}
+.lowfooter {
+  height: 66px;
+  margin: -66px auto 0px auto;
 }
 .bFooter {
   -webkit-border-radius: 5px;
