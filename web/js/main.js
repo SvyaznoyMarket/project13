@@ -595,13 +595,14 @@ $(document).ready(function(){
     .bind('preview', function(e) {
         var el = $(e.target)
         var form = $(this)
+        var flRes = $('.filterresult');
         ajaxFilterCounter++
 		function getFiltersResult (result) {
 			ajaxFilterCounter--
 			if( ajaxFilterCounter > 0 )
 				return
 			if( result.success ) {
-                $('.product_count-block').remove()
+                flRes.hide();
                 switch (result.data % 10) {
                   case 1:
                     ending = 'ь';
@@ -623,7 +624,10 @@ $(document).ready(function(){
                 	firstli = el
                 else
 	                firstli = el.parent().find('> label').first()
-                firstli.after('<div class="filterresult product_count-block" style="display:block; padding: 4px; margin-top: -30px; cursor: pointer;"><i class="corner"></i>Выбрано '+result.data+' модел'+ending+'<br /><a>Показать</a></div>')
+                	$('.result', flRes).text(result.data);
+                	$('.ending', flRes).text(ending);
+                	flRes.css('top',firstli.offset().top-$('.product_filter-block').offset().top).show();
+                	
                 var localTimeout = null
                 $('.product_count-block')
 					.hover(
@@ -633,7 +637,7 @@ $(document).ready(function(){
 						},
 						function() {
 							localTimeout = setTimeout( function() {
-								$('.product_count-block').remove()
+								flRes.hide();
 							}, 4000  )
 						}
 						)
