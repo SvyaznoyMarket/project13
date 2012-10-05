@@ -202,11 +202,13 @@ $(document).ready(function() {
 		}
 		if( data.boxQuantity > 1 ) {
 			// block payment options
-			$('#payment_method_5-field').hide()
-			$('#payment_method_6-field').hide()
+			$('#payTypes > div').hide()
+			$('#payment_method_1-field').show()
+			$('#payment_method_2-field').show()
 		} else {
-			$('#payment_method_5-field').show()
-			$('#payment_method_6-field').show()
+			$('#payTypes > div').show()
+			// $('#payment_method_5-field').show()
+			// $('#payment_method_6-field').show()
 		}
 
 	})
