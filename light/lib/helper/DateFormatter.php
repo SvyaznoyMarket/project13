@@ -35,7 +35,7 @@ class DateFormatter
       return 'послезавтра ('.$date->format('d.m.Y').')';
     }
 
-    return 'через '.$interval->days.' '.self::declination($interval->days , 'день дня дней');
+    return 'через '.$interval->days.' '.self::declination($interval->days , 'день дня дней').' ('.$date->format('d.m.Y').')';
 //    return $date->format('d.m.Y');
   }
 
