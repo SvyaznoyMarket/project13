@@ -23,7 +23,7 @@ $cart = sfContext::getInstance()->getUser()->getCart();
 					</td>
 					<td class="bF1Block_eBuy">
 						<span class="bF1Block_ePrice"><?php echo $warranty->getPrice() ?>&nbsp;	<span class="rubl">p</span></span>
-						<input class="button yellowbutton" type="button" value="<?php echo $cart->hasWarranty($item->getId(), $warranty->getId()) ? 'Выбрана' : 'Выбрать' ?>"
+						<input class="button yellowbutton<?php echo $cart->hasWarranty($item->getId(), $warranty->getId()) ? ' active' : '' ?>" type="button" value="<?php echo $cart->hasWarranty($item->getId(), $warranty->getId()) ? 'Выбрана' : 'Выбрать' ?>"
                             data-ewid="<?php echo $warranty->getId() ?>"
                             data-f1title="<?php echo $warranty->getName() ?>"
                             data-f1price="<?php echo $warranty->getPrice() ?>"
