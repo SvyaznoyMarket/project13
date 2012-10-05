@@ -41,7 +41,7 @@ return array(
   array('/cart/'                             , 'cart.index'), //@TODO реализовать, пока для генерации урлов
   array('/login/<provider>'                  , 'user.signin'), //@TODO реализовать, пока для генерации урлов
   array('/logout'                            , 'user.logout'), //@TODO реализовать, пока для генерации урлов
-  array('/region/autocomplete/<type>'        , 'region.autocomplete'), //@TODO реализовать, пока для генерации урлов
+  array('/region/autocomplete'               , 'region.autocomplete'), //@TODO реализовать, пока для генерации урлов
   array('/region/change/<region>'            , 'region.change'), //@TODO реализовать, пока для генерации урлов
 
   array('/f1/show/<service>'                 , 'service.show'), //@TODO реализовать, пока для генерации урлов
