@@ -1902,31 +1902,6 @@ border-radius: 5px;
 }
 
 
-
-	
-.bOrderPreloader{
-	margin: 25px 0;
-	padding: 20px 0;
-	background: #f6f6f6;
-	border: 1px solid #ddd;
-	border-radius: 7px;
-	-webkit-border-radius: 7px;
-	-moz-border-radius: 7px;
-	-ms-border-radius: 7px;
-	-o-border-radius: 7px;
-	}
-	.bOrderPreloader img,	
-	.bOrderPreloader span{
-		vertical-align: middle;
-		display: inline-block;
-		*display: inline;
-		zoom: 1;
-		}
-	.bOrderPreloader span{
-		width: 240px;
-		padding-left: 15px;
-		font: 18px Tahoma, sans-serif;
-		}
 .bMapShops__ePopupRel h3 {
     font: 20px 'EnterTypeRegular';
     margin: 0 0 15px;
@@ -2125,10 +2100,6 @@ border-radius: 5px;
 		zoom: 1;
 		}
 
-.border-none {
-  border: 0 none;
-}
-
 .bNewDelivery{}
 	.bNewDelivery h2{
 		margin: 0;
@@ -2166,7 +2137,7 @@ border-radius: 5px;
 		}
 
 
-/*-- -- - --- --- -- - */
+/*-- -- - --- --- -- - 
 .b1Click {
     width: 725px;
 }
@@ -2207,7 +2178,7 @@ border-radius: 5px;
 }
 .b1Click .bFormB2 {
     margin: 20px 0 0 110px;
-}
+}*/
 
 .bGrayPopupBlock{
 	top:300px; 
@@ -2377,7 +2348,7 @@ border-radius: 5px;
 		}
 #mapPopup{ float:none;}
 
-.bSR{
+/*.bSR{
 	font: 12px/17px Tahoma, sans-serif;
 	}
 	.bSR b{
@@ -2398,7 +2369,7 @@ border-radius: 5px;
 	.bSR__eSign img{
 		margin-left: 30px;
 		}
-
+*/
 .mSR{
 	top: -13px;
 	float: right;
@@ -2442,7 +2413,7 @@ border-radius: 5px;
     padding: 10px 5px 10px 35px;
 }*/
 
-.bCityPopup{
+/*.bCityPopup{
 	z-index: 100;
 	width: 470px;
 	height: auto;
@@ -2483,8 +2454,9 @@ border-radius: 5px;
 		zoom: 1;
 		}
 	.bCityPopup__eBlock a{
-		/* color: #fff; */
+		/* color: #fff;
 		}
+*/
 .noti {
 	display: none;
 	width: 300px;
