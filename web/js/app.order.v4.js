@@ -1,5 +1,4 @@
 $(document).ready(function() {
-
 	/* ---------------------------------------------------------------------------------------- */
 	/* COMMON DESIGN, BEHAVIOUR ONLY */
 
@@ -278,6 +277,9 @@ $(document).ready(function() {
 			}			
 			return last
 		}
+
+		self.cssForDate = $('.order-delivery_date').css('display')
+		console.info(self.cssForDate)
 
 		// Unavailables
 		self.stolenItems = ko.observableArray([])
