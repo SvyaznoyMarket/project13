@@ -1,16 +1,19 @@
 <?php
 
-namespace Model\Product\Type;
+namespace Model\Product\Label;
 
 class Entity {
     /** @var int */
     private $id;
     /** @var string */
     private $name;
+    /** @var string */
+    private $image;
 
     public function __construct(array $data = array()) {
         if (array_key_exists('id', $data)) $this->setId($data['id']);
         if (array_key_exists('name', $data)) $this->setName($data['name']);
+        if (array_key_exists('media_image', $data)) $this->setImage($data['media_image']);
     }
 
     public function setId($id) {
@@ -27,5 +30,19 @@ class Entity {
 
     public function getName() {
         return $this->name;
+    }
+
+    /**
+     * @param string $image
+     */
+    public function setImage($image) {
+        $this->image = (string)$image;
+    }
+
+    /**
+     * @return string
+     */
+    public function getImage() {
+        return $this->image;
     }
 }

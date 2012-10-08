@@ -190,7 +190,7 @@ class Entity {
     }
 
     static public function getHost($id = null) {
-        $hosts = \App::config()->mediaHost['url'];
+        $hosts = \App::config()->mediaHost;
 
         $index = $id ? ($id % 10) : rand(0, count($hosts) - 1);
         if (!isset($hosts[$index])) {
