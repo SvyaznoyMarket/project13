@@ -566,6 +566,95 @@ ul.lh15 li {
   zoom: 1;
 }
 /* BUTTONS*/
+.bGrayButton {
+  .rounded(5px);
+  background: #f4f4f4;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  color: #4b4b4b;
+  display: inline-block;
+  *display: inline;
+  font: 14px Tahoma, sans-serif;
+  padding: 6px 15px;
+  zoom: 1;
+  &:hover {
+    background: #e4e4e4;
+    border: 1px solid #cecece;
+    color: #000;
+    text-decoration: none;
+  }
+  &.disable {
+    background: #f4f4f4;
+    border: 1px solid #ddd;
+    color: #d0d0d0;
+    cursor: default;
+    text-decoration: none;
+  }
+}
+.bWhiteButton {
+  .rounded(5px);
+  background: @white;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  color: #4b4b4b;
+  display: inline-block;
+  *display: inline;
+  font: 14px Tahoma, sans-serif;
+  padding: 6px 15px;
+  zoom: 1;
+  &:hover {
+    background: @white;
+    border: 1px solid #cecece;
+    color: #000;
+    text-decoration: none;
+  }
+  &.disable {
+    background: @white;
+    border: 1px solid #ddd;
+    color: #cdcdcd;
+    cursor: default;
+    text-decoration: none;
+  }
+}
+.bOrangeButton {
+  .rounded(5px);
+  background: #f89b1c;
+  border-radius: 5px;
+  border: 1px solid #e26500;
+  color: @white;
+  display: inline-block;
+  *display: inline;
+  font: 14px Tahoma, sans-serif;
+  padding: 6px 15px;
+  zoom: 1;
+  i {
+    background: url("@{base-url}/common/img/in_deliver.png") 0px 0px no-repeat;
+    display: inline-block;
+    *display: inline;
+    height: 18px;
+    margin-right: 7px;
+    vertical-align: top;
+    width: 19px;
+    zoom: 1;
+  }
+  &:hover {
+    background: #ee8900;
+    border: 1px solid #cb5b00;
+    color: @white;
+    text-decoration: none;
+  }
+  .disable {
+    background: #f4f4f4;
+    border: 1px solid #ddd;
+    color: #cdcdcd;
+    cursor: default;
+    text-decoration: none;
+    i {
+      background: url("@{base-url}/common/img/in_deliver.png") 0px -18px no-repeat;
+    }
+  }
+}
+
 .bBigOrangeButton {
   .rounded(5px);
   background: #f89b1c;
@@ -580,7 +669,7 @@ ul.lh15 li {
   &:hover {
     background: #ee8900;
     border: 1px solid #cb5b00;
-    color: #fff;
+    color: @white;
     text-decoration: none;
   }
   &.disable {

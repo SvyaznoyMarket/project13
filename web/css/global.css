@@ -587,6 +587,100 @@ ul.lh15 li {
   zoom: 1;
 }
 /* BUTTONS*/
+.bGrayButton {
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  background: #f4f4f4;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  color: #4b4b4b;
+  display: inline-block;
+  *display: inline;
+  font: 14px Tahoma, sans-serif;
+  padding: 6px 15px;
+  zoom: 1;
+}
+.bGrayButton:hover {
+  background: #e4e4e4;
+  border: 1px solid #cecece;
+  color: #000;
+  text-decoration: none;
+}
+.bGrayButton.disable {
+  background: #f4f4f4;
+  border: 1px solid #ddd;
+  color: #d0d0d0;
+  cursor: default;
+  text-decoration: none;
+}
+.bWhiteButton {
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  background: #ffffff;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  color: #4b4b4b;
+  display: inline-block;
+  *display: inline;
+  font: 14px Tahoma, sans-serif;
+  padding: 6px 15px;
+  zoom: 1;
+}
+.bWhiteButton:hover {
+  background: #ffffff;
+  border: 1px solid #cecece;
+  color: #000;
+  text-decoration: none;
+}
+.bWhiteButton.disable {
+  background: #ffffff;
+  border: 1px solid #ddd;
+  color: #cdcdcd;
+  cursor: default;
+  text-decoration: none;
+}
+.bOrangeButton {
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  background: #f89b1c;
+  border-radius: 5px;
+  border: 1px solid #e26500;
+  color: #ffffff;
+  display: inline-block;
+  *display: inline;
+  font: 14px Tahoma, sans-serif;
+  padding: 6px 15px;
+  zoom: 1;
+}
+.bOrangeButton i {
+  background: url("/css/common/img/in_deliver.png") 0px 0px no-repeat;
+  display: inline-block;
+  *display: inline;
+  height: 18px;
+  margin-right: 7px;
+  vertical-align: top;
+  width: 19px;
+  zoom: 1;
+}
+.bOrangeButton:hover {
+  background: #ee8900;
+  border: 1px solid #cb5b00;
+  color: #ffffff;
+  text-decoration: none;
+}
+.bOrangeButton .disable {
+  background: #f4f4f4;
+  border: 1px solid #ddd;
+  color: #cdcdcd;
+  cursor: default;
+  text-decoration: none;
+}
+.bOrangeButton .disable i {
+  background: url("/css/common/img/in_deliver.png") 0px -18px no-repeat;
+}
 .bBigOrangeButton {
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
@@ -604,7 +698,7 @@ ul.lh15 li {
 .bBigOrangeButton:hover {
   background: #ee8900;
   border: 1px solid #cb5b00;
-  color: #fff;
+  color: #ffffff;
   text-decoration: none;
 }
 .bBigOrangeButton.disable {
@@ -4379,6 +4473,38 @@ label.checked {
   font-size: 14px;
 }
 /*---END---СТИЛИ ОКНА С ВЫБОРОМ РЕГИОНА---*/
+/*-------СТИЛИ AJAX ЛОАДЕРА-----*/
+.bNavLoader {
+  clear: both;
+  height: 60px;
+  position: relative;
+  width: 100%;
+}
+.bNavLoader__eIco,
+.bNavLoader__eText {
+  margin: 0px;
+}
+.bNavLoader__eM {
+  margin-top: 8px;
+}
+.bNavLoader__eText {
+  color: #ffa901;
+  font: 14px Tahoma, sans-serif;
+  padding-right: 65px;
+  text-align: right;
+}
+.bNavLoader__eIco {
+  background: url("/css/ajaxPopup/img/arrow_bg.png") no-repeat;
+  float: right;
+  height: 49px;
+  overflow: hidden;
+  text-align: center;
+  width: 45px;
+}
+.bNavLoader__eIco img {
+  margin-top: 9px;
+}
+/*---END---СТИЛИ AJAX ЛОАДЕРА---*/
 /*-------СТИЛИ КУПИТЬ В ОДИН КЛИК-----*/
 .bFast {
   font-family: 'EnterTypeRegular';
