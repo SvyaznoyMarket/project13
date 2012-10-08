@@ -279,7 +279,6 @@ $(document).ready(function() {
 		}
 
 		self.cssForDate = $('.order-delivery_date').css('display')
-		console.info(self.cssForDate)
 
 		// Unavailables
 		self.stolenItems = ko.observableArray([])
