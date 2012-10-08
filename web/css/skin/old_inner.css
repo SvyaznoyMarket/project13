@@ -1602,62 +1602,7 @@ border-radius: 5px;
 }
 
 
-/* F1 Credit */
-.bF1Credit{
-	position: relative;
-	}
-	.bF1Credit h2{
-		padding: 0;
-		color: #4fcbf4;
-		margin: 0 0 13px 0;
-		font: bold 24px Tahoma, sans-serif;
-		}
-	.bF1Credit h3{
-		padding: 0;
-		color: #434343;
-		margin: 0 0 12px 0;
-		font: bold 18px/20px Tahoma, sans-serif;
-		}
-	.bF1Credit p{
-		padding: 0;
-		color: #434343;
-		margin: 0 0 60px 0;
-		font: 14px/20px Tahoma, sans-serif;
-		}
-	.bF1Credit__eImg{
-		position: absolute;
-		}
-	.bF1Credit__eImg.mI1{
-        bottom: 260px;
-		right: 45px;
-		width: 130px;
-		height: 113px;
-		background: url('/images/pages/i1.png') 0 0 no-repeat;
-  }
-	.bF1Credit__eImg.mI2{
-        bottom: 225px;
-		right: 165px;
-		width: 151px;
-		height: 179px;
-		background: url('/images/pages/i2.png') 0 0 no-repeat;
-		}
-	.bF1Credit__eImg.mI3{
-		right: 0;
-        bottom: 390px;
-		width: 106px;
-		height: 133px;
-		background: url('/images/pages/i3.png') 0 0 no-repeat;
-		}
-	.bF1Credit__eImg.mI4{
-		top: 0;
-		right: 50px;
-		width: 215px;
-		height: 120px;
-		background: url('/images/pages/i4.png') 0 0 no-repeat;
-		}
-
-
-/* bLiteboxF1 */
+/* bLiteboxF1 
 .bLiteboxF1{
 	padding-top: 20px;
 	}
@@ -1676,11 +1621,11 @@ border-radius: 5px;
 	.bLiteboxF1__eG a{
 		color: #434343;
 		}
-
+*/
 
 
 /* bMobileApps */
-.bMobileApps{}
+/*.bMobileApps{}
 	.bMobileApps__eHead{
 		width: 920px;
 		height: 224px;
@@ -1691,9 +1636,10 @@ border-radius: 5px;
 		padding: 50px 0 0 0;
 		font: 14px Tahoma, sans-serif;
 		}
-
+*/
 
 /* bMobileCard */
+/*
 .bMobileCard{
 	width: 33%;
 	vertical-align: top;
@@ -1711,7 +1657,7 @@ border-radius: 5px;
 		padding: 0;
 		margin: 0 20px;
 		color: #434343;
-/*		text-align: justify;*/
+/*		text-align: justify;
 		font: 14px Tahoma, sans-serif;
 		}
 	.bMobileCard.mDisable .bMobileCard__eImg div{
@@ -1756,7 +1702,7 @@ border-radius: 5px;
 			text-decoration: underline;
 			font: 14px Tahoma, sans-serif;
 			}
-
+*/
 /* bBacketLineWrap 
 .mWrap{
 	position: relative;
@@ -1981,7 +1927,7 @@ border-radius: 5px;
 	text-decoration: underline;
 	}
 
-.bFormL{
+/*.bFormL{
 	margin: 20px 0;
 	padding-left: 250px;
 	}
@@ -2001,7 +1947,9 @@ border-radius: 5px;
 	.bFormL .checked a{
 		color: #ffa901;
 		}
-
+		
+*/
+/*
 .bFormTable{}
 	.bFormTable td{
 		padding: 5px 0;
@@ -2099,8 +2047,8 @@ border-radius: 5px;
 		*display: inline;
 		zoom: 1;
 		}
-
-.bNewDelivery{}
+*/
+/*.bNewDelivery{}
 	.bNewDelivery h2{
 		margin: 0;
 		padding: 0 0 20px 0;
@@ -2135,7 +2083,7 @@ border-radius: 5px;
 	.bNewDelivery a{
 		text-decoration: underline;
 		}
-
+*/
 
 /*-- -- - --- --- -- - 
 .b1Click {
@@ -2180,7 +2128,7 @@ border-radius: 5px;
     margin: 20px 0 0 110px;
 }*/
 
-.bGrayPopupBlock{
+/*.bGrayPopupBlock{
 	top:300px; 
 	left:180px;
 	z-index: 100;
@@ -2209,7 +2157,7 @@ border-radius: 5px;
 		}
 	.bGrayPopupBlock li a:hover{
 		color: #ffa901;
-		}
+	}/*
 		
 	/*from master*/
 .mMapPopup .bMobDownWrapRel{
@@ -2472,99 +2420,7 @@ border-radius: 5px;
 	margin-top: 50px;
 }
 
-.bCreditLine{}
-    .bCreditLine h2{
-        padding: 0;
-        color: #50ccf2;
-        font: bold 18px Tahoma, sans-serif;
-    }
-    .bCreditLine span{
-        color: #434343;
-        margin: 20px 0;
-        width: 590px;
-        font: 14px Tahoma, sans-serif;
-        display: inline-block;
-        *display: inline;
-        zoom: 1;
-    }
-    .bCreditLine span a{
-        color: #434343;
-        text-decoration: underline;
-    }
-    .bCreditLine span a:hover{
-        color: #000;
-    }
-    .bCreditLine b{
-        color: #434343;
-        text-decoration: underline;
-        font: bold 14px Tahoma, sans-serif;
-    }
-    .bCreditLine select{
-        height: 30px;
-        outline: none;
-        background: #f4f4f4;
-        margin: 20px 0 40px 0;
-        border: 1px solid #dddddd;
-        font: 14px Tahoma, sans-serif;
-        border-radius: 7px;
-        -webkit-border-radius: 7px;
-        -moz-border-radius: 7px;
-        -o-border-radius: 7px;
-    }
-    .bCreditLine dl{
-        color: #434343;
-        margin: 40px 0;
-    }
-    .bCreditLine dl dt{
-        width: 160px;
-        vertical-align: top;
-        display:inline-block;
-        *display: inline;
-        zoom: 1;
-    }
-    .bCreditLine dl dd{
-        width: 750px;
 
-        vertical-align: top;
-        display:inline-block;
-        *display: inline;
-        zoom: 1;
-    }
-    .bCreditLine dl dd h3{
-        margin: 0;
-        font: bold 18px Tahoma, sans-serif;
-    }
-    .bCreditLine dl dd h4{
-        margin: 20px 0 10px 0;
-        font: bold 14px Tahoma, sans-serif;
-    }
-    .bCreditLine ul{
-        padding-left: 30px;
-        font: 14px Tahoma, sans-serif;
-        list-style-image: url('/images/credit_list_style.png');
-    }
-    .bCreditLine ul li{
-        margin: 4px 0;
-    }
-    .bCreditLine__eLogo{
-        float: right;
-    }
-    .bCreditButtonWrap{
-        text-align: center;
-    }
-    .bCreditLine .bBigOrangeButton{
-        font-weight: normal;
-    }
-    .bCreditLine2{
-        color: #434343;
-    }
-    .bCreditLine2 i{
-        font: bold 14px Tahoma, sans-serif;
-    }
-    .bCreditLine2 li{
-        width: 550px;
-        padding: 5px 0;
-    }
 
 /* ------------ shops --------------  */
 .bInShop{
@@ -3047,7 +2903,7 @@ div.mSportFont{ color: #e8303c; }
 .mOurGray{ color: #434343; font: 12px Tahoma, sans-serif; }
 
 
-.bEvent{
+/*.bEvent{
 	margin-bottom: 70px;
 	}
 	.bEvent__eImage{
@@ -3086,9 +2942,9 @@ div.mSportFont{ color: #e8303c; }
 		}
 	.bEvent li a{
 		text-decoration: underline;
-		}
+	}*/
 
-.bPayment{
+/*.bPayment{
   color: #434343;
   font: 14px Tahoma, sans-serif;
   padding-bottom: 50px;
@@ -3157,7 +3013,7 @@ div.mSportFont{ color: #e8303c; }
     height: 30px;
     background: url('/images/pages/bPaySystems.png') 0 -83px no-repeat;
     }
-
+*/
 .mOurGray.mIco{
     color: #434343;
     min-height: 16px;
@@ -3209,11 +3065,6 @@ div.mSportFont{ color: #e8303c; }
     color: #676767;
     width: 200px;
 }
-
-.height220 {
-    height: 220px;
-}
-
 
 .bBuyingLine .creditHref {
     margin-left: 20px;
