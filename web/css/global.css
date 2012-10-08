@@ -4279,43 +4279,177 @@ label.checked {
   width: 550px;
 }
 /*---END---СТИЛИ СТРАНИЦЫ КРЕДИТОВ---*/
-/*-------СТИЛИ СТРАНИЦЫ ВАРИАНТОВ ОПЛАТЫ-----*/
-.bPayment {
-  color: #434343;
-  font: 14px Tahoma, sans-serif;
-  padding-bottom: 50px;
-}
-.bPayment h2 {
-  font: bold 18px Tahoma, sans-serif;
-  margin: 15px 0px;
-  padding: 0px;
-  vertical-align: middle;
-}
-.bPayment p {
+/*-------СТИЛИ СТРАНИЦЫ ВАРИАНТОВ ДОСТАВКИ-----*/
+.bNewDelivery h2 {
+  font-size: 16px;
+  font-family: Tahoma, sans-serif;
+  font-weight: bold;
   margin: 0px;
-  padding: 0px;
+  padding: 0px 0px 20px;
 }
-.bPayment p a {
-  color: #434343;
+.bNewDelivery h3 {
+  font-size: 16px;
+  font-family: Tahoma, sans-serif;
+  margin: 0px;
+  padding: 0px 0px 20px;
+}
+.bNewDelivery div {
+  font-size: 14px;
+  font-family: Tahoma, sans-serif;
+  margin: 0px 0px 10px;
+}
+.bNewDelivery p {
+  font-size: 14px;
+  font-family: Tahoma, sans-serif;
+  line-height: 16px;
+  margin: 0px 0px 20px;
+}
+.bNewDelivery span {
+  display: block;
+  font-size: 12px;
+  font-family: Tahoma, sans-serif;
+  font-weight: bold;
+  line-height: 16px;
+}
+.bNewDelivery i {
+  display: block;
+  font-size: 12px;
+  font-family: Tahoma, sans-serif;
+  font-weight: 100;
+  line-height: 16px;
+  margin: 10px 0px;
   text-decoration: underline;
 }
-.bPayment__ePay1 {
-  background: url("/css/paymentPAge/img/bPay1.png") 0px 50% no-repeat;
-  line-height: 39px !important;
-  min-height: 39px;
-  padding-left: 50px !important;
+.bNewDelivery ul {
+  margin: 10px 0px;
 }
-.bPayment__ePay2 {
-  background: url("/css/paymentPAge/img/bPay2.png") 0px 50% no-repeat;
-  line-height: 33px !important;
-  min-height: 33px;
-  padding-left: 55px !important;
+.bNewDelivery a {
+  text-decoration: underline;
 }
-.bPayment__ePay3 {
-  background: url("/css/paymentPAge/img/bPay3.png") 0px 50% no-repeat;
-  line-height: 41px !important;
-  min-height: 41px;
-  padding-left: 43px !important;
+/*---END---СТИЛИ СТРАНИЦЫ ВАРИАНТОВ ДОСТАВКИ---*/
+/*-------СТИЛИ СТРАНИЦЫ ВАРИАНТОВ ДОСТАВКИ-----*/
+.bNewDelivery h2 {
+  font-size: 16px;
+  font-family: Tahoma, sans-serif;
+  font-weight: bold;
+  margin: 0px;
+  padding: 0px 0px 20px;
+}
+.bNewDelivery h3 {
+  font-size: 16px;
+  font-family: Tahoma, sans-serif;
+  margin: 0px;
+  padding: 0px 0px 20px;
+}
+.bNewDelivery div {
+  font-size: 14px;
+  font-family: Tahoma, sans-serif;
+  margin: 0px 0px 10px;
+}
+.bNewDelivery p {
+  font-size: 14px;
+  font-family: Tahoma, sans-serif;
+  line-height: 16px;
+  margin: 0px 0px 20px;
+}
+.bNewDelivery span {
+  display: block;
+  font-size: 12px;
+  font-family: Tahoma, sans-serif;
+  font-weight: bold;
+  line-height: 16px;
+}
+.bNewDelivery i {
+  display: block;
+  font-size: 12px;
+  font-family: Tahoma, sans-serif;
+  font-weight: 100;
+  line-height: 16px;
+  margin: 10px 0px;
+  text-decoration: underline;
+}
+.bNewDelivery ul {
+  margin: 10px 0px;
+}
+.bNewDelivery a {
+  text-decoration: underline;
+}
+/*---END---СТИЛИ СТРАНИЦЫ ВАРИАНТОВ ДОСТАВКИ---*/
+/*-------СТИЛИ СТРАНИЦЫ ВАРИАНТОВ ОПЛАТЫ-----*/
+/* bMobileApps */
+.bMobileApps__eHead {
+  width: 920px;
+  height: 224px;
+  margin-bottom: 35px;
+  background: url('/images/pages/mob_head.png') no-repeat;
+}
+.bMobileApps__eHead div {
+  padding: 50px 0 0 0;
+  font: 14px Tahoma, sans-serif;
+}
+/* bMobileCard */
+.bMobileCard {
+  width: 33%;
+  vertical-align: top;
+  margin: 30px 0;
+  display: inline-block;
+  *display: inline;
+  zoom: 1;
+}
+.bMobileCard h2 {
+  padding: 0;
+  margin: 15px 20px 10px 20px;
+  font: 18px Tahoma, sans-serif;
+}
+.bMobileCard p {
+  padding: 0;
+  margin: 0 20px;
+  color: #434343;
+  /*text-align: justify;*/
+
+  font: 14px Tahoma, sans-serif;
+}
+.bMobileCard.mDisable .bMobileCard__eImg div {
+  z-index: 3;
+  display: block;
+}
+.bMobileCard.mDisable .bMobileCard__eLink {
+  display: none;
+}
+.bMobileCard.mDisable .bMobileCard__eImg img {
+  opacity: 0.5;
+  filter: progid:dximagetransform.microsoft.alpha(opacity=50);
+  z-index: 1;
+}
+.bMobileCard.mDisable h2,
+.bMobileCard.mDisable p {
+  color: #a6a6a6;
+}
+.bMobileCard__eImg {
+  text-align: center;
+  position: relative;
+}
+.bMobileCard__eImg div {
+  top: -15px;
+  left: 25px;
+  width: 90px;
+  height: 58px;
+  display: none;
+  position: absolute;
+  background: url('/images/pages/cs.png') no-repeat;
+}
+.bMobileCard__eLink {
+  margin: 10px 0 0 20px;
+  padding-left: 20px;
+  background: url('/css/skin/img/c.png') 0 50% no-repeat;
+  display: inline-block;
+  *display: inline;
+  zoom: 1;
+}
+.bMobileCard__eLink a {
+  color: #ffa901;
+  text-decoration: underline;
+  font: 14px Tahoma, sans-serif;
 }
 /*---END---СТИЛИ СТРАНИЦЫ ВАРИАНТОВ ОПЛАТЫ---*/
 /*-------СТИЛИ БОЛЬШОГО ОКНА-----*/

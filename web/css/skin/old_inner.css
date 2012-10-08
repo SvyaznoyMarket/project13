@@ -1623,86 +1623,6 @@ border-radius: 5px;
 		}
 */
 
-
-/* bMobileApps */
-/*.bMobileApps{}
-	.bMobileApps__eHead{
-		width: 920px;
-		height: 224px;
-		margin-bottom: 35px;
-		background: url('/images/pages/mob_head.png') no-repeat;
-		}
-	.bMobileApps__eHead div{
-		padding: 50px 0 0 0;
-		font: 14px Tahoma, sans-serif;
-		}
-*/
-
-/* bMobileCard */
-/*
-.bMobileCard{
-	width: 33%;
-	vertical-align: top;
-	margin: 30px 0;
-	display: inline-block;
-	*display: inline;
-	zoom: 1;
-	}
-	.bMobileCard h2{
-		padding: 0;
-		margin: 15px 20px 10px 20px;
-		font: 18px Tahoma, sans-serif;
-		}
-	.bMobileCard p{
-		padding: 0;
-		margin: 0 20px;
-		color: #434343;
-/*		text-align: justify;
-		font: 14px Tahoma, sans-serif;
-		}
-	.bMobileCard.mDisable .bMobileCard__eImg div{
-		z-index: 3;
-		display: block;
-		}
-	.bMobileCard.mDisable .bMobileCard__eLink{
-		display: none;
-		}
-	.bMobileCard.mDisable .bMobileCard__eImg img{
-		opacity: 0.5;
-		filter: progid:DXImageTransform.Microsoft.Alpha(opacity=50);
-		z-index: 1;
-	}
-	.bMobileCard.mDisable h2,
-	.bMobileCard.mDisable p{
-		color: #a6a6a6;
-		}
-	.bMobileCard__eImg{
-		text-align: center;
-		position: relative;
-		}
-		.bMobileCard__eImg div{
-			top: -15px;
-			left: 25px;
-			width: 90px;
-			height: 58px;
-			display: none;
-			position: absolute;
-			background: url('/images/pages/cs.png') no-repeat;
-			}
-	.bMobileCard__eLink{
-		margin: 10px 0 0 20px;
-		padding-left: 20px;
-		background: url('img/c.png') 0 50% no-repeat;
-		display: inline-block;
-		*display: inline;
-		zoom: 1;
-		}
-		.bMobileCard__eLink a{
-			color: #ffa901;
-			text-decoration: underline;
-			font: 14px Tahoma, sans-serif;
-			}
-*/
 /* bBacketLineWrap 
 .mWrap{
 	position: relative;
@@ -1830,23 +1750,6 @@ border-radius: 5px;
 	padding-right: 15px;
 	cursor: pointer;
 }
-
-/*.bMobileCard__eLink{
-	margin: 10px 0 0 20px;
-	padding-left: 20px;
-	background: url('img/c.png') 0 50% no-repeat;
-
-	display: inline-block;
-	*display: inline;
-	zoom: 1;
-}
-.bMobileCard__eLink a{
-	color: #ffa901;
-	text-decoration: underline;
-	font: 14px Tahoma, sans-serif;
-    font-weight: bold;
-}
-*/
 
 .bMapShops__ePopupRel h3 {
     font: 20px 'EnterTypeRegular';
@@ -2046,42 +1949,6 @@ border-radius: 5px;
 		display: inline-block;
 		*display: inline;
 		zoom: 1;
-		}
-*/
-/*.bNewDelivery{}
-	.bNewDelivery h2{
-		margin: 0;
-		padding: 0 0 20px 0;
-		font: bold 16px Tahoma, sans-serif;
-		}
-	.bNewDelivery h3{
-		margin: 0;
-		padding: 0 0 20px 0;
-		font: 16px Tahoma, sans-serif;
-		}
-	.bNewDelivery div{
-		margin: 0 0 10px 0;
-		font: 14px Tahoma, sans-serif;
-		}
-	.bNewDelivery p{
-		margin: 0 0 20px 0;
-		font: 12px/16px Tahoma, sans-serif;
-		}
-	.bNewDelivery span{
-		display: block;
-		font: bold 12px/16px Tahoma, sans-serif;
-		}
-	.bNewDelivery i{
-		display: block;
-		margin: 10px 0;
-		text-decoration: underline;
-		font: normal 12px/16px Tahoma, sans-serif;
-		}
-	.bNewDelivery ul{
-		margin: 10px 0;
-		}
-	.bNewDelivery a{
-		text-decoration: underline;
 		}
 */
 
