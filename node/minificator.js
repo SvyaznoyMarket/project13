@@ -79,11 +79,12 @@ function watchJSfile( filename ) {
 	fs.watchFile( path, function() {
 		console.info( path + ' CHANGED')
 		fs.stat( path ,function( a, b ) {
-			minify( filename, b.mtime.getTime() )
+			minify( filename, b.mtime.getTime()/1000 )
 		})
 		reconfig()
 	})
 }
+
 
 function procfile( filename ) {
 	var deferred = when.defer()
@@ -98,9 +99,9 @@ function procfile( filename ) {
 		}
 		fs.stat( path ,function( a, b ) {
 			// console.log(  b.mtime.getTime() , config[''+filename] )
-			if( b.mtime.getTime() != config[''+filename] ) {
+			if( b.mtime.getTime()/1000 != config[''+filename] ) {
 				console.log( 'file changed, ', path )
-				minify( filename, b.mtime.getTime() )
+				minify( filename, b.mtime.getTime()/1000 )
 			}
 			deferred.resolve()
 		})

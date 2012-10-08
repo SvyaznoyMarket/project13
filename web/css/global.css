@@ -1,4 +1,3 @@
-/* CSS crunched with Crunch - http://crunchapp.net/ */
 @import "/css/skin/old_inner.css";
 /*-------НЕРАЗОБРАННЫЕ СТИЛИ------*/
 /*---END----НЕРАЗОБРАННЫЕ СТИЛИ---*/
@@ -4327,129 +4326,124 @@ label.checked {
   text-decoration: underline;
 }
 /*---END---СТИЛИ СТРАНИЦЫ ВАРИАНТОВ ДОСТАВКИ---*/
-/*-------СТИЛИ СТРАНИЦЫ ВАРИАНТОВ ДОСТАВКИ-----*/
-.bNewDelivery h2 {
-  font-size: 16px;
-  font-family: Tahoma, sans-serif;
-  font-weight: bold;
-  margin: 0px;
-  padding: 0px 0px 20px;
-}
-.bNewDelivery h3 {
-  font-size: 16px;
-  font-family: Tahoma, sans-serif;
-  margin: 0px;
-  padding: 0px 0px 20px;
-}
-.bNewDelivery div {
-  font-size: 14px;
-  font-family: Tahoma, sans-serif;
-  margin: 0px 0px 10px;
-}
-.bNewDelivery p {
-  font-size: 14px;
-  font-family: Tahoma, sans-serif;
-  line-height: 16px;
-  margin: 0px 0px 20px;
-}
-.bNewDelivery span {
-  display: block;
-  font-size: 12px;
-  font-family: Tahoma, sans-serif;
-  font-weight: bold;
-  line-height: 16px;
-}
-.bNewDelivery i {
-  display: block;
-  font-size: 12px;
-  font-family: Tahoma, sans-serif;
-  font-weight: 100;
-  line-height: 16px;
-  margin: 10px 0px;
-  text-decoration: underline;
-}
-.bNewDelivery ul {
-  margin: 10px 0px;
-}
-.bNewDelivery a {
-  text-decoration: underline;
-}
-/*---END---СТИЛИ СТРАНИЦЫ ВАРИАНТОВ ДОСТАВКИ---*/
-/*-------СТИЛИ СТРАНИЦЫ ВАРИАНТОВ ОПЛАТЫ-----*/
-/* bMobileApps */
+/*-------СТИЛИ СТРАНИЦЫ МОБИЛЬНЫХ ПРИЛОЖЕНИЙ-----*/
 .bMobileApps__eHead {
-  width: 920px;
+  background: url("/css/mobliPage/img/mob_head.png") no-repeat;
   height: 224px;
   margin-bottom: 35px;
-  background: url('/images/pages/mob_head.png') no-repeat;
+  width: 920px;
 }
 .bMobileApps__eHead div {
-  padding: 50px 0 0 0;
-  font: 14px Tahoma, sans-serif;
+  font-size: 14px;
+  font-family: Tahoma, sans-serif;
+  padding: 50px 0px 0px;
 }
-/* bMobileCard */
 .bMobileCard {
-  width: 33%;
-  vertical-align: top;
-  margin: 30px 0;
   display: inline-block;
   *display: inline;
+  margin: 30px 0px;
+  vertical-align: top;
+  width: 33%;
   zoom: 1;
 }
 .bMobileCard h2 {
-  padding: 0;
-  margin: 15px 20px 10px 20px;
-  font: 18px Tahoma, sans-serif;
+  font-size: 18px;
+  font-family: Tahoma, sans-serif;
+  margin: 15px 20px 10px;
+  padding: 0px;
 }
 .bMobileCard p {
-  padding: 0;
-  margin: 0 20px;
   color: #434343;
-  /*text-align: justify;*/
-
-  font: 14px Tahoma, sans-serif;
+  font-size: 14px;
+  font-family: Tahoma, sans-serif;
+  margin: 0px 20px;
+  padding: 0px;
 }
 .bMobileCard.mDisable .bMobileCard__eImg div {
-  z-index: 3;
   display: block;
+  z-index: 3;
+}
+.bMobileCard.mDisable .bMobileCard__eImg img {
+  filter: progid: DXImageTransform.Microsoft.Alpha(opacity=50);
+  -moz-opacity: 0.5;
+  -khtml-opacity: 0.5;
+  -webkit-opacity: 0.5;
+  opacity: 0.5;
+  z-index: 1;
 }
 .bMobileCard.mDisable .bMobileCard__eLink {
   display: none;
-}
-.bMobileCard.mDisable .bMobileCard__eImg img {
-  opacity: 0.5;
-  filter: progid:dximagetransform.microsoft.alpha(opacity=50);
-  z-index: 1;
 }
 .bMobileCard.mDisable h2,
 .bMobileCard.mDisable p {
   color: #a6a6a6;
 }
 .bMobileCard__eImg {
-  text-align: center;
   position: relative;
+  text-align: center;
 }
 .bMobileCard__eImg div {
-  top: -15px;
-  left: 25px;
-  width: 90px;
-  height: 58px;
+  background: url("/css/mobliPage/img/cs.png") no-repeat;
   display: none;
+  height: 58px;
+  left: 25px;
   position: absolute;
-  background: url('/images/pages/cs.png') no-repeat;
+  top: -15px;
+  width: 90px;
 }
 .bMobileCard__eLink {
-  margin: 10px 0 0 20px;
-  padding-left: 20px;
-  background: url('/css/skin/img/c.png') 0 50% no-repeat;
+  background: url("/css/mobliPage/img/c.png") 0px 50% no-repeat;
   display: inline-block;
   *display: inline;
+  margin: 10px 0px 0px 20px;
+  padding-left: 20px;
   zoom: 1;
 }
 .bMobileCard__eLink a {
   color: #ffa901;
+  font-family: Tahoma, sans-serif;
+  font-size: 14px;
+  font-weight: bold;
   text-decoration: underline;
+}
+/*---END---СТИЛИ СТРАНИЦЫ МОБИЛЬНЫХ ПРИЛОЖЕНИЙ---*/
+/*-------СТИЛИ СТРАНИЦЫ ВАРИАНТОВ ОПЛАТЫ-----*/
+.bPayment {
+  color: #434343;
   font: 14px Tahoma, sans-serif;
+  padding-bottom: 50px;
+}
+.bPayment h2 {
+  font: bold 18px Tahoma, sans-serif;
+  margin: 15px 0px;
+  padding: 0px;
+  vertical-align: middle;
+}
+.bPayment p {
+  margin: 0px;
+  padding: 0px;
+}
+.bPayment p a {
+  color: #434343;
+  text-decoration: underline;
+}
+.bPayment__ePay1 {
+  background: url("/css/paymentPage/img/bPay1.png") 0px 50% no-repeat;
+  line-height: 39px !important;
+  min-height: 39px;
+  padding-left: 50px !important;
+}
+.bPayment__ePay2 {
+  background: url("/css/paymentPage/img/bPay2.png") 0px 50% no-repeat;
+  line-height: 33px !important;
+  min-height: 33px;
+  padding-left: 55px !important;
+}
+.bPayment__ePay3 {
+  background: url("/css/paymentPage/img/bPay3.png") 0px 50% no-repeat;
+  line-height: 41px !important;
+  min-height: 41px;
+  padding-left: 43px !important;
 }
 /*---END---СТИЛИ СТРАНИЦЫ ВАРИАНТОВ ОПЛАТЫ---*/
 /*-------СТИЛИ БОЛЬШОГО ОКНА-----*/
