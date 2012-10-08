@@ -98,6 +98,9 @@ class OrderEntity
   /* @var OrderItemEntity[] */
   private $item;
 
+  /** @var bool */
+  private $isBill;
+
 
     public function __construct(array $data = array()){
       if(array_key_exists('id', $data))      $this->id       = (int)$data['id'];
@@ -172,7 +175,7 @@ class OrderEntity
       if(array_key_exists('delivery_type_id', $data))       $this->deliveryType     = $data['delivery_type_id'];
       if(array_key_exists('delivery_interval_id', $data))   $this->deliveryInterval = $data['delivery_interval_id'];
       if(array_key_exists('delivery_date', $data))          $this->deliveryDate     = $data['delivery_date'];
-
+      if(array_key_exists('is_bill', $data))                $this->isBill           = $data['is_bill'];
 
 
       if(array_key_exists('delivery', $data) && array_key_exists('price', $data['delivery'])) {
@@ -579,4 +582,18 @@ class OrderEntity
   {
     return $this->deliveryDate;
   }
+
+    /**
+     * @param boolean $isBill
+     */
+    public function setIsBill($isBill) {
+        $this->isBill = $isBill;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getIsBill() {
+        return $this->isBill;
+    }
 }

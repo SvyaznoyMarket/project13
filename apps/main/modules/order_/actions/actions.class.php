@@ -27,6 +27,39 @@ class order_Actions extends myActions
   {
   }
 
+  public function executeBill(sfWebRequest $request)
+  {
+    if (!$this->getUser()->isAuthenticated() || !$this->getUser()->getGuardUser()->getIsCorporative()) {
+        $this->redirect('user_signin');
+    }
+
+    $orderNumber = $request['order'];
+
+    $result = Core::getInstance()->query('order.get', array(
+      'number' => $orderNumber,
+      'expand' => array('geo', 'user', 'product', 'service'),
+    ));
+    $this->forward404Unless((bool)$request);
+
+    $order = reset($result);
+
+    if (!$order['is_bill']) {
+        $this->setLayout('layout');
+
+        $this->setVar('order', $order);
+        $this->getResponse()->setTitle('Заказ №'.$order['number']);
+
+        return sfView::ERROR;
+    }
+
+    $result = CoreClient::getInstance()->query('order-bill/get', array(
+      'token'    => $this->getUser()->getGuardUser()->getToken(),
+      'order_id' => $order['id'],
+    ));
+
+    var_dump($result); exit();
+  }
+
   /**
    * Executes new action
    *
@@ -278,6 +311,8 @@ class order_Actions extends myActions
     $user = $this->getUser();
 
     $orderIds = $user->getFlash('complete_orders');
+    // Заглушка
+    $orderIds = array(730670);
 
     // проверяет наличие параметра от uniteller
     $orderNumber = $this->paymentProvider->getOrderIdFromRequest($request);

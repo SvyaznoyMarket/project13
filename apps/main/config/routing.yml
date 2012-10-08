@@ -285,6 +285,11 @@ user_orders:
   url:   /private/orders/
   param: { module: user, action: orders }
 #
+# order bill
+user_order_bill:
+  url:   /private/orders/:order/bill
+  param: { module: order_, action: bill }
+#
 # страница формы юридической консультации в ЛК
 user_legalConsultation:
   url:     /private/consultation/legal
@@ -504,7 +509,6 @@ order_show:
   param: { module: order, action: show }
   class:   myDoctrineRoute
   options: { model: Order, type: object, method: getForRoute }
-
 
 # Smartengine
 #

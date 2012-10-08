@@ -1,3 +1,7 @@
+<?php
+$isCorporative = $sf_user->getGuardUser() ? $sf_user->getGuardUser()->getIsCorporative() : false;
+?>
+
 <?php if ($isCredit) { ?>
     <?php include_partial('order_/header', array('title' => 'Покупка в кредит')) ?>
 <?php } else { ?>
@@ -13,7 +17,13 @@
   <div class="line pb15"></div>
 <?php endforeach ?>
 
-<?php if (!$isCredit) { ?>
+<?php if ($isCorporative) { ?>
+<div class="mt32">
+    В ближайшее время мы оповестим вас о выставлении счета в <strong><a href="<?php echo url_for('user_orders') ?>">личном кабинете</a></strong>.
+</div>
+<?php } ?>
+
+<?php if (!$isCredit && !$isCorporative) { ?>
     <div class="mt32">
       В ближайшее время мы вам перезвоним :)
       <br />Специалист нашего Контакт-cENTERа уточнит, где и когда будет удобно получить заказ.
