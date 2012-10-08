@@ -61,7 +61,7 @@ class Entity {
     /** @var \Model\Region\Entity|null */
     private $city;
 
-    public function __construct(array $data = []) {
+    public function __construct(array $data = array()) {
 
         $this->import($data);
     }

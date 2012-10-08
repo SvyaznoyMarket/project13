@@ -3,24 +3,44 @@
 require_once __DIR__ . '/../dark/lib/Debug/Timer.php';
 \Debug\Timer::start('app');
 
-$env = isset($_SERVER['APPLICATION_ENV']) ? $_SERVER['APPLICATION_ENV'] : 'dev';
-$configClass = ucfirst($env).'Config';
+// environment
+$env = isset($_SERVER['APPLICATION_ENV']) ? $_SERVER['APPLICATION_ENV'] : 'live';
 
+// configuration
+$configClass = ucfirst($env).'Config';
 require_once __DIR__ . '/../dark/config/'.$configClass.'.php';
+/** @var $config AppConfig */
 $config = new $configClass;
 
+// debug
+if (isset($_GET['APPLICATION_DEBUG'])) {
+    if ($_GET['APPLICATION_DEBUG']) {
+        $config->debug = true;
+        setcookie('APPLICATION_DEBUG', 1, time() + 60 * 60 * 24 * 7);
+    } else {
+        setcookie('APPLICATION_DEBUG', null);
+    }
+} else if (isset($_COOKIE['APPLICATION_DEBUG'])) {
+    $config->debug = true;
+}
+
+// application
 require_once __DIR__ . '/../dark/lib/App.php';
 \App::init($config);
 
 \App::logger()->info('Start app');
 
+// request
 $request = \App::request();
+// router
 $router = \App::router();
 $request->attributes->add($router->match($request->getPathInfo(), $request->getMethod()));
 
+// resolver
 $resolver = new \Routing\ActionResolver();
 list($actionCall, $actionParams) = $resolver->getCall($request);
 
+// response
 $response = null;
 try {
     /* @var $response \Http\Response */
@@ -46,7 +66,9 @@ try {
         $response = $action->execute($e, $request);
     }
     else {
-        \Debug\Timer::stop('app');
+        $spend = \Debug\Timer::stop('app');
+        \App::logger()->error('End app ' . $spend . ' with ' . $e);
+
         throw $e;
     }
 }
@@ -56,9 +78,10 @@ if ($response instanceof \Http\Response) {
 }
 
 $spend = \Debug\Timer::stop('app');
-\App::logger()->info('End app '.$spend);
+\App::logger()->info('End app ' . $spend);
 
 \App::shutdown();
+
 
 $timers = \Debug\Timer::getAll();
 if (\App::config()->debug && !$request->isXmlHttpRequest()) {

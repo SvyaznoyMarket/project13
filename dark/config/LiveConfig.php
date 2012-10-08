@@ -2,11 +2,11 @@
 
 require_once __DIR__ . '/AppConfig.php';
 
-class ProdConfig extends \AppConfig {
+class LiveConfig extends \AppConfig {
     protected function initialize() {
         parent::initialize();
 
-        $this->env = 'prod';
+        $this->env = 'live';
         $this->debug = false;
 
         $this->coreV2['url'] = 'http://api.enter.ru/v2/';

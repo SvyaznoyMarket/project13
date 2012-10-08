@@ -5,9 +5,14 @@ namespace Model\Product;
 class Repository {
     /** @var \Core\ClientInterface */
     private $client;
+    private $entityClass = '\Model\Product\Entity';
 
     public function __construct(\Core\ClientInterface $client) {
         $this->client = $client;
+    }
+
+    public function setEntityClass($class) {
+        $this->entityClass = $class;
     }
 
     public function getEntityByToken($token) {
@@ -18,7 +23,7 @@ class Repository {
         ));
         $data = reset($response);
 
-        return new Entity($data);
+        return new $this->entityClass($data);
     }
 
     public function getCollectionByToken(array $tokens) {
@@ -30,7 +35,12 @@ class Repository {
             'geo_id'      => \App::user()->getRegion()->getId(),
         ));
 
-        return array_map(function($data) { return new Entity($data); }, $response);
+        $collection = array();
+        foreach ($response as $data) {
+            $collection[] = new $this->entityClass($data);
+        }
+
+        return $collection;
     }
 
     public function getCollectionById(array $ids) {
@@ -42,6 +52,11 @@ class Repository {
             'geo_id'      => \App::user()->getRegion()->getId(),
         ));
 
-        return array_map(function($data) { return new Entity($data); }, $response);
+        $collection = array();
+        foreach ($response as $data) {
+            $collection[] = new $this->entityClass($data);
+        }
+
+        return $collection;
     }
 }

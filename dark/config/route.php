@@ -41,7 +41,7 @@ return array(
         'action'  => array('Region\Action', 'init'),
     ),
     'region.change' => array(
-        'pattern' => '/region/change/:region',
+        'pattern' => '/region/change/{regionId}',
         'action'  => array('Region\Action', 'change'),
     ),
 

@@ -62,7 +62,9 @@ class IndexAction {
         $selectedCategory = $categoryId ? $categoriesById[$categoryId] : reset($categoriesById);
 
         // товары
-        $products = \RepositoryManager::getProduct()->getCollectionById($result['data']);
+        $productRepository = \RepositoryManager::getProduct();
+        $productRepository->setEntityClass('\\Model\\Product\\CompactEntity');
+        $products = $productRepository->getCollectionById($result['data']);
         $productPager = new \Iterator\EntityPager($products, $selectedCategory->getProductCount());
         $productPager->setPage($pageNum);
         $productPager->setMaxPerPage(\App::config()->product['maxItemsPerPage']);

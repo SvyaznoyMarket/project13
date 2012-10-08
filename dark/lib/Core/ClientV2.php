@@ -11,8 +11,6 @@ class ClientV2 implements ClientInterface
     private $isMultiple;
     private $callbacks = array();
     private $resources = array();
-    /** @var Error */
-    private $error;
 
     public function __construct(array $config, \Logger\LoggerInterface $logger = null)
     {
@@ -117,13 +115,6 @@ class ClientV2 implements ClientInterface
         }
     }
 
-    /**
-     * @return Error
-     */
-    public function getError() {
-        return $this->error;
-    }
-
     private function createResource($action, array $params = array(), array $data = array()) {
         $isPostMethod = !empty($data);
 
@@ -181,9 +172,12 @@ class ClientV2 implements ClientInterface
         }
 
         if (is_array($decoded) && array_key_exists('error', $decoded)) {
-            $this->error = new Error($decoded['error']);
+            $e = new \RuntimeException(
+                (string)$decoded['error']['message'] . ' ' . $this->encode($decoded), (int)$decoded['error']['code'],
+                $decoded['error']
+            );
 
-            throw new \RuntimeException((string)$decoded['error']['message'] . ' ' . $this->encode($decoded), (int)$decoded['error']['code']);
+            throw $e;
         }
         if (array_key_exists('result', $decoded)) {
             $decoded = $decoded['result'];
