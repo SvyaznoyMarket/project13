@@ -4300,19 +4300,19 @@ label.checked {
   text-decoration: underline;
 }
 .bPayment__ePay1 {
-  background: url("/css/paymentPAge/img/bPay1.png") 0px 50% no-repeat;
+  background: url("/css/paymentPage/img/bPay1.png") 0px 50% no-repeat;
   line-height: 39px !important;
   min-height: 39px;
   padding-left: 50px !important;
 }
 .bPayment__ePay2 {
-  background: url("/css/paymentPAge/img/bPay2.png") 0px 50% no-repeat;
+  background: url("/css/paymentPage/img/bPay2.png") 0px 50% no-repeat;
   line-height: 33px !important;
   min-height: 33px;
   padding-left: 55px !important;
 }
 .bPayment__ePay3 {
-  background: url("/css/paymentPAge/img/bPay3.png") 0px 50% no-repeat;
+  background: url("/css/paymentPage/img/bPay3.png") 0px 50% no-repeat;
   line-height: 41px !important;
   min-height: 41px;
   padding-left: 43px !important;
