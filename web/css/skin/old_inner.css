@@ -1831,7 +1831,7 @@ border-radius: 5px;
 	cursor: pointer;
 }
 
-.bMobileCard__eLink{
+/*.bMobileCard__eLink{
 	margin: 10px 0 0 20px;
 	padding-left: 20px;
 	background: url('img/c.png') 0 50% no-repeat;
@@ -1846,7 +1846,7 @@ border-radius: 5px;
 	font: 14px Tahoma, sans-serif;
     font-weight: bold;
 }
-
+*/
 
 .bMapShops__ePopupRel h3 {
     font: 20px 'EnterTypeRegular';
@@ -2944,44 +2944,6 @@ div.mSportFont{ color: #e8303c; }
 		text-decoration: underline;
 	}*/
 
-/*.bPayment{
-  color: #434343;
-  font: 14px Tahoma, sans-serif;
-  padding-bottom: 50px;
-  }
-  .bPayment h2{
-    margin: 15px 0;
-    padding: 0;
-    vertical-align: middle;
-    font: bold 18px Tahoma, sans-serif;
-    }
-  .bPayment p{
-    margin: 0;
-    padding: 0;
-    }
-  .bPayment p a{
-    color: #434343;
-    text-decoration: underline;
-    }
-  .bPayment__ePay1{
-    min-height: 39px;
-    line-height: 39px !important;
-    padding-left: 50px !important;
-    background: url('/images/pages/bPay1.png') 0 50% no-repeat;
-    }
-  .bPayment__ePay2{
-    min-height: 33px;
-    line-height: 33px !important;
-    padding-left: 55px !important;
-    background: url('/images/pages/bPay2.png') 0 50% no-repeat;
-    }
-  .bPayment__ePay3{
-    min-height: 41px;
-    line-height: 41px !important;
-    padding-left: 43px !important;
-    background: url('/images/pages/bPay3.png') 0 50% no-repeat;
-    }
-
   .mPayLink{
     padding: 0;
     overflow: hidden;
@@ -3013,7 +2975,7 @@ div.mSportFont{ color: #e8303c; }
     height: 30px;
     background: url('/images/pages/bPaySystems.png') 0 -83px no-repeat;
     }
-*/
+
 .mOurGray.mIco{
     color: #434343;
     min-height: 16px;

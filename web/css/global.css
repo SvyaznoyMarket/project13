@@ -4279,6 +4279,45 @@ label.checked {
   width: 550px;
 }
 /*---END---СТИЛИ СТРАНИЦЫ КРЕДИТОВ---*/
+/*-------СТИЛИ СТРАНИЦЫ ВАРИАНТОВ ОПЛАТЫ-----*/
+.bPayment {
+  color: #434343;
+  font: 14px Tahoma, sans-serif;
+  padding-bottom: 50px;
+}
+.bPayment h2 {
+  font: bold 18px Tahoma, sans-serif;
+  margin: 15px 0px;
+  padding: 0px;
+  vertical-align: middle;
+}
+.bPayment p {
+  margin: 0px;
+  padding: 0px;
+}
+.bPayment p a {
+  color: #434343;
+  text-decoration: underline;
+}
+.bPayment__ePay1 {
+  background: url("/css/paymentPAge/img/bPay1.png") 0px 50% no-repeat;
+  line-height: 39px !important;
+  min-height: 39px;
+  padding-left: 50px !important;
+}
+.bPayment__ePay2 {
+  background: url("/css/paymentPAge/img/bPay2.png") 0px 50% no-repeat;
+  line-height: 33px !important;
+  min-height: 33px;
+  padding-left: 55px !important;
+}
+.bPayment__ePay3 {
+  background: url("/css/paymentPAge/img/bPay3.png") 0px 50% no-repeat;
+  line-height: 41px !important;
+  min-height: 41px;
+  padding-left: 43px !important;
+}
+/*---END---СТИЛИ СТРАНИЦЫ ВАРИАНТОВ ОПЛАТЫ---*/
 /*-------СТИЛИ БОЛЬШОГО ОКНА-----*/
 .bPopupWrap {
   left: 0px;
