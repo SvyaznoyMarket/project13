@@ -171,6 +171,7 @@ foreach ($item->getWarrantyList() as $warranty) {
 <?php } ?>
 
 <?php if ($selectedWarranty) { ?>
+<div class="mBR5 basketServices">
 <div class="service form bBacketServ extWarr mBig" style="display: block;">
     <table cellspacing="0">
         <tbody>
@@ -200,6 +201,7 @@ foreach ($item->getWarrantyList() as $warranty) {
             </tr>
         </tbody>
     </table>
+</div>
 </div>
 <?php } ?>
 
