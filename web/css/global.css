@@ -4279,6 +4279,54 @@ label.checked {
   width: 550px;
 }
 /*---END---СТИЛИ СТРАНИЦЫ КРЕДИТОВ---*/
+/*-------СТИЛИ СТРАНИЦЫ ВАРИАНТОВ ДОСТАВКИ-----*/
+.bNewDelivery h2 {
+  font-size: 16px;
+  font-family: Tahoma, sans-serif;
+  font-weight: bold;
+  margin: 0px;
+  padding: 0px 0px 20px;
+}
+.bNewDelivery h3 {
+  font-size: 16px;
+  font-family: Tahoma, sans-serif;
+  margin: 0px;
+  padding: 0px 0px 20px;
+}
+.bNewDelivery div {
+  font-size: 14px;
+  font-family: Tahoma, sans-serif;
+  margin: 0px 0px 10px;
+}
+.bNewDelivery p {
+  font-size: 14px;
+  font-family: Tahoma, sans-serif;
+  line-height: 16px;
+  margin: 0px 0px 20px;
+}
+.bNewDelivery span {
+  display: block;
+  font-size: 12px;
+  font-family: Tahoma, sans-serif;
+  font-weight: bold;
+  line-height: 16px;
+}
+.bNewDelivery i {
+  display: block;
+  font-size: 12px;
+  font-family: Tahoma, sans-serif;
+  font-weight: 100;
+  line-height: 16px;
+  margin: 10px 0px;
+  text-decoration: underline;
+}
+.bNewDelivery ul {
+  margin: 10px 0px;
+}
+.bNewDelivery a {
+  text-decoration: underline;
+}
+/*---END---СТИЛИ СТРАНИЦЫ ВАРИАНТОВ ДОСТАВКИ---*/
 /*-------СТИЛИ СТРАНИЦЫ ВАРИАНТОВ ОПЛАТЫ-----*/
 .bPayment {
   color: #434343;
