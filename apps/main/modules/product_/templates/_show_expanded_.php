@@ -44,9 +44,11 @@
 
     </div>
     <div class="extrainfo">
-      <span class="db font18 pb10"><b><span class="price"><?php echo formatPrice($item->getPrice()) ?></span> <span
-        class="rubl">p</span></b></span>
+      <span class="db font18 pb10"><b><span class="price"><?php echo formatPrice($item->getPrice()) ?></span> <span class="rubl">p</span></b></span>
 
+        <div class="goodsbar mSmallBtns">
+          <?php render_partial('cart_/templates/_buy_button.php', array('item' => $item)) ?>
+        </div>
 
       <?php if ($item->getIsBuyable()): ?>
       <noindex>

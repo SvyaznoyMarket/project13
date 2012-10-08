@@ -27,7 +27,7 @@ $productionConfig = array(
     'password' => 'qazwsxedc'
   ),
   'smartEngine' => array(
-    'apiUrl' => 'https://selightstage.smartengine.at/se-light/api/1.0/json/',
+    'apiUrl' => 'https://selightprod.smartengine.at/se-light/api/1.0/json/',
     'apiKey' => 'c41851b19511c20acc84f47b7816fb8e',
     'tenantid' => 'ENojUTRcD8',
     'cert' => $baseConfig['rootPath'].'../data/cert/smartengine-server2.crt',
