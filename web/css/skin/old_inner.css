@@ -1069,39 +1069,6 @@ border-radius: 5px;
 		}
 /* ----------- /bInfoBlock ------------- */
 
-/* ----------- bAbout ------------- */
-.bAbout{
-	width: 685px;
-	}
-	.bAbout__eBlock{ border-top: 1px solid #e6e6e6; }
-	.bAbout__eBlock:first-child{ border-top: none; }
-	.bAbout__eBlock:first-child .bAbout__eTitle{ margin-top: 0; }
-	.bAbout__eText,
-	.bAbout__eList,
-	.bAbout__eTitle{
-		margin: 0;
-		padding: 0;
-		}
-	.bAbout__eText,
-	.bAbout__eList li{
-		font: 14px/20px Tahoma, sans-serif;
-		}
-	.bAbout__eTitle{
-		margin-top: 30px;
-		font: bold 18px/20px Tahoma, sans-serif;
-		}
-	.bAbout__eList li{
-		margin-left: 15px;
-		}
-	.bAbout__eList span{
-		width: 95%;
-		vertical-align: top;
-		display: inline-block;
-		*display: inline;
-		zoom: 1;
-		}
-/* ----------- /bAbout ------------- */
-
 
 /* --------------- bMapShops ------------------ */
 .bMapShops{

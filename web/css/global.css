@@ -4114,6 +4114,49 @@ label.checked {
   zoom: 1;
 }
 /*---END---СТИЛИ ОФОРМЛЕНИЯ ЗАКАЗА---*/
+/*-------СТИЛИ СТРАНИЦЫ О КОМПАНИИ-----*/
+.bAbout {
+  width: 685px;
+}
+.bAbout__eBlock {
+  border-top: 1px solid #e6e6e6;
+}
+.bAbout__eBlock:first-child {
+  border-top: none;
+}
+.bAbout__eBlock:first-child .bAbout__eTitle {
+  margin-top: 0px;
+}
+.bAbout__eText,
+.bAbout__eList,
+.bAbout__eTitle {
+  margin: 0px;
+  padding: 0px;
+}
+.bAbout__eText,
+.bAbout__eList li {
+  font-size: 14px;
+  font-family: Tahoma, sans-serif;
+  line-height: 20px;
+}
+.bAbout__eTitle {
+  font-size: 18px;
+  font-family: Tahoma, sans-serif;
+  font-weight: bold;
+  line-height: 20px;
+  margin-top: 30px;
+}
+.bAbout__eList li {
+  margin-left: 15px;
+}
+.bAbout__eList span {
+  display: inline-block;
+  *display: inline;
+  vertical-align: top;
+  width: 95%;
+  zoom: 1;
+}
+/*---END---СТИЛИ СТРАНИЦЫ О КОМПАНИИ---*/
 /*-------СТИЛИ СТРАНИЦЫ КРЕДИТОВ-----*/
 .bF1Credit {
   position: relative;
