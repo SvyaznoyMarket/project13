@@ -4158,6 +4158,21 @@ li.bBuyingDates__eRight {
   zoom: 1;
 }
 /*---END---СТИЛИ СТРАНИЦЫ О КОМПАНИИ---*/
+/*-------СТИЛИ СТРАНИЦЫ ЦСИ-----*/
+.bLInfo__eP,
+.bLInfo__eH2 {
+  margin: 0px;
+  padding: 0px;
+}
+.bLInfo__eH2 {
+  font: 16px Tahoma, sans-serif;
+}
+.bLInfo__eP {
+  font: 12px Tahoma, sans-serif;
+  line-height: 1.6;
+  margin: 13px 0px 22px;
+}
+/*---END---СТИЛИ СТРАНИЦЫ ЦСИ---*/
 /*-------СТИЛИ СТРАНИЦЫ КРЕДИТОВ-----*/
 .bF1Credit {
   position: relative;
