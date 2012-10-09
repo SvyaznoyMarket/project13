@@ -1,7 +1,7 @@
 <?php
 /**
  * @var $page \View\DefaultLayout
- * @var $product \Model\Product\Entity
+ * @var $product \Model\Product\CompactEntity
  * @var $isHidden
  * */
 ?>

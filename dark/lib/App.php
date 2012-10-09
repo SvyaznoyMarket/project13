@@ -121,6 +121,20 @@ class App {
     }
 
     /**
+     * @static
+     * @return Templating\PhpEngine
+     */
+    public static function templating() {
+        static $instance;
+
+        if (!$instance) {
+            $instance = new \Templating\PhpEngine(self::config()->dataDir . '/template');
+        }
+
+        return $instance;
+    }
+
+    /**
      * @param string $name
      * @return \Core\ClientV2
      */
@@ -136,13 +150,13 @@ class App {
 
     /**
      * @static
-     * @return \Wordpress\Client
+     * @return \Content\Client
      */
     public static function contentClient() {
         static $instance;
 
         if (!$instance) {
-            $instance = new \Wordpress\Client();
+            $instance = new \Content\Client();
             $instance->setUrl(\App::config()->wordpress['url']);
         }
 

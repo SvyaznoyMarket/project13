@@ -10,8 +10,13 @@ class IndexPage extends \View\DefaultLayout {
                 $title .= ' – ' . $this->getParam('pageNum');
             }
 
-            $this->setParam('title', $title);
             $this->addMeta('title', $title);
+            $this->setParam('title', trim($this->render('search/_title', array(
+                'searchQuery' => $this->getParam('searchQuery'),
+                'meanQuery'   => $this->getParam('meanQuery'),
+                'forceMean'   => $this->getParam('forceMean'),
+                'count'       => $this->getParam('productPager') instanceof \Iterator\EntityPager ? $this->getParam('productPager')->count() : 0,
+            ))));
         }
     }
 

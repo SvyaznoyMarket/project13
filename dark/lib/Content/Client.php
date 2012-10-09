@@ -1,6 +1,6 @@
 <?php
 
-namespace Wordpress;
+namespace Content;
 
 class Client {
     /** метод запроса: GET */

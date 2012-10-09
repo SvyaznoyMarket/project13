@@ -3,6 +3,8 @@
 namespace View;
 
 class DefaultLayout {
+    /** @var \Templating\PhpEngine */
+    private $engine;
     /** @var string */
     private $templateDir;
     /** @var array */
@@ -28,7 +30,7 @@ class DefaultLayout {
     public $helper;
 
     public function __construct() {
-        $this->templateDir = \App::config()->dataDir . '/template';
+        $this->engine = \App::templating();
 
         $this->helper = new Helper();
 
@@ -72,23 +74,11 @@ class DefaultLayout {
         return $this->render($this->layout);
     }
 
-    final public function render($template, array $vars = array()) {
-        \Debug\Timer::start('template:' . $template);
-        \App::logger('view')->info('Start render template '.$template);
+    final public function render($template, array $params = array()) {
+        $params['page'] = $this;
+        $params['user'] = \App::user();
 
-        // render
-        extract($vars, EXTR_REFS);
-        $page = $this;
-        $user = \App::user();
-        ob_start();
-        require $this->templateDir . '/' . $template . '.php';
-
-        $return = ob_get_clean();
-
-        $spend = \Debug\Timer::stop('template:' . $template);
-        \App::logger('view')->info('End render template '.$template.' '.$spend);
-
-        return $return;
+        return $this->engine->render($template, $params);
     }
 
     public function startEscape() {
