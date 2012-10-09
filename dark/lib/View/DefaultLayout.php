@@ -23,14 +23,12 @@ class DefaultLayout {
     /** @var array */
     protected $javascripts = array();
     /** @var string */
-    protected $layout;
+    protected $layout  = 'layout-default-twoColumn';
     /** @var Helper */
     public $helper;
 
     public function __construct() {
         $this->templateDir = \App::config()->dataDir . '/template';
-
-        $this->layout = 'layout-default-twoColumn';
 
         $this->helper = new Helper();
 

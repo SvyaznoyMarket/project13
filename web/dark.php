@@ -84,8 +84,9 @@ $spend = \Debug\Timer::stop('app');
 
 
 $timers = \Debug\Timer::getAll();
-if (\App::config()->debug && !$request->isXmlHttpRequest()) {
+if ($config->debug && !$request->isXmlHttpRequest()) {
     echo '<pre ondblclick="$(this).remove()" style="position: fixed; top: 2px; left: 2px; background: #000000; color: #33ff33; opacity: 0.8; padding: 2px 5px; border-radius: 5px; font-size: 10px; font-family: Courier New; box-shadow: 0 0 10px rgba(0,0,0,0.5);">'
+        . 'env: ' . $env . '<br />'
         . 'app: ' . round($timers['app']['total']
             - (isset($timers['core']) ? $timers['core']['total'] : 0)
             - (isset($timers['content']) ? $timers['content']['total'] : 0)

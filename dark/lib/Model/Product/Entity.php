@@ -48,7 +48,9 @@ class Entity extends BasicEntity {
     /** @var \Model\Tag\Entity[] */
     protected $tag = array();
     /** @var Media\Entity[] */
-    protected $media = array();
+    protected $photo = array();
+    /** @var Media\Entity[] */
+    protected $photo3d = array();
     /** @var \Model\Brand\Entity|null */
     protected $brand;
     /** @var Label\Entity|null */
@@ -366,21 +368,33 @@ class Entity extends BasicEntity {
     }
 
     public function setMedia(array $mediaList) {
-        $this->media = array();
+        $this->photo = array();
+        $this->photo3d = array();
         foreach ($mediaList as $media) {
             $this->addMedia($media);
         }
     }
 
     public function addMedia(Media\Entity $media) {
-        $this->media[] = $media;
+        switch ($media->getTypeId()) {
+            case 1:
+                $this->photo[] = $media;
+            break;
+            case 2:
+                $this->photo3d[] = $media;
+            break;
+        }
     }
 
-    public function getMedia() {
-        return $this->media;
+    public function getPhoto() {
+        return $this->photo;
     }
 
-    /**
+    public function getPhoto3d() {
+      return $this->photo3d;
+    }
+
+  /**
      * @param int $modelId
      */
     public function setModelId($modelId = null) {

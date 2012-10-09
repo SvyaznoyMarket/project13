@@ -44,7 +44,7 @@ class DefaultLogger implements LoggerInterface {
             'time'    => date('M d H:i:s'),
             'name'    => $this->name,
             'level'   => $level,
-            'message' => is_array($message) ? json_encode($message, JSON_UNESCAPED_UNICODE) : (string)$message,
+            'message' => is_array($message) ? json_encode($message) : (string)$message,
         );
     }
 

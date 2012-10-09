@@ -22,6 +22,7 @@ class App {
         if (self::$config->debug) {
             ini_set('display_errors', 1);
             ini_set('html_errors', 1);
+
             error_reporting(E_ALL);
         } else {
             ini_set('display_errors', 0);
@@ -35,7 +36,7 @@ class App {
         });
 
         set_error_handler(function ($level, $message, $file, $line, $context) {
-            static $levels = [
+            static $levels = array(
                 E_WARNING           => 'Warning',
                 E_NOTICE            => 'Notice',
                 E_USER_ERROR        => 'User Error',
@@ -45,7 +46,7 @@ class App {
                 E_RECOVERABLE_ERROR => 'Catchable Fatal Error',
                 E_DEPRECATED        => 'Deprecated',
                 E_USER_DEPRECATED   => 'User Deprecated',
-            ];
+            );
 
             if (error_reporting() & $level) {
                 throw new \ErrorException(sprintf('%s: %s in %s line %d', isset($levels[$level]) ? $levels[$level] : $level, $message, $file, $line));
