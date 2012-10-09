@@ -2708,6 +2708,7 @@ dt.bCtg__eOrange {
   border-right: 5px solid transparent;
   border-top: 6px solid #f99b1c;
   bottom: -6px;
+  *bottom: -21px;
   display: block;
   left: 8px;
   position: absolute;
