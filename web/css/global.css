@@ -1,3 +1,4 @@
+/* CSS crunched with Crunch - http://crunchapp.net/ */
 @import "/css/skin/old_inner.css";
 /*-------НЕРАЗОБРАННЫЕ СТИЛИ------*/
 /*---END----НЕРАЗОБРАННЫЕ СТИЛИ---*/
@@ -3878,7 +3879,7 @@ label.checked {
   border-color: #ffa901;
 }
 .bBuyingLine__eRadio {
-  filter: progid: DXImageTransform.Microsoft.Alpha(opacity=0);
+  filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
   -moz-opacity: 0;
   -khtml-opacity: 0;
   -webkit-opacity: 0;
@@ -3944,14 +3945,14 @@ label.checked {
   background: #ddd;
   cursor: pointer;
   height: 33px;
-  margin: 0px !important;
   padding: 0px !important;
   position: relative;
   vertical-align: bottom;
   width: 38px;
 }
-.bBuyingDates__eRight {
+li.bBuyingDates__eRight {
   float: right;
+  *float: none;
 }
 .bBuyingDates__eLeft span,
 .bBuyingDates__eRight span {
