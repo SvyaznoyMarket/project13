@@ -118,7 +118,7 @@ all:
   payment:
     enabled: true # общий переключатель для всех видов методов online оплат
     default_provider: psbank
-    credit_enabled: false
+    credit_enabled: true
     provider:
       psbank:
         enabled: true
