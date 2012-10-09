@@ -334,7 +334,41 @@ class ServiceInfo
     if(array_key_exists('level', $data)){ $this->setLevel($data['level']); }
     if(array_key_exists('is_in_shop', $data)){ $this->setIsInShop($data['is_in_shop']); }
     if(array_key_exists('is_delivery', $data)){ $this->setIsDelivery($data['is_delivery']); }
+
+      array_key_exists('product_id', $data) ? $this->setProductId((int)$data['id']) : $this->setProductId(0);
+      if(array_key_exists('price', $data)){ $this->setPrice( $data['price']); }
   }
+
+
+    /**
+     * @return float
+     */
+    public function getPrice(){
+        return $this->price;
+    }
+
+    /**
+     * @return int
+     */
+    public function getProductId(){
+        return $this->productId;
+    }
+
+    /**
+     * @param float $price
+     */
+    public function setPrice($price){
+        $this->price = $price;
+    }
+
+    /**
+     * @param int $productId
+     */
+    public function setProductId($productId){
+        $this->productId = (int) $productId;
+    }
+
+
 
   public function getIsDelivery()
   {

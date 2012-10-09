@@ -30,7 +30,7 @@ class queueController
         throw new \LogicException('Не указано имя задачи.');
       }
 
-      $this->dbh = new \PDO(sprintf('mysql:dbname=%s;host=%s', DB_NAME, DB_HOST), DB_USERNAME, DB_PASSWORD);
+      $this->dbh = new \PDO(sprintf('mysql:dbname=%s;host=%s', Config::get('db.name'), Config::get('db.host')), Config::get('db.user'), Config::get('db.password'));
 
       $this->dbh->beginTransaction();
 

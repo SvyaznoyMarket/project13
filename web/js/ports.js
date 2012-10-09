@@ -351,6 +351,9 @@ ANALYTICS.parseAllAnalDivs( $('.jsanalytics') )
 
 var ADFOX = {
 	adfoxbground : function() {
+        if( $(window).width() < 1000 ) // ATTENTION
+            return
+
 		if (typeof(pr) == 'undefined') { var pr = Math.floor(Math.random() * 1000000); }
 		if (typeof(document.referrer) != 'undefined') {
 		  if (typeof(afReferrer) == 'undefined') {

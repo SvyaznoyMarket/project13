@@ -7,7 +7,7 @@ default:
 
   metas:
     yandex-verification: 623bb356993d4993
-    viewport:	   width=900
+    viewport:	   width=960
     #title:        symfony project
     #description:  symfony project
     #keywords:     symfony, project
@@ -21,8 +21,9 @@ default:
 #    - colorbox/colorbox.css
 #    - jquery.autocomplete.css
 #    - main.css
-    - skin/inner.css
-    - jquery-ui-1.8.20.custom.css
+    - global.css
+#    - skin/inner.css?2012-10-01
+#    - jquery-ui-1.8.20.custom.css
 #    - font.css
 #    - skin/main.css
 #    - navy.css

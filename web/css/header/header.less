@@ -1,0 +1,264 @@
+@headerSprite-url:"@{base-url}/header/img/headerSprite.png";
+.topbar {
+  font-size: 14px;
+  font-family:Tahoma, sans-serif;
+  height: 25px;
+  padding-top: 7px;
+  .bRegion, .usermenu {
+    float:left;
+    a {
+      text-decoration: underline;
+    }
+     b {
+      padding: 0px 10px;
+    }
+  }
+  .usermenu {
+    float: right;
+  }
+  .hBasket {
+    background: url("@{base-url}/header/img/h_basket.png") no-repeat;
+    padding: 9px 0px 3px 30px;
+  }
+}
+
+#header {
+  background: url("@{headerSprite-url}") no-repeat 0px -161px;
+  height: 112px;
+  margin: 10px 0px 20px;
+  padding: 20px 22px 0px 0px;
+  width: 910px;
+  .bToplink {
+    display: block;
+    float: left;
+    height: 71px;
+    margin: 10px 0px 0px 18px;
+  }
+  .extramenu {
+    background: @white;
+    .rounded(5px);
+    border: 2px solid @firmOrange;
+   .box-shadow(0px 0px 7px @typBoxShadowColor);
+    left: 0px;
+    position: absolute;
+    text-align: left;
+    top: 155px;
+    width: 914px;
+    z-index: 1000;
+    .corner{
+      border-bottom: 13px solid @firmOrange;
+      border-left: 14px solid transparent;
+      border-right: 14px solid transparent;
+      height: 0;
+      position: absolute;
+      top: -13px;
+      width: 0;
+      div{
+        border-bottom: 10px solid #FFFFFF;
+        border-left: 11px solid transparent;
+        border-right: 11px solid transparent;
+        bottom: -13px;
+        left: -11px;
+        position: absolute;
+      }
+    }
+    .close{
+      background: url("@{base-url}/common/img/closeBtnOrange.png") no-repeat;
+      cursor: pointer;
+      display: block;
+      height: 26px;
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: 26px;
+    }
+    dl{
+      float: left;
+      margin: 8px 6px 12px 12px;
+      overflow: hidden;
+      width: 210px;
+    }
+    dt{
+      font-size: 16px;
+      padding: 10px 0px 5px;
+    }
+    dd{
+      margin-bottom: 1px;
+      a{
+        display: block;
+        font-size: 11px;
+        padding: 2px 9px;
+        text-decoration: none;
+        &:hover {
+          background-color: @typLightGray;
+        }
+      }
+    }
+    li{
+      float: left;
+      font-size: 11px;
+      margin: 10px 6px 20px 21px;
+      overflow: hidden;
+      width: 201px;
+      img{
+        border: 1px solid #ececec;
+        float: left;
+        margin-right: 13px;
+      }
+    }
+  }
+  #topmenu-root-80 {
+    background: url("@{headerSprite-url}") no-repeat 0px 0px;
+    width: 38px;
+    &:hover {
+      background-position: 0px -71px;
+    }
+  }
+  #topmenu-root-1 {
+    background: url("@{headerSprite-url}") no-repeat -38px 0px;
+    width: 43px;
+    &:hover {
+      background-position: -38px -71px;
+    }
+  }
+  #topmenu-root-21 {
+    background: url("@{headerSprite-url}") no-repeat -81px 0px;
+    width: 54px;
+    &:hover {
+      background-position: -81px -71px;
+    }
+  }
+  #topmenu-root-443 {
+    background: url("@{headerSprite-url}") no-repeat -135px 0px;
+    width: 47px;
+    &:hover {
+      background-position: -135px -71px;
+    }
+  }
+  #topmenu-root-320 {
+    background: url("@{headerSprite-url}") no-repeat -182px 0px;
+    width: 39px;
+    &:hover {
+      background-position: -182px -71px;
+    }
+  }
+  #topmenu-root-1438 {
+    background: url("@{headerSprite-url}") no-repeat -221px 0px;
+    width: 54px;
+    &:hover {
+      background-position: -221px -71px;
+    }
+  }
+  #topmenu-root-224 {
+    background: url("@{headerSprite-url}") no-repeat -275px 0px;
+    width: 34px;
+    &:hover {
+      background-position: -275px -71px;
+    }
+  }
+  #topmenu-root-788 {
+    background: url("@{headerSprite-url}") no-repeat -309px 0px;
+    width: 61px;
+    &:hover {
+      background-position: -309px -71px;
+    }
+  }
+  #topmenu-root-923 {
+    background: url("@{headerSprite-url}") no-repeat -370px 0px;
+    width: 54px;
+    &:hover {
+      background-position: -370px -71px;
+    }
+  }
+  #topmenu-root-647 {
+    background: url("@{headerSprite-url}") no-repeat -424px 0px;
+    width: 43px;
+    &:hover {
+      background-position: -424px -71px;
+    }
+  }
+  #topmenu-root-185{
+    background: url("@{headerSprite-url}") no-repeat -467px 0px;
+    width: 42px;
+    &:hover {
+      background-position: -467px -71px;
+    }
+  }
+  #topmenu-root-311{
+    background: url("@{headerSprite-url}") no-repeat -509px 0px;
+    width: 41px;
+    &:hover {
+      background-position: -509px -71px;
+    }
+  }
+  #topLogo{
+    background: url("@{headerSprite-url}") no-repeat -683px 0;
+    display: block;
+    float: left;
+    height: 91px;
+    text-indent: -1000px;
+    width: 130px;
+  }
+}
+#extramenu-root{
+  &-80{
+    .corner{
+      left: 154px;
+    }
+  }
+  &-1{
+    .corner{
+      left:212px;
+    }
+  }
+  &-21{
+    .corner{
+      left:279px;
+    }
+  }
+  &-443{
+    .corner{
+      left:347px;
+    }
+  }
+  &-320{
+    .corner{
+      left:408px;
+    }
+  }
+  &-1438{
+    .corner{
+      left:467px;
+    }
+  }
+  &-224{
+    .corner{
+      left:535px;
+    }
+  }
+  &-788{
+    .corner{
+      left:600px;
+    }
+  }
+  &-923{
+    .corner{
+      left:676px;
+    }
+  }
+  &-647{
+    .corner{
+      left:742px;
+    }
+  }
+  &-185{
+    .corner{
+      left:803px;
+    }
+  }
+  &-311{
+    .corner{
+      left:858px;
+    }
+  }
+}

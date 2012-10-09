@@ -28,15 +28,8 @@ class Config
 
     public static function getEnvironment(){
         if(!self::$environment){
-            $env = isset($_SERVER['APPLICATION_ENV']) ? $_SERVER['APPLICATION_ENV'] : 'dev';
-            switch ($env) {
-                case 'live':
-                    $env .= '_dev';
-                    break;
-                default:
-                    $env = 'dev';
-                    break;
-            }
+            $env = isset($_SERVER['APPLICATION_ENV']) ? $_SERVER['APPLICATION_ENV'] : 'loc';
+
             self::$environment = $env;
         }
 

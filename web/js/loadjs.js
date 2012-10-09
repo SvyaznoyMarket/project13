@@ -2,12 +2,12 @@
 	var _gaq = window._gaq || []
 	window.onerror = function(msg, url, line) {
 		var preventErrorAlert = true
-		_gaq.push(['_trackEvent', 'JS Error', msg, navigator.userAgent + ' -> ' + url + " : " + line])
+		_gaq.push(['_trackEvent', 'Javascript Error', msg, url + " : " + line])
 		return preventErrorAlert
 	}
-	jQuery.error = function (message) {
-		_gaq.push(['_trackEvent', 'jQuery Error', message, navigator.userAgent])
-	}
+	//jQuery.error = function (message) {
+	//	_gaq.push(['_trackEvent', 'jQuery Error', message, navigator.userAgent])
+	//}
 
 	if( typeof($LAB) === 'undefined' )
 		throw new Error( "Невозможно загрузить файлы JavaScript" )

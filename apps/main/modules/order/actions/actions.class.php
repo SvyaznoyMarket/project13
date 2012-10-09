@@ -47,7 +47,7 @@ class orderActions extends myActions
       'success' => false,
     );
 
-    $this->product = ProductTable::getInstance()->getByBarcode($request->getParameter('product'), array('with_model' => true));
+    $this->product = ProductTable::getInstance()->getByBarcode($request->getParameter('product'), array('with_model' => true, 'with_price' => true, ));
 
     $this->shop = $request['shop'] ? ShopTable::getInstance()->getByToken($request['shop']) : null;
     $shopData =

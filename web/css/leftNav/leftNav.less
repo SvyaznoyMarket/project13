@@ -1,0 +1,316 @@
+@leftNavSprite-url:"@{base-url}/leftNav/img/leftNavSprite.png";
+.product_filter-block{
+  position:relative;
+}
+.bCtg {
+  border-bottom: 1px solid @typLightGray;
+  font: 13px Tahoma, sans-serif;
+  padding: 14px 0px;
+  a {
+    text-decoration: none;
+  }
+  b {
+    color: @typGray;
+    font: 14px Tahoma, sans-serif;
+  }
+  li {
+    cursor: pointer;
+    margin: 2px 0px;
+    &:hover a {
+      color: @firmOrange;
+    }
+  }
+}
+.mBold {
+  font-weight: bold;
+}
+.mSelected {
+  font-weight: bold;
+  padding: 1px 0px 2px;
+}
+.mSelected span {
+  background: @firmOrange;
+  color: @white;
+  padding: 0px 5px;
+}
+.bCtg.mHeight18 li {
+  margin: 7px 0px;
+}
+dt.bCtg__eOrange {
+  color: @firmOrange;
+  font: bold 18px Tahoma, sans-serif;
+}
+.bCtg__eMore {
+  margin-top: 6px;
+  a {
+    background: #cbcbcb;
+    color: @white;
+    padding: 2px 8px;
+    text-decoration: none;
+  }
+}
+.bCtg__eL2 {
+  padding-left: 11px;
+  &.mSelected {
+    padding-left: 6px;
+  }
+}
+.bCtg__eL3 {
+  padding-left: 23px;
+  &.mSelected {
+    padding-left: 18px;
+  }
+}
+.bCtg__eL4 {
+  padding-left: 34px;
+  &.mSelected {
+    padding-left: 29px;
+  }
+}
+.bCtg__eL4
+.bCtg__eL2 span,
+.bCtg__eL3 span,
+.bCtg__eL4 span {}
+.bCtg__eL2 span div,
+.bCtg__eL3 span div,
+.bCtg__eL4 span div {
+  left: -10px;
+  position: absolute;
+  top: 0px;
+}
+.bCtg__eL2.mBold span div,
+.bCtg__eL2.mSelected span div,
+.bCtg__eL3.mBold span div,
+.bCtg__eL3.mSelected span div,
+.bCtg__eL4.mBold span div,
+.bCtg__eL4.mSelected span div {
+  visibility: hidden;
+}
+.catProductNum {
+  font-size: 14px;
+  padding: 11px 0px 3px;
+}
+.mSelected,
+.mSelected b {
+  background: @firmOrange;
+  color: @white;
+}
+.bigfilter {
+  margin-bottom: 15px;
+  &.width450{
+    dt,ul {
+      float: left;
+      width: 100%;
+    }
+    ul {
+      float: left;
+      width: 50%;
+    }
+  }
+  dt {
+    background: url("@{leftNavSprite-url}") no-repeat scroll 11px -129px transparent;
+    border-top: 1px solid @typLightGray;
+    cursor: pointer;
+    font-weight: bold;
+    padding: 7px 0px 8px;
+    &.current {
+      background-position: 11px -82px;
+    }
+    b {
+      background: url("@{base-url}/common/img/questionIcon.png") no-repeat;
+      display: inline-block;
+      height: 11px;
+      margin-left: 5px;
+      vertical-align: middle;
+      width: 14px;
+    }
+    div.pr {
+      display: inline;
+    }
+  }
+  dd {
+    display: none;
+    ul {
+      padding-bottom: 10px;
+    }
+  }
+  li {
+    cursor: pointer;
+    margin-bottom: 1px;
+    padding: 2px 5px 3px 29px;
+    &:hover {
+      background-color: @typLightGray;
+    }
+    label {
+      cursor: pointer;
+      display: block;
+      font-size: 12px;
+    }
+  }
+}
+.bSpec {
+  .rounded(5px);
+  border: 1px solid #f99b1c;
+  margin: 15px 0px;
+  .filterHeader {
+    .border-radius(2px 2px 0px 0px);
+    border-top:none;
+    background: #f99b1c;
+    color: @white;
+    cursor: default;
+    font: bold 14px Tahoma, sans-serif;
+    height: 24px;
+    margin: 0px 0px 15px;
+    padding: 6px 0px 0px 10px;
+    position: relative;
+    i {
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      border-top: 6px solid #f99b1c;
+      bottom: -6px;
+      display: block;
+      left: 8px;
+      position: absolute;
+    }
+  }
+  .pb10 {
+    border-top: 1px solid @typLightGray;
+    margin-bottom: 10px;
+    padding: 15px 0px 5px 10px;
+  }
+  dt {
+    font-weight: bold;
+    padding-left: 10px;
+  }
+  li {
+    padding: 5px 5px 5px 35px;
+  }
+}
+/*.bigfilter DT.first {
+  border: 0px;
+}
+*/
+
+.bSlide .pb5,
+.bSlide .pb5 span {
+  text-align: center;
+}
+.bSlide .pb5 span {
+  /* color: @typGray; */
+  background: none repeat scroll 0px 0px transparent;
+  border: 0px none;
+  font-size: 11px;
+  height: 13px;
+  padding: 0px;
+}
+.sliderbox {
+  margin: 0px auto 10px;
+  width: 194px;
+}
+/*.sliderbox span {
+  display: block; padding-top: 8px; font-size: 10px; color: @typGray;
+}
+*/
+.filter-range {
+  .rounded(4px);
+  background: #ffe6b4 url("@{leftNavSprite-url}") no-repeat 0px -53px;
+  height: 16px;
+  position: relative;
+  div {
+    background: url("@{leftNavSprite-url}") no-repeat 0px -69px;
+    bottom: 0px;
+    height: 80%;
+    position: absolute;
+    z-index: 1;
+  }
+  a {
+    background: url("@{leftNavSprite-url}") no-repeat -18px 0px;
+    cursor: default;
+    height: 24px;
+    margin-left: -7px;
+    outline: none;
+    position: absolute;
+    top: 0px;
+    width: 15px;
+    z-index: 2;
+  }
+}
+.filterresult {
+  .rounded(5px);
+  .box-shadow(0px 0px 9px @typBoxShadowColor);
+  background-color: @white;
+  border: 2px solid @firmOrange;
+  cursor: pointer;
+  display: none;
+  font-weight: normal;
+  left: 215px;
+  margin-top:-12px;
+  padding: 4px;
+  position: absolute;
+  white-space: nowrap;
+  z-index: 10;
+  .corner {
+    border-bottom: 10px solid transparent;
+    border-right: 10px solid @firmOrange;
+    border-top: 10px solid transparent;
+    height: 0;
+    left: -11px;
+    position: absolute;
+    top: 9px;
+    width: 0;
+    div{
+      border-bottom: 9px solid transparent;
+      border-right: 9px solid @white;
+      border-top: 9px solid transparent;
+      position: absolute;
+      top:-9px;
+      left:3px;
+    }
+  }
+  a {
+    color: @firmOrange;
+    font-weight: bold;
+    text-decoration: underline;
+  }
+}
+label.checkbox span.holder {
+  background: url("@{leftNavSprite-url}") 0px 0px no-repeat;
+  height: 32px;
+}
+label.radio span.holder {
+  background: url("@{leftNavSprite-url}") 0px 0px no-repeat;
+  height: 32px;
+}
+label.checkbox:hover span.holder,
+label.radio:hover span.holder {
+  top: 0px !important;
+}
+label.checked span.holder {
+  top: -16px !important;
+}
+label.checked:hover span.holder {
+  top: -16px !important;
+}
+input.hiddenCheckbox {
+  left: -10000px;
+  position: absolute;
+}
+label.prettyCheckbox {
+  lline-height: 19px;
+}
+label.prettyCheckbox span.holderWrap {
+  display: block;
+  float: left;
+  margin: 1px 5px 0px -18px;
+  overflow: hidden;
+  position: relative;
+}
+label.prettyCheckbox span.holder {
+  display: block;
+  left: 0px;
+  position: absolute;
+  top: 0px;
+}
+label.checked {
+  color: @firmOrange;
+}

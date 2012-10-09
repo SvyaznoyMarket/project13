@@ -75,6 +75,18 @@ ADRIVER
   ,Counters::getParam('productId'), Counters::getParam('categoryId'), Counters::getParam('productId'), Counters::getParam('categoryId')
 );
 
+Counters::$counters['AdriverOrder'] = sprintf(<<<ADRIVER_ORDER
+<div id="adriverOrder" data-vars='%s' class="jsanalytics"></div>
+ADRIVER_ORDER
+  ,Counters::getParam('jsonOrderData')
+);
+
+Counters::$counters['HeiasOrder'] = sprintf(<<<HEIAS_ORDER
+<div id="heiasComplete" data-vars='%s' class="jsanalytics"></div>
+HEIAS_ORDER
+  ,Counters::getParam('jsonOrderData')
+);
+
 Counters::$counters['AdHands'] = <<<ADHANDS
 <!-- AdHands -->
     <script type="text/javascript" src="http://sedu.adhands.ru/js/counter.js"></script>
@@ -126,6 +138,18 @@ Counters::$counters['googleAnalytics'] = <<<GOOGLE_ANALYTICS
   </script>
 GOOGLE_ANALYTICS;
 
+Counters::$counters['gooReMaQuickOrder'] = <<<gooReMaQuickOrder
+<div id="gooReMaQuickOrder" class="jsanalytics"></div>
+gooReMaQuickOrder;
+
+Counters::$counters['EverestTech'] = sprintf(<<<EVERESTTECH
+<!-- Efficient Frontiers -->
+  <img src='http://pixel.everesttech.net/3252/t?ev_Orders=0&amp;ev_Revenue=0&amp;ev_Quickorders=1&amp;ev_Quickrevenue=%s&amp;ev_transid=%s' width='1' height='1'/>
+EVERESTTECH
+  ,Counters::getParam('orderData')->getTotalPrice(), Counters::getParam('orderData')->getNumber()
+);
+
+
 Counters::$blocks['mainPageHeader'] = array(
   'googleAnalytics'
 );
@@ -137,4 +161,11 @@ Counters::$blocks['mainPage'] = array(
   'Admitad',
   'Heias',
   'Adriver'
+);
+
+Counters::$blocks['order1ClickSuccess'] = array(
+  'gooReMaQuickOrder',
+  'AdriverOrder',
+  'HeiasOrder',
+  'EverestTech'
 );

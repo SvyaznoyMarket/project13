@@ -77,7 +77,7 @@ class ProductTable extends myDoctrineTable
 
     $q = $this->createQuery('product');
 
-    //$q->leftJoin('product.State productState WITH productState.region_id = ?', $params['region_id']);
+    /*$q->leftJoin('product.State productState WITH productState.region_id = ?', $params['region_id']);
 
     if ('list' == $params['view'])
     {
@@ -95,7 +95,7 @@ class ProductTable extends myDoctrineTable
     if ($params['is_instock'])
     {
       $q->addWhere('IFNULL(productState.is_instock, product.is_instock) = ?', true);
-    }
+    }*/
 
     if ($params['with_line'])
     {
@@ -126,7 +126,7 @@ class ProductTable extends myDoctrineTable
       $q->addWhere('product.model_id IS NULL OR product.is_model = ?', 1);
     }
 
-    $q->orderBy('product.is_instock DESC, product.score DESC');
+    //$q->orderBy('product.is_instock DESC, product.score DESC');
 
     return $q;
   }

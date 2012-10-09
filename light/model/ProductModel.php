@@ -12,6 +12,7 @@ require_once(Config::get('rootPath').'system/App.php');
 require_once(Config::get('rootPath').'lib/TimeDebug.php');
 require_once(Config::get('viewPath').'dataObject/product/ProductShortData.php');
 require_once(Config::get('viewPath').'dataObject/product/ProductData.php');
+require_once(Config::get('rootPath').'/lib/log4php/Logger.php');
 //require_once(Config::get('viewPath').'dataObject/PromoData.php');
 
 class ProductModel
@@ -19,6 +20,7 @@ class ProductModel
 
   /**
    * @param int[] $idList
+   * @param bool $loadDynamic
    * @return ProductData[]
    */
   public function getProductsByIdList($idList, $loadDynamic = true){
@@ -57,6 +59,49 @@ class ProductModel
 
     return $list;
   }
+
+  /**
+   * @param string[] $tokenList
+   * @param bool $loadDynamic
+   * @return ProductData[]
+   */
+  public function getProductsByTokenList($tokenList, $loadDynamic = true){
+    $tokens = array();
+    foreach($tokenList as $token){
+      $tokens[] = $token;
+    }
+    $tokens = array_unique($tokens);
+
+    if (count($tokens) < 1){
+      return array();
+    }
+
+    TimeDebug::start('ProductModel:getProductsByIdList:clientV2');
+
+    $data = array();
+    $callback = function($response) use (&$data)
+    {
+      if (empty($data))
+        $data = $response;
+      else // array_merge do not combine equals keys
+        foreach ($response as $key => $value)
+          $data[$key] = array_merge($data[$key], $value);
+    };
+
+
+    App::getCoreV2()->addQuery('product/get-static', array('slug' => $tokens, 'geo_id' => App::getCurrentUser()->getRegion()->getId()), array(), $callback);
+    if ($loadDynamic)
+      App::getCoreV2()->addQuery('product/get-dynamic', array('slug' => $tokens, 'geo_id' => App::getCurrentUser()->getRegion()->getId()), array(), $callback);
+    App::getCoreV2()->execute();
+    $list = array();
+    foreach ($data as $item)
+      $list[] = $this->create($item);
+
+    TimeDebug::end('ProductModel:getProductsByIdList:clientV2');
+
+    return $list;
+  }
+
 
   /**
    * @param int[] $idList

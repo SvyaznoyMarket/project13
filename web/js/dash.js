@@ -24,17 +24,6 @@ $(document).ready(function(){
 	}
 	ltbx = new Lightbox( $('.lightboxinner'), lbox )
 
-	/* draganddrop */
-	var draganddrop = new DDforLB( $('.allpageinner'), ltbx )
-	$('.boxhover[ref] .photo img').live('mousedown', function(e){
-			e.stopPropagation()
-			e.preventDefault()
-			if(e.which == 1)
-				draganddrop.prepare( e.pageX, e.pageY, parseItemNode(currentItem) ) // if delta then d&d
-	})
-	$('.boxhover[ref] .photo img').live('mouseup', function(e){
-		draganddrop.cancel()
-	})
 	/* ---- */
 	$.getJSON( shortinfo, function(data) {
 			if( data.success ) {
@@ -134,6 +123,7 @@ $(document).ready(function(){
 					$('.boxhover .mainImg', $(self)).css({'width': w + 3, 'height': h + 3 , 'top':'-1px'})
 					$(self).css( {'position':'relative', 'z-index':2 })
 					$(self).children().fadeOut()
+					//$(self).find('.goodsbar.mSmallBtns.mR').fadeIn();
 					$('.boxhover', self).fadeIn(200)
 				}
 			}
@@ -152,8 +142,8 @@ $(document).ready(function(){
 				var h = im.attr('height')*1
 				$('.boxhover .mainImg', self).css({'width': w + 3, 'height': h + 3})
 				$(self).css( 'z-index',1 )
-
 				$(self).children().not('.boxhover').fadeIn()
+				//$(self).find('.goodsbar.mSmallBtns.mR').fadeOut();
 				$('.boxhover', self).fadeOut('slow')
 			}
 			//currentItem = 0
@@ -164,6 +154,20 @@ $(document).ready(function(){
 	$('.boxhover .lt').live('click', function(e) {
 		if( $(this).attr('data-url') )
 			window.location.href = $(this).attr('data-url')
+	})
+	/* GA tracks */
+	var accessoriesMsg = {
+		uri: window.location.pathname,
+		atcl: $('.bGood__eArticle span:last').text().replace(/[^0-9\-]/g, '')
+	}
+
+	$('.bigcarousel').eq(0).bind('click', function(e) {
+		if( _gaq )
+			_gaq.push(['_trackEvent', 'accessories_up', accessoriesMsg[atcl], accessoriesMsg[uri] ])
+	})
+	$('.bigcarousel').eq(1).bind('click', function(e) {
+		if( _gaq )
+			_gaq.push(['_trackEvent', 'accessories_down', accessoriesMsg[atcl], accessoriesMsg[uri] ])
 	})
 
 	/* F1 */
@@ -242,6 +246,149 @@ $(document).ready(function(){
 			return false
 		})
 	}
+
+	/* draganddrop */
+	var draganddrop = new DDforLB( $('.allpageinner'), ltbx )
+	$('.boxhover[ref] .photo img').live('mousedown', function(e){
+			e.stopPropagation()
+			e.preventDefault()
+			if(e.which == 1)
+				draganddrop.prepare( e.pageX, e.pageY, parseItemNode(currentItem) ) // if delta then d&d
+	})
+	$('.boxhover[ref] .photo img').live('mouseup', function(e){
+		draganddrop.cancel()
+	})
+	
+	function DDforLB( outer , ltbx ) {	
+		if (! outer.length ) 
+			return null
+			
+		var self     = this
+		var lightbox = ltbx
+		var isactive = false
+		var icon     = null
+		var margin   = 25 // gravitation parameter
+		var wdiv2    = 30 // draged box halfwidth
+		var containers = $('.dropbox')
+		if (! containers.length ) 
+			return null
+		var abziss 	 = []		
+		var ordinat  = 0
+		var itemdata = null
+		
+		/* initia */
+		var divicon = $('<div>').addClass('dragbox').css('display','none')
+		var icon = $('<div>')
+		divicon.append( icon )
+		$(outer).append( divicon )
+		var shtorka = $('<div>').addClass('graying')
+				.css( {'display':'none', 'opacity': '0.5'} ) //ie special							
+		$(outer).append( shtorka )
+		var shtorkaoffset = 0
+		
+		this.cancel = function() {
+			$(document).unbind('mousemove.dragitem')
+		}
+		
+		$(document).bind('mouseup', function(e) {
+		if(e.target.id == 'dragimg')
+			self.cancel()
+		})
+		
+		this.prepare = function( pageX, pageY, item ) {
+			itemdata = item
+			if(  $( '.boxhover[ref='+ itemdata.id +'] a.link1').hasClass('active') ) 
+				return
+			$(document).bind('mousemove.dragitem', function(e) {
+				e.preventDefault()
+				if(! isactive) {
+					if( Math.abs(pageX - e.pageX) > margin || Math.abs(pageY - e.pageY) > margin ) {
+						self.turnon(e.pageX, e.pageY)
+						isactive = true
+					}
+				} else {		
+					icon.css({'left':e.pageX - wdiv2, 'top':e.pageY - shtorkaoffset - wdiv2 })
+					ordinat = $(containers[0]).offset().top
+
+					if( e.pageY + wdiv2 > ordinat - margin &&
+						e.pageX + wdiv2 > abziss[0] - margin && e.pageX - 30 < abziss[0] + 70 + margin ) { // mouse in HOT area
+	//					e.pageX + wdiv2 > abziss[0] - margin && e.pageX - 30 < abziss[2] + 70 + margin ) { // mouse in HOT area
+						/*var cindex = 3
+						if( e.pageX  < abziss[0] + 70 + margin )
+							cindex = 1
+						else if( e.pageX < abziss[1]  + 70 + margin )
+							cindex = 2*/
+						
+						lightbox.toFire( 3 ) // to burn the box !
+					} else
+						lightbox.putOutBoxes() // run checking is inside
+				}
+			})		
+		}
+		
+		this.turnon = function( pageX, pageY ) {
+			lightbox.clear()
+			shtorka.show()
+			shtorkaoffset = shtorka.offset().top
+			icon.html( $('<img>').css({'width':60, 'height':60}).attr({'id':'dragimg','width':60, 'height':60, 'alt':'', 'src': itemdata.img }) )
+			icon.css({'left':pageX - wdiv2, 'top':pageY - shtorkaoffset - wdiv2 })
+
+			divicon.show()
+			lightbox.getContainers()		
+			for(var i=0; i < containers.length; i++) {
+				abziss[i] = $(containers[i]).offset().left
+			}	
+			$(document).bind('mouseup.dragitem', function() {
+				if( fbox = lightbox.gravitation( ) ) {
+					//$(document).unbind('mousemove')
+					$(document).unbind('.dragitem')
+					icon.animate( {
+	//						left: abziss[ fbox - 1 ] + 5,
+							left: abziss[ 0 ] + 5,
+							top: ordinat - shtorkaoffset + 5
+						} , 400, 
+						function() { self.finalize( fbox ) } )
+				} else 
+					self.turnoff()
+			})		
+		}
+		
+		this.turnoff = function() {
+			isactive = false
+			shtorka.fadeOut()
+			divicon.hide()
+			lightbox.hideContainers()
+			//$(document).unbind('mousemove')
+			$(document).unbind('.dragitem')
+		}
+		
+		this.finalize = function( actioncode ) {
+			setTimeout(function(){
+				self.turnoff()
+				switch( actioncode ) {
+					case 1: //comparing
+						lightbox.getComparing( itemdata )
+						break
+					case 2: //wishes 
+						lightbox.getWishes( itemdata )
+						break
+					case 3: //basket					
+						$.getJSON( $( '.boxhover[ref='+ itemdata.id +'] a.link1').attr('href'), function(data) {
+							if ( data.success && ltbx ) {
+								var tmpitem = itemdata
+								tmpitem.vitems = data.data.full_quantity
+								tmpitem.sum = data.data.full_price
+								ltbx.getBasket( tmpitem )
+							}	
+						})
+						//lightbox.getBasket( itemdata )
+						break
+				}
+			}, 400)
+		}
+		
+	} // DDforLB object	
+
 	/* buy bottons */
 	var markPageButtons = function(){
 		var carturl = $('.lightboxinner .point2').attr('href')

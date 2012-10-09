@@ -1,0 +1,125 @@
+@basketSprite-url:"@{base-url}/basket/img/basketSprite.png";
+.basketline {
+  border-bottom: 1px solid @typLightGray;
+  float: left;
+  margin-bottom: 20px;
+  padding-bottom: 25px;
+  width: 100%;
+}
+.basketleft {
+  float: left;
+  width: 120px;
+}
+.basketright {
+  float: left;
+  padding-left: 20px;
+  width: 780px;
+}
+.goodstitle {
+  float: left;
+  width: 329px;
+}
+.basketinfo {
+  float: right;
+  width: 451px;
+  .left {
+    float: left;
+    margin-right: 20px;
+    text-align: right;
+    width: 215px;
+  }
+  .right {
+    float: left;
+    width: 216px;
+  }
+  .button {
+    font-weight: bold;
+  }
+}
+.numerbox {
+  background: url("@{basketSprite-url}") no-repeat 0 0;
+  height: 25px;
+  width: 109px;
+  b {
+    cursor: pointer;
+    display: block;
+    float: left;
+    height: 25px;
+    width: 27px;
+  }
+  span {
+    display: block;
+    float: left;
+    padding-top: 4px;
+    text-align: center;
+    width: 55px;
+  }
+}
+/* backert service */
+.bBacketServ {
+  background: url("@{basketSprite-url}") -109px 0px no-repeat;
+  border: 1px solid @typLightGray;
+  padding: 10px 10px 10px 75px;
+  .whitelink {
+    font-weight: normal;
+  }
+  .link1 {
+    color: @firmBlue;
+    margin-top: 8px;
+  }
+  th {
+    color: @firmBlue;
+    font-family:Tahoma, sans-serif;
+    font-size:14px;
+    line-height:20px;
+    padding-bottom: 5px;
+    text-align: left;
+  }
+  &.mSmall {
+    display: inline-block;
+    *display: inline;
+    zoom: 1;
+    td {
+      font-family:Tahoma, sans-serif;
+      font-size:11px;
+      line-height:13px;
+      
+    }
+  }
+  &.mBig {
+    td {
+      padding-bottom: 5px;
+      &:first-child {
+        font-family:Tahoma, sans-serif;
+        font-size:14px;
+        font-weight:bold;
+        width: 360px;
+      }
+    }
+    .mPrice {
+      font-family:Tahoma, sans-serif;
+      font-size:14px;
+      text-align: right;
+      width: 105px;
+    }
+    .mEdit {
+      font-family:Tahoma, sans-serif;
+      font-size:11px;
+      padding: 0px 0px 0px 20px;
+      span a {
+        color: @typGray;
+        margin: 0px 2px;
+        text-decoration: underline;
+      }
+    }
+  }
+}
+.bBacketServ__eMore {
+  color: @typGray;
+  font-family:Tahoma, sans-serif;
+  font-size:11px;
+  text-decoration: underline;
+}
+.mVAMiddle {
+  vertical-align: middle;
+}

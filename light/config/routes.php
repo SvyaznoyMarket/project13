@@ -10,7 +10,8 @@ namespace light;
 return array(
   array('/user/shortinfo'                           , 'user.getShortInfo'),
   array('/product/delivery1click'                   , 'delivery.ProductDeliveryJson'),
-  array('/product/delivery-info/<productId>'        , 'delivery.ProductListShortDeliveryJson'),
+  array('/orders/1click'                            , 'order.oneClick'),
+  array('/product/delivery-info/<productId>'       , 'delivery.ProductListShortDeliveryJson'),
   array('/product/delivery-info'                    , 'delivery.ProductListShortDeliveryJson'),
   array('/cart/clear'                                  , 'cart.clear'),
   array('/cart/add/<productId>/_quantity/<quantity>'   , 'cart.setProductQuantity'),
@@ -40,7 +41,7 @@ return array(
   array('/cart/'                             , 'cart.index'), //@TODO реализовать, пока для генерации урлов
   array('/login/<provider>'                  , 'user.signin'), //@TODO реализовать, пока для генерации урлов
   array('/logout'                            , 'user.logout'), //@TODO реализовать, пока для генерации урлов
-  array('/region/autocomplete/<type>'        , 'region.autocomplete'), //@TODO реализовать, пока для генерации урлов
+  array('/region/autocomplete'               , 'region.autocomplete'), //@TODO реализовать, пока для генерации урлов
   array('/region/change/<region>'            , 'region.change'), //@TODO реализовать, пока для генерации урлов
 
   array('/f1/show/<service>'                 , 'service.show'), //@TODO реализовать, пока для генерации урлов

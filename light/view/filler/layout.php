@@ -16,7 +16,7 @@ class FillerLayout implements IFiller
         // $renderer->addCss('font.css');
         $renderer->addCss('jquery-ui-1.8.20.custom.css');
         // $renderer->addCss('navy.css');
-        $renderer->addCss('skin/inner.css');
+        $renderer->addCss('skin/inner.css?2012-10-01');
 
         $renderer->addJS('jquery-1.6.4.min.js');
 
@@ -44,6 +44,17 @@ class FillerLayout implements IFiller
 
         $regionTopList = App::getRegion()->getShopAvailable();
         $renderer->addParameter('regionTopList', $regionTopList);
+
+        $num_row = 3;
+
+        $columns_count = array();
+        $count = count($regionTopList);
+
+        for ($i = 0; $i < $num_row; $i++)
+        {
+            $columns_count[$i] = (int)floor($count / $num_row) + (($count % $num_row) > $i ? 1 : 0);
+        }
+        $renderer->addParameter('columns_count', $columns_count);
 
         if(Config::isDebugMode())
         {

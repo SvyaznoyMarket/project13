@@ -375,57 +375,6 @@ $(document).ready(function(){
 		}
 	})
 	
-	function getRegionsOld() { //deprecated
-		$.getJSON( '/region/init', function(data) {
-			if( !data.success ) 
-				return false
-			var cities = data.data
-			var cityPopup = $('<div class="bCityPopupWrap">').html(
-				'<div class="hideblock bCityPopup">'+
-					'<i title="Закрыть" class="close">Закрыть</i>'+
-					'<div class="title">Привет! Из какого вы города?</div>'+
-				'</div>'+
-			'</div>')
-			for( var ci = 0, cl = cities.length; ci < cl; ci++ ) {
-				if( typeof( cities[ci].link ) === 'undefined' || typeof( cities[ci].name ) === 'undefined' )
-					continue
-				var cnode = $('<div>').append( $('<a>').attr( 'href', cities[ci].link ).text( cities[ci].name ) )
-				if( typeof( cities[ci].is_active ) !== 'undefined' ) {
-					cnode.addClass('bCityPopup__eCurrent')
-					cityPopup.find('.title').after( cnode )
-				} else {
-					cnode.addClass('bCityPopup__eBlock')
-					cityPopup.find('div:first').append( cnode )
-				}
-			}
-			cityPopup.css('display','none').appendTo( $('body') )
-			paintRegions()
-		})	
-	}
-	
-	function paintRegions() {
-		$('.bCityPopupWrap').lightbox_me({ centered: true })
-		/*$('.graying').show()
-		$('.bCityPopupWrap').show()
-		$('body').delegate( '.bCityPopupWrap .close', 'click', function() {
-			$('.graying').hide()
-			$('.bCityPopupWrap').hide()
-		})
-		*/
-	}
-	/*
-	$('body').delegate('#jsregion, .jsChangeRegion', 'click', function() {
-		if( !$(this).data('run') ) {
-			$(this).data('run', true)
-			getRegions()
-		} else {
-			if( $('.bCityPopupWrap').length )
-				paintRegions()
-		}
-		return false
-	})
-	*/
-	
 	$('#jscity').autocomplete( {
 		autoFocus: true,
 		appendTo: '#jscities',
@@ -462,7 +411,7 @@ $(document).ready(function(){
 	})
 	
 	function getRegions() {
-		$('#region-block').lightbox_me( {
+		$('.popupRegion').lightbox_me( {
 			autofocus: true,
 			onClose: function() {			
 				if( !docCookies.hasItem('geoshop') ) {
@@ -484,6 +433,11 @@ $(document).ready(function(){
 			window.location = $(this).data('url')
 	})
 	
+	$('.inputClear').bind('click', function(e) {
+		e.preventDefault()
+		$('#jscity').val('')	
+  	})
+   
 	/* GEOIP fix */
 	if( !docCookies.hasItem('geoshop') ) {
 		getRegions()
@@ -542,7 +496,7 @@ $(document).ready(function(){
 		var form = $(this)
 		if (form.find('input:[name="q"]').val().length < 2)
 			return
-		if( form.find('input:[name="q"]').val() === 'Поиск среди 25 000 товаров' )
+		if( form.find('input:[name="q"]').val() === 'Поиск среди 30 000 товаров' )
 			return
 		var wholemessage = form.serializeArray()
 		function getSearchResults( response ) {
@@ -641,13 +595,14 @@ $(document).ready(function(){
     .bind('preview', function(e) {
         var el = $(e.target)
         var form = $(this)
+        var flRes = $('.filterresult');
         ajaxFilterCounter++
 		function getFiltersResult (result) {
 			ajaxFilterCounter--
 			if( ajaxFilterCounter > 0 )
 				return
 			if( result.success ) {
-                $('.product_count-block').remove()
+                flRes.hide();
                 switch (result.data % 10) {
                   case 1:
                     ending = 'ь';
@@ -669,7 +624,10 @@ $(document).ready(function(){
                 	firstli = el
                 else
 	                firstli = el.parent().find('> label').first()
-                firstli.after('<div class="filterresult product_count-block" style="display:block; padding: 4px; margin-top: -30px; cursor: pointer;"><i class="corner"></i>Выбрано '+result.data+' модел'+ending+'<br /><a>Показать</a></div>')
+                	$('.result', flRes).text(result.data);
+                	$('.ending', flRes).text(ending);
+                	flRes.css('top',firstli.offset().top-$('.product_filter-block').offset().top).show();
+                	
                 var localTimeout = null
                 $('.product_count-block')
 					.hover(
@@ -679,7 +637,7 @@ $(document).ready(function(){
 						},
 						function() {
 							localTimeout = setTimeout( function() {
-								$('.product_count-block').remove()
+								flRes.hide();
 							}, 4000  )
 						}
 						)
@@ -753,7 +711,7 @@ $(document).ready(function(){
 			var dmenu = $(self).position().left*1 + $(self).width()*1 / 2 + 5
 			var punkt = $( '#extramenu-root-'+ $(self).attr('id').replace(/\D+/,'') )
 			if( punkt.length && punkt.find('dl').html().replace(/\s/g,'') != '' )
-				punkt.show().find('.corner').css('left', dmenu)
+				punkt.show()//.find('.corner').css('left', dmenu)
 		}
 	}
 	if( clientBrowser.isTouch ) {

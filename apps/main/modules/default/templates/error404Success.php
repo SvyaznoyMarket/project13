@@ -5,7 +5,7 @@
   <title>Enter.ru</title>
   <meta name="description" content="" />
   <meta name="keywords" content="" />
-  <link href="/css/skin/inner.css" rel="stylesheet" type="text/css" />
+  <link href="/css/global.css" rel="stylesheet" type="text/css" />
 </head>
 <body class='b404'>
 <table class='b404InnerWrap'>
@@ -15,7 +15,7 @@
       <span>Упс! Запрашиваемая вами страница не найдена.</span>
       <h2><b>Вы легко можете найти то,<br> что искали!</b></h2>
       <form action="<?php echo url_for('search') ?>" method="get" id="searchForm">
-        <input id="searchStr" name="q" type='text' value='Поиск среди 25 000 тысяч товаров' onBlur="var field = document.getElementById('searchStr'); if(field.value == ''){field.value = 'Поиск среди 25 000 тысяч товаров'};return false;" onFocus="var field = document.getElementById('searchStr'); if(field.value == 'Поиск среди 25 000 тысяч товаров'){field.value = ''};return false;">
+        <input id="searchStr" name="q" type='text' value='Поиск среди 30 000 товаров' onBlur="var field = document.getElementById('searchStr'); if(field.value == ''){field.value = 'Поиск среди 30 000 товаров'};return false;" onFocus="var field = document.getElementById('searchStr'); if(field.value == 'Поиск среди 30 000 товаров'){field.value = ''};return false;">
         <a class='bOrangeButton' href onclick="document.getElementById('searchForm').submit(); return false;">Найти</a>
       </form><br>
       <span>или позвоните нам в контакт-cENTER <b>8 (800) 700 00 09</b><br> Звонок бесплатный. Радость в подарок.</span><br><br>
@@ -47,7 +47,7 @@
   _gaq.push(['_addOrganic', 'm.yandex.ru','query']);
   _gaq.push(['_trackPageview', '/page404'+location.pathname]);
   _gaq.push(['_trackPageLoadTime']);
-  (function() { var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true; ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js'; var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s); })();
+  (function() { var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true; ga.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'stats.g.doubleclick.net/dc.js'; var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s); })();
 </script>
 </body>
 </html>

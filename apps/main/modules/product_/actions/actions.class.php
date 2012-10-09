@@ -26,12 +26,10 @@ class product_Actions extends myActions
 
     $barcodeList = is_array($request['products']) ? $request['products'] : explode(',', $request['products']);
 
-    $idList = array();
-    foreach(ProductTable::getInstance()->getListByBarcodes($barcodeList, array('with_model' =>  true, )) as $siteProduct){
-      $idList[] = $siteProduct->core_id;
-    }
-    $productList = RepositoryManager::getProduct()->getListById($idList, true);
-    $this->forward404Unless(count($productList));
+    $this->forward404Unless((bool)$barcodeList);
+
+    $productList = RepositoryManager::getProduct()->getListByBarcode($barcodeList, true);
+    $this->forward404Unless((bool)$productList);
 
     $categoryMap = array();
     foreach($productList as $product){

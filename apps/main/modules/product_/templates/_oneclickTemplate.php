@@ -7,7 +7,7 @@
       <tr>
         <td class='bFast__eItem'>
           <div class='bFast__eItemWrap'>
-            <div class='bFast__eArrow'></div>
+            <div class='bFast__eArrow'><div></div></div>
             <div class='bFast__eNum'>Артикул #<span data-bind="text: shortcut"></span></div>
             <div class="bFast__eTitle"><a href="" data-bind="html: title"></a></div>
             <div class='bFast__eCenter'><img alt="" data-bind="attr: {src: icon}"/></div>
