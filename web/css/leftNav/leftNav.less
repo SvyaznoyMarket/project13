@@ -314,3 +314,52 @@ label.prettyCheckbox span.holder {
 label.checked {
   color: @firmOrange;
 }
+
+dd.bSpecSel {
+  background-color: #f4f4f4;
+  border-top: 1px solid @typLightGray;
+  display:block;
+  .mDisabled {
+    display: none;
+  }
+  a {
+    font-size: 12px;
+    font-family: Tahoma, sans-serif;
+  }
+  h3 {
+    font-weight: bold;
+    margin: 5px 0px;
+  }
+  ul {
+    list-style-type: none;
+    margin: 0px;
+    padding: 0px;
+    li {
+      padding: 3px 0px;
+      a {
+        color: @firmOrange;
+      }
+    }
+  }
+  .bSpecSel__eReset {
+    background: @firmOrange;
+    color: #fff;
+    display: inline-block;
+    *display: inline;
+    margin: 4px 0px 10px 11px;
+    padding: 3px 7px;
+    text-decoration: none;
+    zoom: 1;
+    &:hover {
+      color: #fff;
+      text-decoration: none;
+    }
+  }
+}
+dd.bSpecSel h3,
+dd.bSpecSel ul li a {
+  font-size:12px;
+  font-family:Tahoma, sans-serif;
+  padding: 0px 11px;
+  text-decoration: none;
+}

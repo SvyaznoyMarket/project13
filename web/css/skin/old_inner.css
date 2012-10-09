@@ -114,22 +114,6 @@
 */
 
 
-.bSpecSel{
-	background-color: #f4f4f4;
-	border-top: 1px solid #e6e6e6;
-	}
-	.bSpecSel.mDisabled{ display: none; }
-	.bSpecSel h3,
-	.bSpecSel ul li a{font: 12px Tahoma, sans-serif; padding: 0 11px; text-decoration: none;}
-	.bSpecSel a{ font: 12px Tahoma, sans-serif; }
-
-	.bSpecSel h3{ margin: 5px 0; font-weight:bold}
-	.bSpecSel ul{ margin: 0; list-style-type: none; }
-	.bSpecSel ul li{ padding: 3px 0; }
-	.bSpecSel ul li a{ color: #ffa901; }
-	.bSpecSel__eReset{ color: #fff; background: #ffa901; text-decoration: none; padding: 3px 7px; margin: 4px 0 10px 11px; display: inline-block; *display: inline; zoom: 1; }
-	.bSpecSel__eReset:hover{ color: #fff; text-decoration: none; }
-
 .prompting {display:none; position:absolute; left:-39px; top:13px; /*top:29px;*/ z-index:10; width:350px; padding:10px 15px 15px 15px; font-weight:normal; cursor:auto; background-color:#fff; border:2px solid #308fcf;
 	border-radius:5px;
 	-moz-border-radius:5px;
