@@ -40,4 +40,18 @@ class Helper {
     public function formatPrice($price) {
         return number_format($price, 0, ',', ' ');
     }
+
+    public function formatNumberChoice($text, array $replaces = array(), $number) {
+        static $instance;
+
+        if (!$instance) {
+            $instance = new \Util\ChoiceFormatter();
+        }
+
+        if ((bool)$replaces) {
+            $text = strtr($text, $replaces);
+        }
+
+        return $instance->format($text, $number);
+    }
 }

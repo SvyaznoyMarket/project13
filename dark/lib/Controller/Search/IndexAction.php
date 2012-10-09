@@ -17,12 +17,12 @@ class IndexAction {
 
         // параметры ядерного запроса
         $params = array(
-            'request'             => $searchQuery,
-            'type_id'             => 1, // тип искомых сущностей: 1 - товары
-            'geo_id'              => \App::user()->getRegion()->getId(),
-            'start'               => $offset,
-            'limit'               => $limit,
-            'use_mean'            => true,
+            'request'  => $searchQuery,
+            'type_id'  => 1, // тип искомых сущностей: 1 - товары
+            'geo_id'   => \App::user()->getRegion()->getId(),
+            'start'    => $offset,
+            'limit'    => $limit,
+            'use_mean' => true,
         );
         if ($categoryId) {
             $params['product_category_id'] = $categoryId;
@@ -39,6 +39,14 @@ class IndexAction {
         // mock
         //$result = json_decode(file_get_contents(\App::config()->dataDir . '/core/v2-search-get.json'), true)['result'];
         $result = $result[1];
+
+        // проверка на пустоту
+        if (empty($result['count'])) {
+            $page = new \View\Search\EmptyPage();
+            $page->setParam('searchQuery', $searchQuery);
+
+            return new \Http\Response($page->show());
+        }
 
         $forceMean = isset($result['forced_mean']) ? $result['forced_mean'] : false;
         $meanQuery = isset($result['did_you_mean']) ? $result['did_you_mean'] : '';
@@ -91,8 +99,8 @@ class IndexAction {
         // страница
         $page = new \View\Search\IndexPage();
         $page->setParam('searchQuery', $searchQuery);
-        $page->setParam('forceMean', $forceMean);
         $page->setParam('meanQuery', $meanQuery);
+        $page->setParam('forceMean', $forceMean);
         $page->setParam('productPager', $productPager);
         $page->setParam('categories', $categoriesById);
         $page->setParam('selectedCategory', $selectedCategory);
