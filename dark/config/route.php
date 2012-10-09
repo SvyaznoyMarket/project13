@@ -57,7 +57,7 @@ return array(
         'require' => array('productPath' => '[\w\d-_]+\/{1}[\w\d-_]+'),
     ),
     'product.delivery' => array(
-        'pattern' => '/product/delivery-info/{productId}',
+        'pattern' => '/product/delivery-info',
         'action'  => array('Product\DeliveryAction', 'execute'),
     ),
 

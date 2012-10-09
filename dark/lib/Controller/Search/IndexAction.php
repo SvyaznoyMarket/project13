@@ -59,9 +59,16 @@ class IndexAction {
         /** @var $selectedCategory \Model\Product\Category\Entity */
         $selectedCategory = $categoryId ? $categoriesById[$categoryId] : reset($categoriesById);
 
+        // вид товаров
+        $productView = $request->get('view', $selectedCategory->getProductView());
+
         // товары
         $productRepository = \RepositoryManager::getProduct();
-        $productRepository->setEntityClass('\\Model\\Product\\CompactEntity');
+        $productRepository->setEntityClass(
+            \Model\Product\Category\Entity::PRODUCT_VIEW_EXPANDED == $productView
+            ? '\\Model\\Product\\ExpandedEntity'
+            : '\\Model\\Product\\CompactEntity'
+        );
         $products = $productRepository->getCollectionById($result['data']);
         $productPager = new \Iterator\EntityPager($products, $selectedCategory->getProductCount());
         $productPager->setPage($pageNum);
@@ -72,6 +79,15 @@ class IndexAction {
             throw new \Exception\NotFoundException(sprintf('Неверный номер страницы "%s".', $productPager->getPage()));
         }
 
+        if ($request->isXmlHttpRequest()) {
+            return new \Http\Response(\App::templating()->render('product/_list', array(
+                'page'   => new \View\DefaultLayout(),
+                'pager'  => $productPager,
+                'view'   => $productView,
+                'isAjax' => true,
+            )));
+        }
+
         // страница
         $page = new \View\Search\IndexPage();
         $page->setParam('searchQuery', $searchQuery);
@@ -80,6 +96,7 @@ class IndexAction {
         $page->setParam('productPager', $productPager);
         $page->setParam('categories', $categoriesById);
         $page->setParam('selectedCategory', $selectedCategory);
+        $page->setParam('productView', $productView);
 
         return new \Http\Response($page->show());
     }

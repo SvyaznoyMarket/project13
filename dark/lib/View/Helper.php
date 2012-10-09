@@ -24,6 +24,11 @@ class Helper {
             $params[$k] = $v;
         }
         foreach ($replaces as $k => $v) {
+            if (null === $v) {
+                if (isset($params[$k])) unset($params[$k]);
+                continue;
+            }
+
             $params[$k] = $v;
         }
 

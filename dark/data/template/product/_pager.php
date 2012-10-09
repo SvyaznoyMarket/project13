@@ -23,11 +23,9 @@ if (!isset($category)) $category = null;
 
 <? if ($pager->hasPages()): ?>
 <div class="fr allpager mBtn" alt="все товары в категории" title="все товары в категории"
-    data-url="<?= $request->getRequestUri() ?>"
+    data-url="<?= $page->helper->replacedUrl(array('page' => null)) ?>"
     data-page="<?= $pager->getPage() ?>"
-    data-mode="<?= $view ?>"
     data-lastpage="<?= $pager->getLastPage() ?>"
-    data-filter=""
 ></div>
 <?= $page->render('_pagination', array('pager' => $pager)) ?>
 <? endif ?>
@@ -48,11 +46,9 @@ if (!isset($category)) $category = null;
 
 <? if ($pager->hasPages()): ?>
 <div class="fr allpager mBtn" alt="все товары в категории" title="все товары в категории"
-     data-url="<?= $request->getRequestUri() ?>"
+     data-url="<?= $page->helper->replacedUrl(array('page' => null)) ?>"
      data-page="<?= $pager->getPage() ?>"
-     data-mode="<?= $view ?>"
      data-lastpage="<?= $pager->getLastPage() ?>"
-     data-filter=""
-        ></div>
+></div>
 <?= $page->render('_pagination', array('pager' => $pager)) ?>
 <? endif ?>

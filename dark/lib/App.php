@@ -120,6 +120,20 @@ class App {
     }
 
     /**
+     * @static
+     * @return Templating\PhpEngine
+     */
+    public static function templating() {
+        static $instance;
+
+        if (!$instance) {
+            $instance = new \Templating\PhpEngine(self::config()->dataDir . '/template');
+        }
+
+        return $instance;
+    }
+
+    /**
      * @param string $name
      * @return \Core\ClientV2
      */
