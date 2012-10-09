@@ -58,6 +58,10 @@ class App {
     }
 
     public static function shutdown() {
+        foreach (\Debug\Timer::getAll() as $timerName => $timer) {
+            self::logger('timer')->info($timerName . ' ' . $timer['total'] . ' [' . $timer['count'] . ']');
+        }
+
         foreach (self::$loggers as $logger) {
             $logger->dump();
         }
@@ -169,7 +173,8 @@ class App {
                     self::$loggers[$name] = new \Logger\DefaultLogger(new \Logger\Appender\FileAppender(self::$config->logDir . '/core_v2.log'), $name, $config[$name]['level']);
                     break;
                 case 'timer':
-                    self::$loggers[$name] = new \Logger\TimerLogger(new \Logger\Appender\FileAppender(self::$config->logDir . '/timer.log'), $name, $config[$name]['level']);
+                    //self::$loggers[$name] = new \Logger\TimerLogger(new \Logger\Appender\FileAppender(self::$config->logDir . '/timer.log'), $name, $config[$name]['level']);
+                    self::$loggers[$name] = new \Logger\DefaultLogger(new \Logger\Appender\FileAppender(self::$config->logDir . '/timer.log'), $name, $config[$name]['level']);
                     break;
                 default:
                     self::$loggers[$name] = new \Logger\DefaultLogger(new \Logger\Appender\FileAppender(self::$config->logDir . '/app.log'), $name, $config[$name]['level']);

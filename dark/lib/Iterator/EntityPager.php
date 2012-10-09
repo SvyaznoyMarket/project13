@@ -24,7 +24,7 @@ class EntityPager implements \Iterator {
 
     public function setPage($page) {
         $this->page = (int)$page;
-        $this->lastPage = ceil($this->count / $this->maxPerPage);
+        $this->calculateLastPage();
     }
 
     public function getPage() {
@@ -41,6 +41,7 @@ class EntityPager implements \Iterator {
     public function setMaxPerPage($maxPerPage)
     {
         $this->maxPerPage = (int)$maxPerPage;
+        $this->calculateLastPage();
     }
 
     /**
@@ -58,27 +59,31 @@ class EntityPager implements \Iterator {
         return $this->lastPage > 1;
     }
 
+    private function calculateLastPage() {
+        $this->lastPage = ceil($this->count / $this->maxPerPage);
+    }
+
     public function count() {
         return $this->count;
     }
 
-    function rewind() {
+    public function rewind() {
         $this->position = 0;
     }
 
-    function current() {
+    public function current() {
         return $this->collection[$this->position];
     }
 
-    function key() {
+    public function key() {
         return $this->position;
     }
 
-    function next() {
+    public function next() {
         ++$this->position;
     }
 
-    function valid() {
+    public function valid() {
         return isset($this->collection[$this->position]);
     }
 }

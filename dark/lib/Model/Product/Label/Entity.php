@@ -45,4 +45,18 @@ class Entity {
     public function getImage() {
         return $this->image;
     }
+
+    /**
+     * @param int $size
+     * @return null|string
+     */
+    public function getImageUrl($size = 0) {
+        if ($this->image) {
+            $urls = \App::config()->productLabel['url'];
+
+            return $urls[$size] . $this->image;
+        } else {
+            return null;
+        }
+    }
 }

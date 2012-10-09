@@ -24,11 +24,15 @@ class DefaultLayout {
     protected $javascripts = array();
     /** @var string */
     protected $layout;
+    /** @var Helper */
+    public $helper;
 
     public function __construct() {
         $this->templateDir = \App::config()->dataDir . '/template';
 
         $this->layout = 'layout-default-twoColumn';
+
+        $this->helper = new Helper();
 
         $this->setTitle('Enter');
         $this->addMeta('yandex-verification', 'enter');
@@ -84,7 +88,7 @@ class DefaultLayout {
         $return = ob_get_clean();
 
         $spend = \Debug\Timer::stop('template:' . $template);
-        \App::logger('view')->info('Done render template '.$template.' '.$spend);
+        \App::logger('view')->info('End render template '.$template.' '.$spend);
 
         return $return;
     }

@@ -7,12 +7,6 @@ return array(
         'action'  => array('Main\IndexAction', 'execute'),
     ),
 
-    // корзина
-    'cart' => array(
-        'pattern' => '/cart',
-        'action'  => array('Cart\Action', 'executeIndex'),
-    ),
-
     // поиск
     'search' => array(
         'pattern' => '/search',
@@ -45,6 +39,12 @@ return array(
         'action'  => array('Region\Action', 'change'),
     ),
 
+    // магазины
+    'shop' => array(
+        'pattern' => '/shops',
+        'action'  => array('Shop\IndexAction', 'execute'),
+    ),
+
     // каталог товаров
     'product.category' => array(
         'pattern' => '/catalog/{categoryPath}/',
@@ -61,9 +61,13 @@ return array(
         'action'  => array('Product\DeliveryAction', 'execute'),
     ),
 
-    // магазины
-    'shop' => array(
-        'pattern' => '/shops',
-        'action'  => array('Shop\IndexAction', 'execute'),
+    // корзина
+    'cart' => array(
+        'pattern' => '/cart',
+        'action'  => array('Cart\IndexAction', 'execute'),
+    ),
+    'cart.product.add' => array(
+        'pattern' => '/cart/add/{productId}/_quantity/{quantity}', // TODO: сделать '/cart/add-product/{productId}/{quantity}'
+        'action'  => array('Cart\ProductAction', 'add'),
     ),
 );

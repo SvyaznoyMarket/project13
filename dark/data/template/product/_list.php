@@ -18,16 +18,16 @@ if (!isset($isAjax)) $isAjax = false;
 <? else: ?>
     <?php switch ($view) {
         case 'compact':
-            $page->render('product/list/_compact', array('pager' => $pager, 'isAjax' => $isAjax));
+            echo $page->render('product/list/_compact', array('pager' => $pager, 'isAjax' => $isAjax));
             break;
         case 'expanded':
-            $page->render('product/list/_expanded', array('pager' => $pager, 'isAjax' => $isAjax));
+            echo $page->render('product/list/_expanded', array('pager' => $pager, 'isAjax' => $isAjax));
             break;
         case 'line':
-            $page->render('product/list/_line', array('pager' => $pager, 'isAjax' => $isAjax));
+            echo $page->render('product/list/_line', array('pager' => $pager, 'isAjax' => $isAjax));
             break;
         default:
-            $page->render('product/list/_compact', array('pager' => $pager, 'isAjax' => $isAjax));
+            echo $page->render('product/list/_compact', array('pager' => $pager, 'isAjax' => $isAjax));
             break;
     } ?>
 

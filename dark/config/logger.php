@@ -10,6 +10,6 @@ return array(
     ),
 
     'view'   => array(
-        'level' => 2,
+        'level' => 4,
     ),
 );

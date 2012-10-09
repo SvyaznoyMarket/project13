@@ -2,31 +2,21 @@
 
 namespace Model\Product;
 
-class CompactEntity {
+class CompactEntity extends BasicEntity {
     /** @var int */
-    private $id;
-    /** @var int */
-    private $labelId;
-    /** @var string */
-    private $name;
-    /** @var string */
-    private $link;
-    /** @var string */
-    private $token;
-    /** @var string */
-    private $image;
+    protected $labelId;
     /** @var float */
-    private $rating;
+    protected $rating;
     /** @var int */
-    private $ratingCount;
+    protected $ratingCount;
     /** @var Label\Entity|null */
-    private $label;
+    protected $label;
     /** @var int */
-    private $price;
+    protected $priceAverage;
     /** @var int */
-    private $priceAverage;
-    /** @var int */
-    private $priceOld;
+    protected $priceOld;
+    /** @var Model\Entity */
+    protected $model;
 
     public function __construct(array $data = array()) {
         if (array_key_exists('id', $data)) $this->setId($data['id']);
@@ -37,39 +27,16 @@ class CompactEntity {
         if (array_key_exists('media_image', $data)) $this->setImage($data['media_image']);
         if (array_key_exists('rating', $data)) $this->setRating($data['rating']);
         if (array_key_exists('rating_count', $data)) $this->setRatingCount($data['rating_count']);
+        if (array_key_exists('category', $data) && (bool)$data['category']) {
+            $categoryData = reset($data['category']);
+            $this->setMainCategory(new Category\Entity($categoryData));
+        };
         if (array_key_exists('label', $data) && (bool)$data['label']) $this->setLabel(new Label\Entity($data['label']));
         if (array_key_exists('price', $data)) $this->setPrice($data['price']);
         if (array_key_exists('price_average', $data)) $this->setPriceAverage($data['price_average']);
         if (array_key_exists('price_old', $data)) $this->setPriceOld($data['price_old']);
-        // TODO: related, accessories, model
-    }
-
-    /**
-     * @param int $id
-     */
-    public function setId($id) {
-        $this->id = (string)$id;
-    }
-
-    /**
-     * @return int
-     */
-    public function getId() {
-        return $this->id;
-    }
-
-    /**
-     * @param string $image
-     */
-    public function setImage($image) {
-        $this->image = (string)$image;
-    }
-
-    /**
-     * @return string
-     */
-    public function getImage() {
-        return $this->image;
+        if (array_key_exists('state', $data) && (bool)$data['state']) $this->setState(new State\Entity($data['state']));
+        // TODO: model
     }
 
     /**
@@ -101,45 +68,17 @@ class CompactEntity {
     }
 
     /**
-     * @param string $link
+     * @param Model\Entity $model
      */
-    public function setLink($link) {
-        $this->link = (string)$link;
+    public function setModel(Model\Entity $model = null) {
+        $this->model = $model;
     }
 
     /**
-     * @return string
+     * @return Model\Entity
      */
-    public function getLink() {
-        return $this->link;
-    }
-
-    /**
-     * @param string $name
-     */
-    public function setName($name) {
-        $this->name = (string)$name;
-    }
-
-    /**
-     * @return string
-     */
-    public function getName() {
-        return $this->name;
-    }
-
-    /**
-     * @param int $price
-     */
-    public function setPrice($price) {
-        $this->price = (int)$price;
-    }
-
-    /**
-     * @return int
-     */
-    public function getPrice() {
-        return $this->price;
+    public function getModel() {
+        return $this->model;
     }
 
     /**
@@ -196,19 +135,5 @@ class CompactEntity {
      */
     public function getRatingCount() {
         return $this->ratingCount;
-    }
-
-    /**
-     * @param string $token
-     */
-    public function setToken($token) {
-        $this->token = (string)$token;
-    }
-
-    /**
-     * @return string
-     */
-    public function getToken() {
-        return $this->token;
     }
 }

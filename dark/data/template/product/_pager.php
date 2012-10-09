@@ -44,7 +44,7 @@ if (!isset($category)) $category = null;
     <div class="line"></div>
 <? endif ?>
 
-<?//= $page->render('product/_list', array('pager' => $pager, 'view' => $view)) ?>
+<?= $page->render('product/_list', array('pager' => $pager, 'view' => $view)) ?>
 
 <? if ($pager->hasPages()): ?>
 <div class="fr allpager mBtn" alt="все товары в категории" title="все товары в категории"

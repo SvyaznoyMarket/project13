@@ -13,6 +13,8 @@ class User {
     private $entity;
     /** @var \Model\Region\Entity */
     private $region;
+    /** @var Cart */
+    private $cart;
 
     public function __construct() {
         $this->cookieName = \App::config()->authToken['name'];
@@ -108,5 +110,13 @@ class User {
         }
 
         return $this->region;
+    }
+
+    public function getCart() {
+        if (!$this->cart) {
+            $this->cart = new Cart();
+        }
+
+        return $this->cart;
     }
 }

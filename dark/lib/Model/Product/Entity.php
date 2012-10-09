@@ -2,89 +2,75 @@
 
 namespace Model\Product;
 
-class Entity {
+class Entity extends BasicEntity {
     /** @var int */
-    private $id;
+    protected $viewId;
     /** @var int */
-    private $viewId;
+    protected $typeId;
     /** @var int */
-    private $typeId;
+    protected $setId;
     /** @var int */
-    private $setId;
-    /** @var int */
-    private $labelId;
+    protected $labelId;
     /** @var bool */
-    private $isModel;
+    protected $isModel;
     /** @var bool */
-    private $isPrimaryLine;
+    protected $isPrimaryLine;
     /** @var int */
-    private $modelId;
+    protected $modelId;
     /** @var int|null */
-    private $score;
+    protected $score;
     /** @var string */
-    private $name;
+    protected $webName;
     /** @var string */
-    private $link;
+    protected $prefix;
     /** @var string */
-    private $token;
+    protected $article;
     /** @var string */
-    private $webName;
+    protected $barcode;
     /** @var string */
-    private $prefix;
+    protected $tagline;
     /** @var string */
-    private $article;
+    protected $announce;
     /** @var string */
-    private $barcode;
-    /** @var string */
-    private $tagline;
-    /** @var string */
-    private $announce;
-    /** @var string */
-    private $description;
-    /** @var string */
-    private $image;
+    protected $description;
     /** @var float */
-    private $rating;
+    protected $rating;
     /** @var int */
-    private $ratingCount;
+    protected $ratingCount;
     /** @var Category\Entity[] */
-    private $category = array();
+    protected $category = array();
     /** @var int */
-    private $connectedViewId;
+    protected $connectedViewId;
     /** @var Property\Group\Entity[] */
-    private $propertyGroup = array();
+    protected $propertyGroup = array();
     /** @var Property\Entity[] */
-    private $property = array();
+    protected $property = array();
     /** @var \Model\Tag\Entity[] */
-    private $tag = array();
+    protected $tag = array();
     /** @var Media\Entity[] */
-    private $media = array();
+    protected $media = array();
     /** @var \Model\Brand\Entity|null */
-    private $brand;
+    protected $brand;
     /** @var Label\Entity|null */
-    private $label;
+    protected $label;
     /** @var Type\Entity|null */
-    private $type;
+    protected $type;
     /** @var int */
-    private $commentCount;
+    protected $commentCount;
     /** @var int */
-    private $price;
+    protected $priceAverage;
     /** @var int */
-    private $priceAverage;
-    /** @var int */
-    private $priceOld;
-    /** @var State\Entity */
-    private $state;
+    protected $priceOld;
     /** @var Stock\Entity[] */
-    private $stock = array();
+    protected $stock = array();
     /** @var Service\Entity[] */
-    private $service = array();
+    protected $service = array();
     /** @var Line\Entity */
-    private $line;
+    protected $line;
     /** @var Kit\Entity[] */
-    private $kit = array();
+    protected $kit = array();
     /** @var Model\Entity */
-    private $model;
+    protected $model;
 
     public function __construct(array $data = array()) {
         if (array_key_exists('id', $data)) $this->setId($data['id']);
@@ -109,9 +95,14 @@ class Entity {
         if (array_key_exists('media_image', $data)) $this->setImage($data['media_image']);
         if (array_key_exists('rating', $data)) $this->setRating($data['rating']);
         if (array_key_exists('rating_count', $data)) $this->setRatingCount($data['rating_count']);
-        if (array_key_exists('category', $data) && is_array($data['category'])) $this->setCategory(array_map(function($data) {
-            return new Category\Entity($data);
-        }, $data['category']));
+        if (array_key_exists('category', $data) && is_array($data['category'])) {
+            $categoryData = reset($data['category']);
+            $this->setMainCategory($categoryData);
+
+            foreach ($data['category'] as $categoryData) {
+                $this->addCategory(new Category\Entity($categoryData));
+            }
+        }
         if (array_key_exists('connected_products_view_mode', $data)) $this->setConnectedViewId($data['connected_products_view_mode']);
         if (array_key_exists('property_group', $data) && is_array($data['property_group'])) $this->setPropertyGroup(array_map(function($data) {
             return new Property\Group\Entity($data);
@@ -196,13 +187,6 @@ class Entity {
      */
     public function getLink() {
         return $this->link;
-    }
-
-    /**
-     * @return Category\Entity
-     */
-    public function getMainCategory() {
-        return reset($this->category);
     }
 
     /**

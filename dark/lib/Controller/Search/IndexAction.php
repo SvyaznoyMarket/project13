@@ -15,7 +15,7 @@ class IndexAction {
         $categoryId = (int)$request->get('category');
         if (!$categoryId) $categoryId = null;
 
-        // параметры ядерного запрос
+        // параметры ядерного запроса
         $params = array(
             'request'             => $searchQuery,
             'type_id'             => 1, // тип искомых сущностей: 1 - товары
@@ -30,14 +30,12 @@ class IndexAction {
             $params['is_product_category_first_only'] = true;
         }
         // ядерный запрос
-        ///*
         $result = \App::coreClientV2()->query('search/get', $params);
         if (!isset($result[1]) || !isset($result[1]['data'])) {
             $page = new \View\Search\EmptyPage();
 
             return new \Http\Response($page->show());
         }
-        //*/
         // mock
         //$result = json_decode(file_get_contents(\App::config()->dataDir . '/core/v2-search-get.json'), true)['result'];
         $result = $result[1];
