@@ -7,7 +7,7 @@ default:
 
   metas:
     yandex-verification: 623bb356993d4993
-    viewport:	   width=900
+    viewport:	   width=960
     #title:        symfony project
     #description:  symfony project
     #keywords:     symfony, project
