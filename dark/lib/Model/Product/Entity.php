@@ -97,7 +97,7 @@ class Entity extends BasicEntity {
         if (array_key_exists('rating_count', $data)) $this->setRatingCount($data['rating_count']);
         if (array_key_exists('category', $data) && is_array($data['category'])) {
             $categoryData = reset($data['category']);
-            $this->setMainCategory($categoryData);
+            if ((bool)$categoryData) $this->setMainCategory(new Category\Entity($categoryData));
 
             foreach ($data['category'] as $categoryData) {
                 $this->addCategory(new Category\Entity($categoryData));
