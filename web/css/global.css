@@ -1050,6 +1050,19 @@ ul.lh15 li {
 .selectbox225 .styled {
   width: 225px;
 }
+.bMobDown {
+  -webkit-box-shadow: 0px 0px 10px #333333;
+  -moz-box-shadow: 0px 0px 10px #333333;
+  box-shadow: 0px 0px 10px #333333;
+  background: #ffffff;
+  border: 2px solid #ffa901;
+  display: inline-block;
+  *display: inline;
+  margin: 0px auto;
+  padding: 15px 0px 30px;
+  text-align: left;
+  zoom: 1;
+}
 /*---------ШРИФТЫ----------*/
 @font-face {
   font-family: 'Enter';
@@ -5119,6 +5132,66 @@ td.newWarehouse {
 }
 td.newWarehouse img {
   margin: -21px -3px;
+}
+.bMobDown h2 {
+  font: 30px 'Enter';
+  margin: 0px;
+  padding: 0px;
+}
+.bMobDown__eWrap {
+  padding: 0px 20px;
+  position: relative;
+}
+.bMobDown__eClose {
+  background: url("/css/common/img/closeBtnOrange.png") no-repeat 0px 0px;
+  cursor: pointer;
+  height: 26px;
+  position: absolute;
+  right: 0px;
+  top: -15px;
+  width: 26px;
+}
+.bMobDown__eClose.top0 {
+  top: 0px;
+}
+.bMobDown table {
+  margin: 20px -20px;
+  padding: 0px;
+}
+.bMobDown table td {
+  border-left: 1px solid #e6e6e6;
+  max-width: 200px;
+  padding: 0px 20px 20px;
+  vertical-align: top;
+}
+.bMobDown table td:first-child {
+  border-left: none;
+}
+.bMobDown table td h3 {
+  font-size: 18px;
+  margin: 0px;
+  padding: 0px;
+}
+.bMobDown table td p {
+  font-size: 13px;
+}
+.bMobDown table td input {
+  -webkit-box-shadow: 0px 0px 5px #d8d8d8;
+  -moz-box-shadow: 0px 0px 5px #d8d8d8;
+  box-shadow: 0px 0px 5px #d8d8d8;
+  border: 1px solid #d8d8d8;
+  height: 18px;
+  width: 100%;
+}
+.bMobDown table td a,
+.bMobDown table td img {
+  outline: none;
+}
+.bMobDown table td .link1 {
+  cursor: pointer;
+  margin: 12px 0px;
+  padding-left: 15px;
+  padding-right: 15px;
 }
 /*---END---СТИЛИ КУПИТЬ В ОДИН КЛИК---*/
 /*-------СТИЛИ КОРЗИНЫ-----*/
