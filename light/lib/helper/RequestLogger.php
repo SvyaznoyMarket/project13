@@ -81,6 +81,6 @@ class RequestLogger
       $fullText .= '{"url":"'.$log['url'].'", "post":"'.$log['post'].'", "time":"'.$log['time'].'"} | ';
     }
     $fullText .= "response was sent to user after ". (microtime(true) - $this->startTime). " ms.";
-    return $fullText;
+    return str_replace(array("\r", "\n"), '', $fullText);
   }
 }
