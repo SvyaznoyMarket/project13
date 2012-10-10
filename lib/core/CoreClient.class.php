@@ -70,7 +70,6 @@ class CoreClient
       if ($this->parameters->get('log_data_enabled')) {
         $this->logger->info('Core response data: ' . $this->encode($responseDecoded));
       }
-      RequestLogger::getInstance()->addLog($action, $params);
 
       curl_close($connection);
       return $responseDecoded;

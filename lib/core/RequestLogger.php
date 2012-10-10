@@ -72,7 +72,7 @@ class RequestLogger
      * @param string $postData
      * @param string $time
      */
-    public function addLog($url, $postData, $time){
+    public function addLog($url, $postData='', $time=''){
       $this->_requestList[] = array(
         'time' => $time ,
         'url' => $url ,
