@@ -78,7 +78,7 @@ return array(
 
     // корзина
     'cart' => array(
-        'pattern' => '/cart',
+        'pattern' => '/cart/', // TODO: сделать '/cart'
         'action'  => array('Cart\IndexAction', 'execute'),
     ),
     'cart.product.add' => array(

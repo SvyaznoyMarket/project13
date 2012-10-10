@@ -21,7 +21,7 @@ class PhpEngine implements EngineInterface {
      */
     public function render($template, array $params = array()) {
         \Debug\Timer::start('template:' . $template);
-        \App::logger('view')->info('Start render template '.$template);
+        \App::logger('view')->info('Start template ' . $template);
 
         // render
         extract($params, EXTR_REFS);
@@ -31,7 +31,7 @@ class PhpEngine implements EngineInterface {
         $return = ob_get_clean();
 
         $spend = \Debug\Timer::stop('template:' . $template);
-        \App::logger('view')->info('End render template '.$template.' '.$spend);
+        \App::logger('view')->info('End template ' . $template . ' in ' . $spend);
 
         return $return;
     }

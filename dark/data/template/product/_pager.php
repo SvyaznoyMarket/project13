@@ -1,17 +1,17 @@
 <?php
 /**
- * @var $page        \View\DefaultLayout
- * @var $request     \Http\Request
- * @var $pager       \Iterator\EntityPager
- * @var $view        string
- * @var $hasListView bool                                Показывать контрол "Вид товара"
- * @var $hasSorting  bool                                Показывать контрол "Сортировка"
- * @var $category    \Model\Product\Category\Entity|null
+ * @var $page           \View\DefaultLayout
+ * @var $request        \Http\Request
+ * @var $pager          \Iterator\EntityPager
+ * @var $view           string
+ * @var $hasListView    bool                                Показывать контрол "Вид товара"
+ * @var $productSorting
+ * @var $category       \Model\Product\Category\Entity|null
  */
 
 $view = $request->get('view', isset($view) ? $view : null);
 $hasListView = isset($hasListView) && (bool)$hasListView ? true : false;
-$hasSorting = isset($hasSorting) && (bool)$hasSorting ? true : false;
+if (!isset($productSorting)) $productSorting = null;
 if (!isset($category)) $category = null;
 ?>
 
@@ -34,8 +34,8 @@ if (!isset($category)) $category = null;
 <?= $page->render('product/_listView', array('view' => $view, 'request' => $request, 'category' => $category)) ?>
 <? endif ?>
 
-<? if ($hasSorting): ?>
-<?php //include_component('product', 'sorting', array('productSorting' => $productSorting)) ?>
+<? if ($productSorting): ?>
+<?= $page->render('product/_sorting', array('productSorting' => $productSorting)) ?>
 <? endif ?>
 
 <? if ($pager->count()): ?>

@@ -14,7 +14,6 @@ namespace Util;
  * <code>
  *  $string = '[0] are no files |[1] is one file |(1,Inf] are {number} files';
  *
- *  $formatter = new sfMessageFormat(...); //init for a source
  *  $translated = $formatter->format($string);
  *
  *  $choice = new ChoiceFormatter();
@@ -65,7 +64,7 @@ class ChoiceFormatter {
         $n = preg_match_all($this->validate, $set, $matches, PREG_SET_ORDER);
 
         if ($n < 3) {
-            throw new sfException(sprintf('Invalid set "%s".', $set));
+            throw new \Exception(sprintf('Invalid set "%s".', $set));
         }
 
         if (preg_match('/\{\s*n:([^\}]+)\}/', $set, $def)) {
@@ -125,7 +124,7 @@ class ChoiceFormatter {
             eval($str);
 
             return $result;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return false;
         }
     }

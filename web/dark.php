@@ -35,6 +35,7 @@ $request = \App::request();
 // router
 $router = \App::router();
 $request->attributes->add($router->match($request->getPathInfo(), $request->getMethod()));
+\App::logger()->info('Match route ' . $request->attributes->get('route') . ' by uri ' . $request->getRequestUri());
 
 // resolver
 $resolver = new \Routing\ActionResolver();
@@ -45,8 +46,6 @@ $response = null;
 try {
     /* @var $response \Http\Response */
     $response = call_user_func_array($actionCall, $actionParams);
-} catch (\Routing\Exception $e) {
-    throw $e;
 } catch (\Exception\NotFoundException $e) {
     $action = new \Controller\Error\NotFoundAction();
     $response = $action->execute($e, $request);
@@ -67,7 +66,7 @@ try {
     }
     else {
         $spend = \Debug\Timer::stop('app');
-        \App::logger()->error('End app ' . $spend . ' with ' . $e);
+        \App::logger()->error('End app ' . $spend . ' ' . round(memory_get_peak_usage() / 1048576, 2) . 'Mb' . ' with ' . $e);
 
         throw $e;
     }
@@ -78,7 +77,7 @@ if ($response instanceof \Http\Response) {
 }
 
 $spend = \Debug\Timer::stop('app');
-\App::logger()->info('End app ' . $spend);
+\App::logger()->info('End app in ' . $spend . ' used ' . round(memory_get_peak_usage() / 1048576, 2) . 'Mb');
 
 \App::shutdown();
 

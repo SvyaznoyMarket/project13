@@ -11,24 +11,24 @@
 if (!isset($isAjax)) $isAjax = false;
 ?>
 
-<? if (!$pager->count()): ?>
-<div class="clear"></div>
-<p>нет товаров</p>
+<? if (!$pager->count()) { ?>
+    <div class="clear"></div>
+    <p>нет товаров</p>
 
-<? else: ?>
+<? } else { ?>
     <?php switch ($view) {
         case 'compact':
-            echo $page->render('product/list/_compact', array('pager' => $pager, 'isAjax' => $isAjax));
+            require __DIR__ . '/list/_compact.php';
             break;
         case 'expanded':
-            echo $page->render('product/list/_expanded', array('pager' => $pager, 'isAjax' => $isAjax));
+            require __DIR__ . '/list/_expanded.php';
             break;
         case 'line':
-            echo $page->render('product/list/_line', array('pager' => $pager, 'isAjax' => $isAjax));
+            require __DIR__ . '/list/_line.php';
             break;
         default:
-            echo $page->render('product/list/_compact', array('pager' => $pager, 'isAjax' => $isAjax));
+            require __DIR__ . '/list/_compact.php';
             break;
     } ?>
 
-<? endif ?>
+<? } ?>
