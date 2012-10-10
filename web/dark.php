@@ -85,9 +85,10 @@ $spend = \Debug\Timer::stop('app');
 // debug panel
 $timers = \Debug\Timer::getAll();
 if ($config->debug && !$request->isXmlHttpRequest()) {
-    echo '<pre draggable="true" ondblclick="$(this).remove()" style="position: fixed; top: 14px; left: 2px; width: 200px; overflow: hidden; z-index: 999; background: #000000; color: #33ff33; opacity: 0.8; padding: 2px 5px; border-radius: 5px; font-size: 10px; font-family: Courier New; box-shadow: 0 0 10px rgba(0,0,0,0.5);">'
+    echo '<pre draggable="true" ondblclick="$(this).remove()" style="position: fixed; top: 14px; left: 2px; width: 200px; overflow: hidden; z-index: 999; background: #000000; color: #00ff00; opacity: 0.8; padding: 2px 5px; border-radius: 5px; font-size: 10px; font-family: Courier New; box-shadow: 0 0 10px rgba(0,0,0,0.5);">'
         . 'env: ' . $env . '<br />'
         . 'act: ' . (isset($actionCall[0]) ? (str_replace('Controller\\', '', get_class($actionCall[0])) . '.' . $actionCall[1]) : '') . '<br />'
+        . ($response && (200 != $response->getStatusCode()) ? ('status: <span style="color: #ff0000;">' . $response->getStatusCode() . '</span><br />') : '')
         . '<br />'
         . 'app: ' . round($timers['app']['total']
             - (isset($timers['core']) ? $timers['core']['total'] : 0)
