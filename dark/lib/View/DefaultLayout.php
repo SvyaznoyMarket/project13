@@ -34,7 +34,7 @@ class DefaultLayout {
 
         $this->helper = new Helper();
 
-        $this->setTitle('Enter');
+        $this->setTitle('Enter - это выход!');
         $this->addMeta('yandex-verification', 'enter');
         $this->addMeta('viewport', 'width=900');
         $this->addMeta('title', 'Enter');
@@ -134,24 +134,49 @@ class DefaultLayout {
     }
 
     public function slotMeta() {
-        $metas = array();
+        $return = "\n";
         foreach ($this->metas as $name => $content) {
-            if (null !== $content) $metas[$name] = $content;
+            if (null == $return) continue;
+
+            $return .= '<meta name="' . $name .'" content="' . $content . '" />' . "\n";
         }
 
-        return $this->render('_meta', array('metas' => $metas));
+        return $return;
     }
 
     public function slotStylesheet() {
-        return $this->render('_stylesheet', array('stylesheets' => $this->getStylesheets()));
+        $return = "\n";
+
+        foreach ($this->stylesheets as $stylesheet) {
+            $return .= '<link href="' . $stylesheet . '" type="text/css" rel="stylesheet" media="screen" />' . "\n";
+        }
+
+        return $return;
     }
 
     public function slotJavascript() {
-        return $this->render('_javascript', array('javascripts' => $this->getJavascripts()));
+        $return = "\n";
+        foreach ($this->javascripts as $javascript) {
+            $return .= '<script src="' . $javascript . '" type="text/javascript"></script>' . "\n";
+        }
+
+        return $return;
     }
 
     public function slotRelLink() {
-        return '';
+        $request = \App::request();
+
+        $tmp = explode('?', $request->getRequestUri());
+        $tmp = reset($tmp);
+        $path = str_replace(array('_filter', '_tag'), '', $tmp);
+        if ('/' == $path) {
+            $path = '';
+        }
+
+
+        $relLink = $request->getSchemeAndHttpHost() . $path;
+
+        return '<link rel="canonical" href="' . $relLink . '" />';
     }
 
     public function slotGoogleAnalytics() {
