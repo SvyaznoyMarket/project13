@@ -14,15 +14,26 @@ return array(
     ),
 
     // пользователь
-    'user.login'  => array(
+    'user.login' => array(
         'pattern' => '/login',
         'action'  => array('User\Action', 'login'),
-        'method'  => array('GET', 'POST'),
+    ),
+    'user.register' => array(
+        'pattern' => '/register',
+        'action'  => array('User\Action', 'register'),
     ),
     'user.logout' => array(
         'pattern' => '/logout',
         'action'  => array('User\Action', 'logout'),
         'method'  => array('GET'),
+    ),
+    'user.forgot' => array(
+        'pattern' => '/request-password',
+        'action'  => array('User\Action', 'forgot'),
+    ),
+    'user.reset' => array(
+        'pattern' => '/reset-password',
+        'action'  => array('User\Action', 'reset'),
     ),
     'user' => array(
         'pattern' => '/private',
@@ -67,7 +78,7 @@ return array(
         'action'  => array('Cart\IndexAction', 'execute'),
     ),
     'cart.product.add' => array(
-        'pattern' => '/cart/add/{productId}/_quantity/{quantity}', // TODO: сделать '/cart/add-product/{productId}/{quantity}'
+        'pattern' => '/cart/add/{productId}/_quantity/{quantity}', // TODO: сделать поприличнее - '/cart/add-product/{productId}/{quantity}'
         'action'  => array('Cart\ProductAction', 'add'),
     ),
 );

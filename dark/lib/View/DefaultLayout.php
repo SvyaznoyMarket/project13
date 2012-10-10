@@ -213,7 +213,7 @@ class DefaultLayout {
     }
 
     public function slotAuth() {
-        return '';
+        return $this->render('_auth');
     }
 
     public function slotYandexMetrika() {
