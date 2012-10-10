@@ -23,4 +23,15 @@ class Repository {
 
         return $data ? new Entity($data) : null;
     }
+
+    public function getShopAvailableCollection() {
+        $response = $this->client->query('geo/get-shop-available');
+
+        $collection = array();
+        foreach ($response as $data) {
+            $collection[] = new Entity($data);
+        }
+
+        return $collection;
+    }
 }

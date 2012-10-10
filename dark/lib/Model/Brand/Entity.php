@@ -15,10 +15,6 @@ class Entity {
     private $isInFilter;
 
     public function __construct(array $data = array()) {
-        $this->import($data);
-    }
-
-    public function import(array $data) {
         if (array_key_exists('id', $data)) $this->setId($data['id']);
         if (array_key_exists('name', $data)) $this->setName($data['name']);
         if (array_key_exists('description', $data)) $this->setDescription($data['description']);

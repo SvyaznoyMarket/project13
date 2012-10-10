@@ -27,10 +27,6 @@ class Entity {
     private $parent;
 
     public function __construct(array $data = array()) {
-        $this->import($data);
-    }
-
-    public function import(array $data) {
         if (array_key_exists('id', $data)) $this->setId($data['id']);
         if (array_key_exists('parent_id', $data)) $this->setParentId($data['parent_id']);
         if (array_key_exists('name', $data)) $this->setName($data['name']);
