@@ -3459,6 +3459,7 @@ dd.bSpecSel ul li a {
 .goodsbarbig.mSmallBtns a.link1 {
   background: url("/css/item/img/itemSprite.png") 0px 0px no-repeat;
   height: 31px;
+  text-decoration: none;
   width: 137px;
 }
 .goodsbarbig.mSmallBtns a.link1:hover {
