@@ -230,7 +230,7 @@ class DefaultLayout {
     }
 
     public function slotRegionSelection() {
-        return '';
+        return $this->render('_regionSelection');
     }
 
     public function slotInnerJavascript() {

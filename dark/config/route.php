@@ -49,6 +49,10 @@ return array(
         'pattern' => '/region/change/{regionId}',
         'action'  => array('Region\Action', 'change'),
     ),
+    'region.autocomplete' => array(
+        'pattern' => '/region/autocomplete',
+        'action'  => array('Region\Action', 'autocomplete'),
+    ),
 
     // магазины
     'shop' => array(
