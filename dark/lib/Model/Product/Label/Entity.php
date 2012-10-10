@@ -3,6 +3,23 @@
 namespace Model\Product\Label;
 
 class Entity {
+    // Распродажа
+    const LABEL_SALE = 1;
+    // Акция
+    const LABEL_ACTION = 2;
+    // Скидка
+    const LABEL_DISCOUNT = 3;
+    // Супер Цена
+    const LABEL_SUPER_PRICE = 4;
+    // Продукт Года
+    const LABEL_YEAR_PRODUCT = 5;
+    // Новинка
+    const LABEL_NEW = 6;
+    // Для болельщика
+    const LABEL_FANS = 7;
+    // WOW-Кредит
+    const LABEL_CREDIT = 8;
+
     /** @var int */
     private $id;
     /** @var string */
@@ -58,5 +75,13 @@ class Entity {
         } else {
             return null;
         }
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSale()
+    {
+        return $this->id == self::LABEL_SALE;
     }
 }
