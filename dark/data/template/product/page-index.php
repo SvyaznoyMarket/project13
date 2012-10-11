@@ -2,6 +2,10 @@
 /**
  * @var $product \Model\Product\Entity
  * @var $user \Session\User
+ * @var $accessories \Model\Product\Entity[]
+ * @var $related \Model\Product\Entity[]
+ * @var showAccessoryUpper bool
+ * @var $showRelatedUpper bool
  */
 ?>
 
@@ -201,21 +205,13 @@
 
 <?php //render_partial('product_/templates/_product_model.php', array('item' => $product)) ?>
 
-<?php /*
-if ($showAccessoryUpper && count($product->getAccessoryList())){
-  render_partial('product_/templates/_product_accessory.php', array(
-    'product' => $product,
-    'accessoryPagesNum' => $accessoryPagesNum,
-  ));
-}
+<?php if ($showAccessoryUpper && count($product->getAccessoryId()) && \App::config()->product['showAccessories']): ?>
+    <?php echo $page->render('product/_slider', array('product' => $product, 'productList' => $accessories, 'totalProducts' => count($product->getAccessoryId()), 'perPage' => \App::config()->product['itemsInSlider'], 'page' => 1, 'title' => 'Аксессуары')) ?>
+<?php endif ?>
 
-if ($showRelatedUpper && count($product->getRelatedList())){
-  render_partial('product_/templates/_product_related.php', array(
-    'item' => $product,
-    'relatedPagesNum' => $relatedPagesNum,
-  ));
-}*/
-?>
+<?php if ($showRelatedUpper && count($product->getRelatedId()) && \App::config()->product['showRelated']): ?>
+    <?php echo $page->render('product/_slider', array('product' => $product, 'productList' => $related, 'totalProducts' => count($product->getRelatedId()), 'perPage' => \App::config()->product['itemsInSlider'], 'page' => 1, 'title' => 'С этим товаром также покупают')) ?>
+<?php endif ?>
 
 <?php //if (false && sfConfig::get('app_smartengine_pull')): ?>
 <!--div class="clear"></div>
@@ -354,23 +350,24 @@ if ($showRelatedUpper && count($product->getRelatedList())){
 
 </div>
 
-<?php //render_partial('product_/templates/_tags.php', array('item' => $product)) ?>
+<?php if (count($product->getTag())): ?>
+<noindex>
+    <div class="pb25">
+        <strong>Теги:</strong>
+<?php foreach ($product->getTag() as $i => $tag):?>
+<?php echo ($i ? ', ' : '').'<a href="'.$page->url('tag', array('tagToken' => $tag->getToken())).'" class="underline" rel="nofollow">'.$tag->getName().'</a>' ?>
+<?php endforeach ?>
+    </div>
+</noindex>
+<?php endif ?>
 
-<?php /*
-if (!$showAccessoryUpper && count($product->getAccessoryList())){
-  render_partial('product_/templates/_product_accessory.php', array(
-    'product' => $product,
-    'accessoryPagesNum' => $accessoryPagesNum,
-  ));
-}
+<?php if (!$showAccessoryUpper && count($product->getAccessoryId()) && \App::config()->product['showAccessories']): ?>
+    <?php echo $page->render('product/_slider', array('product' => $product, 'productList' => $accessories, 'totalProducts' => count($product->getAccessoryId()), 'perPage' => \App::config()->product['itemsInSlider'], 'page' => 1, 'title' => 'Аксессуары')) ?>
+<?php endif ?>
 
-if (!$showRelatedUpper && count($product->getRelatedList())){
-  render_partial('product_/templates/_product_related.php', array(
-    'item' => $product,
-    'relatedPagesNum' => $relatedPagesNum,
-  ));
-}*/
-?>
+<?php if (!$showRelatedUpper && count($product->getRelatedId()) && \App::config()->product['showRelated']): ?>
+    <?php echo $page->render('product/_slider', array('product' => $product, 'productList' => $related, 'totalProducts' => count($product->getRelatedId()), 'perPage' => \App::config()->product['itemsInSlider'], 'page' => 1, 'title' => 'С этим товаром также покупают')) ?>
+<?php endif ?>
 
 <?php /*render_partial('product_/templates/_bottom_button_block.php', array(
   'product' => $product,

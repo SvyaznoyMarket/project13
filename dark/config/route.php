@@ -78,6 +78,18 @@ return array(
     'product.stock' => array(
         'pattern' => '/product/{productPath}/stock',
     ),
+    'product.accessories' => array(
+        'pattern' => '/products/accessories/{productToken}',
+        'require' => array('productToken' => '[\w\d-_]+'),
+    ),
+    'product.related' => array(
+        'pattern' => '/products/related/{productToken}',
+        'require' => array('productToken' => '[\w\d-_]+'),
+    ),
+    'tag' => array(
+        'pattern' => '/tags/{tagToken}',
+        'require' => array('tagToken' => '[\w\d-_]+'),
+    ),
 
   // корзина
     'cart' => array(
@@ -88,4 +100,5 @@ return array(
         'pattern' => '/cart/add/{productId}/_quantity/{quantity}', // TODO: сделать поприличнее - '/cart/add-product/{productId}/{quantity}'
         'action'  => array('Cart\ProductAction', 'add'),
     ),
+
 );

@@ -10,7 +10,7 @@ class IndexAction {
             throw new \Exception\NotFoundException(sprintf('Неверный номер страницы "%s".', $pageNum));
         }
 
-        $limit = \App::config()->product['maxItemsPerPage'];
+        $limit = \App::config()->product['itemsPerPage'];
         $offset = intval($pageNum - 1) * $limit;
         $categoryId = (int)$request->get('category');
         if (!$categoryId) $categoryId = null;
@@ -80,7 +80,7 @@ class IndexAction {
         $products = $productRepository->getCollectionById($result['data']);
         $productPager = new \Iterator\EntityPager($products, $selectedCategory->getProductCount());
         $productPager->setPage($pageNum);
-        $productPager->setMaxPerPage(\App::config()->product['maxItemsPerPage']);
+        $productPager->setMaxPerPage(\App::config()->product['itemsPerPage']);
 
         // проверка на максимально допустимый номер страницы
         if ($productPager->getPage() > $productPager->getLastPage()) {
