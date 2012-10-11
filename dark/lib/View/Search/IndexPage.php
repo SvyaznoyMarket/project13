@@ -10,7 +10,9 @@ class IndexPage extends \View\DefaultLayout {
                 $title .= ' – ' . $this->getParam('pageNum');
             }
 
+            // TODO: учитывать номер страницы
             $this->addMeta('title', $title);
+            $this->setTitle($title);
             $this->setParam('title', trim($this->render('search/_title', array(
                 'searchQuery' => $this->getParam('searchQuery'),
                 'meanQuery'   => $this->getParam('meanQuery'),

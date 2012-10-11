@@ -4,4 +4,3 @@
  */
 ?>
 
-<h1><?= $category->getName() ?></h1>
