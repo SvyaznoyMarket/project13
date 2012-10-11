@@ -34,7 +34,7 @@ return array(
   array('/catalog/<categoryToken>/'          , 'catalog.showCategory'), //@TODO реализовать, пока для генерации урлов
   array('/products/set/<productBarcodeList>' , 'product.set'), //@TODO реализовать, пока для генерации урлов
   array('/search'                            , 'search.form'), //@TODO реализовать, пока для генерации урлов
-  array('/shops/<regionToken>'               , 'shop.regionList'), //@TODO реализовать, пока для генерации урлов
+  array('/shops'                             , 'shop.regionList'), //@TODO реализовать, пока для генерации урлов
   array('/private/'                          , 'user.index'), //@TODO реализовать, пока для генерации урлов
 
   array('/region/change/<region>'            , 'region.change'), //@TODO реализовать, пока для генерации урлов
