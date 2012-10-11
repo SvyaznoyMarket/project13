@@ -73,6 +73,8 @@ class Entity extends BasicEntity {
     protected $kit = array();
     /** @var Model\Entity */
     protected $model;
+    /** @var [] */
+    protected $groupedProperties = array();
 
     public function __construct(array $data = array()) {
         if (array_key_exists('id', $data)) $this->setId($data['id']);
@@ -139,6 +141,19 @@ class Entity extends BasicEntity {
         if (array_key_exists('kit', $data) && is_array($data['kit'])) $this->setKit(array_map(function($data) {
             return new Kit\Entity($data);
         }, $data['kit']));
+
+
+        foreach ($this->propertyGroup as $group) {
+            if (!isset($this->groupedProperties[$group->getId()])) {
+                $this->groupedProperties[$group->getId()] = array('group' => $group, 'properties' => array());
+            }
+        }
+
+        foreach ($this->property as $property) {
+            if (isset($this->groupedProperties[$property->getGroupId()])) {
+                $this->groupedProperties[$property->getGroupId()]['properties'][] = $property;
+            }
+        }
         // TODO: related, accessories, model
     }
 
@@ -764,5 +779,13 @@ class Entity extends BasicEntity {
         }
 
         return false;
+    }
+
+    /**
+     * @return array
+     */
+    public function getGroupedProperties()
+    {
+        return $this->groupedProperties;
     }
 }
