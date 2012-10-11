@@ -30,41 +30,101 @@ $(document).ready(function() {
 
 	marketfolio.delegate('div.map-google-link', 'click',function(e) {
 		$( 'div.mChecked' , marketfolio ).removeClass('mChecked')
-		if( ! $('#map-container div').length ) {
+		if( ! $('#map-container div').length ) { // only once, on first click !
 			var el = $(this)
 
-			var position = new google.maps.LatLng($('[name="shop[latitude]"]').val(), $('[name="shop[longitude]"]').val());
-			var options = {
-			  zoom: 16,
-			  center: position,
-			  scrollwheel: false,
-			  mapTypeId: google.maps.MapTypeId.ROADMAP,
-			  mapTypeControlOptions: {
-				style: google.maps.MapTypeControlStyle.DROPDOWN_MENU
-			  }
-			};
-
-			var map = new google.maps.Map(document.getElementById('map-container'), options);
-
-			var marker = new google.maps.Marker({
-			  position: new google.maps.LatLng($('[name="shop[latitude]"]').val(), $('[name="shop[longitude]"]').val()),
-			  map: map,
-			  title: $('[name="shop[name]"]').val(),
-			  icon: '/images/marker.png'
-			})
+			var position = {
+				latitude: $('[name="shop[latitude]"]').val(),
+				longitude: $('[name="shop[longitude]"]').val()
+			}
+			var shopOnMap = new MapOnePoint( position, 'map-container' ) 
 		}
 	})
 
+	var vendor = 'yandex' // yandex or google
+	if( vendor==='yandex' )
+		ymaps.ready( function() {
+console.info('yandexIsReady')			
+	        PubSub.publish('yandexIsReady')
+	        ymaps.isReady = true
+	    })		
+
+	function MapOnePoint( position, nodeId ) {
+		if( !position )
+			return
+		if( !position.longitude || !position.latitude )
+			return
+		var self = this
+
+		var markerPreset = {
+			iconImageHref: '/images/marker.png',
+			iconImageSize: [39, 59], 
+	        iconImageOffset: [-19, -57] 
+		}
+
+		self.yandex = function() {		
+			var point = [ position.latitude , position.longitude ]
+			var myMap = new ymaps.Map ( nodeId, {
+			    center: point,
+			    zoom: 16
+			})
+			myMap.controls.add('zoomControl')
+			
+			var myPlacemark = new ymaps.Placemark( point, {}, markerPreset)
+			
+			myMap.geoObjects.add(myPlacemark)
+		}
+
+		self.google = function() {
+			var options = {
+				zoom: 16,
+				// center: position,
+				scrollwheel: false,
+				mapTypeId: google.maps.MapTypeId.ROADMAP,
+				mapTypeControlOptions: {
+					style: google.maps.MapTypeControlStyle.DROPDOWN_MENU
+				}
+			}
+			
+			var point = new google.maps.LatLng( position.latitude , position.longitude )
+			options.center = point
+			var map = new google.maps.Map(document.getElementById( nodeId ), options)
+
+			var marker = new google.maps.Marker({
+				position: point,
+				map: map,
+				icon: markerPreset.iconImageHref
+			})
+		}
+
+		if( vendor === 'yandex' ) {
+			PubSub.subscribe('yandexIsReady', function() {
+				self[vendor]()
+			})
+		} else {
+			self.google()
+		}
+
+	} // MapOnePoint obj
+
 	$('div.map-google-link:first', marketfolio ).trigger('click')
-	if( $('#map-markers').length ) {
+	if( $('#map-markers').length ) { // allshops page
 		function updateTmlt( marker ) {
 			$('#map-info_window-container').html(
 				tmpl('infowindowtmpl', marker )
 			)
 		}
 		var mapCenter =  calcMCenter( $('#map-markers').data('content') )
-		window.regionMap = new MapWithShops( mapCenter, $('#map-info_window-container'), 'region_map-container', updateTmlt )
-		window.regionMap.showMarkers(  $('#map-markers').data('content') )
+		if( vendor === 'yandex' ) {
+			PubSub.subscribe('yandexIsReady', function() {
+				window.regionMap = new MapYandexWithShops( mapCenter, $('#infowindowtmpl'), 'region_map-container' )
+				window.regionMap.showMarkers(  $('#map-markers').data('content') )
+			})
+		} else {
+			window.regionMap = new MapGoogleWithShops( mapCenter, $('#map-info_window-container'), 'region_map-container', updateTmlt )
+			window.regionMap.showMarkers(  $('#map-markers').data('content') )
+		}
+		
 		//window.regionMap.addHandler( '.shopchoose', pickStoreMVM )
 	}
 

@@ -905,7 +905,7 @@ function parse_url( url ) {
 }
 
 /* MAP Object */
-function MapWithShopsG( center, templateIWnode, DOMid, updateInfoWindowTemplate ) {
+function MapGoogleWithShops( center, templateIWnode, DOMid, updateInfoWindowTemplate ) {
 /* Arguments:
 	center is a center of a map
 	templateIWnode is node(jQ) which include template for InfoWindow popup
@@ -1056,14 +1056,13 @@ function MapWithShopsG( center, templateIWnode, DOMid, updateInfoWindowTemplate 
 	/* main() */
 	create()
 
-} // object MapWithShops
+} // object MapGoogleWithShops
 
-function MapWithShops( center, templateIWnode, DOMid, updateInfoWindowTemplate ) {
+function MapYandexWithShops( center, templateIWnode, DOMid ) {
 /* Arguments:
     center is a center of a map
     templateIWnode is node(jQ) which include template for InfoWindow popup
     DOMid is selector (id) for google.maps.Map initialization
-    updateInfoWindowTemplate is a procedure calling each time after marker is clicked
 */
 console.info(arguments)
     var self         = this,
@@ -1082,17 +1081,23 @@ console.info(arguments)
     }
     
     function create() {
-        // ymaps.ready FAILS
-        setTimeout( function() {
-            mapWS = new ymaps.Map(DOMid, {
-                center: [center.latitude, center.longitude],
-                zoom: 10
-            })
+        mapWS = new ymaps.Map(DOMid, {
+            center: [center.latitude, center.longitude],
+            zoom: 10
+        })
+        
+        mapWS.controls
+        .add('zoomControl')
+        // setTimeout( function() {
+        //     mapWS = new ymaps.Map(DOMid, {
+        //         center: [center.latitude, center.longitude],
+        //         zoom: 10
+        //     })
             
-            mapWS.controls
-            .add('zoomControl')
-            //.add('typeSelector', { left: 5, top: 15 })// Список типов карты
-        }, 1200)        
+        //     mapWS.controls
+        //     .add('zoomControl')
+        //     //.add('typeSelector', { left: 5, top: 15 })// Список типов карты
+        // }, 1200)        
     }
 
     this.showInfobox = function( markerId ) {
@@ -1116,23 +1121,22 @@ console.info(arguments)
     }
 
     this.showMarkers = function( argmarkers ) {   
-// console.info(argmarkers)        
+// console.info(argmarkers)
         mapContainer.show()
         mapWS.container.fitToViewport()
         mapWS.setCenter([center.latitude, center.longitude])
-// return
         self.clear()
         markers = argmarkers
         var myCollection = new ymaps.GeoObjectCollection()
         $.each( markers, function(i, item) {
             // Создаем метку и задаем изображение для ее иконки
-
-            var marker = new ymaps.Placemark( [item.latitude, item.longitude], {
-                    id: item.id,
-                    regtime: (item.regtime) ? item.regtime : item.regime,
-                    name: item.name
-                    // balloonContent: 
-                }, {
+            var tmpitem = {
+                id: item.id,
+                name: item.name,
+                address: item.address,
+                regtime: (item.regtime) ? item.regtime : item.regime,
+            }
+            var marker = new ymaps.Placemark( [item.latitude, item.longitude], item, {
                     iconImageHref: '/images/marker.png', // картинка иконки
                     iconImageSize: [39, 59], 
                     iconImageOffset: [-19, -57] 
@@ -1142,16 +1146,18 @@ console.info(arguments)
             myCollection.add(marker)
             markers[i].ref = marker
         })
-        // Создаем шаблон для отображения контента балуна
+// console.info(markers)        
+        // Создаем шаблон для отображения контента балуна         
         var myBalloonLayout = ymaps.templateLayoutFactory.createClass(
-            // templateIWnode.prop('innerHTML')
-        '<div class="bMapShops__ePopupRel">'+
-        '<h3>$[properties.name]</h3>' +
-        '<span>Работает </span>'+
-        '<span>$[properties.regtime]</span>'+
-        '<br/><span class="shopnum" style="display: none;">$[properties.id]</span>'+
-        '<a class="bGrayButton shopchoose" href="">Забрать из этого магазина</a></div>'
+            templateIWnode.prop('innerHTML').replace(/<%=([a-z]+)%>/g, '\$[properties.$1]')
         )
+        // '<div class="bMapShops__ePopupRel">'+
+        // '<h3>$[properties.name]</h3>' +
+        // '<span>Работает </span>'+
+        // '<span>$[properties.regtime]</span>'+
+        // '<br/><span class="shopnum" style="display: none;">$[properties.id]</span>'+
+        // '<a class="bGrayButton shopchoose" href="">Забрать из этого магазина</a></div>'
+        
         // Помещаем созданный шаблон в хранилище шаблонов. Теперь наш шаблон доступен по ключу 'my#superlayout'.
         ymaps.layout.storage.add('my#superlayout', myBalloonLayout)
         // Задаем наш шаблон для балунов геобъектов коллекции.
@@ -1196,7 +1202,7 @@ console.info(arguments)
     /* main() */
     create()
 
-} // object MapWithShops
+} // object MapYandexWithShops
 
 function calcMCenter( shops ) {
 	var latitude = 0, longitude = 0, l = 0

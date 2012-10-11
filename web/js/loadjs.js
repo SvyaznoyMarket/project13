@@ -176,7 +176,9 @@
 			}).runQueue()
 			break
 		case 'shop':
-			$LAB.queueScript('http://maps.google.com/maps/api/js?sensor=false').queueWait( function() {
+			$LAB.queueScript('http://maps.google.com/maps/api/js?sensor=false')
+			.queueScript('http://api-maps.yandex.ru/2.0/?load=package.full&lang=ru-RU')
+			.queueWait( function() {
 				$LAB.script( getWithVersion('ports.js') )
 				.script( getWithVersion('bigjquery.js') ).script( getWithVersion('library.js') )
 				.wait()
