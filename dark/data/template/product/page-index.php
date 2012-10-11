@@ -1,5 +1,6 @@
 <?php
 /**
+ * @var $page \View\DefaultLayout
  * @var $product \Model\Product\Entity
  * @var $user \Session\User
  * @var $accessories \Model\Product\Entity[]
@@ -11,10 +12,6 @@
 
 <?php //slot('header_meta_og') ?>
 <?php //include_component('productCard_', 'header_meta_og', array('product' => $product)) ?>
-<?php //end_slot() ?>
-
-<?php //slot('navigation') ?>
-<?php //include_component('productCard_', 'navigation', array('product' => $product)) ?>
 <?php //end_slot() ?>
 
 <?php
@@ -124,8 +121,8 @@
     <div class="pb5"><strong>
       <a href=""
          data-model='<?php echo $json ?>'
-         link-output='<?php //echo url_for('order_1click', array('product' => $product->getBarcode())) ?>'
-         link-input='<?php //echo url_for('product_delivery_1click') ?>'
+         link-output='<?php echo $page->url('order.1click', array('product' => $product->getBarcode())) ?>'
+         link-input='<?php echo $page->url('product.delivery_1click') ?>'
          class="red underline order1click-link-new">Купить быстро в 1 клик</a>
     </strong></div>
     <?php else: ?>
@@ -308,7 +305,7 @@
     <h2>Покупка в 1 клик!</h2>
     <div class="clear line pb20"></div>
 
-    <form id="order1click-form" action="<?php //echo url_for('order_1click', array('product' => $product->getBarcode())) ?>" method="post"></form>
+    <form id="order1click-form" action="<?php echo $page->url('order.1click', array('product' => $product->getBarcode()))//url_for('order_1click', array('product' => $product->getBarcode())) ?>" method="post"></form>
 
   </div>
 </div>
@@ -400,3 +397,5 @@ if ($rootCat) {
 <?php //if (sfConfig::get('app_smartengine_push')): ?>
 <!--div id="product_view-container" data-url="<?php //echo url_for('smartengine_view', array('product' => $product->getId())) ?>"></div-->
 <?php //endif ?>
+
+<?php echo $page->render('product/form-oneClick') ?>

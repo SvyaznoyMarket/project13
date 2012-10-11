@@ -75,6 +75,9 @@ return array(
         'pattern' => '/product/delivery-info',
         'action'  => array('Product\DeliveryAction', 'execute'),
     ),
+    'product.delivery_1click' => array(
+        'pattern' => '/product/delivery1click',
+    ),
     'product.stock' => array(
         'pattern' => '/product/{productPath}/stock',
     ),
@@ -99,6 +102,11 @@ return array(
     'cart.product.add' => array(
         'pattern' => '/cart/add/{productId}/_quantity/{quantity}', // TODO: сделать поприличнее - '/cart/add-product/{productId}/{quantity}'
         'action'  => array('Cart\ProductAction', 'add'),
+    ),
+
+  // заказ
+    'order.1click' => array(
+        'pattern' => '/orders/1click'
     ),
 
 );
