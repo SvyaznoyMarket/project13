@@ -1,22 +1,65 @@
-@media print{
-  .printPage{
-    background:@white;
-    h1{
-      float:none;
-      font-size:24px;
+.printPage{
+  background:@white;
+  font-size: 1.1em;
+  margin: auto;
+  width:700px;
+  h1{
+    float:left;
+    font-size:2.5em;
+    font-family:'Enter';
+    line-height: 2em;
+    margin: 10px 0;
+    width: 500px;
+  }
+  &__logo{
+    background:url("/css/shopPrintPage/img/logo.gif") no-repeat 0 0;
+    float:right;
+    height:87px;
+    margin: 10px 0;
+    width:95px;
+  }
+  &__map{
+    background:#464646;
+    clear:both;
+    height:550px;
+    width:700px;
+  }
+  &__desc{
+    margin:10px 0;
+    &__header{
+      font-size: 1.2em;
+      margin: 15px 0;
+      padding: 0;
     }
-    &__map{
-      
+    &__subheader{
+      font-size:0.9em;
+      font-weight:100;
+      margin:10px 0;
+      padding:0px;
     }
-    &__desc{
-      
+    &__el{
+      font-size:1em;
     }
-    &__comment{
-      
+    &__info{
+      font-size:0.8em;
     }
-    &__printAction{
-      font-size:14px;
-      padding:7px;
+  }
+  &__comments{
+    margin:10px 0;
+    &__fakeTextarea{
+      display:block;
+      border:1px solid @typGray;
+      height: 80px;
+      width:100%;
+      textarea{
+        border:none;
+        height:100%;
+        width:100%;
+      }
     }
+  }
+  &__printAction{
+    margin:10px 0;
+    width:536px;
   }
 }
