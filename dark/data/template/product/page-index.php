@@ -245,19 +245,6 @@ if ($showRelatedUpper && count($product->getRelatedList())){
 
 <?php endif ?>
 <div class="clear"></div>
-<?php if (2 != $product->getViewId()): ?>
-<!-- Description -->
-<h2 class="bold"><?php echo $product->getName() ?> - Характеристики</h2>
-<div class="line pb25"></div>
-
-
-<div class="descriptionlist">
-  <?php //render_partial('product_/templates/_property_grouped.php', array('item' => $product)) ?>
-</div>
-
-<!-- /Description -->
-<?php //render_partial('product_/templates/_tags.php', array('item' => $product)) ?>
-<?php endif ?>
 
 <!-- Media -->
 <div class="popup mediablock" id="bigpopup"><!-- IVN block #bigpopup is media gallery popup  -->
@@ -346,15 +333,28 @@ if ($showRelatedUpper && count($product->getRelatedList())){
 <?php //render_partial('product_/templates/_kit.php', array('product' => $product)) ?>
 
 <div class="clear pb25"></div>
+<?php endif ?>
 
 <h2 class="bold"><?php echo $product->getName() ?> - Характеристики</h2>
 <div class="line pb25"></div>
 <div class="descriptionlist">
-  <?php //render_partial('product_/templates/_property_grouped.php', array('item' => $product)) ?>
+
+    <?php foreach ($product->getGroupedProperties() as $group): ?>
+    <?php if (!count($group['properties'])): continue; endif ;?>
+    <div class="pb15"><strong><?php echo $group['group']->getName() ?></strong></div>
+    <?php foreach ($group['properties'] as $property): ?>
+        <div class="point">
+            <div class="title"><h3><?php echo $property->getName() ?></h3></div>
+            <div class="description">
+                <?php echo $property->getStringValue() ?>
+            </div>
+        </div>
+        <?php endforeach ?>
+    <?php endforeach ?>
+
 </div>
 
 <?php //render_partial('product_/templates/_tags.php', array('item' => $product)) ?>
-<?php endif ?>
 
 <?php /*
 if (!$showAccessoryUpper && count($product->getAccessoryList())){
