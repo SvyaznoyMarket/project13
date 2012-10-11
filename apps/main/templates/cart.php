@@ -15,7 +15,7 @@
   <body data-template="cart">
     <div class="allpage" id="page">
 	 <div class="adfoxWrapper" id="adfoxbground"></div>
-     <div class="allpageinner">
+     <div class="allpageinner buyingpage">
 
         <?php include_partial('default/header') ?>
 
@@ -43,7 +43,7 @@
       <div class="clear"></div>
     </div>
 
-    <?php include_component('default', 'footer', array('class' => 'footer_cart', )) ?>
+    <?php include_component('default', 'footer', array('view' => 'compact', )) ?>
 
     <?php if (!include_slot('auth')) include_partial('default/auth') ?>
 

@@ -75,7 +75,7 @@
 <?php echo $this->renderFile('default/_auth'/*, array('oAuthProviderList' => $oAuthProviderList)*/); ?>
 
 <?php if (\light\Config::get('isProduction')): ?>
-    <?php $this->renderFile('default/_yandexMetrika') ?>
+    <?php echo $this->renderFile('default/_yandexMetrika') ?>
 <div id="adblender" class="jsanalytics"></div>
 <?php endif ?>
 
