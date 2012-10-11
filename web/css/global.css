@@ -5651,6 +5651,21 @@ td.newWarehouse img {
   width: 560px;
 }
 /*---END---СТИЛИ 503---*/
+/*-------СТИЛИ КАРТОЧКИ МАГАЗИНА ВЕРСИЯ ДЛЯ ПЕЧАТИ-----*/
+@media print {
+  .printPage {
+    background: #ffffff;
+  }
+  .printPage h1 {
+    float: none;
+    font-size: 24px;
+  }
+  .printPage__printAction {
+    font-size: 14px;
+    padding: 7px;
+  }
+}
+/*---END---СТИЛИ КАРТОЧКИ МАГАЗИНА ВЕРСИЯ ДЛЯ ПЕЧАТИ---*/
 /*------СТИЛИ ГЛАВНОЙ------*/
 #mainPage {
   background: #000000;
