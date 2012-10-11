@@ -176,6 +176,7 @@ class OrderEntity
       if(array_key_exists('delivery_interval_id', $data))   $this->deliveryInterval = $data['delivery_interval_id'];
       if(array_key_exists('delivery_date', $data))          $this->deliveryDate     = $data['delivery_date'];
       if(array_key_exists('is_bill', $data))                $this->isBill           = $data['is_bill'];
+      if(array_key_exists('bill', $data))                   $this->isBill           = $data['bill'];
 
 
       if(array_key_exists('delivery', $data) && array_key_exists('price', $data['delivery'])) {

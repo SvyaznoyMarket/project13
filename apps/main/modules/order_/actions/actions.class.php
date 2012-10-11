@@ -43,13 +43,13 @@ class order_Actions extends myActions
 
     $order = reset($result);
 
-    if (!$order['is_bill']) {
+    if ((array_key_exists('is_bill', $order) && empty($order['is_bill'])) || (array_key_exists('bill', $order) && empty($order['bill']))) {
         $this->setLayout('layout');
 
         $this->setVar('order', $order);
         $this->getResponse()->setTitle('Заказ №'.$order['number']);
 
-        return sfView::ERROR;
+        //return sfView::ERROR;
     }
 
     $result = CoreClient::getInstance()->query('order-bill/get', array(
