@@ -24,9 +24,7 @@ $debug->add('memory', sprintf('%s Mb', round(memory_get_peak_usage() / 1048576, 
 if (!\App::request()->isXmlHttpRequest()) {
 ?>
     <div draggable="true" style="position: absolute; top: 24px; left: 2px; width: 260px; overflow: hidden; z-index: 999; background: #000000; color: #00ff00; opacity: 0.8; padding: 4px 6px; border-radius: 5px; font-size: 10px; font-family: Courier New; box-shadow: 0 0 10px rgba(0,0,0,0.5);">
-        <span onclick="$(this).parent().remove()" style="cursor: pointer; font-size: 16px; color: #ffffff;">&times;</span>
-        <span onclick="var el = $(this).parent(); if (el.height() > 40) { el.animate({height: 16}, 200); } else { el.animate({height: 300}, 200); }" style="cursor: pointer; font-size: 16px; color: #ffffff;">&minus;</span>
-        <span onclick="var el = $(this).parent(); if (el.width() > 260) { el.animate({width: 260}, 200); } else { el.animate({width: 1024}, 200); }" style="cursor: pointer; font-size: 16px; color: #ffffff;">+</span>
+        <span onclick="$(this).parent().remove()" style="cursor: pointer; font-size: 16px; color: #999999;">&times;</span>
         <br />
 
     <? foreach ($debug->getAll() as $item) { ?>
