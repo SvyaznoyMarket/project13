@@ -94,7 +94,7 @@ return array(
         'require' => array('tagToken' => '[\w\d-_]+'),
     ),
 
-  // корзина
+    // корзина
     'cart' => array(
         'pattern' => '/cart/', // TODO: сделать '/cart'
         'action'  => array('Cart\IndexAction', 'execute'),
@@ -103,10 +103,22 @@ return array(
         'pattern' => '/cart/add/{productId}/_quantity/{quantity}', // TODO: сделать поприличнее - '/cart/add-product/{productId}/{quantity}'
         'action'  => array('Cart\ProductAction', 'add'),
     ),
+    'cart.service_delete' => array(
+        'pattern' => '/cart/delete_service/{productId}/_service/{serviceId}',
+        'require' => array('productId' => '\d+', 'serviceId' => '\d+'),
+    ),
 
-  // заказ
+    // заказ
     'order.1click' => array(
         'pattern' => '/orders/1click'
     ),
 
+    // услуги
+    'service' => array(
+        'pattern' => '/f1'
+    ),
+    'service.show' => array(
+        'pattern' => '/f1/show/{serviceToken}',
+        'require' => '[\w\d-_]+',
+    ),
 );

@@ -44,10 +44,6 @@
   product_3d_big = <?php echo json_encode($p3d_res_big) ?>;
 </script>
 
-<?php //slot('after_body_block') ?>
-<?php //render_partial('product_/templates/_oneclickTemplate.php', array()) ?>
-<?php //end_slot() ?>
-
 <div class="goodsphoto">
   <a href="<?php echo $product->getImageUrl(4) ?>" class="viewme" ref="image" onclick="return false">
     <?php if ($product->getLabel()): ?>
