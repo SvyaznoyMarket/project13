@@ -119,7 +119,10 @@ class Entity extends BasicEntity {
             return new Media\Entity($data);
         }, $data['media']));
         if (array_key_exists('brand', $data) && (bool)$data['brand']) $this->setBrand(new \Model\Brand\Entity($data['brand']));
-        if (array_key_exists('label', $data) && (bool)$data['label']) $this->setLabel(new Label\Entity($data['label']));
+        if (array_key_exists('label', $data)) {
+            if (isset($data['label'][0]) && (bool)$data['label'][0]) $this->setLabel(new Label\Entity($data['label'][0]));
+            elseif ((bool)$data['label']) $this->setLabel(new Label\Entity($data['label']));
+        }
         if (array_key_exists('type', $data) && (bool)$data['type']) $this->setType(new Type\Entity($data['type']));
         if (array_key_exists('comment_count', $data)) $this->setCommentCount($data['comment_count']);
         if (array_key_exists('price', $data)) $this->setPrice($data['price']);
@@ -394,7 +397,7 @@ class Entity extends BasicEntity {
       return $this->photo3d;
     }
 
-  /**
+    /**
      * @param int $modelId
      */
     public function setModelId($modelId = null) {
@@ -749,5 +752,17 @@ class Entity extends BasicEntity {
      */
     public function getKit() {
         return $this->kit;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasSaleLabel()
+    {
+        if ($this->label) {
+            return $this->label->isSale();
+        }
+
+        return false;
     }
 }

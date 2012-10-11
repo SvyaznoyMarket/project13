@@ -75,8 +75,11 @@ return array(
         'pattern' => '/product/delivery-info',
         'action'  => array('Product\DeliveryAction', 'execute'),
     ),
+    'product.stock' => array(
+        'pattern' => '/product/{productPath}/stock',
+    ),
 
-    // корзина
+  // корзина
     'cart' => array(
         'pattern' => '/cart/', // TODO: сделать '/cart'
         'action'  => array('Cart\IndexAction', 'execute'),

@@ -24,7 +24,7 @@ Options +FollowSymLinks +ExecCGI
 
   # dark
   RewriteRule ^search* dark.php [L]
-  RewriteRule ^product/[^/]* dark.php [L]
+  RewriteRule ^product/([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)$ dark.php [L]
 
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteRule ^wp-admin/$ /content/wp-admin/index.php [L]

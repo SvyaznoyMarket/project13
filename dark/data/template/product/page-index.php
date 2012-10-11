@@ -13,8 +13,6 @@
 <?php //include_component('productCard_', 'navigation', array('product' => $product)) ?>
 <?php //end_slot() ?>
 
-<?php //slot('title', $product->getName()) ?>
-
 <?php
   $json = json_encode(array (
     'jsref' => $product->getToken(),
@@ -51,11 +49,9 @@
 
 <div class="goodsphoto">
   <a href="<?php echo $product->getImageUrl(4) ?>" class="viewme" ref="image" onclick="return false">
-    <?php //foreach ($product->getLabelList() as $label):?>
     <?php if ($product->getLabel()): ?>
     <img class="bLabels" src="<?php echo $product->getLabel()->getImageUrl(1) ?>" alt="<?php echo $product->getLabel()->getName() ?>" />
     <?php endif ?>
-    <?php //endforeach ?>
     <img class="mainImg" src="<?php echo $product->getImageUrl(3) ?>" alt="" width="500" height="500" title="" />
   </a>
 </div>
@@ -77,7 +73,7 @@
         ?>
       </span>
       <strong class="ml5 hf"><?php echo round($product->getRating(), 1) ?></strong>
-      <a href="<?php //echo url_for('productComment', array('product' => $product->getPath())) ?>" class="underline ml5">Читать отзывы</a> <span>(<?php echo $product->getCommentCount() ?>)</span>
+      <a href="<?php echo $product->getLink().'/comments' ?>" class="underline ml5">Читать отзывы</a> <span>(<?php echo $product->getCommentCount() ?>)</span>
     </div>
     <span>Артикул #<?php echo $product->getArticle() ?></span>
   </div>
@@ -96,11 +92,11 @@
   <div class="clear"></div-->
   <?php //end_slot() ?>
   <div class="clear"></div>
-  <div class="clear mOur pt10 <?php //if ($product->hasSaleLabel()) echo 'red'; ?>">Наша цена</div>
+  <div class="clear mOur pt10 <?php if ($product->hasSaleLabel()) echo 'red'; ?>">Наша цена</div>
   <?php endif ?>
 
   <div class="fl pb15">
-    <div class="pb10 <?php //if ($product->hasSaleLabel()) echo 'red'; ?>"><strong class="font34"><span class="price"><?php echo $page->helper->formatPrice($product->getPrice()) ?></span> <span class="rubl">p</span></strong></div>
+    <div class="pb10 <?php if ($product->hasSaleLabel()) echo 'red'; ?>"><strong class="font34"><span class="price"><?php echo $page->helper->formatPrice($product->getPrice()) ?></span> <span class="rubl">p</span></strong></div>
     <?php if ($product->getIsBuyable()): ?>
     <div class="pb5"><strong class="orange">Есть в наличии</strong></div>
     <?php endif ?>
@@ -150,7 +146,7 @@
   <?php //endif; ?>
 
   <?php if ($product->getIsBuyable()): ?>
-  <div class="bDeliver2 delivery-info" id="product-id-<?php echo $product->getId() ?>" data-shoplink="<?php //echo url_for('productStock', array('product' => $product->getPath())) ?>" data-calclink="<?php echo $page->url('product.delivery', array('productId' => $product->getId())) ?>">
+  <div class="bDeliver2 delivery-info" id="product-id-<?php echo $product->getId() ?>" data-shoplink="<?php echo $product->getLink().'/stock' ?>" data-calclink="<?php echo $page->url('product.delivery', array('productId' => $product->getId())) ?>">
     <h4>Как получить заказ?</h4>
     <ul>
       <li>
@@ -158,18 +154,16 @@
       </li>
     </ul>
   </div>
-  <?php endif ?>
 
-  <div class="line pb15"></div>
+    <div class="line pb15"></div>
+    <?php endif ?>
 
   <div style="margin-bottom: 20px;">
     <?php
     //если стоит шильдик Акция
-    //$labels = $product->getLabelList();
-    //$label = isset($labels[0])? $labels[0] : null;
-    if ($product->getLabel() && $product->getLabel()->getId() == ProductLabelEntity::LABEL_ACTION) { ?>
+    if ($product->getLabel() && $product->getLabel()->getId() == \Model\Product\Label\Entity::LABEL_ACTION) { ?>
       <div class="adfoxWrapper" id="adfox400counter"></div>
-      <?php } else if ($product->getLabel() && $product->getLabel()->getId() == ProductLabelEntity::LABEL_CREDIT) { ?>
+      <?php } else if ($product->getLabel() && $product->getLabel()->getId() == \Model\Product\Label\Entity::LABEL_CREDIT) { ?>
       <div class="adfoxWrapper" id="adfoxWowCredit"></div>
       <?php } else { ?>
       <div class="adfoxWrapper" id="adfox400"></div>
