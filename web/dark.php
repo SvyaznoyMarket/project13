@@ -82,23 +82,6 @@ $spend = \Debug\Timer::stop('app');
 \App::shutdown();
 
 // debug panel
-$timers = \Debug\Timer::getAll();
-if ($config->debug && !$request->isXmlHttpRequest()) {
-    echo '<pre draggable="true" ondblclick="$(this).remove()" style="position: fixed; top: 14px; left: 2px; width: 200px; overflow: hidden; z-index: 999; background: #000000; color: #00ff00; opacity: 0.8; padding: 2px 5px; border-radius: 5px; font-size: 10px; font-family: Courier New; box-shadow: 0 0 10px rgba(0,0,0,0.5);">'
-        . 'env: ' . $env . '<br />'
-        . 'act: ' . (isset($actionCall[0]) ? (str_replace('Controller\\', '', get_class($actionCall[0])) . '.' . $actionCall[1]) : '') . '<br />'
-        . ($response && (200 != $response->getStatusCode()) ? ('status: <span style="color: #ff0000;">' . $response->getStatusCode() . '</span><br />') : '')
-        . '<br />'
-        . 'app: ' . round($timers['app']['total']
-            - (isset($timers['core']) ? $timers['core']['total'] : 0)
-            - (isset($timers['content']) ? $timers['content']['total'] : 0)
-        , 3).' s<br />'
-        . 'core: ' . (isset($timers['core']) ? sprintf('%s s [%s]', round($timers['core']['total'], 3), $timers['core']['count']) : '~')
-        . '<br />'
-        . 'content: ' . (isset($timers['content']) ? sprintf('%s s [%s]', round($timers['content']['total'], 3), $timers['content']['count']) : '~')
-        . '<br />'
-        . '<br />'
-        . 'total: ' . round($timers['app']['total'], 3).' s<br />'
-        . 'memory: ' . round(memory_get_peak_usage() / 1048576, 2). ' Mb'
-    .'</pre>';
+if ($config->debug) {
+    require \App::config()->dataDir . '/debug/panel.php';
 }

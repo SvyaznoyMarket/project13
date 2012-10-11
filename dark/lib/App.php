@@ -200,4 +200,14 @@ class App {
 
         return self::$loggers[$name];
     }
+
+    public static function debug() {
+        static $instance;
+
+        if (!$instance) {
+            $instance = new \Debug\Collector();
+        }
+
+        return $instance;
+    }
 }
