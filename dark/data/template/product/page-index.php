@@ -115,7 +115,7 @@
         <?php endif ?>
         <span><?php //echo $product->isInCart() ? $product->getCartQuantity() : 1 ?> шт.</span>
       </div>
-      <?php echo $page->render('cart/button', array('product' => $product, 'disabled' => !$product->getIsBuyable())) ?>
+      <?php echo $page->render('cart/_button', array('product' => $product, 'disabled' => !$product->getIsBuyable())) ?>
     </div>
     <div class="pb5"><strong>
       <a href=""

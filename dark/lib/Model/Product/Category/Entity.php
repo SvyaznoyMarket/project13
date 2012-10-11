@@ -46,6 +46,8 @@ class Entity {
     private $child = array();
     /** @var Entity|null */
     private $parent;
+    /** @var Entity */
+    private $root;
     /** @var Entity[] */
     private $ancestor = array();
 
@@ -85,7 +87,7 @@ class Entity {
      * @return bool
      */
     public function isBranch() {
-        return (bool)$this->child;
+        return (null != $this->parentId) && (2 == $this->level);
     }
 
     /**
@@ -94,7 +96,8 @@ class Entity {
      * @return bool
      */
     public function isLeaf() {
-        return !(bool)$this->child;
+        // TODO: это неверное определение
+        return $this->level > 2;
     }
 
     /**
@@ -394,7 +397,7 @@ class Entity {
      * @return \Model\Product\Category\Entity|null
      */
     public function getParent() {
-        return $this->parent;
+        return $this->parent ?: end($this->ancestor);
     }
 
     /**
@@ -419,5 +422,36 @@ class Entity {
      */
     public function getAncestor() {
         return $this->ancestor;
+    }
+
+    /**
+     * @param \Model\Product\Category\Entity $root
+     */
+    public function setRoot(Entity $root = null) {
+        $this->root = $root;
+    }
+
+    /**
+     * @return \Model\Product\Category\Entity
+     */
+    public function getRoot() {
+        return $this->root ?: reset($this->ancestor);
+    }
+
+    public function getImageUrl($size = 0) {
+        if ($this->image) {
+            $urls = \App::config()->productCategory['url'];
+
+            return $urls[$size] . $this->image;
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * @return string
+     */
+    public function getPath() {
+        return trim(preg_replace('/^\/catalog\//' , '', $this->link), '/');
     }
 }

@@ -40,4 +40,14 @@ class RepositoryManager {
 
         return $instance;
     }
+
+    static public function getProductFilter() {
+        static $instance;
+
+        if (!$instance) {
+            $instance = new \Model\Product\Filter\Repository(\App::coreClientV2());
+        }
+
+        return $instance;
+    }
 }

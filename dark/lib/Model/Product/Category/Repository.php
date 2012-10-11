@@ -65,13 +65,7 @@ class Repository {
             }
 
             $ancestorData = reset($data);
-            if (1 == $ancestorData['level']) {
-                $ancestor = new Entity($ancestorData);
-                $entity->addAncestor($ancestor);
-                $entity->setParent($ancestor);
-            } else {
-                $entity->addAncestor(new Entity($ancestorData));
-            }
+            $entity->addAncestor(new Entity($ancestorData));
 
             if (isset($data[0]['children'])) {
                 $loadBranch($data[0]['children']);

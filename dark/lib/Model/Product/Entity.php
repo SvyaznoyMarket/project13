@@ -788,4 +788,11 @@ class Entity extends BasicEntity {
     {
         return $this->groupedProperties;
     }
+
+    /**
+     * @return string
+     */
+    public function getPath() {
+        return trim(preg_replace('/^\/product\//' , '', $this->link), '/');
+    }
 }
