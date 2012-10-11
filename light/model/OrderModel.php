@@ -135,7 +135,8 @@ class OrderModel
     if(is_array($result) && array_key_exists('confirmed', $result) && $result['confirmed'] == 'true'){
       $order->setId((int) $result['id']);
       $order->setNumber((string) $result['number']);
-      if (array_key_exists('total_price', $result)) $order->setTotalPrice($result['total_price']);
+
+      if (array_key_exists('price', $result)) $order->setTotalPrice($result['price']);
     }
     else{
       throw new \LogicException($result['message'], $result['code']);
