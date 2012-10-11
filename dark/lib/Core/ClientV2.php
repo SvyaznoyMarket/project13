@@ -22,7 +22,6 @@ class ClientV2 implements ClientInterface
 
     public function query($action, array $params = array(), array $data = array()) {
         \Debug\Timer::start('core');
-        \App::logger()->info('Start core request '.$action);
 
         $connection = $this->createResource($action, $params, $data);
         $response = curl_exec($connection);
@@ -41,15 +40,13 @@ class ClientV2 implements ClientInterface
             curl_close($connection);
 
             $spend = \Debug\Timer::stop('core');
-            \App::logger()->info('End core request ' . $action . ' ' . $spend);
+            \App::logger()->info('End core ' . $action . ' in ' . $spend);
 
             return $responseDecoded;
         } catch (\RuntimeException $e) {
             curl_close($connection);
-            $this->logger->error('request params: ' . $action . ', get: ' . print_r($params, 1) . ', post: ' . print_r($data, true) . 'error: ' . (string)$e . ', response: ' . print_r($response, true));
-
             $spend = \Debug\Timer::stop('core');
-            \App::logger()->error('End core request ' . $spend . ' with ' . $e);
+            \App::logger()->error('End core ' . $action . ' in ' . $spend . ' get: ' . json_encode($params) . ' post: ' . json_encode($data) . ' response: ' . json_encode($response, true) . ' with ' . $e);
 
             throw $e;
         }
@@ -81,10 +78,11 @@ class ClientV2 implements ClientInterface
                         $this->logger->debug('Core response done: ' . print_r($done, 1));
                         $handler = $done['handle'];
                         $info = curl_getinfo($handler);
-                        $this->logger->debug('Core response resurce: ' . $handler);
+                        $this->logger->debug('Core response resource: ' . $handler);
                         $this->logger->debug('Core response info: ' . $this->encodeInfo($info));
-                        if (curl_errno($handler) > 0)
+                        if (curl_errno($handler) > 0) {
                             throw new \RuntimeException(curl_error($handler), curl_errno($handler));
+                        }
                         $content = curl_multi_getcontent($handler);
                         if ($info['http_code'] >= 300) {
                             throw new \RuntimeException(sprintf("Invalid http code: %d, \nResponse: %s", $info['http_code'], $content));
@@ -121,6 +119,8 @@ class ClientV2 implements ClientInterface
         $query = $this->config['url']
             . $action
             . '?' . http_build_query(array_merge($params, array('client_id' => $this->config['client_id'])));
+
+        \App::logger()->info('Start core ' . $action . ' query: ' . $query);
 
         $this->logger->info('Send core requset ' . ($isPostMethod ? 'post' : 'get') . ': ' . $query);
         if ($data) {
@@ -173,8 +173,8 @@ class ClientV2 implements ClientInterface
 
         if (is_array($decoded) && array_key_exists('error', $decoded)) {
             $e = new \RuntimeException(
-                (string)$decoded['error']['message'] . ' ' . $this->encode($decoded), (int)$decoded['error']['code'],
-                $decoded['error']
+                (string)$decoded['error']['message'] . ' ' . $this->encode($decoded),
+                (int)$decoded['error']['code']
             );
 
             throw $e;

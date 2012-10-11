@@ -42,6 +42,12 @@ class Entity {
     private $seoText;
     /** @var int */
     private $productCount;
+    /** @var Entity[] */
+    private $child = array();
+    /** @var Entity|null */
+    private $parent;
+    /** @var Entity[] */
+    private $ancestor = array();
 
     public function __construct(array $data = array()) {
         if (array_key_exists('id', $data)) $this->setId($data['id']);
@@ -70,7 +76,7 @@ class Entity {
      * @return bool
      */
     public function isRoot() {
-        return null == $this->parentId;
+        return 1 == $this->level;
     }
 
     /**
@@ -79,8 +85,7 @@ class Entity {
      * @return bool
      */
     public function isBranch() {
-        // TODO: это неверное определение
-        return (null != $this->parentId) && (2 == $this->level);
+        return (bool)$this->child;
     }
 
     /**
@@ -89,8 +94,7 @@ class Entity {
      * @return bool
      */
     public function isLeaf() {
-        // TODO: это неверное определение
-        return $this->level > 2;
+        return !(bool)$this->child;
     }
 
     /**
@@ -353,5 +357,67 @@ class Entity {
      */
     public function getSeoTitle() {
         return $this->seoTitle;
+    }
+
+    /**
+     * @param Entity[] $child
+     */
+    public function setChild(array $children) {
+        $this->child = array();
+        foreach ($children as $child) {
+            $this->addChild($child);
+        }
+    }
+
+    /**
+     * @param Entity $child
+     */
+    public function addChild(Entity $child) {
+        $this->child[] = $child;
+    }
+
+    /**
+     * @return array|Entity[]
+     */
+    public function getChild() {
+        return $this->child;
+    }
+
+    /**
+     * @param \Model\Product\Category\Entity|null $parent
+     */
+    public function setParent(Entity $parent = null) {
+        $this->parent = $parent;
+    }
+
+    /**
+     * @return \Model\Product\Category\Entity|null
+     */
+    public function getParent() {
+        return $this->parent;
+    }
+
+    /**
+     * @param Entity[] $ancestors
+     */
+    public function setAncestor(array $ancestors) {
+        $this->ancestor = array();
+        foreach ($ancestors as $ancestor) {
+            $this->addAncestor($ancestor);
+        }
+    }
+
+    /**
+     * @param Entity $ancestor
+     */
+    public function addAncestor(Entity $ancestor) {
+        $this->ancestor[] = $ancestor;
+    }
+
+    /**
+     * @return Entity[]
+     */
+    public function getAncestor() {
+        return $this->ancestor;
     }
 }
