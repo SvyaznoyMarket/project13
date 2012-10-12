@@ -64,6 +64,16 @@ class IndexAction {
         // листалка
         $productPager = $this->getPager($productFilter, $pageNum, $productView);
 
+        // ajax
+        if ($request->isXmlHttpRequest()) {
+            return new \Http\Response(\App::templating()->render('product/_list', array(
+                'page'   => new \View\DefaultLayout(),
+                'pager'  => $productPager,
+                'view'   => $productView,
+                'isAjax' => true,
+            )));
+        }
+
         $page = new \View\ProductCategory\LeafPage();
         $page->setParam('category', $category);
         $page->setParam('productFilter', $productFilter);

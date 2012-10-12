@@ -87,6 +87,7 @@ class IndexAction {
             throw new \Exception\NotFoundException(sprintf('Неверный номер страницы "%s".', $productPager->getPage()));
         }
 
+        // ajax
         if ($request->isXmlHttpRequest()) {
             return new \Http\Response(\App::templating()->render('product/_list', array(
                 'page'   => new \View\DefaultLayout(),
