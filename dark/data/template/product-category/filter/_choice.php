@@ -10,9 +10,9 @@ use Model\Product\Filter\Entity as FilterEntity;
  * @var $isOpened      bool
  * @var $index         int
  */
-
-$values = $productFilter->getValue($filter);
 ?>
+
+<?php $values = $productFilter->getValue($filter) ?>
 
 <dt<? if (5 > $index) { ?> class="<?= ((1 == $index) ? ' first' : '') ?>"<? } ?>>
     <?= $filter->getName() ?>

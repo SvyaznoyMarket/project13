@@ -34,7 +34,7 @@ class Entity {
      * @param string $name
      */
     public function setName($name) {
-        $this->name = (int)$name;
+        $this->name = (string)$name;
     }
 
     /**

@@ -54,4 +54,13 @@ class Helper {
 
         return $instance->format($text, $number);
     }
+
+    public function clearZeroValue($value) {
+        $frac = $value - floor($value);
+        if (0 == $frac) {
+            return intval($value);
+        } else {
+            return rtrim($value, '0');
+        }
+    }
 }
