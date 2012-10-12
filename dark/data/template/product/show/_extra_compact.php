@@ -48,7 +48,7 @@ $maxHeight = isset($maxHeight) && $maxHeight;
         <h3><a href="<?php echo $product->getLink() ?>"><?php echo $product->getName() ?></a></h3>
 
         <div class="goodsbar mSmallBtns mR">
-          <?php echo $page->render('cart/button', array('product' => $product)) ?>
+          <?php echo $page->render('cart/_button', array('product' => $product)) ?>
         </div>
         <div class="font18 pb10 mSmallBtns"><span class="price"><?php echo $page->helper->formatPrice($product->getPrice()) ?></span> <span class="rubl">p</span></div>
       </div>
