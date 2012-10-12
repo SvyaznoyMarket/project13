@@ -31,11 +31,9 @@ $(document).ready(function() {
 		// if( typeof(delurl)==='undefined' )
 		// 	delurl = addurl + '-1'
 		var drop     = $(nodes.drop).attr('href')
-		this.sum     = $(nodes.sum).html().replace(/\s/,'')
 		var limit    = nodes.limit
 		if( $(nodes.quan).length )
 			this.quantum = $(nodes.quan).html().replace(/\D/g,'') * 1
-
 		var price    = ( self.sum* 1 / self.quantum *1 ).toFixed(2)
 		if( 'price' in nodes )
 		    price    = $(nodes.price).html().replace(/\s/,'')
@@ -43,8 +41,32 @@ $(document).ready(function() {
 		this.noview  = false
 		var dropflag = false
 
+		if( !$(nodes.sum).length )
+			this.sum = this.quantum * this.price
+		else
+			this.sum     = $(nodes.sum).html().replace(/\s/,'')
+
 		totalCash += this.sum * 1
 		var totalCalcTO = null
+
+		if( nodes.linked ) { // warranty only
+			PubSub.subscribe('quantityChange', function( m, data ) {
+//console.info( nodes.linked, data.id, self.sum )
+				if( nodes.linked != data.id )
+					return
+				self.updateWrnt( data.q )
+			})
+		}
+
+		this.updateWrnt = function( q ) {
+			clearTimeout( totalCalcTO )
+			self.quantum = q
+			self.sum = q * self.price
+			$(nodes.quan).html( self.quantum )
+			totalCalcTO = setTimeout( function() {
+                getTotal(), 1000
+            })
+		}
 
 		this.calculate = function( q ) {
 			clearTimeout( totalCalcTO )
@@ -53,8 +75,8 @@ $(document).ready(function() {
 			$(nodes.sum).html( printPrice( self.sum ) )
 			$(nodes.sum).typewriter(800, getTotal)
 			totalCalcTO = setTimeout( function() {
-                 getTotal(), 1000
-             })
+                getTotal(), 1000
+            })
 		}
 
 		this.clear = function() {
@@ -258,7 +280,6 @@ $(document).ready(function() {
 	}
 
 	function addLineWrnt( tr, bline ) {
-	
 		function checkWide() {
 			var buttons = $('.extWarranty .bF1Block_eBuy', bline)
 			var mBig = $('div.bBacketServ.mBig.extWarr', bline)	
@@ -278,23 +299,25 @@ $(document).ready(function() {
 					'line': tr,
 					'less': tr.find('.ajaless'),
 					'more': tr.find('.ajamore'),
-					'quan': tr.find('.ajaquant'),
-					//'price': '.none',
-					'sum': tr.find('.price'),
-					'drop': tr.find('.whitelink')
+					'quan': tr.find('.quantity'),
+					'price': tr.find('.price'),
+					// 'sum': tr.find('.price'),
+					'drop': tr.find('.whitelink'),
+					'linked': bline.attr('ref')
 					}, checkWide)
 		basket.push( tmpline )
 	}	
 
-	function makeWideWrnt( bline, f1item ) {	
+	function makeWideWrnt( bline, f1item ) {
 		$('div.bBacketServ.mSmall:eq(1)', bline).hide()
+		f1item.productQ = bline.find('.ajaquant:first').text().replace(/[^0-9]/g,'')
 		var bBig = $('div.bBacketServ.mBig:eq(1)', bline)
 		bBig.show()	
 		var f1lineshead = $('tr:first', bBig)
 		var f1linecart = tmpl('wrntline', f1item)
 		f1linecart = f1linecart.replace(/WID/g, f1item.ewid ).replace(/PRID/g, bline.attr('ref') )
 		f1lineshead.after( f1linecart )
-		addLineWrnt( $('tr:eq(1)', bBig) )
+		addLineWrnt( $('tr:eq(1)', bBig), bline )
 		getTotal()	
 	}
 	
