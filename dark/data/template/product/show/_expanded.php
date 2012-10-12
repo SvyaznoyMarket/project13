@@ -45,7 +45,7 @@
             <span class="db font18 pb10"><b><span class="price"><?= $page->helper->formatPrice($product->getPrice()) ?></span> <span class="rubl">p</span></b></span>
 
             <div class="goodsbar mSmallBtns">
-                <?= $page->render('cart/button', array('product' => $product)) ?>
+                <?= $page->render('cart/_button', array('product' => $product)) ?>
             </div>
 
             <? if ($product->getIsBuyable()): ?>

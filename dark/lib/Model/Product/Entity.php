@@ -849,4 +849,11 @@ class Entity extends BasicEntity {
     {
         return $this->relatedId;
     }
+
+    /**
+     * @return string
+     */
+    public function getPath() {
+        return trim(preg_replace('/^\/product\//' , '', $this->link), '/');
+    }
 }

@@ -15,10 +15,10 @@ class RegistrationForm {
     );
 
     public function __construct(array $data = array()) {
-        $this->import($data);
+        $this->fromArray($data);
     }
 
-    public function import(array $data) {
+    public function fromArray(array $data) {
         if (array_key_exists('username', $data)) $this->setUsername($data['username']);
         if (array_key_exists('first_name', $data)) $this->setFirstName($data['first_name']);
     }

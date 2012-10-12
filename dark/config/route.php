@@ -71,6 +71,11 @@ return array(
         'action'  => array('Product\IndexAction', 'execute'),
         'require' => array('productPath' => '[\w\d-_]+\/{1}[\w\d-_]+'),
     ),
+    'product.count' => array(
+        'pattern' => '/catalog/{categoryPath}/_count',
+        'action'  => array('ProductCategory\CountAction', 'execute'),
+        'require' => array('categoryPath' => '[\w\d-_]+\/?[\w\d-_]+'),
+    ),
     'product.delivery' => array(
         'pattern' => '/product/delivery-info',
         'action'  => array('Product\DeliveryAction', 'execute'),

@@ -112,7 +112,7 @@
         <?php endif ?>
         <span><?php echo $user->getCart()->hasProduct($product->getId()) ? $user->getCart()->getQuantityByProduct($product->getId()) : 1 ?> шт.</span>
       </div>
-      <?php echo $page->render('cart/button', array('product' => $product, 'disabled' => !$product->getIsBuyable())) ?>
+      <?php echo $page->render('cart/_button', array('product' => $product, 'disabled' => !$product->getIsBuyable())) ?>
     </div>
     <div class="pb5"><strong>
       <a href=""

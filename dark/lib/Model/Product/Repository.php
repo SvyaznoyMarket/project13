@@ -15,6 +15,10 @@ class Repository {
         $this->entityClass = $class;
     }
 
+    /**
+     * @param $token
+     * @return Entity|null
+     */
     public function getEntityByToken($token) {
         $response = $this->client->query('product/get', array(
             'select_type' => 'slug',
@@ -23,9 +27,13 @@ class Repository {
         ));
         $data = reset($response);
 
-        return new $this->entityClass($data);
+        return $data ? new Entity($data) : null;
     }
 
+    /**
+     * @param array $tokens
+     * @return Entity[]
+     */
     public function getCollectionByToken(array $tokens) {
         if (!(bool)$tokens) return array();
 
@@ -43,6 +51,10 @@ class Repository {
         return $collection;
     }
 
+    /**
+     * @param array $ids
+     * @return Entity[]
+     */
     public function getCollectionById(array $ids) {
         if (!(bool)$ids) return array();
 
@@ -58,5 +70,28 @@ class Repository {
         }
 
         return $collection;
+    }
+
+    /**
+     * @param array $filters
+     * @param array $sort
+     * @param null $offset
+     * @param null $limit
+     * @return \Iterator\EntityPager
+     */
+    public function getIteratorByFilter(array $filters = array(), array $sort = array(), $offset = null, $limit = null) {
+        $response = $this->client->query('listing/list', array(
+            'filter' => array(
+                'filters' => $filters,
+                'sort'    => $sort,
+                'offset'  => $offset,
+                'limit'   => $limit,
+            ),
+            'region_id' => \App::user()->getRegion()->getId(),
+        ));
+
+        $collection = $this->getCollectionById($response['list']);
+
+        return new \Iterator\EntityPager($collection, (int)$response['count']);
     }
 }

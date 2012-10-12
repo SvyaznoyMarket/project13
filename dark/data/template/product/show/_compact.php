@@ -74,7 +74,7 @@ $hasModel = (isset($hasModel) ? $hasModel : true) && $product->getModel() && cou
                 <h3><a href="<?= $product->getLink() ?>"><?= $product->getName() ?></a></h3>
 
                 <div class="goodsbar mSmallBtns mR">
-                    <?= $page->render('cart/button', array('product' => $product)) ?>
+                    <?= $page->render('cart/_button', array('product' => $product)) ?>
                 </div>
 
                 <div class="font18 pb10 mSmallBtns">

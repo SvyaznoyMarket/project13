@@ -4,7 +4,7 @@ namespace Controller\Product;
 
 class IndexAction {
     public function execute($productPath, \Http\Request $request) {
-        list($categoryToken, $productToken) = explode('/', $productPath);
+        list(, $productToken) = explode('/', $productPath);
 
         $productRepository = \RepositoryManager::getProduct();
         $product = $productRepository->getEntityByToken($productToken);
