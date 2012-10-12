@@ -255,7 +255,7 @@
           <strong class="font34"><span class="price"><?php echo $page->helper->formatPrice($product->getPrice()) ?></span> <span class="rubl">p</span></strong>
       </div>
       <div class="popup_leftpanel pb40" ref="<?php echo $product->getToken() ?>" data-value='<?php echo $json ?>'>
-        <?php echo $page->render('cart/button', array('product' => $product, 'disabled' => !$product->getIsBuyable(), 'value' => 'Купить')) ?>
+        <?php echo $page->render('cart/_button', array('product' => $product, 'disabled' => !$product->getIsBuyable(), 'value' => 'Купить')) ?>
       </div>
 
       <h2>Фото:</h2>
@@ -366,17 +366,17 @@
 <div class="fr ar">
     <?php if ( $product->getIsBuyable()): ?>
     <div class="goodsbarbig mSmallBtns" ref="<?php echo $product->getToken() ?>" data-value='<?php echo $json ?>'>
-<?php /* ?>
+
         <div class='bCountSet'>
-            <?php if (!$product->getCartQuantity()): ?>
+            <?php if (!$user->getCart()->hasProduct($product->getId())): ?>
             <a class='bCountSet__eP' href>+</a><a class='bCountSet__eM' href>-</a>
             <?php else: ?>
             <a class='bCountSet__eP disabled' href>&nbsp;</a><a class='bCountSet__eM disabled' href>&nbsp;</a>
             <?php endif ?>
-            <span><?php echo $product->getCartQuantity() ? $product->getCartQuantity() : 1 ?> шт.</span>
+            <span><?php echo $user->getCart()->getQuantityByProduct($product->getId()) ? $user->getCart()->getQuantityByProduct($product->getId()) : 1 ?> шт.</span>
         </div>
-<?php */ ?>
-        <?php echo $page->render('cart/button', array('product' => $product, 'disabled' => !$product->getIsBuyable())) ?>
+
+        <?php echo $page->render('cart/_button', array('product' => $product, 'disabled' => !$product->getIsBuyable())) ?>
     </div>
     <?php else: ?>
     <p class="font16 orange">Для покупки товара<br />обратитесь в<br />Контакт-сENTER</p>
@@ -417,4 +417,4 @@ if ($rootCat) {
 <!--div id="product_view-container" data-url="<?php //echo url_for('smartengine_view', array('product' => $product->getId())) ?>"></div-->
 <?php //endif ?>
 
-<?php echo $page->render('product/form-oneClick') ?>
+<?php if ($product->getIsBuyable()): echo $page->render('product/form-oneClick'); endif; ?>
