@@ -108,9 +108,16 @@ return array(
         'pattern' => '/cart/add/{productId}/_quantity/{quantity}', // TODO: сделать поприличнее - '/cart/add-product/{productId}/{quantity}'
         'action'  => array('Cart\ProductAction', 'add'),
     ),
-    'cart.service_delete' => array(
+    'cart.service.delete' => array(
         'pattern' => '/cart/delete_service/{productId}/_service/{serviceId}',
         'require' => array('productId' => '\d+', 'serviceId' => '\d+'),
+    ),
+    'cart.service.add' => array(
+        'pattern' => '/cart/add_service/{productId}/_service/{serviceId}/_quantity/{quantity}/',
+        'require' => array(
+            'productId' => '\d+',
+            'serviceId' => '\d+',
+        ),
     ),
 
     // заказ

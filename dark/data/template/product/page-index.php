@@ -5,6 +5,7 @@
  * @var $user \Session\User
  * @var $accessories \Model\Product\Entity[]
  * @var $related \Model\Product\Entity[]
+ * @var $kit \Model\Product\Entity[]
  * @var showAccessoryUpper bool
  * @var $showRelatedUpper bool
  */
@@ -318,7 +319,23 @@
   </div>
 </div>
 
-<?php if (2 == $product->getViewId()): ?>
+<?php if (2 == $product->getViewId() && count($product->getKit())): ?>
+    <h2 class="bold fl"><?php echo $product->getName() ?> включает в себя:</h2>
+
+    <div class="line"></div>
+    <div style="width: 940px; float: none; margin: 0;" class="goodslist">
+        <?php $i = 0; foreach ($product->getKit() as $part): $i++ ?>
+        <?php echo $page->render('product/show/_compact', array('product' => $kit[$part->getId()], 'kit' => $part)) ?>
+        <?php /*render_partial('product_/templates/_show_.php', array(
+            'view' => 'compact',
+            'show_model' => true,
+            'item' => $kit->getProduct(),
+            'kit' => $kit,
+        )) */ ?>
+        <?php if (0 == ($i % 4)): ?><br class="clear" /><?php endif ?>
+        <?php endforeach ?>
+
+    </div>
 <?php //render_partial('product_/templates/_kit.php', array('product' => $product)) ?>
 
 <div class="clear pb25"></div>
