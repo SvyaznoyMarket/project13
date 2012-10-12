@@ -89,7 +89,10 @@ class AppConfig {
 
     /** @var array */
     public $product = array(
-        'maxItemsPerPage' => 18,
+        'itemsPerPage'    => 18,
+        'showAccessories' => true,
+        'showRelated'     => true,
+        'itemsInSlider'   => 5,
     );
 
     /** @var array */

@@ -3,6 +3,12 @@
 namespace Model\Product;
 
 class Entity extends BasicEntity {
+
+    /**
+     * Дефолтное отображение связанных товаров - аксессуары сверху, смежные товары в футере
+     */
+    const DEFAULT_CONNECTED_PRODUCTS_VIEW_MODE = 1;
+
     /** @var int */
     protected $viewId;
     /** @var int */
@@ -75,6 +81,12 @@ class Entity extends BasicEntity {
     protected $model;
     /** @var [] */
     protected $groupedProperties = array();
+    /** @var int */
+    protected $connectedProductsViewMode;
+    /** @var array */
+    protected $accessoryId = array();
+    /** @var array */
+    protected $relatedId = array();
 
     public function __construct(array $data = array()) {
         if (array_key_exists('id', $data)) $this->setId($data['id']);
@@ -141,7 +153,8 @@ class Entity extends BasicEntity {
         if (array_key_exists('kit', $data) && is_array($data['kit'])) $this->setKit(array_map(function($data) {
             return new Kit\Entity($data);
         }, $data['kit']));
-
+        if (array_key_exists('related', $data)) $this->setRelatedId($data['related']);
+        if (array_key_exists('accessories', $data)) $this->setAccessoryId($data['accessories']);
 
         foreach ($this->propertyGroup as $group) {
             if (!isset($this->groupedProperties[$group->getId()])) {
@@ -787,6 +800,54 @@ class Entity extends BasicEntity {
     public function getGroupedProperties()
     {
         return $this->groupedProperties;
+    }
+
+    /**
+     * @param int $connectedProductsViewMode
+     */
+    public function setConnectedProductsViewMode($connectedProductsViewMode)
+    {
+        $this->connectedProductsViewMode = $connectedProductsViewMode;
+    }
+
+    /**
+     * @return int
+     */
+    public function getConnectedProductsViewMode()
+    {
+        return $this->connectedProductsViewMode;
+    }
+
+    /**
+     * @param array $accessoryId
+     */
+    public function setAccessoryId($accessoryId)
+    {
+        $this->accessoryId = $accessoryId;
+    }
+
+    /**
+     * @return array
+     */
+    public function getAccessoryId()
+    {
+        return $this->accessoryId;
+    }
+
+    /**
+     * @param array $accessoryId
+     */
+    public function setRelatedId($relatedId)
+    {
+        $this->relatedId = $relatedId;
+    }
+
+    /**
+     * @return array
+     */
+    public function getRelatedId()
+    {
+        return $this->relatedId;
     }
 
     /**

@@ -1,16 +1,17 @@
 <?php
 /**
+ * @var $page \View\DefaultLayout
  * @var $product \Model\Product\Entity
  * @var $user \Session\User
+ * @var $accessories \Model\Product\Entity[]
+ * @var $related \Model\Product\Entity[]
+ * @var showAccessoryUpper bool
+ * @var $showRelatedUpper bool
  */
 ?>
 
 <?php //slot('header_meta_og') ?>
 <?php //include_component('productCard_', 'header_meta_og', array('product' => $product)) ?>
-<?php //end_slot() ?>
-
-<?php //slot('navigation') ?>
-<?php //include_component('productCard_', 'navigation', array('product' => $product)) ?>
 <?php //end_slot() ?>
 
 <?php
@@ -42,10 +43,6 @@
   product_3d_small = <?php echo json_encode($p3d_res_small) ?>;
   product_3d_big = <?php echo json_encode($p3d_res_big) ?>;
 </script>
-
-<?php //slot('after_body_block') ?>
-<?php //render_partial('product_/templates/_oneclickTemplate.php', array()) ?>
-<?php //end_slot() ?>
 
 <div class="goodsphoto">
   <a href="<?php echo $product->getImageUrl(4) ?>" class="viewme" ref="image" onclick="return false">
@@ -120,8 +117,8 @@
     <div class="pb5"><strong>
       <a href=""
          data-model='<?php echo $json ?>'
-         link-output='<?php //echo url_for('order_1click', array('product' => $product->getBarcode())) ?>'
-         link-input='<?php //echo url_for('product_delivery_1click') ?>'
+         link-output='<?php echo $page->url('order.1click', array('product' => $product->getBarcode())) ?>'
+         link-input='<?php echo $page->url('product.delivery_1click') ?>'
          class="red underline order1click-link-new">Купить быстро в 1 клик</a>
     </strong></div>
     <?php else: ?>
@@ -201,21 +198,13 @@
 
 <?php //render_partial('product_/templates/_product_model.php', array('item' => $product)) ?>
 
-<?php /*
-if ($showAccessoryUpper && count($product->getAccessoryList())){
-  render_partial('product_/templates/_product_accessory.php', array(
-    'product' => $product,
-    'accessoryPagesNum' => $accessoryPagesNum,
-  ));
-}
+<?php if ($showAccessoryUpper && count($product->getAccessoryId()) && \App::config()->product['showAccessories']): ?>
+    <?php echo $page->render('product/_slider', array('product' => $product, 'productList' => $accessories, 'totalProducts' => count($product->getAccessoryId()), 'perPage' => \App::config()->product['itemsInSlider'], 'page' => 1, 'title' => 'Аксессуары')) ?>
+<?php endif ?>
 
-if ($showRelatedUpper && count($product->getRelatedList())){
-  render_partial('product_/templates/_product_related.php', array(
-    'item' => $product,
-    'relatedPagesNum' => $relatedPagesNum,
-  ));
-}*/
-?>
+<?php if ($showRelatedUpper && count($product->getRelatedId()) && \App::config()->product['showRelated']): ?>
+    <?php echo $page->render('product/_slider', array('product' => $product, 'productList' => $related, 'totalProducts' => count($product->getRelatedId()), 'perPage' => \App::config()->product['itemsInSlider'], 'page' => 1, 'title' => 'С этим товаром также покупают')) ?>
+<?php endif ?>
 
 <?php //if (false && sfConfig::get('app_smartengine_pull')): ?>
 <!--div class="clear"></div>
@@ -312,7 +301,7 @@ if ($showRelatedUpper && count($product->getRelatedList())){
     <h2>Покупка в 1 клик!</h2>
     <div class="clear line pb20"></div>
 
-    <form id="order1click-form" action="<?php //echo url_for('order_1click', array('product' => $product->getBarcode())) ?>" method="post"></form>
+    <form id="order1click-form" action="<?php echo $page->url('order.1click', array('product' => $product->getBarcode()))//url_for('order_1click', array('product' => $product->getBarcode())) ?>" method="post"></form>
 
   </div>
 </div>
@@ -354,23 +343,24 @@ if ($showRelatedUpper && count($product->getRelatedList())){
 
 </div>
 
-<?php //render_partial('product_/templates/_tags.php', array('item' => $product)) ?>
+<?php if (count($product->getTag())): ?>
+<noindex>
+    <div class="pb25">
+        <strong>Теги:</strong>
+<?php foreach ($product->getTag() as $i => $tag):?>
+<?php echo ($i ? ', ' : '').'<a href="'.$page->url('tag', array('tagToken' => $tag->getToken())).'" class="underline" rel="nofollow">'.$tag->getName().'</a>' ?>
+<?php endforeach ?>
+    </div>
+</noindex>
+<?php endif ?>
 
-<?php /*
-if (!$showAccessoryUpper && count($product->getAccessoryList())){
-  render_partial('product_/templates/_product_accessory.php', array(
-    'product' => $product,
-    'accessoryPagesNum' => $accessoryPagesNum,
-  ));
-}
+<?php if (!$showAccessoryUpper && count($product->getAccessoryId()) && \App::config()->product['showAccessories']): ?>
+    <?php echo $page->render('product/_slider', array('product' => $product, 'productList' => $accessories, 'totalProducts' => count($product->getAccessoryId()), 'perPage' => \App::config()->product['itemsInSlider'], 'page' => 1, 'title' => 'Аксессуары')) ?>
+<?php endif ?>
 
-if (!$showRelatedUpper && count($product->getRelatedList())){
-  render_partial('product_/templates/_product_related.php', array(
-    'item' => $product,
-    'relatedPagesNum' => $relatedPagesNum,
-  ));
-}*/
-?>
+<?php if (!$showRelatedUpper && count($product->getRelatedId()) && \App::config()->product['showRelated']): ?>
+    <?php echo $page->render('product/_slider', array('product' => $product, 'productList' => $related, 'totalProducts' => count($product->getRelatedId()), 'perPage' => \App::config()->product['itemsInSlider'], 'page' => 1, 'title' => 'С этим товаром также покупают')) ?>
+<?php endif ?>
 
 <?php /*render_partial('product_/templates/_bottom_button_block.php', array(
   'product' => $product,
@@ -403,3 +393,5 @@ if ($rootCat) {
 <?php //if (sfConfig::get('app_smartengine_push')): ?>
 <!--div id="product_view-container" data-url="<?php //echo url_for('smartengine_view', array('product' => $product->getId())) ?>"></div-->
 <?php //endif ?>
+
+<?php echo $page->render('product/form-oneClick') ?>
