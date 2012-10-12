@@ -237,7 +237,7 @@ class CoreClient
     if (is_null($response)) {
       throw new CoreClientException('Response cannot be null');
     }
-
+    $decoded = json_decode($response, true);
     // check json error
     if ($code = json_last_error()) {
       switch ($code) {
