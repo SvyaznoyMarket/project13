@@ -87,7 +87,7 @@ class Entity {
      * @return bool
      */
     public function isBranch() {
-        return (null != $this->parentId) && (2 == $this->level);
+        return (bool)$this->child;
     }
 
     /**
@@ -96,8 +96,7 @@ class Entity {
      * @return bool
      */
     public function isLeaf() {
-        // TODO: это неверное определение
-        return $this->level > 2;
+        return !(bool)$this->child;
     }
 
     /**
