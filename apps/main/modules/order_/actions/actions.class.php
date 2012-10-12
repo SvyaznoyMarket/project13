@@ -49,7 +49,7 @@ class order_Actions extends myActions
         $this->setVar('order', $order);
         $this->getResponse()->setTitle('Заказ №'.$order['number']);
 
-        //return sfView::ERROR;
+        return sfView::ERROR;
     }
 
     $result = CoreClient::getInstance()->query('order-bill/get', array(
@@ -57,7 +57,7 @@ class order_Actions extends myActions
       'order_id' => $order['id'],
     ));
 
-    var_dump($result); exit();
+    return $this->renderText($result);
   }
 
   /**
