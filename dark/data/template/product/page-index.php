@@ -110,7 +110,7 @@
         <?php else: ?>
         <a class='bCountSet__eP disabled' href>&nbsp;</a><a class='bCountSet__eM disabled' href>&nbsp;</a>
         <?php endif ?>
-        <span><?php //echo $product->isInCart() ? $product->getCartQuantity() : 1 ?> шт.</span>
+        <span><?php echo $user->getCart()->hasProduct($product->getId()) ? $user->getCart()->getQuantityByProduct($product->getId()) : 1 ?> шт.</span>
       </div>
       <?php echo $page->render('cart/_button', array('product' => $product, 'disabled' => !$product->getIsBuyable())) ?>
     </div>
@@ -167,7 +167,7 @@
       <?php } ?>
   </div>
 
-  <?php //render_partial('service/templates/_listByProduct.php', array('item' => $product)) ?>
+  <?php echo $page->render('service/_listByProduct', array('product' => $product)) ?>
 
 </div>
 <!-- /Goods info -->
@@ -252,10 +252,10 @@
       <div class="logobox">Enter связной</div>
       <div class="pb5"><?php echo $product->getName() ?></div>
       <div class="pb5">
-        <?php //render_partial('product_/templates/_price.php', array('price' => formatPrice($product->getPrice()) )) ?>
+          <strong class="font34"><span class="price"><?php echo $page->helper->formatPrice($product->getPrice()) ?></span> <span class="rubl">p</span></strong>
       </div>
       <div class="popup_leftpanel pb40" ref="<?php echo $product->getToken() ?>" data-value='<?php echo $json ?>'>
-        <?php //render_partial('cart_/templates/_buy_button.php', array('item' => $product, 'text' => 'Купить')) ?>
+        <?php echo $page->render('cart/button', array('product' => $product, 'disabled' => !$product->getIsBuyable(), 'value' => 'Купить')) ?>
       </div>
 
       <h2>Фото:</h2>
@@ -301,7 +301,7 @@
     <h2>Покупка в 1 клик!</h2>
     <div class="clear line pb20"></div>
 
-    <form id="order1click-form" action="<?php echo $page->url('order.1click', array('product' => $product->getBarcode()))//url_for('order_1click', array('product' => $product->getBarcode())) ?>" method="post"></form>
+    <form id="order1click-form" action="<?php echo $page->url('order.1click', array('product' => $product->getBarcode())) ?>" method="post"></form>
 
   </div>
 </div>
@@ -362,9 +362,33 @@
     <?php echo $page->render('product/_slider', array('product' => $product, 'productList' => $related, 'totalProducts' => count($product->getRelatedId()), 'perPage' => \App::config()->product['itemsInSlider'], 'page' => 1, 'title' => 'С этим товаром также покупают')) ?>
 <?php endif ?>
 
-<?php /*render_partial('product_/templates/_bottom_button_block.php', array(
-  'product' => $product,
-))*/ ?>
+<div class="line"></div>
+<div class="fr ar">
+    <?php if ( $product->getIsBuyable()): ?>
+    <div class="goodsbarbig mSmallBtns" ref="<?php echo $product->getToken() ?>" data-value='<?php echo $json ?>'>
+<?php /* ?>
+        <div class='bCountSet'>
+            <?php if (!$product->getCartQuantity()): ?>
+            <a class='bCountSet__eP' href>+</a><a class='bCountSet__eM' href>-</a>
+            <?php else: ?>
+            <a class='bCountSet__eP disabled' href>&nbsp;</a><a class='bCountSet__eM disabled' href>&nbsp;</a>
+            <?php endif ?>
+            <span><?php echo $product->getCartQuantity() ? $product->getCartQuantity() : 1 ?> шт.</span>
+        </div>
+<?php */ ?>
+        <?php echo $page->render('cart/button', array('product' => $product, 'disabled' => !$product->getIsBuyable())) ?>
+    </div>
+    <?php else: ?>
+    <p class="font16 orange">Для покупки товара<br />обратитесь в<br />Контакт-сENTER</p>
+    <?php endif ?>
+</div>
+<div class="fr mBuyButtonBottom">
+    <div class="pb10"><strong class="font34"><span class="price"><?php echo $page->helper->formatPrice($product->getPrice()) ?></span> <span class="rubl">p</span></strong></div>
+</div>
+<div class="fl mBuyButtonBottom onleft" >
+    <h2 class="bold"><?php echo $product->getName() ?></h2>
+</div>
+
 
 <br class="clear" />
 
@@ -372,8 +396,7 @@
 <?php //include_slot('additional_data') ?>
 <?php //endif ?>
 
-<?php //include_component('productCard_', 'navigation', array('product' => $product, 'seo' => true)) ?>
-
+<?php echo $page->render('_breadcrumbs', array('breadcrumbs' => $breadcrumbs, 'class' => 'breadcrumbs-footer')) ?>
 
 <?php //slot('seo_counters_advance') ?>
 
@@ -385,8 +408,8 @@ if ($rootCat) {
 }*/
 ?>
 
-<!--div id="heiasProduct" data-vars="<?php echo $product->getId(); ?>" class="jsanalytics"></div>
-<div id="marketgidProd" class="jsanalytics"></div-->
+<div id="heiasProduct" data-vars="<?php echo $product->getId(); ?>" class="jsanalytics"></div>
+<div id="marketgidProd" class="jsanalytics"></div>
 
 <?php //end_slot() ?>
 

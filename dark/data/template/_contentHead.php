@@ -5,18 +5,8 @@
 ?>
 
 <div class="pagehead">
-    <? if ((bool)$breadcrumbs): ?>
-    <div class="breadcrumbs">
-        <a href="/">Enter.ru</a> >
-        <? $i = 1; $count = count($breadcrumbs); foreach ($breadcrumbs as $breadcrumb): ?>
-            <? if ($i < $count): ?>
-                <a href="<?= $breadcrumb['url'] ?>"><?= $breadcrumb['name'] ?></a> &rsaquo;
-            <? else: ?>
-                <strong><?= $breadcrumb['name'] ?></strong>
-            <? endif ?>
-        <? $i++; endforeach ?>
-    </div>
-    <? endif ?>
+
+    <?php echo $page->render('_breadcrumbs', array('breadcrumbs' => $breadcrumbs, 'class' => 'breadcrumbs')) ?>
 
     <div class="clear"></div>
 
