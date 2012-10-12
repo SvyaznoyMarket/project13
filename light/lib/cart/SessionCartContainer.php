@@ -198,6 +198,8 @@ class SessionCartContainer implements CartContainer
               if (($i == $warrantyId) && array_key_exists($productId, $warrantiesByProduct)) {
                   unset($_SESSION[$this->sessionName]['warrantyList'][$i][$productId]);
               }
+
+              if (!(bool)$_SESSION[$this->sessionName]['warrantyList'][$i]) unset($_SESSION[$this->sessionName]['warrantyList'][$i]);
           }
       }
 

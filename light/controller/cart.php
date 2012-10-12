@@ -147,8 +147,9 @@ class cartController
         if (!App::getCurrentUser()->getCart()->containsProduct($productId)) {
           $this->executeSetProductQuantity($productId, 1);
         }
+        $product = App::getCurrentUser()->getCart()->getProduct($productId);
 
-        App::getCurrentUser()->getCart()->setWarranty($warrantyId, $productId, $quantity);
+        App::getCurrentUser()->getCart()->setWarranty($warrantyId, $productId, $product ? $product->getQuantity() : $quantity);
       }
       else{
       }
