@@ -57,23 +57,18 @@ class IndexAction {
             throw new \Exception\NotFoundException(sprintf('Неверный номер страницы "%s".', $pageNum));
         }
 
+        // вид товаров
+        $productView = $request->get('view', $category->getProductView());
+
         // фильтры
         $productFilter = $this->getFilter($category);
-
-        /*
-        $productPager = \RepositoryManager::getProduct()->getIteratorByFilter($productFilter->dump());
-        $productPager->setPage($pageNum);
-        $productPager->setMaxPerPage(\App::config()->product['maxItemsPerPage']);
-
-        // проверка на максимально допустимый номер страницы
-        if ($productPager->getPage() > $productPager->getLastPage()) {
-            throw new \Exception\NotFoundException(sprintf('Неверный номер страницы "%s".', $productPager->getPage()));
-        }
-        */
+        // листалка
+        $productPager = $this->getPager($productFilter, $pageNum, $productView);
 
         $page = new \View\ProductCategory\LeafPage();
         $page->setParam('category', $category);
         $page->setParam('productFilter', $productFilter);
+        $page->setParam('productPager', $productPager);
 
         return new \Http\Response($page->show());
     }
@@ -83,5 +78,32 @@ class IndexAction {
         $productFilter = new \Model\Product\Filter($category, $filters);
 
         return $productFilter;
+    }
+
+    private function getPager(\Model\Product\Filter $productFilter, $pageNum, $productView) {
+        $limit = \App::config()->product['itemsPerPage'];
+
+        $repository = \RepositoryManager::getProduct();
+        $repository->setEntityClass(
+            \Model\Product\Category\Entity::PRODUCT_VIEW_EXPANDED == $productView
+                ? '\\Model\\Product\\ExpandedEntity'
+                : '\\Model\\Product\\CompactEntity'
+        );
+
+        $productPager = $repository->getIteratorByFilter(
+            $productFilter->dump(),
+            array(),
+            ($pageNum - 1) * $limit,
+            $limit
+        );
+        $productPager->setPage($pageNum);
+        $productPager->setMaxPerPage($limit);
+
+        // проверка на максимально допустимый номер страницы
+        if ($productPager->getPage() > $productPager->getLastPage()) {
+           throw new \Exception\NotFoundException(sprintf('Неверный номер страницы "%s".', $productPager->getPage()));
+        }
+
+        return $productPager;
     }
 }
