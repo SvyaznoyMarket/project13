@@ -67,7 +67,13 @@ class CoreClient
       if ($info['http_code'] >= 300) {
         throw new CoreClientException(sprintf("Invalid http code: %d, \nResponse: %s", $info['http_code'], $response));
       }
-      $responseDecoded = $this->decode($response);
+
+      if ('order-bill/get' == $action) {
+          $responseDecoded = $response;
+      } else {
+          $responseDecoded = $this->decode($response);
+      }
+
       if ($this->parameters->get('log_data_enabled')) {
         $this->logger->info('Core response data: ' . $this->encode($responseDecoded));
       }
@@ -230,11 +236,6 @@ class CoreClient
   {
     if (is_null($response)) {
       throw new CoreClientException('Response cannot be null');
-    }
-
-    $decoded = json_decode($response, true);
-    if (is_string($response)) {
-      return $response;
     }
 
     // check json error

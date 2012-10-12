@@ -53,8 +53,8 @@ class order_Actions extends myActions
     }
 
     $result = CoreClient::getInstance()->query('order-bill/get', array(
-      'token'    => $this->getUser()->getGuardUser()->getToken(),
-      'order_id' => $order['id'],
+        'token'    => $this->getUser()->getGuardUser()->getToken(),
+        'order_id' => $order['id'],
     ));
 
     return $this->renderText($result);
