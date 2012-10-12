@@ -2,9 +2,10 @@
 /**
  * @var $page \View\DefaultLayout
  * @var $product \Model\Product\Entity
+ * @var $user \Session\User
  */
 $list = $product->getService();
-$listInCart = array();//$product->getServiceListInCart()->getRawValue(); // symfony code sheet!
+$listInCart = $user->getCart()->getServicesByProduct($product->getId());
 ?>
 <div class="hideblock bF1Block mGoods" style="display: none;">
     <i class="close" title="Закрыть">Закрыть</i>
@@ -26,14 +27,14 @@ $listInCart = array();//$product->getServiceListInCart()->getRawValue(); // symf
             <?php echo $page->helper->formatPrice($service->getPrice()) ?>&nbsp;<span class="rubl">p</span>
           </span>
                 <?php } ?>
-                <?php if ($service->getOnlyInShop()) { ?>
+                <?php if ($service->getIsInShop()) { ?>
                 <span class='bF1Block__eInShop'>доступна в магазине</span>
-                <?php } elseif ($service->isInSale() && in_array($service, $listInCart)) { ?>
+                <?php } elseif ($user->getRegion()->getHasService() && in_array($service, $listInCart)) { ?>
                 <input data-f1title="<?php echo $service->getName() ?>" data-f1price="<?php echo $service->getPrice() ?>" data-fid="<?php echo $service->getId();?>"
                        data-url="<?php echo url_for('cart_service_add', array('service'=>$service->getId(), 'product' => $product->getId())) ?>"
                        ref="<?php echo addslashes($service->getToken());?>"
                        type="button" class="active button yellowbutton" value="В корзине">
-                <?php } elseif ($service->isInSale()) { ?>
+                <?php } elseif ($user->getRegion()->getHasService()) { ?>
                 <input data-f1title="<?php echo $service->getName() ?>" data-f1price="<?php echo $page->helper->formatPrice($service->getPrice()) ?>" data-fid="<?php echo $service->getId();?>"
                        data-url="<?php echo url_for('cart_service_add', array('service'=>$service->getId(), 'product' => $product->getId())) ?>"
                        ref="<?php echo addslashes($service->getToken());?>"
