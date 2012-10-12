@@ -59,7 +59,6 @@ class IndexAction {
 
         // вид товаров
         $productView = $request->get('view', $category->getProductView());
-
         // фильтры
         $productFilter = $this->getFilter($category);
         // листалка
@@ -69,6 +68,7 @@ class IndexAction {
         $page->setParam('category', $category);
         $page->setParam('productFilter', $productFilter);
         $page->setParam('productPager', $productPager);
+        $page->setParam('productView', $productView);
 
         return new \Http\Response($page->show());
     }
