@@ -11,6 +11,12 @@ require_once('ShopData.php');
 
 class DeliveryData
 {
+
+  const TYPE_STANDART = 1;
+  const TYPE_EXPRESS = 2;
+  const TYPE_SELF = 3;
+  const TYPE_SALE = 5;
+
   /**
    * @var integer
    */
@@ -40,7 +46,7 @@ class DeliveryData
    *    0 => array(
    *      'name' => 'Завтра',
    *      'value' => '2012-04-23',
-   *      'shops' => array(
+   *      'shops' => array(                   //Только у самовывоза
    *        'shopId' => array(
    *          'intervalId1' => array(
    *            'time_begin' => '09:00',
@@ -60,7 +66,10 @@ class DeliveryData
    *            'time_begin' => '09:00',
    *            'time_end' => '18:00',
    *          )
-   *        )
+   *        ),
+   *      'intervals' => array(                   //нет у самовывоза
+   *        0 => 5,
+   *        1 => 4,
    *   )
    *
    */

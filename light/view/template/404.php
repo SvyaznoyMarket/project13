@@ -5,7 +5,7 @@
   <title>Enter.ru</title>
   <meta name="description" content="" />
   <meta name="keywords" content="" />
-  <link href="/css/skin/inner.css?2012-10-01" rel="stylesheet" type="text/css" />
+  <link href="/css/global.css" rel="stylesheet" type="text/css" />
 </head>
 <body class='b404'>
 <table class='b404InnerWrap'>

@@ -10,7 +10,7 @@ namespace light;
 
 //require_once(Config::get('rootPath').'model/DeliveryModel.php');
 require_once(Config::get('rootPath').'system/App.php');
-require_once(Config::get('rootPath').'lib/helpers/DateFormatter.php');
+require_once(Config::get('rootPath').'lib/helper/DateFormatter.php');
 require_once(Config::get('rootPath').'lib/TimeDebug.php');
 
 class deliveryController
@@ -59,11 +59,6 @@ class deliveryController
 
     $response->setContentType('application/json');
     $response->setContent(json_encode($return));
-
-    #$renderer = App::getHtmlRenderer();
-    #$renderer->setPage('empty');
-    #$response->setContent($renderer->render());
-
     TimeDebug::end('controller:delivery:ProductDeliveryJson');
   }
 

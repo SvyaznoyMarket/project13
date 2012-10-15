@@ -385,13 +385,14 @@ class Core
     if ($isLog)
     {
       $this->logger->log("Request: ".$data);
-      RequestLogger::getInstance()->addLog($name, $params); // . ' Params: '. implode(',', $paramsList));
     }
     $response = $this->send($data);
     if ($isLog)
     {
       //$this->logger->log("Response: ".$response, !empty($response['error']) ? sfLogger::ERR : sfLogger::INFO);
       $this->logger->log("Response: ".$response);
+      $info = curl_getinfo($this->connection);
+      RequestLogger::getInstance()->addLog($info['url'], print_r($data, true), $info['total_time']); // . ' Params: '. implode(',', $paramsList));
     }
 
     $response = json_decode($response, true);

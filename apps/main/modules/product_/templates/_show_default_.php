@@ -117,7 +117,7 @@ foreach ($photo3dList as $photo3d)
     <div class="pb5"><strong>
       <a href=""
          data-model='<?php echo $json ?>'
-         link-output='<?php echo url_for('order_1click', array('product' => $item->getBarcode())) ?>'
+         link-output='<?php echo url_for('order_1click', array('product' => $item->getToken())) ?>'
          link-input='<?php echo url_for('product_delivery_1click') ?>'
          class="red underline order1click-link-new">Купить быстро в 1 клик</a>
     </strong></div>
@@ -324,7 +324,7 @@ if ($showRelatedUpper && count($item->getRelatedList())){
     <h2>Покупка в 1 клик!</h2>
     <div class="clear line pb20"></div>
 
-    <form id="order1click-form" action="<?php echo url_for('order_1click', array('product' => $item->getBarcode())) ?>" method="post"></form>
+    <form id="order1click-form" action="<?php echo url_for('order_1click', array('product' => $item->getToken())) ?>" method="post"></form>
 
   </div>
 </div>

@@ -7,7 +7,7 @@ namespace light;
  * @var $this HtmlRenderer
  */
 
-require_once(Config::get('rootPath').'lib/helpers/Counters.php');
+require_once(Config::get('helperPath').'Counters.php');
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -89,7 +89,7 @@ require_once(Config::get('rootPath').'lib/helpers/Counters.php');
         <a href="<?php echo $this->url('staticPage.content', array('pageToken' => 'f1')) ?>">Сервис F1</a>
         <a href="<?php echo $this->url('staticPage.content', array('pageToken' => 'credit')) ?>">Покупка в кредит</a>
         <a href="http://job.enter.ru/" target="_blank">Работать у нас</a>
-        <a href="<?php echo $this->url('shop.regionList', array('regionToken' => '')) ?>">Наши магазины</a>
+        <a href="<?php echo $this->url('shop.regionList') ?>">Наши магазины</a>
         <a href="<?php echo $this->url('staticPage.content', array('pageToken' => 'how_make_order')) ?>">Как сделать заказ</a>
         <a href="<?php echo $this->url('staticPage.content', array('pageToken' => 'mobile_apps')) ?>">Мобильные приложения</a>
         <a href="<?php echo $this->url('staticPage.content', array('pageToken' => 'callback')) ?>">Обратная связь</a>

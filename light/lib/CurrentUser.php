@@ -54,16 +54,21 @@ class CurrentUser
     return (bool)$this->getUser();
   }
 
+  public function getAuthToken(){
+    return isset($_SESSION['symfony/user/sfUser/attributes']['guard']['token']) ? $_SESSION['symfony/user/sfUser/attributes']['guard']['token'] : null;
+  }
+
   /**
    * @return UserData|null
    */
   public function getUser(){
     if (!$this->user) {
-      $token = isset($_SESSION['symfony/user/sfUser/attributes']['guard']['token']) ? $_SESSION['symfony/user/sfUser/attributes']['guard']['token'] : null;
+      $token = $this->getAuthToken();
       if ($token) {
-        $data = CoreClient::getInstance()->query('user/get', array('token' => $token));
-
-        $this->user = new UserData($data);
+        $this->user = App::getUser()->getByAuthToken($token);
+      }
+      else{
+        $this->user = null;
       }
     }
 

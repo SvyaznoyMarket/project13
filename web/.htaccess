@@ -21,6 +21,7 @@ Options +FollowSymLinks +ExecCGI
   RewriteRule ^category/main_menu/? index.light.php [L]
   RewriteRule ^product-view/.* index.light.php [L]
   RewriteRule ^product-buy/.* index.light.php [L]
+  RewriteRule ^orders/1click.* index.light.php [L]
 
   # dark
   RewriteRule ^search* dark.php [L]

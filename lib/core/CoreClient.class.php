@@ -59,6 +59,7 @@ class CoreClient
         throw new CoreClientException(curl_error($connection), curl_errno($connection));
       }
       $info = curl_getinfo($connection);
+      RequestLogger::getInstance()->addLog($info['url'], print_r($data, true), $info['total_time']);
       if ($this->parameters->get('log_enabled')) {
         $this->logger->info('Core response '.$connection.' : ' . $this->encodeInfo($info));
       }
@@ -69,7 +70,6 @@ class CoreClient
       if ($this->parameters->get('log_data_enabled')) {
         $this->logger->info('Core response data: ' . $this->encode($responseDecoded));
       }
-      RequestLogger::getInstance()->addLog($action, $params);
 
       curl_close($connection);
       return $responseDecoded;
@@ -95,6 +95,7 @@ class CoreClient
     if (!$this->multiHandler) {
       $this->multiHandler = curl_multi_init();
     }
+    $params['uid'] = RequestLogger::getInstance()->getId();
     $resource = $this->createCurlResource($action, $params, $data);
     curl_multi_add_handle($this->multiHandler, $resource);
     $this->callbacks[(string)$resource] = $callback;
@@ -131,6 +132,9 @@ class CoreClient
 
             $ch = $done['handle'];
             $info = curl_getinfo($ch);
+
+            RequestLogger::getInstance()->addLog($info['url'], "unknown in multi curl", $info['total_time']);
+
             if ($this->parameters->get('log_enabled')) {
               $this->logger->info('Core response '.$ch.' done: ' . $this->encodeInfo($info));
             }

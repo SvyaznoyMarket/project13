@@ -4,6 +4,9 @@
  *
  * @TODO: Добавить поддержку пользовательских заголовков
  */
+
+require_once(__DIR__ . '/helper/RequestLogger.php');
+
 class WPRequest
 {
     /**
@@ -58,6 +61,7 @@ class WPRequest
         {
             $parameterList['json'] = True;
         }
+        $start = microtime(true);
 
         $response = file_get_contents($this->url . $actionUri, false, stream_context_create(
             $this->buildOptionList(
@@ -66,6 +70,8 @@ class WPRequest
                 $timeout
             )
         ));
+
+        \light\RequestLogger::getInstance()->addLog($this->url . $actionUri, '', (microtime(true) - $start));
 
         return $json?json_decode($response, $assoc = True):$response;
     }
