@@ -86,12 +86,19 @@ return array(
     'product.stock' => array(
         'pattern' => '/product/{productPath}/stock',
     ),
-    'product.accessories' => array(
+    'product.slider.category' => array(
+        'pattern' => '/catalog/{categoryPath}/_slider',
+        'action'  => array('Product\SliderAction', 'category'),
+        'require' => array('categoryPath' => '[\w\d-_]+\/?[\w\d-_]+'),
+    ),
+    'product.accessories' => array( // TODO: переименовать в product.slider.accessory
         'pattern' => '/products/accessories/{productToken}',
+        'action'  => array('Product\SliderAction', 'accessory'),
         'require' => array('productToken' => '[\w\d-_]+'),
     ),
-    'product.related' => array(
+    'product.related' => array( // TODO: переименовать в product.slider.related
         'pattern' => '/products/related/{productToken}',
+        'action'  => array('Product\SliderAction', 'related'),
         'require' => array('productToken' => '[\w\d-_]+'),
     ),
     'tag' => array(
@@ -124,6 +131,6 @@ return array(
     ),
     'service.show' => array(
         'pattern' => '/f1/show/{serviceToken}',
-        'require' => '[\w\d-_]+',
+        'require' => array('serviceToken' => '[\w\d-_]+'),
     ),
 );

@@ -60,8 +60,40 @@ class IndexAction {
     private function executeBranchNode(\Model\Product\Category\Entity $category, \Http\Request $request) {
         if (\App::config()->debug) \App::debug()->add('subact', 'branchNode');
 
+        $repository = \RepositoryManager::getProduct();
+
+        // фильтры
+        $productFilter = $this->getFilter($category);
+        // дочерние категории сгруппированные по идентификаторам
+        $childrenById = array();
+        foreach ($category->getChild() as $child) {
+            $childrenById[$child->getId()] = $child;
+        }
+        // листалки сгруппированные по идентификаторам категорий
+        $limit = \App::config()->product['itemsInCategorySlider'] * 2;
+        $repository = \RepositoryManager::getProduct();
+        $repository->setEntityClass('\\Model\\Product\\CompactEntity');
+        // массив фильтров для каждой дочерней категории
+        $filterData = array_map(function(\Model\Product\Category\Entity $category) use ($productFilter) {
+            $productFilter = clone $productFilter;
+            $productFilter->setCategory($category);
+
+            return $productFilter->dump();
+        }, $childrenById);
+        /** @var $child \Model\Product\Category\Entity */
+        $child = reset($childrenById);
+        $productPagersByCategory = array();
+        foreach ($repository->getIteratorsByFilter($filterData, array(), null, $limit) as $productPager) {
+            $productPager->setPage(1);
+            $productPager->setMaxPerPage($limit);
+            $productPagersByCategory[$child->getId()] = $productPager;
+            $child = next($childrenById);
+        }
+
         $page = new \View\ProductCategory\BranchPage();
         $page->setParam('category', $category);
+        $page->setParam('productFilter', $productFilter);
+        $page->setParam('productPagersByCategory', $productPagersByCategory);
 
         return new \Http\Response($page->show());
     }
@@ -85,7 +117,25 @@ class IndexAction {
         // фильтры
         $productFilter = $this->getFilter($category);
         // листалка
-        $productPager = $this->getPager($productFilter, $pageNum, $productView);
+        $limit = \App::config()->product['itemsPerPage'];
+        $repository = \RepositoryManager::getProduct();
+        $repository->setEntityClass(
+            \Model\Product\Category\Entity::PRODUCT_VIEW_EXPANDED == $productView
+                ? '\\Model\\Product\\ExpandedEntity'
+                : '\\Model\\Product\\CompactEntity'
+        );
+        $productPager = $repository->getIteratorByFilter(
+            $productFilter->dump(),
+            array(),
+            ($pageNum - 1) * $limit,
+            $limit
+        );
+        $productPager->setPage($pageNum);
+        $productPager->setMaxPerPage($limit);
+        // проверка на максимально допустимый номер страницы
+        if ($productPager->getPage() > $productPager->getLastPage()) {
+            throw new \Exception\NotFoundException(sprintf('Неверный номер страницы "%s".', $productPager->getPage()));
+        }
 
         // ajax
         if ($request->isXmlHttpRequest()) {
@@ -110,44 +160,11 @@ class IndexAction {
      * @param \Model\Product\Category\Entity $category
      * @return \Model\Product\Filter
      */
-    private function getFilter(\Model\Product\Category\Entity $category = null) {
+    private function getFilter(\Model\Product\Category\Entity $category) {
         $filters = \RepositoryManager::getProductFilter()->getCollectionByCategory($category);
-        $productFilter = new \Model\Product\Filter($category, $filters);
+        $productFilter = new \Model\Product\Filter($filters);
+        $productFilter->setCategory($category);
 
         return $productFilter;
-    }
-
-    /**
-     * @param \Model\Product\Filter $productFilter
-     * @param $pageNum
-     * @param $productView
-     * @return \Iterator\EntityPager
-     * @throws \Exception\NotFoundException
-     */
-    private function getPager(\Model\Product\Filter $productFilter, $pageNum, $productView) {
-        $limit = \App::config()->product['itemsPerPage'];
-
-        $repository = \RepositoryManager::getProduct();
-        $repository->setEntityClass(
-            \Model\Product\Category\Entity::PRODUCT_VIEW_EXPANDED == $productView
-                ? '\\Model\\Product\\ExpandedEntity'
-                : '\\Model\\Product\\CompactEntity'
-        );
-
-        $productPager = $repository->getIteratorByFilter(
-            $productFilter->dump(),
-            array(),
-            ($pageNum - 1) * $limit,
-            $limit
-        );
-        $productPager->setPage($pageNum);
-        $productPager->setMaxPerPage($limit);
-
-        // проверка на максимально допустимый номер страницы
-        if ($productPager->getPage() > $productPager->getLastPage()) {
-           throw new \Exception\NotFoundException(sprintf('Неверный номер страницы "%s".', $productPager->getPage()));
-        }
-
-        return $productPager;
     }
 }

@@ -16,11 +16,27 @@ class Filter {
     /**
      * @param FilterEntity[] $filterCollection
      */
-    public function __construct(CategoryEntity $category, array $filterCollection) {
-        $this->category = $category;
+    public function __construct(array $filterCollection) {
         $this->filters = $filterCollection;
     }
 
+    /**
+     * @param \Model\Product\Category\Entity $category
+     */
+    public function setCategory(\Model\Product\Category\Entity $category = null) {
+        $this->category = $category;
+    }
+
+    /**
+     * @return \Model\Product\Category\Entity
+     */
+    public function getCategory() {
+        return $this->category;
+    }
+
+    /**
+     * @return array
+     */
     public function dump() {
         $return = array();
 
@@ -54,6 +70,9 @@ class Filter {
         return $return;
     }
 
+    /**
+     * @param array $values
+     */
     public function setValues(array $values) {
         $this->values = $values;
     }
@@ -96,6 +115,9 @@ class Filter {
         }
     }
 
+    /**
+     * @return Filter\Entity[]
+     */
     public function getFilterCollection() {
         return $this->filters;
     }

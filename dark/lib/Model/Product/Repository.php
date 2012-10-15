@@ -73,16 +73,16 @@ class Repository {
     }
 
     /**
-     * @param array $filters
+     * @param array $filter
      * @param array $sort
      * @param null $offset
      * @param null $limit
      * @return \Iterator\EntityPager
      */
-    public function getIteratorByFilter(array $filters = array(), array $sort = array(), $offset = null, $limit = null) {
+    public function getIteratorByFilter(array $filter = array(), array $sort = array(), $offset = null, $limit = null) {
         $response = $this->client->query('listing/list', array(
             'filter' => array(
-                'filters' => $filters,
+                'filters' => $filter,
                 'sort'    => $sort,
                 'offset'  => $offset,
                 'limit'   => $limit,
@@ -93,5 +93,52 @@ class Repository {
         $collection = !empty($response['list']) ? $this->getCollectionById($response['list']) : array();
 
         return new \Iterator\EntityPager($collection, (int)$response['count']);
+    }
+
+    /**
+     * @param array $filters
+     * @param array $sort
+     * @param null $offset
+     * @param null $limit
+     * @return \Iterator\EntityPager[]
+     */
+    public function getIteratorsByFilter(array $filters = array(), array $sort = array(), $offset = null, $limit = null) {
+        $response = $this->client->query('listing/multilist', array(), array(
+            'filter_list' => array_map(function($filter) use ($sort, $offset, $limit) {
+                return array(
+                    'filters' => $filter,
+                    'sort'    => $sort,
+                    'offset'  => $offset,
+                    'limit'   => $limit,
+                );
+            }, $filters),
+            'region_id' => \App::user()->getRegion()->getId(),
+        ));
+
+        if (!(bool)$response) {
+            return array();
+        }
+
+        // собираем все идентификаторы товаров, чтобы сделать один запрос в ядро
+        $ids = array();
+        foreach ($response as $data) {
+            $ids = array_merge($ids, $data['list']);
+        }
+        // товары сгруппированные по идентификаторам
+        $collectionById = array();
+        foreach ($this->getCollectionById($ids) as $entity) {
+            $collectionById[$entity->getId()] = $entity;
+        }
+        $iterators = array();
+        foreach ($response as $data) {
+            $collection = array();
+            foreach ($data['list'] as $id) {
+                $collection[] = $collectionById[$id];
+            }
+
+            $iterators[] = new \Iterator\EntityPager($collection, $data['count']);
+        }
+
+        return $iterators;
     }
 }
