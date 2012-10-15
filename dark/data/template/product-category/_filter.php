@@ -16,7 +16,7 @@ $name = 'f';
 <!-- Filter -->
 <form class="product_filter-block" action="" method="get" data-action-count="<?= $page->url('product.count', array('categoryPath' => $category->getPath())) ?>">
     <dl class="bigfilter form bSpec">
-        <h2>Выбираем:<i></i></h2>
+        <dt class="filterHeader">Выбираем:<i></i></dt>
         <? require __DIR__ . '/_selectedFilter.php' ?>
 
         <? $openNum = 0 ?>
