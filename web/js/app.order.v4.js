@@ -920,7 +920,7 @@ flds:	for( field in fieldsToValidate ) {
     var vendor = 'yandex' // yandex or google
 	if( vendor==='yandex' )
 		ymaps.ready( function() {
-console.info('yandexIsReady')			
+// console.info('yandexIsReady')		
 	        PubSub.publish('yandexIsReady')
 	        ymaps.isReady = true
 	    })
@@ -933,9 +933,13 @@ console.info('yandexIsReady')
 			)
 			window.regionMap.addHandler( '.shopchoose', ShopChoosed )						
 		} else {
-			PubSub.subscribe( 'yandexIsReady', function() {					
-				window.regionMap = new MapYandexWithShops( mapCenter, $('#map-info_window-container-ya'), 'mapPopup' )
-				window.regionMap.addHandler( '.shopchoose', pickStoreMVM )
+				PubSub.subscribe( 'yandexIsReady', function() {
+					window.regionMap = new MapYandexWithShops( 
+					calcMCenter( getShopsStack() ), 
+					$('#mapInfoBlock'), 
+					'mapPopup' 
+				)
+				window.regionMap.addHandler( '.shopchoose', ShopChoosed )
 			})
 		}
 	}

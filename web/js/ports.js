@@ -557,7 +557,7 @@ var ADFOX = {
         }
     },
 
-    enable : false
+    enable : true
 }
 
 ADFOX.parseAllAdfoxDivs( $('.adfoxWrapper') )

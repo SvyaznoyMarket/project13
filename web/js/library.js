@@ -1064,7 +1064,7 @@ function MapYandexWithShops( center, templateIWnode, DOMid ) {
     templateIWnode is node(jQ) which include template for InfoWindow popup
     DOMid is selector (id) for google.maps.Map initialization
 */
-console.info(arguments)
+// console.info(arguments)
     var self         = this,
         mapWS        = null,
         infoWindow   = null,

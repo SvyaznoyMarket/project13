@@ -16,7 +16,7 @@ $(document).ready(function() {
 	var vendor = 'yandex' // yandex or google
 	if( vendor==='yandex' )
 		ymaps.ready( function() {
-console.info('yandexIsReady')			
+// console.info('yandexIsReady')			
 	        PubSub.publish('yandexIsReady')
 	        ymaps.isReady = true
 	    })
