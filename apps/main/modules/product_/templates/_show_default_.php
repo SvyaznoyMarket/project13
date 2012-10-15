@@ -277,8 +277,8 @@ if ($showRelatedUpper && count($item->getRelatedList())){
       <div class="pb5">
         <?php render_partial('product_/templates/_price.php', array('price' => formatPrice($item->getPrice()) )) ?>
       </div>
-      <div class="popup_leftpanel pb40" ref="<?php echo $item->getToken() ?>" data-value='<?php echo $json ?>'>
-        <?php render_partial('cart_/templates/_buy_button.php', array('item' => $item, 'text' => 'Купить')) ?>
+      <div class="goodsbarbig mSmallBtns pb40" ref="<?php echo $item->getToken() ?>" data-value='<?php echo $json ?>'>
+        <?php render_partial('cart_/templates/_buy_button.php', array('item' => $item, 'text' => '&nbsp;')) ?>
       </div>
 
       <h2>Фото:</h2>
