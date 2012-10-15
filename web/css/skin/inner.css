@@ -334,7 +334,7 @@ zoom: 1;
 .whitelink .leaf {display:inline-block; width:16px; height:14px; background:url(/css/skin/img/bg.png) no-repeat -197px -101px; vertical-align:-3px; margin-right:8px}
 .whitelink .map {display:inline-block; width:16px; height:16px; background:url(/css/skin/img/bg_inner.png) no-repeat -104px -133px; vertical-align:-5px; margin-right:8px}
 
-.bigbutton {height:33px; padding:0 7px 3px 7px; background-color:#ffa901; background-position:0 -256px; font-size:14px; color:#fff; border-color:#f28900}
+.bigbutton {height:33px; padding:0 7px 3px 7px; background-color:#ffa901; background-position:0 -256px; font-size:14px; color:#fff; border-color:#f28900;-webkit-appearance: none;}
 .bSet__ePrice .link1:hover,
 .bigbutton:hover {background-color:#f79200; background-position:0 -297px}
 .bigbuttonactive, .bigbuttonactive:hover {background-color:#f79200; background-position:0 -338px}
@@ -1033,7 +1033,7 @@ border-radius: 5px;
 .answer .avatar img{vertical-align:top}
 .answerright {float:right; width:571px; overflow:hidden}
 
-.hideblock {display:none; position:absolute; z-index:10; padding:15px 20px; background:#fff; color:#000; font-size:12px; text-align:left; border:2px solid #eaeaea;
+.hideblock {display:none; position:fixed; z-index:10; padding:15px 20px; background:#fff; color:#000; font-size:12px; text-align:left; border:2px solid #eaeaea;
 border-radius:5px;
 -moz-border-radius:5px;
 -webkit-border-radius:5px;
@@ -2526,8 +2526,8 @@ dt.bCtg__eOrange{
 
 /* goods info */
 .bF1Block.mGoods{
-	top: 415px;
-	left: 170px;
+	top: 200px;
+	left: 50%;
 	}
 	.bF1Block.mGoods div{
 		max-height: 320px;
@@ -2595,7 +2595,9 @@ dt.bCtg__eOrange{
 	display:block;
 	min-height: 60px;
 	padding: 10px 20px 20px 75px;
+	margin: 0 0 0 -400px;
 	background: #fff url('img/icon_f1service_big.png') 0 0 no-repeat;
+	width:720px;
 	}
 	.bF1Block h2{
 		color: #4fcbf4;
@@ -2859,7 +2861,7 @@ dt.bCtg__eOrange{
 			font: 14px Tahoma, sans-serif;
 			}
 
-/* bBacketLineWrap */
+/* bBacketLineWrap 
 .mWrap{
 	position: relative;
 	}
@@ -2868,7 +2870,8 @@ dt.bCtg__eOrange{
 		right: 32px;
 		left: auto;
 		z-index: 100;
-		}
+		}*/
+		
 
 /* bMobDownWrapAbs */
 .mW750{ width: 750px }
@@ -4614,10 +4617,20 @@ a[title="vkontakte"]{ background: url('img/socIcons.png') no-repeat -52px -26px 
 .popupRegion .hidden {
   display: none;
 }
+.popupRegion .ui-css{
+	width: 610px;
+}
 .popupRegion .inputClear {
-  color: #A6A6A6;
-  font-size: 14px;
-  margin: 0 10px 0 -18px;
+  	color: #A6A6A6;
+	display: block;
+	float: right;
+	font-size: 14px;
+	height: 20px;
+	margin: -28px 128px 0 0;
+	position: relative;
+	text-align: center;
+	width: 20px;
+	z-index: 100;
 }
 .popupRegion .cityInline {
   font-size: 16px;

@@ -28,7 +28,7 @@ $analyticsCategoryName = $rootCategory->getName() . (($product->getMainCategory(
   <div class="bFormSave">
     <h2>Номер вашего заказа: <?php echo $order->getNumber() ?></h2>
 
-    <p>Дата заказа: <?php echo DateFormatter::format(new \DateTime, 'dd.MM.yyyy') ?>.<br>Сумма
+    <p>Дата заказа: <?php echo DateFormatter::Humanize(new \DateTime()) ?>.<br>Сумма
       заказа: <?php echo number_format($order->getTotalPrice(), 0, ',', ' ') ?> <span class="rubl">p</span></p>
     <span>В ближайшее время мы свяжемся с вами для уточнения параметров заказа.</span>
   </div>

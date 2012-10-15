@@ -89,7 +89,7 @@ require_once(Config::get('helperPath').'Counters.php');
         <a href="<?php echo $this->url('staticPage.content', array('pageToken' => 'f1')) ?>">Сервис F1</a>
         <a href="<?php echo $this->url('staticPage.content', array('pageToken' => 'credit')) ?>">Покупка в кредит</a>
         <a href="http://job.enter.ru/" target="_blank">Работать у нас</a>
-        <a href="<?php echo $this->url('shop.regionList', array('regionToken' => '')) ?>">Наши магазины</a>
+        <a href="<?php echo $this->url('shop.regionList') ?>">Наши магазины</a>
         <a href="<?php echo $this->url('staticPage.content', array('pageToken' => 'how_make_order')) ?>">Как сделать заказ</a>
         <a href="<?php echo $this->url('staticPage.content', array('pageToken' => 'mobile_apps')) ?>">Мобильные приложения</a>
         <a href="<?php echo $this->url('staticPage.content', array('pageToken' => 'callback')) ?>">Обратная связь</a>

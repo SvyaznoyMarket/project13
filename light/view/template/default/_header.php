@@ -13,6 +13,7 @@ require_once(\light\Config::get('rootPath') . 'lib/LastModifiedHandler.php');
     <?php endif ?>
 
     <a href="<?php echo $this->url('shop.regionList') ?>">Магазины Enter</a>
+  </div>
 
     <noindex>
       <div class="usermenu">
@@ -20,7 +21,6 @@ require_once(\light\Config::get('rootPath') . 'lib/LastModifiedHandler.php');
         <a href="<?php echo $this->url('cart.index') ?>" class="hBasket ml10">Моя корзина <span id="topBasket"></span></a>
       </div>
     </noindex>
-  </div>
 </div>
 <!-- /Topbar -->
 
