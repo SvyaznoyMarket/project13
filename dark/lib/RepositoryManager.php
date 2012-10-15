@@ -50,4 +50,14 @@ class RepositoryManager {
 
         return $instance;
     }
+
+    static public function getCreditBank() {
+        static $instance;
+
+        if (!$instance) {
+            $instance = new \Model\CreditBank\Repository(\App::coreClientV2());
+        }
+
+        return $instance;
+    }
 }
