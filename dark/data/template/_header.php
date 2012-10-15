@@ -17,14 +17,14 @@
         <? endif ?>
 
         <a href="<?= $page->url('shop') ?>">Магазины Enter</a>
-
-        <noindex>
-            <div class="usermenu">
-                <?= $page->render('_user') ?>
-                <a href="<?= $page->url('cart') ?>" class="hBasket ml10">Моя корзина <span id="topBasket"></span></a>
-            </div>
-        </noindex>
     </div>
+
+    <noindex>
+        <div class="usermenu">
+            <?= $page->render('_user') ?>
+            <a href="<?= $page->url('cart') ?>" class="hBasket ml10">Моя корзина <span id="topBasket"></span></a>
+        </div>
+    </noindex>
 </div>
 <!-- /Topbar -->
 

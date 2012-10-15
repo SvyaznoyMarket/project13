@@ -1,4 +1,3 @@
-/* CSS crunched with Crunch - http://crunchapp.net/ */
 @import "/css/skin/old_inner.css" all;
 /*обычные цвета*/
 /*фирменный оранжевый*/
@@ -3541,8 +3540,8 @@
     background: #ffffff;
     border: 1px solid #aeaeae;
     display: none;
-    left: -11px;
-    min-width: 85px;
+    left: -1px;
+    width: 100%;
     padding-bottom: 7px;
     position: absolute;
     top: -1px;
@@ -3551,7 +3550,6 @@
   .bDropMenu div span {
     cursor: pointer;
     display: block;
-    margin: 0px 10px;
     padding: 5px 10px;
   }
   .bDropMenu div span a {
@@ -3565,7 +3563,7 @@
   }
   .bDropMenu div span:first-child {
     background: url("/css/item/img/itemSprite.png") 100% -135px no-repeat;
-    padding: 5px 10px 10px;
+    padding: 5px 0 10px 10px;
   }
   .bDropMenu div span:hover {
     background: #e6e6e6;

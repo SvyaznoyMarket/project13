@@ -175,7 +175,7 @@ $(document).ready(function() {
 	})
 	    
 	/* Some handlers */
-    $('.bDropMenu').each( function() {
+    /*$('.bDropMenu').each( function() {
 		var jspan  = $(this).find('span:first')
 		var jdiv   = $(this).find('div')
 		jspan.css('display','block')
@@ -183,7 +183,7 @@ $(document).ready(function() {
 			jspan.width( jdiv.width() - 70)
 		else
 			jdiv.width( jspan.width() + 70)
-	})
+	})*/
 	
     $('.product_rating-form').live({
         'form.ajax-submit.prepare': function(e, result) {
