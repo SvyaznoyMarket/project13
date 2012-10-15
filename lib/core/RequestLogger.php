@@ -72,7 +72,7 @@ class RequestLogger
      * @param string $postData
      * @param string $time
      */
-    public function addLog($url, $postData, $time){
+    public function addLog($url, $postData='', $time=''){
       $this->_requestList[] = array(
         'time' => $time ,
         'url' => $url ,
@@ -98,6 +98,6 @@ class RequestLogger
         $file = $config['log_by_request_file'];
         $this->_logger->addLogger(new sfFileLogger(new sfEventDispatcher(), array('file' => $file)));
 
-        $this->_logger->info($this->getStatistics());
+        $this->_logger->info(str_replace(array("\r", "\n"), '', $this->getStatistics()));
     }
 }

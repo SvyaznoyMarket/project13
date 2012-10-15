@@ -91,7 +91,7 @@ class OrderData
     if(array_key_exists('first_name', $data))        $this->user->setFirstName((string)$data['first_name']);
     if(array_key_exists('middle_name', $data))       $this->user->setMiddleName((string)$data['middle_name']);
     if(array_key_exists('email', $data))             $this->user->setEmail((string)$data['email']);
-    if(array_key_exists('mobile', $data))            $this->user->setPhone((string)$data['mobile']);
+    if(array_key_exists('mobile', $data))            $this->user->setMobile((string)$data['mobile']);
 
     if(array_key_exists('id', $data))                    $this->id                  = (int)$data['id'];
     if(array_key_exists('number', $data))                $this->number              = (string)$data['number'];

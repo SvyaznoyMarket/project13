@@ -271,7 +271,7 @@
   }
 }
 .bBuyingLine__eRadio {
-  filter: e("progid: DXImageTransform.Microsoft.Alpha(opacity=0)");
+  filter: e("progid:DXImageTransform.Microsoft.Alpha(opacity=0)");
   .opacity(0);
   position: absolute;
   z-index: -1;
@@ -330,14 +330,15 @@
   background: #ddd;
   cursor: pointer;
   height: 33px;
-  margin: 0px !important;
+  //margin: 0px !important;
   padding: 0px !important;
   position: relative;
   vertical-align: bottom;
   width: 38px;
 }
-.bBuyingDates__eRight {
-  float: right;
+li.bBuyingDates__eRight{
+  float:right;
+  *float:none;
 }
 .bBuyingDates__eLeft span,
 .bBuyingDates__eRight span {

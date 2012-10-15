@@ -8,9 +8,9 @@ namespace light;
  * To change this template use File | Settings | File Templates.
  */
 
-require_once(ROOT_PATH.'system/App.php');
-require_once(ROOT_PATH.'lib/TimeDebug.php');
-require_once(VIEW_PATH.'dataObject/UserData.php');
+require_once(Config::get('rootPath').'system/App.php');
+require_once(Config::get('rootPath').'lib/TimeDebug.php');
+require_once(Config::get('viewPath').'dataObject/UserData.php');
 
 class UserModel
 {

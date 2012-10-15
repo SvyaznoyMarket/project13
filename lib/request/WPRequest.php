@@ -65,7 +65,11 @@ class WPRequest
 
       sfContext::getInstance()->getLogger()->info('Trying to get ['.$this->url . $actionUri.'] with params ['.print_r($params, true).']');
 
+      $start = microtime(true);
+
       $response = file_get_contents($this->url.$actionUri.'?'.http_build_query($parameterList), false, stream_context_create($params));
+
+      RequestLogger::getInstance()->addLog($this->url . $actionUri, '', (microtime(true) - $start));
 
         if($json)
         {

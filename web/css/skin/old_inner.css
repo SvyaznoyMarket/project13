@@ -113,24 +113,8 @@
 .whitebutton90 {width:90px; background-position:-186px -308px}
 */
 
-
-.bSpecSel{
-	background-color: #f4f4f4;
-	border-top: 1px solid #e6e6e6;
-	}
-	.bSpecSel.mDisabled{ display: none; }
-	.bSpecSel h3,
-	.bSpecSel ul li a{font: 12px Tahoma, sans-serif; padding: 0 11px; text-decoration: none;}
-	.bSpecSel a{ font: 12px Tahoma, sans-serif; }
-
-	.bSpecSel h3{ margin: 5px 0; font-weight:bold}
-	.bSpecSel ul{ margin: 0; list-style-type: none; }
-	.bSpecSel ul li{ padding: 3px 0; }
-	.bSpecSel ul li a{ color: #ffa901; }
-	.bSpecSel__eReset{ color: #fff; background: #ffa901; text-decoration: none; padding: 3px 7px; margin: 4px 0 10px 11px; display: inline-block; *display: inline; zoom: 1; }
-	.bSpecSel__eReset:hover{ color: #fff; text-decoration: none; }
-
-.prompting {display:none; position:absolute; left:-39px; top:13px; /*top:29px;*/ z-index:10; width:350px; padding:10px 15px 15px 15px; font-weight:normal; cursor:auto; background-color:#fff; border:2px solid #308fcf;
+/*
+.prompting {display:none; position:absolute; left:-39px; top:13px;  z-index:10; width:350px; padding:10px 15px 15px 15px; font-weight:normal; cursor:auto; background-color:#fff; border:2px solid #308fcf;
 	border-radius:5px;
 	-moz-border-radius:5px;
 	-webkit-border-radius:5px;
@@ -139,10 +123,10 @@
 	box-shadow:0 0 9px #616161;
 }
 .prompting I {position:absolute; display:block; font-size:0; line-height:0}
-.prompting .corner {top:-15px; /*top:-14px;*/ left:20px; width:20px; height:15px; background:url(/css/common/img/bg.png) no-repeat -35px -14px}
-.prompting .close {top:0px; right:0px; /*right:-2px;*/ width:26px; height:26px; background:url(/css/common/img/bg_inner.png) no-repeat -74px -179px; text-indent:-10000px; cursor:pointer}
+.prompting .corner {top:-15px; left:20px; width:20px; height:15px; background:url(/css/common/img/bg.png) no-repeat -35px -14px}
+.prompting .close {top:0px; right:0px;  width:26px; height:26px; background:url(/css/common/img/bg_inner.png) no-repeat -74px -179px; text-indent:-10000px; cursor:pointer}
 
-
+*/
 
 
 .advice {margin-bottom:20px; border:1px solid #dcdcdc;
@@ -161,7 +145,7 @@
 .article h2 {font-weight:bold; font-size:11px; padding-bottom:5px}
 
 
-
+/*
 .advertbox {float:left; width:100%; height:342px; margin-bottom:2px; position:relative}
 .advertbox .tl, .advertbox .tr, .advertbox .bl, .advertbox .br {position:absolute; display:block; width:5px; height:5px; font-size:0; background:url(/css/common/img/bg.png) no-repeat}
 .advertbox .tl {top:0; left:0; background-position:-161px -54px}
@@ -176,19 +160,19 @@
 .advertbox .current i{position:absolute; left:0; top:50%; margin:-15px 0 0 -32px; display:block; width:15px; height:29px;  background:url(/css/common/img/bg.png) no-repeat -195px -33px}
 .advertbox a{color:#fff}
 .advertbox span{display:block; font-size:18px; padding-bottom:10px}
-
+*/
 
 
 .carbig .scroll span{ font: 14px Tahoma, sans-serif; padding: 0; vertical-align: top;}
 
 
-
+/*
 .carouselmenu {float:left; width:180px}
 .carouselmenu A {display:block; padding:3px 10px}
 .carouselmenu A:hover {background-color:#e6e6e6; text-decoration:none; color:#000}
 .carouselmenu .current, .carouselmenu .current:hover {font-weight:bold; color:#ffa901; background:url(/css/skin/img/icons.png) no-repeat 100% -415px; cursor:auto}
 .bigcarousel774 {float:right; width:748px}
-
+*/
 .ratingbig {width:150px; height:27px; color:#757575; font-family:tahoma; font-size:11px; position:relative; margin-bottom:10px}
 .ratingbox {width:150px; height:27px; background:url(/css/skin/img/stars.gif) repeat-x 0 0; position:relative}
 .ratingbox DIV.current {display:block; height:27px; background:url(/css/skin/img/stars.gif) repeat-x 0 -64px; position:absolute; text-indent:-9000px; z-index:1}
@@ -318,7 +302,7 @@ border-radius:5px;
 
 /*.previewlist .videolink {background:url(/css/common/img/bg_inner.png) no-repeat -778px -238px}*/
 
-.colorlist {float:left; width:100%; padding-bottom:8px}
+/*.colorlist {float:left; width:100%; padding-bottom:8px}
 .colorlist LI {float:left; width:29px; height:29px; margin:0 5px 5px 0}
 .colorlist A {display:block; width:15px; height:15px; padding:5px; background-color:#fff; border:2px solid #e7e7e7;
 border-radius: 7px;
@@ -327,8 +311,8 @@ border-radius: 7px;
 }
 .colorlist A.current, .colorlist A:hover {border-color:#ffa901}
 .colorlist SPAN {display:block; width:15px; height:15px; background-image:url(/css/common/img/bg.png); background-repeat:no-repeat; background-position: -168px -82px}
-
-.variationlist {float:left; width:100%; padding-bottom:8px}
+*/
+/*.variationlist {float:left; width:100%; padding-bottom:8px}
 .variationlist LI {float:left; height:29px; margin:0 10px 5px 0}
 .variationlist A {display:block; height:19px; padding:6px 8px 0 8px; font-weight:bold; font-size:11px; background-color:#fff; border:2px solid #e7e7e7;
 border-radius: 7px;
@@ -336,15 +320,15 @@ border-radius: 7px;
 -webkit-border-radius:7px;
 }
 .variationlist A.current, .variationlist A:hover {border-color:#ffa901; text-decoration:none; color:#000}
-
-.completemenu {float:left; width:295px; padding-bottom:20px}
+*/
+/*.completemenu {float:left; width:295px; padding-bottom:20px}
 .completemenu LI {position:relative; padding:0 0 5px 55px; min-height:29px}
 .completemenu .number, .completepoint .number {position:absolute; top:0; left:0; display:block; width:25px; height:19px; padding-top:6px; background-color:#fff; border:2px solid #e7e7e7; text-align:center; font-weight:normal; font-size:10px;
 border-radius: 7px;
 -moz-border-radius:7px;
 -webkit-border-radius:7px;
 }
-.completemenu .textpoint {display:block; margin-left:-17px; font-size:10px; color:#a6a6a6}
+.completemenu .textpoint {display:block; margin-left:-17px; font-size:10px; color:#a6a6a6}*/
 
 .complete {float:left; width:615px; padding:0 0 20px 10px}
 .completepoint {float:left; width:120px; height:120px; position:relative}
@@ -522,17 +506,7 @@ border-radius:5px;
 .goodsinfosmall {float:left; width:500px; padding-left:20px}
 .graylist li{list-style-type:disc; color:#a6a6a6; margin-left:14px}
 .blacklist li{list-style-type:disc; color:#010101; margin-left:14px}
-
-.selectbox {height:22px; padding:0 10px; line-height:22px; position:relative; background:#e3e3e3 url(/css/common/img/bg_buttons.png) repeat-x 0 -128px; border:1px solid #c9c9c9;
-border-radius: 5px;
--moz-border-radius:5px;
--webkit-border-radius:5px
-}
-.selectbox:hover {background-color:#c5c5c5; background-position:0 -160px}
-.selectbox .select {height:22px; white-space:nowrap; position:absolute; overflow:hidden}
-.selectbox .styled {position:relative; opacity:0; filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0); z-index:2; height:22px; margin-left:-10px; cursor:pointer}
-.selectbox I {position:absolute; top:50%; right:10px; margin-top:-3px; display:block; width:11px; height:7px; background:url(/css/common/img/bg.png) no-repeat -62px -24px}
-
+/*
 .selectbox62 {width:36px}
 .selectbox62 .select {width:27px}
 .selectbox62 .styled {width:62px}
@@ -545,18 +519,10 @@ border-radius: 5px;
 .selectbox98 .select {width:63px}
 .selectbox98 .styled {width:98px}
 
-.selectbox170 {width:148px}
-.selectbox170 .select {width:135px}
-.selectbox170 .styled {width:170px}
-
-.selectbox225 {width:203px}
-.selectbox225 .select {width:190px}
-.selectbox225 .styled {width:225px}
-
 .selectbox429 {width:407px}
 .selectbox429 .select {width:394px}
 .selectbox429 .styled {width:429px}
-
+*/
 .service li{float:left; width:760px; padding:0 0 5px 20px; font-size:11px}
 .service li .pricedata {display:none; float:right; width:451px}
 .service li .pricedata .left {float:left; width:215px; margin-right:20px; text-align:right; font-size:12px}
@@ -575,7 +541,7 @@ border-radius: 5px;
 .wishlinks li{padding-bottom:3px}
 .wishlinks a, .wishlinks a:hover {font-size:11px; color:#a6a6a6; text-decoration:underline}
 .questionicon {display:inline-block; width:14px; height:11px; background:url(/css/common/img/questionIcon.png) no-repeat; vertical-align:middle; margin-left:5px; cursor:pointer}
-
+/*
 .wishlistmenu a{display:block; padding:3px}
 .wishlistmenu a:hover {background-color:#e6e6e6; text-decoration:none; color:#000}
 .wishlistmenu .current, .wishlistmenu .current:hover {font-weight:bold; color:#ffa901; background:url(/css/skin/img/icons.png) no-repeat 100% -415px; cursor:auto}
@@ -588,21 +554,16 @@ border-radius: 5px;
 .wishline .filterlink {color:#a6a6a6; font-weight:normal; margin-right:15px}
 .wishline .filterlist {top:-5px}
 .wishline .filterchoice li a{color:#000; text-decoration:none}
-
+*/
+/*
 .citylist {margin-right:100px}
 .citylist li{font-size:14px; padding-bottom:3px}
-
-.shareline {background-color:#f0f0f0; padding:20px 20px 10px 20px}
-.shareline .backetsharelist LI {float:left; margin-left:15px}
-.shareline a{color:#000}
-.shareline a:hover {color:#404040}
-
-.graying {width:100%; height:100%; position:fixed; z-index:99; top:0; left:0; right:0; botom:0; background:#000; opacity:0.5; filter: progid:DXImageTransform.Microsoft.Alpha(opacity=50);}
+*/
 
 .dragbox {width:100%; height:100%; position:fixed; z-index:101; top:0; left:0; right:0; bottom:41px}
 .dragbox div{position:absolute; z-index:102; width:60px; height:60px; background-color:#fff; cursor:pointer}
 
-.comparisonblock {float:left; width: 644px;  overflow:hidden; background:url(/css/skin/img/bg_comparisonblock.gif) repeat-y 140px 0}
+/*.comparisonblock {float:left; width: 644px;  overflow:hidden; background:url(/css/skin/img/bg_comparisonblock.gif) repeat-y 140px 0}
 .comparisonblock li{float:left; width:120px; margin-right:41px; overflow:hidden}
 .comparisonblock .photo {width:120px; height:120px; margin-bottom:5px; position:relative}
 .comparisonblock .comparphoto {width:120px; height:120px; margin-bottom:5px; background:url(/css/skin/img/comparphoto.png) no-repeat 0 0}
@@ -610,7 +571,7 @@ border-radius: 5px;
 
 .comparisontable {table-layout:fixed}
 .comparisontable .col1 {width:225px}
-.comparisontable .col2, .comparisontable .col3, .comparisontable .col4, .comparisontable .col5 {width:175px; /*width:165px*/}
+.comparisontable .col2, .comparisontable .col3, .comparisontable .col4, .comparisontable .col5 {width:175px; //width:165px}
 .comparisontable th{padding:0 0 15px 0; vertical-align:top; text-align:left}
 .comparisontable td{padding:0 0 15px 10px; vertical-align:top}
 .comparisontable .pointhead div{position:relative; margin-left:-10px; border-bottom:1px solid #e6e6e6; padding:20px 0 10px 0}
@@ -619,7 +580,7 @@ border-radius: 5px;
 .comparisontable .ratingview {display:inline-block; width:63px; margin:0 5px 0 0; vertical-align:-1px; }
 .comparisontable .photo {width:120px; margin:0 auto 9px auto}
 .comparisontable .delete {position:absolute; top:0; right:0; display:block; width:20px; height:20px; background:url(/css/common/img/bg.png) no-repeat -51px -218px; cursor:pointer}
-.comparisontable .goodsbox .photo A {width:120px; margin:0 auto}
+.comparisontable .goodsbox .photo A {width:120px; margin:0 auto}*/
 
 .printpage .comparisontable .col1 {width:150px}
 .printpage .comparisontable .col2, .comparisontable .col3, .comparisontable .col4, .comparisontable .col5 {width:155px; /*width:145px*/}
@@ -704,15 +665,15 @@ border-radius: 5px;
 .errorpage404 .allpage, .errorpage503 .allpage {background:none}
 .errorbox404 {width:430px; margin:0 auto; padding-top:420px}
 .ui-effects-transfer{ border:1px dashed black; z-index:102;}
-
+/*
 .tearmlist {float:left; width:100%}
-.tearmlist dt{float:left; width:905px; padding:0 0 15px 15px; font-size:16px; /*cursor:pointer;*/ background:url(/css/skin/img/icons.png) no-repeat -6px -49px}
-/*.tearmlist DT.current {color:#ffa901; font-weight:bold; background-position:-6px 9px}*/
-.tearmlist dd{/*display:none;*/ float:left; width:905px; padding:0 0 10px 15px}
+.tearmlist dt{float:left; width:905px; padding:0 0 15px 15px; font-size:16px; //cursor:pointer; background:url(/css/skin/img/icons.png) no-repeat -6px -49px}
+//.tearmlist DT.current {color:#ffa901; font-weight:bold; background-position:-6px 9px}
+.tearmlist dd{//display:none; float:left; width:905px; padding:0 0 10px 15px}
 .tearmlist dd li{float:left; width:905px; padding-bottom:10px}
 .tearmlist dd div{float:right; width:870px}
-
-.plug {width:303px; padding-left:344px; padding-right:50px; margin:0 -6px 20px -6px; font-size:14px}
+*/
+/*.plug {width:303px; padding-left:344px; padding-right:50px; margin:0 -6px 20px -6px; font-size:14px}
 .plug h2{font-size:24px; font-weight:bold}
 .plug1 {height:175px; padding-top:35px; background:url(/images/plug1.jpg) no-repeat 0 0;}
 .plug2 {height:175px; padding-top:35px; background:url(/images/plug2.jpg) no-repeat 0 0;}
@@ -723,12 +684,12 @@ border-radius: 5px;
 .plug7 {height:170px; padding-top:40px; background:url(/images/plug7.jpg) no-repeat 0 0;}
 .plug8 {height:170px; padding-top:40px; background:url(/images/plug8.jpg) no-repeat 0 0;}
 .plug9 {height:175px; padding-top:35px; background:url(/images/plug9.jpg) no-repeat 0 0;}
-
+*/
 #plus10{cursor:pointer;}
 
 .infoblock { background: url('/css/skin/img/bg_info_article.gif') no-repeat; width: 350px; height: 73px; padding: 15px 15px 10px 35px; }
 
-.servicebanner {clear:both; width:320px; height:131px; padding:33px 0 0 600px; background:#4fcbf4 url(img/bg_service.jpg) no-repeat 0 0; color:#fff; font-size:14px; line-height:14px; margin-bottom:25px}
+.servicebanner {clear:both; width:320px; height:131px; padding:33px 0 0 600px; background:#4fcbf4 url(/css/skin/img/bg_service2.jpg) no-repeat 0 0; color:#fff; font-size:14px; line-height:14px; margin-bottom:25px}
 .servicebanner div{font-size:24px; line-height:24px; padding-bottom:5px}
 
 .slogan {color:#4fcbf4; margin-bottom:30px; font-size:14px}
@@ -974,23 +935,6 @@ border-radius: 5px;
 		background: url('img/360g.png') no-repeat;
 		}
 /* ----------- /map info ------------- */
-
-/* ----------- INFORMATION ------------- */
-.bLInfo{}
-	.bLInfo__eP,
-	.bLInfo__eH2{
-		margin: 0;
-		padding: 0;
-		}
-	.bLInfo__eH2{
-		font: 16px Tahoma, sans-serif;
-		}
-	.bLInfo__eP{
-		margin: 13px 0 22px 0;
-		font: 12px Tahoma, sans-serif;
-		line-height: 1.6;
-		}
-/* ----------- /INFORMATION ------------- */
 
 
 /* ----------- bInfoBlock ------------- */
@@ -1325,7 +1269,7 @@ border-radius: 5px;
 /* --------------- /bMapShops ------------------ */
 
 /*----------------- mFakeSelect -------------------*/
-.bFakeSelectWrap{
+/*.bFakeSelectWrap{
 	max-width: 200px;
 	margin-bottom: 20px;
 	display: inline-block;
@@ -1372,7 +1316,7 @@ border-radius: 5px;
 		left: -7px;
 		z-index: 5;
 		display: block;
-		}
+	}*/
 /*----------------- /mFakeSelect -------------------*/
 
 
@@ -1619,24 +1563,6 @@ border-radius: 5px;
 	*position: absolute;
 /*	*top: expression(document.getElementsByTagName('body')[0].scrollTop+"px");*/
 }
-.bMobDown{
-	margin: 0 auto;
-	padding: 15px 0 30px 0;
-	background: #fff;
-	text-align: left;
-/*	background: #f1f1f1;*/
-	border: 2px solid #ffa901;
-
-	display: inline-block;
-	*display: inline;
-	zoom: 1;
-
-	box-shadow: 0 0 10px #333;
-	-webkit-box-shadow: 0 0 10px #333;
-	-moz-box-shadow: 0 0 10px #333;
-	-ms-box-shadow: 0 0 10px #333;
-	-o-box-shadow: 0 0 10px #333;
-}
 .bMobDownWrapRel{
 	top: 25%;
 	bottom: 25%;
@@ -1651,73 +1577,9 @@ border-radius: 5px;
 	max-width: 300px;
 }
 /* ---- */
-.bMobDown h2{
-	margin: 0;
-	padding: 0;
-	font: 30px 'Enter';
+.bMobDown .sLocation {
+  font-size: 16px;
 }
-.bMobDown .sLocation{
-	font-size:16px;
-}
-.bMobDown__eWrap{
-	padding: 0 20px;
-	position: relative;
-}
-.bMobDown__eClose{
-	top: -15px;
-	right: 0;
-	width: 26px;
-	height: 26px;
-	cursor: pointer;
-	position: absolute;
-	background:url(/css/common/img/closeBtnOrange.png) no-repeat 0 0;
-}
-.bMobDown__eClose.top0{
-    top: 0;
-}	
-.bMobDown table{
-	padding: 0;
-	margin: 20px -20px;
-}
-.bMobDown table td{
-	max-width: 200px;
-	padding: 0 20px 20px 20px;
-	vertical-align: top;
-	border-left: 1px solid #e6e6e6;
-}
-.bMobDown table td:first-child{
-	border-left: none;
-}
-.bMobDown table td h3{
-	margin: 0;
-	padding: 0;
-	font-size:18px;
-}
-.bMobDown table td p{
-	font-size:13px;
-}
-.bMobDown table td input{
-	width: 100%;
-	height: 18px;
-	border: 1px solid #d8d8d8;
-	box-shadow: 0 0 5px #d8d8d8;
-	-webkit-box-shadow: 0 0 5px #d8d8d8;
-	-moz-box-shadow: 0 0 5px #d8d8d8;
-	-ms-box-shadow: 0 0 5px #d8d8d8;
-	-o-box-shadow: 0 0 5px #d8d8d8;
-}
-.bMobDown table td a,
-.bMobDown table td img{
-	outline: none;
-}
-
-.bMobDown table td .link1{
-	margin: 12px 0;
-	padding-left: 15px;
-	padding-right: 15px;
-	cursor: pointer;
-}
-
 .bMapShops__ePopupRel h3 {
     font: 20px 'EnterTypeRegular';
     margin: 0 0 15px;
@@ -2878,4 +2740,13 @@ div.mSportFont{ color: #e8303c; }
     margin-top: 4px !important;
     position: relative;
     width: 600px;
+}
+.bankWrap .bSelect__eArrow{
+	position:absolute;
+}
+.bankWrap .bSelect span{
+	line-height:30px;
+}
+.bankWrap .bSelect__eDropmenu{
+	position:absolute;
 }
