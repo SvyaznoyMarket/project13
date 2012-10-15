@@ -58,8 +58,6 @@ try {
         'exception' => (string)$e,
     ));
 
-    \App::shutdown();
-
     if (false == \App::config()->debug) {
         $action = new \Controller\Error\ServerErrorAction();
         $response = $action->execute($e, $request);
@@ -67,6 +65,8 @@ try {
     else {
         $spend = \Debug\Timer::stop('app');
         \App::logger()->error('End app ' . $spend . ' ' . round(memory_get_peak_usage() / 1048576, 2) . 'Mb' . ' with ' . $e);
+
+        \App::shutdown();
 
         throw $e;
     }

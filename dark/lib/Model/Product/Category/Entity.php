@@ -259,7 +259,7 @@ class Entity {
      * @param string $productView
      */
     public function setProductView($productView) {
-        if (is_int($productView)) {
+        if ((int)$productView > 0) {
             if (1 == $productView) {
                 $this->productView = self::PRODUCT_VIEW_COMPACT;
             } else if (2 == $productView) {
