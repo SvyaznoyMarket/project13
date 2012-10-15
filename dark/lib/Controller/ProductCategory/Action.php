@@ -2,15 +2,39 @@
 
 namespace Controller\ProductCategory;
 
-class IndexAction {
+class Action {
     /**
      * @param $categoryPath
      * @param \Http\Request $request
      * @return \Http\Response
      * @throws \Exception\NotFoundException
      */
-    public function execute($categoryPath, \Http\Request $request) {
-        $categoryToken = explode('/', trim($categoryPath, '/'));
+    public function slider($categoryPath, \Http\Request $request) {
+        if (!$request->isXmlHttpRequest()) {
+            throw new \Exception\NotFoundException('Request is not xml http request');
+        }
+
+        $categoryToken = explode('/', $categoryPath);
+        $categoryToken = end($categoryToken);
+
+        $repository = \RepositoryManager::getProductCategory();
+
+        $category = $repository->getEntityByToken($categoryToken);
+        if (!$category) {
+            throw new \Exception\NotFoundException(sprintf('Категория товара с токеном "%s" не найдена.', $categoryToken));
+        }
+
+        return new \Http\Response();
+    }
+
+    /**
+     * @param $categoryPath
+     * @param \Http\Request $request
+     * @return \Http\Response
+     * @throws \Exception\NotFoundException
+     */
+    public function category($categoryPath, \Http\Request $request) {
+        $categoryToken = explode('/', $categoryPath);
         $categoryToken = end($categoryToken);
 
         $repository = \RepositoryManager::getProductCategory();
