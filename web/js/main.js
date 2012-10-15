@@ -491,17 +491,6 @@ $(document).ready(function(){
 	}
 	
 	/* Search */
-	$('input:[name="q"]').bind(
-		{
-			'focusin': function() {
-				if ( $(this).val() == 'Поиск среди 30 000 товаров' ) $(this).val( '' );
-			},
-			'blur': function() {
-				if ( $(this).val() == '' ) $(this).val( 'Поиск среди 30 000 товаров' );
-			}
-		}
-	)
-
 	$('.search-form').bind('submit', function(e) {
 		e.preventDefault()
 		var form = $(this)
