@@ -200,11 +200,11 @@
 <?php //render_partial('product_/templates/_product_model.php', array('item' => $product)) ?>
 
 <?php if ($showAccessoryUpper && count($product->getAccessoryId()) && \App::config()->product['showAccessories']): ?>
-    <?php echo $page->render('product/_slider', array('product' => $product, 'productList' => $accessories, 'totalProducts' => count($product->getAccessoryId()), 'perPage' => \App::config()->product['itemsInSlider'], 'page' => 1, 'title' => 'Аксессуары')) ?>
+    <?php echo $page->render('product/_slider', array('product' => $product, 'productList' => array_values($accessories), 'totalProducts' => count($product->getAccessoryId()), 'perPage' => \App::config()->product['itemsInSlider'], 'page' => 1, 'title' => 'Аксессуары')) ?>
 <?php endif ?>
 
 <?php if ($showRelatedUpper && count($product->getRelatedId()) && \App::config()->product['showRelated']): ?>
-    <?php echo $page->render('product/_slider', array('product' => $product, 'productList' => $related, 'totalProducts' => count($product->getRelatedId()), 'perPage' => \App::config()->product['itemsInSlider'], 'page' => 1, 'title' => 'С этим товаром также покупают')) ?>
+    <?php echo $page->render('product/_slider', array('product' => $product, 'productList' => array_values($related), 'totalProducts' => count($product->getRelatedId()), 'perPage' => \App::config()->product['itemsInSlider'], 'page' => 1, 'title' => 'С этим товаром также покупают')) ?>
 <?php endif ?>
 
 <?php //if (false && sfConfig::get('app_smartengine_pull')): ?>
@@ -372,11 +372,11 @@
 <?php endif ?>
 
 <?php if (!$showAccessoryUpper && count($product->getAccessoryId()) && \App::config()->product['showAccessories']): ?>
-    <?php echo $page->render('product/_slider', array('product' => $product, 'productList' => $accessories, 'totalProducts' => count($product->getAccessoryId()), 'perPage' => \App::config()->product['itemsInSlider'], 'page' => 1, 'title' => 'Аксессуары')) ?>
+    <?php echo $page->render('product/_slider', array('product' => $product, 'productList' => array_values($accessories), 'totalProducts' => count($product->getAccessoryId()), 'perPage' => \App::config()->product['itemsInSlider'], 'page' => 1, 'title' => 'Аксессуары')) ?>
 <?php endif ?>
 
 <?php if (!$showRelatedUpper && count($product->getRelatedId()) && \App::config()->product['showRelated']): ?>
-    <?php echo $page->render('product/_slider', array('product' => $product, 'productList' => $related, 'totalProducts' => count($product->getRelatedId()), 'perPage' => \App::config()->product['itemsInSlider'], 'page' => 1, 'title' => 'С этим товаром также покупают')) ?>
+    <?php echo $page->render('product/_slider', array('product' => $product, 'productList' => array_values($related), 'totalProducts' => count($product->getRelatedId()), 'perPage' => \App::config()->product['itemsInSlider'], 'page' => 1, 'title' => 'С этим товаром также покупают')) ?>
 <?php endif ?>
 
 <div class="line"></div>

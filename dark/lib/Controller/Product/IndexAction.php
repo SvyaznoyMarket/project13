@@ -35,46 +35,27 @@ class IndexAction {
             $showRelatedUpper = true;
         }
 
-        $accessories = array();
-        $related = array();
-        $kit = array();
-        $productRepository->setEntityClass('\\Model\\Product\\CompactEntity');
-        if (count($product->getAccessoryId())) {
-            $accessories = $productRepository->getCollectionById(array_slice($product->getAccessoryId(), 0, 10));
-        }
-
-        if (count($product->getRelatedId())) {
-            $related = $productRepository->getCollectionById(array_slice($product->getRelatedId(), 0, 10));
-        }
-
-        $parts = array();
-        foreach ($product->getKit() as $part) {
-            $parts[] = $part->getId();
-        }
-        if (count($parts)) {
-            foreach ($productRepository->getCollectionById($parts) as $part) {
-                $kit[$part->getId()] = $part;
-            }
-        }
-/*        $accessoriesId =  array_slice($product->getAccessoryId(), 0, 10);
-        $relatedId = array_slice($product->getRelatedId(), 0, 10);
+        $accessoriesId =  array_slice($product->getAccessoryId(), 0, \App::config()->product['itemsInSlider'] * 2);
+        $relatedId = array_slice($product->getRelatedId(), 0, \App::config()->product['itemsInSlider'] * 2);
         $partsId = array();
 
         foreach ($product->getKit() as $part) {
             $partsId[] = $part->getId();
         }
 
-        $accessories = array_flip($accessoriesId);
-        $related = array_flip($relatedId);
-        $kit = array_flip($partsId);
+        if ((bool)$accessoriesId || (bool)$relatedId || (bool)$partsId) {
+            $accessories = array_flip($accessoriesId);
+            $related = array_flip($relatedId);
+            $kit = array_flip($partsId);
 
-        $products = $productRepository->getCollectionById(array_merge($accessoriesId, $relatedId, $partsId));
+            $products = $productRepository->getCollectionById(array_merge($accessoriesId, $relatedId, $partsId));
 
-        foreach ($products as $item) {
-            if (isset($accessories[$item->getId()])) $accessories[$item->getId()] = $item;
-            if (isset($related[$item->getId()])) $related[$item->getId()] = $item;
-            if (isset($kit[$item->getId()])) $kit[$item->getId()] = $item;
-        }*/
+            foreach ($products as $item) {
+                if (isset($accessories[$item->getId()])) $accessories[$item->getId()] = $item;
+                if (isset($related[$item->getId()])) $related[$item->getId()] = $item;
+                if (isset($kit[$item->getId()])) $kit[$item->getId()] = $item;
+            }
+        }
 
         $page = new \View\Product\IndexPage();
         $page->setParam('product', $product);
