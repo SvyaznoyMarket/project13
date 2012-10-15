@@ -14,8 +14,7 @@ class DefaultLayout extends Layout {
         $this->addMeta('title', 'Enter');
         $this->addMeta('description', 'Enter');
 
-        $this->addStylesheet('/css/skin/inner.css?2012-10-01');
-        $this->addStylesheet('/css/jquery-ui-1.8.20.custom.css');
+        $this->addStylesheet('/css/global.css?2012-10-15');
 
         $this->addJavascript('/js/jquery-1.6.4.min.js');
         $this->addJavascript('/js/LAB.min.js');

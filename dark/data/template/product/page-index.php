@@ -197,8 +197,7 @@
 <?php endif ?>
 <!-- /Photo video -->
 
-<?php //render_partial('product_/templates/_product_model.php', array('item' => $product)) ?>
-<?php if((bool)$product->getModel() && (bool)$product->getModel()->getProperty()): ?>
+<?php if((bool)$product->getModel() && (bool)$product->getModel()->getProperty()): //модели ?>
 <!-- Variation -->
 <div class="fr width400">
     <h2>Этот товар с другими параметрами:</h2>
@@ -219,34 +218,32 @@
         </div>
 
         <div class="clear"></div>
-
         <?php else: ?>
             <?php
                 $productAttribute = $product->getPropertyById($property->getId());
                 if (!$productAttribute) return;
             ?>
-        <div class="bDropWrap">
+            <div class="bDropWrap">
                 <h5><?php echo $property->getName() ?>:</h5>
 
                 <div class="bDropMenu">
                     <span class="bold"><a href="<?php echo $product->getLink() ?>"><?php echo $productAttribute->getStringValue() ?></a></span>
-                <div>
-                <span class="bold"><a href="<?php echo $product->getLink() ?>"><?php echo $productAttribute->getStringValue() ?></a></span>
+                    <div>
+                        <span class="bold"><a href="<?php echo $product->getLink() ?>"><?php echo $productAttribute->getStringValue() ?></a></span>
 
                 <?php foreach ($property->getOption() as $option):?>
-                <?php if ($option->getValue() == $productAttribute->getValue())continue; ?>
+                    <?php if ($option->getValue() == $productAttribute->getValue())continue; ?>
                     <span>
                         <a href="<?php echo $option->getProduct()->getLink() ?>">
                             <?php echo $option->getHumanizedName() ?>
                         </a>
                     </span>
                 <?php endforeach ?>
-            </div>
+                    </div>
 
-              </div>
+                </div>
             </div>
             <?php endif ?>
-
 <?php endforeach; ?>
 </div>
 <!-- /Variation -->
