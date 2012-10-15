@@ -544,6 +544,18 @@ cart_delete:
   param: { module: cart, action: delete, product: 0, service: 0 }
   requirements:
     product: \d+
+# MOVED TO PLAIN PHP cart warranty set
+cart_warranty_set:
+  url:   /cart/warranty/:product/set/:warranty
+  param: { module: cart, action: warrantySet }
+  requirements:
+    product: \d+
+# MOVED TO PLAIN PHP cart warranty delete
+cart_warranty_delete:
+  url:   /cart/warranty/:product/delete/:warranty
+  param: { module: cart, action: warrantyDelete }
+  requirements:
+    product: \d+
 
 #
 # MOVED TO PLAIN PHP cart clear

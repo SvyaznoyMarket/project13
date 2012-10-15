@@ -674,7 +674,8 @@ class order_Actions extends myActions
         $order->shop_id = null;
       }
 
-      $productItems = array(); $serviceItems = array();
+      $productItems = array();
+      $serviceItems = array();
       foreach ($deliveryTypeData['items'] as $itemToken)
       {
         list($itemType, $itemId) = explode('-', $itemToken);
@@ -684,10 +685,23 @@ class order_Actions extends myActions
           $cartData = $user->getCart()->getProduct($itemId);
           if(!is_null($cartData)){
             /** @var $cartData light\ProductCartData */
-            $productItems[] = array(
+            $productItem = array(
               'id'       => $cartData->getProductId(),
               'quantity' => $cartData->getQuantity() ,
             );
+
+            // дополнительные гарантии для товара
+            if ($warrantyData = $user->getCart()->getWarrantyByProduct($cartData->getProductId())) {
+              /** @var $warrantyData light\WarrantyCartData */
+              $productItem['additional_warranty'] = array(
+                array(
+                'id'       => $warrantyData->getId(),
+                'quantity' => $warrantyData->getQuantity(),
+                ),
+              );
+            }
+
+            $productItems[] = $productItem;
           }
         }
         if ('service' == $itemType)
@@ -766,7 +780,7 @@ class order_Actions extends myActions
         return $return;
     }, $orders);
     //dump($coreData, 1);
-      $response = Core::getInstance()->query('order.create-packet', array(), $coreData, true);
+    $response = Core::getInstance()->query('order.create-packet', array(), $coreData, true);
     //dump($response, 1);
     if (is_array($response) && array_key_exists('confirmed', $response) && $response['confirmed'])
     {
@@ -933,6 +947,18 @@ class order_Actions extends myActions
           {
             $serviceName .= " + <span class='motton'>{$service['name']} ({$service['quantity']} шт.)</span>";
             $serviceTotal += ($service['price'] * $service['quantity']);
+          }
+        }
+
+        // дополнительные гарантии для товара
+        if ($warrantyData = $user->getCart()->getWarrantyByProduct($coreData['id'])) {
+          // нижеследующее нужно для того, чтобы получить название гарантии
+          $productV2 = RepositoryManager::getProduct()->getById($coreData['id'], true);
+          foreach ($productV2->getWarrantyList() as $w) {
+            if ($w->getId() == $warrantyData->getId()) {
+              $serviceName .= sprintf(' + <span class="motton">%s (%s шт.)</span>', $w->getName(), $warrantyData->getQuantity());
+              $serviceTotal += ($warrantyData->getPrice() * $warrantyData->getQuantity());
+            }
           }
         }
 

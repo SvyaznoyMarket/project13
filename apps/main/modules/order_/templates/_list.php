@@ -79,6 +79,18 @@ if (count($list)<1) echo '<div>У Вас пока нет ни одного за�
           <strong class="font14"><?php echo $product->getPrice() ?>&nbsp;<span class="rubl">p</span></strong>
         </td>
       </tr>
+
+      <?php if ($warranty = $product->getWarranty()): ?>
+          <tr>
+              <th>
+                  <?php echo $warranty->getName() ?>
+              </th>
+              <td>
+                  <strong class="font14"><?php echo $warranty->getPrice() ?>&nbsp;<span class="rubl">p</span></strong>
+              </td>
+          </tr>
+      <?php endif ?>
+
       <?php }
 
     endforeach; ?>

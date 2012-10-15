@@ -86,6 +86,9 @@ all:
   online_call:
     enabled: false
 
+  warranty:
+    enabled: true
+
   related_product:
     additional: true # отображать смежные товары из ядра
     accessory: true # отображать аксессуары из ядра
@@ -93,8 +96,8 @@ all:
 
   core:
     config:
-      api_url: 'http://core.ent3.ru/v1/json'
-      userapi_url: 'http://core.ent3.ru/index.php/v2/'
+      api_url: 'http://peterpro.core.ent3.ru/v1/json'
+      userapi_url: 'http://peterpro.core.ent3.ru/index.php/v2/'
       client_code: site
       consumer_key: test
       signature: test
@@ -262,6 +265,9 @@ live:
       cert: %SF_DATA_DIR%/cert/smartengine-server2.crt
       log_enabled: false
       log_data_enabled: false
+
+  warranty:
+    enabled: false
 
   rediska:
     default:

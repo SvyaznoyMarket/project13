@@ -1,0 +1,107 @@
+<?php
+
+/**
+ * Расширенная гарантия
+ */
+class WarrantyEntity
+{
+  /* @var integer */
+  private $id;
+  /* @var string */
+  private $name;
+  /* @var int */
+  private $price;
+  /** @var string */
+  private $description;
+  /** @var string */
+  private $image;
+
+  public function __construct(array $data = array())
+  {
+    if (array_key_exists('id', $data))          $this->setId($data['id']);
+    if (array_key_exists('name', $data))        $this->setName($data['name']);
+    if (array_key_exists('price', $data))       $this->setPrice($data['price']);
+    if (array_key_exists('description', $data)) $this->setDescription($data['description']);
+    if (array_key_exists('image', $data))       $this->setImage($data['image']);
+  }
+
+  /**
+   * @param string $description
+   */
+  public function setDescription($description)
+  {
+    $this->description = (string)$description;
+  }
+
+  /**
+   * @return string
+   */
+  public function getDescription()
+  {
+    return $this->description;
+  }
+
+  /**
+   * @param int $id
+   */
+  public function setId($id)
+  {
+    $this->id = (int)$id;
+  }
+
+  /**
+   * @return int
+   */
+  public function getId()
+  {
+    return $this->id;
+  }
+
+  /**
+   * @param string $image
+   */
+  public function setImage($image)
+  {
+    $this->image = (string)$image;
+  }
+
+  /**
+   * @return string
+   */
+  public function getImage()
+  {
+    return $this->image;
+  }
+
+  /**
+   * @param string $name
+   */
+  public function setName($name)
+  {
+    $this->name = (string)$name;
+  }
+
+  /**
+   * @return string
+   */
+  public function getName()
+  {
+    return $this->name;
+  }
+
+  /**
+   * @param int $price
+   */
+  public function setPrice($price)
+  {
+    $this->price = (int)$price;
+  }
+
+  /**
+   * @return int
+   */
+  public function getPrice()
+  {
+    return $this->price;
+  }
+}

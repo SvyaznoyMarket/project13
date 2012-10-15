@@ -18,19 +18,22 @@ class V2CartPriceContainer implements CartPriceContainer
   public function getPrices(CartContainer $cart){
     try{
       if(is_null($cart) || (!count($cart->getProductsQuantities()) && !count($cart->getServicesQuantities()))){
-        return array("product_list" => array(),"service_list" => array(),"price_total" => 0);
+        return array('product_list' => array(), 'service_list' => array(), 'warranty_list' => array(), 'price_total' => 0);
       }
 
       $response = App::getCoreV2()->query(
         'cart.get-price',
         array('geo_id' => App::getCurrentUser()->getRegion()->getId()),
-        array('product_list' => $cart->getProductsQuantities(), 'service_list' => $cart->getServicesQuantities())
-      );
+        array(
+          'product_list' => $cart->getProductsQuantities(),
+          'service_list' => $cart->getServicesQuantities(),
+          'warranty_list' => $cart->getWarrantiesQuantities(),
+      ));
 
       return (array) $response;
     }
     catch(\Exception $e){
-      return array("product_list" => array(),"service_list" => array(),"price_total" => 0);
+      return array('product_list' => array(), 'service_list' => array(), 'warranty_list' => array(), 'price_total' => 0);
     }
   }
 }
@@ -40,10 +43,10 @@ class MockCartPriceContainer implements CartPriceContainer
 
   public function getPrices(CartContainer $cart){
 
-    $ServicesQuantities = $cart->getServicesQuantities();
+    $servicesQuantities = $cart->getServicesQuantities();
     $serviceList = array();
 
-    foreach($ServicesQuantities as $service){
+    foreach($servicesQuantities as $service){
       $tmp = $service;
       $tmp['price'] = 1500;
       $serviceList[] = $tmp;
@@ -58,10 +61,20 @@ class MockCartPriceContainer implements CartPriceContainer
       $productList[] = $tmp;
     }
 
+    $warrantyQuantities = $cart->getWarrantiesQuantities();
+    $warrantyList = array();
+
+    foreach($warrantyQuantities as $warranty){
+      $tmp = $warranty;
+      $tmp['price'] = 900;
+      $warrantyList[] = $tmp;
+    }
+
     return array(
-      'product_list' => $productList,
-      'service_list' => $serviceList,
-      'price_total' => 9000
+      'product_list'  => $productList,
+      'service_list'  => $serviceList,
+      'warranty_list' => $warrantyList,
+      'price_total'   => 9000
     );
   }
 }

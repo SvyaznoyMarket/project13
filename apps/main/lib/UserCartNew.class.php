@@ -140,6 +140,10 @@ class UserCartNew
     }
   }
 
+  public function hasWarranty($productId, $warrantyId) {
+      return $this->cart->hasWarranty($productId, $warrantyId);
+  }
+
   // legacy Copy-past
   public function getWeight()
   {
@@ -216,6 +220,21 @@ class UserCartNew
   public function getServices()
   {
     return $this->cart->getServiceList();
+  }
+
+  public function getWarranties()
+  {
+    return $this->cart->getWarrantyList();
+  }
+
+  public function getWarrantyByProduct($productId) {
+    foreach ($this->getWarranties() as $warrantiesByProduct) {
+      if (!array_key_exists($productId, $warrantiesByProduct)) continue;
+
+      return $warrantiesByProduct[$productId];
+    }
+
+    return null;
   }
 
   public function count()
