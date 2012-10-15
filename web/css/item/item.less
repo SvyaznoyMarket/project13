@@ -218,8 +218,8 @@
     background: @white;
     border: 1px solid #aeaeae;
     display: none;
-    left: -11px;
-    min-width: 85px;
+    left: -1px;
+    width: 100%;
     padding-bottom: 7px;
     position: absolute;
     top: -1px;
@@ -227,7 +227,6 @@
     span {
       cursor: pointer;
       display: block;
-      margin: 0px 10px;
       padding: 5px 10px;
       a {
         cursor: pointer;
@@ -240,7 +239,7 @@
       }
       &:first-child {
         background: url("@{itemSprite-url}") 100% -135px no-repeat;
-        padding: 5px 10px 10px;
+        padding: 5px 0 10px 10px;
       }
       &:hover {
         background: @typLightGray;

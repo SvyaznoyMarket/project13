@@ -63,7 +63,12 @@ return array(
     // каталог товаров
     'product.category' => array(
         'pattern' => '/catalog/{categoryPath}/',
-        'action'  => array('ProductCategory\IndexAction', 'execute'),
+        'action'  => array('ProductCategory\Action', 'category'),
+        'require' => array('categoryPath' => '[\w\d-_]+\/?[\w\d-_]+'),
+    ),
+    'product.category.slider' => array(
+        'pattern' => '/catalog/{categoryPath}/_slider',
+        'action'  => array('ProductCategory\Action', 'slider'),
         'require' => array('categoryPath' => '[\w\d-_]+\/?[\w\d-_]+'),
     ),
     'product' => array(
@@ -86,19 +91,14 @@ return array(
     'product.stock' => array(
         'pattern' => '/product/{productPath}/stock',
     ),
-    'product.slider.category' => array(
-        'pattern' => '/catalog/{categoryPath}/_slider',
-        'action'  => array('Product\SliderAction', 'category'),
-        'require' => array('categoryPath' => '[\w\d-_]+\/?[\w\d-_]+'),
-    ),
-    'product.accessories' => array( // TODO: переименовать в product.slider.accessory
+    'product.accessories' => array( // TODO: переименовать в product.accessory
         'pattern' => '/products/accessories/{productToken}',
-        'action'  => array('Product\SliderAction', 'accessory'),
+        'action'  => array('Product\AccessoryAction', 'execute'),
         'require' => array('productToken' => '[\w\d-_]+'),
     ),
-    'product.related' => array( // TODO: переименовать в product.slider.related
+    'product.related' => array(
         'pattern' => '/products/related/{productToken}',
-        'action'  => array('Product\SliderAction', 'related'),
+        'action'  => array('Product\RelatedAction', 'execute'),
         'require' => array('productToken' => '[\w\d-_]+'),
     ),
     'tag' => array(
