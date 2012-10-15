@@ -3411,17 +3411,16 @@
   }
   .bCountSet span {
     line-height: 30px;
-    text-align: center;
   }
   .bCountSet .bCountSet__eM {
     background: url("/css/item/img/itemSprite.png") no-repeat -137px 0px;
     float: left;
-    margin: 0px 5px 0px 2px;
+    margin: 0px 0px 0px 2px;
   }
   .bCountSet .bCountSet__eP {
     background: url("/css/item/img/itemSprite.png") no-repeat -152px 0px;
     float: right;
-    margin: 0px 2px 0px 5px;
+    margin: 0px 2px 0px 0px;
   }
   .bDeliver2 {
     padding: 0px 10px 10px 0px;
