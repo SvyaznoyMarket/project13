@@ -1,0 +1,17 @@
+<?php
+/**
+ * @var $page \View\DefaultLayout
+ * @var $product \Model\Product\Entity
+ * @var $disabled bool
+ */
+?>
+
+<?php
+if ($disabled) {
+    $url = '#';
+} else {
+    $url = $page->url('cart.product.add', array('productId' => $product->getId(), 'quantity' => 1));
+}
+?>
+
+<a href="<?= $url ?>" class="link1 bOrangeButton<?php if ($disable): ?> disable<? endif ?>"><i></i><span>Положить в корзину</span></a>

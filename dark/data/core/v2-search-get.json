@@ -1,0 +1,62 @@
+{
+    "result": {
+        "1": {
+            "count": 525,
+            "data": [
+                7019,
+                46007,
+                714,
+                4928,
+                6831,
+                10296,
+                32876,
+                48366,
+                48367,
+                48368,
+                48369,
+                40768,
+                40769,
+                41184,
+                41185,
+                41186,
+                2316,
+                6519,
+                6923,
+                7952
+            ],
+            "category_list": [
+                {
+                    "category_id": 791,
+                    "count": 64,
+                    "category_name": "Аксессуары для Apple iPod"
+                },
+                {
+                    "category_id": 838,
+                    "count": 6,
+                    "category_name": "Кабели для ноутбуков, планшетов и PC"
+                },
+                {
+                    "category_id": 829,
+                    "count": 119,
+                    "category_name": "Аксессуары для Apple iPad"
+                },
+                {
+                    "category_id": 1038,
+                    "count": 2,
+                    "category_name": "Аксессуары для Apple iPad"
+                },
+                {
+                    "category_id": 1065,
+                    "count": 5,
+                    "category_name": "Зарядные устройства и аккумуляторы для телефонов"
+                }
+            ]
+        },
+        "2": {
+            "count": 0,
+            "data": []
+        },
+        "did_you_mean": null,
+        "forced_mean": false
+    }
+}
