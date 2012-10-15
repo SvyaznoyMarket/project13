@@ -14,7 +14,7 @@
 
     <noindex>
         <div class="searchbox">
-            <?= $page->render('form-search') ?>
+            <?= $page->render('search/form-default') ?>
         </div>
     </noindex>
     <div class="clear"></div>

@@ -3,6 +3,12 @@
 namespace Controller\ProductCategory;
 
 class IndexAction {
+    /**
+     * @param $categoryPath
+     * @param \Http\Request $request
+     * @return \Http\Response
+     * @throws \Exception\NotFoundException
+     */
     public function execute($categoryPath, \Http\Request $request) {
         $categoryToken = explode('/', trim($categoryPath, '/'));
         $categoryToken = end($categoryToken);
@@ -27,6 +33,12 @@ class IndexAction {
         return $this->executeLeafNode($category, $request);
     }
 
+    /**
+     * @param \Model\Product\Category\Entity $category
+     * @param \Http\Request $request
+     * @return \Http\Response
+     * @throws \Exception
+     */
     private function executeRootNode(\Model\Product\Category\Entity $category, \Http\Request $request) {
         if (\App::config()->debug) \App::debug()->add('subact', 'rootNode');
 
@@ -40,6 +52,11 @@ class IndexAction {
         return new \Http\Response($page->show());
     }
 
+    /**
+     * @param \Model\Product\Category\Entity $category
+     * @param \Http\Request $request
+     * @return \Http\Response
+     */
     private function executeBranchNode(\Model\Product\Category\Entity $category, \Http\Request $request) {
         if (\App::config()->debug) \App::debug()->add('subact', 'branchNode');
 
@@ -49,6 +66,12 @@ class IndexAction {
         return new \Http\Response($page->show());
     }
 
+    /**
+     * @param \Model\Product\Category\Entity $category
+     * @param \Http\Request $request
+     * @return \Http\Response
+     * @throws \Exception\NotFoundException
+     */
     private function executeLeafNode(\Model\Product\Category\Entity $category, \Http\Request $request) {
         if (\App::config()->debug) \App::debug()->add('subact', 'leafNode');
 
@@ -83,6 +106,10 @@ class IndexAction {
         return new \Http\Response($page->show());
     }
 
+    /**
+     * @param \Model\Product\Category\Entity $category
+     * @return \Model\Product\Filter
+     */
     private function getFilter(\Model\Product\Category\Entity $category = null) {
         $filters = \RepositoryManager::getProductFilter()->getCollectionByCategory($category);
         $productFilter = new \Model\Product\Filter($category, $filters);
@@ -90,6 +117,13 @@ class IndexAction {
         return $productFilter;
     }
 
+    /**
+     * @param \Model\Product\Filter $productFilter
+     * @param $pageNum
+     * @param $productView
+     * @return \Iterator\EntityPager
+     * @throws \Exception\NotFoundException
+     */
     private function getPager(\Model\Product\Filter $productFilter, $pageNum, $productView) {
         $limit = \App::config()->product['itemsPerPage'];
 
