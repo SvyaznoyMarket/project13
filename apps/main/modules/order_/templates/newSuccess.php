@@ -16,11 +16,11 @@
 
 <script id="mapInfoBlock" type="text/html">
   <div class="bMapShops__ePopupRel">
-    <h3><%= name%></h3>
+    <h3><%=name%></h3>
     <span>Работает </span>
-    <span><%= regime%></span>
+    <span><%=regime%></span>
     <br/>
-    <span class="shopnum" style="display: none;"><%= id%></span>
+    <span class="shopnum" style="display: none;"><%=id%></span>
     <a class="bGrayButton shopchoose" href="">Забрать из этого магазина</a>
   </div>
 </script>

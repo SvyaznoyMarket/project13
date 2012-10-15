@@ -13,6 +13,14 @@ $(document).ready(function() {
 			options.hide()
 	})
 	
+	var vendor = 'yandex' // yandex or google
+	if( vendor==='yandex' )
+		ymaps.ready( function() {
+console.info('yandexIsReady')			
+	        PubSub.publish('yandexIsReady')
+	        ymaps.isReady = true
+	    })
+
 	/* View Models */
 	//////////////////////////////////////////
 	
@@ -233,8 +241,21 @@ $(document).ready(function() {
 						mapCenter = calcMCenter( Deliveries['self'].shops )
 					}						
 					if( selfAvailable && ! ('regionMap' in window ) ) {
-						window.regionMap = new MapWithShops( mapCenter, $('#map-info_window-container'), 'mapPopup' )
-						window.regionMap.addHandler( '.shopchoose', pickStoreMVM )
+						if( vendor === 'yandex' ) {
+							if( ymaps.isReady ) {
+								window.regionMap = new MapYandexWithShops( mapCenter, $('#map-info_window-container-ya'), 'mapPopup' )
+								window.regionMap.addHandler( '.shopchoose', pickStoreMVM )						
+							} else {
+								PubSub.subscribe( 'yandexIsReady', function() {					
+									window.regionMap = new MapYandexWithShops( mapCenter, $('#map-info_window-container-ya'), 'mapPopup' )
+									window.regionMap.addHandler( '.shopchoose', pickStoreMVM )
+								})
+							}
+						} 
+						if( vendor === 'google' ) {
+							window.regionMap = new MapGoogleWithShops( mapCenter, $('#map-info_window-container'), 'mapPopup' )
+							window.regionMap.addHandler( '.shopchoose', pickStoreMVM )
+						}
 					}
 					
 				})	
@@ -600,8 +621,21 @@ levup:			for(var i=0, l=numbers.length; i<l; i++)
 			
 				
 			if( selfAvailable ) {
-				window.regionMap = new MapWithShops( mapCenter, $('#map-info_window-container'), 'mapPopup', updateIW )
-				window.regionMap.addHandler( '.shopchoose', pickStoreMVM )
+				if( vendor === 'yandex' ) {
+					if( ymaps.isReady ) {
+						window.regionMap = new MapYandexWithShops( mapCenter, $('#map-info_window-container-ya'), 'mapPopup' )
+						window.regionMap.addHandler( '.shopchoose', pickStoreMVM )						
+					} else {
+						PubSub.subscribe( 'yandexIsReady', function() {					
+							window.regionMap = new MapYandexWithShops( mapCenter, $('#map-info_window-container-ya'), 'mapPopup' )
+							window.regionMap.addHandler( '.shopchoose', pickStoreMVM )
+						})
+					}
+				} 
+				if( vendor === 'google' ) {
+					window.regionMap = new MapGoogleWithShops( mapCenter, $('#map-info_window-container'), 'mapPopup', updateIW )
+					window.regionMap.addHandler( '.shopchoose', pickStoreMVM )
+				}
 			}
 			oneClickIsReady = true
 			enableHandlers()
@@ -704,9 +738,22 @@ levup:			for(var i=0, l=numbers.length; i<l; i++)
 			ko.applyBindings( OC_MVM, $('#order1click-container-new')[0] ) // this way, Lukas!
 			enableHandlers()
 
-			if( selfAvailable ) {
-				window.regionMap = new MapWithShops( mapCenter, $('#infowindowforstock'), 'stockmap', updateIW )
-				window.regionMap.addHandler( '.shopchoose', pickStoreMVM )
+			if( selfAvailable ) {			
+				if( vendor === 'yandex' ) {
+					if( ymaps.isReady ) {
+						window.regionMap = new MapYandexWithShops( mapCenter, $('#infowindowforstockYa'), 'stockmap' )
+						window.regionMap.addHandler( '.shopchoose', pickStoreMVM )						
+					} else {
+						PubSub.subscribe( 'yandexIsReady', function() {					
+							window.regionMap = new MapYandexWithShops( mapCenter, $('#infowindowforstockYa'), 'stockmap' )
+							window.regionMap.addHandler( '.shopchoose', pickStoreMVM )
+						})
+					}
+				} 
+				if( vendor === 'google' ) {
+					window.regionMap = new MapGoogleWithShops( mapCenter, $('#infowindowforstock'), 'stockmap', updateIW )
+					window.regionMap.addHandler( '.shopchoose', pickStoreMVM )
+				}
 			}			
 
 			$('#stockBlock').show()

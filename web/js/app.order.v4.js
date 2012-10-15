@@ -917,17 +917,42 @@ flds:	for( field in fieldsToValidate ) {
         MVM.selectShop( shop )
     }
 
-    window.regionMap = new MapWithShops(
-        calcMCenter( getShopsStack() ),
-        infoBlockNode,
-        'mapPopup',
-        updateI
-    )
+    var vendor = 'yandex' // yandex or google
+	if( vendor==='yandex' )
+		ymaps.ready( function() {
+console.info('yandexIsReady')			
+	        PubSub.publish('yandexIsReady')
+	        ymaps.isReady = true
+	    })
+	if( vendor === 'yandex' ) {
+		if( ymaps.isReady ) {
+			window.regionMap = new MapYandexWithShops( 
+				calcMCenter( getShopsStack() ), 
+				$('#mapInfoBlock'), 
+				'mapPopup' 
+			)
+			window.regionMap.addHandler( '.shopchoose', ShopChoosed )						
+		} else {
+			PubSub.subscribe( 'yandexIsReady', function() {					
+				window.regionMap = new MapYandexWithShops( mapCenter, $('#map-info_window-container-ya'), 'mapPopup' )
+				window.regionMap.addHandler( '.shopchoose', pickStoreMVM )
+			})
+		}
+	}
+    if( vendor === 'google' ) {
+	    window.regionMap = new MapGoogleWithShops(
+	        calcMCenter( getShopsStack() ),
+	        infoBlockNode,
+	        'mapPopup',
+	        updateI
+	    )
+	    window.regionMap.addHandler( '.shopchoose', ShopChoosed )
 
-    window.regionMap.addHandler( '.shopchoose', ShopChoosed )
+	    window.regionMap.addHandlerMarker( 'mouseover', function( marker ) {        
+	        window.regionMap.showInfobox( marker.id )
+	    })
+	}
 
-    window.regionMap.addHandlerMarker( 'mouseover', function( marker ) {        
-        window.regionMap.showInfobox( marker.id )
-    })
+    
 
 })

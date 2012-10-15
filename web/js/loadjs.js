@@ -83,7 +83,7 @@
 		case 'order':
             $LAB.queueScript('knockout-2.1.0.js')
             .queueScript('bigjquery.min.js')
-            //.queueScript('http://maps.google.com/maps/api/js?sensor=true')
+            .queueScript('http://maps.google.com/maps/api/js?sensor=true')
             .queueScript('http://api-maps.yandex.ru/2.0/?load=package.full&lang=ru-RU')
 			.queueWait( function() {
 				$LAB.script( getWithVersion('library.js') )
@@ -130,7 +130,7 @@
 			break
 		case 'product_card':
 			$LAB.queueScript('knockout-2.1.0.js')
-			// .queueScript('http://maps.google.com/maps/api/js?sensor=true')
+			.queueScript('http://maps.google.com/maps/api/js?sensor=true')
 			.queueScript('http://api-maps.yandex.ru/2.0/?load=package.full&lang=ru-RU')
 			.queueWait( function() {
 				$LAB.script( getWithVersion('ports.js') )
@@ -191,7 +191,7 @@
 			break
 		case 'product_stock':
 			$LAB
-			// .queueScript('http://maps.google.com/maps/api/js?sensor=false')
+			.queueScript('http://maps.google.com/maps/api/js?sensor=false')
 			.queueScript('http://api-maps.yandex.ru/2.0/?load=package.full&lang=ru-RU')
 			.queueScript('knockout-2.1.0.js')
 			.queueWait( function() {

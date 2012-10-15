@@ -102,10 +102,17 @@ $json = array (
 					<h3 data-bind="text: address"></h3>
 					<span>Работает </span><span data-bind="text: regtime"></span><br>
 					<span class="shopnum" style="display:none" data-bind="text: id"></span>
-					<a href class='bGrayButton shopchoose' data-bind="">Забрать из этого магазина</a>
+					<a href class='bGrayButton shopchoose'>Забрать из этого магазина</a>
 				</div>
 			</div>								
-			
+			<div id="infowindowforstockYa" style="display:none">
+				<div class='bMapShops__ePopupRel'>
+					<h3>$[properties.name]</h3>
+					<span>Работает </span><span>$[properties.regtime]</span><br>
+					<span class="shopnum" style="display:none">$[properties.id]</span>
+					<a href class='bGrayButton shopchoose'>Забрать из этого магазина</a>
+				</div>
+			</div>
 
 			<!-- ko if: !showMap() -->
 			<table cellpadding="0" cellspacing="0">

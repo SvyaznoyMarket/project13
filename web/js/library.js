@@ -1101,7 +1101,7 @@ console.info(arguments)
     }
 
     this.showInfobox = function( markerId ) {
-
+        markers[markerId].ref.balloon.open()
     }
     
     this.hideInfobox = function() {
@@ -1128,15 +1128,16 @@ console.info(arguments)
         self.clear()
         markers = argmarkers
         var myCollection = new ymaps.GeoObjectCollection()
-        $.each( markers, function(i, item) {
+        $.each( markers, function(i, item) {           
             // Создаем метку и задаем изображение для ее иконки
             var tmpitem = {
                 id: item.id,
                 name: item.name,
                 address: item.address,
                 regtime: (item.regtime) ? item.regtime : item.regime,
+                regime: (item.regtime) ? item.regtime : item.regime
             }
-            var marker = new ymaps.Placemark( [item.latitude, item.longitude], item, {
+            var marker = new ymaps.Placemark( [item.latitude, item.longitude], tmpitem, {
                     iconImageHref: '/images/marker.png', // картинка иконки
                     iconImageSize: [39, 59], 
                     iconImageOffset: [-19, -57] 
@@ -1151,12 +1152,6 @@ console.info(arguments)
         var myBalloonLayout = ymaps.templateLayoutFactory.createClass(
             templateIWnode.prop('innerHTML').replace(/<%=([a-z]+)%>/g, '\$[properties.$1]')
         )
-        // '<div class="bMapShops__ePopupRel">'+
-        // '<h3>$[properties.name]</h3>' +
-        // '<span>Работает </span>'+
-        // '<span>$[properties.regtime]</span>'+
-        // '<br/><span class="shopnum" style="display: none;">$[properties.id]</span>'+
-        // '<a class="bGrayButton shopchoose" href="">Забрать из этого магазина</a></div>'
         
         // Помещаем созданный шаблон в хранилище шаблонов. Теперь наш шаблон доступен по ключу 'my#superlayout'.
         ymaps.layout.storage.add('my#superlayout', myBalloonLayout)
