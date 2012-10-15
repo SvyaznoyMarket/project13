@@ -10,24 +10,16 @@ $num = 0;
 foreach($categoryTree->getChildren() as $item): ?>
 <div class="servicebox fl">
     <div class="serviceboxtop"></div>
-    <a href="<?php echo $item->getLink() ?>">
-        <div class="serviceboxmiddle">
+    <div class="serviceboxmiddle">
+    	<a href="<?php echo $item->getLink() ?>">
             <i class="<?php echo $item->getIconClass() ?>"></i>
             <strong class="font16"><?php echo $item->getName() ?></strong>
             <?php echo $item->getDescriptionByIcon(); ?>
-
-            <br />
-            <div style="text-align: right; ">
-                <a href="<?php echo $item->getLink(); ?>">
-                    <strong>
-                        <font color="#4FCBF4">
-                            выбрать услуги >
-                        </font>
-                    </strong>
-                </a>
-            </div>
-        </div>
-    </a>
+		</a>
+        <a class="servicebox__choice"href="<?php echo $item->getLink(); ?>">
+        	выбрать услуги >
+        </a>
+    </div>
     <div class="serviceboxbottom"></div>
 </div>
 <?php $num++; if ($num%2 == 0):?>
