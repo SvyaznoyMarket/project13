@@ -5,6 +5,7 @@
  * @var $user \Session\User
  * @var $accessories \Model\Product\Entity[]
  * @var $related \Model\Product\Entity[]
+ * @var $kit \Model\Product\Entity[]
  * @var showAccessoryUpper bool
  * @var $showRelatedUpper bool
  */
@@ -197,13 +198,67 @@
 <!-- /Photo video -->
 
 <?php //render_partial('product_/templates/_product_model.php', array('item' => $product)) ?>
+<?php if((bool)$product->getModel() && (bool)$product->getModel()->getProperty()): ?>
+<!-- Variation -->
+<div class="fr width400">
+    <h2>Этот товар с другими параметрами:</h2>
+    <?php foreach ($product->getModel()->getProperty() as $property): ?>
+        <?php if($property->getIsImage()): ?>
+        <div class="bDropWrap">
+            <h5><?php echo $property->getName() ?>:</h5>
+
+            <ul class="previewlist">
+                <?php foreach ($property->getOption() as $option): ?>
+                <li>
+                    <b<?php echo ($product->getId() == $option->getProduct()->getId()) ? ' class="current"' : '' ?> title="<?php echo $option->getHumanizedName() ?>"><a
+                        href="<?php echo $option->getProduct()->getLink() ?>"></a></b>
+                    <img src="<?php echo $option->getProduct()->getImageUrl(1) ?>" alt="<?php echo $option->getHumanizedName() ?>" width="48" height="48"/>
+                </li>
+                <?php endforeach ?>
+            </ul>
+        </div>
+
+        <div class="clear"></div>
+
+        <?php else: ?>
+            <?php
+                $productAttribute = $product->getPropertyById($property->getId());
+                if (!$productAttribute) return;
+            ?>
+        <div class="bDropWrap">
+                <h5><?php echo $property->getName() ?>:</h5>
+
+                <div class="bDropMenu">
+                    <span class="bold"><a href="<?php echo $product->getLink() ?>"><?php echo $productAttribute->getStringValue() ?></a></span>
+                <div>
+                <span class="bold"><a href="<?php echo $product->getLink() ?>"><?php echo $productAttribute->getStringValue() ?></a></span>
+
+                <?php foreach ($property->getOption() as $option):?>
+                <?php if ($option->getValue() == $productAttribute->getValue())continue; ?>
+                    <span>
+                        <a href="<?php echo $option->getProduct()->getLink() ?>">
+                            <?php echo $option->getHumanizedName() ?>
+                        </a>
+                    </span>
+                <?php endforeach ?>
+            </div>
+
+              </div>
+            </div>
+            <?php endif ?>
+
+<?php endforeach; ?>
+</div>
+<!-- /Variation -->
+<?php endif ?>
+
 
 <?php if ($showAccessoryUpper && count($product->getAccessoryId()) && \App::config()->product['showAccessories']): ?>
-    <?php echo $page->render('product/_slider', array('product' => $product, 'productList' => $accessories, 'totalProducts' => count($product->getAccessoryId()), 'perPage' => \App::config()->product['itemsInSlider'], 'page' => 1, 'title' => 'Аксессуары')) ?>
+    <?php echo $page->render('product/_slider', array('product' => $product, 'productList' => array_values($accessories), 'totalProducts' => count($product->getAccessoryId()), 'itemsInSlider' => \App::config()->product['itemsInSlider'], 'page' => 1, 'title' => 'Аксессуары', 'url' => $page->url('product.accessories', array('productToken' => $product->getToken())))) ?>
 <?php endif ?>
 
 <?php if ($showRelatedUpper && count($product->getRelatedId()) && \App::config()->product['showRelated']): ?>
-    <?php echo $page->render('product/_slider', array('product' => $product, 'productList' => $related, 'totalProducts' => count($product->getRelatedId()), 'perPage' => \App::config()->product['itemsInSlider'], 'page' => 1, 'title' => 'С этим товаром также покупают')) ?>
+    <?php echo $page->render('product/_slider', array('product' => $product, 'productList' => array_values($related), 'totalProducts' => count($product->getRelatedId()), 'itemsInSlider' => \App::config()->product['itemsInSlider'], 'page' => 1, 'title' => 'С этим товаром также покупают', 'url' => $page->url('product.related', array('productToken' => $product->getToken())))) ?>
 <?php endif ?>
 
 <?php //if (false && sfConfig::get('app_smartengine_pull')): ?>
@@ -318,7 +373,23 @@
   </div>
 </div>
 
-<?php if (2 == $product->getViewId()): ?>
+<?php if (2 == $product->getViewId() && count($product->getKit())): ?>
+    <h2 class="bold fl"><?php echo $product->getName() ?> включает в себя:</h2>
+
+    <div class="line"></div>
+    <div style="width: 940px; float: none; margin: 0;" class="goodslist">
+        <?php $i = 0; foreach ($product->getKit() as $part): $i++ ?>
+        <?php echo $page->render('product/show/_compact', array('product' => $kit[$part->getId()], 'kit' => $part)) ?>
+        <?php /*render_partial('product_/templates/_show_.php', array(
+            'view' => 'compact',
+            'show_model' => true,
+            'item' => $kit->getProduct(),
+            'kit' => $kit,
+        )) */ ?>
+        <?php if (0 == ($i % 4)): ?><br class="clear" /><?php endif ?>
+        <?php endforeach ?>
+
+    </div>
 <?php //render_partial('product_/templates/_kit.php', array('product' => $product)) ?>
 
 <div class="clear pb25"></div>
@@ -355,11 +426,11 @@
 <?php endif ?>
 
 <?php if (!$showAccessoryUpper && count($product->getAccessoryId()) && \App::config()->product['showAccessories']): ?>
-    <?php echo $page->render('product/_slider', array('product' => $product, 'productList' => $accessories, 'totalProducts' => count($product->getAccessoryId()), 'perPage' => \App::config()->product['itemsInSlider'], 'page' => 1, 'title' => 'Аксессуары')) ?>
+    <?php echo $page->render('product/_slider', array('product' => $product, 'productList' => array_values($accessories), 'totalProducts' => count($product->getAccessoryId()), 'itemsInSlider' => \App::config()->product['itemsInSlider'], 'page' => 1, 'title' => 'Аксессуары', 'url' => $page->url('product.accessories', array('productToken' => $product->getToken())))) ?>
 <?php endif ?>
 
 <?php if (!$showRelatedUpper && count($product->getRelatedId()) && \App::config()->product['showRelated']): ?>
-    <?php echo $page->render('product/_slider', array('product' => $product, 'productList' => $related, 'totalProducts' => count($product->getRelatedId()), 'perPage' => \App::config()->product['itemsInSlider'], 'page' => 1, 'title' => 'С этим товаром также покупают')) ?>
+    <?php echo $page->render('product/_slider', array('product' => $product, 'productList' => array_values($related), 'totalProducts' => count($product->getRelatedId()), 'itemsInSlider' => \App::config()->product['itemsInSlider'], 'page' => 1, 'title' => 'С этим товаром также покупают', 'url' => $page->url('product.related', array('productToken' => $product->getToken())))) ?>
 <?php endif ?>
 
 <div class="line"></div>

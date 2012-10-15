@@ -160,6 +160,9 @@ class DeliveryModel
 
                 $productDeliveryDateData['shops'] = $shopList;
             }
+            else{
+              $productDeliveryDateData['intervals'] = array_key_exists('interval_list', $dateData)?$dateData['interval_list']: array();
+            }
 
             $productDeliveryDateList[] = $productDeliveryDateData;
         }
@@ -172,6 +175,7 @@ class DeliveryModel
             {
                 $shopDataObject = new ShopData();
                 $shopDataObject->setId($shopData['id']);
+                $shopDataObject->setName($shopData['name']);
                 $shopDataObject->setAddress($shopData['address']);
                 $shopDataObject->setRegtime($shopData['working_time']);
                 $shopDataObject->setLatitude($shopData['coord_lat']);

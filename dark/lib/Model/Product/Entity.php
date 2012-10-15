@@ -123,9 +123,9 @@ class Entity extends BasicEntity {
         if (array_key_exists('property_group', $data) && is_array($data['property_group'])) $this->setPropertyGroup(array_map(function($data) {
             return new Property\Group\Entity($data);
         }, $data['property_group']));
-        if (array_key_exists('property', $data) && is_array($data['property'])) $this->setProperty(array_map(function($data) {
-            return new Property\Entity($data);
-        }, $data['property']));
+        if (array_key_exists('property', $data) && is_array($data['property'])) foreach ($data['property'] as $property) {
+            $this->addProperty(new Property\Entity($property));
+        }
         if (array_key_exists('tag', $data) && is_array($data['tag'])) $this->setTag(array_map(function($data) {
             return new \Model\Tag\Entity($data);
         }, $data['tag']));
@@ -155,6 +155,7 @@ class Entity extends BasicEntity {
         }, $data['kit']));
         if (array_key_exists('related', $data)) $this->setRelatedId($data['related']);
         if (array_key_exists('accessories', $data)) $this->setAccessoryId($data['accessories']);
+        if (array_key_exists('model', $data) && (bool)$data['model']) $this->setModel(new Model\Entity($data['model']));
 
         foreach ($this->propertyGroup as $group) {
             if (!isset($this->groupedProperties[$group->getId()])) {
@@ -167,7 +168,7 @@ class Entity extends BasicEntity {
                 $this->groupedProperties[$property->getGroupId()]['properties'][] = $property;
             }
         }
-        // TODO: related, accessories, model
+        // TODO: model
     }
 
     /**
@@ -503,11 +504,19 @@ class Entity extends BasicEntity {
     }
 
     public function addProperty(Property\Entity $property) {
-        $this->property[] = $property;
+        $this->property[$property->getId()] = $property;
     }
 
     public function getProperty() {
-        return $this->property;
+        return array_values($this->property);
+    }
+
+    /**
+     * @param int $id
+     * @return Property\Entity|null
+     */
+    public function getPropertyById($id) {
+        return isset($this->property[$id]) ? $this->property[$id] : null;
     }
 
     public function setPropertyGroup(array $propertyGroups) {

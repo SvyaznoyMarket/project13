@@ -39,7 +39,6 @@
             title="<?php echo $category->getName() ?> - <?php echo $rootCategory->getName() ?>" width="160"
             height="160"/></a>
         </div>
-
         <h2><a href="<?php echo $category->getLink() ?>" class="underline"><?php echo $category->getName() ?></a></h2>
         <ul>
           <?php /* foreach ($category['links'] as $link): ?>
@@ -51,6 +50,7 @@
 
       </div>
     </div>
+
   </div>
   <!-- /Hover -->
 </div>

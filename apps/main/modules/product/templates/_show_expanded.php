@@ -17,7 +17,7 @@
         echo str_repeat('<span class="ratingview" style="width:13px;vertical-align:middle;display:inline-block;"></span>', round($item['rating']));
         echo str_repeat('<span class="ratingview" style="width:13px;vertical-align:middle;display:inline-block;background-position:-51px 0;"></span>', 5 - round($item['rating']));
         ?>
-        <span class="bNGB__eDrop"><a href="<?php echo $item['url'] ?>" style="display: none"></a></span>
+        
       </span>
 
       <div class="pb5 bNGB__eDesc">

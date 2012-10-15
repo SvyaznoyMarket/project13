@@ -79,6 +79,7 @@ TABLE {border-collapse:collapse}
 	font-weight: normal;
 	font-style: normal;
 }
+
 .p0 { padding: 0 !important }
 .pt5 {padding-top:5px}
 .pt7 {padding-top:7px}
@@ -115,6 +116,7 @@ TABLE {border-collapse:collapse}
 .mr20 {margin-right:20px}
 .mr110 {margin-right:110px}
 .auto {margin:0 auto}
+
 .font09 {font-size:0.9em}
 .font9 {font-size:9px}
 .font10 {font-size:10px}
@@ -312,6 +314,7 @@ zoom: 1;
   width: 200px;
   padding-right:50px;
 }
+
 .yellowbutton {height:24px; padding:0 7px 3px 7px; background-color:#ffaa01;  background-position:0 0; font-size:11px; color:#fff; border-color:#f28900}
 .yellowbutton:hover {background-color:#f79200; background-position:0 -32px}
 .yellowbuttonactive, .yellowbuttonactive:hover {background-color:#f79200; background-position:0 -64px}
@@ -825,9 +828,6 @@ LABEL.checked {color:#ffa901}
 .goodsbarbig a.link5 {width:105px; background-position:-201px -280px}
 .goodsbarbig a.link5.active {background-position:0 -316px}
 .goodsbarbig a.link5.disabled {background-position:-216px -316px}
-.goodsbarbig a.link10 {width:105px; background-position:-315px -250px}
-.goodsbarbig a.link10:hover {background-position:-509px -250px}
-.goodsbarbig a.link10.disabled {background-position:-311px -283px}
 .goodsbarbig.mSmallBtns{ width: 137px; display: inline-block; *display: inline; zoom: 1;}
 .goodsbarbig.mSmallBtns a.link1{ width: 137px; height: 31px; background: url('/css/skin/img/buy_buttons.png') 0 0 no-repeat;}
 .goodsbarbig.mSmallBtns a.link1:hover{ background: url('/css/skin/img/buy_buttons.png') 0 -31px no-repeat; }
@@ -835,10 +835,6 @@ LABEL.checked {color:#ffa901}
 .goodsbarbig.mSmallBtns a.link1.active{ background: url('/css/skin/img/buy_buttons.png') 0 -87px no-repeat; }
 .goodsbarbig.mSmallBtns a.link1.disabled, .goodsbarbig.mSmallBtns a.link1.disabled:hover { background: url('/css/skin/img/buy_buttons.png') 0 -118px no-repeat; cursor:default; }
 .goodsbarbig.mSmallBtns a.link1.fr{ floar: right }
-.goodsbarbig.mSmallBtns a.link10{ width: 137px; height: 31px; background: url('/css/skin/img/buy_buttons.png') 0 0 no-repeat;}
-.goodsbarbig.mSmallBtns a.link10:hover{ background: url('/css/skin/img/buy_buttons.png') 0 -31px no-repeat; }
-.goodsbarbig.mSmallBtns a.link10.disabled, .goodsbarbig.mSmallBtns a.link1.disabled:hover { background: url('/css/skin/img/buy_buttons.png') 0 -118px no-repeat; cursor:default; }
-.goodsbarbig.mSmallBtns a.link10.fr{ floar: right }
 
 .goodsbarbig.mSmallBtns {
     display: inline-block;
@@ -1104,7 +1100,7 @@ box-shadow:0 0 7px #616161;
 
 .mediablock {margin: 0 50px; height:724px; background:#fff url(/css/skin/img/bg_mediablock.gif) repeat-y 0 0}
 .mediablock .leftpanel {float:left; width:180px; padding:0 10px 10px 10px}
-.logobox {background: url("/css/skin/img/bg_inner.png") no-repeat -542px -284px; height: 66px;margin: 10px 20px 30px;text-indent: -10000px;width: 85px;}
+.logobox {width:85px; height:95px; background:url(/css/skin/img/bg_inner.png) no-repeat -538px -284px; text-indent:-10000px; margin-bottom:20px}
 .mediablock .topblock {height:530px; padding:19px 9px 0 9px}
 
 .scalepanel {float:right; width:54px; padding:30px 0 0 26px; background-color:#fff}
@@ -1132,6 +1128,7 @@ box-shadow:0 0 7px #616161;
 .articlecard .goodsinfo {float:left; width:373px; padding:0 0 0 17px}
 .articlecard h3{font-size:24px; font-weight:normal; margin:0; padding-bottom:10px}
 .articlecard .f1links .f1linkslist {width:274px}
+
 
 .bigpriceblock {padding:10px 20px 0 20px; border:1px solid #ddd; margin-bottom:15px;
 border-radius:5px;
@@ -1164,6 +1161,7 @@ border-radius:5px;
 #tooltip {position: absolute; z-index: 3000}
 #zoomlink {display: none}
 .zoomlink {width:80px; height:65px; background: url('/css/skin/img/zoom.png') 0 0 no-repeat; }
+
 .articlemenu {float:right; width:215px;  margin-bottom:20px; border:2px solid #dcdcdc;
 border-radius:5px;
 -moz-border-radius:5px;
@@ -1215,7 +1213,7 @@ border-radius: 5px;
 .basketright {float:left; width:780px; padding-left:20px}
 .goodstitle {float:left; width:500px}
 .basketinfo {float:right; width:451px}
-.basketinfo .left {float:left; width:130px; margin-right:20px; text-align:right}
+.basketinfo .left {float:left; width:115px; margin-right:20px; text-align:right}
 .basketinfo .right {float:left; width:216px}
 .basketinfo .button {font-weight:bold}
 .basketinfonarrow {width:244px}
@@ -1444,9 +1442,9 @@ border-radius: 5px;
 #plus10{cursor:pointer;}
 
 .infoblock { background: url('/css/skin/img/bg_info_article.gif') no-repeat; width: 350px; height: 73px; padding: 15px 15px 10px 35px; }
-
 .servicebanner {clear:both; width:320px; height:178px; padding:33px 0 0 600px; background:#4fcbf4 url(/css/skin/img/bg_service2.jpg) no-repeat 0 0; color:#fff; font-size:14px; line-height:14px; margin-bottom:25px}
-.servicebanner div{font-size:24px; line-height:24px; padding-bottom:5px}
+/* .servicebanner {clear:both; width:320px; height:131px; padding:33px 0 0 600px; background:#4fcbf4 url(img/bg_service.jpg) no-repeat 0 0; color:#fff; font-size:14px; line-height:14px; margin-bottom:25px} */
+.servicebanner DIV {font-size:24px; line-height:24px; padding-bottom:5px}
 
 .slogan {color:#4fcbf4; margin-bottom:30px; font-size:14px}
 .slogan strong{display:block; font-size:24px; padding-bottom:5px}
@@ -2391,7 +2389,7 @@ dt.bCtg__eOrange{
 
 .bDropWrap{
 	width: 180px;
-	margin: 0 10px 20px 0;
+	margin: 0 40px 20px 0;
 	}
 	.bDropWrap h5{
 		padding: 0;
@@ -3130,7 +3128,7 @@ dt.bCtg__eOrange{
 	td.newWarehouse img{
 		margin: -21px -3px;
 	}
-
+	
 .bSelect{
 	padding: 0 44px 0 10px;
 	cursor: pointer;
@@ -3572,7 +3570,8 @@ dt.bCtg__eOrange{
 	.bGrayPopupBlock li a:hover{
 		color: #ffa901;
 		}
-
+		
+	/*from master*/
 .mMapPopup .bMobDownWrapRel{
 	top: 5px;
 	bottom: auto;
@@ -3598,6 +3597,8 @@ dt.bCtg__eOrange{
 		*display: inline;
 		zoom: 1;
 		}
+	/*end from master*/
+			
 	.bInShop__eBottom .bMapShops__eMapWrap,	
 	.mMapPopup .bMapShops__eMapWrap,
 	.bFast .bMapShops__eMapWrap{
@@ -4297,7 +4298,6 @@ dt.bCtg__eOrange{
 	background: #f89b1c;
 	border: 1px solid #e26500;
 	font: bold 24px Tahoma, sans-serif;
-	text-align:center;
 
 	display: inline-block;
 	*display: inline;
@@ -4308,6 +4308,7 @@ dt.bCtg__eOrange{
 	-moz-border-radius: 5px;
 	-ms-border-radius: 5px;
 	-o-border-radius: 5px;
+	text-align:center;
 	}
 	.bBigOrangeButton:hover{
 		color: #ffffff;
@@ -5424,7 +5425,6 @@ div.mSportFont{ color: #e8303c; }
 }
 .error_list{ color:red }
 
-
 .bBottommenu {
     background: none repeat scroll 0 0 #FAFAFA;
     border: 2px solid #DCDCDC;
@@ -5535,13 +5535,13 @@ div.mSportFont{ color: #e8303c; }
 
 
 .bEvent{
-	margin-bottom: 70px;
-	}
-	.bEvent__eImage{
-		position: relative;
-		}
-	.bEvent__eImage a{
-		position: absolute;
+    margin-bottom: 70px;
+}
+.bEvent__eImage{
+    position: relative;
+}
+.bEvent__eImage a{
+    position: absolute;
 
 		display: inline-block;
 		*display: inline;
@@ -5559,6 +5559,7 @@ div.mSportFont{ color: #e8303c; }
 		width: 169px;
 		height: 135px;
 		}
+
 	.bEvent h2{
 		padding: 0;
 		margin: 15px 0;
@@ -5797,10 +5798,6 @@ div.mSportFont{ color: #e8303c; }
     line-height: 27px;
     padding: 1px 4px;
 }
-.bBuyingInfo span.placeholder.mRed{
-	border: 1px solid red;
-	border-right:none;
-}
 
 .height220 {
     height: 220px;
@@ -5820,7 +5817,7 @@ div.mSportFont{ color: #e8303c; }
 }
 .banner3 {left:943px; bottom: 0}
 .banner4 {left:-245px; bottom: 0}
-/* ����� �������� */
+/* стили карусели */
 .bCarouselWrap{
 	width: 100%;
     padding: 100px 0 50px;
@@ -5853,7 +5850,7 @@ div.mSportFont{ color: #e8303c; }
 .bCarousel__eBtnL:hover{ background: url('img/c_btn_left_h.png'); }
 .bCarousel__eBtnR:hover{ background: url('img/c_btn_right_h.png'); }
 
-/* ����� ������ */
+/* стили футера */
 #mainPage,
 #mainPage .allpage{
 	background: #000000;
@@ -6054,3 +6051,24 @@ div.mSportFont{ color: #e8303c; }
 		}
 /* ----------- /bNavLoader ------------- */
 /* ------ END MAIN PAGE ------ */
+
+.fl {
+    float: left;
+}
+.bBuyingLine .creditHref {
+    margin-left: 20px;
+    margin-top: 8px;
+}
+.bBuyingLine .creditHref a {
+    color: #434343;
+    text-decoration: underline;
+}
+.bBuyingLine .creditHref a:hover {
+    color: #434343;
+    text-decoration: none;
+}
+.bankWrap {
+    margin-top: 4px !important;
+    position: relative;
+    width: 600px;
+}

@@ -1,7 +1,7 @@
 <dl class='bBuyingLine'>
   <dt>Выберите удобный для вас способ*</dt>
 
-  <dd>
+  <dd id="payTypes">
   <?php foreach ($paymentMethodList as $k => $v): ?>
     <?php if (!$showCreditMethod && $v->isCredit())
           continue;  ?>

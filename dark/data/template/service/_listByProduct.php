@@ -19,7 +19,7 @@ $listInCart = array();//$product->getServiceListInCart();
             <span class="rubl"> p</span>
             <br>
             <a class="bBacketServ__eMore"
-               href="<?php echo $page->url('cart.service_delete', array('serviceId' => 'F1ID', 'productId' => $product->getId()));?>">Отменить услугу</a>
+               href="<?php echo $page->url('cart.service.delete', array('serviceId' => 'F1ID', 'productId' => $product->getId()));?>">Отменить услугу</a>
         </div>
     </script>
     <?php if (count($listInCart)) { ?>
@@ -28,7 +28,7 @@ $listInCart = array();//$product->getServiceListInCart();
         <div ref="<?php echo $service->getToken();?>">
             <?php echo $service->getName() ?> - <?php echo formatPrice($service->getPrice()) ?>&nbsp;<span class="rubl">p</span><br>
             <a class="bBacketServ__eMore"
-               href="<?php echo url_for('cart.service_delete', array('serviceId' => $service->getId(), 'productId' => $product->getId()));?>">Отменить услугу</a>
+               href="<?php echo url_for('cart.service.delete', array('serviceId' => $service->getId(), 'productId' => $product->getId()));?>">Отменить услугу</a>
         </div>
         <?php endforeach ?>
     <?php } else { ?>

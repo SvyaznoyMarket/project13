@@ -2,7 +2,8 @@
 /**
  * @var $page \View\DefaultLayout
  * @var $product \Model\Product\CompactEntity
- * @var $isHidden
+ * @var $isHidden bool
+ * @var $kit \Model\Product\Kit\Entity
  * */
 ?>
 
@@ -15,8 +16,8 @@ $hasModel = (isset($hasModel) ? $hasModel : true) && $product->getModel() && cou
 
     <div class="photo">
         <a href="<?= $product->getLink() ?>">
-            <? if (!empty($kit) && $kit->getQuantity()): ?>
-                <div class="bLabelsQuantity" src="/images/quantity_shild.png"><?= $kit->getQuantity(); ?> шт.</div>
+            <? if (!empty($kit) && $kit->getCount()): ?>
+                <div class="bLabelsQuantity" src="/images/quantity_shild.png"><?= $kit->getCount(); ?> шт.</div>
             <? endif ?>
 
             <? if ($label = $product->getLabel()): ?>
@@ -54,9 +55,9 @@ $hasModel = (isset($hasModel) ? $hasModel : true) && $product->getModel() && cou
                 <!--<a href="" class="fastview">Быстрый просмотр</a>-->
                 <div class="photo">
                     <a href="<?= $product->getLink() ?>">
-                        <? if (!empty($kit) && $kit->getQuantity()): ?>
+                        <? if (!empty($kit) && $kit->getCount()): ?>
                         <div class="bLabelsQuantity" src="/images/quantity_shild.png">
-                            <?= $kit->getQuantity(); ?> шт.
+                            <?= $kit->getCount(); ?> шт.
                         </div>
                         <? endif ?>
 

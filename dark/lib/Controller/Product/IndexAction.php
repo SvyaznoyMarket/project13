@@ -35,16 +35,26 @@ class IndexAction {
             $showRelatedUpper = true;
         }
 
-        $accessories = array();
-        $related = array();
+        $accessoriesId =  array_slice($product->getAccessoryId(), 0, \App::config()->product['itemsInSlider'] * 2);
+        $relatedId = array_slice($product->getRelatedId(), 0, \App::config()->product['itemsInSlider'] * 2);
+        $partsId = array();
 
-        $productRepository->setEntityClass('\\Model\\Product\\CompactEntity');
-        if (count($product->getAccessoryId())) {
-            $accessories = $productRepository->getCollectionById(array_slice($product->getAccessoryId(), 0, 10));
+        foreach ($product->getKit() as $part) {
+            $partsId[] = $part->getId();
         }
 
-        if (count($product->getRelatedId())) {
-            $related = $productRepository->getCollectionById(array_slice($product->getRelatedId(), 0, 10));
+        $accessories = array_flip($accessoriesId);
+        $related = array_flip($relatedId);
+        $kit = array_flip($partsId);
+
+        if ((bool)$accessoriesId || (bool)$relatedId || (bool)$partsId) {
+            $products = $productRepository->getCollectionById(array_merge($accessoriesId, $relatedId, $partsId));
+
+            foreach ($products as $item) {
+                if (isset($accessories[$item->getId()])) $accessories[$item->getId()] = $item;
+                if (isset($related[$item->getId()])) $related[$item->getId()] = $item;
+                if (isset($kit[$item->getId()])) $kit[$item->getId()] = $item;
+            }
         }
 
         $page = new \View\Product\IndexPage();
@@ -55,6 +65,7 @@ class IndexAction {
         $page->setParam('showAccessoryUpper', !$showRelatedUpper);
         $page->setParam('accessories', $accessories);
         $page->setParam('related', $related);
+        $page->setParam('kit', $kit);
 
         return new \Http\Response($page->show());
     }

@@ -22,7 +22,6 @@ The value of selectWidth should be the width of your select list image.
 Visit http://ryanfait.com/ for more information.
 
 */
-
 var checkboxHeight = "14";
 var radioHeight = "20";
 var selectWidth = "190";
@@ -60,7 +59,7 @@ var Custom = {
 				}
 			}
 		}
-		inputs = document.getElementsByTagName("select");
+		inputs = document.getElementsByTagName("select");		
 		for(a = 0; a < inputs.length; a++) {
 			if(inputs[a].className == "styled") {
 				option = inputs[a].getElementsByTagName("option");
@@ -144,4 +143,5 @@ var Custom = {
 		}
 	}
 }
-window.onload = Custom.init;
+//window.onload = 
+Custom.init();

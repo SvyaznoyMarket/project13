@@ -9,6 +9,7 @@ namespace light;
  * To change this template use File | Settings | File Templates.
  */
 require_once('ProductKitData.php');
+require_once(__DIR__.'/../Tree.php');
 require_once(__DIR__.'/../CategoryShortData.php');
 
 class ProductData
@@ -156,7 +157,7 @@ class ProductData
    * @return bool
    */
   public function isKit(){
-    return ($this->getSetId() ==2);
+    return ($this->getSetId() == 2);
   }
 
   /**
@@ -368,9 +369,16 @@ class ProductData
   }
 
   /**
-   * @return \light\CategoryShortData
+   * @return CategoryShortData
    */
   public function getMainCategory() {
     return reset($this->categoryList);
+  }
+
+  /**
+   * @return CategoryShortData[]
+   */
+  public function getCategoryList(){
+    return $this->categoryList;
   }
 }
