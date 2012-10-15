@@ -43,11 +43,11 @@ class IndexAction {
             $partsId[] = $part->getId();
         }
 
-        if ((bool)$accessoriesId || (bool)$relatedId || (bool)$partsId) {
-            $accessories = array_flip($accessoriesId);
-            $related = array_flip($relatedId);
-            $kit = array_flip($partsId);
+        $accessories = array_flip($accessoriesId);
+        $related = array_flip($relatedId);
+        $kit = array_flip($partsId);
 
+        if ((bool)$accessoriesId || (bool)$relatedId || (bool)$partsId) {
             $products = $productRepository->getCollectionById(array_merge($accessoriesId, $relatedId, $partsId));
 
             foreach ($products as $item) {
