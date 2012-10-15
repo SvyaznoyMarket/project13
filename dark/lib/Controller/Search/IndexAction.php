@@ -1,0 +1,112 @@
+<?php
+
+namespace Controller\Search;
+
+class IndexAction {
+    public function execute(\Http\Request $request) {
+        $searchQuery = $request->get('q');
+        $pageNum = (int)$request->get('page', 1);
+        if ($pageNum < 1) {
+            throw new \Exception\NotFoundException(sprintf('Неверный номер страницы "%s".', $pageNum));
+        }
+
+        $limit = \App::config()->product['itemsPerPage'];
+        $offset = intval($pageNum - 1) * $limit;
+        $categoryId = (int)$request->get('category');
+        if (!$categoryId) $categoryId = null;
+
+        // параметры ядерного запроса
+        $params = array(
+            'request'  => $searchQuery,
+            'type_id'  => 1, // тип искомых сущностей: 1 - товары
+            'geo_id'   => \App::user()->getRegion()->getId(),
+            'start'    => $offset,
+            'limit'    => $limit,
+            'use_mean' => true,
+        );
+        if ($categoryId) {
+            $params['product_category_id'] = $categoryId;
+        } else {
+            $params['is_product_category_first_only'] = true;
+        }
+        // ядерный запрос
+        $result = \App::coreClientV2()->query('search/get', $params);
+        if (!isset($result[1]) || !isset($result[1]['data'])) {
+            $page = new \View\Search\EmptyPage();
+
+            return new \Http\Response($page->show());
+        }
+        // mock
+        //$result = json_decode(file_get_contents(\App::config()->dataDir . '/core/v2-search-get.json'), true)['result'];
+        $result = $result[1];
+
+        // проверка на пустоту
+        if (empty($result['count'])) {
+            $page = new \View\Search\EmptyPage();
+            $page->setParam('searchQuery', $searchQuery);
+
+            return new \Http\Response($page->show());
+        }
+
+        $forceMean = isset($result['forced_mean']) ? $result['forced_mean'] : false;
+        $meanQuery = isset($result['did_you_mean']) ? $result['did_you_mean'] : '';
+
+        // категории
+        $categoriesById = array();
+        foreach ($result['category_list'] as $item) {
+            $categoriesById[$item['category_id']] = new \Model\Product\Category\Entity(array(
+                'id'            => $item['category_id'],
+                'name'          => $item['category_name'],
+                'product_count' => $item['count'],
+            ));
+        }
+        // если ид категории из http-запроса нет в коллекции категорий ...
+        if ($categoryId && !isset($categoriesById[$categoryId])) {
+            throw new \Exception\NotFoundException(sprintf('Не найдена категория #%s', $categoryId));
+        }
+        /** @var $selectedCategory \Model\Product\Category\Entity */
+        $selectedCategory = $categoryId ? $categoriesById[$categoryId] : reset($categoriesById);
+
+        // вид товаров
+        $productView = $request->get('view', $selectedCategory->getProductView());
+
+        // товары
+        $productRepository = \RepositoryManager::getProduct();
+        $productRepository->setEntityClass(
+            \Model\Product\Category\Entity::PRODUCT_VIEW_EXPANDED == $productView
+            ? '\\Model\\Product\\ExpandedEntity'
+            : '\\Model\\Product\\CompactEntity'
+        );
+        $products = $productRepository->getCollectionById($result['data']);
+        $productPager = new \Iterator\EntityPager($products, $selectedCategory->getProductCount());
+        $productPager->setPage($pageNum);
+        $productPager->setMaxPerPage(\App::config()->product['itemsPerPage']);
+
+        // проверка на максимально допустимый номер страницы
+        if ($productPager->getPage() > $productPager->getLastPage()) {
+            throw new \Exception\NotFoundException(sprintf('Неверный номер страницы "%s".', $productPager->getPage()));
+        }
+
+        // ajax
+        if ($request->isXmlHttpRequest()) {
+            return new \Http\Response(\App::templating()->render('product/_list', array(
+                'page'   => new \View\DefaultLayout(),
+                'pager'  => $productPager,
+                'view'   => $productView,
+                'isAjax' => true,
+            )));
+        }
+
+        // страница
+        $page = new \View\Search\IndexPage();
+        $page->setParam('searchQuery', $searchQuery);
+        $page->setParam('meanQuery', $meanQuery);
+        $page->setParam('forceMean', $forceMean);
+        $page->setParam('productPager', $productPager);
+        $page->setParam('categories', $categoriesById);
+        $page->setParam('selectedCategory', $selectedCategory);
+        $page->setParam('productView', $productView);
+
+        return new \Http\Response($page->show());
+    }
+}
