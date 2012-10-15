@@ -15,6 +15,7 @@ require_once('interface/CartContainer.php');
 require_once('interface/CartPriceContainer.php');
 require_once('data/ProductCartData.php');
 require_once('data/ServiceCartData.php');
+require_once('data/WarrantyCartData.php');
 require_once(__DIR__ . '/../log4php/Logger.php');
 
 class Cart
@@ -40,6 +41,11 @@ class Cart
    * @var ServiceCartData[] | null
    */
   private $serviceDataList = null;
+
+  /**
+   * @var WarrantyCartData[] | null
+   */
+  private $warrantyDataList = null;
 
   /**
    * @var null | float
@@ -151,6 +157,26 @@ class Cart
     $this->totalPrice = null;
   }
 
+    /**
+     * @param int $productId
+     * @param int $quantity
+     */
+    public function setWarranty($warrantyId, $productId, $quantity = 1){
+        $this->dataContainer->setWarranty($warrantyId, $productId, $quantity);
+        $this->productWarrantyDataList = null;
+        $this->totalPrice = null;
+    }
+
+    public function removeWarranty($warrantyId, $productId) {
+        $this->dataContainer->removeWarranty($warrantyId, $productId);
+        $this->productWarrantyDataList = null;
+        $this->totalPrice = null;
+    }
+
+    public function hasWarranty($productId, $warrantyId) {
+        return $this->dataContainer->hasWarranty($productId, $warrantyId);
+    }
+
   /**
    * @return float
    */
@@ -219,6 +245,20 @@ class Cart
   {
     return $this->dataContainer->getServicesQuantity($productId);
   }
+
+    public function getWarrantiesQuantities() {
+        return $this->dataContainer->getWarrantiesQuantity();
+    }
+
+    /**
+     * @return WarrantyCartData[] key - warrantyId
+     */
+    public function getWarrantyList(){
+        if(is_null($this->warrantyDataList)){
+            $this->fillData();
+        }
+        return $this->warrantyDataList;
+    }
 
   /**
    * @return ProductCartData[] key - productId
@@ -320,8 +360,7 @@ class Cart
   /**
    * Наполняет $this->fullData информацией, обращаясь к моделям
    */
-  private function fillData()
-  {
+  private function fillData(){
 
     // получаем список цен
     $response = $this->priceContainer->getPrices($this->dataContainer);
@@ -345,13 +384,25 @@ class Cart
         $this->serviceDataList[$serviceInfo['id']][$relatedProductId] = new ServiceCartData($serviceInfo);
       }
     }
+
+    $this->warrantyDataList = array();
+    if(array_key_exists('warranty_list', $response)){
+      foreach($response['warranty_list'] as $warrantyInfo){
+        if(!array_key_exists($warrantyInfo['id'], $this->warrantyDataList)){
+          $this->warrantyDataList[$warrantyInfo['id']] = array();
+        }
+        $relatedProductId = (array_key_exists('product_id', $warrantyInfo)) ? intval($warrantyInfo['product_id']) : 0;
+        $this->warrantyDataList[$warrantyInfo['id']][$relatedProductId] = new WarrantyCartData($warrantyInfo);
+      }
+    }
+    //var_dump($this->warrantyDataList); exit();
   }
 
-  private function checkProductLimit() {
-    // если корзина не может вместить новый товар
-    if ($this->getProductsQuantity() >= self::PRODUCT_LIMIT) {
-      $this->dataContainer->shiftProduct();
+    private function checkProductLimit() {
+        // если корзина не может вместить новый товар
+        if ($this->getProductsQuantity() >= self::PRODUCT_LIMIT) {
+            $this->dataContainer->shiftProduct();
+        }
     }
-  }
 
 }

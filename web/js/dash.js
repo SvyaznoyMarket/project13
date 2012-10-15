@@ -24,6 +24,17 @@ $(document).ready(function(){
 	}
 	ltbx = new Lightbox( $('.lightboxinner'), lbox )
 
+	/* draganddrop */
+	var draganddrop = new DDforLB( $('.allpageinner'), ltbx )
+	$('.boxhover[ref] .photo img').live('mousedown', function(e){
+			e.stopPropagation()
+			e.preventDefault()
+			if(e.which == 1)
+				draganddrop.prepare( e.pageX, e.pageY, parseItemNode(currentItem) ) // if delta then d&d
+	})
+	$('.boxhover[ref] .photo img').live('mouseup', function(e){
+		draganddrop.cancel()
+	})
 	/* ---- */
 	$.getJSON( shortinfo, function(data) {
 			if( data.success ) {
@@ -123,7 +134,6 @@ $(document).ready(function(){
 					$('.boxhover .mainImg', $(self)).css({'width': w + 3, 'height': h + 3 , 'top':'-1px'})
 					$(self).css( {'position':'relative', 'z-index':2 })
 					$(self).children().fadeOut()
-					//$(self).find('.goodsbar.mSmallBtns.mR').fadeIn();
 					$('.boxhover', self).fadeIn(200)
 				}
 			}
@@ -142,8 +152,8 @@ $(document).ready(function(){
 				var h = im.attr('height')*1
 				$('.boxhover .mainImg', self).css({'width': w + 3, 'height': h + 3})
 				$(self).css( 'z-index',1 )
+
 				$(self).children().not('.boxhover').fadeIn()
-				//$(self).find('.goodsbar.mSmallBtns.mR').fadeOut();
 				$('.boxhover', self).fadeOut('slow')
 			}
 			//currentItem = 0
@@ -175,6 +185,8 @@ $(document).ready(function(){
 		var f1lines = $('div.bF1Block')
 		// open popup
 		$('.link1, .bF1Info_Logo', look).click( function(){
+			if( $('div.hideblock.extWarranty').is(':visible') )
+				$('div.hideblock.extWarranty').hide()
 			f1lines.show()	
 			return false
 		})
@@ -246,148 +258,78 @@ $(document).ready(function(){
 		})
 	}
 
-	/* draganddrop */
-	var draganddrop = new DDforLB( $('.allpageinner'), ltbx )
-	$('.boxhover[ref] .photo img').live('mousedown', function(e){
-			e.stopPropagation()
-			e.preventDefault()
-			if(e.which == 1)
-				draganddrop.prepare( e.pageX, e.pageY, parseItemNode(currentItem) ) // if delta then d&d
-	})
-	$('.boxhover[ref] .photo img').live('mouseup', function(e){
-		draganddrop.cancel()
-	})
-	
-	function DDforLB( outer , ltbx ) {	
-		if (! outer.length ) 
-			return null
-			
-		var self     = this
-		var lightbox = ltbx
-		var isactive = false
-		var icon     = null
-		var margin   = 25 // gravitation parameter
-		var wdiv2    = 30 // draged box halfwidth
-		var containers = $('.dropbox')
-		if (! containers.length ) 
-			return null
-		var abziss 	 = []		
-		var ordinat  = 0
-		var itemdata = null
-		
-		/* initia */
-		var divicon = $('<div>').addClass('dragbox').css('display','none')
-		var icon = $('<div>')
-		divicon.append( icon )
-		$(outer).append( divicon )
-		var shtorka = $('<div>').addClass('graying')
-				.css( {'display':'none', 'opacity': '0.5'} ) //ie special							
-		$(outer).append( shtorka )
-		var shtorkaoffset = 0
-		
-		this.cancel = function() {
-			$(document).unbind('mousemove.dragitem')
-		}
-		
-		$(document).bind('mouseup', function(e) {
-		if(e.target.id == 'dragimg')
-			self.cancel()
-		})
-		
-		this.prepare = function( pageX, pageY, item ) {
-			itemdata = item
-			if(  $( '.boxhover[ref='+ itemdata.id +'] a.link1').hasClass('active') ) 
-				return
-			$(document).bind('mousemove.dragitem', function(e) {
-				e.preventDefault()
-				if(! isactive) {
-					if( Math.abs(pageX - e.pageX) > margin || Math.abs(pageY - e.pageY) > margin ) {
-						self.turnon(e.pageX, e.pageY)
-						isactive = true
-					}
-				} else {		
-					icon.css({'left':e.pageX - wdiv2, 'top':e.pageY - shtorkaoffset - wdiv2 })
-					ordinat = $(containers[0]).offset().top
+    /* EXT WARRANTY */
+    if ( ($('div.bBlueButton.extWarranty').length)&&($('div.bBlueButton.extWarranty').is(':visible')) ){
+        var look_extWarr = $('div.bBlueButton.extWarranty')
+        var f1lines_extWarr = $('div.hideblock.extWarranty')
+        var ew_look = $("#ew_look")
+        //open popup
+        $('.link1',look_extWarr).click( function(){
+            if( $('div.bF1Block').is(':visible') )
+                $('div.bF1Block').hide()
+            f1lines_extWarr.show()
+            return false
+        })
+        //close popup
+        $('.close', f1lines_extWarr).click( function(){
+            f1lines_extWarr.hide()
+        })
+        //add warranty
+        f1lines_extWarr.find('input.button').bind ('click', function() {
+            if( $('input.button',f1lines_extWarr).hasClass('active') ){
+                $('input.button',f1lines_extWarr).val('Выбрать').removeClass('active');
+            }
+            $(this).val('Выбрана').addClass('active')
+            var extWarr_item = $(this).data()
+            f1lines_extWarr.fadeOut()
+            $.getJSON( extWarr_item.url, function(ext_data) {
+                if( !ext_data.success )
+                    return true
+                $('.link1',look_extWarr).text('Изменить гарантию')
+                look_extWarr.find('h3').text('Вы выбрали гарантию:')
 
-					if( e.pageY + wdiv2 > ordinat - margin &&
-						e.pageX + wdiv2 > abziss[0] - margin && e.pageX - 30 < abziss[0] + 70 + margin ) { // mouse in HOT area
-	//					e.pageX + wdiv2 > abziss[0] - margin && e.pageX - 30 < abziss[2] + 70 + margin ) { // mouse in HOT area
-						/*var cindex = 3
-						if( e.pageX  < abziss[0] + 70 + margin )
-							cindex = 1
-						else if( e.pageX < abziss[1]  + 70 + margin )
-							cindex = 2*/
-						
-						lightbox.toFire( 3 ) // to burn the box !
-					} else
-						lightbox.putOutBoxes() // run checking is inside
-				}
-			})		
-		}
-		
-		this.turnon = function( pageX, pageY ) {
-			lightbox.clear()
-			shtorka.show()
-			shtorkaoffset = shtorka.offset().top
-			icon.html( $('<img>').css({'width':60, 'height':60}).attr({'id':'dragimg','width':60, 'height':60, 'alt':'', 'src': itemdata.img }) )
-			icon.css({'left':pageX - wdiv2, 'top':pageY - shtorkaoffset - wdiv2 })
-
-			divicon.show()
-			lightbox.getContainers()		
-			for(var i=0; i < containers.length; i++) {
-				abziss[i] = $(containers[i]).offset().left
-			}	
-			$(document).bind('mouseup.dragitem', function() {
-				if( fbox = lightbox.gravitation( ) ) {
-					//$(document).unbind('mousemove')
-					$(document).unbind('.dragitem')
-					icon.animate( {
-	//						left: abziss[ fbox - 1 ] + 5,
-							left: abziss[ 0 ] + 5,
-							top: ordinat - shtorkaoffset + 5
-						} , 400, 
-						function() { self.finalize( fbox ) } )
-				} else 
-					self.turnoff()
-			})		
-		}
-		
-		this.turnoff = function() {
-			isactive = false
-			shtorka.fadeOut()
-			divicon.hide()
-			lightbox.hideContainers()
-			//$(document).unbind('mousemove')
-			$(document).unbind('.dragitem')
-		}
-		
-		this.finalize = function( actioncode ) {
-			setTimeout(function(){
-				self.turnoff()
-				switch( actioncode ) {
-					case 1: //comparing
-						lightbox.getComparing( itemdata )
-						break
-					case 2: //wishes 
-						lightbox.getWishes( itemdata )
-						break
-					case 3: //basket					
-						$.getJSON( $( '.boxhover[ref='+ itemdata.id +'] a.link1').attr('href'), function(data) {
-							if ( data.success && ltbx ) {
-								var tmpitem = itemdata
-								tmpitem.vitems = data.data.full_quantity
-								tmpitem.sum = data.data.full_price
-								ltbx.getBasket( tmpitem )
-							}	
-						})
-						//lightbox.getBasket( itemdata )
-						break
-				}
-			}, 400)
-		}
-		
-	} // DDforLB object	
-
+                $('.ew_title', ew_look).text(extWarr_item.f1title)
+                $('.ew_price', ew_look).text(extWarr_item.f1price)
+                $('.bBacketServ__eMore', ew_look).attr('href', extWarr_item.deleteurl)
+                ew_look.show()
+                var tmpitem = {
+                    'id'    : $('.goodsbarbig .link1').attr('href'),
+                    'title' : $('h1').html(),
+                    'vitems': ext_data.data.full_quantity,
+                    'sum'   : ext_data.data.full_price,
+                    'link'  : ext_data.data.link,
+                    'price' : $('.goodsinfo .price').html(),
+                    'img'   : $('.goodsphoto img.mainImg').attr('src')
+                }
+                tmpitem.f1 = extWarr_item
+                if( isInCart )
+                    tmpitem.f1.only = 'yes'
+                ltbx.getBasket( tmpitem )
+                if( !isInCart ) {
+                    isInCart = true
+                    markPageButtons()
+                }
+            })
+            return false
+        })
+        $('.bBacketServ__eMore', ew_look).live('click', function(e){
+            e.preventDefault()
+            var thislink = this
+            $.getJSON( $(this).attr('href'), function(ext_data) {
+                if( !ext_data.success )
+                    return true
+                var line = $(thislink).parent()
+                f1lines_extWarr.find('td[ref='+ line.attr('ref') +']').find('input').val('Купить услугу').removeClass('active')
+                line.hide()
+                ltbx.update({ sum: ext_data.data.full_price })
+                ew_look.hide()
+                if( !$('a.bBacketServ__eMore', look_extWarr).length )
+                    look_extWarr.find('h3').html('Выбирай услуги F1<br/>вместе с этим товаром')
+            })
+            return false
+        })
+    }
+    
 	/* buy bottons */
 	var markPageButtons = function(){
 		var carturl = $('.lightboxinner .point2').attr('href')

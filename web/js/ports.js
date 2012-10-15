@@ -343,7 +343,7 @@ window.ANALYTICS = {
         }
     },
 
-    enable : true
+    enable : false
 }
 
 ANALYTICS.parseAllAnalDivs( $('.jsanalytics') )
@@ -557,7 +557,7 @@ var ADFOX = {
         }
     },
 
-    enable : true
+    enable : false
 }
 
 ADFOX.parseAllAdfoxDivs( $('.adfoxWrapper') )

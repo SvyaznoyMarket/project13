@@ -41,6 +41,9 @@ class ProductEntity
   /** @var ProductLabelEntity[] */
   private $labelList = array();
 
+  /* @var WarrantyEntity[] */
+  private $warrantyList = array();
+
   /* @var string */
   private $name;
   /** @var string */
@@ -147,6 +150,9 @@ class ProductEntity
     if (array_key_exists('price_average', $data))   $this->priceAverage  = $data['price_average'];
     if (array_key_exists('price_old', $data))       $this->priceOld      = $data['price_old'];
     if (array_key_exists('connected_products_view_mode', $data))  $this->connectedProductsViewMode  = (int)$data['connected_products_view_mode'];
+    if (array_key_exists('warranty', $data) && is_array($data['warranty'])) $this->setWarrantyList(array_map(function($data) {
+      return new WarrantyEntity($data);
+    }, $data['warranty']));
   }
 
   public function setId($id)
@@ -1037,5 +1043,21 @@ class ProductEntity
   public function getTagList()
   {
     return $this->tagList;
+  }
+
+  /**
+   * @param WarrantyEntity[] $warranty
+   */
+  public function setWarrantyList(array $warranties)
+  {
+    $this->warrantyList = $warranties;
+  }
+
+  /**
+   * @return WarrantyEntity[]
+   */
+  public function getWarrantyList()
+  {
+    return $this->warrantyList;
   }
 }

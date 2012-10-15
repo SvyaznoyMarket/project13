@@ -2471,6 +2471,18 @@ dt.bCtg__eOrange{
 
 
 /* backert service */
+.basketServices{
+	border:1px solid #E6E6E6;
+}
+.bBacketServ.F1{
+	background: url('img/icon_f1service_big.png') 0 0 no-repeat;
+}
+.bBacketServ.extWarr{
+	background: url('/images/F1_logo_extWarranty.jpg') 0 0 no-repeat;
+}
+.basketServices{
+	float:left;
+}
 .bBacketServ{
 	border: 1px solid #e6e6e6;
 	padding: 10px 10px 10px 75px;
@@ -2488,6 +2500,9 @@ dt.bCtg__eOrange{
 		*display: inline;
 		zoom: 1;
 		}
+	.bBacketServ.mBig table{
+		width: 100%;
+	}
 	.bBacketServ.mBig table td:first-child{
 		width: 360px;
 		font: bold 14px Tahoma, sans-serif;
@@ -2501,8 +2516,9 @@ dt.bCtg__eOrange{
 		padding-bottom: 5px;
 		}
 	.bBacketServ.mBig .mEdit{
-		padding: 0 0 0 20px;
-		font: 11px Tahoma, sans-serif;
+		float: right;
+	    font: 11px Tahoma,sans-serif;
+	    padding: 5px 0 0 20px;
 		}
 	.bBacketServ.mBig .mEdit span a{
 		margin: 0 2px;
@@ -6051,6 +6067,77 @@ div.mSportFont{ color: #e8303c; }
 		}
 /* ----------- /bNavLoader ------------- */
 /* ------ END MAIN PAGE ------ */
+
+/* --- БЛОК ДОПОЛНИТЕЛЬНОЙ ГАРАНТИИ В КАРТОЧКЕ ТОВАРА --- */
+.bBlueButton.extWarranty{
+	margin:20px 0;
+}
+.bBlueButton.extWarranty h3{
+	color: #4fcbf4;
+	margin: 0 0 7px 0;
+	font: bold 14px Tahoma, sans-serif;
+}
+.bBlueButton.extWarranty div{
+	font: 14px Tahoma, sans-serif;
+	margin-bottom: 10px;
+}
+.bBlueButton.extWarranty .link1{
+	color: #4fcbf4;
+}
+.bBlueButton.extWarranty .link1:hover{
+	text-decoration: none;
+}
+/**/
+.hideblock.extWarranty{
+	background: #fff url('/images/F1_logo_extWarranty.jpg') 0 0 no-repeat;
+	display:none;
+	top: 250px;
+	left: 50%;
+	margin-left:-370px;
+	padding: 10px 20px 20px 75px;
+}
+.hideblock.extWarranty div{
+	max-height: 320px;
+	overflow-y: scroll;
+}
+.hideblock.extWarranty h2{
+	color: #4fcbf4;
+	margin: 0 0 10px 0;
+	font: bold 16px Tahoma, sans-serif;
+}
+.hideblock.extWarranty table{
+	width: 650px;
+}
+.hideblock.extWarranty th{
+	text-align: right;
+	text-decoration: underline;
+	font: 12px Tahoma, sans-serif;
+}
+
+/* --- БЛОК ДОПОЛНИТЕЛЬНОЙ ГАРАНТИИ В КОРЗИНЕ --- */
+.bBacketServ.extWarr.mBig{
+	display:none;
+} 
+.bBacketServ.extWarr a.link_extWarr{	
+	background-color: #E5E5E5;
+    background-image: url("/css/skin/img/bg_buttons.png");
+    background-position: 0 -128px;
+    background-repeat: repeat-x;
+    border: 1px solid;
+    border-radius: 5px 5px 5px 5px;
+    border-color: #C9C9C9;
+    color: #4fcbf4;
+    display: inline-block;
+    font-size: 11px;
+    height: 18px;
+    margin-top: 8px;
+    padding: 4px 10px 0;
+    cursor: pointer;
+    font-weight: bold;
+    overflow: visible;
+}    
+.bBacketServ.extWarr a.link_extWarr:hover {background-color:#c5c5c5; background-position:0 -160px; text-decoration:none}
+
 
 .fl {
     float: left;

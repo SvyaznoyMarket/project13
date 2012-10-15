@@ -70,8 +70,12 @@ class Action {
             throw new \Exception(sprintf('У категории "%s" отстутсвуют дочерние узлы', $category->getId()));
         }
 
+        // фильтры
+        $productFilter = $this->getFilter($category);
+
         $page = new \View\ProductCategory\RootPage();
         $page->setParam('category', $category);
+        $page->setParam('productFilter', $productFilter);
 
         return new \Http\Response($page->show());
     }
