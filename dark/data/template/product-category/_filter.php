@@ -10,7 +10,7 @@ use Model\Product\Filter\Entity as FilterEntity;
 ?>
 
 <?php
-$name = 'f';
+$formName = \View\Product\FilterForm::$name;
 ?>
 
 <!-- Filter -->
