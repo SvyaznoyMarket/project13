@@ -158,6 +158,11 @@ class AppConfig {
         'push' => true,
     );
 
+    /** @var array */
+    public $warranty = array(
+        'enabled' => false,
+    );
+
     final public function __construct() {
         $this->initialize();
     }

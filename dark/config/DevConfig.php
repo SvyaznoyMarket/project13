@@ -27,5 +27,9 @@ class DevConfig extends \AppConfig {
             'pull' => true,
             'push' => false,
         );
+
+        $this->warranty = array(
+            'enabled' => true,
+        );
     }
 }

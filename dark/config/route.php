@@ -130,6 +130,14 @@ return array(
             'serviceId' => '\d+',
         ),
     ),
+    'cart.warranty.set' => array(
+        'pattern' => '/cart/warranty/{productId}/set/{warrantyId}',
+        'require' => array('productId' => '\d+', 'warrantyId' => '\d+'),
+    ),
+    'cart.warranty.delete' => array(
+        'pattern' => '/cart/warranty/{productId}/delete/{warrantyId}',
+        'require' => array('productId' => '\d+', 'warrantyId' => '\d+'),
+    ),
 
     // заказ
     'order.1click' => array(

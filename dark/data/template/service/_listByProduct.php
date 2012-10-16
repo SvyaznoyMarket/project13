@@ -2,10 +2,12 @@
 /**
  * @var $page \View\DefaultLayout
  * @var $product \Model\Product\Entity
+ * @var $user \User
  */
 
+$user = \App::user();
 $list = $product->getService();
-$listInCart = array();//$product->getServiceListInCart();
+$listInCart = $user->getCart()->getServicesByProduct($product->getId());
 ?>
 <?php if (count($list)): ?>
 
