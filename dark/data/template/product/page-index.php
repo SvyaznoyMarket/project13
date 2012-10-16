@@ -162,7 +162,8 @@
       <?php } ?>
   </div>
 
-  <?php echo $page->render('service/_listByProduct', array('product' => $product)) ?>
+    <?php echo $page->render('service/_listByProduct', array('product' => $product)) ?>
+    <?php echo $page->render('warranty/_listByProduct', array('product' => $product)) ?>
 
 </div>
 <!-- /Goods info -->
