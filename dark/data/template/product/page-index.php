@@ -129,19 +129,19 @@
 
 
   <div class="line pb15"></div>
-  <?php //if ($dataForCredit['creditIsAllowed'] && sfConfig::get('app_payment_credit_enabled', true)) : ?>
-  <!--div class="creditbox">
+  <?php if ($dataForCredit['creditIsAllowed']) : ?>
+  <div class="creditbox">
     <div class="creditboxinner">
       от <span class="font24"><span class="price"></span> <span class="rubl">p</span></span> в кредит
       <div class="fr pt5"><label class="bigcheck " for="creditinput"><b></b>Беру в кредит
         <input id="creditinput" type="checkbox" name="creditinput" autocomplete="off"/></label></div>
     </div>
-  </div-->
-  <?php //endif; ?>
+  </div>
+  <?php endif; ?>
 
-  <?php //if ($dataForCredit['creditIsAllowed'] && sfConfig::get('app_payment_credit_enabled', true)) : ?>
-  <!--input data-model="<?php //echo $dataForCredit['creditData'] ?>" id="dc_buy_on_credit_<?php //echo $product->getArticle(); ?>" name="dc_buy_on_credit" type="hidden" /-->
-  <?php //endif; ?>
+  <?php if ($dataForCredit['creditIsAllowed']) : ?>
+  <input data-model="<?php echo htmlspecialchars($dataForCredit['creditData']) ?>" id="dc_buy_on_credit_<?php echo $product->getArticle(); ?>" name="dc_buy_on_credit" type="hidden" />
+  <?php endif; ?>
 
   <?php if ($product->getIsBuyable()): ?>
   <div class="bDeliver2 delivery-info" id="product-id-<?php echo $product->getId() ?>" data-shoplink="<?php echo $product->getLink().'/stock' ?>" data-calclink="<?php echo $page->url('product.delivery', array('productId' => $product->getId())) ?>">
@@ -306,8 +306,8 @@
       <div class="pb5">
           <strong class="font34"><span class="price"><?php echo $page->helper->formatPrice($product->getPrice()) ?></span> <span class="rubl">p</span></strong>
       </div>
-      <div class="popup_leftpanel pb40" ref="<?php echo $product->getToken() ?>" data-value='<?php echo $json ?>'>
-        <?php echo $page->render('cart/_button', array('product' => $product, 'disabled' => !$product->getIsBuyable(), 'value' => 'Купить')) ?>
+      <div class="goodsbarbig mSmallBtns pb40" ref="<?php echo $product->getToken() ?>" data-value='<?php echo $json ?>'>
+        <?php echo $page->render('cart/_button', array('product' => $product, 'disabled' => !$product->getIsBuyable())) ?>
       </div>
 
       <h2>Фото:</h2>

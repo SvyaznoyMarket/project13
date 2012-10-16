@@ -94,6 +94,7 @@ class AppConfig {
         'showRelated'           => true,
         'itemsInSlider'         => 5,
         'itemsInCategorySlider' => 3,
+        'minCreditPrice'        => 3000,
     );
 
     /** @var array */

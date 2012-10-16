@@ -17,7 +17,7 @@ class Layout {
         'viewport'                 => null,
         'title'                    => null,
         'description'              => null,
-        //'keywords'                 => null,
+        'keywords'                 => null,
         //'robots'                   => null,
     );
     /** @var array */
@@ -98,6 +98,7 @@ class Layout {
 
     public function setTitle($title) {
         $this->title = (string)$title;
+        $this->addMeta('title', (string)$title);
     }
 
     public function getTitle() {

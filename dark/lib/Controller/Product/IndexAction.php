@@ -57,6 +57,7 @@ class IndexAction {
                 if (isset($kit[$item->getId()])) $kit[$item->getId()] = $item;
             }
         }
+        $dataForCredit = $this->_getDataForCredit($product);
 
         $page = new \View\Product\IndexPage();
         $page->setParam('product', $product);
@@ -67,7 +68,48 @@ class IndexAction {
         $page->setParam('accessories', $accessories);
         $page->setParam('related', $related);
         $page->setParam('kit', $kit);
+        $page->setParam('dataForCredit', $dataForCredit);
+
+        $page->setTitle(sprintf(
+            '%s - купить по цене %s руб. в Москве, %s - характеристиками и описанием и фото от интернет-магазина Enter.ru',
+            $product->getName(),
+            $product->getPrice(),
+            $product->getName()
+        ));
+        $page->addMeta('description', sprintf(
+            'Интернет магазин Enter.ru предлагает купить: %s по цене %s руб. На нашем сайте Вы найдете подробное описание и характеристики товара %s с фото. Заказать понравившийся товар с доставкой по Москве можно у нас на сайте или по телефону 8 (800) 700-00-09.',
+            $product->getName(),
+            $product->getPrice(),
+            $product->getName()
+        ));
+        $page->addMeta('keywords', sprintf('%s Москва интернет магазин купить куплю заказать продажа цены', $product->getName()));
 
         return new \Http\Response($page->show());
+    }
+
+    /**
+     * Собирает в массив данные, необходимые для плагина online кредитовария // скопировано из symfony
+     *
+     * @param $product
+     * @return array
+     */
+    private function _getDataForCredit(\Model\Product\Entity $product) {
+        $result = array();
+
+        $mainCat = $product->getMainCategory();
+        $cart = \App::user()->getCart();
+        $productType = \RepositoryManager::getCreditBank()->getCreditTypeByCategoryToken($mainCat->getToken());
+        $dataForCredit = array(
+            'price' => $product->getPrice(),
+            'articul' => $product->getArticle(),
+            'name' => $product->getName(),
+            'count' => $cart->getQuantityByProduct($product->getId()),
+            'product_type' => $productType,
+            'session_id' => session_id()
+        );
+        $result['creditIsAllowed'] = (bool) (($product->getPrice() * (($cart->getQuantityByProduct($product->getId()) > 0)? $cart->getQuantityByProduct($product->getId()) : 1)) > \App::config()->product['minCreditPrice']);
+        $result['creditData'] = json_encode($dataForCredit);
+
+        return $result;
     }
 }
