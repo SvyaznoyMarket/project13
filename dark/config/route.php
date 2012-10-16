@@ -105,6 +105,10 @@ return array(
         'pattern' => '/tags/{tagToken}',
         'require' => array('tagToken' => '[\w\d-_]+'),
     ),
+    'product.rating.create_total' => array(
+        'pattern' => '/product-rating/createtotal/{productId}/{rating}',
+        'require' => array('productId' => '\d+', 'rating' => '\d+'),
+    ),
 
     // корзина
     'cart' => array(
@@ -126,6 +130,14 @@ return array(
             'serviceId' => '\d+',
         ),
     ),
+    'cart.warranty.set' => array(
+        'pattern' => '/cart/warranty/{productId}/set/{warrantyId}',
+        'require' => array('productId' => '\d+', 'warrantyId' => '\d+'),
+    ),
+    'cart.warranty.delete' => array(
+        'pattern' => '/cart/warranty/{productId}/delete/{warrantyId}',
+        'require' => array('productId' => '\d+', 'warrantyId' => '\d+'),
+    ),
 
     // заказ
     'order.1click' => array(
@@ -140,4 +152,15 @@ return array(
         'pattern' => '/f1/show/{serviceToken}',
         'require' => array('serviceToken' => '[\w\d-_]+'),
     ),
+
+    //SmartEngine
+    'smartengine.pull.product_alsoViewed' => array(
+        'pattern' => '/product-also-viewed/{productId}',
+        'require' => array('productId' => '\d+'),
+    ),
+    'smartengine.push.product_view' => array(
+        'pattern' => '/product-view/{productId}',
+        'require' => array('productId' => '\d+'),
+    )
+
 );

@@ -13,9 +13,10 @@
 <div class="clear"></div>
 
 <?= $page->render('product/_pager', array(
-    'request'     => $request,
-    'pager'       => $productPager,
-    'hasListView' => true,
-    'category'    => $category,
-    'view'        => $productView,
+    'request'       => $request,
+    'pager'         => $productPager,
+    'productFilter' => $productFilter,
+    'hasListView'   => true,
+    'category'      => $category,
+    'view'          => $productView,
 )) ?>

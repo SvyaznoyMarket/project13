@@ -101,7 +101,7 @@ class IndexAction {
         $productType = \RepositoryManager::getCreditBank()->getCreditTypeByCategoryToken($mainCat->getToken());
         $dataForCredit = array(
             'price' => $product->getPrice(),
-            'articul' => $product->getArticle(),
+            //'articul' => $product->getArticle(),
             'name' => $product->getName(),
             'count' => $cart->getQuantityByProduct($product->getId()),
             'product_type' => $productType,

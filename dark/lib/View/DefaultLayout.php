@@ -106,4 +106,12 @@ class DefaultLayout extends Layout {
     public function slotMetaOg() {
         return '';
     }
+
+    public function slotAdvanceSeoCounter() {
+        return '';
+    }
+
+    public function slotAdriver() {
+        return '';
+    }
 }
