@@ -318,6 +318,19 @@ window.ANALYTICS = {
         document.write('<scr'+'ipt type="text/javascript" src="http://luxup.ru/tr_js/20634/59951/'+'?t='+(new Date()).getTime()+(document.referrer?"&r="+encodeURIComponent(document.referrer):'')+(typeof __lx__target !== 'undefined'?'&trg='+encodeURIComponent(__lx__target):'')+'"></scr'+'ipt>');        
     },
 
+    runMethod : function( fnname ) {
+        if( !this. enable )
+            return
+        document.writeln = function(){
+            $('body').append( $(arguments[0] + '') )
+        }
+
+        if( fnname in this ) {
+            this.fnname()
+        }
+
+    },
+
     parseAllAnalDivs : function( nodes ) {
         if( !this. enable )
             return
