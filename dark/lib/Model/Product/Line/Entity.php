@@ -79,4 +79,11 @@ class Entity {
     public function getProductCount() {
         return $this->productCount;
     }
+
+    /**
+     * @return int
+     */
+    public function getTotalCount() {
+        return $this->productCount + $this->kitCount;
+    }
 }

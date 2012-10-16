@@ -76,6 +76,10 @@ return array(
         'action'  => array('Product\IndexAction', 'execute'),
         'require' => array('productPath' => '[\w\d-_]+\/{1}[\w\d-_]+'),
     ),
+    'product.line' => array(
+        'pattern' => '/line/{lineId}',
+        'action'  => array('Product\LineAction', 'execute'),
+    ),
     'product.count' => array(
         'pattern' => '/catalog/{categoryPath}/_count',
         'action'  => array('ProductCategory\CountAction', 'execute'),

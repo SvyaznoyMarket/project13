@@ -73,8 +73,6 @@ class Entity extends BasicEntity {
     protected $stock = array();
     /** @var Service\Entity[] */
     protected $service = array();
-    /** @var Line\Entity */
-    protected $line;
     /** @var Kit\Entity[] */
     protected $kit = array();
     /** @var Model\Entity */
@@ -759,20 +757,6 @@ class Entity extends BasicEntity {
      */
     public function getService() {
         return $this->service;
-    }
-
-    /**
-     * @param \Model\Product\Line\Entity $line
-     */
-    public function setLine(Line\Entity $line = null) {
-        $this->line = $line;
-    }
-
-    /**
-     * @return \Model\Product\Line\Entity
-     */
-    public function getLine() {
-        return $this->line;
     }
 
     public function setKit(array $kits) {

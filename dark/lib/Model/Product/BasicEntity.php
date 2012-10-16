@@ -17,6 +17,8 @@ class BasicEntity {
     protected $price;
     /** @var State\Entity */
     protected $state;
+    /** @var Line\Entity */
+    protected $line;
     /** @var Category\Entity */
     protected $mainCategory;
 
@@ -32,6 +34,7 @@ class BasicEntity {
         };
         if (array_key_exists('price', $data)) $this->setPrice($data['price']);
         if (array_key_exists('state', $data) && (bool)$data['state']) $this->setState(new State\Entity($data['state']));
+        if (array_key_exists('line', $data) && (bool)$data['line']) $this->setLine(new Line\Entity($data['line']));
     }
 
     /**
@@ -179,5 +182,19 @@ class BasicEntity {
      */
     public function getIsBuyable() {
         return $this->getState() && $this->getState()->getIsBuyable();
+    }
+
+    /**
+     * @param \Model\Product\Line\Entity $line
+     */
+    public function setLine(Line\Entity $line = null) {
+        $this->line = $line;
+    }
+
+    /**
+     * @return \Model\Product\Line\Entity
+     */
+    public function getLine() {
+        return $this->line;
     }
 }

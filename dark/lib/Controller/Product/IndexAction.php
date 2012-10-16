@@ -57,7 +57,7 @@ class IndexAction {
                 if (isset($kit[$item->getId()])) $kit[$item->getId()] = $item;
             }
         }
-        $dataForCredit = $this->_getDataForCredit($product);
+        $dataForCredit = $this->getDataForCredit($product);
 
         $page = new \View\Product\IndexPage();
         $page->setParam('product', $product);
@@ -93,7 +93,7 @@ class IndexAction {
      * @param $product
      * @return array
      */
-    private function _getDataForCredit(\Model\Product\Entity $product) {
+    private function getDataForCredit(\Model\Product\Entity $product) {
         $result = array();
 
         $mainCat = $product->getMainCategory();
