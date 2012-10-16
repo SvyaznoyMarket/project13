@@ -44,7 +44,7 @@ class Action {
             throw new \Exception\NotFoundException(sprintf('Категория товара с токеном "%s" не найдена.', $categoryToken));
         }
 
-        // обязательно загружаем предков и детей
+        // обязательно загружаем предков и детей, чтобы установить тип узла категории (root, branch или leaf)
         $repository->loadEntityBranch($category);
 
         // http://en.wikipedia.org/wiki/Tree_%28data_structure%29
@@ -87,8 +87,6 @@ class Action {
      */
     private function executeBranchNode(\Model\Product\Category\Entity $category, \Http\Request $request) {
         if (\App::config()->debug) \App::debug()->add('subact', 'branchNode');
-
-        $repository = \RepositoryManager::getProduct();
 
         // фильтры
         $productFilter = $this->getFilter($category);
@@ -139,6 +137,9 @@ class Action {
         if ($pageNum < 1) {
             throw new \Exception\NotFoundException(sprintf('Неверный номер страницы "%s".', $pageNum));
         }
+
+        // к сожалению, нужна также загрузка дочерних узлов родителя (для левого меню категорий - product-category/_branch)
+        \RepositoryManager::getProductCategory()->loadEntityBranch($category->getParent());
 
         // вид товаров
         $productView = $request->get('view', $category->getProductView());
