@@ -27,7 +27,7 @@ foreach ($parent->getChild() as $child) {
         <ul>
         <? foreach ($categories as $node): ?>
             <?
-            $class = 'bCtg__eL' . $node->getLevel();
+            $class = 'bCtg__eL' . ($node->getLevel() <= 4 ? $node->getLevel() : 4);
             if ($node->getLevel() < $category->getLevel()) $class .= ' mBold';
             if ($node->getId() == $category->getId()) $class .= ' mSelected';
             ?>
