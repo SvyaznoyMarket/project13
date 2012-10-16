@@ -4,16 +4,16 @@ namespace View\Product;
 
 class IndexPage extends \View\DefaultLayout {
 
-  /** @var string */
-  protected $layout  = 'layout-default-oneColumn';
+    /** @var string */
+    protected $layout  = 'layout-default-oneColumn';
 
-  public function slotContent() {
+    public function slotContent() {
         return $this->render('product/page-index', $this->params);
     }
 
-  public function slotBodyDataAttribute() {
-    return 'product_card';
-  }
+    public function slotBodyDataAttribute() {
+        return 'product_card';
+    }
 
     public function slotMetaOg() {
         /** @var \Model\Product\Entity $product  */
@@ -36,5 +36,17 @@ class IndexPage extends \View\DefaultLayout {
                 "<meta property=\"og:image\" content=\"".$product->getImageUrl(3)."\"/>\r\n".
                 "<meta property=\"og:site_name\" content=\"ENTER\"/>\r\n".
                 "<meta property=\"og:type\" content=\"website\"/>\r\n";
+    }
+
+    public function slotAdvanceSeoCounter() {
+        /** @var \Model\Product\Entity $product  */
+        $product = $this->getParam('product');
+
+        if (!$product) {
+            return '';
+        }
+
+        return "<div id=\"heiasProduct\" data-vars=\"".$product->getId()."\" class=\"jsanalytics\"></div>\r\n".
+                "<div id=\"marketgidProd\" class=\"jsanalytics\"></div>\r\n";
     }
 }

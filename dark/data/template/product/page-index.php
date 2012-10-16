@@ -11,10 +11,6 @@
  */
 ?>
 
-<?php //slot('header_meta_og') ?>
-<?php //include_component('productCard_', 'header_meta_og', array('product' => $product)) ?>
-<?php //end_slot() ?>
-
 <?php
   $json = json_encode(array (
     'jsref' => $product->getToken(),
@@ -39,6 +35,8 @@
     $p3d_res_small[] = $photo3d->getUrl(0);
     $p3d_res_big[] = $photo3d->getUrl(1);
   }
+
+  $showAveragePrice = !$product->getPriceOld() && $product->getPriceAverage();
 ?>
 <script type="text/javascript">
   product_3d_small = <?php echo json_encode($p3d_res_small) ?>;
@@ -64,7 +62,7 @@
 <div class="goodsinfo bGood">
   <div class="bGood__eArticle">
     <div class="fr">
-      <span id="rating" data-url="<?php //echo url_for('userProductRating_createtotal', array('rating' => 'score', 'product' => $product->getId() )) ?>">
+      <span id="rating" data-url="<?php echo $page->url('product.rating.create_total', array('rating' => 'score', 'productId' => $product->getId() )) ?>">
         <?php
         echo str_repeat('<span class="ratingview" style="width:13px;vertical-align:middle;display:inline-block;"></span>', round($product->getRating()));
         echo str_repeat('<span class="ratingview" style="width:13px;vertical-align:middle;display:inline-block;background-position:-51px 0;"></span>', 5 - round($product->getRating()));
@@ -81,14 +79,10 @@
 
   <?php if($product->getPriceOld()): ?>
   <div style="text-decoration: line-through; font: normal 18px verdana; letter-spacing: -0.05em; color: #6a6a6a;"><span class="price"><?php echo $page->helper->formatPrice($product->getPriceOld()) ?></span> <span class="rubl">p</span></div>
-  <?php elseif($product->getPriceAverage()): ?>
+  <?php elseif($showAveragePrice): ?>
   <div class="mOurGray">
     Средняя цена в магазинах города*<br><div class='mOurGray mIco'><span class="price"><?php echo $page->helper->formatPrice($product->getPriceAverage()) ?></span> <span class="rubl">p</span> &nbsp;</div>
   </div>
-  <?php //slot('additional_data') ?>
-  <!--div class="gray pt20 mb10">*по данным мониторинга компании Enter</div>
-  <div class="clear"></div-->
-  <?php //end_slot() ?>
   <div class="clear"></div>
   <div class="clear mOur pt10 <?php if ($product->hasSaleLabel()) echo 'red'; ?>">Наша цена</div>
   <?php endif ?>
@@ -258,20 +252,20 @@
     <?php echo $page->render('product/_slider', array('product' => $product, 'productList' => array_values($related), 'totalProducts' => count($product->getRelatedId()), 'itemsInSlider' => \App::config()->product['itemsInSlider'], 'page' => 1, 'title' => 'С этим товаром также покупают', 'url' => $page->url('product.related', array('productToken' => $product->getToken())))) ?>
 <?php endif ?>
 
-<?php //if (false && sfConfig::get('app_smartengine_pull')): ?>
+<?php if (false && \App::config()->smartEngine['pull']): ?>
 <!--div class="clear"></div>
 <div id="product_also_bought-container" data-url="<?php //echo url_for('smartengine_alsoBought', array('product' => $product->getId())) ?>" style="margin-top: 20px;"></div-->
-<?php //endif ?>
+<?php endif ?>
 
-<?php //if (sfConfig::get('app_smartengine_pull')): ?>
-<!--div class="clear"></div>
-<div id="product_user-also_viewed-container" data-url="<?php //echo url_for('smartengine_alsoViewed', array('product' => $product->getId())) ?>" style="margin-top: 20px;"></div-->
-<?php //endif ?>
+<?php if (\App::config()->smartEngine['pull']): ?>
+<div class="clear"></div>
+<div id="product_user-also_viewed-container" data-url="<?php echo $page->url('smartengine.pull.product_alsoViewed', array('productId' => $product->getId())) ?>" style="margin-top: 20px;"></div>
+<?php endif ?>
 
-<?php //if (false && sfConfig::get('app_smartengine_pull')): ?>
+<?php if (false && \App::config()->smartEngine['pull']): ?>
 <!--div class="clear"></div>
 <div id="product_user-recommendation-container" data-url="<?php //echo url_for('smartengine_userRecommendation', array('product' => $product->getId())) ?>" style="margin-top: 20px;"><h3>Recommendations for user...</h3></div-->
-<?php //endif ?>
+<?php endif ?>
 
 <?php $description = $product->getDescription(); ?>
 <?php if (!empty($description)): ?>
@@ -453,29 +447,15 @@
 
 <br class="clear" />
 
-<?php //if (has_slot('additional_data')): ?>
-<?php //include_slot('additional_data') ?>
-<?php //endif ?>
+<?php if ($showAveragePrice): ?>
+    <div class="gray pt20 mb10">*по данным мониторинга компании Enter</div>
+    <div class="clear"></div>
+<?php endif ?>
 
 <?php echo $page->render('_breadcrumbs', array('breadcrumbs' => $breadcrumbs, 'class' => 'breadcrumbs-footer')) ?>
 
-<?php //slot('seo_counters_advance') ?>
-
-<?php /*
-$rootCat = $product->getMainCategory();
-
-if ($rootCat) {
-  include_component('productCategory', 'seo_counters_advance', array('unitId' => $rootCat->getId()));
-}*/
-?>
-
-<div id="heiasProduct" data-vars="<?php echo $product->getId(); ?>" class="jsanalytics"></div>
-<div id="marketgidProd" class="jsanalytics"></div>
-
-<?php //end_slot() ?>
-
-<?php //if (sfConfig::get('app_smartengine_push')): ?>
-<!--div id="product_view-container" data-url="<?php //echo url_for('smartengine_view', array('product' => $product->getId())) ?>"></div-->
-<?php //endif ?>
+<?php if (\App::config()->smartEngine['push']): ?>
+<div id="product_view-container" data-url="<?php echo $page->url('smartengine.push.product_view', array('productId' => $product->getId())) ?>"></div>
+<?php endif ?>
 
 <?php if ($product->getIsBuyable()): echo $page->render('product/form-oneClick'); endif; ?>

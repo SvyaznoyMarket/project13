@@ -105,6 +105,10 @@ return array(
         'pattern' => '/tags/{tagToken}',
         'require' => array('tagToken' => '[\w\d-_]+'),
     ),
+    'product.rating.create_total' => array(
+        'pattern' => '/product-rating/createtotal/{productId}/{rating}',
+        'require' => array('productId' => '\d+', 'rating' => '\d+'),
+    ),
 
     // корзина
     'cart' => array(
@@ -140,4 +144,15 @@ return array(
         'pattern' => '/f1/show/{serviceToken}',
         'require' => array('serviceToken' => '[\w\d-_]+'),
     ),
+
+    //SmartEngine
+    'smartengine.pull.product_alsoViewed' => array(
+        'pattern' => '/product-also-viewed/{productId}',
+        'require' => array('productId' => '\d+'),
+    ),
+    'smartengine.push.product_view' => array(
+        'pattern' => '/product-view/{productId}',
+        'require' => array('productId' => '\d+'),
+    )
+
 );

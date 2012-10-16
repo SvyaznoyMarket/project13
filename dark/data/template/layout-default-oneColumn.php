@@ -59,7 +59,7 @@
     <?= $page->slotInnerJavascript() ?>
     <?= $page->slotAuth() ?>
     <?= $page->slotYandexMetrika() ?>
-    <?//= $page->slotAdvanceSeoCounter() ?>
+    <?= $page->slotAdvanceSeoCounter() ?>
 
     <div id="gooReMaCategories" class="jsanalytics"></div>
     <div id="luxupTracker" class="jsanalytics"></div>
