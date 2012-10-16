@@ -5,7 +5,7 @@
  * @var $pager          \Iterator\EntityPager
  * @var $view           string
  * @var $hasListView    bool                                Показывать контрол "Вид товара"
- * @var $productSorting
+ * @var $productSorting \Model\Product\Sorting
  * @var $productFilter  \Model\Product\Filter
  * @var $category       \Model\Product\Category\Entity|null
  */

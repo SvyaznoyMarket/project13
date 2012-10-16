@@ -88,6 +88,8 @@ class Action {
     private function executeBranchNode(\Model\Product\Category\Entity $category, \Http\Request $request) {
         if (\App::config()->debug) \App::debug()->add('sub.act', 'branchNode');
 
+        // сортировка
+        $productSorting = new \Model\Product\Sorting();
         // фильтры
         $productFilter = $this->getFilter($category, $request);
         // дочерние категории сгруппированные по идентификаторам
@@ -109,7 +111,7 @@ class Action {
         /** @var $child \Model\Product\Category\Entity */
         $child = reset($childrenById);
         $productPagersByCategory = array();
-        foreach ($repository->getIteratorsByFilter($filterData, array(), null, $limit) as $productPager) {
+        foreach ($repository->getIteratorsByFilter($filterData, $productSorting->dump(), null, $limit) as $productPager) {
             $productPager->setPage(1);
             $productPager->setMaxPerPage($limit);
             $productPagersByCategory[$child->getId()] = $productPager;
@@ -141,6 +143,11 @@ class Action {
         // к сожалению, нужна также загрузка дочерних узлов родителя (для левого меню категорий - product-category/_branch)
         \RepositoryManager::getProductCategory()->loadEntityBranch($category->getParent());
 
+        // сортировка
+        $productSorting = new \Model\Product\Sorting();
+        list($sortingName, $sortingDirection) = array_pad(explode('-', $request->get('sort')), 2, null);
+        $productSorting->setActive($sortingName, $sortingDirection);
+
         // вид товаров
         $productView = $request->get('view', $category->getProductView());
         // фильтры
@@ -155,7 +162,7 @@ class Action {
         );
         $productPager = $repository->getIteratorByFilter(
             $productFilter->dump(),
-            array(),
+            $productSorting->dump(),
             ($pageNum - 1) * $limit,
             $limit
         );
@@ -180,6 +187,7 @@ class Action {
         $page->setParam('category', $category);
         $page->setParam('productFilter', $productFilter);
         $page->setParam('productPager', $productPager);
+        $page->setParam('productSorting', $productSorting);
         $page->setParam('productView', $productView);
 
         return new \Http\Response($page->show());

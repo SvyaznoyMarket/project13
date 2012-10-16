@@ -14,9 +14,7 @@ $view = $category->getHasLine() ? 'line' : 'compact';
 <div class="carouseltitle">
     <div class="rubrictitle">
         <h2>
-            <a href="<?= $category->getLink() ?>" class="underline">
-                <?= $category->getName()?>
-            </a>
+            <a href="<?= $category->getLink() ?>" class="underline"><?= $category->getName()?></a>
         </h2>
     </div>
 
