@@ -83,7 +83,7 @@ class IndexAction {
         $productPager->setMaxPerPage(\App::config()->product['itemsPerPage']);
 
         // проверка на максимально допустимый номер страницы
-        if ($productPager->getPage() > $productPager->getLastPage()) {
+        if (($productPager->getPage() - $productPager->getLastPage()) > 0) {
             throw new \Exception\NotFoundException(sprintf('Неверный номер страницы "%s".', $productPager->getPage()));
         }
 
