@@ -6,6 +6,7 @@
  * @var $filter        \Model\Product\Filter\Entity
  * @var $isOpened      bool
  * @var $index         int
+ * @var $formName      string
  */
 ?>
 
@@ -15,8 +16,8 @@
 
 <dd style="display: <?= $isOpened ? 'block' : 'none' ?>;">
     <div class="bSlide">
-        <input type="hidden" name="<?= $name ?>[<?= $filter->getFilterId() ?>][from]" value="<?= $page->helper->clearZeroValue($productFilter->getValueMin($filter)) ?>" id="f_<?= $filter->getFilterId()?>_from"/>
-        <input type="hidden" name="<?= $name ?>[<?= $filter->getFilterId() ?>][to]" value="<?= $page->helper->clearZeroValue($productFilter->getValueMax($filter)) ?>" id="f_<?= $filter->getFilterId()?>_to"/>
+        <input type="hidden" name="<?= $formName ?>[<?= $filter->getFilterId() ?>][from]" value="<?= $page->helper->clearZeroValue($productFilter->getValueMin($filter)) ?>" id="f_<?= $filter->getFilterId()?>_from"/>
+        <input type="hidden" name="<?= $formName ?>[<?= $filter->getFilterId() ?>][to]" value="<?= $page->helper->clearZeroValue($productFilter->getValueMax($filter)) ?>" id="f_<?= $filter->getFilterId()?>_to"/>
 
         <div class="sliderbox">
             <div id="slider-<?= uniqid()?>" class="filter-range"></div>

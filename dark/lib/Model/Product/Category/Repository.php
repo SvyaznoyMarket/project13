@@ -54,6 +54,9 @@ class Repository {
             foreach ($data as $item) {
                 // если наткнулись на текущую категорию, то закругляемся
                 if ($entity->getId() == $item['id']) {
+                    // только при загрузке дерева ядро может отдать нам количество товаров в ней
+                    $entity->setProductCount($item['product_count']);
+                    // добавляем дочерние узлы
                     if (isset($item['children']) && (bool)$item['children']) {
                         foreach ($item['children'] as $childData) {
                             $entity->addChild(new Entity($childData));

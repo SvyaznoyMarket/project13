@@ -78,6 +78,13 @@ class Filter {
     }
 
     /**
+     * @return array
+     */
+    public function getValues() {
+        return $this->values;
+    }
+
+    /**
      * @param FilterEntity $filter
      * @return mixed|null
      */

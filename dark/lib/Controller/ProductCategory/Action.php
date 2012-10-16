@@ -64,14 +64,14 @@ class Action {
      * @throws \Exception
      */
     private function executeRootNode(\Model\Product\Category\Entity $category, \Http\Request $request) {
-        if (\App::config()->debug) \App::debug()->add('subact', 'rootNode');
+        if (\App::config()->debug) \App::debug()->add('sub.act', 'rootNode');
 
         if (!(bool)$category->getChild()) {
             throw new \Exception(sprintf('У категории "%s" отстутсвуют дочерние узлы', $category->getId()));
         }
 
         // фильтры
-        $productFilter = $this->getFilter($category);
+        $productFilter = $this->getFilter($category, $request);
 
         $page = new \View\ProductCategory\RootPage();
         $page->setParam('category', $category);
@@ -86,10 +86,10 @@ class Action {
      * @return \Http\Response
      */
     private function executeBranchNode(\Model\Product\Category\Entity $category, \Http\Request $request) {
-        if (\App::config()->debug) \App::debug()->add('subact', 'branchNode');
+        if (\App::config()->debug) \App::debug()->add('sub.act', 'branchNode');
 
         // фильтры
-        $productFilter = $this->getFilter($category);
+        $productFilter = $this->getFilter($category, $request);
         // дочерние категории сгруппированные по идентификаторам
         $childrenById = array();
         foreach ($category->getChild() as $child) {
@@ -131,7 +131,7 @@ class Action {
      * @throws \Exception\NotFoundException
      */
     private function executeLeafNode(\Model\Product\Category\Entity $category, \Http\Request $request) {
-        if (\App::config()->debug) \App::debug()->add('subact', 'leafNode');
+        if (\App::config()->debug) \App::debug()->add('sub.act', 'leafNode');
 
         $pageNum = (int)$request->get('page', 1);
         if ($pageNum < 1) {
@@ -144,7 +144,7 @@ class Action {
         // вид товаров
         $productView = $request->get('view', $category->getProductView());
         // фильтры
-        $productFilter = $this->getFilter($category);
+        $productFilter = $this->getFilter($category, $request);
         // листалка
         $limit = \App::config()->product['itemsPerPage'];
         $repository = \RepositoryManager::getProduct();
@@ -189,10 +189,11 @@ class Action {
      * @param \Model\Product\Category\Entity $category
      * @return \Model\Product\Filter
      */
-    private function getFilter(\Model\Product\Category\Entity $category) {
+    private function getFilter(\Model\Product\Category\Entity $category, \Http\Request $request) {
         $filters = \RepositoryManager::getProductFilter()->getCollectionByCategory($category);
         $productFilter = new \Model\Product\Filter($filters);
         $productFilter->setCategory($category);
+        $productFilter->setValues($request->get(\View\Product\FilterForm::$name, array()));
 
         return $productFilter;
     }
