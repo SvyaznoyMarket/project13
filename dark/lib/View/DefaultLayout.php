@@ -102,4 +102,8 @@ class DefaultLayout extends Layout {
     public function slotYandexMetrika() {
         return (\App::config()->yandexMetrika['enabled']) ? $this->render('_yandexMetrika') : '';
     }
+
+    public function slotMetaOg() {
+        return '';
+    }
 }

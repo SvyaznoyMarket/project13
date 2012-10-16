@@ -12,6 +12,7 @@
     <?= $page->slotStylesheet() ?>
     <?= $page->slotRelLink() ?>
     <?= $page->slotGoogleAnalytics() ?>
+    <?= $page->slotMetaOg() ?>
 </head>
 <body data-template="<?= $page->slotBodyDataAttribute() ?>">
     <div class="allpage" id="page">
