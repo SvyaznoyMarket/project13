@@ -70,6 +70,20 @@ class IndexAction {
         $page->setParam('kit', $kit);
         $page->setParam('dataForCredit', $dataForCredit);
 
+        $page->setTitle(sprintf(
+            '%s - купить по цене %s руб. в Москве, %s - характеристиками и описанием и фото от интернет-магазина Enter.ru',
+            $product->getName(),
+            $product->getPrice(),
+            $product->getName()
+        ));
+        $page->addMeta('description', sprintf(
+            'Интернет магазин Enter.ru предлагает купить: %s по цене %s руб. На нашем сайте Вы найдете подробное описание и характеристики товара %s с фото. Заказать понравившийся товар с доставкой по Москве можно у нас на сайте или по телефону 8 (800) 700-00-09.',
+            $product->getName(),
+            $product->getPrice(),
+            $product->getName()
+        ));
+        $page->addMeta('keywords', sprintf('%s Москва интернет магазин купить куплю заказать продажа цены', $product->getName()));
+
         return new \Http\Response($page->show());
     }
 

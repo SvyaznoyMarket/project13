@@ -306,8 +306,8 @@
       <div class="pb5">
           <strong class="font34"><span class="price"><?php echo $page->helper->formatPrice($product->getPrice()) ?></span> <span class="rubl">p</span></strong>
       </div>
-      <div class="popup_leftpanel pb40" ref="<?php echo $product->getToken() ?>" data-value='<?php echo $json ?>'>
-        <?php echo $page->render('cart/_button', array('product' => $product, 'disabled' => !$product->getIsBuyable(), 'value' => 'Купить')) ?>
+      <div class="goodsbarbig mSmallBtns pb40" ref="<?php echo $product->getToken() ?>" data-value='<?php echo $json ?>'>
+        <?php echo $page->render('cart/_button', array('product' => $product, 'disabled' => !$product->getIsBuyable())) ?>
       </div>
 
       <h2>Фото:</h2>
