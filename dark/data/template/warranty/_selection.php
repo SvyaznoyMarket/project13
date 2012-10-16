@@ -1,7 +1,7 @@
 <?php
 /** @var $page \View\DefaultLayout */
-/** @var $product ProductEntity */
-/** @var $cart Session\Cart */
+/** @var $product \Model\Product\Entity */
+/** @var $cart \Session\Cart */
 ?>
 
 <?php

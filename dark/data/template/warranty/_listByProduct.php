@@ -2,7 +2,7 @@
 /**
  * @var $page \View\DefaultLayout
  * @var $product \Model\Product\Entity
- * @var $user \User
+ * @var $user \Session\User
  */
 
 $user = \App::user();

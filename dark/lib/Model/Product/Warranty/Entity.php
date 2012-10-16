@@ -16,7 +16,7 @@ class Entity {
     /** @var string */
     private $image;
 
-    function __construct($data) {
+    function __construct(array $data = array()) {
         if (array_key_exists('id', $data)) $this->setId($data['id']);
         if (array_key_exists('name', $data)) $this->setName($data['name']);
         if (array_key_exists('price', $data)) $this->setPrice($data['price']);
