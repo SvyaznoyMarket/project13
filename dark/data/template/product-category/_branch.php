@@ -19,7 +19,12 @@ foreach ($parent->getChild() as $child) {
 ?>
 
 
-<div class="catProductNum"><b>Всего <?= ($category->getProductCount() . ($category->getHasLine() ? ' серий' : ' товаров')) ?></b>
+<div class="catProductNum">
+<? if ($category->getHasLine()): ?>
+    <b>Всего <?= $page->helper->formatNumberChoice('{n: n > 10 && n < 20}%count% серий|{n: n % 10 == 1}%count% серия|{n: n % 10 > 1 && n % 10 < 5}%count% серии|(1,+Inf]%count% серий', array('%count%' => $category->getProductCount()), $category->getProductCount()) ?></b>
+<? else: ?>
+    <b>Всего <?= $page->helper->formatNumberChoice('{n: n > 10 && n < 20}%count% товаров|{n: n % 10 == 1}%count% товар|{n: n % 10 > 1 && n % 10 < 5}%count% товара|(1,+Inf]%count% товаров', array('%count%' => $category->getProductCount()), $category->getProductCount()) ?></b>
+<? endif ?>
 </div>
 <div class="line pb10"></div>
 <dl class="bCtg">
