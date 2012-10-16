@@ -49,4 +49,24 @@ class IndexPage extends \View\DefaultLayout {
         return "<div id=\"heiasProduct\" data-vars=\"".$product->getId()."\" class=\"jsanalytics\"></div>\r\n".
                 "<div id=\"marketgidProd\" class=\"jsanalytics\"></div>\r\n";
     }
+
+    public function slotAdriver() {
+        /** @var \Model\Product\Entity $product  */
+        $product = $this->getParam('product');
+
+        if (!$product) {
+            $data = array(
+                'productId' => 0,
+                'categoryId' => 0,
+            );
+        }
+        else {
+            $data = array(
+                'productId' => $product->getId(),
+                'categoryId' => 0,
+            );
+        }
+
+        return "<div id=\"adriverCommon\" data-vars='".json_encode( $data )."' class=\"jsanalytics\"></div>\r\n";
+    }
 }

@@ -64,7 +64,7 @@
     <div id="gooReMaCategories" class="jsanalytics"></div>
     <div id="luxupTracker" class="jsanalytics"></div>
 
-    <?//= $page->slotAdriver() ?>
+    <?= $page->slotAdriver() ?>
 
 </body>
 </html>

@@ -110,4 +110,8 @@ class DefaultLayout extends Layout {
     public function slotAdvanceSeoCounter() {
         return '';
     }
+
+    public function slotAdriver() {
+        return '';
+    }
 }
