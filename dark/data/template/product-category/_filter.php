@@ -15,6 +15,11 @@ $formName = \View\Product\FilterForm::$name;
 
 <!-- Filter -->
 <form class="product_filter-block" action="" method="get" data-action-count="<?= $page->url('product.count', array('categoryPath' => $category->getPath())) ?>">
+	<div class="filterresult product_count-block">
+		<div class="corner"><div></div></div>
+		Выбрано <span class="result">result.data</span> модел<span class="ending">ending</span><br/>
+		<a>Показать</a>
+	</div>
     <dl class="bigfilter form bSpec">
         <dt class="filterHeader">Выбираем:<i></i></dt>
         <? require __DIR__ . '/_selectedFilter.php' ?>

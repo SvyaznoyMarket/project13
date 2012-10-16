@@ -152,6 +152,12 @@ class AppConfig {
         ),
     );
 
+    /** @var array */
+    public $smartEngine = array(
+        'pull' => true,
+        'push' => true,
+    );
+
     final public function __construct() {
         $this->initialize();
     }

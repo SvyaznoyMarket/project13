@@ -1,5 +1,5 @@
 <script type="text/html" id="auth_tmpl">
-	<a href="<?php echo url_for('user') ?>"><%=user%> </a>
+	<a href="<?php echo url_for('user') ?>"><%=user%></a>
 	&nbsp;<a href="<?php echo url_for('user_signout') ?>">(выйти)</a>
 </script>
 

@@ -7,7 +7,7 @@ $(document).ready(function(){
 	
 	/* Lightbox */
 	var lbox = {}
-	if (window.Lightbox === undefined) {
+	if ( !$('.lightbox').length ) {
 		$('.lightboxinner').hide()
 		$.getJSON( shortinfo, function(data) {
 			if( data.success ) {
