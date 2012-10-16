@@ -77,6 +77,8 @@
                 .script( 'http://direct-credit.ru/widget/api_script_utf.js' )
 				.wait()
 				.script(getWithVersion('main.js'))
+				.wait()
+				.script(getWithVersion('dash.js'))
 				.script(getWithVersion('app.cart.js'))
 			}).runQueue()
 			break
