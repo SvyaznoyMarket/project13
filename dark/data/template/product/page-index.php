@@ -14,7 +14,7 @@
 <?php
   $json = json_encode(array (
     'jsref' => $product->getToken(),
-    'jstitle' => htmlspecialchars($product->getName(), ENT_QUOTES, 'UTF-8'),
+    'jstitle' => $page->escape($product->getName()),
     'jsprice' => $product->getPrice(),
     'jsimg' => $product->getImageUrl(3),
     'jsbimg' =>  $product->getImageUrl(2),
@@ -149,7 +149,7 @@
   <?php endif; ?>
 
   <?php if ($dataForCredit['creditIsAllowed']) : ?>
-  <input data-model="<?php echo htmlspecialchars($dataForCredit['creditData']) ?>" id="dc_buy_on_credit_<?php echo $product->getArticle(); ?>" name="dc_buy_on_credit" type="hidden" />
+  <input data-model="<?php echo $page->escape($dataForCredit['creditData']) ?>" id="dc_buy_on_credit_<?php echo $product->getArticle(); ?>" name="dc_buy_on_credit" type="hidden" />
   <?php endif; ?>
 
   <?php if ($product->getIsBuyable()): ?>

@@ -43,6 +43,8 @@
       <div class="clear"></div>
     </div>
 
+    <?php include_partial('order_/footer') ?>
+
     <?php include_component('default', 'footer', array('view' => 'compact', )) ?>
 
     <?php if (!include_slot('auth')) include_partial('default/auth') ?>

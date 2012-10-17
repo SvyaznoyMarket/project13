@@ -26,6 +26,7 @@
 
 <?php include_component('region', 'select') ?>
 
+<?php include_partial('order_/footer') ?>
 <?php include_component('default', 'footer', array('view' => 'compact')) ?>
 <script src="/js/jquery-1.6.4.min.js" type="text/javascript"></script>
 <script src="/js/LAB.min.js" type="text/javascript"></script>
