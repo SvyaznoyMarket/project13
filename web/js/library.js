@@ -1198,6 +1198,56 @@ function MapYandexWithShops( center, templateIWnode, DOMid ) {
 
 } // object MapYandexWithShops
 
+function MapOnePoint( position, nodeId ) {
+    if( !position )
+        return false
+    if( !position.longitude || !position.latitude )
+        return false
+    var self = this
+
+    var markerPreset = {
+        iconImageHref: '/images/marker.png',
+        iconImageSize: [39, 59], 
+        iconImageOffset: [-19, -57] 
+    }
+
+    self.yandex = function() {      
+        var point = [ position.latitude , position.longitude ]
+        var myMap = new ymaps.Map ( nodeId, {
+            center: point,
+            zoom: 16
+        })
+        myMap.controls.add('zoomControl')
+        
+        var myPlacemark = new ymaps.Placemark( point, {}, markerPreset)
+        
+        myMap.geoObjects.add(myPlacemark)
+    }
+
+    self.google = function() {
+        var options = {
+            zoom: 16,
+            // center: position,
+            scrollwheel: false,
+            mapTypeId: google.maps.MapTypeId.ROADMAP,
+            mapTypeControlOptions: {
+                style: google.maps.MapTypeControlStyle.DROPDOWN_MENU
+            }
+        }
+        
+        var point = new google.maps.LatLng( position.latitude , position.longitude )
+        options.center = point
+        var map = new google.maps.Map(document.getElementById( nodeId ), options)
+
+        var marker = new google.maps.Marker({
+            position: point,
+            map: map,
+            icon: markerPreset.iconImageHref
+        })
+    }
+
+} // object MapOnePoint
+
 function calcMCenter( shops ) {
 	var latitude = 0, longitude = 0, l = 0
 	for(var i in shops ) {
@@ -1214,6 +1264,7 @@ function calcMCenter( shops ) {
 
 window.MapInterface = (function() {
     var vendor, tmplSource
+
     return {
         ready: function( vendorName, tmpl ) {        
             vendor     = vendorName
@@ -1230,6 +1281,7 @@ window.MapInterface = (function() {
             // } else // $LAB.sandbox().script( 'http://api-maps.yandex.ru/2.0/?load=package.full&lang=ru-RU' ).wait( function() {
               
         },
+
         init: function( coordinates, mapContainerId, callback, updater ) { 
             if( vendor === 'yandex' ) {
                 if( typeof(ymaps)!=='undefined' && ymaps.isReady ) {
@@ -1262,7 +1314,31 @@ window.MapInterface = (function() {
                 if( typeof( callback ) !== 'undefined' )
                     callback()
             }
+        },
+
+        onePoint: function( coordinates, mapContainerId ) {
+             var mtmp = new MapOnePoint( coordinates, mapContainerId )
+            
+            if( vendor === 'yandex' ) {
+                if( typeof(ymaps)!=='undefined' && ymaps.isReady ) {
+                    mtmp[vendor]()
+                } else {
+                    PubSub.subscribe('yandexIsReady', function() {
+                        mtmp[vendor]()
+                    })
+                }
+            } 
+            if( vendor === 'google' ) {
+                mtmp[vendor]()
+            }
+        },
+
+        getMapContainer: function() {
+            // TODO
+            // return window.regionMap
         }
+
+        // TODO wrap fn calcMCenter as a method
     }
 }() ); // singleton
 
