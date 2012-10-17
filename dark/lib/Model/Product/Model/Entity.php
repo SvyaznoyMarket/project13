@@ -25,4 +25,16 @@ class Entity {
     public function getProperty() {
         return $this->property;
     }
+
+    /**
+     * @return string
+     */
+    public function getVariations() {
+        $list = array();
+        foreach ($this->property as $property) {
+            $list[] = mb_strtolower($property->getName());
+        }
+
+        return implode(', ', $list);
+    }
 }

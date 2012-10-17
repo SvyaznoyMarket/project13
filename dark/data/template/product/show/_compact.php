@@ -1,15 +1,15 @@
 <?php
 /**
- * @var $page \View\DefaultLayout
- * @var $product \Model\Product\CompactEntity
+ * @var $page     \View\DefaultLayout
+ * @var $product  \Model\Product\CompactEntity
  * @var $isHidden bool
- * @var $kit \Model\Product\Kit\Entity
+ * @var $kit      \Model\Product\Kit\Entity
  * */
 ?>
 
 <?php
 $isHidden = isset($isHidden) && $isHidden;
-$hasModel = (isset($hasModel) ? $hasModel : true) && $product->getModel() && count($product->getModel()->getPropertyList());
+$hasModel = (isset($hasModel) ? $hasModel : true) && $product->getModel() && (bool)$product->getModel()->getProperty();
 ?>
 
 <div class="goodsbox"<? if ($isHidden): ?> style="display:none;"<? endif ?>>
