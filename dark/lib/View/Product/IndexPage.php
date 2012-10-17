@@ -5,7 +5,7 @@ namespace View\Product;
 class IndexPage extends \View\DefaultLayout {
 
     /** @var string */
-    protected $layout  = 'layout-default-oneColumn';
+    protected $layout  = 'layout-oneColumn';
 
     public function slotContent() {
         return $this->render('product/page-index', $this->params);

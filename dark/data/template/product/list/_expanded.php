@@ -1,7 +1,7 @@
 <?php
 /**
- * @var $page \View\Layout
- * @var $pager \Iterator\EntityPager
+ * @var $page    \View\Layout
+ * @var $pager   \Iterator\EntityPager
  * @var $product \Model\Product\Entity
  * */
 ?>

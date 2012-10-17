@@ -3,7 +3,7 @@
 namespace View\Search;
 
 class EmptyPage extends \View\DefaultLayout {
-    protected $layout = 'layout-default-oneColumn';
+    protected $layout = 'layout-oneColumn';
 
     public function prepare() {
         if (!$this->hasParam('title')) {

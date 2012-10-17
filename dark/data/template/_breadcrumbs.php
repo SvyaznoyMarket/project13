@@ -1,6 +1,8 @@
 <?php
-/** @var $class string|null */
-/** @var $breadcrumbs array('url' => null, 'name' => null)[] */
+/**
+ * @var $class       string|null
+ * @var $breadcrumbs array('url' => null, 'name' => null)[]
+ */
 ?>
 
 <?php if ((bool)$breadcrumbs): ?>

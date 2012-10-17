@@ -3,7 +3,7 @@
 namespace View;
 
 class DefaultLayout extends Layout {
-    protected $layout  = 'layout-default-twoColumn';
+    protected $layout  = 'layout-twoColumn';
 
     public function __construct() {
         parent::__construct();

@@ -1,7 +1,7 @@
 <?php
 /**
- * @var $page \View\Layout
- * @var $user \Session\User
+ * @var $page           \View\Layout
+ * @var $user           \Session\User
  * @var $rootCategories \Model\Product\Category\Entity[]
  */
 ?>

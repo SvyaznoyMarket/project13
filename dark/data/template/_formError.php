@@ -1,7 +1,7 @@
 <?php
 /**
  * @var $errors string[]
- * @var $error string
+ * @var $error  string
  */
 ?>
 
