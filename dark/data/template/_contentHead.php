@@ -1,7 +1,9 @@
 <?php
-/** @var $page \View\Layout */
-/** @var $title string|null */
-/** @var $breadcrumbs array('url' => null, 'name' => null)[] */
+/**
+ * @var $page        \View\Layout
+ * @var $title       string|null
+ * @var $breadcrumbs array('url' => null, 'name' => null)[]
+ */
 ?>
 
 <div class="pagehead">

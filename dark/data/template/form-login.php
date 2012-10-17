@@ -1,7 +1,7 @@
 <?php
 /**
- * @var $page \View\Layout
- * @var $form \View\User\LoginForm
+ * @var $page     \View\Layout
+ * @var $form     \View\User\LoginForm
  * @var $redirect string
  */
 ?>

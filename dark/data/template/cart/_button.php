@@ -1,9 +1,9 @@
 <?php
 /**
- * @var $page \View\Layout
- * @var $user \Session\User
- * @var $product \Model\Product\Entity
- * @var $view string
+ * @var $page     \View\Layout
+ * @var $user     \Session\User
+ * @var $product  \Model\Product\Entity
+ * @var $view     string
  * @var $quantity int
  */
 ?>

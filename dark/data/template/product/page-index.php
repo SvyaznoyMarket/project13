@@ -1,13 +1,13 @@
 <?php
 /**
- * @var $page \View\Layout
- * @var $product \Model\Product\Entity
- * @var $user \Session\User
- * @var $accessories \Model\Product\Entity[]
- * @var $related \Model\Product\Entity[]
- * @var $kit \Model\Product\Entity[]
- * @var showAccessoryUpper bool
- * @var $showRelatedUpper bool
+ * @var $page               \View\Layout
+ * @var $product            \Model\Product\Entity
+ * @var $user               \Session\User
+ * @var $accessories        \Model\Product\Entity[]
+ * @var $related            \Model\Product\Entity[]
+ * @var $kit                \Model\Product\Entity[]
+ * @var $showAccessoryUpper bool
+ * @var $showRelatedUpper   bool
  */
 ?>
 

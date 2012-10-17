@@ -1,9 +1,9 @@
 <?php
 /**
- * @var $page \View\Layout
- * @var $product \Model\Product\Entity
+ * @var $page     \View\Layout
+ * @var $product  \Model\Product\Entity
  * @var $disabled bool
- * @var $value string
+ * @var $value    string
  */
 ?>
 
