@@ -68,9 +68,6 @@
 .heart {display:inline-block; width:55px; height:27px; background:url(/css/common/img/bg_inner.png) no-repeat 0 -212px; margin-left:15px}
 .entertitle {font-size:30px; font-family:"Enter"}
 
-.avatar {display:inline-block; width:54px; height:54px; position:relative}
-.avatar B {position:absolute; left:0; top:0; display:block; width:54px; height:54px; background:url(/css/skin/img/avatar_cover.png) no-repeat 0 0}
-.avatar B.current {background-position:0 -59px}
 
 .whitelink .leaf {
   background: url("/css/common/img/bg.png") no-repeat -197px -101px;
@@ -332,65 +329,12 @@ border-radius: 7px;
 .shoplist .description .supply3 {background-position:-699px -321px}
 .shoplist .description .supply4 {background-position:-732px -321px}
 
-
-
-
-.comment {float:left; width:100%; padding-bottom:19px; border-bottom:1px solid #e6e6e6; margin-bottom:15px}
-.commentleft {float:left; width:195px; padding-right:20px; text-align:right; line-height:18px}
-.real {float:right; width:131px; height:54px;  background:#f4f4f4 url(/css/common/img/bg_inner.png) no-repeat -432px -284px; margin-bottom:5px}
-.realtext {float:left; padding:15px 0 0 13px; font-size:10px; line-height:12px; text-align:left}
-.comment .avatar {padding-bottom:5px}
-.real .avatar {padding:0}
-.vote A {font-weight:bold; text-decoration:underline}
-.vote A.green:hover {color:#6ea428}
-.commentright {float:left; width:684px; min-height:147px; padding-left:20px; border-left:1px solid #e6e6e6}
-.commenttext {float:left; width:450px; overflow:hidden}
-.gradelist {float:right; margin-right:20px; font-size:10px; color:#a6a6a6}
-.gradelist LI {padding-bottom:5px}
-.gradelist DIV {padding-bottom:3px; font-size:12px; color:#000}
-
-.sharebox {float:right; position:relative; padding-right:10px}
-.sharelink, .sharelink:hover {position:relative; z-index:2; display:inline-block; padding:5px 0 1px 28px; background:url(/css/skin/img/icons.png) no-repeat 0 -236px; font-size:11px; color:#5da7d9}
-.sharelist {display:none; position:absolute; bottom:-12px; right:0; padding:10px 12px 37px 12px; background:#fff; border:2px solid #eaeaea;
-	border-radius:5px;
-	-moz-border-radius:5px;
-	-webkit-border-radius:5px;
-	-moz-box-shadow:0 0 7px #616161;
-	-webkit-box-shadow:0 0 7px #616161;
-	box-shadow:0 0 7px #616161;
-}
-.sharelist li, .backetsharelist li{padding-bottom:8px}
-.sharelist a, .backetsharelist a{color:#a6a6a6; text-decoration:underline; background:url(/css/skin/img/icons.png) no-repeat; padding:0 0 3px 26px}
-.sharelist .facebook, .backetsharelist .facebook  {background-position:0 -264px}
-.sharelist .vkontakte, .backetsharelist .vkontakte {background-position:0 -290px}
-.sharelist .mailru, .backetsharelist .mailru {background-position:0 -316px}
-.sharelist .odnoklassniki, .backetsharelist .odnoklassniki {background-position:0 -342px}
-.sharelist .twitter, .backetsharelist .twitter {background-position:0 -368px}
-
-.addcomment {display:none; padding-top:15px}
-.textareabox {padding:5px 10px; border:1px solid #c9c9c9;
-border-radius: 5px;
--moz-border-radius:5px;
--webkit-border-radius:5px;
-}
-.textareabox:hover {border-color:#ffd073}
-.textareabox.active {background-color:#fff3db; border-color:#ffd073}
-.textareabox.textdisabled {border-color:#e4e4e4}
-.textareabox textarea{width:662px; height:60px; padding:0; border:none; background:none; overflow:auto; outline:none}
-.textareabox.textdisabled textarea{color:#a6a6a6}
-.addcomment .textareabox {margin-bottom:10px}
-
-.commentlink {display:inline-block; font-weight:bold; background:url(/css/skin/img/icons.png) no-repeat 100% -54px; padding-right:20px; margin-bottom:15px}
-.commentlinkopen {display:inline-block; font-weight:bold; background:url(/css/skin/img/icons.png) no-repeat 100% 5px; padding-right:20px; margin-bottom:15px}
-.commentanswer {display:none; float:left; width:100%}
 .answer {float:left; width:100%; padding-bottom:20px}
 .answerleft {float:left; width:103px; padding-right:10px; text-align:right; line-height:18px}
 .answer .avatar {line-height:1px}
 .answer .avatar img{vertical-align:top}
 .answerright {float:right; width:571px; overflow:hidden}
 
-.checkboxlist {padding-left:20px}
-.checkboxlist LI {padding-bottom:5px}
 
 .checkboxlist2 {padding-left:20px}
 .checkboxlist2 LI {padding-bottom:15px}
