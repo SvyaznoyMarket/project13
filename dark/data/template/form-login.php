@@ -1,6 +1,6 @@
 <?php
 /**
- * @var $page \View\DefaultLayout
+ * @var $page \View\Layout
  * @var $form \View\User\LoginForm
  * @var $redirect string
  */

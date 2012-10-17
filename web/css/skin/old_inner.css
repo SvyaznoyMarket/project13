@@ -731,148 +731,18 @@ border-radius: 5px;
 
 
 /* ----------- map info ------------- */
-.bMap{
-	clear: both;
-	position: relative;
-	padding: 10px 20px;
-	border: 1px solid #d9d9d9;
-	border-radius: 10px;
-	-moz-border-radius: 10px;
-	-webkit-border-radius: 10px;
-	box-shadow: 0 0 4px #d9d9d9;
-	-moz-box-shadow: 0 0 4px #d9d9d9;
-	-webkit-box-shadow: 0 0 4px #d9d9d9;
-	font-size: 0;
-	}
 
-	.bMap__eBody,
-	.bMap__eImages{
-		height: 429px;
-		overflow: hidden;
-		vertical-align: top;
-		display: inline-block;
-		*display: inline;
-		zoom: 1;
-		}
-	.bMap__eBody{
-		width: 696px;
-		z-index: 1;
-		}
-	.bMap__eImages{
-		width: 166px;
-		margin: 0 0 0 16px;
-		}
-	.bMap__eImagesTitle{
-		margin: 10px 0;
-		padding: 0;
-		font: 16px Tahoma, sans-serif;
-		}
-	.bMap__eImg{
+/*	.bMap__eImg{
 		width: 696px;
 		height: 429px;
-		}
-	.bMap__eImgSmall,
-	.bMap__eContainer{
-		width: 80px;
-		height: 49px;
-		cursor: pointer;
+	}*/
 
-		display: inline-block;
-		*display: inline;
-		zoom: 1;
-		}
-	.bMap__eContainer{
-		padding: 1px;
-		}
-	.bMap__eContainer.first,
-	.bMap__eContainer.first .bMap__eImgSmall{
-		width: 162px;
-		height: 96px;
-		}
-	.bMap__eContainer.first{
-		padding: 2px;
-		}
-	.bMap__eContainer.mChecked,
-	.bMap__eContainer:hover{
-		border: 1px solid #ffa901;
-		padding: 0;
-		}
-
-	.bMap__eContainer.mChecked.first,
-	.bMap__eContainer.first:hover{
-		border: 2px solid #ffa901;
-		padding: 0;
-		}
-	.bMap__eContainer.mChecked .bMap__eImgBig{
-		display: block;
-		}
-	.bMap__eImgSmall{
-		width: 80px;
-		height: 49px;
-		border: none;
-		}
-	.bMap__eImgBig{
-		top: 10px;
-		left: 20px;
-		z-index: 10;
-		width: 696px;
-		height: 429px;
-		display: none;
-		overflow: hidden;
-		position: absolute;
-		}
-	.bMap__eImgBig img{
-		width: 696px;
-		height: 429px;
-		}
-
-.bMapInfo{
-	margin: 30px 0 20px 0;
-	}
-	.bMapInfo__eIco,
-	.bMapInfo__eText{
-		vertical-align: top;
-		display: inline-block;
-		*display: inline;
-		zoom: 1;
-		}
-	.bMapInfo__eIco{
-		width: 63px;
-		height: 50px;
-		}
-		.bMapInfo__eIco.mCar{
-			background: url('img/car.png') 50% 0 no-repeat;
-			}
-		.bMapInfo__eIco.mShop{
-			background: url('img/shop.png') 50% 0 no-repeat;
-			}
-	.bMapInfo__eText{
-		width: 845px;
-		}
-	.bMapInfo__eTitle{
-		padding: 0;
-		margin: 0 0 20px 0;
-		font: 24px Tahoma, sans-serif;
-		}
-	.bMapInfo__eP{
-		padding: 0;
-		margin: 0 0 15px 0;
-		}
-		.bMapInfo__eSpan{}
 	.bMap.mFull .bMap__eImages{
 		display: none;
 		}
 	.bMap.mFull .bMap__eBody,
 	.bMap.mFull .bMap__eImg{
 		width: 100%;
-		}
-	.bMap__e360{
-		width: 96px;
-		height: 64px;
-		position: relative;
-		top: -80px;
-		left: 31px;
-		background: url('img/360g.png') no-repeat;
 		}
 /* ----------- /map info ------------- */
 

@@ -4719,6 +4719,137 @@
   }
 }
 /*---END---СТИЛИ СТРАНИЦЫ С МАГАЗИНАМИ---*/
+/*-------СТИЛИ СТРАНИЦЫ МАГАЗИНА-----*/
+@media all {
+  .bMap {
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    -webkit-box-shadow: 0px 0px 4px #d9d9d9;
+    -moz-box-shadow: 0px 0px 4px #d9d9d9;
+    box-shadow: 0px 0px 4px #d9d9d9;
+    border: 1px solid #d9d9d9;
+    clear: both;
+    font-size: 0px;
+    padding: 10px 20px;
+    position: relative;
+  }
+  .bMap__eBody,
+  .bMap__eImages {
+    display: inline-block;
+    *display: inline;
+    height: 429px;
+    overflow: hidden;
+    vertical-align: top;
+    zoom: 1;
+  }
+  .bMap__eBody {
+    width: 696px;
+    z-index: 1;
+  }
+  .bMap__eImages {
+    margin: 0px 0px 0px 16px;
+    width: 166px;
+  }
+  .bMap__eImagesTitle {
+    font: 16px Tahoma, sans-serif;
+    margin: 10px 0px;
+    padding: 0px;
+  }
+  .bMap__eImgSmall,
+  .bMap__eContainer {
+    cursor: pointer;
+    display: inline-block;
+    *display: inline;
+    height: 49px;
+    width: 80px;
+    zoom: 1;
+  }
+  .bMap__eContainer {
+    padding: 1px;
+  }
+  .bMap__eContainer.first {
+    padding: 2px;
+  }
+  .bMap__eContainer.first,
+  .bMap__eContainer.first .bMap__eImgSmall {
+    height: 96px;
+    width: 162px;
+  }
+  .bMap__eContainer.mChecked,
+  .bMap__eContainer:hover {
+    border: 1px solid #ffa901;
+    padding: 0px;
+  }
+  .bMap__eContainer.mChecked .bMap__eImgBig {
+    display: block;
+  }
+  .bMap__eContainer.mChecked.first,
+  .bMap__eContainer.first:hover {
+    border: 2px solid #ffa901;
+    padding: 0px;
+  }
+  .bMap__eImgSmall {
+    border: none;
+    height: 49px;
+    width: 80px;
+  }
+  .bMap__eImgBig {
+    display: none;
+    height: 429px;
+    left: 20px;
+    overflow: hidden;
+    position: absolute;
+    top: 10px;
+    width: 696px;
+    z-index: 10;
+  }
+  .bMap__eImgBig img {
+    height: 429px;
+    width: 696px;
+  }
+  .bMapInfo {
+    margin: 30px 0px 20px;
+  }
+  .bMapInfo__eIco,
+  .bMapInfo__eText {
+    display: inline-block;
+    *display: inline;
+    vertical-align: top;
+    zoom: 1;
+  }
+  .bMapInfo__eIco {
+    height: 50px;
+    width: 63px;
+  }
+  .bMapInfo__eIco.mCar {
+    background: url("/css/shop/img/car.png") 50% 0px no-repeat;
+  }
+  .bMapInfo__eIco.mShop {
+    background: url("/css/shop/img/shop.png") 50% 0px no-repeat;
+  }
+  .bMapInfo__eText {
+    width: 845px;
+  }
+  .bMapInfo__eTitle {
+    font: 24px Tahoma, sans-serif;
+    margin: 0px 0px 20px;
+    padding: 0px;
+  }
+  .bMapInfo__eP {
+    margin: 0px 0px 15px;
+    padding: 0px;
+  }
+  .bMap__e360 {
+    background: url("/css/shop/img/360g.png") no-repeat;
+    height: 64px;
+    left: 31px;
+    position: relative;
+    top: -80px;
+    width: 96px;
+  }
+}
+/*---END---СТИЛИ СТРАНИЦЫ МАГАЗИНА---*/
 /*-------СТИЛИ СТРАНИЦЫ О КОМПАНИИ-----*/
 @media all {
   .bAbout {

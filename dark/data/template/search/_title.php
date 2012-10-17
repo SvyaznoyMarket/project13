@@ -1,6 +1,6 @@
 <?php
 /**
- * @var $page        \View\DefaultLayout
+ * @var $page        \View\Layout
  * @var $searchQuery string
  * @var $meanQuery   string
  * @var $forceMean   string|bool

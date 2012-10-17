@@ -1,6 +1,6 @@
 <?php
 /**
- * @var $page     \View\DefaultLayout
+ * @var $page     \View\Layout
  * @var $product  \Model\Product\CompactEntity
  * @var $isHidden bool
  * @var $kit      \Model\Product\Kit\Entity
@@ -74,9 +74,11 @@ $hasModel = (isset($hasModel) ? $hasModel : true) && $product->getModel() && (bo
 
                 <h3><a href="<?= $product->getLink() ?>"><?= $product->getName() ?></a></h3>
 
+                <? if ($product->getIsBuyable()): ?>
                 <div class="goodsbar mSmallBtns mR">
                     <?= $page->render('cart/_button', array('product' => $product)) ?>
                 </div>
+                <? endif ?>
 
                 <div class="font18 pb10 mSmallBtns">
                     <span class="price"><?= $page->helper->formatPrice($product->getPrice()) ?></span> <span class="rubl">p</span>
