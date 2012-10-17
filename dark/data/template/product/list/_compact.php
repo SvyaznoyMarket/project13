@@ -18,12 +18,12 @@ $hasLastLine = isset($hasLastLine) ? $hasLastLine : true;
 
     <? $i = 0; foreach ($pager as $product): $i++ ?>
         <?= $page->render('product/show/_compact', array('product' => $product)) ?>
-        <?php if (!($i % $itemsPerRow) && ($i == $pager->count() ? $hasLastLine : true)): ?>
+        <?php if (!($i % $itemsPerRow) && ($i == $pager->count() ? $hasLastLine : true) && !$isAjax): ?>
             <div class="line"></div>
         <?php endif ?>
     <?php endforeach ?>
 
-    <?php if (($i % $itemsPerRow) && $hasLastLine): ?>
+    <?php if (($i % $itemsPerRow) && $hasLastLine && !$isAjax): ?>
         <div class="line"></div>
     <?php endif ?>
 
