@@ -11,7 +11,7 @@
 $url = $page->url('product.line', array('lineId' => $product->getLine()->getId()));
 ?>
 
-<div class="goodsbox height250"<?= (isset($ii) && $ii > 3) ? ' style="display:none;"' : '' ?>>
+<div class="goodsbox height250"<? if ($isHidden): ?> style="display:none;"<? endif ?>>
     <div class="photo">
         <a href="<?= $url ?>">
             <? if ($label = $product->getLabel()): ?>
