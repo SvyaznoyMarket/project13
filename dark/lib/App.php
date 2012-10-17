@@ -108,6 +108,21 @@ class App {
 
     /**
      * @static
+     * @return \Http\Session
+     */
+    public static function getSession() {
+        static $instance;
+
+        if (!$instance) {
+            $instance = new \Http\Session();
+            $instance->start();
+        }
+
+        return $instance;
+    }
+
+    /**
+     * @static
      * @return \Session\User
      */
     public static function user() {
