@@ -1,6 +1,6 @@
 <?php
 /**
- * @var $page           \View\DefaultLayout
+ * @var $page           \View\Layout
  * @var $request        \Http\Request
  * @var $pager          \Iterator\EntityPager
  * @var $view           string

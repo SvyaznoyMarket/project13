@@ -1,5 +1,5 @@
 <?php
-/** @var $page \View\DefaultLayout */
+/** @var $page \View\Layout */
 /** @var $title string|null */
 /** @var $breadcrumbs array('url' => null, 'name' => null)[] */
 ?>

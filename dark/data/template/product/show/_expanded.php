@@ -1,6 +1,6 @@
 <?php
 /**
- * @var $page    \View\DefaultLayout
+ * @var $page    \View\Layout
  * @var $product \Model\Product\ExpandedEntity
  * */
 ?>
@@ -49,9 +49,11 @@ $hasModel = (isset($hasModel) ? $hasModel : true) && $product->getModel() && (bo
         <div class="extrainfo">
             <span class="db font18 pb10"><b><span class="price"><?= $page->helper->formatPrice($product->getPrice()) ?></span> <span class="rubl">p</span></b></span>
 
+            <? if ($product->getIsBuyable()): ?>
             <div class="goodsbar mSmallBtns">
                 <?= $page->render('cart/_button', array('product' => $product)) ?>
             </div>
+            <? endif ?>
 
             <? if ($product->getIsBuyable()): ?>
             <noindex>

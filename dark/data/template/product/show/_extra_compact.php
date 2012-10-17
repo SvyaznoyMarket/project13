@@ -1,8 +1,8 @@
 <?php
 /**
- * @var $page \View\DefaultLayout
- * @var $product \Model\Product\CompactEntity
- * @var $isHidden bool
+ * @var $page      \View\Layout
+ * @var $product   \Model\Product\CompactEntity
+ * @var $isHidden  bool
  * @var $maxHeight bool
  * */
 ?>

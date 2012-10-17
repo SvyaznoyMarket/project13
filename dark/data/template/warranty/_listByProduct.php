@@ -1,8 +1,8 @@
 <?php
 /**
- * @var $page \View\DefaultLayout
+ * @var $page    \View\Layout
  * @var $product \Model\Product\Entity
- * @var $user \Session\User
+ * @var $user    \Session\User
  */
 
 $user = \App::user();

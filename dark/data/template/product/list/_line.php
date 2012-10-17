@@ -1,6 +1,6 @@
 <?php
 /**
- * @var $page    \View\DefaultLayout
+ * @var $page    \View\Layout
  * @var $pager   \Iterator\EntityPager
  * @var $product \Model\Product\Entity
  * @var $isAjax  bool
