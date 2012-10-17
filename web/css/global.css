@@ -6,6 +6,36 @@
 /*типичный серый*/
 /*типичный светло-серый*/
 /*типичный цвет тени*/
+/*---------ШРИФТЫ----------*/
+@font-face {
+  font-family: 'Enter';
+  src: url('/css/common/fonts/enter_brash_01-webfont.eot');
+  src: url('/css/common/fonts/enter_brash_01-webfont.eot?#iefix') format('embedded-opentype'), url('/css/common/fonts/enter_brash_01-webfont.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Rouble';
+  src: url('/css/common/fonts/rouble.eot');
+  src: url('/css/common/fonts/rouble.eot?#iefix') format('embedded-opentype'), url('/css/common/fonts/rouble.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Enter Type';
+  src: url('/css/common/fonts/enter_type-webfont.eot');
+  src: url('/css/common/fonts/enter_type-webfont.eot?#iefix') format('embedded-opentype'), url('/css/common/fonts/enter_type-webfont.woff') format('woff'), url('/css/common/fonts/enter_type-webfont.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Enter Type Bold';
+  src: url('/css/common/fonts/entertype_bold-webfont.eot');
+  src: url('/css/common/fonts/entertype_bold-webfont.eot?#iefix') format('embedded-opentype'), url('/css/common/fonts/enter_type-webfont.woff') format('woff'), url('/css/common/fonts/entertype_bold-webfont.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+.rouble {
+  font-family: Rouble;
+  font-size: 36px;
+}
+/*---END----ШРИФТЫ---------*/
 /*---ОСНОВНЫЕ ПРАВИЛА---*/
 @media all {
   html {
@@ -962,37 +992,26 @@
     text-align: left;
     zoom: 1;
   }
+  .dragbox {
+    bottom: 41px;
+    height: 100%;
+    left: 0px;
+    position: fixed;
+    right: 0px;
+    top: 0px;
+    width: 100%;
+    z-index: 101;
+  }
+  .dragbox div {
+    background-color: #ffffff;
+    cursor: pointer;
+    height: 60px;
+    position: absolute;
+    width: 60px;
+    z-index: 102;
+  }
 }
-/*---------ШРИФТЫ----------*/
-@font-face {
-  font-family: 'Enter';
-  src: url('/css/common/fonts/enter_brash_01-webfont.eot');
-  src: url('/css/common/fonts/enter_brash_01-webfont.eot?#iefix') format('embedded-opentype'), url('/css/common/fonts/enter_brash_01-webfont.ttf') format('truetype');
-}
-@font-face {
-  font-family: 'Rouble';
-  src: url('/css/common/fonts/rouble.eot');
-  src: url('/css/common/fonts/rouble.eot?#iefix') format('embedded-opentype'), url('/css/common/fonts/rouble.ttf') format('truetype');
-}
-@font-face {
-  font-family: 'Enter Type';
-  src: url('/css/common/fonts/enter_type-webfont.eot');
-  src: url('/css/common/fonts/enter_type-webfont.eot?#iefix') format('embedded-opentype'), url('/css/common/fonts/enter_type-webfont.woff') format('woff'), url('/css/common/fonts/enter_type-webfont.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-}
-@font-face {
-  font-family: 'Enter Type Bold';
-  src: url('/css/common/fonts/entertype_bold-webfont.eot');
-  src: url('/css/common/fonts/entertype_bold-webfont.eot?#iefix') format('embedded-opentype'), url('/css/common/fonts/enter_type-webfont.woff') format('woff'), url('/css/common/fonts/entertype_bold-webfont.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-}
-.rouble {
-  font-family: Rouble;
-  font-size: 36px;
-}
-/*---END----ШРИФТЫ---------*/
+/*--END---ОСНОВНЫЕ ПРАВИЛА---*/
 /*-----СТИЛИ jQuery UI-----*/
 @media all {
   /*!
@@ -3649,6 +3668,108 @@
   .mBuyButtonBottom.onleft {
     padding: 30px 10px 0px 0px;
     width: 470px;
+  }
+}
+/*стили отзывов к продукту*/
+@media all {
+  .goodsinfosmall {
+    float: left;
+    padding-left: 20px;
+    width: 500px;
+  }
+  .gradetable {
+    margin-bottom: 30px;
+  }
+  .gradetable thead td {
+    padding: 0px 0px 12px 20px;
+  }
+  .gradetable thead th {
+    padding: 0px 0px 12px;
+  }
+  .gradetable td {
+    padding: 0px 0px 5px 20px;
+  }
+  .gradetable th {
+    padding: 0px 0px 5px;
+    text-align: right;
+  }
+  .gradetable th a {
+    font-size: 10px;
+    text-decoration: underline;
+  }
+  .gradetable.fr tbody td {
+    padding: 0px 0px 8px 20px;
+  }
+  .gradetable.fr tbody th {
+    padding: 0px 0px 8px;
+  }
+  .gradetable tbody td {
+    color: #a6a6a6;
+    font-size: 10px;
+  }
+  .recomendbox {
+    margin: -5px 330px 0 330px;
+  }
+  .grade {
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    border: 1px solid #ffa901;
+    float: left;
+    font-size: 0px;
+    height: 6px;
+    line-height: 0px;
+    margin: 3px 6px 0px 0px;
+    width: 84px;
+  }
+  .grade div {
+    background: #ffb721;
+    float: left;
+    font-size: 0px;
+    height: 6px;
+    line-height: 0px;
+  }
+  .percentbox {
+    background: url("/css/item/img/percentBox.gif") no-repeat;
+    display: inline-block;
+    font-size: 18px;
+    height: 32px;
+    padding-top: 2px;
+    text-align: center;
+    vertical-align: middle;
+    width: 64px;
+  }
+  .goodsphotosmall {
+    float: left;
+    position: relative;
+    width: 160px;
+  }
+  .article a {
+    color: #a6a6a6;
+    margin-left: 25px;
+  }
+  .articlemenu {
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    border: 2px solid #dcdcdc;
+    float: right;
+    margin-bottom: 20px;
+    width: 215px;
+  }
+  .articlemenu li {
+    border-bottom: 1px solid #e6e6e6;
+    padding: 10px 0px;
+    text-align: center;
+  }
+  .articlemenu li.next {
+    border: none;
+  }
+  .articlemenu .current,
+  .articlemenu .current:hover {
+    color: #ffb423;
+    cursor: auto;
+    text-decoration: none;
   }
 }
 /*---END---СТИЛИ КАРТОЧКИ ТОВАРА---*/

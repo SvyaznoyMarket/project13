@@ -535,7 +535,7 @@ ul.lh15 li {
   z-index: 1000;
   .close {
     /* right: -2px;*/
-    background: url("/css/common/img/closeBtnOrange.png") no-repeat 0px 0px;
+    background: url("@{base-url}/common/img/closeBtnOrange.png") no-repeat 0px 0px;
     cursor: pointer;
     display: block;
     font-size: 0px;
@@ -861,7 +861,7 @@ ul.lh15 li {
 /* END BUTTONS*/
 .selectbox {
   .rounded(5px);
-  background: #e3e3e3 url("/css/common/img/bg_buttons.png") repeat-x 0px -128px;
+  background: #e3e3e3 url("@{base-url}/common/img/bg_buttons.png") repeat-x 0px -128px;
   border: 1px solid #c9c9c9;
   height: 22px;
   line-height: 22px;
@@ -887,7 +887,7 @@ ul.lh15 li {
     z-index: 2;
   }
   i {
-    background: url("/css/common/img/bg.png") no-repeat -62px -24px;
+    background: url("@{base-url}/common/img/bg.png") no-repeat -62px -24px;
     display: block;
     height: 7px;
     margin-top: -3px;
@@ -925,4 +925,22 @@ ul.lh15 li {
   padding: 15px 0px 30px;
   text-align: left;
   zoom: 1;
+}
+.dragbox {
+  bottom: 41px;
+  height: 100%;
+  left: 0px;
+  position: fixed;
+  right: 0px;
+  top: 0px;
+  width: 100%;
+  z-index: 101;
+  div {
+    background-color: @white;
+    cursor: pointer;
+    height: 60px;
+    position: absolute;
+    width: 60px;
+    z-index: 102;
+  }
 }
