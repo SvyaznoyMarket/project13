@@ -134,8 +134,11 @@ class Entity extends BasicEntity {
         }, $data['media']));
         if (array_key_exists('brand', $data) && (bool)$data['brand']) $this->setBrand(new \Model\Brand\Entity($data['brand']));
         if (array_key_exists('label', $data)) {
-            if (isset($data['label'][0]) && (bool)$data['label'][0]) $this->setLabel(new Label\Entity($data['label'][0]));
-            elseif ((bool)$data['label']) $this->setLabel(new Label\Entity($data['label']));
+            if (isset($data['label'][0]) && (bool)$data['label'][0]) {
+                $this->setLabel(new Label\Entity($data['label'][0]));
+            } elseif ((bool)$data['label']) {
+                $this->setLabel(new Label\Entity($data['label']));
+            }
         }
         if (array_key_exists('type', $data) && (bool)$data['type']) $this->setType(new Type\Entity($data['type']));
         if (array_key_exists('comment_count', $data)) $this->setCommentCount($data['comment_count']);

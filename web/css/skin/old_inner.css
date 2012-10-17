@@ -955,58 +955,7 @@ border-radius: 5px;
 
 
 /* --------------- bMapShops ------------------ */
-.bMapShops{
-	clear: both;
-	position: relative;
-	border: 1px solid #d9d9d9;
-	border-radius: 5px;
-	-moz-border-radius: 5px;
-	-webkit-border-radius: 5px;
-	box-shadow: 0 0 4px #d9d9d9;
-	-moz-box-shadow: 0 0 4px #d9d9d9;
-	-webkit-box-shadow: 0 0 4px #d9d9d9;
-	}
-	.bMapShops__eHead{
-		height: 161px;
-		background: #ededed;
-		}
-	.bMapShops__eImage{
-		top: 0;
-		right: 0;
-		height: 161px;
-		position: absolute;
-		border-top-right-radius: 5px;
-		-webkit-border-top-right-radius: 5px;
-		-moz-border-top-right-radius: 5px;
-		-ms-border-top-right-radius: 5px;
-		-o-border-top-right-radius: 5px;
-		}
-	.bMapShops__eRegion{
-		padding: 40px 20px 0 20px;
-		}
-	.bMapShops__eRegionTitle{
-		margin: 0 0 10px 0;
-		padding: 0;
-		font: 24px Tahoma, sans-serif;
-		}
-	.bMapShops__eRegionText{
-		margin-bottom: 6px;
-		font: 12px Tahoma, sans-serif;
-		}
-	.bMapShops__eTitle{
-		padding: 0;
-		margin: 20px 0;
-		font: bold 24px Tahoma;
-		}
-	.bMapShops .bMapShops__eTitle{
-		margin-left: 20px;
-		}
-	.bMapShops__eMapWrap{
-		/*margin: 20px;*/
-		}
-	.bMapShops__eInfo{
-		font-size: 0;
-		}
+
 .customalign h2.pb30 {
 	padding-bottom: 30px;
 }
@@ -1084,69 +1033,7 @@ border-radius: 5px;
 		background: url('img/z_popup_arrow.png') no-repeat;
 	}*/
 	
-.bShopCard{
-		width: 197px;
-		padding: 16px;
-		cursor: pointer;
-		vertical-align: top;
 
-		display: inline-block;
-		*display: inline;
-		zoom: 1;
-		}
-	.bShopCard:hover{
-		padding: 15px;
-		border: 1px solid #d9d9d9;
-
-		border-radius: 10px;
-		-webkit-border-radius: 10px;
-		-moz-border-radius: 10px;
-		-ms-border-radius: 10px;
-		-o-border-radius: 10px;
-
-		box-shadow: 0 0 5px #d9d9d9;
-		-webkit-box-shadow: 0 0 5px #d9d9d9;
-		-moz-box-shadow: 0 0 5px #d9d9d9;
-		-ms-box-shadow: 0 0 5px #d9d9d9;
-		-o-box-shadow: 0 0 5px #d9d9d9;
-		}
-	.bShopCard__eIco{
-		display: block;
-		margin: 0 auto;
-		}
-	.bShopCard__eTitle{
-		margin: 0;
-		padding: 10px;
-		font: 16px Tahoma, sans-serif;
-		}
-	.bShopCard__eDescription{
-		margin: 0;
-		padding: 0 0 15px 10px;
-		font: 12px Tahoma, sans-serif;
-		}
-	.bShopCard .bShopCard__eView{
-		color: #000;
-		margin-left: 10px;
-		padding: 3px 10px;
-		visibility: hidden;
-		text-decoration: none;
-		font: bold 11px Tahoma, sans-serif;
-		background: url('img/view_bg.png') repeat-x;
-
-		border-radius: 5px;
-		border: 1px solid #c9c9c9;
-		-webkit-border-radius: 5px;
-		-moz-border-radius: 5px;
-		-ms-border-radius: 5px;
-		-o-border-radius: 5px;
-		}
-	.bShopCard:hover .bShopCard__eView{
-		color: #000;
-		visibility: visible;
-		}
-	.bShopCard:hover .bShopCard__eView:hover{
-		background: url('img/view_hbg.png') repeat-x;
-		}
 /* --------------- /bMapShops ------------------ */
 
 /*----------------- mFakeSelect -------------------*/

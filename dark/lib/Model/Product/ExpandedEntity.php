@@ -50,7 +50,13 @@ class ExpandedEntity extends BasicEntity {
                 $this->addProperty($property);
             }
         }
-        if (array_key_exists('label', $data) && (bool)$data['label']) $this->setLabel(new Label\Entity($data['label']));
+        if (array_key_exists('label', $data)) {
+            if (isset($data['label'][0]) && (bool)$data['label'][0]) {
+                $this->setLabel(new Label\Entity($data['label'][0]));
+            } elseif ((bool)$data['label']) {
+                $this->setLabel(new Label\Entity($data['label']));
+            }
+        }
         if (array_key_exists('price', $data)) $this->setPrice($data['price']);
         if (array_key_exists('price_average', $data)) $this->setPriceAverage($data['price_average']);
         if (array_key_exists('price_old', $data)) $this->setPriceOld($data['price_old']);
