@@ -201,7 +201,7 @@
 </div>
 <!-- /ko -->
 
-<div style="margin-top: -10px;">*Дату доставки уточнит специалист Контакт Centra</div>
+<div style="margin-top: -10px;">*Дату доставки уточнит специалист Контакт-сENTER</div>
 
 <dl class='bBuyingLine mSumm order-total-container' style="margin-top: 0;">
 	<dt>

@@ -18,7 +18,7 @@
         <input id="searchStr" name="q" type='text' value='Поиск среди 20 000 тысяч товаров' onBlur="var field = document.getElementById('searchStr'); if(field.value == ''){field.value = 'Поиск среди 20 000 тысяч товаров'};return false;" onFocus="var field = document.getElementById('searchStr'); if(field.value == 'Поиск среди 20 000 тысяч товаров'){field.value = ''};return false;">
         <a class='bOrangeButton' href onclick="document.getElementById('searchForm').submit(); return false;">Найти</a>
       </form><br>
-      <span>или позвоните нам в контакт cENTER <b>8 (800) 700 00 09</b><br> Звонок бесплатный. Радость в подарок.</span><br><br>
+      <span>или позвоните нам в Контакт-сENTER <b>8 (800) 700 00 09</b><br> Звонок бесплатный. Радость в подарок.</span><br><br>
       <a class='bBigOrangeButton' href='/'>Перейти на главную</a>
     </div>
   </td>

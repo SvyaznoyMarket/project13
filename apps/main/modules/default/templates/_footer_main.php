@@ -1,6 +1,6 @@
 <div id="mainPageFooter">
   <div class='bIndexLinks2__eBan'>
-    <div class="vcardtitle">Контакт с ENTER</div>
+    <div class="vcardtitle">Контакт-сENTER</div>
     <div class="vcard"><span class="tel">8 (800) 700 00 09</span></div>
     <div class="address">
       Звонок бесплатный. Радость в подарок :)
