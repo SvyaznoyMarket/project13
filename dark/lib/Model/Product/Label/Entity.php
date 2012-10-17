@@ -6,7 +6,7 @@ class Entity {
     // Распродажа
     const LABEL_SALE = 1;
     // Акция
-    const LABEL_ACTION = 2;
+    const LABEL_PROMO = 2;
     // Скидка
     const LABEL_DISCOUNT = 3;
     // Супер Цена
@@ -19,6 +19,8 @@ class Entity {
     const LABEL_FANS = 7;
     // WOW-Кредит
     const LABEL_CREDIT = 8;
+    // Подарок
+    const LABEL_GIFT = 9;
 
     /** @var int */
     private $id;

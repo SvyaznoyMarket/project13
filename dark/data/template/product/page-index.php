@@ -37,6 +37,21 @@
   }
 
   $showAveragePrice = !$product->getPriceOld() && $product->getPriceAverage();
+
+    $adfox_id_by_label = 'adfox400';
+    if ($product->getLabel()) {
+        switch ($product->getLabel()->getId()) {
+            case \Model\Product\Label\Entity::LABEL_PROMO:
+                $adfox_id_by_label = 'adfox400counter';
+                break;
+            case \Model\Product\Label\Entity::LABEL_CREDIT:
+                $adfox_id_by_label = 'adfoxWowCredit';
+                break;
+            case \Model\Product\Label\Entity::LABEL_GIFT:
+                $adfox_id_by_label = 'adfoxGift';
+                break;
+        }
+    }
 ?>
 <script type="text/javascript">
   product_3d_small = <?php echo json_encode($p3d_res_small) ?>;
@@ -151,15 +166,7 @@
     <?php endif ?>
 
   <div style="margin-bottom: 20px;">
-    <?php
-    //если стоит шильдик Акция
-    if ($product->getLabel() && $product->getLabel()->getId() == \Model\Product\Label\Entity::LABEL_ACTION) { ?>
-      <div class="adfoxWrapper" id="adfox400counter"></div>
-      <?php } else if ($product->getLabel() && $product->getLabel()->getId() == \Model\Product\Label\Entity::LABEL_CREDIT) { ?>
-      <div class="adfoxWrapper" id="adfoxWowCredit"></div>
-      <?php } else { ?>
-      <div class="adfoxWrapper" id="adfox400"></div>
-      <?php } ?>
+    <div class="adfoxWrapper" id="<?php echo $adfox_id_by_label ?>"></div>
   </div>
 
     <?php echo $page->render('service/_listByProduct', array('product' => $product)) ?>
