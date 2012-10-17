@@ -18,13 +18,46 @@ class Action {
         $categoryToken = end($categoryToken);
 
         $repository = \RepositoryManager::getProductCategory();
-
         $category = $repository->getEntityByToken($categoryToken);
         if (!$category) {
             throw new \Exception\NotFoundException(sprintf('Категория товара с токеном "%s" не найдена.', $categoryToken));
         }
 
-        return new \Http\Response();
+        $pageNum = (int)$request->get('page', 1);
+        if ($pageNum < 1) {
+            throw new \Exception\NotFoundException(sprintf('Неверный номер страницы "%s".', $pageNum));
+        }
+
+        // сортировка
+        $productSorting = new \Model\Product\Sorting();
+
+        // вид товаров
+        $productView = $category->getHasLine() ? 'line' : 'compact';
+        // фильтры
+        $productFilter = $this->getFilter($category, $request);
+        // листалка
+        $limit = \App::config()->product['itemsInCategorySlider'];
+        $repository = \RepositoryManager::getProduct();
+        $repository->setEntityClass('\\Model\\Product\\CompactEntity');
+        $productPager = $repository->getIteratorByFilter(
+            $productFilter->dump(),
+            $productSorting->dump(),
+            ($pageNum - 1) * $limit,
+            $limit
+        );
+        $productPager->setPage($pageNum);
+        $productPager->setMaxPerPage($limit);
+        // проверка на максимально допустимый номер страницы
+        if (($productPager->getPage() - $productPager->getLastPage()) > 0) {
+            throw new \Exception\NotFoundException(sprintf('Неверный номер страницы "%s".', $productPager->getPage()));
+        }
+
+        return new \Http\Response(\App::templating()->render('product/_list', array(
+            'page'   => new \View\DefaultLayout(),
+            'pager'  => $productPager,
+            'view'   => $productView,
+            'isAjax' => true,
+        )));
     }
 
     /**
@@ -38,7 +71,6 @@ class Action {
         $categoryToken = end($categoryToken);
 
         $repository = \RepositoryManager::getProductCategory();
-
         $category = $repository->getEntityByToken($categoryToken);
         if (!$category) {
             throw new \Exception\NotFoundException(sprintf('Категория товара с токеном "%s" не найдена.', $categoryToken));

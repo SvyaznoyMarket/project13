@@ -28,6 +28,7 @@ Options +FollowSymLinks +ExecCGI
   RewriteRule ^search* dark.php [L]
   RewriteRule ^product/([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)$ dark.php [L]
   RewriteRule ^catalog/([a-zA-Z_0-9-]+(\/{0,1})[a-zA-Z_0-9-]+)/$ dark.php [L]
+  RewriteRule ^catalog/([a-zA-Z_0-9-]+(\/{0,1})[a-zA-Z_0-9-]+)/_slider$ dark.php [L]
 
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteRule ^wp-admin/$ /content/wp-admin/index.php [L]
