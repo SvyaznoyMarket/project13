@@ -1,9 +1,9 @@
 <?php
 /**
- * @var $page \View\DefaultLayout|\Templating\PhpEngine
- * @var $pager \Iterator\EntityPager
- * @var $view string
- * @var $isAjax bool
+ * @var $page     \View\DefaultLayout|\Templating\PhpEngine
+ * @var $pager    \Iterator\EntityPager
+ * @var $view     string
+ * @var $isAjax   bool
  * */
 ?>
 

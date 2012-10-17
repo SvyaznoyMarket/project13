@@ -96,8 +96,7 @@ class Entity {
      * @param int $size
      * @return null|string
      */
-    public function getImageUrl($size = 1)
-    {
+    public function getImageUrl($size = 1) {
         if ($this->image) {
             $urls = \App::config()->productPhoto['url'];
 

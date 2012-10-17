@@ -76,12 +76,17 @@
   <a href="<?php echo url_for('order_new') ?>" class="bBigOrangeButton width345">Оформить заказ</a>
 </div>
 <div class="clear"></div>
+<?php else: ?>
+<p>в корзине нет товаров</p>
+
+<?php endif ?>
+
 
 <ul class="bBuyingFooter">
   <li>
     <div class="bBuyingFooter__eEnter"></div>
     <h3>Ответы на вопросы</h3>
-    <span>Наш Контакт cENTER<br><b>8 (800) 700 00 09</b><br> 24 часа в сутки / 7 дней в неделю. Звонок бесплатный. Радость в подарок :)</span>
+    <span>Наш Контакт-сENTER<br><b>8 (800) 700 00 09</b><br> 24 часа в сутки / 7 дней в неделю. Звонок бесплатный. Радость в подарок :)</span>
   </li>
   <li>
 
@@ -93,7 +98,7 @@
     <div class="bBuyingFooter__ePeople"></div>
     <h3>Сопровождение заказа</h3>
 
-    <span>После оформления заказа, с Вами свяжется специалист нашего Контакт cENTER для подтверждения заказа.</span>
+    <span>После оформления заказа, с Вами свяжется специалист нашего Контакт-сENTER для подтверждения заказа.</span>
   </li>
   <li>
     <div class="bBuyingFooter__eCar"></div>
@@ -107,11 +112,6 @@
     <span>Вы можете обменять товар в течение 30 дней<br> и в течение 14 дней вернуть в магазин. </span>
   </li>
 </ul>
-
-<?php else: ?>
-  <p>в корзине нет товаров</p>
-
-<?php endif ?>
 
 <?php slot('seo_counters_advance') ?>
 <!--  AdRiver code START. Type:counter(zeropixel) Site: sventer SZ: baskets PZ: 0 BN: 0 -->

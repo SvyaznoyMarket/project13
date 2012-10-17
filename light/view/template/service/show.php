@@ -47,7 +47,7 @@ $json = array(
         <a class="link1" href="<?php echo $this->url('cart.addService', array('serviceId' => $service->getId(), 'quantity' => 1)); ?>">Купить услугу</a>
         <?php elseif($service->getIsInShop()): ?>
         <b>Доступна в магазине</b>
-        <p class="font14">Специалисты контакт cENTER с радостью проконсультируют по данной услуге и подскажут ближайший магазин Enter</p>
+        <p class="font14">Специалисты Контакт-сENTER с радостью проконсультируют по данной услуге и подскажут ближайший магазин Enter</p>
         <p class="font14">
             <strong>8 (800) 700 00 09</strong><br/>
             Skype: skype2enter и call2enter<br/>

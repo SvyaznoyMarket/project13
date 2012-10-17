@@ -43,7 +43,7 @@ class CompactEntity extends BasicEntity {
         if (array_key_exists('price_old', $data)) $this->setPriceOld($data['price_old']);
         if (array_key_exists('state', $data) && (bool)$data['state']) $this->setState(new State\Entity($data['state']));
         if (array_key_exists('line', $data) && (bool)$data['line']) $this->setLine(new Line\Entity($data['line']));
-        // TODO: model
+        if (array_key_exists('model', $data) && (bool)$data['model']) $this->setModel(new Model\Entity($data['model']));
     }
 
     /**

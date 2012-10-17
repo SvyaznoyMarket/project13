@@ -225,7 +225,7 @@ function stylesheet_tag()
       unset($sourceOptions['raw_name']);
     }
 
-    $options = array_merge(array('rel' => 'stylesheet', 'type' => 'text/css', 'media' => 'screen', 'href' => $source), $sourceOptions);
+    $options = array_merge(array('rel' => 'stylesheet', 'type' => 'text/css', 'href' => $source), $sourceOptions);
     $tag = tag('link', $options);
 
     if (null !== $condition)

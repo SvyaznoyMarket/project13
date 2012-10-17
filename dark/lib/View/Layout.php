@@ -136,7 +136,7 @@ class Layout {
         $return = "\n";
 
         foreach ($this->stylesheets as $stylesheet) {
-            $return .= '<link href="' . $stylesheet . '" type="text/css" rel="stylesheet" media="screen" />' . "\n";
+            $return .= '<link href="' . $stylesheet . '" type="text/css" rel="stylesheet" />' . "\n";
         }
 
         return $return;

@@ -1,9 +1,14 @@
 <?php
 /**
- * @var $page \View\DefaultLayout
+ * @var $page    \View\DefaultLayout
  * @var $product \Model\Product\ExpandedEntity
  * */
 ?>
+
+<?php
+$hasModel = (isset($hasModel) ? $hasModel : true) && $product->getModel() && (bool)$product->getModel()->getProperty();
+?>
+
 <div class="goodsbox goodsline bNewGoodsBox">
     <div class="goodsboxlink" <? if ($product->getIsBuyable()): ?> ref="<?= $product->getToken() ?>" data-cid="<?= $product->getId() ?>" <? endif ?>>
         <div class="photo">
@@ -31,7 +36,7 @@
                 <?php endforeach ?>
             </div>
 
-            <? if ($product->getModel() && $product->getModel()->getPropertyList()): ?>
+            <? if ($hasModel): ?>
             <a href="<?= $product->getLink() ?>">
                 <div class="bListVariants">
                     Доступно в разных вариантах<br>

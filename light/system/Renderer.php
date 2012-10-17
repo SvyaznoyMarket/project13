@@ -129,7 +129,7 @@ class HtmlRenderer extends Renderer{
    */
   public function showCss(){
     foreach($this->css as $css){
-      echo '<link rel="stylesheet" type="text/css" media="screen" href="/css/'.$css.'" />'."\r\n";
+      echo '<link rel="stylesheet" type="text/css" href="/css/'.$css.'" />'."\r\n";
     }
   }
 

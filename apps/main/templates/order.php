@@ -21,7 +21,7 @@
     <div class="basketheader">
       <div class="bNLogo"><?php include_slot('title') ?></div>
       <div class="headerright mNLogo">
-        <h2>Круглосуточный Контакт-сEnter</h2>
+        <h2>Круглосуточный Контакт-сENTER</h2>
         <div>8 (800) 700-00-09</div>
 
         <span>Звонок бесплатный. Радость в подарок :)</span>

@@ -22,7 +22,7 @@
   <strong><?php echo $result['stage']['name'] ?>:</strong> <?php echo $result['message'] ?><br/>
   <?php endif ?>
   В ближайшее время мы вам перезвоним :)<br />
-  Специалист нашего Контакт-cENTERа уточнит, где и когда будет удобно получить заказ.
+  Специалист нашего Контакт-сENTER уточнит, где и когда будет удобно получить заказ.
 </div>
 
 <!--div class="fr width250 pb20 form"><label for="radio-1">Я хочу получать СМС уведомления об изменении статуса заказа</label><input id="radio-1" name="radio-1" type="radio" value="radio-1" /></div-->

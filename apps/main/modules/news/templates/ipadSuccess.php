@@ -348,7 +348,7 @@ if (date('U') >= mktime(0,1,0,5,25,2012)) {
                             <table cellpadding="0" cellspacing="0" class="bFastInner" style="display:none" id="f_success">
                                 <tr><th><h2>Вы в списке на предзаказ Нового iPad!</h2></th></tr>
                                 <tr><td>Мы вам скоро перезвоним :)<br>
-                                    Специалист нашего Контакт-cENTERа уточнит, где и когда будет удобно получить ваш новый iPad.</td></tr>
+                                    Специалист нашего Контакт-сENTER уточнит, где и когда будет удобно получить ваш новый iPad.</td></tr>
                             </table>
                             <table cellpadding="0" cellspacing="0" class="bFastInner" id="f_init">
                                 <tr><th colspan="2"><h2>Заполните форму предзаказа Нового iPad:</h2></th></tr>
@@ -373,7 +373,7 @@ if (date('U') >= mktime(0,1,0,5,25,2012)) {
                                 </tr>
 
                                 <tr><td colspan="2">Отправьте предзаказ, и мы вам скоро перезвоним :)<br>
-                                    Специалист нашего Контакт-cENTERа уточнит, где и когда будет удобно получить ваш Новый iPad.</td></tr>
+                                    Специалист нашего Контакт-сENTER уточнит, где и когда будет удобно получить ваш Новый iPad.</td></tr>
                                 <tr><td colspan="2">
                                     <a class='bBigOrangeButton' href="">Отправить предзаказ</a>
                                 </td></tr>
