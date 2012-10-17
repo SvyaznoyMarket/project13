@@ -60,9 +60,6 @@
     padding-bottom: 438px;
     position: relative;
   }
-  .buyingpage {
-    padding-bottom: 96px;
-  }
   * + html .allpageinner {
     float: left;
     width: 100%;
@@ -2357,6 +2354,9 @@
 /*---END---СТИЛИ ФУТЕРА---*/
 /*------СТИЛИ ФУТЕРА ПОКУПОК------*/
 @media all {
+  .buyingpage {
+    padding-bottom: 400px;
+  }
   .bBuyingFooter {
     -webkit-border-radius: 7px;
     -moz-border-radius: 7px;
@@ -2366,6 +2366,7 @@
     font-size: 0;
     height: 232px;
     padding: 20px 0;
+    position: relative;
     margin: -370px auto 0;
     width: 920px;
   }
