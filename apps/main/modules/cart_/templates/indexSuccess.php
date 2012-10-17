@@ -76,6 +76,11 @@
   <a href="<?php echo url_for('order_new') ?>" class="bBigOrangeButton width345">Оформить заказ</a>
 </div>
 <div class="clear"></div>
+<?php else: ?>
+<p>в корзине нет товаров</p>
+
+<?php endif ?>
+
 
 <ul class="bBuyingFooter">
   <li>
@@ -107,11 +112,6 @@
     <span>Вы можете обменять товар в течение 30 дней<br> и в течение 14 дней вернуть в магазин. </span>
   </li>
 </ul>
-
-<?php else: ?>
-  <p>в корзине нет товаров</p>
-
-<?php endif ?>
 
 <?php slot('seo_counters_advance') ?>
 <!--  AdRiver code START. Type:counter(zeropixel) Site: sventer SZ: baskets PZ: 0 BN: 0 -->
