@@ -128,7 +128,7 @@ return array(
         'require' => array('productId' => '\d+', 'serviceId' => '\d+'),
     ),
     'cart.service.add' => array(
-        'pattern' => '/cart/add_service/{productId}/_service/{serviceId}/_quantity/{quantity}/',
+        'pattern' => '/cart/add_service/{productId}/_service/{serviceId}/_quantity/{quantity}',
         'require' => array(
             'productId' => '\d+',
             'serviceId' => '\d+',

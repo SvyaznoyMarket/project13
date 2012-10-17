@@ -1,11 +1,5 @@
 /* CSS crunched with Crunch - http://crunchapp.net/ */
 @import "/css/skin/old_inner.css" all;
-/*обычные цвета*/
-/*фирменный оранжевый*/
-/*фирменный голубой*/
-/*типичный серый*/
-/*типичный светло-серый*/
-/*типичный цвет тени*/
 /*---------ШРИФТЫ----------*/
 @font-face {
   font-family: 'Enter';
@@ -479,6 +473,9 @@
   .height250 {
     height: 250px;
   }
+  .mW750 {
+    width: 750px;
+  }
   .mW1000 {
     width: 1000px;
   }
@@ -496,6 +493,14 @@
   }
   .mBR5 {
     border-radius: 5px;
+  }
+  .mSmall {
+    font: 12px Tahoma, sans-serif;
+    line-height: 1.6;
+  }
+  .mBig {
+    font: 16px Tahoma, sans-serif;
+    line-height: 1.6;
   }
   .border-none {
     border: 0 none;
@@ -3865,6 +3870,32 @@
     padding-right: 50px;
     width: 200px;
   }
+  .bankWrap {
+    margin-top: 4px !important;
+    position: relative;
+    width: 600px;
+  }
+  .bankWrap .bSelect__eArrow {
+    position: absolute;
+  }
+  .bankWrap .bSelect span {
+    line-height: 30px;
+  }
+  .bankWrap .bSelect__eDropmenu {
+    position: absolute;
+  }
+  .bankWrap .creditHref {
+    margin-left: 20px;
+    margin-top: 8px;
+  }
+  .bankWrap .creditHref a {
+    color: #434343;
+    text-decoration: underline;
+  }
+  .bankWrap .creditHref a:hover {
+    color: #434343;
+    text-decoration: none;
+  }
 }
 /*---END---СТИЛИ КРЕДИТОВ---*/
 /*-------СТИЛИ ОФОРМЛЕНИЯ ЗАКАЗА-----*/
@@ -4483,6 +4514,98 @@
   */
 }
 /*---END---СТИЛИ ОФОРМЛЕНИЯ ЗАКАЗА---*/
+/*-------СТИЛИ ОКНА С КАРТОЙ МАГАЗИНОВ-----*/
+@media all {
+  .mMapPopup .bMobDownWrapRel {
+    bottom: auto;
+    top: 5px;
+  }
+  .mMapPopup .bMobDown {
+    background: #f1f1f1;
+    width: 950px;
+  }
+  .mMapPopup .bMobDown__eWrap {
+    padding: 20px 0px 0px;
+  }
+  .mMapPopup .bMapShops__eMapWrap {
+    -webkit-box-shadow: inset 0px 0px 5px #777777;
+    -moz-box-shadow: inset 0px 0px 5px #777777;
+    box-shadow: inset 0px 0px 5px #777777;
+    border: 1px solid #c7c7c7;
+    float: right;
+    height: 550px;
+    overflow: hidden;
+    position: relative;
+    width: 660px;
+  }
+  .bMapShops__eList {
+    background: #ffffff;
+    height: 550px;
+    overflow-y: scroll;
+    width: 287px;
+  }
+  .bMapShops__eList h3 {
+    font: 18px Tahoma, sans-serif;
+    margin-bottom: 0px;
+    padding: 0px 35px 0px 20px;
+  }
+  .bMapShops__eList ul {
+    padding: 0px;
+  }
+  .bMapShops__eList li {
+    cursor: pointer;
+    font: 14px Tahoma, sans-serif;
+    padding: 12px 35px 12px 20px;
+  }
+  .bMapShops__eList li:hover {
+    background: #fff1d8;
+  }
+  .bMapShops__eList li span {
+    font-family: Tahoma, sans-serif;
+    font-size: 12px;
+    line-height: 26px;
+  }
+  .bMapShops__eListNum {
+    color: #ffffff;
+    float: left;
+    font-family: Tahoma, sans-serif;
+    font-size: 12px;
+    font-weight: bold;
+    height: 39px;
+    margin-right: 24px;
+    padding-top: 4px;
+    text-align: center;
+    width: 24px;
+  }
+  .bMapShops__ePopupRel {
+    padding: 8px;
+    position: relative;
+  }
+  .bMapShops__ePopupRel h3 {
+    font: 18px Tahoma, sans-serif;
+    margin: 0px 0px 15px;
+  }
+  .bMapShops__ePopupRel span {
+    font: 12px Tahoma, sans-serif;
+  }
+  .bMapShops__ePopupRel .bGrayButton {
+    margin: 15px 0px 0px;
+  }
+  .bInShop__eBottom .bMapShops__eMapWrap,
+  .mMapPopup .bMapShops__eMapWrap,
+  .bFast .bMapShops__eMapWrap {
+    -webkit-box-shadow: inset 0px 0px 5px #777777;
+    -moz-box-shadow: inset 0px 0px 5px #777777;
+    box-shadow: inset 0px 0px 5px #777777;
+    border: 1px solid #c7c7c7;
+    float: right;
+    height: 550px;
+    overflow: hidden;
+    position: relative;
+    width: 660px;
+  }
+}
+/*---END---СТИЛИ ОКНА С КАРТОЙ МАГАЗИНОВ---*/
 /*-------СТИЛИ СТРАНИЦЫ О КОМПАНИИ-----*/
 @media all {
   .bAbout {

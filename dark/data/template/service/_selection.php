@@ -27,16 +27,16 @@ $listInCart = $user->getCart()->getServicesByProduct($product->getId());
             <?php echo $page->helper->formatPrice($service->getPrice()) ?>&nbsp;<span class="rubl">p</span>
           </span>
                 <?php } ?>
-                <?php if ($service->getIsInShop()) { ?>
+                <?php if (!$service->getIsDelivered() && $service->getIsInShop()) { ?>
                 <span class='bF1Block__eInShop'>доступна в магазине</span>
-                <?php } elseif ($user->getRegion()->getHasService() && in_array($service, $listInCart)) { ?>
+                <?php } elseif ($user->getRegion()->getHasService() && in_array($service->getId(), $listInCart)) { ?>
                 <input data-f1title="<?php echo $service->getName() ?>" data-f1price="<?php echo $service->getPrice() ?>" data-fid="<?php echo $service->getId();?>"
-                       data-url="<?php echo $page->url('cart.service.add', array('serviceId' => $service->getId(), 'productId' => $product->getId())) ?>"
+                       data-url="<?php echo $page->url('cart.service.add', array('serviceId' => $service->getId(), 'productId' => $product->getId(), 'quantity' => 1)) ?>"
                        ref="<?php echo addslashes($service->getToken());?>"
                        type="button" class="active button yellowbutton" value="В корзине">
                 <?php } elseif ($user->getRegion()->getHasService()) { ?>
                 <input data-f1title="<?php echo $service->getName() ?>" data-f1price="<?php echo $page->helper->formatPrice($service->getPrice()) ?>" data-fid="<?php echo $service->getId();?>"
-                       data-url="<?php echo url_for('cart.service.add', array('serviceId' => $service->getId(), 'product' => $product->getId())) ?>"
+                       data-url="<?php echo $page->url('cart.service.add', array('serviceId' => $service->getId(), 'productId' => $product->getId(), 'quantity' => 1,)) ?>"
                        ref="<?php echo addslashes($service->getToken());?>"
                        type="button" class="button yellowbutton" value="Купить услугу">
                 <?php } ?>

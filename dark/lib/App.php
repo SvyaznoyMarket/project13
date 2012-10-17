@@ -110,7 +110,7 @@ class App {
      * @static
      * @return \Http\Session
      */
-    public static function getSession() {
+    public static function session() {
         static $instance;
 
         if (!$instance) {
