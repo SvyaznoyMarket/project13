@@ -479,6 +479,9 @@
   .height250 {
     height: 250px;
   }
+  .mW750 {
+    width: 750px;
+  }
   .mW1000 {
     width: 1000px;
   }
@@ -496,6 +499,14 @@
   }
   .mBR5 {
     border-radius: 5px;
+  }
+  .mSmall {
+    font: 12px Tahoma, sans-serif;
+    line-height: 1.6;
+  }
+  .mBig {
+    font: 16px Tahoma, sans-serif;
+    line-height: 1.6;
   }
   .border-none {
     border: 0 none;
@@ -3864,6 +3875,32 @@
   .creditInfo > div.leftTitle {
     padding-right: 50px;
     width: 200px;
+  }
+  .bankWrap {
+    margin-top: 4px !important;
+    position: relative;
+    width: 600px;
+  }
+  .bankWrap .bSelect__eArrow {
+    position: absolute;
+  }
+  .bankWrap .bSelect span {
+    line-height: 30px;
+  }
+  .bankWrap .bSelect__eDropmenu {
+    position: absolute;
+  }
+  .bankWrap .creditHref {
+    margin-left: 20px;
+    margin-top: 8px;
+  }
+  .bankWrap .creditHref a {
+    color: #434343;
+    text-decoration: underline;
+  }
+  .bankWrap .creditHref a:hover {
+    color: #434343;
+    text-decoration: none;
   }
 }
 /*---END---СТИЛИ КРЕДИТОВ---*/
