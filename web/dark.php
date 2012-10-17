@@ -14,14 +14,15 @@ $config = new $configClass;
 
 // debug
 if (isset($_GET['APPLICATION_DEBUG'])) {
-    if ($_GET['APPLICATION_DEBUG']) {
+    if (!empty($_GET['APPLICATION_DEBUG'])) {
         $config->debug = true;
-        setcookie('APPLICATION_DEBUG', 1, time() + 60 * 60 * 24 * 7);
+        setcookie('debug', 1, strtotime('+7 days' ));
     } else {
-        setcookie('APPLICATION_DEBUG', null);
+        $config->debug = false;
+        setcookie('debug', 0, strtotime('+7 days' ));
     }
-} else if (isset($_COOKIE['APPLICATION_DEBUG'])) {
-    $config->debug = true;
+} else if (isset($_COOKIE['debug'])) {
+    $config->debug = !empty($_COOKIE['debug']);
 }
 
 // application
