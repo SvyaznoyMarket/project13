@@ -90,7 +90,7 @@ class IndexAction {
         // ajax
         if ($request->isXmlHttpRequest()) {
             return new \Http\Response(\App::templating()->render('product/_list', array(
-                'page'   => new \View\DefaultLayout(),
+                'page'   => new \View\Layout(),
                 'pager'  => $productPager,
                 'view'   => $productView,
                 'isAjax' => true,

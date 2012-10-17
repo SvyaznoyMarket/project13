@@ -1,10 +1,10 @@
 <?php
 /**
- * @var $page \View\DefaultLayout
- * @var $searchQuery string
- * @var $categories \Model\Product\Category\Entity[]
+ * @var $page             \View\Layout
+ * @var $searchQuery      string
+ * @var $categories       \Model\Product\Category\Entity[]
  * @var $selectedCategory \Model\Product\Category\Entity
- * @var $limit int
+ * @var $limit            int
  */
 ?>
 

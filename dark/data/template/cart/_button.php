@@ -1,6 +1,6 @@
 <?php
 /**
- * @var $page \View\DefaultLayout
+ * @var $page \View\Layout
  * @var $user \Session\User
  * @var $product \Model\Product\Entity
  * @var $view string

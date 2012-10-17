@@ -1,6 +1,6 @@
 <?php
 /**
- * @var $page    \View\DefaultLayout
+ * @var $page    \View\Layout
  * @var $product \Model\Product\ExpandedEntity
  * */
 ?>

@@ -1,6 +1,6 @@
 <?php
 /**
- * @var $page \View\DefaultLayout
+ * @var $page \View\Layout
  * @var $view string
  * @var $request \Http\Request
  * @var $category \Model\Product\Category\Entity|null
