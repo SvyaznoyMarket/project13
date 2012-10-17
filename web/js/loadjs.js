@@ -26,6 +26,8 @@
 		return flnm
 	}
 
+	var mapVendor = 'yandex'
+
 	$LAB.setGlobalDefaults({ AllowDuplicates: true, AlwaysPreserveOrder:true, UseLocalXHR:false, BasePath:"/js/"})
 	.queueScript('combine.js')
 	// .queueScript('jquery-1.6.4.min.js')
@@ -83,8 +85,7 @@
 		case 'order':
             $LAB.queueScript('knockout-2.1.0.js')
             .queueScript('bigjquery.min.js')
-            // .queueScript('http://maps.google.com/maps/api/js?sensor=true')
-            .queueScript('http://api-maps.yandex.ru/2.0/?load=package.full&lang=ru-RU')
+            .queueScript( (mapVendor==='yandex') ? 'http://api-maps.yandex.ru/2.0/?load=package.full&lang=ru-RU' : 'http://maps.google.com/maps/api/js?sensor=false' )
 			.queueWait( function() {
 				$LAB.script( getWithVersion('library.js') )
 				.script( getWithVersion('ports.js') )
@@ -130,8 +131,7 @@
 			break
 		case 'product_card':
 			$LAB.queueScript('knockout-2.1.0.js')
-			.queueScript('http://maps.google.com/maps/api/js?sensor=true')
-			.queueScript('http://api-maps.yandex.ru/2.0/?load=package.full&lang=ru-RU')
+			.queueScript( (mapVendor==='yandex') ? 'http://api-maps.yandex.ru/2.0/?load=package.full&lang=ru-RU' : 'http://maps.google.com/maps/api/js?sensor=false' )
 			.queueWait( function() {
 				$LAB.script( getWithVersion('ports.js') )
 				.script( getWithVersion('bigjquery.js') )
@@ -176,8 +176,8 @@
 			}).runQueue()
 			break
 		case 'shop':
-			$LAB.queueScript('http://maps.google.com/maps/api/js?sensor=false')
-			.queueScript('http://api-maps.yandex.ru/2.0/?load=package.full&lang=ru-RU')
+			$LAB
+			.queueScript( (mapVendor==='yandex') ? 'http://api-maps.yandex.ru/2.0/?load=package.full&lang=ru-RU' : 'http://maps.google.com/maps/api/js?sensor=false' )
 			.queueWait( function() {
 				$LAB.script( getWithVersion('ports.js') )
 				.script( getWithVersion('bigjquery.js') ).script( getWithVersion('library.js') )
@@ -191,8 +191,7 @@
 			break
 		case 'product_stock':
 			$LAB
-			.queueScript('http://maps.google.com/maps/api/js?sensor=false')
-			.queueScript('http://api-maps.yandex.ru/2.0/?load=package.full&lang=ru-RU')
+			.queueScript( (mapVendor==='yandex') ? 'http://api-maps.yandex.ru/2.0/?load=package.full&lang=ru-RU' : 'http://maps.google.com/maps/api/js?sensor=false' )
 			.queueScript('knockout-2.1.0.js')
 			.queueWait( function() {
 				$LAB.script( getWithVersion('ports.js') )

@@ -12,14 +12,6 @@ $(document).ready(function() {
 		if( options.is(':visible') )
 			options.hide()
 	})
-	
-	var vendor = 'yandex' // yandex or google
-	if( vendor==='yandex' )
-		ymaps.ready( function() {
-// console.info('yandexIsReady')			
-	        PubSub.publish('yandexIsReady')
-	        ymaps.isReady = true
-	    })
 
 	/* View Models */
 	//////////////////////////////////////////
@@ -241,21 +233,10 @@ $(document).ready(function() {
 						mapCenter = calcMCenter( Deliveries['self'].shops )
 					}						
 					if( selfAvailable && ! ('regionMap' in window ) ) {
-						if( vendor === 'yandex' ) {
-							if( ymaps.isReady ) {
-								window.regionMap = new MapYandexWithShops( mapCenter, $('#map-info_window-container-ya'), 'mapPopup' )
-								window.regionMap.addHandler( '.shopchoose', pickStoreMVM )						
-							} else {
-								PubSub.subscribe( 'yandexIsReady', function() {					
-									window.regionMap = new MapYandexWithShops( mapCenter, $('#map-info_window-container-ya'), 'mapPopup' )
-									window.regionMap.addHandler( '.shopchoose', pickStoreMVM )
-								})
-							}
-						} 
-						if( vendor === 'google' ) {
-							window.regionMap = new MapGoogleWithShops( mapCenter, $('#map-info_window-container'), 'mapPopup' )
+						var mapCallback = function() {
 							window.regionMap.addHandler( '.shopchoose', pickStoreMVM )
 						}
+						MapInterface.init( mapCenter, 'mapPopup', mapCallback )
 					}
 					
 				})	
@@ -579,7 +560,11 @@ levup:			for(var i=0, l=numbers.length; i<l; i++)
 	}
 	/* One Click Order */
 	if( $('.order1click-link-new').length ) {
-		
+		MapInterface.ready( 'yandex', { 
+			yandex: $('#map-info_window-container-ya'), 
+			google: $('#map-info_window-container')
+		} )
+
 		var Model = $('.order1click-link-new').data('model')	
 		var inputUrl = $('.order1click-link-new').attr('link-input')		
 		var outputUrl = $('.order1click-link-new').attr('link-output')		
@@ -621,21 +606,10 @@ levup:			for(var i=0, l=numbers.length; i<l; i++)
 			
 				
 			if( selfAvailable ) {
-				if( vendor === 'yandex' ) {
-					if( ymaps.isReady ) {
-						window.regionMap = new MapYandexWithShops( mapCenter, $('#map-info_window-container-ya'), 'mapPopup' )
-						window.regionMap.addHandler( '.shopchoose', pickStoreMVM )						
-					} else {
-						PubSub.subscribe( 'yandexIsReady', function() {					
-							window.regionMap = new MapYandexWithShops( mapCenter, $('#map-info_window-container-ya'), 'mapPopup' )
-							window.regionMap.addHandler( '.shopchoose', pickStoreMVM )
-						})
-					}
-				} 
-				if( vendor === 'google' ) {
-					window.regionMap = new MapGoogleWithShops( mapCenter, $('#map-info_window-container'), 'mapPopup', updateIW )
+				var mapCallback = function() {
 					window.regionMap.addHandler( '.shopchoose', pickStoreMVM )
 				}
+				MapInterface.init( mapCenter, 'mapPopup', mapCallback, updateIW )
 			}
 			oneClickIsReady = true
 			enableHandlers()
@@ -652,7 +626,7 @@ levup:			for(var i=0, l=numbers.length; i<l; i++)
 		}
 				
 		$('.order1click-link-new').bind('click', function(e) { // button 'Купить в один клик'
-			e.preventDefault()
+			e.preventDefault()		
 			if( !oneClickIsReady )
 				return
 			// TODO please go this stuff separate!
@@ -678,6 +652,11 @@ levup:			for(var i=0, l=numbers.length; i<l; i++)
 	/* Page 'Where to buy?' , Stock Map */
 	
 	if( $('#stockBlock').length ) {
+		MapInterface.ready( 'yandex', { 
+			yandex: $('#infowindowforstockYa'), 
+			google: $('#infowindowforstock')
+		} )
+
 		var Model     = $('#stockmodel').data('value')
 		var inputUrl  = $('#stockmodel').attr('link-input')
 		var outputUrl = $('#stockmodel').attr('link-output')
@@ -738,23 +717,12 @@ levup:			for(var i=0, l=numbers.length; i<l; i++)
 			ko.applyBindings( OC_MVM, $('#order1click-container-new')[0] ) // this way, Lukas!
 			enableHandlers()
 
-			if( selfAvailable ) {			
-				if( vendor === 'yandex' ) {
-					if( ymaps.isReady ) {
-						window.regionMap = new MapYandexWithShops( mapCenter, $('#infowindowforstockYa'), 'stockmap' )
-						window.regionMap.addHandler( '.shopchoose', pickStoreMVM )						
-					} else {
-						PubSub.subscribe( 'yandexIsReady', function() {					
-							window.regionMap = new MapYandexWithShops( mapCenter, $('#infowindowforstockYa'), 'stockmap' )
-							window.regionMap.addHandler( '.shopchoose', pickStoreMVM )
-						})
-					}
-				} 
-				if( vendor === 'google' ) {
-					window.regionMap = new MapGoogleWithShops( mapCenter, $('#infowindowforstock'), 'stockmap', updateIW )
+			if( selfAvailable ) {
+				var mapCallback = function() {
 					window.regionMap.addHandler( '.shopchoose', pickStoreMVM )
 				}
-			}			
+				MapInterface.init( mapCenter, 'stockmap', mapCallback, updateIW )
+			}
 
 			$('#stockBlock').show()
 		})	

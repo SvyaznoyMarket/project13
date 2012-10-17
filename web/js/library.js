@@ -1064,7 +1064,6 @@ function MapYandexWithShops( center, templateIWnode, DOMid ) {
     templateIWnode is node(jQ) which include template for InfoWindow popup
     DOMid is selector (id) for google.maps.Map initialization
 */
-// console.info(arguments)
     var self         = this,
         mapWS        = null,
         infoWindow   = null,
@@ -1212,6 +1211,60 @@ function calcMCenter( shops ) {
 	}	
 	return mapCenter
 }
+
+window.MapInterface = (function() {
+    var vendor, tmplSource
+    return {
+        ready: function( vendorName, tmpl ) {        
+            vendor     = vendorName
+            tmplSource = tmpl
+            if( vendor==='yandex' ) {
+                ymaps.ready( function() {
+// console.info('yandexIsReady')            
+                    PubSub.publish('yandexIsReady')
+                    ymaps.isReady = true
+                })
+            }
+            // if( vendor==='google' ) {
+            //      $LAB.sandbox().script( 'http://maps.google.com/maps/api/js?sensor=false' )
+            // } else // $LAB.sandbox().script( 'http://api-maps.yandex.ru/2.0/?load=package.full&lang=ru-RU' ).wait( function() {
+              
+        },
+        init: function( coordinates, mapContainerId, callback, updater ) { 
+            if( vendor === 'yandex' ) {
+                if( typeof(ymaps)!=='undefined' && ymaps.isReady ) {
+                    window.regionMap = new MapYandexWithShops( 
+                        coordinates,
+                        tmplSource.yandex, 
+                        mapContainerId
+                    )
+                    if( typeof( callback ) !== 'undefined' )
+                        callback()
+                } else {
+                    PubSub.subscribe( 'yandexIsReady', function() {                   
+                        window.regionMap = new MapYandexWithShops( 
+                            coordinates, 
+                            tmplSource.yandex, 
+                            mapContainerId 
+                        )
+                        if( typeof( callback ) !== 'undefined' )
+                            callback()
+                    })
+                }
+            }
+            if( vendor === 'google' ) {        
+                window.regionMap = new MapGoogleWithShops(
+                    coordinates,
+                    tmplSource.google,
+                    mapContainerId,
+                    updater
+                )
+                if( typeof( callback ) !== 'undefined' )
+                    callback()
+            }
+        }
+    }
+}() ); // singleton
 
 /*
 	Mechanics @ enter.ru 

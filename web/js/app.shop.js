@@ -41,14 +41,12 @@ $(document).ready(function() {
 		}
 	})
 
-	var vendor = 'yandex' // yandex or google
-	if( vendor==='yandex' )
-		ymaps.ready( function() {
-// console.info('yandexIsReady')			
-	        PubSub.publish('yandexIsReady')
-	        ymaps.isReady = true
-	    })		
+	MapInterface.ready( 'yandex', {
+		yandex: $('#infowindowtmpl'), 
+		google: $('#map-info_window-container')
+	} )	
 
+	var vendor = 'yandex' // yandex or google
 	function MapOnePoint( position, nodeId ) {
 		if( !position )
 			return
@@ -107,7 +105,6 @@ $(document).ready(function() {
 
 	} // MapOnePoint obj
 
-	$('div.map-google-link:first', marketfolio ).trigger('click')
 	if( $('#map-markers').length ) { // allshops page
 		function updateTmlt( marker ) {
 			$('#map-info_window-container').html(
@@ -115,21 +112,15 @@ $(document).ready(function() {
 			)
 		}
 		var mapCenter =  calcMCenter( $('#map-markers').data('content') )
-		if( vendor === 'yandex' ) {
-			PubSub.subscribe('yandexIsReady', function() {
-				window.regionMap = new MapYandexWithShops( mapCenter, $('#infowindowtmpl'), 'region_map-container' )
-				window.regionMap.showMarkers(  $('#map-markers').data('content') )
-			})
-		} else {
-			window.regionMap = new MapGoogleWithShops( mapCenter, $('#map-info_window-container'), 'region_map-container', updateTmlt )
+		var mapCallback = function() {
 			window.regionMap.showMarkers(  $('#map-markers').data('content') )
 		}
-		
-		//window.regionMap.addHandler( '.shopchoose', pickStoreMVM )
+		MapInterface.init( mapCenter, 'region_map-container', mapCallback, updateTmlt )
 	}
 
 	$('#region-select').bind('change', function() {
 		window.location = $(this).find('option:selected').data('url')
 	})
 
+	$('div.map-google-link:first', marketfolio ).trigger('click')
 });
