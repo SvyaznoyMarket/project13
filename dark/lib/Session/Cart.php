@@ -3,8 +3,19 @@
 namespace Session;
 
 class Cart {
+
+    /** @var string */
+    private $sessionName = 'userCart';
+
+    private $storage;
+
+    public function __construct() {
+        $this->storage = \App::session();
+    }
+
     public function hasProduct($productId) {
-        return false;
+        $session = $this->storage->all();
+        return array_key_exists($productId, $session[$this->sessionName]['productList']);
     }
 
     /**
@@ -12,7 +23,16 @@ class Cart {
      * @return array
      */
     public function getServicesByProduct($productId) {
-        return array();
+        $return = array();
+        $session = $this->storage->all();
+
+        foreach ($session[$this->sessionName]['serviceList'] as $serviceId => $service) {
+            if (array_key_exists($productId, $service)) {
+                $return[] = $serviceId;
+            }
+        }
+
+        return array_unique($return);
     }
 
     /**
@@ -20,7 +40,8 @@ class Cart {
      * @return int
      */
     public function getQuantityByProduct($productId) {
-        return 0;
+        $session = $this->storage->all();
+        return count($session[$this->sessionName]['productList']);
     }
 
     /**
@@ -28,7 +49,16 @@ class Cart {
      * @return array
      */
     public function getWarrantyByProduct($productId) {
-        return array();
+        $return = array();
+        $session = $this->storage->all();
+
+        foreach ($session[$this->sessionName]['warrantyList'] as $warrantyId => $warranty) {
+            if (array_key_exists($productId, $warranty)) {
+                $return[] = $warrantyId;
+            }
+        }
+
+        return array_unique($return);
     }
 
     /**
@@ -37,7 +67,8 @@ class Cart {
      * @return bool
      */
     public function hasWarranty($productId, $warrantyId) {
-        return false;
+        $session = $this->storage->all();
+        return isset($session[$this->sessionName]['warrantyList'][$warrantyId][$productId]);
     }
 
 }

@@ -26,13 +26,13 @@ $listInCart = $user->getCart()->getServicesByProduct($product->getId());
     </script>
     <?php if (count($listInCart)) { ?>
     <h3>Вы добавили услуги:</h3>
-    <?php foreach ($listInCart as $service): ?>
+    <?php foreach ($list as $service): if (in_array($service->getId(), $listInCart)): ?>
         <div ref="<?php echo $service->getToken();?>">
-            <?php echo $service->getName() ?> - <?php echo formatPrice($service->getPrice()) ?>&nbsp;<span class="rubl">p</span><br>
+            <?php echo $service->getName() ?> - <?php echo  $page->helper->formatPrice($service->getPrice()) ?>&nbsp;<span class="rubl">p</span><br>
             <a class="bBacketServ__eMore"
-               href="<?php echo url_for('cart.service.delete', array('serviceId' => $service->getId(), 'productId' => $product->getId()));?>">Отменить услугу</a>
+               href="<?php echo $page->url('cart.service.delete', array('serviceId' => $service->getId(), 'productId' => $product->getId()));?>">Отменить услугу</a>
         </div>
-        <?php endforeach ?>
+        <?php endif; endforeach ?>
     <?php } else { ?>
     <h3>Установка<br />и подключение</h3>
     <?php } ?>
