@@ -38,56 +38,49 @@ class Entity {
     /**
      * @param boolean $isImage
      */
-    public function setIsImage($isImage)
-    {
+    public function setIsImage($isImage) {
         $this->isImage = $isImage;
     }
 
     /**
      * @return boolean
      */
-    public function getIsImage()
-    {
+    public function getIsImage() {
         return $this->isImage;
     }
 
     /**
      * @param boolean $isMultiple
      */
-    public function setIsMultiple($isMultiple)
-    {
+    public function setIsMultiple($isMultiple) {
         $this->isMultiple = $isMultiple;
     }
 
     /**
      * @return boolean
      */
-    public function getIsMultiple()
-    {
+    public function getIsMultiple() {
         return $this->isMultiple;
     }
 
     /**
      * @param string $name
      */
-    public function setName($name)
-    {
+    public function setName($name) {
         $this->name = $name;
     }
 
     /**
      * @return string
      */
-    public function getName()
-    {
+    public function getName() {
         return $this->name;
     }
 
     /**
      * @param array $options
      */
-    public function setOption(array $options)
-    {
+    public function setOption(array $options) {
         $this->option = array();
         foreach ($options as $option) {
             $this->addOption($option);
@@ -104,74 +97,63 @@ class Entity {
     /**
      * @return array|Option\Entity[]
      */
-    public function getOption()
-    {
+    public function getOption() {
         return $this->option;
     }
 
     /**
      * @param int $position
      */
-    public function setPosition($position)
-    {
+    public function setPosition($position) {
         $this->position = $position;
     }
 
     /**
      * @return int
      */
-    public function getPosition()
-    {
+    public function getPosition() {
         return $this->position;
     }
 
     /**
      * @param int $typeId
      */
-    public function setTypeId($typeId)
-    {
+    public function setTypeId($typeId) {
         $this->typeId = $typeId;
     }
 
     /**
      * @return int
      */
-    public function getTypeId()
-    {
+    public function getTypeId() {
         return $this->typeId;
     }
 
     /**
      * @param string $unit
      */
-    public function setUnit($unit)
-    {
+    public function setUnit($unit) {
         $this->unit = $unit;
     }
 
     /**
      * @return string
      */
-    public function getUnit()
-    {
+    public function getUnit() {
         return $this->unit;
     }
 
     /**
      * @param int $id
      */
-    public function setId($id)
-    {
+    public function setId($id) {
         $this->id = $id;
     }
 
     /**
      * @return int
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
-
-
 }

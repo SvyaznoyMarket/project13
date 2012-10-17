@@ -33,7 +33,11 @@ $view = $category->getHasLine() ? 'line' : 'compact';
 
 <div class="carousel">
     <? $i = 0; foreach ($pager as $product) { $i++ ?>
-        <?= $page->render('product/show/_' . $view, array('index' => $i, 'product' => $product, 'isHidden' => $i > $itemsInSlider)) ?>
+        <?= $page->render('product/show/_' . $view, array(
+            'index'    => $i,
+            'product'  => $product,
+            'isHidden' => $i > $itemsInSlider,
+        )) ?>
     <? } ?>
 </div>
 <!-- Carousel -->
