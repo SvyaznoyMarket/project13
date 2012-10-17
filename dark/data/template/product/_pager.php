@@ -5,7 +5,8 @@
  * @var $pager          \Iterator\EntityPager
  * @var $view           string
  * @var $hasListView    bool                                Показывать контрол "Вид товара"
- * @var $productSorting
+ * @var $productSorting \Model\Product\Sorting
+ * @var $productFilter  \Model\Product\Filter
  * @var $category       \Model\Product\Category\Entity|null
  */
 
@@ -13,6 +14,7 @@ $view = $request->get('view', isset($view) ? $view : null);
 $hasListView = isset($hasListView) && (bool)$hasListView ? true : false;
 if (!isset($productSorting)) $productSorting = null;
 if (!isset($category)) $category = null;
+$filterData = isset($productFilter) ? http_build_query(array(\View\Product\FilterForm::$name => $productFilter->getValues())) : '';
 ?>
 
 <? if ('expanded' == $view) : ?>
@@ -26,6 +28,7 @@ if (!isset($category)) $category = null;
     data-url="<?= $page->helper->replacedUrl(array('page' => null)) ?>"
     data-page="<?= $pager->getPage() ?>"
     data-lastpage="<?= $pager->getLastPage() ?>"
+    data-filter="<?= $filterData ?>"
 ></div>
 <?= $page->render('_pagination', array('pager' => $pager)) ?>
 <? endif ?>
@@ -49,6 +52,7 @@ if (!isset($category)) $category = null;
      data-url="<?= $page->helper->replacedUrl(array('page' => null)) ?>"
      data-page="<?= $pager->getPage() ?>"
      data-lastpage="<?= $pager->getLastPage() ?>"
+     data-filter="<?= $filterData ?>"
 ></div>
 <?= $page->render('_pagination', array('pager' => $pager)) ?>
 <? endif ?>

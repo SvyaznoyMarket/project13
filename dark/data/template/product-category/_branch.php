@@ -16,11 +16,19 @@ $parent = ($category->isRoot() || $category->isBranch()) ? $category : $category
 foreach ($parent->getChild() as $child) {
     $categories[] = $child;
 }
+
+// total text
+if ($category->getHasLine()) {
+    $totalText = $page->helper->formatNumberChoice('{n: n > 10 && n < 20}%count% серий|{n: n % 10 == 1}%count% серия|{n: n % 10 > 1 && n % 10 < 5}%count% серии|(1,+Inf]%count% серий', array('%count%' => $category->getProductCount()), $category->getProductCount());
+} else {
+    $totalText = $page->helper->formatNumberChoice('{n: n > 10 && n < 20}%count% товаров|{n: n % 10 == 1}%count% товар|{n: n % 10 > 1 && n % 10 < 5}%count% товара|(1,+Inf]%count% товаров', array('%count%' => $category->getProductCount()), $category->getProductCount());
+}
 ?>
 
-
-<div class="catProductNum"><b>Всего <?= ($category->getProductCount() . ($category->getHasLine() ? ' серий' : ' товаров')) ?></b>
+<div class="catProductNum">
+    <b>Всего <?= $totalText ?></b>
 </div>
+
 <div class="line pb10"></div>
 <dl class="bCtg">
     <dd>

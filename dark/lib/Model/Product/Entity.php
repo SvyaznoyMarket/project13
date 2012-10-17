@@ -87,6 +87,8 @@ class Entity extends BasicEntity {
     protected $accessoryId = array();
     /** @var array */
     protected $relatedId = array();
+    /** @var Warranty\Entity[] */
+    protected $warranty = array();
 
     public function __construct(array $data = array()) {
         if (array_key_exists('id', $data)) $this->setId($data['id']);
@@ -156,6 +158,9 @@ class Entity extends BasicEntity {
         if (array_key_exists('related', $data)) $this->setRelatedId($data['related']);
         if (array_key_exists('accessories', $data)) $this->setAccessoryId($data['accessories']);
         if (array_key_exists('model', $data) && (bool)$data['model']) $this->setModel(new Model\Entity($data['model']));
+        if (array_key_exists('warranty', $data) && is_array($data['warranty'])) foreach ($data['warranty'] as $warranty) {
+            $this->addWarranty(new Warranty\Entity($warranty));
+        }
 
         foreach ($this->propertyGroup as $group) {
             if (!isset($this->groupedProperties[$group->getId()])) {
@@ -168,7 +173,7 @@ class Entity extends BasicEntity {
                 $this->groupedProperties[$property->getGroupId()]['properties'][] = $property;
             }
         }
-        // TODO: model
+
     }
 
     /**
@@ -865,4 +870,28 @@ class Entity extends BasicEntity {
     public function getPath() {
         return trim(preg_replace('/^\/product\//' , '', $this->link), '/');
     }
+
+    /**
+     * @param array
+     */
+    public function setWarranty($warranties)
+    {
+        $this->warranty = array();
+        foreach ($warranties as $warranty) {
+            $this->addWarranty($warranty);
+        }
+    }
+
+    /**
+     * @return array|Warranty\Entity[]
+     */
+    public function getWarranty()
+    {
+        return $this->warranty;
+    }
+
+    public function addWarranty(Warranty\Entity $warranty) {
+        $this->warranty[] = $warranty;
+    }
+
 }

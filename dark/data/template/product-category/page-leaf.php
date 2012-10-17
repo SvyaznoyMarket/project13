@@ -1,10 +1,11 @@
 <?php
 /**
- * @var $page          \View\DefaultLayout
- * @var $category      \Model\Product\Category\Entity
- * @var $productFilter \Model\Product\Filter
- * @var $productPager  \Iterator\EntityPager
- * @var $productView   string
+ * @var $page           \View\DefaultLayout
+ * @var $category       \Model\Product\Category\Entity
+ * @var $productFilter  \Model\Product\Filter
+ * @var $productPager   \Iterator\EntityPager
+ * @var $productSorting \Model\Product\Sorting
+ * @var $productView    string
  */
 ?>
 
@@ -13,9 +14,11 @@
 <div class="clear"></div>
 
 <?= $page->render('product/_pager', array(
-    'request'     => $request,
-    'pager'       => $productPager,
-    'hasListView' => true,
-    'category'    => $category,
-    'view'        => $productView,
+    'request'        => $request,
+    'pager'          => $productPager,
+    'productFilter'  => $productFilter,
+    'productSorting' => $productSorting,
+    'hasListView'    => true,
+    'category'       => $category,
+    'view'           => $productView,
 )) ?>

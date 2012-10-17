@@ -23,4 +23,21 @@ class Cart {
         return 0;
     }
 
+    /**
+     * @param $productId
+     * @return array
+     */
+    public function getWarrantyByProduct($productId) {
+        return array();
+    }
+
+    /**
+     * @param int $productId
+     * @param int $warrantyId
+     * @return bool
+     */
+    public function hasWarranty($productId, $warrantyId) {
+        return false;
+    }
+
 }

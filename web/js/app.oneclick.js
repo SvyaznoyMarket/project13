@@ -620,14 +620,15 @@ levup:			for(var i=0, l=numbers.length; i<l; i++)
 		$('.order1click-link-new').bind('click', function(e) { // button 'Купить в один клик'
 			e.preventDefault()
 			if( !oneClickIsReady )
-				return
+				return false
 			// TODO please go this stuff separate!
 			if( typeof(_gaq) !== 'undefined' )
 				_gaq.push(['_trackEvent', 'QuickOrder', 'Open'])
 			if( 'ANALYTICS' in window ) {
-				if( 'marketgidOrder' in ANALYTICS ) {
-					ANALYTICS.marketgidOrder()
-				}
+				ANALYTICS.runMethod( 'marketgidOrder' )
+				// if( 'marketgidOrder' in ANALYTICS ) {
+				// 	ANALYTICS.marketgidOrder()
+				// }
 			}
 
 			$('#order1click-container-new').lightbox_me({

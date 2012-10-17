@@ -64,14 +64,14 @@ class Action {
      * @throws \Exception
      */
     private function executeRootNode(\Model\Product\Category\Entity $category, \Http\Request $request) {
-        if (\App::config()->debug) \App::debug()->add('subact', 'rootNode');
+        if (\App::config()->debug) \App::debug()->add('sub.act', 'rootNode');
 
         if (!(bool)$category->getChild()) {
             throw new \Exception(sprintf('У категории "%s" отстутсвуют дочерние узлы', $category->getId()));
         }
 
         // фильтры
-        $productFilter = $this->getFilter($category);
+        $productFilter = $this->getFilter($category, $request);
 
         $page = new \View\ProductCategory\RootPage();
         $page->setParam('category', $category);
@@ -86,10 +86,12 @@ class Action {
      * @return \Http\Response
      */
     private function executeBranchNode(\Model\Product\Category\Entity $category, \Http\Request $request) {
-        if (\App::config()->debug) \App::debug()->add('subact', 'branchNode');
+        if (\App::config()->debug) \App::debug()->add('sub.act', 'branchNode');
 
+        // сортировка
+        $productSorting = new \Model\Product\Sorting();
         // фильтры
-        $productFilter = $this->getFilter($category);
+        $productFilter = $this->getFilter($category, $request);
         // дочерние категории сгруппированные по идентификаторам
         $childrenById = array();
         foreach ($category->getChild() as $child) {
@@ -109,7 +111,7 @@ class Action {
         /** @var $child \Model\Product\Category\Entity */
         $child = reset($childrenById);
         $productPagersByCategory = array();
-        foreach ($repository->getIteratorsByFilter($filterData, array(), null, $limit) as $productPager) {
+        foreach ($repository->getIteratorsByFilter($filterData, $productSorting->dump(), null, $limit) as $productPager) {
             $productPager->setPage(1);
             $productPager->setMaxPerPage($limit);
             $productPagersByCategory[$child->getId()] = $productPager;
@@ -131,7 +133,7 @@ class Action {
      * @throws \Exception\NotFoundException
      */
     private function executeLeafNode(\Model\Product\Category\Entity $category, \Http\Request $request) {
-        if (\App::config()->debug) \App::debug()->add('subact', 'leafNode');
+        if (\App::config()->debug) \App::debug()->add('sub.act', 'leafNode');
 
         $pageNum = (int)$request->get('page', 1);
         if ($pageNum < 1) {
@@ -141,10 +143,15 @@ class Action {
         // к сожалению, нужна также загрузка дочерних узлов родителя (для левого меню категорий - product-category/_branch)
         \RepositoryManager::getProductCategory()->loadEntityBranch($category->getParent());
 
+        // сортировка
+        $productSorting = new \Model\Product\Sorting();
+        list($sortingName, $sortingDirection) = array_pad(explode('-', $request->get('sort')), 2, null);
+        $productSorting->setActive($sortingName, $sortingDirection);
+
         // вид товаров
         $productView = $request->get('view', $category->getProductView());
         // фильтры
-        $productFilter = $this->getFilter($category);
+        $productFilter = $this->getFilter($category, $request);
         // листалка
         $limit = \App::config()->product['itemsPerPage'];
         $repository = \RepositoryManager::getProduct();
@@ -155,14 +162,14 @@ class Action {
         );
         $productPager = $repository->getIteratorByFilter(
             $productFilter->dump(),
-            array(),
+            $productSorting->dump(),
             ($pageNum - 1) * $limit,
             $limit
         );
         $productPager->setPage($pageNum);
         $productPager->setMaxPerPage($limit);
         // проверка на максимально допустимый номер страницы
-        if ($productPager->getPage() > $productPager->getLastPage()) {
+        if (($productPager->getPage() - $productPager->getLastPage()) > 0) {
             throw new \Exception\NotFoundException(sprintf('Неверный номер страницы "%s".', $productPager->getPage()));
         }
 
@@ -180,6 +187,7 @@ class Action {
         $page->setParam('category', $category);
         $page->setParam('productFilter', $productFilter);
         $page->setParam('productPager', $productPager);
+        $page->setParam('productSorting', $productSorting);
         $page->setParam('productView', $productView);
 
         return new \Http\Response($page->show());
@@ -189,10 +197,11 @@ class Action {
      * @param \Model\Product\Category\Entity $category
      * @return \Model\Product\Filter
      */
-    private function getFilter(\Model\Product\Category\Entity $category) {
+    private function getFilter(\Model\Product\Category\Entity $category, \Http\Request $request) {
         $filters = \RepositoryManager::getProductFilter()->getCollectionByCategory($category);
         $productFilter = new \Model\Product\Filter($filters);
         $productFilter->setCategory($category);
+        $productFilter->setValues($request->get(\View\Product\FilterForm::$name, array()));
 
         return $productFilter;
     }
