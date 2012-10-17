@@ -1011,23 +1011,12 @@ border-radius: 5px;
 	padding-bottom: 30px;
 }
 
-.mMapPopup .bMobDownWrapRel{
-	top: 5px;
-	bottom: auto;
-	}
-	.mMapPopup .bMobDown{
-		width: 950px;
-		background: #f1f1f1;
-		}
-	.mMapPopup .bMobDown__eWrap{
-		padding: 20px 0 0 0;
-		}
-	.mMapPopup__eBottom{
+	/*.mMapPopup__eBottom{
 		padding-top: 20px;
-		}
+	}
 	.mMapPopup__eBottom .mGray{
 		color: #434343;
-		}
+	}
 	.mMapPopup__eBottom div.selectbox{
 		margin-left: 10px;
 		vertical-align: 4px;
@@ -1035,74 +1024,27 @@ border-radius: 5px;
 		display: inline-block;
 		*display: inline;
 		zoom: 1;
-		}
-	.mMapPopup .bMapShops__eMapWrap{
-		float: right;
-		width: 660px;
-		height: 550px;
-		overflow: hidden;
-		position: relative;
-		border: 1px solid #c7c7c7;
-		/*background: url('img/z_map_2.png');*/
-
-		box-shadow: inset 0 0 5px #777;
-		-webkit-box-shadow: inset 0 0 5px #777;
-		-moz-box-shadow: inset 0 0 5px #777;
-		-o-box-shadow: inset 0 0 5px #777;
-		}
-	.mMapPopup .whitebutton{
+	}*/
+	
+	/*.mMapPopup .whitebutton{
 		margin: 7px 0 0 0;
-		}
+	}
 	.mMapPopup .bigmark1{
 		max-width: 270px;
-		}
-	.bMapShops__eList{
-		width: 287px;
-		height: 550px;
-		background: #fff;
-		overflow-y: scroll;
-		}
-	.bMapShops__eList h3{
-		margin-bottom: 0;
-		padding: 0 35px 0 20px;
-		font: 18px Tahoma, sans-serif;
-		}
-	.bMapShops__eListTitle{
+	}*/
+	
+	/*.bMapShops__eListTitle{
 		padding: 20px 35px 15px 20px;
 		font: 14px Tahoma, sans-serif;
-		}
-	.bMapShops__eListTitle img{
+	}*/
+	/*.bMapShops__eListTitle img{
 		float: right;
-		}
-	.bMapShops__eList ul{
-		padding: 0;
-		}
-	.bMapShops__eList li{
-		cursor: pointer;
-		padding: 12px 35px 12px 20px;
-		font: 14px Tahoma, sans-serif;
-		}
-	.bMapShops__eList li:hover{
-		background: #fff1d8;
-		}
-	.bMapShops__eList li span{
-		font: 12px/26px Tahoma, sans-serif;
-		}
-	.bMapShops__eListNum{
-		float: left;
-		width: 24px;
-		height: 39px;
-		color: #ffffff;
-		padding-top: 4px;
-		margin-right: 24px;
-		text-align: center;
-		font: bold 12px Tahoma, sans-serif;
-		/*background: url('img/z_map_popup.png') no-repeat;*/
-		}
-	.mNumPos{
+	}*/
+	
+	/*.mNumPos{
 		z-index: 2;
 		position: absolute;
-		}
+	}
 	.bMapShops__ePopup{
 		width: 280px;
 		z-index: 3;
@@ -1111,22 +1053,20 @@ border-radius: 5px;
 		border: 1px solid #9a9a9a;
 
 		box-shadow: 15px -2px 25px #333;
-		}
-	.bMapShops__ePopupRel h3{ /* .bMapShops__ePopup h3 */
-		margin: 0 0 15px 0;
-		font: 18px Tahoma, sans-serif;
-		}
-	.bMapShops__ePopupRel span{ /* .bMapShops__ePopup span */
-		font: 12px Tahoma, sans-serif;
-		}
-	.bMapShops__ePopupRel .bGrayButton{ /* .bMapShops__ePopup .bGrayButton */
-		margin: 15px 0 0 0;
-		}
-	.bMapShops__ePopupRel{
-		position: relative;
-		padding: 8px;
-		}
-	.bMapShops__ePopupClose{
+	}*/
+	
+	
+	/*.bMapShops__ePopupRel h3 {
+	    font: 20px 'EnterTypeRegular';
+	    margin: 0 0 15px;
+	}
+	.bMapShops__ePopupRel span {
+	    font: 14px 'EnterTypeRegular';
+	}
+	.bMapShops__ePopupRel .bGrayButton {
+	    margin: 15px 0 0;
+	}*/	
+	/*.bMapShops__ePopupClose{
 		top: 5px;
 		right: 15px;
 		color: #818181;
@@ -1134,7 +1074,7 @@ border-radius: 5px;
 		position: absolute;
 		font: 18px Tahoma, sans-serif;
 		text-decoration: none !important;
-		}
+	}
 	.bMapShops__ePopupArrow{
 		left: 100px;
 		bottom: -25px;
@@ -1142,7 +1082,8 @@ border-radius: 5px;
 		height: 25px;
 		position: absolute;
 		background: url('img/z_popup_arrow.png') no-repeat;
-		}
+	}*/
+	
 .bShopCard{
 		width: 197px;
 		padding: 16px;
@@ -1519,16 +1460,6 @@ border-radius: 5px;
 .bMobDown .sLocation {
   font-size: 16px;
 }
-.bMapShops__ePopupRel h3 {
-    font: 20px 'EnterTypeRegular';
-    margin: 0 0 15px;
-}
-.bMapShops__ePopupRel span {
-    font: 14px 'EnterTypeRegular';
-}
-.bMapShops__ePopupRel .bGrayButton {
-    margin: 15px 0 0;
-}		
 /* bFormTable */
 .bNLogo{
 	float: left;
@@ -1795,7 +1726,7 @@ border-radius: 5px;
 	}/*
 		
 	/*from master*/
-.mMapPopup .bMobDownWrapRel{
+/*.mMapPopup .bMobDownWrapRel{
 	top: 5px;
 	bottom: auto;
 	}
@@ -1837,7 +1768,7 @@ border-radius: 5px;
 		-moz-box-shadow: inset 0 0 5px #777;
 		-o-box-shadow: inset 0 0 5px #777;
 		}
-	.mMapPopup .whitebutton{
+/*	.mMapPopup .whitebutton{
 		margin: 7px 0 0 0;
 		}
 	.mMapPopup .bigmark1{
@@ -1885,7 +1816,7 @@ border-radius: 5px;
 		text-align: center;
 		font: 14px 'EnterTypeBold';
 		/*background: url('img/z_map_popup.png') no-repeat;*/
-		}
+		/*}
 	.mNumPos{
 		z-index: 2;
 		position: absolute;
@@ -1929,7 +1860,7 @@ border-radius: 5px;
 		position: absolute;
 		background: url('img/z_popup_arrow.png') no-repeat;
 		}
-#mapPopup{ float:none;}
+#mapPopup{ float:none;}*/
 
 /*.bSR{
 	font: 12px/17px Tahoma, sans-serif;
