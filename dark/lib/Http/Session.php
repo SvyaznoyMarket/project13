@@ -6,7 +6,31 @@ class Session implements \Http\SessionInterface {
     static private $started = false;
 
     public function start() {
-        session_name(SESSION_NAME);
+        $cookieDefaults = session_get_cookie_params();
+
+        $options = array(
+            'session_name'            => \App::config()->session['name'],
+            'session_id'              => null,
+            'auto_start'              => true,
+            'session_cookie_lifetime' => is_null(\App::config()->session['cookie_lifetime'])? $cookieDefaults['lifetime'] : \App::config()->session['cookie_lifetime'],
+            'session_cookie_path'     => $cookieDefaults['path'],
+            'session_cookie_domain'   => $cookieDefaults['domain'],
+            'session_cookie_secure'   => $cookieDefaults['secure'],
+            'session_cookie_httponly' => isset($cookieDefaults['httponly']) ? $cookieDefaults['httponly'] : false,
+            'session_cache_limiter'   => null,
+        );
+
+
+        // set session name
+        $sessionName = $options['session_name'];
+        session_name($sessionName);
+
+        $lifetime = $options['session_cookie_lifetime'];
+        $path     = $options['session_cookie_path'];
+        $domain   = $options['session_cookie_domain'];
+        $secure   = $options['session_cookie_secure'];
+        $httpOnly = $options['session_cookie_httponly'];
+        session_set_cookie_params($lifetime, $path, $domain, $secure, $httpOnly);
 
         if (!self::$started) {
             if (!session_start()) {

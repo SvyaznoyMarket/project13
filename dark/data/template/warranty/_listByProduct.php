@@ -17,14 +17,14 @@ $user = \App::user();
 
     <div class="bBlueButton extWarranty">
         <img alt="Дополнительная гарантия" class="bF1Info_Logo" src="/images/F1_logo_extWarranty.jpg">
-        <?php if ($warranty = $user->getCart()->getWarrantyByProduct($product->getId())) { ?>
+        <?php if (in_array($warranty->getId(), $user->getCart()->getWarrantyByProduct($product->getId()))) { ?>
         <h3>Вы выбрали гарантию:</h3>
         <div id="ew_look" ref="<?php echo $warranty->getId() ?>">
             <span class="ew_title"><?php echo $warrantiesById[$warranty->getId()]->getName() ?></span>
             - <span class="ew_price"><?php echo $page->helper->formatPrice($warranty->getPrice()) ?></span>&nbsp;
             <span class="rubl"> p</span>
             <br>
-            <a class="bBacketServ__eMore" href="<?php echo $product->url('cart.warranty.delete', array('warrantyId' => $warranty->getId(), 'productId' => $item->getId())) ?>">Отменить услугу</a>
+            <a class="bBacketServ__eMore" href="<?php echo $page->url('cart.warranty.delete', array('warrantyId' => $warranty->getId(), 'productId' => $product->getId())) ?>">Отказаться</a>
         </div>
         <?php } else { ?>
         <h3>Дополнительная<br />гарантия</h3>

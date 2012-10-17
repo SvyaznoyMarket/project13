@@ -34,6 +34,11 @@ class AppConfig {
     /** @var string */
     public $sessionToken = 'enter';
 
+    public $session = array(
+        'name'              => 'enter',
+        'cookie_lifetime'   => 15552000,
+    );
+
     /** @var array */
     public $coreV1 = array(
         'url'          => 'http://core.ent3.ru/v1/json',
