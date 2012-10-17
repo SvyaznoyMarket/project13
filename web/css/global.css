@@ -783,17 +783,6 @@
     background-position: 0px -160px;
     text-decoration: none;
   }
-  .whitelinkactive,
-  .whitelinkactive:hover {
-    background-color: #c4c4c4;
-    background-position: 0px -192px;
-  }
-  .whitelinkdisabled {
-    background-color: #ececec;
-    background-position: 0px -224px;
-    border-color: #e4e4e4;
-    color: #e1e1e1;
-  }
   .yellowbutton {
     background-color: #ffaa01;
     background-position: 0px 0px;
@@ -807,16 +796,16 @@
     background-color: #f79200;
     background-position: 0px -32px;
   }
-  .yellowbuttonactive,
-  .yellowbuttonactive:hover {
-    background-color: #f79200;
-    background-position: 0px -64px;
-  }
-  .yellowbuttondisabled {
-    background-color: #ececec;
-    background-position: 0px -96px;
-    border-color: #e4e4e4;
-    color: #e1e1e1;
+  .yellowbutton.mDisabled {
+    -moz-opacity: 0.5;
+    -khtml-opacity: 0.5;
+    -webkit-opacity: 0.5;
+    opacity: 0.5;
+    filter: progid:dximagetransform.microsoft.alpha(opacity=50);
+    color: #a6a6a6;
+    cursor: default;
+    background: #f3f3f3;
+    border: 1px solid #a6a6a6;
   }
   .whitebutton {
     background-color: #e5e5e5;
@@ -830,17 +819,6 @@
   .whitebutton:hover {
     background-color: #c5c5c5;
     background-position: 0px -160px;
-  }
-  .whitebuttonactive,
-  .whitebuttonactive:hover {
-    background-color: #c4c4c4;
-    background-position: 0px -192px;
-  }
-  .whitebuttondisabled {
-    background-color: #ececec;
-    background-position: 0px -224px;
-    border-color: #e4e4e4;
-    color: #e1e1e1;
   }
   .bigbutton {
     background-color: #ffa901;
@@ -857,38 +835,6 @@
     background-color: #f79200;
     background-position: 0px -297px;
   }
-  .bigbuttonactive,
-  .bigbuttonactive:hover {
-    background-color: #f79200;
-    background-position: 0px -338px;
-  }
-  .bigbuttonlink {
-    background-color: #ffa901;
-    background-position: 0px -256px;
-    border-color: #f28900;
-    color: #ffffff;
-    display: inline-block;
-    font-size: 14px;
-    height: 26px;
-    padding: 7px 11px 0px;
-  }
-  .bigbuttonlink:hover {
-    background-color: #f79200;
-    background-position: 0px -297px;
-    color: #ffffff;
-    text-decoration: none;
-  }
-  .bigbuttonlinkactive,
-  .bigbuttonlinkactive:hover {
-    background-color: #f79200;
-    background-position: 0px -338px;
-  }
-  .bigbuttonlink.width214 {
-    padding: 7px 0px 0px;
-    text-align: center;
-    width: 214px;
-  }
-  .bigbuttonlink.mDisabled,
   .bigbutton.mDisabled {
     background: #f9f9f9;
     border-color: #e4e4e4;
@@ -3771,6 +3717,22 @@
     cursor: auto;
     text-decoration: none;
   }
+  .bigbuttonlink {
+    background-color: #ffa901;
+    background-position: 0px -256px;
+    border-color: #f28900;
+    color: #ffffff;
+    display: inline-block;
+    font-size: 14px;
+    height: 26px;
+    padding: 7px 11px 0px;
+  }
+  .bigbuttonlink:hover {
+    background-color: #f79200;
+    background-position: 0px -297px;
+    color: #ffffff;
+    text-decoration: none;
+  }
 }
 /*---END---СТИЛИ КАРТОЧКИ ТОВАРА---*/
 /*-------СТИЛИ РАСШИРЕННОЙ ГАРАНТИИ-----*/
@@ -3850,6 +3812,61 @@
   }
 }
 /*---END---СТИЛИ РАСШИРЕННОЙ ГАРАНТИИ---*/
+/*-------СТИЛИ КРЕДИТОВ-----*/
+@media all {
+  .creditbox {
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    display: none;
+    margin-bottom: 15px;
+  }
+  .creditboxinner {
+    border-bottom: 4px solid #e9e9e9;
+    padding: 10px 20px;
+  }
+  #creditInfo strong span {
+    color: #000;
+    font-size: 160%;
+  }
+  .bigcheck {
+    cursor: pointer;
+    display: inline-block;
+    font-family: Tahoma, sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 24px;
+    vertical-align: top;
+  }
+  .bigcheck b {
+    background: url("/css/credit/img/bigcheck.png") no-repeat scroll 0px 0px transparent;
+    cursor: pointer;
+    display: inline-block;
+    height: 24px;
+    margin: 0px 10px 3px 0px;
+    vertical-align: top;
+    width: 24px;
+  }
+  .bigcheck input {
+    position: absolute;
+    z-index: -1;
+  }
+  .bigcheck.checked {
+    color: #4fcbf4 !important;
+  }
+  .bigcheck.checked b {
+    background-position: 0px -81px;
+  }
+  .creditInfo > div {
+    display: inline-block;
+  }
+  .creditInfo > div.leftTitle {
+    padding-right: 50px;
+    width: 200px;
+  }
+}
+/*---END---СТИЛИ КРЕДИТОВ---*/
 /*-------СТИЛИ ОФОРМЛЕНИЯ ЗАКАЗА-----*/
 @media all {
   .bBuyingHead {
@@ -5338,7 +5355,7 @@
     border-top: 20px solid transparent;
     height: 0;
     position: absolute;
-    right: 1px;
+    right: 2px;
     top: -20px;
     width: 0;
   }

@@ -72,14 +72,6 @@
 .avatar B {position:absolute; left:0; top:0; display:block; width:54px; height:54px; background:url(/css/skin/img/avatar_cover.png) no-repeat 0 0}
 .avatar B.current {background-position:0 -59px}
 
-.creditInfo > div {
-  display: inline-block;
-}
-.creditInfo > div.leftTitle {
-  width: 200px;
-  padding-right:50px;
-}
-
 .whitelink .leaf {
   background: url("/css/common/img/bg.png") no-repeat -197px -101px;
   display: inline-block;
@@ -456,19 +448,6 @@ border-radius:5px;
 .bigpriceblock .goodsbarbig.mSmallBtns a.link1.disabled, .bigpriceblock  .goodsbarbig.mSmallBtns a.link1.disabled:hover { background: url('/css/skin/img/buy_buttons.png') 0 -118px no-repeat; cursor:default; }
 .bigpriceblock .goodsbarbig.mSmallBtns a.link1.fr{ floar: right }
 
-.creditbox { display:none; border:1px solid #ddd; margin-bottom:15px;
-border-radius:5px;
--moz-border-radius:5px;
--webkit-border-radius:5px;
-}
-.creditboxinner { padding:10px 20px 10px 20px; border-bottom:4px solid #e9e9e9}
-#creditInfo strong span { font-size:160%; color: #000; }
-.bigcheck {display:inline-block; font:bold 14px/24px Tahoma,sans-serif; vertical-align:top; cursor:pointer}
-.bigcheck B {display:inline-block; width:24px; height:24px; margin:0 10px 3px 0; background:url("img/bigcheck.png") no-repeat scroll 0 0 transparent; vertical-align:top; cursor:pointer}
-.bigcheck INPUT {position:absolute; z-index:-1}
-.bigcheck.checked {color:#49c7ed !important}
-.bigcheck.checked B {background-position:0 -81px}
-
 
 #tooltip {position: absolute; z-index: 3000}
 #zoomlink {display: none}
@@ -746,14 +725,7 @@ border-radius: 5px;
 	margin: 11px 0;
 	 font-weight: normal;
 	}
-.yellowbutton.mDisabled{
-	opacity: 0.5;
-	filter: progid:DXImageTransform.Microsoft.Alpha(opacity=50);
-	color: #a6a6a6;
-	cursor: default;
-	background: #f3f3f3;
-	border: 1px solid #a6a6a6;
-	}
+
 /* ----------- /feedback form ------------- */
 
 
