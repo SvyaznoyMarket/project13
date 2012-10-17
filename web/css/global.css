@@ -4606,6 +4606,119 @@
   }
 }
 /*---END---СТИЛИ ОКНА С КАРТОЙ МАГАЗИНОВ---*/
+/*-------СТИЛИ СТРАНИЦЫ С МАГАЗИНАМИ-----*/
+@media all {
+  .bMapShops {
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    -webkit-box-shadow: 0px 0px 4px #d9d9d9;
+    -moz-box-shadow: 0px 0px 4px #d9d9d9;
+    box-shadow: 0px 0px 4px #d9d9d9;
+    border: 1px solid #d9d9d9;
+    clear: both;
+    position: relative;
+  }
+  .bMapShops .bMapShops__eTitle {
+    margin-left: 20px;
+  }
+  .bMapShops__eHead {
+    background: #ededed;
+    height: 161px;
+  }
+  .bMapShops__eImage {
+    -webkit-border-top-right-radius: 5px;
+    -webkit-border-bottom-right-radius: 0;
+    -webkit-border-bottom-left-radius: 0;
+    -webkit-border-top-left-radius: 0;
+    -moz-border-radius-topright: 5px;
+    -moz-border-radius-bottomright: 0;
+    -moz-border-radius-bottomleft: 0;
+    -moz-border-radius-topleft: 0;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
+    height: 161px;
+    position: absolute;
+    right: 0px;
+    top: 0px;
+  }
+  .bMapShops__eRegion {
+    padding: 40px 20px 0px;
+  }
+  .bMapShops__eRegionTitle {
+    font: 24px Tahoma, sans-serif;
+    margin: 0px 0px 10px;
+    padding: 0px;
+  }
+  .bMapShops__eRegionText {
+    font: 12px Tahoma, sans-serif;
+    margin-bottom: 6px;
+  }
+  .bMapShops__eTitle {
+    font: bold 24px Tahoma;
+    margin: 20px 0px;
+    padding: 0px;
+  }
+  .bMapShops__eInfo {
+    font-size: 0px;
+  }
+  .bShopCard {
+    cursor: pointer;
+    display: inline-block;
+    *display: inline;
+    padding: 16px;
+    vertical-align: top;
+    width: 197px;
+    zoom: 1;
+  }
+  .bShopCard:hover {
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    -webkit-box-shadow: 0px 0px 5px #d9d9d9;
+    -moz-box-shadow: 0px 0px 5px #d9d9d9;
+    box-shadow: 0px 0px 5px #d9d9d9;
+    border: 1px solid #d9d9d9;
+    padding: 15px;
+  }
+  .bShopCard:hover .bShopCard__eView {
+    color: #000000;
+    visibility: visible;
+  }
+  .bShopCard .bShopCard__eView {
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    background: url("/css/shopsPage/img/shopsPageButton.png") repeat-x 0 0;
+    border: 1px solid #c9c9c9;
+    color: #000;
+    font: bold 11px Tahoma, sans-serif;
+    margin-left: 10px;
+    padding: 3px 10px;
+    text-decoration: none;
+    visibility: hidden;
+  }
+  .bShopCard .bShopCard__eView:hover {
+    background: url("/css/shopsPage/img/shopsPageButton.png") repeat-x 0 -22px;
+  }
+  .bShopCard__eIco {
+    display: block;
+    margin: 0px auto;
+  }
+  .bShopCard__eTitle {
+    font: 16px Tahoma, sans-serif;
+    margin: 0px;
+    padding: 10px;
+  }
+  .bShopCard__eDescription {
+    font: 12px Tahoma, sans-serif;
+    margin: 0px;
+    padding: 0px 0px 15px 10px;
+  }
+}
+/*---END---СТИЛИ СТРАНИЦЫ С МАГАЗИНАМИ---*/
 /*-------СТИЛИ СТРАНИЦЫ О КОМПАНИИ-----*/
 @media all {
   .bAbout {

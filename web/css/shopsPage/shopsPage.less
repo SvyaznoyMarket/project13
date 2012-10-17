@@ -1,0 +1,90 @@
+.bMapShops {
+  .rounded(5px);
+  .box-shadow(0px 0px 4px #d9d9d9);
+  border: 1px solid #d9d9d9;
+  clear: both;
+  position: relative;
+  .bMapShops__eTitle {
+    margin-left: 20px;
+  }
+}
+.bMapShops__eHead {
+  background: #ededed;
+  height: 161px;
+}
+.bMapShops__eImage {
+  .border-radius(5px, 0, 0, 0);
+  height: 161px;
+  position: absolute;
+  right: 0px;
+  top: 0px;
+}
+.bMapShops__eRegion {
+  padding: 40px 20px 0px;
+}
+.bMapShops__eRegionTitle {
+  font: 24px Tahoma, sans-serif;
+  margin: 0px 0px 10px;
+  padding: 0px;
+}
+.bMapShops__eRegionText {
+  font: 12px Tahoma, sans-serif;
+  margin-bottom: 6px;
+}
+.bMapShops__eTitle {
+  font: bold 24px Tahoma;
+  margin: 20px 0px;
+  padding: 0px;
+}
+.bMapShops__eMapWrap {
+}
+.bMapShops__eInfo {
+  font-size: 0px;
+}
+.bShopCard {
+  cursor: pointer;
+  display: inline-block;
+  *display: inline;
+  padding: 16px;
+  vertical-align: top;
+  width: 197px;
+  zoom: 1;
+  &:hover {
+    .rounded(10px);
+    .box-shadow(0px 0px 5px #d9d9d9);
+    border: 1px solid #d9d9d9;
+    padding: 15px;
+    .bShopCard__eView {
+      color: @black;
+      visibility: visible;
+    }
+  }
+  .bShopCard__eView {
+    .rounded(5px);
+    background: url("@{base-url}/shopsPage/img/shopsPageButton.png") repeat-x 0 0;
+    border: 1px solid #c9c9c9;
+    color: #000;
+    font: bold 11px Tahoma, sans-serif;
+    margin-left: 10px;
+    padding: 3px 10px;
+    text-decoration: none;
+    visibility: hidden;
+    &:hover {
+      background: url("@{base-url}/shopsPage/img/shopsPageButton.png") repeat-x 0 -22px;
+    }
+  }
+}
+.bShopCard__eIco {
+  display: block;
+  margin: 0px auto;
+}
+.bShopCard__eTitle {
+  font: 16px Tahoma, sans-serif;
+  margin: 0px;
+  padding: 10px;
+}
+.bShopCard__eDescription {
+  font: 12px Tahoma, sans-serif;
+  margin: 0px;
+  padding: 0px 0px 15px 10px;
+}
