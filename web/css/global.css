@@ -3652,6 +3652,83 @@
   }
 }
 /*---END---СТИЛИ КАРТОЧКИ ТОВАРА---*/
+/*-------СТИЛИ РАСШИРЕННОЙ ГАРАНТИИ-----*/
+/*стили расширенной гарантии в корзине*/
+@media all {
+  .bBacketServ.extWarr.mBig {
+    display: none;
+  }
+  .bBacketServ.extWarr a.link_extWarr {
+    background-color: #e5e5e5;
+    background-image: url("/css/common/img/bg_buttons.png");
+    background-position: 0px -128px;
+    background-repeat: repeat-x;
+    border-color: #c9c9c9;
+    border-radius: 5px;
+    border: 1px solid;
+    color: #4fcbf4;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 11px;
+    font-weight: bold;
+    height: 18px;
+    margin-top: 8px;
+    overflow: visible;
+    padding: 4px 10px 0px;
+  }
+  .bBacketServ.extWarr a.link_extWarr:hover {
+    background-color: #c5c5c5;
+    background-position: 0px -160px;
+    text-decoration: none;
+  }
+}
+/*стили расширенной гарантии в карточке товара*/
+@media all {
+  .extWarranty.bBlueButton {
+    margin: 20px 0;
+  }
+  .extWarranty.bBlueButton h3 {
+    color: #4fcbf4;
+    margin: 0 0 7px 0;
+    font: bold 14px Tahoma, sans-serif;
+  }
+  .extWarranty.bBlueButton div {
+    font: 14px Tahoma, sans-serif;
+    margin-bottom: 10px;
+  }
+  .extWarranty.bBlueButton .link1 {
+    color: #4fcbf4;
+  }
+  .extWarranty.bBlueButton .link1:hover {
+    text-decoration: none;
+  }
+  .extWarranty.hideblock {
+    background: #ffffff url('/css/extWarranty/img/F1_logo_extWarranty.jpg') 0 0 no-repeat;
+    display: none;
+    top: 250px;
+    left: 50%;
+    margin-left: -370px;
+    padding: 10px 20px 20px 75px;
+  }
+  .extWarranty.hideblock div {
+    max-height: 320px;
+    overflow-y: scroll;
+  }
+  .extWarranty.hideblock h2 {
+    color: #4fcbf4;
+    margin: 0 0 10px 0;
+    font: bold 16px Tahoma, sans-serif;
+  }
+  .extWarranty.hideblock table {
+    width: 650px;
+  }
+  .extWarranty.hideblock th {
+    text-align: right;
+    text-decoration: underline;
+    font: 12px Tahoma, sans-serif;
+  }
+}
+/*---END---СТИЛИ РАСШИРЕННОЙ ГАРАНТИИ---*/
 /*-------СТИЛИ ОФОРМЛЕНИЯ ЗАКАЗА-----*/
 @media all {
   .bBuyingHead {
