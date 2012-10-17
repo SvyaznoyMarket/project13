@@ -198,7 +198,7 @@
 
 <?php if(false) { include_partial('order_/map', $sf_data); } ?>
 
-<?php include_partial('order_/footer') ?>
+<?php //include_partial('order_/footer') ?>
 
 <div id="marketgidOrder" class="jsanalytics"></div>
 <?php if ('live' == sfConfig::get('sf_environment')): ?>

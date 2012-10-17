@@ -42,36 +42,8 @@
       </div>
       <div class="clear"></div>
     </div>
-    <ul class="bBuyingFooter">
-        <li>
-            <div class="bBuyingFooter__eEnter"></div>
-            <h3>Ответы на вопросы</h3>
-            <span>Наш Контакт-сENTER<br><b>8 (800) 700 00 09</b><br> 24 часа в сутки / 7 дней в неделю. Звонок бесплатный. Радость в подарок :)</span>
-        </li>
-        <li>
 
-            <div class="bBuyingFooter__eZakaz"></div>
-            <h3>Безопасные покупки</h3>
-            <span>Вы приобретаете качественный товар. Получаете и оплачиваете любым удобным для Вас способом.</span>
-        </li>
-        <li>
-            <div class="bBuyingFooter__ePeople"></div>
-            <h3>Сопровождение заказа</h3>
-
-            <span>После оформления заказа, с Вами свяжется специалист нашего Контакт-сENTER для подтверждения заказа.</span>
-        </li>
-        <li>
-            <div class="bBuyingFooter__eCar"></div>
-            <h3>Собственная служба доставки и сервис</h3>
-            <span>Наша служба F1 доставит заказ вовремя.<br>Соберет, настроит и покажет, как работает.</span>
-        </li>
-
-        <li>
-            <div class="bBuyingFooter__eFinger"></div>
-            <h3>Как для себя</h3>
-            <span>Вы можете обменять товар в течение 30 дней<br> и в течение 14 дней вернуть в магазин. </span>
-        </li>
-    </ul>
+    <?php include_partial('order_/footer') ?>
 
     <?php include_component('default', 'footer', array('view' => 'compact', )) ?>
 

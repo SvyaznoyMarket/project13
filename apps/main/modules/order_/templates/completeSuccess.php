@@ -41,7 +41,7 @@
 <?php } ?>
 
 
-<?php include_partial('order_/footer') ?>
+<?php //include_partial('order_/footer') ?>
 
 <?php slot('seo_counters_advance') ?>
   <?php include_component('order', 'seo_counters_advance', array('step' => 2)) ?>
