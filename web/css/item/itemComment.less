@@ -1,0 +1,115 @@
+.goodsinfosmall {
+  float: left;
+  padding-left: 20px;
+  width: 500px;
+}
+.gradetable {
+  margin-bottom: 30px;
+  thead{
+    td {
+      padding: 0px 0px 12px 20px;
+    }
+    th {
+      padding: 0px 0px 12px;
+    }
+  } 
+  td {
+    padding: 0px 0px 5px 20px;
+  }
+  th {
+    padding: 0px 0px 5px;
+    text-align: right;
+    a {
+      font-size: 10px;
+      text-decoration: underline;
+    }
+  }
+  &.fr tbody{
+    td {
+      padding: 0px 0px 8px 20px;
+    }
+    th {
+      padding: 0px 0px 8px;
+    }
+  }
+  tbody td {
+    color: @typGray;
+    font-size: 10px;
+  } 
+}
+.recomendbox {
+  margin:-5px 330px 0 330px
+}
+.grade {
+  .rounded(5px);
+  border: 1px solid @firmOrange;
+  float: left;
+  font-size: 0px;
+  height: 6px;
+  line-height: 0px;
+  margin: 3px 6px 0px 0px;
+  width: 84px;
+  div {
+    background: #ffb721;
+    float: left;
+    font-size: 0px;
+    height: 6px;
+    line-height: 0px;
+  }
+}
+.percentbox {
+  background: url("@{base-url}/item/img/percentBox.gif") no-repeat;
+  display: inline-block;
+  font-size: 18px;
+  height: 32px;
+  padding-top: 2px;
+  text-align: center;
+  vertical-align: middle;
+  width: 64px;
+}
+.goodsphotosmall {
+  float: left;
+  position: relative;
+  width: 160px;
+}
+.article a {
+  color: @typGray;
+  margin-left: 25px;
+}
+.articlemenu {
+  .rounded(5px);
+  border: 2px solid #dcdcdc;
+  float: right;
+  margin-bottom: 20px;
+  width: 215px;
+  li {
+    border-bottom: 1px solid @typLightGray;
+    padding: 10px 0px;
+    text-align: center;
+    &.next {
+      border: none;
+    }
+  }
+}
+.articlemenu .current,
+.articlemenu .current:hover {
+  color: #ffb423;
+  cursor: auto;
+  text-decoration: none;
+}
+.bigbuttonlink {
+  background-color: @firmOrange;
+  background-position: 0px -256px;
+  border-color: #f28900;
+  color: @white;
+  display: inline-block;
+  font-size: 14px;
+  height: 26px;
+  padding: 7px 11px 0px;
+  &:hover {
+    background-color: #f79200;
+    background-position: 0px -297px;
+    color: @white;
+    text-decoration: none;
+  }
+}

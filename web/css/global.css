@@ -6,6 +6,36 @@
 /*типичный серый*/
 /*типичный светло-серый*/
 /*типичный цвет тени*/
+/*---------ШРИФТЫ----------*/
+@font-face {
+  font-family: 'Enter';
+  src: url('/css/common/fonts/enter_brash_01-webfont.eot');
+  src: url('/css/common/fonts/enter_brash_01-webfont.eot?#iefix') format('embedded-opentype'), url('/css/common/fonts/enter_brash_01-webfont.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Rouble';
+  src: url('/css/common/fonts/rouble.eot');
+  src: url('/css/common/fonts/rouble.eot?#iefix') format('embedded-opentype'), url('/css/common/fonts/rouble.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Enter Type';
+  src: url('/css/common/fonts/enter_type-webfont.eot');
+  src: url('/css/common/fonts/enter_type-webfont.eot?#iefix') format('embedded-opentype'), url('/css/common/fonts/enter_type-webfont.woff') format('woff'), url('/css/common/fonts/enter_type-webfont.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Enter Type Bold';
+  src: url('/css/common/fonts/entertype_bold-webfont.eot');
+  src: url('/css/common/fonts/entertype_bold-webfont.eot?#iefix') format('embedded-opentype'), url('/css/common/fonts/enter_type-webfont.woff') format('woff'), url('/css/common/fonts/entertype_bold-webfont.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+.rouble {
+  font-family: Rouble;
+  font-size: 36px;
+}
+/*---END----ШРИФТЫ---------*/
 /*---ОСНОВНЫЕ ПРАВИЛА---*/
 @media all {
   html {
@@ -449,6 +479,9 @@
   .height250 {
     height: 250px;
   }
+  .mW750 {
+    width: 750px;
+  }
   .mW1000 {
     width: 1000px;
   }
@@ -466,6 +499,14 @@
   }
   .mBR5 {
     border-radius: 5px;
+  }
+  .mSmall {
+    font: 12px Tahoma, sans-serif;
+    line-height: 1.6;
+  }
+  .mBig {
+    font: 16px Tahoma, sans-serif;
+    line-height: 1.6;
   }
   .border-none {
     border: 0 none;
@@ -753,17 +794,6 @@
     background-position: 0px -160px;
     text-decoration: none;
   }
-  .whitelinkactive,
-  .whitelinkactive:hover {
-    background-color: #c4c4c4;
-    background-position: 0px -192px;
-  }
-  .whitelinkdisabled {
-    background-color: #ececec;
-    background-position: 0px -224px;
-    border-color: #e4e4e4;
-    color: #e1e1e1;
-  }
   .yellowbutton {
     background-color: #ffaa01;
     background-position: 0px 0px;
@@ -777,16 +807,16 @@
     background-color: #f79200;
     background-position: 0px -32px;
   }
-  .yellowbuttonactive,
-  .yellowbuttonactive:hover {
-    background-color: #f79200;
-    background-position: 0px -64px;
-  }
-  .yellowbuttondisabled {
-    background-color: #ececec;
-    background-position: 0px -96px;
-    border-color: #e4e4e4;
-    color: #e1e1e1;
+  .yellowbutton.mDisabled {
+    -moz-opacity: 0.5;
+    -khtml-opacity: 0.5;
+    -webkit-opacity: 0.5;
+    opacity: 0.5;
+    filter: progid:dximagetransform.microsoft.alpha(opacity=50);
+    color: #a6a6a6;
+    cursor: default;
+    background: #f3f3f3;
+    border: 1px solid #a6a6a6;
   }
   .whitebutton {
     background-color: #e5e5e5;
@@ -800,17 +830,6 @@
   .whitebutton:hover {
     background-color: #c5c5c5;
     background-position: 0px -160px;
-  }
-  .whitebuttonactive,
-  .whitebuttonactive:hover {
-    background-color: #c4c4c4;
-    background-position: 0px -192px;
-  }
-  .whitebuttondisabled {
-    background-color: #ececec;
-    background-position: 0px -224px;
-    border-color: #e4e4e4;
-    color: #e1e1e1;
   }
   .bigbutton {
     background-color: #ffa901;
@@ -827,38 +846,6 @@
     background-color: #f79200;
     background-position: 0px -297px;
   }
-  .bigbuttonactive,
-  .bigbuttonactive:hover {
-    background-color: #f79200;
-    background-position: 0px -338px;
-  }
-  .bigbuttonlink {
-    background-color: #ffa901;
-    background-position: 0px -256px;
-    border-color: #f28900;
-    color: #ffffff;
-    display: inline-block;
-    font-size: 14px;
-    height: 26px;
-    padding: 7px 11px 0px;
-  }
-  .bigbuttonlink:hover {
-    background-color: #f79200;
-    background-position: 0px -297px;
-    color: #ffffff;
-    text-decoration: none;
-  }
-  .bigbuttonlinkactive,
-  .bigbuttonlinkactive:hover {
-    background-color: #f79200;
-    background-position: 0px -338px;
-  }
-  .bigbuttonlink.width214 {
-    padding: 7px 0px 0px;
-    text-align: center;
-    width: 214px;
-  }
-  .bigbuttonlink.mDisabled,
   .bigbutton.mDisabled {
     background: #f9f9f9;
     border-color: #e4e4e4;
@@ -962,37 +949,26 @@
     text-align: left;
     zoom: 1;
   }
+  .dragbox {
+    bottom: 41px;
+    height: 100%;
+    left: 0px;
+    position: fixed;
+    right: 0px;
+    top: 0px;
+    width: 100%;
+    z-index: 101;
+  }
+  .dragbox div {
+    background-color: #ffffff;
+    cursor: pointer;
+    height: 60px;
+    position: absolute;
+    width: 60px;
+    z-index: 102;
+  }
 }
-/*---------ШРИФТЫ----------*/
-@font-face {
-  font-family: 'Enter';
-  src: url('/css/common/fonts/enter_brash_01-webfont.eot');
-  src: url('/css/common/fonts/enter_brash_01-webfont.eot?#iefix') format('embedded-opentype'), url('/css/common/fonts/enter_brash_01-webfont.ttf') format('truetype');
-}
-@font-face {
-  font-family: 'Rouble';
-  src: url('/css/common/fonts/rouble.eot');
-  src: url('/css/common/fonts/rouble.eot?#iefix') format('embedded-opentype'), url('/css/common/fonts/rouble.ttf') format('truetype');
-}
-@font-face {
-  font-family: 'Enter Type';
-  src: url('/css/common/fonts/enter_type-webfont.eot');
-  src: url('/css/common/fonts/enter_type-webfont.eot?#iefix') format('embedded-opentype'), url('/css/common/fonts/enter_type-webfont.woff') format('woff'), url('/css/common/fonts/enter_type-webfont.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-}
-@font-face {
-  font-family: 'Enter Type Bold';
-  src: url('/css/common/fonts/entertype_bold-webfont.eot');
-  src: url('/css/common/fonts/entertype_bold-webfont.eot?#iefix') format('embedded-opentype'), url('/css/common/fonts/enter_type-webfont.woff') format('woff'), url('/css/common/fonts/entertype_bold-webfont.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-}
-.rouble {
-  font-family: Rouble;
-  font-size: 36px;
-}
-/*---END----ШРИФТЫ---------*/
+/*--END---ОСНОВНЫЕ ПРАВИЛА---*/
 /*-----СТИЛИ jQuery UI-----*/
 @media all {
   /*!
@@ -3651,7 +3627,283 @@
     width: 470px;
   }
 }
+/*стили отзывов к продукту*/
+@media all {
+  .goodsinfosmall {
+    float: left;
+    padding-left: 20px;
+    width: 500px;
+  }
+  .gradetable {
+    margin-bottom: 30px;
+  }
+  .gradetable thead td {
+    padding: 0px 0px 12px 20px;
+  }
+  .gradetable thead th {
+    padding: 0px 0px 12px;
+  }
+  .gradetable td {
+    padding: 0px 0px 5px 20px;
+  }
+  .gradetable th {
+    padding: 0px 0px 5px;
+    text-align: right;
+  }
+  .gradetable th a {
+    font-size: 10px;
+    text-decoration: underline;
+  }
+  .gradetable.fr tbody td {
+    padding: 0px 0px 8px 20px;
+  }
+  .gradetable.fr tbody th {
+    padding: 0px 0px 8px;
+  }
+  .gradetable tbody td {
+    color: #a6a6a6;
+    font-size: 10px;
+  }
+  .recomendbox {
+    margin: -5px 330px 0 330px;
+  }
+  .grade {
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    border: 1px solid #ffa901;
+    float: left;
+    font-size: 0px;
+    height: 6px;
+    line-height: 0px;
+    margin: 3px 6px 0px 0px;
+    width: 84px;
+  }
+  .grade div {
+    background: #ffb721;
+    float: left;
+    font-size: 0px;
+    height: 6px;
+    line-height: 0px;
+  }
+  .percentbox {
+    background: url("/css/item/img/percentBox.gif") no-repeat;
+    display: inline-block;
+    font-size: 18px;
+    height: 32px;
+    padding-top: 2px;
+    text-align: center;
+    vertical-align: middle;
+    width: 64px;
+  }
+  .goodsphotosmall {
+    float: left;
+    position: relative;
+    width: 160px;
+  }
+  .article a {
+    color: #a6a6a6;
+    margin-left: 25px;
+  }
+  .articlemenu {
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    border: 2px solid #dcdcdc;
+    float: right;
+    margin-bottom: 20px;
+    width: 215px;
+  }
+  .articlemenu li {
+    border-bottom: 1px solid #e6e6e6;
+    padding: 10px 0px;
+    text-align: center;
+  }
+  .articlemenu li.next {
+    border: none;
+  }
+  .articlemenu .current,
+  .articlemenu .current:hover {
+    color: #ffb423;
+    cursor: auto;
+    text-decoration: none;
+  }
+  .bigbuttonlink {
+    background-color: #ffa901;
+    background-position: 0px -256px;
+    border-color: #f28900;
+    color: #ffffff;
+    display: inline-block;
+    font-size: 14px;
+    height: 26px;
+    padding: 7px 11px 0px;
+  }
+  .bigbuttonlink:hover {
+    background-color: #f79200;
+    background-position: 0px -297px;
+    color: #ffffff;
+    text-decoration: none;
+  }
+}
 /*---END---СТИЛИ КАРТОЧКИ ТОВАРА---*/
+/*-------СТИЛИ РАСШИРЕННОЙ ГАРАНТИИ-----*/
+/*стили расширенной гарантии в корзине*/
+@media all {
+  .bBacketServ.extWarr.mBig {
+    display: none;
+  }
+  .bBacketServ.extWarr a.link_extWarr {
+    background-color: #e5e5e5;
+    background-image: url("/css/common/img/bg_buttons.png");
+    background-position: 0px -128px;
+    background-repeat: repeat-x;
+    border-color: #c9c9c9;
+    border-radius: 5px;
+    border: 1px solid;
+    color: #4fcbf4;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 11px;
+    font-weight: bold;
+    height: 18px;
+    margin-top: 8px;
+    overflow: visible;
+    padding: 4px 10px 0px;
+  }
+  .bBacketServ.extWarr a.link_extWarr:hover {
+    background-color: #c5c5c5;
+    background-position: 0px -160px;
+    text-decoration: none;
+  }
+}
+/*стили расширенной гарантии в карточке товара*/
+@media all {
+  .extWarranty.bBlueButton {
+    margin: 20px 0;
+  }
+  .extWarranty.bBlueButton h3 {
+    color: #4fcbf4;
+    margin: 0 0 7px 0;
+    font: bold 14px Tahoma, sans-serif;
+  }
+  .extWarranty.bBlueButton div {
+    font: 14px Tahoma, sans-serif;
+    margin-bottom: 10px;
+  }
+  .extWarranty.bBlueButton .link1 {
+    color: #4fcbf4;
+  }
+  .extWarranty.bBlueButton .link1:hover {
+    text-decoration: none;
+  }
+  .extWarranty.hideblock {
+    background: #ffffff url('/css/extWarranty/img/F1_logo_extWarranty.jpg') 0 0 no-repeat;
+    display: none;
+    top: 250px;
+    left: 50%;
+    margin-left: -370px;
+    padding: 10px 20px 20px 75px;
+  }
+  .extWarranty.hideblock div {
+    max-height: 320px;
+    overflow-y: scroll;
+  }
+  .extWarranty.hideblock h2 {
+    color: #4fcbf4;
+    margin: 0 0 10px 0;
+    font: bold 16px Tahoma, sans-serif;
+  }
+  .extWarranty.hideblock table {
+    width: 650px;
+  }
+  .extWarranty.hideblock th {
+    text-align: right;
+    text-decoration: underline;
+    font: 12px Tahoma, sans-serif;
+  }
+}
+/*---END---СТИЛИ РАСШИРЕННОЙ ГАРАНТИИ---*/
+/*-------СТИЛИ КРЕДИТОВ-----*/
+@media all {
+  .creditbox {
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    display: none;
+    margin-bottom: 15px;
+  }
+  .creditboxinner {
+    border-bottom: 4px solid #e9e9e9;
+    padding: 10px 20px;
+  }
+  #creditInfo strong span {
+    color: #000;
+    font-size: 160%;
+  }
+  .bigcheck {
+    cursor: pointer;
+    display: inline-block;
+    font-family: Tahoma, sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 24px;
+    vertical-align: top;
+  }
+  .bigcheck b {
+    background: url("/css/credit/img/bigcheck.png") no-repeat scroll 0px 0px transparent;
+    cursor: pointer;
+    display: inline-block;
+    height: 24px;
+    margin: 0px 10px 3px 0px;
+    vertical-align: top;
+    width: 24px;
+  }
+  .bigcheck input {
+    position: absolute;
+    z-index: -1;
+  }
+  .bigcheck.checked {
+    color: #4fcbf4 !important;
+  }
+  .bigcheck.checked b {
+    background-position: 0px -81px;
+  }
+  .creditInfo > div {
+    display: inline-block;
+  }
+  .creditInfo > div.leftTitle {
+    padding-right: 50px;
+    width: 200px;
+  }
+  .bankWrap {
+    margin-top: 4px !important;
+    position: relative;
+    width: 600px;
+  }
+  .bankWrap .bSelect__eArrow {
+    position: absolute;
+  }
+  .bankWrap .bSelect span {
+    line-height: 30px;
+  }
+  .bankWrap .bSelect__eDropmenu {
+    position: absolute;
+  }
+  .bankWrap .creditHref {
+    margin-left: 20px;
+    margin-top: 8px;
+  }
+  .bankWrap .creditHref a {
+    color: #434343;
+    text-decoration: underline;
+  }
+  .bankWrap .creditHref a:hover {
+    color: #434343;
+    text-decoration: none;
+  }
+}
+/*---END---СТИЛИ КРЕДИТОВ---*/
 /*-------СТИЛИ ОФОРМЛЕНИЯ ЗАКАЗА-----*/
 @media all {
   .bBuyingHead {
@@ -5140,7 +5392,7 @@
     border-top: 20px solid transparent;
     height: 0;
     position: absolute;
-    right: 1px;
+    right: 2px;
     top: -20px;
     width: 0;
   }

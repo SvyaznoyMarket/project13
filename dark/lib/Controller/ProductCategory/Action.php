@@ -18,13 +18,46 @@ class Action {
         $categoryToken = end($categoryToken);
 
         $repository = \RepositoryManager::getProductCategory();
-
         $category = $repository->getEntityByToken($categoryToken);
         if (!$category) {
             throw new \Exception\NotFoundException(sprintf('Категория товара с токеном "%s" не найдена.', $categoryToken));
         }
 
-        return new \Http\Response();
+        $pageNum = (int)$request->get('page', 1);
+        if ($pageNum < 1) {
+            throw new \Exception\NotFoundException(sprintf('Неверный номер страницы "%s".', $pageNum));
+        }
+
+        // сортировка
+        $productSorting = new \Model\Product\Sorting();
+
+        // вид товаров
+        $productView = $category->getHasLine() ? 'line' : 'compact';
+        // фильтры
+        $productFilter = $this->getFilter($category, $request);
+        // листалка
+        $limit = \App::config()->product['itemsInCategorySlider'];
+        $repository = \RepositoryManager::getProduct();
+        $repository->setEntityClass('\\Model\\Product\\CompactEntity');
+        $productPager = $repository->getIteratorByFilter(
+            $productFilter->dump(),
+            $productSorting->dump(),
+            ($pageNum - 1) * $limit,
+            $limit
+        );
+        $productPager->setPage($pageNum);
+        $productPager->setMaxPerPage($limit);
+        // проверка на максимально допустимый номер страницы
+        if (($productPager->getPage() - $productPager->getLastPage()) > 0) {
+            throw new \Exception\NotFoundException(sprintf('Неверный номер страницы "%s".', $productPager->getPage()));
+        }
+
+        return new \Http\Response(\App::templating()->render('product/_list', array(
+            'page'   => new \View\DefaultLayout(),
+            'pager'  => $productPager,
+            'view'   => $productView,
+            'isAjax' => true,
+        )));
     }
 
     /**
@@ -38,7 +71,6 @@ class Action {
         $categoryToken = end($categoryToken);
 
         $repository = \RepositoryManager::getProductCategory();
-
         $category = $repository->getEntityByToken($categoryToken);
         if (!$category) {
             throw new \Exception\NotFoundException(sprintf('Категория товара с токеном "%s" не найдена.', $categoryToken));
@@ -49,12 +81,12 @@ class Action {
 
         // http://en.wikipedia.org/wiki/Tree_%28data_structure%29
         if ($category->isRoot()) {
-            return $this->executeRootNode($category, $request);
+            return $this->rootCategory($category, $request);
         } else if ($category->isBranch()) {
-            return $this->executeBranchNode($category, $request);
+            return $this->branchCategory($category, $request);
         }
 
-        return $this->executeLeafNode($category, $request);
+        return $this->leafCategory($category, $request);
     }
 
     /**
@@ -63,8 +95,8 @@ class Action {
      * @return \Http\Response
      * @throws \Exception
      */
-    private function executeRootNode(\Model\Product\Category\Entity $category, \Http\Request $request) {
-        if (\App::config()->debug) \App::debug()->add('sub.act', 'rootNode');
+    private function rootCategory(\Model\Product\Category\Entity $category, \Http\Request $request) {
+        if (\App::config()->debug) \App::debug()->add('sub.act', 'rootCategory');
 
         if (!(bool)$category->getChild()) {
             throw new \Exception(sprintf('У категории "%s" отстутсвуют дочерние узлы', $category->getId()));
@@ -85,8 +117,8 @@ class Action {
      * @param \Http\Request $request
      * @return \Http\Response
      */
-    private function executeBranchNode(\Model\Product\Category\Entity $category, \Http\Request $request) {
-        if (\App::config()->debug) \App::debug()->add('sub.act', 'branchNode');
+    private function branchCategory(\Model\Product\Category\Entity $category, \Http\Request $request) {
+        if (\App::config()->debug) \App::debug()->add('sub.act', 'branchCategory');
 
         // сортировка
         $productSorting = new \Model\Product\Sorting();
@@ -132,8 +164,8 @@ class Action {
      * @return \Http\Response
      * @throws \Exception\NotFoundException
      */
-    private function executeLeafNode(\Model\Product\Category\Entity $category, \Http\Request $request) {
-        if (\App::config()->debug) \App::debug()->add('sub.act', 'leafNode');
+    private function leafCategory(\Model\Product\Category\Entity $category, \Http\Request $request) {
+        if (\App::config()->debug) \App::debug()->add('sub.act', 'leafCategory');
 
         $pageNum = (int)$request->get('page', 1);
         if ($pageNum < 1) {
@@ -149,7 +181,7 @@ class Action {
         $productSorting->setActive($sortingName, $sortingDirection);
 
         // вид товаров
-        $productView = $request->get('view', $category->getProductView());
+        $productView = $request->get('view', $category->getHasLine() ? 'line' : $category->getProductView());
         // фильтры
         $productFilter = $this->getFilter($category, $request);
         // листалка

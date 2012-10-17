@@ -439,7 +439,10 @@ ul.lh15 li {
 .height250 {
   height: 250px;
 }
-.mW1000{
+.mW750 {
+  width: 750px;
+}
+.mW1000 {
   width: 1000px;
 }
 .column215 {
@@ -456,6 +459,14 @@ ul.lh15 li {
 }
 .mBR5 {
   border-radius: 5px;
+}
+.mSmall{
+  font: 12px Tahoma, sans-serif;
+  line-height: 1.6;
+}
+.mBig{
+  font: 16px Tahoma, sans-serif;
+  line-height: 1.6;
 }
 .border-none {
   border: 0 none;
@@ -535,7 +546,7 @@ ul.lh15 li {
   z-index: 1000;
   .close {
     /* right: -2px;*/
-    background: url("/css/common/img/closeBtnOrange.png") no-repeat 0px 0px;
+    background: url("@{base-url}/common/img/closeBtnOrange.png") no-repeat 0px 0px;
     cursor: pointer;
     display: block;
     font-size: 0px;
@@ -670,7 +681,6 @@ ul.lh15 li {
     }
   }
 }
-
 .bBigOrangeButton {
   .rounded(5px);
   background: #f89b1c;
@@ -724,17 +734,6 @@ ul.lh15 li {
   background-position: 0px -160px;
   text-decoration: none;
 }
-.whitelinkactive,
-.whitelinkactive:hover {
-  background-color: #c4c4c4;
-  background-position: 0px -192px;
-}
-.whitelinkdisabled {
-  background-color: #ececec;
-  background-position: 0px -224px;
-  border-color: #e4e4e4;
-  color: #e1e1e1;
-}
 .yellowbutton {
   background-color: #ffaa01;
   background-position: 0px 0px;
@@ -747,17 +746,14 @@ ul.lh15 li {
     background-color: #f79200;
     background-position: 0px -32px;
   }
-}
-.yellowbuttonactive,
-.yellowbuttonactive:hover {
-  background-color: #f79200;
-  background-position: 0px -64px;
-}
-.yellowbuttondisabled {
-  background-color: #ececec;
-  background-position: 0px -96px;
-  border-color: #e4e4e4;
-  color: #e1e1e1;
+  &.mDisabled{
+    .opacity(0.5);
+    filter: progid:DXImageTransform.Microsoft.Alpha(opacity=50);
+    color: @typGray;
+    cursor: default;
+    background: #f3f3f3;
+    border: 1px solid #a6a6a6;
+    }
 }
 .whitebutton {
   background-color: #e5e5e5;
@@ -771,17 +767,6 @@ ul.lh15 li {
     background-color: #c5c5c5;
     background-position: 0px -160px;
   }
-}
-.whitebuttonactive,
-.whitebuttonactive:hover {
-  background-color: #c4c4c4;
-  background-position: 0px -192px;
-}
-.whitebuttondisabled {
-  background-color: #ececec;
-  background-position: 0px -224px;
-  border-color: #e4e4e4;
-  color: #e1e1e1;
 }
 .bigbutton {
   background-color: @firmOrange;
@@ -798,38 +783,6 @@ ul.lh15 li {
   background-color: #f79200;
   background-position: 0px -297px;
 }
-.bigbuttonactive,
-.bigbuttonactive:hover {
-  background-color: #f79200;
-  background-position: 0px -338px;
-}
-.bigbuttonlink {
-  background-color: @firmOrange;
-  background-position: 0px -256px;
-  border-color: #f28900;
-  color: @white;
-  display: inline-block;
-  font-size: 14px;
-  height: 26px;
-  padding: 7px 11px 0px;
-  &:hover {
-    background-color: #f79200;
-    background-position: 0px -297px;
-    color: @white;
-    text-decoration: none;
-  }
-}
-.bigbuttonlinkactive,
-.bigbuttonlinkactive:hover {
-  background-color: #f79200;
-  background-position: 0px -338px;
-}
-.bigbuttonlink.width214 {
-  padding: 7px 0px 0px;
-  text-align: center;
-  width: 214px;
-}
-.bigbuttonlink.mDisabled,
 .bigbutton.mDisabled {
   background: #f9f9f9;
   border-color: #e4e4e4;
@@ -861,7 +814,7 @@ ul.lh15 li {
 /* END BUTTONS*/
 .selectbox {
   .rounded(5px);
-  background: #e3e3e3 url("/css/common/img/bg_buttons.png") repeat-x 0px -128px;
+  background: #e3e3e3 url("@{base-url}/common/img/bg_buttons.png") repeat-x 0px -128px;
   border: 1px solid #c9c9c9;
   height: 22px;
   line-height: 22px;
@@ -887,7 +840,7 @@ ul.lh15 li {
     z-index: 2;
   }
   i {
-    background: url("/css/common/img/bg.png") no-repeat -62px -24px;
+    background: url("@{base-url}/common/img/bg.png") no-repeat -62px -24px;
     display: block;
     height: 7px;
     margin-top: -3px;
@@ -925,4 +878,22 @@ ul.lh15 li {
   padding: 15px 0px 30px;
   text-align: left;
   zoom: 1;
+}
+.dragbox {
+  bottom: 41px;
+  height: 100%;
+  left: 0px;
+  position: fixed;
+  right: 0px;
+  top: 0px;
+  width: 100%;
+  z-index: 101;
+  div {
+    background-color: @white;
+    cursor: pointer;
+    height: 60px;
+    position: absolute;
+    width: 60px;
+    z-index: 102;
+  }
 }

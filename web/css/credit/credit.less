@@ -1,0 +1,75 @@
+.creditbox {
+  .rounded(5px);
+  border: 1px solid #ddd;
+  display: none;
+  margin-bottom: 15px;
+}
+.creditboxinner {
+  border-bottom: 4px solid #e9e9e9;
+  padding: 10px 20px;
+}
+#creditInfo strong span {
+  color: #000;
+  font-size: 160%;
+}
+.bigcheck {
+  cursor: pointer;
+  display: inline-block;
+  font-family:Tahoma, sans-serif;
+  font-size:14px;
+  font-weight:bold;
+  line-height:24px;
+  vertical-align: top;
+  b {
+    background: url("@{base-url}/credit/img/bigcheck.png") no-repeat scroll 0px 0px transparent;
+    cursor: pointer;
+    display: inline-block;
+    height: 24px;
+    margin: 0px 10px 3px 0px;
+    vertical-align: top;
+    width: 24px;
+  }
+  input {
+    position: absolute;
+    z-index: -1;
+  }
+  &.checked {
+    color: @firmBlue !important;
+    b {
+      background-position: 0px -81px;
+    }
+  }
+}
+.creditInfo > div {
+  display: inline-block;
+  &.leftTitle {
+    padding-right: 50px;
+    width: 200px;
+  }
+}
+.bankWrap {
+  margin-top: 4px !important;
+  position: relative;
+  width: 600px;
+  .bSelect__eArrow {
+    position: absolute;
+  }
+  .bSelect span {
+    line-height: 30px;
+  }
+  .bSelect__eDropmenu {
+    position: absolute;
+  }
+  .creditHref {
+    margin-left: 20px;
+    margin-top: 8px;
+    a {
+      color: #434343;
+      text-decoration: underline;
+      &:hover {
+        color: #434343;
+        text-decoration: none;
+      }
+    }
+  }
+}

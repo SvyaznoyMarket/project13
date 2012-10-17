@@ -6,7 +6,6 @@
  * @var $product       \Model\Product\Entity
  * @var $itemsInSlider int
  */
-
 $view = $category->getHasLine() ? 'line' : 'compact';
 ?>
 

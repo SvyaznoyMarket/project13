@@ -72,14 +72,6 @@
 .avatar B {position:absolute; left:0; top:0; display:block; width:54px; height:54px; background:url(/css/skin/img/avatar_cover.png) no-repeat 0 0}
 .avatar B.current {background-position:0 -59px}
 
-.creditInfo > div {
-  display: inline-block;
-}
-.creditInfo > div.leftTitle {
-  width: 200px;
-  padding-right:50px;
-}
-
 .whitelink .leaf {
   background: url("/css/common/img/bg.png") no-repeat -197px -101px;
   display: inline-block;
@@ -236,14 +228,8 @@
 
 
 
-.goodsphotosmall {float:left; width:160px; position:relative}
-.goodsphotosmall I {position:absolute; left:0; top:0; display:block; height:23px; background:url(/css/common/img/bg.png) no-repeat; text-indent:-10000px}
-.goodsphotosmall .new {width:70px; background-position:0 -54px}
-.goodsphotosmall .bestseller {width:81px; background-position:-75px -54px}
 
 
-
-.article a{color:#a6a6a6; margin-left:25px}
 /*
 
 .goodsbarbig a{display:block; float:left; height:31px; background:url(/css/common/img/bg_inner.png) no-repeat}
@@ -346,23 +332,8 @@ border-radius: 7px;
 .shoplist .description .supply3 {background-position:-699px -321px}
 .shoplist .description .supply4 {background-position:-732px -321px}
 
-.gradetable {margin-bottom:30px}
-.gradetable THEAD TH {padding:0 0 12px 0}
-.gradetable TH {padding:0 0 5px 0; text-align:right}
-.gradetable.fr TBODY TH {padding:0 0 8px 0}
-.gradetable TH A {font-size:10px; text-decoration:underline}
-.gradetable TD { padding:0 0 5px 20px}
-.gradetable THEAD TD {padding:0 0 12px 20px}
-.gradetable.fr TBODY TD {padding:0 0 8px 20px}
-.gradetable TBODY TD {font-size:10px; color:#a6a6a6}
-.grade {float:left; width:84px; height:6px; line-height:0; font-size:0; margin:3px 6px 0 0; border:1px solid #f4a201;
-	border-radius: 5px;
-	-moz-border-radius:5px;
-	-webkit-border-radius:5px;
-}
-.grade DIV {float:left; height:6px; background:#ffb721; line-height:0; font-size:0}
-.percentbox {display:inline-block; width:64px; height:32px; padding-top:2px; text-align:center; font-size:18px; background:url(/css/common/img/bg_inner.png) no-repeat -707px -250px; vertical-align:middle}
-.recomendbox {margin:-5px 330px 0 330px}
+
+
 
 .comment {float:left; width:100%; padding-bottom:19px; border-bottom:1px solid #e6e6e6; margin-bottom:15px}
 .commentleft {float:left; width:195px; padding-right:20px; text-align:right; line-height:18px}
@@ -477,33 +448,12 @@ border-radius:5px;
 .bigpriceblock .goodsbarbig.mSmallBtns a.link1.disabled, .bigpriceblock  .goodsbarbig.mSmallBtns a.link1.disabled:hover { background: url('/css/skin/img/buy_buttons.png') 0 -118px no-repeat; cursor:default; }
 .bigpriceblock .goodsbarbig.mSmallBtns a.link1.fr{ floar: right }
 
-.creditbox { display:none; border:1px solid #ddd; margin-bottom:15px;
-border-radius:5px;
--moz-border-radius:5px;
--webkit-border-radius:5px;
-}
-.creditboxinner { padding:10px 20px 10px 20px; border-bottom:4px solid #e9e9e9}
-#creditInfo strong span { font-size:160%; color: #000; }
-.bigcheck {display:inline-block; font:bold 14px/24px Tahoma,sans-serif; vertical-align:top; cursor:pointer}
-.bigcheck B {display:inline-block; width:24px; height:24px; margin:0 10px 3px 0; background:url("img/bigcheck.png") no-repeat scroll 0 0 transparent; vertical-align:top; cursor:pointer}
-.bigcheck INPUT {position:absolute; z-index:-1}
-.bigcheck.checked {color:#49c7ed !important}
-.bigcheck.checked B {background-position:0 -81px}
-
 
 #tooltip {position: absolute; z-index: 3000}
 #zoomlink {display: none}
 .zoomlink {width:80px; height:65px; background: url('/css/skin/img/zoom.png') 0 0 no-repeat; }
 
-.articlemenu {float:right; width:215px;  margin-bottom:20px; border:2px solid #dcdcdc;
-border-radius:5px;
--moz-border-radius:5px;
--webkit-border-radius:5px}
-.articlemenu li{padding:10px 0; border-bottom:1px solid #e6e6e6; text-align:center}
-.articlemenu li.next {border:none}
-.articlemenu .current, .articlemenu .current:hover {color:#ffb423; text-decoration:none; cursor:auto}
 
-.goodsinfosmall {float:left; width:500px; padding-left:20px}
 .graylist li{list-style-type:disc; color:#a6a6a6; margin-left:14px}
 .blacklist li{list-style-type:disc; color:#010101; margin-left:14px}
 /*
@@ -559,9 +509,6 @@ border-radius:5px;
 .citylist {margin-right:100px}
 .citylist li{font-size:14px; padding-bottom:3px}
 */
-
-.dragbox {width:100%; height:100%; position:fixed; z-index:101; top:0; left:0; right:0; bottom:41px}
-.dragbox div{position:absolute; z-index:102; width:60px; height:60px; background-color:#fff; cursor:pointer}
 
 /*.comparisonblock {float:left; width: 644px;  overflow:hidden; background:url(/css/skin/img/bg_comparisonblock.gif) repeat-y 140px 0}
 .comparisonblock li{float:left; width:120px; margin-right:41px; overflow:hidden}
@@ -778,14 +725,7 @@ border-radius: 5px;
 	margin: 11px 0;
 	 font-weight: normal;
 	}
-.yellowbutton.mDisabled{
-	opacity: 0.5;
-	filter: progid:DXImageTransform.Microsoft.Alpha(opacity=50);
-	color: #a6a6a6;
-	cursor: default;
-	background: #f3f3f3;
-	border: 1px solid #a6a6a6;
-	}
+
 /* ----------- /feedback form ------------- */
 
 
@@ -919,15 +859,6 @@ border-radius: 5px;
 		margin: 0 0 15px 0;
 		}
 		.bMapInfo__eSpan{}
-	.mSmall{
-		font: 12px Tahoma, sans-serif;
-		line-height: 1.6;
-		}
-	.mBig{
-		font: 16px Tahoma, sans-serif;
-		line-height: 1.6;
-		}
-
 	.bMap.mFull .bMap__eImages{
 		display: none;
 		}
@@ -1556,7 +1487,6 @@ border-radius: 5px;
 
 
 /* bMobDownWrapAbs */
-.mW750{ width: 750px }
 .bMobDownWrapAbs.customalign{
     width: 100%;
     height: 100%;
@@ -2509,7 +2439,7 @@ a[title="mastercard"]{
     *display: inline;
     zoom: 1;
 }
-
+/*
 .bBuyingDatePopup{
     z-index: 5;
     width: 140px;
@@ -2559,10 +2489,10 @@ a[title="mastercard"]{
 .bBuyingDatePopup__eOK{
     background: url('img/z_ok.png') no-repeat;
 }
-
-a.mSportFont{ color: #e8303c; font-weight: bold; }
+*/
+/*a.mSportFont{ color: #e8303c; font-weight: bold; }
 div.mSportFont{ color: #e8303c; }
-
+*/
 .bButtonPopup{
     z-index: 5;
     width: 320px;
@@ -2732,100 +2662,3 @@ div.mSportFont{ color: #e8303c; }
     color: #676767;
     width: 200px;
 }
-
-.bBuyingLine .creditHref {
-    margin-left: 20px;
-    margin-top: 8px;
-}
-.bBuyingLine .creditHref a {
-    color: #434343;
-    text-decoration: underline;
-}
-.bBuyingLine .creditHref a:hover {
-    color: #434343;
-    text-decoration: none;
-}
-.bankWrap {
-    margin-top: 4px !important;
-    position: relative;
-    width: 600px;
-}
-.bankWrap .bSelect__eArrow{
-	position:absolute;
-}
-.bankWrap .bSelect span{
-	line-height:30px;
-}
-.bankWrap .bSelect__eDropmenu{
-	position:absolute;
-}
-
-/* --- БЛОК ДОПОЛНИТЕЛЬНОЙ ГАРАНТИИ В КАРТОЧКЕ ТОВАРА --- */
-.bBlueButton.extWarranty{
-	margin:20px 0;
-}
-.bBlueButton.extWarranty h3{
-	color: #4fcbf4;
-	margin: 0 0 7px 0;
-	font: bold 14px Tahoma, sans-serif;
-}
-.bBlueButton.extWarranty div{
-	font: 14px Tahoma, sans-serif;
-	margin-bottom: 10px;
-}
-.bBlueButton.extWarranty .link1{
-	color: #4fcbf4;
-}
-.bBlueButton.extWarranty .link1:hover{
-	text-decoration: none;
-}
-/**/
-.hideblock.extWarranty{
-	background: #fff url('/images/F1_logo_extWarranty.jpg') 0 0 no-repeat;
-	display:none;
-	top: 250px;
-	left: 50%;
-	margin-left:-370px;
-	padding: 10px 20px 20px 75px;
-}
-.hideblock.extWarranty div{
-	max-height: 320px;
-	overflow-y: scroll;
-}
-.hideblock.extWarranty h2{
-	color: #4fcbf4;
-	margin: 0 0 10px 0;
-	font: bold 16px Tahoma, sans-serif;
-}
-.hideblock.extWarranty table{
-	width: 650px;
-}
-.hideblock.extWarranty th{
-	text-align: right;
-	text-decoration: underline;
-	font: 12px Tahoma, sans-serif;
-}
-
-/* --- БЛОК ДОПОЛНИТЕЛЬНОЙ ГАРАНТИИ В КОРЗИНЕ --- */
-.bBacketServ.extWarr.mBig{
-	display:none;
-} 
-.bBacketServ.extWarr a.link_extWarr{	
-	background-color: #E5E5E5;
-    background-image: url("/css/skin/img/bg_buttons.png");
-    background-position: 0 -128px;
-    background-repeat: repeat-x;
-    border: 1px solid;
-    border-radius: 5px 5px 5px 5px;
-    border-color: #C9C9C9;
-    color: #4fcbf4;
-    display: inline-block;
-    font-size: 11px;
-    height: 18px;
-    margin-top: 8px;
-    padding: 4px 10px 0;
-    cursor: pointer;
-    font-weight: bold;
-    overflow: visible;
-}    
-.bBacketServ.extWarr a.link_extWarr:hover {background-color:#c5c5c5; background-position:0 -160px; text-decoration:none}
