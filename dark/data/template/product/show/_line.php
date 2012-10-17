@@ -8,6 +8,7 @@
 ?>
 
 <?php
+$isHidden = isset($isHidden) && $isHidden;
 $url = $page->url('product.line', array('lineId' => $product->getLine()->getId()));
 ?>
 

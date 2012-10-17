@@ -181,7 +181,7 @@ class Action {
         $productSorting->setActive($sortingName, $sortingDirection);
 
         // вид товаров
-        $productView = $request->get('view', $category->getProductView());
+        $productView = $request->get('view', $category->getHasLine() ? 'line' : $category->getProductView());
         // фильтры
         $productFilter = $this->getFilter($category, $request);
         // листалка
