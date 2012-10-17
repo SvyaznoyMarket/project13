@@ -49,12 +49,12 @@ class Action {
 
         // http://en.wikipedia.org/wiki/Tree_%28data_structure%29
         if ($category->isRoot()) {
-            return $this->executeRootNode($category, $request);
+            return $this->rootCategory($category, $request);
         } else if ($category->isBranch()) {
-            return $this->executeBranchNode($category, $request);
+            return $this->branchCategory($category, $request);
         }
 
-        return $this->executeLeafNode($category, $request);
+        return $this->leafCategory($category, $request);
     }
 
     /**
@@ -63,8 +63,8 @@ class Action {
      * @return \Http\Response
      * @throws \Exception
      */
-    private function executeRootNode(\Model\Product\Category\Entity $category, \Http\Request $request) {
-        if (\App::config()->debug) \App::debug()->add('sub.act', 'rootNode');
+    private function rootCategory(\Model\Product\Category\Entity $category, \Http\Request $request) {
+        if (\App::config()->debug) \App::debug()->add('sub.act', 'rootCategory');
 
         if (!(bool)$category->getChild()) {
             throw new \Exception(sprintf('У категории "%s" отстутсвуют дочерние узлы', $category->getId()));
@@ -85,8 +85,8 @@ class Action {
      * @param \Http\Request $request
      * @return \Http\Response
      */
-    private function executeBranchNode(\Model\Product\Category\Entity $category, \Http\Request $request) {
-        if (\App::config()->debug) \App::debug()->add('sub.act', 'branchNode');
+    private function branchCategory(\Model\Product\Category\Entity $category, \Http\Request $request) {
+        if (\App::config()->debug) \App::debug()->add('sub.act', 'branchCategory');
 
         // сортировка
         $productSorting = new \Model\Product\Sorting();
@@ -132,8 +132,8 @@ class Action {
      * @return \Http\Response
      * @throws \Exception\NotFoundException
      */
-    private function executeLeafNode(\Model\Product\Category\Entity $category, \Http\Request $request) {
-        if (\App::config()->debug) \App::debug()->add('sub.act', 'leafNode');
+    private function leafCategory(\Model\Product\Category\Entity $category, \Http\Request $request) {
+        if (\App::config()->debug) \App::debug()->add('sub.act', 'leafCategory');
 
         $pageNum = (int)$request->get('page', 1);
         if ($pageNum < 1) {
