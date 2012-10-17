@@ -60,9 +60,6 @@
     padding-bottom: 438px;
     position: relative;
   }
-  .buyingpage {
-    padding-bottom: 96px;
-  }
   * + html .allpageinner {
     float: left;
     width: 100%;
@@ -2178,7 +2175,7 @@
   }
   .lowfooter {
     height: 66px;
-    margin: -66px auto 0px auto;
+    margin: 30px auto 0px auto;
   }
   .bFooter {
     -webkit-border-radius: 5px;
@@ -2357,16 +2354,21 @@
 /*---END---СТИЛИ ФУТЕРА---*/
 /*------СТИЛИ ФУТЕРА ПОКУПОК------*/
 @media all {
+  .buyingpage {
+    padding-bottom: 400px;
+  }
   .bBuyingFooter {
     -webkit-border-radius: 7px;
     -moz-border-radius: 7px;
     border-radius: 7px;
-    width: 920px;
-    font-size: 0;
-    padding: 20px 0;
-    margin-top: 50px;
     background: #f6f6f6;
     border: 1px solid #dddddd;
+    font-size: 0;
+    height: 232px;
+    padding: 20px 0;
+    position: relative;
+    margin: -370px auto 0;
+    width: 920px;
   }
   .bBuyingFooter li {
     width: 160px;
