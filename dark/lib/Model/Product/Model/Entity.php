@@ -3,7 +3,6 @@
 namespace Model\Product\Model;
 
 class Entity {
-
     /** @var Property\Entity[] */
     protected $property = array();
 
@@ -16,16 +15,14 @@ class Entity {
     /**
      * @param Property\Entity $property
      */
-    public function setProperty($property)
-    {
+    public function setProperty($property) {
         $this->property = $property;
     }
 
     /**
      * @return array|Property\Entity[]
      */
-    public function getProperty()
-    {
+    public function getProperty() {
         return $this->property;
     }
 }

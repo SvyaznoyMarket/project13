@@ -17,32 +17,28 @@ class Entity {
     /**
      * @param Product\Entity $product
      */
-    public function setProduct($product)
-    {
+    public function setProduct($product) {
         $this->product = $product;
     }
 
     /**
      * @return Product\Entity
      */
-    public function getProduct()
-    {
+    public function getProduct() {
         return $this->product;
     }
 
     /**
      * @param string $value
      */
-    public function setValue($value)
-    {
+    public function setValue($value) {
         $this->value = $value;
     }
 
     /**
      * @return string
      */
-    public function getValue()
-    {
+    public function getValue() {
         return $this->value;
     }
 
