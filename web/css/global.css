@@ -4964,6 +4964,47 @@
   }
   */
 }
+@media all {
+  .orderFinal__certificate {
+    margin: 15px 0;
+  }
+  .orderFinal__certificate h2 {
+    font-size: 19px;
+    margin-bottom: 15px;
+  }
+  .orderFinal__certificate input {
+    margin: 0 5px 15px 0;
+    padding: 2px 8px;
+  }
+  .orderFinal__certificate input.cardNumber {
+    width: 230px;
+  }
+  .orderFinal__certificate input.cardPin {
+    width: 90px;
+  }
+  .orderFinal__certificate .process .img {
+    -webkit-border-radius: 7px;
+    -moz-border-radius: 7px;
+    border-radius: 7px;
+    height: 35px;
+    width: 35px;
+    margin: 0 15px 15px 0;
+    float: left;
+  }
+  .orderFinal__certificate .process .img.type1 {
+    background: #d90000 url("/css/order/img/x.gif") no-repeat 50% 50%;
+  }
+  .orderFinal__certificate .process .img.type2 {
+    background: #2db200 url("/css/order/img/green.gif") no-repeat 50% 50%;
+  }
+  .orderFinal__certificate .process .img.type3 {
+    background: #ffa901 url("/css/order/img/ajar.gif") no-repeat 55% 50%;
+  }
+  .orderFinal__certificate .process p {
+    font-size: 18px;
+    line-height: 1.5em;
+  }
+}
 /*---END---СТИЛИ ОФОРМЛЕНИЯ ЗАКАЗА---*/
 /*-------СТИЛИ ОКНА С КАРТОЙ МАГАЗИНОВ-----*/
 @media all {

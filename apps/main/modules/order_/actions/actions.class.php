@@ -299,7 +299,7 @@ class order_Actions extends myActions
 
     if (empty($orderIds))
     {
-      $this->redirect('cart');
+    //  $this->redirect('cart');
     }
 
     $user->setFlash('complete_orders', $orderIds);

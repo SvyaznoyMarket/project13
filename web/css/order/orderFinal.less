@@ -1,0 +1,42 @@
+.orderFinal__certificate{
+  margin:15px 0;
+  h2{
+    font-size: 19px;
+    margin-bottom: 15px;
+  }
+  input{
+    margin: 0 5px 15px 0;
+    padding: 2px 8px;
+    &.cardNumber{
+      width:230px;
+    }
+    &.cardPin{
+      width:90px;
+    }
+  }
+  .process{
+    .img{
+      .rounded(7px);
+      height:35px;
+      width: 35px;
+      margin:0 15px 15px 0;
+      float:left;
+      &.type1{
+        background:#D90000 url("@{base-url}/order/img/x.gif") no-repeat 50% 50%;
+      }
+      &.type2{
+        background:#2DB200 url("@{base-url}/order/img/green.gif") no-repeat 50% 50%;
+      }
+      &.type3{
+        background: @firmOrange url("@{base-url}/order/img/ajar.gif") no-repeat 50% 50%;
+      }
+    }
+    p{
+      font-size:18px;
+      line-height:1.5em;
+    }
+  }
+  .certifText{
+    //some rules
+  }
+}
