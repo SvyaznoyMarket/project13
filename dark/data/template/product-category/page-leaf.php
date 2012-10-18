@@ -1,6 +1,6 @@
 <?php
 /**
- * @var $page           \View\Layout
+ * @var $page           \View\ProductCategory\LeafPage
  * @var $category       \Model\Product\Category\Entity
  * @var $productFilter  \Model\Product\Filter
  * @var $productPager   \Iterator\EntityPager

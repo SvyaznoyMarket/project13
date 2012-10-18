@@ -36,7 +36,7 @@ $request = \App::request();
 // router
 $router = \App::router();
 $request->attributes->add($router->match($request->getPathInfo(), $request->getMethod()));
-\App::logger()->info('Match route ' . $request->attributes->get('route') . ' by uri ' . $request->getRequestUri());
+\App::logger()->info('Match route ' . $request->attributes->get('route') . ' by ' . $request->getMethod()  . ' ' . $request->getRequestUri());
 
 // resolver
 $resolver = new \Routing\ActionResolver();

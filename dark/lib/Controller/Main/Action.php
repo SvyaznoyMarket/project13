@@ -2,7 +2,7 @@
 
 namespace Controller\Main;
 
-class IndexAction {
+class Action {
     public function execute() {
         $page = new \View\Main\IndexPage();
 

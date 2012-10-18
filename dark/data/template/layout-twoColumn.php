@@ -1,6 +1,6 @@
 <?php
 /**
- * @var $page \View\Layout
+ * @var $page \View\DefaultLayout
  */
 ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
@@ -13,7 +13,7 @@
     <?= $page->slotRelLink() ?>
     <?= $page->slotGoogleAnalytics() ?>
 </head>
-<body data-template="<?= $page->slotBodyDataAttribute() ?>">
+<body data-template="<?= $page->slotBodyDataAttribute() ?>" data-id="<?= \App::$id ?>">
     <div class="allpage" id="page">
         <div class="adfoxWrapper" id="adfoxbground"></div>
 

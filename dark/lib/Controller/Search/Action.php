@@ -2,7 +2,7 @@
 
 namespace Controller\Search;
 
-class IndexAction {
+class Action {
     public function execute(\Http\Request $request) {
         $searchQuery = $request->get('q');
         $pageNum = (int)$request->get('page', 1);
