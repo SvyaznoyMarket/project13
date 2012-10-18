@@ -527,8 +527,6 @@ border-radius: 5px;
 
 
 
-.leftmenu li{background:url(/css/skin/img/icons.png) no-repeat -6px -53px; padding:0 0 5px 16px}
-
 .status {width:100%; border-collapse:separate; margin-bottom:20px}
 .status td{height:23px; padding:0; text-align:center;  font-size:11px; background:#fff1d6 url(/css/skin/img/bg_status.png) no-repeat -4px 0; border-right:1px solid #ffd870; border-left:1px solid #f4a201}
 .status td.first {border-left:0; background-position:0 0}
@@ -537,19 +535,11 @@ border-radius: 5px;
 .status td.first.active {background-position:0 -28px}
 .status td.next.active {background-position:100% -28px}
 
-.order {width:100%}
-.order th{text-align:left; padding:0 10px 15px 0; font-size:14px}
-.order td{text-align:right; padding:0 0 15px 10px}
-
 .commentline {float:left; width:100%; overflow:hidden; padding-bottom:25px}
 
 .avatarlist li{float:left; margin:0 10px 10px 0; cursor:pointer}
 
 .attention {background:url(/css/skin/img/attention.gif) no-repeat 0 0; padding:2px 0 2px 26px}
-.help {position:absolute; left:20px; width:240px; font-size:11px; color:#434343}
-.doublehelp {height:46px; padding:15px 0 0 40px; background:url(/css/skin/img/help.png) no-repeat 0 0; margin-top:10px}
-
-.cabinethelp {background:url(/css/skin/img/attention.gif) no-repeat 0 0; padding:20px 0 10px 0; font-size:11px}
 
 .errorpage404 {background:#fff url(/css/skin/img/error_404.png) no-repeat 50% 110px}
 
@@ -770,9 +760,6 @@ border-radius: 5px;
 
 /* --------------- bMapShops ------------------ */
 
-.customalign h2.pb30 {
-	padding-bottom: 30px;
-}
 
 	/*.mMapPopup__eBottom{
 		padding-top: 20px;
@@ -908,15 +895,7 @@ border-radius: 5px;
 	.mbSet{
 		font: 24px Tahoma, sans-serif;
 		}
-	.bSet__eImage{
-        position: relative;
-		width: 500px;
-		overflow: hidden;
-		vertical-align: top;
-		display: inline-block;
-		*display: inline;
-		zoom: 1;
-	}
+
 	.bSet__eImage_small{
 		width: 130px;
         margin-bottom: 30px;
@@ -926,13 +905,7 @@ border-radius: 5px;
 		*display: inline;
 		zoom: 1;
 	}
-	.bSet__eInfo{
-		width: 405px;
-		vertical-align: top;
-		display: inline-block;
-		*display: inline;
-		zoom: 1;
-	}
+	
 	.bSet__eInfo_big{
 		width: 780px;
 		vertical-align: top;
@@ -946,20 +919,6 @@ border-radius: 5px;
 		margin: 0 0 15px 15px;
 		font: 16px Tahoma, sans-serif;
 		}
-	.bSet__eDescription{
-		padding: 0;
-		margin: 0 0 15px 15px;
-		font: 14px Tahoma, sans-serif;
-		}
-	.bSet__ePrice{
-		padding: 0;
-		margin: 0 0 15px 15px;
-		font: 16px Tahoma, sans-serif;
-		}
-	.bSet__ePrice strong{
-		margin-right: 10px;
-		}
-	.bSet__ePrice strong,
 	.bSet__ePrice input{
 		vertical-align: middle;
 		}
@@ -967,9 +926,6 @@ border-radius: 5px;
 		padding: 0;
 		margin: 0 0 10px 15px;
 		}
-    .bSet__eImage.mServiceBig {
-        position: relative;
-    }
 	.bSet__eG{
 		padding: 0;
 /*		color: #a6a6a6;*/
@@ -1059,19 +1015,6 @@ border-radius: 5px;
     font: 18px Tahoma,sans-serif;
     margin-bottom: 0;
 }
-.bServiceCard__eLogo {
-    background: url("img/icon_f1_image.png") no-repeat scroll 0 0 transparent;
-    height: 41px;
-    position: absolute;
-    right: 0;
-    top: 0;
-    width: 39px;
-}
-.mServiceBig .bServiceCard__eLogo {
-    background: url("img/icon_f1_image.png") no-repeat scroll 0 0 transparent;
-    height: 41px;
-    width: 39px;
-}
 .bServiceCard__eLogo_free {
     top: 0;
     left: 0;
@@ -1132,22 +1075,6 @@ border-radius: 5px;
 .bMobDownWrapAbs.customalign{
     width: 100%;
     height: 100%;
-}
-.bMobDownWrapAbs{
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	z-index: 103;
-	position: fixed;
-	text-align: center;
-	*position: absolute;
-/*	*top: expression(document.getElementsByTagName('body')[0].scrollTop+"px");*/
-}
-.bMobDownWrapRel{
-	top: 25%;
-	bottom: 25%;
-	position: relative;
 }
 
 /* .mW2 */
@@ -1672,21 +1599,6 @@ border-radius: 5px;
 		/* color: #fff;
 		}
 */
-.noti {
-	display: none;
-	width: 300px;
-	height: 200px;
-	background-color: #fff;
-	text-align: center;
-	font-size: 18px;
-	border-radius:15px;
-	-moz-border-radius:15px;
-	-webkit-border-radius:15px;
-}
-.noti > div{
-	margin-top: 50px;
-}
-
 
 
 /* ------------ shops --------------  */
