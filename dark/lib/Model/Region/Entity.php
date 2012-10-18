@@ -214,4 +214,45 @@ class Entity {
     {
         return $this->token;
     }
+
+    public function getInflectedName($inflect = 5) {
+        if (!$this->id) {
+            return $this->name;
+        }
+        if ($inflect < 0 || $inflect > 5) {
+            throw new \InvalidArgumentException(sprintf('Неправильный индекс склонения "%s"', $inflect));
+        }
+
+        // cache
+        if ((5 == $inflect) ) {
+            switch ($this->id) {
+                case 14974:
+                    return 'Москве';
+                    break;
+                case 108136:
+                    return 'Санкт-Петербурге';
+                    break;
+                case 13242:
+                    return 'Орле';
+                    break;
+                case 18074:
+                    return 'Воронеже';
+                    break;
+                case 83210:
+                    return 'Брянске';
+                    break;
+            }
+        }
+
+        try {
+            $data = file_get_contents(\App::config()->dataDir . '/inflect/region/' . $this->id . '.json');
+            $data = json_decode($data);
+
+            return array_key_exists($inflect, $data) ? $data[$inflect] : $this->name;
+        } catch (\Exception $e) {
+            \App::logger()->error($e);
+        }
+
+        return $this->name;
+    }
 }

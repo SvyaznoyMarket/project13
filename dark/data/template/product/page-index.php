@@ -135,9 +135,11 @@
     </strong></div>
     <?php endif ?>
   </div>
-
-
   <div class="line pb15"></div>
+
+
+    <?php if ($product->getIsBuyable() || $product->getState()->getIsShop()): ?>
+
   <?php if ($dataForCredit['creditIsAllowed']) : ?>
   <div class="creditbox">
     <div class="creditboxinner">
@@ -152,7 +154,6 @@
   <input data-model="<?php echo $page->escape($dataForCredit['creditData']) ?>" id="dc_buy_on_credit_<?php echo $product->getArticle(); ?>" name="dc_buy_on_credit" type="hidden" />
   <?php endif; ?>
 
-  <?php if ($product->getIsBuyable()): ?>
   <div class="bDeliver2 delivery-info" id="product-id-<?php echo $product->getId() ?>" data-shoplink="<?php echo $product->getLink().'/stock' ?>" data-calclink="<?php echo $page->url('product.delivery', array('productId' => $product->getId())) ?>">
     <h4>Как получить заказ?</h4>
     <ul>
@@ -162,15 +163,34 @@
     </ul>
   </div>
 
-    <div class="line pb15"></div>
-    <?php endif ?>
+  <?php else: ?>
+    <?php if ((bool)$product->getNearestCity()): ?>
+        <div class="otherRegion">
+            <div class="corner">
+                <div></div>
+            </div>
+            <p>Этот товар нельзя купить в <?php $user->getRegion()->getName() ?></p>
+            <p>Товар доступен в <b>Москве</b> и <a href="#"><?php echo count($product->getNearestCity()) ?> других городах</a></p>
+            <ul>
+                <?php foreach ($product->getNearestCity() as $city): ?>
+                <li><a href="<?php echo $page->url('region.change', array('regionId' => $city->getId())) ?>"><?php echo $city->getName() ?></a></li>
+                <?php endforeach ?>
+            </ul>
+            <div class="clear"></div>
+        </div>
+        <a class="likeGoodsRegion" href="<?php echo $product->getMainCategory()->getLink() ?>">Похожие товары, доступные в вашем городе</a>
+        <div class="line pb15"></div>
+        <?php endif ?>
+  <?php endif ?>
 
   <div style="margin-bottom: 20px;">
     <div class="adfoxWrapper" id="<?php echo $adfox_id_by_label ?>"></div>
   </div>
 
+<?php if ($product->getIsBuyable() || $product->getState()->getIsShop()): ?>
     <?php echo $page->render('service/_listByProduct', array('product' => $product)) ?>
     <?php echo $page->render('warranty/_listByProduct', array('product' => $product)) ?>
+<?php endif ?>
 
 </div>
 <!-- /Goods info -->

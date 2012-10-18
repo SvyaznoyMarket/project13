@@ -52,10 +52,15 @@ class Repository {
 
         $loadBranch = function($data) use(&$loadBranch, $entity) {
             foreach ($data as $item) {
+                // mock
+                $item['product_count_global'] = $item['product_count'];
+
                 // если наткнулись на текущую категорию, то закругляемся
                 if ($entity->getId() == $item['id']) {
                     // только при загрузке дерева ядро может отдать нам количество товаров в ней
                     $entity->setProductCount($item['product_count']);
+                    $entity->setGlobalProductCount($item['product_count_global']);
+
                     // добавляем дочерние узлы
                     if (isset($item['children']) && (bool)$item['children']) {
                         foreach ($item['children'] as $childData) {

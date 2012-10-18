@@ -1,6 +1,7 @@
 <?php
 /**
  * @var $page     \View\Layout
+ * @var $user     \Session\User
  * @var $category \Model\Product\Category\Entity
  */
 ?>
@@ -18,15 +19,21 @@ foreach ($parent->getChild() as $child) {
 }
 
 // total text
-if ($category->getHasLine()) {
-    $totalText = $page->helper->formatNumberChoice('{n: n > 10 && n < 20}%count% серий|{n: n % 10 == 1}%count% серия|{n: n % 10 > 1 && n % 10 < 5}%count% серии|(1,+Inf]%count% серий', array('%count%' => $category->getProductCount()), $category->getProductCount());
-} else {
-    $totalText = $page->helper->formatNumberChoice('{n: n > 10 && n < 20}%count% товаров|{n: n % 10 == 1}%count% товар|{n: n % 10 > 1 && n % 10 < 5}%count% товара|(1,+Inf]%count% товаров', array('%count%' => $category->getProductCount()), $category->getProductCount());
-}
+$textTemplate =
+    $category->getHasLine()
+        ? '{n: n > 10 && n < 20}%count% серий|{n: n % 10 == 1}%count% серия|{n: n % 10 > 1 && n % 10 < 5}%count% серии|(1,+Inf]%count% серий'
+        : '{n: n > 10 && n < 20}%count% товаров|{n: n % 10 == 1}%count% товар|{n: n % 10 > 1 && n % 10 < 5}%count% товара|(1,+Inf]%count% товаров';
+//     for current region
+$totalText = $page->helper->formatNumberChoice($textTemplate, array('%count%' => $category->getProductCount()), $category->getProductCount());
+//     for global
+$globalTotalText = $page->helper->formatNumberChoice($textTemplate, array('%count%' => $category->getGlobalProductCount()), $category->getGlobalProductCount());
 ?>
 
 <div class="catProductNum">
-    <b>Всего <?= $totalText ?></b>
+    <b>В <?= $user->getRegion()->getInflectedName(5) ?> <?= $totalText ?></b>
+    <br />
+    Всего в категории <?= $globalTotalText ?>
+    <a href="<?= $page->helper->replacedUrl(array('global' => 1)) ?>">показать все товары</a>
 </div>
 
 <div class="line pb10"></div>
