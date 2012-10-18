@@ -14,4 +14,4 @@ if ($disabled) {
 }
 ?>
 
-<a href="<?= $url ?>" class="link1 bOrangeButton<?php if ($disable): ?> disable<? endif ?>"><i></i><span>Положить в корзину</span></a>
+<a href="<?= $url ?>" class="link1 bOrangeButton<?php if ($disable): ?> disabled<? endif ?>"><i></i><span>Положить в корзину</span></a>

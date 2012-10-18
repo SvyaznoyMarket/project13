@@ -111,7 +111,9 @@
 
 
   <div class="fr ar pb15">
-    <?php if ( $product->getState()->getIsBuyable()): ?>
+    <?php if (!$product->getState()->getIsBuyable() && $product->getState()->getIsShop()): ?>
+    <span class="font16 orange">Для покупки товара<br />обратитесь в Контакт-сENTER</span>
+    <?php else: ?>
     <div class="goodsbarbig mSmallBtns" ref="<?php echo $product->getToken() ?>" data-value='<?php echo $json ?>'>
 
       <div class='bCountSet'>
@@ -131,8 +133,6 @@
          link-input='<?php echo $page->url('product.delivery_1click') ?>'
          class="red underline order1click-link-new">Купить быстро в 1 клик</a>
     </strong></div>
-    <?php else: ?>
-    <span class="font16 orange">Для покупки товара<br />обратитесь в Контакт-сENTER</span>
     <?php endif ?>
   </div>
 
