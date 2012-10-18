@@ -1133,22 +1133,6 @@ border-radius: 5px;
     width: 100%;
     height: 100%;
 }
-.bMobDownWrapAbs{
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	z-index: 103;
-	position: fixed;
-	text-align: center;
-	*position: absolute;
-/*	*top: expression(document.getElementsByTagName('body')[0].scrollTop+"px");*/
-}
-.bMobDownWrapRel{
-	top: 25%;
-	bottom: 25%;
-	position: relative;
-}
 
 /* .mW2 */
 .bMobDown.mW2 .mNone{
