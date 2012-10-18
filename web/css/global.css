@@ -1,5 +1,4 @@
 /* CSS crunched with Crunch - http://crunchapp.net/ */
-@import "/css/skin/old_inner.css" all;
 /*---------ШРИФТЫ----------*/
 @font-face {
   font-family: 'Enter';
@@ -5555,6 +5554,120 @@
   }
 }
 /*---END---СТИЛИ СТРАНИЦЫ ВАРИАНТОВ ОПЛАТЫ---*/
+/*-------СТИЛИ СТРАНИЦЫ F1-----*/
+@media all {
+  .servicebanner {
+    background: #4fcbf4 url("/css/f1Page/img/bg_service2.jpg") no-repeat 0px 0px;
+    clear: both;
+    color: #ffffff;
+    font-size: 14px;
+    height: 178px;
+    line-height: 14px;
+    margin-bottom: 25px;
+    padding: 33px 0px 0px 600px;
+    width: 320px;
+  }
+  .slogan {
+    color: #4fcbf4;
+    font-size: 14px;
+    margin-bottom: 30px;
+  }
+  .slogan strong {
+    display: block;
+    font-size: 24px;
+    padding-bottom: 5px;
+  }
+  .servicebox {
+    position: relative;
+    width: 456px;
+  }
+  .servicebox:hover {
+    background: url("/css/f1Page/img/bg_servicebox.png") repeat-y -922px 0px;
+  }
+  .servicebox:hover .serviceboxtop {
+    background: url("/css/f1Page/img/bg_servicebox.png") no-repeat 0px 0px;
+  }
+  .servicebox:hover .serviceboxbottom {
+    background: url("/css/f1Page/img/bg_servicebox.png") no-repeat -461px 0px;
+  }
+  .servicebox:hover .icon1 {
+    background-position: 0px -85px;
+  }
+  .servicebox:hover .icon2 {
+    background-position: -92px -85px;
+  }
+  .servicebox:hover .icon3 {
+    background-position: -184px -85px;
+  }
+  .servicebox:hover .icon4 {
+    background-position: -276px -85px;
+  }
+  .servicebox strong {
+    display: block;
+    padding-bottom: 15px;
+  }
+  .servicebox i {
+    background: url("/css/f1Page/img/service_icons.png") no-repeat;
+    display: block;
+    height: 80px;
+    left: 10px;
+    position: absolute;
+    top: 20px;
+    width: 88px;
+  }
+  .servicebox .icon1 {
+    background-position: 0px 0px;
+  }
+  .servicebox .icon2 {
+    background-position: -92px 0px;
+  }
+  .servicebox .icon3 {
+    background-position: -184px 0px;
+  }
+  .servicebox .icon4 {
+    background-position: -276px 0px;
+  }
+  .serviceboxtop,
+  .serviceboxbottom {
+    clear: both;
+    font-size: 0px;
+    height: 7px;
+    line-height: 0px;
+    width: 456px;
+  }
+  .serviceboxmiddle {
+    padding: 13px 10px 10px 112px;
+  }
+  .serviceboxmiddle a {
+    display: block;
+  }
+  .servicebox__choice {
+    color: #4fcbf4;
+    float: right;
+    font-weight: bold;
+    margin: 15px 0px;
+  }
+  .serviceblock {
+    float: left;
+    padding-bottom: 20px;
+    width: 100%;
+  }
+  .serviceblock .photo {
+    float: left;
+    width: 160px;
+  }
+  .serviceblock .info {
+    float: left;
+    padding-left: 20px;
+    width: 505px;
+  }
+  .serviceblock h3 {
+    font-size: 24px;
+    margin: 0px;
+    padding-bottom: 10px;
+  }
+}
+/*---END---СТИЛИ СТРАНИЦЫ F1---*/
 /*-------СТИЛИ БОЛЬШОГО ОКНА-----*/
 @media all {
   .bPopupWrap {
