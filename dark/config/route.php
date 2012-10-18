@@ -4,13 +4,13 @@ return array(
     // главная страница
     'homepage' => array(
         'pattern' => '/',
-        'action'  => array('Main\IndexAction', 'execute'),
+        'action'  => array('Main\Action', 'execute'),
     ),
 
     // поиск
     'search' => array(
         'pattern' => '/search',
-        'action'  => array('Search\IndexAction', 'execute'),
+        'action'  => array('Search\Action', 'execute'),
     ),
 
     // вход пользователя
