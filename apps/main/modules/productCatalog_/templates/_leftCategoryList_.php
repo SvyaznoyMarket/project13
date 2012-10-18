@@ -29,7 +29,11 @@ $renderList = function($categoryList) use ($productCategory, &$renderList)
   return $render;
 }
 ?>
-<div class="catProductNum"><b>Всего <?php echo $quantity . ($productCategory->getHasLine() ? ' серий' : ' товаров') ?></b>
+
+<div class="catProductNum">
+	<b>Всего <?php echo $quantity . ($productCategory->has_line ? ' серий' : ' товаров') ?></b>
+	<a href="#">Показать товары в<br/>Самаре</a>
+	<a href="#" class="hidden">Показать все товары</a>
 </div>
 <div class="line pb10"></div>
 <dl class="bCtg">

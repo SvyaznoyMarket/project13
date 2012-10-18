@@ -379,6 +379,11 @@ $(document).ready(function(){
 		}
 	})
 	
+	$('.inputClear').bind('click', function(e) {
+		e.preventDefault()
+		$('#jscity').val('')
+	})
+
 	$('#jscity').autocomplete( {
 		autoFocus: true,
 		appendTo: '#jscities',
@@ -413,6 +418,10 @@ $(document).ready(function(){
 			$( this ).removeClass( "ui-corner-top" ).addClass( "ui-corner-all" );
 		}
 	})
+
+	// function paintRegions() {
+	// 	$('.bCityPopupWrap').lightbox_me({ centered: true })
+	// }
 	
 	function getRegions() {
 		$('.popupRegion').lightbox_me( {
