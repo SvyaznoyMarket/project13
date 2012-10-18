@@ -4,7 +4,7 @@ namespace Controller\ProductCategory;
 
 class Action {
     /**
-     * @param $categoryPath
+     * @param string        $categoryPath
      * @param \Http\Request $request
      * @return \Http\Response
      * @throws \Exception\NotFoundException
@@ -61,7 +61,38 @@ class Action {
     }
 
     /**
-     * @param $categoryPath
+     * @param string        $categoryPath
+     * @param \Http\Request $request
+     * @return \Http\JsonResponse
+     * @throws \Exception\NotFoundException
+     */
+    public function count($categoryPath, \Http\Request $request) {
+        if (!$request->isXmlHttpRequest()) {
+            throw new \Exception\NotFoundException('Request is not xml http request');
+        }
+
+        $categoryToken = explode('/', $categoryPath);
+        $categoryToken = end($categoryToken);
+
+        $repository = \RepositoryManager::getProductCategory();
+        $category = $repository->getEntityByToken($categoryToken);
+        if (!$category) {
+            throw new \Exception\NotFoundException(sprintf('Категория товара с токеном "%s" не найдена.', $categoryToken));
+        }
+
+        // фильтры
+        $productFilter = $this->getFilter($category, $request);
+
+        $count = \RepositoryManager::getProduct()->countByFilter($productFilter->dump());
+
+        return new \Http\JsonResponse(array(
+            'success' => true,
+            'data'    => $count,
+        ));
+    }
+
+    /**
+     * @param string        $categoryPath
      * @param \Http\Request $request
      * @return \Http\Response
      * @throws \Exception\NotFoundException
@@ -91,7 +122,7 @@ class Action {
 
     /**
      * @param \Model\Product\Category\Entity $category
-     * @param \Http\Request $request
+     * @param \Http\Request                  $request
      * @return \Http\Response
      * @throws \Exception
      */
@@ -114,7 +145,7 @@ class Action {
 
     /**
      * @param \Model\Product\Category\Entity $category
-     * @param \Http\Request $request
+     * @param \Http\Request                  $request
      * @return \Http\Response
      */
     private function branchCategory(\Model\Product\Category\Entity $category, \Http\Request $request) {
@@ -160,7 +191,7 @@ class Action {
 
     /**
      * @param \Model\Product\Category\Entity $category
-     * @param \Http\Request $request
+     * @param \Http\Request                  $request
      * @return \Http\Response
      * @throws \Exception\NotFoundException
      */

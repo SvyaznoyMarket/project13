@@ -74,6 +74,24 @@ class Repository {
 
     /**
      * @param array $filter
+     * @return int
+     */
+    public function countByFilter(array $filter = array()) {
+        $response = $this->client->query('listing/list', array(
+            'filter' => array(
+                'filters' => $filter,
+                'sort'    => array(),
+                'offset'  => null,
+                'limit'   => null,
+            ),
+            'region_id' => \App::user()->getRegion()->getId(),
+        ));
+
+        return !empty($response['count']) ? (int)$response['count'] : 0;
+    }
+
+    /**
+     * @param array $filter
      * @param array $sort
      * @param null $offset
      * @param null $limit

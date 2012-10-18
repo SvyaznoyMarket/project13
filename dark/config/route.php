@@ -71,6 +71,11 @@ return array(
         'action'  => array('ProductCategory\Action', 'slider'),
         'require' => array('categoryPath' => '[\w\d-_]+\/?[\w\d-_]+'),
     ),
+    'product.category.count' => array(
+        'pattern' => '/catalog/{categoryPath}/_count',
+        'action'  => array('ProductCategory\Action', 'count'),
+        'require' => array('categoryPath' => '[\w\d-_]+\/?[\w\d-_]+'),
+    ),
     'product' => array(
         'pattern' => '/product/{productPath}',
         'action'  => array('Product\IndexAction', 'execute'),
@@ -79,11 +84,6 @@ return array(
     'product.line' => array(
         'pattern' => '/line/{lineId}',
         'action'  => array('Product\LineAction', 'execute'),
-    ),
-    'product.count' => array(
-        'pattern' => '/catalog/{categoryPath}/_count',
-        'action'  => array('ProductCategory\CountAction', 'execute'),
-        'require' => array('categoryPath' => '[\w\d-_]+\/?[\w\d-_]+'),
     ),
     'product.delivery' => array(
         'pattern' => '/product/delivery-info',
