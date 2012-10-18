@@ -8,17 +8,31 @@ class DefaultLogger implements LoggerInterface {
     const LEVEL_INFO = 3;
     const LEVEL_DEBUG = 4;
 
+    /** @var string */
+    protected $id;
     /** @var \Logger\Appender\AppenderInterface */
     protected $appender;
+    /** @var string */
     protected $name;
+    /** @var int */
     protected $level = 4;
+    /** @var array */
+    protected $levelNames = array(
+        0 => '',
+        1 => 'error',
+        2 => 'warn',
+        3 => 'info',
+        4 => 'debug',
+    );
 
     protected $messages = array();
 
-    public function __construct($appender, $name, $level) {
+    public function __construct(\Logger\Appender\AppenderInterface $appender, $name, $level) {
+        $this->id = \App::$id;
         $this->appender = $appender;
-        $this->name = $name;
-        $this->level = $level;
+        $this->name = (string)$name;
+        $this->level = (int)$level;
+        if ($this->level < 0 || $this->level > 4) $this->level = 0;
     }
 
     public function debug($message) {
@@ -42,8 +56,9 @@ class DefaultLogger implements LoggerInterface {
 
         $this->messages[] = array(
             'time'    => date('M d H:i:s'),
-            'name'    => $this->name,
-            'level'   => $level,
+            //'name'    => $this->name,
+            'name'    => $this->id,
+            'level'   => $this->levelNames[$level],
             'message' => is_array($message) ? json_encode($message) : (string)$message,
         );
     }

@@ -1,6 +1,8 @@
 <?php
 
 class App {
+    /** @var string */
+    public static $id;
     /** @var bool */
     private static $initialized = false;
     /** @var \AppConfig */
@@ -13,6 +15,7 @@ class App {
      * @param string $appDir Директория приложения
      */
     public static function init(\AppConfig $config) {
+        self::$id = uniqid();
         self::$config = $config;
 
         if (self::$initialized) {

@@ -13,7 +13,7 @@
     <?= $page->slotRelLink() ?>
     <?= $page->slotGoogleAnalytics() ?>
 </head>
-<body data-template="<?= $page->slotBodyDataAttribute() ?>">
+<body data-template="<?= $page->slotBodyDataAttribute() ?>" data-id="<?= \App::$id ?>">
     <div class="allpage" id="page">
         <div class="adfoxWrapper" id="adfoxbground"></div>
 
