@@ -87,6 +87,8 @@ class Entity extends BasicEntity {
     protected $relatedId = array();
     /** @var Warranty\Entity[] */
     protected $warranty = array();
+    /** @var \Model\Region\Entity */
+    protected $nearestCity = array();
 
     public function __construct(array $data = array()) {
         if (array_key_exists('id', $data)) $this->setId($data['id']);
@@ -161,6 +163,9 @@ class Entity extends BasicEntity {
         if (array_key_exists('model', $data) && (bool)$data['model']) $this->setModel(new Model\Entity($data['model']));
         if (array_key_exists('warranty', $data) && is_array($data['warranty'])) foreach ($data['warranty'] as $warranty) {
             $this->addWarranty(new Warranty\Entity($warranty));
+        }
+        if (array_key_exists('nearest_city', $data) && is_array($data['nearest_city'])) foreach ($data['nearest_city'] as $city) {
+            $this->addNearestCity(new \Model\Region\Entity($city));
         }
 
         foreach ($this->propertyGroup as $group) {
@@ -878,6 +883,30 @@ class Entity extends BasicEntity {
 
     public function addWarranty(Warranty\Entity $warranty) {
         $this->warranty[] = $warranty;
+    }
+
+
+    /**
+     * @param \Model\Region\Entity[] $nearestCity
+     */
+    public function setNearestCity($nearestCity)
+    {
+        $this->nearestCity = array();
+        foreach ($nearestCity as $city) {
+            $this->addNearestCity($city);
+        }
+    }
+
+    /**
+     * @return \Model\Region\Entity[]
+     */
+    public function getNearestCity()
+    {
+        return $this->nearestCity;
+    }
+
+    public function addNearestCity(\Model\Region\Entity $city) {
+        $this->nearestCity[] = $city;
     }
 
 }

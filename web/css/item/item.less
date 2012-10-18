@@ -328,4 +328,57 @@
     width: 470px;
   }
 }
-
+.otherRegion{
+  .rounded(5px);
+  border: 2px solid @firmOrange;
+  padding:13px 0;
+  position:relative;
+  p{
+    font-size:14px;
+    margin:0 0 0 16px;
+    a{
+      font-weight:bold;
+      border-bottom:1px dotted @black;
+      &:hover{
+        text-decoration:none;
+        border-color:#404040;
+      }
+    }
+  }
+  ul{
+    margin: 10px 0 0 16px;
+    li{
+      font-size: 14px;
+      float:left;
+      width:125px;
+      a{
+        text-decoration:underline;
+      }
+    }
+  }
+  .corner{
+    border-bottom: 13px solid @firmOrange;
+    border-left: 14px solid transparent;
+    border-right: 14px solid transparent;
+    height: 0;
+    position: absolute;
+    right: 45px;
+    top: -13px;
+    width: 0;
+    div{
+      border-bottom: 10px solid #FFFFFF;
+      border-left: 11px solid transparent;
+      border-right: 11px solid transparent;
+      bottom: -13px;
+      left: -11px;
+      position: absolute;
+    }
+  }
+}
+.likeGoodsRegion{
+  display: block;
+  font-size: 18px;
+  font-family: "Enter";
+  line-height: 40px;
+  text-decoration:underline;
+}

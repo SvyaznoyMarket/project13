@@ -1,36 +1,39 @@
-.popupRegion {
+.popupRegion{
   .rounded(6px);
-  .box-shadow(0 0 7px #616161);
-  background: @white;
+  .box-shadow(0 0 7px @typBoxShadowColor);
+  background:#fff;
   border: 2px solid @firmOrange;
-  top: 50px;
+  top:50px;
   left: 50%;
-  margin: 0 0 0 -320px;
+  margin:0 0 0 -320px;
   padding: 20px 25px;
-  position: fixed;
-  width: 590px;
-  z-index: 1000;
-  .close {
-    background: url("@{base-url}/common/img/closeBtnOrange.png") no-repeat 0 0;
+  position:fixed;
+  width:590px;
+  z-index:1000;
+  .close{
+    background: url("@{base-url}/common/img/closeBtnOrange.png") no-repeat 0 0 ;
     display: block;
     height: 26px;
     position: absolute;
     right: 0;
-    text-indent: -10000px;
+    text-indent:-10000px;
     top: 0;
     width: 26px;
   }
-  .popuptitle {
+  .ui-css{
+    width: 610px;
+  }
+  .popuptitle{
     font-family: "Enter";
     font-size: 30px;
     margin: 0;
     text-transform: uppercase;
   }
-  .hidden {
-    display: none;
+  .hidden{
+    display:none;
   }
-  .inputClear {
-    color: @typGray;
+  .inputClear{
+    color: #A6A6A6;
     display: block;
     float: right;
     font-size: 14px;
@@ -41,32 +44,29 @@
     width: 20px;
     z-index: 100;
   }
-  .cityInline {
+  .cityInline{
     font-size: 16px;
     margin: 20px 0 0;
     word-spacing: 15px;
     a {
       border-bottom: 1px dashed black;
-      &:hover {
-        text-decoration: none;
-      }
     }
+    a:hover{
+      text-decoration: none;
+    } 
   }
-  .ui-css {
-    width: 610px;
-  }
-  .colomn {
-    float: left;
+  .colomn{
+    float:left;
     margin: 20px 0;
-    width: 195px;
+    width:195px;
     a {
-      font-size: 16px;
+      font-size:16px;
       font-family: Tahoma, sans-serif;
-      line-height: 26px;
-      display: block;
+      line-height:26px;
+      display:block;
     }
   }
-  .info {
+  .info{
     font-size: 14px;
   }
 }

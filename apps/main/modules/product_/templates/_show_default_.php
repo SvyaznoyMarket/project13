@@ -125,8 +125,31 @@ foreach ($photo3dList as $photo3d)
     <span class="font16 orange">Для покупки товара<br />обратитесь в Контакт-сENTER</span>
     <?php endif ?>
   </div>
-
-
+	
+	<div class="clear"></div>
+	<div class="otherRegion">
+		<div class="corner">
+			<div></div>
+		</div>
+    	<p>Этот товар нельзя купить в Калуге</p>
+		<p>Товар доступен в <b>Москве</b> и <a href="#">12 других городах</a></p>
+		<ul>
+			<li><a href="#">Москва</a></li>
+			<li><a href="#">Липецк</a></li>
+			<li><a href="#">Воронеж</a></li>
+			<li><a href="#">Хабаровск</a></li>
+			<li><a href="#">Сергиев-посад</a></li>
+			<li><a href="#">Санкт-петербург</a></li>
+			<li><a href="#">Выборг</a></li>
+			<li><a href="#">Новгород</a></li>
+			<li><a href="#">Нижний Новгород</a></li>
+			<li><a href="#">Владивосток</a></li>
+			<li><a href="#">Егорьевск</a></li>
+		</ul>
+		<div class="clear"></div>
+	</div>
+	<a class="likeGoodsRegion" href="#">Похожие товары, доступные в вашем городе</a>
+	
   <div class="line pb15"></div>
   <?php if ($dataForCredit['creditIsAllowed'] && sfConfig::get('app_payment_credit_enabled', true)) : ?>
   <div class="creditbox">

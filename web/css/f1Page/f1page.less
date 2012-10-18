@@ -1,0 +1,113 @@
+.servicebanner {
+  background: #4fcbf4 url("@{base-url}/f1Page/img/bg_service2.jpg") no-repeat 0px 0px;
+  clear: both;
+  color: @white;
+  font-size: 14px;
+  height: 178px;
+  line-height: 14px;
+  margin-bottom: 25px;
+  padding: 33px 0px 0px 600px;
+  width: 320px;
+}
+.slogan {
+  color: @firmBlue;
+  font-size: 14px;
+  margin-bottom: 30px;
+}
+.slogan strong {
+  display: block;
+  font-size: 24px;
+  padding-bottom: 5px;
+}
+.servicebox {
+  position: relative;
+  width: 456px;
+  &:hover {
+    background: url("@{base-url}/f1Page/img/bg_servicebox.png") repeat-y -922px 0px;
+    .serviceboxtop {
+      background: url("@{base-url}/f1Page/img/bg_servicebox.png") no-repeat 0px 0px;
+    }
+    .serviceboxbottom {
+      background: url("@{base-url}/f1Page/img/bg_servicebox.png") no-repeat -461px 0px;
+    }
+    .icon1 {
+      background-position: 0px -85px;
+    }
+    .icon2 {
+      background-position: -92px -85px;
+    }
+    .icon3 {
+      background-position: -184px -85px;
+    }
+    .icon4 {
+      background-position: -276px -85px;
+    }
+  }
+  strong {
+    display: block;
+    padding-bottom: 15px;
+  }
+  i {
+    background: url("@{base-url}/f1Page/img/service_icons.png") no-repeat;
+    display: block;
+    height: 80px;
+    left: 10px;
+    position: absolute;
+    top: 20px;
+    width: 88px;
+  }
+  .icon1 {
+    background-position: 0px 0px;
+  }
+  .icon2 {
+    background-position: -92px 0px;
+  }
+  .icon3 {
+    background-position: -184px 0px;
+  }
+  .icon4 {
+    background-position: -276px 0px;
+  }
+}
+.serviceboxtop,
+.serviceboxbottom {
+  clear: both;
+  font-size: 0px;
+  height: 7px;
+  line-height: 0px;
+  width: 456px;
+}
+.serviceboxmiddle {
+  padding: 13px 10px 10px 112px;
+  a {
+    display: block;
+  }
+}
+.servicebox__choice {
+  color: @firmBlue;
+  float: right;
+  font-weight: bold;
+  margin: 15px 0px;
+}
+.serviceblock {
+  float: left;
+  padding-bottom: 20px;
+  width: 100%;
+  .photo {
+    float: left;
+    width: 160px;
+  }
+  .info {
+    float: left;
+    padding-left: 20px;
+    width: 505px;
+    h3{
+      color:@firmBlue;
+    }
+  }
+  h3 {
+    font-size: 24px;
+    margin: 0px;
+    padding-bottom: 10px;
+  }
+}

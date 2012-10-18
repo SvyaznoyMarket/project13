@@ -35,10 +35,6 @@ window.ANALYTICS = {
     heiasOrder : function() {
         var orderArticle = arguments[0];
 
-        HEIAS_T=Math.random(); HEIAS_T=HEIAS_T*10000000000000000000;
-        var HEIAS_SRC='https://ads.heias.com/x/heias.cpa/count.px.v2/?PX=HT|' + HEIAS_T + '|cus|12675|pb|1|order_article|' + a.order_article + '|product_quantity|' + a.product_quantity + '|order_id|' + a.order_id + '|order_total|' + a.order_total + '';
-        document.write('<img width="1" height="1" src="' + HEIAS_SRC + '" />');
-        
         (function(d){
             var HEIAS_PARAMS = [];
             HEIAS_PARAMS.push(['type', 'ppx'], ['ssl', 'auto'], ['n', '12564'], ['cus', '12675']);
@@ -57,6 +53,10 @@ window.ANALYTICS = {
     heiasComplete : function() {
         var a = arguments[0];
 
+        HEIAS_T=Math.random(); HEIAS_T=HEIAS_T*10000000000000000000;
+        var HEIAS_SRC='https://ads.heias.com/x/heias.cpa/count.px.v2/?PX=HT|' + HEIAS_T + '|cus|12675|pb|1|order_article|' + a.order_article + '|product_quantity|' + a.product_quantity + '|order_id|' + a.order_id + '|order_total|' + a.order_total + '';
+        document.write('<img width="1" height="1" src="' + HEIAS_SRC + '" />');
+        
         (function(d) {
             var HEIAS_PARAMS = [];
             HEIAS_PARAMS.push(['type', 'cpx'], ['ssl', 'force'], ['n', '12564'], ['cus', '14935']);
