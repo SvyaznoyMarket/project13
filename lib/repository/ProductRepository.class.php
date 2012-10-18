@@ -190,7 +190,12 @@ class ProductRepository extends ObjectRepository
       'geo_id'      => RepositoryManager::getRegion()->getDefaultRegionId(),
     ));
 
-    return array_map(function($item) { return $this->create($item); }, $result);
+    $return = array();
+    foreach ($result as $item) {
+      $return[] = $this->create($item);
+    }
+
+    return $return;
 
   }
 
