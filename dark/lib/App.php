@@ -1,6 +1,8 @@
 <?php
 
 class App {
+    /** @var string */
+    public static $id;
     /** @var bool */
     private static $initialized = false;
     /** @var \AppConfig */
@@ -13,6 +15,7 @@ class App {
      * @param string $appDir Директория приложения
      */
     public static function init(\AppConfig $config) {
+        self::$id = uniqid();
         self::$config = $config;
 
         if (self::$initialized) {
@@ -203,7 +206,6 @@ class App {
                     self::$loggers[$name] = new \Logger\DefaultLogger(new \Logger\Appender\FileAppender(self::$config->logDir . '/core_v2.log'), $name, $config[$name]['level']);
                     break;
                 case 'timer':
-                    //self::$loggers[$name] = new \Logger\TimerLogger(new \Logger\Appender\FileAppender(self::$config->logDir . '/timer.log'), $name, $config[$name]['level']);
                     self::$loggers[$name] = new \Logger\DefaultLogger(new \Logger\Appender\FileAppender(self::$config->logDir . '/timer.log'), $name, $config[$name]['level']);
                     break;
                 default:

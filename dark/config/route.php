@@ -4,37 +4,42 @@ return array(
     // главная страница
     'homepage' => array(
         'pattern' => '/',
-        'action'  => array('Main\IndexAction', 'execute'),
+        'action'  => array('Main\Action', 'execute'),
     ),
 
     // поиск
     'search' => array(
         'pattern' => '/search',
-        'action'  => array('Search\IndexAction', 'execute'),
+        'action'  => array('Search\Action', 'execute'),
     ),
 
-    // пользователь
+    // вход пользователя
     'user.login' => array(
         'pattern' => '/login',
         'action'  => array('User\Action', 'login'),
     ),
+    // регистрация пользователя
     'user.register' => array(
         'pattern' => '/register',
         'action'  => array('User\Action', 'register'),
     ),
+    // выход пользователя
     'user.logout' => array(
         'pattern' => '/logout',
         'action'  => array('User\Action', 'logout'),
         'method'  => array('GET'),
     ),
+    // восстановление пароля
     'user.forgot' => array(
         'pattern' => '/request-password',
         'action'  => array('User\Action', 'forgot'),
     ),
+    // сброс пароля
     'user.reset' => array(
         'pattern' => '/reset-password',
         'action'  => array('User\Action', 'reset'),
     ),
+    // личный кабинет
     'user' => array(
         'pattern' => '/private',
         'action'  => array('User\IndexAction', 'execute'),
@@ -45,10 +50,12 @@ return array(
         'pattern' => '/region/init',
         'action'  => array('Region\Action', 'init'),
     ),
+    // смена региона
     'region.change' => array(
         'pattern' => '/region/change/{regionId}',
         'action'  => array('Region\Action', 'change'),
     ),
+    // автоподстановка региона
     'region.autocomplete' => array(
         'pattern' => '/region/autocomplete',
         'action'  => array('Region\Action', 'autocomplete'),
@@ -66,25 +73,30 @@ return array(
         'action'  => array('ProductCategory\Action', 'category'),
         'require' => array('categoryPath' => '[\w\d-_]+\/?[\w\d-_]+'),
     ),
+    // слайдер товаров
     'product.category.slider' => array(
         'pattern' => '/catalog/{categoryPath}/_slider',
         'action'  => array('ProductCategory\Action', 'slider'),
         'require' => array('categoryPath' => '[\w\d-_]+\/?[\w\d-_]+'),
     ),
+    // общее количество отфильтрованных товаров
     'product.category.count' => array(
         'pattern' => '/catalog/{categoryPath}/_count',
         'action'  => array('ProductCategory\Action', 'count'),
         'require' => array('categoryPath' => '[\w\d-_]+\/?[\w\d-_]+'),
     ),
+    // карточка товара
     'product' => array(
         'pattern' => '/product/{productPath}',
         'action'  => array('Product\IndexAction', 'execute'),
         'require' => array('productPath' => '[\w\d-_]+\/{1}[\w\d-_]+'),
     ),
+    // карточка линии товара
     'product.line' => array(
         'pattern' => '/line/{lineId}',
         'action'  => array('Product\LineAction', 'execute'),
     ),
+    // расчет доставки товара
     'product.delivery' => array(
         'pattern' => '/product/delivery-info',
         'action'  => array('Product\DeliveryAction', 'execute'),
@@ -119,14 +131,17 @@ return array(
         'pattern' => '/cart/', // TODO: сделать '/cart'
         'action'  => array('Cart\IndexAction', 'execute'),
     ),
+    // добавление товара в корзину
     'cart.product.add' => array(
         'pattern' => '/cart/add/{productId}/_quantity/{quantity}', // TODO: сделать поприличнее - '/cart/add-product/{productId}/{quantity}'
         'action'  => array('Cart\ProductAction', 'add'),
     ),
+    // удаление услуги из корзины
     'cart.service.delete' => array(
         'pattern' => '/cart/delete_service/{productId}/_service/{serviceId}',
         'require' => array('productId' => '\d+', 'serviceId' => '\d+'),
     ),
+    // добавление услуги в корзину
     'cart.service.add' => array(
         'pattern' => '/cart/add_service/{productId}/_service/{serviceId}/_quantity/{quantity}',
         'require' => array(

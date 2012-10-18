@@ -1,6 +1,6 @@
 <?php
 /**
- * @var $page               \View\Layout
+ * @var $page               \View\Product\IndexPage
  * @var $product            \Model\Product\Entity
  * @var $user               \Session\User
  * @var $accessories        \Model\Product\Entity[]
@@ -13,16 +13,16 @@
 
 <?php
   $json = json_encode(array (
-    'jsref' => $product->getToken(),
-    'jstitle' => $page->escape($product->getName()),
-    'jsprice' => $product->getPrice(),
-    'jsimg' => $product->getImageUrl(3),
-    'jsbimg' =>  $product->getImageUrl(2),
-    'jsshortcut' =>  $product->getArticle(),
-    'jsitemid' =>  $product->getId(),
-    'jsregionid' => $user->getRegion()->getId(),
+    'jsref'        => $product->getToken(),
+    'jstitle'      => $page->escape($product->getName()),
+    'jsprice'      => $product->getPrice(),
+    'jsimg'        => $product->getImageUrl(3),
+    'jsbimg'       =>  $product->getImageUrl(2),
+    'jsshortcut'   =>  $product->getArticle(),
+    'jsitemid'     =>  $product->getId(),
+    'jsregionid'   => $user->getRegion()->getId(),
     'jsregionName' => $user->getRegion()->getName(),
-    'jsstock' => 10,
+    'jsstock'      => 10,
   ));
 ?>
 <?php
