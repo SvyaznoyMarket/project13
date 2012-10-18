@@ -576,54 +576,6 @@ border-radius: 5px;
 
 
 /* ----------- feedback form ------------- */
-.bForm{
-	margin: 0 0 100px 0;
-	}
-.bInputBlock{
-	margin: 0 0 16px 0;
-	}
-	.bInputBlock__eP,
-	.bInputBlock__eH2{
-		color: #333333;
-		padding: 0;
-		}
-	.bInputBlock__eH2{
-		font-size: 12px;
-		font-weight: bold;
-		}
-	.bComment,
-	.bInputBlock__eP{
-		font-size: 11px;
-		}
-	.bInputBlock__eP{
-		margin: 2px 0 5px 0;
-		}
-	.bInputBlock__eInput,
-	.bInputBlock__eTextarea{
-		width: 480px;
-		margin: 5px 0 0 0;
-		border: 1px solid #C9C9C9;
-		border-radius: 5px;
-		-moz-border-radius: 5px;
-		-webkit-border-radius: 5px;
-		}
-	.bInputBlock__eInput{
-		height: 20px;
-		}
-	.bInputBlock__eTextarea{
-		height: 70px;
-		}
-.bComment{
-	height: 17px;
-	padding: 2px 0 0 26px;
-	color: #333333;
-	margin: 20px 0 11px 0;
-	background: url('img/attention.gif') no-repeat;
-	}
-.bYellowButton{
-	margin: 11px 0;
-	 font-weight: normal;
-	}
 
 /* ----------- /feedback form ------------- */
 
