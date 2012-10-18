@@ -225,6 +225,9 @@ table {
 .pb30 {
   padding-bottom: 30px;
 }
+/*.customalign h2.pb30 {
+  padding-bottom: 30px;
+}*/
 .pb40 {
   padding-bottom: 40px;
 }
@@ -492,11 +495,11 @@ ul.lh15 li {
   display:none;
 }
 .f1 {
-  background: url("@{base-url}/skin/img/icons.png") no-repeat 0px -111px;
+  background: url("@{base-url}/common/img/icons.png") no-repeat 0px -111px;
   padding: 3px 0px 3px 29px;
 }
 .entry {
-  background: url("@{base-url}/skin/img/icons.png") no-repeat 0px -139px;
+  background: url("@{base-url}/common/img/icons.png") no-repeat 0px -139px;
   padding: 3px 0px 3px 29px;
 }
 .mTah12 {
@@ -893,4 +896,16 @@ ul.lh15 li {
     width: 60px;
     z-index: 102;
   }
+}
+.noti {
+  .rounded(15px);
+  display: none;
+  width: 300px;
+  height: 200px;
+  background-color: @white;
+  text-align: center;
+  font-size: 18px;
+}
+.noti > div{
+  margin-top: 50px;
 }

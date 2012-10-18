@@ -1,4 +1,5 @@
 /* CSS crunched with Crunch - http://crunchapp.net/ */
+@import "/css/skin/old_inner.css" all;
 /*---------ШРИФТЫ----------*/
 @font-face {
   font-family: 'Enter';
@@ -258,6 +259,9 @@
   .pb30 {
     padding-bottom: 30px;
   }
+  /*.customalign h2.pb30 {
+    padding-bottom: 30px;
+  }*/
   .pb40 {
     padding-bottom: 40px;
   }
@@ -525,11 +529,11 @@
     display: none;
   }
   .f1 {
-    background: url("/css/skin/img/icons.png") no-repeat 0px -111px;
+    background: url("/css/common/img/icons.png") no-repeat 0px -111px;
     padding: 3px 0px 3px 29px;
   }
   .entry {
-    background: url("/css/skin/img/icons.png") no-repeat 0px -139px;
+    background: url("/css/common/img/icons.png") no-repeat 0px -139px;
     padding: 3px 0px 3px 29px;
   }
   .mTah12 {
@@ -956,6 +960,20 @@
     position: absolute;
     width: 60px;
     z-index: 102;
+  }
+  .noti {
+    -webkit-border-radius: 15px;
+    -moz-border-radius: 15px;
+    border-radius: 15px;
+    display: none;
+    width: 300px;
+    height: 200px;
+    background-color: #ffffff;
+    text-align: center;
+    font-size: 18px;
+  }
+  .noti > div {
+    margin-top: 50px;
   }
 }
 /*--END---ОСНОВНЫЕ ПРАВИЛА---*/
@@ -3621,6 +3639,67 @@
     width: 470px;
   }
 }
+/*стили для продуктов f1*/
+@media all {
+  .order {
+    width: 100%;
+  }
+  .order th {
+    font-size: 14px;
+    padding: 0px 10px 15px 0px;
+    text-align: left;
+  }
+  .order td {
+    padding: 0px 0px 15px 10px;
+    text-align: right;
+  }
+  .bSet__eImage {
+    *display: inline;
+    display: inline-block;
+    overflow: hidden;
+    position: relative;
+    vertical-align: top;
+    width: 500px;
+    zoom: 1;
+  }
+  .bSet__eInfo {
+    display: inline-block;
+    *display: inline;
+    vertical-align: top;
+    width: 405px;
+    zoom: 1;
+  }
+  .bSet__eDescription {
+    font: 14px Tahoma, sans-serif;
+    margin: 0px 0px 15px 15px;
+    padding: 0px;
+  }
+  .bSet__ePrice {
+    font: 16px Tahoma, sans-serif;
+    margin: 0px 0px 15px 15px;
+    padding: 0px;
+  }
+  .bSet__ePrice strong {
+    margin-right: 10px;
+    vertical-align: middle;
+  }
+  .bSet__eImage.mServiceBig {
+    position: relative;
+  }
+  .bServiceCard__eLogo {
+    background: url("/css/item/img/icon_f1_image.png") no-repeat scroll 0px 0px transparent;
+    height: 41px;
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    width: 39px;
+  }
+  .mServiceBig .bServiceCard__eLogo {
+    background: url("/css/item/img/icon_f1_image.png") no-repeat scroll 0px 0px transparent;
+    height: 41px;
+    width: 39px;
+  }
+}
 /*стили отзывов к продукту*/
 @media all {
   .goodsinfosmall {
@@ -3836,7 +3915,7 @@
   }
   .sharelink,
   .sharelink:hover {
-    background: url("/css/skin/img/icons.png") no-repeat 0px -236px;
+    background: url("/css/common/img/icons.png") no-repeat 0px -236px;
     color: #5da7d9;
     display: inline-block;
     font-size: 11px;
@@ -3865,7 +3944,7 @@
   }
   .sharelist a,
   .backetsharelist a {
-    background: url("/css/skin/img/icons.png") no-repeat;
+    background: url("/css/common/img/icons.png") no-repeat;
     color: #a6a6a6;
     padding: 0px 0px 3px 26px;
     text-decoration: underline;
@@ -3927,14 +4006,14 @@
     margin-bottom: 10px;
   }
   .commentlink {
-    background: url("/css/skin/img/icons.png") no-repeat 100% -54px;
+    background: url("/css/common/img/icons.png") no-repeat 100% -54px;
     display: inline-block;
     font-weight: bold;
     margin-bottom: 15px;
     padding-right: 20px;
   }
   .commentlinkopen {
-    background: url("/css/skin/img/icons.png") no-repeat 100% 5px;
+    background: url("/css/common/img/icons.png") no-repeat 100% 5px;
     display: inline-block;
     font-weight: bold;
     margin-bottom: 15px;
@@ -6802,6 +6881,48 @@
   }
 }
 /*---END---СТИЛИ ГЛАВНОЙ---*/
+/*------СТИЛИ ЛИЧНОГО КАБИНЕТА------*/
+@media all {
+  .leftmenu li {
+    background: url("/css/user/img/arrow.png") no-repeat 0 0;
+    padding: 0px 0px 5px 16px;
+  }
+  .cabinethelp {
+    background: url("/css/skin/img/attention.gif") no-repeat 0px 0px;
+    font-size: 11px;
+    padding: 20px 0px 10px;
+  }
+}
+@media all {
+  .help {
+    color: #434343;
+    font-size: 11px;
+    left: 20px;
+    position: absolute;
+    width: 240px;
+  }
+  .doublehelp {
+    background: url("/css/user/img/help.png") no-repeat 0px 0px;
+    height: 46px;
+    margin-top: 10px;
+    padding: 15px 0px 0px 40px;
+  }
+}
+@media all {
+  .order {
+    width: 100%;
+  }
+  .order th {
+    font-size: 14px;
+    padding: 0px 10px 15px 0px;
+    text-align: left;
+  }
+  .order td {
+    padding: 0px 0px 15px 10px;
+    text-align: right;
+  }
+}
+/*---END---СТИЛИ ЛИЧНОГО КАБИНЕТА---*/
 /*--- ТЕСТОВЫЕ СТИЛИ----*/
 @media all {
   .goodsbox__inner {
