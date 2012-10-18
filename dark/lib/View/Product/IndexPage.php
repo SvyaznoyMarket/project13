@@ -9,8 +9,12 @@ class IndexPage extends \View\DefaultLayout {
     public function prepare() {
         /** @var $product \Model\Product\Entity */
         $product = $this->getParam('product') instanceof \Model\Product\Entity ? $this->getParam('product') : null;
+        if (!$product) {
+            return;
+        }
 
-        if (!$this->hasParam('breadcrumbs') && $product) {
+        // breadcrumbs
+        if (!$this->hasParam('breadcrumbs')) {
             $breadcrumbs = array();
 
             foreach ($product->getCategory() as $category) {
@@ -26,6 +30,21 @@ class IndexPage extends \View\DefaultLayout {
 
             $this->setParam('breadcrumbs', $breadcrumbs);
         }
+
+        // seo: page meta
+        $this->setTitle(sprintf(
+            '%s - купить по цене %s руб. в Москве, %s - характеристиками и описанием и фото от интернет-магазина Enter.ru',
+            $product->getName(),
+            $product->getPrice(),
+            $product->getName()
+        ));
+        $this->addMeta('description', sprintf(
+            'Интернет магазин Enter.ru предлагает купить: %s по цене %s руб. На нашем сайте Вы найдете подробное описание и характеристики товара %s с фото. Заказать понравившийся товар с доставкой по Москве можно у нас на сайте или по телефону ' . \App::config()->company['phone'] . '.',
+            $product->getName(),
+            $product->getPrice(),
+            $product->getName()
+        ));
+        $this->addMeta('keywords', sprintf('%s Москва интернет магазин купить куплю заказать продажа цены', $product->getName()));
     }
 
     public function slotContent() {

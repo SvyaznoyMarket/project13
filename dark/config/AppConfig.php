@@ -53,8 +53,14 @@ class AppConfig {
         'client_id' => 'site',
     );
 
+    /** @var array */
     public $wordpress = array(
         'url' => 'http://content.ent3.ru/',
+    );
+
+    /** @var array */
+    public $company = array(
+        'phone' => '8 (800) 700-00-09',
     );
 
     /** @var array */
@@ -79,6 +85,7 @@ class AppConfig {
         'defaultId'      => 14974,
     );
 
+    /** @var array */
     public $mediaHost = array(
         0 => 'http://fs01.enter.ru',
         1 => 'http://fs02.enter.ru',
