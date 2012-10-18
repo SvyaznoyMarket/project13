@@ -42,6 +42,8 @@ class Entity {
     private $seoText;
     /** @var int */
     private $productCount;
+    /** @var int */
+    private $globalProductCount;
     /** @var Entity[] */
     private $child = array();
     /** @var Entity|null */
@@ -70,6 +72,7 @@ class Entity {
         if (array_key_exists('seo_text', $data)) $this->setSeoText($data['seo_text']);
         if (array_key_exists('root_category_image', $data)) $this->setRootImage($data['root_category_image']);
         if (array_key_exists('product_count', $data)) $this->setProductCount($data['product_count']);
+        if (array_key_exists('product_count_global', $data)) $this->setGlobalProductCount($data['product_count_global']);
     }
 
     /**
@@ -245,6 +248,20 @@ class Entity {
     public function setProductCount($productCount)
     {
         $this->productCount = (int)$productCount;
+    }
+
+    /**
+     * @param int $globalProductCount
+     */
+    public function setGlobalProductCount($globalProductCount) {
+        $this->globalProductCount = (int)$globalProductCount;
+    }
+
+    /**
+     * @return int
+     */
+    public function getGlobalProductCount() {
+        return $this->globalProductCount;
     }
 
     /**
