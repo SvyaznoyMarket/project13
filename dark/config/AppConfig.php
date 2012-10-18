@@ -100,6 +100,7 @@ class AppConfig {
         'itemsInSlider'         => 5,
         'itemsInCategorySlider' => 3,
         'minCreditPrice'        => 3000,
+        'totalCount'            => 30000,
     );
 
     /** @var array */

@@ -5,6 +5,6 @@
 ?>
 
 <form class="search-form" action="<?= $page->url('search') ?>" method="get">
-    <input name="q" type="text" class="text startse" value="Поиск среди 30 000 товаров" />
+    <input name="q" type="text" class="text startse" value="Поиск среди <?= number_format(\App::config()->product['totalCount'], 0, ',', ' ') ?> товаров" />
     <input type="submit" class="searchbutton" value="Найти" title="Найти" />
 </form>

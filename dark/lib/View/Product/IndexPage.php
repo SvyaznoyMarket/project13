@@ -28,7 +28,7 @@ class IndexPage extends \View\DefaultLayout {
         } elseif ($product->getTagline()) {
             $description = $product->getTagline();
         } else {
-            $description = 'Enter - новый способ покупать. Любой из 20000 товаров нашего ассортимента можно купить где угодно, как угодно и когда угодно. Наша миссия: дарить время для настоящего. Честно. С любовью. Как для себя.';
+            $description = 'Enter - новый способ покупать. Любой из ' . number_format(\App::config()->product['totalCount'], 0, ',', ' ') . ' товаров нашего ассортимента можно купить где угодно, как угодно и когда угодно. Наша миссия: дарить время для настоящего. Честно. С любовью. Как для себя.';
         }
 
         return "<meta property=\"og:title\" content=\"".$product->getName()."\"/>\r\n".

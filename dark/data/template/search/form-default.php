@@ -7,7 +7,7 @@
 ?>
 
 <?php
-if (empty($searchQuery)) $searchQuery = 'Поиск среди 30 000 товаров';
+if (empty($searchQuery)) $searchQuery = 'Поиск среди ' . number_format(\App::config()->product['totalCount'], 0, ',', ' ') . ' товаров';
 $isWide = (isset($isWide) && $isWide) ? true : false;
 ?>
 
