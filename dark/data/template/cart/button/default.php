@@ -17,4 +17,4 @@ if ($disabled) {
 if (empty($value)) $value = '&nbsp;'
 ?>
 
-<a href="<?= $url ?>" class="link1 event-click cart cart-add<?php if ($disabled): ?> disable<? endif ?>"><?= $value ?></a>
+<a href="<?= $url ?>" class="link1 event-click cart cart-add<?php if ($disabled): ?> disabled<? endif ?>"><?= $value ?></a>
