@@ -110,14 +110,20 @@ class Action {
         // обязательно загружаем предков и детей, чтобы установить тип узла категории (root, branch или leaf)
         $repository->loadEntityBranch($category);
 
-        // http://en.wikipedia.org/wiki/Tree_%28data_structure%29
-        if ($category->isRoot()) {
-            return $this->rootCategory($category, $request);
-        } else if ($category->isBranch()) {
+        // если категория содержится во внешнем узле дерева
+        if ($category->isLeaf()) {
+            return $this->leafCategory($category, $request);
+        }
+        // иначе, если в запросе есть фильтрация
+        else if ($request->get(\View\Product\FilterForm::$name)) {
             return $this->branchCategory($category, $request);
         }
+        // иначе, если категория самого верхнего уровня
+        else if ($category->isRoot()) {
+            return $this->rootCategory($category, $request);
+        }
 
-        return $this->leafCategory($category, $request);
+        return $this->branchCategory($category, $request);
     }
 
     /**
@@ -264,7 +270,12 @@ class Action {
         $filters = \RepositoryManager::getProductFilter()->getCollectionByCategory($category);
         $productFilter = new \Model\Product\Filter($filters);
         $productFilter->setCategory($category);
-        $productFilter->setValues($request->get(\View\Product\FilterForm::$name, array()));
+        // filter values
+        $values = $request->get(\View\Product\FilterForm::$name, array());
+        if ($request->get('global', 0)) {
+            $values['global'] = 1;
+        }
+        $productFilter->setValues($values);
 
         return $productFilter;
     }

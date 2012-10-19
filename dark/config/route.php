@@ -93,7 +93,7 @@ return array(
     ),
     // карточка линии товара
     'product.line' => array(
-        'pattern' => '/line/{lineId}',
+        'pattern' => '/line/{lineToken}',
         'action'  => array('Product\LineAction', 'execute'),
     ),
     // расчет доставки товара
@@ -124,6 +124,13 @@ return array(
     'product.rating.create_total' => array(
         'pattern' => '/product-rating/createtotal/{productId}/{rating}',
         'require' => array('productId' => '\d+', 'rating' => '\d+'),
+    ),
+
+    // проверка сертификата
+    'certificate.check' => array(
+        'pattern' => '/certificate-check',
+        'action'  => array('Certificate\Action', 'check'),
+        'method'  => array('POST'),
     ),
 
     // корзина

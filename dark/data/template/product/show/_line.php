@@ -9,7 +9,7 @@
 
 <?php
 $isHidden = isset($isHidden) && $isHidden;
-$url = $page->url('product.line', array('lineId' => $product->getLine()->getId()));
+$url = $page->url('product.line', array('lineToken' => $product->getLine()->getToken()));
 ?>
 
 <div class="goodsbox height250"<? if ($isHidden): ?> style="display:none;"<? endif ?>>

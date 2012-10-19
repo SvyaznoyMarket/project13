@@ -44,8 +44,8 @@ class RegionInflectAction {
 
             $file = \App::config()->dataDir . '/inflect/region/' . $item['id'] . '.json';
             if (file_exists($file)) {
-                //continue;
-                unlink($file);
+                continue;
+                //unlink($file);
             }
 
             $response = file_get_contents('http://export.yandex.ru/inflect.xml?' . http_build_query(array(

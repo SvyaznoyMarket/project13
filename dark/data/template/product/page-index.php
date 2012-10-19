@@ -84,7 +84,7 @@
         ?>
       </span>
       <strong class="ml5 hf"><?php echo round($product->getRating(), 1) ?></strong>
-      <a href="<?php echo $product->getLink().'/comments' ?>" class="underline ml5">Читать отзывы</a> <span>(<?php echo $product->getCommentCount() ?>)</span>
+      <!--a href="<?php echo $product->getLink().'/comments' ?>" class="underline ml5">Читать отзывы</a> <span>(<?php echo $product->getCommentCount() ?>)</span-->
     </div>
     <span>Артикул #<?php echo $product->getArticle() ?></span>
   </div>
@@ -431,7 +431,8 @@
     <div class="pb25">
         <strong>Теги:</strong>
 <?php foreach ($product->getTag() as $i => $tag):?>
-<?php echo ($i ? ', ' : '').'<a href="'.$page->url('tag', array('tagToken' => $tag->getToken())).'" class="underline" rel="nofollow">'.$tag->getName().'</a>' ?>
+<?php //echo ($i ? ', ' : '').'<a href="'.$page->url('tag', array('tagToken' => $tag->getToken())).'" class="underline" rel="nofollow">'.$tag->getName().'</a>' ?>
+<?php echo ($i ? ', ' : '').$tag->getName() ?>
 <?php endforeach ?>
     </div>
 </noindex>

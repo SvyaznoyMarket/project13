@@ -28,11 +28,11 @@ class FilterForm {
                     if (!($this->isEqualNumeric($value['from'], $filter->getMin()))) $name[] = sprintf('от %d', $value['from']);
                     if (!($this->isEqualNumeric($value['to'], $filter->getMax()))) $name[] = sprintf('до %d', $value['to']);
                     if (!$name) continue;
-                    if ($filter->getFilterId() == 'price') $name[] .= 'р.';
+                    if ($filter->getId() == 'price') $name[] .= 'р.';
                     $return[] = array(
-                        'type' => $filter->getFilterId() == 'brand' ? 'creator' : 'parameter',
+                        'type' => $filter->getId() == 'brand' ? 'creator' : 'parameter',
                         'name'  => implode(' ', $name),
-                        'url'   => $this->getUrl($filter->getFilterId()),
+                        'url'   => $this->getUrl($filter->getId()),
                         'title' => $filter->getName(),
                     );
                     break;
@@ -40,9 +40,9 @@ class FilterForm {
                     if (!is_array($value) || count($value) == 0) continue;
                     foreach ($value as $v) {
                         $return[] = array(
-                            'type'  => $filter->getFilterId() == 'brand' ? 'creator' : 'parameter',
+                            'type'  => $filter->getId() == 'brand' ? 'creator' : 'parameter',
                             'name'  => $filter->getName() . ': ' . ($v == 1 ? 'да' : 'нет'),
-                            'url'   => $this->getUrl($filter->getFilterId(), $v),
+                            'url'   => $this->getUrl($filter->getId(), $v),
                             'title' => $filter->getName(),
                         );
                     }
@@ -52,9 +52,9 @@ class FilterForm {
                     foreach ($filter->getOption() as $option) {
                         if (in_array($option->getId(), $value)) {
                             $return[] = array(
-                                'type'  => $filter->getFilterId() == 'brand' ? 'creator' : 'parameter',
+                                'type'  => $filter->getId() == 'brand' ? 'creator' : 'parameter',
                                 'name'  => $option->getName(),
-                                'url'   => $this->getUrl($filter->getFilterId(), $option->getId()),
+                                'url'   => $this->getUrl($filter->getId(), $option->getId()),
                                 'title' => $filter->getName(),
                             );
                         }

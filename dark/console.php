@@ -44,7 +44,9 @@ try {
     ];
     call_user_func_array($actionCall[0], $actionCall[1]);
 } catch (\Exception $e) {
-    \App::logger()->error('End cli app in ' . $spend . ' used ' . round(memory_get_peak_usage() / 1048576, 2) . 'Mb with ' . $e);
+    $spend = \Debug\Timer::stop('app');
+    \App::logger()->error('End cli app ' . $spend . ' ' . round(memory_get_peak_usage() / 1048576, 2) . 'Mb' . ' with ' . $e);
+
     \App::shutdown();
 
     throw $e;
