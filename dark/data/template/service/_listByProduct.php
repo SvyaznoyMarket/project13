@@ -1,11 +1,11 @@
 <?php
 /**
  * @var $page    \View\Layout
+ * @var $user    \Session\User
  * @var $product \Model\Product\Entity
  * @var $user    \Session\User
  */
 
-$user = \App::user();
 $list = $product->getService();
 $listInCart = $user->getCart()->getServicesByProduct($product->getId());
 ?>

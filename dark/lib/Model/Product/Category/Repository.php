@@ -11,13 +11,27 @@ class Repository {
     }
 
     public function getEntityByToken($token) {
-        $data = $this->client->query('category/token', array(
-            'token_list' => array($token),
-            'geo_id'      => 14974,
+        $data = $this->client->query('category/get', array(
+            'slug'   => array($token),
+            'geo_id' => \App::user()->getRegion()->getId(),
         ));
         $data = (bool)$data ? reset($data) : null;
 
         return $data ? new Entity($data) : null;
+    }
+
+    public function getCollectionById(array $ids) {
+        $data = $this->client->query('category/get', array(
+            'id'    => $ids,
+            'geo_id' => \App::user()->getRegion()->getId(),
+        ));
+
+        $collection = array();
+        foreach($data as $item){
+            $collection[] = new Entity($item);
+        }
+
+        return $collection;
     }
 
     /**

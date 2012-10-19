@@ -7,6 +7,18 @@ class IndexPage extends \View\DefaultLayout {
         /** @var $productPager \Iterator\EntityPager */
         $productPager = $this->getParam('productPager') instanceof \Iterator\EntityPager ? $this->getParam('productPager') : null;
 
+        // breadcrumbs
+        if (!$this->hasParam('breadcrumbs')) {
+            $breadcrumbs = array();
+            $breadcrumbs[] = array(
+                'name' => 'Поиск (' . $this->getParam('searchQuery') . ')',
+                'url'  => \App::router()->generate('search', array('q' => $this->getParam('searchQuery'))),
+            );
+
+            $this->setParam('breadcrumbs', $breadcrumbs);
+        }
+
+        // seo: title
         if (!$this->hasParam('title')) {
             $title = 'Вы искали “' . $this->getParam('searchQuery') . '”';
             if ($productPager && ($productPager->getPage() > 1)) {
@@ -35,12 +47,12 @@ class IndexPage extends \View\DefaultLayout {
     }
 
     public function slotSidebar() {
-        $this->setParam('limit', 8);
-
         if (!(bool)$this->getParam('categories')) {
             return  '';
         }
 
-        return $this->render('search/_sidebar', $this->params);
+        return $this->render('search/_sidebar', array_merge($this->params, array(
+            'limit' => 8,
+        )));
     }
 }

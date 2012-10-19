@@ -164,20 +164,21 @@
     position: relative;
     width: 48px;
   }
-  b {
+  a {
     border: 2px solid @typLightGray;
     .rounded(7px);
     display: block;
-    height: 47px;
-    left: -1px;
-    position: absolute;
-    top: -1px;
-    width: 47px;
+    height: 44px;
+    overflow: hidden;
+    width: 44px;
     z-index: 1;
     &:hover,
     &.current{
       border: 2px solid @firmOrange;
       cursor: pointer;
+    }
+    img{
+      margin:-2px;
     }
   }
   
@@ -256,15 +257,11 @@
   margin-right: -15px;
   width: 935px;
   .goodsbox {
-    background-color: @white;
     margin-bottom: 14px;
     margin-right: 20px;
     padding: 10px;
     position: relative;
     width: 147px;
-    &:hover .boxhover {
-      display: block;
-    }
     .buy {
       .rounded(5px);
       background-color: @firmOrange;
@@ -275,9 +272,9 @@
       position: absolute;
       top: 0px;
     }
-  }
-  .boxhover {
-    width: 167px;
+    .goodsbox__inner{
+      width: 150px;
+    }
   }
   .goodsrating {
     color: @typGray;

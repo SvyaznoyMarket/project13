@@ -251,6 +251,14 @@ class Entity {
     }
 
     /**
+     * @return int
+     */
+    public function getProductCount()
+    {
+        return $this->productCount;
+    }
+
+    /**
      * @param int $globalProductCount
      */
     public function setGlobalProductCount($globalProductCount) {
@@ -262,14 +270,6 @@ class Entity {
      */
     public function getGlobalProductCount() {
         return $this->globalProductCount;
-    }
-
-    /**
-     * @return int
-     */
-    public function getProductCount()
-    {
-        return $this->productCount;
     }
 
     /**

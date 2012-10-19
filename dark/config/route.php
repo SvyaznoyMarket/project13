@@ -119,7 +119,11 @@ return array(
     ),
     'tag' => array(
         'pattern' => '/tags/{tagToken}',
-        'require' => array('tagToken' => '[\w\d-_]+'),
+        'action'  => array('Tag\Action', 'index'),
+    ),
+    'tag.category' => array(
+        'pattern' => '/tags/{tagToken}/{categoryToken}',
+        'action'  => array('Tag\Action', 'index'),
     ),
     'product.rating.create_total' => array(
         'pattern' => '/product-rating/createtotal/{productId}/{rating}',
