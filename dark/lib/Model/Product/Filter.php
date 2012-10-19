@@ -23,7 +23,11 @@ class Filter {
     /**
      * @param \Model\Product\Category\Entity $category
      */
-    public function setCategory(\Model\Product\Category\Entity $category = null) {
+    public function setCategory($category = null) {
+        if (!($category instanceof \Model\Product\Category\Entity || $category instanceof \Model\Tag\Category\Entity)) {
+            throw new \InvalidArgumentException('Category must be instance of \Model\Product\Category\Entity or \Model\Tag\Category\Entity');
+        }
+
         $this->category = $category;
     }
 

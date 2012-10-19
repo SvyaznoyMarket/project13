@@ -1,6 +1,7 @@
 <?php
 /**
  * @var $page     \View\Layout
+ * @var $request  \Http\Request
  * @var $user     \Session\User
  * @var $category \Model\Product\Category\Entity
  */
@@ -8,7 +9,7 @@
 
 <?php
 // флаг: показывать все товары в категории
-$isGlobal = \App::request()->get('global', 0) ? true : false;
+$isGlobal = $request->get('global', 0) ? true : false;
 
 // название региона в предложном падеже
 $regionInflectedName = $user->getRegion()->getInflectedName(5);

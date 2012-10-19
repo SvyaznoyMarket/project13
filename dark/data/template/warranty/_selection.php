@@ -1,13 +1,14 @@
 <?php
 /**
  * @var $page    \View\Layout
+ * @var $user    \Session\User
  * @var $product \Model\Product\Entity
  * @var $cart    \Session\Cart
  */
 ?>
 
 <?php
-    $cart = \App::user()->getCart();
+    $cart = $user->getCart();
 ?>
 
 <?php if (\App::config()->warranty['enabled']) { ?>
