@@ -3579,23 +3579,24 @@
     position: relative;
     width: 48px;
   }
-  .previewlist b {
+  .previewlist a {
     border: 2px solid #e6e6e6;
     -webkit-border-radius: 7px;
     -moz-border-radius: 7px;
     border-radius: 7px;
     display: block;
-    height: 47px;
-    left: -1px;
-    position: absolute;
-    top: -1px;
-    width: 47px;
+    height: 44px;
+    overflow: hidden;
+    width: 44px;
     z-index: 1;
   }
-  .previewlist b:hover,
-  .previewlist b.current {
+  .previewlist a:hover,
+  .previewlist a.current {
     border: 2px solid #ffa901;
     cursor: pointer;
+  }
+  .previewlist a img {
+    margin: -2px;
   }
   .bDropWrap {
     margin: 0px 10px 20px 0px;
@@ -5899,11 +5900,9 @@
     width: 100%;
     z-index: 1003;
   }
-  #bigpopup .previewlist .viewstock b {
-    border: 2px solid #e6e6e6;
-    -webkit-border-radius: 7px;
-    -moz-border-radius: 7px;
-    border-radius: 7px;
+  /*#bigpopup .previewlist .viewstock a {
+    border: 2px solid @typLightGray;
+    .rounded(7px);
     display: block;
     height: 48px;
     left: -2px;
@@ -5914,18 +5913,18 @@
   }
   #bigpopup .previewlist b:hover,
   .previewlist b.current {
-    border: 2px solid #ffa901;
-  }
+    border: 2px solid @firmOrange;
+  }*/
   .previewlist .axonometric {
     background: url("/css/bigPopup/img/bigPopupSprite.png") no-repeat -30px -72px;
   }
-  .previewlist a {
+  /*.previewlist a {
     cursor: pointer;
     display: block;
     height: 48px;
-    text-indent: -10000px;
+   //text-indent: -10000px;
     width: 48px;
-  }
+  }*/
   .scrollbox {
     background: url("/css/bigPopup/img/bigPopupSprite.png") no-repeat 0px 0px;
     bottom: 0px;
