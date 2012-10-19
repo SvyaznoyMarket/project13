@@ -4982,6 +4982,9 @@
   .orderFinal__certificate input.cardPin {
     width: 90px;
   }
+  .orderFinal__certificate .process {
+    display: none;
+  }
   .orderFinal__certificate .process .img {
     -webkit-border-radius: 7px;
     -moz-border-radius: 7px;
@@ -4991,14 +4994,14 @@
     margin: 0 15px 15px 0;
     float: left;
   }
-  .orderFinal__certificate .process .img.type1 {
+  .orderFinal__certificate .process .img.red {
     background: #d90000 url("/css/order/img/x.gif") no-repeat 50% 50%;
   }
-  .orderFinal__certificate .process .img.type2 {
+  .orderFinal__certificate .process .img.green {
     background: #2db200 url("/css/order/img/green.gif") no-repeat 50% 50%;
   }
-  .orderFinal__certificate .process .img.type3 {
-    background: #ffa901 url("/css/order/img/ajar.gif") no-repeat 55% 50%;
+  .orderFinal__certificate .process .img.orange {
+    background: #ffa901 url("/css/order/img/ajar.gif") no-repeat 50% 50%;
   }
   .orderFinal__certificate .process p {
     font-size: 18px;

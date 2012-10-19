@@ -13,18 +13,21 @@
   <div class="line pb15"></div>
 <?php endforeach ?>
 
+
 <div class="orderFinal__certificate">
+	<script type="text/html" id="processBlock">
+		<div class="process">
+			<div class="img <%=typeNum%>"></div>
+			<p><%=text%></p>
+			<div class="clear"></div>
+		</div>
+	</script>
 	<h2>Заполните информацию с подарочной карты</h2>
 	<form class="ui-css">
 		<input class="bBuyingLine__eText cardNumber" placeholder="Номер" />
 		<input class="bBuyingLine__eText cardPin" placeholder="ПИН" />
-		<input class="button bigbutton" id="jschangecity" type="submit" value="Отправить" />
+		<input id="sendCard" class="button bigbutton mDisabled" type="button" value="Отправить" />
 	</form>
-	<div class="process">
-		<div class="img type3"></div>
-		<p>Блок для процессинговой инфы</p>
-		<div class="clear"></div>
-	</div>
 	<p class="certifText">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
 </div>
 <div class="line pb15"></div>

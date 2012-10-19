@@ -15,19 +15,20 @@
     }
   }
   .process{
+    display:none;
     .img{
       .rounded(7px);
       height:35px;
       width: 35px;
       margin:0 15px 15px 0;
       float:left;
-      &.type1{
+      &.red{
         background:#D90000 url("@{base-url}/order/img/x.gif") no-repeat 50% 50%;
       }
-      &.type2{
+      &.green{
         background:#2DB200 url("@{base-url}/order/img/green.gif") no-repeat 50% 50%;
       }
-      &.type3{
+      &.orange{
         background: @firmOrange url("@{base-url}/order/img/ajar.gif") no-repeat 50% 50%;
       }
     }
