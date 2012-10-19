@@ -126,6 +126,13 @@ return array(
         'require' => array('productId' => '\d+', 'rating' => '\d+'),
     ),
 
+    // проверка сертификата
+    'certificate.check' => array(
+        'pattern' => '/certificate-check',
+        'action'  => array('Certificate\Action', 'check'),
+        'method'  => array('POST'),
+    ),
+
     // корзина
     'cart' => array(
         'pattern' => '/cart/', // TODO: сделать '/cart'
