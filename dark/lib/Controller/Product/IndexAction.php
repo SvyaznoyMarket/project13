@@ -7,8 +7,8 @@ class IndexAction {
         $productToken = explode('/', $productPath);
         $productToken = end($productToken);
 
-        $productRepository = \RepositoryManager::getProduct();
-        $product = $productRepository->getEntityByToken($productToken);
+        $repository = \RepositoryManager::getProduct();
+        $product = $repository->getEntityByToken($productToken);
         if (!$product) {
             throw new \Exception\NotFoundException(sprintf('Товар с токеном "%s" не найден.', $productToken));
         }
@@ -32,7 +32,7 @@ class IndexAction {
         $kit = array_flip($partsId);
 
         if ((bool)$accessoriesId || (bool)$relatedId || (bool)$partsId) {
-            $products = $productRepository->getCollectionById(array_merge($accessoriesId, $relatedId, $partsId));
+            $products = $repository->getCollectionById(array_merge($accessoriesId, $relatedId, $partsId));
 
             foreach ($products as $item) {
                 if (isset($accessories[$item->getId()])) $accessories[$item->getId()] = $item;
