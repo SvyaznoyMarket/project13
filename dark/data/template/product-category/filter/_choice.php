@@ -24,8 +24,8 @@ use Model\Product\Filter\Entity as FilterEntity;
         <?  ?>
         <? foreach (array('нет', 'да') as $id => $name) { $id = (int)$id ?>
         <li>
-            <label for="<?= $formName ?>_<?= $filter->getFilterId()?>_<?= $id?>" class="prettyCheckbox checkbox list">
-                <input name="<?= $formName ?>[<?= $filter->getFilterId()?>][]" type="checkbox" value="<?= $id?>" <? if (in_array($id, $values)) echo 'checked' ?> id="<?= $formName ?>_<?= $filter->getFilterId()?>_<?= $id?>" class="hiddenCheckbox"/>
+            <label for="<?= $formName ?>_<?= $filter->getId()?>_<?= $id?>" class="prettyCheckbox checkbox list">
+                <input name="<?= $formName ?>[<?= $filter->getId()?>][]" type="checkbox" value="<?= $id?>" <? if (in_array($id, $values)) echo 'checked' ?> id="<?= $formName ?>_<?= $filter->getId()?>_<?= $id?>" class="hiddenCheckbox"/>
                 <span class="holderWrap" style="width: 13px; height: 13px;">
                     <span class="holder" style="width: 13px; "></span>
                 </span>

@@ -26,7 +26,7 @@ $formName = \View\Product\FilterForm::$name;
 
         <? $openNum = 0 ?>
         <? $index = 0; foreach ($productFilter->getFilterCollection() as $filter) { ?>
-            <? if ('price' == $filter->getFilterId() || 'brand' == $filter->getFilterId()) {
+            <? if ('price' == $filter->getId() || 'brand' == $filter->getId()) {
                 $isOpened = true;
             } elseif ($openNum < 5) {
                 $openNum++;

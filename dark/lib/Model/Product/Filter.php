@@ -47,11 +47,11 @@ class Filter {
                     case FilterEntity::TYPE_NUMBER:
                     case FilterEntity::TYPE_SLIDER:
                         if ($filter->getMax() != $value['to'] || $filter->getMin() != $value['from']) {
-                            $return[] = array($filter->getFilterId(), 2, $value['from'], $value['to']);
+                            $return[] = array($filter->getId(), 2, $value['from'], $value['to']);
                         }
                         break;
                     default:
-                        $return[] = array($filter->getFilterId(), 1, $value);
+                        $return[] = array($filter->getId(), 1, $value);
                         break;
                 }
             }
@@ -89,8 +89,8 @@ class Filter {
      * @return mixed|null
      */
     public function getValue(FilterEntity $filter) {
-        if (isset($this->values[$filter->getFilterId()])) {
-            return (array)$this->values[$filter->getFilterId()];
+        if (isset($this->values[$filter->getId()])) {
+            return (array)$this->values[$filter->getId()];
         } else {
             return array();
         }

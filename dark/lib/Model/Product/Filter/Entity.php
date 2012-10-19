@@ -10,7 +10,7 @@ class Entity {
     const TYPE_LIST = 5;
     const TYPE_SLIDER = 6;
 
-    private $filterId;
+    private $id;
     private $typeId;
     private $name;
     private $unit;
@@ -21,7 +21,7 @@ class Entity {
     private $option = array();
 
     public function __construct(array $data = array()) {
-        if (array_key_exists('filter_id', $data)) $this->setFilterId($data['filter_id']);
+        if (array_key_exists('filter_id', $data)) $this->setId($data['filter_id']);
         if (array_key_exists('name', $data)) $this->setName($data['name']);
         if (array_key_exists('type_id', $data)) $this->setTypeId($data['type_id']);
         if (array_key_exists('unit', $data)) $this->setUnit($data['unit']);
@@ -38,7 +38,7 @@ class Entity {
 
     public function toArray() {
         return array(
-            'filter_id'   => $this->filterId,
+            'filter_id'   => $this->id,
             'name'        => $this->name,
             'type_id'     => $this->typeId,
             'unit'        => $this->unit,
@@ -50,12 +50,12 @@ class Entity {
         );
     }
 
-    public function setFilterId($filterId) {
-        $this->filterId = $filterId;
+    public function setId($id) {
+        $this->id = $id;
     }
 
-    public function getFilterId() {
-        return $this->filterId;
+    public function getId() {
+        return $this->id;
     }
 
     public function setIsMultiple($isMultiple) {

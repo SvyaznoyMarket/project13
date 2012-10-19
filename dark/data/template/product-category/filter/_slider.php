@@ -16,8 +16,8 @@
 
 <dd style="display: <?= $isOpened ? 'block' : 'none' ?>;">
     <div class="bSlide">
-        <input type="hidden" name="<?= $formName ?>[<?= $filter->getFilterId() ?>][from]" value="<?= $page->helper->clearZeroValue($productFilter->getValueMin($filter)) ?>" id="f_<?= $filter->getFilterId()?>_from"/>
-        <input type="hidden" name="<?= $formName ?>[<?= $filter->getFilterId() ?>][to]" value="<?= $page->helper->clearZeroValue($productFilter->getValueMax($filter)) ?>" id="f_<?= $filter->getFilterId()?>_to"/>
+        <input type="hidden" name="<?= $formName ?>[<?= $filter->getId() ?>][from]" value="<?= $page->helper->clearZeroValue($productFilter->getValueMin($filter)) ?>" id="f_<?= $filter->getId()?>_from"/>
+        <input type="hidden" name="<?= $formName ?>[<?= $filter->getId() ?>][to]" value="<?= $page->helper->clearZeroValue($productFilter->getValueMax($filter)) ?>" id="f_<?= $filter->getId()?>_to"/>
 
         <div class="sliderbox">
             <div id="slider-<?= uniqid()?>" class="filter-range"></div>
@@ -27,7 +27,7 @@
             <input class="slider-to" type="hidden" disabled="disabled" value="<?= $page->helper->clearZeroValue($filter->getMax())?>"/>
             <span class="slider-interval"></span>
 
-            <?if ($filter->getFilterId() == 'price') { ?>
+            <?if ($filter->getId() == 'price') { ?>
                 <span class="rubl">p</span>
             <? } else { ?>
                 <?= $filter->getUnit() ?>
