@@ -108,6 +108,8 @@ class AppConfig {
         'itemsInCategorySlider' => 3,
         'minCreditPrice'        => 3000,
         'totalCount'            => 30000,
+        // глобальный (без учета региона) список товаров
+        'globalListEnabled'     => false,
     );
 
     /** @var array */

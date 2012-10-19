@@ -38,9 +38,11 @@ $globalTotalText = $page->helper->formatNumberChoice($textTemplate, array('%coun
 
 <div class="catProductNum">
     <b>В <?= $regionInflectedName ?> <?= $totalText ?></b>
-    <br />
-    Всего в категории <?= $globalTotalText ?>
-    <a href="<?= $page->helper->replacedUrl(array('global' => $isGlobal ? null : 1)) ?>"><?= ($isGlobal ? ('показать товары в ' . $regionInflectedName) : 'показать все товары') ?></a>
+    <? if (\App::config()->product['globalListEnabled']): ?>
+        <br />
+        Всего в категории <?= $globalTotalText ?>
+        <a href="<?= $page->helper->replacedUrl(array('global' => $isGlobal ? null : 1)) ?>"><?= ($isGlobal ? ('показать товары в ' . $regionInflectedName) : 'показать все товары') ?></a>
+    <? endif ?>
 </div>
 
 <div class="line pb10"></div>
