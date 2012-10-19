@@ -205,10 +205,9 @@
   <ul class="previewlist">
     <?php foreach ($photoList as $photo): ?>
     <li class="viewstock" ref="photo<?php echo $photo->getId() ?>">
-      <b>
-        <a href="<?php echo $photo->getUrl(4) ?>" class="viewme" ref="image"></a>
-      </b>
-      <img src="<?php echo $photo->getUrl(2) ?>" alt="" width="48" height="48" />
+    	<a href="<?php echo $photo->getUrl(4) ?>" class="viewme" ref="image">
+    		<img src="<?php echo $photo->getUrl(2) ?>" alt="" width="48" height="48" />
+    	</a>
     </li>
     <?php endforeach ?>
     <?php if (count($photo3dList) > 0): ?>
@@ -335,7 +334,11 @@
       <h2>Фото:</h2>
       <ul class="previewlist">
         <?php foreach ($photoList as $photo): ?>
-        <li class="viewstock" ref="photo<?php echo $photo->getId() ?>"><b><a href="<?php echo $photo->getUrl(4) ?>" class="viewme" ref="image" id="try-3"></a></b><img src="<?php echo $photo->getUrl(2) ?>" alt="" width="48" height="48" /></li>
+        <li class="viewstock" ref="photo<?php echo $photo->getId() ?>">
+        	<a href="<?php echo $photo->getUrl(4) ?>" class="viewme" ref="image" id="try-3">
+        		<img src="<?php echo $photo->getUrl(2) ?>" alt="" width="48" height="48" />
+        	</a>
+        </li>
         <?php endforeach ?>
         <?php if (count($photo3dList) > 0): ?>
         <li><a href="#" class="axonometric viewme" ref="360" title="Объемное изображение">Объемное изображение</a></li>

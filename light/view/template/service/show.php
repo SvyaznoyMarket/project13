@@ -4,7 +4,7 @@
  */
 $json = array(
     'jsref' => $service->getToken(),
-    'jsimg' => $service->getMediaImageUrl(2),
+    'jsimg' => $service->getMediaImage() ? $service->getMediaImageUrl(2) : '/images/f1infobig.png',
     'jstitle' => $service->getName(),
     'jsprice' => number_format($service->getPrice(), 0, ',', ' '),
 );

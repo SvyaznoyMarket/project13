@@ -1,4 +1,27 @@
-$(document).ready(function () {    
+$(document).ready(function () {
+	// sertificate
+	if ($('.orderFinal__certificate').length){
+		var number = $(".cardNumber"),
+			pin	= $(".cardPin"),
+			form = $(".orderFinal__certificate form"),
+			button = $('#sendCard');
+		var orange = {typeNum:'orange',text:'Проверка данных'},
+			red = {typeNum:'red',text:'Произошла ошибка'}
+		var checkCard = function(){
+			if ((number.val()!=='')&&(pin.val()!=='')){
+				button.removeClass('mDisabled');
+			}
+		}	
+		number.mask("9999 9999 9999 99", { completed:checkCard, placeholder: "*", maxlength: 14 } )
+		pin.mask("9999", { completed:checkCard, placeholder: "*", maxlength: 4 } )
+		button.bind('click',function(){
+			if ($(this).hasClass('mDisabled')) return false;
+			console.log(orange)
+			form.after(tmpl('processBlock', {typeNum:'orange',text:'Проверка данных'}))
+			return false;
+		})
+	}
+	
     $('.auth-link').bind('click', function (e) {
         e.preventDefault()
 
@@ -27,7 +50,7 @@ $(document).ready(function () {
             }
         })
     }) 
-    ;   
+    ;
     ( function () {
         if (!$('#product_errors').length) return;
 
@@ -205,6 +228,5 @@ $(document).ready(function () {
         })
         
     }
-
 
 });

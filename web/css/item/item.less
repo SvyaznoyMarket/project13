@@ -164,20 +164,21 @@
     position: relative;
     width: 48px;
   }
-  b {
+  a {
     border: 2px solid @typLightGray;
     .rounded(7px);
     display: block;
-    height: 47px;
-    left: -1px;
-    position: absolute;
-    top: -1px;
-    width: 47px;
+    height: 44px;
+    overflow: hidden;
+    width: 44px;
     z-index: 1;
     &:hover,
     &.current{
       border: 2px solid @firmOrange;
       cursor: pointer;
+    }
+    img{
+      margin:-2px;
     }
   }
   

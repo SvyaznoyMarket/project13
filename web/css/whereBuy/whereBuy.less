@@ -1,0 +1,248 @@
+.bInShop__eBottom .bMapShops__eMapWrap,
+.bFast .bMapShops__eMapWrap {
+  .inner-shadow(0px, 0px,5px, #777);
+  border: 1px solid #c7c7c7;
+  float: right;
+  height: 550px;
+  overflow: hidden;
+  position: relative;
+  width: 660px;
+}
+.bInShop {
+  border: 1px solid #e6e6e6;
+  clear: both;
+  width: 100%;
+}
+.bInShop__eNoTime {
+  color: #000;
+  font-size: 16px;
+  padding-top: 20px;
+  a {
+    text-decoration: underline;
+  }
+}
+.bInShop__eNoTime 
+.bInShop__eMap h2 {
+  font-size: 12px;
+}
+.bInShop__eMap .bigmark div {
+  line-height: 1;
+}
+.bInShop__eTop table {
+  width: 100%;
+}
+.bInShop__eTop td {
+  padding-bottom: 20px;
+  padding-top: 20px;
+}
+.bInShop__eItemInfo {
+  color: #434343;
+  font: 14px Tahoma, sans-serif;
+  width: 35%;
+  div {
+    font-size: 16px;
+    padding: 0px 0px 0px 10px;
+  }
+  h3 {
+    font-size: 16px;
+    margin: 0px;
+    padding: 0px 0px 10px;
+    b {
+      padding-left: 15px;
+    }
+  }
+}
+.bInShop__eSelectors {
+  color: #434343;
+  text-align: justify;
+  width: 39%;
+}
+.bInShop__eSelectorsWrap {
+  display: inline-block;
+  font-size: 16px;
+  margin: 0px 10px;
+}
+.bInShopLine div {
+  display: inline-block;
+  *display: inline;
+  vertical-align: top;
+  zoom: 1;
+}
+.bInShop__eSelectorsLong {
+  display: inline-block;
+  *display: inline;
+  height: 1px;
+  vertical-align: top;
+  width: 95%;
+  zoom: 1;
+}
+.bInShop__eSelectorsWrap .bSelectors,
+.bInShop__eSelectorsWrap .bGrayButton {
+  margin: 10px 0px;
+}
+.bSelectors {
+  .rounded(5px);
+  background: #f4f4f4;
+  border: 1px solid #ddd;
+  color: #4b4b4b;
+  display: inline-block;
+  *display: inline;
+  font-size: 16px;
+  padding: 2px;
+  zoom: 1;
+}
+.bSelectors a {
+  color: #434343;
+  display: inline-block;
+  *display: inline;
+  padding: 4px 13px;
+  zoom: 1;
+}
+.bSelectors a.mChecked {
+  .rounded(5px);
+  color: #fff;
+  &.mOrange {
+    background: @firmOrange;
+  }
+  &.mGreen {
+    background: #c1d837;
+  }
+  &.mBlue {
+    background: @firmBlue;
+  }
+}
+.bSelectors a:hover {
+  text-decoration: none;
+}
+.bInShopLine__eCount {
+  width: 150px;
+  &.mInF {
+    padding-left: 56px;
+  }
+}
+.bInShopLine__eCount i,
+.bInShopLine__eCount span {
+  display: inline-block;
+  *display: inline;
+  vertical-align: middle;
+  zoom: 1;
+}
+.bInShopLine__eCount i {
+  height: 12px;
+  padding-left: 10px;
+  width: 42px;
+  &.mIn1 {
+    background: url("@{base-url}/whereBuy/img/in_shop.png") 0px 0px no-repeat;
+  }
+  &.mIn2 {
+    background: url("@{base-url}/whereBuy/img/in_shop.png") 0px -12px no-repeat;
+  }
+  &.mIn3 {
+    background: url("@{base-url}/whereBuy/img/in_shop.png") 0px -24px no-repeat;
+  }
+}
+.bInShopLine__eCount span {
+  color: #000;
+  font: 12px Tahoma, sans-serif;
+}
+.bInShopLine__eButton {
+  text-align: right;
+  width: 217px;
+}
+.bInShop__eSelectors.mLong {
+  padding-left: 50px;
+  width: 66%;
+}
+.bInShop__eItemIcon {
+  text-align: center;
+  width: 25%;
+}
+.bInShop__eItemIcon.mNoArrows .bInShop__eLeftArrow,
+.bInShop__eItemIcon.mNoArrows .bInShop__eRightArrow {
+  background-image: none;
+}
+.bInShop__eLeftArrow,
+.bInShop__eRightArrow {
+  display: inline-block;
+  *display: inline;
+  vertical-align: top;
+  zoom: 1;
+}
+.bInShop__eLeftArrow {
+  background: url("@{base-url}/whereBuy/img/bShopLeftArrow.png") 0px 100% no-repeat;
+}
+.bInShop__eRightArrow {
+  background: url("@{base-url}/whereBuy/img/bShopRightArrow.png") 100% 100% no-repeat;
+  padding: 0px 40px;
+}
+.bInShop__eBottom {
+  border-top: 2px solid #e6e6e6;
+}
+.bInShop__eBottom .bMapShops__eMapWrap {
+  .box-shadow(none);
+  height: 480px;
+  width: 919px;
+}
+.bInShop__eBottom td {
+  min-width: 442px;
+  padding: 0px;
+  vertical-align: top;
+}
+.bInShop__eBottom td .bBigOrangeButton {
+  margin: 0px 20px 20px;
+}
+.bInShop__eBottom h2 {
+  font-size: 26px;
+  margin: 0px;
+  padding: 20px 20px 0px;
+  .mLft {
+    color: #c1d837;
+    font-weight: normal !important;
+  }
+  .mRt {
+    color: @firmBlue;
+    font-style: normal;
+  }
+}
+.bInShop__eListWrap {
+  margin: 20px 0px;
+  max-height: 370px;
+  overflow-y: scroll;
+}
+.bInShop__eList {
+  background: url("@{base-url}/whereBuy/img/bRadio.png") 0px 50% no-repeat;
+  cursor: pointer;
+  margin: 5px 20px;
+  min-height: 30px;
+  padding-left: 40px;
+}
+.bInShop__eList,
+.bInShop__eDescription {
+  display: inline-block;
+  *display: inline;
+  vertical-align: middle;
+  zoom: 1;
+}
+.bInShop__eDescription {
+  color: #434343;
+  font-size: 16px;
+  word-wrap: break-word;
+}
+.bInShop__eList.mChecked {
+  background: url("@{base-url}/whereBuy/img/bRadioChecked.png") 0px 50% no-repeat;
+}
+.bInShop__eList.mChecked .bInShop__eDescription {
+  color: #f99b1c;
+}
+.bInShopError {
+  padding: 15px 20px;
+  text-align: justify;
+}
+.bInShopError h2 {
+  display: inline-block;
+  *display: inline;
+  font-size: 26px;
+  margin: 0px;
+  padding: 0px;
+  zoom: 1;
+}

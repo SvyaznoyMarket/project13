@@ -3579,23 +3579,24 @@
     position: relative;
     width: 48px;
   }
-  .previewlist b {
+  .previewlist a {
     border: 2px solid #e6e6e6;
     -webkit-border-radius: 7px;
     -moz-border-radius: 7px;
     border-radius: 7px;
     display: block;
-    height: 47px;
-    left: -1px;
-    position: absolute;
-    top: -1px;
-    width: 47px;
+    height: 44px;
+    overflow: hidden;
+    width: 44px;
     z-index: 1;
   }
-  .previewlist b:hover,
-  .previewlist b.current {
+  .previewlist a:hover,
+  .previewlist a.current {
     border: 2px solid #ffa901;
     cursor: pointer;
+  }
+  .previewlist a img {
+    margin: -2px;
   }
   .bDropWrap {
     margin: 0px 10px 20px 0px;
@@ -3818,9 +3819,12 @@
     padding: 0px 0px 15px 10px;
     text-align: right;
   }
+  .bSet {
+    margin-bottom: 40px;
+  }
   .bSet__eImage {
-    *display: inline;
     display: inline-block;
+    *display: inline;
     overflow: hidden;
     position: relative;
     vertical-align: top;
@@ -4305,6 +4309,11 @@
     width: 24px;
   }
   .bigcheck input {
+    filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
+    -moz-opacity: 0;
+    -khtml-opacity: 0;
+    -webkit-opacity: 0;
+    opacity: 0;
     position: absolute;
     z-index: -1;
   }
@@ -4982,6 +4991,9 @@
   .orderFinal__certificate input.cardPin {
     width: 90px;
   }
+  .orderFinal__certificate .process {
+    display: none;
+  }
   .orderFinal__certificate .process .img {
     -webkit-border-radius: 7px;
     -moz-border-radius: 7px;
@@ -4991,14 +5003,14 @@
     margin: 0 15px 15px 0;
     float: left;
   }
-  .orderFinal__certificate .process .img.type1 {
+  .orderFinal__certificate .process .img.red {
     background: #d90000 url("/css/order/img/x.gif") no-repeat 50% 50%;
   }
-  .orderFinal__certificate .process .img.type2 {
+  .orderFinal__certificate .process .img.green {
     background: #2db200 url("/css/order/img/green.gif") no-repeat 50% 50%;
   }
-  .orderFinal__certificate .process .img.type3 {
-    background: #ffa901 url("/css/order/img/ajar.gif") no-repeat 55% 50%;
+  .orderFinal__certificate .process .img.orange {
+    background: #ffa901 url("/css/order/img/ajar.gif") no-repeat 50% 50%;
   }
   .orderFinal__certificate .process p {
     font-size: 18px;
@@ -5006,6 +5018,265 @@
   }
 }
 /*---END---СТИЛИ ОФОРМЛЕНИЯ ЗАКАЗА---*/
+/*-------СТИЛИ СТРАНИЦЫ ГДЕ КУПИТЬ-----*/
+@media all {
+  .bInShop__eBottom .bMapShops__eMapWrap,
+  .bFast .bMapShops__eMapWrap {
+    -webkit-box-shadow: inset 0px 0px 5px #777777;
+    -moz-box-shadow: inset 0px 0px 5px #777777;
+    box-shadow: inset 0px 0px 5px #777777;
+    border: 1px solid #c7c7c7;
+    float: right;
+    height: 550px;
+    overflow: hidden;
+    position: relative;
+    width: 660px;
+  }
+  .bInShop {
+    border: 1px solid #e6e6e6;
+    clear: both;
+    width: 100%;
+  }
+  .bInShop__eNoTime {
+    color: #000;
+    font-size: 16px;
+    padding-top: 20px;
+  }
+  .bInShop__eNoTime a {
+    text-decoration: underline;
+  }
+  .bInShop__eNoTime.bInShop__eMap h2 {
+    font-size: 12px;
+  }
+  .bInShop__eMap .bigmark div {
+    line-height: 1;
+  }
+  .bInShop__eTop table {
+    width: 100%;
+  }
+  .bInShop__eTop td {
+    padding-bottom: 20px;
+    padding-top: 20px;
+  }
+  .bInShop__eItemInfo {
+    color: #434343;
+    font: 14px Tahoma, sans-serif;
+    width: 35%;
+  }
+  .bInShop__eItemInfo div {
+    font-size: 16px;
+    padding: 0px 0px 0px 10px;
+  }
+  .bInShop__eItemInfo h3 {
+    font-size: 16px;
+    margin: 0px;
+    padding: 0px 0px 10px;
+  }
+  .bInShop__eItemInfo h3 b {
+    padding-left: 15px;
+  }
+  .bInShop__eSelectors {
+    color: #434343;
+    text-align: justify;
+    width: 39%;
+  }
+  .bInShop__eSelectorsWrap {
+    display: inline-block;
+    font-size: 16px;
+    margin: 0px 10px;
+  }
+  .bInShopLine div {
+    display: inline-block;
+    *display: inline;
+    vertical-align: top;
+    zoom: 1;
+  }
+  .bInShop__eSelectorsLong {
+    display: inline-block;
+    *display: inline;
+    height: 1px;
+    vertical-align: top;
+    width: 95%;
+    zoom: 1;
+  }
+  .bInShop__eSelectorsWrap .bSelectors,
+  .bInShop__eSelectorsWrap .bGrayButton {
+    margin: 10px 0px;
+  }
+  .bSelectors {
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    background: #f4f4f4;
+    border: 1px solid #ddd;
+    color: #4b4b4b;
+    display: inline-block;
+    *display: inline;
+    font-size: 16px;
+    padding: 2px;
+    zoom: 1;
+  }
+  .bSelectors a {
+    color: #434343;
+    display: inline-block;
+    *display: inline;
+    padding: 4px 13px;
+    zoom: 1;
+  }
+  .bSelectors a.mChecked {
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    color: #fff;
+  }
+  .bSelectors a.mChecked.mOrange {
+    background: #ffa901;
+  }
+  .bSelectors a.mChecked.mGreen {
+    background: #c1d837;
+  }
+  .bSelectors a.mChecked.mBlue {
+    background: #4fcbf4;
+  }
+  .bSelectors a:hover {
+    text-decoration: none;
+  }
+  .bInShopLine__eCount {
+    width: 150px;
+  }
+  .bInShopLine__eCount.mInF {
+    padding-left: 56px;
+  }
+  .bInShopLine__eCount i,
+  .bInShopLine__eCount span {
+    display: inline-block;
+    *display: inline;
+    vertical-align: middle;
+    zoom: 1;
+  }
+  .bInShopLine__eCount i {
+    height: 12px;
+    padding-left: 10px;
+    width: 42px;
+  }
+  .bInShopLine__eCount i.mIn1 {
+    background: url("/css/whereBuy/img/in_shop.png") 0px 0px no-repeat;
+  }
+  .bInShopLine__eCount i.mIn2 {
+    background: url("/css/whereBuy/img/in_shop.png") 0px -12px no-repeat;
+  }
+  .bInShopLine__eCount i.mIn3 {
+    background: url("/css/whereBuy/img/in_shop.png") 0px -24px no-repeat;
+  }
+  .bInShopLine__eCount span {
+    color: #000;
+    font: 12px Tahoma, sans-serif;
+  }
+  .bInShopLine__eButton {
+    text-align: right;
+    width: 217px;
+  }
+  .bInShop__eSelectors.mLong {
+    padding-left: 50px;
+    width: 66%;
+  }
+  .bInShop__eItemIcon {
+    text-align: center;
+    width: 25%;
+  }
+  .bInShop__eItemIcon.mNoArrows .bInShop__eLeftArrow,
+  .bInShop__eItemIcon.mNoArrows .bInShop__eRightArrow {
+    background-image: none;
+  }
+  .bInShop__eLeftArrow,
+  .bInShop__eRightArrow {
+    display: inline-block;
+    *display: inline;
+    vertical-align: top;
+    zoom: 1;
+  }
+  .bInShop__eLeftArrow {
+    background: url("/css/whereBuy/img/bShopLeftArrow.png") 0px 100% no-repeat;
+  }
+  .bInShop__eRightArrow {
+    background: url("/css/whereBuy/img/bShopRightArrow.png") 100% 100% no-repeat;
+    padding: 0px 40px;
+  }
+  .bInShop__eBottom {
+    border-top: 2px solid #e6e6e6;
+  }
+  .bInShop__eBottom .bMapShops__eMapWrap {
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    height: 480px;
+    width: 919px;
+  }
+  .bInShop__eBottom td {
+    min-width: 442px;
+    padding: 0px;
+    vertical-align: top;
+  }
+  .bInShop__eBottom td .bBigOrangeButton {
+    margin: 0px 20px 20px;
+  }
+  .bInShop__eBottom h2 {
+    font-size: 26px;
+    margin: 0px;
+    padding: 20px 20px 0px;
+  }
+  .bInShop__eBottom h2 .mLft {
+    color: #c1d837;
+    font-weight: normal !important;
+  }
+  .bInShop__eBottom h2 .mRt {
+    color: #4fcbf4;
+    font-style: normal;
+  }
+  .bInShop__eListWrap {
+    margin: 20px 0px;
+    max-height: 370px;
+    overflow-y: scroll;
+  }
+  .bInShop__eList {
+    background: url("/css/whereBuy/img/bRadio.png") 0px 50% no-repeat;
+    cursor: pointer;
+    margin: 5px 20px;
+    min-height: 30px;
+    padding-left: 40px;
+  }
+  .bInShop__eList,
+  .bInShop__eDescription {
+    display: inline-block;
+    *display: inline;
+    vertical-align: middle;
+    zoom: 1;
+  }
+  .bInShop__eDescription {
+    color: #434343;
+    font-size: 16px;
+    word-wrap: break-word;
+  }
+  .bInShop__eList.mChecked {
+    background: url("/css/whereBuy/img/bRadioChecked.png") 0px 50% no-repeat;
+  }
+  .bInShop__eList.mChecked .bInShop__eDescription {
+    color: #f99b1c;
+  }
+  .bInShopError {
+    padding: 15px 20px;
+    text-align: justify;
+  }
+  .bInShopError h2 {
+    display: inline-block;
+    *display: inline;
+    font-size: 26px;
+    margin: 0px;
+    padding: 0px;
+    zoom: 1;
+  }
+}
+/*---END---СТИЛИ СТРАНИЦЫ ГДЕ КУПИТЬ---*/
 /*-------СТИЛИ ОКНА С КАРТОЙ МАГАЗИНОВ-----*/
 @media all {
   .mMapPopup .bMobDownWrapRel {
@@ -5888,32 +6159,8 @@
     width: 100%;
     z-index: 1003;
   }
-  #bigpopup .previewlist .viewstock b {
-    border: 2px solid #e6e6e6;
-    -webkit-border-radius: 7px;
-    -moz-border-radius: 7px;
-    border-radius: 7px;
-    display: block;
-    height: 48px;
-    left: -2px;
-    position: absolute;
-    top: -2px;
-    width: 48px;
-    z-index: 1;
-  }
-  #bigpopup .previewlist b:hover,
-  .previewlist b.current {
-    border: 2px solid #ffa901;
-  }
   .previewlist .axonometric {
     background: url("/css/bigPopup/img/bigPopupSprite.png") no-repeat -30px -72px;
-  }
-  .previewlist a {
-    cursor: pointer;
-    display: block;
-    height: 48px;
-    text-indent: -10000px;
-    width: 48px;
   }
   .scrollbox {
     background: url("/css/bigPopup/img/bigPopupSprite.png") no-repeat 0px 0px;
