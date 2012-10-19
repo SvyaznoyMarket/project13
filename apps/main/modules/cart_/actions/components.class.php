@@ -94,7 +94,7 @@ class cart_Components extends myComponents
           'price' => $product->getPrice(),
           'priceFormatted' =>  number_format($product->getPrice(), 0, ',', ' '),
           'total' => number_format($cartInfo->getTotalPrice(), 0, ',', ' '),
-          'photo' => $product->getMediaImageUrl(1),
+          'photo' => $product->getMediaImageUrl(1) ,
           'fullObject' => $product,
           'availableForPurchase' => (!$cartInfo->hasError()),
           'credit_data_type' =>CreditBankRepository::getCreditTypeByCategoryToken($rootCategoryToken),
@@ -136,7 +136,7 @@ class cart_Components extends myComponents
             'price'     => $serviceCoreInfo->getPrice(),
             'total'     => number_format($prodServInfo->getTotalPrice(), 0, ',', ' '),
             'priceFormatted'  => number_format($serviceCoreInfo->getPrice(), 0, ',', ' '),
-            'photo' => $urlsService[2] . $serviceCoreInfo->getMediaImage(),
+            'photo' => $serviceCoreInfo->getMediaImage() ? ($urlsService[2] . $serviceCoreInfo->getMediaImage()) : '/images/f1infobig.png',
             'availableForPurchase' => (!$prodServInfo->hasError()),
           );
         }
