@@ -14,5 +14,7 @@ class LiveConfig extends \AppConfig {
 
         $this->googleAnalytics['enabled'] = true;
         $this->yandexMetrika['enabled'] = true;
+
+        $this->product['globalListEnabled'] = false;
     }
 }

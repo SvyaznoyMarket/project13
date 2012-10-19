@@ -93,7 +93,7 @@ return array(
     ),
     // карточка линии товара
     'product.line' => array(
-        'pattern' => '/line/{lineId}',
+        'pattern' => '/line/{lineToken}',
         'action'  => array('Product\LineAction', 'execute'),
     ),
     // расчет доставки товара

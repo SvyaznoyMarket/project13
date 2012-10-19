@@ -270,7 +270,12 @@ class Action {
         $filters = \RepositoryManager::getProductFilter()->getCollectionByCategory($category);
         $productFilter = new \Model\Product\Filter($filters);
         $productFilter->setCategory($category);
-        $productFilter->setValues($request->get(\View\Product\FilterForm::$name, array()));
+        // filter values
+        $values = $request->get(\View\Product\FilterForm::$name, array());
+        if ($request->get('global', 0)) {
+            $values['global'] = 1;
+        }
+        $productFilter->setValues($values);
 
         return $productFilter;
     }
