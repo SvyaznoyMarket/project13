@@ -977,7 +977,7 @@ class order_Actions extends myActions
         $itemView->id = $coreData['id'];
         $itemView->name = $coreData['name'].$serviceName;
         //$itemView->image = ProductTable::getInstance()->getMainPhotoUrl($recordData, 0);
-        $itemView->image = $coreData['media_image'];
+        $itemView->image = 'product' == $itemType ? $coreData['media_image'] : ($coreData['media_image'] ? $coreData['media_image'] : '/images/f1info.png');
         $itemView->price = $coreData['price'];
         $itemView->quantity = $cartData['quantity'];
         $itemView->total = ($cartData['price'] * $cartData['quantity']) + $serviceTotal;
