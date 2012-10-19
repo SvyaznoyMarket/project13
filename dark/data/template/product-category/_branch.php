@@ -7,6 +7,13 @@
 ?>
 
 <?php
+// флаг: показывать все товары в категории
+$isGlobal = \App::request()->get('global', 0) ? true : false;
+
+// название региона в предложном падеже
+$regionInflectedName = $user->getRegion()->getInflectedName(5);
+
+// список категорий
 $categories = $category->getAncestor();
 // включить в список категорию, если она не рутовая (root) и внутренняя (inner)
 if (!$category->isRoot() && $category->isBranch()) {
@@ -30,10 +37,10 @@ $globalTotalText = $page->helper->formatNumberChoice($textTemplate, array('%coun
 ?>
 
 <div class="catProductNum">
-    <b>В <?= $user->getRegion()->getInflectedName(5) ?> <?= $totalText ?></b>
+    <b>В <?= $regionInflectedName ?> <?= $totalText ?></b>
     <br />
     Всего в категории <?= $globalTotalText ?>
-    <a href="<?= $page->helper->replacedUrl(array('global' => 1)) ?>">показать все товары</a>
+    <a href="<?= $page->helper->replacedUrl(array('global' => $isGlobal ? null : 1)) ?>"><?= ($isGlobal ? ('показать товары в ' . $regionInflectedName) : 'показать все товары') ?></a>
 </div>
 
 <div class="line pb10"></div>

@@ -67,6 +67,10 @@ class Filter {
             $return[] = array('category', 1, $this->category->getId());
         }
 
+        if (array_key_exists('global', $this->values) && $this->values['global']) {
+            $return[] = array('is_global_buyable', 1, 1);
+        }
+
         return $return;
     }
 
