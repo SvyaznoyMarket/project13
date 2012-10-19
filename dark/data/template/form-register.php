@@ -1,12 +1,13 @@
 <?php
 /**
  * @var $page     \View\Layout
+ * @var $request  \Http\Request
  * @var $redirect string
  */
 ?>
 
 <?php
-if (empty($redirect)) $redirect = \App::request()->getRequestUri();
+if (empty($redirect)) $redirect = $request->getRequestUri();
 if (!isset($form)) $form = new \View\User\RegistrationForm();
 ?>
 

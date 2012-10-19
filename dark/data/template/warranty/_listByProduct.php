@@ -1,11 +1,10 @@
 <?php
 /**
  * @var $page    \View\Layout
+ * @var $user    \Session\User
  * @var $product \Model\Product\Entity
  * @var $user    \Session\User
  */
-
-$user = \App::user();
 ?>
 
 <?php if (\App::config()->warranty['enabled']) { ?>

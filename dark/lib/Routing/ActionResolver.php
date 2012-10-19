@@ -7,7 +7,7 @@ use Http\Request;
 class ActionResolver {
     public function getCall(Request $request) {
         if (!is_array($request->attributes->get('action'))) {
-            throw new \Exception\NotFoundException('Не найдено действие.');
+            throw new \Exception\NotFoundException('Запрос не содержит действия');
         }
 
         list ($actionName, $actionMethod) = $request->attributes->get('action');

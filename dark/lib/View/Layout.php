@@ -64,6 +64,7 @@ class Layout {
     final public function render($template, array $params = array()) {
         $params['page'] = $this;
         $params['user'] = \App::user();
+        $params['request'] = \App::request();
 
         return $this->engine->render($template, $params);
     }

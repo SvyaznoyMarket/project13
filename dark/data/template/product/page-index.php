@@ -430,10 +430,9 @@
 <noindex>
     <div class="pb25">
         <strong>Теги:</strong>
-<?php foreach ($product->getTag() as $i => $tag):?>
-<?php //echo ($i ? ', ' : '').'<a href="'.$page->url('tag', array('tagToken' => $tag->getToken())).'" class="underline" rel="nofollow">'.$tag->getName().'</a>' ?>
-<?php echo ($i ? ', ' : '').$tag->getName() ?>
-<?php endforeach ?>
+        <?php $i = 0; $count = count($product->getTag()); foreach ($product->getTag() as $tag): $i++ ?>
+            <a href="<?= $page->url('tag', array('tagToken' => $tag->getToken())) ?>" class="underline" rel="nofollow"><?= $tag->getName() ?></a><? if ($i < $count) echo ', ' ?>
+        <?php endforeach ?>
     </div>
 </noindex>
 <?php endif ?>
