@@ -232,9 +232,9 @@
             <ul class="previewlist">
                 <?php foreach ($property->getOption() as $option): ?>
                 <li>
-                    <b<?php echo ($product->getId() == $option->getProduct()->getId()) ? ' class="current"' : '' ?> title="<?php echo $option->getHumanizedName() ?>"><a
-                        href="<?php echo $option->getProduct()->getLink() ?>"></a></b>
-                    <img src="<?php echo $option->getProduct()->getImageUrl(1) ?>" alt="<?php echo $option->getHumanizedName() ?>" width="48" height="48"/>
+                    <a href="<?php echo $option->getProduct()->getLink() ?>" <?php echo ($product->getId() == $option->getProduct()->getId()) ? ' class="current"' : '' ?> title="<?php echo $option->getHumanizedName() ?>">
+                    	<img src="<?php echo $option->getProduct()->getImageUrl(1) ?>" alt="<?php echo $option->getHumanizedName() ?>" width="48" height="48"/>
+                    </a>
                 </li>
                 <?php endforeach ?>
             </ul>
