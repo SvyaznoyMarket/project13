@@ -2270,14 +2270,6 @@
     margin-right: 25px;
     text-decoration: underline;
   }
-  /*.mistakeimg {
-    background: url("@{base-url}/common/img/bg_inner.png") no-repeat 0px -158px;
-    display: inline-block;
-    height: 17px;
-    margin: -8px 5px 0px 0px;
-    vertical-align: middle;
-    width: 92px;
-  }*/
   /* footer default */
   .footer {
     height: 438px;
@@ -3988,7 +3980,7 @@
     width: 54px;
   }
   .avatar b {
-    background: url("/css/skin/img/avatar_cover.png") no-repeat 0px 0px;
+    background: url("/css/item/img/avatar_cover.png") no-repeat 0px 0px;
     display: block;
     height: 54px;
     left: 0px;
@@ -4014,7 +4006,7 @@
     width: 195px;
   }
   .real {
-    background: #f4f4f4 url("/css/common/img/bg_inner.png") no-repeat -432px -284px;
+    background: #f4f4f4 url("/css/item/img/real_bg.gif") no-repeat 0px 0px;
     float: right;
     height: 54px;
     margin-bottom: 5px;
@@ -5602,7 +5594,8 @@
   }
 }
 /*---END---СТИЛИ СТРАНИЦЫ МАГАЗИНА---*/
-/*-------СТИЛИ СТРАНИЦЫ О КОМПАНИИ-----*/
+/*-------СТИЛИ СТРАНИЦ WORDPRESS-----*/
+/*страница о компании*/
 @media all {
   .bAbout {
     width: 685px;
@@ -5646,8 +5639,7 @@
     zoom: 1;
   }
 }
-/*---END---СТИЛИ СТРАНИЦЫ О КОМПАНИИ---*/
-/*-------СТИЛИ СТРАНИЦЫ ЦСИ-----*/
+/*страница центра стратегических исследований*/
 @media all {
   .bLInfo__eP,
   .bLInfo__eH2 {
@@ -5663,8 +5655,7 @@
     margin: 13px 0px 22px;
   }
 }
-/*---END---СТИЛИ СТРАНИЦЫ ЦСИ---*/
-/*-------СТИЛИ СТРАНИЦЫ КРЕДИТОВ-----*/
+/*страница с кредитами*/
 @media all {
   .bF1Credit {
     position: relative;
@@ -5829,8 +5820,7 @@
     width: 550px;
   }
 }
-/*---END---СТИЛИ СТРАНИЦЫ КРЕДИТОВ---*/
-/*-------СТИЛИ СТРАНИЦЫ ВАРИАНТОВ ДОСТАВКИ-----*/
+/*страница с вариантами доставки*/
 @media all {
   .bNewDelivery h2 {
     font-size: 16px;
@@ -5879,11 +5869,10 @@
     text-decoration: underline;
   }
 }
-/*---END---СТИЛИ СТРАНИЦЫ ВАРИАНТОВ ДОСТАВКИ---*/
-/*-------СТИЛИ СТРАНИЦЫ МОБИЛЬНЫХ ПРИЛОЖЕНИЙ-----*/
+/*страница мобильных приложений*/
 @media all {
   .bMobileApps__eHead {
-    background: url("/css/mobliPage/img/mob_head.png") no-repeat;
+    background: url("/css/wordpress/img/mob_head.png") no-repeat;
     height: 224px;
     margin-bottom: 35px;
     width: 920px;
@@ -5938,7 +5927,7 @@
     text-align: center;
   }
   .bMobileCard__eImg div {
-    background: url("/css/mobliPage/img/cs.png") no-repeat;
+    background: url("/css/wordpress/img/cs.png") no-repeat;
     display: none;
     height: 58px;
     left: 25px;
@@ -5947,7 +5936,7 @@
     width: 90px;
   }
   .bMobileCard__eLink {
-    background: url("/css/mobliPage/img/c.png") 0px 50% no-repeat;
+    background: url("/css/wordpress/img/c.png") 0px 50% no-repeat;
     display: inline-block;
     *display: inline;
     margin: 10px 0px 0px 20px;
@@ -5979,8 +5968,7 @@
     position: relative;
   }
 }
-/*---END---СТИЛИ СТРАНИЦЫ МОБИЛЬНЫХ ПРИЛОЖЕНИЙ---*/
-/*-------СТИЛИ СТРАНИЦЫ ВАРИАНТОВ ОПЛАТЫ-----*/
+/*страница вариантов оплаты*/
 @media all {
   .bPayment {
     color: #434343;
@@ -6002,25 +5990,25 @@
     text-decoration: underline;
   }
   .bPayment__ePay1 {
-    background: url("/css/paymentPage/img/bPay1.png") 0px 50% no-repeat;
+    background: url("/css/wordpress/img/bPay1.png") 0px 50% no-repeat;
     line-height: 39px !important;
     min-height: 39px;
     padding-left: 50px !important;
   }
   .bPayment__ePay2 {
-    background: url("/css/paymentPage/img/bPay2.png") 0px 50% no-repeat;
+    background: url("/css/wordpress/img/bPay2.png") 0px 50% no-repeat;
     line-height: 33px !important;
     min-height: 33px;
     padding-left: 55px !important;
   }
   .bPayment__ePay3 {
-    background: url("/css/paymentPage/img/bPay3.png") 0px 50% no-repeat;
+    background: url("/css/wordpress/img/bPay3.png") 0px 50% no-repeat;
     line-height: 41px !important;
     min-height: 41px;
     padding-left: 43px !important;
   }
 }
-/*---END---СТИЛИ СТРАНИЦЫ ВАРИАНТОВ ОПЛАТЫ---*/
+/*---END---СТИЛИ СТРАНИЦ WORDPRESS---*/
 /*-------СТИЛИ СТРАНИЦЫ F1-----*/
 @media all {
   .servicebanner {
@@ -6231,8 +6219,6 @@
     width: 54px;
   }
   .zoom {
-    /*background: url("/css/common/img/bg_inner.png") no-repeat -117px -158px;*/
-  
     cursor: pointer;
     height: 25px;
     margin-bottom: 30px;
