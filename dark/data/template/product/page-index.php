@@ -156,15 +156,6 @@
   <input data-model="<?php echo $page->escape($dataForCredit['creditData']) ?>" id="dc_buy_on_credit_<?php echo $product->getArticle(); ?>" name="dc_buy_on_credit" type="hidden" />
   <?php endif; ?>
 
-  <div class="bDeliver2 delivery-info" id="product-id-<?php echo $product->getId() ?>" data-shoplink="<?php echo $product->getLink().'/stock' ?>" data-calclink="<?php echo $page->url('product.delivery', array('productId' => $product->getId())) ?>">
-    <h4>Как получить заказ?</h4>
-    <ul>
-      <li>
-        <h5>Идет расчет условий доставки...</h5>
-      </li>
-    </ul>
-  </div>
-
   <?php else: ?>
     <?php if (\App::config()->product['globalListEnabled'] && (bool)$product->getNearestCity()): ?>
         <div class="otherRegion">
@@ -184,6 +175,15 @@
         <div class="line pb15"></div>
         <?php endif ?>
   <?php endif ?>
+
+  <div class="bDeliver2 delivery-info" id="product-id-<?php echo $product->getId() ?>" data-shoplink="<?php echo $product->getLink().'/stock' ?>" data-calclink="<?php echo $page->url('product.delivery', array('productId' => $product->getId())) ?>">
+    <h4>Как получить заказ?</h4>
+    <ul>
+      <li>
+        <h5>Идет расчет условий доставки...</h5>
+      </li>
+    </ul>
+  </div>
 
   <div style="margin-bottom: 20px;">
     <div class="adfoxWrapper" id="<?php echo $adfox_id_by_label ?>"></div>
