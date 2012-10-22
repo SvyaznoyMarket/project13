@@ -43,31 +43,23 @@
 	</dd>
 </dl>
 
-<div class='bMobDownWrapAbs mMapPopup hidden'>
-  <div class='bMobDownWrapRel'>
-
-    <div class='bMobDown mBR5 mW2'>
-      <div class='bMobDown__eWrap'>
-        <div class='bMobDown__eClose close'></div>
-        <div class='bMapShops__eMapWrap' id="mapPopup" style="float: right;">
-        </div>
-        <div class='bMapShops__eList'>
-          <h3>Выберите магазин Enter для самовывоза</h3>
-          <ul id="mapPopup_shopInfo">
-          	<!-- ko foreach: shopsInPopup -->
-          	<li data-bind="attr: {ref: id}, click: $root.selectShop ">
-				<div class="bMapShops__eListNum"><img src="/images/shop.png" alt=""/></div>
-				<div data-bind="text: name"></div>
-				<span>Работаем</span> <span data-bind="text: regime"></span>
-			</li> 
-			<!-- /ko -->
-          </ul>
-        </div>
-      </div>
+  <div id="orderMapPopup" class='popup'>
+    <i class='close'></i>
+    <div class='bMapShops__eMapWrap' id="mapPopup" style="float: right;">
     </div>
-
+    <div class='bMapShops__eList'>
+      <h3>Выберите магазин Enter для самовывоза</h3>
+      <ul id="mapPopup_shopInfo">
+      	<!-- ko foreach: shopsInPopup -->
+      	<li data-bind="attr: {ref: id}, click: $root.selectShop ">
+			<div class="bMapShops__eListNum"><img src="/images/shop.png" alt=""/></div>
+			<div data-bind="text: name"></div>
+			<span>Работаем</span> <span data-bind="text: regime"></span>
+		</li> 
+		<!-- /ko -->
+      </ul>
+    </div>
   </div>
-</div>
 
 <div data-bind="style: { display: $root.stolenItems().length > 0 ? 'block' : 'none' }" class="hf">
 	<div class='bMobDownWrapAbs customalign'>
