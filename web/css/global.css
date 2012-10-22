@@ -2604,7 +2604,7 @@
     padding: 11px 0px 3px;
   }
   .catProductNum a {
-    background: url("/css/leftNav/img/leftNavSprite.png") no-repeat scroll -38px 8px;
+    background: url("/css/leftNav/img/leftNavSprite.png") no-repeat scroll -38px 1px;
     color: #ffa901;
     display: block;
     font-size: 14px;
