@@ -587,9 +587,6 @@
     border-color: #e4e4e4;
     color: #a6a6a6;
   }
-  .popupbox {
-    padding: 20px 20px 30px;
-  }
   .pouptitle {
     float: left;
     font-family: "Enter";
@@ -1885,7 +1882,9 @@
     background-color: #ffffff;
     border: 2px solid #ffa901;
     color: #000000;
+    overflow: hidden;
     padding: 20px 25px;
+    position: relative;
     text-align: left;
   }
   .popup .close {
@@ -1983,6 +1982,169 @@
     margin-right: -2px;
     padding-right: 20px;
   }
+}
+/*большое окно в карточке товара*/
+@media all {
+  .bPopupWrap {
+    left: 0px;
+    margin-top: 200px;
+    position: relative;
+    top: 0px;
+    width: 100%;
+    z-index: 1003;
+  }
+  .previewlist .axonometric {
+    background: url("/css/popup/img/bigPopupSprite.png") no-repeat -30px -72px;
+  }
+  .scrollbox {
+    background: url("/css/popup/img/bigPopupSprite.png") no-repeat 0px 0px;
+    bottom: 0px;
+    display: none;
+    height: 71px;
+    left: 50%;
+    margin-left: -183px;
+    position: absolute;
+    width: 354px;
+    z-index: 10;
+  }
+  .scrollbox div {
+    height: 54px;
+    margin: 10px 0px 0px 94px;
+    position: relative;
+    width: 176px;
+  }
+  .scrollbox div b {
+    background: url("/css/popup/img/bigPopupSprite.png") no-repeat 0 -71px;
+    cursor: pointer;
+    display: block;
+    height: 26px;
+    left: 110px;
+    position: absolute;
+    top: 28px;
+    width: 26px;
+  }
+  .photoview {
+    height: 100%;
+    margin: 0px 80px 0px 200px;
+    min-height: 100%;
+    position: static;
+  }
+  .photobox {
+    float: left;
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+  }
+  .photobox img {
+    position: relative;
+  }
+  .mediablock {
+    height: 724px;
+    margin: 0px 50px;
+  }
+  .mediablock.popup {
+    padding: 0;
+  }
+  .mediablock .leftpanel {
+    background: #EFEFEF;
+    float: left;
+    height: 100%;
+    padding: 0px 10px 10px;
+    width: 180px;
+  }
+  .mediablock .topblock {
+    height: 530px;
+    padding: 19px 9px 0px;
+  }
+  .logobox {
+    background: url("/css/popup/img/bigPopupSprite.png") no-repeat -239px -73px;
+    height: 95px;
+    margin-bottom: 20px;
+    text-indent: -10000px;
+    width: 85px;
+  }
+  .scalepanel {
+    background-color: #ffffff;
+    float: right;
+    padding: 30px 0px 0px 26px;
+    width: 54px;
+  }
+  .scalepanel .versioncontrol {
+    bottom: 15px;
+    display: none;
+    position: absolute;
+    right: 5px;
+    text-align: center;
+    width: 54px;
+  }
+  .zoom {
+    cursor: pointer;
+    height: 25px;
+    margin-bottom: 30px;
+    visibility: hidden;
+    width: 26px;
+  }
+  .scale {
+    background: url("/css/popup/img/bigPopupSprite.png") no-repeat -327px -72px;
+    height: 217px;
+    width: 26px;
+  }
+  .scale b {
+    cursor: pointer;
+    display: block;
+  }
+  .scale div {
+    height: 71px;
+    position: relative;
+    width: 26px;
+  }
+  .scale div b {
+    background: url("/css/popup/img/bigPopupSprite.png") no-repeat -82px -73px;
+    height: 20px;
+    left: 2px;
+    position: absolute;
+    width: 22px;
+  }
+  .scale .plus,
+  .scale .minus {
+    height: 26px;
+    width: 26px;
+  }
+  /*
+   * Эта кнопка скрыта
+  .popup_leftpanel a.link1 {
+    .rounded(5px);
+    background-color: #ffaa01;
+    background: url("@{base-url}/common/img/bg_buttons.png") repeat-x;
+    border: 1px solid #f28900;
+    color: @white;
+    display: block;
+    font-size: 11px;
+    font-weight: bold;
+    height: 16px;
+    overflow: visible;
+    padding: 3px 7px;
+    text-align: center;
+    width: 70px;
+    &:hover {
+      background-color: @firmOrange;
+      background-position: 0px -32px;
+      text-decoration: none;
+    }
+    &.active {
+      background-color: @firmOrange;
+      background-position: 0px -64px;
+    }
+    &.disabled {
+      background-color: #ececec;
+      background-position: 0px -96px;
+      border-color: #e4e4e4;
+      color: #e1e1e1;
+    }
+  }
+   * 
+   */
 }
 /*---END---СТИЛИ ВСПЛЫВАЮЩИХ ОКОН---*/
 /*------СТИЛИ ХЕАДЕРА------*/
@@ -6128,167 +6290,6 @@
   }
 }
 /*---END---СТИЛИ СТРАНИЦЫ F1---*/
-/*-------СТИЛИ БОЛЬШОГО ОКНА-----*/
-@media all {
-  .bPopupWrap {
-    left: 0px;
-    margin-top: 200px;
-    position: relative;
-    top: 0px;
-    width: 100%;
-    z-index: 1003;
-  }
-  .previewlist .axonometric {
-    background: url("/css/bigPopup/img/bigPopupSprite.png") no-repeat -30px -72px;
-  }
-  .scrollbox {
-    background: url("/css/bigPopup/img/bigPopupSprite.png") no-repeat 0px 0px;
-    bottom: 0px;
-    display: none;
-    height: 71px;
-    left: 50%;
-    margin-left: -183px;
-    position: absolute;
-    width: 354px;
-    z-index: 10;
-  }
-  .scrollbox div {
-    height: 54px;
-    margin: 10px 0px 0px 94px;
-    position: relative;
-    width: 176px;
-  }
-  .scrollbox div b {
-    background: url("/css/bigPopup/img/bigPopupSprite.png") no-repeat 0 -71px;
-    cursor: pointer;
-    display: block;
-    height: 26px;
-    left: 110px;
-    position: absolute;
-    top: 28px;
-    width: 26px;
-  }
-  .photoview {
-    height: 100%;
-    margin: 0px 80px 0px 200px;
-    min-height: 100%;
-    position: static;
-  }
-  .photobox {
-    float: left;
-    height: 100%;
-    overflow: hidden;
-    position: relative;
-    width: 100%;
-  }
-  .photobox img {
-    position: relative;
-  }
-  .mediablock {
-    height: 724px;
-    margin: 0px 50px;
-  }
-  .mediablock .leftpanel {
-    background: #EFEFEF;
-    float: left;
-    height: 100%;
-    padding: 0px 10px 10px;
-    width: 180px;
-  }
-  .mediablock .topblock {
-    height: 530px;
-    padding: 19px 9px 0px;
-  }
-  .logobox {
-    background: url("/css/bigPopup/img/bigPopupSprite.png") no-repeat -239px -73px;
-    height: 95px;
-    margin-bottom: 20px;
-    text-indent: -10000px;
-    width: 85px;
-  }
-  .scalepanel {
-    background-color: #ffffff;
-    float: right;
-    padding: 30px 0px 0px 26px;
-    width: 54px;
-  }
-  .scalepanel .versioncontrol {
-    bottom: 15px;
-    display: none;
-    position: absolute;
-    right: 5px;
-    text-align: center;
-    width: 54px;
-  }
-  .zoom {
-    cursor: pointer;
-    height: 25px;
-    margin-bottom: 30px;
-    visibility: hidden;
-    width: 26px;
-  }
-  .scale {
-    background: url("/css/bigPopup/img/bigPopupSprite.png") no-repeat -327px -72px;
-    height: 217px;
-    width: 26px;
-  }
-  .scale b {
-    cursor: pointer;
-    display: block;
-  }
-  .scale div {
-    height: 71px;
-    position: relative;
-    width: 26px;
-  }
-  .scale div b {
-    background: url("/css/bigPopup/img/bigPopupSprite.png") no-repeat -82px -73px;
-    height: 20px;
-    left: 2px;
-    position: absolute;
-    width: 22px;
-  }
-  .scale .plus,
-  .scale .minus {
-    height: 26px;
-    width: 26px;
-  }
-  /*
-   * Эта кнопка скрыта
-  .popup_leftpanel a.link1 {
-    .rounded(5px);
-    background-color: #ffaa01;
-    background: url("@{base-url}/common/img/bg_buttons.png") repeat-x;
-    border: 1px solid #f28900;
-    color: @white;
-    display: block;
-    font-size: 11px;
-    font-weight: bold;
-    height: 16px;
-    overflow: visible;
-    padding: 3px 7px;
-    text-align: center;
-    width: 70px;
-    &:hover {
-      background-color: @firmOrange;
-      background-position: 0px -32px;
-      text-decoration: none;
-    }
-    &.active {
-      background-color: @firmOrange;
-      background-position: 0px -64px;
-    }
-    &.disabled {
-      background-color: #ececec;
-      background-position: 0px -96px;
-      border-color: #e4e4e4;
-      color: #e1e1e1;
-    }
-  }
-   * 
-   */
-}
-/*---END---СТИЛИ БОЛЬШОГО ОКНА---*/
 /*-------СТИЛИ F1 всплывающего блока-----*/
 @media all {
   .hideblock {
