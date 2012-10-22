@@ -2042,6 +2042,7 @@
   .mediablock {
     height: 724px;
     margin: 0px 50px;
+    display: none;
   }
   .mediablock.popup {
     padding: 0;
