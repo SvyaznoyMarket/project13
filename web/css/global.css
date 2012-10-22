@@ -2146,6 +2146,187 @@
    * 
    */
 }
+/*окно купить в один клик*/
+@media all {
+  #order1click-container-new {
+    width: 1000px;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+  #order1click-container-new h2 {
+    font: 30px 'Enter';
+    margin: 0px;
+    padding: 0px;
+  }
+  #order1click-container-new table {
+    margin: 20px -20px;
+    padding: 0px;
+  }
+  #order1click-container-new table td {
+    border-left: 1px solid #e6e6e6;
+    max-width: 200px;
+    padding: 0px 20px 20px;
+    vertical-align: top;
+  }
+  #order1click-container-new table td:first-child {
+    border-left: none;
+  }
+  #order1click-container-new table td h3 {
+    font-size: 18px;
+    margin: 0px;
+    padding: 0px;
+  }
+  #order1click-container-new table td p {
+    font-size: 13px;
+  }
+  #order1click-container-new table td input {
+    -webkit-box-shadow: 0px 0px 5px #d8d8d8;
+    -moz-box-shadow: 0px 0px 5px #d8d8d8;
+    box-shadow: 0px 0px 5px #d8d8d8;
+    border: 1px solid #d8d8d8;
+    height: 18px;
+    width: 100%;
+  }
+  #order1click-container-new table td a,
+  #order1click-container-new table td img {
+    outline: none;
+  }
+  #order1click-container-new table td .link1 {
+    cursor: pointer;
+    margin: 12px 0px;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+  .bFast {
+    font-family: 'EnterTypeRegular';
+    margin: 0px !important;
+    width: 100%;
+  }
+  .bFast .bBigOrangeButton {
+    padding-left: 0px;
+    padding-right: 0px;
+    text-align: center;
+    width: 100%;
+  }
+  .bFast .bMapShops__eMapWrap {
+    float: left;
+  }
+  .bFast__eItem {
+    border-right: 1px solid #bfbfbf;
+    padding-bottom: 20px !important;
+    padding-left: 0px !important;
+    padding-top: 20px !important;
+    width: 175px;
+  }
+  .bFast__eItemWrap {
+    height: 100%;
+    position: relative;
+    width: 100%;
+  }
+  .bFast__eForm {
+    border-left: none;
+  }
+  .bFast__eForm td {
+    border-left: none !important;
+    padding-right: 10px !important;
+  }
+  .bFast__eArrow {
+    border-bottom: 20px solid transparent;
+    border-left: 20px solid #e6e6e6;
+    border-top: 20px solid transparent;
+    height: 0;
+    position: absolute;
+    right: -40px;
+    top: 50px;
+    width: 0;
+  }
+  .bFast__eArrow div {
+    border-bottom: 20px solid transparent;
+    border-left: 20px solid #ffffff;
+    border-top: 20px solid transparent;
+    height: 0;
+    position: absolute;
+    right: 2px;
+    top: -20px;
+    width: 0;
+  }
+  .bFast__eNum {
+    font-size: 14px;
+  }
+  .bFast__eTitle {
+    font-size: 16px;
+  }
+  .bFast__eCenter {
+    margin: 10px 0px;
+    text-align: center;
+  }
+  .bFast__eCenter .bCountSet {
+    left: auto;
+    position: relative;
+  }
+  .bFast__eMapLink {
+    color: #ffa901;
+    text-decoration: underline;
+  }
+  .mFastInpSmall {
+    width: 207px;
+  }
+  .mFastInpBig {
+    width: 418px;
+  }
+  .bFastInner {
+    width: 100%;
+  }
+  .bFastInner th {
+    padding: 0px 0px 16px 25px;
+  }
+  .bFastInner td {
+    font-size: 16px;
+    line-height: 30px;
+    padding-left: 25px !important;
+  }
+  .bFastInner__eInput {
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    border: 1px solid #dedede;
+    height: 30px !important;
+    padding: 0px 5px;
+  }
+  .bFastInner__eInput .mEmpty {
+    border: 1px solid #ed323b;
+  }
+  span.mEmpty {
+    color: #ed323b;
+  }
+  .bFastInner__eSelect,
+  .bFastInner__eSelect option {
+    background: none;
+    border: 1px solid #9e9e9e;
+    line-height: 30px;
+    margin: 0px;
+    outline: none;
+    padding: 5px 0px;
+  }
+  .bFast__ePrice {
+    /* font: 16px 'EnterTypeRegular';*/
+  
+    font-size: 16px;
+    margin: 7px 0px;
+  }
+  .bFast__ePrice div {
+    float: right;
+  }
+  td.newWarehouse {
+    font-size: 15px;
+  }
+  td.newWarehouse img {
+    margin: -21px -3px;
+  }
+}
 /*---END---СТИЛИ ВСПЛЫВАЮЩИХ ОКОН---*/
 /*------СТИЛИ ХЕАДЕРА------*/
 @media all {
@@ -6419,199 +6600,6 @@
   }
 }
 /*---END---СТИЛИ AJAX ЛОАДЕРА---*/
-/*-------СТИЛИ КУПИТЬ В ОДИН КЛИК-----*/
-@media all {
-  .bFast {
-    font-family: 'EnterTypeRegular';
-    margin: 0px !important;
-    width: 100%;
-  }
-  .bFast .bBigOrangeButton {
-    padding-left: 0px;
-    padding-right: 0px;
-    text-align: center;
-    width: 100%;
-  }
-  .bFast .bMapShops__eMapWrap {
-    float: left;
-  }
-  .bFast__eItem {
-    border-right: 1px solid #bfbfbf;
-    padding-bottom: 20px !important;
-    padding-left: 0px !important;
-    padding-top: 20px !important;
-    width: 175px;
-  }
-  .bFast__eItemWrap {
-    height: 100%;
-    position: relative;
-    width: 100%;
-  }
-  .bFast__eForm {
-    border-left: none;
-  }
-  .bFast__eForm td {
-    border-left: none !important;
-    padding-right: 10px !important;
-  }
-  .bFast__eArrow {
-    border-bottom: 20px solid transparent;
-    border-left: 20px solid #e6e6e6;
-    border-top: 20px solid transparent;
-    height: 0;
-    position: absolute;
-    right: -40px;
-    top: 50px;
-    width: 0;
-  }
-  .bFast__eArrow div {
-    border-bottom: 20px solid transparent;
-    border-left: 20px solid #ffffff;
-    border-top: 20px solid transparent;
-    height: 0;
-    position: absolute;
-    right: 2px;
-    top: -20px;
-    width: 0;
-  }
-  .bFast__eNum {
-    font-size: 14px;
-  }
-  .bFast__eTitle {
-    font-size: 16px;
-  }
-  .bFast__eCenter {
-    margin: 10px 0px;
-    text-align: center;
-  }
-  .bFast__eCenter .bCountSet {
-    left: auto;
-    position: relative;
-  }
-  .bFast__eMapLink {
-    color: #ffa901;
-    text-decoration: underline;
-  }
-  .mFastInpSmall {
-    width: 207px;
-  }
-  .mFastInpBig {
-    width: 418px;
-  }
-  .bFastInner {
-    width: 100%;
-  }
-  .bFastInner th {
-    padding: 0px 0px 16px 25px;
-  }
-  .bFastInner td {
-    font-size: 16px;
-    line-height: 30px;
-    padding-left: 25px !important;
-  }
-  .bFastInner__eInput {
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
-    -webkit-box-shadow: none;
-    -moz-box-shadow: none;
-    box-shadow: none;
-    border: 1px solid #dedede;
-    height: 30px !important;
-    padding: 0px 5px;
-  }
-  .bFastInner__eInput .mEmpty {
-    border: 1px solid #ed323b;
-  }
-  span.mEmpty {
-    color: #ed323b;
-  }
-  .bFastInner__eSelect,
-  .bFastInner__eSelect option {
-    background: none;
-    border: 1px solid #9e9e9e;
-    line-height: 30px;
-    margin: 0px;
-    outline: none;
-    padding: 5px 0px;
-  }
-  .bFast__ePrice {
-    /* font: 16px 'EnterTypeRegular';*/
-  
-    font-size: 16px;
-    margin: 7px 0px;
-  }
-  .bFast__ePrice div {
-    float: right;
-  }
-  td.newWarehouse {
-    font-size: 15px;
-  }
-  td.newWarehouse img {
-    margin: -21px -3px;
-  }
-  .bMobDown h2 {
-    font: 30px 'Enter';
-    margin: 0px;
-    padding: 0px;
-  }
-  .bMobDown__eWrap {
-    padding: 0px 20px;
-    position: relative;
-  }
-  .bMobDown__eClose {
-    background: url("/css/common/img/closeBtnOrange.png") no-repeat 0px 0px;
-    cursor: pointer;
-    height: 26px;
-    position: absolute;
-    right: 0px;
-    top: -15px;
-    width: 26px;
-  }
-  .bMobDown__eClose.top0 {
-    top: 0px;
-  }
-  .bMobDown table {
-    margin: 20px -20px;
-    padding: 0px;
-  }
-  .bMobDown table td {
-    border-left: 1px solid #e6e6e6;
-    max-width: 200px;
-    padding: 0px 20px 20px;
-    vertical-align: top;
-  }
-  .bMobDown table td:first-child {
-    border-left: none;
-  }
-  .bMobDown table td h3 {
-    font-size: 18px;
-    margin: 0px;
-    padding: 0px;
-  }
-  .bMobDown table td p {
-    font-size: 13px;
-  }
-  .bMobDown table td input {
-    -webkit-box-shadow: 0px 0px 5px #d8d8d8;
-    -moz-box-shadow: 0px 0px 5px #d8d8d8;
-    box-shadow: 0px 0px 5px #d8d8d8;
-    border: 1px solid #d8d8d8;
-    height: 18px;
-    width: 100%;
-  }
-  .bMobDown table td a,
-  .bMobDown table td img {
-    outline: none;
-  }
-  .bMobDown table td .link1 {
-    cursor: pointer;
-    margin: 12px 0px;
-    padding-left: 15px;
-    padding-right: 15px;
-  }
-}
-/*---END---СТИЛИ КУПИТЬ В ОДИН КЛИК---*/
 /*-------СТИЛИ КОРЗИНЫ-----*/
 @media all {
   .basketline {
