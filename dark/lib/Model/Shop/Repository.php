@@ -1,6 +1,6 @@
 <?php
 
-namespace Model\Region;
+namespace Model\Shop;
 
 class Repository {
     /** @var \Core\ClientInterface */
@@ -11,18 +11,11 @@ class Repository {
     }
 
     /**
-     * @return Entity|null
-     */
-    public function getDefaultEntity() {
-        return $this->getEntityById(\App::config()->region['defaultId']);
-    }
-
-    /**
      * @param int $id
      * @return Entity|null
      */
     public function getEntityById($id) {
-        $response = $this->client->query('geo/get', array(
+        $response = $this->client->query('shop/get', array(
             'id' => array($id),
         ));
 
@@ -36,26 +29,12 @@ class Repository {
      * @return Entity|null
      */
     public function getEntityByToken($token) {
-        $response = $this->client->query('geo/get', array(
+        $response = $this->client->query('shop/get', array(
             'slug' => array($token),
         ));
 
         $data = (bool)$response ? reset($response) : null;
 
         return $data ? new Entity($data) : null;
-    }
-
-    /**
-     * @return Entity[]
-     */
-    public function getShopAvailableCollection() {
-        $response = $this->client->query('geo/get-shop-available');
-
-        $collection = array();
-        foreach ($response as $data) {
-            $collection[] = new Entity($data);
-        }
-
-        return $collection;
     }
 }

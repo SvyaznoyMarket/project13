@@ -64,7 +64,15 @@ return array(
     // магазины
     'shop' => array(
         'pattern' => '/shops',
-        'action'  => array('Shop\IndexAction', 'execute'),
+        'action'  => array('Shop\Action', 'index'),
+    ),
+    'shop.region' => array(
+        'pattern' => '/shops/{regionToken}',
+        'action'  => array('Shop\Action', 'region'),
+    ),
+    'shop.show' => array(
+        'pattern' => '/shops/{regionToken}/{shopToken}',
+        'action'  => array('Shop\Action', 'show'),
     ),
 
     // каталог товаров
