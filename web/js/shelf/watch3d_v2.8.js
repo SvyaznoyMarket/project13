@@ -795,29 +795,31 @@ function gigaimage( worknode , zoom, /* zoomer node*/ zoo, overwritefn) {
 				dragH(e)
 			}
 		})	
-		jnode[0].addEventListener("touchstart",  //touch devices
-			function(e) {
-				e.preventDefault()
-				dragH(e)
-			} , false) 
-		jnode[0].addEventListener("touchmove",  //touch devices
-			function(e) {
-				if( active ){
+		if( typeof( window.addEventListener) !== 'undefined' ) {
+			jnode[0].addEventListener("touchstart",  //touch devices
+				function(e) {
 					e.preventDefault()
-					var mdelta = {
-						x: e.pageX - init.pageX ,
-						y: e.pageY - init.pageY
+					dragH(e)
+				} , false) 
+			jnode[0].addEventListener("touchmove",  //touch devices
+				function(e) {
+					if( active ){
+						e.preventDefault()
+						var mdelta = {
+							x: e.pageX - init.pageX ,
+							y: e.pageY - init.pageY
+						}
+						self.action( e, mdelta, evstamp, self.zoom )
+						init.pageX = e.pageX				
+						init.pageY = e.pageY					
 					}
-					self.action( e, mdelta, evstamp, self.zoom )
-					init.pageX = e.pageX				
-					init.pageY = e.pageY					
-				}
-			} , false)
-		jnode[0].addEventListener("touchend",  //touch devices
-			function(e) {
-				active = false
-				self.cursorHand()
-			} , false) 								
+				} , false)
+			jnode[0].addEventListener("touchend",  //touch devices
+				function(e) {
+					active = false
+					self.cursorHand()
+				} , false) 		
+		}						
 	}
 	this.addDrag()
 	//document.ondragstart = document.body.onselectstart = function() {return false} /* prevent default behaviour */

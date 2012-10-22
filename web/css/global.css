@@ -2210,17 +2210,19 @@
 .popupRegion .hidden {
   display: none;
 }
+.popupRegion .bBuyingLine__eText {
+  margin: 0 -20px 0 0;
+}
 .popupRegion .inputClear {
   color: #A6A6A6;
-  display: block;
-  float: right;
   font-size: 14px;
   height: 20px;
-  margin: -28px 128px 0 0;
-  position: relative;
+  margin: 0 15px 0 0;
   text-align: center;
   width: 20px;
-  z-index: 100;
+}
+.popupRegion .bigbutton {
+  margin: -1px 0 0 -1px;
 }
 .popupRegion .cityInline {
   font-size: 16px;
@@ -6405,86 +6407,6 @@
   }
 }
 /*---END---СТИЛИ ОКНА АВТОРИЗАЦИИ---*/
-/*-------СТИЛИ ОКНА С ВЫБОРОМ РЕГИОНА-----*/
-@media all {
-  .popupRegion {
-    -webkit-border-radius: 6px;
-    -moz-border-radius: 6px;
-    border-radius: 6px;
-    -webkit-box-shadow: 0 0 7px #616161;
-    -moz-box-shadow: 0 0 7px #616161;
-    box-shadow: 0 0 7px #616161;
-    background: #fff;
-    border: 2px solid #ffa901;
-    top: 50px;
-    left: 50%;
-    margin: 0 0 0 -320px;
-    padding: 20px 25px;
-    position: fixed;
-    width: 590px;
-    z-index: 1000;
-  }
-  .popupRegion .close {
-    background: url("/css/common/img/closeBtnOrange.png") no-repeat 0 0;
-    display: block;
-    height: 26px;
-    position: absolute;
-    right: 0;
-    text-indent: -10000px;
-    top: 0;
-    width: 26px;
-  }
-  .popupRegion .ui-css {
-    width: 610px;
-  }
-  .popupRegion .popuptitle {
-    font-family: "Enter";
-    font-size: 30px;
-    margin: 0;
-    text-transform: uppercase;
-  }
-  .popupRegion .hidden {
-    display: none;
-  }
-  .popupRegion .inputClear {
-    color: #A6A6A6;
-    display: block;
-    float: right;
-    font-size: 14px;
-    height: 20px;
-    margin: -28px 128px 0 0;
-    position: relative;
-    text-align: center;
-    width: 20px;
-    z-index: 100;
-  }
-  .popupRegion .cityInline {
-    font-size: 16px;
-    margin: 20px 0 0;
-    word-spacing: 15px;
-  }
-  .popupRegion .cityInline a {
-    border-bottom: 1px dashed black;
-  }
-  .popupRegion .cityInline a:hover {
-    text-decoration: none;
-  }
-  .popupRegion .colomn {
-    float: left;
-    margin: 20px 0;
-    width: 195px;
-  }
-  .popupRegion .colomn a {
-    font-size: 16px;
-    font-family: Tahoma, sans-serif;
-    line-height: 26px;
-    display: block;
-  }
-  .popupRegion .info {
-    font-size: 14px;
-  }
-}
-/*---END---СТИЛИ ОКНА С ВЫБОРОМ РЕГИОНА---*/
 /*-------СТИЛИ AJAX ЛОАДЕРА-----*/
 @media all {
   .bNavLoader {
