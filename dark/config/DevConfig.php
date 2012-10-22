@@ -10,7 +10,8 @@ class DevConfig extends \AppConfig {
         $this->debug = true;
 
         //$this->coreV2['url'] = 'http://api.enter.ru/v2/';
-        $this->coreV2['url'] = 'http://core.ent3.ru/v2/';
+        //$this->coreV2['url'] = 'http://core.ent3.ru/v2/';
+        $this->coreV2['url'] = 'http://test2.core.ent3.ru/v2/';
         $this->coreV2['client_id'] = 'site';
 
         $this->coreV1 = array(
@@ -31,5 +32,7 @@ class DevConfig extends \AppConfig {
         $this->warranty = array(
             'enabled' => true,
         );
+
+        $this->product['globalListEnabled'] = true;
     }
 }
