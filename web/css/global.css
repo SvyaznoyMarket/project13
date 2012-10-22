@@ -1905,6 +1905,20 @@
    */
 }
 /*---END--СТИЛИ jQuery UI--*/
+/*------СТИЛИ ВСПЛЫВАЮЩИХ ОКОН------*/
+@media all {
+  .popup {
+    background-color: #ffffff;
+    border: 2px solid #ffa901;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+    -webkit-box-shadow: 0 0 7px #616161;
+    -moz-box-shadow: 0 0 7px #616161;
+    box-shadow: 0 0 7px #616161;
+  }
+}
+/*---END---СТИЛИ ВСПЛЫВАЮЩИХ ОКОН---*/
 /*------СТИЛИ ХЕАДЕРА------*/
 @media all {
   .topbar {
