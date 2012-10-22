@@ -36,8 +36,6 @@ class Action {
 
             return new \Http\Response($page->show());
         }
-        // mock
-        //$result = json_decode(file_get_contents(\App::config()->dataDir . '/core/v2-search-get.json'), true)['result'];
         $result = $result[1];
 
         // проверка на пустоту
