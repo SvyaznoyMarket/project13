@@ -91,10 +91,11 @@ class deliveryController
         $return[$productId] = array();
         foreach($deliveries as $delivery){
           $return[$productId][] = array(
-            'typeId' => $delivery->getModeId(),
-            'date' => DateFormatter::Humanize($delivery->getEarliestDate()),
-            'token' => $delivery->getToken(),
-            'price' => $delivery->getPrice()
+            'typeId'           => $delivery->getModeId(),
+            'date'             => DateFormatter::Humanize($delivery->getEarliestDate()),
+            'token'            => $delivery->getToken(),
+            'price'            => $delivery->getPrice(),
+            'transportCompany' => App::getCurrentUser()->getRegion()->getHasTransportCompany(),
           );
         }
       }
