@@ -2210,17 +2210,19 @@
 .popupRegion .hidden {
   display: none;
 }
+.popupRegion .bBuyingLine__eText {
+  margin: 0 -20px 0 0;
+}
 .popupRegion .inputClear {
   color: #A6A6A6;
-  display: block;
-  float: right;
   font-size: 14px;
   height: 20px;
-  margin: -28px 128px 0 0;
-  position: relative;
+  margin: 0 15px 0 0;
   text-align: center;
   width: 20px;
-  z-index: 100;
+}
+.popupRegion .bigbutton {
+  margin: -1px 0 0 -1px;
 }
 .popupRegion .cityInline {
   font-size: 16px;
