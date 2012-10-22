@@ -944,7 +944,7 @@ $(document).ready(function(){
 
 		this.printError = function() {
 			if( this.node )
-				$(this.node).html( 'Стоимость доставки Вы можете уточнить в контакт cEntre 8&nbsp;(800)&nbsp;700-00-09' )
+				$(this.node).html( 'Стоимость доставки Вы можете уточнить в Контакт-сENTER 8&nbsp;(800)&nbsp;700-00-09' )
 		}
 
 		this.post = function( url, coreid ) {
