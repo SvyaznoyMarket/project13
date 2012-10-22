@@ -1882,6 +1882,7 @@
     background-color: #ffffff;
     border: 2px solid #ffa901;
     color: #000000;
+    display: none;
     overflow: hidden;
     padding: 20px 25px;
     position: relative;
@@ -2042,7 +2043,6 @@
   .mediablock {
     height: 724px;
     margin: 0px 50px;
-    display: none;
   }
   .mediablock.popup {
     padding: 0;
