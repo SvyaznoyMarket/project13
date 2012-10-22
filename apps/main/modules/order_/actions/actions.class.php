@@ -312,7 +312,7 @@ class order_Actions extends myActions
 
     $orderIds = $user->getFlash('complete_orders');
     // Заглушка
-    $orderIds = array(730670);
+    //$orderIds = array(730670);
 
     // проверяет наличие параметра от uniteller
     $orderNumber = $this->paymentProvider->getOrderIdFromRequest($request);
