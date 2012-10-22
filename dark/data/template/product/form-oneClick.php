@@ -1,4 +1,4 @@
-<div class='bMobDown popup' style="display:none" id="order1click-container-new">
+<div class='popup' style="display:none" id="order1click-container-new">
     <div class='close'></div>
     <form id="oneClick" action="">
 
