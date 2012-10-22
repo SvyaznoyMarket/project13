@@ -568,38 +568,6 @@
     width: 100%;
     z-index: 99;
   }
-  .popup {
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
-    -webkit-box-shadow: 0px 0px 7px #616161;
-    -moz-box-shadow: 0px 0px 7px #616161;
-    box-shadow: 0px 0px 7px #616161;
-    background: #ffffff;
-    border: 2px solid #ffa901;
-    color: #000000;
-    display: none;
-    font-size: 12px;
-    overflow: hidden;
-    position: relative;
-    text-align: left;
-    z-index: 1000;
-  }
-  .popup .close {
-    /* right: -2px;*/
-  
-    background: url("/css/common/img/closeBtnOrange.png") no-repeat 0px 0px;
-    cursor: pointer;
-    display: block;
-    font-size: 0px;
-    height: 26px;
-    line-height: 0px;
-    position: absolute;
-    right: 0px;
-    text-indent: -10000px;
-    top: 0px;
-    width: 26px;
-  }
   .text {
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
@@ -1916,10 +1884,13 @@
     box-shadow: 0 0 7px #616161;
     background-color: #ffffff;
     border: 2px solid #ffa901;
+    color: #000000;
     padding: 20px 25px;
+    text-align: left;
   }
   .popup .close {
     background: url("/css/common/img/closeBtnOrange.png") no-repeat 0 0;
+    cursor: pointer;
     display: block;
     height: 26px;
     position: absolute;
@@ -1984,6 +1955,33 @@
   }
   .popupRegion .info {
     font-size: 14px;
+  }
+}
+/*окно авторизации*/
+@media all {
+  #auth-block {
+    width: 694px;
+    /*
+    .shareline {
+      background-color: #f0f0f0;
+      padding: 20px 20px 10px;
+      a {
+        color: #000;
+        &:hover {
+          color: #404040;
+        }
+      }
+      .backetsharelist li {
+        float: left;
+        margin-left: 15px;
+      }
+    }*/
+  
+  }
+  #auth-block .registerbox .loginForm {
+    border-right: 1px solid #e6e6e6;
+    margin-right: -2px;
+    padding-right: 20px;
   }
 }
 /*---END---СТИЛИ ВСПЛЫВАЮЩИХ ОКОН---*/
@@ -6386,29 +6384,6 @@
   }
 }
 /*---END---F1 всплывающего блока---*/
-/*-------СТИЛИ ОКНА АВТОРИЗАЦИИ-----*/
-@media all {
-  .registerbox .loginForm {
-    border-right: 1px solid #e6e6e6;
-    margin-right: -2px;
-    padding-right: 20px;
-  }
-  .shareline {
-    background-color: #f0f0f0;
-    padding: 20px 20px 10px;
-  }
-  .shareline a {
-    color: #000;
-  }
-  .shareline a:hover {
-    color: #404040;
-  }
-  .shareline .backetsharelist li {
-    float: left;
-    margin-left: 15px;
-  }
-}
-/*---END---СТИЛИ ОКНА АВТОРИЗАЦИИ---*/
 /*-------СТИЛИ AJAX ЛОАДЕРА-----*/
 @media all {
   .bNavLoader {
