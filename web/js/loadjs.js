@@ -101,6 +101,7 @@
 				.queueWait( function() {
 				$LAB.script( getWithVersion('ports.js') )
 				.script( getWithVersion('library.js') )
+				.script('shelf/jquery.mockjax.js')	
 				// .script( 'JsHttpRequest.js' )
     //             .script( 'http://direct-credit.ru/widget/api_script_utf.js' )
     //             .script( 'http://direct-credit.ru/widget/script_utf.js' )
@@ -108,6 +109,7 @@
 				.wait()
 				.script(getWithVersion('app.order.js'))
 				.script(getWithVersion('main.js'))
+
 			}).runQueue()
 			break
         case 'order_error':
