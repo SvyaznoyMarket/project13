@@ -940,6 +940,39 @@
     margin-top: 50px;
   }
 }
+@media all {
+  #upper {
+    -webkit-border-top-right-radius: 0;
+    -webkit-border-bottom-right-radius: 6px;
+    -webkit-border-bottom-left-radius: 6px;
+    -webkit-border-top-left-radius: 0;
+    -moz-border-radius-topright: 0;
+    -moz-border-radius-bottomright: 6px;
+    -moz-border-radius-bottomleft: 6px;
+    -moz-border-radius-topleft: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 6px;
+    border-bottom-left-radius: 6px;
+    border-top-left-radius: 0;
+    -webkit-box-shadow: 0 0 7px #616161;
+    -moz-box-shadow: 0 0 7px #616161;
+    box-shadow: 0 0 7px #616161;
+    background: #ffa901 url("/css/common/img/upArrow.png") no-repeat 5px 3px;
+    position: fixed;
+    top: 0;
+    left: 50%;
+    margin-left: -25px;
+    margin-top: -30px;
+    padding: 2px 15px 5px 30px;
+  }
+  #upper a {
+    font-size: 16px;
+    color: #ffffff;
+  }
+  #upper a:hover {
+    text-decoration: none;
+  }
+}
 /*--END---ОСНОВНЫЕ ПРАВИЛА---*/
 /*-----СТИЛИ jQuery UI-----*/
 @media all {

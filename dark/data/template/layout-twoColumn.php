@@ -66,10 +66,12 @@
     <?= $page->slotAuth() ?>
     <?= $page->slotYandexMetrika() ?>
     <?//= $page->slotAdvanceSeoCounter() ?>
+    
+    <script type="text/javascript" src="/js/upper.js"></script>
 
     <div id="gooReMaCategories" class="jsanalytics"></div>
     <div id="luxupTracker" class="jsanalytics"></div>
-
+	<div id="upper"><a href="#">Наверх</a></div>
     <?//= $page->slotAdriver() ?>
 
 </body>
