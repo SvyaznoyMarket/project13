@@ -2912,6 +2912,9 @@
 /*--END--СТИЛИ ЛЕВОЙ НАВИГАЦИИ--*/
 /*-------СТИЛИ КАТАЛОГА-----*/
 @media all {
+  .column685 .adfoxWrapper {
+    margin-bottom: 30px;
+  }
   .filter {
     color: #a6a6a6;
     float: left;
