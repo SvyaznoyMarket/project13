@@ -27,6 +27,15 @@ class Repository {
         ));
         $data = reset($response);
 
+        // костыль по просьбе Эрика
+        $response = $this->client->query('product/get-dynamic', array(
+            'id'     => $data['id'],
+            'geo_id' => \App::user()->getRegion()->getId(),
+        ));
+        $dynamicData = reset($response);
+        if (array_key_exists('nearest_city', $dynamicData)) $data['nearest_city'] = $dynamicData['nearest_city'];
+        // конец костыля
+
         return $data ? new Entity($data) : null;
     }
 

@@ -25,6 +25,8 @@ class Entity {
     private $longitude;
     /** @var Entity */
     private $parent;
+    /** @var bool */
+    private $hasTransportCompany;
 
     public function __construct(array $data = array()) {
         if (array_key_exists('id', $data)) $this->setId($data['id']);
@@ -37,6 +39,7 @@ class Entity {
         if (array_key_exists('has_f1', $data)) $this->setHasService($data['has_f1']);
         if (array_key_exists('coord_long', $data)) $this->setLongitude($data['coord_long']);
         if (array_key_exists('coord_lat', $data)) $this->setLatitude($data['coord_lat']);
+        if (array_key_exists('tk_available', $data)) $this->setHasTransportCompany($data['tk_available']);
     }
 
     /**
@@ -213,6 +216,20 @@ class Entity {
     public function getToken()
     {
         return $this->token;
+    }
+
+    /**
+     * @param bool $hasTransportCompany
+     */
+    public function setHasTransportCompany($hasTransportCompany) {
+        $this->hasTransportCompany = (bool)$hasTransportCompany;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getHasTransportCompany() {
+        return $this->hasTransportCompany;
     }
 
     public function getInflectedName($inflect = 5) {

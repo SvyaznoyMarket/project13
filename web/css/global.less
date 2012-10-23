@@ -6,7 +6,7 @@
 @base-url:"/css";
 
 //--------МИКСИНЫ----------
-@import "common/elements.less";
+@import "common/mixins.less";
 
 //---ОСНОВНЫЕ И ФИРМЕННЫЕ ЦВЕТА---
 @import "common/color.less";
@@ -87,29 +87,20 @@
 @import "shop/shop.less" all;
 /*---END---СТИЛИ СТРАНИЦЫ МАГАЗИНА---*/
 
-/*-------СТИЛИ СТРАНИЦЫ О КОМПАНИИ-----*/
-@import "aboutPage/aboutPage.less" all;
-/*---END---СТИЛИ СТРАНИЦЫ О КОМПАНИИ---*/
-
-/*-------СТИЛИ СТРАНИЦЫ ЦСИ-----*/
-@import "researchPage/researchPage.less" all;
-/*---END---СТИЛИ СТРАНИЦЫ ЦСИ---*/
-
-/*-------СТИЛИ СТРАНИЦЫ КРЕДИТОВ-----*/
-@import "creditPage/creditPage.less" all;
-/*---END---СТИЛИ СТРАНИЦЫ КРЕДИТОВ---*/
-
-/*-------СТИЛИ СТРАНИЦЫ ВАРИАНТОВ ДОСТАВКИ-----*/
-@import "deliveryPage/deliveryPage.less" all;
-/*---END---СТИЛИ СТРАНИЦЫ ВАРИАНТОВ ДОСТАВКИ---*/
-
-/*-------СТИЛИ СТРАНИЦЫ МОБИЛЬНЫХ ПРИЛОЖЕНИЙ-----*/
-@import "mobilePage/mobilePage.less" all;
-/*---END---СТИЛИ СТРАНИЦЫ МОБИЛЬНЫХ ПРИЛОЖЕНИЙ---*/
-
-/*-------СТИЛИ СТРАНИЦЫ ВАРИАНТОВ ОПЛАТЫ-----*/
-@import "paymentPage/paymentPage.less" all;
-/*---END---СТИЛИ СТРАНИЦЫ ВАРИАНТОВ ОПЛАТЫ---*/
+/*-------СТИЛИ СТРАНИЦ WORDPRESS-----*/
+/*страница о компании*/
+@import "wordpress/aboutPage.less" all;
+/*страница центра стратегических исследований*/
+@import "wordpress/researchPage.less" all;
+/*страница с кредитами*/
+@import "wordpress/creditPage.less" all;
+/*страница с вариантами доставки*/
+@import "wordpress/deliveryPage.less" all;
+/*страница мобильных приложений*/
+@import "wordpress/mobilePage.less" all;
+/*страница вариантов оплаты*/
+@import "wordpress/paymentPage.less" all;
+/*---END---СТИЛИ СТРАНИЦ WORDPRESS---*/
 
 /*-------СТИЛИ СТРАНИЦЫ F1-----*/
 @import "f1Page/f1Page.less" all;
@@ -126,10 +117,6 @@
 /*-------СТИЛИ ОКНА АВТОРИЗАЦИИ-----*/
 @import "authPopup/authPopup.less" all;
 /*---END---СТИЛИ ОКНА АВТОРИЗАЦИИ---*/
-
-/*-------СТИЛИ ОКНА С ВЫБОРОМ РЕГИОНА-----*/
-@import "popupRegion/popupRegion.less" all;
-/*---END---СТИЛИ ОКНА С ВЫБОРОМ РЕГИОНА---*/
 
 /*-------СТИЛИ AJAX ЛОАДЕРА-----*/
 @import "ajaxPopup/ajaxPopup.less" all;
@@ -151,13 +138,10 @@
 @import "pagehead/pagehead.less" all;
 /*--END---СТИЛИ ХЛЕБНЫХ КРОШЕК И ХЭДА--*/
 
-/*-------СТИЛИ 404-----*/
-@import "404/404.less" all;
-/*---END---СТИЛИ 404---*/
-
-/*-------СТИЛИ 503-----*/
-@import "503/503.less" all;
-/*---END---СТИЛИ 503---*/
+/*-------СТИЛИ СТРАНИЦ ОШИБОК-----*/
+@import "errors/404.less" all;
+@import "errors/503.less" all;
+/*---END---СТИЛИ СТРАНИЦ ОШИБОК---*/
 
 /*-------СТИЛИ КАРТОЧКИ МАГАЗИНА ВЕРСИЯ ДЛЯ ПЕЧАТИ-----*/
 @import "shopPrintPage/shopPrintPage.less" all;
@@ -174,6 +158,3 @@
 @import "user/userOrders.less" all;
 @import "user/consultation.less" all;
 /*---END---СТИЛИ ЛИЧНОГО КАБИНЕТА---*/
-
-/*--- ТЕСТОВЫЕ СТИЛИ----*/
-@import "test/newCatalog.less" all;

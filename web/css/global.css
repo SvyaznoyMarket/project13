@@ -2210,17 +2210,19 @@
 .popupRegion .hidden {
   display: none;
 }
+.popupRegion .bBuyingLine__eText {
+  margin: 0 -20px 0 0;
+}
 .popupRegion .inputClear {
   color: #A6A6A6;
-  display: block;
-  float: right;
   font-size: 14px;
   height: 20px;
-  margin: -28px 128px 0 0;
-  position: relative;
+  margin: 0 15px 0 0;
   text-align: center;
   width: 20px;
-  z-index: 100;
+}
+.popupRegion .bigbutton {
+  margin: -1px 0 0 -1px;
 }
 .popupRegion .cityInline {
   font-size: 16px;
@@ -2270,14 +2272,6 @@
     margin-right: 25px;
     text-decoration: underline;
   }
-  /*.mistakeimg {
-    background: url("@{base-url}/common/img/bg_inner.png") no-repeat 0px -158px;
-    display: inline-block;
-    height: 17px;
-    margin: -8px 5px 0px 0px;
-    vertical-align: middle;
-    width: 92px;
-  }*/
   /* footer default */
   .footer {
     height: 438px;
@@ -2610,7 +2604,7 @@
     padding: 11px 0px 3px;
   }
   .catProductNum a {
-    background: url("/css/leftNav/img/leftNavSprite.png") no-repeat scroll -38px 8px;
+    background: url("/css/leftNav/img/leftNavSprite.png") no-repeat scroll -38px 1px;
     color: #ffa901;
     display: block;
     font-size: 14px;
@@ -3063,11 +3057,41 @@
     font-size: 10px;
     margin: -3px 0px 0px -5px;
   }
-  .ratingview {
-    background: url("/css/catalog/img/catalogSprite.png") no-repeat 0px 0px;
+  /*.ratingview {
+    background: url("@{catalogSprite-url}") no-repeat 0px 0px;
     display: block;
     height: 11px;
     margin-bottom: 10px;
+  }*/
+  .goodsbox__rating {
+    background: url("data:image/gif;base64,R0lGODlhDQALANUAAPKKA/7z5Pi7bPvctPaqSPnMkPSYIf3pz/////auUfvarvnGhPzgvfSeLfe1YP3u2/rQmfi+cvKNCf748Pzmyfe0Xf3t2PWiNvezWvzlxvrUovnKjfe6afSaJPjCe/OQD/atTvrOlv////3q0v3w3vSfMPvet/asS/i8b/SbJ/vbsQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAAHAP8ALAAAAAANAAsAAAZQQIRQSAgMj8PBCYNEpgaAAzIwWJwECEgqohkJLyfPYGjZVD4UxKSxQJokjGGg8zgCVEhUYUgyNEEqIxwKCABNJScNIQkpBiRIJ2NCFg4ZQ0EAOw==") repeat-x 0 0;
+    height: 11px;
+    margin-bottom: 10px;
+    position: relative;
+    width: 65px;
+  }
+  .goodsbox__rating .fill {
+    background: url("data:image/gif;base64,R0lGODlhDQALANUAAPKKA/znzPe4ZvSfMPrQmfyyAP716vefAPnFgfrVpfasS/OTFf////vfuvaaAPezWv67AP/79vihAP3u2/WmP/mnAPi+cvKMBvvbsfnJivrTn/STAP25AP748PziwPe1YPvYq/qsAPnHh/OVG/+/APedAPrRnPe6afatTvikAP/////8+fqpAPOMAP3pz/mjAPebAP+9APKNCQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAAHAP8ALAAAAAANAAsAAAZVQIZQ6DkNj8fBZYI8JkoVRTNAOC0KpMMj0zAwQIADC0IqhySOh5Bw4JTfEtRqKJK8SQVK5Nhp3UsaSC4bMSwSHCkISBgOMgIZIwcfSBoWXgwrJgJDQQA7") repeat-x 0 0;
+    height: 11px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+  }
+  .goodsbox__rating.rate1 .fill {
+    width: 13px;
+  }
+  .goodsbox__rating.rate2 .fill {
+    width: 26px;
+  }
+  .goodsbox__rating.rate3 .fill {
+    width: 39px;
+  }
+  .goodsbox__rating.rate4 .fill {
+    width: 52px;
+  }
+  .goodsbox__rating.rate5 .fill {
+    width: 65px;
   }
   .goodslist {
     float: left;
@@ -3113,55 +3137,18 @@
   .goodsbox li {
     padding-bottom: 7px;
   }
-  .boxhover {
-    cursor: pointer;
-    display: none;
-    left: -4px;
-    padding: 9px 0px 0px 9px;
-    position: absolute;
-    top: -4px;
-    width: 215px;
-    z-index: 3;
+  .goodsbox__inner {
+    padding: 10px;
+    width: 195px;
+    border-radius: 5px;
   }
-  .boxhover .rt {
-    background: #ffffff url("/css/catalog/img/bg_shadow.png") no-repeat 100% 0px;
-    display: block;
-    height: 9px;
-    position: absolute;
-    right: 0px;
-    top: 0px;
-    width: 9px;
+  .goodsbox__inner.hover {
+    border: 1px solid #e6e6e6;
+    margin: -1px;
+    -webkit-box-shadow: 0 0 11px 7px #e6e6e6;
+    -moz-box-shadow: 0 0 11px 7px #e6e6e6;
+    box-shadow: 0 0 11px 7px #e6e6e6;
   }
-  .boxhover .lb {
-    background: #ffffff url("/css/catalog/img/bg_shadow.png") no-repeat 0px 100%;
-    bottom: 0px;
-    display: block;
-    height: 9px;
-    left: 0px;
-    position: absolute;
-    width: 9px;
-  }
-  .boxhover .rb {
-    background: #ffffff url("/css/catalog/img/bg_shadow.png") no-repeat 100% 100%;
-    lmargin: 9px 0px 0px 9px;
-    lposition: relative;
-  }
-  .boxhover .lt {
-    background: #ffffff url("/css/catalog/img/bg_shadow.png") no-repeat 0px 0px;
-    left: -9px;
-    padding: 14px 6px 6px 14px;
-    position: relative;
-    top: -9px;
-    zoom: 1;
-  }
-  /*
-  .goodsbox:hover {
-    position: relative; z-index: 2;;
-  }
-  .goodsbox:hover .boxhover {
-    display: block;;
-  }
-  */
   .goodsboxlink {
     display: block;
   }
@@ -3677,15 +3664,11 @@
     width: 935px;
   }
   .bigcarousel .goodsbox {
-    background-color: #ffffff;
     margin-bottom: 14px;
     margin-right: 20px;
     padding: 10px;
     position: relative;
     width: 147px;
-  }
-  .bigcarousel .goodsbox:hover .boxhover {
-    display: block;
   }
   .bigcarousel .goodsbox .buy {
     -webkit-border-radius: 5px;
@@ -3699,8 +3682,8 @@
     position: absolute;
     top: 0px;
   }
-  .bigcarousel .boxhover {
-    width: 167px;
+  .bigcarousel .goodsbox .goodsbox__inner {
+    width: 150px;
   }
   .bigcarousel .goodsrating {
     color: #a6a6a6;
@@ -3999,7 +3982,7 @@
     width: 54px;
   }
   .avatar b {
-    background: url("/css/skin/img/avatar_cover.png") no-repeat 0px 0px;
+    background: url("/css/item/img/avatar_cover.png") no-repeat 0px 0px;
     display: block;
     height: 54px;
     left: 0px;
@@ -4025,7 +4008,7 @@
     width: 195px;
   }
   .real {
-    background: #f4f4f4 url("/css/common/img/bg_inner.png") no-repeat -432px -284px;
+    background: #f4f4f4 url("/css/item/img/real_bg.gif") no-repeat 0px 0px;
     float: right;
     height: 54px;
     margin-bottom: 5px;
@@ -5613,7 +5596,8 @@
   }
 }
 /*---END---СТИЛИ СТРАНИЦЫ МАГАЗИНА---*/
-/*-------СТИЛИ СТРАНИЦЫ О КОМПАНИИ-----*/
+/*-------СТИЛИ СТРАНИЦ WORDPRESS-----*/
+/*страница о компании*/
 @media all {
   .bAbout {
     width: 685px;
@@ -5657,8 +5641,7 @@
     zoom: 1;
   }
 }
-/*---END---СТИЛИ СТРАНИЦЫ О КОМПАНИИ---*/
-/*-------СТИЛИ СТРАНИЦЫ ЦСИ-----*/
+/*страница центра стратегических исследований*/
 @media all {
   .bLInfo__eP,
   .bLInfo__eH2 {
@@ -5674,8 +5657,7 @@
     margin: 13px 0px 22px;
   }
 }
-/*---END---СТИЛИ СТРАНИЦЫ ЦСИ---*/
-/*-------СТИЛИ СТРАНИЦЫ КРЕДИТОВ-----*/
+/*страница с кредитами*/
 @media all {
   .bF1Credit {
     position: relative;
@@ -5840,8 +5822,7 @@
     width: 550px;
   }
 }
-/*---END---СТИЛИ СТРАНИЦЫ КРЕДИТОВ---*/
-/*-------СТИЛИ СТРАНИЦЫ ВАРИАНТОВ ДОСТАВКИ-----*/
+/*страница с вариантами доставки*/
 @media all {
   .bNewDelivery h2 {
     font-size: 16px;
@@ -5890,11 +5871,10 @@
     text-decoration: underline;
   }
 }
-/*---END---СТИЛИ СТРАНИЦЫ ВАРИАНТОВ ДОСТАВКИ---*/
-/*-------СТИЛИ СТРАНИЦЫ МОБИЛЬНЫХ ПРИЛОЖЕНИЙ-----*/
+/*страница мобильных приложений*/
 @media all {
   .bMobileApps__eHead {
-    background: url("/css/mobliPage/img/mob_head.png") no-repeat;
+    background: url("/css/wordpress/img/mob_head.png") no-repeat;
     height: 224px;
     margin-bottom: 35px;
     width: 920px;
@@ -5949,7 +5929,7 @@
     text-align: center;
   }
   .bMobileCard__eImg div {
-    background: url("/css/mobliPage/img/cs.png") no-repeat;
+    background: url("/css/wordpress/img/cs.png") no-repeat;
     display: none;
     height: 58px;
     left: 25px;
@@ -5958,7 +5938,7 @@
     width: 90px;
   }
   .bMobileCard__eLink {
-    background: url("/css/mobliPage/img/c.png") 0px 50% no-repeat;
+    background: url("/css/wordpress/img/c.png") 0px 50% no-repeat;
     display: inline-block;
     *display: inline;
     margin: 10px 0px 0px 20px;
@@ -5990,8 +5970,7 @@
     position: relative;
   }
 }
-/*---END---СТИЛИ СТРАНИЦЫ МОБИЛЬНЫХ ПРИЛОЖЕНИЙ---*/
-/*-------СТИЛИ СТРАНИЦЫ ВАРИАНТОВ ОПЛАТЫ-----*/
+/*страница вариантов оплаты*/
 @media all {
   .bPayment {
     color: #434343;
@@ -6013,25 +5992,25 @@
     text-decoration: underline;
   }
   .bPayment__ePay1 {
-    background: url("/css/paymentPage/img/bPay1.png") 0px 50% no-repeat;
+    background: url("/css/wordpress/img/bPay1.png") 0px 50% no-repeat;
     line-height: 39px !important;
     min-height: 39px;
     padding-left: 50px !important;
   }
   .bPayment__ePay2 {
-    background: url("/css/paymentPage/img/bPay2.png") 0px 50% no-repeat;
+    background: url("/css/wordpress/img/bPay2.png") 0px 50% no-repeat;
     line-height: 33px !important;
     min-height: 33px;
     padding-left: 55px !important;
   }
   .bPayment__ePay3 {
-    background: url("/css/paymentPage/img/bPay3.png") 0px 50% no-repeat;
+    background: url("/css/wordpress/img/bPay3.png") 0px 50% no-repeat;
     line-height: 41px !important;
     min-height: 41px;
     padding-left: 43px !important;
   }
 }
-/*---END---СТИЛИ СТРАНИЦЫ ВАРИАНТОВ ОПЛАТЫ---*/
+/*---END---СТИЛИ СТРАНИЦ WORDPRESS---*/
 /*-------СТИЛИ СТРАНИЦЫ F1-----*/
 @media all {
   .servicebanner {
@@ -6242,8 +6221,6 @@
     width: 54px;
   }
   .zoom {
-    /*background: url("/css/common/img/bg_inner.png") no-repeat -117px -158px;*/
-  
     cursor: pointer;
     height: 25px;
     margin-bottom: 30px;
@@ -6430,86 +6407,6 @@
   }
 }
 /*---END---СТИЛИ ОКНА АВТОРИЗАЦИИ---*/
-/*-------СТИЛИ ОКНА С ВЫБОРОМ РЕГИОНА-----*/
-@media all {
-  .popupRegion {
-    -webkit-border-radius: 6px;
-    -moz-border-radius: 6px;
-    border-radius: 6px;
-    -webkit-box-shadow: 0 0 7px #616161;
-    -moz-box-shadow: 0 0 7px #616161;
-    box-shadow: 0 0 7px #616161;
-    background: #fff;
-    border: 2px solid #ffa901;
-    top: 50px;
-    left: 50%;
-    margin: 0 0 0 -320px;
-    padding: 20px 25px;
-    position: fixed;
-    width: 590px;
-    z-index: 1000;
-  }
-  .popupRegion .close {
-    background: url("/css/common/img/closeBtnOrange.png") no-repeat 0 0;
-    display: block;
-    height: 26px;
-    position: absolute;
-    right: 0;
-    text-indent: -10000px;
-    top: 0;
-    width: 26px;
-  }
-  .popupRegion .ui-css {
-    width: 610px;
-  }
-  .popupRegion .popuptitle {
-    font-family: "Enter";
-    font-size: 30px;
-    margin: 0;
-    text-transform: uppercase;
-  }
-  .popupRegion .hidden {
-    display: none;
-  }
-  .popupRegion .inputClear {
-    color: #A6A6A6;
-    display: block;
-    float: right;
-    font-size: 14px;
-    height: 20px;
-    margin: -28px 128px 0 0;
-    position: relative;
-    text-align: center;
-    width: 20px;
-    z-index: 100;
-  }
-  .popupRegion .cityInline {
-    font-size: 16px;
-    margin: 20px 0 0;
-    word-spacing: 15px;
-  }
-  .popupRegion .cityInline a {
-    border-bottom: 1px dashed black;
-  }
-  .popupRegion .cityInline a:hover {
-    text-decoration: none;
-  }
-  .popupRegion .colomn {
-    float: left;
-    margin: 20px 0;
-    width: 195px;
-  }
-  .popupRegion .colomn a {
-    font-size: 16px;
-    font-family: Tahoma, sans-serif;
-    line-height: 26px;
-    display: block;
-  }
-  .popupRegion .info {
-    font-size: 14px;
-  }
-}
-/*---END---СТИЛИ ОКНА С ВЫБОРОМ РЕГИОНА---*/
 /*-------СТИЛИ AJAX ЛОАДЕРА-----*/
 @media all {
   .bNavLoader {
@@ -7078,7 +6975,7 @@
   }
 }
 /*--END---СТИЛИ ХЛЕБНЫХ КРОШЕК И ХЭДА--*/
-/*-------СТИЛИ 404-----*/
+/*-------СТИЛИ СТРАНИЦ ОШИБОК-----*/
 @media all {
   .b404 {
     background: #ffffff;
@@ -7099,7 +6996,7 @@
     vertical-align: middle;
   }
   .b404__eLogo {
-    background: url("/css/404/img/b404Logo.png") no-repeat;
+    background: url("/css/errors/img/b404Logo.png") no-repeat;
     height: 87px;
     position: absolute;
     right: 10px;
@@ -7107,7 +7004,7 @@
     width: 95px;
   }
   .b404Block {
-    background: url("/css/404/img/b404.png") no-repeat;
+    background: url("/css/errors/img/b404.png") no-repeat;
     height: 305px;
     padding: 120px 0px 0px 500px;
     text-align: left;
@@ -7137,11 +7034,9 @@
     vertical-align: middle;
   }
 }
-/*---END---СТИЛИ 404---*/
-/*-------СТИЛИ 503-----*/
 @media all {
   .errorpage503 {
-    background: #ffffff url("/css/503/img/error_503.png") no-repeat 50% 0px;
+    background: #ffffff url("/css/errors/img/error_503.png") no-repeat 50% 0px;
   }
   .logo503 {
     padding: 61px 0px 0px 8px;
@@ -7152,7 +7047,7 @@
     width: 560px;
   }
 }
-/*---END---СТИЛИ 503---*/
+/*---END---СТИЛИ СТРАНИЦ ОШИБОК---*/
 /*-------СТИЛИ КАРТОЧКИ МАГАЗИНА ВЕРСИЯ ДЛЯ ПЕЧАТИ-----*/
 @media all {
   .printPage {
@@ -7542,85 +7437,3 @@
   }
 }
 /*---END---СТИЛИ ЛИЧНОГО КАБИНЕТА---*/
-/*--- ТЕСТОВЫЕ СТИЛИ----*/
-@media all {
-  .goodsbox__inner {
-    padding: 10px;
-    width: 195px;
-    border-radius: 5px;
-  }
-  .goodsbox__inner:hover {
-    border: 1px solid #e6e6e6;
-    margin: -1px;
-    box-shadow: 0 0 11px 7px #e6e6e6;
-  }
-  .goodsbox__inner.js:hover {
-    box-shadow: none;
-    border: none;
-    margin: 0;
-  }
-  .goodsbox__inner.js.hover {
-    border: 1px solid #e6e6e6;
-    margin: -1px;
-  }
-  .goodsbox__inner.version2:hover {
-    border: 1px solid #a6a6a6;
-    box-shadow: 0 0 11px 7px #e6e6e6;
-    margin: -1px;
-  }
-  .goodsbox__inner.version2.js:hover {
-    box-shadow: none;
-    border: none;
-    margin: 0;
-  }
-  .goodsbox__inner.version2.js.hover {
-    border: 1px solid #a6a6a6;
-    box-shadow: 0 0 11px 7px #e6e6e6;
-    margin: -1px;
-  }
-  .goodsbox__inner.version3:hover {
-    border: 1px solid #a6a6a6;
-    box-shadow: 0 0 11px 7px #a6a6a6;
-    margin: -1px;
-  }
-  .goodsbox__inner.version3.js:hover {
-    box-shadow: none;
-    border: none;
-    margin: 0;
-  }
-  .goodsbox__inner.version3.js.hover {
-    border: 1px solid #a6a6a6;
-    box-shadow: 0 0 11px 7px #a6a6a6;
-    margin: -1px;
-  }
-  .goodsbox__rating {
-    background: url("data:image/gif;base64,R0lGODlhDQALANUAAPKKA/7z5Pi7bPvctPaqSPnMkPSYIf3pz/////auUfvarvnGhPzgvfSeLfe1YP3u2/rQmfi+cvKNCf748Pzmyfe0Xf3t2PWiNvezWvzlxvrUovnKjfe6afSaJPjCe/OQD/atTvrOlv////3q0v3w3vSfMPvet/asS/i8b/SbJ/vbsQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAAHAP8ALAAAAAANAAsAAAZQQIRQSAgMj8PBCYNEpgaAAzIwWJwECEgqohkJLyfPYGjZVD4UxKSxQJokjGGg8zgCVEhUYUgyNEEqIxwKCABNJScNIQkpBiRIJ2NCFg4ZQ0EAOw==") repeat-x 0 0;
-    height: 11px;
-    margin-bottom: 10px;
-    position: relative;
-    width: 65px;
-  }
-  .goodsbox__rating .fill {
-    background: url("data:image/gif;base64,R0lGODlhDQALANUAAPKKA/znzPe4ZvSfMPrQmfyyAP716vefAPnFgfrVpfasS/OTFf////vfuvaaAPezWv67AP/79vihAP3u2/WmP/mnAPi+cvKMBvvbsfnJivrTn/STAP25AP748PziwPe1YPvYq/qsAPnHh/OVG/+/APedAPrRnPe6afatTvikAP/////8+fqpAPOMAP3pz/mjAPebAP+9APKNCQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAAHAP8ALAAAAAANAAsAAAZVQIZQ6DkNj8fBZYI8JkoVRTNAOC0KpMMj0zAwQIADC0IqhySOh5Bw4JTfEtRqKJK8SQVK5Nhp3UsaSC4bMSwSHCkISBgOMgIZIwcfSBoWXgwrJgJDQQA7") repeat-x 0 0;
-    height: 11px;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 0;
-  }
-  .goodsbox__rating.rate1 .fill {
-    width: 13px;
-  }
-  .goodsbox__rating.rate2 .fill {
-    width: 26px;
-  }
-  .goodsbox__rating.rate3 .fill {
-    width: 39px;
-  }
-  .goodsbox__rating.rate4 .fill {
-    width: 52px;
-  }
-  .goodsbox__rating.rate5 .fill {
-    width: 65px;
-  }
-}

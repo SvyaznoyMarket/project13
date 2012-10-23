@@ -127,7 +127,7 @@
   position: relative;
   width: 54px;
   b {
-    background: url("/css/skin/img/avatar_cover.png") no-repeat 0px 0px;
+    background: url("@{base-url}/item/img/avatar_cover.png") no-repeat 0px 0px;
     display: block;
     height: 54px;
     left: 0px;
@@ -140,7 +140,7 @@
   }
 }
 .comment {
-  border-bottom: 1px solid #e6e6e6;
+  border-bottom: 1px solid @typLightGray;
   float: left;
   margin-bottom: 15px;
   padding-bottom: 19px;
@@ -154,7 +154,7 @@
   width: 195px;
 }
 .real {
-  background: #f4f4f4 url("/css/common/img/bg_inner.png") no-repeat -432px -284px;
+  background: #f4f4f4 url("@{base-url}/item/img/real_bg.gif") no-repeat 0px 0px;
   float: right;
   height: 54px;
   margin-bottom: 5px;
@@ -181,7 +181,7 @@
   }
 }
 .commentright {
-  border-left: 1px solid #e6e6e6;
+  border-left: 1px solid @typLightGray;
   float: left;
   min-height: 147px;
   padding-left: 20px;
@@ -223,7 +223,7 @@
 }
 .sharelist {
   .rounded(5px);
-  .box-shadow(0px 0px 7px #616161);
+  .box-shadow(0px 0px 7px @typBoxShadowColor);
   background: #fff;
   border: 2px solid #eaeaea;
   bottom: -12px;
@@ -239,7 +239,7 @@
 .sharelist a,
 .backetsharelist a {
   background: url("@{base-url}/common/img/icons.png") no-repeat;
-  color: #a6a6a6;
+  color: @typGray;
   padding: 0px 0px 3px 26px;
   text-decoration: underline;
 }

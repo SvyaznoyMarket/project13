@@ -61,6 +61,16 @@ class RepositoryManager {
         return $instance;
     }
 
+    static public function getShop() {
+        static $instance;
+
+        if (!$instance) {
+            $instance = new \Model\Shop\Repository(\App::coreClientV2());
+        }
+
+        return $instance;
+    }
+
     static public function getCreditBank() {
         static $instance;
 

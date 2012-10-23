@@ -35,6 +35,9 @@ class RegionData
    */
   private $isMain;
 
+  /** @var bool */
+  private $hasTransportCompany;
+
 
   /**
    * @param int $geoIpCode
@@ -115,4 +118,20 @@ class RegionData
   {
     return $this->token;
   }
+
+  /**
+   * @param boolean $hasTransportCompany
+   */
+  public function setHasTransportCompany($hasTransportCompany) {
+    $this->hasTransportCompany = $hasTransportCompany;
+  }
+
+  /**
+   * @return boolean
+   */
+  public function getHasTransportCompany() {
+    return $this->hasTransportCompany;
+  }
+
+
 }

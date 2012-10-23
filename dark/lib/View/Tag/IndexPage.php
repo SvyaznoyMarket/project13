@@ -11,7 +11,6 @@ class IndexPage extends \View\DefaultLayout {
         }
 
         // breadcrumbs
-        // breadcrumbs
         if (!$this->hasParam('breadcrumbs')) {
             $breadcrumbs = array();
             $breadcrumbs[] = array(

@@ -63,4 +63,25 @@ class Helper {
             return rtrim($value, '0');
         }
     }
+
+    public function humanizeDate($date) {
+        $today = new \DateTime();
+        $today->settime(0, 0, 0);
+        if (!is_object($date) || !is_a($date, 'DateTime')) {
+            $date = new \DateTime($date);
+        }
+
+        $interval = $today->diff($date);
+        if ($interval->days == 0) {
+            return 'сегодня (' . $date->format('d.m.Y') . ')';
+        }
+        if ($interval->days == 1 && $interval->invert == 0) { //если invert = 1 - значит дата уже прошла
+            return 'завтра (' . $date->format('d.m.Y') . ')';
+        }
+        if ($interval->days == 2 && $interval->invert == 0) { //если invert = 1 - значит дата уже прошла
+            return 'послезавтра (' . $date->format('d.m.Y') . ')';
+        }
+
+        return 'через ' . $this->formatNumberChoice('{n: n > 10 && n < 20}%count% дней|{n: n % 10 == 1}%count% день|{n: n % 10 > 1 && n % 10 < 5}%count% дня|(1,+Inf]%count% дней', array('%count%' => $interval->days), $interval->days) . ' (' . $date->format('d.m.Y') . ')';
+    }
 }

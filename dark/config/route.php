@@ -64,7 +64,15 @@ return array(
     // магазины
     'shop' => array(
         'pattern' => '/shops',
-        'action'  => array('Shop\IndexAction', 'execute'),
+        'action'  => array('Shop\Action', 'index'),
+    ),
+    'shop.region' => array(
+        'pattern' => '/shops/{regionToken}',
+        'action'  => array('Shop\Action', 'region'),
+    ),
+    'shop.show' => array(
+        'pattern' => '/shops/{regionToken}/{shopToken}',
+        'action'  => array('Shop\Action', 'show'),
     ),
 
     // каталог товаров
@@ -100,6 +108,7 @@ return array(
     'product.delivery' => array(
         'pattern' => '/product/delivery-info',
         'action'  => array('Product\DeliveryAction', 'execute'),
+        'method'  => array('POST'),
     ),
     'product.delivery_1click' => array(
         'pattern' => '/product/delivery1click',

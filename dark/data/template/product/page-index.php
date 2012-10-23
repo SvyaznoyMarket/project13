@@ -84,7 +84,7 @@
         ?>
       </span>
       <strong class="ml5 hf"><?php echo round($product->getRating(), 1) ?></strong>
-      <!--a href="<?php echo $product->getLink().'/comments' ?>" class="underline ml5">Читать отзывы</a> <span>(<?php echo $product->getCommentCount() ?>)</span-->
+      <!--a href="<?php //echo $product->getLink().'/comments' ?>" class="underline ml5">Читать отзывы</a> <span>(<?php echo $product->getCommentCount() ?>)</span-->
     </div>
     <span>Артикул #<?php echo $product->getArticle() ?></span>
   </div>
@@ -111,7 +111,7 @@
 
 
   <div class="fr ar pb15">
-    <?php if (!$product->getState()->getIsBuyable() && $product->getState()->getIsShop()): ?>
+    <?php if (!$product->getIsBuyable() && $product->getState()->getIsShop()): ?>
     <span class="font16 orange">Для покупки товара<br />обратитесь в Контакт-сENTER</span>
     <?php else: ?>
     <div class="goodsbarbig mSmallBtns" ref="<?php echo $product->getToken() ?>" data-value='<?php echo $json ?>'>
@@ -126,6 +126,7 @@
       </div>
       <?php echo $page->render('cart/_button', array('product' => $product, 'disabled' => !$product->getIsBuyable())) ?>
     </div>
+    <?php if ($product->getIsBuyable()): ?>
     <div class="pb5"><strong>
       <a href=""
          data-model='<?php echo $json ?>'
@@ -134,11 +135,12 @@
          class="red underline order1click-link-new">Купить быстро в 1 клик</a>
     </strong></div>
     <?php endif ?>
+    <?php endif ?>
   </div>
   <div class="line pb15"></div>
 
 
-    <?php if ($product->getIsBuyable() || $product->getState()->getIsShop()): ?>
+  <?php if ($product->getIsBuyable() || $product->getState()->getIsShop()): ?>
 
   <?php if ($dataForCredit['creditIsAllowed']) : ?>
   <div class="creditbox">
@@ -154,17 +156,8 @@
   <input data-model="<?php echo $page->escape($dataForCredit['creditData']) ?>" id="dc_buy_on_credit_<?php echo $product->getArticle(); ?>" name="dc_buy_on_credit" type="hidden" />
   <?php endif; ?>
 
-  <div class="bDeliver2 delivery-info" id="product-id-<?php echo $product->getId() ?>" data-shoplink="<?php echo $product->getLink().'/stock' ?>" data-calclink="<?php echo $page->url('product.delivery', array('productId' => $product->getId())) ?>">
-    <h4>Как получить заказ?</h4>
-    <ul>
-      <li>
-        <h5>Идет расчет условий доставки...</h5>
-      </li>
-    </ul>
-  </div>
-
   <?php else: ?>
-    <?php if ((bool)$product->getNearestCity()): ?>
+    <?php if (\App::config()->product['globalListEnabled'] && (bool)$product->getNearestCity()): ?>
         <div class="otherRegion">
             <div class="corner">
                 <div></div>
@@ -182,6 +175,15 @@
         <div class="line pb15"></div>
         <?php endif ?>
   <?php endif ?>
+
+  <div class="bDeliver2 delivery-info" id="product-id-<?= $product->getId() ?>" data-shoplink="<?= $page->url('product.stock', array('productPath' => $product->getPath())) ?>" data-calclink="<?= $page->url('product.delivery') ?>">
+    <h4>Как получить заказ?</h4>
+    <ul>
+      <li>
+        <h5>Идет расчет условий доставки...</h5>
+      </li>
+    </ul>
+  </div>
 
   <div style="margin-bottom: 20px;">
     <div class="adfoxWrapper" id="<?php echo $adfox_id_by_label ?>"></div>
@@ -230,9 +232,9 @@
             <ul class="previewlist">
                 <?php foreach ($property->getOption() as $option): ?>
                 <li>
-                    <b<?php echo ($product->getId() == $option->getProduct()->getId()) ? ' class="current"' : '' ?> title="<?php echo $option->getHumanizedName() ?>"><a
-                        href="<?php echo $option->getProduct()->getLink() ?>"></a></b>
-                    <img src="<?php echo $option->getProduct()->getImageUrl(1) ?>" alt="<?php echo $option->getHumanizedName() ?>" width="48" height="48"/>
+                    <a href="<?php echo $option->getProduct()->getLink() ?>" <?php echo ($product->getId() == $option->getProduct()->getId()) ? ' class="current"' : '' ?> title="<?php echo $option->getHumanizedName() ?>">
+                    	<img src="<?php echo $option->getProduct()->getImageUrl(1) ?>" alt="<?php echo $option->getHumanizedName() ?>" width="48" height="48"/>
+                    </a>
                 </li>
                 <?php endforeach ?>
             </ul>
@@ -450,7 +452,9 @@
 
 <div class="line"></div>
 <div class="fr ar">
-    <?php if ( $product->getIsBuyable()): ?>
+    <?php if ( !$product->getIsBuyable() && $product->getState()->getIsShop()): ?>
+    <p class="font16 orange">Для покупки товара<br />обратитесь в<br />Контакт-сENTER</p>
+    <?php else: ?>
     <div class="goodsbarbig mSmallBtns" ref="<?php echo $product->getToken() ?>" data-value='<?php echo $json ?>'>
 
         <div class='bCountSet'>
@@ -464,8 +468,6 @@
 
         <?php echo $page->render('cart/_button', array('product' => $product, 'disabled' => !$product->getIsBuyable())) ?>
     </div>
-    <?php else: ?>
-    <p class="font16 orange">Для покупки товара<br />обратитесь в<br />Контакт-сENTER</p>
     <?php endif ?>
 </div>
 <div class="fr mBuyButtonBottom">
