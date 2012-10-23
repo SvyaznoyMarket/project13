@@ -84,7 +84,7 @@ class User {
             throw new \LogicException('Ид региона не должен быть пустым.');
         }
 
-        $cookie = new \Http\Cookie($this->cookieName, $region->getId(), time() + \App::config()->region['cookieLifetime']);
+        $cookie = new \Http\Cookie(\App::config()->region['cookieName'], $region->getId(), time() + \App::config()->region['cookieLifetime']);
         $response->headers->setCookie($cookie);
     }
 

@@ -7,8 +7,8 @@ class Action {
 
     }
 
-    public function change(\Http\Request $request) {
-        $regionId = (int)$request->get('region');
+    public function change($regionId, \Http\Request $request) {
+        $regionId = (int)$regionId;
 
         if (!$regionId) {
             return new \Http\RedirectResponse(\App::router()->generate('homepage'));
@@ -27,6 +27,29 @@ class Action {
     }
 
     public function autocomplete(\Http\Request $request) {
+        if (!$request->isXmlHttpRequest()) {
+            throw new \Exception\NotFoundException('Request is not xml http request');
+        }
 
+        $limit = 8;
+        $keyword = $request->get('q');
+        $router = \App::router();
+
+        $data = array();
+        if (mb_strlen($keyword) >= 3) {
+            $result = \App::coreClientV2()->query('geo/autocomplete', array('letters' => $keyword));
+            $i = 0;
+            foreach ($result as $item) {
+                if ($i >= $limit) break;
+
+                $data[] = array(
+                    'name'  => $item['name'] . ((!empty($item['region']['name']) && ($item['name'] != $item['region']['name'])) ? (" ({$item['region']['name']})") : ''),
+                    'url'   => $router->generate('region.change', array('regionId' => $item['id'])),
+                );
+                $i++;
+            }
+        }
+
+        return new \Http\JsonResponse(array('data' => $data));
     }
 }
