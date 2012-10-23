@@ -10,6 +10,7 @@
     <p class="font16">Дата заказа: <?php echo format_date($order['added'], 'd', 'ru') ?></p>
   <?php endif ?>
   <p class="font16">Сумма заказа: <?php echo $order['sum'] ?> <span class="rubl">p</span></p>
+  <p class="font16">Сумма для оплаты: <span id="paymentWithCard"><?php echo $order['sum'] ?></span> <span class="rubl">p</span></p>
   <div class="line pb15"></div>
 <?php endforeach ?>
 
@@ -23,11 +24,12 @@
 		</div>
 	</script>
 	<h2>Заполните информацию с подарочной карты</h2>
-	<form class="ui-css">
+	<form>
 		<input class="bBuyingLine__eText cardNumber" placeholder="Номер" />
 		<input class="bBuyingLine__eText cardPin" placeholder="ПИН" />
-		<input id="sendCard" class="button bigbutton mDisabled" type="button" value="Отправить" />
+		<input id="sendCard" class="button bigbutton mDisabled" type="submit" value="Активировать" />
 	</form>
+  <div id="processing"></div>
 	<p class="certifText">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
 </div>
 <div class="line pb15"></div>

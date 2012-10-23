@@ -1,26 +1,164 @@
 $(document).ready(function () {
-	// sertificate
-	if ($('.orderFinal__certificate').length){
-		var number = $(".cardNumber"),
-			pin	= $(".cardPin"),
-			form = $(".orderFinal__certificate form"),
-			button = $('#sendCard');
-		var orange = {typeNum:'orange',text:'Проверка данных'},
-			red = {typeNum:'red',text:'Произошла ошибка'}
-		var checkCard = function(){
-			if ((number.val()!=='')&&(pin.val()!=='')){
-				button.removeClass('mDisabled');
-			}
-		}	
-		number.mask("9999 9999 9999 99", { completed:checkCard, placeholder: "*", maxlength: 14 } )
-		pin.mask("9999", { completed:checkCard, placeholder: "*", maxlength: 4 } )
-		button.bind('click',function(){
-			if ($(this).hasClass('mDisabled')) return false;
-			console.log(orange)
-			form.after(tmpl('processBlock', {typeNum:'orange',text:'Проверка данных'}))
-			return false;
-		})
+	
+    
+    /* sertificate */
+	if( $('.orderFinal__certificate').length ) {
+        var code = $(".cardNumber"),
+            pin = $(".cardPin"),
+            form = $(".orderFinal__certificate form"),
+            button = $('#sendCard'),
+
+            urlCheck = '/certificate-check',
+            urlActivate = '/certificate-activate'
+
+        var SertificateCard = (function() {
+
+            var
+                paymentWithCard = $('#paymentWithCard').text()*1,
+                checked = false,
+                processTmpl = 'processBlock'
+
+            function setPaymentSum( delta ) {
+                if( delta > paymentWithCard )
+                    paymentWithCard = 0
+                else
+                    paymentWithCard -= delta
+                $('#paymentWithCard').text( paymentWithCard )
+            }
+
+            function prepareNewCard() {
+                code.val('')
+                pin.val('')
+                button.addClass('mDisabled')
+                checked = false
+            }
+            function getCode() {
+                return code.val().replace(/[^0-9]/g,'')
+            } 
+            function getPIN() {
+                return pin.val().replace(/[^0-9]/g,'')
+            }
+            function getParams() {
+                return { code: getCode() , pin: getPIN() }
+            }
+            function activateButton() {
+// console.info('activateButton', getCode(), getPIN())                    
+                if( checked && ( getCode() !== '' ) && getCode().length === 14 && ( getPIN() !== '' ) && getPIN().length === 4) {
+                    button.removeClass('mDisabled')
+                }
+            }
+            function checkForStars( v ) {
+                if( v.match(/\*/) )
+                     button.addClass('mDisabled')
+            }
+            function checkCard() {
+                setProcessingStatus( 'orange', 'Проверка по номеру карты' )
+                $.get( urlCheck, { code: '23846829634' }, function( data ) {
+                    if( ! 'success' in data )
+                        return false
+                    if( !data.success ) {
+                        setProcessingStatus( 'red' )
+                        return false
+                    }
+                    setProcessingStatus( 'green', data.data )
+                })       
+                activateButton()
+                pin.focus()
+            }
+            function setProcessingStatus( status, data ) {    
+                var blockProcess = $('.process').first()
+                if( !blockProcess.hasClass('picked') ) 
+                    blockProcess.remove()
+                var options = { typeNum: status }
+                switch( status ) {
+                    case 'orange':   
+                        options.text = data 
+                        checked = false
+                        break
+                    case 'red':
+                        options.text = 'Произошла ошибка: ' + data
+                        checked = false
+                        break
+                    case 'green':
+                        if( 'activated' in data ) 
+                            options.text = 'Карта '+ data.code + ' на сумму ' + data.sum + ' активирована!'
+                        else
+                            options.text = 'Карта '+ data.code + ' имеет номинал ' + data.sum
+                        checked = true
+                        break
+                }
+                form.after( tmpl( processTmpl, options) )
+                if( typeof( data['activated'] ) !== 'undefined' )
+                    $('.process').first().addClass('picked')
+                activateButton()
+            }
+
+            return {
+                activateButton: activateButton,
+                checkCard: checkCard,
+                setProcessingStatus: setProcessingStatus,
+                setPaymentSum: setPaymentSum,
+                prepareNewCard: prepareNewCard,
+                getParams: getParams,
+                checkForStars: checkForStars
+            }
+        })(); // object SertificateCard , singleton
+
+// console.info(SertificateCard)
+
+        code.mask("999 999 999 9999 9", { completed: SertificateCard.checkCard, placeholder: "*" } )
+        pin.mask("9999", { completed: SertificateCard.activateButton, placeholder: "*" } )
+        code.bind('keyup', function() {
+// console.info( $(this).val() )
+            SertificateCard.checkForStars( $(this).val() )
+        })
+        pin.bind('keyup', function() {
+// console.info( $(this).val() )
+            SertificateCard.checkForStars( $(this).val() )
+        })
+       
+        button.bind('click', function(e) {
+            e.preventDefault()
+            if( $(this).hasClass('mDisabled') )
+                return false
+            SertificateCard.setProcessingStatus( 'orange', 'Минутку, активация карты...' )
+            
+            $.get( urlActivate, SertificateCard.getParams(), function( data ) {
+                if( ! 'success' in data )
+                    return false
+                if( !data.success ) {
+                    SertificateCard.setProcessingStatus( 'red', data.error )
+                    return false
+                }
+                data.data.activated = true
+                SertificateCard.setProcessingStatus( 'green', data.data )
+                SertificateCard.setPaymentSum( data.data.sum*1 )
+                SertificateCard.prepareNewCard()
+            })       
+            return false
+        })
+
+        $.mockjax({
+          url: '/certificate-check',
+          responseTime: 1000,
+          responseText: {
+            success: true,
+            data: { sum: 1000, code: '3432432' }
+          }
+        })
+        $.mockjax({
+          url: '/certificate-activate',
+          responseTime: 1000,
+          responseText: {
+            success: true,
+            error: 'alredy activated',
+            data: { sum: 1000, code: '3432432' }
+          }
+        })
+		
 	}
+
+    /* */
 	
     $('.auth-link').bind('click', function (e) {
         e.preventDefault()
@@ -212,7 +350,7 @@ $(document).ready(function () {
         }
 
         var callback_decision = function(decision) {
-            //console.info( 'Пришел статус: ' + decision )
+//console.info( 'Пришел статус: ' + decision )
         }
         
         $LAB.script( 'https://www.kupivkredit.ru/widget/vkredit.js')
