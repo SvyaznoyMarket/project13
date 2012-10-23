@@ -176,7 +176,7 @@
         <?php endif ?>
   <?php endif ?>
 
-  <div class="bDeliver2 delivery-info" id="product-id-<?php echo $product->getId() ?>" data-shoplink="<?php echo $product->getLink().'/stock' ?>" data-calclink="<?php echo $page->url('product.delivery', array('productId' => $product->getId())) ?>">
+  <div class="bDeliver2 delivery-info" id="product-id-<?= $product->getId() ?>" data-shoplink="<?= $page->url('product.stock', array('productPath' => $product->getPath())) ?>" data-calclink="<?= $page->url('product.delivery') ?>">
     <h4>Как получить заказ?</h4>
     <ul>
       <li>
