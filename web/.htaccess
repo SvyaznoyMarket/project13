@@ -14,7 +14,7 @@ Options +FollowSymLinks +ExecCGI
   RewriteRule ^region/init/$ index.light.php [L]
   RewriteRule ^user/shortinfo/?$ index.light.php [L]
   RewriteRule ^product/delivery1click/? index.light.php [L]
-  RewriteRule ^product/delivery-info.* index.light.php [L]
+  #RewriteRule ^product/delivery-info.* index.light.php [L]
   RewriteRule ^cart/add.* index.light.php [L]
   RewriteRule ^cart/delete.* index.light.php [L]
   RewriteRule ^cart/clear.* index.light.php [L]
@@ -33,6 +33,7 @@ Options +FollowSymLinks +ExecCGI
   RewriteRule ^tags/([a-zA-Z_0-9-]+)$ dark.php [L]
   RewriteRule ^tags/([a-zA-Z_0-9-]+)/([a-zA-Z_0-9-]+)$ dark.php [L]
   RewriteRule ^certificate-check* dark.php [L]
+  RewriteRule ^product/delivery-info* dark.php [L]
   #RewriteRule ^shops/([a-zA-Z_0-9-]+)/([a-zA-Z_0-9-]+)$ dark.php [L]
 
   RewriteCond %{REQUEST_FILENAME} !-f

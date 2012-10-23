@@ -39,7 +39,7 @@ class Entity {
         if (array_key_exists('has_f1', $data)) $this->setHasService($data['has_f1']);
         if (array_key_exists('coord_long', $data)) $this->setLongitude($data['coord_long']);
         if (array_key_exists('coord_lat', $data)) $this->setLatitude($data['coord_lat']);
-        if (array_key_exists('tk_available', $data)) $this->setLatitude($data['tk_available']);
+        if (array_key_exists('tk_available', $data)) $this->setHasTransportCompany($data['tk_available']);
     }
 
     /**

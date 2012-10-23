@@ -108,6 +108,7 @@ return array(
     'product.delivery' => array(
         'pattern' => '/product/delivery-info',
         'action'  => array('Product\DeliveryAction', 'execute'),
+        'method'  => array('POST'),
     ),
     'product.delivery_1click' => array(
         'pattern' => '/product/delivery1click',
