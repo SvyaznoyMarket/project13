@@ -162,7 +162,7 @@
             <div class="corner">
                 <div></div>
             </div>
-            <p>Этот товар нельзя купить в <?php $user->getRegion()->getName() ?></p>
+            <p>Этот товар нельзя купить в <?= $user->getRegion()->getInflectedName(5) ?></p>
             <p>Товар доступен в <b>Москве</b> и <a href="#"><?php echo count($product->getNearestCity()) ?> других городах</a></p>
             <ul>
                 <?php foreach ($product->getNearestCity() as $city): ?>
