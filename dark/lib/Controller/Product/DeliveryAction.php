@@ -23,7 +23,13 @@ class DeliveryAction {
             $params['product_list'][] = array('id' => (int)$productId, 'quantity' => 1);
         }
 
-        $response = \App::coreClientV2()->query('delivery/calc', array('geo_id' => $regionId), $params);
+        try {
+            $response = \App::coreClientV2()->query('delivery/calc', array('geo_id' => $regionId), $params);
+        } catch (\Exception $e) {
+            \App::logger()->error($e);
+            return new \Http\JsonResponse(array('success' => false));
+        }
+
         if (empty($response['product_list'])) {
             \App::logger()->error('Core delivery/calc has not "product_list" data');
             return new \Http\JsonResponse(array('success' => false));
