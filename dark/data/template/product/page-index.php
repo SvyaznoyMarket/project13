@@ -163,7 +163,7 @@
                 <div></div>
             </div>
             <p>Этот товар нельзя купить в <?= $user->getRegion()->getInflectedName(5) ?></p>
-            <p>Товар доступен в <b>Москве</b> и <a href="#"><?php echo count($product->getNearestCity()) ?> других городах</a></p>
+            <p>Товар доступен в <b>Москве</b> и <a href="#"><? $count = count($product->getNearestCity()); echo (1 == $count ? 'другом городе' : 'других городах') ?></a></p>
             <ul>
                 <?php foreach ($product->getNearestCity() as $city): ?>
                 <li><a href="<?php echo $page->url('region.change', array('regionId' => $city->getId())) ?>"><?php echo $city->getName() ?></a></li>
