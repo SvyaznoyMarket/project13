@@ -141,7 +141,7 @@ $(document).ready(function(){
 //console.log('start anim');
 					goodsbox.shadowAnim(box, 0, 1, 0);
 				}
-			} , 400)
+			} , 300)
 		},
 		hoverOff: function(box){
 			clearTimeout(timeoutId);
