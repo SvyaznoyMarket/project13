@@ -209,6 +209,10 @@ class Action {
             throw new \Exception\NotFoundException(sprintf('Неверный номер страницы "%s".', $pageNum));
         }
 
+        if (!$category->getParent()) {
+            throw new \RuntimeException(sprintf('Category #%s has no parent', $category->getId()));
+        }
+
         // к сожалению, нужна также загрузка дочерних узлов родителя (для левого меню категорий - product-category/_branch)
         \RepositoryManager::getProductCategory()->loadEntityBranch($category->getParent());
 
