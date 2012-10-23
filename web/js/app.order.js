@@ -1,5 +1,6 @@
 $(document).ready(function () {
 	
+    
     /* sertificate */
 	if( $('.orderFinal__certificate').length ) {
         var code = $(".cardNumber"),
