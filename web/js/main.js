@@ -962,13 +962,13 @@ $(document).ready(function(){
 					if( !data.data[ coreid[i] ] )
 						continue
 					for( var j in data.data[ coreid[i] ] ) {
-						var dlvr = data.data[ coreid[i] ][ j ]
+						var dlvr = data.data[ coreid[i] ][ j ]			
 						switch ( dlvr.token ) {
 							case 'self':
 								that.self = dlvr.date
 								break
 							default:
-								that.other.push( { date: dlvr.date, price: dlvr.price } )
+								that.other.push( { date: dlvr.date, price: dlvr.price, tc: ( typeof(dlvr.transportCompany) !== 'undefined') } )
 						}
 					}
 					that.processHTML( coreid[i] )
@@ -1021,9 +1021,13 @@ $(document).ready(function(){
 			
 			if( other.length > 0 )
 				html += '<li><h5>Можно заказать сейчас с доставкой</h5>'
-			for(var i=0; i < other.length; i++)
+			for(var i=0; i < other.length; i++) {
 				html += '<div>&mdash; Можем доставить '+ other[i].date + this.formatPrice(other[i].price) +'</div>'
-				
+				if( other[i].tc ) {
+					html += '<div>&mdash; Доставка осуществляется партнерскими траспортными компаниями</div>'
+				}
+			}
+
 			html += '</ul>'
 			dlvr_node.html(html)
 		}
