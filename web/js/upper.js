@@ -13,7 +13,7 @@ $(document).ready(function(){
 			upper.animate({'marginTop':'-30px'},400);
 		}
 	});
-	upper.find('a').bind('click',function(){
+	upper.bind('click',function(){
 		$(window).scrollTo('0px',400);
 		return false;
 	});
