@@ -385,7 +385,7 @@ border-radius:5px;
 }
 .bigpriceblock .bCountSet {position:relative; right:0; left:auto; margin-top:17px}
 
-.bigpriceblock .goodsbarbig.mSmallBtns{ width: 162px !important; display: inline-block; *display: inline; zoom; 1;}
+.bigpriceblock .goodsbarbig.mSmallBtns{ width: 162px !important; display: inline-block; *display: inline; zoom: 1;}
 .bigpriceblock .goodsbarbig.mSmallBtns a.link1{ width: 162px; height: 39px; background: url('/css/skin/img/bg_inner.png') 0 -350px no-repeat;}
 .bigpriceblock .goodsbarbig.mSmallBtns a.link1:hover{ background: url('/css/skin/img/bg_inner.png') -165px -350px no-repeat; }
 .bigpriceblock .goodsbarbig.mSmallBtns a.link1.active{ background: url('/css/skin/img/bg_inner.png') -330px -350px no-repeat; }
@@ -570,7 +570,42 @@ border-radius: 5px;
 
 .infoblock { background: url('/css/skin/img/bg_info_article.gif') no-repeat; width: 350px; height: 73px; padding: 15px 15px 10px 35px; }
 
+.servicebanner {clear:both; width:320px; height:178px; padding:33px 0 0 600px; background:#4fcbf4 url(/css/skin/img/bg_service2.jpg) no-repeat 0 0; color:#fff; font-size:14px; line-height:14px; margin-bottom:25px}
 .servicebanner div{font-size:24px; line-height:24px; padding-bottom:5px}
+
+.slogan {color:#4fcbf4; margin-bottom:30px; font-size:14px}
+.slogan strong{display:block; font-size:24px; padding-bottom:5px}
+
+.servicebox {width:456px; position:relative}
+.servicebox:hover {background:url(img/bg_servicebox.png) repeat-y -922px 0}
+.serviceboxtop, .serviceboxbottom {clear:both; width:456px; height:7px; font-size:0; line-height:0}
+.servicebox:hover .serviceboxtop {background:url(img/bg_servicebox.png) no-repeat 0 0}
+.servicebox:hover .serviceboxbottom {background:url(img/bg_servicebox.png) no-repeat -461px 0}
+.serviceboxmiddle {padding:13px 10px 10px 112px}
+.serviceboxmiddle a{
+	display: block;
+}
+.servicebox strong{display:block; padding-bottom:15px}
+.servicebox i{display:block; position:absolute; left:10px; top:20px; width:88px; height:80px; background:url(img/service_icons.png) no-repeat}
+.servicebox .icon1 {background-position:0 0}
+.servicebox .icon2 {background-position:-92px 0}
+.servicebox .icon3 {background-position:-184px 0}
+.servicebox .icon4 {background-position:-276px 0}
+.servicebox:hover .icon1{background-position:0 -85px}
+.servicebox:hover .icon2{background-position:-92px -85px}
+.servicebox:hover .icon3{background-position:-184px -85px}
+.servicebox:hover .icon4{background-position:-276px -85px}
+.servicebox__choice{
+	color:#4FCBF4;
+	font-weight:bold;
+	float:right;
+	margin:15px 0;
+}
+
+.serviceblock {float:left; width:100%; padding-bottom:20px}
+.serviceblock .photo {float:left; width:160px}
+.serviceblock .info {float:left; width:505px; padding-left:20px}
+.serviceblock h3{margin:0; padding-bottom:10px; font-size:24px}
 
 /* ------------------------------------------------------------------- */
 
