@@ -14,4 +14,8 @@ class EmptyPage extends \View\DefaultLayout {
     public function slotContent() {
         return $this->render('search/page-empty', $this->params);
     }
+
+    public function slotBodyDataAttribute() {
+        return 'product_catalog';
+    }
 }

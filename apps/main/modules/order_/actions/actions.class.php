@@ -728,6 +728,14 @@ class order_Actions extends myActions
           /** @var $product \light\ServiceCartData */
 
           if (0 == $productId) continue;
+          $relatesToProduct = false;
+          foreach ($productItems as $productItem) {
+              if ($productItem['id'] == $productId) {
+                  $relatesToProduct = true;
+                  break;
+              }
+          }
+          if (!$relatesToProduct) continue;
 
           if (!array_key_exists($serviceId, $servicesForProduct))
           {
