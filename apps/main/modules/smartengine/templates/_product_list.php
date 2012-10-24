@@ -8,7 +8,6 @@
 
 <?php
 $pagesNum = ceil(count($products) / 5);
-myDebug::dump($marker);
 $marker = isset($marker) ? $marker : null;
 ?>
 
