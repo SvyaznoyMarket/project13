@@ -7,7 +7,7 @@
  */
 ?>
 
-<? require __DIR__ . '/_banner.php' ?>
+<div class="adfoxWrapper" id="adfox683sub"></div>
 
 <div class="clear"></div>
 
