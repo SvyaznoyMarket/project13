@@ -1,3 +1,4 @@
+/* CSS crunched with Crunch - http://crunchapp.net/ */
 /*---------ШРИФТЫ----------*/
 @font-face {
   font-family: 'Enter';
@@ -4197,9 +4198,8 @@
     background-image: url("/css/common/img/bg_buttons.png");
     background-position: 0px -128px;
     background-repeat: repeat-x;
-    border-color: #c9c9c9;
     border-radius: 5px;
-    border: 1px solid;
+    border: 1px solid #C9C9C9;
     color: #4fcbf4;
     cursor: pointer;
     display: inline-block;

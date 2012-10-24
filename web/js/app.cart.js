@@ -31,21 +31,24 @@ $(document).ready(function() {
 		// if( typeof(delurl)==='undefined' )
 		// 	delurl = addurl + '-1'
 		var drop     = $(nodes.drop).attr('href')
-		var limit    = nodes.limit
+		var limit    = ( typeof(nodes.limit) !== 'undefined' ) ? nodes.limit : 1000
 		if( $(nodes.quan).length )
 			this.quantum = $(nodes.quan).html().replace(/\D/g,'') * 1
-		var price    = ( self.sum* 1 / self.quantum *1 ).toFixed(2)
-		if( 'price' in nodes )
-		    price    = $(nodes.price).html().replace(/\s/,'')
-		this.price   = price
+
+		// var price    = ( self.sum* 1 / self.quantum *1 ).toFixed(2)
+		// if( ( 'price' in nodes ) && $(nodes.price).length )
+		//     price    = $(nodes.price).html().replace(/\s/,'')
+		// this.price   = price
 		this.noview  = false
 		var dropflag = false
 
-		if( !$(nodes.sum).length )
+		if( !$(nodes.sum).length ) {
+			this.price = $(nodes.price).html().replace(/\s/,'')
 			this.sum = this.quantum * this.price
-		else
+		} else {
 			this.sum     = $(nodes.sum).html().replace(/\s/,'')
-
+			this.price = ( self.sum* 1 / self.quantum *1 ).toFixed(2)
+		}
 		totalCash += this.sum * 1
 		var totalCalcTO = null
 
@@ -71,7 +74,7 @@ $(document).ready(function() {
 		this.calculate = function( q ) {
 			clearTimeout( totalCalcTO )
 			self.quantum = q
-			self.sum = price * q
+			self.sum = self.price * q
 			$(nodes.sum).html( printPrice( self.sum ) )
 			$(nodes.sum).typewriter(800, getTotal)
 			totalCalcTO = setTimeout( function() {
@@ -96,17 +99,16 @@ $(document).ready(function() {
 		}
 
 		this.update = function( minimax, delta ) {
+			
 			if( delta > 0 && ( limit < ( self.quantum + delta ) ) ) {
 				$(minimax).data('run',false)
 				return
 			}
 			//var tmpurl = (delta > 0) ? addurl : delurl
 			//self.quantum += delta
-
             var tmpurl = addurl;
             self.quantum += delta
             tmpurl += self.quantum;
-
 
 			$(nodes.quan).html( self.quantum + ' шт.' )
 			self.calculate( self.quantum )
