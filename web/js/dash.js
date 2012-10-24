@@ -544,7 +544,7 @@ $(document).ready(function(){
 	var markPageButtons = function(){
 		var carturl = $('.lightboxinner .point2').attr('href')
 		$('.goodsbarbig .link1').attr('href', carturl ).addClass('active')
-		$('#bigpopup a.link1').attr('href', carturl ).html('в корзине')
+		$('#bigpopup a.link1').attr('href', carturl ).addClass('active')//.html('в корзине')
 		$('.bSet__ePrice .link1').unbind('click')
 		$('.goodsbar .link1').die('click')
 		$('.bCountSet__eP').addClass('disabled')
@@ -600,7 +600,8 @@ $(document).ready(function(){
 	var BB = new BuyBottons()
 	BB.push( 'div.bServiceCardWrap input' ) // F1
 	BB.push('div.goodsbarbig a.link1', $('div.goodsbarbig').data('value'), markPageButtons ) // product card, buy big
-	BB.push( '#bigpopup a.link1', $('div.popup_leftpanel').data('value'), markPageButtons ) // product card, buy in popup
+	// commented cause the same selector works
+	// BB.push( '#bigpopup a.link1', $('div.goodsbarbig').data('value'), markPageButtons ) // product card, buy in popup
 	BB.push('div.bSet a.link1', $('div.bSet').data('value'), markPageButtons ) // a set card, buy big
 	BB.push('div.mServ a.link1', $('div.mServ').data('value') ) // service card, buy big
 	BB.push('div.bInShop__eButton a.link1', $('div.bInShop__eButton').data('value'), function(){
@@ -609,14 +610,14 @@ $(document).ready(function(){
 	}) // stock product card, buy orange
 	BB.push('div.goodsinfosmall a.link1', $('div.goodsinfosmall').data('value') ) //feedback feed
 
-
 	/* BB */
 	function BuyBottons() {
 		this.push = function( selector, jsond,  afterpost ) {
 			if( ! $(selector).length )
 				return
 			var carturl = $('.lightboxinner .point2').attr('href')
-			$('body').delegate( selector, 'click', function() {
+			$('body').delegate( selector, 'click', function(e) {
+				e.preventDefault()
 				var button = $(this)
 				if( !jsond )
 					jsond = button.data('value')
@@ -641,15 +642,7 @@ $(document).ready(function(){
 					ajurl = jsond.url
 				}
 				button.addClass('active').attr('href', carturl)
-				//credit case
-				// if( 'creditBox' in window ) { // productCard
-				// 	if( !ajurl.match(/_quantity\/[0-9]+/) )
-				// 		ajurl += '/1' //quantity
-				// 	if( creditBox.getState() )
-				// 		ajurl += '/1' //credit
-				// 	else 	
-				// 		ajurl += '/0' //no credit
-				// }
+
 				$.getJSON( ajurl, function( data ) {
 					if ( data.success && ltbx ) {
 						var tmpitem = {
