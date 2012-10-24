@@ -957,15 +957,16 @@
     -webkit-box-shadow: 0 0 7px #616161;
     -moz-box-shadow: 0 0 7px #616161;
     box-shadow: 0 0 7px #616161;
-    background: #ffa901 url("/css/common/img/upArrow.png") no-repeat 5px 3px;
+    background: #ffa901 url("/css/common/img/upArrow2.png") no-repeat 12px 9px;
     color: #ffffff;
-    font-size: 16px;
+    font-size: 14px;
     position: fixed;
     top: 0;
     left: 50%;
+    letter-spacing: 0.1em;
     margin-left: -25px;
     margin-top: -30px;
-    padding: 2px 15px 5px 30px;
+    padding: 2px 15px 5px 35px;
     z-index: 2000;
   }
   #upper:hover {
