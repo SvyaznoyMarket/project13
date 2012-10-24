@@ -1,5 +1,4 @@
 AddDefaultCharset utf-8
-SetEnv APPLICATION_ENV dev
 
 Options +FollowSymLinks +ExecCGI
 
