@@ -33,7 +33,7 @@
             </form>-->
 
             <form id="login-form" action="/login" class="form" method="post">
-                <input type="hidden" name="redirect_to" value="http://enter3.ent3.ru/catalog/appliances/" />
+                <input type="hidden" name="redirect_to" value="<?php echo \light\App::getRequest()->getUri() ?>" />
                 <div class="fl width327 mr20">
                     <div class="font16 pb20">У меня есть логин и пароль</div>
 
@@ -58,7 +58,7 @@
                 </div>
             </form>
             <form id="register-form" action="/register" class="form" method="post">
-                <input type="hidden" name="redirect_to" value="http://enter3.ent3.ru/catalog/appliances/" />
+                <input type="hidden" name="redirect_to" value="<?php echo \light\App::getRequest()->getUri() ?>" />
                 <div class="fr width327 ml20">
                     <div class="font16 pb20">Я новый пользователь</div>
                     <div class="pb5">Как к вам обращаться?</div>

@@ -567,6 +567,7 @@ upi:			for( var item=0, boxitems=self.chosenBox().itemList(); item < boxitems.le
 				/* Select Shop at Zero Step */	
 				// pushing into box items which have selected shop
 				var selectedShopBoxShops = [ { shop: d.id, items: [] } ]
+
 				for( var box in self.dlvrBoxes() ) {
 					var procBox = self.dlvrBoxes()[box]
 					for( var item =0; item < procBox.itemList().length;  ) {				
@@ -613,7 +614,7 @@ upi:			for( var item=0, boxitems=self.chosenBox().itemList(); item < boxitems.le
 				// build new self-boxes
 				for(var tkn in newboxes ) {
 					var argshop = Model.shops[ newboxes[tkn].shop ]
-					addBox ( 'self', 'self_'+newboxes[tkn].shop, newboxes[tkn].items, argshop )
+					addBox ( 'self', 'self_'+newboxes[tkn].shop , newboxes[tkn].items, argshop )
 				}
 				// drop empty boxes
 				for( var box =0; box < self.dlvrBoxes().length;  ) {
@@ -634,7 +635,6 @@ upi:			for( var item=0, boxitems=self.chosenBox().itemList(); item < boxitems.le
 						data.type = 'courier'
 						break
 					}
-
 				PubSub.publish( 'DeliveryChanged', data )
 			}
 
@@ -678,8 +678,7 @@ upi:			for( var item=0, boxitems=self.chosenBox().itemList(); item < boxitems.le
 				for( var i in dlvr.itemList() )
 					boxitems.push( dlvr.itemList()[i].token )
 				data.items = boxitems
-// console.info(data)
-				ServerModel.deliveryTypes[ dlvr.token + formateDate( dlvr.chosenDate() ) ] = data
+				ServerModel.deliveryTypes[ dlvr.token + '_' + formateDate( dlvr.chosenDate() ) + '_' + dlvr.itemList()[0].id ] = data
 			}
 			return ServerModel
 		}
@@ -831,7 +830,6 @@ flds:	for( field in fieldsToValidate ) {
 			type_id = $('input[name="order[delivery_type_id]"]').val()
 		toSend.push( { name: 'order[delivery_type_id]', value: type_id })
 		toSend.push( { name: 'delivery_map', value: JSON.stringify( MVM.getServerModel() )  } )//encodeURIComponent
-// console.info( toSend )
 		$.ajax({
 			url: form.attr('action'),
 			timeout: 20000,
