@@ -27,6 +27,12 @@ class Entity {
     private $wayAuto;
     /* @var string */
     private $description;
+    /** @var bool */
+    private $isReconstructed;
+    /** @var Photo\Entity[] */
+    private $photo = array();
+    /* @var Panorama\Entity */
+    private $panorama;
 
     public function __construct(array $data = array()) {
         if (array_key_exists('id', $data)) $this->setId($data['id']);
@@ -41,6 +47,8 @@ class Entity {
         if (array_key_exists('way_walk', $data)) $this->setWayWalk($data['way_walk']);
         if (array_key_exists('way_auto', $data)) $this->setWayAuto($data['way_auto']);
         if (array_key_exists('description', $data)) $this->setDescription($data['description']);
+        if (array_key_exists('is_reconstruction', $data)) $this->setIsReconstructed($data['is_reconstruction']);
+        // TODO: фото. сейчас ядро не возвращает
     }
 
     /**
@@ -209,5 +217,57 @@ class Entity {
      */
     public function getWayWalk() {
         return $this->wayWalk;
+    }
+
+    /**
+     * @param \Model\Shop\Panorama\Entity $panorama
+     */
+    public function setPanorama(Panorama\Entity $panorama = null) {
+        $this->panorama = $panorama;
+    }
+
+    /**
+     * @return \Model\Shop\Panorama\Entity
+     */
+    public function getPanorama() {
+        return $this->panorama;
+    }
+
+    /**
+     * @param Photo\Entity[] $photos
+     */
+    public function setPhoto(array $photos) {
+        $this->photo = array();
+        foreach ($photos as $photo) {
+            $this->addPhoto($photo);
+        }
+    }
+
+    /**
+     * @param Photo\Entity $photo
+     */
+    public function addPhoto(Photo\Entity $photo) {
+        $this->photo[] = $photo;
+    }
+
+    /**
+     * @return Photo\Entity[]
+     */
+    public function getPhoto() {
+        return $this->photo;
+    }
+
+    /**
+     * @param bool $isReconstructed
+     */
+    public function setIsReconstructed($isReconstructed) {
+        $this->isReconstructed = (bool)$isReconstructed;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getIsReconstructed() {
+        return $this->isReconstructed;
     }
 }
