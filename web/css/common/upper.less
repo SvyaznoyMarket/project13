@@ -2,6 +2,8 @@
   .border-radius(0, 6px, 6px, 0);
   .box-shadow(0 0 7px @typBoxShadowColor);
   background:@firmOrange url("@{base-url}/common/img/upArrow.png") no-repeat 5px 3px;
+  color:@white;
+  font-size:16px;
   position:fixed;
   top:0;
   left:50%;
@@ -9,11 +11,7 @@
   margin-top:-30px;
   padding: 2px 15px 5px 30px;
   z-index: 2000;
-  a{
-    font-size:16px;
-    color:@white;
-    &:hover{
-      text-decoration:none;
-    }
+  &:hover{
+    text-decoration:none;
   }
 }

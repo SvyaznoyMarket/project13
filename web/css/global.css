@@ -958,6 +958,8 @@
     -moz-box-shadow: 0 0 7px #616161;
     box-shadow: 0 0 7px #616161;
     background: #ffa901 url("/css/common/img/upArrow.png") no-repeat 5px 3px;
+    color: #ffffff;
+    font-size: 16px;
     position: fixed;
     top: 0;
     left: 50%;
@@ -966,11 +968,7 @@
     padding: 2px 15px 5px 30px;
     z-index: 2000;
   }
-  #upper a {
-    font-size: 16px;
-    color: #ffffff;
-  }
-  #upper a:hover {
+  #upper:hover {
     text-decoration: none;
   }
 }

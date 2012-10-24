@@ -65,7 +65,7 @@
 
     <div id="gooReMaCategories" class="jsanalytics"></div>
     <div id="luxupTracker" class="jsanalytics"></div>
-	<div id="upper"><a href="#">Наверх</a></div>
+	<a id="upper" href="#">Наверх</a>
     <?= $page->slotAdriver() ?>
 
 </body>
