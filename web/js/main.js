@@ -954,7 +954,9 @@ $(document).ready(function(){
 					return false
 				}
 				if( !data.success || data.data.length === 0 ) {
-					that.printError()
+					// that.printError()
+					if( that.node )
+						$(that.node).html('')
 					return false					
 				}
 					
