@@ -44,6 +44,8 @@ class Entity {
     private $productCount;
     /** @var int */
     private $globalProductCount;
+    /** @var bool */
+    private $hasChild;
     /** @var Entity[] */
     private $child = array();
     /** @var Entity|null */
@@ -73,6 +75,7 @@ class Entity {
         if (array_key_exists('root_category_image', $data)) $this->setRootImage($data['root_category_image']);
         if (array_key_exists('product_count', $data)) $this->setProductCount($data['product_count']);
         if (array_key_exists('product_count_global', $data)) $this->setGlobalProductCount($data['product_count_global']);
+        if (array_key_exists('has_children', $data)) $this->setHasChild($data['has_children']);
     }
 
     /**
@@ -90,7 +93,7 @@ class Entity {
      * @return bool
      */
     public function isBranch() {
-        return (bool)$this->child;
+        return $this->hasChild;
     }
 
     /**
@@ -99,7 +102,7 @@ class Entity {
      * @return bool
      */
     public function isLeaf() {
-        return !(bool)$this->child;
+        return !$this->hasChild;
     }
 
     /**
@@ -376,6 +379,20 @@ class Entity {
      */
     public function getSeoTitle() {
         return $this->seoTitle;
+    }
+
+    /**
+     * @param bool $hasChild
+     */
+    public function setHasChild($hasChild) {
+        $this->hasChild = (bool)$hasChild;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getHasChild() {
+        return $this->hasChild;
     }
 
     /**
