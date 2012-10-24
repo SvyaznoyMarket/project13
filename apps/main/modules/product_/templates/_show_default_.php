@@ -101,7 +101,10 @@ foreach ($photo3dList as $photo3d)
 
 
   <div class="fr ar pb15">
-    <?php if ($item->getState()->getIsBuyable()): ?>
+    <?php if (!$item->getIsBuyable() && $item->getState()->getIsShop()): ?>
+        <div class="line pb15"></div>
+        <span class="font16 orange">Товар очень популярный и остался только на витрине магазина. Успей купить!</span>
+    <?php else: ?>
     <div class="goodsbarbig mSmallBtns" ref="<?php echo $item->getToken() ?>" data-value='<?php echo $json ?>'>
 
       <div class='bCountSet'>
@@ -114,6 +117,7 @@ foreach ($photo3dList as $photo3d)
       </div>
       <?php render_partial('cart_/templates/_buy_button.php', array('item' => $item)) ?>
     </div>
+    <?php if ($item->getIsBuyable()): ?>
     <div class="pb5"><strong>
       <a href=""
          data-model='<?php echo $json ?>'
@@ -121,16 +125,14 @@ foreach ($photo3dList as $photo3d)
          link-input='<?php echo url_for('product_delivery_1click') ?>'
          class="red underline order1click-link-new">Купить быстро в 1 клик</a>
     </strong></div>
-    <?php elseif (!$item->getIsBuyable() && $item->getState()->getIsShop()): ?>
-        <div class="line pb15"></div>
-        <span class="font16 orange">Товар очень популярный и остался только на витрине магазина. Успей купить!</span>
+    <?php endif ?>
     <?php endif ?>
   </div>
 
 
-  <div class="line pb15"></div>
   <?php if ($item->getIsBuyable() && $dataForCredit['creditIsAllowed'] && sfConfig::get('app_payment_credit_enabled', true)) : ?>
-  <div class="creditbox">
+    <div class="line pb15"></div>
+    <div class="creditbox">
     <div class="creditboxinner">
       от <span class="font24"><span class="price"></span> <span class="rubl">p</span></span> в кредит
       <div class="fr pt5"><label class="bigcheck " for="creditinput"><b></b>Беру в кредит
