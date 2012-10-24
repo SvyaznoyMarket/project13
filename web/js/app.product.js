@@ -125,6 +125,12 @@ $(document).ready(function() {
 				$(this).data('hm', max)
 				return
 			}
+			if( hm === max ) {
+				$('.bCountSet__eP', np).addClass('disabled')
+			} else {
+				if( $('.bCountSet__eP', np).hasClass('disabled') )
+					$('.bCountSet__eP', np).removeClass('disabled')
+			}
 			np.find('span').text( hm + '  шт.')
 			l1.attr('href', l1href +  hm )
 			l1cl.attr('href', l1clhref + '&quantity=' + hm )
