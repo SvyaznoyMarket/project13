@@ -142,4 +142,11 @@ class Entity {
     public function getWork() {
         return $this->work;
     }
+
+    /**
+     * @return bool
+     */
+    public function isInSale() {
+        return $this->getIsDelivered() && $this->getPrice() && $this->getPrice() > \App::config()->service['minPriceForDelivery'];
+    }
 }

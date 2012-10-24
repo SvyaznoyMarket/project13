@@ -153,6 +153,7 @@ class AppConfig {
             1 => 'http://fs01.enter.ru/11/1/500/',
             2 => 'http://fs01.enter.ru/11/1/120/',
         ),
+        'minPriceForDelivery' => 950,
     );
 
     /** @var array */
