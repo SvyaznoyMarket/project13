@@ -20,8 +20,6 @@ class Repository {
             'geo_id' => \App::user()->getRegion()->getId(),
         ));
         $data = reset($response);
-        // mock
-        $data = $data[0];
 
         return $data ? new Entity($data) : null;
     }
