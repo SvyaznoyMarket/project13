@@ -25,26 +25,8 @@ class productCatalog_Actions extends myActions
    */
   public function executeIndex()
   {
-    $productCategoryList = ProductCategoryTable::getInstance()->createQuery()
-      ->select('id, name, level, token, token_prefix')
-      ->where('is_active = ?', true)
-      ->orderBy('root_id, lft')
-      ->fetchArray();
-
-    $this->setVar('productCategoryList', $productCategoryList);
-
-    $list = array();
-    foreach ($productCategoryList as $productCategory)
-    {
-      $list[] = array(
-        'name'  => $productCategory['name'],
-        'url'   => $this->generateUrl('productCatalog_category', array('productCategory' => $productCategory['token_prefix'] ? ($productCategory['token_prefix'] . '/' . $productCategory['token']) : $productCategory['token'])),
-        'level' => $productCategory['level'],
-      );
-    }
-
-    $this->setVar('list', $list, true);
-    $this->setVar('infinity', true);
+  	$categoryList = RepositoryManager::getProductCategory()->getTree(null);
+	$this->setVar('categoryList', $categoryList);
   }
 
   public function executeProductType(sfWebRequest $request)
@@ -53,7 +35,7 @@ class productCatalog_Actions extends myActions
     $this->forward404Unless($productType);
     $this->loadList($request);
   }
-
+ 
   public function executeProduct(sfWebRequest $request)
   {
     $productCategory = $this->getProductCategory($request);
