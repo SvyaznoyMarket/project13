@@ -128,16 +128,12 @@ class CoreClient
     $error = null;
     try {
       do {
-        $code = curl_multi_exec($this->multiHandler, $this->still_executing);
-      } while ($code == CURLM_CALL_MULTI_PERFORM);
-
-      do {
-        $ready = curl_multi_select($this->multiHandler);
-	do {
-	  $code = curl_multi_exec($this->multiHandler, $this->still_executing);
+       	do {
+	  $code = curl_multi_exec($this->multiHandler, $curl_still_executing);
+	  $this->still_executing = $curl_still_executing;
 	} while ($code == CURLM_CALL_MULTI_PERFORM);
 
-        if ($ready >= 0) {
+        //if ($ready >= 0) {
           // if one or more descriptors is ready, read content and run callbacks
               while ($done = curl_multi_info_read($this->multiHandler)) {
 
@@ -168,8 +164,10 @@ class CoreClient
                 $callback = $this->callbacks[(string)$ch];
                 $callback($responseDecoded);
               }
-        }
-
+        //}
+        if ($curl_still_executing) {
+	  $ready = curl_multi_select($this->multiHandler);
+	}
 
       } while ($this->still_executing);
     } catch (Exception $e) {
