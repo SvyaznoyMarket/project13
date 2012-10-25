@@ -9,7 +9,7 @@
 
 <?php
 // флаг: показывать все товары в категории
-$isGlobal = $request->get('global', 0) ? true : false;
+$isGlobal = (bool)$request->get('global', false);
 
 // название региона в предложном падеже
 $regionInflectedName = $user->getRegion()->getInflectedName(5);
