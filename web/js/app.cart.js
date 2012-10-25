@@ -170,7 +170,8 @@ $(document).ready(function() {
 
 	} // object basketline
 
-	var basket = []	
+	var basket = [],
+		popupIsOpened = false	
 
 	$('.basketline').each( function(){
 		var bline = $(this)
@@ -194,9 +195,13 @@ $(document).ready(function() {
 			})
 		}
 		bline.find('a.link1').click( function(){
+			if( popupIsOpened )
+				return false
+			popupIsOpened = true
 			var f1popup = $('div.bF1Block', bline)
 			f1popup.show()
 			       .find('.close').click( function() {
+				       	popupIsOpened = false
 			       		f1popup.hide()
 			       })
 			f1popup.find('input.button').click( function() {
@@ -220,10 +225,13 @@ $(document).ready(function() {
 			})
 		}
 		bline.find('a.link_extWarr').click( function(){
-			
+			if( popupIsOpened )
+				return false
+			popupIsOpened = true
 			var wrntpopup = $('.extWarranty', bline)
 			wrntpopup.show()
 					 .find('.close').click( function() {
+					 	popupIsOpened = false
 			       		wrntpopup.hide()
 			         })
 			wrntpopup.find('input.button').click( function() {
