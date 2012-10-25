@@ -2,7 +2,7 @@
 
 namespace View\Shop;
 
-class ShowPage extends \View\DefaultLayout {
+class RegionPage extends \View\DefaultLayout {
     protected $layout = 'layout-oneColumn';
 
     public function prepare() {
@@ -12,30 +12,21 @@ class ShowPage extends \View\DefaultLayout {
             return;
         }
 
-        /** @var $shop \Model\Shop\Entity */
-        $shop = $this->getParam('shop') instanceof \Model\Shop\Entity ? $this->getParam('shop') : null;
-        if (!$shop) {
-            return;
-        }
-
         // breadcrumbs
         if (!$this->hasParam('breadcrumbs')) {
             $breadcrumbs = array();
             $breadcrumbs[] = array(
                 'name' => 'Магазины Enter в  ' . $region->getInflectedName(5),
-                'url'  => \App::router()->generate('shop.region', array('regionToken' => $region->getToken())),
-            );
-            $breadcrumbs[] = array(
-                'name' => $shop->getName(),
-                'url'  => null, // потому что последний элемент ;)
+                'url'  => null,
             );
 
             $this->setParam('breadcrumbs', $breadcrumbs);
         }
 
         // seo: title
-        $this->setTitle($shop->getName());
-        $this->setParam('title', $shop->getName());
+        $title = 'Магазины Enter в ' . $region->getInflectedName(5);
+        $this->setTitle($title);
+        $this->setParam('title', $title);
     }
 
     public function slotBodyDataAttribute() {
@@ -43,6 +34,6 @@ class ShowPage extends \View\DefaultLayout {
     }
 
     public function slotContent() {
-        return $this->render('shop/page-show', $this->params);
+        return $this->render('shop/page-region', $this->params);
     }
 }

@@ -2,11 +2,13 @@
 /**
  * @var $product ProductEntity
  * @var $pagesNum int
+ * @var $marker string
  */
 ?>
 
 <?php
 $pagesNum = ceil(count($products) / 5);
+$marker = isset($marker) ? $marker : null;
 ?>
 
 <div class="carouseltitle carbig">
@@ -32,6 +34,7 @@ $pagesNum = ceil(count($products) / 5);
       'maxPerPage' => 5,
       'fixHeight'  => true,
       'ii'         => $i++,
+      'marker'     => $marker,
     )) ?>
   <?php endforeach ?>
 </div>

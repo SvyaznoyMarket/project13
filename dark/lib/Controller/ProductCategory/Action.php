@@ -107,8 +107,22 @@ class Action {
             throw new \Exception\NotFoundException(sprintf('Категория товара с токеном "%s" не найдена.', $categoryToken));
         }
 
-        // обязательно загружаем предков и детей, чтобы установить тип узла категории (root, branch или leaf)
-        $repository->loadEntityBranch($category);
+        if ($category->isLeaf()) {
+            $parent = $category->getParentId() ? $repository->getEntityById($category->getParentId()) : null;
+            if (!$parent) {
+                throw new \RuntimeException(sprintf('Category #%s has no parent', $category->getId()));
+            }
+            $category->setParent($parent);
+            $repository->loadEntityBranch($category->getParent());
+
+            // устанавливаем предков категории на основе предков родителя
+            foreach ($category->getParent()->getAncestor() as $ancestor) {
+                $category->addAncestor($ancestor);
+            }
+            $category->addAncestor($parent);
+        } else {
+            $repository->loadEntityBranch($category);
+        }
 
         // если категория содержится во внешнем узле дерева
         if ($category->isLeaf()) {
@@ -135,7 +149,7 @@ class Action {
     private function rootCategory(\Model\Product\Category\Entity $category, \Http\Request $request) {
         if (\App::config()->debug) \App::debug()->add('sub.act', 'rootCategory');
 
-        if (!(bool)$category->getChild()) {
+        if (!$category->getHasChild()) {
             throw new \Exception(sprintf('У категории "%s" отстутсвуют дочерние узлы', $category->getId()));
         }
 
@@ -208,13 +222,6 @@ class Action {
         if ($pageNum < 1) {
             throw new \Exception\NotFoundException(sprintf('Неверный номер страницы "%s".', $pageNum));
         }
-
-        if (!$category->getParent()) {
-            throw new \RuntimeException(sprintf('Category #%s has no parent', $category->getId()));
-        }
-
-        // к сожалению, нужна также загрузка дочерних узлов родителя (для левого меню категорий - product-category/_branch)
-        \RepositoryManager::getProductCategory()->loadEntityBranch($category->getParent());
 
         // сортировка
         $productSorting = new \Model\Product\Sorting();

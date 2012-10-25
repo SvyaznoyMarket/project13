@@ -153,8 +153,10 @@ foreach ($photo3dList as $photo3d)
 	</div>
 	<a class="likeGoodsRegion" href="#">Похожие товары, доступные в вашем городе</a>
 
-  <?php if ($item->getIsBuyable() && $dataForCredit['creditIsAllowed'] && sfConfig::get('app_payment_credit_enabled', true)) : ?>
+    <?php if ($item->getIsBuyable()): ?>
     <div class="line pb15"></div>
+
+    <?php if ($dataForCredit['creditIsAllowed'] && sfConfig::get('app_payment_credit_enabled', true)) : ?>
     <div class="creditbox">
     <div class="creditboxinner">
       от <span class="font24"><span class="price"></span> <span class="rubl">p</span></span> в кредит
@@ -162,13 +164,10 @@ foreach ($photo3dList as $photo3d)
         <input id="creditinput" type="checkbox" name="creditinput" autocomplete="off"/></label></div>
     </div>
   </div>
-  <?php endif; ?>
 
-  <?php if ($dataForCredit['creditIsAllowed'] && sfConfig::get('app_payment_credit_enabled', true)) : ?>
   <input data-model="<?php echo $dataForCredit['creditData'] ?>" id="dc_buy_on_credit_<?php echo $item->getArticle(); ?>" name="dc_buy_on_credit" type="hidden" />
   <?php endif; ?>
 
-  <?php if ($item->getIsBuyable()): ?>
   <div class="bDeliver2 delivery-info" id="product-id-<?php echo $item->getId() ?>" data-shoplink="<?php echo url_for('productStock', array('product' => $item->getPath())) ?>" data-calclink="<?php echo url_for('product_delivery', array('product' => $item->getId())) ?>">
     <h4>Как получить заказ?</h4>
     <ul>

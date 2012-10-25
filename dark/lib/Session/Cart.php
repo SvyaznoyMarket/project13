@@ -69,7 +69,16 @@ class Cart {
      */
     public function getQuantityByProduct($productId) {
         $session = $this->storage->all();
-        return count($session[$this->sessionName]['productList']);
+        $productId = (int)$productId;
+
+        if (array_key_exists($productId, $session[$this->sessionName]['productList'])) {
+            if ((int)$session[$this->sessionName]['productList'][$productId] < 1) {
+                unset($session[$this->sessionName]['productList'][$productId]);
+                return 0;
+            }
+            return $session[$this->sessionName]['productList'][$productId];
+        }
+        return 0;
     }
 
     /**
