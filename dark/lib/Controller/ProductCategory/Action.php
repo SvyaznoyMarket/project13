@@ -120,6 +120,16 @@ class Action {
                 $category->addAncestor($ancestor);
             }
             $category->addAncestor($parent);
+
+            // у дочек родителя категория содержит всю инфу
+            // TODO: переделать
+            foreach ($category->getParent()->getChild() as $child) {
+                if ($child->getId() == $category->getId()) {
+                    $category->setProductCount($child->getProductCount());
+                    $category->setGlobalProductCount($child->getGlobalProductCount());
+                    break;
+                }
+            }
         } else {
             $repository->loadEntityBranch($category);
         }

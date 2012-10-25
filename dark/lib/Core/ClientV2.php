@@ -140,8 +140,7 @@ class ClientV2 implements ClientInterface
         return $connection;
     }
 
-    private function decode($response)
-    {
+    private function decode($response) {
         if (is_null($response)) {
             throw new \RuntimeException('Response cannot be null');
         }
