@@ -3106,7 +3106,7 @@
   }
   .goodslist .goodsbox,
   .carousel .goodsbox {
-    min-height: 284px;
+    min-height: 300px;
   }
   .goodsbox {
     float: left;
