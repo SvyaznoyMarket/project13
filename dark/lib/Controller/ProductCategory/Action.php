@@ -120,6 +120,16 @@ class Action {
                 $category->addAncestor($ancestor);
             }
             $category->addAncestor($parent);
+
+            // у дочек родителя категория содержит всю инфу
+            // TODO: переделать
+            foreach ($category->getParent()->getChild() as $child) {
+                if ($child->getId() == $category->getId()) {
+                    $category->setProductCount($child->getProductCount());
+                    $category->setGlobalProductCount($child->getGlobalProductCount());
+                    break;
+                }
+            }
         } else {
             $repository->loadEntityBranch($category);
         }
@@ -278,12 +288,14 @@ class Action {
      * @return \Model\Product\Filter
      */
     private function getFilter(\Model\Product\Category\Entity $category, \Http\Request $request) {
-        $filters = \RepositoryManager::getProductFilter()->getCollectionByCategory($category);
+        $isGlobal = (bool)$request->get('global', false);
+
+        $filters = \RepositoryManager::getProductFilter()->getCollectionByCategory($category, $isGlobal ? null : \App::user()->getRegion());
         $productFilter = new \Model\Product\Filter($filters);
         $productFilter->setCategory($category);
         // filter values
         $values = $request->get(\View\Product\FilterForm::$name, array());
-        if ($request->get('global', 0)) {
+        if ($isGlobal) {
             $values['global'] = 1;
         }
         $productFilter->setValues($values);

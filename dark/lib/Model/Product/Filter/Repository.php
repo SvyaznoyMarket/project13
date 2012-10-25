@@ -14,13 +14,16 @@ class Repository {
      * @param \Model\Product\Category\Entity $category
      * @return Entity[]
      */
-    public function getCollectionByCategory($category) {
+    public function getCollectionByCategory($category, \Model\Region\Entity $region = null) {
         $collection = array();
 
-        $response = $this->client->query('listing/filter', array(
+        $params = array(
             'category_id' => $category->getId(),
-            'region_id'   => \App::user()->getRegion()->getId(),
-        ));
+        );
+        if ($region) {
+            $params['region_id'] = $region->getId();
+        }
+        $response = $this->client->query('listing/filter', $params);
         $exists = array();
         foreach ($response as $data) {
             $collection[] = new Entity($data);
