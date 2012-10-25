@@ -38,6 +38,8 @@ class CoreClient
     $this->logger = new sfAggregateLogger(new sfEventDispatcher());
     $this->logger->addLogger(new sfFileLogger(new sfEventDispatcher(), array('file' => $this->parameters->get('log_file'))));
     $this->logger->addLogger(sfContext::getInstance()->getLogger());
+
+    $this->still_executing = false;
   }
 
   /**
@@ -100,6 +102,7 @@ class CoreClient
     curl_multi_add_handle($this->multiHandler, $resource);
     $this->callbacks[(string)$resource] = $callback;
     $this->resources[] = $resource;
+    $this->still_executing = true;
   }
 
   /**
@@ -125,10 +128,16 @@ class CoreClient
     $error = null;
     try {
       do {
-        $code = curl_multi_exec($this->multiHandler, $still_executing);
-        if ($code == CURLM_OK) {
-          $ready = curl_multi_select($this->multiHandler);
-          if ($ready >= 0) {
+        $code = curl_multi_exec($this->multiHandler, $this->still_executing);
+      } while ($code == CURLM_CALL_MULTI_PERFORM);
+
+      do {
+        $ready = curl_multi_select($this->multiHandler);
+	do {
+	  $code = curl_multi_exec($this->multiHandler, $this->still_executing);
+	} while ($code == CURLM_CALL_MULTI_PERFORM);
+
+        if ($ready >= 0) {
           // if one or more descriptors is ready, read content and run callbacks
               while ($done = curl_multi_info_read($this->multiHandler)) {
 
@@ -159,11 +168,10 @@ class CoreClient
                 $callback = $this->callbacks[(string)$ch];
                 $callback($responseDecoded);
               }
-          }
-        } elseif ($code != CURLM_CALL_MULTI_PERFORM) {
-          throw new CoreClientException("multi_curl failure [$code]");
         }
-      } while ($still_executing && $ready != -1);
+
+
+      } while ($this->still_executing);
     } catch (Exception $e) {
       $error = $e;
     }
