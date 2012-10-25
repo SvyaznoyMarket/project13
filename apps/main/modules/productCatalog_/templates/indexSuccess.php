@@ -3,11 +3,11 @@
  * @var $categoryList ProductCategoryEntity[]
  */
 ?>
-<?php slot('title', 'Каталог товаров') ?>
+<?php //slot('title', 'Каталог товаров') ?>
 
-<?php slot('navigation') ?>
-<?php include_component('productCatalog_', 'navigation') ?>
-<?php end_slot() ?>
+<?php //slot('navigation') ?>
+<?php //include_component('productCatalog_', 'navigation') ?>
+<?php //end_slot() ?>
 
 <?php 
 $renderList = function($list) use(&$renderList){
@@ -28,6 +28,23 @@ $renderList = function($list) use(&$renderList){
 ?>
 <div class="clear"></div>
 <div class="indexCatalog">
+	<div class="indexCatalog__slideMenu">
+		<h2>Поиск по категориям:</h2>
+			<input id="catFind" type="text" class="bBuyingLine__eText"  />
+			<input id="catFindButton" class="searchbutton" type="button" />
+		<h2>Быстрый переход:</h2>
+		<ul>
+			<li>
+				<a href="#">Рутовая категория №1</a>
+			</li>
+			<li>
+				<a href="#">Рутовая категория №2</a>
+			</li>
+			<li>
+				<a href="#">Рутовая категория №3</a>
+			</li>
+		</ul>
+	</div>
 	<?php $renderList($categoryList) ?>
 </div>
 <? /*
