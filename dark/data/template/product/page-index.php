@@ -130,7 +130,7 @@
     <div class="pb5"><strong>
       <a href=""
          data-model='<?php echo $json ?>'
-         link-output='<?php echo $page->url('order.1click', array('product' => $product->getBarcode())) ?>'
+         link-output='<?php echo $page->url('order.1click', array('product' => $product->getToken())) ?>'
          link-input='<?php echo $page->url('product.delivery_1click') ?>'
          class="red underline order1click-link-new">Купить быстро в 1 клик</a>
     </strong></div>
