@@ -13,10 +13,10 @@ $marker = isset($marker) ? $marker : null;
 ?>
 
 <div class="goodsbox"<?php echo (isset($ii) && $ii > $maxPerPage) ? ' style="display:none;"' : '' ?>>
-    <div class="goodsbox__inner">
+    <div class="goodsbox__inner" ref="<?php echo $item->getToken() ?>">
     	<div class="photo">
 	        <a href="<?php echo $item->getLink().(!empty($marker) ? $marker : '') ?>">
-      			<img src="<?php echo $item->getMediaImageUrl() ?>" alt="<?php echo $title ?>" title="<?php echo $title ?>" width="119" height="120"/>
+      			<img class="mainImg" src="<?php echo $item->getMediaImageUrl() ?>" alt="<?php echo $title ?>" title="<?php echo $title ?>" width="119" height="120"/>
 			</a>
 	    </div>
 		<div class="goodsbox__rating rate<?= round($item->getRating())?>">
