@@ -1,3 +1,4 @@
+/* CSS crunched with Crunch - http://crunchapp.net/ */
 /*---------ШРИФТЫ----------*/
 @font-face {
   font-family: 'Enter';
@@ -3795,6 +3796,10 @@
     line-height: 40px;
     text-decoration: underline;
   }
+  .carbig .scroll span {
+    padding: 0px;
+    vertical-align: top;
+  }
 }
 /*стили для продуктов f1*/
 @media all {
@@ -5344,19 +5349,17 @@
   .bMapShops__ePopupRel .bGrayButton {
     margin: 15px 0px 0px;
   }
-  .bInShop__eBottom .bMapShops__eMapWrap,
+  /*.bInShop__eBottom .bMapShops__eMapWrap, 
   .mMapPopup .bMapShops__eMapWrap,
   .bFast .bMapShops__eMapWrap {
-    -webkit-box-shadow: inset 0px 0px 5px #777777;
-    -moz-box-shadow: inset 0px 0px 5px #777777;
-    box-shadow: inset 0px 0px 5px #777777;
+    .inner-shadow(0px, 0px, 5px, #777);
     border: 1px solid #c7c7c7;
     float: right;
     height: 550px;
     overflow: hidden;
     position: relative;
     width: 660px;
-  }
+  }*/
 }
 /*---END---СТИЛИ ОКНА С КАРТОЙ МАГАЗИНОВ---*/
 /*-------СТИЛИ СТРАНИЦЫ С МАГАЗИНАМИ-----*/

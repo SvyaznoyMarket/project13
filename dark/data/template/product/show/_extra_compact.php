@@ -13,10 +13,10 @@ $maxHeight = isset($maxHeight) && $maxHeight;
 ?>
 
 <div class="goodsbox<? if ($maxHeight): ?> height220<? endif ?>"<? if ($isHidden): ?> style="display:none;"<? endif ?>>
-    <div class="goodsbox__inner">
+    <div class="goodsbox__inner" ref="<?php echo $product->getToken(); ?>">
     	<div class="photo">
 			<a href="<?php echo $product->getLink() ?>">
-			  <img src="<?php echo $product->getImageUrl() ?>" alt="<?php echo $product->getNameWithCategory() ?>"
+			  <img class="mainImg" src="<?php echo $product->getImageUrl() ?>" alt="<?php echo $product->getNameWithCategory() ?>"
 				title="<?php echo $product->getNameWithCategory() ?>" width="119" height="120"/>
 			</a>
 		</div>

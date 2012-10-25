@@ -440,7 +440,7 @@ levup:			for(var i=0, l=numbers.length; i<l; i++)
 				tind = i
 				break
 			} else {
-				if( Date.parse( currentDate ) == Date.parse( Deliveries['self'].dates[i].value ) ) {
+				if( parseISO8601( currentDate ) == parseISO8601( Deliveries['self'].dates[i].value ) ) {
 					tind = i
 					break
 				}
@@ -650,14 +650,12 @@ levup:			for(var i=0, l=numbers.length; i<l; i++)
 		var outputUrl = $('#stockmodel').attr('link-output')
 		var selfAvailable = false
 		var currentDate = (new Date()).toISOString().substr(0,10)
-
 		/* Load Data from Server */
 		var postData = {
 			product_id: Model.jsitemid,
 			product_quantity: 1,
 			region_id: Model.jsregionid*1
 		}
-		
 		$.post( inputUrl, postData, function(data) {
 			if( !data.success ) {
 				//SHOW WARNING, NO MVM
@@ -688,8 +686,9 @@ levup:			for(var i=0, l=numbers.length; i<l; i++)
 				$('#noDlvr').show()
 				return false				
 			}
-			if( Date.parse( Deliveries['self'].dates[0].value ) !== Date.parse( currentDate ) &&
-				Date.parse( Deliveries['self'].dates[0].value ) !== Date.parse( currentDate ) + 1000*60*60*24 ) {
+
+			if( parseISO8601( Deliveries['self'].dates[0].value ) !== parseISO8601( currentDate ) &&
+				parseISO8601( Deliveries['self'].dates[0].value ) !== parseISO8601( currentDate ) + 1000*60*60*24 ) {
 				//SHOW WARNING, NO TODAY AND TOMORROW DELIVERY
 				$('#noDlvr').show()
 				return false				
