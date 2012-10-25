@@ -4,11 +4,8 @@ namespace Controller\Error;
 
 class ServerErrorAction {
     public function execute(\Exception $e) {
-        $page = new \View\Error\IndexPage();
+        $content = \App::templating()->render('error/page-500');
 
-        $page->setParam('title', 'Ошибка 500');
-        $page->setParam('message', 'Что-то поломалось...');
-
-        return new \Http\Response($page->show(), 500);
+        return new \Http\Response($content, 500);
     }
 }
