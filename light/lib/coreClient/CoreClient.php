@@ -134,32 +134,35 @@ class CoreClient
       do {
         $code = curl_multi_exec($this->multiHandler, $still_executing);
         if ($code == CURLM_OK) {
-          // if one or more descriptors is ready, read content and run callbacks
-          while ($done = curl_multi_info_read($this->multiHandler)) {
-            $this->log('Core response done: ' . print_r($done, 1), 'debug');
-            $ch = $done['handle'];
-            $info = curl_getinfo($ch);
+          $ready = curl_multi_select($this->multiHandler);
+          if ($ready >= 0) {
+                // if one or more descriptors is ready, read content and run callbacks
+              while ($done = curl_multi_info_read($this->multiHandler)) {
+                $this->log('Core response done: ' . print_r($done, 1), 'debug');
+                $ch = $done['handle'];
+                $info = curl_getinfo($ch);
 
-            RequestLogger::getInstance()->addLog($info['url'], "unknown in multi curl", $info['total_time']);
+                RequestLogger::getInstance()->addLog($info['url'], "unknown in multi curl", $info['total_time']);
 
-            $this->log('Core response resurce: ' . $ch, 'debug');
-            $this->log('Core response info: ' . $this->encodeInfo($info), 'debug');
-            if (curl_errno($ch) > 0)
-              throw new \RuntimeException(curl_error($ch), curl_errno($ch));
-            $content = curl_multi_getcontent($ch);
-            if ($info['http_code'] >= 300) {
-              throw new \RuntimeException(sprintf("Invalid http code: %d, \nResponse: %s", $info['http_code'], $content));
+                $this->log('Core response resurce: ' . $ch, 'debug');
+                $this->log('Core response info: ' . $this->encodeInfo($info), 'debug');
+                if (curl_errno($ch) > 0)
+                  throw new \RuntimeException(curl_error($ch), curl_errno($ch));
+                $content = curl_multi_getcontent($ch);
+                if ($info['http_code'] >= 300) {
+                  throw new \RuntimeException(sprintf("Invalid http code: %d, \nResponse: %s", $info['http_code'], $content));
+                }
+                $responseDecoded = $this->decode($content);
+                $this->log('Core response data: ' . $this->encode($responseDecoded), 'debug');
+                /** @var $callback callback */
+                $callback = $this->callbacks[(string)$ch];
+                $callback($responseDecoded);
             }
-            $responseDecoded = $this->decode($content);
-            $this->log('Core response data: ' . $this->encode($responseDecoded), 'debug');
-            /** @var $callback callback */
-            $callback = $this->callbacks[(string)$ch];
-            $callback($responseDecoded);
           }
         } elseif ($code != CURLM_CALL_MULTI_PERFORM) {
           throw new \RuntimeException("multi_curl failure [$code]");
         }
-      } while ($still_executing);
+      } while ($still_executing && $ready != -1);
       $time_end = microtime(true);
       $this->log('Multi-request time:' . ($time_end - $time_start), 'info');
     } catch (Exception $e) {
