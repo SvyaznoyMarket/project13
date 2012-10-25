@@ -14,10 +14,10 @@ $renderList = function($list) use(&$renderList){
 	if(count($list)){
 		$level = $list[0]->getLevel();
 	?>
-	<ul class="indexCatalog__<?php echo $level ?>">
+	<ul>
 	  <?php foreach ($list as $i => $item): ?>
-	  	<li>
-	    	<a href="<?php echo $item->getLink() ?>"><?php echo $item->getName() ?></a>
+	  	<li class="indexCatalog__<?php echo $level ?>">
+	    	<a class="indexCatalog__<?php echo $level ?>" href="<?php echo $item->getLink() ?>"><?php echo $item->getName() ?></a>
 	    	<?php $renderList($item->getChildren()); ?>
 	    </li>
 	  <?php endforeach ?>
@@ -26,7 +26,8 @@ $renderList = function($list) use(&$renderList){
 	}
 }
 ?>
-<div id="korch-id">
+<div class="clear"></div>
+<div class="indexCatalog">
 	<?php $renderList($categoryList) ?>
 </div>
 <? /*
