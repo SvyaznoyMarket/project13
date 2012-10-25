@@ -20,7 +20,7 @@ class ShopModel
    */
   public function getById($id){
     $id = (int) $id;
-    $response = App::getCoreV2()->query('shop.get', array(), array('id' => array($id)));
+    $response = App::getCoreV2()->query('shop.get', array('id' => array($id)), array());
     if (!isset($response[0]) || !is_array($response[0])){
       return null;
     }
