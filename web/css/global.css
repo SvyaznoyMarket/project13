@@ -1,4 +1,3 @@
-/* CSS crunched with Crunch - http://crunchapp.net/ */
 /*---------ШРИФТЫ----------*/
 @font-face {
   font-family: 'Enter';
@@ -6186,7 +6185,7 @@
   }
   .photobox {
     float: left;
-    height: 100%;
+    height: 2500px;
     overflow: hidden;
     position: relative;
     width: 100%;
