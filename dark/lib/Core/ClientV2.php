@@ -11,6 +11,8 @@ class ClientV2 implements ClientInterface
     private $isMultiple;
     private $callbacks = array();
     private $resources = array();
+    /** @var bool */
+    private $still_executing = false;
 
     public function __construct(array $config, \Logger\LoggerInterface $logger = null)
     {
@@ -18,6 +20,8 @@ class ClientV2 implements ClientInterface
             'client_id' => null,
         ), $config);
         $this->logger = $logger;
+
+        $this->still_executing = false;
     }
 
     public function query($action, array $params = array(), array $data = array()) {
@@ -60,6 +64,7 @@ class ClientV2 implements ClientInterface
         curl_multi_add_handle($this->isMultiple, $resource);
         $this->callbacks[(string)$resource] = $callback;
         $this->resources[] = $resource;
+        $this->still_executing = true;
     }
 
     public function execute() {
@@ -71,31 +76,34 @@ class ClientV2 implements ClientInterface
         $error = null;
         try {
             do {
-                $code = curl_multi_exec($this->isMultiple, $stillExecuting);
-                if ($code == CURLM_OK) {
-                    // if one or more descriptors is ready, read content and run callbacks
-                    while ($done = curl_multi_info_read($this->isMultiple)) {
-                        $this->logger->debug('Core response done: ' . print_r($done, 1));
-                        $handler = $done['handle'];
-                        $info = curl_getinfo($handler);
-                        $this->logger->debug('Core response resource: ' . $handler);
-                        $this->logger->debug('Core response info: ' . $this->encodeInfo($info));
-                        if (curl_errno($handler) > 0) {
-                            throw new \RuntimeException(curl_error($handler), curl_errno($handler));
-                        }
-                        $content = curl_multi_getcontent($handler);
-                        if ($info['http_code'] >= 300) {
-                            throw new \RuntimeException(sprintf("Invalid http code: %d, \nResponse: %s", $info['http_code'], $content));
-                        }
-                        $decodedResponse = $this->decode($content);
-                        $this->logger->debug('Core response data: ' . $this->encode($decodedResponse));
-                        $callback = $this->callbacks[(string)$handler];
-                        $callback($decodedResponse);
+                do {
+                    $code = curl_multi_exec($this->multiHandler, $curl_still_executing);
+                    $this->still_executing = $curl_still_executing;
+                } while ($code == CURLM_CALL_MULTI_PERFORM);
+
+                // if one or more descriptors is ready, read content and run callbacks
+                while ($done = curl_multi_info_read($this->isMultiple)) {
+                    $this->logger->debug('Core response done: ' . print_r($done, 1));
+                    $handler = $done['handle'];
+                    $info = curl_getinfo($handler);
+                    $this->logger->debug('Core response resource: ' . $handler);
+                    $this->logger->debug('Core response info: ' . $this->encodeInfo($info));
+                    if (curl_errno($handler) > 0) {
+                        throw new \RuntimeException(curl_error($handler), curl_errno($handler));
                     }
-                } elseif ($code != CURLM_CALL_MULTI_PERFORM) {
-                    throw new \RuntimeException("multi_curl failure [$code]");
+                    $content = curl_multi_getcontent($handler);
+                    if ($info['http_code'] >= 300) {
+                        throw new \RuntimeException(sprintf("Invalid http code: %d, \nResponse: %s", $info['http_code'], $content));
+                    }
+                    $decodedResponse = $this->decode($content);
+                    $this->logger->debug('Core response data: ' . $this->encode($decodedResponse));
+                    $callback = $this->callbacks[(string)$handler];
+                    $callback($decodedResponse);
                 }
-            } while ($stillExecuting);
+                if ($curl_still_executing) {
+                    $ready = curl_multi_select($this->multiHandler);
+                }
+            } while ($this->still_executing);
         } catch (Exception $e) {
             $error = $e;
         }

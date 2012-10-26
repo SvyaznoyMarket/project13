@@ -18,6 +18,8 @@ class CoreClient
   private $callbacks = array();
   private $resources = array();
   private $isOnExecute = false;
+  /** @var bool */
+  private $still_executing = false;
 
   /**
    * @return CoreClient
