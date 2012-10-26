@@ -457,14 +457,14 @@ levup:			for(var i=0, l=numbers.length; i<l; i++)
 		self.pickedShop = ko.observable( self.todayShops[0] )
 		self.selectedS = ko.observable( {} )
 		var ending = 'ах'
-		if( self.todayShops.length % 10 === 1 )
+		if( self.todayShops.length === 1 )
 			ending = 'е'
-		self.todayH2 = 'Можно <span class="mLft">сегодня</span> в '+ self.todayShops.length + ' магазин'+ ending +':'
-		if( self.tomorrowShops.length % 10 === 1 )
+		self.todayH2 = 'Можно забрать <span class="mLft">сегодня</span> в '+ self.todayShops.length + ' магазин'+ ending +':'
+		if( self.tomorrowShops.length === 1 )
 			ending = 'е'
 		else
 			ending = 'ах'			
-		self.tomorrowH2 = ( self.todayShops.length > 0 ) ? 'или' : 'Можно'
+		self.tomorrowH2 = ( self.todayShops.length > 0 ) ? 'или' : 'Можно забрать '
 		self.tomorrowH2 += ' <span class="mRt">завтра</span> в '+ self.tomorrowShops.length + ' магазин'+ ending +':'
 		
 		self.toggleView = function( flag ) {		
