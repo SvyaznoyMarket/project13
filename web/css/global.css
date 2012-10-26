@@ -3756,6 +3756,25 @@ dd.bSpecSel ul li a {
   padding: 30px 10px 0px 0px;
   width: 470px;
 }
+.vitrin {
+  text-align: left;
+}
+.vitrin p {
+  font-family: 'Enter Type';
+  font-weight: bold;
+}
+.vitrin span {
+  font-size: 14px;
+  display: block;
+  margin: 7px 0;
+}
+.vitrin ul li {
+  font-size: 14px;
+}
+.vitrin ul li:before {
+  margin: 0 10px;
+  content: "–";
+}
 /*---END---СТИЛИ КАРТОЧКИ ТОВАРА---*/
 /*-------СТИЛИ ОФОРМЛЕНИЯ ЗАКАЗА-----*/
 .bBuyingHead {
