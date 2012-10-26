@@ -344,7 +344,7 @@ class guardActions extends myActions
               $form->setError('corp_okpo', 'Поле заполнено неверно.');
               break;
             case 698:
-              $form->setError('corp_inn', 'Пользователь с таким ИНН уже зарегистрирован.');
+              $form->setError('corp_inn', 'Пользователь с таким ИНН уже зарегистрирован. Пожалуйста обратитесь в контакт-cENTER.');
               break;
           }
         }
