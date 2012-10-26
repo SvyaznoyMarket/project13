@@ -30,6 +30,8 @@ require_once __DIR__ . '/../dark/lib/App.php';
 \App::init($config);
 
 \App::logger()->info('Start app');
+$requestLogger = \Util\RequestLogger::getInstance();
+$requestLogger->setId(\App::$id);
 
 // request
 $request = \App::request();
@@ -72,6 +74,7 @@ try {
         throw $e;
     }
 }
+\App::logger('request_compatible')->info($requestLogger->getStatistics());
 
 if ($response instanceof \Http\Response) {
     $response->send();

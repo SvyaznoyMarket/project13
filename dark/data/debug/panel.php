@@ -2,9 +2,10 @@
 $debug = App::debug();
 
 if (isset($response) && (200 != $response->getStatusCode())) {
-    $debug->add('status', $response->getStatusCode(), \Debug\Collector::TYPE_ERROR, 101);
+    $debug->add('status', $response->getStatusCode(), \Debug\Collector::TYPE_ERROR, 102);
 }
 
+$debug->add('id', \App::$id, \Debug\Collector::TYPE_INFO, 101);
 $debug->add('env', \App::config()->env, \Debug\Collector::TYPE_INFO, 100);
 $debug->add('act', implode('.', \App::request()->attributes->get('action', array('?', '?'))), 99);
 
