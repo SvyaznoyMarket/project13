@@ -72,15 +72,8 @@ class RegionRepository
 
   public function getById($id)
   {
-    $q = new CoreQuery('geo.get', array(
-      'id' => (int)$id,
-      "count" => false,
-      "start" => "",
-      "limit" => "",
-      "expand" => array("store", "price_list")
-    ));
+    $result = CoreClient::getInstance()->query('geo/get', array('id' => array($id)));
 
-    $result = $q->getResult();
     if ($data = reset($result)) {
       return $this->create($data);
     }

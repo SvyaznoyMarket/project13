@@ -43,6 +43,9 @@ class RegionEntity
   /** @var string */
   private $latitude;
 
+  /** @var bool */
+  private $hasTransportCompany;
+
   public function __construct(array $data = array()){
     if(array_key_exists('id', $data))            $this->id          = (int)$data['id'];
     if(array_key_exists('token', $data))         $this->token       = (string)$data['token'];
@@ -78,6 +81,8 @@ class RegionEntity
       $this->latitude  = $coords[$this->id][0];
       $this->longitude = $coords[$this->id][1];
     }
+
+    if (array_key_exists('tk_available', $data)) $this->setHasTransportCompany($data['tk_available']);
   }
   /**
    * @param int $id
@@ -302,5 +307,19 @@ class RegionEntity
   public function getToken()
   {
     return $this->token;
+  }
+
+  /**
+   * @param bool $hasTransportCompany
+   */
+  public function setHasTransportCompany($hasTransportCompany) {
+    $this->hasTransportCompany = (bool)$hasTransportCompany;
+  }
+
+  /**
+   * @return bool
+   */
+  public function getHasTransportCompany() {
+    return $this->hasTransportCompany;
   }
 }

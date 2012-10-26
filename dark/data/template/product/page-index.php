@@ -142,7 +142,7 @@
 
   <?php if ($product->getIsBuyable() || $product->getState()->getIsShop()): ?>
 
-  <?php if ($dataForCredit['creditIsAllowed']) : ?>
+  <?php if ($dataForCredit['creditIsAllowed'] && !$user->getRegion()->getHasTransportCompany()) : ?>
   <div class="creditbox">
     <div class="creditboxinner">
       от <span class="font24"><span class="price"></span> <span class="rubl">p</span></span> в кредит
@@ -153,10 +153,10 @@
   <?php endif; ?>
 
   <?php if ($dataForCredit['creditIsAllowed']) : ?>
-  <input data-model="<?php echo $page->escape($dataForCredit['creditData']) ?>" id="dc_buy_on_credit_<?php echo $product->getArticle(); ?>" name="dc_buy_on_credit" type="hidden" />
+    <input data-model="<?php echo $page->escape($dataForCredit['creditData']) ?>" id="dc_buy_on_credit_<?php echo $product->getArticle(); ?>" name="dc_buy_on_credit" type="hidden" />
   <?php endif; ?>
 
-  <?php else: ?>
+  <?php elseif ($user->getRegion()->getHasTransportCompany()): ?>
     <? if (\App::config()->product['globalListEnabled'] && (bool)$product->getNearestCity()): ?>
         <?= $page->render('product/_nearestCity', array('product' => $product)) ?>
     <? else: ?>

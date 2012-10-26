@@ -34,12 +34,15 @@ $textTemplate =
 //     for current region
 $totalText = $page->helper->formatNumberChoice($textTemplate, array('%count%' => $category->getProductCount()), $category->getProductCount());
 //     for global
-$globalTotalText = $page->helper->formatNumberChoice($textTemplate, array('%count%' => $category->getGlobalProductCount()), $category->getGlobalProductCount());
+$globalTotalText =
+    $user->getRegion()->getHasTransportCompany()
+    ? $page->helper->formatNumberChoice($textTemplate, array('%count%' => $category->getGlobalProductCount()), $category->getGlobalProductCount())
+    : '';
 ?>
 
 <div class="catProductNum">
     <b>В <?= $regionInflectedName ?> <?= $totalText ?></b>
-    <? if (\App::config()->product['globalListEnabled']): ?>
+    <? if (\App::config()->product['globalListEnabled'] && $user->getRegion()->getHasTransportCompany()): ?>
         <br />
         Всего в категории <?= $globalTotalText ?>
         <a href="<?= $page->helper->replacedUrl(array('global' => $isGlobal ? null : 1)) ?>"><?= ($isGlobal ? ('показать товары в ' . $regionInflectedName) : 'показать все товары') ?></a>
