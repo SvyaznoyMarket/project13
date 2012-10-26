@@ -3799,6 +3799,25 @@
     padding: 0px;
     vertical-align: top;
   }
+  .vitrin {
+    text-align: left;
+  }
+  .vitrin p {
+    font-family: 'Enter Type';
+    font-weight: bold;
+  }
+  .vitrin span {
+    font-size: 14px;
+    display: block;
+    margin: 7px 0;
+  }
+  .vitrin ul li {
+    font-size: 14px;
+  }
+  .vitrin ul li:before {
+    margin: 0 10px;
+    content: "–";
+  }
 }
 /*стили для продуктов f1*/
 @media all {

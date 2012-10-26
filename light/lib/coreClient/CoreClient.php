@@ -13,6 +13,10 @@ class CoreClient
 
   /** @var resource */
   private $multiHandler;
+
+  /** @var bool */
+  private $still_executing;
+
   /** @var callback[] */
   private $callbacks = array();
   private $resources = array();
@@ -38,6 +42,7 @@ class CoreClient
   private function __construct(array $parameters)
   {
     $this->parameters = $parameters;
+      $this->still_executing = false;
   }
 
   private function __clone(){}
@@ -112,6 +117,7 @@ class CoreClient
     curl_multi_add_handle($this->multiHandler, $resource);
     $this->callbacks[(string)$resource] = $callback;
     $this->resources[] = $resource;
+    $this->still_executing = true;
   }
 
   /**
@@ -132,9 +138,12 @@ class CoreClient
     try {
       $time_start = microtime(true);
       do {
-        $code = curl_multi_exec($this->multiHandler, $still_executing);
-        if ($code == CURLM_OK) {
-          // if one or more descriptors is ready, read content and run callbacks
+          do {
+              $code = curl_multi_exec($this->multiHandler, $curl_still_executing);
+              $this->still_executing = $curl_still_executing;
+          } while ($code == CURLM_CALL_MULTI_PERFORM);
+
+                // if one or more descriptors is ready, read content and run callbacks
           while ($done = curl_multi_info_read($this->multiHandler)) {
             $this->log('Core response done: ' . print_r($done, 1), 'debug');
             $ch = $done['handle'];
@@ -156,10 +165,10 @@ class CoreClient
             $callback = $this->callbacks[(string)$ch];
             $callback($responseDecoded);
           }
-        } elseif ($code != CURLM_CALL_MULTI_PERFORM) {
-          throw new \RuntimeException("multi_curl failure [$code]");
-        }
-      } while ($still_executing);
+          if ($curl_still_executing) {
+              $ready = curl_multi_select($this->multiHandler);
+          }
+      } while ($this->still_executing);
       $time_end = microtime(true);
       $this->log('Multi-request time:' . ($time_end - $time_start), 'info');
     } catch (Exception $e) {

@@ -135,6 +135,22 @@ class productCard_Actions extends myActions
 
     $dataForCredit = $this->_getDataForCredit($product);
 
+    $showroomShops = array();
+    //загружаем магазины, если товар доступен только на витрине
+    if (!$product->getIsBuyable() && $product->getState()->getIsShop()) {
+        $shopIds = array();
+        foreach ($product->getStock() as $stock) {
+            $quantityShowroom = $stock->getQuantityShowroom();
+            $shopId = $stock->getShopId();
+            if (!empty($quantityShowroom) && !empty($shopId)) {
+                $shopIds[] = $shopId;
+            }
+        }
+        if (count($shopIds)) {
+            $showroomShops = RepositoryManager::getShop()->getListById($shopIds);
+        }
+    }
+
     $this->setVar('dataForCredit', $dataForCredit);
     $this->setVar('showRelatedUpper', $showRelatedUpper);
     $this->setVar('showAccessoryUpper', !$showRelatedUpper);
@@ -142,5 +158,6 @@ class productCard_Actions extends myActions
     $this->setVar('accessoryPagesNum', ceil(count($product->getAccessoryIdList()) / self::NUM_RELATED_ON_PAGE));
     $this->setVar('product', $product);
     $this->setVar('view', 'compact');
+    $this->setVar('showroomShops', $showroomShops);
   }
 }

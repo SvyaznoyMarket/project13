@@ -6,6 +6,7 @@
  * @var $accessoryPagesNum int
  * @var $showRelatedUpper boolean
  * @var $showAccessoryUpper boolean
+ * @var $showroomShops ShopEntity[]
  */
 
 
@@ -28,6 +29,7 @@
   'showRelatedUpper' => $showRelatedUpper,
   'showAccessoryUpper' => $showAccessoryUpper,
   'dataForCredit' => $dataForCredit,
+  'showroomShops' => $showroomShops,
 )) ?>
 
 

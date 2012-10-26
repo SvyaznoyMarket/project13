@@ -9,6 +9,7 @@
  * @var $showRelatedUpper boolean
  * @var $showAccessoryUpper boolean
  * @var $dataForCredit array
+ * @var $showroomShops ShopEntity[]
  */
 $json = json_encode(array (
   'jsref' => $item->getToken(),
@@ -102,8 +103,16 @@ foreach ($photo3dList as $photo3d)
 
   <div class="fr ar pb15">
     <?php if (!$item->getIsBuyable() && $item->getState()->getIsShop()): ?>
-        <div class="line pb15"></div>
-        <span class="font16 orange">Товар очень популярный и остался только на витрине магазина. Успей купить!</span>
+       <div class="vitrin">
+	       	 <div class="line pb15"></div>
+	        <p class="font18 orange">Товар очень популярный и остался только на витрине. Успей купить!</p>
+	        <span><?php echo (count($showroomShops) == 1) ? 'Адрес магазина' : 'Адреса магазинов' ?>:</span>
+        	<ul>
+        		<?php foreach ($showroomShops as $shop): ?>
+		          <li><?php echo $shop->getAddress() //ссылки пока не будет, появится позже ?></li>
+		        <?php endforeach ?>
+        	</ul>
+       </div>
     <?php else: ?>
     <div class="goodsbarbig mSmallBtns" ref="<?php echo $item->getToken() ?>" data-value='<?php echo $json ?>'>
 
