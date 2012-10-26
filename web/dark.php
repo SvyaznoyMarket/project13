@@ -4,7 +4,7 @@ require_once __DIR__ . '/../dark/lib/Debug/Timer.php';
 \Debug\Timer::start('app');
 
 // environment
-$env = isset($_SERVER['APPLICATION_ENV']) ? $_SERVER['APPLICATION_ENV'] : 'live';
+$env = isset($_SERVER['APPLICATION_ENV']) ? $_SERVER['APPLICATION_ENV'] : 'dev';
 
 // configuration
 $configClass = ucfirst($env).'Config';
