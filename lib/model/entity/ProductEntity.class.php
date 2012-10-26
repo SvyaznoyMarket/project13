@@ -98,7 +98,9 @@ class ProductEntity
   private $priceOld;
   /** @var ProductStateEntity */
   private $state;
-  /** @var ProductLineEntity */
+  /** @var ProductStockEntity[] */
+  private $stock = array();
+    /** @var ProductLineEntity */
   private $line;
   /** @var ProductMediaEntity[] */
   private $mediaList = array();
@@ -1038,4 +1040,31 @@ class ProductEntity
   {
     return $this->tagList;
   }
+
+    /**
+     * @param array $stocks
+     */
+    public function setStock(array $stocks)
+    {
+        $this->stock = array();
+        foreach($stocks as $stock)
+            $this->addStock($stock);
+    }
+
+    /**
+     * @return array|ProductStockEntity[]
+     */
+    public function getStock()
+    {
+        return $this->stock;
+    }
+
+    /**
+     * @param ProductStockEntity $stock
+     */
+    public function addStock(ProductStockEntity $stock)
+    {
+        $this->stock[] = $stock;
+    }
+
 }

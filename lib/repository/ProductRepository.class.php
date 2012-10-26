@@ -71,6 +71,9 @@ class ProductRepository extends ObjectRepository
     }
     if (!empty($data['state']))
       $product->setState(new ProductStateEntity($data['state']));
+    if (array_key_exists('stock', $data) && is_array($data['stock'])) foreach ($data['stock'] as $stock) {
+      $product->addStock(new ProductStockEntity($stock));
+    }
     if (!empty($data['line']))
       $product->setLine(new ProductLineEntity($data['line']));
     if (!empty($data['label']))
