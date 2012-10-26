@@ -3354,41 +3354,6 @@
 /*--END--СТИЛИ ЛЕВОЙ НАВИГАЦИИ--*/
 /*-------СТИЛИ КАТАЛОГА-----*/
 @media all {
-  .indexCatalog a {
-    display: inline-block;
-    text-decoration: underline;
-    width: 190px;
-  }
-  .indexCatalog a.indexCatalog__1 {
-    background: #000000;
-    color: #ffa901;
-    display: block;
-    font-family: 'Enter';
-    font-size: 32px;
-    padding: 5px 5px 5px 30px;
-  }
-  .indexCatalog a.indexCatalog__1:hover {
-    color: #ffa901;
-  }
-  .indexCatalog a.indexCatalog__2 {
-    font-size: 16px;
-    font-weight: bold;
-  }
-  .indexCatalog li {
-    margin: 5px 5px 5px 30px;
-  }
-  .indexCatalog li ul {
-    display: inline-block;
-    margin: 10px;
-    vertical-align: top;
-  }
-  .indexCatalog li.indexCatalog__2 {
-    background: #e6e6e6;
-    margin: 5px 0;
-    padding: 10px;
-  }
-}
-@media all {
   .filter {
     color: #a6a6a6;
     float: left;
