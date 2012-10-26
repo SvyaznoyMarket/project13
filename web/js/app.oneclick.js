@@ -457,10 +457,10 @@ levup:			for(var i=0, l=numbers.length; i<l; i++)
 		self.pickedShop = ko.observable( self.todayShops[0] )
 		self.selectedS = ko.observable( {} )
 		var ending = 'ах'
-		if( self.todayShops.length === 1 )
+		if( self.todayShops.length % 10 === 1 && self.todayShops.length !== 11 )
 			ending = 'е'
 		self.todayH2 = 'Можно забрать <span class="mLft">сегодня</span> в '+ self.todayShops.length + ' магазин'+ ending +':'
-		if( self.tomorrowShops.length === 1 )
+		if( self.tomorrowShops.length % 10 === 1 && self.tomorrowShops.length !== 11 )
 			ending = 'е'
 		else
 			ending = 'ах'			
