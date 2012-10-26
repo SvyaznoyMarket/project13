@@ -1,4 +1,18 @@
 $(document).ready(function(){
+	/*страница /catalog/ */
+	if($('.indexCatalog__slideMenu').length){
+		var slMenu = $('.indexCatalog__slideMenu');
+		var startVal = slMenu.offset().top;
+		$(window).scroll(function(){
+			if ($(window).scrollTop() > startVal){
+				slMenu.offset({top:$(window).scrollTop()})
+			}
+			else{
+				slMenu.removeAttr('style');
+			}
+		});
+	}
+	
 	var carturl = $('.lightboxinner .point2').attr('href')
 
 	var shortinfo = '/user/shortinfo'
