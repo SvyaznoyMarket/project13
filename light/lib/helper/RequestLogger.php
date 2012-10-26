@@ -70,17 +70,28 @@ class RequestLogger
   public function addLog($url, $postData, $time){
         $this->_requestList[] = array(
             'time' => $time ,
-            'url' => $url ,
-            'post' => $postData
+            'url' => str_replace(array("\r", "\n"), '', $url) ,
+            'post' => str_replace(array("\r", "\n", "\t"), '', $postData)
         );
     }
 
   public function getStatistics(){
-    $fullText = 'Request id: ' . $this->getId() . " | ";
-    foreach ($this->_requestList as $log) {
-      $fullText .= '{"url":"'.$log['url'].'", "post":"'.$log['post'].'", "time":"'.$log['time'].'"} | ';
-    }
-    $fullText .= "response was sent to user after ". (microtime(true) - $this->startTime). " ms.";
-    return str_replace(array("\r", "\n"), '', $fullText);
+      $data = array(
+          'request_id' => $this->getId(),
+          'request_uri' => $_SERVER['REQUEST_URI'],
+          'api_queries' => array(),
+          'total_time' => (microtime(true) - $this->startTime),
+          'type' => 'light'
+      );
+
+      foreach ($this->_requestList as $log) {
+          $data['api_queries'][] = array(
+              'url' => $log['url'],
+              'post' => $log['post'],
+              'time' => $log['time']
+          );
+      }
+
+      return json_encode($data);
   }
 }

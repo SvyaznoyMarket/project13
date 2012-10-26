@@ -103,7 +103,7 @@ all:
       signature: test
       log_enabled: true
       log_file: %SF_LOG_DIR%/core_client_2.log
-      log_by_request_file: %SF_LOG_DIR%/core_client_2_request.log
+      log_by_request_file: %SF_LOG_DIR%/site_page_time.log
       log_response: false # логировать ответ
 
   cache_eraser:

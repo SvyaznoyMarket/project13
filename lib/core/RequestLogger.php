@@ -72,21 +72,32 @@ class RequestLogger
      * @param string $postData
      * @param string $time
      */
-    public function addLog($url, $postData='', $time=''){
-      $this->_requestList[] = array(
-        'time' => $time ,
-        'url' => $url ,
-        'post' => $postData
-      );
+    public function addLog($url, $postData, $time){
+        $this->_requestList[] = array(
+            'time' => $time ,
+            'url' => str_replace(array("\r", "\n"), '', $url) ,
+            'post' => str_replace(array("\r", "\n", "\t"), '', $postData)
+        );
     }
 
     public function getStatistics(){
-      $fullText = 'Request id: ' . $this->getId() . " | ";
-      foreach ($this->_requestList as $log) {
-        $fullText .= '{"url":"'.$log['url'].'", "post":"'.$log['post'].'", "time":"'.$log['time'].'"} | ';
-      }
-      $fullText .= "response was sent to user after ". (microtime(true) - $this->startTime). " ms.";
-      return $fullText;
+        $data = array(
+            'request_id' => $this->getId(),
+            'request_uri' => $_SERVER['REQUEST_URI'],
+            'api_queries' => array(),
+            'total_time' => (microtime(true) - $this->startTime),
+            'type' => 'symfony'
+        );
+
+        foreach ($this->_requestList as $log) {
+            $data['api_queries'][] = array(
+                'url' => $log['url'],
+                'post' => $log['post'],
+                'time' => $log['time']
+            );
+        }
+
+        return json_encode($data);
     }
 
     /**
@@ -98,6 +109,6 @@ class RequestLogger
         $file = $config['log_by_request_file'];
         $this->_logger->addLogger(new sfFileLogger(new sfEventDispatcher(), array('file' => $file)));
 
-        $this->_logger->info(str_replace(array("\r", "\n"), '', $this->getStatistics()));
+        $this->_logger->info($this->getStatistics());
     }
 }

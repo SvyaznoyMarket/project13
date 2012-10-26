@@ -11,7 +11,7 @@
     </appender>
     <appender name="requestLogFileAppender" class="LoggerAppenderFile">
         <layout class="LoggerLayoutTTCC" />
-        <param name="file" value="requestPlainPhp.log" />
+        <param name="file" value="site_page_time.log" />
         <param name="append" value="true" />
     </appender>
     <appender name="cartFileAppender" class="LoggerAppenderFile">
