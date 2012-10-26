@@ -26,29 +26,12 @@ class Layout {
     protected $javascripts = array();
     /** @var Helper */
     public $helper;
-    /** @var array */
-    protected $stylesheetTimestamps = array();
-    /** @var array */
-    protected $javascriptTimestamps = array();
 
     protected $layout;
 
     public function __construct() {
         $this->engine = \App::templating();
         $this->helper = new Helper();
-
-        if (\App::config()->asset['timestampEnabled']) {
-            try {
-                // css
-                $content = file_get_contents(\App::config()->dataDir . '/asset/css-timestamp.json');
-                $this->stylesheetTimestamps = json_decode($content, true);
-                // js
-                $content = file_get_contents(\App::config()->dataDir . '/asset/js-timestamp.json');
-                $this->javascriptTimestamps = json_decode($content, true);
-            } catch (\Exception $e) {
-                \App::logger()->error($e);
-            }
-        }
     }
 
     public function setParam($name, $value) {
@@ -98,9 +81,13 @@ class Layout {
     }
 
     public function addStylesheet($stylesheet) {
-        $name = preg_replace('/^\/css\//', '', $stylesheet);
-        if (isset($this->stylesheetTimestamps[$name])) {
-            $stylesheet .= '?' . $this->stylesheetTimestamps[$name];
+        if (\App::config()->asset['timestampEnabled']) {
+            try {
+                $timestamp = filectime(\App::config()->webDir . '/' . trim($stylesheet, '/'));
+                $stylesheet .= '?' . $timestamp;
+            } catch (\Exception $e) {
+                \App::logger($e);
+            }
         }
 
         $this->stylesheets[] = $stylesheet;
@@ -111,10 +98,15 @@ class Layout {
     }
 
     public function addJavascript($javascript) {
-        $name = preg_replace('/^\/js\//', '', $javascript);
-        if (isset($this->javascriptTimestamps[$name])) {
-            $javascript .= '?' . $this->javascriptTimestamps[$name];
+        if (\App::config()->asset['timestampEnabled']) {
+            try {
+                $timestamp = filectime(\App::config()->webDir . '/' . trim($javascript, '/'));
+                $javascript .= '?' . $timestamp;
+            } catch (\Exception $e) {
+                \App::logger($e);
+            }
         }
+
         $this->javascripts[] = $javascript;
     }
 

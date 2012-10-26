@@ -26,6 +26,9 @@ class AppConfig {
     public $logDir;
 
     /** @var string */
+    public $webDir;
+
+    /** @var string */
     public $authToken = array(
         'name'     => 'enter_auth',
         'lifetime' => 15552000 // 180 дней,
@@ -196,6 +199,7 @@ class AppConfig {
         $this->libDir = $this->appDir . '/lib';
         $this->dataDir = $this->appDir . '/data';
         $this->logDir = realpath($this->appDir . '/../log');
+        $this->webDir = realpath($this->appDir . '/../web');
     }
 
     public function __set($name, $value) {
