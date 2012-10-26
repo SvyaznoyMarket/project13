@@ -4985,9 +4985,6 @@
   .orderFinal__certificate input.cardPin {
     width: 90px;
   }
-  .orderFinal__certificate .process {
-    display: none;
-  }
   .orderFinal__certificate .process .img {
     -webkit-border-radius: 7px;
     -moz-border-radius: 7px;
