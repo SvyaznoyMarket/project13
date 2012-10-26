@@ -1,4 +1,16 @@
 $(document).ready(function(){
+	/* GA categories referrer */
+	function categoriesSpy( e ) {
+		if( typeof(_gaq) !== 'undefined' )
+			_gaq.push(['_trackEvent', 'CategoryClick', e.data, window.location.pathname ])
+		return true
+	}
+	$('.breadcrumbs').first().find('a').bind( 'click', 'Хлебные крошки сверху', categoriesSpy )
+	$('.breadcrumbs-footer').find('a').bind( 'click', 'Хлебные крошки снизу', categoriesSpy )
+	$('.extramenu').find('a').live('click', 'Верхнее меню', categoriesSpy )
+	$('.bCtg').find('a').bind('click', 'Левое меню', categoriesSpy )
+	$('.rubrictitle').find('a').bind('click', 'Заголовок карусели', categoriesSpy )
+	$('a.srcoll_link').bind('click', 'Ссылка Посмотреть все', categoriesSpy )
 
 	/* admitad */	
 	if( document.location.search.match(/admitad_uid/) ) {

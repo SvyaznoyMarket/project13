@@ -244,11 +244,11 @@ $(document).ready(function(){
 		atcl: $('.bGood__eArticle span:last').text().replace(/[^0-9\-]/g, '')
 	}
 	$('.bigcarousel').eq(0).bind('click', function(e) {
-		if( _gaq )
+		if( typeof(_gaq) !== 'undefined' )
 			_gaq.push(['_trackEvent', 'accessories_up', accessoriesMsg['atcl'], accessoriesMsg['uri'] ])
 	})
 	$('.bigcarousel').eq(1).bind('click', function(e) {
-		if( _gaq )
+		if( typeof(_gaq) !== 'undefined' )
 			_gaq.push(['_trackEvent', 'accessories_down', accessoriesMsg['atcl'], accessoriesMsg['uri'] ])
 	})
 
