@@ -1,5 +1,4 @@
 $(document).ready(function () {
-	
     
     /* sertificate */
 	if( $('.orderFinal__certificate').length ) {
@@ -53,11 +52,12 @@ $(document).ready(function () {
             }
             function checkCard() {
                 setProcessingStatus( 'orange', 'Проверка по номеру карты' )
-                $.get( urlCheck, { code: '23846829634' }, function( data ) {
+                $.post( urlCheck, { code: '23846829634' }, function( data ) {
                     if( ! 'success' in data )
                         return false
                     if( !data.success ) {
-                        setProcessingStatus( 'red' )
+                        var err = ( typeof(data.error) !== 'undefined' ) ? data.error : 'ERROR'
+                        setProcessingStatus( 'red', err )
                         return false
                     }
                     setProcessingStatus( 'green', data.data )
@@ -104,16 +104,12 @@ $(document).ready(function () {
             }
         })(); // object SertificateCard , singleton
 
-// console.info(SertificateCard)
-
         code.mask("999 999 999 9999 9", { completed: SertificateCard.checkCard, placeholder: "*" } )
         pin.mask("9999", { completed: SertificateCard.activateButton, placeholder: "*" } )
         code.bind('keyup', function() {
-// console.info( $(this).val() )
             SertificateCard.checkForStars( $(this).val() )
         })
         pin.bind('keyup', function() {
-// console.info( $(this).val() )
             SertificateCard.checkForStars( $(this).val() )
         })
        
@@ -138,14 +134,14 @@ $(document).ready(function () {
             return false
         })
 
-        $.mockjax({
-          url: '/certificate-check',
-          responseTime: 1000,
-          responseText: {
-            success: true,
-            data: { sum: 1000, code: '3432432' }
-          }
-        })
+        // $.mockjax({
+        //   url: '/certificate-check',
+        //   responseTime: 1000,
+        //   responseText: {
+        //     success: true,
+        //     data: { sum: 1000, code: '3432432' }
+        //   }
+        // })
         $.mockjax({
           url: '/certificate-activate',
           responseTime: 1000,
