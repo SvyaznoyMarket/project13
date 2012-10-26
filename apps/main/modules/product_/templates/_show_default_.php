@@ -105,7 +105,7 @@ foreach ($photo3dList as $photo3d)
     <?php if (!$item->getIsBuyable() && $item->getState()->getIsShop()): ?>
        <div class="vitrin">
 	       	 <div class="line pb15"></div>
-	        <p class="font18 orange">Товар очень популярный и остался только на витрине магазина. Успей купить!</p>
+	        <p class="font18 orange">Товар очень популярный и остался только на витрине. Успей купить!</p>
 	        <span><?php echo (count($showroomShops) == 1) ? 'Адрес магазина' : 'Адреса магазинов' ?>:</span>
         	<ul>
         		<?php foreach ($showroomShops as $shop): ?>
