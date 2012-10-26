@@ -157,23 +157,11 @@
   <?php endif; ?>
 
   <?php else: ?>
-    <?php if (\App::config()->product['globalListEnabled'] && (bool)$product->getNearestCity()): ?>
-        <div class="otherRegion">
-            <div class="corner">
-                <div></div>
-            </div>
-            <p>Этот товар нельзя купить в <?= $user->getRegion()->getInflectedName(5) ?></p>
-            <p>Товар доступен в <b>Москве</b> и <a class="expander" href="#"><? $count = count($product->getNearestCity()); echo (1 == $count ? 'другом городе' : 'других городах') ?></a></p>
-            <ul>
-                <?php foreach ($product->getNearestCity() as $city): ?>
-                <li><a href="<?php echo $page->url('region.change', array('regionId' => $city->getId())) ?>"><?php echo $city->getName() ?></a></li>
-                <?php endforeach ?>
-            </ul>
-            <div class="clear"></div>
-        </div>
-        <a class="likeGoodsRegion" href="<?php echo $product->getMainCategory()->getLink() ?>">Похожие товары, доступные в вашем городе</a>
-        <div class="line pb15"></div>
-        <?php endif ?>
+    <? if (\App::config()->product['globalListEnabled'] && (bool)$product->getNearestCity()): ?>
+        <?= $page->render('product/_nearestCity', array('product' => $product)) ?>
+    <? else: ?>
+        <p>Этот товар мы доставляем только в регионах нашего присутствия</p>
+    <? endif ?>
   <?php endif ?>
 
   <div class="bDeliver2 delivery-info" id="product-id-<?= $product->getId() ?>" data-shoplink="<?= $page->url('product.stock', array('productPath' => $product->getPath())) ?>" data-calclink="<?= $page->url('product.delivery') ?>">

@@ -12,7 +12,7 @@ class Action {
     );
 
     public function check(\Http\Request $request) {
-        $code = $request->get('code');
+        $code = trim($request->get('code'));
         if (!$code) {
             return new \Http\JsonResponse(array('success' => false, 'error' => 'Не указан код сертификата'));
         }
@@ -20,6 +20,11 @@ class Action {
         $error = 'Неверный сертификат';
         try {
             $response = \App::coreClientV2()->query('certificate/check', array('code' => $code));
+            if (is_array($response) && array_key_exists('error', $response)) {
+                $e = new \Core\Exception($response['error']['message'], $response['error']['code']);
+
+                throw $e;
+            }
 
             $statusCode = (int)$response['status_code'];
             if (0 == $statusCode) {
