@@ -41,6 +41,6 @@ class Action {
             }
         }
 
-        return new \Http\JsonResponse(array('success' => false, $error => $error));
+        return new \Http\JsonResponse(array('success' => false, 'error' => $error));
     }
 }
