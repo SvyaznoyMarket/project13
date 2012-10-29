@@ -71,7 +71,7 @@ class WPRequest
             )
         ));
 
-        \light\RequestLogger::getInstance()->addLog($this->url . $actionUri, '', (microtime(true) - $start));
+        \light\RequestLogger::getInstance()->addLog($this->url . $actionUri, array(), (microtime(true) - $start));
 
         return $json?json_decode($response, $assoc = True):$response;
     }
