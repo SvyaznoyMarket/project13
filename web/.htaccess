@@ -35,8 +35,8 @@ Options +FollowSymLinks +ExecCGI
   RewriteRule ^product/delivery-info* dark.php [L]
   #RewriteRule ^region/change/* dark.php [L]
   RewriteRule ^region/autocomplete* dark.php [L]
-  RewriteRule ^shops/([a-zA-Z_0-9-]+)$ dark.php [L]
-  RewriteRule ^shops/([a-zA-Z_0-9-]+)/([a-zA-Z_0-9-]+)$ dark.php [L]
+  #RewriteRule ^shops/([a-zA-Z_0-9-]+)$ dark.php [L]
+  #RewriteRule ^shops/([a-zA-Z_0-9-]+)/([a-zA-Z_0-9-]+)$ dark.php [L]
 
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteRule ^wp-admin/$ /content/wp-admin/index.php [L]

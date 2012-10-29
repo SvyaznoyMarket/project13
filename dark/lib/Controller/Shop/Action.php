@@ -5,6 +5,8 @@ namespace Controller\Shop;
 class Action {
     public function index() {
         $region = \App::user()->getRegion();
+
+        return $this->region($region->getId());
     }
 
     public function region($regionId) {
