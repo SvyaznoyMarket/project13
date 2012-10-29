@@ -13,10 +13,8 @@ class NotFoundAction {
             return new \Http\Response('', 404);
         }
 
-        $page = new \View\Error\IndexPage();
-        $page->setParam('title', 'Ошибка 404');
-        $page->setParam('message', 'Страница не найдена');
+        $content = \App::templating()->render('error/page-404', array('page' => new \View\Layout()));
 
-        return new \Http\Response($page->show(), 404);
+        return new \Http\Response($content, 404);
     }
 }

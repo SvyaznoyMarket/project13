@@ -14,27 +14,6 @@
   <div class="line pb15"></div>
 <?php endforeach ?>
 
-<? if (!$sf_user->getRegion('region')->getHasTransportCompany()): ?>
-<div class="orderFinal__certificate">
-	<script type="text/html" id="processBlock">
-		<div class="process">
-			<div class="img <%=typeNum%>"></div>
-			<p><%=text%></p>
-			<div class="clear"></div>
-		</div>
-	</script>
-	<h2>Заполните информацию с подарочной карты</h2>
-	<form>
-		<input class="bBuyingLine__eText cardNumber" placeholder="Номер" />
-		<input class="bBuyingLine__eText cardPin" placeholder="ПИН" />
-		<input id="sendCard" class="button bigbutton mDisabled" type="submit" value="Активировать" />
-	</form>
-  <div id="processing"></div>
-	<p class="certifText">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-</div>
-<div class="line pb15"></div>
-<? endif ?>
-
 <?php if (!$isCredit) { ?>
     <div class="mt32">
       В ближайшее время мы вам перезвоним :)

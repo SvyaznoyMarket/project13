@@ -116,6 +116,11 @@ class PaymentMethodEntity
         return $this->is_credit;
     }
 
+    public function isCertificate() {
+        // заглушка
+        return $this->id == 9;
+    }
+
     /**
      * @param string $name
      */
