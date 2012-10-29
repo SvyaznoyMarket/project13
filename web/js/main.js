@@ -982,7 +982,7 @@ $(document).ready(function(){
 								that.self = dlvr.date
 								break
 							default:
-								that.other.push( { date: dlvr.date, price: dlvr.price, tc: ( typeof(dlvr.transportCompany) !== 'undefined') } )
+								that.other.push( { date: dlvr.date, price: dlvr.price, tc: ( typeof(dlvr.transportCompany) !== 'undefined') ? dlvr.transportCompany : false } )
 						}
 					}
 					that.processHTML( coreid[i] )
