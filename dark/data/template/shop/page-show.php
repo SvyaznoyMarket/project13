@@ -43,7 +43,9 @@
         </div>
     </div>
 
-    <input id="map-panorama" type="hidden" data-swf="<?= $shop->getPanorama()->getSwf() ?>" data-xml="<?= $shop->getPanorama()->getXml() ?>"/>
+    <? if ($shop->getPanorama()): ?>
+        <input id="map-panorama" type="hidden" data-swf="<?= $shop->getPanorama()->getSwf() ?>" data-xml="<?= $shop->getPanorama()->getXml() ?>"/>
+    <? endif ?>
 </div>
 <!-- /bMap -->
 
