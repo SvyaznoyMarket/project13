@@ -4981,12 +4981,6 @@
     padding: 0px 0px 0px 10px;
     zoom: 1;
   }
-  /*.bSelect:hover .bSelect__eDropmenu {
-    display: block;;
-  }
-  */
-}
-@media all {
   .orderFinal__certificate {
     margin: 15px 0;
   }
@@ -5025,7 +5019,13 @@
   .orderFinal__certificate .process p {
     font-size: 18px;
     line-height: 1.5em;
+    display: inline;
+    float: none;
   }
+  /*.bSelect:hover .bSelect__eDropmenu {
+    display: block;;
+  }
+  */
 }
 /*---END---СТИЛИ ОФОРМЛЕНИЯ ЗАКАЗА---*/
 /*-------СТИЛИ СТРАНИЦЫ ГДЕ КУПИТЬ-----*/

@@ -88,6 +88,7 @@
             .queueScript('http://maps.google.com/maps/api/js?sensor=true')
 			.queueWait( function() {
 				$LAB.script( getWithVersion('library.js') )
+				// .script('shelf/jquery.mockjax.js')	
 				.script( getWithVersion('ports.js') )
 				.script( 'JsHttpRequest.js' )                
                 .script( 'http://direct-credit.ru/widget/api_script_utf.js' )
@@ -101,7 +102,7 @@
 				.queueWait( function() {
 				$LAB.script( getWithVersion('ports.js') )
 				.script( getWithVersion('library.js') )
-				.script('shelf/jquery.mockjax.js')	
+				// .script('shelf/jquery.mockjax.js')	
 				// .script( 'JsHttpRequest.js' )
     //             .script( 'http://direct-credit.ru/widget/api_script_utf.js' )
     //             .script( 'http://direct-credit.ru/widget/script_utf.js' )

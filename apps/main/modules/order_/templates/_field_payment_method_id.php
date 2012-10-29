@@ -13,7 +13,7 @@
       <i>
         <div><?php echo $v->getDescription() // ?></div>
         <?php if ($v->isCredit()) {  ?>
-          <div id="creditInfo"  <?php if ($v->getId() != $selectedMethodId) echo 'style="display:none"' ?> >
+          <div class="innerType" id="creditInfo"  <?php if ($v->getId() != $selectedMethodId) echo 'style="display:none"' ?> >
             <div>Выберите банк:</div>
             <div class="bankWrap">
                 <div data-value='<?php echo $bankJson; ?>' class="fl bSelect mFastInpSmall">
@@ -34,7 +34,7 @@
             <div><sup>**</sup> Кредит не распространяется на услуги F1 и доставку. Сумма платежей предварительная и уточняется банком в процессе принятия кредитного решения.</div>
           </div>   
           <?php } else if ($v->isCertificate() && !$sf_user->getRegion('region')->getHasTransportCompany()) { ?>
-              <div class="orderFinal__certificate">
+              <div class="orderFinal__certificate hidden innerType">
                   <script type="text/html" id="processBlock">
                       <div class="process">
                           <div class="img <%=typeNum%>"></div>
@@ -42,10 +42,10 @@
                           <div class="clear"></div>
                       </div>
                   </script>
-                  <form>
+                  <div id="sertificateFields">
                       <input class="bBuyingLine__eText cardNumber" placeholder="Номер" />
                       <input class="bBuyingLine__eText cardPin" placeholder="ПИН" />
-                  </form>
+                  </div>
                   <div id="processing"></div>
               </div>
           <?php } ?>

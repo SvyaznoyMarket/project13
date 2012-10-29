@@ -40,14 +40,104 @@ $(document).ready(function() {
 		e.stopPropagation()
 	})
 
-	/* Credit */
-    $('body').delegate('input[name="order[payment_method_id]"]', 'click', function() {
-        if( this.id === 'order_payment_method_id_6' )
-            $('#creditInfo').show()
-        else
-            $('#creditInfo').hide()
-    })
+	$('body').delegate('input[name="order[payment_method_id]"]', 'click', function() {
+		$('.innerType').hide()
+		$(this).parent().parent().find('.innerType').show()
+	})
 
+	/* Sertificate */
+	if( $('.orderFinal__certificate').length ) {
+
+        var code = $(".cardNumber"),
+            pin = $(".cardPin"),
+            sfields = $("#sertificateFields"),
+
+            urlCheck = '/certificate-check'
+
+        var SertificateCard = (function() {
+
+            var
+                paymentWithCard = $('#paymentWithCard').text()*1,
+                checked = false,
+                processTmpl = 'processBlock'
+
+            function getCode() {
+                return code.val().replace(/[^0-9]/g,'')
+            } 
+            function getPIN() {
+                return pin.val().replace(/[^0-9]/g,'')
+            }
+            function isActive() {
+            	if( checked && ( getCode() !== '' ) && getCode().length === 14 && ( getPIN() !== '' ) && getPIN().length === 4)
+            		return true
+            	return false
+            }
+
+            function checkCard() {
+                setProcessingStatus( 'orange', 'Проверка по номеру карты' )
+                $.post( urlCheck, { code: '23846829634' }, function( data ) {
+                    if( ! 'success' in data )
+                        return false
+                    if( !data.success ) {
+                        var err = ( typeof(data.error) !== 'undefined' ) ? data.error : 'ERROR'
+                        setProcessingStatus( 'red', err )
+                        return false
+                    }
+                    setProcessingStatus( 'green', data.data )
+                })       
+                pin.focus()
+            }
+            function setProcessingStatus( status, data ) {    
+                var blockProcess = $('.process').first()
+                if( !blockProcess.hasClass('picked') ) 
+                    blockProcess.remove()
+                var options = { typeNum: status }
+                switch( status ) {
+                    case 'orange':   
+                        options.text = data 
+                        checked = false
+                        break
+                    case 'red':
+                        options.text = 'Произошла ошибка: ' + data
+                        checked = false
+                        break
+                    case 'green':
+                        if( 'activated' in data ) 
+                            options.text = 'Карта '+ data.code + ' на сумму ' + data.sum + ' активирована!'
+                        else
+                            options.text = 'Карта '+ data.code + ' имеет номинал ' + data.sum
+                        checked = true
+                        break
+                }
+                sfields.after( tmpl( processTmpl, options) )
+                if( typeof( data['activated'] ) !== 'undefined' )
+                    $('.process').first().addClass('picked')
+            }
+
+            return {
+                checkCard: checkCard,
+                setProcessingStatus: setProcessingStatus,
+                isActive: isActive,
+                getCode: getCode,
+                getPIN: getPIN
+            }
+        })(); // object SertificateCard , singleton
+
+        code.mask("999 999 999 9999 9", { completed: SertificateCard.checkCard, placeholder: "*" } )
+        pin.mask("9999", { placeholder: "*" } )
+
+        // $.mockjax({
+        //   url: '/certificate-check',
+        //   responseTime: 1000,
+        //   responseText: {
+        //     success: true,
+        //     data: { sum: 1000, code: '3432432' }
+        //   }
+        // })
+		
+	}
+
+	/* Credit */
     if( $('.bankWrap').length ) {
         var banks = $('.bankWrap > .bSelect').data('value')
         var docs  = $('.bankWrap > .creditHref')
@@ -830,6 +920,13 @@ flds:	for( field in fieldsToValidate ) {
 			type_id = $('input[name="order[delivery_type_id]"]').val()
 		toSend.push( { name: 'order[delivery_type_id]', value: type_id })
 		toSend.push( { name: 'delivery_map', value: JSON.stringify( MVM.getServerModel() )  } )//encodeURIComponent
+		console.info( SertificateCard )
+		if( typeof(SertificateCard) !== 'undefined' )
+			if( SertificateCard.isActive() ) {
+				toSend.push( { name: 'order[card]', value: SertificateCard.getCode() })
+				toSend.push( { name: 'order[pin]', value: SertificateCard.getPIN() })
+			}
+
 		$.ajax({
 			url: form.attr('action'),
 			timeout: 20000,
