@@ -3,8 +3,7 @@
 
   <dd id="payTypes">
   <?php foreach ($paymentMethodList as $k => $v): ?>
-    <?php if (!$showCreditMethod && $v->isCredit())
-          continue;  ?>
+    <?php if (!$showCreditMethod && $v->isCredit()) continue;  ?>
      <div id="payment_method_<?php echo $v->getId() ?>-field">
       <p></p>
       <label class='<?php if ($v->getId() == $selectedMethodId) echo 'mChecked' ?>' for="order_payment_method_id_<?php echo $v->getId() ?>">
@@ -34,6 +33,21 @@
             </div>
             <div><sup>**</sup> Кредит не распространяется на услуги F1 и доставку. Сумма платежей предварительная и уточняется банком в процессе принятия кредитного решения.</div>
           </div>   
+          <?php } else if ($v->isCertificate() && !$sf_user->getRegion('region')->getHasTransportCompany()) { ?>
+              <div class="orderFinal__certificate">
+                  <script type="text/html" id="processBlock">
+                      <div class="process">
+                          <div class="img <%=typeNum%>"></div>
+                          <p><%=text%></p>
+                          <div class="clear"></div>
+                      </div>
+                  </script>
+                  <form>
+                      <input class="bBuyingLine__eText cardNumber" placeholder="Номер" />
+                      <input class="bBuyingLine__eText cardPin" placeholder="ПИН" />
+                  </form>
+                  <div id="processing"></div>
+              </div>
           <?php } ?>
       </i>
     </div>

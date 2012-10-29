@@ -39,6 +39,13 @@ class PaymentMethodRepository
 
         $result = CoreClient::getInstance()->query('payment-method.get', $params);
 
+        // mock
+        $result[] = array(
+            'id'          => 9,
+            'name'        => 'Оплата подарочной картой',
+            'description' => 'Заполните информацию с подарочной карты',
+        );
+
         if (empty($result) || !is_array($result)) {
             return null;
         }
@@ -56,7 +63,7 @@ class PaymentMethodRepository
    * @return int[]
    */
   public function getAcceptedList(){
-    return array(1, 2, 5, 6, 8);
+    return array(1, 2, 5, 6, 8, 9);
   }
 
 }
