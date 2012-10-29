@@ -92,7 +92,7 @@
   <div class="font14 pb15"><?php echo $product->getTagline() ?></div>
   <div class="clear"></div>
 
-  <?php if($product->getPriceOld()): ?>
+  <?php if($product->getPriceOld() && !$user->getRegion()->getHasTransportCompany()): ?>
   <div style="text-decoration: line-through; font: normal 18px verdana; letter-spacing: -0.05em; color: #6a6a6a;"><span class="price"><?php echo $page->helper->formatPrice($product->getPriceOld()) ?></span> <span class="rubl">p</span></div>
   <?php elseif($showAveragePrice): ?>
   <div class="mOurGray">
