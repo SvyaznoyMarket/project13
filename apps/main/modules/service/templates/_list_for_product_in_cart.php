@@ -123,7 +123,8 @@ foreach ($item->getWarrantyList() as $warranty) {
 </div>
 <?php } ?>
 
-<div class="mBR5 basketServices">  
+<?php if (count($warrantiesById) && sfConfig::get('app_warranty_enabled', false)): ?>
+<div class="mBR5 basketServices">
   <div class="service form bBacketServ extWarr mSmall" <?php if ($selectedWarranty) echo ' style="display:none;"';  ?>>
       <table cellspacing="0">
           <tbody>
@@ -208,8 +209,9 @@ foreach ($item->getWarrantyList() as $warranty) {
 </div>
 </div>
 <?php } ?>
+<?php render_partial('product_/templates/_ext_warranty_lightbox.php', array('item' => $product['fullObject']))?>
+<?php endif ?>
 
-  <?php include_component('product', 'f1_lightbox', array('f1' => $list, 'product' => $product, 'servListId' => $servListId, 'parentAction' => $this->getActionName())) ?>
-  <?php render_partial('product_/templates/_ext_warranty_lightbox.php', array('item' => $product['fullObject']))?>
+<?php include_component('product', 'f1_lightbox', array('f1' => $list, 'product' => $product, 'servListId' => $servListId, 'parentAction' => $this->getActionName())) ?>
 
 <?php endif ?>

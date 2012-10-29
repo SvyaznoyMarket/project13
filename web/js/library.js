@@ -905,12 +905,12 @@ function parse_url( url ) {
 }
 
 /* MAP Object */
-function MapWithShops( center, templateIWnode, DOMid, updateInfoWindowTemplate ) {
+function MapWithShops( center, templateIWnode, DOMid, updateIWT ) {
 /* Arguments:
 	center is a center of a map
 	templateIWnode is node(jQ) which include template for InfoWindow popup
 	DOMid is selector (id) for google.maps.Map initialization
-	updateInfoWindowTemplate is a procedure calling each time after marker is clicked
+	updateIWT is a procedure calling each time after marker is clicked
 */
 	var self         = this,
 		mapWS        = null,
@@ -920,10 +920,11 @@ function MapWithShops( center, templateIWnode, DOMid, updateInfoWindowTemplate )
 		currMarker   = null,
 		mapContainer = $('#'+DOMid),
 		infoWindowTemplate = templateIWnode.prop('innerHTML')
-	
-	this.updateInfoWindowTemplate = function( marker ) {
-		if( updateInfoWindowTemplate )
-			updateInfoWindowTemplate( marker )
+
+	self.updateInfoWindowTemplate = function( marker ) {
+		if( typeof(updateIWT) !== 'undefined' ) {
+			updateIWT( marker )
+        }
 		infoWindowTemplate = templateIWnode.prop('innerHTML')	
 	}
 	
@@ -953,7 +954,6 @@ function MapWithShops( center, templateIWnode, DOMid, updateInfoWindowTemplate )
 		var item = markers[marker.id]
 		
 		marker.setVisible(false) // hides marker
-		
         self.updateInfoWindowTemplate( item )
 		infoWindow.setContent( infoWindowTemplate )
 		infoWindow.setPosition( marker.position )

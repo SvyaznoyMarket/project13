@@ -581,7 +581,10 @@ levup:			for(var i=0, l=numbers.length; i<l; i++)
 			product_quantity: 1,
 			region_id: Model.jsregionid*1
 		}
-		
+		function updateIWCL( marker ) {
+			if( typeof(OC_MVM) !== 'undefined' )
+				OC_MVM.pickShopOnMap( marker.id )
+		}		
 		$.post( inputUrl, postData, function(data) {
 			if( !data.success || data.data.length === 0 ) {
 				OC_MVM = new OneCViewModel() 
@@ -600,7 +603,7 @@ levup:			for(var i=0, l=numbers.length; i<l; i++)
 			
 				
 			if( selfAvailable ) {
-				window.regionMap = new MapWithShops( mapCenter, $('#map-info_window-container'), 'mapPopup', updateIW )
+				window.regionMap = new MapWithShops( mapCenter, $('#map-info_window-container'), 'mapPopup', updateIWCL )
 				window.regionMap.addHandler( '.shopchoose', pickStoreMVM )
 			}
 			oneClickIsReady = true
@@ -612,10 +615,7 @@ levup:			for(var i=0, l=numbers.length; i<l; i++)
 			window.regionMap.closeMap( OC_MVM.turnOffMap )
 			OC_MVM.chooseShopById( shopnum )
 		}
-		function updateIW( marker ) {
-			if( typeof(OC_MVM) !== 'undefined' )
-				OC_MVM.pickShopOnMap( marker.id )
-		}
+
 				
 		$('.order1click-link-new').bind('click', function(e) { // button 'Купить в один клик'
 			e.preventDefault()
