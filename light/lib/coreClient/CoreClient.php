@@ -80,7 +80,7 @@ class CoreClient
       $info = curl_getinfo($connection);
       $this->log('Core response resource: ' . $connection ,'debug');
       $this->log('Core response info: ' . $this->encodeInfo($info), 'debug');
-      RequestLogger::getInstance()->addLog($info['url'], print_r($data, true), $info['total_time']);
+      RequestLogger::getInstance()->addLog($info['url'], $data, $info['total_time']);
       if ($info['http_code'] >= 300) {
         throw new \RuntimeException(sprintf("Invalid http code: %d, \nResponse: %s", $info['http_code'], $response));
       }
@@ -149,7 +149,7 @@ class CoreClient
             $ch = $done['handle'];
             $info = curl_getinfo($ch);
 
-            RequestLogger::getInstance()->addLog($info['url'], "unknown in multi curl", $info['total_time']);
+            RequestLogger::getInstance()->addLog($info['url'], array("unknown in multi curl"), $info['total_time']);
 
             $this->log('Core response resurce: ' . $ch, 'debug');
             $this->log('Core response info: ' . $this->encodeInfo($info), 'debug');
@@ -403,7 +403,7 @@ class CoreV1Client
     $time_start = microtime(true);
     $response = $this->send($data);
     $info = curl_getinfo($this->connection);
-    RequestLogger::getInstance()->addLog($info['url'], print_r($data, true), $info['total_time']);
+    RequestLogger::getInstance()->addLog($info['url'], $data, $info['total_time']);
     $this->log("Response: ".$response, 'debug');
     $time_end = microtime(true);
     $this->log('Request time:' . ($time_end - $time_start), 'info');

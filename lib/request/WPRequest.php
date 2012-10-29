@@ -69,7 +69,7 @@ class WPRequest
 
       $response = file_get_contents($this->url.$actionUri.'?'.http_build_query($parameterList), false, stream_context_create($params));
 
-      RequestLogger::getInstance()->addLog($this->url . $actionUri, '', (microtime(true) - $start));
+      RequestLogger::getInstance()->addLog($this->url . $actionUri, array(), (microtime(true) - $start));
 
         if($json)
         {

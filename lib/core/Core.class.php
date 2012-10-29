@@ -392,7 +392,7 @@ class Core
       //$this->logger->log("Response: ".$response, !empty($response['error']) ? sfLogger::ERR : sfLogger::INFO);
       $this->logger->log("Response: ".$response);
       $info = curl_getinfo($this->connection);
-      RequestLogger::getInstance()->addLog($info['url'], print_r($data, true), $info['total_time']); // . ' Params: '. implode(',', $paramsList));
+      RequestLogger::getInstance()->addLog($info['url'], $data, $info['total_time']); // . ' Params: '. implode(',', $paramsList));
     }
 
     $response = json_decode($response, true);
