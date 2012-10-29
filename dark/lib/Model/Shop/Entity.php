@@ -270,4 +270,18 @@ class Entity {
     public function getIsReconstructed() {
         return $this->isReconstructed;
     }
+
+    /**
+     * @param int $size
+     * @return null|string
+     */
+    public function getImageUrl($size = 1) {
+        if ($this->image) {
+            $urls = \App::config()->shopPhoto['url'];
+
+            return $urls[$size] . $this->image;
+        } else {
+            return null;
+        }
+    }
 }

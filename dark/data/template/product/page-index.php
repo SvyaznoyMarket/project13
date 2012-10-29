@@ -8,6 +8,7 @@
  * @var $kit                \Model\Product\Entity[]
  * @var $showAccessoryUpper bool
  * @var $showRelatedUpper   bool
+ * @var $showroomShops      \Model\Shop\Entity
  */
 ?>
 
@@ -112,7 +113,16 @@
 
   <div class="fr ar pb15">
     <?php if (!$product->getIsBuyable() && $product->getState()->getIsShop()): ?>
-    <span class="font16 orange">Для покупки товара<br />обратитесь в Контакт-сENTER</span>
+      <div class="vitrin">
+          <div class="line pb15"></div>
+          <p class="font18 orange">Товар очень популярный и остался только на витрине. Успей купить!</p>
+          <span><?php echo (count($showroomShops) == 1) ? 'Адрес магазина' : 'Адреса магазинов' ?>:</span>
+          <ul>
+              <?php foreach ($showroomShops as $shop): ?>
+              <li><?php echo $shop->getAddress() //ссылки пока не будет, появится позже ?></li>
+              <?php endforeach ?>
+          </ul>
+      </div>
     <?php else: ?>
     <div class="goodsbarbig mSmallBtns" ref="<?php echo $product->getToken() ?>" data-value='<?php echo $json ?>'>
 

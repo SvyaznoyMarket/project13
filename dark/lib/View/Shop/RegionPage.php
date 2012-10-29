@@ -7,7 +7,7 @@ class RegionPage extends \View\DefaultLayout {
 
     public function prepare() {
         /** @var $region \Model\Region\Entity */
-        $region = $this->getParam('region') instanceof \Model\Region\Entity ? $this->getParam('region') : null;
+        $region = $this->getParam('currentRegion') instanceof \Model\Region\Entity ? $this->getParam('currentRegion') : null;
         if (!$region) {
             return;
         }
