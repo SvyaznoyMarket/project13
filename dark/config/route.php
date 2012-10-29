@@ -67,7 +67,7 @@ return array(
         'action'  => array('Shop\Action', 'index'),
     ),
     'shop.region' => array(
-        'pattern' => '/shops/{regionToken}',
+        'pattern' => '/shops/{regionId}',
         'action'  => array('Shop\Action', 'region'),
     ),
     'shop.show' => array(

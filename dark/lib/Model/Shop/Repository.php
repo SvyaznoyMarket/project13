@@ -36,6 +36,10 @@ class Repository {
         return $data ? new Entity($data) : null;
     }
 
+    /**
+     * @param \Model\Region\Entity $region
+     * @return Entity[]
+     */
     public function getCollectionByRegion(\Model\Region\Entity $region) {
         $response = $this->client->query('shop/get', array(
             'geo_id' => $region->getId(),

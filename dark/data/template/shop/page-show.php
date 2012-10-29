@@ -1,8 +1,8 @@
 <?php
 /**
- * @var $page   \View\Shop\ShowPage
- * @var $region \Model\Region\Entity
- * @var $shop   \Model\Shop\Entity
+ * @var $page          \View\Shop\ShowPage
+ * @var $currentRegion \Model\Region\Entity
+ * @var $shop          \Model\Shop\Entity
  */
 ?>
 
