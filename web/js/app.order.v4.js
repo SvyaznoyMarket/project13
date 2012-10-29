@@ -920,7 +920,6 @@ flds:	for( field in fieldsToValidate ) {
 			type_id = $('input[name="order[delivery_type_id]"]').val()
 		toSend.push( { name: 'order[delivery_type_id]', value: type_id })
 		toSend.push( { name: 'delivery_map', value: JSON.stringify( MVM.getServerModel() )  } )//encodeURIComponent
-		console.info( SertificateCard )
 		if( typeof(SertificateCard) !== 'undefined' )
 			if( SertificateCard.isActive() ) {
 				toSend.push( { name: 'order[card]', value: SertificateCard.getCode() })
