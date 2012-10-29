@@ -48,4 +48,22 @@ class Repository {
 
         return $collection;
     }
+
+    /**
+     * @param array $ids
+     * @return Entity[]
+     */
+    public function getCollectionById(array $ids = array()) {
+        if (!(bool)$ids) return array();
+
+        $response = $this->client->query('shop/get', array(
+            'id' => $ids,
+        ));
+
+        $collection = array();
+        foreach ($response as $data) {
+            $collection[] = new Entity($data);
+        }
+        return $collection;
+    }
 }

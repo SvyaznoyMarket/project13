@@ -42,6 +42,22 @@ class IndexAction {
         }
         $dataForCredit = $this->getDataForCredit($product);
 
+        $showroomShops = array();
+        //загружаем магазины, если товар доступен только на витрине
+        if (!$product->getIsBuyable() && $product->getState()->getIsShop()) {
+            $shopIds = array();
+            foreach ($product->getStock() as $stock) {
+                $quantityShowroom = $stock->getQuantityShowroom();
+                $shopId = $stock->getShopId();
+                if (!empty($quantityShowroom) && !empty($shopId)) {
+                    $shopIds[] = $shopId;
+                }
+            }
+            if (count($shopIds)) {
+                $showroomShops = \RepositoryManager::getShop()->getCollectionById($shopIds);
+            }
+        }
+
         $page = new \View\Product\IndexPage();
         $page->setParam('product', $product);
         $page->setParam('title', $product->getName());
@@ -51,6 +67,7 @@ class IndexAction {
         $page->setParam('related', $related);
         $page->setParam('kit', $kit);
         $page->setParam('dataForCredit', $dataForCredit);
+        $page->setParam('showroomShops', $showroomShops);
 
         return new \Http\Response($page->show());
     }
