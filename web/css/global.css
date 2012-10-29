@@ -1,3 +1,4 @@
+/* CSS crunched with Crunch - http://crunchapp.net/ */
 /*---------ШРИФТЫ----------*/
 @font-face {
   font-family: 'Enter';
@@ -6164,7 +6165,8 @@
     z-index: 1003;
   }
   .previewlist .axonometric {
-    background: url("/css/bigPopup/img/bigPopupSprite.png") no-repeat -30px -72px;
+    background: url("/css/bigPopup/img/bigPopupSprite.png") no-repeat -32px -73px;
+    text-indent: -100000px;
   }
   .scrollbox {
     background: url("/css/bigPopup/img/bigPopupSprite.png") no-repeat 0px 0px;
