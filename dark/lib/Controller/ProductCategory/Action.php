@@ -311,7 +311,9 @@ class Action {
      */
     private function getFilter(\Model\Product\Category\Entity $category, \Http\Request $request) {
         // проверяем флаг глобального списка в параметрах запроса
-        $isGlobal = (bool)$request->cookies->get(self::$globalCookieName, false);
+        $isGlobal =
+            \App::user()->getRegion()->getHasTransportCompany()
+            && (bool)$request->cookies->get(self::$globalCookieName, false);
 
         $filters = \RepositoryManager::getProductFilter()->getCollectionByCategory($category, $isGlobal ? null : \App::user()->getRegion());
         $productFilter = new \Model\Product\Filter($filters, $isGlobal);
