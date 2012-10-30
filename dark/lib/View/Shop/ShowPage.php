@@ -7,7 +7,7 @@ class ShowPage extends \View\DefaultLayout {
 
     public function prepare() {
         /** @var $region \Model\Region\Entity */
-        $region = $this->getParam('region') instanceof \Model\Region\Entity ? $this->getParam('region') : null;
+        $region = $this->getParam('currentRegion') instanceof \Model\Region\Entity ? $this->getParam('currentRegion') : null;
         if (!$region) {
             return;
         }
@@ -23,7 +23,7 @@ class ShowPage extends \View\DefaultLayout {
             $breadcrumbs = array();
             $breadcrumbs[] = array(
                 'name' => 'Магазины Enter в  ' . $region->getInflectedName(5),
-                'url'  => \App::router()->generate('shop.region', array('regionToken' => $region->getToken())),
+                'url'  => \App::router()->generate('shop.region', array('regionId' => $region->getId())),
             );
             $breadcrumbs[] = array(
                 'name' => $shop->getName(),

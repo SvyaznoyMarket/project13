@@ -3,32 +3,58 @@
 namespace Model\Shop\Photo;
 
 class Entity {
+    /** @var string */
+    private $source;
     /** @var int */
-    private $id;
+    private $position;
 
     /**
      * @param array $data
      */
     public function __construct(array $data = array()) {
-        // TODO: доделать. сейчас ядро ничего не возвращает
-        if (array_key_exists('id', $data)) $this->setId($data['id']);
+        if (array_key_exists('source', $data)) $this->setSource($data['source']);
+        if (array_key_exists('position', $data)) $this->setPosition($data['position']);
     }
 
     /**
-     * @param int $id
+     * @param int $position
      */
-    public function setId($id) {
-        $this->id = (int)$id;
+    public function setPosition($position) {
+        $this->position = (int)$position;
     }
 
     /**
      * @return int
      */
-    public function getId() {
-        return $this->id;
+    public function getPosition() {
+        return $this->position;
     }
 
+    /**
+     * @param string $source
+     */
+    public function setSource($source) {
+        $this->source = (string)$source;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSource() {
+        return $this->source;
+    }
+
+    /**
+     * @param int $size
+     * @return null|string
+     */
     public function getUrl($size = 1) {
-        return '';
+        if ($this->source) {
+            $urls = \App::config()->shopPhoto['url'];
+
+            return $urls[$size] . $this->source;
+        } else {
+            return null;
+        }
     }
 }

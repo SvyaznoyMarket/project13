@@ -48,7 +48,11 @@ class Entity {
         if (array_key_exists('way_auto', $data)) $this->setWayAuto($data['way_auto']);
         if (array_key_exists('description', $data)) $this->setDescription($data['description']);
         if (array_key_exists('is_reconstruction', $data)) $this->setIsReconstructed($data['is_reconstruction']);
-        // TODO: фото. сейчас ядро не возвращает
+        if (array_key_exists('images', $data) && is_array($data['images'])) {
+            foreach ($data['images'] as $photoData) {
+                $this->addPhoto(new Photo\Entity($photoData));
+            }
+        }
     }
 
     /**

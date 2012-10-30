@@ -55,10 +55,13 @@ class Action {
         if (!$shop) {
             throw new \Exception\NotFoundException(sprintf('Shop with token %s not found', $shopToken));
         }
-        $shop->setPanorama(new \Model\Shop\Panorama\Entity(array(
-            'swf' => '/panoramas/shops/' . $shop->getId() . '/tour.swf',
-            'xml' => '/panoramas/shops/' . $shop->getId() . '/tour.xml',
-        )));
+        // hardcode
+        if (in_array($shop->getId(), array(1))) {
+            $shop->setPanorama(new \Model\Shop\Panorama\Entity(array(
+                'swf' => '/panoramas/shops/' . $shop->getId() . '/tour.swf',
+                'xml' => '/panoramas/shops/' . $shop->getId() . '/tour.xml',
+            )));
+        }
 
         $page = new \View\Shop\ShowPage();
         $page->setParam('currentRegion', $currentRegion);
