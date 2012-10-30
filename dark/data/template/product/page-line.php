@@ -51,8 +51,10 @@ $json = array(
             <div class='bSet__eIcons'>
                 <ul class="previewlist">
                     <?php foreach ($parts as $part): ?>
-                    <li><b><a href="<?php echo $part->getLink() ?>" title="<?php echo $part->getName() ?>"></a></b>
-                        <img src="<?php echo $part->getImageUrl(1) ?>" alt="<?php echo $part->getName() ?>" width="48" height="48">
+                    <li>
+                    	<a href="<?php echo $part->getLink() ?>" title="<?php echo $part->getName() ?>">
+                        	<img src="<?php echo $part->getImageUrl(1) ?>" alt="<?php echo $part->getName() ?>" width="48" height="48">
+                        </a>
                     </li>
                     <?php endforeach ?>
                 </ul>
