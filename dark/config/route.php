@@ -162,6 +162,10 @@ return array(
         'pattern' => '/cart/add/{productId}/_quantity/{quantity}', // TODO: сделать поприличнее - '/cart/add-product/{productId}/{quantity}'
         'action'  => array('Cart\ProductAction', 'add'),
     ),
+    'old.cart.product.add' => array(
+        'pattern' => '/cart/add/{productId}/_quantity/', // TODO: Убить, когда полностью переедем на dark, переписать js с учетом наличия кол-ва
+        'action'  => array('Cart\ProductAction', 'add'),
+    ),
     // удаление услуги из корзины
     'cart.service.delete' => array(
         'pattern' => '/cart/delete_service/{productId}/_service/{serviceId}',

@@ -10,7 +10,7 @@
 if ($disabled) {
     $url = '#';
 } else {
-    $url = $page->url('cart.product.add', array('productId' => $product->getId(), 'quantity' => 1));
+    $url = $page->url('old.cart.product.add', array('productId' => $product->getId()));
 }
 ?>
 
