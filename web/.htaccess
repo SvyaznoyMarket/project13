@@ -29,6 +29,7 @@ Options +FollowSymLinks +ExecCGI
   RewriteRule ^catalog/([a-zA-Z_0-9-]+(\/{0,1})[a-zA-Z_0-9-]+)/$ dark.php [L]
   RewriteRule ^catalog/([a-zA-Z_0-9-]+(\/{0,1})[a-zA-Z_0-9-]+)/_slider$ dark.php [L]
   RewriteRule ^catalog/([a-zA-Z_0-9-]+(\/{0,1})[a-zA-Z_0-9-]+)/_count$ dark.php [L]
+  RewriteRule ^catalog/([a-zA-Z_0-9-]+(\/{0,1})[a-zA-Z_0-9-]+)/_global$ dark.php [L]
   RewriteRule ^tags/([a-zA-Z_0-9-]+)$ dark.php [L]
   RewriteRule ^tags/([a-zA-Z_0-9-]+)/([a-zA-Z_0-9-]+)$ dark.php [L]
   RewriteRule ^certificate-check* dark.php [L]

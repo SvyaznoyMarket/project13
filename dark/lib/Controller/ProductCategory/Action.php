@@ -3,7 +3,22 @@
 namespace Controller\ProductCategory;
 
 class Action {
-    public static $globalCookieName = 'global';
+    private static $globalCookieName = 'global';
+
+    public function setGlobal($categoryPath, \Http\Request $request) {
+        $response = new \Http\RedirectResponse($request->headers->get('referer') ?: \App::router()->generate('product.category', array($categoryPath => $categoryPath)));
+
+        if ($request->query->has('global')) {
+            if ($request->query->get('global')) {
+                $cookie = new \Http\Cookie(self::$globalCookieName, 1, strtotime('+7 days' ));
+                $response->headers->setCookie($cookie);
+            } else {
+                $response->headers->clearCookie(self::$globalCookieName);
+            }
+        }
+
+        return $response;
+    }
 
     /**
      * @param string        $categoryPath
@@ -218,10 +233,7 @@ class Action {
         $page->setParam('productFilter', $productFilter);
         $page->setParam('productPagersByCategory', $productPagersByCategory);
 
-        $response = new \Http\Response($page->show());
-        $this->postExecute($request, $response);
-
-        return $response;
+        return new \Http\Response($page->show());
     }
 
     /**
@@ -285,10 +297,7 @@ class Action {
         $page->setParam('productSorting', $productSorting);
         $page->setParam('productView', $productView);
 
-        $response = new \Http\Response($page->show());
-        $this->postExecute($request, $response);
-
-        return $response;
+        return new \Http\Response($page->show());
     }
 
     /**
@@ -297,7 +306,7 @@ class Action {
      */
     private function getFilter(\Model\Product\Category\Entity $category, \Http\Request $request) {
         // проверяем флаг глобального списка в параметрах запроса
-        $isGlobal = (bool)$request->get('global', $request->cookies->get(self::$globalCookieName, false));
+        $isGlobal = (bool)$request->cookies->get(self::$globalCookieName, false);
 
         $filters = \RepositoryManager::getProductFilter()->getCollectionByCategory($category, $isGlobal ? null : \App::user()->getRegion());
         $productFilter = new \Model\Product\Filter($filters, $isGlobal);
@@ -310,22 +319,5 @@ class Action {
         $productFilter->setValues($values);
 
         return $productFilter;
-    }
-
-    /**
-     * Следит за кукой "global"
-     *
-     * @param \Http\Request $request
-     * @param \Http\Response $response
-     */
-    private function postExecute(\Http\Request $request, \Http\Response $response) {
-        if ($request->query->has('global')) {
-            if ($request->query->get('global')) {
-                $cookie = new \Http\Cookie(self::$globalCookieName, 1, strtotime('+7 days' ));
-                $response->headers->setCookie($cookie);
-            } else {
-                $response->headers->clearCookie(self::$globalCookieName);
-            }
-        }
     }
 }

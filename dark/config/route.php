@@ -93,6 +93,12 @@ return array(
         'action'  => array('ProductCategory\Action', 'count'),
         'require' => array('categoryPath' => '[\w\d-_]+\/?[\w\d-_]+'),
     ),
+    // показывать глобальный список товаров
+    'product.category.global' => array(
+        'pattern' => '/catalog/{categoryPath}/_global',
+        'action'  => array('ProductCategory\Action', 'setGlobal'),
+        'require' => array('categoryPath' => '[\w\d-_]+\/?[\w\d-_]+'),
+    ),
     // карточка товара
     'product' => array(
         'pattern' => '/product/{productPath}',
