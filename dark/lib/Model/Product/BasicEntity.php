@@ -184,14 +184,14 @@ class BasicEntity {
     }
 
     /**
-     * @param \Model\Product\Line\Entity $line
+     * @param \Model\Line\Entity $line
      */
     public function setLine(Line\Entity $line = null) {
         $this->line = $line;
     }
 
     /**
-     * @return \Model\Product\Line\Entity
+     * @return Line\Entity
      */
     public function getLine() {
         return $this->line;

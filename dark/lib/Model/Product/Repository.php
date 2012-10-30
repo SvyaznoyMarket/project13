@@ -31,6 +31,20 @@ class Repository {
     }
 
     /**
+     * @param $id
+     * @return Entity|null
+     */
+    public function getEntityById($id) {
+        $response = $this->client->query('product/get', array(
+            'id'        => $id,
+            'geo_id'      => \App::user()->getRegion()->getId(),
+        ));
+        $data = reset($response);
+
+        return $data ? new Entity($data) : null;
+    }
+
+    /**
      * @param array $tokens
      * @return Entity[]
      */
