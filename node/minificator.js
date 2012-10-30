@@ -67,6 +67,7 @@ function parseJS() {
 }
 
 /* main() */
+	var lessf = []
 	if( typeMode !== 'js' )
 		parseLESS()
 	if( typeMode !== 'css' )
@@ -75,19 +76,23 @@ function parseJS() {
 	if( watchMode === 'on' ) {
 		fs.watchFile( POINTS.less, function() {
 			console.log('LESS CHANGED ' + POINTS.less )
+			unwatchCSSbutch( lessf )
 			parseLESS()
+			watchAllLESS()
 		})
-		
-		fs.readFile( POINTS.less , 'utf8', function(e, data ) { 
-			var lessf = data.match( /@import\ \"([a-zA-Z\.\/]+)\"/g )
-			for( var i in lessf ) {
-				watchCCSfile( lessf[i].replace( /@import\ \"([a-za-zA-Z\.\/]+)\"/g , '$1' ) )
-			}
-		})
+		watchAllLESS()
 
 	}
 /* */
-
+function watchAllLESS() {
+	fs.readFile( POINTS.less , 'utf8', function(e, data ) { 
+		lessf = data.match( /@import\ \"([a-zA-Z\.\/]+)\"/g )
+		for( var i in lessf ) {
+			lessf[i] = lessf[i].replace( /@import\ \"([a-za-zA-Z\.\/]+)\"/g , '$1' )
+		}
+		watchCSSbutch( lessf )
+	})
+}
 function reconfig() {
 	console.log( config )
 	// var chunk = 'window.filesWithVersion = ' + JSON.stringify( config )
@@ -109,6 +114,19 @@ function procall( list ) {
 			watchJSfile( k )
 	}
 	return when.all( promises )
+}
+
+function watchCSSbutch( a ) {
+	for( var i in a ) {
+		watchCCSfile( a[i] )
+	}
+}
+
+function unwatchCSSbutch( a ) {
+	for( var i in a ) {
+		// console.log( POINTS.cssdir + lessf[i] )
+		fs.unwatchFile( POINTS.cssdir + a[i] )
+	}
 }
 
 function watchCCSfile( filename ) {
