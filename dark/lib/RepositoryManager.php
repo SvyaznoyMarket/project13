@@ -80,4 +80,14 @@ class RepositoryManager {
 
         return $instance;
     }
+
+    static function getLine() {
+        static $instance;
+
+        if (!$instance) {
+            $instance = new \Model\Line\Repository(\App::coreClientV2());
+        }
+
+        return $instance;
+    }
 }
