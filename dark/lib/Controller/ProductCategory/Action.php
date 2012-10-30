@@ -5,6 +5,11 @@ namespace Controller\ProductCategory;
 class Action {
     private static $globalCookieName = 'global';
 
+    /**
+     * @param string        $categoryPath
+     * @param \Http\Request $request
+     * @return \Http\RedirectResponse
+     */
     public function setGlobal($categoryPath, \Http\Request $request) {
         $response = new \Http\RedirectResponse($request->headers->get('referer') ?: \App::router()->generate('product.category', array($categoryPath => $categoryPath)));
 
