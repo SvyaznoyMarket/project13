@@ -43,8 +43,8 @@
                       </div>
                   </script>
                   <div id="sertificateFields">
-                      <input class="bBuyingLine__eText cardNumber" placeholder="Номер" />
-                      <input class="bBuyingLine__eText cardPin" placeholder="ПИН" />
+                      <input name="order[cardnumber]" class="bBuyingLine__eText cardNumber" placeholder="Номер" />
+                      <input name="order[cardpin]" class="bBuyingLine__eText cardPin" placeholder="ПИН" />
                   </div>
                   <div id="processing"></div>
               </div>

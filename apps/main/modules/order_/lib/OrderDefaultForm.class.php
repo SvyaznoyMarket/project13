@@ -98,10 +98,16 @@ class OrderDefaultForm extends BaseOrderForm
     $this->validatorSchema['credit_bank_id'] = new sfValidatorString(array('required' => false));
     $this->widgetSchema['credit_bank_id']->setLabel('');
 
-      // sclub_card_number
+    // sclub_card_number
     $this->widgetSchema['sclub_card_number'] = new sfWidgetFormInputText();
     $this->widgetSchema['sclub_card_number']->setLabel('Номер карточки связного клуба');
     $this->validatorSchema['sclub_card_number'] = new myValidatorSClubCardNumber(array('required' => false), array('invalid' => 'В номере карты допущена ошибка. Проверьте правильность ввода номера и повторите попытку'));
+
+    // certificate
+    $this->widgetSchema['cardnumber'] = new sfWidgetFormInputText();
+    $this->validatorSchema['cardnumber'] = new sfValidatorString(array('required' => false));
+    $this->widgetSchema['cardpin'] = new sfWidgetFormInputText();
+    $this->validatorSchema['cardpin'] = new sfValidatorString(array('required' => false));
 
     // payment_method_id
     $choices = array();
@@ -136,6 +142,8 @@ class OrderDefaultForm extends BaseOrderForm
       'sclub_card_number',
       'payment_method_id',
       'agreed',
+      'cardnumber',
+      'cardpin',
     );
     if ($hasMetro)
     {
@@ -155,6 +163,12 @@ class OrderDefaultForm extends BaseOrderForm
           $this->validatorSchema['address_number']->setOption('required', true);
         }
       }
+    }
+
+    // если оплата подарочной картой
+    if (!empty($taintedValues['payment_method_id']) && (9 == $taintedValues['payment_method_id'])) {
+        $this->validatorSchema['cardnumber'] = new myValidatorCertificate(array('required' => true));
+        $this->validatorSchema['cardpin'] = new sfValidatorString(array('required' => true));
     }
 
     parent::bind($taintedValues);
