@@ -3800,6 +3800,9 @@
     padding: 0px;
     vertical-align: top;
   }
+  .mbSet {
+    font: 24px Tahoma, sans-serif;
+  }
   .bSet__eArticul {
     padding: 0;
     margin: 0 0 15px 15px;
