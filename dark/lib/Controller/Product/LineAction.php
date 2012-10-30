@@ -33,31 +33,17 @@ class LineAction {
 
         // вид списка других товаров в серии
         $productView = $request->get('view', 'compact');
+        $productRepository = \RepositoryManager::getProduct();
 
-        /*$products = array();
-        if ((bool)$line->getProductId()) {
-            $products = \RepositoryManager::getProduct()->getCollectionById($line->getProductId());
-        }
-
-        $kits = array();
-        if ((bool)$line->getKitId()) {
-            $kits = \RepositoryManager::getProduct()->getCollectionById($line->getKitId());
-        }
-
-        $mainProduct = \RepositoryManager::getProduct()->getEntityById($line->getMainProductId());
-*/
+        $mainProduct = $productRepository->getEntityById($line->getMainProductId());
 
         //Собираем все id для товров: наборов серии, простых товаров серии
         $productInLineId = array_merge($line->getKitId(), $line->getProductId());
         $productInLine = array_flip($productInLineId);
-        $productInLine[$line->getMainProductId()] = null;
-        $globalProduct = \RepositoryManager::getProduct()->getCollectionById($productInLineId);
+        $productRepository->setEntityClass( '\Model\Product\ExpandedEntity');
+        $globalProduct = $productRepository->getCollectionById($productInLineId);
 
         foreach ($globalProduct as $product) {
-            if ($product->getId() == $line->getMainProductId()) {
-                $mainProduct = $product;
-                unset($productInLine[$product->getId()]);
-            }
             if (isset($productInLine[$product->getId()])) {
                 $productInLine[$product->getId()] = $product;
             }
@@ -66,11 +52,12 @@ class LineAction {
         //Запрашиваю составные части набора
         $parts = array();
         if ((bool)$mainProduct->getKit()) {
+            $productRepository->setEntityClass( '\Model\Product\CompactEntity');
             $partId = array();
             foreach ($mainProduct->getKit() as $part) {
                 $partId[] = $part->getId();
             }
-            $parts = \RepositoryManager::getProduct()->getCollectionById($partId);
+            $parts = $productRepository->getCollectionById($partId);
         }
 
         if ((bool)$productInLine) {
