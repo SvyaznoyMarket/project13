@@ -19,14 +19,14 @@ class Action {
 
         $error = 'Неверный сертификат';
         try {
-            $response = \App::coreClientV2()->query('certificate/check', array('code' => $code));
-            if (is_array($response) && array_key_exists('error', $response)) {
-                $e = new \Core\Exception($response['error']['message'], $response['error']['code']);
+            $result = \App::coreClientV2()->query('certificate/check', array('code' => $code));
+            if (is_array($result) && array_key_exists('error', $result)) {
+                $e = new \Core\Exception($result['error']['message'], $result['error']['code']);
 
                 throw $e;
             }
 
-            $statusCode = (int)$response['status_code'];
+            $statusCode = (int)$result['status_code'];
             if (0 == $statusCode) {
                 return new \Http\JsonResponse(array('success' => true));
             } else {
