@@ -1038,7 +1038,7 @@ $(document).ready(function(){
 			for(var i=0; i < other.length; i++) {
 				html += '<div>&mdash; Можем доставить '+ other[i].date + this.formatPrice(other[i].price) +'</div>'
 				if( other[i].tc ) {
-					html += '<div>&mdash; Доставка осуществляется партнерскими траспортными компаниями</div>'
+					html += '<div>&mdash; <a href="/how_get_order">Доставка осуществляется партнерскими траспортными компаниями</a></div>'
 				}
 			}
 
