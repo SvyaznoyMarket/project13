@@ -72,14 +72,14 @@ class RequestLogger
   /**
    * Добавляет запрос в список запросов от ядра
    * @param string $url
-   * @param string $postData
+   * @param array $postData
    * @param string $time
    */
   public function addLog($url, $postData, $time){
         $this->_requestList[] = array(
             'time' => $time ,
             'url' => str_replace(array("\r", "\n"), '', $url) ,
-            'post' => str_replace(array("\r", "\n", "\t"), '', $postData)
+            'post' => $postData,
         );
     }
 

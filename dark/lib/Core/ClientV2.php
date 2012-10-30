@@ -36,7 +36,7 @@ class ClientV2 implements ClientInterface
             $info = curl_getinfo($connection);
             $this->logger->debug('Core response resource: ' . $connection);
             $this->logger->debug('Core response info: ' . $this->encodeInfo($info));
-            \Util\RequestLogger::getInstance()->addLog($info['url'], print_r($data, true), $info['total_time']);
+            \Util\RequestLogger::getInstance()->addLog($info['url'], $data, $info['total_time']);
             if ($info['http_code'] >= 300) {
                 throw new \RuntimeException(sprintf("Invalid http code: %d, \nResponse: %s", $info['http_code'], $response));
             }
@@ -89,7 +89,7 @@ class ClientV2 implements ClientInterface
                     $info = curl_getinfo($handler);
                     $this->logger->debug('Core response resource: ' . $handler);
                     $this->logger->debug('Core response info: ' . $this->encodeInfo($info));
-                    \Util\RequestLogger::getInstance()->addLog($info['url'], "unknown in multi curl", $info['total_time']);
+                    \Util\RequestLogger::getInstance()->addLog($info['url'], array("unknown in multi curl"), $info['total_time']);
                     if (curl_errno($handler) > 0) {
                         throw new \RuntimeException(curl_error($handler), curl_errno($handler));
                     }
