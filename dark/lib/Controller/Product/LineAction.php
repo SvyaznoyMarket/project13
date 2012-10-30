@@ -19,6 +19,8 @@ class LineAction {
                $id = $matches['id'];
            }
         }
+        //TODO
+
         if (!$id) {
             throw new \Exception\NotFoundException(sprintf('Серия с токеном "%s" не найдена.', $lineToken));
         }
@@ -27,6 +29,9 @@ class LineAction {
         if (!$line) {
             throw new \Exception\NotFoundException(sprintf('Серия с токеном "%s" не найдена.', $lineToken));
         }
+
+        // вид списка других товаров в серии
+        $productView = $request->get('view', 'compact');
 
         $products = array();
         if ((bool)$line->getProductId()) {
@@ -40,10 +45,26 @@ class LineAction {
 
         $mainProduct = \RepositoryManager::getProduct()->getEntityById($line->getMainProductId());
 
+        $parts = array();
+        if ((bool)$mainProduct->getKit()) {
+            $partId = array();
+            foreach ($mainProduct->getKit() as $part) {
+                $partId[] = $part->getId();
+            }
+            $parts = \RepositoryManager::getProduct()->getCollectionById($partId);
+        }
+
+        $productPager = new \Iterator\EntityPager($kits, count($kits));
+        $productPager->setMaxPerPage(count($kits));
+
         $page = new \View\Product\LinePage();
         $page->setParam('line', $line);
         $page->setParam('products', $products);
-        $page->setParam('kit', $kits);
+        $page->setParam('kits', $kits);
+        $page->setParam('mainProduct', $mainProduct);
+        $page->setParam('parts', $parts);
+        $page->setParam('productView', $productView);
+        $page->setParam('productPager', $productPager);
 
         return new \Http\Response($page->show());
     }

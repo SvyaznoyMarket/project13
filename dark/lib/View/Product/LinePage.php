@@ -8,4 +8,8 @@ class LinePage extends \View\DefaultLayout {
     public function slotContent() {
         return $this->render('product/page-line', $this->params);
     }
+
+    public function slotBodyDataAttribute() {
+        return 'product_card';
+    }
 }
