@@ -107,19 +107,15 @@ $(document).ready(function(){
 			shadowTimeoutId = setTimeout( function(){
 				if (start<stop){
 					alpha+=0.1;
-//console.log(alpha);
 				}
 				else{
 					alpha-=0.1;
 				}
 				if ((alpha>1)||(alpha<0.1)){
-// console.log('stop animaton '+alpha);
 					$(obj).css('box-shadow','0 0 11px 7px rgba(230, 230, 230,'+stop+')');
-// console.log('stop anim');
 					//clearTimeout(shadowTimeoutId);
 				}
 				else{
-//console.log('continue animaton '+alpha);
 					$(obj).css('box-shadow','0 0 11px 7px rgba(230, 230, 230,'+alpha+')');
 					goodsbox.shadowAnim(obj, start, stop, alpha);
 				}
@@ -128,7 +124,6 @@ $(document).ready(function(){
 		hoverOn: function(box){
 			timeoutId = setTimeout( function(){
 				goodsbox.hoverTrigger = true;
-// console.log('hover on', box);
 				var img = $(box).find('.mainImg');
 				currentItem = $(box).attr('ref');
 				var h = img.height();
@@ -138,7 +133,6 @@ $(document).ready(function(){
 					$(box).addClass('hover');
 				}
 				else{
-//console.log('start anim');
 					goodsbox.shadowAnim(box, 0, 1, 0);
 				}
 			} , 300)
@@ -146,7 +140,6 @@ $(document).ready(function(){
 		hoverOff: function(box){
 			clearTimeout(timeoutId);
 			if (goodsbox.hoverTrigger){
-//console.log('hover off');
 				goodsbox.hoverTrigger = false;
 				var img = $(box).find('.mainImg');
 				var h = img.height();
@@ -156,7 +149,6 @@ $(document).ready(function(){
 					$(box).removeClass('hover');
 				}
 				else{
-//console.log('start anim');
 					clearTimeout(shadowTimeoutId);
 					goodsbox.shadowAnim(box, 1, 0, 1);
 				}
@@ -164,73 +156,15 @@ $(document).ready(function(){
 		}
 	} // object goodsbox
 
-	/*
-	var id          = null // setTimeout
-	var currentItem = 0 // ref= product ID
-	var bkgr = $('b.rt:first').css('background-image') 
-	$('.goodsbox').live( {
-		'mouseenter': function() {
-			var self = this
-			if( $(this).hasClass('goodsline') ) {
-				currentItem = $( '.goodsboxlink',self).attr('ref')
-				return
-			}
-			if( $(this).parent().hasClass('bigcarousel') ) {
-				currentItem = $( '.boxhover',self).attr('ref')
-				return
-			}
-			
-			$(self).css('cursor','pointer')
-			var im = $('.boxhover .mainImg', $(self))
-
-			function showBorders() {
-				if(	$(self).data('run') ) {
-					var w = im.attr('width')*1
-					var h = im.attr('height')*1
-					$('.boxhover .mainImg', $(self)).css({'width': w + 3, 'height': h + 3 , 'top':'-1px'})
-					$(self).css( {'position':'relative', 'z-index':2 })
-					$(self).children().fadeOut()
-					$('.boxhover', self).fadeIn(200)
-				}
-			}
-			$(self).data('run', true)
-			currentItem = $( '.boxhover',self).attr('ref')
-			id = setTimeout( showBorders, 200)
-		},
-		'mouseleave': function() {
-			if( $(this).hasClass('goodsline') || $(this).parent().hasClass('bigcarousel')  ) return
-			var self = this
-			var im = $('.boxhover .mainImg', self)
-			if(	$(self).data('run') ) {
-				clearTimeout( id )
-				$(self).data('run',false)
-				var w = im.attr('width')*1
-				var h = im.attr('height')*1
-				$('.boxhover .mainImg', self).css({'width': w + 3, 'height': h + 3})
-				$(self).css( 'z-index',1 )
-
-				$(self).children().not('.boxhover').fadeIn()
-				$('.boxhover', self).fadeOut('slow')
-			}
-			//currentItem = 0
-		}
-	})
-	*/
 	$('.allpageinner').delegate( '.goodsbox__inner', 'mouseenter', function() {
 			goodsbox.hoverOn(this);
 	})
 	$('.allpageinner').delegate( '.goodsbox__inner', 'mouseleave', function() {
 			goodsbox.hoverOff(this);
 	})
-	// $('.goodsbox__inner')
-	// 	.mouseenter( //on
-		// function(){
-		// 	goodsbox.hoverOn(this);
-		// })
-	// 	.mouseleave( //off
-	// 	function(){
-	// 		goodsbox.hoverOff(this);	
-	// 	})
+	$('.allpageinner').delegate( '.goodsboxlink', 'mouseenter', function() { // expanded view hack
+		currentItem = $(this).attr('ref')
+	})
 	/* ---- */
 
 	$('.goodsbox__inner').live('click', function(e) {
@@ -569,12 +503,14 @@ $(document).ready(function(){
 	}
 
 	$('.goodsbox a.link1').live('click', function(e) {
+		e.stopPropagation()
 		var button = this
 		if( $(button).hasClass('disabled') )
 			return false
 		if( $(button).hasClass('active') )
 			return true
-		if (! currentItem ) return false
+		if ( typeof(currentItem)==='undefined' )
+			return false
 
 		if( ltbx ){
 			var tmp = $(this).parent().parent().parent().find('.photo img.mainImg')
@@ -598,7 +534,7 @@ $(document).ready(function(){
 				PubSub.publish( 'productBought', currentItem )
 			}
 		})
-		e.stopPropagation()
+		
 		return false
 	})
 
