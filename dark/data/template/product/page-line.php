@@ -5,7 +5,7 @@
  * @var $mainProduct    \Model\Product\Entity
  * @var $parts          \Model\Product\Entity[]
  * @var $request        \Http\Request
- * @var $productPager   \Iterator\EntityPager
+ * @var $productPager   \Iterator\EntityPager|NULL
  * @var $productView    string
  */
 
@@ -67,7 +67,7 @@ $json = array(
     </div>
 </div>
 
-<?php if ((bool)$kits || (bool)$products): ?>
+<?php if ((bool)$productPager): ?>
 
 <h2 class="bold fl">Еще другие модели в серии <?php echo $line->getName() ?></h2>
 

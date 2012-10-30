@@ -4,6 +4,7 @@ namespace Controller\Product;
 
 class LineAction {
     public function execute($lineToken, \Http\Request $request) {
+        //return new \Http\Response('');
         //$line = \RepositoryManager::getLine()->getEntityByToken($lineToken);
         //TODO: выпилить костыль, когда на ядре появится метод получени линии по токену
         $id = null;
@@ -33,7 +34,7 @@ class LineAction {
         // вид списка других товаров в серии
         $productView = $request->get('view', 'compact');
 
-        $products = array();
+        /*$products = array();
         if ((bool)$line->getProductId()) {
             $products = \RepositoryManager::getProduct()->getCollectionById($line->getProductId());
         }
@@ -44,7 +45,25 @@ class LineAction {
         }
 
         $mainProduct = \RepositoryManager::getProduct()->getEntityById($line->getMainProductId());
+*/
 
+        //Собираем все id для товров: наборов серии, простых товаров серии
+        $productInLineId = array_merge($line->getKitId(), $line->getProductId());
+        $productInLine = array_flip($productInLineId);
+        $productInLine[$line->getMainProductId()] = null;
+        $globalProduct = \RepositoryManager::getProduct()->getCollectionById($productInLineId);
+
+        foreach ($globalProduct as $product) {
+            if ($product->getId() == $line->getMainProductId()) {
+                $mainProduct = $product;
+                unset($productInLine[$product->getId()]);
+            }
+            if (isset($productInLine[$product->getId()])) {
+                $productInLine[$product->getId()] = $product;
+            }
+        }
+
+        //Запрашиваю составные части набора
         $parts = array();
         if ((bool)$mainProduct->getKit()) {
             $partId = array();
@@ -54,17 +73,20 @@ class LineAction {
             $parts = \RepositoryManager::getProduct()->getCollectionById($partId);
         }
 
-        $productPager = new \Iterator\EntityPager($kits, count($kits));
-        $productPager->setMaxPerPage(count($kits));
+        if ((bool)$productInLine) {
+            $productPager = new \Iterator\EntityPager(array_values($productInLine), count($productInLine));
+            $productPager->setMaxPerPage(count($productInLine));
+        } else {
+            $productPager = null;
+        }
 
         $page = new \View\Product\LinePage();
         $page->setParam('line', $line);
-        $page->setParam('products', $products);
-        $page->setParam('kits', $kits);
         $page->setParam('mainProduct', $mainProduct);
         $page->setParam('parts', $parts);
         $page->setParam('productView', $productView);
         $page->setParam('productPager', $productPager);
+        $page->setParam('title', 'Серия ' . $line->getName());
 
         return new \Http\Response($page->show());
     }
