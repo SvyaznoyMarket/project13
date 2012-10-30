@@ -12,12 +12,14 @@ class Filter {
     private $filters = array();
     /** @var array */
     private $values = array();
+    private $isGlobal = false;
 
     /**
      * @param FilterEntity[] $filterCollection
      */
-    public function __construct(array $filterCollection) {
+    public function __construct(array $filterCollection, $isGlobal = false) {
         $this->filters = $filterCollection;
+        $this->isGlobal = $isGlobal;
     }
 
     /**
@@ -135,5 +137,9 @@ class Filter {
      */
     public function getFilterCollection() {
         return $this->filters;
+    }
+
+    public function isGlobal() {
+        return $this->isGlobal;
     }
 }

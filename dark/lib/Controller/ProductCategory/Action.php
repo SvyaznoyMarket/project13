@@ -3,6 +3,8 @@
 namespace Controller\ProductCategory;
 
 class Action {
+    public static $globalCookieName = 'global';
+
     /**
      * @param string        $categoryPath
      * @param \Http\Request $request
@@ -216,7 +218,10 @@ class Action {
         $page->setParam('productFilter', $productFilter);
         $page->setParam('productPagersByCategory', $productPagersByCategory);
 
-        return new \Http\Response($page->show());
+        $response = new \Http\Response($page->show());
+        $this->postExecute($request, $response);
+
+        return $response;
     }
 
     /**
@@ -280,7 +285,10 @@ class Action {
         $page->setParam('productSorting', $productSorting);
         $page->setParam('productView', $productView);
 
-        return new \Http\Response($page->show());
+        $response = new \Http\Response($page->show());
+        $this->postExecute($request, $response);
+
+        return $response;
     }
 
     /**
@@ -288,10 +296,11 @@ class Action {
      * @return \Model\Product\Filter
      */
     private function getFilter(\Model\Product\Category\Entity $category, \Http\Request $request) {
-        $isGlobal = (bool)$request->get('global', false);
+        // проверяем флаг глобального списка в параметрах запроса
+        $isGlobal = (bool)$request->get('global', $request->cookies->get(self::$globalCookieName, false));
 
         $filters = \RepositoryManager::getProductFilter()->getCollectionByCategory($category, $isGlobal ? null : \App::user()->getRegion());
-        $productFilter = new \Model\Product\Filter($filters);
+        $productFilter = new \Model\Product\Filter($filters, $isGlobal);
         $productFilter->setCategory($category);
         // filter values
         $values = $request->get(\View\Product\FilterForm::$name, array());
@@ -301,5 +310,22 @@ class Action {
         $productFilter->setValues($values);
 
         return $productFilter;
+    }
+
+    /**
+     * Следит за кукой "global"
+     *
+     * @param \Http\Request $request
+     * @param \Http\Response $response
+     */
+    private function postExecute(\Http\Request $request, \Http\Response $response) {
+        if ($request->query->has('global')) {
+            if ($request->query->get('global')) {
+                $cookie = new \Http\Cookie(self::$globalCookieName, 1, strtotime('+7 days' ));
+                $response->headers->setCookie($cookie);
+            } else {
+                $response->headers->clearCookie(self::$globalCookieName);
+            }
+        }
     }
 }

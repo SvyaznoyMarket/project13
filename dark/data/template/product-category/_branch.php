@@ -1,15 +1,16 @@
 <?php
 /**
- * @var $page     \View\Layout
- * @var $request  \Http\Request
- * @var $user     \Session\User
- * @var $category \Model\Product\Category\Entity
+ * @var $page          \View\Layout
+ * @var $request       \Http\Request
+ * @var $user          \Session\User
+ * @var $category      \Model\Product\Category\Entity
+ * @var $productFilter \Model\Product\Filter
  */
 ?>
 
 <?php
 // флаг: показывать все товары в категории
-$isGlobal = (bool)$request->get('global', false);
+$isGlobal = $productFilter->isGlobal();
 
 // название региона в предложном падеже
 $regionInflectedName = $user->getRegion()->getInflectedName(5);
@@ -45,7 +46,7 @@ $globalTotalText =
     <? if (\App::config()->product['globalListEnabled'] && $user->getRegion()->getHasTransportCompany()): ?>
         <br />
         Всего в категории <?= $globalTotalText ?>
-        <a href="<?= $page->helper->replacedUrl(array('global' => $isGlobal ? null : 1)) ?>"><?= ($isGlobal ? ('показать товары в ' . $regionInflectedName) : 'показать все товары') ?></a>
+        <a href="<?= $page->helper->replacedUrl(array('global' => $isGlobal ? ($request->cookies->has(\Controller\ProductCategory\Action::$globalCookieName) ? 0 : null) : 1)) ?>"><?= ($isGlobal ? ('показать товары в ' . $regionInflectedName) : 'показать все товары') ?></a>
     <? endif ?>
 </div>
 
