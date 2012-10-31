@@ -24,21 +24,8 @@ class Repository {
             $params['region_id'] = $region->getId();
         }
         $response = $this->client->query('listing/filter', $params);
-        $exists = array();
         foreach ($response as $data) {
             $collection[] = new Entity($data);
-            $exists[] = $data['filter_id'];
-        }
-
-        if ($parent = $category->getParent()) {
-            $response = $this->client->query('listing/filter', array(
-                'category_id' => $parent->getId(),
-                'region_id'   => \App::user()->getRegion()->getId(),
-            ));
-            foreach ($response as $data) {
-                if (in_array($data['filter_id'], $exists)) continue;
-                $collection[] = new Entity($data);
-            }
         }
 
         return $collection;
