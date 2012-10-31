@@ -67,6 +67,9 @@ $(document).ready(function() {
             function getPIN() {
                 return pin.val().replace(/[^0-9]/g,'')
             }
+            function getParams() {
+                return { code: getCode() , pin: getPIN() }
+            }
             function isActive() {
             	if( checked && ( getCode() !== '' ) && getCode().length === 14 && ( getPIN() !== '' ) && getPIN().length === 4)
             		return true
@@ -75,7 +78,7 @@ $(document).ready(function() {
 
             function checkCard() {
                 setProcessingStatus( 'orange', 'Проверка по номеру карты' )
-                $.post( urlCheck, { code: '23846829634' }, function( data ) {
+                $.post( urlCheck, getParams(), function( data ) {
                     if( ! 'success' in data )
                         return false
                     if( !data.success ) {
@@ -85,7 +88,7 @@ $(document).ready(function() {
                     }
                     setProcessingStatus( 'green', data.data )
                 })       
-                pin.focus()
+                // pin.focus()
             }
             function setProcessingStatus( status, data ) {    
                 var blockProcess = $('.process').first()
@@ -123,8 +126,8 @@ $(document).ready(function() {
             }
         })(); // object SertificateCard , singleton
 
-        code.mask("999 999 999 9999 9", { completed: SertificateCard.checkCard, placeholder: "*" } )
-        pin.mask("9999", { placeholder: "*" } )
+        code.mask("999 999 999 9999 9", { completed: function(){ pin.focus() }, placeholder: "*" } )
+        pin.mask("9999", { completed: SertificateCard.checkCard, placeholder: "*" } )
 
         // $.mockjax({
         //   url: '/certificate-check',
