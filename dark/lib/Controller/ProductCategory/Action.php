@@ -179,7 +179,7 @@ class Action {
      * @throws \Exception
      */
     private function rootCategory(\Model\Product\Category\Entity $category, \Http\Request $request) {
-        if (\App::config()->debug) \App::debug()->add('sub.act', 'rootCategory');
+        if (\App::config()->debug) \App::debug()->add('sub.act', 'rootCategory', 138);
 
         if (!$category->getHasChild()) {
             throw new \Exception(sprintf('У категории "%s" отстутсвуют дочерние узлы', $category->getId()));
@@ -201,7 +201,7 @@ class Action {
      * @return \Http\Response
      */
     private function branchCategory(\Model\Product\Category\Entity $category, \Http\Request $request) {
-        if (\App::config()->debug) \App::debug()->add('sub.act', 'branchCategory');
+        if (\App::config()->debug) \App::debug()->add('sub.act', 'branchCategory', 138);
 
         // сортировка
         $productSorting = new \Model\Product\Sorting();
@@ -248,7 +248,7 @@ class Action {
      * @throws \Exception\NotFoundException
      */
     private function leafCategory(\Model\Product\Category\Entity $category, \Http\Request $request) {
-        if (\App::config()->debug) \App::debug()->add('sub.act', 'leafCategory');
+        if (\App::config()->debug) \App::debug()->add('sub.act', 'leafCategory', 138);
 
         $pageNum = (int)$request->get('page', 1);
         if ($pageNum < 1) {
