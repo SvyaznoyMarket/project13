@@ -769,7 +769,7 @@ class order_Actions extends myActions
       $orders[] = $order;
     }
 
-      $coreData = array_map(function($order) use ($user) {
+    $coreData = array_map(function($order) use ($user) {
       /* @var $order Order */
       /* @var $user myUser */
       $return = $order->exportToCore();
@@ -794,6 +794,19 @@ class order_Actions extends myActions
     //dump($response, 1);
     if (is_array($response) && array_key_exists('confirmed', $response) && $response['confirmed'])
     {
+      $firstOrder = reset($orders);
+      // проверка на подарочный сертификат
+      if ((1 == count($orders)) && (10 == $firstOrder->payment_method_id)) {
+        try {
+            $r = CoreClient::getInstance()->query('order/pay', array('id' => $firstOrder->core_id), array(
+                'certificate'     => $firstOrder->cardnumber,
+                'certificate_pin' => $firstOrder->cardpin,
+            ));
+            //var_dump($r); exit();
+        } catch(Exception $e) {
+        }
+      }
+
       return $response['orders'];
     }
     else {
