@@ -44,6 +44,7 @@ class PaymentMethodRepository
             'id'          => 10,
             'name'        => 'Оплата подарочной картой',
             'description' => 'Заполните информацию с подарочной карты',
+            'is_online'   => true,
         );
 
         if (empty($result) || !is_array($result)) {

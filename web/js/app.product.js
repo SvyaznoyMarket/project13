@@ -84,9 +84,10 @@ $(document).ready(function() {
 
 	/* Rating */
 	if( $('#rating').length ) {
-		var iscore = $('#rating').next().html().replace(/\D/g,'')
-		$('#rating span').remove()
-		$('#rating').raty({
+		var iscore = $('#rating').next().html().replace(/[^\d\.]/g,'') * 1
+		$('#rating img').remove()
+        $('#rating span').remove()
+        $('#rating').raty({
 		  start: iscore,
 		  showHalf: true,
 		  path: '/css/skin/img/',
