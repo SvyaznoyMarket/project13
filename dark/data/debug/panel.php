@@ -30,7 +30,7 @@ $queryString = '';
 foreach ((array)$requestData['api_queries'] as $query) {
     $queryString .=
         sprintf('%01.3f', round($query['time'], 3))
-        . ' ' . '<a style="color: #00ffff" href="' . $query['url'] . '" target="_blank" data-method="' . ((bool)$query['post'] ? 'post' : 'get') . '">' . rawurldecode(parse_url($query['url'], PHP_URL_PATH)) . '</a>'
+        . ' ' . '<a style="color: #00ffff" href="' . $query['url'] . '" target="_blank" data-method="' . ((bool)$query['post'] ? 'post' : 'get') . '">' . rawurldecode($query['url']) . '</a>'
         . ' ' . ((bool)$query['post'] ? json_encode($query['post']) : '')
         . '<br />';
 }
