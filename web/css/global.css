@@ -1,4 +1,3 @@
-/* CSS crunched with Crunch - http://crunchapp.net/ */
 /*---------ШРИФТЫ----------*/
 @font-face {
   font-family: 'Enter';
@@ -5028,6 +5027,9 @@
   }
   .orderFinal__certificate input.cardPin {
     width: 90px;
+  }
+  .orderFinal__certificate input.mRed {
+    border: 1px solid red;
   }
   .orderFinal__certificate .process .img {
     -webkit-border-radius: 7px;
