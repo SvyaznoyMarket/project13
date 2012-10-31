@@ -41,7 +41,7 @@ return array(
     ),
     // личный кабинет
     'user' => array(
-        'pattern' => '/private',
+        'pattern' => '/private/',
         'action'  => array('User\IndexAction', 'execute'),
     ),
 
