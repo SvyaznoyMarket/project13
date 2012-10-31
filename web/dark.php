@@ -74,11 +74,11 @@ try {
         throw $e;
     }
 }
-\App::logger('request_compatible')->info($requestLogger->getStatistics());
-
 if ($response instanceof \Http\Response) {
     $response->send();
 }
+
+\App::logger('request_compatible')->info($requestLogger->getStatistics());
 
 $spend = \Debug\Timer::stop('app');
 \App::logger()->info('End app in ' . $spend . ' used ' . round(memory_get_peak_usage() / 1048576, 2) . 'Mb');
