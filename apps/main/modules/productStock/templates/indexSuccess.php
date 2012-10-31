@@ -12,6 +12,10 @@ foreach($product->getCategoryList() as $category)
     'url' => $category->getLink(),
   );
 $list[] = array(
+    'name' => $product->getName(),
+    'url' => $product->getLink(),
+);
+$list[] = array(
   'name' => 'Где купить ' . mb_lcfirst($product->getName()),
   'url' => $product->getLink(),
 );

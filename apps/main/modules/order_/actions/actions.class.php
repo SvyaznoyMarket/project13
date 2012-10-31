@@ -190,6 +190,8 @@ class order_Actions extends myActions
         $this->getUser()->getCart()->clear();
         $this->getUser()->getOrder()->clear(); //FIXME: убрать
 
+        setcookie('credit_on', '', time() - 3600);
+
         $result = array_merge($result, array(
           'success' => true,
           'data'    => array('redirect' => $this->generateUrl('order_complete')),

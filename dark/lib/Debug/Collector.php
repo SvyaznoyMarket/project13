@@ -9,7 +9,7 @@ class Collector {
 
     private $data = array();
 
-    public function add($name, $value, $type = null, $priority = null) {
+    public function add($name, $value, $priority = null, $type = null) {
         static $next = 50;
 
         $this->data[] = array(

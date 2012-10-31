@@ -4903,13 +4903,13 @@
     padding-left: 10px;
   }
   #order_address_building {
-    padding-left: 65px;
+    padding-left: 45px;
   }
   #order_address_apartment {
     padding-left: 80px;
   }
   #order_address_number {
-    padding-left: 45px;
+    padding-left: 65px;
   }
   .bFormError {
     color: #ec323b;
