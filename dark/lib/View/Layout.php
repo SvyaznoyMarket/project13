@@ -86,7 +86,7 @@ class Layout {
                 $timestamp = filectime(\App::config()->webDir . '/' . trim($stylesheet, '/'));
                 $stylesheet .= '?' . $timestamp;
             } catch (\Exception $e) {
-                \App::logger($e);
+                \App::logger()->error($e);
             }
         }
 
@@ -103,7 +103,7 @@ class Layout {
                 $timestamp = filectime(\App::config()->webDir . '/' . trim($javascript, '/'));
                 $javascript .= '?' . $timestamp;
             } catch (\Exception $e) {
-                \App::logger($e);
+                \App::logger()->error($e);
             }
         }
 

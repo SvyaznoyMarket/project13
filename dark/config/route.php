@@ -41,7 +41,7 @@ return array(
     ),
     // личный кабинет
     'user' => array(
-        'pattern' => '/private',
+        'pattern' => '/private/',
         'action'  => array('User\IndexAction', 'execute'),
     ),
 
@@ -160,6 +160,10 @@ return array(
     // добавление товара в корзину
     'cart.product.add' => array(
         'pattern' => '/cart/add/{productId}/_quantity/{quantity}', // TODO: сделать поприличнее - '/cart/add-product/{productId}/{quantity}'
+        'action'  => array('Cart\ProductAction', 'add'),
+    ),
+    'old.cart.product.add' => array(
+        'pattern' => '/cart/add/{productId}/_quantity/', // TODO: Убить, когда полностью переедем на dark, переписать js с учетом наличия кол-ва
         'action'  => array('Cart\ProductAction', 'add'),
     ),
     // удаление услуги из корзины
