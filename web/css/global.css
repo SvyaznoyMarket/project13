@@ -1,3 +1,4 @@
+/* CSS crunched with Crunch - http://crunchapp.net/ */
 /*---------ШРИФТЫ----------*/
 @font-face {
   font-family: 'Enter';
@@ -6674,11 +6675,7 @@
     font-size: 13px;
   }
   .bMobDown table td input {
-    -webkit-box-shadow: 0px 0px 5px #d8d8d8;
-    -moz-box-shadow: 0px 0px 5px #d8d8d8;
-    box-shadow: 0px 0px 5px #d8d8d8;
-    border: 1px solid #d8d8d8;
-    height: 18px;
+    border: 1px solid #a6a6a6;
     width: 100%;
   }
   .bMobDown table td a,
