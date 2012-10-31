@@ -11,7 +11,7 @@ $json = array (
 ?>
 <div class="line"></div>
 <div class="fr ar">
-  <?php if ( $product->getState()->getIsBuyable()): ?>
+  <?php if (!(!$product->getIsBuyable() && $product->getState()->getIsShop())): ?>
     <div class="goodsbarbig mSmallBtns" ref="<?php echo $product->getToken() ?>" data-value='<?php echo json_encode( $json ) ?>'>
 
         <div class='bCountSet'>
@@ -25,8 +25,6 @@ $json = array (
 
         <?php render_partial('cart_/templates/_buy_button.php', array('item' => $product)) ?>
     </div>
-  <?php else: ?>
-    <p class="font16 orange">Для покупки товара<br />обратитесь в Контакт-сENTER</p>
   <?php endif ?>
 </div>
 <div class="fr mBuyButtonBottom">

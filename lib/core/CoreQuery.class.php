@@ -15,6 +15,7 @@ class CoreQuery
     $this->core = Core::getInstance();
 
     $this->query = $query;
+    $parameters['uid'] = RequestLogger::getInstance()->getId();
     $this->parameters = $parameters;
     $this->data = $data;
   }

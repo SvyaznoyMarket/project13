@@ -4,25 +4,11 @@ class ShopRepository
 {
   public function create($data)
   {
-    $data = array_merge(array(
-      'id'           => null,
-      'slug'         => null,
-      'name'         => '',
-      'working_time' => '',
-      'address'      => '',
-      'coord_long'   => null,
-      'coord_lat'    => null,
-    ), $data);
+    $entity = new ShopEntity($data);
 
-    $entity = new ShopEntity();
-
-    $entity->setAddress($data['address']);
-    $entity->setLatitude($data['coord_lat']);
-    $entity->setLongitude($data['coord_long']);
-    $entity->setName($data['name']);
-    $entity->setRegime($data['working_time']);
-    $entity->setToken($data['slug']);
-
+    if (!$entity->getId()) {
+        return null;
+    }
     return $entity;
   }
 
@@ -34,4 +20,22 @@ class ShopRepository
 
     return isset($result['count']) ? $result['count'] : 0;
   }
+
+    /**
+     * @param array $ids
+     * @return ShopEntity[]
+     */
+    public function getListById(array $ids)
+    {
+        if (empty($ids)) return array();
+        $response = CoreClient::getInstance()->query('shop.get', array(
+            'id' => $ids,
+        ));
+
+        $list = array();
+        foreach ($response as $data) {
+            $list[] = $this->create($data);
+        }
+        return $list;
+    }
 }

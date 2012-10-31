@@ -9,6 +9,7 @@
  * @var $showRelatedUpper boolean
  * @var $showAccessoryUpper boolean
  * @var $dataForCredit array
+ * @var $showroomShops ShopEntity[]
  */
 $json = json_encode(array (
   'jsref' => $item->getToken(),
@@ -101,7 +102,18 @@ foreach ($photo3dList as $photo3d)
 
 
   <div class="fr ar pb15">
-    <?php if ( $item->getState()->getIsBuyable()): ?>
+    <?php if (!$item->getIsBuyable() && $item->getState()->getIsShop()): ?>
+       <div class="vitrin">
+	       	 <div class="line pb15"></div>
+	        <p class="font18 orange">Товар очень популярный и остался только на витрине. Успей купить!</p>
+	        <span><?php echo (count($showroomShops) == 1) ? 'Адрес магазина' : 'Адреса магазинов' ?>:</span>
+        	<ul>
+        		<?php foreach ($showroomShops as $shop): ?>
+		          <li><?php echo $shop->getAddress() //ссылки пока не будет, появится позже ?></li>
+		        <?php endforeach ?>
+        	</ul>
+       </div>
+    <?php else: ?>
     <div class="goodsbarbig mSmallBtns" ref="<?php echo $item->getToken() ?>" data-value='<?php echo $json ?>'>
 
       <div class='bCountSet'>
@@ -114,35 +126,34 @@ foreach ($photo3dList as $photo3d)
       </div>
       <?php render_partial('cart_/templates/_buy_button.php', array('item' => $item)) ?>
     </div>
+    <?php if ($item->getIsBuyable()): ?>
     <div class="pb5"><strong>
       <a href=""
          data-model='<?php echo $json ?>'
-         link-output='<?php echo url_for('order_1click', array('product' => $item->getBarcode())) ?>'
+         link-output='<?php echo url_for('order_1click', array('product' => $item->getToken())) ?>'
          link-input='<?php echo url_for('product_delivery_1click') ?>'
          class="red underline order1click-link-new">Купить быстро в 1 клик</a>
     </strong></div>
-    <?php else: ?>
-    <span class="font16 orange">Для покупки товара<br />обратитесь в Контакт-сENTER</span>
+    <?php endif ?>
     <?php endif ?>
   </div>
 
 
-  <div class="line pb15"></div>
-  <?php if ($dataForCredit['creditIsAllowed'] && sfConfig::get('app_payment_credit_enabled', true)) : ?>
-  <div class="creditbox">
+    <?php if ($item->getIsBuyable()): ?>
+    <div class="line pb15"></div>
+
+    <?php if ($dataForCredit['creditIsAllowed'] && sfConfig::get('app_payment_credit_enabled', true)) : ?>
+    <div class="creditbox">
     <div class="creditboxinner">
       от <span class="font24"><span class="price"></span> <span class="rubl">p</span></span> в кредит
       <div class="fr pt5"><label class="bigcheck " for="creditinput"><b></b>Беру в кредит
         <input id="creditinput" type="checkbox" name="creditinput" autocomplete="off"/></label></div>
     </div>
   </div>
-  <?php endif; ?>
 
-  <?php if ($dataForCredit['creditIsAllowed'] && sfConfig::get('app_payment_credit_enabled', true)) : ?>
   <input data-model="<?php echo $dataForCredit['creditData'] ?>" id="dc_buy_on_credit_<?php echo $item->getArticle(); ?>" name="dc_buy_on_credit" type="hidden" />
   <?php endif; ?>
 
-  <?php if ($item->getIsBuyable()): ?>
   <div class="bDeliver2 delivery-info" id="product-id-<?php echo $item->getId() ?>" data-shoplink="<?php echo url_for('productStock', array('product' => $item->getPath())) ?>" data-calclink="<?php echo url_for('product_delivery', array('product' => $item->getId())) ?>">
     <h4>Как получить заказ?</h4>
     <ul>
@@ -324,7 +335,7 @@ if ($showRelatedUpper && count($item->getRelatedList())){
     <h2>Покупка в 1 клик!</h2>
     <div class="clear line pb20"></div>
 
-    <form id="order1click-form" action="<?php echo url_for('order_1click', array('product' => $item->getBarcode())) ?>" method="post"></form>
+    <form id="order1click-form" action="<?php echo url_for('order_1click', array('product' => $item->getToken())) ?>" method="post"></form>
 
   </div>
 </div>

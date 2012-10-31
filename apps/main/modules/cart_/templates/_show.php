@@ -65,7 +65,7 @@
   <?php else: ?>
   <div class="basketline mWrap">
     <div class="basketleft">
-      <?php if (isset($item['photo'])) echo '<div class="bServiceCard__eLogo"></div>' ?>
+     <!-- <?php if (isset($item['photo'])) echo '<div class="bServiceCard__eLogo"></div>' ?>-->
       <a href="<?php echo url_for('service_show', array('service' => $item['token'])) ?>">
         <?php echo (isset($item['photo'])) ? image_tag($item['photo']) : '<div class="bServiceCard__eLogo_free pr_imp"></div>' ?>
       </a>

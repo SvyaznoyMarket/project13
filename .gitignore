@@ -12,6 +12,7 @@
 /config/databases.yml
 /web/xml/*
 /web/sitemap*
+/web/pdf/*
 erase.cmd
 erase_barcode.cmd
 *.nblh~

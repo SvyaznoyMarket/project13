@@ -71,6 +71,9 @@ class ProductRepository extends ObjectRepository
     }
     if (!empty($data['state']))
       $product->setState(new ProductStateEntity($data['state']));
+    if (array_key_exists('stock', $data) && is_array($data['stock'])) foreach ($data['stock'] as $stock) {
+      $product->addStock(new ProductStockEntity($stock));
+    }
     if (!empty($data['line']))
       $product->setLine(new ProductLineEntity($data['line']));
     if (!empty($data['label']))
@@ -171,6 +174,32 @@ class ProductRepository extends ObjectRepository
       'id' => $idList,
       'geo_id' => RepositoryManager::getRegion()->getDefaultRegionId(),
     ), $loadDynamic);
+  }
+
+  /**
+   * Load ProductEntity by barcode from core.
+   *
+   * @param array $barcodeList
+   * @param bool $loadDynamic is load dynamic data
+   * @return ProductEntity[]
+   */
+  public function getListByBarcode(array $barcodeList, $loadDynamic = false)
+  {
+    if (empty($barcodeList)) return array();
+
+    $result = CoreClient::getInstance()->query('product/get', array(
+      'select_type' => 'bar_code',
+      'bar_code'    => $barcodeList,
+      'geo_id'      => RepositoryManager::getRegion()->getDefaultRegionId(),
+    ));
+
+    $return = array();
+    foreach ($result as $item) {
+      $return[] = $this->create($item);
+    }
+
+    return $return;
+
   }
 
   /**

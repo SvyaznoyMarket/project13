@@ -140,7 +140,7 @@
 			      			</li>
 			      			<!-- ko foreach: caclDates -->
 							<li class="order-delivery_date"
-								data-bind="style: { display: ( $data.week === $parent.curWeek() ) ? 'inline-block' : 'none' },
+								data-bind="style: { display: ( $data.week === $parent.curWeek() ) ? $root.cssForDate : 'none' },
 										click: function(data, event) { $root.clickDate($parent, data, event) },
 										css: { bBuyingDates__eEnable: $data.enable(),
 												bBuyingDates__eDisable: (!$data.enable()),

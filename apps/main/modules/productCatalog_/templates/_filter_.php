@@ -14,9 +14,15 @@
       action=""
       method="get"
       data-action-count="<?php echo url_for('productCatalog_count', array('productCategory' => $productCategory->getTokenPrefix() ? ($productCategory->getTokenPrefix().'/'.$productCategory->getToken()) : $productCategory->getToken())) ?>">
-
+	
+	<div class="filterresult product_count-block">
+		<div class="corner"><div></div></div>
+		Выбрано <span class="result">result.data</span> модел<span class="ending">ending</span><br/>
+		<a>Показать</a>
+	</div>
+  
   <dl class="bigfilter form bSpec">
-    <h2>Выбираем:<i></i></h2>
+    <dt class="filterHeader">Выбираем:<i></i></dt>
     <?php require '_filter_selected_.php' ?>
     <?php $openNum = 0; ?>
     <?php $i = 0; foreach ($productFilter->getFilterList() as $filter): ?>

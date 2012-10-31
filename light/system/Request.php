@@ -140,7 +140,7 @@ class Request {
 	{
 		if (!in_array(strtoupper($method), array(self::GET, self::POST, self::PUT, self::DELETE, self::HEAD)))
 		{
-			throw new \Exception(sprintf('Invalid request method: %s.', $method));
+      $this->method = self::GET;
 		}
 
 		$this->method = strtoupper($method);

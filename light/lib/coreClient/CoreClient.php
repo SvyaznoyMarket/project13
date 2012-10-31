@@ -4,7 +4,7 @@ use Logger;
 use Exception;
 
 require_once(__DIR__.'/../log4php/Logger.php');
-require_once(__DIR__.'/../helpers/RequestLogger.php');
+require_once(__DIR__ . '/../helper/RequestLogger.php');
 
 class CoreClient
 {
@@ -13,6 +13,10 @@ class CoreClient
 
   /** @var resource */
   private $multiHandler;
+
+  /** @var bool */
+  private $still_executing;
+
   /** @var callback[] */
   private $callbacks = array();
   private $resources = array();
@@ -38,6 +42,7 @@ class CoreClient
   private function __construct(array $parameters)
   {
     $this->parameters = $parameters;
+      $this->still_executing = false;
   }
 
   private function __clone(){}
@@ -75,11 +80,13 @@ class CoreClient
       $info = curl_getinfo($connection);
       $this->log('Core response resource: ' . $connection ,'debug');
       $this->log('Core response info: ' . $this->encodeInfo($info), 'debug');
+      RequestLogger::getInstance()->addLog($info['url'], print_r($data, true), $info['total_time']);
       if ($info['http_code'] >= 300) {
         throw new \RuntimeException(sprintf("Invalid http code: %d, \nResponse: %s", $info['http_code'], $response));
       }
       $this->log('Core response: ' . $response, 'debug');
-      RequestLogger::getInstance()->addLog($action, $params);
+
+//      RequestLogger::getInstance()->addLog($action, $params);
       $responseDecoded = $this->decode($response);
       curl_close($connection);
       return $responseDecoded;
@@ -105,10 +112,12 @@ class CoreClient
     if (!$this->multiHandler) {
       $this->multiHandler = curl_multi_init();
     }
+    $params['uid'] = RequestLogger::getInstance()->getId();
     $resource = $this->createCurlResource($action, $params, $data);
     curl_multi_add_handle($this->multiHandler, $resource);
     $this->callbacks[(string)$resource] = $callback;
     $this->resources[] = $resource;
+    $this->still_executing = true;
   }
 
   /**
@@ -129,13 +138,19 @@ class CoreClient
     try {
       $time_start = microtime(true);
       do {
-        $code = curl_multi_exec($this->multiHandler, $still_executing);
-        if ($code == CURLM_OK) {
-          // if one or more descriptors is ready, read content and run callbacks
+          do {
+              $code = curl_multi_exec($this->multiHandler, $curl_still_executing);
+              $this->still_executing = $curl_still_executing;
+          } while ($code == CURLM_CALL_MULTI_PERFORM);
+
+                // if one or more descriptors is ready, read content and run callbacks
           while ($done = curl_multi_info_read($this->multiHandler)) {
             $this->log('Core response done: ' . print_r($done, 1), 'debug');
             $ch = $done['handle'];
             $info = curl_getinfo($ch);
+
+            RequestLogger::getInstance()->addLog($info['url'], "unknown in multi curl", $info['total_time']);
+
             $this->log('Core response resurce: ' . $ch, 'debug');
             $this->log('Core response info: ' . $this->encodeInfo($info), 'debug');
             if (curl_errno($ch) > 0)
@@ -150,10 +165,10 @@ class CoreClient
             $callback = $this->callbacks[(string)$ch];
             $callback($responseDecoded);
           }
-        } elseif ($code != CURLM_CALL_MULTI_PERFORM) {
-          throw new \RuntimeException("multi_curl failure [$code]");
-        }
-      } while ($still_executing);
+          if ($curl_still_executing) {
+              $ready = curl_multi_select($this->multiHandler);
+          }
+      } while ($this->still_executing);
       $time_end = microtime(true);
       $this->log('Multi-request time:' . ($time_end - $time_start), 'info');
     } catch (Exception $e) {
@@ -384,10 +399,11 @@ class CoreV1Client
       'data'   => $data), JSON_FORCE_OBJECT);
 
     $this->log("Request: ".$data, 'info');
-    RequestLogger::getInstance()->addLog($name, $params);
 
     $time_start = microtime(true);
     $response = $this->send($data);
+    $info = curl_getinfo($this->connection);
+    RequestLogger::getInstance()->addLog($info['url'], print_r($data, true), $info['total_time']);
     $this->log("Response: ".$response, 'debug');
     $time_end = microtime(true);
     $this->log('Request time:' . ($time_end - $time_start), 'info');

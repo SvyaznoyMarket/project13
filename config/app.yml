@@ -119,7 +119,7 @@ all:
   payment:
     enabled: true # общий переключатель для всех видов методов online оплат
     default_provider: psbank
-    credit_enabled: false
+    credit_enabled: true
     provider:
       psbank:
         enabled: true
@@ -266,6 +266,7 @@ live:
       cert: %SF_DATA_DIR%/cert/smartengine-server2.crt
       log_enabled: false
       log_data_enabled: false
+      marker: '?utm_source=enter_ru&utm_medium=cpc&utm_campaign=se&utm_content=recommend'
 
   rediska:
     default:

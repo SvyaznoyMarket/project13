@@ -109,23 +109,27 @@ $isCorporative = $sf_user->getGuardUser() && $sf_user->getGuardUser()->getIsCorp
 
           <?php if (isset($form['address_metro'])): ?>
           <div class="ui-css">
-            <p></p>
-            <span class="placeholder">Метро</span><?php echo $form['address_metro']->render(array('class' => 'placeholder-input bBuyingLine__eText mInputLong', 'title' => 'Метро', 'style' => 'width: 419px;')) ?>
+            <span class="placeholder">Метро</span><?php echo $form['address_metro']->render(array('class' => 'placeholder-input bBuyingLine__eText mInputLong', 'title' => 'Метро')) ?>
             <div id="metrostations"></div>
           </div>
           <?php endif ?>
 
-          <div>
-            <p></p>
-            <span class="placeholder">Улица</span><?php echo $form['address_street']->render(array('class' => 'placeholder-input bBuyingLine__eText mInputLong', 'title' => 'Улица', 'style' => 'width: 315px;')) ?>
-            <span class="placeholder">Дом</span><?php echo $form['address_number']->render(array('class' => 'placeholder-input bBuyingLine__eText mInputShort', 'title' => 'Дом', 'style' => 'width: 50px;')) ?>
+          <div class="street">
+            <span class="placeholder">Улица</span><?php echo $form['address_street']->render(array('class' => 'placeholder-input bBuyingLine__eText mInputLong', 'title' => 'Улица')) ?>
           </div>
-
-          <div>
-            <p></p>
-            <span class="placeholder">Корпус</span><?php echo $form['address_building']->render(array('class' => 'placeholder-input bBuyingLine__eText mInputShort', 'title' => 'Корпус', 'style' => 'width: 83px')) ?>
-            <span class="placeholder">Квартира</span><?php echo $form['address_apartment']->render(array('class' => 'placeholder-input bBuyingLine__eText mInputShort', 'title' => 'Квартира', 'style' => 'width: 85px')) ?>
-            <span class="placeholder">Этаж</span><?php echo $form['address_floor']->render(array('class' => 'placeholder-input bBuyingLine__eText mInputShort', 'title' => 'Этаж', 'style' => 'width: 83px')) ?>
+			
+			<div class="number">
+				<span class="placeholder">Дом</span><?php echo $form['address_number']->render(array('class' => 'placeholder-input bBuyingLine__eText mInputShort', 'title' => 'Дом')) ?>
+			</div>
+			
+          <div class="building">
+            <span class="placeholder">Корпус</span><?php echo $form['address_building']->render(array('class' => 'placeholder-input bBuyingLine__eText mInputShort', 'title' => 'Корпус')) ?>
+          </div>
+          <div class="apartament">
+            <span class="placeholder">Квартира</span><?php echo $form['address_apartment']->render(array('class' => 'placeholder-input bBuyingLine__eText mInputShort', 'title' => 'Квартира')) ?>
+          </div>
+          <div class="floor">
+            <span class="placeholder">Этаж</span><?php echo $form['address_floor']->render(array('class' => 'placeholder-input bBuyingLine__eText mInputShort', 'title' => 'Этаж')) ?>
           </div>
         </dd>
       </dl>

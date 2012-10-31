@@ -7,7 +7,7 @@
 $list = $productFilter->getSelectedList();
 if(count($list)):
 ?>
-<div class="bSpecSel">
+<dd class="bSpecSel">
     <h3>Ваш выбор:</h3>
     <ul>
         <?php foreach ($list as $item): ?>
@@ -20,5 +20,5 @@ if(count($list)):
     </ul>
     <a class="bSpecSel__eReset"
        href="<?php echo url_for('productCatalog_category', array('productCategory' => $productCategory->getTokenPrefix() ? ($productCategory->getTokenPrefix().'/'.$productCategory->getToken()) : $productCategory->getToken())) ?>">сбросить все</a>
-</div>
+</dd>
 <?php endif; ?>

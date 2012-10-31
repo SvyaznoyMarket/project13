@@ -40,6 +40,8 @@ class CoreClient
     $this->logger = new sfAggregateLogger(new sfEventDispatcher());
     $this->logger->addLogger(new sfFileLogger(new sfEventDispatcher(), array('file' => $this->parameters->get('log_file'))));
     $this->logger->addLogger(sfContext::getInstance()->getLogger());
+
+    $this->still_executing = false;
   }
 
   /**
@@ -61,6 +63,7 @@ class CoreClient
         throw new CoreClientException(curl_error($connection), curl_errno($connection));
       }
       $info = curl_getinfo($connection);
+      RequestLogger::getInstance()->addLog($info['url'], print_r($data, true), $info['total_time']);
       if ($this->parameters->get('log_enabled')) {
         $this->logger->info('Core response '.$connection.' : ' . $this->encodeInfo($info));
       }
@@ -77,7 +80,6 @@ class CoreClient
       if ($this->parameters->get('log_data_enabled')) {
         $this->logger->info('Core response data: ' . $this->encode($responseDecoded));
       }
-      RequestLogger::getInstance()->addLog($action, $params);
 
       curl_close($connection);
       return $responseDecoded;
@@ -103,10 +105,12 @@ class CoreClient
     if (!$this->multiHandler) {
       $this->multiHandler = curl_multi_init();
     }
+    $params['uid'] = RequestLogger::getInstance()->getId();
     $resource = $this->createCurlResource($action, $params, $data);
     curl_multi_add_handle($this->multiHandler, $resource);
     $this->callbacks[(string)$resource] = $callback;
     $this->resources[] = $resource;
+    $this->still_executing = true;
   }
 
   /**
@@ -131,14 +135,20 @@ class CoreClient
     $active = null;
     $error = null;
     try {
-      do {
-        $code = curl_multi_exec($this->multiHandler, $still_executing);
-        if ($code == CURLM_OK) {
+        do {
+            do {
+              $code = curl_multi_exec($this->multiHandler, $curl_still_executing);
+              $this->still_executing = $curl_still_executing;
+            } while ($code == CURLM_CALL_MULTI_PERFORM);
+
           // if one or more descriptors is ready, read content and run callbacks
-          while ($done = curl_multi_info_read($this->multiHandler)) {
+            while ($done = curl_multi_info_read($this->multiHandler)) {
 
             $ch = $done['handle'];
             $info = curl_getinfo($ch);
+
+            RequestLogger::getInstance()->addLog($info['url'], "unknown in multi curl", $info['total_time']);
+
             if ($this->parameters->get('log_enabled')) {
               $this->logger->info('Core response '.$ch.' done: ' . $this->encodeInfo($info));
             }
@@ -160,14 +170,11 @@ class CoreClient
             /** @var $callback callback */
             $callback = $this->callbacks[(string)$ch];
             $callback($responseDecoded);
-          }
-        } elseif ($code != CURLM_CALL_MULTI_PERFORM) {
-          throw new CoreClientException("multi_curl failure [$code]");
-        }
-        if($still_executing == 0){
-          curl_multi_exec($this->multiHandler, $still_executing);
-        }
-      } while ($still_executing);
+            }
+            if ($curl_still_executing) {
+	            $ready = curl_multi_select($this->multiHandler);
+	        }
+        } while ($this->still_executing);
     } catch (Exception $e) {
       $error = $e;
     }
