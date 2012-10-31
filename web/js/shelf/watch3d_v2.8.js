@@ -711,13 +711,13 @@ function gigaimage( worknode , zoom, /* zoomer node*/ zoo, overwritefn) {
 	this.zoomIn = function(){
 		var outer = jnode.parent()
 		var offs = outer.offset()
-		this.fixzoom(1, Math.round( outer.width() / 2 ) + offs.left, Math.round( outer.height() / 2 ) + offs.top ) //center click imitation
+		this.fixzoom(1, Math.round( outer.width() / 2 ) + offs.left, Math.round( $('#bigpopup').height() / 2 ) + offs.top ) //center click imitation
 	}
 
 	this.zoomOut = function(){
 		var outer = jnode.parent()
 		var offs = outer.offset()
-		this.fixzoom(-1, Math.round( outer.width() / 2 ) + offs.left, Math.round( outer.height() / 2 ) + offs.top )
+		this.fixzoom(-1, Math.round( outer.width() / 2 ) + offs.left, Math.round( $('#bigpopup').height() / 2 ) + offs.top )
 	}
 	var outer = jnode.parent()
 

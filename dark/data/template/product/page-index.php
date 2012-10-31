@@ -80,8 +80,15 @@
     <div class="fr">
       <span id="rating" data-url="<?php echo $page->url('product.rating.create_total', array('rating' => 'score', 'productId' => $product->getId() )) ?>">
         <?php
-        echo str_repeat('<span class="ratingview" style="width:13px;vertical-align:middle;display:inline-block;"></span>', round($product->getRating()));
-        echo str_repeat('<span class="ratingview" style="width:13px;vertical-align:middle;display:inline-block;background-position:-51px 0;"></span>', 5 - round($product->getRating()));
+        echo str_repeat('<img src="/css/skin/img/star_a.png" alt="">', floor($product->getRating()));
+        if ($product->getRating() - floor($product->getRating()) > 0 and $product->getRating() - floor($product->getRating()) < 0.25) {
+            echo '<img src="/css/skin/img/star_p.png" alt="">';
+        } elseif ($product->getRating() - floor($product->getRating()) < 0.75) {
+            echo '<img src="/css/skin/img/star_h.png" alt="">';
+        } else {
+            echo '<img src="/css/skin/img/star_a.png" alt="">';
+        }
+        echo str_repeat('<img src="/css/skin/img/star_p.png" alt="">', 5 - ceil($product->getRating()));
         ?>
       </span>
       <strong class="ml5 hf"><?php echo round($product->getRating(), 1) ?></strong>
@@ -450,9 +457,7 @@
 
 <div class="line"></div>
 <div class="fr ar">
-    <?php if ( !$product->getIsBuyable() && $product->getState()->getIsShop()): ?>
-    <p class="font16 orange">Для покупки товара<br />обратитесь в<br />Контакт-сENTER</p>
-    <?php else: ?>
+    <?php if ($product->getIsBuyable() || !$product->getState()->getIsShop()): ?>
     <div class="goodsbarbig mSmallBtns" ref="<?php echo $product->getToken() ?>" data-value='<?php echo $json ?>'>
 
         <div class='bCountSet'>
