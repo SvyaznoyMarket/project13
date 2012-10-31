@@ -73,13 +73,13 @@ class OrderDefaultForm extends BaseOrderForm
     $this->validatorSchema['address_street'] = new sfValidatorString(array('required' => false), array('required' => 'Укажите улицу'));
     $this->widgetSchema['address_street']->setLabel('Улица');
 
-    $this->widgetSchema['address_number'] = new sfWidgetFormInputText();
-    $this->validatorSchema['address_number'] = new sfValidatorString(array('required' => false), array('required' => 'Укажите дом'));
-    $this->widgetSchema['address_number']->setLabel('Дом');
-
     $this->widgetSchema['address_building'] = new sfWidgetFormInputText();
-    $this->validatorSchema['address_building'] = new sfValidatorString(array('required' => false), array('required' => 'Укажите корпус'));
-    $this->widgetSchema['address_building']->setLabel('Корпус');
+    $this->validatorSchema['address_building'] = new sfValidatorString(array('required' => false), array('required' => 'Укажите дом'));
+    $this->widgetSchema['address_building']->setLabel('Дом');
+
+    $this->widgetSchema['address_number'] = new sfWidgetFormInputText();
+    $this->validatorSchema['address_number'] = new sfValidatorString(array('required' => false), array('required' => 'Укажите корпус'));
+    $this->widgetSchema['address_number']->setLabel('Корпус');
 
     $this->widgetSchema['address_apartment'] = new sfWidgetFormInputText();
     $this->validatorSchema['address_apartment'] = new sfValidatorString(array('required' => false), array('required' => 'Укажите номер квартиры'));
@@ -180,8 +180,8 @@ class OrderDefaultForm extends BaseOrderForm
 
     $this->object->mapValue('address_metro', !empty($values['address_metro']) ? $values['address_metro'] : null);
     $this->object->mapValue('address_street', !empty($values['address_street']) ? $values['address_street'] : null);
-    $this->object->mapValue('address_number', !empty($values['address_number']) ? $values['address_number'] : null);
-    $this->object->mapValue('address_building', !empty($values['address_building']) ? $values['address_building'] : null);
-    $this->object->mapValue('address_apartment', !empty($values['address_apartment']) ? $values['address_apartment'] : null);
+    $this->object->mapValue('address_number', isset($values['address_number']) ? $values['address_number'] : null);
+    $this->object->mapValue('address_building', isset($values['address_building']) ? $values['address_building'] : null);
+    $this->object->mapValue('address_apartment', isset($values['address_apartment']) ? $values['address_apartment'] : null);
   }
 }
