@@ -4,29 +4,7 @@ namespace Controller\Product;
 
 class LineAction {
     public function execute($lineToken, \Http\Request $request) {
-        //return new \Http\Response('');
-        //$line = \RepositoryManager::getLine()->getEntityByToken($lineToken);
-        //TODO: выпилить костыль, когда на ядре появится метод получени линии по токену
-        $id = null;
-        $db = mysql_connect('localhost', 'root', 'qazwsxedc');
-        mysql_select_db('enter', $db);
-        $result = mysql_query('SELECT `core_id` FROM `product_line` WHERE `token` = \'' . mysql_real_escape_string($lineToken) . '\'');
-        if ($row = mysql_fetch_assoc($result)) {
-            $id = $row['core_id'];
-        } else {
-            $matches = array();
-            preg_match('/\w+-(?P<id>\d+)/', $lineToken, $matches);
-           if (count($matches)) {
-               $id = $matches['id'];
-           }
-        }
-        //TODO
-
-        if (!$id) {
-            throw new \Exception\NotFoundException(sprintf('Серия с токеном "%s" не найдена.', $lineToken));
-        }
-
-        $line = \RepositoryManager::getLine()->getEntityById($id);
+        $line = \RepositoryManager::getLine()->getEntityByToken($lineToken);
         if (!$line) {
             throw new \Exception\NotFoundException(sprintf('Серия с токеном "%s" не найдена.', $lineToken));
         }

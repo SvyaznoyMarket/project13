@@ -16,7 +16,7 @@ class Repository {
      */
     public function getEntityByToken($token) {
         $data = $this->client->query('line/list', array(
-            'slug'   => array($token),
+            'token'  => array($token),
             'geo_id' => \App::user()->getRegion()->getId(),
         ));
         $data = (bool)$data ? reset($data) : null;
