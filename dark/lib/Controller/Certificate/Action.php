@@ -13,20 +13,21 @@ class Action {
 
     public function check(\Http\Request $request) {
         $code = trim($request->get('code'));
-        if (!$code) {
-            return new \Http\JsonResponse(array('success' => false, 'error' => 'Не указан код сертификата'));
+        $pin = trim($request->get('pin'));
+        if (!$code || !$pin) {
+            return new \Http\JsonResponse(array('success' => false, 'error' => 'Не указан код или пин сертификата'));
         }
 
         $error = 'Неверный сертификат';
         try {
-            $response = \App::coreClientV2()->query('certificate/check', array('code' => $code));
-            if (is_array($response) && array_key_exists('error', $response)) {
-                $e = new \Core\Exception($response['error']['message'], $response['error']['code']);
+            $result = \App::coreClientV2()->query('certificate/check', array('code' => $code, 'pin' => $pin));
+            if (is_array($result) && array_key_exists('error', $result)) {
+                $e = new \Core\Exception($result['error']['message'], $result['error']['code']);
 
                 throw $e;
             }
 
-            $statusCode = (int)$response['status_code'];
+            $statusCode = (int)$result['status_code'];
             if (0 == $statusCode) {
                 return new \Http\JsonResponse(array('success' => true));
             } else {
@@ -34,7 +35,7 @@ class Action {
                     $error = $this->errors[$statusCode];
                 }
             }
-        } catch (\Core\Exception $e) {
+        } catch (\Exception $e) {
             \App::logger()->warn('Error when checking certificate ' . $e);
             if (-1 == $e->getCode()) {
                 $error = 'Сертификат не найден';
