@@ -111,11 +111,11 @@
           </div>
 			
 			<div class="number">
-				<span class="placeholder">Дом</span><?php echo $form['address_number']->render(array('class' => 'placeholder-input bBuyingLine__eText mInputShort', 'title' => 'Дом')) ?>
+				<span class="placeholder">Дом</span><?php echo $form['address_building']->render(array('class' => 'placeholder-input bBuyingLine__eText mInputShort', 'title' => 'Дом')) ?>
 			</div>
 			
           <div class="building">
-            <span class="placeholder">Корпус</span><?php echo $form['address_building']->render(array('class' => 'placeholder-input bBuyingLine__eText mInputShort', 'title' => 'Корпус')) ?>
+            <span class="placeholder">Корпус</span><?php echo $form['address_number']->render(array('class' => 'placeholder-input bBuyingLine__eText mInputShort', 'title' => 'Корпус')) ?>
           </div>
           <div class="apartament">
             <span class="placeholder">Квартира</span><?php echo $form['address_apartment']->render(array('class' => 'placeholder-input bBuyingLine__eText mInputShort', 'title' => 'Квартира')) ?>
