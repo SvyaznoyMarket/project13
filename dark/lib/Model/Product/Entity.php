@@ -45,8 +45,6 @@ class Entity extends BasicEntity {
     protected $ratingCount;
     /** @var Category\Entity[] */
     protected $category = array();
-    /** @var int */
-    protected $connectedViewId;
     /** @var Property\Group\Entity[] */
     protected $propertyGroup = array();
     /** @var Property\Entity[] */
@@ -121,7 +119,7 @@ class Entity extends BasicEntity {
                 $this->addCategory(new Category\Entity($categoryData));
             }
         }
-        if (array_key_exists('connected_products_view_mode', $data)) $this->setConnectedViewId($data['connected_products_view_mode']);
+        if (array_key_exists('connected_products_view_mode', $data)) $this->setConnectedProductsViewMode($data['connected_products_view_mode']);
         if (array_key_exists('property_group', $data) && is_array($data['property_group'])) $this->setPropertyGroup(array_map(function($data) {
             return new Property\Group\Entity($data);
         }, $data['property_group']));
@@ -309,20 +307,6 @@ class Entity extends BasicEntity {
      */
     public function getCommentCount() {
         return $this->commentCount;
-    }
-
-    /**
-     * @param int|null $connectedViewId
-     */
-    public function setConnectedViewId($connectedViewId = null) {
-        $this->connectedViewId = $connectedViewId ? (int)$connectedViewId : null;
-    }
-
-    /**
-     * @return int
-     */
-    public function getConnectedViewId() {
-        return $this->connectedViewId;
     }
 
     /**
@@ -810,9 +794,9 @@ class Entity extends BasicEntity {
     /**
      * @param int $connectedProductsViewMode
      */
-    public function setConnectedProductsViewMode($connectedProductsViewMode)
+    public function setConnectedProductsViewMode($connectedProductsViewMode = null)
     {
-        $this->connectedProductsViewMode = $connectedProductsViewMode;
+        $this->connectedProductsViewMode = $connectedProductsViewMode ? (int)$connectedProductsViewMode : null;
     }
 
     /**
