@@ -112,17 +112,18 @@ class guardActions extends myActions
   {
     $this->getUser()->signOut();
 
-    if ($request->getParameter('redirect_to'))
+    /*if ($request->getParameter('redirect_to'))
     {
       $signoutUrl = $request->getParameter('redirect_to');
     }
     else
     {
       $signoutUrl = sfConfig::get('app_guard_signout_url', $request->getReferer());
-    }
+    }*/
 
-    //$this->redirect('' != $signoutUrl ? $signoutUrl : '@homepage');
-    $this->redirect('@homepage');
+    $signoutUrl = $request->getReferer();
+    $this->redirect(!empty($signoutUrl) ? $signoutUrl : '@homepage');
+    //$this->redirect('@homepage');
   }
 
   /**
