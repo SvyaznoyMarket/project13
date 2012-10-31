@@ -604,13 +604,13 @@ levup:			for(var i=0, l=numbers.length; i<l; i++)
 				
 			if( selfAvailable ) {
 				window.regionMap = new MapWithShops( mapCenter, $('#map-info_window-container'), 'mapPopup', updateIWCL )
-				window.regionMap.addHandler( '.shopchoose', pickStoreMVM )
+				window.regionMap.addHandler( '.shopchoose', pickStoreMVMCL )
 			}
 			oneClickIsReady = true
 			enableHandlers()
 		})
 
-		function pickStoreMVM( node ) {	
+		function pickStoreMVMCL( node ) {	
 			var shopnum = $(node).parent().find('.shopnum').text()
 			window.regionMap.closeMap( OC_MVM.turnOffMap )
 			OC_MVM.chooseShopById( shopnum )
