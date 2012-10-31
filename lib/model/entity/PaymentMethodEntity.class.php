@@ -117,8 +117,7 @@ class PaymentMethodEntity
     }
 
     public function isCertificate() {
-        // заглушка
-        return $this->id == 9;
+        return 10 == $this->id;
     }
 
     /**

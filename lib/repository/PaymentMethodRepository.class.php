@@ -41,7 +41,7 @@ class PaymentMethodRepository
 
         // mock
         $result[] = array(
-            'id'          => 9,
+            'id'          => 10,
             'name'        => 'Оплата подарочной картой',
             'description' => 'Заполните информацию с подарочной карты',
         );
@@ -63,7 +63,7 @@ class PaymentMethodRepository
    * @return int[]
    */
   public function getAcceptedList(){
-    return array(1, 2, 5, 6, 8, 9);
+    return array(1, 2, 5, 6, 8, 10);
   }
 
 }
