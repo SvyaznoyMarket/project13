@@ -18,5 +18,5 @@ erase_barcode.cmd
 *.nblh~
 .idea
 .DS_Store
-/dark/config/LocalConfig.php
+/dark/config/config-local.php
 /light/config/local.php

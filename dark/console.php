@@ -11,14 +11,13 @@ require_once __DIR__ . '/lib/Debug/Timer.php';
 $env = isset($_SERVER['APPLICATION_ENV']) ? $_SERVER['APPLICATION_ENV'] : 'live';
 
 // configuration
-$configClass = ucfirst($env).'Config';
-require_once __DIR__ . '/config/'.$configClass.'.php';
-/** @var $config AppConfig */
-$config = new $configClass;
+/** @var $config \Config\AppConfig */
+$config = include realpath(__DIR__ . '/config/config-' . $env . '.php');
+if (false === $config) die(sprintf('Не удалось загрузить конфигурацию для среды "%s"', $env));
 
 // application
 require_once __DIR__ . '/../dark/lib/App.php';
-\App::init($config);
+\App::init($env, $config);
 
 \App::logger()->info('Start cli app');
 

@@ -2,10 +2,12 @@
 
 class App {
     /** @var string */
+    public static $env;
+    /** @var string */
     public static $id;
     /** @var bool */
     private static $initialized = false;
-    /** @var \AppConfig */
+    /** @var \Config\AppConfig */
     private static $config;
     /** @var \Logger\LoggerInterface[] */
     private static $loggers = array();
@@ -14,9 +16,12 @@ class App {
      * @static
      * @param string $appDir Директория приложения
      */
-    public static function init(\AppConfig $config) {
+    public static function init($env, \Config\AppConfig $config) {
+        self::$env = $env;
         self::$id = uniqid();
         self::$config = $config;
+
+        mb_internal_encoding(self::$config->encoding ?: 'UTF-8');
 
         if (self::$initialized) {
             throw new \LogicException('Приложение уже инициализировано.');
@@ -73,7 +78,7 @@ class App {
 
     /**
      * @static
-     * @return \AppConfig
+     * @return \Config\AppConfig
      */
     public static function config() {
         return self::$config;
