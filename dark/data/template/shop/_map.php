@@ -7,45 +7,39 @@
  */
 ?>
 
-<?php if (count($markers)): ?>
-    <!-- bMapShops -->
-    <div class="bMapShops">
-        <div class='bMapShops__eHead'>
-            <div class='bMapShops__eRegion'>
-                <h2 class='bMapShops__eRegionTitle'>Enter в <?= $currentRegion->getInflectedName(5) ?>!</h2>
-                <div class='bMapShops__eRegionText'>Enter в регионах:</div>
-                <div class="selectbox selectbox170 fl"><i></i>
-                    <span id="selectregion" class="select"><?php echo $currentRegion->getName() ?> </span>
-                    <select id="region-select" class="styled" name="region">
-                    <? foreach ($regions as $region): ?>
-                        <option data-url="<?= $page->url('shop.region', array('regionId' => $region->getId())) ?>"<?php if ($region->getId() == $currentRegion->getId()): ?> selected="selected"<? endif ?> value="<?= $region->getId() ?>"><?= $region->getName() ?></option>
-                    <? endforeach ?>
-                    </select>
-                </div>
+<!-- bMapShops -->
+<div class="bMapShops">
+    <div class='bMapShops__eHead'>
+        <div class='bMapShops__eRegion'>
+            <h2 class='bMapShops__eRegionTitle'>Enter в <?= $currentRegion->getInflectedName(5) ?>!</h2>
+            <div class='bMapShops__eRegionText'>Enter в регионах:</div>
+            <div class="selectbox selectbox170 fl"><i></i>
+                <span id="selectregion" class="select"><?php echo $currentRegion->getName() ?> </span>
+                <select id="region-select" class="styled" name="region">
+                <? foreach ($regions as $region): ?>
+                    <option data-url="<?= $page->url('shop.region', array('regionId' => $region->getId())) ?>"<?php if ($region->getId() == $currentRegion->getId()): ?> selected="selected"<? endif ?> value="<?= $region->getId() ?>"><?= $region->getName() ?></option>
+                <? endforeach ?>
+                </select>
             </div>
-            <img class="bMapShops__eImage" src="/images/shop-h1.png" />
         </div>
-        <div class='bMapShops__eContent'>
-
-            <h2 class='bMapShops__eTitle'>Магазины Enter на карте</h2>
-            <div id="region_map-container" class='bMapShops__eMapWrap' style="width: auto; height: 490px;"></div>
-        </div>
+        <img class="bMapShops__eImage" src="/images/shop-h1.png" />
     </div>
+    <div class='bMapShops__eContent'>
 
-    <input id="map-markers" type="hidden" data-content='<?= json_encode($markers) ?>' />
-    <!-- /bMapShops -->
+        <h2 class='bMapShops__eTitle'>Магазины Enter на карте</h2>
+        <div id="region_map-container" class='bMapShops__eMapWrap' style="width: auto; height: 490px;"></div>
+    </div>
+</div>
 
-    <div id="map-info_window-container" style="display:none"></div>
+<input id="map-markers" type="hidden" data-content='<?= json_encode($markers) ?>' />
+<!-- /bMapShops -->
 
-    <script type="text/html" id="infowindowtmpl">
-        <div class="bMapShops__ePopupRel">
-            <h3><%=address%></h3>
-            <span><%=regtime%></span><br>
-            <a href="<%=link%>" class="bGrayButton shopchoose">Перейти к магазину</a>
-        </div>
-    </script>
+<div id="map-info_window-container" style="display:none"></div>
 
-<?php else: ?>
-    В этом городе пока нет магазинов.
-
-<?php endif ?>
+<script type="text/html" id="infowindowtmpl">
+    <div class="bMapShops__ePopupRel">
+        <h3><%=address%></h3>
+        <span><%=regtime%></span><br>
+        <a href="<%=link%>" class="bGrayButton shopchoose">Перейти к магазину</a>
+    </div>
+</script>
