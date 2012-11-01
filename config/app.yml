@@ -168,6 +168,9 @@ all:
        partnerName: 'ООО «Enter»'
        signature: 'enter-secret-werj7537'
 
+  certificate:
+    enabled: true
+
   js_combine:
     file:     %SF_WEB_DIR%/js/combine.js
     compiler: %SF_LIB_DIR%/vendor/google-closure/compiler.jar
@@ -266,6 +269,9 @@ live:
       log_enabled: false
       log_data_enabled: false
       marker: '?utm_source=enter_ru&utm_medium=cpc&utm_campaign=se&utm_content=recommend'
+
+  certificate:
+    enabled: false
 
   warranty:
     enabled: false
