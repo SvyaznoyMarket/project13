@@ -21,6 +21,8 @@ class App {
         self::$id = uniqid();
         self::$config = $config;
 
+        mb_internal_encoding(self::$config->encoding ?: 'UTF-8');
+
         if (self::$initialized) {
             throw new \LogicException('Приложение уже инициализировано.');
         }

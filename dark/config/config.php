@@ -3,6 +3,8 @@
 require_once __DIR__ . '/../lib/Config/AppConfig.php';
 
 $c = new \Config\AppConfig();
+// encoding
+$c->encoding = 'UTF-8';
 // dirs
 $c->appDir = realpath(__DIR__ . '/..');
 $c->configDir = $c->appDir . '/config';
