@@ -15,7 +15,7 @@
 <?php
   $json = json_encode(array (
     'jsref'        => $product->getToken(),
-    'jstitle'      => $page->escape($product->getName()),
+    'jstitle'      => $page->escape($page->escape($product->getName())),
     'jsprice'      => $product->getPrice(),
     'jsimg'        => $product->getImageUrl(3),
     'jsbimg'       =>  $product->getImageUrl(2),
