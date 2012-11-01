@@ -7131,6 +7131,9 @@
   .errorpage503 {
     background: #ffffff url("/css/errors/img/error_503.png") no-repeat 50% 0px;
   }
+  .errorpage503.allpage {
+    background: none;
+  }
   .logo503 {
     padding: 61px 0px 0px 8px;
   }
