@@ -63,8 +63,13 @@ class PaymentMethodRepository
    * Ф-я возвращает список айдишников, которые допустимы для оплаты на сайте
    * @return int[]
    */
-  public function getAcceptedList(){
-    return array(1, 2, 5, 6, 8, 10);
+  public function getAcceptedList() {
+    $return = array(1, 2, 5, 6, 8);
+    if (sfConfig::get('app_certificate_enabled', false)) {
+        $return[] = 10;
+    }
+
+    return $return;
   }
 
 }
