@@ -10,14 +10,23 @@ class Entity {
     const TYPE_LIST = 5;
     const TYPE_SLIDER = 6;
 
+    /** @var string */
     private $id;
+    /** @var int */
     private $typeId;
+    /** @var string */
     private $name;
+    /** @var string */
     private $unit;
+    /** @var bool */
     private $isMultiple;
+    /** @var bool */
     private $isSlider;
+    /** @var int */
     private $min;
+    /** @var int */
     private $max;
+    /** @var Option\Entity[] */
     private $option = array();
 
     public function __construct(array $data = array()) {
@@ -50,50 +59,88 @@ class Entity {
         );
     }
 
+    /**
+     * Осторожно: строковый тип!
+     *
+     * @param string $id
+     */
     public function setId($id) {
-        $this->id = $id;
+        $this->id = (string)$id;
     }
 
+    /**
+     * @return string
+     */
     public function getId() {
         return $this->id;
     }
 
+    /**
+     * @param bool $isMultiple
+     */
     public function setIsMultiple($isMultiple) {
         $this->isMultiple = (bool)$isMultiple;
     }
 
+    /**
+     * @return bool
+     */
     public function getIsMultiple() {
         return $this->isMultiple;
     }
 
+    /**
+     * @param bool $isSlider
+     */
     public function setIsSlider($isSlider) {
         $this->isSlider = (bool)$isSlider;
     }
 
+    /**
+     * @return bool
+     */
     public function getIsSlider() {
         return $this->isSlider;
     }
 
+    /**
+     * @param int $max
+     */
     public function setMax($max) {
-        $this->max = $max;
+        $this->max = (int)$max;
     }
 
+    /**
+     * @return int
+     */
     public function getMax() {
         return $this->max;
     }
 
+    /**
+     * @param int $min
+     */
     public function setMin($min) {
-        $this->min = $min;
+        $this->min = (int)$min;
     }
 
+    /**
+     * @return int
+     */
     public function getMin() {
         return $this->min;
     }
 
+    /**
+     * @param string $name
+     */
     public function setName($name) {
         $this->name = (string)$name;
     }
 
+    /**
+     * @return string
+     */
     public function getName() {
         return $this->name;
     }
@@ -122,18 +169,30 @@ class Entity {
         return $this->option;
     }
 
+    /**
+     * @param int $typeId
+     */
     public function setTypeId($typeId) {
         $this->typeId = (int)$typeId;
     }
 
+    /**
+     * @return int
+     */
     public function getTypeId() {
         return $this->typeId;
     }
 
+    /**
+     * @param string $unit
+     */
     public function setUnit($unit) {
         $this->unit = (string)$unit;
     }
 
+    /**
+     * @return string
+     */
     public function getUnit() {
         return $this->unit;
     }
