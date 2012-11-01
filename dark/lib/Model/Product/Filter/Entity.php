@@ -28,6 +28,12 @@ class Entity {
     private $max;
     /** @var Option\Entity[] */
     private $option = array();
+    /**
+     * Флаг: отображать фильтр в списке?
+     *
+     * @var bool
+     */
+    private $isInList = true;
 
     public function __construct(array $data = array()) {
         if (array_key_exists('filter_id', $data)) $this->setId($data['filter_id']);
@@ -195,5 +201,19 @@ class Entity {
      */
     public function getUnit() {
         return $this->unit;
+    }
+
+    /**
+     * @param bool $isInList
+     */
+    public function setIsInList($isInList) {
+        $this->isInList = (bool)$isInList;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getIsInList() {
+        return $this->isInList;
     }
 }

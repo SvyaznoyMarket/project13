@@ -315,14 +315,41 @@ class Action {
             \App::user()->getRegion()->getHasTransportCompany()
             && (bool)$request->cookies->get(self::$globalCookieName, false);
 
-        $filters = \RepositoryManager::getProductFilter()->getCollectionByCategory($category, $isGlobal ? null : \App::user()->getRegion());
-        $productFilter = new \Model\Product\Filter($filters, $isGlobal);
-        $productFilter->setCategory($category);
+        // регион для фильтров
+        $region = !$isGlobal ? \App::user()->getRegion() : null;
+
         // filter values
         $values = $request->get(\View\Product\FilterForm::$name, array());
         if ($isGlobal) {
             $values['global'] = 1;
         }
+
+        $filters = \RepositoryManager::getProductFilter()->getCollectionByCategory($category, $region);
+        // проверяем есть ли в запросе фильтры
+        if ((bool)$values) {
+            // проверяем есть ли в запросе фильтры, которых нет в текущей категории (фильтры родительских категорий)
+            /** @var $exists Ид фильтров текущей категории */
+            $exists = array_map(function($filter) { /** @var $filter \Model\Product\Filter\Entity */ return $filter->getId(); }, $filters);
+            /** @var $diff Ид фильтров родительских категорий */
+            $diff = array_diff(array_keys($values), $exists);
+            if ((bool)$diff) {
+                foreach ($category->getAncestor() as $ancestor) {
+                    foreach (\RepositoryManager::getProductFilter()->getCollectionByCategory($ancestor, $region) as $filter) {
+                        if (false === $i = array_search($filter->getId(), $diff)) continue;
+
+                        // скрываем фильтр в списке
+                        $filter->setIsInList(false);
+                        $filters[] = $filter;
+                        unset($diff[$i]);
+                        if (!(bool)$diff) break;
+                    }
+                    if (!(bool)$diff) break;
+                }
+            }
+        }
+
+        $productFilter = new \Model\Product\Filter($filters, $isGlobal);
+        $productFilter->setCategory($category);
         $productFilter->setValues($values);
 
         return $productFilter;

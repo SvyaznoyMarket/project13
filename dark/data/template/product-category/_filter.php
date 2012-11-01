@@ -25,7 +25,8 @@ $formName = \View\Product\FilterForm::$name;
         <? require __DIR__ . '/_selectedFilter.php' ?>
 
         <? $openNum = 0 ?>
-        <? $index = 0; foreach ($productFilter->getFilterCollection() as $filter) { ?>
+        <? $index = 0; foreach ($productFilter->getFilterCollection() as $filter): ?>
+            <? if (!$filter->getIsInList()) continue ?>
             <? if ('price' == $filter->getId() || 'brand' == $filter->getId()) {
                 $isOpened = true;
             } elseif ($openNum < 5) {
@@ -47,7 +48,7 @@ $formName = \View\Product\FilterForm::$name;
                     require __DIR__ . '/filter/_choice.php';
                     break;
             } ?>
-        <? } ?>
+        <? endforeach ?>
 
         <div class="pb10"><input type="submit" class="button yellowbutton" value="Подобрать"/></div>
     </dl>
