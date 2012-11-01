@@ -7,13 +7,10 @@ class Entity {
     private $id;
     /** @var string */
     private $name;
-    /** @var int */
-    private $propertyId;
 
     public function __construct(array $data = array()) {
         if (array_key_exists('id', $data)) $this->setId($data['id']);
         if (array_key_exists('name', $data)) $this->setName($data['name']);
-        if (array_key_exists('property_id', $data)) $this->setPropertyId($data['property_id']);
     }
 
     /**
@@ -42,19 +39,5 @@ class Entity {
      */
     public function getName() {
         return $this->name;
-    }
-
-    /**
-     * @param int $propertyId
-     */
-    public function setPropertyId($propertyId) {
-        $this->propertyId = (int)$propertyId;
-    }
-
-    /**
-     * @return int
-     */
-    public function getPropertyId() {
-        return $this->propertyId;
     }
 }
