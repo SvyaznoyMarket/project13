@@ -457,9 +457,7 @@
 
 <div class="line"></div>
 <div class="fr ar">
-    <?php if ( !$product->getIsBuyable() && $product->getState()->getIsShop()): ?>
-    <p class="font16 orange">Для покупки товара<br />обратитесь в<br />Контакт-сENTER</p>
-    <?php else: ?>
+    <?php if ($product->getIsBuyable() || !$product->getState()->getIsShop()): ?>
     <div class="goodsbarbig mSmallBtns" ref="<?php echo $product->getToken() ?>" data-value='<?php echo $json ?>'>
 
         <div class='bCountSet'>

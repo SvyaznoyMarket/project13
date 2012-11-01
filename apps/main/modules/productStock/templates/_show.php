@@ -49,8 +49,8 @@ $json = array (
 							<span data-bind="text: priceTxt"></span> <span class="rubl">p</span></h3>
 						Выберите магазин для резервирования товара, а мы подготовим его к вашему приезду
 					</div>
-                    <div>
-                        <a href="<?php echo $product->getLink() ?>"><< В карточку товара</a>
+                    <div class='bInShop__eItemInfo_back'>
+                        < <a href="<?php echo $product->getLink() ?>">Вернуться в карточку товара</a>
                     </div>
 				</td>
 				<!-- ko if:!showMap() -->

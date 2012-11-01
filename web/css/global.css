@@ -5119,6 +5119,11 @@
   .bInShop__eItemInfo h3 b {
     padding-left: 15px;
   }
+  .bInShop__eItemInfo_back a {
+    font-size: 14px;
+    text-decoration: underline;
+    line-height: 3em;
+  }
   .bInShop__eSelectors {
     color: #434343;
     text-align: justify;
