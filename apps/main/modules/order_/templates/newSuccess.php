@@ -3,7 +3,7 @@
   'order[recipient_last_name]'    => 'Заполните поле',
   'order[recipient_phonenumbers]' => 'Заполните поле',
   'order[address_street]'         => 'Укажите адрес',
-  'order[address_number]'         => 'Укажите адрес',
+  'order[address_building]'       => 'Укажите адрес',
   'order[payment_method_id]'      => 'Выберите способ оплаты',
   'order[agreed]'                 => 'Необходимо согласие',
 ) ?>

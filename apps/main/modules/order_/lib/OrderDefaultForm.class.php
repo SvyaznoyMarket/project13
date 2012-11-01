@@ -160,7 +160,7 @@ class OrderDefaultForm extends BaseOrderForm
       if ($deliveryType = DeliveryTypeTable::getInstance()->find($taintedValues['delivery_type_id'])) {
         if ('standart' == $deliveryType->token) {
           $this->validatorSchema['address_street']->setOption('required', true);
-          $this->validatorSchema['address_number']->setOption('required', true);
+          $this->validatorSchema['address_building']->setOption('required', true);
         }
       }
     }
