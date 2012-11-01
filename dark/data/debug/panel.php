@@ -14,10 +14,10 @@ $appTimer = \Debug\Timer::get('app');
 $coreTimer = \Debug\Timer::get('core');
 $contentTimer = \Debug\Timer::get('content');
 
-$debug->add('app', sprintf('%s s', round($appTimer['total'] - $coreTimer['total'] - $contentTimer['total'], 3)), 98);
-$debug->add('core', sprintf('%s s [%s]', round($coreTimer['total'], 3), $coreTimer['count']), 97);
-$debug->add('content', sprintf('%s s [%s]', round($contentTimer['total'], 3), $contentTimer['count']), 96);
-$debug->add('total', sprintf('%s s', round($appTimer['total'], 3)), 95);
+$debug->add('app', sprintf('%s ms', round($appTimer['total'] - $coreTimer['total'] - $contentTimer['total'], 3) * 1000), 98);
+$debug->add('core', sprintf('%s ms [%s]', round($coreTimer['total'], 3) * 1000, $coreTimer['count']), 97);
+$debug->add('content', sprintf('%s ms [%s]', round($contentTimer['total'], 3) * 1000, $contentTimer['count']), 96);
+$debug->add('total', sprintf('%s ms', round($appTimer['total'], 3) * 1000), 95);
 
 // memory
 $debug->add('memory', sprintf('%s Mb', round(memory_get_peak_usage() / 1048576, 2)), 90);
@@ -29,12 +29,12 @@ if (!isset($requestData['api_queries'])) $requestData = array('api_queries' => a
 $queryString = '';
 foreach ((array)$requestData['api_queries'] as $query) {
     $queryString .=
-        sprintf('%01.3f', round($query['time'], 3))
+        (round($query['time'], 3) * 1000)
         . ' ' . '<a style="color: #00ffff" href="' . $query['url'] . '" target="_blank" data-method="' . ((bool)$query['post'] ? 'post' : 'get') . '">' . rawurldecode($query['url']) . '</a>'
         . ' ' . ((bool)$query['post'] ? json_encode($query['post']) : '')
         . '<br />';
 }
-$debug->add('api', $queryString, 80);
+$debug->add('query', $queryString, 80);
 
 if (!\App::request()->isXmlHttpRequest()) {
 ?>
