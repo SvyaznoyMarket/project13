@@ -28,48 +28,41 @@ $(document).ready(function() {
 		//$('div.map-360-link', marketfolio ).trigger('click')
 	}
 
+	MapInterface.ready( 'yandex', {
+		yandex: $('#infowindowtmpl'), 
+		google: $('#map-info_window-container')
+	} )	
+
 	marketfolio.delegate('div.map-google-link', 'click',function(e) {
 		$( 'div.mChecked' , marketfolio ).removeClass('mChecked')
-		if( ! $('#map-container div').length ) {
+		if( ! $('#map-container div').length ) { // only once, on first click !
 			var el = $(this)
 
-			var position = new google.maps.LatLng($('[name="shop[latitude]"]').val(), $('[name="shop[longitude]"]').val());
-			var options = {
-			  zoom: 16,
-			  center: position,
-			  scrollwheel: false,
-			  mapTypeId: google.maps.MapTypeId.ROADMAP,
-			  mapTypeControlOptions: {
-				style: google.maps.MapTypeControlStyle.DROPDOWN_MENU
-			  }
-			};
-
-			var map = new google.maps.Map(document.getElementById('map-container'), options);
-
-			var marker = new google.maps.Marker({
-			  position: new google.maps.LatLng($('[name="shop[latitude]"]').val(), $('[name="shop[longitude]"]').val()),
-			  map: map,
-			  title: $('[name="shop[name]"]').val(),
-			  icon: '/images/marker.png'
-			})
+			var position = {
+				latitude: $('[name="shop[latitude]"]').val(),
+				longitude: $('[name="shop[longitude]"]').val()
+			}
+			MapInterface.onePoint( position, 'map-container' )
 		}
 	})
 
 	$('div.map-google-link:first', marketfolio ).trigger('click')
-	if( $('#map-markers').length ) {
+
+	if( $('#map-markers').length ) { // allshops page
+		$('#region-select').bind('change', function() {
+			window.location = $(this).find('option:selected').data('url')
+		})
+
 		function updateTmlt( marker ) {
 			$('#map-info_window-container').html(
 				tmpl('infowindowtmpl', marker )
 			)
 		}
 		var mapCenter =  calcMCenter( $('#map-markers').data('content') )
-		window.regionMap = new MapWithShops( mapCenter, $('#map-info_window-container'), 'region_map-container', updateTmlt )
-		window.regionMap.showMarkers(  $('#map-markers').data('content') )
-		//window.regionMap.addHandler( '.shopchoose', pickStoreMVM )
+		var mapCallback = function() {
+			window.regionMap.showMarkers(  $('#map-markers').data('content') )
+		}
+		MapInterface.init( mapCenter, 'region_map-container', mapCallback, updateTmlt )
 	}
-
-	$('#region-select').bind('change', function() {
-		window.location = $(this).find('option:selected').data('url')
-	})
 
 });

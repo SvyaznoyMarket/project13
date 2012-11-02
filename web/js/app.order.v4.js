@@ -981,7 +981,6 @@ flds:	for( field in fieldsToValidate ) {
 		$('.mMapPopup').lightbox_me({ 
 			centered: true,
             onLoad: function() {
-// console.info(shopsStack, getShopsStack() )
                 window.regionMap.showMarkers( getShopsStack() )
             }
         })
@@ -1015,17 +1014,15 @@ flds:	for( field in fieldsToValidate ) {
         MVM.selectShop( shop )
     }
 
-    window.regionMap = new MapWithShops(
-        calcMCenter( getShopsStack() ),
-        infoBlockNode,
-        'mapPopup',
-        updateI
-    )
-
-    window.regionMap.addHandler( '.shopchoose', ShopChoosed )
-
-    window.regionMap.addHandlerMarker( 'mouseover', function( marker ) {        
-        window.regionMap.showInfobox( marker.id )
-    })
+    
+	MapInterface.ready( 'yandex', {
+		yandex: $('#mapInfoBlock'), 
+		google: $('#map-info_window-container')
+	} )
+	var mapCenter = calcMCenter( getShopsStack() )
+	var mapCallback = function() {
+		window.regionMap.addHandler( '.shopchoose', ShopChoosed )
+	}
+	MapInterface.init( mapCenter, 'mapPopup', mapCallback, updateI )
 
 })
