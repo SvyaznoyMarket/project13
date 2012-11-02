@@ -234,7 +234,7 @@ $(document).ready(function() {
 					}						
 					if( selfAvailable && ! ('regionMap' in window ) ) {
 						var mapCallback = function() {
-							window.regionMap.addHandler( '.shopchoose', pickStoreMVM )
+							window.regionMap.addHandler( '.shopchoose', pickStoreMVMCL )
 						}
 						MapInterface.init( mapCenter, 'mapPopup', mapCallback )
 					}
@@ -607,10 +607,9 @@ levup:			for(var i=0, l=numbers.length; i<l; i++)
 			OC_MVM = new OneCViewModel() 
 			ko.applyBindings( OC_MVM, $('#order1click-container-new')[0] ) // this way, Lukas!
 			
-				
 			if( selfAvailable ) {
 				var mapCallback = function() {
-					window.regionMap.addHandler( '.shopchoose', pickStoreMVM )
+					window.regionMap.addHandler( '.shopchoose', pickStoreMVMCL )
 				}
 				MapInterface.init( mapCenter, 'mapPopup', mapCallback, updateIWCL )
 			}
@@ -626,7 +625,7 @@ levup:			for(var i=0, l=numbers.length; i<l; i++)
 
 				
 		$('.order1click-link-new').bind('click', function(e) { // button 'Купить в один клик'
-			e.preventDefault()		
+			e.preventDefault()	
 			if( !oneClickIsReady )
 				return false
 			// TODO please go this stuff separate!
