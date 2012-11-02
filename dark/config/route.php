@@ -147,8 +147,16 @@ return array(
         'pattern' => '/tags/{tagToken}',
         'action'  => array('Tag\Action', 'index'),
     ),
+    'tag.infinity' => array(
+        'pattern' => '/tags/{tagToken}/_infinity',
+        'action'  => array('Tag\Action', 'index'),
+    ),
     'tag.category' => array(
         'pattern' => '/tags/{tagToken}/{categoryToken}',
+        'action'  => array('Tag\Action', 'index'),
+    ),
+    'tag.category.infinity' => array(
+        'pattern' => '/tags/{tagToken}/{categoryToken}/_infinity',
         'action'  => array('Tag\Action', 'index'),
     ),
     'product.rating.create_total' => array(
