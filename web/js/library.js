@@ -1162,7 +1162,9 @@ function MapYandexWithShops( center, templateIWnode, DOMid ) {
             balloonMaxWidth: 350
         })
         mapWS.geoObjects.add( myCollection )
-        mapWS.setBounds( myCollection.getBounds() )
+        var bounds = myCollection.getBounds() 
+        if( bounds[0][0] !== bounds[1][0] )   // cause setBounds() hit a bug if only one point    
+            mapWS.setBounds( bounds )
     }
 
     this.closeMap = function( callback ) {
