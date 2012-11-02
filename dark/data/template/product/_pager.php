@@ -25,7 +25,7 @@ $filterData = isset($productFilter) ? http_build_query(array(\View\Product\Filte
 
 <? if ($pager->hasPages()): ?>
 <div class="fr allpager mBtn" alt="все товары в категории" title="все товары в категории"
-    data-url="<?= $page->helper->replacedUrl(array('page' => null)) ?>"
+    data-url="<?= $page->helper->replacedUrl(array('page' => null), null, $request->attributes->get('route').'.infinity') ?>"
     data-page="<?= $pager->getPage() ?>"
     data-lastpage="<?= $pager->getLastPage() ?>"
     data-filter="<?= $filterData ?>"
@@ -49,7 +49,7 @@ $filterData = isset($productFilter) ? http_build_query(array(\View\Product\Filte
 
 <? if ($pager->hasPages()): ?>
 <div class="fr allpager mBtn" alt="все товары в категории" title="все товары в категории"
-     data-url="<?= $page->helper->replacedUrl(array('page' => null)) ?>"
+     data-url="<?= $page->helper->replacedUrl(array('page' => null), null, $request->attributes->get('route').'.infinity') ?>"
      data-page="<?= $pager->getPage() ?>"
      data-lastpage="<?= $pager->getLastPage() ?>"
      data-filter="<?= $filterData ?>"

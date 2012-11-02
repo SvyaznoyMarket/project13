@@ -1134,6 +1134,7 @@ function MapYandexWithShops( center, templateIWnode, DOMid ) {
                 id: item.id,
                 name: item.name,
                 address: item.address,
+                link: item.link,
                 regtime: (item.regtime) ? item.regtime : item.regime,
                 regime: (item.regtime) ? item.regtime : item.regime
             }
@@ -1285,7 +1286,7 @@ window.MapInterface = (function() {
               
         },
 
-        init: function( coordinates, mapContainerId, callback, updater ) { 
+        init: function( coordinates, mapContainerId, callback, updater ) {
             if( vendor === 'yandex' ) {
                 if( typeof(ymaps)!=='undefined' && ymaps.isReady ) {
                     window.regionMap = new MapYandexWithShops( 
