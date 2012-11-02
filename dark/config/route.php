@@ -12,6 +12,11 @@ return array(
         'pattern' => '/search',
         'action'  => array('Search\Action', 'execute'),
     ),
+    // поиск бесконечная прокрутка
+    'search.infinity' => array(
+        'pattern' => '/search/_infinity',
+        'action'  => array('Search\Action', 'execute'),
+    ),
 
     // вход пользователя
     'user.login' => array(
@@ -97,6 +102,12 @@ return array(
     'product.category.global' => array(
         'pattern' => '/catalog/{categoryPath}/_global',
         'action'  => array('ProductCategory\Action', 'setGlobal'),
+        'require' => array('categoryPath' => '[\w\d-_]+\/?[\w\d-_]+'),
+    ),
+    // каталог товаров с бесконечной прокруткой
+    'product.category.infinity' => array(
+        'pattern' => '/catalog/{categoryPath}/_infinity',
+        'action'  => array('ProductCategory\Action', 'category'),
         'require' => array('categoryPath' => '[\w\d-_]+\/?[\w\d-_]+'),
     ),
     // карточка товара
