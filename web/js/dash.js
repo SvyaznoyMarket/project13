@@ -1,4 +1,5 @@
 $(document).ready(function(){
+	
 	var carturl = $('.lightboxinner .point2').attr('href')
 
 	var shortinfo = '/user/shortinfo'

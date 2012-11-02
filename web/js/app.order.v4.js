@@ -978,7 +978,7 @@ flds:	for( field in fieldsToValidate ) {
 
 	/* Shop Popup */
 	$('#OrderView').delegate( '.selectShop', 'click', function() {
-		$('.mMapPopup').lightbox_me({ 
+		$('#orderMapPopup').lightbox_me({ 
 			centered: true,
             onLoad: function() {
                 window.regionMap.showMarkers( getShopsStack() )

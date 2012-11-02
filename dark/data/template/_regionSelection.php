@@ -17,7 +17,7 @@ for ($i = 0; $i < $rowCount; $i++) {
 }
 ?>
 
-<div class="popupRegion" style="display:none">
+<div class="popup popupRegion" style="display:none">
     <a href="#" class="close">Закрыть</a>
 
     <h2 class="pouptitle">Привет! Укажите, из какого вы города.</h2>

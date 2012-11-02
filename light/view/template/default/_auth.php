@@ -76,25 +76,4 @@
             <div class="clear"></div>
         </div>
     </div>
-    <div class="shareline">
-        <div class="fl">Войти на сайт через:</div>
-
-        <ul class="backetsharelist">
-            <li>
-                <a id="open_auth_vkontakte-link" class="open_auth-link vkontakte" href="/login/vkontakte" target="_blank">ВКонтакте</a>
-            </li>
-            <li>
-                <a id="open_auth_facebook-link" class="open_auth-link facebook" href="/login/facebook" target="_blank">Facebook</a>
-            </li>
-            <li>
-                <a id="open_auth_twitter-link" class="open_auth-link twitter" href="/login/twitter" target="_blank">Twitter</a>
-            </li>
-            <li>
-                <a id="open_auth_odnoklassniki-link" class="open_auth-link odnoklassniki" href="/login/odnoklassniki" target="_blank">Odnoklassniki.ru</a>
-            </li>
-            <li>
-                <a id="open_auth_mailru-link" class="open_auth-link mailru" href="/login/mailru" target="_blank">Mail.ru</a>
-            </li>
-        </ul>    <div class="clear"></div>
-    </div>
 </div>

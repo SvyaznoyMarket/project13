@@ -2,10 +2,8 @@
 
 <div class="popup" id="auth-block">
   <i title="Закрыть" class="close">Закрыть</i>
-  <div class="popupbox width694">
-    <h2 class="pouptitle">Вход в Enter</h2>
-    <?php include_component('guard', 'form_auth') ?>
-  </div>
+  <h2 class="pouptitle">Вход в Enter</h2>
+  <?php include_component('guard', 'form_auth') ?>
   <!--
   <div class="shareline">
     <div class="fl">Войти на сайт через:</div>
