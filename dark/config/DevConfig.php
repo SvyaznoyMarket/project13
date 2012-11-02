@@ -34,7 +34,5 @@ class DevConfig extends \AppConfig {
         );
 
         $this->product['globalListEnabled'] = false;
-
-        $this->yandexMetrika['enabled'] = false;
     }
 }

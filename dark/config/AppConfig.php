@@ -73,7 +73,7 @@ class AppConfig {
 
     /** @var array */
     public $yandexMetrika = array(
-        'enabled' => true,
+        'enabled' => false,
     );
 
     /** @var array */
