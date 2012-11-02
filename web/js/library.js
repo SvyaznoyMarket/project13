@@ -905,7 +905,8 @@ function parse_url( url ) {
 }
 
 /* MAP Object */
-function MapWithShops( center, templateIWnode, DOMid, updateIWT ) {
+
+function MapGoogleWithShops( center, templateIWnode, DOMid, updateInfoWindowTemplate ) {
 /* Arguments:
 	center is a center of a map
 	templateIWnode is node(jQ) which include template for InfoWindow popup
@@ -1056,7 +1057,200 @@ function MapWithShops( center, templateIWnode, DOMid, updateIWT ) {
 	/* main() */
 	create()
 
-} // object MapWithShops
+} // object MapGoogleWithShops
+
+function MapYandexWithShops( center, templateIWnode, DOMid ) {
+/* Arguments:
+    center is a center of a map
+    templateIWnode is node(jQ) which include template for InfoWindow popup
+    DOMid is selector (id) for google.maps.Map initialization
+*/
+    var self         = this,
+        mapWS        = null,
+        infoWindow   = null,
+        positionC    = null,
+        markers      = [],
+        currMarker   = null,
+        mapContainer = $('#'+DOMid),
+        infoWindowTemplate = templateIWnode.prop('innerHTML')   
+    
+    this.updateInfoWindowTemplate = function( marker ) {
+        // if( updateInfoWindowTemplate )
+        //     updateInfoWindowTemplate( marker )
+        // infoWindowTemplate = templateIWnode.prop('innerHTML')   
+    }
+    
+    function create() {
+        mapWS = new ymaps.Map(DOMid, {
+            center: [center.latitude, center.longitude],
+            zoom: 10
+        })
+        
+        mapWS.controls
+        .add('zoomControl')
+        // setTimeout( function() {
+        //     mapWS = new ymaps.Map(DOMid, {
+        //         center: [center.latitude, center.longitude],
+        //         zoom: 10
+        //     })
+            
+        //     mapWS.controls
+        //     .add('zoomControl')
+        //     //.add('typeSelector', { left: 5, top: 15 })// Список типов карты
+        // }, 1200)        
+    }
+
+    this.showInfobox = function( markerId ) {
+        markers[markerId].ref.balloon.open()
+    }
+    
+    this.hideInfobox = function() {
+        // infoWindow.close()
+    }
+
+    var handlers = []
+
+    this.addHandlerMarker = function( e, callback ) {
+        // handlers.push( { 'event': e, 'callback': callback } )
+    }
+    
+    this.clear = function() {
+        mapWS.geoObjects.each( function( mapObj ) {
+            mapWS.geoObjects.remove(mapObj)
+        })
+    }
+
+    this.showMarkers = function( argmarkers ) {   
+// console.info(argmarkers)
+        mapContainer.show()
+        mapWS.container.fitToViewport()
+        mapWS.setCenter([center.latitude, center.longitude])
+        self.clear()
+        markers = argmarkers
+        var myCollection = new ymaps.GeoObjectCollection()
+        $.each( markers, function(i, item) {           
+            // Создаем метку и задаем изображение для ее иконки
+            var tmpitem = {
+                id: item.id,
+                name: item.name,
+                address: item.address,
+                link: item.link,
+                regtime: (item.regtime) ? item.regtime : item.regime,
+                regime: (item.regtime) ? item.regtime : item.regime
+            }
+            var marker = new ymaps.Placemark( [item.latitude, item.longitude], tmpitem, {
+                    iconImageHref: '/images/marker.png', // картинка иконки
+                    iconImageSize: [39, 59], 
+                    iconImageOffset: [-19, -57] 
+                }
+            )
+            
+            myCollection.add(marker)
+            markers[i].ref = marker
+        })
+// console.info(markers)        
+        // Создаем шаблон для отображения контента балуна         
+        var myBalloonLayout = ymaps.templateLayoutFactory.createClass(
+            templateIWnode.prop('innerHTML').replace(/<%=([a-z]+)%>/g, '\$[properties.$1]')
+        )
+        
+        // Помещаем созданный шаблон в хранилище шаблонов. Теперь наш шаблон доступен по ключу 'my#superlayout'.
+        ymaps.layout.storage.add('my#superlayout', myBalloonLayout)
+        // Задаем наш шаблон для балунов геобъектов коллекции.
+        myCollection.options.set({
+            balloonContentBodyLayout:'my#superlayout',
+            // Максимальная ширина балуна в пикселах
+            balloonMaxWidth: 350
+        })
+        mapWS.geoObjects.add( myCollection )
+        var bounds = myCollection.getBounds() 
+        if( bounds[0][0] !== bounds[1][0] )   // cause setBounds() hit a bug if only one point    
+            mapWS.setBounds( bounds )
+    }
+
+    this.closeMap = function( callback ) {
+        // infoWindow.close()
+        mapContainer.hide('blind', null, 800, function() {
+            if( callback )
+                callback()
+        })
+    },
+
+    this.closePopupMap = function( callback ) {
+        // infoWindow.close()
+        if( callback )
+            callback()
+    }
+            
+    this.addHandler = function( selector, callback ) {
+        mapContainer.delegate( selector, 'click', function(e) { //desktops          
+            e.preventDefault()
+            callback( e.target )
+        })
+        var bw = new brwsr()
+        if( bw.isTouch )
+            mapContainer[0].addEventListener("touchstart",  //touch devices
+            function(e) {
+                e.preventDefault()
+                if( e.target.is( selector ) )
+                    callback( e.target )
+            } , false)                          
+    }
+
+    /* main() */
+    create()
+
+} // object MapYandexWithShops
+
+function MapOnePoint( position, nodeId ) {
+    if( !position )
+        return false
+    if( !position.longitude || !position.latitude )
+        return false
+    var self = this
+
+    var markerPreset = {
+        iconImageHref: '/images/marker.png',
+        iconImageSize: [39, 59], 
+        iconImageOffset: [-19, -57] 
+    }
+
+    self.yandex = function() {      
+        var point = [ position.latitude , position.longitude ]
+        var myMap = new ymaps.Map ( nodeId, {
+            center: point,
+            zoom: 16
+        })
+        myMap.controls.add('zoomControl')
+        
+        var myPlacemark = new ymaps.Placemark( point, {}, markerPreset)
+        
+        myMap.geoObjects.add(myPlacemark)
+    }
+
+    self.google = function() {
+        var options = {
+            zoom: 16,
+            // center: position,
+            scrollwheel: false,
+            mapTypeId: google.maps.MapTypeId.ROADMAP,
+            mapTypeControlOptions: {
+                style: google.maps.MapTypeControlStyle.DROPDOWN_MENU
+            }
+        }
+        
+        var point = new google.maps.LatLng( position.latitude , position.longitude )
+        options.center = point
+        var map = new google.maps.Map(document.getElementById( nodeId ), options)
+
+        var marker = new google.maps.Marker({
+            position: point,
+            map: map,
+            icon: markerPreset.iconImageHref
+        })
+    }
+
+} // object MapOnePoint
 
 function calcMCenter( shops ) {
 	var latitude = 0, longitude = 0, l = 0
@@ -1071,6 +1265,86 @@ function calcMCenter( shops ) {
 	}	
 	return mapCenter
 }
+
+window.MapInterface = (function() {
+    var vendor, tmplSource
+
+    return {
+        ready: function( vendorName, tmpl ) {        
+            vendor     = vendorName
+            tmplSource = tmpl
+            if( vendor==='yandex' ) {
+                ymaps.ready( function() {
+// console.info('yandexIsReady')            
+                    PubSub.publish('yandexIsReady')
+                    ymaps.isReady = true
+                })
+            }
+            // if( vendor==='google' ) {
+            //      $LAB.sandbox().script( 'http://maps.google.com/maps/api/js?sensor=false' )
+            // } else // $LAB.sandbox().script( 'http://api-maps.yandex.ru/2.0/?load=package.full&lang=ru-RU' ).wait( function() {
+              
+        },
+
+        init: function( coordinates, mapContainerId, callback, updater ) {
+            if( vendor === 'yandex' ) {
+                if( typeof(ymaps)!=='undefined' && ymaps.isReady ) {
+                    window.regionMap = new MapYandexWithShops( 
+                        coordinates,
+                        tmplSource.yandex, 
+                        mapContainerId
+                    )
+                    if( typeof( callback ) !== 'undefined' )
+                        callback()
+                } else {
+                    PubSub.subscribe( 'yandexIsReady', function() {                   
+                        window.regionMap = new MapYandexWithShops( 
+                            coordinates, 
+                            tmplSource.yandex, 
+                            mapContainerId 
+                        )
+                        if( typeof( callback ) !== 'undefined' )
+                            callback()
+                    })
+                }
+            }
+            if( vendor === 'google' ) {        
+                window.regionMap = new MapGoogleWithShops(
+                    coordinates,
+                    tmplSource.google,
+                    mapContainerId,
+                    updater
+                )
+                if( typeof( callback ) !== 'undefined' )
+                    callback()
+            }
+        },
+
+        onePoint: function( coordinates, mapContainerId ) {
+             var mtmp = new MapOnePoint( coordinates, mapContainerId )
+            
+            if( vendor === 'yandex' ) {
+                if( typeof(ymaps)!=='undefined' && ymaps.isReady ) {
+                    mtmp[vendor]()
+                } else {
+                    PubSub.subscribe('yandexIsReady', function() {
+                        mtmp[vendor]()
+                    })
+                }
+            } 
+            if( vendor === 'google' ) {
+                mtmp[vendor]()
+            }
+        },
+
+        getMapContainer: function() {
+            // TODO
+            // return window.regionMap
+        }
+
+        // TODO wrap fn calcMCenter as a method
+    }
+}() ); // singleton
 
 /*
 	Mechanics @ enter.ru 

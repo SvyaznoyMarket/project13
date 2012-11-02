@@ -90,6 +90,14 @@
                                         <a href class='bGrayButton shopchoose' data-bind="click: $root.shopChoose">Забрать из этого магазина</a>
                                     </div>
                                 </div>
+                                <div id="map-info_window-container-ya" style="display:none">
+                                  <div class='bMapShops__ePopupRel'>
+                                    <h3>$[properties.name]</h3>
+                                    <span>$[properties.regtime]</span><br>
+                                    <span class="shopnum" style="display:none">$[properties.id]</span>
+                                    <a href class='bGrayButton shopchoose' >Забрать из этого магазина</a>
+                                  </div>
+                                </div>
                             </td></tr>
 
 

@@ -12,7 +12,7 @@ $(document).ready(function() {
 		if( options.is(':visible') )
 			options.hide()
 	})
-	
+
 	/* View Models */
 	//////////////////////////////////////////
 	
@@ -233,8 +233,10 @@ $(document).ready(function() {
 						mapCenter = calcMCenter( Deliveries['self'].shops )
 					}						
 					if( selfAvailable && ! ('regionMap' in window ) ) {
-						window.regionMap = new MapWithShops( mapCenter, $('#map-info_window-container'), 'mapPopup' )
-						window.regionMap.addHandler( '.shopchoose', pickStoreMVM )
+						var mapCallback = function() {
+							window.regionMap.addHandler( '.shopchoose', pickStoreMVMCL )
+						}
+						MapInterface.init( mapCenter, 'mapPopup', mapCallback )
 					}
 					
 				})	
@@ -558,7 +560,11 @@ levup:			for(var i=0, l=numbers.length; i<l; i++)
 	}
 	/* One Click Order */
 	if( $('.order1click-link-new').length ) {
-		
+		MapInterface.ready( 'yandex', { 
+			yandex: $('#map-info_window-container-ya'), 
+			google: $('#map-info_window-container')
+		} )
+
 		var Model = $('.order1click-link-new').data('model')	
 		var inputUrl = $('.order1click-link-new').attr('link-input')		
 		var outputUrl = $('.order1click-link-new').attr('link-output')		
@@ -601,10 +607,11 @@ levup:			for(var i=0, l=numbers.length; i<l; i++)
 			OC_MVM = new OneCViewModel() 
 			ko.applyBindings( OC_MVM, $('#order1click-container-new')[0] ) // this way, Lukas!
 			
-				
 			if( selfAvailable ) {
-				window.regionMap = new MapWithShops( mapCenter, $('#map-info_window-container'), 'mapPopup', updateIWCL )
-				window.regionMap.addHandler( '.shopchoose', pickStoreMVMCL )
+				var mapCallback = function() {
+					window.regionMap.addHandler( '.shopchoose', pickStoreMVMCL )
+				}
+				MapInterface.init( mapCenter, 'mapPopup', mapCallback, updateIWCL )
 			}
 			oneClickIsReady = true
 			enableHandlers()
@@ -618,7 +625,7 @@ levup:			for(var i=0, l=numbers.length; i<l; i++)
 
 				
 		$('.order1click-link-new').bind('click', function(e) { // button 'Купить в один клик'
-			e.preventDefault()
+			e.preventDefault()	
 			if( !oneClickIsReady )
 				return false
 			// TODO please go this stuff separate!
@@ -645,6 +652,11 @@ levup:			for(var i=0, l=numbers.length; i<l; i++)
 	/* Page 'Where to buy?' , Stock Map */
 	
 	if( $('#stockBlock').length ) {
+		MapInterface.ready( 'yandex', { 
+			yandex: $('#infowindowforstockYa'), 
+			google: $('#infowindowforstock')
+		} )
+
 		var Model     = $('#stockmodel').data('value')
 		var inputUrl  = $('#stockmodel').attr('link-input')
 		var outputUrl = $('#stockmodel').attr('link-output')
@@ -705,9 +717,11 @@ levup:			for(var i=0, l=numbers.length; i<l; i++)
 			enableHandlers()
 
 			if( selfAvailable ) {
-				window.regionMap = new MapWithShops( mapCenter, $('#infowindowforstock'), 'stockmap', updateIW )
-				window.regionMap.addHandler( '.shopchoose', pickStoreMVM )
-			}			
+				var mapCallback = function() {
+					window.regionMap.addHandler( '.shopchoose', pickStoreMVM )
+				}
+				MapInterface.init( mapCenter, 'stockmap', mapCallback, updateIW )
+			}
 
 			$('#stockBlock').show()
 		})	
