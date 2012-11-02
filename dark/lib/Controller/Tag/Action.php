@@ -75,6 +75,16 @@ class Action {
             throw new \Exception\NotFoundException(sprintf('Неверный номер страницы "%s".', $productPager->getPage()));
         }
 
+        // ajax
+        if ($request->isXmlHttpRequest()) {
+            return new \Http\Response(\App::templating()->render('product/_list', array(
+                'page'   => new \View\Layout(),
+                'pager'  => $productPager,
+                'view'   => $productView,
+                'isAjax' => true,
+            )));
+        }
+
         $page = new \View\Tag\IndexPage();
         $page->setParam('tag', $tag);
         $page->setParam('productPager', $productPager);
