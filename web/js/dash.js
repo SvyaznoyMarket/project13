@@ -129,7 +129,7 @@ $(document).ready(function(){
 				currentItem = $(box).attr('ref');
 				var h = img.height();
 				var w = img.width();
-				img.stop(true,true).animate({'height':h+3,'width':w+3,'marginTop':'-3px'},150);
+				img.stop(true,true).animate({'height':h+3,'width':w+3},150);
 				if (window.navigator.userAgent.indexOf ("MSIE") >= 0){
 					$(box).addClass('hover');
 				}
