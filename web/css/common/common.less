@@ -683,8 +683,6 @@ ul.lh15 li {
 .bSet__ePrice .link1,
 .button {
   .rounded(5px);
-  background-image: url("@{base-url}/common/img/bg_buttons.png");
-  background-repeat: repeat-x;
   border: 1px solid;
   cursor: pointer;
   font-weight: bold;
@@ -692,8 +690,7 @@ ul.lh15 li {
 }
 .bBlueButton .link1,
 .whitelink {
-  background-color: #e5e5e5;
-  background-position: 0px -128px;
+  .grayGradLight();
   border-color: #c9c9c9;
   color: #010101;
   display: inline-block;
@@ -703,21 +700,18 @@ ul.lh15 li {
 }
 .bBlueButton .link1:hover,
 .whitelink:hover {
-  background-color: #c5c5c5;
-  background-position: 0px -160px;
+  .grayGradDark();
   text-decoration: none;
 }
 .yellowbutton {
-  background-color: #ffaa01;
-  background-position: 0px 0px;
+  .orangeGradLight();
   border-color: #f28900;
   color: #fff;
   font-size: 11px;
   height: 24px;
   padding: 0px 7px 3px;
   &:hover {
-    background-color: #f79200;
-    background-position: 0px -32px;
+    .orangeGradDark();
   }
   &.mDisabled{
     .opacity(0.5);
@@ -726,24 +720,21 @@ ul.lh15 li {
     cursor: default;
     background: #f3f3f3;
     border: 1px solid #a6a6a6;
-    }
+  }
 }
 .whitebutton {
-  background-color: #e5e5e5;
-  background-position: 0px -128px;
+  .grayGradLight();
   border-color: #c9c9c9;
   color: #010101;
   font-size: 11px;
   height: 24px;
   padding: 0px 7px 3px;
   &:hover {
-    background-color: #c5c5c5;
-    background-position: 0px -160px;
+    .grayGradDark();
   }
 }
 .bigbutton {
-  background-color: @firmOrange;
-  background-position: 0px -256px;
+  .orangeGradLight();
   border-color: #f28900;
   color: @white;
   font-size: 14px;
@@ -753,8 +744,7 @@ ul.lh15 li {
 }
 .bSet__ePrice .link1:hover,
 .bigbutton:hover {
-  background-color: #f79200;
-  background-position: 0px -297px;
+  .orangeGradDark();
 }
 .bigbutton.mDisabled {
   background: #f9f9f9;
@@ -763,8 +753,7 @@ ul.lh15 li {
   cursor: default;
 }
 .bSet__ePrice .link1 {
-  background-color: @firmOrange;
-  background-position: 0px -256px;
+  .orangeGradLight();
   border-color: #f28900;
   color: @white;
   display: inline-block;
@@ -772,8 +761,7 @@ ul.lh15 li {
   height: 26px;
   padding: 7px 11px 0px;
   &:hover {
-    background-color: #f79200;
-    background-position: 0px -297px;
+    .orangeGradDark();
     color: @white;
     text-decoration: none;
   }
@@ -787,15 +775,14 @@ ul.lh15 li {
 /* END BUTTONS*/
 .selectbox {
   .rounded(5px);
-  background: #e3e3e3 url("@{base-url}/common/img/bg_buttons.png") repeat-x 0px -128px;
+  .grayGradDark();
   border: 1px solid #c9c9c9;
   height: 22px;
   line-height: 22px;
   padding: 0px 10px;
   position: relative;
   &:hover {
-    background-color: #c5c5c5;
-    background-position: 0px -160px;
+    .grayGradDark2();
   }
   .select {
     height: 22px;
