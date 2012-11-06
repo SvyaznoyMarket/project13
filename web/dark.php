@@ -15,10 +15,10 @@ if (false === $config) die(sprintf('Не удалось загрузить ко�
 if (isset($_GET['APPLICATION_DEBUG'])) {
     if (!empty($_GET['APPLICATION_DEBUG'])) {
         $config->debug = true;
-        setcookie('debug', 1, strtotime('+7 days' ));
+        setcookie('debug', 1, strtotime('+7 days' ), '/');
     } else {
         $config->debug = false;
-        setcookie('debug', 0, strtotime('+7 days' ));
+        setcookie('debug', 0, strtotime('+7 days' ), '/');
     }
 } else if (isset($_COOKIE['debug'])) {
     $config->debug = !empty($_COOKIE['debug']);
