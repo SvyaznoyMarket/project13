@@ -265,7 +265,7 @@ live:
     pull: true  # запрашивать данные с сервера smartengine
     config:
       api_url: 'https://selightprod.smartengine.at/se-light/api/1.0/json/'
-      cert: %SF_DATA_DIR%/cert/selightprodtmp.cer
+      cert: %SF_DATA_DIR%/cert/smartengine-server2.crt
       log_enabled: false
       log_data_enabled: false
       marker: '?utm_source=enter_ru&utm_medium=cpc&utm_campaign=se&utm_content=recommend'
