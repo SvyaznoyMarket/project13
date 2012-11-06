@@ -1,4 +1,3 @@
-/* CSS crunched with Crunch - http://crunchapp.net/ */
 /*---------ШРИФТЫ----------*/
 @font-face {
   font-family: 'Enter';
@@ -976,6 +975,13 @@
 @media all {
   body.showModal #upper {
     display: none;
+  }
+  body.bought .goodsbarbig.mSmallBtns a.link1 {
+    background: url("/css/item/img/itemSprite.png") 0px -62px no-repeat;
+  }
+  body.bought .bCountSet__eP,
+  body.bought .bCountSet__eM {
+    visibility: hidden;
   }
 }
 /*--END---ОСНОВНЫЕ ПРАВИЛА---*/
@@ -3957,16 +3963,10 @@
     float: left;
     margin: 0px 0px 0px 2px;
   }
-  .bCountSet .disabled {
-    visibility: hidden;
-  }
   .bCountSet .bCountSet__eP {
     background: url("/css/item/img/itemSprite.png") no-repeat -152px 0px;
     float: right;
     margin: 0px 2px 0px 0px;
-  }
-  .bCountSet .disabled {
-    visibility: hidden;
   }
   .bDeliver2 {
     padding: 0px 10px 10px 0px;
