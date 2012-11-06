@@ -78,20 +78,25 @@ class Repository {
      *
      * @param Entity $entity
      */
-    public function loadEntityBranch(Entity $entity) {
-        $data = $this->client->query('category/tree', array(
+    public function loadEntityBranch(Entity $entity, \Model\Region\Entity $region = null) {
+        $params = array(
             'root_id'         => $entity->getId(),
             'max_level'       => null,
             'is_load_parents' => true,
-            'region_id'       => \App::user()->getRegion()->getId(),
-        ));
+        );
+        if ($region) {
+            $params['region_id'] = \App::user()->getRegion()->getId();
+        }
+        $data = $this->client->query('category/tree', $params);
 
-        $loadBranch = function($data) use(&$loadBranch, $entity) {
+        $loadBranch = function($data) use(&$loadBranch, $entity, $region) {
             foreach ($data as $item) {
                 // если наткнулись на текущую категорию, то закругляемся
                 if ($entity->getId() == $item['id']) {
                     // только при загрузке дерева ядро может отдать нам количество товаров в ней
-                    $entity->setProductCount($item['product_count']);
+                    if ($region) {
+                        $entity->setProductCount($item['product_count']);
+                    }
                     if (\App::config()->product['globalListEnabled']) {
                         $entity->setGlobalProductCount($item['product_count_global']);
                     }
