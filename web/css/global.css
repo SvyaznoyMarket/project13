@@ -1,3 +1,4 @@
+/* CSS crunched with Crunch - http://crunchapp.net/ */
 /*---------ШРИФТЫ----------*/
 @font-face {
   font-family: 'Enter';
@@ -970,6 +971,11 @@
   }
   #upper:hover {
     text-decoration: none;
+  }
+}
+@media all {
+  body.showModal #upper {
+    display: none;
   }
 }
 /*--END---ОСНОВНЫЕ ПРАВИЛА---*/

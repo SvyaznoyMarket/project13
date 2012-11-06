@@ -111,7 +111,7 @@
                      .resize( function(){ if( opts.reallyBig ) setHeight( $self ) } )
                      .scroll( function(){ if ( !opts.reallyBig ) setSelfPosition() })//IVN
                      .keydown(observeEscapePress);
-
+			$('body').addClass('showModal');
             $self.find(opts.closeSelector).click(function() { removeModal(true); return false; });
             $overlay.click( function(e) { 
             	e.preventDefault();
@@ -155,7 +155,7 @@
                     $(window).unbind('scroll', setSelfPosition);
                     $(window).unbind('resize', setSelfPosition);
 
-
+					$('body').removeClass('showModal');
                 });
             }
 
