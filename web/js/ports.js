@@ -325,8 +325,8 @@ window.ANALYTICS = {
             $('body').append( $(arguments[0] + '') )
         }
 
-        if( fnname in this ) {
-            this.fnname()
+        if( fnname+'' in this ) {
+            this[fnname+'']()
         }
 
     },
