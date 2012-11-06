@@ -17,7 +17,7 @@
         <? foreach ($shops as $shop): ?>
             <!-- __eCard -->
             <div class='bShopCard' onclick="window.location='<?= $page->url('shop.show', array('regionToken' => $currentRegion->getToken(), 'shopToken' => $shop->getToken())) ?>'">
-                <img class='bShopCard__eIco' src='<?= $shop->getImageUrl(5) ?>' width="162" height="100" />
+                <img class='bShopCard__eIco' src='<?= $shop->getImageUrl(2) ?>' width="162" height="100" />
                 <h3 class='bShopCard__eTitle'><?= $shop->getName() ?></h3>
                 <? if ($shop->getIsReconstructed()): ?>
                     <p class='bShopCard__eDescription red'>На реконструкции</p>
