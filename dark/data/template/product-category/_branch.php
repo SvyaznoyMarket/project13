@@ -42,7 +42,10 @@ $globalTotalText =
 ?>
 
 <div class="catProductNum">
-    <b>В <?= $regionInflectedName ?> <?= $totalText ?></b>
+    <? if ($category->getProductCount()): ?>
+        <b>В <?= $regionInflectedName ?> <?= $totalText ?></b>
+    <? endif ?>
+
     <? if (\App::config()->product['globalListEnabled'] && $user->getRegion()->getHasTransportCompany()): ?>
         <br />
         Всего в категории <?= $globalTotalText ?>
