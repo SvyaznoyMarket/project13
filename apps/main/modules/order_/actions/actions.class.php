@@ -423,7 +423,7 @@ class order_Actions extends myActions
     // онлайн оплата?
     if (1 == count($orders) && empty($orderNumber))
     {
-      $order = $orders[0];
+      $order = reset($orders);
 
       //$paymentMethod = !empty($order['payment_id']) ? PaymentMethodTable::getInstance()->getByCoreId($order['payment_id']) : null;
       $paymentMethod = RepositoryManager::getPaymentMethod()->getById($order['payment_id']);
