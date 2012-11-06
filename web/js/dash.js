@@ -63,7 +63,8 @@ $(document).ready(function(){
 			if( bx.length ) {
 				var button = $('a.link1', bx)
 				button.attr('href', $('.lightboxinner .point2').attr('href') )
-				button.unbind('click').addClass('active')
+				$('body').addClass('bought')
+				button.unbind('click')//.addClass('active')
 				isInCart = true
 				if( lbox.servicesInCart )
 				for( var tokenS in lbox.servicesInCart ) {
@@ -483,12 +484,13 @@ $(document).ready(function(){
 	/* buy bottons */
 	var markPageButtons = function(){
 		var carturl = $('.lightboxinner .point2').attr('href')
-		$('.goodsbarbig .link1').attr('href', carturl ).addClass('active')
-		$('#bigpopup a.link1').attr('href', carturl ).addClass('active')//.html('в корзине')
+		$('body').addClass('bought')
+		$('.goodsbarbig .link1').attr('href', carturl )//.addClass('active')
+		$('#bigpopup a.link1').attr('href', carturl )//.addClass('active')//.html('в корзине')
 		$('.bSet__ePrice .link1').unbind('click')
 		$('.goodsbar .link1').die('click')
-		$('.bCountSet__eP').addClass('disabled')
-		$('.bCountSet__eM').addClass('disabled')
+		//$('.bCountSet__eP').addClass('disabled')
+		//$('.bCountSet__eM').addClass('disabled')
 	}
 	
 	/* stuff go to litebox */
@@ -565,8 +567,8 @@ $(document).ready(function(){
 					jsond = button.data('value')
 				if( !jsond )
 					return false
-				if( button.hasClass('active') ) {
-					document.location = button.attr('href')//return true
+				if( $('body').hasClass('bought') ) {
+					document.location = carturl//return true
 					return false
 				}
 				if( button.hasClass('disabled') )
@@ -583,7 +585,7 @@ $(document).ready(function(){
 					button.val('В корзине')
 					ajurl = jsond.url
 				}
-				button.addClass('active').attr('href', carturl)
+				$('body').addClass('bought')
 				$.getJSON( ajurl, function( data ) {
 					if ( data.success && ltbx ) {
 						var tmpitem = {
