@@ -147,6 +147,6 @@ class Entity {
      * @return bool
      */
     public function isInSale() {
-        return $this->getIsDelivered() && $this->getPrice() && $this->getPrice() > \App::config()->service['minPriceForDelivery'];
+        return $this->getIsDelivered() && $this->getPrice() && $this->getPrice() >= \App::config()->service['minPriceForDelivery'];
     }
 }
