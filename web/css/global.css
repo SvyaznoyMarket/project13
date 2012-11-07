@@ -599,7 +599,127 @@
     *display: inline;
     zoom: 1;
   }
-  /* BUTTONS*/
+  .selectbox {
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    background: #e5e5e5;
+    background: -moz-linear-gradient(top, #ffffff 0%, #e3e3e3 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffffff), color-stop(100%, #e3e3e3));
+    background: -webkit-linear-gradient(top, #ffffff 0%, #e3e3e3 100%);
+    background: -o-linear-gradient(top, #ffffff 0%, #e3e3e3 100%);
+    background: -ms-linear-gradient(top, #ffffff 0%, #e3e3e3 100%);
+    background: linear-gradient(to bottom, #ffffff 0%, #e3e3e3 100%);
+    filter: progid:dximagetransform.microsoft.gradient(startColorstr='#ffffff', endColorstr='#e3e3e3', GradientType=0);
+    border: 1px solid #c9c9c9;
+    height: 22px;
+    line-height: 22px;
+    padding: 0px 10px;
+    position: relative;
+  }
+  .selectbox:hover {
+    background: #c5c5c5;
+    background: -moz-linear-gradient(top, #ffffff 0%, #c5c5c5 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffffff), color-stop(100%, #c5c5c5));
+    background: -webkit-linear-gradient(top, #ffffff 0%, #c5c5c5 100%);
+    background: -o-linear-gradient(top, #ffffff 0%, #c5c5c5 100%);
+    background: -ms-linear-gradient(top, #ffffff 0%, #c5c5c5 100%);
+    background: linear-gradient(to bottom, #ffffff 0%, #c5c5c5 100%);
+    filter: progid:dximagetransform.microsoft.gradient(startColorstr='#ffffff', endColorstr='#c5c5c5', GradientType=0);
+  }
+  .selectbox .select {
+    height: 22px;
+    overflow: hidden;
+    position: absolute;
+    white-space: nowrap;
+  }
+  .selectbox .styled {
+    cursor: pointer;
+    filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
+    height: 22px;
+    margin-left: -10px;
+    -moz-opacity: 0;
+    -khtml-opacity: 0;
+    -webkit-opacity: 0;
+    opacity: 0;
+    position: relative;
+    z-index: 2;
+  }
+  .selectbox i {
+    background: url("/css/common/img/bg.png") no-repeat -62px -24px;
+    display: block;
+    height: 7px;
+    margin-top: -3px;
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    width: 11px;
+  }
+  .selectbox170 {
+    width: 148px;
+  }
+  .selectbox170 .select {
+    width: 135px;
+  }
+  .selectbox170 .styled {
+    width: 170px;
+  }
+  .selectbox225 {
+    width: 203px;
+  }
+  .selectbox225 .select {
+    width: 190px;
+  }
+  .selectbox225 .styled {
+    width: 225px;
+  }
+  .bMobDown {
+    -webkit-box-shadow: 0px 0px 10px #333333;
+    -moz-box-shadow: 0px 0px 10px #333333;
+    box-shadow: 0px 0px 10px #333333;
+    background: #ffffff;
+    border: 2px solid #ffa901;
+    display: inline-block;
+    *display: inline;
+    margin: 0px auto;
+    padding: 15px 0px 30px;
+    text-align: left;
+    zoom: 1;
+  }
+  .dragbox {
+    bottom: 41px;
+    height: 100%;
+    left: 0px;
+    position: fixed;
+    right: 0px;
+    top: 0px;
+    width: 100%;
+    z-index: 101;
+  }
+  .dragbox div {
+    background-color: #ffffff;
+    cursor: pointer;
+    height: 60px;
+    position: absolute;
+    width: 60px;
+    z-index: 102;
+  }
+  .noti {
+    -webkit-border-radius: 15px;
+    -moz-border-radius: 15px;
+    border-radius: 15px;
+    display: none;
+    width: 300px;
+    height: 200px;
+    background-color: #ffffff;
+    text-align: center;
+    font-size: 18px;
+  }
+  .noti > div {
+    margin-top: 50px;
+  }
+}
+@media all {
   .bGrayButton {
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
@@ -624,33 +744,6 @@
     background: #f4f4f4;
     border: 1px solid #ddd;
     color: #d0d0d0;
-    cursor: default;
-    text-decoration: none;
-  }
-  .bWhiteButton {
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
-    background: #ffffff;
-    border-radius: 5px;
-    border: 1px solid #ddd;
-    color: #4b4b4b;
-    display: inline-block;
-    *display: inline;
-    font: 14px Tahoma, sans-serif;
-    padding: 6px 15px;
-    zoom: 1;
-  }
-  .bWhiteButton:hover {
-    background: #ffffff;
-    border: 1px solid #cecece;
-    color: #000;
-    text-decoration: none;
-  }
-  .bWhiteButton.disable {
-    background: #ffffff;
-    border: 1px solid #ddd;
-    color: #cdcdcd;
     cursor: default;
     text-decoration: none;
   }
@@ -771,7 +864,7 @@
     background: linear-gradient(to bottom, #ffc000 0%, #ffaa01 100%);
     filter: progid:dximagetransform.microsoft.gradient(startColorstr='#ffc000', endColorstr='#ffaa01', GradientType=0);
     border-color: #f28900;
-    color: #fff;
+    color: #ffffff;
     font-size: 11px;
     height: 24px;
     padding: 0px 7px 3px;
@@ -888,126 +981,6 @@
     border-color: #e4e4e4;
     color: #dcdcdc;
     cursor: default;
-  }
-  /* END BUTTONS*/
-  .selectbox {
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
-    background: #e5e5e5;
-    background: -moz-linear-gradient(top, #ffffff 0%, #e3e3e3 100%);
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffffff), color-stop(100%, #e3e3e3));
-    background: -webkit-linear-gradient(top, #ffffff 0%, #e3e3e3 100%);
-    background: -o-linear-gradient(top, #ffffff 0%, #e3e3e3 100%);
-    background: -ms-linear-gradient(top, #ffffff 0%, #e3e3e3 100%);
-    background: linear-gradient(to bottom, #ffffff 0%, #e3e3e3 100%);
-    filter: progid:dximagetransform.microsoft.gradient(startColorstr='#ffffff', endColorstr='#e3e3e3', GradientType=0);
-    border: 1px solid #c9c9c9;
-    height: 22px;
-    line-height: 22px;
-    padding: 0px 10px;
-    position: relative;
-  }
-  .selectbox:hover {
-    background: #c5c5c5;
-    background: -moz-linear-gradient(top, #ffffff 0%, #c5c5c5 100%);
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffffff), color-stop(100%, #c5c5c5));
-    background: -webkit-linear-gradient(top, #ffffff 0%, #c5c5c5 100%);
-    background: -o-linear-gradient(top, #ffffff 0%, #c5c5c5 100%);
-    background: -ms-linear-gradient(top, #ffffff 0%, #c5c5c5 100%);
-    background: linear-gradient(to bottom, #ffffff 0%, #c5c5c5 100%);
-    filter: progid:dximagetransform.microsoft.gradient(startColorstr='#ffffff', endColorstr='#c5c5c5', GradientType=0);
-  }
-  .selectbox .select {
-    height: 22px;
-    overflow: hidden;
-    position: absolute;
-    white-space: nowrap;
-  }
-  .selectbox .styled {
-    cursor: pointer;
-    filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
-    height: 22px;
-    margin-left: -10px;
-    -moz-opacity: 0;
-    -khtml-opacity: 0;
-    -webkit-opacity: 0;
-    opacity: 0;
-    position: relative;
-    z-index: 2;
-  }
-  .selectbox i {
-    background: url("/css/common/img/bg.png") no-repeat -62px -24px;
-    display: block;
-    height: 7px;
-    margin-top: -3px;
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    width: 11px;
-  }
-  .selectbox170 {
-    width: 148px;
-  }
-  .selectbox170 .select {
-    width: 135px;
-  }
-  .selectbox170 .styled {
-    width: 170px;
-  }
-  .selectbox225 {
-    width: 203px;
-  }
-  .selectbox225 .select {
-    width: 190px;
-  }
-  .selectbox225 .styled {
-    width: 225px;
-  }
-  .bMobDown {
-    -webkit-box-shadow: 0px 0px 10px #333333;
-    -moz-box-shadow: 0px 0px 10px #333333;
-    box-shadow: 0px 0px 10px #333333;
-    background: #ffffff;
-    border: 2px solid #ffa901;
-    display: inline-block;
-    *display: inline;
-    margin: 0px auto;
-    padding: 15px 0px 30px;
-    text-align: left;
-    zoom: 1;
-  }
-  .dragbox {
-    bottom: 41px;
-    height: 100%;
-    left: 0px;
-    position: fixed;
-    right: 0px;
-    top: 0px;
-    width: 100%;
-    z-index: 101;
-  }
-  .dragbox div {
-    background-color: #ffffff;
-    cursor: pointer;
-    height: 60px;
-    position: absolute;
-    width: 60px;
-    z-index: 102;
-  }
-  .noti {
-    -webkit-border-radius: 15px;
-    -moz-border-radius: 15px;
-    border-radius: 15px;
-    display: none;
-    width: 300px;
-    height: 200px;
-    background-color: #ffffff;
-    text-align: center;
-    font-size: 18px;
-  }
-  .noti > div {
-    margin-top: 50px;
   }
 }
 @media all {
