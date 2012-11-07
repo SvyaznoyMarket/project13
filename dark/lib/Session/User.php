@@ -26,6 +26,9 @@ class User {
         }
     }
 
+    /**
+     * @return \Model\User\Entity|null
+     */
     public function getEntity() {
         if (!$this->token) {
             return null;
@@ -88,6 +91,10 @@ class User {
         $response->headers->setCookie($cookie);
     }
 
+    /**
+     * @return \Model\Region\Entity|null
+     * @throws \RuntimeException
+     */
     public function getRegion() {
         if (!$this->region) {
             $cookieName = \App::config()->region['cookieName'];
@@ -112,6 +119,9 @@ class User {
         return $this->region;
     }
 
+    /**
+     * @return Cart
+     */
     public function getCart() {
         if (!$this->cart) {
             $this->cart = new Cart();
