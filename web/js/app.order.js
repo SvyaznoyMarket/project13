@@ -276,7 +276,8 @@ $(document).ready(function () {
 
     /* Credit Widget */
     //window.onbeforeunload = function (){ return false }    // DEBUG    
-    
+    if( ! $('#credit-widget').length )
+        return
     var creditWidget = $('#credit-widget').data('value')
     if( ! 'widget' in creditWidget )
         return
