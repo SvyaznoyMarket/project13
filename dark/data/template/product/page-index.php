@@ -249,7 +249,7 @@
         <?php else: ?>
             <?php
                 $productAttribute = $product->getPropertyById($property->getId());
-                if (!$productAttribute) return;
+                if (!$productAttribute) break;
             ?>
             <div class="bDropWrap">
                 <h5><?php echo $property->getName() ?>:</h5>
@@ -272,7 +272,7 @@
                 </div>
             </div>
             <?php endif ?>
-<?php endforeach; ?>
+    <?php endforeach; ?>
 </div>
 <!-- /Variation -->
 <?php endif ?>
