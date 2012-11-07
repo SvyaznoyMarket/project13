@@ -69,6 +69,7 @@ class ClientV2 implements ClientInterface
     }
 
     public function execute() {
+        \Debug\Timer::start('core');
         if (!$this->isMultiple) {
             throw new \RuntimeException('No query to execute.');
         }
@@ -78,7 +79,7 @@ class ClientV2 implements ClientInterface
         try {
             do {
                 do {
-                    $code = curl_multi_exec($this->multiHandler, $curl_still_executing);
+                    $code = curl_multi_exec($this->isMultiple, $curl_still_executing);
                     $this->still_executing = $curl_still_executing;
                 } while ($code == CURLM_CALL_MULTI_PERFORM);
 
@@ -91,10 +92,12 @@ class ClientV2 implements ClientInterface
                     $this->logger->debug('Core response info: ' . $this->encodeInfo($info));
                     \Util\RequestLogger::getInstance()->addLog($info['url'], array("unknown in multi curl"), $info['total_time']);
                     if (curl_errno($handler) > 0) {
+                        $spend = \Debug\Timer::stop('core');
                         throw new \RuntimeException(curl_error($handler), curl_errno($handler));
                     }
                     $content = curl_multi_getcontent($handler);
                     if ($info['http_code'] >= 300) {
+                        $spend = \Debug\Timer::stop('core');
                         throw new \RuntimeException(sprintf("Invalid http code: %d, \nResponse: %s", $info['http_code'], $content));
                     }
                     $decodedResponse = $this->decode($content);
@@ -103,7 +106,7 @@ class ClientV2 implements ClientInterface
                     $callback($decodedResponse);
                 }
                 if ($curl_still_executing) {
-                    $ready = curl_multi_select($this->multiHandler);
+                    $ready = curl_multi_select($this->isMultiple);
                 }
             } while ($this->still_executing);
         } catch (Exception $e) {
@@ -119,8 +122,12 @@ class ClientV2 implements ClientInterface
         $this->resources = array();
         if (!is_null($error)) {
             $this->logger->error('Error:' . (string)$error . 'Response: ' . print_r(isset($content) ? $content : null, true));
+            $spend = \Debug\Timer::stop('core');
             throw $error;
         }
+
+        $spend = \Debug\Timer::stop('core');
+        \App::logger()->info('End core execute in ' . $spend);
     }
 
     private function createResource($action, array $params = array(), array $data = array()) {

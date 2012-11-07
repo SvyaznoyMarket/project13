@@ -41,7 +41,7 @@ Options +FollowSymLinks +ExecCGI
   RewriteRule ^region/autocomplete* dark.php [L]
   #RewriteRule ^shops* dark.php [L]
   RewriteRule ^line/* dark.php [L]
-  #RewriteRule ^cart/$ dark.php [L]
+  RewriteRule ^cart/$ dark.php [L]
 
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteRule ^wp-admin/$ /content/wp-admin/index.php [L]

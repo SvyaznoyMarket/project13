@@ -115,6 +115,10 @@ class AppConfig {
         'url' => array(),
     );
     /** @var array */
+    public $payment = array(
+        'creditEnabled' => null,
+    );
+    /** @var array */
     public $smartEngine = array(
         'pull' => null,
         'push' => null,
