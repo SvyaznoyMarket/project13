@@ -1215,17 +1215,20 @@ function MapOnePoint( position, nodeId ) {
         iconImageOffset: [-19, -57] 
     }
 
-    self.yandex = function() {      
-        var point = [ position.latitude , position.longitude ]
-        var myMap = new ymaps.Map ( nodeId, {
+    self.yandex = function() {    
+        var point = [ position.latitude*1 , position.longitude*1 ]
+         myMap = new ymaps.Map ( nodeId, {
             center: point,
             zoom: 16
         })
         myMap.controls.add('zoomControl')
-        
+
         var myPlacemark = new ymaps.Placemark( point, {}, markerPreset)
-        
         myMap.geoObjects.add(myPlacemark)
+        
+        myMap.zoomRange.get( point ).then( function (range) {
+            myMap.setZoom( range[1] )
+        })
     }
 
     self.google = function() {
