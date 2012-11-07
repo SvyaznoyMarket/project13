@@ -4,6 +4,7 @@
   <dd id="payTypes">
   <?php foreach ($paymentMethodList as $k => $v): ?>
     <?php if (!$showCreditMethod && $v->isCredit()) continue;  ?>
+    <?php if ($sf_user->getRegion('region')->getHasTransportCompany() && $v->isCertificate()) continue;  ?>
      <div id="payment_method_<?php echo $v->getId() ?>-field">
       <p></p>
       <label class='<?php if ($v->getId() == $selectedMethodId) echo 'mChecked' ?>' for="order_payment_method_id_<?php echo $v->getId() ?>">

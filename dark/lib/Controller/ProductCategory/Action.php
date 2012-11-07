@@ -129,13 +129,15 @@ class Action {
             throw new \Exception\NotFoundException(sprintf('Категория товара с токеном "%s" не найдена.', $categoryToken));
         }
 
+        $isGlobal = $this->isGlobal();
+
         if ($category->isLeaf()) {
             $parent = $category->getParentId() ? $repository->getEntityById($category->getParentId()) : null;
             if (!$parent) {
                 throw new \RuntimeException(sprintf('Category #%s has no parent', $category->getId()));
             }
             $category->setParent($parent);
-            $repository->loadEntityBranch($category->getParent());
+            $repository->loadEntityBranch($category->getParent(), $isGlobal ? null : \App::user()->getRegion());
 
             // устанавливаем предков категории на основе предков родителя
             foreach ($category->getParent()->getAncestor() as $ancestor) {
@@ -153,7 +155,7 @@ class Action {
                 }
             }
         } else {
-            $repository->loadEntityBranch($category);
+            $repository->loadEntityBranch($category, $isGlobal ? null : \App::user()->getRegion());
         }
 
         // если категория содержится во внешнем узле дерева
@@ -311,12 +313,10 @@ class Action {
      */
     private function getFilter(\Model\Product\Category\Entity $category, \Http\Request $request) {
         // проверяем флаг глобального списка в параметрах запроса
-        $isGlobal =
-            \App::user()->getRegion()->getHasTransportCompany()
-            && (bool)$request->cookies->get(self::$globalCookieName, false);
+        $isGlobal = $this->isGlobal();
 
         // регион для фильтров
-        $region = !$isGlobal ? \App::user()->getRegion() : null;
+        $region = $isGlobal ? null : \App::user()->getRegion();
 
         // filter values
         $values = $request->get(\View\Product\FilterForm::$name, array());
@@ -353,5 +353,10 @@ class Action {
         $productFilter->setValues($values);
 
         return $productFilter;
+    }
+
+    public function isGlobal() {
+        return \App::user()->getRegion()->getHasTransportCompany()
+            && (bool)(\App::request()->cookies->get(self::$globalCookieName, false));
     }
 }

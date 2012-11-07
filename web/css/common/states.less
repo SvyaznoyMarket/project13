@@ -1,0 +1,20 @@
+//если открыто всплывающее окно
+body.showModal{
+  #upper{
+    display:none;
+  }
+}
+//если товар куплен
+body.bought{
+  .goodsbarbig{
+    &.mSmallBtns{
+      a.link1{
+        background: url("@{base-url}/item/img/itemSprite.png") 0px -62px no-repeat;
+      }
+    }
+  }
+  .bCountSet__eP,
+  .bCountSet__eM{
+    visibility: hidden; 
+  }
+}
