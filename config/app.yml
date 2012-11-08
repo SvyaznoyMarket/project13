@@ -151,7 +151,7 @@ all:
 
   smartengine:
     push: false # отправлять данные на сервер smartengine
-    pull: false # запрашивать данные с сервера smartengine
+    pull: true # запрашивать данные с сервера smartengine
     config:
       api_url: 'https://selightprod.smartengine.at/se-light/api/1.0/json/'
       # api_url: 'https://selightstage.smartengine.at/se-light/api/1.0/json/' # для demo
@@ -265,10 +265,10 @@ live:
     pull: true  # запрашивать данные с сервера smartengine
     config:
       api_url: 'https://selightprod.smartengine.at/se-light/api/1.0/json/'
-      cert: %SF_DATA_DIR%/cert/smartengine-server2.crt
+      cert: %SF_DATA_DIR%/cert/selightprod.crt
       log_enabled: false
       log_data_enabled: false
-      marker: '?utm_source=enter_ru&utm_medium=cpc&utm_campaign=se&utm_content=recommend'
+      #marker: '?utm_source=enter_ru&utm_medium=cpc&utm_campaign=se&utm_content=recommend'
 
   certificate:
     enabled: false
