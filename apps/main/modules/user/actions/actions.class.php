@@ -136,7 +136,7 @@ class userActions extends myActions
           'last_name'   => $data['last_name'],
           'sex'         => $data['gender'],
           'email'       => $data['email'],
-          'modile'      => $data['phonenumber'],
+          'mobile'      => $data['phonenumber'],
           'phone'       => $data['phonenumber_city'],
           'skype'       => $data['skype'],
           'birthday'    => $data['birthday'],
