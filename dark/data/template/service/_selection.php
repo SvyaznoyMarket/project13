@@ -34,7 +34,7 @@ $cartServicesById = $cartProduct ? $cartProduct->getService() : array();
 
                     <? if (!$service->getIsDelivered() && $service->getIsInShop()) { ?>
                     <span class='bF1Block__eInShop'>доступна в магазине</span>
-                    <? } elseif ($user->getRegion()->getHasService() && $service->isInSale() && $cartProduct->hasService($service->getId())) { ?>
+                    <? } elseif ($user->getRegion()->getHasService() && $service->isInSale() && $cartProduct && $cartProduct->hasService($service->getId())) { ?>
                     <input data-f1title="<?= $service->getName() ?>" data-f1price="<?= $service->getPrice() ?>"
                            data-fid="<?= $service->getId() ?>"
                            data-url="<?= $page->url('cart.service.add', array('serviceId' => $service->getId(), 'productId' => $product->getId(), 'quantity' => 1)) ?>"
