@@ -3,7 +3,7 @@
  * @var $page             \View\Layout
  * @var $cart             \Session\Cart
  * @var $creditEnabled    bool
- * @var $products         \Model\Product\Entity[]
+ * @var $products         \Model\Product\CartEntity[]
  * @var $services         \Model\Product\Service\Entity[]
  * @var $cartProductsById \Model\Cart\Product\Entity[]
  * @var $cartServicesById \Model\Cart\Service\Entity[]
@@ -12,6 +12,16 @@
 
 <?
 $creditData = array();
+
+foreach ($products as $product) {
+    $cartProduct = $cartProductsById[$product->getId()];
+    $creditData[] = array(
+        'id'       => $product->getId(),
+        'quantity' => $cartProduct->getQuantity(),
+        'price'    => $cartProduct->getPrice(),
+        'type'     => \Model\CreditBank\Repository::getCreditTypeByCategoryToken($product->getMainCategory() ? $product->getMainCategory()->getToken() : null),
+    );
+}
 ?>
 
 
@@ -67,7 +77,7 @@ $creditData = array();
 </script>
 
 <? if ($creditEnabled): ?>
-    <div id="tsCreditCart" data-value="<?= json_encode($creditData) ?>"></div>
+    <div id="tsCreditCart" data-value='<?= json_encode($creditData) ?>'></div>
 <? endif ?>
 
 <? foreach ($products as $product): ?>
