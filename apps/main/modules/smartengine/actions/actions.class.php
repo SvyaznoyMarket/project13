@@ -58,7 +58,7 @@ class smartengineActions extends myActions
         return $this->renderText('');
       }
 
-      $se_config = sfConfig::get('app_smartengine_config');
+      $se_config = sfConfig::get('app_smartengine_config', '');
       return $this->renderPartial($this->getModuleName().'/product_list', array(
         'title'    => 'С этим товаром также смотрят',
         'products' => $products,

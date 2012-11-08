@@ -76,8 +76,9 @@ class SmartengineClient
     ;
 
     $connection = curl_init();
-    curl_setopt($connection, CURLOPT_SSL_VERIFYPEER, true);
-    if (defined('SMARTENGINE_CERT') && SMARTENGINE_CERT) {
+      /** TODO: разобраться с коннектом с сертификатом и вернуть значение в true */
+      curl_setopt($connection, CURLOPT_SSL_VERIFYPEER, false);
+      if (defined('SMARTENGINE_CERT') && SMARTENGINE_CERT) {
       curl_setopt($connection, CURLOPT_CAINFO, SMARTENGINE_CERT);
     }
     curl_setopt($connection, CURLOPT_HEADER, 0);
