@@ -17,7 +17,7 @@ $hasModel = (isset($hasModel) ? $hasModel : true) && $product->getModel() && (bo
     	<div class="photo">
 	        <a href="<?= $product->getLink() ?>">
 	            <? if (!empty($kit) && $kit->getCount()): ?>
-	                <div class="bLabelsQuantity" src="/images/quantity_shild.png"><?= $kit->getCount(); ?> шт.</div>
+	                <div class="bLabelsQuantity" src="/images/quantity_shild.png"><?= $kit->getCount() ?> шт.</div>
 	            <? endif ?>
 	
 	            <? if ($label = $product->getLabel()): ?>
