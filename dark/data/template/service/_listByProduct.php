@@ -9,7 +9,7 @@ $services = $product->getService();
 $cartProduct = $user->getCart()->getProductById($product->getId());
 $cartServicesById = $cartProduct ? $cartProduct->getService() : array();
 ?>
-<? if (count($services)): ?>
+<? if ((bool)$services): ?>
 
     <?= $page->render('service/_selection', array('product' => $product)) ?>
 

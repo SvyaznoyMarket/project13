@@ -128,7 +128,9 @@ foreach ($products as $product) {
 
             <div class="clear pb15"></div>
 
-            <?= $page->render('cart/_serviceByProduct', array('product' => $product, 'cartProduct' => $cartProduct)) ?>
+            <? if ((bool)$product->getService()): ?>
+                <?= $page->render('cart/_serviceByProduct', array('product' => $product, 'cartProduct' => $cartProduct)) ?>
+            <?endif ?>
 
         </div>
     </div>
