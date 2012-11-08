@@ -906,7 +906,7 @@ function parse_url( url ) {
 
 /* MAP Object */
 
-function MapGoogleWithShops( center, templateIWnode, DOMid, updateInfoWindowTemplate ) {
+function MapGoogleWithShops( center, templateIWnode, DOMid, updateIWT ) {
 /* Arguments:
 	center is a center of a map
 	templateIWnode is node(jQ) which include template for InfoWindow popup
@@ -953,7 +953,6 @@ function MapGoogleWithShops( center, templateIWnode, DOMid, updateInfoWindowTemp
         var marker = markers[markerId].ref 
 		currMarker = marker
 		var item = markers[marker.id]
-		
 		marker.setVisible(false) // hides marker
         self.updateInfoWindowTemplate( item )
 		infoWindow.setContent( infoWindowTemplate )
@@ -1215,17 +1214,20 @@ function MapOnePoint( position, nodeId ) {
         iconImageOffset: [-19, -57] 
     }
 
-    self.yandex = function() {      
-        var point = [ position.latitude , position.longitude ]
-        var myMap = new ymaps.Map ( nodeId, {
+    self.yandex = function() {    
+        var point = [ position.latitude*1 , position.longitude*1 ]
+         myMap = new ymaps.Map ( nodeId, {
             center: point,
             zoom: 16
         })
         myMap.controls.add('zoomControl')
-        
+
         var myPlacemark = new ymaps.Placemark( point, {}, markerPreset)
-        
         myMap.geoObjects.add(myPlacemark)
+        
+        myMap.zoomRange.get( point ).then( function (range) {
+            myMap.setZoom( range[1] )
+        })
     }
 
     self.google = function() {

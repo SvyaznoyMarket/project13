@@ -21,11 +21,10 @@ use Model\Product\Filter\Entity as FilterEntity;
 
 <dd style="display: <?= $isOpened ? 'block' : 'none' ?>;">
     <ul class="checkbox_list">
-        <?  ?>
         <? foreach (array('нет', 'да') as $id => $name) { $id = (int)$id ?>
         <li>
+            <input name="<?= $formName ?>[<?= $filter->getId()?>][]" type="checkbox" value="<?= $id?>" <? if (in_array($id, $values)) echo 'checked' ?> id="<?= $formName ?>_<?= $filter->getId()?>_<?= $id?>" class="hiddenCheckbox"/>
             <label for="<?= $formName ?>_<?= $filter->getId()?>_<?= $id?>" class="prettyCheckbox checkbox list">
-                <input name="<?= $formName ?>[<?= $filter->getId()?>][]" type="checkbox" value="<?= $id?>" <? if (in_array($id, $values)) echo 'checked' ?> id="<?= $formName ?>_<?= $filter->getId()?>_<?= $id?>" class="hiddenCheckbox"/>
                 <span class="holderWrap" style="width: 13px; height: 13px;">
                     <span class="holder" style="width: 13px; "></span>
                 </span>

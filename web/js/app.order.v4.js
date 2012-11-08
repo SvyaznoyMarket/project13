@@ -306,7 +306,7 @@ $(document).ready(function() {
 	})
 
 	PubSub.subscribe( 'ShopSelected', function( m, data ) {
-		$('.mMapPopup').trigger('close')
+		$('#orderMapPopup').trigger('close')
 		$('#order-form').show()
 		$('#order-submit').removeClass('disable')
 	})

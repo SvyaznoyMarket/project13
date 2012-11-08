@@ -407,6 +407,8 @@ $(document).ready(function() {
 		self.shortcut  = Model.jsshortcut
 		self.region    = Model.jsregion
 		self.today = ko.observable(true)
+		self.todayLabel = ko.observable('Сегодня')
+		self.tomorrowLabel = ko.observable('Завтра')
 		
 		self.priceTxt = ko.computed(function() {
 			return printPrice( self.price )
@@ -437,37 +439,44 @@ levup:			for(var i=0, l=numbers.length; i<l; i++)
 		}
 		//find today index
 		var tind = -1
-		for(var i=0, l=Deliveries['self'].dates.length; i<l; i++)
-			if( Deliveries['self'].dates[i].value === currentDate ) {
-				tind = i
-				break
-			} else {
-				if( parseISO8601( currentDate ) == parseISO8601( Deliveries['self'].dates[i].value ) ) {
-					tind = i
-					break
-				}
-			}
+		// only today-tomorrow printing:
+		// for(var i=0, l=Deliveries['self'].dates.length; i<l; i++)
+		// 	if( Deliveries['self'].dates[i].value === currentDate ) {
+		// 		tind = i
+		// 		break
+		// 	} else {
+		// 		if( parseISO8601( currentDate ) == parseISO8601( Deliveries['self'].dates[i].value ) ) {
+		// 			tind = i
+		// 			break
+		// 		}
+		// 	}
 			
-		if( tind < 0 ) {
-			self.tomorrowShops = parseDateShop( Deliveries['self'].dates[ tind + 1 ].shopIds, 'tmr' )
-		} else {
-			self.todayShops = parseDateShop( Deliveries['self'].dates[ tind ].shopIds, 'td' )
-			if( Deliveries['self'].dates.length > tind + 1 )
-				self.tomorrowShops = parseDateShop( Deliveries['self'].dates[ tind + 1 ].shopIds, 'tmr' )			
+		// if( tind < 0 ) {
+		// 	self.tomorrowShops = parseDateShop( Deliveries['self'].dates[ tind + 1 ].shopIds, 'tmr' )
+		// } else {
+		// 	self.todayShops = parseDateShop( Deliveries['self'].dates[ tind ].shopIds, 'td' )
+		// 	if( Deliveries['self'].dates.length > tind + 1 )
+		// 		self.tomorrowShops = parseDateShop( Deliveries['self'].dates[ tind + 1 ].shopIds, 'tmr' )			
+		// }
+		self.todayShops = parseDateShop( Deliveries['self'].dates[ 0 ].shopIds, 'td' )
+		self.todayLabel( Deliveries['self'].dates[ 0 ].name.match(/\d{2}\.\d{2}\.\d{4}/)[0] )
+		if( Deliveries['self'].dates.length > 1 ) {
+			self.tomorrowShops = parseDateShop( Deliveries['self'].dates[ 1 ].shopIds, 'tmr' )
+			self.tomorrowLabel( Deliveries['self'].dates[ 1 ].name.match(/\d{2}\.\d{2}\.\d{4}/)[0] )
 		}
-
 		self.pickedShop = ko.observable( self.todayShops[0] )
 		self.selectedS = ko.observable( {} )
 		var ending = 'ах'
 		if( self.todayShops.length % 10 === 1 && self.todayShops.length !== 11 )
 			ending = 'е'
-		self.todayH2 = 'Можно забрать <span class="mLft">сегодня</span> в '+ self.todayShops.length + ' магазин'+ ending +':'
+		self.todayH2 = 'Можно забрать <span class="mLft">'+ Deliveries['self'].dates[ 0 ].name +'</span> в '+ self.todayShops.length + ' магазин'+ ending +':'
 		if( self.tomorrowShops.length % 10 === 1 && self.tomorrowShops.length !== 11 )
 			ending = 'е'
 		else
 			ending = 'ах'			
 		self.tomorrowH2 = ( self.todayShops.length > 0 ) ? 'или' : 'Можно забрать '
-		self.tomorrowH2 += ' <span class="mRt">завтра</span> в '+ self.tomorrowShops.length + ' магазин'+ ending +':'
+		if( Deliveries['self'].dates.length > 1 )
+			self.tomorrowH2 += ' <span class="mRt">'+ Deliveries['self'].dates[ 1 ].name +'</span> в '+ self.tomorrowShops.length + ' магазин'+ ending +':'
 		
 		self.toggleView = function( flag ) {		
 			self.showMap( flag )
