@@ -7,10 +7,12 @@
  * @var $itemsInSlider  int
  * @var $totalProducts  int
  * @var $url            string
+ * @var $gaEvent        string
  */
 ?>
 
 <?php $totalPages = (int)ceil($totalProducts / $itemsInSlider) ?>
+<?php $gaEvent = isset($gaEvent) ? $gaEvent : null ?>
 
 <div class="carouseltitle carbig">
     <div class="rubrictitle"><h3><?php echo $title ?></h3></div>
@@ -29,7 +31,7 @@
 
 <div class="bigcarousel">
     <?php foreach ($productList as $i => $item): ?>
-        <?php echo $page->render('product/show/_extra_compact', array('product' => $item, 'isHidden' => $i >= $itemsInSlider)) ?>
+        <?php echo $page->render('product/show/_extra_compact', array('product' => $item, 'isHidden' => $i >= $itemsInSlider, 'gaEvent' => $gaEvent)) ?>
     <?php endforeach ?>
 </div>
 
