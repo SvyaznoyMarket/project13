@@ -44,7 +44,7 @@ $json = array(
         </div>
         <?php endif ?>
         <?php if($service->getIsDelivery()): ?>
-        <a class="link1" href="<?php echo $this->url('cart.addService', array('serviceId' => $service->getId(), 'quantity' => 1)); ?>">Купить услугу</a>
+        <a class="link1 gaEvent" href="<?php echo $this->url('cart.addService', array('serviceId' => $service->getId(), 'quantity' => 1)); ?>" data-event="BuyF1" data-title="Заказ услуги F1">Купить услугу</a>
         <?php elseif($service->getIsInShop()): ?>
         <b>Доступна в магазине</b>
         <p class="font14">Специалисты Контакт-сENTER с радостью проконсультируют по данной услуге и подскажут ближайший магазин Enter</p>
@@ -108,7 +108,7 @@ $json = array(
 
             <?php if ($alike->getIsInShop()) : ?>
             <form action="<?php echo $this->url('cart.addService', array('serviceId' => $alike->getId(), 'quantity' => 1)) ?>"/>
-            <input data-value='<?php echo json_encode($json) ?>' type="submit" class="button yellowbutton" value="Купить услугу"/>
+            <input data-value='<?php echo json_encode($json) ?>' data-event="BuyF1" data-title="Заказ услуги F1" type="submit"  class="button yellowbutton gaEvent" value="Купить услугу"/>
             </form>
             <?php endif ?>
         </div>

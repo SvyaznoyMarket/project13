@@ -45,8 +45,10 @@ $cartServicesById = $cartProduct ? $cartProduct->getService() : array();
                            data-f1price="<?= $page->helper->formatPrice($service->getPrice()) ?>"
                            data-fid="<?= $service->getId() ?>"
                            data-url="<?= $page->url('cart.service.add', array('serviceId' => $service->getId(), 'productId' => $product->getId(), 'quantity' => 1)) ?>"
+                           data-event="BuyF1"
+                           data-title="Заказ услуги F1"
                            ref="<?= addslashes($service->getToken()) ?>"
-                           type="button" class="button yellowbutton" value="Купить услугу" />
+                           type="button" class="button yellowbutton gaEvent" value="Купить услугу" />
                     <? } ?>
                 </td>
             </tr>

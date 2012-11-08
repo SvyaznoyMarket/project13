@@ -32,11 +32,13 @@ $(document).ready(function(){
 	$('a.srcoll_link').bind('click', 'Ссылка Посмотреть все', categoriesSpy )
     /* GA click counter */
     function gaClickCounter() {
-        if( typeof(_gaq) !== 'undefined' )
-            _gaq.push(['_trackEvent', $(this).data('event'), 'Переход по ссылке', ,,, false])
+        if( typeof(_gaq) !== 'undefined' ) {
+            var title =  ($(this).data('event') !== 'undefined') ?  $(this).data('event') : 'без названия';
+            _gaq.push(['_trackEvent', $(this).data('event'), title, ,,, false])
+        }
         return true
     }
-    $('a.gaEvent').bind('click', gaClickCounter )
+    $('.gaEvent').bind('click', gaClickCounter )
 
     /* admitad */
 	if( document.location.search.match(/admitad_uid/) ) {

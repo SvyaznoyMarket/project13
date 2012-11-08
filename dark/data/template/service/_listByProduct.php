@@ -39,7 +39,7 @@ $cartServicesById = $cartProduct ? $cartProduct->getService() : array();
         <? } else { ?>
         <h3>Установка<br/>и подключение</h3>
         <? } ?>
-        <a class="link1" href="">Выбрать услуги</a>
+        <a class="link1 gaEvent" data-event="F1" data-title="Переход по ссылке" href="">Выбрать услуги</a>
     </div>
 
 <? endif ?>
