@@ -279,7 +279,7 @@
 
 
 <?php if ($showAccessoryUpper && count($product->getAccessoryId()) && \App::config()->product['showAccessories']): ?>
-    <?php echo $page->render('product/_slider', array('product' => $product, 'productList' => array_values($accessories), 'totalProducts' => count($product->getAccessoryId()), 'itemsInSlider' => \App::config()->product['itemsInSlider'], 'page' => 1, 'title' => 'Аксессуары', 'url' => $page->url('product.accessories', array('productToken' => $product->getToken())))) ?>
+    <?php echo $page->render('product/_slider', array('product' => $product, 'productList' => array_values($accessories), 'totalProducts' => count($product->getAccessoryId()), 'itemsInSlider' => \App::config()->product['itemsInSlider'], 'page' => 1, 'title' => 'Аксессуары', 'url' => $page->url('product.accessories', array('productToken' => $product->getToken())), 'gaEvent' => 'Accessorize')) ?>
 <?php endif ?>
 
 <?php if ($showRelatedUpper && count($product->getRelatedId()) && \App::config()->product['showRelated']): ?>
@@ -448,7 +448,7 @@
 <?php endif ?>
 
 <?php if (!$showAccessoryUpper && count($product->getAccessoryId()) && \App::config()->product['showAccessories']): ?>
-    <?php echo $page->render('product/_slider', array('product' => $product, 'productList' => array_values($accessories), 'totalProducts' => count($product->getAccessoryId()), 'itemsInSlider' => \App::config()->product['itemsInSlider'], 'page' => 1, 'title' => 'Аксессуары', 'url' => $page->url('product.accessories', array('productToken' => $product->getToken())))) ?>
+    <?php echo $page->render('product/_slider', array('product' => $product, 'productList' => array_values($accessories), 'totalProducts' => count($product->getAccessoryId()), 'itemsInSlider' => \App::config()->product['itemsInSlider'], 'page' => 1, 'title' => 'Аксессуары', 'url' => $page->url('product.accessories', array('productToken' => $product->getToken())), 'gaEvent' => 'Accessorize')) ?>
 <?php endif ?>
 
 <?php if (!$showRelatedUpper && count($product->getRelatedId()) && \App::config()->product['showRelated']): ?>
