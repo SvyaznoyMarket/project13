@@ -60,6 +60,14 @@ class Entity {
     }
 
     /**
+     * @param int $size
+     * @return null|string
+     */
+    public function getImageUrl($size = 1) {
+        return $this->image ? \App::config()->service['url'][$size] . $this->image : null;
+    }
+
+    /**
      * @param boolean $isDelivered
      */
     public function setIsDelivered($isDelivered) {

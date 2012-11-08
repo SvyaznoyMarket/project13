@@ -67,11 +67,13 @@ $json = array (
 					<div class="bInShop__eSelectorsWrap">
 						Заберу:
 						<br/>
-						<div class="bSelectors">
-							<a href="" data-bind="click: function() { toggleTerm(true) },
-												  css : { mChecked: today(), mGreen: today()  } ">Сегодня</a>
-							<a href="" data-bind="click: function() { toggleTerm(false) },
-												  css : { mChecked: !today(), mBlue: !today()  } ">Завтра</a>
+						<div class="bSelectors mDates">
+							<a href="" data-bind="text: todayLabel(),
+												  click: function() { toggleTerm(true) },
+												  css : { mChecked: today(), mGreen: today() } ">Сегодня</a>
+							<a href="" data-bind="text: tomorrowLabel(),
+												  click: function() { toggleTerm(false) },
+												  css : { mChecked: !today(), mBlue: !today() } ">Завтра</a>
 						</div>
 					</div>
 					<!-- /ko -->

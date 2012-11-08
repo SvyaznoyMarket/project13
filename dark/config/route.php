@@ -181,6 +181,11 @@ return array(
         'pattern' => '/cart/add/{productId}/_quantity/{quantity}', // TODO: сделать поприличнее - '/cart/add-product/{productId}/{quantity}'
         'action'  => array('Cart\ProductAction', 'add'),
     ),
+    // удаление товара из корзины
+    'cart.product.delete' => array(
+        'pattern' => '/cart/delete/{productId}/_service/', // TODO: сделать поприличнее - '/cart/delete-product/{productId}'
+        'action'  => array('Cart\ProductAction', 'delete'),
+    ),
     'old.cart.product.add' => array(
         'pattern' => '/cart/add/{productId}/_quantity/', // TODO: Убить, когда полностью переедем на dark, переписать js с учетом наличия кол-ва
         'action'  => array('Cart\ProductAction', 'add'),
@@ -209,12 +214,16 @@ return array(
 
     // заказ
     'order.1click' => array(
-        'pattern' => '/orders/1click'
+        'pattern' => '/orders/1click',
+    ),
+    'order.new' => array(
+        'pattern' => '/orders/new',
+        'action'  => array('Order\Action', 'create'),
     ),
 
     // услуги
     'service' => array(
-        'pattern' => '/f1'
+        'pattern' => '/f1',
     ),
     'service.show' => array(
         'pattern' => '/f1/show/{serviceToken}',

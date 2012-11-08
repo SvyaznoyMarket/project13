@@ -12,7 +12,7 @@
  */
 ?>
 
-<?php
+<?
   $json = json_encode(array (
     'jsref'        => $product->getToken(),
     'jstitle'      => $page->escape($page->escape($product->getName())),
@@ -26,7 +26,7 @@
     'jsstock'      => 10,
   ));
 ?>
-<?php
+<?
   $photoList = $product->getPhoto();
   $photo3dList = $product->getPhoto3d();
   $p3d_res_small = array();
@@ -55,31 +55,31 @@
     }
 ?>
 <script type="text/javascript">
-  product_3d_small = <?php echo json_encode($p3d_res_small) ?>;
-  product_3d_big = <?php echo json_encode($p3d_res_big) ?>;
+  product_3d_small = <?= json_encode($p3d_res_small) ?>;
+  product_3d_big = <?= json_encode($p3d_res_big) ?>;
 </script>
 
 <div class="goodsphoto">
-  <a href="<?php echo $product->getImageUrl(4) ?>" class="viewme" ref="image" onclick="return false">
-    <?php if ($product->getLabel()): ?>
-    <img class="bLabels" src="<?php echo $product->getLabel()->getImageUrl(1) ?>" alt="<?php echo $product->getLabel()->getName() ?>" />
-    <?php endif ?>
-    <img class="mainImg" src="<?php echo $product->getImageUrl(3) ?>" alt="" width="500" height="500" title="" />
+  <a href="<?= $product->getImageUrl(4) ?>" class="viewme" ref="image" onclick="return false">
+    <? if ($product->getLabel()): ?>
+    <img class="bLabels" src="<?= $product->getLabel()->getImageUrl(1) ?>" alt="<?= $product->getLabel()->getName() ?>" />
+    <? endif ?>
+    <img class="mainImg" src="<?= $product->getImageUrl(3) ?>" alt="" width="500" height="500" title="" />
   </a>
 </div>
 <div style="display:none;" id="stock">
   <!-- list of images 500*500 for preview -->
-  <?php foreach ($photoList as $photo): ?>
-  <img src="<?php echo $photo->getUrl(3) ?>" alt="" data-url="<?php echo $photo->getUrl(4) ?>" ref="photo<?php echo $photo->getId() ?>" width="500" height="500" title="" />
-  <?php endforeach ?>
+  <? foreach ($photoList as $photo): ?>
+  <img src="<?= $photo->getUrl(3) ?>" alt="" data-url="<?= $photo->getUrl(4) ?>" ref="photo<?= $photo->getId() ?>" width="500" height="500" title="" />
+  <? endforeach ?>
 </div>
 
 <!-- Goods info -->
 <div class="goodsinfo bGood">
   <div class="bGood__eArticle">
     <div class="fr">
-      <span id="rating" data-url="<?php echo $page->url('product.rating.create_total', array('rating' => 'score', 'productId' => $product->getId() )) ?>">
-        <?php
+      <span id="rating" data-url="<?= $page->url('product.rating.create_total', array('rating' => 'score', 'productId' => $product->getId() )) ?>">
+        <?
         echo str_repeat('<img src="/css/skin/img/star_a.png" alt="">', floor($product->getRating()));
         if ($product->getRating() - floor($product->getRating()) > 0 and $product->getRating() - floor($product->getRating()) < 0.25) {
             echo '<img src="/css/skin/img/star_p.png" alt="">';
@@ -91,75 +91,75 @@
         echo str_repeat('<img src="/css/skin/img/star_p.png" alt="">', 5 - ceil($product->getRating()));
         ?>
       </span>
-      <strong class="ml5 hf"><?php echo round($product->getRating(), 1) ?></strong>
-      <!--a href="<?php //echo $product->getLink().'/comments' ?>" class="underline ml5">Читать отзывы</a> <span>(<?php echo $product->getCommentCount() ?>)</span-->
+      <strong class="ml5 hf"><?= round($product->getRating(), 1) ?></strong>
+      <!--a href="<? //echo $product->getLink().'/comments' ?>" class="underline ml5">Читать отзывы</a> <span>(<?= $product->getCommentCount() ?>)</span-->
     </div>
-    <span>Артикул #<?php echo $product->getArticle() ?></span>
+    <span>Артикул #<?= $product->getArticle() ?></span>
   </div>
 
-  <div class="font14 pb15"><?php echo $product->getTagline() ?></div>
+  <div class="font14 pb15"><?= $product->getTagline() ?></div>
   <div class="clear"></div>
 
-  <?php if($product->getPriceOld() && !$user->getRegion()->getHasTransportCompany()): ?>
-  <div style="text-decoration: line-through; font: normal 18px verdana; letter-spacing: -0.05em; color: #6a6a6a;"><span class="price"><?php echo $page->helper->formatPrice($product->getPriceOld()) ?></span> <span class="rubl">p</span></div>
-  <?php elseif($showAveragePrice): ?>
+  <? if($product->getPriceOld() && !$user->getRegion()->getHasTransportCompany()): ?>
+  <div style="text-decoration: line-through; font: normal 18px verdana; letter-spacing: -0.05em; color: #6a6a6a;"><span class="price"><?= $page->helper->formatPrice($product->getPriceOld()) ?></span> <span class="rubl">p</span></div>
+  <? elseif($showAveragePrice): ?>
   <div class="mOurGray">
-    Средняя цена в магазинах города*<br><div class='mOurGray mIco'><span class="price"><?php echo $page->helper->formatPrice($product->getPriceAverage()) ?></span> <span class="rubl">p</span> &nbsp;</div>
+    Средняя цена в магазинах города*<br><div class='mOurGray mIco'><span class="price"><?= $page->helper->formatPrice($product->getPriceAverage()) ?></span> <span class="rubl">p</span> &nbsp;</div>
   </div>
   <div class="clear"></div>
-  <div class="clear mOur pt10 <?php if ($product->hasSaleLabel()) echo 'red'; ?>">Наша цена</div>
-  <?php endif ?>
+  <div class="clear mOur pt10 <? if ($product->hasSaleLabel()) echo 'red'; ?>">Наша цена</div>
+  <? endif ?>
 
   <div class="fl pb15">
-    <div class="pb10 <?php if ($product->hasSaleLabel()) echo 'red'; ?>"><strong class="font34"><span class="price"><?php echo $page->helper->formatPrice($product->getPrice()) ?></span> <span class="rubl">p</span></strong></div>
-    <?php if ($product->getIsBuyable()): ?>
+    <div class="pb10 <? if ($product->hasSaleLabel()) echo 'red'; ?>"><strong class="font34"><span class="price"><?= $page->helper->formatPrice($product->getPrice()) ?></span> <span class="rubl">p</span></strong></div>
+    <? if ($product->getIsBuyable()): ?>
     <div class="pb5"><strong class="orange">Есть в наличии</strong></div>
-    <?php endif ?>
+    <? endif ?>
   </div>
 
 
   <div class="fr ar pb15">
-    <?php if (!$product->getIsBuyable() && $product->getState()->getIsShop()): ?>
+    <? if (!$product->getIsBuyable() && $product->getState()->getIsShop()): ?>
       <div class="vitrin">
           <div class="line pb15"></div>
           <p class="font18 orange">Товар очень популярный и остался только на витрине. Успей купить!</p>
-          <span><?php echo (count($showroomShops) == 1) ? 'Адрес магазина' : 'Адреса магазинов' ?>:</span>
+          <span><?= (count($showroomShops) == 1) ? 'Адрес магазина' : 'Адреса магазинов' ?>:</span>
           <ul>
-              <?php foreach ($showroomShops as $shop): ?>
-              <li><?php echo $shop->getAddress() //ссылки пока не будет, появится позже ?></li>
-              <?php endforeach ?>
+              <? foreach ($showroomShops as $shop): ?>
+              <li><?= $shop->getAddress() //ссылки пока не будет, появится позже ?></li>
+              <? endforeach ?>
           </ul>
       </div>
-    <?php else: ?>
-    <div class="goodsbarbig mSmallBtns" ref="<?php echo $product->getToken() ?>" data-value='<?php echo $json ?>'>
+    <? else: ?>
+    <div class="goodsbarbig mSmallBtns" ref="<?= $product->getToken() ?>" data-value='<?= $json ?>'>
 
       <div class='bCountSet'>
-        <?php if (!$user->getCart()->hasProduct($product->getId())): ?>
+        <? if (!$user->getCart()->hasProduct($product->getId())): ?>
         <a class='bCountSet__eP' href>+</a><a class='bCountSet__eM' href>-</a>
-        <?php else: ?>
+        <? else: ?>
         <a class='bCountSet__eP disabled' href>&nbsp;</a><a class='bCountSet__eM disabled' href>&nbsp;</a>
-        <?php endif ?>
-        <span><?php echo $user->getCart()->hasProduct($product->getId()) ? $user->getCart()->getQuantityByProduct($product->getId()) : 1 ?> шт.</span>
+        <? endif ?>
+        <span><?= $user->getCart()->hasProduct($product->getId()) ? $user->getCart()->getQuantityByProduct($product->getId()) : 1 ?> шт.</span>
       </div>
-      <?php echo $page->render('cart/_button', array('product' => $product, 'disabled' => !$product->getIsBuyable())) ?>
+      <?= $page->render('cart/_button', array('product' => $product, 'disabled' => !$product->getIsBuyable())) ?>
     </div>
-    <?php if ($product->getIsBuyable()): ?>
+    <? if ($product->getIsBuyable()): ?>
     <div class="pb5"><strong>
       <a href=""
-         data-model='<?php echo $json ?>'
-         link-output='<?php echo $page->url('order.1click', array('product' => $product->getToken())) ?>'
-         link-input='<?php echo $page->url('product.delivery_1click') ?>'
+         data-model='<?= $json ?>'
+         link-output='<?= $page->url('order.1click', array('product' => $product->getToken())) ?>'
+         link-input='<?= $page->url('product.delivery_1click') ?>'
          class="red underline order1click-link-new">Купить быстро в 1 клик</a>
     </strong></div>
-    <?php endif ?>
-    <?php endif ?>
+    <? endif ?>
+    <? endif ?>
   </div>
   <div class="line pb15"></div>
 
 
-  <?php if ($product->getIsBuyable() || $product->getState()->getIsShop()): ?>
+  <? if ($product->getIsBuyable() || $product->getState()->getIsShop()): ?>
 
-  <?php if ($dataForCredit['creditIsAllowed'] && !$user->getRegion()->getHasTransportCompany()) : ?>
+  <? if ($dataForCredit['creditIsAllowed'] && !$user->getRegion()->getHasTransportCompany()) : ?>
   <div class="creditbox">
     <div class="creditboxinner">
       от <span class="font24"><span class="price"></span> <span class="rubl">p</span></span> в кредит
@@ -167,19 +167,19 @@
         <input id="creditinput" type="checkbox" name="creditinput" autocomplete="off"/></label></div>
     </div>
   </div>
-  <?php endif; ?>
+  <? endif; ?>
 
-  <?php if ($dataForCredit['creditIsAllowed']) : ?>
-    <input data-model="<?php echo $page->escape($dataForCredit['creditData']) ?>" id="dc_buy_on_credit_<?php echo $product->getArticle(); ?>" name="dc_buy_on_credit" type="hidden" />
-  <?php endif; ?>
+  <? if ($dataForCredit['creditIsAllowed']) : ?>
+    <input data-model="<?= $page->escape($dataForCredit['creditData']) ?>" id="dc_buy_on_credit_<?= $product->getArticle(); ?>" name="dc_buy_on_credit" type="hidden" />
+  <? endif; ?>
 
-  <?php elseif ($user->getRegion()->getHasTransportCompany()): ?>
+  <? elseif ($user->getRegion()->getHasTransportCompany()): ?>
     <? if (\App::config()->product['globalListEnabled'] && (bool)$product->getNearestCity()): ?>
         <?= $page->render('product/_nearestCity', array('product' => $product)) ?>
     <? else: ?>
         <p>Этот товар мы доставляем только в регионах нашего присутствия</p>
     <? endif ?>
-  <?php endif ?>
+  <? endif ?>
 
   <div class="bDeliver2 delivery-info" id="product-id-<?= $product->getId() ?>" data-shoplink="<?= $page->url('product.stock', array('productPath' => $product->getPath())) ?>" data-calclink="<?= $page->url('product.delivery') ?>">
     <h4>Как получить заказ?</h4>
@@ -191,13 +191,13 @@
   </div>
 
   <div style="margin-bottom: 20px;">
-    <div class="adfoxWrapper" id="<?php echo $adfox_id_by_label ?>"></div>
+    <div class="adfoxWrapper" id="<?= $adfox_id_by_label ?>"></div>
   </div>
 
-<?php if ($product->getIsBuyable() || $product->getState()->getIsShop()): ?>
-    <?php echo $page->render('service/_listByProduct', array('product' => $product)) ?>
-    <?php echo $page->render('warranty/_listByProduct', array('product' => $product)) ?>
-<?php endif ?>
+<? if ($product->getIsBuyable() || $product->getState()->getIsShop()): ?>
+    <?= $page->render('service/_listByProduct', array('product' => $product)) ?>
+    <?= $page->render('warranty/_listByProduct', array('product' => $product)) ?>
+<? endif ?>
 
 </div>
 <!-- /Goods info -->
@@ -205,114 +205,114 @@
 <div class="clear"></div>
 
 <!-- Photo video -->
-<?php if (count($photo3dList) > 0 || count($photoList) > 0): ?>
+<? if (count($photo3dList) > 0 || count($photoList) > 0): ?>
 <div class="fl width500">
   <h2>Фото товара:</h2>
-  <div class="font11 gray pb10">Всего фотографий <?php echo count($photoList) ?></div>
+  <div class="font11 gray pb10">Всего фотографий <?= count($photoList) ?></div>
   <ul class="previewlist">
-    <?php foreach ($photoList as $photo): ?>
-    <li class="viewstock" ref="photo<?php echo $photo->getId() ?>">
-    	<a href="<?php echo $photo->getUrl(4) ?>" class="viewme" ref="image">
-    		<img src="<?php echo $photo->getUrl(2) ?>" alt="" width="48" height="48" />
+    <? foreach ($photoList as $photo): ?>
+    <li class="viewstock" ref="photo<?= $photo->getId() ?>">
+    	<a href="<?= $photo->getUrl(4) ?>" class="viewme" ref="image">
+    		<img src="<?= $photo->getUrl(2) ?>" alt="" width="48" height="48" />
     	</a>
     </li>
-    <?php endforeach ?>
-    <?php if (count($photo3dList) > 0): ?>
+    <? endforeach ?>
+    <? if (count($photo3dList) > 0): ?>
     <li><a href="#" class="axonometric viewme" ref="360" title="Объемное изображение">Объемное изображение</a></li>
-    <?php endif ?>
+    <? endif ?>
   </ul>
 </div>
-<?php endif ?>
+<? endif ?>
 <!-- /Photo video -->
 
-<?php if((bool)$product->getModel() && (bool)$product->getModel()->getProperty()): //модели ?>
+<? if((bool)$product->getModel() && (bool)$product->getModel()->getProperty()): //модели ?>
 <!-- Variation -->
 <div class="fr width400">
     <h2>Этот товар с другими параметрами:</h2>
-    <?php foreach ($product->getModel()->getProperty() as $property): ?>
-        <?php if($property->getIsImage()): ?>
+    <? foreach ($product->getModel()->getProperty() as $property): ?>
+        <? if($property->getIsImage()): ?>
         <div class="bDropWrap">
-            <h5><?php echo $property->getName() ?>:</h5>
+            <h5><?= $property->getName() ?>:</h5>
 
             <ul class="previewlist">
-                <?php foreach ($property->getOption() as $option): ?>
+                <? foreach ($property->getOption() as $option): ?>
                 <li>
-                    <a href="<?php echo $option->getProduct()->getLink() ?>" <?php echo ($product->getId() == $option->getProduct()->getId()) ? ' class="current"' : '' ?> title="<?php echo $option->getHumanizedName() ?>">
-                    	<img src="<?php echo $option->getProduct()->getImageUrl(1) ?>" alt="<?php echo $option->getHumanizedName() ?>" width="48" height="48"/>
+                    <a href="<?= $option->getProduct()->getLink() ?>" <?= ($product->getId() == $option->getProduct()->getId()) ? ' class="current"' : '' ?> title="<?= $option->getHumanizedName() ?>">
+                    	<img src="<?= $option->getProduct()->getImageUrl(1) ?>" alt="<?= $option->getHumanizedName() ?>" width="48" height="48"/>
                     </a>
                 </li>
-                <?php endforeach ?>
+                <? endforeach ?>
             </ul>
         </div>
 
         <div class="clear"></div>
-        <?php else: ?>
-            <?php
+        <? else: ?>
+            <?
                 $productAttribute = $product->getPropertyById($property->getId());
                 if (!$productAttribute) break;
             ?>
             <div class="bDropWrap">
-                <h5><?php echo $property->getName() ?>:</h5>
+                <h5><?= $property->getName() ?>:</h5>
 
                 <div class="bDropMenu">
-                    <span class="bold"><a href="<?php echo $product->getLink() ?>"><?php echo $productAttribute->getStringValue() ?></a></span>
+                    <span class="bold"><a href="<?= $product->getLink() ?>"><?= $productAttribute->getStringValue() ?></a></span>
                     <div>
-                        <span class="bold"><a href="<?php echo $product->getLink() ?>"><?php echo $productAttribute->getStringValue() ?></a></span>
+                        <span class="bold"><a href="<?= $product->getLink() ?>"><?= $productAttribute->getStringValue() ?></a></span>
 
-                <?php foreach ($property->getOption() as $option):?>
-                    <?php if ($option->getValue() == $productAttribute->getValue())continue; ?>
+                <? foreach ($property->getOption() as $option):?>
+                    <? if ($option->getValue() == $productAttribute->getValue())continue; ?>
                     <span>
-                        <a href="<?php echo $option->getProduct()->getLink() ?>">
-                            <?php echo $option->getHumanizedName() ?>
+                        <a href="<?= $option->getProduct()->getLink() ?>">
+                            <?= $option->getHumanizedName() ?>
                         </a>
                     </span>
-                <?php endforeach ?>
+                <? endforeach ?>
                     </div>
 
                 </div>
             </div>
-            <?php endif ?>
-    <?php endforeach; ?>
+        <? endif ?>
+    <? endforeach; ?>
 </div>
 <!-- /Variation -->
-<?php endif ?>
+<? endif ?>
 
 
-<?php if ($showAccessoryUpper && count($product->getAccessoryId()) && \App::config()->product['showAccessories']): ?>
-    <?php echo $page->render('product/_slider', array('product' => $product, 'productList' => array_values($accessories), 'totalProducts' => count($product->getAccessoryId()), 'itemsInSlider' => \App::config()->product['itemsInSlider'], 'page' => 1, 'title' => 'Аксессуары', 'url' => $page->url('product.accessories', array('productToken' => $product->getToken())))) ?>
-<?php endif ?>
+<? if ($showAccessoryUpper && count($product->getAccessoryId()) && \App::config()->product['showAccessories']): ?>
+    <?= $page->render('product/_slider', array('product' => $product, 'productList' => array_values($accessories), 'totalProducts' => count($product->getAccessoryId()), 'itemsInSlider' => \App::config()->product['itemsInSlider'], 'page' => 1, 'title' => 'Аксессуары', 'url' => $page->url('product.accessories', array('productToken' => $product->getToken())))) ?>
+<? endif ?>
 
-<?php if ($showRelatedUpper && count($product->getRelatedId()) && \App::config()->product['showRelated']): ?>
-    <?php echo $page->render('product/_slider', array('product' => $product, 'productList' => array_values($related), 'totalProducts' => count($product->getRelatedId()), 'itemsInSlider' => \App::config()->product['itemsInSlider'], 'page' => 1, 'title' => 'С этим товаром также покупают', 'url' => $page->url('product.related', array('productToken' => $product->getToken())))) ?>
-<?php endif ?>
+<? if ($showRelatedUpper && count($product->getRelatedId()) && \App::config()->product['showRelated']): ?>
+    <?= $page->render('product/_slider', array('product' => $product, 'productList' => array_values($related), 'totalProducts' => count($product->getRelatedId()), 'itemsInSlider' => \App::config()->product['itemsInSlider'], 'page' => 1, 'title' => 'С этим товаром также покупают', 'url' => $page->url('product.related', array('productToken' => $product->getToken())))) ?>
+<? endif ?>
 
-<?php if (false && \App::config()->smartEngine['pull']): ?>
+<? if (false && \App::config()->smartEngine['pull']): ?>
 <!--div class="clear"></div>
-<div id="product_also_bought-container" data-url="<?php //echo url_for('smartengine_alsoBought', array('product' => $product->getId())) ?>" style="margin-top: 20px;"></div-->
-<?php endif ?>
+<div id="product_also_bought-container" data-url="<? //echo url_for('smartengine_alsoBought', array('product' => $product->getId())) ?>" style="margin-top: 20px;"></div-->
+<? endif ?>
 
-<?php if (\App::config()->smartEngine['pull']): ?>
+<? if (\App::config()->smartEngine['pull']): ?>
 <div class="clear"></div>
-<div id="product_user-also_viewed-container" data-url="<?php echo $page->url('smartengine.pull.product_alsoViewed', array('productId' => $product->getId())) ?>" style="margin-top: 20px;"></div>
-<?php endif ?>
+<div id="product_user-also_viewed-container" data-url="<?= $page->url('smartengine.pull.product_alsoViewed', array('productId' => $product->getId())) ?>" style="margin-top: 20px;"></div>
+<? endif ?>
 
-<?php if (false && \App::config()->smartEngine['pull']): ?>
+<? if (false && \App::config()->smartEngine['pull']): ?>
 <!--div class="clear"></div>
-<div id="product_user-recommendation-container" data-url="<?php //echo url_for('smartengine_userRecommendation', array('product' => $product->getId())) ?>" style="margin-top: 20px;"><h3>Recommendations for user...</h3></div-->
-<?php endif ?>
+<div id="product_user-recommendation-container" data-url="<? //echo url_for('smartengine_userRecommendation', array('product' => $product->getId())) ?>" style="margin-top: 20px;"><h3>Recommendations for user...</h3></div-->
+<? endif ?>
 
-<?php $description = $product->getDescription(); ?>
-<?php if (!empty($description)): ?>
+<? $description = $product->getDescription(); ?>
+<? if (!empty($description)): ?>
 <!-- Information -->
 <div class="clear"></div>
-<h2 class="bold"><?php echo $product->getName() ?> - Информация о товаре</h2>
+<h2 class="bold"><?= $product->getName() ?> - Информация о товаре</h2>
 <div class="line pb15"></div>
 <ul class="pb10">
-  <?php echo $description ?>
+  <?= $description ?>
 </ul>
 <!-- /Information  -->
 
-<?php endif ?>
+<? endif ?>
 <div class="clear"></div>
 
 <!-- Media -->
@@ -330,26 +330,26 @@
   <div class="leftpanel" style="margin-left:-100%">
     <div class="topblock font16">
       <div class="logobox">Enter связной</div>
-      <div class="pb5"><?php echo $product->getName() ?></div>
+      <div class="pb5"><?= $product->getName() ?></div>
       <div class="pb5">
-          <strong class="font34"><span class="price"><?php echo $page->helper->formatPrice($product->getPrice()) ?></span> <span class="rubl">p</span></strong>
+          <strong class="font34"><span class="price"><?= $page->helper->formatPrice($product->getPrice()) ?></span> <span class="rubl">p</span></strong>
       </div>
-      <div class="goodsbarbig mSmallBtns pb40" ref="<?php echo $product->getToken() ?>" data-value='<?php echo $json ?>'>
-        <?php echo $page->render('cart/_button', array('product' => $product, 'disabled' => !$product->getIsBuyable())) ?>
+      <div class="goodsbarbig mSmallBtns pb40" ref="<?= $product->getToken() ?>" data-value='<?= $json ?>'>
+        <?= $page->render('cart/_button', array('product' => $product, 'disabled' => !$product->getIsBuyable())) ?>
       </div>
 
       <h2>Фото:</h2>
       <ul class="previewlist">
-        <?php foreach ($photoList as $photo): ?>
-        <li class="viewstock" ref="photo<?php echo $photo->getId() ?>">
-        	<a href="<?php echo $photo->getUrl(4) ?>" class="viewme" ref="image" id="try-3">
-        		<img src="<?php echo $photo->getUrl(2) ?>" alt="" width="48" height="48" />
+        <? foreach ($photoList as $photo): ?>
+        <li class="viewstock" ref="photo<?= $photo->getId() ?>">
+        	<a href="<?= $photo->getUrl(4) ?>" class="viewme" ref="image" id="try-3">
+        		<img src="<?= $photo->getUrl(2) ?>" alt="" width="48" height="48" />
         	</a>
         </li>
-        <?php endforeach ?>
-        <?php if (count($photo3dList) > 0): ?>
+        <? endforeach ?>
+        <? if (count($photo3dList) > 0): ?>
         <li><a href="#" class="axonometric viewme" ref="360" title="Объемное изображение">Объемное изображение</a></li>
-        <?php endif ?>
+        <? endif ?>
       </ul>
     </div>
 
@@ -385,7 +385,7 @@
     <h2>Покупка в 1 клик!</h2>
     <div class="clear line pb20"></div>
 
-    <form id="order1click-form" action="<?php echo $page->url('order.1click', array('product' => $product->getBarcode())) ?>" method="post"></form>
+    <form id="order1click-form" action="<?= $page->url('order.1click', array('product' => $product->getBarcode())) ?>" method="post"></form>
 
   </div>
 </div>
@@ -402,96 +402,96 @@
   </div>
 </div>
 
-<?php if (2 == $product->getViewId() && count($product->getKit())): ?>
-    <h2 class="bold fl"><?php echo $product->getName() ?> включает в себя:</h2>
+<? if (2 == $product->getViewId() && count($product->getKit())): ?>
+    <h2 class="bold fl"><?= $product->getName() ?> включает в себя:</h2>
 
     <div class="line"></div>
     <div style="width: 940px; float: none; margin: 0;" class="goodslist">
-        <?php $i = 0; foreach ($product->getKit() as $part): $i++ ?>
-        <?php echo $page->render('product/show/_compact', array('product' => $kit[$part->getId()], 'kit' => $part)) ?>
-        <?php if (0 == ($i % 4)): ?><br class="clear" /><?php endif ?>
-        <?php endforeach ?>
+        <? $i = 0; foreach ($product->getKit() as $part): $i++ ?>
+        <?= $page->render('product/show/_compact', array('product' => $kit[$part->getId()], 'kit' => $part)) ?>
+        <? if (0 == ($i % 4)): ?><br class="clear" /><? endif ?>
+        <? endforeach ?>
 
     </div>
 
 <div class="clear pb25"></div>
-<?php endif ?>
+<? endif ?>
 
-<h2 class="bold"><?php echo $product->getName() ?> - Характеристики</h2>
+<h2 class="bold"><?= $product->getName() ?> - Характеристики</h2>
 <div class="line pb25"></div>
 <div class="descriptionlist">
 
-    <?php foreach ($product->getGroupedProperties() as $group): ?>
-    <?php if (!count($group['properties'])): continue; endif ;?>
-    <div class="pb15"><strong><?php echo $group['group']->getName() ?></strong></div>
-    <?php foreach ($group['properties'] as $property): ?>
+    <? foreach ($product->getGroupedProperties() as $group): ?>
+    <? if (!count($group['properties'])): continue; endif ;?>
+    <div class="pb15"><strong><?= $group['group']->getName() ?></strong></div>
+    <? foreach ($group['properties'] as $property): ?>
         <div class="point">
-            <div class="title"><h3><?php echo $property->getName() ?></h3></div>
+            <div class="title"><h3><?= $property->getName() ?></h3></div>
             <div class="description">
-                <?php echo $property->getStringValue() ?>
+                <?= $property->getStringValue() ?>
             </div>
         </div>
-        <?php endforeach ?>
-    <?php endforeach ?>
+        <? endforeach ?>
+    <? endforeach ?>
 
 </div>
 
-<?php if (count($product->getTag())): ?>
+<? if (count($product->getTag())): ?>
 <noindex>
     <div class="pb25">
         <strong>Теги:</strong>
-        <?php $i = 0; $count = count($product->getTag()); foreach ($product->getTag() as $tag): $i++ ?>
+        <? $i = 0; $count = count($product->getTag()); foreach ($product->getTag() as $tag): $i++ ?>
             <a href="<?= $page->url('tag', array('tagToken' => $tag->getToken())) ?>" class="underline" rel="nofollow"><?= $tag->getName() ?></a><? if ($i < $count) echo ', ' ?>
-        <?php endforeach ?>
+        <? endforeach ?>
     </div>
 </noindex>
-<?php endif ?>
+<? endif ?>
 
-<?php if (!$showAccessoryUpper && count($product->getAccessoryId()) && \App::config()->product['showAccessories']): ?>
-    <?php echo $page->render('product/_slider', array('product' => $product, 'productList' => array_values($accessories), 'totalProducts' => count($product->getAccessoryId()), 'itemsInSlider' => \App::config()->product['itemsInSlider'], 'page' => 1, 'title' => 'Аксессуары', 'url' => $page->url('product.accessories', array('productToken' => $product->getToken())))) ?>
-<?php endif ?>
+<? if (!$showAccessoryUpper && count($product->getAccessoryId()) && \App::config()->product['showAccessories']): ?>
+    <?= $page->render('product/_slider', array('product' => $product, 'productList' => array_values($accessories), 'totalProducts' => count($product->getAccessoryId()), 'itemsInSlider' => \App::config()->product['itemsInSlider'], 'page' => 1, 'title' => 'Аксессуары', 'url' => $page->url('product.accessories', array('productToken' => $product->getToken())))) ?>
+<? endif ?>
 
-<?php if (!$showRelatedUpper && count($product->getRelatedId()) && \App::config()->product['showRelated']): ?>
-    <?php echo $page->render('product/_slider', array('product' => $product, 'productList' => array_values($related), 'totalProducts' => count($product->getRelatedId()), 'itemsInSlider' => \App::config()->product['itemsInSlider'], 'page' => 1, 'title' => 'С этим товаром также покупают', 'url' => $page->url('product.related', array('productToken' => $product->getToken())))) ?>
-<?php endif ?>
+<? if (!$showRelatedUpper && count($product->getRelatedId()) && \App::config()->product['showRelated']): ?>
+    <?= $page->render('product/_slider', array('product' => $product, 'productList' => array_values($related), 'totalProducts' => count($product->getRelatedId()), 'itemsInSlider' => \App::config()->product['itemsInSlider'], 'page' => 1, 'title' => 'С этим товаром также покупают', 'url' => $page->url('product.related', array('productToken' => $product->getToken())))) ?>
+<? endif ?>
 
 <div class="line"></div>
 <div class="fr ar">
-    <?php if ($product->getIsBuyable() || !$product->getState()->getIsShop()): ?>
-    <div class="goodsbarbig mSmallBtns" ref="<?php echo $product->getToken() ?>" data-value='<?php echo $json ?>'>
+    <? if ($product->getIsBuyable() || !$product->getState()->getIsShop()): ?>
+    <div class="goodsbarbig mSmallBtns" ref="<?= $product->getToken() ?>" data-value='<?= $json ?>'>
 
         <div class='bCountSet'>
-            <?php if (!$user->getCart()->hasProduct($product->getId())): ?>
+            <? if (!$user->getCart()->hasProduct($product->getId())): ?>
             <a class='bCountSet__eP' href>+</a><a class='bCountSet__eM' href>-</a>
-            <?php else: ?>
+            <? else: ?>
             <a class='bCountSet__eP disabled' href>&nbsp;</a><a class='bCountSet__eM disabled' href>&nbsp;</a>
-            <?php endif ?>
-            <span><?php echo $user->getCart()->getQuantityByProduct($product->getId()) ? $user->getCart()->getQuantityByProduct($product->getId()) : 1 ?> шт.</span>
+            <? endif ?>
+            <span><?= $user->getCart()->getQuantityByProduct($product->getId()) ? $user->getCart()->getQuantityByProduct($product->getId()) : 1 ?> шт.</span>
         </div>
 
-        <?php echo $page->render('cart/_button', array('product' => $product, 'disabled' => !$product->getIsBuyable())) ?>
+        <?= $page->render('cart/_button', array('product' => $product, 'disabled' => !$product->getIsBuyable())) ?>
     </div>
-    <?php endif ?>
+    <? endif ?>
 </div>
 <div class="fr mBuyButtonBottom">
-    <div class="pb10"><strong class="font34"><span class="price"><?php echo $page->helper->formatPrice($product->getPrice()) ?></span> <span class="rubl">p</span></strong></div>
+    <div class="pb10"><strong class="font34"><span class="price"><?= $page->helper->formatPrice($product->getPrice()) ?></span> <span class="rubl">p</span></strong></div>
 </div>
 <div class="fl mBuyButtonBottom onleft" >
-    <h2 class="bold"><?php echo $product->getName() ?></h2>
+    <h2 class="bold"><?= $product->getName() ?></h2>
 </div>
 
 
 <br class="clear" />
 
-<?php if ($showAveragePrice): ?>
+<? if ($showAveragePrice): ?>
     <div class="gray pt20 mb10">*по данным мониторинга компании Enter</div>
     <div class="clear"></div>
-<?php endif ?>
+<? endif ?>
 
-<?php echo $page->render('_breadcrumbs', array('breadcrumbs' => $breadcrumbs, 'class' => 'breadcrumbs-footer')) ?>
+<?= $page->render('_breadcrumbs', array('breadcrumbs' => $breadcrumbs, 'class' => 'breadcrumbs-footer')) ?>
 
-<?php if (\App::config()->smartEngine['push']): ?>
-<div id="product_view-container" data-url="<?php echo $page->url('smartengine.push.product_view', array('productId' => $product->getId())) ?>"></div>
-<?php endif ?>
+<? if (\App::config()->smartEngine['push']): ?>
+<div id="product_view-container" data-url="<?= $page->url('smartengine.push.product_view', array('productId' => $product->getId())) ?>"></div>
+<? endif ?>
 
-<?php if ($product->getIsBuyable()): echo $page->render('product/form-oneClick'); endif; ?>
+<? if ($product->getIsBuyable()): echo $page->render('product/form-oneClick'); endif; ?>

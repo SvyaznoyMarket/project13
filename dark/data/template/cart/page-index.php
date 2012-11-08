@@ -1,28 +1,32 @@
-<?php
+<?
 /**
- * @var $page \View\Cart\IndexPage
- * @var $user \Session\User
+ * @var $page         \View\Cart\IndexPage
+ * @var $user         \Session\User
+ * @var $selectCredit bool
+ * @var $products         \Model\Product\Entity[]
+ * @var $services         \Model\Product\Service\Entity[]
+ * @var $cartProductsById \Model\Cart\Product\Entity[]
+ * @var $cartServicesById \Model\Cart\Service\Entity[]
  */
 ?>
 
 <?
 $cart = $user->getCart();
+$creditEnabled = ($cart->getTotalProductPrice() >= \App::config()->product['minCreditPrice']) && \App::config()->payment['creditEnabled'];
 ?>
 
 <div style="float:left; width: 100%; padding-bottom: 20px">
     <div id="adfox920" class="adfoxWrapper"></div>
 </div>
 
-<?php if ($cart->countFull() > 0): ?>
-<?php include_component('cart_', 'show') ?>
+<?= require __DIR__ . '/_show.php' ?>
 
 <div class="fl width345 font14">
-    <?php if (($cart->getProductsPrice() >= ProductEntity::MIN_CREDIT_PRICE ) && sfConfig::get('app_payment_credit_enabled', true)) : ?>
+    <? if ($creditEnabled): ?>
     <div id="creditFlag" style="display:none">
-        <label class="bigcheck <?php if ($selectCredit) echo 'checked'; ?>" for="selectCredit">
+        <label class="bigcheck <? if ($selectCredit): ?> checked<? endif ?>" for="selectCredit">
             <b></b>Выбранные товары купить в кредит
-            <input autocomplete="off" class="" type="checkbox" id="selectCredit" <?php if ($selectCredit){ echo 'checked="checked"'; }?>
-                   name="selectCredit"/>
+            <input autocomplete="off" class="" type="checkbox" id="selectCredit"<? if ($selectCredit): ?> checked="checked"<? endif ?> name="selectCredit"/>
         </label>
 
         <div class="pl35 font11">
@@ -30,17 +34,17 @@ $cart = $user->getCart();
             и в течение нескольких минут получаете СМС о решении банка. Оригиналы документов мы привезем вместе с выбранными товарами!
         </div>
     </div>
-    <?php endif; ?>
+    <? endif ?>
 
 </div>
 <div id="total" class="fr">
     <div class="left">
-        <?php if (($cart->getProductsPrice() >= ProductEntity::MIN_CREDIT_PRICE ) && sfConfig::get('app_payment_credit_enabled', true)) : ?>
-        <div id="creditSum" data-minsum="<?php echo ProductEntity::MIN_CREDIT_PRICE ?>" style="display:none">
+        <? if ($creditEnabled) : ?>
+        <div id="creditSum" data-minsum="<?= \App::config()->product['minCreditPrice'] ?>" style="display:none">
             <div class="font14 width370 creditInfo pb10 grayUnderline">
                 <div class="leftTitle">Сумма заказа:</div>
                 <div class="font24">
-                    <span class="price"><?php echo $cart->getTotal(true) ?></span> <span class="rubl">p</span>
+                    <span class="price"><?= $page->helper->formatPrice($cart->getTotalPrice()) ?></span> <span class="rubl">p</span>
                 </div>
             </div>
             <div style="display:none" id="blockFromCreditAgent">
@@ -60,7 +64,7 @@ $cart = $user->getCart();
                 </div>
             </div>
         </div>
-        <?php endif; ?>
+        <? endif; ?>
 
         <div id="commonSum">
             <div class="font14">
@@ -68,26 +72,24 @@ $cart = $user->getCart();
             </div>
             <div class="font30"><strong>
 				<span class="price">
-						<?php echo $cart->getTotal(true); ?>
+						<?= $page->helper->formatPrice($cart->getTotalPrice()) ?>
 				</span>
                 <span class="rubl">p</span></strong></div>
         </div>
     </div>
 
 </div>
+
 <div class="clear pb25"></div>
 <div class="line pb30"></div>
 <div class="fl font14 pt10">&lt; <a class="underline" href="/">Вернуться к покупкам</a></div>
+
 <div class="width500 auto">
-    <a href="<?php echo url_for('order_new') ?>" class="bBigOrangeButton width345">Оформить заказ</a>
+    <a href="<?= $page->url('order.new') ?>" class="bBigOrangeButton width345">Оформить заказ</a>
 </div>
 <div class="clear"></div>
-<?php else: ?>
-<p>в корзине нет товаров</p>
 
-<?php endif ?>
 
-<?php slot('seo_counters_advance') ?>
 <!--  AdRiver code START. Type:counter(zeropixel) Site: sventer SZ: baskets PZ: 0 BN: 0 -->
 <script language="javascript" type="text/javascript"><!--
 var RndNum4NoCash = Math.round(Math.random() * 1000000000);
@@ -97,8 +99,8 @@ document.write('<img src="http://ad.adriver.ru/cgi-bin/rle.cgi?' + 'sid=179070&s
 <noscript><img src="http://ad.adriver.ru/cgi-bin/rle.cgi?sid=179070&sz=baskets&bt=21&pz=0&rnd=1616108824" border=0 width=1 height=1></noscript>
 <!--  AdRiver code END  -->
 
-<div id="heiasOrder" data-vars="<?php echo $cart->getSeoCartArticle(); ?>" class="jsanalytics"></div>
-<?php end_slot() ?>
+<div id="heiasOrder" data-vars="<?= $cart->getAnalyticsData() ?>" class="jsanalytics"></div>
+
 
 <!--Трэкер "Корзина"-->
 <script>document.write('<img src="http://mixmarket.biz/tr.plx?e=3779415&r='+escape(document.referrer)+'&t='+(new Date()).getTime()+'" width="1" height="1"/>');</script>

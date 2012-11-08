@@ -106,9 +106,11 @@ $(document).ready(function() {
 			}
 			//var tmpurl = (delta > 0) ? addurl : delurl
 			//self.quantum += delta
-            var tmpurl = addurl;
+            var tmpurl = addurl.slice(0, -1);
             self.quantum += delta
-            tmpurl += self.quantum;
+            console.log(self.quantum)
+            tmpurl += self.quantum
+            console.log(tmpurl);
 
 			$(nodes.quan).html( self.quantum + ' шт.' )
 			self.calculate( self.quantum )

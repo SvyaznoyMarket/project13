@@ -99,6 +99,10 @@ class DefaultLayout extends Layout {
         return $this->render('_auth');
     }
 
+    public function slotUserbar() {
+        return $this->render('_userbar');
+    }
+
     public function slotYandexMetrika() {
         return (\App::config()->yandexMetrika['enabled']) ? $this->render('_yandexMetrika') : '';
     }

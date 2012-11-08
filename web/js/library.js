@@ -906,7 +906,7 @@ function parse_url( url ) {
 
 /* MAP Object */
 
-function MapGoogleWithShops( center, templateIWnode, DOMid, updateInfoWindowTemplate ) {
+function MapGoogleWithShops( center, templateIWnode, DOMid, updateIWT ) {
 /* Arguments:
 	center is a center of a map
 	templateIWnode is node(jQ) which include template for InfoWindow popup
@@ -953,7 +953,6 @@ function MapGoogleWithShops( center, templateIWnode, DOMid, updateInfoWindowTemp
         var marker = markers[markerId].ref 
 		currMarker = marker
 		var item = markers[marker.id]
-		
 		marker.setVisible(false) // hides marker
         self.updateInfoWindowTemplate( item )
 		infoWindow.setContent( infoWindowTemplate )
