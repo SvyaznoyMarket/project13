@@ -5,6 +5,8 @@
  * @var $product  \Model\Product\Entity
  * @var $view     string
  * @var $quantity int
+ * @var $gaEvent  string
+ * @var $gaTitle  string
  */
 ?>
 
@@ -18,6 +20,9 @@ if (empty($quantity)) {
 }
 
 $disabled = !$product->getIsBuyable();
+
+$gaEvent = !empty($gaEvent) ? $gaEvent : null;
+$gaTitle = !empty($gaTitle) ? $gaTitle : null;
 
 switch ($view) {
     case 'default':
