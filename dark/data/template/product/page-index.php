@@ -469,7 +469,7 @@
             <span><?php echo $user->getCart()->getQuantityByProduct($product->getId()) ? $user->getCart()->getQuantityByProduct($product->getId()) : 1 ?> шт.</span>
         </div>
 
-        <?php echo $page->render('cart/_button', array('product' => $product, 'disabled' => !$product->getIsBuyable())) ?>
+        <?= $page->render('cart/_button', array('product' => $product, 'disabled' => !$product->getIsBuyable(), 'gaEvent' => 'Add2Basket_vnizu', 'gaTitle' => 'Добавление в корзину')) ?>
     </div>
     <?php endif ?>
 </div>
