@@ -4,6 +4,8 @@
  * @var $product  \Model\Product\Entity
  * @var $disabled bool
  * @var $value    string
+ * @var $gaEvent  string
+ * @var $gaTitle  string
  */
 ?>
 
@@ -17,4 +19,4 @@ if ($disabled) {
 if (empty($value)) $value = '&nbsp;'
 ?>
 
-<a href="<?= $url ?>" class="link1 event-click cart cart-add<?php if ($disabled): ?> disabled<? endif ?>"><?= $value ?></a>
+<a href="<?= $url ?>"<?php echo (!empty($gaEvent) ? (' data-event="'.$gaEvent.'"') : '').(!empty($gaTitle) ? (' data-title="'.$gaTitle.'"') : '') ?> class="link1 event-click cart cart-add<?php if ($disabled): ?> disabled<? endif ?><?php if ($gaEvent): ?> gaEvent<? endif ?>"><?= $value ?></a>

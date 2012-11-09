@@ -35,6 +35,7 @@ $marker = isset($marker) ? $marker : null;
       'fixHeight'  => true,
       'ii'         => $i++,
       'marker'     => $marker,
+      'gaEvent'    => 'SmartEngine',
     )) ?>
   <?php endforeach ?>
 </div>

@@ -25,7 +25,7 @@ $url = $page->url('product.line', array('lineToken' => $product->getLine()->getT
 	    <h3>
             <a href="<?= $url ?>">
                 <strong>Серия <?= $product->getLine()->getName() ?></strong>
-                <span class="font10 gray"> (<?= $product->getLine()->getTotalCount() ?>)</span>
+                <span class="font10 gray"> <? if ($product->getLine()->getTotalCount()): ?>(<?= $product->getLine()->getTotalCount() ?>)<? endif ?></span>
             </a>
         </h3>
     </div>

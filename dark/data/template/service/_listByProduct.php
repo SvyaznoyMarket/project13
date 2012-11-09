@@ -9,7 +9,7 @@ $services = $product->getService();
 $cartProduct = $user->getCart()->getProductById($product->getId());
 $cartServicesById = $cartProduct ? $cartProduct->getService() : array();
 ?>
-<? if (count($services)): ?>
+<? if ((bool)$services): ?>
 
     <?= $page->render('service/_selection', array('product' => $product)) ?>
 
@@ -25,9 +25,9 @@ $cartServicesById = $cartProduct ? $cartProduct->getService() : array();
                     услугу</a>
             </div>
         </script>
-        <? if (count($cartServicesById)) { ?>
+        <? if (count($listInCart)) { ?>
         <h3>Вы добавили услуги:</h3>
-        <? foreach ($services as $service): if ($cartProduct && $cartProduct->hasService($service->getId())): ?>
+        <? foreach ($list as $service): if (in_array($service->getId(), $listInCart)): ?>
             <div ref="<?= $service->getToken();?>">
                 <?= $service->getName() ?> - <?=  $page->helper->formatPrice($service->getPrice()) ?>
                 &nbsp;<span class="rubl">p</span><br>
@@ -39,7 +39,7 @@ $cartServicesById = $cartProduct ? $cartProduct->getService() : array();
         <? } else { ?>
         <h3>Установка<br/>и подключение</h3>
         <? } ?>
-        <a class="link1" href="">Выбрать услуги</a>
+        <a class="link1 gaEvent" data-event="F1" data-title="Переход по ссылке" href="">Выбрать услуги</a>
     </div>
 
 <? endif ?>

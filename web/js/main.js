@@ -30,8 +30,17 @@ $(document).ready(function(){
 	$('.bCtg').find('a').bind('click', 'Левое меню', categoriesSpy )
 	$('.rubrictitle').find('a').bind('click', 'Заголовок карусели', categoriesSpy )
 	$('a.srcoll_link').bind('click', 'Ссылка Посмотреть все', categoriesSpy )
+    /* GA click counter */
+    function gaClickCounter() {
+        if( typeof(_gaq) !== 'undefined' ) {
+            var title =  ($(this).data('event') !== 'undefined') ?  $(this).data('event') : 'без названия';
+            _gaq.push(['_trackEvent', $(this).data('event'), title, ,,, false])
+        }
+        return true
+    }
+    $('.gaEvent').bind('click', gaClickCounter )
 
-	/* admitad */	
+    /* admitad */
 	if( document.location.search.match(/admitad_uid/) ) {
 		var url_s = parse_url( document.location.search )
 		docCookies.setItem( false, "admitad_uid", url_s.admitad_uid, 31536e3, '/') // 31536e3 == one year

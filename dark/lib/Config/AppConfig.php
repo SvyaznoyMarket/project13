@@ -88,6 +88,7 @@ class AppConfig {
         'totalCount'            => null,
         // глобальный (без учета региона) список товаров
         'globalListEnabled'     => null,
+        'showAveragePrice'      => null,
     );
     /** @var array */
     public $productPhoto = array(
