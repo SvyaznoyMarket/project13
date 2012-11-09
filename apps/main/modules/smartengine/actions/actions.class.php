@@ -58,11 +58,11 @@ class smartengineActions extends myActions
         return $this->renderText('');
       }
 
-      $se_config = sfConfig::get('app_smartengine_config', '');
+      $se_config = sfConfig::get('app_smartengine_config', array());
       return $this->renderPartial($this->getModuleName().'/product_list', array(
         'title'    => 'С этим товаром также смотрят',
         'products' => $products,
-        'marker'   => $se_config['marker'],
+        'marker'   => isset($se_config['marker']) ? $se_config['marker'] : null,
       ));
     } catch(Exception $e) {
       return $this->renderText('');
