@@ -30,8 +30,9 @@ class RegionModel
     $region->setToken($response[0]['token']);
     $region->setIsMain((bool) $response[0]['is_main']);
     $region->setHasTransportCompany((bool)$response[0]['tk_available']);
+      $region->setHasF1((bool)$response[0]['has_f1']);
 
-    return $region;
+      return $region;
   }
 
   /**
