@@ -43,7 +43,7 @@ foreach ($products as $product) {
                    href="#">
                     <b class="ajaless" title="Уменьшить"></b>
                 </a>
-                <span class="ajaquant">1 шт.</span>
+                <input class="ajaquant" value="1">
                 <a href="<?= $page->url('cart.service.add', array('serviceId' => 'F1ID', 'quantity' => 1, 'productId' => 'PRID')); ?>">
                     <b class="ajamore" title="Увеличить"></b>
                 </a>
@@ -114,8 +114,9 @@ foreach ($products as $product) {
                         <? else: ?>
                             <b class="ajaless" title="Уменьшить"></b>
                         <? endif ?>
-                        <span class="ajaquant"><?= $cartProduct->getQuantity() ?>шт.</span>
-                        <a href="<?= $page->url('cart.product.add', array('productId' => $product->getId(), 'quantity' => 1)) ?>"><b class="ajamore" title="Увеличить"></b></a>
+                        <input class="ajaquant" value="<?= $cartProduct->getQuantity() ?>">
+                        <a href="<?= $page->url('cart.product.add', array('productId' => $product->getId(), 'quantity' => 1)) ?>"><b class="ajamore" title="Увеличить"></b>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -178,7 +179,7 @@ foreach ($products as $product) {
                         <? else: ?>
                             <b class="ajaless" title="Уменьшить"></b>
                         <? endif ?>
-                        <span class="ajaquant"><?= $cartService->getQuantity() ?> шт.</span>
+                        <input class="ajaquant" value="<?= $cartService->getQuantity() ?>">
                         <a href="<?= $page->url('cart.service.add', array('serviceId' => $service->getId(), 'productId' => null, 'quantity' => 1)) ?>"><b class="ajamore" title="Увеличить"></b></a>
                     </div>
                 </div>

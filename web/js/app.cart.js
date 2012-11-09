@@ -2,6 +2,7 @@ $(document).ready(function() {
 	/* basket */
 	var total = $('#total .price')
 	var totalCash = 0
+	var focusTrigger = false;
 
 	function getTotal() {
 		for(var i=0, tmp=0; i < basket.length; i++ ) {
@@ -33,8 +34,7 @@ $(document).ready(function() {
 		var drop     = $(nodes.drop).attr('href')
 		var limit    = ( typeof(nodes.limit) !== 'undefined' ) ? nodes.limit : 1000
 		if( $(nodes.quan).length )
-			this.quantum = $(nodes.quan).html().replace(/\D/g,'') * 1
-
+			this.quantum = $(nodes.quan).val() * 1
 		// var price    = ( self.sum* 1 / self.quantum *1 ).toFixed(2)
 		// if( ( 'price' in nodes ) && $(nodes.price).length )
 		//     price    = $(nodes.price).html().replace(/\s/,'')
@@ -65,7 +65,7 @@ $(document).ready(function() {
 			clearTimeout( totalCalcTO )
 			self.quantum = q
 			self.sum = q * self.price
-			$(nodes.quan).html( self.quantum )
+			$(nodes.quan).val( self.quantum )
 			totalCalcTO = setTimeout( function() {
                 getTotal(), 1000
             })
@@ -107,12 +107,16 @@ $(document).ready(function() {
 			//var tmpurl = (delta > 0) ? addurl : delurl
 			//self.quantum += delta
             var tmpurl = addurl.slice(0, -1);
-            self.quantum += delta
-            console.log(self.quantum)
+            
+            if (minimax) {
+            	self.quantum += delta
+            }
+            	else self.quantum = delta
+            
             tmpurl += self.quantum
-            console.log(tmpurl);
 
-			$(nodes.quan).html( self.quantum + ' шт.' )
+			//$(nodes.quan).html( self.quantum)
+			$(nodes.quan).val(self.quantum)
 			self.calculate( self.quantum )
 			totalCash += self.price * delta
 			PubSub.publish( 'quantityChange', { q : self.quantum, id : self.id } )
@@ -169,9 +173,36 @@ $(document).ready(function() {
 			}
 			return false
 		})
+		$(nodes.quan).focusin(function(){
+			$(nodes.quan).bind('keyup',function(e){
+				if (((e.which>=48)&&(e.which<=57))||(e.which==8)){//если это цифра или бэкспэйс
+					var quan = self.quantum = $(nodes.quan).val().replace(/\D/g,'') * 1
+					if (quan > 0){//если больше нуля, апдейтим
+						focusTrigger = false
+						self.update( false, quan)
+					}
+					else{ //если меньше, очищаем
+						focusTrigger = true
+					}
+				}
+				else{
+					//если это не цифра
+					var quan = self.quantum = $(nodes.quan).val().replace(/\D/g,'') * 1
+					$(nodes.quan).val(self.quantum)
+					focusTrigger = (quan > 0)? false : true
+				}
+			})
+		})
+		$(nodes.quan).focusout(function(){
+			if (focusTrigger){
+				focusTrigger = false
+				self.clear()
+			}
+			$(nodes.quan).unbind('keyup')
+		})
 
 	} // object basketline
-
+	
 	var basket = [],
 		popupIsOpened = false	
 
