@@ -45,4 +45,8 @@ class ShowPage extends \View\DefaultLayout {
     public function slotContent() {
         return $this->render('shop/page-show', $this->params);
     }
+
+    public function slotBodyClassAttribute() {
+        return 'shopPrintPage';
+    }
 }

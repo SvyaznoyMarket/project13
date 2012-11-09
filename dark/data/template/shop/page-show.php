@@ -110,6 +110,6 @@
     </div>
 </div>
 <!-- /bMapInfo -->
-
+<a class="bOrangeButton printAction" href="javascript:window.print()">Распечатать</a>
 <div class="clear"></div>
 

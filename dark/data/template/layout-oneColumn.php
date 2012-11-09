@@ -14,7 +14,7 @@
     <?= $page->slotGoogleAnalytics() ?>
     <?= $page->slotMetaOg() ?>
 </head>
-<body data-template="<?= $page->slotBodyDataAttribute() ?>" data-id="<?= \App::$id ?>">
+<body class="<?= $page->slotBodyClassAttribute() ?>" data-template="<?= $page->slotBodyDataAttribute() ?>" data-id="<?= \App::$id ?>">
     <div class="allpage" id="page">
         <div class="adfoxWrapper" id="adfoxbground"></div>
 

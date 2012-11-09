@@ -6078,6 +6078,40 @@
     top: -80px;
     width: 96px;
   }
+  .printAction {
+    float: right;
+    margin: 20px;
+  }
+}
+@media print {
+  .shopPrintPage .bMap {
+    border: none;
+    box-shadow: none;
+  }
+  .shopPrintPage .bMap__eBody {
+    display: block;
+    margin: 0 auto;
+    width: 696px;
+    z-index: 1;
+  }
+  .shopPrintPage .bMapInfo {
+    font-size: 1.1em;
+  }
+  .shopPrintPage .topbar,
+  .shopPrintPage #header,
+  .shopPrintPage #upper,
+  .shopPrintPage .searchbox,
+  .shopPrintPage .breadcrumbs,
+  .shopPrintPage .bMap__eImages,
+  .shopPrintPage #map-panorama,
+  .shopPrintPage .printAction,
+  .shopPrintPage .popup,
+  .shopPrintPage .footer,
+  .shopPrintPage .lightbox {
+    display: none;
+    visibility: hidden;
+    opacity: 0;
+  }
 }
 /*---END---СТИЛИ СТРАНИЦЫ МАГАЗИНА---*/
 /*-------СТИЛИ СТРАНИЦ WORDPRESS-----*/
@@ -6857,12 +6891,22 @@
     height: 25px;
     width: 27px;
   }
-  .numerbox span {
+  .numerbox .ajaquant {
     display: block;
     float: left;
-    padding-top: 4px;
-    text-align: center;
-    width: 55px;
+    margin: 0 0 0 -2px;
+    padding-right: 24px;
+    text-align: right;
+    width: 27px;
+  }
+  .numerbox .ajamore:before {
+    content: "шт.";
+    font-size: 11px;
+    font-weight: 100;
+    left: -23px;
+    position: relative;
+    top: 4px;
+    width: 23px;
   }
   /* backert service */
   .bBacketServ {
@@ -7224,81 +7268,6 @@
 }
 /*---END---СТИЛИ СТРАНИЦ ОШИБОК---*/
 /*-------СТИЛИ КАРТОЧКИ МАГАЗИНА ВЕРСИЯ ДЛЯ ПЕЧАТИ-----*/
-@media all {
-  .printPage {
-    background: #ffffff;
-    font-size: 1.1em;
-    margin: auto;
-    width: 700px;
-  }
-  .printPage h1 {
-    float: left;
-    font-size: 2.5em;
-    font-family: 'Enter';
-    line-height: 2em;
-    margin: 10px 0;
-    width: 500px;
-  }
-  .printPage__logo {
-    background: url("/css/shopPrintPage/img/logo.gif") no-repeat 0 0;
-    float: right;
-    height: 87px;
-    margin: 10px 0;
-    width: 95px;
-  }
-  .printPage__map {
-    background: #464646;
-    clear: both;
-    height: 550px;
-    width: 700px;
-  }
-  .printPage__desc {
-    margin: 10px 0;
-  }
-  .printPage__desc__header {
-    font-size: 1.2em;
-    margin: 15px 0;
-    padding: 0;
-  }
-  .printPage__desc__subheader {
-    font-size: 0.9em;
-    font-weight: 100;
-    margin: 10px 0;
-    padding: 0px;
-  }
-  .printPage__desc__el {
-    font-size: 1em;
-  }
-  .printPage__desc__info {
-    font-size: 0.8em;
-  }
-  .printPage__comments {
-    margin: 10px 0;
-  }
-  .printPage__comments__fakeTextarea {
-    display: block;
-    border: 1px solid #a6a6a6;
-    height: 80px;
-    width: 100%;
-  }
-  .printPage__comments__fakeTextarea textarea {
-    border: none;
-    height: 100%;
-    width: 100%;
-  }
-  .printPage__printAction {
-    margin: 10px 0;
-    width: 536px;
-  }
-}
-@media print {
-  .printPage {
-    font-size: 0.9em;
-  }
-  .printPage__printAction {
-    display: none;
-  }
-}
 /*---END---СТИЛИ КАРТОЧКИ МАГАЗИНА ВЕРСИЯ ДЛЯ ПЕЧАТИ---*/
 /*------СТИЛИ ГЛАВНОЙ------*/
 @media all {

@@ -34,7 +34,7 @@
   <input id="map-panorama" type="hidden" data-swf="<?php echo $item['panorama']['swf'] ?>" data-xml="<?php echo $item['panorama']['xml'] ?>" />
 </div>
 <!-- /bMap -->
-
+<a class="printPage__printAction bBigOrangeButton" href="javascript:window.print()">Распечатать</a>
 <!-- bMapInfo -->
 <div class='bMapInfo'>
   <div class='bMapInfo__eIco mShop'></div>
