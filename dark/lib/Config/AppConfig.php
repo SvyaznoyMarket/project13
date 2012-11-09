@@ -24,7 +24,6 @@ class AppConfig {
     /** @var string */
     public $authToken = array(
         'name'     => null,
-        'lifetime' => null,
     );
     /** @var string */
     public $sessionToken;

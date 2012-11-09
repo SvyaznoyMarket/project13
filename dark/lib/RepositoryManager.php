@@ -90,4 +90,14 @@ class RepositoryManager {
 
         return $instance;
     }
+
+    static function getOrder() {
+        static $instance;
+
+        if (!$instance) {
+            $instance = new \Model\Order\Repository(\App::coreClientV2());
+        }
+
+        return $instance;
+    }
 }

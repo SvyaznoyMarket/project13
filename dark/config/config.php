@@ -15,8 +15,7 @@ $c->webDir = realpath($c->appDir . '/../web');
 
 $c->debug = true;
 $c->appName = 'Enter';
-$c->authToken['name']     = 'enter_auth';
-$c->authToken['lifetime'] = 15552000; // 180 дней
+$c->authToken['name']     = '_token';
 $c->sessionToken = 'enter';
 $c->session['name']            = 'enter';
 $c->session['cookie_lifetime'] = 15552000;

@@ -4,11 +4,11 @@ namespace Session;
 
 class User {
     /** @var string */
-    private $cookieName = '_token';
-    /** @var string */
-    private $cookieLifetime = 151200;
-    /** @var \Http\Request */
-    private $request;
+    private $tokenName;
+    /** @var string|null */
+    private $token;
+    /** @var \Http\Session */
+    private $session;
     /** @var \Model\User\Entity */
     private $entity;
     /** @var \Model\Region\Entity */
@@ -17,13 +17,8 @@ class User {
     private $cart;
 
     public function __construct() {
-        $this->cookieName = \App::config()->authToken['name'];
-        $this->cookieLifetime = \App::config()->authToken['lifetime'];
-        $this->request = \App::request();
-
-        if ($this->request->cookies->has($this->cookieName)) {
-            $this->token = $this->request->cookies->get($this->cookieName);
-        }
+        $this->tokenName = \App::config()->authToken['name'];
+        $this->token = \App::session()->get($this->tokenName);
     }
 
     /**
@@ -35,9 +30,8 @@ class User {
         }
 
         if (!$this->entity) {
-            $repository = \RepositoryManager::getUser();
-
-            $user = $repository->getEntityByToken($this->token);
+            $user = \RepositoryManager::getUser()->getEntityByToken($this->token);
+            $user->setToken($this->token);
             if (!$user) {
                 return null;
             }
@@ -50,36 +44,33 @@ class User {
 
     /**
      * @param \Model\User\Entity $user
-     * @param \Http\Response     $response
      */
-    public function signIn(\Model\User\Entity $user, \Http\Response $response) {
-        $user->setTokenExpiredAt(new \DateTime('+' . $this->cookieLifetime . ' seconds'));
-        $user->setIpAddress($this->request->getClientIp());
-        $this->setToken($user->getToken(), $response);
+    public function signIn(\Model\User\Entity $user) {
+        $user->setIpAddress(\App::request()->getClientIp());
+        $this->setToken($user->getToken());
         //\RepositoryManager::getUser()->saveEntity($user);
     }
 
     /**
      * @param string $token
      */
-    private function setToken($token, \Http\Response $response) {
+    public function setToken($token) {
         if (!$token) {
             throw new \LogicException('Токен пользователя не должен быть пустым.');
         }
 
-        $cookie = new \Http\Cookie($this->cookieName, $token, time() + $this->cookieLifetime);
-        $response->headers->setCookie($cookie);
+        \App::session()->set($this->tokenName, $token);
     }
 
-    private function removeToken(\Http\Response $response) {
-        $response->headers->clearCookie(self::$cookieName);
+    public function removeToken() {
+        \App::session()->remove($this->tokenName);
     }
 
     /**
      * @return string
      */
-    private function getToken() {
-        return $this->request->cookies->get(self::$cookieName);
+    public function getToken() {
+        return \App::session()->get($this->tokenName, null);
     }
 
     public function setRegion(\Model\Region\Entity $region, \Http\Response $response) {
@@ -99,8 +90,8 @@ class User {
         if (!$this->region) {
             $cookieName = \App::config()->region['cookieName'];
 
-            if ($this->request->cookies->has($cookieName)) {
-                $id = (int)$this->request->cookies->get($cookieName);
+            if (\App::request()->cookies->has($cookieName)) {
+                $id = (int)\App::request()->cookies->get($cookieName);
                 $this->region = \RepositoryManager::getRegion()->getEntityById($id);
                 if (!$this->region) {
                     \App::logger()->warn(sprintf('Регион #"%s" не найден.', $cookieName));
