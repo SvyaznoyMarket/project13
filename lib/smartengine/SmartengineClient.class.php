@@ -101,11 +101,9 @@ class SmartengineClient
     //var_dump($query);
 
     $connection = curl_init();
-      /** TODO: разобраться с коннектом с сертификатом и вернуть значение в true */
-    curl_setopt($connection, CURLOPT_SSL_VERIFYPEER, false);
+    curl_setopt($connection, CURLOPT_SSL_VERIFYPEER, true);
     if ($this->config['cert']) {
       curl_setopt($connection, CURLOPT_CAINFO, $this->config['cert']);
-        //curl_setopt($connection, CURLOPT_CAPATH, sfConfig::get('sf_symfony_data_dir'));
     }
     curl_setopt($connection, CURLOPT_HEADER, 0);
     curl_setopt($connection, CURLOPT_RETURNTRANSFER, true);

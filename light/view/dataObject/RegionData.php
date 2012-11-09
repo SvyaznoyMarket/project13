@@ -38,8 +38,10 @@ class RegionData
   /** @var bool */
   private $hasTransportCompany;
 
+  /** @var bool */
+  private $hasF1;
 
-  /**
+    /**
    * @param int $geoIpCode
    */
   public function setGeoIpCode($geoIpCode)
@@ -132,6 +134,22 @@ class RegionData
   public function getHasTransportCompany() {
     return $this->hasTransportCompany;
   }
+
+    /**
+     * @param boolean $hasF1
+     */
+    public function setHasF1($hasF1)
+    {
+        $this->hasF1 = $hasF1;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getHasF1()
+    {
+        return $this->hasF1;
+    }
 
 
 }

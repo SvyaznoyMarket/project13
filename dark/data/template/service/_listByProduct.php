@@ -25,9 +25,9 @@ $cartServicesById = $cartProduct ? $cartProduct->getService() : array();
                     услугу</a>
             </div>
         </script>
-        <? if (count($cartServicesById)) { ?>
+        <? if (count($listInCart)) { ?>
         <h3>Вы добавили услуги:</h3>
-        <? foreach ($services as $service): if ($cartProduct && $cartProduct->hasService($service->getId())): ?>
+        <? foreach ($list as $service): if (in_array($service->getId(), $listInCart)): ?>
             <div ref="<?= $service->getToken();?>">
                 <?= $service->getName() ?> - <?=  $page->helper->formatPrice($service->getPrice()) ?>
                 &nbsp;<span class="rubl">p</span><br>

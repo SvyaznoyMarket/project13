@@ -67,6 +67,7 @@ $c->product['minCreditPrice']        = 3000;
 $c->product['totalCount']            = 30000;
 // глобальный (без учета региона) список товаров
 $c->product['globalListEnabled']     = false;
+$c->product['showAveragePrice']      = false;
 
 $c->productPhoto['url'] = array(
     0 => '/1/1/60/',

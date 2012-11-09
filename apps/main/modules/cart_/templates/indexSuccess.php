@@ -9,9 +9,8 @@
 </div>
 <?php if ($cart->countFull() > 0): ?>
   <?php include_component('cart_', 'show') ?>
-
 <div class="fl width345 font14">
-  <?php if (($cart->getProductsPrice() >= ProductEntity::MIN_CREDIT_PRICE ) && sfConfig::get('app_payment_credit_enabled', true)) : ?>
+  <?php if (!$sf_user->getRegion('tk_available') && ($cart->getProductsPrice() >= ProductEntity::MIN_CREDIT_PRICE ) && sfConfig::get('app_payment_credit_enabled', true)) : ?>
   <div id="creditFlag" style="display:none">
     <label class="bigcheck <?php if ($selectCredit) echo 'checked'; ?>" for="selectCredit">
       <b></b>Выбранные товары купить в кредит

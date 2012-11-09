@@ -128,6 +128,7 @@ class myUser extends myGuardSecurityUser
       'longitude' => $region->getLongitude(),
       'region' => $region,
       'has_f1' => isset($r[0]) ? ((bool)$r[0]['has_f1']) : false,
+      'tk_available' => isset($r[0]) ? ((bool)$r[0]['tk_available']) : false,
     );
 
     #@TODO: зачем кука устанавливается два раза ?

@@ -43,6 +43,7 @@ $json = array(
             </strong>
         </div>
         <?php endif ?>
+        <?php if (\light\App::getCurrentUser()->getRegion()->getHasF1()): ?>
         <?php if($service->getIsDelivery()): ?>
         <a class="link1 gaEvent" href="<?php echo $this->url('cart.addService', array('serviceId' => $service->getId(), 'quantity' => 1)); ?>" data-event="BuyF1" data-title="Заказ услуги F1">Купить услугу</a>
         <?php elseif($service->getIsInShop()): ?>
@@ -53,6 +54,7 @@ $json = array(
             Skype: skype2enter и call2enter<br/>
             ICQ: 648198963
         </p>
+        <?php endif ?>
         <?php endif ?>
     </div>
 </div>
@@ -93,7 +95,7 @@ $json = array(
                 <?php if($alike->getPrice()): ?>
                 <?php echo number_format($alike->getPrice(), 0, ',', ' '); ?>
                 <span class="rubl">p</span>
-                <?php elseif ($alike->getIsInShop()): ?>
+                <?php elseif ($alike->getIsInShop() && \light\App::getCurrentUser()->getRegion()->getHasF1()): ?>
                 <div>доступна в магазине</div>
                 <?php endif ?>
             </div>
@@ -106,7 +108,7 @@ $json = array(
             'url' => $this->url('cart.addService', array('serviceId' => $alike->getId(), 'quantity' => 1)),
         ) ?>
 
-            <?php if ($alike->getIsInShop()) : ?>
+            <?php if ($alike->getIsInShop() && \light\App::getCurrentUser()->getRegion()->getHasF1()) : ?>
             <form action="<?php echo $this->url('cart.addService', array('serviceId' => $alike->getId(), 'quantity' => 1)) ?>"/>
             <input data-value='<?php echo json_encode($json) ?>' data-event="BuyF1" data-title="Заказ услуги F1" type="submit"  class="button yellowbutton gaEvent" value="Купить услугу"/>
             </form>
