@@ -238,6 +238,31 @@ return array(
     'smartengine.push.product_view' => array(
         'pattern' => '/product-view/{productId}',
         'require' => array('productId' => '\d+'),
-    )
+    ),
 
+    // редактирование данных пользователя
+    'user.edit' => array(
+        'pattern' => '/private/edit',
+        'action'  => array('User\EditAction', 'execute'),
+    ),
+    // редактирование данных пользователя
+    'user.order' => array(
+        'pattern' => '/private/orders',
+        'action'  => array('User\OrderAction', 'execute'),
+    ),
+    // адвокат клиента
+    'user.consultation' => array(
+        'pattern' => '/private/consultation',
+        'action'  => array('User\Сonsultation', 'execute'),
+    ),
+    // адвокат клиента
+    'user.consultation.send' => array(
+        'pattern' => '/private/consultation/send',
+        'action'  => array('User\Сonsultation', 'send'),
+    ),
+    // изменение пароля пользователя
+    'user.changePassword' => array(
+        'pattern' => '/private/password',
+        'action'  => array('User\Action', 'changePassword'),
+    ),
 );

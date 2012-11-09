@@ -118,11 +118,6 @@ class Request {
     protected $format;
 
     /**
-     * @var \Http\SessionInterface
-     */
-    protected $session;
-
-    /**
      * @var string
      */
     protected $locale;
@@ -352,9 +347,6 @@ class Request {
 
     /**
      * Clones the current request.
-     *
-     * Note that the session is not cloned as duplicated requests
-     * are most of the time sub-requests of the main one.
      */
     public function __clone() {
         $this->query = clone $this->query;
@@ -499,52 +491,6 @@ class Request {
      */
     public function get($key, $default = null, $deep = false) {
         return $this->query->get($key, $this->attributes->get($key, $this->request->get($key, $default, $deep), $deep), $deep);
-    }
-
-    /**
-     * Gets the Session.
-     *
-     * @return SessionInterface|null The session
-     *
-     * @api
-     */
-    public function getSession() {
-        return $this->session;
-    }
-
-    /**
-     * Whether the request contains a Session which was started in one of the
-     * previous requests.
-     *
-     * @return boolean
-     *
-     * @api
-     */
-    public function hasPreviousSession() {
-        // the check for $this->session avoids malicious users trying to fake a session cookie with proper name
-        return $this->hasSession() && $this->cookies->has($this->session->getName());
-    }
-
-    /**
-     * Whether the request contains a Session object.
-     *
-     * @return boolean
-     *
-     * @api
-     */
-    public function hasSession() {
-        return null !== $this->session;
-    }
-
-    /**
-     * Sets the Session.
-     *
-     * @param SessionInterface $session The Session
-     *
-     * @api
-     */
-    public function setSession(SessionInterface $session) {
-        $this->session = $session;
     }
 
     /**
