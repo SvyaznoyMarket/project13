@@ -7,10 +7,9 @@ require_once __DIR__ . '/../dark/lib/Debug/Timer.php';
 $env = isset($_SERVER['APPLICATION_ENV']) ? $_SERVER['APPLICATION_ENV'] : 'dev';
 
 // configuration
-$configClass = ucfirst($env).'Config';
-require_once __DIR__ . '/../dark/config/'.$configClass.'.php';
-/** @var $config AppConfig */
-$config = new $configClass;
+/** @var $config \Config\AppConfig */
+$config = include realpath(__DIR__ . '/../dark/config/config-' . $env . '.php');
+if (false === $config) die(sprintf('Не удалось загрузить конфигурацию для среды "%s"', $env));
 
 // debug
 if (isset($_GET['APPLICATION_DEBUG'])) {
@@ -27,7 +26,7 @@ if (isset($_GET['APPLICATION_DEBUG'])) {
 
 // application
 require_once __DIR__ . '/../dark/lib/App.php';
-\App::init($config);
+\App::init($env, $config);
 
 \App::logger()->info('Start app');
 $requestLogger = \Util\RequestLogger::getInstance();

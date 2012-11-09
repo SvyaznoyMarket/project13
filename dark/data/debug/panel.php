@@ -6,7 +6,7 @@ if (isset($response) && (200 != $response->getStatusCode())) {
 }
 
 $debug->add('id', \App::$id, 140);
-$debug->add('env', \App::config()->env, 139);
+$debug->add('env', \App::$env, 139);
 $debug->add('act', implode('.', \App::request()->attributes->get('action', array('?', '?'))), 138);
 
 // timers
