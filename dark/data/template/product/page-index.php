@@ -37,7 +37,7 @@
     $p3d_res_big[] = $photo3d->getUrl(1);
   }
 
-  $showAveragePrice = !$product->getPriceOld() && $product->getPriceAverage();
+  $showAveragePrice = \App::config()->product['showAveragePrice'] && !$product->getPriceOld() && $product->getPriceAverage();
 
     $adfox_id_by_label = 'adfox400';
     if ($product->getLabel()) {
