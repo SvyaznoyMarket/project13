@@ -118,4 +118,8 @@ class DefaultLayout extends Layout {
     public function slotAdriver() {
         return '';
     }
+    
+    public function slotBodyClassAttribute() {
+        return '';
+    }
 }
