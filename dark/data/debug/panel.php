@@ -8,6 +8,9 @@ if (isset($response) && (200 != $response->getStatusCode())) {
 $debug->add('id', \App::$id, 140);
 $debug->add('env', \App::$env, 139);
 $debug->add('act', implode('.', \App::request()->attributes->get('action', array('?', '?'))), 138);
+if (\App::user()->getToken()) {
+    $debug->add('user', \App::user()->getToken(), 135);
+}
 
 // timers
 $appTimer = \Debug\Timer::get('app');

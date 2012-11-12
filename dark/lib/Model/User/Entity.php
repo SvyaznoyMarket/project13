@@ -537,4 +537,11 @@ class Entity {
     {
         return $this->zipCode;
     }
+
+    /**
+     * @return string
+     */
+    public function getName() {
+        return implode(' ', array($this->getFirstName(), $this->getLastName()));
+    }
 }

@@ -20,21 +20,17 @@ class IndexPage extends \View\DefaultLayout {
     }
 
     public function slotContent() {
-        return $this->render('user/page-index', $this->params);
-    }
-
-    public function slotSidebar() {
         $this->params['menu'] = array(
             array(
                 'title' => 'Моя персональная информация',
                 'links' => array(
                     array(
                         'name' => 'Изменить мои данные',
-                        'url'  => 'user.edit',
+                        'url'  => $this->url('user.edit'),
                     ),
                     array(
                         'name' => 'Изменить пароль',
-                        'url'  => 'user.changePassword',
+                        'url'  => $this->url('user.changePassword'),
                     ),
                 )
             ),
@@ -45,7 +41,7 @@ class IndexPage extends \View\DefaultLayout {
                     array(
                         'name' => 'Мои заказы',
                         'num'  => \RepositoryManager::getOrder()->countByUserToken(\App::user()->getEntity()->getToken()),
-                        'url'  => 'user.order',
+                        'url'  => $this->url('user.order'),
                     ),
                 )
             ),
@@ -55,12 +51,16 @@ class IndexPage extends \View\DefaultLayout {
                 'links' => array(
                     array(
                         'name' => 'Адвокат клиента',
-                        'url'  => 'user.consultation',
+                        'url'  => $this->url('user.consultation'),
                     ),
                 )
             ),
         );
 
+        return $this->render('user/page-index', $this->params);
+    }
+
+    public function slotSidebar() {
         return $this->render('user/_sidebar', $this->params);
     }
 }
