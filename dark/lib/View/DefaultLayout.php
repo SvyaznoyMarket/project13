@@ -45,6 +45,11 @@ class DefaultLayout extends Layout {
         return 'default';
     }
 
+    public function slotBodyClassAttribute() {
+        return '';
+    }
+
+
     public function slotHeader() {
         if (!$this->hasParam('rootCategories')) {
             $rootCategories = \RepositoryManager::getProductCategory()->getRootCollection();
