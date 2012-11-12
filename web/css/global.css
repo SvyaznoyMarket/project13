@@ -6078,39 +6078,76 @@
     top: -80px;
     width: 96px;
   }
+  #staticYMap {
+    display: none;
+  }
   .printAction {
     float: right;
-    margin: 20px;
+    margin: 20px 20px -50px;
+    position: relative;
+    text-align: center;
+    width: 135px;
+    z-index: 10;
+  }
+  .printLogo {
+    display: none;
+    width: 10mm;
   }
 }
 @media print {
   .shopPrintPage .bMap {
     border: none;
     box-shadow: none;
+    padding: 0;
+    margin-left: 30mm;
   }
-  .shopPrintPage .bMap__eBody {
+  .shopPrintPage .bMap #staticYMap {
     display: block;
-    margin: 0 auto;
-    width: 696px;
-    z-index: 1;
+  }
+  .shopPrintPage .pagehead h1 {
+    float: none;
+    font-family: Arial, sans-serif;
+    font-size: 30px;
+    font-weight: normal;
+    margin-left: 30mm;
+    width: 650px;
+  }
+  .shopPrintPage .printLogo {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 18mm;
+    width: 10mm;
   }
   .shopPrintPage .bMapInfo {
     font-size: 1.1em;
+    margin-left: 30mm;
+    width: 650px;
+  }
+  .shopPrintPage .bMapInfo .bMapInfo__eTitle.mShop {
+    display: none;
+  }
+  .shopPrintPage .bMapInfo .bMapInfo__eText {
+    width: 650px;
   }
   .shopPrintPage .topbar,
   .shopPrintPage #header,
   .shopPrintPage #upper,
   .shopPrintPage .searchbox,
   .shopPrintPage .breadcrumbs,
+  .shopPrintPage .bMap__eBody,
   .shopPrintPage .bMap__eImages,
   .shopPrintPage #map-panorama,
   .shopPrintPage .printAction,
   .shopPrintPage .popup,
   .shopPrintPage .footer,
+  .shopPrintPage .bMapInfo__eIco.mShop,
   .shopPrintPage .lightbox {
     display: none;
-    visibility: hidden;
-    opacity: 0;
+    width: 0px;
+  }
+  .shopPrintPage #page {
+    height: 100%;
   }
 }
 /*---END---СТИЛИ СТРАНИЦЫ МАГАЗИНА---*/

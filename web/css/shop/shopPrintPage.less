@@ -1,31 +1,61 @@
 .shopPrintPage{
+
+	@marginLeft: 30mm; //отступ страницы печати
+	@widthPrintPage: 650px; // ширина страницы
+
 	.bMap{
 		border: none;
 		box-shadow:none;
+		padding: 0;
+		margin-left: @marginLeft;
+		#staticYMap{
+			display: block;
+		}
 	}
-	.bMap__eBody{
+	.pagehead h1{
+		float: none;
+		font-family: Arial, sans-serif;
+		font-size: 30px;
+		font-weight: normal;
+		margin-left: @marginLeft;
+		width: @widthPrintPage;
+	}
+	.printLogo{
 		display: block;
-		margin: 0 auto;
-		width: 696px;
-		z-index: 1;
+		position: absolute;
+		top: 0;
+		left: 18mm;
+		width: 10mm;
 	}
 	.bMapInfo{
 		font-size:1.1em;
+		margin-left: @marginLeft;
+		width: @widthPrintPage;
+		.bMapInfo__eTitle.mShop{
+			display: none;
+		}
+		.bMapInfo__eText{
+			width: @widthPrintPage;
+		}
 	}
 	.topbar,
 	#header,
 	#upper,
 	.searchbox,
 	.breadcrumbs,
+	.bMap__eBody,
 	.bMap__eImages,
 	#map-panorama,
 	.printAction,
 	.popup,
 	.footer,
+	.bMapInfo__eIco.mShop,
 	.lightbox{
 		display: none;
-		visibility: hidden;
-		opacity: 0;
+		width: 0px;
 	}
-
+	#page{
+		height: 100%;
+		//width: @widthPrintPage;
+	}
 }

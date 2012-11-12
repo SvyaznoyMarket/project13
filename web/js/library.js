@@ -1214,6 +1214,17 @@ function MapOnePoint( position, nodeId ) {
         iconImageOffset: [-19, -57] 
     }
 
+    if ($('#staticYMap').length){ //static map for printPage
+        var url = "http://static-maps.yandex.ru/1.x/?"
+        var statType = 'l=map'
+        var statCord = 'll='+position.longitude+','+position.latitude
+        var statZoom = 'z=16'
+        var statSize = 'size=650,450' // it's max value :`(
+        var statPlacemark = 'pt='+position.longitude+','+position.latitude+',pm2dol'
+        var src = url+statCord+'&'+statZoom+'&'+statType+'&'+statSize+'&'+statPlacemark
+        $('#staticYMap img').attr('src',src)
+    }
+
     self.yandex = function() {    
         var point = [ position.latitude*1 , position.longitude*1 ]
          myMap = new ymaps.Map ( nodeId, {

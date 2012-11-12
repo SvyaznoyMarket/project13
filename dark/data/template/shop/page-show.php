@@ -12,9 +12,9 @@
 <input type="hidden" name="shop[longitude]" value="<?= $shop->getLongitude() ?>"/>
 
 <!-- bMap -->
+<img class="printLogo" src='/css/skin/logo503.png'/>
 <div class="bMap">
     <div id="map-container" class='bMap__eBody'></div>
-
     <div class='bMap__eImages'>
         <h3 class='bMap__eImagesTitle'>Смотри как внутри</h3>
 
@@ -46,14 +46,17 @@
     <? if ($shop->getPanorama()): ?>
         <input id="map-panorama" type="hidden" data-swf="<?= $shop->getPanorama()->getSwf() ?>" data-xml="<?= $shop->getPanorama()->getXml() ?>"/>
     <? endif ?>
+
+    <div id="staticYMap"><img src="" /></div>
 </div>
 <!-- /bMap -->
-
+<a class="bOrangeButton printAction" href="javascript:window.print()">Распечатать</a>
+<div class="clear"></div>
 <!-- bMapInfo -->
 <div class='bMapInfo'>
     <div class='bMapInfo__eIco mShop'></div>
     <div class='bMapInfo__eText'>
-        <h2 class='bMapInfo__eTitle'><?= $shop->getAddress() ?></h2>
+        <h2 class='bMapInfo__eTitle mShop'><?= $shop->getAddress() ?></h2>
 
         <p class='bMapInfo__eP'>
             <span class='bMapInfo__eSpan mBig'>
@@ -67,8 +70,7 @@
             <? endif ?>
 
             <? if ($shop->getPhone()): ?>
-                Телефон<?= false !== strpos($shop->getPhone(), ',') ? 'ы' : '' ?>
-                : <?= $shop->getPhone() ?><br/>
+                Телефон<?= false !== strpos($shop->getPhone(), ',') ? 'ы' : '' ?>: <?= $shop->getPhone() ?><br/>
             <? endif ?>
             </span>
         </p>
@@ -110,6 +112,5 @@
     </div>
 </div>
 <!-- /bMapInfo -->
-<a class="bOrangeButton printAction" href="javascript:window.print()">Распечатать</a>
 <div class="clear"></div>
 
