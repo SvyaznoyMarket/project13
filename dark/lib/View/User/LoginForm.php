@@ -83,4 +83,19 @@ class LoginForm {
     public function getErrors() {
         return $this->errors;
     }
+
+    /**
+     * @return bool
+     */
+    public function isValid() {
+        $isValid = true;
+        foreach ($this->errors as $error) {
+            if (null !== $error) {
+                $isValid = false;
+                break;
+            }
+        }
+
+        return $isValid;
+    }
 }

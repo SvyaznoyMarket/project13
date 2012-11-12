@@ -1,13 +1,24 @@
 <?php
 /**
- * @var $page \View\User\IndexPage
+ * @var $page \View\Layout
+ * @var $menu array
  */
 ?>
 
-<?// include_component('user', 'shortuserinfo') ?>
-<div class="cabinethelp">Заполни о себе больше информации это позволит нам сделать тебе интересные предложения</div>
-<div class="pb15">
-    <form action="<?= $page->url('user.edit') ?>" method="get">
-        <input type="submit" class="button whitebutton" id="whitebutton" value="Заполнить мои данные"/>
-    </form>
+<div class="fl width315">
+
+    <? foreach ($menu as $item): ?>
+    <div class="font16 orange pb10"><?= $item['title']?></div>
+    <ul class="leftmenu pb20">
+        <? foreach ($item['links'] as $link): ?>
+        <li>
+            <a href="<?= $link['url'] ?>">
+                <?= $link['name'] ?>
+                <? if (isset($link['num'])) echo '(' . $link['num'] . ')' ?>
+            </a>
+        </li>
+        <? endforeach ?>
+    </ul>
+    <? endforeach ?>
+
 </div>
