@@ -108,16 +108,11 @@ foreach ($products as $product) {
                         class="price"><?= $page->helper->formatPrice($product->getPrice()) ?></span> <span class="rubl">p</span></span>
                 </div>
                 <div class="right">
-                    <div class="numerbox">
-                        <? if ($cartProduct->getQuantity() > 1): ?>
-                            <a href="<?= $page->url('cart.product.add', array('productId' => $product->getId(), 'quantity' => -1)) ?>"><b class="ajaless" title="Уменьшить"></b></a>
-                        <? else: ?>
-                            <b class="ajaless" title="Уменьшить"></b>
-                        <? endif ?>
-                        <input class="ajaquant" value="<?= $cartProduct->getQuantity() ?>">
-                        <a href="<?= $page->url('cart.product.add', array('productId' => $product->getId(), 'quantity' => 1)) ?>"><b class="ajamore" title="Увеличить"></b>
-                        </a>
-                    </div>
+                    <?= $page->render('_spinner', array(
+                        'quantity' => $cartProduct->getQuantity(),
+                        'incUrl'   => $page->url('cart.product.add', array('productId' => $product->getId(), 'quantity' => 1)),
+                        'decUrl'   => $page->url('cart.product.add', array('productId' => $product->getId(), 'quantity' => -1)),
+                    ))?>
                 </div>
             </div>
             <div class="basketinfo">
@@ -175,15 +170,11 @@ foreach ($products as $product) {
                     <span class="price"><?= $service->getPrice() ? $page->helper->formatPrice($service->getPrice()) : '' ?></span> <span class="rubl">p</span></span>
                 </div>
                 <div class="right">
-                    <div class="numerbox">
-                        <? if ($cartService->getQuantity() > 1): ?>
-                            <a href="<?= $page->url('cart.service.add', array('serviceId' => $service->getId(), 'productId' => null, 'quantity' => -1)) ?>"><b class="ajaless" title="Уменьшить"></b></a>
-                        <? else: ?>
-                            <b class="ajaless" title="Уменьшить"></b>
-                        <? endif ?>
-                        <input class="ajaquant" value="<?= $cartService->getQuantity() ?>">
-                        <a href="<?= $page->url('cart.service.add', array('serviceId' => $service->getId(), 'productId' => null, 'quantity' => 1)) ?>"><b class="ajamore" title="Увеличить"></b></a>
-                    </div>
+                    <?= $page->render('_spinner', array(
+                        'quantity' => $cartService->getQuantity(),
+                       'incUrl'   => $page->url('cart.service.add', array('serviceId' => $service->getId(), 'productId' => null, 'quantity' => 1)),
+                       'decUrl'   => $page->url('cart.service.add', array('serviceId' => $service->getId(), 'productId' => null, 'quantity' => -1)),
+                    ))?>
                 </div>
             </div>
             <div class="basketinfo">

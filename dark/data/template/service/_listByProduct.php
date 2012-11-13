@@ -20,9 +20,7 @@ $cartServicesById = $cartProduct ? $cartProduct->getService() : array();
                 <%=f1title%> - <%=f1price%>&nbsp;
                 <span class="rubl"> p</span>
                 <br>
-                <a class="bBacketServ__eMore"
-                   href="<?= $page->url('cart.service.delete', array('serviceId' => 'F1ID', 'productId' => $product->getId()));?>">Отменить
-                    услугу</a>
+                <a class="bBacketServ__eMore" href="<?= $page->url('cart.service.delete', array('serviceId' => 'F1ID', 'productId' => $product->getId()));?>">Отменить услугу</a>
             </div>
         </script>
         <? if ($cartProduct && (bool)$cartProduct->getService()) { ?>
@@ -31,9 +29,7 @@ $cartServicesById = $cartProduct ? $cartProduct->getService() : array();
             <div ref="<?= $service->getToken();?>">
                 <?= $service->getName() ?> - <?=  $page->helper->formatPrice($service->getPrice()) ?>
                 &nbsp;<span class="rubl">p</span><br>
-                <a class="bBacketServ__eMore"
-                   href="<?= $page->url('cart.service.delete', array('serviceId' => $service->getId(), 'productId' => $product->getId()));?>">Отменить
-                    услугу</a>
+                <a class="bBacketServ__eMore" href="<?= $page->url('cart.service.delete', array('serviceId' => $service->getId(), 'productId' => $product->getId()));?>">Отменить услугу</a>
             </div>
             <? endif; endforeach ?>
         <? } else { ?>

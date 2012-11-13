@@ -86,21 +86,11 @@ foreach ($product->getService() as $service) {
                         </td>
                         <td class="mPrice"><span class="price"><?= $page->helper->formatPrice($cartService->getTotalPrice()) ?></span>&nbsp;<span class="rubl">p</span></td>
                         <td class="mEdit">
-                            <div class="numerbox mInlineBlock mVAMiddle">
-                                <? if ($cartService->getQuantity() > 1): ?>
-                                <a href="<?= $page->url('cart.service.add', array('serviceId' => $service->getId(), 'quantity' => -1, 'productId' => $product->getId())) ?>">
-                                    <b title="Уменьшить" class="ajaless"></b>
-                                </a>
-                                <? else: ?>
-                                <a href="#" ref="<?= $page->url('cart.service.add', array('serviceId' => $service->getId(), 'quantity' => -1, 'productId' => $product->getId())) ?>">
-                                    <b title="Уменьшить" class="ajaless"></b>
-                                </a>
-                                <? endif ?>
-                                <span class="ajaquant"><?= $cartService->getQuantity() ?> шт.</span>
-                                <a href="<?= $page->url('cart.service.add', array('serviceId' => $service->getId(), 'productId' => $product->getId(), 'quantity' => 1)) ?>">
-                                    <b title="Увеличить" class="ajamore"></b>
-                                </a>
-                            </div>
+                            <?= $page->render('_spinner', array(
+                                'quantity' => $cartService->getQuantity(),
+                                'incUrl'   => $page->url('cart.service.add', array('serviceId' => $service->getId(), 'quantity' => 1, 'productId' => $product->getId())),
+                                'decUrl'   => $page->url('cart.service.add', array('serviceId' => $service->getId(), 'quantity' => -1, 'productId' => $product->getId())),
+                            ))?>
                             <a class="button whitelink ml5 mInlineBlock mVAMiddle" href="<?= $page->url('cart.service.delete', array('serviceId' => $service->getId(), 'productId' => $product->getId())) ?>">Отменить</a>
                         </td>
                     </tr>
