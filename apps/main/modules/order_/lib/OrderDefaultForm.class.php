@@ -167,7 +167,8 @@ class OrderDefaultForm extends BaseOrderForm
 
     // если оплата подарочной картой
     if (!empty($taintedValues['payment_method_id']) && (10 == $taintedValues['payment_method_id'])) {
-        $this->validatorSchema['cardnumber'] = new myValidatorCertificate(array('required' => true));
+        //$this->validatorSchema['cardnumber'] = new myValidatorCertificate(array('required' => true));
+        $this->validatorSchema['cardnumber'] = new sfValidatorString(array('required' => true));
         $this->validatorSchema['cardpin'] = new sfValidatorString(array('required' => true));
     }
 

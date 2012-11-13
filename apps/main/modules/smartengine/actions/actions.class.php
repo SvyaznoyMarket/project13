@@ -30,7 +30,7 @@ class smartengineActions extends myActions
       if ($this->getUser()->isAuthenticated()) {
         $params['userid'] = $this->getUser()->getGuardUser()->getId();
       }
-      if ($product->getMainCategory()) {
+      if ($product->getMainCategory() && in_array($product->getMainCategory()->getId(), array(1, 788))) {
         $params['itemtype'] = $product->getMainCategory()->getId();
         $params['requesteditemtype'] = $product->getMainCategory()->getId();
       }
