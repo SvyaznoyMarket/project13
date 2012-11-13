@@ -6091,7 +6091,6 @@
   }
   .printLogo {
     display: none;
-    width: 10mm;
   }
 }
 @media print {
@@ -6099,7 +6098,7 @@
     border: none;
     box-shadow: none;
     padding: 0;
-    margin-left: 30mm;
+    margin-left: 33mm;
   }
   .shopPrintPage .bMap #staticYMap {
     display: block;
@@ -6109,19 +6108,18 @@
     font-family: Arial, sans-serif;
     font-size: 30px;
     font-weight: normal;
-    margin-left: 30mm;
+    margin-left: 33mm;
     width: 650px;
   }
   .shopPrintPage .printLogo {
     display: block;
     position: absolute;
     top: 0;
-    left: 18mm;
-    width: 10mm;
+    width: 28mm;
   }
   .shopPrintPage .bMapInfo {
     font-size: 1.1em;
-    margin-left: 30mm;
+    margin-left: 33mm;
     width: 650px;
   }
   .shopPrintPage .bMapInfo .bMapInfo__eTitle.mShop {
