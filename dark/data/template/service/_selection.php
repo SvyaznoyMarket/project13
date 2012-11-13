@@ -38,6 +38,7 @@ $cartServicesById = $cartProduct ? $cartProduct->getService() : array();
                     <input data-f1title="<?= $service->getName() ?>" data-f1price="<?= $service->getPrice() ?>"
                            data-fid="<?= $service->getId() ?>"
                            data-url="<?= $page->url('cart.service.add', array('serviceId' => $service->getId(), 'productId' => $product->getId(), 'quantity' => 1)) ?>"
+                           data-f1token="<?= $service->getToken() ?>"
                            ref="<?= addslashes($service->getToken()) ?>"
                            type="button" class="active button yellowbutton" value="В корзине" />
                     <? } elseif ($user->getRegion()->getHasService() && $service->isInSale()) { ?>
@@ -45,6 +46,7 @@ $cartServicesById = $cartProduct ? $cartProduct->getService() : array();
                            data-f1price="<?= $page->helper->formatPrice($service->getPrice()) ?>"
                            data-fid="<?= $service->getId() ?>"
                            data-url="<?= $page->url('cart.service.add', array('serviceId' => $service->getId(), 'productId' => $product->getId(), 'quantity' => 1)) ?>"
+                           data-f1token="<?= $service->getToken() ?>"
                            data-event="BuyF1"
                            data-title="Заказ услуги F1"
                            ref="<?= addslashes($service->getToken()) ?>"
