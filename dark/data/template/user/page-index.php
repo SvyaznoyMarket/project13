@@ -1,6 +1,6 @@
 <?php
 /**
- * @var $page \View\Layout
+ * @var $page \View\User\IndexPage
  * @var $menu array
  */
 ?>
