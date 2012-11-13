@@ -6994,10 +6994,8 @@
     font-size: 11px;
     padding: 0px 0px 0px 20px;
   }
-  .bBacketServ.mBig .mEdit span a {
-    color: #a6a6a6;
-    margin: 0px 2px;
-    text-decoration: underline;
+  .bBacketServ.mBig .mEdit .numerbox {
+    float: left;
   }
   .bBacketServ__eMore {
     color: #a6a6a6;
