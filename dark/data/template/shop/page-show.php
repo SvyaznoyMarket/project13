@@ -12,7 +12,7 @@
 <input type="hidden" name="shop[longitude]" value="<?= $shop->getLongitude() ?>"/>
 
 <!-- bMap -->
-<img class="printLogo" src='/css/skin/logo503.png'/>
+<img class="printLogo" src='/css/shop/img/bw_logo.png'/>
 <div class="bMap">
     <div id="map-container" class='bMap__eBody'></div>
     <div class='bMap__eImages'>
