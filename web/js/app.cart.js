@@ -228,8 +228,10 @@ $(document).ready(function() {
 			})
 		}
 		bline.find('a.link1').click( function(){
+			console.log('123')
 			if( popupIsOpened )
 				return false
+			console.log('pop not open')
 			popupIsOpened = true
 			var f1popup = $('div.bF1Block', bline)
 			f1popup.show()
@@ -245,6 +247,7 @@ $(document).ready(function() {
 				$.getJSON( f1item.url, function(data) {
 				})
 				makeWide( bline, f1item )
+				popupIsOpened = false
 		   		f1popup.hide()
 		   })
 			return false
@@ -273,6 +276,7 @@ $(document).ready(function() {
 				$(this).val('В корзине').addClass('active')
 				var tmpitem = $(this).data()			
 				$.getJSON( tmpitem.url, function(data) { })
+				popupIsOpened = false
 				wrntpopup.hide()
 				makeWideWrnt( bline, tmpitem )
 		   		
