@@ -85,10 +85,4 @@ class Action {
     public function reset(\Http\Request $request) {
 
     }
-
-    public function changePassword(\Http\Request $request) {
-        if ($request->isMethod('post')) {
-
-        }
-    }
 }

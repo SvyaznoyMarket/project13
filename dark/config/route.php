@@ -268,6 +268,6 @@ return array(
     // изменение пароля пользователя
     'user.changePassword' => array(
         'pattern' => '/private/password',
-        'action'  => array('User\Action', 'changePassword'),
+        'action'  => array('User\ChangePasswordAction', 'execute'),
     ),
 );

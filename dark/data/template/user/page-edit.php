@@ -6,7 +6,7 @@
 ?>
 
 <? if ($error = $form->getError('global')): ?>
-    <p class="error"><?= $error ?></p>
+    <p class="red"><?= $error ?></p>
 <? endif ?>
 
 <form action="<?= $page->url('user.edit') ?>" class="form" method="post">
