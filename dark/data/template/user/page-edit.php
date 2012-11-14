@@ -5,9 +5,12 @@
  */
 ?>
 
+<? if ($error = $form->getError('global')): ?>
+    <p class="error"><?= $error ?></p>
+<? endif ?>
+
 <form action="<?= $page->url('user.edit') ?>" class="form" method="post">
     <div class="fl width430">
-
 
         <div class="pb10">
             <label for="user_first_name">Имя</label>:
@@ -25,14 +28,13 @@
         <input type="text" id="user_last_name" value="<?= $form->getLastName() ?>" name="user[last_name]" class="text width418 mb10" />
 
         <div class="pb10">
-            <label for="user_gender">Пол</label>:
+            <label for="user_sex">Пол</label>:
 
         </div>
-        <div class="selectbox selectbox170"><i></i>
-            <span class="select" id="selectuser[gender]"><?= $form->getSexName() ?></span>
-            <select id="user_gender" name="user[gender]" class="styled">
+        <div class="selectbox170">
+            <select id="user_sex" name="user[sex]">
             <? foreach (array('' => '', '1' => 'мужской', '2' => 'женский') as $sexValue => $sexName): ?>
-                <option value="<?= $sexValue ?>"<? if ($sexValue == $form->getSex()): ?> selected="selected"<? endif ?>><?= $sexName ?></option>
+                <option value="<?= $sexValue ?>"<? if ((int)$sexValue == (int)$form->getSex()): ?> selected="selected"<? endif ?>><?= $sexName ?></option>
             <? endforeach ?>
             </select>
         </div>
@@ -67,31 +69,25 @@
         <div class="pb10">
             <label>Дата рождения</label>:
         </div>
-        <div class="selectbox selectbox75 fl mr10">
-            <i></i>
-            <? $selectedDay = $form->getBirthday() ? $form->getBirthday()->format('d') : '' ?>
-            <span class="select" id="selectuser[birthday][day]"><?= $selectedDay ?></span>
-            <select id="user_birthday_day" name="user[birthday][day]" class="styled">
-            <? foreach (array_merge(array(''), range(1, 31)) as $day): ?>
+        <div class="selectbox75 fl mr10">
+            <? $selectedDay = $form->getBirthday() ? $form->getBirthday()->format('j') : '' ?>
+            <select id="user_birthday_day" name="user[birthday][day]">
+            <? foreach (array_merge(array(''), range(1, 31)) as $day):  ?>
                 <option value="<?= $day ?>"<? if ((int)$day == (int)$selectedDay): ?> selected="selected"<? endif ?>><?= $day ?></option>
             <? endforeach ?>
             </select>
         </div>
-        <div class="selectbox selectbox98 fl mr10">
-            <i></i>
-            <? $selectedMonth = $form->getBirthday() ? $form->getBirthday()->format('m') : '' ?>
-            <span class="select" id="selectuser[birthday][month]"><?= $selectedMonth ?></span>
-            <select id="user_birthday_month" name="user[birthday][month]" class="styled">
+        <div class="selectbox98 fl mr10">
+            <? $selectedMonth = $form->getBirthday() ? $form->getBirthday()->format('n') : '' ?>
+            <select id="user_birthday_month" name="user[birthday][month]">
             <? foreach (array_merge(array(''), range(1, 12)) as $month): ?>
                 <option value="<?= $month ?>"<? if ((int)$month == (int)$selectedMonth): ?> selected="selected"<? endif ?>><?= $month ?></option>
             <? endforeach ?>
             </select>
         </div>
-        <div class="selectbox selectbox75 fl">
-            <i></i>
+        <div class="selectbox75 fl">
             <? $selectedYear = $form->getBirthday() ? $form->getBirthday()->format('Y') : '' ?>
-            <span class="select" id="selectuser[birthday][year]"><?= $selectedYear?></span>
-            <select id="user_birthday_year" name="user[birthday][year]" class="styled">
+            <select id="user_birthday_year" name="user[birthday][year]">
             <? foreach (array_merge(array(''), range(2005, 1930)) as $year): ?>
                 <option value="<?= $year ?>"<? if ((int)$year == (int)$selectedYear): ?> selected="selected"<? endif ?>><?= $year ?></option>
             <? endforeach ?>

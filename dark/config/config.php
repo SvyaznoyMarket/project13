@@ -107,6 +107,8 @@ $c->shopPhoto['url'] = array(
     5 => 'http://fs01.enter.ru/8/1/original/',
 );
 
+$c->cart['productLimit'] = 50;
+
 $c->payment['creditEnabled'] = true;
 
 $c->smartEngine['pull'] = true;

@@ -21,7 +21,7 @@ class UserModel
    */
   public function getByAuthToken($token){
     try{
-      $response = App::getCoreV2()->query('user.get', array('token' => $token), array());
+      $response = App::getCoreV2()->query('user/get', array('token' => $token), array());
       if(!is_array($response) || empty($response)){
         return null;
       }

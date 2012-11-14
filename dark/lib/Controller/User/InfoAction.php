@@ -63,8 +63,7 @@ class InfoAction {
             });
         }
 
-        if ((bool)$warrantyData = $cart->getWarrantyData()) {
-        }
+        $warrantyData = $cart->getWarrantyData();
 
         // получаем общую стоимость корзины
         if (((bool)$productData || (bool)$serviceData)) {
@@ -87,12 +86,16 @@ class InfoAction {
         if ($productData || $serviceData) {
             $client->execute();
 
+            $totalQuantity = $cart->getProductsQuantity();
+
+            // products
             foreach ($productData as $item) {
                 if (!isset($productTokensById[$item['id']])) continue;
 
                 $responseData['productsInCart'][$productTokensById[$item['id']]] = $item['quantity'];
             }
 
+            // services
             foreach ($serviceData as $item) {
                 if (!isset($responseData['servicesInCart'][$serviceTokensById[$item['id']]])) {
                     $responseData['servicesInCart'][$serviceTokensById[$item['id']]] = array();
@@ -102,8 +105,19 @@ class InfoAction {
                     $responseData['servicesInCart'][$serviceTokensById[$item['id']]][$productTokensById[$item['product_id']]] = $item['quantity'];
                 } else {
                     $responseData['servicesInCart'][$serviceTokensById[$item['id']]][0] = $item['quantity'];
+                    $totalQuantity++;
                 }
             }
+
+            // warranties
+            foreach ($warrantyData as $warrantyId => $warrantiesByProduct) {
+                foreach ($warrantiesByProduct as $productId => $item) {
+                    if (!isset($productTokensById[$item['id']])) continue;
+                    $responseData['warrantiesInCart'][$warrantyId][$productTokensById[$item['id']]] = $item['quantity'];
+                }
+            }
+
+            $responseData['vitems'] = $totalQuantity;
         }
 
         return new \Http\JsonResponse(array(

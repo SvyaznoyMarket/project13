@@ -63,4 +63,8 @@ class IndexPage extends \View\DefaultLayout {
     public function slotSidebar() {
         return $this->render('user/_sidebar', $this->params);
     }
+
+    public function slotBodyDataAttribute() {
+        return 'infopage';
+    }
 }

@@ -52,7 +52,10 @@ class EditForm {
                 $this->setBirthday(null);
             }
             else try {
-                $this->setBirthday(new \DateTime(strtotime($data['birthday'])));
+                if (is_array($data['birthday'])) {
+                    $data['birthday'] = sprintf('%04d-%02d-%02d 00:00:00', $data['birthday']['year'], $data['birthday']['month'], $data['birthday']['day']);
+                }
+                $this->setBirthday(new \DateTime($data['birthday']));
             } catch (\Exception $e) {
                 \App::logger()->warn($e);
             }

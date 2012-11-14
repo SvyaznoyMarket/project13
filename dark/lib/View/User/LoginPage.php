@@ -19,4 +19,8 @@ class LoginPage extends \View\DefaultLayout {
 
         return parent::slotContentHead();
     }
+
+    public function slotBodyDataAttribute() {
+        return 'infopage';
+    }
 }

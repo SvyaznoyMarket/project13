@@ -9,7 +9,7 @@ class EditPage extends \View\DefaultLayout {
             $breadcrumbs = array();
             $breadcrumbs[] = array(
                 'name' => 'Личный кабинет',
-                'url'  => null,
+                'url'  => $this->url('user'),
             );
             $breadcrumbs[] = array(
                 'name' => 'Профиль пользователя',
@@ -29,5 +29,9 @@ class EditPage extends \View\DefaultLayout {
 
     public function slotSidebar() {
         return $this->render('user/_sidebar', $this->params);
+    }
+
+    public function slotBodyDataAttribute() {
+        return 'infopage';
     }
 }
