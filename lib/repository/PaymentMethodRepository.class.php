@@ -39,14 +39,6 @@ class PaymentMethodRepository
 
         $result = CoreClient::getInstance()->query('payment-method.get', $params);
 
-        // mock
-        $result[] = array(
-            'id'          => 10,
-            'name'        => 'Оплата подарочной картой',
-            'description' => 'Заполните информацию с подарочной карты',
-            'is_online'   => true,
-        );
-
         if (empty($result) || !is_array($result)) {
             return null;
         }

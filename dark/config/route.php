@@ -148,6 +148,11 @@ return array(
         'action'  => array('Product\RelatedAction', 'execute'),
         'require' => array('productToken' => '[\w\d-_]+'),
     ),
+    'product.comments' => array(
+        'pattern' => '/product/{productPath}/comments',
+        'action'  => array('Product\CommentsAction', 'execute'),
+        'require' => array('productPath' => '[\w\d-_]+\/{1}[\w\d-_]+'),
+    ),
     'tag' => array(
         'pattern' => '/tags/{tagToken}',
         'action'  => array('Tag\Action', 'index'),

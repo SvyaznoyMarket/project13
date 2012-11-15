@@ -172,6 +172,8 @@ class order_Actions extends myActions
       $baseOrder = $form->updateObject();
 
       $baseOrder->mapValue('credit_bank_id', $form->getValue('credit_bank_id'));
+      $baseOrder->mapValue('cardnumber', $form->getValue('cardnumber'));
+      $baseOrder->mapValue('cardpin', $form->getValue('cardpin'));
       /*
       $baseOrder->address = ''
         .($form->getValue('address_metro') ? "метро {$form->getValue('address_metro')}, " : '')
@@ -791,19 +793,25 @@ class order_Actions extends myActions
     }, $orders);
     //dump($coreData, 1);
     $response = Core::getInstance()->query('order.create-packet', array(), $coreData, true);
-    //dump($response, 1);
     if (is_array($response) && array_key_exists('confirmed', $response) && $response['confirmed'])
     {
       $firstOrder = reset($orders);
       // проверка на подарочный сертификат
       if ((1 == count($orders)) && (10 == $firstOrder->payment_method_id)) {
         try {
-            $r = CoreClient::getInstance()->query('order/pay', array('id' => $firstOrder->core_id), array(
-                'certificate'     => $firstOrder->cardnumber,
-                'certificate_pin' => $firstOrder->cardpin,
+            $firstOrderData = reset($response['orders']);
+
+            $r = Core::getInstance()->query('order/pay', array('id' => $firstOrderData['id']), array(
+                'certificate'     => preg_replace('/[^\d]+/', '', $firstOrder->cardnumber),
+                'certificate_pin' => preg_replace('/[^\d]+/', '', $firstOrder->cardpin),
+                'payment_detail'  => 'Оплата подарочным сертификатом',
             ));
-            //var_dump($r); exit();
+
+            if (!$r['confirmed']) {
+                throw new \Exception('Certificate not applied for order#' . $firstOrderData['id']);
+            }
         } catch(Exception $e) {
+          $this->getLogger()->err($e->getMessage());
         }
       }
 
