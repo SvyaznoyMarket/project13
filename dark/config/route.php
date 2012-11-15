@@ -257,13 +257,9 @@ return array(
     ),
     // адвокат клиента
     'user.consultation' => array(
-        'pattern' => '/private/consultation',
-        'action'  => array('User\Сonsultation', 'execute'),
-    ),
-    // адвокат клиента
-    'user.consultation.send' => array(
-        'pattern' => '/private/consultation/send',
-        'action'  => array('User\Сonsultation', 'send'),
+        //'pattern' => '/private/consultation',
+        'pattern' => '/private/consultation/legal',
+        'action'  => array('User\ConsultationAction', 'execute'),
     ),
     // изменение пароля пользователя
     'user.changePassword' => array(

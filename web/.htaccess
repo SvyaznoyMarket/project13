@@ -44,9 +44,8 @@ Options +FollowSymLinks +ExecCGI
   RewriteRule ^cart/$ dark.php [L]
   RewriteRule ^login$ dark.php [L]
   RewriteRule ^logout$ dark.php [L]
+  RewriteRule ^private/consultation* index.php [L]
   RewriteRule ^private/* dark.php [L]
-  RewriteRule ^private/edit* dark.php [L]
-  RewriteRule ^private/password* dark.php [L]
   RewriteRule ^user/shortinfo/?$ dark.php [L]
 
   RewriteCond %{REQUEST_FILENAME} !-f
