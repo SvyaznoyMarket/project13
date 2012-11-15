@@ -2009,7 +2009,7 @@
     margin: 0 -20px 0 0;
   }
   .popupRegion .inputClear {
-    color: #A6A6A6;
+    color: #a6a6a6;
     font-size: 14px;
     height: 20px;
     margin: 0 15px 0 0;
@@ -4279,7 +4279,7 @@
     width: 0;
   }
   .otherRegion .corner div {
-    border-bottom: 10px solid #FFFFFF;
+    border-bottom: 10px solid #ffffff;
     border-left: 11px solid transparent;
     border-right: 11px solid transparent;
     bottom: -13px;
@@ -4307,7 +4307,7 @@
   }
   .bSet__eMoreInfo {
     text-decoration: none;
-    border-bottom: 2px solid #000;
+    border-bottom: 2px solid #000000;
     font: 16px Tahoma, sans-serif;
     font-weight: bold;
   }
@@ -5728,7 +5728,7 @@
     background: url("/css/whereBuy/img/in_shop.png") 0px -24px no-repeat;
   }
   .bInShopLine__eCount span {
-    color: #000;
+    color: #000000;
     font: 12px Tahoma, sans-serif;
   }
   .bInShopLine__eButton {

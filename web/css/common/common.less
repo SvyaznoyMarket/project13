@@ -84,25 +84,25 @@ a {
   text-decoration: none;
 }
 a:hover {
-  color: #404040;
+  color: @typLinkColor;
   text-decoration: underline;
 }
 a.underline {
   text-decoration: underline;
 }
 a.underline:hover {
-  color: #404040;
+  color: @typLinkColor;
 }
 a.nodecor {
   text-decoration: none;
 }
 .red,
 .red:hover {
-  color: #cb3735 !important;
+  color: @firmRed !important;
 }
 .redprice,
 .redprice:hover {
-  color: #e8303c !important;
+  color: @typRed !important;
 }
 .gray {
   color: @typGray;
@@ -113,7 +113,7 @@ a.nodecor {
   color: @firmOrange;
 }
 .green {
-  color: #6ea428;
+  color: @firmGreen;
 }
 .motton,
 a.motton:hover {
@@ -546,7 +546,7 @@ ul.lh15 li {
   }
   &.textdisabled {
     border-color: #e4e4e4;
-    color: #a6a6a6;
+    color: @typGray;
   }
 }
 .popupbox {
