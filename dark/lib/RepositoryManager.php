@@ -100,4 +100,14 @@ class RepositoryManager {
 
         return $instance;
     }
+
+    static function getDeliveryType() {
+        static $instance;
+
+        if (!$instance) {
+            $instance = new \Model\DeliveryType\Repository(\App::coreClientV2());
+        }
+
+        return $instance;
+    }
 }

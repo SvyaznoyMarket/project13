@@ -55,7 +55,7 @@ class CurrentUser
   }
 
   public function getAuthToken(){
-    return isset($_SESSION['symfony/user/sfUser/attributes']['guard']['token']) ? $_SESSION['symfony/user/sfUser/attributes']['guard']['token'] : null;
+    return isset($_SESSION['_token']) ? (string)$_SESSION['_token'] : null;
   }
 
   /**

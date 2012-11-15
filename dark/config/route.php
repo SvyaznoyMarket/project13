@@ -18,6 +18,11 @@ return array(
         'action'  => array('Search\Action', 'execute'),
     ),
 
+    // инфо пользователя
+    'user.info' => array(
+        'pattern' => '/user/shortinfo',
+        'action'  => array('User\InfoAction', 'execute'),
+    ),
     // вход пользователя
     'user.login' => array(
         'pattern' => '/login',
@@ -263,6 +268,6 @@ return array(
     // изменение пароля пользователя
     'user.changePassword' => array(
         'pattern' => '/private/password',
-        'action'  => array('User\Action', 'changePassword'),
+        'action'  => array('User\ChangePasswordAction', 'execute'),
     ),
 );

@@ -16,14 +16,15 @@ class Cart {
     private $warranties = null;
     /** @var int|null */
     private $totalPrice = null;
+    private $productLimit = null;
 
     public function __construct() {
         $this->storage = \App::session();
         $session = $this->storage->all();
 
-        /**
-         * Если человек впервые - заводим ему пустую корзину
-         */
+        $this->productLimit = \App::config()->cart['productLimit'];
+
+        // если пользователь впервые, то заводим ему пустую корзину
         if(!array_key_exists($this->sessionName, $session)){
             $this->storage->set($this->sessionName, array('productList' => array(), 'serviceList' => array(), 'warrantyList' => array()));
             return;
@@ -49,9 +50,31 @@ class Cart {
 
     }
 
+    public function setProduct(\Model\Product\Entity $product, $quantity = 1) {
+        $data = $this->storage->get($this->sessionName);
+        if ($quantity > 0) {
+            $data['productList'][$product->getId()] = $quantity;
+            $this->storage->set($this->sessionName, $data);
+        }
+    }
+
+    public function deleteProduct(\Model\Product\Entity $product) {
+        // TODO: сделать
+    }
+
     public function hasProduct($productId) {
-        $session = $this->storage->all();
-        return array_key_exists($productId, $session[$this->sessionName]['productList']);
+        $data = $this->storage->get($this->sessionName);
+
+        return array_key_exists($productId, $data['productList']);
+    }
+
+    public function shiftProduct() {
+        $data = $this->storage->get($this->sessionName);
+        reset($data['productList']);
+
+        $key = key($data['productList']);
+        unset($data['productList'][$key]);
+        $this->storage->set($this->sessionName, $data);
     }
 
     /**
@@ -59,17 +82,11 @@ class Cart {
      * @return int
      */
     public function getQuantityByProduct($productId) {
-        $session = $this->storage->all();
+        $data = $this->getData();
         $productId = (int)$productId;
 
-        if (array_key_exists($productId, $session[$this->sessionName]['productList'])) {
-            if ((int)$session[$this->sessionName]['productList'][$productId] < 1) {
-                unset($session[$this->sessionName]['productList'][$productId]);
-
-                return 0;
-            }
-
-            return $session[$this->sessionName]['productList'][$productId];
+        if (array_key_exists($productId, $data['productList'])) {
+            return $data['productList'][$productId];
         }
 
         return 0;
@@ -82,9 +99,9 @@ class Cart {
      */
     public function getWarrantyByProduct($productId) {
         $return = array();
-        $session = $this->storage->all();
+        $data = $this->getData();
 
-        foreach ($session[$this->sessionName]['warrantyList'] as $warrantyId => $warranty) {
+        foreach ($data['warrantyList'] as $warrantyId => $warranty) {
             if (array_key_exists($productId, $warranty)) {
                 $return[] = $warrantyId;
             }
@@ -99,8 +116,9 @@ class Cart {
      * @return bool
      */
     public function hasWarranty($productId, $warrantyId) {
-        $session = $this->storage->all();
-        return isset($session[$this->sessionName]['warrantyList'][$warrantyId][$productId]);
+        $data = $this->getData();
+
+        return isset($data['warrantyList'][$warrantyId][$productId]);
     }
 
     /**
@@ -108,13 +126,13 @@ class Cart {
      */
     public function count() {
         $count = 0;
-        $session = $this->storage->all();
-        foreach ($session[$this->sessionName]['serviceList'] as $service) {
+        $data = $this->getData();
+        foreach ($data['serviceList'] as $service) {
             foreach ($service as $quantity) {
                 $count += $quantity;
             }
         }
-        foreach ($session[$this->sessionName]['productList'] as $quantity) {
+        foreach ($data['productList'] as $quantity) {
             $count += $quantity;
         }
 
@@ -217,18 +235,18 @@ class Cart {
      * @return int
      */
     public function getProductsQuantity() {
-        $session = $this->storage->all();
+        $data = $this->getData();
 
-        return count($session[$this->sessionName]['productList']);
+        return count($data['productList']);
     }
 
     /**
      * @return int
      */
     public function getServicesQuantity() {
-        $session = $this->storage->all();
+        $data = $this->getData();
 
-        return count($session[$this->sessionName]['serviceList']);
+        return count($data['serviceList']);
     }
 
     /**
@@ -237,9 +255,9 @@ class Cart {
      */
     public function getServicesQuantityByProduct($productId) {
         $count = 0;
-        $session = $this->storage->all();
+        $data = $this->getData();
 
-        foreach ($session[$this->sessionName]['serviceList'] as $service) {
+        foreach ($data['serviceList'] as $service) {
             if (array_key_exists($productId, $service)) {
                 $count++;
             }
@@ -248,22 +266,24 @@ class Cart {
         return $count;
     }
 
+    public function getData() {
+        return $this->storage->get($this->sessionName);
+    }
+
     /**
      * @return array
      */
     public function getWarrantiesQuantity() {
-        $session = $this->storage->all();
+        $data = $this->getData();
         $return = array();
 
-        foreach($session[$this->sessionName]['warrantyList'] as $warrantyId => $warrantiesByProduct) {
+        foreach($data['warrantyList'] as $warrantyId => $warrantiesByProduct) {
             foreach ($warrantiesByProduct as $productId => $warrantyQuantity) {
-                $data =array(
+                $return[] =array(
                     'id'         => $warrantyId,
                     'quantity'   => $warrantyQuantity,
                     'product_id' => (int)$productId,
                 );
-
-                $return[] = $data;
             }
         }
 
@@ -274,9 +294,9 @@ class Cart {
      * @return array
      */
     public function getProductData() {
-        $session = $this->storage->all();
+        $data = $this->getData();
         $return = array();
-        foreach ($session[$this->sessionName]['productList'] as $productId => $productQuantity) {
+        foreach ($data['productList'] as $productId => $productQuantity) {
             $return[] = array(
                 'id'       => $productId,
                 'quantity' => $productQuantity
@@ -290,20 +310,20 @@ class Cart {
      * @return array
      */
     public function getServiceData() {
-        $session = $this->storage->all();
+        $data = $this->getData();
         $return = array();
-        foreach ($session[$this->sessionName]['serviceList'] as $serviceId => $serviceList) {
+        foreach ($data['serviceList'] as $serviceId => $serviceList) {
             foreach ($serviceList as $productId => $serviceQuantity) {
                 $productId = (int)$productId;
-                $data = array(
+                $item = array(
                     'id'       => $serviceId,
                     'quantity' => $serviceQuantity
                 );
 
                 if ($productId > 0) {
-                    $data['product_id'] = $productId;
+                    $item['product_id'] = $productId;
                 }
-                $return[] = $data;
+                $return[] = $item;
             }
         }
 
@@ -314,16 +334,15 @@ class Cart {
      * @return array
      */
     public function getWarrantyData() {
-        $session = $this->storage->all();
+        $data = $this->getData();
         $return = array();
-        foreach($session[$this->sessionName]['warrantyList'] as $warrantyId => $warrantiesByProduct) {
+        foreach($data['warrantyList'] as $warrantyId => $warrantiesByProduct) {
             foreach($warrantiesByProduct as $productId => $warrantyQuantity){
-                $data =array(
+                $return[] =array(
                     'id'         => $warrantyId,
                     'quantity'   => $warrantyQuantity,
                     'product_id' => (int)$productId,
                 );
-                $return[] = $data;
             }
         }
 
@@ -394,12 +413,19 @@ class Cart {
     }
 
     public function getAnalyticsData() {
-        $data = array();
+        $return = array();
 
         foreach ($this->getProductData() as $product) {
-            $data[] = $product['id'];
+            $return[] = $product['id'];
         }
 
-        return implode(',', $data);
+        return implode(',', $return);
+    }
+
+    private function checkProductLimit() {
+        // если корзина не может вместить новый товар
+        if (null != $this->productLimit && ($this->getProductsQuantity() >= $this->productLimit)) {
+            $this->shiftProduct();
+        }
     }
 }

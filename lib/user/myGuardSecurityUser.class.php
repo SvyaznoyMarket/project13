@@ -118,7 +118,7 @@ class myGuardSecurityUser extends sfBasicSecurityUser
   {
     // signin
     $this->setAttribute('user_id', $user->getId(), 'guard');
-    $this->setAttribute('token', $user->getToken(), 'guard');
+    $_SESSION['_token'] = $user->getToken();
     $this->setAuthenticated(true);
     $this->clearCredentials();
     $this->addCredentials($user->getPermissionNames());
@@ -146,6 +146,7 @@ class myGuardSecurityUser extends sfBasicSecurityUser
   public function signOut()
   {
     $this->getAttributeHolder()->removeNamespace('guard');
+    if (isset($_SESSION['_token'])) unset($_SESSION['_token']);
     $this->user = null;
     $this->clearCredentials();
     $this->setAuthenticated(false);
@@ -161,7 +162,7 @@ class myGuardSecurityUser extends sfBasicSecurityUser
    */
   public function getGuardUser()
   {
-    if (!$this->user && $token = $this->getAttribute('token', null, 'guard'))
+    if (!$this->user && ($token = isset($_SESSION['_token']) ? $_SESSION['_token'] : null))
     {
       $this->user = RepositoryManager::getUser()->getByToken($token);
       if (!$this->user)
@@ -363,7 +364,7 @@ class myGuardSecurityUser extends sfBasicSecurityUser
   {
     if ($this->authenticated === null)
     {
-      $token = $this->getAttribute('token', null, 'guard');
+      $token = isset($_SESSION['_token']) ? $_SESSION['_token'] : null;
 
       if ($token) {
         try {

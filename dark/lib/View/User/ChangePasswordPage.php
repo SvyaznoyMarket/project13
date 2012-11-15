@@ -2,7 +2,7 @@
 
 namespace View\User;
 
-class EditPage extends \View\DefaultLayout {
+class ChangePasswordPage extends \View\DefaultLayout {
     public function prepare() {
         // breadcrumbs
         if (!$this->hasParam('breadcrumbs')) {
@@ -12,19 +12,19 @@ class EditPage extends \View\DefaultLayout {
                 'url'  => $this->url('user'),
             );
             $breadcrumbs[] = array(
-                'name' => 'Профиль пользователя',
+                'name' => 'Изменение пароля',
                 'url'  => null,
             );
 
             $this->setParam('breadcrumbs', $breadcrumbs);
         }
 
-        $this->setTitle('Профиль пользователя - Enter');
-        $this->setParam('title', 'Профиль пользователя');
+        $this->setTitle('Изменение пароля - Enter');
+        $this->setParam('title', 'Изменение пароля');
     }
 
     public function slotContent() {
-        return $this->render('user/page-edit', $this->params);
+        return $this->render('user/page-changePassword', $this->params);
     }
 
     public function slotSidebar() {
