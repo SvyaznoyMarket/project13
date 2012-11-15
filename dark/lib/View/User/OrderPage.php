@@ -27,6 +27,10 @@ class OrderPage extends \View\DefaultLayout {
         return $this->render('user/page-order', $this->params);
     }
 
+    public function slotSidebar() {
+        return $this->render('user/_sidebar', $this->params);
+    }
+
     public function slotBodyDataAttribute() {
         return 'infopage';
     }
