@@ -18,6 +18,8 @@ if (!isset($form)) $form = new \View\User\LoginForm();
     <div class="fl width327 mr20">
         <div class="font16 pb20">У меня есть логин и пароль</div>
 
+        <? if ($error = $form->getError('global')) echo $page->render('_formError', array('error' => $error)) ?>
+
         <div class="pb5">E-mail или мобильный телефон:</div>
         <div class="pb5">
             <? if ($error = $form->getError('username')) echo $page->render('_formError', array('error' => $error)) ?>

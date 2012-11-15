@@ -15,7 +15,7 @@ class Action {
                 $form->setError('username', 'Не указан логин');
             }
             if (!$form->getPassword()) {
-                $form->setError('username', 'Не указан пароль');
+                $form->setError('password', 'Не указан пароль');
             }
 
             if ($form->isValid()) {
@@ -44,7 +44,7 @@ class Action {
                     // xhr
                     if ($request->isXmlHttpRequest()) {
                         return new \Http\JsonResponse(array(
-                            'success' => $form->isValid(),
+                            'success' => true,
                             'data'    => array(
                                 'content' => \App::templating()->render('form-login', array(
                                     'page'    => new \View\Layout(),
@@ -59,6 +59,20 @@ class Action {
                 } catch(\Exception $e) {
                     $form->setError('global', 'Неверно указан логин или пароль');
                 }
+            }
+
+            // xhr
+            if ($request->isXmlHttpRequest()) {
+                return new \Http\JsonResponse(array(
+                    'success' => $form->isValid(),
+                    'data'    => array(
+                        'content' => \App::templating()->render('form-login', array(
+                            'page'    => new \View\Layout(),
+                            'form'    => $form,
+                            'request' => \App::request(),
+                        )),
+                    ),
+                ));
             }
         }
 
