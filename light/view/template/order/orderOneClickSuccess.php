@@ -30,7 +30,7 @@ $analyticsCategoryName = $rootCategory->getName() . (($product->getMainCategory(
 
     <p>Дата заказа: <?php echo DateFormatter::Humanize(new \DateTime()) ?>.<br>Сумма
       заказа: <?php echo number_format($order->getTotalPrice(), 0, ',', ' ') ?> <span class="rubl">p</span></p>
-    <span>В ближайшее время мы свяжемся с вами для уточнения параметров заказа.</span>
+    <span>Спасибо за размещение заказа! Оператор подтвердит его звонком или смс на Ваш контактный номер!</span>
   </div>
 
   <?php if ($order->getNumber()): ?>
