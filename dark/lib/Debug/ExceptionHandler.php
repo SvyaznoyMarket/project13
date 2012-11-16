@@ -21,7 +21,7 @@ class ExceptionHandler {
                 $message = str_replace('Stack trace:', '<span style="color: #ff0000">Stack trace:</span>', $message);
             } if (isset($message)) unset($message);
 
-            $response->setContent('<h1 style="font-size: 16px;">Ошибка 500</h1><pre style="overflow: auto; background: #333333; color: #fcfcfc; padding: 8px 12px; border-radius: 5px; font-size: 14px; font-family: Courier New; box-shadow: 0 0 10px rgba(0,0,0,0.5);">' . implode("\n", $messages) . '</pre>');
+            $response->setContent('<h1 style="font-size: 16px;">#' . $exception->getCode() .' ' . $exception->getMessage() . '</h1><pre style="overflow: auto; background: #333333; color: #fcfcfc; padding: 8px 12px; border-radius: 5px; font-size: 14px; font-family: Courier New; box-shadow: 0 0 10px rgba(0,0,0,0.5);">' . implode("\n", $messages) . '</pre>');
         }
 
         $response->setStatusCode(500);
