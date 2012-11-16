@@ -13,7 +13,7 @@ $hasModel = (isset($hasModel) ? $hasModel : true) && $product->getModel() && (bo
 ?>
 
 <div class="goodsbox"<? if ($isHidden): ?> style="display:none;"<? endif ?>>
-    <div class="goodsbox__inner" ref="<?= $product->getToken(); ?>">
+    <div class="goodsbox__inner" ref="<?= $product->getToken(); ?>" data-url="<?= $product->getLink() ?>">
     	<div class="photo">
 	        <a href="<?= $product->getLink() ?>">
 	            <? if (!empty($kit) && $kit->getCount()): ?>
