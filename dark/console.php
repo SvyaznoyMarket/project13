@@ -17,7 +17,13 @@ if (false === $config) die(sprintf('Не удалось загрузить ко�
 
 // application
 require_once __DIR__ . '/../dark/lib/App.php';
-\App::init($env, $config);
+\App::init($env, $config, function() {
+    if ($error = error_get_last()) {
+        \App::logger()->error($error);
+    }
+
+    \App::shutdown();
+});
 
 \App::logger()->info('Start cli app');
 

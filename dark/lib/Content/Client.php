@@ -23,20 +23,20 @@ class Client {
      * @return array Собирает список опций для создания стрима к сервису
      */
     private function buildOptionList($method, $params, $timeout) {
-        $optionList = array(
+        $options = array(
             'http' => array(
                 'method'  => $method,
                 'content' => http_build_query($params, '', '&'),
-                'timeout' => $timeout
-
+                'timeout' => $timeout,
+                'header'  => "Content-Type: text/xml\r\n",
             )
         );
 
         if ($method == self::methodPost) {
-            $optionList['header'] = 'Content-type: application/x-www-form-urlencoded';
+            $options['http']['header'] = 'Content-type: application/x-www-form-urlencoded';
         }
 
-        return $optionList;
+        return $options;
     }
 
     public function send($action, $params = array(), $method = self::methodPost, $timeout = 30, $json = true) {

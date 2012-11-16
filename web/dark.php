@@ -24,9 +24,40 @@ if (isset($_GET['APPLICATION_DEBUG'])) {
     $config->debug = !empty($_COOKIE['debug']);
 }
 
+// response
+$response = null;
+
 // application
 require_once __DIR__ . '/../dark/lib/App.php';
-\App::init($env, $config);
+\App::init($env, $config, function() use (&$response) {
+    $error = error_get_last();
+    if ($error && (error_reporting() & $error['type'])) {
+        $spend = \Debug\Timer::stop('app');
+        \App::logger()->error('Fail app ' . $spend . ' ' . round(memory_get_peak_usage() / 1048576, 2) . 'Mb' . ' with error ' . json_encode($error));
+
+        if (\App::config()->debug) {
+            $action = new \Debug\ErrorAction();
+            $response = $action->execute();
+        }
+    } else {
+        $spend = \Debug\Timer::stop('app');
+        \App::logger()->info('End app in ' . $spend . ' used ' . round(memory_get_peak_usage() / 1048576, 2) . 'Mb');
+    }
+
+    if ($response instanceof \Http\Response) {
+        $response->send();
+    }
+
+    \App::logger('request_compatible')->info(\Util\RequestLogger::getInstance()->getStatistics());
+
+    // dumps logs
+    \App::shutdown();
+
+    // debug panel
+    if (\App::config()->debug) {
+        require \App::config()->dataDir . '/debug/panel.php';
+    }
+});
 
 \App::logger()->info('Start app');
 $requestLogger = \Util\RequestLogger::getInstance();
@@ -39,8 +70,6 @@ $router = \App::router();
 $request->attributes->add($router->match($request->getPathInfo(), $request->getMethod()));
 \App::logger()->info('Match route ' . $request->attributes->get('route') . ' by ' . $request->getMethod()  . ' ' . $request->getRequestUri());
 
-// response
-$response = null;
 try {
     // resolver
     $resolver = new \Routing\ActionResolver();
@@ -61,26 +90,9 @@ try {
     ));
 
     if (\App::config()->debug) {
-        $spend = \Debug\Timer::stop('app');
-        \App::logger()->error('End app ' . $spend . ' ' . round(memory_get_peak_usage() / 1048576, 2) . 'Mb' . ' with ' . $e);
-
         throw $e;
-    }
-    else {
+    } else {
         $action = new \Controller\Error\ServerErrorAction();
         $response = $action->execute($e, $request);
     }
-}
-if ($response instanceof \Http\Response) {
-    $response->send();
-}
-
-\App::logger('request_compatible')->info($requestLogger->getStatistics());
-
-$spend = \Debug\Timer::stop('app');
-\App::logger()->info('End app in ' . $spend . ' used ' . round(memory_get_peak_usage() / 1048576, 2) . 'Mb');
-
-// debug panel
-if ($config->debug) {
-    require \App::config()->dataDir . '/debug/panel.php';
 }

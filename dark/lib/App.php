@@ -13,10 +13,13 @@ class App {
     private static $loggers = array();
 
     /**
-     * @static
-     * @param string $appDir Директория приложения
+     * @param string           $env             Среда выполнения [local, dev, prod, ...]
+     * @param Config\AppConfig $config
+     * @param null             $shutdownHandler Функция, которая будет выполнена после завершения работы скрипта
+     * @throws LogicException
+     * @throws ErrorException
      */
-    public static function init($env, \Config\AppConfig $config) {
+    public static function init($env, \Config\AppConfig $config, $shutdownHandler = null) {
         self::$env = $env;
         self::$id = uniqid();
         self::$config = $config;
@@ -64,19 +67,9 @@ class App {
             return false;
         });
 
-        // exception handler
-        if (self::$config->debug) {
-            set_exception_handler(array(new \Debug\ExceptionHandler(), 'handle'));
-        }
-
         // shutdown handler
-        register_shutdown_function(function() {
-            if ($error = error_get_last()) {
-                \App::logger()->error($error);
-            }
-
+        register_shutdown_function($shutdownHandler ?: function() {
             \App::shutdown();
-            //if ($error = error_get_last()) {}
         });
 
         self::$initialized = true;
