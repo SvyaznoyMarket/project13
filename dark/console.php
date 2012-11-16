@@ -46,12 +46,8 @@ try {
     $spend = \Debug\Timer::stop('app');
     \App::logger()->error('End cli app ' . $spend . ' ' . round(memory_get_peak_usage() / 1048576, 2) . 'Mb' . ' with ' . $e);
 
-    \App::shutdown();
-
     throw $e;
 }
 
 $spend = \Debug\Timer::stop('app');
 \App::logger()->info('End cli app in ' . $spend . ' used ' . round(memory_get_peak_usage() / 1048576, 2) . 'Mb');
-
-\App::shutdown();

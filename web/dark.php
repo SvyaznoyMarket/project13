@@ -60,17 +60,15 @@ try {
         'exception' => (string)$e,
     ));
 
-    if (false == \App::config()->debug) {
-        $action = new \Controller\Error\ServerErrorAction();
-        $response = $action->execute($e, $request);
-    }
-    else {
+    if (\App::config()->debug) {
         $spend = \Debug\Timer::stop('app');
         \App::logger()->error('End app ' . $spend . ' ' . round(memory_get_peak_usage() / 1048576, 2) . 'Mb' . ' with ' . $e);
 
-        \App::shutdown();
-
         throw $e;
+    }
+    else {
+        $action = new \Controller\Error\ServerErrorAction();
+        $response = $action->execute($e, $request);
     }
 }
 if ($response instanceof \Http\Response) {
@@ -81,8 +79,6 @@ if ($response instanceof \Http\Response) {
 
 $spend = \Debug\Timer::stop('app');
 \App::logger()->info('End app in ' . $spend . ' used ' . round(memory_get_peak_usage() / 1048576, 2) . 'Mb');
-
-\App::shutdown();
 
 // debug panel
 if ($config->debug) {
