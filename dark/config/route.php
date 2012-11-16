@@ -240,7 +240,7 @@ return array(
         'require' => array('serviceToken' => '[\w\d-_]+'),
     ),
 
-    //SmartEngine
+    // smartengine
     'smartengine.pull.product_alsoViewed' => array(
         'pattern' => '/product-also-viewed/{productId}',
         'require' => array('productId' => '\d+'),

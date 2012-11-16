@@ -15,4 +15,8 @@ class NullLogger implements LoggerInterface {
     public function error($message) {}
 
     public function dump() {}
+
+    public function getMessages() {
+        return array();
+    }
 }
