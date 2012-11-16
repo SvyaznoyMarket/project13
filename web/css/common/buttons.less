@@ -51,7 +51,6 @@
 .bOrangeButton {
   .rounded(5px);
   background: #f89b1c;
-  border-radius: 5px;
   border: 1px solid #e26500;
   color: @white;
   display: inline-block;
@@ -59,6 +58,7 @@
   font: 14px Tahoma, sans-serif;
   padding: 6px 15px;
   zoom: 1;
+  behavior: url(@pie);
   i {
     background: url("@{base-url}/common/img/in_deliver.png") 0px 0px no-repeat;//иконка корзины
     display: inline-block;
@@ -97,6 +97,7 @@
   padding: 6px 80px;
   text-align: center;
   zoom: 1;
+  behavior: url(@pie);
   &:hover {
     background: #ee8900;
     border: 1px solid #cb5b00;
@@ -119,6 +120,7 @@
   cursor: pointer;
   font-weight: bold;
   overflow: visible;
+  behavior: url(@pie);
 }
 .bBlueButton .link1,
 .whitelink {

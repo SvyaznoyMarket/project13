@@ -100,70 +100,13 @@ $(document).ready(function(){
 	}
 	/* ---- */
 
-	/* IKEA-like hover */
-	var goodsbox = {
-		timeoutId:0,
-		shadowTimeoutId:0,
-		hoverTrigger:false,
-		shadowAnim:function(obj, start, stop, alpha){
-			shadowTimeoutId = setTimeout( function(){
-				if (start<stop){
-					alpha+=0.1;
-				}
-				else{
-					alpha-=0.1;
-				}
-				if ((alpha>1)||(alpha<0.1)){
-					$(obj).css('box-shadow','0 0 11px 7px rgba(230, 230, 230,'+stop+')');
-					//clearTimeout(shadowTimeoutId);
-				}
-				else{
-					$(obj).css('box-shadow','0 0 11px 7px rgba(230, 230, 230,'+alpha+')');
-					goodsbox.shadowAnim(obj, start, stop, alpha);
-				}
-			},15);			
-		},
-		hoverOn: function(box){
-			timeoutId = setTimeout( function(){
-				goodsbox.hoverTrigger = true;
-				var img = $(box).find('.mainImg');
-				currentItem = $(box).attr('ref');
-				var h = img.height();
-				var w = img.width();
-				img.stop(true,true).animate({'height':h+3,'width':w+3,'marginTop':'-3px'},150);
-				if (window.navigator.userAgent.indexOf ("MSIE") >= 0){
-					$(box).addClass('hover');
-				}
-				else{
-					goodsbox.shadowAnim(box, 0, 1, 0);
-				}
-			} , 300)
-		},
-		hoverOff: function(box){
-			clearTimeout(timeoutId);
-			if (goodsbox.hoverTrigger){
-				goodsbox.hoverTrigger = false;
-				var img = $(box).find('.mainImg');
-				var h = img.height();
-				var w = img.width();
-				img.stop(true,true).animate({'height':h-3,'width':w-3,'marginTop':'0'},150);
-				if (window.navigator.userAgent.indexOf ("MSIE") >= 0){
-					$(box).removeClass('hover');
-				}
-				else{
-					clearTimeout(shadowTimeoutId);
-					goodsbox.shadowAnim(box, 1, 0, 1);
-				}
-			}
-		}
-	} // object goodsbox
+	// hover imitation for IE
+	if (window.navigator.userAgent.indexOf ("MSIE") >= 0){
+		$('.allpageinner').delegate( '.goodsbox__inner', 'hover', function() {
+			$(this).toggleClass('hover');
+		})
+	}
 
-	$('.allpageinner').delegate( '.goodsbox__inner', 'mouseenter', function() {
-			goodsbox.hoverOn(this);
-	})
-	$('.allpageinner').delegate( '.goodsbox__inner', 'mouseleave', function() {
-			goodsbox.hoverOff(this);
-	})
 	$('.allpageinner').delegate( '.goodsboxlink', 'mouseenter', function() { // expanded view hack
 		currentItem = $(this).attr('ref')
 	})
