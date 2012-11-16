@@ -43,6 +43,7 @@ class App {
             require_once $libDir . DIRECTORY_SEPARATOR . str_replace('\\', DIRECTORY_SEPARATOR, $class) . '.php';
         });
 
+        // error handler
         set_error_handler(function ($level, $message, $file, $line, $context) {
             static $levels = array(
                 E_WARNING           => 'Warning',
@@ -62,6 +63,11 @@ class App {
 
             return false;
         });
+
+        // exception handler
+        if (self::$config->debug) {
+            set_exception_handler(array(new \Debug\ExceptionHandler(), 'handle'));
+        }
 
         self::$initialized = true;
     }
