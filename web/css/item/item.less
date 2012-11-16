@@ -78,6 +78,7 @@
   top: 0px;
   width:78px;
   zoom: 1;
+  behavior: url(@pie);
   a {
     color: #959595;
     cursor: pointer;
@@ -171,7 +172,7 @@
     height: 44px;
     overflow: hidden;
     width: 44px;
-    z-index: 1;
+    behavior: url(@pie);
     &:hover,
     &.current{
       border: 2px solid @firmOrange;
@@ -179,6 +180,7 @@
     }
     img{
       margin:-2px;
+      *margin-top:-4px;
     }
   }
   

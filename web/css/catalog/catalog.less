@@ -209,14 +209,15 @@
   }
 }
 .goodsbox__inner{
+  background: @white;
   padding:10px;
   width:195px;
-  border-radius:5px;
-}
-.goodsbox__inner.hover{
-  border:1px solid @typLightGray;
-  margin:-1px;
-  .box-shadow(0 0 11px 7px @typLightGray);
+  &:hover,
+  &.hover{
+      .rounded(5px);
+      .box-shadow(0 0 6px 2px @typLightGray);
+      behavior: url('@{pie}');
+  }
 }
 .goodsboxlink {
   display: block;
