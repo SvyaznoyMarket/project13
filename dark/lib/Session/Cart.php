@@ -401,7 +401,7 @@ class Cart {
         $this->warranties = array();
         if(array_key_exists('warranty_list', $response)) {
             foreach($response['warranty_list'] as $warrantyData) {
-                $warranty = new \Model\Cart\Service\Entity($warrantyData);
+                $warranty = new \Model\Cart\Warranty\Entity($warrantyData);
                 $productId = (array_key_exists('product_id', $warrantyData)) ? (int)$warrantyData['product_id'] : null;
                 if ($productId && !empty($this->products[$productId])) {
                     $this->products[$productId]->addWarranty($warranty);

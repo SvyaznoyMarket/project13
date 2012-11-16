@@ -1,4 +1,4 @@
-<?
+<?php
 /**
  * @var $page        \View\Layout
  * @var $cart        \Session\Cart
