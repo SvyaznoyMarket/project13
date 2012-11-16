@@ -69,6 +69,12 @@ class App {
             set_exception_handler(array(new \Debug\ExceptionHandler(), 'handle'));
         }
 
+        // shutdown handler
+        register_shutdown_function(function() {
+            \App::shutdown();
+            //if ($error = error_get_last()) {}
+        });
+
         self::$initialized = true;
     }
 
