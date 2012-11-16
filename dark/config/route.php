@@ -148,6 +148,11 @@ return array(
         'action'  => array('Product\RelatedAction', 'execute'),
         'require' => array('productToken' => '[\w\d-_]+'),
     ),
+    'product.comments' => array(
+        'pattern' => '/product/{productPath}/comments',
+        'action'  => array('Product\CommentsAction', 'execute'),
+        'require' => array('productPath' => '[\w\d-_]+\/{1}[\w\d-_]+'),
+    ),
     'tag' => array(
         'pattern' => '/tags/{tagToken}',
         'action'  => array('Tag\Action', 'index'),
@@ -235,7 +240,7 @@ return array(
         'require' => array('serviceToken' => '[\w\d-_]+'),
     ),
 
-    //SmartEngine
+    // smartengine
     'smartengine.pull.product_alsoViewed' => array(
         'pattern' => '/product-also-viewed/{productId}',
         'require' => array('productId' => '\d+'),
@@ -257,13 +262,9 @@ return array(
     ),
     // адвокат клиента
     'user.consultation' => array(
-        'pattern' => '/private/consultation',
-        'action'  => array('User\Сonsultation', 'execute'),
-    ),
-    // адвокат клиента
-    'user.consultation.send' => array(
-        'pattern' => '/private/consultation/send',
-        'action'  => array('User\Сonsultation', 'send'),
+        //'pattern' => '/private/consultation',
+        'pattern' => '/private/consultation/legal',
+        'action'  => array('User\ConsultationAction', 'execute'),
     ),
     // изменение пароля пользователя
     'user.changePassword' => array(

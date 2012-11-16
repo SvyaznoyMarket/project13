@@ -33,8 +33,8 @@ $(document).ready(function(){
     /* GA click counter */
     function gaClickCounter() {
         if( typeof(_gaq) !== 'undefined' ) {
-            var title =  ($(this).data('event') !== 'undefined') ?  $(this).data('event') : 'без названия';
-            _gaq.push(['_trackEvent', $(this).data('event'), title, ,,, false])
+            var title =  ($(this).data('title') !== 'undefined') ?  $(this).data('title') : 'без названия';
+            _gaq.push(['_trackEvent', $(this).data('event'), title,,,false])
         }
         return true
     }

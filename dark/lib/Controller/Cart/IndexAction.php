@@ -22,7 +22,7 @@ class IndexAction {
                 'id'          => $productIds,
                 'geo_id'      => \App::user()->getRegion()->getId(),
             ), array(), function($data) use(&$products, $cartProductsById) {
-                foreach($data as $item){
+                foreach ($data as $item) {
                     $products[] = new \Model\Product\CartEntity($item);
                 }
             });
@@ -33,7 +33,7 @@ class IndexAction {
                 'id'     => $serviceIds,
                 'geo_id' => \App::user()->getRegion()->getId(),
             ), array(), function($data) use(&$services, $cartServicesById) {
-                foreach($data as $item){
+                foreach ($data as $item) {
                     $services[] = new \Model\Product\Service\Entity($item);
                 }
             });

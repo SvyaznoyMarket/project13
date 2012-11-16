@@ -12,4 +12,6 @@ interface LoggerInterface {
     public function error($message);
 
     public function dump();
+
+    public function getMessages();
 }

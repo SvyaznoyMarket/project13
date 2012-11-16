@@ -26,6 +26,7 @@ Options +FollowSymLinks +ExecCGI
   # dark
   RewriteRule ^search* dark.php [L]
   RewriteRule ^product/([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)$ dark.php [L]
+  RewriteRule ^product/([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)/comments$ dark.php [L]
   RewriteRule ^catalog/([a-zA-Z_0-9-]+(\/{0,1})[a-zA-Z_0-9-]+)/$ dark.php [L]
   RewriteRule ^catalog/([a-zA-Z_0-9-]+(\/{0,1})[a-zA-Z_0-9-]+)/_slider$ dark.php [L]
   RewriteRule ^catalog/([a-zA-Z_0-9-]+(\/{0,1})[a-zA-Z_0-9-]+)/_count$ dark.php [L]
@@ -44,9 +45,8 @@ Options +FollowSymLinks +ExecCGI
   RewriteRule ^cart/$ dark.php [L]
   RewriteRule ^login$ dark.php [L]
   RewriteRule ^logout$ dark.php [L]
+  RewriteRule ^private/consultation* index.php [L]
   RewriteRule ^private/* dark.php [L]
-  RewriteRule ^private/edit* dark.php [L]
-  RewriteRule ^private/password* dark.php [L]
   RewriteRule ^user/shortinfo/?$ dark.php [L]
 
   RewriteCond %{REQUEST_FILENAME} !-f

@@ -23,6 +23,8 @@ class productCommentActions extends myActions
    */
   public function executeIndex(sfWebRequest $request)
   {
+      $this->forward404();
+
     $this->product = $this->getRoute()->getObject();
 
     $this->forward404If(!$this->product);

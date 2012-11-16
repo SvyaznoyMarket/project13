@@ -128,6 +128,10 @@ foreach ($products as $product) {
                 <?= $page->render('cart/_serviceByProduct', array('product' => $product, 'cartProduct' => $cartProduct)) ?>
             <?endif ?>
 
+            <? if (\App::config()->warranty['enabled'] && (bool)$product->getWarranty()): ?>
+                <?= $page->render('cart/_warrantyByProduct', array('product' => $product, 'cartProduct' => $cartProduct)) ?>
+            <?endif ?>
+
         </div>
     </div>
 <? endforeach ?>

@@ -188,8 +188,13 @@ class ClientV2 implements ClientInterface
         }
 
         if (is_array($decoded) && array_key_exists('error', $decoded)) {
+            $message = $decoded['error']['message'] . ' ' . $this->encode($decoded);
+            $message = preg_replace_callback('/\\\\u([0-9a-f]{4})/i', function($match) {
+                return mb_convert_encoding(pack('H*', $match[1]), 'UTF-8', 'UCS-2BE');
+            }, $message);
+
             $e = new \RuntimeException(
-                (string)$decoded['error']['message'] . ' ' . $this->encode($decoded),
+                $message,
                 (int)$decoded['error']['code']
             );
 

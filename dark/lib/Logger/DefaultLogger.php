@@ -68,4 +68,8 @@ class DefaultLogger implements LoggerInterface {
             $this->appender->dump($this->messages);
         }
     }
+
+    public function getMessages() {
+        return $this->messages;
+    }
 }
