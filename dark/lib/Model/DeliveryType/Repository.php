@@ -14,7 +14,7 @@ class Repository {
      * @return Entity[]
      */
     public function getCollection() {
-        \App::logger()->info('Start ' . __METHOD__);
+        \App::logger()->info('Start ' . __METHOD__ . ' ' . json_encode(func_get_args()));
 
         $data = array(
             array(
