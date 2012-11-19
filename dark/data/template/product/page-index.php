@@ -80,15 +80,15 @@
     <div class="fr">
       <span id="rating" data-url="<?= $page->url('product.rating.create_total', array('rating' => 'score', 'productId' => $product->getId() )) ?>">
         <?
-        echo str_repeat('<img src="/css/skin/img/star_a.png" alt="">', floor($product->getRating()));
+        echo str_repeat('<img src="/css/skin/img/star_a.png" alt="" />', floor($product->getRating()));
         if ($product->getRating() - floor($product->getRating()) > 0 and $product->getRating() - floor($product->getRating()) < 0.25) {
-            echo '<img src="/css/skin/img/star_p.png" alt="">';
+            echo '<img src="/css/skin/img/star_p.png" alt="" />';
         } elseif ($product->getRating() - floor($product->getRating()) < 0.75) {
-            echo '<img src="/css/skin/img/star_h.png" alt="">';
+            echo '<img src="/css/skin/img/star_h.png" alt="" />';
         } else {
-            echo '<img src="/css/skin/img/star_a.png" alt="">';
+            echo '<img src="/css/skin/img/star_a.png" alt="" />';
         }
-        echo str_repeat('<img src="/css/skin/img/star_p.png" alt="">', 5 - ceil($product->getRating()));
+        echo str_repeat('<img src="/css/skin/img/star_p.png" alt="" />', 5 - ceil($product->getRating()));
         ?>
       </span>
       <strong class="ml5 hf"><?= round($product->getRating(), 1) ?></strong>
@@ -104,7 +104,7 @@
   <div style="text-decoration: line-through; font: normal 18px verdana; letter-spacing: -0.05em; color: #6a6a6a;"><span class="price"><?= $page->helper->formatPrice($product->getPriceOld()) ?></span> <span class="rubl">p</span></div>
   <? elseif($showAveragePrice): ?>
   <div class="mOurGray">
-    Средняя цена в магазинах города*<br><div class='mOurGray mIco'><span class="price"><?= $page->helper->formatPrice($product->getPriceAverage()) ?></span> <span class="rubl">p</span> &nbsp;</div>
+    Средняя цена в магазинах города*<br/><div class='mOurGray mIco'><span class="price"><?= $page->helper->formatPrice($product->getPriceAverage()) ?></span> <span class="rubl">p</span> &nbsp;</div>
   </div>
   <div class="clear"></div>
   <div class="clear mOur pt10 <? if ($product->hasSaleLabel()) echo 'red'; ?>">Наша цена</div>
@@ -135,9 +135,9 @@
 
       <div class='bCountSet'>
         <? if (!$user->getCart()->hasProduct($product->getId())): ?>
-        <a class='bCountSet__eP' href>+</a><a class='bCountSet__eM' href>-</a>
+        <a class='bCountSet__eP' href="#">+</a><a class='bCountSet__eM' href="#">-</a>
         <? else: ?>
-        <a class='bCountSet__eP disabled' href>&nbsp;</a><a class='bCountSet__eM disabled' href>&nbsp;</a>
+        <a class='bCountSet__eP disabled' href="#">&nbsp;</a><a class='bCountSet__eM disabled' href="#">&nbsp;</a>
         <? endif ?>
         <span><?= $user->getCart()->hasProduct($product->getId()) ? $user->getCart()->getQuantityByProduct($product->getId()) : 1 ?> шт.</span>
       </div>
@@ -393,7 +393,7 @@
 <div id="ajaxgoods" class="popup width230" style="display: none">
   <div  style="padding: 15px 15px 20px 5px">
     <div class="bNavLoader__eIco">
-      <img src="/images/ajar.gif">
+      <img src="/images/ajar.gif" />
     </div>
     <div class="bNavLoader__eM">
       <p class="bNavLoader__eText">Подождите немного</p>
@@ -462,9 +462,9 @@
 
         <div class='bCountSet'>
             <? if (!$user->getCart()->hasProduct($product->getId())): ?>
-            <a class='bCountSet__eP' href>+</a><a class='bCountSet__eM' href>-</a>
+            <a class='bCountSet__eP' href="#">+</a><a class='bCountSet__eM' href="#">-</a>
             <? else: ?>
-            <a class='bCountSet__eP disabled' href>&nbsp;</a><a class='bCountSet__eM disabled' href>&nbsp;</a>
+            <a class='bCountSet__eP disabled' href="#">&nbsp;</a><a class='bCountSet__eM disabled' href="#">&nbsp;</a>
             <? endif ?>
             <span><?= $user->getCart()->getQuantityByProduct($product->getId()) ? $user->getCart()->getQuantityByProduct($product->getId()) : 1 ?> шт.</span>
         </div>

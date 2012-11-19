@@ -24,7 +24,7 @@
             </div>
             <? endif ?>
         </div>
-        <img class="bMapShops__eImage" src="/images/shop-h1.png" />
+        <img class="bMapShops__eImage" src="/images/shop-h1.png" alt="shopPageLogo" />
     </div>
 
     <? if ((bool)$markers): ?>
