@@ -52,7 +52,15 @@ class DefaultLayout extends Layout {
 
     public function slotHeader() {
         if (!$this->hasParam('rootCategories')) {
-            $rootCategories = \RepositoryManager::getProductCategory()->getRootCollection();
+            try {
+                $rootCategories = \RepositoryManager::getProductCategory()->getRootCollection();
+            } catch (\Exception $e) {
+                \App::$exception = $e;
+                \App::logger()->error($e);
+
+                $rootCategories = array();
+            }
+
             foreach($rootCategories as $i => $category){
                 if(!$category->getIsInMenu()){
                     unset($rootCategories[$i]);
