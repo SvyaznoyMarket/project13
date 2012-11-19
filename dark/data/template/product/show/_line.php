@@ -13,7 +13,7 @@ $url = $page->url('product.line', array('lineToken' => $product->getLine()->getT
 ?>
 
 <div class="goodsbox height250"<? if ($isHidden): ?> style="display:none;"<? endif ?>>
-    <div class="goodsbox__inner">
+    <div class="goodsbox__inner" data-url="<?= $product->getLink() ?>">
 	    <div class="photo">
 	        <a href="<?= $url ?>">
 	            <? if ($label = $product->getLabel()): ?>

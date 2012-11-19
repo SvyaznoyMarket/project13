@@ -3354,6 +3354,7 @@
     display: block;
     float: left;
     margin: 1px 5px 0px -18px;
+    *margin-left: -20px;
     overflow: hidden;
     position: relative;
   }
@@ -3649,6 +3650,7 @@
   }
   .goodsbox__inner {
     background: #ffffff;
+    cursor: pointer;
     padding: 10px;
     width: 195px;
   }
