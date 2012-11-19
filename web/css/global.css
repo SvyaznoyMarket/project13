@@ -3147,6 +3147,9 @@
   .bigfilter dt.current {
     background-position: 11px -82px;
   }
+  .bigfilter dt.submit {
+    background: none;
+  }
   .bigfilter dt b {
     background: url("/css/common/img/questionIcon.png") no-repeat;
     display: inline-block;
