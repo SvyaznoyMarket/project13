@@ -14,9 +14,8 @@
     font: 14px Tahoma, sans-serif;
   }
   li {
-    cursor: pointer;
     margin: 2px 0px;
-    &:hover a {
+    a:hover {
       color: @firmOrange;
     }
   }
@@ -129,6 +128,9 @@ dt.bCtg__eOrange {
     padding: 7px 0px 8px;
     &.current {
       background-position: 11px -82px;
+    }
+    &.submit{
+      background: none;
     }
     b {
       background: url("@{base-url}/common/img/questionIcon.png") no-repeat;

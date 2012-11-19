@@ -12,7 +12,7 @@
 <input type="hidden" name="shop[longitude]" value="<?= $shop->getLongitude() ?>"/>
 
 <!-- bMap -->
-<img class="printLogo" src='/css/shop/img/bw_logo.png'/>
+<img class="printLogo" src='/css/shop/img/bw_logo.png' alt="Enter logo" />
 <div class="bMap">
     <div id="map-container" class='bMap__eBody'></div>
     <div class='bMap__eImages'>
@@ -22,10 +22,10 @@
 
             <? $i = 0; $count = count($shop->getPhoto()); foreach ($shop->getPhoto() as $photo): $i++ ?>
             <div class="bMap__eContainer<? if (1 == $i) echo ' first' ?> map-image-link">
-                <img class="bMap__eImgSmall" src="<?= $photo->getUrl(5) ?>"/>
+                <img class="bMap__eImgSmall" src="<?= $photo->getUrl(5) ?>" alt="" />
 
                 <div class='bMap__eImgBig'>
-                    <img src="<?= $photo->getUrl(5) ?>" />
+                    <img src="<?= $photo->getUrl(5) ?>" alt="" />
                 </div>
 
                 <? if ((1 == $i) && $shop->getPanorama()): ?>
@@ -35,7 +35,7 @@
             <? endforeach ?>
 
             <div class="bMap__eContainer map-google-link">
-                <img class='bMap__eImgSmall' src='/images/map_ico.png'/>
+                <img class='bMap__eImgSmall' src='/images/map_ico.png' alt="" />
 
                 <div class='bMap__eImgBig'></div>
             </div>
@@ -47,7 +47,7 @@
         <input id="map-panorama" type="hidden" data-swf="<?= $shop->getPanorama()->getSwf() ?>" data-xml="<?= $shop->getPanorama()->getXml() ?>"/>
     <? endif ?>
 
-    <div id="staticYMap"><img src="" /></div>
+    <div id="staticYMap"><img src="" alt="yandex map for printer" /></div>
 </div>
 <!-- /bMap -->
 <a class="bOrangeButton printAction" href="javascript:window.print()">Распечатать</a>
@@ -93,20 +93,20 @@
 
         <? if ($shop->getWayWalk()): ?>
             <p class='bMapInfo__eP'>
-            <span class='bMapInfo__eSpan mSmall'>
-                <b>Проезд на городском транспорте</b><br>
-                <?= $shop->getWayWalk() ?>
-            </span>
+                <span class='bMapInfo__eSpan mSmall'>
+                    <b>Проезд на городском транспорте</b><br />
+                </span>
             </p>
+            <?= $shop->getWayWalk() ?>
         <? endif ?>
 
         <? if ($shop->getWayAuto()): ?>
             <p class='bMapInfo__eP'>
-            <span class='bMapInfo__eSpan mSmall'>
-                <b>Проезд на авто</b><br>
-                <?= $shop->getWayAuto() ?>
-            </span>
-        </p>
+                <span class='bMapInfo__eSpan mSmall'>
+                    <b>Проезд на авто</b><br />
+                </span>
+            </p>
+            <?= $shop->getWayAuto() ?>
         <? endif ?>
 
     </div>

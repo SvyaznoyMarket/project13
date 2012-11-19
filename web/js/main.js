@@ -591,9 +591,17 @@ $(document).ready(function(){
 		var link = el.find('a')
 		link.text('еще...' == link.text() ? 'скрыть' : 'еще...')
 	})
+
+	$('.product_filter-block input:submit').addClass('mDisabled')
+	$('.product_filter-block input:submit').click( function(e) {
+		if( $(this).hasClass('mDisabled') )
+			e.preventDefault()
+	})
   
 	/* Side Filter Block handlers */
 	$(".bigfilter dt").click(function(){
+		if ( $('.bigfilter dt').hasClass('submit') )
+			return true
 		$(this).next(".bigfilter dd").slideToggle(200)
 		$(this).toggleClass("current")
 		return false
@@ -610,11 +618,7 @@ $(document).ready(function(){
 		$(this).toggleClass("current")
 		return false
 	})
-	$('.product_filter-block input:submit').addClass('mDisabled')
-	$('.product_filter-block input:submit').click( function(e) {
-		if( $(this).hasClass('mDisabled') )
-			e.preventDefault()
-	})
+	
 	var launch = false
 	$('.product_filter-block').change(function(){
 		activateForm()

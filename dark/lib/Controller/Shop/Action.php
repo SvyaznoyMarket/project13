@@ -16,7 +16,14 @@ class Action {
         }
 
         //города присутствия
-        $regions = \RepositoryManager::getRegion()->getShopAvailableCollection();
+        try {
+            $regions = \RepositoryManager::getRegion()->getShopAvailableCollection();
+        } catch (\Exception $e) {
+            \App::$exception = $e;
+            \App::logger()->error($e);
+
+            $regions = array();
+        }
 
         // магазины
         $shops = \RepositoryManager::getShop()->getCollectionByRegion($currentRegion);

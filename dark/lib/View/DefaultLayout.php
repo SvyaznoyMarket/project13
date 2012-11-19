@@ -52,7 +52,15 @@ class DefaultLayout extends Layout {
 
     public function slotHeader() {
         if (!$this->hasParam('rootCategories')) {
-            $rootCategories = \RepositoryManager::getProductCategory()->getRootCollection();
+            try {
+                $rootCategories = \RepositoryManager::getProductCategory()->getRootCollection();
+            } catch (\Exception $e) {
+                \App::$exception = $e;
+                \App::logger()->error($e);
+
+                $rootCategories = array();
+            }
+
             foreach($rootCategories as $i => $category){
                 if(!$category->getIsInMenu()){
                     unset($rootCategories[$i]);
@@ -67,19 +75,7 @@ class DefaultLayout extends Layout {
     public function slotFooter() {
         $client = \App::contentClient();
 
-        /*
         try {
-            $shopCount = \App::coreClientV2()->query('shop/get-quantity1');
-        } catch (\Exception $e) {
-            \App::$exception = $e;
-            \App::logger()->error($e);
-
-            $shopCount = 0;
-        }
-        */
-
-        try {
-            //$response = $client->send('footer_default', array('shop_count' => $shopCount));
             $response = $client->send('footer_default');
         } catch (\Exception $e) {
             \App::$exception = $e;

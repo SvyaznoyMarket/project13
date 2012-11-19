@@ -20,6 +20,8 @@ class Repository {
      * @return Entity|null
      */
     public function getEntityByToken($token) {
+        \App::logger()->info('Start ' . __METHOD__ . ' ' . json_encode(func_get_args()));
+
         $response = $this->client->query('product/get', array(
             'select_type' => 'slug',
             'slug'        => $token,
@@ -35,6 +37,8 @@ class Repository {
      * @return Entity|null
      */
     public function getEntityById($id) {
+        \App::logger()->info('Start ' . __METHOD__ . ' ' . json_encode(func_get_args()));
+
         $response = $this->client->query('product/get', array(
             'id'        => $id,
             'geo_id'      => \App::user()->getRegion()->getId(),
@@ -49,6 +53,8 @@ class Repository {
      * @return Entity[]
      */
     public function getCollectionByToken(array $tokens) {
+        \App::logger()->info('Start ' . __METHOD__ . ' ' . json_encode(func_get_args()));
+
         if (!(bool)$tokens) return array();
 
         $response = $this->client->query('product/get', array(
@@ -70,6 +76,8 @@ class Repository {
      * @return Entity[]
      */
     public function getCollectionById(array $ids) {
+        \App::logger()->info('Start ' . __METHOD__ . ' ' . json_encode(func_get_args()));
+
         if (!(bool)$ids) return array();
 
         $response = $this->client->query('product/get', array(
@@ -91,6 +99,8 @@ class Repository {
      * @return int
      */
     public function countByFilter(array $filter = array()) {
+        \App::logger()->info('Start ' . __METHOD__ . ' ' . json_encode(func_get_args()));
+
         $response = $this->client->query('listing/list', array(
             'filter' => array(
                 'filters' => $filter,
@@ -112,6 +122,8 @@ class Repository {
      * @return \Iterator\EntityPager
      */
     public function getIteratorByFilter(array $filter = array(), array $sort = array(), $offset = null, $limit = null) {
+        \App::logger()->info('Start ' . __METHOD__ . ' ' . json_encode(func_get_args()));
+
         $response = $this->client->query('listing/list', array(
             'filter' => array(
                 'filters' => $filter,
@@ -135,6 +147,8 @@ class Repository {
      * @return \Iterator\EntityPager[]
      */
     public function getIteratorsByFilter(array $filters = array(), array $sort = array(), $offset = null, $limit = null) {
+        \App::logger()->info('Start ' . __METHOD__ . ' ' . json_encode(func_get_args()));
+
         $response = $this->client->query('listing/multilist', array(), array(
             'filter_list' => array_map(function($filter) use ($sort, $offset, $limit) {
                 return array(

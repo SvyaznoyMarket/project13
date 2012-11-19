@@ -15,6 +15,8 @@ class Repository {
      * @return Entity|null
      */
     public function getEntityByToken($token) {
+        \App::logger()->info('Start ' . __METHOD__ . ' ' . json_encode(func_get_args()));
+
         $response = $this->client->query('tag/get', array(
             'slug'   => $token,
             'geo_id' => \App::user()->getRegion()->getId(),
@@ -29,6 +31,8 @@ class Repository {
      * @return Entity|null
      */
     public function getEntityById($id) {
+        \App::logger()->info('Start ' . __METHOD__ . ' ' . json_encode(func_get_args()));
+
         $response = $this->client->query('tag/get', array(
             'id'     => $id,
             'geo_id' => \App::user()->getRegion()->getId(),

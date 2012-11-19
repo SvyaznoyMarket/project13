@@ -32,7 +32,17 @@ class IndexAction {
         $kit = array_flip($partsId);
 
         if ((bool)$accessoriesId || (bool)$relatedId || (bool)$partsId) {
-            $products = $repository->getCollectionById(array_merge($accessoriesId, $relatedId, $partsId));
+            try {
+                $products = $repository->getCollectionById(array_merge($accessoriesId, $relatedId, $partsId));
+            } catch (\Exception $e) {
+                \App::$exception = $e;
+                \App::logger()->error($e);
+
+                $products = array();
+                $accessories = array();
+                $related = array();
+                $kit = array();
+            }
 
             foreach ($products as $item) {
                 if (isset($accessories[$item->getId()])) $accessories[$item->getId()] = $item;

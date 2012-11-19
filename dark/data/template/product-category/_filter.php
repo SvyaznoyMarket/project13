@@ -50,7 +50,7 @@ $formName = \View\Product\FilterForm::$name;
             } ?>
         <? endforeach ?>
 
-        <div class="pb10"><input type="submit" class="button yellowbutton" value="Подобрать"/></div>
+        <dt class="submit pb10"><input type="submit" class="button yellowbutton" value="Подобрать"/></dt>
     </dl>
 </form>
 <!-- /Filter -->
