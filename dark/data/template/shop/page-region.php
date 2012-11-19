@@ -7,9 +7,9 @@
  */
 ?>
 
-<? if ((bool)$shops): ?>
-    <? require __DIR__ . '/_map.php' ?>
+<? require __DIR__ . '/_map.php' ?>
 
+<? if ((bool)$shops): ?>
     <!-- bMapInfo -->
     <div class='bMapShops__eInfo'>
         <h2 class='bMapShops__eTitle'>Все магазины Enter в <?= $currentRegion->getInflectedName(5) ?></h2>
@@ -37,6 +37,6 @@
     <br />
 
 <? else: ?>
-    <p>В этом городе пока нет магазинов.</p>
+    <p class="font16">В этом городе пока нет магазинов.</p>
 
 <? endif ?>
