@@ -11,7 +11,7 @@ class Repository {
     }
 
     public function getEntityByToken($token) {
-        \App::logger()->info('Start ' . __METHOD__ . ' ' . json_encode(func_get_args()));
+        \App::logger()->debug('Start ' . __METHOD__ . ' ' . json_encode(func_get_args()));
 
         $response = $this->client->query('user/get', array(
             'token' => $token,
