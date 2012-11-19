@@ -67,7 +67,7 @@ require_once __DIR__ . '/../dark/lib/App.php';
     }
 });
 
-\App::logger()->info('Start app');
+\App::logger()->info('Start app in ' . \App::$env . ' env');
 $requestLogger = \Util\RequestLogger::getInstance();
 $requestLogger->setId(\App::$id);
 

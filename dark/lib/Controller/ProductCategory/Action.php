@@ -324,7 +324,15 @@ class Action {
             $values['global'] = 1;
         }
 
-        $filters = \RepositoryManager::getProductFilter()->getCollectionByCategory($category, $region);
+        try {
+            $filters = \RepositoryManager::getProductFilter()->getCollectionByCategory($category, $region);
+        } catch (\Exception $e) {
+            \App::$exception = $e;
+            \App::logger()->error($e);
+
+            $filters = array();
+        }
+
         // проверяем есть ли в запросе фильтры
         if ((bool)$values) {
             // проверяем есть ли в запросе фильтры, которых нет в текущей категории (фильтры родительских категорий)
@@ -334,7 +342,15 @@ class Action {
             $diff = array_diff(array_keys($values), $exists);
             if ((bool)$diff) {
                 foreach ($category->getAncestor() as $ancestor) {
-                    foreach (\RepositoryManager::getProductFilter()->getCollectionByCategory($ancestor, $region) as $filter) {
+                    try {
+                        $ancestorFilters = \RepositoryManager::getProductFilter()->getCollectionByCategory($ancestor, $region);
+                    } catch (\Exception $e) {
+                        \App::$exception = $e;
+                        \App::logger()->error($e);
+
+                        $ancestorFilters = array();
+                    }
+                    foreach ($ancestorFilters as $filter) {
                         if (false === $i = array_search($filter->getId(), $diff)) continue;
 
                         // скрываем фильтр в списке

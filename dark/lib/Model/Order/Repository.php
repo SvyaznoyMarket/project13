@@ -15,6 +15,8 @@ class Repository {
      * @return int Количество заказов
      */
     public function countByUserToken($userToken) {
+        \App::logger()->info('Start ' . __METHOD__ . ' ' . json_encode(func_get_args()));
+
         $data = $this->client->query('order/get', array('token' => $userToken));
 
         return $data ? count($data) : 0;
@@ -25,6 +27,8 @@ class Repository {
      * @return Entity[]
      */
     public function getCollectionByUserToken($userToken) {
+        \App::logger()->info('Start ' . __METHOD__ . ' ' . json_encode(func_get_args()));
+
         $data = $this->client->query('order/get', array('token' => $userToken));
 
         $collection = array();
