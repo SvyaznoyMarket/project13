@@ -67,8 +67,20 @@ class DefaultLayout extends Layout {
     public function slotFooter() {
         $client = \App::contentClient();
 
+        /*
         try {
-            $response = $client->send('footer_default', array('shop_count' => \App::coreClientV2()->query('shop/get-quantity')));
+            $shopCount = \App::coreClientV2()->query('shop/get-quantity1');
+        } catch (\Exception $e) {
+            \App::$exception = $e;
+            \App::logger()->error($e);
+
+            $shopCount = 0;
+        }
+        */
+
+        try {
+            //$response = $client->send('footer_default', array('shop_count' => $shopCount));
+            $response = $client->send('footer_default');
         } catch (\Exception $e) {
             \App::$exception = $e;
             \App::logger()->error($e);
