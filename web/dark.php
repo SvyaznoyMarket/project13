@@ -53,6 +53,13 @@ require_once __DIR__ . '/../dark/lib/App.php';
             }
         }
 
+        // debug panel
+        if (\App::config()->debug && !\App::request()->isXmlHttpRequest()) {
+            $content = $response->getContent();
+            $content .= require \App::config()->dataDir . '/debug/panel.php';
+            $response->setContent($content);
+        }
+
         $response->send();
     }
 
@@ -61,10 +68,6 @@ require_once __DIR__ . '/../dark/lib/App.php';
     // dumps logs
     \App::shutdown();
 
-    // debug panel
-    if (\App::config()->debug) {
-        require \App::config()->dataDir . '/debug/panel.php';
-    }
 });
 
 \App::logger()->info('Start app');
