@@ -56,7 +56,7 @@ class cartController
       if ($product->isKit()) {
         $quantity = $result['quantity'] = $this->executeAddKit($product, $quantity);
       }
-      elseif($_GET['quantity'] == Null)
+      elseif(!isset($_GET['quantity']) || $_GET['quantity'] == Null)
       {
           $quantity = $result['quantity'] = $this->executeAddProduct($productId);
       }
