@@ -228,10 +228,8 @@ $(document).ready(function() {
 			})
 		}
 		bline.find('a.link1').click( function(){
-			console.log('123')
 			if( popupIsOpened )
 				return false
-			console.log('pop not open')
 			popupIsOpened = true
 			var f1popup = $('div.bF1Block', bline)
 			f1popup.show()
