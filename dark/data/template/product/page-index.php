@@ -80,15 +80,15 @@
     <div class="fr">
       <span id="rating" data-url="<?= $page->url('product.rating.create_total', array('rating' => 'score', 'productId' => $product->getId() )) ?>">
         <?
-        echo str_repeat('<img src="/css/skin/img/star_a.png" alt="">', floor($product->getRating()));
+        echo str_repeat('<img src="/css/skin/img/star_a.png" alt="" />', floor($product->getRating()));
         if ($product->getRating() - floor($product->getRating()) > 0 and $product->getRating() - floor($product->getRating()) < 0.25) {
-            echo '<img src="/css/skin/img/star_p.png" alt="">';
+            echo '<img src="/css/skin/img/star_p.png" alt="" />';
         } elseif ($product->getRating() - floor($product->getRating()) < 0.75) {
-            echo '<img src="/css/skin/img/star_h.png" alt="">';
+            echo '<img src="/css/skin/img/star_h.png" alt="" />';
         } else {
-            echo '<img src="/css/skin/img/star_a.png" alt="">';
+            echo '<img src="/css/skin/img/star_a.png" alt="" />';
         }
-        echo str_repeat('<img src="/css/skin/img/star_p.png" alt="">', 5 - ceil($product->getRating()));
+        echo str_repeat('<img src="/css/skin/img/star_p.png" alt="" />', 5 - ceil($product->getRating()));
         ?>
       </span>
       <strong class="ml5 hf"><?= round($product->getRating(), 1) ?></strong>
