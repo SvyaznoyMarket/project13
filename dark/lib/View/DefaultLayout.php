@@ -66,7 +66,13 @@ class DefaultLayout extends Layout {
 
     public function slotFooter() {
         $client = \App::contentClient();
-        $response = @$client->send('footer_default', array('shop_count' => \App::coreClientV2()->query('shop/get-quantity')));
+
+        try {
+            $response = $client->send('footer_default', array('shop_count' => \App::coreClientV2()->query('shop/get-quantity')));
+        } catch (\Exception $e) {
+            $response = array('content' => $this->render('_partialError', array('e' => $e, 'sender' => 'footer')));
+            \App::logger()->error($e);
+        }
 
         return $response['content'];
     }
