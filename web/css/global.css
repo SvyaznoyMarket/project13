@@ -3036,10 +3036,9 @@
     font: 14px Tahoma, sans-serif;
   }
   .bCtg li {
-    cursor: pointer;
     margin: 2px 0px;
   }
-  .bCtg li:hover a {
+  .bCtg li a:hover {
     color: #ffa901;
   }
   .mBold {
