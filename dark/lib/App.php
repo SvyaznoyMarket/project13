@@ -5,6 +5,8 @@ class App {
     public static $env;
     /** @var string */
     public static $id;
+    /** @var $exception */
+    public static $exception;
     /** @var bool */
     private static $initialized = false;
     /** @var \Config\AppConfig */

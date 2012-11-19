@@ -70,8 +70,10 @@ class DefaultLayout extends Layout {
         try {
             $response = $client->send('footer_default', array('shop_count' => \App::coreClientV2()->query('shop/get-quantity')));
         } catch (\Exception $e) {
-            $response = array('content' => $this->render('_partialError', array('e' => $e, 'sender' => 'footer')));
+            \App::$exception = $e;
             \App::logger()->error($e);
+
+            $response = array('content' => '');
         }
 
         return $response['content'];
