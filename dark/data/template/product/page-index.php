@@ -135,9 +135,9 @@
 
       <div class='bCountSet'>
         <? if (!$user->getCart()->hasProduct($product->getId())): ?>
-        <a class='bCountSet__eP' href>+</a><a class='bCountSet__eM' href>-</a>
+        <a class='bCountSet__eP' href="#">+</a><a class='bCountSet__eM' href="#">-</a>
         <? else: ?>
-        <a class='bCountSet__eP disabled' href>&nbsp;</a><a class='bCountSet__eM disabled' href>&nbsp;</a>
+        <a class='bCountSet__eP disabled' href="#">&nbsp;</a><a class='bCountSet__eM disabled' href="#">&nbsp;</a>
         <? endif ?>
         <span><?= $user->getCart()->hasProduct($product->getId()) ? $user->getCart()->getQuantityByProduct($product->getId()) : 1 ?> шт.</span>
       </div>
