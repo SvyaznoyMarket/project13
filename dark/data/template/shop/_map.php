@@ -12,6 +12,8 @@
     <div class='bMapShops__eHead'>
         <div class='bMapShops__eRegion'>
             <h2 class='bMapShops__eRegionTitle'>Enter в <?= $currentRegion->getInflectedName(5) ?>!</h2>
+
+            <? if ((bool)$regions): ?>
             <div class='bMapShops__eRegionText'>Enter в регионах:</div>
             <div class="selectbox selectbox170 fl"><i></i>
                 <select id="region-select" class="styled" name="region">
@@ -20,6 +22,7 @@
                 <? endforeach ?>
                 </select>
             </div>
+            <? endif ?>
         </div>
         <img class="bMapShops__eImage" src="/images/shop-h1.png" />
     </div>
