@@ -14,6 +14,8 @@ class Repository {
      * @return Entity[]
      */
     public function getCollection() {
+        \App::logger()->info('Start ' . __METHOD__);
+
         $data = array(
             array(
                 'id'          => 1,

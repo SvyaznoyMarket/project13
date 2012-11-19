@@ -15,6 +15,8 @@ class Repository {
      * @return Entity|null
      */
     public function getEntityByToken($token) {
+        \App::logger()->info('Start ' . __METHOD__);
+
         $data = $this->client->query('category/get', array(
             'slug'   => array($token),
             'geo_id' => \App::user()->getRegion()->getId(),
@@ -29,6 +31,8 @@ class Repository {
      * @return Entity|null
      */
     public function getEntityById($id) {
+        \App::logger()->info('Start ' . __METHOD__);
+
         $data = $this->client->query('category/get', array(
             'id'     => array($id),
             'geo_id' => \App::user()->getRegion()->getId(),
@@ -43,6 +47,8 @@ class Repository {
      * @return Entity[]
      */
     public function getCollectionById(array $ids) {
+        \App::logger()->info('Start ' . __METHOD__);
+
         $data = $this->client->query('category/get', array(
             'id'    => $ids,
             'geo_id' => \App::user()->getRegion()->getId(),
@@ -60,6 +66,8 @@ class Repository {
      * @return Entity[]
      */
     public function getRootCollection() {
+        \App::logger()->info('Start ' . __METHOD__);
+
         $data = $this->client->query('category/tree', array(
             'max_level'       => 1,
             'is_load_parents' => false,
@@ -79,6 +87,8 @@ class Repository {
      * @param Entity $entity
      */
     public function loadEntityBranch(Entity $entity, \Model\Region\Entity $region = null) {
+        \App::logger()->info('Start ' . __METHOD__);
+
         $params = array(
             'root_id'         => $entity->getId(),
             'max_level'       => null,

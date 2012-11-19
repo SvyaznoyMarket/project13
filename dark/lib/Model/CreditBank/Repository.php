@@ -17,6 +17,8 @@ class Repository
      * @return string
      */
     public static function getCreditTypeByCategoryToken($categoryToken) {
+        \App::logger()->info('Start ' . __METHOD__);
+
         return in_array($categoryToken, array('electronics', 'sport', 'appliances', 'do_it_yourself', 'furniture', 'household'))
             ? $categoryToken
             : 'another';
@@ -28,6 +30,8 @@ class Repository
      * @return null|Entity
      */
     public function getEntityById($id) {
+        \App::logger()->info('Start ' . __METHOD__);
+
         if (!$id) {
             return null;
         }
@@ -46,6 +50,8 @@ class Repository
      * @return Entity[]
      */
     public function getCollection() {
+        \App::logger()->info('Start ' . __METHOD__);
+
         $result = $this->client->query('payment-method.get-credit-bank', array(
             'geo_id' => \App::user()->getRegion()->getId(),
         ));

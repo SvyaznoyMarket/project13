@@ -15,6 +15,8 @@ class Repository {
      * @return Entity|null
      */
     public function getEntityByToken($token) {
+        \App::logger()->info('Start ' . __METHOD__);
+
         $data = $this->client->query('line/list', array(
             'token'  => array($token),
             'geo_id' => \App::user()->getRegion()->getId(),
@@ -29,6 +31,8 @@ class Repository {
      * @return Entity|null
      */
     public function getEntityById($id) {
+        \App::logger()->info('Start ' . __METHOD__);
+
         $data = $this->client->query('line/list', array(
             'id'   => array($id),
             'geo_id' => \App::user()->getRegion()->getId(),
