@@ -7,85 +7,68 @@ class UserEntity implements ArrayAccess
 
   /* @var string */
   private $token;
-
   /* @var string */
   private $id;
-
   /* @var string */
   private $email;
-
   /* @var string */
   private $phonenumber;
-
   /* @var string */
   private $homePhonenumber;
-
   /* @var string */
   private $firstName;
-
   /* @var string */
   private $lastName;
-
   /* @var string */
   private $middleName;
-
   /* @var string */
   private $lastLogin;
-
   /* @var string */
   private $lastIp;
-
   /* @var RegionEntity */
   private $region;
-
   /* @var integer */
   private $type;
-
   /* @var integer */
   private $gender;
-
   /* @var string */
   private $birthday;
-
   /* @var string */
   private $photo;
-
   /* @var string */
   private $skype;
-
   /* @var string */
   private $occupation;
-
   /* @var string */
   private $address;
-
   /* @var string */
   private $zipCode;
-
   /* @var bool */
   private $subscribed;
-
+  /** @var bool */
+  private $isCorporative;
 
   public function __construct(array $data = array()){
-    if(array_key_exists('token', $data))         $this->token       = (string)$data['token'];
-    if(array_key_exists('id', $data))            $this->id          = (int)$data['id'];
-    if(array_key_exists('email', $data))         $this->email       = (string)$data['email'];
-    if(array_key_exists('mobile', $data))        $this->phonenumber = (string)$data['mobile'];
-    if(array_key_exists('phone', $data))         $this->homePhonenumber = (string)$data['phone'];
-    if(array_key_exists('first_name', $data))    $this->firstName   = (string)$data['first_name'];
-    if(array_key_exists('last_name', $data))     $this->lastName    = (string)$data['last_name'];
-    if(array_key_exists('middle_name', $data))   $this->middleName  = (string)$data['middle_name'];
-    if(array_key_exists('last_login', $data))    $this->lastLogin   = (string)$data['last_login'];
-    if(array_key_exists('ip', $data))            $this->lastIp      = (string)$data['ip'];
-    if(array_key_exists('geo', $data))           $this->region      = new Region($data['geo']);
-    if(array_key_exists('type_id', $data))       $this->type        = (int)$data['type_id'];
-    if(array_key_exists('sex', $data))           $this->gender      = (int)$data['sex'];
-    if(array_key_exists('birthday', $data))      $this->birthday    = (string)$data['birthday'];
-    if(array_key_exists('skype', $data))         $this->skype       = (string)$data['skype'];
-    if(array_key_exists('occupation', $data))    $this->occupation  = (string)$data['occupation'];
-    if(array_key_exists('address', $data))       $this->address     = (string)$data['address'];
-    if(array_key_exists('zip_code', $data))      $this->zipCode     = (string)$data['zip_code'];
-    if(array_key_exists('is_subscribe', $data))  $this->subscribed  = (string)$data['is_subscribe'];
+    if(array_key_exists('token', $data))          $this->token       = (string)$data['token'];
+    if(array_key_exists('id', $data))             $this->id          = (int)$data['id'];
+    if(array_key_exists('email', $data))          $this->email       = (string)$data['email'];
+    if(array_key_exists('mobile', $data))         $this->phonenumber = (string)$data['mobile'];
+    if(array_key_exists('phone', $data))          $this->homePhonenumber = (string)$data['phone'];
+    if(array_key_exists('first_name', $data))     $this->firstName   = (string)$data['first_name'];
+    if(array_key_exists('last_name', $data))      $this->lastName    = (string)$data['last_name'];
+    if(array_key_exists('middle_name', $data))    $this->middleName  = (string)$data['middle_name'];
+    if(array_key_exists('last_login', $data))     $this->lastLogin   = (string)$data['last_login'];
+    if(array_key_exists('ip', $data))             $this->lastIp      = (string)$data['ip'];
+    if(array_key_exists('geo', $data))            $this->region      = new Region($data['geo']);
+    if(array_key_exists('type_id', $data))        $this->type        = (int)$data['type_id'];
+    if(array_key_exists('sex', $data))            $this->gender      = (int)$data['sex'];
+    if(array_key_exists('birthday', $data))       $this->birthday    = (string)$data['birthday'];
+    if(array_key_exists('skype', $data))          $this->skype       = (string)$data['skype'];
+    if(array_key_exists('occupation', $data))     $this->occupation  = (string)$data['occupation'];
+    if(array_key_exists('address', $data))        $this->address     = (string)$data['address'];
+    if(array_key_exists('zip_code', $data))       $this->zipCode     = (string)$data['zip_code'];
+    if(array_key_exists('is_subscribe', $data))   $this->subscribed  = (string)$data['is_subscribe'];
+    if(array_key_exists('is_corporative', $data)) $this->isCorporative  = (bool)$data['is_corporative'];
   }
 
   public function __get($key){
@@ -128,6 +111,22 @@ class UserEntity implements ArrayAccess
   public function getId()
   {
     return $this->id;
+  }
+
+  /**
+   * @param boolean $isCorporative
+   */
+  public function setIsCorporative($isCorporative)
+  {
+    $this->isCorporative = $isCorporative;
+  }
+
+  /**
+   * @return boolean
+   */
+  public function getIsCorporative()
+  {
+    return $this->isCorporative;
   }
 
   /**

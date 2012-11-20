@@ -27,3 +27,6 @@ oauthSignin:
 
 oauthCallback:
   is_secure: false
+
+corporateRegister:
+  is_secure: false

@@ -273,17 +273,13 @@ class order_Components extends myComponents
     $serviceIds = array();
 
     foreach($list as $order){
-      /** @var $order OrderEntity */
       $items = $order->getItem();
-//      echo 'order: '.$order->getNumber()."<br/>\r\n";
       foreach($items as $item){
         /** @var $item OrderItemEntity */
         if($item->getServiceId()){
-//          echo 'service: <pre>'; var_export($item); echo '</pre>';
           $serviceIds[] = $item->getServiceId();
         }
         else{
-//          echo 'product: <pre>'; var_export($item); echo '</pre>';
           $productIds[] = $item->getProductId();
         }
       }

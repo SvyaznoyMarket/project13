@@ -285,6 +285,11 @@ user_orders:
   url:   /private/orders/
   param: { module: user, action: orders }
 #
+# order bill
+user_order_bill:
+  url:   /private/orders/:order/bill
+  param: { module: order_, action: bill }
+#
 # страница формы юридической консультации в ЛК
 user_legalConsultation:
   url:     /private/consultation/legal
@@ -340,6 +345,11 @@ user_changePassword:
 user_changePasswordSave:
   url:   /private/password/save
   param: { module: guard, action: changePasswordSave }
+#
+# user corporate register
+user_corporateRegister:
+  url:   /corporate-register
+  param: { module: guard, action: corporateRegister }
 #
 # user register
 user_register:
@@ -499,7 +509,6 @@ order_show:
   param: { module: order, action: show }
   class:   myDoctrineRoute
   options: { model: Order, type: object, method: getForRoute }
-
 
 # Smartengine
 #

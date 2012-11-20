@@ -36,6 +36,11 @@ class PaymentMethodRepository
     public function getList()
     {
         $params = array('geo_id' => RepositoryManager::getRegion()->getDefaultRegionId());
+        if ($user = sfContext::getInstance()->getUser()->getGuardUser()) {
+            if ($user->getIsCorporative()) {
+                $params['is_corporative'] = true;
+            }
+        }
 
         $result = CoreClient::getInstance()->query('payment-method.get', $params);
 
