@@ -15,7 +15,7 @@ class Repository {
      * @return Entity[]
      */
     public function getCollectionByCategory($category, \Model\Region\Entity $region = null) {
-        \App::logger()->debug('Start ' . __METHOD__ . ' ' . json_encode(func_get_args()));
+        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args()));
         $collection = array();
 
         $params = array(

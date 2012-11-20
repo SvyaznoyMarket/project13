@@ -14,7 +14,7 @@ class Repository {
      * @return Entity[]
      */
     public function getCollection(\Model\Region\Entity $region = null) {
-        \App::logger()->debug('Start ' . __METHOD__ . ' ' . json_encode(func_get_args()));
+        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args()));
 
         $data = $this->client->query('payment-method/get', array(
             'geo_id' => $region ? $region->getId() : \App::user()->getRegion()->getId(),
