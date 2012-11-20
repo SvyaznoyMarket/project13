@@ -101,10 +101,10 @@ class IndexAction {
     private function getDataForCredit(\Model\Product\Entity $product) {
         $result = array();
 
-        $mainCat = $product->getMainCategory();
+        $category = $product->getMainCategory();
         $cart = \App::user()->getCart();
         try {
-            $productType = \RepositoryManager::getCreditBank()->getCreditTypeByCategoryToken($mainCat->getToken());
+            $productType = $category ? \RepositoryManager::getCreditBank()->getCreditTypeByCategoryToken($category->getToken()) : '';
         } catch (\Exception $e) {
             \App::$exception = $e;
             \App::logger()->error($e);
