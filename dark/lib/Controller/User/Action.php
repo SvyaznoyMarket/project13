@@ -96,6 +96,10 @@ class Action {
         \App::logger()->debug('Exec ' . __METHOD__);
     }
 
+    public function registerCorporate(\Http\Request $request) {
+        \App::logger()->debug('Exec ' . __METHOD__);
+    }
+
     public function forgot(\Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
     }

@@ -33,6 +33,11 @@ return array(
         'pattern' => '/register',
         'action'  => array('User\Action', 'register'),
     ),
+    // регистрация корпоративного пользователя
+    'user.registerCorporate' => array(
+        'pattern' => '/corporate-register',
+        'action'  => array('User\Action', 'registerCorporate'),
+    ),
     // выход пользователя
     'user.logout' => array(
         'pattern' => '/logout',

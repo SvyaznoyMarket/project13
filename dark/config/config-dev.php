@@ -18,5 +18,7 @@ $c->warranty['enabled'] = true;
 
 $c->product['globalListEnabled'] = false;
 
+$c->user['corporateRegister'] = true;
+
 
 return $c;

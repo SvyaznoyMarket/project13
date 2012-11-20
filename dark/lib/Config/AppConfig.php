@@ -131,6 +131,10 @@ class AppConfig {
     public $cart = array(
         'productLimit' => null, // максимальное количество товаров в корзине, при котором добавляемый товар не будет вытеснять первый товар из корзины
     );
+    /** @var array */
+    public $user = array(
+        'corporateRegister' => null,
+    );
 
     public function __set($name, $value) {
         throw new \LogicException(sprintf('Неизвестный параметр "%s".', $name));

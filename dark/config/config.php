@@ -116,5 +116,7 @@ $c->smartEngine['push'] = true;
 
 $c->warranty['enabled'] = false;
 
+$c->user['corporateRegister'] = false;
+
 
 return $c;
