@@ -8,8 +8,4 @@ return array(
     'timer'   => array(
         'level' => 4,
     ),
-
-    'view'   => array(
-        'level' => 0,
-    ),
 );

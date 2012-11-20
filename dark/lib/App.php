@@ -34,13 +34,9 @@ class App {
 
         if (self::$config->debug) {
             ini_set('display_errors', 1);
-            ini_set('html_errors', 1);
-
-            error_reporting(E_ALL);
+            error_reporting(-1);
         } else {
             ini_set('display_errors', 0);
-            ini_set('html_errors', 0);
-            error_reporting(E_ALL ^ E_NOTICE);
         }
 
         $libDir = self::$config->libDir;

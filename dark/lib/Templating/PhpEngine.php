@@ -20,19 +20,11 @@ class PhpEngine implements EngineInterface {
      * @return string
      */
     public function render($template, array $params = array()) {
-        \Debug\Timer::start('template:' . $template);
-        \App::logger('view')->info('Start template ' . $template);
-
         // render
         extract($params, EXTR_REFS);
         ob_start();
         require $this->templateDir . '/' . $template . '.php';
 
-        $return = ob_get_clean();
-
-        $spend = \Debug\Timer::stop('template:' . $template);
-        \App::logger('view')->info('End template ' . $template . ' in ' . $spend);
-
-        return $return;
+        return ob_get_clean();
     }
 }
