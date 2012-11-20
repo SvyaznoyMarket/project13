@@ -10,6 +10,8 @@ class OrderAction {
     }
 
     public function execute(\Http\Request $request) {
+        \App::logger()->debug('Exec ' . __METHOD__);
+
         $client = \App::coreClientV2();
 
         // способы получения заказа

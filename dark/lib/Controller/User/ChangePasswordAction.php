@@ -10,6 +10,8 @@ class ChangePasswordAction {
     }
 
     public function execute(\Http\Request $request) {
+        \App::logger()->debug('Exec ' . __METHOD__);
+
         $error = null;
 
         $oldPassword = trim((string)$request->get('password_old'));

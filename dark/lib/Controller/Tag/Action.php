@@ -4,6 +4,8 @@ namespace Controller\Tag;
 
 class Action {
     public function index($tagToken, \Http\Request $request, $categoryToken = null) {
+        \App::logger()->debug('Exec ' . __METHOD__);
+
         $tag = \RepositoryManager::getTag()->getEntityByToken($tagToken);
         if (!$tag) {
             throw new \Exception\NotFoundException(sprintf('Тег с токеном "%s" не найден', $tagToken));

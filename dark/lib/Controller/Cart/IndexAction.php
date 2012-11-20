@@ -4,6 +4,8 @@ namespace Controller\Cart;
 
 class IndexAction {
     public function execute(\Http\Request $request) {
+        \App::logger()->debug('Exec ' . __METHOD__);
+
         $client = \App::coreClientV2();
         $cart = \App::user()->getCart();
 

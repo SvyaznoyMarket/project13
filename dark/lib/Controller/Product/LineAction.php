@@ -4,6 +4,8 @@ namespace Controller\Product;
 
 class LineAction {
     public function execute($lineToken, \Http\Request $request) {
+        \App::logger()->debug('Exec ' . __METHOD__);
+
         $line = \RepositoryManager::getLine()->getEntityByToken($lineToken);
         if (!$line) {
             throw new \Exception\NotFoundException(sprintf('Серия с токеном "%s" не найдена.', $lineToken));

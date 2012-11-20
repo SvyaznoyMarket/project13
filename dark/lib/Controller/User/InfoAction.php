@@ -4,6 +4,8 @@ namespace Controller\User;
 
 class InfoAction {
     public function execute(\Http\Request $request) {
+        \App::logger()->debug('Exec ' . __METHOD__);
+
         if (!$request->isXmlHttpRequest()) {
             throw new \Exception\NotFoundException('Request is not xml http');
         }

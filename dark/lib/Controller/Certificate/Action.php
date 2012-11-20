@@ -12,6 +12,8 @@ class Action {
     );
 
     public function check(\Http\Request $request) {
+        \App::logger()->debug('Exec ' . __METHOD__);
+
         $code = trim($request->get('code'));
         $pin = trim($request->get('pin'));
         if (!$code || !$pin) {

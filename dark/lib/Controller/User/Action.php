@@ -4,6 +4,8 @@ namespace Controller\User;
 
 class Action {
     public function login(\Http\Request $request) {
+        \App::logger()->debug('Exec ' . __METHOD__);
+
         if (\App::user()->getEntity()) {
             return new \Http\RedirectResponse(\App::router()->generate('user'));
         }
@@ -83,17 +85,19 @@ class Action {
     }
 
     public function logout() {
+        \App::logger()->debug('Exec ' . __METHOD__);
+
         \App::user()->removeToken();
 
         return new \Http\RedirectResponse(\App::router()->generate('homepage'));
     }
 
     public function register(\Http\Request $request) {
-
+        \App::logger()->debug('Exec ' . __METHOD__);
     }
 
     public function forgot(\Http\Request $request) {
-
+        \App::logger()->debug('Exec ' . __METHOD__);
     }
 
     public function reset(\Http\Request $request) {
