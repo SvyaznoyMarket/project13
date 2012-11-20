@@ -32,11 +32,22 @@ require_once __DIR__ . '/../dark/lib/App.php';
 \App::init($env, $config, function() use (&$response) {
     $error = error_get_last();
     if ($error && (error_reporting() & $error['type'])) {
+
         $spend = \Debug\Timer::stop('app');
         \App::logger()->error('Fail app ' . $spend . ' ' . round(memory_get_peak_usage() / 1048576, 2) . 'Mb' . ' with error ' . json_encode($error));
 
+        // очищаем буфер вывода
+        $previous = null;
+        while (($level = ob_get_level()) > 0 && $level !== $previous) {
+            $previous = $level;
+            ob_end_clean();
+        }
+
         if (\App::config()->debug) {
             $action = new \Debug\ErrorAction();
+            $response = $action->execute();
+        } else {
+            $action = new \Controller\Error\ServerErrorAction();
             $response = $action->execute();
         }
     } else {
@@ -56,7 +67,7 @@ require_once __DIR__ . '/../dark/lib/App.php';
         // debug panel
         if (\App::config()->debug && !\App::request()->isXmlHttpRequest()) {
             $content = $response->getContent();
-            $content .= require \App::config()->dataDir . '/debug/panel.php';
+            $content .= include \App::config()->dataDir . '/debug/panel.php';
             $response->setContent($content);
         }
 
@@ -102,8 +113,5 @@ try {
 
     if (\App::config()->debug) {
         throw $e;
-    } else {
-        $action = new \Controller\Error\ServerErrorAction();
-        $response = $action->execute($e, $request);
     }
 }
