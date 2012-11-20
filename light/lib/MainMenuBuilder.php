@@ -112,14 +112,14 @@ class MainMenuBuilder
    * @param int $quantity
    * @return array box sizes
    */
-  private static function getCapacityOfBoxes($weights, $quantity){
+  private static function getCapacityOfBoxes(array $weights, $quantity){
     $weight = (int) $weights[0]*1.1; //Чуть увеличиваем раздел блоков что бы из-за переносов последний блок не распирало
     unset($weights[0]);
     $middle = ceil($weight/$quantity);
 
     $blocks = array();
     for($i=0; $i<$quantity; $i++){
-      $max = max($weights);
+      $max = !empty($weights) ? max($weights) : 0;
       if($middle < $max){ //Проверка на категории, не влезающие в блоки даже если они одни
         $blocks[] = $max;
         $weight -= $max;
