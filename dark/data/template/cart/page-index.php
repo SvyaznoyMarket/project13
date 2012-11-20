@@ -19,7 +19,7 @@ $creditEnabled = ($cart->getTotalProductPrice() >= \App::config()->product['minC
     <div id="adfox920" class="adfoxWrapper"></div>
 </div>
 
-<?= require __DIR__ . '/_show.php' ?>
+<? require __DIR__ . '/_show.php' ?>
 
 <div class="fl width345 font14">
     <? if ($creditEnabled): ?>
