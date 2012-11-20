@@ -26,7 +26,7 @@ $c->coreV1['client_id']    = 'site';
 $c->coreV1['consumer_key'] = 'test';
 $c->coreV1['signature']    = 'test';
 
-$c->coreV2['url']       = 'http://core.ent3.ru/index.php/v2/';
+$c->coreV2['url']       = 'http://core.ent3.ru/v2/';
 $c->coreV2['client_id'] = 'site';
 
 
