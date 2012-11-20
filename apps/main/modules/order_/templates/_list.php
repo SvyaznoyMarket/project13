@@ -10,6 +10,10 @@
  */
 ?>
 
+<?php
+$isCorporative = $sf_user->getGuardUser() ? $sf_user->getGuardUser()->getIsCorporative() : false;
+?>
+
 <div class="fl"><strong class="font16">Текущие заказы (<?php echo count($list); ?>)</strong></div>
 <div class="clear pb20"></div>
 <?php
@@ -25,7 +29,7 @@ if (count($list)<1) echo '<div>У Вас пока нет ни одного за�
   <?php }elseif ($item->getStatusId() == Order::STATUS_CANCELLED){ ?>
   <div class="fr font16 orange pb10">Заказ отменен</div>
   <?php  }?>
-  <div class="font16 orange pb10"><strong>Заказ № <?php echo $item->getNumber()?> от <?php echo format_date($item->getCreatedAt(),'dd.MM.yyyy')?></strong> на сумму&nbsp;<?php echo $item->getSum()?> <span class="rubl">p</span></div>
+  <div class="font16 orange pb10"><strong>Заказ № <?php echo $item->getNumber() ?> от <?php echo format_date($item->getCreatedAt(),'dd.MM.yyyy')?></strong> на сумму&nbsp;<?php echo $item->getSum()?> <span class="rubl">p</span></div>
 
   <?php if ($item->getStatusId()!=Order::STATUS_READY && $item->getStatusId()!=Order::STATUS_CANCELLED && false){ ?>
   <table cellspacing="0" class="status">
@@ -112,13 +116,17 @@ if (count($list)<1) echo '<div>У Вас пока нет ни одного за�
       <th>
         <?php if ($item->getDeliveryDate()){ ?>
         <div class="font12 pb5">
-          <?php echo (array_key_exists($item->getDeliveryType(), $deliveryTypeList))? $deliveryTypeList[$item->getDeliveryType()]->getName() : '' ."."; ?>
+          <?php //echo (array_key_exists($item->getDeliveryType(), $deliveryTypeList))? $deliveryTypeList[$item->getDeliveryType()]->getName() : '' ."."; ?>
           <?php if ('0000-00-00' !== $item->getDeliveryDate()): ?>
           <?php echo format_date($item->getDeliveryDate(),'dd MMMM yyyy','ru')?>г.
           <?php endif ?>
         </div>
         <?php } ?>
         <div class="font12">Способ оплаты: <?php echo  (array_key_exists($item->getPaymentId(), $paymentMethodList))? $paymentMethodList[$item->getPaymentId()]->getName() : ''?></div>
+
+        <?php if ($isCorporative) { ?>
+        <div class="font12">Счет: <?php echo $item->getIsBill() ? link_to('выставлен', 'user_order_bill', array('order' => $item->getNumber())) : 'выставляется' ?></div>
+        <?php } ?>
       </th>
       <td>Итого к оплате:<br><strong class="font18"><?php echo $item->getSum() ?>&nbsp;<span class="rubl">p</span></strong></td>
     </tr>

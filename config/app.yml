@@ -78,6 +78,7 @@ all:
     allow_login_with_email: true
     signout_url: '@user'
     signin_url: '@user'
+    corporate_registration_enabled: true
     #remember_key_expiration_age: 1296000
 
   admitad:
@@ -96,8 +97,8 @@ all:
 
   core:
     config:
-      api_url: 'http://core.ent3.ru/v1/json'
-      userapi_url: 'http://core.ent3.ru/index.php/v2/'
+      api_url: 'http://peterpro.core.ent3.ru/v1/json'
+      userapi_url: 'http://peterpro.core.ent3.ru/index.php/v2/'
       client_code: site
       consumer_key: test
       signature: test
@@ -222,6 +223,9 @@ all:
 
 
 live:
+  guard:
+    corporate_registration_enabled: false
+
   open_auth:
     provider:
       vkontakte:
