@@ -984,6 +984,7 @@ flds:	for( field in fieldsToValidate ) {
                 window.regionMap.showMarkers( getShopsStack() )
             }
         })
+        loadMap()
 		return false
 	} )
 
@@ -1014,15 +1015,15 @@ flds:	for( field in fieldsToValidate ) {
         MVM.selectShop( shop )
     }
 
-    
-	MapInterface.ready( 'yandex', {
-		yandex: $('#mapInfoBlock'), 
-		google: $('#map-info_window-container')
-	} )
-	var mapCenter = calcMCenter( getShopsStack() )
-	var mapCallback = function() {
-		window.regionMap.addHandler( '.shopchoose', ShopChoosed )
-	}
-	MapInterface.init( mapCenter, 'mapPopup', mapCallback, updateI )
-
+    function loadMap(){
+    	MapInterface.ready( 'yandex', {
+			yandex: $('#mapInfoBlock'), 
+			google: $('#map-info_window-container')
+		} )
+		var mapCenter = calcMCenter( getShopsStack() )
+		var mapCallback = function() {
+			window.regionMap.addHandler( '.shopchoose', ShopChoosed )
+		}
+		MapInterface.init( mapCenter, 'mapPopup', mapCallback, updateI )
+    }
 })
