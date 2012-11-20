@@ -10,6 +10,8 @@ class Action {
     }
 
     public function region($regionId) {
+        \App::logger()->debug('Exec ' . __METHOD__);
+
         $currentRegion = \RepositoryManager::getRegion()->getEntityById($regionId);
         if (!$currentRegion) {
             throw new \Exception\NotFoundException(sprintf('Region #%s not found', $regionId));
@@ -53,6 +55,8 @@ class Action {
     }
 
     public function show($regionToken, $shopToken) {
+        \App::logger()->debug('Exec ' . __METHOD__);
+
         $currentRegion = \RepositoryManager::getRegion()->getEntityByToken($regionToken);
         if (!$currentRegion) {
             throw new \Exception\NotFoundException(sprintf('Region with token %s not found', $regionToken));

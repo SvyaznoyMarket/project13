@@ -11,6 +11,8 @@ class Action {
      * @return \Http\RedirectResponse
      */
     public function setGlobal($categoryPath, \Http\Request $request) {
+        \App::logger()->debug('Exec ' . __METHOD__);
+
         $response = new \Http\RedirectResponse($request->headers->get('referer') ?: \App::router()->generate('product.category', array($categoryPath => $categoryPath)));
 
         if ($request->query->has('global')) {
@@ -32,6 +34,8 @@ class Action {
      * @throws \Exception\NotFoundException
      */
     public function slider($categoryPath, \Http\Request $request) {
+        \App::logger()->debug('Exec ' . __METHOD__);
+
         if (!$request->isXmlHttpRequest()) {
             throw new \Exception\NotFoundException('Request is not xml http request');
         }
@@ -89,6 +93,8 @@ class Action {
      * @throws \Exception\NotFoundException
      */
     public function count($categoryPath, \Http\Request $request) {
+        \App::logger()->debug('Exec ' . __METHOD__);
+
         if (!$request->isXmlHttpRequest()) {
             throw new \Exception\NotFoundException('Request is not xml http request');
         }
@@ -120,6 +126,8 @@ class Action {
      * @throws \Exception\NotFoundException
      */
     public function category($categoryPath, \Http\Request $request) {
+        \App::logger()->debug('Exec ' . __METHOD__);
+
         $categoryToken = explode('/', $categoryPath);
         $categoryToken = end($categoryToken);
 
@@ -181,6 +189,8 @@ class Action {
      * @throws \Exception
      */
     private function rootCategory(\Model\Product\Category\Entity $category, \Http\Request $request) {
+        \App::logger()->debug('Exec ' . __METHOD__);
+
         if (\App::config()->debug) \App::debug()->add('sub.act', 'rootCategory', 138);
 
         if (!$category->getHasChild()) {
@@ -203,6 +213,8 @@ class Action {
      * @return \Http\Response
      */
     private function branchCategory(\Model\Product\Category\Entity $category, \Http\Request $request) {
+        \App::logger()->debug('Exec ' . __METHOD__);
+
         if (\App::config()->debug) \App::debug()->add('sub.act', 'branchCategory', 138);
 
         // сортировка
@@ -250,6 +262,8 @@ class Action {
      * @throws \Exception\NotFoundException
      */
     private function leafCategory(\Model\Product\Category\Entity $category, \Http\Request $request) {
+        \App::logger()->debug('Exec ' . __METHOD__);
+
         if (\App::config()->debug) \App::debug()->add('sub.act', 'leafCategory', 138);
 
         $pageNum = (int)$request->get('page', 1);

@@ -15,7 +15,7 @@ class Repository {
      * @return Entity|null
      */
     public function getEntityById($id) {
-        \App::logger()->info('Start ' . __METHOD__ . ' ' . json_encode(func_get_args()));
+        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args()));
 
         $data = $this->client->query('shop/get', array(
             'id' => array($id),
@@ -30,7 +30,7 @@ class Repository {
      * @return Entity|null
      */
     public function getEntityByToken($token) {
-        \App::logger()->info('Start ' . __METHOD__ . ' ' . json_encode(func_get_args()));
+        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args()));
 
         $data = $this->client->query('shop/get', array(
             'slug' => array($token),
@@ -45,7 +45,7 @@ class Repository {
      * @return Entity[]
      */
     public function getCollectionByRegion(\Model\Region\Entity $region) {
-        \App::logger()->info('Start ' . __METHOD__ . ' ' . json_encode(func_get_args()));
+        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args()));
 
         $response = $this->client->query('shop/get', array(
             'geo_id' => $region->getId(),
@@ -64,7 +64,7 @@ class Repository {
      * @return Entity[]
      */
     public function getCollectionById(array $ids = array()) {
-        \App::logger()->info('Start ' . __METHOD__ . ' ' . json_encode(func_get_args()));
+        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args()));
 
         if (!(bool)$ids) return array();
 

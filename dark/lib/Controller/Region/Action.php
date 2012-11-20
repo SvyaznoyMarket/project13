@@ -8,6 +8,8 @@ class Action {
     }
 
     public function change($regionId, \Http\Request $request) {
+        \App::logger()->debug('Exec ' . __METHOD__);
+
         $regionId = (int)$regionId;
 
         if (!$regionId) {
@@ -27,6 +29,8 @@ class Action {
     }
 
     public function autocomplete(\Http\Request $request) {
+        \App::logger()->debug('Exec ' . __METHOD__);
+
         if (!$request->isXmlHttpRequest()) {
             throw new \Exception\NotFoundException('Request is not xml http request');
         }

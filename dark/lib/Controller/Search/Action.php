@@ -4,6 +4,8 @@ namespace Controller\Search;
 
 class Action {
     public function execute(\Http\Request $request) {
+        \App::logger()->debug('Exec ' . __METHOD__);
+
         $searchQuery = $request->get('q');
         $pageNum = (int)$request->get('page', 1);
         if ($pageNum < 1) {

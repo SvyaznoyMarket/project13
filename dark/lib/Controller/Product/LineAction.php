@@ -4,6 +4,8 @@ namespace Controller\Product;
 
 class LineAction {
     public function execute($lineToken, \Http\Request $request) {
+        \App::logger()->debug('Exec ' . __METHOD__);
+
         $line = \RepositoryManager::getLine()->getEntityByToken($lineToken);
         if (!$line) {
             throw new \Exception\NotFoundException(sprintf('Серия с токеном "%s" не найдена.', $lineToken));
@@ -17,13 +19,21 @@ class LineAction {
 
         //Собираем все id для товров: наборов серии, простых товаров серии
         $productInLineId = array_merge($line->getKitId(), $line->getProductId());
-        $productInLine = array_flip($productInLineId);
+        $productsInLine = array_flip($productInLineId);
         $productRepository->setEntityClass( '\Model\Product\ExpandedEntity');
-        $globalProduct = $productRepository->getCollectionById($productInLineId);
 
-        foreach ($globalProduct as $product) {
-            if (isset($productInLine[$product->getId()])) {
-                $productInLine[$product->getId()] = $product;
+        try {
+            $globalProducts = $productRepository->getCollectionById($productInLineId);
+        } catch (\Exception $e) {
+            \App::$exception = $e;
+            \App::logger()->error($e);
+
+            $globalProducts = array();
+        }
+
+        foreach ($globalProducts as $product) {
+            if (isset($productsInLine[$product->getId()])) {
+                $productsInLine[$product->getId()] = $product;
             }
         }
 
@@ -35,12 +45,19 @@ class LineAction {
             foreach ($mainProduct->getKit() as $part) {
                 $partId[] = $part->getId();
             }
-            $parts = $productRepository->getCollectionById($partId);
+            try {
+                $parts = $productRepository->getCollectionById($partId);
+            } catch (\Exception $e) {
+                \App::$exception = $e;
+                \App::logger()->error($e);
+
+                $parts = array();
+            }
         }
 
-        if ((bool)$productInLine) {
-            $productPager = new \Iterator\EntityPager(array_values($productInLine), count($productInLine));
-            $productPager->setMaxPerPage(count($productInLine));
+        if ((bool)$productsInLine) {
+            $productPager = new \Iterator\EntityPager(array_values($productsInLine), count($productsInLine));
+            $productPager->setMaxPerPage(count($productsInLine));
         } else {
             $productPager = null;
         }

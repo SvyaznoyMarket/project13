@@ -10,6 +10,8 @@ class ConsultationAction {
     }
 
     public function execute(\Http\Request $request) {
+        \App::logger()->debug('Exec ' . __METHOD__);
+
         $userEntity = \App::user()->getEntity();
 
         $form = new \View\User\ConsultationForm();

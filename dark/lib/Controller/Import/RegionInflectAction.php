@@ -4,6 +4,8 @@ namespace Controller\Import;
 
 class RegionInflectAction {
     public function execute() {
+        \App::logger()->debug('Exec ' . __METHOD__);
+
         $xml = simplexml_load_file(\App::config()->dataDir . '/core/geo.xml');
 
         foreach ($xml->xpath('//row') as $row) {

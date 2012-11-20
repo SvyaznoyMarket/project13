@@ -14,7 +14,7 @@ class Repository {
      * @return Entity|null
      */
     public function getDefaultEntity() {
-        \App::logger()->info('Start ' . __METHOD__ . ' ' . json_encode(func_get_args()));
+        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args()));
 
         return $this->getEntityById(\App::config()->region['defaultId']);
     }
@@ -24,7 +24,7 @@ class Repository {
      * @return Entity|null
      */
     public function getEntityById($id) {
-        \App::logger()->info('Start ' . __METHOD__ . ' ' . json_encode(func_get_args()));
+        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args()));
 
         $response = $this->client->query('geo/get', array(
             'id' => array($id),
@@ -40,7 +40,7 @@ class Repository {
      * @return Entity|null
      */
     public function getEntityByToken($token) {
-        \App::logger()->info('Start ' . __METHOD__ . ' ' . json_encode(func_get_args()));
+        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args()));
 
         $response = $this->client->query('geo/get', array(
             'slug' => array($token),
@@ -55,7 +55,7 @@ class Repository {
      * @return Entity[]
      */
     public function getShopAvailableCollection() {
-        \App::logger()->info('Start ' . __METHOD__ . ' ' . json_encode(func_get_args()));
+        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args()));
 
         $response = $this->client->query('geo/get-shop-available');
 

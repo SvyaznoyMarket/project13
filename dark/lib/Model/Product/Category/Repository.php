@@ -15,7 +15,7 @@ class Repository {
      * @return Entity|null
      */
     public function getEntityByToken($token) {
-        \App::logger()->info('Start ' . __METHOD__ . ' ' . json_encode(func_get_args()));
+        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args()));
 
         $data = $this->client->query('category/get', array(
             'slug'   => array($token),
@@ -31,7 +31,7 @@ class Repository {
      * @return Entity|null
      */
     public function getEntityById($id) {
-        \App::logger()->info('Start ' . __METHOD__ . ' ' . json_encode(func_get_args()));
+        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args()));
 
         $data = $this->client->query('category/get', array(
             'id'     => array($id),
@@ -47,7 +47,7 @@ class Repository {
      * @return Entity[]
      */
     public function getCollectionById(array $ids) {
-        \App::logger()->info('Start ' . __METHOD__ . ' ' . json_encode(func_get_args()));
+        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args()));
 
         $data = $this->client->query('category/get', array(
             'id'    => $ids,
@@ -66,7 +66,7 @@ class Repository {
      * @return Entity[]
      */
     public function getRootCollection() {
-        \App::logger()->info('Start ' . __METHOD__ . ' ' . json_encode(func_get_args()));
+        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args()));
 
         $data = $this->client->query('category/tree', array(
             'max_level'       => 1,
@@ -87,7 +87,7 @@ class Repository {
      * @param Entity $entity
      */
     public function loadEntityBranch(Entity $entity, \Model\Region\Entity $region = null) {
-        \App::logger()->info('Start ' . __METHOD__ . ' ' . json_encode(func_get_args()));
+        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args()));
 
         $params = array(
             'root_id'         => $entity->getId(),
