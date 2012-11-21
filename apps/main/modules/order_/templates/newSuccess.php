@@ -84,13 +84,14 @@ $isCorporative = $sf_user->getGuardUser() && $sf_user->getGuardUser()->getIsCorp
 
       <dl class='bBuyingLine'>
         <dt>Телефон для связи*</dt>
-        <dd>
-
-            <p></p>
-            <?php echo $form['recipient_phonenumbers']->render(array('class' => 'bBuyingLine__eText mInputLong')) ?>
+        <dd> 
+            <div class="phonePH">
+                <span class="placeholder">8</span>
+                 <?php echo $form['recipient_phonenumbers']->render(array('class' => 'bBuyingLine__eText mInputLong')) ?>
+            </div>
+            
             <div>
-              <p></p>
-              <label for="<?php echo $form['is_receive_sms']->renderId() ?>">
+                <label for="<?php echo $form['is_receive_sms']->renderId() ?>">
                 <b></b> <h5>Я хочу получать СМС уведомления об изменении статуса заказа</h5>
                 <?php echo $form['is_receive_sms']->render(array('class' => 'bBuyingLine__eRadio')) ?>
               </label>
