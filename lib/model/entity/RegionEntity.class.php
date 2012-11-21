@@ -46,6 +46,12 @@ class RegionEntity
   /** @var bool */
   private $hasTransportCompany;
 
+  /** @var bool */
+  private $hasSubway;
+
+  /** @var bool */
+  private $hasF1;
+
   public function __construct(array $data = array()){
     if(array_key_exists('id', $data))            $this->id          = (int)$data['id'];
     if(array_key_exists('token', $data))         $this->token       = (string)$data['token'];
@@ -56,8 +62,11 @@ class RegionEntity
     if(array_key_exists('rgt', $data))           $this->rgt         = (int)$data['rgt'];
     if(array_key_exists('price_list_id', $data)) $this->priceListId = (int)$data['price_list_id'];
     if(array_key_exists('parent_id', $data))     $this->parentId    = (int)$data['parent_id'];
+    if(array_key_exists('has_subway', $data))    $this->hasSubway   = (bool)$data['has_subway'];
+    if(array_key_exists('has_f1', $data))        $this->hasF1       = (bool)$data['has_f1'];
+    if (array_key_exists('tk_available', $data)) $this->setHasTransportCompany($data['tk_available']);
 
-    $coords = array(
+      $coords = array(
       99      => array('52.618600', '39.568900'),
       1964    => array('54.913510', '37.416799'),
       1965    => array('55.937785', '37.520213'),
@@ -82,7 +91,6 @@ class RegionEntity
       $this->longitude = $coords[$this->id][1];
     }
 
-    if (array_key_exists('tk_available', $data)) $this->setHasTransportCompany($data['tk_available']);
   }
   /**
    * @param int $id
@@ -322,4 +330,36 @@ class RegionEntity
   public function getHasTransportCompany() {
     return $this->hasTransportCompany;
   }
+
+    /**
+     * @param boolean $hasF1
+     */
+    public function setHasF1($hasF1)
+    {
+        $this->hasF1 = (bool)$hasF1;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getHasF1()
+    {
+        return $this->hasF1;
+    }
+
+    /**
+     * @param boolean $hasSubway
+     */
+    public function setHasSubway($hasSubway)
+    {
+        $this->hasSubway = (bool)$hasSubway;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getHasSubway()
+    {
+        return $this->hasSubway;
+    }
 }

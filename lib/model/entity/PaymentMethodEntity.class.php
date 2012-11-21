@@ -8,6 +8,8 @@
  */
 class PaymentMethodEntity
 {
+  const CERTIFICATE_ID = 9;
+
   /**
    * @var int
    */
@@ -117,7 +119,7 @@ class PaymentMethodEntity
     }
 
     public function isCertificate() {
-        return 10 == $this->id;
+        return self::CERTIFICATE_ID == $this->id;
     }
 
     /**

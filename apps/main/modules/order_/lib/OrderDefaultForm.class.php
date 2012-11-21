@@ -18,11 +18,6 @@ class OrderDefaultForm extends BaseOrderForm
       throw new Exception('Delivery types not provided');
     }
 
-    $region = $user->getRegion();
-
-    // TODO: использовать новую сущность
-    $hasMetro = 14974 == $region['core_id'];
-
     // region_id
     $this->widgetSchema['region_id'] = new myWidgetFormComponent(array('component' => array('order_', 'field_region_id'), 'component_param' => array()));
     $this->widgetSchema['region_id']->setLabel('В каком городе вы будете получать заказ?');
@@ -50,7 +45,7 @@ class OrderDefaultForm extends BaseOrderForm
 
     // recipient_phonenumbers
     $this->widgetSchema['recipient_phonenumbers'] = new sfWidgetFormInputText();
-    $this->validatorSchema['recipient_phonenumbers'] = new sfValidatorString(array('min_length' => 7, 'max_length' => 20, 'required' => true, 'trim' => true), array('required' => 'Укажите телефон для связи', 'min_length' => 'Неправильный телефонный номер', 'max_length' => 'Неправильный телефонный номер'));
+    $this->validatorSchema['recipient_phonenumbers'] = new sfValidatorString(array('min_length' => 11, 'max_length' => 11, 'required' => true), array('required' => 'Укажите телефон для связи', 'min_length' => 'Неправильный телефонный номер', 'max_length' => 'Неправильный телефонный номер'));
     $this->widgetSchema['recipient_phonenumbers']->setLabel('Мобильный телефон для связи:');
 
     // is_receive_sms
@@ -68,6 +63,9 @@ class OrderDefaultForm extends BaseOrderForm
     $this->widgetSchema['address_metro'] = new sfWidgetFormInputText();
     $this->validatorSchema['address_metro'] = new sfValidatorString(array('required' => false), array('required' => 'Укажите метро'));
     $this->widgetSchema['address_metro']->setLabel('Метро');
+
+    $this->widgetSchema['subway_id'] = new sfWidgetFormInputHidden();
+    $this->validatorSchema['subway_id'] = new sfValidatorInteger(array('required' => false));
 
     $this->widgetSchema['address_street'] = new sfWidgetFormInputText();
     $this->validatorSchema['address_street'] = new sfValidatorString(array('required' => false), array('required' => 'Укажите улицу'));
@@ -144,7 +142,12 @@ class OrderDefaultForm extends BaseOrderForm
       'agreed',
       'cardnumber',
       'cardpin',
+      'subway_id',
     );
+
+    $region = $user->getRegion();
+    $hasMetro = $region['has_subway'];
+
     if ($hasMetro)
     {
       $fields[] = 'address_metro';
@@ -156,6 +159,18 @@ class OrderDefaultForm extends BaseOrderForm
 
   public function bind(array $taintedValues = null, array $taintedFiles = null)
   {
+    if (!empty($taintedValues['recipient_phonenumbers'])) {
+      $value = $taintedValues['recipient_phonenumbers'];
+      $value = trim((string)$value);
+      $value = preg_replace('/^\+7/', '8', $value);
+      $value = preg_replace('/[^\d]/', '', $value);
+      if (10 == strlen($value)) {
+          $value = '8' . $value;
+      }
+
+      $taintedValues['recipient_phonenumbers'] = $value;
+    }
+
     if (!empty($taintedValues['delivery_type_id'])) {
       if ($deliveryType = DeliveryTypeTable::getInstance()->find($taintedValues['delivery_type_id'])) {
         if ('standart' == $deliveryType->token) {
@@ -166,7 +181,7 @@ class OrderDefaultForm extends BaseOrderForm
     }
 
     // если оплата подарочной картой
-    if (!empty($taintedValues['payment_method_id']) && (10 == $taintedValues['payment_method_id'])) {
+    if (!empty($taintedValues['payment_method_id']) && (PaymentMethodEntity::CERTIFICATE_ID == $taintedValues['payment_method_id'])) {
         //$this->validatorSchema['cardnumber'] = new myValidatorCertificate(array('required' => true));
         $this->validatorSchema['cardnumber'] = new sfValidatorString(array('required' => true));
         $this->validatorSchema['cardpin'] = new sfValidatorString(array('required' => true));
@@ -184,5 +199,6 @@ class OrderDefaultForm extends BaseOrderForm
     $this->object->mapValue('address_number', isset($values['address_number']) ? $values['address_number'] : null);
     $this->object->mapValue('address_building', isset($values['address_building']) ? $values['address_building'] : null);
     $this->object->mapValue('address_apartment', isset($values['address_apartment']) ? $values['address_apartment'] : null);
+    //$this->object->mapValue('subway_id', isset($values['subway_id']) ? $values['subway_id'] : null);
   }
 }

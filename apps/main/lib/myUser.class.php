@@ -84,7 +84,7 @@ class myUser extends myGuardSecurityUser
       return null;
     }
     #@TODO: если нет запрашиваемого ключа то лучше выкидывать ошибку
-    return !empty($key) ? $this->region[$key] : $this->region;
+    return (!empty($key) && isset($this->region[$key])) ? $this->region[$key] : $this->region;
   }
 
   public function getRegion_()
@@ -127,8 +127,9 @@ class myUser extends myGuardSecurityUser
       'latitude' => $region->getLatitude(),
       'longitude' => $region->getLongitude(),
       'region' => $region,
-      'has_f1' => isset($r[0]) ? ((bool)$r[0]['has_f1']) : false,
+      'has_f1' => $region->getHasF1(),
       'tk_available' => isset($r[0]) ? ((bool)$r[0]['tk_available']) : false,
+      'has_subway' => $region->getHasSubway(),
     );
 
     #@TODO: зачем кука устанавливается два раза ?

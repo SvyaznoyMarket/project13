@@ -63,7 +63,7 @@ class PaymentMethodRepository
   public function getAcceptedList() {
     $return = array(1, 2, 5, 6, 8);
     if (sfConfig::get('app_certificate_enabled', false)) {
-        $return[] = 10;
+        $return[] = PaymentMethodEntity::CERTIFICATE_ID;
     }
 
     return $return;
