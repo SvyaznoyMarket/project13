@@ -832,7 +832,7 @@ class order_Actions extends myActions
     {
       $firstOrder = reset($orders);
       // проверка на подарочный сертификат
-      if ((1 == count($orders)) && (10 == $firstOrder->payment_method_id)) {
+      if ((1 == count($orders)) && (PaymentMethodEntity::CERTIFICATE_ID == $firstOrder->payment_method_id)) {
         try {
             $firstOrderData = reset($response['orders']);
 
