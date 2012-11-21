@@ -20,7 +20,7 @@ class RegionModel
    */
   public function getById($id){
     $id = (int) $id;
-    $response = App::getCoreV2()->query('geo.get-by-id-list', array(), array('id_list' => array($id)));
+    $response = App::getCoreV2()->query('geo/get', array(), array('id' => array($id)));
     if (!isset($response[0])){
       return null;
     }
