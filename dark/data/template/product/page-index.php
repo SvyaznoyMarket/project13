@@ -15,7 +15,7 @@
 <?
   $json = json_encode(array (
     'jsref'        => $product->getToken(),
-    'jstitle'      => $page->escape($page->escape($product->getName())),
+    'jstitle'      => $product->getName(),
     'jsprice'      => $product->getPrice(),
     'jsimg'        => $product->getImageUrl(3),
     'jsbimg'       =>  $product->getImageUrl(2),
@@ -24,7 +24,7 @@
     'jsregionid'   => $user->getRegion()->getId(),
     'jsregionName' => $user->getRegion()->getName(),
     'jsstock'      => 10,
-  ));
+  ),  JSON_HEX_QUOT | JSON_HEX_APOS);
 ?>
 <?
   $photoList = $product->getPhoto();
