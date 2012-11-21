@@ -84,6 +84,11 @@ class order_Actions extends myActions
     $defaultDeliveryType = (1 == count($deliveryTypes)) ? $deliveryTypes[0] : null;
     $deliveryMap = $this->getDeliveryMapView($defaultDeliveryType);
 
+    $region = $user->getRegion();
+    if ($region['has_subway']) {
+        $this->setVar('subwayStations', array_map(function(SubwayEntity $item) { return array('val' => $item->getId(), 'label' => $item->getName()); }, RepositoryManager::getSubway()->getListByRegionId($user->getRegion('id'))), true);
+    }
+
     $this->setVar('deliveryMap', $deliveryMap);
     $this->setVar('deliveryMap_json', json_encode($deliveryMap));
     $this->setVar('mapCenter', json_encode(array('latitude' => $user->getRegion('latitude'), 'longitude' => $user->getRegion('longitude'))));
@@ -174,6 +179,8 @@ class order_Actions extends myActions
       $baseOrder->mapValue('credit_bank_id', $form->getValue('credit_bank_id'));
       $baseOrder->mapValue('cardnumber', $form->getValue('cardnumber'));
       $baseOrder->mapValue('cardpin', $form->getValue('cardpin'));
+      //$baseOrder->mapValue('subway_id', $form->getValue('subway_id'));
+
       /*
       $baseOrder->address = ''
         .($form->getValue('address_metro') ? "метро {$form->getValue('address_metro')}, " : '')
@@ -788,6 +795,7 @@ class order_Actions extends myActions
       $return['address_building'] = $order->address_building;
       $return['address_apartment'] = $order->address_apartment;
       $return['address_floor'] = $order->address_floor;
+      $return['subway_id'] = $order->subway_id;
 
         return $return;
     }, $orders);
@@ -1141,12 +1149,13 @@ class order_Actions extends myActions
       'recipient_first_name',
       'recipient_last_name',
       'recipient_phonenumbers',
-      //'address_metro',
       'address_street',
       'address_number',
       'address_building',
       'address_apartment',
       'address_floor',
+      'subway_id',
+      'address_metro',
     );
   }
 }

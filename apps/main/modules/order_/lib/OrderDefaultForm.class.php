@@ -18,11 +18,6 @@ class OrderDefaultForm extends BaseOrderForm
       throw new Exception('Delivery types not provided');
     }
 
-    $region = $user->getRegion();
-
-    // TODO: использовать новую сущность
-    $hasMetro = 14974 == $region['core_id'];
-
     // region_id
     $this->widgetSchema['region_id'] = new myWidgetFormComponent(array('component' => array('order_', 'field_region_id'), 'component_param' => array()));
     $this->widgetSchema['region_id']->setLabel('В каком городе вы будете получать заказ?');
@@ -68,6 +63,9 @@ class OrderDefaultForm extends BaseOrderForm
     $this->widgetSchema['address_metro'] = new sfWidgetFormInputText();
     $this->validatorSchema['address_metro'] = new sfValidatorString(array('required' => false), array('required' => 'Укажите метро'));
     $this->widgetSchema['address_metro']->setLabel('Метро');
+
+    $this->widgetSchema['subway_id'] = new sfWidgetFormInputHidden();
+    $this->validatorSchema['subway_id'] = new sfValidatorInteger(array('required' => false));
 
     $this->widgetSchema['address_street'] = new sfWidgetFormInputText();
     $this->validatorSchema['address_street'] = new sfValidatorString(array('required' => false), array('required' => 'Укажите улицу'));
@@ -144,7 +142,12 @@ class OrderDefaultForm extends BaseOrderForm
       'agreed',
       'cardnumber',
       'cardpin',
+      'subway_id',
     );
+
+    $region = $user->getRegion();
+    $hasMetro = $region['has_subway'];
+
     if ($hasMetro)
     {
       $fields[] = 'address_metro';
@@ -184,5 +187,6 @@ class OrderDefaultForm extends BaseOrderForm
     $this->object->mapValue('address_number', isset($values['address_number']) ? $values['address_number'] : null);
     $this->object->mapValue('address_building', isset($values['address_building']) ? $values['address_building'] : null);
     $this->object->mapValue('address_apartment', isset($values['address_apartment']) ? $values['address_apartment'] : null);
+    //$this->object->mapValue('subway_id', isset($values['subway_id']) ? $values['subway_id'] : null);
   }
 }
