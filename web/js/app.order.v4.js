@@ -165,7 +165,8 @@ $(document).ready(function() {
 	PubSub.subscribe( 'authorize', function( m, d ) {
 		$('#order_recipient_first_name').val( d.first_name )
 		$('#order_recipient_last_name').val( d.last_name )
-		$('#order_recipient_phonenumbers').val( d.phonenumber + '       ' )
+		//$('#order_recipient_phonenumbers').val( d.phonenumber + '       ' )
+		$('#order_recipient_phonenumbers').val( d.phonenumber )
 		$('#user-block').hide()
 	})
 
@@ -187,13 +188,14 @@ $(document).ready(function() {
     // region changer (handler) describes in another file, its common call
 	if( typeof( $.mask ) !== 'undefined' ) {
 		$.mask.definitions['n'] = "[()0-9\ \-]"
+        /*
 		$("#order_recipient_phonenumbers").mask("8nnnnnnnnnnnnnnnnn", { placeholder: " ", maxlength: 10 } )
 		var predefPhone = document.getElementById('order_recipient_phonenumbers').getAttribute('value')
         if( predefPhone && predefPhone != '' )
             $('#order_recipient_phonenumbers').val( predefPhone + '       ' )
         else   
             $("#order_recipient_phonenumbers").val('8')
-        
+        */
         $.mask.definitions['*'] = "[0-9*]"
         $("#order_sclub_card_number").mask("* ****** ******", { placeholder: "*" } )
 		if( $("#order_sclub_card_number")[0].getAttribute('value') )
