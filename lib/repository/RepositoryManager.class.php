@@ -199,4 +199,15 @@ class RepositoryManager
     if(!$repo) $repo = new UserRepository();
     return $repo;
   }
+
+    /**
+     * @static
+     * @return SubwayRepository
+     */
+    public static function getSubway()
+    {
+        static $repo;
+        if(!$repo) $repo = new SubwayRepository();
+        return $repo;
+    }
 }

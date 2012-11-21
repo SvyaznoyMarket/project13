@@ -7,7 +7,9 @@
   'order[payment_method_id]'      => 'Выберите способ оплаты',
   'order[agreed]'                 => 'Необходимо согласие',
 ) ?>
-
+<?php
+  $jsStationNames = json_encode(isset($subwayStations) ? $subwayStations : array(), JSON_HEX_QUOT | JSON_HEX_APOS);
+?>
 <?php include_partial('order_/header', array('title' => 'Финальный шаг :)')) ?>
 <div id="adfox920" class="adfoxWrapper"></div>
 
@@ -102,7 +104,8 @@
           <?php if (isset($form['address_metro'])): ?>
           <div class="ui-css">
             <span class="placeholder">Метро</span><?php echo $form['address_metro']->render(array('class' => 'placeholder-input bBuyingLine__eText mInputLong', 'title' => 'Метро')) ?>
-            <div id="metrostations"></div>
+            <div id="metrostations" data-name='<?php echo $jsStationNames ?>'></div>
+            <?php echo $form['subway_id']->render() ?>
           </div>
           <?php endif ?>
 
