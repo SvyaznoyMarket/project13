@@ -253,6 +253,113 @@ class guardActions extends myActions
   /**
    * Executes register action
    *
+   * @param sfWebRequest $request A request object
+   */
+  public function executeCorporateRegister(sfRequest $request) {
+    $this->forward404Unless(sfConfig::get('app_guard_corporate_registration_enabled', false));
+
+    $client = CoreClient::getInstance();
+
+    $form = new CorporateRegisterForm();
+    $errors = array();
+
+    if ($request->isMethod('post')) {
+      $form->import($request->getPostParameter('register'));
+
+      if ($form->validate()) {
+        try {
+          $data = array(
+              'first_name'    => $form->getFirstName(),
+              'last_name'     => $form->getLastName(),
+              'middle_name'   => $form->getMiddleName(),
+              'sex'           => 0,
+              //'birthday'      => null,
+              'email'         => $form->getEmail(),
+              'phone'         => null,
+              'mobile'        => $form->getPhone(),
+              'is_subscribe'  => false,
+              'occupation'    => null,
+              'detail'        => array(
+                  //'legal_type' => null,
+                  //'name'          => $form->getCorpName(),
+                  'legal_type'    => 'ЮЛ',
+                  'name_full'     => $form->getCorpName(),
+                  'address_legal' => $form->getCorpLegalAddress(),
+                  'address_real'  => $form->getCorpRealAddress(),
+                  'okpo'          => $form->getCorpOKPO(),
+                  'inn'           => $form->getCorpINN(),
+                  'kpp'           => $form->getCorpKPP(),
+                  'bik'           => $form->getCorpBIK(),
+                  'account'       => $form->getCorpAccount(),
+                  'korr_account'  => $form->getCorpKorrAccount(),
+              ),
+          );
+          $result = $client->query('user/create-legal', array(
+              'geo_id' => $this->getUser()->getRegion('id'),
+          ), $data);
+
+          if (!isset($result['token'])) {
+              throw new RuntimeException('Не получен токен пользователя');
+          }
+          $user = new UserEntity(array(
+            'id'             => $result['id'],
+            'token'          => $result['token'],
+            'is_corporative' => $result['is_corporative'],
+          ));
+          $this->getUser()->signIn($user);
+
+          $this->redirect($this->getSigninUrl());
+        } catch (Exception $e) {
+          $errors['common'] = 'Не удалось сохранить форму. '.(sfConfig::get('sf_debug') ? $e->getMessage() : '');
+
+          $error = $client->getError();
+          if (isset($error['code'])) switch ($error['code']) {
+            case 686:
+              $form->setError('phone', 'Такой номер телефона уже зарегистрирован.');
+              break;
+            case 684:
+              $form->setError('email', 'Такой email уже зарегистрирован.');
+              break;
+            case 689:
+              $form->setError('email', 'Поле заполнено неверно.');
+              break;
+            case 690:
+              $form->setError('phone', 'Поле заполнено неверно.');
+              break;
+            case 692:
+              $form->setError('corp_inn', 'Поле заполнено неверно.');
+              break;
+            case 693:
+              $form->setError('corp_kpp', 'Поле заполнено неверно.');
+              break;
+            case 696:
+              $form->setError('corp_account', 'Поле заполнено неверно.');
+              break;
+            case 697:
+              $form->setError('corp_korr_account', 'Поле заполнено неверно.');
+              break;
+            case 694:
+              $form->setError('corp_bik', 'Поле заполнено неверно.');
+              break;
+            case 695:
+              $form->setError('corp_okpo', 'Поле заполнено неверно.');
+              break;
+            case 698:
+              $form->setError('corp_inn', 'Пользователь с таким ИНН уже зарегистрирован. Пожалуйста обратитесь в контакт-cENTER.');
+              break;
+          }
+        }
+
+      }
+    }
+
+    $this->setVar('form', $form);
+    $this->setVar('errors', $errors);
+  }
+
+  /**
+   * Executes register action
+   *
    * @param sfRequest $request A request object
    */
   public function executeRegister($request)

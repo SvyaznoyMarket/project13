@@ -36,6 +36,11 @@ class PaymentMethodRepository
     public function getList()
     {
         $params = array('geo_id' => RepositoryManager::getRegion()->getDefaultRegionId());
+        if ($user = sfContext::getInstance()->getUser()->getGuardUser()) {
+            if ($user->getIsCorporative()) {
+                $params['is_corporative'] = true;
+            }
+        }
 
         $result = CoreClient::getInstance()->query('payment-method.get', $params);
 
@@ -58,7 +63,7 @@ class PaymentMethodRepository
   public function getAcceptedList() {
     $return = array(1, 2, 5, 6, 8);
     if (sfConfig::get('app_certificate_enabled', false)) {
-        $return[] = 10;
+        $return[] = PaymentMethodEntity::CERTIFICATE_ID;
     }
 
     return $return;

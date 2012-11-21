@@ -66,7 +66,15 @@ class IndexAction {
                 }
             }
             if (count($shopIds)) {
-                $showroomShops = \RepositoryManager::getShop()->getCollectionById($shopIds);
+                try {
+                    $showroomShops = \RepositoryManager::getShop()->getCollectionById($shopIds);
+                } catch (\Exception $e) {
+                    \App::$exception = $e;
+                    \App::logger()->error($e);
+
+                    $showroomShops = array();
+                }
+
             }
         }
 
@@ -93,16 +101,24 @@ class IndexAction {
     private function getDataForCredit(\Model\Product\Entity $product) {
         $result = array();
 
-        $mainCat = $product->getMainCategory();
+        $category = $product->getMainCategory();
         $cart = \App::user()->getCart();
-        $productType = \RepositoryManager::getCreditBank()->getCreditTypeByCategoryToken($mainCat->getToken());
+        try {
+            $productType = $category ? \RepositoryManager::getCreditBank()->getCreditTypeByCategoryToken($category->getToken()) : '';
+        } catch (\Exception $e) {
+            \App::$exception = $e;
+            \App::logger()->error($e);
+
+            $productType = '';
+        }
+
         $dataForCredit = array(
-            'price' => $product->getPrice(),
-            //'articul' => $product->getArticle(),
-            'name' => $product->getName(),
-            'count' => $cart->getQuantityByProduct($product->getId()),
+            'price'        => $product->getPrice(),
+            //'articul'      => $product->getArticle(),
+            'name'         => $product->getName(),
+            'count'        => $cart->getQuantityByProduct($product->getId()),
             'product_type' => $productType,
-            'session_id' => session_id()
+            'session_id'   => session_id()
         );
         $result['creditIsAllowed'] = (bool) (($product->getPrice() * (($cart->getQuantityByProduct($product->getId()) > 0)? $cart->getQuantityByProduct($product->getId()) : 1)) > \App::config()->product['minCreditPrice']);
         $result['creditData'] = json_encode($dataForCredit);

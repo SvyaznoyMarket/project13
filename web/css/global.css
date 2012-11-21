@@ -6932,6 +6932,9 @@
     height: 25px;
     width: 109px;
   }
+  .numerbox a:hover {
+    text-decoration: none;
+  }
   .numerbox b {
     cursor: pointer;
     display: block;
@@ -6940,12 +6943,14 @@
     width: 27px;
   }
   .numerbox .ajaquant {
+    background: none;
+    border: none;
     display: block;
     float: left;
-    margin: 0 0 0 -2px;
+    margin: 3px 0 0 -2px;
     padding-right: 24px;
     text-align: right;
-    width: 27px;
+    width: 57px;
   }
   .numerbox .ajamore:before {
     content: "шт.";

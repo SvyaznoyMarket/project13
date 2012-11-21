@@ -45,7 +45,7 @@ class OrderDefaultForm extends BaseOrderForm
 
     // recipient_phonenumbers
     $this->widgetSchema['recipient_phonenumbers'] = new sfWidgetFormInputText();
-    $this->validatorSchema['recipient_phonenumbers'] = new sfValidatorString(array('min_length' => 7, 'max_length' => 20, 'required' => true, 'trim' => true), array('required' => 'Укажите телефон для связи', 'min_length' => 'Неправильный телефонный номер', 'max_length' => 'Неправильный телефонный номер'));
+    $this->validatorSchema['recipient_phonenumbers'] = new sfValidatorString(array('min_length' => 11, 'max_length' => 11, 'required' => true), array('required' => 'Укажите телефон для связи', 'min_length' => 'Неправильный телефонный номер', 'max_length' => 'Неправильный телефонный номер'));
     $this->widgetSchema['recipient_phonenumbers']->setLabel('Мобильный телефон для связи:');
 
     // is_receive_sms
@@ -159,6 +159,18 @@ class OrderDefaultForm extends BaseOrderForm
 
   public function bind(array $taintedValues = null, array $taintedFiles = null)
   {
+    if (!empty($taintedValues['recipient_phonenumbers'])) {
+      $value = $taintedValues['recipient_phonenumbers'];
+      $value = trim((string)$value);
+      $value = preg_replace('/^\+7/', '8', $value);
+      $value = preg_replace('/[^\d]/', '', $value);
+      if (10 == strlen($value)) {
+          $value = '8' . $value;
+      }
+
+      $taintedValues['recipient_phonenumbers'] = $value;
+    }
+
     if (!empty($taintedValues['delivery_type_id'])) {
       if ($deliveryType = DeliveryTypeTable::getInstance()->find($taintedValues['delivery_type_id'])) {
         if ('standart' == $deliveryType->token) {
@@ -169,7 +181,7 @@ class OrderDefaultForm extends BaseOrderForm
     }
 
     // если оплата подарочной картой
-    if (!empty($taintedValues['payment_method_id']) && (10 == $taintedValues['payment_method_id'])) {
+    if (!empty($taintedValues['payment_method_id']) && (PaymentMethodEntity::CERTIFICATE_ID == $taintedValues['payment_method_id'])) {
         //$this->validatorSchema['cardnumber'] = new myValidatorCertificate(array('required' => true));
         $this->validatorSchema['cardnumber'] = new sfValidatorString(array('required' => true));
         $this->validatorSchema['cardpin'] = new sfValidatorString(array('required' => true));

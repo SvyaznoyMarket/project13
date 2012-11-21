@@ -1,3 +1,11 @@
+<?php
+/**
+ * @var $sf_user myUser
+ */
+
+$isCorporative = $sf_user->getGuardUser() && $sf_user->getGuardUser()->getIsCorporative();
+?>
+
 <?php $jsValidator = array(
   'order[recipient_first_name]'   => 'Заполните поле',
   'order[recipient_last_name]'    => 'Заполните поле',
@@ -140,7 +148,7 @@
         </dd>
       </dl>
 
-      <dl class='bBuyingLine'>
+      <dl class='bBuyingLine<?php echo $isCorporative ? ' hidden' : '' ?>'>
         <dt>Если у вас есть карта<br />&laquo;Связной-Клуб&raquo;, вы можете указать ее номер</dt>
         <dd class="bSClub">
           <div class="bSClub__eWrap pb25">
@@ -164,7 +172,11 @@
           <div>
             <label class='mLabelLong' for="<?php echo $form['agreed']->renderId() ?>">
               <b></b>
-              <h4>Я ознакомлен и согласен с &laquo;<a href="<?php echo url_for('default_show', array('page' => 'terms')) ?>" target="_blank">Условиями продажи</a>&raquo; и &laquo;<a href="<?php echo url_for('default_show', array('page' => 'legal')) ?>" target="_blank">Правовой информацией</a>&raquo;*</h4>
+              <?php if ($isCorporative) { ?>
+                <h4>Я ознакомлен и согласен с &laquo;<a href="<?php echo url_for('default_show', array('page' => 'corp-terms')) ?>" target="_blank">Условиями продажи</a>&raquo; и &laquo;<a href="<?php echo url_for('default_show', array('page' => 'legal')) ?>" target="_blank">Правовой информацией</a>&raquo;*</h4>
+              <? } else { ?>
+                <h4>Я ознакомлен и согласен с &laquo;<a href="<?php echo url_for('default_show', array('page' => 'terms')) ?>" target="_blank">Условиями продажи</a>&raquo; и &laquo;<a href="<?php echo url_for('default_show', array('page' => 'legal')) ?>" target="_blank">Правовой информацией</a>&raquo;*</h4>
+              <? } ?>
               <?php echo $form['agreed']->render(array('class' => 'bBuyingLine__eRadio')) ?>
             </label>
           </div>

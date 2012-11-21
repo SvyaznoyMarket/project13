@@ -16,5 +16,9 @@
     </div>
     <input type="submit" class="fr button bigbutton" value="Регистрация" tabindex="10" />
 
+    <? if (sfConfig::get('app_guard_corporate_registration_enabled', false)): ?>
+        <p><a href="<?php echo url_for('user_corporateRegister') ?>" class="orange underline">регистрация юридического лица</a></p>
+    <? endif ?>
+
   </div>
 </form>

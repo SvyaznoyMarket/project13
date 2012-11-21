@@ -28,5 +28,9 @@ if (!isset($form)) $form = new \View\User\RegistrationForm();
         </div>
         <input type="submit" class="fr button bigbutton" value="Регистрация" tabindex="10"/>
 
+        <? if (\App::config()->user['corporateRegister']): ?>
+        <p><a href="<?= $page->url('user.registerCorporate') ?>" class="orange underline">регистрация юридического лица</a></p>
+        <? endif ?>
+
     </div>
 </form>

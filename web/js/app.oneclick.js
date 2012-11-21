@@ -276,13 +276,14 @@ $(document).ready(function() {
 						self.showMap(false)
 					})
 				} else {
-					self.showMap(true)
-					$('#mapPopup').show( 'blind', null, 1000 )
+					$('#mapPopup').show( 'blind', null, 1000, function(){
+						self.showMap(true)
+						self.showMarkers()	
+					})
 				}
+				// if( !self.showMap() )
+				// 	return false
 				
-				if( !self.showMap() )
-					return
-				self.showMarkers()	
 			}
 			
 			self.turnOffMap = function() {
@@ -293,7 +294,7 @@ $(document).ready(function() {
 				var markersPull = {}
 				var tmp = self.shops()//MVM.popupWithShops()
 				for(var i=0, l = tmp.length; i<l; i++) {
-					var key = tmp[i].id + ''
+					var key = tmp[i].id * 1
 					markersPull[ key ] = {
 						id: tmp[i].id,
 						name: tmp[i].address,
@@ -302,7 +303,7 @@ $(document).ready(function() {
 						longitude: tmp[i].longitude
 					}
 				}
-				window.regionMap.showMarkers( markersPull )				
+				window.regionMap.showMarkers( markersPull )	
 			}
 			
 			self.chooseShopById = function( shopnum ) {
