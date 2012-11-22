@@ -320,9 +320,6 @@ $(document).ready(function() {
 
 	function OrderModel() {
 		var self = this	
-		for (var i in Model.shops)
-			for (var j in Model.shops[i])
-			console.log('модель '+Model.shops[i][j])
 
 		function thereIsExactPropertie( list, propertie, value ) {								
 			for(var ind=0, le = list.length; ind<le; ind++) {
@@ -509,13 +506,10 @@ up:				for( var linedate in box.caclDates ) { // Loop for T Interval
 		fillUpBoxesFromModel()
 		
 		self.shopsInPopup = ko.observableArray( [] )
-		console.log('self.shopsInPopup '+self.shopsInPopup())
 
 		function fillUpShopsFromModel() {
-			console.log('зашли в fillUpShopsFromModel')
 			self.shopsInPopup.removeAll()
 			for( var key in Model.shops ){
-				console.log(Model.shops[key])
 				self.shopsInPopup.push( Model.shops[key] )
 			}
 		}
@@ -628,11 +622,9 @@ l2:			for(var i in Model.deliveryTypes) {
 		}
 
 		self.showAllShops = function() {
-			console.log('зашли showAllShops')
 			self.shopsInPopup.removeAll()
 			for( var key in Model.shops ){
 				self.shopsInPopup.push( Model.shops[key] )
-				console.log(Model.shops[key])
 			}
 		}
 
@@ -979,9 +971,8 @@ flds:	for( field in fieldsToValidate ) {
 	/* MAIN() */
 
 // console.info( 'MODEL ', Model )
-	MVM = new OrderModel() 
-	ko.applyBindings( MVM , $('#MVVM')[0] )
-
+		MVM = new OrderModel() 
+		ko.applyBindings( MVM , $('#MVVM')[0] )	
 	/* ---------------------------------------------------------------------------------------- */
 	/* MAP REDESIGN */
     var shopList      = $('#mapPopup_shopInfo'),
@@ -989,13 +980,10 @@ flds:	for( field in fieldsToValidate ) {
         //deprecated: shopsStack    = $('#order-delivery_map-data').data().value.shops 
     
     function getShopsStack() {
-    	console.log('пытаемся получить магазины')
+    	MVM.showAllShops();
 		var shopsStack = {}
 		for( var sh in MVM.shopsInPopup() ){
-			console.log('ходим по циклу...магазин '+MVM.shopsInPopup()[sh].id)
 			shopsStack[ MVM.shopsInPopup()[sh].id ] = MVM.shopsInPopup()[sh]
-			// for (var i in MVM.shopsInPopup()[sh])
-			// 	console.log(MVM.shopsInPopup()[sh][i])
 		}
 		return shopsStack
     }
@@ -1005,7 +993,16 @@ flds:	for( field in fieldsToValidate ) {
 		$('#orderMapPopup').lightbox_me({ 
 			centered: true,
             onLoad: function() {
-            	loadMap(getShopsStack())
+            	shops = getShopsStack()
+        		if (!$.isEmptyObject(shops)){
+        			$.when( loadMap(shops) ).then(function(){ 
+					    // console.log(window.regionMap)
+						if (window.regionMap){
+							window.regionMap.showMarkers( shops )
+						}
+					})
+            		// loadMap(shops)
+            	}
             }
         })
 		return false
@@ -1038,7 +1035,7 @@ flds:	for( field in fieldsToValidate ) {
         MVM.selectShop( shop )
     }
 
-    function loadMap( shopsStack ){
+    function loadMap(shopsStack){
     	$('#mapPopup').empty()
     	MapInterface.ready( 'yandex', {
 			yandex: $('#mapInfoBlock'), 
@@ -1049,6 +1046,5 @@ flds:	for( field in fieldsToValidate ) {
 			window.regionMap.addHandler( '.shopchoose', ShopChoosed )
 		}
 		MapInterface.init( mapCenter, 'mapPopup', mapCallback, updateI )
-		window.regionMap.showMarkers( shopsStack )
     }
 })
