@@ -98,6 +98,9 @@ class order_Actions extends myActions
         {
           if (array_key_exists($k, $cookieValue) && empty($this->order->{$k}))
           {
+            if (('recipient_phonenumbers' == $k) && (11 == strlen($cookieValue[$k]))) {
+                $cookieValue[$k] = substr($cookieValue[$k], 1);
+            }
             $this->order->{$k} = $cookieValue[$k];
           }
         }
@@ -195,8 +198,12 @@ class order_Actions extends myActions
           $coockieValue = array();
           foreach ($this->getCookieKeys() as $k) {
             if (!array_key_exists($k, $values)) continue;
+              $value = $values[$k];
+              if ('recipient_phonenumbers' == $k) {
+                $value = substr($value, 1);
+              }
 
-            $coockieValue[$k] = $values[$k];
+            $coockieValue[$k] = $value;
           }
 
           $this->getResponse()->setCookie(self::ORDER_COOKIE_NAME, base64_encode(serialize($coockieValue)), time() + (3600 * 24 * 30));
