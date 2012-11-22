@@ -2536,7 +2536,7 @@
     display: block;
     float: left;
     height: 71px;
-    margin: 10px 0px 0px 17px;
+    margin: 10px 0px 0px 11px;
   }
   #header .extramenu {
     background: #ffffff;
@@ -2638,6 +2638,13 @@
   #header #topmenu-root-21:hover {
     background-position: -81px -71px;
   }
+  #header #topmenu-root-2545 {
+    background: url("/css/header/img/headerSprite.png") no-repeat -923px 0px;
+    width: 62px;
+  }
+  #header #topmenu-root-2545:hover {
+    background-position: -923px -71px;
+  }
   #header #topmenu-root-443 {
     background: url('/css/header/img/elka.gif') no-repeat 0 0;
     width: 50px;
@@ -2716,40 +2723,43 @@
   
   }
   #extramenu-root-80 .corner {
-    left: 151px;
+    left: 146px;
   }
   #extramenu-root-1 .corner {
-    left: 208px;
+    left: 198px;
   }
   #extramenu-root-21 .corner {
-    left: 275px;
+    left: 257px;
+  }
+  #extramenu-root-2545 .corner {
+    left: 326px;
   }
   #extramenu-root-443 .corner {
-    left: 343px;
+    left: 392px;
   }
   #extramenu-root-320 .corner {
-    left: 402px;
+    left: 445px;
   }
   #extramenu-root-1438 .corner {
-    left: 465px;
+    left: 503px;
   }
   #extramenu-root-224 .corner {
-    left: 527px;
+    left: 556px;
   }
   #extramenu-root-788 .corner {
-    left: 593px;
+    left: 617px;
   }
   #extramenu-root-923 .corner {
-    left: 665px;
+    left: 683px;
   }
   #extramenu-root-647 .corner {
-    left: 730px;
+    left: 743px;
   }
   #extramenu-root-185 .corner {
-    left: 790px;
+    left: 794px;
   }
   #extramenu-root-225 .corner {
-    left: 858px;
+    left: 856px;
   }
 }
 /*---END---СТИЛИ ХЕАДЕРА---*/
