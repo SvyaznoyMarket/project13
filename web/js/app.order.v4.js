@@ -165,8 +165,7 @@ $(document).ready(function() {
 	PubSub.subscribe( 'authorize', function( m, d ) {
 		$('#order_recipient_first_name').val( d.first_name )
 		$('#order_recipient_last_name').val( d.last_name )
-		//$('#order_recipient_phonenumbers').val( d.phonenumber + '       ' )
-		$('#order_recipient_phonenumbers').val( d.phonenumber )
+		$('#order_recipient_phonenumbers').val( d.phonenumber + '' )
 		$('#user-block').hide()
 	})
 

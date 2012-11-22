@@ -291,7 +291,7 @@
 <div id="product_also_bought-container" data-url="<? //echo url_for('smartengine_alsoBought', array('product' => $product->getId())) ?>" style="margin-top: 20px;"></div-->
 <? endif ?>
 
-<? if (\App::config()->smartEngine['pull']): ?>
+<?php if (\App::config()->smartEngine['pull'] && ($product->getMainCategory() instanceof \Model\Product\Category\Entity) && !in_array($product->getMainCategory()->getId(), array(1, 788))): ?>
 <div class="clear"></div>
 <div id="product_user-also_viewed-container" data-url="<?= $page->url('smartengine.pull.product_alsoViewed', array('productId' => $product->getId())) ?>" style="margin-top: 20px;"></div>
 <? endif ?>
