@@ -995,13 +995,13 @@ flds:	for( field in fieldsToValidate ) {
             onLoad: function() {
             	shops = getShopsStack()
         		if (!$.isEmptyObject(shops)){
-        			$.when( loadMap(shops) ).then(function(){ 
-					    // console.log(window.regionMap)
-						if (window.regionMap){
-							window.regionMap.showMarkers( shops )
-						}
-					})
-            		// loadMap(shops)
+     //    			$.when( loadMap(shops) ).then(function(){ 
+					//     // console.log(window.regionMap)
+					// 	if (window.regionMap){
+					// 		window.regionMap.showMarkers( shops )
+					// 	}
+					// })
+            		loadMap(shops)
             	}
             }
         })
@@ -1043,6 +1043,10 @@ flds:	for( field in fieldsToValidate ) {
 		} )
 		var mapCenter = calcMCenter( shopsStack )
 		var mapCallback = function() {
+			// console.log(window.regionMap)
+			if (window.regionMap){
+				window.regionMap.showMarkers( shops )
+			}
 			window.regionMap.addHandler( '.shopchoose', ShopChoosed )
 		}
 		MapInterface.init( mapCenter, 'mapPopup', mapCallback, updateI )
