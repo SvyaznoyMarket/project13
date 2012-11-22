@@ -1120,7 +1120,7 @@ function MapYandexWithShops( center, templateIWnode, DOMid ) {
     }
 
     this.showMarkers = function( argmarkers ) {   
-// console.info(argmarkers)
+        console.info(argmarkers)
         mapContainer.show()
         mapWS.container.fitToViewport()
         mapWS.setCenter([center.latitude, center.longitude])

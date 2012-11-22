@@ -200,13 +200,13 @@ $(document).ready(function() {
     })
 
 	if( typeof( $.mask ) !== 'undefined' ) {
-		$.mask.definitions['n'] = "[()0-9\ \-]"
-		$("#order_recipient_phonenumbers").mask("8nnnnnnnnnnnnnnnnn", { placeholder: " ", maxlength: 10 } )
-		var predefPhone = document.getElementById('order_recipient_phonenumbers').getAttribute('value')
-        if( predefPhone && predefPhone != '' )
-            $('#order_recipient_phonenumbers').val( predefPhone + '       ' )
-        else   
-            $("#order_recipient_phonenumbers").val('8')
+		// $.mask.definitions['n'] = "[()0-9\ \-]"
+		// $("#order_recipient_phonenumbers").mask("8nnnnnnnnnnnnnnnnn", { placeholder: " ", maxlength: 10 } )
+		// var predefPhone = document.getElementById('order_recipient_phonenumbers').getAttribute('value')
+  //       if( predefPhone && predefPhone != '' )
+  //           $('#order_recipient_phonenumbers').val( predefPhone + '       ' )
+  //       else   
+  //           $("#order_recipient_phonenumbers").val('8')
         
         $.mask.definitions['*'] = "[0-9*]"
         $("#order_sclub_card_number").mask("* ****** ******", { placeholder: "*" } )
@@ -321,6 +321,9 @@ $(document).ready(function() {
 
 	function OrderModel() {
 		var self = this	
+		for (var i in Model.shops)
+			for (var j in Model.shops[i])
+			console.log('модель '+Model.shops[i][j])
 
 		function thereIsExactPropertie( list, propertie, value ) {								
 			for(var ind=0, le = list.length; ind<le; ind++) {
@@ -507,11 +510,15 @@ up:				for( var linedate in box.caclDates ) { // Loop for T Interval
 		fillUpBoxesFromModel()
 		
 		self.shopsInPopup = ko.observableArray( [] )
+		console.log('self.shopsInPopup '+self.shopsInPopup())
 
 		function fillUpShopsFromModel() {
+			console.log('зашли в fillUpShopsFromModel')
 			self.shopsInPopup.removeAll()
-			for( var key in Model.shops )
+			for( var key in Model.shops ){
+				console.log(Model.shops[key])
 				self.shopsInPopup.push( Model.shops[key] )
+			}
 		}
 
 		fillUpShopsFromModel()
@@ -622,9 +629,12 @@ l2:			for(var i in Model.deliveryTypes) {
 		}
 
 		self.showAllShops = function() {
+			console.log('зашли showAllShops')
 			self.shopsInPopup.removeAll()
-			for( var key in Model.shops )
+			for( var key in Model.shops ){
 				self.shopsInPopup.push( Model.shops[key] )
+				console.log(Model.shops[key])
+			}
 		}
 
 		self.selectShop = function( d ) {
@@ -980,9 +990,14 @@ flds:	for( field in fieldsToValidate ) {
         //deprecated: shopsStack    = $('#order-delivery_map-data').data().value.shops 
     
     function getShopsStack() {
+    	console.log('пытаемся получить магазины')
 		var shopsStack = {}
-		for( var sh in MVM.shopsInPopup() )
+		for( var sh in MVM.shopsInPopup() ){
+			console.log('ходим по циклу...магазин '+MVM.shopsInPopup()[sh].id)
 			shopsStack[ MVM.shopsInPopup()[sh].id ] = MVM.shopsInPopup()[sh]
+			// for (var i in MVM.shopsInPopup()[sh])
+			// 	console.log(MVM.shopsInPopup()[sh][i])
+		}
 		return shopsStack
     }
 
@@ -991,10 +1006,9 @@ flds:	for( field in fieldsToValidate ) {
 		$('#orderMapPopup').lightbox_me({ 
 			centered: true,
             onLoad: function() {
-                window.regionMap.showMarkers( getShopsStack() )
+            	loadMap(getShopsStack())
             }
         })
-        loadMap()
 		return false
 	} )
 
@@ -1025,15 +1039,17 @@ flds:	for( field in fieldsToValidate ) {
         MVM.selectShop( shop )
     }
 
-    function loadMap(){
+    function loadMap( shopsStack ){
+    	$('#mapPopup').empty()
     	MapInterface.ready( 'yandex', {
 			yandex: $('#mapInfoBlock'), 
 			google: $('#map-info_window-container')
 		} )
-		var mapCenter = calcMCenter( getShopsStack() )
+		var mapCenter = calcMCenter( shopsStack )
 		var mapCallback = function() {
 			window.regionMap.addHandler( '.shopchoose', ShopChoosed )
 		}
 		MapInterface.init( mapCenter, 'mapPopup', mapCallback, updateI )
+		window.regionMap.showMarkers( shopsStack )
     }
 })
