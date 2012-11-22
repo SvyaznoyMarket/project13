@@ -8,7 +8,7 @@ class ErrorAction {
 
         $logger = \App::logger();
         if ($request->isXmlHttpRequest()) {
-            $response = new \Http\JsonResponse($logger->getMessages());
+            $response = new \Http\JsonResponse(array('success' => false, 'trace' => $logger->getMessages()));
         } else {
             $response = new \Http\Response();
 

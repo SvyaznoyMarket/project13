@@ -38,6 +38,7 @@ Options +FollowSymLinks +ExecCGI
   RewriteRule ^tags/([a-zA-Z_0-9-]+)/([a-zA-Z_0-9-]+)/_infinity$ dark.php [L]
   RewriteRule ^certificate-check* dark.php [L]
   RewriteRule ^product/delivery-info* dark.php [L]
+  #RewriteRule ^product/delivery1click/? dark.php [L]
   #RewriteRule ^region/change/* dark.php [L]
   RewriteRule ^region/autocomplete* dark.php [L]
   RewriteRule ^shops* dark.php [L]

@@ -134,11 +134,12 @@ return array(
     // расчет доставки товара
     'product.delivery' => array(
         'pattern' => '/product/delivery-info',
-        'action'  => array('Product\DeliveryAction', 'execute'),
+        'action'  => array('Product\DeliveryAction', 'info'),
         'method'  => array('POST'),
     ),
     'product.delivery_1click' => array(
         'pattern' => '/product/delivery1click',
+        'action'  => array('Product\DeliveryAction', 'oneClick'),
     ),
     'product.stock' => array(
         'pattern' => '/product/{productPath}/stock',
