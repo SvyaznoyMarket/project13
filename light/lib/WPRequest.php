@@ -36,12 +36,11 @@ class WPRequest
     /**
      * @return array Собирает список опций для создания стрима к сервису
      */
-    private function buildOptionList($method, $parameterList, $timeout)
+    private function buildOptionList($method, $timeout)
     {
         $optionList = array(
             'http' => array(
                 'method' => $method,
-                'content' => http_build_query($parameterList, '', '&'),
                 'timeout' => $timeout
 
             )
@@ -55,7 +54,7 @@ class WPRequest
         return $optionList;
     }
 
-    public function send($actionUri, $parameterList = array(), $method = self::methodPost, $timeout = 30, $json = True)
+    public function send($actionUri, $parameterList = array(), $method = self::methodGet, $timeout = 1, $json = True)
     {
         if($json)
         {
@@ -63,15 +62,14 @@ class WPRequest
         }
         $start = microtime(true);
 
-        $response = file_get_contents($this->url . $actionUri, false, stream_context_create(
+        $response = file_get_contents($this->url.$actionUri.'?'.http_build_query($parameterList), false, stream_context_create(
             $this->buildOptionList(
                 $method,
-                $parameterList,
                 $timeout
             )
         ));
 
-        \light\RequestLogger::getInstance()->addLog($this->url . $actionUri, array(), (microtime(true) - $start));
+        \light\RequestLogger::getInstance()->addLog($this->url . $actionUri . '?' . http_build_query($parameterList), array(), (microtime(true) - $start));
 
         return $json?json_decode($response, $assoc = True):$response;
     }
