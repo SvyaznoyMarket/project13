@@ -203,7 +203,7 @@ $(document).ready(function() {
 		// $("#order_recipient_phonenumbers").mask("8nnnnnnnnnnnnnnnnn", { placeholder: " ", maxlength: 10 } )
 		// var predefPhone = document.getElementById('order_recipient_phonenumbers').getAttribute('value')
   //       if( predefPhone && predefPhone != '' )
-  //           $('#order_recipient_phonenumbers').val( predefPhone + '' )
+  //           $('#order_recipient_phonenumbers').val( predefPhone + '       ' )
   //       else   
   //           $("#order_recipient_phonenumbers").val('8')
         
@@ -509,8 +509,9 @@ up:				for( var linedate in box.caclDates ) { // Loop for T Interval
 
 		function fillUpShopsFromModel() {
 			self.shopsInPopup.removeAll()
-			for( var key in Model.shops )
+			for( var key in Model.shops ){
 				self.shopsInPopup.push( Model.shops[key] )
+			}
 		}
 
 		fillUpShopsFromModel()
@@ -622,8 +623,9 @@ l2:			for(var i in Model.deliveryTypes) {
 
 		self.showAllShops = function() {
 			self.shopsInPopup.removeAll()
-			for( var key in Model.shops )
+			for( var key in Model.shops ){
 				self.shopsInPopup.push( Model.shops[key] )
+			}
 		}
 
 		self.selectShop = function( d ) {
@@ -969,9 +971,8 @@ flds:	for( field in fieldsToValidate ) {
 	/* MAIN() */
 
 // console.info( 'MODEL ', Model )
-	MVM = new OrderModel() 
-	ko.applyBindings( MVM , $('#MVVM')[0] )
-
+		MVM = new OrderModel() 
+		ko.applyBindings( MVM , $('#MVVM')[0] )	
 	/* ---------------------------------------------------------------------------------------- */
 	/* MAP REDESIGN */
     var shopList      = $('#mapPopup_shopInfo'),
@@ -979,9 +980,11 @@ flds:	for( field in fieldsToValidate ) {
         //deprecated: shopsStack    = $('#order-delivery_map-data').data().value.shops 
     
     function getShopsStack() {
+    	MVM.showAllShops();
 		var shopsStack = {}
-		for( var sh in MVM.shopsInPopup() )
+		for( var sh in MVM.shopsInPopup() ){
 			shopsStack[ MVM.shopsInPopup()[sh].id ] = MVM.shopsInPopup()[sh]
+		}
 		return shopsStack
     }
 
@@ -990,10 +993,13 @@ flds:	for( field in fieldsToValidate ) {
 		$('#orderMapPopup').lightbox_me({ 
 			centered: true,
             onLoad: function() {
-                window.regionMap.showMarkers( getShopsStack() )
+            	$('#mapPopup').empty()
+            	shops = getShopsStack()
+        		if (!$.isEmptyObject(shops)){
+            		loadMap('yandex', shops)
+            	}
             }
         })
-        loadMap()
 		return false
 	} )
 
@@ -1024,13 +1030,14 @@ flds:	for( field in fieldsToValidate ) {
         MVM.selectShop( shop )
     }
 
-    function loadMap(){
-    	MapInterface.ready( 'yandex', {
+    function loadMap(vendor, shopsStack){
+    	MapInterface.ready( vendor, {
 			yandex: $('#mapInfoBlock'), 
 			google: $('#map-info_window-container')
 		} )
-		var mapCenter = calcMCenter( getShopsStack() )
+		var mapCenter = calcMCenter( shopsStack )
 		var mapCallback = function() {
+			window.regionMap.showMarkers( shops )
 			window.regionMap.addHandler( '.shopchoose', ShopChoosed )
 		}
 		MapInterface.init( mapCenter, 'mapPopup', mapCallback, updateI )

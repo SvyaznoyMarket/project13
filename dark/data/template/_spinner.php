@@ -13,6 +13,6 @@
     <? else: ?>
         <b class="ajaless" title="Уменьшить"></b>
     <? endif ?>
-    <input class="ajaquant" value="<?= $quantity ?>" />
+    <input maxlength="2" class="ajaquant" value="<?= $quantity ?>" />
     <a href="<?= $incUrl ?>"><b class="ajamore" title="Увеличить"></b></a>
 </div>

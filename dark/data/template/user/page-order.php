@@ -46,7 +46,10 @@
 
     <table class="order mb15">
         <? foreach ($order->getProduct() as $orderProduct): ?>
-            <? $product = $productsById[$orderProduct->getId()] ?>
+            <?
+                if (empty($productsById[$orderProduct->getId()])) continue;
+                $product = $productsById[$orderProduct->getId()];
+            ?>
             <tr>
                 <th>
                     <a href="<?= $product->getLink() ?>">
@@ -74,7 +77,10 @@
         <? endforeach ?>
 
         <? foreach ($order->getService() as $orderService): ?>
-            <? $service = $servicesById[$orderService->getId()] ?>
+            <?
+                if (empty($servicesById[$orderService->getId()])) continue;
+                $service = $servicesById[$orderService->getId()];
+            ?>
             <tr>
                 <th>
                     <a href="<?= $page->url('service.show', array('serviceToken' => $service->getToken())) ?>">

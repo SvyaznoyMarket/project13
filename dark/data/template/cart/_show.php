@@ -43,7 +43,7 @@ foreach ($products as $product) {
                    href="#">
                     <b class="ajaless" title="Уменьшить"></b>
                 </a>
-                <input class="ajaquant" value="1">
+                <input maxlength="2" class="ajaquant" value="1">
                 <a href="<?= $page->url('cart.service.add', array('serviceId' => 'F1ID', 'quantity' => 1, 'productId' => 'PRID')); ?>">
                     <b class="ajamore" title="Увеличить"></b>
                 </a>
@@ -176,15 +176,15 @@ foreach ($products as $product) {
                 <div class="right">
                     <?= $page->render('_spinner', array(
                         'quantity' => $cartService->getQuantity(),
-                       'incUrl'   => $page->url('cart.service.add', array('serviceId' => $service->getId(), 'productId' => null, 'quantity' => 1)),
-                       'decUrl'   => $page->url('cart.service.add', array('serviceId' => $service->getId(), 'productId' => null, 'quantity' => -1)),
+                       'incUrl'   => $page->url('cart.service.add', array('serviceId' => $service->getId(), 'productId' => 0, 'quantity' => 1)),
+                       'decUrl'   => $page->url('cart.service.add', array('serviceId' => $service->getId(), 'productId' => 0, 'quantity' => -1)),
                     ))?>
                 </div>
             </div>
             <div class="basketinfo">
                 <div class="left font24"><span class="sum"><?= $page->helper->formatPrice($cartService->getTotalPrice()) ?></span> <span class="rubl">p</span></div>
                 <div class="right">
-                    <a href="<?= $page->url('cart.service.delete', array('serviceId' => $service->getId(), 'productId' => null)) ?>" class="button whitelink mr5">Удалить</a>
+                    <a href="<?= $page->url('cart.service.delete', array('serviceId' => $service->getId(), 'productId' => 0)) ?>" class="button whitelink mr5">Удалить</a>
                 </div>
             </div>
 

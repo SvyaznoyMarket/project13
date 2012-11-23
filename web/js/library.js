@@ -1120,7 +1120,7 @@ function MapYandexWithShops( center, templateIWnode, DOMid ) {
     }
 
     this.showMarkers = function( argmarkers ) {   
-// console.info(argmarkers)
+        // console.info(argmarkers)
         mapContainer.show()
         mapWS.container.fitToViewport()
         mapWS.setCenter([center.latitude, center.longitude])
@@ -1300,9 +1300,11 @@ window.MapInterface = (function() {
         },
 
         init: function( coordinates, mapContainerId, callback, updater ) {
+            // console.log('инитимся..', coordinates, mapContainerId, callback, updater)
             if( vendor === 'yandex' ) {
-                if( typeof(ymaps)!=='undefined' && ymaps.isReady ) {
-                    window.regionMap = new MapYandexWithShops( 
+                if( typeof(ymaps)!=='undefined') { //if( typeof(ymaps)!=='undefined' && ymaps.isReady ) {
+                    // console.info('1')
+                    window.regionMap = new MapYandexWithShops(
                         coordinates,
                         tmplSource.yandex, 
                         mapContainerId
@@ -1310,6 +1312,7 @@ window.MapInterface = (function() {
                     if( typeof( callback ) !== 'undefined' )
                         callback()
                 } else {
+                    // console.info('2')
                     PubSub.subscribe( 'yandexIsReady', function() {                   
                         window.regionMap = new MapYandexWithShops( 
                             coordinates, 

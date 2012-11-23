@@ -622,6 +622,7 @@ levup:			for(var i=0, l=numbers.length; i<l; i++)
 					window.regionMap.addHandler( '.shopchoose', pickStoreMVMCL )
 				}
 				MapInterface.init( mapCenter, 'mapPopup', mapCallback, updateIWCL )
+				// console.log(window.regionMap)
 			}
 			oneClickIsReady = true
 			enableHandlers()
@@ -732,6 +733,7 @@ levup:			for(var i=0, l=numbers.length; i<l; i++)
 				}
 				MapInterface.init( mapCenter, 'stockmap', mapCallback, updateIW )
 			}
+
 
 			$('#stockBlock').show()
 		})	

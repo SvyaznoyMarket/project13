@@ -22,6 +22,7 @@ foreach($categoryTree->getChildren() as $item){
 $sort = array( 'icon1', 'icon2', 'icon3', 'icon4');
 
 foreach($sort as $key){
+    if (!isset($tmp[$key])) continue;
 	$item = $tmp[$key];
 	?>
 	<div class="servicebox fl">
