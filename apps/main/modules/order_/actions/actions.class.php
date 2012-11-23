@@ -98,8 +98,8 @@ class order_Actions extends myActions
         {
           if (array_key_exists($k, $cookieValue) && empty($this->order->{$k}))
           {
-            if (('recipient_phonenumbers' == $k) && (11 == strlen($cookieValue[$k]))) {
-                $cookieValue[$k] = substr($cookieValue[$k], 1);
+            if (('recipient_phonenumbers' == $k) && (strlen($cookieValue[$k])) > 10) {
+                $cookieValue[$k] = substr($cookieValue[$k], 1, 10);
             }
             $this->order->{$k} = $cookieValue[$k];
           }
