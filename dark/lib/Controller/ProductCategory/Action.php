@@ -128,8 +128,39 @@ class Action {
     public function category($categoryPath, \Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
+        $client = \App::coreClientV2();
+        $user = \App::user();
+
         $categoryToken = explode('/', $categoryPath);
         $categoryToken = end($categoryToken);
+
+        // запрашиваем пользователя, если он авторизован
+        if ($user->getToken()) {
+            $client->addQuery('user/get', array('token' => $user->getToken()), array(), function($data) {
+                if ((bool)$data) {
+                    \App::user()->setEntity(new \Model\User\Entity($data));
+                }
+            });
+        }
+
+        // запрашиваем текущий регион
+        $client->addQuery('geo/get', array('id' => array($user->getRegionId())), array(), function($data) {
+            $data = reset($data);
+            if ((bool)$data) {
+                \App::user()->setRegion(new \Model\Region\Entity($data));
+            }
+        });
+
+        // запрашиваем список регионов для выбора
+        $shopAvailableRegions = array();
+        $client->addQuery('geo/get-shop-available', array(), array(), function($data) use (&$shopAvailableRegions) {
+            foreach ($data as $item) {
+                $shopAvailableRegions[] = new \Model\Region\Entity($item);
+            }
+        });
+
+        // 1-й пакет запросов
+        $client->execute();
 
         $repository = \RepositoryManager::getProductCategory();
         $category = $repository->getEntityByToken($categoryToken);
@@ -168,18 +199,30 @@ class Action {
 
         // если категория содержится во внешнем узле дерева
         if ($category->isLeaf()) {
-            return $this->leafCategory($category, $request);
+            $page = new \View\ProductCategory\LeafPage();
+            $page->setParam('shopAvailableRegions', $shopAvailableRegions);
+
+            return $this->leafCategory($category, $page, $request);
         }
         // иначе, если в запросе есть фильтрация
         else if ($request->get(\View\Product\FilterForm::$name)) {
-            return $this->branchCategory($category, $request);
+            $page = new \View\ProductCategory\BranchPage();
+            $page->setParam('shopAvailableRegions', $shopAvailableRegions);
+
+            return $this->branchCategory($category, $page, $request);
         }
         // иначе, если категория самого верхнего уровня
         else if ($category->isRoot()) {
-            return $this->rootCategory($category, $request);
+            $page = new \View\ProductCategory\RootPage();
+            $page->setParam('shopAvailableRegions', $shopAvailableRegions);
+
+            return $this->rootCategory($category, $page, $request);
         }
 
-        return $this->branchCategory($category, $request);
+        $page = new \View\ProductCategory\BranchPage();
+        $page->setParam('shopAvailableRegions', $shopAvailableRegions);
+
+        return $this->branchCategory($category, $page, $request);
     }
 
     /**
@@ -188,7 +231,7 @@ class Action {
      * @return \Http\Response
      * @throws \Exception
      */
-    private function rootCategory(\Model\Product\Category\Entity $category, \Http\Request $request) {
+    private function rootCategory(\Model\Product\Category\Entity $category, \View\Layout $page, \Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
         if (\App::config()->debug) \App::debug()->add('sub.act', 'rootCategory', 138);
@@ -200,7 +243,6 @@ class Action {
         // фильтры
         $productFilter = $this->getFilter($category, $request);
 
-        $page = new \View\ProductCategory\RootPage();
         $page->setParam('category', $category);
         $page->setParam('productFilter', $productFilter);
 
@@ -212,7 +254,7 @@ class Action {
      * @param \Http\Request                  $request
      * @return \Http\Response
      */
-    private function branchCategory(\Model\Product\Category\Entity $category, \Http\Request $request) {
+    private function branchCategory(\Model\Product\Category\Entity $category, \View\Layout $page, \Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
         if (\App::config()->debug) \App::debug()->add('sub.act', 'branchCategory', 138);
@@ -247,7 +289,6 @@ class Action {
             $child = next($childrenById);
         }
 
-        $page = new \View\ProductCategory\BranchPage();
         $page->setParam('category', $category);
         $page->setParam('productFilter', $productFilter);
         $page->setParam('productPagersByCategory', $productPagersByCategory);
@@ -261,7 +302,7 @@ class Action {
      * @return \Http\Response
      * @throws \Exception\NotFoundException
      */
-    private function leafCategory(\Model\Product\Category\Entity $category, \Http\Request $request) {
+    private function leafCategory(\Model\Product\Category\Entity $category, \View\Layout $page, \Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
         if (\App::config()->debug) \App::debug()->add('sub.act', 'leafCategory', 138);
@@ -311,7 +352,6 @@ class Action {
             )));
         }
 
-        $page = new \View\ProductCategory\LeafPage();
         $page->setParam('category', $category);
         $page->setParam('productFilter', $productFilter);
         $page->setParam('productPager', $productPager);

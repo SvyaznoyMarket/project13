@@ -22,6 +22,13 @@ class User {
     }
 
     /**
+     * @param \Model\User\Entity $entity
+     */
+    public function setEntity(\Model\User\Entity $entity) {
+        $this->entity = $entity;
+    }
+
+    /**
      * @return \Model\User\Entity|null
      */
     public function getEntity() {
@@ -52,7 +59,10 @@ class User {
     }
 
     /**
+     * Устанавливает токен в сессии
+     *
      * @param string $token
+     * @throws \LogicException
      */
     public function setToken($token) {
         if (!$token) {
@@ -62,6 +72,9 @@ class User {
         \App::session()->set($this->tokenName, $token);
     }
 
+    /**
+     * Удаляет токен из сессии
+     */
     public function removeToken() {
         \App::session()->remove($this->tokenName);
     }
@@ -73,13 +86,30 @@ class User {
         return \App::session()->get($this->tokenName, null);
     }
 
-    public function setRegion(\Model\Region\Entity $region, \Http\Response $response) {
+    /**
+     * Меняет куку региона
+     *
+     * @param \Model\Region\Entity $region
+     * @param \Http\Response $response
+     * @throws \LogicException
+     */
+    public function changeRegion(\Model\Region\Entity $region, \Http\Response $response) {
+        $this->setRegion($region);
+
+        $cookie = new \Http\Cookie(\App::config()->region['cookieName'], $region->getId(), time() + \App::config()->region['cookieLifetime']);
+        $response->headers->setCookie($cookie);
+    }
+
+    /**
+     * @param \Model\Region\Entity $region
+     * @throws \LogicException
+     */
+    public function setRegion(\Model\Region\Entity $region) {
         if (!$region->getId()) {
             throw new \LogicException('Ид региона не должен быть пустым.');
         }
 
-        $cookie = new \Http\Cookie(\App::config()->region['cookieName'], $region->getId(), time() + \App::config()->region['cookieLifetime']);
-        $response->headers->setCookie($cookie);
+        $this->region = $region;
     }
 
     /**
@@ -88,13 +118,12 @@ class User {
      */
     public function getRegion() {
         if (!$this->region) {
-            $cookieName = \App::config()->region['cookieName'];
+            $regionId = $this->getRegionId();
 
-            if (\App::request()->cookies->has($cookieName)) {
-                $id = (int)\App::request()->cookies->get($cookieName);
-                $this->region = \RepositoryManager::getRegion()->getEntityById($id);
+            if ($regionId) {
+                $this->region = \RepositoryManager::getRegion()->getEntityById($regionId);
                 if (!$this->region) {
-                    \App::logger()->warn(sprintf('Регион #"%s" не найден.', $cookieName));
+                    \App::logger()->warn(sprintf('Регион #"%s" не найден.', $regionId));
                 }
             }
         }
@@ -108,6 +137,21 @@ class User {
         }
 
         return $this->region;
+    }
+
+    /**
+     * Возвращает значение куки региона
+     *
+     * @return int|null
+     */
+    public function getRegionId() {
+        $cookieName = \App::config()->region['cookieName'];
+
+        if (\App::request()->cookies->has($cookieName)) {
+            return (int)\App::request()->cookies->get($cookieName);
+        } else {
+            return null;
+        }
     }
 
     /**
