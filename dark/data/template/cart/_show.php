@@ -43,7 +43,7 @@ foreach ($products as $product) {
                    href="#">
                     <b class="ajaless" title="Уменьшить"></b>
                 </a>
-                <input class="ajaquant" value="1">
+                <input maxlength="2" class="ajaquant" value="1">
                 <a href="<?= $page->url('cart.service.add', array('serviceId' => 'F1ID', 'quantity' => 1, 'productId' => 'PRID')); ?>">
                     <b class="ajamore" title="Увеличить"></b>
                 </a>
