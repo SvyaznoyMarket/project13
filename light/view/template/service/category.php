@@ -2,6 +2,13 @@
     <div class="column685 pr">
         <div class="line pb20 mt32"></div>
         <?php foreach($categoryList as $i => $child):?>
+        <?php
+            $childList = $child->getServiceList();
+            if(!$childList)
+            {
+                continue;
+            }
+        ?>
         <?php if($i>0): ?>
             <div class="line pb20 mt32"></div>
             <?php endif ?>
@@ -17,7 +24,7 @@
             <div class="info">
                 <h3><?php echo $child->getName() ?></h3>
                 <div class="hf">
-                    <?php foreach($child->getServiceList() as $service): ?>
+                    <?php foreach($childList as $service): ?>
                     <div class="font16 pb8">
                         <a href="<?php echo $this->url('service.show', array('service'=>$service->getToken())) ?>" >
                             <?php echo $service->getName() ?>
