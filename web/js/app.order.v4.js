@@ -995,13 +995,7 @@ flds:	for( field in fieldsToValidate ) {
             onLoad: function() {
             	shops = getShopsStack()
         		if (!$.isEmptyObject(shops)){
-     //    			$.when( loadMap(shops) ).then(function(){ 
-					//     // console.log(window.regionMap)
-					// 	if (window.regionMap){
-					// 		window.regionMap.showMarkers( shops )
-					// 	}
-					// })
-            		loadMap(shops)
+            		loadMap('yandex', shops)
             	}
             }
         })
@@ -1035,20 +1029,23 @@ flds:	for( field in fieldsToValidate ) {
         MVM.selectShop( shop )
     }
 
-    function loadMap(shopsStack){
+    function loadMap(vendor, shopsStack){
     	$('#mapPopup').empty()
-    	MapInterface.ready( 'yandex', {
+    	MapInterface.ready( vendor, {
 			yandex: $('#mapInfoBlock'), 
 			google: $('#map-info_window-container')
 		} )
 		var mapCenter = calcMCenter( shopsStack )
 		var mapCallback = function() {
 			// console.log(window.regionMap)
-			if (window.regionMap){
-				window.regionMap.showMarkers( shops )
-			}
 			window.regionMap.addHandler( '.shopchoose', ShopChoosed )
 		}
 		MapInterface.init( mapCenter, 'mapPopup', mapCallback, updateI )
+		if (window.regionMap){
+			window.regionMap.showMarkers( shops )
+		}
+		else{
+			loadMap('google', shops)
+		}
     }
 })
