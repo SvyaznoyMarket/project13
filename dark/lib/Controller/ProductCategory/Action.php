@@ -167,17 +167,19 @@ class Action {
 
         // запрашиваем текущий регион, если есть кука региона
         if ($user->getRegionId()) {
-            $client->addQuery('geo/get', array('id' => array($user->getRegionId())), array(), function($data) {
-                $data = reset($data);
-                if ((bool)$data) {
-                    \App::user()->setRegion(new \Model\Region\Entity($data));
-                }
-            });
+            if ($user->getRegionId()) {
+                \RepositoryManager::getRegion()->prepareEntityById($user->getRegionId(), function($data) {
+                    $data = reset($data);
+                    if ((bool)$data) {
+                        \App::user()->setRegion(new \Model\Region\Entity($data));
+                    }
+                });
+            }
         }
 
         // запрашиваем список регионов для выбора
         $shopAvailableRegions = array();
-        $client->addQuery('geo/get-shop-available', array(), array(), function($data) use (&$shopAvailableRegions) {
+        \RepositoryManager::getRegion()->prepareShopAvailableCollection(function($data) use (&$shopAvailableRegions) {
             foreach ($data as $item) {
                 $shopAvailableRegions[] = new \Model\Region\Entity($item);
             }
@@ -193,14 +195,7 @@ class Action {
 
         // запрашиваем рутовые категории
         $rootCategories = array();
-        $params = array(
-            'max_level'       => 1,
-            'is_load_parents' => false,
-        );
-        if ($region) {
-            $params['region_id'] = $region->getId();
-        }
-        $client->addQuery('category/tree', $params, array(), function($data) use(&$rootCategories) {
+        \RepositoryManager::getProductCategory()->prepareRootCollection($region, function($data) use(&$rootCategories) {
             foreach ($data as $item) {
                 $rootCategories[] = new \Model\Product\Category\Entity($item);
             }
@@ -209,10 +204,7 @@ class Action {
         // запрашиваем категорию по токену
         /** @var $category \Model\Product\Category\Entity */
         $category = null;
-        $client->addQuery('category/get', array(
-            'slug'   => array($categoryToken),
-            'geo_id' => \App::user()->getRegion()->getId(),
-        ), array(), function($data) use (&$category) {
+        \RepositoryManager::getProductCategory()->prepareEntityByToken($categoryToken, $region, function($data) use (&$category) {
             $data = reset($data);
             if ((bool)$data) {
                 $category = new \Model\Product\Category\Entity($data);
@@ -229,90 +221,12 @@ class Action {
         // подготовка 3-го пакета запросов
 
         // запрашиваем дерево категорий
-        $params = array(
-            'root_id'         => $category->getHasChild() ? $category->getId() : $category->getParentId(),
-            'max_level'       => 5,
-            'is_load_parents' => true,
-        );
-        if ($region) {
-            $params['region_id'] = $region->getId();
-        }
-        $client->addQuery('category/tree', $params, array(), function($data) use (&$category, &$region) {
-            /**
-             * Загрузка дочерних и родительских узлов категории
-             *
-             * @param \Model\Product\Category\Entity $category
-             * @param array $data
-             * @use \Model\Region\Entity $region
-             */
-            $loadBranch = function(\Model\Product\Category\Entity $category, array $data) use (&$region) {
-                // только при загрузке дерева ядро может отдать нам количество товаров в ней
-                if ($region && isset($data['product_count'])) {
-                    $category->setProductCount($data['product_count']);
-                }
-                if (\App::config()->product['globalListEnabled'] && isset($data['product_count_global'])) {
-                    $category->setGlobalProductCount($data['product_count_global']);
-                }
-
-                // добавляем дочерние узлы
-                if (isset($data['children']) && is_array($data['children'])) {
-                    foreach ($data['children'] as $childData) {
-                        $category->addChild(new \Model\Product\Category\Entity($childData));
-                    }
-                }
-            };
-
-            /**
-             * Перебор дерева категорий на данном уровне
-             *
-             * @param $data
-             * @use $iterateLevel
-             * @use $loadBranch
-             * @use $category     Текущая категория каталога
-             */
-            $iterateLevel = function($data) use(&$iterateLevel, &$loadBranch, $category) {
-                $item = reset($data);
-                if (!(bool)$item) return;
-
-                $level = (int)$item['level'];
-                if ($level < $category->getLevel()) {
-                    // если текущий уровень меньше уровня категории, загружаем данные для предков и прямого родителя категории
-                    $ancestor = new \Model\Product\Category\Entity($item);
-                    if (1 == ($category->getLevel() - $level)) {
-                        $loadBranch($ancestor, $item);
-                        $category->setParent($ancestor);
-                    }
-                    $category->addAncestor($ancestor);
-                } else if ($level == $category->getLevel()) {
-                    // если текущий уровень равен уровню категории, пробуем найти данные для категории
-                    foreach ($data as $item) {
-                        // ура, наконец-то наткнулись на текущую категорию
-                        if ($item['id'] == $category->getId()) {
-                            $loadBranch($category, $item);
-                            return;
-                        }
-                    }
-                }
-
-                $item = reset($data);
-                if (isset($item['children'])) {
-                    $iterateLevel($item['children']);
-                }
-            };
-
-            $iterateLevel($data);
-        });
+        \RepositoryManager::getProductCategory()->prepareEntityBranch($category, $region);
 
         // запрашиваем фильтры
-        $params = array(
-            'category_id' => $category->getId(),
-        );
-        if ($region) {
-            $params['region_id'] = $region->getId();
-        }
         /** @var $filters \Model\Product\Filter\Entity[] */
         $filters = array();
-        $client->addQuery('listing/filter', $params, array(), function($data) use (&$filters) {
+        \RepositoryManager::getProductFilter()->prepareCollectionByCategory($category, $region, function($data) use (&$filters) {
             foreach ($data as $item) {
                 $filters[] = new \Model\Product\Filter\Entity($item);
             }

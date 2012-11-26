@@ -26,7 +26,7 @@ class IndexAction {
 
         // запрашиваем текущий регион, если есть кука региона
         if ($user->getRegionId()) {
-            $client->addQuery('geo/get', array('id' => array($user->getRegionId())), array(), function($data) {
+            \RepositoryManager::getRegion()->prepareEntityById($user->getRegionId(), function($data) {
                 $data = reset($data);
                 if ((bool)$data) {
                     \App::user()->setRegion(new \Model\Region\Entity($data));
@@ -36,7 +36,7 @@ class IndexAction {
 
         // запрашиваем список регионов для выбора
         $shopAvailableRegions = array();
-        $client->addQuery('geo/get-shop-available', array(), array(), function($data) use (&$shopAvailableRegions) {
+        \RepositoryManager::getRegion()->prepareShopAvailableCollection(function($data) use (&$shopAvailableRegions) {
             foreach ($data as $item) {
                 $shopAvailableRegions[] = new \Model\Region\Entity($item);
             }
@@ -51,14 +51,7 @@ class IndexAction {
 
         // запрашиваем рутовые категории
         $rootCategories = array();
-        $params = array(
-            'max_level'       => 1,
-            'is_load_parents' => false,
-        );
-        if ($region) {
-            $params['region_id'] = $region->getId();
-        }
-        $client->addQuery('category/tree', $params, array(), function($data) use(&$rootCategories) {
+        \RepositoryManager::getProductCategory()->prepareRootCollection($region, function($data) use(&$rootCategories) {
             foreach ($data as $item) {
                 $rootCategories[] = new \Model\Product\Category\Entity($item);
             }
@@ -67,11 +60,7 @@ class IndexAction {
         // запрашиваем товар по токену
         /** @var $product \Model\Product\Entity */
         $product = null;
-        $client->addQuery('product/get', array(
-            'select_type' => 'slug',
-            'slug'        => $productToken,
-            'geo_id'      => $region->getId(),
-        ), array(), function($data) use (&$product) {
+        \RepositoryManager::getProduct()->prepareEntityByToken($productToken, $region, function($data) use (&$product) {
             $data = reset($data);
             if ((bool)$data) {
                 $product = new \Model\Product\Entity($data);

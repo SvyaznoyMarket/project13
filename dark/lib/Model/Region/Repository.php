@@ -36,6 +36,16 @@ class Repository {
     }
 
     /**
+     * @param int $id
+     * @param $callback
+     */
+    public function prepareEntityById($id, $callback) {
+        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args()));
+
+        $this->client->addQuery('geo/get', array('id' => array($id)), array(), $callback);
+    }
+
+    /**
      * @param string $token
      * @return Entity|null
      */
@@ -65,5 +75,14 @@ class Repository {
         }
 
         return $collection;
+    }
+
+    /**
+     * @param $callback
+     */
+    public function prepareShopAvailableCollection($callback) {
+        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args()));
+
+        $this->client->addQuery('geo/get-shop-available', array(), array(), $callback);
     }
 }
