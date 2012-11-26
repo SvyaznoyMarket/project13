@@ -23,7 +23,7 @@ class Client {
      * @return array Собирает список опций для создания стрима к сервису
      */
     private function buildOptionList($method, $timeout) {
-        $optionList = array(
+        $options = array(
             'http' => array(
                 'method'  => $method,
                 'timeout' => $timeout,
