@@ -162,9 +162,11 @@
   <? if ($dataForCredit['creditIsAllowed'] && !$user->getRegion()->getHasTransportCompany()) : ?>
   <div class="creditbox">
     <div class="creditboxinner">
-      от <span class="font24"><span class="price"></span> <span class="rubl">p</span></span> в кредит
+      <div class="creditLeft">от <span class="font24"><b class="price"></b> <b class="rubl">p</b></span> в кредит</div>
       <div class="fr pt5"><label class="bigcheck " for="creditinput"><b></b>Беру в кредит
-        <input id="creditinput" type="checkbox" name="creditinput" autocomplete="off"/></label></div>
+        <input id="creditinput" type="checkbox" name="creditinput" autocomplete="off"/></label>
+      </div>
+      <div class="clear"></div>
     </div>
   </div>
   <? endif; ?>
