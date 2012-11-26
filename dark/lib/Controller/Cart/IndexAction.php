@@ -14,9 +14,10 @@ class IndexAction {
 
         // запрашиваем пользователя, если он авторизован
         if ($user->getToken()) {
-            $client->addQuery('user/get', array('token' => $user->getToken()), array(), function($data) {
+            \RepositoryManager::getRegion()->prepareEntityById($user->getRegionId(), function($data) {
+                $data = reset($data);
                 if ((bool)$data) {
-                    \App::user()->setEntity(new \Model\User\Entity($data));
+                    \App::user()->setRegion(new \Model\Region\Entity($data));
                 }
             });
         }

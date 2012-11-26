@@ -17,7 +17,7 @@ class IndexAction {
 
         // запрашиваем пользователя, если он авторизован
         if ($user->getToken()) {
-            $client->addQuery('user/get', array('token' => $user->getToken()), array(), function($data) {
+            \RepositoryManager::getUser()->prepareEntityByToken($user->getToken(), function($data) {
                 if ((bool)$data) {
                     \App::user()->setEntity(new \Model\User\Entity($data));
                 }
