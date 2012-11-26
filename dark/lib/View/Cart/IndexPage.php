@@ -22,8 +22,7 @@ class IndexPage extends \View\DefaultLayout {
     }
 
     public function slotFooter() {
-        $client = \App::contentClient();
-        $response = @$client->send('footer_compact', array('shop_count' => \App::coreClientV2()->query('shop/get-quantity')));
+        $response = @\App::contentClient()->send('footer_compact');
 
         return $this->render('order/_footer', $this->params) . "\n\n" . $response['content'];
     }

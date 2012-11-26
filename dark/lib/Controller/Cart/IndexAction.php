@@ -7,7 +7,51 @@ class IndexAction {
         \App::logger()->debug('Exec ' . __METHOD__);
 
         $client = \App::coreClientV2();
-        $cart = \App::user()->getCart();
+        $user = \App::user();
+        $region = $user->getRegion();
+        $cart = $user->getCart();
+
+        // подготовка 1-го пакета запросов
+
+        // запрашиваем пользователя, если он авторизован
+        if ($user->getToken()) {
+            $client->addQuery('user/get', array('token' => $user->getToken()), array(), function($data) {
+                if ((bool)$data) {
+                    \App::user()->setEntity(new \Model\User\Entity($data));
+                }
+            });
+        }
+
+        // запрашиваем текущий регион, если есть кука региона
+        if ($user->getRegionId()) {
+            \RepositoryManager::getRegion()->prepareEntityById($user->getRegionId(), function($data) {
+                $data = reset($data);
+                if ((bool)$data) {
+                    \App::user()->setRegion(new \Model\Region\Entity($data));
+                }
+            });
+        }
+
+        // запрашиваем список регионов для выбора
+        $shopAvailableRegions = array();
+        \RepositoryManager::getRegion()->prepareShopAvailableCollection(function($data) use (&$shopAvailableRegions) {
+            foreach ($data as $item) {
+                $shopAvailableRegions[] = new \Model\Region\Entity($item);
+            }
+        });
+
+        // выполнение 1-го пакета запросов
+        $client->execute();
+
+        // подготовка 2-го пакета запросов
+
+        // запрашиваем рутовые категории
+        $rootCategories = array();
+        \RepositoryManager::getProductCategory()->prepareRootCollection($region, function($data) use(&$rootCategories) {
+            foreach ($data as $item) {
+                $rootCategories[] = new \Model\Product\Category\Entity($item);
+            }
+        });
 
         $cartProductsById = $cart->getProducts();
         $cartServicesById = $cart->getServices();
@@ -18,34 +62,30 @@ class IndexAction {
         $products = array();
         $services = array();
 
+        // запрашиваем список товаров
         if ((bool)$productIds) {
-            $client->addQuery('product/get', array(
-                'select_type' => 'id',
-                'id'          => $productIds,
-                'geo_id'      => \App::user()->getRegion()->getId(),
-            ), array(), function($data) use(&$products, $cartProductsById) {
+            \RepositoryManager::getProduct()->prepareCollectionById($productIds, $region, function($data) use(&$products, $cartProductsById) {
                 foreach ($data as $item) {
                     $products[] = new \Model\Product\CartEntity($item);
                 }
             });
         }
 
+        // запрашиваем список услуг
         if ((bool)$serviceIds) {
-            $client->addQuery('service/get2', array(
-                'id'     => $serviceIds,
-                'geo_id' => \App::user()->getRegion()->getId(),
-            ), array(), function($data) use(&$services, $cartServicesById) {
+            \RepositoryManager::getService()->prepareCollectionById($serviceIds, $region, function($data) use(&$services, $cartServicesById) {
                 foreach ($data as $item) {
                     $services[] = new \Model\Product\Service\Entity($item);
                 }
             });
         }
 
-        if ((bool)$productIds || (bool)$serviceIds) {
-            $client->execute();
-        }
+        // выполнение 2-го пакета запросов
+        $client->execute();
 
         $page = new \View\Cart\IndexPage();
+        $page->setParam('shopAvailableRegions', $shopAvailableRegions);
+        $page->setParam('rootCategories', $rootCategories);
         $page->setParam('selectCredit', 1 == $request->cookies->get('credit_on'));
         $page->setParam('products', $products);
         $page->setParam('services', $services);

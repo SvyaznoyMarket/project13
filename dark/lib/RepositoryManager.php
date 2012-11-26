@@ -51,6 +51,16 @@ class RepositoryManager {
         return $instance;
     }
 
+    static public function getService() {
+        static $instance;
+
+        if (!$instance) {
+            $instance = new \Model\Product\Service\Repository(\App::coreClientV2());
+        }
+
+        return $instance;
+    }
+
     static public function getTag() {
         static $instance;
 
