@@ -993,6 +993,7 @@ flds:	for( field in fieldsToValidate ) {
 		$('#orderMapPopup').lightbox_me({ 
 			centered: true,
             onLoad: function() {
+            	$('#mapPopup').empty()
             	shops = getShopsStack()
         		if (!$.isEmptyObject(shops)){
             		loadMap('yandex', shops)
@@ -1030,22 +1031,15 @@ flds:	for( field in fieldsToValidate ) {
     }
 
     function loadMap(vendor, shopsStack){
-    	$('#mapPopup').empty()
     	MapInterface.ready( vendor, {
 			yandex: $('#mapInfoBlock'), 
 			google: $('#map-info_window-container')
 		} )
 		var mapCenter = calcMCenter( shopsStack )
 		var mapCallback = function() {
-			// console.log(window.regionMap)
+			window.regionMap.showMarkers( shops )
 			window.regionMap.addHandler( '.shopchoose', ShopChoosed )
 		}
 		MapInterface.init( mapCenter, 'mapPopup', mapCallback, updateI )
-		if (window.regionMap){
-			window.regionMap.showMarkers( shops )
-		}
-		else{
-			loadMap('google', shops)
-		}
     }
 })

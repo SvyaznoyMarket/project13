@@ -600,7 +600,7 @@ function likemovie( nodename , apinodes, s, b) {
 		this.toggle()
 	}
 	
-	this.show = function() {	
+	this.show = function() {
 		$(frontier).show()
 		if( liteversion ) gi.addZoom(cnvimg)
 		gi.addDrag()
@@ -695,11 +695,12 @@ function gigaimage( worknode , zoom, /* zoomer node*/ zoo, overwritefn) {
 	}
 			
 	this.setDimensionProps = function( px ) {
+		var outer = jnode.parent()
 		var resol = px ? px : vzooms[self.zoom - 1]
 		jnode.attr('width', resol)
 		 	  .attr('height', resol)
-			  .css('left', Math.round( (jnode.parent().innerWidth() - resol ) / 2 ) )
-			  .css('top', Math.round( ( $('body').height() - 60 - resol ) / 2 ) )		// 60 = 30*2 , margin for popoup // $('body').height() is more precise					 
+			  .css('left', ( outer.width() - resol) / 2 )
+			  .css('top', ( outer.height() - resol) / 2 )		// 60 = 30*2 , margin for popoup // $('body').height() is more precise				 
 	
 	}
 	if ( ! (cnvCompatible && tagIsCanvas ) )
