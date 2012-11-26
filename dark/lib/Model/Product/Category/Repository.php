@@ -27,6 +27,24 @@ class Repository {
     }
 
     /**
+     * @param sreing               $token
+     * @param \Model\Region\Entity $region
+     * @param                      $callback
+     */
+    public function prepareEntityByToken($token, \Model\Region\Entity $region = null, $callback) {
+        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args()));
+
+        $params = array(
+            'slug' => array($token),
+        );
+        if ($region instanceof \Model\Region\Entity) {
+            $params['geo_id'] = $region->getId();
+        }
+
+        $this->client->addQuery('category/get', $params, array(), $callback);
+    }
+
+    /**
      * @param int $id
      * @return Entity|null
      */
@@ -81,55 +99,97 @@ class Repository {
         return $collection;
     }
 
-    /**
-     * Загружает предков (ancestors) и собственных детей (children) для данной категории
-     *
-     * @param Entity $entity
-     */
-    public function loadEntityBranch(Entity $entity, \Model\Region\Entity $region = null) {
+    public function prepareRootCollection(\Model\Region\Entity $region = null, $callback) {
         \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args()));
 
         $params = array(
-            'root_id'         => $entity->getId(),
-            'max_level'       => null,
+            'max_level'       => 1,
+            'is_load_parents' => false,
+        );
+        if ($region instanceof \Model\Region\Entity) {
+            $params['region_id'] = $region->getId();
+        }
+
+        $this->client->addQuery('category/tree', $params, array(), $callback);
+    }
+
+    /**
+     * @param Entity               $category
+     * @param \Model\Region\Entity $region
+     */
+    public function prepareEntityBranch(Entity $category, \Model\Region\Entity $region = null) {
+        $params = array(
+            'root_id'         => $category->getHasChild() ? $category->getId() : $category->getParentId(),
+            'max_level'       => 5,
             'is_load_parents' => true,
         );
         if ($region) {
-            $params['region_id'] = \App::user()->getRegion()->getId();
+            $params['region_id'] = $region->getId();
         }
-        $data = $this->client->query('category/tree', $params);
+        $this->client->addQuery('category/tree', $params, array(), function($data) use (&$category, &$region) {
+            /**
+             * Загрузка дочерних и родительских узлов категории
+             *
+             * @param \Model\Product\Category\Entity $category
+             * @param array $data
+             * @use \Model\Region\Entity $region
+             */
+            $loadBranch = function(\Model\Product\Category\Entity $category, array $data) use (&$region) {
+                // только при загрузке дерева ядро может отдать нам количество товаров в ней
+                if ($region && isset($data['product_count'])) {
+                    $category->setProductCount($data['product_count']);
+                }
+                if (\App::config()->product['globalListEnabled'] && isset($data['product_count_global'])) {
+                    $category->setGlobalProductCount($data['product_count_global']);
+                }
 
-        $loadBranch = function($data) use(&$loadBranch, $entity, $region) {
-            foreach ($data as $item) {
-                // если наткнулись на текущую категорию, то закругляемся
-                if ($entity->getId() == $item['id']) {
-                    // только при загрузке дерева ядро может отдать нам количество товаров в ней
-                    if ($region) {
-                        $entity->setProductCount($item['product_count']);
+                // добавляем дочерние узлы
+                if (isset($data['children']) && is_array($data['children'])) {
+                    foreach ($data['children'] as $childData) {
+                        $category->addChild(new \Model\Product\Category\Entity($childData));
                     }
-                    if (\App::config()->product['globalListEnabled']) {
-                        $entity->setGlobalProductCount($item['product_count_global']);
-                    }
+                }
+            };
 
-                    // добавляем дочерние узлы
-                    if (isset($item['children']) && (bool)$item['children']) {
-                        foreach ($item['children'] as $childData) {
-                            $entity->addChild(new Entity($childData));
+            /**
+             * Перебор дерева категорий на данном уровне
+             *
+             * @param $data
+             * @use $iterateLevel
+             * @use $loadBranch
+             * @use $category     Текущая категория каталога
+             */
+            $iterateLevel = function($data) use(&$iterateLevel, &$loadBranch, $category) {
+                $item = reset($data);
+                if (!(bool)$item) return;
+
+                $level = (int)$item['level'];
+                if ($level < $category->getLevel()) {
+                    // если текущий уровень меньше уровня категории, загружаем данные для предков и прямого родителя категории
+                    $ancestor = new \Model\Product\Category\Entity($item);
+                    if (1 == ($category->getLevel() - $level)) {
+                        $loadBranch($ancestor, $item);
+                        $category->setParent($ancestor);
+                    }
+                    $category->addAncestor($ancestor);
+                } else if ($level == $category->getLevel()) {
+                    // если текущий уровень равен уровню категории, пробуем найти данные для категории
+                    foreach ($data as $item) {
+                        // ура, наконец-то наткнулись на текущую категорию
+                        if ($item['id'] == $category->getId()) {
+                            $loadBranch($category, $item);
+                            return;
                         }
                     }
-
-                    return;
                 }
-            }
 
-            $ancestorData = reset($data);
-            if ((bool)$ancestorData) $entity->addAncestor(new Entity($ancestorData));
+                $item = reset($data);
+                if (isset($item['children'])) {
+                    $iterateLevel($item['children']);
+                }
+            };
 
-            if (isset($data[0]['children'])) {
-                $loadBranch($data[0]['children']);
-            }
-        };
-
-        $loadBranch($data);
+            $iterateLevel($data);
+        });
     }
 }

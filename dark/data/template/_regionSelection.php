@@ -1,14 +1,13 @@
 <?php
 /**
- * @var $page   \View\Layout
- * @var $region \Model\Region\Entity
+ * @var $page    \View\Layout
+ * @var $region  \Model\Region\Entity
+ * @var $regions \Model\Region\Entity[]
  */
 ?>
 
 <?php
 $rowCount = 3;
-$regions = RepositoryManager::getRegion()->getShopAvailableCollection();
-
 $columnCount = array();
 $count = count($regions);
 

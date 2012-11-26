@@ -51,23 +51,26 @@ class DefaultLayout extends Layout {
 
 
     public function slotHeader() {
-        if (!$this->hasParam('rootCategories')) {
+        /** @var $categories \Model\Product\Category\Entity[] */
+        $categories = $this->getParam('rootCategories');
+
+        if (null === $categories) {
             try {
-                $rootCategories = \RepositoryManager::getProductCategory()->getRootCollection();
+                $categories = \RepositoryManager::getProductCategory()->getRootCollection();
             } catch (\Exception $e) {
                 \App::$exception = $e;
                 \App::logger()->error($e);
 
-                $rootCategories = array();
+                $categories = array();
             }
-
-            foreach($rootCategories as $i => $category){
-                if(!$category->getIsInMenu()){
-                    unset($rootCategories[$i]);
-                }
-            }
-            $this->setParam('rootCategories', $rootCategories);
         }
+
+        foreach($categories as $i => $category){
+            if(!$category->getIsInMenu()){
+                unset($categories[$i]);
+            }
+        }
+        $this->setParam('rootCategories', $categories);
 
         return $this->render('_header', $this->params);
     }
@@ -109,7 +112,20 @@ class DefaultLayout extends Layout {
     }
 
     public function slotRegionSelection() {
-        return $this->render('_regionSelection');
+        /** @var $regions \Model\Region\Entity */
+        $regions = $this->getParam('shopAvailableRegions', null);
+
+        if (null === $regions) {
+            try {
+                $regions = \RepositoryManager::getRegion()->getShopAvailableCollection();
+            } catch (\Exception $e) {
+                \App::logger()->error($e);
+
+                $regions = array();
+            }
+        }
+
+        return $this->render('_regionSelection', array_merge($this->params, array('regions' => $regions)));
     }
 
     public function slotInnerJavascript() {

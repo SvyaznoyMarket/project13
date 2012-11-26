@@ -23,7 +23,7 @@ class Action {
             throw new \Exception\NotFoundException(sprintf('Region #%s not found', $regionId));
         }
 
-        \App::user()->setRegion($region, $response);
+        \App::user()->changeRegion($region, $response);
 
         return $response;
     }
