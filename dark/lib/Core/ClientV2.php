@@ -100,10 +100,14 @@ class ClientV2 implements ClientInterface
                         $spend = \Debug\Timer::stop('core');
                         throw new \RuntimeException(sprintf("Invalid http code: %d, \nResponse: %s", $info['http_code'], $content));
                     }
-                    $decodedResponse = $this->decode($content);
-                    $this->logger->debug('Core response data: ' . $this->encode($decodedResponse));
-                    $callback = $this->callbacks[(string)$handler];
-                    $callback($decodedResponse);
+                    try {
+                        $decodedResponse = $this->decode($content);
+                        $this->logger->debug('Core response data: ' . $this->encode($decodedResponse));
+                        $callback = $this->callbacks[(string)$handler];
+                        $callback($decodedResponse);
+                    } catch (\Exception $e) {
+                        \App::logger()->error($e);
+                    }
                 }
                 if ($curl_still_executing) {
                     $ready = curl_multi_select($this->isMultiple);
@@ -123,7 +127,7 @@ class ClientV2 implements ClientInterface
         if (!is_null($error)) {
             $this->logger->error('Error:' . (string)$error . 'Response: ' . print_r(isset($content) ? $content : null, true));
             $spend = \Debug\Timer::stop('core');
-            throw $error;
+            //throw $error;
         }
 
         $spend = \Debug\Timer::stop('core');
