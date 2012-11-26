@@ -126,7 +126,7 @@
           <span><?= (count($showroomShops) == 1) ? 'Адрес магазина' : 'Адреса магазинов' ?>:</span>
           <ul>
               <? foreach ($showroomShops as $shop): ?>
-              <li><?= $shop->getAddress() //ссылки пока не будет, появится позже ?></li>
+              <li><?= '<a href="'.$page->url('shop.show', array('shopToken' => $shop->getToken(), 'regionToken' => $user->getRegion()->getToken())).'" class="underline">'.$shop->getAddress().'</a>' ?></li>
               <? endforeach ?>
           </ul>
       </div>
