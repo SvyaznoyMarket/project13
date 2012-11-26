@@ -637,7 +637,11 @@ class order_Actions extends myActions
       {
         $serviceObj = $service[0];
       }
-      $servicesInCart[] = array('id' => $serviceId, 'quantity' => $serviceObj->getQuantity());
+
+      if ($serviceObj->getQuantity() > 0) {
+          $servicesInCart[] = array('id' => $serviceId, 'quantity' => $serviceObj->getQuantity());
+      }
+
     }
 
     $deliveryTypes = array();
@@ -901,7 +905,9 @@ class order_Actions extends myActions
       /** @var $tmp \light\ServiceCartData */
       $tmp = $service[0];
 
-      $servicesInCart[] = array('id' => $serviceId, 'quantity' => $tmp->getQuantity());
+      if ($tmp->getQuantity() > 0) {
+        $servicesInCart[] = array('id' => $serviceId, 'quantity' => $tmp->getQuantity());
+      }
     }
 
     // услуги к товарам

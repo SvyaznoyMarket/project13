@@ -2,6 +2,7 @@
 /**
  * @var $page    \View\Layout
  * @var $product \Model\Product\Entity
+ * @var $service \Model\Product\Service\Entity
  * @var $user    \Session\User
  */
 ?>
