@@ -8,7 +8,6 @@ class IndexAction {
 
         $client = \App::coreClientV2();
         $user = \App::user();
-        $region = $user->getRegion();
         $cart = $user->getCart();
 
         // подготовка 1-го пакета запросов
@@ -42,6 +41,8 @@ class IndexAction {
 
         // выполнение 1-го пакета запросов
         $client->execute();
+
+        $region = $user->getRegion();
 
         // подготовка 2-го пакета запросов
 
