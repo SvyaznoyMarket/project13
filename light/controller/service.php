@@ -52,6 +52,7 @@ class serviceController
 
   public function show(Response $response, $params = array()) {
       $service = App::getService()->getByToken($_REQUEST['service']);
+      App::forward404If($service === null);
       $renderer = App::getHtmlRenderer();
       $renderer->setTitle('F1 - ' . $service->getName(). ' – Enter.ru');
       $idList = (array)$service->getAlikeIdList();
