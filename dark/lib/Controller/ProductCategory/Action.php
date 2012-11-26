@@ -331,11 +331,18 @@ class Action {
         /** @var $child \Model\Product\Category\Entity */
         $child = reset($childrenById);
         $productPagersByCategory = array();
+        $productCount = 0;
         foreach ($repository->getIteratorsByFilter($filterData, $productSorting->dump(), null, $limit) as $productPager) {
             $productPager->setPage(1);
             $productPager->setMaxPerPage($limit);
             $productPagersByCategory[$child->getId()] = $productPager;
             $child = next($childrenById);
+            $productCount += $productPager->count();
+        }
+        if ($this->isGlobal()) {
+            $category->setGlobalProductCount($productCount);
+        } else {
+            $category->setProductCount($productCount);
         }
 
         $page->setParam('productPagersByCategory', $productPagersByCategory);
