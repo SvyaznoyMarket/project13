@@ -148,8 +148,11 @@ $(document).ready(function(){
 		})
 		// add f1
 		f1lines.find('input.button').bind ('click', function() {
-			if( $(this).hasClass('active') )
+			if( $(this).hasClass('active') ){
+				window.location.href = $(this).attr('href')
 				return false
+			}
+				
 			$(this).val('В корзине').addClass('active').attr( 'href', carturl )
 			var f1item = $(this).data()
 			//credit case
