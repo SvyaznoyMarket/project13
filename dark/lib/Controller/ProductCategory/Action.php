@@ -384,6 +384,12 @@ class Action {
         );
         $productPager->setPage($pageNum);
         $productPager->setMaxPerPage($limit);
+        if ($this->isGlobal()) {
+            $category->setGlobalProductCount($productPager->count());
+        } else {
+            $category->setProductCount($productPager->count());
+        }
+
         // проверка на максимально допустимый номер страницы
         if (($productPager->getPage() - $productPager->getLastPage()) > 0) {
             throw new \Exception\NotFoundException(sprintf('Неверный номер страницы "%s".', $productPager->getPage()));
