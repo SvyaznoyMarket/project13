@@ -212,7 +212,7 @@ class CoreClient
     curl_setopt($connection, CURLOPT_HEADER, 0);
     curl_setopt($connection, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($connection, CURLOPT_URL, $query);
-    curl_setopt($this->connection, CURLOPT_HTTPHEADER, array("X-Request-Id: ".RequestLogger::getInstance()->getId()));
+    curl_setopt($connection, CURLOPT_HTTPHEADER, array("X-Request-Id: ".RequestLogger::getInstance()->getId()));
 
       if ($isPostMethod) {
       curl_setopt($connection, CURLOPT_POST, true);
@@ -363,7 +363,7 @@ class CoreV1Client
 
     $this->connection = curl_init();
     curl_setopt($this->connection, CURLOPT_URL, $this->parameters['api_url']);
-    curl_setopt ($this->connection, CURLOPT_HEADER, 0);
+    curl_setopt($this->connection, CURLOPT_HEADER, 0);
     curl_setopt($this->connection, CURLOPT_POST, true);
     curl_setopt($this->connection, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($this->connection, CURLOPT_HTTPHEADER, array("X-Request-Id: ".RequestLogger::getInstance()->getId()));
