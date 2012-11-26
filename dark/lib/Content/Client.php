@@ -22,11 +22,10 @@ class Client {
     /**
      * @return array Собирает список опций для создания стрима к сервису
      */
-    private function buildOptionList($method, $params, $timeout) {
-        $options = array(
+    private function buildOptionList($method, $timeout) {
+        $optionList = array(
             'http' => array(
                 'method'  => $method,
-                'content' => http_build_query($params, '', '&'),
                 'timeout' => $timeout,
                 'header'  => "Content-Type: text/xml\r\n",
             )
@@ -39,7 +38,7 @@ class Client {
         return $options;
     }
 
-    public function send($action, $params = array(), $method = self::methodPost, $timeout = 30, $json = true) {
+    public function send($action, $params = array(), $method = self::methodGet, $timeout = 1, $json = true) {
         \Debug\Timer::start('content');
         \App::logger()->info('Start content request ' . $action);
 
@@ -47,9 +46,13 @@ class Client {
             $params['json'] = true;
         }
 
-        $response = file_get_contents($this->url . $action, false, stream_context_create(
-            $this->buildOptionList($method, $params, $timeout)
-        ));
+        $start = microtime(true);
+        $url = $this->url.$action.'?'.http_build_query($params);
+        $response = file_get_contents($url, false, stream_context_create($this->buildOptionList(
+            $method,
+            $timeout
+        )));
+        \Util\RequestLogger::getInstance()->addLog($url, array(), (microtime(true) - $start));
 
         if ($json) {
             $response = json_decode($response, true);

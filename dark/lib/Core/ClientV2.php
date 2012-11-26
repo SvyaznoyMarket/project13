@@ -148,6 +148,7 @@ class ClientV2 implements ClientInterface
         curl_setopt($connection, CURLOPT_HEADER, 0);
         curl_setopt($connection, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($connection, CURLOPT_URL, $query);
+        curl_setopt($connection, CURLOPT_HTTPHEADER, array("X-Request-Id: ".\Util\RequestLogger::getInstance()->getId()));
 
         if ($isPostMethod) {
             curl_setopt($connection, CURLOPT_POST, true);
