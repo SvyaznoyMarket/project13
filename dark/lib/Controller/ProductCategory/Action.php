@@ -165,13 +165,15 @@ class Action {
             });
         }
 
-        // запрашиваем текущий регион
-        $client->addQuery('geo/get', array('id' => array($user->getRegionId())), array(), function($data) {
-            $data = reset($data);
-            if ((bool)$data) {
-                \App::user()->setRegion(new \Model\Region\Entity($data));
-            }
-        });
+        // запрашиваем текущий регион, если есть кука региона
+        if ($user->getRegionId()) {
+            $client->addQuery('geo/get', array('id' => array($user->getRegionId())), array(), function($data) {
+                $data = reset($data);
+                if ((bool)$data) {
+                    \App::user()->setRegion(new \Model\Region\Entity($data));
+                }
+            });
+        }
 
         // запрашиваем список регионов для выбора
         $shopAvailableRegions = array();
@@ -184,14 +186,21 @@ class Action {
         // выполнение 1-го пакета запросов
         $client->execute();
 
+        /** @var $region \Model\Region\Entity|null */
+        $region = $this->isGlobal() ? null : \App::user()->getRegion();
+
         // подготовка 2-го пакета запросов
 
         // запрашиваем рутовые категории
         $rootCategories = array();
-        $client->addQuery('category/tree', array(
+        $params = array(
             'max_level'       => 1,
             'is_load_parents' => false,
-        ), array(), function($data) use(&$rootCategories) {
+        );
+        if ($region) {
+            $params['region_id'] = $region->getId();
+        }
+        $client->addQuery('category/tree', $params, array(), function($data) use(&$rootCategories) {
             foreach ($data as $item) {
                 $rootCategories[] = new \Model\Product\Category\Entity($item);
             }
@@ -216,9 +225,6 @@ class Action {
         if (!$category) {
             throw new \Exception\NotFoundException(sprintf('Категория товара с токеном "%s" не найдена.', $categoryToken));
         }
-
-        /** @var $region \Model\Region\Entity|null */
-        $region = $this->isGlobal() ? null : \App::user()->getRegion();
 
         // подготовка 3-го пакета запросов
 
