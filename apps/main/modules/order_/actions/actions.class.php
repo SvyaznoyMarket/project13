@@ -199,14 +199,13 @@ class order_Actions extends myActions
           foreach ($this->getCookieKeys() as $k) {
             if (!array_key_exists($k, $values)) continue;
               $value = $values[$k];
-              if ('recipient_phonenumbers' == $k) {
-                $value = substr($value, 1);
+              if (('recipient_phonenumbers' == $k) && (strlen($value)) > 10) {
+                $value = substr($value, 1, 10);
               }
 
             $coockieValue[$k] = $value;
           }
-
-          $this->getResponse()->setCookie(self::ORDER_COOKIE_NAME, base64_encode(serialize($coockieValue)), time() + (3600 * 24 * 30));
+          $this->getResponse()->setCookie(self::ORDER_COOKIE_NAME, base64_encode(serialize($coockieValue)), strtotime('+1 year' ));
         }
         catch (Exception $e) {
           $this->getLogger()->err('{'.__CLASS__.'} не могу запихнуть куку: '.$e->getMessage());
