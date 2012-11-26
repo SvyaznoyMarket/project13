@@ -106,6 +106,7 @@ class ClientV2 implements ClientInterface
                         $callback = $this->callbacks[(string)$handler];
                         $callback($decodedResponse);
                     } catch (\Exception $e) {
+                        \App::$exception = $e;
                         \App::logger()->error($e);
                     }
                 }
@@ -125,6 +126,7 @@ class ClientV2 implements ClientInterface
         $this->callbacks = array();
         $this->resources = array();
         if (!is_null($error)) {
+            \App::$exception = $e;
             $this->logger->error('Error:' . (string)$error . 'Response: ' . print_r(isset($content) ? $content : null, true));
             $spend = \Debug\Timer::stop('core');
             //throw $error;
