@@ -38,7 +38,7 @@ class Core
 
     $this->connection = curl_init();
     curl_setopt($this->connection, CURLOPT_URL, $this->getConfig('api_url'));
-    curl_setopt ($this->connection, CURLOPT_HEADER, 0);
+    curl_setopt($this->connection, CURLOPT_HEADER, 0);
     curl_setopt($this->connection, CURLOPT_POST, true);
     curl_setopt($this->connection, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($this->connection, CURLOPT_HTTPHEADER, array("X-Request-Id: ".RequestLogger::getInstance()->getId()));
