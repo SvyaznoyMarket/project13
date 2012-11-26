@@ -55,7 +55,7 @@ class CoreClient
    */
   public function query($action, array $params = array(), array $data = array())
   {
-    $params['uid'] = RequestLogger::getInstance()->getId();
+    //$params['uid'] = RequestLogger::getInstance()->getId();
     $connection = $this->createCurlResource($action, $params, $data);
     $response = curl_exec($connection);
     try {
@@ -99,7 +99,7 @@ class CoreClient
     if (!$this->multiHandler) {
       $this->multiHandler = curl_multi_init();
     }
-    $params['uid'] = RequestLogger::getInstance()->getId();
+    //$params['uid'] = RequestLogger::getInstance()->getId();
     $resource = $this->createCurlResource($action, $params, $data);
     curl_multi_add_handle($this->multiHandler, $resource);
     $this->callbacks[(string)$resource] = $callback;
@@ -210,8 +210,9 @@ class CoreClient
     curl_setopt($connection, CURLOPT_HEADER, 0);
     curl_setopt($connection, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($connection, CURLOPT_URL, $query);
+    curl_setopt($this->connection, CURLOPT_HTTPHEADER, array("X-Request-Id: ".RequestLogger::getInstance()->getId()));
 
-    if ($isPostMethod) {
+      if ($isPostMethod) {
       curl_setopt($connection, CURLOPT_POST, true);
       curl_setopt($connection, CURLOPT_POSTFIELDS, $this->encode($data));
     }

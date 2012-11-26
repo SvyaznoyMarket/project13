@@ -41,8 +41,9 @@ class Core
     curl_setopt ($this->connection, CURLOPT_HEADER, 0);
     curl_setopt($this->connection, CURLOPT_POST, true);
     curl_setopt($this->connection, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($this->connection, CURLOPT_HTTPHEADER, array("X-Request-Id: ".RequestLogger::getInstance()->getId()));
 
-    $this->logger = new sfFileLogger(new sfEventDispatcher(), array('file' => sfConfig::get('sf_log_dir').'/core_lib.log'));
+      $this->logger = new sfFileLogger(new sfEventDispatcher(), array('file' => sfConfig::get('sf_log_dir').'/core_lib.log'));
   }
 
   public function getConfig($name = null)
@@ -360,9 +361,9 @@ class Core
 
   public function query($name, array $params = array(), array $data = array(), $clean = false)
   {
-      $params['uid'] = RequestLogger::getInstance()->getId();
+      //$params['uid'] = RequestLogger::getInstance()->getId();
 
-      $isLog = !in_array($name, array('sync.get'));
+    $isLog = !in_array($name, array('sync.get'));
 
     $action = '/'.str_replace('.', '/', $name).'/';
 
