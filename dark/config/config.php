@@ -34,8 +34,8 @@ $c->wordpress['url'] = 'http://content.ent3.ru/';
 $c->company['phone'] = '8 (800) 700-00-09';
 $c->company['icq'] = '648198963';
 
+$c->analytics['enabled'] = false;
 $c->googleAnalytics['enabled'] = false;
-
 $c->yandexMetrika['enabled'] = false;
 
 $c->asset['timestampEnabled'] = true;
@@ -106,6 +106,13 @@ $c->shopPhoto['url'] = array(
     3 => 'http://fs01.enter.ru/8/1/500/',
     4 => 'http://fs01.enter.ru/8/1/2500/',
     5 => 'http://fs01.enter.ru/8/1/original/',
+);
+
+$c->banner['timeout'] = 6000;
+$c->banner['url'] = array(
+    0 => 'http://fs01.enter.ru/4/1/230x302/',
+    1 => 'http://fs01.enter.ru/4/1/768x302/',
+    2 => 'http://fs01.enter.ru/4/1/920x320/',
 );
 
 $c->cart['productLimit'] = 50;

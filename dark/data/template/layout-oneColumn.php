@@ -41,8 +41,10 @@
     <?= $page->slotYandexMetrika() ?>
     <?= $page->slotAdvanceSeoCounter() ?>
 
-    <div id="gooReMaCategories" class="jsanalytics"></div>
-    <div id="luxupTracker" class="jsanalytics"></div>
+    <? if (\App::config()->analytics['enabled']): ?>
+        <div id="gooReMaCategories" class="jsanalytics"></div>
+        <div id="luxupTracker" class="jsanalytics"></div>
+    <? endif ?>
 	
 	<a id="upper" href="#">Наверх</a>
 

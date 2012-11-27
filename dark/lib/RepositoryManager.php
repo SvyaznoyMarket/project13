@@ -130,4 +130,14 @@ class RepositoryManager {
 
         return $instance;
     }
+
+    static function getBanner() {
+        static $instance;
+
+        if (!$instance) {
+            $instance = new \Model\Banner\Repository(\App::coreClientV2());
+        }
+
+        return $instance;
+    }
 }

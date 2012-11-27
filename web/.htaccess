@@ -22,6 +22,7 @@ Options +FollowSymLinks +ExecCGI
   RewriteRule ^orders/1click.* index.light.php [L]
 
   # dark
+  RewriteRule ^$ dark.php [L]
   RewriteRule ^f1.*$ dark.php [L]
   RewriteRule ^search* dark.php [L]
   RewriteRule ^product/([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)$ dark.php [L]
