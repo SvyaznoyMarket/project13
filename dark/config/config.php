@@ -66,7 +66,7 @@ $c->product['itemsInCategorySlider'] = 3;
 $c->product['minCreditPrice']        = 3000;
 $c->product['totalCount']            = 30000;
 // глобальный (без учета региона) список товаров
-$c->product['globalListEnabled']     = false;
+$c->product['globalListEnabled']     = true;
 $c->product['showAveragePrice']      = false;
 
 $c->productPhoto['url'] = array(
