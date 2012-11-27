@@ -11,7 +11,10 @@ if (\App::$exception instanceof \Exception) {
 
 $debug->add('id', \App::$id, 140);
 $debug->add('env', \App::$env, 139);
-$debug->add('act', implode('.', \App::request()->attributes->get('action', array('?', '?'))), 138);
+
+$action =implode('.', \App::request()->attributes->get('action', array()));
+$debug->add('act', $action ?: 'undefined', 138, $action ? \Debug\Collector::TYPE_INFO : \Debug\Collector::TYPE_ERROR);
+
 if (\App::user()->getToken()) {
     $debug->add('user', \App::user()->getToken(), 135);
 }
