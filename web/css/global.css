@@ -2058,6 +2058,30 @@
     margin-right: -2px;
     padding-right: 20px;
   }
+  .bSubscibe {
+    float: left;
+    display: none;
+    font-family: Tahoma, sans-serif;
+    font-size: 12px;
+    vertical-align: top;
+  }
+  .bSubscibe b {
+    background: url("/css/common/img/bigcheck.png") no-repeat scroll 0px 0px transparent;
+    cursor: pointer;
+    float: left;
+    display: block;
+    height: 24px;
+    margin: 3px 10px 0 0;
+    width: 24px;
+  }
+  .bSubscibe .subscibe {
+    opacity: 0;
+    position: absolute;
+    z-index: -1;
+  }
+  .bSubscibe.checked b {
+    background-position: 0 -54px;
+  }
 }
 /*большое окно в карточке товара*/
 @media all {
@@ -2522,7 +2546,7 @@
     height: 112px;
     margin: 10px 0px 20px;
     padding: 20px 22px 0px 0px;
-    width: 930px;
+    width: 910px;
     /*
     #topmenu-root-311{
       background: url("@{headerSprite-url}") no-repeat -509px 0px;
@@ -4884,7 +4908,7 @@
     vertical-align: top;
   }
   .bigcheck b {
-    background: url("/css/credit/img/bigcheck.png") no-repeat scroll 0px 0px transparent;
+    background: url("/css/common/img/bigcheck.png") no-repeat scroll 0px 0px transparent;
     cursor: pointer;
     display: inline-block;
     height: 24px;
@@ -7370,7 +7394,7 @@
   }
   #mainPage #header {
     background: none;
-    width: 930px;
+    width: 920px;
   }
   #mainPage #topLogo {
     background: url("/css/header/img/headerSprite.png") no-repeat -550px 0;

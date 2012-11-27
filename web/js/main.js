@@ -1,4 +1,22 @@
 $(document).ready(function(){
+	/*register e-mail check*/
+	if ($('#register_username').length){
+		$('#register_username').bind('keyup',function(){
+			if (($(this).val().search('@')) != -1){
+				$(this).parents('#register-form').find('.bSubscibe').show()
+			}
+			else if ($(this).parents('#register-form').find('.bSubscibe').is(":visible")){
+				$(this).parents('#register-form').find('.bSubscibe').hide()
+			}
+		})
+	}
+	if ($('.bSubscibe').length){
+		$('.bSubscibe').bind('click', function(){
+			$(this).toggleClass('checked')
+			return false
+		})
+	}
+
 	/* upper */
 	var upper = $('#upper');
 	var trigger = false;//сработало ли появление языка
