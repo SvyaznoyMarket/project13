@@ -107,8 +107,9 @@ $(document).ready(function(){
 		})
 	}
 
-	$('.allpageinner').delegate( '.goodsbox__inner', 'mouseenter', function() { // expanded view hack
+	$('.allpageinner').delegate( '.goodsbox', 'mouseenter', function() { // expanded view hack
 		currentItem = $(this).attr('ref')
+        console.log(currentItem)
 	})
 	/* ---- */
 
@@ -458,9 +459,14 @@ $(document).ready(function(){
 			return false
 		if( $(button).hasClass('active') )
 			return true
-		if ( typeof(currentItem)==='undefined' )
+		if ( typeof(currentItem)==='undefined' ) {
+            console.log('currentItem is undefined')
 			return false
-		if( ltbx ){
+        } else {
+            console.log(currentItem)
+        }
+
+        if( ltbx ){
 			var tmp = $(this).parent().parent().parent().find('.photo img.mainImg')
 			tmp.effect('transfer',{ to: $('.point2 b') , easing: 'easeInOutQuint', img: tmp.attr('src') }, 500 )
 		}

@@ -9,8 +9,8 @@
 $hasModel = (isset($hasModel) ? $hasModel : true) && $product->getModel() && (bool)$product->getModel()->getProperty();
 ?>
 
-<div class="goodsbox goodsline bNewGoodsBox">
-    <div class="goodsboxlink" <? if ($product->getIsBuyable()): ?> ref="<?= $product->getToken() ?>" data-cid="<?= $product->getId() ?>" <? endif ?>>
+<div class="goodsbox goodsline bNewGoodsBox" ref="<?= $product->getToken() ?>">
+    <div class="goodsboxlink" <? if ($product->getIsBuyable()): ?> data-cid="<?= $product->getId() ?>" <? endif ?>>
         <div class="photo">
             <a href="<?= $product->getLink() ?>">
                 <? if ($label = $product->getLabel()): ?>
