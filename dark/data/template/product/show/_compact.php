@@ -12,8 +12,8 @@ $isHidden = isset($isHidden) && $isHidden;
 $hasModel = (isset($hasModel) ? $hasModel : true) && $product->getModel() && (bool)$product->getModel()->getProperty();
 ?>
 
-<div class="goodsbox"<? if ($isHidden): ?> style="display:none;"<? endif ?>>
-    <div class="goodsbox__inner" ref="<?= $product->getToken(); ?>" data-url="<?= $product->getLink() ?>">
+<div class="goodsbox"<? if ($isHidden): ?> style="display:none;"<? endif ?> ref="<?= $product->getToken(); ?>">
+    <div class="goodsbox__inner" data-url="<?= $product->getLink() ?>">
     	<div class="photo">
 	        <a href="<?= $product->getLink() ?>">
 	            <? if (!empty($kit) && $kit->getCount()): ?>

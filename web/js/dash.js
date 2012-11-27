@@ -107,7 +107,7 @@ $(document).ready(function(){
 		})
 	}
 
-	$('.allpageinner').delegate( '.goodsbox__inner', 'mouseenter', function() { // expanded view hack
+	$('.allpageinner').delegate( '.goodsbox', 'mouseenter', function() { // expanded view hack
 		currentItem = $(this).attr('ref')
 	})
 	/* ---- */
@@ -460,7 +460,8 @@ $(document).ready(function(){
 			return true
 		if ( typeof(currentItem)==='undefined' )
 			return false
-		if( ltbx ){
+
+        if( ltbx ){
 			var tmp = $(this).parent().parent().parent().find('.photo img.mainImg')
 			tmp.effect('transfer',{ to: $('.point2 b') , easing: 'easeInOutQuint', img: tmp.attr('src') }, 500 )
 		}
