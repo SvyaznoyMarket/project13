@@ -2058,9 +2058,11 @@
     margin-right: -2px;
     padding-right: 20px;
   }
+  #register-form .bSubscibe {
+    display: none;
+  }
   .bSubscibe {
     float: left;
-    display: none;
     font-family: Tahoma, sans-serif;
     font-size: 12px;
     vertical-align: top;

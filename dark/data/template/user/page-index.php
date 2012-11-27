@@ -22,3 +22,14 @@
     <? endforeach ?>
 
 </div>
+<form>
+    <div class="fr width315">
+        <div class="font16 orange pb10">Рассылка по электронной почте</div>
+         <label class="bSubscibe">
+            <b></b> Хочу знать об интересных<br />предложениях
+            <input type="checkbox" value="1" autocomplete="off" class="subscibe">
+        </label>
+        <input type="submit" class="fr button bigbutton" value="Сохранить" tabindex="10"/>
+        <div class="clear"></div>
+    </div>
+</form>
