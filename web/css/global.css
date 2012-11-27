@@ -2522,7 +2522,7 @@
     height: 112px;
     margin: 10px 0px 20px;
     padding: 20px 22px 0px 0px;
-    width: 910px;
+    width: 930px;
     /*
     #topmenu-root-311{
       background: url("@{headerSprite-url}") no-repeat -509px 0px;
@@ -2988,7 +2988,7 @@
     padding: 20px 0;
     position: relative;
     margin: -467px auto 0;
-    width: 920px;
+    width: 922px;
   }
   .bBuyingFooter li {
     width: 160px;
@@ -5049,7 +5049,7 @@
     font: 14px Tahoma, sans-serif;
     margin-right: 10px;
     vertical-align: top;
-    width: 260px;
+    width: 258px;
     zoom: 1;
   }
   .bBuyingLine dt a {
@@ -7370,7 +7370,7 @@
   }
   #mainPage #header {
     background: none;
-    width: 920px;
+    width: 930px;
   }
   #mainPage #topLogo {
     background: url("/css/header/img/headerSprite.png") no-repeat -550px 0;
