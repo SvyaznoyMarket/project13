@@ -50,7 +50,7 @@ $json = array(
         </div>
         <? endif ?>
         <? if ($user->getRegion()->getHasService()): ?>
-            <? if ($service->getIsDelivered()): ?>
+            <? if ($service->isInSale()): ?>
                 <a class="link1 gaEvent"
                    href="<?= $page->url('cart.service.add', array('serviceId' => $service->getId(), 'quantity' => 1, 'productId' => 0)); ?>"
                    data-event="BuyF1" data-title="Заказ услуги F1">Купить услугу</a>
@@ -105,7 +105,7 @@ $json = array(
 
             <? $json = array('jsref' => $alike->getToken(), 'jsimg' => $alike->getImageUrl(), 'jstitle' => $alike->getName(), 'jsprice' => $page->helper->formatPrice($alike->getPrice()), 'url' => $page->url('cart.service.add', array('serviceId' => $alike->getId(), 'quantity' => 1, 'productId' => 0))) ?>
 
-            <? if ($alike->getIsInShop() && $user->getRegion()->getHasService()) : ?>
+            <? if ($alike->isInSale() && $user->getRegion()->getHasService()) : ?>
                 <form action="<?= $page->url('cart.service.add', array('serviceId' => $alike->getId(), 'quantity' => 1, 'productId' => 0)) ?>">
                     <input data-value="<?= $page->escape(json_encode($json)) ?>" data-event="BuyF1" data-title="Заказ услуги F1" type="submit" class="button yellowbutton gaEvent" value="Купить услугу"/>
                 </form>
