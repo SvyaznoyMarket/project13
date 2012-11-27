@@ -1,6 +1,6 @@
 <?php
 
-namespace Model\Product\Service;
+namespace Model\Product\Service\Category;
 
 class Repository {
     /** @var \Core\ClientInterface */
@@ -11,22 +11,35 @@ class Repository {
     }
 
     /**
-     * @param array                $ids
      * @param \Model\Region\Entity $region
      * @param                      $callback
      */
-    public function prepareCollectionById(array $ids, \Model\Region\Entity $region = null, $callback) {
+    public function prepareRootCollection(\Model\Region\Entity $region = null, $callback) {
         \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args()));
 
-        if (!(bool)$ids) return;
-
         $params = array(
-            'id' => $ids,
+            'max_depth' => 3,
         );
         if ($region instanceof \Model\Region\Entity) {
             $params['geo_id'] = $region->getId();
         }
-        $this->client->addQuery('service/get2', $params, array(), $callback);
+        $this->client->addQuery('service/get-category-tree', $params, array(), $callback);
+    }
+
+    /**
+     * @param \Model\Region\Entity $region
+     * @param                      $callback
+     */
+    public function prepareCollection(\Model\Region\Entity $region = null, $callback) {
+        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args()));
+
+        $params = array(
+            'max_depth' => 3,
+        );
+        if ($region instanceof \Model\Region\Entity) {
+            $params['geo_id'] = $region->getId();
+        }
+        $this->client->addQuery('service/get-category-tree', $params, array(), $callback);
     }
 
     /**
@@ -43,23 +56,7 @@ class Repository {
         if ($region instanceof \Model\Region\Entity) {
             $params['geo_id'] = $region->getId();
         }
-        $this->client->addQuery('service/get2', $params, array(), $callback);
-    }
 
-    /**
-     * @param Category\Entity      $category
-     * @param \Model\Region\Entity $region
-     * @param                      $callback
-     */
-    public function prepareIdsByCategory(Category\Entity $category, \Model\Region\Entity $region = null, $callback) {
-        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args()));
-
-        $params = array(
-            'category_id' => $category->getId(),
-        );
-        if ($region instanceof \Model\Region\Entity) {
-            $params['geo_id'] = $region->getId();
-        }
-        $this->client->addQuery('service/list', $params, array(), $callback);
+        $this->client->addQuery('service/get-category-tree', $params, array(), $callback);
     }
 }

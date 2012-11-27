@@ -32,6 +32,7 @@ $c->coreV2['client_id'] = 'site';
 $c->wordpress['url'] = 'http://content.ent3.ru/';
 
 $c->company['phone'] = '8 (800) 700-00-09';
+$c->company['icq'] = '648198963';
 
 $c->googleAnalytics['enabled'] = false;
 

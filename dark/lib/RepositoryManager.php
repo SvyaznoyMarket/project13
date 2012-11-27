@@ -61,6 +61,16 @@ class RepositoryManager {
         return $instance;
     }
 
+    static public function getServiceCategory() {
+        static $instance;
+
+        if (!$instance) {
+            $instance = new \Model\Product\Service\Category\Repository(\App::coreClientV2());
+        }
+
+        return $instance;
+    }
+
     static public function getTag() {
         static $instance;
 

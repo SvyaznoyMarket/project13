@@ -19,6 +19,12 @@ class Entity {
     private $isInShop;
     /** @var int */
     private $price;
+    /** @var array Category\Entity[] */
+    private $category = array();
+    /** @var array Entity[] */
+    private $alike = array();
+    /** @var array */
+    private $alikeId = array();
 
     public function __construct(array $data = array()) {
         if (array_key_exists('id', $data)) $this->setId($data['id']);
@@ -29,6 +35,72 @@ class Entity {
         if (array_key_exists('is_delivery', $data)) $this->setIsDelivered($data['is_delivery']);
         if (array_key_exists('is_in_shop', $data)) $this->setIsInShop($data['is_in_shop']);
         if (array_key_exists('price', $data)) $this->setPrice($data['price']);
+        if (array_key_exists('category_list', $data) && is_array($data['category_list'])) foreach ($data['category_list'] as $categoryData) {
+            $this->addCategory(new Category\Entity($categoryData));
+        }
+        if (array_key_exists('alike_list', $data) && is_array($data['alike_list'])) $this->setAlikeId($data['alike_list']);
+    }
+
+    /**
+     * @param Entity[] $alike
+     */
+    public function setAlike($alikes) {
+        $this->category = array();
+        foreach ($alikes as $alike) {
+            $this->addAlike($alike);
+        }
+    }
+
+    /**
+     * @param Entity $alike
+     */
+    public function addAlike(Entity $alike) {
+        $this->alike[] = $alike;
+    }
+
+    /**
+     * @return Entity[]
+     */
+    public function getAlike() {
+        return $this->alike;
+    }
+
+    /**
+     * @param array $alikeId
+     */
+    public function setAlikeId(array $alikeId) {
+        $this->alikeId = $alikeId;
+    }
+
+    /**
+     * @return array
+     */
+    public function getAlikeId() {
+        return $this->alikeId;
+    }
+
+    /**
+     * @param Category\Entity[] $categories
+     */
+    public function setCategory(array $categories) {
+        $this->category = array();
+        foreach ($categories as $category) {
+            $this->addCategory($category);
+        }
+    }
+
+    /**
+     * @param Category\Entity $category
+     */
+    public function addCategory(Category\Entity $category) {
+        $this->category[] = $category;
+    }
+
+    /**
+     * @return Category\Entity[]
+     */
+    public function getCategory() {
+        return $this->category;
     }
 
     /**

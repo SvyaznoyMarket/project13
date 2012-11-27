@@ -240,10 +240,17 @@ return array(
     // услуги
     'service' => array(
         'pattern' => '/f1',
+        'action'  => array('Service\Action', 'index'),
+    ),
+    'service.category' => array(
+        'pattern' => '/f1/{categoryToken}',
+        'require' => array('categoryToken' => '[\w\d-_]+'),
+        'action'  => array('Service\Action', 'category'),
     ),
     'service.show' => array(
         'pattern' => '/f1/show/{serviceToken}',
         'require' => array('serviceToken' => '[\w\d-_]+'),
+        'action'  => array('Service\Action', 'show'),
     ),
 
     // smartengine

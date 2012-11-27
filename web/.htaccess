@@ -9,11 +9,9 @@ Options +FollowSymLinks +ExecCGI
   # getting no_script_name to work
   #RewriteBase /
 
-  RewriteRule ^f1.*$ index.light.php [L]
+  #RewriteRule ^f1.*$ index.light.php [L]
   RewriteRule ^region/init/$ index.light.php [L]
-  #RewriteRule ^user/shortinfo/?$ index.light.php [L]
   RewriteRule ^product/delivery1click/? index.light.php [L]
-  #RewriteRule ^product/delivery-info.* index.light.php [L]
   RewriteRule ^cart/add.* index.light.php [L]
   RewriteRule ^cart/delete.* index.light.php [L]
   RewriteRule ^cart/clear.* index.light.php [L]
@@ -24,6 +22,7 @@ Options +FollowSymLinks +ExecCGI
   RewriteRule ^orders/1click.* index.light.php [L]
 
   # dark
+  RewriteRule ^f1.*$ dark.php [L]
   RewriteRule ^search* dark.php [L]
   RewriteRule ^product/([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)$ dark.php [L]
   RewriteRule ^product/([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)/comments$ dark.php [L]

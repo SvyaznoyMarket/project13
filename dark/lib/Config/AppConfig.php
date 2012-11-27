@@ -51,6 +51,7 @@ class AppConfig {
     /** @var array */
     public $company = array(
         'phone' => null,
+        'icq'   => null,
     );
     /** @var array */
     public $googleAnalytics = array(
