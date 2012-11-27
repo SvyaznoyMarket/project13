@@ -14,8 +14,8 @@ $maxHeight = isset($maxHeight) && $maxHeight;
 $gaEvent = isset($gaEvent) ? $gaEvent : null;
 ?>
 
-<div class="goodsbox<? if ($maxHeight): ?> height220<? endif ?>"<? if ($isHidden): ?> style="display:none;"<? endif ?>>
-    <div class="goodsbox__inner" ref="<?php echo $product->getToken(); ?>" data-url="<?= $product->getLink() ?>">
+<div class="goodsbox<? if ($maxHeight): ?> height220<? endif ?>"<? if ($isHidden): ?> style="display:none;"<? endif ?> ref="<?php echo $product->getToken(); ?>">
+    <div class="goodsbox__inner" data-url="<?= $product->getLink() ?>">
     	<div class="photo">
 			<a href="<?php echo $product->getLink() ?>"<?php if (!empty($gaEvent)) echo ' data-event="'.$gaEvent.'" data-title="Переход по ссылке" class="gaEvent"'; ?>>
 			  <img class="mainImg" src="<?php echo $product->getImageUrl() ?>" alt="<?php echo $product->getNameWithCategory() ?>"
