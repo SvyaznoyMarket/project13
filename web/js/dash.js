@@ -109,7 +109,6 @@ $(document).ready(function(){
 
 	$('.allpageinner').delegate( '.goodsbox', 'mouseenter', function() { // expanded view hack
 		currentItem = $(this).attr('ref')
-        console.log(currentItem)
 	})
 	/* ---- */
 
@@ -459,12 +458,8 @@ $(document).ready(function(){
 			return false
 		if( $(button).hasClass('active') )
 			return true
-		if ( typeof(currentItem)==='undefined' ) {
-            console.log('currentItem is undefined')
+		if ( typeof(currentItem)==='undefined' )
 			return false
-        } else {
-            console.log(currentItem)
-        }
 
         if( ltbx ){
 			var tmp = $(this).parent().parent().parent().find('.photo img.mainImg')
