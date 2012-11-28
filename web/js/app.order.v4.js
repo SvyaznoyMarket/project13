@@ -528,7 +528,6 @@ up:				for( var linedate in box.caclDates ) { // Loop for T Interval
 		self.shopButtonEnable = ko.observable( false )
 
 		self.changeWeek = function( direction, data, e ) {
-			console.info('ch week')
 			if( direction > 0 ) {
 				if( data.nweeks == data.curWeek() )
 					return	
