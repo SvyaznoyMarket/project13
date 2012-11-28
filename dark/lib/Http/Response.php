@@ -124,6 +124,7 @@ class Response {
         $this->setContent($content);
         $this->setStatusCode($status);
         $this->setProtocolVersion('1.0');
+        $this->headers->set('X-Page-Id', \Util\RequestLogger::getInstance()->getId());
         if (!$this->headers->has('Date')) {
             $this->setDate(new \DateTime(null, new \DateTimeZone('UTC')));
         }
