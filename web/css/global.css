@@ -7263,9 +7263,12 @@
     border-radius: 5px;
     background: #ffffff;
     border: 1px solid #c9c9c9;
+    -moz-box-sizing: content-box;
+    -webkit-box-sizing: content-box;
+    box-sizing: content-box;
     float: left;
-    height: 28px;
-    line-height: 28px;
+    height: 26px;
+    line-height: 26px;
     padding: 0px 5px;
     position: relative;
     width: 297px;
