@@ -46,7 +46,7 @@
                         <? endif ?>
                     </div>
                     <div class="pb20">
-                        <?//= $service->getDescription() ?>
+                        <?= $service->getDescription() ?>
                         <?= $service->getWork() ?>
                     </div>
                 <? endforeach ?>
