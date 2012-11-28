@@ -54,6 +54,10 @@ class AppConfig {
         'icq'   => null,
     );
     /** @var array */
+    public $analytics = array(
+        'enabled' => null,
+    );
+    /** @var array */
     public $googleAnalytics = array(
         'enabled' => null,
     );
@@ -114,6 +118,11 @@ class AppConfig {
     /** @var array */
     public $shopPhoto = array(
         'url' => array(),
+    );
+    /** @var array */
+    public $banner = array(
+        'timeout' => null,
+        'url'     => array(),
     );
     /** @var array */
     public $payment = array(
