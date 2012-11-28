@@ -1052,8 +1052,8 @@ class order_Actions extends myActions
         $itemView->url = $coreData['link'];
         $itemView->deleteUrl =
           'products' == $itemType
-          ? $this->generateUrl('cart_delete', array('product' => $recordData['id']), true)
-          : $this->generateUrl('cart_service_delete', array('service' => $recordData['id'], 'product' => 0), true)
+          ? $this->generateUrl('cart_delete', array('product' => $recordData['id']))
+          : $this->generateUrl('cart_service_delete', array('service' => $recordData['id'], 'product' => 0))
         ;
         $itemView->addUrl =
           'products' == $itemType
