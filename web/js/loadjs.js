@@ -184,7 +184,7 @@
 			$LAB
 			.queueScript( (mapVendor==='yandex') ? 'http://api-maps.yandex.ru/2.0/?load=package.full&lang=ru-RU' : 'http://maps.google.com/maps/api/js?sensor=false' )
 			.queueWait( function() {
-				$LAB.script( getWithVersion('ports.js') )
+				$LAB.script( getWithVersion('ports.js') ).wait()
 				.script( getWithVersion('bigjquery.js') ).script( getWithVersion('library.js') )
 				.wait()
 				.script( getWithVersion('app.shop.js') )
