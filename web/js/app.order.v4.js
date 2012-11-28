@@ -404,11 +404,11 @@ $(document).ready(function() {
 
 			// 1) Build Tight Interval
 			var tightInterval = buildTightInterval( edges )				
-			
+
 			// 2) Make Additional Dates				
 			var first = getMonday( tightInterval[0].timestamp )				
 			var last = getSunday( tightInterval[1].timestamp )
-// console.info( 'Interval edges for ', bid, ' :', first, last )
+ //console.info( 'Interval edges for ', bid, ' :', first, last )
 
 			// 3) Make Dates By T Interval
 			var doweeks = ['Вс','Пн','Вт','Ср','Чт','Пт','Сб']
@@ -428,7 +428,6 @@ $(document).ready(function() {
 				first.setTime( first.getTime()*1 + 24*60*60*1000 )
 			}
 			box.nweeks = nweeks-1
-
 			// 4) Loop
 up:				for( var linedate in box.caclDates ) { // Loop for T Interval
 				var dates = []
@@ -456,14 +455,17 @@ up:				for( var linedate in box.caclDates ) { // Loop for T Interval
 				box.itemList.push( Model.items[ items[prdct] ] )
 			}
 			box.shop = ko.observable( shop )
-
+			// console.info(box.curWeek())
 			calculateDates(box)
 			// Calc Chosen Date
+
 			box.chosenDate = ko.observable(0)
 			box.chosenInterval = ko.observable('none')
 			box.currentIntervals = ko.observableArray([])
-
+			// console.log(box.caclDates)
+			var i = 0
 			for( var linedate in box.caclDates ) { // Chosen Date is the first enabled
+				i++
 				if( box.caclDates[linedate].enable() ) {
 					box.chosenDate( box.caclDates[linedate].tstamp )
 					box.chosenInterval( box.caclDates[linedate].intervals[0] )
@@ -471,8 +473,13 @@ up:				for( var linedate in box.caclDates ) { // Loop for T Interval
 						box.currentIntervals.push( box.caclDates[linedate].intervals[key] )
 					break
 				}
+				if (i==7){
+					i=0
+					box.curWeek( box.curWeek() + 1 )
+				}
+					
 			}
-
+			// console.info(box.chosenDate( box.caclDates[linedate].tstamp ) )
 			box.dlvrPrice  = ko.computed(function() {
 				var out = 0
 				var bid = this.token
@@ -521,6 +528,7 @@ up:				for( var linedate in box.caclDates ) { // Loop for T Interval
 		self.shopButtonEnable = ko.observable( false )
 
 		self.changeWeek = function( direction, data, e ) {
+			console.info('ch week')
 			if( direction > 0 ) {
 				if( data.nweeks == data.curWeek() )
 					return	
