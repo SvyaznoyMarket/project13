@@ -49,6 +49,7 @@
     </div>
     <div class='bMapShops__eList'>
       <h3>Выберите магазин Enter для самовывоза</h3>
+      <p class="pl20">Регион <?php echo $region ?></p> 
       <ul id="mapPopup_shopInfo">
       	<!-- ko foreach: shopsInPopup -->
       	<li data-bind="attr: {ref: id}, click: $root.selectShop ">
