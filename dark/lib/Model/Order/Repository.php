@@ -19,7 +19,7 @@ class Repository {
 
         $data = $this->client->query('order/get', array('token' => $userToken));
 
-        return $data ? count($data) : 0;
+        return (bool)$data ? count($data) : 0;
     }
 
     /**
@@ -37,5 +37,11 @@ class Repository {
         }
 
         return $collection;
+    }
+
+    public function prepareCollectionByUserToken($userToken, $callback) {
+        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args()));
+
+        $this->client->addQuery('order/get', array('token' => $userToken), array(), $callback);
     }
 }
