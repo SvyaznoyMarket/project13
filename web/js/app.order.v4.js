@@ -550,26 +550,29 @@ up:				for( var linedate in box.caclDates ) { // Loop for T Interval
 
 		self.deleteItem = function( box, d, e ) {
 			// ajax del 
-			$.get( d.deleteUrl, function(){ } )
+			$.get( d.deleteUrl, function(){ 
 			// drop from box
-			box.itemList.remove( d )
-			if( !box.itemList().length )
-				self.dlvrBoxes.remove( box )
-l2:			for(var i in Model.deliveryTypes) {
-				var tmpDlvr = Model.deliveryTypes[i]
-				for(var j=0, l=tmpDlvr.items.length; j<l; j++) {
-					if( tmpDlvr.items[j] === d.token ) {
-						tmpDlvr.items.splice( j, 1 )
-						break l2
+				box.itemList.remove( d )
+				if( !box.itemList().length )
+					self.dlvrBoxes.remove( box )
+	l2:			for(var i in Model.deliveryTypes) {
+					var tmpDlvr = Model.deliveryTypes[i]
+					for(var j=0, l=tmpDlvr.items.length; j<l; j++) {
+						if( tmpDlvr.items[j] === d.token ) {
+							tmpDlvr.items.splice( j, 1 )
+							break l2
+						}
 					}
 				}
-			}
-// console.info(Model)
-			// check if no items in boxes
-			if( !self.dlvrBoxes().length ) {
-			// refresh page -> server redirect to empty cart
-				document.location.reload()
-			}
+	// console.info(Model)
+				// check if no items in boxes
+				if( !self.dlvrBoxes().length ) {
+				// refresh page -> server redirect to empty cart
+					document.location.reload()
+				}
+
+			} )
+
 		}
 
 		self.totalSum = ko.computed( function() {
