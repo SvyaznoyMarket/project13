@@ -13,11 +13,13 @@ class InfoAction {
         $client = \App::coreClientV2();
         $user = \App::user();
         $cart = $user->getCart();
-        $userEntity = $user->getEntity();
+
+        // внимание! опасный трюк: если есть кука региона избавляемся от запроса в ядро
+        $region = $user->getRegionId() ? new \Model\Region\Entity(array('id' => $user->getRegionId())) : $user->getRegion();
 
         $responseData = array(
-            'name'             => $userEntity ? $userEntity->getName() : '',
-            'link'             => $userEntity ? \App::router()->generate('user') : \App::router()->generate('user.login'),
+            'name'             => '',
+            'link'             => \App::router()->generate('user.login'),
             'vitems'           => 0,
             'sum'              => 0,
             'vwish'            => 0,
@@ -26,9 +28,18 @@ class InfoAction {
             'servicesInCart'   => array(),
             'warrantiesInCart' => array(),
             'bingo'            => false,
-            'region_id'        => $user->getRegion()->getId(),
+            'region_id'        => $region->getId(),
             'is_credit'        => 1 == $request->cookies->get('credit_on'),
         );
+
+        // запрашиваем пользователя, если он авторизован
+        if ($user->getToken()) {
+            \RepositoryManager::getUser()->prepareEntityByToken($user->getToken(), function($data) {
+                if ((bool)$data) {
+                    \App::user()->setEntity(new \Model\User\Entity($data));
+                }
+            });
+        }
 
         // получаем токены товаров
         $productTokensById = array();
@@ -37,11 +48,7 @@ class InfoAction {
                 $productTokensById[$item['id']] = null;
             }
 
-            $client->addQuery('product/get', array(
-                'select_type' => 'id',
-                'id'          => array_keys($productTokensById),
-                'geo_id'      => $user->getRegion()->getId(),
-            ), array(), function($data) use(&$productTokensById) {
+            \RepositoryManager::getProduct()->prepareCollectionById(array_keys($productTokensById), $region, function($data) use(&$productTokensById) {
                 foreach($data as $item) {
                     $productTokensById[$item['id']] = $item['token'];
                 }
@@ -55,10 +62,7 @@ class InfoAction {
                 $serviceTokensById[$item['id']] = null;
             }
 
-            $client->addQuery('service/get2', array(
-                'id'     => array_keys($serviceTokensById),
-                'geo_id' => $user->getRegion()->getId(),
-            ), array(), function($data) use(&$serviceTokensById) {
+            \RepositoryManager::getService()->prepareCollectionById(array_keys($serviceTokensById), $region, function($data) use(&$serviceTokensById) {
                 foreach($data as $item){
                     $serviceTokensById[$item['id']] = $item['token'];
                 }
@@ -85,8 +89,14 @@ class InfoAction {
             }
         }
 
-        if ($productData || $serviceData) {
+        if ($productData || $serviceData || $user->getToken()) {
             $client->execute();
+
+            // если пользователь авторизован
+            if ($userEntity = $user->getEntity()) {
+                $responseData['name'] = $userEntity->getName();
+                $responseData['link'] = \App::router()->generate('user');
+            }
 
             $totalQuantity = $cart->getProductsQuantity();
 
