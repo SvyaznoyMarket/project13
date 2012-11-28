@@ -6,6 +6,9 @@ class Repository {
     /** @var \Core\ClientInterface */
     private $client;
 
+    /**
+     * @param \Core\ClientInterface $client
+     */
     public function __construct(\Core\ClientInterface $client) {
         $this->client = $client;
     }

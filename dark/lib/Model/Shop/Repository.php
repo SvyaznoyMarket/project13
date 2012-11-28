@@ -6,6 +6,9 @@ class Repository {
     /** @var \Core\ClientInterface */
     private $client;
 
+    /**
+     * @param \Core\ClientInterface $client
+     */
     public function __construct(\Core\ClientInterface $client) {
         $this->client = $client;
     }
@@ -71,6 +74,10 @@ class Repository {
         return $collection;
     }
 
+    /**
+     * @param \Model\Region\Entity $region
+     * @param                      $callback
+     */
     public function prepareCollectionByRegion(\Model\Region\Entity $region, $callback) {
         \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args()));
 

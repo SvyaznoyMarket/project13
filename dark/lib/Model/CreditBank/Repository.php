@@ -7,6 +7,9 @@ class Repository
     /** @var \Core\ClientInterface */
     private $client;
 
+    /**
+     * @param \Core\ClientInterface $client
+     */
     public function __construct(\Core\ClientInterface $client) {
         $this->client = $client;
     }
@@ -26,8 +29,8 @@ class Repository
 
 
     /**
-     * @param string $token
-     * @return null|Entity
+     * @param int $id
+     * @return Entity|null
      */
     public function getEntityById($id) {
         \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args()));
@@ -45,8 +48,8 @@ class Repository
 
         return $data ? new \Model\CreditBank\Entity($data) : null;
     }
+
     /**
-     * @param string $token
      * @return Entity[]
      */
     public function getCollection() {
