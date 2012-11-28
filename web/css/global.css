@@ -3160,6 +3160,10 @@
   }
   .bigfilter dt.submit {
     background: none;
+    cursor: default;
+  }
+  .bigfilter dt.submit input {
+    cursor: pointer;
   }
   .bigfilter dt b {
     background: url("/css/common/img/questionIcon.png") no-repeat;

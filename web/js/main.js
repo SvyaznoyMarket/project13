@@ -600,7 +600,7 @@ $(document).ready(function(){
   
 	/* Side Filter Block handlers */
 	$(".bigfilter dt").click(function(){
-		if ( $('.bigfilter dt').hasClass('submit') )
+		if ( $(this).hasClass('submit') )
 			return true
 		$(this).next(".bigfilter dd").slideToggle(200)
 		$(this).toggleClass("current")
