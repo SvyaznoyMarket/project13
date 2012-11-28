@@ -62,7 +62,7 @@ class IndexAction {
         // запрашиваем количество заказов пользователя
         /** @var $product \Model\Product\Entity */
         $orderCount = 0;
-        \RepositoryManager::getOrder()->prepareCollectionByUserToken(\App::user()->getToken(), function($data) use(&$orderCount) {
+        \RepositoryManager::getOrder()->prepareCollectionByUserToken($user->getToken(), function($data) use(&$orderCount) {
             $orderCount = (bool)$data ? count($data) : 0;
         });
 

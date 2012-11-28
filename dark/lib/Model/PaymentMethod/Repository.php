@@ -11,6 +11,7 @@ class Repository {
     }
 
     /**
+     * @param \Model\Region\Entity $region
      * @return Entity[]
      */
     public function getCollection(\Model\Region\Entity $region = null) {
@@ -26,5 +27,17 @@ class Repository {
         }
 
         return $collection;
+    }
+
+    /**
+     * @param \Model\Region\Entity $region
+     * @param                      $callback
+     */
+    public function prepareCollection(\Model\Region\Entity $region = null, $callback) {
+        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args()));
+
+        $this->client->addQuery('payment-method/get', array(
+            'geo_id' => $region ? $region->getId() : \App::user()->getRegion()->getId(),
+        ), array(), $callback);
     }
 }

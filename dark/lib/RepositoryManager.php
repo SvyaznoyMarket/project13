@@ -131,6 +131,16 @@ class RepositoryManager {
         return $instance;
     }
 
+    static function getPaymentMethod() {
+        static $instance;
+
+        if (!$instance) {
+            $instance = new \Model\PaymentMethod\Repository(\App::coreClientV2());
+        }
+
+        return $instance;
+    }
+
     static function getBanner() {
         static $instance;
 
