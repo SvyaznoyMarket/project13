@@ -15,13 +15,14 @@ Options +FollowSymLinks +ExecCGI
   RewriteRule ^cart/delete.* index.light.php [L]
   RewriteRule ^cart/clear.* index.light.php [L]
   RewriteRule ^cart/warranty/.* index.light.php [L]
-  RewriteRule ^category/main_menu/? index.light.php [L]
+  #RewriteRule ^category/main_menu/? index.light.php [L]
   RewriteRule ^product-view/.* index.light.php [L]
   RewriteRule ^product-buy/.* index.light.php [L]
   RewriteRule ^orders/1click.* index.light.php [L]
 
   # dark
   RewriteRule ^$ dark.php [L]
+  RewriteRule ^category/main_menu/? dark.php [L]
   RewriteRule ^f1.*$ dark.php [L]
   RewriteRule ^search* dark.php [L]
   RewriteRule ^product/([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)$ dark.php [L]

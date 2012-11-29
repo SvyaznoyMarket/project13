@@ -2,58 +2,35 @@
 
 namespace Model\Product\Category;
 
-class Entity {
-    const PRODUCT_VIEW_COMPACT = 'compact';
-    const PRODUCT_VIEW_EXPANDED = 'expanded';
-
-    /** @var int */
-    private $id;
-    /** @var int */
-    private $parentId;
+class Entity extends BasicEntity {
     /** @var bool */
-    private $isFurniture;
+    protected $isFurniture;
     /** @var string */
-    private $name;
+    protected $image;
     /** @var string */
-    private $link;
-    /** @var string */
-    private $token;
-    /** @var string */
-    private $image;
-    /** @var string */
-    private $rootImage;
+    protected $rootImage;
     /** @var bool */
-    private $hasLine;
+    protected $hasLine;
     /** @var string */
-    private $productView;
+    protected $productView;
     /** @var bool */
-    private $isInMenu;
+    protected $isInMenu;
+    /** @var string */
+    protected $seoTitle;
+    /** @var string */
+    protected $seoKeywords;
+    /** @var string */
+    protected $seoDescription;
+    /** @var string */
+    protected $seoHeader;
+    /** @var string */
+    protected $seoText;
     /** @var int */
-    private $level;
-    /** @var string */
-    private $seoTitle;
-    /** @var string */
-    private $seoKeywords;
-    /** @var string */
-    private $seoDescription;
-    /** @var string */
-    private $seoHeader;
-    /** @var string */
-    private $seoText;
+    protected $productCount;
     /** @var int */
-    private $productCount;
-    /** @var int */
-    private $globalProductCount;
+    protected $globalProductCount;
     /** @var bool */
-    private $hasChild;
-    /** @var Entity[] */
-    private $child = array();
-    /** @var Entity|null */
-    private $parent;
-    /** @var Entity */
-    private $root;
-    /** @var Entity[] */
-    private $ancestor = array();
+    protected $hasChild;
 
     public function __construct(array $data = array()) {
         if (array_key_exists('id', $data)) $this->setId($data['id']);
@@ -76,6 +53,12 @@ class Entity {
         if (array_key_exists('product_count', $data)) $this->setProductCount($data['product_count']);
         if (array_key_exists('product_count_global', $data)) $this->setGlobalProductCount($data['product_count_global']);
         if (array_key_exists('has_children', $data)) $this->setHasChild($data['has_children']);
+        //TODO: протестировать $data['children']
+        /*
+        if (array_key_exists('children', $data) && is_array($data['children'])) foreach ($data['children'] as $childData) {
+            $this->addChild(new BasicEntity($childData));
+        }
+        */
     }
 
     /**
@@ -106,48 +89,6 @@ class Entity {
     }
 
     /**
-     * @param string $link
-     */
-    public function setLink($link) {
-        $this->link = (string)$link;
-    }
-
-    /**
-     * @return string
-     */
-    public function getLink() {
-        return $this->link;
-    }
-
-    /**
-     * @param string $name
-     */
-    public function setName($name) {
-        $this->name = (string)$name;
-    }
-
-    /**
-     * @return string
-     */
-    public function getName() {
-        return $this->name;
-    }
-
-    /**
-     * @param string $token
-     */
-    public function setToken($token) {
-        $this->token = (string)$token;
-    }
-
-    /**
-     * @return string
-     */
-    public function getToken() {
-        return $this->token;
-    }
-
-    /**
      * @param boolean $hasLine
      */
     public function setHasLine($hasLine) {
@@ -159,20 +100,6 @@ class Entity {
      */
     public function getHasLine() {
         return $this->hasLine;
-    }
-
-    /**
-     * @param int $id
-     */
-    public function setId($id) {
-        $this->id = (int)$id;
-    }
-
-    /**
-     * @return int
-     */
-    public function getId() {
-        return $this->id;
     }
 
     /**
@@ -215,34 +142,6 @@ class Entity {
      */
     public function getIsInMenu() {
         return $this->isInMenu;
-    }
-
-    /**
-     * @param int $level
-     */
-    public function setLevel($level) {
-        $this->level = (int)$level;
-    }
-
-    /**
-     * @return int
-     */
-    public function getLevel() {
-        return $this->level;
-    }
-
-    /**
-     * @param int $parentId
-     */
-    public function setParentId($parentId) {
-        $this->parentId = (int)$parentId;
-    }
-
-    /**
-     * @return int
-     */
-    public function getParentId() {
-        return $this->parentId;
     }
 
     /**
@@ -393,82 +292,6 @@ class Entity {
      */
     public function getHasChild() {
         return $this->hasChild;
-    }
-
-    /**
-     * @param Entity[] $child
-     */
-    public function setChild(array $children) {
-        $this->child = array();
-        foreach ($children as $child) {
-            $this->addChild($child);
-        }
-    }
-
-    /**
-     * @param Entity $child
-     */
-    public function addChild(Entity $child) {
-        $this->child[] = $child;
-    }
-
-    /**
-     * @return array|Entity[]
-     */
-    public function getChild() {
-        return $this->child;
-    }
-
-    /**
-     * @param \Model\Product\Category\Entity|null $parent
-     */
-    public function setParent(Entity $parent = null) {
-        $this->parent = $parent;
-    }
-
-    /**
-     * @return \Model\Product\Category\Entity|null
-     */
-    public function getParent() {
-        return $this->parent ?: end($this->ancestor);
-    }
-
-    /**
-     * @param Entity[] $ancestors
-     */
-    public function setAncestor(array $ancestors) {
-        $this->ancestor = array();
-        foreach ($ancestors as $ancestor) {
-            $this->addAncestor($ancestor);
-        }
-    }
-
-    /**
-     * @param Entity $ancestor
-     */
-    public function addAncestor(Entity $ancestor) {
-        $this->ancestor[] = $ancestor;
-    }
-
-    /**
-     * @return Entity[]
-     */
-    public function getAncestor() {
-        return $this->ancestor;
-    }
-
-    /**
-     * @param \Model\Product\Category\Entity $root
-     */
-    public function setRoot(Entity $root = null) {
-        $this->root = $root;
-    }
-
-    /**
-     * @return \Model\Product\Category\Entity
-     */
-    public function getRoot() {
-        return $this->root ?: reset($this->ancestor);
     }
 
     public function getImageUrl($size = 0) {

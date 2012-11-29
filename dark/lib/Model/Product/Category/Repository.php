@@ -5,12 +5,21 @@ namespace Model\Product\Category;
 class Repository {
     /** @var \Core\ClientInterface */
     private $client;
+    /** @var string */
+    private $entityClass = '\Model\Product\Category\Entity';
 
     /**
      * @param \Core\ClientInterface $client
      */
     public function __construct(\Core\ClientInterface $client) {
         $this->client = $client;
+    }
+
+    /**
+     * @param string $class
+     */
+    public function setEntityClass($class) {
+        $this->entityClass = $class;
     }
 
     /**
@@ -26,7 +35,7 @@ class Repository {
         ));
         $data = (bool)$data ? reset($data) : null;
 
-        return $data ? new Entity($data) : null;
+        return $data ? new $this->entityClass($data) : null;
     }
 
     /**
@@ -60,7 +69,7 @@ class Repository {
         ));
         $data = (bool)$data ? reset($data) : null;
 
-        return $data ? new Entity($data) : null;
+        return $data ? new $this->entityClass($data) : null;
     }
 
     /**
@@ -77,7 +86,7 @@ class Repository {
 
         $collection = array();
         foreach($data as $item){
-            $collection[] = new Entity($item);
+            $collection[] = new $this->entityClass($item);
         }
 
         return $collection;
@@ -89,6 +98,7 @@ class Repository {
     public function getRootCollection() {
         \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args()));
 
+        // TODO: добавить регион
         $data = $this->client->query('category/tree', array(
             'max_level'       => 1,
             'is_load_parents' => false,
@@ -96,7 +106,7 @@ class Repository {
 
         $collection = array();
         foreach($data as $item){
-            $collection[] = new Entity($item);
+            $collection[] = new $this->entityClass($item);
         }
 
         return $collection;
@@ -118,6 +128,32 @@ class Repository {
         }
 
         $this->client->addQuery('category/tree', $params, array(), $callback);
+    }
+
+    /**
+     * @param int $maxLevel
+     * @return Entity[]
+     */
+    public function getTreeCollection(\Model\Region\Entity $region, $maxLevel = null) {
+        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args()));
+
+        $params = array(
+            'is_load_parents' => false,
+        );
+        if (null !== $maxLevel) {
+            $params['max_level'] = $maxLevel;
+        }
+        if ($region instanceof \Model\Region\Entity) {
+            $params['region_id'] = $region->getId();
+        }
+        $data = $this->client->query('category/tree', $params);
+
+        $collection = array();
+        foreach($data as $item){
+            $collection[] = new $this->entityClass($item);
+        }
+
+        return $collection;
     }
 
     /**

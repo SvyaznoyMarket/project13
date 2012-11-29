@@ -7,6 +7,11 @@ return array(
         'action'  => array('Main\IndexAction', 'execute'),
     ),
 
+    'category.mainMenu' => array(
+        'pattern' => '/category/main_menu',
+        'action'  => array('ProductCategory\MainMenuAction', 'execute'),
+    ),
+
     // поиск
     'search' => array(
         'pattern' => '/search',
