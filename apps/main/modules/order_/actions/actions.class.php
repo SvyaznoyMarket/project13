@@ -93,7 +93,7 @@ class order_Actions extends myActions
       $cookieValue = $request->getCookie(self::ORDER_COOKIE_NAME);
       if (!empty($cookieValue))
       {
-        $cookieValue = (array)unserialize(base64_decode($cookieValue));
+        $cookieValue = (array)unserialize(base64_decode(strtr($cookieValue, '-_', '+/')));
         foreach ($this->getCookieKeys() as $k)
         {
           if (array_key_exists($k, $cookieValue) && empty($this->order->{$k}))
@@ -205,7 +205,7 @@ class order_Actions extends myActions
 
             $coockieValue[$k] = $value;
           }
-          $this->getResponse()->setCookie(self::ORDER_COOKIE_NAME, base64_encode(serialize($coockieValue)), strtotime('+1 year' ));
+          $this->getResponse()->setCookie(self::ORDER_COOKIE_NAME, strtr(base64_encode(serialize($coockieValue)), '+/', '-_'), strtotime('+1 year' ));
         }
         catch (Exception $e) {
           $this->getLogger()->err('{'.__CLASS__.'} не могу запихнуть куку: '.$e->getMessage());
