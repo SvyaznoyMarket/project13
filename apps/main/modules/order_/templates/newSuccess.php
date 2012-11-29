@@ -14,7 +14,9 @@ $isCorporative = $sf_user->getGuardUser() && $sf_user->getGuardUser()->getIsCorp
   'order[address_building]'       => 'Укажите адрес',
   'order[payment_method_id]'      => 'Выберите способ оплаты',
   'order[agreed]'                 => 'Необходимо согласие',
-) ?>
+);
+if (isset($form['address_metro'])) $jsValidator['order[address_metro]'] = 'Укажите ближайшее метро';
+?>
 <?php
   $jsStationNames = json_encode(isset($subwayStations) ? $subwayStations : array(), JSON_HEX_QUOT | JSON_HEX_APOS);
 ?>

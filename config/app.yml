@@ -224,7 +224,7 @@ all:
 
 live:
   guard:
-    corporate_registration_enabled: false
+    corporate_registration_enabled: true
 
   open_auth:
     provider:
