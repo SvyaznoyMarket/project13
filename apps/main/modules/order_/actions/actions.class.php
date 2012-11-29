@@ -622,24 +622,11 @@ class order_Actions extends myActions
     $servicesInCart = array();
     $serviceList = $user->getCart()->getServices();
     foreach($serviceList as $serviceId => $service){
-      if (!array_key_exists(0, $service))
-      {
-        if ($service instanceof ServiceCartData)
-        {
-          $serviceObj = $service;
-        }
-        else
-        {
-          continue;
-        }
-      }
-      else
-      {
-        $serviceObj = $service[0];
-      }
+      $row = each($service);
+      $serviceObj = $row['value'];
 
       if ($serviceObj->getQuantity() > 0) {
-          $servicesInCart[] = array('id' => $serviceId, 'quantity' => $serviceObj->getQuantity());
+          $servicesInCart[] = array('id' => $serviceId, 'quantity' => $serviceObj->getQuantity(), 'product_id' => $serviceObj->getRelatedProductId());
       }
 
     }
@@ -900,13 +887,16 @@ class order_Actions extends myActions
     $serviceList = $user->getCart()->getServices();
     foreach ($serviceList as $serviceId => $service)
     {
-      if (!array_key_exists(0, $service)) continue;
+      //if (!array_key_exists(0, $service)) continue;
 
       /** @var $tmp \light\ServiceCartData */
-      $tmp = $service[0];
+      //$tmp = $service[0];
+      $row = each($service);
+
+      $tmp = $row['value'];
 
       if ($tmp->getQuantity() > 0) {
-        $servicesInCart[] = array('id' => $serviceId, 'quantity' => $tmp->getQuantity());
+        $servicesInCart[] = array('id' => $serviceId, 'quantity' => $tmp->getQuantity(), 'product_id' => $tmp->getRelatedProductId());
       }
     }
 
