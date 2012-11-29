@@ -618,16 +618,19 @@ up:				for( var linedate in box.caclDates ) { // Loop for T Interval
 				var itemDlvrs = box.itemList()[i].deliveries
 				for( var key in itemDlvrs ) {
 					if( key.match('self_') )
-						shopIds.push( key.replace('self_','') )
+						shopIds.push( key.replace('self_','')*1 )
 				}
 			}
-
+			
 			fillUpShopsFromModel()	
+			// console.log( self.shopsInPopup() )
 			for( var i=0; i<self.shopsInPopup().length; ) {
-				if( $.inArray( self.shopsInPopup()[i].id , shopIds ) === -1 )
+				if( $.inArray( self.shopsInPopup()[i].id , shopIds ) === -1 ){
 					self.shopsInPopup.remove( self.shopsInPopup()[i] )
-				else
+				}
+				else{
 					i++
+				}
 			}
 		}
 
@@ -991,7 +994,7 @@ flds:	for( field in fieldsToValidate ) {
         //deprecated: shopsStack    = $('#order-delivery_map-data').data().value.shops 
     
     function getShopsStack() {
-    	MVM.showAllShops();
+    	// MVM.showAllShops();
 		var shopsStack = {}
 		for( var sh in MVM.shopsInPopup() ){
 			shopsStack[ MVM.shopsInPopup()[sh].id ] = MVM.shopsInPopup()[sh]
