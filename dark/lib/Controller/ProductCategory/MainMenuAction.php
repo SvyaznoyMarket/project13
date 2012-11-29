@@ -42,23 +42,16 @@ class MainMenuAction {
                 $weightsByCategory[$child->getId()] = $weight;
             }
 
-            if ((bool)$weightsByCategory) {
-                $averageWeight = floor($totalWeight / self::ITEMS_PER_COLUMN);
-                $maxWeight = max($weightsByCategory);
-                if ($maxWeight < $averageWeight) {
-                    $averageWeight = $maxWeight;
-                }
-            } else {
-                $averageWeight = 0;
-            }
+            $averageWeight = floor($totalWeight / self::ITEMS_PER_COLUMN);
+            $maxWeight = (bool)$weightsByCategory ? max($weightsByCategory) : 0;
 
-            $columnWeight = 1;
+            $columnWeight = 0;
             $column = 0;
             foreach ($category->getChild() as $child) {
                 $columnsByCategory[$child->getId()] = $column;
 
-                $columnWeight += $weightsByCategory[$child->getId()];
-                if (($columnWeight > $averageWeight) && ($column < self::ITEMS_PER_COLUMN)) {
+                $columnWeight += ceil($weightsByCategory[$child->getId()]) + $column;
+                if (($columnWeight >= $averageWeight) && (($column + 1) < self::ITEMS_PER_COLUMN)) {
                     $columnWeight = 0;
                     $column++;
                 }
