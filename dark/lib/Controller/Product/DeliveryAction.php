@@ -129,7 +129,7 @@ class DeliveryAction {
                         $date['shopIds'] = array();
                         foreach ($dateData['shop_list'] as $dateShopData) {
                             $shop = array(
-                                'id'        => $dateShopData['id'],
+                                'id'        => (int)$dateShopData['id'],
                                 'regtime'   => $shopData[$dateShopData['id']]['working_time'], // что за описка "regtime"?
                                 'address'   => $shopData[$dateShopData['id']]['address'],
                                 'latitude'  => $shopData[$dateShopData['id']]['coord_lat'],
@@ -142,7 +142,7 @@ class DeliveryAction {
 
                             foreach ($response['interval_list'] as $interval) {
                                 if (in_array($interval['id'], $dateShopData['interval_list'])) {
-                                    $date['shopIds'][] = $dateShopData['id'];
+                                    $date['shopIds'][] = (int)$dateShopData['id'];
                                 }
                             }
                         }
