@@ -1,6 +1,6 @@
 <?php
 /**
- * @var $page           \View\Layout
+ * @var $page           \View\DefaultLayout
  * @var $user           \Session\User
  * @var $rootCategories \Model\Product\Category\Entity[]
  */
@@ -31,8 +31,6 @@
 <!-- Header -->
 <div id="header" class="topmenu">
     <a id="topLogo" href="/">Enter Связной</a>
-    <? foreach ($rootCategories as $category): ?>
-        <a id="topmenu-root-<?= $category->getId() ?>" class="bToplink" title="<?= $category->getName() ?>" href="<?= $category->getLink() ?>"></a>
-    <? endforeach ?>
+    <?= $page->slotRootCategory() ?>
 </div>
 <!-- /Header -->

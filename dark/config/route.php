@@ -4,7 +4,7 @@ return array(
     // главная страница
     'homepage' => array(
         'pattern' => '/',
-        'action'  => array('Main\Action', 'execute'),
+        'action'  => array('Main\IndexAction', 'execute'),
     ),
 
     // поиск

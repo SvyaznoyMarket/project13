@@ -20,6 +20,8 @@ class IndexPage extends \View\DefaultLayout {
     }
 
     public function slotContent() {
+        $orderCount = $this->getParam('orderCount');
+
         $this->params['menu'] = array(
             array(
                 'title' => 'Моя персональная информация',
@@ -40,7 +42,7 @@ class IndexPage extends \View\DefaultLayout {
                 'links' => array(
                     array(
                         'name' => 'Мои заказы',
-                        'num'  => \RepositoryManager::getOrder()->countByUserToken(\App::user()->getEntity()->getToken()),
+                        'num'  => $orderCount,
                         'url'  => $this->url('user.order'),
                     ),
                 )

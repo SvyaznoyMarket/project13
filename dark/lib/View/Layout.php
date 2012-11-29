@@ -142,7 +142,7 @@ class Layout {
     public function slotMeta() {
         $return = "\n";
         foreach ($this->metas as $name => $content) {
-            if (null == $return) continue;
+            if (null == $content) continue;
 
             $return .= '<meta name="' . $name .'" content="' . $content . '" />' . "\n";
         }

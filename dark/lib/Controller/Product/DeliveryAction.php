@@ -15,6 +15,8 @@ class DeliveryAction {
             throw new \Exception\NotFoundException('Request is not xml http request');
         }
 
+        $user = \App::user();
+
         $productIds = $request->get('ids');
         if (!(bool)$productIds) {
             return new \Http\JsonResponse(array('success' => false));
@@ -23,7 +25,11 @@ class DeliveryAction {
         $regionId =
             $request->get('region')
             ? (int)$request->get('region')
-            : (int)$request->cookies->get(\App::config()->region['cookieName']);
+            : $user->getRegionId();
+
+        if (!$regionId) {
+            $regionId = $user->getRegion()->getId();
+        }
 
         $params = array('product_list' => array());
         foreach($productIds as $productId) {
@@ -38,7 +44,10 @@ class DeliveryAction {
         }
 
         if (empty($response['product_list'])) {
-            \App::logger()->error('Core delivery/calc has not "product_list" data');
+            $e = new \Exception('Core delivery/calc has no "product_list" data');
+            \App::$exception = $e;
+            \App::logger()->error($e);
+
             return new \Http\JsonResponse(array('success' => false));
         }
 

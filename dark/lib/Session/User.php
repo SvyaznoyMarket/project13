@@ -25,6 +25,7 @@ class User {
      * @param \Model\User\Entity $entity
      */
     public function setEntity(\Model\User\Entity $entity) {
+        $entity->setToken($this->getToken());
         $this->entity = $entity;
     }
 

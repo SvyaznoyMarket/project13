@@ -7,10 +7,16 @@ class Repository {
     private $client;
     private $entityClass = '\Model\Product\Entity';
 
+    /**
+     * @param \Core\ClientInterface $client
+     */
     public function __construct(\Core\ClientInterface $client) {
         $this->client = $client;
     }
 
+    /**
+     * @param string $class
+     */
     public function setEntityClass($class) {
         $this->entityClass = $class;
     }
@@ -113,6 +119,11 @@ class Repository {
         return $collection;
     }
 
+    /**
+     * @param array                $ids
+     * @param \Model\Region\Entity $region
+     * @param                      $callback
+     */
     public function prepareCollectionById(array $ids, \Model\Region\Entity $region = null, $callback) {
         \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args()));
 

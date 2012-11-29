@@ -46,7 +46,7 @@ $isCorporative = $sf_user->getGuardUser() && $sf_user->getGuardUser()->getIsCorp
     <input id="order-delivery_map-data" type="hidden" data-value='<?php echo $deliveryMap_json ?>' />
     <?php 
     // KNOCKOUT
-      include_partial('order_/blocks_tmpl')
+      include_partial('order_/blocks_tmpl', array('region' => $form['region_id']) )
     ?>  
 
 

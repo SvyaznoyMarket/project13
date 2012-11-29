@@ -887,6 +887,7 @@ upi:			for( var item=0, boxitems=self.chosenBox().itemList(); item < boxitems.le
 	}
 
 	$('#order-submit').click( function(e) {
+		broken = 0
 		e.preventDefault()
 		if( sended ) return // form is currently processing
 		if( $(this).hasClass('disable')) { // form isnot active - delivery should be chosen

@@ -33,7 +33,7 @@ $json = array(
     <? endif ?>
 
     <p class="bSet__eDescription">
-        <?//= $service->getDescription() ?>
+        <?= $service->getDescription() ?>
         <?= $service->getWork(); ?>
     </p>
 

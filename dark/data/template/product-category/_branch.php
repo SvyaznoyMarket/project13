@@ -28,16 +28,14 @@ foreach ($parent->getChild() as $child) {
 }
 
 // total text
-$textTemplate =
-    $category->getHasLine()
-        ? '{n: n > 10 && n < 20}%count% серий|{n: n % 10 == 1}%count% серия|{n: n % 10 > 1 && n % 10 < 5}%count% серии|(1,+Inf]%count% серий'
-        : '{n: n > 10 && n < 20}%count% товаров|{n: n % 10 == 1}%count% товар|{n: n % 10 > 1 && n % 10 < 5}%count% товара|(1,+Inf]%count% товаров';
-//     for current region
-$totalText = $page->helper->formatNumberChoice($textTemplate, array('%count%' => $category->getProductCount()), $category->getProductCount());
+$totalText = $category->getProductCount() . ' ' . ($category->getHasLine()
+    ? $page->helper->numberChoice($category->getProductCount(), array('серия', 'серии', 'серий'))
+    : $page->helper->numberChoice($category->getProductCount(), array('товар', 'товара', 'товаров'))
+);
 //     for global
 $globalTotalText =
     $user->getRegion()->getHasTransportCompany()
-    ? $page->helper->formatNumberChoice($textTemplate, array('%count%' => $category->getGlobalProductCount()), $category->getGlobalProductCount())
+    ? $page->helper->numberChoice($category->getGlobalProductCount(), array('товар', 'товара', 'товаров'))
     : '';
 ?>
 

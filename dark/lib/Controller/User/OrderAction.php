@@ -13,6 +13,41 @@ class OrderAction {
         \App::logger()->debug('Exec ' . __METHOD__);
 
         $client = \App::coreClientV2();
+        $user = \App::user();
+
+        // подготовка 1-го пакета запросов
+
+        // запрашиваем пользователя, если он авторизован
+        if ($user->getToken()) {
+            \RepositoryManager::getUser()->prepareEntityByToken($user->getToken(), function($data) {
+                if ((bool)$data) {
+                    \App::user()->setEntity(new \Model\User\Entity($data));
+                }
+            });
+        }
+
+        // запрашиваем текущий регион, если есть кука региона
+        if ($user->getRegionId()) {
+            \RepositoryManager::getRegion()->prepareEntityById($user->getRegionId(), function($data) {
+                $data = reset($data);
+                if ((bool)$data) {
+                    \App::user()->setRegion(new \Model\Region\Entity($data));
+                }
+            });
+        }
+
+        // запрашиваем список регионов для выбора
+        $shopAvailableRegions = array();
+        \RepositoryManager::getRegion()->prepareShopAvailableCollection(function($data) use (&$shopAvailableRegions) {
+            foreach ($data as $item) {
+                $shopAvailableRegions[] = new \Model\Region\Entity($item);
+            }
+        });
+
+        // выполнение 1-го пакета запросов
+        $client->execute();
+
+        $region = $user->getRegion();
 
         // способы получения заказа
         $deliveryTypesById = array();
@@ -20,12 +55,30 @@ class OrderAction {
             $deliveryTypesById[$deliveryType->getId()] = $deliveryType;
         }
 
-        // заказы
-        $orders = \RepositoryManager::getOrder()->getCollectionByUserToken(\App::user()->getToken());
+        // подготовка 2-го пакета запросов
 
-        // сортировка по дате desc
+        // запрашиваем рутовые категории
+        $rootCategories = array();
+        \RepositoryManager::getProductCategory()->prepareRootCollection($region, function($data) use(&$rootCategories) {
+            foreach ($data as $item) {
+                $rootCategories[] = new \Model\Product\Category\Entity($item);
+            }
+        });
+
+        // запрашиваем заказы пользователя
         /** @var $orders \Model\Order\Entity[] */
-        $orders = array_reverse($orders);
+        $orders = array();
+        \RepositoryManager::getOrder()->prepareCollectionByUserToken($user->getToken(), function($data) use(&$orders) {
+            foreach ($data as $item) {
+                $orders[] = new \Model\Order\Entity($item);
+            }
+            // сортировка по дате desc
+            /** @var $orders \Model\Order\Entity[] */
+            $orders = array_reverse($orders);
+        });
+
+        // выполнение 2-го пакета запросов
+        $client->execute();
 
         // товары и услуги
         $productsById = array();
@@ -39,32 +92,31 @@ class OrderAction {
             }
         }
 
-        $paymentMethodsById = array();
-        $client->addQuery('payment-method/get', array(
-            'geo_id' => \RepositoryManager::getRegion()->getDefaultEntity()->getId(),
-        ), array(), function($data) use(&$paymentMethodsById) {
-            foreach($data as $item){
-                $paymentMethodsById[$item['id']] = new \Model\PaymentMethod\Entity($item);
-            }
-        });
+        // подготовка 3-го пакета запросов
 
+        // методы оплаты
+        $paymentMethodsById = array();
+        \RepositoryManager::getPaymentMethod()->prepareCollection(
+            $region->getId() == \App::config()->region['defaultId'] ? $region : \RepositoryManager::getRegion()->getDefaultEntity(),
+            function($data) use(&$paymentMethodsById) {
+                foreach($data as $item){
+                    $paymentMethodsById[$item['id']] = new \Model\PaymentMethod\Entity($item);
+                }
+            }
+        );
+
+        // товары
         if ((bool)$productsById) {
-            $client->addQuery('product/get', array(
-                'select_type' => 'id',
-                'id'          => array_keys($productsById),
-                'geo_id'      => \App::user()->getRegion()->getId(),
-            ), array(), function($data) use(&$productsById) {
+            \RepositoryManager::getProduct()->prepareCollectionById(array_keys($productsById), $region, function($data) use(&$productsById) {
                 foreach($data as $item){
                     $productsById[$item['id']] = new \Model\Product\CartEntity($item);
                 }
             });
         }
 
+        // услуги
         if ((bool)$servicesById) {
-            $client->addQuery('service/get2', array(
-                'id'     => array_keys($servicesById),
-                'geo_id' => \App::user()->getRegion()->getId(),
-            ), array(), function($data) use(&$servicesById) {
+            \RepositoryManager::getService()->prepareCollectionById(array_keys($servicesById), $region, function($data) use(&$servicesById) {
                 foreach($data as $item){
                     $servicesById[$item['id']] = new \Model\Product\Service\Entity($item);
                 }
@@ -72,10 +124,13 @@ class OrderAction {
         }
 
         if ((bool)$productsById || (bool)$servicesById) {
+            // выполнение 3-го пакета запросов
             $client->execute();
         }
 
         $page = new \View\User\OrderPage();
+        $page->setParam('shopAvailableRegions', $shopAvailableRegions);
+        $page->setParam('rootCategories', $rootCategories);
         $page->setParam('deliveryTypesById', $deliveryTypesById);
         $page->setParam('paymentMethodsById', $paymentMethodsById);
         $page->setParam('orders', $orders);
