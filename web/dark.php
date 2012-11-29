@@ -67,7 +67,9 @@ require_once __DIR__ . '/../dark/lib/App.php';
         // debug panel
         if (\App::config()->debug && !\App::request()->isXmlHttpRequest()) {
             $content = $response->getContent();
-            $content .= include \App::config()->dataDir . '/debug/panel.php';
+            ob_start();
+            include \App::config()->dataDir . '/debug/panel.php';
+            $content .= ob_get_flush();
             $response->setContent($content);
         }
 

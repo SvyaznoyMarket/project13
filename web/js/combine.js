@@ -1,16 +1,16 @@
 window.filesWithVersion = {
-"app.order.v4.js":1354025888,
+"app.order.v4.js":1354190687,
 "ports.js":1353422204,
-"app.oneclick.js":1353672189,
+"app.oneclick.js":1354085035,
 "infopages.js":1351763597,
-"library.js":1353917671,
-"app.cart.js":1353483331,
-"bigjquery.min.js":1353483331,
+"library.js":1354190687,
+"app.cart.js":1354099186,
+"bigjquery.min.js":1354085035,
 "welcome.js":1351500454,
-"main.js":1354021075,
-"dash.js":1354025888,
-"app.order.js":1353422204,
+"main.js":1354190687,
+"dash.js":1354085035,
+"app.order.js":1354195485,
 "app.product.comment.list.js":1351763596,
 "app.product.js":1353422204,
-"app.shop.js":1353483331
+"app.shop.js":1354085035
 }
