@@ -8,9 +8,7 @@ class IndexAction {
 
         $client = \App::coreClientV2();
         $user = \App::user();
-
-        // внимание! опасный трюк: если есть кука региона избавляемся от запроса в ядро
-        $region = $user->getRegionId() ? new \Model\Region\Entity(array('id' => $user->getRegionId())) : $user->getRegion();
+        $region = $user->getRegion();
 
         // подготовка 1-го пакета запросов
 

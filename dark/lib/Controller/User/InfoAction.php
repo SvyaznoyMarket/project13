@@ -13,9 +13,7 @@ class InfoAction {
         $client = \App::coreClientV2();
         $user = \App::user();
         $cart = $user->getCart();
-
-        // внимание! опасный трюк: если есть кука региона избавляемся от запроса в ядро
-        $region = $user->getRegionId() ? new \Model\Region\Entity(array('id' => $user->getRegionId())) : $user->getRegion();
+        $region = $user->getRegion();
 
         $responseData = array(
             'name'             => '',
