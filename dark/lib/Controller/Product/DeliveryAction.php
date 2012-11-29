@@ -81,7 +81,6 @@ class DeliveryAction {
      * @throws \Exception\NotFoundException
      */
     public function oneClick(\Http\Request $request) {
-        // TODO: не доделано
         \App::logger()->debug('Exec ' . __METHOD__);
 
         $helper = new \View\Helper();
@@ -93,6 +92,9 @@ class DeliveryAction {
         $productId = (int)$request->get('product_id');
         $productQuantity = (int)$request->get('product_quantity');
         $regionId = (int)$request->get('region_id');
+        if (!$regionId) {
+            $regionId = \App::user()->getRegion()->getId();
+        }
 
         $params = array('product_list' => array(
             array(
@@ -113,23 +115,36 @@ class DeliveryAction {
 
                 $dates = array();
                 $shops = array();
+                $day = 0;
                 foreach ($deliveryData['date_list'] as $dateData) {
+                    $day++;
+                    if ($day > 7) continue;
+
                     $date = array(
                         'name'  => $helper->humanizeDate($dateData['date']),
                         'value' => $dateData['date']
                     );
 
                     if('self' == $token) {
+                        $date['shopIds'] = array();
                         foreach ($dateData['shop_list'] as $dateShopData) {
                             $shop = array(
                                 'id'        => $dateShopData['id'],
                                 'regtime'   => $shopData[$dateShopData['id']]['working_time'], // что за описка "regtime"?
                                 'address'   => $shopData[$dateShopData['id']]['address'],
-                                'longitude' => $shopData[$dateShopData['id']]['coord_long'],
                                 'latitude'  => $shopData[$dateShopData['id']]['coord_lat'],
+                                'longitude' => $shopData[$dateShopData['id']]['coord_long'],
                             );
 
-                            $shops[] = $shop;
+                            if (!in_array($shop, $shops)) {
+                                $shops[] = $shop;
+                            }
+
+                            foreach ($response['interval_list'] as $interval) {
+                                if (in_array($interval['id'], $dateShopData['interval_list'])) {
+                                    $date['shopIds'][] = $dateShopData['id'];
+                                }
+                            }
                         }
 
                     } else {
@@ -150,14 +165,23 @@ class DeliveryAction {
                 $responseData[$token] = $item;
             }
         } catch (\Exception $e) {
+            \App::$exception = $e;
             \App::logger()->error($e);
-            return new \Http\JsonResponse(array('success' => false, 'error' => \App::config()->debug ? $e->getMessage() : 'Ошибка'));
+
+            $responseData['data'] = array();
+
+            return new \Http\JsonResponse(array(
+                'success'     => false,
+                'error'       => \App::config()->debug ? $e->getMessage() : 'Ошибка',
+                'currentDate' => date('Y-m-d'),
+            ));
         }
 
 
         return new \Http\JsonResponse(array(
-            'success' => true,
-            'data'    => $responseData,
+            'success'     => true,
+            'data'        => $responseData,
+            'currentDate' => date('Y-m-d'),
         ));
     }
 }

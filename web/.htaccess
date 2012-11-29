@@ -9,9 +9,8 @@ Options +FollowSymLinks +ExecCGI
   # getting no_script_name to work
   #RewriteBase /
 
-  #RewriteRule ^f1.*$ index.light.php [L]
   RewriteRule ^region/init/$ index.light.php [L]
-  RewriteRule ^product/delivery1click/? index.light.php [L]
+  #RewriteRule ^product/delivery1click/? index.light.php [L]
   RewriteRule ^cart/add.* index.light.php [L]
   RewriteRule ^cart/delete.* index.light.php [L]
   RewriteRule ^cart/clear.* index.light.php [L]
@@ -38,7 +37,7 @@ Options +FollowSymLinks +ExecCGI
   RewriteRule ^tags/([a-zA-Z_0-9-]+)/([a-zA-Z_0-9-]+)/_infinity$ dark.php [L]
   RewriteRule ^certificate-check* dark.php [L]
   RewriteRule ^product/delivery-info* dark.php [L]
-  #RewriteRule ^product/delivery1click/? dark.php [L]
+  RewriteRule ^product/delivery1click/? dark.php [L]
   #RewriteRule ^region/change/* dark.php [L]
   RewriteRule ^region/autocomplete* dark.php [L]
   RewriteRule ^shops* dark.php [L]
