@@ -2,7 +2,7 @@
 
 namespace Controller\Product;
 
-class CommentsAction {
+class CommentAction {
 
     public function execute($productPath, \Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
