@@ -148,6 +148,8 @@ return array(
     ),
     'product.stock' => array(
         'pattern' => '/product/{productPath}/stock',
+        'action'  => array('Product\StockAction', 'execute'),
+        'require' => array('productPath' => '[\w\d-_]+\/{1}[\w\d-_]+'),
     ),
     'product.accessories' => array( // TODO: переименовать в product.accessory
         'pattern' => '/products/accessories/{productToken}',

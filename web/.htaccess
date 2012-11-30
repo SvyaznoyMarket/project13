@@ -22,10 +22,12 @@ Options +FollowSymLinks +ExecCGI
 
   # dark
   RewriteRule ^$ dark.php [L]
+  RewriteRule ^user/shortinfo/?$ dark.php [L]
   RewriteRule ^category/main_menu/? dark.php [L]
   RewriteRule ^f1.*$ dark.php [L]
   RewriteRule ^search* dark.php [L]
   RewriteRule ^product/([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)$ dark.php [L]
+  RewriteRule ^product/([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)/stock$ dark.php [L]
   RewriteRule ^product/([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)/comments$ dark.php [L]
   RewriteRule ^catalog/([a-zA-Z_0-9-]+(\/{0,1})[a-zA-Z_0-9-]+)/$ dark.php [L]
   RewriteRule ^catalog/([a-zA-Z_0-9-]+(\/{0,1})[a-zA-Z_0-9-]+)/_slider$ dark.php [L]
@@ -48,7 +50,6 @@ Options +FollowSymLinks +ExecCGI
   RewriteRule ^logout$ dark.php [L]
   RewriteRule ^private/consultation* index.php [L]
   RewriteRule ^private/* dark.php [L]
-  RewriteRule ^user/shortinfo/?$ dark.php [L]
 
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteRule ^wp-admin/$ /content/wp-admin/index.php [L]
