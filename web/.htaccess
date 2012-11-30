@@ -49,6 +49,7 @@ Options +FollowSymLinks +ExecCGI
   RewriteRule ^login$ dark.php [L]
   RewriteRule ^logout$ dark.php [L]
   RewriteRule ^private/consultation* index.php [L]
+  RewriteRule ^private/orders/([a-zA-Z_0-9-]+)/bill* index.php [L]
   RewriteRule ^private/* dark.php [L]
 
   RewriteCond %{REQUEST_FILENAME} !-f
