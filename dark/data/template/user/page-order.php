@@ -1,6 +1,7 @@
 <?php
 /**
  * @var $page               \View\User\OrderPage
+ * @var $user               \Session\User
  * @var $deliveryTypesById  \Model\DeliveryType\Entity[]
  * @var $paymentMethodsById \Model\PaymentMethod\Entity[]
  * @var $orders             \Model\Order\Entity[]
@@ -121,6 +122,16 @@
                 <div class="font12">
                     <?= $paymentMethod->getName() ?>
                 </div>
+                <? endif ?>
+
+                <? if ($user->getEntity() && $user->getEntity()->getIsCorporative()): ?>
+                    <div class="font12">Счет:
+                        <? if ($order->getBill()): ?>
+                            <a href="<?= $page->url('order.bill', array('orderNumber' => $order->getNumber())) ?>">выставлен</a>
+                        <? else: ?>
+                            выставляется
+                        <? endif ?>
+                    </div>
                 <? endif ?>
             </th>
             <td>
