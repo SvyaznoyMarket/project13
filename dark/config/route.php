@@ -161,9 +161,9 @@ return array(
         'action'  => array('Product\RelatedAction', 'execute'),
         'require' => array('productToken' => '[\w\d-_]+'),
     ),
-    'product.comments' => array(
+    'product.comment' => array(
         'pattern' => '/product/{productPath}/comments',
-        'action'  => array('Product\CommentsAction', 'execute'),
+        'action'  => array('Product\CommentAction', 'execute'),
         'require' => array('productPath' => '[\w\d-_]+\/{1}[\w\d-_]+'),
     ),
     'tag' => array(
