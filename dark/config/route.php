@@ -276,4 +276,10 @@ return array(
         'pattern' => '/private/password',
         'action'  => array('User\ChangePasswordAction', 'execute'),
     ),
+    // подписка
+    'user.subscribe' => array(
+        'pattern' => '/private/subscribe',
+        'action'  => array('User\SubscribeAction', 'execute'),
+        'method'  => array('POST'),
+    ),
 );
