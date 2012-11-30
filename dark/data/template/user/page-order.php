@@ -125,13 +125,13 @@
                 <? endif ?>
 
                 <? if ($user->getEntity() && $user->getEntity()->getIsCorporative()): ?>
-                <div class="font12">Счет:
-                    <? if ($order->getBill()): ?>
-                        <a href="<?= $page->url('order.bill', array('orderNumber' => $order->getNumber())) ?>">выставлен</a>
+                    <div class="font12">Счет:
+                        <? if ($order->getBill()): ?>
+                            <a href="<?= $page->url('order.bill', array('orderNumber' => $order->getNumber())) ?>">выставлен</a>
                         <? else: ?>
-                        выставляется
+                            выставляется
                         <? endif ?>
-                </div>
+                    </div>
                 <? endif ?>
             </th>
             <td>

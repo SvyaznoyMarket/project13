@@ -243,6 +243,10 @@ return array(
         'pattern' => '/orders/new',
         'action'  => array('Order\Action', 'create'),
     ),
+    'order.bill' => array(
+        'pattern' => '/private/orders/{orderNumber}/bill',
+        'action'  => array('Order\BillAction', 'execute'),
+    ),
 
     // услуги
     'service' => array(
