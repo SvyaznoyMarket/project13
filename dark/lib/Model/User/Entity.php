@@ -93,448 +93,392 @@ class Entity {
     /**
      * @param string $address
      */
-    public function setAddress($address)
-    {
+    public function setAddress($address) {
         $this->address = (string)$address;
     }
 
     /**
      * @return string
      */
-    public function getAddress()
-    {
+    public function getAddress() {
         return $this->address;
     }
 
     /**
      * @param \DateTime|null $birthday
      */
-    public function setBirthday(\DateTime $birthday = null)
-    {
+    public function setBirthday(\DateTime $birthday = null) {
         $this->birthday = $birthday;
     }
 
     /**
      * @return \DateTime|null
      */
-    public function getBirthday()
-    {
+    public function getBirthday() {
         return $this->birthday;
     }
 
     /**
      * @param \Model\Region\Entity|null $city
      */
-    public function setCity(\Model\Region\Entity $city = null)
-    {
+    public function setCity(\Model\Region\Entity $city = null) {
         $this->city = $city;
     }
 
     /**
      * @return \Model\Region\Entity
      */
-    public function getCity()
-    {
+    public function getCity() {
         return $this->city;
     }
 
     /**
      * @param int $cityId
      */
-    public function setCityId($cityId = null)
-    {
+    public function setCityId($cityId = null) {
         $this->cityId = $cityId ? (int)$cityId : null;
     }
 
     /**
      * @return int
      */
-    public function getCityId()
-    {
+    public function getCityId() {
         return $this->cityId;
     }
 
     /**
      * @param \DateTime $createdAt
      */
-    public function setCreatedAt(\DateTime $createdAt = null)
-    {
+    public function setCreatedAt(\DateTime $createdAt = null) {
         $this->createdAt = $createdAt;
     }
 
     /**
      * @return \DateTime
      */
-    public function getCreatedAt()
-    {
+    public function getCreatedAt() {
         return $this->createdAt;
     }
 
     /**
      * @param string $email
      */
-    public function setEmail($email)
-    {
+    public function setEmail($email) {
         $this->email = (string)$email;
     }
 
     /**
      * @return string
      */
-    public function getEmail()
-    {
+    public function getEmail() {
         return $this->email;
     }
 
     /**
      * @param string $firstName
      */
-    public function setFirstName($firstName)
-    {
+    public function setFirstName($firstName) {
         $this->firstName = (string)$firstName;
     }
 
     /**
      * @return string
      */
-    public function getFirstName()
-    {
+    public function getFirstName() {
         return $this->firstName;
     }
 
     /**
      * @param string $homePhone
      */
-    public function setHomePhone($homePhone)
-    {
+    public function setHomePhone($homePhone) {
         $this->homePhone = (string)$homePhone;
     }
 
     /**
      * @return string
      */
-    public function getHomePhone()
-    {
+    public function getHomePhone() {
         return $this->homePhone;
     }
 
     /**
      * @param int $id
      */
-    public function setId($id)
-    {
+    public function setId($id) {
         $this->id = (int)$id;
     }
 
     /**
      * @return int
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
     /**
      * @param string $identity
      */
-    public function setIdentity($identity)
-    {
+    public function setIdentity($identity) {
         $this->identity = (string)$identity;
     }
 
     /**
      * @return string
      */
-    public function getIdentity()
-    {
+    public function getIdentity() {
         return $this->identity;
     }
 
     /**
      * @param string $ipAddress
      */
-    public function setIpAddress($ipAddress)
-    {
+    public function setIpAddress($ipAddress) {
         $this->ipAddress = (string)$ipAddress;
     }
 
     /**
      * @return string
      */
-    public function getIpAddress()
-    {
+    public function getIpAddress() {
         return $this->ipAddress;
     }
 
     /**
      * @param boolean $isActive
      */
-    public function setIsActive($isActive)
-    {
+    public function setIsActive($isActive) {
         $this->isActive = (bool)$isActive;
     }
 
     /**
      * @return boolean
      */
-    public function getIsActive()
-    {
+    public function getIsActive() {
         return $this->isActive;
     }
 
     /**
      * @param boolean $isCorporative
      */
-    public function setIsCorporative($isCorporative)
-    {
+    public function setIsCorporative($isCorporative) {
         $this->isCorporative = (bool)$isCorporative;
     }
 
     /**
      * @return boolean
      */
-    public function getIsCorporative()
-    {
+    public function getIsCorporative() {
         return $this->isCorporative;
     }
 
     /**
      * @param boolean $isSubscribed
      */
-    public function setIsSubscribed($isSubscribed)
-    {
+    public function setIsSubscribed($isSubscribed) {
         $this->isSubscribed = (bool)$isSubscribed;
     }
 
     /**
      * @return boolean
      */
-    public function getIsSubscribed()
-    {
+    public function getIsSubscribed() {
         return $this->isSubscribed;
     }
 
     /**
      * @param \DateTime $lastLoginAt
      */
-    public function setLastLoginAt(\DateTime $lastLoginAt = null)
-    {
+    public function setLastLoginAt(\DateTime $lastLoginAt = null) {
         $this->lastLoginAt = $lastLoginAt;
     }
 
     /**
      * @return \DateTime
      */
-    public function getLastLoginAt()
-    {
+    public function getLastLoginAt() {
         return $this->lastLoginAt;
     }
 
     /**
      * @param string $lastName
      */
-    public function setLastName($lastName)
-    {
+    public function setLastName($lastName) {
         $this->lastName = (string)$lastName;
     }
 
     /**
      * @return string
      */
-    public function getLastName()
-    {
+    public function getLastName() {
         return $this->lastName;
     }
 
     /**
      * @param string $middleName
      */
-    public function setMiddleName($middleName)
-    {
+    public function setMiddleName($middleName) {
         $this->middleName = (string)$middleName;
     }
 
     /**
      * @return string
      */
-    public function getMiddleName()
-    {
+    public function getMiddleName() {
         return $this->middleName;
     }
 
     /**
      * @param string $mobilePhone
      */
-    public function setMobilePhone($mobilePhone)
-    {
+    public function setMobilePhone($mobilePhone) {
         $this->mobilePhone = (string)$mobilePhone;
     }
 
     /**
      * @return string
      */
-    public function getMobilePhone()
-    {
+    public function getMobilePhone() {
         return $this->mobilePhone;
     }
 
     /**
      * @param string $occupation
      */
-    public function setOccupation($occupation)
-    {
+    public function setOccupation($occupation) {
         $this->occupation = (string)$occupation;
     }
 
     /**
      * @return string
      */
-    public function getOccupation()
-    {
+    public function getOccupation() {
         return $this->occupation;
     }
 
     /**
      * @param int $regionId
      */
-    public function setRegionId($regionId)
-    {
+    public function setRegionId($regionId) {
         $this->regionId = (int)$regionId;
     }
 
     /**
      * @return int
      */
-    public function getRegionId()
-    {
+    public function getRegionId() {
         return $this->regionId;
     }
 
     /**
      * @param string $sex
      */
-    public function setSex($sex)
-    {
+    public function setSex($sex) {
         $this->sex = (int)$sex;
     }
 
     /**
      * @return string
      */
-    public function getSex()
-    {
+    public function getSex() {
         return $this->sex;
     }
 
     /**
      * @param string $skype
      */
-    public function setSkype($skype)
-    {
+    public function setSkype($skype) {
         $this->skype = (string)$skype;
     }
 
     /**
      * @return string
      */
-    public function getSkype()
-    {
+    public function getSkype() {
         return $this->skype;
     }
 
     /**
      * @param string $token
      */
-    public function setToken($token)
-    {
+    public function setToken($token) {
         $this->token = (string)$token;
     }
 
     /**
      * @return string
      */
-    public function getToken()
-    {
+    public function getToken() {
         return $this->token;
     }
 
     /**
      * @param  $tokenExpiredAt|null
      */
-    public function setTokenExpiredAt(\DateTime $tokenExpiredAt = null)
-    {
+    public function setTokenExpiredAt(\DateTime $tokenExpiredAt = null) {
         $this->tokenExpiredAt = $tokenExpiredAt;
     }
 
     /**
      * @return \DateTime|null
      */
-    public function getTokenExpiredAt()
-    {
+    public function getTokenExpiredAt() {
         return $this->tokenExpiredAt;
     }
 
     /**
      * @param int $typeId
      */
-    public function setTypeId($typeId)
-    {
+    public function setTypeId($typeId) {
         $this->typeId = (int)$typeId;
     }
 
     /**
      * @return int
      */
-    public function getTypeId()
-    {
+    public function getTypeId() {
         return $this->typeId;
     }
 
     /**
      * @param string $ui
      */
-    public function setUi($ui)
-    {
+    public function setUi($ui) {
         $this->ui = (string)$ui;
     }
 
     /**
      * @return string
      */
-    public function getUi()
-    {
+    public function getUi() {
         return $this->ui;
     }
 
     /**
      * @param \DateTime $updatedAt
      */
-    public function setUpdatedAt(\DateTime $updatedAt = null)
-    {
+    public function setUpdatedAt(\DateTime $updatedAt = null) {
         $this->updatedAt = $updatedAt;
     }
 
     /**
      * @return \DateTime
      */
-    public function getUpdatedAt()
-    {
+    public function getUpdatedAt() {
         return $this->updatedAt;
     }
 
     /**
      * @param string $zipCode
      */
-    public function setZipCode($zipCode)
-    {
+    public function setZipCode($zipCode) {
         $this->zipCode = (string)$zipCode;
     }
 
     /**
      * @return string
      */
-    public function getZipCode()
-    {
+    public function getZipCode() {
         return $this->zipCode;
     }
 
