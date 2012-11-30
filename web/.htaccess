@@ -49,6 +49,7 @@ Options +FollowSymLinks +ExecCGI
   RewriteRule ^private/orders/([a-zA-Z_0-9-]+)/bill* index.php [L]
   RewriteRule ^private/* dark.php [L]
   RewriteRule ^user/shortinfo/?$ dark.php [L]
+  RewriteRule ^refurbished/subscribe$ dark.php [L]
 
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteRule ^wp-admin/$ /content/wp-admin/index.php [L]
