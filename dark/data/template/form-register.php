@@ -29,9 +29,11 @@ if (!isset($form)) $form = new \View\User\RegistrationForm();
          <label class="bSubscibe">
             <b></b> Хочу знать об интересных<br />предложениях
             <input type="checkbox" value="1" autocomplete="off" class="subscibe">
+
         </label>
         <input type="submit" class="fr button bigbutton" value="Регистрация" tabindex="10"/>
         <div class="clear"></div>
+        <p>Нажимая кнопку «Регистрация», я подтверждаю свое согласие с <a class="underline" href="/terms">Условиями продажи...</a></p>
         <? if (\App::config()->user['corporateRegister']): ?>
         <p><a href="<?= $page->url('user.registerCorporate') ?>" class="orange underline">регистрация юридического лица</a></p>
         <? endif ?>

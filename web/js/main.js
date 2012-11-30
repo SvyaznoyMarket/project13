@@ -12,7 +12,14 @@ $(document).ready(function(){
 	}
 	if ($('.bSubscibe').length){
 		$('.bSubscibe').bind('click', function(){
-			$(this).toggleClass('checked')
+			if ($(this).hasClass('checked')){
+				$(this).removeClass('checked')
+				$(this).find('input').removeAttr('checked')
+			}
+			else{
+				$(this).addClass('checked')
+				$(this).find('input').attr('checked','checked')
+			}
 			return false
 		})
 	}
