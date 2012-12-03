@@ -14,8 +14,14 @@
       <?php echo $form['username']->render(array('class' => 'text width315 mb10')) ?>
       <!--<input type="password" class="text width315 mb10" value="Пароль" />-->
     </div>
-    <input type="submit" class="fr button bigbutton" value="Регистрация" tabindex="10" />
+    <label class="bSubscibe checked">
+        <b></b> Хочу знать об интересных<br />предложениях
+        <input type="checkbox" name="subscribe" value="1" autocomplete="off" class="subscibe" checked="checked" />
 
+    </label>
+    <input type="submit" class="fr button bigbutton" value="Регистрация" tabindex="10" />
+    <div class="clear"></div>
+    <p>Нажимая кнопку «Регистрация», я подтверждаю свое согласие с <a class="underline" href="/terms">Условиями продажи...</a></p>
     <? if (sfConfig::get('app_guard_corporate_registration_enabled', false)): ?>
         <p><a href="<?php echo url_for('user_corporateRegister') ?>" class="orange underline">регистрация юридического лица</a></p>
     <? endif ?>

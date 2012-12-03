@@ -295,4 +295,21 @@ return array(
         'pattern' => '/private/password',
         'action'  => array('User\ChangePasswordAction', 'execute'),
     ),
+
+    //подписка на уцененные товары
+    'refurbished' => array(
+        'pattern' => '/refurbished',
+        'action'  => array('Refurbished\Action', 'execute'),
+    ),
+    'refurbished.subscribe' => array(
+        'pattern' => '/refurbished/subscribe',
+        'action'  => array('Refurbished\Action', 'subscribe'),
+    ),
+
+    // подписка
+    'user.subscribe' => array(
+        'pattern' => '/private/subscribe',
+        'action'  => array('User\SubscribeAction', 'execute'),
+        'method'  => array('POST'),
+    ),
 );

@@ -1,4 +1,36 @@
 $(document).ready(function(){
+	function regEmailValid(){
+		/*register e-mail check*/
+		if ($('#register_username').length){
+			if (($('#register_username').val().search('@')) != -1){
+				$('#register_username').parents('#register-form').find('.bSubscibe').show()
+			}
+			$('#register_username').bind('keyup',function(){
+				if (($(this).val().search('@')) != -1){
+					$(this).parents('#register-form').find('.bSubscibe').show()
+				}
+				else if ($(this).parents('#register-form').find('.bSubscibe').is(":visible")){
+					$(this).parents('#register-form').find('.bSubscibe').hide()
+				}
+			})
+		}
+		/*subscribe*/
+		if ($('.bSubscibe').length){
+			$('.bSubscibe').bind('click', function(){
+				if ($(this).hasClass('checked')){
+					$(this).removeClass('checked')
+					$(this).find('.subscibe').removeAttr('checked')
+				}
+				else{
+					$(this).addClass('checked')
+					$(this).find('.subscibe').attr('checked','checked')
+				}
+				return false
+			})
+		}
+	}
+	regEmailValid()
+
 	/* upper */
 	var upper = $('#upper');
 	var trigger = false;//сработало ли появление языка
@@ -18,6 +50,32 @@ $(document).ready(function(){
 		$(window).scrollTo('0px',400);
 		return false;
 	});
+
+	/* 
+		Форма подписки на уцененные товары
+		страница /discounted
+	*/
+	if ($('#subscribe-form').length){
+		$('#subscribe-form').bind('submit', function(e, param) {
+			e.preventDefault()
+			var form = $('#subscribe-form')
+			var wholemessage = form.serializeArray()
+			wholemessage["redirect_to"] = form.find('[name="redirect_to"]:first').val()
+			function authFromServer(response) {
+				if ( response.success ) {
+					form.find('label').hide()
+					form.find('#subscribeSaleSubmit').empty().addClass('font18').html('Подписка прошла успешно. Все ништяк ;)')
+				}
+			}
+			$.ajax({
+				type: 'POST',
+				url: form.attr('action'),
+				data: wholemessage,
+				success: authFromServer
+			})
+		})
+	}
+
 	/* GA categories referrer */
 	function categoriesSpy( e ) {
 		if( typeof(_gaq) !== 'undefined' )
@@ -189,6 +247,7 @@ $(document).ready(function(){
             }
           } else {
             form.html( $(response.data.content).html() )
+            regEmailValid()
           }
 		}
 		

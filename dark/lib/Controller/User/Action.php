@@ -41,11 +41,8 @@ class Action {
                     }
                     $user->setToken($result['token']);
 
-                    \App::user()->signIn($user);
-
-                    // xhr
-                    if ($request->isXmlHttpRequest()) {
-                        return new \Http\JsonResponse(array(
+                    $response = $request->isXmlHttpRequest()
+                        ? new \Http\JsonResponse(array(
                             'success' => true,
                             'data'    => array(
                                 'content' => \App::templating()->render('form-login', array(
@@ -54,10 +51,12 @@ class Action {
                                     'request' => \App::request(),
                                 )),
                             ),
-                        ));
-                    }
+                        ))
+                        : new \Http\RedirectResponse(\App::router()->generate('user'));
 
-                    return new \Http\RedirectResponse(\App::router()->generate('user'));
+                    \App::user()->signIn($user, $response);
+
+                    return $response;
                 } catch(\Exception $e) {
                     $form->setError('global', 'Неверно указан логин или пароль');
                 }
@@ -87,9 +86,14 @@ class Action {
     public function logout() {
         \App::logger()->debug('Exec ' . __METHOD__);
 
-        \App::user()->removeToken();
+        $user = \App::user();
 
-        return new \Http\RedirectResponse(\App::router()->generate('homepage'));
+        $user->removeToken();
+
+        $response = new \Http\RedirectResponse(\App::router()->generate('homepage'));
+        $user->setCacheCookie($response);
+
+        return $response;
     }
 
     public function register(\Http\Request $request) {
