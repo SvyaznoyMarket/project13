@@ -53,6 +53,8 @@ Options +FollowSymLinks +ExecCGI
   RewriteRule ^private/* dark.php [L]
   RewriteRule ^user/shortinfo/?$ dark.php [L]
   RewriteRule ^refurbished* dark.php [L]
+  RewriteRule ^register$ dark.php [L]
+  RewriteRule ^request-password$ dark.php [L]
 
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteRule ^wp-admin/$ /content/wp-admin/index.php [L]

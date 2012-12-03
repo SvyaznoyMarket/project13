@@ -170,7 +170,7 @@ class User {
 
     public function setCacheCookie(\Http\Response $response) {
         $value = md5(strval(\App::session()->getId()) . strval(time()));
-        $cookie = new \Http\Cookie('enter_auth', $value);
+        $cookie = new \Http\Cookie(\App::config()->cacheCookieName, $value);
         \App::logger()->debug(sprintf('Cache cookie %s cooked', $value));
 
         $response->headers->setCookie($cookie);
