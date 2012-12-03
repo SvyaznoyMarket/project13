@@ -24,6 +24,8 @@
 
 </div>
 
+<!-- 
+временно скрыто SITE-375
 <form action="<?= $page->url('user.subscribe') ?>" method="post">
     <div class="fr width315">
         <div class="font16 orange pb10">Рассылка по электронной почте</div>
@@ -34,4 +36,4 @@
         <input type="submit" class="fr button bigbutton" value="Сохранить" tabindex="10"/>
         <div class="clear"></div>
     </div>
-</form>
+</form> -->
