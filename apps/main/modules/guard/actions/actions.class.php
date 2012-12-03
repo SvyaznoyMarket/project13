@@ -258,6 +258,8 @@ class guardActions extends myActions
   public function executeCorporateRegister(sfRequest $request) {
     $this->forward404Unless(sfConfig::get('app_guard_corporate_registration_enabled', false));
 
+    $this->getRequest()->setParameter('_template', 'infopage');
+    
     $client = CoreClient::getInstance();
 
     $form = new CorporateRegisterForm();
