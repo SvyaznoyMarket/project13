@@ -28,11 +28,11 @@ class Action {
 
         $response['post_data'] = $_POST;
 
-        if (!$form->getUsername()) {
+        if (!$form->getName()) {
             $form->setError('username', 'Не указан логин');
         }
-        if (!$form->getPassword()) {
-            $form->setError('password', 'Не указан пароль');
+        if (!$form->getEmail()) {
+            $form->setError('email', 'Не указана почта');
         }
 
 
