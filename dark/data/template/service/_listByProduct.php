@@ -16,7 +16,7 @@ $cartServicesById = $cartProduct ? $cartProduct->getService() : array();
     <div class="bF1Info bBlueButton">
         <img class="bF1Info_Logo" src="/images/f1info.png" alt="Улуги F1"/>
         <script type="text/html" id="f1look">
-            <div ref="<%=fid%>">
+            <div ref="<%=f1token%>">
                 <%=f1title%> - <%=f1price%>&nbsp;
                 <span class="rubl"> p</span>
                 <br>
