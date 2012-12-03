@@ -32,7 +32,7 @@ if (!isset($form)) $form = new \View\User\RegistrationForm();
         <input type="submit" class="fr button bigbutton" value="Регистрация" tabindex="10"/>
 
         <? if (\App::config()->user['corporateRegister']): ?>
-        <p><a href="<?= $page->url('user.registerCorporate') ?>" class="orange underline">регистрация юридического лица</a></p>
+        <p><a href="<?= $page->url('user.registerCorporate') ?>" class="orange underline">Регистрация юридического лица</a></p>
         <? endif ?>
 
     </div>

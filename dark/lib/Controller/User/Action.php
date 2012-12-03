@@ -206,10 +206,199 @@ class Action {
         return new \Http\Response($page->show());
     }
 
+    /**
+     * @param \Http\Request $request
+     * @return \Http\JsonResponse|\Http\RedirectResponse|\Http\Response
+     * @throws \Exception
+     */
     public function registerCorporate(\Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
+
+        if (\App::user()->getEntity()) {
+            return $request->isXmlHttpRequest()
+                ? new \Http\JsonResponse(array('success' => true))
+                : new \Http\RedirectResponse(\App::router()->generate('user'));
+        }
+
+        $form = new \View\User\CorporateRegistrationForm();
+        if ($request->isMethod('post')) {
+            $form->fromArray($request->request->get('register'));
+            if (!$form->getFirstName()) {
+                $form->setError('first_name', 'Не указано имя');
+            }
+            if (!$form->getFirstName()) {
+                $form->setError('first_name', 'Укажите имя');
+            }
+            if (!$form->getMiddleName()) {
+                $form->setError('middle_name', 'Укажите отчество');
+            }
+            if (!$form->getLastName()) {
+                $form->setError('last_name', 'Укажите фамилию');
+            }
+            if (!$form->getEmail()) {
+                $form->setError('email', 'Укажите email');
+            }
+            if (!$form->getPhone()) {
+                $form->setError('phone', 'Укажите номер телефона');
+            }
+            if (!$form->getCorpName()) {
+                $form->setError('corp_name', 'Укажите название организации');
+            }
+            if (!$form->getCorpLegalAddress()) {
+                $form->setError('corp_legal_address', 'Укажите юридический адрес');
+            }
+            if (!$form->getCorpRealAddress()) {
+                $form->setError('corp_real_address', 'Укажите фактический адрес');
+            }
+            if (!$form->getCorpINN()) {
+                $form->setError('corp_inn', 'Укажите ИНН');
+            }
+            if (!$form->getCorpKPP()) {
+                $form->setError('corp_kpp', 'Укажите КПП');
+            }
+            if (!$form->getCorpAccount()) {
+                $form->setError('corp_account', 'Укажите расчетный счет');
+            }
+            if (!$form->getCorpKorrAccount()) {
+                $form->setError('corp_korr_account', 'Укажите корреспондентский счет');
+            }
+            if (!$form->getCorpBIK()) {
+                $form->setError('corp_bik', 'Укажите БИК');
+            }
+            if (!$form->getCorpOKPO()) {
+                $form->setError('corp_okpo', 'Укажите ОКПО');
+            }
+
+            if ($form->isValid()) {
+                $phone = $form->getPhone();
+                $phone = preg_replace('/^\+7/', '8', $phone);
+                $phone = preg_replace('/[^\d]/', '', $phone);
+
+                $data = array(
+                    'first_name'    => $form->getFirstName(),
+                    'last_name'     => $form->getLastName(),
+                    'middle_name'   => $form->getMiddleName(),
+                    'sex'           => 0,
+                    //'birthday'      => null,
+                    'email'         => $form->getEmail(),
+                    'phone'         => null,
+                    'mobile'        => $phone,
+                    'is_subscribe'  => false,
+                    'occupation'    => null,
+                    'detail'        => array(
+                        //'legal_type' => null,
+                        //'name'          => $form->getCorpName(),
+                        'legal_type'    => 'ЮЛ',
+                        'name_full'     => $form->getCorpName(),
+                        'address_legal' => $form->getCorpLegalAddress(),
+                        'address_real'  => $form->getCorpRealAddress(),
+                        'okpo'          => $form->getCorpOKPO(),
+                        'inn'           => $form->getCorpINN(),
+                        'kpp'           => $form->getCorpKPP(),
+                        'bik'           => $form->getCorpBIK(),
+                        'account'       => $form->getCorpAccount(),
+                        'korr_account'  => $form->getCorpKorrAccount(),
+                    ),
+                );
+
+                try {
+                    $result = \App::coreClientV2()->query('user/create-legal', array(
+                        'geo_id' => \App::user()->getRegion()->getId(),
+                    ), $data);
+                    if (empty($result['token'])) {
+                        throw new \Exception('Не удалось получить токен');
+                    }
+
+                    $user = \RepositoryManager::getUser()->getEntityByToken($result['token']);
+                    if (!$user) {
+                        throw new \Exception(sprintf('Не удалось получить пользователя по токену %s', $result['token']));
+                    }
+                    $user->setToken($result['token']);
+
+                    $response = $request->isXmlHttpRequest()
+                        ? new \Http\JsonResponse(array(
+                            'success' => true,
+                            'data'    => array(
+                                'content' => \App::templating()->render('form-registerCorporate', array(
+                                    'page'    => new \View\Layout(),
+                                    'form'    => $form,
+                                    'request' => \App::request(),
+                                )),
+                            ),
+                        ))
+                        : new \Http\RedirectResponse(\App::router()->generate('user'));
+
+                    \App::user()->signIn($user, $response);
+
+                    return $response;
+                } catch(\Exception $e) {
+                    switch ($e->getCode()) {
+                        case 686:
+                            $form->setError('phone', 'Такой номер телефона уже зарегистрирован.');
+                            break;
+                        case 684:
+                            $form->setError('email', 'Такой email уже зарегистрирован.');
+                            break;
+                        case 689:
+                            $form->setError('email', 'Поле заполнено неверно.');
+                            break;
+                        case 690:
+                            $form->setError('phone', 'Поле заполнено неверно.');
+                            break;
+                        case 692:
+                            $form->setError('corp_inn', 'Поле заполнено неверно.');
+                            break;
+                        case 693:
+                            $form->setError('corp_kpp', 'Поле заполнено неверно.');
+                            break;
+                        case 696:
+                            $form->setError('corp_account', 'Поле заполнено неверно.');
+                            break;
+                        case 697:
+                            $form->setError('corp_korr_account', 'Поле заполнено неверно.');
+                            break;
+                        case 694:
+                            $form->setError('corp_bik', 'Поле заполнено неверно.');
+                            break;
+                        case 695:
+                            $form->setError('corp_okpo', 'Поле заполнено неверно.');
+                            break;
+                        case 698:
+                            $form->setError('corp_inn', 'Пользователь с таким ИНН уже зарегистрирован. Пожалуйста обратитесь в контакт-cENTER.');
+                            break;
+                        default:
+                            $form->setError('global', 'Не удалось создать пользователя' . (\App::config()->debug ? (': ' . $e->getMessage()) : ''));
+                            break;
+                    }
+                }
+            }
+
+            // xhr
+            if ($request->isXmlHttpRequest()) {
+                return new \Http\JsonResponse(array(
+                    'success' => $form->isValid(),
+                    'data'    => array(
+                        'content' => \App::templating()->render('form-registerCorporate', array(
+                            'page'    => new \View\Layout(),
+                            'form'    => $form,
+                            'request' => \App::request(),
+                        )),
+                    ),
+                ));
+            }
+        }
+
+        $page = new \View\User\CorporateRegistrationPage();
+        $page->setParam('form', $form);
+
+        return new \Http\Response($page->show());
     }
 
+    /**
+     * @param \Http\Request $request
+     * @return \Http\JsonResponse
+     * @throws \Exception
+     */
     public function forgot(\Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
