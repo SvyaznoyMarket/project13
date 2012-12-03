@@ -207,6 +207,27 @@ class Action {
 
     public function forgot(\Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
+
+        $username = trim((string)$request->get('login'));
+
+        $error = null;
+        try {
+            if (!$username) {
+                $error = 'Не указан email или мобильный телефон';
+                throw new \Exception($error);
+            }
+
+            $result = \App::coreClientV2()->query('user/reset-password', array(
+                (strpos($username, '@') ? 'email' : 'mobile') => $username,
+            ));
+            if (isset($result['confirmed']) && $result['confirmed']) {
+                return new \Http\JsonResponse(array('success' => true));
+            }
+        } catch(\Exception $e) {
+            $error = $error ?: ('Не удалось запросить пароль. Попробуйте позже' . (\App::config()->debug ? (': ' . $e->getMessage()) : ''));
+        }
+
+        return new \Http\JsonResponse(array('success' => false, 'error' => $error));
     }
 
     public function reset(\Http\Request $request) {
