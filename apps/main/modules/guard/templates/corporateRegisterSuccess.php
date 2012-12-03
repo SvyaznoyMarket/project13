@@ -27,9 +27,13 @@
     </div>
 
     <div class="pb5">Контактный e-mail:</div>
-    <div class="pb5">
+    <div class="pb15">
         <?php include_partial('default/field_errors', array('errors' => $form->getError('email'))) ?>
-        <input type="email" class="text width315 mb10" name="register[email]" value="<?php echo $form->getEmail() ?>" required="required" />
+        <input type="email" class="text width315 mb10" name="register[email]" value="<?php echo $form->getEmail() ?>" required="required" /><br/>
+        <label class="bSubscibe checked">
+            <b></b> Хочу знать об интересных<br />предложениях
+            <input type="checkbox" name="subscribe" value="1" autocomplete="off" class="subscibe" checked="checked" />
+        </label>
     </div>
 
     <div class="pb5">Мобильный телефон:</div>

@@ -26,7 +26,7 @@ if (!isset($form)) $form = new \View\User\RegistrationForm();
             <? if ($error = $form->getError('username')) echo $page->render('_formError', array('error' => $error)) ?>
             <input type="text" id="register_username" class="text width315 mb10" name="register[username]" value="<?= $form->getUsername() ?>" tabindex="6"/>
         </div>
-         <label class="bSubscibe checked">
+        <label class="bSubscibe fl checked">
             <b></b> Хочу знать об интересных<br />предложениях
             <input type="checkbox" name="subscribe" value="1" autocomplete="off" class="subscibe" checked="checked" />
 
