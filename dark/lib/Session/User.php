@@ -45,10 +45,12 @@ class User {
     /**
      * @param \Model\User\Entity $user
      */
-    public function signIn(\Model\User\Entity $user) {
+    public function signIn(\Model\User\Entity $user, \Http\Response $response) {
         $user->setIpAddress(\App::request()->getClientIp());
         $this->setToken($user->getToken());
         //\RepositoryManager::getUser()->saveEntity($user);
+
+        $this->setCacheCookie($response);
     }
 
     /**
@@ -119,5 +121,13 @@ class User {
         }
 
         return $this->cart;
+    }
+
+    public function setCacheCookie(\Http\Response $response) {
+        $value = md5(strval(\App::session()->getId()) . strval(time()));
+        $cookie = new \Http\Cookie('enter_auth', $value);
+        \App::logger()->debug(sprintf('Cache cookie %s cooked', $value));
+
+        $response->headers->setCookie($cookie);
     }
 }
