@@ -78,7 +78,6 @@ class StockAction {
         $page->setParam('shopAvailableRegions', $shopAvailableRegions);
         $page->setParam('rootCategories', $rootCategories);
         $page->setParam('product', $product);
-        $page->setParam('title', $product->getName());
 
         return new \Http\Response($page->show());
     }
