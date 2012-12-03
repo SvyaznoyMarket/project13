@@ -282,6 +282,10 @@ return array(
     ),
 
     //подписка на уцененные товары
+    'refurbished' => array(
+        'pattern' => '/refurbished',
+        'action'  => array('Refurbished\Action', 'execute'),
+    ),
     'refurbished.subscribe' => array(
         'pattern' => '/refurbished/subscribe',
         'action'  => array('Refurbished\Action', 'subscribe'),
