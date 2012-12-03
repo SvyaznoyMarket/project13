@@ -28,7 +28,7 @@ if (!isset($form)) $form = new \View\User\RegistrationForm();
         </div>
          <label class="bSubscibe">
             <b></b> Хочу знать об интересных<br />предложениях
-            <input type="checkbox" name="subscribe" value="1" autocomplete="off" class="subscibe" />
+            <input type="checkbox" name="subscribe" value="1" autocomplete="off" class="subscibe" checked="checked" />
 
         </label>
         <input type="submit" class="fr button bigbutton" value="Регистрация" tabindex="10"/>
