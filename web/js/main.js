@@ -1,4 +1,36 @@
 $(document).ready(function(){
+	function regEmailValid(){
+		/*register e-mail check*/
+		if ($('#register_username').length){
+			if (($('#register_username').val().search('@')) != -1){
+				$('#register_username').parents('#register-form').find('.bSubscibe').show()
+			}
+			$('#register_username').bind('keyup',function(){
+				if (($(this).val().search('@')) != -1){
+					$(this).parents('#register-form').find('.bSubscibe').show()
+				}
+				else if ($(this).parents('#register-form').find('.bSubscibe').is(":visible")){
+					$(this).parents('#register-form').find('.bSubscibe').hide()
+				}
+			})
+		}
+		/*subscribe*/
+		if ($('.bSubscibe').length){
+			$('.bSubscibe').bind('click', function(){
+				if ($(this).hasClass('checked')){
+					$(this).removeClass('checked')
+					$(this).find('.subscibe').removeAttr('checked')
+				}
+				else{
+					$(this).addClass('checked')
+					$(this).find('.subscibe').attr('checked','checked')
+				}
+				return false
+			})
+		}
+	}
+	regEmailValid()
+
 	/* upper */
 	var upper = $('#upper');
 	var trigger = false;//сработало ли появление языка
@@ -189,6 +221,7 @@ $(document).ready(function(){
             }
           } else {
             form.html( $(response.data.content).html() )
+            regEmailValid()
           }
 		}
 		

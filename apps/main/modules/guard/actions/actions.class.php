@@ -277,7 +277,7 @@ class guardActions extends myActions
               'email'         => $form->getEmail(),
               'phone'         => null,
               'mobile'        => $form->getPhone(),
-              'is_subscribe'  => false,
+              'is_subscribe'  => (bool)$request->getPostParameter('subscribe', false),
               'occupation'    => null,
               'detail'        => array(
                   //'legal_type' => null,
@@ -390,6 +390,10 @@ class guardActions extends myActions
         }
         else {
           $data['mobile'] = $username;
+        }
+
+        if ($request->getParameter('subscribe')) {
+          $data['is_subscribe'] = true;
         }
 
         try {

@@ -290,4 +290,11 @@ return array(
         'pattern' => '/refurbished/subscribe',
         'action'  => array('Refurbished\Action', 'subscribe'),
     )
+
+    // подписка
+    'user.subscribe' => array(
+        'pattern' => '/private/subscribe',
+        'action'  => array('User\SubscribeAction', 'execute'),
+        'method'  => array('POST'),
+    ),
 );
