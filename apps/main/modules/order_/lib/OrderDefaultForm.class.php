@@ -151,7 +151,7 @@ class OrderDefaultForm extends BaseOrderForm
     if ($hasMetro)
     {
       $fields[] = 'address_metro';
-      $this->validatorSchema['subway_id']->setOption('required', true);
+      // $this->validatorSchema['subway_id']->setOption('required', true);
     }
     $this->useFields($fields);
 
