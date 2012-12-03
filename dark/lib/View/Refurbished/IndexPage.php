@@ -3,6 +3,9 @@
 namespace View\Refurbished;
 
 class IndexPage extends \View\DefaultLayout {
+    /** @var string */
+    protected $layout  = 'layout-oneColumn';
+
     public function prepare() {
 
         // breadcrumbs
@@ -21,6 +24,10 @@ class IndexPage extends \View\DefaultLayout {
             $this->setTitle('Уцененные товары оптом – Enter.ru');
             $this->setParam('title', 'Уцененные товары оптом');
         }
+    }
+
+    public function slotBodyDataAttribute() {
+        return 'infopage';
     }
 
     public function slotContent() {
