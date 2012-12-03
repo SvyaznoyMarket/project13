@@ -280,4 +280,10 @@ return array(
         'pattern' => '/private/password',
         'action'  => array('User\ChangePasswordAction', 'execute'),
     ),
+
+    //подписка на уцененные товары
+    'refurbished.subscribe' => array(
+        'pattern' => '/refurbished/subscribe',
+        'action'  => array('Refurbished\Action', 'subscribe'),
+    )
 );
