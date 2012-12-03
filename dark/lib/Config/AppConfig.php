@@ -32,6 +32,8 @@ class AppConfig {
         'name'            => null,
         'cookie_lifetime' => null,
     );
+    /** @var string */
+    public $cacheCookieName = null;
     /** @var array */
     public $coreV1 = array(
         'url'          => null,
