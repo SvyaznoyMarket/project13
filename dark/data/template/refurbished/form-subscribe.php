@@ -32,6 +32,6 @@ if (!isset($form)) $form = new \View\Refurbished\SubscribeForm();
             	<input type="text" id="subscriber_email" value="<?= $form->getEmail() ?>" name="subscriber[email]"/>
             </label>
 
-        	<p><input class="button yellowbutton" type="submit" value="Подписаться" /></p> -->
+        	<p id="subscribeSaleSubmit"><input class="button yellowbutton" type="submit" value="Подписаться" /></p> -->
     </div>
 </form>
