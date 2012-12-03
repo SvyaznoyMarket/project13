@@ -18,6 +18,32 @@ $(document).ready(function(){
 		$(window).scrollTo('0px',400);
 		return false;
 	});
+
+	/* 
+		Форма подписки на уцененные товары
+		страница /discounted
+	*/
+	if ($('#subscribe-form').length){
+		$('#subscribe-form').bind('submit', function(e, param) {
+			e.preventDefault()
+			var form = $('#subscribe-form')
+			var wholemessage = form.serializeArray()
+			wholemessage["redirect_to"] = form.find('[name="redirect_to"]:first').val()
+			function authFromServer(response) {
+				if ( response.success ) {
+					form.find('label').hide()
+					form.find('#subscribeSaleSubmit').empty().addClass('font18').html('Подписка прошла успешно. Все ништяк ;)')
+				}
+			}
+			$.ajax({
+				type: 'POST',
+				url: form.attr('action'),
+				data: wholemessage,
+				success: authFromServer
+			})
+		})
+	}
+
 	/* GA categories referrer */
 	function categoriesSpy( e ) {
 		if( typeof(_gaq) !== 'undefined' )
