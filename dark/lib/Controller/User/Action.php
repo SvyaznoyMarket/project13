@@ -97,9 +97,14 @@ class Action {
     public function logout() {
         \App::logger()->debug('Exec ' . __METHOD__);
 
-        \App::user()->removeToken();
+        $user = \App::user();
 
-        return new \Http\RedirectResponse(\App::router()->generate('user.login'));
+        $user->removeToken();
+
+        $response = new \Http\RedirectResponse(\App::router()->generate('user.login'));
+        $user->setCacheCookie($response);
+
+        return $response;
     }
 
     /**
