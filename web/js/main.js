@@ -10,15 +10,19 @@ $(document).ready(function(){
 			}
 		})
 	}
+	/*subscribe*/
 	if ($('.bSubscibe').length){
+		if ($('.bSubscibe .subscibe').attr('checked') == 'checked'){
+			$('.bSubscibe .subscibe').addClass('checked')
+		}
 		$('.bSubscibe').bind('click', function(){
 			if ($(this).hasClass('checked')){
 				$(this).removeClass('checked')
-				$(this).find('input').removeAttr('checked')
+				$(this).find('.subscibe').removeAttr('checked')
 			}
 			else{
 				$(this).addClass('checked')
-				$(this).find('input').attr('checked','checked')
+				$(this).find('.subscibe').attr('checked','checked')
 			}
 			return false
 		})
