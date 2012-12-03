@@ -289,7 +289,7 @@ return array(
     'refurbished.subscribe' => array(
         'pattern' => '/refurbished/subscribe',
         'action'  => array('Refurbished\Action', 'subscribe'),
-    )
+    ),
 
     // подписка
     'user.subscribe' => array(
