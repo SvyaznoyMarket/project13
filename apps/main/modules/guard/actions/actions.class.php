@@ -392,6 +392,10 @@ class guardActions extends myActions
           $data['mobile'] = $username;
         }
 
+        if ($request->getParameter('subscribe')) {
+          $data['is_subscribe'] = true;
+        }
+
         try {
           $r = CoreClient::getInstance()->query('user/create', array(), $data);
 
