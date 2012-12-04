@@ -99,19 +99,11 @@ try {
 
     /* @var $response \Http\Response */
     $response = call_user_func_array($actionCall, $actionParams);
+    throw new RuntimeException();
 } catch (\Exception\NotFoundException $e) {
     $action = new \Controller\Error\NotFoundAction();
     $response = $action->execute($e, $request);
 } catch (\Exception\AccessDeniedException $e) {
     $action = new \Controller\Error\AccessDeniedAction();
     $response = $action->execute($e, $request);
-} catch (\Exception $e) {
-    \App::logger()->error(array(
-        'message'   => 'Ошибка сервера.',
-        'exception' => (string)$e,
-    ));
-
-    if (\App::config()->debug) {
-        throw $e;
-    }
 }
