@@ -29,7 +29,7 @@ class Action {
         if ($categoryId) {
             $params['product_category_id'] = $categoryId;
         } else {
-            $params['is_product_category_first_only'] = true;
+            //$params['is_product_category_first_only'] = false;
         }
         // ядерный запрос
         $result = \App::coreClientV2()->query('search/get', $params);
@@ -65,10 +65,10 @@ class Action {
             throw new \Exception\NotFoundException(sprintf('Не найдена категория #%s', $categoryId));
         }
         /** @var $selectedCategory \Model\Product\Category\Entity */
-        $selectedCategory = $categoryId ? $categoriesById[$categoryId] : reset($categoriesById);
+        $selectedCategory = $categoryId ? $categoriesById[$categoryId] : null;
 
         // вид товаров
-        $productView = $request->get('view', $selectedCategory->getProductView());
+        $productView = $request->get('view', $selectedCategory ? $selectedCategory->getProductView() : \Model\Product\Category\Entity::PRODUCT_VIEW_COMPACT);
 
         // товары
         $productRepository = \RepositoryManager::getProduct();
@@ -78,7 +78,7 @@ class Action {
             : '\\Model\\Product\\CompactEntity'
         );
         $products = $productRepository->getCollectionById($result['data']);
-        $productPager = new \Iterator\EntityPager($products, $selectedCategory->getProductCount());
+        $productPager = new \Iterator\EntityPager($products, $selectedCategory ? $selectedCategory->getProductCount() : $result['count']);
         $productPager->setPage($pageNum);
         $productPager->setMaxPerPage(\App::config()->product['itemsPerPage']);
 
