@@ -440,26 +440,27 @@ levup:			for(var i=0, l=numbers.length; i<l; i++)
 			return out	
 		}
 		//find today index
-		var tind = -1
+		var tind = 0
 		//only today-tomorrow printing:
-		for(var i=0, l=Deliveries['self'].dates.length; i<l; i++)
-			if( Deliveries['self'].dates[i].value === currentDate ) {
-				tind = i
-				break
-			} else {
-				if( parseISO8601( currentDate ) == parseISO8601( Deliveries['self'].dates[i].value ) ) {
-					tind = i
-					break
-				}
-			}
+
+		// for(var i=0, l=Deliveries['self'].dates.length; i<l; i++)
+		// 	if( Deliveries['self'].dates[i].value === currentDate ) {
+		// 		tind = i
+		// 		break
+		// 	} else {
+		// 		if( parseISO8601( currentDate ) == parseISO8601( Deliveries['self'].dates[i].value ) ) {
+		// 			tind = i
+		// 			break
+		// 		}
+		// 	}
 			
-		if( tind < 0 ) {
-			self.tomorrowShops = parseDateShop( Deliveries['self'].dates[ tind + 1 ].shopIds, 'tmr' )
-		} else {
-			self.todayShops = parseDateShop( Deliveries['self'].dates[ tind ].shopIds, 'td' )
-			if( Deliveries['self'].dates.length > tind + 1 )
-				self.tomorrowShops = parseDateShop( Deliveries['self'].dates[ tind + 1 ].shopIds, 'tmr' )			
-		}
+		// if( tind < 0 ) {
+		// 	self.tomorrowShops = parseDateShop( Deliveries['self'].dates[ tind + 1 ].shopIds, 'tmr' )
+		// } else {
+		// 	self.todayShops = parseDateShop( Deliveries['self'].dates[ tind ].shopIds, 'td' )
+		// 	if( Deliveries['self'].dates.length > tind + 1 )
+		// 		self.tomorrowShops = parseDateShop( Deliveries['self'].dates[ tind + 1 ].shopIds, 'tmr' )			
+		// }
 		self.todayShops = parseDateShop( Deliveries['self'].dates[ 0 ].shopIds, 'td' )
 		self.todayLabel( Deliveries['self'].dates[ 0 ].name.match(/\d{2}\.\d{2}\.\d{4}/)[0] )
 		if( Deliveries['self'].dates.length > 1 ) {
@@ -539,6 +540,8 @@ levup:			for(var i=0, l=numbers.length; i<l; i++)
 		}
 		
 		self.reserveItem = function() {
+			// console.log(tind)
+			// console.log(Deliveries['self'].dates[ tind ])
 			var MVMinterface = {
 				type: 'self',
 				date: self.today() ? Deliveries['self'].dates[ tind ] : Deliveries['self'].dates[ tind + 1 ],
