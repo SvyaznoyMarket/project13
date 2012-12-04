@@ -200,7 +200,7 @@ class order_Actions extends myActions
             if (!array_key_exists($k, $values)) continue;
               $value = $values[$k];
               if (('recipient_phonenumbers' == $k) && (strlen($value)) > 10) {
-                $value = substr($value, 1, 10);
+                $value = substr($value, -10);
               }
 
             $coockieValue[$k] = $value;
