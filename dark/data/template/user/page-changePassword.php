@@ -24,12 +24,12 @@
         <div class="pb10">
             <label for="password_password_old">Старый пароль</label>
         </div>
-        <input type="password" id="password_password_old" name="password_old" class="text width418 mb15" autocomplete="off" required="required" />
+        <input type="password" id="password_password_old" name="password_old" class="text width418 mb15" autocomplete="off" />
 
         <div class="pb10">
             <label for="password_password_new">Новый пароль</label>
         </div>
-        <input type="password" id="password_password_new" name="password_new" class="text width418 mb15" autocomplete="off" required="required" />
+        <input type="password" id="password_password_new" name="password_new" class="text width418 mb15" autocomplete="off" />
 
         <div class="clear pb10"></div>
         <div class="pb20">
