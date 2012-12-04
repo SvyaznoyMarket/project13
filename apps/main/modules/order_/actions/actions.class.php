@@ -87,7 +87,7 @@ class order_Actions extends myActions
     if ($user->isAuthenticated()) {
       $this->order->recipient_first_name = $user->getGuardUser()->getFirstName();
       $this->order->recipient_last_name = $user->getGuardUser()->getLastName();
-      $this->order->recipient_phonenumbers = $user->getGuardUser()->getPhonenumber();
+      $this->order->recipient_phonenumbers = (strlen($user->getGuardUser()->getPhonenumber()) > 10) ? substr($user->getGuardUser()->getPhonenumber(), -10) : $user->getGuardUser()->getPhonenumber();
     }
     else {
       $cookieValue = $request->getCookie(self::ORDER_COOKIE_NAME);
@@ -99,7 +99,7 @@ class order_Actions extends myActions
           if (array_key_exists($k, $cookieValue) && empty($this->order->{$k}))
           {
             if (('recipient_phonenumbers' == $k) && (strlen($cookieValue[$k])) > 10) {
-                $cookieValue[$k] = substr($cookieValue[$k], 1, 10);
+                $cookieValue[$k] = substr($cookieValue[$k], -10);
             }
             $this->order->{$k} = $cookieValue[$k];
           }
