@@ -67,7 +67,9 @@ require_once __DIR__ . '/../dark/lib/App.php';
         // debug panel
         if (\App::config()->debug && !\App::request()->isXmlHttpRequest()) {
             $content = $response->getContent();
-            $content .= include \App::config()->dataDir . '/debug/panel.php';
+            ob_start();
+            include \App::config()->dataDir . '/debug/panel.php';
+            $content .= ob_get_flush();
             $response->setContent($content);
         }
 
@@ -98,7 +100,8 @@ try {
     list($actionCall, $actionParams) = $resolver->getCall($request);
 
     /* @var $response \Http\Response */
-    $response = call_user_func_array($actionCall, $actionParams} catch (\Exception\NotFoundException $e) {
+    $response = call_user_func_array($actionCall, $actionParams);
+} catch (\Exception\NotFoundException $e) {
     $action = new \Controller\Error\NotFoundAction();
     $response = $action->execute($e, $request);
 } catch (\Exception\AccessDeniedException $e) {
