@@ -74,6 +74,9 @@ class IndexAction {
         $page->setParam('rootCategories', $rootCategories);
         $page->setParam('orderCount', $orderCount);
 
+        $form = new \View\User\ConsultationForm();
+        $page->setParam('form', $form);
+
         return new \Http\Response($page->show());
     }
 }

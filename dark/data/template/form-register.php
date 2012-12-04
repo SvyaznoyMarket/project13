@@ -29,8 +29,14 @@ if (!isset($form)) $form = new \View\User\RegistrationForm();
             <? if ($error = $form->getError('username')) echo $page->render('_formError', array('error' => $error)) ?>
             <input required="required" type="text" id="register_username" class="text width315 mb10" name="register[username]" value="<?= $form->getUsername() ?>" tabindex="6"/>
         </div>
-        <input type="submit" class="fr button bigbutton" value="Регистрация" tabindex="10"/>
+         <label class="bSubscibe checked">
+            <b></b> Хочу знать об интересных<br />предложениях
+            <input type="checkbox" name="subscribe" value="1" autocomplete="off" class="subscibe" checked="checked" />
 
+        </label>
+        <input type="submit" class="fr button bigbutton" value="Регистрация" tabindex="10"/>
+        <div class="clear"></div>
+        <p>Нажимая кнопку «Регистрация», я подтверждаю свое согласие с <a class="underline" href="/terms">Условиями продажи...</a></p>
         <? if (\App::config()->user['corporateRegister']): ?>
         <p><a href="<?= $page->url('user.registerCorporate') ?>" class="orange underline">Регистрация юридического лица</a></p>
         <? endif ?>

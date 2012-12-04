@@ -28,7 +28,7 @@
     <div class="pb5">Контактный e-mail:</div>
     <div class="pb5">
         <? if ($error = $form->getError('email')) echo $page->render('_formError', array('error' => $error)) ?>
-        <input type="email" class="text width315 mb10" name="register[email]" value="<?= $form->getEmail() ?>" />
+        <input type="text" class="text width315 mb10" name="register[email]" value="<?= $form->getEmail() ?>" />
     </div>
 
     <div class="pb5">Мобильный телефон:</div>

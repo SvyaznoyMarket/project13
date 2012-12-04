@@ -93,7 +93,7 @@ $(document).ready(function() {
 			self.chosenShop = ko.observable( {} )
 			self.pickedShop = ko.observable( {} )
 				
-			self.dynModel = function( Deliveries ) {				
+			self.dynModel = function( Deliveries ) {	
 				var chosenType = self.chosenDlvr().type
 				if ( !chosenType )
 					chosenType = 'self'
@@ -115,7 +115,8 @@ $(document).ready(function() {
 				
 				self.dates( Deliveries[ self.chosenDlvr().type+'' ].dates.slice(0) )
 				self.chosenDate( self.dates()[0] )
-				
+
+
 				if( selfAvailable ) {
 					self.shops( Deliveries['self'].shops.slice(0) )
 					self.chosenShop( self.shops()[0] )
@@ -181,11 +182,11 @@ $(document).ready(function() {
 						if( self.dlvrs()[i].type == 'self' ) {
 							self.chosenDlvr( self.dlvrs()[i]  )
 							break
-						}						
+						}
 					self.disabledSelectors( true )
 					self.noQBar( true )
 					if( 'date' in data )
-						self.chosenDate( data.date )
+						self.chosenDate( data.date )		
 					if( 'shop' in data )
 						self.chosenShop( data.shop )
 				} else if( data.type === 'courier' ) {
@@ -381,7 +382,7 @@ $(document).ready(function() {
 						$('.bFast').parent().append( data.data.content )
 						$('.bFast').remove()
 						$('.p0').removeClass('p0')
-						$('.top0').removeClass('top0')
+						//$('.top0').removeClass('top0')
 						// $('.order1click-link-new').remove()
 						if( typeof(_gaq) !== 'undefined' && typeof(runAnalitics) !== 'undefined' )
 							runAnalitics()
@@ -440,25 +441,25 @@ levup:			for(var i=0, l=numbers.length; i<l; i++)
 		}
 		//find today index
 		var tind = -1
-		// only today-tomorrow printing:
-		// for(var i=0, l=Deliveries['self'].dates.length; i<l; i++)
-		// 	if( Deliveries['self'].dates[i].value === currentDate ) {
-		// 		tind = i
-		// 		break
-		// 	} else {
-		// 		if( parseISO8601( currentDate ) == parseISO8601( Deliveries['self'].dates[i].value ) ) {
-		// 			tind = i
-		// 			break
-		// 		}
-		// 	}
+		//only today-tomorrow printing:
+		for(var i=0, l=Deliveries['self'].dates.length; i<l; i++)
+			if( Deliveries['self'].dates[i].value === currentDate ) {
+				tind = i
+				break
+			} else {
+				if( parseISO8601( currentDate ) == parseISO8601( Deliveries['self'].dates[i].value ) ) {
+					tind = i
+					break
+				}
+			}
 			
-		// if( tind < 0 ) {
-		// 	self.tomorrowShops = parseDateShop( Deliveries['self'].dates[ tind + 1 ].shopIds, 'tmr' )
-		// } else {
-		// 	self.todayShops = parseDateShop( Deliveries['self'].dates[ tind ].shopIds, 'td' )
-		// 	if( Deliveries['self'].dates.length > tind + 1 )
-		// 		self.tomorrowShops = parseDateShop( Deliveries['self'].dates[ tind + 1 ].shopIds, 'tmr' )			
-		// }
+		if( tind < 0 ) {
+			self.tomorrowShops = parseDateShop( Deliveries['self'].dates[ tind + 1 ].shopIds, 'tmr' )
+		} else {
+			self.todayShops = parseDateShop( Deliveries['self'].dates[ tind ].shopIds, 'td' )
+			if( Deliveries['self'].dates.length > tind + 1 )
+				self.tomorrowShops = parseDateShop( Deliveries['self'].dates[ tind + 1 ].shopIds, 'tmr' )			
+		}
 		self.todayShops = parseDateShop( Deliveries['self'].dates[ 0 ].shopIds, 'td' )
 		self.todayLabel( Deliveries['self'].dates[ 0 ].name.match(/\d{2}\.\d{2}\.\d{4}/)[0] )
 		if( Deliveries['self'].dates.length > 1 ) {
@@ -622,7 +623,6 @@ levup:			for(var i=0, l=numbers.length; i<l; i++)
 					window.regionMap.addHandler( '.shopchoose', pickStoreMVMCL )
 				}
 				MapInterface.init( mapCenter, 'mapPopup', mapCallback, updateIWCL )
-				// console.log(window.regionMap)
 			}
 			oneClickIsReady = true
 			enableHandlers()

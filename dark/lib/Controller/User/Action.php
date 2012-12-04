@@ -63,7 +63,6 @@ class Action {
 
                     \App::user()->signIn($user, $response);
 
-
                     return $response;
                 } catch(\Exception $e) {
                     $form->setError('global', 'Неверно указан логин или пароль' . (\App::config()->debug ? (': ' . $e->getMessage()) : ''));
