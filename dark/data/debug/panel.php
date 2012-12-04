@@ -40,6 +40,7 @@ $queryString = '';
 foreach ((array)$requestData['api_queries'] as $query) {
     $queryString .=
         (round($query['time'], 3) * 1000)
+        . ' ' . '<span style="color: #cccccc;">' . $query['host'] . '</span>'
         . ' ' . '<a style="color: #00ffff" href="' . $query['url'] . '" target="_blank" data-method="' . ((bool)$query['post'] ? 'post' : 'get') . '">' . rawurldecode($query['url']) . '</a>'
         . ' ' . ((bool)$query['post'] ? json_encode($query['post']) : '')
         . '<br />';

@@ -75,9 +75,10 @@ class RequestLogger
    * @param array $postData
    * @param string $time
    */
-  public function addLog($url, $postData, $time){
+  public function addLog($url, $postData, $time, $host){
         $this->_requestList[] = array(
             'time' => $time ,
+            'host' => $host,
             'url' => str_replace(array("\r", "\n"), '', $url) ,
             'post' => $postData,
         );
@@ -94,6 +95,7 @@ class RequestLogger
 
       foreach ($this->_requestList as $log) {
           $data['api_queries'][] = array(
+              'host' => $log['host'],
               'url' => $log['url'],
               'post' => $log['post'],
               'time' => $log['time']
