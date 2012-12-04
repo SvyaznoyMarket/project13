@@ -79,6 +79,14 @@ $(document).ready(function() {
 					valerror: false,
 					regexp: /^[()0-9\-\+\s]+$/
 				}) )
+				self.textfields.push( ko.observable({
+					title: 'номер вашей карты «Связной-Клуб»',
+					name: 'order[recipient_scCard]', //UNIQUE!
+					selectorid: 'scCard',
+					value: '',
+					valerror: false,
+					regexp: /^[()0-9\-\+\s]+$/
+				}) )
 			
 			self.disabledSelectors = ko.observable( false )
 			self.noQBar            = ko.observable( false )
