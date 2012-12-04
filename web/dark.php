@@ -101,7 +101,6 @@ try {
 
     /* @var $response \Http\Response */
     $response = call_user_func_array($actionCall, $actionParams);
-    throw new RuntimeException();
 } catch (\Exception\NotFoundException $e) {
     $action = new \Controller\Error\NotFoundAction();
     $response = $action->execute($e, $request);
