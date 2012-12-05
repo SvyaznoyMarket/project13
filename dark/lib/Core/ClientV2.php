@@ -55,6 +55,7 @@ class ClientV2 implements ClientInterface
             curl_close($connection);
             $spend = \Debug\Timer::stop('core');
             \App::logger()->error('End core ' . $action . ' in ' . $spend . ' get: ' . json_encode($params) . ' post: ' . json_encode($data) . ' response: ' . json_encode($response, true) . ' with ' . $e);
+            \App::$exception = $e;
 
             throw $e;
         }
@@ -161,7 +162,7 @@ class ClientV2 implements ClientInterface
         curl_setopt($connection, CURLOPT_HEADER, 1);
         curl_setopt($connection, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($connection, CURLOPT_URL, $query);
-        curl_setopt($connection, CURLOPT_HTTPHEADER, array("X-Request-Id: ".\Util\RequestLogger::getInstance()->getId()));
+        curl_setopt($connection, CURLOPT_HTTPHEADER, array('X-Request-Id: '.\Util\RequestLogger::getInstance()->getId(), 'Expect:'));
 
         if ($isPostMethod) {
             curl_setopt($connection, CURLOPT_POST, true);
@@ -204,7 +205,9 @@ class ClientV2 implements ClientInterface
                     break;
             }
             $message = sprintf('Json error: "%s", Response: "%s"', $error, $response);
-            throw new \RuntimeException($message, $code);
+            $e = new \RuntimeException($message, $code);
+            \App::$exception = $e;
+            throw $e;
         }
 
         if (is_array($decoded) && array_key_exists('error', $decoded)) {
