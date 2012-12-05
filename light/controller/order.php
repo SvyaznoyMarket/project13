@@ -56,10 +56,11 @@ class orderController
       }
 
       $order = array(
-        'delivered_at' => (array_key_exists('delivered_at', $_POST['order']) ? $_POST['order']['delivered_at']:''),
-        'recipient_first_name'  => (array_key_exists('recipient_first_name', $_POST['order']) ? $_POST['order']['recipient_first_name']:''),
-        'recipient_phonenumber' => (array_key_exists('recipient_phonenumbers', $_POST['order']) ? $_POST['order']['recipient_phonenumbers']:''),
-        'product' => $productList
+        'delivered_at'              => (array_key_exists('delivered_at', $_POST['order']) ? $_POST['order']['delivered_at']:''),
+        'recipient_first_name'      => (array_key_exists('recipient_first_name', $_POST['order']) ? $_POST['order']['recipient_first_name']:''),
+        'recipient_phonenumber'     => (array_key_exists('recipient_phonenumbers', $_POST['order']) ? $_POST['order']['recipient_phonenumbers']:''),
+        'svyaznoy_club_card_number' => (array_key_exists('recipient_scCard', $_POST['order']) ? $_POST['order']['recipient_scCard']:''),
+        'product'                   => $productList,
       );
       if(array_key_exists('shop_id', $_POST['order'])) $order['shop_id'] = (int) $_POST['order']['shop_id'];
 
