@@ -312,4 +312,10 @@ return array(
         'action'  => array('User\SubscribeAction', 'execute'),
         'method'  => array('POST'),
     ),
+
+    //smartengine
+    'smartengine.push.buy' => array(
+        'pattern' => '/product-buy/{orderNumber}',
+        'action' => array('Smartengine\Action', 'pushBuy'),
+    ),
 );
