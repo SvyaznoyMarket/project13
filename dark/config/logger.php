@@ -6,6 +6,6 @@ return array(
     ),
 
     'timer'   => array(
-        'level' => 4,
+        'level' => 0,
     ),
 );
