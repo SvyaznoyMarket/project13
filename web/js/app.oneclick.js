@@ -85,7 +85,7 @@ $(document).ready(function() {
 					selectorid: 'scCard',
 					value: '',
 					valerror: false,
-					regexp: /^[()0-9\-\+\s]+$/
+					regexp: /^[()0-9\-\s]+$/
 				}) )
 			
 			self.disabledSelectors = ko.observable( false )
@@ -326,6 +326,9 @@ $(document).ready(function() {
 			
 			self.validateField = function( textfield, e ) {
 				var valerror = false
+				if ((e.currentTarget.name == 'order[recipient_scCard]')&&(e.currentTarget.value == '')){
+					return true
+				}
 				if( e.currentTarget.value.replace(/\s/g, '') == '' ||  !textfield.regexp.test( e.currentTarget.value ) ) {
 					valerror = true
 					self.formStatus('typing')
@@ -333,7 +336,7 @@ $(document).ready(function() {
 				if( e.currentTarget.getAttribute('id') === 'phonemask' && e.currentTarget.value.replace(/[^0-9]/g, '').length !== 11 ) {
 					valerror = true
 					self.formStatus('typing')
-				}	
+				}
 				for(var i=0, l=self.textfields.length; i<l; i++) // like indexOf
 					if( self.textfields[i]().name === textfield.name ) {
 						var tmp = self.textfields[i]()
