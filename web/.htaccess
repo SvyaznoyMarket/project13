@@ -17,7 +17,6 @@ Options +FollowSymLinks +ExecCGI
   RewriteRule ^cart/warranty/.* index.light.php [L]
   #RewriteRule ^category/main_menu/? index.light.php [L]
   RewriteRule ^product-view/.* index.light.php [L]
-  RewriteRule ^product-buy/.* index.light.php [L]
   RewriteRule ^orders/1click.* index.light.php [L]
 
   # dark
@@ -56,6 +55,7 @@ Options +FollowSymLinks +ExecCGI
   RewriteRule ^register$ dark.php [L]
   RewriteRule ^corporate-register$ dark.php [L]
   RewriteRule ^request-password$ dark.php [L]
+  RewriteRule ^product-buy/.* dark.php [L]
 
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteRule ^wp-admin/$ /content/wp-admin/index.php [L]
