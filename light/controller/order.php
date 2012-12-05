@@ -68,7 +68,14 @@ class orderController
 
       //@todo validator
 
-      $order = App::getOrder()->save($order);
+      try {
+        $order = App::getOrder()->save($order);
+      } catch (\Exception $e) {
+          return $response->setContent(json_encode(array(
+              'success' => false,
+              'message' => 'Не удалось создать заказ.' . (735 == $e->getCode() ? ' Невалидный номер карты Связного клуба' : '')
+          )));
+      }
 
 
 //      Send core requset post: http://api.enter.dev/index.php/v2/order/create?uid=5062eab6631eb&client_id=site
