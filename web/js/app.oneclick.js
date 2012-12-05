@@ -370,6 +370,7 @@ $(document).ready(function() {
 						
 			self.sendData = function() {
 				self.formStatus('sending')
+				$('.bFastInner tbody tr:last').empty()
 				var postData = {
 					'order[product_quantity]' : self.quantity(),
 					'order[delivered_at]' : self.chosenDate().value,
@@ -387,6 +388,7 @@ $(document).ready(function() {
 					success: function( data, textStatus ) {
 						if( !data.success || textStatus !== 'success' ) {
 							self.formStatus('typing')
+							$('.bFastInner tbody tr:last').append('<td colspan="2" class="red">'+data.message+'</td>')
 							return
 						}
 						//process
