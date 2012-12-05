@@ -142,6 +142,8 @@ class Action {
                     $data['mobile'] = $phone;
                 }
 
+                $data['is_subscribe'] = (bool)$request->get('subscribe', false);
+
                 try {
                     $result = \App::coreClientV2()->query('user/create', array(), $data);
                     if (empty($result['token'])) {
@@ -282,7 +284,7 @@ class Action {
                     'email'         => $form->getEmail(),
                     'phone'         => null,
                     'mobile'        => $phone,
-                    'is_subscribe'  => false,
+                    'is_subscribe'  => (bool)$request->get('subscribe', false),
                     'occupation'    => null,
                     'detail'        => array(
                         //'legal_type' => null,
