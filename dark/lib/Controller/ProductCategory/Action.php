@@ -43,7 +43,7 @@ class Action {
         $categoryToken = explode('/', $categoryPath);
         $categoryToken = end($categoryToken);
 
-        $region = $this->isGlobal() ? null : \App::user()->getRegion();
+        $region = self::isGlobal() ? null : \App::user()->getRegion();
 
         $repository = \RepositoryManager::getProductCategory();
         $category = $repository->getEntityByToken($categoryToken);
@@ -112,7 +112,7 @@ class Action {
         $categoryToken = explode('/', $categoryPath);
         $categoryToken = end($categoryToken);
 
-        $region = $this->isGlobal() ? null : \App::user()->getRegion();
+        $region = self::isGlobal() ? null : \App::user()->getRegion();
 
         $repository = \RepositoryManager::getProductCategory();
         $category = $repository->getEntityByToken($categoryToken);
@@ -189,7 +189,7 @@ class Action {
         $client->execute();
 
         /** @var $region \Model\Region\Entity|null */
-        $region = $this->isGlobal() ? null : \App::user()->getRegion();
+        $region = self::isGlobal() ? null : \App::user()->getRegion();
 
         // подготовка 2-го пакета запросов
 
@@ -339,7 +339,7 @@ class Action {
             $child = next($childrenById);
             $productCount += $productPager->count();
         }
-        if ($this->isGlobal()) {
+        if (self::isGlobal()) {
             $category->setGlobalProductCount($productCount);
         } else {
             $category->setProductCount($productCount);
@@ -391,7 +391,7 @@ class Action {
         );
         $productPager->setPage($pageNum);
         $productPager->setMaxPerPage($limit);
-        if ($this->isGlobal()) {
+        if (self::isGlobal()) {
             $category->setGlobalProductCount($productPager->count());
         } else {
             $category->setProductCount($productPager->count());
@@ -427,7 +427,7 @@ class Action {
      */
     private function getFilter(array $filters, \Model\Product\Category\Entity $category, \Http\Request $request) {
         // проверяем флаг глобального списка в параметрах запроса
-        $isGlobal = $this->isGlobal();
+        $isGlobal = self::isGlobal();
 
         // регион для фильтров
         $region = $isGlobal ? null : \App::user()->getRegion();
@@ -479,7 +479,7 @@ class Action {
     /**
      * @return bool
      */
-    public function isGlobal() {
+    public static function isGlobal() {
         return \App::user()->getRegion()->getHasTransportCompany()
             && (bool)(\App::request()->cookies->get(self::$globalCookieName, false));
     }

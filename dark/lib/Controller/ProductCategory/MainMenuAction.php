@@ -20,8 +20,10 @@ class MainMenuAction {
         $repository = \RepositoryManager::getProductCategory();
         $repository->setEntityClass('\Model\Product\Category\BasicEntity');
 
+        $region = \Controller\ProductCategory\Action::isGlobal() ? null : \App::user()->getRegion();
+
         try {
-            $categories = $repository->getTreeCollection(\App::user()->getRegion(), 3);
+            $categories = $repository->getTreeCollection($region, 3);
         } catch (\Exception $e) {
             \App::$exception = $e;
             \App::logger()->error($e);
