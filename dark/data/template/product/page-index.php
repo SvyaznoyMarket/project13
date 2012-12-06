@@ -8,7 +8,7 @@
  * @var $kit                \Model\Product\Entity[]
  * @var $showAccessoryUpper bool
  * @var $showRelatedUpper   bool
- * @var $showroomShops      \Model\Shop\Entity
+ * @var $showroomShops      \Model\Shop\Entity[]
  */
 ?>
 
@@ -25,6 +25,19 @@
     'jsregionName' => $user->getRegion()->getName(),
     'jsstock'      => 10,
   ),  JSON_HEX_QUOT | JSON_HEX_APOS);
+
+  $availableShops = array();
+  foreach ($showroomShops as $shop) {
+      $availableShops[] = array(
+          'name'        => $shop->getName(),
+          'address'     => $shop->getAddress(),
+          'worktime'    => $shop->getRegime(),
+          'longtitude'  => $shop->getLongitude(),
+          'latitude'    => $shop->getLatitude(),
+          'url'         => $page->url('shop.show', array('shopToken' => $shop->getToken(), 'regionToken' => $user->getRegion()->getToken())),
+      );
+  }
+  $jsonAvailableShops = json_encode($availableShops, JSON_HEX_QUOT | JSON_HEX_APOS);
 ?>
 <?
   $photoList = $product->getPhoto();
@@ -120,10 +133,10 @@
 
   <div class="fr ar pb15">
     <? if (!$product->getIsBuyable() && $product->getState()->getIsShop()): ?>
-      <div class="vitrin">
+      <div id="availableShops" data-shops='<?= $jsonAvailableShops ?>'></div>
+      <!--div class="vitrin">
           <div class="line pb15"></div>
-          <p class="font18 orange">Этот товар вы можете купить только в этих магазинах</p>
-          <!-- <span><?= (count($showroomShops) == 1) ? 'Адрес магазина' : 'Адреса магазинов' ?>:</span> -->
+          <p class="font18 orange">Этот товар вы можете купить только в эт<?= (count($showroomShops) == 1) ? 'ом магазине' : 'их магазинах' ?></p>
           <ul>
               <? foreach ($showroomShops as $shop): ?>
               <li>
@@ -133,8 +146,8 @@
               </li>
               <? endforeach ?>
           </ul>
-      </div>
-    <? else: ?>
+      </div-->
+    <? endif ?>
     <div class="goodsbarbig mSmallBtns" ref="<?= $product->getToken() ?>" data-value='<?= $json ?>'>
 
       <div class='bCountSet'>
@@ -155,7 +168,6 @@
          link-input='<?= $page->url('product.delivery_1click') ?>'
          class="red underline order1click-link-new">Купить быстро в 1 клик</a>
     </strong></div>
-    <? endif ?>
     <? endif ?>
   </div>
   <div class="line pb15"></div>
@@ -187,6 +199,7 @@
     <? endif ?>
   <? endif ?>
 
+  <?php if ($product->getIsBuyable()): ?>
   <div class="bDeliver2 delivery-info" id="product-id-<?= $product->getId() ?>" data-shoplink="<?= $page->url('product.stock', array('productPath' => $product->getPath())) ?>" data-calclink="<?= $page->url('product.delivery') ?>">
     <h4>Как получить заказ?</h4>
     <ul>
@@ -195,6 +208,7 @@
       </li>
     </ul>
   </div>
+  <?php endif ?>
 
   <div style="margin-bottom: 20px;">
     <div class="adfoxWrapper" id="<?= $adfox_id_by_label ?>"></div>
@@ -463,7 +477,7 @@
 
 <div class="line"></div>
 <div class="fr ar">
-    <? if ($product->getIsBuyable() || !$product->getState()->getIsShop()): ?>
+    <? //if ($product->getIsBuyable() || !$product->getState()->getIsShop()): ?>
     <div class="goodsbarbig mSmallBtns" ref="<?= $product->getToken() ?>" data-value='<?= $json ?>'>
 
         <div class='bCountSet'>
@@ -477,7 +491,7 @@
 
         <?= $page->render('cart/_button', array('product' => $product, 'disabled' => !$product->getIsBuyable(), 'gaEvent' => 'Add2Basket_vnizu', 'gaTitle' => 'Добавление в корзину')) ?>
     </div>
-    <? endif ?>
+    <? //endif ?>
 </div>
 <div class="fr mBuyButtonBottom">
     <div class="pb10"><strong class="font34"><span class="price"><?= $page->helper->formatPrice($product->getPrice()) ?></span> <span class="rubl">p</span></strong></div>
