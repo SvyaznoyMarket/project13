@@ -110,6 +110,8 @@ class DeliveryAction {
             $productData = isset($response['product_list']) ? $response['product_list'] : array();
             $productData = array_pop($productData);
             $shopData = isset($response['shop_list']) ? $response['shop_list'] : array();
+            $regionData = isset($response['geo_list']) ? $response['geo_list'] : array();
+
             foreach ($productData['delivery_mode_list'] as $deliveryData) {
                 $token = $deliveryData['token'];
 
@@ -128,10 +130,15 @@ class DeliveryAction {
                     if('self' == $token) {
                         $date['shopIds'] = array();
                         foreach ($dateData['shop_list'] as $dateShopData) {
+                            $address = $shopData[$dateShopData['id']]['address'];
+                            if (($regionId != $shopData[$dateShopData['id']]['geo_id']) && isset($regionData[$shopData[$dateShopData['id']]['geo_id']]['name'])) {
+                                $address = $regionData[$shopData[$dateShopData['id']]['geo_id']]['name'] . ', ' . $address;
+                            }
+
                             $shop = array(
                                 'id'        => (int)$dateShopData['id'],
                                 'regtime'   => $shopData[$dateShopData['id']]['working_time'], // что за описка "regtime"?
-                                'address'   => $shopData[$dateShopData['id']]['address'],
+                                'address'   => $address,
                                 'latitude'  => $shopData[$dateShopData['id']]['coord_lat'],
                                 'longitude' => $shopData[$dateShopData['id']]['coord_long'],
                             );
