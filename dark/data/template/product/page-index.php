@@ -122,11 +122,15 @@
     <? if (!$product->getIsBuyable() && $product->getState()->getIsShop()): ?>
       <div class="vitrin">
           <div class="line pb15"></div>
-          <p class="font18 orange">Товар очень популярный и остался только на витрине. Успей купить!</p>
-          <span><?= (count($showroomShops) == 1) ? 'Адрес магазина' : 'Адреса магазинов' ?>:</span>
+          <p class="font18 orange">Этот товар вы можете купить только в этих магазинах</p>
+          <!-- <span><?= (count($showroomShops) == 1) ? 'Адрес магазина' : 'Адреса магазинов' ?>:</span> -->
           <ul>
               <? foreach ($showroomShops as $shop): ?>
-              <li><?= '<a href="'.$page->url('shop.show', array('shopToken' => $shop->getToken(), 'regionToken' => $user->getRegion()->getToken())).'" class="underline">'.$shop->getAddress().'</a>' ?></li>
+              <li>
+                <a class="fr dashedLink" href="#">Посмотреть на карте</a>
+                <?= '<a href="'.$page->url('shop.show', array('shopToken' => $shop->getToken(), 'regionToken' => $user->getRegion()->getToken())).'" class="underline">'.$shop->getAddress().'</a>' ?>
+                <strong class="font12 orange db pt10">есть в наличии</strong>
+              </li>
               <? endforeach ?>
           </ul>
       </div>

@@ -417,9 +417,9 @@
 }
 .vitrin{
   text-align:left;
+  width: 400px;
   p{
-    font-family: 'Enter Type';
-    font-weight: bold;
+    font-family: 'Enter';
   }
   span{
     font-size:14px;
@@ -427,13 +427,12 @@
     margin:7px 0;
   }
   ul{
-   
    li{
-     font-size:14px;
-     &:before{
-       margin: 0 10px;
-       content:"–";
-     }
+      background: url('@{base-url}/item/img/shop.png') no-repeat 0 0;
+      font-size:14px;
+      min-height: 40px;
+      margin: 10px 0;
+      padding: 0 0 0 50px;
    }
  }
 }

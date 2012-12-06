@@ -125,6 +125,14 @@
   a.underline:hover {
     color: #404040;
   }
+  .dashedLink {
+    text-decoration: none;
+    border-bottom: 1px dashed;
+  }
+  .dashedLink:hover {
+    text-decoration: none;
+    border-bottom: 1px dashed;
+  }
   a.nodecor {
     text-decoration: none;
   }
@@ -4383,10 +4391,10 @@
   }
   .vitrin {
     text-align: left;
+    width: 400px;
   }
   .vitrin p {
-    font-family: 'Enter Type';
-    font-weight: bold;
+    font-family: 'Enter';
   }
   .vitrin span {
     font-size: 14px;
@@ -4394,11 +4402,11 @@
     margin: 7px 0;
   }
   .vitrin ul li {
+    background: url('/css/item/img/shop.png') no-repeat 0 0;
     font-size: 14px;
-  }
-  .vitrin ul li:before {
-    margin: 0 10px;
-    content: "–";
+    min-height: 40px;
+    margin: 10px 0;
+    padding: 0 0 0 50px;
   }
 }
 /*стили для продуктов f1*/
