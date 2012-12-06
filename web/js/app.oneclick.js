@@ -59,7 +59,9 @@ $(document).ready(function() {
 				}
 				return status
 			}, this)
-			
+
+			var scNum = docCookies.getItem("scId") //берем номер карты связного клуба из куки
+
 			self.showMap = ko.observable( false )
 			self.textfields = []
 			
@@ -83,7 +85,7 @@ $(document).ready(function() {
 					title: 'номер вашей карты «Связной-Клуб»',
 					name: 'order[recipient_scCard]', //UNIQUE!
 					selectorid: 'scCard',
-					value: '',
+					value: scNum,
 					valerror: false,
 					regexp: /^[()0-9\-\s]+$/
 				}) )
