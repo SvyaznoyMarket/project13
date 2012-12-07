@@ -55,7 +55,7 @@ Options +FollowSymLinks +ExecCGI
   RewriteRule ^register$ dark.php [L]
   RewriteRule ^corporate-register$ dark.php [L]
   RewriteRule ^request-password$ dark.php [L]
-  RewriteRule ^product-buy/.* dark.php [L]
+  RewriteRule ^product-buy.* dark.php [L]
 
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteRule ^wp-admin/$ /content/wp-admin/index.php [L]

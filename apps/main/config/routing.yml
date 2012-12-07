@@ -522,7 +522,7 @@ smartengine_alsoViewed:
   param: { module: smartengine, action: alsoViewed }
 # view
 smartengine_buy:
-  url: /product-buy/:product
+  url: /product-buy
   param: { module: smartengine, action: buy }
 # alsoBought
 smartengine_alsoBought:

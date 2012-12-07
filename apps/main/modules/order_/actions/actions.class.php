@@ -469,6 +469,7 @@ class order_Actions extends myActions
     //dump($orders, 1);
 
 
+    $isCredit = false;
     $this->paymentForm = false;
     // онлайн оплата?
     if (1 == count($orders) && empty($orderNumber))
@@ -478,7 +479,6 @@ class order_Actions extends myActions
       //$paymentMethod = !empty($order['payment_id']) ? PaymentMethodTable::getInstance()->getByCoreId($order['payment_id']) : null;
       $paymentMethod = RepositoryManager::getPaymentMethod()->getById($order['payment_id']);
 
-      $isCredit = false;
       if ($paymentMethod->getIsOnline() || in_array($paymentMethod->getId(), array(5, 8))) { //'online', 'invoice'
         $provider = $this->getPaymentProvider();
         $this->paymentForm = $this->paymentProvider->getForm($order);

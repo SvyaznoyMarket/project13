@@ -134,12 +134,10 @@ class queueController
 
     $productIds = array();
     foreach ($data as $item) {
-      foreach ($item['product_ids'] as $productId) {
-        $productIds[$productId] = null;
+      foreach ($item['order']['product'] as $product) {
+        $productIds[] = $product['id'];
       }
     }
-    $productIds = array_keys($productIds);
-
     if (!(bool)$productIds) return;
 
     /** @var $productsById \light\ProductData[] */
@@ -150,22 +148,23 @@ class queueController
 
     try {
       foreach ($data as $item) {
-        foreach ($item['product_ids'] as $productId) {
-          $product = isset($productsById[$productId]) ? $productsById[$productId] : null;
-          if (!$product) continue;
+        foreach ($item['order']['product'] as $product) {
 
           $params = array(
             'sessionid'       => $item['sessionid'],
-            'itemid'          => $product->getId(),
-            'itemdescription' => $product->getName(),
-            'itemurl'         => 'http://'.$item['host'].$product->getLink(),
+            'itemid'          => $product['id'],
+            'itemdescription' => $productsById[$product['id']]->getName(),
+            'itemurl'         => 'http://'.$item['host'].$productsById[$product['id']]->getLink(),
             'actiontime'      => $item['time'],
+            'orderid'         => $item['order']['id'],
+            'unitprice'       => $product['price'],
+            'quantity'        => $product['quantity'],
           );
           if ($item['user_id']) {
             $params['userid'] = $item['user_id'];
           }
-          if ($product->getMainCategory()) {
-            $params['itemtype'] = $product->getMainCategory()->getId();
+          if ($productsById[$product['id']]->getMainCategory()) {
+            $params['itemtype'] = $productsById[$product['id']]->getMainCategory()->getId();
           }
 
           $r = $client->query('buy', $params);

@@ -128,5 +128,9 @@ $c->warranty['enabled'] = false;
 
 $c->user['corporateRegister'] = true;
 
+$c->database['host']     = 'localhost';
+$c->database['name']     = 'enter';
+$c->database['user']     = 'root';
+$c->database['password'] = 'qazwsxedc';
 
 return $c;

@@ -148,6 +148,14 @@ class AppConfig {
         'corporateRegister' => null,
     );
 
+    /** @var array */
+    public $database = array(
+        'host'     => null,
+        'name'     => null,
+        'user'     => null,
+        'password' => null,
+    );
+
     public function __set($name, $value) {
         throw new \LogicException(sprintf('Неизвестный параметр "%s".', $name));
     }
