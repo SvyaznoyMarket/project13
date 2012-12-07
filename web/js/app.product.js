@@ -6,7 +6,6 @@ $(document).ready(function() {
 			shopStack: 0,
 			init: function(){
 				shopFromModel = $('#availableShops').data('shops')
-				console.log(shopFromModel)
 				vitrin.shopStack = {}
 				//render shops
 				for (i in shopFromModel){
@@ -16,32 +15,37 @@ $(document).ready(function() {
 					$('#mapPopup_shopInfo').append(shopMapTpl)
 					vitrin.shopStack[shopFromModel[i].id] = shopFromModel[i]
 				}
-				console.log(vitrin.shopStack)
 				//delegate click on shop
 				$('#listAvalShop').delegate('.shopLookAtMap', 'click', function(){
-					console.info('click!')
 					$('#orderMapPopup').lightbox_me({ 
 						centered: true,
 						onLoad: function() {
 							$('#mapPopup').empty()
-							vitrin.popupShow()
+							vitrin.showPopup()
 						}
 					})
 					return false
 				})
 			},
-			popupShow: function(){
-				console.log('loaad')
-				//ßvitrin.loadMap()
+			showPopup: function(){
+				vitrin.loadMap()
+				$('#mapPopup_shopInfo').delegate('li', 'hover', function() {
+					//console.log('1')
+			        var id = $(this).attr('ref')//$(this).data('id')
+			        if( hoverTimer.timer ) {
+			            clearTimeout( hoverTimer.timer )
+			        }
+			        if( id && id != hoverTimer.id) {
+			            hoverTimer.id = id
+			            hoverTimer.timer = setTimeout( function() {            
+			                window.regionMap.showInfobox( id )
+			            }, 350)
+			        }
+			    })
 			},
 			updateI: function ( marker ) {
-				infoBlockNode.html( tmpl( 'mapInfoBlock', marker ))
+				$('#map-info_window-container').html( tmpl( 'mapInfoBlock', marker ))
 				hoverTimer.id = marker.id
-			},
-			ShopChoosed: function ( node ) {
-				var shopnum = $(node).parent().find('.shopnum').text()
-				var shop = Model.shops[shopnum]
-				MVM.selectShop( shop )
 			},
 			loadMap: function (){
 				MapInterface.ready( 'yandex', {
@@ -49,8 +53,8 @@ $(document).ready(function() {
 					google: $('#map-info_window-container')
 				} )
 				var mapCenter = calcMCenter( vitrin.shopStack )
-				var mapCallback = function() {
-					window.regionMap.showMarkers( vitrin.shopStack )
+				var mapCallback = function() {			
+					window.regionMap.showMarkers( vitrin.shopStack )		
 					//window.regionMap.addHandler( '.shopchoose', vitrin.ShopChoosed )
 				}
 				MapInterface.init( mapCenter, 'mapPopup', mapCallback, vitrin.updateI)
