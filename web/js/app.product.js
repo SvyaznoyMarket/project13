@@ -9,9 +9,9 @@ $(document).ready(function() {
 				vitrin.shopStack = {}
 				//render shops
 				for (i in shopFromModel){
-					var shopTpl = tmpl('itemAvalShop_tmpl', shopFromModel[i])
+					// var shopTpl = tmpl('itemAvalShop_tmpl', shopFromModel[i])
 					var shopMapTpl = tmpl('itemAvalShop_tmplPopup',shopFromModel[i])
-					$('#listAvalShop').append(shopTpl)
+					// $('#listAvalShop').append(shopTpl)
 					$('#mapPopup_shopInfo').append(shopMapTpl)
 					vitrin.shopStack[shopFromModel[i].id] = shopFromModel[i]
 				}

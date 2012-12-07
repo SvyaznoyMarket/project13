@@ -163,15 +163,14 @@
       <div class="vitrin" id="availableShops" data-shops='<?= $jsonAvailableShops ?>'>
         <div class="line pb15"></div>
         <p class="font18 orange">Этот товар вы можете купить только в эт<?= (count($showroomShops) == 1) ? 'ом магазине' : 'их магазинах' ?></p>
-        <script type="text/html" id="itemAvalShop_tmpl">
-          <li>
-            <a class="fr dashedLink shopLookAtMap" href="#">Посмотреть на карте</a>
-            <a class="avalShopAddr" href="<%=url%>" class="underline"><%=name%></a>
-            <strong class="font12 orange db pt10"><%=( (quantity*1) >= 5 ? "есть в наличии" : "осталось мало")%> </strong>
-          </li>
-        </script>
         <ul id="listAvalShop">
-
+          <? foreach ($showroomShops as $shop): ?>
+              <li>
+                <a class="fr dashedLink shopLookAtMap" href="#">Посмотреть на карте</a>
+                <?= '<a class="avalShopAddr" href="'.$page->url('shop.show', array('shopToken' => $shop->getToken(), 'regionToken' => $user->getRegion()->getToken())).'" class="underline">'.$shop->getName().'</a>' ?>
+                <strong class="font12 orange db pt10">quantity</strong>
+              </li>
+          <? endforeach ?>
         </ul>
       </div>
       <!--div class="vitrin">
