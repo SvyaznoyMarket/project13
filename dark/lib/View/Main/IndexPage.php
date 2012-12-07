@@ -27,4 +27,11 @@ class IndexPage extends \View\DefaultLayout {
 
         return $response['content'];
     }
+
+    public function slotInnerJavascript() {
+        return ''
+            . $this->render('main/_odinkod')
+            . "\n\n"
+            . $this->render('_innerJavascript');
+    }
 }

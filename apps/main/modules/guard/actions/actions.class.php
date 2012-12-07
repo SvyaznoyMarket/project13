@@ -258,6 +258,8 @@ class guardActions extends myActions
   public function executeCorporateRegister(sfRequest $request) {
     $this->forward404Unless(sfConfig::get('app_guard_corporate_registration_enabled', false));
 
+    $this->getRequest()->setParameter('_template', 'infopage');
+    
     $client = CoreClient::getInstance();
 
     $form = new CorporateRegisterForm();
@@ -294,6 +296,9 @@ class guardActions extends myActions
                   'korr_account'  => $form->getCorpKorrAccount(),
               ),
           );
+          if ($request->getParameter('subscribe')) {
+            $data['is_subscribe'] = true;
+          }
           $result = $client->query('user/create-legal', array(
               'geo_id' => $this->getUser()->getRegion('id'),
           ), $data);
