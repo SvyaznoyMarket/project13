@@ -1,4 +1,66 @@
 $(document).ready(function() {
+	/*Вывод магазинов, когда товар доступен только в них
+	*/
+	if ($('#availableShops').length){
+		vitrin = {
+			shopStack: 0,
+			init: function(){
+				shopFromModel = $('#availableShops').data('shops')
+				console.log(shopFromModel)
+				vitrin.shopStack = {}
+				//render shops
+				for (i in shopFromModel){
+					var shopTpl = tmpl('itemAvalShop_tmpl', shopFromModel[i])
+					var shopMapTpl = tmpl('itemAvalShop_tmplPopup',shopFromModel[i])
+					$('#listAvalShop').append(shopTpl)
+					$('#mapPopup_shopInfo').append(shopMapTpl)
+					vitrin.shopStack[shopFromModel[i].id] = shopFromModel[i]
+				}
+				console.log(vitrin.shopStack)
+				//delegate click on shop
+				$('#listAvalShop').delegate('.shopLookAtMap', 'click', function(){
+					console.info('click!')
+					$('#orderMapPopup').lightbox_me({ 
+						centered: true,
+						onLoad: function() {
+							$('#mapPopup').empty()
+							vitrin.popupShow()
+						}
+					})
+					return false
+				})
+			},
+			popupShow: function(){
+				console.log('loaad')
+				//ßvitrin.loadMap()
+			},
+			updateI: function ( marker ) {
+				infoBlockNode.html( tmpl( 'mapInfoBlock', marker ))
+				hoverTimer.id = marker.id
+			},
+			ShopChoosed: function ( node ) {
+				var shopnum = $(node).parent().find('.shopnum').text()
+				var shop = Model.shops[shopnum]
+				MVM.selectShop( shop )
+			},
+			loadMap: function (){
+				MapInterface.ready( 'yandex', {
+					yandex: $('#mapInfoBlock'), 
+					google: $('#map-info_window-container')
+				} )
+				var mapCenter = calcMCenter( vitrin.shopStack )
+				var mapCallback = function() {
+					window.regionMap.showMarkers( vitrin.shopStack )
+					//window.regionMap.addHandler( '.shopchoose', vitrin.ShopChoosed )
+				}
+				MapInterface.init( mapCenter, 'mapPopup', mapCallback, vitrin.updateI)
+			}
+		}
+	 	vitrin.init()
+	}
+	
+
+
 	/* Delivery Bubble */
 	if( $('.otherRegion').length ) {
 		$('.expander').click( function() {
@@ -237,5 +299,5 @@ $(document).ready(function() {
         }
     })
     
-
+   
 });
