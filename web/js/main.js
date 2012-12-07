@@ -549,6 +549,27 @@ $(document).ready(function(){
 		e.preventDefault()
 		$('#jscity').val('')	
   	})
+
+  	$('.popupRegion .rightArr').bind('click', function(){
+  		var regionSlideW = $('.popupRegion .regionSlides_slide').width() *1
+  		var sliderW = $('.popupRegion .regionSlides').width() *1
+  		var sliderLeft = parseInt($('.popupRegion .regionSlides').css('left'))
+  		$('.popupRegion .leftArr').show()
+  		$('.popupRegion .regionSlides').animate({'left':sliderLeft-regionSlideW})
+		if ((sliderLeft-(regionSlideW*2)) <= -sliderW){
+  			$('.popupRegion .rightArr').hide()
+  		}
+  	})
+  	$('.popupRegion .leftArr').bind('click', function(){
+  		var regionSlideW = $('.popupRegion .regionSlides_slide').width() *1
+  		var sliderW = $('.popupRegion .regionSlides').width() *1
+  		var sliderLeft = parseInt($('.popupRegion .regionSlides').css('left'))
+  		$('.popupRegion .rightArr').show()
+  		$('.popupRegion .regionSlides').animate({'left':sliderLeft+regionSlideW})
+  		if (sliderLeft+(regionSlideW*2) >= 0){
+  			$('.popupRegion .leftArr').hide()
+  		}
+  	})
    
 	/* GEOIP fix */
 	if( !docCookies.hasItem('geoshop') ) {
