@@ -275,7 +275,7 @@ live:
       marker: '?from=smartengine'
 
   certificate:
-    enabled: false
+    enabled: true
 
   warranty:
     enabled: false
