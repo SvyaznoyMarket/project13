@@ -8,7 +8,7 @@
  */
 class PaymentMethodEntity
 {
-  const CERTIFICATE_ID = 9;
+  const CERTIFICATE_ID = 10;
 
   /**
    * @var int
