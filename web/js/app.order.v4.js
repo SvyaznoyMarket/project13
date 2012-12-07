@@ -1051,7 +1051,7 @@ flds:	for( field in fieldsToValidate ) {
 		} )
 		var mapCenter = calcMCenter( shopsStack )
 		var mapCallback = function() {
-			window.regionMap.showMarkers( shops )
+			window.regionMap.showMarkers( shopsStack )
 			window.regionMap.addHandler( '.shopchoose', ShopChoosed )
 		}
 		MapInterface.init( mapCenter, 'mapPopup', mapCallback, updateI )

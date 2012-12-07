@@ -29,12 +29,14 @@
   $availableShops = array();
   foreach ($showroomShops as $shop) {
       $availableShops[] = array(
+          'id'          => $shop->getId(),
           'name'        => $shop->getName(),
           'address'     => $shop->getAddress(),
           'worktime'    => $shop->getRegime(),
-          'longtitude'  => $shop->getLongitude(),
+          'longitude'  => $shop->getLongitude(),
           'latitude'    => $shop->getLatitude(),
           'url'         => $page->url('shop.show', array('shopToken' => $shop->getToken(), 'regionToken' => $user->getRegion()->getToken())),
+          'quantity'    => '3'
       );
   }
   $jsonAvailableShops = json_encode($availableShops, JSON_HEX_QUOT | JSON_HEX_APOS);
@@ -133,7 +135,20 @@
 
   <div class="fr ar pb15">
     <? if (!$product->getIsBuyable() && $product->getState()->getIsShop()): ?>
-      <div id="availableShops" data-shops='<?= $jsonAvailableShops ?>'></div>
+      <div class="vitrin" id="availableShops" data-shops='<?= $jsonAvailableShops ?>'>
+        <div class="line pb15"></div>
+        <p class="font18 orange">Этот товар вы можете купить только в эт<?= (count($showroomShops) == 1) ? 'ом магазине' : 'их магазинах' ?></p>
+        <script type="text/html" id="itemAvalShop_tmpl">
+          <li>
+            <a class="fr dashedLink shopLookAtMap" href="#">Посмотреть на карте</a>
+            <a class="avalShopAddr" href="<%=url%>" class="underline"><%=name%></a>
+            <strong class="font12 orange db pt10"><%=( (quantity*1) >= 5 ? "есть в наличии" : "осталось мало")%> </strong>
+          </li>
+        </script>
+        <ul id="listAvalShop">
+
+        </ul>
+      </div>
       <!--div class="vitrin">
           <div class="line pb15"></div>
           <p class="font18 orange">Этот товар вы можете купить только в эт<?= (count($showroomShops) == 1) ? 'ом магазине' : 'их магазинах' ?></p>
@@ -397,7 +412,26 @@
 </div>
 <!-- /Media -->
 
+<!-- shopPopup -->
+<div id="orderMapPopup" class='popup'>
+  <i class='close'></i>
+  <div class='bMapShops__eMapWrap' id="mapPopup" style="float: right;">
+  </div>
+  <div class='bMapShops__eList'>
+    <script type="text/html" id="itemAvalShop_tmplPopup">
+      <li>
+        <div class="bMapShops__eListNum"><img src="/images/shop.png" alt=""/></div>
+        <div><%=name%></div>
+        <span>Работаем</span> <span><%=worktime%></span>
+      </li>
+    </script>
+    <h3>Выберите магазин Enter для самовывоза</h3>
+    <ul id="mapPopup_shopInfo">
 
+    </ul>
+  </div>
+</div>
+<!-- /shopPopup -->
 
 <div id="order1click-container" class="bMobDown mBR5 mW2 mW900" style="display: none">
   <div class="bMobDown__eWrap">
