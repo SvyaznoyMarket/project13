@@ -134,7 +134,7 @@ class Repository {
      * @param int $maxLevel
      * @return Entity[]
      */
-    public function getTreeCollection(\Model\Region\Entity $region, $maxLevel = null) {
+    public function getTreeCollection(\Model\Region\Entity $region = null, $maxLevel = null) {
         \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args()));
 
         $params = array(
