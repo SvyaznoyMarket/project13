@@ -32,7 +32,7 @@
           'id'          => $shop->getId(),
           'name'        => $shop->getName(),
           'address'     => $shop->getAddress(),
-          'worktime'    => $shop->getRegime(),
+          'regtime'    => $shop->getRegime(),
           'longitude'  => $shop->getLongitude(),
           'latitude'    => $shop->getLatitude(),
           'url'         => $page->url('shop.show', array('shopToken' => $shop->getToken(), 'regionToken' => $user->getRegion()->getToken())),
@@ -134,35 +134,7 @@
 
 
   <div class="fr ar pb15">
-    <? if (!$product->getIsBuyable() && $product->getState()->getIsShop()): ?>
-      <div class="vitrin" id="availableShops" data-shops='<?= $jsonAvailableShops ?>'>
-        <div class="line pb15"></div>
-        <p class="font18 orange">Этот товар вы можете купить только в эт<?= (count($showroomShops) == 1) ? 'ом магазине' : 'их магазинах' ?></p>
-        <script type="text/html" id="itemAvalShop_tmpl">
-          <li>
-            <a class="fr dashedLink shopLookAtMap" href="#">Посмотреть на карте</a>
-            <a class="avalShopAddr" href="<%=url%>" class="underline"><%=name%></a>
-            <strong class="font12 orange db pt10"><%=( (quantity*1) >= 5 ? "есть в наличии" : "осталось мало")%> </strong>
-          </li>
-        </script>
-        <ul id="listAvalShop">
-
-        </ul>
-      </div>
-      <!--div class="vitrin">
-          <div class="line pb15"></div>
-          <p class="font18 orange">Этот товар вы можете купить только в эт<?= (count($showroomShops) == 1) ? 'ом магазине' : 'их магазинах' ?></p>
-          <ul>
-              <? foreach ($showroomShops as $shop): ?>
-              <li>
-                <a class="fr dashedLink" href="#">Посмотреть на карте</a>
-                <?= '<a href="'.$page->url('shop.show', array('shopToken' => $shop->getToken(), 'regionToken' => $user->getRegion()->getToken())).'" class="underline">'.$shop->getAddress().'</a>' ?>
-                <strong class="font12 orange db pt10">есть в наличии</strong>
-              </li>
-              <? endforeach ?>
-          </ul>
-      </div-->
-    <? endif ?>
+    
     <div class="goodsbarbig mSmallBtns" ref="<?= $product->getToken() ?>" data-value='<?= $json ?>'>
 
       <div class='bCountSet'>
@@ -185,6 +157,37 @@
     </strong></div>
     <? endif ?>
   </div>
+  <? if (!$product->getIsBuyable() && $product->getState()->getIsShop()): ?>
+  <div class="fr ar pb15">
+
+      <div class="vitrin" id="availableShops" data-shops='<?= $jsonAvailableShops ?>'>
+        <div class="line pb15"></div>
+        <p class="font18 orange">Этот товар вы можете купить только в эт<?= (count($showroomShops) == 1) ? 'ом магазине' : 'их магазинах' ?></p>
+        <ul id="listAvalShop">
+          <? foreach ($showroomShops as $shop): ?>
+              <li>
+                <a class="fr dashedLink shopLookAtMap" href="#">Посмотреть на карте</a>
+                <?= '<a class="avalShopAddr" href="'.$page->url('shop.show', array('shopToken' => $shop->getToken(), 'regionToken' => $user->getRegion()->getToken())).'" class="underline">'.$shop->getName().'</a>' ?>
+                <strong class="font12 orange db pt10">quantity</strong>
+              </li>
+          <? endforeach ?>
+        </ul>
+      </div>
+      <!--div class="vitrin">
+          <div class="line pb15"></div>
+          <p class="font18 orange">Этот товар вы можете купить только в эт<?= (count($showroomShops) == 1) ? 'ом магазине' : 'их магазинах' ?></p>
+          <ul>
+              <? foreach ($showroomShops as $shop): ?>
+              <li>
+                <a class="fr dashedLink" href="#">Посмотреть на карте</a>
+                <?= '<a href="'.$page->url('shop.show', array('shopToken' => $shop->getToken(), 'regionToken' => $user->getRegion()->getToken())).'" class="underline">'.$shop->getAddress().'</a>' ?>
+                <strong class="font12 orange db pt10">есть в наличии</strong>
+              </li>
+              <? endforeach ?>
+          </ul>
+      </div-->
+  </div>
+  <? endif ?>
   <div class="line pb15"></div>
 
 
@@ -413,16 +416,25 @@
 <!-- /Media -->
 
 <!-- shopPopup -->
+<script type="text/html" id="mapInfoBlock">
+  <div class="bMapShops__ePopupRel">
+    <h3><%=name%></h3>
+    <span>Работает </span>
+    <span><%=regime%></span>
+    <br/>
+    <span class="shopnum" style="display: none;"><%=id%></span>
+  </div>
+</script>
 <div id="orderMapPopup" class='popup'>
   <i class='close'></i>
   <div class='bMapShops__eMapWrap' id="mapPopup" style="float: right;">
   </div>
   <div class='bMapShops__eList'>
     <script type="text/html" id="itemAvalShop_tmplPopup">
-      <li>
+      <li ref="<%=id%>">
         <div class="bMapShops__eListNum"><img src="/images/shop.png" alt=""/></div>
         <div><%=name%></div>
-        <span>Работаем</span> <span><%=worktime%></span>
+        <span>Работаем</span> <span><%=regtime%></span>
       </li>
     </script>
     <h3>Выберите магазин Enter для самовывоза</h3>

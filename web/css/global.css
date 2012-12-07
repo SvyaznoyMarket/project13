@@ -181,6 +181,22 @@
     line-height: 0px;
     width: 100%;
   }
+  .clearfix:after {
+    visibility: hidden;
+    display: block;
+    font-size: 0;
+    content: " ";
+    clear: both;
+    height: 0;
+  }
+  * html .clearfix {
+    zoom: 1;
+  }
+  /* IE6 */
+  *:first-child + html .clearfix {
+    zoom: 1;
+  }
+  /* IE7 */
   .float100 {
     float: left;
     width: 100%;
@@ -2002,15 +2018,17 @@
 /*окно с выбором региона*/
 @media all {
   .popupRegion {
-    width: 590px;
+    width: 780px;
   }
-  .popupRegion .ui-css {
-    width: 610px;
+  .popupRegion.popup {
+    padding: 30px;
   }
   .popupRegion .popuptitle {
     font-family: "Enter";
     font-size: 30px;
+    float: none;
     margin: 0;
+    padding: 0;
     text-transform: uppercase;
   }
   .popupRegion .hidden {
@@ -2018,6 +2036,10 @@
   }
   .popupRegion .bBuyingLine__eText {
     margin: 0 -20px 0 0;
+    height: 33px;
+    line-height: 33px;
+    padding-left: 20px;
+    width: 605px;
   }
   .popupRegion .inputClear {
     color: #a6a6a6;
@@ -2028,32 +2050,73 @@
     width: 20px;
   }
   .popupRegion .bigbutton {
-    margin: -1px 0 0 -1px;
+    height: 33px;
+    line-height: 33px;
   }
   .popupRegion .cityInline {
-    font-size: 16px;
     margin: 20px 0 0;
     word-spacing: 15px;
   }
-  .popupRegion .cityInline a {
+  .popupRegion .cityInline .cityItem {
+    width: 195px;
+    float: left;
+  }
+  .popupRegion .cityInline .cityItem a {
     border-bottom: 1px dashed black;
+    display: inline;
+    margin-left: 20px;
   }
   .popupRegion .cityInline a:hover {
     text-decoration: none;
   }
   .popupRegion .colomn {
     float: left;
-    margin: 20px 0;
+    height: 275px;
+    margin-top: 20px;
     width: 195px;
   }
   .popupRegion .colomn a {
-    font-size: 16px;
     font-family: Tahoma, sans-serif;
-    line-height: 26px;
+    line-height: 1.5em;
+    margin-left: 20px;
     display: block;
   }
   .popupRegion .info {
     font-size: 14px;
+  }
+  .popupRegion .BlackArrow {
+    background: none;
+    height: 275px;
+    margin-top: 20px;
+    width: 30px;
+  }
+  .popupRegion .BlackArrow.leftArr {
+    background: #fff7e6 url('/css/popup/img/arrow1.png') no-repeat 50% 50%;
+    display: none;
+    margin-left: -30px;
+  }
+  .popupRegion .BlackArrow.leftArr:hover {
+    background-color: #ffd481;
+  }
+  .popupRegion .BlackArrow.rightArr {
+    background: #fff7e6 url('/css/popup/img/arrow2.png') no-repeat 50% 50%;
+    margin-right: -30px;
+  }
+  .popupRegion .BlackArrow.rightArr:hover {
+    background-color: #ffd481;
+  }
+  .popupRegion .regionSlidesWrap {
+    width: 780px;
+    overflow: hidden;
+  }
+  .popupRegion .regionSlides {
+    position: relative;
+    left: 0;
+    width: 1560px;
+  }
+  .popupRegion .regionSlides_slide {
+    float: left;
+    width: 780px;
   }
 }
 /*окно авторизации*/
@@ -4406,6 +4469,10 @@
     min-height: 40px;
     margin: 10px 0;
     padding: 0 0 0 50px;
+  }
+  .vitrin ul li .avalShopAddr {
+    display: inline-block;
+    width: 200px;
   }
 }
 /*стили для продуктов f1*/

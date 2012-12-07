@@ -223,3 +223,21 @@ if (isset($form['address_metro'])) $jsValidator['order[address_metro]'] = 'Ук�
   <div id="heiasOrder" data-vars="<?php echo $sf_user->getCart()->getSeoCartArticle() ?>" class="jsanalytics"></div>
 
 <?php endif ?>
+
+<? if (('live' == sfConfig::get('sf_environment')) && ($cusId = Odinkod::getCusId($sf_user->getRawValue()->getRegion('region')))): ?>
+    <?
+        $productIds = array();
+        foreach ($sf_user->getCart()->getProducts() as $cartProduct) {
+            $productIds[] = $cartProduct->getProductId();
+        }
+    ?>
+
+<script language="javascript">
+    var odinkod = {
+        "type": "basket",
+        "product_list":"<?= implode(',', $productIds) ?>"
+    };
+    document.write('<scr'+'ipt src="'+('https:' == document.location.protocol ? 'https://ssl.' : 'http://') +
+            'cdn.odinkod.ru/tags/<?= $cusId ?>.js"></scr'+'ipt>');
+</script>
+<? endif ?>

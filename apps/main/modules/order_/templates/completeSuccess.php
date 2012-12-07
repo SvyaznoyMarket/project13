@@ -174,3 +174,26 @@ $isCorporative = $sf_user->getGuardUser() ? $sf_user->getGuardUser()->getIsCorpo
     }
     ?>
 <?php endif ?>
+
+<? if (('live' == sfConfig::get('sf_environment')) && ($cusId = Odinkod::getCusId($sf_user->getRawValue()->getRegion('region')))): ?>
+<?
+    $productIds = array();
+    foreach ($sf_user->getCart()->getProducts() as $cartProduct) {
+        $productIds[] = $cartProduct->getProductId();
+    }
+    ?>
+
+    <?php foreach ($orders as $i => $order): ?>
+    <script language="javascript">
+        var odinkod = {
+            "type": "transaction",
+            "order_value":"<?= $order['sum'] ?>",
+            "transaction_id":"<?= $order['number'] ?>",
+            "product_list":"<?= implode(',', implode(',', array_map(function($i) { return $i['product_id']; }, $order['product']))) ?>"
+        };
+        document.write('<scr'+'ipt src="'+('https:' == document.location.protocol ? 'https://ssl.' : 'http://') +
+                'cdn.odinkod.ru/tags/<?= $cusId ?>.js"></scr'+'ipt>');
+    </script>
+    <?php endforeach ?>
+
+<? endif ?>

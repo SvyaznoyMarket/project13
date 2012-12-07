@@ -55,6 +55,16 @@ class IndexPage extends \View\DefaultLayout {
         return 'product_card';
     }
 
+    public function slotInnerJavascript() {
+        /** @var $product \Model\Product\Entity */
+        $product = $this->getParam('product') instanceof \Model\Product\Entity ? $this->getParam('product') : null;
+
+        return ''
+            . ($product ? $this->render('product/_odinkod', array('product' => $product)) : '')
+            . "\n\n"
+            . $this->render('_innerJavascript');
+    }
+
     public function slotMetaOg() {
         /** @var \Model\Product\Entity $product  */
         $product = $this->getParam('product');
