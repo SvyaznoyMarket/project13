@@ -174,7 +174,7 @@
           <? endforeach ?>
         </ul>
         <?php if (count($shopsWithQuantity) > 3): ?>
-          <a class="orange strong dashedLink font18" href="#">исчо</a>
+          <a id="slideAvalShop" class="orange strong dashedLink font18" href="#">Еще <?=count($shopsWithQuantity)-3?> магазин<?=((count($shopsWithQuantity)-3) > 5) ? 'ов' : ( ((count($shopsWithQuantity)-3) >1 ) ? 'а' : '')?></a>
         <?php endif ?>
       </div>
   </div>
