@@ -6,7 +6,6 @@ $(document).ready(function() {
 			shopStack: 0,
 			init: function(){
 				$('#slideAvalShop').bind('click', function(){
-					console.log('123')
 					$('#listAvalShop .hidden').toggle(150)
 					return false
 				})
