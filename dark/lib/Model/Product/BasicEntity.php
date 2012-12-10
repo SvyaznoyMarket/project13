@@ -180,7 +180,7 @@ class BasicEntity {
      * @return bool
      */
     public function getIsBuyable() {
-        return $this->getState() && $this->getState()->getIsBuyable();
+        return $this->getState() && $this->getState()->getIsBuyable() && $this->getState()->getIsStore();
     }
 
     /**
