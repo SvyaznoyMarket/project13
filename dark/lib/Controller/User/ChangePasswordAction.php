@@ -33,6 +33,7 @@ class ChangePasswordAction {
 
                 return new \Http\RedirectResponse(\App::router()->generate('user.changePassword'));
             } catch (\Exception $e) {
+                \App::$exception = null;
                 \App::logger()->error($e);
                 switch ($e->getCode()) {
                     case 1000:
