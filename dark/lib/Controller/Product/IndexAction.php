@@ -117,25 +117,36 @@ class IndexAction {
         }
         $dataForCredit = $this->getDataForCredit($product);
 
-        $showroomShops = array();
+        $shopsWithQuantity = array();
         //загружаем магазины, если товар доступен только на витрине
         if (!$product->getIsBuyable() && $product->getState()->getIsShop()) {
-            $shopIds = array();
+            $quantityByShop = array();
             foreach ($product->getStock() as $stock) {
-                $quantityShowroom = $stock->getQuantityShowroom();
+                $quantityShowroom = (int)$stock->getQuantityShowroom();
+                $quantity = (int)$stock->getQuantity();
                 $shopId = $stock->getShopId();
-                if (!empty($quantityShowroom) && !empty($shopId)) {
-                    $shopIds[] = $shopId;
+                if ((0 < $quantity + $quantityShowroom) && !empty($shopId)) {
+                    $quantityByShop[$shopId] = array(
+                        'quantity' => $quantity,
+                        'quantityShowroom' => $quantityShowroom,
+                    );
                 }
             }
-            if (count($shopIds)) {
+            if (count($quantityByShop)) {
                 try {
-                    $showroomShops = \RepositoryManager::getShop()->getCollectionById($shopIds);
+                    $shops = \RepositoryManager::getShop()->getCollectionById(array_keys($quantityByShop));
+                    foreach ($shops as $shop) {
+                        $shopsWithQuantity[] = array(
+                            'shop' => $shop,
+                            'quantity' => $quantityByShop[$shop->getId()]['quantity'],
+                            'quantityShowroom' => $quantityByShop[$shop->getId()]['quantityShowroom'],
+                        );
+                    }
                 } catch (\Exception $e) {
                     \App::$exception = $e;
                     \App::logger()->error($e);
 
-                    $showroomShops = array();
+                    $shopsWithQuantity = array();
                 }
 
             }
@@ -152,7 +163,7 @@ class IndexAction {
         $page->setParam('related', $related);
         $page->setParam('kit', $kit);
         $page->setParam('dataForCredit', $dataForCredit);
-        $page->setParam('showroomShops', $showroomShops);
+        $page->setParam('shopsWithQuantity', $shopsWithQuantity);
 
         return new \Http\Response($page->show());
     }

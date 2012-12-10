@@ -8,7 +8,7 @@
  * @var $kit                \Model\Product\Entity[]
  * @var $showAccessoryUpper bool
  * @var $showRelatedUpper   bool
- * @var $showroomShops      \Model\Shop\Entity[]
+ * @var $shopsWithQuantity  array
  */
 ?>
 
@@ -27,16 +27,17 @@
   ),  JSON_HEX_QUOT | JSON_HEX_APOS);
 
   $availableShops = array();
-  foreach ($showroomShops as $shop) {
+  foreach ($shopsWithQuantity as $shopWithQuantity) {
+      /** @var $shop \Model\Shop\Entity */
+      $shop = $shopWithQuantity['shop'];
       $availableShops[] = array(
-          'id'          => $shop->getId(),
-          'name'        => $shop->getName(),
-          'address'     => $shop->getAddress(),
-          'regtime'    => $shop->getRegime(),
-          'longitude'  => $shop->getLongitude(),
-          'latitude'    => $shop->getLatitude(),
-          'url'         => $page->url('shop.show', array('shopToken' => $shop->getToken(), 'regionToken' => $user->getRegion()->getToken())),
-          'quantity'    => '3'
+          'id'        => $shop->getId(),
+          'name'      => $shop->getName(),
+          'address'   => $shop->getAddress(),
+          'regtime'   => $shop->getRegime(),
+          'longitude' => $shop->getLongitude(),
+          'latitude'  => $shop->getLatitude(),
+          'url'       => $page->url('shop.show', array('shopToken' => $shop->getToken(), 'regionToken' => $user->getRegion()->getToken())),
       );
   }
   $jsonAvailableShops = json_encode($availableShops, JSON_HEX_QUOT | JSON_HEX_APOS);
@@ -162,30 +163,20 @@
 
       <div class="vitrin" id="availableShops" data-shops='<?= $jsonAvailableShops ?>'>
         <div class="line pb15"></div>
-        <p class="font18 orange">Этот товар вы можете купить только в эт<?= (count($showroomShops) == 1) ? 'ом магазине' : 'их магазинах' ?></p>
+        <p class="font18 orange">Этот товар вы можете купить только в эт<?= (count($shopsWithQuantity) == 1) ? 'ом магазине' : 'их магазинах' ?></p>
         <ul id="listAvalShop">
-          <? foreach ($showroomShops as $shop): ?>
-              <li>
+          <? $i = 0; foreach ($shopsWithQuantity as $shopWithQuantity): $i++?>
+              <li<?= $i > 3 ? ' class="hidden"' : ''?>>
                 <a class="fr dashedLink shopLookAtMap" href="#">Посмотреть на карте</a>
-                <?= '<a class="avalShopAddr" href="'.$page->url('shop.show', array('shopToken' => $shop->getToken(), 'regionToken' => $user->getRegion()->getToken())).'" class="underline">'.$shop->getName().'</a>' ?>
-                <strong class="font12 orange db pt10">quantity</strong>
+                <?= '<a class="avalShopAddr" href="'.$page->url('shop.show', array('shopToken' => $shopWithQuantity['shop']->getToken(), 'regionToken' => $user->getRegion()->getToken())).'" class="underline">'.$shopWithQuantity['shop']->getName().'</a>' ?>
+                <strong class="font12 orange db pt10"><?= ($shopWithQuantity['quantity'] > 5 ? 'есть в наличии' : ($shopWithQuantity['quantity'] > 0 ? 'осталось мало' : ($shopWithQuantity['quantityShowroom'] > 0 ? 'есть только на витрине' : ''))) ?></strong>
               </li>
           <? endforeach ?>
         </ul>
+        <?php if (count($shopsWithQuantity) > 3): ?>
+          <a class="orange strong dashedLink font18" href="#">исчо</a>
+        <?php endif ?>
       </div>
-      <!--div class="vitrin">
-          <div class="line pb15"></div>
-          <p class="font18 orange">Этот товар вы можете купить только в эт<?= (count($showroomShops) == 1) ? 'ом магазине' : 'их магазинах' ?></p>
-          <ul>
-              <? foreach ($showroomShops as $shop): ?>
-              <li>
-                <a class="fr dashedLink" href="#">Посмотреть на карте</a>
-                <?= '<a href="'.$page->url('shop.show', array('shopToken' => $shop->getToken(), 'regionToken' => $user->getRegion()->getToken())).'" class="underline">'.$shop->getAddress().'</a>' ?>
-                <strong class="font12 orange db pt10">есть в наличии</strong>
-              </li>
-              <? endforeach ?>
-          </ul>
-      </div-->
   </div>
   <? endif ?>
   <div class="line pb15"></div>
