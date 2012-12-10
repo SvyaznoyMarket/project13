@@ -2,7 +2,7 @@
 /**
  * @var $page          \View\Shop\ShowPage
  * @var $regions       \Model\Region\Entity[]
- * @var $currentRegion \Model\Region\Entity
+ * @var $currentRegion \Model\Region\Entity | null
  * @var $markers       array
  */
 ?>
@@ -11,14 +11,15 @@
 <div class="bMapShops">
     <div class='bMapShops__eHead'>
         <div class='bMapShops__eRegion'>
-            <h2 class='bMapShops__eRegionTitle'>Enter в <?= $currentRegion->getInflectedName(5) ?>!</h2>
+            <h2 class='bMapShops__eRegionTitle'><?= $currentRegion ? ('Enter в ' . $currentRegion->getInflectedName(5)) : 'Все магазины Enter'?>!</h2>
 
             <? if ((bool)$regions): ?>
             <div class='bMapShops__eRegionText'>Enter в регионах:</div>
             <div class="selectbox selectbox170 fl"><i></i>
                 <select id="region-select" class="styled" name="region">
+                    <option data-url="<?= $page->url('shop') ?>"<?php if (!$currentRegion): ?> selected="selected"<? endif ?> value="">Все магазины</option>
                 <? foreach ($regions as $region): ?>
-                    <option data-url="<?= $page->url('shop.region', array('regionId' => $region->getId())) ?>"<?php if ($region->getId() == $currentRegion->getId()): ?> selected="selected"<? endif ?> value="<?= $region->getId() ?>"><?= $region->getName() ?></option>
+                    <option data-url="<?= $page->url('shop.region', array('regionId' => $region->getId())) ?>"<?php if ($currentRegion && $region->getId() == $currentRegion->getId()): ?> selected="selected"<? endif ?> value="<?= $region->getId() ?>"><?= $region->getName() ?></option>
                 <? endforeach ?>
                 </select>
             </div>

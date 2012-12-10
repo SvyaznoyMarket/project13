@@ -78,12 +78,15 @@ class Repository {
      * @param \Model\Region\Entity $region
      * @param                      $callback
      */
-    public function prepareCollectionByRegion(\Model\Region\Entity $region, $callback) {
+    public function prepareCollectionByRegion(\Model\Region\Entity $region = null, $callback) {
         \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args()));
 
-        $this->client->addQuery('shop/get', array(
-            'geo_id' => $region->getId(),
-        ), array(), $callback);
+        $params = array();
+        if (!is_null($region)) {
+            $params['geo_id'] = $region->getId();
+        }
+
+        $this->client->addQuery('shop/get', $params, array(), $callback);
     }
 
     /**

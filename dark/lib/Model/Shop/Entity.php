@@ -27,12 +27,14 @@ class Entity {
     private $wayAuto;
     /* @var string */
     private $description;
-    /** @var bool */
+    /* @var bool */
     private $isReconstructed;
-    /** @var Photo\Entity[] */
+    /* @var Photo\Entity[] */
     private $photo = array();
     /* @var Panorama\Entity */
     private $panorama;
+    /* @var Region\Entity */
+    private $region;
 
     public function __construct(array $data = array()) {
         if (array_key_exists('id', $data)) $this->setId($data['id']);
@@ -53,6 +55,7 @@ class Entity {
                 $this->addPhoto(new Photo\Entity($photoData));
             }
         }
+        if (array_key_exists('geo', $data)) $this->setRegion(new Region\Entity($data['geo']));
     }
 
     /**
@@ -287,5 +290,21 @@ class Entity {
         } else {
             return null;
         }
+    }
+
+    /**
+     * @param \Model\Shop\Region\Entity $region
+     */
+    public function setRegion(Region\Entity $region)
+    {
+        $this->region = $region;
+    }
+
+    /**
+     * @return \Model\Shop\Region\Entity
+     */
+    public function getRegion()
+    {
+        return $this->region;
     }
 }

@@ -8,15 +8,15 @@ class RegionPage extends \View\DefaultLayout {
     public function prepare() {
         /** @var $region \Model\Region\Entity */
         $region = $this->getParam('currentRegion') instanceof \Model\Region\Entity ? $this->getParam('currentRegion') : null;
-        if (!$region) {
+        /*if (!$region) {
             return;
-        }
+        }*/
 
         // breadcrumbs
         if (!$this->hasParam('breadcrumbs')) {
             $breadcrumbs = array();
             $breadcrumbs[] = array(
-                'name' => 'Магазины Enter в  ' . $region->getInflectedName(5),
+                'name' => $region ? ('Магазины Enter в  ' . $region->getInflectedName(5)) : 'Все магазины Enter',
                 'url'  => null,
             );
 
@@ -24,7 +24,7 @@ class RegionPage extends \View\DefaultLayout {
         }
 
         // seo: title
-        $title = 'Магазины Enter в ' . $region->getInflectedName(5);
+        $title = $region ? ('Магазины Enter в ' . $region->getInflectedName(5)) : 'Все магазины';
         $this->setTitle($title);
         $this->setParam('title', $title);
     }
