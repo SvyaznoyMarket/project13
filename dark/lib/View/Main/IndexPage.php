@@ -19,7 +19,7 @@ class IndexPage extends \View\DefaultLayout {
         try {
             $response = $client->send('footer_main_v2');
         } catch (\Exception $e) {
-            \App::$exception = $e;
+            \App::exception()->add($e);
             \App::logger()->error($e);
 
             $response = array('content' => '');

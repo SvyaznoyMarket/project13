@@ -5,8 +5,6 @@ class App {
     public static $env;
     /** @var string */
     public static $id;
-    /** @var $exception */
-    public static $exception;
     /** @var bool */
     private static $initialized = false;
     /** @var \Config\AppConfig */
@@ -89,6 +87,19 @@ class App {
      */
     public static function config() {
         return self::$config;
+    }
+
+    /**
+     * @return ExceptionStack
+     */
+    public static function exception() {
+        static $instance;
+
+        if (!$instance) {
+            $instance = new \ExceptionStack();
+        }
+
+        return $instance;
     }
 
     /**

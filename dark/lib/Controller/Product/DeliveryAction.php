@@ -45,7 +45,7 @@ class DeliveryAction {
 
         if (empty($response['product_list'])) {
             $e = new \Exception('Core delivery/calc has no "product_list" data');
-            \App::$exception = $e;
+            \App::exception()->add($e);
             \App::logger()->error($e);
 
             return new \Http\JsonResponse(array('success' => false));
@@ -172,7 +172,7 @@ class DeliveryAction {
                 $responseData[$token] = $item;
             }
         } catch (\Exception $e) {
-            \App::$exception = $e;
+            \App::exception()->add($e);
             \App::logger()->error($e);
 
             $responseData['data'] = array();

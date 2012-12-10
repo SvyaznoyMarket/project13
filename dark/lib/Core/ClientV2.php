@@ -56,7 +56,7 @@ class ClientV2 implements ClientInterface
             curl_close($connection);
             $spend = \Debug\Timer::stop('core');
             \App::logger()->error('End core ' . $action . ' in ' . $spend . ' get: ' . json_encode($params) . ' post: ' . json_encode($data) . ' response: ' . json_encode($response, true) . ' with ' . $e);
-            \App::$exception = $e;
+            \App::exception()->add($e);
 
             throw $e;
         }
@@ -116,7 +116,7 @@ class ClientV2 implements ClientInterface
                         $callback = $this->successCallbacks[(string)$handler];
                         $callback($decodedResponse);
                     } catch (\Exception $e) {
-                        \App::$exception = $e;
+                        \App::exception()->add($e);
                         \App::logger()->error($e);
 
                         $callback = $this->failCallbacks[(string)$handler];
@@ -142,7 +142,7 @@ class ClientV2 implements ClientInterface
         $this->failCallbacks = array();
         $this->resources = array();
         if (!is_null($error)) {
-            \App::$exception = $e;
+            \App::exception()->add($e);
             $this->logger->error('Error:' . (string)$error . 'Response: ' . print_r(isset($content) ? $content : null, true));
             $spend = \Debug\Timer::stop('core');
             //throw $error;
@@ -214,7 +214,7 @@ class ClientV2 implements ClientInterface
             }
             $message = sprintf('Json error: "%s", Response: "%s"', $error, $response);
             $e = new \RuntimeException($message, $code);
-            \App::$exception = $e;
+            \App::exception()->add($e);
             throw $e;
         }
 

@@ -56,7 +56,7 @@ require_once __DIR__ . '/../dark/lib/App.php';
     }
 
     if ($response instanceof \Http\Response) {
-        if (\App::$exception instanceof \Exception) {
+        if ((bool)\App::exception()->all()) {
             $response->setStatusCode(500);
             if (\App::config()->debug) {
                 $action = new \Debug\ErrorAction();

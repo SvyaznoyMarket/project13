@@ -21,7 +21,7 @@ class Action {
                     \App::user()->setEntity(new \Model\User\Entity($data));
                 }
             }, function (\Exception $e) {
-                \App::$exception = null;
+                \App::exception()->remove($e);
                 $token = \App::user()->removeToken();
                 throw new \Exception\AccessDeniedException(sprintf('Время действия токена %s истекло', $token));
             });
@@ -66,7 +66,7 @@ class Action {
         \RepositoryManager::getServiceCategory()->prepareRootCollection($region, function($data) use (&$categories) {
             if (!isset($data['children']) || !is_array($data['children'])) {
                 $e = new \Exception('Неверные данные для категорий услуг');
-                \App::$exception = $e;
+                \App::exception()->add($e);
                 \App::logger()->error($e);
                 return;
             }
@@ -101,7 +101,7 @@ class Action {
                     \App::user()->setEntity(new \Model\User\Entity($data));
                 }
             }, function (\Exception $e) {
-                \App::$exception = null;
+                \App::exception()->remove($e);
                 $token = \App::user()->removeToken();
                 throw new \Exception\AccessDeniedException(sprintf('Время действия токена %s истекло', $token));
             });
@@ -169,7 +169,7 @@ class Action {
         $callback = function($data) use (&$serviceIds, $category) {
             if (!isset($data['list']) || !is_array($data['list'])) {
                 $e = new \Exception(sprintf('Не получены услуги для категории %s', $category->getId()));
-                \App::$exception = $e;
+                \App::exception()->add($e);
                 \App::logger()->error($e);
 
                 return;
@@ -186,7 +186,7 @@ class Action {
         \RepositoryManager::getServiceCategory()->prepareCollection($region, function($data) use (&$allCategories) {
             if (!isset($data['children']) || !is_array($data['children'])) {
                 $e = new \Exception('Неверные данные для категорий услуг');
-                \App::$exception = $e;
+                \App::exception()->add($e);
                 \App::logger()->error($e);
                 return;
             }
@@ -247,7 +247,7 @@ class Action {
                     \App::user()->setEntity(new \Model\User\Entity($data));
                 }
             }, function (\Exception $e) {
-                \App::$exception = null;
+                \App::exception()->remove($e);
                 $token = \App::user()->removeToken();
                 throw new \Exception\AccessDeniedException(sprintf('Время действия токена %s истекло', $token));
             });
