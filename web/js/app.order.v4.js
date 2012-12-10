@@ -126,7 +126,19 @@ $(document).ready(function() {
             }
         })(); // object SertificateCard , singleton
 
-        code.mask("999 999 999 9999 9", { completed: function(){ pin.focus() }, placeholder: "*" } )
+        // code.mask("999 999 999 9999 9", { completed: function(){ pin.focus() }, placeholder: "*" } )
+        code.bind('keyup',function(e){
+			if (((e.which>=48)&&(e.which<=57))||(e.which==8)){//если это цифра или бэкспэйс
+				if(pin.val().length==4){
+					SertificateCard.checkCard()
+				}
+			}
+			else{
+				//если это не цифра
+				var clearVal = $(this).val().replace(/\D/g,'')
+				$(this).val(clearVal)
+			}
+		})
         pin.mask("9999", { completed: SertificateCard.checkCard, placeholder: "*" } )
 
         // $.mockjax({
