@@ -5,6 +5,11 @@ $(document).ready(function() {
 		vitrin = {
 			shopStack: 0,
 			init: function(){
+				$('#slideAvalShop').bind('click', function(){
+					console.log('123')
+					$('#listAvalShop .hidden').toggle(150)
+					return false
+				})
 				shopFromModel = $('#availableShops').data('shops')
 				vitrin.shopStack = {}
 				//render shops
