@@ -44,84 +44,10 @@ for ($i = 0; $i < $rowCount; $i++) {
                         <? } ?>
                     </div>
                 <? $offset += $count; endforeach ?>
-                <div class="colomn font14 clearfix">
-                    <a href="/region/change/119597">Батайск</a>
-                    <a href="/region/change/13241">Белгород</a>
-                    <a href="/region/change/83210">Брянск</a>
-                    <a href="/region/change/96423">Владимир</a>
-                    <a href="/region/change/18074">Воронеж</a>
-                    <a href="/region/change/1965">Долгопрудный</a>
-                    <a href="/region/change/3323">Егорьевск</a>
-                    <a href="/region/change/93751">Екатеринбург</a>
-                    <a href="/region/change/58490">Елец</a>
-                    <a href="/region/change/93747">Иваново</a>
-                    <a href="/region/change/1922">Климовск</a>
-                    <a href="/region/change/124190">Краснодар</a>
-                    <a href="/region/change/74562">Курск</a>
-                </div>
             </div>
-            <div class="regionSlides_slide">
-                <div class="colomn font14 clearfix">
-                    <a href="/region/change/119597">Батайск</a>
-                    <a href="/region/change/13241">Белгород</a>
-                    <a href="/region/change/83210">Брянск</a>
-                    <a href="/region/change/96423">Владимир</a>
-                    <a href="/region/change/18074">Воронеж</a>
-                    <a href="/region/change/1965">Долгопрудный</a>
-                    <a href="/region/change/3323">Егорьевск</a>
-                    <a href="/region/change/93751">Екатеринбург</a>
-                    <a href="/region/change/58490">Елец</a>
-                    <a href="/region/change/93747">Иваново</a>
-                    <a href="/region/change/1922">Климовск</a>
-                    <a href="/region/change/124190">Краснодар</a>
-                    <a href="/region/change/74562">Курск</a>
-                </div>
-                <div class="colomn font14 clearfix">
-                    <a href="/region/change/119597">Батайск</a>
-                    <a href="/region/change/13241">Белгород</a>
-                    <a href="/region/change/83210">Брянск</a>
-                    <a href="/region/change/96423">Владимир</a>
-                    <a href="/region/change/18074">Воронеж</a>
-                    <a href="/region/change/1965">Долгопрудный</a>
-                    <a href="/region/change/3323">Егорьевск</a>
-                    <a href="/region/change/93751">Екатеринбург</a>
-                    <a href="/region/change/58490">Елец</a>
-                    <a href="/region/change/93747">Иваново</a>
-                    <a href="/region/change/1922">Климовск</a>
-                    <a href="/region/change/124190">Краснодар</a>
-                    <a href="/region/change/74562">Курск</a>
-                </div>
-                <div class="colomn font14 clearfix">
-                    <a href="/region/change/119597">Батайск</a>
-                    <a href="/region/change/13241">Белгород</a>
-                    <a href="/region/change/83210">Брянск</a>
-                    <a href="/region/change/96423">Владимир</a>
-                    <a href="/region/change/18074">Воронеж</a>
-                    <a href="/region/change/1965">Долгопрудный</a>
-                    <a href="/region/change/3323">Егорьевск</a>
-                    <a href="/region/change/93751">Екатеринбург</a>
-                    <a href="/region/change/58490">Елец</a>
-                    <a href="/region/change/93747">Иваново</a>
-                    <a href="/region/change/1922">Климовск</a>
-                    <a href="/region/change/124190">Краснодар</a>
-                    <a href="/region/change/74562">Курск</a>
-                </div>
-                <div class="colomn font14 clearfix">
-                    <a href="/region/change/119597">Батайск</a>
-                    <a href="/region/change/13241">Белгород</a>
-                    <a href="/region/change/83210">Брянск</a>
-                    <a href="/region/change/96423">Владимир</a>
-                    <a href="/region/change/18074">Воронеж</a>
-                    <a href="/region/change/1965">Долгопрудный</a>
-                    <a href="/region/change/3323">Егорьевск</a>
-                    <a href="/region/change/93751">Екатеринбург</a>
-                    <a href="/region/change/58490">Елец</a>
-                    <a href="/region/change/93747">Иваново</a>
-                    <a href="/region/change/1922">Климовск</a>
-                    <a href="/region/change/124190">Краснодар</a>
-                    <a href="/region/change/74562">Курск</a>
-                </div>
-            </div>
+<!--             <div class="regionSlides_slide">
+
+            </div> -->
         </div>
     </div>
     <div class="BlackArrow fl rightArr"></div>
