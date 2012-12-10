@@ -2100,6 +2100,7 @@
   }
   .popupRegion .BlackArrow.rightArr {
     background: #fff7e6 url('/css/popup/img/arrow2.png') no-repeat 50% 50%;
+    display: none;
     margin-right: -30px;
   }
   .popupRegion .BlackArrow.rightArr:hover {

@@ -333,6 +333,7 @@ class Action {
 
                     return $response;
                 } catch(\Exception $e) {
+                    \App::$exception = null;
                     switch ($e->getCode()) {
                         case 686:
                             $form->setError('phone', 'Такой номер телефона уже зарегистрирован.');

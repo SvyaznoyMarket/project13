@@ -31,13 +31,14 @@ class Repository {
 
     /**
      * @param string $token
-     * @param        $callback
+     * @param        $done
+     * @param        $fail
      */
-    public function prepareEntityByToken($token, $callback) {
+    public function prepareEntityByToken($token, $done, $fail = null) {
         \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args()));
 
         $this->client->addQuery('user/get', array(
             'token' => $token,
-        ), array(), $callback);
+        ), array(), $done, $fail);
     }
 }

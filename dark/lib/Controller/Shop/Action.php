@@ -21,6 +21,10 @@ class Action {
                 if ((bool)$data) {
                     \App::user()->setEntity(new \Model\User\Entity($data));
                 }
+            }, function (\Exception $e) {
+                \App::$exception = null;
+                $token = \App::user()->removeToken();
+                throw new \Exception\AccessDeniedException(sprintf('Время действия токена %s истекло', $token));
             });
         }
 
@@ -117,6 +121,10 @@ class Action {
                 if ((bool)$data) {
                     \App::user()->setEntity(new \Model\User\Entity($data));
                 }
+            }, function (\Exception $e) {
+                \App::$exception = null;
+                $token = \App::user()->removeToken();
+                throw new \Exception\AccessDeniedException(sprintf('Время действия токена %s истекло', $token));
             });
         }
 
