@@ -1026,7 +1026,7 @@ $(document).ready(function(){
 	loadProductRelatedContainer($('#product_view-container'))
 	loadProductRelatedContainer($('#product_also_bought-container'))
     loadProductRelatedContainer($('#product_user-also_viewed-container'))
-    loadProductRelatedContainer($('#product_buy-container')); // no such element
+    //loadProductRelatedContainer($('#product_buy-container')); // no such element
     //loadProductRelatedContainer($('#product_user-recommendation-container'));
 
     function loadProductRelatedContainer(container) {
@@ -1049,6 +1049,18 @@ $(document).ready(function(){
             })
         }
     }
+
+    $('.product_buy-container').each(function() {
+        order = $(this).data('order')
+        if (typeof(order) == 'object' && !$.isEmptyObject(order)) {
+            $.ajax({
+                url: ($(this).data('url')),
+                data: order,
+                type: 'POST',
+                timeout: 20000
+            })
+        }
+    })
 
 	/* Delivery Ajax */
 	function dlvrajax() {

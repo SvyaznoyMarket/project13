@@ -163,13 +163,17 @@ $isCorporative = $sf_user->getGuardUser() ? $sf_user->getGuardUser()->getIsCorpo
 
 
 <?php if (sfConfig::get('app_smartengine_push')): ?>
-  <?php $productIds = array(); foreach ($orders as $order) $productIds = array_merge($productIds, array_map(function($i) use ($productIds) { return $i['product_id']; }, $order['product'])) ?>
-
-  <?php if (count($productIds)): ?>
-    <div id="product_buy-container" data-url="<?php echo url_for('smartengine_buy', array('product' => implode('-', $productIds))) ?>"></div>
-  <?php endif ?>
+<?php foreach ($orders as $order) {
+        $jsonOrdersData = json_encode(array('order' => array(
+            'id' => $order['id'],
+            'product' => array_map(function($product) { return array('id' => $product['product_id'], 'price' => $product['price'], 'quantity' => $product['quantity']); }, $order['product']),
+        )), JSON_HEX_QUOT | JSON_HEX_APOS)
+        ?>
+    <div class="product_buy-container" data-url="<?php echo url_for('smartengine_buy') ?>" data-order='<?php echo $jsonOrdersData ?>'></div>
+    <?php
+    }
+    ?>
 <?php endif ?>
-
 
 <? if (('live' == sfConfig::get('sf_environment')) && ($cusId = Odinkod::getCusId($sf_user->getRawValue()->getRegion('region')))): ?>
 <?

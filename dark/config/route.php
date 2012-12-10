@@ -315,7 +315,8 @@ return array(
 
     //smartengine
     'smartengine.push.buy' => array(
-        'pattern' => '/product-buy/{orderNumber}',
-        'action' => array('Smartengine\Action', 'pushBuy'),
+        'pattern' => '/product-buy',
+        'action'  => array('Smartengine\Action', 'pushBuy'),
+        'method'  => array('POST'),
     ),
 );
