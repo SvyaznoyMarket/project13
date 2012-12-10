@@ -9,7 +9,8 @@ class ClientV2 implements ClientInterface
     private $logger;
     /** @var resource */
     private $isMultiple;
-    private $callbacks = array();
+    private $successCallbacks = array();
+    private $failCallbacks = array();
     private $resources = array();
     /** @var bool */
     private $still_executing = false;
@@ -61,13 +62,14 @@ class ClientV2 implements ClientInterface
         }
     }
 
-    public function addQuery($action, array $params = array(), array $data = array(), $callback) {
+    public function addQuery($action, array $params = array(), array $data = array(), $successCallback, $failCallback = null) {
         if (!$this->isMultiple) {
             $this->isMultiple = curl_multi_init();
         }
         $resource = $this->createResource($action, $params, $data);
         curl_multi_add_handle($this->isMultiple, $resource);
-        $this->callbacks[(string)$resource] = $callback;
+        $this->successCallbacks[(string)$resource] = $successCallback;
+        $this->failCallbacks[(string)$resource] = $failCallback;
         $this->resources[] = $resource;
         $this->still_executing = true;
     }
@@ -111,11 +113,16 @@ class ClientV2 implements ClientInterface
                     try {
                         $decodedResponse = $this->decode($content);
                         $this->logger->debug('Core response data: ' . $this->encode($decodedResponse));
-                        $callback = $this->callbacks[(string)$handler];
+                        $callback = $this->successCallbacks[(string)$handler];
                         $callback($decodedResponse);
                     } catch (\Exception $e) {
                         \App::$exception = $e;
                         \App::logger()->error($e);
+
+                        $callback = $this->failCallbacks[(string)$handler];
+                        if ($callback) {
+                            $callback($e);
+                        }
                     }
                 }
                 if ($curl_still_executing) {
@@ -131,7 +138,8 @@ class ClientV2 implements ClientInterface
         }
         curl_multi_close($this->isMultiple);
         $this->isMultiple = null;
-        $this->callbacks = array();
+        $this->successCallbacks = array();
+        $this->failCallbacks = array();
         $this->resources = array();
         if (!is_null($error)) {
             \App::$exception = $e;

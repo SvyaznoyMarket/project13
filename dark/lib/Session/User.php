@@ -79,7 +79,10 @@ class User {
      * Удаляет токен из сессии
      */
     public function removeToken() {
+        $token = $this->getToken();
         \App::session()->remove($this->tokenName);
+
+        return $token;
     }
 
     /**
