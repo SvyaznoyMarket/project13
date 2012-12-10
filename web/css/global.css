@@ -7469,6 +7469,35 @@
     width: 560px;
   }
 }
+@media all {
+  #errUnavalible {
+    background: #ffffff;
+    height: 100%;
+  }
+  #errUnavalible .allpage {
+    background: url('/css/errors/img/unavalible.jpg') no-repeat 50% 50%;
+    height: 600px;
+    position: relative;
+    width: 640px;
+  }
+  #errUnavalible .unavaliblePageInner {
+    position: absolute;
+    left: 90px;
+    top: 200px;
+    width: 310px;
+  }
+  #errUnavalible .unavaliblePageInner h1 {
+    color: #ffa901;
+    font-size: 26px;
+    float: none;
+    width: 310px;
+  }
+  #errUnavalible .unavaliblePageInner p {
+    color: #000000;
+    font-family: 'Enter Type';
+    font-size: 18px;
+  }
+}
 /*---END---СТИЛИ СТРАНИЦ ОШИБОК---*/
 /*-------СТИЛИ КАРТОЧКИ МАГАЗИНА ВЕРСИЯ ДЛЯ ПЕЧАТИ-----*/
 /*---END---СТИЛИ КАРТОЧКИ МАГАЗИНА ВЕРСИЯ ДЛЯ ПЕЧАТИ---*/
