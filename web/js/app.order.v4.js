@@ -1,7 +1,7 @@
 $(document).ready(function() {
 	/* ---------------------------------------------------------------------------------------- */
 	/* COMMON DESIGN, BEHAVIOUR ONLY */
-
+	var _gaq = window._gaq || []
 	/* Custom Selectors */ 
 	$('body').delegate( '.bSelect', 'click', function() {
 		if( $(this).hasClass('mDisabled') )
@@ -807,9 +807,9 @@ upi:			for( var item=0, boxitems=self.chosenBox().itemList(); item < boxitems.le
 		// set delivery types on the top
 		self.showForm(true)
 		var endTimePreOrder = new Date().getTime()
-		var timeSpentPreOrder = endTimePreOrder - startTime;
+		var timeSpentPreOrder = endTimePreOrder - startTime
 		// console.info(timeSpent)
-		_gaq.push(['_trackTiming', 'New order', 'JS response', timeSpentPreOrder]);
+		_gaq.push(['_trackTiming', 'New order', 'JS response', timeSpentPreOrder])
 		for( var tkn in Model.deliveryTypes )
 			if( Model.deliveryTypes[tkn].type === 'standart' )
 				self.dlvrCourierEnable(true)
