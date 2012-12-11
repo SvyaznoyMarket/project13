@@ -1,0 +1,62 @@
+<?php
+/**
+ * @var $page \View\DefaultLayout
+ */
+?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <?= $page->slotMeta() ?>
+    <title><?= $page->getTitle() ?></title>
+    <link rel="shortcut icon" href="/favicon.ico"/>
+    <?= $page->slotStylesheet() ?>
+    <?= $page->slotRelLink() ?>
+    <?= $page->slotGoogleAnalytics() ?>
+</head>
+
+<body data-template="<?= $page->slotBodyDataAttribute() ?>" data-id="<?= \App::$id ?>">
+
+<div class="graying" style="opacity: 0.5; display: none;"></div>
+
+<!-- js templete -->
+<script type="text/html" id="moveitem_tmpl">
+  <span class="bButtonPopup" style="left: 203px">
+    <span class="bButtonPopup__eTitle">Переместить товар:</span>
+      <% for ( var i = 0; i < dlvr . length; i++ ) { %>
+      <a class="bButtonPopup__eLine moveline"><%=dlvr[i].title%></a>
+      <% } %>
+  </span>
+</script>
+
+<script type="text/html" id="tip_tmpl">
+  <span class="bTooltip" style="top:-38px; left:<%=cssl%>">
+    <span class="bTooltip__eText"><%=tiptext%></span>
+    <span class="bTooltip__eArrow"></span>
+  </span>
+</script>
+<!-- js templete -->
+
+<div class="allpage" data="privet">
+    <div class="allpageinner buyingpage">
+        <?= $page->slotContent() ?>
+    </div>
+</div>
+
+<?= $page->slotRegionSelection() ?>
+<?= $page->render('order/_footer') ?>
+<?= $page->slotFooter() ?>
+
+<?= $page->slotJavascript() ?>
+<?= $page->slotInnerJavascript() ?>
+<?= $page->slotAuth() ?>
+<?= $page->slotYandexMetrika() ?>
+<?= $page->slotAdvanceSeoCounter() ?>
+
+<? if (\App::config()->analytics['enabled']): ?>
+    <div id="gooReMaCategories" class="jsanalytics"></div>
+    <div id="luxupTracker" class="jsanalytics"></div>
+<? endif ?>
+
+</body>
+</html>

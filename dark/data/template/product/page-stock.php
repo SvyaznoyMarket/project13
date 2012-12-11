@@ -13,7 +13,7 @@ $json = array('jsref' => $product->getToken(), 'jstitle' => $product->getName(),
 ?>
 <div class="clear"></div>
 <input type="hidden" id="stockmodel"
-    data-value="<?= $page->escape(json_encode($json)) ?>"
+    data-value="<?= $page->json($json) ?>"
     link-output="<?= $page->url('order.1click', array('product' => $product->getToken())) ?>"
     link-input="<?= $page->url('product.delivery_1click') ?>"
 />

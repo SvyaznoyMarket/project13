@@ -39,7 +39,7 @@ class Repository
             return null;
         }
 
-        $response = $this->client->query('payment-method.get-credit-bank', array(
+        $response = $this->client->query('payment-method/get-credit-bank', array(
             'id'     => array($id),
             'geo_id' => \App::user()->getRegion()->getId(),
         ));
@@ -55,7 +55,7 @@ class Repository
     public function getCollection() {
         \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args()));
 
-        $result = $this->client->query('payment-method.get-credit-bank', array(
+        $result = $this->client->query('payment-method/get-credit-bank', array(
             'geo_id' => \App::user()->getRegion()->getId(),
         ));
 

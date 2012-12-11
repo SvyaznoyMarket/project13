@@ -37,7 +37,7 @@ $json = array(
         <?= $service->getWork(); ?>
     </p>
 
-    <div class="bSet__ePrice mServ" ref="<?= $service->getToken() ?>" data-value="<?= $page->escape(json_encode($json)) ?>">
+    <div class="bSet__ePrice mServ" ref="<?= $service->getToken() ?>" data-value="<?= $page->json($json) ?>">
         <? if ($service->getPrice()): ?>
         <div class="font34">
             <strong>
@@ -107,7 +107,7 @@ $json = array(
 
             <? if ($alike->isInSale() && $user->getRegion()->getHasService()) : ?>
                 <form action="<?= $page->url('cart.service.add', array('serviceId' => $alike->getId(), 'quantity' => 1, 'productId' => 0)) ?>">
-                    <input data-value="<?= $page->escape(json_encode($json)) ?>" data-event="BuyF1" data-title="Заказ услуги F1" type="submit" class="button yellowbutton gaEvent" value="Купить услугу"/>
+                    <input data-value="<?= $page->json($json) ?>" data-event="BuyF1" data-title="Заказ услуги F1" type="submit" class="button yellowbutton gaEvent" value="Купить услугу"/>
                 </form>
             <? endif ?>
         </div>

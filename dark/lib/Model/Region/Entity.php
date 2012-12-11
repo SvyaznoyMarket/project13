@@ -18,6 +18,8 @@ class Entity {
     /** @var bool */
     private $hasDelivery;
     /** @var bool */
+    private $hasSubway;
+    /** @var bool */
     private $hasService;
     /** @var float */
     private $latitude;
@@ -36,6 +38,7 @@ class Entity {
         if (array_key_exists('is_main', $data)) $this->setIsMain($data['is_main']);
         if (array_key_exists('has_shop', $data)) $this->setHasShop($data['has_shop']);
         if (array_key_exists('has_delivery', $data)) $this->setHasDelivery($data['has_delivery']);
+        if (array_key_exists('has_subway', $data)) $this->setHasSubway($data['has_subway']);
         if (array_key_exists('has_f1', $data)) $this->setHasService($data['has_f1']);
         if (array_key_exists('coord_long', $data)) $this->setLongitude($data['coord_long']);
         if (array_key_exists('coord_lat', $data)) $this->setLatitude($data['coord_lat']);
@@ -88,6 +91,20 @@ class Entity {
     public function getHasShop()
     {
         return $this->hasShop;
+    }
+
+    /**
+     * @param boolean $hasSubway
+     */
+    public function setHasSubway($hasSubway) {
+        $this->hasSubway = (bool)$hasSubway;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getHasSubway() {
+        return $this->hasSubway;
     }
 
     /**

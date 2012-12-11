@@ -80,6 +80,10 @@ class Layout {
         return htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
     }
 
+    public function json($value) {
+        return htmlspecialchars(json_encode($value, JSON_HEX_TAG|JSON_HEX_AMP|JSON_HEX_QUOT|JSON_HEX_APOS), ENT_QUOTES, 'UTF-8');
+    }
+
     public function addStylesheet($stylesheet) {
         if (\App::config()->asset['timestampEnabled']) {
             try {

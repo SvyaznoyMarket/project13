@@ -195,4 +195,17 @@ class RepositoryManager {
 
         return $instance;
     }
+
+    /**
+     * @return Model\Subway\Repository
+     */
+    static function getSubway() {
+        static $instance;
+
+        if (!$instance) {
+            $instance = new \Model\Subway\Repository(\App::coreClientV2());
+        }
+
+        return $instance;
+    }
 }

@@ -3,6 +3,8 @@
 namespace Model\PaymentMethod;
 
 class Entity {
+    const CERTIFICATE_ID = 10;
+
     /** @var int */
     private $id;
     /** @var string */
@@ -110,5 +112,12 @@ class Entity {
      */
     public function getName() {
         return $this->name;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isCertificate() {
+        return self::CERTIFICATE_ID == $this->id;
     }
 }

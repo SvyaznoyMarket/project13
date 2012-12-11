@@ -24,8 +24,12 @@ class Repository {
             'geo_id' => $region ? $region->getId() : \App::user()->getRegion()->getId(),
         ));
 
+        $enabledIds = \App::config()->payment['enabledIds'];
+
         $collection = array();
         foreach ($data as $item) {
+            if (!in_array($item['id'], $enabledIds)) continue;
+
             $collection[] = new Entity($item);
         }
 

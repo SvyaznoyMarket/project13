@@ -239,7 +239,7 @@ return array(
     'order.1click' => array(
         'pattern' => '/orders/1click',
     ),
-    'order.new' => array(
+    'order.create' => array(
         'pattern' => '/orders/new',
         'action'  => array('Order\Action', 'create'),
     ),

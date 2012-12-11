@@ -5,4 +5,4 @@
  */
 ?>
 
-<input id="main_banner-data" type="hidden" disabled="disabled" data-value="<?= $page->escape(json_encode($bannerData)) ?>" />
+<input id="main_banner-data" type="hidden" disabled="disabled" data-value="<?= $page->json($bannerData) ?>" />

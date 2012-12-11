@@ -54,7 +54,7 @@ class Repository {
 
         $collection = array();
         foreach ($data as $item) {
-            $collection = new Entity($item);
+            $collection[] = new Entity($item);
         }
 
         return $collection;

@@ -85,7 +85,7 @@ $creditEnabled = ($cart->getTotalProductPrice() >= \App::config()->product['minC
 <div class="fl font14 pt10">&lt; <a class="underline" href="/">Вернуться к покупкам</a></div>
 
 <div class="width500 auto">
-    <a href="<?= $page->url('order.new') ?>" class="bBigOrangeButton width345">Оформить заказ</a>
+    <a href="<?= $page->url('order.create') ?>" class="bBigOrangeButton width345">Оформить заказ</a>
 </div>
 <div class="clear"></div>
 
