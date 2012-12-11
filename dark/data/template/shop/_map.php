@@ -10,20 +10,9 @@
 <!-- bMapShops -->
 <div class="bMapShops">
     <div class='bMapShops__eHead'>
-        <div class='bMapShops__eRegion'>
-            <h2 class='bMapShops__eRegionTitle'><?= $currentRegion ? ('Enter в ' . $currentRegion->getInflectedName(5)) : 'Все магазины Enter'?>!</h2>
-
-            <? if ((bool)$regions): ?>
-            <div class='bMapShops__eRegionText'>Enter в регионах:</div>
-            <div class="selectbox selectbox170 fl"><i></i>
-                <select id="region-select" class="styled" name="region">
-                    <option data-url="<?= $page->url('shop') ?>"<?php if (!$currentRegion): ?> selected="selected"<? endif ?> value="">Все магазины</option>
-                <? foreach ($regions as $region): ?>
-                    <option data-url="<?= $page->url('shop.region', array('regionId' => $region->getId())) ?>"<?php if ($currentRegion && $region->getId() == $currentRegion->getId()): ?> selected="selected"<? endif ?> value="<?= $region->getId() ?>"><?= $region->getName() ?></option>
-                <? endforeach ?>
-                </select>
-            </div>
-            <? endif ?>
+        <div class='bMapShops__eRegion font14 width290'>
+            <p>У нас 58 магазинов в 32 городах России.</p>
+            <p>А доставить вашу покупку мы можем даже туда, где нас нет: во многих городах нам помогают с доставкой проверенные транспортные компании.</p>
         </div>
         <img class="bMapShops__eImage" src="/images/shop-h1.png" alt="shopPageLogo" />
     </div>

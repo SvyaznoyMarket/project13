@@ -1167,7 +1167,7 @@ function MapYandexWithShops( center, templateIWnode, DOMid ) {
             mapWS.setBounds( bounds )
     }
     this.showCluster = function( argmarkers ){
-        console.log('cluster!')
+        // console.log('cluster!')
         mapContainer.show()
         mapWS.container.fitToViewport()
         mapWS.setCenter([center.latitude, center.longitude])
@@ -1190,7 +1190,6 @@ function MapYandexWithShops( center, templateIWnode, DOMid ) {
                     iconImageOffset: [-19, -57] 
                 }
             )
-            
             clusterer.add(marker)
             
         })
@@ -1207,6 +1206,7 @@ function MapYandexWithShops( center, templateIWnode, DOMid ) {
             balloonMaxWidth: 350
         })
         mapWS.geoObjects.add(clusterer);
+        mapWS.setZoom(4)
     }
 
     this.closeMap = function( callback ) {
