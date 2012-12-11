@@ -10,6 +10,6 @@
 <?php else: ?>
   <h2><?php echo isset($message) ? $message : 'При формировании заказа произошла ошибка' ?></h2>
   <script type="text/javascript">
-  	_gaq.push(['_trackEvent', 'Errors', 'Orders/new error', <?php echo isset($message) ? $message : 'При формировании заказа произошла ошибка' ?>])
+  	_gaq.push(['_trackEvent', 'Errors', 'Orders/new error', '<?php echo isset($message) ? $message : 'При формировании заказа произошла ошибка' ?>'])
   </script>
 <?php endif ?>
