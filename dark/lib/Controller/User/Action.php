@@ -65,6 +65,7 @@ class Action {
 
                     return $response;
                 } catch(\Exception $e) {
+                    \App::$exception = null;
                     $form->setError('global', 'Неверно указан логин или пароль' . (\App::config()->debug ? (': ' . $e->getMessage()) : ''));
                 }
             }
@@ -173,6 +174,8 @@ class Action {
 
                     return $response;
                 } catch(\Exception $e) {
+                    \App::$exception = null;
+
                     switch ($e->getCode()) {
                         case 684:
                         case 686:
@@ -334,6 +337,7 @@ class Action {
                     return $response;
                 } catch(\Exception $e) {
                     \App::$exception = null;
+
                     switch ($e->getCode()) {
                         case 686:
                             $form->setError('phone', 'Такой номер телефона уже зарегистрирован.');
@@ -420,6 +424,8 @@ class Action {
                 return new \Http\JsonResponse(array('success' => true));
             }
         } catch(\Exception $e) {
+            \App::$exception = null;
+
             $error = $error ?: ('Не удалось запросить пароль. Попробуйте позже' . (\App::config()->debug ? (': ' . $e->getMessage()) : ''));
         }
 

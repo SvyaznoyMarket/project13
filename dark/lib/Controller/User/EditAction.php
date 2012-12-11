@@ -40,8 +40,10 @@ class EditAction {
 
                 return new \Http\RedirectResponse(\App::router()->generate('user.edit'));
             } catch (\Exception $e) {
-                $form->setError('global', 'Не удалось сохранить форму');
+                \App::$exception = null;
                 \App::logger()->error($e);
+
+                $form->setError('global', 'Не удалось сохранить форму');
             }
         }
 
