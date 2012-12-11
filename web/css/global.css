@@ -5268,6 +5268,11 @@
     width: 24px;
     zoom: 1;
   }
+  .bBuyingLine label .payment_method_label {
+    display: inline-block;
+    font-weight: bold;
+    width: 400px;
+  }
   .bBuyingLine h5 {
     color: #434343;
     display: inline-block;
