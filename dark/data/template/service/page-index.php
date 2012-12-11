@@ -55,7 +55,7 @@ foreach ($categories as $category) {
     </div>
 
     <? if ($i % 2 == 0): ?>       
-        <div class="pb30"></div>
+        <div class="pb30 clear"></div>
     <? endif ?>
 <? endforeach ?>
 
