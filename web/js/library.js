@@ -1166,6 +1166,48 @@ function MapYandexWithShops( center, templateIWnode, DOMid ) {
         if( bounds[0][0] !== bounds[1][0] )   // cause setBounds() hit a bug if only one point    
             mapWS.setBounds( bounds )
     }
+    this.showCluster = function( argmarkers ){
+        console.log('cluster!')
+        mapContainer.show()
+        mapWS.container.fitToViewport()
+        mapWS.setCenter([center.latitude, center.longitude])
+        self.clear()
+        markers = argmarkers
+        clusterer = new ymaps.Clusterer({clusterDisableClickZoom: false, maxZoom:8});
+        $.each( markers, function(i, item) {           
+            // Создаем метку и задаем изображение для ее иконки
+            var tmpitem = {
+                id: item.id,
+                name: item.name,
+                address: item.address,
+                link: item.link,
+                regtime: (item.regtime) ? item.regtime : item.regime,
+                regime: (item.regtime) ? item.regtime : item.regime
+            }
+            var marker = new ymaps.Placemark( [item.latitude, item.longitude], tmpitem, {
+                    iconImageHref: '/images/marker.png', // картинка иконки
+                    iconImageSize: [39, 59], 
+                    iconImageOffset: [-19, -57] 
+                }
+            )
+            
+            clusterer.add(marker)
+            
+        })
+        var myBalloonLayout = ymaps.templateLayoutFactory.createClass(
+            templateIWnode.prop('innerHTML').replace(/<%=([a-z]+)%>/g, '\$[properties.$1]')
+        )
+        
+        // Помещаем созданный шаблон в хранилище шаблонов. Теперь наш шаблон доступен по ключу 'my#superlayout'.
+        ymaps.layout.storage.add('my#superlayout', myBalloonLayout)
+        // Задаем наш шаблон для балунов геобъектов коллекции.
+        clusterer.options.set({
+            balloonContentBodyLayout:'my#superlayout',
+            // Максимальная ширина балуна в пикселах
+            balloonMaxWidth: 350
+        })
+        mapWS.geoObjects.add(clusterer);
+    }
 
     this.closeMap = function( callback ) {
         // infoWindow.close()
