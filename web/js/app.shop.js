@@ -60,7 +60,7 @@ $(document).ready(function() {
 		}
 		var mapCenter =  calcMCenter( $('#map-markers').data('content') )
 		var mapCallback = function() {
-			window.regionMap.showMarkers(  $('#map-markers').data('content') )
+			window.regionMap.showCluster(  $('#map-markers').data('content') )
 		}
 		MapInterface.init( mapCenter, 'region_map-container', mapCallback, updateTmlt )
 	}
