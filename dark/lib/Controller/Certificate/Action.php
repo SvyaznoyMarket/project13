@@ -38,6 +38,7 @@ class Action {
                 }
             }
         } catch (\Exception $e) {
+            \App::$exception = null;
             \App::logger()->warn('Error when checking certificate ' . $e);
             if (-1 == $e->getCode()) {
                 $error = 'Сертификат не найден';
