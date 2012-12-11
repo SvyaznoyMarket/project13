@@ -42,7 +42,7 @@ class FillerLayout implements IFiller
         $regionTopList = App::getRegion()->getShowInMenu();
         $renderer->addParameter('regionTopList', $regionTopList);
 
-        $num_row = 3;
+        $num_row = 4;
 
         $columns_count = array();
         $count = count($regionTopList);
