@@ -40,7 +40,7 @@ foreach($sort as $key){
 		<div class="serviceboxbottom"></div>
 	</div>
 <?php $num++; if ($num%2 == 0):?>
-    <div class="pb30"></div>
+    <div class="pb30 clear"></div>
     <?php endif; 
 }?>
 <div class="pb30 clear"></div>
