@@ -71,7 +71,7 @@ $(document).ready(function() {
 					selectorid: '',
 					value: '',
 					valerror: false,
-					regexp: /^[a-zа-я\s]+$/i
+					regexp: /^[ёa-zа-я\s]+$/i
 				}) )
 				self.textfields.push( ko.observable({
 					title: 'Телефон для связи',
