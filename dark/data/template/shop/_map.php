@@ -1,9 +1,9 @@
 <?php
 /**
- * @var $page          \View\Shop\ShowPage
- * @var $regions       \Model\Region\Entity[]
- * @var $currentRegion \Model\Region\Entity
- * @var $markers       array
+ * @var $page                 \View\Shop\ShowPage
+ * @var $shopAvailableRegions \Model\Region\Entity[]
+ * @var $currentRegion        \Model\Region\Entity
+ * @var $markers              array
  */
 ?>
 
@@ -13,11 +13,11 @@
         <div class='bMapShops__eRegion'>
             <h2 class='bMapShops__eRegionTitle'>Enter в <?= $currentRegion->getInflectedName(5) ?>!</h2>
 
-            <? if ((bool)$regions): ?>
+            <? if ((bool)$shopAvailableRegions): ?>
             <div class='bMapShops__eRegionText'>Enter в регионах:</div>
             <div class="selectbox selectbox170 fl"><i></i>
                 <select id="region-select" class="styled" name="region">
-                <? foreach ($regions as $region): ?>
+                <? foreach ($shopAvailableRegions as $region): ?>
                     <option data-url="<?= $page->url('shop.region', array('regionId' => $region->getId())) ?>"<?php if ($region->getId() == $currentRegion->getId()): ?> selected="selected"<? endif ?> value="<?= $region->getId() ?>"><?= $region->getName() ?></option>
                 <? endforeach ?>
                 </select>
