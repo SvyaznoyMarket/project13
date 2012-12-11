@@ -213,8 +213,10 @@
     <? else: ?>
         <p>Этот товар мы доставляем только в регионах нашего присутствия</p>
     <? endif ?>
+  <?php endif ?>
 
-  <div class="bDeliver2 delivery-info" id="product-id-<?= $product->getId() ?>" data-shoplink="<?= $page->url('product.stock', array('productPath' => $product->getPath())) ?>" data-calclink="<?= $page->url('product.delivery') ?>">
+  <? if ($product->getIsBuyable()): ?>
+    <div class="bDeliver2 delivery-info" id="product-id-<?= $product->getId() ?>" data-shoplink="<?= $page->url('product.stock', array('productPath' => $product->getPath())) ?>" data-calclink="<?= $page->url('product.delivery') ?>">
     <h4>Как получить заказ?</h4>
     <ul>
       <li>
