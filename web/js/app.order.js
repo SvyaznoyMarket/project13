@@ -231,6 +231,7 @@ $(document).ready(function () {
                             // else {
                             //     if ((i +1) == length) dfd.resolve()
                             // }
+                            _gaq.push(['_trackEvent', 'Errors', 'User error', 'Нет нужного количества товаров'])
                             orderErrPopup('Непредвиденная ошибка', 'Вы заказали товар '+item.product.name+' в количестве '+item.product.quantity+' шт. <br/ >Доступно только '+item.quantity_available+' шт.<br/ >Будет заказано '+item.quantity_available+'шт' , function(){
                                     $.ajax({
                                         url: item.product.deleteUrl
@@ -257,6 +258,7 @@ $(document).ready(function () {
                             //     }
                             //     dfd.reject()
                             // }
+                            _gaq.push(['_trackEvent', 'Errors', 'User error', 'Нет товара для выбранного способа доставки'])
                             orderErrPopup('Непредвиденная ошибка', 'Товара ' + item.product.name + ' нет в наличии для выбранного способа доставки.<br/>Товар будет удален из корзины.', function(){
                                 $.ajax({
                                     url: item.product.deleteUrl
@@ -278,7 +280,7 @@ $(document).ready(function () {
                         // else {
                         //     if ((i +1) == length) dfd.resolve()
                         // }
-                        console.log('ок')
+                        _gaq.push(['_trackEvent', 'Errors', 'User error', 'Товар недоступен для продажи'])
                         orderErrPopup('Непредвиденная ошибка', 'Товар ' + item.product.name + ' недоступен для продажи.<br/>Товар будет удален из корзины.', function(){
                             $.ajax({
                                 url: item.product.deleteUrl
