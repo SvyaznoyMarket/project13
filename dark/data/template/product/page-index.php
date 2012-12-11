@@ -148,13 +148,13 @@
       </div>
     <?php endif ?>
       <?= $page->render('cart/_button', array('product' => $product, 'disabled' => !$product->getIsBuyable())) ?>
-        <? if (!$product->getIsBuyable() && $product->getState()->getIsShop()): ?>
-        <div class="notBuying font12">
-            <div class="corner"><div></div></div>
-            Только в розничных магазинах
-        </div>
-        <? endif ?>
     </div>
+    <? if (!$product->getIsBuyable() && $product->getState()->getIsShop()): ?>
+      <div class="notBuying font12">
+          <div class="corner"><div></div></div>
+          Только в розничных магазинах
+      </div>
+    <? endif ?>
     <? if ($product->getIsBuyable()): ?>
     <div class="pb5"><strong>
       <a href=""

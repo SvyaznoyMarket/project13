@@ -742,6 +742,28 @@
   .noti > div {
     margin-top: 50px;
   }
+  .notBuying {
+    border: 1px solid #e6e6e6;
+    padding: 7px;
+    position: relative;
+  }
+  .notBuying .corner {
+    border-bottom: 9px solid #e6e6e6;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    height: 0;
+    position: absolute;
+    top: -9px;
+    width: 0;
+  }
+  .notBuying .corner div {
+    border-bottom: 7px solid #ffffff;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    bottom: -9px;
+    left: -8px;
+    position: absolute;
+  }
 }
 @media all {
   .bGrayButton {
@@ -3762,28 +3784,6 @@
   .goodsbox li {
     padding-bottom: 7px;
   }
-  .goodsbox .notBuying {
-    border: 1px solid #e6e6e6;
-    padding: 7px;
-    position: relative;
-  }
-  .goodsbox .notBuying .corner {
-    border-bottom: 9px solid #e6e6e6;
-    border-left: 10px solid transparent;
-    border-right: 10px solid transparent;
-    height: 0;
-    position: absolute;
-    top: -9px;
-    width: 0;
-  }
-  .goodsbox .notBuying .corner div {
-    border-bottom: 7px solid #ffffff;
-    border-left: 8px solid transparent;
-    border-right: 8px solid transparent;
-    bottom: -9px;
-    left: -8px;
-    position: absolute;
-  }
   .goodsbox__inner {
     background: #ffffff;
     cursor: pointer;
@@ -4099,6 +4099,9 @@
     float: left;
     padding: 0px 0px 40px 20px;
     width: 400px;
+  }
+  .goodsinfo .notBuying .corner {
+    right: 8px;
   }
   .goodsbarbig {
     height: 31px;
