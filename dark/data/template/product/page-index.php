@@ -137,8 +137,8 @@
   <div class="fr ar pb15">
     
     <div class="goodsbarbig mSmallBtns" ref="<?= $product->getToken() ?>" data-value='<?= $json ?>'>
-
-      <div class='bCountSet'>
+    <? if ($product->getIsBuyable()): ?>
+    <div class='bCountSet'>
         <? if (!$user->getCart()->hasProduct($product->getId())): ?>
         <a class='bCountSet__eP' href="#">+</a><a class='bCountSet__eM' href="#">-</a>
         <? else: ?>
@@ -146,7 +146,14 @@
         <? endif ?>
         <span><?= $user->getCart()->hasProduct($product->getId()) ? $user->getCart()->getQuantityByProduct($product->getId()) : 1 ?> шт.</span>
       </div>
+    <?php endif ?>
       <?= $page->render('cart/_button', array('product' => $product, 'disabled' => !$product->getIsBuyable())) ?>
+        <? if (!$product->getIsBuyable() && $product->getState()->getIsShop()): ?>
+        <div class="notBuying font12">
+            <div class="corner"><div></div></div>
+            Только в розничных магазинах
+        </div>
+        <? endif ?>
     </div>
     <? if ($product->getIsBuyable()): ?>
     <div class="pb5"><strong>
@@ -182,7 +189,7 @@
   <div class="line pb15"></div>
 
 
-  <? if ($product->getIsBuyable() || $product->getState()->getIsShop()): ?>
+  <? if ($product->getIsBuyable()): ?>
 
   <? if ($dataForCredit['creditIsAllowed'] && !$user->getRegion()->getHasTransportCompany()) : ?>
   <div class="creditbox">
@@ -206,9 +213,7 @@
     <? else: ?>
         <p>Этот товар мы доставляем только в регионах нашего присутствия</p>
     <? endif ?>
-  <? endif ?>
 
-  <?php if ($product->getIsBuyable()): ?>
   <div class="bDeliver2 delivery-info" id="product-id-<?= $product->getId() ?>" data-shoplink="<?= $page->url('product.stock', array('productPath' => $product->getPath())) ?>" data-calclink="<?= $page->url('product.delivery') ?>">
     <h4>Как получить заказ?</h4>
     <ul>
@@ -217,13 +222,11 @@
       </li>
     </ul>
   </div>
-  <?php endif ?>
 
   <div style="margin-bottom: 20px;">
     <div class="adfoxWrapper" id="<?= $adfox_id_by_label ?>"></div>
   </div>
 
-<? if ($product->getIsBuyable() || $product->getState()->getIsShop()): ?>
     <?= $page->render('service/_listByProduct', array('product' => $product)) ?>
     <?= $page->render('warranty/_listByProduct', array('product' => $product)) ?>
 <? endif ?>
@@ -517,6 +520,7 @@
     <? //if ($product->getIsBuyable() || !$product->getState()->getIsShop()): ?>
     <div class="goodsbarbig mSmallBtns" ref="<?= $product->getToken() ?>" data-value='<?= $json ?>'>
 
+    <?php if ($product->getIsBuyable()): ?>
         <div class='bCountSet'>
             <? if (!$user->getCart()->hasProduct($product->getId())): ?>
             <a class='bCountSet__eP' href="#">+</a><a class='bCountSet__eM' href="#">-</a>
@@ -525,8 +529,15 @@
             <? endif ?>
             <span><?= $user->getCart()->getQuantityByProduct($product->getId()) ? $user->getCart()->getQuantityByProduct($product->getId()) : 1 ?> шт.</span>
         </div>
+    <?php endif ?>
 
         <?= $page->render('cart/_button', array('product' => $product, 'disabled' => !$product->getIsBuyable(), 'gaEvent' => 'Add2Basket_vnizu', 'gaTitle' => 'Добавление в корзину')) ?>
+        <? if (!$product->getIsBuyable() && $product->getState()->getIsShop()): ?>
+        <div class="notBuying font12">
+            <div class="corner"><div></div></div>
+            Только в розничных магазинах
+        </div>
+        <? endif ?>
     </div>
     <? //endif ?>
 </div>

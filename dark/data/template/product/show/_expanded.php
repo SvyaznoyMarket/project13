@@ -52,7 +52,7 @@ $hasModel = (isset($hasModel) ? $hasModel : true) && $product->getModel() && (bo
             <div class="goodsbar mSmallBtns">
                 <?= $page->render('cart/_button', array('product' => $product, 'disabled' => !$product->getIsBuyable())) ?>
             </div>
-            <? if (!($product->getIsBuyable())): ?>
+            <? if (!$product->getIsBuyable() && $product->getState()->getIsShop()): ?>
                 <div class="notBuying font12">
                     <div class="corner"><div></div></div>
                     Только в розничных магазинах
