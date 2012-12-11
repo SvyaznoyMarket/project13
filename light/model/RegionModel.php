@@ -49,7 +49,7 @@ class RegionModel
    * @throws UnexpectedValueException
    */
   public function getShopAvailable(){
-    $response = App::getCoreV2()->query('geo.get-shop-available', array('show_in_menu' => true), array());
+    $response = App::getCoreV2()->query('geo.get-shop-available', array(), array());
     if (!isset($response[0])){
       return array();
     }
@@ -71,7 +71,35 @@ class RegionModel
     return $regionList;
   }
 
-  public function Mock(){
+    /**
+     * Функция возвращает список городов, для отображения в форме смены региона
+     * @return RegionData[]
+     * @throws UnexpectedValueException
+     */
+    public function getShowInMenu(){
+        $response = App::getCoreV2()->query('geo.get-menu-cities', array(), array());
+        if (!isset($response[0])){
+            return array();
+        }
+
+        $regionList = array();
+
+        if(!is_array($response)){
+            throw new \UnexpectedValueException('null response from core');
+        }
+        foreach($response as $geo){
+            $region = new RegionData();
+            $region->setId((int) $geo['id']);
+            $region->setName($geo['name']);
+            $region->setToken($geo['token']);
+            $region->setIsMain((bool) $geo['is_main']);
+            $regionList[] = $region;
+        }
+
+        return $regionList;
+    }
+
+    public function Mock(){
     $region = new RegionData();
     $region->setId((int) 14974);
     $region->setName('Москва');

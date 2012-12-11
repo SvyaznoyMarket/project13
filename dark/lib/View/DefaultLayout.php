@@ -117,7 +117,7 @@ class DefaultLayout extends Layout {
 
         if (null === $regions) {
             try {
-                $regions = \RepositoryManager::getRegion()->getShopAvailableCollection();
+                $regions = \RepositoryManager::getRegion()->getShowInMenuCollection();
             } catch (\Exception $e) {
                 \App::logger()->error($e);
 
