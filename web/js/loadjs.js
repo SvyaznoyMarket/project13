@@ -1,4 +1,6 @@
 (function() {
+	startTime = new Date().getTime();
+	// console.log('start'+startTime)
 	var _gaq = window._gaq || []
 	window.onerror = function(msg, url, line) {
 		var preventErrorAlert = true

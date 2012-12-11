@@ -806,6 +806,10 @@ upi:			for( var item=0, boxitems=self.chosenBox().itemList(); item < boxitems.le
 
 		// set delivery types on the top
 		self.showForm(true)
+		var endTimePreOrder = new Date().getTime()
+		var timeSpentPreOrder = endTimePreOrder - startTime;
+		// console.info(timeSpent)
+		_gaq.push(['_trackTiming', 'New order', 'JS response', timeSpentPreOrder]);
 		for( var tkn in Model.deliveryTypes )
 			if( Model.deliveryTypes[tkn].type === 'standart' )
 				self.dlvrCourierEnable(true)
@@ -965,7 +969,7 @@ flds:	for( field in fieldsToValidate ) {
 				toSend.push( { name: 'order[card]', value: SertificateCard.getCode() })
 				toSend.push( { name: 'order[pin]', value: SertificateCard.getPIN() })
 			}
-
+		var startAjaxOrderTime = new Date().getTime()
 		$.ajax({
 			url: form.attr('action'),
 			timeout: 20000,
@@ -982,6 +986,9 @@ flds:	for( field in fieldsToValidate ) {
 					return
 				}
 				Blocker.bye()
+				var endAjaxOrderTime = new Date().getTime()
+				var AjaxOrderSpent = endAjaxOrderTime - startAjaxOrderTime
+				_gaq.push(['_trackTiming', 'Order complete', 'DB response', AjaxOrderSpent])
 				if( 'redirect' in data.data )
 					window.location = data.data.redirect
 			},
