@@ -25,6 +25,8 @@
 </table>
 <script type="text/javascript">
   var _gaq = _gaq || [];
+  var nowURL = document.URL;
+  _gaq.push(['_trackEvent', 'Errors', '404', nowURL]);
   _gaq.push(['_setAccount', 'UA-25485956-1']);
   _gaq.push(['_addOrganic', 'nova.rambler.ru', 'query']);
   _gaq.push(['_addOrganic', 'go.mail.ru', 'q']);
