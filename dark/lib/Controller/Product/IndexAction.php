@@ -39,10 +39,10 @@ class IndexAction {
         }
 
         // запрашиваем список регионов для выбора
-        $shopAvailableRegions = array();
-        \RepositoryManager::getRegion()->prepareShowInMenuCollection(function($data) use (&$shopAvailableRegions) {
+        $regionsToSelect = array();
+        \RepositoryManager::getRegion()->prepareShowInMenuCollection(function($data) use (&$regionsToSelect) {
             foreach ($data as $item) {
-                $shopAvailableRegions[] = new \Model\Region\Entity($item);
+                $regionsToSelect[] = new \Model\Region\Entity($item);
             }
         });
 
@@ -153,7 +153,7 @@ class IndexAction {
         }
 
         $page = new \View\Product\IndexPage();
-        $page->setParam('shopAvailableRegions', $shopAvailableRegions);
+        $page->setParam('regionsToSelect', $regionsToSelect);
         $page->setParam('rootCategories', $rootCategories);
         $page->setParam('product', $product);
         $page->setParam('title', $product->getName());

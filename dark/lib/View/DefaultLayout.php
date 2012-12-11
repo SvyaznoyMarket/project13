@@ -113,7 +113,7 @@ class DefaultLayout extends Layout {
 
     public function slotRegionSelection() {
         /** @var $regions \Model\Region\Entity */
-        $regions = $this->getParam('shopAvailableRegions', null);
+        $regions = $this->getParam('regionsToSelect', null);
 
         if (null === $regions) {
             try {
