@@ -22,7 +22,7 @@ class RegionRepository
    */
   public function getShopAvailable(){
 
-    $response = CoreClient::getInstance()->query('geo.get-shop-available', array(), array());
+    $response = CoreClient::getInstance()->query('geo.get-shop-available', array('show_in_menu ' => true), array());
 
     if(!is_array($response) || !isset($response[0])){
       return array();
