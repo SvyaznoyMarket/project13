@@ -88,4 +88,13 @@ class Repository {
 
         $this->client->addQuery('geo/get-shop-available', array(), array(), $callback);
     }
+
+    /**
+     * @param $callback
+     */
+    public function prepareShowInMenuCollection($callback) {
+        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args()));
+
+        $this->client->addQuery('geo/get-shop-available', array('show_in_menu' => true), array(), $callback);
+    }
 }

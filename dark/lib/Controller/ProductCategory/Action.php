@@ -183,7 +183,7 @@ class Action {
 
         // запрашиваем список регионов для выбора
         $shopAvailableRegions = array();
-        \RepositoryManager::getRegion()->prepareShopAvailableCollection(function($data) use (&$shopAvailableRegions) {
+        \RepositoryManager::getRegion()->prepareShowInMenuCollection(function($data) use (&$shopAvailableRegions) {
             foreach ($data as $item) {
                 $shopAvailableRegions[] = new \Model\Region\Entity($item);
             }

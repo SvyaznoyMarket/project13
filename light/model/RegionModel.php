@@ -49,7 +49,7 @@ class RegionModel
    * @throws UnexpectedValueException
    */
   public function getShopAvailable(){
-    $response = App::getCoreV2()->query('geo.get-shop-available', array(), array());
+    $response = App::getCoreV2()->query('geo.get-shop-available', array('show_in_menu' => true), array());
     if (!isset($response[0])){
       return array();
     }
