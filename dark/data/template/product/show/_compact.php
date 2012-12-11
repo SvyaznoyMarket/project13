@@ -31,14 +31,18 @@ $hasModel = (isset($hasModel) ? $hasModel : true) && $product->getModel() && (bo
 	    	<div class="fill"></div>
 	    </div>
 	    <h3><a href="<?= $product->getLink() ?>"><?= $product->getName() ?></a></h3>
-		<? if ($product->getIsBuyable()): ?>
         <div class="goodsbar mSmallBtns mR">
-            <?= $page->render('cart/_button', array('product' => $product)) ?>
+            <?= $page->render('cart/_button', array('product' => $product, 'disabled' => !$product->getIsBuyable())) ?>
         </div>
-        <? endif ?>
 	    <div class="font18 pb10 mSmallBtns">
             <span class="price"><?= $page->helper->formatPrice($product->getPrice()) ?></span> <span class="rubl">p</span>
         </div>
+        <? if (!$product->getIsBuyable() && $product->getState()->getIsShop()): ?>
+        	<div class="notBuying font12">
+                <div class="corner"><div></div></div>
+                Только в розничных магазинах
+            </div>
+		<? endif ?>
 	    <? if ($hasModel): ?>
         <a href="<?= $product->getLink() ?>">
             <div class="bListVariants">

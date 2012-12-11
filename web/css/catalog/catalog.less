@@ -207,6 +207,28 @@
   li {
     padding-bottom: 7px;
   }
+  .notBuying{
+    border:1px solid @typLightGray;
+    padding:7px;
+    position: relative;
+    .corner{
+      border-bottom: 9px solid @typLightGray;
+      border-left: 10px solid transparent;
+      border-right: 10px solid transparent;
+      height: 0;
+      position: absolute;
+      top: -9px;
+      width: 0;
+      div{
+        border-bottom: 7px solid @white;
+        border-left: 8px solid transparent;
+        border-right: 8px solid transparent;
+        bottom: -9px;
+        left: -8px;
+        position: absolute;
+      }
+    }
+  }
 }
 .goodsbox__inner{
   background: @white;
@@ -218,6 +240,11 @@
       .rounded(5px);
       .box-shadow(0 0 6px 2px @typLightGray);
       behavior: url('@{pie}');
+  }
+  .notBuying{
+    .corner{
+      right: 8px;
+    }
   }
 }
 .goodsboxlink {
@@ -324,6 +351,11 @@
     margin-left: 14px;
     padding: 0px 0px 1px;
   }
+  .notBuying{
+    .corner{
+      left: 8px;
+    }
+  }
 } 
 .goodsbar {
   height: 25px;
@@ -347,6 +379,11 @@
       width: 37px;
       &:hover, &.link1active {
         background: url("@{catalogSprite-url}") -102px 0 no-repeat;
+      }
+      &.disabled{
+        background: url("@{catalogSprite-url}") -64px -26px no-repeat;
+        height: 24px;
+        width: 37px;
       }
     }
   }

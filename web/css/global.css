@@ -3762,6 +3762,28 @@
   .goodsbox li {
     padding-bottom: 7px;
   }
+  .goodsbox .notBuying {
+    border: 1px solid #e6e6e6;
+    padding: 7px;
+    position: relative;
+  }
+  .goodsbox .notBuying .corner {
+    border-bottom: 9px solid #e6e6e6;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    height: 0;
+    position: absolute;
+    top: -9px;
+    width: 0;
+  }
+  .goodsbox .notBuying .corner div {
+    border-bottom: 7px solid #ffffff;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    bottom: -9px;
+    left: -8px;
+    position: absolute;
+  }
   .goodsbox__inner {
     background: #ffffff;
     cursor: pointer;
@@ -3777,6 +3799,9 @@
     -moz-box-shadow: 0 0 6px 2px #e6e6e6;
     box-shadow: 0 0 6px 2px #e6e6e6;
     behavior: url('/css/common/PIE.htc');
+  }
+  .goodsbox__inner .notBuying .corner {
+    right: 8px;
   }
   .goodsboxlink {
     display: block;
@@ -3881,6 +3906,9 @@
     margin-left: 14px;
     padding: 0px 0px 1px;
   }
+  .goodsline .notBuying .corner {
+    left: 8px;
+  }
   .goodsbar {
     height: 25px;
     width: 111px;
@@ -3905,6 +3933,11 @@
   .goodsbar a.link1:hover,
   .goodsbar a.link1.link1active {
     background: url("/css/catalog/img/catalogSprite.png") -102px 0 no-repeat;
+  }
+  .goodsbar a.link1.disabled {
+    background: url("/css/catalog/img/catalogSprite.png") -64px -26px no-repeat;
+    height: 24px;
+    width: 37px;
   }
   .font18.mSmallBtns {
     line-height: 24px;
