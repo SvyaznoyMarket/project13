@@ -99,7 +99,7 @@ class regionActions extends myActions
   {
     $this->forward404Unless($request->isXmlHttpRequest());
 
-    $regions = RepositoryManager::getRegion()->getShopAvailable();
+    $regions = RepositoryManager::getRegion()->getShowInMenu();
 
     $return = array();
     foreach ($regions as $region)
