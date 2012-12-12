@@ -1168,12 +1168,12 @@ function MapYandexWithShops( center, templateIWnode, DOMid ) {
     }
     this.showCluster = function( argmarkers ){
         // console.log('cluster!')
-        mapContainer.show()
-        mapWS.container.fitToViewport()
+        // mapContainer.show()
+        // mapWS.container.fitToViewport()
         mapWS.setCenter([center.latitude, center.longitude])
         self.clear()
         markers = argmarkers
-        clusterer = new ymaps.Clusterer({clusterDisableClickZoom: false, maxZoom:8});
+        clusterer = new ymaps.Clusterer({clusterDisableClickZoom: false, maxZoom:8, synchAdd:true});
         $.each( markers, function(i, item) {           
             // Создаем метку и задаем изображение для ее иконки
             var tmpitem = {

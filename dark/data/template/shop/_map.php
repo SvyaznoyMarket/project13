@@ -19,9 +19,9 @@
 
     <? if ((bool)$markers): ?>
     <div class='bMapShops__eContent'>
-
         <h2 class='bMapShops__eTitle'>Магазины Enter на карте</h2>
-        <div id="region_map-container" class='bMapShops__eMapWrap' style="width: auto; height: 490px;"></div>
+        <div style="width: 218px;" class="bMapShops__eMapCityList fl">s</div>
+        <div id="region_map-container" class='bMapShops__eMapWrap' style="height: 490px;"></div>
     </div>
     <? endif ?>
 
