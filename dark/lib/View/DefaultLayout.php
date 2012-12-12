@@ -58,7 +58,7 @@ class DefaultLayout extends Layout {
             try {
                 $categories = \RepositoryManager::getProductCategory()->getRootCollection();
             } catch (\Exception $e) {
-                \App::$exception = $e;
+                \App::exception()->add($e);
                 \App::logger()->error($e);
 
                 $categories = array();
@@ -81,7 +81,7 @@ class DefaultLayout extends Layout {
         try {
             $response = $client->send('footer_default');
         } catch (\Exception $e) {
-            \App::$exception = $e;
+            \App::exception()->add($e);
             \App::logger()->error($e);
 
             $response = array('content' => '');

@@ -37,7 +37,7 @@ class InfoAction {
                     \App::user()->setEntity(new \Model\User\Entity($data));
                 }
             }, function (\Exception $e) {
-                \App::$exception = null;
+                \App::exception()->remove($e);
                 $token = \App::user()->removeToken();
                 throw new \Exception\AccessDeniedException(sprintf('Время действия токена %s истекло', $token));
             });

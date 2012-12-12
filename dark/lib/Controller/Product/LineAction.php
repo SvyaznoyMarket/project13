@@ -25,7 +25,7 @@ class LineAction {
         try {
             $globalProducts = $productRepository->getCollectionById($productInLineId);
         } catch (\Exception $e) {
-            \App::$exception = $e;
+            \App::exception()->add($e);
             \App::logger()->error($e);
 
             $globalProducts = array();
@@ -48,7 +48,7 @@ class LineAction {
             try {
                 $parts = $productRepository->getCollectionById($partId);
             } catch (\Exception $e) {
-                \App::$exception = $e;
+                \App::exception()->add($e);
                 \App::logger()->error($e);
 
                 $parts = array();

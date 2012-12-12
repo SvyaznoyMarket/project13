@@ -25,7 +25,7 @@ class MainMenuAction {
         try {
             $categories = $repository->getTreeCollection($region, 3);
         } catch (\Exception $e) {
-            \App::$exception = $e;
+            \App::exception()->add($e);
             \App::logger()->error($e);
 
             $categories = array();

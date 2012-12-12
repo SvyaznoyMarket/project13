@@ -22,7 +22,7 @@ class IndexAction {
                     \App::user()->setEntity(new \Model\User\Entity($data));
                 }
             }, function (\Exception $e) {
-                \App::$exception = null;
+                \App::exception()->remove($e);
                 $token = \App::user()->removeToken();
                 throw new \Exception\AccessDeniedException(sprintf('Время действия токена %s истекло', $token));
             });
@@ -100,7 +100,7 @@ class IndexAction {
             try {
                 $products = $repository->getCollectionById(array_merge($accessoriesId, $relatedId, $partsId));
             } catch (\Exception $e) {
-                \App::$exception = $e;
+                \App::exception()->add($e);
                 \App::logger()->error($e);
 
                 $products = array();
@@ -143,7 +143,7 @@ class IndexAction {
                         );
                     }
                 } catch (\Exception $e) {
-                    \App::$exception = $e;
+                    \App::exception()->add($e);
                     \App::logger()->error($e);
 
                     $shopsWithQuantity = array();
@@ -182,7 +182,7 @@ class IndexAction {
         try {
             $productType = $category ? \RepositoryManager::getCreditBank()->getCreditTypeByCategoryToken($category->getToken()) : '';
         } catch (\Exception $e) {
-            \App::$exception = $e;
+            \App::exception()->add($e);
             \App::logger()->error($e);
 
             $productType = '';

@@ -5,8 +5,8 @@ if (isset($response) && (200 != $response->getStatusCode())) {
     $debug->add('status', $response->getStatusCode(), 150, \Debug\Collector::TYPE_ERROR);
 }
 
-if (\App::$exception instanceof \Exception) {
-    $debug->add('error', \App::$exception, 149, \Debug\Collector::TYPE_ERROR);
+if ((bool)\App::exception()->all()) {
+    $debug->add('error', implode("\n", array_map(function($e) { return (string)$e; }, \App::exception()->all())), 149, \Debug\Collector::TYPE_ERROR);
 }
 
 $debug->add('id', \App::$id, 140);
