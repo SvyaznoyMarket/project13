@@ -421,7 +421,7 @@
 
   </div>
 </div>
-<?php elseif ($product->getIsShop()): ?>
+<?php elseif ($product->getState()->getIsShop()): ?>
 <!-- shopPopup -->
 <script type="text/html" id="mapInfoBlock">
   <div class="bMapShops__ePopupRel">
