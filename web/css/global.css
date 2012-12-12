@@ -6192,13 +6192,16 @@
     zoom: 1;
   }
   .bMapShops__eContent {
-    height: 560px;
+    height: 490px;
     overflow: hidden;
   }
   .bMapShops__eMapCityList {
     height: 100%;
     overflow-y: scroll;
     width: 218px;
+  }
+  .bMapShops__eMapCityList_city {
+    padding: 3px 7px;
   }
   .bMap__eContainer {
     padding: 1px;

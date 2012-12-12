@@ -13,26 +13,23 @@
         <div class='bMapShops__eRegion font14 width290'>
             <p>У нас 58 магазинов в 32 городах России.</p>
             <p>А доставить вашу покупку мы можем даже туда, где нас нет: во многих городах нам помогают с доставкой проверенные транспортные компании.</p>
-<!--
-            <? if ((bool)$shopAvailableRegions): ?>
-            <div class='bMapShops__eRegionText'>Enter в регионах:</div>
-            <div class="selectbox selectbox170 fl"><i></i>
-                <select id="region-select" class="styled" name="region">
-                <? foreach ($shopAvailableRegions as $region): ?>
-                    <option data-url="<?= $page->url('shop.region', array('regionId' => $region->getId())) ?>"<?php if ($region->getId() == $currentRegion->getId()): ?> selected="selected"<? endif ?> value="<?= $region->getId() ?>"><?= $region->getName() ?></option>
-                <? endforeach ?>
-                </select>
-            </div>
-            <? endif ?>
--->
+
         </div>
         <img class="bMapShops__eImage" src="/images/shop-h1.png" alt="shopPageLogo" />
     </div>
 
     <? if ((bool)$markers): ?>
+    <h2 class='bMapShops__eTitle'>Магазины Enter на карте</h2>
     <div class='bMapShops__eContent'>
-        <h2 class='bMapShops__eTitle'>Магазины Enter на карте</h2>
-        <div style="width: 218px;" class="bMapShops__eMapCityList fl">s</div>
+        <? if ((bool)$shopAvailableRegions): ?>
+        <ul style="width: 218px;" class="bMapShops__eMapCityList fl">
+            <? foreach ($shopAvailableRegions as $region): ?>
+            <li class="font16 bMapShops__eMapCityList_city">
+                <a href="#" ref="<?=$region->getId()?>"><?= $region->getName() ?></a>
+            </li>
+            <? endforeach ?>
+        </ul>
+        <? endif ?>
         <div id="region_map-container" class='bMapShops__eMapWrap' style="height: 490px;"></div>
     </div>
     <? endif ?>
