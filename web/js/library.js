@@ -1191,7 +1191,8 @@ function MapYandexWithShops( center, templateIWnode, DOMid ) {
                 }
             )
             clusterer.add(marker)
-            
+            markers[i].ref = marker
+            // console.log(markers)
         })
         var myBalloonLayout = ymaps.templateLayoutFactory.createClass(
             templateIWnode.prop('innerHTML').replace(/<%=([a-z]+)%>/g, '\$[properties.$1]')
@@ -1207,6 +1208,10 @@ function MapYandexWithShops( center, templateIWnode, DOMid ) {
         })
         mapWS.geoObjects.add(clusterer);
         mapWS.setZoom(4)
+    }
+
+    this.chZoomCenter = function( center, zoom ) {
+        mapWS.setCenter([center.latitude, center.longitude], zoom, { checkZoomRange: true, duration:800 } )
     }
 
     this.closeMap = function( callback ) {

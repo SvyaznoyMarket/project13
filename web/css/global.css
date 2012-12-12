@@ -6201,6 +6201,7 @@
     width: 218px;
   }
   .bMapShops__eMapCityList_city {
+    cursor: pointer;
     padding: 3px 7px;
   }
   .bMap__eContainer {

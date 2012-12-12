@@ -24,8 +24,8 @@
         <? if ((bool)$shopAvailableRegions): ?>
         <ul style="width: 218px;" class="bMapShops__eMapCityList fl">
             <? foreach ($shopAvailableRegions as $region): ?>
-            <li class="font16 bMapShops__eMapCityList_city">
-                <a href="#" ref="<?=$region->getId()?>"><?= $region->getName() ?></a>
+            <li class="font16 bMapShops__eMapCityList_city" ref="<?=$region->getId()?>">
+                <?= $region->getName() ?>
             </li>
             <? endforeach ?>
         </ul>
