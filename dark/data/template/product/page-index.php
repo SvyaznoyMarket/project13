@@ -410,7 +410,18 @@
   </div>
 </div>
 <!-- /Media -->
+<?php if ($product->getIsBuyable()): ?>
+<div id="order1click-container" class="bMobDown mBR5 mW2 mW900" style="display: none">
+  <div class="bMobDown__eWrap">
+    <div class="bMobDown__eClose close"></div>
+    <h2>Покупка в 1 клик!</h2>
+    <div class="clear line pb20"></div>
 
+    <form id="order1click-form" action="<?= $page->url('order.1click', array('product' => $product->getBarcode())) ?>" method="post"></form>
+
+  </div>
+</div>
+<?php elseif ($product->getIsShop()): ?>
 <!-- shopPopup -->
 <script type="text/html" id="mapInfoBlock">
   <div class="bMapShops__ePopupRel">
@@ -440,17 +451,8 @@
   </div>
 </div>
 <!-- /shopPopup -->
+<?php endif; ?>
 
-<div id="order1click-container" class="bMobDown mBR5 mW2 mW900" style="display: none">
-  <div class="bMobDown__eWrap">
-    <div class="bMobDown__eClose close"></div>
-    <h2>Покупка в 1 клик!</h2>
-    <div class="clear line pb20"></div>
-
-    <form id="order1click-form" action="<?= $page->url('order.1click', array('product' => $product->getBarcode())) ?>" method="post"></form>
-
-  </div>
-</div>
 
 <div id="ajaxgoods" class="popup width230" style="display: none">
   <div  style="padding: 15px 15px 20px 5px">
