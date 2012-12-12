@@ -129,11 +129,19 @@ class Action {
             });
         }
 
-        // запрашиваем список регионов для выбора
+        // запрашиваем список регионов, где есть магазины
         $shopAvailableRegions = array();
         \RepositoryManager::getRegion()->prepareShopAvailableCollection(function($data) use (&$shopAvailableRegions) {
             foreach ($data as $item) {
                 $shopAvailableRegions[] = new \Model\Region\Entity($item);
+            }
+        });
+
+        // запрашиваем список регионов для выбора
+        $regionsToSelect = array();
+        \RepositoryManager::getRegion()->prepareShowInMenuCollection(function($data) use (&$regionsToSelect) {
+            foreach ($data as $item) {
+                $regionsToSelect[] = new \Model\Region\Entity($item);
             }
         });
 
@@ -146,8 +154,6 @@ class Action {
         if (!$currentRegion) {
             throw new \Exception\NotFoundException(sprintf('Region #%s not found', $regionId));
         }
-
-        $regions = $shopAvailableRegions;
 
         // подготовка 2-го пакета запросов
 
@@ -191,7 +197,7 @@ class Action {
         $page->setParam('shopAvailableRegions', $shopAvailableRegions);
         $page->setParam('rootCategories', $rootCategories);
         $page->setParam('currentRegion', $currentRegion);
-        $page->setParam('regions', $regions);
+        $page->setParam('regionsToSelect', $regionsToSelect);
         $page->setParam('shops', $shops);
         $page->setParam('markers', $markers);
 
@@ -230,10 +236,10 @@ class Action {
         }
 
         // запрашиваем список регионов для выбора
-        $shopAvailableRegions = array();
-        \RepositoryManager::getRegion()->prepareShopAvailableCollection(function($data) use (&$shopAvailableRegions) {
+        $regionsToSelect = array();
+        \RepositoryManager::getRegion()->prepareShowInMenuCollection(function($data) use (&$regionsToSelect) {
             foreach ($data as $item) {
-                $shopAvailableRegions[] = new \Model\Region\Entity($item);
+                $regionsToSelect[] = new \Model\Region\Entity($item);
             }
         });
 
@@ -282,7 +288,7 @@ class Action {
         }
 
         $page = new \View\Shop\ShowPage();
-        $page->setParam('shopAvailableRegions', $shopAvailableRegions);
+        $page->setParam('regionsToSelect', $regionsToSelect);
         $page->setParam('rootCategories', $rootCategories);
         $page->setParam('currentRegion', $currentRegion);
         $page->setParam('shop', $shop);

@@ -159,7 +159,7 @@ class OrderStep1Form extends BaseOrderForm
 
     $this->disableCSRFProtection();
 
-    $regions = RepositoryManager::getRegion()->getShopAvailable();
+    $regions = RepositoryManager::getRegion()->getShowInMenu();
     $region_choises = array();
     foreach ($regions as $region)
     {

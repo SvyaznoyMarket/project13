@@ -113,11 +113,11 @@ class DefaultLayout extends Layout {
 
     public function slotRegionSelection() {
         /** @var $regions \Model\Region\Entity */
-        $regions = $this->getParam('shopAvailableRegions', null);
+        $regions = $this->getParam('regionsToSelect', null);
 
         if (null === $regions) {
             try {
-                $regions = \RepositoryManager::getRegion()->getShopAvailableCollection();
+                $regions = \RepositoryManager::getRegion()->getShowInMenuCollection();
             } catch (\Exception $e) {
                 \App::logger()->error($e);
 

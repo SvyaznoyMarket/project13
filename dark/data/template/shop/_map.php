@@ -1,9 +1,9 @@
 <?php
 /**
- * @var $page          \View\Shop\ShowPage
- * @var $regions       \Model\Region\Entity[]
- * @var $currentRegion \Model\Region\Entity | null
- * @var $markers       array
+ * @var $page                 \View\Shop\ShowPage
+ * @var $shopAvailableRegions \Model\Region\Entity[]
+ * @var $currentRegion        \Model\Region\Entity
+ * @var $markers              array
  */
 ?>
 
@@ -13,6 +13,18 @@
         <div class='bMapShops__eRegion font14 width290'>
             <p>У нас 58 магазинов в 32 городах России.</p>
             <p>А доставить вашу покупку мы можем даже туда, где нас нет: во многих городах нам помогают с доставкой проверенные транспортные компании.</p>
+<!--
+            <? if ((bool)$shopAvailableRegions): ?>
+            <div class='bMapShops__eRegionText'>Enter в регионах:</div>
+            <div class="selectbox selectbox170 fl"><i></i>
+                <select id="region-select" class="styled" name="region">
+                <? foreach ($shopAvailableRegions as $region): ?>
+                    <option data-url="<?= $page->url('shop.region', array('regionId' => $region->getId())) ?>"<?php if ($region->getId() == $currentRegion->getId()): ?> selected="selected"<? endif ?> value="<?= $region->getId() ?>"><?= $region->getName() ?></option>
+                <? endforeach ?>
+                </select>
+            </div>
+            <? endif ?>
+-->
         </div>
         <img class="bMapShops__eImage" src="/images/shop-h1.png" alt="shopPageLogo" />
     </div>

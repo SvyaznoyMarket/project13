@@ -88,4 +88,29 @@ class Repository {
 
         $this->client->addQuery('geo/get-shop-available', array(), array(), $callback);
     }
+
+    /**
+     * @return Entity[]
+     */
+    public function getShowInMenuCollection() {
+        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args()));
+
+        $response = $this->client->query('geo/get-menu-cities');
+
+        $collection = array();
+        foreach ($response as $data) {
+            $collection[] = new Entity($data);
+        }
+
+        return $collection;
+    }
+
+    /**
+     * @param $callback
+     */
+    public function prepareShowInMenuCollection($callback) {
+        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args()));
+
+        $this->client->addQuery('geo/get-menu-cities', array(), array(), $callback);
+    }
 }

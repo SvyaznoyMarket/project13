@@ -625,8 +625,8 @@ class order_Actions extends myActions
       $row = each($service);
       $serviceObj = $row['value'];
 
-      if ($serviceObj->getQuantity() > 0) {
-          $servicesInCart[] = array('id' => $serviceId, 'quantity' => $serviceObj->getQuantity(), 'product_id' => $serviceObj->getRelatedProductId());
+      if ($serviceObj->getQuantity() > 0 && !$serviceObj->getRelatedProductId()) {
+          $servicesInCart[] = array('id' => $serviceId, 'quantity' => $serviceObj->getQuantity()/*, 'product_id' => $serviceObj->getRelatedProductId()*/);
       }
 
     }
@@ -895,8 +895,8 @@ class order_Actions extends myActions
 
       $tmp = $row['value'];
 
-      if ($tmp->getQuantity() > 0) {
-        $servicesInCart[] = array('id' => $serviceId, 'quantity' => $tmp->getQuantity(), 'product_id' => $tmp->getRelatedProductId());
+      if ($tmp->getQuantity() > 0 && !$tmp->getRelatedProductId()) {
+        $servicesInCart[] = array('id' => $serviceId, 'quantity' => $tmp->getQuantity()/*, 'product_id' => $tmp->getRelatedProductId()*/);
       }
     }
 

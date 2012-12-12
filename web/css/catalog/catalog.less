@@ -219,6 +219,11 @@
       .box-shadow(0 0 6px 2px @typLightGray);
       behavior: url('@{pie}');
   }
+  .notBuying{
+    .corner{
+      right: 8px;
+    }
+  }
 }
 .goodsboxlink {
   display: block;
@@ -324,6 +329,11 @@
     margin-left: 14px;
     padding: 0px 0px 1px;
   }
+  .notBuying{
+    .corner{
+      left: 8px;
+    }
+  }
 } 
 .goodsbar {
   height: 25px;
@@ -347,6 +357,11 @@
       width: 37px;
       &:hover, &.link1active {
         background: url("@{catalogSprite-url}") -102px 0 no-repeat;
+      }
+      &.disabled{
+        background: url("@{catalogSprite-url}") -64px -26px no-repeat;
+        height: 24px;
+        width: 37px;
       }
     }
   }

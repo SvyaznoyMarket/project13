@@ -13,8 +13,8 @@ class regionComponents extends myComponents
 
   public function executeSelect()
   {
-    $num_row = 3;
-    $this->regions = RepositoryManager::getRegion()->getShopAvailable();
+    $num_row = 4;
+    $this->regions = RepositoryManager::getRegion()->getShowInMenu();
 
     $this->columns_count = array();
     $count = count($this->regions);

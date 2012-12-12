@@ -27,8 +27,14 @@ $gaEvent = isset($gaEvent) ? $gaEvent : null;
 	    </div>
 	    <h3><a href="<?php echo $product->getLink() ?>"<?php if (!empty($gaEvent)) echo ' data-event="'.$gaEvent.'" data-title="Переход по ссылке" class="gaEvent"'; ?>><?php echo $product->getName() ?></a></h3>
 		<div class="goodsbar mSmallBtns mR">
-          <?php echo $page->render('cart/_button', array('product' => $product)) ?>
+          <?= $page->render('cart/_button', array('product' => $product, 'disabled' => !$product->getIsBuyable())) ?>
         </div>
 	    <div class="font18 pb10 mSmallBtns"><span class="price"><?php echo $page->helper->formatPrice($product->getPrice()) ?></span> <span class="rubl">p</span></div>
+	    <? if (!$product->getIsBuyable() && $product->getState()->getIsShop()): ?>
+        	<div class="notBuying font12">
+                <div class="corner"><div></div></div>
+                Только в розничных магазинах
+            </div>
+		<? endif ?>
     </div>
 </div>
