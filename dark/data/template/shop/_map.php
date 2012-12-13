@@ -21,10 +21,10 @@
     <? if ((bool)$markers): ?>
     <h2 class='bMapShops__eTitle'><a href="#">Магазины Enter на карте</a></h2>
     <script type="text/html" id="shopInCity">
-            <li><p><%=name%></p>
-                <span><%=regtime%></span><br>
-                <a href="<%=link%>" class="bGrayButton shopchoose">Перейти к магазину</a>
-            </li>
+        <li class="shopInCity" ref="<%=id%>"><p><%=name%></p>
+            <span><%=regtime%></span><br>
+            <a href="<%=link%>" class="bGrayButton shopchoose">Перейти к магазину</a>
+        </li>
     </script>
     <div class='bMapShops__eContent'>
         <? if ((bool)$shopAvailableRegions): ?>
@@ -32,7 +32,7 @@
             <? foreach ($shopAvailableRegions as $region): ?>
             <li class="font16 bMapShops__eMapCityList_city" ref="<?=$region->getId()?>">
                 <?= $region->getName() ?>
-                <ul class="font14 shopInCity">
+                <ul class="font14">
                 </ul>
             </li>
             <? endforeach ?>

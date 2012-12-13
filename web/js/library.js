@@ -1143,9 +1143,8 @@ function MapYandexWithShops( center, templateIWnode, DOMid ) {
                     iconImageOffset: [-19, -57] 
                 }
             )
-            
             myCollection.add(marker)
-            markers[i].ref = marker
+            markers[item.id].ref = marker
         })
 // console.info(markers)        
         // Создаем шаблон для отображения контента балуна         
@@ -1167,7 +1166,9 @@ function MapYandexWithShops( center, templateIWnode, DOMid ) {
             mapWS.setBounds( bounds )
         }
         else{
-            mapWS.setCenter([markers[0].latitude, markers[0].longitude], 15, { checkZoomRange: true, duration:800 } )
+            $.each( markers, function(i, item) {
+                mapWS.setCenter([markers[i].latitude, markers[i].longitude], 15, { checkZoomRange: true, duration:800 } )
+            })
         }    
             
     }
@@ -1177,9 +1178,9 @@ function MapYandexWithShops( center, templateIWnode, DOMid ) {
         // mapWS.container.fitToViewport()
         mapWS.setCenter([center.latitude, center.longitude])
         self.clear()
-        markers = argmarkers
+        var dots = argmarkers
         clusterer = new ymaps.Clusterer({clusterDisableClickZoom: false, maxZoom:8, synchAdd:true});
-        $.each( markers, function(i, item) {           
+        $.each( dots, function(i, item) {           
             // Создаем метку и задаем изображение для ее иконки
             var tmpitem = {
                 id: item.id,
@@ -1196,8 +1197,8 @@ function MapYandexWithShops( center, templateIWnode, DOMid ) {
                 }
             )
             clusterer.add(marker)
-            markers[i].ref = marker
-            // console.log(markers)
+            dots[i].ref = marker
+            // console.log(dots)
         })
         var myBalloonLayout = ymaps.templateLayoutFactory.createClass(
             templateIWnode.prop('innerHTML').replace(/<%=([a-z]+)%>/g, '\$[properties.$1]')

@@ -48,23 +48,43 @@ $(document).ready(function() {
 
 	$('div.map-google-link:first', marketfolio ).trigger('click')
 
-	if( $('#map-markers').length ) { // allshops page
-		// $('#region-select').bind('change', function() {
-		// 	window.location = $(this).find('option:selected').data('url')
-		// })
+	if( $('#map-markers').length ) {
 		var allshops = $('#map-markers').data('content')
+
+		var hoverTimer = { 'timer': null, 'id': 0 }
+	    $('.bMapShops__eMapCityList ul').delegate('li', 'hover', function() {
+	        var id = $(this).attr('ref')//$(this).data('id')
+	        if( hoverTimer.timer ) {
+	            clearTimeout( hoverTimer.timer )
+	        }
+	        if( id && id != hoverTimer.id) {
+	            hoverTimer.id = id
+	            hoverTimer.timer = setTimeout( function() {   
+	                window.regionMap.showInfobox( id )
+	            }, 350)
+	        }
+	    })
+
+	    // превращаем список магазинов в удобоваримый стек для яндекс карт
+	    function getShopsStack(shops) {
+			var shopsStack = {}
+			for( var sh in shops ){
+				shopsStack[ shops[sh].id ] = shops[sh]
+			}
+			return shopsStack
+	    }
 
 		var cityHandler = function(){
 			// show all city
 			$('.bMapShops__eTitle').click(function(){
-				$('.bMapShops__eMapCityList ul').empty()
+				$('.bMapShops__eMapCityList_city ul').empty()
 				window.regionMap.showCluster(  allshops )
 				return false
 			})
 			// show current city
-			$('.bMapShops__eMapCityList li').click( function(){
+			$('.bMapShops__eMapCityList_city').click( function(){
 				var curCity = []
-				$('.bMapShops__eMapCityList ul').empty()
+				$('.bMapShops__eMapCityList_city ul').empty()
 				for (var i in allshops){
 					if (allshops[i].region_id == $(this).attr('ref')){
 						var shopTpl = tmpl('shopInCity', allshops[i])
@@ -73,7 +93,7 @@ $(document).ready(function() {
 					}
 				}
 				if (curCity.length) {
-					window.regionMap.showMarkers(  curCity )
+					window.regionMap.showMarkers(  getShopsStack(curCity) )
 				}
 				else{
 					alert('В этом городе пока еще нет наших магазинов')
