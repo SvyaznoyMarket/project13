@@ -53,25 +53,34 @@ $(document).ready(function() {
 		// 	window.location = $(this).find('option:selected').data('url')
 		// })
 		var allshops = $('#map-markers').data('content')
-		var cityHoverHandler = function(){
-			$('.bMapShops__eMapCityList').delegate('li','click', function(){
+
+		var cityHandler = function(){
+			// show all city
+			$('.bMapShops__eTitle').click(function(){
+				$('.bMapShops__eMapCityList ul').empty()
+				window.regionMap.showCluster(  allshops )
+				return false
+			})
+			// show current city
+			$('.bMapShops__eMapCityList li').click( function(){
 				var curCity = []
+				$('.bMapShops__eMapCityList ul').empty()
 				for (var i in allshops){
 					if (allshops[i].region_id == $(this).attr('ref')){
+						var shopTpl = tmpl('shopInCity', allshops[i])
+						$(this).find('ul').append(shopTpl)
 						curCity.push(allshops[i])
 					}
 				}
 				if (curCity.length) {
-					var mapCenter = calcMCenter( curCity )
-					window.regionMap.chZoomCenter( mapCenter, '10')
+					window.regionMap.showMarkers(  curCity )
 				}
 				else{
-					alert('здесь магазнов нет!')
+					alert('В этом городе пока еще нет наших магазинов')
 				}
 			})
 		}
 
-		// console.info($('#map-markers').data('content'))
 		function updateTmlt( marker ) {
 			$('#map-info_window-container').html(
 				tmpl('infowindowtmpl', marker )
@@ -80,7 +89,7 @@ $(document).ready(function() {
 		var mapCenter =  calcMCenter( allshops )
 		var mapCallback = function() {
 			window.regionMap.showCluster(  allshops )
-			cityHoverHandler()
+			cityHandler()
 		}
 		MapInterface.init( mapCenter, 'region_map-container', mapCallback, updateTmlt )
 	}

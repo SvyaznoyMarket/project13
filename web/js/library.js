@@ -1163,8 +1163,13 @@ function MapYandexWithShops( center, templateIWnode, DOMid ) {
         })
         mapWS.geoObjects.add( myCollection )
         var bounds = myCollection.getBounds() 
-        if( bounds[0][0] !== bounds[1][0] )   // cause setBounds() hit a bug if only one point    
+        if( bounds[0][0] !== bounds[1][0] ){ // cause setBounds() hit a bug if only one point  
             mapWS.setBounds( bounds )
+        }
+        else{
+            mapWS.setCenter([markers[0].latitude, markers[0].longitude], 15, { checkZoomRange: true, duration:800 } )
+        }    
+            
     }
     this.showCluster = function( argmarkers ){
         // console.log('cluster!')

@@ -3,7 +3,7 @@ window.filesWithVersion = {
 "ports.js":1354786359,
 "app.oneclick.js":1355314881,
 "infopages.js":1351763597,
-"library.js":1355323932,
+"library.js":1355402481,
 "app.cart.js":1354099186,
 "bigjquery.min.js":1354085035,
 "welcome.js":1351500454,
@@ -12,5 +12,5 @@ window.filesWithVersion = {
 "app.order.js":1355314881,
 "app.product.comment.list.js":1351763596,
 "app.product.js":1355143273,
-"app.shop.js":1355324452
+"app.shop.js":1355404254
 }
