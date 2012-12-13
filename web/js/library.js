@@ -1179,7 +1179,7 @@ function MapYandexWithShops( center, templateIWnode, DOMid ) {
         mapWS.setCenter([center.latitude, center.longitude])
         self.clear()
         var dots = argmarkers
-        clusterer = new ymaps.Clusterer({clusterDisableClickZoom: false, maxZoom:8, synchAdd:true});
+        clusterer = new ymaps.Clusterer({clusterDisableClickZoom: false, maxZoom:8, synchAdd:true, minClusterSize:1});
         $.each( dots, function(i, item) {           
             // Создаем метку и задаем изображение для ее иконки
             var tmpitem = {
