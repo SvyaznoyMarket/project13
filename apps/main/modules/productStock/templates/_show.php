@@ -26,8 +26,8 @@ $json = array (
 <div class='bInShop' id="noDlvr" style="display:none">
 	<div class='bInShop__eTop'>
 		<div class='bInShopError'>
-			<h2>В этом регионе выбранный товар не найден.<br>Отличный повод посетить другой город :)</h2>
-			<div class='bInShop__eSelectorsWrap'>
+            <h2>Сейчас товара нет в вашем городе,<br>но есть возможность купить его в другом городе :)</h2>
+            <div class='bInShop__eSelectorsWrap'>
 				<?php echo sfContext::getInstance()->getUser()->getRegion('name') ?><br/>
 				<a class='bGrayButton jsChangeRegion' href="">Другой город</a>
 			</div>
