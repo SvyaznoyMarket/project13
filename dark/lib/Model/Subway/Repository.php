@@ -31,4 +31,17 @@ class Repository {
 
         return $collection;
     }
+
+    /**
+     * @param \Model\Region\Entity $region
+     * @param $done
+     * @param $fail
+     */
+    public function prepareCollectionByRegion(\Model\Region\Entity $region, $done, $fail = null) {
+        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args()));
+
+        $this->client->addQuery('subway/get', array(
+            'geo_id' => $region->getId(),
+        ), array(), $done, $fail);
+    }
 }

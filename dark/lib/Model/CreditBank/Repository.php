@@ -67,4 +67,11 @@ class Repository
         return $collection;
     }
 
+    public function prepareCollection($done, $fail = null) {
+        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args()));
+
+        $this->client->addQuery('payment-method/get-credit-bank', array(
+            'geo_id' => \App::user()->getRegion()->getId(),
+        ), array(), $done, $fail);
+    }
 }

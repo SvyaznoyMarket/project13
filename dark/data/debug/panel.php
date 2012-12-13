@@ -49,7 +49,7 @@ $debug->add('query', $queryString, 80);
 
 if (!\App::request()->isXmlHttpRequest()) {
 ?>
-    <span draggable="true" style="position: fixed; bottom: 10px; left: 2px; z-index: 999; background: #000000; color: #00ff00; opacity: 0.9; padding: 4px 6px; border-radius: 5px; font-size: 11px; font-weight: normal; font-family: Courier New; box-shadow: 0 0 10px rgba(0,0,0,0.5);">
+    <span draggable="true" style="position: fixed; bottom: 30px; left: 2px; z-index: 999; background: #000000; color: #00ff00; opacity: 0.9; padding: 4px 6px; border-radius: 5px; font-size: 11px; font-weight: normal; font-family: Courier New; box-shadow: 0 0 10px rgba(0,0,0,0.5);">
         <span onclick="$(this).parent().remove()" style="cursor: pointer; font-size: 16px; color: #999999;" title="закрыть">&times;</span>
         <br />
 

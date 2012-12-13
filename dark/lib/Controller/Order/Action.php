@@ -8,8 +8,8 @@ class Action {
      * @return \Http\Response
      */
     public function create(\Http\Request $request) {
+        $client = \App::coreClientV2();
         $user = \App::user();
-        $cart = $user->getCart();
         $form = new \View\Order\Form();
 
         // TODO $this->getOrder()
@@ -21,48 +21,76 @@ class Action {
             return new \Http\RedirectResponse(\App::router()->generate('cart'));
         }
 
-        // станции метро
+        // подготовка пакета запросов
+
+        // запрашиваем список станций метро
+        /** @var $subwayData array */
         $subwayData = array();
         if ($user->getRegion()->getHasSubway()) {
-            foreach (\RepositoryManager::getSubway()->getCollectionByRegion($user->getRegion()) as $subway) {
-                $subwayData[] = array('val' => $subway->getId(), 'label' => $subway->getName());
-            }
+            \RepositoryManager::getSubway()->prepareCollectionByRegion($user->getRegion(), function($data) use (&$subwayData) {
+                foreach ($data as $item) {
+                    $subwayData[] = array('val' => $item['id'], 'label' => $item['name']);
+                }
+            }, function(\Exception $e) {
+                \App::exception()->remove($e);
+            });
         }
 
-        // способы оплаты
+        // запрашиваем список способов оплаты
+        /** @var $paymentMethods \Model\PaymentMethod\Entity[] */
         $paymentMethods = array();
         $selectedPaymentMethodId = null;
         $creditAllowed = \App::config()->payment['creditEnabled'] && ($user->getCart()->getTotalProductPrice()) < \App::config()->product['minCreditPrice'];
-        foreach (\RepositoryManager::getPaymentMethod()->getCollection() as $i => $paymentMethod) {
-            // кредит
-            if ($paymentMethod->getIsCredit() && !$creditAllowed) {
-                continue;
-            }
+        \RepositoryManager::getPaymentMethod()->prepareCollection(null, function($data)
+            use (
+                &$paymentMethods,
+                &$selectedPaymentMethodId,
+                $creditAllowed,
+                $user,
+                $request
+            ) {
+                foreach ($data as $i => $item) {
+                    $paymentMethod = new \Model\PaymentMethod\Entity($item);
 
-            // подарочный сертификат
-            if ($user->getRegion()->getHasTransportCompany() && $paymentMethod->isCertificate()) {
-                continue;
-            }
+                    // кредит
+                    if ($paymentMethod->getIsCredit() && !$creditAllowed) {
+                        continue;
+                    }
 
-            if ($creditAllowed && $request->cookies->get('credit_on')) {
-                if ($paymentMethod->getIsCredit()) {
-                    $selectedPaymentMethodId = $paymentMethod->getId();
+                    // подарочный сертификат
+                    if ($user->getRegion()->getHasTransportCompany() && $paymentMethod->isCertificate()) {
+                        continue;
+                    }
+
+                    if ($creditAllowed && $request->cookies->get('credit_on')) {
+                        if ($paymentMethod->getIsCredit()) {
+                            $selectedPaymentMethodId = $paymentMethod->getId();
+                        }
+                    } elseif (null == $selectedPaymentMethodId) {
+                        $selectedPaymentMethodId = $paymentMethod->getId();
+                    }
+
+                    $paymentMethods[] = $paymentMethod;
                 }
-            } elseif (null == $selectedPaymentMethodId) {
-                $selectedPaymentMethodId = $paymentMethod->getId();
+        });
+
+        // запрашиваем список кредитных банков
+        /** @var $banks \Model\CreditBank\Entity[] */
+        $banks = array();
+        \RepositoryManager::getCreditBank()->prepareCollection(function($data) use (&$banks) {
+            foreach ($data as $item) {
+                $banks[] = new \Model\CreditBank\Entity($item);
             }
-
-            $paymentMethods[] = $paymentMethod;
-        }
-
-        // банки
-        $banks = \RepositoryManager::getCreditBank()->getCollection();
+        });
         rsort($banks);
         $bankData = array();
         foreach ($banks as $bank) {
             $bankData[$bank->getId()]['name'] = $bank->getName();
             $bankData[$bank->getId()]['href'] = $bank->getLink();
         }
+
+        // выполнение пакета запросов
+        $client->execute();
 
         $page = new \View\Order\CreatePage();
 
@@ -126,20 +154,23 @@ class Action {
             }
         }
 
+        // подготовка пакета запросов
+
+        // магазины
+        /** @var $shops \Model\Shop\Entity[] */
+        $shops = array();
         // карта доставки
-        $result = \App::coreClientV2()->query('order/calc-tmp', array(
+        $deliveryCalcResult = null;
+        \App::coreClientV2()->addQuery('order/calc-tmp', array(
             'geo_id'  => $user->getRegion()->getId(),
         ), array(
             'product' => $productsInCart,
             'service' => $servicesInCart,
-        ));
+        ), function($data) use (&$deliveryCalcResult, &$shops) {
+            $deliveryCalcResult = $data;
+            $shops = array_map(function($data) { return new \Model\Shop\Entity($data); }, $deliveryCalcResult['shops']);
+        });
         //$result = json_decode(file_get_contents(\App::config()->dataDir . '/core/v2-order-calc.json'), true);
-
-        // магазины
-        /** @var $shops \Model\Shop\Entity[] */
-        $shops = array_map(function($data) { return new \Model\Shop\Entity($data); }, $result['shops']);
-
-        // подготовка пакета запросов
 
         // запрашиваем список товаров
         $productsById = array();
@@ -169,8 +200,8 @@ class Action {
         $deliveryMapView = new \View\Order\DeliveryCalc\Map();
 
         $deliveryMapView->unavailable = array();
-        if (array_key_exists('unavailable', $result)) {
-            foreach ($result['unavailable'] as $itemType => $itemIds) {
+        if (array_key_exists('unavailable', $deliveryCalcResult)) {
+            foreach ($deliveryCalcResult['unavailable'] as $itemType => $itemIds) {
                 $deliveryMapView->unavailable = array_merge($deliveryMapView->unavailable, array_map(function($id) use ($itemType) {
                     return ('products' == $itemType ? 'product' : 'service') . '-' . $id;
                 }, $itemIds));
@@ -193,7 +224,7 @@ class Action {
 
         // сборка товаров и услуг
         foreach (array('products', 'services') as $itemType) {
-            foreach ($result[$itemType] as $itemData) {
+            foreach ($deliveryCalcResult[$itemType] as $itemData) {
                 $itemData['id'] = (int)$itemData['id'];
 
                 /** @var $cartItem \Model\Cart\Product\Entity|\Model\Cart\Service\Entity|null */
@@ -311,7 +342,7 @@ class Action {
         foreach (\RepositoryManager::getDeliveryType()->getCollection() as $deliveryType) {
             $deliveryTypesById[$deliveryType->getId()] = $deliveryType;
         }
-        foreach ($result['deliveries'] as $deliveryTypeToken => $itemData) {
+        foreach ($deliveryCalcResult['deliveries'] as $deliveryTypeToken => $itemData) {
             $itemData['mode_id'] = (int)$itemData['mode_id'];
 
             $deliveryType = isset($deliveryTypesById[$itemData['mode_id']]) ? $deliveryTypesById[$itemData['mode_id']] : null;
