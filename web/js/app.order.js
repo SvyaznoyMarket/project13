@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    
+    var _gaq = window._gaq || []
     /* sertificate */
 	if( $('.orderFinal__certificate').length ) {
         var code = $(".cardNumber"),
@@ -188,7 +188,6 @@ $(document).ready(function () {
     ( function () {
         if (!$('#product_errors').length) return;
         var orderErrPopup = function( title, txt, callback ) {
-            console.log('ююю')
             var block = '<div id="orderErrPopup" class="popup">' +
                             '<div class="popupbox width290">' +
                                 '<div class="font18 pb18"> ' +txt+ '</div>'+
@@ -206,31 +205,14 @@ $(document).ready(function () {
         }
 
         var length = $('#product_errors').data('value').length
-
         if (length) {
             var checkItemQuantity = function() {
                 var dfd = $.Deferred()
 
                 $.each($('#product_errors').data('value'), function(i, item) {
-
                     if (708 == item.code) {
-
                         if (item.quantity_available > 0)
                         {
-                            // if (confirm('Вы заказали товар "'+item.product.name+'" в количестве '+item.product.quantity+' шт.'+"\n\n"+'Доступно только '+item.quantity_available+' шт.'+"\n\n"+'Заказать '+item.quantity_available+'шт?')) {
-                            //     $.ajax({
-                            //         url: item.product.deleteUrl
-                            //     }).done(function(result) {
-                            //             $.ajax({
-                            //                 url: item.product.addUrl
-                            //             }).done(function() {
-                            //                     if ((i +1) == length) dfd.resolve()
-                            //             })
-                            //         })
-                            // }
-                            // else {
-                            //     if ((i +1) == length) dfd.resolve()
-                            // }
                             _gaq.push(['_trackEvent', 'Errors', 'User error', 'Нет нужного количества товаров'])
                             orderErrPopup('Непредвиденная ошибка', 'Вы заказали товар '+item.product.name+' в количестве '+item.product.quantity+' шт. <br/ >Доступно только '+item.quantity_available+' шт.<br/ >Будет заказано '+item.quantity_available+'шт' , function(){
                                     $.ajax({
@@ -245,19 +227,6 @@ $(document).ready(function () {
                             })
                         }
                         else {
-                            // if (confirm('Товара "'+item.product.name+'" нет в наличии для выбранного способа доставки.'+"\n\n"+'Удалить товар из корзины?')) {
-                            //     $.ajax({
-                            //         url: item.product.deleteUrl
-                            //     }).done(function(result) {
-                            //         if ((i +1) == length) dfd.resolve()
-                            //     })
-                            // }
-                            // else {
-                            //     if ($('#cart-link').data('value')) {
-                            //         window.location = $('#cart-link').data('value');
-                            //     }
-                            //     dfd.reject()
-                            // }
                             _gaq.push(['_trackEvent', 'Errors', 'User error', 'Нет товара для выбранного способа доставки'])
                             orderErrPopup('Непредвиденная ошибка', 'Товара ' + item.product.name + ' нет в наличии для выбранного способа доставки.<br/>Товар будет удален из корзины.', function(){
                                 $.ajax({
@@ -269,17 +238,6 @@ $(document).ready(function () {
                         }
                     }
                     else {
-                    //else if (800 == item.code) {
-                        // if (confirm('Товар "' + item.product.name + '" недоступен для продажи.'+"\n\n"+'Удалить этот товар из корзины?')) {
-                        //     $.ajax({
-                        //         url: item.product.deleteUrl
-                        //     }).done(function() {
-                        //         if ((i +1) == length) dfd.resolve()
-                        //     })
-                        // }
-                        // else {
-                        //     if ((i +1) == length) dfd.resolve()
-                        // }
                         _gaq.push(['_trackEvent', 'Errors', 'User error', 'Товар недоступен для продажи'])
                         orderErrPopup('Непредвиденная ошибка', 'Товар ' + item.product.name + ' недоступен для продажи.<br/>Товар будет удален из корзины.', function(){
                             $.ajax({
