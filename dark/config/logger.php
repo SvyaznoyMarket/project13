@@ -6,6 +6,10 @@ return array(
     ),
 
     'timer'   => array(
-        'level' => 4,
+        'level' => 0,
+    ),
+
+    'core_v2' => array(
+        'level' => 2,
     ),
 );
