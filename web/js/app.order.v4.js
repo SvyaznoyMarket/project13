@@ -1,7 +1,7 @@
 $(document).ready(function() {
 	/* ---------------------------------------------------------------------------------------- */
 	/* COMMON DESIGN, BEHAVIOUR ONLY */
-
+	var _gaq = window._gaq || []
 	/* Custom Selectors */ 
 	$('body').delegate( '.bSelect', 'click', function() {
 		if( $(this).hasClass('mDisabled') )
@@ -126,7 +126,19 @@ $(document).ready(function() {
             }
         })(); // object SertificateCard , singleton
 
-        code.mask("999 999 999 9999 9", { completed: function(){ pin.focus() }, placeholder: "*" } )
+        // code.mask("999 999 999 9999 9", { completed: function(){ pin.focus() }, placeholder: "*" } )
+        code.bind('keyup',function(e){
+			if (((e.which>=48)&&(e.which<=57))||(e.which==8)){//если это цифра или бэкспэйс
+				if(pin.val().length==4){
+					SertificateCard.checkCard()
+				}
+			}
+			else{
+				//если это не цифра
+				var clearVal = $(this).val().replace(/\D/g,'')
+				$(this).val(clearVal)
+			}
+		})
         pin.mask("9999", { completed: SertificateCard.checkCard, placeholder: "*" } )
 
         // $.mockjax({
@@ -794,6 +806,10 @@ upi:			for( var item=0, boxitems=self.chosenBox().itemList(); item < boxitems.le
 
 		// set delivery types on the top
 		self.showForm(true)
+		var endTimePreOrder = new Date().getTime()
+		var timeSpentPreOrder = endTimePreOrder - startTime
+		// console.info(timeSpent)
+		_gaq.push(['_trackTiming', 'New order', 'JS response', timeSpentPreOrder])
 		for( var tkn in Model.deliveryTypes )
 			if( Model.deliveryTypes[tkn].type === 'standart' )
 				self.dlvrCourierEnable(true)
@@ -953,7 +969,7 @@ flds:	for( field in fieldsToValidate ) {
 				toSend.push( { name: 'order[card]', value: SertificateCard.getCode() })
 				toSend.push( { name: 'order[pin]', value: SertificateCard.getPIN() })
 			}
-
+		var startAjaxOrderTime = new Date().getTime()
 		$.ajax({
 			url: form.attr('action'),
 			timeout: 20000,
@@ -970,6 +986,9 @@ flds:	for( field in fieldsToValidate ) {
 					return
 				}
 				Blocker.bye()
+				var endAjaxOrderTime = new Date().getTime()
+				var AjaxOrderSpent = endAjaxOrderTime - startAjaxOrderTime
+				_gaq.push(['_trackTiming', 'Order complete', 'DB response', AjaxOrderSpent])
 				if( 'redirect' in data.data )
 					window.location = data.data.redirect
 			},

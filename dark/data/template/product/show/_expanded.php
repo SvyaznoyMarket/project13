@@ -49,12 +49,15 @@ $hasModel = (isset($hasModel) ? $hasModel : true) && $product->getModel() && (bo
         <div class="extrainfo">
             <span class="db font18 pb10"><b><span class="price"><?= $page->helper->formatPrice($product->getPrice()) ?></span> <span class="rubl">p</span></b></span>
 
-            <? if ($product->getIsBuyable()): ?>
             <div class="goodsbar mSmallBtns">
-                <?= $page->render('cart/_button', array('product' => $product)) ?>
+                <?= $page->render('cart/_button', array('product' => $product, 'disabled' => !$product->getIsBuyable())) ?>
             </div>
+            <? if (!$product->getIsBuyable() && $product->getState()->getIsShop()): ?>
+                <div class="notBuying font12">
+                    <div class="corner"><div></div></div>
+                    Только в розничных магазинах
+                </div>
             <? endif ?>
-
             <? if ($product->getIsBuyable()): ?>
             <noindex>
                 <ul class="bNGB__eUl">

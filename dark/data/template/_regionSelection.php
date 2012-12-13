@@ -7,7 +7,7 @@
 ?>
 
 <?php
-$rowCount = 3;
+$rowCount = 4;
 $columnCount = array();
 $count = count($regions);
 

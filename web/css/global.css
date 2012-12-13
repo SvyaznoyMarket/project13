@@ -742,6 +742,28 @@
   .noti > div {
     margin-top: 50px;
   }
+  .notBuying {
+    border: 1px solid #e6e6e6;
+    padding: 7px;
+    position: relative;
+  }
+  .notBuying .corner {
+    border-bottom: 9px solid #e6e6e6;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    height: 0;
+    position: absolute;
+    top: -9px;
+    width: 0;
+  }
+  .notBuying .corner div {
+    border-bottom: 7px solid #ffffff;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    bottom: -9px;
+    left: -8px;
+    position: absolute;
+  }
 }
 @media all {
   .bGrayButton {
@@ -2433,6 +2455,7 @@
     font-size: 16px;
   }
   .bFast__eCenter {
+    font-size: 12px;
     margin: 10px 0px;
     text-align: center;
   }
@@ -3778,6 +3801,9 @@
     box-shadow: 0 0 6px 2px #e6e6e6;
     behavior: url('/css/common/PIE.htc');
   }
+  .goodsbox__inner .notBuying .corner {
+    right: 8px;
+  }
   .goodsboxlink {
     display: block;
   }
@@ -3881,6 +3907,9 @@
     margin-left: 14px;
     padding: 0px 0px 1px;
   }
+  .goodsline .notBuying .corner {
+    left: 8px;
+  }
   .goodsbar {
     height: 25px;
     width: 111px;
@@ -3905,6 +3934,11 @@
   .goodsbar a.link1:hover,
   .goodsbar a.link1.link1active {
     background: url("/css/catalog/img/catalogSprite.png") -102px 0 no-repeat;
+  }
+  .goodsbar a.link1.disabled {
+    background: url("/css/catalog/img/catalogSprite.png") -64px -26px no-repeat;
+    height: 24px;
+    width: 37px;
   }
   .font18.mSmallBtns {
     line-height: 24px;
@@ -4066,6 +4100,9 @@
     float: left;
     padding: 0px 0px 40px 20px;
     width: 400px;
+  }
+  .goodsinfo .notBuying .corner {
+    right: 8px;
   }
   .goodsbarbig {
     height: 31px;
@@ -5231,6 +5268,11 @@
     vertical-align: top;
     width: 24px;
     zoom: 1;
+  }
+  .bBuyingLine label .payment_method_label {
+    display: inline-block;
+    font-weight: bold;
+    width: 400px;
   }
   .bBuyingLine h5 {
     color: #434343;
@@ -7467,6 +7509,35 @@
     margin: 0px auto;
     padding-top: 250px;
     width: 560px;
+  }
+}
+@media all {
+  #errUnavalible {
+    background: #ffffff;
+    height: 100%;
+  }
+  #errUnavalible .allpage {
+    background: url('/css/errors/img/unavalible.jpg') no-repeat 50% 50%;
+    height: 600px;
+    position: relative;
+    width: 640px;
+  }
+  #errUnavalible .unavaliblePageInner {
+    position: absolute;
+    left: 90px;
+    top: 200px;
+    width: 310px;
+  }
+  #errUnavalible .unavaliblePageInner h1 {
+    color: #ffa901;
+    font-size: 26px;
+    float: none;
+    width: 310px;
+  }
+  #errUnavalible .unavaliblePageInner p {
+    color: #000000;
+    font-family: 'Enter Type';
+    font-size: 18px;
   }
 }
 /*---END---СТИЛИ СТРАНИЦ ОШИБОК---*/

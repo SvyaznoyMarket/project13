@@ -38,10 +38,10 @@ class Action {
         }
 
         // запрашиваем список регионов для выбора
-        $shopAvailableRegions = array();
-        \RepositoryManager::getRegion()->prepareShopAvailableCollection(function($data) use (&$shopAvailableRegions) {
+        $regionsToSelect = array();
+        \RepositoryManager::getRegion()->prepareShowInMenuCollection(function($data) use (&$regionsToSelect) {
             foreach ($data as $item) {
-                $shopAvailableRegions[] = new \Model\Region\Entity($item);
+                $regionsToSelect[] = new \Model\Region\Entity($item);
             }
         });
 
@@ -79,7 +79,7 @@ class Action {
         $client->execute();
 
         $page = new \View\Service\IndexPage();
-        $page->setParam('shopAvailableRegions', $shopAvailableRegions);
+        $page->setParam('regionsToSelect', $regionsToSelect);
         $page->setParam('rootCategories', $rootCategories);
         $page->setParam('categories', $categories);
 
@@ -118,10 +118,10 @@ class Action {
         }
 
         // запрашиваем список регионов для выбора
-        $shopAvailableRegions = array();
-        \RepositoryManager::getRegion()->prepareShopAvailableCollection(function($data) use (&$shopAvailableRegions) {
+        $regionsToSelect = array();
+        \RepositoryManager::getRegion()->prepareShowInMenuCollection(function($data) use (&$regionsToSelect) {
             foreach ($data as $item) {
-                $shopAvailableRegions[] = new \Model\Region\Entity($item);
+                $regionsToSelect[] = new \Model\Region\Entity($item);
             }
         });
 
@@ -223,7 +223,7 @@ class Action {
         }
 
         $page = new \View\Service\CategoryPage();
-        $page->setParam('shopAvailableRegions', $shopAvailableRegions);
+        $page->setParam('regionsToSelect', $regionsToSelect);
         $page->setParam('rootCategories', $rootCategories);
         $page->setParam('category', $category);
         $page->setParam('servicesByCategory', $servicesByCategory);
@@ -264,10 +264,10 @@ class Action {
         }
 
         // запрашиваем список регионов для выбора
-        $shopAvailableRegions = array();
-        \RepositoryManager::getRegion()->prepareShopAvailableCollection(function($data) use (&$shopAvailableRegions) {
+        $regionsToSelect = array();
+        \RepositoryManager::getRegion()->prepareShowInMenuCollection(function($data) use (&$regionsToSelect) {
             foreach ($data as $item) {
-                $shopAvailableRegions[] = new \Model\Region\Entity($item);
+                $regionsToSelect[] = new \Model\Region\Entity($item);
             }
         });
 
@@ -318,7 +318,7 @@ class Action {
         }
 
         $page = new \View\Service\ShowPage();
-        $page->setParam('shopAvailableRegions', $shopAvailableRegions);
+        $page->setParam('regionsToSelect', $regionsToSelect);
         $page->setParam('rootCategories', $rootCategories);
         $page->setParam('service', $service);
 

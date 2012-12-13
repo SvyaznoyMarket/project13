@@ -105,7 +105,7 @@ class DeliveryAction {
 
         $responseData = array();
         try {
-            $response = \App::coreClientV2()->query('delivery/calc', array('geo_id' => $regionId), $params);
+            $response = \App::coreClientV2()->query('delivery/calc', array('geo_id' => $regionId, 'days_num' => 7), $params);
 
             $productData = isset($response['product_list']) ? $response['product_list'] : array();
             $productData = array_pop($productData);
