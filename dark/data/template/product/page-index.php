@@ -8,7 +8,7 @@
  * @var $kit                \Model\Product\Entity[]
  * @var $showAccessoryUpper bool
  * @var $showRelatedUpper   bool
- * @var $showroomShops      \Model\Shop\Entity
+ * @var $shopsWithQuantity  array
  */
 ?>
 
@@ -25,6 +25,22 @@
     'jsregionName' => $user->getRegion()->getName(),
     'jsstock'      => 10,
   ),  JSON_HEX_QUOT | JSON_HEX_APOS);
+
+  $availableShops = array();
+  foreach ($shopsWithQuantity as $shopWithQuantity) {
+      /** @var $shop \Model\Shop\Entity */
+      $shop = $shopWithQuantity['shop'];
+      $availableShops[] = array(
+          'id'        => $shop->getId(),
+          'name'      => $shop->getName(),
+          'address'   => $shop->getAddress(),
+          'regtime'   => $shop->getRegime(),
+          'longitude' => $shop->getLongitude(),
+          'latitude'  => $shop->getLatitude(),
+          'url'       => $page->url('shop.show', array('shopToken' => $shop->getToken(), 'regionToken' => $user->getRegion()->getToken())),
+      );
+  }
+  $jsonAvailableShops = json_encode($availableShops, JSON_HEX_QUOT | JSON_HEX_APOS);
 ?>
 <?
   $photoList = $product->getPhoto();
@@ -119,21 +135,10 @@
 
 
   <div class="fr ar pb15">
-    <? if (!$product->getIsBuyable() && $product->getState()->getIsShop()): ?>
-      <div class="vitrin">
-          <div class="line pb15"></div>
-          <p class="font18 orange">Товар очень популярный и остался только на витрине. Успей купить!</p>
-          <span><?= (count($showroomShops) == 1) ? 'Адрес магазина' : 'Адреса магазинов' ?>:</span>
-          <ul>
-              <? foreach ($showroomShops as $shop): ?>
-              <li><?= $shop->getAddress() //ссылки пока не будет, появится позже ?></li>
-              <? endforeach ?>
-          </ul>
-      </div>
-    <? else: ?>
+    
     <div class="goodsbarbig mSmallBtns" ref="<?= $product->getToken() ?>" data-value='<?= $json ?>'>
-
-      <div class='bCountSet'>
+    <? if ($product->getIsBuyable()): ?>
+    <div class='bCountSet'>
         <? if (!$user->getCart()->hasProduct($product->getId())): ?>
         <a class='bCountSet__eP' href="#">+</a><a class='bCountSet__eM' href="#">-</a>
         <? else: ?>
@@ -141,8 +146,15 @@
         <? endif ?>
         <span><?= $user->getCart()->hasProduct($product->getId()) ? $user->getCart()->getQuantityByProduct($product->getId()) : 1 ?> шт.</span>
       </div>
+    <?php endif ?>
       <?= $page->render('cart/_button', array('product' => $product, 'disabled' => !$product->getIsBuyable())) ?>
     </div>
+    <? if (!$product->getIsBuyable() && $product->getState()->getIsShop()): ?>
+      <div class="notBuying font12">
+          <div class="corner"><div></div></div>
+          Только в розничных магазинах
+      </div>
+    <? endif ?>
     <? if ($product->getIsBuyable()): ?>
     <div class="pb5"><strong>
       <a href=""
@@ -152,12 +164,32 @@
          class="red underline order1click-link-new">Купить быстро в 1 клик</a>
     </strong></div>
     <? endif ?>
-    <? endif ?>
   </div>
+  <? if (!$product->getIsBuyable() && $product->getState()->getIsShop()): ?>
+  <div class="fr ar pb15">
+
+      <div class="vitrin" id="availableShops" data-shops='<?= $jsonAvailableShops ?>'>
+        <div class="line pb15"></div>
+        <p class="font18 orange">Этот товар вы можете купить только в эт<?= (count($shopsWithQuantity) == 1) ? 'ом магазине' : 'их магазинах' ?></p>
+        <ul id="listAvalShop">
+          <? $i = 0; foreach ($shopsWithQuantity as $shopWithQuantity): $i++?>
+              <li<?= $i > 3 ? ' class="hidden"' : ''?>>
+                <a class="fr dashedLink shopLookAtMap" href="#">Посмотреть на карте</a>
+                <?= '<a class="avalShopAddr" href="'.$page->url('shop.show', array('shopToken' => $shopWithQuantity['shop']->getToken(), 'regionToken' => $user->getRegion()->getToken())).'" class="underline">'.$shopWithQuantity['shop']->getName().'</a>' ?>
+                <strong class="font12 orange db pt10"><?= ($shopWithQuantity['quantity'] > 5 ? 'есть в наличии' : ($shopWithQuantity['quantity'] > 0 ? 'осталось мало' : ($shopWithQuantity['quantityShowroom'] > 0 ? 'есть только на витрине' : ''))) ?></strong>
+              </li>
+          <? endforeach ?>
+        </ul>
+        <?php if (count($shopsWithQuantity) > 3): ?>
+          <a id="slideAvalShop" class="orange strong dashedLink font18" href="#">Еще <?=count($shopsWithQuantity)-3?> магазин<?=((count($shopsWithQuantity)-3) > 5) ? 'ов' : ( ((count($shopsWithQuantity)-3) >1 ) ? 'а' : '')?></a>
+        <?php endif ?>
+      </div>
+  </div>
+  <? endif ?>
   <div class="line pb15"></div>
 
 
-  <? if ($product->getIsBuyable() || $product->getState()->getIsShop()): ?>
+  <? if ($product->getIsBuyable()): ?>
 
   <? if ($dataForCredit['creditIsAllowed'] && !$user->getRegion()->getHasTransportCompany()) : ?>
   <div class="creditbox">
@@ -181,9 +213,10 @@
     <? else: ?>
         <p>Этот товар мы доставляем только в регионах нашего присутствия</p>
     <? endif ?>
-  <? endif ?>
+  <?php endif ?>
 
-  <div class="bDeliver2 delivery-info" id="product-id-<?= $product->getId() ?>" data-shoplink="<?= $page->url('product.stock', array('productPath' => $product->getPath())) ?>" data-calclink="<?= $page->url('product.delivery') ?>">
+  <? if ($product->getIsBuyable()): ?>
+    <div class="bDeliver2 delivery-info" id="product-id-<?= $product->getId() ?>" data-shoplink="<?= $page->url('product.stock', array('productPath' => $product->getPath())) ?>" data-calclink="<?= $page->url('product.delivery') ?>">
     <h4>Как получить заказ?</h4>
     <ul>
       <li>
@@ -196,7 +229,6 @@
     <div class="adfoxWrapper" id="<?= $adfox_id_by_label ?>"></div>
   </div>
 
-<? if ($product->getIsBuyable() || $product->getState()->getIsShop()): ?>
     <?= $page->render('service/_listByProduct', array('product' => $product)) ?>
     <?= $page->render('warranty/_listByProduct', array('product' => $product)) ?>
 <? endif ?>
@@ -378,9 +410,7 @@
   </div>
 </div>
 <!-- /Media -->
-
-
-
+<?php if ($product->getIsBuyable()): ?>
 <div id="order1click-container" class="bMobDown mBR5 mW2 mW900" style="display: none">
   <div class="bMobDown__eWrap">
     <div class="bMobDown__eClose close"></div>
@@ -391,6 +421,38 @@
 
   </div>
 </div>
+<?php elseif ($product->getState()->getIsShop()): ?>
+<!-- shopPopup -->
+<script type="text/html" id="mapInfoBlock">
+  <div class="bMapShops__ePopupRel">
+    <h3><%=name%></h3>
+    <span>Работает </span>
+    <span><%=regime%></span>
+    <br/>
+    <span class="shopnum" style="display: none;"><%=id%></span>
+  </div>
+</script>
+<div id="orderMapPopup" class='popup'>
+  <i class='close'></i>
+  <div class='bMapShops__eMapWrap' id="mapPopup" style="float: right;">
+  </div>
+  <div class='bMapShops__eList'>
+    <script type="text/html" id="itemAvalShop_tmplPopup">
+      <li ref="<%=id%>">
+        <div class="bMapShops__eListNum"><img src="/images/shop.png" alt=""/></div>
+        <div><%=name%></div>
+        <span>Работаем</span> <span><%=regtime%></span>
+      </li>
+    </script>
+    <h3>Выберите магазин Enter для самовывоза</h3>
+    <ul id="mapPopup_shopInfo">
+
+    </ul>
+  </div>
+</div>
+<!-- /shopPopup -->
+<?php endif; ?>
+
 
 <div id="ajaxgoods" class="popup width230" style="display: none">
   <div  style="padding: 15px 15px 20px 5px">
@@ -459,9 +521,10 @@
 
 <div class="line"></div>
 <div class="fr ar">
-    <? if ($product->getIsBuyable() || !$product->getState()->getIsShop()): ?>
+    <? //if ($product->getIsBuyable() || !$product->getState()->getIsShop()): ?>
     <div class="goodsbarbig mSmallBtns" ref="<?= $product->getToken() ?>" data-value='<?= $json ?>'>
 
+    <?php if ($product->getIsBuyable()): ?>
         <div class='bCountSet'>
             <? if (!$user->getCart()->hasProduct($product->getId())): ?>
             <a class='bCountSet__eP' href="#">+</a><a class='bCountSet__eM' href="#">-</a>
@@ -470,10 +533,17 @@
             <? endif ?>
             <span><?= $user->getCart()->getQuantityByProduct($product->getId()) ? $user->getCart()->getQuantityByProduct($product->getId()) : 1 ?> шт.</span>
         </div>
+    <?php endif ?>
 
         <?= $page->render('cart/_button', array('product' => $product, 'disabled' => !$product->getIsBuyable(), 'gaEvent' => 'Add2Basket_vnizu', 'gaTitle' => 'Добавление в корзину')) ?>
+        <? if (!$product->getIsBuyable() && $product->getState()->getIsShop()): ?>
+        <div class="notBuying font12">
+            <div class="corner"><div></div></div>
+            Только в розничных магазинах
+        </div>
+        <? endif ?>
     </div>
-    <? endif ?>
+    <? //endif ?>
 </div>
 <div class="fr mBuyButtonBottom">
     <div class="pb10"><strong class="font34"><span class="price"><?= $page->helper->formatPrice($product->getPrice()) ?></span> <span class="rubl">p</span></strong></div>

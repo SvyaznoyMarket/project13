@@ -10,6 +10,8 @@ class Entity {
     /** @var string */
     private $token;
     /** @var string */
+    private $description;
+    /** @var string */
     private $work;
     /** @var string */
     private $image;
@@ -19,16 +21,111 @@ class Entity {
     private $isInShop;
     /** @var int */
     private $price;
+    /** @var array Category\Entity[] */
+    private $category = array();
+    /** @var array Entity[] */
+    private $alike = array();
+    /** @var array */
+    private $alikeId = array();
 
     public function __construct(array $data = array()) {
         if (array_key_exists('id', $data)) $this->setId($data['id']);
         if (array_key_exists('name', $data)) $this->setName($data['name']);
         if (array_key_exists('token', $data)) $this->setToken($data['token']);
         if (array_key_exists('work', $data)) $this->setWork($data['work']);
+        if (array_key_exists('description', $data)) $this->setDescription($data['description']);
         if (array_key_exists('media_image', $data)) $this->setImage($data['media_image']);
         if (array_key_exists('is_delivery', $data)) $this->setIsDelivered($data['is_delivery']);
+        // поддержка /v2/service/get2
         if (array_key_exists('is_in_shop', $data)) $this->setIsInShop($data['is_in_shop']);
+        if (array_key_exists('only_inshop', $data)) $this->setIsInShop($data['only_inshop']);
         if (array_key_exists('price', $data)) $this->setPrice($data['price']);
+        // поддержка /v2/service/get2
+        if (array_key_exists('category_list', $data) && is_array($data['category_list'])) foreach ($data['category_list'] as $categoryData) {
+            $this->addCategory(new Category\Entity($categoryData));
+        }
+        if (array_key_exists('category', $data) && is_array($data['category'])) foreach ($data['category'] as $categoryData) {
+            $this->addCategory(new Category\Entity($categoryData));
+        }
+        // поддержка /v2/service/get2
+        if (array_key_exists('alike_list', $data) && is_array($data['alike_list'])) $this->setAlikeId($data['alike_list']);
+        if (array_key_exists('alike', $data) && is_array($data['alike'])) $this->setAlikeId($data['alike']);
+    }
+
+    /**
+     * @param Entity[] $alike
+     */
+    public function setAlike($alikes) {
+        $this->category = array();
+        foreach ($alikes as $alike) {
+            $this->addAlike($alike);
+        }
+    }
+
+    /**
+     * @param Entity $alike
+     */
+    public function addAlike(Entity $alike) {
+        $this->alike[] = $alike;
+    }
+
+    /**
+     * @return Entity[]
+     */
+    public function getAlike() {
+        return $this->alike;
+    }
+
+    /**
+     * @param array $alikeId
+     */
+    public function setAlikeId(array $alikeId) {
+        $this->alikeId = $alikeId;
+    }
+
+    /**
+     * @return array
+     */
+    public function getAlikeId() {
+        return $this->alikeId;
+    }
+
+    /**
+     * @param Category\Entity[] $categories
+     */
+    public function setCategory(array $categories) {
+        $this->category = array();
+        foreach ($categories as $category) {
+            $this->addCategory($category);
+        }
+    }
+
+    /**
+     * @param Category\Entity $category
+     */
+    public function addCategory(Category\Entity $category) {
+        $this->category[] = $category;
+    }
+
+    /**
+     * @return Category\Entity[]
+     */
+    public function getCategory() {
+        return $this->category;
+    }
+
+    /**
+     * @param string $description
+     */
+    public function setDescription($description) {
+        $this->description = (string)$description;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescription() {
+        return $this->description;
     }
 
     /**

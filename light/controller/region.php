@@ -14,7 +14,7 @@ class regionController
 {
   public function getShopAvailable(Response $response, $params = array()){
     TimeDebug::start('controller:region:getShopAvailable');
-    $regionList = App::getRegion()->getShopAvailable();
+    $regionList = App::getRegion()->getShowInMenu();
 
     $currentRegionId = App::getCurrentUser()->getRegion()->getId();
     $return = array();

@@ -6,15 +6,19 @@ class Repository {
     /** @var \Core\ClientInterface */
     private $client;
 
+    /**
+     * @param \Core\ClientInterface $client
+     */
     public function __construct(\Core\ClientInterface $client) {
         $this->client = $client;
     }
 
     /**
      * @param \Model\Product\Category\Entity $category
-     * @return Entity[]
+     * @param \Model\Region\Entity           $region
+     * @return array
      */
-    public function getCollectionByCategory($category, \Model\Region\Entity $region = null) {
+    public function getCollectionByCategory(\Model\Product\Category\Entity $category, \Model\Region\Entity $region = null) {
         \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args()));
         $collection = array();
 
@@ -30,5 +34,22 @@ class Repository {
         }
 
         return $collection;
+    }
+
+    /**
+     * @param \Model\Product\Category\Entity $category
+     * @param \Model\Region\Entity           $region
+     * @param                                $callback
+     */
+    public function prepareCollectionByCategory(\Model\Product\Category\Entity $category, \Model\Region\Entity $region = null, $callback) {
+        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args()));
+
+        $params = array(
+            'category_id' => $category->getId(),
+        );
+        if ($region) {
+            $params['region_id'] = $region->getId();
+        }
+        $this->client->addQuery('listing/filter', $params, array(), $callback);
     }
 }

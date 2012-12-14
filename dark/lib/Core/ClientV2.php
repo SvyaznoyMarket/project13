@@ -9,7 +9,8 @@ class ClientV2 implements ClientInterface
     private $logger;
     /** @var resource */
     private $isMultiple;
-    private $callbacks = array();
+    private $successCallbacks = array();
+    private $failCallbacks = array();
     private $resources = array();
     /** @var bool */
     private $still_executing = false;
@@ -36,7 +37,10 @@ class ClientV2 implements ClientInterface
             $info = curl_getinfo($connection);
             $this->logger->debug('Core response resource: ' . $connection);
             $this->logger->debug('Core response info: ' . $this->encodeInfo($info));
-            \Util\RequestLogger::getInstance()->addLog($info['url'], $data, $info['total_time']);
+            $header = $this->getHeader($response, true);
+
+            \Util\RequestLogger::getInstance()->addLog($info['url'], $data, $info['total_time'], isset($header['X-Server-Name']) ? $header['X-Server-Name'] : 'unknown');
+
             if ($info['http_code'] >= 300) {
                 throw new \RuntimeException(sprintf("Invalid http code: %d, \nResponse: %s", $info['http_code'], $response));
             }
@@ -52,18 +56,20 @@ class ClientV2 implements ClientInterface
             curl_close($connection);
             $spend = \Debug\Timer::stop('core');
             \App::logger()->error('End core ' . $action . ' in ' . $spend . ' get: ' . json_encode($params) . ' post: ' . json_encode($data) . ' response: ' . json_encode($response, true) . ' with ' . $e);
+            \App::$exception = $e;
 
             throw $e;
         }
     }
 
-    public function addQuery($action, array $params = array(), array $data = array(), $callback) {
+    public function addQuery($action, array $params = array(), array $data = array(), $successCallback, $failCallback = null) {
         if (!$this->isMultiple) {
             $this->isMultiple = curl_multi_init();
         }
         $resource = $this->createResource($action, $params, $data);
         curl_multi_add_handle($this->isMultiple, $resource);
-        $this->callbacks[(string)$resource] = $callback;
+        $this->successCallbacks[(string)$resource] = $successCallback;
+        $this->failCallbacks[(string)$resource] = $failCallback;
         $this->resources[] = $resource;
         $this->still_executing = true;
     }
@@ -90,20 +96,34 @@ class ClientV2 implements ClientInterface
                     $info = curl_getinfo($handler);
                     $this->logger->debug('Core response resource: ' . $handler);
                     $this->logger->debug('Core response info: ' . $this->encodeInfo($info));
-                    \Util\RequestLogger::getInstance()->addLog($info['url'], array("unknown in multi curl"), $info['total_time']);
                     if (curl_errno($handler) > 0) {
                         $spend = \Debug\Timer::stop('core');
+                        \Util\RequestLogger::getInstance()->addLog($info['url'], array("unknown in multi curl"), $info['total_time'], 'unknown');
                         throw new \RuntimeException(curl_error($handler), curl_errno($handler));
                     }
                     $content = curl_multi_getcontent($handler);
+                    $header = $this->getHeader($content, true);
+
+                    \Util\RequestLogger::getInstance()->addLog($info['url'], array("unknown in multi curl"), $info['total_time'], isset($header['X-Server-Name']) ? $header['X-Server-Name'] : 'unknown');
+
                     if ($info['http_code'] >= 300) {
                         $spend = \Debug\Timer::stop('core');
                         throw new \RuntimeException(sprintf("Invalid http code: %d, \nResponse: %s", $info['http_code'], $content));
                     }
-                    $decodedResponse = $this->decode($content);
-                    $this->logger->debug('Core response data: ' . $this->encode($decodedResponse));
-                    $callback = $this->callbacks[(string)$handler];
-                    $callback($decodedResponse);
+                    try {
+                        $decodedResponse = $this->decode($content);
+                        $this->logger->debug('Core response data: ' . $this->encode($decodedResponse));
+                        $callback = $this->successCallbacks[(string)$handler];
+                        $callback($decodedResponse);
+                    } catch (\Exception $e) {
+                        \App::$exception = $e;
+                        \App::logger()->error($e);
+
+                        $callback = $this->failCallbacks[(string)$handler];
+                        if ($callback) {
+                            $callback($e);
+                        }
+                    }
                 }
                 if ($curl_still_executing) {
                     $ready = curl_multi_select($this->isMultiple);
@@ -118,12 +138,14 @@ class ClientV2 implements ClientInterface
         }
         curl_multi_close($this->isMultiple);
         $this->isMultiple = null;
-        $this->callbacks = array();
+        $this->successCallbacks = array();
+        $this->failCallbacks = array();
         $this->resources = array();
         if (!is_null($error)) {
+            \App::$exception = $e;
             $this->logger->error('Error:' . (string)$error . 'Response: ' . print_r(isset($content) ? $content : null, true));
             $spend = \Debug\Timer::stop('core');
-            throw $error;
+            //throw $error;
         }
 
         $spend = \Debug\Timer::stop('core');
@@ -145,10 +167,10 @@ class ClientV2 implements ClientInterface
         }
 
         $connection = curl_init();
-        curl_setopt($connection, CURLOPT_HEADER, 0);
+        curl_setopt($connection, CURLOPT_HEADER, 1);
         curl_setopt($connection, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($connection, CURLOPT_URL, $query);
-        curl_setopt($connection, CURLOPT_HTTPHEADER, array("X-Request-Id: ".\Util\RequestLogger::getInstance()->getId()));
+        curl_setopt($connection, CURLOPT_HTTPHEADER, array('X-Request-Id: '.\Util\RequestLogger::getInstance()->getId(), 'Expect:'));
 
         if ($isPostMethod) {
             curl_setopt($connection, CURLOPT_POST, true);
@@ -158,10 +180,16 @@ class ClientV2 implements ClientInterface
         return $connection;
     }
 
+    /**
+     * @param string $response Тело ответа без заголовка (header)
+     * @return mixed
+     * @throws \RuntimeException
+     */
     private function decode($response) {
         if (is_null($response)) {
             throw new \RuntimeException('Response cannot be null');
         }
+
         $decoded = json_decode($response, true);
         if ($code = json_last_error()) {
             switch ($code) {
@@ -185,7 +213,9 @@ class ClientV2 implements ClientInterface
                     break;
             }
             $message = sprintf('Json error: "%s", Response: "%s"', $error, $response);
-            throw new \RuntimeException($message, $code);
+            $e = new \RuntimeException($message, $code);
+            \App::$exception = $e;
+            throw $e;
         }
 
         if (is_array($decoded) && array_key_exists('error', $decoded)) {
@@ -206,6 +236,37 @@ class ClientV2 implements ClientInterface
         }
 
         return $decoded;
+    }
+
+    /**
+     * @param string $plainResponse Ответ с заголовком (header) и телом (body)
+     * @param bool $isUpdateResponse Нужно ли вырезать из ответа заголовок (header), если true, то в $plainResponse по окончании работы будет содержаться тело (body)
+     * @return array
+     * @throws \RuntimeException
+     */
+    private function getHeader(&$plainResponse, $isUpdateResponse = true) {
+        if (is_null($plainResponse)) {
+            throw new \RuntimeException('Response cannot be null');
+        }
+
+        $header = array();
+        $response = explode("\r\n\r\n", $plainResponse);
+        if ($isUpdateResponse) $plainResponse = isset($response[1]) ? $response[1] : null;
+
+        $plainHeader = explode("\r\n", $response[0]);
+        foreach ($plainHeader as $line) {
+            $pos = strpos($line, ':');
+            if ($pos) {
+                $key = substr($line, 0, $pos);
+                $value = trim(substr($line, $pos + 1));
+                $header[$key] = $value;
+            }
+            else {
+                $header[] = $line;
+            }
+        }
+
+        return $header;
     }
 
     private function encode($data)

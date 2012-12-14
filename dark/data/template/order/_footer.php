@@ -1,6 +1,6 @@
 <ul class='bBuyingFooter'>
     <li style="width: 896px; text-align: center;">
-        <h3 style="font-size: 36px; margin: 20px 0 30px 0;">Заказывайте спокойно, мы обо всем позаботимся!</h3>
+        <h3 style="font-size: 36px; margin: 20px 0 30px 0;">Мы обо всем позаботимся!</h3>
     </li>
     <li>
         <div class='bBuyingFooter__eEnter'></div>

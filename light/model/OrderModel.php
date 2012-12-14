@@ -62,6 +62,7 @@ class OrderModel
     if(array_key_exists('recipient_first_name', $data)) $orderData['first_name'] = (string) $data['recipient_first_name'];
     if(array_key_exists('recipient_phonenumber', $data)) $orderData['mobile'] = (string) $data['recipient_phonenumber'];
     if(array_key_exists('product', $data)) $orderData['product'] = $data['product'];
+    if(array_key_exists('svyaznoy_club_card_number', $data)) $orderData['svyaznoy_club_card_number'] = $data['svyaznoy_club_card_number'];
 
     $order = $this->getOrderFromArray($orderData);
     $order->setTypeId(OrderData::TYPE_1CLICK);

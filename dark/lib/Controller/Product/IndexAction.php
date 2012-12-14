@@ -6,11 +6,74 @@ class IndexAction {
     public function execute($productPath, \Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
+        $client = \App::coreClientV2();
+        $user = \App::user();
+        $repository = \RepositoryManager::getProduct();
+
         $productToken = explode('/', $productPath);
         $productToken = end($productToken);
 
-        $repository = \RepositoryManager::getProduct();
-        $product = $repository->getEntityByToken($productToken);
+        // подготовка 1-го пакета запросов
+
+        // запрашиваем пользователя, если он авторизован
+        if ($user->getToken()) {
+            \RepositoryManager::getUser()->prepareEntityByToken($user->getToken(), function($data) {
+                if ((bool)$data) {
+                    \App::user()->setEntity(new \Model\User\Entity($data));
+                }
+            }, function (\Exception $e) {
+                \App::$exception = null;
+                $token = \App::user()->removeToken();
+                throw new \Exception\AccessDeniedException(sprintf('Время действия токена %s истекло', $token));
+            });
+        }
+
+        // запрашиваем текущий регион, если есть кука региона
+        if ($user->getRegionId()) {
+            \RepositoryManager::getRegion()->prepareEntityById($user->getRegionId(), function($data) {
+                $data = reset($data);
+                if ((bool)$data) {
+                    \App::user()->setRegion(new \Model\Region\Entity($data));
+                }
+            });
+        }
+
+        // запрашиваем список регионов для выбора
+        $regionsToSelect = array();
+        \RepositoryManager::getRegion()->prepareShowInMenuCollection(function($data) use (&$regionsToSelect) {
+            foreach ($data as $item) {
+                $regionsToSelect[] = new \Model\Region\Entity($item);
+            }
+        });
+
+        // выполнение 1-го пакета запросов
+        $client->execute();
+
+        $region = $user->getRegion();
+
+        // подготовка 2-го пакета запросов
+
+        // запрашиваем рутовые категории
+        $rootCategories = array();
+        \RepositoryManager::getProductCategory()->prepareRootCollection($region, function($data) use(&$rootCategories) {
+            foreach ($data as $item) {
+                $rootCategories[] = new \Model\Product\Category\Entity($item);
+            }
+        });
+
+        // запрашиваем товар по токену
+        /** @var $product \Model\Product\Entity */
+        $product = null;
+        \RepositoryManager::getProduct()->prepareEntityByToken($productToken, $region, function($data) use (&$product) {
+            $data = reset($data);
+            if ((bool)$data) {
+                $product = new \Model\Product\Entity($data);
+            }
+        });
+
+        // выполнение 2-го пакета запросов
+        $client->execute();
+
         if (!$product) {
             throw new \Exception\NotFoundException(sprintf('Товар с токеном "%s" не найден.', $productToken));
         }
@@ -54,31 +117,44 @@ class IndexAction {
         }
         $dataForCredit = $this->getDataForCredit($product);
 
-        $showroomShops = array();
+        $shopsWithQuantity = array();
         //загружаем магазины, если товар доступен только на витрине
         if (!$product->getIsBuyable() && $product->getState()->getIsShop()) {
-            $shopIds = array();
+            $quantityByShop = array();
             foreach ($product->getStock() as $stock) {
-                $quantityShowroom = $stock->getQuantityShowroom();
+                $quantityShowroom = (int)$stock->getQuantityShowroom();
+                $quantity = (int)$stock->getQuantity();
                 $shopId = $stock->getShopId();
-                if (!empty($quantityShowroom) && !empty($shopId)) {
-                    $shopIds[] = $shopId;
+                if ((0 < $quantity + $quantityShowroom) && !empty($shopId)) {
+                    $quantityByShop[$shopId] = array(
+                        'quantity' => $quantity,
+                        'quantityShowroom' => $quantityShowroom,
+                    );
                 }
             }
-            if (count($shopIds)) {
+            if (count($quantityByShop)) {
                 try {
-                    $showroomShops = \RepositoryManager::getShop()->getCollectionById($shopIds);
+                    $shops = \RepositoryManager::getShop()->getCollectionById(array_keys($quantityByShop));
+                    foreach ($shops as $shop) {
+                        $shopsWithQuantity[] = array(
+                            'shop' => $shop,
+                            'quantity' => $quantityByShop[$shop->getId()]['quantity'],
+                            'quantityShowroom' => $quantityByShop[$shop->getId()]['quantityShowroom'],
+                        );
+                    }
                 } catch (\Exception $e) {
                     \App::$exception = $e;
                     \App::logger()->error($e);
 
-                    $showroomShops = array();
+                    $shopsWithQuantity = array();
                 }
 
             }
         }
 
         $page = new \View\Product\IndexPage();
+        $page->setParam('regionsToSelect', $regionsToSelect);
+        $page->setParam('rootCategories', $rootCategories);
         $page->setParam('product', $product);
         $page->setParam('title', $product->getName());
         $page->setParam('showRelatedUpper', $showRelatedUpper);
@@ -87,7 +163,7 @@ class IndexAction {
         $page->setParam('related', $related);
         $page->setParam('kit', $kit);
         $page->setParam('dataForCredit', $dataForCredit);
-        $page->setParam('showroomShops', $showroomShops);
+        $page->setParam('shopsWithQuantity', $shopsWithQuantity);
 
         return new \Http\Response($page->show());
     }

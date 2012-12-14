@@ -37,7 +37,27 @@ class RegionRepository
     return $regionList;
   }
 
-  /**
+    /**
+     * @return RegionEntity[]
+     */
+    public function getShowInMenu(){
+
+        $response = CoreClient::getInstance()->query('geo.get-menu-cities', array(), array());
+
+        if(!is_array($response) || !isset($response[0])){
+            return array();
+        }
+
+        $regionList = array();
+
+        foreach($response as $geo){
+            $regionList[] = $this->create($geo);
+        }
+
+        return $regionList;
+    }
+
+    /**
    * @param $data
    * @return RegionEntity
    */

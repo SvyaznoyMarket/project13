@@ -549,6 +549,27 @@ $(document).ready(function(){
 		e.preventDefault()
 		$('#jscity').val('')	
   	})
+
+  	$('.popupRegion .rightArr').bind('click', function(){
+  		var regionSlideW = $('.popupRegion .regionSlides_slide').width() *1
+  		var sliderW = $('.popupRegion .regionSlides').width() *1
+  		var sliderLeft = parseInt($('.popupRegion .regionSlides').css('left'))
+  		$('.popupRegion .leftArr').show()
+  		$('.popupRegion .regionSlides').animate({'left':sliderLeft-regionSlideW})
+		if ((sliderLeft-(regionSlideW*2)) <= -sliderW){
+  			$('.popupRegion .rightArr').hide()
+  		}
+  	})
+  	$('.popupRegion .leftArr').bind('click', function(){
+  		var regionSlideW = $('.popupRegion .regionSlides_slide').width() *1
+  		var sliderW = $('.popupRegion .regionSlides').width() *1
+  		var sliderLeft = parseInt($('.popupRegion .regionSlides').css('left'))
+  		$('.popupRegion .rightArr').show()
+  		$('.popupRegion .regionSlides').animate({'left':sliderLeft+regionSlideW})
+  		if (sliderLeft+(regionSlideW*2) >= 0){
+  			$('.popupRegion .leftArr').hide()
+  		}
+  	})
    
 	/* GEOIP fix */
 	if( !docCookies.hasItem('geoshop') ) {
@@ -1005,7 +1026,7 @@ $(document).ready(function(){
 	loadProductRelatedContainer($('#product_view-container'))
 	loadProductRelatedContainer($('#product_also_bought-container'))
     loadProductRelatedContainer($('#product_user-also_viewed-container'))
-    loadProductRelatedContainer($('#product_buy-container')); // no such element
+    //loadProductRelatedContainer($('#product_buy-container')); // no such element
     //loadProductRelatedContainer($('#product_user-recommendation-container'));
 
     function loadProductRelatedContainer(container) {
@@ -1028,6 +1049,18 @@ $(document).ready(function(){
             })
         }
     }
+
+    $('.product_buy-container').each(function() {
+        order = $(this).data('order')
+        if (typeof(order) == 'object' && !$.isEmptyObject(order)) {
+            $.ajax({
+                url: ($(this).data('url')),
+                data: order,
+                type: 'POST',
+                timeout: 20000
+            })
+        }
+    })
 
 	/* Delivery Ajax */
 	function dlvrajax() {
@@ -1129,7 +1162,7 @@ $(document).ready(function(){
 			for(var i=0; i < other.length; i++) {
 				html += '<div>&mdash; Можем доставить '+ other[i].date + this.formatPrice(other[i].price) +'</div>'
 				if( other[i].tc ) {
-					html += '<div>&mdash; <a href="/how_get_order">Доставка осуществляется партнерскими траспортными компаниями</a></div>'
+					html += '<div>&mdash; <a href="/how_get_order">Доставка осуществляется партнерскими транспортными компаниями</a></div>'
 				}
 			}
 

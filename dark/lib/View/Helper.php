@@ -41,18 +41,15 @@ class Helper {
         return number_format($price, 0, ',', ' ');
     }
 
-    public function formatNumberChoice($text, array $replaces = array(), $number) {
-        static $instance;
+    /**
+     * @param int   $number  Например: 1, 43, 112
+     * @param array $choices Например: ['отзыв', 'отзыва', 'отзывов']
+     * @return mixed
+     */
+    public function numberChoice($number, array $choices) {
+        $cases = array (2, 0, 1, 1, 1, 2);
 
-        if (!$instance) {
-            $instance = new \Util\ChoiceFormatter();
-        }
-
-        if ((bool)$replaces) {
-            $text = strtr($text, $replaces);
-        }
-
-        return $instance->format($text, $number);
+        return $choices[ ($number % 100 > 4 && $number % 100 < 20) ? 2 : $cases[min($number % 10, 5)]];
     }
 
     public function clearZeroValue($value) {
@@ -82,6 +79,6 @@ class Helper {
             return 'послезавтра (' . $date->format('d.m.Y') . ')';
         }
 
-        return 'через ' . $this->formatNumberChoice('{n: n > 10 && n < 20}%count% дней|{n: n % 10 == 1}%count% день|{n: n % 10 > 1 && n % 10 < 5}%count% дня|(1,+Inf]%count% дней', array('%count%' => $interval->days), $interval->days) . ' (' . $date->format('d.m.Y') . ')';
+        return 'через ' . $interval->days . ' ' . $this->numberChoice($interval->days, array('день', 'дня', 'дней')) . ' (' . $date->format('d.m.Y') . ')';
     }
 }

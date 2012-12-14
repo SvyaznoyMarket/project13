@@ -4,7 +4,12 @@ return array(
     // главная страница
     'homepage' => array(
         'pattern' => '/',
-        'action'  => array('Main\Action', 'execute'),
+        'action'  => array('Main\IndexAction', 'execute'),
+    ),
+
+    'category.mainMenu' => array(
+        'pattern' => '/category/main_menu',
+        'action'  => array('ProductCategory\MainMenuAction', 'execute'),
     ),
 
     // поиск
@@ -134,14 +139,17 @@ return array(
     // расчет доставки товара
     'product.delivery' => array(
         'pattern' => '/product/delivery-info',
-        'action'  => array('Product\DeliveryAction', 'execute'),
+        'action'  => array('Product\DeliveryAction', 'info'),
         'method'  => array('POST'),
     ),
     'product.delivery_1click' => array(
         'pattern' => '/product/delivery1click',
+        'action'  => array('Product\DeliveryAction', 'oneClick'),
     ),
     'product.stock' => array(
         'pattern' => '/product/{productPath}/stock',
+        'action'  => array('Product\StockAction', 'execute'),
+        'require' => array('productPath' => '[\w\d-_]+\/{1}[\w\d-_]+'),
     ),
     'product.accessories' => array( // TODO: переименовать в product.accessory
         'pattern' => '/products/accessories/{productToken}',
@@ -153,9 +161,9 @@ return array(
         'action'  => array('Product\RelatedAction', 'execute'),
         'require' => array('productToken' => '[\w\d-_]+'),
     ),
-    'product.comments' => array(
+    'product.comment' => array(
         'pattern' => '/product/{productPath}/comments',
-        'action'  => array('Product\CommentsAction', 'execute'),
+        'action'  => array('Product\CommentAction', 'execute'),
         'require' => array('productPath' => '[\w\d-_]+\/{1}[\w\d-_]+'),
     ),
     'tag' => array(
@@ -243,10 +251,17 @@ return array(
     // услуги
     'service' => array(
         'pattern' => '/f1',
+        'action'  => array('Service\Action', 'index'),
+    ),
+    'service.category' => array(
+        'pattern' => '/f1/{categoryToken}',
+        'require' => array('categoryToken' => '[\w\d-_]+'),
+        'action'  => array('Service\Action', 'category'),
     ),
     'service.show' => array(
         'pattern' => '/f1/show/{serviceToken}',
         'require' => array('serviceToken' => '[\w\d-_]+'),
+        'action'  => array('Service\Action', 'show'),
     ),
 
     // smartengine
@@ -295,6 +310,13 @@ return array(
     'user.subscribe' => array(
         'pattern' => '/private/subscribe',
         'action'  => array('User\SubscribeAction', 'execute'),
+        'method'  => array('POST'),
+    ),
+
+    //smartengine
+    'smartengine.push.buy' => array(
+        'pattern' => '/product-buy',
+        'action'  => array('Smartengine\Action', 'pushBuy'),
         'method'  => array('POST'),
     ),
 );

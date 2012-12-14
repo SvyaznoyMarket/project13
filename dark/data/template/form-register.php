@@ -16,15 +16,18 @@ if (!isset($form)) $form = new \View\User\RegistrationForm();
 
     <div class="fr width327 ml20">
         <div class="font16 pb20">Я новый пользователь</div>
+
+        <? if ($error = $form->getError('global')) echo $page->render('_formError', array('error' => $error)) ?>
+
         <div class="pb5">Как к вам обращаться?</div>
         <div class="pb5">
             <? if ($error = $form->getError('first_name')) echo $page->render('_formError', array('error' => $error)) ?>
-            <input type="text" id="register_first_name" class="text width315 mb10" name="register[first_name]" value="<?= $form->getFirstName() ?>" tabindex="5"/>
+            <input required="required" type="text" id="register_first_name" class="text width315 mb10" name="register[first_name]" value="<?= $form->getFirstName() ?>" tabindex="5"/>
         </div>
         <div class="pb5">E-mail или мобильный телефон:</div>
         <div class="pb5">
             <? if ($error = $form->getError('username')) echo $page->render('_formError', array('error' => $error)) ?>
-            <input type="text" id="register_username" class="text width315 mb10" name="register[username]" value="<?= $form->getUsername() ?>" tabindex="6"/>
+            <input required="required" type="text" id="register_username" class="text width315 mb10" name="register[username]" value="<?= $form->getUsername() ?>" tabindex="6"/>
         </div>
         <label class="bSubscibe fl checked">
             <b></b> Хочу знать об интересных<br />предложениях
@@ -35,7 +38,7 @@ if (!isset($form)) $form = new \View\User\RegistrationForm();
         <div class="clear"></div>
         <p>Нажимая кнопку «Регистрация», я подтверждаю свое согласие с <a class="underline" href="/terms">Условиями продажи...</a></p>
         <? if (\App::config()->user['corporateRegister']): ?>
-        <p><a href="<?= $page->url('user.registerCorporate') ?>" class="orange underline">регистрация юридического лица</a></p>
+        <p><a href="<?= $page->url('user.registerCorporate') ?>" class="orange underline">Регистрация юридического лица</a></p>
         <? endif ?>
 
     </div>

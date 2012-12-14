@@ -93,6 +93,14 @@ a.underline {
 a.underline:hover {
   color: @typLinkColor;
 }
+.dashedLink{
+  text-decoration: none;
+  border-bottom: 1px dashed;
+  &:hover{
+    text-decoration: none;
+    border-bottom: 1px dashed;
+  }
+}
 a.nodecor {
   text-decoration: none;
 }
@@ -141,10 +149,22 @@ a.motton:hover {
   line-height: 0px;
   width: 100%;
 }
+// true clear fix!
+.clearfix:after {
+  visibility: hidden;
+  display: block;
+  font-size: 0;
+  content: " ";
+  clear: both;
+  height: 0;
+  }
+* html .clearfix             { zoom: 1; } /* IE6 */
+*:first-child+html .clearfix { zoom: 1; } /* IE7 */
 .float100 {
   float: left;
   width: 100%;
 }
+
 .ar {
   text-align: right;
 }
@@ -661,4 +681,26 @@ ul.lh15 li {
 }
 .noti > div{
   margin-top: 50px;
+}
+.notBuying{
+  border:1px solid @typLightGray;
+  padding:7px;
+  position: relative;
+  .corner{
+    border-bottom: 9px solid @typLightGray;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    height: 0;
+    position: absolute;
+    top: -9px;
+    width: 0;
+    div{
+      border-bottom: 7px solid @white;
+      border-left: 8px solid transparent;
+      border-right: 8px solid transparent;
+      bottom: -9px;
+      left: -8px;
+      position: absolute;
+    }
+  }
 }

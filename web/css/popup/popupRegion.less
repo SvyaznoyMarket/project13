@@ -1,12 +1,18 @@
 .popupRegion{
-  width:590px;
-  .ui-css{
-    width: 610px;
+  @colomnW:195px;
+  @colomnH:275px;
+  @controlW:30px;
+  @colomnMarginT:20px;
+  width:(@colomnW * 4);
+  &.popup{
+    padding: @controlW;
   }
   .popuptitle{
     font-family: "Enter";
     font-size: 30px;
+    float:none;
     margin: 0;
+    padding: 0;
     text-transform: uppercase;
   }
   .hidden{
@@ -14,6 +20,10 @@
   }
   .bBuyingLine__eText{
     margin: 0 -20px 0 0;
+    height: 33px;
+    line-height: 33px;
+    padding-left: 20px;
+    width:(@colomnW*3)+20;
   }
   .inputClear{
     color: @typGray;
@@ -24,14 +34,21 @@
     width: 20px;
   }
   .bigbutton{
-    margin:-1px 0 0 -1px;  
+    //margin:-1px 0 0 -1px;  
+    height: 33px;
+    line-height: 33px;
   }
   .cityInline{
-    font-size: 16px;
     margin: 20px 0 0;
     word-spacing: 15px;
-    a {
-      border-bottom: 1px dashed black;
+    .cityItem {
+      width: @colomnW;
+      float:left;
+      a {
+        border-bottom: 1px dashed black;
+        display: inline;
+        margin-left:20px;
+      }
     }
     a:hover{
       text-decoration: none;
@@ -39,16 +56,52 @@
   }
   .colomn{
     float:left;
-    margin: 20px 0;
-    width:195px;
+    height: @colomnH;
+    margin-top: @colomnMarginT;
+    width:@colomnW;
     a {
-      font-size:16px;
       font-family: Tahoma, sans-serif;
-      line-height:26px;
+      line-height:1.5em;
+      margin-left:20px;
       display:block;
     }
   }
   .info{
     font-size: 14px;
+  }
+  .BlackArrow{
+    background: none;
+    height: @colomnH;
+    margin-top: @colomnMarginT;
+    width: @controlW;
+    &.leftArr{
+      background: lighten(@firmOrange, 45%) url('@{base-url}/popup/img/arrow1.png') no-repeat 50% 50%;
+      display: none;
+      margin-left: -@controlW;
+      &:hover{
+        background-color: lighten(@firmOrange, 25%);
+      }
+    }
+    &.rightArr{
+      background: lighten(@firmOrange, 45%) url('@{base-url}/popup/img/arrow2.png') no-repeat 50% 50%;
+      display: none;
+      margin-right: -@controlW;
+      &:hover{
+        background-color: lighten(@firmOrange, 25%);
+      }
+    }
+  }
+  .regionSlidesWrap{
+    width: @colomnW * 4;
+    overflow: hidden;
+  }
+  .regionSlides{
+    position: relative;
+    left:0;
+    width: @colomnW * 8;
+    &_slide{
+      float: left;
+      width: @colomnW * 4;
+    }
   }
 }

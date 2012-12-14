@@ -4,31 +4,88 @@ namespace Controller\Shop;
 
 class Action {
     public function index() {
-        $region = \App::user()->getRegion();
-
-        return $this->region($region->getId());
+        return $this->region(\App::config()->region['defaultId']);
     }
 
     public function region($regionId) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
-        $currentRegion = \RepositoryManager::getRegion()->getEntityById($regionId);
+        $client = \App::coreClientV2();
+        $user = \App::user();
+
+        // подготовка 1-го пакета запросов
+
+        // запрашиваем пользователя, если он авторизован
+        if ($user->getToken()) {
+            \RepositoryManager::getUser()->prepareEntityByToken($user->getToken(), function($data) {
+                if ((bool)$data) {
+                    \App::user()->setEntity(new \Model\User\Entity($data));
+                }
+            }, function (\Exception $e) {
+                \App::$exception = null;
+                $token = \App::user()->removeToken();
+                throw new \Exception\AccessDeniedException(sprintf('Время действия токена %s истекло', $token));
+            });
+        }
+
+        // запрашиваем текущий регион, если есть кука региона
+        if ($user->getRegionId()) {
+            \RepositoryManager::getRegion()->prepareEntityById($user->getRegionId(), function($data) {
+                $data = reset($data);
+                if ((bool)$data) {
+                    \App::user()->setRegion(new \Model\Region\Entity($data));
+                }
+            });
+        }
+
+        // запрашиваем список регионов, где есть магазины
+        $shopAvailableRegions = array();
+        \RepositoryManager::getRegion()->prepareShopAvailableCollection(function($data) use (&$shopAvailableRegions) {
+            foreach ($data as $item) {
+                $shopAvailableRegions[] = new \Model\Region\Entity($item);
+            }
+        });
+
+        // запрашиваем список регионов для выбора
+        $regionsToSelect = array();
+        \RepositoryManager::getRegion()->prepareShowInMenuCollection(function($data) use (&$regionsToSelect) {
+            foreach ($data as $item) {
+                $regionsToSelect[] = new \Model\Region\Entity($item);
+            }
+        });
+
+        // выполнение 1-го пакета запросов
+        $client->execute();
+
+        $region = $user->getRegion();
+
+        $currentRegion = $regionId == $region->getId() ? $region : \RepositoryManager::getRegion()->getEntityById($regionId);
         if (!$currentRegion) {
             throw new \Exception\NotFoundException(sprintf('Region #%s not found', $regionId));
         }
 
-        //города присутствия
-        try {
-            $regions = \RepositoryManager::getRegion()->getShopAvailableCollection();
-        } catch (\Exception $e) {
-            \App::$exception = $e;
-            \App::logger()->error($e);
+        // подготовка 2-го пакета запросов
 
-            $regions = array();
-        }
+        // запрашиваем рутовые категории
+        $rootCategories = array();
+        \RepositoryManager::getProductCategory()->prepareRootCollection($region, function($data) use(&$rootCategories) {
+            foreach ($data as $item) {
+                $rootCategories[] = new \Model\Product\Category\Entity($item);
+            }
+        });
 
         // магазины
-        $shops = \RepositoryManager::getShop()->getCollectionByRegion($currentRegion);
+        /** @var $shops \Model\Shop\Entity[] */
+        $shops = array();
+        \RepositoryManager::getShop()->prepareCollectionByRegion($currentRegion, function($data) use (&$shops) {
+            foreach ($data as $item) {
+                $shops[] = new \Model\Shop\Entity($item);
+            }
+        });
+
+        // выполнение 2-го пакета запросов
+        $client->execute();
+
         // маркеры
         $markers = array();
         foreach ($shops as $shop) {
@@ -46,8 +103,10 @@ class Action {
         }
 
         $page = new \View\Shop\RegionPage();
+        $page->setParam('shopAvailableRegions', $shopAvailableRegions);
+        $page->setParam('rootCategories', $rootCategories);
         $page->setParam('currentRegion', $currentRegion);
-        $page->setParam('regions', $regions);
+        $page->setParam('regionsToSelect', $regionsToSelect);
         $page->setParam('shops', $shops);
         $page->setParam('markers', $markers);
 
@@ -57,12 +116,75 @@ class Action {
     public function show($regionToken, $shopToken) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
-        $currentRegion = \RepositoryManager::getRegion()->getEntityByToken($regionToken);
+        $client = \App::coreClientV2();
+        $user = \App::user();
+
+        // подготовка 1-го пакета запросов
+
+        // запрашиваем пользователя, если он авторизован
+        if ($user->getToken()) {
+            \RepositoryManager::getUser()->prepareEntityByToken($user->getToken(), function($data) {
+                if ((bool)$data) {
+                    \App::user()->setEntity(new \Model\User\Entity($data));
+                }
+            }, function (\Exception $e) {
+                \App::$exception = null;
+                $token = \App::user()->removeToken();
+                throw new \Exception\AccessDeniedException(sprintf('Время действия токена %s истекло', $token));
+            });
+        }
+
+        // запрашиваем текущий регион, если есть кука региона
+        if ($user->getRegionId()) {
+            \RepositoryManager::getRegion()->prepareEntityById($user->getRegionId(), function($data) {
+                $data = reset($data);
+                if ((bool)$data) {
+                    \App::user()->setRegion(new \Model\Region\Entity($data));
+                }
+            });
+        }
+
+        // запрашиваем список регионов для выбора
+        $regionsToSelect = array();
+        \RepositoryManager::getRegion()->prepareShowInMenuCollection(function($data) use (&$regionsToSelect) {
+            foreach ($data as $item) {
+                $regionsToSelect[] = new \Model\Region\Entity($item);
+            }
+        });
+
+        // выполнение 1-го пакета запросов
+        $client->execute();
+
+        $region = $user->getRegion();
+
+        $currentRegion = $regionToken == $region->getToken() ? $region : \RepositoryManager::getRegion()->getEntityByToken($regionToken);
         if (!$currentRegion) {
             throw new \Exception\NotFoundException(sprintf('Region with token %s not found', $regionToken));
         }
 
-        $shop = \RepositoryManager::getShop()->getEntityByToken($shopToken);
+        // подготовка 2-го пакета запросов
+
+        // запрашиваем рутовые категории
+        $rootCategories = array();
+        \RepositoryManager::getProductCategory()->prepareRootCollection($region, function($data) use(&$rootCategories) {
+            foreach ($data as $item) {
+                $rootCategories[] = new \Model\Product\Category\Entity($item);
+            }
+        });
+
+        // магазин
+        /** @var $shop \Model\Shop\Entity */
+        $shop = null;
+        \RepositoryManager::getShop()->prepareEntityByToken($shopToken, function($data) use (&$shop) {
+            $data = reset($data);
+            if ((bool)$data) {
+                $shop = new \Model\Shop\Entity($data);
+            }
+        });
+
+        // выполнение 2-го пакета запросов
+        $client->execute();
+
         if (!$shop) {
             throw new \Exception\NotFoundException(sprintf('Shop with token %s not found', $shopToken));
         }
@@ -75,6 +197,8 @@ class Action {
         }
 
         $page = new \View\Shop\ShowPage();
+        $page->setParam('regionsToSelect', $regionsToSelect);
+        $page->setParam('rootCategories', $rootCategories);
         $page->setParam('currentRegion', $currentRegion);
         $page->setParam('shop', $shop);
 

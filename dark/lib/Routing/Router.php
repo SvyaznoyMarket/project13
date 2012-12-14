@@ -17,7 +17,7 @@ class Router {
      * @param string $method
      * @return array
      * @throws \LogicException
-     * @throws Exception
+     * @throws \Exception\NotFoundException
      */
     public function match($path, $method) {
         $path = rawurldecode($path);
@@ -60,7 +60,7 @@ class Router {
             }
         }
 
-        throw new Exception(sprintf('Не найден маршрут для пути "%s".', $path));
+        throw new \Exception\NotFoundException(sprintf('Не найден маршрут для пути "%s".', $path));
     }
 
     /**
@@ -69,11 +69,11 @@ class Router {
      * @param  bool   $absolute
      * @return string
      * @throws \LogicException
-     * @throws Exception
+     * @throws \RuntimeException
      */
     public function generate($name, array $params = array(), $absolute = false) {
         if (!isset($this->rules[$name])) {
-            throw new Exception(sprintf('Неизвестный маршрут "%s".', $name));
+            throw new \RuntimeException(sprintf('Неизвестный маршрут "%s".', $name));
         }
 
         $rule = $this->rules[$name];

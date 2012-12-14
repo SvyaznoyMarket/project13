@@ -59,7 +59,9 @@ $(document).ready(function() {
 				}
 				return status
 			}, this)
-			
+
+			var scNum = docCookies.getItem("scId") //берем номер карты связного клуба из куки
+
 			self.showMap = ko.observable( false )
 			self.textfields = []
 			
@@ -69,7 +71,7 @@ $(document).ready(function() {
 					selectorid: '',
 					value: '',
 					valerror: false,
-					regexp: /^[a-zа-я\s]+$/i
+					regexp: /^[ёa-zа-я\s]+$/i
 				}) )
 				self.textfields.push( ko.observable({
 					title: 'Телефон для связи',
@@ -78,6 +80,14 @@ $(document).ready(function() {
 					value: '',
 					valerror: false,
 					regexp: /^[()0-9\-\+\s]+$/
+				}) )
+				self.textfields.push( ko.observable({
+					title: 'номер вашей карты «Связной-Клуб»',
+					name: 'order[recipient_scCard]', //UNIQUE!
+					selectorid: 'scCard',
+					value: scNum,
+					valerror: false,
+					regexp: /^[()0-9\-\s]+$/
 				}) )
 			
 			self.disabledSelectors = ko.observable( false )
@@ -318,6 +328,9 @@ $(document).ready(function() {
 			
 			self.validateField = function( textfield, e ) {
 				var valerror = false
+				if ((e.currentTarget.name == 'order[recipient_scCard]')&&(e.currentTarget.value == '')){
+					return true
+				}
 				if( e.currentTarget.value.replace(/\s/g, '') == '' ||  !textfield.regexp.test( e.currentTarget.value ) ) {
 					valerror = true
 					self.formStatus('typing')
@@ -325,7 +338,7 @@ $(document).ready(function() {
 				if( e.currentTarget.getAttribute('id') === 'phonemask' && e.currentTarget.value.replace(/[^0-9]/g, '').length !== 11 ) {
 					valerror = true
 					self.formStatus('typing')
-				}	
+				}
 				for(var i=0, l=self.textfields.length; i<l; i++) // like indexOf
 					if( self.textfields[i]().name === textfield.name ) {
 						var tmp = self.textfields[i]()
@@ -359,6 +372,7 @@ $(document).ready(function() {
 						
 			self.sendData = function() {
 				self.formStatus('sending')
+				$('.bFastInner tbody tr:last').empty()
 				var postData = {
 					'order[product_quantity]' : self.quantity(),
 					'order[delivered_at]' : self.chosenDate().value,
@@ -376,6 +390,7 @@ $(document).ready(function() {
 					success: function( data, textStatus ) {
 						if( !data.success || textStatus !== 'success' ) {
 							self.formStatus('typing')
+							$('.bFastInner tbody tr:last').append('<td colspan="2" class="red">'+data.message+'</td>')
 							return
 						}
 						//process

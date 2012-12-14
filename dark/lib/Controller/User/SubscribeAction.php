@@ -27,8 +27,10 @@ class SubscribeAction {
 
                 return new \Http\RedirectResponse(\App::router()->generate('user'));
             } catch (\Exception $e) {
-                $error = 'Не удалось сохранить данные';
+                \App::$exception = null;
                 \App::logger()->error($e);
+
+                $error = 'Не удалось сохранить данные';
             }
         }
 

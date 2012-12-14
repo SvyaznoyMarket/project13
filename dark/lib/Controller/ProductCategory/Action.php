@@ -43,6 +43,8 @@ class Action {
         $categoryToken = explode('/', $categoryPath);
         $categoryToken = end($categoryToken);
 
+        $region = self::isGlobal() ? null : \App::user()->getRegion();
+
         $repository = \RepositoryManager::getProductCategory();
         $category = $repository->getEntityByToken($categoryToken);
         if (!$category) {
@@ -60,7 +62,15 @@ class Action {
         // вид товаров
         $productView = $category->getHasLine() ? 'line' : 'compact';
         // фильтры
-        $productFilter = $this->getFilter($category, $request);
+        try {
+            $filters = \RepositoryManager::getProductFilter()->getCollectionByCategory($category, $region);
+        } catch (\Exception $e) {
+            \App::$exception = $e;
+            \App::logger()->error($e);
+
+            $filters = array();
+        }
+        $productFilter = $this->getFilter($filters, $category, $request);
         // листалка
         $limit = \App::config()->product['itemsInCategorySlider'];
         $repository = \RepositoryManager::getProduct();
@@ -102,6 +112,8 @@ class Action {
         $categoryToken = explode('/', $categoryPath);
         $categoryToken = end($categoryToken);
 
+        $region = self::isGlobal() ? null : \App::user()->getRegion();
+
         $repository = \RepositoryManager::getProductCategory();
         $category = $repository->getEntityByToken($categoryToken);
         if (!$category) {
@@ -109,7 +121,15 @@ class Action {
         }
 
         // фильтры
-        $productFilter = $this->getFilter($category, $request);
+        try {
+            $filters = \RepositoryManager::getProductFilter()->getCollectionByCategory($category, $region);
+        } catch (\Exception $e) {
+            \App::$exception = $e;
+            \App::logger()->error($e);
+
+            $filters = array();
+        }
+        $productFilter = $this->getFilter($filters, $category, $request);
 
         $count = \RepositoryManager::getProduct()->countByFilter($productFilter->dump());
 
@@ -128,67 +148,149 @@ class Action {
     public function category($categoryPath, \Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
+        $client = \App::coreClientV2();
+        $user = \App::user();
+
         $categoryToken = explode('/', $categoryPath);
         $categoryToken = end($categoryToken);
 
-        $repository = \RepositoryManager::getProductCategory();
-        $category = $repository->getEntityByToken($categoryToken);
+        // подготовка 1-го пакета запросов
+
+        // запрашиваем пользователя, если он авторизован
+        if ($user->getToken()) {
+            \RepositoryManager::getUser()->prepareEntityByToken($user->getToken(), function($data) {
+                if ((bool)$data) {
+                    \App::user()->setEntity(new \Model\User\Entity($data));
+                }
+            }, function (\Exception $e) {
+                \App::$exception = null;
+                $token = \App::user()->removeToken();
+                throw new \Exception\AccessDeniedException(sprintf('Время действия токена %s истекло', $token));
+            });
+        }
+
+        // запрашиваем текущий регион, если есть кука региона
+        if ($user->getRegionId()) {
+            if ($user->getRegionId()) {
+                \RepositoryManager::getRegion()->prepareEntityById($user->getRegionId(), function($data) {
+                    $data = reset($data);
+                    if ((bool)$data) {
+                        \App::user()->setRegion(new \Model\Region\Entity($data));
+                    }
+                });
+            }
+        }
+
+        // запрашиваем список регионов для выбора
+        $regionsToSelect = array();
+        \RepositoryManager::getRegion()->prepareShowInMenuCollection(function($data) use (&$regionsToSelect) {
+            foreach ($data as $item) {
+                $regionsToSelect[] = new \Model\Region\Entity($item);
+            }
+        });
+
+        // выполнение 1-го пакета запросов
+        $client->execute();
+
+        /** @var $region \Model\Region\Entity|null */
+        $region = self::isGlobal() ? null : \App::user()->getRegion();
+
+        // подготовка 2-го пакета запросов
+
+        // запрашиваем рутовые категории
+        $rootCategories = array();
+        \RepositoryManager::getProductCategory()->prepareRootCollection($region, function($data) use(&$rootCategories) {
+            foreach ($data as $item) {
+                $rootCategories[] = new \Model\Product\Category\Entity($item);
+            }
+        });
+
+        // запрашиваем категорию по токену
+        /** @var $category \Model\Product\Category\Entity */
+        $category = null;
+        \RepositoryManager::getProductCategory()->prepareEntityByToken($categoryToken, $region, function($data) use (&$category) {
+            $data = reset($data);
+            if ((bool)$data) {
+                $category = new \Model\Product\Category\Entity($data);
+            }
+        });
+
+        // выполнение 2-го пакета запросов
+        $client->execute();
+
         if (!$category) {
             throw new \Exception\NotFoundException(sprintf('Категория товара с токеном "%s" не найдена.', $categoryToken));
         }
 
-        $isGlobal = $this->isGlobal();
+        // подготовка 3-го пакета запросов
 
-        if ($category->isLeaf()) {
-            $parent = $category->getParentId() ? $repository->getEntityById($category->getParentId()) : null;
-            if (!$parent) {
-                throw new \RuntimeException(sprintf('Category #%s has no parent', $category->getId()));
-            }
-            $category->setParent($parent);
-            $repository->loadEntityBranch($category->getParent(), $isGlobal ? null : \App::user()->getRegion());
+        // запрашиваем дерево категорий
+        \RepositoryManager::getProductCategory()->prepareEntityBranch($category, $region);
 
-            // устанавливаем предков категории на основе предков родителя
-            foreach ($category->getParent()->getAncestor() as $ancestor) {
-                $category->addAncestor($ancestor);
+        // запрашиваем фильтры
+        /** @var $filters \Model\Product\Filter\Entity[] */
+        $filters = array();
+        \RepositoryManager::getProductFilter()->prepareCollectionByCategory($category, $region, function($data) use (&$filters) {
+            foreach ($data as $item) {
+                $filters[] = new \Model\Product\Filter\Entity($item);
             }
-            $category->addAncestor($parent);
+        });
 
-            // у дочек родителя категория содержит всю инфу
-            // TODO: переделать
-            foreach ($category->getParent()->getChild() as $child) {
-                if ($child->getId() == $category->getId()) {
-                    $category->setProductCount($child->getProductCount());
-                    $category->setGlobalProductCount($child->getGlobalProductCount());
-                    break;
-                }
-            }
-        } else {
-            $repository->loadEntityBranch($category, $isGlobal ? null : \App::user()->getRegion());
-        }
+        // выполнение 3-го пакета запросов
+        $client->execute();
+
+        // фильтры
+        $productFilter = $this->getFilter($filters, $category, $request);
+
+        $setPageParameters = function(\View\Layout $page) use (
+            &$category,
+            &$regionsToSelect,
+            &$rootCategories,
+            &$productFilter
+        ) {
+            $page->setParam('category', $category);
+            $page->setParam('regionsToSelect', $regionsToSelect);
+            $page->setParam('rootCategories', $rootCategories);
+            $page->setParam('productFilter', $productFilter);
+        };
 
         // если категория содержится во внешнем узле дерева
         if ($category->isLeaf()) {
-            return $this->leafCategory($category, $request);
+            $page = new \View\ProductCategory\LeafPage();
+            $setPageParameters($page);
+
+            return $this->leafCategory($category, $productFilter, $page, $request);
         }
         // иначе, если в запросе есть фильтрация
         else if ($request->get(\View\Product\FilterForm::$name)) {
-            return $this->branchCategory($category, $request);
+            $page = new \View\ProductCategory\BranchPage();
+            $setPageParameters($page);
+
+            return $this->branchCategory($category, $productFilter, $page, $request);
         }
         // иначе, если категория самого верхнего уровня
         else if ($category->isRoot()) {
-            return $this->rootCategory($category, $request);
+            $page = new \View\ProductCategory\RootPage();
+            $setPageParameters($page);
+
+            return $this->rootCategory($category, $productFilter, $page, $request);
         }
 
-        return $this->branchCategory($category, $request);
+        $page = new \View\ProductCategory\BranchPage();
+        $setPageParameters($page);
+
+        return $this->branchCategory($category, $productFilter, $page, $request);
     }
 
     /**
      * @param \Model\Product\Category\Entity $category
+     * @param \Model\Product\Filter          $productFilter
+     * @param \View\Layout                   $page
      * @param \Http\Request                  $request
      * @return \Http\Response
      * @throws \Exception
      */
-    private function rootCategory(\Model\Product\Category\Entity $category, \Http\Request $request) {
+    private function rootCategory(\Model\Product\Category\Entity $category, \Model\Product\Filter $productFilter, \View\Layout $page, \Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
         if (\App::config()->debug) \App::debug()->add('sub.act', 'rootCategory', 138);
@@ -197,30 +299,23 @@ class Action {
             throw new \Exception(sprintf('У категории "%s" отстутсвуют дочерние узлы', $category->getId()));
         }
 
-        // фильтры
-        $productFilter = $this->getFilter($category, $request);
-
-        $page = new \View\ProductCategory\RootPage();
-        $page->setParam('category', $category);
-        $page->setParam('productFilter', $productFilter);
-
         return new \Http\Response($page->show());
     }
 
     /**
      * @param \Model\Product\Category\Entity $category
+     * @param \Model\Product\Filter          $productFilter
+     * @param \View\Layout                   $page
      * @param \Http\Request                  $request
      * @return \Http\Response
      */
-    private function branchCategory(\Model\Product\Category\Entity $category, \Http\Request $request) {
+    private function branchCategory(\Model\Product\Category\Entity $category, \Model\Product\Filter $productFilter, \View\Layout $page, \Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
         if (\App::config()->debug) \App::debug()->add('sub.act', 'branchCategory', 138);
 
         // сортировка
         $productSorting = new \Model\Product\Sorting();
-        // фильтры
-        $productFilter = $this->getFilter($category, $request);
         // дочерние категории сгруппированные по идентификаторам
         $childrenById = array();
         foreach ($category->getChild() as $child) {
@@ -240,16 +335,20 @@ class Action {
         /** @var $child \Model\Product\Category\Entity */
         $child = reset($childrenById);
         $productPagersByCategory = array();
+        $productCount = 0;
         foreach ($repository->getIteratorsByFilter($filterData, $productSorting->dump(), null, $limit) as $productPager) {
             $productPager->setPage(1);
             $productPager->setMaxPerPage($limit);
             $productPagersByCategory[$child->getId()] = $productPager;
             $child = next($childrenById);
+            $productCount += $productPager->count();
+        }
+        if (self::isGlobal()) {
+            $category->setGlobalProductCount($productCount);
+        } else {
+            $category->setProductCount($productCount);
         }
 
-        $page = new \View\ProductCategory\BranchPage();
-        $page->setParam('category', $category);
-        $page->setParam('productFilter', $productFilter);
         $page->setParam('productPagersByCategory', $productPagersByCategory);
 
         return new \Http\Response($page->show());
@@ -257,11 +356,13 @@ class Action {
 
     /**
      * @param \Model\Product\Category\Entity $category
+     * @param \Model\Product\Filter          $productFilter
+     * @param \View\Layout                   $page
      * @param \Http\Request                  $request
      * @return \Http\Response
      * @throws \Exception\NotFoundException
      */
-    private function leafCategory(\Model\Product\Category\Entity $category, \Http\Request $request) {
+    private function leafCategory(\Model\Product\Category\Entity $category, \Model\Product\Filter $productFilter, \View\Layout $page, \Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
         if (\App::config()->debug) \App::debug()->add('sub.act', 'leafCategory', 138);
@@ -278,8 +379,6 @@ class Action {
 
         // вид товаров
         $productView = $request->get('view', $category->getHasLine() ? 'line' : $category->getProductView());
-        // фильтры
-        $productFilter = $this->getFilter($category, $request);
         // листалка
         $limit = \App::config()->product['itemsPerPage'];
         $repository = \RepositoryManager::getProduct();
@@ -296,6 +395,12 @@ class Action {
         );
         $productPager->setPage($pageNum);
         $productPager->setMaxPerPage($limit);
+        if (self::isGlobal()) {
+            $category->setGlobalProductCount($productPager->count());
+        } else {
+            $category->setProductCount($productPager->count());
+        }
+
         // проверка на максимально допустимый номер страницы
         if (($productPager->getPage() - $productPager->getLastPage()) > 0) {
             throw new \Exception\NotFoundException(sprintf('Неверный номер страницы "%s".', $productPager->getPage()));
@@ -311,9 +416,6 @@ class Action {
             )));
         }
 
-        $page = new \View\ProductCategory\LeafPage();
-        $page->setParam('category', $category);
-        $page->setParam('productFilter', $productFilter);
         $page->setParam('productPager', $productPager);
         $page->setParam('productSorting', $productSorting);
         $page->setParam('productView', $productView);
@@ -322,12 +424,14 @@ class Action {
     }
 
     /**
+     * @param \Model\Product\Filter\Entity[] $filters
      * @param \Model\Product\Category\Entity $category
+     * @param \Http\Request                  $request
      * @return \Model\Product\Filter
      */
-    private function getFilter(\Model\Product\Category\Entity $category, \Http\Request $request) {
+    private function getFilter(array $filters, \Model\Product\Category\Entity $category, \Http\Request $request) {
         // проверяем флаг глобального списка в параметрах запроса
-        $isGlobal = $this->isGlobal();
+        $isGlobal = self::isGlobal();
 
         // регион для фильтров
         $region = $isGlobal ? null : \App::user()->getRegion();
@@ -336,15 +440,6 @@ class Action {
         $values = $request->get(\View\Product\FilterForm::$name, array());
         if ($isGlobal) {
             $values['global'] = 1;
-        }
-
-        try {
-            $filters = \RepositoryManager::getProductFilter()->getCollectionByCategory($category, $region);
-        } catch (\Exception $e) {
-            \App::$exception = $e;
-            \App::logger()->error($e);
-
-            $filters = array();
         }
 
         // проверяем есть ли в запросе фильтры
@@ -385,7 +480,10 @@ class Action {
         return $productFilter;
     }
 
-    public function isGlobal() {
+    /**
+     * @return bool
+     */
+    public static function isGlobal() {
         return \App::user()->getRegion()->getHasTransportCompany()
             && (bool)(\App::request()->cookies->get(self::$globalCookieName, false));
     }

@@ -11,7 +11,10 @@ if (\App::$exception instanceof \Exception) {
 
 $debug->add('id', \App::$id, 140);
 $debug->add('env', \App::$env, 139);
-$debug->add('act', implode('.', \App::request()->attributes->get('action', array('?', '?'))), 138);
+
+$action =implode('.', \App::request()->attributes->get('action', array()));
+$debug->add('act', $action ?: 'undefined', 138, $action ? \Debug\Collector::TYPE_INFO : \Debug\Collector::TYPE_ERROR);
+
 if (\App::user()->getToken()) {
     $debug->add('user', \App::user()->getToken(), 135);
 }
@@ -37,6 +40,7 @@ $queryString = '';
 foreach ((array)$requestData['api_queries'] as $query) {
     $queryString .=
         (round($query['time'], 3) * 1000)
+        . ' ' . '<span style="color: #cccccc;">' . $query['host'] . '</span>'
         . ' ' . '<a style="color: #00ffff" href="' . $query['url'] . '" target="_blank" data-method="' . ((bool)$query['post'] ? 'post' : 'get') . '">' . rawurldecode($query['url']) . '</a>'
         . ' ' . ((bool)$query['post'] ? json_encode($query['post']) : '')
         . '<br />';

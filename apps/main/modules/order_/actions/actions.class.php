@@ -470,6 +470,7 @@ class order_Actions extends myActions
     //dump($orders, 1);
 
 
+    $isCredit = false;
     $this->paymentForm = false;
     // онлайн оплата?
     if (1 == count($orders) && empty($orderNumber))
@@ -479,7 +480,6 @@ class order_Actions extends myActions
       //$paymentMethod = !empty($order['payment_id']) ? PaymentMethodTable::getInstance()->getByCoreId($order['payment_id']) : null;
       $paymentMethod = RepositoryManager::getPaymentMethod()->getById($order['payment_id']);
 
-      $isCredit = false;
       if ($paymentMethod->getIsOnline() || in_array($paymentMethod->getId(), array(5, 8))) { //'online', 'invoice'
         $provider = $this->getPaymentProvider();
         $this->paymentForm = $this->paymentProvider->getForm($order);
@@ -623,24 +623,11 @@ class order_Actions extends myActions
     $servicesInCart = array();
     $serviceList = $user->getCart()->getServices();
     foreach($serviceList as $serviceId => $service){
-      if (!array_key_exists(0, $service))
-      {
-        if ($service instanceof ServiceCartData)
-        {
-          $serviceObj = $service;
-        }
-        else
-        {
-          continue;
-        }
-      }
-      else
-      {
-        $serviceObj = $service[0];
-      }
+      $row = each($service);
+      $serviceObj = $row['value'];
 
-      if ($serviceObj->getQuantity() > 0) {
-          $servicesInCart[] = array('id' => $serviceId, 'quantity' => $serviceObj->getQuantity());
+      if ($serviceObj->getQuantity() > 0 && !$serviceObj->getRelatedProductId()) {
+          $servicesInCart[] = array('id' => $serviceId, 'quantity' => $serviceObj->getQuantity()/*, 'product_id' => $serviceObj->getRelatedProductId()*/);
       }
 
     }
@@ -901,13 +888,16 @@ class order_Actions extends myActions
     $serviceList = $user->getCart()->getServices();
     foreach ($serviceList as $serviceId => $service)
     {
-      if (!array_key_exists(0, $service)) continue;
+      //if (!array_key_exists(0, $service)) continue;
 
       /** @var $tmp \light\ServiceCartData */
-      $tmp = $service[0];
+      //$tmp = $service[0];
+      $row = each($service);
 
-      if ($tmp->getQuantity() > 0) {
-        $servicesInCart[] = array('id' => $serviceId, 'quantity' => $tmp->getQuantity());
+      $tmp = $row['value'];
+
+      if ($tmp->getQuantity() > 0 && !$tmp->getRelatedProductId()) {
+        $servicesInCart[] = array('id' => $serviceId, 'quantity' => $tmp->getQuantity()/*, 'product_id' => $tmp->getRelatedProductId()*/);
       }
     }
 

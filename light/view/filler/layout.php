@@ -39,10 +39,10 @@ class FillerLayout implements IFiller
 
         $renderer->addParameter('categoryRootList', $list, true);
 
-        $regionTopList = App::getRegion()->getShopAvailable();
+        $regionTopList = App::getRegion()->getShowInMenu();
         $renderer->addParameter('regionTopList', $regionTopList);
 
-        $num_row = 3;
+        $num_row = 4;
 
         $columns_count = array();
         $count = count($regionTopList);

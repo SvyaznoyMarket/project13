@@ -32,6 +32,8 @@ class AppConfig {
         'name'            => null,
         'cookie_lifetime' => null,
     );
+    /** @var string */
+    public $cacheCookieName = null;
     /** @var array */
     public $coreV1 = array(
         'url'          => null,
@@ -51,6 +53,11 @@ class AppConfig {
     /** @var array */
     public $company = array(
         'phone' => null,
+        'icq'   => null,
+    );
+    /** @var array */
+    public $analytics = array(
+        'enabled' => null,
     );
     /** @var array */
     public $googleAnalytics = array(
@@ -115,6 +122,11 @@ class AppConfig {
         'url' => array(),
     );
     /** @var array */
+    public $banner = array(
+        'timeout' => null,
+        'url'     => array(),
+    );
+    /** @var array */
     public $payment = array(
         'creditEnabled' => null,
     );
@@ -134,6 +146,14 @@ class AppConfig {
     /** @var array */
     public $user = array(
         'corporateRegister' => null,
+    );
+
+    /** @var array */
+    public $database = array(
+        'host'     => null,
+        'name'     => null,
+        'user'     => null,
+        'password' => null,
     );
 
     public function __set($name, $value) {

@@ -8,7 +8,7 @@
     <div id="payment_method_<?php echo $v->getId() ?>-field">
       <p></p>
       <label class='<?php if ($v->getId() == $selectedMethodId) echo 'mChecked' ?>' for="order_payment_method_id_<?php echo $v->getId() ?>">
-        <b></b> <?php echo $v->getName() ?>
+        <b></b> <span class="payment_method_label"><?php echo $v->getName() ?></span>
         <input id="order_payment_method_id_<?php echo $v->getId() ?>" class='bBuyingLine__eRadio' name='<?php echo $name ?>' type='radio' value="<?php echo $v->getId() ?>" <?php if ($v->getId() == $selectedMethodId) echo 'checked="checked"' ?> />
       </label>
       <i>

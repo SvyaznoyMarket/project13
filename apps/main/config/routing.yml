@@ -522,7 +522,7 @@ smartengine_alsoViewed:
   param: { module: smartengine, action: alsoViewed }
 # view
 smartengine_buy:
-  url: /product-buy/:product
+  url: /product-buy
   param: { module: smartengine, action: buy }
 # alsoBought
 smartengine_alsoBought:
@@ -542,8 +542,8 @@ cart:
 #
 # MOVED TO PLAIN PHP cart add
 cart_add:
-  url:   /cart/add/:product/_quantity/:quantity/
-  param: { module: cart, action: add, quantity: 1}
+  url:   /cart/add/:product/_quantity/:quantity
+  param: { module: cart, action: add }
   requirements:
     sf_method: [ get, post ]
     product: \d+

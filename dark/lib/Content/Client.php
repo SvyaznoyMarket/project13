@@ -52,7 +52,7 @@ class Client {
             $method,
             $timeout
         )));
-        \Util\RequestLogger::getInstance()->addLog($url, array(), (microtime(true) - $start));
+        \Util\RequestLogger::getInstance()->addLog($url, array(), (microtime(true) - $start), 'unknown');
 
         if ($json) {
             $response = json_decode($response, true);
