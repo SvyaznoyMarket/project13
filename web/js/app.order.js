@@ -187,73 +187,74 @@ $(document).ready(function () {
     ;
     ( function () {
         if (!$('#product_errors').length) return;
-        var orderErrPopup = function( title, txt, callback ) {
-            var block = '<div id="orderErrPopup" class="popup">' +
+        // var dfd = $.Deferred()
+        var orderErrPopup = function( txt, delUrl, addUrl ) {
+            var id = 'tmpErrPopup'+Math.floor(Math.random()*22)
+            var block = '<div id="'+id+'" class="popup">' +
                             '<div class="popupbox width290">' +
-                                '<div class="font18 pb18"> ' +txt+ '</div>'+
+                                '<div class="font18 pb18"> Непредвиденная ошибка</div>'+
                             '</div>' +
                             '<p style="text-align:center"><a href="#" class="closePopup bBigOrangeButton">OK</a></p>'
                         '</div> '
             $('body').append( $(block) )
-            $('#orderErrPopup').lightbox_me({
+            $.each(txt, function(i, item){
+                $('#'+id).find('.popupbox').append('<div class="font18 pb18"> ' +item+ '</div>')
+            })
+            $('#'+id).lightbox_me({
               centered: true,
               closeSelector: ".closePopup",
               onClose: function(){
-                    callback()
+                    var sendData = function(item, i){
+                        if(item[i]){
+                            var url = item[i]+''
+                            $.ajax({
+                                url: url
+                            }).then(function(res){
+                                i++
+                                sendData(item, i)
+                            })
+                        }
+                        else{
+                            // console.log('complete!')
+                            window.location.reload()
+                        }
+
+                    }
+                    $.merge(delUrl, addUrl)
+                    sendData(delUrl, 0)
                 }
             })
         }
-
+        var txt = []
+        var delUrl = []
+        var addUrl = []
         var length = $('#product_errors').data('value').length
         if (length) {
             var checkItemQuantity = function() {
-                var dfd = $.Deferred()
-
                 $.each($('#product_errors').data('value'), function(i, item) {
                     if (708 == item.code) {
-                        if (item.quantity_available > 0)
-                        {
+                        if (item.quantity_available > 0) {
                             _gaq.push(['_trackEvent', 'Errors', 'User error', 'Нет нужного количества товаров'])
-                            orderErrPopup('Непредвиденная ошибка', 'Вы заказали товар '+item.product.name+' в количестве '+item.product.quantity+' шт. <br/ >Доступно только '+item.quantity_available+' шт.<br/ >Будет заказано '+item.quantity_available+'шт' , function(){
-                                    $.ajax({
-                                        url: item.product.deleteUrl
-                                    }).done(function(result) {
-                                        $.ajax({
-                                            url: item.product.addUrl
-                                        }).done(function() {
-                                                if ((i +1) == length) dfd.resolve()
-                                        })
-                                    })
-                            })
+                            txt.push('Вы заказали товар '+item.product.name+' в количестве '+item.product.quantity+' шт. <br/ >Доступно только '+item.quantity_available+' шт.<br/ >Будет заказано '+item.quantity_available+'шт')
+                            delUrl.push(item.product.deleteUrl)
+                            addUrl.push(item.product.addUrl)
+                            
                         }
                         else {
                             _gaq.push(['_trackEvent', 'Errors', 'User error', 'Нет товара для выбранного способа доставки'])
-                            orderErrPopup('Непредвиденная ошибка', 'Товара ' + item.product.name + ' нет в наличии для выбранного способа доставки.<br/>Товар будет удален из корзины.', function(){
-                                $.ajax({
-                                    url: item.product.deleteUrl
-                                }).done(function(result) {
-                                    if ((i +1) == length) dfd.resolve()
-                                })
-                            })
+                            txt.push('Товара ' + item.product.name + ' нет в наличии для выбранного способа доставки.<br/>Товар будет удален из корзины.')
+                            delUrl.push(item.product.deleteUrl)
                         }
                     }
                     else {
                         _gaq.push(['_trackEvent', 'Errors', 'User error', 'Товар недоступен для продажи'])
-                        orderErrPopup('Непредвиденная ошибка', 'Товар ' + item.product.name + ' недоступен для продажи.<br/>Товар будет удален из корзины.', function(){
-                            $.ajax({
-                                url: item.product.deleteUrl
-                            }).done(function() {
-                                if ((i +1) == length) dfd.resolve()
-                            })
-                        })
+                        txt.push('Товар ' + item.product.name + ' недоступен для продажи.<br/>Товар будет удален из корзины.')
+                        delUrl.push(item.product.deleteUrl)
                     }
                 })
-                return dfd.promise()
+                orderErrPopup(txt, delUrl, addUrl)
             }
-
-            $.when(checkItemQuantity()).done(function() {
-                window.location.reload()
-            })
+            checkItemQuantity()
         }
 
      })();
