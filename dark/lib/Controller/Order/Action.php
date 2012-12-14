@@ -29,7 +29,44 @@ class Action {
         }
 
         if ($request->isMethod('post')) {
-            $this->saveOrder();
+            if (!$request->isXmlHttpRequest()) {
+                throw new \Exception\NotFoundException('Request is not xml http request');
+            }
+
+            if (!is_array($request->request->get('order'))) {
+                throw new \Exception(sprintf('Запрос не содержит параметра %s %s', 'order', json_encode($request->request->all())));
+            }
+
+            // обновление формы
+            $form->fromArray($request->request->get('order'));
+
+            // валидация формы
+            $this->validateForm($form);
+            if (!$form->isValid()) {
+                $errors = array_filter($form->getErrors(), function($error) { if ($error) return true; }) ;
+                return new \Http\JsonResponse(array(
+                    'success' => false,
+                    'error'   => array('code' => 'invalid', 'message' => 'Форма заполнена неверно'),
+                    'errors'  => $errors,
+                ));
+            }
+
+            try {
+                $this->saveOrder($form, $deliveryMap);
+            } catch (\Exception $e) {
+                $errors = array();
+
+                return new \Http\JsonResponse(array(
+                    'success' => false,
+                    'error'   => array('code' => 'invalid', 'message' => 'Форма заполнена неверно' . (\App::config()->debug ? (': ' . $e) : '')),
+                    'errors'  => $errors,
+                ));
+            }
+
+            return new \Http\JsonResponse(array(
+                'success' => true,
+            ));
+
         }
 
         // подготовка пакета запросов
@@ -121,6 +158,73 @@ class Action {
         return new \Http\Response($page->show());
     }
 
+    /**
+     * @param \View\Order\Form             $form        Валидная форма заказа
+     * @param \View\Order\DeliveryCalc\Map $deliveryMap Ката доставки заказов
+     * @throws \Exception
+     */
+    public function saveOrder(\View\Order\Form $form, \View\Order\DeliveryCalc\Map $deliveryMap) {
+        if (!$form->isValid()) {
+            throw new \Exception('Невалидная форма заказа %s');
+        }
+
+        $order = new \Model\Order\Entity();
+
+        //var_dump($_REQUEST); exit();
+    }
+
+    /**
+     * @param \View\Order\Form $form
+     */
+    private function validateForm(\View\Order\Form $form) {
+        // мобильный телефон
+        $value = $form->getMobilePhone();
+        $value = trim((string)$value);
+        $value = preg_replace('/^\+7/', '8', $value);
+        $value = preg_replace('/[^\d]/', '', $value);
+        if (10 == strlen($value)) {
+            $value = '8' . $value;
+        }
+        $form->setMobilePhone($value);
+        if (!$form->getMobilePhone()) {
+            $form->setError('recipient_phonenumbers', 'Не указан мобильный телефон');
+        } else if (11 != strlen($form->getMobilePhone())) {
+            $form->setError('recipient_phonenumbers', 'Номер мобильного телефона должен содержать 11 цифр');
+        }
+
+        // способ доставки
+        if (!$form->getDeliveryTypeId()) {
+            $form->setError('delivery_type_id', 'Не указан способ получения заказа');
+        } else if ($form->getDeliveryTypeId()) {
+            $deliveryType = \RepositoryManager::getDeliveryType()->getEntityById($form->getDeliveryTypeId());
+            if (!$deliveryType) {
+                $form->setError('delivery_type_id', 'Способ получения заказа недоступен');
+            } else if ('standart' == $deliveryType->getToken()) {
+                if (!$form->getAddressStreet()) {
+                    $form->setError('address_street', 'Укажите улицу');
+                }
+                if (!$form->getAddressBuilding()) {
+                    $form->setError('address_building', 'Укажите дом');
+                }
+            }
+        }
+
+        // метод оплаты
+        if (!$form->getPaymentMethodId()) {
+            $form->setError('payment_method_id', 'Не указан способ оплаты');
+        } else if ($form->getPaymentMethodId() && (\Model\PaymentMethod\Entity::CERTIFICATE_ID == $form->getPaymentMethodId())) {
+            if (!$form->getCertificateCardnumber()) {
+                $form->setError('cardnumber', 'Укажите номер карты');
+            }
+            if (!$form->getCertificatePin()) {
+                $form->setError('cardpin', 'Укажите пин карты');
+            }
+        }
+    }
+
+    /**
+     * @return \View\Order\Form
+     */
     private function getForm() {
         $request = \App::request();
         $form = new \View\Order\Form();
@@ -130,8 +234,8 @@ class Action {
             $form->setFirstName($userEntity->getFirstName());
             $form->setLastName($userEntity->getLastName());
             $form->setMobilePhone((strlen($userEntity->getMobilePhone()) > 10)
-                ? substr($userEntity->getMobilePhone(), -10)
-                : $userEntity->getMobilePhone()
+                    ? substr($userEntity->getMobilePhone(), -10)
+                    : $userEntity->getMobilePhone()
             );
         } else {
             $cookieValue = $request->cookies->get(self::ORDER_COOKIE_NAME);
@@ -151,12 +255,6 @@ class Action {
         }
 
         return $form;
-    }
-
-    private function saveOrder() {
-        $order = new \Model\Order\Entity();
-
-        var_dump($_REQUEST); exit();
     }
 
     /**

@@ -188,6 +188,10 @@ class Entity {
         if (array_key_exists('pay_sum', $data)) $this->setPaySum($data['pay_sum']);
     }
 
+    public function dump() {
+
+    }
+
     /**
      * @param string $address
      */

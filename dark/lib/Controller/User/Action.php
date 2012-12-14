@@ -422,7 +422,7 @@ class Action {
                 return new \Http\JsonResponse(array('success' => true));
             }
         } catch(\Exception $e) {
-            \App::$exception = null;
+            \App::exception()->remove($e);
 
             $error = $error ?: ('Не удалось запросить пароль. Попробуйте позже' . (\App::config()->debug ? (': ' . $e->getMessage()) : ''));
         }

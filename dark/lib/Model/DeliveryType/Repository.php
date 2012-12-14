@@ -59,4 +59,20 @@ class Repository {
 
         return $collection;
     }
+
+    /**
+     * @param int $id
+     * @return Entity|null
+     */
+    public function getEntityById($id) {
+        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args()));
+
+        foreach ($this->getCollection() as $entity) {
+            if ($id == $entity->getId()) {
+                return $entity;
+            }
+        }
+
+        return null;
+    }
 }
