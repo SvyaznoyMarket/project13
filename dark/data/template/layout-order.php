@@ -44,7 +44,7 @@
 </div>
 
 <?= $page->slotRegionSelection() ?>
-<?= $page->render('order/_footer') ?>
+<? if (!(bool)\App::exception()->all()) echo $page->render('order/_footer') ?>
 <?= $page->slotFooter() ?>
 
 <?= $page->slotJavascript() ?>

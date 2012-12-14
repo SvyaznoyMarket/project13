@@ -5,12 +5,7 @@
  */
 ?>
 
-<?
-$productIds = array();
-foreach ($order->getProduct() as $orderProduct) {
-    $productIds[] = $orderProduct->getId();
-}
-?>
+<? $productIds = array_map(function($cartProduct) { /** @var $cartProduct \Model\Cart\Product\Entity */ return $cartProduct->getId(); }, $user->getCart()->getProducts()) ?>
 
 <? if (\App::config()->analytics['enabled'] && (bool)$productIds && ($cusId = \Analytics\Odinkod::getCusId($user->getRegion()))): ?>
 <script language="javascript">

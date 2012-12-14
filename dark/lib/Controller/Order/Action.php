@@ -12,13 +12,23 @@ class Action {
         $user = \App::user();
         $form = new \View\Order\Form();
 
-        // TODO $this->getOrder()
-        $order = new \Model\Order\Entity();
+        try {
+            $deliveryMap = $this->getDeliveryMap();
+        } catch (\Exception $e) {
+            $page = new \View\Order\ErrorPage();
+            $page->setParam('exception', $e);
 
-        $deliveryMap = $this->getDeliveryMap();
+            return new \Http\Response($page->show());
+        }
+
         if (!$deliveryMap) {
             \App::logger()->warn('Невозможно начать оформление заказа: в корзине нет товаров и услуг');
             return new \Http\RedirectResponse(\App::router()->generate('cart'));
+        }
+
+        if ($request->isMethod('post')) {
+            // TODO $this->getOrder()
+            $order = new \Model\Order\Entity();
         }
 
         // подготовка пакета запросов
@@ -99,7 +109,6 @@ class Action {
         // TODO: доделать расчет ссылки
 
         $page->setParam('form', $form);
-        $page->setParam('order', $order);
         $page->setParam('deliveryMap', $deliveryMap);
         $page->setParam('subwayData', $subwayData);
         $page->setParam('banks', $banks);
@@ -169,6 +178,10 @@ class Action {
         ), function($data) use (&$deliveryCalcResult, &$shops) {
             $deliveryCalcResult = $data;
             $shops = array_map(function($data) { return new \Model\Shop\Entity($data); }, $deliveryCalcResult['shops']);
+        }, function (\Exception $e) {
+            //\App::exception()->remove($e);
+
+            throw $e;
         });
         //$result = json_decode(file_get_contents(\App::config()->dataDir . '/core/v2-order-calc.json'), true);
 
@@ -195,6 +208,13 @@ class Action {
 
         // выполнение пакета запросов
         $client->execute();
+
+        if (!$deliveryCalcResult) {
+            $e = new \Exception('Калькулятор доставки вернул пустой результат');
+            \App::logger()->error($e->getMessage());
+
+            throw $e;
+        }
 
         // карта доставки
         $deliveryMapView = new \View\Order\DeliveryCalc\Map();

@@ -3,7 +3,6 @@
  * @var $page                    \View\Order\CreatePage
  * @var $user                    \Session\User
  * @var $form                    \View\Order\Form
- * @var $order                   \Model\Order\Entity
  * @var $subwayData              array
  * @var $bankData                array
  * @var $banks                   \Model\CreditBank\Entity[]
@@ -282,5 +281,5 @@ if ($form->hasSubway()) $jsValidator['order[address_metro]'] = 'Укажите �
 <?php if (\App::config()->analytics): ?>
     <div id="marketgidOrder" class="jsanalytics"></div>
     <div id="heiasOrder" data-vars="<?= $user->getCart()->getAnalyticsData() ?>" class="jsanalytics"></div>
-    <?= $page->render('order/_odinkodForCreate', array('order' => $order)) ?>
+    <?= $page->render('order/_odinkodForCreate') ?>
 <?php endif ?>
