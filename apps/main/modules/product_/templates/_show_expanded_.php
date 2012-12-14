@@ -3,9 +3,9 @@
  * @var $item ProductEntity|sfOutputEscaperObjectDecorator
  */
 ?>
-<div class="goodsbox goodsline bNewGoodsBox">
-  <div class="goodsboxlink" <?php if ($item->getIsBuyable()): ?> ref="<?php echo $item->getToken() ?>"
+<div class="goodsbox goodsline bNewGoodsBox" <?php if ($item->getIsBuyable()): ?> ref="<?php echo $item->getToken() ?>"
        data-cid="<?php echo $item->getId() ?>" <?php endif ?>>
+  <div class="goodsboxlink">
     <div class="photo">
       <a href="<?php echo $item->getLink() ?>">
       <?php if ($label = $item->getMainLabel()): ?>
