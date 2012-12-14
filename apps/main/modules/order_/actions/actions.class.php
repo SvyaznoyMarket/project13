@@ -125,6 +125,7 @@ class order_Actions extends myActions
         $this->setVar('subwayStations', array_map(function(SubwayEntity $item) { return array('val' => $item->getId(), 'label' => $item->getName()); }, RepositoryManager::getSubway()->getListByRegionId($user->getRegion('id'))), true);
     }
 
+    $this->getLogger()->info('Delivery map: '.json_encode($deliveryMap));
     $this->setVar('deliveryMap', $deliveryMap);
     $this->setVar('deliveryMap_json', json_encode($deliveryMap));
     $this->setVar('mapCenter', json_encode(array('latitude' => $user->getRegion('latitude'), 'longitude' => $user->getRegion('longitude'))));
