@@ -68,7 +68,24 @@ class Form {
     }
 
     public function fromArray(array $data) {
-        if (array_key_exists('delivery_type_id', $data)) $this->setDeliveryTypeId($data['delivery_type_id']);
+        if (array_key_exists('delivery_type_id', $data))       $this->setDeliveryTypeId($data['delivery_type_id']);
+        if (array_key_exists('recipient_first_name', $data))   $this->setFirstName($data['recipient_first_name']);
+        if (array_key_exists('recipient_last_name', $data))    $this->setLastName($data['recipient_last_name']);
+        if (array_key_exists('recipient_phonenumbers', $data)) $this->setMobilePhone($data['recipient_phonenumbers']);
+        if (array_key_exists('is_receive_sms', $data))         $this->setIsSmsAlert($data['is_receive_sms']);
+        if (array_key_exists('address_street', $data))         $this->setAddressStreet($data['address_street']);
+        if (array_key_exists('address_number', $data))         $this->setAddressNumber($data['address_number']);
+        if (array_key_exists('address_building', $data))       $this->setAddressBuilding($data['address_building']);
+        if (array_key_exists('address_apartment', $data))      $this->setAddressApartment($data['address_apartment']);
+        if (array_key_exists('address_floor', $data))          $this->setAddressFloor($data['address_floor']);
+        if (array_key_exists('extra', $data))                  $this->setComment($data['extra']);
+        if (array_key_exists('credit_bank_id', $data))         $this->setCreditBankId($data['credit_bank_id']);
+        if (array_key_exists('sclub_card_number', $data))      $this->setSclubCardnumber($data['sclub_card_number']);
+        if (array_key_exists('payment_method_id', $data))      $this->setPaymentMethodId($data['payment_method_id']);
+        if (array_key_exists('agreed', $data))                 $this->setAgreed($data['agreed']);
+        if (array_key_exists('cardnumber', $data))             $this->setCertificateCardnumber($data['cardnumber']);
+        if (array_key_exists('cardpin', $data))                $this->setCertificatePin($data['cardpin']);
+        if (array_key_exists('subway_id', $data))              $this->setSubwayId($data['subway_id']);
     }
 
     /**

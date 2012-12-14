@@ -3,6 +3,8 @@
 namespace Controller\Order;
 
 class Action {
+    const ORDER_COOKIE_NAME = 'last_order';
+
     /**
      * @param \Http\Request $request
      * @return \Http\Response
@@ -10,7 +12,7 @@ class Action {
     public function create(\Http\Request $request) {
         $client = \App::coreClientV2();
         $user = \App::user();
-        $form = new \View\Order\Form();
+        $form = $this->getForm();
 
         try {
             $deliveryMap = $this->getDeliveryMap();
@@ -27,8 +29,7 @@ class Action {
         }
 
         if ($request->isMethod('post')) {
-            // TODO $this->getOrder()
-            $order = new \Model\Order\Entity();
+            $this->saveOrder();
         }
 
         // подготовка пакета запросов
@@ -120,8 +121,47 @@ class Action {
         return new \Http\Response($page->show());
     }
 
+    private function getForm() {
+        $request = \App::request();
+        $form = new \View\Order\Form();
+
+        // вытащить из куки значения для формы, если пользователь неавторизован
+        if ($userEntity = \App::user()->getEntity()) {
+            $form->setFirstName($userEntity->getFirstName());
+            $form->setLastName($userEntity->getLastName());
+            $form->setMobilePhone((strlen($userEntity->getMobilePhone()) > 10)
+                ? substr($userEntity->getMobilePhone(), -10)
+                : $userEntity->getMobilePhone()
+            );
+        } else {
+            $cookieValue = $request->cookies->get(self::ORDER_COOKIE_NAME);
+            if (!empty($cookieValue)) {
+                $cookieValue = (array)unserialize(base64_decode(strtr($cookieValue, '-_', '+/')));
+                $data = array();
+                foreach ($this->getFormCookieKeys() as $k) {
+                    if (array_key_exists($k, $cookieValue)) {
+                        if (('recipient_phonenumbers' == $k) && (strlen($cookieValue[$k])) > 10) {
+                            $cookieValue[$k] = substr($cookieValue[$k], -10);
+                        }
+                        $data[$k] = $cookieValue[$k];
+                    }
+                }
+                $form->fromArray($data);
+            }
+        }
+
+        return $form;
+    }
+
+    private function saveOrder() {
+        $order = new \Model\Order\Entity();
+
+        var_dump($_REQUEST); exit();
+    }
+
     /**
      * @return \View\Order\DeliveryCalc\Map|null
+     * @throws \Exception
      */
     private function getDeliveryMap() {
         $client = \App::coreClientV2();
@@ -430,5 +470,20 @@ class Action {
         }
 
         return $deliveryMapView;
+    }
+
+    private function getFormCookieKeys() {
+        return array(
+            'recipient_first_name',
+            'recipient_last_name',
+            'recipient_phonenumbers',
+            'address_street',
+            'address_number',
+            'address_building',
+            'address_apartment',
+            'address_floor',
+            //'subway_id',
+            //'address_metro',
+        );
     }
 }
