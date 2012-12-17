@@ -1123,52 +1123,52 @@ class order_Actions extends myActions
         $deliveryTypeView->items[] = $itemView->token;
       }
 
-      $tmpDates = null;
-      $dates = array();
-      foreach ($deliveryTypeView->items as $itemToken)
-      {
-        $dates = array_map(function($i) { return $i->value; }, $deliveryMapView->items[$itemToken]->deliveries[$deliveryTypeView->token]->dates);
-        $dates = is_array($tmpDates) ? array_intersect($dates, $tmpDates) : $dates;
-        $tmpDates = $dates;
-      }
-      $deliveryTypeView->date = array_shift($dates);
-      $deliveryTypeView->displayDate = format_date($deliveryTypeView->date, 'd MMMM', 'ru');
+           $tmpDates = null;
+           $dates = array();
+           foreach ($deliveryMapView->items as $itemView) {
+               if (isset($itemView->deliveries[$deliveryTypeView->token])) {
+                   //берем дату
+                   $dates = array_map(function($i) { return $i->value; }, $itemView->deliveries[$deliveryTypeView->token]->dates);
+                   $dates = is_array($tmpDates) ? array_intersect($dates, $tmpDates) : $dates;
+                   $tmpDates = $dates;
 
-      $interval =
-        (isset($deliveryTypeView->items[0]) && isset($deliveryMapView->items[$deliveryTypeView->items[0]]->deliveries[$deliveryTypeView->token]->dates[0]->intervals[0]))
-        ? $deliveryMapView->items[$deliveryTypeView->items[0]]->deliveries[$deliveryTypeView->token]->dates[0]->intervals[0]
-        : null
-      ;
-      $deliveryTypeView->interval = ($interval) ? ($interval->start_at.','.$interval->end_at) : null;
-      $deliveryTypeView->displayInterval = ($interval) ? ('с '.$interval->start_at.' по '.$interval->end_at) : null;
+                   //берем интервал
+                   if (!(bool)$deliveryTypeView->interval && isset($itemView->deliveries[$deliveryTypeView->token]->dates[0]->intervals[0])) {
+                       $interval = $itemView->deliveries[$deliveryTypeView->token]->dates[0]->intervals[0];
+                       $deliveryTypeView->interval = $interval->start_at.','.$interval->end_at;
+                       $deliveryTypeView->displayInterval = 'с '.$interval->start_at.' по '.$interval->end_at;
+                   }
+               }
+           }
 
-      $deliveryMapView->deliveryTypes[$deliveryTypeView->token] = $deliveryTypeView;
-    }
+           $deliveryTypeView->date = array_shift($dates);
+           $deliveryTypeView->displayDate = format_date($deliveryTypeView->date, 'd MMMM', 'ru');
 
-    foreach ($deliveryMapView->items as $itemView)
-    {
-      foreach ($itemView->deliveries as $deliveryView)
-      {
-        $deliveryView->name .= ''
-          .(
-            $deliveryMapView->deliveryTypes[$deliveryView->token]->shop
-            ? (' '.str_replace('г. Москва,', '', $deliveryMapView->deliveryTypes[$deliveryView->token]->shop->address))
-            : ''
-          )
-        ;
-      }
-    }
+           $deliveryMapView->deliveryTypes[$deliveryTypeView->token] = $deliveryTypeView;
+         }
 
-    //var_dump($deliveryMapView); die();
+         foreach ($deliveryMapView->items as $itemView)
+         {
+           foreach ($itemView->deliveries as $deliveryView)
+           {
+             $deliveryView->name .= ''
+               .(
+                 $deliveryMapView->deliveryTypes[$deliveryView->token]->shop
+                 ? (' '.str_replace('г. Москва,', '', $deliveryMapView->deliveryTypes[$deliveryView->token]->shop->address))
+                 : ''
+               )
+             ;
+           }
+         }
 
-    return $deliveryMapView;
-  }
+         return $deliveryMapView;
+       }
 
-  /**
-   *
-   * @param type $name
-   * @return PsbankPaymentProvider
-   */
+       /**
+        *
+        * @param type $name
+        * @return PsbankPaymentProvider
+        */
   private function getPaymentProvider($name = null)
   {
     if (null == $name) {
