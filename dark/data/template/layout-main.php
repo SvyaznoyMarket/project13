@@ -29,10 +29,7 @@
 <div class="allpage">
     <div class="adfoxWrapper" id="adfox980"></div>
 
-    <div id="header">
-        <a id="topLogo" href="/">Enter Связной</a>
-        <?= $page->slotRootCategory() ?>
-    </div>
+    <?= $page->slotHeader() ?>
 
     <noindex>
         <div id="mainPageSearch" class="searchbox">
@@ -55,6 +52,8 @@
     <div class="clear"></div>
 </div>
 
+<?= $page->slotRegionSelection() ?>
+<?= $page->slotAuth() ?>
 <?= $page->slotJavascript() ?>
 <?= $page->slotInnerJavascript() ?>
 

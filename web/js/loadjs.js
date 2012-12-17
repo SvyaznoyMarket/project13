@@ -52,9 +52,11 @@
 	switch( document.body.getAttribute('data-template') ) {
 		case 'main':
 			$LAB.queueWait( function() {
-				$LAB.script( getWithVersion('ports.js') )
+				$LAB.script( getWithVersion('bigjquery.js') )
+				.script( getWithVersion('ports.js') )
 				.script( getWithVersion('library.js') )
 				.wait()
+				.script(getWithVersion('main.js'))
 				.script(getWithVersion('welcome.js'))
 			}).runQueue()
 			break

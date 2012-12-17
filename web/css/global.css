@@ -7560,6 +7560,17 @@
     height: 93px;
     width: 140px;
   }
+  #mainPage .topbar #jsregion,
+  #mainPage .topbar .usermenu a {
+    color: #ffffff;
+  }
+  #mainPage .topbar .hBasket {
+    background: url("/css/mainPage/img/mainPageSprite.png") no-repeat -312px -74px;
+  }
+  #mainPage .topbar .headerContactPhone,
+  #mainPage .topbar .headerShopLink {
+    display: none;
+  }
   /*--- ПОИСК ---*/
   #mainPageSearch.searchbox {
     background: url("/css/mainPage/img/mainPageSprite.png") no-repeat 0 0;

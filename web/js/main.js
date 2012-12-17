@@ -846,7 +846,7 @@ $(document).ready(function(){
     })
 
 	/* Top Menu */
-	if( $('.topmenu').length ) {
+	if( $('.topmenu').length && !$('body#mainPage').length) {
 		$.get('/category/main_menu', function(data){
 			$('#header').append( data )
 		})
