@@ -840,13 +840,6 @@ class Entity extends BasicEntity {
     }
 
     /**
-     * @return string
-     */
-    public function getPath() {
-        return trim(preg_replace('/^\/product\//' , '', $this->link), '/');
-    }
-
-    /**
      * @param array
      */
     public function setWarranty($warranties)

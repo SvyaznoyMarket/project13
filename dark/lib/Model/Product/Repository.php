@@ -97,6 +97,49 @@ class Repository {
     }
 
     /**
+     * @param array $barcodes
+     * @return Entity[]
+     */
+    public function getCollectionByBarcode(array $barcodes) {
+        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args()));
+
+        if (!(bool)$barcodes) return array();
+
+        $response = $this->client->query('product/get', array(
+            'select_type' => 'bar_code',
+            'bar_code'    => $barcodes,
+            'geo_id'      => \App::user()->getRegion()->getId(),
+        ));
+
+        $collection = array();
+        foreach ($response as $data) {
+            $collection[] = new $this->entityClass($data);
+        }
+
+        return $collection;
+    }
+
+    /**
+     * @param array                $barcodes
+     * @param \Model\Region\Entity $region
+     * @param                      $done
+     * @param                      $fail
+     */
+    public function prepareCollectionByBarcode(array $barcodes, \Model\Region\Entity $region = null, $done, $fail = null) {
+        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args()));
+
+        $params = array(
+            'select_type' => 'bar_code',
+            'bar_code'    => $barcodes,
+        );
+        if ($region instanceof \Model\Region\Entity) {
+            $params['geo_id'] = $region->getId();
+        }
+
+        $this->client->addQuery('product/get', $params, array(), $done, $fail);
+    }
+
+    /**
      * @param array $ids
      * @return Entity[]
      */
@@ -122,9 +165,10 @@ class Repository {
     /**
      * @param array                $ids
      * @param \Model\Region\Entity $region
-     * @param                      $callback
+     * @param                      $done
+     * @param                      $fail
      */
-    public function prepareCollectionById(array $ids, \Model\Region\Entity $region = null, $callback) {
+    public function prepareCollectionById(array $ids, \Model\Region\Entity $region = null, $done, $fail = null) {
         \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args()));
 
         if (!(bool)$ids) return;
@@ -136,7 +180,7 @@ class Repository {
         if ($region instanceof \Model\Region\Entity) {
             $params['geo_id'] = $region->getId();
         }
-        $this->client->addQuery('product/get', $params, array(), $callback);
+        $this->client->addQuery('product/get', $params, array(), $done, $fail);
     }
 
     /**

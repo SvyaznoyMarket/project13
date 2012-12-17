@@ -6,6 +6,8 @@ class BasicEntity {
     /** @var int */
     protected $id;
     /** @var string */
+    protected $barcode;
+    /** @var string */
     protected $name;
     /** @var string */
     protected $link;
@@ -27,6 +29,7 @@ class BasicEntity {
         if (array_key_exists('name', $data)) $this->setName($data['name']);
         if (array_key_exists('link', $data)) $this->setLink($data['link']);
         if (array_key_exists('token', $data)) $this->setToken($data['token']);
+        if (array_key_exists('bar_code', $data)) $this->setBarcode($data['bar_code']);
         if (array_key_exists('media_image', $data)) $this->setImage($data['media_image']);
         if (array_key_exists('category', $data) && (bool)$data['category']) {
             $categoryData = reset($data['category']);
@@ -35,6 +38,20 @@ class BasicEntity {
         if (array_key_exists('price', $data)) $this->setPrice($data['price']);
         if (array_key_exists('state', $data) && (bool)$data['state']) $this->setState(new State\Entity($data['state']));
         if (array_key_exists('line', $data) && (bool)$data['line']) $this->setLine(new Line\Entity($data['line']));
+    }
+
+    /**
+     * @param string $barcode
+     */
+    public function setBarcode($barcode) {
+        $this->barcode = (string)$barcode;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBarcode() {
+        return $this->barcode;
     }
 
     /**
@@ -184,7 +201,7 @@ class BasicEntity {
     }
 
     /**
-     * @param \Model\Line\Entity $line
+     * @param \Model\Product\Line\Entity $line|null
      */
     public function setLine(Line\Entity $line = null) {
         $this->line = $line;
@@ -195,5 +212,12 @@ class BasicEntity {
      */
     public function getLine() {
         return $this->line;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPath() {
+        return trim(preg_replace('/^\/product\//' , '', $this->link), '/');
     }
 }
