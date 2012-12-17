@@ -1,6 +1,6 @@
 <?php
 $colCount = 4;
-$rowCount = 10;
+$rowCount = 11;
 $count = count($regions);
 ?>
 

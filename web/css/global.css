@@ -2040,7 +2040,7 @@
 /*окно с выбором региона*/
 @media all {
   .popupRegion {
-    width: 780px;
+    width: 820px;
   }
   .popupRegion.popup {
     padding: 30px;
@@ -2061,7 +2061,7 @@
     height: 33px;
     line-height: 33px;
     padding-left: 20px;
-    width: 605px;
+    width: 635px;
   }
   .popupRegion .inputClear {
     color: #a6a6a6;
@@ -2080,7 +2080,7 @@
     word-spacing: 15px;
   }
   .popupRegion .cityInline .cityItem {
-    width: 195px;
+    width: 205px;
     float: left;
   }
   .popupRegion .cityInline .cityItem a {
@@ -2095,7 +2095,7 @@
     float: left;
     height: 240px;
     margin-top: 20px;
-    width: 195px;
+    width: 205px;
   }
   .popupRegion .colomn a {
     font-family: Tahoma, sans-serif;
@@ -2128,17 +2128,17 @@
     background-color: #ffd481;
   }
   .popupRegion .regionSlidesWrap {
-    width: 780px;
+    width: 820px;
     overflow: hidden;
   }
   .popupRegion .regionSlides {
     position: relative;
     left: 0;
-    width: 1560px;
+    width: 1640px;
   }
   .popupRegion .regionSlides_slide {
     float: left;
-    width: 780px;
+    width: 820px;
   }
 }
 /*окно авторизации*/
