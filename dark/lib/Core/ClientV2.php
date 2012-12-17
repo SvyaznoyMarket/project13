@@ -25,6 +25,13 @@ class ClientV2 implements ClientInterface
         $this->still_executing = false;
     }
 
+    /**
+     * @param $action
+     * @param array $params
+     * @param array $data
+     * @return mixed
+     * @throws \RuntimeException
+     */
     public function query($action, array $params = array(), array $data = array()) {
         \Debug\Timer::start('core');
 

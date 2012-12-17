@@ -7,7 +7,9 @@ class Action {
 
     /**
      * @param \Http\Request $request
-     * @return \Http\Response
+     * @return \Http\JsonResponse|\Http\RedirectResponse|\Http\Response
+     * @throws \Exception\NotFoundException
+     * @throws \Exception
      */
     public function create(\Http\Request $request) {
         $client = \App::coreClientV2();
@@ -164,13 +166,128 @@ class Action {
      * @throws \Exception
      */
     public function saveOrder(\View\Order\Form $form, \View\Order\DeliveryCalc\Map $deliveryMap) {
+        $request = \App::request();
+        $user = \App::user();
+        $userEntity = $user->getEntity();
+
         if (!$form->isValid()) {
             throw new \Exception('Невалидная форма заказа %s');
         }
 
-        $order = new \Model\Order\Entity();
+        /** @var $deliveryTypesById \Model\DeliveryType\Entity[] */
+        $deliveryTypesById = array();
+        foreach (\RepositoryManager::getDeliveryType()->getCollection() as $deliveryType) {
+            $deliveryTypesById[$deliveryType->getId()] = $deliveryType;
+        }
 
-        //var_dump($_REQUEST); exit();
+        /** @var $deliveryTypesById \Model\Shop\Entity[] */
+        $shopsById = array();
+        foreach (\RepositoryManager::getShop()->getCollectionByRegion($user->getRegion()) as $shop) {
+            $shopsById[$shop->getId()] = $shop;
+        }
+
+        $deliveryData = json_decode($request->get('delivery_map'), true);
+        if (empty($deliveryData['deliveryTypes']) ) {
+            $e = new \Exception(sprintf('Пустая карта доставки %s', json_encode($request->request->all())));
+            \App::logger()->error($e->getMessage());
+
+            throw $e;
+        }
+
+        $data = array();
+        foreach ($deliveryData['deliveryTypes'] as $deliveryItem) {
+            if (!isset($deliveryTypesById[$deliveryItem['id']])) {
+                \App::logger()->error(sprintf('Неизвестный тип доставки %s', json_encode($deliveryItem)));
+                continue;
+            }
+
+            $deliveryType = $deliveryTypesById[$deliveryItem['id']];
+
+            // общие данные заказа
+            $orderData = array(
+                'type_id'                   => \Model\Order\Entity::TYPE_ORDER,
+                'user_id'                   => $userEntity ? $userEntity->getId() : null,
+                'is_legal'                  => $userEntity ? $userEntity->getIsCorporative() : false,
+                'geo_id'                    => $user->getRegion()->getId(),
+                'payment_id'                => $form->getPaymentMethodId(),
+                'credit_bank_id'            => $form->getCreditBankId(),
+                'last_name'                 => $form->getLastName(),
+                'first_name'                => $form->getFirstName(),
+                'mobile'                    => $form->getMobilePhone(),
+                'is_receive_sms'            => $form->getIsSmsAlert(),
+                'subway_id'                 => $form->getSubwayId(),
+                'address_street'            => $form->getAddressStreet(),
+                'address_number'            => $form->getAddressNumber(),
+                'address_building'          => $form->getAddressBuilding(),
+                'address_apartment'         => $form->getAddressApartment(),
+                'address_floor'             => $form->getAddressFloor(),
+                'extra'                     => $form->getComment(),
+                'svyaznoy_club_card_number' => $form->getSclubCardnumber(),
+                'delivery_type_id'          => $deliveryType->getId(),
+                'delivery_period'           => !empty($deliveryItem['interval']) ? explode(',', $deliveryItem['interval']) : null,
+                'delivery_date'             => !empty($deliveryItem['date']) ? $deliveryItem['date'] : null,
+                'ip'                        => $request->getClientIp(),
+                'product'                   => array(),
+                'service'                   => array(),
+            );
+
+            // данные для самовывоза
+            if ('self' == $deliveryType->getToken()) {
+                $shopId = (int)$deliveryItem['shop']['id'];
+                if (!array_key_exists($shopId, $shopsById)) {
+                    \App::logger()->error(sprintf('Неизвестный магазин %s', json_encode($deliveryItem['shop'])));
+                }
+                $orderData['shop_id'] = $shopId;
+            }
+
+            foreach ($deliveryItem['items'] as $itemToken) {
+                if (false === strpos($itemToken, '-')) {
+                    \App::logger()->error(sprintf('Неправильный элемент заказа %s', json_encode($itemToken)));
+                }
+
+                list($itemType, $itemId) = explode('-', $itemToken);
+
+                // товары
+                if ('product' == $itemType) {
+                    $cartProduct = $user->getCart()->getProductById($itemId);
+                    if (!$cartProduct) {
+                        \App::logger()->error(sprintf('Элемент заказа %s не найден в корзине', json_encode($itemToken)));
+                        continue;
+                    }
+                    $orderData['product'][] = array(
+                        'id'       => $cartProduct->getId(),
+                        'quantity' => $cartProduct->getQuantity(),
+                    );
+
+                    // связанные услуги
+                    foreach ($cartProduct->getService() as $cartService) {
+                        $orderData['service'][] = array(
+                            'id'         => $cartService->getId(),
+                            'quantity'   => $cartService->getQuantity(),
+                            'product_id' => $cartProduct->getId(),
+                        );
+                    }
+                // несвязанные услуги
+                } else if ('service' == $itemType) {
+                    $cartService = $user->getCart()->getServiceById($itemId);
+                    if (!$cartService) {
+                        \App::logger()->error(sprintf('Элемент заказа %s не найден в корзине', json_encode($itemToken)));
+                        continue;
+                    }
+                    $orderData['service'][] = array(
+                        'id'       => $cartService->getId(),
+                        'quantity' => $cartService->getQuantity(),
+                    );
+                }
+            }
+
+            $data[] = $orderData;
+        }
+
+        $result = \App::coreClientV2()->query('order/create-packet', array(), $data);
+        if (!isset($result['confirmed']) || !$result['confirmed']) {
+            throw new \Exception(sprintf('Заказ не подтвержден. Ответ ядра: %s', json_encode($result)));
+        }
     }
 
     /**
@@ -500,6 +617,7 @@ class Action {
         foreach (\RepositoryManager::getDeliveryType()->getCollection() as $deliveryType) {
             $deliveryTypesById[$deliveryType->getId()] = $deliveryType;
         }
+        //foreach ($deliveryCalcResult['possible_deliveries'] as $deliveryTypeToken => $itemData) {
         foreach ($deliveryCalcResult['deliveries'] as $deliveryTypeToken => $itemData) {
             $itemData['mode_id'] = (int)$itemData['mode_id'];
 
@@ -580,7 +698,7 @@ class Action {
             'address_building',
             'address_apartment',
             'address_floor',
-            //'subway_id',
+            'subway_id',
             //'address_metro',
         );
     }
