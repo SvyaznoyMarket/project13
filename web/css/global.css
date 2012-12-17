@@ -2093,7 +2093,7 @@
   }
   .popupRegion .colomn {
     float: left;
-    height: 275px;
+    height: 240px;
     margin-top: 20px;
     width: 195px;
   }
@@ -2108,7 +2108,7 @@
   }
   .popupRegion .BlackArrow {
     background: none;
-    height: 275px;
+    height: 240px;
     margin-top: 20px;
     width: 30px;
   }
