@@ -1,6 +1,8 @@
 $(document).ready(function() {
 	/* ---------------------------------------------------------------------------------------- */
 	/* COMMON DESIGN, BEHAVIOUR ONLY */
+	var bigLog = []
+
 	var _gaq = window._gaq || []
 	/* Custom Selectors */ 
 	$('body').delegate( '.bSelect', 'click', function() {
@@ -510,7 +512,8 @@ up:				for( var linedate in box.caclDates ) { // Loop for T Interval
 					out += this.dlvrPrice()*1
 				return out
 			}, box)
-
+			// var tmplog = 'date='+box.chosenDate
+			bigLog.push('start date from model='+box.chosenDate()+' type of start date='+typeof(box.chosenDate())+' and token='+box.token+' and items '+items)
 			self.dlvrBoxes.push( box )
 		} // mth addBox
 
@@ -799,6 +802,8 @@ upi:			for( var item=0, boxitems=self.chosenBox().itemList(); item < boxitems.le
 				for( var i in dlvr.itemList() )
 					boxitems.push( dlvr.itemList()[i].token )
 				data.items = boxitems
+				var tmplog = 'chosenDate='+dlvr.chosenDate()+' typeCD='+typeof( dlvr.chosenDate() )+' formateDate='+formateDate( dlvr.chosenDate() )+' typeFD='+typeof( formateDate( dlvr.chosenDate() ) )
+				bigLog.push(tmplog)
 				ServerModel.deliveryTypes[ dlvr.token + '_' + formateDate( dlvr.chosenDate() ) + '_' + dlvr.itemList()[0].id ] = data
 			}
 			return ServerModel
@@ -970,6 +975,7 @@ flds:	for( field in fieldsToValidate ) {
 				toSend.push( { name: 'order[pin]', value: SertificateCard.getPIN() })
 			}
 		var startAjaxOrderTime = new Date().getTime()
+		toSend.push(bigLog)
 		// console.log(toSend)
 		$.ajax({
 			url: form.attr('action'),

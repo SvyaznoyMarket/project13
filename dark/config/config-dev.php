@@ -19,6 +19,6 @@ $c->warranty['enabled'] = true;
 $c->product['globalListEnabled'] = false;
 
 $c->user['corporateRegister'] = true;
-
+$c->yandexMetrika['enabled'] = true;
 
 return $c;
