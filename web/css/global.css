@@ -6210,12 +6210,15 @@
   .bMapShops__eMapCityList_city .shopInCity {
     padding: 1px 10px 1px 20px;
   }
+  .bMapShops__eMapCityList_city .shopInCity p {
+    margin: 8px 0 5px;
+  }
   .bMapShops__eMapCityList_city .shopInCity:hover {
     background-color: #fff7e6;
   }
   .bMapShops__eMapCityList_city .shopInCity .shopchoose {
     font-size: 12px;
-    margin: 10px 0;
+    margin: 8px 0 5px;
   }
   .bMapShops__eMapCityList_city.chosedCity .cityName {
     background-color: #ffc34e;
