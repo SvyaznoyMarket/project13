@@ -369,7 +369,7 @@ $(document).ready(function() {
 			var first = new Date( pseudoMonday )
 			if( first.getDay() !== 1 ) {
 				//add before				
-				var dbefore = (first.getDay()) ? first.getDay() - 1 : 6
+				var dbefore = (first.getDay()) ? first.getDay()*1 - 1 : 6
 				first.setTime( first.getTime()*1 - dbefore*24*60*60*1000 )
 			}
 			return first		
@@ -425,10 +425,10 @@ $(document).ready(function() {
 			// 3) Make Dates By T Interval
 			var doweeks = ['Вс','Пн','Вт','Ср','Чт','Пт','Сб']
 			var nweeks = 1
-			while( first.getTime() <= last.getTime() ) {
+			while( first.getTime()*1 <= last.getTime()*1 ) {
 				var linerDate = {
-					dayOfWeek: doweeks[ first.getDay() ],
-					day: first.getDate(),
+					dayOfWeek: doweeks[ first.getDay()*1 ],
+					day: first.getDate()*1,
 					tstamp: first.getTime()*1,
 					week: nweeks,
 					enable: ko.observable( false )
@@ -970,6 +970,7 @@ flds:	for( field in fieldsToValidate ) {
 				toSend.push( { name: 'order[pin]', value: SertificateCard.getPIN() })
 			}
 		var startAjaxOrderTime = new Date().getTime()
+		// console.log(toSend)
 		$.ajax({
 			url: form.attr('action'),
 			timeout: 20000,
