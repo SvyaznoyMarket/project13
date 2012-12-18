@@ -6311,6 +6311,7 @@
     display: none;
   }
   #region_map-container {
+    float: right;
     width: 700px;
   }
 }

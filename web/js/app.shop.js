@@ -28,11 +28,6 @@ $(document).ready(function() {
 		//$('div.map-360-link', marketfolio ).trigger('click')
 	}
 
-	MapInterface.ready( 'yandex', {
-		yandex: $('#infowindowtmpl'), 
-		google: $('#map-info_window-container')
-	} )	
-
 	marketfolio.delegate('div.map-google-link', 'click',function(e) {
 		$( 'div.mChecked' , marketfolio ).removeClass('mChecked')
 		if( ! $('#map-container div').length ) { // only once, on first click !
@@ -42,7 +37,13 @@ $(document).ready(function() {
 				latitude: $('[name="shop[latitude]"]').val(),
 				longitude: $('[name="shop[longitude]"]').val()
 			}
-			MapInterface.onePoint( position, 'map-container' )
+			$.when(MapInterface.ready( 'yandex', {
+				yandex: $('#infowindowtmpl'), 
+				google: $('#map-info_window-container')
+			}))
+			.done(function(){
+				MapInterface.onePoint( position, 'map-container' )
+			})
 		}
 	})
 
@@ -51,6 +52,7 @@ $(document).ready(function() {
 	if( $('#map-markers').length ) {
 		var allshops = $('#map-markers').data('content')
 
+		//показываем бабл магазина при наведении на него в списке
 		var hoverTimer = { 'timer': null, 'id': 0 }
 	    $('.bMapShops__eMapCityList ul').delegate('li', 'hover', function() {
 	        var id = $(this).attr('ref')//$(this).data('id')
@@ -74,6 +76,7 @@ $(document).ready(function() {
 			return shopsStack
 	    }
 
+	    //показываем карту города, при клике на название города
 		var cityHandler = function(){
 			// show all city
 			$('.bMapShops__eTitle').click(function(){
@@ -111,7 +114,13 @@ $(document).ready(function() {
 			window.regionMap.showCluster(  allshops )
 			cityHandler()
 		}
-		MapInterface.init( mapCenter, 'region_map-container', mapCallback, updateTmlt )
+		$.when(MapInterface.ready( 'yandex', {
+			yandex: $('#infowindowtmpl'), 
+			google: $('#map-info_window-container')
+		}))
+		.done(function(){
+			MapInterface.init( mapCenter, 'region_map-container', mapCallback, updateTmlt )
+		})
 	}
 
 });

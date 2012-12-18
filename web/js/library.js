@@ -1336,16 +1336,19 @@ window.MapInterface = (function() {
     var vendor, tmplSource
 
     return {
-        ready: function( vendorName, tmpl ) {        
+        ready: function( vendorName, tmpl) {
+            var mapReady = $.Deferred()
             vendor     = vendorName
             tmplSource = tmpl
             if( vendor==='yandex' ) {
                 ymaps.ready( function() {
-// console.info('yandexIsReady')            
+                    // console.info('yandexIsReady')            
                     PubSub.publish('yandexIsReady')
                     ymaps.isReady = true
+                    mapReady.resolve()
                 })
             }
+            return mapReady.promise()
             // if( vendor==='google' ) {
             //      $LAB.sandbox().script( 'http://maps.google.com/maps/api/js?sensor=false' )
             // } else // $LAB.sandbox().script( 'http://api-maps.yandex.ru/2.0/?load=package.full&lang=ru-RU' ).wait( function() {
@@ -1355,7 +1358,7 @@ window.MapInterface = (function() {
         init: function( coordinates, mapContainerId, callback, updater ) {
             // console.log('инитимся..', coordinates, mapContainerId, callback, updater)
             if( vendor === 'yandex' ) {
-                if( typeof(ymaps)!=='undefined') { //if( typeof(ymaps)!=='undefined' && ymaps.isReady ) {
+                if( typeof(ymaps)!=='undefined' && ymaps.isReady ) {
                     // console.info('1')
                     window.regionMap = new MapYandexWithShops(
                         coordinates,
