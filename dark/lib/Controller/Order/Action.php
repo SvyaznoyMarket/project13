@@ -4,6 +4,7 @@ namespace Controller\Order;
 
 class Action {
     const ORDER_COOKIE_NAME = 'last_order';
+    const ORDER_SESSION_NAME = 'order';
 
     /**
      * @param \Http\Request $request
@@ -14,6 +15,7 @@ class Action {
     public function create(\Http\Request $request) {
         $client = \App::coreClientV2();
         $user = \App::user();
+        $userEntity = $user->getEntity();
         $form = $this->getForm();
 
         try {
@@ -30,6 +32,7 @@ class Action {
             return new \Http\RedirectResponse(\App::router()->generate('cart'));
         }
 
+        // сохранение заказа
         if ($request->isMethod('post')) {
             if (!$request->isXmlHttpRequest()) {
                 throw new \Exception\NotFoundException('Request is not xml http request');
@@ -54,21 +57,53 @@ class Action {
             }
 
             try {
-                $this->saveOrder($form, $deliveryMap);
+                $orderNumbers = $this->saveOrder($form, $deliveryMap);
+
+                \App::session()->set(self::ORDER_SESSION_NAME, array_map(function($orderNumber) use ($form) {
+                    return array('number' => $orderNumber, 'phone' => $form->getMobilePhone());
+                }, $orderNumbers));
+
+                $response = new \Http\JsonResponse(array(
+                    'success' => true,
+                ));
+
+                try {
+                    // save cookie
+                    $cookieValue = array(
+                        'recipient_first_name'   => $form->getFirstName(),
+                        'recipient_last_name'    => $form->getLastName(),
+                        'recipient_phonenumbers' => $form->getMobilePhone(),
+                        'address_street'         => $form->getAddressStreet(),
+                        'address_number'         => $form->getAddressNumber(),
+                        'address_building'       => $form->getAddressBuilding(),
+                        'address_apartment'      => $form->getAddressApartment(),
+                        'address_floor'          => $form->getAddressFloor(),
+                        'subway_id'              => $form->getSubwayId(),
+                    );
+                    $cookie = new \Http\Cookie(self::ORDER_COOKIE_NAME, strtr(base64_encode(serialize($cookieValue)), '+/', '-_'), strtotime('+1 year' ));
+                    $response->headers->setCookie($cookie);
+
+                    $cookie = new \Http\Cookie('credit_on', '', time() - 3600);
+                    $response->headers->setCookie($cookie);
+
+                    $user->getCart()->clear();
+                    $user->setCacheCookie($response);
+                } catch (\Exception $e) {
+                    \App::logger($e);
+                }
             } catch (\Exception $e) {
+                // временно закомментировано для отладки
+                //\App::exception()->remove($e);
                 $errors = array();
 
-                return new \Http\JsonResponse(array(
+                $response = new \Http\JsonResponse(array(
                     'success' => false,
-                    'error'   => array('code' => 'invalid', 'message' => 'Форма заполнена неверно' . (\App::config()->debug ? (': ' . $e) : '')),
+                    'error'   => array('code' => 'invalid', 'message' => 'Не удалось создать заказ' . (\App::config()->debug ? (': ' . $e) : '')),
                     'errors'  => $errors,
                 ));
             }
 
-            return new \Http\JsonResponse(array(
-                'success' => true,
-            ));
-
+            return $response;
         }
 
         // подготовка пакета запросов
@@ -91,7 +126,7 @@ class Action {
         $paymentMethods = array();
         $selectedPaymentMethodId = null;
         $creditAllowed = \App::config()->payment['creditEnabled'] && ($user->getCart()->getTotalProductPrice()) < \App::config()->product['minCreditPrice'];
-        \RepositoryManager::getPaymentMethod()->prepareCollection(null, function($data)
+        \RepositoryManager::getPaymentMethod()->prepareCollection(null, $userEntity ? $userEntity->getIsCorporative() : false, function($data)
             use (
                 &$paymentMethods,
                 &$selectedPaymentMethodId,
@@ -112,6 +147,7 @@ class Action {
                         continue;
                     }
 
+                    // кредит
                     if ($creditAllowed && $request->cookies->get('credit_on')) {
                         if ($paymentMethod->getIsCredit()) {
                             $selectedPaymentMethodId = $paymentMethod->getId();
@@ -160,12 +196,72 @@ class Action {
         return new \Http\Response($page->show());
     }
 
+    public function complete(\Http\Request $request) {
+        $orderData = array_map(function ($orderData) {
+            return array_merge(array('number' => null, 'phone' => null), $orderData);
+        }, (array)\App::session()->get(self::ORDER_SESSION_NAME));
+        //$orderData = array(array('number' => 'XX013863', 'phone' => '80000000000'));
+
+        // TODO: payment provider
+        //$orderNumber = from request
+
+        /** @var $orders \Model\Order\Entity[] */
+        $orders = array();
+        foreach ($orderData as $orderItem) {
+            if (!$orderItem['number'] || !$orderItem['phone']) {
+                \App::logger()->error(sprintf('Невалидные данные о заказе в сессии %s', json_encode($orderItem)));
+                continue;
+            }
+
+            $order = \RepositoryManager::getOrder()->getEntityByNumberAndPhone($orderItem['number'], $orderItem['phone']);
+            if (!$order) {
+                \App::logger()->error(sprintf('Заказ из сессии не найден %s', json_encode($orderItem)));
+                continue;
+            }
+
+            $orders[] = $order;
+        }
+
+        if (!(bool)$orders) {
+            \App::logger()->error(sprintf('В сессии нет созданных заказов. Запрос: %s, сессия: %s', json_encode($request->query->all()), (array)\App::session()->get(self::ORDER_SESSION_NAME)));
+
+            return new \Http\RedirectResponse(\App::router()->generate('cart'));
+        }
+
+        /** @var $firstOrder \Model\Order\Entity */
+        $firstOrder = reset($orders);
+        // метод оплаты
+        $paymentMethod = \RepositoryManager::getPaymentMethod()->getEntityById($firstOrder->getPaymentId());
+        if (!$paymentMethod) {
+            throw new \Exception(sprintf('Не найден метод оплаты для заказа #%s', $firstOrder->getId()));
+        }
+
+        $paymentForm = null;
+        $creditData = array();
+        // если онлайн оплата
+        if ($paymentMethod->getIsOnline()) {
+
+        // если покупка в кредит
+        } else if ($paymentMethod->getIsCredit()) {
+
+        }
+
+        $page = new \View\Order\CompletePage();
+        $page->setParam('orders', $orders);
+        $page->setParam('paymentForm', $paymentForm);
+        $page->setParam('creditData', $creditData);
+
+        return new \Http\Response($page->show());
+    }
+
+
     /**
      * @param \View\Order\Form             $form        Валидная форма заказа
      * @param \View\Order\DeliveryCalc\Map $deliveryMap Ката доставки заказов
      * @throws \Exception
+     * @return array Номера созданных заказов
      */
-    public function saveOrder(\View\Order\Form $form, \View\Order\DeliveryCalc\Map $deliveryMap) {
+    private function saveOrder(\View\Order\Form $form, \View\Order\DeliveryCalc\Map $deliveryMap) {
         $request = \App::request();
         $user = \App::user();
         $userEntity = $user->getEntity();
@@ -238,6 +334,13 @@ class Action {
                     \App::logger()->error(sprintf('Неизвестный магазин %s', json_encode($deliveryItem['shop'])));
                 }
                 $orderData['shop_id'] = $shopId;
+                $orderData['subway_id'] = null;
+            }
+
+            // подарочный сертификат
+            if (1 == count($deliveryData['deliveryTypes'])) {
+                $orderData['certificate'] = $form->getCertificateCardnumber();
+                $orderData['certificate_pin'] = $form->getCertificatePin();
             }
 
             foreach ($deliveryItem['items'] as $itemToken) {
@@ -284,10 +387,24 @@ class Action {
             $data[] = $orderData;
         }
 
-        $result = \App::coreClientV2()->query('order/create-packet', array(), $data);
-        if (!isset($result['confirmed']) || !$result['confirmed']) {
+        //$result = \App::coreClientV2()->query('order/create-packet', array(), $data);
+        $result = json_decode('[{"confirmed":"true","id":"1118595","number":"XX013863","number_erp":"COXX-013863","user_id":null,"price":11980,"pay_sum":11980}]', true);
+        if (!is_array($result)) {
             throw new \Exception(sprintf('Заказ не подтвержден. Ответ ядра: %s', json_encode($result)));
         }
+
+        $orderNumbers = array();
+        foreach ($result as $orderData) {
+            if (empty($orderData['number'])) {
+                \App::logger()->error(sprintf('Ошибка при создании заказа %s', json_encode($orderData)));
+                continue;
+            }
+            \App::logger()->debug(sprintf('Заказ %s успешно создан %s', $orderData['number'], json_encode($orderData)));
+
+            $orderNumbers[] = $orderData['number'];
+        }
+
+        return $orderNumbers;
     }
 
     /**
@@ -359,7 +476,17 @@ class Action {
             if (!empty($cookieValue)) {
                 $cookieValue = (array)unserialize(base64_decode(strtr($cookieValue, '-_', '+/')));
                 $data = array();
-                foreach ($this->getFormCookieKeys() as $k) {
+                foreach (array(
+                     'recipient_first_name',
+                     'recipient_last_name',
+                     'recipient_phonenumbers',
+                     'address_street',
+                     'address_number',
+                     'address_building',
+                     'address_apartment',
+                     'address_floor',
+                     'subway_id',
+                ) as $k) {
                     if (array_key_exists($k, $cookieValue)) {
                         if (('recipient_phonenumbers' == $k) && (strlen($cookieValue[$k])) > 10) {
                             $cookieValue[$k] = substr($cookieValue[$k], -10);
@@ -617,8 +744,7 @@ class Action {
         foreach (\RepositoryManager::getDeliveryType()->getCollection() as $deliveryType) {
             $deliveryTypesById[$deliveryType->getId()] = $deliveryType;
         }
-        //foreach ($deliveryCalcResult['possible_deliveries'] as $deliveryTypeToken => $itemData) {
-        foreach ($deliveryCalcResult['deliveries'] as $deliveryTypeToken => $itemData) {
+        foreach ($deliveryCalcResult['possible_deliveries'] as $deliveryTypeToken => $itemData) {
             $itemData['mode_id'] = (int)$itemData['mode_id'];
 
             $deliveryType = isset($deliveryTypesById[$itemData['mode_id']]) ? $deliveryTypesById[$itemData['mode_id']] : null;
@@ -686,20 +812,5 @@ class Action {
         }
 
         return $deliveryMapView;
-    }
-
-    private function getFormCookieKeys() {
-        return array(
-            'recipient_first_name',
-            'recipient_last_name',
-            'recipient_phonenumbers',
-            'address_street',
-            'address_number',
-            'address_building',
-            'address_apartment',
-            'address_floor',
-            'subway_id',
-            //'address_metro',
-        );
     }
 }

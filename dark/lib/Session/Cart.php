@@ -50,6 +50,14 @@ class Cart {
 
     }
 
+    public function clear() {
+        $this->storage->set($this->sessionName, null);
+        $this->totalPrice = null;
+        $this->products = null;
+        $this->services = null;
+        $this->warranties = null;
+    }
+
     public function setProduct(\Model\Product\Entity $product, $quantity = 1) {
         $data = $this->storage->get($this->sessionName);
         if ($quantity > 0) {

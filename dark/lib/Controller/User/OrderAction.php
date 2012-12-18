@@ -102,6 +102,7 @@ class OrderAction {
         $paymentMethodsById = array();
         \RepositoryManager::getPaymentMethod()->prepareCollection(
             $region->getId() == \App::config()->region['defaultId'] ? $region : \RepositoryManager::getRegion()->getDefaultEntity(),
+            false,
             function($data) use(&$paymentMethodsById) {
                 foreach($data as $item){
                     $paymentMethodsById[$item['id']] = new \Model\PaymentMethod\Entity($item);

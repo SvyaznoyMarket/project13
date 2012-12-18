@@ -44,11 +44,25 @@ class Repository {
 
     /**
      * @param string $userToken
- * @param            $callback
+     * @param        $callback
      */
     public function prepareCollectionByUserToken($userToken, $callback) {
         \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args()));
 
         $this->client->addQuery('order/get', array('token' => $userToken), array(), $callback);
+    }
+
+    /**
+     * @param string $number
+     * @param string $phone
+     * @return Entity|null
+     */
+    public function getEntityByNumberAndPhone($number, $phone) {
+        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args()));
+
+        $data = $this->client->query('order/get-by-mobile', array('number' => $number, 'mobile' => $phone));
+        $data = reset($data);
+
+        return $data ? new Entity($data) : null;
     }
 }

@@ -243,6 +243,10 @@ return array(
         'pattern' => '/orders/new',
         'action'  => array('Order\Action', 'create'),
     ),
+    'order.complete' => array(
+        'pattern' => '/orders/complete',
+        'action'  => array('Order\Action', 'complete'),
+    ),
     'order.bill' => array(
         'pattern' => '/private/orders/{orderNumber}/bill',
         'action'  => array('Order\BillAction', 'execute'),
