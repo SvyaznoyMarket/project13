@@ -12,5 +12,5 @@ window.filesWithVersion = {
 "app.order.js":1355829267,
 "app.product.comment.list.js":1351763596,
 "app.product.js":1355492972,
-"app.shop.js":1355836375
+"app.shop.js":1355837502
 }

@@ -86,6 +86,8 @@ $(document).ready(function() {
 			})
 			// show current city
 			$('.bMapShops__eMapCityList_city').click( function(){
+				$('.bMapShops__eMapCityList_city').removeClass('chosedCity')
+				$(this).addClass('chosedCity')
 				var curCity = []
 				$('.bMapShops__eMapCityList_city ul').empty()
 				for (var i in allshops){

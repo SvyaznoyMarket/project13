@@ -31,8 +31,8 @@
         <ul style="width: 218px;" class="bMapShops__eMapCityList fl">
             <? foreach ($shopAvailableRegions as $region): ?>
             <li class="font16 bMapShops__eMapCityList_city" ref="<?=$region->getId()?>">
-                <?= $region->getName() ?>
-                <ul class="font14">
+                <p class="cityName"><?= $region->getName() ?></p class="cityName">
+                <ul class="font12">
                 </ul>
             </li>
             <? endforeach ?>

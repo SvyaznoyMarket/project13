@@ -6202,17 +6202,23 @@
   }
   .bMapShops__eMapCityList_city {
     cursor: pointer;
-    padding: 3px 7px;
+  }
+  .bMapShops__eMapCityList_city .cityName {
+    margin: 0;
+    padding: 5px 7px;
   }
   .bMapShops__eMapCityList_city .shopInCity {
-    padding: 5px 10px 5px 20px;
+    padding: 1px 10px 1px 20px;
   }
   .bMapShops__eMapCityList_city .shopInCity:hover {
-    background-color: #FFF1D8;
+    background-color: #fff7e6;
   }
   .bMapShops__eMapCityList_city .shopInCity .shopchoose {
     font-size: 12px;
     margin: 10px 0;
+  }
+  .bMapShops__eMapCityList_city.chosedCity .cityName {
+    background-color: #ffc34e;
   }
   .bMap__eContainer {
     padding: 1px;
