@@ -513,7 +513,7 @@ up:				for( var linedate in box.caclDates ) { // Loop for T Interval
 				return out
 			}, box)
 			// var tmplog = 'date='+box.chosenDate
-			bigLog.push('start date from model='+box.chosenDate()+' type of start date='+typeof(box.chosenDate())+' and token='+box.token+' and items '+items)
+			bigLog.push({ name: 'addBox', value: 'start date from model='+box.chosenDate()+' type of start date='+typeof(box.chosenDate())+' and token='+box.token+' and items '+items})
 			self.dlvrBoxes.push( box )
 		} // mth addBox
 
@@ -803,7 +803,7 @@ upi:			for( var item=0, boxitems=self.chosenBox().itemList(); item < boxitems.le
 					boxitems.push( dlvr.itemList()[i].token )
 				data.items = boxitems
 				var tmplog = 'chosenDate='+dlvr.chosenDate()+' typeCD='+typeof( dlvr.chosenDate() )+' formateDate='+formateDate( dlvr.chosenDate() )+' typeFD='+typeof( formateDate( dlvr.chosenDate() ) )
-				bigLog.push(tmplog)
+				bigLog.push({name: 'getServerModel', value: tmplog})
 				ServerModel.deliveryTypes[ dlvr.token + '_' + formateDate( dlvr.chosenDate() ) + '_' + dlvr.itemList()[0].id ] = data
 			}
 			return ServerModel
