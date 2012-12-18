@@ -990,7 +990,8 @@ flds:	for( field in fieldsToValidate ) {
 				var endAjaxOrderTime = new Date().getTime()
 				var AjaxOrderSpent = endAjaxOrderTime - startAjaxOrderTime
 				_gaq.push(['_trackTiming', 'Order complete', 'DB response', AjaxOrderSpent])
-				yaCounter10503055.reachGoal('\orders\complete')
+				if (typeof(yaCounter10503055) !== 'undefined')
+					yaCounter10503055.reachGoal('\orders\complete')
 				if( 'redirect' in data.data )
 					window.location = data.data.redirect
 			},
