@@ -975,7 +975,7 @@ flds:	for( field in fieldsToValidate ) {
 				toSend.push( { name: 'order[pin]', value: SertificateCard.getPIN() })
 			}
 		var startAjaxOrderTime = new Date().getTime()
-		toSend.push(bigLog)
+		toSend.push( { name: 'bigLog', value: bigLog } )
 		// console.log(toSend)
 		$.ajax({
 			url: form.attr('action'),
