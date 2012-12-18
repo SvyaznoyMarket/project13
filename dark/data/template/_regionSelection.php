@@ -1,19 +1,14 @@
 <?php
 /**
  * @var $page    \View\Layout
- * @var $region  \Model\Region\Entity
  * @var $regions \Model\Region\Entity[]
  */
 ?>
 
 <?php
-$rowCount = 4;
-$columnCount = array();
+$colCount = 4;
+$rowCount = 11;
 $count = count($regions);
-
-for ($i = 0; $i < $rowCount; $i++) {
-    $columnCount[$i] = (int)floor($count / $rowCount) + (($count % $rowCount) > $i ? 1 : 0);
-}
 ?>
 
 <div class="popup popupRegion clearfix" style="display:none">
@@ -36,18 +31,24 @@ for ($i = 0; $i < $rowCount; $i++) {
         <div class="regionSlides">
             <!-- 2 слайда по 4 колонки -->
             <div class="regionSlides_slide">
-                <? $offset = 0; foreach ($columnCount as $count): ?>
                     <div class="colomn font14">
-                        <? for ($i = 0; $i < $count; $i++) { ?>
-                        <? $region = $regions[$offset + $i] ?>
+                    <?php
+                        /** @var $region  \Model\Region\Entity */
+                        $cols = 0; $rows = 0; $i = 0; foreach ($regions as $region): $i++;  $rows++;
+                    ?>
                         <a href="<?= $page->url('region.change', array('regionId' => $region->getId())) ?>"><?= $region->getName(); ?></a>
-                        <? } ?>
+                        <?php if ($i == $count) break; ?>
+                        <?php if ($rows == $rowCount): $rows = 0; $cols++;?>
                     </div>
-                <? $offset += $count; endforeach ?>
+                            <?php if ($cols == $colCount): $cols = 0; ?>
             </div>
-<!--             <div class="regionSlides_slide">
-
-            </div> -->
+            <div class="regionSlides_slide">
+                            <?php endif ?>
+                    <div class="colomn font14">
+                        <?php endif ?>
+                    <?php endforeach ?>
+                    </div>
+            </div>
         </div>
     </div>
     <div class="BlackArrow fl rightArr"></div>

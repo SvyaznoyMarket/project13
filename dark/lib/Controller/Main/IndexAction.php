@@ -6,6 +6,7 @@ class IndexAction {
     public function execute() {
         \App::logger()->debug('Exec ' . __METHOD__);
 
+        $router = \App::router();
         $client = \App::coreClientV2();
         $user = \App::user();
         $region = $user->getRegion();
@@ -21,34 +22,148 @@ class IndexAction {
         });
 
         // запрашиваем баннеры
+        $itemsByBanner = array();
         $bannerData = array();
-        \RepositoryManager::getBanner()->prepareCollection($region, function ($data) use (&$bannerData) {
+        \RepositoryManager::getBanner()->prepareCollection($region, function ($data) use (&$bannerData, &$itemsByBanner) {
             $timeout = \App::config()->banner['timeout'];
             $urls = \App::config()->banner['url'];
 
             foreach ($data as $i => $item) {
+                $bannerId = isset($item['id']) ? (int)$item['id'] : null;
                 $item = array(
-                    'id'    => isset($item['id']) ? (int)$item['id'] : null,
+                    'id'    => $bannerId,
                     'name'  => isset($item['name']) ? (string)$item['name'] : null,
                     'url'   => isset($item['url']) ? (string)$item['url'] : null,
                     'image' => isset($item['media_image']) ? (string)$item['media_image'] : null,
+                    'item'  => isset($item['item_list']) ? (array)$item['item_list'] : array(),
                 );
 
-                if (empty($item['url']) || empty($item['image'])) continue;
+                if (empty($item['image'])) continue;
 
                 $bannerData[] = array(
+                    'id'    => $bannerId,
                     'alt'   => $item['name'],
                     'imgs'  => $item['image'] ? ($urls[0] . $item['image']) : null,
                     'imgb'  => $item['image'] ? ($urls[1] . $item['image']) : null,
                     'url'   => $item['url'],
                     't'     => $i > 0 ? $timeout : $timeout + 4000,
-                    'ga'    => $item['id'] . ' - ' . $item['name'],
+                    'ga'    => $bannerId . ' - ' . $item['name'],
                 );
+
+                $itemsByBanner[$bannerId] = array();
+                foreach ($item['item'] as $itemData) {
+                    $itemsByBanner[$bannerId][] = new \Model\Banner\Item\Entity($itemData);
+                }
             }
         });
 
         // выполнение 1-го пакета запросов
         $client->execute();
+
+        // товары, услуги, категории
+        /** @var $productsById \Model\Product\BasicEntity[] */
+        $productsById = array();
+        /** @var $productsById \Model\Product\Service\Entity[] */
+        $servicesById = array();
+        /** @var $productsById \Model\Product\Category\Entity[] */
+        $categoriesById = array();
+        foreach ($itemsByBanner as $items) {
+            foreach ($items as $item) {
+                /** @var $item \Model\Banner\Item\Entity */
+                if ($item->getProductId()) $productsById[$item->getProductId()] = null;
+                if ($item->getServiceId()) $servicesById[$item->getServiceId()] = null;
+                if ($item->getProductCategoryId()) $categoriesById[$item->getProductCategoryId()] = null;
+            }
+        }
+
+        // подготовка 2-го пакета запросов
+        // запрашиваем товары
+        if ((bool)$productsById) {
+            \RepositoryManager::getProduct()->prepareCollectionById(array_keys($productsById), $region, function($data) use (&$productsById) {
+                foreach ($data as $item) {
+                    $productsById[(int)$item['id']] = new \Model\Product\BasicEntity($item);
+                }
+            }, function(\Exception $e) {
+                // TODO: \App::exception()->remove($e);
+                \App::$exception = null;
+                \App::logger()->error('Не удалось получить товары для баннеров');
+            });
+        }
+        // запрашиваем услуги
+        if ((bool)$servicesById) {
+            \RepositoryManager::getService()->prepareCollectionById(array_keys($servicesById), $region, function($data) use (&$servicesById) {
+                foreach ($data as $item) {
+                    $servicesById[(int)$item['id']] = new \Model\Product\Service\Entity($item);
+                }
+            }, function(\Exception $e) {
+                // TODO: \App::exception()->remove($e);
+                \App::$exception = null;
+                \App::logger()->error('Не удалось получить услуги для баннеров');
+            });
+        }
+        // запрашиваем категории товаров
+        if ((bool)$categoriesById) {
+            \RepositoryManager::getProductCategory()->prepareCollectionById(array_keys($categoriesById), $region, function($data) use (&$categoriesById) {
+                foreach ($data as $item) {
+                    $categoriesById[(int)$item['id']] = new \Model\Product\Category\Entity($item);
+                }
+            }, function(\Exception $e) {
+                // TODO: \App::exception()->remove($e);
+                \App::$exception = null;
+                \App::logger()->error('Не удалось получить категории товаров для баннеров');
+            });
+        }
+
+        if ((bool)$productsById || (bool)$servicesById || (bool)$categoriesById) {
+            // выполнение 2-го пакета запросов
+            $client->execute();
+        }
+
+        // формируем ссылки для баннеров
+        foreach ($bannerData as $i => &$item) {
+            $url = $item['url'];
+
+            $bannerItems = isset($itemsByBanner[$item['id']]) ? (array)$itemsByBanner[$item['id']] : array();
+            if ((bool)$bannerItems) {
+                /** @var $bannerItem \Model\Banner\Item\Entity */
+                $bannerItem = reset($bannerItems);
+                if (!$bannerItem) continue;
+
+                if ($bannerItem->getProductId()) {
+                    $products = array();
+                    foreach ($bannerItems as $bannerItem) {
+                        $product = ($bannerItem->getProductId() && isset($productsById[$bannerItem->getProductId()]))
+                            ? $productsById[$bannerItem->getProductId()]
+                            : null;
+                        if (!$product) continue;
+
+                        $products[] = $product;
+                    }
+                    if (!(bool)$products) continue;
+
+                    if (1 == count($products)) {
+                        /** @var $product \Model\Product\Entity */
+                        $product = reset($products);
+                        $url = $router->generate('product', array('productPath' => $product->getPath()));
+                    } else {
+                        $barcodes = array_map(function ($product) { /** @var $product \Model\Product\Entity */ return $product->getBarcode(); }, $products);
+                        $url = $router->generate('product.set', array(
+                            'productBarcodes' => implode(',', $barcodes),
+                        ));
+                    }
+                } else if ($bannerItem->getServiceId()) {
+                    \App::logger()->error('Услуги для баннера еще не реализованы');
+                } else if ($bannerItem->getProductCategoryId()) {
+                    \App::logger()->error('Категории для баннера еще не реализованы');
+                }
+            }
+
+            if (!$url) {
+                unset($bannerData[$i]);
+            }
+
+            $item['url'] = $url;
+        } if (isset($item)) unset($item);
 
         $page = new \View\Main\IndexPage();
         $page->setParam('bannerData', $bannerData);

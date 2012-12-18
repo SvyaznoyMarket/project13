@@ -166,6 +166,10 @@ return array(
         'action'  => array('Product\CommentAction', 'execute'),
         'require' => array('productPath' => '[\w\d-_]+\/{1}[\w\d-_]+'),
     ),
+    'product.set' => array(
+        'pattern' => '/products/set/{productBarcodes}',
+        'action'  => array('Product\SetAction', 'execute'),
+    ),
     'tag' => array(
         'pattern' => '/tags/{tagToken}',
         'action'  => array('Tag\Action', 'index'),
