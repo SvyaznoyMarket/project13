@@ -90,6 +90,7 @@ $(document).ready(function() {
 					regexp: /^[()0-9\-\s]+$/
 				}) )
 			
+
 			self.disabledSelectors = ko.observable( false )
 			self.noQBar            = ko.observable( false )
 			self.stableType        = ko.observable( false )
@@ -586,6 +587,19 @@ levup:			for(var i=0, l=numbers.length; i<l; i++)
 		if( typeof( $.mask ) !== 'undefined' ) {
 			$.mask.definitions['n'] = "[()0-9\ \-]"
 			$("#phonemask").mask("+7 nnnnnnnnnnnnnnnnn", { placeholder: " ", maxlength: 10 } )
+			
+			$.mask.definitions['*'] = "[0-9*]"
+	        $("#scCard").mask("* ****** ******", { placeholder: "*" } )
+			if( $("#scCard")[0].getAttribute('value') )
+				$("#scCard").val( $("#scCard")[0].getAttribute('value') )
+			$("#scCard").blur( function() {
+				if( $(this).val() === "* ****** ******" ) {
+					$(this).trigger('unmask').val('')
+					$(this).focus( function() {
+						$("#scCard").mask("* ****** ******", { placeholder: "*" } )
+					})
+				}
+	        })	
 		}
 	}
 	/* One Click Order */
