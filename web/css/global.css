@@ -6191,6 +6191,7 @@
     zoom: 1;
   }
   .bMapShops__eContent {
+    border-top: 2px solid #e6e6e6;
     height: 490px;
     overflow: hidden;
   }
