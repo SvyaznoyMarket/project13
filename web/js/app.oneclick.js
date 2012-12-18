@@ -657,6 +657,7 @@ levup:			for(var i=0, l=numbers.length; i<l; i++)
 			e.preventDefault()	
 			if( !oneClickIsReady )
 				return false
+			yaCounter10503055.reachGoal('\orders\complete')
 			// TODO please go this stuff separate!
 			if( typeof(_gaq) !== 'undefined' )
 				_gaq.push(['_trackEvent', 'QuickOrder', 'Open'])
