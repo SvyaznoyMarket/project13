@@ -1,6 +1,6 @@
-<div class="goodsbox goodsline bNewGoodsBox">
-  <div class="goodsboxlink" <?php if ($item['is_insale']): ?> ref="<?php echo $item['token'] ?>"
+<div class="goodsbox goodsline bNewGoodsBox" <?php if ($item['is_insale']): ?> ref="<?php echo $item['token'] ?>"
        data-cid="<?php echo $item['core_id'] ?>" <?php endif ?>>
+  <div class="goodsboxlink">
     <div class="photo">
       <?php if ($item['label']): ?>
       <img class="bLabels" src="<?php echo $item['label']->getImageUrl() ?>"

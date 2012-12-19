@@ -25,7 +25,7 @@ class Cart {
         $this->productLimit = \App::config()->cart['productLimit'];
 
         // если пользователь впервые, то заводим ему пустую корзину
-        if(!array_key_exists($this->sessionName, $session)){
+        if(empty($session[$this->sessionName])){
             $this->storage->set($this->sessionName, array('productList' => array(), 'serviceList' => array(), 'warrantyList' => array()));
             return;
         }

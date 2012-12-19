@@ -8,4 +8,8 @@ return array(
     'timer'   => array(
         'level' => 0,
     ),
+
+    'core_v2' => array(
+        'level' => 2,
+    ),
 );

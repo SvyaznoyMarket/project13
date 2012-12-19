@@ -1,32 +1,48 @@
-<div class="popup popupRegion" style="display:none">
-  <a href="#" class="close">Закрыть</a>
-  <h2 class="pouptitle">Привет! Укажите, из какого вы города.</h2>
-  <div class="hidden">
-    <p>скрытый блок</p>
-  </div>
-  <form class="ui-css">
-    <input id="jscity" 
-      data-url-autocomplete="<?php echo url_for('region_autocomplete') ?>" placeholder="Введите свой город" class="bBuyingLine__eText mInputLong" /><a class="inputClear" href="#">x</a>
-    <input id="jschangecity" type="submit" value="Сохранить" class="button bigbutton mDisabled" />
-    <div id="jscities" style="position:relative"></div>
+<?php
+$colCount = 4;
+$rowCount = 11;
+$count = count($regions);
+?>
+
+<div class="popup popupRegion clearfix" style="display:none">
+    <a href="#" class="close">Закрыть</a>
+    <h2 class="popuptitle">Из какого вы города?</h2>
+    <p class="font16">Цены товаров и доставки зависят от региона.</p>
+    <form class="ui-css">
+        <input id="jscity" data-url-autocomplete="<?= url_for('region_autocomplete') ?>" placeholder="Введите свой город" class="bBuyingLine__eText font18"/>
+        <a class="inputClear" href="#">x</a>
+        <input id="jschangecity" type="submit" value="Сохранить" class="button bigbutton mDisabled"/>
+
+        <div id="jscities" style="position:relative"></div>
     </form>
-    <div class="cityInline">
-      <a href="<?php echo url_for('region_change', array('region' => 14974)) ?>">Москва</a>
-      <a href="<?php echo url_for('region_change', array('region' => 108136)) ?>">Санкт-Петербург</a>
+    <div class="cityInline font14 clearfix">
+        <div class="cityItem"><a href="<?= url_for('region_change', array('region' => 14974)) ?>">Москва</a></div>
+        <div class="cityItem"><a href="<?= url_for('region_change', array('region' => 108136)) ?>">Санкт-Петербург</a></div>
     </div>
-  <?php $offset = 0; ?>
-  <?php foreach ($columns_count as $count): ?>
-  <div class="colomn">
-    <?php for ($i = 0; $i < $count; $i++): ?>
-    <?php $region = $regions[$offset + $i]; ?>
-    <a href="<?php echo url_for('region_change', array('region' => $region->getId())) ?>"><?php echo $region->getName(); ?></a>
-    <?php endfor ?>
-    <?php $offset += $count; ?>
-  </div>
-  <?php endforeach; ?>
-  <div class="clear"></div>
-  <!--div class="info">
-    <p>Мы доставим вашу покупку в любой регион. 
-      Если в вашем регионе еще нет нашего офиса, доставка будет осуществляться с помощью партнеров.</p>
-  </div-->
+    <div class="BlackArrow fl leftArr"></div>
+    <div class="regionSlidesWrap fl">
+        <div class="regionSlides">
+            <!-- 2 слайда по 4 колонки -->
+        <div class="regionSlides_slide">
+        <div class="colomn font14">
+            <?php
+            /** @var $region  \Model\Region\Entity */
+            $cols = 0; $rows = 0; $i = 0; foreach ($regions as $region): $i++;  $rows++;
+            ?>
+            <a href="<?= url_for('region_change', array('region' => $region->getId())) ?>"><?= $region->getName(); ?></a>
+            <?php if ($i == $count) break; ?>
+            <?php if ($rows == $rowCount): $rows = 0; $cols++;?>
+                    </div>
+                            <?php if ($cols == $colCount): $cols = 0; ?>
+            </div>
+            <div class="regionSlides_slide">
+                            <?php endif ?>
+                    <div class="colomn font14">
+                        <?php endif ?>
+            <?php endforeach ?>
+        </div>
+        </div>
+        </div>
+    </div>
+    <div class="BlackArrow fl rightArr"></div>
 </div>

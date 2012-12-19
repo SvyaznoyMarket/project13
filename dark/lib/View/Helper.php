@@ -79,6 +79,6 @@ class Helper {
             return 'послезавтра (' . $date->format('d.m.Y') . ')';
         }
 
-        return 'через ' . $interval->days . ' ' . $this->numberChoice($interval->days, array('день', 'дня', 'дней')) . ' (' . $date->format('d.m.Y') . ')';
+        return 'через ' . ($interval->days - 1) . ' ' . $this->numberChoice(($interval->days - 1), array('день', 'дня', 'дней')) . ' (' . $date->format('d.m.Y') . ')';
     }
 }

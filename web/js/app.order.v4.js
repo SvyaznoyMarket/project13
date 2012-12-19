@@ -369,7 +369,7 @@ $(document).ready(function() {
 			var first = new Date( pseudoMonday )
 			if( first.getDay() !== 1 ) {
 				//add before				
-				var dbefore = (first.getDay()) ? first.getDay() - 1 : 6
+				var dbefore = (first.getDay()) ? first.getDay()*1 - 1 : 6
 				first.setTime( first.getTime()*1 - dbefore*24*60*60*1000 )
 			}
 			return first		
@@ -402,33 +402,45 @@ $(document).ready(function() {
 		self.step2 = ko.observable( false )
 		self.dlvrBoxes = ko.observableArray([])
 
+		function reTimestamping(date){//date is string
+			var y = date.substr(0,4)*1
+			var m = date.substr(5,2)*1
+			var d = date.substr(8,2)*1
+			var newDate = new Date (y, (m-1), d)
+			var timestamp = Date.parse(newDate)
+			return timestamp
+		} 
+
 		function calculateDates( box ) {
 			// Algorithm for Dates Compilation
 			// divided into 4 steps:
 			box.caclDates = []
 			var bid = box.token
 			// 0) There are some intervals
-			var edges = []		
+			var edges = []	
 			for(var i=0, l=box.itemList().length; i<l; i++) {
+				//re-timestamping
+				for (var j in box.itemList()[i].deliveries[bid].dates){
+	 				box.itemList()[i].deliveries[bid].dates[j].timestamp = reTimestamping(box.itemList()[i].deliveries[bid].dates[j].value)
+	 			}
 				var dates = box.itemList()[i].deliveries[bid].dates
 				edges.push( [ dates[0], dates[ dates.length - 1 ] ] )
 			}
-
 			// 1) Build Tight Interval
-			var tightInterval = buildTightInterval( edges )				
-
+			var tightInterval = buildTightInterval( edges )
 			// 2) Make Additional Dates				
 			var first = getMonday( tightInterval[0].timestamp )				
 			var last = getSunday( tightInterval[1].timestamp )
- //console.info( 'Interval edges for ', bid, ' :', first, last )
+ 			//console.info( 'Interval edges for ', bid, ' :', first, last )
+
 
 			// 3) Make Dates By T Interval
 			var doweeks = ['Вс','Пн','Вт','Ср','Чт','Пт','Сб']
 			var nweeks = 1
-			while( first.getTime() <= last.getTime() ) {
+			while( first.getTime()*1 <= last.getTime()*1 ) {
 				var linerDate = {
-					dayOfWeek: doweeks[ first.getDay() ],
-					day: first.getDate(),
+					dayOfWeek: doweeks[ first.getDay()*1 ],
+					day: first.getDate()*1,
 					tstamp: first.getTime()*1,
 					week: nweeks,
 					enable: ko.observable( false )
@@ -510,7 +522,6 @@ up:				for( var linedate in box.caclDates ) { // Loop for T Interval
 					out += this.dlvrPrice()*1
 				return out
 			}, box)
-
 			self.dlvrBoxes.push( box )
 		} // mth addBox
 
@@ -771,12 +782,12 @@ upi:			for( var item=0, boxitems=self.chosenBox().itemList(); item < boxitems.le
 		}
 
 		function formateDate( tstamp ) {
+
 			var raw = new Date(tstamp),
 				m = raw.getMonth()+1,
 				d = raw.getDate()
 			return raw.getFullYear() + '-' + ( m > 9 ? m : '0' + m ) + '-' + ( d > 9 ? d : '0' + d )
 		}
-
 		self.getServerModel = function() {
 			var ServerModel = {
 				deliveryTypes: {}
@@ -970,6 +981,7 @@ flds:	for( field in fieldsToValidate ) {
 				toSend.push( { name: 'order[pin]', value: SertificateCard.getPIN() })
 			}
 		var startAjaxOrderTime = new Date().getTime()
+		// console.log(toSend)
 		$.ajax({
 			url: form.attr('action'),
 			timeout: 20000,
@@ -989,6 +1001,8 @@ flds:	for( field in fieldsToValidate ) {
 				var endAjaxOrderTime = new Date().getTime()
 				var AjaxOrderSpent = endAjaxOrderTime - startAjaxOrderTime
 				_gaq.push(['_trackTiming', 'Order complete', 'DB response', AjaxOrderSpent])
+				if (typeof(yaCounter10503055) !== 'undefined')
+					yaCounter10503055.reachGoal('\orders\complete')
 				if( 'redirect' in data.data )
 					window.location = data.data.redirect
 			},
