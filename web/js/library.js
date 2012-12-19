@@ -1358,7 +1358,7 @@ window.MapInterface = (function() {
         init: function( coordinates, mapContainerId, callback, updater ) {
             // console.log('инитимся..', coordinates, mapContainerId, callback, updater)
             if( vendor === 'yandex' ) {
-                if( typeof(ymaps)!=='undefined' && ymaps.isReady ) {
+                if( typeof(ymaps)!=='undefined') {
                     // console.info('1')
                     window.regionMap = new MapYandexWithShops(
                         coordinates,
