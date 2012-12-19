@@ -542,8 +542,8 @@ cart:
 #
 # MOVED TO PLAIN PHP cart add
 cart_add:
-  url:   /cart/add/:product/_quantity/:quantity/
-  param: { module: cart, action: add, quantity: 1}
+  url:   /cart/add/:product/_quantity/:quantity
+  param: { module: cart, action: add }
   requirements:
     sf_method: [ get, post ]
     product: \d+

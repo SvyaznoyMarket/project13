@@ -58,6 +58,7 @@ Options +FollowSymLinks +ExecCGI
   RewriteRule ^product-buy.* dark.php [L]
   RewriteRule ^orders/new.* dark.php [L]
   RewriteRule ^orders/complete.* dark.php [L]
+  RewriteRule ^products/set/* dark.php [L]
   RewriteRule ^orders/payment/.* dark.php [L]
 
   RewriteCond %{REQUEST_FILENAME} !-f

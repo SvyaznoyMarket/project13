@@ -90,6 +90,7 @@ $(document).ready(function() {
 					regexp: /^[()0-9\-\s]+$/
 				}) )
 			
+
 			self.disabledSelectors = ko.observable( false )
 			self.noQBar            = ko.observable( false )
 			self.stableType        = ko.observable( false )
@@ -476,6 +477,7 @@ levup:			for(var i=0, l=numbers.length; i<l; i++)
 		// 	if( Deliveries['self'].dates.length > tind + 1 )
 		// 		self.tomorrowShops = parseDateShop( Deliveries['self'].dates[ tind + 1 ].shopIds, 'tmr' )			
 		// }
+        console.log('zzzz')
 		self.todayShops = parseDateShop( Deliveries['self'].dates[ 0 ].shopIds, 'td' )
 		self.todayLabel( Deliveries['self'].dates[ 0 ].name.match(/\d{2}\.\d{2}\.\d{4}/)[0] )
 		if( Deliveries['self'].dates.length > 1 ) {
@@ -585,6 +587,19 @@ levup:			for(var i=0, l=numbers.length; i<l; i++)
 		if( typeof( $.mask ) !== 'undefined' ) {
 			$.mask.definitions['n'] = "[()0-9\ \-]"
 			$("#phonemask").mask("+7 nnnnnnnnnnnnnnnnn", { placeholder: " ", maxlength: 10 } )
+			
+			$.mask.definitions['*'] = "[0-9*]"
+	        $("#scCard").mask("* ****** ******", { placeholder: "*" } )
+			if( $("#scCard")[0].getAttribute('value') )
+				$("#scCard").val( $("#scCard")[0].getAttribute('value') )
+			$("#scCard").blur( function() {
+				if( $(this).val() === "* ****** ******" ) {
+					$(this).trigger('unmask').val('')
+					$(this).focus( function() {
+						$("#scCard").mask("* ****** ******", { placeholder: "*" } )
+					})
+				}
+	        })	
 		}
 	}
 	/* One Click Order */
@@ -657,6 +672,8 @@ levup:			for(var i=0, l=numbers.length; i<l; i++)
 			e.preventDefault()	
 			if( !oneClickIsReady )
 				return false
+			if (typeof(yaCounter10503055) !== 'undefined')
+				yaCounter10503055.reachGoal('\orders\complete')
 			// TODO please go this stuff separate!
 			if( typeof(_gaq) !== 'undefined' )
 				_gaq.push(['_trackEvent', 'QuickOrder', 'Open'])
@@ -728,8 +745,7 @@ levup:			for(var i=0, l=numbers.length; i<l; i++)
 				return false				
 			}
 
-			if( parseISO8601( Deliveries['self'].dates[0].value ) !== parseISO8601( currentDate ) &&
-				parseISO8601( Deliveries['self'].dates[0].value ) !== parseISO8601( currentDate ) + 1000*60*60*24 ) {
+			if( !(Deliveries['self'].dates.length > 0) ) {
 				//SHOW WARNING, NO TODAY AND TOMORROW DELIVERY
 				$('#noDlvr').show()
 				return false				
