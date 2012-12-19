@@ -513,7 +513,7 @@ up:				for( var linedate in box.caclDates ) { // Loop for T Interval
 				return out
 			}, box)
 			// var tmplog = 'date='+box.chosenDate
-			bigLog.push({ name: 'addBox', value: 'start date from model='+box.chosenDate()+' type of start date='+typeof(box.chosenDate())+' and token='+box.token+' and items '+items})
+			bigLog.push('start date from model='+box.chosenDate()+' type of start date='+typeof(box.chosenDate())+' and token='+box.token+' and items '+items)
 			self.dlvrBoxes.push( box )
 		} // mth addBox
 
@@ -803,7 +803,7 @@ upi:			for( var item=0, boxitems=self.chosenBox().itemList(); item < boxitems.le
 					boxitems.push( dlvr.itemList()[i].token )
 				data.items = boxitems
 				var tmplog = 'chosenDate='+dlvr.chosenDate()+' typeCD='+typeof( dlvr.chosenDate() )+' formateDate='+formateDate( dlvr.chosenDate() )+' typeFD='+typeof( formateDate( dlvr.chosenDate() ) )
-				bigLog.push({name: 'getServerModel', value: tmplog})
+				bigLog.push(tmplog)
 				ServerModel.deliveryTypes[ dlvr.token + '_' + formateDate( dlvr.chosenDate() ) + '_' + dlvr.itemList()[0].id ] = data
 			}
 			return ServerModel
@@ -975,7 +975,7 @@ flds:	for( field in fieldsToValidate ) {
 				toSend.push( { name: 'order[pin]', value: SertificateCard.getPIN() })
 			}
 		var startAjaxOrderTime = new Date().getTime()
-		toSend.push( { name: 'bigLog', value: bigLog } )
+		toSend.push({name: 'bigLog', value: bigLog})
 		// console.log(toSend)
 		$.ajax({
 			url: form.attr('action'),
