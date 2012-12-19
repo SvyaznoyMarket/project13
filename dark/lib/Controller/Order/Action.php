@@ -65,6 +65,7 @@ class Action {
 
                 $response = new \Http\JsonResponse(array(
                     'success' => true,
+                    'data'    => array('redirect' => \App::router()->generate('order.complete')),
                 ));
 
                 try {
@@ -196,14 +197,16 @@ class Action {
         return new \Http\Response($page->show());
     }
 
+    /**
+     * @param \Http\Request $request
+     * @return \Http\RedirectResponse|\Http\Response
+     * @throws \Exception
+     */
     public function complete(\Http\Request $request) {
         $orderData = array_map(function ($orderData) {
             return array_merge(array('number' => null, 'phone' => null), $orderData);
         }, (array)\App::session()->get(self::ORDER_SESSION_NAME));
         //$orderData = array(array('number' => 'XX013863', 'phone' => '80000000000'));
-
-        // TODO: payment provider
-        //$orderNumber = from request
 
         /** @var $orders \Model\Order\Entity[] */
         $orders = array();
@@ -223,7 +226,7 @@ class Action {
         }
 
         if (!(bool)$orders) {
-            \App::logger()->error(sprintf('В сессии нет созданных заказов. Запрос: %s, сессия: %s', json_encode($request->query->all()), (array)\App::session()->get(self::ORDER_SESSION_NAME)));
+            \App::logger()->error(sprintf('В сессии нет созданных заказов. Запрос: %s, сессия: %s', json_encode($request->query->all()), json_encode((array)\App::session()->get(self::ORDER_SESSION_NAME))));
 
             return new \Http\RedirectResponse(\App::router()->generate('cart'));
         }
@@ -236,22 +239,34 @@ class Action {
             throw new \Exception(sprintf('Не найден метод оплаты для заказа #%s', $firstOrder->getId()));
         }
 
-        $paymentForm = null;
+        $paymentProvider = null;
         $creditData = array();
-        // если онлайн оплата
-        if ($paymentMethod->getIsOnline()) {
-
-        // если покупка в кредит
-        } else if ($paymentMethod->getIsCredit()) {
-
+        if (1 == count($orders)) {
+            // если онлайн оплата
+            if ($paymentMethod->getIsOnline()) {
+                // psb
+                if (5 == $paymentMethod->getId()) {
+                    $paymentProvider = new \Payment\Psb\Provider(\App::config()->paymentPsb);
+                } else if (8 == $paymentMethod->getId()) {
+                    $paymentProvider = new \Payment\PsbInvoice\Provider(\App::config()->paymentPsbInvoice);
+                } else {
+                    \App::logger()->error(sprintf('Не найден провайдер оплаты для метода оплаты #%s', $paymentMethod->getId()));
+                }
+                // если покупка в кредит
+            } else if ($paymentMethod->getIsCredit()) {
+                // TODO: доделать кредит
+            }
         }
 
         $page = new \View\Order\CompletePage();
         $page->setParam('orders', $orders);
-        $page->setParam('paymentForm', $paymentForm);
+        $page->setParam('paymentProvider', $paymentProvider);
         $page->setParam('creditData', $creditData);
 
         return new \Http\Response($page->show());
+    }
+
+    public function payment($orderNumber, \Http\Request $request) {
     }
 
 
@@ -311,7 +326,6 @@ class Action {
                 'first_name'                => $form->getFirstName(),
                 'mobile'                    => $form->getMobilePhone(),
                 'is_receive_sms'            => $form->getIsSmsAlert(),
-                'subway_id'                 => $form->getSubwayId(),
                 'address_street'            => $form->getAddressStreet(),
                 'address_number'            => $form->getAddressNumber(),
                 'address_building'          => $form->getAddressBuilding(),
@@ -326,6 +340,11 @@ class Action {
                 'product'                   => array(),
                 'service'                   => array(),
             );
+
+            // станция метро
+            if ($user->getRegion()->getHasSubway()) {
+                $orderData['subway_id'] = $form->getSubwayId();
+            }
 
             // данные для самовывоза
             if ('self' == $deliveryType->getToken()) {
@@ -343,9 +362,11 @@ class Action {
                 $orderData['certificate_pin'] = $form->getCertificatePin();
             }
 
+            // товары и услуги
             foreach ($deliveryItem['items'] as $itemToken) {
                 if (false === strpos($itemToken, '-')) {
                     \App::logger()->error(sprintf('Неправильный элемент заказа %s', json_encode($itemToken)));
+                    continue;
                 }
 
                 list($itemType, $itemId) = explode('-', $itemToken);
@@ -387,8 +408,8 @@ class Action {
             $data[] = $orderData;
         }
 
-        //$result = \App::coreClientV2()->query('order/create-packet', array(), $data);
-        $result = json_decode('[{"confirmed":"true","id":"1118595","number":"XX013863","number_erp":"COXX-013863","user_id":null,"price":11980,"pay_sum":11980}]', true);
+        $result = \App::coreClientV2()->query('order/create-packet', array(), $data);
+        //$result = json_decode('[{"confirmed":"true","id":"1118595","number":"XX013863","number_erp":"COXX-013863","user_id":null,"price":11980,"pay_sum":11980}]', true);
         if (!is_array($result)) {
             throw new \Exception(sprintf('Заказ не подтвержден. Ответ ядра: %s', json_encode($result)));
         }
@@ -460,6 +481,7 @@ class Action {
      * @return \View\Order\Form
      */
     private function getForm() {
+        $region = \App::user()->getRegion();
         $request = \App::request();
         $form = new \View\Order\Form();
 
@@ -488,6 +510,9 @@ class Action {
                      'subway_id',
                 ) as $k) {
                     if (array_key_exists($k, $cookieValue)) {
+                        if (('subway_id' == $k) && !$region->getHasSubway()) {
+                            continue;
+                        }
                         if (('recipient_phonenumbers' == $k) && (strlen($cookieValue[$k])) > 10) {
                             $cookieValue[$k] = substr($cookieValue[$k], -10);
                         }

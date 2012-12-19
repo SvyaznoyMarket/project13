@@ -1,11 +1,11 @@
 <?php
 /**
- * @var $page        \View\Order\CreatePage
- * @var $user        \Session\User
- * @var $orders      \Model\Order\Entity[]
- * @var $isCredit    bool
- * @var $paymentForm null
- * @var $creditData  array
+ * @var $page            \View\Order\CreatePage
+ * @var $user            \Session\User
+ * @var $orders          \Model\Order\Entity[]
+ * @var $isCredit        bool
+ * @var $paymentProvider \Payment\ProviderInterface
+ * @var $creditData      array
  */
 ?>
 
@@ -48,25 +48,20 @@ $isCredit = false;
 </div>
 <? endif ?>
 
-<? if ($paymentForm) { ?>
+<? if ($paymentProvider): ?>
     <p>Через <span class="timer">5</span> сек. мы автоматически перенаправим Вас на страницу оплаты, если этого не произойдет, пожалуйста, нажмите на кнопку "Оплатить заказ".</p>
     <div class="pt10">
-
-        <form class="form" method="post" action="<?= $paymentForm->getUrl() ?>">
-            <?= $page->render('order/form-paymentPsb', array('form' => $paymentForm)) ?>
-            <input id="pay-button" type="submit" class="button bigbutton" value="Оплатить заказ"/>
-        </form>
-
+        <?= $page->render('order/form-payment', array('provider' => $paymentProvider, 'order' => reset($orders))) ?>
     </div>
-<? } else { ?>
+<? else: ?>
     <div class="mt32" style="text-align: center">
         <a class='bBigOrangeButton' href="<?= $page->url('homepage') ?>">Продолжить покупки</a>
     </div>
-<? } ?>
+<? endif ?>
 
-<? if ($isCredit) { ?>
+<? if ($isCredit): ?>
     <div id='credit-widget' data-value="<?= $page->json($creditData) ?>"></div>
-<? } ?>
+<? endif ?>
 
 
 <? //slot('analytics_report') ?>

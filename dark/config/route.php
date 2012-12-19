@@ -247,6 +247,10 @@ return array(
         'pattern' => '/orders/complete',
         'action'  => array('Order\Action', 'complete'),
     ),
+    'order.payment' => array(
+        'pattern' => '/orders/payment/{orderNumber}',
+        'action'  => array('Order\Action', 'payment'),
+    ),
     'order.bill' => array(
         'pattern' => '/private/orders/{orderNumber}/bill',
         'action'  => array('Order\BillAction', 'execute'),

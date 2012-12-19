@@ -128,8 +128,20 @@ class AppConfig {
     );
     /** @var array */
     public $payment = array(
-        'creditEnabled' => null, // TODO: выпилить, т.к. дублирует enabledIds
-        'enabledIds'    => array(),
+        'creditEnabled' => null,
+    );
+    /** @var array */
+    public $paymentPsb = array(
+        'terminal'     => null,
+        'merchant'     => null,
+        'merchantName' => null,
+        'key'          => null,
+        'payUrl'       => null,
+    );
+    public $paymentPsbInvoice = array(
+        'contractorId' => null,
+        'key'          => null,
+        'payUrl'       => null,
     );
     /** @var array */
     public $smartEngine = array(
