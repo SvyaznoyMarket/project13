@@ -4,7 +4,7 @@ namespace Controller\Order;
 
 class Action {
     const ORDER_COOKIE_NAME = 'last_order';
-    const ORDER_SESSION_NAME = 'order';
+    const ORDER_SESSION_NAME = 'lastOrder';
 
     /**
      * @param \Http\Request $request
@@ -203,27 +203,7 @@ class Action {
      * @throws \Exception
      */
     public function complete(\Http\Request $request) {
-        $orderData = array_map(function ($orderData) {
-            return array_merge(array('number' => null, 'phone' => null), $orderData);
-        }, (array)\App::session()->get(self::ORDER_SESSION_NAME));
-        //$orderData = array(array('number' => 'XX013863', 'phone' => '80000000000'));
-
-        /** @var $orders \Model\Order\Entity[] */
-        $orders = array();
-        foreach ($orderData as $orderItem) {
-            if (!$orderItem['number'] || !$orderItem['phone']) {
-                \App::logger()->error(sprintf('Невалидные данные о заказе в сессии %s', json_encode($orderItem)));
-                continue;
-            }
-
-            $order = \RepositoryManager::getOrder()->getEntityByNumberAndPhone($orderItem['number'], $orderItem['phone']);
-            if (!$order) {
-                \App::logger()->error(sprintf('Заказ из сессии не найден %s', json_encode($orderItem)));
-                continue;
-            }
-
-            $orders[] = $order;
-        }
+        $orders = $this->getLastOrders();
 
         if (!(bool)$orders) {
             \App::logger()->error(sprintf('В сессии нет созданных заказов. Запрос: %s, сессия: %s', json_encode($request->query->all()), json_encode((array)\App::session()->get(self::ORDER_SESSION_NAME))));
@@ -233,7 +213,9 @@ class Action {
 
         /** @var $firstOrder \Model\Order\Entity */
         $firstOrder = reset($orders);
+
         // метод оплаты
+        //$paymentMethod = \RepositoryManager::getPaymentMethod()->getEntityById(8);
         $paymentMethod = \RepositoryManager::getPaymentMethod()->getEntityById($firstOrder->getPaymentId());
         if (!$paymentMethod) {
             throw new \Exception(sprintf('Не найден метод оплаты для заказа #%s', $firstOrder->getId()));
@@ -258,6 +240,8 @@ class Action {
             }
         }
 
+        // TODO: удалять из сессии успешный заказ, время создания которого больше 1 часа
+
         $page = new \View\Order\CompletePage();
         $page->setParam('orders', $orders);
         $page->setParam('paymentProvider', $paymentProvider);
@@ -266,7 +250,35 @@ class Action {
         return new \Http\Response($page->show());
     }
 
+    /**
+     * @param number        $orderNumber
+     * @param \Http\Request $request
+     * @return \Http\Response
+     * @throws \Exception\NotFoundException
+     */
     public function payment($orderNumber, \Http\Request $request) {
+        $orderNumber = trim((string)$orderNumber);
+        if (!$orderNumber) {
+            throw new \Exception\NotFoundException('Не передан номер заказа');
+        }
+
+        $orders = array_filter($this->getLastOrders(), function($order) use ($orderNumber) {
+            /** @var $order \Model\Order\Entity */
+            if ($order->getNumber() === $orderNumber) return true;
+        });
+        //var_dump($this->getLastOrders()); exit();
+        $order = reset($orders);
+        if (!$order) {
+            throw new \Exception\NotFoundException(sprintf('Заказ с номером %s не найден', $orderNumber));
+        }
+
+
+        $page = new \View\Order\CompletePage();
+        $page->setParam('orders', $orders);
+        $page->setParam('paymentProvider', null);
+        $page->setParam('creditData', array());
+
+        return new \Http\Response($page->show());
     }
 
 
@@ -837,5 +849,35 @@ class Action {
         }
 
         return $deliveryMapView;
+    }
+
+    /**
+     * @return \Model\Order\Entity[]
+     */
+    private function getLastOrders() {
+        $orderData = array_map(function ($orderItem) {
+            return array_merge(array('number' => null, 'phone' => null), $orderItem);
+        }, (array)\App::session()->get(self::ORDER_SESSION_NAME));
+        //$orderData = array(array('number' => 'XX013863', 'phone' => '80000000000'));
+
+        /** @var $orders \Model\Order\Entity[] */
+        $orders = array();
+        foreach ($orderData as $orderItem) {
+            if (!$orderItem['number'] || !$orderItem['phone']) {
+                \App::logger()->error(sprintf('Невалидные данные о заказе в сессии %s', json_encode($orderItem)));
+                continue;
+            }
+
+            // TODO: запрашивать несколько заказов асинхронно
+            $order = \RepositoryManager::getOrder()->getEntityByNumberAndPhone($orderItem['number'], $orderItem['phone']);
+            if (!$order) {
+                \App::logger()->error(sprintf('Заказ из сессии не найден %s', json_encode($orderItem)));
+                continue;
+            }
+
+            $orders[] = $order;
+        }
+
+        return $orders;
     }
 }

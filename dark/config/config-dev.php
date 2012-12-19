@@ -14,11 +14,7 @@ $c->coreV1['url'] = 'http://core.ent3.ru/v1/json';
 $c->smartEngine['pull'] = true;
 $c->smartEngine['push'] = false;
 
-$c->warranty['enabled'] = true;
-
-$c->product['globalListEnabled'] = false;
-
-$c->user['corporateRegister'] = true;
+//$c->warranty['enabled'] = true;
 
 $c->paymentPsb['terminal'] = '79036768';
 $c->paymentPsb['merchant'] = '790367686219999';
