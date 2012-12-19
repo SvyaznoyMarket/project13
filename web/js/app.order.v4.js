@@ -1,8 +1,6 @@
 $(document).ready(function() {
 	/* ---------------------------------------------------------------------------------------- */
 	/* COMMON DESIGN, BEHAVIOUR ONLY */
-	var bigLog = []
-
 	var _gaq = window._gaq || []
 	/* Custom Selectors */ 
 	$('body').delegate( '.bSelect', 'click', function() {
@@ -404,25 +402,37 @@ $(document).ready(function() {
 		self.step2 = ko.observable( false )
 		self.dlvrBoxes = ko.observableArray([])
 
+		function reTimestamping(date){//date is string
+			var y = date.substr(0,4)*1
+			var m = date.substr(5,2)*1
+			var d = date.substr(8,2)*1
+			var newDate = new Date (y, (m-1), d)
+			var timestamp = Date.parse(newDate)
+			return timestamp
+		} 
+
 		function calculateDates( box ) {
 			// Algorithm for Dates Compilation
 			// divided into 4 steps:
 			box.caclDates = []
 			var bid = box.token
 			// 0) There are some intervals
-			var edges = []		
+			var edges = []	
 			for(var i=0, l=box.itemList().length; i<l; i++) {
+				//re-timestamping
+				for (var j in box.itemList()[i].deliveries[bid].dates){
+	 				box.itemList()[i].deliveries[bid].dates[j].timestamp = reTimestamping(box.itemList()[i].deliveries[bid].dates[j].value)
+	 			}
 				var dates = box.itemList()[i].deliveries[bid].dates
 				edges.push( [ dates[0], dates[ dates.length - 1 ] ] )
 			}
-
 			// 1) Build Tight Interval
-			var tightInterval = buildTightInterval( edges )				
-
+			var tightInterval = buildTightInterval( edges )
 			// 2) Make Additional Dates				
 			var first = getMonday( tightInterval[0].timestamp )				
 			var last = getSunday( tightInterval[1].timestamp )
- //console.info( 'Interval edges for ', bid, ' :', first, last )
+ 			//console.info( 'Interval edges for ', bid, ' :', first, last )
+
 
 			// 3) Make Dates By T Interval
 			var doweeks = ['Вс','Пн','Вт','Ср','Чт','Пт','Сб']
@@ -512,8 +522,6 @@ up:				for( var linedate in box.caclDates ) { // Loop for T Interval
 					out += this.dlvrPrice()*1
 				return out
 			}, box)
-			// var tmplog = 'date='+box.chosenDate
-			bigLog.push('start date from model='+box.chosenDate()+' type of start date='+typeof(box.chosenDate())+' and token='+box.token+' and items '+items)
 			self.dlvrBoxes.push( box )
 		} // mth addBox
 
@@ -774,12 +782,12 @@ upi:			for( var item=0, boxitems=self.chosenBox().itemList(); item < boxitems.le
 		}
 
 		function formateDate( tstamp ) {
+
 			var raw = new Date(tstamp),
 				m = raw.getMonth()+1,
 				d = raw.getDate()
 			return raw.getFullYear() + '-' + ( m > 9 ? m : '0' + m ) + '-' + ( d > 9 ? d : '0' + d )
 		}
-
 		self.getServerModel = function() {
 			var ServerModel = {
 				deliveryTypes: {}
@@ -802,8 +810,6 @@ upi:			for( var item=0, boxitems=self.chosenBox().itemList(); item < boxitems.le
 				for( var i in dlvr.itemList() )
 					boxitems.push( dlvr.itemList()[i].token )
 				data.items = boxitems
-				var tmplog = 'chosenDate='+dlvr.chosenDate()+' typeCD='+typeof( dlvr.chosenDate() )+' formateDate='+formateDate( dlvr.chosenDate() )+' typeFD='+typeof( formateDate( dlvr.chosenDate() ) )
-				bigLog.push(tmplog)
 				ServerModel.deliveryTypes[ dlvr.token + '_' + formateDate( dlvr.chosenDate() ) + '_' + dlvr.itemList()[0].id ] = data
 			}
 			return ServerModel
@@ -975,7 +981,6 @@ flds:	for( field in fieldsToValidate ) {
 				toSend.push( { name: 'order[pin]', value: SertificateCard.getPIN() })
 			}
 		var startAjaxOrderTime = new Date().getTime()
-		toSend.push(bigLog)
 		// console.log(toSend)
 		$.ajax({
 			url: form.attr('action'),
