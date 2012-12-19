@@ -165,6 +165,8 @@ class IndexAction {
             $item['url'] = $url;
         } if (isset($item)) unset($item);
 
+        $bannerData = array_values($bannerData);
+
         $page = new \View\Main\IndexPage();
         $page->setParam('bannerData', $bannerData);
         $page->setParam('rootCategories', $rootCategories);
