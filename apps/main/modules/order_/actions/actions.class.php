@@ -713,6 +713,7 @@ class order_Actions extends myActions
 
         $order->address = null;
         $order->shop_id = $shop ? $shop->id : null;
+        $order->subway_id = null;
       }
       else {
         $order->shop_id = null;

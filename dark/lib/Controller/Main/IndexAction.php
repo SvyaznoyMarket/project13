@@ -158,12 +158,16 @@ class IndexAction {
                 }
             }
 
-            if (!$url) {
+            if (!$url && !$item['url']) {
+                \App::logger()->error(sprintf('Невалидный баннер %s', json_encode((array)$item)));
                 unset($bannerData[$i]);
+                continue;
             }
 
             $item['url'] = $url;
         } if (isset($item)) unset($item);
+
+        $bannerData = array_values($bannerData);
 
         $page = new \View\Main\IndexPage();
         $page->setParam('bannerData', $bannerData);

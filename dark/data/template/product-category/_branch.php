@@ -33,10 +33,7 @@ $totalText = $category->getProductCount() . ' ' . ($category->getHasLine()
     : $page->helper->numberChoice($category->getProductCount(), array('товар', 'товара', 'товаров'))
 );
 //     for global
-$globalTotalText =
-    $user->getRegion()->getHasTransportCompany()
-    ? $page->helper->numberChoice($category->getGlobalProductCount(), array('товар', 'товара', 'товаров'))
-    : '';
+$globalTotalText = $category->getGlobalProductCount() . ' ' .$page->helper->numberChoice($category->getGlobalProductCount(), array('товар', 'товара', 'товаров'));
 ?>
 
 <div class="catProductNum">
@@ -44,7 +41,7 @@ $globalTotalText =
         <b>В <?= $regionInflectedName ?> <?= $totalText ?></b>
     <? endif ?>
 
-    <? if (\App::config()->product['globalListEnabled'] && $user->getRegion()->getHasTransportCompany()): ?>
+    <? if ($category->getGlobalProductCount() && \App::config()->product['globalListEnabled'] && $user->getRegion()->getHasTransportCompany()): ?>
         <br />
         Всего в категории <?= $globalTotalText ?>
         <noindex>
