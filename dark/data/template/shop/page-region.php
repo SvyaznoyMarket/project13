@@ -8,7 +8,9 @@
 ?>
 
 <? require __DIR__ . '/_map.php' ?>
-
+<div class="pb20"></div>
+<?php
+/**
 <? if ((bool)$shops): ?>
     <!-- bMapInfo -->
     <div class='bMapShops__eInfo'>
@@ -40,3 +42,5 @@
     <p class="font16">В этом городе пока нет магазинов.</p>
 
 <? endif ?>
+ */
+?>
