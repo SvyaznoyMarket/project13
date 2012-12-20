@@ -385,7 +385,7 @@ class Action {
 
                         $creditData['vars']['items'][] = array(
                             'name'     => $product->getName(),
-                            'quantity' => $orderProduct->getQuantity(),
+                            'quantity' => (string)$orderProduct->getQuantity(),
                             'price'    => $orderProduct->getPrice(),
                             'articul'  => $product->getArticle(),
                             'type'     => \RepositoryManager::getCreditBank()->getCreditTypeByCategoryToken($product->getMainCategory() ? $product->getMainCategory()->getToken() : null),
