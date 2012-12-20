@@ -12,6 +12,9 @@ $(document).ready(function(){
 		$('.lightboxinner').hide()
 		$.getJSON( shortinfo, function(data) {
 			if( data.success ) {
+				if (data.data.vitems>0) {
+                    $('#topBasket').text( '('+data.data.vitems+')' )
+                }
 				if( data.data.name ) {
 					var dtmpl={}
 					dtmpl.user = data.data.name
