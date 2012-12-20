@@ -12,7 +12,7 @@
 <?php
 $isCorporative = $user->getEntity() ? $user->getEntity()->getIsCorporative() : false;
 // TODO: доделать
-$isCredit = false;
+$isCredit = (bool)$creditData;
 ?>
 
 <!-- Header -->
@@ -60,7 +60,7 @@ $isCredit = false;
 <? endif ?>
 
 <? if ($isCredit): ?>
-    <div id='credit-widget' data-value="<?= $page->json($creditData) ?>"></div>
+    <div id="credit-widget" data-value="<?= $page->json($creditData) ?>"></div>
 <? endif ?>
 
 

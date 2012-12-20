@@ -252,6 +252,15 @@ $(document).ready(function() {
     if ($('#metrostations') !== 'undefined') {
         ubahn = $('#metrostations').data('name')
     }
+
+    if ( $('#order_subway_id').val().length ){
+    	var metroId = $('#order_subway_id').val()*1
+    	for (var i in ubahn){
+    		if ( (ubahn[i].val*1)==metroId)
+    			$('#order_address_metro').val(ubahn[i].label)
+    	}
+    }
+
 	$( "#order_address_metro" )
 		.autocomplete({
 			source: ubahn,

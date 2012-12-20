@@ -8,6 +8,8 @@ class BasicEntity {
     /** @var string */
     protected $barcode;
     /** @var string */
+    protected $article;
+    /** @var string */
     protected $name;
     /** @var string */
     protected $link;
@@ -29,6 +31,7 @@ class BasicEntity {
         if (array_key_exists('name', $data)) $this->setName($data['name']);
         if (array_key_exists('link', $data)) $this->setLink($data['link']);
         if (array_key_exists('token', $data)) $this->setToken($data['token']);
+        if (array_key_exists('article', $data)) $this->setArticle($data['article']);
         if (array_key_exists('bar_code', $data)) $this->setBarcode($data['bar_code']);
         if (array_key_exists('media_image', $data)) $this->setImage($data['media_image']);
         if (array_key_exists('category', $data) && (bool)$data['category']) {
@@ -38,6 +41,20 @@ class BasicEntity {
         if (array_key_exists('price', $data)) $this->setPrice($data['price']);
         if (array_key_exists('state', $data) && (bool)$data['state']) $this->setState(new State\Entity($data['state']));
         if (array_key_exists('line', $data) && (bool)$data['line']) $this->setLine(new Line\Entity($data['line']));
+    }
+
+    /**
+     * @param string $article
+     */
+    public function setArticle($article) {
+        $this->article = (string)$article;
+    }
+
+    /**
+     * @return string
+     */
+    public function getArticle() {
+        return $this->article;
     }
 
     /**

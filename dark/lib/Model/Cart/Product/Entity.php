@@ -28,10 +28,16 @@ class Entity {
         }
     }
 
+    /**
+     * @param $id
+     */
     public function setId($id) {
         $this->id = (int)$id;
     }
 
+    /**
+     * @return int
+     */
     public function getId() {
         return $this->id;
     }

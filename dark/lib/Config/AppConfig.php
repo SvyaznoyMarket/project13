@@ -131,6 +131,14 @@ class AppConfig {
         'creditEnabled' => null,
     );
     /** @var array */
+    public $creditProvider = array(
+        'kupivkredit' => array(
+            'partnerId'   => null,
+            'partnerName' => null,
+            'signature'   => null,
+        ),
+    );
+    /** @var array */
     public $paymentPsb = array(
         'terminal'     => null,
         'merchant'     => null,

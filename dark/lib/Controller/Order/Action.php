@@ -4,7 +4,7 @@ namespace Controller\Order;
 
 class Action {
     const ORDER_COOKIE_NAME = 'last_order';
-    const ORDER_SESSION_NAME = 'order';
+    const ORDER_SESSION_NAME = 'lastOrder';
 
     /**
      * @param \Http\Request $request
@@ -15,21 +15,110 @@ class Action {
     public function create(\Http\Request $request) {
         $client = \App::coreClientV2();
         $user = \App::user();
+        $region = $user->getRegion();
+        $cart = $user->getCart();
         $userEntity = $user->getEntity();
         $form = $this->getForm();
 
         try {
-            $deliveryMap = $this->getDeliveryMap();
+            // проверка на пустую корзину
+            if ($cart->isEmpty()) {
+                \App::logger()->warn('Невозможно начать оформление заказа: в корзине нет товаров и услуг');
+
+                return new \Http\RedirectResponse(\App::router()->generate('cart'));
+            }
+
+            // товары и услуги в корзине индексированные по ид
+            $cartProductsById = $cart->getProducts();
+            $cartServicesById = $cart->getServices();
+
+            $productIds = array_keys($cartProductsById);
+            $serviceIds = array_keys($cartServicesById);
+            foreach ($cartProductsById as $cartProduct) {
+                foreach ($cartProduct->getService() as $serviceCart) {
+                    $serviceIds[] = $serviceCart->getId();
+                }
+            }
+
+            // данные по товарам и услугам для запроса в ядро
+            $productsInCart = array();
+            foreach ($cartProductsById as $cartProduct) {
+                $productsInCart[] = array('id' => $cartProduct->getId(), 'quantity' => $cartProduct->getQuantity());
+            }
+            $servicesInCart = array();
+            // несвязанные услуги
+            foreach ($cartServicesById as $cartService) {
+                $servicesInCart[] = array('id' => $cartService->getId(), 'quantity' => $cartService->getQuantity());
+            }
+            // связанные услуги
+            foreach ($cartProductsById as $cartProduct) {
+                foreach ($cartProduct->getService() as $cartService) {
+                    $servicesInCart[] = array('id' => $cartService->getId(), 'quantity' => $cartProduct->getQuantity(), 'product_id' => $cartProduct->getId());
+                }
+            }
+
+            // подготовка пакета запросов
+
+            // магазины
+            /** @var $shops \Model\Shop\Entity[] */
+            $shops = array();
+            // карта доставки
+            $deliveryCalcResult = null;
+            \App::coreClientV2()->addQuery('order/calc-tmp', array(
+                'geo_id'  => $user->getRegion()->getId(),
+            ), array(
+                'product' => $productsInCart,
+                'service' => $servicesInCart,
+            ), function($data) use (&$deliveryCalcResult, &$shops) {
+                $deliveryCalcResult = $data;
+                $shops = array_map(function($data) { return new \Model\Shop\Entity($data); }, $deliveryCalcResult['shops']);
+            }, function (\Exception $e) {
+                //\App::exception()->remove($e);
+
+                throw $e;
+            });
+            //$result = json_decode(file_get_contents(\App::config()->dataDir . '/core/v2-order-calc.json'), true);
+
+            // товары и услуги индексированные по ид
+            /** @var $productsById \Model\Product\CartEntity[] */
+            $productsById = array();
+            /** @var $servicesById \Model\Product\Service\Entity[] */
+            $servicesById = array();
+
+            // запрашиваем список товаров
+            if ((bool)$productIds) {
+                \RepositoryManager::getProduct()->prepareCollectionById($productIds, $region, function($data) use(&$productsById, $cartProductsById) {
+                    foreach ($data as $item) {
+                        $productsById[$item['id']] = new \Model\Product\CartEntity($item);
+                    }
+                });
+            }
+
+            // запрашиваем список услуг
+            if ((bool)$serviceIds) {
+                \RepositoryManager::getService()->prepareCollectionById($serviceIds, $region, function($data) use(&$servicesById, $cartServicesById) {
+                    foreach ($data as $item) {
+                        $servicesById[$item['id']] = new \Model\Product\Service\Entity($item);
+                    }
+                });
+            }
+
+            // выполнение пакета запросов
+            $client->execute();
+
+            if (!$deliveryCalcResult) {
+                $e = new \Exception('Калькулятор доставки вернул пустой результат');
+                \App::logger()->error($e->getMessage());
+
+                throw $e;
+            }
+
+            $deliveryMap = $this->getDeliveryMap($deliveryCalcResult, $productsById, $servicesById, $shops);
         } catch (\Exception $e) {
             $page = new \View\Order\ErrorPage();
             $page->setParam('exception', $e);
 
             return new \Http\Response($page->show());
-        }
-
-        if (!$deliveryMap) {
-            \App::logger()->warn('Невозможно начать оформление заказа: в корзине нет товаров и услуг');
-            return new \Http\RedirectResponse(\App::router()->generate('cart'));
         }
 
         // сохранение заказа
@@ -57,8 +146,10 @@ class Action {
             }
 
             try {
+                // сохранение заказов в ядре
                 $orderNumbers = $this->saveOrder($form, $deliveryMap);
 
+                // сохранение заказов в сессии
                 \App::session()->set(self::ORDER_SESSION_NAME, array_map(function($orderNumber) use ($form) {
                     return array('number' => $orderNumber, 'phone' => $form->getMobilePhone());
                 }, $orderNumbers));
@@ -69,7 +160,7 @@ class Action {
                 ));
 
                 try {
-                    // save cookie
+                    // сохранение заказа в куках
                     $cookieValue = array(
                         'recipient_first_name'   => $form->getFirstName(),
                         'recipient_last_name'    => $form->getLastName(),
@@ -87,7 +178,9 @@ class Action {
                     $cookie = new \Http\Cookie('credit_on', '', time() - 3600);
                     $response->headers->setCookie($cookie);
 
+                    // очистка корзины
                     $user->getCart()->clear();
+                    // очистка кеша
                     $user->setCacheCookie($response);
                 } catch (\Exception $e) {
                     \App::logger($e);
@@ -126,7 +219,7 @@ class Action {
         /** @var $paymentMethods \Model\PaymentMethod\Entity[] */
         $paymentMethods = array();
         $selectedPaymentMethodId = null;
-        $creditAllowed = \App::config()->payment['creditEnabled'] && ($user->getCart()->getTotalProductPrice()) < \App::config()->product['minCreditPrice'];
+        $creditAllowed = \App::config()->payment['creditEnabled'] && ($user->getCart()->getTotalProductPrice()) >= \App::config()->product['minCreditPrice'];
         \RepositoryManager::getPaymentMethod()->prepareCollection(null, $userEntity ? $userEntity->getIsCorporative() : false, function($data)
             use (
                 &$paymentMethods,
@@ -169,6 +262,11 @@ class Action {
                 $banks[] = new \Model\CreditBank\Entity($item);
             }
         });
+
+        // выполнение пакета запросов
+        $client->execute();
+
+        // json для кредитных банков
         rsort($banks);
         $bankData = array();
         foreach ($banks as $bank) {
@@ -176,9 +274,25 @@ class Action {
             $bankData[$bank->getId()]['href'] = $bank->getLink();
         }
 
-        // выполнение пакета запросов
-        $client->execute();
+        // json для кредита
+        $creditData = array();
+        foreach ($cartProductsById as $cartProduct) {
+            /** @var $product \Model\Product\CartEntity|null */
+            $product = isset($productsById[$cartProduct->getId()]) ? $productsById[$cartProduct->getId()] : null;
+            if (!$product) {
+                \App::logger()->error(sprintf('Товар #%s не найден', $cartProduct->getId()));
+                continue;
+            }
 
+            $creditData[] = array(
+                'id'       => $product->getId(),
+                'quantity' => $cartProduct->getQuantity(),
+                'price'    => $cartProduct->getPrice(),
+                'type'     => \RepositoryManager::getCreditBank()->getCreditTypeByCategoryToken($product->getMainCategory() ? $product->getMainCategory()->getToken() : null),
+            );
+        }
+
+        // страница
         $page = new \View\Order\CreatePage();
 
         // ссылка "вернуться к покупкам"
@@ -190,6 +304,7 @@ class Action {
         $page->setParam('subwayData', $subwayData);
         $page->setParam('banks', $banks);
         $page->setParam('bankData', $bankData);
+        $page->setParam('creditData', $creditData);
         $page->setParam('backLink', $backLink);
         $page->setParam('paymentMethods', $paymentMethods);
         $page->setParam('selectedPaymentMethodId', $selectedPaymentMethodId);
@@ -203,60 +318,85 @@ class Action {
      * @throws \Exception
      */
     public function complete(\Http\Request $request) {
-        $orderData = array_map(function ($orderData) {
-            return array_merge(array('number' => null, 'phone' => null), $orderData);
-        }, (array)\App::session()->get(self::ORDER_SESSION_NAME));
-        //$orderData = array(array('number' => 'XX013863', 'phone' => '80000000000'));
+        // последние заказы в сессии
+        $orders = $this->getLastOrders();
 
-        /** @var $orders \Model\Order\Entity[] */
-        $orders = array();
-        foreach ($orderData as $orderItem) {
-            if (!$orderItem['number'] || !$orderItem['phone']) {
-                \App::logger()->error(sprintf('Невалидные данные о заказе в сессии %s', json_encode($orderItem)));
-                continue;
-            }
-
-            $order = \RepositoryManager::getOrder()->getEntityByNumberAndPhone($orderItem['number'], $orderItem['phone']);
-            if (!$order) {
-                \App::logger()->error(sprintf('Заказ из сессии не найден %s', json_encode($orderItem)));
-                continue;
-            }
-
-            $orders[] = $order;
-        }
-
-        if (!(bool)$orders) {
+        /** @var $order \Model\Order\Entity */
+        $order = reset($orders);
+        if (!$order) {
             \App::logger()->error(sprintf('В сессии нет созданных заказов. Запрос: %s, сессия: %s', json_encode($request->query->all()), json_encode((array)\App::session()->get(self::ORDER_SESSION_NAME))));
-
             return new \Http\RedirectResponse(\App::router()->generate('cart'));
+
         }
 
-        /** @var $firstOrder \Model\Order\Entity */
-        $firstOrder = reset($orders);
+        // товары индексированные по ид
+        /** @var $productsById \Model\Product\CartEntity[] */
+        $productsById = array();
+        \RepositoryManager::getProduct()->setEntityClass('\Model\Product\CartEntity');
+        foreach (\RepositoryManager::getProduct()->getCollectionById(array_map(function ($orderProduct) { /** @var $orderProduct \Model\Order\Product\Entity */ return $orderProduct->getId(); }, $order->getProduct())) as $product) {
+            $productsById[$product->getId()] = $product;
+        }
+
         // метод оплаты
-        $paymentMethod = \RepositoryManager::getPaymentMethod()->getEntityById($firstOrder->getPaymentId());
+        $paymentMethod = \RepositoryManager::getPaymentMethod()->getEntityById($order->getPaymentId());
         if (!$paymentMethod) {
-            throw new \Exception(sprintf('Не найден метод оплаты для заказа #%s', $firstOrder->getId()));
+            throw new \Exception(sprintf('Не найден метод оплаты для заказа #%s', $order->getId()));
         }
 
         $paymentProvider = null;
         $creditData = array();
         if (1 == count($orders)) {
-            // если онлайн оплата
-            if ($paymentMethod->getIsOnline()) {
-                // psb
-                if (5 == $paymentMethod->getId()) {
-                    $paymentProvider = new \Payment\Psb\Provider(\App::config()->paymentPsb);
-                } else if (8 == $paymentMethod->getId()) {
-                    $paymentProvider = new \Payment\PsbInvoice\Provider(\App::config()->paymentPsbInvoice);
-                } else {
-                    \App::logger()->error(sprintf('Не найден провайдер оплаты для метода оплаты #%s', $paymentMethod->getId()));
-                }
-                // если покупка в кредит
+            // онлайн оплата через psb
+            if (5 == $paymentMethod->getId()) {
+                $paymentProvider = new \Payment\Psb\Provider(\App::config()->paymentPsb);
+            // онлайн оплата через psb invoice
+            } else if (8 == $paymentMethod->getId()) {
+                $paymentProvider = new \Payment\PsbInvoice\Provider(\App::config()->paymentPsbInvoice);
+            // если покупка в кредит
             } else if ($paymentMethod->getIsCredit()) {
-                // TODO: доделать кредит
+                if (!$order->getCredit() || !$order->getCredit()->getBankProviderId()) {
+                    throw new \Exception(sprintf('Не найден кредитный банк для заказа #%s', $order->getId()));
+                }
+
+                $creditProviderId = $order->getCredit()->getBankProviderId();
+                if ($creditProviderId == \Model\CreditBank\Entity::PROVIDER_KUPIVKREDIT) {
+                    $data = new \View\Order\Credit\Kupivkredit($order, $productsById);
+                    $creditData = array(
+                        'widget' => 'kupivkredit',
+                        'vars'   => array(
+                            'sum'   => $order->getProductSum(), // брокеру отпрвляем стоимость только продуктов!
+                            'order' => (string)$data,
+                            'sig'   => $data->getSig(),
+                        ),
+                    );
+                } else if ($creditProviderId == \Model\CreditBank\Entity::PROVIDER_DIRECT_CREDIT) {
+
+                    $creditData['widget'] = 'direct-credit';
+                    $creditData['vars'] = array(
+                        'number' => $order->getNumber(),
+                        'items' => array()
+                    );
+                    foreach ($order->getProduct() as $orderProduct) {
+                        /** @var $product \Model\Product\CartEntity|null */
+                        $product = isset($productsById[$orderProduct->getId()]) ? $productsById[$orderProduct->getId()] : null;
+                        if (!$product) {
+                            throw new \Exception(sprintf('Не найден товар #%s, который есть в заказе', $orderProduct->getId()));
+                        }
+
+                        $creditData['vars']['items'][] = array(
+                            'name'     => $product->getName(),
+                            'quantity' => (string)$orderProduct->getQuantity(),
+                            'price'    => $orderProduct->getPrice(),
+                            'articul'  => $product->getArticle(),
+                            'type'     => \RepositoryManager::getCreditBank()->getCreditTypeByCategoryToken($product->getMainCategory() ? $product->getMainCategory()->getToken() : null),
+                        );
+                    }
+                }
+
             }
         }
+
+        // TODO: удалять из сессии успешный заказ, время создания которого больше 1 часа
 
         $page = new \View\Order\CompletePage();
         $page->setParam('orders', $orders);
@@ -266,7 +406,34 @@ class Action {
         return new \Http\Response($page->show());
     }
 
+    /**
+     * @param number        $orderNumber
+     * @param \Http\Request $request
+     * @return \Http\Response
+     * @throws \Exception\NotFoundException
+     */
     public function payment($orderNumber, \Http\Request $request) {
+        $orderNumber = trim((string)$orderNumber);
+        if (!$orderNumber) {
+            throw new \Exception\NotFoundException('Не передан номер заказа');
+        }
+
+        $orders = array_filter($this->getLastOrders(), function($order) use ($orderNumber) {
+            /** @var $order \Model\Order\Entity */
+            if ($order->getNumber() === $orderNumber) return true;
+        });
+        $order = reset($orders);
+        if (!$order) {
+            throw new \Exception\NotFoundException(sprintf('Заказ с номером %s не найден в сессии', $orderNumber));
+        }
+
+
+        $page = new \View\Order\CompletePage();
+        $page->setParam('orders', $orders);
+        $page->setParam('paymentProvider', null);
+        $page->setParam('creditData', array());
+
+        return new \Http\Response($page->show());
     }
 
 
@@ -527,101 +694,22 @@ class Action {
     }
 
     /**
-     * @return \View\Order\DeliveryCalc\Map|null
-     * @throws \Exception
+     * @param array                           $deliveryCalcResult
+     * @param \Model\Product\Entity[]         $productsById
+     * @param \Model\Product\Service\Entity[] $servicesById
+     * @param \Model\Shop\Entity[]            $shops
+     * @return \View\Order\DeliveryCalc\Map
      */
-    private function getDeliveryMap() {
+    private function getDeliveryMap(array $deliveryCalcResult, array $productsById, array $servicesById, array $shops) {
         $client = \App::coreClientV2();
         $user = \App::user();
         $region = $user->getRegion();
         $cart = $user->getCart();
         $router = \App::router();
 
-        // товары и услуги в корзине
+        // товары и услуги в корзине индексированные по ид
         $cartProductsById = $cart->getProducts();
         $cartServicesById = $cart->getServices();
-
-        $productIds = array_keys($cartProductsById);
-        $serviceIds = array_keys($cartServicesById);
-        foreach ($cartProductsById as $cartProduct) {
-            foreach ($cartProduct->getService() as $serviceCart) {
-                $serviceIds[] = $serviceCart->getId();
-            }
-        }
-
-        if (!(bool)$productIds && !(bool)$serviceIds) {
-            return null;
-        }
-
-        // данные по товарам и услугам для запроса в ядро
-        $productsInCart = array();
-        foreach ($cartProductsById as $cartProduct) {
-            $productsInCart[] = array('id' => $cartProduct->getId(), 'quantity' => $cartProduct->getQuantity());
-        }
-        $servicesInCart = array();
-        // несвязанные услуги
-        foreach ($cartServicesById as $cartService) {
-            $servicesInCart[] = array('id' => $cartService->getId(), 'quantity' => $cartService->getQuantity());
-        }
-        // связанные услуги
-        foreach ($cartProductsById as $cartProduct) {
-            foreach ($cartProduct->getService() as $cartService) {
-                $servicesInCart[] = array('id' => $cartService->getId(), 'quantity' => $cartProduct->getQuantity(), 'product_id' => $cartProduct->getId());
-            }
-        }
-
-        // подготовка пакета запросов
-
-        // магазины
-        /** @var $shops \Model\Shop\Entity[] */
-        $shops = array();
-        // карта доставки
-        $deliveryCalcResult = null;
-        \App::coreClientV2()->addQuery('order/calc-tmp', array(
-            'geo_id'  => $user->getRegion()->getId(),
-        ), array(
-            'product' => $productsInCart,
-            'service' => $servicesInCart,
-        ), function($data) use (&$deliveryCalcResult, &$shops) {
-            $deliveryCalcResult = $data;
-            $shops = array_map(function($data) { return new \Model\Shop\Entity($data); }, $deliveryCalcResult['shops']);
-        }, function (\Exception $e) {
-            //\App::exception()->remove($e);
-
-            throw $e;
-        });
-        //$result = json_decode(file_get_contents(\App::config()->dataDir . '/core/v2-order-calc.json'), true);
-
-        // запрашиваем список товаров
-        $productsById = array();
-        $servicesById = array();
-
-        if ((bool)$productIds) {
-            \RepositoryManager::getProduct()->prepareCollectionById($productIds, $region, function($data) use(&$productsById, $cartProductsById) {
-                foreach ($data as $item) {
-                    $productsById[$item['id']] = new \Model\Product\CartEntity($item);
-                }
-            });
-        }
-
-        // запрашиваем список услуг
-        if ((bool)$serviceIds) {
-            \RepositoryManager::getService()->prepareCollectionById($serviceIds, $region, function($data) use(&$servicesById, $cartServicesById) {
-                foreach ($data as $item) {
-                    $servicesById[$item['id']] = new \Model\Product\Service\Entity($item);
-                }
-            });
-        }
-
-        // выполнение пакета запросов
-        $client->execute();
-
-        if (!$deliveryCalcResult) {
-            $e = new \Exception('Калькулятор доставки вернул пустой результат');
-            \App::logger()->error($e->getMessage());
-
-            throw $e;
-        }
 
         // карта доставки
         $deliveryMapView = new \View\Order\DeliveryCalc\Map();
@@ -837,5 +925,35 @@ class Action {
         }
 
         return $deliveryMapView;
+    }
+
+    /**
+     * @return \Model\Order\Entity[]
+     */
+    private function getLastOrders() {
+        $orderData = array_map(function ($orderItem) {
+            return array_merge(array('number' => null, 'phone' => null), $orderItem);
+        }, (array)\App::session()->get(self::ORDER_SESSION_NAME));
+        //$orderData = array(array('number' => 'XX013863', 'phone' => '80000000000'));
+
+        /** @var $orders \Model\Order\Entity[] */
+        $orders = array();
+        foreach ($orderData as $orderItem) {
+            if (!$orderItem['number'] || !$orderItem['phone']) {
+                \App::logger()->error(sprintf('Невалидные данные о заказе в сессии %s', json_encode($orderItem)));
+                continue;
+            }
+
+            // TODO: запрашивать несколько заказов асинхронно
+            $order = \RepositoryManager::getOrder()->getEntityByNumberAndPhone($orderItem['number'], $orderItem['phone']);
+            if (!$order) {
+                \App::logger()->error(sprintf('Заказ из сессии не найден %s', json_encode($orderItem)));
+                continue;
+            }
+
+            $orders[] = $order;
+        }
+
+        return $orders;
     }
 }

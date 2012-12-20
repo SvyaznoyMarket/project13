@@ -39,7 +39,7 @@ class Provider implements \Payment\ProviderInterface {
             'redirect_url'   => $backUrl,
         );
 
-        $signature = $this->config['contractor_id'].$data['InvoiceID'].$data['Sum'].$data['PayDescription'];
+        $signature = $this->config['contractorId'] . $data['InvoiceID'] . $data['Sum'] . $data['PayDescription'];
         $signature1251 = iconv('UTF-8', 'windows-1251', $signature);
         $sign = '';
 

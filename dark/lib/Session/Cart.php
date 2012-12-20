@@ -50,6 +50,13 @@ class Cart {
 
     }
 
+    /**
+     * @return bool
+     */
+    public function isEmpty() {
+        return !(bool)$this->getProducts() && !(bool)$this->getServices();
+    }
+
     public function clear() {
         $this->storage->set($this->sessionName, null);
         $this->totalPrice = null;

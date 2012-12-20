@@ -25,7 +25,7 @@ class App {
         self::$config = $config;
 
         mb_internal_encoding(self::$config->encoding ?: 'UTF-8');
-        setlocale(LC_ALL, array('ru_RU.UTF-8', 'rus_RUS.UTF-8', 'Russian_Russia.65001'));
+        //setlocale(LC_ALL, array('ru_RU.UTF-8', 'rus_RUS.UTF-8', 'Russian_Russia.65001'));
 
         if (self::$initialized) {
             throw new \LogicException('Приложение уже инициализировано.');

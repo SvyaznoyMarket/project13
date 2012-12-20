@@ -30,8 +30,6 @@ class Entity extends BasicEntity {
     /** @var string */
     protected $prefix;
     /** @var string */
-    protected $article;
-    /** @var string */
     protected $barcode;
     /** @var string */
     protected $tagline;
@@ -257,20 +255,6 @@ class Entity extends BasicEntity {
      */
     public function getAnnounce() {
         return $this->announce;
-    }
-
-    /**
-     * @param string $article
-     */
-    public function setArticle($article) {
-        $this->article = (string)$article;
-    }
-
-    /**
-     * @return string
-     */
-    public function getArticle() {
-        return $this->article;
     }
 
     /**
