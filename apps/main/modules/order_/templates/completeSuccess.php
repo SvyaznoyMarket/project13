@@ -66,8 +66,8 @@ $isCorporative = $sf_user->getGuardUser() ? $sf_user->getGuardUser()->getIsCorpo
 
 <?php if ('live' == sfConfig::get('sf_environment')): ?>    
   <script type="text/javascript">
+  function orderAnalyticsRun(){
   <?php foreach ($orders as $order): ?>
-
   if (typeof _gaq != 'undefined') _gaq.push(['_addTrans',
       '<?php echo $order['number'] ?>', // Номер заказа
       '<?php echo $order['shop']['name'] ?>', // Название магазина (Необязательно)
@@ -87,6 +87,7 @@ $isCorporative = $sf_user->getGuardUser() ? $sf_user->getGuardUser()->getIsCorpo
   if (typeof _gaq != 'undefined') _gaq.push(['_trackTrans']);
 
   <?php endforeach ?>
+  } 
   </script>
 
 

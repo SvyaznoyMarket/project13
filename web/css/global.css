@@ -6070,7 +6070,7 @@
     top: 0px;
   }
   .bMapShops__eRegion {
-    padding: 40px 20px 0px;
+    padding: 10px 20px 0;
   }
   .bMapShops__eRegionTitle {
     font: 24px Tahoma, sans-serif;
@@ -6190,6 +6190,39 @@
     width: 80px;
     zoom: 1;
   }
+  .bMapShops__eContent {
+    border-top: 2px solid #e6e6e6;
+    height: 490px;
+    overflow: hidden;
+  }
+  .bMapShops__eMapCityList {
+    height: 100%;
+    overflow-y: scroll;
+    width: 218px;
+  }
+  .bMapShops__eMapCityList_city {
+    cursor: pointer;
+  }
+  .bMapShops__eMapCityList_city .cityName {
+    margin: 0;
+    padding: 5px 7px;
+  }
+  .bMapShops__eMapCityList_city .shopInCity {
+    padding: 1px 10px 1px 20px;
+  }
+  .bMapShops__eMapCityList_city .shopInCity p {
+    margin: 8px 0 5px;
+  }
+  .bMapShops__eMapCityList_city .shopInCity:hover {
+    background-color: #fff7e6;
+  }
+  .bMapShops__eMapCityList_city .shopInCity .shopchoose {
+    font-size: 12px;
+    margin: 8px 0 5px;
+  }
+  .bMapShops__eMapCityList_city.chosedCity .cityName {
+    background-color: #ffc34e;
+  }
   .bMap__eContainer {
     padding: 1px;
   }
@@ -6286,6 +6319,10 @@
   }
   .printLogo {
     display: none;
+  }
+  #region_map-container {
+    float: right;
+    width: 700px;
   }
 }
 @media print {
@@ -7866,3 +7903,25 @@
   }
 }
 /*---END---СТИЛИ ЛИЧНОГО КАБИНЕТА---*/
+/*------НОВОГОДНЕЕ ОФОРМЛЕНИЕ------*/
+@media all {
+  #mainPage #header.newYearTheme {
+    background: url("/css/newYearTheme/img/mainGarland.gif") bottom center no-repeat;
+    height: 140px;
+    margin-bottom: 0;
+  }
+  #mainPage #header.newYearTheme #topLogo {
+    background: url("/css/newYearTheme/img/NY_logo.jpg") center center no-repeat;
+    height: 107px;
+    margin-top: -15px;
+  }
+  #header.newYearTheme {
+    background: url("/css/newYearTheme/img/headerGarland.png") 0 0 no-repeat;
+    height: 125px;
+    margin-bottom: -10px;
+  }
+  #header.newYearTheme #topLogo {
+    background: url("/css/newYearTheme/img/NY_logo_small.jpg") center center no-repeat;
+  }
+}
+/*---END---НОВОГОДНЕЕ ОФОРМЛЕНИЕ---*/

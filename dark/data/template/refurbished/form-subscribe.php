@@ -19,7 +19,7 @@ if (!isset($form)) $form = new \View\Refurbished\SubscribeForm();
         	<p>Мы предлагаем уникальную возможность для оптовых партнеров! Enter начинает распродажу уцененных товаров.</p>
 			<p>Всю интересующую Вас информацию можете получить по телефону 8 (965) 380-83-03</p>
 			<p>Контактное лицо Григорьева Ольга</p>
-<!-- 			<p>Подписка! Получай первым информацию о новых товарах и лотах</p>
+ 			<p>Подписка! Получай первым информацию о новых товарах и лотах</p>
             <? if ($error = $form->getError('name')) echo $page->render('_formError', array('error' => $error)) ?>
             <label class="mInlineBlock mb10">
             	<span class="mInlineBlock width70">Ваше имя</span>&nbsp;
@@ -32,6 +32,6 @@ if (!isset($form)) $form = new \View\Refurbished\SubscribeForm();
             	<input type="text" id="subscriber_email" value="<?= $form->getEmail() ?>" name="subscriber[email]"/>
             </label>
 
-        	<p id="subscribeSaleSubmit"><input class="button yellowbutton" type="submit" value="Подписаться" /></p> -->
+        	<p id="subscribeSaleSubmit"><input class="button yellowbutton" type="submit" value="Подписаться" /></p>
     </div>
 </form>

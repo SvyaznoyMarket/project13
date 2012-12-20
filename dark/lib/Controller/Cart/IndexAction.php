@@ -13,14 +13,14 @@ class IndexAction {
         // подготовка 1-го пакета запросов
 
         // запрашиваем пользователя, если он авторизован
-        if ($user->getToken()) {
+        /*if ($user->getToken()) {
             \RepositoryManager::getRegion()->prepareEntityById($user->getRegionId(), function($data) {
                 $data = reset($data);
                 if ((bool)$data) {
                     \App::user()->setRegion(new \Model\Region\Entity($data));
                 }
             });
-        }
+        }*/
 
         // запрашиваем текущий регион, если есть кука региона
         if ($user->getRegionId()) {

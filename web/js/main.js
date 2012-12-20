@@ -64,7 +64,7 @@ $(document).ready(function(){
 			function authFromServer(response) {
 				if ( response.success ) {
 					form.find('label').hide()
-					form.find('#subscribeSaleSubmit').empty().addClass('font18').html('Подписка прошла успешно. Все ништяк ;)')
+					form.find('#subscribeSaleSubmit').empty().addClass('font18').html('Спасибо, уже скоро в вашей почте информация об уцененных товарах.')
 				}
 			}
 			$.ajax({

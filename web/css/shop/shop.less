@@ -38,6 +38,39 @@
   width: 80px;
   zoom: 1;
 }
+.bMapShops__eContent{
+  border-top: 2px solid @typLightGray;
+  height: 490px;
+  overflow: hidden;
+}
+.bMapShops__eMapCityList{
+  height: 100%;
+  overflow-y: scroll;
+  width: 218px;
+  &_city{
+    cursor: pointer;
+    .cityName{
+      margin: 0;
+      padding: 5px 7px;
+    }
+    .shopInCity{
+      padding: 1px 10px 1px 20px;
+      p{
+        margin: 8px 0 5px;
+      }
+      &:hover{
+        background-color: lighten(@firmOrange, 45%);
+      }
+      .shopchoose{
+        font-size: 12px;
+        margin: 8px 0 5px;
+      }
+    }
+    &.chosedCity .cityName{
+      background-color: lighten(@firmOrange, 15%);
+    }
+  }
+}
 .bMap__eContainer {
   padding: 1px;
   &.first {
@@ -134,4 +167,8 @@
 }
 .printLogo{
   display: none;
+}
+#region_map-container{
+  float: right;
+  width: 700px;
 }

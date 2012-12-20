@@ -25,5 +25,6 @@ $c->paymentPsbInvoice['contractorId'] = 14;
 $c->paymentPsbInvoice['key'] = $c->dataDir . '/key/privkey.pem';
 $c->paymentPsbInvoice['payUrl'] = 'https://retail-tst.payment.ru/dn/Invoices/ReceiveUniversalInvoices.aspx';
 
+$c->database['host']     = '10.20.33.2';
 
 return $c;

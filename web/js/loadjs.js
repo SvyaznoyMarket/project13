@@ -89,13 +89,13 @@
 			}).runQueue()
 			break
 		case 'order':
-            $LAB.queueScript('knockout-2.1.0.js')
-            .queueScript('bigjquery.min.js')
-            .queueScript( (mapVendor==='yandex') ? 'http://api-maps.yandex.ru/2.0/?load=package.full&lang=ru-RU' : 'http://maps.google.com/maps/api/js?sensor=false' )
+            $LAB
+            .queueScript( (mapVendor==='yandex') ? 'http://api-maps.yandex.ru/2.0/?load=package.full&lang=ru-RU' : 'http://maps.google.com/maps/api/js?sensor=false')
+            .queueScript('knockout-2.1.0.js')
 			.queueWait( function() {
-				$LAB.script( getWithVersion('library.js') )
+				$LAB.script( getWithVersion('ports.js') ).wait()
+				.script( getWithVersion('bigjquery.js') ).script( getWithVersion('library.js') )
 				// .script('shelf/jquery.mockjax.js')	
-				.script( getWithVersion('ports.js') )
 				.script( 'JsHttpRequest.js' )                
                 .script( 'http://direct-credit.ru/widget/api_script_utf.js' )
 				.wait()
