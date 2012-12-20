@@ -133,4 +133,8 @@ $c->database['name']     = 'enter';
 $c->database['user']     = 'root';
 $c->database['password'] = 'qazwsxedc';
 
+$c->creditProvider['kupivkredit']['partnerId'] = '1-6ADAEAT';
+$c->creditProvider['kupivkredit']['partnerName'] = 'ООО «Enter»';
+$c->creditProvider['kupivkredit']['signature'] = 'enter-secret-werj7537';
+
 return $c;

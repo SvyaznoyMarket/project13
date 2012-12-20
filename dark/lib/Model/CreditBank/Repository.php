@@ -39,12 +39,11 @@ class Repository
             return null;
         }
 
-        $response = $this->client->query('payment-method/get-credit-bank', array(
+        $data = $this->client->query('payment-method/get-credit-bank', array(
             'id'     => array($id),
             'geo_id' => \App::user()->getRegion()->getId(),
         ));
-
-        $data = reset($response);
+        $data = reset($data);
 
         return $data ? new \Model\CreditBank\Entity($data) : null;
     }

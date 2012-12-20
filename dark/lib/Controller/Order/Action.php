@@ -318,40 +318,81 @@ class Action {
      * @throws \Exception
      */
     public function complete(\Http\Request $request) {
+        // последние заказы в сессии
         $orders = $this->getLastOrders();
 
-        if (!(bool)$orders) {
+        /** @var $order \Model\Order\Entity */
+        $order = reset($orders);
+        if (!$order) {
             \App::logger()->error(sprintf('В сессии нет созданных заказов. Запрос: %s, сессия: %s', json_encode($request->query->all()), json_encode((array)\App::session()->get(self::ORDER_SESSION_NAME))));
-
             return new \Http\RedirectResponse(\App::router()->generate('cart'));
+
         }
 
-        /** @var $firstOrder \Model\Order\Entity */
-        $firstOrder = reset($orders);
+        // товары индексированные по ид
+        /** @var $productsById \Model\Product\CartEntity[] */
+        $productsById = array();
+        \RepositoryManager::getProduct()->setEntityClass('\Model\Product\CartEntity');
+        foreach (\RepositoryManager::getProduct()->getCollectionById(array_map(function ($orderProduct) { /** @var $orderProduct \Model\Order\Product\Entity */ return $orderProduct->getId(); }, $order->getProduct())) as $product) {
+            $productsById[$product->getId()] = $product;
+        }
 
         // метод оплаты
-        //$paymentMethod = \RepositoryManager::getPaymentMethod()->getEntityById(8);
-        $paymentMethod = \RepositoryManager::getPaymentMethod()->getEntityById($firstOrder->getPaymentId());
+        $paymentMethod = \RepositoryManager::getPaymentMethod()->getEntityById($order->getPaymentId());
         if (!$paymentMethod) {
-            throw new \Exception(sprintf('Не найден метод оплаты для заказа #%s', $firstOrder->getId()));
+            throw new \Exception(sprintf('Не найден метод оплаты для заказа #%s', $order->getId()));
         }
 
         $paymentProvider = null;
         $creditData = array();
         if (1 == count($orders)) {
-            // если онлайн оплата
-            if ($paymentMethod->getIsOnline()) {
-                // psb
-                if (5 == $paymentMethod->getId()) {
-                    $paymentProvider = new \Payment\Psb\Provider(\App::config()->paymentPsb);
-                } else if (8 == $paymentMethod->getId()) {
-                    $paymentProvider = new \Payment\PsbInvoice\Provider(\App::config()->paymentPsbInvoice);
-                } else {
-                    \App::logger()->error(sprintf('Не найден провайдер оплаты для метода оплаты #%s', $paymentMethod->getId()));
-                }
-                // если покупка в кредит
+            // онлайн оплата через psb
+            if (5 == $paymentMethod->getId()) {
+                $paymentProvider = new \Payment\Psb\Provider(\App::config()->paymentPsb);
+            // онлайн оплата через psb invoice
+            } else if (8 == $paymentMethod->getId()) {
+                $paymentProvider = new \Payment\PsbInvoice\Provider(\App::config()->paymentPsbInvoice);
+            // если покупка в кредит
             } else if ($paymentMethod->getIsCredit()) {
-                // TODO: доделать кредит
+                if (!$order->getCredit() || !$order->getCredit()->getBankProviderId()) {
+                    throw new \Exception(sprintf('Не найден кредитный банк для заказа #%s', $order->getId()));
+                }
+
+                $creditProviderId = $order->getCredit()->getBankProviderId();
+                if ($creditProviderId == \Model\CreditBank\Entity::PROVIDER_KUPIVKREDIT) {
+                    $data = new \View\Order\Credit\Kupivkredit($order, $productsById);
+                    $creditData = array(
+                        'widget' => 'kupivkredit',
+                        'vars'   => array(
+                            'sum'   => $order->getProductSum(), // брокеру отпрвляем стоимость только продуктов!
+                            'order' => (string)$data,
+                            'sig'   => $data->getSig(),
+                        ),
+                    );
+                } else if ($creditProviderId == \Model\CreditBank\Entity::PROVIDER_DIRECT_CREDIT) {
+
+                    $creditData['widget'] = 'direct-credit';
+                    $creditData['vars'] = array(
+                        'number' => $order->getNumber(),
+                        'items' => array()
+                    );
+                    foreach ($order->getProduct() as $orderProduct) {
+                        /** @var $product \Model\Product\CartEntity|null */
+                        $product = isset($productsById[$orderProduct->getId()]) ? $productsById[$orderProduct->getId()] : null;
+                        if (!$product) {
+                            throw new \Exception(sprintf('Не найден товар #%s, который есть в заказе', $orderProduct->getId()));
+                        }
+
+                        $creditData['vars']['items'][] = array(
+                            'name'     => $product->getName(),
+                            'quantity' => $orderProduct->getQuantity(),
+                            'price'    => $orderProduct->getPrice(),
+                            'articul'  => $product->getArticle(),
+                            'type'     => \RepositoryManager::getCreditBank()->getCreditTypeByCategoryToken($product->getMainCategory() ? $product->getMainCategory()->getToken() : null),
+                        );
+                    }
+                }
+
             }
         }
 

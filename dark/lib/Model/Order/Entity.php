@@ -106,6 +106,8 @@ class Entity {
     private $delivery = array();
     /** @var int */
     private $paySum;
+    /** @var Credit\Entity|null */
+    private $credit;
 
     /**
      * @param array $data
@@ -186,6 +188,7 @@ class Entity {
             }
         }
         if (array_key_exists('pay_sum', $data)) $this->setPaySum($data['pay_sum']);
+        if (array_key_exists('credit', $data) && (bool)$data['credit']) $this->setCredit(new Credit\Entity($data['credit']));
     }
 
     public function dump() {
@@ -808,5 +811,31 @@ class Entity {
      */
     public function getCityId() {
         return $this->cityId;
+    }
+
+    /**
+     * @param \Model\Order\Credit\Entity|null $credit
+     */
+    public function setCredit(Credit\Entity $credit) {
+        $this->credit = $credit;
+    }
+
+    /**
+     * @return \Model\Order\Credit\Entity|null
+     */
+    public function getCredit() {
+        return $this->credit;
+    }
+
+    /**
+     * @return int
+     */
+    public function getProductSum() {
+        $sum = 0;
+        foreach ($this->getProduct() as $product) {
+            $sum += $product->getPrice() * $product->getQuantity();
+        }
+
+        return $sum;
     }
 }

@@ -2,8 +2,7 @@
 
 namespace Model\CreditBank;
 
-class Entity
-{
+class Entity {
 
     /**
      * Кредитный брокет Kupivkredit
@@ -51,125 +50,111 @@ class Entity
     private $description;
 
 
-    public function __construct(array $data = array()){
-        if(array_key_exists('id', $data)) $this->setId($data['id']);
-        if(array_key_exists('name', $data)) $this->setName($data['name']);
-        if(array_key_exists('token', $data)) $this->setToken($data['token']);
-        if(array_key_exists('href', $data)) $this->setLink($data['href']);
-        if(array_key_exists('description', $data)) $this->setDescription($data['description']);
-        if(array_key_exists('provider_id', $data)) $this->setProviderId($data['provider_id']);
-        if(array_key_exists('position', $data)) $this->setPosition($data['position']);
+    public function __construct(array $data = array()) {
+        if (array_key_exists('id', $data)) $this->setId($data['id']);
+        if (array_key_exists('name', $data)) $this->setName($data['name']);
+        if (array_key_exists('token', $data)) $this->setToken($data['token']);
+        if (array_key_exists('href', $data)) $this->setLink($data['href']);
+        if (array_key_exists('description', $data)) $this->setDescription($data['description']);
+        if (array_key_exists('provider_id', $data)) $this->setProviderId($data['provider_id']);
+        if (array_key_exists('position', $data)) $this->setPosition($data['position']);
     }
 
     /**
      * @param int $id
      */
-    public function setId($id)
-    {
+    public function setId($id) {
         $this->id = (int)$id;
     }
 
     /**
      * @return int
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
     /**
      * @param string $name
      */
-    public function setName($name)
-    {
+    public function setName($name) {
         $this->name = (string)$name;
     }
 
     /**
      * @return string
      */
-    public function getName()
-    {
+    public function getName() {
         return $this->name;
     }
 
     /**
      * @param string $description
      */
-    public function setDescription($description)
-    {
+    public function setDescription($description) {
         $this->description = (string)$description;
     }
 
     /**
      * @return string
      */
-    public function getDescription()
-    {
+    public function getDescription() {
         return $this->description;
     }
 
     /**
      * @param int $provider_id
      */
-    public function setProviderId($provider_id)
-    {
+    public function setProviderId($provider_id) {
         $this->provider_id = (int)$provider_id;
     }
 
     /**
      * @return int
      */
-    public function getProviderId()
-    {
+    public function getProviderId() {
         return $this->provider_id;
     }
 
     /**
      * @param int $position
      */
-    public function setPosition($position)
-    {
+    public function setPosition($position) {
         $this->position = (int)$position;
     }
 
     /**
      * @return int
      */
-    public function getPosition()
-    {
+    public function getPosition() {
         return $this->position;
     }
 
     /**
      * @param int $token
      */
-    public function setToken($token)
-    {
+    public function setToken($token) {
         $this->token = (string)$token;
     }
 
     /**
      * @return int
      */
-    public function getToken()
-    {
+    public function getToken() {
         return $this->token;
     }
 
     /**
      * @param int $href
      */
-    public function setLink($link)
-    {
+    public function setLink($link) {
         $this->link = (string)$link;
     }
 
     /**
      * @return int
      */
-    public function getLink()
-    {
+    public function getLink() {
         return $this->link;
     }
 }
