@@ -57,7 +57,6 @@
     _gaq.push(['_addOrganic', 'ya.ru', 'q']);
     _gaq.push(['_addOrganic', 'm.yandex.ru', 'query']);
     _gaq.push(['_trackPageview', '/page404' + location.pathname]);
-    _gaq.push(['_trackPageLoadTime']);
     (function () {
         var ga = document.createElement('script');
         ga.type = 'text/javascript';
