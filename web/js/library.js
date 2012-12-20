@@ -1167,7 +1167,7 @@ function MapYandexWithShops( center, templateIWnode, DOMid ) {
         }
         else{
             $.each( markers, function(i, item) {
-                mapWS.setCenter([markers[i].latitude, markers[i].longitude], 15, { checkZoomRange: true, duration:800 } )
+                mapWS.setCenter([markers[i].latitude, markers[i].longitude], 14)
             })
         }    
             
