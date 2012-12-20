@@ -1143,9 +1143,8 @@ function MapYandexWithShops( center, templateIWnode, DOMid ) {
                     iconImageOffset: [-19, -57] 
                 }
             )
-            
             myCollection.add(marker)
-            markers[i].ref = marker
+            markers[item.id].ref = marker
         })
 // console.info(markers)        
         // Создаем шаблон для отображения контента балуна         
@@ -1163,8 +1162,62 @@ function MapYandexWithShops( center, templateIWnode, DOMid ) {
         })
         mapWS.geoObjects.add( myCollection )
         var bounds = myCollection.getBounds() 
-        if( bounds[0][0] !== bounds[1][0] )   // cause setBounds() hit a bug if only one point    
+        if( bounds[0][0] !== bounds[1][0] ){ // cause setBounds() hit a bug if only one point  
             mapWS.setBounds( bounds )
+        }
+        else{
+            $.each( markers, function(i, item) {
+                mapWS.setCenter([markers[i].latitude, markers[i].longitude], 15, { checkZoomRange: true, duration:800 } )
+            })
+        }    
+            
+    }
+    this.showCluster = function( argmarkers ){
+        // console.log('cluster!')
+        // mapContainer.show()
+        // mapWS.container.fitToViewport()
+        mapWS.setCenter([center.latitude, center.longitude])
+        self.clear()
+        var dots = argmarkers
+        clusterer = new ymaps.Clusterer({clusterDisableClickZoom: false, maxZoom:8, synchAdd:true, minClusterSize:1});
+        $.each( dots, function(i, item) {           
+            // Создаем метку и задаем изображение для ее иконки
+            var tmpitem = {
+                id: item.id,
+                name: item.name,
+                address: item.address,
+                link: item.link,
+                regtime: (item.regtime) ? item.regtime : item.regime,
+                regime: (item.regtime) ? item.regtime : item.regime
+            }
+            var marker = new ymaps.Placemark( [item.latitude, item.longitude], tmpitem, {
+                    iconImageHref: '/images/marker.png', // картинка иконки
+                    iconImageSize: [39, 59], 
+                    iconImageOffset: [-19, -57] 
+                }
+            )
+            clusterer.add(marker)
+            dots[i].ref = marker
+            // console.log(dots)
+        })
+        var myBalloonLayout = ymaps.templateLayoutFactory.createClass(
+            templateIWnode.prop('innerHTML').replace(/<%=([a-z]+)%>/g, '\$[properties.$1]')
+        )
+        
+        // Помещаем созданный шаблон в хранилище шаблонов. Теперь наш шаблон доступен по ключу 'my#superlayout'.
+        ymaps.layout.storage.add('my#superlayout', myBalloonLayout)
+        // Задаем наш шаблон для балунов геобъектов коллекции.
+        clusterer.options.set({
+            balloonContentBodyLayout:'my#superlayout',
+            // Максимальная ширина балуна в пикселах
+            balloonMaxWidth: 350
+        })
+        mapWS.geoObjects.add(clusterer);
+        mapWS.setZoom(4)
+    }
+
+    this.chZoomCenter = function( center, zoom ) {
+        mapWS.setCenter([center.latitude, center.longitude], zoom, { checkZoomRange: true, duration:800 } )
     }
 
     this.closeMap = function( callback ) {
@@ -1283,16 +1336,19 @@ window.MapInterface = (function() {
     var vendor, tmplSource
 
     return {
-        ready: function( vendorName, tmpl ) {        
+        ready: function( vendorName, tmpl) {
+            var mapReady = $.Deferred()
             vendor     = vendorName
             tmplSource = tmpl
             if( vendor==='yandex' ) {
                 ymaps.ready( function() {
-// console.info('yandexIsReady')            
+                    // console.info('yandexIsReady')            
                     PubSub.publish('yandexIsReady')
                     ymaps.isReady = true
+                    mapReady.resolve()
                 })
             }
+            return mapReady.promise()
             // if( vendor==='google' ) {
             //      $LAB.sandbox().script( 'http://maps.google.com/maps/api/js?sensor=false' )
             // } else // $LAB.sandbox().script( 'http://api-maps.yandex.ru/2.0/?load=package.full&lang=ru-RU' ).wait( function() {
@@ -1302,7 +1358,7 @@ window.MapInterface = (function() {
         init: function( coordinates, mapContainerId, callback, updater ) {
             // console.log('инитимся..', coordinates, mapContainerId, callback, updater)
             if( vendor === 'yandex' ) {
-                if( typeof(ymaps)!=='undefined') { //if( typeof(ymaps)!=='undefined' && ymaps.isReady ) {
+                if( typeof(ymaps)!=='undefined') {
                     // console.info('1')
                     window.regionMap = new MapYandexWithShops(
                         coordinates,

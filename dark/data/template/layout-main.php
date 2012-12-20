@@ -29,7 +29,7 @@
 <div class="allpage">
     <div class="adfoxWrapper" id="adfox980"></div>
 
-    <div id="header">
+    <div id="header" class="newYearTheme">
         <a id="topLogo" href="/">Enter Связной</a>
         <?= $page->slotRootCategory() ?>
     </div>

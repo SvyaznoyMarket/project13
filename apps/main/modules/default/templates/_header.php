@@ -20,7 +20,7 @@
 <!-- /Topbar -->
 
 <!-- Header -->
-<div id="header" class="topmenu">
+<div id="header" class="topmenu newYearTheme">
     <?php LastModifiedHandler::setLastModified();  ?>
     <a id="topLogo" href="/">Enter Связной</a>
     <?php //include_partial('default/logo') ?>
