@@ -29,7 +29,7 @@
 <!-- /Topbar -->
 
 <!-- Header -->
-<div id="header" class="topmenu">
+<div id="header" class="topmenu newYearTheme">
     <a id="topLogo" href="/">Enter Связной</a>
     <?= $page->slotRootCategory() ?>
 </div>

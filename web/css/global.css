@@ -7892,3 +7892,25 @@
   }
 }
 /*---END---СТИЛИ ЛИЧНОГО КАБИНЕТА---*/
+/*------НОВОГОДНЕЕ ОФОРМЛЕНИЕ------*/
+@media all {
+  #mainPage #header.newYearTheme {
+    background: url("/css/newYearTheme/img/mainGarland.gif") bottom center no-repeat;
+    height: 140px;
+    margin-bottom: 0;
+  }
+  #mainPage #header.newYearTheme #topLogo {
+    background: url("/css/newYearTheme/img/NY_logo.jpg") center center no-repeat;
+    height: 107px;
+    margin-top: -15px;
+  }
+  #header.newYearTheme {
+    background: url("/css/newYearTheme/img/headerGarland.png") 0 0 no-repeat;
+    height: 125px;
+    margin-bottom: -10px;
+  }
+  #header.newYearTheme #topLogo {
+    background: url("/css/newYearTheme/img/NY_logo_small.jpg") center center no-repeat;
+  }
+}
+/*---END---НОВОГОДНЕЕ ОФОРМЛЕНИЕ---*/
