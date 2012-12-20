@@ -4,6 +4,7 @@
  * @var $user                    \Session\User
  * @var $form                    \View\Order\Form
  * @var $subwayData              array
+ * @var $creditData              array
  * @var $bankData                array
  * @var $banks                   \Model\CreditBank\Entity[]
  * @var $bank                    \Model\CreditBank\Entity
@@ -198,7 +199,7 @@ if ($form->hasSubway()) $jsValidator['order[address_metro]'] = 'Укажите �
                                 <div class="clear"></div>
                             </div>
                             <input type='hidden' name='order[credit_bank_id]' value='<?= $bank->getId(); ?>' />
-                            <div id="tsCreditCart" data-value="<?//php echo $dataForCredit ?>" ></div>
+                            <div id="tsCreditCart" data-value="<?= $page->json($creditData) ?>" ></div>
                             <!--div>Сумма заказа: <span class="rubl">p</span></div-->
                             <div>
                                 <strong style="font-size:160%; color: #000;">Ежемесячный платеж<sup>**</sup>:

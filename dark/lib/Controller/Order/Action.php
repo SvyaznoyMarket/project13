@@ -15,21 +15,110 @@ class Action {
     public function create(\Http\Request $request) {
         $client = \App::coreClientV2();
         $user = \App::user();
+        $region = $user->getRegion();
+        $cart = $user->getCart();
         $userEntity = $user->getEntity();
         $form = $this->getForm();
 
         try {
-            $deliveryMap = $this->getDeliveryMap();
+            // проверка на пустую корзину
+            if ($cart->isEmpty()) {
+                \App::logger()->warn('Невозможно начать оформление заказа: в корзине нет товаров и услуг');
+
+                return new \Http\RedirectResponse(\App::router()->generate('cart'));
+            }
+
+            // товары и услуги в корзине индексированные по ид
+            $cartProductsById = $cart->getProducts();
+            $cartServicesById = $cart->getServices();
+
+            $productIds = array_keys($cartProductsById);
+            $serviceIds = array_keys($cartServicesById);
+            foreach ($cartProductsById as $cartProduct) {
+                foreach ($cartProduct->getService() as $serviceCart) {
+                    $serviceIds[] = $serviceCart->getId();
+                }
+            }
+
+            // данные по товарам и услугам для запроса в ядро
+            $productsInCart = array();
+            foreach ($cartProductsById as $cartProduct) {
+                $productsInCart[] = array('id' => $cartProduct->getId(), 'quantity' => $cartProduct->getQuantity());
+            }
+            $servicesInCart = array();
+            // несвязанные услуги
+            foreach ($cartServicesById as $cartService) {
+                $servicesInCart[] = array('id' => $cartService->getId(), 'quantity' => $cartService->getQuantity());
+            }
+            // связанные услуги
+            foreach ($cartProductsById as $cartProduct) {
+                foreach ($cartProduct->getService() as $cartService) {
+                    $servicesInCart[] = array('id' => $cartService->getId(), 'quantity' => $cartProduct->getQuantity(), 'product_id' => $cartProduct->getId());
+                }
+            }
+
+            // подготовка пакета запросов
+
+            // магазины
+            /** @var $shops \Model\Shop\Entity[] */
+            $shops = array();
+            // карта доставки
+            $deliveryCalcResult = null;
+            \App::coreClientV2()->addQuery('order/calc-tmp', array(
+                'geo_id'  => $user->getRegion()->getId(),
+            ), array(
+                'product' => $productsInCart,
+                'service' => $servicesInCart,
+            ), function($data) use (&$deliveryCalcResult, &$shops) {
+                $deliveryCalcResult = $data;
+                $shops = array_map(function($data) { return new \Model\Shop\Entity($data); }, $deliveryCalcResult['shops']);
+            }, function (\Exception $e) {
+                //\App::exception()->remove($e);
+
+                throw $e;
+            });
+            //$result = json_decode(file_get_contents(\App::config()->dataDir . '/core/v2-order-calc.json'), true);
+
+            // товары и услуги индексированные по ид
+            /** @var $productsById \Model\Product\CartEntity[] */
+            $productsById = array();
+            /** @var $servicesById \Model\Product\Service\Entity[] */
+            $servicesById = array();
+
+            // запрашиваем список товаров
+            if ((bool)$productIds) {
+                \RepositoryManager::getProduct()->prepareCollectionById($productIds, $region, function($data) use(&$productsById, $cartProductsById) {
+                    foreach ($data as $item) {
+                        $productsById[$item['id']] = new \Model\Product\CartEntity($item);
+                    }
+                });
+            }
+
+            // запрашиваем список услуг
+            if ((bool)$serviceIds) {
+                \RepositoryManager::getService()->prepareCollectionById($serviceIds, $region, function($data) use(&$servicesById, $cartServicesById) {
+                    foreach ($data as $item) {
+                        $servicesById[$item['id']] = new \Model\Product\Service\Entity($item);
+                    }
+                });
+            }
+
+            // выполнение пакета запросов
+            $client->execute();
+
+            if (!$deliveryCalcResult) {
+                $e = new \Exception('Калькулятор доставки вернул пустой результат');
+                \App::logger()->error($e->getMessage());
+
+                throw $e;
+            }
+
+            $deliveryMap = $this->getDeliveryMap($deliveryCalcResult, $productsById, $servicesById, $shops);
         } catch (\Exception $e) {
             $page = new \View\Order\ErrorPage();
             $page->setParam('exception', $e);
 
             return new \Http\Response($page->show());
-        }
-
-        if (!$deliveryMap) {
-            \App::logger()->warn('Невозможно начать оформление заказа: в корзине нет товаров и услуг');
-            return new \Http\RedirectResponse(\App::router()->generate('cart'));
         }
 
         // сохранение заказа
@@ -57,8 +146,10 @@ class Action {
             }
 
             try {
+                // сохранение заказов в ядре
                 $orderNumbers = $this->saveOrder($form, $deliveryMap);
 
+                // сохранение заказов в сессии
                 \App::session()->set(self::ORDER_SESSION_NAME, array_map(function($orderNumber) use ($form) {
                     return array('number' => $orderNumber, 'phone' => $form->getMobilePhone());
                 }, $orderNumbers));
@@ -69,7 +160,7 @@ class Action {
                 ));
 
                 try {
-                    // save cookie
+                    // сохранение заказа в куках
                     $cookieValue = array(
                         'recipient_first_name'   => $form->getFirstName(),
                         'recipient_last_name'    => $form->getLastName(),
@@ -87,7 +178,9 @@ class Action {
                     $cookie = new \Http\Cookie('credit_on', '', time() - 3600);
                     $response->headers->setCookie($cookie);
 
+                    // очистка корзины
                     $user->getCart()->clear();
+                    // очистка кеша
                     $user->setCacheCookie($response);
                 } catch (\Exception $e) {
                     \App::logger($e);
@@ -126,7 +219,7 @@ class Action {
         /** @var $paymentMethods \Model\PaymentMethod\Entity[] */
         $paymentMethods = array();
         $selectedPaymentMethodId = null;
-        $creditAllowed = \App::config()->payment['creditEnabled'] && ($user->getCart()->getTotalProductPrice()) < \App::config()->product['minCreditPrice'];
+        $creditAllowed = \App::config()->payment['creditEnabled'] && ($user->getCart()->getTotalProductPrice()) >= \App::config()->product['minCreditPrice'];
         \RepositoryManager::getPaymentMethod()->prepareCollection(null, $userEntity ? $userEntity->getIsCorporative() : false, function($data)
             use (
                 &$paymentMethods,
@@ -169,6 +262,11 @@ class Action {
                 $banks[] = new \Model\CreditBank\Entity($item);
             }
         });
+
+        // выполнение пакета запросов
+        $client->execute();
+
+        // json для кредитных банков
         rsort($banks);
         $bankData = array();
         foreach ($banks as $bank) {
@@ -176,9 +274,25 @@ class Action {
             $bankData[$bank->getId()]['href'] = $bank->getLink();
         }
 
-        // выполнение пакета запросов
-        $client->execute();
+        // json для кредита
+        $creditData = array();
+        foreach ($cartProductsById as $cartProduct) {
+            /** @var $product \Model\Product\CartEntity|null */
+            $product = isset($productsById[$cartProduct->getId()]) ? $productsById[$cartProduct->getId()] : null;
+            if (!$product) {
+                \App::logger()->error(sprintf('Товар #%s не найден', $cartProduct->getId()));
+                continue;
+            }
 
+            $creditData[] = array(
+                'id'       => $product->getId(),
+                'quantity' => $cartProduct->getQuantity(),
+                'price'    => $cartProduct->getPrice(),
+                'type'     => \RepositoryManager::getCreditBank()->getCreditTypeByCategoryToken($product->getMainCategory() ? $product->getMainCategory()->getToken() : null),
+            );
+        }
+
+        // страница
         $page = new \View\Order\CreatePage();
 
         // ссылка "вернуться к покупкам"
@@ -190,6 +304,7 @@ class Action {
         $page->setParam('subwayData', $subwayData);
         $page->setParam('banks', $banks);
         $page->setParam('bankData', $bankData);
+        $page->setParam('creditData', $creditData);
         $page->setParam('backLink', $backLink);
         $page->setParam('paymentMethods', $paymentMethods);
         $page->setParam('selectedPaymentMethodId', $selectedPaymentMethodId);
@@ -266,10 +381,9 @@ class Action {
             /** @var $order \Model\Order\Entity */
             if ($order->getNumber() === $orderNumber) return true;
         });
-        //var_dump($this->getLastOrders()); exit();
         $order = reset($orders);
         if (!$order) {
-            throw new \Exception\NotFoundException(sprintf('Заказ с номером %s не найден', $orderNumber));
+            throw new \Exception\NotFoundException(sprintf('Заказ с номером %s не найден в сессии', $orderNumber));
         }
 
 
@@ -539,101 +653,22 @@ class Action {
     }
 
     /**
-     * @return \View\Order\DeliveryCalc\Map|null
-     * @throws \Exception
+     * @param array                           $deliveryCalcResult
+     * @param \Model\Product\Entity[]         $productsById
+     * @param \Model\Product\Service\Entity[] $servicesById
+     * @param \Model\Shop\Entity[]            $shops
+     * @return \View\Order\DeliveryCalc\Map
      */
-    private function getDeliveryMap() {
+    private function getDeliveryMap(array $deliveryCalcResult, array $productsById, array $servicesById, array $shops) {
         $client = \App::coreClientV2();
         $user = \App::user();
         $region = $user->getRegion();
         $cart = $user->getCart();
         $router = \App::router();
 
-        // товары и услуги в корзине
+        // товары и услуги в корзине индексированные по ид
         $cartProductsById = $cart->getProducts();
         $cartServicesById = $cart->getServices();
-
-        $productIds = array_keys($cartProductsById);
-        $serviceIds = array_keys($cartServicesById);
-        foreach ($cartProductsById as $cartProduct) {
-            foreach ($cartProduct->getService() as $serviceCart) {
-                $serviceIds[] = $serviceCart->getId();
-            }
-        }
-
-        if (!(bool)$productIds && !(bool)$serviceIds) {
-            return null;
-        }
-
-        // данные по товарам и услугам для запроса в ядро
-        $productsInCart = array();
-        foreach ($cartProductsById as $cartProduct) {
-            $productsInCart[] = array('id' => $cartProduct->getId(), 'quantity' => $cartProduct->getQuantity());
-        }
-        $servicesInCart = array();
-        // несвязанные услуги
-        foreach ($cartServicesById as $cartService) {
-            $servicesInCart[] = array('id' => $cartService->getId(), 'quantity' => $cartService->getQuantity());
-        }
-        // связанные услуги
-        foreach ($cartProductsById as $cartProduct) {
-            foreach ($cartProduct->getService() as $cartService) {
-                $servicesInCart[] = array('id' => $cartService->getId(), 'quantity' => $cartProduct->getQuantity(), 'product_id' => $cartProduct->getId());
-            }
-        }
-
-        // подготовка пакета запросов
-
-        // магазины
-        /** @var $shops \Model\Shop\Entity[] */
-        $shops = array();
-        // карта доставки
-        $deliveryCalcResult = null;
-        \App::coreClientV2()->addQuery('order/calc-tmp', array(
-            'geo_id'  => $user->getRegion()->getId(),
-        ), array(
-            'product' => $productsInCart,
-            'service' => $servicesInCart,
-        ), function($data) use (&$deliveryCalcResult, &$shops) {
-            $deliveryCalcResult = $data;
-            $shops = array_map(function($data) { return new \Model\Shop\Entity($data); }, $deliveryCalcResult['shops']);
-        }, function (\Exception $e) {
-            //\App::exception()->remove($e);
-
-            throw $e;
-        });
-        //$result = json_decode(file_get_contents(\App::config()->dataDir . '/core/v2-order-calc.json'), true);
-
-        // запрашиваем список товаров
-        $productsById = array();
-        $servicesById = array();
-
-        if ((bool)$productIds) {
-            \RepositoryManager::getProduct()->prepareCollectionById($productIds, $region, function($data) use(&$productsById, $cartProductsById) {
-                foreach ($data as $item) {
-                    $productsById[$item['id']] = new \Model\Product\CartEntity($item);
-                }
-            });
-        }
-
-        // запрашиваем список услуг
-        if ((bool)$serviceIds) {
-            \RepositoryManager::getService()->prepareCollectionById($serviceIds, $region, function($data) use(&$servicesById, $cartServicesById) {
-                foreach ($data as $item) {
-                    $servicesById[$item['id']] = new \Model\Product\Service\Entity($item);
-                }
-            });
-        }
-
-        // выполнение пакета запросов
-        $client->execute();
-
-        if (!$deliveryCalcResult) {
-            $e = new \Exception('Калькулятор доставки вернул пустой результат');
-            \App::logger()->error($e->getMessage());
-
-            throw $e;
-        }
 
         // карта доставки
         $deliveryMapView = new \View\Order\DeliveryCalc\Map();
