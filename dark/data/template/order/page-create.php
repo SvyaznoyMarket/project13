@@ -120,7 +120,7 @@ if ($form->hasSubway()) $jsValidator['order[address_metro]'] = 'Укажите �
                         <span class="placeholder">Метро</span>
                         <input type="text" id="order_address_metro" title="Метро" class="placeholder-input bBuyingLine__eText mInputLong ui-autocomplete-input" name="order[address_metro]" autocomplete="off" role="textbox" aria-autocomplete="list" aria-haspopup="true" />
                         <div id="metrostations" data-name="<?= $page->json($subwayData) ?>"></div>
-                        <input type="hidden" id="order_subway_id" name="order[subway_id]" />
+                        <input type="hidden" id="order_subway_id" name="order[subway_id]" value="<?= $form->getSubwayId() ?>" />
                     </div>
                 <? endif ?>
 
