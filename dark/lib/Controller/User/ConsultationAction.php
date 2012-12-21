@@ -3,6 +3,9 @@
 namespace Controller\User;
 
 class ConsultationAction {
+
+    private $channelId = 3;
+
     public function __construct() {
         if (!\App::user()->getToken()) {
             throw new \Exception\AccessDeniedException();
@@ -21,7 +24,8 @@ class ConsultationAction {
 
             try {
                 $response = \App::coreClientV1()->query('user.callback.create', array(), array(
-                    // TODO: сделать
+                    'channel_id' => $this->channelId,
+//                    ''
                 ));
 
                 if (!isset($response['confirmed']) || !$response['confirmed']) {
