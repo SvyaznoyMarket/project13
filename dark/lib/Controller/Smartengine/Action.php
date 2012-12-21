@@ -100,7 +100,7 @@ class Action {
 
             return new \Http\Response(\App::templating()->render('product/_slider', array(
                 'page'   => new \View\Layout(),
-                'productList'  => $products,
+                'productList'  => array_values($products),
                 'title'    => 'С этим товаром также смотрят',
                 'itemsInSlider' => 5,
                 'totalProducts' => count($products),
