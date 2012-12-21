@@ -80,7 +80,7 @@
     <? if ($product->getLabel()): ?>
     <img class="bLabels" src="<?= $product->getLabel()->getImageUrl(1) ?>" alt="<?= $product->getLabel()->getName() ?>" />
     <? endif ?>
-    <img class="mainImg" src="<?= $product->getImageUrl(3) ?>" alt="" width="500" height="500" title="" />
+    <img class="mainImg" src="<?= $product->getImageUrl(3) ?>" alt="<?=$product->getName()?>" title="<?=$product->getName()?>" width="500" height="500" />
   </a>
 </div>
 <div style="display:none;" id="stock">
@@ -247,7 +247,7 @@
     <? foreach ($photoList as $photo): ?>
     <li class="viewstock" ref="photo<?= $photo->getId() ?>">
     	<a href="<?= $photo->getUrl(4) ?>" class="viewme" ref="image">
-    		<img src="<?= $photo->getUrl(2) ?>" alt="" width="48" height="48" />
+    		<img src="<?= $photo->getUrl(2) ?>" alt="<?=$product->getName()?>" title="<?=$product->getName()?>" width="48" height="48" />
     	</a>
     </li>
     <? endforeach ?>
@@ -377,7 +377,7 @@
         <? foreach ($photoList as $photo): ?>
         <li class="viewstock" ref="photo<?= $photo->getId() ?>">
         	<a href="<?= $photo->getUrl(4) ?>" class="viewme" ref="image" id="try-3">
-        		<img src="<?= $photo->getUrl(2) ?>" alt="" width="48" height="48" />
+        		<img src="<?= $photo->getUrl(2) ?>" alt="<?=$product->getName()?>" title="<?=$product->getName()?>" width="48" height="48" />
         	</a>
         </li>
         <? endforeach ?>
