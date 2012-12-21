@@ -6215,7 +6215,7 @@
   }
   .bMapShops__eMapCityList {
     height: 100%;
-    overflow-y: scroll;
+    overflow-y: auto;
     width: 218px;
   }
   .bMapShops__eMapCityList_city {
@@ -6238,8 +6238,15 @@
     font-size: 12px;
     margin: 8px 0 5px;
   }
+  .bMapShops__eMapCityList_city.chosedCity {
+    position: relative;
+  }
   .bMapShops__eMapCityList_city.chosedCity .cityName {
     background-color: #ffc34e;
+    position: relative;
+  }
+  .bMapShops__eMapCityList_city ul {
+    display: none;
   }
   .bMap__eContainer {
     padding: 1px;
