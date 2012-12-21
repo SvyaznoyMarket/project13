@@ -7907,7 +7907,7 @@
   #header.newYearTheme {
     background: url("/css/newYearTheme/img/headerGarland.png") 0 0 no-repeat;
     height: 125px;
-    margin-bottom: -10px;
+    margin-bottom: 5px;
   }
   #header.newYearTheme #topLogo {
     background: url("/css/newYearTheme/img/NY_logo_small.jpg") center center no-repeat;
