@@ -13,5 +13,6 @@ $c->analytics['enabled'] = true;
 $c->googleAnalytics['enabled'] = true;
 $c->yandexMetrika['enabled'] = true;
 
+$c->database['host']     = '10.20.33.2';
 
 return $c;
