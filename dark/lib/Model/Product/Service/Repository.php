@@ -16,6 +16,32 @@ class Repository {
     /**
      * @param array                $ids
      * @param \Model\Region\Entity $region
+     * @return Entity[]
+     */
+    public function getCollectionById(array $ids, \Model\Region\Entity $region = null) {
+        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args()));
+
+        if (!(bool)$ids) return array();
+
+        $params = array(
+            'id' => $ids,
+        );
+        if ($region instanceof \Model\Region\Entity) {
+            $params['geo_id'] = $region->getId();
+        }
+        $data = $this->client->query('service/get2', $params, array());
+
+        $collection = array();
+        foreach ($data as $item) {
+            $collection[] = new Entity($item);
+        }
+
+        return $collection;
+    }
+
+    /**
+     * @param array                $ids
+     * @param \Model\Region\Entity $region
      * @param                      $callback
      */
     public function prepareCollectionById(array $ids, \Model\Region\Entity $region = null, $callback) {
