@@ -283,7 +283,13 @@ return array(
     ),
     'smartengine.push.product_view' => array(
         'pattern' => '/product-view/{productId}',
+        'action' => array('Smartengine\Action', 'pushView'),
         'require' => array('productId' => '\d+'),
+    ),
+    'smartengine.push.buy' => array(
+        'pattern' => '/product-buy',
+        'action'  => array('Smartengine\Action', 'pushBuy'),
+        'method'  => array('POST'),
     ),
 
     // редактирование данных пользователя
@@ -322,13 +328,6 @@ return array(
     'user.subscribe' => array(
         'pattern' => '/private/subscribe',
         'action'  => array('User\SubscribeAction', 'execute'),
-        'method'  => array('POST'),
-    ),
-
-    //smartengine
-    'smartengine.push.buy' => array(
-        'pattern' => '/product-buy',
-        'action'  => array('Smartengine\Action', 'pushBuy'),
         'method'  => array('POST'),
     ),
 );
