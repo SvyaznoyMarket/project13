@@ -9,16 +9,14 @@
 
 <? require __DIR__ . '/_map.php' ?>
 <div class="pb20"></div>
-<?php
-/**
+
 <? if ((bool)$shops): ?>
     <!-- bMapInfo -->
     <div class='bMapShops__eInfo'>
-        <h2 class='bMapShops__eTitle'>Все магазины Enter<?php if ($currentRegion): ?> в <?= $currentRegion->getInflectedName(5) ?><?php endif?></h2>
 
         <? foreach ($shops as $shop): ?>
             <!-- __eCard -->
-            <div class='bShopCard' onclick="window.location='<?= $page->url('shop.show', array('regionToken' => $currentRegion ? $currentRegion->getToken() : $shop->getRegion()->getToken(), 'shopToken' => $shop->getToken())) ?>'">
+            <div class='bShopCard shop_<?=$shop->getRegion()->getId()?>' onclick="window.location='<?= $page->url('shop.show', array('regionToken' => $currentRegion ? $currentRegion->getToken() : $shop->getRegion()->getToken(), 'shopToken' => $shop->getToken())) ?>'">
                 <img class='bShopCard__eIco' src='<?= $shop->getImageUrl(2) ?>' width="162" height="100" />
                 <h3 class='bShopCard__eTitle'><?= $shop->getName() ?></h3>
                 <? if ($shop->getIsReconstructed()): ?>
@@ -42,5 +40,3 @@
     <p class="font16">В этом городе пока нет магазинов.</p>
 
 <? endif ?>
- */
-?>

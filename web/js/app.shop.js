@@ -83,16 +83,10 @@ $(document).ready(function() {
 
 	    //показываем карту города, при клике на название города
 		var cityHandler = function(){
-			// show all city
-			$('.bMapShops__eTitle').click(function(){
-				$('.bMapShops__eMapCityList_city ul').fadeOut(500, function(){
-					$('.bMapShops__eMapCityList_city ul').empty()
-					window.regionMap.showCluster(  allshops )
-				})
-				return false
-			})
 			// show current city
 			$('.bMapShops__eMapCityList_city').click( function(){
+				var nowRef = $(this).attr('ref')
+				$('.bShopCard').hide()
 				$('.bMapShops__eMapCityList_city ul').fadeOut(500, function(){
 					$('.bMapShops__eMapCityList_city ul').empty()
 				})
@@ -116,12 +110,13 @@ $(document).ready(function() {
 						$('.bMapShops__eMapCityList_city').hide()
 						$(this).addClass('chosedCity').show()
 						var startOffsetTop = $('.chosedCity').offset().top
-						$('.bMapShops__eMapCityList').scroll(function(){
-							var nowOffestTop = $('.chosedCity').offset().top
-							$('.chosedCity .cityName').css('top', startOffsetTop-nowOffestTop)
-						})
+						$('.shop_'+nowRef).css('display', 'inline-block')
 						$(this).find('ul').fadeIn(500, function(){
 							window.regionMap.showMarkers(  getShopsStack(curCity) )
+							$('.bMapShops__eMapCityList').scroll(function(){
+								var nowOffestTop = $('.chosedCity').offset().top
+								$('.chosedCity .cityName').css('top', startOffsetTop-nowOffestTop)
+							})
 						})
 					}
 					else{
