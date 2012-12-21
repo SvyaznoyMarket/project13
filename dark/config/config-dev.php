@@ -26,5 +26,6 @@ $c->paymentPsbInvoice['contractorId'] = 14;
 $c->paymentPsbInvoice['key'] = $c->dataDir . '/key/privkey.pem';
 $c->paymentPsbInvoice['payUrl'] = 'https://retail-tst.payment.ru/dn/Invoices/ReceiveUniversalInvoices.aspx';
 
+$c->smartEngine['cert'] = $c->dataDir . '/cert/gsorganizationvalg2.crt';
 
 return $c;

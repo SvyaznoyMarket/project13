@@ -54,9 +54,64 @@ class Action {
         catch (\Exception $e) {
             return new \Http\JsonResponse(array('success' => false, 'data' => $e->getMessage()));
         }
-
-
     }
+
+    public function pullProductAlsoViewed(\Http\Request $request, $productId) {
+        try {
+            $product = \RepositoryManager::getProduct()->getEntityById($productId);
+            if (!$product) {
+                return new \Http\Response('');
+            }
+
+            $client = \App::smartengineClient();
+            $user = \App::user()->getEntity();
+
+            $params = array(
+                'sessionid'         => session_id(),
+                'itemid'            => $product->getId(),
+            );
+            if ($user) {
+                $params['userid'] = $user->getId();
+            }
+            $params['itemtype'] = $product->getMainCategory()->getId();
+            $r = $client->query('otherusersalsoviewed', $params);
+
+            if (isset($r['error'])) {
+                //$this->getLogger()->err('Smartengine: error #'.$r['error']['@code'].' '.$r['error']['@message']);
+
+                return new \Http\Response();
+            }
+
+            $ids =
+                array_key_exists('id', $r['recommendeditems']['item'])
+                    ? array($r['recommendeditems']['item']['id'])
+                    : array_map(function($item) { return $item['id']; }, isset($r['recommendeditems']['item']) ? $r['recommendeditems']['item'] : array());
+            if (!count($ids)) {
+                return new \Http\Response('');
+            }
+
+            $products = \RepositoryManager::getProduct()->getCollectionById($ids);
+            foreach ($products as $i => $product) {
+                if (!$product->getIsBuyable()) unset($products[$i]);
+            }
+            if (!count($products)) {
+                return new \Http\Response('');
+            }
+
+            return new \Http\Response(\App::templating()->render('product/_slider', array(
+                'page'   => new \View\Layout(),
+                'productList'  => $products,
+                'title'    => 'С этим товаром также смотрят',
+                'itemsInSlider' => 5,
+                'totalProducts' => count($products),
+                'url' => '',
+                'gaEvent'    => 'SmartEngine',
+            )));
+        } catch(Exception $e) {
+            return new \Http\Response('');
+        }
+    }
+
 
     private function getDbh() {
         if (!$this->dbh) {

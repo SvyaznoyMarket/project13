@@ -2,7 +2,6 @@
 /**
  * @var $page           \View\Layout
  * @var $productList    \Model\Product\Entity[]
- * @var $product        \Model\Product\Entity
  * @var $title          string
  * @var $itemsInSlider  int
  * @var $totalProducts  int

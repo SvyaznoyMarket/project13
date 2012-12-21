@@ -56,6 +56,7 @@ Options +FollowSymLinks +ExecCGI
   RewriteRule ^request-password$ dark.php [L]
   RewriteRule ^product-buy.* dark.php [L]
   RewriteRule ^product-view/.* dark.php [L]
+  RewriteRule ^product-also-viewed/.*$ dark.php [L]
   RewriteRule ^orders/new.* dark.php [L]
   RewriteRule ^orders/complete.* dark.php [L]
   RewriteRule ^products/set/* dark.php [L]

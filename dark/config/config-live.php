@@ -27,4 +27,6 @@ $c->paymentPsbInvoice['payUrl'] = 'https://retail-tst.payment.ru/dn/Invoices/Rec
 
 $c->database['host']     = '10.20.33.2';
 
+$c->smartEngine['cert'] = $c->dataDir . '/cert/gsorganizationvalg2.crt';
+
 return $c;
