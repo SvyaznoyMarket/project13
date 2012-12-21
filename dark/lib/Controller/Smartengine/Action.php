@@ -63,7 +63,7 @@ class Action {
                 return new \Http\Response('');
             }
 
-            $client = \Smartengine\Client::getInstance();
+            $client = \App::smartengineClient();
             $user = \App::user()->getEntity();
 
             $params = array(

@@ -11,34 +11,19 @@ class Client {
 
     private $resources = array();
 
-    /**
-     * @return SmartengineClient
-     */
-    static public function getInstance()
-    {
-        static $instance;
-        if (!$instance) {
-            $instance = new Client(\App::config()->smartEngine);
-        }
-        return $instance;
-    }
-
-    private function __construct(array $config)
+    public function __construct(array $config,  \Logger\LoggerInterface $logger = null)
     {
         $this->config = array_merge(array(
             'api_url'          => null,
             'api_key'          => null,
             'tenantid'         => null,
             'timeout'          => 0.5,
-            //'log_file'         => null,
             'cert'             => null,
             'log_enabled'      => false,
             'log_data_enabled' => false,
         ), $config);
 
-        //$this->logger = new sfAggregateLogger(new sfEventDispatcher());
-        //$this->logger->addLogger(new sfFileLogger(new sfEventDispatcher(), array('file' => $this->config['log_file'])));
-        //$this->logger->addLogger(sfContext::getInstance()->getLogger());
+        $this->logger = $logger;
     }
 
     /**
@@ -52,6 +37,8 @@ class Client {
      */
     public function query($action, array $params = array())
     {
+        \Debug\Timer::start('smartengine');
+
         $connection = $this->createResource($action, $params);
         $response = curl_exec($connection);
         try {
@@ -59,23 +46,34 @@ class Client {
                 throw new SmartengineClientException(curl_error($connection), curl_errno($connection));
             }
             $info = curl_getinfo($connection);
+            $this->logger->debug('Smartengine response resource: ' . $connection);
+            $this->logger->debug('Smartengine response info: ' . $this->encodeInfo($info));
+
+            \Util\RequestLogger::getInstance()->addLog($info['url'], '', $info['total_time'], 'smartengine');
+
             if ($this->config['log_enabled']) {
-                //$this->logger->info('Response '.$connection.' : '.(is_array($info) ? json_encode($info) : $info));
+                $this->logger->info('Response '.$connection.' : '.(is_array($info) ? json_encode($info) : $info));
             }
             if ($info['http_code'] >= 300) {
                 throw new SmartengineClientException(sprintf("Invalid http code: %d, \nResponse: %s", $info['http_code'], $response));
             }
 
             if ($this->config['log_data_enabled']) {
-                //$this->logger->info('Response data: '.$response);
+                $this->logger->info('Response data: '.$response);
             }
             $responseDecoded = $this->decode($response);
             curl_close($connection);
+
+            $spend = \Debug\Timer::stop('smartengine');
+            \App::logger()->info('End smartengine ' . $action . ' in ' . $spend);
+
             return $responseDecoded;
         }
         catch (SmartengineClientException $e) {
             curl_close($connection);
-            //$this->logger->err($e->__toString());
+            $spend = \Debug\Timer::stop('smartengine');
+            \App::logger()->error('End smartengine ' . $action . ' in ' . $spend . ' get: ' . json_encode($params) . ' response: ' . json_encode($response, true) . ' with ' . $e);
+            $this->logger->err($e->__toString());
             throw $e;
         }
     }
@@ -99,7 +97,7 @@ class Client {
             'tenantid' => $this->config['tenantid'],
         ), $params))
         ;
-        //var_dump($query);
+        \App::logger()->info('Start smartengine ' . $action . ' query: ' . $query);
 
         $connection = curl_init();
         curl_setopt($connection, CURLOPT_SSL_VERIFYPEER, true);
@@ -112,7 +110,7 @@ class Client {
         curl_setopt($connection, CURLOPT_URL, $query);
 
         if ($this->config['log_enabled']) {
-            //$this->logger->info('Request '.$connection.' '.'get'.': '.$query);
+            $this->logger->info('Send smartengine requset '.$connection);
         }
 
         return $connection;
@@ -176,6 +174,16 @@ class Client {
             $data
         );
         return $data;
+    }
+
+    private function encodeInfo($info)
+    {
+        return $this->encode(array_intersect_key($info, array_flip(array(
+            'content_type', 'http_code', 'header_size', 'request_size',
+            'redirect_count', 'total_time', 'namelookup_time', 'connect_time', 'pretransfer_time', 'size_upload',
+            'size_download', 'speed_download',
+            'starttransfer_time', 'redirect_time', 'certinfo', 'redirect_url'
+        ))));
     }
 }
 

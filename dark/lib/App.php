@@ -177,7 +177,7 @@ class App {
     }
 
     /**
-     * @param string $name
+     * @static
      * @return \Core\ClientV2
      */
     public static function coreClientV2() {
@@ -200,6 +200,20 @@ class App {
         if (!$instance) {
             $instance = new \Content\Client();
             $instance->setUrl(\App::config()->wordpress['url']);
+        }
+
+        return $instance;
+    }
+
+    /**
+     * @static
+     * @return \Smartengine\Client
+     */
+    public static function smartengineClient() {
+        static $instance;
+
+        if (!$instance) {
+            $instance = new \Smartengine\Client(self::$config->smartEngine, \App::logger('smartengine'));
         }
 
         return $instance;
@@ -234,6 +248,9 @@ class App {
                     break;
                 case 'request_compatible':
                     self::$loggers[$name] = new \Logger\DefaultLogger(new \Logger\Appender\FileAppender(self::$config->logDir . '/site_page_time.log'), 'RequestLogger', $config[$name]['level']);
+                    break;
+                case 'smartengine':
+                    self::$loggers[$name] = new \Logger\DefaultLogger(new \Logger\Appender\FileAppender(self::$config->logDir . '/smartengine.log'), $name, $config[$name]['level']);
                     break;
                 default:
                     self::$loggers[$name] = new \Logger\DefaultLogger(new \Logger\Appender\FileAppender(self::$config->logDir . '/app.log'), $name, $config[$name]['level']);

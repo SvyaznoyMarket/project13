@@ -12,4 +12,8 @@ return array(
     'core_v2' => array(
         'level' => 2,
     ),
+
+    'smartengine' => array(
+        'level' => 0,
+    ),
 );
