@@ -25,7 +25,12 @@ class Action {
             if ($cart->isEmpty()) {
                 \App::logger()->warn('Невозможно начать оформление заказа: в корзине нет товаров и услуг');
 
-                return new \Http\RedirectResponse(\App::router()->generate('cart'));
+                return $request->isXmlHttpRequest()
+                    ? new \Http\JsonResponse(array(
+                        'success' => true,
+                        'data'    => array('redirect' => \App::router()->generate('order.complete')),
+                    ))
+                    : new \Http\RedirectResponse(\App::router()->generate('cart'));
             }
 
             // товары и услуги в корзине индексированные по ид
@@ -329,12 +334,35 @@ class Action {
 
         }
 
+        // TODO: асинхронные запросы в ядро
+
+        // собираем магазины
+        /** @var $shopsById \Model\Shop\Entity[] */
+        $shopsById = array();
+        foreach ($orders as $order) {
+            if (!$order->getShopId()) continue;
+
+            $shopsById[$order->getShopId()] = null;
+        }
+        if ((bool)$shopsById) {
+            foreach (\RepositoryManager::getShop()->getCollectionById(array_keys($shopsById)) as $shop) {
+                $shopsById[$shop->getId()] = $shop;
+            }
+        }
+
         // товары индексированные по ид
-        /** @var $productsById \Model\Product\CartEntity[] */
+        /** @var $productsById \Model\Product\Entity[] */
         $productsById = array();
-        \RepositoryManager::getProduct()->setEntityClass('\Model\Product\CartEntity');
+        \RepositoryManager::getProduct()->setEntityClass('\Model\Product\Entity');
         foreach (\RepositoryManager::getProduct()->getCollectionById(array_map(function ($orderProduct) { /** @var $orderProduct \Model\Order\Product\Entity */ return $orderProduct->getId(); }, $order->getProduct())) as $product) {
             $productsById[$product->getId()] = $product;
+        }
+
+        // товары индексированные по ид
+        /** @var $servicesById \Model\Product\Service\Entity[] */
+        $servicesById = array();
+        foreach (\RepositoryManager::getService()->getCollectionById(array_map(function ($orderService) { /** @var $orderService \Model\Order\Service\Entity */ return $orderService->getId(); }, $order->getService())) as $service) {
+            $servicesById[$service->getId()] = $service;
         }
 
         // метод оплаты
@@ -377,7 +405,7 @@ class Action {
                         'items' => array()
                     );
                     foreach ($order->getProduct() as $orderProduct) {
-                        /** @var $product \Model\Product\CartEntity|null */
+                        /** @var $product \Model\Product\Entity|null */
                         $product = isset($productsById[$orderProduct->getId()]) ? $productsById[$orderProduct->getId()] : null;
                         if (!$product) {
                             throw new \Exception(sprintf('Не найден товар #%s, который есть в заказе', $orderProduct->getId()));
@@ -400,6 +428,9 @@ class Action {
 
         $page = new \View\Order\CompletePage();
         $page->setParam('orders', $orders);
+        $page->setParam('shopsById', $shopsById);
+        $page->setParam('productsById', $productsById);
+        $page->setParam('servicesById', $servicesById);
         $page->setParam('paymentProvider', $paymentProvider);
         $page->setParam('creditData', $creditData);
 

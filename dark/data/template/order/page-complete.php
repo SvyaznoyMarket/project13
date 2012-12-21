@@ -3,6 +3,9 @@
  * @var $page            \View\Order\CreatePage
  * @var $user            \Session\User
  * @var $orders          \Model\Order\Entity[]
+ * @var $productsById    \Model\Product\Entity[]
+ * @var $servicesById    \Model\Product\Service\Entity[]
+ * @var $shopsById       \Model\Shop\Entity[]
  * @var $isCredit        bool
  * @var $paymentProvider \Payment\ProviderInterface
  * @var $creditData      array
@@ -64,9 +67,12 @@ $isCredit = (bool)$creditData;
 <? endif ?>
 
 
-<? //slot('analytics_report') ?>
-<? // TODO: перенести из _order/completeSuccess.php ?>
-<? //end_slot() ?>
+<? if (\App::config()->analytics) echo $page->render('order/_analytics', array(
+    'orders'       => $orders,
+    'productsById' => $productsById,
+    'servicesById' => $servicesById,
+    'shopsById'    => $shopsById,
+)) ?>
 
 
 <?php if (false && sfConfig::get('app_smartengine_push')): ?>
