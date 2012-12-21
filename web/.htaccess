@@ -61,6 +61,7 @@ Options +FollowSymLinks +ExecCGI
   RewriteRule ^orders/complete.* dark.php [L]
   RewriteRule ^products/set/* dark.php [L]
   RewriteRule ^orders/payment/.* dark.php [L]
+  RewriteRule ^products/accessories/.* dark.php [L]
 
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteRule ^wp-admin/$ /content/wp-admin/index.php [L]

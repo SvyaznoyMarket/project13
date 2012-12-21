@@ -151,7 +151,7 @@ return array(
         'action'  => array('Product\StockAction', 'execute'),
         'require' => array('productPath' => '[\w\d-_]+\/{1}[\w\d-_]+'),
     ),
-    'product.accessories' => array( // TODO: переименовать в product.accessory
+    'product.accessory' => array(
         'pattern' => '/products/accessories/{productToken}',
         'action'  => array('Product\AccessoryAction', 'execute'),
         'require' => array('productToken' => '[\w\d-_]+'),
