@@ -279,6 +279,7 @@ return array(
     // smartengine
     'smartengine.pull.product_alsoViewed' => array(
         'pattern' => '/product-also-viewed/{productId}',
+        'action' => array('Smartengine\Action', 'pullProductAlsoViewed'),
         'require' => array('productId' => '\d+'),
     ),
     'smartengine.push.product_view' => array(
