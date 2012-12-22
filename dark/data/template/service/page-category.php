@@ -34,14 +34,12 @@
                             <?= $service->getName() ?>
                         </a>
                         <? if (!is_null($service->getPrice())): ?>
-                            &mdash; <div class="font16 mInlineBlock">
-                            <strong>
+                            <div class="font16 mInlineBlock">
                             <? if ($service->getPrice()): ?>
-                                <?= $page->helper->formatPrice($service->getPrice()) ?>&nbsp;<span class="rubl">p</span>
+                                &mdash; <strong><?= $page->helper->formatPrice($service->getPrice()) ?>&nbsp;<span class="rubl">p</span></strong>
                             <? else: ?>
-                                бесплатно
+                                <!-- &mdash; <strong>бесплатно</strong>-->
                             <? endif ?>
-                            </strong>
                         </div>
                         <? endif ?>
                     </div>
