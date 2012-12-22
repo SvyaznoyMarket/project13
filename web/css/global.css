@@ -4034,13 +4034,13 @@
     border-color: #000000;
   }
   .bListVariants {
+    background: url('/css/catalog/img/variant.gif') 8px 12px no-repeat;
+    border: 1px solid #e6e6e6;
     color: #434343;
     cursor: pointer;
-    margin-right: 10px;
-    border: 1px solid #d9d9d9;
-    padding: 10px 24px 10px 38px;
     font: 11px Tahoma, sans-serif;
-    background: url('/css/catalog/img/catalogSprite.png') -140px 10px no-repeat;
+    margin-top: 5px;
+    padding: 10px 24px 10px 38px;
   }
   .bLabels {
     display: block;
@@ -6109,8 +6109,7 @@
   }
   .bShopCard {
     cursor: pointer;
-    display: inline-block;
-    *display: inline;
+    display: none;
     padding: 16px;
     vertical-align: top;
     width: 197px;
