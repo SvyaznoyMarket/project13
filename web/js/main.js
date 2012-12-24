@@ -602,11 +602,6 @@ $(document).ready(function(){
 	if( !docCookies.hasItem('geoshop') ) {
 		getRegions()
 	}
-	if( !docCookies.hasItem('geoshop_change') ) {
-		docCookies.removeItem('geoshop')
-		docCookies.setItem( false, "geoshop_change", "yes", 31536e3, "/")
-		getRegions()
-	}
 	
 	/* Services Toggler */
 	if( $('.serviceblock').length ) {
