@@ -42,11 +42,11 @@ class Action {
                         throw new \Exception('Не удалось получить токен');
                     }
 
-                    $user = \RepositoryManager::getUser()->getEntityByToken($result['token']);
-                    if (!$user) {
+                    $userEntity = \RepositoryManager::getUser()->getEntityByToken($result['token']);
+                    if (!$userEntity) {
                         throw new \Exception(sprintf('Не удалось получить пользователя по токену %s', $result['token']));
                     }
-                    $user->setToken($result['token']);
+                    $userEntity->setToken($result['token']);
 
                     $response = $request->isXmlHttpRequest()
                         ? new \Http\JsonResponse(array(
@@ -57,11 +57,17 @@ class Action {
                                     'form'    => $form,
                                     'request' => \App::request(),
                                 )),
+                                'user' => array(
+                                    'first_name'   => $userEntity->getFirstName(),
+                                    'last_name'    => $userEntity->getLastName(),
+                                    'mobile_phone' => $userEntity->getMobilePhone(),
+                                ),
+                                'link' => \App::router()->generate('user'),
                             ),
                         ))
                         : new \Http\RedirectResponse(\App::router()->generate('user'));
 
-                    \App::user()->signIn($user, $response);
+                    \App::user()->signIn($userEntity, $response);
 
                     return $response;
                 } catch(\Exception $e) {
