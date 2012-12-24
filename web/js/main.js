@@ -241,11 +241,19 @@ $(document).ready(function(){
                 form.unbind('submit')
                 form.submit()
               }
-            } else {
+            } 
+            else {
               $('#auth-block').trigger('close')
               PubSub.publish( 'authorize', response.user )
             }
-          } else {
+            //for order page
+            if ( $('#order-form').length ){
+            	$('#order_recipient_first_name').val( response.data.user.first_name )
+            	$('#order_recipient_last_name').val( response.data.user.last_name )
+            	$('#order_recipient_phonenumbers').val( response.data.user.mobile_phone.slice(1) )
+            }
+          } 
+          else {
             form.html( $(response.data.content).html() )
             regEmailValid()
           }
