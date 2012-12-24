@@ -256,6 +256,10 @@ return array(
         'pattern' => '/orders/new',
         'action'  => array('Order\Action', 'create'),
     ),
+    'order.externalCreate' => array(
+        'pattern' => '/orders/create-external',
+        'action'  => array('Order\ExternalCreateAction', 'execute'),
+    ),
     'order.complete' => array(
         'pattern' => '/orders/complete',
         'action'  => array('Order\Action', 'complete'),
