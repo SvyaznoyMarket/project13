@@ -248,6 +248,7 @@ $(document).ready(function(){
             }
             //for order page
             if ( $('#order-form').length ){
+            	$('#user-block').html('Привет, <strong><a href="'+response.data.link+'">'+response.data.user.first_name+'</a></strong>')
             	$('#order_recipient_first_name').val( response.data.user.first_name )
             	$('#order_recipient_last_name').val( response.data.user.last_name )
             	$('#order_recipient_phonenumbers').val( response.data.user.mobile_phone.slice(1) )

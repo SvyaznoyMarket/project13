@@ -213,15 +213,6 @@ class orderActions extends myActions
             'order_total' => $order['sum'],
             'product_quantity' => implode(',', array_map(function($i) { return $i['quantity']; }, $order->getProductRelation()->toArray())),
           ));
-          $jsonMyThings = json_encode(array (
-            'order_id' => $order['number'],
-            'order_total' => $order['sum'],
-            'products' => array(
-                'ProductID' => $this->product->core_id,
-                'price' => $this->product->getRealPrice(),
-                'qty' => $this->form->getValue('product_quantity')
-            )
-          ));
           $return['success'] = true;
             $return['message'] = 'Заказ успешно создан';
             $return['data'] = array(
