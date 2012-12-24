@@ -217,21 +217,23 @@
 
   <? if ($product->getIsBuyable()): ?>
     <div class="bDeliver2 delivery-info" id="product-id-<?= $product->getId() ?>" data-shoplink="<?= $page->url('product.stock', array('productPath' => $product->getPath())) ?>" data-calclink="<?= $page->url('product.delivery') ?>">
-    <h4>Как получить заказ?</h4>
-    <ul>
-      <li>
-        <h5>Идет расчет условий доставки...</h5>
-      </li>
-    </ul>
-  </div>
+      <h4>Как получить заказ?</h4>
+      <ul>
+        <li>
+          <h5>Идет расчет условий доставки...</h5>
+        </li>
+      </ul>
+    </div>
+  <?php endif ?>
 
   <div style="margin-bottom: 20px;">
     <div class="adfoxWrapper" id="<?= $adfox_id_by_label ?>"></div>
   </div>
 
+  <? if ($product->getIsBuyable()): ?>
     <?= $page->render('service/_listByProduct', array('product' => $product)) ?>
     <?= $page->render('warranty/_listByProduct', array('product' => $product)) ?>
-<? endif ?>
+  <? endif ?>
 
 </div>
 <!-- /Goods info -->
