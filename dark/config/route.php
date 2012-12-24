@@ -80,6 +80,15 @@ return array(
         'pattern' => '/region/autocomplete',
         'action'  => array('Region\Action', 'autocomplete'),
     ),
+    // сменя региона по прямой ссылке
+    'region.redirect' => array(
+        'pattern' => '/reg/{regionId}/{redirectTo}',
+        'action'  => array('Region\Action', 'redirect'),
+        'require' => array(
+            'regionId'   => '\d+',
+            'redirectTo' => '.+',
+        ),
+    ),
 
     // магазины
     'shop' => array(

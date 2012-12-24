@@ -60,4 +60,27 @@ class Action {
 
         return new \Http\JsonResponse(array('data' => $data));
     }
+
+    public function redirect(\Http\Request $request, $regionId, $redirectTo) {
+        \App::logger()->debug('Exec ' . __METHOD__);
+
+        $regionId = (int)$regionId;
+
+        if ('/' !== $redirectTo[0]) {
+            $redirectTo = '/' . $redirectTo;
+        }
+
+        if (!$regionId) {
+            return new \Http\RedirectResponse($redirectTo);
+        }
+
+        $response = new \Http\RedirectResponse($redirectTo);
+
+        $region = \RepositoryManager::getRegion()->getEntityById($regionId);
+        if ($region) {
+            \App::user()->changeRegion($region, $response);
+        }
+
+        return $response;
+    }
 }

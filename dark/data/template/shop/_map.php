@@ -19,7 +19,7 @@
     </div>
 
     <? if ((bool)$markers): ?>
-    <h2 class='bMapShops__eTitle'><a href="#">Магазины Enter на карте</a></h2>
+    <h2 class='bMapShops__eTitle'>Магазины Enter на карте</h2>
     <script type="text/html" id="shopInCity">
         <li class="shopInCity" ref="<%=id%>"><p><%=name%></p>
             <span><%=regtime%></span><br>

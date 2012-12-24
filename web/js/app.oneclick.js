@@ -477,7 +477,7 @@ levup:			for(var i=0, l=numbers.length; i<l; i++)
 		// 	if( Deliveries['self'].dates.length > tind + 1 )
 		// 		self.tomorrowShops = parseDateShop( Deliveries['self'].dates[ tind + 1 ].shopIds, 'tmr' )			
 		// }
-        console.log('zzzz')
+        // console.log('zzzz')
 		self.todayShops = parseDateShop( Deliveries['self'].dates[ 0 ].shopIds, 'td' )
 		self.todayLabel( Deliveries['self'].dates[ 0 ].name.match(/\d{2}\.\d{2}\.\d{4}/)[0] )
 		if( Deliveries['self'].dates.length > 1 ) {
