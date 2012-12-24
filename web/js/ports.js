@@ -246,74 +246,6 @@ window.ANALYTICS = {
         +'-1000px" ></iframe>');
     },
 
-    myThingsMain : function() {
-        if (typeof (MyThings) != "undefined") { 
-                MyThings.Track({ 
-                    EventType: MyThings.Event.Visit,
-                     Action: "200"        
-            });    
-        } 
-    },
-    
-    myThingsCat : function() {
-        var category = arguments[0]
-        var breadcrumbs = $('.breadcrumbs').find('a')
-        if( !breadcrumbs.length )
-            return
-        var data = {
-            EventType: MyThings.Event.Visit,
-            Action: "1011"
-        }
-        var ind = 0
-        for( var i=1, l=breadcrumbs.length; i<l; i++ ) {
-            var ind = ( i === 1 ) ? '' : ( i - 1 )
-            data[ 'Category'+ind ] = $(breadcrumbs[i]).text()
-        }
-        if( ind )
-            data[ 'Category'+(ind+1) ] = $('.breadcrumbs strong').text()    
-        if (typeof (MyThings) != "undefined") {
-            MyThings.Track( data );
-        }
-    },
-
-    myThingsProd : function() {
-        var token = arguments[0]
-        if (typeof (MyThings) != "undefined") { 
-            MyThings.Track({
-                EventType: MyThings.Event.Visit,
-                Action: "1010",
-                ProductId: 'token'
-            });
-        }
-    },
-
-    myThingsBuy : function() {
-        var token = arguments[0];
-        if (typeof (token) == "undefined") 
-            return
-        if (typeof (MyThings) != "undefined") {
-           MyThings.Track({
-               EventType: MyThings.Event.Visit,
-               Action: "1013",
-               ProductId: token
-           });
-        }
-   },
-
-    myThingsFin : function() {
-        var a = arguments[0];  
-        // a.products has tmpl { id: "ProductID", price: "24.90", qty: 2 }
-        if (typeof (MyThings) != "undefined") { 
-            MyThings.Track({ 
-                EventType: MyThings.Event.Conversion,
-                 Action: "9902",
-                Products: a.products,
-                TransactionReference: a.order_id +'',
-                 TransactionAmount: a.order_total + ''
-            }); 
-        } 
-    },
-
     luxupTracker : function() {
         document.write('<scr'+'ipt type="text/javascript" src="http://luxup.ru/tr_js/20634/59951/'+'?t='+(new Date()).getTime()+(document.referrer?"&r="+encodeURIComponent(document.referrer):'')+(typeof __lx__target !== 'undefined'?'&trg='+encodeURIComponent(__lx__target):'')+'"></scr'+'ipt>');        
     },

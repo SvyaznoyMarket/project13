@@ -59,7 +59,6 @@
 <?= $page->slotInnerJavascript() ?>
 
 <? if (\App::config()->analytics['enabled']): ?>
-    <div id="myThingsMain" class="jsanalytics"></div>
     <div id="adblender" class="jsanalytics"></div>
     <div id="yandexMetrika" class="jsanalytics"></div>
     <div id="heiasMain" class="jsanalytics"></div>
