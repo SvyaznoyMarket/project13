@@ -7,7 +7,7 @@
  */
 ?>
 
-<? $form = $provider->getForm($order, $page->url('order.payment', array('orderNumber' => $order->getNumber()), true)) ?>
+<? $form = $provider->getForm($order, $page->url('order.paymentComplete', array('orderNumber' => $order->getNumber()), true)) ?>
 
 <form class="form" method="post" action="<?= $provider->getPayUrl() ?>">
     <input type="hidden" name="ContractorID" value="<?= $form->getContractorId() ?>" />

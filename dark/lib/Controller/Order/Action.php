@@ -323,6 +323,8 @@ class Action {
      * @throws \Exception
      */
     public function complete(\Http\Request $request) {
+        $user = \App::user();
+
         // последние заказы в сессии
         $orders = $this->getLastOrders();
 
@@ -353,15 +355,25 @@ class Action {
         // товары индексированные по ид
         /** @var $productsById \Model\Product\Entity[] */
         $productsById = array();
+        foreach ($orders as $order) {
+            foreach ($order->getProduct() as $orderProduct) {
+                $productsById[$orderProduct->getId()] = null;
+            }
+        }
         \RepositoryManager::getProduct()->setEntityClass('\Model\Product\Entity');
-        foreach (\RepositoryManager::getProduct()->getCollectionById(array_map(function ($orderProduct) { /** @var $orderProduct \Model\Order\Product\Entity */ return $orderProduct->getId(); }, $order->getProduct())) as $product) {
+        foreach (\RepositoryManager::getProduct()->getCollectionById(array_keys($productsById)) as $product) {
             $productsById[$product->getId()] = $product;
         }
 
-        // товары индексированные по ид
+        // услуги индексированные по ид
         /** @var $servicesById \Model\Product\Service\Entity[] */
         $servicesById = array();
-        foreach (\RepositoryManager::getService()->getCollectionById(array_map(function ($orderService) { /** @var $orderService \Model\Order\Service\Entity */ return $orderService->getId(); }, $order->getService())) as $service) {
+        foreach ($orders as $order) {
+            foreach ($order->getService() as $orderService) {
+                $servicesById[$orderService->getId()] = null;
+            }
+        }
+        foreach (\RepositoryManager::getService()->getCollectionById(array_map(function ($orderService) { /** @var $orderService \Model\Order\Service\Entity */ return $orderService->getId(); }, $order->getService()), $user->getRegion()) as $service) {
             $servicesById[$service->getId()] = $service;
         }
 
@@ -443,7 +455,7 @@ class Action {
      * @return \Http\Response
      * @throws \Exception\NotFoundException
      */
-    public function payment($orderNumber, \Http\Request $request) {
+    public function paymentComplete($orderNumber, \Http\Request $request) {
         $orderNumber = trim((string)$orderNumber);
         if (!$orderNumber) {
             throw new \Exception\NotFoundException('Не передан номер заказа');

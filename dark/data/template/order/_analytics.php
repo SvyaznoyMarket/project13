@@ -25,7 +25,7 @@
 
             if (typeof _gaq != 'undefined') _gaq.push(['_addTrans',
                 '<?= $order->getNumber() ?>', // Номер заказа
-                '<?= $shop->getName() ?>', // Название магазина (Необязательно)
+                '<?= $shop ? $shop->getName() : '' ?>', // Название магазина (Необязательно)
                 '<?= str_replace(',', '.', $order->getSum()) ?>', // Полная сумма заказа (дроби через точку)
                 '', // налог
                 '<?= $delivery ? $delivery->getPrice() : 0 ?>', // Стоимость доставки (дроби через точку)
@@ -34,23 +34,23 @@
                 '' // Страна (нобязательно)
             ]);
 
-                // _addItem: Номер заказа, Артикул, Название товара, Категория товара, Стоимость 1 единицы товара, Количество товара
-                <? foreach ($order->getProduct() as $orderProduct): ?>
-                <?
-                    $product = isset($productsById[$orderProduct->getId()]) ? $productsById[$orderProduct->getId()] : null;
-                    if (!$product) continue;
+            // _addItem: Номер заказа, Артикул, Название товара, Категория товара, Стоимость 1 единицы товара, Количество товара
+            <? foreach ($order->getProduct() as $orderProduct): ?>
+            <?
+                $product = isset($productsById[$orderProduct->getId()]) ? $productsById[$orderProduct->getId()] : null;
+                if (!$product) continue;
 
-                    $categories = $product->getCategory();
-                    $category = array_pop($categories);
-                    $rootCategory = array_shift($categories);
+                $categories = $product->getCategory();
+                $category = array_pop($categories);
+                $rootCategory = array_shift($categories);
 
-                    $categoryName = ($rootCategory && ($rootCategory->getId() != $category->getId()))
-                        ? ($rootCategory->getName() . ' - ' . $category->getName())
-                        : $category->getName();
-                ?>
+                $categoryName = ($rootCategory && ($rootCategory->getId() != $category->getId()))
+                    ? ($rootCategory->getName() . ' - ' . $category->getName())
+                    : $category->getName();
+            ?>
 
-                if (typeof _gaq != 'undefined') _gaq.push(['_addItem', <?= implode(',', array($order->getNumber(), $product->getArticle(), $product->getName(), $categoryName, $orderProduct->getPrice(), $orderProduct->getQuantity())) ?>]);
-                <?php endforeach ?>
+                if (typeof _gaq != 'undefined') _gaq.push(['_addItem', '<?= implode("','", array($order->getNumber(), $product->getArticle(), $product->getName(), $categoryName, $orderProduct->getPrice(), $orderProduct->getQuantity())) ?>']);
+            <?php endforeach ?>
 
             <? foreach ($order->getService() as $orderService): ?>
             <?
@@ -66,7 +66,7 @@
                 : $category->getName();
             ?>
 
-            if (typeof _gaq != 'undefined') _gaq.push(['_addItem', <?= implode(',', array($order->getNumber(), $service->getToken(), $service->getName(), $categoryName, $orderService->getPrice(), $orderService->getQuantity())) ?>]);
+                if (typeof _gaq != 'undefined') _gaq.push(['_addItem', '<?= implode("','", array($order->getNumber(), $service->getToken(), $service->getName(), $categoryName, $orderService->getPrice(), $orderService->getQuantity())) ?>']);
             <?php endforeach ?>
 
                 if (typeof _gaq != 'undefined') _gaq.push(['_trackTrans']);
@@ -97,13 +97,13 @@
                                 price: <?= $orderProduct->getPrice() ?>,
                                 quantity: <?= $orderProduct->getQuantity() ?>
 
-                            }<?php echo ((bool)$order->getService() || ($j < (count($order->getProduct()) - 1))) ? ',' : '' ?>
+                            }<?php echo ((bool)$order->getService() || ($j < (count($order->getProduct()) - 1))) ? ',' : "\n" ?>
 
                         <? endforeach ?>
 
                         <? foreach ($order->getService() as $j => $orderService): ?>
                             <?
-                            $service = isset($servicesById[$servicesById->getId()]) ? $servicesById[$orderService->getId()] : null;
+                            $service = isset($servicesById[$orderService->getId()]) ? $servicesById[$orderService->getId()] : null;
                             if (!$service) continue;
                             ?>
 
@@ -117,7 +117,7 @@
 
                         <? endforeach ?>
                     ]
-                }<?= ($i < (count($orders) - 1)) ? ',' : '' ?>
+                }<?= ($i < (count($orders) - 1)) ? ',' : "\n" ?>
 
                 <? endforeach ?>
             ]

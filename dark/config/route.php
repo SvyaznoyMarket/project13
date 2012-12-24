@@ -251,9 +251,9 @@ return array(
         'pattern' => '/orders/complete',
         'action'  => array('Order\Action', 'complete'),
     ),
-    'order.payment' => array(
+    'order.paymentComplete' => array(
         'pattern' => '/orders/payment/{orderNumber}',
-        'action'  => array('Order\Action', 'payment'),
+        'action'  => array('Order\Action', 'paymentComplete'),
     ),
     'order.bill' => array(
         'pattern' => '/private/orders/{orderNumber}/bill',

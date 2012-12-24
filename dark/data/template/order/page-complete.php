@@ -67,7 +67,7 @@ $isCredit = (bool)$creditData;
 <? endif ?>
 
 
-<? if (\App::config()->analytics) echo $page->render('order/_analytics', array(
+<? if (\App::config()->analytics['enabled']) echo $page->render('order/_analytics', array(
     'orders'       => $orders,
     'productsById' => $productsById,
     'servicesById' => $servicesById,
@@ -88,9 +88,7 @@ $isCredit = (bool)$creditData;
 <?php endif ?>
 
 
-<? if (\App::config()->googleAnalytics['enabled']): ?>
-    <?= $page->render('order/_odinkodForComplete', array('orders' => $orders)) ?>
-<? endif ?>
+<? if (\App::config()->googleAnalytics['enabled']) echo $page->render('order/_odinkodForComplete', array('orders' => $orders)) ?>
 
 
 <? if (\App::config()->googleAnalytics['enabled']): ?>
