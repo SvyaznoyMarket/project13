@@ -170,7 +170,7 @@ class App {
         static $instance;
 
         if (!$instance) {
-            $instance = new \Templating\PhpEngine(self::config()->dataDir . '/template');
+            $instance = new \Templating\PhpEngine(self::config()->appDir . '/template');
         }
 
         return $instance;
