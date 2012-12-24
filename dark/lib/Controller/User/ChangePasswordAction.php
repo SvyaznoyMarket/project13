@@ -12,6 +12,11 @@ class ChangePasswordAction {
     public function execute(\Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
+        $session = \App::session();
+
+        $message = $session->get('flash');
+        $session->remove('flash');
+
         $error = null;
 
         $oldPassword = trim((string)$request->get('password_old'));
@@ -30,6 +35,8 @@ class ChangePasswordAction {
                 if (!isset($response['confirmed']) || !$response['confirmed']) {
                     throw new \Exception('Не удалось сохранить форму');
                 }
+
+                $session->set('flash', 'Пароль успешно изменен');
 
                 return new \Http\RedirectResponse(\App::router()->generate('user.changePassword'));
             } catch (\Exception $e) {
@@ -50,6 +57,7 @@ class ChangePasswordAction {
         }
 
         $page = new \View\User\ChangePasswordPage();
+        $page->setParam('message', $message);
         $page->setParam('error', $error);
 
         return new \Http\Response($page->show());

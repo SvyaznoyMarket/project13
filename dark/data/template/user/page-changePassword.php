@@ -1,13 +1,16 @@
 <?php
 /**
- * @var $page  \View\User\ChangePasswordPage
- * @var $user  \Session\User
- * @var $error string
+ * @var $page    \View\User\ChangePasswordPage
+ * @var $user    \Session\User
+ * @var $error   string
+ * @var $message string
  */
 ?>
 
 <? if ($error): ?>
     <p class="red"><?= $error ?></p>
+<? elseif ($message): ?>
+    <p class="green"><?= $message ?></p>
 <? endif ?>
 
 <form action="<?= $page->url('user.changePassword') ?>" method="post">
