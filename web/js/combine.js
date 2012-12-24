@@ -1,7 +1,7 @@
 window.filesWithVersion = {
 "app.order.v4.js":1356085967,
 "ports.js":1355928392,
-"app.oneclick.js":1355993654,
+"app.oneclick.js":1356335153,
 "infopages.js":1351763597,
 "library.js":1356080304,
 "app.cart.js":1354099186,
@@ -11,6 +11,6 @@ window.filesWithVersion = {
 "dash.js":1356085967,
 "app.order.js":1356080304,
 "app.product.comment.list.js":1351763596,
-"app.product.js":1355492972,
-"app.shop.js":1356098825
+"app.product.js":1356335020,
+"app.shop.js":1356100386
 }
