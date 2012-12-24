@@ -178,6 +178,20 @@ class App {
 
     /**
      * @static
+     * @return Curl\Client
+     */
+    public static function curl() {
+        static $instance;
+
+        if (!$instance) {
+            $instance = new \Curl\Client();
+        }
+
+        return $instance;
+    }
+
+    /**
+     * @static
      * @return \Core\ClientV2
      */
     public static function coreClientV2() {
@@ -198,8 +212,7 @@ class App {
         static $instance;
 
         if (!$instance) {
-            $instance = new \Content\Client();
-            $instance->setUrl(\App::config()->wordpress['url']);
+            $instance = new \Content\Client(\App::config()->wordpress, self::curl());
         }
 
         return $instance;

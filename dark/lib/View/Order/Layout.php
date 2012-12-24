@@ -9,7 +9,7 @@ class Layout extends \View\DefaultLayout {
         $client = \App::contentClient();
 
         try {
-            $response = $client->send('footer_compact');
+            $response = $client->query('footer_compact');
         } catch (\Exception $e) {
             \App::exception()->add($e);
             \App::logger()->error($e);

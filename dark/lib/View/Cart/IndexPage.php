@@ -22,7 +22,14 @@ class IndexPage extends \View\DefaultLayout {
     }
 
     public function slotFooter() {
-        $response = @\App::contentClient()->send('footer_compact');
+        try {
+            $response = \App::contentClient()->query('footer_compact');
+        } catch (\Exception $e) {
+            \App::exception()->add($e);
+            \App::logger()->error($e);
+
+            $response = array('content' => '');
+        }
 
         return $this->render('order/_footer', $this->params) . "\n\n" . $response['content'];
     }

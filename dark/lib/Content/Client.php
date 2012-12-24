@@ -3,69 +3,51 @@
 namespace Content;
 
 class Client {
-    /** метод запроса: GET */
-    const methodGet = 'GET';
-    /** метод запроса: POST */
-    const methodPost = 'POST';
+    /** @var array */
+    private $config;
+    /** @var \Curl\Client */
+    private $curl;
 
-    /** @var string HTTP адрес сервиса контента */
-    private $url;
+    /**
+     * @param array        $config
+     * @param \Curl\Client $curl
+     */
+    public function __construct(array $config, \Curl\Client $curl) {
+        $this->config = array_merge(array(
+            'url' => null,
+        ), $config);
 
-    public function getUrl() {
-        return $this->url;
-    }
-
-    public function setUrl($url) {
-        $this->url = $url;
+        $this->curl = $curl;
     }
 
     /**
-     * @return array Собирает список опций для создания стрима к сервису
+     * @param string $action
+     * @param array  $data
+     * @return array|null
+     * @throws \Exception
      */
-    private function buildOptionList($method, $timeout) {
-        $options = array(
-            'http' => array(
-                'method'  => $method,
-                'timeout' => $timeout,
-                'header'  => "Content-Type: text/xml\r\n",
-            )
-        );
-
-        if ($method == self::methodPost) {
-            $options['http']['header'] = 'Content-type: application/x-www-form-urlencoded';
-        }
-
-        return $options;
-    }
-
-    public function send($action, $params = array(), $method = self::methodGet, $timeout = 1, $json = true) {
+    public function query ($action, array $data = array()) {
         \Debug\Timer::start('content');
         \App::logger()->info('Start content request ' . $action);
 
-        if ($json) {
-            $params['json'] = true;
+        $url = $this->config['url'] . $action . '?json=1';
+        $response = null;
+        try {
+            $response = $this->curl->query($url, $data);
+            $spend = \Debug\Timer::stop('content');
+            \App::logger()->info('End content request ' . $action . ' in ' . $spend);
+        } catch (\Exception $e) {
+            $spend = \Debug\Timer::stop('content');
+            \App::logger()->info('Fail content request ' . $action . ' in ' . $spend . ' with ' . $e);
         }
 
-        $start = microtime(true);
-        $url = $this->url.$action.'?'.http_build_query($params);
-        $response = file_get_contents($url, false, stream_context_create($this->buildOptionList(
-            $method,
-            $timeout
-        )));
-        \Util\RequestLogger::getInstance()->addLog($url, array(), (microtime(true) - $start), 'unknown');
+        \Util\RequestLogger::getInstance()->addLog($url, array(), $spend, 'unknown');
 
-        if ($json) {
-            $response = json_decode($response, true);
-
-            if (isset($response['result']))
-            {
-                $response = $response['result'];
-            }
+        $data = json_decode($response, true);
+        if ($error = json_last_error()) {
+            throw new \Exception('Json error', $error);
         }
 
-        $spend = \Debug\Timer::stop('content');
-        \App::logger()->info('End content request ' . $action . ' ' . $spend);
-
-        return $response;
+        return $data;
     }
 }

@@ -79,7 +79,7 @@ class DefaultLayout extends Layout {
         $client = \App::contentClient();
 
         try {
-            $response = $client->send('footer_default');
+            $response = $client->query('footer_default');
         } catch (\Exception $e) {
             \App::exception()->add($e);
             \App::logger()->error($e);
