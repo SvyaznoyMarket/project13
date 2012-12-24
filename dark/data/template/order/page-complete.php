@@ -75,17 +75,17 @@ $isCredit = (bool)$creditData;
 )) ?>
 
 
-<?php if (false && sfConfig::get('app_smartengine_push')): ?>
-<?php foreach ($orders as $order) {
-        $jsonOrdersData = json_encode(array('order' => array('id' => $order['id'], 'product' => array_map(function ($product) {
-            return array('id' => $product['product_id'], 'price' => $product['price'], 'quantity' => $product['quantity']);
-        }, $order['product']),)), JSON_HEX_QUOT | JSON_HEX_APOS)
-        ?>
-    <div class="product_buy-container" data-url="<?php echo url_for('smartengine_buy') ?>" data-order='<?php echo $jsonOrdersData ?>'></div>
-    <?php
-    }
+<? if (\App::config()->smartEngine['push']): ?>
+    <? foreach ($orders as $order): ?>
+    <?
+        $jsonOrdersData = array('order' => array('id' => $order->getId(), 'product' => array_map(function ($orderProduct) {
+            /** @var $orderProduct \Model\Order\Product\Entity */
+            return array('id' => $orderProduct->getId(), 'price' => $orderProduct->getPrice(), 'quantity' => $orderProduct->getQuantity());
+        }, $order->getProduct())))
     ?>
-<?php endif ?>
+        <div class="product_buy-container" data-url="<?= $page->url('smartengine.push.buy') ?>" data-order="<?= $page->json($jsonOrdersData) ?>"></div>
+    <? endforeach ?>
+<? endif ?>
 
 
 <? if (\App::config()->googleAnalytics['enabled']) echo $page->render('order/_odinkodForComplete', array('orders' => $orders)) ?>
