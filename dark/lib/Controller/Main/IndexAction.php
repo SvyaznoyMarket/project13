@@ -154,7 +154,13 @@ class IndexAction {
                 } else if ($bannerItem->getServiceId()) {
                     \App::logger()->error('Услуги для баннера еще не реализованы');
                 } else if ($bannerItem->getProductCategoryId()) {
-                    \App::logger()->error('Категории для баннера еще не реализованы');
+                    $category = reset($categoriesById);
+                    if (!$category instanceof \Model\Product\Category\Entity) {
+                        \App::logger()->error(sprintf('Категория #%s не найдена', $bannerItem->getProductCategoryId()));
+                        continue;
+                    }
+
+                    $url = $router->generate('product.category', array('categoryPath' => $category->getPath()));
                 }
             }
 

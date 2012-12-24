@@ -188,7 +188,8 @@ $(document).ready(function() {
 		np.data('hm', np.first().find('span').text().replace(/\D/g,'') )
 		
 		var tmp = $('.goodsbarbig:first').data('value')
-		var max = ( 'jsstock' in tmp ) ? tmp.jsstock : 1
+		if (typeof(tmp) !== 'undefined')
+			var max = ( 'jsstock' in tmp ) ? tmp.jsstock : 1
 		
 		np.bind('update', function() {
 			var hm = $(this).data('hm')

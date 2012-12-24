@@ -51,6 +51,7 @@ $(document).ready(function() {
 
 	if( $('#map-markers').length ) {
 		var allshops = $('#map-markers').data('content')
+		var showShopTrigger = false // показан ли конкретный город
 
 		//показываем бабл магазина при наведении на него в списке
 		var hoverTimer = { 'timer': null, 'id': 0 }
@@ -75,33 +76,53 @@ $(document).ready(function() {
 			}
 			return shopsStack
 	    }
+	    // выбранный город всегда остается наверху
+	    function shopScroll(){
+	    	
+	    }
 
 	    //показываем карту города, при клике на название города
 		var cityHandler = function(){
-			// show all city
-			$('.bMapShops__eTitle').click(function(){
-				$('.bMapShops__eMapCityList_city ul').empty()
-				window.regionMap.showCluster(  allshops )
-				return false
-			})
 			// show current city
 			$('.bMapShops__eMapCityList_city').click( function(){
-				$('.bMapShops__eMapCityList_city').removeClass('chosedCity')
-				$(this).addClass('chosedCity')
-				var curCity = []
-				$('.bMapShops__eMapCityList_city ul').empty()
-				for (var i in allshops){
-					if (allshops[i].region_id == $(this).attr('ref')){
-						var shopTpl = tmpl('shopInCity', allshops[i])
-						$(this).find('ul').append(shopTpl)
-						curCity.push(allshops[i])
-					}
-				}
-				if (curCity.length) {
-					window.regionMap.showMarkers(  getShopsStack(curCity) )
+				var nowRef = $(this).attr('ref')
+				$('.bShopCard').hide()
+				$('.bMapShops__eMapCityList_city ul').fadeOut(500, function(){
+					$('.bMapShops__eMapCityList_city ul').empty()
+				})
+				if (showShopTrigger){
+					// город открыт, схлопываем список магазинов
+					$(this).removeClass('chosedCity')
+					$('.bMapShops__eMapCityList_city').show()
+					showShopTrigger = false
 				}
 				else{
-					alert('В этом городе пока еще нет наших магазинов')
+					// город не открыт открываем спискок магазинов
+					var curCity = []
+					for (var i in allshops){ //получаем список магазинов в этом городе
+						if (allshops[i].region_id == $(this).attr('ref')){
+							var shopTpl = tmpl('shopInCity', allshops[i])
+							$(this).find('ul').append(shopTpl)
+							curCity.push(allshops[i])
+						}
+					}
+					if (curCity.length) { // если магазины есть
+						$('.bMapShops__eMapCityList_city').hide()
+						$(this).addClass('chosedCity').show()
+						var startOffsetTop = $('.chosedCity').offset().top
+						$('.shop_'+nowRef).css('display', 'inline-block')
+						$(this).find('ul').fadeIn(500, function(){
+							window.regionMap.showMarkers(  getShopsStack(curCity) )
+							$('.bMapShops__eMapCityList').scroll(function(){
+								var nowOffestTop = $('.chosedCity').offset().top
+								$('.chosedCity .cityName').css('top', startOffsetTop-nowOffestTop)
+							})
+						})
+					}
+					else{
+						alert('В этом городе пока еще нет наших магазинов')
+					}
+					showShopTrigger = true
 				}
 			})
 		}
