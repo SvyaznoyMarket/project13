@@ -100,9 +100,16 @@ $json = array(
             </p>
 
             <div class="bServiceCard__ePrice pb10">
-                <? if ($alike->getPrice()): ?>
-                    <?= $page->helper->formatPrice($alike->getPrice()) ?>
+                <? if (!is_null($alike->getPrice())): ?>
+                    <? if($alike->getPrice()): ?>
+                    <?= $page->helper->formatPrice($alike->getPrice()); ?>
                     <span class="rubl">p</span>
+                    <? else: ?>
+                    бесплатно
+                    <? endif ?>
+                <? elseif (!is_null($alike->getPriceMin())): ?>
+                    от <?= $page->helper->formatPrice($alike->getPriceMin()) ?>
+                <span class="rubl">p</span>
                 <? elseif ($alike->getIsInShop() && $user->getRegion()->getHasService()): ?>
                     <div>доступна в магазине</div>
                 <? endif ?>

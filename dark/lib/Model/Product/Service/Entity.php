@@ -271,7 +271,7 @@ class Entity {
     public function setPriceMin($priceMin)
     {
         if (!is_null($priceMin)) {
-            $this->priceMin = (int)$priceMin;
+            $this->priceMin = (int)$priceMin > 0 ? (int)$priceMin : null;
         } else {
             $this->priceMin = $priceMin;
         }
@@ -291,7 +291,7 @@ class Entity {
     public function setPricePercent($pricePercent)
     {
         if (!is_null($pricePercent)) {
-            $this->pricePercent = (int)$pricePercent;
+            $this->pricePercent = (int)$pricePercent > 0 ? (int)$pricePercent : null;
         } else {
             $this->pricePercent = $pricePercent;
         }
