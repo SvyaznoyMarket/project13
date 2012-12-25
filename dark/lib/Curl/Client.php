@@ -9,7 +9,7 @@ class Client {
      * @return mixed|null
      * @throws \RuntimeException
      */
-    public function query($url, array $data = []) {
+    public function query($url, array $data = array()) {
         $connection = $this->create($url, $data);
 
         $response = null;
@@ -23,16 +23,16 @@ class Client {
             }
 
             curl_close($connection);
-            //\App::logger('curl')->debug(['response' => $response, 'info' => $info]);
+            //\App::logger('curl')->debug(array('response' => $response, 'info' => $info));
         } catch (\Exception $e) {
             curl_close($connection);
-            //\App::logger('curl')->error(['response' => $response, 'info' => $info]);
+            //\App::logger('curl')->error(array('response' => $response, 'info' => $info));
         }
 
         return $response;
     }
 
-    private function create($url, array $data = []) {
+    private function create($url, array $data = array()) {
         //\App::logger()->debug(sprintf('Curl %s %s %s', (bool)$data ? 'POST' : 'GET', $url, json_encode($data, JSON_UNESCAPED_UNICODE)));
 
         $connection = curl_init();
@@ -44,7 +44,7 @@ class Client {
         if ((bool)$data) {
             curl_setopt($connection, CURLOPT_POST, true);
             curl_setopt($connection, CURLOPT_POSTFIELDS, http_build_query($data));
-            //curl_setopt($connection, CURLOPT_HTTPHEADER, ['Content-Type: application/x-www-form-urlencoded']);
+            //curl_setopt($connection, CURLOPT_HTTPHEADER, array('Content-Type: application/x-www-form-urlencoded'));
         }
 
         return $connection;
