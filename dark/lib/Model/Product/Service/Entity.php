@@ -19,8 +19,12 @@ class Entity {
     private $isDelivered;
     /** @var bool */
     private $isInShop;
-    /** @var int */
+    /** @var int|null */
     private $price;
+    /** @var int|null */
+    private $pricePercent;
+    /** @var int|null */
+    private $priceMin;
     /** @var array Category\Entity[] */
     private $category = array();
     /** @var array Entity[] */
@@ -40,6 +44,8 @@ class Entity {
         if (array_key_exists('is_in_shop', $data)) $this->setIsInShop($data['is_in_shop']);
         if (array_key_exists('only_inshop', $data)) $this->setIsInShop($data['only_inshop']);
         if (array_key_exists('price', $data)) $this->setPrice($data['price']);
+        if (array_key_exists('price_percent', $data)) $this->setPricePercent($data['price_percent']);
+        if (array_key_exists('price_min', $data)) $this->setPriceMin($data['price_min']);
         // поддержка /v2/service/get2
         if (array_key_exists('category_list', $data) && is_array($data['category_list'])) foreach ($data['category_list'] as $categoryData) {
             $this->addCategory(new Category\Entity($categoryData));
@@ -210,11 +216,15 @@ class Entity {
      * @param int $price
      */
     public function setPrice($price) {
-        $this->price = (int)$price;
+        if (!is_null($price)) {
+            $this->price = (int)$price;
+        } else {
+            $this->price = $price;
+        }
     }
 
     /**
-     * @return int
+     * @return int|null
      */
     public function getPrice() {
         return $this->price;
@@ -253,5 +263,45 @@ class Entity {
      */
     public function isInSale() {
         return $this->getIsDelivered() && $this->getPrice() && $this->getPrice() >= \App::config()->service['minPriceForDelivery'];
+    }
+
+    /**
+     * @param int $priceMin
+     */
+    public function setPriceMin($priceMin)
+    {
+        if (!is_null($priceMin)) {
+            $this->priceMin = (int)$priceMin;
+        } else {
+            $this->priceMin = $priceMin;
+        }
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getPriceMin()
+    {
+        return $this->priceMin;
+    }
+
+    /**
+     * @param int $pricePercent
+     */
+    public function setPricePercent($pricePercent)
+    {
+        if (!is_null($pricePercent)) {
+            $this->pricePercent = (int)$pricePercent;
+        } else {
+            $this->pricePercent = $pricePercent;
+        }
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getPricePercent()
+    {
+        return $this->pricePercent;
     }
 }

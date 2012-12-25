@@ -38,7 +38,7 @@ $json = array(
     </p>
 
     <div class="bSet__ePrice mServ" ref="<?= $service->getToken() ?>" data-value="<?= $page->escape(json_encode($json)) ?>">
-        <? if ($service->getPrice()): ?>
+        <? if (!is_null($service->getPrice())): ?>
         <div class="font34">
             <strong>
             <? if ($service->getPrice()): ?>
@@ -48,7 +48,12 @@ $json = array(
             <? endif ?>
             </strong>
         </div>
+        <? elseif (!is_null($service->getPricePercent())): ?>
+        <div class="font16">
+            <strong><?= $service->getPricePercent() ?>%</strong> от стоимости товара<?php if (!is_null($service->getPriceMin())): ?>, но не менее <strong><span class="price"><?= $page->helper->formatPrice($service->getPriceMin()) ?></span> <span class="rubl">p</span></strong><?php endif ?>
+        </div>
         <? endif ?>
+
         <? if ($user->getRegion()->getHasService()): ?>
             <? if ($service->isInSale()): ?>
                 <a class="link1 gaEvent"
