@@ -618,8 +618,11 @@ class Action {
             $data[] = $orderData;
         }
 
-        $result = \App::coreClientV2()->query('order/create-packet', array(), $data);
-        //$result = json_decode('[{"confirmed":"true","id":"1118595","number":"XX013863","number_erp":"COXX-013863","user_id":null,"price":11980,"pay_sum":11980}]', true);
+        $params = array();
+        if ($userEntity && $userEntity->getToken()) {
+            $params['token'] = $userEntity->getToken();
+        }
+        $result = \App::coreClientV2()->query('order/create-packet', $params, $data);
         if (!is_array($result)) {
             throw new \Exception(sprintf('Заказ не подтвержден. Ответ ядра: %s', json_encode($result)));
         }
