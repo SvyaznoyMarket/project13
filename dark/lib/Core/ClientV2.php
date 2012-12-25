@@ -225,21 +225,24 @@ class ClientV2 implements ClientInterface
             throw $e;
         }
 
-        if (is_array($decoded) && array_key_exists('error', $decoded)) {
-            $message = $decoded['error']['message'] . ' ' . $this->encode($decoded);
-            $message = preg_replace_callback('/\\\\u([0-9a-f]{4})/i', function($match) {
-                return mb_convert_encoding(pack('H*', $match[1]), 'UTF-8', 'UCS-2BE');
-            }, $message);
+        if (is_array($decoded)) {
+            if (array_key_exists('error', $decoded)) {
+                $message = $decoded['error']['message'] . ' ' . $this->encode($decoded);
+                $message = preg_replace_callback('/\\\\u([0-9a-f]{4})/i', function($match) {
+                    return mb_convert_encoding(pack('H*', $match[1]), 'UTF-8', 'UCS-2BE');
+                }, $message);
 
-            $e = new \RuntimeException(
-                $message,
-                (int)$decoded['error']['code']
-            );
+                $e = new \RuntimeException(
+                    $message,
+                    (int)$decoded['error']['code']
+                );
 
-            throw $e;
-        }
-        if (array_key_exists('result', $decoded)) {
-            $decoded = $decoded['result'];
+                throw $e;
+            }
+
+            if (array_key_exists('result', $decoded)) {
+                $decoded = $decoded['result'];
+            }
         }
 
         return $decoded;
