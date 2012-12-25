@@ -1,7 +1,9 @@
 $(document).ready(function() {
+	// GA variables
+	var items_num = 0 // количество элементов в заказе (если в заказе 10 лопат и 1 совок, то логируем 11 элементов)
+	var suborders_num = 0 // количество подзаказов в заказе
 	/* ---------------------------------------------------------------------------------------- */
 	/* COMMON DESIGN, BEHAVIOUR ONLY */
-	var _gaq = window._gaq || []
 	/* Custom Selectors */ 
 	$('body').delegate( '.bSelect', 'click', function() {
 		if( $(this).hasClass('mDisabled') )
@@ -339,6 +341,14 @@ $(document).ready(function() {
 	var Model = $('#order-delivery_map-data').data('value')
 	// Check Consistency TODO
 
+	// GA items count log
+	if (typeof(_gaq) !== 'undefined') {
+		$.each(Model.items, function(i, product){
+			items_num += product.quantity
+		})
+		_gaq.push(['_trackEvent', 'New order', 'Items', items_num]);
+	}
+
 	function OrderModel() {
 		var self = this	
 
@@ -575,7 +585,12 @@ up:				for( var linedate in box.caclDates ) { // Loop for T Interval
 		self.clickDate = function( box, d, e ) {
 			if( !d.enable() ) 
 				return
+			var prevDay = box.chosenDate()
 			box.chosenDate( d.tstamp )
+			var nowDay = box.chosenDate()
+			var delta = (nowDay - prevDay)/60/60/24/1000
+			if (typeof(_gaq) !== 'undefined') 
+				_gaq.push(['_trackEvent', 'Order card', 'Date changed', delta]);
 			box.currentIntervals.removeAll()
 			for( var key in d.intervals )
 				box.currentIntervals.push( d.intervals[key] )
@@ -588,8 +603,11 @@ up:				for( var linedate in box.caclDates ) { // Loop for T Interval
 		}
 
 		self.deleteItem = function( box, d, e ) {
-			// ajax del 
+			// ajax del
 			$.get( d.deleteUrl, function(){ 
+			// GA
+			if (typeof(_gaq) !== 'undefined') 
+				_gaq.push(['_trackEvent', 'Order card', 'Item deleted']);
 			// drop from box
 				box.itemList.remove( d )
 				if( !box.itemList().length )
@@ -829,7 +847,8 @@ upi:			for( var item=0, boxitems=self.chosenBox().itemList(); item < boxitems.le
 		var endTimePreOrder = new Date().getTime()
 		var timeSpentPreOrder = endTimePreOrder - startTime
 		// console.info(timeSpent)
-		_gaq.push(['_trackTiming', 'New order', 'JS response', timeSpentPreOrder])
+		if (typeof(_gaq) !== 'undefined') 
+			_gaq.push(['_trackTiming', 'New order', 'JS response', timeSpentPreOrder])
 		for( var tkn in Model.deliveryTypes )
 			if( Model.deliveryTypes[tkn].type === 'standart' )
 				self.dlvrCourierEnable(true)
@@ -984,13 +1003,15 @@ flds:	for( field in fieldsToValidate ) {
 			type_id = $('input[name="order[delivery_type_id]"]').val()
 		toSend.push( { name: 'order[delivery_type_id]', value: type_id })
 		toSend.push( { name: 'delivery_map', value: JSON.stringify( MVM.getServerModel() )  } )//encodeURIComponent
+		for (var i in MVM.getServerModel().deliveryTypes)
+			suborders_num++
 		if( typeof(SertificateCard) !== 'undefined' )
 			if( SertificateCard.isActive() ) {
 				toSend.push( { name: 'order[card]', value: SertificateCard.getCode() })
 				toSend.push( { name: 'order[pin]', value: SertificateCard.getPIN() })
 			}
 		var startAjaxOrderTime = new Date().getTime()
-		// console.log(toSend)
+		// console.info(toSend)
 		$.ajax({
 			url: form.attr('action'),
 			timeout: 20000,
@@ -1007,9 +1028,13 @@ flds:	for( field in fieldsToValidate ) {
 					return
 				}
 				Blocker.bye()
-				var endAjaxOrderTime = new Date().getTime()
-				var AjaxOrderSpent = endAjaxOrderTime - startAjaxOrderTime
-				_gaq.push(['_trackTiming', 'Order complete', 'DB response', AjaxOrderSpent])
+				if (typeof(_gaq) !== 'undefined') {
+					var endAjaxOrderTime = new Date().getTime()
+					var AjaxOrderSpent = endAjaxOrderTime - startAjaxOrderTime
+					_gaq.push(['_trackEvent', 'Order complete', suborders_num, items_num])
+					_gaq.push(['_trackTiming', 'Order complete', 'DB response', AjaxOrderSpent])
+				}
+				
 				if (typeof(yaCounter10503055) !== 'undefined')
 					yaCounter10503055.reachGoal('\orders\complete')
 				if( 'redirect' in data.data )
