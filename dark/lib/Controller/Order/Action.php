@@ -13,6 +13,8 @@ class Action {
      * @throws \Exception
      */
     public function create(\Http\Request $request) {
+        \App::logger()->debug('Exec ' . __METHOD__);
+
         $client = \App::coreClientV2();
         $user = \App::user();
         $region = $user->getRegion();
@@ -382,6 +384,8 @@ class Action {
      * @throws \Exception
      */
     public function complete(\Http\Request $request) {
+        \App::logger()->debug('Exec ' . __METHOD__);
+
         $user = \App::user();
 
         // последние заказы в сессии
@@ -515,6 +519,8 @@ class Action {
      * @throws \Exception\NotFoundException
      */
     public function paymentComplete($orderNumber, \Http\Request $request) {
+        \App::logger()->debug('Exec ' . __METHOD__);
+
         $orderNumber = trim((string)$orderNumber);
         if (!$orderNumber) {
             throw new \Exception\NotFoundException('Не передан номер заказа');

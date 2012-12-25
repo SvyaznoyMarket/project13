@@ -10,7 +10,6 @@ class BillAction {
     }
 
     public function execute(\Http\Request $request, $orderNumber) {
-        // TODO: доделать
         \App::logger()->debug('Exec ' . __METHOD__);
 
         $client = \App::curl();
