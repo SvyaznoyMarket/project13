@@ -80,20 +80,62 @@ class Action {
                 $deliveryCalcResult = $data;
                 $shops = array_map(function($data) { return new \Model\Shop\Entity($data); }, $deliveryCalcResult['shops']);
             }, function (\Exception $e) use (&$page) {
-                if ($e instanceof \Core\Exception) {
-                    \App::exception()->remove($e);
-
-                    $errorData = (array)$e->getContent();
-                    $errorData = isset($errorData['product_error_list']) ? (array)$errorData['product_error_list'] : array();
-                    if ((bool)$errorData) {
-                        $page = new \View\Order\WarnPage();
-                        $page->setParam('errorData', $errorData);
-
-                        return;
-                    }
+                if (!$e instanceof \Core\Exception) {
+                    throw $e;
                 }
 
-                throw $e;
+                \App::exception()->remove($e);
+
+                $errorData = (array)$e->getContent();
+                $errorData = isset($errorData['product_error_list']) ? (array)$errorData['product_error_list'] : array();
+
+                // товары
+                $productIds = array_map(function ($item) { return $item['id']; }, $errorData);
+                /** @var $productsById \Model\Product\Entity[] */
+                $productsById = array();
+                foreach (\RepositoryManager::getProduct()->getCollectionById($productIds) as $product) {
+                    $productsById[$product->getId()] = $product;
+                }
+
+                if ((bool)$errorData && (bool)$productsById) {
+                    foreach ($errorData as &$errorItem) {
+                        /** @var $product \Model\Product\Entity */
+                        $product = isset($productsById[$errorItem['id']]) ? $productsById[$errorItem['id']] : null;
+                        if (!$product) {
+                            \App::logger()->error(sprintf('Товар #%s из данных об ошибке %s не найден', $errorItem['id'], json_encode($errorItem)));
+                            continue;
+                        }
+                        $cartProduct = \App::user()->getCart()->getProductById($product->getId());
+                        if (!$cartProduct) {
+                            \App::logger()->error(sprintf('Товар #%s не найден в корзине', $errorItem['id']));
+                            continue;
+                        }
+
+                        $errorItem['product'] = array();
+                        $errorItem['product']['id'] = $product->getId();
+                        $errorItem['product']['token'] = $product->getToken();
+                        $errorItem['product']['name'] = $product->getName();
+                        $errorItem['product']['image'] = $product->getImageUrl(0);
+
+                        $errorItem['product']['quantity'] = $cartProduct->getQuantity();
+                        $errorItem['product']['price'] = $product->getPrice();
+
+                        if (!empty($errorItem['quantity_available'])) {
+                            $errorItem['product']['addUrl'] = \App::router()->generate('cart.product.add', array('productId' => $product->getId(), 'quantity' => $errorItem['quantity_available']));
+                        }
+                        $errorItem['product']['deleteUrl'] = \App::router()->generate('cart.product.delete', array('productId' => $product->getId()));
+
+                        if (708 == $errorItem['code']) {
+                            $errorItem['message'] = !empty($errorItem['quantity_available']) ? sprintf('Доступно только %s шт.', $errorItem['quantity_available']) : $errorItem['message'];
+                        }
+
+                    } if (isset($errorItem)) unset($errorItem);
+
+                    $page = new \View\Order\WarnPage();
+                    $page->setParam('errorData', $errorData);
+
+                    return;
+                }
             });
             //$result = json_decode(file_get_contents(\App::config()->dataDir . '/core/v2-order-calc.json'), true);
 
