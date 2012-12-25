@@ -38,9 +38,13 @@
                             <? if ($service->getPrice()): ?>
                                 &mdash; <strong><?= $page->helper->formatPrice($service->getPrice()) ?>&nbsp;<span class="rubl">p</span></strong>
                             <? else: ?>
-                                <!-- &mdash; <strong>бесплатно</strong>-->
+                                &mdash; <strong>бесплатно</strong>
                             <? endif ?>
-                        </div>
+                            </div>
+                        <? elseif (!is_null($service->getPriceMin())): ?>
+                            <div class="font16 mInlineBlock">
+                                &mdash; от <strong><?= $page->helper->formatPrice($service->getPriceMin()) ?>&nbsp;<span class="rubl">p</span></strong>
+                            </div>
                         <? endif ?>
                     </div>
                     <div class="pb20">

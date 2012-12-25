@@ -11,7 +11,7 @@
 <div class="bMapShops">
     <div class='bMapShops__eHead'>
         <div class='bMapShops__eRegion font14 width290'>
-            <p>У нас 58 магазинов в 32 городах России.</p>
+            <p>У нас <?php echo count($markers) ?> магазинов в <?php echo count($shopAvailableRegions)?> городах России.</p>
             <p>А доставить вашу покупку мы можем даже туда, где нас нет: во многих городах нам помогают с доставкой проверенные транспортные компании.</p>
 
         </div>
