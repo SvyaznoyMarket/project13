@@ -52,14 +52,14 @@
         </div>
 
         <div class="pb10">
-            <label for="user_phonenumber">Мобильный телефон</label>:
+            <label for="user_mobile_phone">Мобильный телефон</label>:
         </div>
-        <input type="text" id="user_phonenumber" value="<?= $form->getMobilePhone() ?>" name="user[phonenumber]" class="text width418 mb10" />
+        <input type="text" id="user_mobile_phone" value="<?= $form->getMobilePhone() ?>" name="user[mobile_phone]" class="text width418 mb10" />
 
         <div class="pb10">
-            <label for="user_phonenumber_city">Домашний телефон</label>:
+            <label for="user_home_phone">Домашний телефон</label>:
         </div>
-        <input type="text" id="user_phonenumber_city" value="<?= $form->getHomePhone() ?>" name="user[phonenumber_city]" class="text width418 mb10" />
+        <input type="text" id="user_home_phone" value="<?= $form->getHomePhone() ?>" name="user[home_phone]" class="text width418 mb10" />
 
         <div class="pb10">
             <label for="user_skype">Skype</label>:

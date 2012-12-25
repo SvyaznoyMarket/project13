@@ -20,7 +20,6 @@
   
   <div id="adriverOrder" data-vars='<?php echo $jsonOrdr ?>' class="jsanalytics"></div>
   <div id="heiasComplete" data-vars='<?php echo $jsonOrdr ?>' class="jsanalytics"></div>
-  <div id="myThingsFin" data-vars='<?php echo $jsonMyThings ?>' class="jsanalytics"></div>
 
   <script type="text/javascript">
     function runAnalitics() {
