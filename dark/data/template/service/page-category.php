@@ -40,10 +40,10 @@
                             <? else: ?>
                                 &mdash; <strong>бесплатно</strong>
                             <? endif ?>
-                        </div>
-                        <? elseif (!is_null($service->getPricePercent())): ?>
-                            <div class="font12 mInlineBlock">
-                                &mdash; <strong><?= $service->getPricePercent() ?>%</strong> от стоимости товара<?php if (!is_null($service->getPriceMin())): ?>, но не менее <strong><span class="price"><?= $page->helper->formatPrice($service->getPriceMin()) ?></span> <span class="rubl">p</span></strong><?php endif ?>
+                            </div>
+                        <? elseif (!is_null($service->getPriceMin())): ?>
+                            <div class="font16 mInlineBlock">
+                                &mdash; от <strong><?= $page->helper->formatPrice($service->getPriceMin()) ?>&nbsp;<span class="rubl">p</span></strong>
                             </div>
                         <? endif ?>
                     </div>
