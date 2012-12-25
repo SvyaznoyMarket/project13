@@ -1,7 +1,9 @@
 $(document).ready(function() {
+	// GA variables
+	var items_num = 0 // количество элементов в заказе (если в заказе 10 лопат и 1 совок, то логируем 11 элементов)
+	var suborders_num = 0 // количество подзаказов в заказе
 	/* ---------------------------------------------------------------------------------------- */
 	/* COMMON DESIGN, BEHAVIOUR ONLY */
-	var _gaq = window._gaq || []
 	/* Custom Selectors */ 
 	$('body').delegate( '.bSelect', 'click', function() {
 		if( $(this).hasClass('mDisabled') )
@@ -339,6 +341,14 @@ $(document).ready(function() {
 	var Model = $('#order-delivery_map-data').data('value')
 	// Check Consistency TODO
 
+	// GA items count log
+	if (typeof(_gaq) !== 'undefined') {
+		$.each(Model.items, function(i, product){
+			items_num += product.quantity
+		})
+		_gaq.push(['_trackEvent', 'New order', 'Items', items_num]);
+	}
+
 	function OrderModel() {
 		var self = this	
 
@@ -575,7 +585,12 @@ up:				for( var linedate in box.caclDates ) { // Loop for T Interval
 		self.clickDate = function( box, d, e ) {
 			if( !d.enable() ) 
 				return
+			var prevDay = box.chosenDate()
 			box.chosenDate( d.tstamp )
+			var nowDay = box.chosenDate()
+			var delta = (nowDay - prevDay)/60/60/24/1000
+			if (typeof(_gaq) !== 'undefined') 
+				_gaq.push(['_trackEvent', 'Order card', 'Date changed', delta]);
 			box.currentIntervals.removeAll()
 			for( var key in d.intervals )
 				box.currentIntervals.push( d.intervals[key] )
@@ -588,8 +603,11 @@ up:				for( var linedate in box.caclDates ) { // Loop for T Interval
 		}
 
 		self.deleteItem = function( box, d, e ) {
-			// ajax del 
+			// ajax del
 			$.get( d.deleteUrl, function(){ 
+			// GA
+			if (typeof(_gaq) !== 'undefined') 
+				_gaq.push(['_trackEvent', 'Order card', 'Item deleted']);
 			// drop from box
 				box.itemList.remove( d )
 				if( !box.itemList().length )
@@ -829,7 +847,8 @@ upi:			for( var item=0, boxitems=self.chosenBox().itemList(); item < boxitems.le
 		var endTimePreOrder = new Date().getTime()
 		var timeSpentPreOrder = endTimePreOrder - startTime
 		// console.info(timeSpent)
-		_gaq.push(['_trackTiming', 'New order', 'JS response', timeSpentPreOrder])
+		if (typeof(_gaq) !== 'undefined') 
+			_gaq.push(['_trackTiming', 'New order', 'JS response', timeSpentPreOrder])
 		for( var tkn in Model.deliveryTypes )
 			if( Model.deliveryTypes[tkn].type === 'standart' )
 				self.dlvrCourierEnable(true)
