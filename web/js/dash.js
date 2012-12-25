@@ -563,9 +563,6 @@ $(document).ready(function(){
 			if( 'gooReMaBuy' in ANALYTICS ) {
 				ANALYTICS.gooReMaBuy()
 			}
-			if( 'myThingsBuy' in ANALYTICS ) {
-				ANALYTICS.myThingsBuy( arguments[1] )
-			}
 		})
 	}
 
