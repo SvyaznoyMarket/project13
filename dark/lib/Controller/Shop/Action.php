@@ -37,8 +37,26 @@ class Action {
         // запрашиваем список регионов для выбора
         $shopAvailableRegions = array();
         \RepositoryManager::getRegion()->prepareShopAvailableCollection(function($data) use (&$shopAvailableRegions) {
+            $firstElements = array();
+            $elements = array();
             foreach ($data as $item) {
-                $shopAvailableRegions[] = new \Model\Region\Entity($item);
+                $region = new \Model\Region\Entity($item);
+                //если прилетела Москва
+                if (14974 == $region->getId()) {
+                    //если Москва, добавляем ее в начало
+                    array_unshift($firstElements, $region);
+                } elseif (108136 == $region->getId()) {
+                    //если Питер, добавляем его в конец
+                    $firstElements[] = $region;
+                } else {
+                    $elements[] = $region;
+                }
+            }
+            foreach ($firstElements as $item) {
+                $shopAvailableRegions[] = $item;
+            }
+            foreach ($elements as $item) {
+                $shopAvailableRegions[] = $item;
             }
         });
 
