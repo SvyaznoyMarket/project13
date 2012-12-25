@@ -1003,13 +1003,15 @@ flds:	for( field in fieldsToValidate ) {
 			type_id = $('input[name="order[delivery_type_id]"]').val()
 		toSend.push( { name: 'order[delivery_type_id]', value: type_id })
 		toSend.push( { name: 'delivery_map', value: JSON.stringify( MVM.getServerModel() )  } )//encodeURIComponent
+		for (var i in MVM.getServerModel().deliveryTypes)
+			suborders_num++
 		if( typeof(SertificateCard) !== 'undefined' )
 			if( SertificateCard.isActive() ) {
 				toSend.push( { name: 'order[card]', value: SertificateCard.getCode() })
 				toSend.push( { name: 'order[pin]', value: SertificateCard.getPIN() })
 			}
 		var startAjaxOrderTime = new Date().getTime()
-		// console.log(toSend)
+		// console.info(toSend)
 		$.ajax({
 			url: form.attr('action'),
 			timeout: 20000,
@@ -1026,9 +1028,13 @@ flds:	for( field in fieldsToValidate ) {
 					return
 				}
 				Blocker.bye()
-				var endAjaxOrderTime = new Date().getTime()
-				var AjaxOrderSpent = endAjaxOrderTime - startAjaxOrderTime
-				_gaq.push(['_trackTiming', 'Order complete', 'DB response', AjaxOrderSpent])
+				if (typeof(_gaq) !== 'undefined') {
+					var endAjaxOrderTime = new Date().getTime()
+					var AjaxOrderSpent = endAjaxOrderTime - startAjaxOrderTime
+					_gaq.push(['_trackEvent', 'Order complete', suborders_num, items_num])
+					_gaq.push(['_trackTiming', 'Order complete', 'DB response', AjaxOrderSpent])
+				}
+				
 				if (typeof(yaCounter10503055) !== 'undefined')
 					yaCounter10503055.reachGoal('\orders\complete')
 				if( 'redirect' in data.data )
