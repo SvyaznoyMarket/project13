@@ -27,6 +27,9 @@ class Client {
         } catch (\Exception $e) {
             curl_close($connection);
             //\App::logger('curl')->error(array('response' => $response, 'info' => $info));
+
+            \App::exception()->add($e);
+            throw $e;
         }
 
         return $response;

@@ -350,4 +350,10 @@ return array(
         'pattern' => '/qr/{qrcode}',
         'action'  => array('Qrcode\Action', 'execute'),
     ),
+
+    //content
+    'content' => array(
+        'pattern' => '/{token}',
+        'action'  => array('Content\Action', 'execute'),
+    )
 );

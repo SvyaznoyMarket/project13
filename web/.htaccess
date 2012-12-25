@@ -39,7 +39,7 @@ Options +FollowSymLinks +ExecCGI
   RewriteRule ^certificate-check* dark.php [L]
   RewriteRule ^product/delivery-info* dark.php [L]
   RewriteRule ^product/delivery1click/? dark.php [L]
-  RewriteRule ^region/change/* dark.php [L]
+#  RewriteRule ^region/change/* dark.php [L]
   RewriteRule ^region/autocomplete* dark.php [L]
   RewriteRule ^shops* dark.php [L]
   RewriteRule ^line/* dark.php [L]
@@ -83,7 +83,7 @@ Options +FollowSymLinks +ExecCGI
   RewriteCond %{REQUEST_FILENAME} !-f
 
   # no, so we redirect to our front web controller
-  RewriteRule ^(.*)$ index.php [QSA,L]
+  RewriteRule ^(.*)$ dark.php [QSA,L]
 </IfModule>
 
 # php
