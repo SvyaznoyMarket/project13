@@ -59,6 +59,7 @@ Options +FollowSymLinks +ExecCGI
   RewriteRule ^product-also-viewed/.*$ dark.php [L]
   RewriteRule ^orders/new.* dark.php [L]
   RewriteRule ^orders/complete.* dark.php [L]
+  RewriteRule ^orders/create-external.* dark.php [L]
   RewriteRule ^products/set/* dark.php [L]
   RewriteRule ^orders/payment/.* dark.php [L]
   RewriteRule ^products/accessories/.* dark.php [L]

@@ -106,7 +106,7 @@ class Router {
         }
 
         $extra = array_diff_key($params, $vars);
-        if ($extra && $query = http_build_query($extra, '', '&')) {
+        if ((bool)$extra && $query = http_build_query($extra, '', '&')) {
             $url .= '?' . $query;
         }
 

@@ -8,8 +8,9 @@ class ExternalCreateAction {
      * @return \Http\RedirectResponse
      * @throws \Exception\NotFoundException
      */
-    public function create(\Http\Request $request) {
+    public function execute(\Http\Request $request) {
         $user = \App::user();
+        $cart = $user->getCart();
 
         $productInCart = (array)$request->get('items');
         $regionId = (int)$request->get('city_id');
@@ -33,7 +34,7 @@ class ExternalCreateAction {
         }
 
         // очистка корзины
-        $user->getCart()->clear();
+        $cart->clear();
         // наполнение корзины товарами из заказа извне
         foreach ($productInCart as $id => $quantity) {
             /** @var $product \Model\Product\Entity|null */
@@ -43,7 +44,7 @@ class ExternalCreateAction {
                 continue;
             }
 
-            $user->getCart()->setProduct($product, $quantity);
+            $cart->setProduct($product, $quantity);
         }
 
         $params = array();
