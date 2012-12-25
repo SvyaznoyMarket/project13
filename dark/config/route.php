@@ -344,4 +344,10 @@ return array(
         'action'  => array('User\SubscribeAction', 'execute'),
         'method'  => array('POST'),
     ),
+
+    // qrcode
+    'qrcode' => array(
+        'pattern' => '/qr/{qrcode}',
+        'action'  => array('Qrcode\Action', 'execute'),
+    ),
 );

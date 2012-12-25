@@ -3,6 +3,12 @@
 namespace Controller\Product;
 
 class SetAction {
+    /**
+     * @param string        $productBarcodes Например, '2070903000023,2070903000054,2070902000000'
+     * @param \Http\Request $request
+     * @return \Http\Response
+     * @throws \Exception\NotFoundException
+     */
     public function execute($productBarcodes, \Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
