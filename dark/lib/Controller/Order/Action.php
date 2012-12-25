@@ -63,6 +63,8 @@ class Action {
             }
 
             // подготовка пакета запросов
+            // страница с уточнением количества товаров или с ошибкой
+            $page = null;
 
             // магазины
             /** @var $shops \Model\Shop\Entity[] */
@@ -77,8 +79,19 @@ class Action {
             ), function($data) use (&$deliveryCalcResult, &$shops) {
                 $deliveryCalcResult = $data;
                 $shops = array_map(function($data) { return new \Model\Shop\Entity($data); }, $deliveryCalcResult['shops']);
-            }, function (\Exception $e) {
-                //\App::exception()->remove($e);
+            }, function (\Exception $e) use (&$page) {
+                if ($e instanceof \Core\Exception) {
+                    \App::exception()->remove($e);
+
+                    $errorData = (array)$e->getContent();
+                    $errorData = isset($errorData['product_error_list']) ? (array)$errorData['product_error_list'] : array();
+                    if ((bool)$errorData) {
+                        $page = new \View\Order\WarnPage();
+                        $page->setParam('errorData', $errorData);
+
+                        return;
+                    }
+                }
 
                 throw $e;
             });
@@ -111,6 +124,10 @@ class Action {
             // выполнение пакета запросов
             $client->execute();
 
+            // если кто-то из обратных функции асинхронных запросов в ядро определил $page, то выдать результат
+            if ($page instanceof \View\Layout) {
+                return new \Http\Response($page->show());
+            }
             if (!$deliveryCalcResult) {
                 $e = new \Exception('Калькулятор доставки вернул пустой результат');
                 \App::logger()->error($e->getMessage());

@@ -81,6 +81,9 @@ class ClientV2 implements ClientInterface
         $this->still_executing = true;
     }
 
+    /**
+     * @throws \RuntimeException
+     */
     public function execute() {
         \Debug\Timer::start('core');
         if (!$this->isMultiple) {
@@ -159,6 +162,12 @@ class ClientV2 implements ClientInterface
         \App::logger()->info('End core execute in ' . $spend);
     }
 
+    /**
+     * @param string $action
+     * @param array  $params
+     * @param array  $data
+     * @return resource
+     */
     private function createResource($action, array $params = array(), array $data = array()) {
         $isPostMethod = !empty($data);
 
@@ -232,10 +241,16 @@ class ClientV2 implements ClientInterface
                     return mb_convert_encoding(pack('H*', $match[1]), 'UTF-8', 'UCS-2BE');
                 }, $message);
 
-                $e = new \RuntimeException(
+                $e = new Exception(
                     $message,
                     (int)$decoded['error']['code']
                 );
+
+                /**
+                 * $e->setContent нужен для того, чтобы сохранять ошибки от /v2/order/calc-tmp:
+                 *   кроме error.code и error.message возвращается массив error.product_error_list
+                 */
+                $e->setContent($decoded['error']);
 
                 throw $e;
             }

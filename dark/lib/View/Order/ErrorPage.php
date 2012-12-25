@@ -8,7 +8,7 @@ class ErrorPage extends Layout {
     }
 
     public function slotContent() {
-        return $this->render('order/page-create-error', $this->params);
+        return $this->render('order/page-error', $this->params);
     }
 
     public function slotBodyDataAttribute() {
