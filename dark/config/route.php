@@ -251,6 +251,8 @@ return array(
     // заказ
     'order.1click' => array(
         'pattern' => '/orders/1click',
+        'action'  => array('Order\OneClickAction', 'execute'),
+        'method'  => array('POST'),
     ),
     'order.create' => array(
         'pattern' => '/orders/new',

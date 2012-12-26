@@ -25,11 +25,11 @@
 
             if (typeof _gaq != 'undefined') _gaq.push(['_addTrans',
                 '<?= $order->getNumber() ?>', // Номер заказа
-                '<?= $shop ? $shop->getName() : '' ?>', // Название магазина (Необязательно)
+                '<?= $shop ? $page->escape($shop->getName()) : '' ?>', // Название магазина (Необязательно)
                 '<?= str_replace(',', '.', $order->getSum()) ?>', // Полная сумма заказа (дроби через точку)
                 '', // налог
                 '<?= $delivery ? $delivery->getPrice() : 0 ?>', // Стоимость доставки (дроби через точку)
-                '<?= $order->getCity() ? $order->getCity()->getName() : '' ?>', // Город доставки (Необязательно)
+                '<?= $order->getCity() ? $page->escape($order->getCity()->getName()) : '' ?>', // Город доставки (Необязательно)
                 '', // Область (необязательно)
                 '' // Страна (нобязательно)
             ]);
@@ -49,7 +49,7 @@
                     : $category->getName();
             ?>
 
-                if (typeof _gaq != 'undefined') _gaq.push(['_addItem', '<?= implode("','", array($order->getNumber(), $product->getArticle(), $product->getName(), $categoryName, $orderProduct->getPrice(), $orderProduct->getQuantity())) ?>']);
+                if (typeof _gaq != 'undefined') _gaq.push(['_addItem', '<?= implode("','", array($order->getNumber(), $product->getArticle(), $page->escape($product->getName()), $page->escape($categoryName), $orderProduct->getPrice(), $orderProduct->getQuantity())) ?>']);
             <?php endforeach ?>
 
             <? foreach ($order->getService() as $orderService): ?>
@@ -66,7 +66,7 @@
                 : $category->getName();
             ?>
 
-                if (typeof _gaq != 'undefined') _gaq.push(['_addItem', '<?= implode("','", array($order->getNumber(), $service->getToken(), $service->getName(), $categoryName, $orderService->getPrice(), $orderService->getQuantity())) ?>']);
+                if (typeof _gaq != 'undefined') _gaq.push(['_addItem', '<?= implode("','", array($order->getNumber(), $service->getToken(), $page->escape($service->getName()), $page->escape($categoryName), $orderService->getPrice(), $orderService->getQuantity())) ?>']);
             <?php endforeach ?>
 
                 if (typeof _gaq != 'undefined') _gaq.push(['_trackTrans']);
@@ -93,7 +93,7 @@
 
                             {
                                 id:'<?= $product->getArticle() ?>',
-                                name:'<?= $product->getName() ?>',
+                                name:'<?= $page->escape($product->getName()) ?>',
                                 price: <?= $orderProduct->getPrice() ?>,
                                 quantity: <?= $orderProduct->getQuantity() ?>
 
@@ -109,7 +109,7 @@
 
                             {
                                 id:'<?= $service->getToken() ?>',
-                                name:'<?= $service->getName() ?>',
+                                name:'<?= $page->escape($service->getName()) ?>',
                                 price: <?= $orderService->getPrice() ?>,
                                 quantity: <?= $orderService->getQuantity() ?>
 

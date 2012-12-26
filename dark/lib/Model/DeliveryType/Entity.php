@@ -3,6 +3,9 @@
 namespace Model\DeliveryType;
 
 class Entity {
+    const TYPE_STANDART = 'standart';
+    const TYPE_SELF = 'self';
+
     /** @var int */
     private $id;
     /** @var string */

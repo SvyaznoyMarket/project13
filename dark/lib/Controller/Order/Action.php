@@ -592,9 +592,9 @@ class Action {
             // общие данные заказа
             $orderData = array(
                 'type_id'                   => \Model\Order\Entity::TYPE_ORDER,
+                'geo_id'                    => $user->getRegion()->getId(),
                 'user_id'                   => $userEntity ? $userEntity->getId() : null,
                 'is_legal'                  => $userEntity ? $userEntity->getIsCorporative() : false,
-                'geo_id'                    => $user->getRegion()->getId(),
                 'payment_id'                => $form->getPaymentMethodId(),
                 'credit_bank_id'            => $form->getCreditBankId(),
                 'last_name'                 => $form->getLastName(),
@@ -688,8 +688,8 @@ class Action {
             $params['token'] = $userEntity->getToken();
         }
         $result = \App::coreClientV2()->query('order/create-packet', $params, $data);
-        if (!is_array($result)) {
-            throw new \Exception(sprintf('Заказ не подтвержден. Ответ ядра: %s', json_encode($result)));
+        if (empty($result['number'])) {
+            throw new \Exception(sprintf('Не получен номер заказа. Ответ ядра: %s', json_encode($result)));
         }
 
         $orderNumbers = array();

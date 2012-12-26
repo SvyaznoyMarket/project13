@@ -75,4 +75,20 @@ class Repository {
 
         return null;
     }
+
+    /**
+     * @param int $token
+     * @return Entity|null
+     */
+    public function getEntityByToken($token) {
+        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args()));
+
+        foreach ($this->getCollection() as $entity) {
+            if ($token == $entity->getToken()) {
+                return $entity;
+            }
+        }
+
+        return null;
+    }
 }
