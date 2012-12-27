@@ -6,9 +6,6 @@ class Entity implements \Oauth\Model\EntityInterface {
     /** @var string */
     private $id;
     /** @var string */
-    private $username;
-
-    /** @var string */
     private $firstName;
     /** @var string */
     private $lastName;
@@ -32,8 +29,6 @@ class Entity implements \Oauth\Model\EntityInterface {
     }
 
     public function import(array $data) {
-        if (array_key_exists('username', $data)) $this->setUsername($data['username']);
-
         if (array_key_exists('uid', $data)) $this->setId($data['uid']);
         if (array_key_exists('first_name', $data)) $this->setFirstName($data['first_name']);
         if (array_key_exists('last_name', $data)) $this->setLastName($data['last_name']);
@@ -200,19 +195,5 @@ class Entity implements \Oauth\Model\EntityInterface {
      */
     public function getPic2() {
         return $this->pic2;
-    }
-
-    /**
-     * @param string $username
-     */
-    public function setUsername($username) {
-        $this->username = (string)$username;
-    }
-
-    /**
-     * @return string
-     */
-    public function getUsername() {
-        return $this->username;
     }
 }
