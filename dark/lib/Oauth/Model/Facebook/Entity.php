@@ -6,9 +6,6 @@ class Entity implements \Oauth\Model\EntityInterface {
     /** @var string */
     private $id;
     /** @var string */
-    private $username;
-
-    /** @var string */
     private $firstName;
     /** @var string */
     private $lastName;
@@ -16,8 +13,8 @@ class Entity implements \Oauth\Model\EntityInterface {
     private $name;
     /** @var string */
     private $link;
-    /** @var string Всегда переопределяется \Model\User\Entity::$username */
-    //private $username;
+    /** @var string */
+    private $username;
     /** @var string */
     private $birthday;
     /** @var array */
@@ -48,14 +45,12 @@ class Entity implements \Oauth\Model\EntityInterface {
     }
 
     public function import(array $data) {
-        if (array_key_exists('username', $data)) $this->setUsername($data['username']);
-
         if (array_key_exists('id', $data)) $this->setId($data['id']);
         if (array_key_exists('first_name', $data)) $this->setFirstName($data['first_name']);
         if (array_key_exists('last_name', $data)) $this->setLastName($data['last_name']);
         if (array_key_exists('name', $data)) $this->setName($data['name']);
         if (array_key_exists('link', $data)) $this->setLink($data['link']);
-        //if (array_key_exists('username', $data)) $this->setUsername($data['username']); Всегда переопределяется \Model\User\Entity::$username */
+        if (array_key_exists('username', $data)) $this->setUsername($data['username']);
         if (array_key_exists('birthday', $data)) $this->setBirthday($data['birthday']);
         if (array_key_exists('hometown', $data)) $this->setHometown($data['hometown']);
         if (array_key_exists('location', $data)) $this->setLocation($data['location']);
