@@ -1,7 +1,8 @@
 $(document).ready(function() {
-	// GA variables
+	// for GA variables
 	var items_num = 0 // количество элементов в заказе (если в заказе 10 лопат и 1 совок, то логируем 11 элементов)
 	var suborders_num = 0 // количество подзаказов в заказе
+	var nowDelivery = 0 // выбранный тип доставки
 	/* ---------------------------------------------------------------------------------------- */
 	/* COMMON DESIGN, BEHAVIOUR ONLY */
 	/* Custom Selectors */ 
@@ -641,6 +642,7 @@ up:				for( var linedate in box.caclDates ) { // Loop for T Interval
 		}, this)
 
 		self.pickCourier = function() {
+			nowDelivery = 'standart'
 			fillUpBoxesFromModel()
 			self.step2( true )
 			self.shopButtonEnable( false )
@@ -652,6 +654,7 @@ up:				for( var linedate in box.caclDates ) { // Loop for T Interval
 		}
 
 		self.pickShops = function() {
+			nowDelivery = 'self'
 			self.step2( false )
 			self.shopButtonEnable( true )
 			var data = {
@@ -1003,8 +1006,6 @@ flds:	for( field in fieldsToValidate ) {
 			type_id = $('input[name="order[delivery_type_id]"]').val()
 		toSend.push( { name: 'order[delivery_type_id]', value: type_id })
 		toSend.push( { name: 'delivery_map', value: JSON.stringify( MVM.getServerModel() )  } )//encodeURIComponent
-		for (var i in MVM.getServerModel().deliveryTypes)
-			suborders_num++
 		if( typeof(SertificateCard) !== 'undefined' )
 			if( SertificateCard.isActive() ) {
 				toSend.push( { name: 'order[card]', value: SertificateCard.getCode() })
@@ -1029,9 +1030,14 @@ flds:	for( field in fieldsToValidate ) {
 				}
 				Blocker.bye()
 				if (typeof(_gaq) !== 'undefined') {
+					for (var i in MVM.getServerModel().deliveryTypes){
+						var tmpLog = 'выбрана '+nowDelivery+' доставят '+MVM.getServerModel().deliveryTypes[i].type
+						_gaq.push(['_trackEvent', 'Order card', 'Completed', tmpLog]);
+						suborders_num++
+					}
+					_gaq.push(['_trackEvent', 'Order complete', suborders_num, items_num])
 					var endAjaxOrderTime = new Date().getTime()
 					var AjaxOrderSpent = endAjaxOrderTime - startAjaxOrderTime
-					_gaq.push(['_trackEvent', 'Order complete', suborders_num, items_num])
 					_gaq.push(['_trackTiming', 'Order complete', 'DB response', AjaxOrderSpent])
 				}
 				
