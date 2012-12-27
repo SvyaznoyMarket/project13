@@ -152,7 +152,7 @@ class Action {
         // выполнение 2-го пакета запросов
         $client->execute();
 
-        if (2 == $category->getLevel()) {
+        if ($category && (2 == $category->getLevel())) {
             $children = $category->getChild();
             /** @var $category \Model\Product\Service\Category\Entity */
             $category = reset($children);
