@@ -102,7 +102,15 @@ class User {
     public function changeRegion(\Model\Region\Entity $region, \Http\Response $response) {
         $this->setRegion($region);
 
-        $cookie = new \Http\Cookie(\App::config()->region['cookieName'], $region->getId(), time() + \App::config()->region['cookieLifetime']);
+        $cookie = new \Http\Cookie(
+            \App::config()->region['cookieName'],
+            $region->getId(),
+            time() + \App::config()->region['cookieLifetime'],
+            '/',
+            null,
+            false,
+            false // важно httpOnly=false, чтобы js мог получить куку
+        );
         $response->headers->setCookie($cookie);
     }
 

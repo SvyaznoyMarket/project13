@@ -233,6 +233,29 @@ class App {
     }
 
     /**
+     * @param $name
+     * @return \Oauth\ProviderInterface
+     * @throws InvalidArgumentException
+     */
+    public static function oauth($name) {
+        static $instances = array();
+
+        if (!isset($instances[$name])) {
+            if (\Oauth\VkontakteProvider::NAME == $name) {
+                $instances[$name] = new \Oauth\VkontakteProvider(self::$config->vkontakteOauth);
+            } elseif (\Oauth\OdnoklassnikiProvider::NAME == $name) {
+                $instances[$name] = new \Oauth\OdnoklassnikiProvider(self::$config->odnoklassnikiOauth);
+            } elseif (\Oauth\FacebookProvider::NAME == $name) {
+                $instances[$name] = new \Oauth\FacebookProvider(self::$config->facebookOauth);
+            } else {
+                throw new \InvalidArgumentException(sprintf('Не найден провайдер аутентификации "%s".', $name));
+            }
+        }
+
+        return $instances[$name];
+    }
+
+    /**
      * @static
      * @param string $name Logger owner
      * @return \Logger\LoggerInterface
