@@ -496,7 +496,7 @@ $(document).ready(function(){
 			if( jqXHR.statusText == 'error' ){
 				console.error(' неизвестная ajax ошибка')
 				if( typeof(_gaq) !== 'undefined' )
-					_gaq.push(['_trackEvent', 'Errors', 'Ajax Errors', 'неизвестная ajax ошибка', ajaxUrl])
+					_gaq.push(['_trackEvent', 'Errors', 'Ajax Errors', 'неизвестная ajax ошибка'])
 				var date = new Date();
 				var time = date.getHours()+':'+date.getMinutes()+':'+date.getSeconds()
 				var nowUrl = window.location.pathname
