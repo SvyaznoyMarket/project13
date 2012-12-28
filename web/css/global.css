@@ -2482,6 +2482,14 @@
     font-size: 16px;
     line-height: 30px;
     padding-left: 25px !important;
+    position: relative;
+  }
+  .bFastInner #phonemask {
+    padding-left: 30px;
+  }
+  .bFastInner #phonePH {
+    margin: 0 5px;
+    position: absolute;
   }
   .bFastInner__eInput {
     -webkit-border-radius: 5px;
