@@ -6,7 +6,7 @@
  */
 ?>
 
-<?= $page->render('product/form-oneClick') ?>
+<?= $page->render('order/form-oneClick') ?>
 
 <?
 $json = array('jsref' => $product->getToken(), 'jstitle' => $product->getName(), 'jsprice' => $product->getPrice(), 'jssimg' => $product->getImageUrl(1), 'jsimg' => $product->getImageUrl(3), 'jsbimg' => $product->getImageUrl(2), 'jsshortcut' => $product->getArticle(), 'jsitemid' => $product->getId(), 'jsregionid' => $user->getRegion()->getId(), 'jsregion' => $user->getRegion()->getName());

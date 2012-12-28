@@ -568,4 +568,4 @@
 <div id="product_view-container" data-url="<?= $page->url('smartengine.push.product_view', array('productId' => $product->getId())) ?>"></div>
 <? endif ?>
 
-<? if ($product->getIsBuyable()): echo $page->render('product/form-oneClick'); endif; ?>
+<? if ($product->getIsBuyable()): echo $page->render('order/form-oneClick'); endif; ?>
