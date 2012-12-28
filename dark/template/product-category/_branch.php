@@ -23,8 +23,10 @@ if (!$category->isRoot() && $category->isBranch()) {
 }
 
 $parent = ($category->isRoot() || $category->isBranch()) ? $category : $category->getParent();
-foreach ($parent->getChild() as $child) {
-    $categories[] = $child;
+if ($parent) {
+    foreach ($parent->getChild() as $child) {
+        $categories[] = $child;
+    }
 }
 
 // total text

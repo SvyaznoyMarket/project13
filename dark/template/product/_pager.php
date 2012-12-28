@@ -37,7 +37,7 @@ $filterData = isset($productFilter) ? http_build_query(array(\View\Product\Filte
 <?= $page->render('product/_listView', array('view' => $view, 'request' => $request, 'category' => $category)) ?>
 <? endif ?>
 
-<? if ($productSorting): ?>
+<? if ($productSorting && $pager->count()): ?>
 <?= $page->render('product/_sorting', array('productSorting' => $productSorting)) ?>
 <? endif ?>
 

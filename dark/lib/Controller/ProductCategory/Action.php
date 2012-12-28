@@ -343,11 +343,6 @@ class Action {
             $child = next($childrenById);
             $productCount += $productPager->count();
         }
-        if (self::isGlobal()) {
-            $category->setGlobalProductCount($productCount);
-        } else {
-            $category->setProductCount($productCount);
-        }
 
         $page->setParam('productPagersByCategory', $productPagersByCategory);
 
