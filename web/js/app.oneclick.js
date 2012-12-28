@@ -64,12 +64,15 @@ $(document).ready(function() {
 
 			self.showMap = ko.observable( false )
 			self.textfields = []
-			
+
+			var firstNameVal = ( $('#oneClick').length ) ? $('#oneClick').data('values').recipient_first_name : ''
+			var phoneNumberVal = ( $('#oneClick').length ) ? $('#oneClick').data('values').recipient_phonenumbers : ''
+
 				self.textfields.push( ko.observable({
 					title: 'Имя получателя',
 					name: 'order[recipient_first_name]', //UNIQUE!
 					selectorid: '',
-					value: '',
+					value: firstNameVal,
 					valerror: false,
 					regexp: /^[ёa-zа-я\s]+$/i
 				}) )
@@ -77,7 +80,7 @@ $(document).ready(function() {
 					title: 'Телефон для связи',
 					name: 'order[recipient_phonenumbers]', //UNIQUE!
 					selectorid: 'phonemask',
-					value: '',
+					value: phoneNumberVal,
 					valerror: false,
 					regexp: /^[()0-9\-\+\s]+$/
 				}) )
@@ -89,7 +92,6 @@ $(document).ready(function() {
 					valerror: false,
 					regexp: /^[()0-9\-\s]+$/
 				}) )
-			
 
 			self.disabledSelectors = ko.observable( false )
 			self.noQBar            = ko.observable( false )
@@ -336,7 +338,7 @@ $(document).ready(function() {
 					valerror = true
 					self.formStatus('typing')
 				}	
-				if( e.currentTarget.getAttribute('id') === 'phonemask' && e.currentTarget.value.replace(/[^0-9]/g, '').length !== 11 ) {
+				if( e.currentTarget.getAttribute('id') === 'phonemask' && e.currentTarget.value.replace(/[^0-9]/g, '').length !== 10 ) {
 					valerror = true
 					self.formStatus('typing')
 				}
@@ -584,9 +586,25 @@ levup:			for(var i=0, l=numbers.length; i<l; i++)
 	
 	/* Inputs */
 	function enableHandlers() {
+		$("#phonemask").parent().prepend('<span id="phonePH">+7</span>')
+		$("#phonemask").focusin(function(){
+	    	$(this).attr('maxlength','10')
+	    	$(this).bind('keyup',function(e){
+				if (((e.which>=48)&&(e.which<=57))||(e.which==8)){//если это цифра или бэкспэйс
+					//
+				}
+				else{
+					//если это не цифра
+					var clearVal = $(this).val().replace(/\D/g,'')
+					$(this).val(clearVal)
+				}
+			})
+	    })
 		if( typeof( $.mask ) !== 'undefined' ) {
-			$.mask.definitions['n'] = "[()0-9\ \-]"
-			$("#phonemask").mask("+7 nnnnnnnnnnnnnnnnn", { placeholder: " ", maxlength: 10 } )
+			// $.mask.definitions['n'] = "[()0-9\ \-]"
+			// $("#phonemask").mask("+7 nnnnnnnnnnnnnnnnn", { placeholder: " ", maxlength: 10 } )
+			// if( $("#phonemask")[0].getAttribute('value') )
+			// 	$("#phonemask").val( $("#phonemask")[0].getAttribute('value') )
 			
 			$.mask.definitions['*'] = "[0-9*]"
 	        $("#scCard").mask("* ****** ******", { placeholder: "*" } )
