@@ -273,9 +273,6 @@ class App {
 
         if (!isset(self::$loggers[$name])) {
             switch ($name) {
-                case 'core_v1':
-                    self::$loggers[$name] = new \Logger\DefaultLogger(new \Logger\Appender\FileAppender(self::$config->logDir . '/core_v1.log'), $name, $config[$name]['level']);
-                    break;
                 case 'core_v2':
                     self::$loggers[$name] = new \Logger\DefaultLogger(new \Logger\Appender\FileAppender(self::$config->logDir . '/core_v2.log'), $name, $config[$name]['level']);
                     break;

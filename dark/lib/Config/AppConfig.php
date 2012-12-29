@@ -35,13 +35,6 @@ class AppConfig {
     /** @var string */
     public $cacheCookieName = null;
     /** @var array */
-    public $coreV1 = array(
-        'url'          => null,
-        'client_id'    => null,
-        'consumer_key' => null,
-        'signature'    => null,
-    );
-    /** @var array */
     public $coreV2 = array(
         'url'       => null,
         'client_id' => null,

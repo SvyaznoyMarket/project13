@@ -7,7 +7,7 @@ class ConsultationAction {
     private $channelId = 3;
 
     public function __construct() {
-        if (!\App::user()->getToken()) {
+        if (!\App::user()->getEntity()) {
             throw new \Exception\AccessDeniedException();
         }
     }
@@ -23,9 +23,8 @@ class ConsultationAction {
             $form->fromArray($request->request->get('form'));
 
             try {
-                $response = \App::coreClientV1()->query('user.callback.create', array(), array(
-                    'channel_id' => $this->channelId,
-//                    ''
+                $response = \App::coreClientV2()->query('user/callback-create', array(), array(
+                    'token' => $userEntity->getToken(),
                 ));
 
                 if (!isset($response['confirmed']) || !$response['confirmed']) {
