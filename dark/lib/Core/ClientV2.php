@@ -13,7 +13,7 @@ class ClientV2 implements ClientInterface
     private $failCallbacks = array();
     private $resources = array();
     /** @var bool */
-    private $still_executing = false;
+    private $stillExecuting = false;
 
     public function __construct(array $config, \Logger\LoggerInterface $logger = null)
     {
@@ -22,7 +22,7 @@ class ClientV2 implements ClientInterface
         ), $config);
         $this->logger = $logger;
 
-        $this->still_executing = false;
+        $this->stillExecuting = false;
     }
 
     /**
@@ -78,7 +78,7 @@ class ClientV2 implements ClientInterface
         $this->successCallbacks[(string)$resource] = $successCallback;
         $this->failCallbacks[(string)$resource] = $failCallback;
         $this->resources[] = $resource;
-        $this->still_executing = true;
+        $this->stillExecuting = true;
     }
 
     /**
@@ -96,7 +96,7 @@ class ClientV2 implements ClientInterface
             do {
                 do {
                     $code = curl_multi_exec($this->isMultiple, $curl_still_executing);
-                    $this->still_executing = $curl_still_executing;
+                    $this->stillExecuting = $curl_still_executing;
                 } while ($code == CURLM_CALL_MULTI_PERFORM);
 
                 // if one or more descriptors is ready, read content and run callbacks
@@ -138,7 +138,7 @@ class ClientV2 implements ClientInterface
                 if ($curl_still_executing) {
                     $ready = curl_multi_select($this->isMultiple);
                 }
-            } while ($this->still_executing);
+            } while ($this->stillExecuting);
         } catch (Exception $e) {
             $error = $e;
         }
