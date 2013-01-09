@@ -215,7 +215,7 @@ return array(
     // добавление товара в корзину
     'cart.product.add' => array(
         'pattern' => '/cart/add/{productId}/_quantity/{quantity}', // TODO: сделать поприличнее - '/cart/add-product/{productId}/{quantity}'
-        'action'  => array('Cart\ProductAction', 'add'),
+        'action'  => array('Cart\ProductAction', 'set'),
     ),
     // удаление товара из корзины
     'cart.product.delete' => array(
@@ -224,12 +224,13 @@ return array(
     ),
     'old.cart.product.add' => array(
         'pattern' => '/cart/add/{productId}/_quantity/', // TODO: Убить, когда полностью переедем на dark, переписать js с учетом наличия кол-ва
-        'action'  => array('Cart\ProductAction', 'add'),
+        'action'  => array('Cart\ProductAction', 'set'),
     ),
     // удаление услуги из корзины
     'cart.service.delete' => array(
         'pattern' => '/cart/delete_service/{productId}/_service/{serviceId}',
         'require' => array('productId' => '\d+', 'serviceId' => '\d+'),
+        'action'  => array('Cart\ServiceAction', 'delete'),
     ),
     // добавление услуги в корзину
     'cart.service.add' => array(
@@ -238,7 +239,7 @@ return array(
             'productId' => '\d+',
             'serviceId' => '\d+',
         ),
-        'action'  => array('Cart\ServiceAction', 'add'),
+        'action'  => array('Cart\ServiceAction', 'set'),
     ),
     'cart.warranty.set' => array(
         'pattern' => '/cart/warranty/{productId}/set/{warrantyId}',

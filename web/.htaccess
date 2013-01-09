@@ -9,10 +9,10 @@ Options +FollowSymLinks +ExecCGI
   # getting no_script_name to work
   #RewriteBase /
 
-  RewriteRule ^region/init/$ index.light.php [L]
+  #RewriteRule ^region/init/$ index.light.php [L]
   #RewriteRule ^product/delivery1click/? index.light.php [L]
   #RewriteRule ^cart/add.* index.light.php [L]
-  RewriteRule ^cart/delete.* index.light.php [L]
+  #RewriteRule ^cart/delete.* index.light.php [L]
   RewriteRule ^cart/clear.* index.light.php [L]
   RewriteRule ^cart/warranty/.* index.light.php [L]
   #RewriteRule ^category/main_menu/? index.light.php [L]

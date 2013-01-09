@@ -70,11 +70,25 @@ class Cart {
 
         $data = $this->storage->get($this->sessionName);
         $data['productList'][$product->getId()] = $quantity;
-        $this->storage->set($this->sessionName, $data);
-    }
 
-    public function deleteProduct(\Model\Product\Entity $product) {
-        // TODO: сделать
+        // если нулевое количество товара, то удаляем связаные с товаром услуги и гарантии
+        if (0 == $quantity) {
+            unset($data['productList'][$product->getId()]);
+        }
+
+        $this->storage->set($this->sessionName, $data);
+
+        // удаление связаных услуг
+        $cartProduct = $this->getProductById($product->getId());
+        if ($cartProduct) {
+            foreach ($cartProduct->getService() as $cartService) {
+                $service = new \Model\Product\Service\Entity(array('id' => $cartService->getId()));
+                $this->setService($service, 0, $product->getId());
+            }
+        }
+
+        // удаление связаных гарантий
+        // TODO: доделать
     }
 
     public function hasProduct($productId) {
@@ -104,6 +118,21 @@ class Cart {
             $data['serviceList'][$service->getId()] = array();
         }
         $data['serviceList'][$service->getId()][$productId] = $quantity;
+
+        // если нулевое количество услуги, то удаляем
+        if (0 == $quantity) {
+            foreach ($data['serviceList'] as $serviceId => $serviceData) {
+                foreach ($serviceData as $iProductId => $serviceQuantity) {
+                    if ($iProductId == $productId) {
+                        unset($data['serviceList'][$serviceId][$productId]);
+                        if (!(bool)$data['serviceList'][$serviceId]) {
+                            unset($data['serviceList'][$serviceId]);
+                        }
+                    }
+                }
+            }
+        }
+
         $this->storage->set($this->sessionName, $data);
     }
 

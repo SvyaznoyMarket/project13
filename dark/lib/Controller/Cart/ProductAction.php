@@ -10,15 +10,17 @@ class ProductAction {
      * @return \Http\JsonResponse|\Http\RedirectResponse
      * @throws \Exception
      */
-    public function add($productId, $quantity = 1, \Http\Request $request) {
+    public function set($productId, $quantity = 1, \Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
         $cart = \App::user()->getCart();
 
+        $quantity = (int)$quantity;
+
         try {
-            $quantity = (int)$quantity;
-            if ($quantity < 1) {
-                throw new \Exception('Указано неверное количество товаров');
+            if ($quantity < 0) {
+                $quantity = 0;
+                \App::logger()->warn(sprintf('Указано неверное количество товаров. Запрос %s', json_encode($request->request->all())));
             }
 
             $productId = (int)$productId;
@@ -64,5 +66,16 @@ class ProductAction {
                 ))
                 : new \Http\RedirectResponse($request->headers->get('referer') ?: \App::router()->generate('homepage'));
         }
+    }
+
+    /**
+     * @param $productId
+     * @param \Http\Request $request
+     * @return \Http\JsonResponse|\Http\RedirectResponse
+     */
+    public function delete(\Http\Request $request, $productId) {
+        \App::logger()->debug('Exec ' . __METHOD__);
+
+        return $this->set($productId, 0, $request);
     }
 }

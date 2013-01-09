@@ -11,15 +11,17 @@ class ServiceAction {
      * @return \Http\JsonResponse|\Http\RedirectResponse
      * @throws \Exception
      */
-    public function add($serviceId, $productId, $quantity = 1, \Http\Request $request) {
+    public function set($serviceId, $productId, $quantity = 1, \Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
         $cart = \App::user()->getCart();
 
+        $quantity = (int)$quantity;
+
         try {
-            $quantity = (int)$quantity;
-            if ($quantity < 1) {
-                throw new \Exception('Указано неверное количество услуг');
+            if ($quantity < 0) {
+                $quantity = 0;
+                \App::logger()->warn(sprintf('Указано неверное количество услуг. Запрос %s', json_encode($request->request->all())));
             }
 
             $serviceId = (int)$serviceId;
@@ -35,9 +37,10 @@ class ServiceAction {
                 }
             }
 
-            if ($product) {
+            // если в корзине нет товара
+            if ($product && !$cart->hasProduct($product->getId())) {
                 $action = new ProductAction();
-                $action->add($product->getId(), $quantity, $request);
+                $action->set($product->getId(), $quantity, $request);
             }
 
             $service = \RepositoryManager::getService()->getEntityById($serviceId, \App::user()->getRegion());
@@ -66,5 +69,17 @@ class ServiceAction {
                 ))
                 : new \Http\RedirectResponse($request->headers->get('referer') ?: \App::router()->generate('homepage'));
         }
+    }
+
+    /**
+     * @param $serviceId
+     * @param $productId
+     * @param \Http\Request $request
+     * @return \Http\JsonResponse|\Http\RedirectResponse
+     */
+    public function delete(\Http\Request $request, $serviceId, $productId = null) {
+        \App::logger()->debug('Exec ' . __METHOD__);
+
+        return $this->set($serviceId, $productId, 0, $request);
     }
 }
