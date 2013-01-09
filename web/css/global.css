@@ -2774,8 +2774,11 @@
     background-position: -923px -71px;
   }
   #header #topmenu-root-443 {
-    background: url('/css/header/img/elka.gif') no-repeat 0 0;
-    width: 50px;
+    background: url("/css/header/img/headerSprite.png") no-repeat -135px 0px;
+    width: 47px;
+  }
+  #header #topmenu-root-443:hover {
+    background-position: -135px -71px;
   }
   #header #topmenu-root-320 {
     background: url("/css/header/img/headerSprite.png") no-repeat -182px 0px;
@@ -7455,6 +7458,7 @@
     color: #a6a6a6;
     font-size: 11px;
     padding: 0px 0px 14px 10px;
+    width: 750px;
   }
   .breadcrumbs-footer a {
     color: #a6a6a6;
@@ -7936,24 +7940,4 @@
 }
 /*---END---СТИЛИ ЛИЧНОГО КАБИНЕТА---*/
 /*------НОВОГОДНЕЕ ОФОРМЛЕНИЕ------*/
-@media all {
-  #mainPage #header.newYearTheme {
-    background: url("/css/newYearTheme/img/mainGarland.gif") bottom center no-repeat;
-    height: 140px;
-    margin-bottom: 0;
-  }
-  #mainPage #header.newYearTheme #topLogo {
-    background: url("/css/newYearTheme/img/NY_logo.jpg") center center no-repeat;
-    height: 107px;
-    margin-top: -15px;
-  }
-  #header.newYearTheme {
-    background: url("/css/newYearTheme/img/headerGarland.png") 0 0 no-repeat;
-    height: 125px;
-    margin-bottom: 5px;
-  }
-  #header.newYearTheme #topLogo {
-    background: url("/css/newYearTheme/img/NY_logo_small.jpg") center center no-repeat;
-  }
-}
 /*---END---НОВОГОДНЕЕ ОФОРМЛЕНИЕ---*/

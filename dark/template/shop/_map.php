@@ -7,11 +7,15 @@
  */
 ?>
 
+<?
+$shopCount = count($markers);
+?>
+
 <!-- bMapShops -->
 <div class="bMapShops">
     <div class='bMapShops__eHead'>
         <div class='bMapShops__eRegion font14 width290'>
-            <p>У нас <?php echo count($markers) ?> магазинов в <?php echo count($shopAvailableRegions)?> городах России.</p>
+                <p>У нас <?= $shopCount . ' ' . $page->helper->numberChoice($shopCount, array('магазин', 'магазина', 'магазинов')) ?> в <?php echo count($shopAvailableRegions)?> городах России.</p>
             <p>А доставить вашу покупку мы можем даже туда, где нас нет: во многих городах нам помогают с доставкой проверенные транспортные компании.</p>
 
         </div>
