@@ -32,6 +32,9 @@ $debug->add('total', sprintf('%s ms', round($appTimer['total'], 3) * 1000), 95);
 // memory
 $debug->add('memory', sprintf('%s Mb', round(memory_get_peak_usage() / 1048576, 2)), 90);
 
+// session
+$debug->add('session', print_r(\App::session()->all(), true), 89);
+
 $requestLogger = \Util\RequestLogger::getInstance();
 $requestData = $requestLogger->getStatistics();
 $requestData = json_decode($requestData, true);

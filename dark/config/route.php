@@ -238,6 +238,7 @@ return array(
             'productId' => '\d+',
             'serviceId' => '\d+',
         ),
+        'action'  => array('Cart\ServiceAction', 'add'),
     ),
     'cart.warranty.set' => array(
         'pattern' => '/cart/warranty/{productId}/set/{warrantyId}',

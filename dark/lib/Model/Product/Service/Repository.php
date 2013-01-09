@@ -14,6 +14,25 @@ class Repository {
     }
 
     /**
+     * @param $id
+     * @return Entity|null
+     */
+    public function getEntityById($id, \Model\Region\Entity $region = null) {
+        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args()));
+
+        $params = array(
+            'id' => array($id),
+        );
+        if ($region instanceof \Model\Region\Entity) {
+            $params['geo_id'] = $region->getId();
+        }
+        $data = $this->client->query('service/get2', $params, array());
+        $data = reset($data);
+
+        return $data ? new Entity($data) : null;
+    }
+
+    /**
      * @param array                $ids
      * @param \Model\Region\Entity $region
      * @return Entity[]

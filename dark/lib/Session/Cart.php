@@ -66,11 +66,11 @@ class Cart {
     }
 
     public function setProduct(\Model\Product\Entity $product, $quantity = 1) {
+        if ($quantity < 0) $quantity = 0;
+
         $data = $this->storage->get($this->sessionName);
-        if ($quantity > 0) {
-            $data['productList'][$product->getId()] = $quantity;
-            $this->storage->set($this->sessionName, $data);
-        }
+        $data['productList'][$product->getId()] = $quantity;
+        $this->storage->set($this->sessionName, $data);
     }
 
     public function deleteProduct(\Model\Product\Entity $product) {
@@ -89,6 +89,21 @@ class Cart {
 
         $key = key($data['productList']);
         unset($data['productList'][$key]);
+        $this->storage->set($this->sessionName, $data);
+    }
+
+    public function setService(\Model\Product\Service\Entity $service, $quantity = 1, $productId = null) {
+        if ($quantity < 0) $quantity = 0;
+
+        if (!$productId) {
+            $productId = 0;
+        }
+
+        $data = $this->storage->get($this->sessionName);
+        if (!array_key_exists($service->getId(), $data['serviceList'])) {
+            $data['serviceList'][$service->getId()] = array();
+        }
+        $data['serviceList'][$service->getId()][$productId] = $quantity;
         $this->storage->set($this->sessionName, $data);
     }
 
@@ -327,8 +342,8 @@ class Cart {
     public function getServiceData() {
         $data = $this->getData();
         $return = array();
-        foreach ($data['serviceList'] as $serviceId => $serviceList) {
-            foreach ($serviceList as $productId => $serviceQuantity) {
+        foreach ($data['serviceList'] as $serviceId => $serviceData) {
+            foreach ($serviceData as $productId => $serviceQuantity) {
                 $productId = (int)$productId;
                 $item = array(
                     'id'       => $serviceId,
