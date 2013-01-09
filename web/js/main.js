@@ -450,16 +450,35 @@ $(document).ready(function(){
 		$('#ajaxerror div.fl').append('<small>'+ settings.url.replace(/(.*)\?ts=/,'')+'</small>')
 	})
 	*/
-
+	var logError = function(data) {
+		$.ajax({
+			type: 'POST',
+			global: false,
+			url: '/log-json',
+			data: data,
+			error: console.log('log err')
+		})
+	}
 	$.ajaxSetup({
 		timeout: 10000,
 		statusCode: {
 			404: function() {
 				// errorpopup(' 404 ошибка, страница не найдена')
-				if( typeof(_gaq) == 'undefined' ){
-					var _gaq = window._gaq || []
+				var ajaxUrl = this.url
+				var date = new Date();
+				var time = date.getHours()+':'+date.getMinutes()+':'+date.getSeconds()
+				var nowUrl = window.location.pathname
+				var userAgent = navigator.userAgent
+				var data = {
+					time:time,
+					type:'404 ошибка',
+					ajaxUrl:ajaxUrl,
+					nowUrl:nowUrl,
+					userAgent:userAgent
 				}
-				_gaq.push(['_trackEvent', 'Errors', 'Ajax Errors', '404 ошибка, страница не найдена']);
+				logError(data)
+				if( typeof(_gaq) !== 'undefined' )
+					_gaq.push(['_trackEvent', 'Errors', 'Ajax Errors', '404 ошибка, страница не найдена']);
 			},
 			401: function() {
 				if( $('#auth-block').length ) {
@@ -471,43 +490,85 @@ $(document).ready(function(){
 					})
 				} else{
 					errorpopup(' 401 ошибка, авторизуйтесь заново')
-					if( typeof(_gaq) == 'undefined' ){
-						var _gaq = window._gaq || []
-					}
-					_gaq.push(['_trackEvent', 'Errors', 'Ajax Errors', '401 ошибка, авторизуйтесь заново'])
+					if( typeof(_gaq) !== 'undefined' )
+						_gaq.push(['_trackEvent', 'Errors', 'Ajax Errors', '401 ошибка, авторизуйтесь заново'])
 				}
 					
 			},
 			500: function() {
 				// errorpopup(' сервер перегружен')
-				if( typeof(_gaq) == 'undefined' ){
-					var _gaq = window._gaq || []
+				var ajaxUrl = this.url
+				var date = new Date();
+				var time = date.getHours()+':'+date.getMinutes()+':'+date.getSeconds()
+				var nowUrl = window.location.pathname
+				var userAgent = navigator.userAgent
+				var data = {
+					time:time,
+					type:'500 ошибка',
+					ajaxUrl:ajaxUrl,
+					nowUrl:nowUrl,
+					userAgent:userAgent
 				}
-				_gaq.push(['_trackEvent', 'Errors', 'Ajax Errors', '500 сервер перегружен'])
+				logError(data)
+				if( typeof(_gaq) !== 'undefined' )
+					_gaq.push(['_trackEvent', 'Errors', 'Ajax Errors', '500 сервер перегружен'])
 			},
 			503: function() {
 				// errorpopup(' 503 ошибка, сервер перегружен')
-				if( typeof(_gaq) == 'undefined' ){
-					var _gaq = window._gaq || []
+				var ajaxUrl = this.url
+				var date = new Date();
+				var time = date.getHours()+':'+date.getMinutes()+':'+date.getSeconds()
+				var nowUrl = window.location.pathname
+				var userAgent = navigator.userAgent
+				var data = {
+					time:time,
+					type:'503 ошибка',
+					ajaxUrl:ajaxUrl,
+					nowUrl:nowUrl,
+					userAgent:userAgent
 				}
-				_gaq.push(['_trackEvent', 'Errors', 'Ajax Errors', '503 ошибка, сервер перегружен'])
+				logError(data)
+				if( typeof(_gaq) !== 'undefined' )
+					_gaq.push(['_trackEvent', 'Errors', 'Ajax Errors', '503 ошибка, сервер перегружен'])
 			},
 			504: function() {
 				// errorpopup(' 504 ошибка, проверьте соединение с интернетом')
-				if( typeof(_gaq) == 'undefined' ){
-					var _gaq = window._gaq || []
+				var ajaxUrl = this.url
+				var date = new Date();
+				var time = date.getHours()+':'+date.getMinutes()+':'+date.getSeconds()
+				var nowUrl = window.location.pathname
+				var userAgent = navigator.userAgent
+				var data = {
+					time:time,
+					type:'504 ошибка',
+					ajaxUrl:ajaxUrl,
+					nowUrl:nowUrl,
+					userAgent:userAgent
 				}
-				_gaq.push(['_trackEvent', 'Errors', 'Ajax Errors', '504 ошибка, проверьте соединение с интернетом'])
+				logError(data)
+				if( typeof(_gaq) !== 'undefined' )
+					_gaq.push(['_trackEvent', 'Errors', 'Ajax Errors', '504 ошибка, проверьте соединение с интернетом'])
 			}
 
 		  },
 		error: function (jqXHR, textStatus, errorThrown) {
+			var ajaxUrl = this.url
 			if( jqXHR.statusText == 'error' ){
 				console.error(' неизвестная ajax ошибка')
-				if( typeof(_gaq) == 'undefined' ){
-					var _gaq = window._gaq || []
+				if( typeof(_gaq) !== 'undefined' )
+					_gaq.push(['_trackEvent', 'Errors', 'Ajax Errors', 'неизвестная ajax ошибка'])
+				var date = new Date();
+				var time = date.getHours()+':'+date.getMinutes()+':'+date.getSeconds()
+				var nowUrl = window.location.pathname
+				var userAgent = navigator.userAgent
+				var data = {
+					time:time,
+					type:'неизвестная ajax ошибка',
+					ajaxUrl:ajaxUrl,
+					nowUrl:nowUrl,
+					userAgent:userAgent
 				}
-				_gaq.push(['_trackEvent', 'Errors', 'Ajax Errors', 'неизвестная ajax ошибка'])
+				logError(data)
 			}
 			else if ( textStatus=='timeout' )
 				;//errorpopup(' проверьте соединение с интернетом')
