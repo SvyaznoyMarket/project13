@@ -52,7 +52,7 @@ class ProductAction {
                     'success' => true,
                     'data'    => array(
                         'quantity'      => $quantity,
-                        'full_quantity' => $cart->getProductsQuantity() + $cart->getServicesQuantity(),
+                        'full_quantity' => $cart->getProductsQuantity() + $cart->getServicesQuantity() + $cart->getWarrantiesQuantity(),
                         'full_price'    => $cart->getTotalPrice(),
                         'link'          => \App::router()->generate('order.create'),
                     ),

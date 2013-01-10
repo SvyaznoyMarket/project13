@@ -240,19 +240,18 @@ return array(
     // добавление услуги в корзину
     'cart.service.add' => array(
         'pattern' => '/cart/add_service/{productId}/_service/{serviceId}/_quantity/{quantity}',
-        'require' => array(
-            'productId' => '\d+',
-            'serviceId' => '\d+',
-        ),
+        'require' => array('productId' => '\d+', 'serviceId' => '\d+'),
         'action'  => array('Cart\ServiceAction', 'set'),
     ),
     'cart.warranty.set' => array(
         'pattern' => '/cart/warranty/{productId}/set/{warrantyId}',
         'require' => array('productId' => '\d+', 'warrantyId' => '\d+'),
+        'action'  => array('Cart\WarrantyAction', 'set'),
     ),
     'cart.warranty.delete' => array(
         'pattern' => '/cart/warranty/{productId}/delete/{warrantyId}',
         'require' => array('productId' => '\d+', 'warrantyId' => '\d+'),
+        'action'  => array('Cart\WarrantyAction', 'delete'),
     ),
 
     // заказ

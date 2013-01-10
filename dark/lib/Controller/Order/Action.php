@@ -892,15 +892,23 @@ class Action {
                 }
 
                 // дополнительные гарантии для товара
-                if ($cartItem instanceof \Model\Cart\Product\Entity && ($warrantyData = $user->getCart()->getWarrantyByProduct($cartItem->getId()))) {
+                if ($cartItem instanceof \Model\Cart\Product\Entity) {
                     /** @var $product \Model\Product\CartEntity */
                     $product = $productsById[$cartItem->getId()];
+                    $warrantiesById = array();
                     foreach ($product->getWarranty() as $warranty) {
-                        // TODO: Внимание! $warrantyData['id'] переделать, когда $user->getCart()->getWarrantyByProduct будет возвращать сущность \Model\Cart\Warranty\Entity
-                        if ($warranty->getId() == $warrantyData['id']) {
-                            $serviceName .= sprintf(' + <span class="motton">%s (%s шт.)</span>', $warranty->getName(), $warrantyData['quantity']);
-                            $serviceTotal += ($warrantyData['price'] * $warrantyData['quantity']);
+                        $warrantiesById[$warranty->getId()] = $warranty;
+                    }
+                    foreach ($cartItem->getWarranty() as $cartWarranty) {
+                        /** @var $warranty \Model\Product\Warranty\Entity */
+                        $warranty = isset($warrantiesById[$cartWarranty->getId()]) ? $warrantiesById[$cartWarranty->getId()] : null;
+                        if (!$warranty) {
+                            \App::logger()->error(sprintf('Не найдена гарантия #%s для товара #%s', $cartWarranty->getId(), $product->getId()));
+                            continue;
                         }
+
+                        $serviceName .= sprintf(' + <span class="motton">%s (%s шт.)</span>', $warranty->getName(), $cartWarranty->getQuantity());
+                        $serviceTotal += ($cartWarranty->getPrice() * $cartWarranty->getQuantity());
                     }
                 }
 

@@ -2,39 +2,39 @@
 
 namespace Controller\Cart;
 
-class ServiceAction {
+class WarrantyAction {
     /**
-     * @param int           $serviceId
+     * @param int           $warrantyId
      * @param int           $productId
      * @param int           $quantity
      * @param \Http\Request $request
      * @return \Http\JsonResponse|\Http\RedirectResponse
      * @throws \Exception
      */
-    public function set($serviceId, $productId, $quantity = 1, \Http\Request $request) {
+    public function set($warrantyId, $productId, $quantity = 1, \Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
         $cart = \App::user()->getCart();
 
-        $serviceId = (int)$serviceId;
+        $warrantyId = (int)$warrantyId;
         $productId = (int)$productId;
         $quantity = (int)$quantity;
 
         try {
             if ($quantity < 0) {
                 $quantity = 0;
-                \App::logger()->warn(sprintf('Указано неверное количество услуг. Запрос %s', json_encode($request->request->all())));
+                \App::logger()->warn(sprintf('Указано неверное количество гарантий. Запрос %s', json_encode($request->request->all())));
             }
 
-            if (!$serviceId) {
-                throw new \Exception('Не получен ид услуги');
+            if (!$warrantyId) {
+                throw new \Exception('Не получен ид гарантии');
             }
 
             $product = null;
             if ($productId) {
                 $product = \RepositoryManager::getProduct()->getEntityById($productId);
                 if (!$product) {
-                    throw new \Exception(sprintf('Товар #%s для услуги #%s не найден', $productId, $serviceId));
+                    throw new \Exception(sprintf('Товар #%s для гарантии #%s не найден', $productId, $warrantyId));
                 }
             }
 
@@ -44,19 +44,26 @@ class ServiceAction {
                 $action->set($product->getId(), $quantity, $request);
             }
 
-            $service = \RepositoryManager::getService()->getEntityById($serviceId, \App::user()->getRegion());
-            if (!$service) {
-                throw new \Exception(sprintf('Товар #%s не найден', $serviceId));
+            // TODO: на ядре пока нет метода для получения гарантии по ид
+            $warranty = null;
+            foreach ($product->getWarranty() as $iWarranty) {
+                if ($iWarranty->getId() == $warrantyId) {
+                    $warranty = $iWarranty;
+                    break;
+                }
+            }
+            if (!$warranty) {
+                throw new \Exception(sprintf('Товар #%s не найден', $warrantyId));
             }
 
-            $cart->setService($service, $quantity, $productId);
+            $cart->setWarranty($warranty, $quantity, $productId);
 
             return $request->isXmlHttpRequest()
                 ? new \Http\JsonResponse(array(
                     'success' => true,
                     'data'    => array(
                         'quantity'      => $quantity,
-                        'full_quantity' => $cart->getProductsQuantity() + $cart->getServicesQuantity() + $cart->getWarrantiesQuantity(),
+                        'full_quantity' => $cart->getProductsQuantity() + $cart->getServicesQuantity() +$cart->getWarrantiesQuantity(),
                         'full_price'    => $cart->getTotalPrice(),
                         'link'          => \App::router()->generate('order.create'),
                     ),
@@ -66,21 +73,21 @@ class ServiceAction {
             return $request->isXmlHttpRequest()
                 ? new \Http\JsonResponse(array(
                     'success' => false,
-                    'data'    => array('error' => 'Не удалось добавить услугу в корзину', 'debug' => $e->getMessage()),
+                    'data'    => array('error' => 'Не удалось добавить гарантию в корзину', 'debug' => $e->getMessage()),
                 ))
                 : new \Http\RedirectResponse($request->headers->get('referer') ?: \App::router()->generate('homepage'));
         }
     }
 
     /**
-     * @param $serviceId
+     * @param $warrantyId
      * @param $productId
      * @param \Http\Request $request
      * @return \Http\JsonResponse|\Http\RedirectResponse
      */
-    public function delete(\Http\Request $request, $serviceId, $productId = null) {
+    public function delete(\Http\Request $request, $warrantyId, $productId = null) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
-        return $this->set($serviceId, $productId, 0, $request);
+        return $this->set($warrantyId, $productId, 0, $request);
     }
 }
