@@ -170,6 +170,13 @@ class AppConfig {
         'password' => null,
     );
 
+    /** @var array */
+    public $queue = array(
+        'pidFile' => null,
+        'workerLimit' => null,
+        'maxLockTime' => null,
+    );
+
     public function __set($name, $value) {
         throw new \LogicException(sprintf('Неизвестный параметр "%s".', $name));
     }
@@ -177,4 +184,5 @@ class AppConfig {
     public function __get($name) {
         throw new \LogicException(sprintf('Неизвестный параметр "%s".', $name));
     }
+
 }

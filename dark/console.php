@@ -8,7 +8,11 @@ require_once __DIR__ . '/lib/Debug/Timer.php';
 \Debug\Timer::start('app');
 
 // environment
-$env = isset($_SERVER['APPLICATION_ENV']) ? $_SERVER['APPLICATION_ENV'] : 'live';
+if (!isset($argv[3])) {
+    throw new \Exception\NotFoundException('Не указана среда окружения');
+} else {
+    $env = $argv[3];
+}
 
 // configuration
 /** @var $config \Config\AppConfig */
@@ -45,7 +49,7 @@ try {
 
     $actionCall = [
         [$controller, $action],
-        array_slice($argv, 3),
+        array_slice($argv, 4),
     ];
     call_user_func_array($actionCall[0], $actionCall[1]);
 } catch (\Exception $e) {

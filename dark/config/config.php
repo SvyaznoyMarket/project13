@@ -137,4 +137,8 @@ $c->creditProvider['kupivkredit']['partnerId'] = '1-6ADAEAT';
 $c->creditProvider['kupivkredit']['partnerName'] = 'ООО «Enter»';
 $c->creditProvider['kupivkredit']['signature'] = 'enter-secret-werj7537';
 
+$c->queue['pidFile'] = (sys_get_temp_dir() ?: '/tmp').'/enter-queue.pid';
+$c->queue['workerLimit'] = 10;
+$c->queue['maxLockTime'] = 600;
+
 return $c;
