@@ -212,6 +212,11 @@ return array(
         'pattern' => '/cart/', // TODO: сделать '/cart'
         'action'  => array('Cart\IndexAction', 'execute'),
     ),
+    // очистка корзины
+    'cart.clear' => array(
+        'pattern' => '/cart/clear',
+        'action'  => array('Cart\ClearAction', 'execute'),
+    ),
     // добавление товара в корзину
     'cart.product.add' => array(
         'pattern' => '/cart/add/{productId}/_quantity/{quantity}', // TODO: сделать поприличнее - '/cart/add-product/{productId}/{quantity}'

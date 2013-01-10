@@ -13,7 +13,7 @@ Options +FollowSymLinks +ExecCGI
   #RewriteRule ^product/delivery1click/? index.light.php [L]
   #RewriteRule ^cart/add.* index.light.php [L]
   #RewriteRule ^cart/delete.* index.light.php [L]
-  RewriteRule ^cart/clear.* index.light.php [L]
+  #RewriteRule ^cart/clear.* index.light.php [L]
   RewriteRule ^cart/warranty/.* index.light.php [L]
   #RewriteRule ^category/main_menu/? index.light.php [L]
   #RewriteRule ^orders/1click.* index.light.php [L]
