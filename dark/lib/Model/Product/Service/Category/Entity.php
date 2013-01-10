@@ -48,7 +48,7 @@ class Entity {
     }
 
     /**
-     * @param Entity[] $child
+     * @param Entity[] $children
      */
     public function setChild(array $children) {
         $this->child = array();

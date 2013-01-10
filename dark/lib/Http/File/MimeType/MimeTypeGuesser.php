@@ -82,9 +82,11 @@ class MimeTypeGuesser implements MimeTypeGuesserInterface {
      *
      * @param string $path The path to the file
      *
+     * @throws \Http\File\Exception\AccessDeniedException
+     * @throws \LogicException
+     * @throws \Http\File\Exception\FileNotFoundException
      * @return string         The mime type or NULL, if none could be guessed
      *
-     * @throws FileException  If the file does not exist
      */
     public function guess($path) {
         if (!is_file($path)) {

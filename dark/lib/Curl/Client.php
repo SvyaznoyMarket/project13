@@ -6,8 +6,9 @@ class Client {
     /**
      * @param string $url
      * @param array  $data
-     * @return mixed|null
      * @throws \RuntimeException
+     * @throws \Exception
+     * @return mixed|null
      */
     public function query($url, array $data = array()) {
         $connection = $this->create($url, $data);

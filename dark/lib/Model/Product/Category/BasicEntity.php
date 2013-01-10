@@ -124,7 +124,7 @@ class BasicEntity {
     }
 
     /**
-     * @param BasicEntity[] $child
+     * @param BasicEntity[] $children
      */
     public function setChild(array $children) {
         $this->child = array();

@@ -55,10 +55,10 @@ class Entity {
     }
 
     /**
-     * @param bool $is_buyable
+     * @param $isQuickOnly
      */
-    public function setIsQuickOnly($is_quick_only) {
-        $this->isQuickOnly = (bool)$is_quick_only;
+    public function setIsQuickOnly($isQuickOnly) {
+        $this->isQuickOnly = (bool)$isQuickOnly;
     }
 
     /**
@@ -69,10 +69,10 @@ class Entity {
     }
 
     /**
-     * @param bool $is_image
+     * @param bool $isImage
      */
-    public function setIsImage($is_image) {
-        $this->isImage = (bool)$is_image;
+    public function setIsImage($isImage) {
+        $this->isImage = (bool)$isImage;
     }
 
     /**
@@ -83,10 +83,10 @@ class Entity {
     }
 
     /**
-     * @param bool $is_price
+     * @param bool $isPrice
      */
-    public function setIsPrice($is_price) {
-        $this->isPrice = (bool)$is_price;
+    public function setIsPrice($isPrice) {
+        $this->isPrice = (bool)$isPrice;
     }
 
     /**
@@ -97,10 +97,10 @@ class Entity {
     }
 
     /**
-     * @param bool $is_shop
+     * @param bool $isShop
      */
-    public function setIsShop($is_shop) {
-        $this->isShop = (bool)$is_shop;
+    public function setIsShop($isShop) {
+        $this->isShop = (bool)$isShop;
     }
 
     /**
@@ -111,10 +111,10 @@ class Entity {
     }
 
     /**
-     * @param bool $is_store
+     * @param bool $isStore
      */
-    public function setIsStore($is_store) {
-        $this->isStore = (bool)$is_store;
+    public function setIsStore($isStore) {
+        $this->isStore = (bool)$isStore;
     }
 
     /**
@@ -125,10 +125,10 @@ class Entity {
     }
 
     /**
-     * @param bool $is_supplier
+     * @param bool $isSupplier
      */
-    public function setIsSupplier($is_supplier) {
-        $this->isSupplier = (bool)$is_supplier;
+    public function setIsSupplier($isSupplier) {
+        $this->isSupplier = (bool)$isSupplier;
     }
 
     /**
@@ -139,10 +139,10 @@ class Entity {
     }
 
     /**
-     * @param bool $is_view_card
+     * @param bool $isViewCard
      */
-    public function setIsInCard($is_view_card) {
-        $this->isInCard = (bool)$is_view_card;
+    public function setIsInCard($isViewCard) {
+        $this->isInCard = (bool)$isViewCard;
     }
 
     /**
@@ -153,10 +153,10 @@ class Entity {
     }
 
     /**
-     * @param bool $is_view_list
+     * @param bool $isInList
      */
-    public function setIsInList($is_view_list) {
-        $this->isInList = (bool)$is_view_list;
+    public function setIsInList($isInList) {
+        $this->isInList = (bool)$isInList;
     }
 
     /**
@@ -167,10 +167,10 @@ class Entity {
     }
 
     /**
-     * @param int $status_id
+     * @param int $statusId
      */
-    public function setStatusId($status_id) {
-        $this->statusId = (int)$status_id;
+    public function setStatusId($statusId) {
+        $this->statusId = (int)$statusId;
     }
 
     /**

@@ -989,6 +989,7 @@ class Request {
      *
      * @param Boolean $asResource If true, a resource will be returned
      *
+     * @throws \LogicException
      * @return string|resource The request bodyText content or a resource to read the bodyText stream.
      */
     public function getContent($asResource = false) {

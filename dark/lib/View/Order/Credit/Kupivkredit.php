@@ -14,6 +14,7 @@ class Kupivkredit {
     /**
      * @param \Model\Order\Entity     $order
      * @param \Model\Product\Entity[] $productsById
+     * @throws \Exception
      */
     public function __construct(\Model\Order\Entity $order, array $productsById) {
         $this->config = \App::config()->creditProvider['kupivkredit'];

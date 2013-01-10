@@ -730,7 +730,7 @@ class Entity {
     }
 
     /**
-     * @param string $updatedAt
+     * @param \DateTime|string $updatedAt
      */
     public function setUpdatedAt(\DateTime $updatedAt = null) {
         $this->updatedAt = $updatedAt;

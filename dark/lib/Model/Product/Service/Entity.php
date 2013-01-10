@@ -59,7 +59,7 @@ class Entity {
     }
 
     /**
-     * @param Entity[] $alike
+     * @param Entity[] $alikes
      */
     public function setAlike($alikes) {
         $this->category = array();

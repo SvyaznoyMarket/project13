@@ -16,6 +16,7 @@ class Filter {
 
     /**
      * @param FilterEntity[] $filterCollection
+     * @param bool $isGlobal
      */
     public function __construct(array $filterCollection, $isGlobal = false) {
         $this->filters = $filterCollection;
@@ -24,6 +25,7 @@ class Filter {
 
     /**
      * @param \Model\Product\Category\Entity $category
+     * @throws \InvalidArgumentException
      */
     public function setCategory($category = null) {
         if (!($category instanceof \Model\Product\Category\Entity || $category instanceof \Model\Tag\Category\Entity)) {

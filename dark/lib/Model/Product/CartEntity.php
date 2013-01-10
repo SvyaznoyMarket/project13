@@ -44,7 +44,8 @@ class CartEntity extends CompactEntity {
     }
 
     /**
-     * @param Warranty\Entity[] $services
+     * @param Warranty\Entity[] $warranties
+     * @return void
      */
     public function setWarranty(array $warranties) {
         $this->warranty = array();

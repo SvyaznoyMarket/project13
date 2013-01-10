@@ -15,6 +15,7 @@ class Repository {
 
     /**
      * @param $id
+     * @param \Model\Region\Entity $region
      * @return Entity|null
      */
     public function getEntityById($id, \Model\Region\Entity $region = null) {

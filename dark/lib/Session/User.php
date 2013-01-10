@@ -52,6 +52,7 @@ class User {
 
     /**
      * @param \Model\User\Entity $user
+     * @param \Http\Response $response
      */
     public function signIn(\Model\User\Entity $user, \Http\Response $response) {
         $user->setIpAddress(\App::request()->getClientIp());

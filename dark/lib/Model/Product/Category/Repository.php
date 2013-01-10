@@ -151,6 +151,7 @@ class Repository {
     }
 
     /**
+     * @param \Model\Region\Entity $region
      * @param int $maxLevel
      * @return Entity[]
      */

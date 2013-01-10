@@ -48,7 +48,7 @@ class Entity {
     }
 
     /**
-     * @param \Model\Tag\Category\Entity[] $category
+     * @param \Model\Tag\Category\Entity[] $categories
      */
     public function setCategory(array $categories) {
         $this->category = array();

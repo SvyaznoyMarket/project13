@@ -192,7 +192,8 @@ class Entity extends BasicEntity {
     }
 
     /**
-     * @param Category\Entity $categories
+     * @param Category\Entity[] $categories
+     * @return void
      */
     public function setCategory(array $categories) {
         $this->category = array();
@@ -808,7 +809,8 @@ class Entity extends BasicEntity {
     }
 
     /**
-     * @param array $accessoryId
+     * @param $relatedId
+     * @return void
      */
     public function setRelatedId($relatedId)
     {

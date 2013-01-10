@@ -95,8 +95,8 @@ class ClientV2 implements ClientInterface
         try {
             do {
                 do {
-                    $code = curl_multi_exec($this->isMultiple, $curl_still_executing);
-                    $this->stillExecuting = $curl_still_executing;
+                    $code = curl_multi_exec($this->isMultiple, $stillExecuting);
+                    $this->stillExecuting = $stillExecuting;
                 } while ($code == CURLM_CALL_MULTI_PERFORM);
 
                 // if one or more descriptors is ready, read content and run callbacks
@@ -135,7 +135,7 @@ class ClientV2 implements ClientInterface
                         }
                     }
                 }
-                if ($curl_still_executing) {
+                if ($stillExecuting) {
                     $ready = curl_multi_select($this->isMultiple);
                 }
             } while ($this->stillExecuting);
@@ -198,8 +198,9 @@ class ClientV2 implements ClientInterface
 
     /**
      * @param string $response Тело ответа без заголовка (header)
-     * @return mixed
      * @throws \RuntimeException
+     * @throws Exception
+     * @return mixed
      */
     private function decode($response) {
         if (is_null($response)) {

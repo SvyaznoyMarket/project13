@@ -31,9 +31,8 @@ class Client {
      *
      * @param $action
      * @param array $params
-     * @param array $data
-     * @return array
      * @throws SmartengineClientException
+     * @return array
      */
     public function query($action, array $params = array())
     {
@@ -81,7 +80,6 @@ class Client {
     /**
      * @param $action
      * @param array $params
-     * @param array $data
      * @return resource
      */
     private function createResource($action, array $params = array())

@@ -145,7 +145,7 @@ class Entity {
     }
 
     /**
-     * @param int $href
+     * @param $link
      */
     public function setLink($link) {
         $this->link = (string)$link;
