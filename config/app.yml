@@ -97,16 +97,16 @@ all:
 
   core:
     config:
-      #api_url: 'http://core.ent3.ru/v1/json'
-      #userapi_url: 'http://core.ent3.ru/v2/'
-      #client_code: site
-      #consumer_key: test
-      #signature: test
-      api_url: 'http://api.enter.ru/v1/json'
-      userapi_url: 'http://api.enter.ru/v2/'
+      api_url: 'http://core.ent3.ru/v1/json'
+      userapi_url: 'http://core.ent3.ru/v2/'
       client_code: site
-      consumer_key: s7urupe7Efrus8un
-      signature: mEbradRUBruprUT7ukuvAxupraCrEcuk
+      consumer_key: test
+      signature: test
+      #api_url: 'http://api.enter.ru/v1/json'
+      #userapi_url: 'http://api.enter.ru/v2/'
+      #client_code: site
+      #consumer_key: s7urupe7Efrus8un
+      #signature: mEbradRUBruprUT7ukuvAxupraCrEcuk
       log_enabled: true
       log_file: %SF_LOG_DIR%/core_client_2.log
       log_by_request_file: %SF_LOG_DIR%/site_page_time.log
