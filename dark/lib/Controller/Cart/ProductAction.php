@@ -15,6 +15,7 @@ class ProductAction {
 
         $cart = \App::user()->getCart();
 
+        $productId = (int)$productId;
         $quantity = (int)$quantity;
 
         try {
@@ -23,7 +24,6 @@ class ProductAction {
                 \App::logger()->warn(sprintf('Указано неверное количество товаров. Запрос %s', json_encode($request->request->all())));
             }
 
-            $productId = (int)$productId;
             if (!$productId) {
                 throw new \Exception('Не получен ид товара');
             }

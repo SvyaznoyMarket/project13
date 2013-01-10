@@ -25,7 +25,7 @@ class Cart {
         $this->productLimit = \App::config()->cart['productLimit'];
 
         // если пользователь впервые, то заводим ему пустую корзину
-        if(empty($session[$this->sessionName])){
+        if (empty($session[$this->sessionName])) {
             $this->storage->set($this->sessionName, array('productList' => array(), 'serviceList' => array(), 'warrantyList' => array()));
             return;
         }
@@ -42,7 +42,7 @@ class Cart {
             $this->storage->set($this->sessionName, $data);
         }
 
-        if(!array_key_exists('warrantyList', $session[$this->sessionName])){
+        if (!array_key_exists('warrantyList', $session[$this->sessionName])) {
             $data = $this->storage->get($this->sessionName);
             $data['warrantyList'] = array();
             $this->storage->set($this->sessionName, $data);
@@ -65,32 +65,24 @@ class Cart {
         $this->warranties = null;
     }
 
+    /**
+     * @param \Model\Product\Entity $product
+     * @param int $quantity
+     */
     public function setProduct(\Model\Product\Entity $product, $quantity = 1) {
         if ($quantity < 0) $quantity = 0;
 
         $data = $this->storage->get($this->sessionName);
         $data['productList'][$product->getId()] = $quantity;
 
-        // если нулевое количество товара, то удаляем связаные с товаром услуги и гарантии
-        if (0 == $quantity) {
-            unset($data['productList'][$product->getId()]);
-        }
-
         $this->storage->set($this->sessionName, $data);
-
-        // удаление связаных услуг
-        $cartProduct = $this->getProductById($product->getId());
-        if ($cartProduct) {
-            foreach ($cartProduct->getService() as $cartService) {
-                $service = new \Model\Product\Service\Entity(array('id' => $cartService->getId()));
-                $this->setService($service, 0, $product->getId());
-            }
-        }
-
-        // удаление связаных гарантий
-        // TODO: доделать
+        $this->clearEmpty();
     }
 
+    /**
+     * @param $productId
+     * @return bool
+     */
     public function hasProduct($productId) {
         $data = $this->storage->get($this->sessionName);
 
@@ -106,6 +98,11 @@ class Cart {
         $this->storage->set($this->sessionName, $data);
     }
 
+    /**
+     * @param \Model\Product\Service\Entity $service
+     * @param int $quantity
+     * @param null $productId
+     */
     public function setService(\Model\Product\Service\Entity $service, $quantity = 1, $productId = null) {
         if ($quantity < 0) $quantity = 0;
 
@@ -119,21 +116,8 @@ class Cart {
         }
         $data['serviceList'][$service->getId()][$productId] = $quantity;
 
-        // если нулевое количество услуги, то удаляем
-        if (0 == $quantity) {
-            foreach ($data['serviceList'] as $serviceId => $serviceData) {
-                foreach ($serviceData as $iProductId => $serviceQuantity) {
-                    if ($iProductId == $productId) {
-                        unset($data['serviceList'][$serviceId][$productId]);
-                        if (!(bool)$data['serviceList'][$serviceId]) {
-                            unset($data['serviceList'][$serviceId]);
-                        }
-                    }
-                }
-            }
-        }
-
         $this->storage->set($this->sessionName, $data);
+        $this->clearEmpty();
     }
 
     /**
@@ -203,7 +187,7 @@ class Cart {
      */
     public function getTotalProductPrice() {
         $price = 0;
-        foreach($this->getProducts() as $product){
+        foreach ($this->getProducts() as $product) {
             $price += $product->getTotalPrice();
         }
 
@@ -395,11 +379,11 @@ class Cart {
     public function getWarrantyData() {
         $data = $this->getData();
         $return = array();
-        foreach($data['warrantyList'] as $warrantyId => $warrantiesByProduct) {
-            foreach($warrantiesByProduct as $productId => $warrantyQuantity){
+        foreach($data['warrantyList'] as $warrantyId => $warrantyData) {
+            foreach($warrantyData as $productId => $quantity) {
                 $return[] =array(
                     'id'         => $warrantyId,
-                    'quantity'   => $warrantyQuantity,
+                    'quantity'   => $quantity,
                     'product_id' => (int)$productId,
                 );
             }
@@ -481,10 +465,47 @@ class Cart {
         return implode(',', $return);
     }
 
-    private function checkProductLimit() {
-        // если корзина не может вместить новый товар
-        if (null != $this->productLimit && ($this->getProductsQuantity() >= $this->productLimit)) {
-            $this->shiftProduct();
+    /**
+     * Удаляет товары, услуги и гарантии с нулевым количеством
+     */
+    private function clearEmpty() {
+        $data = $this->storage->get($this->sessionName);
+
+        // товары
+        foreach ($data['productList'] as $productId => $quantity) {
+            if (!$quantity) {
+                unset($data['productList'][$productId]);
+            }
         }
+        // услуги
+        foreach ($data['serviceList'] as $serviceId => $serviceData) {
+            foreach ($serviceData as $productId => $quantity) {
+                if ($productId && !array_key_exists($productId, $data['productList'])) {
+                    unset($data['serviceList'][$serviceId][$productId]);
+                } else if (!$quantity) {
+                    unset($data['serviceList'][$serviceId][$productId]);
+                }
+
+                if (!(bool)$data['serviceList'][$serviceId]) {
+                    unset($data['serviceList'][$serviceId]);
+                }
+            }
+        }
+        // гарантии
+        foreach($data['warrantyList'] as $warrantyId => $warrantyData) {
+            foreach($warrantyData as $productId => $quantity) {
+                if ($productId && !array_key_exists($productId, $data['productList'])) {
+                    unset($data['warrantyList'][$warrantyId][$productId]);
+                } else if (!$quantity) {
+                    unset($data['warrantyList'][$warrantyId][$productId]);
+                }
+
+                if (!(bool)$data['warrantyList'][$warrantyId]) {
+                    unset($data['warrantyList'][$warrantyId]);
+                }
+            }
+        }
+
+        $this->storage->set($this->sessionName, $data);
     }
 }

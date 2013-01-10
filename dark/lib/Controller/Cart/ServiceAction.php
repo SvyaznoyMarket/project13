@@ -16,6 +16,8 @@ class ServiceAction {
 
         $cart = \App::user()->getCart();
 
+        $serviceId = (int)$serviceId;
+        $productId = (int)$productId;
         $quantity = (int)$quantity;
 
         try {
@@ -24,7 +26,6 @@ class ServiceAction {
                 \App::logger()->warn(sprintf('Указано неверное количество услуг. Запрос %s', json_encode($request->request->all())));
             }
 
-            $serviceId = (int)$serviceId;
             if (!$serviceId) {
                 throw new \Exception('Не получен ид услуги');
             }
