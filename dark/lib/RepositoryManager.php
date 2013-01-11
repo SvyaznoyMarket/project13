@@ -4,7 +4,7 @@ class RepositoryManager {
     /**
      * @return Model\Region\Repository
      */
-    static public function getRegion() {
+    static public function region() {
         static $instance;
 
         if (!$instance) {
@@ -17,7 +17,7 @@ class RepositoryManager {
     /**
      * @return Model\User\Repository
      */
-    static public function getUser() {
+    static public function user() {
         static $instance;
 
         if (!$instance) {
@@ -30,7 +30,7 @@ class RepositoryManager {
     /**
      * @return Model\Product\Repository
      */
-    static public function getProduct() {
+    static public function product() {
         static $instance;
 
         if (!$instance) {
@@ -43,7 +43,7 @@ class RepositoryManager {
     /**
      * @return Model\Product\Category\Repository
      */
-    static public function getProductCategory() {
+    static public function productCategory() {
         static $instance;
 
         if (!$instance) {
@@ -56,7 +56,7 @@ class RepositoryManager {
     /**
      * @return Model\Product\Filter\Repository
      */
-    static public function getProductFilter() {
+    static public function productFilter() {
         static $instance;
 
         if (!$instance) {
@@ -69,7 +69,7 @@ class RepositoryManager {
     /**
      * @return Model\Product\Service\Repository
      */
-    static public function getService() {
+    static public function service() {
         static $instance;
 
         if (!$instance) {
@@ -82,7 +82,7 @@ class RepositoryManager {
     /**
      * @return Model\Product\Service\Category\Repository
      */
-    static public function getServiceCategory() {
+    static public function serviceCategory() {
         static $instance;
 
         if (!$instance) {
@@ -95,7 +95,7 @@ class RepositoryManager {
     /**
      * @return Model\Tag\Repository
      */
-    static public function getTag() {
+    static public function tag() {
         static $instance;
 
         if (!$instance) {
@@ -108,7 +108,7 @@ class RepositoryManager {
     /**
      * @return Model\Shop\Repository
      */
-    static public function getShop() {
+    static public function shop() {
         static $instance;
 
         if (!$instance) {
@@ -121,7 +121,7 @@ class RepositoryManager {
     /**
      * @return Model\CreditBank\Repository
      */
-    static public function getCreditBank() {
+    static public function creditBank() {
         static $instance;
 
         if (!$instance) {
@@ -134,7 +134,7 @@ class RepositoryManager {
     /**
      * @return Model\Line\Repository
      */
-    static function getLine() {
+    static function line() {
         static $instance;
 
         if (!$instance) {
@@ -147,7 +147,7 @@ class RepositoryManager {
     /**
      * @return Model\Order\Repository
      */
-    static function getOrder() {
+    static function order() {
         static $instance;
 
         if (!$instance) {
@@ -160,7 +160,7 @@ class RepositoryManager {
     /**
      * @return Model\DeliveryType\Repository
      */
-    static function getDeliveryType() {
+    static function deliveryType() {
         static $instance;
 
         if (!$instance) {
@@ -173,7 +173,7 @@ class RepositoryManager {
     /**
      * @return Model\PaymentMethod\Repository
      */
-    static function getPaymentMethod() {
+    static function paymentMethod() {
         static $instance;
 
         if (!$instance) {
@@ -186,7 +186,7 @@ class RepositoryManager {
     /**
      * @return Model\Banner\Repository
      */
-    static function getBanner() {
+    static function banner() {
         static $instance;
 
         if (!$instance) {
@@ -199,7 +199,7 @@ class RepositoryManager {
     /**
      * @return Model\Subway\Repository
      */
-    static function getSubway() {
+    static function subway() {
         static $instance;
 
         if (!$instance) {

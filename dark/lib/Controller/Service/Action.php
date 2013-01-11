@@ -16,7 +16,7 @@ class Action {
 
         // запрашиваем пользователя, если он авторизован
         /*if ($user->getToken()) {
-            \RepositoryManager::getUser()->prepareEntityByToken($user->getToken(), function($data) {
+            \RepositoryManager::user()->prepareEntityByToken($user->getToken(), function($data) {
                 if ((bool)$data) {
                     \App::user()->setEntity(new \Model\User\Entity($data));
                 }
@@ -29,7 +29,7 @@ class Action {
 
         // запрашиваем текущий регион, если есть кука региона
         if ($user->getRegionId()) {
-            \RepositoryManager::getRegion()->prepareEntityById($user->getRegionId(), function($data) {
+            \RepositoryManager::region()->prepareEntityById($user->getRegionId(), function($data) {
                 $data = reset($data);
                 if ((bool)$data) {
                     \App::user()->setRegion(new \Model\Region\Entity($data));
@@ -39,7 +39,7 @@ class Action {
 
         // запрашиваем список регионов для выбора
         $regionsToSelect = array();
-        \RepositoryManager::getRegion()->prepareShowInMenuCollection(function($data) use (&$regionsToSelect) {
+        \RepositoryManager::region()->prepareShowInMenuCollection(function($data) use (&$regionsToSelect) {
             foreach ($data as $item) {
                 $regionsToSelect[] = new \Model\Region\Entity($item);
             }
@@ -54,7 +54,7 @@ class Action {
 
         // запрашиваем рутовые категории
         $rootCategories = array();
-        \RepositoryManager::getProductCategory()->prepareRootCollection($region, function($data) use(&$rootCategories) {
+        \RepositoryManager::productCategory()->prepareRootCollection($region, function($data) use(&$rootCategories) {
             foreach ($data as $item) {
                 $rootCategories[] = new \Model\Product\Category\Entity($item);
             }
@@ -63,7 +63,7 @@ class Action {
         // услуги
         /** @var $services \Model\Product\Service\Entity[] */
         $categories = array();
-        \RepositoryManager::getServiceCategory()->prepareRootCollection($region, function($data) use (&$categories) {
+        \RepositoryManager::serviceCategory()->prepareRootCollection($region, function($data) use (&$categories) {
             if (!isset($data['children']) || !is_array($data['children'])) {
                 $e = new \Exception('Неверные данные для категорий услуг');
                 \App::exception()->add($e);
@@ -96,7 +96,7 @@ class Action {
 
         // запрашиваем пользователя, если он авторизован
         if ($user->getToken()) {
-            \RepositoryManager::getUser()->prepareEntityByToken($user->getToken(), function($data) {
+            \RepositoryManager::user()->prepareEntityByToken($user->getToken(), function($data) {
                 if ((bool)$data) {
                     \App::user()->setEntity(new \Model\User\Entity($data));
                 }
@@ -109,7 +109,7 @@ class Action {
 
         // запрашиваем текущий регион, если есть кука региона
         if ($user->getRegionId()) {
-            \RepositoryManager::getRegion()->prepareEntityById($user->getRegionId(), function($data) {
+            \RepositoryManager::region()->prepareEntityById($user->getRegionId(), function($data) {
                 $data = reset($data);
                 if ((bool)$data) {
                     \App::user()->setRegion(new \Model\Region\Entity($data));
@@ -119,7 +119,7 @@ class Action {
 
         // запрашиваем список регионов для выбора
         $regionsToSelect = array();
-        \RepositoryManager::getRegion()->prepareShowInMenuCollection(function($data) use (&$regionsToSelect) {
+        \RepositoryManager::region()->prepareShowInMenuCollection(function($data) use (&$regionsToSelect) {
             foreach ($data as $item) {
                 $regionsToSelect[] = new \Model\Region\Entity($item);
             }
@@ -134,7 +134,7 @@ class Action {
 
         // запрашиваем рутовые категории
         $rootCategories = array();
-        \RepositoryManager::getProductCategory()->prepareRootCollection($region, function($data) use(&$rootCategories) {
+        \RepositoryManager::productCategory()->prepareRootCollection($region, function($data) use(&$rootCategories) {
             foreach ($data as $item) {
                 $rootCategories[] = new \Model\Product\Category\Entity($item);
             }
@@ -143,7 +143,7 @@ class Action {
         // запрашиваем категорию услуги
         /** @var $category \Model\Product\Service\Category\Entity */
         $category = null;
-        \RepositoryManager::getServiceCategory()->prepareEntityByToken($categoryToken, $region, function($data) use(&$category) {
+        \RepositoryManager::serviceCategory()->prepareEntityByToken($categoryToken, $region, function($data) use(&$category) {
             if ((bool)$data) {
                 $category = new \Model\Product\Service\Category\Entity($data);
             }
@@ -177,13 +177,13 @@ class Action {
             $serviceIds = array_merge($serviceIds, $data['list']);
         };
         foreach ($category->getChild() as $child) {
-            \RepositoryManager::getService()->prepareIdsByCategory($child, $region, $callback);
+            \RepositoryManager::service()->prepareIdsByCategory($child, $region, $callback);
         }
 
         // все категории услуг
         /** @var $allCategories \Model\Product\Service\Category\Entity[] */
         $allCategories = array();
-        \RepositoryManager::getServiceCategory()->prepareCollection($region, function($data) use (&$allCategories) {
+        \RepositoryManager::serviceCategory()->prepareCollection($region, function($data) use (&$allCategories) {
             if (!isset($data['children']) || !is_array($data['children'])) {
                 $e = new \Exception('Неверные данные для категорий услуг');
                 \App::exception()->add($e);
@@ -204,7 +204,7 @@ class Action {
         /** @var $servicesByCategory \Model\Product\Service\Entity[] */
         $servicesByCategory = array();
         if ((bool)$serviceIds) {
-            \RepositoryManager::getService()->prepareCollectionById($serviceIds, $region, function($data) use(&$servicesByCategory) {
+            \RepositoryManager::service()->prepareCollectionById($serviceIds, $region, function($data) use(&$servicesByCategory) {
                 foreach ($data as $item) {
                     $service = new \Model\Product\Service\Entity($item);
                     /** @var $serviceCategory \Model\Product\Service\Category\Entity */
@@ -242,7 +242,7 @@ class Action {
 
         // запрашиваем пользователя, если он авторизован
         if ($user->getToken()) {
-            \RepositoryManager::getUser()->prepareEntityByToken($user->getToken(), function($data) {
+            \RepositoryManager::user()->prepareEntityByToken($user->getToken(), function($data) {
                 if ((bool)$data) {
                     \App::user()->setEntity(new \Model\User\Entity($data));
                 }
@@ -255,7 +255,7 @@ class Action {
 
         // запрашиваем текущий регион, если есть кука региона
         if ($user->getRegionId()) {
-            \RepositoryManager::getRegion()->prepareEntityById($user->getRegionId(), function($data) {
+            \RepositoryManager::region()->prepareEntityById($user->getRegionId(), function($data) {
                 $data = reset($data);
                 if ((bool)$data) {
                     \App::user()->setRegion(new \Model\Region\Entity($data));
@@ -265,7 +265,7 @@ class Action {
 
         // запрашиваем список регионов для выбора
         $regionsToSelect = array();
-        \RepositoryManager::getRegion()->prepareShowInMenuCollection(function($data) use (&$regionsToSelect) {
+        \RepositoryManager::region()->prepareShowInMenuCollection(function($data) use (&$regionsToSelect) {
             foreach ($data as $item) {
                 $regionsToSelect[] = new \Model\Region\Entity($item);
             }
@@ -280,7 +280,7 @@ class Action {
 
         // запрашиваем рутовые категории
         $rootCategories = array();
-        \RepositoryManager::getProductCategory()->prepareRootCollection($region, function($data) use(&$rootCategories) {
+        \RepositoryManager::productCategory()->prepareRootCollection($region, function($data) use(&$rootCategories) {
             foreach ($data as $item) {
                 $rootCategories[] = new \Model\Product\Category\Entity($item);
             }
@@ -289,7 +289,7 @@ class Action {
         // услуга
         /** @var $service \Model\Product\Service\Entity */
         $service = null;
-        \RepositoryManager::getService()->prepareEntityByToken($serviceToken, $region, function($data) use (&$service) {
+        \RepositoryManager::service()->prepareEntityByToken($serviceToken, $region, function($data) use (&$service) {
             $data = reset($data);
             if ((bool)$data) {
                 $service = new \Model\Product\Service\Entity($data);
@@ -307,7 +307,7 @@ class Action {
             // подготовка 3-го пакета запросов
 
             // похожие услуги
-            \RepositoryManager::getService()->prepareCollectionById($service->getAlikeId(), $region, function($data) use (&$service) {
+            \RepositoryManager::service()->prepareCollectionById($service->getAlikeId(), $region, function($data) use (&$service) {
                 foreach ($data as $item) {
                     $service->addAlike(new \Model\Product\Service\Entity($item));
                 }

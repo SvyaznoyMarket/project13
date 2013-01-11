@@ -58,7 +58,7 @@ class Action {
 
     public function pullProductAlsoViewed(\Http\Request $request, $productId) {
         try {
-            $product = \RepositoryManager::getProduct()->getEntityById($productId);
+            $product = \RepositoryManager::product()->getEntityById($productId);
             if (!$product) {
                 return new \Http\Response('');
             }
@@ -90,7 +90,7 @@ class Action {
                 return new \Http\Response('');
             }
 
-            $products = \RepositoryManager::getProduct()->getCollectionById($ids);
+            $products = \RepositoryManager::product()->getCollectionById($ids);
             foreach ($products as $i => $product) {
                 if (!$product->getIsBuyable()) unset($products[$i]);
             }

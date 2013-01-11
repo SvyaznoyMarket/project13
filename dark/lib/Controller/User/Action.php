@@ -42,7 +42,7 @@ class Action {
                         throw new \Exception('Не удалось получить токен');
                     }
 
-                    $userEntity = \RepositoryManager::getUser()->getEntityByToken($result['token']);
+                    $userEntity = \RepositoryManager::user()->getEntityByToken($result['token']);
                     if (!$userEntity) {
                         throw new \Exception(sprintf('Не удалось получить пользователя по токену %s', $result['token']));
                     }
@@ -157,7 +157,7 @@ class Action {
                         throw new \Exception('Не удалось получить токен');
                     }
 
-                    $user = \RepositoryManager::getUser()->getEntityByToken($result['token']);
+                    $user = \RepositoryManager::user()->getEntityByToken($result['token']);
                     if (!$user) {
                         throw new \Exception(sprintf('Не удалось получить пользователя по токену %s', $result['token']));
                     }
@@ -318,7 +318,7 @@ class Action {
                         throw new \Exception('Не удалось получить токен');
                     }
 
-                    $user = \RepositoryManager::getUser()->getEntityByToken($result['token']);
+                    $user = \RepositoryManager::user()->getEntityByToken($result['token']);
                     if (!$user) {
                         throw new \Exception(sprintf('Не удалось получить пользователя по токену %s', $result['token']));
                     }

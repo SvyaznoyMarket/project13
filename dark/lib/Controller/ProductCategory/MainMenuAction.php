@@ -17,7 +17,7 @@ class MainMenuAction {
             throw new \Exception\NotFoundException('Request is not xml http request');
         }
 
-        $repository = \RepositoryManager::getProductCategory();
+        $repository = \RepositoryManager::productCategory();
         $repository->setEntityClass('\Model\Product\Category\BasicEntity');
 
         $region = \Controller\ProductCategory\Action::isGlobal() ? null : \App::user()->getRegion();

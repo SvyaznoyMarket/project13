@@ -43,7 +43,7 @@ class OneClickAction {
             ), $formData);
 
             $productQuantity = (int)$formData['product_quantity'];
-            $product = \RepositoryManager::getProduct()->getEntityByToken($productToken);
+            $product = \RepositoryManager::product()->getEntityByToken($productToken);
             if (!$product) {
                 $e = new \Exception\NotFoundException(sprintf('Товар с токеном %s не найден в ядре', $productToken));
                 \App::logger()->error($e);
@@ -59,7 +59,7 @@ class OneClickAction {
                 $productsInCart = array(array('id' => $product->getId(), 'quantity' => $productQuantity));
             }
 
-            $deliveryType = \RepositoryManager::getDeliveryType()->getEntityByToken(
+            $deliveryType = \RepositoryManager::deliveryType()->getEntityByToken(
                 $formData['shop_id']
                 ? \Model\DeliveryType\Entity::TYPE_SELF
                 : \Model\DeliveryType\Entity::TYPE_STANDART
@@ -106,7 +106,7 @@ class OneClickAction {
                     throw new \Exception(sprintf('Не получен номер заказа. Ответ ядра: %s', json_encode($result)));
                 }
 
-                $order = \RepositoryManager::getOrder()->getEntityByNumberAndPhone($orderNumber, $formData['recipient_phonenumbers']);
+                $order = \RepositoryManager::order()->getEntityByNumberAndPhone($orderNumber, $formData['recipient_phonenumbers']);
                 if (!$order) {
                     \App::logger()->error(sprintf('Заказ №%s не найден в ядре', $result['number']));
                     $order = new \Model\Order\Entity(array('number' => $result['number']));
@@ -128,7 +128,7 @@ class OneClickAction {
             $shop = null;
             if ($order->getShopId()) {
                 try {
-                    $shop = \RepositoryManager::getShop()->getEntityById($order->getShopId());
+                    $shop = \RepositoryManager::shop()->getEntityById($order->getShopId());
                 } catch(\Exception $e) {
                     \App::logger()->error($e);
                 }
@@ -138,7 +138,7 @@ class OneClickAction {
             /** @var $orderProduct \Model\Order\Product\Entity */
             $orderProduct = reset($orderProducts);
             try {
-                $product = $orderProduct ? \RepositoryManager::getProduct()->getEntityById($orderProduct->getId()) : null;
+                $product = $orderProduct ? \RepositoryManager::product()->getEntityById($orderProduct->getId()) : null;
             } catch (\Exception $e) {
                 \App::logger()->error($e);
                 $product = null;

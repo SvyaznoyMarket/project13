@@ -71,7 +71,7 @@ class Action {
         $productView = $request->get('view', $selectedCategory ? $selectedCategory->getProductView() : \Model\Product\Category\Entity::PRODUCT_VIEW_COMPACT);
 
         // товары
-        $productRepository = \RepositoryManager::getProduct();
+        $productRepository = \RepositoryManager::product();
         $productRepository->setEntityClass(
             \Model\Product\Category\Entity::PRODUCT_VIEW_EXPANDED == $productView
             ? '\\Model\\Product\\ExpandedEntity'

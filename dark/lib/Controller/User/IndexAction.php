@@ -19,7 +19,7 @@ class IndexAction {
 
         // запрашиваем пользователя, если он авторизован
         if ($user->getToken()) {
-            \RepositoryManager::getUser()->prepareEntityByToken($user->getToken(), function($data) {
+            \RepositoryManager::user()->prepareEntityByToken($user->getToken(), function($data) {
                 if ((bool)$data) {
                     \App::user()->setEntity(new \Model\User\Entity($data));
                 }
@@ -32,7 +32,7 @@ class IndexAction {
 
         // запрашиваем текущий регион, если есть кука региона
         if ($user->getRegionId()) {
-            \RepositoryManager::getRegion()->prepareEntityById($user->getRegionId(), function($data) {
+            \RepositoryManager::region()->prepareEntityById($user->getRegionId(), function($data) {
                 $data = reset($data);
                 if ((bool)$data) {
                     \App::user()->setRegion(new \Model\Region\Entity($data));
@@ -42,7 +42,7 @@ class IndexAction {
 
         // запрашиваем список регионов для выбора
         $regionsToSelect = array();
-        \RepositoryManager::getRegion()->prepareShowInMenuCollection(function($data) use (&$regionsToSelect) {
+        \RepositoryManager::region()->prepareShowInMenuCollection(function($data) use (&$regionsToSelect) {
             foreach ($data as $item) {
                 $regionsToSelect[] = new \Model\Region\Entity($item);
             }
@@ -57,7 +57,7 @@ class IndexAction {
 
         // запрашиваем рутовые категории
         $rootCategories = array();
-        \RepositoryManager::getProductCategory()->prepareRootCollection($region, function($data) use(&$rootCategories) {
+        \RepositoryManager::productCategory()->prepareRootCollection($region, function($data) use(&$rootCategories) {
             foreach ($data as $item) {
                 $rootCategories[] = new \Model\Product\Category\Entity($item);
             }
@@ -66,7 +66,7 @@ class IndexAction {
         // запрашиваем количество заказов пользователя
         /** @var $product \Model\Product\Entity */
         $orderCount = 0;
-        \RepositoryManager::getOrder()->prepareCollectionByUserToken($user->getToken(), function($data) use(&$orderCount) {
+        \RepositoryManager::order()->prepareCollectionByUserToken($user->getToken(), function($data) use(&$orderCount) {
             $orderCount = (bool)$data ? count($data) : 0;
         });
 

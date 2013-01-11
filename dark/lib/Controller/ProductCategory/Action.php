@@ -45,7 +45,7 @@ class Action {
 
         $region = self::isGlobal() ? null : \App::user()->getRegion();
 
-        $repository = \RepositoryManager::getProductCategory();
+        $repository = \RepositoryManager::productCategory();
         $category = $repository->getEntityByToken($categoryToken);
         if (!$category) {
             throw new \Exception\NotFoundException(sprintf('Категория товара с токеном "%s" не найдена.', $categoryToken));
@@ -63,7 +63,7 @@ class Action {
         $productView = $category->getHasLine() ? 'line' : 'compact';
         // фильтры
         try {
-            $filters = \RepositoryManager::getProductFilter()->getCollectionByCategory($category, $region);
+            $filters = \RepositoryManager::productFilter()->getCollectionByCategory($category, $region);
         } catch (\Exception $e) {
             \App::exception()->add($e);
             \App::logger()->error($e);
@@ -73,7 +73,7 @@ class Action {
         $productFilter = $this->getFilter($filters, $category, $request);
         // листалка
         $limit = \App::config()->product['itemsInCategorySlider'];
-        $repository = \RepositoryManager::getProduct();
+        $repository = \RepositoryManager::product();
         $repository->setEntityClass('\\Model\\Product\\CompactEntity');
         $productPager = $repository->getIteratorByFilter(
             $productFilter->dump(),
@@ -114,7 +114,7 @@ class Action {
 
         $region = self::isGlobal() ? null : \App::user()->getRegion();
 
-        $repository = \RepositoryManager::getProductCategory();
+        $repository = \RepositoryManager::productCategory();
         $category = $repository->getEntityByToken($categoryToken);
         if (!$category) {
             throw new \Exception\NotFoundException(sprintf('Категория товара с токеном "%s" не найдена.', $categoryToken));
@@ -122,7 +122,7 @@ class Action {
 
         // фильтры
         try {
-            $filters = \RepositoryManager::getProductFilter()->getCollectionByCategory($category, $region);
+            $filters = \RepositoryManager::productFilter()->getCollectionByCategory($category, $region);
         } catch (\Exception $e) {
             \App::exception()->add($e);
             \App::logger()->error($e);
@@ -131,7 +131,7 @@ class Action {
         }
         $productFilter = $this->getFilter($filters, $category, $request);
 
-        $count = \RepositoryManager::getProduct()->countByFilter($productFilter->dump());
+        $count = \RepositoryManager::product()->countByFilter($productFilter->dump());
 
         return new \Http\JsonResponse(array(
             'success' => true,
@@ -158,7 +158,7 @@ class Action {
 
         // запрашиваем пользователя, если он авторизован
         /*if ($user->getToken()) {
-            \RepositoryManager::getUser()->prepareEntityByToken($user->getToken(), function($data) {
+            \RepositoryManager::user()->prepareEntityByToken($user->getToken(), function($data) {
                 if ((bool)$data) {
                     \App::user()->setEntity(new \Model\User\Entity($data));
                 }
@@ -172,7 +172,7 @@ class Action {
         // запрашиваем текущий регион, если есть кука региона
         if ($user->getRegionId()) {
             if ($user->getRegionId()) {
-                \RepositoryManager::getRegion()->prepareEntityById($user->getRegionId(), function($data) {
+                \RepositoryManager::region()->prepareEntityById($user->getRegionId(), function($data) {
                     $data = reset($data);
                     if ((bool)$data) {
                         \App::user()->setRegion(new \Model\Region\Entity($data));
@@ -183,7 +183,7 @@ class Action {
 
         // запрашиваем список регионов для выбора
         $regionsToSelect = array();
-        \RepositoryManager::getRegion()->prepareShowInMenuCollection(function($data) use (&$regionsToSelect) {
+        \RepositoryManager::region()->prepareShowInMenuCollection(function($data) use (&$regionsToSelect) {
             foreach ($data as $item) {
                 $regionsToSelect[] = new \Model\Region\Entity($item);
             }
@@ -199,7 +199,7 @@ class Action {
 
         // запрашиваем рутовые категории
         $rootCategories = array();
-        \RepositoryManager::getProductCategory()->prepareRootCollection($region, function($data) use(&$rootCategories) {
+        \RepositoryManager::productCategory()->prepareRootCollection($region, function($data) use(&$rootCategories) {
             foreach ($data as $item) {
                 $rootCategories[] = new \Model\Product\Category\Entity($item);
             }
@@ -208,7 +208,7 @@ class Action {
         // запрашиваем категорию по токену
         /** @var $category \Model\Product\Category\Entity */
         $category = null;
-        \RepositoryManager::getProductCategory()->prepareEntityByToken($categoryToken, $region, function($data) use (&$category) {
+        \RepositoryManager::productCategory()->prepareEntityByToken($categoryToken, $region, function($data) use (&$category) {
             $data = reset($data);
             if ((bool)$data) {
                 $category = new \Model\Product\Category\Entity($data);
@@ -225,12 +225,12 @@ class Action {
         // подготовка 3-го пакета запросов
 
         // запрашиваем дерево категорий
-        \RepositoryManager::getProductCategory()->prepareEntityBranch($category, $region);
+        \RepositoryManager::productCategory()->prepareEntityBranch($category, $region);
 
         // запрашиваем фильтры
         /** @var $filters \Model\Product\Filter\Entity[] */
         $filters = array();
-        \RepositoryManager::getProductFilter()->prepareCollectionByCategory($category, $region, function($data) use (&$filters) {
+        \RepositoryManager::productFilter()->prepareCollectionByCategory($category, $region, function($data) use (&$filters) {
             foreach ($data as $item) {
                 $filters[] = new \Model\Product\Filter\Entity($item);
             }
@@ -323,7 +323,7 @@ class Action {
         }
         // листалки сгруппированные по идентификаторам категорий
         $limit = \App::config()->product['itemsInCategorySlider'] * 2;
-        $repository = \RepositoryManager::getProduct();
+        $repository = \RepositoryManager::product();
         $repository->setEntityClass('\\Model\\Product\\CompactEntity');
         // массив фильтров для каждой дочерней категории
         $filterData = array_map(function(\Model\Product\Category\Entity $category) use ($productFilter) {
@@ -376,7 +376,7 @@ class Action {
         $productView = $request->get('view', $category->getHasLine() ? 'line' : $category->getProductView());
         // листалка
         $limit = \App::config()->product['itemsPerPage'];
-        $repository = \RepositoryManager::getProduct();
+        $repository = \RepositoryManager::product();
         $repository->setEntityClass(
             \Model\Product\Category\Entity::PRODUCT_VIEW_EXPANDED == $productView
                 ? '\\Model\\Product\\ExpandedEntity'
@@ -447,7 +447,7 @@ class Action {
             if ((bool)$diff) {
                 foreach ($category->getAncestor() as $ancestor) {
                     try {
-                        $ancestorFilters = \RepositoryManager::getProductFilter()->getCollectionByCategory($ancestor, $region);
+                        $ancestorFilters = \RepositoryManager::productFilter()->getCollectionByCategory($ancestor, $region);
                     } catch (\Exception $e) {
                         \App::exception()->add($e);
                         \App::logger()->error($e);

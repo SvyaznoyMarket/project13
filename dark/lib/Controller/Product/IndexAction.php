@@ -8,7 +8,7 @@ class IndexAction {
 
         $client = \App::coreClientV2();
         $user = \App::user();
-        $repository = \RepositoryManager::getProduct();
+        $repository = \RepositoryManager::product();
 
         $productToken = explode('/', $productPath);
         $productToken = end($productToken);
@@ -17,7 +17,7 @@ class IndexAction {
 
         // запрашиваем пользователя, если он авторизован
         /*if ($user->getToken()) {
-            \RepositoryManager::getUser()->prepareEntityByToken($user->getToken(), function($data) {
+            \RepositoryManager::user()->prepareEntityByToken($user->getToken(), function($data) {
                 if ((bool)$data) {
                     \App::user()->setEntity(new \Model\User\Entity($data));
                 }
@@ -30,7 +30,7 @@ class IndexAction {
 
         // запрашиваем текущий регион, если есть кука региона
         if ($user->getRegionId()) {
-            \RepositoryManager::getRegion()->prepareEntityById($user->getRegionId(), function($data) {
+            \RepositoryManager::region()->prepareEntityById($user->getRegionId(), function($data) {
                 $data = reset($data);
                 if ((bool)$data) {
                     \App::user()->setRegion(new \Model\Region\Entity($data));
@@ -40,7 +40,7 @@ class IndexAction {
 
         // запрашиваем список регионов для выбора
         $regionsToSelect = array();
-        \RepositoryManager::getRegion()->prepareShowInMenuCollection(function($data) use (&$regionsToSelect) {
+        \RepositoryManager::region()->prepareShowInMenuCollection(function($data) use (&$regionsToSelect) {
             foreach ($data as $item) {
                 $regionsToSelect[] = new \Model\Region\Entity($item);
             }
@@ -55,7 +55,7 @@ class IndexAction {
 
         // запрашиваем рутовые категории
         $rootCategories = array();
-        \RepositoryManager::getProductCategory()->prepareRootCollection($region, function($data) use(&$rootCategories) {
+        \RepositoryManager::productCategory()->prepareRootCollection($region, function($data) use(&$rootCategories) {
             foreach ($data as $item) {
                 $rootCategories[] = new \Model\Product\Category\Entity($item);
             }
@@ -64,7 +64,7 @@ class IndexAction {
         // запрашиваем товар по токену
         /** @var $product \Model\Product\Entity */
         $product = null;
-        \RepositoryManager::getProduct()->prepareEntityByToken($productToken, $region, function($data) use (&$product) {
+        \RepositoryManager::product()->prepareEntityByToken($productToken, $region, function($data) use (&$product) {
             $data = reset($data);
             if ((bool)$data) {
                 $product = new \Model\Product\Entity($data);
@@ -134,7 +134,7 @@ class IndexAction {
             }
             if (count($quantityByShop)) {
                 try {
-                    $shops = \RepositoryManager::getShop()->getCollectionById(array_keys($quantityByShop));
+                    $shops = \RepositoryManager::shop()->getCollectionById(array_keys($quantityByShop));
                     foreach ($shops as $shop) {
                         $shopsWithQuantity[] = array(
                             'shop' => $shop,
@@ -180,7 +180,7 @@ class IndexAction {
         $category = $product->getMainCategory();
         $cart = \App::user()->getCart();
         try {
-            $productType = $category ? \RepositoryManager::getCreditBank()->getCreditTypeByCategoryToken($category->getToken()) : '';
+            $productType = $category ? \RepositoryManager::creditBank()->getCreditTypeByCategoryToken($category->getToken()) : '';
         } catch (\Exception $e) {
             \App::exception()->add($e);
             \App::logger()->error($e);

@@ -48,7 +48,7 @@ class Action {
         }
 
         // товары
-        foreach (\RepositoryManager::getProduct()->getCollectionById(array_keys($productsById)) as $product) {
+        foreach (\RepositoryManager::product()->getCollectionById(array_keys($productsById)) as $product) {
             $productsById[$product->getId()] = $product;
         }
 

@@ -16,13 +16,13 @@ class RelatedAction {
 
         $page = $request->get('page', 1);
 
-        $product = \RepositoryManager::getProduct()->getEntityByToken($productToken);
+        $product = \RepositoryManager::product()->getEntityByToken($productToken);
         if (!$product)
             return new \Http\JsonResponse(array('success' => false, 'data' => 'Не найден товар ' . $productToken));
 
         $begin = self::NUM_RELATED_ON_PAGE * ($page - 1);
         $accessoryIdList = array_slice($product->getRelatedId(), $begin, self::NUM_RELATED_ON_PAGE);
-        $accessoryProductList = \RepositoryManager::getProduct()->getCollectionById($accessoryIdList);
+        $accessoryProductList = \RepositoryManager::product()->getCollectionById($accessoryIdList);
 
         $response = " ";
         foreach ($accessoryProductList as $accessory)

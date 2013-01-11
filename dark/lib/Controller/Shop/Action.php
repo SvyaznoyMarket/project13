@@ -13,7 +13,7 @@ class Action {
 
         // запрашиваем пользователя, если он авторизован
         /*if ($user->getToken()) {
-            \RepositoryManager::getUser()->prepareEntityByToken($user->getToken(), function($data) {
+            \RepositoryManager::user()->prepareEntityByToken($user->getToken(), function($data) {
                 if ((bool)$data) {
                     \App::user()->setEntity(new \Model\User\Entity($data));
                 }
@@ -26,7 +26,7 @@ class Action {
 
         // запрашиваем текущий регион, если есть кука региона
         if ($user->getRegionId()) {
-            \RepositoryManager::getRegion()->prepareEntityById($user->getRegionId(), function($data) {
+            \RepositoryManager::region()->prepareEntityById($user->getRegionId(), function($data) {
                 $data = reset($data);
                 if ((bool)$data) {
                     \App::user()->setRegion(new \Model\Region\Entity($data));
@@ -36,7 +36,7 @@ class Action {
 
         // запрашиваем список регионов для выбора
         $shopAvailableRegions = array();
-        \RepositoryManager::getRegion()->prepareShopAvailableCollection(function($data) use (&$shopAvailableRegions) {
+        \RepositoryManager::region()->prepareShopAvailableCollection(function($data) use (&$shopAvailableRegions) {
             $firstElements = array();
             $elements = array();
             foreach ($data as $item) {
@@ -71,7 +71,7 @@ class Action {
 
         // запрашиваем рутовые категории
         $rootCategories = array();
-        \RepositoryManager::getProductCategory()->prepareRootCollection($region, function($data) use(&$rootCategories) {
+        \RepositoryManager::productCategory()->prepareRootCollection($region, function($data) use(&$rootCategories) {
             foreach ($data as $item) {
                 $rootCategories[] = new \Model\Product\Category\Entity($item);
             }
@@ -80,7 +80,7 @@ class Action {
         // магазины
         /** @var $shops \Model\Shop\Entity[] */
         $shops = array();
-        \RepositoryManager::getShop()->prepareCollectionByRegion(null, function($data) use (&$shops) {
+        \RepositoryManager::shop()->prepareCollectionByRegion(null, function($data) use (&$shops) {
             foreach ($data as $item) {
                 $shops[] = new \Model\Shop\Entity($item);
             }
@@ -126,7 +126,7 @@ class Action {
 
         // запрашиваем пользователя, если он авторизован
         if ($user->getToken()) {
-            \RepositoryManager::getUser()->prepareEntityByToken($user->getToken(), function($data) {
+            \RepositoryManager::user()->prepareEntityByToken($user->getToken(), function($data) {
                 if ((bool)$data) {
                     \App::user()->setEntity(new \Model\User\Entity($data));
                 }
@@ -139,7 +139,7 @@ class Action {
 
         // запрашиваем текущий регион, если есть кука региона
         if ($user->getRegionId()) {
-            \RepositoryManager::getRegion()->prepareEntityById($user->getRegionId(), function($data) {
+            \RepositoryManager::region()->prepareEntityById($user->getRegionId(), function($data) {
                 $data = reset($data);
                 if ((bool)$data) {
                     \App::user()->setRegion(new \Model\Region\Entity($data));
@@ -149,7 +149,7 @@ class Action {
 
         // запрашиваем список регионов, где есть магазины
         $shopAvailableRegions = array();
-        \RepositoryManager::getRegion()->prepareShopAvailableCollection(function($data) use (&$shopAvailableRegions) {
+        \RepositoryManager::region()->prepareShopAvailableCollection(function($data) use (&$shopAvailableRegions) {
             foreach ($data as $item) {
                 $shopAvailableRegions[] = new \Model\Region\Entity($item);
             }
@@ -157,7 +157,7 @@ class Action {
 
         // запрашиваем список регионов для выбора
         $regionsToSelect = array();
-        \RepositoryManager::getRegion()->prepareShowInMenuCollection(function($data) use (&$regionsToSelect) {
+        \RepositoryManager::region()->prepareShowInMenuCollection(function($data) use (&$regionsToSelect) {
             foreach ($data as $item) {
                 $regionsToSelect[] = new \Model\Region\Entity($item);
             }
@@ -168,7 +168,7 @@ class Action {
 
         $region = $user->getRegion();
 
-        $currentRegion = $regionId == $region->getId() ? $region : \RepositoryManager::getRegion()->getEntityById($regionId);
+        $currentRegion = $regionId == $region->getId() ? $region : \RepositoryManager::region()->getEntityById($regionId);
         if (!$currentRegion) {
             throw new \Exception\NotFoundException(sprintf('Region #%s not found', $regionId));
         }
@@ -177,7 +177,7 @@ class Action {
 
         // запрашиваем рутовые категории
         $rootCategories = array();
-        \RepositoryManager::getProductCategory()->prepareRootCollection($region, function($data) use(&$rootCategories) {
+        \RepositoryManager::productCategory()->prepareRootCollection($region, function($data) use(&$rootCategories) {
             foreach ($data as $item) {
                 $rootCategories[] = new \Model\Product\Category\Entity($item);
             }
@@ -186,7 +186,7 @@ class Action {
         // магазины
         /** @var $shops \Model\Shop\Entity[] */
         $shops = array();
-        \RepositoryManager::getShop()->prepareCollectionByRegion($currentRegion, function($data) use (&$shops) {
+        \RepositoryManager::shop()->prepareCollectionByRegion($currentRegion, function($data) use (&$shops) {
             foreach ($data as $item) {
                 $shops[] = new \Model\Shop\Entity($item);
             }
@@ -232,7 +232,7 @@ class Action {
 
         // запрашиваем пользователя, если он авторизован
         if ($user->getToken()) {
-            \RepositoryManager::getUser()->prepareEntityByToken($user->getToken(), function($data) {
+            \RepositoryManager::user()->prepareEntityByToken($user->getToken(), function($data) {
                 if ((bool)$data) {
                     \App::user()->setEntity(new \Model\User\Entity($data));
                 }
@@ -245,7 +245,7 @@ class Action {
 
         // запрашиваем текущий регион, если есть кука региона
         if ($user->getRegionId()) {
-            \RepositoryManager::getRegion()->prepareEntityById($user->getRegionId(), function($data) {
+            \RepositoryManager::region()->prepareEntityById($user->getRegionId(), function($data) {
                 $data = reset($data);
                 if ((bool)$data) {
                     \App::user()->setRegion(new \Model\Region\Entity($data));
@@ -255,7 +255,7 @@ class Action {
 
         // запрашиваем список регионов для выбора
         $regionsToSelect = array();
-        \RepositoryManager::getRegion()->prepareShowInMenuCollection(function($data) use (&$regionsToSelect) {
+        \RepositoryManager::region()->prepareShowInMenuCollection(function($data) use (&$regionsToSelect) {
             foreach ($data as $item) {
                 $regionsToSelect[] = new \Model\Region\Entity($item);
             }
@@ -266,7 +266,7 @@ class Action {
 
         $region = $user->getRegion();
 
-        $currentRegion = $regionToken == $region->getToken() ? $region : \RepositoryManager::getRegion()->getEntityByToken($regionToken);
+        $currentRegion = $regionToken == $region->getToken() ? $region : \RepositoryManager::region()->getEntityByToken($regionToken);
         if (!$currentRegion) {
             throw new \Exception\NotFoundException(sprintf('Region with token %s not found', $regionToken));
         }
@@ -275,7 +275,7 @@ class Action {
 
         // запрашиваем рутовые категории
         $rootCategories = array();
-        \RepositoryManager::getProductCategory()->prepareRootCollection($region, function($data) use(&$rootCategories) {
+        \RepositoryManager::productCategory()->prepareRootCollection($region, function($data) use(&$rootCategories) {
             foreach ($data as $item) {
                 $rootCategories[] = new \Model\Product\Category\Entity($item);
             }
@@ -284,7 +284,7 @@ class Action {
         // магазин
         /** @var $shop \Model\Shop\Entity */
         $shop = null;
-        \RepositoryManager::getShop()->prepareEntityByToken($shopToken, function($data) use (&$shop) {
+        \RepositoryManager::shop()->prepareEntityByToken($shopToken, function($data) use (&$shop) {
             $data = reset($data);
             if ((bool)$data) {
                 $shop = new \Model\Shop\Entity($data);

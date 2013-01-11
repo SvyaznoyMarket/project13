@@ -28,7 +28,7 @@ class ProductAction {
                 throw new \Exception('Не получен ид товара');
             }
 
-            $product = \RepositoryManager::getProduct()->getEntityById($productId);
+            $product = \RepositoryManager::product()->getEntityById($productId);
             if (!$product) {
                 throw new \Exception(sprintf('Товар #%s не найден', $productId));
             }

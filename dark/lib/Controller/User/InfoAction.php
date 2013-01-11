@@ -32,7 +32,7 @@ class InfoAction {
 
         // запрашиваем пользователя, если он авторизован
         if ($user->getToken()) {
-            \RepositoryManager::getUser()->prepareEntityByToken($user->getToken(), function($data) {
+            \RepositoryManager::user()->prepareEntityByToken($user->getToken(), function($data) {
                 if ((bool)$data) {
                     \App::user()->setEntity(new \Model\User\Entity($data));
                 }
@@ -50,7 +50,7 @@ class InfoAction {
                 $productTokensById[$item['id']] = null;
             }
 
-            \RepositoryManager::getProduct()->prepareCollectionById(array_keys($productTokensById), $region, function($data) use(&$productTokensById) {
+            \RepositoryManager::product()->prepareCollectionById(array_keys($productTokensById), $region, function($data) use(&$productTokensById) {
                 foreach($data as $item) {
                     $productTokensById[$item['id']] = $item['token'];
                 }
@@ -64,7 +64,7 @@ class InfoAction {
                 $serviceTokensById[$item['id']] = null;
             }
 
-            \RepositoryManager::getService()->prepareCollectionById(array_keys($serviceTokensById), $region, function($data) use(&$serviceTokensById) {
+            \RepositoryManager::service()->prepareCollectionById(array_keys($serviceTokensById), $region, function($data) use(&$serviceTokensById) {
                 foreach($data as $item){
                     $serviceTokensById[$item['id']] = $item['token'];
                 }

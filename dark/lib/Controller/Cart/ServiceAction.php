@@ -32,7 +32,7 @@ class ServiceAction {
 
             $product = null;
             if ($productId) {
-                $product = \RepositoryManager::getProduct()->getEntityById($productId);
+                $product = \RepositoryManager::product()->getEntityById($productId);
                 if (!$product) {
                     throw new \Exception(sprintf('Товар #%s для услуги #%s не найден', $productId, $serviceId));
                 }
@@ -44,7 +44,7 @@ class ServiceAction {
                 $action->set($product->getId(), $quantity, $request);
             }
 
-            $service = \RepositoryManager::getService()->getEntityById($serviceId, \App::user()->getRegion());
+            $service = \RepositoryManager::service()->getEntityById($serviceId, \App::user()->getRegion());
             if (!$service) {
                 throw new \Exception(sprintf('Товар #%s не найден', $serviceId));
             }

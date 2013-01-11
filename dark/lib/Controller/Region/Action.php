@@ -18,7 +18,7 @@ class Action {
 
         $response = new \Http\RedirectResponse($request->headers->get('referer') ?: \App::router()->generate('homepage'));
 
-        $region = \RepositoryManager::getRegion()->getEntityById($regionId);
+        $region = \RepositoryManager::region()->getEntityById($regionId);
         if (!$region) {
             throw new \Exception\NotFoundException(sprintf('Region #%s not found', $regionId));
         }
@@ -76,7 +76,7 @@ class Action {
 
         $response = new \Http\RedirectResponse($redirectTo);
 
-        $region = \RepositoryManager::getRegion()->getEntityById($regionId);
+        $region = \RepositoryManager::region()->getEntityById($regionId);
         if ($region) {
             \App::user()->changeRegion($region, $response);
         }

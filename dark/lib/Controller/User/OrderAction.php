@@ -19,7 +19,7 @@ class OrderAction {
 
         // запрашиваем пользователя, если он авторизован
         if ($user->getToken()) {
-            \RepositoryManager::getUser()->prepareEntityByToken($user->getToken(), function($data) {
+            \RepositoryManager::user()->prepareEntityByToken($user->getToken(), function($data) {
                 if ((bool)$data) {
                     \App::user()->setEntity(new \Model\User\Entity($data));
                 }
@@ -32,7 +32,7 @@ class OrderAction {
 
         // запрашиваем текущий регион, если есть кука региона
         if ($user->getRegionId()) {
-            \RepositoryManager::getRegion()->prepareEntityById($user->getRegionId(), function($data) {
+            \RepositoryManager::region()->prepareEntityById($user->getRegionId(), function($data) {
                 $data = reset($data);
                 if ((bool)$data) {
                     \App::user()->setRegion(new \Model\Region\Entity($data));
@@ -42,7 +42,7 @@ class OrderAction {
 
         // запрашиваем список регионов для выбора
         $regionsToSelect = array();
-        \RepositoryManager::getRegion()->prepareShowInMenuCollection(function($data) use (&$regionsToSelect) {
+        \RepositoryManager::region()->prepareShowInMenuCollection(function($data) use (&$regionsToSelect) {
             foreach ($data as $item) {
                 $regionsToSelect[] = new \Model\Region\Entity($item);
             }
@@ -55,7 +55,7 @@ class OrderAction {
 
         // способы получения заказа
         $deliveryTypesById = array();
-        foreach (\RepositoryManager::getDeliveryType()->getCollection() as $deliveryType) {
+        foreach (\RepositoryManager::deliveryType()->getCollection() as $deliveryType) {
             $deliveryTypesById[$deliveryType->getId()] = $deliveryType;
         }
 
@@ -63,7 +63,7 @@ class OrderAction {
 
         // запрашиваем рутовые категории
         $rootCategories = array();
-        \RepositoryManager::getProductCategory()->prepareRootCollection($region, function($data) use(&$rootCategories) {
+        \RepositoryManager::productCategory()->prepareRootCollection($region, function($data) use(&$rootCategories) {
             foreach ($data as $item) {
                 $rootCategories[] = new \Model\Product\Category\Entity($item);
             }
@@ -72,7 +72,7 @@ class OrderAction {
         // запрашиваем заказы пользователя
         /** @var $orders \Model\Order\Entity[] */
         $orders = array();
-        \RepositoryManager::getOrder()->prepareCollectionByUserToken($user->getToken(), function($data) use(&$orders) {
+        \RepositoryManager::order()->prepareCollectionByUserToken($user->getToken(), function($data) use(&$orders) {
             foreach ($data as $item) {
                 $orders[] = new \Model\Order\Entity($item);
             }
@@ -100,8 +100,8 @@ class OrderAction {
 
         // методы оплаты
         $paymentMethodsById = array();
-        \RepositoryManager::getPaymentMethod()->prepareCollection(
-            $region->getId() == \App::config()->region['defaultId'] ? $region : \RepositoryManager::getRegion()->getDefaultEntity(),
+        \RepositoryManager::paymentMethod()->prepareCollection(
+            $region->getId() == \App::config()->region['defaultId'] ? $region : \RepositoryManager::region()->getDefaultEntity(),
             false,
             function($data) use(&$paymentMethodsById) {
                 foreach($data as $item){
@@ -112,7 +112,7 @@ class OrderAction {
 
         // товары
         if ((bool)$productsById) {
-            \RepositoryManager::getProduct()->prepareCollectionById(array_keys($productsById), $region, function($data) use(&$productsById) {
+            \RepositoryManager::product()->prepareCollectionById(array_keys($productsById), $region, function($data) use(&$productsById) {
                 foreach($data as $item){
                     $productsById[$item['id']] = new \Model\Product\CartEntity($item);
                 }
@@ -121,7 +121,7 @@ class OrderAction {
 
         // услуги
         if ((bool)$servicesById) {
-            \RepositoryManager::getService()->prepareCollectionById(array_keys($servicesById), $region, function($data) use(&$servicesById) {
+            \RepositoryManager::service()->prepareCollectionById(array_keys($servicesById), $region, function($data) use(&$servicesById) {
                 foreach($data as $item){
                     $servicesById[$item['id']] = new \Model\Product\Service\Entity($item);
                 }

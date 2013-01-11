@@ -14,9 +14,9 @@ class ExternalCreateAction {
 
         $productInCart = (array)$request->get('items');
         $regionId = (int)$request->get('city_id');
-        $region = $regionId ? \RepositoryManager::getRegion()->getById($regionId) : null;
+        $region = $regionId ? \RepositoryManager::region()->getById($regionId) : null;
         if (!$region) {
-            $region = \RepositoryManager::getRegion()->getDefaultEntity();
+            $region = \RepositoryManager::region()->getDefaultEntity();
             \App::logger()->warn('Не передан регион для заказа извне');
         }
 
@@ -29,7 +29,7 @@ class ExternalCreateAction {
         foreach ($productInCart as $id => $quantity) {
             $productsById[$id] = null;
         }
-        foreach (\RepositoryManager::getProduct()->getCollectionById(array_keys($productsById)) as $product) {
+        foreach (\RepositoryManager::product()->getCollectionById(array_keys($productsById)) as $product) {
             $productsById[$product->getId()] = $product;
         }
 

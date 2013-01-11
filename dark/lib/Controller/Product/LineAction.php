@@ -6,14 +6,14 @@ class LineAction {
     public function execute($lineToken, \Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
-        $line = \RepositoryManager::getLine()->getEntityByToken($lineToken);
+        $line = \RepositoryManager::line()->getEntityByToken($lineToken);
         if (!$line) {
             throw new \Exception\NotFoundException(sprintf('Серия с токеном "%s" не найдена.', $lineToken));
         }
 
         // вид списка других товаров в серии
         $productView = $request->get('view', 'compact');
-        $productRepository = \RepositoryManager::getProduct();
+        $productRepository = \RepositoryManager::product();
 
         $mainProduct = $productRepository->getEntityById($line->getMainProductId());
 

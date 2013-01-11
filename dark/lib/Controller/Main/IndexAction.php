@@ -15,7 +15,7 @@ class IndexAction {
 
         // запрашиваем рутовые категории
         $rootCategories = array();
-        \RepositoryManager::getProductCategory()->prepareRootCollection($region, function($data) use(&$rootCategories) {
+        \RepositoryManager::productCategory()->prepareRootCollection($region, function($data) use(&$rootCategories) {
             foreach ($data as $item) {
                 $rootCategories[] = new \Model\Product\Category\Entity($item);
             }
@@ -24,7 +24,7 @@ class IndexAction {
         // запрашиваем баннеры
         $itemsByBanner = array();
         $bannerData = array();
-        \RepositoryManager::getBanner()->prepareCollection($region, function ($data) use (&$bannerData, &$itemsByBanner) {
+        \RepositoryManager::banner()->prepareCollection($region, function ($data) use (&$bannerData, &$itemsByBanner) {
             $timeout = \App::config()->banner['timeout'];
             $urls = \App::config()->banner['url'];
 
@@ -79,7 +79,7 @@ class IndexAction {
         // подготовка 2-го пакета запросов
         // запрашиваем товары
         if ((bool)$productsById) {
-            \RepositoryManager::getProduct()->prepareCollectionById(array_keys($productsById), $region, function($data) use (&$productsById) {
+            \RepositoryManager::product()->prepareCollectionById(array_keys($productsById), $region, function($data) use (&$productsById) {
                 foreach ($data as $item) {
                     $productsById[(int)$item['id']] = new \Model\Product\BasicEntity($item);
                 }
@@ -91,7 +91,7 @@ class IndexAction {
         }
         // запрашиваем услуги
         if ((bool)$servicesById) {
-            \RepositoryManager::getService()->prepareCollectionById(array_keys($servicesById), $region, function($data) use (&$servicesById) {
+            \RepositoryManager::service()->prepareCollectionById(array_keys($servicesById), $region, function($data) use (&$servicesById) {
                 foreach ($data as $item) {
                     $servicesById[(int)$item['id']] = new \Model\Product\Service\Entity($item);
                 }
@@ -103,7 +103,7 @@ class IndexAction {
         }
         // запрашиваем категории товаров
         if ((bool)$categoriesById) {
-            \RepositoryManager::getProductCategory()->prepareCollectionById(array_keys($categoriesById), $region, function($data) use (&$categoriesById) {
+            \RepositoryManager::productCategory()->prepareCollectionById(array_keys($categoriesById), $region, function($data) use (&$categoriesById) {
                 foreach ($data as $item) {
                     $categoriesById[(int)$item['id']] = new \Model\Product\Category\Entity($item);
                 }

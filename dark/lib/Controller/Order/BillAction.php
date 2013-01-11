@@ -16,7 +16,7 @@ class BillAction {
 
         $userEntity = \App::user()->getEntity();
 
-        $order = \RepositoryManager::getOrder()->getEntityByNumberAndPhone($orderNumber, $userEntity->getMobilePhone());
+        $order = \RepositoryManager::order()->getEntityByNumberAndPhone($orderNumber, $userEntity->getMobilePhone());
         if (!$order) {
             throw new \Exception\NotFoundException(sprintf('Заказ с номером "%s" не найден.', $orderNumber));
         }

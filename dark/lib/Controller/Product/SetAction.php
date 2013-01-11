@@ -25,7 +25,7 @@ class SetAction {
         $categoriesById = array();
         /** @var $products \Model\Product\ExpandedEntity */
         $products = array();
-        \RepositoryManager::getProduct()->prepareCollectionByBarcode($productBarcodes, \App::user()->getRegion(), function($data) use (&$products, &$categoriesById) {
+        \RepositoryManager::product()->prepareCollectionByBarcode($productBarcodes, \App::user()->getRegion(), function($data) use (&$products, &$categoriesById) {
             foreach ($data as $item) {
                 $products[] = new \Model\Product\ExpandedEntity($item);
 

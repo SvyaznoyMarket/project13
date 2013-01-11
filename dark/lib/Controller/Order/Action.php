@@ -95,7 +95,7 @@ class Action {
                 $productIds = array_map(function ($item) { return $item['id']; }, $errorData);
                 /** @var $productsById \Model\Product\Entity[] */
                 $productsById = array();
-                foreach (\RepositoryManager::getProduct()->getCollectionById($productIds) as $product) {
+                foreach (\RepositoryManager::product()->getCollectionById($productIds) as $product) {
                     $productsById[$product->getId()] = $product;
                 }
 
@@ -149,7 +149,7 @@ class Action {
 
             // запрашиваем список товаров
             if ((bool)$productIds) {
-                \RepositoryManager::getProduct()->prepareCollectionById($productIds, $region, function($data) use(&$productsById, $cartProductsById) {
+                \RepositoryManager::product()->prepareCollectionById($productIds, $region, function($data) use(&$productsById, $cartProductsById) {
                     foreach ($data as $item) {
                         $productsById[$item['id']] = new \Model\Product\CartEntity($item);
                     }
@@ -158,7 +158,7 @@ class Action {
 
             // запрашиваем список услуг
             if ((bool)$serviceIds) {
-                \RepositoryManager::getService()->prepareCollectionById($serviceIds, $region, function($data) use(&$servicesById, $cartServicesById) {
+                \RepositoryManager::service()->prepareCollectionById($serviceIds, $region, function($data) use(&$servicesById, $cartServicesById) {
                     foreach ($data as $item) {
                         $servicesById[$item['id']] = new \Model\Product\Service\Entity($item);
                     }
@@ -272,7 +272,7 @@ class Action {
         /** @var $subwayData array */
         $subwayData = array();
         if ($user->getRegion()->getHasSubway()) {
-            \RepositoryManager::getSubway()->prepareCollectionByRegion($user->getRegion(), function($data) use (&$subwayData) {
+            \RepositoryManager::subway()->prepareCollectionByRegion($user->getRegion(), function($data) use (&$subwayData) {
                 foreach ($data as $item) {
                     $subwayData[] = array('val' => $item['id'], 'label' => $item['name']);
                 }
@@ -286,7 +286,7 @@ class Action {
         $paymentMethods = array();
         $selectedPaymentMethodId = null;
         $creditAllowed = \App::config()->payment['creditEnabled'] && ($user->getCart()->getTotalProductPrice()) >= \App::config()->product['minCreditPrice'];
-        \RepositoryManager::getPaymentMethod()->prepareCollection(null, $userEntity ? $userEntity->getIsCorporative() : false, function($data)
+        \RepositoryManager::paymentMethod()->prepareCollection(null, $userEntity ? $userEntity->getIsCorporative() : false, function($data)
             use (
                 &$paymentMethods,
                 &$selectedPaymentMethodId,
@@ -323,7 +323,7 @@ class Action {
         // запрашиваем список кредитных банков
         /** @var $banks \Model\CreditBank\Entity[] */
         $banks = array();
-        \RepositoryManager::getCreditBank()->prepareCollection(function($data) use (&$banks) {
+        \RepositoryManager::creditBank()->prepareCollection(function($data) use (&$banks) {
             foreach ($data as $item) {
                 $banks[] = new \Model\CreditBank\Entity($item);
             }
@@ -354,7 +354,7 @@ class Action {
                 'id'       => $product->getId(),
                 'quantity' => $cartProduct->getQuantity(),
                 'price'    => $cartProduct->getPrice(),
-                'type'     => \RepositoryManager::getCreditBank()->getCreditTypeByCategoryToken($product->getMainCategory() ? $product->getMainCategory()->getToken() : null),
+                'type'     => \RepositoryManager::creditBank()->getCreditTypeByCategoryToken($product->getMainCategory() ? $product->getMainCategory()->getToken() : null),
             );
         }
 
@@ -410,7 +410,7 @@ class Action {
             $shopsById[$order->getShopId()] = null;
         }
         if ((bool)$shopsById) {
-            foreach (\RepositoryManager::getShop()->getCollectionById(array_keys($shopsById)) as $shop) {
+            foreach (\RepositoryManager::shop()->getCollectionById(array_keys($shopsById)) as $shop) {
                 $shopsById[$shop->getId()] = $shop;
             }
         }
@@ -423,8 +423,8 @@ class Action {
                 $productsById[$orderProduct->getId()] = null;
             }
         }
-        \RepositoryManager::getProduct()->setEntityClass('\Model\Product\Entity');
-        foreach (\RepositoryManager::getProduct()->getCollectionById(array_keys($productsById)) as $product) {
+        \RepositoryManager::product()->setEntityClass('\Model\Product\Entity');
+        foreach (\RepositoryManager::product()->getCollectionById(array_keys($productsById)) as $product) {
             $productsById[$product->getId()] = $product;
         }
 
@@ -436,12 +436,12 @@ class Action {
                 $servicesById[$orderService->getId()] = null;
             }
         }
-        foreach (\RepositoryManager::getService()->getCollectionById(array_map(function ($orderService) { /** @var $orderService \Model\Order\Service\Entity */ return $orderService->getId(); }, $order->getService()), $user->getRegion()) as $service) {
+        foreach (\RepositoryManager::service()->getCollectionById(array_map(function ($orderService) { /** @var $orderService \Model\Order\Service\Entity */ return $orderService->getId(); }, $order->getService()), $user->getRegion()) as $service) {
             $servicesById[$service->getId()] = $service;
         }
 
         // метод оплаты
-        $paymentMethod = \RepositoryManager::getPaymentMethod()->getEntityById($order->getPaymentId());
+        $paymentMethod = \RepositoryManager::paymentMethod()->getEntityById($order->getPaymentId());
         if (!$paymentMethod) {
             throw new \Exception(sprintf('Не найден метод оплаты для заказа #%s', $order->getId()));
         }
@@ -491,7 +491,7 @@ class Action {
                             'quantity' => (string)$orderProduct->getQuantity(),
                             'price'    => $orderProduct->getPrice(),
                             'articul'  => $product->getArticle(),
-                            'type'     => \RepositoryManager::getCreditBank()->getCreditTypeByCategoryToken($product->getMainCategory() ? $product->getMainCategory()->getToken() : null),
+                            'type'     => \RepositoryManager::creditBank()->getCreditTypeByCategoryToken($product->getMainCategory() ? $product->getMainCategory()->getToken() : null),
                         );
                     }
                 }
@@ -562,13 +562,13 @@ class Action {
 
         /** @var $deliveryTypesById \Model\DeliveryType\Entity[] */
         $deliveryTypesById = array();
-        foreach (\RepositoryManager::getDeliveryType()->getCollection() as $deliveryType) {
+        foreach (\RepositoryManager::deliveryType()->getCollection() as $deliveryType) {
             $deliveryTypesById[$deliveryType->getId()] = $deliveryType;
         }
 
         /** @var $deliveryTypesById \Model\Shop\Entity[] */
         $shopsById = array();
-        foreach (\RepositoryManager::getShop()->getCollectionByRegion($user->getRegion()) as $shop) {
+        foreach (\RepositoryManager::shop()->getCollectionByRegion($user->getRegion()) as $shop) {
             $shopsById[$shop->getId()] = $shop;
         }
 
@@ -729,7 +729,7 @@ class Action {
         if (!$form->getDeliveryTypeId()) {
             $form->setError('delivery_type_id', 'Не указан способ получения заказа');
         } else if ($form->getDeliveryTypeId()) {
-            $deliveryType = \RepositoryManager::getDeliveryType()->getEntityById($form->getDeliveryTypeId());
+            $deliveryType = \RepositoryManager::deliveryType()->getEntityById($form->getDeliveryTypeId());
             if (!$deliveryType) {
                 $form->setError('delivery_type_id', 'Способ получения заказа недоступен');
             } else if ('standart' == $deliveryType->getToken()) {
@@ -973,7 +973,7 @@ class Action {
         // сборка типов доставки
         /** @var $deliveryTypesById \Model\DeliveryType\Entity[] */
         $deliveryTypesById = array();
-        foreach (\RepositoryManager::getDeliveryType()->getCollection() as $deliveryType) {
+        foreach (\RepositoryManager::deliveryType()->getCollection() as $deliveryType) {
             $deliveryTypesById[$deliveryType->getId()] = $deliveryType;
         }
         foreach ($deliveryCalcResult['possible_deliveries'] as $deliveryTypeToken => $itemData) {
@@ -1064,7 +1064,7 @@ class Action {
             }
 
             // TODO: запрашивать несколько заказов асинхронно
-            $order = \RepositoryManager::getOrder()->getEntityByNumberAndPhone($orderItem['number'], $orderItem['phone']);
+            $order = \RepositoryManager::order()->getEntityByNumberAndPhone($orderItem['number'], $orderItem['phone']);
             if (!$order) {
                 \App::logger()->error(sprintf('Заказ из сессии не найден %s', json_encode($orderItem)));
                 continue;

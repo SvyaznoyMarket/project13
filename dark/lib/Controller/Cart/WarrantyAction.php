@@ -32,7 +32,7 @@ class WarrantyAction {
 
             $product = null;
             if ($productId) {
-                $product = \RepositoryManager::getProduct()->getEntityById($productId);
+                $product = \RepositoryManager::product()->getEntityById($productId);
                 if (!$product) {
                     throw new \Exception(sprintf('Товар #%s для гарантии #%s не найден', $productId, $warrantyId));
                 }

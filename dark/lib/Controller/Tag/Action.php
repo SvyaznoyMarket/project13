@@ -6,7 +6,7 @@ class Action {
     public function index($tagToken, \Http\Request $request, $categoryToken = null) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
-        $tag = \RepositoryManager::getTag()->getEntityByToken($tagToken);
+        $tag = \RepositoryManager::tag()->getEntityByToken($tagToken);
         if (!$tag) {
             throw new \Exception\NotFoundException(sprintf('Тег с токеном "%s" не найден', $tagToken));
         }
@@ -28,7 +28,7 @@ class Action {
         }
         /** @var $categoriesByToken \Model\Product\Category\Entity[] */
         $categoriesByToken = array();
-        foreach (\RepositoryManager::getProductCategory()->getCollectionById(array_keys($tagCategoriesById)) as $category) {
+        foreach (\RepositoryManager::productCategory()->getCollectionById(array_keys($tagCategoriesById)) as $category) {
             /** @var $category \Model\Product\Category\Entity */
             $tagCategory = $tagCategoriesById[$category->getId()];
             $category->setProductCount($tagCategory->getProductCount());
@@ -58,7 +58,7 @@ class Action {
         $productFilter->setValues(array('tag' => array($tag->getId())));
         // листалка
         $limit = \App::config()->product['itemsPerPage'];
-        $repository = \RepositoryManager::getProduct();
+        $repository = \RepositoryManager::product();
         $repository->setEntityClass(
             \Model\Product\Category\Entity::PRODUCT_VIEW_EXPANDED == $productView
                 ? '\\Model\\Product\\ExpandedEntity'

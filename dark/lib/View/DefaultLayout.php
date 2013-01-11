@@ -56,7 +56,7 @@ class DefaultLayout extends Layout {
 
         if (null === $categories) {
             try {
-                $categories = \RepositoryManager::getProductCategory()->getRootCollection();
+                $categories = \RepositoryManager::productCategory()->getRootCollection();
             } catch (\Exception $e) {
                 \App::exception()->add($e);
                 \App::logger()->error($e);
@@ -117,7 +117,7 @@ class DefaultLayout extends Layout {
 
         if (null === $regions) {
             try {
-                $regions = \RepositoryManager::getRegion()->getShowInMenuCollection();
+                $regions = \RepositoryManager::region()->getShowInMenuCollection();
             } catch (\Exception $e) {
                 \App::logger()->error($e);
 

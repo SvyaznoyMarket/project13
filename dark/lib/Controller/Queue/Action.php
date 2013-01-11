@@ -82,7 +82,7 @@ class Action {
 
         /** @var $productsById \Model\Product\Entity[] */
         $productsById = array();
-        foreach (\RepositoryManager::getProduct()->getCollectionById($productIds) as $product) {
+        foreach (\RepositoryManager::product()->getCollectionById($productIds) as $product) {
             $productsById[$product->getId()] = $product;
         }
 
@@ -135,7 +135,7 @@ class Action {
 
         /** @var $productsById \light\ProductData[] */
         $productsById = array();
-        foreach (\RepositoryManager::getProduct()->getCollectionById($productIds) as $product) {
+        foreach (\RepositoryManager::product()->getCollectionById($productIds) as $product) {
             $productsById[$product->getId()] = $product;
         }
 
