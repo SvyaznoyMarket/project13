@@ -376,8 +376,15 @@
     width: 80px;
   }
 }
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5) {
+  .bLogo {
+    background: url("/css/mobile/header/img/logo_R.png") no-repeat 0 0;
+    background-size: 85px 60px;
+  }
+}
 @media only screen and (min-device-pixel-ratio: 1.5) {
   .bLogo {
-    background: none;
+    background: url("/css/mobile/header/img/logo_R.png") no-repeat 0 0;
+    background-size: 85px 60px;
   }
 }
