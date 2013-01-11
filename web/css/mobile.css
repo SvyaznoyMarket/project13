@@ -173,6 +173,18 @@
     min-height: 100%;
     width: 100%;
   }
+  .bContentMenu_eItem {
+    border-top: 2px solid #dcdcdc;
+    list-style: none;
+  }
+  .bContentMenu_eLink {
+    background: url('/css/mobile/common/img/greenArrow.gif') no-repeat 97% center;
+    color: #000000;
+    display: block;
+    font-size: 15px;
+    padding: 10px;
+    text-decoration: none;
+  }
 }
 @media all {
   .grayButton {
@@ -311,6 +323,7 @@
     font-size: 15px;
     margin: 1px 0;
     padding: 10px;
+    text-decoration: none;
   }
   .bContactPhone_ePhone {
     font-size: 18px;
@@ -321,8 +334,8 @@
     color: #ffffff;
     float: left;
     font-size: 14px;
-    height: 30px;
     padding: 15px 10px;
+    text-decoration: none;
     width: 140px;
   }
   .bCopyright {
