@@ -10,11 +10,18 @@
 @import "common/fonts.less";
 
 //---ОСНОВНЫЕ ПРАВИЛА------
-@import "mobile/common/common.less" all;
-@import "mobile/common/buttons.less" all;
+@import "mobile/common/common.less" screen;
+@import "mobile/common/buttons.less" screen;
 
 //-------- ШАПКА ----------
-@import "mobile/header/header.less" all;
+@import "mobile/header/header.less" screen;
 
 //-------- ПОДВАЛ ---------
-@import "mobile/footer/footer.less" all;
+@import "mobile/footer/footer.less" screen;
+
+//---- МЕНЮ КАТЕГОРИЙ -----
+@import "mobile/categoryMenu/categoryMenu.less" screen;
+
+//---  СТИЛИ ДЛЯ РЕТИНЫ ---
+@import "mobile/common/retina.less" only screen and (-webkit-min-device-pixel-ratio : 1.5);
+@import "mobile/common/retina.less" only screen and (min-device-pixel-ratio : 1.5);

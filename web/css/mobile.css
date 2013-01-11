@@ -26,7 +26,7 @@
   font-family: Rouble;
   font-size: 36px;
 }
-@media all {
+@media screen {
   html,
   body,
   div,
@@ -131,6 +131,9 @@
   section {
     display: block;
   }
+  nav ul {
+    list-style: none;
+  }
   .clearfix:after {
     visibility: hidden;
     display: block;
@@ -175,7 +178,6 @@
   }
   .bContentMenu_eItem {
     border-top: 2px solid #dcdcdc;
-    list-style: none;
   }
   .bContentMenu_eLink {
     background: url('/css/mobile/common/img/greenArrow.gif') no-repeat 97% center;
@@ -186,7 +188,7 @@
     text-decoration: none;
   }
 }
-@media all {
+@media screen {
   .grayButton {
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
@@ -198,7 +200,7 @@
     text-decoration: none;
   }
 }
-@media all {
+@media screen {
   .bHeaderFirstLine,
   .bHeaderSecondLine {
     background: #000000;
@@ -312,7 +314,7 @@
     -webkit-appearance: none;
   }
 }
-@media all {
+@media screen {
   .bLightGrayWrap {
     border-top: 2px solid #dcdcdc;
     border-bottom: 2px solid #dcdcdc;
@@ -344,5 +346,38 @@
     font-size: 8px;
     padding: 5px;
     width: 310px;
+  }
+}
+@media screen {
+  .bCategoryMenu {
+    background: #000000;
+  }
+  .bCategoryItem {
+    background: #000000;
+    float: left;
+    text-align: center;
+  }
+  .bCategoryItem_eLink {
+    color: #ffffff;
+    display: block;
+    height: 105px;
+    width: 105px;
+  }
+  .bCategoryItem_eIcon {
+    display: block;
+    height: 50px;
+  }
+  .bCategoryItem_eName {
+    display: block;
+    font-family: 'Enter';
+    font-size: 14px;
+    margin: 0 auto;
+    text-transform: uppercase;
+    width: 80px;
+  }
+}
+@media only screen and (min-device-pixel-ratio: 1.5) {
+  .bLogo {
+    background: none;
   }
 }
