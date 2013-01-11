@@ -166,7 +166,7 @@
   }
   body {
     height: auto !important;
-    width: 360px;
+    width: 320px;
   }
   .bWrap {
     height: auto;
@@ -191,7 +191,7 @@
   .bHeaderSecondLine {
     background: #000000;
     padding: 10px;
-    width: 340px;
+    width: 300px;
   }
   .bHeaderFirstLine {
     -webkit-box-shadow: 0 1px 1px 2px #616161;
@@ -228,7 +228,7 @@
   }
   .bHeaderSecondLine_eLink {
     color: #ffffff;
-    font-size: 16px;
+    font-size: 15px;
     margin: 0 0 0 25px;
   }
   .bLogo {
@@ -237,21 +237,21 @@
     width: 85px;
   }
   .bSelectRegion {
-    margin: 10px;
+    margin: 10px 0;
     overflow: hidden;
-    width: 120px;
+    width: 105px;
   }
   .bSelectRegion_eSelect {
     background: transparent;
     border: none;
     color: #aeabab;
-    font-size: 12px;
+    font-size: 11px;
     text-decoration: underline;
-    width: 140px;
+    width: 125px;
     -webkit-appearance: none;
   }
   .bCatalogLink {
-    font-size: 24px;
+    font-size: 22px;
     margin-right: 10px;
   }
   .bSearch {
@@ -275,7 +275,7 @@
     height: 25px;
     margin: 0;
     padding: 0 5px;
-    width: 140px;
+    width: 105px;
     -webkit-appearance: none;
   }
   .bSearch_eButton {
@@ -308,28 +308,28 @@
   .bContactPhone {
     background: #dcdcdc;
     color: #000000;
-    font-size: 16px;
+    font-size: 15px;
     margin: 1px 0;
-    padding: 10px 13px;
+    padding: 10px;
   }
   .bContactPhone_ePhone {
-    font-size: 20px;
-    margin: 0 20px;
+    font-size: 18px;
+    margin: 0 15px;
   }
   .bBottomLinks_eLink {
     background: #2a2a2a;
     color: #ffffff;
     float: left;
-    font-size: 16px;
+    font-size: 14px;
     height: 30px;
-    padding: 13px 10px;
-    width: 160px;
+    padding: 15px 10px;
+    width: 140px;
   }
   .bCopyright {
     background: #000000;
     color: #ffffff;
-    font-size: 9px;
-    padding: 5px 10px;
-    width: 340px;
+    font-size: 8px;
+    padding: 5px;
+    width: 310px;
   }
 }
