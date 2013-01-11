@@ -1,0 +1,74 @@
+.bHeader{
+
+}
+.bHeaderFirstLine,
+.bHeaderSecondLine{
+	background: @black;
+	padding: 10px;
+	width: 340px;
+}
+.bHeaderFirstLine{
+	.box-shadow(0 1px 1px 2px @typBoxShadowColor);
+	.darkGrad();
+	margin-bottom: 3px;
+}
+.bHeaderSecondLine{
+	background: @black;
+	&_eLink{
+		color: @white;
+		font-size: 16px;
+		margin: 0 0 0 25px;
+	}
+}
+.bLogo{
+	background: url('@{base-url}/header/img/logo.png') no-repeat 0 0;
+	height: 60px;
+	width: 85px;
+}
+.bSelectRegion{
+	@SelectW:120px;
+	margin: 10px;
+	overflow: hidden;
+	width: @SelectW;
+	&_eSelect{
+		background: transparent;
+		border:none;
+		color:#aeabab;
+		font-size: 12px;
+		text-decoration: underline;
+		width: @SelectW + 20;
+		-webkit-appearance: none;
+	}
+	&_eRegion{
+
+	}
+}
+.bCatalogLink{
+	font-size: 24px;
+	margin-right: 10px;
+}
+.bSearch{
+	@serchH:25px;
+	height: @serchH;
+	&_eText{
+		.border-radius(0, 0, 3px, 3px);
+		border: 1px solid #4D4D4D;
+		border-right: none;
+		height: @serchH;
+		margin: 0;
+		padding: 0 5px;
+		width: 140px;
+		-webkit-appearance: none;
+	}
+	&_eButton{
+		.border-radius(3px, 3px, 0, 0);
+		// .darkGradLigtenBottom();
+		background: url('@{base-url}/header/img/search.png') no-repeat 50% 50%;
+		border: 1px solid #0C0C0C;
+		height: @serchH;
+		margin: 0;
+		padding: 0;
+		width: 30px;
+		-webkit-appearance: none;
+	}
+}
