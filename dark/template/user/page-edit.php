@@ -1,12 +1,15 @@
 <?php
 /**
- * @var $page \View\User\EditPage
- * @var $form \View\User\EditForm
+ * @var $page    \View\User\EditPage
+ * @var $form    \View\User\EditForm
+ * @var $message string
  */
 ?>
 
 <? if ($error = $form->getError('global')): ?>
     <p class="red"><?= $error ?></p>
+<? elseif ($message): ?>
+    <p class="green"><?= $message ?></p>
 <? endif ?>
 
 <form action="<?= $page->url('user.edit') ?>" class="form" method="post">
