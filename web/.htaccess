@@ -18,11 +18,9 @@ Options +FollowSymLinks +ExecCGI
   #RewriteRule ^category/main_menu/? index.light.php [L]
   #RewriteRule ^orders/1click.* index.light.php [L]
 
-  #symfony
-  RewriteRule ^private/consultation/legal.* index.php [L]
+  #RewriteRule ^private/consultation/legal.* index.php [L]
   RewriteRule ^product-rating/createtotal.* index.php [L]
 
-  # dark
 #  RewriteRule ^$ dark.php [L]
 #  RewriteRule ^user/shortinfo/?$ dark.php [L]
 #  RewriteRule ^category/main_menu/? dark.php [L]
