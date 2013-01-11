@@ -8,7 +8,9 @@ var POINTS = {
 	'cssdir': '../web/css/',
 	'js': '../web/js/combine.js',
 	'less': '../web/css/global.less',
-	'css': '../web/css/global.css'
+	'css': '../web/css/global.css',
+	'mLess':'../web/css/mobile.less',
+	'mCss':'../web/css/mobile.css'
 }	
 
 var red   = '\033[31m'
@@ -50,6 +52,20 @@ function parseLESS() {
 			console.log('</ CSS >')
 		})
 	})
+	fs.readFile( POINTS.mLess , 'utf8', function(e, data ) { 
+		parser.parse( data, function (err, tree) {
+			console.log( '< CSS mobile>')
+		    if (err) { 
+		    	console.log('</ CSS mobile>')
+		    	return console.error( red + 'Error processing less file '+err)
+		    }
+	    	
+		    // console.log( tree.toCSS().length )
+			fs.writeFile( POINTS.mCss , tree.toCSS(), 'utf8', function(curr, prev) {})
+			console.log('OK')
+			console.log('</ CSS mobile>')
+		})
+	})
 }
 
 function parseJS() {
@@ -68,6 +84,7 @@ function parseJS() {
 
 /* main() */
 	var lessf = []
+	var lessmf = []
 	if( typeMode !== 'js' )
 		parseLESS()
 	if( typeMode !== 'css' )
@@ -77,6 +94,12 @@ function parseJS() {
 		fs.watchFile( POINTS.less, function() {
 			console.log('LESS CHANGED ' + POINTS.less )
 			unwatchCSSbutch( lessf )
+			parseLESS()
+			watchAllLESS()
+		})
+		fs.watchFile( POINTS.mLess, function() {
+			console.log('LESS CHANGED ' + POINTS.mLess )
+			unwatchCSSbutch( lessmf )
 			parseLESS()
 			watchAllLESS()
 		})
@@ -91,6 +114,13 @@ function watchAllLESS() {
 			lessf[i] = lessf[i].replace( /@import\ \"([a-za-zA-Z\.\/]+)\"/g , '$1' )
 		}
 		watchCSSbutch( lessf )
+	})
+	fs.readFile( POINTS.mLess , 'utf8', function(e, data ) { 
+		lessmf = data.match( /@import\ \"([a-zA-Z\.\/]+)\"/g )
+		for( var i in lessmf ) {
+			lessmf[i] = lessmf[i].replace( /@import\ \"([a-za-zA-Z\.\/]+)\"/g , '$1' )
+		}
+		watchCSSbutch( lessmf )
 	})
 }
 function reconfig() {
