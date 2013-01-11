@@ -81,6 +81,9 @@ class Action {
 
                 return new \Http\Response();
             }
+            if (!(bool)$r['recommendeditems']) {
+                return new \Http\Response('');
+            }
 
             $ids =
                 array_key_exists('id', $r['recommendeditems']['item'])
