@@ -70,6 +70,10 @@ class Action {
             $redirectTo = '/' . $redirectTo;
         }
 
+        if ((bool)$request->getQueryString()) {
+            $redirectTo .= '?'.$request->getQueryString();
+        }
+
         if (!$regionId) {
             return new \Http\RedirectResponse($redirectTo);
         }
