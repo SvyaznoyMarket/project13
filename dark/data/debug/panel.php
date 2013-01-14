@@ -1,5 +1,6 @@
 <?php
 $debug = App::debug();
+$page = new \View\Layout();
 
 if (isset($response) && (200 != $response->getStatusCode())) {
     $debug->add('status', $response->getStatusCode(), 150, \Debug\Collector::TYPE_ERROR);
@@ -46,7 +47,7 @@ foreach ((array)$requestData['api_queries'] as $query) {
     $queryString .=
         (round($query['time'], 3) * 1000)
         . ' ' . '<span style="color: #cccccc;">' . $query['host'] . '</span>'
-        . ' ' . '<a style="color: #00ffff" href="' . $query['url'] . '" target="_blank" data-method="' . ((bool)$query['post'] ? 'post' : 'get') . '">' . rawurldecode($query['url']) . '</a>'
+        . ' ' . '<a style="color: #00ffff" href="' . $page->escape($query['url']) . '" target="_blank" data-method="' . ((bool)$query['post'] ? 'post' : 'get') . '">' . $page->escape(rawurldecode($query['url'])) . '</a>'
         . ' ' . ((bool)$query['post'] ? json_encode($query['post']) : '')
         . '<br />';
 }

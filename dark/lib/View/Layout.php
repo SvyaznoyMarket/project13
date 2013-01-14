@@ -73,15 +73,15 @@ class Layout {
     }
 
     public function endEscape() {
-        echo htmlspecialchars(ob_get_clean(), ENT_QUOTES, 'UTF-8');
+        echo htmlspecialchars(ob_get_clean(), ENT_QUOTES, \App::config()->encoding);
     }
 
     public function escape($value) {
-        return htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
+        return htmlspecialchars($value, ENT_QUOTES, \App::config()->encoding);
     }
 
     public function json($value) {
-        return htmlspecialchars(json_encode($value, JSON_HEX_TAG|JSON_HEX_AMP|JSON_HEX_QUOT|JSON_HEX_APOS), ENT_QUOTES, 'UTF-8');
+        return htmlspecialchars(json_encode($value, JSON_HEX_TAG|JSON_HEX_AMP|JSON_HEX_QUOT|JSON_HEX_APOS), ENT_QUOTES, \App::config()->encoding);
     }
 
     public function addStylesheet($stylesheet) {
