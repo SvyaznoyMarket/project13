@@ -6,7 +6,10 @@ class Action {
     public function execute(\Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
-        $searchQuery = $request->get('q');
+        $searchQuery = trim((string)$request->get('q'));
+        if (empty($searchQuery)) {
+            throw new \Exception\NotFoundException(sprintf('Пустая фраза поиска.', $searchQuery));
+        }
         $pageNum = (int)$request->get('page', 1);
         if ($pageNum < 1) {
             throw new \Exception\NotFoundException(sprintf('Неверный номер страницы "%s".', $pageNum));

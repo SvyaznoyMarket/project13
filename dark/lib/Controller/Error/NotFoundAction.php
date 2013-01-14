@@ -15,7 +15,10 @@ class NotFoundAction {
             return new \Http\Response('', 404);
         }
 
-        $content = \App::templating()->render('error/page-404', array('page' => new \View\Layout()));
+        $content = \App::templating()->render('error/page-404', array(
+            'page'      => new \View\Layout(),
+            'exception' => $e,
+        ));
 
         return new \Http\Response($content, 404);
     }

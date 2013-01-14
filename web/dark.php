@@ -91,10 +91,11 @@ $requestLogger->setId(\App::$id);
 $request = \App::request();
 // router
 $router = \App::router();
-$request->attributes->add($router->match($request->getPathInfo(), $request->getMethod()));
-\App::logger()->info('Match route ' . $request->attributes->get('route') . ' by ' . $request->getMethod()  . ' ' . $request->getRequestUri());
 
 try {
+    $request->attributes->add($router->match($request->getPathInfo(), $request->getMethod()));
+    \App::logger()->info('Match route ' . $request->attributes->get('route') . ' by ' . $request->getMethod()  . ' ' . $request->getRequestUri());
+
     // resolver
     $resolver = new \Routing\ActionResolver();
     list($actionCall, $actionParams) = $resolver->getCall($request);

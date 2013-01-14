@@ -1,6 +1,7 @@
 <?php
 /**
- * @var $page \View\Layout
+ * @var $page      \View\Layout
+ * @var $exception \Exception
  */
 ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -17,7 +18,7 @@
         <a class='b404__eLogo' href='/'></a>
 
         <div class='b404Block'>
-            <span>Упс! Запрашиваемая вами страница не найдена.</span>
+            <span><?= \App::config()->debug ? $exception->getMessage() : 'Упс! Запрашиваемая вами страница не найдена' ?></span>
 
             <h2><b>Вы легко можете найти то,<br> что искали!</b></h2>
 
