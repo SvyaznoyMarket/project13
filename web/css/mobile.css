@@ -282,6 +282,7 @@
   }
   .bSearch {
     height: 25px;
+    width: 55%;
   }
   .bSearch_eText {
     -webkit-border-top-right-radius: 0;
@@ -301,7 +302,7 @@
     height: 25px;
     margin: 0;
     padding: 0 5px;
-    width: 105px;
+    width: 75%;
     -webkit-appearance: none;
   }
   .bSearch_eButton {
