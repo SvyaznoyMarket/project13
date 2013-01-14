@@ -11,7 +11,7 @@ class IndexPage extends \View\DefaultLayout {
         if (!$this->hasParam('breadcrumbs')) {
             $breadcrumbs = array();
             $breadcrumbs[] = array(
-                'name' => 'Поиск (' . $this->getParam('searchQuery') . ')',
+                'name' => 'Поиск (' . $this->escape($this->getParam('searchQuery')) . ')',
                 'url'  => \App::router()->generate('search', array('q' => $this->getParam('searchQuery'))),
             );
 
