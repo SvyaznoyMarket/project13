@@ -169,7 +169,7 @@
   }
   body {
     height: auto !important;
-    width: 320px;
+    min-width: 320px;
   }
   .bWrap {
     height: auto;
@@ -205,7 +205,6 @@
   .bHeaderSecondLine {
     background: #000000;
     padding: 10px;
-    width: 300px;
   }
   .bHeaderFirstLine {
     -webkit-box-shadow: 0 1px 1px 2px #616161;
@@ -243,7 +242,7 @@
   .bHeaderSecondLine_eLink {
     color: #ffffff;
     font-size: 15px;
-    margin: 0 0 0 25px;
+    margin: 0 10px;
   }
   .bLogo {
     background: url('/css/mobile/header/img/logo.png') no-repeat 0 0;
@@ -251,7 +250,7 @@
     width: 85px;
   }
   .bSelectRegion {
-    margin: 10px 0;
+    margin: 10px 0 10px 5px;
     overflow: hidden;
     width: 105px;
   }
@@ -331,24 +330,64 @@
     font-size: 18px;
     margin: 0 15px;
   }
-  .bBottomLinks_eLink {
+  .bBottomLinks {
     background: #2a2a2a;
+  }
+  .bBottomLinks_eLink {
     color: #ffffff;
     float: left;
     font-size: 14px;
-    padding: 15px 10px;
+    padding: 15px 3%;
     text-decoration: none;
-    width: 140px;
+    width: 44%;
   }
   .bCopyright {
     background: #000000;
     color: #ffffff;
     font-size: 8px;
     padding: 5px;
-    width: 310px;
   }
 }
 @media screen {
+  .mFurniture {
+    background: url('/css/mobile/categoryMenu/img/icons_id_80.png') no-repeat 0 0;
+  }
+  .mAppliances {
+    background: url('/css/mobile/categoryMenu/img/icons_id_1.png') no-repeat 0 0;
+  }
+  .mBeauty {
+    background: url('/css/mobile/categoryMenu/img/icons_id_21.png') no-repeat 0 0;
+  }
+  .mPerfumery {
+    background: url('/css/mobile/categoryMenu/img/icons_id_2545.png') no-repeat 0 0;
+  }
+  .mHousehold {
+    background: url('/css/mobile/categoryMenu/img/icons_id_443.png') no-repeat 0 0;
+  }
+  .mChildren {
+    background: url('/css/mobile/categoryMenu/img/icons_id_320.png') no-repeat 0 0;
+  }
+  .mPets {
+    background: url('/css/mobile/categoryMenu/img/icons_id_1438.png') no-repeat 0 0;
+  }
+  .mHandmade {
+    background: url('/css/mobile/categoryMenu/img/icons_id_224.png') no-repeat 0 0;
+  }
+  .mElectronics {
+    background: url('/css/mobile/categoryMenu/img/icons_id_788.png') no-repeat 0 0;
+  }
+  .mJewel {
+    background: url('/css/mobile/categoryMenu/img/icons_id_923.png') no-repeat 0 0;
+  }
+  .mSport {
+    background: url('/css/mobile/categoryMenu/img/icons_id_647.png') no-repeat 0 0;
+  }
+  .mGifts {
+    background: url('/css/mobile/categoryMenu/img/icons_id_185.png') no-repeat 0 0;
+  }
+  .mAuto {
+    background: url('/css/mobile/categoryMenu/img/icons_id_225.png') no-repeat 0 0;
+  }
   .bCategoryMenu {
     background: #000000;
   }
@@ -356,16 +395,19 @@
     background: #000000;
     float: left;
     text-align: center;
+    width: 33%;
   }
   .bCategoryItem_eLink {
     color: #ffffff;
     display: block;
     height: 105px;
-    width: 105px;
+    text-decoration: none;
   }
   .bCategoryItem_eIcon {
     display: block;
     height: 50px;
+    margin: 5px auto;
+    width: 76px;
   }
   .bCategoryItem_eName {
     display: block;
@@ -381,10 +423,119 @@
     background: url("/css/mobile/header/img/logo_R.png") no-repeat 0 0;
     background-size: 85px 60px;
   }
+  .mFurniture {
+    background: url('/css/mobile/categoryMenu/img/retina/icons_id_80.png') no-repeat 0 0;
+    background-size: 71px 71px;
+  }
+  .mAppliances {
+    background: url('/css/mobile/categoryMenu/img/retina/icons_id_1.png') no-repeat 0 0;
+    background-size: 71px 71px;
+  }
+  .mBeauty {
+    background: url('/css/mobile/categoryMenu/img/retina/icons_id_21.png') no-repeat 0 0;
+    background-size: 71px 71px;
+  }
+  .mPerfumery {
+    background: url('/css/mobile/categoryMenu/img/retina/icons_id_2545.png') no-repeat 0 0;
+    background-size: 71px 71px;
+  }
+  .mHousehold {
+    background: url('/css/mobile/categoryMenu/img/retina/icons_id_443.png') no-repeat 0 0;
+    background-size: 71px 71px;
+  }
+  .mChildren {
+    background: url('/css/mobile/categoryMenu/img/retina/icons_id_320.png') no-repeat 0 0;
+    background-size: 71px 71px;
+  }
+  .mPets {
+    background: url('/css/mobile/categoryMenu/img/retina/icons_id_1438.png') no-repeat 0 0;
+    background-size: 71px 71px;
+  }
+  .mHandmade {
+    background: url('/css/mobile/categoryMenu/img/retina/icons_id_224.png') no-repeat 0 0;
+    background-size: 71px 71px;
+  }
+  .mElectronics {
+    background: url('/css/mobile/categoryMenu/img/retina/icons_id_788.png') no-repeat 0 0;
+    background-size: 71px 71px;
+  }
+  .mJewel {
+    background: url('/css/mobile/categoryMenu/img/retina/icons_id_923.png') no-repeat 0 0;
+    background-size: 71px 71px;
+  }
+  .mSport {
+    background: url('/css/mobile/categoryMenu/img/retina/icons_id_647.png') no-repeat 0 0;
+    background-size: 71px 71px;
+  }
+  .mGifts {
+    background: url('/css/mobile/categoryMenu/img/retina/icons_id_185.png') no-repeat 0 0;
+    background-size: 71px 71px;
+  }
+  .mAuto {
+    background: url('/css/mobile/categoryMenu/img/retina/icons_id_225.png') no-repeat 0 0;
+    background-size: 71px 71px;
+  }
 }
 @media only screen and (min-device-pixel-ratio: 1.5) {
   .bLogo {
     background: url("/css/mobile/header/img/logo_R.png") no-repeat 0 0;
     background-size: 85px 60px;
+  }
+  .mFurniture {
+    background: url('/css/mobile/categoryMenu/img/retina/icons_id_80.png') no-repeat 0 0;
+    background-size: 71px 71px;
+  }
+  .mAppliances {
+    background: url('/css/mobile/categoryMenu/img/retina/icons_id_1.png') no-repeat 0 0;
+    background-size: 71px 71px;
+  }
+  .mBeauty {
+    background: url('/css/mobile/categoryMenu/img/retina/icons_id_21.png') no-repeat 0 0;
+    background-size: 71px 71px;
+  }
+  .mPerfumery {
+    background: url('/css/mobile/categoryMenu/img/retina/icons_id_2545.png') no-repeat 0 0;
+    background-size: 71px 71px;
+  }
+  .mHousehold {
+    background: url('/css/mobile/categoryMenu/img/retina/icons_id_443.png') no-repeat 0 0;
+    background-size: 71px 71px;
+  }
+  .mChildren {
+    background: url('/css/mobile/categoryMenu/img/retina/icons_id_320.png') no-repeat 0 0;
+    background-size: 71px 71px;
+  }
+  .mPets {
+    background: url('/css/mobile/categoryMenu/img/retina/icons_id_1438.png') no-repeat 0 0;
+    background-size: 71px 71px;
+  }
+  .mHandmade {
+    background: url('/css/mobile/categoryMenu/img/retina/icons_id_224.png') no-repeat 0 0;
+    background-size: 71px 71px;
+  }
+  .mElectronics {
+    background: url('/css/mobile/categoryMenu/img/retina/icons_id_788.png') no-repeat 0 0;
+    background-size: 71px 71px;
+  }
+  .mJewel {
+    background: url('/css/mobile/categoryMenu/img/retina/icons_id_923.png') no-repeat 0 0;
+    background-size: 71px 71px;
+  }
+  .mSport {
+    background: url('/css/mobile/categoryMenu/img/retina/icons_id_647.png') no-repeat 0 0;
+    background-size: 71px 71px;
+  }
+  .mGifts {
+    background: url('/css/mobile/categoryMenu/img/retina/icons_id_185.png') no-repeat 0 0;
+    background-size: 71px 71px;
+  }
+  .mAuto {
+    background: url('/css/mobile/categoryMenu/img/retina/icons_id_225.png') no-repeat 0 0;
+    background-size: 71px 71px;
+  }
+}
+@media only screen and (min-width: 321px) {
+  .bCategoryItem {
+    width: 25%;
   }
 }
