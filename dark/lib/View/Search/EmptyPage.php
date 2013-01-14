@@ -7,7 +7,7 @@ class EmptyPage extends \View\DefaultLayout {
 
     public function prepare() {
         if (!$this->hasParam('title')) {
-            $this->setParam('title', 'Вы искали “' . $this->getParam('searchQuery') . '”');
+            $this->setParam('title', 'Вы искали “' . $this->escape($this->getParam('searchQuery')) . '”');
         }
     }
 

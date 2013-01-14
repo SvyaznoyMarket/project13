@@ -86,7 +86,7 @@ class OneClickAction {
                 'delivery_date'             => (string)$formData['delivered_at'],
                 'first_name'                => (string)$formData['recipient_first_name'],
                 'mobile'                    => trim((string)$formData['recipient_phonenumbers']),
-                'svyaznoy_club_card_number' => (string)$formData['recipient_scCard'],
+                'svyaznoy_club_card_number' => str_replace(' ','', (string)$formData['recipient_scCard']),
                 'product'                   => $productsInCart,
                 'extra'                     => 'Это быстрый заказ за 1 клик. Уточните параметры заказа у клиента.',
                 'ip'                        => $request->getClientIp(),
