@@ -68,6 +68,12 @@ nav ul{
 .mEnter{
 	font-family: 'Enter';
 }
+.mGrayLink{
+	color: #575757;
+}
+.mBlackLink{
+	color: @black;
+}
 
 //layout
 html, body{
@@ -88,16 +94,22 @@ body{
 }
 
 // typical blocks
+.bMenuBack{
+	background: #f0f0f0 url('@{base-url}/common/img/backGrayArrow.png') no-repeat 10px center;
+	display: block;
+	font-size: 14px;
+	padding: 7px 0 7px 25px;
+	text-decoration: none;
+}
 .bContentMenu{
 	&_eItem{
 		border-top: 2px solid #dcdcdc;
 	}
 	&_eLink{
 		background: url('@{base-url}/common/img/greenArrow.gif') no-repeat 97% center;
-		color: @black;
 		display: block;
 		font-size: 15px;
-		padding: 10px;
+		padding: 10px 25px 10px 10px;
 		text-decoration: none;
 	}
 }

@@ -159,6 +159,12 @@
   .mEnter {
     font-family: 'Enter';
   }
+  .mGrayLink {
+    color: #575757;
+  }
+  .mBlackLink {
+    color: #000000;
+  }
   html,
   body {
     background: #ffffff;
@@ -176,15 +182,21 @@
     min-height: 100%;
     width: 100%;
   }
+  .bMenuBack {
+    background: #f0f0f0 url('/css/mobile/common/img/backGrayArrow.png') no-repeat 10px center;
+    display: block;
+    font-size: 14px;
+    padding: 7px 0 7px 25px;
+    text-decoration: none;
+  }
   .bContentMenu_eItem {
     border-top: 2px solid #dcdcdc;
   }
   .bContentMenu_eLink {
     background: url('/css/mobile/common/img/greenArrow.gif') no-repeat 97% center;
-    color: #000000;
     display: block;
     font-size: 15px;
-    padding: 10px;
+    padding: 10px 25px 10px 10px;
     text-decoration: none;
   }
 }
