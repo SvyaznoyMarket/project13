@@ -152,7 +152,7 @@
     <? if (!$product->getIsBuyable() && $product->getState()->getIsShop()): ?>
       <div class="notBuying font12">
           <div class="corner"><div></div></div>
-          Только в розничных магазинах
+          Только в магазинах
       </div>
     <? endif ?>
     <? if ($product->getIsBuyable()): ?>
@@ -170,7 +170,7 @@
 
       <div class="vitrin" id="availableShops" data-shops='<?= $jsonAvailableShops ?>'>
         <div class="line pb15"></div>
-        <p class="font18 orange">Этот товар вы можете купить только в эт<?= (count($shopsWithQuantity) == 1) ? 'ом магазине' : 'их магазинах' ?></p>
+        <p class="font18 orange">Этот товар вы можете купить только в магазин<?= (count($shopsWithQuantity) == 1) ? 'е' : 'ах' ?></p>
         <ul id="listAvalShop">
           <? $i = 0; foreach ($shopsWithQuantity as $shopWithQuantity): $i++?>
               <li<?= $i > 3 ? ' class="hidden"' : ''?>>
@@ -541,7 +541,7 @@
         <? if (!$product->getIsBuyable() && $product->getState()->getIsShop()): ?>
         <div class="notBuying font12">
             <div class="corner"><div></div></div>
-            Только в розничных магазинах
+            Только в магазинах
         </div>
         <? endif ?>
     </div>

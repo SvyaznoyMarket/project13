@@ -33,7 +33,7 @@ $gaEvent = isset($gaEvent) ? $gaEvent : null;
 	    <? if (!$product->getIsBuyable() && $product->getState()->getIsShop()): ?>
         	<div class="notBuying font12">
                 <div class="corner"><div></div></div>
-                Только в розничных магазинах
+                Только в магазинах
             </div>
 		<? endif ?>
     </div>
