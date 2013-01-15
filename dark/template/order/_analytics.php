@@ -141,18 +141,12 @@
         return $orderProduct->getQuantity();
     }, $order->getProduct())),
     );
-    $jsonMyThings = array('order_id' => $order->getNumber(), 'order_total' => $order->getSum(), 'products' => array());
-
-    foreach ($order->getProduct() as $orderProduct) {
-        $jsonMyThings['products'][] = array('ProductID' => $orderProduct->getId(), 'price' => $orderProduct->getPrice(), 'qty' => $orderProduct->getQuantity());
-    }
     ?>
 
     <div id="heiasComplete" data-vars="<?= $page->json($jsonOrdr) ?>" class="jsanalytics"></div>
 
     <div id="adriverOrder" data-vars="<?= $page->json($jsonOrdr) ?>" class="jsanalytics"></div>
 
-    <div id="myThingsFin" data-vars="<?= $page->json($jsonMyThings) ?>" class="jsanalytics"></div>
     <!-- Efficient Frontiers -->
     <img src="http://pixel.everesttech.net/3252/t?ev_Orders=1&amp;ev_Revenue=<?= $order->getSum() ?>&amp;ev_Quickorders=0&amp;ev_Quickrevenue=0&amp;ev_transid=<?= $order->getNumber() ?>" width="1" height="1" />
 

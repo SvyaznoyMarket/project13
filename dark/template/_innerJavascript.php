@@ -1,13 +1,4 @@
 <? if (\App::config()->analytics): ?>
-<script type="text/javascript">
-    var mtHost = (("https:" == document.location.protocol) ? "https://rainbowx" : "http://rainbowx") + ".mythings.com";
-    var mtAdvertiserToken = "1989-100-ru";
-    document.write(unescape("%3Cscript src='" + mtHost + "/c.aspx?atok=" + mtAdvertiserToken + "' type='text/javascript'%3E%3C/script%3E"));
-</script>
-<? endif ?>
-
-
-<? if (\App::config()->analytics): ?>
 <!-- Google Code for 'Тег ремаркетинга' -->
 <!-- Remarketing tags may not be associated with personally identifiable information or placed on pages related to sensitive categories. For instructions on adding this tag and more information on the above requirements, read the setup guide: google.com/ads/remarketingsetup -->
 <script type="text/javascript">
