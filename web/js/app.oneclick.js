@@ -673,7 +673,12 @@ levup:			for(var i=0, l=numbers.length; i<l; i++)
 				var mapCallback = function() {
 					window.regionMap.addHandler( '.shopchoose', pickStoreMVMCL )
 				}
-				MapInterface.init( mapCenter, 'mapPopup', mapCallback, updateIWCL )
+				try{
+					MapInterface.init( mapCenter, 'mapPopup', mapCallback, updateIWCL )
+				}
+				catch(e){
+					$('.bFast__eMapLink').remove()
+				}
 			}
 			oneClickIsReady = true
 			enableHandlers()
