@@ -53,12 +53,10 @@ class Entity extends BasicEntity {
         if (array_key_exists('product_count', $data)) $this->setProductCount($data['product_count']);
         if (array_key_exists('product_count_global', $data)) $this->setGlobalProductCount($data['product_count_global']);
         if (array_key_exists('has_children', $data)) $this->setHasChild($data['has_children']);
-        //TODO: протестировать $data['children']
-        /*
+
         if (array_key_exists('children', $data) && is_array($data['children'])) foreach ($data['children'] as $childData) {
-            $this->addChild(new BasicEntity($childData));
+            $this->addChild(new Entity($childData));
         }
-        */
     }
 
     /**

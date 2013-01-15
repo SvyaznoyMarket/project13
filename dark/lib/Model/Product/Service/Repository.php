@@ -111,4 +111,24 @@ class Repository {
         }
         $this->client->addQuery('service/list', $params, array(), $callback);
     }
+
+    /**
+     * @param Category\Entity $category
+     * @param \Model\Region\Entity $region
+     * @return Entity[]
+     */
+    public function getCollectionByCategory(Category\Entity $category, \Model\Region\Entity $region = null) {
+        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args()));
+
+        $params = array(
+            'category_id' => $category->getId(),
+        );
+        if ($region instanceof \Model\Region\Entity) {
+            $params['geo_id'] = $region->getId();
+        }
+        $data = $this->client->query('service/list', $params, array());
+        $ids = isset($data['list']) ? (array)$data['list'] : array();
+
+        return $this->getCollectionById($ids, $region);
+    }
 }

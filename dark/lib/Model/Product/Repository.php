@@ -218,7 +218,7 @@ class Repository {
             'region_id' => $region ? $region->getId() : \App::user()->getRegion()->getId(),
         ));
 
-        $collection = !empty($response['list']) ? $this->getCollectionById($response['list']) : array();
+        $collection = !empty($response['list']) ? $this->getCollectionById($response['list'], $region) : array();
 
         return new \Iterator\EntityPager($collection, (int)$response['count']);
     }

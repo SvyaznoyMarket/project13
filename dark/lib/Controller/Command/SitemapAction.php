@@ -3,277 +3,275 @@
 namespace Controller\Command;
 
 class SitemapAction {
-    /**
-     * @var string URL сайта
-     */
-    private $_fullUrl = 'http://www.enter.ru';
+    const URL_LIMIT = 49999; // http://ru.wikipedia.org/wiki/Sitemaps
+    const FILE_SIZE_LIMIT = 10; // Mb
+    const ENTITY_LIMIT = 100;
+    const URL_PREFIX = 'http://www.enter.ru';
 
-    /**
-     * @var string Шаблон для генерации имён файлов
-     */
-    private $fileNameTemplate = 'web/sitemap_#NUM#.xml';
-    /**
-     * @var string Имя файла - индекса
-     */
-    private $indexFileName = 'web/sitemap.xml';
+    private $basePath;
+    private $tempPath;
+    private $indexFileName;
+    private $fileTemplate;
 
-    /**
-     * @var string Имя файла, в который идён запись на данный момент
-     */
-    private $fileName;
-
-    /**
-     * @var array Символы, которые необходимо заменять
-     */
-    private $replaceSymbols = array(
-        'from' => array('&', "'", '"', '>', '<'),
-        'to' => array('&amp;', '&apos;', '&quot;', '&gt;', '&lt;')
-    );
-
-    /**
-     * @var \Routing\Router Объект для маршрутизации
-     */
     private $router;
-
-    /**
-     *
-     * @var int Максимальное количество записей в одном файле
-     */
-    private $maxNumInFile = 49999;
-
-    /**
-     * @var int Текущее количество записей в файле
-     */
-    private $currentNumInFile = 0;
-
-    /**
-     * @var int Номер текущего файла
-     */
-    private $currentFileNum = 0;
+    private $region;
+    private $fileName;
+    private $fileCount = 0;
 
     public function __construct() {
         $this->router = \App::router();
+        $this->region = \RepositoryManager::region()->getDefaultEntity();
+
+        $this->basePath = \App::config()->webDir . '/';
+        $this->tempPath = (sys_get_temp_dir() ?: '/tmp') . '/';
+        $this->indexFileName = $this->basePath . '/sitemap.xml';
+        $this->fileTemplate = 'sitemap_{num}.xml';
     }
 
     public function execute() {
         \App::logger()->debug('Exec ' . __METHOD__);
 
-        //инициализация
-        $this->createSitemapFolder();
-        file_put_contents($this->indexFileName, '<?xml version="1.0" encoding="UTF-8"?>
-<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">');
-        $this->beginNewFile();
+        $this->fillHomepage();
+        $this->fillProductCategory();
+        $this->fillProduct();
+        $this->fillServiceCategory();
+        $this->fillService();
+        $this->fillShop();
+        $this->fillPage();
 
+        $this->closeContent();
 
-        $this->putIndexUrl();
-        $this->putCategoryUrl();
-        $this->putProductUrl();
-        $this->putServiceCategoryUrl();
-        $this->putServiceUrl();
-        $this->putShopUrl();
-        $this->putStaticPagesUrl();
-        $this->putAnotherUrl();
+        $this->replace();
 
-        //закрываем все файлы
-        $this->put('</urlset>' . "\n");
-        file_put_contents($this->indexFileName, '</sitemapindex>', FILE_APPEND);
+        echo "\n";
     }
 
-    private function createSitemapFolder() {
-        $pathAr = explode('/', $this->fileNameTemplate);
-        $path = "";
-        for ($i = 0; $i < count($pathAr) - 1; $i++) {
-            if ($i > 0) {
-                $path .= "/";
-            }
-            $path .= $pathAr[$i];
-            if (!file_exists($path)) {
-                mkdir($path);
-            }
-        }
-        //удаляем старые файлы sitemap
-        for ($i = 0; $i < 100; $i++) {
-            $name = str_replace("#NUM#", $i, $this->fileNameTemplate);
-            if (file_exists($name)) {
-                unlink($name);
-            }
-        }
-    }
-
-    private function beginNewFile() {
-        $this->currentNumInFile = 0;
-
-        //завершим старый файл
-        if (isset($this->fileName)) {
-            $this->put('</urlset>' . "\n");
+    private function replace() {
+        // удаляем старые файлы
+        $file = $this->indexFileName;
+        if (is_file($file)) {
+            unlink($file);
         }
 
-        //следующий номер
-        $this->currentFileNum++;
-        //соответствующее имя
-        $this->fileName = str_replace('#NUM#', $this->currentFileNum, $this->fileNameTemplate);
-        #echo $this->_fileName ."\n";
-        //начинаем файл
-        $this->putNew('<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-');
+        for ($i = 1; $i < 1000; $i++) {
+            $file = $this->basePath . str_replace('{num}', $i, $this->fileTemplate);
+            if (is_file($file)) {
+                unlink($file);
+            }
+        }
 
-        //добавим в индекс новый файл
-        $newFileData = '
+        // создаем новые файлы
+        $files = array();
+        for ($i = 1; $i <= $this->fileCount; $i++) {
+            $source = $this->basePath . str_replace('{num}', $i, $this->fileTemplate) . '.new';
+            if (!is_file($source)) {
+                \App::logger()->error(sprintf('File %s does not exist', $source));
+                continue;
+            }
+
+            $destination = $this->basePath . str_replace('{num}', $i, $this->fileTemplate);
+            if (!copy($source, $destination)) {
+                \App::logger()->error(sprintf('Can\'t copy sitemap file from %s to %s', $source, $destination));
+                continue;
+            }
+
+            unlink($source);
+
+            $files[] = basename($destination);
+        }
+
+        if ((bool)$files) {
+            file_put_contents($this->indexFileName,
+                '<?xml version="1.0" encoding="UTF-8"?>
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+'
+            );
+
+            foreach ($files as $file) {
+                file_put_contents($this->indexFileName, '
   <sitemap>
-      <loc>' . $this->_fullUrl . str_replace('web', '', $this->fileName) . '</loc>
+      <loc>' . self::URL_PREFIX . '/' . $file . '</loc>
   </sitemap>
-        ';
-        file_put_contents($this->indexFileName, $newFileData, FILE_APPEND);
-    }
+', FILE_APPEND);
+            }
 
-    private function putIndexUrl() {
-        $xmlData = '<url>
-  <loc>' . $this->generateUrl('homepage') . '</loc>
-  <changefreq>hourly</changefreq>
-  <priority>0.8</priority>
-</url>
-';
-        $this->put($xmlData);
-    }
-
-    private function putAnotherUrl() {
-        $xmlData = '<url>
-  <loc>' . $this->generateUrl('callback') . '</loc>
-  <changefreq>monthly</changefreq>
-  <priority>0.5</priority>
-</url>
-';
-        $this->put($xmlData);
-    }
-
-    private function putStaticPagesUrl() {
-        // TODO: ждем решения задачи CON-60
-        $pages = Doctrine_Core::getTable('Page')->createQuery('p')->fetchArray();
-        foreach ($pages as $item) {
-            $xmlData = '<url>
-<loc>' . $this->generateUrl('default_show', array('page' => $item['token'])) . '</loc>
-<changefreq>monthly</changefreq>
-<priority>0.5</priority>
-</url>
-';
-            $this->put($xmlData);
+            file_put_contents($this->indexFileName,
+'
+</sitemapindex>
+',
+                FILE_APPEND);
         }
     }
 
-    private function putServiceUrl() {
-        $services = Doctrine_Core::getTable('Service')->createQuery('s')->where('s.is_active = ?', 1)->orderBy('s.id') #->limit(50)
-            ->fetchArray();
-        foreach ($services as $item) {
-            $xmlData = '<url>
-  <loc>' . $this->generateUrl('service_show', array('service' => $item['token'])) . '</loc>
-  <changefreq>monthly</changefreq>
-  <priority>0.5</priority>
-</url>
-';
-            $this->put($xmlData);
-        }
+    private function fillHomepage() {
+        $this->putContent(
+            $this->router->generate('homepage'),
+            'hourly',
+            '0.8'
+        );
     }
 
-    private function putServiceCategoryUrl() {
-        $xmlData = '<url>
-  <loc>' . $this->generateUrl('service_index') . '</loc>
-  <changefreq>monthly</changefreq>
-  <priority>0.6</priority>
-</url>
-';
-        $this->put($xmlData);
+    private function fillProductCategory() {
+        $walk = function($categories) use (&$walk) {
+            foreach ($categories as $category) {
+                /** @var \Model\Product\Category\Entity $category */
+                if (!$category->getPath()) continue;
 
-        $eccenseList = Doctrine_Core::getTable('ServiceCategory')->createQuery('s')->where('s.is_active = ? AND s.level = ?', array(1, 2))->orderBy('s.id') #->limit(50)
-            ->fetchArray();
-        foreach ($eccenseList as $item) {
-            $xmlData = '<url>
-  <loc>' . $this->generateUrl('service_category', array('serviceCategory' => $item['token'])) . '</loc>
-  <changefreq>monthly</changefreq>
-  <priority>0.5</priority>
-</url>
-';
-            $this->put($xmlData);
-        }
+                $this->putContent(
+                    $this->router->generate('product.category', array('categoryPath' => $category->getPath())),
+                    'daily',
+                    '0.8'
+                );
+
+                if ((bool)$category->getChild()) {
+                    $walk($category->getChild());
+                }
+            }
+        };
+        $walk(\RepositoryManager::productCategory()->getTreeCollection($this->region));
     }
 
+    private function fillProduct() {
+        $productRepository = \RepositoryManager::product();
+        /** @param \Model\Product\Category\Entity[] $categories */
+        $walk = function($categories) use (&$walk, $productRepository) {
+            $limit = self::ENTITY_LIMIT;
+            foreach ($categories as $category) {
+                $filter = new \Model\Product\Filter(array());
+                $filter->setCategory($category);
 
-    private function putShopUrl() {
-        $xmlData = '<url>
-  <loc>' . $this->generateUrl('shop') . '</loc>
-  <changefreq>daily</changefreq>
-  <priority>0.6</priority>
-</url>
-';
-        $this->put($xmlData);
+                $offset = 0;
+                while (($category->getGlobalProductCount() - ($offset + $limit)) > 0) {
+                    $products = $productRepository->getIteratorByFilter($filter->dump(), array(), $offset, $limit, $this->region);
+                    foreach ($products as $product) {
+                        /** @var \Model\Product\Entity $product */
+                        if (!$product->getPath()) continue;
 
-        $eccenseList = Doctrine_Core::getTable('Shop')->createQuery('s')->where('s.is_active = ?', 1) #->limit(50)
-            ->fetchArray();
-        foreach ($eccenseList as $item) {
-            $xmlData = '<url>
-  <loc>' . $this->generateUrl('shop_show', array('shop' => $item['token'])) . '</loc>
-  <changefreq>monthly</changefreq>
-  <priority>0.5</priority>
-</url>
-';
-            $this->put($xmlData);
-        }
+                        $this->putContent(
+                            $this->router->generate('product', array('productPath' => $product->getPath())),
+                            'daily',
+                            '0.8'
+                        );
+                    }
+
+                    $offset += $limit;
+                }
+
+                if ((bool)$category->getChild()) {
+                    $walk($category->getChild());
+                }
+            }
+        };
+        $walk(\RepositoryManager::productCategory()->getTreeCollection($this->region));
     }
 
+    private function fillServiceCategory() {
+        $walk = function($categories) use (&$walk) {
+            foreach ($categories as $category) {
+                /** @var \Model\Product\Service\Category\Entity $category */
+                if (!$category->getToken()) continue;
 
-    private function putProductUrl() {
-        $productList = Doctrine_Core::getTable('Product')->createQuery('pc')->where('is_active = ?', 1)->where('view_show = ?', 1)->orderBy('pc.id') #->limit(50)
-            ->fetchArray();
-        foreach ($productList as $product) {
-            if (isset($product['token_prefix']) && !empty($product['token_prefix'])) {
-                $xmlData = '<url>
-  <loc>' . $this->generateUrl('productCard', array('product' => $product['token_prefix'] . '/' . $product['token'])) . '</loc>
-  <changefreq>monthly</changefreq>
-  <priority>0.6</priority>
-</url>
-<url>
-  <loc>' . $this->generateUrl('productComment', array('product' => $product['token_prefix'] . '/' . $product['token'])) . '</loc>
-  <changefreq>monthly</changefreq>
-  <priority>0.6</priority>
-</url>
-';
-                $this->put($xmlData);
+                $this->putContent(
+                    $this->router->generate('service.category', array('categoryToken' => $category->getToken())),
+                    'monthly',
+                    '0.6'
+                );
+
+                if ((bool)$category->getChild()) {
+                    $walk($category->getChild());
+                }
+            }
+        };
+        $walk(\RepositoryManager::serviceCategory()->getCollection($this->region));
+    }
+
+    private function fillService() {
+        $serviceRepository = \RepositoryManager::service();
+        $walk = function($categories) use (&$walk, $serviceRepository) {
+            /** @var $category \Model\Product\Service\Category\Entity */
+            foreach ($categories as $category) {
+                $services = $serviceRepository->getCollectionByCategory($category, $this->region);
+                foreach ($services as $service) {
+                    if (!$service->getToken()) continue;
+
+                    /** @var $service \Model\Product\Service\Entity */
+                    $this->putContent(
+                        $this->router->generate('service.show', array('serviceToken' => $service->getToken())),
+                        'monthly',
+                        '0.5'
+                    );
+                }
+
+                if ((bool)$category->getChild()) {
+                    $walk($category->getChild());
+                }
+            }
+        };
+        $walk(\RepositoryManager::serviceCategory()->getCollection($this->region));
+    }
+
+    private function fillShop() {
+        foreach (\RepositoryManager::region()->getShopAvailableCollection() as $region) {
+            foreach (\RepositoryManager::shop()->getCollectionByRegion($region) as $shop) {
+                $this->putContent(
+                    $this->router->generate('shop.show', array('regionToken' => $region->getToken(), 'shopToken' => $shop->getToken())),
+                    'daily',
+                    '0.6'
+                );
             }
         }
     }
 
-    private function putCategoryUrl() {
-        $categoryList = Doctrine_Core::getTable('ProductCategory')->createQuery('pc')->where('is_active = ?', 1)->orderBy('pc.id') #->limit(50)
-            ->fetchArray();
-        foreach ($categoryList as $cat) {
-            $xmlData = '<url>
-  <loc>' . $this->generateUrl('productCatalog_category', array('productCategory' => $cat['token_prefix'] ? ($cat['token_prefix'] . '/' . $cat['token']) : $cat['token'])) . '</loc>
-  <changefreq>daily</changefreq>
-  <priority>0.8</priority>
+    private function fillPage() {
+        // TODO: ждем CON-60
+    }
+
+    private function putContent($url, $freq, $priority) {
+        $content =
+            '<url>
+  <loc>' . self::URL_PREFIX . str_replace(array('&', "'", '"', '>', '<'), array('&amp;', '&apos;', '&quot;', '&gt;', '&lt;'), $url) . '</loc>
+  <changefreq>' . $freq . '</changefreq>
+  <priority>' . $priority . '</priority>
 </url>
 ';
-            $this->put($xmlData);
+
+        if (!$this->fileName) {
+            $this->fileName = $this->tempPath . str_replace('{num}', ++$this->fileCount, $this->fileTemplate);
+            if (file_exists($this->fileName)) {
+                unlink($this->fileName);
+            }
+
+            file_put_contents($this->fileName,
+'<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+'
+            );
+
+            echo "\n" . $this->fileName;
+        }
+
+        file_put_contents($this->fileName, $content, FILE_APPEND);
+        $count = (int)shell_exec('grep -c "<url>" ' . $this->fileName);
+
+        if (0 == ($count % self::ENTITY_LIMIT)) echo '.';
+
+        if (($count >= self::URL_LIMIT) || ((filesize($this->fileName) / 1048576) >= self::FILE_SIZE_LIMIT)) {
+            $this->closeContent();
         }
     }
 
-    private function generateUrl($path, $data = array()) {
-        $url = $this->_fullUrl . $this->router->generate($path, $data);
-        $url = str_replace($this->replaceSymbols['from'], $this->replaceSymbols['to'], $url);
-
-        return $url;
-    }
-
-    private function put($data) {
-        file_put_contents($this->fileName, $data, FILE_APPEND);
-        $this->currentNumInFile += substr_count($data, '<url>');
-        //если файл заполнен, надо начинать новый
-        # echo $this->_currentNumInFile .'-----------'. $this->_maxNumInFile."\n";
-        if ($this->currentNumInFile >= $this->maxNumInFile) {
-            $this->beginNewFile();
+    private function closeContent() {
+        if (!$this->fileName) {
+            return;
         }
-    }
 
-    private function putNew($data) {
-        file_put_contents($this->fileName, $data);
+        file_put_contents($this->fileName, '</urlset>' . "\n", FILE_APPEND);
+
+        $destination = $this->basePath . basename($this->fileName) . '.new';
+        if (!copy($this->fileName, $destination)) {
+            \App::logger()->error(sprintf('Can\'t copy sitemap file from %s to %s', $this->fileName, $destination));
+        }
+        unlink($this->fileName);
+        $this->fileName = null;
     }
 }
