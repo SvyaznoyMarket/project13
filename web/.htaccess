@@ -19,7 +19,7 @@ Options +FollowSymLinks +ExecCGI
   #RewriteRule ^orders/1click.* index.light.php [L]
 
   #RewriteRule ^private/consultation/legal.* index.php [L]
-  RewriteRule ^product-rating/createtotal.* index.php [L]
+#  RewriteRule ^product-rating/createtotal.* index.php [L]
 
 #  RewriteRule ^$ dark.php [L]
 #  RewriteRule ^user/shortinfo/?$ dark.php [L]

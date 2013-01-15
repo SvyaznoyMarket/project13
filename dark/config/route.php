@@ -198,6 +198,7 @@ return array(
     'product.rating.create_total' => array(
         'pattern' => '/product-rating/createtotal/{productId}/{rating}',
         'require' => array('productId' => '\d+', 'rating' => '\d+'),
+        'action'  => array('Product\RatingAction', 'createTotal'),
     ),
 
     // проверка сертификата
