@@ -316,7 +316,7 @@ class Form {
      * @param string $sclubCardnumber
      */
     public function setSclubCardnumber($sclubCardnumber) {
-        $this->sclubCardnumber = trim((string)$sclubCardnumber);
+        $this->sclubCardnumber = str_replace(' ','', (string)$sclubCardnumber);
     }
 
     /**
