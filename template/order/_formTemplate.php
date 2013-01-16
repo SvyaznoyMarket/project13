@@ -56,8 +56,7 @@
     </div>
     <div class='bMapShops__eList'>
         <h3>Выберите магазин Enter для самовывоза</h3>
-
-        <p class="pl20">Регион <?= $user->getRegion()->getName() ?></p>
+        <p class="pl20">Регион <?= $user->getRegion()->getName() ?>  ( <a id="jsregion" data-url="<?= $page->url('region.init') ?>" href="<?= $page->url('region.change', array('regionId' => $user->getRegion()->getId())) ?>" style="font-weight: normal">изменить</a> )</p>
         <ul id="mapPopup_shopInfo">
             <!-- ko foreach: shopsInPopup -->
             <li data-bind="attr: {ref: id}, click: $root.selectShop ">
