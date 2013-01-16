@@ -69,10 +69,10 @@ foreach ($product->getWarranty() as $warranty) {
         <div class="service form bBacketServ extWarr mBig" style="display: block;">
             <table cellspacing="0">
                 <tbody>
-                <tr ref="<?= $selectedWarranty->getId(); ?>">
+                <tr>
                     <th colspan="3">Для этого товара выбрана дополнительная гарантия:</th>
                 </tr>
-                <tr>
+                <tr ref="<?= $selectedWarranty->getId(); ?>">
                     <td>
                         <span class="ew_title"><?= $selectedWarranty->getName() ?></span>
                         <br>

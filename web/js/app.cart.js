@@ -285,7 +285,7 @@ $(document).ready(function() {
 
 	function addLine( tr, bline ) {
 	
-		function checkWide() {
+		var checkWide = function () {
 			var buttons = $('td.bF1Block_eBuy', bline)
 			var mBig = $('div.bBacketServ.mBig.F1', bline)		
 			for(var i=0, l = $(buttons).length; i < l; i++) {
@@ -325,7 +325,7 @@ $(document).ready(function() {
 	}
 
 	function addLineWrnt( tr, bline ) {
-		function checkWide() {
+		var checkWide = function () {
 			var buttons = $('.extWarranty .bF1Block_eBuy', bline)
 			var mBig = $('div.bBacketServ.mBig.extWarr', bline)	
 			for(var i=0, l = $(buttons).length; i < l; i++) {
@@ -339,17 +339,17 @@ $(document).ready(function() {
 				$('div.bBacketServ.mBig.extWarr', bline).hide()							
 				$('div.bBacketServ.mSmall.extWarr', bline).show()
 			}	
-		}	
+		}
 		var tmpline = new basketline({
 					'line': tr,
 					'less': tr.find('.ajaless'),
 					'more': tr.find('.ajamore'),
 					'quan': tr.find('.quantity'),
 					'price': tr.find('.price'),
-					// 'sum': tr.find('.price'),
+					'sum': tr.find('.price'),
 					'drop': tr.find('.whitelink'),
 					'linked': bline.attr('ref')
-					}, checkWide)
+					}, checkWide())
 		basket.push( tmpline )
 	}	
 
@@ -361,6 +361,8 @@ $(document).ready(function() {
 		var f1lineshead = $('tr:first', bBig)
 		var f1linecart = tmpl('wrntline', f1item)
 		f1linecart = f1linecart.replace(/WID/g, f1item.ewid ).replace(/PRID/g, bline.attr('ref') )
+		if ($('.ew_title', bBig).length)
+			$($('tr:eq(1)', bBig)).remove()
 		f1lineshead.after( f1linecart )
 		addLineWrnt( $('tr:eq(1)', bBig), bline )
 		getTotal()	
