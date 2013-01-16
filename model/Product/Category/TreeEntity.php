@@ -2,7 +2,7 @@
 
 namespace Model\Product\Category;
 
-class Entity extends BasicEntity {
+class TreeEntity extends BasicEntity {
     /** @var bool */
     protected $isFurniture;
     /** @var string */
@@ -54,7 +54,9 @@ class Entity extends BasicEntity {
         if (array_key_exists('product_count_global', $data)) $this->setGlobalProductCount($data['product_count_global']);
         if (array_key_exists('has_children', $data)) $this->setHasChild($data['has_children']);
 
-        // в отличие от TreeEntity нет автозагрузки дочерних элементов
+        if (array_key_exists('children', $data) && is_array($data['children'])) foreach ($data['children'] as $childData) {
+            $this->addChild(new Entity($childData));
+        }
     }
 
     /**
