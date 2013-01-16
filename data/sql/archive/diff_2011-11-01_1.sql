@@ -1,3 +1,0 @@
-ALTER TABLE `product` ADD COLUMN `line_id` BIGINT(20) NULL DEFAULT NULL AFTER `group_id`;
-CREATE TABLE `product_line` (`id` BIGINT AUTO_INCREMENT, `name` VARCHAR(255) NOT NULL, `photo` VARCHAR(255), `created_at` DATETIME NOT NULL, `updated_at` DATETIME NOT NULL, `core_id` BIGINT COMMENT 'ид записи в Core', PRIMARY KEY(`id`)) COMMENT = 'Серии мебели' ENGINE = INNODB;
-ALTER TABLE `product` ADD CONSTRAINT `product_line_id_product_line_id` FOREIGN KEY (`line_id`) REFERENCES `product_line`(`id`) ON DELETE SET NULL;

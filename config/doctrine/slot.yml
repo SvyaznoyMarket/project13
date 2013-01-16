@@ -1,9 +1,0 @@
-Slot:
-  options:
-    comment: 'Слот'
-  actAs: [ Timestampable ]
-  columns:
-    id:                { type: integer(20), autoincrement: true, primary: true }
-    type:              { type: enum, length: 20, values: [ menu, banner ], notnull: true, comment: 'тип, или сущность' }
-    token:             { type: string(255), unique: true, notnull: true, notblank: true }
-    name:              { type: string(255), notnull: false, default: null, comment: 'название' }

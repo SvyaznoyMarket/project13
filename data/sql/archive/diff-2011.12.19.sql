@@ -1,1 +1,0 @@
-ALTER TABLE `qrcode` CHANGE COLUMN `token` `token` VARCHAR(255) NOT NULL COLLATE 'utf8_bin' AFTER `id`;

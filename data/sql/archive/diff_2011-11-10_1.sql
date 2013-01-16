@@ -1,1 +1,0 @@
-ALTER TABLE `product_line` ADD COLUMN `token` VARCHAR(255) NOT NULL AFTER `name`;#, ADD UNIQUE INDEX `token` (`token`);

@@ -1,6 +1,0 @@
-<form action="<?php echo url_for('@welcome') ?>" method="post">
-  <!--<input type="text" class="text" value="Введи секретное слово :)" autocomplete="off" style="outline:none" onfocus="if (this.value == 'Введи секретное слово :)') this.value = '';" onblur="if (this.value == '') this.value = 'Введи секретное слово :)';" name="<?php echo sfConfig::get('app_welcome_cookie_name') ?>" />-->
-  <input type="password" class="text" value="" style="outline:none" name="<?php echo sfConfig::get('app_welcome_cookie_name') ?>" />
-  <input type="submit" class="entrybutton" value="Войти" style="outline:none"/>
-  <input type="hidden" name="url" value="<?php echo $url ?>" />
-</form>

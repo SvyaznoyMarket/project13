@@ -1,6 +1,0 @@
-ALTER TABLE `user_profile`  CHANGE COLUMN `core_id` `core_id` BIGINT(20) NULL DEFAULT NULL COMMENT 'ид записи в Core' AFTER `content`,  ADD COLUMN `core_network_id` BIGINT NULL DEFAULT NULL COMMENT 'ид социальной сети в Core' AFTER `core_id`;
-
-DROP TABLE `user_product_rating_total`;
-CREATE TABLE `user_product_rating_total` (`id` BIGINT AUTO_INCREMENT, `user_id` BIGINT, `product_id` BIGINT NOT NULL, `value` DECIMAL(18, 14) DEFAULT 0 NOT NULL COMMENT 'Рейтинг товара', `created_at` DATETIME NOT NULL, `updated_at` DATETIME NOT NULL, `core_id` BIGINT COMMENT 'ид записи в Core', INDEX `user_id_idx` (`user_id`), INDEX `product_id_idx` (`product_id`), PRIMARY KEY(`id`)) COMMENT = 'Общие пользовательские оценки товара' ENGINE = INNODB;
-ALTER TABLE `user_product_rating_total` ADD CONSTRAINT `user_product_rating_total_user_id_guard_user_id` FOREIGN KEY (`user_id`) REFERENCES `guard_user`(`id`) ON DELETE SET NULL;
-ALTER TABLE `user_product_rating_total` ADD CONSTRAINT `user_product_rating_total_product_id_product_id` FOREIGN KEY (`product_id`) REFERENCES `product`(`id`) ON DELETE CASCADE;

@@ -1,1 +1,0 @@
-ALTER TABLE `product_filter` CHANGE COLUMN `value_min` `value_min` DECIMAL(10,4) NULL DEFAULT NULL AFTER `position`, CHANGE COLUMN `value_max` `value_max` DECIMAL(10,4) NULL DEFAULT NULL AFTER `value_min`;

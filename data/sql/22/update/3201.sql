@@ -1,1 +1,0 @@
-ALTER TABLE `shop` ADD COLUMN `is_reconstruction` TINYINT(1) NOT NULL DEFAULT '0' COMMENT 'Магазин на реконструкции?' AFTER `is_active`;

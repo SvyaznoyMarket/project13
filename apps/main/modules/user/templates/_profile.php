@@ -1,1 +1,0 @@
-<?php include_component('user', 'profile_client', $sf_data) ?>

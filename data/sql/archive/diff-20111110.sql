@@ -1,1 +1,0 @@
-ALTER TABLE `stock_product_relation`  ADD COLUMN `is_supplied` TINYINT(1) NULL DEFAULT '0' COMMENT 'Может поставляться' AFTER `quantity`;

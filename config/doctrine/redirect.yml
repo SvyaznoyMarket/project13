@@ -1,8 +1,0 @@
-Redirect:
-  options:
-    comment: 'Редирект'
-  columns:
-    id:                { type: integer(20), autoincrement: true, primary: true }
-    old_url:           { type: string(255), notnull: true, notblank: true }
-    new_url:           { type: string(255), notnull: true, notblank: true }
-    status_code:       { type: integer(4), notnull: true, default: 301 }

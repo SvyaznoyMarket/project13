@@ -1,4 +1,0 @@
-CREATE TABLE `product_kit_relation` (`id` BIGINT AUTO_INCREMENT, `kit_id` BIGINT NOT NULL, `part_id` BIGINT NOT NULL, INDEX `kit_id_idx` (`kit_id`), INDEX `part_id_idx` (`part_id`), PRIMARY KEY(`id`)) COMMENT = 'Комплекты' ENGINE = INNODB;
-ALTER TABLE `product_kit_relation` ADD CONSTRAINT `product_kit_relation_part_id_product_id` FOREIGN KEY (`part_id`) REFERENCES `product`(`id`) ON DELETE CASCADE;
-ALTER TABLE `product_kit_relation` ADD CONSTRAINT `product_kit_relation_kit_id_product_id` FOREIGN KEY (`kit_id`) REFERENCES `product`(`id`) ON DELETE CASCADE;
-ALTER TABLE `product` ADD COLUMN `set_id` BIGINT(20) NULL DEFAULT NULL AFTER `status_id`;

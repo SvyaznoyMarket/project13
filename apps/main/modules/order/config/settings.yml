@@ -1,3 +1,0 @@
-all:
-  settings:
-    standard_helpers: [Date]

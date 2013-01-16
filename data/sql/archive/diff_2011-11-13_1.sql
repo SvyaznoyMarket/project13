@@ -1,1 +1,0 @@
-ALTER TABLE `product_category` CHANGE COLUMN `had_line` `has_line` TINYINT(1) NOT NULL DEFAULT '0' COMMENT 'Есть серии для отображения' AFTER `is_active`;

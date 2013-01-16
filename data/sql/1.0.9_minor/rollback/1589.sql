@@ -1,2 +1,0 @@
-DELETE FROM `page` WHERE `id` = 73;
-ALTER TABLE `page` AUTO_INCREMENT = 72;

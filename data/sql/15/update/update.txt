@@ -1,2 +1,0 @@
-source 2482.sql;
-source clear.sql;

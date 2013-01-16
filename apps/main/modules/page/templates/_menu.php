@@ -1,1 +1,0 @@
-<?php include_partial("page/menu_{$view}", $sf_data) ?>

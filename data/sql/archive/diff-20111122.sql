@@ -1,1 +1,0 @@
-CREATE TABLE `qrcode` (`id` BIGINT AUTO_INCREMENT, `token` VARCHAR(255) NOT NULL UNIQUE, `content` TEXT, `created_at` DATETIME NOT NULL, `updated_at` DATETIME NOT NULL, `core_id` BIGINT COMMENT 'ид записи в Core', PRIMARY KEY(`id`)) COMMENT = 'qr-код' ENGINE = INNODB;

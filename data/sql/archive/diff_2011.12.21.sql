@@ -1,1 +1,0 @@
-ALTER TABLE `service_category_relation`	ADD CONSTRAINT `service_category_relation_category_id_service_category_id` FOREIGN KEY (`category_id`) REFERENCES `service_category` (`id`) ON UPDATE CASCADE ON DELETE CASCADE, ADD CONSTRAINT `service_category_relation_service_id_service_id` FOREIGN KEY (`service_id`) REFERENCES `service` (`id`) ON UPDATE CASCADE;

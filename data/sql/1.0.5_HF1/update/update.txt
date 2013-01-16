@@ -1,4 +1,0 @@
-ALTER TABLE `order`
-DROP FOREIGN KEY `order_delivery_period_id_delivery_period_id`;
-
-DROP TABLE `delivery_period`;

@@ -1,1 +1,0 @@
-<?php include_component('productCategory', 'list', array('view' => $view, 'productCategoryList' => $productCategoryList)) ?>

@@ -1,1 +1,0 @@
-delete from `page` WHERE token IN ('release', 'release_2011_07_04', 'release_2011_07_19', 'release_2011_11_24', 'release_2011_12_09', 'release_2012_02_08', 'release_2012_02_27', 'release_2012_03_11', 'release_team');

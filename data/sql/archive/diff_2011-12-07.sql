@@ -1,1 +1,0 @@
-ALTER TABLE `service_product_relation` ADD COLUMN `core_id` BIGINT NULL DEFAULT NULL COMMENT 'ид записи в Core' AFTER `product_id`;

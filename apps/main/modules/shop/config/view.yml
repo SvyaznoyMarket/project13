@@ -1,6 +1,0 @@
-all:
-  javascripts:
-    - http://maps.google.com/maps/api/js?sensor=false
-    - google.maps.infobox.js
-    - app.shop.js
-    - tour.js

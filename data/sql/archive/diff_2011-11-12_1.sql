@@ -1,1 +1,0 @@
-ALTER TABLE `product_property_relation`  CHANGE COLUMN `value_string` `value_string` VARCHAR(500) NULL DEFAULT NULL AFTER `value_float`;

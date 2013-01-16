@@ -1,2 +1,0 @@
-ALTER TABLE `callback`
-ADD COLUMN `channel_id` INT NULL DEFAULT '1' COMMENT 'Id канала связи - что бы определять, кому отправлять callback на ядре (1- обычныая форма связи, 2 - юридические консультации в ЛК)'  AFTER `category_id` ;

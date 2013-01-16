@@ -1,1 +1,0 @@
-<?php include_partial('cart/show_'.$view, $sf_data) ?>

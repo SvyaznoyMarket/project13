@@ -1,2 +1,0 @@
-ALTER TABLE `product_category` ADD COLUMN `is_shown_in_menu` TINYINT(1) NOT NULL DEFAULT '0' COMMENT 'Отображать ли категорию в верхнем меню?' AFTER `is_active`;
-UPDATE `product_category` SET `is_shown_in_menu` = 1 WHERE `level` = 0;

@@ -1,9 +1,0 @@
-Slot:
-  Slot_banner_default:
-    type: banner
-    token: 'banner_default'
-    name: 'Баннер на главной странице'
-  Slot_big_banner:
-    type: banner
-    token: 'big_banner'
-    name: 'Большой баннер на главной странице'

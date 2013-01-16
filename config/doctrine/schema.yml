@@ -1,5 +1,0 @@
-detect_relations: false
-connection: doctrine
-#actAs: [Timestampable]
-options:
-  type: INNODB

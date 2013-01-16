@@ -1,1 +1,0 @@
-<?php include_component('productCategory', 'extra_menu') ?>

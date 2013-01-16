@@ -1,1 +1,0 @@
-CREATE TABLE `delivery_period` (`id` BIGINT AUTO_INCREMENT, `delivery_type_id` BIGINT NOT NULL, `name` VARCHAR(255) NOT NULL, `core_id` BIGINT COMMENT 'ид записи в Core', INDEX `delivery_type_id_idx` (`delivery_type_id`), PRIMARY KEY(`id`)) COMMENT = 'Периоды времени для доставки' ENGINE = INNODB;

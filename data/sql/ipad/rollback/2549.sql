@@ -1,1 +1,0 @@
-DROP TABLE `ipad_action`;

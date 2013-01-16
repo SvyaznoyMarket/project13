@@ -1,8 +1,0 @@
-DROP TABLE `product_group`;
-DROP TABLE `product_group_property_relation`;
-ALTER TABLE `product` ADD COLUMN `is_model` TINYINT(1) NOT NULL DEFAULT '0' COMMENT 'Главные товар среди моделей?' AFTER `is_lines_main`;
-CREATE TABLE `product_model_property_relation` (`id` BIGINT AUTO_INCREMENT, `product_property_id` BIGINT NOT NULL, `product_id` BIGINT NOT NULL, `position` INT DEFAULT 1 NOT NULL COMMENT 'Порядок отображения', `is_image` TINYINT(1) DEFAULT '0' NOT NULL COMMENT 'Выводить ли у характеристики картинку товара?', `created_at` DATETIME NOT NULL, `updated_at` DATETIME NOT NULL, INDEX `product_property_id_idx` (`product_property_id`), INDEX `product_id_idx` (`product_id`), PRIMARY KEY(`id`)) COMMENT = 'Связь модели и свойств, которые будут различны для модели' ENGINE = INNODB;
-ALTER TABLE `product_model_property_relation` ADD CONSTRAINT `product_model_property_relation_product_id_product_model_id` FOREIGN KEY (`product_id`) REFERENCES `product`(`model_id`) ON DELETE CASCADE;
-ALTER TABLE `product_model_property_relation` ADD CONSTRAINT `product_model_property_relation_product_id_product_id` FOREIGN KEY (`product_id`) REFERENCES `product`(`id`) ON DELETE CASCADE;
-ALTER TABLE `product_model_property_relation` ADD CONSTRAINT `pppi_5` FOREIGN KEY (`product_property_id`) REFERENCES `product_property`(`id`) ON DELETE CASCADE;
-ALTER TABLE `product_property_relation` CHANGE COLUMN `value_string` `value_string` VARCHAR(2000) NULL DEFAULT NULL AFTER `value_float`;

@@ -1,6 +1,0 @@
-CREATE TABLE `product_status` (`id` BIGINT AUTO_INCREMENT, `name` VARCHAR(255) NOT NULL, `token` VARCHAR(255) NOT NULL, PRIMARY KEY(`id`)) COMMENT = 'Тип продажи товара' ENGINE = INNODB;
-ALTER TABLE `product` ADD COLUMN `status_id` BIGINT(20) NULL DEFAULT NULL AFTER `model_id`;
-ALTER TABLE `product` ADD CONSTRAINT `product_status_id_product_status_id` FOREIGN KEY (`status_id`) REFERENCES `product_status`(`id`) ON DELETE SET NULL;
-CREATE TABLE `product_category_product_line_relation` (`id` BIGINT AUTO_INCREMENT, `category_id` BIGINT NOT NULL, `line_id` BIGINT NOT NULL, `position` INT DEFAULT 1 NOT NULL COMMENT 'Порядок сортировки', `core_id` BIGINT COMMENT 'ид записи в Core', INDEX `line_id_idx` (`line_id`), INDEX `category_id_idx` (`category_id`), PRIMARY KEY(`id`)) COMMENT = 'Связь категории товара с товарной линией' ENGINE = INNODB;
-ALTER TABLE `product_category_product_line_relation` ADD CONSTRAINT `product_category_product_line_relation_line_id_product_line_id` FOREIGN KEY (`line_id`) REFERENCES `product_line`(`id`) ON DELETE CASCADE;
-ALTER TABLE `product_category_product_line_relation` ADD CONSTRAINT `pcpi` FOREIGN KEY (`category_id`) REFERENCES `product_category`(`id`) ON DELETE CASCADE;

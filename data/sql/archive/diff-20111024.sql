@@ -1,2 +1,0 @@
-ALTER TABLE `task`  ADD COLUMN `attempt` INT(4) NOT NULL DEFAULT '0' COMMENT 'Номер неудачной попытки' AFTER `content`;
-ALTER TABLE `product`  CHANGE COLUMN `creator_id` `creator_id` BIGINT(20) NULL DEFAULT NULL AFTER `type_id`;

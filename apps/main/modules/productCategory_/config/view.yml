@@ -1,6 +1,0 @@
-all:
-  javascripts:
-    - app.product.js
-    
-menuSuccess:
-  layout: free 

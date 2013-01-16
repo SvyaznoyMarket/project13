@@ -1,1 +1,0 @@
-UPDATE `wp_users` SET `user_pass`='$P$BxhyrUjYQMBjsMmNbBHW3EFiECYEIv/' WHERE `user_login`='enter';

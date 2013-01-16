@@ -1,7 +1,0 @@
-all:
-  javascripts:
-    - app.product.js
-    
-categoryAjaxSuccess:
-  layout: free
-  

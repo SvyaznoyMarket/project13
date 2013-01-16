@@ -1,1 +1,0 @@
-<?php include_component('default', 'navigation_seo', $sf_data) ?>

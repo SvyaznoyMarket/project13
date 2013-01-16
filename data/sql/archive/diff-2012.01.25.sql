@@ -1,2 +1,0 @@
-CREATE TABLE `cache_eraser_log` (`id` BIGINT AUTO_INCREMENT, `type` VARCHAR(255), `entity_id` BIGINT NOT NULL, `region_id` BIGINT, `extra` TEXT, `created_at` DATETIME NOT NULL, `updated_at` DATETIME NOT NULL, INDEX `region_id_idx` (`region_id`), PRIMARY KEY(`id`)) COMMENT = 'Ëמד סבנמסא ךורא' ENGINE = INNODB;
-ALTER TABLE `cache_eraser_log` ADD CONSTRAINT `cache_eraser_log_region_id_region_id` FOREIGN KEY (`region_id`) REFERENCES `region`(`id`) ON DELETE SET NULL;

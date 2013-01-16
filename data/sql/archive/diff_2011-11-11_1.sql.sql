@@ -1,2 +1,0 @@
-CREATE TABLE `service_product_relation` (`service_id` BIGINT, `product_id` BIGINT, PRIMARY KEY(`service_id`, `product_id`)) COMMENT = 'Связь услуги с продуктом' ENGINE = INNODB;
-DROP TABLE IF EXISTS service_category_product_type_relation;

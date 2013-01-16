@@ -1,1 +1,0 @@
-ALTER TABLE `order` ADD `delivery_price` DECIMAL(12, 2) DEFAULT 0 NOT NULL COMMENT 'Цена доставки' AFTER delivery_period_id;

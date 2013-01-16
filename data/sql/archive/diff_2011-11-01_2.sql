@@ -1,2 +1,0 @@
-ALTER TABLE `product` ADD COLUMN `model_id` BIGINT(20) NULL DEFAULT NULL AFTER `line_id`;
-ALTER TABLE `product` ADD CONSTRAINT `product_model_id_product_id` FOREIGN KEY (`model_id`) REFERENCES `product`(`id`) ON DELETE SET NULL;

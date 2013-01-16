@@ -1,1 +1,0 @@
-ALTER TABLE `task` ADD UNIQUE INDEX `core_idx` (`type`, `core_id`, `core_packet_id`);

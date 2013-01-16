@@ -1,1 +1,0 @@
-ALTER TABLE `product_category` DROP COLUMN `is_shown_in_menu`;

@@ -1,1 +1,0 @@
-ALTER TABLE `creator`    ADD COLUMN `is_filter` TINYINT(1) NOT NULL DEFAULT '1' COMMENT 'Нужно ли выводить в фильтрах?' AFTER `description`;

@@ -1,7 +1,0 @@
-indexSuccess:
-  javascripts:
-    - watch3dv2.min.js
-    - productcard.js
-    - app.order.js
-    - main.js
-    - app.product.js

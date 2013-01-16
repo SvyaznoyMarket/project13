@@ -1,1 +1,0 @@
-ALTER TABLE `task`  ADD COLUMN `error` TEXT NULL DEFAULT NULL AFTER `attempt`;

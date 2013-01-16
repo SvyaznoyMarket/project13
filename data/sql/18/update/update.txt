@@ -1,4 +1,0 @@
-source 2753.sql;
-
-USE wordpress;
-source 3010.sql;

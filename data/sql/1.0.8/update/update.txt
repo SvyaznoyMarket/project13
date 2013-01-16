@@ -1,5 +1,0 @@
-source 1428.sql;
-source 1432.sql;
-source 1322.sql;
-source 1418.sql; # обновить вручную через mysql-client
-source 1166.sql;

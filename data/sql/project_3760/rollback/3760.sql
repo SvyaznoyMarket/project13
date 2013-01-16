@@ -1,1 +1,0 @@
-DELETE FROM `payment_method` WHERE `token` = 'invoice';
