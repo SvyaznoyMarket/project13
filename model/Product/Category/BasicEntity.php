@@ -198,4 +198,11 @@ class BasicEntity {
     public function getRoot() {
         return $this->root ?: reset($this->ancestor);
     }
+
+    /**
+     * @return string
+     */
+    public function getPath() {
+        return trim(preg_replace('/^\/catalog\//' , '', $this->link), '/');
+    }
 }

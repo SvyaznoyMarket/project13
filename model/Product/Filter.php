@@ -24,11 +24,11 @@ class Filter {
     }
 
     /**
-     * @param \Model\Product\Category\Entity $category
+     * @param \Model\Product\Category\BasicEntity $category
      * @throws \InvalidArgumentException
      */
     public function setCategory($category = null) {
-        if (!($category instanceof \Model\Product\Category\Entity || $category instanceof \Model\Tag\Category\Entity)) {
+        if (!($category instanceof \Model\Product\Category\BasicEntity || $category instanceof \Model\Tag\Category\Entity)) {
             throw new \InvalidArgumentException('Category must be instance of \Model\Product\Category\Entity or \Model\Tag\Category\Entity');
         }
 

@@ -112,9 +112,12 @@ class SitemapAction {
     }
 
     private function fillProductCategory() {
+        $productCategoryRepository = \RepositoryManager::productCategory();
+        $productCategoryRepository->setEntityClass('\Model\Product\Category\TreeEntity');
+
         $walk = function($categories) use (&$walk) {
             foreach ($categories as $category) {
-                /** @var \Model\Product\Category\Entity $category */
+                /** @var \Model\Product\Category\TreeEntity $category */
                 if (!$category->getPath()) continue;
 
                 $this->putContent(
@@ -128,12 +131,17 @@ class SitemapAction {
                 }
             }
         };
-        $walk(\RepositoryManager::productCategory()->getTreeCollection($this->region));
+        $walk($productCategoryRepository->getTreeCollection($this->region));
     }
 
     private function fillProduct() {
+        $productCategoryRepository = \RepositoryManager::productCategory();
+        $productCategoryRepository->setEntityClass('\Model\Product\Category\TreeEntity');
+
         $productRepository = \RepositoryManager::product();
-        /** @param \Model\Product\Category\Entity[] $categories */
+        $productRepository->setEntityClass('\Model\Product\BasicEntity');
+
+        /** @param \Model\Product\Category\TreeEntity[] $categories */
         $walk = function($categories) use (&$walk, $productRepository) {
             $limit = self::ENTITY_LIMIT;
             foreach ($categories as $category) {
@@ -144,7 +152,7 @@ class SitemapAction {
                 while (($category->getGlobalProductCount() - ($offset + $limit)) > 0) {
                     $products = $productRepository->getIteratorByFilter($filter->dump(), array(), $offset, $limit, $this->region);
                     foreach ($products as $product) {
-                        /** @var \Model\Product\Entity $product */
+                        /** @var \Model\Product\BasicEntity $product */
                         if (!$product->getPath()) continue;
 
                         $this->putContent(
@@ -162,7 +170,7 @@ class SitemapAction {
                 }
             }
         };
-        $walk(\RepositoryManager::productCategory()->getTreeCollection($this->region));
+        $walk($productCategoryRepository->getTreeCollection($this->region));
     }
 
     private function fillServiceCategory() {
