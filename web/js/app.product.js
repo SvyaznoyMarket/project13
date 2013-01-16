@@ -4,9 +4,18 @@ $(document).ready(function() {
 	if ($('#availableShops').length){
 		vitrin = {
 			shopStack: 0,
+			initText:'',
 			init: function(){
+				vitrin.initText = $('#slideAvalShop').html()
 				$('#slideAvalShop').bind('click', function(){
 					$('#listAvalShop .hidden').toggle(150)
+					$(this).toggleClass('showedShop')
+					if ($(this).hasClass('showedShop')){
+						$(this).html('Свернуть')
+					}
+					else{
+						$(this).html(vitrin.initText)
+					}
 					return false
 				})
 				shopFromModel = $('#availableShops').data('shops')
