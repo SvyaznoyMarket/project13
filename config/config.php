@@ -10,8 +10,8 @@ $c->appDir = realpath(__DIR__ . '/..');
 $c->configDir = $c->appDir . '/config';
 $c->libDir = $c->appDir . '/lib';
 $c->dataDir = $c->appDir . '/data';
-$c->logDir = realpath($c->appDir . '/log');
-$c->webDir = realpath($c->appDir . '/web');
+$c->logDir = $c->appDir . '/log';
+$c->webDir = $c->appDir . '/web';
 
 $c->debug = true;
 $c->appName = 'Enter';
