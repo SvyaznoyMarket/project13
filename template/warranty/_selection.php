@@ -23,7 +23,7 @@
                 <?php foreach($product->getWarranty() as $warranty): ?>
             <tr>
                 <td class="bF1Block_eInfo">
-                    <?php echo $warranty->getName() ?><br>
+                    <?php echo $warranty->getName() ?><br/>
                     <a href="#">Подробнее об услуге</a>
                 </td>
                 <td class="bF1Block_eBuy">

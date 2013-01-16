@@ -23,7 +23,7 @@ $cartServicesById = $cartProduct ? $cartProduct->getService() : array();
             <? foreach ($services as $service): ?>
             <tr>
 
-                <td class="bF1Block_eInfo"><?= $service->getName() ?><br>
+                <td class="bF1Block_eInfo"><?= $service->getName() ?><br/>
                     <a href="<?= $page->url('service.show', array('serviceToken' => $service->getToken())) ?>">Подробнее об услуге</a>
                 </td>
                 <td class="bF1Block_eBuy" ref="<?= $service->getToken() ?>">

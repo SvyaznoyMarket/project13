@@ -30,7 +30,7 @@ foreach ($products as $product) {
     <tr ref="<%=f1token%>">
         <td>
             <%=f1title%>
-            <br>
+            <br/>
             <a class="bBacketServ__eMore" href="<?= $page->url('service.show', array('serviceToken' => '<%=fid%>')); ?>">Подробнее об услуге</a>
         </td>
         <td class="mPrice">
@@ -43,7 +43,7 @@ foreach ($products as $product) {
                    href="#">
                     <b class="ajaless" title="Уменьшить"></b>
                 </a>
-                <input maxlength="2" class="ajaquant" value="1">
+                <input maxlength="2" class="ajaquant" value="1"/>
                 <a href="<?= $page->url('cart.service.add', array('serviceId' => 'F1ID', 'quantity' => 1, 'productId' => 'PRID')); ?>">
                     <b class="ajamore" title="Увеличить"></b>
                 </a>
@@ -58,7 +58,7 @@ foreach ($products as $product) {
     <tr ref="<%=ewid%>">
         <td>
             <span class="ew_title"><%=f1title%></span>
-            <br>
+            <br/>
             <!--a class="bBacketServ__eMore" href="#">Подробнее об услуге</a-->
         </td>
         <td class="mPrice">
