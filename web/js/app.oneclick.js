@@ -156,6 +156,8 @@ $(document).ready(function() {
 				self.chosenDate( self.dates()[0] )
 				if( self.showMap() )
 					self.showMap( false )
+				if (typeof(window.regionMap)=='undefined')
+					$('.bFast__eMapLink').remove()
 			}
 			
 			self.plusItem = function() {
