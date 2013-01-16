@@ -38,9 +38,21 @@ class App {
             ini_set('display_errors', 0);
         }
 
-        $libDir = self::$config->libDir;
-        spl_autoload_register(function ($class) use ($libDir) {
-            require_once $libDir . DIRECTORY_SEPARATOR . str_replace('\\', DIRECTORY_SEPARATOR, $class) . '.php';
+        $autoloadMap = array(
+            'namespace' => array(
+                'Controller' => self::$config->appDir . '/controller',
+                'Model'      => self::$config->appDir . '/model',
+                'View'       => self::$config->appDir . '/view',
+            ),
+            'path'           => self::$config->appDir . '/lib',
+        );
+        spl_autoload_register(function ($class) use ($autoloadMap) {
+            $namespace = substr($class, 0, strpos($class, '\\'));
+            if (isset($autoloadMap['namespace'][$namespace])) {
+                require_once $autoloadMap['namespace'][$namespace] . DIRECTORY_SEPARATOR . str_replace('\\', DIRECTORY_SEPARATOR, preg_replace('/^' . $namespace . '/', '', $class)) . '.php';
+            } else {
+                require_once $autoloadMap['path'] . DIRECTORY_SEPARATOR . str_replace('\\', DIRECTORY_SEPARATOR, $class) . '.php';
+            }
         });
 
         // error handler
