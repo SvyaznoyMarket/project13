@@ -40,9 +40,23 @@ class ConsultationAction {
                     throw new \Exception($error);
                 }
 
-                $response = \App::coreClientV2()->query('user/callback-create', array(), array(
+                $name = explode(" ", $form->getName());
+                $data = array(
                     'token' => $userEntity->getToken(),
-                ));
+                    'email' => $form->getEmail(),
+                    'theme' => $form->getSubject(),
+                    'text' => $form->getMessage(),
+                    'channel_id' => 2,
+                );
+
+                if ((bool)$name[0]) {
+                    $data['first_name'] = $name[0];
+                }
+                if ((bool)$name[1]) {
+                    $data['last_name'] = $name[1];
+                }
+
+                $response = \App::coreClientV2()->query('user/callback-create', array(), $data);
 
                 if (!isset($response['confirmed']) || !$response['confirmed']) {
                     throw new \Exception('Не удалось сохранить форму');
