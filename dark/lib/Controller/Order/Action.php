@@ -540,6 +540,7 @@ class Action {
         $page->setParam('orders', $orders);
         $page->setParam('paymentProvider', null);
         $page->setParam('creditData', array());
+        $page->setParam('isOrderAnalytics', false);
 
         return new \Http\Response($page->show());
     }
@@ -1045,7 +1046,7 @@ class Action {
         $orderData = array_map(function ($orderItem) {
             return array_merge(array('number' => null, 'phone' => null), $orderItem);
         }, (array)\App::session()->get(self::ORDER_SESSION_NAME));
-        //$orderData = array(array('number' => 'XX013863', 'phone' => '80000000000'));
+        //$orderData = array(array('number' => 'XX172699', 'phone' => '89213778560'));
 
         /** @var $orders \Model\Order\Entity[] */
         $orders = array();
