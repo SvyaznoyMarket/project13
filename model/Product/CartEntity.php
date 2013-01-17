@@ -7,6 +7,8 @@ class CartEntity extends CompactEntity {
     protected $service = array();
     /** @var Warranty\Entity[] */
     protected $warranty = array();
+    /** @var Kit\Entity[] */
+    protected $kit = array();
 
     public function __construct(array $data = array()) {
         parent::__construct($data);
@@ -17,6 +19,9 @@ class CartEntity extends CompactEntity {
         if (array_key_exists('warranty', $data) && is_array($data['warranty'])) $this->setWarranty(array_map(function($data) {
             return new Warranty\Entity($data);
         }, $data['warranty']));
+        if (array_key_exists('kit', $data) && is_array($data['kit'])) $this->setKit(array_map(function($data) {
+            return new Kit\Entity($data);
+        }, $data['kit']));
     }
 
     /**
@@ -82,5 +87,29 @@ class CartEntity extends CompactEntity {
         }
 
         return $return;
+    }
+
+    /**
+     * @param Kit\Entity[] $kits
+     */
+    public function setKit(array $kits) {
+        $this->kit = array();
+        foreach ($kits as $kit) {
+            $this->addKit($kit);
+        }
+    }
+
+    /**
+     * @param Kit\Entity $kit
+     */
+    public function addKit(Kit\Entity $kit) {
+        $this->kit[] = $kit;
+    }
+
+    /**
+     * @return Kit\Entity[]
+     */
+    public function getKit() {
+        return $this->kit;
     }
 }

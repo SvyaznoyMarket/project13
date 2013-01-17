@@ -65,7 +65,9 @@ class IndexAction {
         $productIds = array_keys($cartProductsById);
         $serviceIds = array_keys($cartServicesById);
 
+        /** @var $products \Model\Product\CartEntity[] */
         $products = array();
+        /** @var $services \Model\Product\Service\Entity[] */
         $services = array();
 
         // запрашиваем список товаров
@@ -89,6 +91,26 @@ class IndexAction {
         // выполнение 2-го пакета запросов
         $client->execute();
 
+        // подготовка 3-го пакета запросов
+        $hasAnyoneKit = false;
+        $productKitsById = array();
+        foreach ($products as $product) {
+            $kitIds = array_map(function($kit) { /** @var $kit \Model\Product\Kit\Entity */ return $kit->getId(); }, $product->getKit());
+            if ((bool)$kitIds) {
+                $hasAnyoneKit = true;
+                \RepositoryManager::product()->prepareCollectionById($kitIds, $region, function($data) use(&$productKitsById) {
+                    foreach ($data as $item) {
+                        $productKitsById[$item['id']] = new \Model\Product\CartEntity($item);
+                    }
+                });
+            }
+        }
+
+        // выполнение 3-го пакета запросов
+        if ($hasAnyoneKit) {
+            $client->execute();
+        }
+
         $page = new \View\Cart\IndexPage();
         $page->setParam('regionsToSelect', $regionsToSelect);
         $page->setParam('rootCategories', $rootCategories);
@@ -97,6 +119,7 @@ class IndexAction {
         $page->setParam('services', $services);
         $page->setParam('cartProductsById', $cartProductsById);
         $page->setParam('cartServicesById', $cartServicesById);
+        $page->setParam('productKitsById', $productKitsById);
 
         return new \Http\Response($page->show());
     }
