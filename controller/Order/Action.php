@@ -252,9 +252,12 @@ class Action {
                     \App::logger($e);
                 }
             } catch (\Exception $e) {
-                // временно закомментировано для отладки
-                //\App::exception()->remove($e);
                 $errors = array();
+
+                if (735 == $e->getCode()) {
+                    \App::exception()->remove($e);
+                    $errors['sclub_card_number'] = 'Неверный код карты Связной-Клуб';
+                }
 
                 $response = new \Http\JsonResponse(array(
                     'success' => false,
