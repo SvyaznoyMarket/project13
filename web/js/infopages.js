@@ -153,4 +153,67 @@ $(document).ready(function(){
 		$(".iphone-load").click(  function(){ showQRpopup( ".iphone-block" );  return false; } )
 		$(".symbian-load").click( function(){ showQRpopup( ".symbian-block" ); return false; } )
 	}
+
+	/* promo catalog */
+	if ( $('#promoCatalog').length){
+		var data = {
+			"slides":[
+				{"imgUrl":"http://content.enter.ru/wp-content/uploads/2013/01/slide1.jpg", "title":"slide1", "linkUrl":"#1"},
+				{"imgUrl":"http://content.enter.ru/wp-content/uploads/2013/01/slide2.jpg", "title":"slide2", "linkUrl":"#2"},
+				{"imgUrl":"http://content.enter.ru/wp-content/uploads/2013/01/slide3.jpg", "title":"slide3", "linkUrl":"#3"},
+				{"imgUrl":"http://content.enter.ru/wp-content/uploads/2013/01/slide4.jpg", "title":"slide4", "linkUrl":"#4"},
+				{"imgUrl":"http://content.enter.ru/wp-content/uploads/2013/01/slide1.jpg", "title":"slide1", "linkUrl":"#1"},
+				{"imgUrl":"http://content.enter.ru/wp-content/uploads/2013/01/slide2.jpg", "title":"slide2", "linkUrl":"#2"},
+				{"imgUrl":"http://content.enter.ru/wp-content/uploads/2013/01/slide3.jpg", "title":"slide3", "linkUrl":"#3"},
+			]
+		}
+
+		//первоначальная настройка
+		for (var slide in data.slides){
+			var slideTmpl = tmpl("slide_tmpl",data.slides[slide])
+			$('.bPromoCatalogSliderWrap').append(slideTmpl)
+			$('.bPromoCatalogNavArrow.mCatalogNavRight').before('<a href="#'+slide+'" class="bPromoCatalogNav_eLink">'+((slide*1)+1)+'</a>')
+		}
+		$('.bPromoCatalogNav_eLink:first').addClass('active')
+		var slider_SlideW = $('.bPromoCatalogSliderWrap_eSlide').width() // ширина одного слайда
+		var slider_SlideCount = data.slides.length //количество слайдов
+		var slider_WrapW = $('.bPromoCatalogSliderWrap').width( slider_SlideW * slider_SlideCount + (920/2 - slider_SlideW/2)) // установка ширины обертки
+		var nowSlide = 0 //текущий слайд
+
+		//листание стрелками
+		$('.bPromoCatalogSlider_eArrow').bind('click', function() {
+			var pos = ( $(this).hasClass('mArLeft'))?'-1':'1'
+			nowSlide = nowSlide + pos*1
+			moveSlide(nowSlide)
+			return false
+		})
+		//пагинатор
+		$('.bPromoCatalogNav_eLink').bind('click', function() {
+			if ( $(this).hasClass('active') )
+				return false
+			var link = $(this).attr('href').slice(1)*1
+			moveSlide(link)
+			return false
+		})
+
+		//перемещение слайдов на указанный слайд
+		var moveSlide = function(slide) {
+			if (slide === 0){
+				$('.bPromoCatalogSlider_eArrow.mArLeft').hide()
+			}
+			else{
+				$('.bPromoCatalogSlider_eArrow.mArLeft').show()
+			}
+			if (slide === slider_SlideCount-1) {
+				$('.bPromoCatalogSlider_eArrow.mArRight').hide()
+			}
+			else{
+				$('.bPromoCatalogSlider_eArrow.mArRight').show()
+			}
+			$('.bPromoCatalogNav_eLink').removeClass('active')
+			$('.bPromoCatalogSliderWrap').animate({'left':-(slider_SlideW*slide)},500)
+			$('.bPromoCatalogNav_eLink').eq(slide).addClass('active')
+			nowSlide = slide
+		}
+	}
 })
