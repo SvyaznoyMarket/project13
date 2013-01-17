@@ -4,23 +4,32 @@
     (function (d, w, c) {
         (w[c] = w[c] || []).push(function() {
             try {
-                w.yaCounter10503055 = new Ya.Metrika({id:10503055, enableAll: true, webvisor:true});
-            } catch(e) {}
+                w.yaCounter18703492 = new Ya.Metrika(
+                        {id:18703492, webvisor:true, clickmap:true, trackLinks:true, accurateTrackBounce:true}
+
+                );
+            } catch(e) { }
         });
 
         var n = d.getElementsByTagName("script")[0],
-            s = d.createElement("script"),
-            f = function () { n.parentNode.insertBefore(s, n); };
+                s = d.createElement("script"),
+                f = function ()
+                { n.parentNode.insertBefore(s, n); }
+
+                ;
         s.type = "text/javascript";
         s.async = true;
         s.src = (d.location.protocol == "https:" ? "https:" : "http:") + "//mc.yandex.ru/metrika/watch.js";
 
-        if (w.opera == "[object Opera]") {
-            d.addEventListener("DOMContentLoaded", f);
-        } else { f(); }
+        if (w.opera == "[object Opera]")
+        { d.addEventListener("DOMContentLoaded", f, false); }
+
+        else
+        { f(); }
+
     })(document, window, "yandex_metrika_callbacks");
 </script>
-<noscript><div><img src="//mc.yandex.ru/watch/10503055" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<noscript><div><img src="//mc.yandex.ru/watch/18703492" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
 <!-- /Yandex.Metrika counter -->
 
 <div id="adblender" class="jsanalytics"></div>
