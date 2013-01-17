@@ -38,9 +38,18 @@ class User {
         }
 
         if (!$this->entity) {
-            $user = \RepositoryManager::getUser()->getEntityByToken($this->token);
-            $user->setToken($this->token);
-            if (!$user) {
+            try {
+                $user = \RepositoryManager::getUser()->getEntityByToken($this->token);
+                $user->setToken($this->token);
+            } catch (\Exception $e) {
+                switch ($e->getCode()) {
+                    case 402:
+                        $this->removeToken();
+                        \App::exception()->remove($e);
+                    break;
+                }
+            }
+            if (!(bool)$user) {
                 return null;
             }
 
