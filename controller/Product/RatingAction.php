@@ -32,6 +32,8 @@ class RatingAction {
                 ));
             }
         } catch (\Core\Exception $e) {
+            \App::exception()->remove($e);
+
             return new \Http\JsonResponse(array(
                 'success' => false,
                 'error'   => array('code' => 'invalid', 'message' => 'Не удалось установить оценку' . (\App::config()->debug ? (': ' . $e) : '')),
