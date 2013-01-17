@@ -208,8 +208,16 @@
     border-radius: 3px;
     background: #2a2a2a;
     color: #ffffff;
-    display: block;
     padding: 10px;
+    text-decoration: none;
+  }
+  .orangeButton {
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    background: #ffa901;
+    color: #ffffff;
+    padding: 7px;
     text-decoration: none;
   }
 }
@@ -430,6 +438,26 @@
     margin: 0 auto;
     text-transform: uppercase;
     width: 80px;
+  }
+}
+@media screen {
+  .bStoreItem {
+    margin: 15px 0;
+    padding: 0 15px;
+  }
+  .bStoreItem_eMap {
+    border: 2px solid #dcdcdc;
+    height: 170px;
+    margin-bottom: 15px;
+    width: 100%;
+  }
+  .bStoreItem__eAddress {
+    font-size: 18px;
+    margin: 8px 0;
+  }
+  .bStoreItem_eRegtime {
+    font-size: 14px;
+    margin: 8px 0;
   }
 }
 @media only screen and (-webkit-min-device-pixel-ratio: 1.5) {
