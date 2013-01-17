@@ -95,8 +95,8 @@ return array(
         'pattern' => '/shops',
         'action'  => array('Shop\Action', 'index'),
     ),
-    'shop.region' => array(
-        'pattern' => '/shops/{regionId}', // TODO: regionId --> regionToken
+    'shop.region' => array( // deprecated
+        'pattern' => '/shops/{regionId}',
         'action'  => array('Shop\Action', 'region'),
     ),
     'shop.show' => array(

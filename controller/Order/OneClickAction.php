@@ -112,6 +112,9 @@ class OneClickAction {
                     $order = new \Model\Order\Entity(array('number' => $result['number']));
                 }
             } catch (\Exception $e) {
+                \App::logger()->warn($e);
+                \App::exception()->remove($e);
+
                 return new \Http\JsonResponse(array(
                     'success' => false,
                     'message' => 'Не удалось создать заказ.' . (735 == $e->getCode() ? ' Невалидный номер карты Связного клуба' : ''),
