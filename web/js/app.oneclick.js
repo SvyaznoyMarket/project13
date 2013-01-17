@@ -266,7 +266,7 @@ $(document).ready(function() {
 						if( item.shopIds.length > 0 ) {
 							self.shops.removeAll()// = ko.observableArray( Deliveries['self'].shops.slice(0) )
 							for(var key in Deliveries['self'].shops ) {
-								if( item.shopIds.indexOf( Deliveries['self'].shops[key].id*1 ) !== -1 )
+								if( $.inArray(Deliveries['self'].shops[key].id, item.shopIds) !== -1 )
 									self.shops.push( Deliveries['self'].shops[key] )
 							}
 						}
