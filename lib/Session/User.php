@@ -38,9 +38,18 @@ class User {
         }
 
         if (!$this->entity) {
-            $user = \RepositoryManager::user()->getEntityByToken($this->token);
-            $user->setToken($this->token);
-            if (!$user) {
+            try {
+                $user = \RepositoryManager::user()->getEntityByToken($this->token);
+                $user->setToken($this->token);
+            } catch (\Exception $e) {
+                switch ($e->getCode()) {
+                    case 402:
+                        $this->removeToken();
+                        \App::exception()->remove($e);
+                        break;
+                }
+            }
+            if (!(bool)$user) {
                 return null;
             }
 
@@ -52,12 +61,11 @@ class User {
 
     /**
      * @param \Model\User\Entity $user
-     * @param \Http\Response $response
      */
     public function signIn(\Model\User\Entity $user, \Http\Response $response) {
         $user->setIpAddress(\App::request()->getClientIp());
         $this->setToken($user->getToken());
-        //\RepositoryManager::user()->saveEntity($user);
+        //\RepositoryManager::getUser()->saveEntity($user);
 
         $this->setCacheCookie($response);
     }
@@ -136,7 +144,7 @@ class User {
             $regionId = $this->getRegionId();
 
             if ($regionId) {
-                $this->region = \RepositoryManager::region()->getEntityById($regionId);
+                $this->region = \RepositoryManager::getRegion()->getEntityById($regionId);
                 if (!$this->region) {
                     \App::logger()->warn(sprintf('Регион #"%s" не найден.', $regionId));
                 }
@@ -144,7 +152,7 @@ class User {
         }
 
         if (!$this->region) {
-            $this->region = \RepositoryManager::region()->getDefaultEntity(\App::config()->region['defaultId']);
+            $this->region = \RepositoryManager::getRegion()->getDefaultEntity(\App::config()->region['defaultId']);
         }
 
         if (!$this->region) {

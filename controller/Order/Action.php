@@ -540,6 +540,7 @@ class Action {
         $page->setParam('orders', $orders);
         $page->setParam('paymentProvider', null);
         $page->setParam('creditData', array());
+        $page->setParam('isOrderAnalytics', false);
 
         return new \Http\Response($page->show());
     }
