@@ -144,7 +144,7 @@ class User {
             $regionId = $this->getRegionId();
 
             if ($regionId) {
-                $this->region = \RepositoryManager::getRegion()->getEntityById($regionId);
+                $this->region = \RepositoryManager::region()->getEntityById($regionId);
                 if (!$this->region) {
                     \App::logger()->warn(sprintf('Регион #"%s" не найден.', $regionId));
                 }
@@ -152,7 +152,7 @@ class User {
         }
 
         if (!$this->region) {
-            $this->region = \RepositoryManager::getRegion()->getDefaultEntity(\App::config()->region['defaultId']);
+            $this->region = \RepositoryManager::region()->getDefaultEntity(\App::config()->region['defaultId']);
         }
 
         if (!$this->region) {

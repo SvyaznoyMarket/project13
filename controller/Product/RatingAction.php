@@ -43,8 +43,8 @@ class RatingAction {
             return  new \Http\JsonResponse(array(
                 'success' => true,
                 'data' => array(
-                    //'rating' => $this->_product->rating, //текущий рейтинг
-                    //'rating_quantity' => $this->_product->rating_quantity, //количество проголосовавших
+                    'rating' => $result['rating'], //текущий рейтинг
+                    'rating_quantity' =>$result['rating_count'], //количество проголосовавших
                 ),
             ));
         }
