@@ -181,7 +181,7 @@ if ($form->hasSubway()) $jsValidator['order[address_metro]'] = 'Укажите �
                 <? foreach ($paymentMethods as $paymentMethod): ?>
                 <?
                     // TODO: удалить в v.33
-                    if (7 == $paymentMethod->getId()) continue; // Онлайн через терминал
+                    if (7 == $paymentMethod->getId() || 3 == $paymentMethod->getId()) continue; // Онлайн через терминал
                 ?>
                 <div id="payment_method_<?= $paymentMethod->getId() ?>-field">
                     <p></p>
