@@ -4071,6 +4071,223 @@
     width: 50px;
   }
 }
+/*страница с промо каталогом */
+@media all {
+  .mRight {
+    top: 0;
+    right: 0;
+    background: -moz-linear-gradient(left, rgba(255, 255, 255, 0.75) 0%, #ffffff 100%);
+    /* FF3.6+ */
+  
+    background: -webkit-gradient(linear, left top, right top, color-stop(0%, rgba(255, 255, 255, 0.75)), color-stop(100%, #ffffff));
+    /* Chrome,Safari4+ */
+  
+    background: -webkit-linear-gradient(left, rgba(255, 255, 255, 0.75) 0%, #ffffff 100%);
+    /* Chrome10+,Safari5.1+ */
+  
+    background: -o-linear-gradient(left, rgba(255, 255, 255, 0.75) 0%, #ffffff 100%);
+    /* Opera 11.10+ */
+  
+    background: -ms-linear-gradient(left, rgba(255, 255, 255, 0.75) 0%, #ffffff 100%);
+    /* IE10+ */
+  
+    background: linear-gradient(to right, rgba(255, 255, 255, 0.75) 0%, #ffffff 100%);
+    /* W3C */
+  
+    filter: progid:dximagetransform.microsoft.gradient(startColorstr='#bfffffff', endColorstr='#ffffff', GradientType=1);
+    /* IE6-9 */
+  
+  }
+  .mLeft {
+    top: 0;
+    left: 0;
+    background: -moz-linear-gradient(left, #ffffff 0%, rgba(255, 255, 255, 0.75) 100%);
+    /* FF3.6+ */
+  
+    background: -webkit-gradient(linear, left top, right top, color-stop(0%, #ffffff), color-stop(100%, rgba(255, 255, 255, 0.75)));
+    /* Chrome,Safari4+ */
+  
+    background: -webkit-linear-gradient(left, #ffffff 0%, rgba(255, 255, 255, 0.75) 100%);
+    /* Chrome10+,Safari5.1+ */
+  
+    background: -o-linear-gradient(left, #ffffff 0%, rgba(255, 255, 255, 0.75) 100%);
+    /* Opera 11.10+ */
+  
+    background: -ms-linear-gradient(left, #ffffff 0%, rgba(255, 255, 255, 0.75) 100%);
+    /* IE10+ */
+  
+    background: linear-gradient(to right, #ffffff 0%, rgba(255, 255, 255, 0.75) 100%);
+    /* W3C */
+  
+    filter: progid:dximagetransform.microsoft.gradient(startColorstr='#ffffff', endColorstr='#bfffffff', GradientType=1);
+    /* IE6-9 */
+  
+  }
+  .bPromoCatalog {
+    overflow: hidden;
+  }
+  .bPromoCatalog_eName {
+    font-family: 'Enter';
+    font-size: 36px;
+    font-weight: 100;
+    text-transform: uppercase;
+  }
+  .bPromoCatalog_eSecondName {
+    color: #4fcbf4;
+  }
+  .bPromoCatalogSlider {
+    margin: 30px 0;
+    position: relative;
+  }
+  .bPromoCatalogSlider_eFadePane {
+    width: 170px;
+    height: 100%;
+    position: absolute;
+    z-index: 2;
+  }
+  .bPromoCatalogSliderWrap {
+    position: relative;
+  }
+  .bPromoCatalogSliderWrap_eSlide {
+    float: left;
+    width: 580px;
+  }
+  .bPromoCatalogSliderWrap_eSlide:first-child {
+    margin-left: 170px;
+  }
+  .bPromoCatalogSliderWrap_eSlideLink {
+    display: block;
+    margin: 0 auto;
+    width: 450px;
+    z-index: 1;
+  }
+  .bPromoCatalogSlider_eArrow {
+    height: 53px;
+    display: block;
+    position: absolute;
+    top: 45%;
+    width: 54px;
+    z-index: 3;
+  }
+  .bPromoCatalogSlider_eArrow.mArLeft {
+    background: url('/css/catalog/img/leftarrow.jpg') no-repeat 0 0;
+    display: none;
+    left: 16%;
+  }
+  .bPromoCatalogSlider_eArrow.mArRight {
+    background: url('/css/catalog/img/rightarrow.jpg') no-repeat 0 0;
+    right: 16%;
+  }
+  .mCatalogNavLeft {
+    background: url('/css/catalog/img/leftPCa.gif') no-repeat 0 0;
+    display: none;
+    float: left;
+    margin-right: 10px;
+  }
+  .mCatalogNavRight {
+    background: url('/css/catalog/img/rightPCa.gif') no-repeat 0 0;
+    display: none;
+    float: right;
+  }
+  .bPromoCatalogNavArrow {
+    display: block;
+    height: 27px;
+    width: 30px;
+  }
+  .bPromoCatalogNav {
+    margin: 20px auto;
+    width: 450px;
+  }
+  .bPromoCatalogNav_eLink {
+    background: #F3F3F3;
+    border: 1px solid #616161;
+    display: block;
+    float: left;
+    font-family: 'Enter';
+    font-size: 14px;
+    line-height: 23px;
+    margin: 1px 3px;
+    text-align: center;
+    width: 23px;
+  }
+  .bPromoCatalogNav_eLink:hover {
+    text-decoration: none;
+  }
+  .bPromoCatalogNav_eLink.active {
+    background: #ffa901;
+    color: #ffffff;
+  }
+  .topLifted {
+    position: relative;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+  }
+  .topLifted:before,
+  .topLifted:after {
+    content: "";
+    position: absolute;
+    height: 20%;
+    left: -34px;
+    max-width: 300px;
+    top: 55px;
+    transform: rotate(87deg);
+    opacity: 0.8;
+    width: 50%;
+    -webkit-box-shadow: 0 15px 4px #616161;
+    -moz-box-shadow: 0 15px 4px #616161;
+    box-shadow: 0 15px 4px #616161;
+    -webkit-transform: rotate(88deg);
+    -moz-transform: rotate(88deg);
+    -ms-transform: rotate(88deg);
+    -o-transform: rotate(88deg);
+    transform: rotate(88deg);
+    z-index: -2;
+  }
+  .topLifted:after {
+    right: -35px;
+    left: auto;
+    -webkit-transform: rotate(-88deg);
+    -moz-transform: rotate(-88deg);
+    -ms-transform: rotate(-88deg);
+    -o-transform: rotate(-88deg);
+    transform: rotate(-88deg);
+  }
+  .bottomLifted {
+    position: relative;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+  }
+  .bottomLifted:before,
+  .bottomLifted:after {
+    content: "";
+    position: absolute;
+    height: 20%;
+    left: -34px;
+    max-width: 300px;
+    bottom: 52px;
+    transform: rotate(87deg);
+    opacity: 0.8;
+    width: 50%;
+    -webkit-box-shadow: 0 15px 4px #616161;
+    -moz-box-shadow: 0 15px 4px #616161;
+    box-shadow: 0 15px 4px #616161;
+    -webkit-transform: rotate(92deg);
+    -moz-transform: rotate(92deg);
+    -ms-transform: rotate(92deg);
+    -o-transform: rotate(92deg);
+    transform: rotate(92deg);
+    z-index: -2;
+  }
+  .bottomLifted:after {
+    right: -35px;
+    left: auto;
+    -webkit-transform: rotate(-92deg);
+    -moz-transform: rotate(-92deg);
+    -ms-transform: rotate(-92deg);
+    -o-transform: rotate(-92deg);
+    transform: rotate(-92deg);
+  }
+}
 /*---END---СТИЛИ КАТАЛОГА---*/
 /*-------СТИЛИ КАРТОЧКИ ТОВАРА-----*/
 @media all {
