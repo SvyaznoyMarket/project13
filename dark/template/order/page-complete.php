@@ -1,14 +1,15 @@
 <?php
 /**
- * @var $page            \View\Order\CreatePage
- * @var $user            \Session\User
- * @var $orders          \Model\Order\Entity[]
- * @var $productsById    \Model\Product\Entity[]
- * @var $servicesById    \Model\Product\Service\Entity[]
- * @var $shopsById       \Model\Shop\Entity[]
- * @var $isCredit        bool
- * @var $paymentProvider \Payment\ProviderInterface
- * @var $creditData      array
+ * @var $page               \View\Order\CreatePage
+ * @var $user               \Session\User
+ * @var $orders             \Model\Order\Entity[]
+ * @var $productsById       \Model\Product\Entity[]
+ * @var $servicesById       \Model\Product\Service\Entity[]
+ * @var $shopsById          \Model\Shop\Entity[]
+ * @var $isCredit           bool
+ * @var $paymentProvider    \Payment\ProviderInterface
+ * @var $creditData         array
+ * @var $isOrderAnalytics   bool
  */
 ?>
 
@@ -16,6 +17,7 @@
 $isCorporative = $user->getEntity() ? $user->getEntity()->getIsCorporative() : false;
 // TODO: доделать
 $isCredit = (bool)$creditData;
+$isOrderAnalytics = isset($isOrderAnalytics) ? $isOrderAnalytics : true;
 ?>
 
 <!-- Header -->
@@ -67,7 +69,7 @@ $isCredit = (bool)$creditData;
 <? endif ?>
 
 
-<? if (\App::config()->analytics['enabled']) echo $page->render('order/_analytics', array(
+<? if (\App::config()->analytics['enabled'] && $isOrderAnalytics) echo $page->render('order/_analytics', array(
     'orders'       => $orders,
     'productsById' => $productsById,
     'servicesById' => $servicesById,
