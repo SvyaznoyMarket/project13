@@ -256,7 +256,7 @@ class Action {
 
                 if (735 == $e->getCode()) {
                     \App::exception()->remove($e);
-                    $errors['sclub_card_number'] = 'Неверный код карты Связной-Клуб';
+                    $errors['order[sclub_card_number]'] = 'Неверный код карты Связной-Клуб';
                 }
 
                 $response = new \Http\JsonResponse(array(
