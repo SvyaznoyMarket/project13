@@ -735,6 +735,9 @@ class Entity extends BasicEntity {
         return $this->service;
     }
 
+    /**
+     * @param Kit\Entity[] $kits
+     */
     public function setKit(array $kits) {
         $this->kit = array();
         foreach ($kits as $kit) {
