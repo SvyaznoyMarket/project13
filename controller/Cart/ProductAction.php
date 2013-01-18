@@ -33,13 +33,8 @@ class ProductAction {
                 throw new \Exception(sprintf('Товар #%s не найден', $productId));
             }
 
-            if ((bool)$product->getKit()) {
-                foreach ($product->getKit() as $kit) {
-                    $cart->setProduct(new \Model\Product\Entity(array('id' => $kit->getId())), $kit->getCount() * $quantity);
-                }
-            } else {
-                $cart->setProduct($product, $quantity);
-            }
+            // не учитываем является ли товар набором или нет - за это отвечает ядро
+            $cart->setProduct($product, $quantity);
 
             // обновить количество гарантий для товара
             foreach ($cart->getWarrantyByProduct($product->getId()) as $cartWarranty) {

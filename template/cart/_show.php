@@ -7,6 +7,7 @@
  * @var $services         \Model\Product\Service\Entity[]
  * @var $cartProductsById \Model\Cart\Product\Entity[]
  * @var $cartServicesById \Model\Cart\Service\Entity[]
+ * @var $productKitsById  \Model\Product\CartEntity[]
  */
 ?>
 
@@ -81,9 +82,9 @@ foreach ($products as $product) {
 <? endif ?>
 
 <? foreach ($products as $product): ?>
-    <?
+<?
     $cartProduct = $cartProductsById[$product->getId()];
-    ?>
+?>
     <div class="basketline mWrap" ref="<?= $product->getId() ?>">
         <div class="basketleft">
             <a href="<?= $product->getLink() ?>">
@@ -121,6 +122,25 @@ foreach ($products as $product) {
                     <a href="<?= $page->url('cart.product.delete', array('productId' => $product->getId())) ?>" class="button whitelink mr5">Удалить</a>
                 </div>
             </div>
+
+            <?
+                $kitData = array();
+                foreach ($product->getKit() as $kit) {
+                    $productKit = isset($productKitsById[$kit->getId()]) ? $productKitsById[$kit->getId()] : null;
+                    if (!$productKit) {
+                        \App::logger()->error(sprintf('Не загружен товар для элемента набора #%s', $kit->getId()));
+                        continue;
+                    }
+
+                    $kitData = array(
+                        'name'     => $productKit->getName(),
+                        'image'    => $productKit->getImageUrl(0),
+                        'price'    => $productKit->getPrice(),
+                        'quantity' => $kit->getCount() * $cartProduct->getQuantity(),
+                    );
+                }
+            ?>
+            <div id="<?= sprintf('product-%s-kit', $product->getId()) ?>" class="product_kit-data" type="hidden" data-value="<?= $page->json($kitData) ?>"></div>
 
             <div class="clear pb15"></div>
 
