@@ -4343,8 +4343,10 @@
   }
   .goodsbarbig.mSmallBtns a.link1 {
     background: url("/css/item/img/itemSprite.png") 0px 0px no-repeat;
+    font-size: 0px;
     height: 31px;
     text-decoration: none;
+    text-indent: -10000px;
     width: 137px;
   }
   .goodsbarbig.mSmallBtns a.link1:hover {
