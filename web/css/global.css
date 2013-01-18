@@ -5392,20 +5392,6 @@
   .bBuyingLineWrap .bBuyingLine p {
     width: 132px;
   }
-  .bSClub {
-    background: url("/css/skin/img/svyaznoi_club.png") 280px 0px no-repeat;
-  }
-  .bSClub__eWrap {
-    font: 14px 'EnterTypeRegular';
-    vertical-align: top;
-    width: 280px;
-  }
-  .bSClub__eWrap .mInputShort {
-    width: 200px;
-  }
-  .bSClub__eWrap h4 {
-    font: 14px 'EnterTypeBold';
-  }
   .bBuyingInfo {
     padding: 0px 0px 10px;
   }
@@ -5417,7 +5403,7 @@
   }
   .bBuyingInfo span.placeholder {
     color: #000000;
-    line-height: 27px;
+    line-height: 30px;
     margin-left: 10px;
   }
   .bBuyingLine {
@@ -5823,6 +5809,7 @@
     -webkit-box-sizing: border-box;
     height: 30px;
     left: 0;
+    line-height: 30px;
     -moz-opacity: 0.8;
     -khtml-opacity: 0.8;
     -webkit-opacity: 0.8;
@@ -5953,6 +5940,20 @@
     *display: inline;
     padding: 0px 0px 0px 10px;
     zoom: 1;
+  }
+  .bSClub {
+    background: url("/css/skin/img/svyaznoi_club.png") 280px 0px no-repeat;
+  }
+  .bSClub__eWrap {
+    font: 14px 'EnterTypeRegular';
+    vertical-align: top;
+    width: 280px;
+  }
+  .bSClub__eWrap .mInputShort {
+    width: 200px;
+  }
+  .bSClub__eWrap h4 {
+    font: 14px 'EnterTypeBold';
   }
   .orderFinal__certificate {
     margin: 15px 0;
