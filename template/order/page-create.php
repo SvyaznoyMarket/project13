@@ -179,6 +179,10 @@ if ($form->hasSubway()) $jsValidator['order[address_metro]'] = 'Укажите �
 
             <dd id="payTypes">
                 <? foreach ($paymentMethods as $paymentMethod): ?>
+                <?
+                    // TODO: удалить в v.33
+                    if (7 == $paymentMethod->getId() || 3 == $paymentMethod->getId()) continue; // Онлайн через терминал
+                ?>
                 <div id="payment_method_<?= $paymentMethod->getId() ?>-field">
                     <p></p>
                     <label class="<? if ($paymentMethod->getId() == $selectedPaymentMethodId) echo 'mChecked' ?>" for="order_payment_method_id_<?= $paymentMethod->getId() ?>">
