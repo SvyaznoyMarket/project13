@@ -172,7 +172,7 @@ class DeliveryAction {
                 $responseData[$token] = $item;
             }
         } catch (\Exception $e) {
-            \App::exception()->add($e);
+            \App::exception()->remove($e);
             \App::logger()->error($e);
 
             $responseData['data'] = array();
