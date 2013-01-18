@@ -165,20 +165,51 @@ $(document).ready(function(){
 				{"imgUrl":"http://content.enter.ru/wp-content/uploads/2013/01/slide1.jpg", "title":"slide1", "linkUrl":"#1"},
 				{"imgUrl":"http://content.enter.ru/wp-content/uploads/2013/01/slide2.jpg", "title":"slide2", "linkUrl":"#2"},
 				{"imgUrl":"http://content.enter.ru/wp-content/uploads/2013/01/slide3.jpg", "title":"slide3", "linkUrl":"#3"},
+				{"imgUrl":"http://content.enter.ru/wp-content/uploads/2013/01/slide1.jpg", "title":"slide1", "linkUrl":"#1"},
+				{"imgUrl":"http://content.enter.ru/wp-content/uploads/2013/01/slide2.jpg", "title":"slide2", "linkUrl":"#2"},
+				{"imgUrl":"http://content.enter.ru/wp-content/uploads/2013/01/slide3.jpg", "title":"slide3", "linkUrl":"#3"},
+				{"imgUrl":"http://content.enter.ru/wp-content/uploads/2013/01/slide4.jpg", "title":"slide4", "linkUrl":"#4"},
+				{"imgUrl":"http://content.enter.ru/wp-content/uploads/2013/01/slide1.jpg", "title":"slide1", "linkUrl":"#1"},
+				{"imgUrl":"http://content.enter.ru/wp-content/uploads/2013/01/slide2.jpg", "title":"slide2", "linkUrl":"#2"},
+				{"imgUrl":"http://content.enter.ru/wp-content/uploads/2013/01/slide3.jpg", "title":"slide3", "linkUrl":"#3"},
+				{"imgUrl":"http://content.enter.ru/wp-content/uploads/2013/01/slide1.jpg", "title":"slide1", "linkUrl":"#1"},
+				{"imgUrl":"http://content.enter.ru/wp-content/uploads/2013/01/slide2.jpg", "title":"slide2", "linkUrl":"#2"},
+				{"imgUrl":"http://content.enter.ru/wp-content/uploads/2013/01/slide3.jpg", "title":"slide3", "linkUrl":"#3"},
+				{"imgUrl":"http://content.enter.ru/wp-content/uploads/2013/01/slide4.jpg", "title":"slide4", "linkUrl":"#4"},
+				{"imgUrl":"http://content.enter.ru/wp-content/uploads/2013/01/slide1.jpg", "title":"slide1", "linkUrl":"#1"},
+				{"imgUrl":"http://content.enter.ru/wp-content/uploads/2013/01/slide2.jpg", "title":"slide2", "linkUrl":"#2"},
+				{"imgUrl":"http://content.enter.ru/wp-content/uploads/2013/01/slide3.jpg", "title":"slide3", "linkUrl":"#3"}
 			]
 		}
 
 		//первоначальная настройка
-		for (var slide in data.slides){
-			var slideTmpl = tmpl("slide_tmpl",data.slides[slide])
-			$('.bPromoCatalogSliderWrap').append(slideTmpl)
-			$('.bPromoCatalogNavArrow.mCatalogNavRight').before('<a href="#'+slide+'" class="bPromoCatalogNav_eLink">'+((slide*1)+1)+'</a>')
+		var initSlider = function() {
+			for (var slide in data.slides){
+				var slideTmpl = tmpl("slide_tmpl",data.slides[slide])
+				$('.bPromoCatalogSliderWrap').append(slideTmpl)
+				// $('.bPromoCatalogNavArrow.mCatalogNavRight').before('<a href="#'+slide+'" class="bPromoCatalogNav_eLink">'+((slide*1)+1)+'</a>')
+				if ( (data.slides.length > 13)&&((slide*1)==12) ){
+					$('.bPromoCatalogNav').append('<a class="bPromoCatalogNav_eLink promoCatalogDotted">...</a>')
+					$('.bPromoCatalogNav').append('<a id="promoCatalogSlide'+slide+'" href="#'+slide+'" class="bPromoCatalogNav_eLink mHidden">'+((slide*1)+1)+'</a>')
+				}
+				else if( (data.slides.length > 13)&&((slide*1)>12) ){
+					$('.bPromoCatalogNav').append('<a id="promoCatalogSlide'+slide+'" href="#'+slide+'" class="bPromoCatalogNav_eLink mHidden">'+((slide*1)+1)+'</a>')
+				}
+				else{
+					$('.bPromoCatalogNav').append('<a id="promoCatalogSlide'+slide+'" href="#'+slide+'" class="bPromoCatalogNav_eLink">'+((slide*1)+1)+'</a>')
+				}
+			}
+			$('.bPromoCatalogNav_eLink:first').addClass('active')
+			$('.bPromoCatalogNav_eLink:last').removeClass('mHidden')
 		}
-		$('.bPromoCatalogNav_eLink:first').addClass('active')
-		var slider_SlideW = $('.bPromoCatalogSliderWrap_eSlide').width() // ширина одного слайда
-		var slider_SlideCount = data.slides.length //количество слайдов
-		var slider_WrapW = $('.bPromoCatalogSliderWrap').width( slider_SlideW * slider_SlideCount + (920/2 - slider_SlideW/2)) // установка ширины обертки
-		var nowSlide = 0 //текущий слайд
+
+		initSlider() //запуск слайдера
+
+		//переменные
+		var slider_SlideW = $('.bPromoCatalogSliderWrap_eSlide').width()	// ширина одного слайда
+		var slider_SlideCount = data.slides.length	//количество слайдов
+		var slider_WrapW = $('.bPromoCatalogSliderWrap').width( slider_SlideW * slider_SlideCount + (920/2 - slider_SlideW/2))	// установка ширины обертки
+		var nowSlide = 0 	//текущий слайд
 
 		//листание стрелками
 		$('.bPromoCatalogSlider_eArrow').bind('click', function() {
@@ -211,9 +242,52 @@ $(document).ready(function(){
 				$('.bPromoCatalogSlider_eArrow.mArRight').show()
 			}
 			$('.bPromoCatalogNav_eLink').removeClass('active')
-			$('.bPromoCatalogSliderWrap').animate({'left':-(slider_SlideW*slide)},500)
-			$('.bPromoCatalogNav_eLink').eq(slide).addClass('active')
-			nowSlide = slide
+			$('.bPromoCatalogSliderWrap').animate({'left':-(slider_SlideW*slide)},500, function(){
+				$('#promoCatalogSlide'+slide).addClass('active')
+				nowSlide = slide
+				paginator(slide)
+			})
+		}
+
+		// проверка пагинатора
+		var paginator = function(num) {
+			// console.log(slider_SlideCount)
+			var diff = 3 // количество цифр слева и справа
+			var res = 0 //нужно ли двигать пагинатор и на сколько
+			for(var i=1; i<=diff; i++) {
+				if( $('#promoCatalogSlide'+(num+i)).hasClass('mHidden') ){
+					res = diff-i
+					break
+				}
+				if( $('#promoCatalogSlide'+(num-i)).hasClass('mHidden') ){
+					res = -(diff-i)
+					break
+				}
+			}
+			if (res!==0){ //пагинатор нужно двигать
+				console.log('подвинуть на '+res)
+				if (res>0){ //двигаем влево
+					if ( (num+res)<slider_SlideCount-1 ){
+						console.log('докрутили не до конца влево')
+						var drop = ( $('.promoCatalogDotted').length==1 )?(res+1):res
+						console.log('итого элементов дропнется '+drop)
+						// dropElements('left',drop, num)
+					}
+				}
+				else{ // двигаем вправо
+
+				}
+			}
+			var dropElements = function(direction, cols, now){
+				console.log(direction)
+				// if(direction=='left'){
+				// 	for(var i=1;i<=cols;i++){
+				// 		$('.bPromoCatalogNav_eLink').is('visible').eq(1+i).addClass('mHidden')
+				// 		$('#promoCatalogSlide'+(now+i)).removeClass('mHidden')
+				// 		console.log($('#promoCatalogSlide'+(now+i)))
+				// 	}
+				// }
+			}
 		}
 	}
 })

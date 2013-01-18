@@ -1,26 +1,4 @@
 @promoCatalogMainW:450px; //заглавная ширина 
-.mRight{
-	top:0;
-	right: 0;
-	background: -moz-linear-gradient(left,  rgba(255,255,255,0.75) 0%, rgba(255,255,255,1) 100%); /* FF3.6+ */
-	background: -webkit-gradient(linear, left top, right top, color-stop(0%,rgba(255,255,255,0.75)), color-stop(100%,rgba(255,255,255,1))); /* Chrome,Safari4+ */
-	background: -webkit-linear-gradient(left,  rgba(255,255,255,0.75) 0%,rgba(255,255,255,1) 100%); /* Chrome10+,Safari5.1+ */
-	background: -o-linear-gradient(left,  rgba(255,255,255,0.75) 0%,rgba(255,255,255,1) 100%); /* Opera 11.10+ */
-	background: -ms-linear-gradient(left,  rgba(255,255,255,0.75) 0%,rgba(255,255,255,1) 100%); /* IE10+ */
-	background: linear-gradient(to right,  rgba(255,255,255,0.75) 0%,rgba(255,255,255,1) 100%); /* W3C */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#bfffffff', endColorstr='#ffffff',GradientType=1 ); /* IE6-9 */
-}
-.mLeft{
-	top:0;
-	left: 0;
-	background: -moz-linear-gradient(left,  rgba(255,255,255,1) 0%, rgba(255,255,255,0.75) 100%); /* FF3.6+ */
-	background: -webkit-gradient(linear, left top, right top, color-stop(0%,rgba(255,255,255,1)), color-stop(100%,rgba(255,255,255,0.75))); /* Chrome,Safari4+ */
-	background: -webkit-linear-gradient(left,  rgba(255,255,255,1) 0%,rgba(255,255,255,0.75) 100%); /* Chrome10+,Safari5.1+ */
-	background: -o-linear-gradient(left,  rgba(255,255,255,1) 0%,rgba(255,255,255,0.75) 100%); /* Opera 11.10+ */
-	background: -ms-linear-gradient(left,  rgba(255,255,255,1) 0%,rgba(255,255,255,0.75) 100%); /* IE10+ */
-	background: linear-gradient(to right,  rgba(255,255,255,1) 0%,rgba(255,255,255,0.75) 100%); /* W3C */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#bfffffff',GradientType=1 ); /* IE6-9 */
-}
 .bPromoCatalog{
 	overflow: hidden;
 	&_eName{
@@ -85,17 +63,6 @@
 			right: @arrowPos;
 		}
 	}
-}
-.mCatalogNavLeft{
-	background: url('@{base-url}/catalog/img/leftPCa.gif') no-repeat 0 0;
-	display: none;
-	float: left;
-	margin-right: 10px;
-}
-.mCatalogNavRight{
-	background: url('@{base-url}/catalog/img/rightPCa.gif') no-repeat 0 0;
-	display: none;
-	float: right;
 }
 .bPromoCatalogNavArrow{
 	display: block;
@@ -198,3 +165,40 @@
 	-o-transform:rotate(-92deg);
 	transform:rotate(-92deg);
 }
+//modificators
+.mHidden{
+	display: none;
+}
+.mRight{
+	top:0;
+	right: 0;
+	background: -moz-linear-gradient(left,  rgba(255,255,255,0.75) 0%, rgba(255,255,255,1) 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, right top, color-stop(0%,rgba(255,255,255,0.75)), color-stop(100%,rgba(255,255,255,1))); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(left,  rgba(255,255,255,0.75) 0%,rgba(255,255,255,1) 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(left,  rgba(255,255,255,0.75) 0%,rgba(255,255,255,1) 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(left,  rgba(255,255,255,0.75) 0%,rgba(255,255,255,1) 100%); /* IE10+ */
+	background: linear-gradient(to right,  rgba(255,255,255,0.75) 0%,rgba(255,255,255,1) 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#bfffffff', endColorstr='#ffffff',GradientType=1 ); /* IE6-9 */
+}
+.mLeft{
+	top:0;
+	left: 0;
+	background: -moz-linear-gradient(left,  rgba(255,255,255,1) 0%, rgba(255,255,255,0.75) 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, right top, color-stop(0%,rgba(255,255,255,1)), color-stop(100%,rgba(255,255,255,0.75))); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(left,  rgba(255,255,255,1) 0%,rgba(255,255,255,0.75) 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(left,  rgba(255,255,255,1) 0%,rgba(255,255,255,0.75) 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(left,  rgba(255,255,255,1) 0%,rgba(255,255,255,0.75) 100%); /* IE10+ */
+	background: linear-gradient(to right,  rgba(255,255,255,1) 0%,rgba(255,255,255,0.75) 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#bfffffff',GradientType=1 ); /* IE6-9 */
+}
+// .mCatalogNavLeft{
+// 	background: url('@{base-url}/catalog/img/leftPCa.gif') no-repeat 0 0;
+// 	display: none;
+// 	float: left;
+// 	margin-right: 10px;
+// }
+// .mCatalogNavRight{
+// 	background: url('@{base-url}/catalog/img/rightPCa.gif') no-repeat 0 0;
+// 	display: none;
+// 	float: right;
+// }
