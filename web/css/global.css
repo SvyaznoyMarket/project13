@@ -5561,7 +5561,8 @@
     -moz-border-radius: 5px;
     border-radius: 5px;
     border: 1px solid #ddd;
-    height: 27px;
+    height: 30px;
+    line-height: 30px;
     outline: none;
     vertical-align: top;
     width: 350px;
@@ -5590,7 +5591,7 @@
     margin: 0px 0px 10px;
     outline: none;
     padding: 5px;
-    width: 475px;
+    width: 75.5%;
   }
   .bBuyingLine__eTextarea:focus {
     border-color: #ffa901;
@@ -5759,10 +5760,6 @@
   }
   .phonePH {
     position: relative;
-  }
-  .phonePH span.placeholder {
-    line-height: 31px;
-    margin-left: 12px;
   }
   .phonePH #order_recipient_phonenumbers {
     -moz-opacity: 0.8;
