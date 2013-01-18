@@ -105,21 +105,15 @@
                 <span data-bind="visible: type === 'standart' ">Доставим</span>
                 <span data-bind="text: $root.printDate( $data.chosenDate() )"></span>*
             </h2>
-
-            <div style="margin: 8px 0 12px 0;" class="bSelect mFastInpSmall">
-                <span data-bind="text: $data.chosenInterval()"></span>
-
-                <div class="bSelect__eArrow"></div>
-                <div id="order-interval_standart_rapid-holder" class="bSelect__eDropmenu order-interval-holder">
+            <div style="margin: 8px 0 12px 0;" class="bSelectWrap mFastInpSmall">
+                <span class="bSelectWrap_eText" data-bind="text: $data.chosenInterval()"></span>
+                <select id="order-interval_standart_rapid-holder" class='bSelect mFastInpSmall order-interval-holder'>
                     <!-- ko foreach : currentIntervals -->
-                    <div class="order-interval"
-                         data-bind=" click: function(data, event) { $root.clickInterval($parent, data, event) } ">
-                        <span data-bind="text: $data"></span>
-                    </div>
+                    <option class="bSelect_eItem order-interval" data-bind="click: function(data, event) { $root.clickInterval($parent, data, event) }, text: $data"></option>
                     <!-- /ko -->
-                </div>
+                </select>
             </div>
-
+            
             <i class="order-delivery_price">
                 <!-- ko if: dlvrPrice() > 0 -->
 				<span class="red">Стоимость доставки

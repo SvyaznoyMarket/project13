@@ -206,3 +206,55 @@
     cursor: default;
   }
 }
+// drop-down
+.bSelectWrap{
+  .rounded(5px);
+  background: url("@{base-url}/common/img/bSelectDown.png") right center no-repeat;
+  border: 1px solid #9e9e9e;
+  cursor: pointer;
+  display: inline-block;
+  *display: inline;
+  height: 30px;
+  overflow: hidden;
+  position: relative;
+  &_eText{
+    line-height: 30px;
+    margin-left: 10px;
+    position: absolute;
+    z-index: 1;
+  }
+  &.mFastInpSmall {
+    vertical-align: top;
+    width: 190px;
+    .bSelect{
+      width: 215px;
+    }
+  }
+  &.mFastInpBig {
+    width: 400px;
+    .bSelect{
+      width: 425px;
+    }
+  }
+}
+.bSelect {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  color: transparent;
+  font-size: 16px;
+  height: 30px;
+  padding: 5px;
+  position: absolute;
+  -webkit-appearance: none;
+  z-index: 2;
+  &.mDisabled {
+    border: 1px solid #ddd;
+    color: #cdcdcd;
+    cursor: default;
+  }
+  &_eItem{
+    color: black;
+    height: 30px;
+  }
+}

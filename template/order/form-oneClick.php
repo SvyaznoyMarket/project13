@@ -51,37 +51,33 @@ $formData = array(
                             <tr data-bind="visible: noDelivery()"><td colspan="2"><h2 class="red">Товар в количестве <span data-bind="text: quantity()"></span> шт. отсутствует на складе.</h2></td></tr>
                             <tr data-bind="visible: !noDelivery()"><td width="200">Способ получения заказа:</td>
                                 <td>
-                                    <div class='bSelect mFastInpSmall' data-bind="css: { mDisabled : (disabledSelectors() || stableType() ) }">
-                                        <span data-bind="text: chosenDlvr().name"></span>
-                                        <div class='bSelect__eArrow'></div>
-                                        <div class='bSelect__eDropmenu'>
+                                    <div class="bSelectWrap mFastInpSmall mr10">
+                                        <span class="bSelectWrap_eText" data-bind="text: chosenDlvr().name"></span>
+                                        <select class='bSelect' data-bind="css: { mDisabled : (disabledSelectors() || stableType() ) }">
                                             <!-- ko foreach : dlvrs -->
-                                            <div data-bind="click: $root.changeDlvr"><span data-bind="text: name"></span></div>
+                                            <option class="bSelect_eItem" data-bind="click: $root.changeDlvr, text: name"></option>
                                             <!-- /ko -->
-                                        </div>
+                                        </select>
                                     </div>
-
-                                    <div class='bSelect mFastInpSmall' data-bind="css: { mDisabled : disabledSelectors() }">
-                                        <span data-bind="text: chosenDate().name"></span>
-                                        <div class='bSelect__eArrow'></div>
-                                        <div class='bSelect__eDropmenu'>
+                                    <div class="bSelectWrap mFastInpSmall">
+                                        <span class="bSelectWrap_eText" data-bind="text: chosenDate().name"></span>
+                                        <select class='bSelect mFastInpSmall' data-bind="css: { mDisabled : disabledSelectors() }">
                                             <!-- ko foreach : dates -->
-                                            <div data-bind="click: $root.pickDate"><span data-bind="text: name"></span></div>
+                                            <option class="bSelect_eItem" data-bind="click: $root.pickDate, text: name"></option>
                                             <!-- /ko -->
-                                        </div>
+                                        </select>
                                     </div>
                                 </td></tr>
                             <!-- ko if: chosenDlvr().type == 'self' -->
                             <tr data-bind="visible: !noDelivery()"><td>Магазин для самовывоза:</td>
                                 <td>
-                                    <div class='bSelect mFastInpBig' data-bind="css: { mDisabled : disabledSelectors() }">
-                                        <span data-bind="text: chosenShop().address"></span>
-                                        <div class='bSelect__eArrow'></div>
-                                        <div class='bSelect__eDropmenu'>
+                                    <div class="bSelectWrap mFastInpBig">
+                                        <span class="bSelectWrap_eText" data-bind="text: chosenShop().address"></span>
+                                        <select class='bSelect' data-bind="css: { mDisabled : disabledSelectors() }">
                                             <!-- ko foreach : shops -->
-                                            <div data-bind="click: $root.pickShop"><span data-bind="text: address"></span></div>
+                                            <option class="bSelect_eItem" data-bind="click: $root.pickShop, text: address"></option>
                                             <!-- /ko -->
-                                        </div>
+                                        </select>
                                     </div>
                                     <!-- ko if: !disabledSelectors() -->
                                     <a class='bFast__eMapLink' href="" data-bind="click: toggleMap">

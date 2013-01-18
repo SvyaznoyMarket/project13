@@ -157,21 +157,21 @@ $(document).ready(function() {
 
 	/* Credit */
     if( $('.bankWrap').length ) {
-        var banks = $('.bankWrap > .bSelect').data('value')
+        var banks = $('.bankWrap .bSelect').data('value')
         var docs  = $('.bankWrap > .creditHref')
-        var options = $('<div>').addClass('bSelect__eDropmenu')
+        var select = $('.bankWrap .bSelect')
         for( var id in banks ) {
-            var option = $('<div>').attr('ref', id).append( $('<span>').text( banks[id].name ) )
+            var option = $('<option>').attr('ref', id).addClass('bSelect_eItem').text( banks[id].name )
             option.click( function() {
                 var thisId = $(this).attr('ref')
-                $('.bankWrap > .bSelect').find('span:first').text( banks[ thisId ].name )
+                $('.bankWrap .bSelectWrap_eText').text( banks[ thisId ].name )
                 $('input[name="order[credit_bank_id]"]').val( thisId )
                 docs.find('a').attr('href', banks[ thisId ].href )
                 docs.find('span').text('(' + banks[ thisId ].name + ')' )
             })
-            options.append( option )
+            select.append( option )
         }
-        $('.bankWrap > .bSelect').append( options )
+        // $('.bankWrap > .bSelect').append( options )
 
         DirectCredit.init( $('#tsCreditCart').data('value'), $('#creditPrice') )
     }
