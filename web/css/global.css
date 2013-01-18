@@ -7453,6 +7453,36 @@
   .mVAMiddle {
     vertical-align: middle;
   }
+  .product_kit-data.whitelink {
+    color: #ffa901;
+    margin-top: 15px;
+  }
+  .bKitPopup {
+    width: 500px;
+  }
+  .bKitPopupLine {
+    border-bottom: 1px solid #e6e6e6;
+    font-size: 14px;
+  }
+  .bKitPopupLine_eImg {
+    margin: 15px 12px 0px 0;
+    width: 60px;
+  }
+  .bKitPopupLine_eName {
+    margin: 15px 12px 0px 0;
+    width: 300px;
+  }
+  .bKitPopupLine_ePrice {
+    margin: 15px 12px 0px 0;
+    width: 60px;
+  }
+  .bKitPopupLine_eQuan {
+    margin: 15px 0 15px;
+    width: 44px;
+  }
+  .bKitPopupLine:last-child {
+    border-bottom: none;
+  }
 }
 /*---END---СТИЛИ КОРЗИНЫ---*/
 /*-----СТИЛИ ЛАЙТБОКСА-----*/

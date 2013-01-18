@@ -81,6 +81,22 @@ foreach ($products as $product) {
     <div id="tsCreditCart" data-value='<?= json_encode($creditData) ?>'></div>
 <? endif ?>
 
+
+<script type="text/html" id="bKitPopupLine_Tmpl">
+    <div class="bKitPopupLine clearfix">
+        <div class="bKitPopupLine_eImg fl"><img src="<%=image%>" alt="<%=name%>"/></div>
+        <div class="bKitPopupLine_eName fl"><%=name%></div>
+        <div class="bKitPopupLine_ePrice fl"><%=price%> <span class="rubl">p</span></div>
+        <div class="bKitPopupLine_eQuan fl"><%=quantity%> шт.</div>
+    </div>
+</script>
+<div id="kitPopup" class="popup">
+    <a class="close" href="#">Закрыть</a>
+    <div class="bKitPopup">
+        
+    </div>
+</div>
+
 <? foreach ($products as $product): ?>
 <?
     $cartProduct = $cartProductsById[$product->getId()];
@@ -91,7 +107,7 @@ foreach ($products as $product) {
                 <img src="<?= $product->getImageUrl() ?>" alt="<?= $product->getName() ?>" />
             </a>
         </div>
-        <div class="basketright">
+        <div class="basketright clearfix">
             <div class="goodstitle">
                 <div class="font24 pb5"><a href="<?= $product->getLink() ?>"><?= $product->getName() ?></a></div>
                 <? if ($cartProduct->getIsBuyable()): ?>
@@ -132,7 +148,7 @@ foreach ($products as $product) {
                         continue;
                     }
 
-                    $kitData = array(
+                    $kitData[] = array(
                         'name'     => $productKit->getName(),
                         'image'    => $productKit->getImageUrl(0),
                         'price'    => $productKit->getPrice(),
@@ -140,8 +156,6 @@ foreach ($products as $product) {
                     );
                 }
             ?>
-            <div id="<?= sprintf('product-%s-kit', $product->getId()) ?>" class="product_kit-data" type="hidden" data-value="<?= $page->json($kitData) ?>"></div>
-
             <div class="clear pb15"></div>
 
             <? if ((bool)$product->getService()): ?>
@@ -151,6 +165,10 @@ foreach ($products as $product) {
             <? if (\App::config()->warranty['enabled'] && (bool)$product->getWarranty()): ?>
                 <?= $page->render('cart/_warrantyByProduct', array('product' => $product, 'cartProduct' => $cartProduct)) ?>
             <?endif ?>
+
+            <? if ((bool)$kitData): ?>
+                <a id="<?= sprintf('product-%s-kit', $product->getId()) ?>" href="#" class="product_kit-data fr mt15 button whitelink" data-value="<?= $page->json($kitData) ?>">Посмотреть состав набора</a>
+            <? endif ?>
 
         </div>
     </div>

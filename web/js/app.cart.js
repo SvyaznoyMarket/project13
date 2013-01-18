@@ -4,6 +4,21 @@ $(document).ready(function() {
 	var totalCash = 0
 	var focusTrigger = false;
 
+	if ($('.product_kit-data').length){
+		$('.product_kit-data').bind('click', function(){
+			var elems = $(this).data('value')
+			$('.bKitPopup').empty()
+			for (obj in elems){
+				var kitLine = tmpl('bKitPopupLine_Tmpl', elems[obj])
+				$('.bKitPopup').append(kitLine)
+			}
+			$('#kitPopup').lightbox_me({
+				centered: true
+			})
+			return false
+		})
+	}
+
 	function getTotal() {
 		for(var i=0, tmp=0; i < basket.length; i++ ) {
 			if( ! basket[i].noview && $.contains( document.body, basket[i].hasnodes[0] ) )
