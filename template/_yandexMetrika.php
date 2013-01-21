@@ -4,9 +4,8 @@
     (function (d, w, c) {
         (w[c] = w[c] || []).push(function() {
             try {
-                w.yaCounter18703492 = new Ya.Metrika(
-                        {id:18703492, webvisor:true, clickmap:true, trackLinks:true, accurateTrackBounce:true}
-
+                w.yaCounter10503055 = new Ya.Metrika(
+                        {id:10503055, webvisor:true, clickmap:true, trackLinks:true, accurateTrackBounce:true}
                 );
             } catch(e) { }
         });
