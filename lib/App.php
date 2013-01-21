@@ -38,21 +38,28 @@ class App {
             ini_set('display_errors', 0);
         }
 
-        $autoloadMap = array(
-            'namespace' => array(
-                'Controller' => self::$config->appDir . '/controller',
-                'Model'      => self::$config->appDir . '/model',
-                'View'       => self::$config->appDir . '/view',
-            ),
-            'path'           => self::$config->appDir . '/lib',
-        );
-        spl_autoload_register(function ($class) use ($autoloadMap) {
-            $namespace = substr($class, 0, strpos($class, '\\'));
-            if (isset($autoloadMap['namespace'][$namespace])) {
-                require_once $autoloadMap['namespace'][$namespace] . DIRECTORY_SEPARATOR . str_replace('\\', DIRECTORY_SEPARATOR, preg_replace('/^' . $namespace . '/', '', $class)) . '.php';
-            } else {
-                require_once $autoloadMap['path'] . DIRECTORY_SEPARATOR . str_replace('\\', DIRECTORY_SEPARATOR, $class) . '.php';
+        $appDir = self::config()->appDir;
+        spl_autoload_register(function ($class) use ($appDir) {
+            if ('\\' == $class[0]) {
+                $class = substr($class, 1);
             }
+
+            $namespace = substr($class, 0, strpos($class, '\\'));
+            $path = null;
+            switch ($namespace) {
+                case 'Controller': case 'View':
+                $class = lcfirst($class);
+                $path = $appDir . '/main';
+                break;
+                case 'Model':
+                    $class = preg_replace('/^' . $namespace . '/', '', $class);
+                    $path = $appDir . '/model';
+                    break;
+                default:
+                    $path = $appDir . '/lib';
+            }
+
+            require_once $path . DIRECTORY_SEPARATOR . str_replace('\\', DIRECTORY_SEPARATOR, $class) . '.php';
         });
 
         // error handler
@@ -182,7 +189,7 @@ class App {
         static $instance;
 
         if (!$instance) {
-            $instance = new \Templating\PhpEngine(self::config()->appDir . '/template');
+            $instance = new \Templating\PhpEngine(self::config()->appDir . '/main/template');
         }
 
         return $instance;
