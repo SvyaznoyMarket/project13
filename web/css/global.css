@@ -2870,6 +2870,12 @@
   #header #topmenu-root-923:hover {
     background-position: -370px -71px;
   }
+  #header #topmenu-root-923.jew25 {
+    background: url("/css/header/img/jew.gif") no-repeat 0px 0px;
+  }
+  #header #topmenu-root-923.jew25:hover {
+    background: url("/css/header/img/jew.gif") no-repeat 0px 0px;
+  }
   #header #topmenu-root-647 {
     background: url("/css/header/img/headerSprite.png") no-repeat -424px 0px;
     width: 43px;
