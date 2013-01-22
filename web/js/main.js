@@ -451,13 +451,15 @@ $(document).ready(function(){
 	})
 	*/
 	var logError = function(data) {
-		$.ajax({
-			type: 'POST',
-			global: false,
-			url: '/log-json',
-			data: data,
-			error: console.log('log err')
-		})
+        if (data.ajaxUrl !== '/log-json') {
+            $.ajax({
+                type: 'POST',
+                global: false,
+                url: '/log-json',
+                data: data,
+                error: console.log('log err')
+            })
+        }
 	}
 	$.ajaxSetup({
 		timeout: 10000,
