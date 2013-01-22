@@ -69,29 +69,29 @@
 	height: 27px;
 	width: 30px;
 }
-.bPromoCatalogNav{
-	margin: 20px auto;
-	width: @promoCatalogMainW;
-	&_eLink{
-		background: #F3F3F3;
-		border: 1px solid @typBoxShadowColor;
-		display: block;
-		float: left;
-		font-family: 'Enter';
-		font-size: 14px;
-		line-height: 23px;
-		margin: 1px 3px;
-		text-align: center;
-		width: 23px;
-		&:hover{
-			text-decoration: none;
-		}
-		&.active{
-			background: @firmOrange;
-			color: @white;
-		}
-	}
-}
+// .bPaginator{
+// 	margin: 20px auto;
+// 	width: @promoCatalogMainW;
+// 	&_eLink{
+// 		background: #F3F3F3;
+// 		border: 1px solid @typBoxShadowColor;
+// 		display: block;
+// 		float: left;
+// 		font-family: 'Enter';
+// 		font-size: 14px;
+// 		line-height: 23px;
+// 		margin: 1px 3px;
+// 		text-align: center;
+// 		width: 23px;
+// 		&:hover{
+// 			text-decoration: none;
+// 		}
+// 		&.active{
+// 			background: @firmOrange;
+// 			color: @white;
+// 		}
+// 	}
+// }
  
 .topLifted {
 	position: relative;
@@ -202,3 +202,53 @@
 // 	display: none;
 // 	float: right;
 // }
+
+.bPaginator{
+	margin: 20px auto;
+	overflow: hidden;
+	width: @promoCatalogMainW;
+	&_eWrap{
+		position: relative;
+	}
+	&_eLink{
+		background: #F3F3F3;
+		border: 1px solid @typBoxShadowColor;
+		display: block;
+		float: left;
+		font-family: 'Enter';
+		font-size: 14px;
+		line-height: 23px;
+		margin-bottom: 5px;
+		margin-top:3px;
+		text-align: center;
+		width: 23px;
+		&:hover{
+			text-decoration: none;
+		}
+		&.active{
+			background: @firmOrange;
+			color: @white;
+		}
+	}
+}
+.bPaginatorSlider{
+	height: 30px;
+	padding-top: 1px;
+	position: relative;
+	z-index: 2;
+	&_eWrap{
+		background: #DDD;
+		height: 5px;
+		margin-top: 15px;
+		position: relative;
+		z-index: 1;
+	}
+	&_eFill{
+		background: #888;
+		position: relative;
+		height: 5px;
+	}
+	&_eArrow{
+
+	}
+}

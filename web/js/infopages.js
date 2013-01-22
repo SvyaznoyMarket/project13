@@ -154,6 +154,98 @@ $(document).ready(function(){
 		$(".symbian-load").click( function(){ showQRpopup( ".symbian-block" ); return false; } )
 	}
 
+	/*paginator*/
+	var EnterPaginator = function(domID,totalPages, visPages, activePage){
+		
+		self = this
+
+		self.inputVars = {
+			domID: domID, // id элемента для пагинатора
+			totalPages:totalPages, //общее количество страниц
+			visPages:visPages?visPages:10, // количество видимых сраниц
+			activePage:activePage?activePage:1 // текущая активная страница
+		}
+
+		var pag = $('#'+self.inputVars.domID) // пагинатор
+		var pagW = pag.width() // ширина пагинатора
+		var eSliderFillW = (pagW*self.inputVars.visPages)/self.inputVars.totalPages // ширина закрашенной области слайдера
+		var onePageOnSlider = eSliderFillW / self.inputVars.visPages // ширина соответствующая одной странице на слайдере
+		var onePage = pagW / self.inputVars.visPages // ширина одной цифры на пагинаторе
+		var center = Math.round(self.inputVars.visPages/2)
+		
+		function init() {
+			pag.append('<div class="bPaginator_eWrap"></div>')
+			pag.append('<div class="bPaginatorSlider"><div class="bPaginatorSlider_eWrap"><div class="bPaginatorSlider_eFill" style="width:'+eSliderFillW+'px"></div></div></div>')
+			for (i=0; i<self.inputVars.totalPages; i++){
+				$('.bPaginator_eWrap', pag).append('<a class="bPaginator_eLink" href="#'+i+'">'+(i+1)+'</a>')
+				if ((i+1)=== self.inputVars.activePage)
+					$('.bPaginator_eLink', pag).eq(i).addClass('active')
+			}
+			var realLinkW = $('.bPaginator_eLink', pag).width() // реальная ширина цифр
+			$('.bPaginator_eLink', pag).css({'marginLeft':(onePage-realLinkW-2)/2, 'marginRight':(onePage-realLinkW-2)/2}) // размазываем цифры по ширине слайдера
+			$('.bPaginator_eWrap', pag).addClass('clearfix').width(onePage*self.inputVars.totalPages) // устанавливаем ширину wrap'а, добавляем ему очистку
+		}
+
+		function enableHandlers() {
+			// биндим хандлеры
+			var clicked = false
+			var startX = 0
+			var nowLeft = 0
+			$('.bPaginatorSlider', pag).bind('mousedown', function(e){
+				startX = e.pageX;
+				nowLeft = parseInt($('.bPaginatorSlider_eFill', pag).css('left'))
+				clicked = true
+			})
+			$('.bPaginatorSlider', pag).bind('mouseup', function(){
+				clicked = false
+			})
+			pag.bind('mouseout', function(){
+				clicked = false
+			})
+			$('.bPaginatorSlider', pag).bind('mousemove', function(e){
+				if (clicked){
+					var newLeft = nowLeft+(e.pageX-startX)
+					if ( (newLeft>=0) && (newLeft<=pagW-eSliderFillW) ){
+						$('.bPaginatorSlider_eFill', pag).css('left', nowLeft+(e.pageX-startX))
+						scrollingByBar(newLeft)
+					}
+				}
+			})
+		}
+
+		function scrollingByBar(left){
+			var pagLeft = Math.round(left/onePageOnSlider)
+			$('.bPaginator_eWrap', pag).css('left', -(onePage * pagLeft))
+		}
+
+		self.setActive = function (page){
+			$('.bPaginator_eLink', pag).removeClass('active')
+			$('.bPaginator_eLink', pag).eq(page).addClass('active')
+
+			var left = parseInt($('.bPaginator_eWrap', pag).css('left')) // текущее положение пагинатора
+			var barLeft = parseInt($('.bPaginatorSlider_eFill', pag).css('left')) // текущее положение бара
+			var nowLeftElH = Math.round(left/onePage)*(-1) // количество скрытых элементов
+			var diff = -(center-(page-nowLeftElH)) // на сколько элементов необходимо подвинуть пагинатор для центрирования
+			if (left-(diff*onePage)>0){
+				left = 0
+				barLeft = 0
+			}
+			else if (page > self.inputVars.totalPages-center){
+				left = Math.round(self.inputVars.totalPages-self.inputVars.visPages)*onePage*(-1)
+				barLeft = Math.round(self.inputVars.totalPages-self.inputVars.visPages)*onePageOnSlider
+			}
+			else{
+				left = left-(diff*onePage)
+				barLeft = barLeft+(diff*onePageOnSlider)
+			}
+			$('.bPaginator_eWrap').animate({'left': left})
+			$('.bPaginatorSlider_eFill', pag).animate({'left': barLeft})
+		}
+
+		init()
+		enableHandlers()
+	}
+
 	/* promo catalog */
 	if ( $('#promoCatalog').length){
 		var data = {
@@ -183,43 +275,34 @@ $(document).ready(function(){
 		}
 
 		//первоначальная настройка
+		var slider_SlideCount = data.slides.length	//количество слайдов
+
+		var catalogPaginator = new EnterPaginator('promoCatalogPaginator',slider_SlideCount, 12, 1)
+
 		var initSlider = function() {
 			for (var slide in data.slides){
 				var slideTmpl = tmpl("slide_tmpl",data.slides[slide])
 				$('.bPromoCatalogSliderWrap').append(slideTmpl)
-				// $('.bPromoCatalogNavArrow.mCatalogNavRight').before('<a href="#'+slide+'" class="bPromoCatalogNav_eLink">'+((slide*1)+1)+'</a>')
-				if ( (data.slides.length > 13)&&((slide*1)==12) ){
-					$('.bPromoCatalogNav').append('<a class="bPromoCatalogNav_eLink promoCatalogDotted">...</a>')
-					$('.bPromoCatalogNav').append('<a id="promoCatalogSlide'+slide+'" href="#'+slide+'" class="bPromoCatalogNav_eLink mHidden">'+((slide*1)+1)+'</a>')
-				}
-				else if( (data.slides.length > 13)&&((slide*1)>12) ){
-					$('.bPromoCatalogNav').append('<a id="promoCatalogSlide'+slide+'" href="#'+slide+'" class="bPromoCatalogNav_eLink mHidden">'+((slide*1)+1)+'</a>')
-				}
-				else{
-					$('.bPromoCatalogNav').append('<a id="promoCatalogSlide'+slide+'" href="#'+slide+'" class="bPromoCatalogNav_eLink">'+((slide*1)+1)+'</a>')
-				}
+				// $('.bPromoCatalogNav').append('<a id="promoCatalogSlide'+slide+'" href="#'+slide+'" class="bPromoCatalogNav_eLink">'+((slide*1)+1)+'</a>')
 			}
-			$('.bPromoCatalogNav_eLink:first').addClass('active')
-			$('.bPromoCatalogNav_eLink:last').removeClass('mHidden')
+			
 		}
-
 		initSlider() //запуск слайдера
 
 		//переменные
 		var slider_SlideW = $('.bPromoCatalogSliderWrap_eSlide').width()	// ширина одного слайда
-		var slider_SlideCount = data.slides.length	//количество слайдов
+		
 		var slider_WrapW = $('.bPromoCatalogSliderWrap').width( slider_SlideW * slider_SlideCount + (920/2 - slider_SlideW/2))	// установка ширины обертки
 		var nowSlide = 0 	//текущий слайд
 
 		//листание стрелками
 		$('.bPromoCatalogSlider_eArrow').bind('click', function() {
 			var pos = ( $(this).hasClass('mArLeft'))?'-1':'1'
-			nowSlide = nowSlide + pos*1
-			moveSlide(nowSlide)
+			moveSlide(nowSlide + pos*1)
 			return false
 		})
 		//пагинатор
-		$('.bPromoCatalogNav_eLink').bind('click', function() {
+		$('.bPaginator_eLink').bind('click', function() {
 			if ( $(this).hasClass('active') )
 				return false
 			var link = $(this).attr('href').slice(1)*1
@@ -241,53 +324,11 @@ $(document).ready(function(){
 			else{
 				$('.bPromoCatalogSlider_eArrow.mArRight').show()
 			}
-			$('.bPromoCatalogNav_eLink').removeClass('active')
 			$('.bPromoCatalogSliderWrap').animate({'left':-(slider_SlideW*slide)},500, function(){
-				$('#promoCatalogSlide'+slide).addClass('active')
 				nowSlide = slide
-				paginator(slide)
 			})
+			catalogPaginator.setActive(slide)
 		}
 
-		// проверка пагинатора
-		var paginator = function(num) {
-			// console.log(slider_SlideCount)
-			var diff = 3 // количество цифр слева и справа
-			var res = 0 //нужно ли двигать пагинатор и на сколько
-			for(var i=1; i<=diff; i++) {
-				if( $('#promoCatalogSlide'+(num+i)).hasClass('mHidden') ){
-					res = diff-i
-					break
-				}
-				if( $('#promoCatalogSlide'+(num-i)).hasClass('mHidden') ){
-					res = -(diff-i)
-					break
-				}
-			}
-			if (res!==0){ //пагинатор нужно двигать
-				console.log('подвинуть на '+res)
-				if (res>0){ //двигаем влево
-					if ( (num+res)<slider_SlideCount-1 ){
-						console.log('докрутили не до конца влево')
-						var drop = ( $('.promoCatalogDotted').length==1 )?(res+1):res
-						console.log('итого элементов дропнется '+drop)
-						// dropElements('left',drop, num)
-					}
-				}
-				else{ // двигаем вправо
-
-				}
-			}
-			var dropElements = function(direction, cols, now){
-				console.log(direction)
-				// if(direction=='left'){
-				// 	for(var i=1;i<=cols;i++){
-				// 		$('.bPromoCatalogNav_eLink').is('visible').eq(1+i).addClass('mHidden')
-				// 		$('#promoCatalogSlide'+(now+i)).removeClass('mHidden')
-				// 		console.log($('#promoCatalogSlide'+(now+i)))
-				// 	}
-				// }
-			}
-		}
 	}
 })

@@ -4195,29 +4195,6 @@
     height: 27px;
     width: 30px;
   }
-  .bPromoCatalogNav {
-    margin: 20px auto;
-    width: 450px;
-  }
-  .bPromoCatalogNav_eLink {
-    background: #F3F3F3;
-    border: 1px solid #616161;
-    display: block;
-    float: left;
-    font-family: 'Enter';
-    font-size: 14px;
-    line-height: 23px;
-    margin: 1px 3px;
-    text-align: center;
-    width: 23px;
-  }
-  .bPromoCatalogNav_eLink:hover {
-    text-decoration: none;
-  }
-  .bPromoCatalogNav_eLink.active {
-    background: #ffa901;
-    color: #ffffff;
-  }
   .topLifted {
     position: relative;
     -moz-border-radius: 4px;
@@ -4340,6 +4317,52 @@
     filter: progid:dximagetransform.microsoft.gradient(startColorstr='#ffffff', endColorstr='#bfffffff', GradientType=1);
     /* IE6-9 */
   
+  }
+  .bPaginator {
+    margin: 20px auto;
+    overflow: hidden;
+    width: 450px;
+  }
+  .bPaginator_eWrap {
+    position: relative;
+  }
+  .bPaginator_eLink {
+    background: #F3F3F3;
+    border: 1px solid #616161;
+    display: block;
+    float: left;
+    font-family: 'Enter';
+    font-size: 14px;
+    line-height: 23px;
+    margin-bottom: 5px;
+    margin-top: 3px;
+    text-align: center;
+    width: 23px;
+  }
+  .bPaginator_eLink:hover {
+    text-decoration: none;
+  }
+  .bPaginator_eLink.active {
+    background: #ffa901;
+    color: #ffffff;
+  }
+  .bPaginatorSlider {
+    height: 30px;
+    padding-top: 1px;
+    position: relative;
+    z-index: 2;
+  }
+  .bPaginatorSlider_eWrap {
+    background: #DDD;
+    height: 5px;
+    margin-top: 15px;
+    position: relative;
+    z-index: 1;
+  }
+  .bPaginatorSlider_eFill {
+    background: #888;
+    position: relative;
+    height: 5px;
   }
 }
 /*---END---СТИЛИ КАТАЛОГА---*/
