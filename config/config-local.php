@@ -9,7 +9,7 @@ $c = require __DIR__ . '/config-dev.php';
 
 $c->analytics['enabled'] = false;
 
-$c->mobileDomain = 'enter-mobile.loc';
+$c->mobileHost = 'enter-mobile.loc';
 
 $c->warranty['enabled'] = true;
 

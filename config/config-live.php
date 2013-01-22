@@ -13,7 +13,7 @@ $c->analytics['enabled'] = true;
 $c->googleAnalytics['enabled'] = true;
 $c->yandexMetrika['enabled'] = true;
 
-$c->mobileDomain = 'm.enter.ru';
+$c->mobileHost = 'm.enter.ru';
 
 // промсвязьбанк
 $c->paymentPsb['terminal'] = '20097201';

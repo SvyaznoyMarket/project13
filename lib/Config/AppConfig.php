@@ -22,6 +22,10 @@ class AppConfig {
     /** @var string */
     public $webDir;
     /** @var string */
+    public $templateDir;
+    /** @var string */
+    public $controllerPrefix;
+    /** @var string */
     public $authToken = array(
         'name'     => null,
     );
@@ -61,7 +65,7 @@ class AppConfig {
         'enabled' => null,
     );
     /** @var string */
-    public $mobileDomain = null;
+    public $mobileHost = null;
     /** @var array */
     public $onlineCall = array(
         'enabled' => null,

@@ -5,6 +5,23 @@ namespace Routing;
 use Http\Request;
 
 class ActionResolver {
+    private $controllerPrefix = 'Controller';
+
+    /**
+     * @param string $controllerPrefix
+     */
+    public function __construct($controllerPrefix = null) {
+        if ($controllerPrefix) {
+            $this->controllerPrefix = $controllerPrefix;
+        }
+    }
+
+    /**
+     * @param \Http\Request $request
+     * @return array
+     * @throws \RuntimeException
+     * @throws \Exception\NotFoundException
+     */
     public function getCall(Request $request) {
         if (!is_array($request->attributes->get('action'))) {
             throw new \Exception\NotFoundException('Запрос не содержит действия');
@@ -12,7 +29,7 @@ class ActionResolver {
 
         list ($actionName, $actionMethod) = $request->attributes->get('action');
 
-        $r = new \ReflectionClass('Controller\\' . $actionName);
+        $r = new \ReflectionClass($this->controllerPrefix . '\\' . $actionName);
         $action = $r->newInstanceArgs();
 
         $attributes = $request->attributes->all();

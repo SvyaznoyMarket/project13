@@ -12,6 +12,9 @@ $c->libDir = $c->appDir . '/lib';
 $c->dataDir = $c->appDir . '/data';
 $c->logDir = $c->appDir . '/log';
 $c->webDir = $c->appDir . '/web';
+$c->templateDir = $c->appDir . '/main/template';
+
+$c->controllerPrefix = 'Controller';
 
 $c->debug = true;
 $c->appName = 'Enter';

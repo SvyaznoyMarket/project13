@@ -2,56 +2,19 @@
 
 namespace View;
 
-class Helper {
-    public function replacedUrl(array $replaces, array $excluded = null, $route = null) {
-        $request = \App::request();
-
-        if (null == $route) {
-            if (!$request->attributes->has('route')) {
-                throw new \RuntimeException('В атрибутах запроса не задан параметр "route".');
-            }
-
-            $route = $request->attributes->get('route');
-        }
-
-        $excluded = (null == $excluded) ? array('page' => '1') : $excluded;
-
-        $params = array();
-        foreach (array_diff(array_keys($request->attributes->all()), array('pattern', 'method', 'action', 'route', 'require')) as $k) {
-            $params[$k] = $request->attributes->get($k);
-        }
-        foreach ($request->query->all() as $k => $v) {
-            $params[$k] = $v;
-        }
-        foreach ($replaces as $k => $v) {
-            if (null === $v) {
-                if (isset($params[$k])) unset($params[$k]);
-                continue;
-            }
-
-            $params[$k] = $v;
-        }
-
-        $params = array_diff_assoc($params, $excluded);
-
-        return \App::router()->generate($route, $params);
-    }
-
+class Helper extends \Templating\Helper {
+    /**
+     * @param $price
+     * @return string
+     */
     public function formatPrice($price) {
         return number_format($price, 0, ',', ' ');
     }
 
     /**
-     * @param int   $number  Например: 1, 43, 112
-     * @param array $choices Например: ['отзыв', 'отзыва', 'отзывов']
-     * @return mixed
+     * @param $value
+     * @return int|string
      */
-    public function numberChoice($number, array $choices) {
-        $cases = array (2, 0, 1, 1, 1, 2);
-
-        return $choices[ ($number % 100 > 4 && $number % 100 < 20) ? 2 : $cases[min($number % 10, 5)]];
-    }
-
     public function clearZeroValue($value) {
         $frac = $value - floor($value);
         if (0 == $frac) {
@@ -61,6 +24,10 @@ class Helper {
         }
     }
 
+    /**
+     * @param $date
+     * @return string
+     */
     public function humanizeDate($date) {
         $today = new \DateTime();
         $today->settime(0, 0, 0);

@@ -5,14 +5,14 @@ class App {
     public static $env;
     /** @var string */
     public static $id;
+    /** @var string */
+    public static $name = 'main';
     /** @var bool */
     private static $initialized = false;
     /** @var \Config\AppConfig */
     private static $config;
     /** @var \Logger\LoggerInterface[] */
     private static $loggers = array();
-    /** @var string */
-    private static $defaultRouterName = 'main';
 
     /**
      * @param string           $env             Среда выполнения [local, dev, prod, ...]
@@ -27,7 +27,6 @@ class App {
         self::$config = $config;
 
         mb_internal_encoding(self::$config->encoding ?: 'UTF-8');
-        //setlocale(LC_ALL, array('ru_RU.UTF-8', 'rus_RUS.UTF-8', 'Russian_Russia.65001'));
 
         if (self::$initialized) {
             throw new \LogicException('Приложение уже инициализировано.');
@@ -39,30 +38,6 @@ class App {
         } else {
             ini_set('display_errors', 0);
         }
-
-        $appDir = self::config()->appDir;
-        spl_autoload_register(function ($class) use ($appDir) {
-            if ('\\' == $class[0]) {
-                $class = substr($class, 1);
-            }
-
-            $namespace = substr($class, 0, strpos($class, '\\'));
-            $path = null;
-            switch ($namespace) {
-                case 'Controller': case 'View':
-                $class = lcfirst($class);
-                $path = $appDir . '/main';
-                break;
-                case 'Model':
-                    $class = preg_replace('/^' . $namespace . '/', '', $class);
-                    $path = $appDir . '/model';
-                    break;
-                default:
-                    $path = $appDir . '/lib';
-            }
-
-            require_once $path . DIRECTORY_SEPARATOR . str_replace('\\', DIRECTORY_SEPARATOR, $class) . '.php';
-        });
 
         // error handler
         set_error_handler(function ($level, $message, $file, $line, $context) {
@@ -125,14 +100,6 @@ class App {
     }
 
     /**
-     * @static
-     * @param string $name Постфикс названия файла с правилами маршрутизации (обычно совпадает с названием приложения: main, mobile, ...)
-     */
-    public static function setDefaultRouterName($name) {
-        self::$defaultRouterName = $name;
-    }
-
-    /**
      * @param string|null $name Постфикс названия файла с правилами маршрутизации (обычно совпадает с названием приложения: main, mobile, ...)
      * @return mixed
      */
@@ -140,7 +107,7 @@ class App {
         static $instances = array();
 
         if (null == $name) {
-            $name = self::$defaultRouterName;
+            $name = self::$name;
         }
 
         if (!isset($instances[$name])) {
@@ -160,6 +127,20 @@ class App {
 
         if (!$instance) {
             $instance = \Http\Request::createFromGlobals();
+        }
+
+        return $instance;
+    }
+
+    /**
+     * @static
+     * @return \Routing\ActionResolver
+     */
+    public static function actionResolver() {
+        static $instance;
+
+        if (!$instance) {
+            $instance = new \Routing\ActionResolver(self::$config->controllerPrefix);
         }
 
         return $instance;
@@ -202,7 +183,7 @@ class App {
         static $instance;
 
         if (!$instance) {
-            $instance = new \Templating\PhpEngine(self::config()->appDir . '/main/template');
+            $instance = new \Templating\PhpEngine(self::$config->templateDir);
         }
 
         return $instance;

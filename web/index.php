@@ -11,6 +11,10 @@ $env = isset($_SERVER['APPLICATION_ENV']) ? $_SERVER['APPLICATION_ENV'] : 'dev';
 $config = include realpath(__DIR__ . '/../config/config-' . $env . '.php');
 if (false === $config) die(sprintf('Не удалось загрузить конфигурацию для среды "%s"', $env));
 
+// autoload
+require_once __DIR__ . '/../lib/Autoloader.php';
+Autoloader::register($config->appDir);
+
 // debug
 if (isset($_GET['APPLICATION_DEBUG'])) {
     if (!empty($_GET['APPLICATION_DEBUG'])) {
@@ -24,11 +28,20 @@ if (isset($_GET['APPLICATION_DEBUG'])) {
     $config->debug = !empty($_COOKIE['debug']);
 }
 
+// request
+// TODO: придумать, как по другому можно получить имя хоста
+$request = \Http\Request::createFromGlobals();
+
+// определение флага {десктопное|мобильное приложение} на основе домена
+if ($config->mobileHost && ($config->mobileHost == $request->getHttpHost())) {
+    \App::$name = 'mobile';
+    $config->templateDir = $config->appDir . '/mobile/template';
+    $config->controllerPrefix = 'Mobile\\Controller';
+}
+
 // response
 $response = null;
 
-// application
-require_once __DIR__ . '/../lib/App.php';
 \App::init($env, $config, function() use (&$response) {
     $error = error_get_last();
     if ($error && (error_reporting() & $error['type'])) {
@@ -67,7 +80,9 @@ require_once __DIR__ . '/../lib/App.php';
         // debug panel
         if (\App::config()->debug && !\App::request()->isXmlHttpRequest()) {
             $content = $response->getContent();
-            $content .= include \App::config()->dataDir . '/debug/panel.php';
+            ob_start();
+            include \App::config()->dataDir . '/debug/panel.php';
+            $content .= ob_get_flush();
             $response->setContent($content);
         }
 
@@ -88,15 +103,14 @@ $requestLogger->setId(\App::$id);
 // request
 $request = \App::request();
 // router
-\App::setDefaultRouterName('main');
 $router = \App::router();
 
 try {
     $request->attributes->add($router->match($request->getPathInfo(), $request->getMethod()));
     \App::logger()->info('Match route ' . $request->attributes->get('route') . ' by ' . $request->getMethod()  . ' ' . $request->getRequestUri());
 
-    // resolver
-    $resolver = new \Routing\ActionResolver();
+    // action resolver
+    $resolver = \App::actionResolver();
     list($actionCall, $actionParams) = $resolver->getCall($request);
 
     /* @var $response \Http\Response */
