@@ -61,10 +61,6 @@ class AppConfig {
         'enabled' => null,
     );
     /** @var array */
-    public $asset = array(
-        'timestampEnabled' => null,
-    );
-    /** @var array */
     public $onlineCall = array(
         'enabled' => null,
     );

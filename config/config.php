@@ -35,8 +35,6 @@ $c->analytics['enabled'] = false;
 $c->googleAnalytics['enabled'] = false;
 $c->yandexMetrika['enabled'] = false;
 
-$c->asset['timestampEnabled'] = true;
-
 $c->onlineCall['enabled'] = false;
 
 $c->region['cookieName']     = 'geoshop';
