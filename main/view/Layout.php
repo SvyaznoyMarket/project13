@@ -85,13 +85,11 @@ class Layout {
     }
 
     public function addStylesheet($stylesheet) {
-        if (\App::config()->asset['timestampEnabled']) {
-            try {
-                $timestamp = filectime(\App::config()->webDir . '/' . trim($stylesheet, '/'));
-                $stylesheet .= '?' . $timestamp;
-            } catch (\Exception $e) {
-                \App::logger()->error($e);
-            }
+        try {
+            $timestamp = filectime(\App::config()->webDir . '/' . trim($stylesheet, '/'));
+            $stylesheet .= '?' . $timestamp;
+        } catch (\Exception $e) {
+            \App::logger()->error($e);
         }
 
         $this->stylesheets[] = $stylesheet;
@@ -102,13 +100,11 @@ class Layout {
     }
 
     public function addJavascript($javascript) {
-        if (\App::config()->asset['timestampEnabled']) {
-            try {
-                $timestamp = filectime(\App::config()->webDir . '/' . trim($javascript, '/'));
-                $javascript .= '?' . $timestamp;
-            } catch (\Exception $e) {
-                \App::logger()->error($e);
-            }
+        try {
+            $timestamp = filectime(\App::config()->webDir . '/' . trim($javascript, '/'));
+            $javascript .= '?' . $timestamp;
+        } catch (\Exception $e) {
+            \App::logger()->error($e);
         }
 
         $this->javascripts[] = $javascript;

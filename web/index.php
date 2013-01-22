@@ -88,6 +88,7 @@ $requestLogger->setId(\App::$id);
 // request
 $request = \App::request();
 // router
+\App::setDefaultRouterName('main');
 $router = \App::router();
 
 try {

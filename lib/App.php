@@ -11,6 +11,8 @@ class App {
     private static $config;
     /** @var \Logger\LoggerInterface[] */
     private static $loggers = array();
+    /** @var string */
+    private static $defaultRouterName = 'main';
 
     /**
      * @param string           $env             Среда выполнения [local, dev, prod, ...]
@@ -124,18 +126,29 @@ class App {
 
     /**
      * @static
-     * @return \Routing\Router
+     * @param string $name Постфикс названия файла с правилами маршрутизации (обычно совпадает с названием приложения: main, mobile, ...)
      */
-    public static function router() {
-        static $instance;
+    public static function setDefaultRouterName($name) {
+        self::$defaultRouterName = $name;
+    }
 
-        if (!$instance) {
-            $rules = require self::$config->configDir . '/route.php';
+    /**
+     * @param string|null $name Постфикс названия файла с правилами маршрутизации (обычно совпадает с названием приложения: main, mobile, ...)
+     * @return mixed
+     */
+    public static function router($name = null) {
+        static $instances = array();
 
-            $instance = new \Routing\Router($rules);
+        if (null == $name) {
+            $name = self::$defaultRouterName;
         }
 
-        return $instance;
+        if (!isset($instances[$name])) {
+            $rules = require self::$config->configDir . '/route-' . $name . '.php';
+            $instances[$name] = new \Routing\Router($rules);
+        }
+
+        return $instances[$name];
     }
 
     /**
