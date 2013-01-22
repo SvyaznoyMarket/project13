@@ -60,6 +60,8 @@ class AppConfig {
     public $yandexMetrika = array(
         'enabled' => null,
     );
+    /** @var string */
+    public $mobileDomain = null;
     /** @var array */
     public $onlineCall = array(
         'enabled' => null,

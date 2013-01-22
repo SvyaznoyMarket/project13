@@ -9,6 +9,8 @@ $c->debug = true;
 //$c->coreV2['url'] = 'http://test2.core.ent3.ru/v2/';
 $c->coreV2['url'] = 'http://core.ent3.ru/v2/';
 
+$c->mobileDomain = 'm.ent3.ru';
+
 $c->smartEngine['pull'] = true;
 $c->smartEngine['push'] = false;
 
