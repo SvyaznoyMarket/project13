@@ -1043,10 +1043,10 @@
     position: relative;
   }
   .bSelectWrap_eText {
+    color: #000000;
     line-height: 30px;
     margin-left: 10px;
     position: absolute;
-    z-index: 1;
   }
   .bSelectWrap.mFastInpSmall {
     vertical-align: top;
@@ -1062,7 +1062,11 @@
     width: 425px;
   }
   .bSelect {
-    background: transparent;
+    -moz-opacity: 0;
+    -khtml-opacity: 0;
+    -webkit-opacity: 0;
+    opacity: 0;
+    background-color: transparent;
     border: none;
     box-shadow: none;
     color: transparent;
@@ -1071,7 +1075,6 @@
     padding: 5px;
     position: absolute;
     -webkit-appearance: none;
-    z-index: 2;
   }
   .bSelect.mDisabled {
     border: 1px solid #ddd;
@@ -1079,6 +1082,10 @@
     cursor: default;
   }
   .bSelect_eItem {
+    -moz-opacity: 1;
+    -khtml-opacity: 1;
+    -webkit-opacity: 1;
+    opacity: 1;
     color: black;
     height: 30px;
   }
