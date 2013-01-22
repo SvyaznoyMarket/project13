@@ -178,6 +178,10 @@ class IndexAction {
         $page = new \View\Main\IndexPage();
         $page->setParam('bannerData', $bannerData);
         $page->setParam('rootCategories', $rootCategories);
+        $page->setParam('myThingsData', array(
+            'EventType' => 'MyThings.Event.Visit',
+            'Action' => '200'
+        ));
 
         return new \Http\Response($page->show());
     }
