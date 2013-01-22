@@ -49,7 +49,6 @@ class DefaultLayout extends Layout {
         return '';
     }
 
-
     public function slotHeader() {
         /** @var $categories \Model\Product\Category\Entity[] */
         $categories = $this->getParam('rootCategories');

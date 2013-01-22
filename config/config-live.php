@@ -13,6 +13,7 @@ $c->analytics['enabled'] = true;
 $c->googleAnalytics['enabled'] = true;
 $c->yandexMetrika['enabled'] = true;
 
+$c->mainHost = 'www.enter.ru';
 $c->mobileHost = 'm.enter.ru';
 
 // промсвязьбанк

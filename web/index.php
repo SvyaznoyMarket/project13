@@ -79,11 +79,10 @@ $response = null;
 
         // debug panel
         if (\App::config()->debug && !\App::request()->isXmlHttpRequest()) {
-            $content = $response->getContent();
             ob_start();
             include \App::config()->dataDir . '/debug/panel.php';
-            $content .= ob_get_flush();
-            $response->setContent($content);
+            $content = ob_get_flush();
+            $response->setContent($response->getContent() . "\n\n" . $content);
         }
 
         $response->send();

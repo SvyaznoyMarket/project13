@@ -65,6 +65,8 @@ class AppConfig {
         'enabled' => null,
     );
     /** @var string */
+    public $mainHost = null;
+    /** @var string */
     public $mobileHost = null;
     /** @var array */
     public $onlineCall = array(
