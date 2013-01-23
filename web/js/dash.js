@@ -484,10 +484,28 @@ $(document).ready(function(){
 				$(button).attr('href', $('.lightboxinner .point2').attr('href') )
 				$(button).addClass('active')
 				PubSub.publish( 'productBought', currentItem )
-			}
+
+                sendAnalytics(ajurl)
+            }
 		})
+
 		return false
 	})
+
+    function sendAnalytics(item) {
+        if (typeof(MyThings) != "undefined") {
+            matches = item.match("\/cart\/add\/(\\d+)/_quantity\/")
+            if (null !== matches) {
+                productId = matches[1]
+
+                MyThings.Track({
+                    EventType: MyThings.Event.Visit,
+                    Action: "1013",
+                    ProductId: productId
+                })
+            }
+        }
+    }
 
 	var BB = new BuyBottons()
 	BB.push( 'div.bServiceCardWrap input' ) // F1
@@ -549,7 +567,9 @@ $(document).ready(function(){
 						if( afterpost )
 							afterpost()
 						PubSub.publish( 'productBought', tmpitem )
-					}
+
+                        sendAnalytics(ajurl)
+                    }
 				})
 				return false
 			})
