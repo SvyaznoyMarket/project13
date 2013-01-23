@@ -131,10 +131,16 @@ $(document).ready(function() {
             tmpurl += self.quantum
 
 			//$(nodes.quan).html( self.quantum)
+			// console.log($(nodes.quan))
 			$(nodes.quan).val(self.quantum)
 			self.calculate( self.quantum )
 			totalCash += self.price * delta
-			PubSub.publish( 'quantityChange', { q : self.quantum, id : self.id } )
+
+			// if (self.quantum < nodes.line.find('.extWarr.mBig .ajaquant').val()){
+				
+			// }
+
+			// PubSub.publish( 'quantityChange', { q : self.quantum, id : self.id } )
 			// if( $('#selectCredit').length ) {
 			// 	var sufx = ''
 			// 	if( $('#selectCredit').val()*1 )
@@ -161,9 +167,14 @@ $(document).ready(function() {
 
 		this.checkNode = function(node, newQ){
 			if (node.warranty !== 'undefined'){
-				var q = node.line.parents('.basketright').find('.ajaquant:first').val()
-				if (newQ>q)
+				if (newQ>node.line.parents('.basketright').find('.ajaquant:first').val()){
 					return false
+				}
+				else{
+					return true
+				}
+			}
+			else{
 				return true
 			}
 		}
@@ -191,7 +202,8 @@ $(document).ready(function() {
 
 		$(nodes.more).click( function() {
 			var plus = this
-			if(self.checkNode(nodes, nodes.quan.val()+1)){	
+			var nQuan = nodes.quan.val()+1
+			if(self.checkNode(nodes, nQuan)){	
 				if( ! $(plus).data('run') ) {
 					$(plus).data('run',true)
 					self.update( plus, 1 )
