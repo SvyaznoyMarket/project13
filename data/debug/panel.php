@@ -50,7 +50,7 @@ foreach ((array)$requestData['api_queries'] as $query) {
         (round($query['time'], 3) * 1000)
         . ' ' . '<span style="color: #cccccc;">' . $query['host'] . '</span>'
         . ' ' . '<a style="color: #00ffff" href="' . $page->escape($query['url']) . '" target="_blank" data-method="' . ((bool)$query['post'] ? 'post' : 'get') . '">' . $page->escape(rawurldecode($query['url'])) . '</a>'
-        . ' ' . ((bool)$query['post'] ? json_encode($query['post']) : '')
+        . ' ' . ((bool)$query['post'] ? json_encode($query['post'], JSON_UNESCAPED_UNICODE) : '')
         . '<br />';
 }
 $debug->add('query', $queryString, 80);

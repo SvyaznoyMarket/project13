@@ -21,14 +21,14 @@ class OneClickAction {
         try {
             $productToken = $request->get('product');
             if (!$productToken) {
-                $e = new \Exception\NotFoundException(sprintf('В GET запросе %s не содержится токена товара для заказа в один клик', json_encode($request->query->all())));
+                $e = new \Exception\NotFoundException(sprintf('В GET запросе %s не содержится токена товара для заказа в один клик', json_encode($request->query->all(), JSON_UNESCAPED_UNICODE)));
                 \App::logger()->error($e);
                 throw $e;
             }
 
             $formData = (array)$request->request->get('order');
             if (!(bool)$formData) {
-                $e = new \Exception\NotFoundException(sprintf('В POST запросе %s не содержится данных о заказе в один клик', json_encode($request->request->all())));
+                $e = new \Exception\NotFoundException(sprintf('В POST запросе %s не содержится данных о заказе в один клик', json_encode($request->request->all(), JSON_UNESCAPED_UNICODE)));
                 \App::logger()->error($e);
                 throw $e;
             }
@@ -103,7 +103,7 @@ class OneClickAction {
                 $result = \App::coreClientV2()->query('order/create', $params, $data);
                 $orderNumber = !empty($result['number']) ? (string)$result['number'] : null;
                 if (!$orderNumber) {
-                    throw new \Exception(sprintf('Не получен номер заказа. Ответ ядра: %s', json_encode($result)));
+                    throw new \Exception(sprintf('Не получен номер заказа. Ответ ядра: %s', json_encode($result, JSON_UNESCAPED_UNICODE)));
                 }
 
                 $order = \RepositoryManager::order()->getEntityByNumberAndPhone($orderNumber, $formData['recipient_phonenumbers']);
@@ -127,6 +127,17 @@ class OneClickAction {
                 'order_total'      => $order->getSum(),
                 'product_quantity' => implode(',', array_map(function($orderProduct) { /** @var $orderProduct \Model\Order\Product\Entity */ return $orderProduct->getQuantity(); }, $order->getProduct())),
             ));
+
+            $myThingsOrderData = array(
+                'EventType' => 'MyThings.Event.Conversion',
+                'Action' => '9902',
+                'TransactionReference' => $order->getNumber(),
+                'TransactionAmount' => str_replace(',', '.', $order->getSum()), // Полная сумма заказа (дроби через точку
+                'Products' => array_map(function($orderProduct){
+                    /** @var $orderProduct \Model\Order\Product\Entity  */
+                    return array('id' => $orderProduct->getId(), 'price' => $orderProduct->getPrice(), 'qty' => $orderProduct->getQuantity());
+                }, $order->getProduct()),
+            );
 
             $shop = null;
             if ($order->getShopId()) {
@@ -153,12 +164,13 @@ class OneClickAction {
                 'data'    => array(
                     'title'   => 'Ваш заказ принят, спасибо!',
                     'content' => \App::templating()->render('order/_oneClick', array(
-                        'page'         => new \View\Layout(),
-                        'order'        => $order,
-                        'orderData'    => $orderData,
-                        'shop'         => $shop,
-                        'orderProduct' => $orderProduct,
-                        'product'      => $product,
+                        'page'              => new \View\Layout(),
+                        'order'             => $order,
+                        'orderData'         => $orderData,
+                        'myThingsOrderData' => $myThingsOrderData,
+                        'shop'              => $shop,
+                        'orderProduct'      => $orderProduct,
+                        'product'           => $product,
                     )),
                     'shop'    => $shop,
                 ),

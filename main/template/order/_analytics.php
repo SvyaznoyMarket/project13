@@ -128,6 +128,7 @@
 <div id="gooReMaSuccess" class="jsanalytics"></div>
 <div id="marketgidOrderSuccess" class="jsanalytics"></div>
 
+<?php $myThingsData = array(); ?>
 <?php foreach ($orders as $i => $order):
     $jsonOrdr = array(
     'order_article'    => implode(',', array_map(function ($orderProduct) {
@@ -141,6 +142,16 @@
         return $orderProduct->getQuantity();
     }, $order->getProduct())),
     );
+    $myThingsData[] = array(
+        'EventType' => 'MyThings.Event.Conversion',
+        'Action' => '9902',
+        'TransactionReference' => $order->getNumber(),
+        'TransactionAmount' => str_replace(',', '.', $order->getSum()), // Полная сумма заказа (дроби через точку
+        'Products' => array_map(function($orderProduct){
+            /** @var $orderProduct \Model\Order\Product\Entity  */
+            return array('id' => $orderProduct->getId(), 'price' => $orderProduct->getPrice(), 'qty' => $orderProduct->getQuantity());
+        }, $order->getProduct()),
+    );
     ?>
 
     <div id="heiasComplete" data-vars="<?= $page->json($jsonOrdr) ?>" class="jsanalytics"></div>
@@ -151,3 +162,5 @@
     <img src="http://pixel.everesttech.net/3252/t?ev_Orders=1&amp;ev_Revenue=<?= $order->getSum() ?>&amp;ev_Quickorders=0&amp;ev_Quickrevenue=0&amp;ev_transid=<?= $order->getNumber() ?>" width="1" height="1" />
 
 <?php endforeach ?>
+
+    <div id="myThingsTracker" data-value="<?= $page->json($myThingsData) ?>" class="jsanalytics"></div>
