@@ -6,18 +6,18 @@ $(document).ready(function() {
 	/* ---------------------------------------------------------------------------------------- */
 	/* COMMON DESIGN, BEHAVIOUR ONLY */
 	/* Custom Selectors */ 
-	$('body').delegate( '.bSelect', 'click', function() {
-		if( $(this).hasClass('mDisabled') )
-			return false
-		$(this).find('.bSelect__eDropmenu').toggle()
-	})
-	$('body').delegate( '.bSelect', 'mouseleave', function() {
-		if( $(this).hasClass('mDisabled') )
-			return false
-		var options = $(this).find('.bSelect__eDropmenu')
-		if( options.is(':visible') )
-			options.hide()
-	})
+	// $('body').delegate( '.bSelect', 'click', function() {
+	// 	if( $(this).hasClass('mDisabled') )
+	// 		return false
+	// 	$(this).find('.bSelect__eDropmenu').toggle()
+	// })
+	// $('body').delegate( '.bSelect', 'mouseleave', function() {
+	// 	if( $(this).hasClass('mDisabled') )
+	// 		return false
+	// 	var options = $(this).find('.bSelect__eDropmenu')
+	// 	if( options.is(':visible') )
+	// 		options.hide()
+	// })
 
 	/*  Custom Checkboxes */
 	$('body').delegate('.bBuyingLine label', 'click', function() {

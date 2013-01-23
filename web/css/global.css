@@ -1069,12 +1069,11 @@
     background-color: transparent;
     border: none;
     box-shadow: none;
-    color: transparent;
+    color: #000000;
     font-size: 16px;
     height: 30px;
     padding: 5px;
     position: absolute;
-    -webkit-appearance: none;
   }
   .bSelect.mDisabled {
     border: 1px solid #ddd;
@@ -1087,6 +1086,7 @@
     -webkit-opacity: 1;
     opacity: 1;
     color: black;
+    display: block;
     height: 30px;
   }
 }

@@ -52,19 +52,13 @@ $formData = array(
                             <tr data-bind="visible: !noDelivery()"><td width="200">Способ получения заказа:</td>
                                 <td>
                                     <div class="bSelectWrap mFastInpSmall mr10">
-                                        <span class="bSelectWrap_eText" data-bind="text: chosenDlvr().name"></span>
-                                        <select class='bSelect' data-bind="css: { mDisabled : (disabledSelectors() || stableType() ) }">
-                                            <!-- ko foreach : dlvrs -->
-                                            <option class="bSelect_eItem" data-bind="click: $root.changeDlvr, text: name"></option>
-                                            <!-- /ko -->
+                                        <span class="bSelectWrap_eText" data-bind="text: chosenDlvr().name"></span><!-- function(form, event) { $root.doSomething($data, form, event) } -->
+                                        <select class='bSelect' data-bind="options: dlvrs, optionsText:'name', optionsValue:$data, value:chosenDlvr, css: { mDisabled : (disabledSelectors() || stableType() ) }, event:{ change:$root.changeDlvr}">
                                         </select>
                                     </div>
                                     <div class="bSelectWrap mFastInpSmall">
                                         <span class="bSelectWrap_eText" data-bind="text: chosenDate().name"></span>
-                                        <select class='bSelect mFastInpSmall' data-bind="css: { mDisabled : disabledSelectors() }">
-                                            <!-- ko foreach : dates -->
-                                            <option class="bSelect_eItem" data-bind="click: $root.pickDate, text: name"></option>
-                                            <!-- /ko -->
+                                        <select class='bSelect' data-bind="options: dates, optionsText:'name', optionsValue:$data, value:chosenDate, css: { mDisabled : disabledSelectors() }, event:{ change:$root.pickDate}">
                                         </select>
                                     </div>
                                 </td></tr>
@@ -73,10 +67,7 @@ $formData = array(
                                 <td>
                                     <div class="bSelectWrap mFastInpBig">
                                         <span class="bSelectWrap_eText" data-bind="text: chosenShop().address"></span>
-                                        <select class='bSelect' data-bind="css: { mDisabled : disabledSelectors() }">
-                                            <!-- ko foreach : shops -->
-                                            <option class="bSelect_eItem" data-bind="click: $root.pickShop, text: address"></option>
-                                            <!-- /ko -->
+                                        <select class='bSelect' data-bind="options: shops, optionsText:'address', optionsValue:$data, value:chosenShop, css: { mDisabled : disabledSelectors() }, event:{ change:$root.pickShop}">
                                         </select>
                                     </div>
                                     <!-- ko if: !disabledSelectors() -->

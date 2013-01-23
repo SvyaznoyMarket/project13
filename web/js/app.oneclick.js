@@ -1,17 +1,17 @@
 $(document).ready(function() {
 	/* Custom Selectors */ 
-	$('#order1click-container-new').delegate( '.bSelect', 'click', function() {
-		if( $(this).hasClass('mDisabled') )
-			return false
-		$(this).find('.bSelect__eDropmenu').toggle()
-	})
-	$('#order1click-container-new').delegate( '.bSelect', 'mouseleave', function() {
-		if( $(this).hasClass('mDisabled') )
-			return false
-		var options = $(this).find('.bSelect__eDropmenu')
-		if( options.is(':visible') )
-			options.hide()
-	})
+	// $('#order1click-container-new').delegate( '.bSelect', 'click', function() {
+	// 	if( $(this).hasClass('mDisabled') )
+	// 		return false
+	// 	$(this).find('.bSelect__eDropmenu').toggle()
+	// })
+	// $('#order1click-container-new').delegate( '.bSelect', 'mouseleave', function() {
+	// 	if( $(this).hasClass('mDisabled') )
+	// 		return false
+	// 	var options = $(this).find('.bSelect__eDropmenu')
+	// 	if( options.is(':visible') )
+	// 		options.hide()
+	// })
 
 	/* View Models */
 	//////////////////////////////////////////
@@ -105,7 +105,7 @@ $(document).ready(function() {
 			self.shops = ko.observableArray([])
 			self.chosenShop = ko.observable( {} )
 			self.pickedShop = ko.observable( {} )
-				
+
 			self.dynModel = function( Deliveries ) {	
 				var chosenType = self.chosenDlvr().type
 				if ( !chosenType )
@@ -129,7 +129,6 @@ $(document).ready(function() {
 				self.dates( Deliveries[ self.chosenDlvr().type+'' ].dates.slice(0) )
 				self.chosenDate( self.dates()[0] )
 
-
 				if( selfAvailable ) {
 					self.shops( Deliveries['self'].shops.slice(0) )
 					self.chosenShop( self.shops()[0] )
@@ -141,18 +140,20 @@ $(document).ready(function() {
 				}
 			}
 			self.dynModel( Deliveries )
-			
+
 			self.total = ko.computed(function() {
 				return printPrice( self.price * self.quantity() + self.chosenDlvr().price * 1 )
 			}, this)
 			
-			self.changeDlvr = function( argDlvr ) {
-				self.chosenDlvr( argDlvr )
+			self.changeDlvr = function() {
+				var typeDlvr = self.chosenDlvr().type
 				self.dates.removeAll()
-				//while( self.dates().length )
-				//	self.dates.pop()
-				for(var i=0; i< Deliveries[ argDlvr.type ].dates.length; i++ )	
-					self.dates.push( Deliveries[ argDlvr.type ].dates[i] )	
+				while( self.dates().length )
+					self.dates.pop()
+
+				for(var i=0; i< Deliveries[ typeDlvr ].dates.length; i++ ){
+					self.dates().push(Deliveries[ typeDlvr ].dates[i])
+				}
 				self.chosenDate( self.dates()[0] )
 				if( self.showMap() )
 					self.showMap( false )
@@ -258,9 +259,8 @@ $(document).ready(function() {
 				})	
 			}
 			
-			self.pickDate = function( item ) {
-				self.chosenDate( item )
-				//shops mod		
+			self.pickDate = function( ) {
+				//shops mod	
 				if( selfAvailable ) {
 					if( 'shopIds' in item ) 
 						if( item.shopIds.length > 0 ) {
@@ -275,8 +275,9 @@ $(document).ready(function() {
 					self.showMarkers()	
 			}
 			
-			self.pickShop = function( item ) {
-				self.chosenShop( item )
+			self.pickShop = function( ) {
+				// self.chosenShop( item )
+				console.log(self.chosenShop())
 			}
 			self.pickShopOnMap = function( shid ) {
 				for(var i=0, l=self.shops().length; i<l; i++)
