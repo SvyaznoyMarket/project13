@@ -117,6 +117,7 @@ class IndexAction {
         }
 
         // формируем ссылки для баннеров
+        // TODO: перенести код в метод репозитория
         foreach ($bannerData as $i => &$item) {
             $url = $item['url'];
 
