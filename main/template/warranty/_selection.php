@@ -32,7 +32,7 @@
                            data-ewid="<?php echo $warranty->getId() ?>"
                            data-f1title="<?php echo $warranty->getName() ?>"
                            data-f1price="<?php echo $warranty->getPrice() ?>"
-                           data-url="<?php echo $page->url('cart.warranty.set', array('productId' => $product->getId(), 'warrantyId' => $warranty->getId())) ?>"
+                           data-url="<?php echo $page->url('cart.warranty.set', array('productId' => $product->getId(), 'warrantyId' => $warranty->getId(), 'quantity' => 1)) ?>"
                            data-deleteurl="<?php echo $page->url('cart.warranty.delete', array('productId' => $product->getId(), 'warrantyId' => $warranty->getId())) ?>" />
                 </td>
             </tr>

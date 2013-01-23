@@ -245,7 +245,7 @@ return array(
         'action'  => array('Cart\ServiceAction', 'set'),
     ),
     'cart.warranty.set' => array(
-        'pattern' => '/cart/warranty/{productId}/set/{warrantyId}',
+        'pattern' => '/cart/warranty/{productId}/set/{warrantyId}/_quantity/{quantity}',
         'require' => array('productId' => '\d+', 'warrantyId' => '\d+'),
         'action'  => array('Cart\WarrantyAction', 'set'),
     ),
