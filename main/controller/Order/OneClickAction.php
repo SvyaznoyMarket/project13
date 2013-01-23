@@ -21,14 +21,14 @@ class OneClickAction {
         try {
             $productToken = $request->get('product');
             if (!$productToken) {
-                $e = new \Exception\NotFoundException(sprintf('В GET запросе %s не содержится токена товара для заказа в один клик', json_encode($request->query->all())));
+                $e = new \Exception\NotFoundException(sprintf('В GET запросе %s не содержится токена товара для заказа в один клик', json_encode($request->query->all(), JSON_UNESCAPED_UNICODE)));
                 \App::logger()->error($e);
                 throw $e;
             }
 
             $formData = (array)$request->request->get('order');
             if (!(bool)$formData) {
-                $e = new \Exception\NotFoundException(sprintf('В POST запросе %s не содержится данных о заказе в один клик', json_encode($request->request->all())));
+                $e = new \Exception\NotFoundException(sprintf('В POST запросе %s не содержится данных о заказе в один клик', json_encode($request->request->all(), JSON_UNESCAPED_UNICODE)));
                 \App::logger()->error($e);
                 throw $e;
             }
@@ -103,7 +103,7 @@ class OneClickAction {
                 $result = \App::coreClientV2()->query('order/create', $params, $data);
                 $orderNumber = !empty($result['number']) ? (string)$result['number'] : null;
                 if (!$orderNumber) {
-                    throw new \Exception(sprintf('Не получен номер заказа. Ответ ядра: %s', json_encode($result)));
+                    throw new \Exception(sprintf('Не получен номер заказа. Ответ ядра: %s', json_encode($result, JSON_UNESCAPED_UNICODE)));
                 }
 
                 $order = \RepositoryManager::order()->getEntityByNumberAndPhone($orderNumber, $formData['recipient_phonenumbers']);

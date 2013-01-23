@@ -23,7 +23,7 @@ class ServiceAction {
         try {
             if ($quantity < 0) {
                 $quantity = 0;
-                \App::logger()->warn(sprintf('Указано неверное количество услуг. Запрос %s', json_encode($request->request->all())));
+                \App::logger()->warn(sprintf('Указано неверное количество услуг. Запрос %s', json_encode($request->request->all(), JSON_UNESCAPED_UNICODE)));
             }
 
             if (!$serviceId) {

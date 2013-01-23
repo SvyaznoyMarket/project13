@@ -162,7 +162,7 @@ class IndexAction {
             }
 
             /*if (!$url && !$item['url']) {
-                \App::logger()->error(sprintf('Невалидный баннер %s', json_encode((array)$item)));
+                \App::logger()->error(sprintf('Невалидный баннер %s', json_encode((array)$item, JSON_UNESCAPED_UNICODE)));
                 unset($bannerData[$i]);
                 continue;
             }*/

@@ -23,7 +23,7 @@ class WarrantyAction {
         try {
             if ($quantity < 0) {
                 $quantity = 0;
-                \App::logger()->warn(sprintf('Указано неверное количество гарантий. Запрос %s', json_encode($request->request->all())));
+                \App::logger()->warn(sprintf('Указано неверное количество гарантий. Запрос %s', json_encode($request->request->all(), JSON_UNESCAPED_UNICODE)));
             }
 
             if (!$warrantyId) {

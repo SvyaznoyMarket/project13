@@ -62,7 +62,7 @@ class ClientV2 implements ClientInterface
         } catch (\RuntimeException $e) {
             curl_close($connection);
             $spend = \Debug\Timer::stop('core');
-            \App::logger()->error('End core ' . $action . ' in ' . $spend . ' get: ' . json_encode($params) . ' post: ' . json_encode($data) . ' response: ' . json_encode($response, true) . ' with ' . $e);
+            \App::logger()->error('End core ' . $action . ' in ' . $spend . ' get: ' . json_encode($params, JSON_UNESCAPED_UNICODE) . ' post: ' . json_encode($data, JSON_UNESCAPED_UNICODE) . ' response: ' . json_encode($response, JSON_UNESCAPED_UNICODE) . ' with ' . $e);
             \App::exception()->add($e);
 
             throw $e;
@@ -190,7 +190,7 @@ class ClientV2 implements ClientInterface
 
         if ($isPostMethod) {
             curl_setopt($connection, CURLOPT_POST, true);
-            curl_setopt($connection, CURLOPT_POSTFIELDS, json_encode($data));
+            curl_setopt($connection, CURLOPT_POSTFIELDS, json_encode($data, JSON_UNESCAPED_UNICODE));
         }
 
         return $connection;
@@ -297,8 +297,7 @@ class ClientV2 implements ClientInterface
 
     private function encode($data)
     {
-        //return json_encode($data, JSON_UNESCAPED_UNICODE);
-        return json_encode($data);
+        return json_encode($data, JSON_UNESCAPED_UNICODE);
     }
 
     private function encodeInfo($info)

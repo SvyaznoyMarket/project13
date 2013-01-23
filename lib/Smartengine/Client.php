@@ -51,7 +51,7 @@ class Client {
             \Util\RequestLogger::getInstance()->addLog($info['url'], '', $info['total_time'], 'smartengine');
 
             if ($this->config['log_enabled']) {
-                $this->logger->info('Response '.$connection.' : '.(is_array($info) ? json_encode($info) : $info));
+                $this->logger->info('Response '.$connection.' : '.(is_array($info) ? json_encode($info, JSON_UNESCAPED_UNICODE) : $info));
             }
             if ($info['http_code'] >= 300) {
                 throw new SmartengineClientException(sprintf("Invalid http code: %d, \nResponse: %s", $info['http_code'], $response));
@@ -71,7 +71,7 @@ class Client {
         catch (SmartengineClientException $e) {
             curl_close($connection);
             $spend = \Debug\Timer::stop('smartengine');
-            \App::logger()->error('End smartengine ' . $action . ' in ' . $spend . ' get: ' . json_encode($params) . ' response: ' . json_encode($response, true) . ' with ' . $e);
+            \App::logger()->error('End smartengine ' . $action . ' in ' . $spend . ' get: ' . json_encode($params, JSON_UNESCAPED_UNICODE) . ' response: ' . json_encode($response, JSON_UNESCAPED_UNICODE) . ' with ' . $e);
             $this->logger->err($e->__toString());
             throw $e;
         }
@@ -171,6 +171,7 @@ class Client {
             },
             $data
         );
+
         return $data;
     }
 
