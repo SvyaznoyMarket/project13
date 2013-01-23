@@ -145,8 +145,8 @@ class DefaultLayout extends Layout {
     }
 
     public function slotMyThings() {
-        //return (bool)$this->getParam('myThingsData') ? $this->render('_myThingsTracker', array('myThingsData' => $this->getParam('myThingsData'),)) : '';
-        return (\App::config()->analytics['enabled'] && (bool)$this->getParam('myThingsData')) ? $this->render('_myThingsTracker', array('myThingsData' => $this->getParam('myThingsData'),)) : '';
+        return (bool)$this->getParam('myThingsData') ? $this->render('_myThingsTracker', array('myThingsData' => $this->getParam('myThingsData'),)) : '';
+        //return (\App::config()->analytics['enabled'] && (bool)$this->getParam('myThingsData')) ? $this->render('_myThingsTracker', array('myThingsData' => $this->getParam('myThingsData'),)) : '';
     }
 
     public function slotMetaOg() {

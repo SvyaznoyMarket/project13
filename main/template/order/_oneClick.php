@@ -25,6 +25,7 @@
         <div id="gooReMaQuickOrder" class="jsanalytics"></div>
         <div id="adriverOrder" data-vars="<?= $page->json($orderData) ?>" class="jsanalytics"></div>
         <div id="heiasComplete" data-vars="<?= $page->json($orderData) ?>" class="jsanalytics"></div>
+        <div id="myThingsOrderData" data-value="<?= $page->json($myThingsOrderData) ?>"></div>
         <!-- Efficient Frontiers -->
         <img src="http://pixel.everesttech.net/3252/t?ev_Orders=0&amp;ev_Revenue=0&amp;ev_Quickorders=1&amp;ev_Quickrevenue=<?= $order->getSum() ?>&amp;ev_transid=<?= $order->getNumber() ?>" width="1" height="1" />
     <? endif ?>
@@ -85,6 +86,10 @@
             if (typeof(yaCounter10503055) !== 'undefined')  yaCounter10503055.reachGoal('QORDER', yaParams);
 
             if (typeof(window.adBelnder) != 'undefined') window.adBelnder.addOrder(<?= str_replace(',', '.', $order->getSum()) ?>);
+
+            if (typeof(MyThings) != "undefined" && typeof($('#myThingsOrderData').data('value')) == "object") {
+                MyThings.Track($('#myThingsOrderData').data('value'))
+            }
         }
     </script>
 

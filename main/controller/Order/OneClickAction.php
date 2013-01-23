@@ -128,6 +128,17 @@ class OneClickAction {
                 'product_quantity' => implode(',', array_map(function($orderProduct) { /** @var $orderProduct \Model\Order\Product\Entity */ return $orderProduct->getQuantity(); }, $order->getProduct())),
             ));
 
+            $myThingsOrderData = array(
+                'EventType' => 'MyThings.Event.Conversion',
+                'Action' => '9902',
+                'TransactionReference' => $order->getNumber(),
+                'TransactionAmount' => str_replace(',', '.', $order->getSum()), // Полная сумма заказа (дроби через точку
+                'Products' => array_map(function($orderProduct){
+                    /** @var $orderProduct \Model\Order\Product\Entity  */
+                    return array('id' => $orderProduct->getId(), 'price' => $orderProduct->getPrice(), 'qty' => $orderProduct->getQuantity());
+                }, $order->getProduct()),
+            );
+
             $shop = null;
             if ($order->getShopId()) {
                 try {
@@ -153,12 +164,13 @@ class OneClickAction {
                 'data'    => array(
                     'title'   => 'Ваш заказ принят, спасибо!',
                     'content' => \App::templating()->render('order/_oneClick', array(
-                        'page'         => new \View\Layout(),
-                        'order'        => $order,
-                        'orderData'    => $orderData,
-                        'shop'         => $shop,
-                        'orderProduct' => $orderProduct,
-                        'product'      => $product,
+                        'page'              => new \View\Layout(),
+                        'order'             => $order,
+                        'orderData'         => $orderData,
+                        'myThingsOrderData' => $myThingsOrderData,
+                        'shop'              => $shop,
+                        'orderProduct'      => $orderProduct,
+                        'product'           => $product,
                     )),
                     'shop'    => $shop,
                 ),

@@ -299,6 +299,20 @@ window.ANALYTICS = {
 
 ANALYTICS.parseAllAnalDivs( $('.jsanalytics') )
 
+//трекинг от MyThings. Вызывается при загрузке внешнего скрипта
+function _mt_ready(){
+    if (typeof(MyThings) != "undefined") {
+        if ($.isArray($('#myThingsTracker').data('value'))) {
+            $.each($('#myThingsTracker').data('value'), function(i, e) {
+                //MyThings.Track(e)
+                console.log(e)
+            })
+        } else {
+            //MyThings.Track($('#myThingsTracker').data('value'))
+            console.log($('#myThingsTracker').data('value'))
+        }
+    }
+}
 
 var ADFOX = {
 	adfoxbground : function() {
