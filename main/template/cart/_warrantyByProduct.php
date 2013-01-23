@@ -88,9 +88,6 @@ foreach ($product->getWarranty() as $warranty) {
                     <td class="mPrice">
                         <span class="price"><?= $selectedWarranty->getPrice() ?></span>&nbsp;<span class="rubl">p</span>
                     </td>
-                    <td class="mQuantity" style="font-size: 80%; padding-left: 20px;">
-                        <span class="quantity"><?= $cartProduct->getWarrantyById($selectedWarranty->getId())->getQuantity() ?></span>&nbsp;<span>шт</span>
-                    </td>
                     <td class="mEdit">
                         <?= $page->render('_spinner', array(
                             'quantity' => $cartWarranty->getQuantity(),

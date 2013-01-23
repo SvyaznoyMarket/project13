@@ -159,6 +159,15 @@ $(document).ready(function() {
 			})
 		}
 
+		this.checkNode = function(node, newQ){
+			if (node.warranty !== 'undefined'){
+				var q = node.line.parents('.basketright').find('.ajaquant:first').val()
+				if (newQ>q)
+					return false
+				return true
+			}
+		}
+
 		$(nodes.drop).click( function() {
 			if(! $(nodes.drop).data('run') ) {
 				$(nodes.drop).data('run', true)
@@ -182,9 +191,11 @@ $(document).ready(function() {
 
 		$(nodes.more).click( function() {
 			var plus = this
-			if( ! $(plus).data('run') ) {
-				$(plus).data('run',true)
-				self.update( plus, 1 )
+			if(self.checkNode(nodes, nodes.quan.val()+1)){	
+				if( ! $(plus).data('run') ) {
+					$(plus).data('run',true)
+					self.update( plus, 1 )
+				}
 			}
 			return false
 		})
@@ -194,7 +205,9 @@ $(document).ready(function() {
 					var quan = self.quantum = $(nodes.quan).val().replace(/\D/g,'') * 1
 					if (quan > 0){//если больше нуля, апдейтим
 						focusTrigger = false
-						self.update( false, quan)
+						if(self.checkNode(nodes, quan)){
+							self.update( false, quan)
+						}
 					}
 					else{ //если меньше, очищаем
 						focusTrigger = true
@@ -357,10 +370,11 @@ $(document).ready(function() {
 		}
 		var tmpline = new basketline({
 					'line': tr,
+					'warranty':true,
 					'less': tr.find('.ajaless'),
 					'more': tr.find('.ajamore'),
-					'quan': tr.find('.quantity'),
-					'price': tr.find('.price'),
+					'quan': tr.find('.ajaquant'),
+					// 'price': tr.find('.price'),
 					'sum': tr.find('.price'),
 					'drop': tr.find('.whitelink'),
 					'linked': bline.attr('ref')
