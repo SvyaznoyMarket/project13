@@ -5,7 +5,7 @@
  */
 ?>
 
-<a class="bMenuBack mBlackLink" href="<?= $page->url('product.category') ?>">Каталог</a>
+<a class="bMenuBack mBlackLink" href="<?= $page->url('homepage') ?>">Главная</a>
 <nav class="bContentMenu">
     <ul>
     <? foreach ($categories as $category): ?>

@@ -115,6 +115,12 @@ return array(
         'action'  => array('ProductCategory\Action', 'category'),
         'require' => array('categoryPath' => '[\w\d-_]+\/?[\w\d-_]+'),
     ),
+    // категория товаров со списком товаров
+    'product.category.product' => array(
+        'pattern' => '/catalog/{categoryPath}/all',
+        'action'  => array('ProductCategory\Action', 'product'),
+        'require' => array('categoryPath' => '[\w\d-_]+\/?[\w\d-_]+'),
+    ),
     // слайдер товаров
     'product.category.slider' => array(
         'pattern' => '/catalog/{categoryPath}/_slider',
