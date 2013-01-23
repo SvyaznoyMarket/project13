@@ -299,6 +299,12 @@ class Action {
             throw new \Exception(sprintf('У категории "%s" отстутсвуют дочерние узлы', $category->getId()));
         }
 
+        $page->setParam('myThingsData', array(
+            'EventType' => 'MyThings.Event.Visit',
+            'Action' => '1011',
+	        'Category' => $category->getName(),
+        ));
+
         return new \Http\Response($page->show());
     }
 
@@ -345,6 +351,13 @@ class Action {
         }
 
         $page->setParam('productPagersByCategory', $productPagersByCategory);
+
+        $page->setParam('myThingsData', array(
+            'EventType' => 'MyThings.Event.Visit',
+            'Action' => '1011',
+            'Category' => $category->getAncestor()[0]->getName(),
+            'SubCategory' => $category->getName()
+        ));
 
         return new \Http\Response($page->show());
     }
@@ -414,6 +427,13 @@ class Action {
         $page->setParam('productPager', $productPager);
         $page->setParam('productSorting', $productSorting);
         $page->setParam('productView', $productView);
+
+        $page->setParam('myThingsData', array(
+            'EventType' => 'MyThings.Event.Visit',
+            'Action' => '1011',
+            'Category' => $category->getAncestor()[0]->getName(),
+            'SubCategory' => $category->getName()
+        ));
 
         return new \Http\Response($page->show());
     }

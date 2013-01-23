@@ -40,6 +40,7 @@ class DeliveryAction {
             $response = \App::coreClientV2()->query('delivery/calc', array('geo_id' => $regionId), $params);
         } catch (\Exception $e) {
             \App::logger()->error($e);
+            \App::exception()->remove($e);
             return new \Http\JsonResponse(array('success' => false));
         }
 

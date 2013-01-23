@@ -24,13 +24,15 @@ foreach ($product->getWarranty() as $warranty) {
             <tr>
                 <th colspan="3">Для этого товара есть дополнительная гарантия:</th>
             </tr>
-                <? foreach ($product->getWarranty() as $warranty) { ?>
+
+            <? foreach ($product->getWarranty() as $warranty): ?>
             <tr>
                 <td><?= $warranty->getName() ?></td>
                 <td class="mPrice"></td>
                 <td class="mEdit"></td>
             </tr>
-                <? } ?>
+            <? endforeach ?>
+
             <tr>
                 <td class="bBlueButton">
                     <a href="" class="link_extWarr">Выбрать гарантию!</a>
@@ -64,7 +66,12 @@ foreach ($product->getWarranty() as $warranty) {
     </div>
 <? endif ?>
 
-<? if ($selectedWarranty) { ?>
+<?
+    $cartWarranty = ($cartProduct && $selectedWarranty && $cartProduct->hasWarranty($selectedWarranty->getId()))
+        ? $cartProduct->getWarrantyById($selectedWarranty->getId())
+        : null;
+?>
+<? if ($cartWarranty): ?>
     <div class="mBR5 basketServices">
         <div class="service form bBacketServ extWarr mBig" style="display: block;">
             <table cellspacing="0">
@@ -85,6 +92,11 @@ foreach ($product->getWarranty() as $warranty) {
                         <span class="quantity"><?= $cartProduct->getWarrantyById($selectedWarranty->getId())->getQuantity() ?></span>&nbsp;<span>шт</span>
                     </td>
                     <td class="mEdit">
+                        <?= $page->render('_spinner', array(
+                            'quantity' => $cartWarranty->getQuantity(),
+                            'incUrl'   => $page->url('cart.warranty.set', array('warrantyId' => $selectedWarranty->getId(), 'quantity' => 1, 'productId' => $product->getId())),
+                            'decUrl'   => $page->url('cart.warranty.set', array('warrantyId' => $selectedWarranty->getId(), 'quantity' => -1, 'productId' => $product->getId())),
+                        )) ?>
                         <a class="button whitelink ml5 mInlineBlock mVAMiddle" href="<?= $page->url('cart.warranty.delete', array('warrantyId' => $selectedWarranty->getId(), 'productId' => $product->getId())) ?>">Отменить</a>
                     </td>
                 </tr>
@@ -99,6 +111,6 @@ foreach ($product->getWarranty() as $warranty) {
             </table>
         </div>
     </div>
-<? } ?>
+<? endif ?>
 
 <?= $page->render('warranty/_selection', array('product' => $product)) ?>

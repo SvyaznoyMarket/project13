@@ -657,10 +657,22 @@ class Action {
                         \App::logger()->error(sprintf('Элемент заказа %s не найден в корзине', json_encode($itemToken)));
                         continue;
                     }
-                    $orderData['product'][] = array(
+
+                    $productData = array(
                         'id'       => $cartProduct->getId(),
                         'quantity' => $cartProduct->getQuantity(),
+
                     );
+
+                    // расширенная гарантия
+                    foreach ($cartProduct->getWarranty() as $cartWarranty) {
+                        $productData['additional_warranty'][] = array(
+                            'id'         => $cartWarranty->getId(),
+                            'quantity'   => $cartProduct->getQuantity(),
+                        );
+                    }
+
+                    $orderData['product'][] = $productData;
 
                     // связанные услуги
                     foreach ($cartProduct->getService() as $cartService) {
@@ -670,7 +682,8 @@ class Action {
                             'product_id' => $cartProduct->getId(),
                         );
                     }
-                // несвязанные услуги
+
+                    // несвязанные услуги
                 } else if ('service' == $itemType) {
                     $cartService = $user->getCart()->getServiceById($itemId);
                     if (!$cartService) {

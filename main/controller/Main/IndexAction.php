@@ -84,8 +84,7 @@ class IndexAction {
                     $productsById[(int)$item['id']] = new \Model\Product\BasicEntity($item);
                 }
             }, function(\Exception $e) {
-                // TODO: \App::exception()->remove($e);
-                \App::$exception = null;
+                \App::exception()->remove($e);
                 \App::logger()->error('Не удалось получить товары для баннеров');
             });
         }
@@ -96,8 +95,7 @@ class IndexAction {
                     $servicesById[(int)$item['id']] = new \Model\Product\Service\Entity($item);
                 }
             }, function(\Exception $e) {
-                // TODO: \App::exception()->remove($e);
-                \App::$exception = null;
+                \App::exception()->remove($e);
                 \App::logger()->error('Не удалось получить услуги для баннеров');
             });
         }
@@ -108,8 +106,7 @@ class IndexAction {
                     $categoriesById[(int)$item['id']] = new \Model\Product\Category\Entity($item);
                 }
             }, function(\Exception $e) {
-                // TODO: \App::exception()->remove($e);
-                \App::$exception = null;
+                \App::exception()->remove($e);
                 \App::logger()->error('Не удалось получить категории товаров для баннеров');
             });
         }
@@ -178,6 +175,10 @@ class IndexAction {
         $page = new \View\Main\IndexPage();
         $page->setParam('bannerData', $bannerData);
         $page->setParam('rootCategories', $rootCategories);
+        $page->setParam('myThingsData', array(
+            'EventType' => 'MyThings.Event.Visit',
+            'Action' => '200'
+        ));
 
         return new \Http\Response($page->show());
     }
