@@ -20,7 +20,7 @@ class Repository
      * @return string
      */
     public static function getCreditTypeByCategoryToken($categoryToken) {
-        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args()));
+        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         return in_array($categoryToken, array('electronics', 'sport', 'appliances', 'do_it_yourself', 'furniture', 'household'))
             ? $categoryToken
@@ -33,7 +33,7 @@ class Repository
      * @return Entity|null
      */
     public function getEntityById($id) {
-        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args()));
+        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         if (!$id) {
             return null;
@@ -52,7 +52,7 @@ class Repository
      * @return Entity[]
      */
     public function getCollection() {
-        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args()));
+        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         $result = $this->client->query('payment-method/get-credit-bank', array(
             'geo_id' => \App::user()->getRegion()->getId(),
@@ -67,7 +67,7 @@ class Repository
     }
 
     public function prepareCollection($done, $fail = null) {
-        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args()));
+        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         $this->client->addQuery('payment-method/get-credit-bank', array(
             'geo_id' => \App::user()->getRegion()->getId(),

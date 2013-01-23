@@ -18,7 +18,7 @@ class Repository {
      * @return int Количество заказов
      */
     public function countByUserToken($userToken) {
-        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args()));
+        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         $data = $this->client->query('order/get', array('token' => $userToken));
 
@@ -30,7 +30,7 @@ class Repository {
      * @return Entity[]
      */
     public function getCollectionByUserToken($userToken) {
-        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args()));
+        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         $data = $this->client->query('order/get', array('token' => $userToken));
 
@@ -48,7 +48,7 @@ class Repository {
      * @return void
      */
     public function prepareCollectionByUserToken($userToken, $callback) {
-        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args()));
+        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         $this->client->addQuery('order/get', array('token' => $userToken), array(), $callback);
     }
@@ -59,7 +59,7 @@ class Repository {
      * @return Entity|null
      */
     public function getEntityByNumberAndPhone($number, $phone) {
-        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args()));
+        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         $data = $this->client->query('order/get-by-mobile', array('number' => $number, 'mobile' => $phone));
         $data = reset($data);
