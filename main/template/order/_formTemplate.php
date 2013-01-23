@@ -107,13 +107,10 @@
             </h2>
             <div style="margin: 8px 0 12px 0;" class="bSelectWrap mFastInpSmall">
                 <span class="bSelectWrap_eText" data-bind="text: $data.chosenInterval()"></span>
-                <select id="order-interval_standart_rapid-holder" class='bSelect mFastInpSmall order-interval-holder'>
-                    <!-- ko foreach : currentIntervals -->
-                    <option class="bSelect_eItem order-interval" data-bind="click: function(data, event) { $root.clickInterval($parent, data, event) }, text: $data"></option>
-                    <!-- /ko -->
+                <select id="order-interval_standart_rapid-holder" class='bSelect order-interval-holder' data-bind="options:currentIntervals, optionsText:$data, optionsValue:$data, value:chosenInterval">
                 </select>
             </div>
-            
+
             <i class="order-delivery_price">
                 <!-- ko if: dlvrPrice() > 0 -->
 				<span class="red">Стоимость доставки
