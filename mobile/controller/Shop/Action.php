@@ -18,4 +18,26 @@ class Action {
 
         return new \Http\Response($page->show());
     }
+
+    /**
+     * @param string $regionToken
+     * @param string $shopToken
+     * @return \Http\Response
+     * @throws \Exception\NotFoundException
+     */
+    public function show($regionToken, $shopToken) {
+        \App::logger()->debug('Exec ' . __METHOD__);
+
+        $region = \App::user()->getRegion();
+        $shop = \RepositoryManager::shop()->getEntityByToken($shopToken);
+        if (!$shop) {
+            throw new \Exception\NotFoundException(sprintf('Магазин @s не найден', $shopToken));
+        }
+
+        $page = new \Mobile\View\Shop\ShowPage();
+        $page->setParam('region', $region);
+        $page->setParam('shop', $shop);
+
+        return new \Http\Response($page->show());
+    }
 }
