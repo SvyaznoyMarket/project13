@@ -352,12 +352,17 @@ class Action {
 
         $page->setParam('productPagersByCategory', $productPagersByCategory);
 
-        $page->setParam('myThingsData', array(
+        $myThingsData = array(
             'EventType' => 'MyThings.Event.Visit',
             'Action' => '1011',
-            'Category' => $category->getAncestor()[0]->getName(),
-            'SubCategory' => $category->getName()
-        ));
+        );
+        if ($category->isRoot()) {
+            $myThingsData['Category'] = $category->getName();
+        } else {
+            $myThingsData['Category'] = $category->getAncestor()[0]->getName();
+            $myThingsData['SubCategory'] = $category->getName();
+        }
+        $page->setParam('myThingsData', $myThingsData);
 
         return new \Http\Response($page->show());
     }
