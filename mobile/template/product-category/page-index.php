@@ -5,12 +5,14 @@
  */
 ?>
 
-<a class="bMenuBack mBlackLink" href="<?= $page->url('homepage') ?>">Главная</a>
-<nav class="bContentMenu">
+<nav class="bCategoryMenu clearfix">
     <ul>
     <? foreach ($categories as $category): ?>
-        <li class="bContentMenu_eItem">
-            <a class="bContentMenu_eLink mBlackLink" href="<?= $page->url('product.category.show', ['categoryPath' => $category->getPath()]) ?>"><?= $category->getName() ?></a>
+        <li class="bCategoryItem">
+            <a class="bCategoryItem_eLink" href="<?= $page->url('product.category.show', ['categoryPath' => $category->getPath()]) ?>">
+                <span class="bCategoryItem_eIcon mCategoryIcon_<?= $category->getId() ?>"></span>
+                <span class="bCategoryItem_eName"><?= $category->getName() ?></span>
+            </a>
         </li>
     <? endforeach ?>
     </ul>
