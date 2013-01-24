@@ -111,7 +111,7 @@ $(document).ready(function() {
 				if ( !chosenType )
 					chosenType = 'self'
 				self.dlvrs.removeAll()
-				self.chosenDlvr({})
+				// self.chosenDlvr({})
 
 				for(var obj in Deliveries ) {
 					self.dlvrs.push( {
