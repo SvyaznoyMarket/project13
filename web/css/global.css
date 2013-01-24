@@ -4851,10 +4851,44 @@
     position: absolute;
   }
   .bSimilarGoods_eLeftCaption {
-    border-right: 1px solid #e6e6e6;
     font-size: 14px;
     padding: 15px 25px 15px 10px;
     width: 150px;
+  }
+  .bSimilarGoodsSlider {
+    border-left: 1px solid #e6e6e6;
+    overflow: hidden;
+    position: relative;
+  }
+  .bSimilarGoodsSlider_eArrow {
+    display: block;
+    position: absolute;
+    height: 100%;
+    width: 35px;
+  }
+  .bSimilarGoodsSlider_eArrow.mLeft {
+    background: url('/css/item/img/leftArrSlider.png') no-repeat center;
+    left: 0;
+  }
+  .bSimilarGoodsSlider_eArrow.mRight {
+    background: url('/css/item/img/rightArrSlider.png') no-repeat center;
+    right: 0;
+  }
+  .bSimilarGoodsSlider_eWrap {
+    margin-left: 25px;
+    width: 4000px;
+  }
+  .bSimilarGoodsSlider_eGoods {
+    margin: 10px 0;
+  }
+  .bSimilarGoodsSlider_eGoodsInfo {
+    width: 150px;
+  }
+  .bSimilarGoodsSlider_eGoodsInfo h3 {
+    font-size: 12px;
+    font-weight: 100;
+    margin: 3px 0;
+    text-decoration: underline;
   }
   .lifted {
     -webkit-border-radius: 4px;

@@ -473,10 +473,47 @@
     }
   }
   &_eLeftCaption{
-    border-right: 1px solid @typLightGray;
     font-size: 14px;
     padding: 15px 25px 15px 10px;
     width: 150px;
+  }
+}
+.bSimilarGoodsSlider{
+  border-left: 1px solid @typLightGray;
+  overflow: hidden;
+  position: relative;
+  &_eArrow{
+    display: block;
+    position: absolute;
+    height: 100%;
+    width: 35px;
+    &.mLeft{
+      background: url('@{base-url}/item/img/leftArrSlider.png') no-repeat center;
+      left:0;
+    }
+    &.mRight{
+      background: url('@{base-url}/item/img/rightArrSlider.png') no-repeat center;
+      right:0;
+    }
+  }
+  &_eWrap{
+    margin-left:25px;
+    width: 4000px;
+  }
+  &_eGoods{
+    margin:10px 0;
+  }
+  &_eGoodsImg{
+
+  }
+  &_eGoodsInfo{
+    width: 150px;
+    h3{
+      font-size: 12px;
+      font-weight: 100;
+      margin:3px 0;
+      text-decoration: underline;
+    }
   }
 }
 .lifted {
