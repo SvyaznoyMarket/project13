@@ -75,6 +75,31 @@
   product_3d_big = <?= json_encode($p3d_res_big) ?>;
 </script>
 
+<!-- похожие товары -->
+<? if (!$product->getIsBuyable() && $product->getState()->getIsShop()): ?>
+<div class="clear"></div>
+<div class="lifted"><div class="bSimilarGoods">
+  <div class="bSimilarGoods_eCorner">
+      <div></div>
+  </div>
+  <div class="bSimilarGoods_eLeftCaption">
+    Товар есть только в&nbsp;магазинах. Вы&nbsp;можете заказать похожий товар
+  </div>
+  <div class="bSimilarGoodsSlider">
+    <div class="bSimilarGoodsSlider_eWrap">
+      <div class="bSimilarGoodsSlider_eGoods">
+        <img src="http://content.enter.ru/wp-content/uploads/2013/01/similargoodstmp.jpg"/>
+        <div class="bSimilarGoodsSlider_eGoodsInfo">
+          <div class="goodsbox__rating rate4"><div class="fill"></div></div>
+          <h3><a href="#">Наушники CBR CHP636Bt белые</a></h3>
+          <div class="font18 pb10 mSmallBtns"><span class="price">1 020</span> <span class="rubl">p</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div></div>
+<? endif ?>
+
 <div class="goodsphoto">
   <a href="<?= $product->getImageUrl(4) ?>" class="viewme" ref="image" onclick="return false">
     <? if ($product->getLabel()): ?>
