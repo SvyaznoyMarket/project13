@@ -45,7 +45,7 @@ class OneClickAction {
             $productQuantity = (int)$formData['product_quantity'];
             $product = \RepositoryManager::product()->getEntityByToken($productToken);
             if (!$product) {
-                $e = new \Exception\NotFoundException(sprintf('Товар с токеном %s не найден в ядре', $productToken));
+                $e = new \Exception\NotFoundException(sprintf('Товар @%s не найден в ядре', $productToken));
                 \App::logger()->error($e);
                 throw $e;
             }

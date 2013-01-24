@@ -159,7 +159,7 @@ class Action {
         }
 
         if (!$category) {
-            throw new \Exception\NotFoundException(sprintf('Категория услуги с токеном "%s" не найдена', $categoryToken));
+            throw new \Exception\NotFoundException(sprintf('Категория услуги @%s не найдена', $categoryToken));
         }
 
         // подготовка 3-го пакета запросов
@@ -300,7 +300,7 @@ class Action {
         $client->execute();
 
         if (!$service) {
-            throw new \Exception\NotFoundException(sprintf('Service with token %s not found', $serviceToken));
+            throw new \Exception\NotFoundException(sprintf('Service @%s not found', $serviceToken));
         }
 
         if ((bool)$service->getAlikeId()) {

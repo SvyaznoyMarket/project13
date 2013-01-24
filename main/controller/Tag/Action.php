@@ -8,7 +8,7 @@ class Action {
 
         $tag = \RepositoryManager::tag()->getEntityByToken($tagToken);
         if (!$tag) {
-            throw new \Exception\NotFoundException(sprintf('Тег с токеном "%s" не найден', $tagToken));
+            throw new \Exception\NotFoundException(sprintf('Тег @%s не найден', $tagToken));
         }
 
         $pageNum = (int)$request->get('page', 1);
@@ -36,7 +36,7 @@ class Action {
         }
         if ($categoryToken) {
             if (!isset($categoriesByToken[$categoryToken])) {
-                throw new \Exception\NotFoundException(sprintf('Категория с токеном "%s" не найдена', $categoryToken));
+                throw new \Exception\NotFoundException(sprintf('Категория @%s не найдена', $categoryToken));
             }
             $category = $categoriesByToken[$categoryToken];
         } else {

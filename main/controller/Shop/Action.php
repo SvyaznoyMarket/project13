@@ -182,7 +182,7 @@ class Action {
 
         $currentRegion = $regionToken == $region->getToken() ? $region : \RepositoryManager::region()->getEntityByToken($regionToken);
         if (!$currentRegion) {
-            throw new \Exception\NotFoundException(sprintf('Region with token %s not found', $regionToken));
+            throw new \Exception\NotFoundException(sprintf('Region @%s not found', $regionToken));
         }
 
         // подготовка 2-го пакета запросов
@@ -209,7 +209,7 @@ class Action {
         $client->execute();
 
         if (!$shop) {
-            throw new \Exception\NotFoundException(sprintf('Shop with token %s not found', $shopToken));
+            throw new \Exception\NotFoundException(sprintf('Shop @%s not found', $shopToken));
         }
         // hardcode
         if (in_array($shop->getId(), array(1))) {

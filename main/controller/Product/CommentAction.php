@@ -10,6 +10,6 @@ class CommentAction {
         $productToken = explode('/', $productPath);
         $productToken = end($productToken);
 
-        throw new \Exception\NotFoundException(sprintf('Товар с токеном "%s" не найден.', $productToken));
+        throw new \Exception\NotFoundException(sprintf('Товар @%s не найден.', $productToken));
     }
 }

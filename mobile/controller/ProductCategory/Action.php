@@ -54,7 +54,7 @@ class Action {
         $client->execute();
 
         if (!$category) {
-            throw new \Exception\NotFoundException(sprintf('Категория товара с токеном "%s" не найдена.', $categoryToken));
+            throw new \Exception\NotFoundException(sprintf('Категория товара @%s не найдена.', $categoryToken));
         }
 
         // подготовка 3-го пакета запросов

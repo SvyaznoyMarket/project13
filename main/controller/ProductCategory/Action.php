@@ -48,7 +48,7 @@ class Action {
         $repository = \RepositoryManager::productCategory();
         $category = $repository->getEntityByToken($categoryToken);
         if (!$category) {
-            throw new \Exception\NotFoundException(sprintf('Категория товара с токеном "%s" не найдена.', $categoryToken));
+            throw new \Exception\NotFoundException(sprintf('Категория товара @%s не найдена.', $categoryToken));
         }
 
         $pageNum = (int)$request->get('page', 1);
@@ -117,7 +117,7 @@ class Action {
         $repository = \RepositoryManager::productCategory();
         $category = $repository->getEntityByToken($categoryToken);
         if (!$category) {
-            throw new \Exception\NotFoundException(sprintf('Категория товара с токеном "%s" не найдена.', $categoryToken));
+            throw new \Exception\NotFoundException(sprintf('Категория товара @%s не найдена.', $categoryToken));
         }
 
         // фильтры
@@ -219,7 +219,7 @@ class Action {
         $client->execute();
 
         if (!$category) {
-            throw new \Exception\NotFoundException(sprintf('Категория товара с токеном "%s" не найдена.', $categoryToken));
+            throw new \Exception\NotFoundException(sprintf('Категория товара @%s не найдена.', $categoryToken));
         }
 
         // подготовка 3-го пакета запросов

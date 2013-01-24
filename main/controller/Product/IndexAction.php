@@ -75,7 +75,7 @@ class IndexAction {
         $client->execute();
 
         if (!$product) {
-            throw new \Exception\NotFoundException(sprintf('Товар с токеном "%s" не найден.', $productToken));
+            throw new \Exception\NotFoundException(sprintf('Товар @%s не найден.', $productToken));
         }
 
         if ($product->getConnectedProductsViewMode() == $product::DEFAULT_CONNECTED_PRODUCTS_VIEW_MODE) {
