@@ -4865,6 +4865,7 @@
     position: absolute;
     height: 100%;
     width: 35px;
+    z-index: 2;
   }
   .bSimilarGoodsSlider_eArrow.mLeft {
     background: url('/css/item/img/leftArrSlider.png') no-repeat center;
@@ -4872,14 +4873,17 @@
   }
   .bSimilarGoodsSlider_eArrow.mRight {
     background: url('/css/item/img/rightArrSlider.png') no-repeat center;
-    right: 0;
+    right: -1px;
   }
   .bSimilarGoodsSlider_eWrap {
     margin-left: 25px;
+    position: relative;
     width: 4000px;
+    z-index: 1;
   }
   .bSimilarGoodsSlider_eGoods {
     margin: 10px 0;
+    width: 250px;
   }
   .bSimilarGoodsSlider_eGoodsInfo {
     width: 150px;

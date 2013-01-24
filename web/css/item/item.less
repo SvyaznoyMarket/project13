@@ -487,21 +487,25 @@
     position: absolute;
     height: 100%;
     width: 35px;
+    z-index: 2;
     &.mLeft{
       background: url('@{base-url}/item/img/leftArrSlider.png') no-repeat center;
       left:0;
     }
     &.mRight{
       background: url('@{base-url}/item/img/rightArrSlider.png') no-repeat center;
-      right:0;
+      right:-1px;
     }
   }
   &_eWrap{
     margin-left:25px;
+    position: relative;
     width: 4000px;
+    z-index: 1;
   }
   &_eGoods{
     margin:10px 0;
+    width: 250px;
   }
   &_eGoodsImg{
 
