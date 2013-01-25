@@ -1043,6 +1043,12 @@
     position: relative;
     zoom: 1;
   }
+  .bSelectWrap.mDisabled .bSelectWrap_eText {
+    color: #e6e6e6;
+  }
+  .bSelectWrap.mDisabled .bSelect {
+    display: none;
+  }
   .bSelectWrap_eText {
     color: #000000;
     line-height: 30px;
@@ -1074,11 +1080,6 @@
     position: absolute;
     -webkit-appearance: none;
     zoom: 1;
-  }
-  .bSelect.mDisabled {
-    border: 1px solid #ddd;
-    color: #cdcdcd;
-    cursor: default;
   }
   .bSelect option {
     filter: progid:dximagetransform.microsoft.alpha(opacity=100);

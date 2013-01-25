@@ -218,6 +218,14 @@
   overflow: hidden;
   position: relative;
   zoom:1;
+  &.mDisabled {
+    .bSelectWrap_eText{
+      color:@typLightGray;
+    }
+    .bSelect{
+      display: none;
+    }
+  }
   &_eText{
     color: @black;
     line-height: 30px;
@@ -250,11 +258,6 @@
   position: absolute;
   -webkit-appearance: none;
   zoom:1;
-  &.mDisabled {
-    border: 1px solid #ddd;
-    color: #cdcdcd;
-    cursor: default;
-  }
   option{
     filter:progid:DXImageTransform.Microsoft.Alpha(opacity=100);
     background-color: #FFFFFF;

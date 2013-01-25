@@ -51,9 +51,9 @@ $formData = array(
                             <tr data-bind="visible: noDelivery()"><td colspan="2"><h2 class="red">Товар в количестве <span data-bind="text: quantity()"></span> шт. отсутствует на складе.</h2></td></tr>
                             <tr data-bind="visible: !noDelivery()"><td width="200">Способ получения заказа:</td>
                                 <td>
-                                    <div class="bSelectWrap mFastInpSmall mr10">
+                                    <div class="bSelectWrap mFastInpSmall mr10" data-bind="css: { mDisabled : (disabledSelectors() || stableType() ) }">
                                         <span class="bSelectWrap_eText" data-bind="text: chosenDlvr().name"></span><!-- function(form, event) { $root.doSomething($data, form, event) } -->
-                                        <select class='bSelect' data-bind="options: dlvrs, optionsText:'name', optionsValue:$data, value:chosenDlvr, css: { mDisabled : (disabledSelectors() || stableType() ) }, event:{ change:$root.changeDlvr}">
+                                        <select class='bSelect' data-bind="options: dlvrs, optionsText:'name', optionsValue:$data, value:chosenDlvr, event:{ change:$root.changeDlvr}">
                                         </select>
                                     </div>
                                     <div class="bSelectWrap mFastInpSmall">
@@ -65,9 +65,9 @@ $formData = array(
                             <!-- ko if: chosenDlvr().type == 'self' -->
                             <tr data-bind="visible: !noDelivery()"><td>Магазин для самовывоза:</td>
                                 <td>
-                                    <div class="bSelectWrap mFastInpBig">
+                                    <div class="bSelectWrap mFastInpBig" data-bind="css: { mDisabled : disabledSelectors() }">
                                         <span class="bSelectWrap_eText" data-bind="text: chosenShop().address"></span>
-                                        <select class='bSelect' data-bind="options: shops, optionsText:'address', optionsValue:$data, value:chosenShop, css: { mDisabled : disabledSelectors() }, event:{ change:$root.pickShop}">
+                                        <select class='bSelect' data-bind="options: shops, optionsText:'address', optionsValue:$data, value:chosenShop, event:{ change:$root.pickShop}">
                                         </select>
                                     </div>
                                     <!-- ko if: !disabledSelectors() -->
