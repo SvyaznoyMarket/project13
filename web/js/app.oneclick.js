@@ -12,10 +12,7 @@ $(document).ready(function() {
 	// 	if( options.is(':visible') )
 	// 		options.hide()
 	// })
-	$('#order1click-container-new').delegate( '.bSelect', 'click', function() {
-		if( $(this).parents('.bSelectWrap').hasClass('mDisabled') )
-			return false
-	})
+
 	/* View Models */
 	//////////////////////////////////////////
 	
