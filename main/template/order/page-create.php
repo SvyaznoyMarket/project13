@@ -96,13 +96,6 @@ if ($form->hasSubway()) $jsValidator['order[address_metro]'] = 'Укажите �
                     <span class="placeholder">8</span>
                     <input type="text" id="order_recipient_phonenumbers" class="bBuyingLine__eText mInputLong" name="order[recipient_phonenumbers]" maxlength="10" value="<?= $form->getMobilePhone() ?>"/>
                 </div>
-
-                <div>
-                    <label for="order_is_receive_sms">
-                        <b></b> <h5>Я хочу получать СМС уведомления об изменении статуса заказа</h5>
-                        <input type="checkbox" id="order_is_receive_sms" class="bBuyingLine__eRadio" name="order[is_receive_sms]">
-                    </label>
-                </div>
             </dd>
         </dl>
 

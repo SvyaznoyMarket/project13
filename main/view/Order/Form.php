@@ -13,8 +13,6 @@ class Form {
     private $lastName;
     /** @var string */
     private $mobilePhone;
-    /** @var bool */
-    private $isSmsAlert = false;
     /** @var string */
     private $addressStreet;
     /** @var int */
@@ -47,7 +45,6 @@ class Form {
         'recipient_first_name'   => null,
         'recipient_last_name'    => null,
         'recipient_phonenumbers' => null,
-        'is_receive_sms'         => null,
         'address_street'         => null,
         'address_number'         => null,
         'address_building'       => null,
@@ -72,7 +69,6 @@ class Form {
         if (array_key_exists('recipient_first_name', $data))   $this->setFirstName($data['recipient_first_name']);
         if (array_key_exists('recipient_last_name', $data))    $this->setLastName($data['recipient_last_name']);
         if (array_key_exists('recipient_phonenumbers', $data)) $this->setMobilePhone($data['recipient_phonenumbers']);
-        if (array_key_exists('is_receive_sms', $data))         $this->setIsSmsAlert($data['is_receive_sms']);
         if (array_key_exists('address_street', $data))         $this->setAddressStreet($data['address_street']);
         if (array_key_exists('address_number', $data))         $this->setAddressNumber($data['address_number']);
         if (array_key_exists('address_building', $data))       $this->setAddressBuilding($data['address_building']);
@@ -254,20 +250,6 @@ class Form {
      */
     public function getFirstName() {
         return $this->firstName;
-    }
-
-    /**
-     * @param boolean $isSmsAlert
-     */
-    public function setIsSmsAlert($isSmsAlert) {
-        $this->isSmsAlert = (bool)$isSmsAlert;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function getIsSmsAlert() {
-        return $this->isSmsAlert;
     }
 
     /**

@@ -604,7 +604,6 @@ class Action {
                 'last_name'                 => $form->getLastName(),
                 'first_name'                => $form->getFirstName(),
                 'mobile'                    => $form->getMobilePhone(),
-                'is_receive_sms'            => $form->getIsSmsAlert(),
                 'address_street'            => $form->getAddressStreet(),
                 'address_number'            => $form->getAddressNumber(),
                 'address_building'          => $form->getAddressBuilding(),
