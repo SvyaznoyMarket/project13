@@ -1069,6 +1069,10 @@
     width: 410px;
   }
   .bSelect {
+    -moz-opacity: 0;
+    -khtml-opacity: 0;
+    -webkit-opacity: 0;
+    opacity: 0;
     filter: progid:dximagetransform.microsoft.alpha(opacity=0);
     background-color: transparent;
     border: none;
