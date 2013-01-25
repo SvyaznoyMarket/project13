@@ -94,6 +94,12 @@ $c->service['url'] = array(
     1 => 'http://fs01.enter.ru/11/1/500/',
     2 => 'http://fs01.enter.ru/11/1/120/',
 );
+
+$c->serviceCategory['url'] = array(
+    0 => 'http://fs01.enter.ru/10/1/160/',
+    1 => 'http://fs01.enter.ru/10/1/500/',
+);
+
 $c->service['minPriceForDelivery'] = 950;
 
 $c->shopPhoto['url'] = array(

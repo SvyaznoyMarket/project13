@@ -111,6 +111,10 @@ class AppConfig {
         'minPriceForDelivery' => null,
     );
     /** @var array */
+    public $serviceCategory = array(
+        'url'                 => array(),
+    );
+    /** @var array */
     public $shopPhoto = array(
         'url' => array(),
     );
