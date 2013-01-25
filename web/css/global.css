@@ -7192,6 +7192,10 @@
     margin: 0px;
     padding-bottom: 10px;
   }
+  .bF1ServiceImg {
+    width: 160px;
+    height: 160px;
+  }
 }
 /*---END---СТИЛИ СТРАНИЦЫ F1---*/
 /*-------СТИЛИ F1 всплывающего блока-----*/
