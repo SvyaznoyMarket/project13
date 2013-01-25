@@ -4,7 +4,7 @@
 	var _gaq = window._gaq || []
 	window.onerror = function(msg, url, line) {
 		var preventErrorAlert = true
-		_gaq.push(['_trackEvent', 'Javascript Error', msg, url + " : " + line])
+		// _gaq.push(['_trackEvent', 'Javascript Error', msg, url + " : " + line])
 		return preventErrorAlert
 	}
 	//jQuery.error = function (message) {
