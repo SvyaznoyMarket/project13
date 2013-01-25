@@ -165,11 +165,9 @@ class IndexAction {
         $page->setParam('dataForCredit', $dataForCredit);
         $page->setParam('shopsWithQuantity', $shopsWithQuantity);
         $page->setParam('myThingsData', array(
-            array(
-                'EventType' => 'MyThings.Event.Visit',
-                'Action' => '1010',
-                'ProductId' => $product->getId(),
-            ),
+            'EventType' => 'MyThings.Event.Visit',
+            'Action' => '1010',
+            'ProductId' => $product->getId(),
         ));
 
         return new \Http\Response($page->show());

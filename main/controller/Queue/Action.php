@@ -80,9 +80,10 @@ class Action {
 
         if (!(bool)$productIds) return;
 
+        $region = \RepositoryManager::region()->getDefaultEntity();
         /** @var $productsById \Model\Product\Entity[] */
         $productsById = array();
-        foreach (\RepositoryManager::product()->getCollectionById($productIds) as $product) {
+        foreach (\RepositoryManager::product()->getCollectionById($productIds, $region) as $product) {
             $productsById[$product->getId()] = $product;
         }
 
@@ -133,9 +134,10 @@ class Action {
         }
         if (!(bool)$productIds) return;
 
-        /** @var $productsById \light\ProductData[] */
+        $region = \RepositoryManager::region()->getDefaultEntity();
+        /** @var $productsById \Model\Product\Entity[] */
         $productsById = array();
-        foreach (\RepositoryManager::product()->getCollectionById($productIds) as $product) {
+        foreach (\RepositoryManager::product()->getCollectionById($productIds, $region) as $product) {
             $productsById[$product->getId()] = $product;
         }
 
