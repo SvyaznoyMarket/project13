@@ -1,6 +1,6 @@
 $(document).ready(function () {
     // promo block after header GA
-    $('.bPromoCategory').bind('click', function(){
+    $('.bPromoCategory a').bind('click', function(){
         var link = $(this).attr('href')
         if( typeof(_gaq) !== 'undefined' )
             _gaq.push(['_trackEvent', 'CategoryClick', 'Верхнее меню', link ])
