@@ -22,9 +22,9 @@ class Entity {
     private $isMultiple;
     /** @var bool */
     private $isSlider;
-    /** @var int */
+    /** @var float */
     private $min;
-    /** @var int */
+    /** @var float */
     private $max;
     /** @var Option\Entity[] */
     private $option = array();
@@ -110,28 +110,28 @@ class Entity {
     }
 
     /**
-     * @param int $max
+     * @param float $max
      */
     public function setMax($max) {
-        $this->max = (int)$max;
+        $this->max = (float)$max;
     }
 
     /**
-     * @return int
+     * @return float
      */
     public function getMax() {
         return $this->max;
     }
 
     /**
-     * @param int $min
+     * @param float $min
      */
     public function setMin($min) {
-        $this->min = (int)$min;
+        $this->min = (float)$min;
     }
 
     /**
-     * @return int
+     * @return float
      */
     public function getMin() {
         return $this->min;
