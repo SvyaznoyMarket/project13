@@ -160,17 +160,20 @@ $(document).ready(function() {
         var banks = $('.bankWrap .bSelect').data('value')
         var docs  = $('.bankWrap > .creditHref')
         var select = $('.bankWrap .bSelect')
-        for( var id in banks ) {
-            var option = $('<option>').attr('ref', id).addClass('bSelect_eItem').text( banks[id].name )
-            select.append( option )
-        }
-        select.change(function () {
-			var thisId = $("option:selected", select).attr('ref')
+        var chSelect = function(){
+        	var thisId = $("option:selected", select).attr('ref')
 			$('.bankWrap .bSelectWrap_eText').text( banks[ thisId ].name )
 			$('input[name="order[credit_bank_id]"]').val( thisId )
 			docs.find('a').attr('href', banks[ thisId ].href )
 			docs.find('span').text('(' + banks[ thisId ].name + ')' )
-		})
+        }
+        for( var id in banks ) {
+            var option = $('<option>').attr('ref', id).addClass('bSelect_eItem').text( banks[id].name )
+            select.append( option )
+        }
+        $("option", select).eq(0).attr('selected','selected')
+        chSelect()
+        select.change(chSelect)
         // $('.bankWrap > .bSelect').append( options )
 
         DirectCredit.init( $('#tsCreditCart').data('value'), $('#creditPrice') )
