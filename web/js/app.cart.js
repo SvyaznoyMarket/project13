@@ -131,10 +131,16 @@ $(document).ready(function() {
             tmpurl += self.quantum
 
 			//$(nodes.quan).html( self.quantum)
+			// console.log($(nodes.quan))
 			$(nodes.quan).val(self.quantum)
 			self.calculate( self.quantum )
 			totalCash += self.price * delta
-			PubSub.publish( 'quantityChange', { q : self.quantum, id : self.id } )
+
+			// if (self.quantum < nodes.line.find('.extWarr.mBig .ajaquant').val()){
+				
+			// }
+
+			// PubSub.publish( 'quantityChange', { q : self.quantum, id : self.id } )
 			// if( $('#selectCredit').length ) {
 			// 	var sufx = ''
 			// 	if( $('#selectCredit').val()*1 )
@@ -157,6 +163,20 @@ $(document).ready(function() {
 					location.href = location.href
 				}
 			})
+		}
+
+		this.checkNode = function(node, newQ){
+			if (node.warranty !== 'undefined'){
+				if (newQ>node.line.parents('.basketright').find('.ajaquant:first').val()){
+					return false
+				}
+				else{
+					return true
+				}
+			}
+			else{
+				return true
+			}
 		}
 
 		$(nodes.drop).click( function() {
@@ -182,9 +202,12 @@ $(document).ready(function() {
 
 		$(nodes.more).click( function() {
 			var plus = this
-			if( ! $(plus).data('run') ) {
-				$(plus).data('run',true)
-				self.update( plus, 1 )
+			var nQuan = nodes.quan.val()+1
+			if(self.checkNode(nodes, nQuan)){	
+				if( ! $(plus).data('run') ) {
+					$(plus).data('run',true)
+					self.update( plus, 1 )
+				}
 			}
 			return false
 		})
@@ -194,7 +217,9 @@ $(document).ready(function() {
 					var quan = self.quantum = $(nodes.quan).val().replace(/\D/g,'') * 1
 					if (quan > 0){//если больше нуля, апдейтим
 						focusTrigger = false
-						self.update( false, quan)
+						if(self.checkNode(nodes, quan)){
+							self.update( false, quan)
+						}
 					}
 					else{ //если меньше, очищаем
 						focusTrigger = true
@@ -357,10 +382,11 @@ $(document).ready(function() {
 		}
 		var tmpline = new basketline({
 					'line': tr,
+					'warranty':true,
 					'less': tr.find('.ajaless'),
 					'more': tr.find('.ajamore'),
-					'quan': tr.find('.quantity'),
-					'price': tr.find('.price'),
+					'quan': tr.find('.ajaquant'),
+					// 'price': tr.find('.price'),
 					'sum': tr.find('.price'),
 					'drop': tr.find('.whitelink'),
 					'linked': bline.attr('ref')

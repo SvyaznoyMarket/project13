@@ -96,13 +96,6 @@ if ($form->hasSubway()) $jsValidator['order[address_metro]'] = 'Укажите �
                     <span class="placeholder">8</span>
                     <input type="text" id="order_recipient_phonenumbers" class="bBuyingLine__eText mInputLong" name="order[recipient_phonenumbers]" maxlength="10" value="<?= $form->getMobilePhone() ?>"/>
                 </div>
-
-                <div>
-                    <label for="order_is_receive_sms">
-                        <b></b> <h5>Я хочу получать СМС уведомления об изменении статуса заказа</h5>
-                        <input type="checkbox" id="order_is_receive_sms" class="bBuyingLine__eRadio" name="order[is_receive_sms]">
-                    </label>
-                </div>
             </dd>
         </dl>
 
@@ -179,10 +172,6 @@ if ($form->hasSubway()) $jsValidator['order[address_metro]'] = 'Укажите �
 
             <dd id="payTypes">
                 <? foreach ($paymentMethods as $paymentMethod): ?>
-                <?
-                    // TODO: удалить в v.33
-                    if (7 == $paymentMethod->getId() || 3 == $paymentMethod->getId()) continue; // Онлайн через терминал
-                ?>
                 <div id="payment_method_<?= $paymentMethod->getId() ?>-field">
                     <p></p>
                     <label class="<? if ($paymentMethod->getId() == $selectedPaymentMethodId) echo 'mChecked' ?>" for="order_payment_method_id_<?= $paymentMethod->getId() ?>">
@@ -198,14 +187,8 @@ if ($form->hasSubway()) $jsValidator['order[address_metro]'] = 'Укажите �
                                 <div class="bSelectWrap mFastInpSmall fl">
                                     <span class="bSelectWrap_eText"><?= $bank->getName() ?></span>
                                     <select class='bSelect mFastInpSmall' data-value="<?= $page->json($bankData) ?>">
-                                        <!-- <option class="bSelect_eItem" data-bind="click: function(data, event) { $root.clickInterval($parent, data, event) }, text: $data"></option> -->
                                     </select>
                                 </div>
-
-                                <!-- <div data-value="<?= $page->json($bankData) ?>" class="fl bSelect mFastInpSmall">
-                                    <span > <?= $bank->getName() ?></span>
-                                    <div class="bSelect__eArrow"></div>
-                                </div> -->
 
                                 <div class="fl creditHref"><a target="_blank" href="<?= $bank->getLink() ?>">Условия кредита <span>(<?= $bank->getName() ?>)</span></a></div>
                                 <div class="clear"></div>

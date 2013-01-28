@@ -6,18 +6,18 @@ $(document).ready(function() {
 	/* ---------------------------------------------------------------------------------------- */
 	/* COMMON DESIGN, BEHAVIOUR ONLY */
 	/* Custom Selectors */ 
-	$('body').delegate( '.bSelect', 'click', function() {
-		if( $(this).hasClass('mDisabled') )
-			return false
-		$(this).find('.bSelect__eDropmenu').toggle()
-	})
-	$('body').delegate( '.bSelect', 'mouseleave', function() {
-		if( $(this).hasClass('mDisabled') )
-			return false
-		var options = $(this).find('.bSelect__eDropmenu')
-		if( options.is(':visible') )
-			options.hide()
-	})
+	// $('body').delegate( '.bSelect', 'click', function() {
+	// 	if( $(this).hasClass('mDisabled') )
+	// 		return false
+	// 	$(this).find('.bSelect__eDropmenu').toggle()
+	// })
+	// $('body').delegate( '.bSelect', 'mouseleave', function() {
+	// 	if( $(this).hasClass('mDisabled') )
+	// 		return false
+	// 	var options = $(this).find('.bSelect__eDropmenu')
+	// 	if( options.is(':visible') )
+	// 		options.hide()
+	// })
 
 	/*  Custom Checkboxes */
 	$('body').delegate('.bBuyingLine label', 'click', function() {
@@ -160,17 +160,20 @@ $(document).ready(function() {
         var banks = $('.bankWrap .bSelect').data('value')
         var docs  = $('.bankWrap > .creditHref')
         var select = $('.bankWrap .bSelect')
+        var chSelect = function(){
+        	var thisId = $("option:selected", select).attr('ref')
+			$('.bankWrap .bSelectWrap_eText').text( banks[ thisId ].name )
+			$('input[name="order[credit_bank_id]"]').val( thisId )
+			docs.find('a').attr('href', banks[ thisId ].href )
+			docs.find('span').text('(' + banks[ thisId ].name + ')' )
+        }
         for( var id in banks ) {
             var option = $('<option>').attr('ref', id).addClass('bSelect_eItem').text( banks[id].name )
-            option.click( function() {
-                var thisId = $(this).attr('ref')
-                $('.bankWrap .bSelectWrap_eText').text( banks[ thisId ].name )
-                $('input[name="order[credit_bank_id]"]').val( thisId )
-                docs.find('a').attr('href', banks[ thisId ].href )
-                docs.find('span').text('(' + banks[ thisId ].name + ')' )
-            })
             select.append( option )
         }
+        $("option", select).eq(0).attr('selected','selected')
+        chSelect()
+        select.change(chSelect)
         // $('.bankWrap > .bSelect').append( options )
 
         DirectCredit.init( $('#tsCreditCart').data('value'), $('#creditPrice') )

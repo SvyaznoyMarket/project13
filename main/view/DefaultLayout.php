@@ -144,6 +144,10 @@ class DefaultLayout extends Layout {
         return (\App::config()->yandexMetrika['enabled']) ? $this->render('_yandexMetrika') : '';
     }
 
+    public function slotMyThings() {
+        return (\App::config()->analytics['enabled'] && (bool)$this->getParam('myThingsData')) ? $this->render('_myThingsTracker', array('myThingsData' => $this->getParam('myThingsData'),)) : '';
+    }
+
     public function slotMetaOg() {
         return '';
     }

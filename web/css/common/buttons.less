@@ -217,6 +217,15 @@
   height: 30px;
   overflow: hidden;
   position: relative;
+  zoom:1;
+  &.mDisabled {
+    .bSelectWrap_eText{
+      color:@typLightGray;
+    }
+    .bSelect{
+      display: none;
+    }
+  }
   &_eText{
     color: @black;
     line-height: 30px;
@@ -225,20 +234,21 @@
   }
   &.mFastInpSmall {
     vertical-align: top;
-    width: 190px;
+    width: 178px;
     .bSelect{
-      width: 215px;
+      width: 210px;
     }
   }
   &.mFastInpBig {
-    width: 400px;
+    width: 375px;
     .bSelect{
-      width: 425px;
+      width: 410px;
     }
   }
 }
 .bSelect {
   .opacity(0);
+  filter:progid:DXImageTransform.Microsoft.Alpha(opacity=0);
   background-color: transparent;
   border: none;
   box-shadow: none;
@@ -253,9 +263,13 @@
     color: #cdcdcd;
     cursor: default;
   }
-  &_eItem{
-    .opacity(1);
+  option{
+    filter:progid:DXImageTransform.Microsoft.Alpha(opacity=100);
+    background-color: #FFFFFF;
     color: black;
+    display: block;
     height: 30px;
+    -webkit-appearance: none;
+    zoom:1;
   }
 }

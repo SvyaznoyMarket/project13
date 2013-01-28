@@ -299,6 +299,12 @@ class Action {
             throw new \Exception(sprintf('У категории "%s" отстутсвуют дочерние узлы', $category->getId()));
         }
 
+        $page->setParam('myThingsData', array(
+            'EventType' => 'MyThings.Event.Visit',
+            'Action' => '1011',
+	        'Category' => $category->getName(),
+        ));
+
         return new \Http\Response($page->show());
     }
 
@@ -345,6 +351,18 @@ class Action {
         }
 
         $page->setParam('productPagersByCategory', $productPagersByCategory);
+
+        $myThingsData = array(
+            'EventType' => 'MyThings.Event.Visit',
+            'Action' => '1011',
+        );
+        if ($category->isRoot()) {
+            $myThingsData['Category'] = $category->getName();
+        } else {
+            $myThingsData['Category'] = $category->getAncestor()[0]->getName();
+            $myThingsData['SubCategory'] = $category->getName();
+        }
+        $page->setParam('myThingsData', $myThingsData);
 
         return new \Http\Response($page->show());
     }
@@ -414,6 +432,13 @@ class Action {
         $page->setParam('productPager', $productPager);
         $page->setParam('productSorting', $productSorting);
         $page->setParam('productView', $productView);
+
+        $page->setParam('myThingsData', array(
+            'EventType' => 'MyThings.Event.Visit',
+            'Action' => '1011',
+            'Category' => $category->getAncestor()[0]->getName(),
+            'SubCategory' => $category->getName()
+        ));
 
         return new \Http\Response($page->show());
     }

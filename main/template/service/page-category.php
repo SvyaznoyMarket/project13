@@ -19,7 +19,7 @@
         <div class="photo pr">
             <? if ($child->getImage()): ?>
                 <div class="bServiceCard__eLogo"></div>
-                <img class='bF1ServiceImg' alt="<?= $child->getName()?>" src="<?= $child->getImageUrl() ?>" />
+                <img class='bF1ServiceImg' alt="<?= $child->getName()?>" src="<?= $child->getImageUrl(0) ?>" />
             <? else: ?>
                 <img alt="<?= $child->getName()?>" src="/images/f1infobig.png" />
             <? endif ?>

@@ -21,7 +21,7 @@ class ProductAction {
         try {
             if ($quantity < 0) {
                 $quantity = 0;
-                \App::logger()->warn(sprintf('Указано неверное количество товаров. Запрос %s', json_encode($request->request->all())));
+                \App::logger()->warn(sprintf('Указано неверное количество товаров. Запрос %s', json_encode($request->request->all(), JSON_UNESCAPED_UNICODE)));
             }
 
             if (!$productId) {
@@ -36,10 +36,34 @@ class ProductAction {
             // не учитываем является ли товар набором или нет - за это отвечает ядро
             $cart->setProduct($product, $quantity);
 
+            $cartProduct = $cart->getProductById($product->getId());
+
             // обновить количество гарантий для товара
-            foreach ($cart->getWarrantyByProduct($product->getId()) as $cartWarranty) {
-                // TODO: доделать гарантии
-                //$cart->setWarranty($cartWarranty, $quantity);
+            if ($cartProduct && (bool)$cartProduct->getWarranty()) {
+
+                try {
+                    $cartWarranties = $cartProduct->getWarranty();
+                    /** @var $cartWarranty \Model\Cart\Warranty\Entity|null */
+                    $cartWarranty = reset($cartWarranties);
+                    if (!$cartWarranty) {
+                        throw new \Exception(sprintf('Не найдена расширенная гарантия на товар #%s', $product->getId()));
+                    }
+
+                    $warranty = null;
+                    foreach ($product->getWarranty() as $iWarranty) {
+                        if ($iWarranty->getId() == $cartWarranty->getId()) {
+                            $warranty = $iWarranty;
+                            break;
+                        }
+                    }
+                    if (!$warranty) {
+                        throw new \Exception(sprintf('Не найдена расширенная гарантия #%s на товар #%s', $cartWarranty->getId(), $product->getId()));
+                    }
+
+                    $cart->setWarranty($warranty, $quantity, $product->getId());
+                } catch (\Exception $e) {
+                    \App::logger()->error($e);
+                }
             }
 
             return $request->isXmlHttpRequest()

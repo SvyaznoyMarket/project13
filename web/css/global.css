@@ -1041,6 +1041,13 @@
     height: 30px;
     overflow: hidden;
     position: relative;
+    zoom: 1;
+  }
+  .bSelectWrap.mDisabled .bSelectWrap_eText {
+    color: #e6e6e6;
+  }
+  .bSelectWrap.mDisabled .bSelect {
+    display: none;
   }
   .bSelectWrap_eText {
     color: #000000;
@@ -1050,22 +1057,23 @@
   }
   .bSelectWrap.mFastInpSmall {
     vertical-align: top;
-    width: 190px;
+    width: 178px;
   }
   .bSelectWrap.mFastInpSmall .bSelect {
-    width: 215px;
+    width: 210px;
   }
   .bSelectWrap.mFastInpBig {
-    width: 400px;
+    width: 375px;
   }
   .bSelectWrap.mFastInpBig .bSelect {
-    width: 425px;
+    width: 410px;
   }
   .bSelect {
     -moz-opacity: 0;
     -khtml-opacity: 0;
     -webkit-opacity: 0;
     opacity: 0;
+    filter: progid:dximagetransform.microsoft.alpha(opacity=0);
     background-color: transparent;
     border: none;
     box-shadow: none;
@@ -1081,13 +1089,14 @@
     color: #cdcdcd;
     cursor: default;
   }
-  .bSelect_eItem {
-    -moz-opacity: 1;
-    -khtml-opacity: 1;
-    -webkit-opacity: 1;
-    opacity: 1;
+  .bSelect option {
+    filter: progid:dximagetransform.microsoft.alpha(opacity=100);
+    background-color: #FFFFFF;
     color: black;
+    display: block;
     height: 30px;
+    -webkit-appearance: none;
+    zoom: 1;
   }
 }
 @media all {
@@ -2404,57 +2413,7 @@
 }
 /*окно купить в один клик*/
 @media all {
-  #order1click-container-new {
-    width: 950px;
-    padding-top: 0;
-    padding-bottom: 0;
-  }
-  #order1click-container-new h2 {
-    font: 30px 'Enter';
-    margin: 0px;
-    padding: 0px;
-  }
-  #order1click-container-new table {
-    margin: 20px -20px;
-    padding: 0px;
-  }
-  #order1click-container-new table td {
-    border-left: 1px solid #e6e6e6;
-    max-width: 200px;
-    padding: 0px 20px 20px;
-    vertical-align: top;
-  }
-  #order1click-container-new table td:first-child {
-    border-left: none;
-  }
-  #order1click-container-new table td h3 {
-    font-size: 18px;
-    margin: 0px;
-    padding: 0px;
-  }
-  #order1click-container-new table td p {
-    font-size: 13px;
-  }
-  #order1click-container-new table td input {
-    -webkit-box-shadow: 0px 0px 5px #d8d8d8;
-    -moz-box-shadow: 0px 0px 5px #d8d8d8;
-    box-shadow: 0px 0px 5px #d8d8d8;
-    border: 1px solid #d8d8d8;
-    height: 18px;
-    width: 100%;
-  }
-  #order1click-container-new table td a,
-  #order1click-container-new table td img {
-    outline: none;
-  }
-  #order1click-container-new table td .link1 {
-    cursor: pointer;
-    margin: 12px 0px;
-    padding-left: 15px;
-    padding-right: 15px;
-  }
   .bFast {
-    font-family: 'EnterTypeRegular';
     margin: 0px !important;
     width: 100%;
   }
@@ -2534,11 +2493,8 @@
   .bFastInner {
     width: 100%;
   }
-  .bFastInner th {
-    padding: 0px 0px 16px 25px;
-  }
   .bFastInner td {
-    font-size: 16px;
+    font-size: 15px;
     line-height: 30px;
     padding-left: 25px !important;
     position: relative;
@@ -2593,6 +2549,55 @@
   }
   td.newWarehouse img {
     margin: -21px -3px;
+  }
+  #order1click-container-new {
+    width: 950px;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+  #order1click-container-new h2 {
+    font: 30px 'Enter';
+    margin: 0px;
+    padding: 0 0 15px;
+  }
+  #order1click-container-new table {
+    margin: 20px -20px;
+    padding: 0px;
+  }
+  #order1click-container-new table td {
+    border-left: 1px solid #e6e6e6;
+    max-width: 200px;
+    padding: 0px 20px 20px;
+    vertical-align: top;
+  }
+  #order1click-container-new table td:first-child {
+    border-left: none;
+  }
+  #order1click-container-new table td h3 {
+    font-size: 18px;
+    margin: 0px;
+    padding: 0px;
+  }
+  #order1click-container-new table td p {
+    font-size: 13px;
+  }
+  #order1click-container-new table td input {
+    -webkit-box-shadow: 0px 0px 5px #d8d8d8;
+    -moz-box-shadow: 0px 0px 5px #d8d8d8;
+    box-shadow: 0px 0px 5px #d8d8d8;
+    border: 1px solid #d8d8d8;
+    height: 18px;
+    width: 100%;
+  }
+  #order1click-container-new table td a,
+  #order1click-container-new table td img {
+    outline: none;
+  }
+  #order1click-container-new table td .link1 {
+    cursor: pointer;
+    margin: 12px 0px;
+    padding-left: 15px;
+    padding-right: 15px;
   }
 }
 /*окно с выбором магазина*/
@@ -5497,6 +5502,9 @@
     line-height: 30px;
     margin-left: 10px;
   }
+  .bBuyingInfo span.bSelectWrap_eText {
+    line-height: 30px;
+  }
   .bBuyingLine {
     font-size: 0px;
     margin: 20px 0px;
@@ -7217,6 +7225,10 @@
     font-size: 24px;
     margin: 0px;
     padding-bottom: 10px;
+  }
+  .bF1ServiceImg {
+    width: 160px;
+    height: 160px;
   }
 }
 /*---END---СТИЛИ СТРАНИЦЫ F1---*/

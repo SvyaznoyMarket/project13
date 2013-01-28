@@ -56,6 +56,7 @@
 <?= $page->slotAuth() ?>
 <?= $page->slotJavascript() ?>
 <?= $page->slotInnerJavascript() ?>
+<?= $page->slotMyThings() ?>
 
 <? if (\App::config()->analytics['enabled']): ?>
     <div id="adblender" class="jsanalytics"></div>

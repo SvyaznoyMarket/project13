@@ -74,10 +74,10 @@ foreach ($product->getService() as $service) {
                     <th colspan="3">Для этого товара есть услуги:</th>
                 </tr>
                 <? foreach ($product->getService() as $service): ?>
-                    <?
+                <?
                     if (!$cartProduct->hasService($service->getId())) continue;
                     $cartService = $cartProduct->getServiceById($service->getId());
-                    ?>
+                ?>
 
                     <tr ref="<?= $service->getToken() ?>">
                         <td>
@@ -90,7 +90,7 @@ foreach ($product->getService() as $service) {
                                 'quantity' => $cartService->getQuantity(),
                                 'incUrl'   => $page->url('cart.service.add', array('serviceId' => $service->getId(), 'quantity' => 1, 'productId' => $product->getId())),
                                 'decUrl'   => $page->url('cart.service.add', array('serviceId' => $service->getId(), 'quantity' => -1, 'productId' => $product->getId())),
-                            ))?>
+                            )) ?>
                             <a class="button whitelink ml5 mInlineBlock mVAMiddle" href="<?= $page->url('cart.service.delete', array('serviceId' => $service->getId(), 'productId' => $product->getId())) ?>">Отменить</a>
                         </td>
                     </tr>

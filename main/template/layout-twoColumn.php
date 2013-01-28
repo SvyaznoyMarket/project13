@@ -46,6 +46,7 @@
     <?= $page->slotAuth() ?>
     <?= $page->slotYandexMetrika() ?>
     <?//= $page->slotAdvanceSeoCounter() ?>
+    <?= $page->slotMyThings() ?>
 
     <? if (\App::config()->analytics['enabled']): ?>
         <div id="gooReMaCategories" class="jsanalytics"></div>

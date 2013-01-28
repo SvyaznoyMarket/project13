@@ -6,7 +6,6 @@ class Action {
     private $dbh = null;
 
     public function pushBuy(\Http\Request $request) {
-        // TODO: доделать
         \App::logger()->debug('Exec ' . __METHOD__);
 
         $order = $request->request->get('order');

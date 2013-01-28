@@ -15,8 +15,7 @@ class ClientV2 implements ClientInterface
     /** @var bool */
     private $stillExecuting = false;
 
-    public function __construct(array $config, \Logger\LoggerInterface $logger = null)
-    {
+    public function __construct(array $config, \Logger\LoggerInterface $logger = null) {
         $this->config = array_merge(array(
             'client_id' => null,
         ), $config);
@@ -62,7 +61,7 @@ class ClientV2 implements ClientInterface
         } catch (\RuntimeException $e) {
             curl_close($connection);
             $spend = \Debug\Timer::stop('core');
-            \App::logger()->error('End core ' . $action . ' in ' . $spend . ' get: ' . json_encode($params) . ' post: ' . json_encode($data) . ' response: ' . json_encode($response, true) . ' with ' . $e);
+            \App::logger()->error('End core ' . $action . ' in ' . $spend . ' get: ' . json_encode($params, JSON_UNESCAPED_UNICODE) . ' post: ' . json_encode($data, JSON_UNESCAPED_UNICODE) . ' response: ' . json_encode($response, JSON_UNESCAPED_UNICODE) . ' with ' . $e);
             \App::exception()->add($e);
 
             throw $e;
@@ -187,6 +186,7 @@ class ClientV2 implements ClientInterface
         curl_setopt($connection, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($connection, CURLOPT_URL, $query);
         curl_setopt($connection, CURLOPT_HTTPHEADER, array('X-Request-Id: '.\Util\RequestLogger::getInstance()->getId(), 'Expect:'));
+        curl_setopt($connection, CURLOPT_ENCODING, 'gzip,deflate');
 
         if ($isPostMethod) {
             curl_setopt($connection, CURLOPT_POST, true);
@@ -238,9 +238,6 @@ class ClientV2 implements ClientInterface
         if (is_array($decoded)) {
             if (array_key_exists('error', $decoded)) {
                 $message = $decoded['error']['message'] . ' ' . $this->encode($decoded);
-                $message = preg_replace_callback('/\\\\u([0-9a-f]{4})/i', function($match) {
-                    return mb_convert_encoding(pack('H*', $match[1]), \App::config()->encoding, 'UCS-2BE');
-                }, $message);
 
                 $e = new Exception(
                     $message,
@@ -295,14 +292,11 @@ class ClientV2 implements ClientInterface
         return $header;
     }
 
-    private function encode($data)
-    {
-        //return json_encode($data, JSON_UNESCAPED_UNICODE);
-        return json_encode($data);
+    private function encode($data) {
+        return json_encode($data, JSON_UNESCAPED_UNICODE);
     }
 
-    private function encodeInfo($info)
-    {
+    private function encodeInfo($info) {
         return $this->encode(array_intersect_key($info, array_flip(array(
             'content_type', 'http_code', 'header_size', 'request_size',
             'redirect_count', 'total_time', 'namelookup_time', 'connect_time', 'pretransfer_time', 'size_upload',

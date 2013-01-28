@@ -168,24 +168,6 @@ class Cart {
     }
 
     /**
-     * TODO: переделать чтобы отдавала сущности \Model\Cart\Warranty\Entity
-     * @param $productId
-     * @return array
-     */
-    public function getWarrantyByProduct($productId) {
-        $return = array();
-        $data = $this->getData();
-
-        foreach ($this->getWarrantyData() as $warrantyId => $warrantyData) {
-            if (array_key_exists($productId, $warrantyData)) {
-                $return[] = $warrantyId;
-            }
-        }
-
-        return array_unique($return);
-    }
-
-    /**
      * @param int $productId
      * @param int $warrantyId
      * @return bool

@@ -30,14 +30,14 @@ class Sorting {
             'title'     => 'по рейтингу',
             'direction' => 'desc',
         ),
-        'score'  => array(
-            'name'      => 'score',
+        'default'  => array(
+            'name'      => 'default',
             'title'     => 'как для своих',
             'direction' => 'desc',
         ),
     );
     /** @var string */
-    private $active = 'score';
+    private $active = 'default';
 
     /**
      * @return string

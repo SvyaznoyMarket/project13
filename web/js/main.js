@@ -451,13 +451,15 @@ $(document).ready(function(){
 	})
 	*/
 	var logError = function(data) {
-		$.ajax({
-			type: 'POST',
-			global: false,
-			url: '/log-json',
-			data: data,
-			error: console.log('log err')
-		})
+        if (data.ajaxUrl !== '/log-json') {
+            $.ajax({
+                type: 'POST',
+                global: false,
+                url: '/log-json',
+                data: data,
+                error: console.log('log err')
+            })
+        }
 	}
 	$.ajaxSetup({
 		timeout: 10000,
@@ -1248,11 +1250,15 @@ $(document).ready(function(){
 				html += '<li><h5>Можно заказать сейчас и самостоятельно забрать в магазине ' +
 						self + '</h5><div>&mdash; <a target="blank" href="' +
 						dlvr_node.data('shoplink') + '">В каких магазинах ENTER можно забрать?</a></div></li>'	
-			
+			// console.log(other.length)
 			if( other.length > 0 )
 				html += '<li><h5>Можно заказать сейчас с доставкой</h5>'
-			for(var i=0; i < other.length; i++) {
-				html += '<div>&mdash; Можем доставить '+ other[i].date + this.formatPrice(other[i].price) +'</div>'
+			for(var i in other) {
+				// console.info(other[i].date)
+				// console.info(this.formatPrice(other[i].price))
+				if (other[i].date !== undefined){
+					html += '<div>&mdash; Можем доставить '+ other[i].date + this.formatPrice(other[i].price) +'</div>'
+				}
 				if( other[i].tc ) {
 					html += '<div>&mdash; <a href="/how_get_order">Доставка осуществляется партнерскими транспортными компаниями</a></div>'
 				}

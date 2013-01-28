@@ -12,7 +12,7 @@
 
 <?
 $cart = $user->getCart();
-$creditEnabled = ($cart->getTotalProductPrice() >= \App::config()->product['minCreditPrice']) && \App::config()->payment['creditEnabled'];
+$creditEnabled = ($cart->getTotalProductPrice() >= \App::config()->product['minCreditPrice']) && \App::config()->payment['creditEnabled'] && !$user->getRegion()->getHasTransportCompany();
 ?>
 
 <div style="float:left; width: 100%; padding-bottom: 20px">

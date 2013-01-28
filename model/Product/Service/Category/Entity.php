@@ -118,7 +118,7 @@ class Entity {
      * @return null|string
      */
     public function getImageUrl($size = 1) {
-        return $this->image ? \App::config()->service['url'][$size] . $this->image : null;
+        return $this->image ? \App::config()->serviceCategory['url'][$size] . $this->image : null;
     }
 
     /**

@@ -18,7 +18,7 @@ class Repository {
      * @return Entity[]
      */
     public function getCollection(\Model\Region\Entity $region = null) {
-        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args()));
+        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         $data = $this->client->query('payment-method/get', array(
             'geo_id' => $region ? $region->getId() : \App::user()->getRegion()->getId(),
@@ -38,7 +38,7 @@ class Repository {
      * @return Entity
      */
     public function getEntityById($id, \Model\Region\Entity $region = null) {
-        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args()));
+        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         $data = $this->client->query('payment-method/get', array(
             'id'     => array($id),
@@ -56,7 +56,7 @@ class Repository {
      * @param                      $fail
      */
     public function prepareCollection(\Model\Region\Entity $region = null, $isCorporative = false, $done, $fail = null) {
-        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args()));
+        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         $this->client->addQuery('payment-method/get', array(
             'geo_id'         => $region ? $region->getId() : \App::user()->getRegion()->getId(),
