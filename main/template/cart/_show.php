@@ -66,11 +66,12 @@ foreach ($products as $product) {
             <span class="price"><%=f1price%></span>
             &nbsp;<span class="rubl">p</span>
         </td>
-        <td class="mQuantity" style="font-size: 80%; padding-left: 20px;">
-            <span class="quantity"><%=productQ%></span>
-            &nbsp;<span>шт</span>
-        </td>
         <td class="mEdit">
+        <div class="numerbox">
+            <b title="Уменьшить" class="ajaless"></b>
+            <input value="1" class="ajaquant" maxlength="2">
+            <a href="<?= $page->url('cart.warranty.set', array('warrantyId' => 'WID', 'productId' => 'PRID', 'quantity' => 1)) ?>"><b title="Увеличить" class="ajamore"></b></a>
+        </div>
             <a class="button whitelink ml5 mInlineBlock mVAMiddle"
                href="<?= $page->url('cart.warranty.delete', array('warrantyId' => 'WID', 'productId' => 'PRID')) ?>">Отменить</a>
         </td>
