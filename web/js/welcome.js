@@ -1,4 +1,11 @@
 $(document).ready(function () {
+    // promo block after header GA
+    $('.bPromoCategory').bind('click', function(){
+        var link = $(this).attr('href')
+        if( typeof(_gaq) !== 'undefined' )
+            _gaq.push(['_trackEvent', 'CategoryClick', 'Верхнее меню', link ])
+    })
+    
 	/* admitad */
 	if( document.location.search.match(/admitad_uid/) ) {
 		var url_s = parse_url( document.location.search )
