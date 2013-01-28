@@ -19,8 +19,12 @@ if (!isset($argv[3])) {
 $config = include realpath(__DIR__ . '/config/config-' . $env . '.php');
 if (false === $config) die(sprintf('Не удалось загрузить конфигурацию для среды "%s"', $env));
 
+
+// autoload
+require_once __DIR__ . '/lib/Autoloader.php';
+Autoloader::register($config->appDir);
+
 // application
-require_once __DIR__ . '/lib/App.php';
 \App::init($env, $config, function() {
     if ($error = error_get_last()) {
         \App::logger()->error($error);
