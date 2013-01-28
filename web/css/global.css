@@ -2913,54 +2913,6 @@
     text-indent: -10000px;
     width: 130px;
   }
-  #extramenu-root {
-    /*
-    &-311{
-      .corner{
-        left:858px;
-      }
-    }*/
-  
-  }
-  #extramenu-root-80 .corner {
-    left: 146px;
-  }
-  #extramenu-root-1 .corner {
-    left: 198px;
-  }
-  #extramenu-root-21 .corner {
-    left: 257px;
-  }
-  #extramenu-root-2545 .corner {
-    left: 326px;
-  }
-  #extramenu-root-443 .corner {
-    left: 392px;
-  }
-  #extramenu-root-320 .corner {
-    left: 445px;
-  }
-  #extramenu-root-1438 .corner {
-    left: 503px;
-  }
-  #extramenu-root-224 .corner {
-    left: 556px;
-  }
-  #extramenu-root-788 .corner {
-    left: 617px;
-  }
-  #extramenu-root-923 .corner {
-    left: 683px;
-  }
-  #extramenu-root-647 .corner {
-    left: 743px;
-  }
-  #extramenu-root-185 .corner {
-    left: 794px;
-  }
-  #extramenu-root-225 .corner {
-    left: 856px;
-  }
 }
 /*---END---СТИЛИ ХЕАДЕРА---*/
 /*------СТИЛИ ФУТЕРА------*/
