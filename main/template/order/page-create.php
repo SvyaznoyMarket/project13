@@ -187,14 +187,8 @@ if ($form->hasSubway()) $jsValidator['order[address_metro]'] = 'Укажите �
                                 <div class="bSelectWrap mFastInpSmall fl">
                                     <span class="bSelectWrap_eText"><?= $bank->getName() ?></span>
                                     <select class='bSelect mFastInpSmall' data-value="<?= $page->json($bankData) ?>">
-                                        <!-- <option class="bSelect_eItem" data-bind="click: function(data, event) { $root.clickInterval($parent, data, event) }, text: $data"></option> -->
                                     </select>
                                 </div>
-
-                                <!-- <div data-value="<?= $page->json($bankData) ?>" class="fl bSelect mFastInpSmall">
-                                    <span > <?= $bank->getName() ?></span>
-                                    <div class="bSelect__eArrow"></div>
-                                </div> -->
 
                                 <div class="fl creditHref"><a target="_blank" href="<?= $bank->getLink() ?>">Условия кредита <span>(<?= $bank->getName() ?>)</span></a></div>
                                 <div class="clear"></div>
