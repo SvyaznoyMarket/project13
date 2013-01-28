@@ -24,7 +24,7 @@
             <tr>
                 <td class="bF1Block_eInfo">
                     <?php echo $warranty->getName() ?><br/>
-                    <a href="#">Подробнее об услуге</a>
+                    <a href="/warranty_f1#warranty<?php echo $warranty->getId() ?>">Подробнее об услуге</a>
                 </td>
                 <td class="bF1Block_eBuy" ref="<?php echo $warranty->getId() ?>">
                     <span class="bF1Block_ePrice"><?php echo $warranty->getPrice() ?>&nbsp;	<span class="rubl">p</span></span>
