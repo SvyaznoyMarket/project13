@@ -581,15 +581,16 @@
 <div class="descriptionlist">
 
     <? foreach ($product->getGroupedProperties() as $group): ?>
-    <? if (!count($group['properties'])): continue; endif ;?>
-    <div class="pb15"><strong><?= $group['group']->getName() ?></strong></div>
-    <? foreach ($group['properties'] as $property): ?>
-        <div class="point">
-            <div class="title"><h3><?= $property->getName() ?></h3></div>
-            <div class="description">
-                <?= $property->getStringValue() ?>
+    <? if (!count($group['properties'])) continue ?>
+        <div class="pb15"><strong><?= $group['group']->getName() ?></strong></div>
+        <? foreach ($group['properties'] as $property): ?>
+        <? /** @var $property \Model\Product\Property\Entity  */?>
+            <div class="point">
+                <div class="title" title="<?= $page->escape($property->getHint()) ?>"><h3><?= $property->getName() ?></h3></div>
+                <div class="description">
+                    <?= $property->getStringValue() ?>
+                </div>
             </div>
-        </div>
         <? endforeach ?>
     <? endforeach ?>
 
