@@ -1,4 +1,6 @@
 AddDefaultCharset utf-8
+SetEnv APPLICATION_NAME main
+SetEnv APPLICATION_ENV local
 
 Options +FollowSymLinks +ExecCGI
 

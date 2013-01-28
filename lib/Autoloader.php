@@ -21,7 +21,7 @@ class Autoloader {
                     $class = preg_replace('/^' . $namespace . '/', '', $class);
                     $path = $basePath . '/model';
                     break;
-                case 'Mobile':
+                case 'Mobile': case 'Terminal':
                     $parts = explode('\\', $class);
                     $count = count($parts);
                     for ($i = 0; $i < $count; $i++) {
@@ -32,7 +32,6 @@ class Autoloader {
                         }
                     }
                     $class = implode('\\', $parts);
-
                     $path = $basePath;
                     break;
                 default:

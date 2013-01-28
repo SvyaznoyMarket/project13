@@ -32,12 +32,20 @@ if (isset($_GET['APPLICATION_DEBUG'])) {
 // TODO: придумать, как по другому можно получить имя хоста
 $request = \Http\Request::createFromGlobals();
 
-// определение флага {десктопное|мобильное приложение} на основе домена
-if ($config->mobileHost && ($config->mobileHost == $request->getHttpHost())) {
-    \App::$name = 'mobile';
-    $config->templateDir = $config->appDir . '/mobile/template';
-    $config->controllerPrefix = 'Mobile\\Controller';
+// app name
+\App::$name = isset($_SERVER['APPLICATION_NAME']) ? $_SERVER['APPLICATION_NAME'] : 'main';
+if ('main' == \App::$name) {
+    // определение флага {десктопное|мобильное приложение} на основе домена
+    if ($config->mobileHost && ($config->mobileHost == $request->getHttpHost())) {
+        \App::$name = 'mobile';
+        $config->templateDir = $config->appDir . '/mobile/template';
+        $config->controllerPrefix = 'Mobile\\Controller';
+    }
+} else if ('terminal' == \App::$name) {
+    $config->templateDir = $config->appDir . '/terminal/template';
+    $config->controllerPrefix = 'Terminal\\Controller';
 }
+
 
 // response
 $response = null;
