@@ -30,7 +30,17 @@
     <div class="adfoxWrapper" id="adfox980"></div>
 
     <?= $page->slotHeader() ?>
-
+    <div class="bPromoCategoryWrap clearfix">
+        <div class="bPromoCategory fl">
+            <a class="bPromoCategory_eIcon fl" href="#"><img src=""/></a>
+            <div class="fl">
+                <h2 class="bPromoCategory_eTitle">Скоро дачный сезон!</h2>
+                <a class="bPromoCategory_eLink" href="#">Товары для сада и огорода</a>
+                <a class="bPromoCategory_eLink" href="#">Товары для рассады</a>
+                <a class="bPromoCategory_eLink" href="#">Горшки и кашпо</a>
+            </div>
+        </div>
+    </div>
     <noindex>
         <div id="mainPageSearch" class="searchbox">
             <?= $page->render('search/form-main') ?>
