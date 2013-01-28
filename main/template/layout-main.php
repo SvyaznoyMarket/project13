@@ -31,13 +31,24 @@
 
     <?= $page->slotHeader() ?>
     <div class="bPromoCategoryWrap clearfix">
-        <div class="bPromoCategory fl">
-            <a class="bPromoCategory_eIcon fl" href="#"><img src=""/></a>
+        <div id="ogorod_1feb" class="bPromoCategory fl">
+            <div class="bPromoCategory_eArrow"></div>
+            <a class="bPromoCategory_eIcon fl" href="/catalog/do_it_yourself/tovari-dlya-sada-311/?from=enter_internal_promo_season"><img src="/css/mainPage/img/bPromoCategory_ogorodGreen.gif"/></a>
             <div class="fl">
                 <h2 class="bPromoCategory_eTitle">Скоро дачный сезон!</h2>
-                <a class="bPromoCategory_eLink" href="#">Товары для сада и огорода</a>
-                <a class="bPromoCategory_eLink" href="#">Товары для рассады</a>
-                <a class="bPromoCategory_eLink" href="#">Горшки и кашпо</a>
+                <a class="bPromoCategory_eLink" href="/catalog/do_it_yourself/tovari-dlya-sada-311/?from=enter_internal_promo_season">Товары для сада и огорода</a>
+                <a class="bPromoCategory_eLink" href="catalog/doityourself/ruchnie-sadovie-instrumenti-tovari-dlya-rassadi-1564/?from=enter_internal_promo_season">Товары для рассады</a>
+                <a class="bPromoCategory_eLink" href="/catalog/household/dekor-interera-gorshki-i-kashpo-1130/?from=enter_internal_promo_season">Горшки и кашпо</a>
+            </div>
+        </div>
+        <div id="jew_1feb" class="bPromoCategory fl">
+            <div class="bPromoCategory_eArrow"></div>
+            <a class="bPromoCategory_eIcon fl" href="/catalog/jewel/ukrasheniya-ko-dnyu-vlyublennih-2826/?from=enter_internal_promo_season"><img src="/css/mainPage/img/bPromoCategory_jewelPink.gif"/></a>
+            <div class="fl">
+                <h2 class="bPromoCategory_eTitle">Подарки к весенним праздникам</h2>
+                <a class="bPromoCategory_eLink" href="/catalog/jewel/ukrasheniya-ko-dnyu-vlyublennih-2826/?from=enter_internal_promo_season">Украшения ко Дню влюбленных</a>
+                <p class="bPromoCategory_eLink"><a href="/catalog/jewel/koltsa-966/?from=enter_internal_promo_season">Кольца</a>, <a href="/catalog/jewel/sergi-1004/?from=enter_internal_promo_season">серьги</a>, <a href="/catalog/jewel/tsepochki-i-brasleti-1022/?from=enter_internal_promo_season">цепочки и браслеты</a></p>
+                <a class="bPromoCategory_eLink" href="/catalog/jewel/pandora-1320/?from=enter_internal_promo_season">Украшения Pandora</a>
             </div>
         </div>
     </div>
