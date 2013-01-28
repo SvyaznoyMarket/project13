@@ -7937,6 +7937,29 @@
   #mainPage .topbar .headerShopLink {
     display: none;
   }
+  .bPromoCategoryWrap {
+    margin-top: -35px;
+    position: relative;
+    z-index: 10;
+  }
+  .bPromoCategory_eTitle {
+    color: #ffffff;
+    font-family: 'Enter';
+    font-size: 18px;
+    font-weight: 100;
+    line-height: 2em;
+    padding: 0;
+    text-transform: uppercase;
+  }
+  .bPromoCategory_eLink {
+    color: #ffffff;
+    font-family: 'Enter Type';
+    font-size: 15px;
+    display: block;
+  }
+  .bPromoCategory_eLink:hover {
+    color: #ffffff;
+  }
   /*--- ПОИСК ---*/
   #mainPageSearch.searchbox {
     background: url("/css/mainPage/img/mainPageSprite.png") no-repeat 0 0;
