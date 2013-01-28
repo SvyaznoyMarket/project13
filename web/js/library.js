@@ -866,9 +866,13 @@ function printPrice ( val ) {
 	var floatv = (val+'').split('.')
 	var out = floatv[0]
 	var le = floatv[0].length
-	if( le > 6 ) {
+    if ( le > 7){
+        out = out.substr( 0, le - 6) + ' ' + out.substr( le - 6, le - 5) + ' ' + out.substr( le - 3, le )
+    }
+	else if( le > 6 ) {
 		out = out.substr( 0, le - 6) + ' ' + out.substr( le - 6, le - 4) + ' ' + out.substr( le - 3, le )
-	} else if ( le > 3 ) {
+	} 
+    else if ( le > 3 ) {
 		out = out.substr( 0, le - 3) + ' ' + out.substr( le - 3, le )
 	}
 	if( floatv.length == 2 && floatv[1]*1 > 0 ) {
