@@ -957,7 +957,7 @@ $(document).ready(function(){
 		}
 	}
 	if( clientBrowser.isTouch ) {
-		$('.topmenu a.bToplink').bind ('click', function(){
+		$('#header .bToplink').bind ('click', function(){
 			if( $(this).data('run') )
 				return true
 			$('.extramenu').hide()	
@@ -967,12 +967,15 @@ $(document).ready(function(){
 			return false
 		})
 	} else {	
-		$('.topmenu a.bToplink').bind( {
+		$('#header .bToplink').bind( {
 			'mouseenter': function() {
 				$('.extramenu').hide()
 				var self = this				
 				$(self).data('run', true)
 				currentMenu = $(self).attr('id').replace(/\D+/,'')
+				var menuLeft = $(self).offset().left
+				var cornerLeft = menuLeft-$('#header').offset().left+($('#topmenu-root-'+currentMenu+'').width()/2)-13
+				$('#extramenu-root-'+currentMenu+' .corner').css({'left':cornerLeft})
 				idcm = setTimeout( function() { showList( self ) }, 300)
 			},
 			'mouseleave': function() {

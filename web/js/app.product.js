@@ -75,6 +75,43 @@ $(document).ready(function() {
 		}
 	 	vitrin.init()
 	}
+
+	/* вывод слайдера со схожими товарами, если товар доступен только на витрине*/
+	if ( $('#similarGoodsSlider').length){
+		
+		// основные элементы
+		var similarSlider = $('#similarGoodsSlider')
+		var similarWrap = similarSlider.find('.bSimilarGoodsSlider_eWrap')
+		var similarGoods = similarSlider.find('.bSimilarGoodsSlider_eGoods')
+		var similarArrow = similarSlider.find('.bSimilarGoodsSlider_eArrow')
+
+		// init
+		var slidesCount = similarGoods.length
+		var sliderW = similarSlider.width()
+		var slidesW = similarGoods.width()
+		var wrapW = slidesW * slidesCount
+		var left = 0
+		similarWrap.width(wrapW)
+		
+		similarArrow.bind('click', function(){
+			if ($(this).hasClass('mLeft')){
+				left += (slidesW * 2)
+			}
+			else{
+				left -= (slidesW * 2)
+			}
+			// left *= ($(this).hasClass('mLeft'))?-1:1
+			if ((left < sliderW-wrapW-50)){
+				left = sliderW-wrapW-50
+			}
+			if (left > 0 ){
+				left = 0
+			}
+			similarWrap.animate({'left':left})
+			return false
+		})
+
+	}
 	
 
 

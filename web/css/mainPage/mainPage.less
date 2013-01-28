@@ -27,6 +27,67 @@
     }
   }  
 }
+// ПРОМО БЛОК ПОСЛЕ ХЕАДРЕА
+.bPromoCategoryWrap{
+  margin-top: -50px;
+  position: relative;
+  z-index: 10;
+}
+.bPromoCategory{
+  position: relative;
+  &_eArrow{
+    height: 31px;
+    width: 21px;
+  }
+  &_eIcon{
+    margin: 10px;
+  }
+  &_eTitle{
+    font-family: 'Enter';
+    font-size: 18px;
+    font-weight: 100;
+    line-height: 2em;
+    padding: 0;
+    text-transform: uppercase;
+  }
+  &_eLink{
+    color: @white;
+    font-family: 'Enter Type';
+    font-size: 15px;
+    display: block;
+    margin: 0;
+    padding: 0;
+  }
+  a{
+    color: @white;
+    &:hover{
+      color: @white;
+    }
+  }
+}
+// СЕЗОННЫЕ ID
+#ogorod_1feb{
+  .bPromoCategory{
+    &_eArrow{
+      background: url('@{base-url}/mainPage/img/bPromoCategory_greenArrow.gif') no-repeat 0 0;
+      margin-left: 70px;
+    }
+    &_eTitle{
+      color:#c1d838;
+    }
+  }
+}
+#jew_1feb{
+  .bPromoCategory{
+    &_eArrow{
+      background: url('@{base-url}/mainPage/img/bPromoCategory_pinkArrow.gif') no-repeat 0 0;
+      margin-left: 70px;
+    }
+    &_eTitle{
+      color:#bf4a96;
+    }
+  }
+}
 /*--- ПОИСК ---*/
 #mainPageSearch{
   &.searchbox {

@@ -1,0 +1,33 @@
+@base-url:"/css/mobile";
+
+//--------МИКСИНЫ----------
+@import "common/mixins.less";
+
+//---ОСНОВНЫЕ И ФИРМЕННЫЕ ЦВЕТА И ГРАДИЕНТЫ---
+@import "common/color.less";
+
+//---------ШРИФТЫ----------
+@import "common/fonts.less";
+
+//---ОСНОВНЫЕ ПРАВИЛА------
+@import "mobile/common/common.less" screen;
+@import "mobile/common/buttons.less" screen;
+
+//-------- ШАПКА ----------
+@import "mobile/header/header.less" screen;
+
+//-------- ПОДВАЛ ---------
+@import "mobile/footer/footer.less" screen;
+
+//---- МЕНЮ КАТЕГОРИЙ -----
+@import "mobile/categoryMenu/categoryMenu.less" screen;
+
+//---- КАРТОЧКА МАГАЗИНА -----
+@import "mobile/storeItem/storeItem.less" screen;
+
+//---  СТИЛИ ДЛЯ РЕТИНЫ ---
+@import "mobile/common/retina.less" only screen and (-webkit-min-device-pixel-ratio : 1.5);
+@import "mobile/common/retina.less" only screen and (min-device-pixel-ratio : 1.5);
+
+// --- СТИЛИ ДЛЯ ЛЭНДСКЕЙПА ---
+@import "mobile/common/landscape.less" only screen and (min-width : 321px);

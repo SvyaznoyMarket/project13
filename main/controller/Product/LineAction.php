@@ -8,7 +8,7 @@ class LineAction {
 
         $line = \RepositoryManager::line()->getEntityByToken($lineToken);
         if (!$line) {
-            throw new \Exception\NotFoundException(sprintf('Серия с токеном "%s" не найдена.', $lineToken));
+            throw new \Exception\NotFoundException(sprintf('Серия @%s не найдена.', $lineToken));
         }
 
         // вид списка других товаров в серии

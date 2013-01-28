@@ -231,7 +231,15 @@ class SitemapAction {
     }
 
     private function fillPage() {
-        // TODO: ждем CON-60
+        $result = \App::contentClient()->query('api/page/list/');
+        $pages = (array)json_decode($result, true);
+        foreach ($pages as $page) {
+            $this->putContent(
+                '/' . $page['token'],
+                'monthly',
+                '0.5'
+            );
+        }
     }
 
     private function putContent($url, $freq, $priority) {

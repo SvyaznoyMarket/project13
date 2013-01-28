@@ -101,7 +101,7 @@ class App {
 
     /**
      * @param string|null $name Постфикс названия файла с правилами маршрутизации (обычно совпадает с названием приложения: main, mobile, ...)
-     * @return mixed
+     * @return \Routing\Router
      */
     public static function router($name = null) {
         static $instances = array();

@@ -2917,54 +2917,6 @@
     text-indent: -10000px;
     width: 130px;
   }
-  #extramenu-root {
-    /*
-    &-311{
-      .corner{
-        left:858px;
-      }
-    }*/
-  
-  }
-  #extramenu-root-80 .corner {
-    left: 146px;
-  }
-  #extramenu-root-1 .corner {
-    left: 198px;
-  }
-  #extramenu-root-21 .corner {
-    left: 257px;
-  }
-  #extramenu-root-2545 .corner {
-    left: 326px;
-  }
-  #extramenu-root-443 .corner {
-    left: 392px;
-  }
-  #extramenu-root-320 .corner {
-    left: 445px;
-  }
-  #extramenu-root-1438 .corner {
-    left: 503px;
-  }
-  #extramenu-root-224 .corner {
-    left: 556px;
-  }
-  #extramenu-root-788 .corner {
-    left: 617px;
-  }
-  #extramenu-root-923 .corner {
-    left: 683px;
-  }
-  #extramenu-root-647 .corner {
-    left: 743px;
-  }
-  #extramenu-root-185 .corner {
-    left: 794px;
-  }
-  #extramenu-root-225 .corner {
-    left: 856px;
-  }
 }
 /*---END---СТИЛИ ХЕАДЕРА---*/
 /*------СТИЛИ ФУТЕРА------*/
@@ -4387,7 +4339,7 @@
     width: 500px;
   }
   .bGood__eArticle {
-    border-bottom: 1px solid #dfdfdf;
+    border-bottom: 1px solid #e6e6e6;
     font-size: 12px;
     font-family: Tahoma, sans-serif;
     margin: 0px 0px 15px;
@@ -4828,6 +4780,111 @@
   .vitrin ul li .avalShopAddr {
     display: inline-block;
     width: 200px;
+  }
+  .bSimilarGoods {
+    background: #ffffff;
+    border-bottom: 1px solid #e6e6e6;
+    border-top: 1px solid #e6e6e6;
+    margin: 10px 0 30px;
+    width: 100%;
+  }
+  .bSimilarGoods_eCorner {
+    border-bottom: 13px solid #e6e6e6;
+    border-left: 14px solid transparent;
+    border-right: 14px solid transparent;
+    height: 0;
+    margin-bottom: -13px;
+    position: relative;
+    top: -13px;
+    left: 40px;
+    width: 0;
+  }
+  .bSimilarGoods_eCorner div {
+    border-bottom: 11px solid #FFFFFF;
+    border-left: 12px solid transparent;
+    border-right: 12px solid transparent;
+    bottom: -13px;
+    left: -12px;
+    position: absolute;
+  }
+  .bSimilarGoods_eLeftCaption {
+    font-size: 14px;
+    padding: 15px 25px 15px 10px;
+    width: 150px;
+  }
+  .bSimilarGoodsSlider {
+    border-left: 1px solid #e6e6e6;
+    overflow: hidden;
+    position: relative;
+  }
+  .bSimilarGoodsSlider_eArrow {
+    display: block;
+    position: absolute;
+    height: 100%;
+    width: 35px;
+    z-index: 2;
+  }
+  .bSimilarGoodsSlider_eArrow.mLeft {
+    background: url('/css/item/img/leftArrSlider.png') no-repeat center;
+    left: 0;
+  }
+  .bSimilarGoodsSlider_eArrow.mRight {
+    background: url('/css/item/img/rightArrSlider.png') no-repeat center;
+    right: -1px;
+  }
+  .bSimilarGoodsSlider_eWrap {
+    margin-left: 25px;
+    position: relative;
+    width: 4000px;
+    z-index: 1;
+  }
+  .bSimilarGoodsSlider_eGoods {
+    margin: 10px 0;
+    width: 250px;
+  }
+  .bSimilarGoodsSlider_eGoodsInfo {
+    width: 150px;
+  }
+  .bSimilarGoodsSlider_eGoodsInfo h3 {
+    font-size: 12px;
+    font-weight: 100;
+    margin: 3px 0;
+    text-decoration: underline;
+  }
+  .lifted {
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    position: relative;
+    z-index: 1;
+  }
+  .lifted:before,
+  .lifted:after {
+    -webkit-box-shadow: 0 12px 17px #616161;
+    -moz-box-shadow: 0 12px 17px #616161;
+    box-shadow: 0 12px 17px #616161;
+    bottom: 15px;
+    content: "";
+    height: 10%;
+    max-width: 300px;
+    left: 10px;
+    position: absolute;
+    width: 50%;
+    -webkit-transform: rotate(-3deg);
+    -moz-transform: rotate(-3deg);
+    -ms-transform: rotate(-3deg);
+    -o-transform: rotate(-3deg);
+    transform: rotate(-3deg);
+    z-index: -2;
+  }
+  .lifted:after {
+    right: 10px;
+    left: auto;
+    -webkit-transform: rotate(3deg);
+    -moz-transform: rotate(3deg);
+    -ms-transform: rotate(3deg);
+    -o-transform: rotate(3deg);
+    transform: rotate(3deg);
   }
 }
 /*стили для продуктов f1*/
@@ -7891,6 +7948,57 @@
   #mainPage .topbar .headerContactPhone,
   #mainPage .topbar .headerShopLink {
     display: none;
+  }
+  .bPromoCategoryWrap {
+    margin-top: -50px;
+    position: relative;
+    z-index: 10;
+  }
+  .bPromoCategory {
+    position: relative;
+  }
+  .bPromoCategory_eArrow {
+    height: 31px;
+    width: 21px;
+  }
+  .bPromoCategory_eIcon {
+    margin: 10px;
+  }
+  .bPromoCategory_eTitle {
+    font-family: 'Enter';
+    font-size: 18px;
+    font-weight: 100;
+    line-height: 2em;
+    padding: 0;
+    text-transform: uppercase;
+  }
+  .bPromoCategory_eLink {
+    color: #ffffff;
+    font-family: 'Enter Type';
+    font-size: 15px;
+    display: block;
+    margin: 0;
+    padding: 0;
+  }
+  .bPromoCategory a {
+    color: #ffffff;
+  }
+  .bPromoCategory a:hover {
+    color: #ffffff;
+  }
+  #ogorod_1feb .bPromoCategory_eArrow {
+    background: url('/css/mainPage/img/bPromoCategory_greenArrow.gif') no-repeat 0 0;
+    margin-left: 70px;
+  }
+  #ogorod_1feb .bPromoCategory_eTitle {
+    color: #c1d838;
+  }
+  #jew_1feb .bPromoCategory_eArrow {
+    background: url('/css/mainPage/img/bPromoCategory_pinkArrow.gif') no-repeat 0 0;
+    margin-left: 70px;
+  }
+  #jew_1feb .bPromoCategory_eTitle {
+    color: #bf4a96;
   }
   /*--- ПОИСК ---*/
   #mainPageSearch.searchbox {

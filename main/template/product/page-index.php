@@ -75,6 +75,99 @@
   product_3d_big = <?= json_encode($p3d_res_big) ?>;
 </script>
 
+<!-- похожие товары -->
+<? if (!$product->getIsBuyable() && $product->getState()->getIsShop()): ?>
+<div class="clear"></div>
+<div class="lifted">
+  <div class="bSimilarGoods clearfix">
+    <div class="bSimilarGoods_eCorner"><div></div></div>
+    <div class="bSimilarGoods_eLeftCaption fl">
+      Товар есть только в&nbsp;магазинах. Вы&nbsp;можете заказать похожий товар
+    </div>
+    <div id="similarGoodsSlider" class="bSimilarGoodsSlider">
+      <a class="bSimilarGoodsSlider_eArrow mLeft" href="#"></a>
+      <a class="bSimilarGoodsSlider_eArrow mRight" href="#"></a>
+      <div class="bSimilarGoodsSlider_eWrap">
+        <!-- similar good -->
+        <div class="bSimilarGoodsSlider_eGoods fl">
+          <a class="bSimilarGoodsSlider_eGoodsImg fl"><img src="http://content.enter.ru/wp-content/uploads/2013/01/similargoodstmp.jpg"/></a>
+          <div class="bSimilarGoodsSlider_eGoodsInfo fl">
+            <div class="goodsbox__rating rate4"><div class="fill"></div></div>
+            <h3><a href="#">Наушники CBR CHP636Bt белые</a></h3>
+            <div class="font18 pb10 mSmallBtns"><span class="price">1 020</span> <span class="rubl">p</span></div>
+          </div>
+        </div>
+        <div class="bSimilarGoodsSlider_eGoods fl">
+          <img class="fl" src="http://content.enter.ru/wp-content/uploads/2013/01/similargoodstmp.jpg"/>
+          <div class="bSimilarGoodsSlider_eGoodsInfo fl">
+            <div class="goodsbox__rating rate4"><div class="fill"></div></div>
+            <h3><a href="#">Наушники CBR CHP636Bt белые</a></h3>
+            <div class="font18 pb10 mSmallBtns"><span class="price">1 020</span> <span class="rubl">p</span></div>
+          </div>
+        </div>
+        <div class="bSimilarGoodsSlider_eGoods fl">
+          <img class="fl" src="http://content.enter.ru/wp-content/uploads/2013/01/similargoodstmp.jpg"/>
+          <div class="bSimilarGoodsSlider_eGoodsInfo fl">
+            <div class="goodsbox__rating rate4"><div class="fill"></div></div>
+            <h3><a href="#">Наушники CBR CHP636Bt белые</a></h3>
+            <div class="font18 pb10 mSmallBtns"><span class="price">1 020</span> <span class="rubl">p</span></div>
+          </div>
+        </div>
+        <div class="bSimilarGoodsSlider_eGoods fl">
+          <img class="fl" src="http://content.enter.ru/wp-content/uploads/2013/01/similargoodstmp.jpg"/>
+          <div class="bSimilarGoodsSlider_eGoodsInfo fl">
+            <div class="goodsbox__rating rate4"><div class="fill"></div></div>
+            <h3><a href="#">Наушники CBR CHP636Bt белые</a></h3>
+            <div class="font18 pb10 mSmallBtns"><span class="price">1 020</span> <span class="rubl">p</span></div>
+          </div>
+        </div>
+        <div class="bSimilarGoodsSlider_eGoods fl">
+          <img class="fl" src="http://content.enter.ru/wp-content/uploads/2013/01/similargoodstmp.jpg"/>
+          <div class="bSimilarGoodsSlider_eGoodsInfo fl">
+            <div class="goodsbox__rating rate4"><div class="fill"></div></div>
+            <h3><a href="#">Наушники CBR CHP636Bt белые</a></h3>
+            <div class="font18 pb10 mSmallBtns"><span class="price">1 020</span> <span class="rubl">p</span></div>
+          </div>
+        </div>
+        <div class="bSimilarGoodsSlider_eGoods fl">
+          <img class="fl" src="http://content.enter.ru/wp-content/uploads/2013/01/similargoodstmp.jpg"/>
+          <div class="bSimilarGoodsSlider_eGoodsInfo fl">
+            <div class="goodsbox__rating rate4"><div class="fill"></div></div>
+            <h3><a href="#">Наушники CBR CHP636Bt белые</a></h3>
+            <div class="font18 pb10 mSmallBtns"><span class="price">1 020</span> <span class="rubl">p</span></div>
+          </div>
+        </div>
+        <div class="bSimilarGoodsSlider_eGoods fl">
+          <img class="fl" src="http://content.enter.ru/wp-content/uploads/2013/01/similargoodstmp.jpg"/>
+          <div class="bSimilarGoodsSlider_eGoodsInfo fl">
+            <div class="goodsbox__rating rate4"><div class="fill"></div></div>
+            <h3><a href="#">Наушники CBR CHP636Bt белые</a></h3>
+            <div class="font18 pb10 mSmallBtns"><span class="price">1 020</span> <span class="rubl">p</span></div>
+          </div>
+        </div>
+        <div class="bSimilarGoodsSlider_eGoods fl">
+          <img class="fl" src="http://content.enter.ru/wp-content/uploads/2013/01/similargoodstmp.jpg"/>
+          <div class="bSimilarGoodsSlider_eGoodsInfo fl">
+            <div class="goodsbox__rating rate4"><div class="fill"></div></div>
+            <h3><a href="#">Наушники CBR CHP636Bt белые</a></h3>
+            <div class="font18 pb10 mSmallBtns"><span class="price">1 020</span> <span class="rubl">p</span></div>
+          </div>
+        </div>
+        <div class="bSimilarGoodsSlider_eGoods fl">
+          <img class="fl" src="http://content.enter.ru/wp-content/uploads/2013/01/similargoodstmp.jpg"/>
+          <div class="bSimilarGoodsSlider_eGoodsInfo fl">
+            <div class="goodsbox__rating rate4"><div class="fill"></div></div>
+            <h3><a href="#">Наушники CBR CHP636Bt белые</a></h3>
+            <div class="font18 pb10 mSmallBtns"><span class="price">1 020</span> <span class="rubl">p</span></div>
+          </div>
+        </div>
+        <!-- /similar good -->
+      </div>
+    </div>
+  </div>
+</div>
+<? endif ?>
+
 <div class="goodsphoto">
   <a href="<?= $product->getImageUrl(4) ?>" class="viewme" ref="image" onclick="return false">
     <? if ($product->getLabel()): ?>
@@ -488,15 +581,16 @@
 <div class="descriptionlist">
 
     <? foreach ($product->getGroupedProperties() as $group): ?>
-    <? if (!count($group['properties'])): continue; endif ;?>
-    <div class="pb15"><strong><?= $group['group']->getName() ?></strong></div>
-    <? foreach ($group['properties'] as $property): ?>
-        <div class="point">
-            <div class="title"><h3><?= $property->getName() ?></h3></div>
-            <div class="description">
-                <?= $property->getStringValue() ?>
+    <? if (!count($group['properties'])) continue ?>
+        <div class="pb15"><strong><?= $group['group']->getName() ?></strong></div>
+        <? foreach ($group['properties'] as $property): ?>
+        <? /** @var $property \Model\Product\Property\Entity  */?>
+            <div class="point">
+                <div class="title" title="<?= $page->escape($property->getHint()) ?>"><h3><?= $property->getName() ?></h3></div>
+                <div class="description">
+                    <?= $property->getStringValue() ?>
+                </div>
             </div>
-        </div>
         <? endforeach ?>
     <? endforeach ?>
 
