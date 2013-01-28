@@ -2,6 +2,10 @@
 
 namespace Config;
 
+require_once __DIR__ . '/Oauth/VkontakteConfig.php';
+require_once __DIR__ . '/Oauth/OdnoklassnikiConfig.php';
+require_once __DIR__ . '/Oauth/FacebookConfig.php';
+
 class AppConfig {
     /** @var string */
     public $encoding;
@@ -68,6 +72,13 @@ class AppConfig {
     public $mainHost = null;
     /** @var string */
     public $mobileHost = null;
+    /** @var array */
+    /** @var Oauth\VkontakteConfig */
+    public $vkontakteOauth;
+    /** @var Oauth\OdnoklassnikiConfig */
+    public $odnoklassnikiOauth;
+    /** @var Oauth\FacebookConfig */
+    public $facebookOauth;
     /** @var array */
     public $onlineCall = array(
         'enabled' => null,
@@ -174,6 +185,12 @@ class AppConfig {
         'password' => null,
     );
 
+    public function __construct() {
+        $this->vkontakteOauth = new OAuth\VkontakteConfig();
+        $this->odnoklassnikiOauth = new OAuth\OdnoklassnikiConfig();
+        $this->facebookOauth = new OAuth\FacebookConfig();
+    }
+
     /** @var array */
     public $queue = array(
         'pidFile' => null,
@@ -188,5 +205,4 @@ class AppConfig {
     public function __get($name) {
         throw new \LogicException(sprintf('Неизвестный параметр "%s".', $name));
     }
-
 }

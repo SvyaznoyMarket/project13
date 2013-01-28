@@ -64,6 +64,16 @@ return array(
         'pattern' => '/private/',
         'action'  => array('User\IndexAction', 'execute'),
     ),
+    // вход через социальные сети
+    'user.login.external' => array(
+        'pattern' => '/login-{providerName}',
+        'action'  => array('User\ExternalLoginAction', 'execute'),
+    ),
+    // ответ от социальных сетей при входе пользователя
+    'user.login.external.response' => array(
+        'pattern' => '/login-{providerName}/response',
+        'action'  => array('User\ExternalLoginResponseAction', 'execute'),
+    ),
 
     // регион
     'region.init' => array(
