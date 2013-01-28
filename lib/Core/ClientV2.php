@@ -15,8 +15,7 @@ class ClientV2 implements ClientInterface
     /** @var bool */
     private $stillExecuting = false;
 
-    public function __construct(array $config, \Logger\LoggerInterface $logger = null)
-    {
+    public function __construct(array $config, \Logger\LoggerInterface $logger = null) {
         $this->config = array_merge(array(
             'client_id' => null,
         ), $config);
@@ -190,7 +189,7 @@ class ClientV2 implements ClientInterface
 
         if ($isPostMethod) {
             curl_setopt($connection, CURLOPT_POST, true);
-            curl_setopt($connection, CURLOPT_POSTFIELDS, json_encode($data, JSON_UNESCAPED_UNICODE));
+            curl_setopt($connection, CURLOPT_POSTFIELDS, json_encode($data));
         }
 
         return $connection;
@@ -238,9 +237,6 @@ class ClientV2 implements ClientInterface
         if (is_array($decoded)) {
             if (array_key_exists('error', $decoded)) {
                 $message = $decoded['error']['message'] . ' ' . $this->encode($decoded);
-                $message = preg_replace_callback('/\\\\u([0-9a-f]{4})/i', function($match) {
-                    return mb_convert_encoding(pack('H*', $match[1]), \App::config()->encoding, 'UCS-2BE');
-                }, $message);
 
                 $e = new Exception(
                     $message,
@@ -295,13 +291,11 @@ class ClientV2 implements ClientInterface
         return $header;
     }
 
-    private function encode($data)
-    {
+    private function encode($data) {
         return json_encode($data, JSON_UNESCAPED_UNICODE);
     }
 
-    private function encodeInfo($info)
-    {
+    private function encodeInfo($info) {
         return $this->encode(array_intersect_key($info, array_flip(array(
             'content_type', 'http_code', 'header_size', 'request_size',
             'redirect_count', 'total_time', 'namelookup_time', 'connect_time', 'pretransfer_time', 'size_upload',
