@@ -201,10 +201,12 @@ $(document).ready(function() {
 						}
 					self.disabledSelectors( true )
 					self.noQBar( true )
+					self.chooseShopById(data.shop.id)
 					if( 'date' in data )
 						self.chosenDate( data.date )		
-					if( 'shop' in data )
-						self.chosenShop( data.shop )
+					if( 'shop' in data ){
+						self.chooseShopById(data.shop.id)
+					}
 				} else if( data.type === 'courier' ) {
 					self.formStatus('reserve')
 					for(var i=0, l=self.dlvrs().length; i<l; i++ )
@@ -219,6 +221,7 @@ $(document).ready(function() {
 			}
 			
 			self.loadData = function( momentq, direction ) {
+				console.info('loadData')
 				if( ( direction > 0 && self.quantity() > momentq ) || ( direction < 0 && self.quantity() < momentq ) )
 					return
 				var postData = {
@@ -276,8 +279,8 @@ $(document).ready(function() {
 			}
 			
 			self.pickShop = function( ) {
-				// self.chosenShop( item )
-				console.log(self.chosenShop())
+				self.chosenShop( item )
+				// console.log(self.chosenShop())
 			}
 			self.pickShopOnMap = function( shid ) {
 				for(var i=0, l=self.shops().length; i<l; i++)
@@ -399,6 +402,7 @@ $(document).ready(function() {
 							$('.bFastInner tbody tr:last').append('<td colspan="2" class="red">'+data.message+'</td>')
 							return
 						}
+						console.log(data)
 						//process
 						$('.bFast').parent().append( data.data.content )
 						$('.bFast').remove()
@@ -491,6 +495,7 @@ levup:			for(var i=0, l=numbers.length; i<l; i++)
 		}
 		self.pickedShop = ko.observable( self.todayShops[0] )
 		self.selectedS = ko.observable( {} )
+
 		var ending = 'ах'
 		if( self.todayShops.length % 10 === 1 && self.todayShops.length !== 11 )
 			ending = 'е'
@@ -570,6 +575,7 @@ levup:			for(var i=0, l=numbers.length; i<l; i++)
 				shop: self.selectedS()
 			}
 			OC_MVM.preparedData( MVMinterface )
+			// OC_MVM.pickShop(selectedS())
 			$('#order1click-container-new').lightbox_me( { } )
 			return false
 		}	

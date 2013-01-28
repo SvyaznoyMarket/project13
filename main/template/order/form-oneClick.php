@@ -56,9 +56,9 @@ $formData = array(
                                         <select class='bSelect' data-bind="options: dlvrs, optionsText:'name', optionsValue:$data, value:chosenDlvr, event:{ change:$root.changeDlvr}">
                                         </select>
                                     </div>
-                                    <div class="bSelectWrap mFastInpSmall">
+                                    <div class="bSelectWrap mFastInpSmall" data-bind="css: { mDisabled : disabledSelectors() }">
                                         <span class="bSelectWrap_eText" data-bind="text: chosenDate().name"></span>
-                                        <select class='bSelect' data-bind="options: dates, optionsText:'name', optionsValue:$data, value:chosenDate, css: { mDisabled : disabledSelectors() }, event:{ change:$root.pickDate}">
+                                        <select class='bSelect' data-bind="options: dates, optionsText:'name', optionsValue:$data, value:chosenDate, event:{ change:$root.pickDate}">
                                         </select>
                                     </div>
                                 </td></tr>
