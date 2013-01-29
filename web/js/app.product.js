@@ -96,7 +96,7 @@ $(document).ready(function() {
 		          <a class="bSimilarGoodsSlider_eGoodsImg fl" href="'+data[item].link+'"><img width="83" height="83" src="'+data[item].image+'"/></a>
 		          <div class="bSimilarGoodsSlider_eGoodsInfo fl">
 		            <div class="goodsbox__rating rate'+data[item].rating+'"><div class="fill"></div></div>
-		            <h3><a href="#">'+data[item].name+'</a></h3>
+		            <h3><a href="'+data[item].link+'">'+data[item].name+'</a></h3>
 		            <div class="font18 pb10 mSmallBtns"><span class="price">'+data[item].price+'</span> <span class="rubl">p</span></div>
 		          </div>
 		        </div>')
