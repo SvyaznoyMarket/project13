@@ -79,24 +79,39 @@ $(document).ready(function() {
 	/* вывод слайдера со схожими товарами, если товар доступен только на витрине*/
 	if ( $('#similarGoodsSlider').length){
 
-        $.ajax({
-            url: $('#similarGoodsSlider').data('url'),
-            timeout: 20000
-        })
-
 		// основные элементы
 		var similarSlider = $('#similarGoodsSlider')
 		var similarWrap = similarSlider.find('.bSimilarGoodsSlider_eWrap')
-		var similarGoods = similarSlider.find('.bSimilarGoodsSlider_eGoods')
 		var similarArrow = similarSlider.find('.bSimilarGoodsSlider_eArrow')
 
-		// init
-		var slidesCount = similarGoods.length
-		var sliderW = similarSlider.width()
-		var slidesW = similarGoods.width()
-		var wrapW = slidesW * slidesCount
+		var slidesW = 250
+		var sliderW = 0
+		var slidesCount = 0
+		var wrapW = 0
 		var left = 0
-		similarWrap.width(wrapW)
+		// init
+		$.getJSON( $('#similarGoodsSlider').data('url') , function(data){
+        	for (var item in data){
+        		similarWrap.append('<div class="bSimilarGoodsSlider_eGoods fl">
+		          <a class="bSimilarGoodsSlider_eGoodsImg fl" href="'+data[item].link+'"><img width="83" height="83" src="'+data[item].image+'"/></a>
+		          <div class="bSimilarGoodsSlider_eGoodsInfo fl">
+		            <div class="goodsbox__rating rate'+data[item].rating+'"><div class="fill"></div></div>
+		            <h3><a href="#">'+data[item].name+'</a></h3>
+		            <div class="font18 pb10 mSmallBtns"><span class="price">'+data[item].price+'</span> <span class="rubl">p</span></div>
+		          </div>
+		        </div>')
+        	}
+		}).done(function(){
+			var similarGoods = similarSlider.find('.bSimilarGoodsSlider_eGoods')
+			slidesCount = similarGoods.length
+			wrapW = slidesW * slidesCount
+			similarWrap.width(wrapW)
+			if (slidesCount > 0){
+				$('.bSimilarGoods').fadeIn(300, function(){
+					sliderW = similarSlider.width()
+				})
+			}
+		})
 		
 		similarArrow.bind('click', function(){
 			if ($(this).hasClass('mLeft')){

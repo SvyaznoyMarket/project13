@@ -4867,6 +4867,7 @@
     background: #ffffff;
     border-bottom: 1px solid #e6e6e6;
     border-top: 1px solid #e6e6e6;
+    display: none;
     margin: 10px 0 30px;
     width: 100%;
   }
