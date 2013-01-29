@@ -13,6 +13,9 @@ $c->mobileHost = 'm.ent3.ru';
 
 $c->smartEngine['pull'] = true;
 $c->smartEngine['push'] = false;
+$c->smartEngine['api_url'] = 'https://selightstage.smartengine.at/se-light/api/1.0/json/';
+$c->smartEngine['cert'] = $c->dataDir . '/cert/gsorganizationvalg2.crt';
+$c->smartEngine['ssl_verify'] = false;
 
 $c->warranty['enabled'] = true;
 
@@ -25,7 +28,5 @@ $c->paymentPsb['payUrl'] = 'http://193.200.10.117:8080/cgi-bin/cgi_link';
 $c->paymentPsbInvoice['contractorId'] = 14;
 $c->paymentPsbInvoice['key'] = $c->dataDir . '/key/privkey.pem';
 $c->paymentPsbInvoice['payUrl'] = 'https://retail-tst.payment.ru/dn/Invoices/ReceiveUniversalInvoices.aspx';
-
-$c->smartEngine['cert'] = $c->dataDir . '/cert/gsorganizationvalg2.crt';
 
 return $c;

@@ -78,7 +78,12 @@ $(document).ready(function() {
 
 	/* вывод слайдера со схожими товарами, если товар доступен только на витрине*/
 	if ( $('#similarGoodsSlider').length){
-		
+
+        $.ajax({
+            url: $('#similarGoodsSlider').data('url'),
+            timeout: 20000
+        })
+
 		// основные элементы
 		var similarSlider = $('#similarGoodsSlider')
 		var similarWrap = similarSlider.find('.bSimilarGoodsSlider_eWrap')

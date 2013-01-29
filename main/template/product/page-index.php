@@ -76,15 +76,16 @@
 </script>
 
 <!-- похожие товары -->
-<? if (!$product->getIsBuyable() && $product->getState()->getIsShop()): ?>
+<? if (/*!$product->getIsBuyable() && $product->getState()->getIsShop()  && */\App::config()->smartEngine['pull']): ?>
 <div class="clear"></div>
+
 <div class="lifted">
   <div class="bSimilarGoods clearfix">
     <div class="bSimilarGoods_eCorner"><div></div></div>
     <div class="bSimilarGoods_eLeftCaption fl">
       Товар есть только в&nbsp;магазинах. Вы&nbsp;можете заказать похожий товар
     </div>
-    <div id="similarGoodsSlider" class="bSimilarGoodsSlider">
+    <div id="similarGoodsSlider" class="bSimilarGoodsSlider" data-url="<?= $page->url('smartengine.pull.product_similar', array('productId' => $product->getId())) ?>">
       <a class="bSimilarGoodsSlider_eArrow mLeft" href="#"></a>
       <a class="bSimilarGoodsSlider_eArrow mRight" href="#"></a>
       <div class="bSimilarGoodsSlider_eWrap">

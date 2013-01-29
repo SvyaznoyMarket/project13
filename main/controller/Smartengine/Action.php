@@ -114,6 +114,71 @@ class Action {
         }
     }
 
+    public function pullProductSimilar(\Http\Request $request, $productId) {
+        try {
+            $product = \RepositoryManager::product()->getEntityById($productId);
+            if (!$product) {
+                return new \Http\Response('');
+            }
+
+            $client = \App::smartengineClient();
+            $user = \App::user()->getEntity();
+
+            $params = array(
+                'sessionid'         => session_id(),
+                'itemid'            => $product->getId(),
+                'assoctype'         => 'IS_SIMILAR',
+                'numberOfResults'   => 15,
+            );
+            if ($user) {
+                $params['userid'] = $user->getId();
+            }
+            $params['itemtype'] = $product->getMainCategory()->getId();
+            $r = $client->query('relateditems', $params);
+
+            if (isset($r['error'])) {
+                //$this->getLogger()->err('Smartengine: error #'.$r['error']['@code'].' '.$r['error']['@message']);
+
+                return new \Http\Response('');
+            }
+            if (!(bool)$r['recommendeditems']) {
+                return new \Http\JsonResponse('');
+            }
+
+            $ids =
+                array_key_exists('id', $r['recommendeditems']['item'])
+                    ? array($r['recommendeditems']['item']['id'])
+                    : array_map(function($item) { return $item['id']; }, isset($r['recommendeditems']['item']) ? $r['recommendeditems']['item'] : array());
+            if (!count($ids)) {
+                return new \Http\Response('');
+            }
+
+            $products = \RepositoryManager::product()->getCollectionById($ids);
+
+            $return = array();
+            foreach ($products as $product) {
+                if (!$product->getIsBuyable()) continue;
+
+                $return[] = array(
+                    'id' => $product->getId(),
+                    'name' => $product->getName(),
+                    'image' => $product->getImageUrl(),
+                    'rating' => $product->getRating(),
+                    'link' => $product->getLink(),
+                    'price' => $product->getPrice(),
+                );
+            }
+            if (!count($return)) {
+                return new \Http\Response('');
+            }
+
+            return new \Http\JsonResponse($return);
+
+        } catch(Exception $e) {
+            return new \Http\Response('');
+        }
+    }
+
 
     private function getDbh() {
         if (!$this->dbh) {

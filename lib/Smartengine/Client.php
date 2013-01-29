@@ -98,7 +98,7 @@ class Client {
         \App::logger()->info('Start smartengine ' . $action . ' query: ' . $query);
 
         $connection = curl_init();
-        curl_setopt($connection, CURLOPT_SSL_VERIFYPEER, true);
+        curl_setopt($connection, CURLOPT_SSL_VERIFYPEER, $this->config['ssl_verify']);
         if ($this->config['cert']) {
             curl_setopt($connection, CURLOPT_CAINFO, $this->config['cert']);
         }

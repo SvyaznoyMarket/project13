@@ -314,6 +314,11 @@ return array(
         'action' => array('Smartengine\Action', 'pullProductAlsoViewed'),
         'require' => array('productId' => '\d+'),
     ),
+    'smartengine.pull.product_similar' => array(
+        'pattern' => '/product-similar/{productId}',
+        'action' => array('Smartengine\Action', 'pullProductSimilar'),
+        'require' => array('productId' => '\d+'),
+    ),
     'smartengine.push.product_view' => array(
         'pattern' => '/product-view/{productId}',
         'action' => array('Smartengine\Action', 'pushView'),
