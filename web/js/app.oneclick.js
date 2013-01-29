@@ -402,7 +402,7 @@ $(document).ready(function() {
 							$('.bFastInner tbody tr:last').append('<td colspan="2" class="red">'+data.message+'</td>')
 							return
 						}
-						console.log(data)
+						// console.log(data)
 						//process
 						$('.bFast').parent().append( data.data.content )
 						$('.bFast').remove()

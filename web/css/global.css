@@ -2650,6 +2650,9 @@
     padding-left: 15px;
     padding-right: 15px;
   }
+  .bFormSave {
+    padding: 20px 0 0;
+  }
 }
 /*окно с выбором магазина*/
 @media all {

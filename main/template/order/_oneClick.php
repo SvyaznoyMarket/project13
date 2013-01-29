@@ -12,13 +12,12 @@
 <div style="width: 900px;">
 
     <div class="bFormSave">
-        <h2>Номер вашего заказа: <?= $order->getNumber() ?></h2>
-
-        <p>
-            Дата заказа: <?= $page->helper->humanizeDate(new \DateTime()) ?>.
-            <br>Сумма заказа: <?= $page->helper->formatPrice($order->getSum()) ?> <span class="rubl">p</span>
-        </p>
-        <span>Спасибо за размещение заказа! Оператор подтвердит его звонком или смс на Ваш контактный номер!</span>
+        <h2>Ваш заказ принят, спасибо!</h2>
+        <p class="font19">Номер заказа: <?= $order->getNumber() ?></p>
+        <p class="font16">Дата заказа: <?= $page->helper->humanizeDate(new \DateTime()) ?></p>
+        <p class="font16">Сумма заказа: <?= $page->helper->formatPrice($order->getSum()) ?> <span class="rubl">p</span></p>
+        <div class="line"></div>
+        <p class="font14">Спасибо за размещение заказа! Оператор подтвердит его звонком или смс на Ваш контактный номер!</p>
     </div>
 
     <? if (\App::config()->analytics['enabled']): ?>
@@ -93,11 +92,11 @@
         }
     </script>
 
-    <div class="line"></div>
+    <!-- <div class="line"></div> -->
 
     <div class="bFormB2">
-        <div class="fr">
-            <a href="<?= $page->url('homepage') ?>" onclick="$('#order1click-container-new').trigger('close'); return false">Продолжить покупки</a> <span>&gt;</span>
+        <div class="ac mb25">
+            <a class="bBigOrangeButton" href="<?= $page->url('homepage') ?>" onclick="$('#order1click-container-new').trigger('close'); return false">Продолжить покупки</a>
         </div>
     </div>
 
