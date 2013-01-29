@@ -9,6 +9,8 @@ $c->coreV2['url'] = 'http://api.enter.ru/v2/';
 
 $c->wordpress['url'] = 'http://content.enter.ru/';
 
+$c->dataStore['url'] = 'http://api.enter.ru/';
+
 $c->analytics['enabled'] = true;
 $c->googleAnalytics['enabled'] = true;
 $c->yandexMetrika['enabled'] = true;

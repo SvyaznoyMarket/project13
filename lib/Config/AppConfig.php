@@ -52,6 +52,10 @@ class AppConfig {
         'url' => null,
     );
     /** @var array */
+    public $dataStore = array(
+        'url' => null,
+    );
+    /** @var array */
     public $company = array(
         'phone' => null,
         'icq'   => null,

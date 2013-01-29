@@ -233,6 +233,20 @@ class App {
 
     /**
      * @static
+     * @return \DataStore\Client
+     */
+    public static function dataStoreClient() {
+        static $instance;
+
+        if (!$instance) {
+            $instance = new \DataStore\Client(\App::config()->dataStore, self::curl());
+        }
+
+        return $instance;
+    }
+
+    /**
+     * @static
      * @return \Smartengine\Client
      */
     public static function smartengineClient() {

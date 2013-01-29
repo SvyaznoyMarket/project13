@@ -308,6 +308,13 @@ return array(
         'action'  => array('Service\Action', 'show'),
     ),
 
+    // промо каталоги
+    'promo.show' => array(
+        'pattern' => '/promo/{promoToken}',
+        'require' => array('categoryToken' => '[\w\d-_]+'),
+        'action'  => array('Promo\IndexAction', 'execute'),
+    ),
+
     // smartengine
     'smartengine.pull.product_alsoViewed' => array(
         'pattern' => '/product-also-viewed/{productId}',

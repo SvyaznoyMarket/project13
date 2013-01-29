@@ -208,4 +208,17 @@ class RepositoryManager {
 
         return $instance;
     }
+
+    /**
+     * @return Model\Promo\Repository
+     */
+    static function promo() {
+        static $instance;
+
+        if (!$instance) {
+            $instance = new \Model\Promo\Repository(\App::dataStoreClient());
+        }
+
+        return $instance;
+    }
 }
