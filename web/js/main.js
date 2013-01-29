@@ -39,6 +39,10 @@ $(document).ready(function(){
 			regBtn.bind('click', function(){
 				if (!register)
 					return false
+				if ( typeof(_gaq) !== 'undefined' ){
+					var type = (chEmail)?'email':'mobile'
+					_gaq.push(['_trackEvent', 'Account', 'Create account', type])
+				}
 			})
 
 			mailPhoneInput.bind('keyup',function(e){
@@ -301,6 +305,12 @@ $(document).ready(function(){
 		
 		function authFromServer(response) {
           if ( response.success ) {
+          	if ('login-form' == form.attr('id')){
+          		if ( typeof(_gaq) !== 'undefined' ){
+					var type = ((form.find('#signin_username').val().search('@')) != -1)?'email':'mobile'
+					_gaq.push(['_trackEvent', 'Account', 'Log in', type, window.location.href]);
+				}
+          	}
             if ( form.data('redirect') ) {
               if (response.url) {
                 window.location = response.url
@@ -355,6 +365,10 @@ $(document).ready(function(){
 		form.find('.whitebutton').attr('disabled', 'disabled')
 		$.post(form.prop('action'), form.serializeArray(), function(resp){
 			if (resp.success === true) {
+				if ( typeof(_gaq) !== 'undefined' ){
+					var type = ((form.find('input.text').val().search('@')) != -1)?'email':'mobile'
+					_gaq.push(['_trackEvent', 'Account', 'Forgot password', type])
+				}
 				//$('#reset-pwd-form').hide();
 				//$('#login-form').show();
 				//alert('Новый пароль был вам выслан по почте или смс');
