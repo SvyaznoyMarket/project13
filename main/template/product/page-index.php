@@ -76,7 +76,7 @@
 </script>
 
 <!-- похожие товары -->
-<? if (/*!$product->getIsBuyable() && $product->getState()->getIsShop()  && */\App::config()->smartEngine['pull']): ?>
+<? if (!$product->getIsBuyable() && $product->getState()->getIsShop()  && \App::config()->smartEngine['pull']): ?>
 <div class="clear"></div>
 
 <div class="lifted">
