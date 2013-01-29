@@ -2246,6 +2246,22 @@
   .bSubscibe.checked b {
     background-position: 0 -54px;
   }
+  .registerAnotherWayBtn {
+    color: #a6a6a6;
+    border-bottom: 1px dotted;
+    margin-right: 20px;
+  }
+  .registerAnotherWayBtn:hover {
+    text-decoration: none;
+  }
+  .registerPhonePH {
+    display: none;
+    margin: 3px 10px;
+    position: absolute;
+  }
+  .registerPhone {
+    padding-left: 30px;
+  }
 }
 /*большое окно в карточке товара*/
 @media all {

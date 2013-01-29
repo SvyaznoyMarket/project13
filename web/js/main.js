@@ -2,17 +2,84 @@ $(document).ready(function(){
 	function regEmailValid(){
 		/*register e-mail check*/
 		if ($('#register_username').length){
-			if (($('#register_username').val().search('@')) != -1){
-				$('#register_username').parents('#register-form').find('.bSubscibe').show()
-			}
-			$('#register_username').bind('keyup',function(){
-				if (($(this).val().search('@')) != -1){
-					$(this).parents('#register-form').find('.bSubscibe').show()
+			var chEmail = true // проверяем ли как e-mail
+			var register = false
+			var firstNameInput = $('#register_first_name')
+			var mailPhoneInput = $('#register_username')
+			var subscibe = mailPhoneInput.parents('#register-form').find('.bSubscibe')
+			var regBtn = mailPhoneInput.parents('#register-form').find('.bigbutton')
+
+			subscibe.show()
+
+			// переключение типов проверки
+			$('.registerAnotherWayBtn').bind('click', function(){
+				if (chEmail){
+					chEmail = false
+					$('.registerAnotherWay').html('Ваш мобильный телефон')
+					$('.registerAnotherWayBtn').html('Ввести e-mail')
+					mailPhoneInput.attr('maxlength', 10)
+					mailPhoneInput.addClass('registerPhone')
+					$('.registerPhonePH').show()
+					subscibe.hide()
 				}
-				else if ($(this).parents('#register-form').find('.bSubscibe').is(":visible")){
-					$(this).parents('#register-form').find('.bSubscibe').hide()
+				else{
+					chEmail = true
+					$('.registerAnotherWay').html('Ваш e-mail')
+					$('.registerAnotherWayBtn').html('У меня нет e-mail')
+					mailPhoneInput.removeAttr('maxlength')
+					mailPhoneInput.removeClass('registerPhone')
+					$('.registerPhonePH').hide()
+					subscibe.show()
 				}
+				mailPhoneInput.val('')
+				register = false
+				regBtn.addClass('mDisabled')
 			})
+
+			regBtn.bind('click', function(){
+				if (!register)
+					return false
+			})
+
+			mailPhoneInput.bind('keyup',function(e){
+				checkInputs(e)
+			})
+			firstNameInput.bind('keyup',function(){
+				checkInputs()
+			})
+			// проверка заполненности инпутов
+			var checkInputs = function(e){
+				if (chEmail){ // проверяем как e-mail
+					if ( ((mailPhoneInput.val().search('@')) != -1)&&(firstNameInput.val().length>0) ){
+						register = true
+						regBtn.removeClass('mDisabled')
+					}
+					else{
+						register = false
+						regBtn.addClass('mDisabled')
+					}
+				}
+				else{ // проверяем как телефон
+					subscibe.hide()
+					if ( ((e.which>=96)&&(e.which<=105))||((e.which>=48)&&(e.which<=57))||(e.which==8) ){ //если это цифра или бэкспэйс
+
+					}
+					else{
+						//если это не цифра
+						var clearVal = mailPhoneInput.val().replace(/\D/g,'')
+						mailPhoneInput.val(clearVal)
+					}
+					if ( (mailPhoneInput.val().length == 10)&&(firstNameInput.val().length>0) ){
+						regBtn.removeClass('mDisabled')
+						register = true
+					}
+					else{
+						register = false
+						regBtn.addClass('mDisabled')
+					}
+				}
+			}
+
 		}
 		/*subscribe*/
 		if ($('.bSubscibe').length){

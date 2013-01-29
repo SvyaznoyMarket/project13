@@ -24,17 +24,19 @@ if (!isset($form)) $form = new \View\User\RegistrationForm();
             <? if ($error = $form->getError('first_name')) echo $page->render('_formError', array('error' => $error)) ?>
             <input required="required" type="text" id="register_first_name" class="text width315 mb10" name="register[first_name]" value="<?= $form->getFirstName() ?>" tabindex="5"/>
         </div>
-        <div class="pb5">E-mail или мобильный телефон:</div>
+        <div class="pb5 clearfix"><span class="registerAnotherWay">Ваш e-mail</span>:<a class="registerAnotherWayBtn font10 fr" href="#">У меня нет e-mail</a></div>
         <div class="pb5">
             <? if ($error = $form->getError('username')) echo $page->render('_formError', array('error' => $error)) ?>
+            <span class="registerPhonePH">+7</span>
             <input required="required" type="text" id="register_username" class="text width315 mb10" name="register[username]" value="<?= $form->getUsername() ?>" tabindex="6"/>
+            
         </div>
         <label class="bSubscibe fl checked">
             <b></b> Хочу знать об интересных<br />предложениях
             <input type="checkbox" name="subscribe" value="1" autocomplete="off" class="subscibe" checked="checked" />
 
         </label>
-        <input type="submit" class="fr button bigbutton" value="Регистрация" tabindex="10"/>
+        <input type="submit" class="fr button bigbutton mDisabled" value="Регистрация" tabindex="10"/>
         <div class="clear"></div>
         <p>Нажимая кнопку «Регистрация», я подтверждаю свое согласие с <a class="underline" href="/terms">Условиями продажи...</a></p>
         <? if (\App::config()->user['corporateRegister']): ?>

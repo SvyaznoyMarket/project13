@@ -205,7 +205,7 @@ $(document).ready(function() {
     $("#order_recipient_phonenumbers").focusin(function(){
     	$(this).attr('maxlength','10')
     	$(this).bind('keyup',function(e){
-			if (((e.which>=48)&&(e.which<=57))||(e.which==8)){//если это цифра или бэкспэйс
+			if ( ((e.which>=96)&&(e.which<=105))||((e.which>=48)&&(e.which<=57))||(e.which==8) ){//если это цифра или бэкспэйс
 				//
 			}
 			else{
