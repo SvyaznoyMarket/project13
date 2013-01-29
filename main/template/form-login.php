@@ -23,16 +23,16 @@ if (!isset($form)) $form = new \View\User\LoginForm();
         <div class="pb5">E-mail или мобильный телефон:</div>
         <div class="pb5">
             <? if ($error = $form->getError('username')) echo $page->render('_formError', array('error' => $error)) ?>
-            <input required="required" type="text" id="signin_username" class="text width315 mb10" value="<?= $form->getUsername() ?>" name="signin[username]"/>
+            <input required="required" type="text" id="signin_username" class="text width315 mb10" tabindex="1" value="<?= $form->getUsername() ?>" name="signin[username]"/>
         </div>
 
         <div class="pb5">
-            <a id="forgot-pwd-trigger" href="<?= $page->url('user.forgot') ?>" class="fr orange underline">Забыли пароль?</a>
+            <a id="forgot-pwd-trigger" href="<?= $page->url('user.forgot') ?>" class="fr orange underline" tabindex="2">Забыли пароль?</a>
             Пароль:
         </div>
         <div class="pb5">
             <? if ($error = $form->getError('password')) echo $page->render('_formError', array('error' => $error)) ?>
-            <input required="required" type="password" id="signin_password" class="text width315 mb10" name="signin[password]"/>
+            <input required="required" type="password" id="signin_password" class="text width315 mb10" name="signin[password]" tabindex="3"/>
         </div>
 
         <input type="submit" class="fr button bigbutton" value="Войти" tabindex="4"/>
