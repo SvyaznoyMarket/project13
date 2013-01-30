@@ -5,6 +5,10 @@ class Action {
     /** @var  \PDO */
     private $dbh = null;
 
+    /**
+     * @param \Http\Request $request
+     * @return \Http\JsonResponse
+     */
     public function pushBuy(\Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
@@ -12,63 +16,76 @@ class Action {
 
         try {
             $user = \App::user()->getEntity();
-            $data = array(
+            $data = [
                 'host'        => $request->getHost(),
                 'time'        => date('d_m_Y_H_i_s'),
                 'sessionid'   => session_id(),
                 'user_id'     => $user ? $user->getId() : null,
                 'order'       => $order,
-            );
+            ];
 
             $this->getDbh()->exec("INSERT INTO `queue` (`name`, `body`) VALUES ('smartengine.buy', '".addslashes(json_encode($data, JSON_HEX_APOS | JSON_HEX_QUOT))."')");
 
-            return new \Http\JsonResponse(array('success' => true, ));
+            return new \Http\JsonResponse(['success' => true]);
         }
         catch (\Exception $e) {
-            return new \Http\JsonResponse(array('success' => false, 'data' => $e->getMessage()));
+            return new \Http\JsonResponse(['success' => false, 'data' => $e->getMessage()]);
         }
     }
 
+    /**
+     * @param \Http\Request $request
+     * @param int $productId
+     * @return \Http\JsonResponse
+     */
     public function pushView(\Http\Request $request, $productId) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
 
         if (!$productId)
-            return new \Http\JsonResponse(array('success' => false, 'data' => 'Не найден товар ' . $request->request->getInt('productId')));
+            return new \Http\JsonResponse(['success' => false, 'data' => 'Не найден товар ' . $request->request->getInt('productId')]);
 
         try {
             $user = \App::user()->getEntity();
-            $data = array(
+            $data = [
                 'host'       => $request->getHost(),
                 'time'       => date('d_m_Y_H_i_s'),
                 'sessionid'  => session_id(),
                 'product_id' => (int)$productId,
                 'user_id'    => $user ? $user->getId() : null,
-            );
+            ];
 
             $this->getDbh()->exec("INSERT INTO `queue` (`name`, `body`) VALUES ('smartengine.view', '".addslashes(json_encode($data, JSON_HEX_APOS | JSON_HEX_QUOT))."')");
 
-            return new \Http\JsonResponse(array('success' => true, ));
+            return new \Http\JsonResponse(['success' => true]);
         }
         catch (\Exception $e) {
-            return new \Http\JsonResponse(array('success' => false, 'data' => $e->getMessage()));
+            return new \Http\JsonResponse(['success' => false, 'data' => $e->getMessage()]);
         }
     }
 
+    /**
+     * @param \Http\Request $request
+     * @param int $productId
+     * @return \Http\Response
+     * @throws \Exception
+     */
     public function pullProductAlsoViewed(\Http\Request $request, $productId) {
+        \App::logger()->debug('Exec ' . __METHOD__);
+
         try {
             $product = \RepositoryManager::product()->getEntityById($productId);
             if (!$product) {
-                return new \Http\Response('');
+                throw new \Exception(sprintf('Товар #%s не найден', $productId));
             }
 
             $client = \App::smartengineClient();
             $user = \App::user()->getEntity();
 
-            $params = array(
-                'sessionid'         => session_id(),
-                'itemid'            => $product->getId(),
-            );
+            $params = [
+                'sessionid' => session_id(),
+                'itemid'    => $product->getId(),
+            ];
             if ($user) {
                 $params['userid'] = $user->getId();
             }
@@ -76,20 +93,19 @@ class Action {
             $r = $client->query('otherusersalsoviewed', $params);
 
             if (isset($r['error'])) {
-                //$this->getLogger()->err('Smartengine: error #'.$r['error']['@code'].' '.$r['error']['@message']);
-
-                return new \Http\Response();
+                if (isset($r['error'])) {
+                    throw new \Exception($r['error']['@message'] . ': '. json_encode($r, JSON_UNESCAPED_UNICODE), (int)$r['error']['@code']);
+                }
             }
             if (!(bool)$r['recommendeditems']) {
-                return new \Http\Response('');
+                throw new \Exception();
             }
 
-            $ids =
-                array_key_exists('id', $r['recommendeditems']['item'])
-                    ? array($r['recommendeditems']['item']['id'])
-                    : array_map(function($item) { return $item['id']; }, isset($r['recommendeditems']['item']) ? $r['recommendeditems']['item'] : array());
+            $ids = array_key_exists('id', $r['recommendeditems']['item'])
+                ? [$r['recommendeditems']['item']['id']]
+                : array_map(function($item) { return $item['id']; }, isset($r['recommendeditems']['item']) ? $r['recommendeditems']['item'] : []);
             if (!count($ids)) {
-                return new \Http\Response('');
+                throw new \Exception();
             }
 
             $products = \RepositoryManager::product()->getCollectionById($ids);
@@ -97,39 +113,49 @@ class Action {
                 if (!$product->getIsBuyable()) unset($products[$i]);
             }
             if (!count($products)) {
-                return new \Http\Response('');
+                throw new \Exception();
             }
 
-            return new \Http\Response(\App::templating()->render('product/_slider', array(
-                'page'   => new \View\Layout(),
-                'productList'  => array_values($products),
-                'title'    => 'С этим товаром также смотрят',
+            return new \Http\Response(\App::templating()->render('product/_slider', [
+                'page'          => new \View\Layout(),
+                'productList'   => array_values($products),
+                'title'         => 'С этим товаром также смотрят',
                 'itemsInSlider' => 5,
                 'totalProducts' => count($products),
-                'url' => '',
-                'gaEvent'    => 'SmartEngine',
-            )));
-        } catch(Exception $e) {
-            return new \Http\Response('');
+                'url'           => '',
+                'gaEvent'       => 'SmartEngine',
+            ]));
+        } catch (\Exception $e) {
+            \App::logger()->error($e);
+
+            return new \Http\Response();
         }
     }
 
+    /**
+     * @param \Http\Request $request
+     * @param int $productId
+     * @return \Http\JsonResponse
+     * @throws \Exception
+     */
     public function pullProductSimilar(\Http\Request $request, $productId) {
+        \App::logger()->debug('Exec ' . __METHOD__);
+
         try {
             $product = \RepositoryManager::product()->getEntityById($productId);
             if (!$product) {
-                return new \Http\Response('');
+                throw new \Exception(sprintf('Товар #%s не найден', $productId));
             }
 
             $client = \App::smartengineClient();
             $user = \App::user()->getEntity();
 
-            $params = array(
-                'sessionid'         => session_id(),
-                'itemid'            => $product->getId(),
-                'assoctype'         => 'IS_SIMILAR',
-                'numberOfResults'   => 15,
-            );
+            $params = [
+                'sessionid'       => session_id(),
+                'itemid'          => $product->getId(),
+                'assoctype'       => 'IS_SIMILAR',
+                'numberOfResults' => 15,
+            ];
             if ($user) {
                 $params['userid'] = $user->getId();
             }
@@ -137,54 +163,53 @@ class Action {
             $r = $client->query('relateditems', $params);
 
             if (isset($r['error'])) {
-                //$this->getLogger()->err('Smartengine: error #'.$r['error']['@code'].' '.$r['error']['@message']);
-
-                return new \Http\Response('');
+                throw new \Exception($r['error']['@message'] . ': '. json_encode($r, JSON_UNESCAPED_UNICODE), (int)$r['error']['@code']);
             }
             if (!(bool)$r['recommendeditems']) {
-                return new \Http\JsonResponse('');
+                throw new \Exception();
             }
 
-            $ids =
-                array_key_exists('id', $r['recommendeditems']['item'])
-                    ? array($r['recommendeditems']['item']['id'])
-                    : array_map(function($item) { return $item['id']; }, isset($r['recommendeditems']['item']) ? $r['recommendeditems']['item'] : array());
+            $ids = array_key_exists('id', $r['recommendeditems']['item'])
+                ? [$r['recommendeditems']['item']['id']]
+                : array_map(function($item) { return $item['id']; }, isset($r['recommendeditems']['item']) ? $r['recommendeditems']['item'] : []);
             if (!count($ids)) {
-                return new \Http\Response('');
+                throw new \Exception();
             }
 
             $products = \RepositoryManager::product()->getCollectionById($ids);
 
-            $return = array();
+            $return = [];
             foreach ($products as $product) {
                 if (!$product->getIsBuyable()) continue;
 
-                $return[] = array(
-                    'id' => $product->getId(),
-                    'name' => $product->getName(),
-                    'image' => $product->getImageUrl(),
+                $return[] = [
+                    'id'     => $product->getId(),
+                    'name'   => $product->getName(),
+                    'image'  => $product->getImageUrl(),
                     'rating' => $product->getRating(),
-                    'link' => $product->getLink(),
-                    'price' => $product->getPrice(),
-                );
+                    'link'   => $product->getLink(),
+                    'price'  => $product->getPrice(),
+                ];
             }
             if (!count($return)) {
-                return new \Http\Response('');
+                throw new \Exception();
             }
 
             return new \Http\JsonResponse($return);
 
-        } catch(Exception $e) {
-            return new \Http\Response('');
+        } catch (\Exception $e) {
+            \App::logger()->error($e);
+
+            return new \Http\JsonResponse();
         }
     }
 
 
     private function getDbh() {
         if (!$this->dbh) {
-            $this->dbh = new \PDO(sprintf('mysql:dbname=%s;host=%s', \App::config()->database['name'], \App::config()->database['host']), \App::config()->database['user'], \App::config()->database['password'], array(
+            $this->dbh = new \PDO(sprintf('mysql:dbname=%s;host=%s', \App::config()->database['name'], \App::config()->database['host']), \App::config()->database['user'], \App::config()->database['password'], [
                 \PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8',
-            ));
+            ]);
         }
 
         return $this->dbh;
