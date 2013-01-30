@@ -290,7 +290,7 @@ window.ANALYTICS = {
 
     myThingsTracker: function() {
         //трекинг от MyThings. Вызывается при загрузке внешнего скрипта
-        windows._mt_ready = function (){
+        window._mt_ready = function (){
             if (typeof(MyThings) != "undefined") {
                 var sendData = $('#myThingsTracker').data('value')
                 if (!$.isArray(sendData)) {
