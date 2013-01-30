@@ -148,7 +148,6 @@ $(document).ready(function() {
 	if ($('.goodsphoto_eVideoShield').length){
 		var shield = $('.goodsphoto_eVideoShield')
 		shield.bind('click', function(){
-			console.log('video shield click')
 			$('#productVideo').lightbox_me({ 
 				centered: true,
 				onLoad: function() {
