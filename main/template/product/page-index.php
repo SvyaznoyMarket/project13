@@ -96,6 +96,7 @@
 <? endif ?>
 
 <div class="goodsphoto">
+  <a class="goodsphoto_eVideoShield" href="#"></a>
   <a href="<?= $product->getImageUrl(4) ?>" class="viewme" ref="image" onclick="return false">
     <? if ($product->getLabel()): ?>
     <img class="bLabels" src="<?= $product->getLabel()->getImageUrl(1) ?>" alt="<?= $product->getLabel()->getName() ?>" />
@@ -475,6 +476,9 @@
 <!-- /shopPopup -->
 <?php endif; ?>
 
+<div id="productVideo" class="blackPopup">
+  <div class="close"></div>
+</div>
 
 <div id="ajaxgoods" class="popup width230" style="display: none">
   <div  style="padding: 15px 15px 20px 5px">

@@ -2105,6 +2105,23 @@
     top: 0;
     width: 26px;
   }
+  .blackPopup {
+    background: #000000;
+    color: #ffffff;
+    position: relative;
+    text-align: left;
+  }
+  .blackPopup .close {
+    background: url("/css/common/img/closeBtnOrange.png") no-repeat 0 0;
+    cursor: pointer;
+    display: block;
+    height: 26px;
+    position: absolute;
+    right: 0;
+    text-indent: -10000px;
+    top: 0;
+    width: 26px;
+  }
 }
 /*окно с выбором региона*/
 @media all {
@@ -4415,6 +4432,18 @@
     padding-bottom: 10px;
     position: relative;
     width: 500px;
+  }
+  .goodsphoto_eVideoShield {
+    background: url('/css/item/img/videoStiker.png') no-repeat 0 0;
+    position: absolute;
+    height: 85px;
+    right: 25px;
+    top: 0px;
+    width: 100px;
+    z-index: 3;
+  }
+  .goodsphoto_eVideoShield:hover {
+    background: url('/css/item/img/videoStikerHover.png') no-repeat 0 0;
   }
   .bGood__eArticle {
     border-bottom: 1px solid #e6e6e6;
