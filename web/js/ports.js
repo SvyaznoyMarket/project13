@@ -289,8 +289,25 @@ window.ANALYTICS = {
     },
 
     myThingsTracker: function() {
-        var mtHost = (("https:" == document.location.protocol) ? "https" : "http") + "://rainbow-ru.mythings.com";
-        var mtAdvertiserToken = "1989-100-ru";
+        //трекинг от MyThings. Вызывается при загрузке внешнего скрипта
+        windows._mt_ready = function (){
+            if (typeof(MyThings) != "undefined") {
+                var sendData = $('#myThingsTracker').data('value')
+                if (!$.isArray(sendData)) {
+                    sendData = [sendData];
+                }
+
+                $.each(sendData, function(i, e) {
+                    if (e.EventType !== "undefined") {
+                        e.EventType = eval(e.EventType)
+                    }
+                    MyThings.Track(e)
+                })
+            }
+        }
+
+        mtHost = (("https:" == document.location.protocol) ? "https" : "http") + "://rainbow-ru.mythings.com";
+        mtAdvertiserToken = "1989-100-ru";
         document.write(unescape("%3Cscript src='" + mtHost + "/c.aspx?atok="+mtAdvertiserToken+"' type='text/javascript'%3E%3C/script%3E"));
     },
 
@@ -298,23 +315,6 @@ window.ANALYTICS = {
 }
 
 ANALYTICS.parseAllAnalDivs( $('.jsanalytics') )
-
-//трекинг от MyThings. Вызывается при загрузке внешнего скрипта
-function _mt_ready(){
-    if (typeof(MyThings) != "undefined") {
-        var sendData = $('#myThingsTracker').data('value')
-        if (!$.isArray(sendData)) {
-            sendData = [sendData];
-        }
-
-        $.each(sendData, function(i, e) {
-            if (e.EventType !== "undefined") {
-                e.EventType = eval(e.EventType)
-            }
-            MyThings.Track(e)
-        })
-    }
-}
 
 var ADFOX = {
 	adfoxbground : function() {
