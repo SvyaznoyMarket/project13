@@ -1,12 +1,13 @@
 <?php
 /**
- * @var $page  \View\DefaultLayout
- * @var $promo \Model\Promo\Entity
+ * @var $page      \View\DefaultLayout
+ * @var $promo     \Model\Promo\Entity
+ * @var $slideData array
  */
 ?>
 
 <!-- promo catalog -->
-<div id="promoCatalog" class="bPromoCatalog">
+<div id="promoCatalog" class="bPromoCatalog" data-slides="<?= $page->json($slideData) ?>">
 
     <script type="text/html" id="slide_tmpl">
         <div class="bPromoCatalogSliderWrap_eSlide">

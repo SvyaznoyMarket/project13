@@ -1,0 +1,23 @@
+{
+    "name": "Зима 2013",
+    "image": [
+        {
+            "name": "slide1",
+            "url": "http://content.enter.ru/wp-content/uploads/2013/01/slide1.jpg",
+            "action": "link",
+            "item": ["http://www.enter.ru"]
+        },
+        {
+            "name": "slide2",
+            "url": "http://content.enter.ru/wp-content/uploads/2013/01/slide2.jpg",
+            "action": "link",
+            "item": ["http://www.enter.ru"]
+        },
+        {
+            "name": "slide3",
+            "url": "http://content.enter.ru/wp-content/uploads/2013/01/slide3.jpg",
+            "action": "product",
+            "item": [41549, 15029]
+        }
+    ]    
+}
