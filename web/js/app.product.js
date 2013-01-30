@@ -89,18 +89,29 @@ $(document).ready(function() {
 		var slidesCount = 0
 		var wrapW = 0
 		var left = 0
+		
 		// init
+		var init = function(data){
+			for (var item in data){
+				var similarGood = tmpl('similarGoodTmpl',data[item])
+				similarWrap.append(similarGood)
+			}
+			var similarGoods = similarSlider.find('.bSimilarGoodsSlider_eGoods')
+			slidesCount = similarGoods.length
+			wrapW = slidesW * slidesCount
+			similarWrap.width(wrapW)
+			if (slidesCount > 0){
+				$('.bSimilarGoods').fadeIn(300, function(){
+					sliderW = similarSlider.width()
+				})
+			}
+		}
+
 		$.getJSON( $('#similarGoodsSlider').data('url') , function(data){
-        	for (var item in data){
-        		similarWrap.append('<div class="bSimilarGoodsSlider_eGoods fl">
-		          <a class="bSimilarGoodsSlider_eGoodsImg fl" href="'+data[item].link+'"><img width="83" height="83" src="'+data[item].image+'"/></a>
-		          <div class="bSimilarGoodsSlider_eGoodsInfo fl">
-		            <div class="goodsbox__rating rate'+data[item].rating+'"><div class="fill"></div></div>
-		            <h3><a href="'+data[item].link+'">'+data[item].name+'</a></h3>
-		            <div class="font18 pb10 mSmallBtns"><span class="price">'+data[item].price+'</span> <span class="rubl">p</span></div>
-		          </div>
-		        </div>')
-        	}
+			if (!($.isEmptyObject(data))){
+				var initData = data
+				init(initData)
+			}
 		}).done(function(){
 			var similarGoods = similarSlider.find('.bSimilarGoodsSlider_eGoods')
 			slidesCount = similarGoods.length
@@ -131,6 +142,21 @@ $(document).ready(function() {
 			return false
 		})
 
+	}
+
+	// видео в карточке товара
+	if ($('.goodsphoto_eVideoShield').length){
+		var shield = $('.goodsphoto_eVideoShield')
+		shield.bind('click', function(){
+			console.log('video shield click')
+			$('#productVideo').lightbox_me({ 
+				centered: true,
+				onLoad: function() {
+					// console.log('load!')
+				}
+			})
+			return false
+		})
 	}
 	
 

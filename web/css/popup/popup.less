@@ -2,13 +2,11 @@
   position: relative;
   text-align: left;
   .close{
-    background: url("@{base-url}/common/img/closeBtnOrange.png") no-repeat 0 0 ;
     cursor: pointer;
     display: block;
     height: 26px;
     position: absolute;
     right: 0;
-    text-indent:-10000px;
     top: 0;
     width: 26px;
   }
@@ -24,9 +22,19 @@
   overflow: hidden;
   padding: 20px 25px;
   .allpopupstyle();
+  .close{
+    background: url("@{base-url}/common/img/closeBtnOrange.png") no-repeat 0 0 ;
+    text-indent:-10000px;
+  }
 }
 .blackPopup{
   background: @black;
   color:@white;
-  .allpopupstyle()
+  .allpopupstyle();
+  .close{
+    font-family: sans-serif;
+    font-size: 18px;
+    line-height: 26px;
+    text-align: center;
+  }
 }

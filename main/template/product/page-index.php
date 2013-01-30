@@ -80,6 +80,16 @@
 <div class="clear"></div>
 
 <div class="lifted">
+  <script type="text/html" id="similarGoodTmpl">
+    <div class="bSimilarGoodsSlider_eGoods fl">
+      <a class="bSimilarGoodsSlider_eGoodsImg fl" href="<%=link%>"><img width="83" height="83" src="<%=image%>"/></a>
+      <div class="bSimilarGoodsSlider_eGoodsInfo fl">
+        <div class="goodsbox__rating rate<%=rating%>"><div class="fill"></div></div>
+        <h3><a href="<%=link%>"><%=name%></a></h3>
+        <div class="font18 pb10 mSmallBtns"><span class="price"><%=price%></span> <span class="rubl">p</span></div>
+      </div>
+    </div>
+  </script>
   <div class="bSimilarGoods clearfix">
     <div class="bSimilarGoods_eCorner"><div></div></div>
     <div class="bSimilarGoods_eLeftCaption fl">
@@ -476,9 +486,13 @@
 <!-- /shopPopup -->
 <?php endif; ?>
 
+<!-- product video pop-up -->
 <div id="productVideo" class="blackPopup">
-  <div class="close"></div>
+  <div class="close">X</div>
+  <!-- <iframe width="640" height="360" src="http://rutube.ru/video/embed/6125142" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowfullscreen scrolling="no"></iframe>  -->
+  <iframe src="http://player.vimeo.com/video/58429056?badge=0" width="500" height="250" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
 </div>
+<!-- /product video pop-up -->
 
 <div id="ajaxgoods" class="popup width230" style="display: none">
   <div  style="padding: 15px 15px 20px 5px">
