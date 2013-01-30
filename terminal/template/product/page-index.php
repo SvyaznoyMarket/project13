@@ -20,7 +20,7 @@
 
     <p class="bGoodItem_ePrice"><?= $page->helper->formatPrice($product->getPrice()) ?></p>
 
-    <p><a class="bGoodItem_eBayBtn" href="#">Купить</a></p>
+    <p><a class="bGoodItem_eBayBtn" href="#" onclick="terminal.cart.addProduct(<?= $product->getId() ?>)">Купить</a></p>
     <hr/>
     <div class="bGoodSimilar">
         <? foreach ($related as $iProduct): ?>
@@ -42,7 +42,7 @@
         <div class="bGoodSpecification">
             <h3 class="bGoodSpecification_eBlockName"><?= $group['group']->getName() ?></h3>
             <? foreach ($group['properties'] as $property): ?>
-			    <span class="bGoodSpecification_eSpecTitle"><?= $property->getName() ?><span> - <span class="bGoodSpecification_eSpecValue"><?= $property->getStringValue() ?><span>
+			    <p><span class="bGoodSpecification_eSpecTitle"><?= $property->getName() ?></span> - <span class="bGoodSpecification_eSpecValue"><?= $property->getStringValue() ?></span></p>
 			<? endforeach ?>
         </div>
         <? endforeach ?>
