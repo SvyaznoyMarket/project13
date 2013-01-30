@@ -130,7 +130,7 @@ $c->smartEngine['tenantid'] = 'ENojUTRcD8';
 $c->smartEngine['log_enabled'] = true;
 $c->smartEngine['log_data_enabled'] = true;
 
-$c->warranty['enabled'] = false;
+$c->warranty['enabled'] = true;
 
 $c->user['corporateRegister'] = true;
 

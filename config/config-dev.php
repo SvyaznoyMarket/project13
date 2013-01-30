@@ -12,8 +12,6 @@ $c->coreV2['url'] = 'http://core.ent3.ru/v2/';
 $c->smartEngine['pull'] = true;
 $c->smartEngine['push'] = false;
 
-$c->warranty['enabled'] = true;
-
 $c->paymentPsb['terminal'] = '79036768';
 $c->paymentPsb['merchant'] = '790367686219999';
 $c->paymentPsb['merchantName'] = 'Enter';
