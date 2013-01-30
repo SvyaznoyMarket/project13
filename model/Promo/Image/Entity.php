@@ -24,7 +24,7 @@ class Entity {
     public function __construct(array $data = []) {
         if (array_key_exists('name', $data)) $this->setName($data['name']);
         if (array_key_exists('url', $data)) $this->setUrl($data['url']);
-        if (array_key_exists('action', $data)) $this->setAction($data['id']);
+        if (array_key_exists('action', $data)) $this->setAction($data['action']);
         if (array_key_exists('item', $data)) {
             if (!is_array($data['item'])) {
                 $data['item'] = [$data['item']];

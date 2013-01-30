@@ -26,7 +26,7 @@ class Client {
      * @throws \Exception
      */
     public function query($file) {
-        return json_decode(file_get_contents('/home/green/temp/promo.json'), true);
+        return json_decode(file_get_contents(\App::config()->dataDir . '/data-store/promo.json'), true);
 
         \Debug\Timer::start('data-store');
         \App::logger()->info('Start data-store request ' . $file);

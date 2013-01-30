@@ -8,4 +8,8 @@ class IndexPage extends \View\DefaultLayout {
     public function slotContent() {
         return $this->render('promo/page-index', $this->params);
     }
+
+    public function slotBodyClassAttribute() {
+        return 'infopage';
+    }
 }

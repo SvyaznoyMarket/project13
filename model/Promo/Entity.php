@@ -34,10 +34,10 @@ class Entity {
     }
 
     /**
-     * @param \Model\Promo\Image\Entity[] $image
+     * @param \Model\Promo\Image\Entity[] $images
      */
-    public function setImage(array $image) {
-        $this->image = $image;
+    public function setImage(array $images) {
+        $this->image = array_map(function ($data) { return new Image\Entity($data); }, $images);
     }
 
     /**
