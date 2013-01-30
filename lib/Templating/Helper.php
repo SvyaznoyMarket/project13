@@ -55,4 +55,11 @@ class Helper {
         return $choices[ ($number % 100 > 4 && $number % 100 < 20) ? 2 : $cases[min($number % 10, 5)]];
     }
 
+    /**
+     * @param $price
+     * @return string
+     */
+    public function formatPrice($price) {
+        return number_format($price, 0, ',', ' ');
+    }
 }

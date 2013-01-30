@@ -4,6 +4,9 @@
  */
 ?><!DOCTYPE HTML>
 <html>
+<head>
+    <?= $page->slotJavascript() ?>
+</head>
 <body>
 
     <?= $page->slotContent() ?>

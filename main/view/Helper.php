@@ -4,14 +4,6 @@ namespace View;
 
 class Helper extends \Templating\Helper {
     /**
-     * @param $price
-     * @return string
-     */
-    public function formatPrice($price) {
-        return number_format($price, 0, ',', ' ');
-    }
-
-    /**
      * @param $value
      * @return int|string
      */

@@ -7,5 +7,7 @@ class DefaultLayout extends \Templating\HtmlLayout {
 
     public function __construct() {
         parent::__construct();
+
+        $this->addJavascript('/js/jquery-1.6.4.min.js');
     }
 }

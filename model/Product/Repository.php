@@ -40,6 +40,21 @@ class Repository {
     }
 
     /**
+     * @param int                  $id
+     * @param \Model\Region\Entity $region
+     * @param                      $callback
+     */
+    public function prepareEntityById($id, \Model\Region\Entity $region = null, $callback) {
+        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
+
+        $this->client->addQuery('product/get', array(
+            'select_type' => 'id',
+            'id'        => [$id],
+            'geo_id'      => $region ? $region->getId() : \App::user()->getRegion()->getId(),
+        ), array(), $callback);
+    }
+
+    /**
      * @param string               $token
      * @param \Model\Region\Entity $region
      * @param                      $callback
