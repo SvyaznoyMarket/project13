@@ -4,6 +4,18 @@
   padding-bottom: 10px;
   position: relative;
   width: 500px;
+  &_eVideoShield{
+    background: url('@{base-url}/item/img/videoStiker.png') no-repeat 0 0;
+    position: absolute;
+    height: 85px;
+    right: 25px;
+    top: 0px;
+    width: 100px;
+    z-index: 3;
+    &:hover{
+      background: url('@{base-url}/item/img/videoStikerHover.png') no-repeat 0 0;
+    }
+  }
 }
 .bGood__eArticle {
   border-bottom: 1px solid @typLightGray;

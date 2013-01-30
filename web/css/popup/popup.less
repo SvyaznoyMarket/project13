@@ -1,13 +1,4 @@
-.popup{
-  .rounded(6px);
-  .box-shadow(0 0 7px @typBoxShadowColor);
-  background-color:@white;
-  border:2px solid @firmOrange;
-  color: @black;
-  cursor: default;
-  display: none;
-  overflow: hidden;
-  padding: 20px 25px;
+.allpopupstyle(){
   position: relative;
   text-align: left;
   .close{
@@ -21,4 +12,21 @@
     top: 0;
     width: 26px;
   }
+}
+.popup{
+  .rounded(6px);
+  .box-shadow(0 0 7px @typBoxShadowColor);
+  background-color:@white;
+  border:2px solid @firmOrange;
+  color: @black;
+  cursor: default;
+  display: none;
+  overflow: hidden;
+  padding: 20px 25px;
+  .allpopupstyle();
+}
+.blackPopup{
+  background: @black;
+  color:@white;
+  .allpopupstyle()
 }
