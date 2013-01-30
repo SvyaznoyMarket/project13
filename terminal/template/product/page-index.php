@@ -25,10 +25,10 @@
     <div class="bGoodSimilar">
         <? foreach ($related as $iProduct): ?>
         <div class="bGoodSimilar_eGoods">
-            <a class="bGoodSimilar_eGoodsImg" href="#link"><img width="83" height="83" src="<?= $iProduct->getImageUrl(1) ?>"/></a>
+            <a class="bGoodSimilar_eGoodsImg" href="#link" onclick="terminal.core.gui.screen.push('product', {productId: <?= $iProduct->getId() ?>})"><img width="83" height="83" src="<?= $iProduct->getImageUrl(1) ?>"/></a>
             <div class="bGoodSimilar_eGoodsInfo">
                 <p class="bGoodSimilar_eRating"><?= $iProduct->getRating() ?></p>
-                <h2><a href="#link"><?= $iProduct->getName() ?></a></h2>
+                <h2><a href="#link" onclick="terminal.core.gui.screen.push('product', {productId: <?= $iProduct->getId() ?>})"><?= $iProduct->getName() ?></a></h2>
                 <p class="bGoodSimilar_ePrice"><?= $page->helper->formatPrice($iProduct->getPrice()) ?></p>
             </div>
         </div>
