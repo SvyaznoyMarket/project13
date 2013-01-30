@@ -48,6 +48,14 @@ class Cart {
             $this->storage->set($this->sessionName, $data);
         }
 
+        // лимит товаров
+        $data = $this->storage->get($this->sessionName);
+        $productCount = count($data['productList']);
+        if ($productCount > $this->productLimit) {
+            $data['productList'] = array_slice($data['productList'], $productCount - $this->productLimit, $this->productLimit, true);
+            $this->storage->set($this->sessionName, $data);
+            \App::logger()->warn(sprintf('Пользователь sessionId=%s добавил %s-й товар в корзину', $this->storage->getId(), $productCount));
+        }
     }
 
     /**
