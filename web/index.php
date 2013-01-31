@@ -51,7 +51,6 @@ if ('main' == \App::$name) {
     $config->routePrefix = 'terminal';
 }
 
-
 // response
 $response = null;
 

@@ -10,7 +10,7 @@ class Router {
 
     public function __construct(array $rules, $prefix = null) {
         $this->rules = $rules;
-        $this->prefix = '/' . trim($prefix, '/');
+        $this->prefix = $prefix ? ('/' . trim($prefix, '/')) : '';
     }
 
     /**
