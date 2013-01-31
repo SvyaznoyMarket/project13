@@ -152,6 +152,7 @@ class Repository {
 
     /**
      * @param array $ids
+     * @param \Model\Region\Entity $region
      * @return Entity[]
      */
     public function getCollectionById(array $ids, \Model\Region\Entity $region = null) {

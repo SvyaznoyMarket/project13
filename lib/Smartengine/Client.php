@@ -3,12 +3,10 @@
 namespace Smartengine;
 
 class Client {
-    /* @var sfParameterHolder */
+    /* @var array */
     private $config = null;
-
-    /* @var sfFileLogger */
+    /* @var \Logger\LoggerInterface */
     private $logger = null;
-
     private $resources = [];
 
     public function __construct(array $config,  \Logger\LoggerInterface $logger = null)
@@ -72,7 +70,7 @@ class Client {
             curl_close($connection);
             $spend = \Debug\Timer::stop('smartengine');
             \App::logger()->error('End smartengine ' . $action . ' in ' . $spend . ' get: ' . json_encode($params, JSON_UNESCAPED_UNICODE) . ' response: ' . json_encode($response, JSON_UNESCAPED_UNICODE) . ' with ' . $e);
-            $this->logger->err($e->__toString());
+            $this->logger->error($e->__toString());
             throw $e;
         }
     }

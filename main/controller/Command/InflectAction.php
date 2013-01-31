@@ -11,6 +11,7 @@ class InflectAction {
 
     /**
      * @param int $limit
+     * @throws \Exception
      */
     public function execute($limit = 10000) {
         \App::logger()->debug('Exec ' . __METHOD__);

@@ -151,7 +151,7 @@ class ClientV2 implements ClientInterface
         $this->failCallbacks = [];
         $this->resources = [];
         if (!is_null($error)) {
-            \App::exception()->add($e);
+            \App::exception()->add($error);
             $this->logger->error('Error:' . (string)$error . 'Response: ' . print_r(isset($content) ? $content : null, true));
             $spend = \Debug\Timer::stop('core');
             //throw $error;

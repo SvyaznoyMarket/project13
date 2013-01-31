@@ -42,6 +42,7 @@ class User {
                 $user = \RepositoryManager::user()->getEntityByToken($this->token);
                 $user->setToken($this->token);
             } catch (\Exception $e) {
+                $user = null;
                 switch ($e->getCode()) {
                     case 402:
                         $this->removeToken();
@@ -61,6 +62,7 @@ class User {
 
     /**
      * @param \Model\User\Entity $user
+     * @param \Http\Response $response
      */
     public function signIn(\Model\User\Entity $user, \Http\Response $response) {
         $user->setIpAddress(\App::request()->getClientIp());

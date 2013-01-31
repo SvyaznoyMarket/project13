@@ -27,8 +27,6 @@ class Autoloader {
                     for ($i = 0; $i < $count; $i++) {
                         if (($i <= 1) && ($i < ($count - 1))) {
                             $parts[$i] = lcfirst($parts[$i]);
-                        } else {
-                            $parts[$i] = $parts[$i];
                         }
                     }
                     $class = implode('\\', $parts);
