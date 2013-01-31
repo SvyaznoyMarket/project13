@@ -8140,6 +8140,9 @@
   #ogorod_1feb .bPromoCategory_eTitle {
     color: #c1d838;
   }
+  #jew_1feb {
+    left: 185px;
+  }
   #jew_1feb .bPromoCategory_eArrow {
     background: url('/css/mainPage/img/bPromoCategory_pinkArrow.gif') no-repeat 0 0;
     margin-left: 70px;
