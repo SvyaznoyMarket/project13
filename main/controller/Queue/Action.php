@@ -2,12 +2,19 @@
 
 namespace Controller\Queue;
 
+// TODO: Переделать с использованием QueueManager
 class Action {
 
     /** @var \PDO */
     private $dbh;
-    /** @var \Logger */
+    /** @var \Logger\LoggerInterface */
     private $logger;
+
+    public function __construct() {
+        if ('cli' !== PHP_SAPI) {
+            throw new \Exception('Действие доступно только через CLI');
+        }
+    }
 
     public function execute($queueName, $limit = 1000) {
         echo "Executing '{$queueName}' with: limit={$limit} ...\n";
@@ -110,7 +117,7 @@ class Action {
                 //print_r($r);
                 if (isset($r['error'])) $this->logger->error('Smartengine: error #'.$r['error']['@code'].' '.$r['error']['@message']);
             }
-        } catch(\SmartengineClientException $e) {
+        } catch(\Exception $e) {
             $this->logger->error($e->getMessage());
             echo "Error {$e->getMessage()} ...\n";
         }
@@ -167,7 +174,7 @@ class Action {
                     if (isset($r['error'])) $this->logger->error('Smartengine: error #'.$r['error']['@code'].' '.$r['error']['@message']);
                 }
             }
-        } catch(\SmartengineClientException $e) {
+        } catch(\Exception $e) {
             $this->logger->error($e->getMessage());
             echo "Error {$e->getMessage()} ...\n";
         }

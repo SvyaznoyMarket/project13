@@ -15,6 +15,7 @@ $c->webDir = $c->appDir . '/web';
 $c->templateDir = $c->appDir . '/main/template';
 
 $c->controllerPrefix = 'Controller';
+$c->routePrefix = '';
 
 $c->debug = true;
 $c->appName = 'Enter';
