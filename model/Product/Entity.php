@@ -42,17 +42,17 @@ class Entity extends BasicEntity {
     /** @var int */
     protected $ratingCount;
     /** @var Category\Entity[] */
-    protected $category = array();
+    protected $category = [];
     /** @var Property\Group\Entity[] */
-    protected $propertyGroup = array();
+    protected $propertyGroup = [];
     /** @var Property\Entity[] */
-    protected $property = array();
+    protected $property = [];
     /** @var \Model\Tag\Entity[] */
-    protected $tag = array();
+    protected $tag = [];
     /** @var Media\Entity[] */
-    protected $photo = array();
+    protected $photo = [];
     /** @var Media\Entity[] */
-    protected $photo3d = array();
+    protected $photo3d = [];
     /** @var \Model\Brand\Entity|null */
     protected $brand;
     /** @var Label\Entity|null */
@@ -66,27 +66,27 @@ class Entity extends BasicEntity {
     /** @var int */
     protected $priceOld;
     /** @var Stock\Entity[] */
-    protected $stock = array();
+    protected $stock = [];
     /** @var Service\Entity[] */
-    protected $service = array();
+    protected $service = [];
     /** @var Kit\Entity[] */
-    protected $kit = array();
+    protected $kit = [];
     /** @var Model\Entity */
     protected $model;
     /** @var [] */
-    protected $groupedProperties = array();
+    protected $groupedProperties = [];
     /** @var int */
     protected $connectedProductsViewMode;
     /** @var array */
-    protected $accessoryId = array();
+    protected $accessoryId = [];
     /** @var array */
-    protected $relatedId = array();
+    protected $relatedId = [];
     /** @var Warranty\Entity[] */
-    protected $warranty = array();
+    protected $warranty = [];
     /** @var \Model\Region\Entity */
-    protected $nearestCity = array();
+    protected $nearestCity = [];
 
-    public function __construct(array $data = array()) {
+    public function __construct(array $data = []) {
         if (array_key_exists('id', $data)) $this->setId($data['id']);
         if (array_key_exists('view_id', $data)) $this->setViewId($data['view_id']);
         if (array_key_exists('type_id', $data)) $this->setTypeId($data['type_id']);
@@ -166,7 +166,7 @@ class Entity extends BasicEntity {
 
         foreach ($this->propertyGroup as $group) {
             if (!isset($this->groupedProperties[$group->getId()])) {
-                $this->groupedProperties[$group->getId()] = array('group' => $group, 'properties' => array());
+                $this->groupedProperties[$group->getId()] = array('group' => $group, 'properties' => []);
             }
         }
 
@@ -196,7 +196,7 @@ class Entity extends BasicEntity {
      * @return void
      */
     public function setCategory(array $categories) {
-        $this->category = array();
+        $this->category = [];
         foreach ($categories as $category) {
             $this->addCategory($category);
         }
@@ -379,8 +379,8 @@ class Entity extends BasicEntity {
     }
 
     public function setMedia(array $mediaList) {
-        $this->photo = array();
-        $this->photo3d = array();
+        $this->photo = [];
+        $this->photo3d = [];
         foreach ($mediaList as $media) {
             $this->addMedia($media);
         }
@@ -476,7 +476,7 @@ class Entity extends BasicEntity {
     }
 
     public function setProperty(array $properties) {
-        $this->property = array();
+        $this->property = [];
         foreach ($properties as $property) {
             $this->addProperty($property);
         }
@@ -499,7 +499,7 @@ class Entity extends BasicEntity {
     }
 
     public function setPropertyGroup(array $propertyGroups) {
-        $this->propertyGroup = array();
+        $this->propertyGroup = [];
         foreach ($propertyGroups as $propertyGroup) {
             $this->addPropertyGroup($propertyGroup);
         }
@@ -584,7 +584,7 @@ class Entity extends BasicEntity {
     }
 
     public function setStock(array $stocks) {
-        $this->stock = array();
+        $this->stock = [];
         foreach ($stocks as $stock) {
             $this->addStock($stock);
         }
@@ -599,7 +599,7 @@ class Entity extends BasicEntity {
     }
 
     public function setTag(array $tags) {
-        $this->tag = array();
+        $this->tag = [];
         foreach ($tags as $tag) {
             $this->addTag($tag);
         }
@@ -715,7 +715,7 @@ class Entity extends BasicEntity {
      * @param Service\Entity[] $services
      */
     public function setService(array $services) {
-        $this->service = array();
+        $this->service = [];
         foreach ($services as $service) {
             $this->addService($service);
         }
@@ -739,7 +739,7 @@ class Entity extends BasicEntity {
      * @param Kit\Entity[] $kits
      */
     public function setKit(array $kits) {
-        $this->kit = array();
+        $this->kit = [];
         foreach ($kits as $kit) {
             $this->addKit($kit);
         }
@@ -833,7 +833,7 @@ class Entity extends BasicEntity {
      */
     public function setWarranty($warranties)
     {
-        $this->warranty = array();
+        $this->warranty = [];
         foreach ($warranties as $warranty) {
             $this->addWarranty($warranty);
         }
@@ -857,7 +857,7 @@ class Entity extends BasicEntity {
      */
     public function setNearestCity($nearestCity)
     {
-        $this->nearestCity = array();
+        $this->nearestCity = [];
         foreach ($nearestCity as $city) {
             $this->addNearestCity($city);
         }

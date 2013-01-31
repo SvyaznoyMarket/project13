@@ -8,22 +8,22 @@ class HtmlLayout {
     /** @var string */
     private $templateDir;
     /** @var array */
-    protected $params = array();
+    protected $params = [];
     /** @var string */
     protected $title;
     /** @var array */
-    protected $metas = array(
+    protected $metas = [
         'yandex-verification'      => null,
         'viewport'                 => null,
         'title'                    => null,
         'description'              => null,
         'keywords'                 => null,
         //'robots'                   => null,
-    );
+    ];
     /** @var array */
-    protected $stylesheets = array();
+    protected $stylesheets = [];
     /** @var array */
-    protected $javascripts = array();
+    protected $javascripts = [];
     /** @var Helper */
     public $helper;
 
@@ -78,7 +78,7 @@ class HtmlLayout {
      * @param array $params
      * @return string
      */
-    final public function render($template, array $params = array()) {
+    final public function render($template, array $params = []) {
         $params['page'] = $this;
         $params['user'] = \App::user();
         $params['request'] = \App::request();
@@ -193,7 +193,7 @@ class HtmlLayout {
      * @param bool $absolute
      * @return mixed
      */
-    public function url($routeName, array $params = array(), $absolute = false) {
+    public function url($routeName, array $params = [], $absolute = false) {
         return \App::router()->generate($routeName, $params, $absolute);
     }
 

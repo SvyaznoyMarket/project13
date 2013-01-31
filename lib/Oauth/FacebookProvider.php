@@ -38,7 +38,7 @@ class FacebookProvider implements ProviderInterface {
             return null;
         }
 
-        $response = $this->query($this->getAccessTokenUrl($code), array(), false);
+        $response = $this->query($this->getAccessTokenUrl($code), [], false);
         parse_str($response, $response);
         if (empty($response['access_token'])) {
             \App::logger()->warn(array('provider' => self::NAME, 'url' => $this->getAccessTokenUrl($code), 'response' => $response));
@@ -47,7 +47,7 @@ class FacebookProvider implements ProviderInterface {
         $accessToken = $response['access_token'];
 
         $response = $this->query($this->getProfileUrl($accessToken));
-        $response = is_array($response) ? $response : array();
+        $response = is_array($response) ? $response : [];
         if (empty($response['id']) || empty($response['first_name'])) {
             \App::logger()->warn(array('provider' => self::NAME, 'url' => $this->getProfileUrl($accessToken), 'response' => $response));
             return null;
@@ -63,12 +63,12 @@ class FacebookProvider implements ProviderInterface {
      * @return string
      */
     private function getAccessTokenUrl($code) {
-        return 'https://graph.facebook.com/oauth/access_token?' . http_build_query(array(
+        return 'https://graph.facebook.com/oauth/access_token?' . http_build_query([
             'client_id'     => $this->config->clientId,
-            'redirect_uri'  => \App::router()->generate('user.login.external.response', array('providerName' => self::NAME), true),
+            'redirect_uri'  => \App::router()->generate('user.login.external.response', ['providerName' => self::NAME], true),
             'client_secret' => $this->config->secretKey,
             'code'          => $code,
-        ));
+        ]);
     }
 
     /**
@@ -88,7 +88,7 @@ class FacebookProvider implements ProviderInterface {
      * @return mixed|null
      * @throws \Exception
      */
-    private function query($url, array $data = array(), $jsonDecode = true) {
+    private function query($url, array $data = [], $jsonDecode = true) {
         $client = new \Curl\Client();
 
         try {

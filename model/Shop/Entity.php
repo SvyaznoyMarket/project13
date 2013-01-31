@@ -30,13 +30,13 @@ class Entity {
     /* @var bool */
     private $isReconstructed;
     /* @var Photo\Entity[] */
-    private $photo = array();
+    private $photo = [];
     /* @var Panorama\Entity */
     private $panorama;
     /* @var Region\Entity */
     private $region;
 
-    public function __construct(array $data = array()) {
+    public function __construct(array $data = []) {
         if (array_key_exists('id', $data)) $this->setId($data['id']);
         if (array_key_exists('token', $data)) $this->setToken($data['token']);
         if (array_key_exists('name', $data)) $this->setName($data['name']);
@@ -244,7 +244,7 @@ class Entity {
      * @param Photo\Entity[] $photos
      */
     public function setPhoto(array $photos) {
-        $this->photo = array();
+        $this->photo = [];
         foreach ($photos as $photo) {
             $this->addPhoto($photo);
         }

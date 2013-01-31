@@ -9,7 +9,7 @@ class IndexPage extends \View\DefaultLayout {
 
         // breadcrumbs
         if (!$this->hasParam('breadcrumbs')) {
-            $breadcrumbs = array();
+            $breadcrumbs = [];
             $breadcrumbs[] = array(
                 'name' => 'Поиск (' . $this->escape($this->getParam('searchQuery')) . ')',
                 'url'  => \App::router()->generate('search', array('q' => $this->getParam('searchQuery'))),

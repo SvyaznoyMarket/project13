@@ -26,7 +26,7 @@ class Client {
      * @return array|null
      * @throws \Exception
      */
-    public function query ($action, array $data = array()) {
+    public function query ($action, array $data = []) {
         \Debug\Timer::start('content');
         \App::logger()->info('Start content request ' . $action);
 
@@ -41,7 +41,7 @@ class Client {
             \App::logger()->info('Fail content request ' . $action . ' in ' . $spend . ' with ' . $e);
         }
 
-        \Util\RequestLogger::getInstance()->addLog($url, array(), $spend, 'unknown');
+        \Util\RequestLogger::getInstance()->addLog($url, [], $spend, 'unknown');
 
         $data = json_decode($response, true);
         if ($error = json_last_error()) {

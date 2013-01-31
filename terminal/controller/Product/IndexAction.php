@@ -45,7 +45,7 @@ class IndexAction {
 
         $accessoryIds =  array_slice($product->getAccessoryId(), 0, \App::config()->product['itemsInSlider'] * 2);
         $relatedIds = array_slice($product->getRelatedId(), 0, \App::config()->product['itemsInSlider'] * 2);
-        $partIds = array();
+        $partIds = [];
 
         foreach ($product->getKit() as $part) {
             $partIds[] = $part->getId();
@@ -62,10 +62,10 @@ class IndexAction {
                 \App::exception()->add($e);
                 \App::logger()->error($e);
 
-                $products = array();
-                $accessories = array();
-                $related = array();
-                $kit = array();
+                $products = [];
+                $accessories = [];
+                $related = [];
+                $kit = [];
             }
 
             foreach ($products as $item) {

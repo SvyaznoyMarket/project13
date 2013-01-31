@@ -25,7 +25,7 @@ class Action {
         }
 
         // запрашиваем список регионов для выбора
-        $regionsToSelect = array();
+        $regionsToSelect = [];
         \RepositoryManager::region()->prepareShowInMenuCollection(function($data) use (&$regionsToSelect) {
             foreach ($data as $item) {
                 $regionsToSelect[] = new \Model\Region\Entity($item);

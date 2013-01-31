@@ -27,7 +27,7 @@ class Entity {
     /**
      * @param array $data
      */
-    public function __construct(array $data = array()) {
+    public function __construct(array $data = []) {
         if (array_key_exists('status_id', $data)) $this->setStatusId($data['status_id']);
         if (array_key_exists('is_image', $data)) $this->setIsImage($data['is_image']);
         if (array_key_exists('is_price', $data)) $this->setIsPrice($data['is_price']);

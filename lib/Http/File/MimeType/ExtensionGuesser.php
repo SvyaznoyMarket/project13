@@ -30,7 +30,7 @@ class ExtensionGuesser implements ExtensionGuesserInterface {
      *
      * @var array
      */
-    protected $guessers = array();
+    protected $guessers = [];
 
     /**
      * Returns the singleton instance

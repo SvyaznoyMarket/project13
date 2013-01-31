@@ -39,6 +39,6 @@ class Repository {
 
         $this->client->addQuery('user/get', array(
             'token' => $token,
-        ), array(), $done, $fail);
+        ), [], $done, $fail);
     }
 }

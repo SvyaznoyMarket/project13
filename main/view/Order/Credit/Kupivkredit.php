@@ -4,8 +4,8 @@ namespace View\Order\Credit;
 
 class Kupivkredit {
     private $config;
-    public $details = array();
-    public $items = array();
+    public $details = [];
+    public $items = [];
     public $partnerId;
     public $partnerName;
     public $partnerOrderId;

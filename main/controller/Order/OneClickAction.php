@@ -50,7 +50,7 @@ class OneClickAction {
                 throw $e;
             }
 
-            $productsInCart = array();
+            $productsInCart = [];
             if ((bool)$product->getKit()) {
                 foreach($product->getKit() as $kit) {
                     $productsInCart[] = array('id' => $kit->getId(), 'quantity' => ($kit->getCount() * $productQuantity));
@@ -96,7 +96,7 @@ class OneClickAction {
             }
 
             try {
-                $params = array();
+                $params = [];
                 if ($userEntity && $userEntity->getToken()) {
                     $params['token'] = $userEntity->getToken();
                 }

@@ -16,7 +16,7 @@ $debug->add('name', \App::$name, 143);
 $debug->add('git.branch', shell_exec(sprintf('cd %s && git rev-parse --abbrev-ref HEAD', realpath(\App::config()->appDir))), 142);
 $debug->add('git.tag', shell_exec(sprintf('cd %s && git describe --always --tag', realpath(\App::config()->appDir))), 141);
 
-$action =implode('.', \App::request()->attributes->get('action', array()));
+$action =implode('.', \App::request()->attributes->get('action', []));
 $debug->add('act', $action ?: 'undefined', 138, $action ? \Debug\Collector::TYPE_INFO : \Debug\Collector::TYPE_ERROR);
 
 if (\App::user()->getToken()) {
@@ -44,7 +44,7 @@ if ('local' == \App::$env) {
 $requestLogger = \Util\RequestLogger::getInstance();
 $requestData = $requestLogger->getStatistics();
 $requestData = json_decode($requestData, true);
-if (!isset($requestData['api_queries'])) $requestData = array('api_queries' => array());
+if (!isset($requestData['api_queries'])) $requestData = ['api_queries' => []];
 $queryString = '';
 foreach ((array)$requestData['api_queries'] as $query) {
     $queryString .=

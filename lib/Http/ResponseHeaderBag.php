@@ -17,12 +17,12 @@ class ResponseHeaderBag extends HeaderBag {
     /**
      * @var array
      */
-    protected $computedCacheControl = array();
+    protected $computedCacheControl = [];
 
     /**
      * @var array
      */
-    protected $cookies = array();
+    protected $cookies = [];
 
     /**
      * Constructor.
@@ -31,7 +31,7 @@ class ResponseHeaderBag extends HeaderBag {
      *
      * @api
      */
-    public function __construct(array $headers = array()) {
+    public function __construct(array $headers = []) {
         parent::__construct($headers);
 
         if (!isset($this->headers['cache-control'])) {
@@ -51,7 +51,7 @@ class ResponseHeaderBag extends HeaderBag {
     /**
      * @api
      */
-    public function replace(array $headers = array()) {
+    public function replace(array $headers = []) {
         parent::replace($headers);
 
         if (!isset($this->headers['cache-control'])) {
@@ -80,7 +80,7 @@ class ResponseHeaderBag extends HeaderBag {
         parent::remove($key);
 
         if ('cache-control' === strtr(strtolower($key), '_', '-')) {
-            $this->computedCacheControl = array();
+            $this->computedCacheControl = [];
         }
     }
 
@@ -148,7 +148,7 @@ class ResponseHeaderBag extends HeaderBag {
             return $this->cookies;
         }
 
-        $flattenedCookies = array();
+        $flattenedCookies = [];
         foreach ($this->cookies as $path) {
             foreach ($path as $cookies) {
                 foreach ($cookies as $cookie) {

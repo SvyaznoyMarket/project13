@@ -38,7 +38,7 @@ class Action {
         }
 
         // запрашиваем список регионов для выбора
-        $regionsToSelect = array();
+        $regionsToSelect = [];
         \RepositoryManager::region()->prepareShowInMenuCollection(function($data) use (&$regionsToSelect) {
             foreach ($data as $item) {
                 $regionsToSelect[] = new \Model\Region\Entity($item);
@@ -53,7 +53,7 @@ class Action {
         // подготовка 2-го пакета запросов
 
         // запрашиваем рутовые категории
-        $rootCategories = array();
+        $rootCategories = [];
         \RepositoryManager::productCategory()->prepareRootCollection($region, function($data) use(&$rootCategories) {
             foreach ($data as $item) {
                 $rootCategories[] = new \Model\Product\Category\Entity($item);
@@ -62,7 +62,7 @@ class Action {
 
         // услуги
         /** @var $services \Model\Product\Service\Entity[] */
-        $categories = array();
+        $categories = [];
         \RepositoryManager::serviceCategory()->prepareRootCollection($region, function($data) use (&$categories) {
             if (!isset($data['children']) || !is_array($data['children'])) {
                 $e = new \Exception('Неверные данные для категорий услуг');
@@ -118,7 +118,7 @@ class Action {
         }
 
         // запрашиваем список регионов для выбора
-        $regionsToSelect = array();
+        $regionsToSelect = [];
         \RepositoryManager::region()->prepareShowInMenuCollection(function($data) use (&$regionsToSelect) {
             foreach ($data as $item) {
                 $regionsToSelect[] = new \Model\Region\Entity($item);
@@ -133,7 +133,7 @@ class Action {
         // подготовка 2-го пакета запросов
 
         // запрашиваем рутовые категории
-        $rootCategories = array();
+        $rootCategories = [];
         \RepositoryManager::productCategory()->prepareRootCollection($region, function($data) use(&$rootCategories) {
             foreach ($data as $item) {
                 $rootCategories[] = new \Model\Product\Category\Entity($item);
@@ -165,7 +165,7 @@ class Action {
         // подготовка 3-го пакета запросов
 
         // ид услуг
-        $serviceIds = array();
+        $serviceIds = [];
         $callback = function($data) use (&$serviceIds, $category) {
             if (!isset($data['list']) || !is_array($data['list'])) {
                 $e = new \Exception(sprintf('Не получены услуги для категории %s', $category->getId()));
@@ -182,7 +182,7 @@ class Action {
 
         // все категории услуг
         /** @var $allCategories \Model\Product\Service\Category\Entity[] */
-        $allCategories = array();
+        $allCategories = [];
         \RepositoryManager::serviceCategory()->prepareCollection($region, function($data) use (&$allCategories) {
             if (!isset($data['children']) || !is_array($data['children'])) {
                 $e = new \Exception('Неверные данные для категорий услуг');
@@ -202,7 +202,7 @@ class Action {
 
         // услуги
         /** @var $servicesByCategory \Model\Product\Service\Entity[] */
-        $servicesByCategory = array();
+        $servicesByCategory = [];
         if ((bool)$serviceIds) {
             \RepositoryManager::service()->prepareCollectionById($serviceIds, $region, function($data) use(&$servicesByCategory) {
                 foreach ($data as $item) {
@@ -212,7 +212,7 @@ class Action {
                     $serviceCategory = array_pop($categories);
                     if (!$serviceCategory) continue;
                     if (!isset($servicesByCategory[$serviceCategory->getId()])) {
-                        $servicesByCategory[$serviceCategory->getId()] = array();
+                        $servicesByCategory[$serviceCategory->getId()] = [];
                     }
                     $servicesByCategory[$serviceCategory->getId()][] = $service;
                 }
@@ -264,7 +264,7 @@ class Action {
         }
 
         // запрашиваем список регионов для выбора
-        $regionsToSelect = array();
+        $regionsToSelect = [];
         \RepositoryManager::region()->prepareShowInMenuCollection(function($data) use (&$regionsToSelect) {
             foreach ($data as $item) {
                 $regionsToSelect[] = new \Model\Region\Entity($item);
@@ -279,7 +279,7 @@ class Action {
         // подготовка 2-го пакета запросов
 
         // запрашиваем рутовые категории
-        $rootCategories = array();
+        $rootCategories = [];
         \RepositoryManager::productCategory()->prepareRootCollection($region, function($data) use(&$rootCategories) {
             foreach ($data as $item) {
                 $rootCategories[] = new \Model\Product\Category\Entity($item);

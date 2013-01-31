@@ -20,5 +20,5 @@ class Item {
     public $deleteUrl;
 
     /* @var $deliveries Delivery[] */
-    public $deliveries = array();
+    public $deliveries = [];
 }

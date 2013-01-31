@@ -14,7 +14,7 @@ class RegionPage extends \View\DefaultLayout {
 
         // breadcrumbs
         if (!$this->hasParam('breadcrumbs')) {
-            $breadcrumbs = array();
+            $breadcrumbs = [];
             $breadcrumbs[] = array(
                 'name' => $region ? ('Магазины Enter в  ' . $region->getInflectedName(5)) : 'Все магазины Enter',
                 'url'  => null,

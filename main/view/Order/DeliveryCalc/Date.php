@@ -9,5 +9,5 @@ class Date {
     public $timestamp;
 
     /* @var $intervals Interval[] */
-    public $intervals = array();
+    public $intervals = [];
 }

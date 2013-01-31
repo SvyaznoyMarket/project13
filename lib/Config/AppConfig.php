@@ -32,48 +32,48 @@ class AppConfig {
     /** @var string */
     public $routePrefix;
     /** @var string */
-    public $authToken = array(
+    public $authToken = [
         'name'     => null,
-    );
+    ];
     /** @var string */
     public $sessionToken;
     /** @var array */
-    public $session = array(
+    public $session = [
         'name'            => null,
         'cookie_lifetime' => null,
-    );
+    ];
     /** @var string */
     public $cacheCookieName = null;
     /** @var array */
-    public $coreV2 = array(
+    public $coreV2 = [
         'url'       => null,
         'client_id' => null,
-    );
+    ];
     /** @var array */
-    public $wordpress = array(
+    public $wordpress = [
         'url' => null,
-    );
+    ];
     /** @var array */
-    public $dataStore = array(
+    public $dataStore = [
         'url' => null,
-    );
+    ];
     /** @var array */
-    public $company = array(
+    public $company = [
         'phone' => null,
         'icq'   => null,
-    );
+    ];
     /** @var array */
-    public $analytics = array(
+    public $analytics = [
         'enabled' => null,
-    );
+    ];
     /** @var array */
-    public $googleAnalytics = array(
+    public $googleAnalytics = [
         'enabled' => null,
-    );
+    ];
     /** @var array */
-    public $yandexMetrika = array(
+    public $yandexMetrika = [
         'enabled' => null,
-    );
+    ];
     /** @var string */
     public $mainHost = null;
     /** @var string */
@@ -86,19 +86,19 @@ class AppConfig {
     /** @var Oauth\FacebookConfig */
     public $facebookOauth;
     /** @var array */
-    public $onlineCall = array(
+    public $onlineCall = [
         'enabled' => null,
-    );
+    ];
     /** @var array */
-    public $region = array(
+    public $region = [
         'cookieName'     => null,
         'cookieLifetime' => null,
         'defaultId'      => null,
-    );
+    ];
     /** @var array */
-    public $mediaHost = array();
+    public $mediaHost = [];
     /** @var array */
-    public $product = array(
+    public $product = [
         'itemsPerPage'          => null,
         'showAccessories'       => null,
         'showRelated'           => null,
@@ -109,91 +109,91 @@ class AppConfig {
         // глобальный (без учета региона) список товаров
         'globalListEnabled'     => null,
         'showAveragePrice'      => null,
-    );
+    ];
     /** @var array */
-    public $productPhoto = array(
-        'url' => array(),
-    );
+    public $productPhoto = [
+        'url' => [],
+    ];
     /** @var array */
-    public $productPhoto3d = array(
-        'url' => array(),
-    );
+    public $productPhoto3d = [
+        'url' => [],
+    ];
     /** @var array */
-    public $productLabel = array(
-        'url' => array(),
-    );
+    public $productLabel = [
+        'url' => [],
+    ];
     /** @var array */
-    public $productCategory = array(
-        'url' => array(),
-    );
+    public $productCategory = [
+        'url' => [],
+    ];
     /** @var array */
-    public $service = array(
-        'url'                 => array(),
+    public $service = [
+        'url'                 => [],
         'minPriceForDelivery' => null,
-    );
+    ];
     /** @var array */
-    public $serviceCategory = array(
-        'url'                 => array(),
-    );
+    public $serviceCategory = [
+        'url' => [],
+    ];
     /** @var array */
-    public $shopPhoto = array(
-        'url' => array(),
-    );
+    public $shopPhoto = [
+        'url' => [],
+    ];
     /** @var array */
-    public $banner = array(
+    public $banner = [
         'timeout' => null,
-        'url'     => array(),
-    );
+        'url'     => [],
+    ];
     /** @var array */
-    public $payment = array(
+    public $payment = [
         'creditEnabled' => null,
-    );
+    ];
     /** @var array */
-    public $creditProvider = array(
-        'kupivkredit' => array(
+    public $creditProvider = [
+        'kupivkredit' => [
             'partnerId'   => null,
             'partnerName' => null,
             'signature'   => null,
-        ),
-    );
+        ],
+    ];
     /** @var array */
-    public $paymentPsb = array(
+    public $paymentPsb = [
         'terminal'     => null,
         'merchant'     => null,
         'merchantName' => null,
         'key'          => null,
         'payUrl'       => null,
-    );
-    public $paymentPsbInvoice = array(
+    ];
+    public $paymentPsbInvoice = [
         'contractorId' => null,
         'key'          => null,
         'payUrl'       => null,
-    );
+    ];
     /** @var array */
-    public $smartEngine = array(
+    public $smartEngine = [
         'pull' => null,
         'push' => null,
-    );
+    ];
     /** @var array */
-    public $warranty = array(
+    public $warranty = [
         'enabled' => null,
-    );
+    ];
     /** @var array */
-    public $cart = array(
+    public $cart = [
         'productLimit' => null, // максимальное количество товаров в корзине, при котором добавляемый товар не будет вытеснять первый товар из корзины
-    );
+    ];
     /** @var array */
-    public $user = array(
+    public $user = [
         'corporateRegister' => null,
-    );
+    ];
 
     /** @var array */
-    public $database = array(
+    public $database = [
         'host'     => null,
         'name'     => null,
         'user'     => null,
         'password' => null,
-    );
+    ];
 
     public function __construct() {
         $this->vkontakteOauth = new OAuth\VkontakteConfig();
@@ -202,11 +202,11 @@ class AppConfig {
     }
 
     /** @var array */
-    public $queue = array(
+    public $queue = [
         'pidFile' => null,
         'workerLimit' => null,
         'maxLockTime' => null,
-    );
+    ];
 
     public function __set($name, $value) {
         throw new \LogicException(sprintf('Неизвестный параметр "%s".', $name));

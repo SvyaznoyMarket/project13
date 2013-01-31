@@ -41,7 +41,7 @@ class Action {
         if ($form->isValid()) {
             try {
                 $name = explode(" ", $form->getName());
-                $response = \App::coreClientV2()->query('user/callback-create', array(), array(
+                $response = \App::coreClientV2()->query('user/callback-create', [], array(
                     'channel_id' => $this->channelId,
                     'first_name' => isset($name[0]) ? $name[0] : null,
                     'last_name' =>  isset($name[1]) ? $name[1] : null,

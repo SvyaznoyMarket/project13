@@ -27,7 +27,7 @@ class Entity {
     /** @var float */
     private $max;
     /** @var Option\Entity[] */
-    private $option = array();
+    private $option = [];
     /**
      * Флаг: отображать фильтр в списке?
      *
@@ -35,7 +35,7 @@ class Entity {
      */
     private $isInList = true;
 
-    public function __construct(array $data = array()) {
+    public function __construct(array $data = []) {
         if (array_key_exists('filter_id', $data)) $this->setId($data['filter_id']);
         if (array_key_exists('name', $data)) $this->setName($data['name']);
         if (array_key_exists('type_id', $data)) $this->setTypeId($data['type_id']);
@@ -155,7 +155,7 @@ class Entity {
      * @param Option\Entity[] $options
      */
     public function setOption(array $options) {
-        $this->option = array();
+        $this->option = [];
         foreach ($options as $option) {
             $this->addOption($option);
         }

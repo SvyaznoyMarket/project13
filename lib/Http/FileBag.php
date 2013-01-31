@@ -17,15 +17,15 @@ class FileBag extends ParameterBag {
      *
      * @api
      */
-    public function __construct(array $parameters = array()) {
+    public function __construct(array $parameters = []) {
         $this->replace($parameters);
     }
 
     /**
      * @api
      */
-    public function replace(array $files = array()) {
-        $this->parameters = array();
+    public function replace(array $files = []) {
+        $this->parameters = [];
         $this->add($files);
     }
 
@@ -43,7 +43,7 @@ class FileBag extends ParameterBag {
     /**
      * @api
      */
-    public function add(array $files = array()) {
+    public function add(array $files = []) {
         foreach ($files as $key => $file) {
             $this->set($key, $file);
         }

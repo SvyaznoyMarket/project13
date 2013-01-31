@@ -26,7 +26,7 @@
     'jsstock'      => 10,
   ),  JSON_HEX_QUOT | JSON_HEX_APOS);
 
-  $availableShops = array();
+  $availableShops = [];
   foreach ($shopsWithQuantity as $shopWithQuantity) {
       /** @var $shop \Model\Shop\Entity */
       $shop = $shopWithQuantity['shop'];
@@ -45,8 +45,8 @@
 <?
   $photoList = $product->getPhoto();
   $photo3dList = $product->getPhoto3d();
-  $p3d_res_small = array();
-  $p3d_res_big = array();
+  $p3d_res_small = [];
+  $p3d_res_big = [];
   foreach ($photo3dList as $photo3d)
   {
     $p3d_res_small[] = $photo3d->getUrl(0);

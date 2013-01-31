@@ -61,7 +61,7 @@ class SitemapAction {
         }
 
         // создаем новые файлы
-        $files = array();
+        $files = [];
         for ($i = 1; $i <= $this->fileCount; $i++) {
             $source = $this->basePath . str_replace('{num}', $i, $this->fileTemplate) . '.new';
             if (!is_file($source)) {
@@ -145,12 +145,12 @@ class SitemapAction {
         $walk = function($categories) use (&$walk, $productRepository) {
             $limit = self::ENTITY_LIMIT;
             foreach ($categories as $category) {
-                $filter = new \Model\Product\Filter(array());
+                $filter = new \Model\Product\Filter([]);
                 $filter->setCategory($category);
 
                 $offset = 0;
                 while (($category->getGlobalProductCount() - ($offset + $limit)) > 0) {
-                    $products = $productRepository->getIteratorByFilter($filter->dump(), array(), $offset, $limit, $this->region);
+                    $products = $productRepository->getIteratorByFilter($filter->dump(), [], $offset, $limit, $this->region);
                     foreach ($products as $product) {
                         /** @var \Model\Product\BasicEntity $product */
                         if (!$product->getPath()) continue;

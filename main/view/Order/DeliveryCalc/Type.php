@@ -18,7 +18,7 @@ class Type {
     public $shop;
 
     /* @var $items Item[] */
-    public $items = array();
+    public $items = [];
 
 
 }

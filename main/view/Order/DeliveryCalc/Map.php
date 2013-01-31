@@ -4,14 +4,14 @@ namespace View\Order\DeliveryCalc;
 
 class Map {
     /* @var $deliveryTypes Type[] */
-    public $deliveryTypes = array();
+    public $deliveryTypes = [];
 
     /* @var $items Item[] */
-    public $items = array();
+    public $items = [];
 
     /* @var $shops Shop[] */
-    public $shops = array();
+    public $shops = [];
 
     /* @var $unavailable array */
-    public $unavailable = array();
+    public $unavailable = [];
 }

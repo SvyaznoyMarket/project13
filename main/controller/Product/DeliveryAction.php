@@ -31,7 +31,7 @@ class DeliveryAction {
             $regionId = $user->getRegion()->getId();
         }
 
-        $params = array('product_list' => array());
+        $params = array('product_list' => []);
         foreach($productIds as $productId) {
             $params['product_list'][] = array('id' => (int)$productId, 'quantity' => 1);
         }
@@ -54,11 +54,11 @@ class DeliveryAction {
 
         $helper = new \View\Helper();
 
-        $data = array();
+        $data = [];
         foreach($response['product_list'] as $productId => $productData){
             if (!isset($productData['delivery_mode_list'])) continue;
 
-            $data[$productId] = array();
+            $data[$productId] = [];
             foreach($productData['delivery_mode_list'] as $delivery) {
                 $date = reset($delivery['date_list']);
                 $date = $date['date'];
@@ -104,20 +104,20 @@ class DeliveryAction {
             ),
         ));
 
-        $responseData = array();
+        $responseData = [];
         try {
             $response = \App::coreClientV2()->query('delivery/calc', array('geo_id' => $regionId, 'days_num' => 7), $params);
 
-            $productData = isset($response['product_list']) ? $response['product_list'] : array();
+            $productData = isset($response['product_list']) ? $response['product_list'] : [];
             $productData = array_pop($productData);
-            $shopData = isset($response['shop_list']) ? $response['shop_list'] : array();
-            $regionData = isset($response['geo_list']) ? $response['geo_list'] : array();
+            $shopData = isset($response['shop_list']) ? $response['shop_list'] : [];
+            $regionData = isset($response['geo_list']) ? $response['geo_list'] : [];
 
             foreach ($productData['delivery_mode_list'] as $deliveryData) {
                 $token = $deliveryData['token'];
 
-                $dates = array();
-                $shops = array();
+                $dates = [];
+                $shops = [];
                 $day = 0;
                 foreach ($deliveryData['date_list'] as $dateData) {
                     $day++;
@@ -129,7 +129,7 @@ class DeliveryAction {
                     );
 
                     if('self' == $token) {
-                        $date['shopIds'] = array();
+                        $date['shopIds'] = [];
                         foreach ($dateData['shop_list'] as $dateShopData) {
                             $address = $shopData[$dateShopData['id']]['address'];
                             if (($regionId != $shopData[$dateShopData['id']]['geo_id']) && isset($regionData[$shopData[$dateShopData['id']]['geo_id']]['name'])) {
@@ -156,7 +156,7 @@ class DeliveryAction {
                         }
 
                     } else {
-                        $date['intervals'] = array_key_exists('interval_list', $dateData) ? $dateData['interval_list'] : array();
+                        $date['intervals'] = array_key_exists('interval_list', $dateData) ? $dateData['interval_list'] : [];
                     }
 
                     $dates[] = $date;
@@ -176,7 +176,7 @@ class DeliveryAction {
             \App::exception()->remove($e);
             \App::logger()->error($e);
 
-            $responseData['data'] = array();
+            $responseData['data'] = [];
 
             return new \Http\JsonResponse(array(
                 'success'     => false,

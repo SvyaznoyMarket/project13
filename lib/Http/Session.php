@@ -90,6 +90,6 @@ class Session implements \Http\SessionInterface {
     }
 
     public function clear() {
-        $_SESSION = array();
+        $_SESSION = [];
     }
 }

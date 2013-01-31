@@ -9,9 +9,9 @@ class Filter {
     /** @var CategoryEntity */
     private $category;
     /** @var FilterEntity[] */
-    private $filters = array();
+    private $filters = [];
     /** @var array */
-    private $values = array();
+    private $values = [];
     private $isGlobal = false;
 
     /**
@@ -46,7 +46,7 @@ class Filter {
      * @return array
      */
     public function dump() {
-        $return = array();
+        $return = [];
 
         foreach ($this->filters as $filter) {
             $value = $this->getValue($filter);
@@ -104,7 +104,7 @@ class Filter {
         if (isset($this->values[$filter->getId()])) {
             return (array)$this->values[$filter->getId()];
         } else {
-            return array();
+            return [];
         }
     }
 

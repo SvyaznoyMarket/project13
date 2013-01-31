@@ -6,7 +6,7 @@ class IndexPage extends \View\DefaultLayout {
     public function prepare() {
         // breadcrumbs
         if (!$this->hasParam('breadcrumbs')) {
-            $breadcrumbs = array();
+            $breadcrumbs = [];
             $breadcrumbs[] = array(
                 'name' => 'Личный кабинет',
                 'url'  => null,

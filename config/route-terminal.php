@@ -1,16 +1,16 @@
 <?php
 
-return array(
+return [
     // главная страница
-    'homepage' => array(
+    'homepage' => [
         'pattern' => '/',
-        'action'  => array('Main\IndexAction', 'execute'),
-    ),
+        'action'  => ['Main\IndexAction', 'execute'],
+    ],
 
     // карточка товара
-    'product.show' => array(
+    'product.show' => [
         'pattern' => '/product/{productId}',
-        'action'  => array('Product\IndexAction', 'execute'),
-        'require' => array('productPath' => '[\d]+'),
-    ),
-);
+        'action'  => ['Product\IndexAction', 'execute'],
+        'require' => ['productPath' => '[\d]+'],
+    ],
+];

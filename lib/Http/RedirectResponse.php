@@ -22,7 +22,7 @@ class RedirectResponse extends Response {
      *
      * @api
      */
-    public function __construct($url, $status = 302, $headers = array()) {
+    public function __construct($url, $status = 302, $headers = []) {
         if (empty($url)) {
             throw new \InvalidArgumentException('Cannot redirect to an empty URL.');
         }
@@ -51,7 +51,7 @@ class RedirectResponse extends Response {
         }
     }
 
-    public static function create($url = '', $status = 302, $headers = array()) {
+    public static function create($url = '', $status = 302, $headers = []) {
         return new static($url, $status, $headers);
     }
 

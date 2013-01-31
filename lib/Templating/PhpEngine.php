@@ -19,7 +19,7 @@ class PhpEngine implements EngineInterface {
      *
      * @return string
      */
-    public function render($template, array $params = array()) {
+    public function render($template, array $params = []) {
         // render
         extract($params, EXTR_REFS);
         ob_start();

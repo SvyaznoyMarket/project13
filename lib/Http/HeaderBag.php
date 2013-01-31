@@ -16,9 +16,9 @@ class HeaderBag implements \IteratorAggregate, \Countable {
      *
      * @api
      */
-    public function __construct(array $headers = array()) {
-        $this->cacheControl = array();
-        $this->headers = array();
+    public function __construct(array $headers = []) {
+        $this->cacheControl = [];
+        $this->headers = [];
         foreach ($headers as $key => $values) {
             $this->set($key, $values);
         }
@@ -76,8 +76,8 @@ class HeaderBag implements \IteratorAggregate, \Countable {
      *
      * @api
      */
-    public function replace(array $headers = array()) {
-        $this->headers = array();
+    public function replace(array $headers = []) {
+        $this->headers = [];
         $this->add($headers);
     }
 
@@ -110,7 +110,7 @@ class HeaderBag implements \IteratorAggregate, \Countable {
 
         if (!array_key_exists($key, $this->headers)) {
             if (null === $default) {
-                return $first ? null : array();
+                return $first ? null : [];
             }
 
             return $first ? $default : array($default);
@@ -188,7 +188,7 @@ class HeaderBag implements \IteratorAggregate, \Countable {
         unset($this->headers[$key]);
 
         if ('cache-control' === $key) {
-            $this->cacheControl = array();
+            $this->cacheControl = [];
         }
     }
 
@@ -254,7 +254,7 @@ class HeaderBag implements \IteratorAggregate, \Countable {
     }
 
     protected function getCacheControlHeader() {
-        $parts = array();
+        $parts = [];
         ksort($this->cacheControl);
         foreach ($this->cacheControl as $key => $value) {
             if (true === $value) {
@@ -279,7 +279,7 @@ class HeaderBag implements \IteratorAggregate, \Countable {
      * @return array An array representing the attribute values
      */
     protected function parseCacheControl($header) {
-        $cacheControl = array();
+        $cacheControl = [];
         preg_match_all('#([a-zA-Z][a-zA-Z_-]*)\s*(?:=(?:"([^"]*)"|([^ \t",;]*)))?#', $header, $matches, PREG_SET_ORDER);
         foreach ($matches as $match) {
             $cacheControl[strtolower($match[1])] = isset($match[2]) && $match[2] ? $match[2] : (isset($match[3]) ? $match[3] : true);

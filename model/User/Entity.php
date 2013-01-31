@@ -61,7 +61,7 @@ class Entity {
     /** @var \Model\Region\Entity|null */
     private $city;
 
-    public function __construct(array $data = array()) {
+    public function __construct(array $data = []) {
         if (array_key_exists('id', $data)) $this->setId($data['id']);
         if (array_key_exists('ui', $data)) $this->setUi($data['ui']);
         if (array_key_exists('type_id', $data)) $this->setTypeId($data['type_id']);

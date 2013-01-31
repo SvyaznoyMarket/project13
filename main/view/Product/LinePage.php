@@ -10,7 +10,7 @@ class LinePage extends \View\DefaultLayout {
         $line = $this->getParam('line');
         // breadcrumbs
         if (!$this->hasParam('breadcrumbs')) {
-            $breadcrumbs = array();
+            $breadcrumbs = [];
 
             foreach ($product->getCategory() as $category) {
                 $breadcrumbs[] = array(

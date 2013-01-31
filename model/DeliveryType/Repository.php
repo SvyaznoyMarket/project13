@@ -52,7 +52,7 @@ class Repository {
             ),
         );
 
-        $collection = array();
+        $collection = [];
         foreach ($data as $item) {
             $collection[] = new Entity($item);
         }

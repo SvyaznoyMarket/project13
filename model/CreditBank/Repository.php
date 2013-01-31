@@ -58,7 +58,7 @@ class Repository
             'geo_id' => \App::user()->getRegion()->getId(),
         ));
 
-        $collection = array();
+        $collection = [];
         foreach ($result as $item) {
             $collection[] = new \Model\CreditBank\Entity($item);
         }
@@ -71,6 +71,6 @@ class Repository
 
         $this->client->addQuery('payment-method/get-credit-bank', array(
             'geo_id' => \App::user()->getRegion()->getId(),
-        ), array(), $done, $fail);
+        ), [], $done, $fail);
     }
 }

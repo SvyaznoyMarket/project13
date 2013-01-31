@@ -18,11 +18,11 @@ class IndexAction {
 
         // товары, услуги, категории
         /** @var $productsById \Model\Product\BasicEntity[] */
-        $productsById = array();
+        $productsById = [];
         /** @var $productsById \Model\Product\Service\Entity[] */
-        $servicesById = array();
+        $servicesById = [];
         /** @var $productsById \Model\Product\Category\Entity[] */
-        $categoriesById = array();
+        $categoriesById = [];
         foreach ($promo->getImage() as $promoImage) {
             switch ($promoImage->getAction()) {
                 case \Model\Promo\Image\Entity::ACTION_PRODUCT:

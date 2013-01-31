@@ -14,7 +14,7 @@ class ExpandedEntity extends BasicEntity {
     /** @var string */
     protected $article;
     /** @var Property\Entity[] */
-    protected $property = array();
+    protected $property = [];
     /** @var int */
     protected $priceAverage;
     /** @var int */
@@ -22,7 +22,7 @@ class ExpandedEntity extends BasicEntity {
     /** @var Model\Entity */
     protected $model;
 
-    public function __construct(array $data = array()) {
+    public function __construct(array $data = []) {
         if (array_key_exists('id', $data)) $this->setId($data['id']);
         if (array_key_exists('label_id', $data)) $this->setLabelId($data['label_id']);
         if (array_key_exists('name', $data)) $this->setName($data['name']);
@@ -149,7 +149,7 @@ class ExpandedEntity extends BasicEntity {
     }
 
     public function setProperty(array $properties) {
-        $this->property = array();
+        $this->property = [];
         foreach ($properties as $property) {
             $this->addProperty($property);
         }

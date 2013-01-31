@@ -48,11 +48,11 @@ class Action {
             }
 
             // данные по товарам и услугам для запроса в ядро
-            $productsInCart = array();
+            $productsInCart = [];
             foreach ($cartProductsById as $cartProduct) {
                 $productsInCart[] = array('id' => $cartProduct->getId(), 'quantity' => $cartProduct->getQuantity());
             }
-            $servicesInCart = array();
+            $servicesInCart = [];
             // несвязанные услуги
             foreach ($cartServicesById as $cartService) {
                 $servicesInCart[] = array('id' => $cartService->getId(), 'quantity' => $cartService->getQuantity());
@@ -70,7 +70,7 @@ class Action {
 
             // магазины
             /** @var $shops \Model\Shop\Entity[] */
-            $shops = array();
+            $shops = [];
             // карта доставки
             $deliveryCalcResult = null;
             \App::coreClientV2()->addQuery('order/calc-tmp', array(
@@ -89,12 +89,12 @@ class Action {
                 \App::exception()->remove($e);
 
                 $errorData = (array)$e->getContent();
-                $errorData = isset($errorData['product_error_list']) ? (array)$errorData['product_error_list'] : array();
+                $errorData = isset($errorData['product_error_list']) ? (array)$errorData['product_error_list'] : [];
 
                 // товары
                 $productIds = array_map(function ($item) { return $item['id']; }, $errorData);
                 /** @var $productsById \Model\Product\Entity[] */
-                $productsById = array();
+                $productsById = [];
                 foreach (\RepositoryManager::product()->getCollectionById($productIds) as $product) {
                     $productsById[$product->getId()] = $product;
                 }
@@ -113,7 +113,7 @@ class Action {
                             continue;
                         }
 
-                        $errorItem['product'] = array();
+                        $errorItem['product'] = [];
                         $errorItem['product']['id'] = $product->getId();
                         $errorItem['product']['token'] = $product->getToken();
                         $errorItem['product']['name'] = $product->getName();
@@ -143,9 +143,9 @@ class Action {
 
             // товары и услуги индексированные по ид
             /** @var $productsById \Model\Product\CartEntity[] */
-            $productsById = array();
+            $productsById = [];
             /** @var $servicesById \Model\Product\Service\Entity[] */
-            $servicesById = array();
+            $servicesById = [];
 
             // запрашиваем список товаров
             if ((bool)$productIds) {
@@ -252,7 +252,7 @@ class Action {
                     \App::logger($e);
                 }
             } catch (\Exception $e) {
-                $errors = array();
+                $errors = [];
 
                 if (735 == $e->getCode()) {
                     \App::exception()->remove($e);
@@ -273,7 +273,7 @@ class Action {
 
         // запрашиваем список станций метро
         /** @var $subwayData array */
-        $subwayData = array();
+        $subwayData = [];
         if ($user->getRegion()->getHasSubway()) {
             \RepositoryManager::subway()->prepareCollectionByRegion($user->getRegion(), function($data) use (&$subwayData) {
                 foreach ($data as $item) {
@@ -286,7 +286,7 @@ class Action {
 
         // запрашиваем список способов оплаты
         /** @var $paymentMethods \Model\PaymentMethod\Entity[] */
-        $paymentMethods = array();
+        $paymentMethods = [];
         $selectedPaymentMethodId = null;
         $creditAllowed = \App::config()->payment['creditEnabled'] && ($user->getCart()->getTotalProductPrice()) >= \App::config()->product['minCreditPrice'];
         \RepositoryManager::paymentMethod()->prepareCollection(null, $userEntity ? $userEntity->getIsCorporative() : false, function($data)
@@ -325,7 +325,7 @@ class Action {
 
         // запрашиваем список кредитных банков
         /** @var $banks \Model\CreditBank\Entity[] */
-        $banks = array();
+        $banks = [];
         \RepositoryManager::creditBank()->prepareCollection(function($data) use (&$banks) {
             foreach ($data as $item) {
                 $banks[] = new \Model\CreditBank\Entity($item);
@@ -337,14 +337,14 @@ class Action {
 
         // json для кредитных банков
         rsort($banks);
-        $bankData = array();
+        $bankData = [];
         foreach ($banks as $bank) {
             $bankData[$bank->getId()]['name'] = $bank->getName();
             $bankData[$bank->getId()]['href'] = $bank->getLink();
         }
 
         // json для кредита
-        $creditData = array();
+        $creditData = [];
         foreach ($cartProductsById as $cartProduct) {
             /** @var $product \Model\Product\CartEntity|null */
             $product = isset($productsById[$cartProduct->getId()]) ? $productsById[$cartProduct->getId()] : null;
@@ -406,7 +406,7 @@ class Action {
 
         // собираем магазины
         /** @var $shopsById \Model\Shop\Entity[] */
-        $shopsById = array();
+        $shopsById = [];
         foreach ($orders as $order) {
             if (!$order->getShopId()) continue;
 
@@ -420,7 +420,7 @@ class Action {
 
         // товары индексированные по ид
         /** @var $productsById \Model\Product\Entity[] */
-        $productsById = array();
+        $productsById = [];
         foreach ($orders as $order) {
             foreach ($order->getProduct() as $orderProduct) {
                 $productsById[$orderProduct->getId()] = null;
@@ -433,7 +433,7 @@ class Action {
 
         // услуги индексированные по ид
         /** @var $servicesById \Model\Product\Service\Entity[] */
-        $servicesById = array();
+        $servicesById = [];
         foreach ($orders as $order) {
             foreach ($order->getService() as $orderService) {
                 $servicesById[$orderService->getId()] = null;
@@ -450,7 +450,7 @@ class Action {
         }
 
         $paymentProvider = null;
-        $creditData = array();
+        $creditData = [];
         if (1 == count($orders)) {
             // онлайн оплата через psb
             if (5 == $paymentMethod->getId()) {
@@ -480,7 +480,7 @@ class Action {
                     $creditData['widget'] = 'direct-credit';
                     $creditData['vars'] = array(
                         'number' => $order->getNumber(),
-                        'items' => array()
+                        'items' => []
                     );
                     foreach ($order->getProduct() as $orderProduct) {
                         /** @var $product \Model\Product\Entity|null */
@@ -542,7 +542,7 @@ class Action {
         $page = new \View\Order\CompletePage();
         $page->setParam('orders', $orders);
         $page->setParam('paymentProvider', null);
-        $page->setParam('creditData', array());
+        $page->setParam('creditData', []);
         $page->setParam('isOrderAnalytics', false);
 
         return new \Http\Response($page->show());
@@ -565,13 +565,13 @@ class Action {
         }
 
         /** @var $deliveryTypesById \Model\DeliveryType\Entity[] */
-        $deliveryTypesById = array();
+        $deliveryTypesById = [];
         foreach (\RepositoryManager::deliveryType()->getCollection() as $deliveryType) {
             $deliveryTypesById[$deliveryType->getId()] = $deliveryType;
         }
 
         /** @var $deliveryTypesById \Model\Shop\Entity[] */
-        $shopsById = array();
+        $shopsById = [];
         foreach (\RepositoryManager::shop()->getCollectionByRegion($user->getRegion()) as $shop) {
             $shopsById[$shop->getId()] = $shop;
         }
@@ -584,7 +584,7 @@ class Action {
             throw $e;
         }
 
-        $data = array();
+        $data = [];
         foreach ($deliveryData['deliveryTypes'] as $deliveryItem) {
             if (!isset($deliveryTypesById[$deliveryItem['id']])) {
                 \App::logger()->error(sprintf('Неизвестный тип доставки %s', json_encode($deliveryItem, JSON_UNESCAPED_UNICODE)));
@@ -615,8 +615,8 @@ class Action {
                 'delivery_period'           => !empty($deliveryItem['interval']) ? explode(',', $deliveryItem['interval']) : null,
                 'delivery_date'             => !empty($deliveryItem['date']) ? $deliveryItem['date'] : null,
                 'ip'                        => $request->getClientIp(),
-                'product'                   => array(),
-                'service'                   => array(),
+                'product'                   => [],
+                'service'                   => [],
             );
 
             // станция метро
@@ -699,7 +699,7 @@ class Action {
             $data[] = $orderData;
         }
 
-        $params = array();
+        $params = [];
         if ($userEntity && $userEntity->getToken()) {
             $params['token'] = $userEntity->getToken();
         }
@@ -708,7 +708,7 @@ class Action {
             throw new \Exception(sprintf('Заказ не подтвержден. Ответ ядра: %s', json_encode($result, JSON_UNESCAPED_UNICODE)));
         }
 
-        $orderNumbers = array();
+        $orderNumbers = [];
         foreach ($result as $orderData) {
             if (empty($orderData['number'])) {
                 \App::logger()->error(sprintf('Ошибка при создании заказа %s', json_encode($orderData, JSON_UNESCAPED_UNICODE)));
@@ -791,7 +791,7 @@ class Action {
             $cookieValue = $request->cookies->get(self::ORDER_COOKIE_NAME);
             if (!empty($cookieValue)) {
                 $cookieValue = (array)unserialize(base64_decode(strtr($cookieValue, '-_', '+/')));
-                $data = array();
+                $data = [];
                 foreach (array(
                      'recipient_first_name',
                      'recipient_last_name',
@@ -841,7 +841,7 @@ class Action {
         // карта доставки
         $deliveryMapView = new \View\Order\DeliveryCalc\Map();
 
-        $deliveryMapView->unavailable = array();
+        $deliveryMapView->unavailable = [];
         if (array_key_exists('unavailable', $deliveryCalcResult)) {
             foreach ($deliveryCalcResult['unavailable'] as $itemType => $itemIds) {
                 $deliveryMapView->unavailable = array_merge($deliveryMapView->unavailable, array_map(function($id) use ($itemType) {
@@ -911,7 +911,7 @@ class Action {
                 if ($cartItem instanceof \Model\Cart\Product\Entity) {
                     /** @var $product \Model\Product\CartEntity */
                     $product = $productsById[$cartItem->getId()];
-                    $warrantiesById = array();
+                    $warrantiesById = [];
                     foreach ($product->getWarranty() as $warranty) {
                         $warrantiesById[$warranty->getId()] = $warranty;
                     }
@@ -988,7 +988,7 @@ class Action {
 
         // сборка типов доставки
         /** @var $deliveryTypesById \Model\DeliveryType\Entity[] */
-        $deliveryTypesById = array();
+        $deliveryTypesById = [];
         foreach (\RepositoryManager::deliveryType()->getCollection() as $deliveryType) {
             $deliveryTypesById[$deliveryType->getId()] = $deliveryType;
         }
@@ -1022,7 +1022,7 @@ class Action {
             }
 
             $tmpDates = null;
-            $dates = array();
+            $dates = [];
             foreach ($deliveryTypeView->items as $itemToken) {
                 $dates = array_map(function($i) { return $i->value; }, $deliveryMapView->items[$itemToken]->deliveries[$deliveryTypeView->token]->dates);
                 $dates = is_array($tmpDates) ? array_intersect($dates, $tmpDates) : $dates;
@@ -1072,7 +1072,7 @@ class Action {
         //$orderData = array(array('number' => 'XX013863', 'phone' => '80000000000'));
 
         /** @var $orders \Model\Order\Entity[] */
-        $orders = array();
+        $orders = [];
         foreach ($orderData as $orderItem) {
             if (!$orderItem['number'] || !$orderItem['phone']) {
                 \App::logger()->error(sprintf('Невалидные данные о заказе в сессии %s', json_encode($orderItem, JSON_UNESCAPED_UNICODE)));

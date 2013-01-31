@@ -27,7 +27,7 @@ class Entity {
     /**
      * @param array $data
      */
-    public function __construct(array $data = array()) {
+    public function __construct(array $data = []) {
         if (array_key_exists('store_id', $data))            $this->setStoreId($data['store_id']);
         if (array_key_exists('shop_id', $data))             $this->setShopId($data['shop_id']);
         if (array_key_exists('is_supplier', $data))         $this->setIsSupplier($data['is_supplier']);

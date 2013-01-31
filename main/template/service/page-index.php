@@ -20,7 +20,7 @@ $helper = $page->helper;
 <?php
 $icons = array('icon1', 'icon2', 'icon3', 'icon4');
 
-$categoriesByIcon = array();
+$categoriesByIcon = [];
 foreach ($categories as $category) {
     $icon = $helper->categoryIconClass($category);
 

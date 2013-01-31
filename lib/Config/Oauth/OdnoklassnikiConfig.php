@@ -3,17 +3,11 @@
 namespace Config\Oauth;
 
 class OdnoklassnikiConfig {
-    /**
-     * @var string ID приложения
-     */
+    /** @var string ID приложения */
     public $clientId;
-    /**
-     * @var string Секретный ключ
-     */
+    /** @var string Секретный ключ */
     public $secretKey;
-    /**
-     * @var string Публичный ключ
-     */
+    /** @var string Публичный ключ */
     public $publicKey;
 
     public function __set($name, $value) {

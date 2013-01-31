@@ -33,22 +33,20 @@ class ActionResolver {
         $action = $r->newInstanceArgs();
 
         $attributes = $request->attributes->all();
-        $arguments = array();
+        $arguments = [];
         $r = new \ReflectionMethod($action, $actionMethod);
         foreach ($r->getParameters() as $param) {
             if (array_key_exists($param->name, $attributes)) {
                 $arguments[] = $attributes[$param->name];
             } elseif ($param->getClass() && $param->getClass()->isInstance($request)) {
                 $arguments[] = $request;
-            }
-            elseif ($param->isDefaultValueAvailable()) {
+            } elseif ($param->isDefaultValueAvailable()) {
                 $arguments[] = $param->getDefaultValue();
-            }
-            else {
+            } else {
                 throw new \RuntimeException(sprintf('Действию "%s" необходим обязательный параметр "%s"', get_class($action), $param->name));
             }
         }
 
-        return array(array($action, $actionMethod), $arguments);
+        return [[$action, $actionMethod], $arguments];
     }
 }

@@ -30,14 +30,14 @@ class Provider implements \Payment\ProviderInterface {
      * @return Form
      */
     public function getForm(\Model\Order\Entity $order, $backUrl) {
-        $data = array(
+        $data = [
             'ContractorID'   => $this->config['contractorId'],
             'InvoiceID'      => $order->getNumber(),
             'Sum'            => sprintf("%01.2f", $order->getSum()),
             'PayDescription' => sprintf('Оплата заказа №%s', $order->getNumber()),
             'AdditionalInfo' => '',
             'redirect_url'   => $backUrl,
-        );
+        ];
 
         $signature = $this->config['contractorId'] . $data['InvoiceID'] . $data['Sum'] . $data['PayDescription'];
         $signature1251 = iconv('UTF-8', 'windows-1251', $signature);

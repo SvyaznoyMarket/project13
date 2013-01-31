@@ -68,7 +68,7 @@ class Action {
             \App::exception()->add($e);
             \App::logger()->error($e);
 
-            $filters = array();
+            $filters = [];
         }
         $productFilter = $this->getFilter($filters, $category, $request);
         // листалка
@@ -127,7 +127,7 @@ class Action {
             \App::exception()->add($e);
             \App::logger()->error($e);
 
-            $filters = array();
+            $filters = [];
         }
         $productFilter = $this->getFilter($filters, $category, $request);
 
@@ -182,7 +182,7 @@ class Action {
         }
 
         // запрашиваем список регионов для выбора
-        $regionsToSelect = array();
+        $regionsToSelect = [];
         \RepositoryManager::region()->prepareShowInMenuCollection(function($data) use (&$regionsToSelect) {
             foreach ($data as $item) {
                 $regionsToSelect[] = new \Model\Region\Entity($item);
@@ -198,7 +198,7 @@ class Action {
         // подготовка 2-го пакета запросов
 
         // запрашиваем рутовые категории
-        $rootCategories = array();
+        $rootCategories = [];
         \RepositoryManager::productCategory()->prepareRootCollection($region, function($data) use(&$rootCategories) {
             foreach ($data as $item) {
                 $rootCategories[] = new \Model\Product\Category\Entity($item);
@@ -229,7 +229,7 @@ class Action {
 
         // запрашиваем фильтры
         /** @var $filters \Model\Product\Filter\Entity[] */
-        $filters = array();
+        $filters = [];
         \RepositoryManager::productFilter()->prepareCollectionByCategory($category, $region, function($data) use (&$filters) {
             foreach ($data as $item) {
                 $filters[] = new \Model\Product\Filter\Entity($item);
@@ -323,7 +323,7 @@ class Action {
         // сортировка
         $productSorting = new \Model\Product\Sorting();
         // дочерние категории сгруппированные по идентификаторам
-        $childrenById = array();
+        $childrenById = [];
         foreach ($category->getChild() as $child) {
             $childrenById[$child->getId()] = $child;
         }
@@ -340,7 +340,7 @@ class Action {
         }, $childrenById);
         /** @var $child \Model\Product\Category\Entity */
         $child = reset($childrenById);
-        $productPagersByCategory = array();
+        $productPagersByCategory = [];
         $productCount = 0;
         foreach ($repository->getIteratorsByFilter($filterData, $productSorting->dump(), null, $limit) as $productPager) {
             $productPager->setPage(1);
@@ -457,7 +457,7 @@ class Action {
         $region = $isGlobal ? null : \App::user()->getRegion();
 
         // filter values
-        $values = $request->get(\View\Product\FilterForm::$name, array());
+        $values = $request->get(\View\Product\FilterForm::$name, []);
         if ($isGlobal) {
             $values['global'] = 1;
         }
@@ -477,7 +477,7 @@ class Action {
                         \App::exception()->add($e);
                         \App::logger()->error($e);
 
-                        $ancestorFilters = array();
+                        $ancestorFilters = [];
                     }
                     foreach ($ancestorFilters as $filter) {
                         if (false === $i = array_search($filter->getId(), $diff)) continue;

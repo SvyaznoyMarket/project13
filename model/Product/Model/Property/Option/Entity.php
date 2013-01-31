@@ -9,7 +9,7 @@ class Entity {
     /** @var Product\Entity[] */
     private $product;
 
-    public function __construct(array $data = array()) {
+    public function __construct(array $data = []) {
         if (array_key_exists('value', $data)) $this->setValue($data['value']);
         if (array_key_exists('product', $data) && (bool)$data['product']) $this->setProduct(new Product\Entity($data['product']));
     }

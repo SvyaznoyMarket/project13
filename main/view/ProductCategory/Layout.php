@@ -21,7 +21,7 @@ class Layout extends \View\DefaultLayout {
 
         // breadcrumbs
         if (!$this->hasParam('breadcrumbs')) {
-            $breadcrumbs = array();
+            $breadcrumbs = [];
             foreach ($category->getAncestor() as $ancestor) {
                 $breadcrumbs[] = array(
                     'name' => $ancestor->getName(),
@@ -38,7 +38,7 @@ class Layout extends \View\DefaultLayout {
 
         // seo: page meta
         if ($productPager && ($productPager->getPage() > 1)) {
-            $categoryNames = array();
+            $categoryNames = [];
             foreach ($category->getAncestor() as $ancestor) {
                 $categoryNames[] = $ancestor->getName();
             }

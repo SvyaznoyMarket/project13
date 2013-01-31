@@ -8,7 +8,7 @@ class Entity {
     /** @var int */
     private $count;
 
-    public function __construct(array $data = array()) {
+    public function __construct(array $data = []) {
         if (array_key_exists('id', $data)) $this->setId($data['id']);
         if (array_key_exists('count', $data)) $this->setCount($data['count']);
     }

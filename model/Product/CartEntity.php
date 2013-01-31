@@ -4,13 +4,13 @@ namespace Model\Product;
 
 class CartEntity extends CompactEntity {
     /** @var Service\Entity[] */
-    protected $service = array();
+    protected $service = [];
     /** @var Warranty\Entity[] */
-    protected $warranty = array();
+    protected $warranty = [];
     /** @var Kit\Entity[] */
-    protected $kit = array();
+    protected $kit = [];
 
-    public function __construct(array $data = array()) {
+    public function __construct(array $data = []) {
         parent::__construct($data);
 
         if (array_key_exists('service', $data) && is_array($data['service'])) $this->setService(array_map(function($data) {
@@ -28,7 +28,7 @@ class CartEntity extends CompactEntity {
      * @param Service\Entity[] $services
      */
     public function setService(array $services) {
-        $this->service = array();
+        $this->service = [];
         foreach ($services as $service) {
             $this->addService($service);
         }
@@ -53,7 +53,7 @@ class CartEntity extends CompactEntity {
      * @return void
      */
     public function setWarranty(array $warranties) {
-        $this->warranty = array();
+        $this->warranty = [];
         foreach ($warranties as $warranty) {
             $this->addWarranty($warranty);
         }
@@ -93,7 +93,7 @@ class CartEntity extends CompactEntity {
      * @param Kit\Entity[] $kits
      */
     public function setKit(array $kits) {
-        $this->kit = array();
+        $this->kit = [];
         foreach ($kits as $kit) {
             $this->addKit($kit);
         }

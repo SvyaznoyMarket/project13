@@ -51,7 +51,7 @@ class Repository {
             'select_type' => 'id',
             'id'        => [$id],
             'geo_id'      => $region ? $region->getId() : \App::user()->getRegion()->getId(),
-        ), array(), $callback);
+        ), [], $callback);
     }
 
     /**
@@ -66,7 +66,7 @@ class Repository {
             'select_type' => 'slug',
             'slug'        => $token,
             'geo_id'      => $region ? $region->getId() : \App::user()->getRegion()->getId(),
-        ), array(), $callback);
+        ), [], $callback);
     }
 
     /**
@@ -94,7 +94,7 @@ class Repository {
     public function getCollectionByToken(array $tokens, \Model\Region\Entity $region = null) {
         \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
-        if (!(bool)$tokens) return array();
+        if (!(bool)$tokens) return [];
 
         $response = $this->client->query('product/get', array(
             'select_type' => 'slug',
@@ -102,7 +102,7 @@ class Repository {
             'geo_id'      => $region ? $region->getId() : \App::user()->getRegion()->getId(),
         ));
 
-        $collection = array();
+        $collection = [];
         foreach ($response as $data) {
             $collection[] = new $this->entityClass($data);
         }
@@ -118,7 +118,7 @@ class Repository {
     public function getCollectionByBarcode(array $barcodes, \Model\Region\Entity $region = null) {
         \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
-        if (!(bool)$barcodes) return array();
+        if (!(bool)$barcodes) return [];
 
         $response = $this->client->query('product/get', array(
             'select_type' => 'bar_code',
@@ -126,7 +126,7 @@ class Repository {
             'geo_id'      => $region ? $region->getId() : \App::user()->getRegion()->getId(),
         ));
 
-        $collection = array();
+        $collection = [];
         foreach ($response as $data) {
             $collection[] = new $this->entityClass($data);
         }
@@ -147,7 +147,7 @@ class Repository {
             'select_type' => 'bar_code',
             'bar_code'    => $barcodes,
             'geo_id'      => $region ? $region->getId() : \App::user()->getRegion()->getId(),
-        ), array(), $done, $fail);
+        ), [], $done, $fail);
     }
 
     /**
@@ -157,7 +157,7 @@ class Repository {
     public function getCollectionById(array $ids, \Model\Region\Entity $region = null) {
         \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
-        if (!(bool)$ids) return array();
+        if (!(bool)$ids) return [];
 
         $response = $this->client->query('product/get', array(
             'select_type' => 'id',
@@ -165,7 +165,7 @@ class Repository {
             'geo_id'      => $region ? $region->getId() : \App::user()->getRegion()->getId(),
         ));
 
-        $collection = array();
+        $collection = [];
         foreach ($response as $data) {
             $collection[] = new $this->entityClass($data);
         }
@@ -188,7 +188,7 @@ class Repository {
             'select_type' => 'id',
             'id'          => $ids,
             'geo_id'      => $region ? $region->getId() : \App::user()->getRegion()->getId(),
-        ), array(), $done, $fail);
+        ), [], $done, $fail);
     }
 
     /**
@@ -196,13 +196,13 @@ class Repository {
      * @param \Model\Region\Entity $region
      * @return int
      */
-    public function countByFilter(array $filter = array(), \Model\Region\Entity $region = null) {
+    public function countByFilter(array $filter = [], \Model\Region\Entity $region = null) {
         \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         $response = $this->client->query('listing/list', array(
             'filter' => array(
                 'filters' => $filter,
-                'sort'    => array(),
+                'sort'    => [],
                 'offset'  => null,
                 'limit'   => null,
             ),
@@ -220,11 +220,11 @@ class Repository {
      * @param \Model\Region\Entity $region
      * @return \Iterator\EntityPager
      */
-    public function getIteratorByFilter(array $filter = array(), array $sort = array(), $offset = null, $limit = null, \Model\Region\Entity $region = null) {
+    public function getIteratorByFilter(array $filter = [], array $sort = [], $offset = null, $limit = null, \Model\Region\Entity $region = null) {
         \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         //TODO: выпилить, когда будет реализована задача CORE-675
-        if (isset($sort['default'])) $sort = array();
+        if (isset($sort['default'])) $sort = [];
 
         $response = $this->client->query('listing/list', array(
             'filter' => array(
@@ -236,7 +236,7 @@ class Repository {
             'region_id' => $region ? $region->getId() : \App::user()->getRegion()->getId(),
         ));
 
-        $collection = !empty($response['list']) ? $this->getCollectionById($response['list'], $region) : array();
+        $collection = !empty($response['list']) ? $this->getCollectionById($response['list'], $region) : [];
 
         return new \Iterator\EntityPager($collection, (int)$response['count']);
     }
@@ -249,13 +249,13 @@ class Repository {
      * @param \Model\Region\Entity $region
      * @return \Iterator\EntityPager[]
      */
-    public function getIteratorsByFilter(array $filters = array(), array $sort = array(), $offset = null, $limit = null, \Model\Region\Entity $region = null) {
+    public function getIteratorsByFilter(array $filters = [], array $sort = [], $offset = null, $limit = null, \Model\Region\Entity $region = null) {
         \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
-        $response = $this->client->query('listing/multilist', array(), array(
+        $response = $this->client->query('listing/multilist', [], array(
             'filter_list' => array_map(function($filter) use ($sort, $offset, $limit) {
                 //TODO: выпилить, когда будет реализована задача CORE-675
-                if (isset($sort['default'])) $sort = array();
+                if (isset($sort['default'])) $sort = [];
 
                 return array(
                     'filters' => $filter,
@@ -268,22 +268,22 @@ class Repository {
         ));
 
         if (!(bool)$response) {
-            return array();
+            return [];
         }
 
         // собираем все идентификаторы товаров, чтобы сделать один запрос в ядро
-        $ids = array();
+        $ids = [];
         foreach ($response as $data) {
             $ids = array_merge($ids, $data['list']);
         }
         // товары сгруппированные по идентификаторам
-        $collectionById = array();
+        $collectionById = [];
         foreach ($this->getCollectionById($ids) as $entity) {
             $collectionById[$entity->getId()] = $entity;
         }
-        $iterators = array();
+        $iterators = [];
         foreach ($response as $data) {
-            $collection = array();
+            $collection = [];
             foreach ($data['list'] as $id) {
                 $collection[] = $collectionById[$id];
             }

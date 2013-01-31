@@ -19,11 +19,11 @@ class OdnoklassnikiProvider implements ProviderInterface {
      * @return string
      */
     public function getLoginUrl() {
-        return 'http://www.odnoklassniki.ru/oauth/authorize?' . http_build_query(array(
+        return 'http://www.odnoklassniki.ru/oauth/authorize?' . http_build_query([
             'client_id'     => $this->config->clientId,
-            'redirect_uri'  => \App::router()->generate('user.login.external.response', array('providerName' => self::NAME), true),
+            'redirect_uri'  => \App::router()->generate('user.login.external.response', ['providerName' => self::NAME], true),
             'response_type' => 'code',
-        ));
+        ]);
     }
 
     /**
@@ -38,13 +38,13 @@ class OdnoklassnikiProvider implements ProviderInterface {
             return null;
         }
 
-        $response = $this->query($this->getAccessTokenUrl(), array(
+        $response = $this->query($this->getAccessTokenUrl(), [
             'code'          => $code,
-            'redirect_uri'  => \App::router()->generate('user.login.external.response', array('providerName' => self::NAME), true),
+            'redirect_uri'  => \App::router()->generate('user.login.external.response', ['providerName' => self::NAME], true),
             'grant_type'    => 'authorization_code',
             'client_id'     => $this->config->clientId,
             'client_secret' => $this->config->secretKey,
-        ));
+        ]);
         if (empty($response['access_token'])) {
             \App::logger()->warn(array('provider' => self::NAME, 'url' => $this->getAccessTokenUrl($code), 'response' => $response));
             return null;
@@ -76,11 +76,11 @@ class OdnoklassnikiProvider implements ProviderInterface {
     private function getProfileUrl($accessToken) {
         $sig = md5('application_key=' . $this->config->publicKey . 'method=users.getCurrentUser' . md5($accessToken . $this->config->secretKey));
 
-        return 'http://api.odnoklassniki.ru/fb.do?method=users.getCurrentUser&' . http_build_query(array(
+        return 'http://api.odnoklassniki.ru/fb.do?method=users.getCurrentUser&' . http_build_query([
             'access_token'    => $accessToken,
             'application_key' => $this->config->publicKey,
             'sig'             => $sig,
-        ));
+        ]);
     }
 
     /**
@@ -89,7 +89,7 @@ class OdnoklassnikiProvider implements ProviderInterface {
      * @return mixed|null
      * @throws \Exception
      */
-    private function query($url, array $data = array()) {
+    private function query($url, array $data = []) {
         $client = new \Curl\Client();
 
         try {

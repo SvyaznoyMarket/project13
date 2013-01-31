@@ -22,12 +22,12 @@ class Action {
 
         // категории
         /** @var $tagCategoriesById \Model\Tag\Category\Entity[] */
-        $tagCategoriesById = array();
+        $tagCategoriesById = [];
         foreach ($tag->getCategory() as $tagCategory) {
             $tagCategoriesById[$tagCategory->getId()] = $tagCategory;
         }
         /** @var $categoriesByToken \Model\Product\Category\Entity[] */
-        $categoriesByToken = array();
+        $categoriesByToken = [];
         foreach (\RepositoryManager::productCategory()->getCollectionById(array_keys($tagCategoriesById)) as $category) {
             /** @var $category \Model\Product\Category\Entity */
             $tagCategory = $tagCategoriesById[$category->getId()];

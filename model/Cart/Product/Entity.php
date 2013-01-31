@@ -12,11 +12,11 @@ class Entity {
     /** @var bool */
     private $isBuyable = true;
     /** @var \Model\Cart\Service\Entity[] */
-    private $service = array();
+    private $service = [];
     /** @var \Model\Cart\Warranty\Entity[] */
-    private $warranty = array();
+    private $warranty = [];
 
-    public function __construct(array $data = array()) {
+    public function __construct(array $data = []) {
         if (array_key_exists('id', $data)) $this->setId($data['id']);
         if (array_key_exists('quantity', $data)) $this->setQuantity($data['quantity']);
         if (array_key_exists('price', $data)) $this->setPrice($data['price']);
@@ -95,7 +95,7 @@ class Entity {
      * @param \Model\Cart\Service\Entity[] $services
      */
     public function setService(array $services) {
-        $this->service = array();
+        $this->service = [];
         foreach ($services as $service) {
             $this->addService($service);
         }
@@ -131,7 +131,7 @@ class Entity {
      * @param \Model\Cart\Warranty\Entity[] $warranties
      */
     public function setWarranty($warranties) {
-        $this->warranty = array();
+        $this->warranty = [];
         foreach ($warranties as $warranty) {
             $this->addWarranty($warranty);
         }

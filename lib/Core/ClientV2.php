@@ -9,9 +9,9 @@ class ClientV2 implements ClientInterface
     private $logger;
     /** @var resource */
     private $isMultiple;
-    private $successCallbacks = array();
-    private $failCallbacks = array();
-    private $resources = array();
+    private $successCallbacks = [];
+    private $failCallbacks = [];
+    private $resources = [];
     /** @var bool */
     private $stillExecuting = false;
 
@@ -31,7 +31,7 @@ class ClientV2 implements ClientInterface
      * @return mixed
      * @throws \RuntimeException
      */
-    public function query($action, array $params = array(), array $data = array()) {
+    public function query($action, array $params = [], array $data = []) {
         \Debug\Timer::start('core');
 
         $connection = $this->createResource($action, $params, $data);
@@ -68,7 +68,7 @@ class ClientV2 implements ClientInterface
         }
     }
 
-    public function addQuery($action, array $params = array(), array $data = array(), $successCallback, $failCallback = null) {
+    public function addQuery($action, array $params = [], array $data = [], $successCallback, $failCallback = null) {
         if (!$this->isMultiple) {
             $this->isMultiple = curl_multi_init();
         }
@@ -107,13 +107,13 @@ class ClientV2 implements ClientInterface
                     $this->logger->debug('Core response info: ' . $this->encodeInfo($info));
                     if (curl_errno($handler) > 0) {
                         $spend = \Debug\Timer::stop('core');
-                        \Util\RequestLogger::getInstance()->addLog($info['url'], array("unknown in multi curl"), $info['total_time'], 'unknown');
+                        \Util\RequestLogger::getInstance()->addLog($info['url'], ['unknown in multi curl'], $info['total_time'], 'unknown');
                         throw new \RuntimeException(curl_error($handler), curl_errno($handler));
                     }
                     $content = curl_multi_getcontent($handler);
                     $header = $this->getHeader($content, true);
 
-                    \Util\RequestLogger::getInstance()->addLog($info['url'], array("unknown in multi curl"), $info['total_time'], isset($header['X-Server-Name']) ? $header['X-Server-Name'] : 'unknown');
+                    \Util\RequestLogger::getInstance()->addLog($info['url'], ['unknown in multi curl'], $info['total_time'], isset($header['X-Server-Name']) ? $header['X-Server-Name'] : 'unknown');
 
                     if ($info['http_code'] >= 300) {
                         $spend = \Debug\Timer::stop('core');
@@ -147,9 +147,9 @@ class ClientV2 implements ClientInterface
         }
         curl_multi_close($this->isMultiple);
         $this->isMultiple = null;
-        $this->successCallbacks = array();
-        $this->failCallbacks = array();
-        $this->resources = array();
+        $this->successCallbacks = [];
+        $this->failCallbacks = [];
+        $this->resources = [];
         if (!is_null($error)) {
             \App::exception()->add($e);
             $this->logger->error('Error:' . (string)$error . 'Response: ' . print_r(isset($content) ? $content : null, true));
@@ -167,12 +167,12 @@ class ClientV2 implements ClientInterface
      * @param array  $data
      * @return resource
      */
-    private function createResource($action, array $params = array(), array $data = array()) {
+    private function createResource($action, array $params = [], array $data = []) {
         $isPostMethod = !empty($data);
 
         $query = $this->config['url']
             . $action
-            . '?' . http_build_query(array_merge($params, array('client_id' => $this->config['client_id'])));
+            . '?' . http_build_query(array_merge($params, ['client_id' => $this->config['client_id']]));
 
         \App::logger()->info('Start core ' . $action . ' query: ' . $query);
 
@@ -185,7 +185,7 @@ class ClientV2 implements ClientInterface
         curl_setopt($connection, CURLOPT_HEADER, 1);
         curl_setopt($connection, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($connection, CURLOPT_URL, $query);
-        curl_setopt($connection, CURLOPT_HTTPHEADER, array('X-Request-Id: '.\Util\RequestLogger::getInstance()->getId(), 'Expect:'));
+        curl_setopt($connection, CURLOPT_HTTPHEADER, ['X-Request-Id: '.\Util\RequestLogger::getInstance()->getId(), 'Expect:']);
         curl_setopt($connection, CURLOPT_ENCODING, 'gzip,deflate');
 
         if ($isPostMethod) {
@@ -272,7 +272,7 @@ class ClientV2 implements ClientInterface
             throw new \RuntimeException('Response cannot be null');
         }
 
-        $header = array();
+        $header = [];
         $response = explode("\r\n\r\n", $plainResponse);
         if ($isUpdateResponse) $plainResponse = isset($response[1]) ? $response[1] : null;
 

@@ -7,17 +7,17 @@ class Collector {
     const TYPE_WARN = 'warn';
     const TYPE_INFO = 'info';
 
-    private $data = array();
+    private $data = [];
 
     public function add($name, $value, $priority = null, $type = null) {
         static $next = 50;
 
-        $this->data[] = array(
+        $this->data[] = [
             'name'     => $name,
             'value'    => $value,
             'type'     => $type ?: self::TYPE_INFO,
             'priority' => $priority ?: $next,
-        );
+        ];
 
         --$next;
     }

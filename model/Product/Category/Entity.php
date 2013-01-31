@@ -32,7 +32,7 @@ class Entity extends BasicEntity {
     /** @var bool */
     protected $hasChild;
 
-    public function __construct(array $data = array()) {
+    public function __construct(array $data = []) {
         if (array_key_exists('id', $data)) $this->setId($data['id']);
         if (array_key_exists('parent_id', $data)) $this->setParentId($data['parent_id']);
         if (array_key_exists('is_furniture', $data)) $this->setIsFurniture($data['is_furniture']);

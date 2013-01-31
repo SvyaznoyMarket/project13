@@ -30,9 +30,9 @@ class Entity {
     /** @var bool */
     private $isInList;
     /** @var Option\Entity[] */
-    private $option = array();
+    private $option = [];
 
-    public function __construct(array $data = array()) {
+    public function __construct(array $data = []) {
         if (array_key_exists('id', $data)) $this->setId($data['id']);
         if (array_key_exists('type_id', $data)) $this->setTypeId($data['type_id']);
         if (array_key_exists('name', $data)) $this->setName($data['name']);
@@ -152,7 +152,7 @@ class Entity {
      * @param Option\Entity[] $options
      */
     public function setOption(array $options) {
-        $this->option = array();
+        $this->option = [];
         foreach ($options as $option) {
             $this->addOption($option);
         }
@@ -253,7 +253,7 @@ class Entity {
         }
 
         if (!empty($this->option)) {
-            $value = array();
+            $value = [];
             foreach ($this->option as $option) {
                 $value[] = $option->getHumanizedName();
             }

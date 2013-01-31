@@ -17,14 +17,14 @@ class FilterForm {
     }
 
     public function getSelected() {
-        $return = array();
+        $return = [];
         foreach ($this->productFilter->getFilterCollection() as $filter) {
             $value = $this->productFilter->getValue($filter);
             switch ($filter->getTypeId()) {
                 case FilterEntity::TYPE_SLIDER:
                 case FilterEntity::TYPE_NUMBER:
                     if (empty($value['from']) && empty($value['to'])) continue;
-                    $name = array();
+                    $name = [];
                     if (!($this->isEqualNumeric($value['from'], $filter->getMin()))) $name[] = sprintf('от %d', $value['from']);
                     if (!($this->isEqualNumeric($value['to'], $filter->getMax()))) $name[] = sprintf('до %d', $value['to']);
                     if (!$name) continue;

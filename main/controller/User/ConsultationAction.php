@@ -56,7 +56,7 @@ class ConsultationAction {
                     $data['last_name'] = $name[1];
                 }
 
-                $response = \App::coreClientV2()->query('user/callback-create', array(), $data);
+                $response = \App::coreClientV2()->query('user/callback-create', [], $data);
 
                 if (!isset($response['confirmed']) || !$response['confirmed']) {
                     throw new \Exception('Не удалось сохранить форму');

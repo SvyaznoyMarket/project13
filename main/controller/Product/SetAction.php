@@ -22,9 +22,9 @@ class SetAction {
         // подготовка 1-го запроса
 
         /** @var $categoriesById \Model\Product\Category\Entity[] */
-        $categoriesById = array();
+        $categoriesById = [];
         /** @var $products \Model\Product\ExpandedEntity */
-        $products = array();
+        $products = [];
         \RepositoryManager::product()->prepareCollectionByBarcode($productBarcodes, \App::user()->getRegion(), function($data) use (&$products, &$categoriesById) {
             foreach ($data as $item) {
                 $products[] = new \Model\Product\ExpandedEntity($item);

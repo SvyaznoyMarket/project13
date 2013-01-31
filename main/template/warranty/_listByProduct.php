@@ -9,7 +9,7 @@
 
 <? if (\App::config()->warranty['enabled']) { ?>
 <?
-    $warrantiesById = array(); foreach ($product->getWarranty() as $warranty) { $warrantiesById[$warranty->getId()] = $warranty; }
+    $warrantiesById = []; foreach ($product->getWarranty() as $warranty) { $warrantiesById[$warranty->getId()] = $warranty; }
     $cartProduct = $user->getCart()->getProductById($product->getId());
     /** @var $cartWarranty \Model\Cart\Warranty\Entity|null */
     $cartWarranty = null;

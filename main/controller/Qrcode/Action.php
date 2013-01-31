@@ -21,13 +21,13 @@ class Action {
 
         $data = $client->query('qrcode/get', array('qrcode' => $qrcode));
 
-        $list = isset($data['item_list']) ? (array)$data['item_list'] : array();
+        $list = isset($data['item_list']) ? (array)$data['item_list'] : [];
         if (!(bool)$list) {
             throw new \Exception\NotFoundException(sprintf('Не получен список элеметов для qrcode %s', $qrcode));
         }
 
         /** @var $productsById \Model\Product\Entity[] */
-        $productsById = array();
+        $productsById = [];
         // получаем ид товаров
         foreach ($list as $item) {
             $item = array(

@@ -24,7 +24,7 @@ class Repository {
             'geo_id' => $region->getId(),
         ));
 
-        $collection = array();
+        $collection = [];
         foreach ($response as $data) {
             $collection[] = new Entity($data);
         }
@@ -42,6 +42,6 @@ class Repository {
 
         $this->client->addQuery('subway/get', array(
             'geo_id' => $region->getId(),
-        ), array(), $done, $fail);
+        ), [], $done, $fail);
     }
 }

@@ -29,7 +29,7 @@ class DefaultLayout extends \Templating\HtmlLayout {
             } catch (\Exception $e) {
                 \App::logger()->error($e);
 
-                $regions = array();
+                $regions = [];
             }
         }
 

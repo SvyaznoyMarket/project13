@@ -3,13 +3,15 @@
 namespace Debug;
 
 class Timer {
-    private static $default = array(
+    /** @var array */
+    private static $default = [
         'active' => false,
         'start'  => 0,
         'total'  => 0,
         'count'  => 0,
-    );
-    private static $instances = array();
+    ];
+    /** @var array */
+    private static $instances = [];
 
     public static function start($name) {
         if (!isset(self::$instances[$name])) {
@@ -22,7 +24,7 @@ class Timer {
 
     public static function stop($name) {
         if (!isset(self::$instances[$name]) || !self::$instances[$name]['active']) {
-            return;
+            return 0;
         }
 
         self::$instances[$name]['active'] = false;

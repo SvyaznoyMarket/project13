@@ -20,7 +20,7 @@ class ShowPage extends \View\DefaultLayout {
 
         // breadcrumbs
         if (!$this->hasParam('breadcrumbs')) {
-            $breadcrumbs = array();
+            $breadcrumbs = [];
             $breadcrumbs[] = array(
                 'name' => 'Магазины Enter в  ' . $region->getInflectedName(5),
                 'url'  => \App::router()->generate('shop.region', array('regionId' => $region->getId())),

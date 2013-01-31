@@ -11,7 +11,7 @@ class Entity {
     /**
      * @param array $data
      */
-    public function __construct(array $data = array()) {
+    public function __construct(array $data = []) {
         if (array_key_exists('source', $data)) $this->setSource($data['source']);
         if (array_key_exists('position', $data)) $this->setPosition($data['position']);
     }

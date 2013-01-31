@@ -20,11 +20,11 @@ class Entity {
     /** @var int */
     private $level;
     /** @var Entity[] */
-    private $child = array();
+    private $child = [];
     /** @var Entity|null */
     private $parent;
 
-    public function __construct(array $data = array()) {
+    public function __construct(array $data = []) {
         if (array_key_exists('id', $data)) $this->setId($data['id']);
         if (array_key_exists('parent_id', $data)) $this->setParentId($data['parent_id']);
         if (array_key_exists('name', $data)) $this->setName($data['name']);
@@ -51,7 +51,7 @@ class Entity {
      * @param Entity[] $children
      */
     public function setChild(array $children) {
-        $this->child = array();
+        $this->child = [];
         foreach ($children as $child) {
             $this->addChild($child);
         }

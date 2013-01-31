@@ -19,12 +19,12 @@ class VkontakteProvider implements ProviderInterface {
      * @return string
      */
     public function getLoginUrl() {
-        return 'http://oauth.vk.com/authorize?' . http_build_query(array(
+        return 'http://oauth.vk.com/authorize?' . http_build_query([
             'client_id'     => $this->config->clientId,
             'scope'         => '',
-            'redirect_uri'  => \App::router()->generate('user.login.external.response', array('providerName' => self::NAME), true),
+            'redirect_uri'  => \App::router()->generate('user.login.external.response', ['providerName' => self::NAME], true),
             'response_type' => 'code',
-        ));
+        ]);
     }
 
     /**
@@ -47,7 +47,7 @@ class VkontakteProvider implements ProviderInterface {
         $userId = $response['user_id'];
 
         $response = $this->query($this->getProfileUrl($userId));
-        $response = (isset($response['response']) && is_array($response['response'])) ? reset($response['response']) : array();
+        $response = (isset($response['response']) && is_array($response['response'])) ? reset($response['response']) : [];
         if (empty($response['uid']) || empty($response['first_name']) || ('DELETED' == $response['first_name'])) {
             \App::logger()->warn(array('provider' => self::NAME, 'url' => $this->getProfileUrl($userId), 'response' => $response));
             return null;
@@ -63,12 +63,12 @@ class VkontakteProvider implements ProviderInterface {
      * @return string
      */
     private function getAccessTokenUrl($code) {
-        return 'https://oauth.vk.com/access_token?' . http_build_query(array(
+        return 'https://oauth.vk.com/access_token?' . http_build_query([
             'client_id'     => $this->config->clientId,
             'client_secret' => $this->config->secretKey,
             'code'          => $code,
-            'redirect_uri'  => \App::router()->generate('user.login.external.response', array('providerName' => self::NAME), true),
-        ));
+            'redirect_uri'  => \App::router()->generate('user.login.external.response', ['providerName' => self::NAME], true),
+        ]);
     }
 
     /**
@@ -76,10 +76,10 @@ class VkontakteProvider implements ProviderInterface {
      * @return string
      */
     private function getProfileUrl($id) {
-        return 'https://api.vk.com/method/users.get?' . http_build_query(array(
+        return 'https://api.vk.com/method/users.get?' . http_build_query([
             'uids'   => $id,
             'fields' => 'uid,first_name,last_name,nickname,screen_name,sex,bdate,city,country,timezone,photo,photo_medium,photo_big',
-        ));
+        ]);
     }
 
     /**
@@ -88,7 +88,7 @@ class VkontakteProvider implements ProviderInterface {
      * @return mixed|null
      * @throws \Exception
      */
-    private function query($url, array $data = array()) {
+    private function query($url, array $data = []) {
         $client = new \Curl\Client();
 
         try {
@@ -98,7 +98,7 @@ class VkontakteProvider implements ProviderInterface {
             // TODO: json_last_error()
 
             if (!$response || !empty($response['error'])) {
-                \App::logger()->warn(array('provider' => self::NAME, 'url' => $url, 'data' => $data, 'response' => $response));
+                \App::logger()->warn(['provider' => self::NAME, 'url' => $url, 'data' => $data, 'response' => $response]);
                 throw new \Exception($response['error'] . (isset($response['error_description']) ? (': ' . $response['error_description']) : ''));
             }
         } catch (\Exception $e) {

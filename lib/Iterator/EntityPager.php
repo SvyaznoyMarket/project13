@@ -4,7 +4,7 @@ namespace Iterator;
 
 class EntityPager implements \Iterator {
     /** @var array */
-    private $collection = array();
+    private $collection = [];
     /** @var int */
     private $count = 0;
     /** @var int */

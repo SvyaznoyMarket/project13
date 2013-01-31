@@ -45,7 +45,7 @@ class Repository {
     public function prepareEntityById($id, $callback) {
         \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
-        $this->client->addQuery('geo/get', array('id' => array($id)), array(), $callback);
+        $this->client->addQuery('geo/get', array('id' => array($id)), [], $callback);
     }
 
     /**
@@ -72,7 +72,7 @@ class Repository {
 
         $response = $this->client->query('geo/get-shop-available');
 
-        $collection = array();
+        $collection = [];
         foreach ($response as $data) {
             $collection[] = new Entity($data);
         }
@@ -86,7 +86,7 @@ class Repository {
     public function prepareShopAvailableCollection($callback) {
         \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
-        $this->client->addQuery('geo/get-shop-available', array(), array(), $callback);
+        $this->client->addQuery('geo/get-shop-available', [], [], $callback);
     }
 
     /**
@@ -97,7 +97,7 @@ class Repository {
 
         $response = $this->client->query('geo/get-menu-cities');
 
-        $collection = array();
+        $collection = [];
         foreach ($response as $data) {
             $collection[] = new Entity($data);
         }
@@ -111,6 +111,6 @@ class Repository {
     public function prepareShowInMenuCollection($callback) {
         \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
-        $this->client->addQuery('geo/get-menu-cities', array(), array(), $callback);
+        $this->client->addQuery('geo/get-menu-cities', [], [], $callback);
     }
 }

@@ -6,7 +6,7 @@ class ConsultationPage extends \View\DefaultLayout {
     public function prepare() {
         // breadcrumbs
         if (!$this->hasParam('breadcrumbs')) {
-            $breadcrumbs = array();
+            $breadcrumbs = [];
             $breadcrumbs[] = array(
                 'name' => 'Личный кабинет',
                 'url'  => $this->url('user'),

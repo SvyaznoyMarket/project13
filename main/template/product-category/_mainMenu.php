@@ -16,7 +16,7 @@
     <span class="close" href="#"></span>
     <?php for ($column = 0; $column < 4; $column++): ?>
         <?
-            $children = array();
+            $children = [];
             foreach ($category->getChild() as $child) {
                 if ($column != $columnsByCategory[$child->getId()]) continue;
                 $children[] = $child;

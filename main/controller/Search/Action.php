@@ -55,7 +55,7 @@ class Action {
         $meanQuery = isset($result['did_you_mean']) ? $result['did_you_mean'] : '';
 
         // категории
-        $categoriesById = array();
+        $categoriesById = [];
         foreach ($result['category_list'] as $item) {
             $categoriesById[$item['category_id']] = new \Model\Product\Category\Entity(array(
                 'id'            => $item['category_id'],

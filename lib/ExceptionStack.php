@@ -2,7 +2,7 @@
 
 class ExceptionStack {
     /** @var \Exception[] */
-    private $exceptions = array();
+    private $exceptions = [];
 
     /**
      * @param Exception $e

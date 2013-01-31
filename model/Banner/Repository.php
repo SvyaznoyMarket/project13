@@ -20,13 +20,13 @@ class Repository {
     public function getCollection(\Model\Region\Entity $region = null) {
         \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args()));
 
-        $params = array();
+        $params = [];
         if ($region) {
             $params['geo_id'] = $region->getId();
         }
         $data = $this->client->query('promo/get');
 
-        $collection = array();
+        $collection = [];
         foreach ($data as $item) {
             $collection[] = new Entity($item);
         }
@@ -41,11 +41,11 @@ class Repository {
     public function prepareCollection(\Model\Region\Entity $region = null, $callback) {
         \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
-        $params = array();
+        $params = [];
         if ($region) {
             $params['geo_id'] = $region->getId();
         }
-        $this->client->addQuery('promo/get', $params, array(), $callback);
+        $this->client->addQuery('promo/get', $params, [], $callback);
     }
 
     /**
@@ -71,7 +71,7 @@ class Repository {
             }
 
             if ($item->getProductId()) {
-                $products = array();
+                $products = [];
                 foreach ($items as $item) {
                     $product = isset($productsById[$item->getProductId()])
                         ? $productsById[$item->getProductId()]

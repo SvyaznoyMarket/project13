@@ -9,7 +9,7 @@ class RegionInflectAction {
         $xml = simplexml_load_file(\App::config()->dataDir . '/core/geo.xml');
 
         foreach ($xml->xpath('//row') as $row) {
-            $item = array();
+            $item = [];
             foreach ($row->field as $field) {
                 if ('id' == $field['name']) {
                     $item['id'] = (string)$field;
@@ -55,7 +55,7 @@ class RegionInflectAction {
             )));
             if (!$itemXml = simplexml_load_string($response)) continue;
 
-            $data = array();
+            $data = [];
             foreach ($itemXml->xpath('//inflection') as $inflection) {
                 $data[] = (string)$inflection;
             }

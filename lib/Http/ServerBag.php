@@ -12,7 +12,7 @@ class ServerBag extends ParameterBag {
      * @return string
      */
     public function getHeaders() {
-        $headers = array();
+        $headers = [];
         foreach ($this->parameters as $key => $value) {
             if (0 === strpos($key, 'HTTP_')) {
                 $headers[substr($key, 5)] = $value;

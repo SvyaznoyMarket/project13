@@ -14,13 +14,13 @@ class JsonResponse extends Response {
      * @param integer $status  The response status code
      * @param array   $headers An array of response headers
      */
-    public function __construct($data = array(), $status = 200, $headers = array()) {
+    public function __construct($data = [], $status = 200, $headers = []) {
         parent::__construct('', $status, $headers);
 
         $this->setData($data);
     }
 
-    public static function create($data = array(), $status = 200, $headers = array()) {
+    public static function create($data = [], $status = 200, $headers = []) {
         return new static($data, $status, $headers);
     }
 
@@ -56,7 +56,7 @@ class JsonResponse extends Response {
      *
      * @return JsonResponse
      */
-    public function setData($data = array()) {
+    public function setData($data = []) {
         // root should be JSON object, not array
         if (is_array($data) && 0 === count($data)) {
             $data = new \ArrayObject();

@@ -21,10 +21,10 @@ class Helper {
             $route = $request->attributes->get('route');
         }
 
-        $excluded = (null == $excluded) ? array('page' => '1') : $excluded;
+        $excluded = (null == $excluded) ? ['page' => '1'] : $excluded;
 
-        $params = array();
-        foreach (array_diff(array_keys($request->attributes->all()), array('pattern', 'method', 'action', 'route', 'require')) as $k) {
+        $params = [];
+        foreach (array_diff(array_keys($request->attributes->all()), ['pattern', 'method', 'action', 'route', 'require']) as $k) {
             $params[$k] = $request->attributes->get($k);
         }
         foreach ($request->query->all() as $k => $v) {

@@ -25,7 +25,7 @@ class ExternalCreateAction {
         }
 
         /** @var $productsById \Model\Product\Entity[] */
-        $productsById = array();
+        $productsById = [];
         foreach ($productInCart as $id => $quantity) {
             $productsById[$id] = null;
         }
@@ -47,7 +47,7 @@ class ExternalCreateAction {
             $cart->setProduct($product, $quantity);
         }
 
-        $params = array();
+        $params = [];
         foreach ($request->query->all() as $k => $v) {
             if (0 === strpos($k, 'utm_')) {
                 $params[$k] = $v;

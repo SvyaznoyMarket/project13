@@ -18,7 +18,7 @@ class CompactEntity extends BasicEntity {
     /** @var Model\Entity */
     protected $model;
 
-    public function __construct(array $data = array()) {
+    public function __construct(array $data = []) {
         if (array_key_exists('id', $data)) $this->setId($data['id']);
         if (array_key_exists('article', $data)) $this->setArticle($data['article']);
         if (array_key_exists('label_id', $data)) $this->setLabelId($data['label_id']);

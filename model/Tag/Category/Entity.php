@@ -10,7 +10,7 @@ class Entity {
     /** @var int */
     private $productCount;
 
-    public function __construct(array $data = array()) {
+    public function __construct(array $data = []) {
         if (array_key_exists('category_id', $data)) $this->setId($data['category_id']);
         if (array_key_exists('name', $data)) $this->setName($data['name']);
         if (array_key_exists('count', $data)) $this->setProductCount($data['count']);

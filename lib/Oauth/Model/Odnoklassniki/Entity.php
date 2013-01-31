@@ -24,7 +24,7 @@ class Entity implements \Oauth\Model\EntityInterface {
     /** @var string $pic2 profile small picture (128x128) */
     private $pic2;
 
-    public function __construct(array $data = array()) {
+    public function __construct(array $data = []) {
         $this->import($data);
     }
 

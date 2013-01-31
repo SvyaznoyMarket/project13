@@ -20,7 +20,7 @@ class ParameterBag implements \IteratorAggregate, \Countable {
      *
      * @api
      */
-    public function __construct(array $parameters = array()) {
+    public function __construct(array $parameters = []) {
         $this->parameters = $parameters;
     }
 
@@ -53,7 +53,7 @@ class ParameterBag implements \IteratorAggregate, \Countable {
      *
      * @api
      */
-    public function replace(array $parameters = array()) {
+    public function replace(array $parameters = []) {
         $this->parameters = $parameters;
     }
 
@@ -64,7 +64,7 @@ class ParameterBag implements \IteratorAggregate, \Countable {
      *
      * @api
      */
-    public function add(array $parameters = array()) {
+    public function add(array $parameters = []) {
         $this->parameters = array_replace($this->parameters, $parameters);
     }
 
@@ -239,7 +239,7 @@ class ParameterBag implements \IteratorAggregate, \Countable {
      *
      * @return mixed
      */
-    public function filter($key, $default = null, $deep = false, $filter = FILTER_DEFAULT, $options = array()) {
+    public function filter($key, $default = null, $deep = false, $filter = FILTER_DEFAULT, $options = []) {
         $value = $this->get($key, $default, $deep);
 
         // Always turn $options into an array - this allows filter_var option shortcuts.

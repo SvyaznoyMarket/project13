@@ -23,7 +23,7 @@ class Repository {
         if ($region instanceof \Model\Region\Entity) {
             $params['geo_id'] = $region->getId();
         }
-        $this->client->addQuery('service/get-category-tree', $params, array(), $callback);
+        $this->client->addQuery('service/get-category-tree', $params, [], $callback);
     }
 
     /**
@@ -39,7 +39,7 @@ class Repository {
         if ($region instanceof \Model\Region\Entity) {
             $params['geo_id'] = $region->getId();
         }
-        $this->client->addQuery('service/get-category-tree', $params, array(), $callback);
+        $this->client->addQuery('service/get-category-tree', $params, [], $callback);
     }
 
     /**
@@ -61,12 +61,12 @@ class Repository {
             $e = new \Exception('Неверные данные для категорий услуг');
             \App::exception()->add($e);
             \App::logger()->error($e);
-            $data = array();
+            $data = [];
         } else {
             $data = $data['children'];
         }
 
-        $collection = array();
+        $collection = [];
         foreach ($data as $item) {
             $collection[] = new Entity($item);
         }
@@ -89,6 +89,6 @@ class Repository {
             $params['geo_id'] = $region->getId();
         }
 
-        $this->client->addQuery('service/get-category-tree', $params, array(), $callback);
+        $this->client->addQuery('service/get-category-tree', $params, [], $callback);
     }
 }

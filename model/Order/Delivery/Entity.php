@@ -12,7 +12,7 @@ class Entity {
     /** @var \DateTime */
     private $deliveredAt;
 
-    public function __construct(array $data = array()) {
+    public function __construct(array $data = []) {
         if (array_key_exists('delivery_type_id', $data)) $this->setId($data['delivery_type_id']);
         if (array_key_exists('price', $data)) $this->setPrice($data['price']);
         if (array_key_exists('delivery_id', $data)) $this->setTypeId($data['delivery_id']);

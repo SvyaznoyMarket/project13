@@ -38,10 +38,10 @@ class Action {
         }
 
         // запрашиваем список регионов для выбора
-        $shopAvailableRegions = array();
+        $shopAvailableRegions = [];
         \RepositoryManager::region()->prepareShopAvailableCollection(function($data) use (&$shopAvailableRegions) {
-            $firstElements = array();
-            $elements = array();
+            $firstElements = [];
+            $elements = [];
             foreach ($data as $item) {
                 $region = new \Model\Region\Entity($item);
                 //если прилетела Москва
@@ -73,7 +73,7 @@ class Action {
         // подготовка 2-го пакета запросов
 
         // запрашиваем рутовые категории
-        $rootCategories = array();
+        $rootCategories = [];
         \RepositoryManager::productCategory()->prepareRootCollection($region, function($data) use(&$rootCategories) {
             foreach ($data as $item) {
                 $rootCategories[] = new \Model\Product\Category\Entity($item);
@@ -82,7 +82,7 @@ class Action {
 
         // магазины
         /** @var $shops \Model\Shop\Entity[] */
-        $shops = array();
+        $shops = [];
         \RepositoryManager::shop()->prepareCollectionByRegion(null, function($data) use (&$shops) {
             foreach ($data as $item) {
                 $shops[] = new \Model\Shop\Entity($item);
@@ -93,7 +93,7 @@ class Action {
         $client->execute();
 
         // маркеры
-        $markers = array();
+        $markers = [];
         foreach ($shops as $shop) {
             $markers[$shop->getId()] = array(
                 'id'                => $shop->getId(),
@@ -168,7 +168,7 @@ class Action {
         }
 
         // запрашиваем список регионов для выбора
-        $regionsToSelect = array();
+        $regionsToSelect = [];
         \RepositoryManager::region()->prepareShowInMenuCollection(function($data) use (&$regionsToSelect) {
             foreach ($data as $item) {
                 $regionsToSelect[] = new \Model\Region\Entity($item);
@@ -188,7 +188,7 @@ class Action {
         // подготовка 2-го пакета запросов
 
         // запрашиваем рутовые категории
-        $rootCategories = array();
+        $rootCategories = [];
         \RepositoryManager::productCategory()->prepareRootCollection($region, function($data) use(&$rootCategories) {
             foreach ($data as $item) {
                 $rootCategories[] = new \Model\Product\Category\Entity($item);

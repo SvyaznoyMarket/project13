@@ -6,7 +6,7 @@
 ?>
 
 <?php
-$list = array();
+$list = [];
 
 $active = $productSorting->getActive();
 $active['url'] = $page->helper->replacedUrl(array('sort' => implode('-', array($active['name'], $active['direction']))));

@@ -4,7 +4,7 @@ namespace View\Order;
 
 class CompletePage extends Layout {
     public function prepare() {
-        $orders = is_array($this->getParam('orders')) ? $this->getParam('orders') : array();
+        $orders = is_array($this->getParam('orders')) ? $this->getParam('orders') : [];
         /** @var $order \Model\Order\Entity */
         $order = reset($orders);
         if ($order) {

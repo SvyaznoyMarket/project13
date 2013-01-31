@@ -12,7 +12,7 @@ class App {
     /** @var \Config\AppConfig */
     private static $config;
     /** @var \Logger\LoggerInterface[] */
-    private static $loggers = array();
+    private static $loggers = [];
 
     /**
      * @param string           $env             Среда выполнения [local, dev, prod, ...]
@@ -41,7 +41,7 @@ class App {
 
         // error handler
         set_error_handler(function ($level, $message, $file, $line, $context) {
-            static $levels = array(
+            static $levels = [
                 E_WARNING           => 'Warning',
                 E_NOTICE            => 'Notice',
                 E_USER_ERROR        => 'User Error',
@@ -51,7 +51,7 @@ class App {
                 E_RECOVERABLE_ERROR => 'Catchable Fatal Error',
                 E_DEPRECATED        => 'Deprecated',
                 E_USER_DEPRECATED   => 'User Deprecated',
-            );
+            ];
 
             if (error_reporting() & $level) {
                 throw new \ErrorException(sprintf('%s: %s in %s line %d', isset($levels[$level]) ? $levels[$level] : $level, $message, $file, $line));
@@ -104,7 +104,7 @@ class App {
      * @return \Routing\Router
      */
     public static function router($name = null) {
-        static $instances = array();
+        static $instances = [];
 
         if (null == $name) {
             $name = self::$name;
@@ -281,7 +281,7 @@ class App {
      * @throws InvalidArgumentException
      */
     public static function oauth($name) {
-        static $instances = array();
+        static $instances = [];
 
         if (!isset($instances[$name])) {
             if (\Oauth\VkontakteProvider::NAME == $name) {
@@ -304,7 +304,7 @@ class App {
      * @return \Logger\LoggerInterface
      */
     public static function logger($name = 'app') {
-        static $config = array();
+        static $config = [];
 
         if (!$config) {
             $config = require self::$config->configDir . '/logger.php';

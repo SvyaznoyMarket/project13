@@ -41,7 +41,7 @@ class IndexAction {
         }
 
         // запрашиваем список регионов для выбора
-        $regionsToSelect = array();
+        $regionsToSelect = [];
         \RepositoryManager::region()->prepareShowInMenuCollection(function($data) use (&$regionsToSelect) {
             foreach ($data as $item) {
                 $regionsToSelect[] = new \Model\Region\Entity($item);
@@ -56,7 +56,7 @@ class IndexAction {
         // подготовка 2-го пакета запросов
 
         // запрашиваем рутовые категории
-        $rootCategories = array();
+        $rootCategories = [];
         \RepositoryManager::productCategory()->prepareRootCollection($region, function($data) use(&$rootCategories) {
             foreach ($data as $item) {
                 $rootCategories[] = new \Model\Product\Category\Entity($item);

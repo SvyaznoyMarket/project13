@@ -11,7 +11,7 @@ class Entity {
     /* @var string */
     private $value;
 
-    public function __construct(array $data = array()) {
+    public function __construct(array $data = []) {
         if (array_key_exists('id', $data)) $this->setId($data['id']);
         if (array_key_exists('value', $data)) $this->setValue($data['value']);
     }

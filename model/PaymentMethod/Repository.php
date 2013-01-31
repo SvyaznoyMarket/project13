@@ -24,7 +24,7 @@ class Repository {
             'geo_id' => $region ? $region->getId() : \App::user()->getRegion()->getId(),
         ));
 
-        $collection = array();
+        $collection = [];
         foreach ($data as $item) {
             $collection[] = new Entity($item);
         }
@@ -61,6 +61,6 @@ class Repository {
         $this->client->addQuery('payment-method/get', array(
             'geo_id'         => $region ? $region->getId() : \App::user()->getRegion()->getId(),
             'is_corporative' => $isCorporative,
-        ), array(), $done, $fail);
+        ), [], $done, $fail);
     }
 }

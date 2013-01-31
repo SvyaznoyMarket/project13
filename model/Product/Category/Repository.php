@@ -53,7 +53,7 @@ class Repository {
             $params['geo_id'] = $region->getId();
         }
 
-        $this->client->addQuery('category/get', $params, array(), $callback);
+        $this->client->addQuery('category/get', $params, [], $callback);
     }
 
     /**
@@ -84,7 +84,7 @@ class Repository {
             'geo_id' => \App::user()->getRegion()->getId(),
         ));
 
-        $collection = array();
+        $collection = [];
         foreach($data as $item){
             $collection[] = new $this->entityClass($item);
         }
@@ -109,7 +109,7 @@ class Repository {
         if ($region instanceof \Model\Region\Entity) {
             $params['geo_id'] = $region->getId();
         }
-        $this->client->addQuery('category/get', $params, array(), $done, $fail);
+        $this->client->addQuery('category/get', $params, [], $done, $fail);
     }
 
     /**
@@ -124,7 +124,7 @@ class Repository {
             'is_load_parents' => false,
         ));
 
-        $collection = array();
+        $collection = [];
         foreach($data as $item){
             $collection[] = new $this->entityClass($item);
         }
@@ -147,7 +147,7 @@ class Repository {
             $params['region_id'] = $region->getId();
         }
 
-        $this->client->addQuery('category/tree', $params, array(), $callback);
+        $this->client->addQuery('category/tree', $params, [], $callback);
     }
 
     /**
@@ -169,7 +169,7 @@ class Repository {
         }
         $data = $this->client->query('category/tree', $params);
 
-        $collection = array();
+        $collection = [];
         foreach($data as $item){
             $collection[] = new $this->entityClass($item);
         }
@@ -190,7 +190,7 @@ class Repository {
         if ($region) {
             $params['region_id'] = $region->getId();
         }
-        $this->client->addQuery('category/tree', $params, array(), function($data) use (&$category, &$region) {
+        $this->client->addQuery('category/tree', $params, [], function($data) use (&$category, &$region) {
             /**
              * Загрузка дочерних и родительских узлов категории
              *

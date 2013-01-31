@@ -14,7 +14,7 @@ class BillPage extends \View\DefaultLayout {
 
         // breadcrumbs
         if (!$this->hasParam('breadcrumbs')) {
-            $breadcrumbs = array();
+            $breadcrumbs = [];
             $breadcrumbs[] = array(
                 'name' => 'Личный кабинет',
                 'url'  => null,

@@ -14,7 +14,7 @@ class IndexAction {
         // подготовка 1-го пакета запросов
 
         // запрашиваем рутовые категории
-        $rootCategories = array();
+        $rootCategories = [];
         \RepositoryManager::productCategory()->prepareRootCollection($region, function($data) use(&$rootCategories) {
             foreach ($data as $item) {
                 $rootCategories[] = new \Model\Product\Category\Entity($item);
@@ -22,8 +22,8 @@ class IndexAction {
         });
 
         // запрашиваем баннеры
-        $itemsByBanner = array();
-        $bannerData = array();
+        $itemsByBanner = [];
+        $bannerData = [];
         \RepositoryManager::banner()->prepareCollection($region, function ($data) use (&$bannerData, &$itemsByBanner) {
             $timeout = \App::config()->banner['timeout'];
             $urls = \App::config()->banner['url'];
@@ -35,7 +35,7 @@ class IndexAction {
                     'name'  => isset($item['name']) ? (string)$item['name'] : null,
                     'url'   => isset($item['url']) ? (string)$item['url'] : null,
                     'image' => isset($item['media_image']) ? (string)$item['media_image'] : null,
-                    'item'  => isset($item['item_list']) ? (array)$item['item_list'] : array(),
+                    'item'  => isset($item['item_list']) ? (array)$item['item_list'] : [],
                 );
 
                 if (empty($item['image'])) continue;
@@ -50,7 +50,7 @@ class IndexAction {
                     'ga'    => $bannerId . ' - ' . $item['name'],
                 );
 
-                $itemsByBanner[$bannerId] = array();
+                $itemsByBanner[$bannerId] = [];
                 foreach ($item['item'] as $itemData) {
                     $itemsByBanner[$bannerId][] = new \Model\Banner\Item\Entity($itemData);
                 }
@@ -62,11 +62,11 @@ class IndexAction {
 
         // товары, услуги, категории
         /** @var $productsById \Model\Product\BasicEntity[] */
-        $productsById = array();
+        $productsById = [];
         /** @var $productsById \Model\Product\Service\Entity[] */
-        $servicesById = array();
+        $servicesById = [];
         /** @var $productsById \Model\Product\Category\Entity[] */
-        $categoriesById = array();
+        $categoriesById = [];
         foreach ($itemsByBanner as $items) {
             foreach ($items as $item) {
                 /** @var $item \Model\Banner\Item\Entity */
@@ -121,14 +121,14 @@ class IndexAction {
         foreach ($bannerData as $i => &$item) {
             $url = $item['url'];
 
-            $bannerItems = isset($itemsByBanner[$item['id']]) ? (array)$itemsByBanner[$item['id']] : array();
+            $bannerItems = isset($itemsByBanner[$item['id']]) ? (array)$itemsByBanner[$item['id']] : [];
             if ((bool)$bannerItems) {
                 /** @var $bannerItem \Model\Banner\Item\Entity */
                 $bannerItem = reset($bannerItems);
                 if (!$bannerItem) continue;
 
                 if ($bannerItem->getProductId()) {
-                    $products = array();
+                    $products = [];
                     foreach ($bannerItems as $bannerItem) {
                         $product = ($bannerItem->getProductId() && isset($productsById[$bannerItem->getProductId()]))
                             ? $productsById[$bannerItem->getProductId()]

@@ -39,7 +39,7 @@ class IndexAction {
         }
 
         // запрашиваем список регионов для выбора
-        $regionsToSelect = array();
+        $regionsToSelect = [];
         \RepositoryManager::region()->prepareShowInMenuCollection(function($data) use (&$regionsToSelect) {
             foreach ($data as $item) {
                 $regionsToSelect[] = new \Model\Region\Entity($item);
@@ -54,7 +54,7 @@ class IndexAction {
         // подготовка 2-го пакета запросов
 
         // запрашиваем рутовые категории
-        $rootCategories = array();
+        $rootCategories = [];
         \RepositoryManager::productCategory()->prepareRootCollection($region, function($data) use(&$rootCategories) {
             foreach ($data as $item) {
                 $rootCategories[] = new \Model\Product\Category\Entity($item);
@@ -86,7 +86,7 @@ class IndexAction {
 
         $accessoriesId =  array_slice($product->getAccessoryId(), 0, \App::config()->product['itemsInSlider'] * 2);
         $relatedId = array_slice($product->getRelatedId(), 0, \App::config()->product['itemsInSlider'] * 2);
-        $partsId = array();
+        $partsId = [];
 
         foreach ($product->getKit() as $part) {
             $partsId[] = $part->getId();
@@ -103,10 +103,10 @@ class IndexAction {
                 \App::exception()->add($e);
                 \App::logger()->error($e);
 
-                $products = array();
-                $accessories = array();
-                $related = array();
-                $kit = array();
+                $products = [];
+                $accessories = [];
+                $related = [];
+                $kit = [];
             }
 
             foreach ($products as $item) {
@@ -117,10 +117,10 @@ class IndexAction {
         }
         $dataForCredit = $this->getDataForCredit($product);
 
-        $shopsWithQuantity = array();
+        $shopsWithQuantity = [];
         //загружаем магазины, если товар доступен только на витрине
         if (!$product->getIsBuyable() && $product->getState()->getIsShop()) {
-            $quantityByShop = array();
+            $quantityByShop = [];
             foreach ($product->getStock() as $stock) {
                 $quantityShowroom = (int)$stock->getQuantityShowroom();
                 $quantity = (int)$stock->getQuantity();
@@ -146,7 +146,7 @@ class IndexAction {
                     \App::exception()->add($e);
                     \App::logger()->error($e);
 
-                    $shopsWithQuantity = array();
+                    $shopsWithQuantity = [];
                 }
 
             }
@@ -180,7 +180,7 @@ class IndexAction {
      * @return array
      */
     private function getDataForCredit(\Model\Product\Entity $product) {
-        $result = array();
+        $result = [];
 
         $category = $product->getMainCategory();
         $cart = \App::user()->getCart();

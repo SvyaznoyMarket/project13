@@ -17,15 +17,15 @@ class DefaultLogger implements LoggerInterface {
     /** @var int */
     protected $level = 4;
     /** @var array */
-    protected $levelNames = array(
+    protected $levelNames = [
         0 => '',
         1 => 'error',
         2 => 'warn',
         3 => 'info',
         4 => 'debug',
-    );
+    ];
 
-    protected $messages = array();
+    protected $messages = [];
 
     public function __construct(\Logger\Appender\AppenderInterface $appender, $name, $level) {
         $this->id = \App::$id;
@@ -54,13 +54,13 @@ class DefaultLogger implements LoggerInterface {
     protected function log($message, $level) {
         if ($level > $this->level) return;
 
-        $this->messages[] = array(
+        $this->messages[] = [
             'time'    => date('M d H:i:s'),
             //'name'    => $this->name,
             'name'    => $this->id,
             'level'   => $this->levelNames[$level],
             'message' => is_array($message) ? json_encode($message, JSON_UNESCAPED_UNICODE) : (string)$message,
-        );
+        ];
     }
 
     public function dump() {

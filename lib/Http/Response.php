@@ -119,7 +119,7 @@ class Response {
      *
      * @api
      */
-    public function __construct($content = '', $status = 200, $headers = array()) {
+    public function __construct($content = '', $status = 200, $headers = []) {
         $this->headers = new ResponseHeaderBag($headers);
         $this->setContent($content);
         $this->setStatusCode($status);
@@ -145,7 +145,7 @@ class Response {
      *
      * @return Response
      */
-    public static function create($content = '', $status = 200, $headers = array()) {
+    public static function create($content = '', $status = 200, $headers = []) {
         return new static($content, $status, $headers);
     }
 
@@ -899,7 +899,7 @@ class Response {
      */
     public function getVary() {
         if (!$vary = $this->headers->get('Vary')) {
-            return array();
+            return [];
         }
 
         return is_array($vary) ? $vary : preg_split('/[\s,]+/', $vary);

@@ -6,5 +6,5 @@ class Delivery {
     public $token;
     public $name;
     public $price;
-    public $dates = array();
+    public $dates = [];
 }

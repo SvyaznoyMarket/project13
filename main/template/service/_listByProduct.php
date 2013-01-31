@@ -7,7 +7,7 @@
 
 $services = $product->getService();
 $cartProduct = $user->getCart()->getProductById($product->getId());
-$cartServicesById = $cartProduct ? $cartProduct->getService() : array();
+$cartServicesById = $cartProduct ? $cartProduct->getService() : [];
 ?>
 <? if ((bool)$services): ?>
 

@@ -12,7 +12,7 @@
 ?>
 
 <?
-$creditData = array();
+$creditData = [];
 
 foreach ($products as $product) {
     $cartProduct = $cartProductsById[$product->getId()];
@@ -141,7 +141,7 @@ foreach ($products as $product) {
             </div>
 
             <?
-                $kitData = array();
+                $kitData = [];
                 foreach ($product->getKit() as $kit) {
                     $productKit = isset($productKitsById[$kit->getId()]) ? $productKitsById[$kit->getId()] : null;
                     if (!$productKit) {

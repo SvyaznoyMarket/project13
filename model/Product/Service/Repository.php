@@ -27,7 +27,7 @@ class Repository {
         if ($region instanceof \Model\Region\Entity) {
             $params['geo_id'] = $region->getId();
         }
-        $data = $this->client->query('service/get2', $params, array());
+        $data = $this->client->query('service/get2', $params, []);
         $data = reset($data);
 
         return $data ? new Entity($data) : null;
@@ -41,7 +41,7 @@ class Repository {
     public function getCollectionById(array $ids, \Model\Region\Entity $region = null) {
         \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
-        if (!(bool)$ids) return array();
+        if (!(bool)$ids) return [];
 
         $params = array(
             'id' => $ids,
@@ -49,9 +49,9 @@ class Repository {
         if ($region instanceof \Model\Region\Entity) {
             $params['geo_id'] = $region->getId();
         }
-        $data = $this->client->query('service/get2', $params, array());
+        $data = $this->client->query('service/get2', $params, []);
 
-        $collection = array();
+        $collection = [];
         foreach ($data as $item) {
             $collection[] = new Entity($item);
         }
@@ -75,7 +75,7 @@ class Repository {
         if ($region instanceof \Model\Region\Entity) {
             $params['geo_id'] = $region->getId();
         }
-        $this->client->addQuery('service/get2', $params, array(), $callback);
+        $this->client->addQuery('service/get2', $params, [], $callback);
     }
 
     /**
@@ -92,7 +92,7 @@ class Repository {
         if ($region instanceof \Model\Region\Entity) {
             $params['geo_id'] = $region->getId();
         }
-        $this->client->addQuery('service/get2', $params, array(), $callback);
+        $this->client->addQuery('service/get2', $params, [], $callback);
     }
 
     /**
@@ -109,7 +109,7 @@ class Repository {
         if ($region instanceof \Model\Region\Entity) {
             $params['geo_id'] = $region->getId();
         }
-        $this->client->addQuery('service/list', $params, array(), $callback);
+        $this->client->addQuery('service/list', $params, [], $callback);
     }
 
     /**
@@ -126,8 +126,8 @@ class Repository {
         if ($region instanceof \Model\Region\Entity) {
             $params['geo_id'] = $region->getId();
         }
-        $data = $this->client->query('service/list', $params, array());
-        $ids = isset($data['list']) ? (array)$data['list'] : array();
+        $data = $this->client->query('service/list', $params, []);
+        $ids = isset($data['list']) ? (array)$data['list'] : [];
 
         return $this->getCollectionById($ids, $region);
     }

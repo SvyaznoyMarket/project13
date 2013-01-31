@@ -15,7 +15,7 @@ class IndexPage extends \View\DefaultLayout {
 
         // breadcrumbs
         if (!$this->hasParam('breadcrumbs')) {
-            $breadcrumbs = array();
+            $breadcrumbs = [];
 
             foreach ($product->getCategory() as $category) {
                 $breadcrumbs[] = array(

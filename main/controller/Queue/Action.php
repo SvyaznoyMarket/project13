@@ -42,12 +42,12 @@ class Action {
             $sth = $this->dbh->query("SELECT id, name, body FROM `queue` WHERE {$clause} LIMIT {$limit}");
             $sth->execute();
 
-            $ids = array(); // идентификаторы заданий
-            $calls = array(); // вызовы обработчиков
+            $ids = []; // идентификаторы заданий
+            $calls = []; // вызовы обработчиков
             while ($row = $sth->fetch(\PDO::FETCH_ASSOC)) {
                 $ids[] = $row['id'];
                 if (!isset($calls[$row['name']])) {
-                    $calls[$row['name']] = array();
+                    $calls[$row['name']] = [];
                 }
                 $calls[$row['name']][$row['id']] = json_decode($row['body'], true);
             }
@@ -79,7 +79,7 @@ class Action {
 
         $client = \App::smartengineClient();
 
-        $productIds = array();
+        $productIds = [];
         foreach ($data as $item) {
             $productIds[$item['product_id']] = null;
         }
@@ -89,7 +89,7 @@ class Action {
 
         $region = \RepositoryManager::region()->getDefaultEntity();
         /** @var $productsById \Model\Product\Entity[] */
-        $productsById = array();
+        $productsById = [];
         foreach (\RepositoryManager::product()->getCollectionById($productIds, $region) as $product) {
             $productsById[$product->getId()] = $product;
         }
@@ -133,7 +133,7 @@ class Action {
 
         $client = \App::smartengineClient();
 
-        $productIds = array();
+        $productIds = [];
         foreach ($data as $item) {
             foreach ($item['order']['product'] as $product) {
                 $productIds[] = $product['id'];
@@ -143,7 +143,7 @@ class Action {
 
         $region = \RepositoryManager::region()->getDefaultEntity();
         /** @var $productsById \Model\Product\Entity[] */
-        $productsById = array();
+        $productsById = [];
         foreach (\RepositoryManager::product()->getCollectionById($productIds, $region) as $product) {
             $productsById[$product->getId()] = $product;
         }

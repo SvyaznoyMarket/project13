@@ -152,7 +152,7 @@ class Action {
                 $data['is_subscribe'] = (bool)$request->get('subscribe', false);
 
                 try {
-                    $result = \App::coreClientV2()->query('user/create', array(), $data);
+                    $result = \App::coreClientV2()->query('user/create', [], $data);
                     if (empty($result['token'])) {
                         throw new \Exception('Не удалось получить токен');
                     }

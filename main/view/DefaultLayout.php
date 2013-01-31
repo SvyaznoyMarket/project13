@@ -60,7 +60,7 @@ class DefaultLayout extends Layout {
                 \App::exception()->add($e);
                 \App::logger()->error($e);
 
-                $categories = array();
+                $categories = [];
             }
         }
 
@@ -96,7 +96,7 @@ class DefaultLayout extends Layout {
         }
         // навигация
         if (!$this->hasParam('breadcrumbs')) {
-            $this->setParam('breadcrumbs', array());
+            $this->setParam('breadcrumbs', []);
         }
 
         return $this->render('_contentHead', $this->params);
@@ -120,7 +120,7 @@ class DefaultLayout extends Layout {
             } catch (\Exception $e) {
                 \App::logger()->error($e);
 
-                $regions = array();
+                $regions = [];
             }
         }
 

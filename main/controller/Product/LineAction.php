@@ -28,7 +28,7 @@ class LineAction {
             \App::exception()->add($e);
             \App::logger()->error($e);
 
-            $globalProducts = array();
+            $globalProducts = [];
         }
 
         foreach ($globalProducts as $product) {
@@ -38,10 +38,10 @@ class LineAction {
         }
 
         //Запрашиваю составные части набора
-        $parts = array();
+        $parts = [];
         if ((bool)$mainProduct->getKit()) {
             $productRepository->setEntityClass( '\Model\Product\CompactEntity');
-            $partId = array();
+            $partId = [];
             foreach ($mainProduct->getKit() as $part) {
                 $partId[] = $part->getId();
             }
@@ -51,7 +51,7 @@ class LineAction {
                 \App::exception()->add($e);
                 \App::logger()->error($e);
 
-                $parts = array();
+                $parts = [];
             }
         }
 

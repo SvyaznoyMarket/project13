@@ -25,7 +25,7 @@ class RatingAction {
             {
                 //если пользователь не авторизован - отправим запрос в ядро - вероятоно,
                 //пользователь с таким ip голосовал и ядро запретит голосование
-                $result = $client->query('user/create-product-rating', array(), array(
+                $result = $client->query('user/create-product-rating', [], array(
                     'product_id' => $productId,
                     'ip' => \App::request()->getClientIp(),
                     'value' => $rating,

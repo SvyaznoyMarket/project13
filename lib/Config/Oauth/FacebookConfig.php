@@ -3,13 +3,9 @@
 namespace Config\Oauth;
 
 class FacebookConfig {
-    /**
-     * @var string ID приложения
-     */
+    /** @var string ID приложения */
     public $clientId;
-    /**
-     * @var string Защищенный ключ
-     */
+    /** @var string Защищенный ключ */
     public $secretKey;
 
     public function __set($name, $value) {

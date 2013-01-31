@@ -10,7 +10,7 @@
 <?
 $services = $product->getService();
 $cartProduct = $user->getCart()->getProductById($product->getId());
-$cartServicesById = $cartProduct ? $cartProduct->getService() : array();
+$cartServicesById = $cartProduct ? $cartProduct->getService() : [];
 ?>
 
 <div class="hideblock bF1Block mGoods" style="display: none;">

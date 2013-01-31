@@ -9,7 +9,7 @@ class Client {
     /* @var sfFileLogger */
     private $logger = null;
 
-    private $resources = array();
+    private $resources = [];
 
     public function __construct(array $config,  \Logger\LoggerInterface $logger = null)
     {
@@ -34,7 +34,7 @@ class Client {
      * @throws SmartengineClientException
      * @return array
      */
-    public function query($action, array $params = array())
+    public function query($action, array $params = [])
     {
         \Debug\Timer::start('smartengine');
 
@@ -82,7 +82,7 @@ class Client {
      * @param array $params
      * @return resource
      */
-    private function createResource($action, array $params = array())
+    private function createResource($action, array $params = [])
     {
         foreach ($params as &$param) {
             $param = rawurlencode($param);

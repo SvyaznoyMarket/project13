@@ -99,11 +99,11 @@ class Entity {
     /** @var \Model\User\Entity */
     private $user;
     /** @var \Model\Order\Product\Entity[] */
-    private $product = array();
+    private $product = [];
     /** @var \Model\Order\Service\Entity[] */
-    private $service = array();
+    private $service = [];
     /** @var \Model\Order\Delivery\Entity[] */
-    private $delivery = array();
+    private $delivery = [];
     /** @var int */
     private $paySum;
     /** @var Credit\Entity|null */
@@ -112,7 +112,7 @@ class Entity {
     /**
      * @param array $data
      */
-    public function __construct(array $data = array()) {
+    public function __construct(array $data = []) {
         if (array_key_exists('id', $data)) $this->setId($data['id']);
         if (array_key_exists('type_id', $data)) $this->setTypeId($data['type_id']);
         if (array_key_exists('status_id', $data)) $this->setStatusId($data['status_id']);
@@ -170,19 +170,19 @@ class Entity {
         if (array_key_exists('geo', $data) && (bool)$data['geo']) $this->setCity(new \Model\Region\Entity($data['geo']));
         //if (array_key_exists('user', $data) && (bool)$data['user']) $this->setCity(new \Model\User\Entity($data['user']));
         if (array_key_exists('product', $data)) {
-            $this->product = array();
+            $this->product = [];
             foreach ((array)$data['product'] as $productData) {
                 $this->addProduct(new Product\Entity($productData));
             }
         }
         if (array_key_exists('service', $data)) {
-            $this->service = array();
+            $this->service = [];
             foreach ((array)$data['service'] as $serviceData) {
                 $this->addService(new Service\Entity($serviceData));
             }
         }
         if (array_key_exists('delivery', $data)) {
-            $this->delivery = array();
+            $this->delivery = [];
             foreach ((array)$data['delivery'] as $deliveryData) {
                 $this->addDelivery(new Delivery\Entity($deliveryData));
             }
@@ -310,8 +310,8 @@ class Entity {
     /**
      * @param \Model\Order\Delivery\Entity[] $deliveries
      */
-    public function setDelivery(array $deliveries = array()) {
-        $this->delivery = array();
+    public function setDelivery(array $deliveries = []) {
+        $this->delivery = [];
         foreach ($deliveries as $delivery) {
             $this->addDelivery($delivery);
         }
@@ -601,7 +601,7 @@ class Entity {
      * @param \Model\Order\Product\Entity[] $products
      */
     public function setProduct(array $products) {
-        $this->product = array();
+        $this->product = [];
         foreach ($products as $product) {
             $this->addProduct($product);
         }
@@ -639,7 +639,7 @@ class Entity {
      * @param \Model\Order\Service\Entity[] $services
      */
     public function setService(array $services) {
-        $this->service = array();
+        $this->service = [];
         foreach ($services as $service) {
             $this->addService($service);
         }

@@ -14,7 +14,7 @@ class SubscribeForm {
         'email'   => null,
     );
 
-    public function __construct(array $data = array()) {
+    public function __construct(array $data = []) {
         $this->fromArray($data);
     }
 

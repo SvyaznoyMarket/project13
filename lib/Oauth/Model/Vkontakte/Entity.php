@@ -30,7 +30,7 @@ class Entity implements \Oauth\Model\EntityInterface {
     /** @var string */
     private $photoBig;
 
-    public function __construct(array $data = array()) {
+    public function __construct(array $data = []) {
         $this->import($data);
     }
 

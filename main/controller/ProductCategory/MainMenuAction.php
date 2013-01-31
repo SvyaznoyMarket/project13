@@ -28,14 +28,14 @@ class MainMenuAction {
             \App::exception()->add($e);
             \App::logger()->error($e);
 
-            $categories = array();
+            $categories = [];
         }
 
-        $columnsByCategory = array();
+        $columnsByCategory = [];
         foreach ($categories as $category) {
             /** @var $category \Model\Product\Category\BasicEntity */
 
-            $weightsByCategory = array();
+            $weightsByCategory = [];
             $totalWeight = 0;
             foreach ($category->getChild() as $child) {
                 $weight = $this->getCategoryWeight($child);

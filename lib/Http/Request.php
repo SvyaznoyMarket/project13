@@ -143,7 +143,7 @@ class Request {
      *
      * @api
      */
-    public function __construct(array $query = array(), array $request = array(), array $attributes = array(), array $cookies = array(), array $files = array(), array $server = array(), $content = null) {
+    public function __construct(array $query = [], array $request = [], array $attributes = [], array $cookies = [], array $files = [], array $server = [], $content = null) {
         $this->initialize($query, $request, $attributes, $cookies, $files, $server, $content);
     }
 
@@ -162,7 +162,7 @@ class Request {
      *
      * @api
      */
-    public function initialize(array $query = array(), array $request = array(), array $attributes = array(), array $cookies = array(), array $files = array(), array $server = array(), $content = null) {
+    public function initialize(array $query = [], array $request = [], array $attributes = [], array $cookies = [], array $files = [], array $server = [], $content = null) {
         $this->request = new ParameterBag($request);
         $this->query = new ParameterBag($query);
         $this->attributes = new ParameterBag($attributes);
@@ -191,7 +191,7 @@ class Request {
      * @api
      */
     public static function createFromGlobals() {
-        $request = new static($_GET, $_POST, array(), $_COOKIE, $_FILES, $_SERVER);
+        $request = new static($_GET, $_POST, [], $_COOKIE, $_FILES, $_SERVER);
 
         if (0 === strpos($request->server->get('CONTENT_TYPE'), 'application/x-www-form-urlencoded')
             && in_array(strtoupper($request->server->get('REQUEST_METHOD', 'GET')), array('PUT', 'DELETE', 'PATCH'))
@@ -218,7 +218,7 @@ class Request {
      *
      * @api
      */
-    public static function create($uri, $method = 'GET', $parameters = array(), $cookies = array(), $files = array(), $server = array(), $content = null) {
+    public static function create($uri, $method = 'GET', $parameters = [], $cookies = [], $files = [], $server = [], $content = null) {
         $defaults = array(
             'SERVER_NAME'          => 'localhost',
             'SERVER_PORT'          => 80,
@@ -271,10 +271,10 @@ class Request {
                 $defaults['CONTENT_TYPE'] = 'application/x-www-form-urlencoded';
             case 'PATCH':
                 $request = $parameters;
-                $query = array();
+                $query = [];
                 break;
             default:
-                $request = array();
+                $request = [];
                 $query = $parameters;
                 break;
         }
@@ -294,7 +294,7 @@ class Request {
             'QUERY_STRING'   => $queryString,
         ));
 
-        return new static($query, $request, array(), $cookies, $files, $server, $content);
+        return new static($query, $request, [], $cookies, $files, $server, $content);
     }
 
     /**
@@ -398,7 +398,7 @@ class Request {
         $requestOrder = ini_get('request_order') ? : ini_get('variable_order');
         $requestOrder = preg_replace('#[^cgp]#', '', strtolower($requestOrder)) ? : 'gp';
 
-        $_REQUEST = array();
+        $_REQUEST = [];
         foreach (str_split($requestOrder) as $order) {
             $_REQUEST = array_merge($_REQUEST, $request[$order]);
         }
@@ -441,8 +441,8 @@ class Request {
             return '';
         }
 
-        $parts = array();
-        $order = array();
+        $parts = [];
+        $order = [];
 
         foreach (explode('&', $qs) as $param) {
             if ('' === $param || '=' === $param[0]) {
@@ -1064,7 +1064,7 @@ class Request {
         }
 
         $languages = $this->splitHttpAcceptHeader($this->headers->get('Accept-Language'));
-        $this->languages = array();
+        $this->languages = [];
         foreach ($languages as $lang => $q) {
             if (strstr($lang, '-')) {
                 $codes = explode('-', $lang);
@@ -1145,10 +1145,10 @@ class Request {
      */
     public function splitHttpAcceptHeader($header) {
         if (!$header) {
-            return array();
+            return [];
         }
 
-        $values = array();
+        $values = [];
         foreach (array_filter(explode(',', $header)) as $value) {
             // Cut off any q-value that might come after a semi-colon
             if (preg_match('/;\s*(q=.*$)/', $value, $match)) {

@@ -34,7 +34,7 @@ class Provider implements \Payment\ProviderInterface {
     public function getForm(\Model\Order\Entity $order, $backUrl) {
         $form = new Form();
 
-        $data = array(
+        $data = [
             'AMOUNT'     => $order->getSum(),
             'CURRENCY'   => 'RUB',
             'ORDER'      => $order->getId(),
@@ -47,10 +47,10 @@ class Provider implements \Payment\ProviderInterface {
             'TIMESTAMP'  => gmdate('YmdHis'),
             'NONCE'      => $this->generateNonce(),
             'BACKREF'    => $backUrl,
-        );
+        ];
 
         // массив названий параметров, участвующих в формировании HMAC
-        $hmacParamNames = array('AMOUNT', 'CURRENCY', 'ORDER', 'MERCH_NAME', 'MERCHANT', 'TERMINAL', 'EMAIL', 'TRTYPE', 'TIMESTAMP', 'NONCE', 'BACKREF');
+        $hmacParamNames = ['AMOUNT', 'CURRENCY', 'ORDER', 'MERCH_NAME', 'MERCHANT', 'TERMINAL', 'EMAIL', 'TRTYPE', 'TIMESTAMP', 'NONCE', 'BACKREF'];
         $hmac = '';
         foreach ($hmacParamNames as $hmacParamName) {
             $hmac .=
@@ -69,7 +69,7 @@ class Provider implements \Payment\ProviderInterface {
      * @return string
      */
     private function generateNonce() {
-        $chars = array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'A', 'B', 'C', 'D', 'E', 'F');
+        $chars = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'A', 'B', 'C', 'D', 'E', 'F'];
         $length = rand(16, 32);
 
         $return = '';

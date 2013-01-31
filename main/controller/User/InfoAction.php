@@ -22,9 +22,9 @@ class InfoAction {
             'sum'              => 0,
             'vwish'            => 0,
             'vcomp'            => 0,
-            'productsInCart'   => array(),
-            'servicesInCart'   => array(),
-            'warrantiesInCart' => array(),
+            'productsInCart'   => [],
+            'servicesInCart'   => [],
+            'warrantiesInCart' => [],
             'bingo'            => false,
             'region_id'        => $region->getId(),
             'is_credit'        => 1 == $request->cookies->get('credit_on'),
@@ -44,7 +44,7 @@ class InfoAction {
         }
 
         // получаем токены товаров
-        $productTokensById = array();
+        $productTokensById = [];
         if ((bool)$productData = $cart->getProductData()) {
             foreach ($productData as $item) {
                 $productTokensById[$item['id']] = null;
@@ -58,7 +58,7 @@ class InfoAction {
         }
 
         // получаем токены услуг
-        $serviceTokensById = array();
+        $serviceTokensById = [];
         if ((bool)$serviceData = $cart->getServiceData()) {
             foreach ($serviceData as $item) {
                 $serviceTokensById[$item['id']] = null;
@@ -112,7 +112,7 @@ class InfoAction {
             // services
             foreach ($serviceData as $item) {
                 if (!isset($responseData['servicesInCart'][$serviceTokensById[$item['id']]])) {
-                    $responseData['servicesInCart'][$serviceTokensById[$item['id']]] = array();
+                    $responseData['servicesInCart'][$serviceTokensById[$item['id']]] = [];
                 }
 
                 if (!empty($item['product_id']) && isset($productTokensById[$item['product_id']])) {

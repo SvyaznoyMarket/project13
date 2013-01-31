@@ -3,5 +3,5 @@
 namespace Templating;
 
 interface EngineInterface {
-    public function render($source, array $params = array());
+    public function render($source, array $params = []);
 }

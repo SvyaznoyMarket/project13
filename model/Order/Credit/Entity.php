@@ -14,7 +14,7 @@ class Entity {
     /** @var \DateTime|null */
     private $updatedAt;
 
-    public function __construct(array $data = array()) {
+    public function __construct(array $data = []) {
         if (array_key_exists('credit_bank_id', $data)) $this->setBankId($data['credit_bank_id']);
         if (array_key_exists('credit_provider_id', $data)) $this->setBankProviderId($data['credit_provider_id']);
         if (array_key_exists('credit_sum', $data)) $this->setSum($data['credit_sum']);

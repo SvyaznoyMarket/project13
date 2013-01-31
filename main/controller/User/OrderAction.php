@@ -41,7 +41,7 @@ class OrderAction {
         }
 
         // запрашиваем список регионов для выбора
-        $regionsToSelect = array();
+        $regionsToSelect = [];
         \RepositoryManager::region()->prepareShowInMenuCollection(function($data) use (&$regionsToSelect) {
             foreach ($data as $item) {
                 $regionsToSelect[] = new \Model\Region\Entity($item);
@@ -54,7 +54,7 @@ class OrderAction {
         $region = $user->getRegion();
 
         // способы получения заказа
-        $deliveryTypesById = array();
+        $deliveryTypesById = [];
         foreach (\RepositoryManager::deliveryType()->getCollection() as $deliveryType) {
             $deliveryTypesById[$deliveryType->getId()] = $deliveryType;
         }
@@ -62,7 +62,7 @@ class OrderAction {
         // подготовка 2-го пакета запросов
 
         // запрашиваем рутовые категории
-        $rootCategories = array();
+        $rootCategories = [];
         \RepositoryManager::productCategory()->prepareRootCollection($region, function($data) use(&$rootCategories) {
             foreach ($data as $item) {
                 $rootCategories[] = new \Model\Product\Category\Entity($item);
@@ -71,7 +71,7 @@ class OrderAction {
 
         // запрашиваем заказы пользователя
         /** @var $orders \Model\Order\Entity[] */
-        $orders = array();
+        $orders = [];
         \RepositoryManager::order()->prepareCollectionByUserToken($user->getToken(), function($data) use(&$orders) {
             foreach ($data as $item) {
                 $orders[] = new \Model\Order\Entity($item);
@@ -85,8 +85,8 @@ class OrderAction {
         $client->execute();
 
         // товары и услуги
-        $productsById = array();
-        $servicesById = array();
+        $productsById = [];
+        $servicesById = [];
         foreach ($orders as $order) {
             foreach ($order->getProduct() as $orderProduct) {
                 $productsById[$orderProduct->getId()] = null;
@@ -99,7 +99,7 @@ class OrderAction {
         // подготовка 3-го пакета запросов
 
         // методы оплаты
-        $paymentMethodsById = array();
+        $paymentMethodsById = [];
         \RepositoryManager::paymentMethod()->prepareCollection(
             $region->getId() == \App::config()->region['defaultId'] ? $region : \RepositoryManager::region()->getDefaultEntity(),
             false,

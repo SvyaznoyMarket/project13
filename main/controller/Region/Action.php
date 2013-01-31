@@ -43,7 +43,7 @@ class Action {
 
         $router = \App::router();
 
-        $data = array();
+        $data = [];
         if (mb_strlen($keyword) >= 3) {
             $result = \App::coreClientV2()->query('geo/autocomplete', array('letters' => $keyword));
             $i = 0;
