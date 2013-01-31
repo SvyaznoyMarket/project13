@@ -531,7 +531,18 @@
         <? foreach ($group['properties'] as $property): ?>
         <? /** @var $property \Model\Product\Property\Entity  */?>
             <div class="point">
-                <div class="title" title="<?= $page->escape($property->getHint()) ?>"><h3><?= $property->getName() ?></h3></div>
+                <div class="title"><h3><?= $property->getName() ?></h3>
+                  <? if ($property->getHint()): ?>
+                  <div class="bHint fl">
+                    <a class="bHint_eLink"><?= $property->getName() ?></a>
+                    <div class="bHint_ePopup popup">
+                      <div class="close"></div>
+                      <div class="corner"><div></div></div>
+                      <?= $property->getHint() ?>
+                    </div>
+                  </div>
+                  <? endif ?>
+                </div>
                 <div class="description">
                     <?= $property->getStringValue() ?>
                 </div>

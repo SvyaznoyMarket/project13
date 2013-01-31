@@ -570,3 +570,44 @@
   -o-transform:rotate(3deg);
   transform:rotate(3deg);
 }
+
+.bHint{
+  margin-bottom: -5px;
+  position: relative;
+  &_eLink{
+    background: @white url('@{base-url}/item/img/hintQ.gif') no-repeat center center;
+    cursor: pointer;
+    display: block;
+    font-size: 0;
+    height: 16px;
+    text-indent: -10000px;
+    width: 20px;
+  }
+  &_ePopup{
+    display: none;
+    left: -20px;
+    padding: 10px 15px;
+    position: absolute;
+    overflow: auto;
+    top: 30px;
+    width: 350px;
+    .corner{
+      border-bottom: 13px solid @firmOrange;
+      border-left: 14px solid transparent;
+      border-right: 14px solid transparent;
+      height: 0;
+      position: absolute;
+      right: 45px;
+      top: -13px;
+      width: 0;
+      div{
+        border-bottom: 10px solid @white;
+        border-left: 11px solid transparent;
+        border-right: 11px solid transparent;
+        bottom: -13px;
+        left: -11px;
+        position: absolute;
+      }
+    }
+  }
+}

@@ -162,8 +162,23 @@ $(document).ready(function() {
 			return false
 		})
 	}
-	
 
+	// подсказки
+	if ($('.bHint').length){
+		$('.bHint_eLink').bind('click', function(){
+			$('.bHint_ePopup').hide()
+			$(this).parent().find('.bHint_ePopup').show()
+			var hintTitle = $(this).html()
+			var url = window.location.href
+			if (typeof(_gaq) !== 'undefined') {
+				_gaq.push(['_trackEvent', 'Hints', hintTitle, url])
+			}
+		})
+		$('.bHint_ePopup .close').bind('click', function(){
+			$('.bHint_ePopup').hide()
+		})
+	}
+	
 
 	/* Delivery Bubble */
 	if( $('.otherRegion').length ) {
