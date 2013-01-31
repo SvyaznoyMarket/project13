@@ -491,7 +491,7 @@
   }
   &_eLeftCaption{
     font-size: 14px;
-    padding: 15px 25px 15px 10px;
+    padding: 15px 0 15px 10px;
     width: 150px;
   }
 }
@@ -499,6 +499,7 @@
   border-left: 1px solid @typLightGray;
   overflow: hidden;
   position: relative;
+  width: 750px;
   &_eArrow{
     display: block;
     position: absolute;
@@ -508,6 +509,7 @@
     &.mLeft{
       background: url('@{base-url}/item/img/leftArrSlider.png') no-repeat center;
       left:0;
+      display: none;
     }
     &.mRight{
       background: url('@{base-url}/item/img/rightArrSlider.png') no-repeat center;
@@ -515,7 +517,7 @@
     }
   }
   &_eWrap{
-    margin-left:25px;
+    // margin-left:25px;
     position: relative;
     width: 4000px;
     z-index: 1;

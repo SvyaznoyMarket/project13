@@ -132,11 +132,16 @@ $(document).ready(function() {
 				left -= (slidesW * 2)
 			}
 			// left *= ($(this).hasClass('mLeft'))?-1:1
-			if ((left < sliderW-wrapW-50)){
-				left = sliderW-wrapW-50
-			}
-			if (left > 0 ){
+			if ((left <= sliderW-wrapW)){
+				left = sliderW-wrapW
+				$('.bSimilarGoodsSlider_eArrow.mRight').hide()
+			} 
+			else if (left >= 0 ){
 				left = 0
+				$('.bSimilarGoodsSlider_eArrow.mLeft').hide()
+			}
+			else{
+				similarArrow.show()
 			}
 			similarWrap.animate({'left':left})
 			return false
