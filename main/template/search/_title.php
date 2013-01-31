@@ -10,7 +10,7 @@
 
 <? if ($count) { // если товары найдены ?>
 
-    <? if (false == $forceMean) { // если принудительный поиск не был использован ?>
+    <? if (!$forceMean) { // если принудительный поиск не был использован ?>
         Ура! Нашли <span class="orange">&quot;<?= $page->escape($searchQuery) ?>&quot;</span>
         <?= $count . ' ' . $page->helper->numberChoice($count, array('товар', 'товара', 'товаров')) ?>
 
@@ -18,7 +18,10 @@
         Вы искали <span class="orange">&quot;<?= $page->escape($meanQuery) ?>&quot;</span> ?<br />
         Мы нашли <?= $count . ' ' . $page->helper->numberChoice($count, array('товар', 'товара', 'товаров')) ?> :)
 
-        <p class="font16" style="font-family: Tahoma;"><strong><?= $page->escape($searchQuery) ?></strong> мы не нашли. Уточните, пожалуйста, запрос</p>
+        <br />
+        <span class="font16" style="font-family: Tahoma;">
+            <strong style="font-weight: bold">&quot;<?= $page->escape($searchQuery) ?>&quot;</strong> мы не нашли. Уточните, пожалуйста, запрос
+        </span>
     <? } ?>
 
 <? } else { // ...иначе, если товары не найдены ?>

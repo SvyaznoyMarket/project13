@@ -41,6 +41,9 @@ class Action {
 
             return new \Http\Response($page->show());
         }
+        $forceMean = isset($result['forced_mean']) ? $result['forced_mean'] : false;
+        $meanQuery = isset($result['did_you_mean']) ? $result['did_you_mean'] : '';
+
         $result = $result[1];
 
         // проверка на пустоту
@@ -50,9 +53,6 @@ class Action {
 
             return new \Http\Response($page->show());
         }
-
-        $forceMean = isset($result['forced_mean']) ? $result['forced_mean'] : false;
-        $meanQuery = isset($result['did_you_mean']) ? $result['did_you_mean'] : '';
 
         // категории
         $categoriesById = [];
