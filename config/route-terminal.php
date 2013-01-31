@@ -11,6 +11,6 @@ return [
     'product.show' => [
         'pattern' => '/product/{productId}',
         'action'  => ['Product\IndexAction', 'execute'],
-        'require' => ['productPath' => '[\d]+'],
+        'require' => ['productId' => '[\d]+'],
     ],
 ];
