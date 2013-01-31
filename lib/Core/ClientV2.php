@@ -86,7 +86,8 @@ class ClientV2 implements ClientInterface
     public function execute() {
         \Debug\Timer::start('core');
         if (!$this->isMultiple) {
-            throw new \RuntimeException('No query to execute.');
+            $this->logger->error('No query to execute.');
+            return;
         }
 
         $active = null;
