@@ -2,9 +2,6 @@
 namespace Controller\Smartengine;
 
 class Action {
-    /** @var  \PDO */
-    private $dbh = null;
-
     /**
      * @param \Http\Request $request
      * @return \Http\JsonResponse
@@ -24,7 +21,7 @@ class Action {
                 'order'       => $order,
             ];
 
-            $this->getDbh()->exec("INSERT INTO `queue` (`name`, `body`) VALUES ('smartengine.buy', '".addslashes(json_encode($data, JSON_HEX_APOS | JSON_HEX_QUOT))."')");
+            \App::database()->exec("INSERT INTO `queue` (`name`, `body`) VALUES ('smartengine.buy', '".addslashes(json_encode($data, JSON_HEX_APOS | JSON_HEX_QUOT))."')");
 
             return new \Http\JsonResponse(['success' => true]);
         }
@@ -55,7 +52,7 @@ class Action {
                 'user_id'    => $user ? $user->getId() : null,
             ];
 
-            $this->getDbh()->exec("INSERT INTO `queue` (`name`, `body`) VALUES ('smartengine.view', '".addslashes(json_encode($data, JSON_HEX_APOS | JSON_HEX_QUOT))."')");
+            \App::database()->exec("INSERT INTO `queue` (`name`, `body`) VALUES ('smartengine.view', '".addslashes(json_encode($data, JSON_HEX_APOS | JSON_HEX_QUOT))."')");
 
             return new \Http\JsonResponse(['success' => true]);
         }
@@ -202,16 +199,5 @@ class Action {
 
             return new \Http\JsonResponse();
         }
-    }
-
-
-    private function getDbh() {
-        if (!$this->dbh) {
-            $this->dbh = new \PDO(sprintf('mysql:dbname=%s;host=%s', \App::config()->database['name'], \App::config()->database['host']), \App::config()->database['user'], \App::config()->database['password'], [
-                \PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8',
-            ]);
-        }
-
-        return $this->dbh;
     }
 }

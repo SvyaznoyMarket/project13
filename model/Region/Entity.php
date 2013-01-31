@@ -30,7 +30,7 @@ class Entity {
     /** @var bool */
     private $hasTransportCompany;
 
-    public function __construct(array $data = array()) {
+    public function __construct(array $data = []) {
         if (array_key_exists('id', $data)) $this->setId($data['id']);
         if (array_key_exists('parent_id', $data)) $this->setParentId($data['parent_id']);
         if (array_key_exists('name', $data)) $this->setName($data['name']);
@@ -284,7 +284,10 @@ class Entity {
 
             return array_key_exists($inflect, $data) ? $data[$inflect] : $this->name;
         } catch (\Exception $e) {
-            \App::logger()->error($e);
+            \App::database()->exec("INSERT INTO `queue` (`name`, `body`) VALUES ('inflect.region', '" . addslashes(json_encode([
+                'region_id' => $this->id,
+            ], JSON_HEX_APOS | JSON_HEX_QUOT))."')");
+            \App::logger()->warn($e);
         }
 
         return $this->name;

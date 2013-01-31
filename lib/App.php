@@ -225,7 +225,23 @@ class App {
         static $instance;
 
         if (!$instance) {
-            $instance = new \Content\Client(\App::config()->wordpress, self::curl());
+            $instance = new \Content\Client(self::config()->wordpress, self::curl());
+        }
+
+        return $instance;
+    }
+
+    /**
+     * @static
+     * @return \PDO
+     */
+    public static function database() {
+        static $instance;
+
+        if (!$instance) {
+            $instance = new \PDO(sprintf('mysql:dbname=%s;host=%s', self::config()->database['name'], self::config()->database['host']), self::config()->database['user'], self::config()->database['password'], [
+                \PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8',
+            ]);
         }
 
         return $instance;
@@ -239,7 +255,7 @@ class App {
         static $instance;
 
         if (!$instance) {
-            $instance = new \DataStore\Client(\App::config()->dataStore, self::curl());
+            $instance = new \DataStore\Client(self::config()->dataStore, self::curl());
         }
 
         return $instance;
