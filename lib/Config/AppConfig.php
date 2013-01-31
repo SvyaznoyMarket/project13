@@ -30,6 +30,8 @@ class AppConfig {
     /** @var string */
     public $controllerPrefix;
     /** @var string */
+    public $routePrefix;
+    /** @var string */
     public $authToken = array(
         'name'     => null,
     );

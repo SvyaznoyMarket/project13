@@ -112,7 +112,7 @@ class App {
 
         if (!isset($instances[$name])) {
             $rules = require self::$config->configDir . '/route-' . $name . '.php';
-            $instances[$name] = new \Routing\Router($rules);
+            $instances[$name] = new \Routing\Router($rules, self::$config->routePrefix);
         }
 
         return $instances[$name];

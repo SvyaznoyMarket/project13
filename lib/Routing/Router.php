@@ -3,13 +3,14 @@
 namespace Routing;
 
 class Router {
-    /**
-     * @var array
-     */
+    /** @var array */
     private $rules;
+    /** @var string|null */
+    private $prefix;
 
-    public function __construct(array $rules) {
+    public function __construct(array $rules, $prefix = null) {
         $this->rules = $rules;
+        $this->prefix = '/' . trim($prefix, '/');
     }
 
     /**
@@ -23,6 +24,10 @@ class Router {
         $path = rawurldecode($path);
 
         foreach ($this->rules as $routeName => $rule) {
+            if ($this->prefix) {
+                $rule['pattern'] = $this->prefix . $rule['pattern'];
+            }
+
             // Если не указан http-метод или http-метод совпадает с правилом маршрута ...
             if (!array_key_exists('method', $rule) || in_array($method, $rule['method'])) {
 
@@ -35,8 +40,8 @@ class Router {
                     }
                 } // ... иначе
                 else {
-                    $patternReplaces = array();
-                    $varNames = array();
+                    $patternReplaces = [];
+                    $varNames = [];
                     preg_match_all('#\{(\w+)\}#', $rule['pattern'], $matches, PREG_OFFSET_CAPTURE | PREG_SET_ORDER);
                     foreach ($matches as $match) {
                         $varName = $match[1][0];
@@ -71,13 +76,16 @@ class Router {
      * @throws \LogicException
      * @throws \RuntimeException
      */
-    public function generate($name, array $params = array(), $absolute = false) {
+    public function generate($name, array $params = [], $absolute = false) {
         if (!isset($this->rules[$name])) {
             throw new \RuntimeException(sprintf('Неизвестный маршрут "%s".', $name));
         }
 
         $rule = $this->rules[$name];
-        $vars = array();
+        if ($this->prefix) {
+            $rule['pattern'] = $this->prefix . $rule['pattern'];
+        }
+        $vars = [];
 
         if (isset($params['#'])) {
             $anchor = '#' . $params['#'];
@@ -86,12 +94,12 @@ class Router {
             $anchor = '';
         }
 
-        // Если в шаблоне нет переменных ...
+        // если в шаблоне нет переменных ...
         if (false === strpos($rule['pattern'], '{')) {
             $url = $rule['pattern'];
-        } // ... иначе
-        else {
-            $patternReplaces = array();
+        // ... иначе
+        } else {
+            $patternReplaces = [];
             preg_match_all('#\{(\w+)\}#', $rule['pattern'], $matches, PREG_OFFSET_CAPTURE | PREG_SET_ORDER);
             foreach ($matches as $match) {
                 $varName = $match[1][0];

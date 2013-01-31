@@ -48,6 +48,7 @@ if ('main' == \App::$name) {
 
     $config->templateDir = $config->appDir . '/terminal/template';
     $config->controllerPrefix = 'Terminal\\Controller';
+    $config->routePrefix = 'terminal';
 }
 
 
