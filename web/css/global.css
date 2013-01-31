@@ -5011,7 +5011,7 @@
     position: relative;
   }
   .bHint_eLink {
-    background: #ffffff url('/css/item/img/hintQ.gif') no-repeat center center;
+    background: #ffffff url('/css/item/img/hintQ.gif') no-repeat left center;
     cursor: pointer;
     display: block;
     font-size: 0;
@@ -5025,26 +5025,8 @@
     padding: 10px 15px;
     position: absolute;
     overflow: auto;
-    top: 30px;
+    top: 20px;
     width: 350px;
-  }
-  .bHint_ePopup .corner {
-    border-bottom: 13px solid #ffa901;
-    border-left: 14px solid transparent;
-    border-right: 14px solid transparent;
-    height: 0;
-    position: absolute;
-    right: 45px;
-    top: -13px;
-    width: 0;
-  }
-  .bHint_ePopup .corner div {
-    border-bottom: 10px solid #ffffff;
-    border-left: 11px solid transparent;
-    border-right: 11px solid transparent;
-    bottom: -13px;
-    left: -11px;
-    position: absolute;
   }
 }
 /*стили для продуктов f1*/

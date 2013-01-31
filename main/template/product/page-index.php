@@ -537,7 +537,6 @@
                     <a class="bHint_eLink"><?= $property->getName() ?></a>
                     <div class="bHint_ePopup popup">
                       <div class="close"></div>
-                      <div class="corner"><div></div></div>
                       <?= $property->getHint() ?>
                     </div>
                   </div>
