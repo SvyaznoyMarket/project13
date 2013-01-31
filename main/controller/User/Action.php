@@ -48,6 +48,10 @@ class Action {
                     }
                     $userEntity->setToken($result['token']);
 
+                    $redirect = (0 === strpos($request->get('redirect_to'), $request->getSchemeAndHttpHost()))
+                        ? $request->get('redirect_to')
+                        : \App::router()->generate('user');
+
                     $response = $request->isXmlHttpRequest()
                         ? new \Http\JsonResponse(array(
                             'success' => true,
@@ -62,10 +66,10 @@ class Action {
                                     'last_name'    => $userEntity->getLastName(),
                                     'mobile_phone' => $userEntity->getMobilePhone(),
                                 ),
-                                'link' => \App::router()->generate('user'),
+                                'link' => $redirect,
                             ),
                         ))
-                        : new \Http\RedirectResponse(\App::router()->generate('user'));
+                        : new \Http\RedirectResponse($redirect);
 
                     \App::user()->signIn($userEntity, $response);
 

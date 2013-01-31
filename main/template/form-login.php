@@ -8,7 +8,7 @@
 ?>
 
 <?php
-if (empty($redirect)) $redirect = $request->getRequestUri();
+if (empty($redirect)) $redirect = $request->getUri();
 if (!isset($form)) $form = new \View\User\LoginForm();
 ?>
 
