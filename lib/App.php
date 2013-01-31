@@ -239,9 +239,13 @@ class App {
         static $instance;
 
         if (!$instance) {
-            $instance = new \PDO(sprintf('mysql:dbname=%s;host=%s', self::config()->database['name'], self::config()->database['host']), self::config()->database['user'], self::config()->database['password'], [
-                \PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8',
-            ]);
+            try {
+                $instance = new \PDO(sprintf('mysql:dbname=%s;host=%s', self::config()->database['name'], self::config()->database['host']), self::config()->database['user'], self::config()->database['password'], [
+                    \PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8',
+                ]);
+            } catch (\Exception $e) {
+                self::logger()->error($e);
+            }
         }
 
         return $instance;

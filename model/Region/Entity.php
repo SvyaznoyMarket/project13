@@ -284,11 +284,13 @@ class Entity {
 
             return array_key_exists($inflect, $data) ? $data[$inflect] : $this->name;
         } catch (\Exception $e) {
-            \App::database()->exec("INSERT INTO `queue` (`name`, `body`) VALUES ('inflect', '" . addslashes(json_encode([
-                'original' => $this->name,
-                'file'     => \App::config()->dataDir . '/inflect/region/' . $this->id . '.json',
-            ], JSON_HEX_APOS | JSON_HEX_QUOT | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT))."')");
             \App::logger()->warn($e);
+            if ($dbh = \App::database()) {
+                $dbh->exec("INSERT INTO `queue` (`name`, `body`) VALUES ('inflect', '" . addslashes(json_encode([
+                    'original' => $this->name,
+                    'file'     => \App::config()->dataDir . '/inflect/region/' . $this->id . '.json',
+                ], JSON_HEX_APOS | JSON_HEX_QUOT | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT))."')");
+            }
         }
 
         return $this->name;
