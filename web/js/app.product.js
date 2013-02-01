@@ -152,11 +152,14 @@ $(document).ready(function() {
 	// видео в карточке товара
 	if ($('.goodsphoto_eVideoShield').length){
 		var shield = $('.goodsphoto_eVideoShield')
+		var iframe = $('#productVideo .productVideo_iframe').html()
+		$('#productVideo .productVideo_iframe').empty()
 		shield.bind('click', function(){
+			$('#productVideo .productVideo_iframe').append(iframe)
 			$('#productVideo').lightbox_me({ 
 				centered: true,
-				onLoad: function() {
-					// console.log('load!')
+				onClose: function(){
+					$('#productVideo .productVideo_iframe').empty()
 				}
 			})
 			return false
