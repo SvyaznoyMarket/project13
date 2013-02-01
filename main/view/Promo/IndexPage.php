@@ -9,7 +9,7 @@ class IndexPage extends \View\DefaultLayout {
         return $this->render('promo/page-index', $this->params);
     }
 
-    public function slotBodyClassAttribute() {
+    public function slotBodyDataAttribute() {
         return 'infopage';
     }
 }

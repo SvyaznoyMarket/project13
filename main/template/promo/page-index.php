@@ -5,7 +5,7 @@
  * @var $slideData array
  */
 ?>
-
+<div class="clear"></div>
 <!-- promo catalog -->
 <div id="promoCatalog" class="bPromoCatalog" data-slides="<?= $page->json($slideData) ?>">
 

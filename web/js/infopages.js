@@ -248,42 +248,18 @@ $(document).ready(function(){
 
 	/* promo catalog */
 	if ( $('#promoCatalog').length){
-		var data = {
-			"slides":[
-				{"imgUrl":"http://content.enter.ru/wp-content/uploads/2013/01/slide1.jpg", "title":"slide1", "linkUrl":"#1"},
-				{"imgUrl":"http://content.enter.ru/wp-content/uploads/2013/01/slide2.jpg", "title":"slide2", "linkUrl":"#2"},
-				{"imgUrl":"http://content.enter.ru/wp-content/uploads/2013/01/slide3.jpg", "title":"slide3", "linkUrl":"#3"},
-				{"imgUrl":"http://content.enter.ru/wp-content/uploads/2013/01/slide4.jpg", "title":"slide4", "linkUrl":"#4"},
-				{"imgUrl":"http://content.enter.ru/wp-content/uploads/2013/01/slide1.jpg", "title":"slide1", "linkUrl":"#1"},
-				{"imgUrl":"http://content.enter.ru/wp-content/uploads/2013/01/slide2.jpg", "title":"slide2", "linkUrl":"#2"},
-				{"imgUrl":"http://content.enter.ru/wp-content/uploads/2013/01/slide3.jpg", "title":"slide3", "linkUrl":"#3"},
-				{"imgUrl":"http://content.enter.ru/wp-content/uploads/2013/01/slide1.jpg", "title":"slide1", "linkUrl":"#1"},
-				{"imgUrl":"http://content.enter.ru/wp-content/uploads/2013/01/slide2.jpg", "title":"slide2", "linkUrl":"#2"},
-				{"imgUrl":"http://content.enter.ru/wp-content/uploads/2013/01/slide3.jpg", "title":"slide3", "linkUrl":"#3"},
-				{"imgUrl":"http://content.enter.ru/wp-content/uploads/2013/01/slide4.jpg", "title":"slide4", "linkUrl":"#4"},
-				{"imgUrl":"http://content.enter.ru/wp-content/uploads/2013/01/slide1.jpg", "title":"slide1", "linkUrl":"#1"},
-				{"imgUrl":"http://content.enter.ru/wp-content/uploads/2013/01/slide2.jpg", "title":"slide2", "linkUrl":"#2"},
-				{"imgUrl":"http://content.enter.ru/wp-content/uploads/2013/01/slide3.jpg", "title":"slide3", "linkUrl":"#3"},
-				{"imgUrl":"http://content.enter.ru/wp-content/uploads/2013/01/slide1.jpg", "title":"slide1", "linkUrl":"#1"},
-				{"imgUrl":"http://content.enter.ru/wp-content/uploads/2013/01/slide2.jpg", "title":"slide2", "linkUrl":"#2"},
-				{"imgUrl":"http://content.enter.ru/wp-content/uploads/2013/01/slide3.jpg", "title":"slide3", "linkUrl":"#3"},
-				{"imgUrl":"http://content.enter.ru/wp-content/uploads/2013/01/slide4.jpg", "title":"slide4", "linkUrl":"#4"},
-				{"imgUrl":"http://content.enter.ru/wp-content/uploads/2013/01/slide1.jpg", "title":"slide1", "linkUrl":"#1"},
-				{"imgUrl":"http://content.enter.ru/wp-content/uploads/2013/01/slide2.jpg", "title":"slide2", "linkUrl":"#2"},
-				{"imgUrl":"http://content.enter.ru/wp-content/uploads/2013/01/slide3.jpg", "title":"slide3", "linkUrl":"#3"}
-			]
-		}
-
+		var data = $('#promoCatalog').data('slides')
+		
 		//первоначальная настройка
-		var slider_SlideCount = data.slides.length	//количество слайдов
-
+		var slider_SlideCount = data.length	//количество слайдов
 		var catalogPaginator = new EnterPaginator('promoCatalogPaginator',slider_SlideCount, 12, 1)
 
 		var initSlider = function() {
-			for (var slide in data.slides){
-				var slideTmpl = tmpl("slide_tmpl",data.slides[slide])
+			for (var slide in data){
+				console.log(data[slide])
+				var slideTmpl = tmpl("slide_tmpl",data[slide])
 				$('.bPromoCatalogSliderWrap').append(slideTmpl)
-				// $('.bPromoCatalogNav').append('<a id="promoCatalogSlide'+slide+'" href="#'+slide+'" class="bPromoCatalogNav_eLink">'+((slide*1)+1)+'</a>')
+				$('.bPromoCatalogNav').append('<a id="promoCatalogSlide'+slide+'" href="#'+slide+'" class="bPromoCatalogNav_eLink">'+((slide*1)+1)+'</a>')
 			}
 			
 		}
