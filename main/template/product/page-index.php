@@ -14,6 +14,9 @@
 ?>
 
 <?
+$productVideo = reset($productVideos);
+?>
+<?
   $json = json_encode(array (
     'jsref'        => $product->getToken(),
     'jstitle'      => $product->getName(),
@@ -107,7 +110,8 @@
 <? endif ?>
 
 <div class="goodsphoto">
-  <a class="goodsphoto_eVideoShield" href="#"></a>
+  <? if ($productVideo): ?><a class="goodsphoto_eVideoShield" href="#"></a><? endif ?>
+
   <a href="<?= $product->getImageUrl(4) ?>" class="viewme" ref="image" onclick="return false">
     <? if ($product->getLabel()): ?>
     <img class="bLabels" src="<?= $product->getLabel()->getImageUrl(1) ?>" alt="<?= $product->getLabel()->getName() ?>" />
@@ -488,7 +492,7 @@
 <?php endif; ?>
 
 <!-- product video pop-up -->
-<? if ($productVideo = reset($productVideos)): ?>
+<? if ($productVideo): ?>
     <div id="productVideo" class="blackPopup">
       <div class="close">X</div>
       <!-- <iframe width="640" height="360" src="http://rutube.ru/video/embed/6125142" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowfullscreen scrolling="no"></iframe>  -->
