@@ -24,15 +24,19 @@ class DefaultLogger implements LoggerInterface {
         3 => 'info',
         4 => 'debug',
     ];
+    /** @var bool */
+    protected $immediatelyDump;
 
     protected $messages = [];
 
-    public function __construct(\Logger\Appender\AppenderInterface $appender, $name, $level) {
+    public function __construct(\Logger\Appender\AppenderInterface $appender, $name, $level, $immediatelyDump = false) {
         $this->id = \App::$id;
         $this->appender = $appender;
         $this->name = (string)$name;
         $this->level = (int)$level;
         if ($this->level < 0 || $this->level > 4) $this->level = 0;
+
+        $this->immediatelyDump = $immediatelyDump;
     }
 
     public function debug($message) {
@@ -54,13 +58,18 @@ class DefaultLogger implements LoggerInterface {
     protected function log($message, $level) {
         if ($level > $this->level) return;
 
-        $this->messages[] = [
+        $logData = [
             'time'    => date('M d H:i:s'),
             //'name'    => $this->name,
             'name'    => $this->id,
             'level'   => $this->levelNames[$level],
             'message' => is_array($message) ? json_encode($message, JSON_UNESCAPED_UNICODE) : (string)$message,
         ];
+        if ($this->immediatelyDump) {
+            $this->appender->dump([$logData]);
+        } else {
+            $this->messages[] = $logData;
+        }
     }
 
     public function dump() {

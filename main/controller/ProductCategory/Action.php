@@ -190,7 +190,7 @@ class Action {
         });
 
         // выполнение 1-го пакета запросов
-        $client->execute();
+        $client->execute(\App::config()->coreV2['retryTimeout']['tiny']);
 
         /** @var $region \Model\Region\Entity|null */
         $region = self::isGlobal() ? null : \App::user()->getRegion();
@@ -216,7 +216,7 @@ class Action {
         });
 
         // выполнение 2-го пакета запросов
-        $client->execute();
+        $client->execute(\App::config()->coreV2['retryTimeout']['tiny']);
 
         if (!$category) {
             throw new \Exception\NotFoundException(sprintf('Категория товара @%s не найдена.', $categoryToken));
@@ -237,7 +237,7 @@ class Action {
         });
 
         // выполнение 3-го пакета запросов
-        $client->execute();
+        $client->execute(\App::config()->coreV2['retryTimeout']['tiny']);
 
         // фильтры
         $productFilter = $this->getFilter($filters, $category, $request);

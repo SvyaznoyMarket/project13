@@ -6,6 +6,15 @@ $c = require __DIR__ . '/config.php';
 $c->debug = false;
 
 $c->coreV2['url'] = 'http://api.enter.ru/v2/';
+$c->coreV2['retryTimeout'] = [
+    'default' => 0.5,
+    'tiny'    => 0.05,
+    'short'   => 0.2,
+    'medium'  => 0.5,
+    'long'    => 0.8,
+    'huge'    => 1.5,
+    'forever' => 0,
+];
 
 $c->wordpress['url'] = 'http://content.enter.ru/';
 

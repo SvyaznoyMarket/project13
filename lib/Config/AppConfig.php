@@ -46,8 +46,10 @@ class AppConfig {
     public $cacheCookieName = null;
     /** @var array */
     public $coreV2 = [
-        'url'       => null,
-        'client_id' => null,
+        'url'          => null,
+        'client_id'    => null,
+        'retryTimeout' => [],
+        'retryCount'   => null,
     ];
     /** @var array */
     public $wordpress = [

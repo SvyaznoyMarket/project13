@@ -28,7 +28,16 @@ $c->cacheCookieName = 'enter_auth';
 
 $c->coreV2['url']       = 'http://core.ent3.ru/v2/';
 $c->coreV2['client_id'] = 'site';
-
+$c->coreV2['retryTimeout'] = [
+    'default' => 1,
+    'tiny'    => 0.1,
+    'short'   => 0.4,
+    'medium'  => 1,
+    'long'    => 1.6,
+    'huge'    => 3,
+    'forever' => 0,
+];
+$c->coreV2['retryCount'] = 3;
 
 $c->wordpress['url'] = 'http://content.ent3.ru/';
 

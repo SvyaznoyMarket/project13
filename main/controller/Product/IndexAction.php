@@ -47,7 +47,7 @@ class IndexAction {
         });
 
         // выполнение 1-го пакета запросов
-        $client->execute();
+        $client->execute(\App::config()->coreV2['retryTimeout']['tiny']);
 
         $region = $user->getRegion();
 
@@ -72,7 +72,7 @@ class IndexAction {
         });
 
         // выполнение 2-го пакета запросов
-        $client->execute();
+        $client->execute(\App::config()->coreV2['retryTimeout']['tiny']);
 
         if (!$product) {
             throw new \Exception\NotFoundException(sprintf('Товар @%s не найден.', $productToken));

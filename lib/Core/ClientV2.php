@@ -12,6 +12,8 @@ class ClientV2 implements ClientInterface
     private $successCallbacks = [];
     private $failCallbacks = [];
     private $resources = [];
+    private $queries = [];
+    private $queryIndex = [];
     /** @var bool */
     private $stillExecuting = false;
 
@@ -73,27 +75,56 @@ class ClientV2 implements ClientInterface
             $this->isMultiple = curl_multi_init();
         }
         $resource = $this->createResource($action, $params, $data);
-        curl_multi_add_handle($this->isMultiple, $resource);
+        if (0 !== curl_multi_add_handle($this->isMultiple, $resource)) {
+            $this->logger->error('Adding multi query error: ' . curl_error($resource));
+            return false;
+        };
         $this->successCallbacks[(string)$resource] = $successCallback;
         $this->failCallbacks[(string)$resource] = $failCallback;
         $this->resources[] = $resource;
+
+        /* нужно сохранить исходные данные для retry */
+        $hash = md5($action . serialize($params) . serialize($data));
+        if (!isset($this->queries[$hash])) {
+            $this->queries[$hash] = array(
+                'resources' => array(
+                    $resource,
+                ),
+                'query' => array(
+                    'action' => $action,
+                    'params' => $params,
+                    'data'   => $data,
+                ),
+            );
+        } else {
+            $this->queries[$hash]['resources'][] = $resource;
+        }
+        $this->queryIndex[$resource] = $hash;
+
         $this->stillExecuting = true;
     }
 
     /**
+     * @param int $retryTimeout
      * @throws \RuntimeException
      */
-    public function execute() {
+    public function execute($retryTimeout = null) {
         \Debug\Timer::start('core');
         if (!$this->isMultiple) {
             $this->logger->error('No query to execute.');
             return;
         }
 
+        if (null === $retryTimeout) $retryTimeout = isset($this->config['retryTimeout']['default']) ? $this->config['retryTimeout']['default'] : 0;
         $active = null;
         $error = null;
         try {
+            $absoluteTimeout = microtime(true);
             do {
+                if ($absoluteTimeout <= microtime(true)) {
+                    $absoluteTimeout += $retryTimeout;
+                    $this->logger->debug(microtime(true) . ': Слудеющий таймаут должен сработать в ' . $absoluteTimeout);
+                }
                 do {
                     $code = curl_multi_exec($this->isMultiple, $stillExecuting);
                     $this->stillExecuting = $stillExecuting;
@@ -103,18 +134,31 @@ class ClientV2 implements ClientInterface
                 while ($done = curl_multi_info_read($this->isMultiple)) {
                     $this->logger->debug('Core response done: ' . print_r($done, 1));
                     $handler = $done['handle'];
+
+                    //$this->logger->info(microtime(true) . ': получен ответ на запрос ' . $this->queries[$this->queryIndex[$handler]]['query']['action'] . '[' . (string)$handler . ']');
+                    $this->logger->debug(microtime(true) . ': <- [' . (string)$handler . ']');
+
+                    //удаляем запрос из массива запросов на исполнение и прерываем дублирующие запросы
+                    foreach ($this->queries[$this->queryIndex[$handler]]['resources'] as $resource) {
+                        if ($resource !== $handler) {
+                            curl_multi_remove_handle($this->isMultiple, $resource);
+                        }
+                    }
+
                     $info = curl_getinfo($handler);
                     $this->logger->debug('Core response resource: ' . $handler);
                     $this->logger->debug('Core response info: ' . $this->encodeInfo($info));
                     if (curl_errno($handler) > 0) {
                         $spend = \Debug\Timer::stop('core');
-                        \Util\RequestLogger::getInstance()->addLog($info['url'], ['unknown in multi curl'], $info['total_time'], 'unknown');
+                        \Util\RequestLogger::getInstance()->addLog($info['url'], $this->queries[$this->queryIndex[$handler]]['query']['data'], $info['total_time'], 'multi(' . count($this->queries[$this->queryIndex[$handler]]['resources']) . ' try(s)): ' . 'unknown');
                         throw new \RuntimeException(curl_error($handler), curl_errno($handler));
                     }
                     $content = curl_multi_getcontent($handler);
                     $header = $this->getHeader($content, true);
 
-                    \Util\RequestLogger::getInstance()->addLog($info['url'], ['unknown in multi curl'], $info['total_time'], isset($header['X-Server-Name']) ? $header['X-Server-Name'] : 'unknown');
+                    \Util\RequestLogger::getInstance()->addLog($info['url'], $this->queries[$this->queryIndex[$handler]]['query']['data'], $info['total_time'], 'multi(' . count($this->queries[$this->queryIndex[$handler]]['resources']) . ' try(s)): ' . (isset($header['X-Server-Name']) ? $header['X-Server-Name'] : 'unknown'));
+
+                    unset($this->queries[$this->queryIndex[$handler]]);
 
                     if ($info['http_code'] >= 300) {
                         $spend = \Debug\Timer::stop('core');
@@ -136,7 +180,42 @@ class ClientV2 implements ClientInterface
                     }
                 }
                 if ($stillExecuting) {
-                    $ready = curl_multi_select($this->isMultiple);
+                    $timeout = $absoluteTimeout - microtime(true);
+                    if (0 >= $timeout) {
+                        $timeout += $retryTimeout;
+                        $absoluteTimeout += $retryTimeout;
+                    }
+                    $isTryAvailable = false;
+                    foreach ($this->queries as $query) {
+                        if (count($query['resources']) < $this->config['retryCount']) {
+                            $isTryAvailable = true;
+                            break;
+                        }
+                    }
+                    if ($isTryAvailable && 0 !== $retryTimeout) {
+                        $this->logger->debug(microtime(true) . ': ждем ответа или ' . $timeout . ' сек');
+                        $ready = curl_multi_select($this->isMultiple, $timeout);
+                    } else {
+                        $this->logger->debug(microtime(true) . ':' . ( 0 === $retryTimeout ? '' : ' все попытки исчерпаны,') . ' ждем ответа');
+                        $ready = curl_multi_select($this->isMultiple, 30);
+                    }
+
+                    if (0 === $ready) {
+                        //Если случился timeout, то посылаем в ядро еще запросы
+                        $this->logger->debug(microtime(true) . ': произошло прерывание по таймауту, в очереди ' . count($this->queries) . ' запроса(ов)');
+
+                        foreach ($this->queries as $query) {
+                            if (count($query['resources']) >= $this->config['retryCount']) continue;
+                            $this->logger->debug(microtime(true) . ': посылаю еще один запрос в ядро: ' . $query['query']['action']);
+                            $this->addQuery(
+                                $query['query']['action'],
+                                $query['query']['params'],
+                                $query['query']['data'],
+                                $this->successCallbacks[(string)$query['resources'][0]],
+                                isset($this->failCallbacks[(string)$query['resources'][0]]) ? $this->failCallbacks[(string)$query['resources'][0]] : null
+                            );
+                        }
+                    }
                 }
             } while ($this->stillExecuting);
         } catch (Exception $e) {

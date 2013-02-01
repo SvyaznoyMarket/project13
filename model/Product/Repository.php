@@ -29,14 +29,21 @@ class Repository {
     public function getEntityByToken($token, \Model\Region\Entity $region = null) {
         \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
-        $response = $this->client->query('product/get', array(
-            'select_type' => 'slug',
-            'slug'        => $token,
-            'geo_id'      => $region ? $region->getId() : \App::user()->getRegion()->getId(),
-        ));
-        $data = reset($response);
+        $client = clone $this->client;
 
-        return $data ? new Entity($data) : null;
+        $entity = null;
+        $client->addQuery('product/get', array(
+                'select_type' => 'slug',
+                'slug'        => $token,
+                'geo_id'      => $region ? $region->getId() : \App::user()->getRegion()->getId(),
+            ), array(), function($data) use(&$entity) {
+            $data = reset($response);
+            $entity = $data ? new Entity($data) : null;
+        });
+
+        $client->execute(\App::config()->coreV2['reteryTimeout']['short']);
+
+        return $entity;
     }
 
     /**
@@ -160,16 +167,21 @@ class Repository {
 
         if (!(bool)$ids) return [];
 
-        $response = $this->client->query('product/get', array(
+        $client = clone $this->client;
+
+        $collection = [];
+        $entityClass = $this->entityClass;
+        $client->addQuery('product/get', [
             'select_type' => 'id',
             'id'          => $ids,
             'geo_id'      => $region ? $region->getId() : \App::user()->getRegion()->getId(),
-        ));
+        ], [], function($data) use(&$collection, $entityClass) {
+            foreach ($data as $item) {
+                $collection[] = new $entityClass($item);
+            }
+        });
 
-        $collection = [];
-        foreach ($response as $data) {
-            $collection[] = new $this->entityClass($data);
-        }
+        $client->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
         return $collection;
     }
@@ -227,7 +239,8 @@ class Repository {
         //TODO: выпилить, когда будет реализована задача CORE-675
         if (isset($sort['default'])) $sort = [];
 
-        $response = $this->client->query('listing/list', array(
+        $response = array();
+        $this->client->addQuery('listing/list', array(
             'filter' => array(
                 'filters' => $filter,
                 'sort'    => $sort,
@@ -235,9 +248,21 @@ class Repository {
                 'limit'   => $limit,
             ),
             'region_id' => $region ? $region->getId() : \App::user()->getRegion()->getId(),
-        ));
+            ), array(), function($data) use(&$response) {
+            $response = $data;
+        });
+        $this->client->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
-        $collection = !empty($response['list']) ? $this->getCollectionById($response['list'], $region) : [];
+        $collection = [];
+        $entityClass = $this->entityClass;
+        if (!empty($response['list'])) {
+            $this->prepareCollectionById($response['list'], $region, function($data) use(&$collection, $entityClass) {
+                foreach ($data as $item) {
+                    $collection[] = new $entityClass($item);
+                }
+            });
+        }
+        $this->client->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
         return new \Iterator\EntityPager($collection, (int)$response['count']);
     }
@@ -253,35 +278,47 @@ class Repository {
     public function getIteratorsByFilter(array $filters = [], array $sort = [], $offset = null, $limit = null, \Model\Region\Entity $region = null) {
         \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
-        $response = $this->client->query('listing/multilist', [], array(
+        // собираем все идентификаторы товаров, чтобы сделать один запрос в ядро
+        $ids = [];
+        $response = [];
+        $this->client->addQuery('listing/multilist', [], [
             'filter_list' => array_map(function($filter) use ($sort, $offset, $limit) {
                 //TODO: выпилить, когда будет реализована задача CORE-675
                 if (isset($sort['default'])) $sort = [];
 
-                return array(
+                return [
                     'filters' => $filter,
                     'sort'    => $sort,
                     'offset'  => $offset,
                     'limit'   => $limit,
-                );
+                ];
             }, $filters),
             'region_id' => $region ? $region->getId() : \App::user()->getRegion()->getId(),
-        ));
+        ], function($data) use(&$ids, &$response) {
+            $response = $data;
+
+            foreach ($data as $item) {
+                $ids = array_merge($ids, $item['list']);
+            }
+        });
+        $this->client->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
         if (!(bool)$response) {
             return [];
         }
 
-        // собираем все идентификаторы товаров, чтобы сделать один запрос в ядро
-        $ids = [];
-        foreach ($response as $data) {
-            $ids = array_merge($ids, $data['list']);
-        }
         // товары сгруппированные по идентификаторам
         $collectionById = [];
-        foreach ($this->getCollectionById($ids) as $entity) {
-            $collectionById[$entity->getId()] = $entity;
-        }
+
+        $entityClass = $this->entityClass;
+        $this->prepareCollectionById($ids, null, function($data) use(&$collectionById, $entityClass){
+            foreach ($data as $item) {
+                $collectionById[$item['id']] = new $entityClass($item);
+            }
+        });
+        $this->client->execute(\App::config()->coreV2['retryTimeout']['medium']);
+
+
         $iterators = [];
         foreach ($response as $data) {
             $collection = [];
