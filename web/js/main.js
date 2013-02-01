@@ -312,8 +312,8 @@ $(document).ready(function(){
 				}
           	}
             if ( form.data('redirect') ) {
-              if (response.url) {
-                window.location = response.url
+              if (response.data.link) {
+                window.location = response.data.link
               } else {
                 form.unbind('submit')
                 form.submit()
