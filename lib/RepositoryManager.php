@@ -67,6 +67,19 @@ class RepositoryManager {
     }
 
     /**
+     * @return Model\Product\Video\Repository
+     */
+    static public function productVideo() {
+        static $instance;
+
+        if (!$instance) {
+            $instance = new \Model\Product\Video\Repository(\App::dataStoreClient());
+        }
+
+        return $instance;
+    }
+
+    /**
      * @return Model\Product\Service\Repository
      */
     static public function service() {

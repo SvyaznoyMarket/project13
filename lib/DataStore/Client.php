@@ -26,15 +26,19 @@ class Client {
      * @throws \Exception
      */
     public function query($file) {
-        return json_decode(file_get_contents(\App::config()->dataDir . '/data-store/promo.json'), true);
-
         \Debug\Timer::start('data-store');
         \App::logger()->info('Start data-store request ' . $file);
 
         $url = $this->config['url'] . $file;
         $response = null;
         try {
-            $response = $this->curl->query($url);
+            // локальный файл
+            if (0 === strpos($url, '/')) {
+                $response = file_get_contents($url);
+            // http-ресурс
+            } else {
+                $response = $this->curl->query($url);
+            }
             $spend = \Debug\Timer::stop('data-store');
             \App::logger()->info('End data-store request ' . $file . ' in ' . $spend);
         } catch (\Exception $e) {

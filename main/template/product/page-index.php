@@ -2,6 +2,7 @@
 /**
  * @var $page               \View\Product\IndexPage
  * @var $product            \Model\Product\Entity
+ * @var $productVideos      \Model\Product\Video\Entity[]
  * @var $user               \Session\User
  * @var $accessories        \Model\Product\Entity[]
  * @var $related            \Model\Product\Entity[]
@@ -487,11 +488,14 @@
 <?php endif; ?>
 
 <!-- product video pop-up -->
-<div id="productVideo" class="blackPopup">
-  <div class="close">X</div>
-  <!-- <iframe width="640" height="360" src="http://rutube.ru/video/embed/6125142" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowfullscreen scrolling="no"></iframe>  -->
-  <iframe src="http://player.vimeo.com/video/58429056?badge=0" width="500" height="250" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
-</div>
+<? if ($productVideo = reset($productVideos)): ?>
+    <div id="productVideo" class="blackPopup">
+      <div class="close">X</div>
+      <!-- <iframe width="640" height="360" src="http://rutube.ru/video/embed/6125142" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowfullscreen scrolling="no"></iframe>  -->
+      <!--<iframe src="http://player.vimeo.com/video/58429056?badge=0" width="500" height="250" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>-->
+      <?= $productVideo->getContent() ?>
+    </div>
+<? endif ?>
 <!-- /product video pop-up -->
 
 <div id="ajaxgoods" class="popup width230" style="display: none">

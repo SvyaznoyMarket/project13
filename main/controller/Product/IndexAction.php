@@ -152,10 +152,17 @@ class IndexAction {
             }
         }
 
+        try {
+            $productVideos = \RepositoryManager::productVideo()->getCollectionByProduct($product);
+        } catch (\Exception $e) {
+            $productVideos = [];
+        }
+
         $page = new \View\Product\IndexPage();
         $page->setParam('regionsToSelect', $regionsToSelect);
         $page->setParam('rootCategories', $rootCategories);
         $page->setParam('product', $product);
+        $page->setParam('productVideos', $productVideos);
         $page->setParam('title', $product->getName());
         $page->setParam('showRelatedUpper', $showRelatedUpper);
         $page->setParam('showAccessoryUpper', !$showRelatedUpper);
