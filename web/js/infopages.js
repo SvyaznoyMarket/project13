@@ -256,7 +256,6 @@ $(document).ready(function(){
 
 		var initSlider = function() {
 			for (var slide in data){
-				console.log(data[slide])
 				var slideTmpl = tmpl("slide_tmpl",data[slide])
 				$('.bPromoCatalogSliderWrap').append(slideTmpl)
 				$('.bPromoCatalogNav').append('<a id="promoCatalogSlide'+slide+'" href="#'+slide+'" class="bPromoCatalogNav_eLink">'+((slide*1)+1)+'</a>')
