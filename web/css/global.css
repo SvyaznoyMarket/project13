@@ -7854,6 +7854,9 @@
   .bPromoCategory a:hover {
     color: #ffffff;
   }
+  #ogorod_1feb {
+    width: 250px;
+  }
   #ogorod_1feb .bPromoCategory_eArrow {
     background: url('/css/mainPage/img/bPromoCategory_greenArrow.gif') no-repeat 0 0;
     margin-left: 70px;
@@ -7863,6 +7866,7 @@
   }
   #jew_1feb {
     left: 185px;
+    width: 310px;
   }
   #jew_1feb .bPromoCategory_eArrow {
     background: url('/css/mainPage/img/bPromoCategory_pinkArrow.gif') no-repeat 0 0;
