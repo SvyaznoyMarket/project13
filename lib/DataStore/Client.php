@@ -34,7 +34,7 @@ class Client {
         try {
             // локальный файл
             if (0 === strpos($url, '/')) {
-                $response = file_get_contents($url);
+                $response = is_file($url) ? file_get_contents($url) : null;
             // http-ресурс
             } else {
                 $response = $this->curl->query($url);
@@ -48,13 +48,14 @@ class Client {
 
         \Util\RequestLogger::getInstance()->addLog($url, [], $spend, 'unknown');
 
+
         if ('json' == pathinfo($file, PATHINFO_EXTENSION)) {
-            $data = json_decode($response, true);
+            $response = json_decode($response, true);
             if ($error = json_last_error()) {
                 throw new \Exception('Json error', $error);
             }
         }
 
-        return $data;
+        return $response;
     }
 }
