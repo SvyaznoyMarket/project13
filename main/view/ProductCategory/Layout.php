@@ -79,6 +79,8 @@ class Layout extends \View\DefaultLayout {
             if (!$page->getKeywords()) {
                 $page->setKeywords($category->getName() . ' магазин продажа доставка ' . $regionName . ' enter.ru');
             }
+
+            $this->applySeoPattern($page);
         }
 
         $this->setTitle($page->getTitle());
@@ -93,5 +95,24 @@ class Layout extends \View\DefaultLayout {
 
     public function slotSidebar() {
         return $this->render('product-category/_sidebar', $this->params);
+    }
+
+    private function applySeoPattern(\Model\Page\Entity $page) {
+        $dataStore = \App::dataStoreClient();
+
+        /** @var $category \Model\Product\Category\Entity */
+        $category = $this->getParam('category') instanceof \Model\Product\Category\Entity ? $this->getParam('category') : null;
+        if (!$category) {
+            return;
+        }
+
+        $seoTemplate = null;
+        foreach (array_reverse(array_merge($category->getAncestor(), [$category])) as $iCategory) {
+            /** @var $iCategory \Model\Product\Category\Entity */
+            $seoTemplate = $dataStore->query(sprintf('seo/%s.json', trim($iCategory->getLink(), '/')));
+            if ((bool)$seoTemplate) break;
+        }
+
+        $dataStore = \App::dataStoreClient();
     }
 }
