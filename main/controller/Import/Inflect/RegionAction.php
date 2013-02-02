@@ -1,8 +1,8 @@
 <?php
 
-namespace Controller\Import;
+namespace Controller\Import\Inflect;
 
-class RegionInflectAction {
+class RegionAction {
     public function execute() {
         \App::logger()->debug('Exec ' . __METHOD__);
 
