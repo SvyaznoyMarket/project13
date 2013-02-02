@@ -279,8 +279,7 @@ class Entity {
         }
 
         try {
-            $data = file_get_contents(\App::config()->dataDir . '/inflect/region/' . $this->id . '.json');
-            $data = json_decode($data);
+            $data = \App::dataStoreClient()->query(sprintf('inflect/region/%s.json', $this->id));
 
             return array_key_exists($inflect, $data) ? $data[$inflect] : $this->name;
         } catch (\Exception $e) {
