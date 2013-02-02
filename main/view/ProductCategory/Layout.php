@@ -36,7 +36,9 @@ class Layout extends \View\DefaultLayout {
             $this->setParam('breadcrumbs', $breadcrumbs);
         }
 
-        // seo: page meta
+        // seo
+        $page = new \Model\Page\Entity();
+
         if ($productPager && ($productPager->getPage() > 1)) {
             $categoryNames = [];
             foreach ($category->getAncestor() as $ancestor) {
@@ -44,16 +46,20 @@ class Layout extends \View\DefaultLayout {
             }
             $categoryNames[] = $category->getName();
 
-            $this->setTitle(sprintf('%s - страница %d из %d - интернет-магазин Enter.ru - %s',
+            $page->setTitle(sprintf('%s - страница %d из %d - интернет-магазин Enter.ru - %s',
                 implode(' - ', $categoryNames),
                 $productPager->getPage(),
                 $productPager->getLastPage(),
                 $regionName
             ));
         } else {
+            $page->setTitle($category->getSeoTitle());
+            $page->setDescription($category->getSeoDescription());
+            $page->setKeywords($category->getSeoKeywords());
+
             // title
-            if (!$category->getSeoTitle()) {
-                $category->setSeoTitle(''
+            if (!$page->getTitle()) {
+                $page->setTitle(''
                     . $category->getName()
                     . ($category->getRoot() ? (' - ' . $category->getRoot()->getName()) : '')
                     . ' - ' . $regionName
@@ -61,8 +67,8 @@ class Layout extends \View\DefaultLayout {
                 );
             }
             // description
-            if (!$category->getSeoDescription()) {
-                $category->setSeoDescription(''
+            if (!$page->getDescription()) {
+                $page->setDescription(''
                     . $category->getName()
                     . ' в ' . $regionName
                     . ' с ценами и описанием.'
@@ -70,14 +76,14 @@ class Layout extends \View\DefaultLayout {
                 );
             }
             // keywords
-            if (!$category->getSeoKeywords()) {
-                $category->setSeoKeywords($category->getName() . ' магазин продажа доставка ' . $regionName . ' enter.ru');
+            if (!$page->getKeywords()) {
+                $page->setKeywords($category->getName() . ' магазин продажа доставка ' . $regionName . ' enter.ru');
             }
-
-            $this->setTitle($category->getSeoTitle());
-            $this->addMeta('description', $category->getSeoDescription());
-            $this->addMeta('keywords', $category->getSeoKeywords());
         }
+
+        $this->setTitle($page->getTitle());
+        $this->addMeta('description', $page->getDescription());
+        $this->addMeta('keywords', $page->getKeywords());
     }
 
     public function slotBodyDataAttribute() {
