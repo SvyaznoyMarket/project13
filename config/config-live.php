@@ -29,4 +29,6 @@ $c->database['host']     = '10.20.33.2';
 
 $c->smartEngine['cert'] = $c->dataDir . '/cert/gsorganizationvalg2.crt';
 
+$c->user['corporateRegister'] = false;
+
 return $c;
