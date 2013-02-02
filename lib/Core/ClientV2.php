@@ -99,7 +99,7 @@ class ClientV2 implements ClientInterface
         } else {
             $this->queries[$hash]['resources'][] = $resource;
         }
-        $this->queryIndex[$resource] = $hash;
+        $this->queryIndex[(int)$resource] = $hash;
 
         $this->stillExecuting = true;
     }
@@ -135,11 +135,11 @@ class ClientV2 implements ClientInterface
                     $this->logger->debug('Core response done: ' . print_r($done, 1));
                     $handler = $done['handle'];
 
-                    //$this->logger->info(microtime(true) . ': получен ответ на запрос ' . $this->queries[$this->queryIndex[$handler]]['query']['action'] . '[' . (string)$handler . ']');
+                    //$this->logger->info(microtime(true) . ': получен ответ на запрос ' . $this->queries[$this->queryIndex[(int)$handler]]['query']['action'] . '[' . (string)$handler . ']');
                     $this->logger->debug(microtime(true) . ': <- [' . (string)$handler . ']');
 
                     //удаляем запрос из массива запросов на исполнение и прерываем дублирующие запросы
-                    foreach ($this->queries[$this->queryIndex[$handler]]['resources'] as $resource) {
+                    foreach ($this->queries[$this->queryIndex[(int)$handler]]['resources'] as $resource) {
                         if ($resource !== $handler) {
                             curl_multi_remove_handle($this->isMultiple, $resource);
                         }
@@ -150,15 +150,15 @@ class ClientV2 implements ClientInterface
                     $this->logger->debug('Core response info: ' . $this->encodeInfo($info));
                     if (curl_errno($handler) > 0) {
                         $spend = \Debug\Timer::stop('core');
-                        \Util\RequestLogger::getInstance()->addLog($info['url'], $this->queries[$this->queryIndex[$handler]]['query']['data'], $info['total_time'], 'multi(' . count($this->queries[$this->queryIndex[$handler]]['resources']) . ' try(s)): ' . 'unknown');
+                        \Util\RequestLogger::getInstance()->addLog($info['url'], $this->queries[$this->queryIndex[(int)$handler]]['query']['data'], $info['total_time'], 'multi(' . count($this->queries[$this->queryIndex[(int)$handler]]['resources']) . ' try(s)): ' . 'unknown');
                         throw new \RuntimeException(curl_error($handler), curl_errno($handler));
                     }
                     $content = curl_multi_getcontent($handler);
                     $header = $this->getHeader($content, true);
 
-                    \Util\RequestLogger::getInstance()->addLog($info['url'], $this->queries[$this->queryIndex[$handler]]['query']['data'], $info['total_time'], 'multi(' . count($this->queries[$this->queryIndex[$handler]]['resources']) . ' try(s)): ' . (isset($header['X-Server-Name']) ? $header['X-Server-Name'] : 'unknown'));
+                    \Util\RequestLogger::getInstance()->addLog($info['url'], $this->queries[$this->queryIndex[(int)$handler]]['query']['data'], $info['total_time'], 'multi(' . count($this->queries[$this->queryIndex[(int)$handler]]['resources']) . ' try(s)): ' . (isset($header['X-Server-Name']) ? $header['X-Server-Name'] : 'unknown'));
 
-                    unset($this->queries[$this->queryIndex[$handler]]);
+                    unset($this->queries[$this->queryIndex[(int)$handler]]);
 
                     if ($info['http_code'] >= 300) {
                         $spend = \Debug\Timer::stop('core');
