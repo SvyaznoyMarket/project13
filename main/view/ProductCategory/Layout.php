@@ -80,7 +80,12 @@ class Layout extends \View\DefaultLayout {
                 $page->setKeywords($category->getName() . ' магазин продажа доставка ' . $regionName . ' enter.ru');
             }
 
-            $this->applySeoPattern($page);
+            try {
+                $this->applySeoPattern($page);
+            } catch (\Exception $e) {
+                \App::exception()->remove($e);
+                \App::logger()->error($e);
+            }
         }
 
         $this->setTitle($page->getTitle());
@@ -112,7 +117,23 @@ class Layout extends \View\DefaultLayout {
             $seoTemplate = $dataStore->query(sprintf('seo/%s.json', trim($iCategory->getLink(), '/')));
             if ((bool)$seoTemplate) break;
         }
+        if (!$seoTemplate) return;
 
-        $dataStore = \App::dataStoreClient();
+        $patterns = [
+            'категория' => $dataStore->query(sprintf('inflect/product-category/%s.json', $category->getId())),
+            'город'     => $dataStore->query(sprintf('inflect/region/%s.json', \App::user()->getRegion()->getId())),
+            'сайт'      => $dataStore->query('inflect/сайт.json'),
+        ];
+
+        $replacer = new \Util\InflectReplacer($patterns);
+        if ($value = $replacer->get($seoTemplate['title'])) {
+            $page->setTitle($value);
+        }
+        if ($value = $replacer->get($seoTemplate['description'])) {
+            $page->setDescription($value);
+        }
+        if ($value = $replacer->get($seoTemplate['keywords'])) {
+            $page->setKeywords($value);
+        }
     }
 }

@@ -24,26 +24,37 @@ class InflectReplacer {
      * @throws \Exception
      */
     public function get($value) {
-        foreach ($this->patterns as $pattern => $replace) {
+        foreach ($this->patterns as $pattern => $replaces) {
+            if (!is_array($replaces)) {
+                throw new \Exception(sprintf('Неверный шаблон %s', json_encode($replaces, JSON_UNESCAPED_UNICODE)));
+            }
+
             $matches = [];
-            if (preg_match('/{' . $pattern . '\|([а-я]+)}/ui', $value, $matches)) {
-                $match = !empty($matches[0]) ? $matches[0] : null;
-                $case = !empty($matches[1]) ? $matches[1] : null;
-                if (!$case) {
-                    throw new \Exception(sprintf('Не получено название падежа для %s', $match));
-                }
+            if (preg_match_all('/{' . $pattern . '\|([а-я]+)}/ui', $value, $matches)) {
+                foreach ($matches[0] as $i => $match) {
+                    $case = !empty($matches[1][$i]) ? $matches[1][$i] : null;
 
-                if (!isset($this->caseIndexes[$case])) {
-                    throw new \Exception(sprintf('Неправильное обозначение падежа %s', $case));
-                }
-                $caseIndex = $this->caseIndexes[$case];
-                if (empty($this->patterns[$pattern][$caseIndex])) {
-                    \App::logger()->error(sprintf('Не найден падеж %s для %s', $case, $pattern));
-                    $caseIndex = 0;
-                }
-                $replace = $replace[$caseIndex];
+                    if (!$case) {
+                        throw new \Exception(sprintf('Не получено название падежа для %s', $match));
+                    }
+                    if (!isset($this->caseIndexes[$case])) {
+                        throw new \Exception(sprintf('Неправильное обозначение падежа %s', $case));
+                    }
 
-                $value = str_replace($match, $replace, $value);
+                    $caseIndex = $this->caseIndexes[$case];
+                    if (empty($this->patterns[$pattern][$caseIndex])) {
+                        \App::logger()->error(sprintf('Не найден падеж %s для %s', $case, $pattern));
+                        $caseIndex = 0;
+                    }
+
+                    if (empty($replaces[$caseIndex])) {
+                        $replace = reset($replaces);
+                    } else {
+                        $replace = $replaces[$caseIndex];
+                    }
+
+                    $value = str_replace($match, $replace, $value);
+                }
             }
         }
 
