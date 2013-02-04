@@ -128,6 +128,7 @@ class Action {
 
         $productIds = array();
         foreach ($data as $item) {
+            if (!isset($item['order']['product'])) continue;
             foreach ($item['order']['product'] as $product) {
                 $productIds[] = $product['id'];
             }
