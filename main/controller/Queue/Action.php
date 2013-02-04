@@ -135,6 +135,7 @@ class Action {
 
         $productIds = [];
         foreach ($data as $item) {
+            if (!isset($item['order']['product'])) continue;
             foreach ($item['order']['product'] as $product) {
                 $productIds[] = $product['id'];
             }
@@ -150,6 +151,7 @@ class Action {
 
         try {
             foreach ($data as $item) {
+                if (!isset($item['order']['product'])) continue;
                 foreach ($item['order']['product'] as $product) {
 
                     $params = array(

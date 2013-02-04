@@ -47,7 +47,7 @@
             <div class="fl">
                 <h2 class="bPromoCategory_eTitle">Подарки к весенним праздникам</h2>
                 <a class="bPromoCategory_eLink" href="/catalog/jewel/ukrasheniya-ko-dnyu-vlyublennih-2826/?from=enter_internal_promo_season">Украшения ко Дню влюбленных</a>
-                <p class="bPromoCategory_eLink"><a href="/catalog/jewel/koltsa-966/?from=enter_internal_promo_season">Кольца</a>, <a href="/catalog/jewel/sergi-1004/?from=enter_internal_promo_season">серьги</a>, <a href="/catalog/jewel/tsepochki-i-brasleti-1022/?from=enter_internal_promo_season">цепочки и браслеты</a></p>
+                <p class="bPromoCategory_eLink"><a href="/catalog/jewel/koltsa-966/?from=enter_internal_promo_season">Кольца</a>, <a href="/catalog/jewel/sergi-1004/?from=enter_internal_promo_season">серьги</a>, <a href="/catalog/jewel/tsepochki-i-brasleti-tsepochki-/?from=enter_internal_promo_season">цепочки</a> и <a href="/catalog/jewel/tsepochki-i-brasleti-brasleti-/?from=enter_internal_promo_season">браслеты</a></p>
                 <a class="bPromoCategory_eLink" href="/catalog/jewel/pandora-1320/?from=enter_internal_promo_season">Украшения Pandora</a>
             </div>
         </div>
