@@ -42,7 +42,8 @@ class Client {
             $spend = \Debug\Timer::stop('data-store');
             \App::logger()->info('End data-store request ' . $file . ' in ' . $spend);
         } catch (\Exception $e) {
-            $spend = \Debug\Timer::stop('content');
+            $spend = \Debug\Timer::stop('data-store');
+            \App::exception()->remove($e);
             \App::logger()->info('Fail data-store request ' . $file . ' in ' . $spend . ' with ' . $e);
         }
 

@@ -83,7 +83,6 @@ class Layout extends \View\DefaultLayout {
             try {
                 $this->applySeoPattern($page);
             } catch (\Exception $e) {
-                \App::exception()->remove($e);
                 \App::logger()->error($e);
             }
         }
