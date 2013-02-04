@@ -37,7 +37,7 @@ class Repository {
                 'slug'        => $token,
                 'geo_id'      => $region ? $region->getId() : \App::user()->getRegion()->getId(),
             ), array(), function($data) use(&$entity) {
-            $data = reset($response);
+            $data = reset($data);
             $entity = $data ? new Entity($data) : null;
         });
 
