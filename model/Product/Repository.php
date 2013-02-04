@@ -41,7 +41,7 @@ class Repository {
             $entity = $data ? new Entity($data) : null;
         });
 
-        $client->execute(\App::config()->coreV2['reteryTimeout']['short']);
+        $client->execute(\App::config()->coreV2['retryTimeout']['short']);
 
         return $entity;
     }
