@@ -84,13 +84,20 @@ class Repository {
     public function getEntityById($id, \Model\Region\Entity $region = null) {
         \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
-        $response = $this->client->query('product/get', array(
-            'id'     => $id,
-            'geo_id' => $region ? $region->getId() : \App::user()->getRegion()->getId(),
-        ));
-        $data = reset($response);
+        $client = clone $this->client;
 
-        return $data ? new Entity($data) : null;
+        $entity = null;
+        $client->addQuery('product/get', array(
+            'id'     => $id,
+            'geo_id'      => $region ? $region->getId() : \App::user()->getRegion()->getId(),
+        ), array(), function($data) use(&$entity) {
+            $data = reset($data);
+            $entity = $data ? new Entity($data) : null;
+        });
+
+        $client->execute(\App::config()->coreV2['retryTimeout']['short']);
+
+        return $entity;
     }
 
     /**
@@ -212,7 +219,10 @@ class Repository {
     public function countByFilter(array $filter = [], \Model\Region\Entity $region = null) {
         \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
-        $response = $this->client->query('listing/list', array(
+        $client = clone $this->client;
+
+        $count = 0;
+        $client->addQuery('listing/list', array(
             'filter' => array(
                 'filters' => $filter,
                 'sort'    => [],
@@ -220,9 +230,12 @@ class Repository {
                 'limit'   => null,
             ),
             'region_id' => $region ? $region->getId() : \App::user()->getRegion()->getId(),
-        ));
+        ), [], function($data) use(&$count){
+            $count = !empty($data['count']) ? (int)$data['count'] : 0;
+        });
+        $client->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
-        return !empty($response['count']) ? (int)$response['count'] : 0;
+        return $count;
     }
 
     /**
