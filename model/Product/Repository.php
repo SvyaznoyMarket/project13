@@ -32,14 +32,18 @@ class Repository {
         $client = clone $this->client;
 
         $entity = null;
-        $client->addQuery('product/get', array(
+        $client->addQuery('product/get',
+            [
                 'select_type' => 'slug',
                 'slug'        => $token,
                 'geo_id'      => $region ? $region->getId() : \App::user()->getRegion()->getId(),
-            ), array(), function($data) use(&$entity) {
-            $data = reset($data);
-            $entity = $data ? new Entity($data) : null;
-        });
+            ],
+            [],
+            function($data) use(&$entity) {
+                $data = reset($data);
+                $entity = $data ? new Entity($data) : null;
+            }
+        );
 
         $client->execute(\App::config()->coreV2['retryTimeout']['short']);
 
@@ -87,13 +91,17 @@ class Repository {
         $client = clone $this->client;
 
         $entity = null;
-        $client->addQuery('product/get', array(
-            'id'     => $id,
-            'geo_id'      => $region ? $region->getId() : \App::user()->getRegion()->getId(),
-        ), array(), function($data) use(&$entity) {
-            $data = reset($data);
-            $entity = $data ? new Entity($data) : null;
-        });
+        $client->addQuery('product/get',
+            [
+                'id'     => $id,
+                'geo_id' => $region ? $region->getId() : \App::user()->getRegion()->getId(),
+            ],
+            [],
+            function($data) use(&$entity) {
+                $data = reset($data);
+                $entity = $data ? new Entity($data) : null;
+            }
+        );
 
         $client->execute(\App::config()->coreV2['retryTimeout']['short']);
 

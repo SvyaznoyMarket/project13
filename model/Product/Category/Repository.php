@@ -29,13 +29,25 @@ class Repository {
     public function getEntityByToken($token) {
         \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
-        $data = $this->client->query('category/get', array(
-            'slug'   => array($token),
-            'geo_id' => \App::user()->getRegion()->getId(),
-        ));
-        $data = (bool)$data ? reset($data) : null;
+        $client = clone $this->client;
+        $entityClass = $this->entityClass;
 
-        return $data ? new $this->entityClass($data) : null;
+        $entity = null;
+        $client->addQuery('category/get',
+            [
+                'slug'   => [$token],
+                'geo_id' => \App::user()->getRegion()->getId(),
+            ],
+            [],
+            function ($data) use (&$entity, $entityClass) {
+                $data = reset($data);
+                $entity = $data ? new $entityClass($data) : null;
+            }
+        );
+
+        $client->execute(\App::config()->coreV2['retryTimeout']['default']);
+
+        return $entity;
     }
 
     /**
@@ -46,9 +58,9 @@ class Repository {
     public function prepareEntityByToken($token, \Model\Region\Entity $region = null, $callback) {
         \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
-        $params = array(
-            'slug' => array($token),
-        );
+        $params = [
+            'slug' => [$token],
+        ];
         if ($region instanceof \Model\Region\Entity) {
             $params['geo_id'] = $region->getId();
         }
@@ -63,13 +75,25 @@ class Repository {
     public function getEntityById($id) {
         \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
-        $data = $this->client->query('category/get', array(
-            'id'     => array($id),
-            'geo_id' => \App::user()->getRegion()->getId(),
-        ));
-        $data = (bool)$data ? reset($data) : null;
+        $client = clone $this->client;
+        $entityClass = $this->entityClass;
 
-        return $data ? new $this->entityClass($data) : null;
+        $entity = null;
+        $client->addQuery('category/get',
+            [
+                'id'     => [$id],
+                'geo_id' => \App::user()->getRegion()->getId(),
+            ],
+            [],
+            function ($data) use (&$entity, $entityClass) {
+                $data = reset($data);
+                $entity = $data ? new $entityClass($data) : null;
+            }
+        );
+
+        $client->execute(\App::config()->coreV2['retryTimeout']['default']);
+
+        return $entity;
     }
 
     /**
@@ -79,15 +103,24 @@ class Repository {
     public function getCollectionById(array $ids) {
         \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
-        $data = $this->client->query('category/get', array(
-            'id'    => $ids,
-            'geo_id' => \App::user()->getRegion()->getId(),
-        ));
+        $client = clone $this->client;
+        $entityClass = $this->entityClass;
 
         $collection = [];
-        foreach($data as $item){
-            $collection[] = new $this->entityClass($item);
-        }
+        $client->addQuery('category/get',
+            [
+                'id'    => $ids,
+                'geo_id' => \App::user()->getRegion()->getId(),
+            ],
+            [],
+            function ($data) use (&$collection, $entityClass) {
+                foreach ($data as $item) {
+                    $collection[] = new $entityClass($item);
+                }
+            }
+        );
+
+        $client->execute(\App::config()->coreV2['retryTimeout']['default']);
 
         return $collection;
     }
@@ -103,9 +136,9 @@ class Repository {
 
         if (!(bool)$ids) return;
 
-        $params = array(
+        $params = [
             'id' => $ids,
-        );
+        ];
         if ($region instanceof \Model\Region\Entity) {
             $params['geo_id'] = $region->getId();
         }
@@ -118,16 +151,25 @@ class Repository {
     public function getRootCollection() {
         \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
-        // TODO: добавить регион
-        $data = $this->client->query('category/tree', array(
-            'max_level'       => 1,
-            'is_load_parents' => false,
-        ));
+        $client = clone $this->client;
+        $entityClass = $this->entityClass;
 
+        // TODO: добавить регион
         $collection = [];
-        foreach($data as $item){
-            $collection[] = new $this->entityClass($item);
-        }
+        $client->addQuery('category/tree',
+            [
+                'max_level'       => 1,
+                'is_load_parents' => false,
+            ],
+            [],
+            function ($data) use (&$collection, $entityClass) {
+                foreach ($data as $item) {
+                    $collection[] = new $entityClass($item);
+                }
+            }
+        );
+
+        $client->execute(\App::config()->coreV2['retryTimeout']['default']);
 
         return $collection;
     }
@@ -139,10 +181,10 @@ class Repository {
     public function prepareRootCollection(\Model\Region\Entity $region = null, $callback) {
         \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
-        $params = array(
+        $params = [
             'max_level'       => 1,
             'is_load_parents' => false,
-        );
+        ];
         if ($region instanceof \Model\Region\Entity) {
             $params['region_id'] = $region->getId();
         }
@@ -158,21 +200,27 @@ class Repository {
     public function getTreeCollection(\Model\Region\Entity $region = null, $maxLevel = null) {
         \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
-        $params = array(
+        $client = clone $this->client;
+        $entityClass = $this->entityClass;
+
+        $params = [
             'is_load_parents' => false,
-        );
+        ];
         if (null !== $maxLevel) {
             $params['max_level'] = $maxLevel;
         }
         if ($region instanceof \Model\Region\Entity) {
             $params['region_id'] = $region->getId();
         }
-        $data = $this->client->query('category/tree', $params);
 
         $collection = [];
-        foreach($data as $item){
-            $collection[] = new $this->entityClass($item);
-        }
+        $client->addQuery('category/tree', $params, [], function ($data) use (&$collection, $entityClass) {
+            foreach ($data as $item) {
+                $collection[] = new $entityClass($item);
+            }
+        });
+
+        $client->execute(\App::config()->coreV2['retryTimeout']['default']);
 
         return $collection;
     }
@@ -182,11 +230,11 @@ class Repository {
      * @param \Model\Region\Entity $region
      */
     public function prepareEntityBranch(Entity $category, \Model\Region\Entity $region = null) {
-        $params = array(
+        $params = [
             'root_id'         => $category->getHasChild() ? $category->getId() : $category->getParentId(),
             'max_level'       => 5,
             'is_load_parents' => true,
-        );
+        ];
         if ($region) {
             $params['region_id'] = $region->getId();
         }

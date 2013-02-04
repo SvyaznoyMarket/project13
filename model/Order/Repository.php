@@ -20,9 +20,17 @@ class Repository {
     public function countByUserToken($userToken) {
         \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
-        $data = $this->client->query('order/get', array('token' => $userToken));
+        $client = clone $this->client;
 
-        return (bool)$data ? count($data) : 0;
+        $entity = null;
+        $client->addQuery('order/get', ['token' => $userToken], [], function ($data) use (&$entity) {
+            $data = reset($data);
+            $entity = $data ? new Entity($data) : null;
+        });
+
+        $client->execute(\App::config()->coreV2['retryTimeout']['default']);
+
+        return $entity;
     }
 
     /**
@@ -32,12 +40,16 @@ class Repository {
     public function getCollectionByUserToken($userToken) {
         \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
-        $data = $this->client->query('order/get', array('token' => $userToken));
+        $client = clone $this->client;
 
         $collection = [];
-        foreach ($data as $item) {
-            $collection[] = new Entity($item);
-        }
+        $client->addQuery('order/get', ['token' => $userToken], [], function ($data) use (&$collection) {
+            foreach ($data as $item) {
+                $collection[] = new Entity($item);
+            }
+        });
+
+        $client->execute(\App::config()->coreV2['retryTimeout']['default']);
 
         return $collection;
     }
@@ -50,7 +62,7 @@ class Repository {
     public function prepareCollectionByUserToken($userToken, $callback) {
         \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
-        $this->client->addQuery('order/get', array('token' => $userToken), [], $callback);
+        $this->client->addQuery('order/get', ['token' => $userToken], [], $callback);
     }
 
     /**
@@ -61,9 +73,16 @@ class Repository {
     public function getEntityByNumberAndPhone($number, $phone) {
         \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
-        $data = $this->client->query('order/get-by-mobile', array('number' => $number, 'mobile' => $phone));
-        $data = reset($data);
+        $client = clone $this->client;
 
-        return $data ? new Entity($data) : null;
+        $entity = null;
+        $client->addQuery('order/get-by-mobile', ['number' => $number, 'mobile' => $phone], [], function ($data) use (&$entity) {
+            $data = reset($data);
+            $entity = $data ? new Entity($data) : null;
+        });
+
+        $client->execute(\App::config()->coreV2['retryTimeout']['default']);
+
+        return $entity;
     }
 }

@@ -20,14 +20,22 @@ class Repository {
     public function getCollection(\Model\Region\Entity $region = null) {
         \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
-        $data = $this->client->query('payment-method/get', array(
-            'geo_id' => $region ? $region->getId() : \App::user()->getRegion()->getId(),
-        ));
+        $client = clone $this->client;
 
         $collection = [];
-        foreach ($data as $item) {
-            $collection[] = new Entity($item);
-        }
+        $client->addQuery('payment-method/get',
+            [
+                'geo_id' => $region ? $region->getId() : \App::user()->getRegion()->getId(),
+            ],
+            [],
+            function ($data) use (&$collection) {
+                foreach ($data as $item) {
+                    $collection[] = new Entity($item);
+                }
+            }
+        );
+
+        $client->execute(\App::config()->coreV2['retryTimeout']['default']);
 
         return $collection;
     }
@@ -40,13 +48,24 @@ class Repository {
     public function getEntityById($id, \Model\Region\Entity $region = null) {
         \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
-        $data = $this->client->query('payment-method/get', array(
-            'id'     => array($id),
-            'geo_id' => $region ? $region->getId() : \App::user()->getRegion()->getId(),
-        ));
-        $data = reset($data);
+        $client = clone $this->client;
 
-        return $data ? new Entity($data) : null;
+        $entity = null;
+        $client->addQuery('payment-method/get',
+            [
+                'id'     => [$id],
+                'geo_id' => $region ? $region->getId() : \App::user()->getRegion()->getId(),
+            ],
+            [],
+            function ($data) use (&$entity) {
+                $data = reset($data);
+                $entity = $data ? new Entity($data) : null;
+            }
+        );
+
+        $client->execute(\App::config()->coreV2['retryTimeout']['default']);
+
+        return $entity;
     }
 
     /**

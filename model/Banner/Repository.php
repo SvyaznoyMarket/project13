@@ -20,16 +20,21 @@ class Repository {
     public function getCollection(\Model\Region\Entity $region = null) {
         \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args()));
 
+        $client = clone $this->client;
+
         $params = [];
         if ($region) {
             $params['geo_id'] = $region->getId();
         }
-        $data = $this->client->query('promo/get');
 
         $collection = [];
-        foreach ($data as $item) {
-            $collection[] = new Entity($item);
-        }
+        $client->addQuery('promo/get', [], [], function ($data) use (&$collection) {
+            foreach ($data as $item) {
+                $collection[] = new Entity($item);
+            }
+        });
+
+        $client->execute(\App::config()->coreV2['retryTimeout']['default']);
 
         return $collection;
     }
