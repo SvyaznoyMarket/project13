@@ -30,17 +30,17 @@ class IndexAction {
 
             foreach ($data as $i => $item) {
                 $bannerId = isset($item['id']) ? (int)$item['id'] : null;
-                $item = array(
+                $item = [
                     'id'    => $bannerId,
                     'name'  => isset($item['name']) ? (string)$item['name'] : null,
                     'url'   => isset($item['url']) ? (string)$item['url'] : null,
                     'image' => isset($item['media_image']) ? (string)$item['media_image'] : null,
                     'item'  => isset($item['item_list']) ? (array)$item['item_list'] : [],
-                );
+                ];
 
                 if (empty($item['image'])) continue;
 
-                $bannerData[] = array(
+                $bannerData[] = [
                     'id'    => $bannerId,
                     'alt'   => $item['name'],
                     'imgs'  => $item['image'] ? ($urls[0] . $item['image']) : null,
@@ -48,7 +48,7 @@ class IndexAction {
                     'url'   => $item['url'],
                     't'     => $i > 0 ? $timeout : $timeout + 4000,
                     'ga'    => $bannerId . ' - ' . $item['name'],
-                );
+                ];
 
                 $itemsByBanner[$bannerId] = [];
                 foreach ($item['item'] as $itemData) {
@@ -142,12 +142,12 @@ class IndexAction {
                     if (1 == count($products)) {
                         /** @var $product \Model\Product\Entity */
                         $product = reset($products);
-                        $url = $router->generate('product', array('productPath' => $product->getPath()));
+                        $url = $router->generate('product', ['productPath' => $product->getPath()]);
                     } else {
                         $barcodes = array_map(function ($product) { /** @var $product \Model\Product\Entity */ return $product->getBarcode(); }, $products);
-                        $url = $router->generate('product.set', array(
+                        $url = $router->generate('product.set', [
                             'productBarcodes' => implode(',', $barcodes),
-                        ));
+                        ]);
                     }
                 } else if ($bannerItem->getServiceId()) {
                     \App::logger()->error('Услуги для баннера еще не реализованы');
@@ -158,7 +158,7 @@ class IndexAction {
                         continue;
                     }
 
-                    $url = $router->generate('product.category', array('categoryPath' => $category->getPath()));
+                    $url = $router->generate('product.category', ['categoryPath' => $category->getPath()]);
                 }
             }
 
@@ -176,10 +176,10 @@ class IndexAction {
         $page = new \View\Main\IndexPage();
         $page->setParam('bannerData', $bannerData);
         $page->setParam('rootCategories', $rootCategories);
-        $page->setParam('myThingsData', array(
+        $page->setParam('myThingsData', [
             'EventType' => 'MyThings.Event.Visit',
-            'Action' => '200'
-        ));
+            'Action'    => '200'
+        ]);
 
         return new \Http\Response($page->show());
     }

@@ -59,22 +59,22 @@ class WarrantyAction {
             $cart->setWarranty($warranty, $quantity, $productId);
 
             return $request->isXmlHttpRequest()
-                ? new \Http\JsonResponse(array(
+                ? new \Http\JsonResponse([
                     'success' => true,
-                    'data'    => array(
+                    'data'    => [
                         'quantity'      => $quantity,
                         'full_quantity' => $cart->getProductsQuantity() + $cart->getServicesQuantity() +$cart->getWarrantiesQuantity(),
                         'full_price'    => $cart->getTotalPrice(),
                         'link'          => \App::router()->generate('order.create'),
-                    ),
-                ))
+                    ],
+                ])
                 : new \Http\RedirectResponse($request->headers->get('referer') ?: \App::router()->generate('homepage'));
         } catch (\Exception $e) {
             return $request->isXmlHttpRequest()
-                ? new \Http\JsonResponse(array(
+                ? new \Http\JsonResponse([
                     'success' => false,
-                    'data'    => array('error' => 'Не удалось добавить гарантию в корзину', 'debug' => $e->getMessage()),
-                ))
+                    'data'    => ['error' => 'Не удалось добавить гарантию в корзину', 'debug' => $e->getMessage()],
+                ])
                 : new \Http\RedirectResponse($request->headers->get('referer') ?: \App::router()->generate('homepage'));
         }
     }
