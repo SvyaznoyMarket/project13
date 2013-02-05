@@ -19,8 +19,6 @@ $c->coreV2['retryTimeout'] = [
     'forever' => 0,
 ];
 
-$c->dataStore['url'] = 'http://core.ent3.ru/';
-
 $c->mobileHost = 'm.ent3.ru';
 
 $c->smartEngine['pull'] = true;

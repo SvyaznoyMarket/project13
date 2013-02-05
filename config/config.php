@@ -41,7 +41,7 @@ $c->coreV2['retryCount'] = 3;
 
 $c->wordpress['url'] = 'http://content.ent3.ru/';
 
-$c->dataStore['url'] = 'http://core.ent3.ru/';
+$c->dataStore['url'] = 'http://www.enter.ru/';
 
 $c->company['phone'] = '8 (800) 700-00-09';
 $c->company['icq'] = '648198963';
