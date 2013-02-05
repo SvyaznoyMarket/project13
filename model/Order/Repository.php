@@ -22,15 +22,14 @@ class Repository {
 
         $client = clone $this->client;
 
-        $entity = null;
-        $client->addQuery('order/get', ['token' => $userToken], [], function ($data) use (&$entity) {
-            $data = reset($data);
-            $entity = $data ? new Entity($data) : null;
+        $count = null;
+        $client->addQuery('order/get', ['token' => $userToken], [], function ($data) use (&$count) {
+            $count = (bool)$data ? count($data) : 0;
         });
 
         $client->execute(\App::config()->coreV2['retryTimeout']['default']);
 
-        return $entity;
+        return $count;
     }
 
     /**

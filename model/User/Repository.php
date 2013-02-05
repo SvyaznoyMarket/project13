@@ -24,8 +24,7 @@ class Repository {
 
         $entity = null;
         $client->addQuery('user/get', ['token' => $token], [], function ($data) use (&$entity) {
-            $data = reset($data);
-            $entity = $data ? new Entity($data) : null;
+            $entity = (bool)$data ? new Entity($data) : null;
         });
 
         $client->execute(\App::config()->coreV2['retryTimeout']['default']);
