@@ -81,7 +81,7 @@ class IndexAction {
             $repository->setEntityImageLink($image, $router, $productsById, $categoriesById, $servicesById);
 
             $slideData[] = [
-                'imgUrl'  => $image->getUrl(),
+                'imgUrl'  => \App::config()->dataStore['url'] . 'promo/' . $promo->getToken() . '/' . trim($image->getUrl(), '/'),
                 'title'   => $image->getName(),
                 'linkUrl' => $image->getLink(),
             ];
