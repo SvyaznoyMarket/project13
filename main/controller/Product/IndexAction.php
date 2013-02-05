@@ -152,7 +152,11 @@ class IndexAction {
             }
         }
 
-        $productVideos = \RepositoryManager::productVideo()->getCollectionByProduct($product);
+        try {
+            $productVideos = \RepositoryManager::productVideo()->getCollectionByProduct($product);
+        } catch (\Exception $e) {
+            \App::logger($e);
+        }
 
         $page = new \View\Product\IndexPage();
         $page->setParam('regionsToSelect', $regionsToSelect);
