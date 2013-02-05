@@ -155,7 +155,7 @@ class IndexAction {
         try {
             $productVideos = \RepositoryManager::productVideo()->getCollectionByProduct($product);
         } catch (\Exception $e) {
-            \App::logger($e);
+            \App::logger()->error($e);
         }
 
         $page = new \View\Product\IndexPage();

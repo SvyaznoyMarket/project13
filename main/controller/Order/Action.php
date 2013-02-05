@@ -249,7 +249,7 @@ class Action {
                     // очистка кеша
                     $user->setCacheCookie($response);
                 } catch (\Exception $e) {
-                    \App::logger($e);
+                    \App::logger()->error($e);
                 }
             } catch (\Exception $e) {
                 $errors = [];
