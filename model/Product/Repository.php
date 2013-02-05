@@ -184,21 +184,33 @@ class Repository {
 
         $client = clone $this->client;
 
+        $chunckedIds = array_chunk($ids, 50);
+
         $collection = [];
         $entityClass = $this->entityClass;
-        $client->addQuery('product/get', [
-            'select_type' => 'id',
-            'id'          => $ids,
-            'geo_id'      => $region ? $region->getId() : \App::user()->getRegion()->getId(),
-        ], [], function($data) use(&$collection, $entityClass) {
-            foreach ($data as $item) {
-                $collection[] = new $entityClass($item);
-            }
-        });
+        foreach ($chunckedIds as $i => $chunk) {
+            $client->addQuery('product/get',
+                [
+                    'select_type' => 'id',
+                    'id'          => $chunk,
+                    'geo_id'      => $region ? $region->getId() : \App::user()->getRegion()->getId(),
+                ],
+                [],
+                function($data) use(&$collection, $entityClass, $i) {
+                    foreach ($data as $item) {
+                        $collection[$i][] = new $entityClass($item);
+                }
+            });
+        }
 
         $client->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
-        return $collection;
+        $result = [];
+        foreach ($collection as $chunk) {
+            $result = array_merge($result, $chunk);
+        }
+
+        return $result;
     }
 
     /**
