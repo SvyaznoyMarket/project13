@@ -15,7 +15,6 @@
     <? endforeach ?>
 
     <p class="bGoodItem_eRating"><?= $product->getRating() ?></p>
-
     <p class="bGoodItem_eShortDesc"><?= $product->getTagline() ?></p>
 
     <p class="bGoodItem_ePrice"><?= $page->helper->formatPrice($product->getPrice()) ?></p>
