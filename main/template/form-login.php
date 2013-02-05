@@ -27,14 +27,14 @@ if (!isset($form)) $form = new \View\User\LoginForm();
         </div>
 
         <div class="pb5">
-            <a id="forgot-pwd-trigger" href="<?= $page->url('user.forgot') ?>" class="fr orange underline" tabindex="2">Забыли пароль?</a>
+            <a id="forgot-pwd-trigger" href="<?= $page->url('user.forgot') ?>" class="fr orange underline">Забыли пароль?</a>
             Пароль:
         </div>
         <div class="pb5">
             <? if ($error = $form->getError('password')) echo $page->render('_formError', array('error' => $error)) ?>
-            <input required="required" type="password" id="signin_password" class="text width315 mb10" name="signin[password]" tabindex="3"/>
+            <input required="required" type="password" id="signin_password" class="text width315 mb10" name="signin[password]" tabindex="2"/>
         </div>
 
-        <input type="submit" class="fr button bigbutton" value="Войти" tabindex="4"/>
+        <input type="submit" class="fr button bigbutton" value="Войти" tabindex="3"/>
     </div>
 </form>
