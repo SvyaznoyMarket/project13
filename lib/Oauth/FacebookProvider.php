@@ -19,11 +19,11 @@ class FacebookProvider implements ProviderInterface {
      * @return string
      */
     public function getLoginUrl() {
-        return 'https://www.facebook.com/dialog/oauth?' . http_build_query(array(
+        return 'https://www.facebook.com/dialog/oauth?' . http_build_query([
             'client_id'     => $this->config->clientId,
             'redirect_uri'  => \App::router()->generate('user.login.external.response', ['providerName' => self::NAME], true),
             'response_type' => 'code',
-        ));
+        ]);
     }
 
     /**
@@ -34,14 +34,14 @@ class FacebookProvider implements ProviderInterface {
         $code = $request->get('code');
 
         if (empty($code)) {
-            \App::logger()->warn(array('provider' => self::NAME, 'request' => $request->query->all()));
+            \App::logger()->warn(['provider' => self::NAME, 'request' => $request->query->all()]);
             return null;
         }
 
         $response = $this->query($this->getAccessTokenUrl($code), [], false);
         parse_str($response, $response);
         if (empty($response['access_token'])) {
-            \App::logger()->warn(array('provider' => self::NAME, 'url' => $this->getAccessTokenUrl($code), 'response' => $response));
+            \App::logger()->warn(['provider' => self::NAME, 'url' => $this->getAccessTokenUrl($code), 'response' => $response]);
             return null;
         }
         $accessToken = $response['access_token'];
@@ -49,7 +49,7 @@ class FacebookProvider implements ProviderInterface {
         $response = $this->query($this->getProfileUrl($accessToken));
         $response = is_array($response) ? $response : [];
         if (empty($response['id']) || empty($response['first_name'])) {
-            \App::logger()->warn(array('provider' => self::NAME, 'url' => $this->getProfileUrl($accessToken), 'response' => $response));
+            \App::logger()->warn(['provider' => self::NAME, 'url' => $this->getProfileUrl($accessToken), 'response' => $response]);
             return null;
         }
 
@@ -76,9 +76,9 @@ class FacebookProvider implements ProviderInterface {
      * @return string
      */
     private function getProfileUrl($accessToken) {
-        return 'https://graph.facebook.com/me?' . http_build_query(array(
+        return 'https://graph.facebook.com/me?' . http_build_query([
             'access_token' => $accessToken,
-        ));
+        ]);
     }
 
     /**
@@ -99,7 +99,7 @@ class FacebookProvider implements ProviderInterface {
                 // TODO: json_last_error()
 
                 if (!$response || !empty($response['error']['code'])) {
-                    \App::logger()->warn(array('provider' => self::NAME, 'url' => $url, 'data' => $data, 'response' => $response));
+                    \App::logger()->warn(['provider' => self::NAME, 'url' => $url, 'data' => $data, 'response' => $response]);
                     throw new \Exception($response['error']['code'] . (isset($response['error']['message']) ? (': ' . $response['error']['message']) : ''));
                 }
             }

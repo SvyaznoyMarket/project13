@@ -208,7 +208,7 @@ class ParameterBag implements \IteratorAggregate, \Countable {
      */
     public function getDigits($key, $default = '', $deep = false) {
         // we need to remove - and + because they're allowed in the filter
-        return str_replace(array('-', '+'), '', $this->filter($key, $default, $deep, FILTER_SANITIZE_NUMBER_INT));
+        return str_replace(['-', '+'], '', $this->filter($key, $default, $deep, FILTER_SANITIZE_NUMBER_INT));
     }
 
     /**
@@ -244,7 +244,7 @@ class ParameterBag implements \IteratorAggregate, \Countable {
 
         // Always turn $options into an array - this allows filter_var option shortcuts.
         if (!is_array($options) && $options) {
-            $options = array('flags' => $options);
+            $options = ['flags' => $options];
         }
 
         // Add a convenience check for arrays.

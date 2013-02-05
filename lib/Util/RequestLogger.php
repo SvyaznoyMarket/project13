@@ -79,7 +79,7 @@ class RequestLogger {
      * @param $host
      */
     public function addLog($url, $postData, $time, $host) {
-        $this->request[] = ['time' => $time, 'host' => $host, 'url' => str_replace(array("\r", "\n"), '', $url), 'post' => $postData];
+        $this->request[] = ['time' => $time, 'host' => $host, 'url' => str_replace(["\r", "\n"], '', $url), 'post' => $postData];
     }
 
     public function getStatistics() {

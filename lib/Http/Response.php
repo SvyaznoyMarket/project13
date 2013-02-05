@@ -49,7 +49,7 @@ class Response {
      *
      * @var array
      */
-    public static $statusTexts = array(
+    public static $statusTexts = [
         100 => 'Continue',
         101 => 'Switching Protocols',
         102 => 'Processing', // RFC2518
@@ -110,7 +110,7 @@ class Response {
         508 => 'Loop Detected', // RFC5842
         510 => 'Not Extended', // RFC2774
         511 => 'Network Authentication Required', // RFC6585
-    );
+    ];
 
     /**
      * @param string  $content The response content
@@ -188,7 +188,7 @@ class Response {
     public function prepare(Request $request) {
         $headers = $this->headers;
 
-        if ($this->isInformational() || in_array($this->statusCode, array(204, 304))) {
+        if ($this->isInformational() || in_array($this->statusCode, [204, 304])) {
             $this->setContent(null);
         }
 
@@ -306,7 +306,7 @@ class Response {
      * @api
      */
     public function setContent($content) {
-        if (null !== $content && !is_string($content) && !is_numeric($content) && !is_callable(array($content, '__toString'))) {
+        if (null !== $content && !is_string($content) && !is_numeric($content) && !is_callable([$content, '__toString'])) {
             throw new \UnexpectedValueException('The Response content must be a string or object implementing __toString(), "' . gettype($content) . '" given.');
         }
 
@@ -441,7 +441,7 @@ class Response {
      * @api
      */
     public function isCacheable() {
-        if (!in_array($this->statusCode, array(200, 203, 300, 301, 302, 404, 410))) {
+        if (!in_array($this->statusCode, [200, 203, 300, 301, 302, 404, 410])) {
             return false;
         }
 
@@ -816,7 +816,7 @@ class Response {
      * @api
      */
     public function setCache(array $options) {
-        if ($diff = array_diff(array_keys($options), array('etag', 'last_modified', 'max_age', 's_maxage', 'private', 'public'))) {
+        if ($diff = array_diff(array_keys($options), ['etag', 'last_modified', 'max_age', 's_maxage', 'private', 'public'])) {
             throw new \InvalidArgumentException(sprintf('Response does not support the following options: "%s".', implode('", "', array_values($diff))));
         }
 
@@ -872,7 +872,7 @@ class Response {
         $this->setContent(null);
 
         // remove headers that MUST NOT be included with 304 Not Modified responses
-        foreach (array('Allow', 'Content-Encoding', 'Content-Language', 'Content-Length', 'Content-MD5', 'Content-Type', 'Last-Modified') as $header) {
+        foreach (['Allow', 'Content-Encoding', 'Content-Language', 'Content-Length', 'Content-MD5', 'Content-Type', 'Last-Modified'] as $header) {
             $this->headers->remove($header);
         }
 
@@ -1064,7 +1064,7 @@ class Response {
      * @api
      */
     public function isRedirect($location = null) {
-        return in_array($this->statusCode, array(201, 301, 302, 303, 307, 308)) && (null === $location ? : $location == $this->headers->get('Location'));
+        return in_array($this->statusCode, [201, 301, 302, 303, 307, 308]) && (null === $location ? : $location == $this->headers->get('Location'));
     }
 
     /**
@@ -1075,6 +1075,6 @@ class Response {
      * @api
      */
     public function isEmpty() {
-        return in_array($this->statusCode, array(201, 204, 304));
+        return in_array($this->statusCode, [201, 204, 304]);
     }
 }

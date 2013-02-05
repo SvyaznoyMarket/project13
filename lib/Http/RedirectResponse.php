@@ -43,7 +43,7 @@ class RedirectResponse extends Response {
     </body>
 </html>', htmlspecialchars($url, ENT_QUOTES, 'UTF-8')),
             $status,
-            array_merge($headers, array('Location' => $url))
+            array_merge($headers, ['Location' => $url])
         );
 
         if (!$this->isRedirect()) {

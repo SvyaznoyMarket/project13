@@ -11,7 +11,7 @@ class Client {
 
     public function __construct(array $config,  \Logger\LoggerInterface $logger = null)
     {
-        $this->config = array_merge(array(
+        $this->config = array_merge([
             'api_url'          => null,
             'api_key'          => null,
             'tenantid'         => null,
@@ -19,7 +19,7 @@ class Client {
             'cert'             => null,
             'log_enabled'      => false,
             'log_data_enabled' => false,
-        ), $config);
+        ], $config);
 
         $this->logger = $logger;
     }
@@ -88,10 +88,10 @@ class Client {
 
         $query = $this->config['api_url']
             . str_replace('.', '/', $action)
-            . '?' . http_build_query(array_merge(array(
+            . '?' . http_build_query(array_merge([
             'apikey'   => $this->config['api_key'],
             'tenantid' => $this->config['tenantid'],
-        ), $params))
+        ], $params))
         ;
         \App::logger()->info('Start smartengine ' . $action . ' query: ' . $query);
 
@@ -175,16 +175,11 @@ class Client {
 
     private function encodeInfo($info)
     {
-        return $this->encode(array_intersect_key($info, array_flip(array(
+        return $this->encode(array_intersect_key($info, array_flip([
             'content_type', 'http_code', 'header_size', 'request_size',
             'redirect_count', 'total_time', 'namelookup_time', 'connect_time', 'pretransfer_time', 'size_upload',
             'size_download', 'speed_download',
             'starttransfer_time', 'redirect_time', 'certinfo', 'redirect_url'
-        ))));
+        ])));
     }
-}
-
-
-class SmartengineClientException extends \Exception {
-
 }

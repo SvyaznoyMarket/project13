@@ -50,7 +50,7 @@ class Helper {
      * @return mixed
      */
     public function numberChoice($number, array $choices) {
-        $cases = array (2, 0, 1, 1, 1, 2);
+        $cases = [2, 0, 1, 1, 1, 2];
 
         return $choices[ ($number % 100 > 4 && $number % 100 < 20) ? 2 : $cases[min($number % 10, 5)]];
     }

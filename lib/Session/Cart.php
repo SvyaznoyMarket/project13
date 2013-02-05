@@ -392,11 +392,11 @@ class Cart {
         $return = [];
         foreach($data['warrantyList'] as $warrantyId => $warrantyData) {
             foreach($warrantyData as $productId => $quantity) {
-                $return[] =array(
+                $return[] = [
                     'id'         => $warrantyId,
                     'quantity'   => $quantity,
                     'product_id' => (int)$productId,
-                );
+                ];
             }
         }
 

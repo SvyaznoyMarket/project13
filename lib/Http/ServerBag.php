@@ -17,7 +17,7 @@ class ServerBag extends ParameterBag {
             if (0 === strpos($key, 'HTTP_')) {
                 $headers[substr($key, 5)] = $value;
             } // CONTENT_* are not prefixed with HTTP_
-            elseif (in_array($key, array('CONTENT_LENGTH', 'CONTENT_MD5', 'CONTENT_TYPE'))) {
+            elseif (in_array($key, ['CONTENT_LENGTH', 'CONTENT_MD5', 'CONTENT_TYPE'])) {
                 $headers[$key] = $value;
             }
         }

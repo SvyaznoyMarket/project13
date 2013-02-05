@@ -15,7 +15,7 @@ class MimeTypeExtensionGuesser implements ExtensionGuesserInterface {
      *
      * @var array
      */
-    protected $defaultExtensions = array(
+    protected $defaultExtensions = [
         'application/andrew-inset'                                                  => 'ez',
         'application/applixware'                                                    => 'aw',
         'application/atom+xml'                                                      => 'atom',
@@ -718,7 +718,7 @@ class MimeTypeExtensionGuesser implements ExtensionGuesserInterface {
         'video/x-msvideo'                                                           => 'avi',
         'video/x-sgi-movie'                                                         => 'movie',
         'x-conference/x-cooltalk'                                                   => 'ice',
-    );
+    ];
 
     public function guess($mimeType) {
         return isset($this->defaultExtensions[$mimeType]) ? $this->defaultExtensions[$mimeType] : null;

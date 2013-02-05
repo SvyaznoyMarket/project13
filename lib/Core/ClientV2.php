@@ -18,9 +18,9 @@ class ClientV2 implements ClientInterface
     private $stillExecuting = false;
 
     public function __construct(array $config, \Logger\LoggerInterface $logger = null) {
-        $this->config = array_merge(array(
+        $this->config = array_merge([
             'client_id' => null,
-        ), $config);
+        ], $config);
         $this->logger = $logger;
 
         $this->stillExecuting = false;
@@ -86,16 +86,16 @@ class ClientV2 implements ClientInterface
         /* нужно сохранить исходные данные для retry */
         $hash = md5($action . serialize($params) . serialize($data));
         if (!isset($this->queries[$hash])) {
-            $this->queries[$hash] = array(
-                'resources' => array(
+            $this->queries[$hash] = [
+                'resources' => [
                     $resource,
-                ),
-                'query' => array(
+                ],
+                'query' => [
                     'action' => $action,
                     'params' => $params,
                     'data'   => $data,
-                ),
-            );
+                ],
+            ];
         } else {
             $this->queries[$hash]['resources'][] = $resource;
         }
@@ -377,11 +377,11 @@ class ClientV2 implements ClientInterface
     }
 
     private function encodeInfo($info) {
-        return $this->encode(array_intersect_key($info, array_flip(array(
+        return $this->encode(array_intersect_key($info, array_flip([
             'content_type', 'http_code', 'header_size', 'request_size',
             'redirect_count', 'total_time', 'namelookup_time', 'connect_time', 'pretransfer_time', 'size_upload',
             'size_download', 'speed_download',
             'starttransfer_time', 'redirect_time', 'certinfo', 'redirect_url'
-        ))));
+        ])));
     }
 }
