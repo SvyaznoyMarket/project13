@@ -10,8 +10,8 @@
     <?= $page->slotJavascript() ?>
 </head>
 <body>
-
-    <?= $page->slotContent() ?>
-
+	<div class="bWrap">
+    	<?= $page->slotContent() ?>
+    </div>
 </body>
 </html>

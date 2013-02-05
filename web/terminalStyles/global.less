@@ -1,11 +1,32 @@
 //основной путь всех файлов
 @base-url: "/terminalStyles";
 
+// colors variables
+@import "common/color.less";
+// import fonts
+@import "common/fonts.less";
 
 // css reset & common styles
 @import "common/common.less" all;
 
+// common block & elements
+@import "common/commonBlocks.less" all;
 
-// IMPORTANT: always last import!
-// модификаторы
+// UI styles
+@import "common/ui.less" all;
+
+
+
+//
+// PAGES
+//
+
+// product blocks & elements
+@import "product/product.less" all;
+
+//
+// IMPORTANT: always last import! modificators
+// 
 @import "common/modificators.less" all;
+
+*{color: #FFF;}

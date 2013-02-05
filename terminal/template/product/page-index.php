@@ -6,20 +6,46 @@
  */
 ?>
 
-<article class="bGoodItem">
-    <h1><?= $product->getName() ?></h1>
+<article class="bGoodItem">    
+    
+    <div class="bGoodItemHead mRounded mBlackBlock clearfix">
+        <div class="bGoodImgBlock mRounded mFl mW940">
+            <div class="bPreviewImg">
+                <? foreach ($product->getPhoto() as $photo): ?>
+                    <a class="bPreviewImg_eLink mRounded" href="">
+                        <img class="bPreviewImg_eImage" src="<?= $photo->getUrl(2) ?>" alt="<?= $page->escape($product->getName()) ?>"/>
+                    </a>
+                <? endforeach ?>
+            </div>
+            <div class="bGoodImgBlock_eMainImg">
+                <? if ($product->getLabel()): ?>
+                    <img class="bLabels" src="<?= $product->getLabel()->getImageUrl(1) ?>" alt="<?= $product->getLabel()->getName() ?>" />
+                <? endif ?>
+                <img width="480" src="<?= $product->getImageUrl(3) ?>" alt="<?= $page->escape($product->getName()) ?>"/>
+            </div>
+        </div>
+        
+        <div class="bGoodDescBlock mFr mW600">
+            <div class="clearfix">
+                <p class="mFl">Код товара:<?= $product->getArticle() ?></p>
+                <p class="mFr"><span class="bRating mRate_<?= $product->getRating() ?>"><?= $product->getRating() ?></span></p>
+            </div>
+            <h1 class="bTitle"><?= $product->getName() ?></h1>
+        
+            <div class="bGoodDescBlock_eSubBlock">
+                <p class="bGoodDescBlock_ePrice"><?= $page->helper->formatPrice($product->getPrice()) ?> <span class="bRuble">p</span></p>
+            </div>
 
-    <img class="bGoodItem_eMainImg" src="<?= $product->getImageUrl(3) ?>" alt="<?= $page->escape($product->getName()) ?>"/>
-    <? foreach ($product->getPhoto() as $photo): ?>
-        <img class="bGoodItem_ePreviewImg" src="<?= $photo->getUrl(2) ?>" alt="<?= $page->escape($product->getName()) ?>"/>
-    <? endforeach ?>
+            <div class="clearfix">
+                <a class="bGoodDescBlock_eBayBtn bButton mOrangeBtn mFl" href="#" onclick="terminal.cart.addProduct(<?= $product->getId() ?>)">В корзину</a>
+                <a class="bGoodDescBlock_eCompBtn bButton mGrayBtn mFl" href="#">К сравнению</a>
+            </div>
 
-    <p class="bGoodItem_eRating"><?= $product->getRating() ?></p>
-    <p class="bGoodItem_eShortDesc"><?= $product->getTagline() ?></p>
+            <p class="bGoodDescBlock_eShortDesc"><?= $product->getTagline() ?></p>
+        </div>
+    </div>
 
-    <p class="bGoodItem_ePrice"><?= $page->helper->formatPrice($product->getPrice()) ?></p>
 
-    <p><a class="bGoodItem_eBayBtn" href="#" onclick="terminal.cart.addProduct(<?= $product->getId() ?>)">Купить</a></p>
     <hr/>
     <div class="bGoodSimilar">
         <? foreach ($related as $iProduct): ?>
