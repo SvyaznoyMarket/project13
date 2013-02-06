@@ -489,12 +489,21 @@ class Action {
                             throw new \Exception(sprintf('Не найден товар #%s, который есть в заказе', $orderProduct->getId()));
                         }
 
+                        $shop = $order->getShopId()
+                            ? \RepositoryManager::shop()->getEntityById($order->getShopId())
+                            : null;
+                        if (!$shop) {
+                            $shops = \RepositoryManager::shop()->getCollectionByRegion($user->getRegion());
+                            $shop = reset($shops);
+                        }
+
                         $creditData['vars']['items'][] = array(
                             'name'     => $product->getName(),
                             'quantity' => (string)$orderProduct->getQuantity(),
                             'price'    => $orderProduct->getPrice(),
                             'articul'  => $product->getArticle(),
                             'type'     => \RepositoryManager::creditBank()->getCreditTypeByCategoryToken($product->getMainCategory() ? $product->getMainCategory()->getToken() : null),
+                            'region'   => $shop ? $shop->getId() : null,
                         );
                     }
                 }
