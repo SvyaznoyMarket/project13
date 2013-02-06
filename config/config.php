@@ -69,6 +69,8 @@ $c->mediaHost = [
     9 => 'http://fs10.enter.ru',
 ];
 
+$c->search['itemLimit'] = 1000;
+
 $c->product['itemsPerPage']          = 18;
 $c->product['showAccessories']       = true;
 $c->product['showRelated']           = true;
