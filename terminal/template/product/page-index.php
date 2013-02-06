@@ -48,10 +48,10 @@ $warranties = $product->getWarranty();
 
                 <div class="clearfix mMB80">
                     <a class="bGoodDescBlock_eBayBtn bButton mOrangeBtn mFl" href="#" onclick="terminal.cart.addProduct(<?= $product->getId() ?>)">В корзину</a>
-                    <a class="bGoodDescBlock_eCompBtn bButton mGrayBtn mFl" href="#">К сравнению</a>
+                    <a class="bGoodDescBlock_eCompBtn bButton mGrayBtn mFl" href="#" onclick="terminal.compare.addProduct(<?= $product->getId() ?>)">К сравнению</a>
                 </div>
 
-                <p class="bGoodDescBlock_eShortDesc"><?= $product->getTagline() ?></p>
+                <p class="bGoodDescBlock_eShortDesc"><?= $product->getTagline() ?> <a class="bGoodDescBlock_eMore" href="#">Подробнее...</a></p>
             </div>
         </div>
 
@@ -101,8 +101,6 @@ $warranties = $product->getWarranty();
         </div>
     </div>
 
-    <!-- <p class="bGoodItem_eFullDesc"><?= $product->getDescription() ?></p>-->
-
     <div class="clearfix">
         <div class="bGoodItemSpecifications mW960 mPad15_30 mRounded mBlackBlock mFl">
             <h2 class="bGoodItemSpecifications_eTitle">Характеристики</h2>
@@ -114,6 +112,8 @@ $warranties = $product->getWarranty();
                 <? endforeach ?>
             </div>
             <? endforeach ?>
+            <h2 class="bGoodItemSpecifications_eTitle">Описание</h2>
+            <p class="bGoodItemFullDesc"><?= $product->getDescription() ?></p>
         </div>
         <div class="bGoodItemF1 mW570 mPad15_30 mRounded mBlackBlock mFr">
             <h2 class="bGoodItemF1_eServiceTitle">Выбирайте услуги вместе с этим товаром</h2>
