@@ -1,41 +1,78 @@
 .bRating{
-	&.mRate{
-		&_0{
-
-		}
+	background: url('@{base-url}/common/img/rating_unrated.png') repeat-x 0 0;
+	display: block;
+	height: 15px;
+    width: 55px;
+	.mRate{
 		&_1{
-
+			background: url('@{base-url}/common/img/rating_rated.png') repeat-x 0 0;
+			display: block;
+			height: 15px;
+			width: 11px;
 		}
 		&_2{
-
+			background: url('@{base-url}/common/img/rating_rated.png') repeat-x 0 0;
+			display: block;
+			height: 15px;
+			width: 22px;
 		}
 		&_3{
-
+			background: url('@{base-url}/common/img/rating_rated.png') repeat-x 0 0;
+			display: block;
+			height: 15px;
+			width: 33px;
 		}
 		&_4{
-
+			background: url('@{base-url}/common/img/rating_rated.png') repeat-x 0 0;
+			display: block;
+			height: 15px;
+			width: 44px;
 		}
 		&_5{
-
+			background: url('@{base-url}/common/img/rating_rated.png') repeat-x 0 0;
+			display: block;
+			height: 15px;
+			width: 55px;
 		}
 	}
 }
 .bButton{
 	border-radius: 5px;
 	display: block;
-	font-size: 16px;
-	height: 48px;
-	line-height: 48px;
+	font-weight: bold;
 	text-align: center;
 	text-transform: uppercase;
 	text-decoration: none;
-	width: 166px;
 	&.mGrayBtn{
-		background: #3a3a3a;
-		color: #cbcbcb;
+		background: @gray;
+		color: @lightGray;
+		font-size: 16px;
+		height: 48px;
+		line-height: 48px;
+		width: 166px;
 	}
 	&.mOrangeBtn{
 		background: @firmOrange;
-		color: #3a3a3a;
+		color: @gray;
+		font-size: 16px;
+		height: 48px;
+		line-height: 48px;
+		width: 166px;
+	}
+	&.mSmallGrayBtn{
+		background: @gray;
+		color: @lightGray;
+		font-size: 15px;
+		height: 32px;
+		line-height: 32px;
+		width: 105px;
+	}
+	&.mSmallOrangeBtn{
+		background: @firmOrange;
+		color: @gray;
+		font-size: 15px;
+		height: 32px;
+		line-height: 32px;
+		width: 105px;
 	}
 }

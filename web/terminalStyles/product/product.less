@@ -1,8 +1,10 @@
 .bGoodItemHead{
 	padding: 10px;
+	margin-bottom:20px;
 }
+
 .bGoodImgBlock{
-	background: #FFF;
+	background: @white;
 	position: relative;
 	&_eMainLink{
 	}
@@ -13,13 +15,22 @@
 		position: relative;
 		width: 480px;
 	}
+	&_eEnlarge{
+		background: url('@{base-url}/product/img/enlarge.png') no-repeat center center;
+		bottom:15px;
+		height: 55px;
+		position: absolute;
+		right: 15px;
+		width: 55px;
+	}
 }
+
 .bPreviewImg{
 	position: absolute;
 	left: 15px;
 	bottom: 15px;
 	&_eLink{
-		box-shadow: 0 0 1px 2px #a6a6a6;
+		box-shadow: 0 0 1px 2px @lightShadow;
 		display: block;
 		margin-top: 10px;
 		overflow: hidden;
@@ -29,8 +40,72 @@
 		width: 70px;
 	}
 }
+
+.bGoodSubItems{
+	margin-top: 20px;
+	padding: 0 20px;
+	&_eHeader{
+		display: block;
+		border-bottom: 1px solid @gray;
+	}
+	&_eTitle{
+		color: @lightGray;
+		font-size: 22px;
+		margin-right: 30px;
+		line-height: 1.5em;
+		text-decoration: none;
+	}
+}
+.bGoodSubItem{
+	margin:15px 0;
+	&_eGoods{
+		width: 340px;
+		margin-right: 20px;
+	}
+	&_eGoodsImg{
+		background: @white;
+		box-sizing: border-box;
+		height: 150px;
+		margin-right: 15px;
+		overflow: hidden;
+		padding: 10px;
+		text-align: center;
+		width: 150px;
+	}
+	&_eGoodsInfo{
+		position: relative;
+		height: 150px;
+	}
+	&_eTitle{
+		font-size: 16px;
+		line-height: 1.2em;		
+	}
+	&_eLink{
+		color: @white;
+		text-decoration: none;
+	}
+	&_eRating{
+
+	}
+	&_ePrice{
+		font-size: 20px;
+		line-height: 2em;
+	}
+	&_eMore{
+		position: absolute;
+		bottom: 0;
+		left: 165px;
+	}
+}
+
 .bGoodDescBlock{
-	color:#dcd9e3;
+	.bTitle{
+		margin-top:30px;
+	}
+	&_eArticle{
+		font-size: 16px;
+		line-height: 1.2em;
+	}
 	&_eRating{
 
 	}
@@ -38,17 +113,91 @@
 
 	}
 	&_eSubBlock{
-		background: #222222;
-		margin:30px 0;
+		background: @darkGray;
+		margin:15px 0 30px;
 		padding: 25px 20px;
 	}
 	&_ePrice{
-		font-size: 34px;
+		font-size: 36px;
+		line-height: 1.2em;
+		width: 50%;
+	}
+	&_eDelivery{
+		font-size: 16px;
+		line-height: 1.2em;
+		width: 50%;
 	}
 	&_eBayBtn{
 		margin-right: 15px;
 	}
 	&_eCompBtn{
 
+	}
+}
+
+.bGoodItemSpecifications{
+ 	&_eTitle{
+ 		color: @firmOrange;
+ 		font-size: 22px;
+ 		line-height: 2em;
+ 	}
+}
+
+.bGoodSpecification{
+	border-bottom: 1px solid @gray;
+ 	&_eBlockName{
+ 		font-size: 20px;
+ 		line-height: 1.8em;
+ 	}
+ 	&_eBlockDesc{
+ 		border-top: 1px solid @gray;
+ 		font-size: 16px;
+ 		line-height: 1.7em;
+ 	}
+ 	&_eSpecTitle{
+ 		color: @lightGray;
+		display: block;
+ 		width: 40%;
+ 	}
+ 	&_eSpecValue{
+ 		display: block;
+ 		width: 60%;
+ 	}
+}
+
+.bGoodItemF1{
+	&_eServiceTitle{
+		color: @firmBlue;
+		font-size: 22px;
+	}
+}
+.bGoodServiceItem{
+	font-size: 26px;
+	margin: 25px 0;
+	&_eLogo{
+		background: @firmBlue url('@{base-url}/product/img/F1_shild_big.png') no-repeat center center;
+		height: 150px;
+		margin-right: 25px;
+		width: 150px;
+		&.mWarranty{
+			&_1{
+				background: url('@{base-url}/product/img/f1_black_150.png') no-repeat center center;
+			}
+			&_2{
+				background: url('@{base-url}/product/img/f1_gold_150.png') no-repeat center center;
+			}
+			&_3{
+				background: url('@{base-url}/product/img/f1_platinum_150.png') no-repeat center center;
+			}
+		}
+	}
+	&_eTitle{
+		line-height: 1.2em;
+	}
+	&_ePrice{
+		line-height: 1.5em;
+	}
+	.bButton{
+		margin-right: 15px;
 	}
 }

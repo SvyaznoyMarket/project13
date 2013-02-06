@@ -1,9 +1,12 @@
 .bWrap{
   background: url('@{base-url}/common/img/background.png') 0 0;
+  // background: transparent;
   padding:30px 40px;
 }
 .bTitle{
+	color: @lightGray;
 	font-size: 36px;
+	line-height: 1.2em;
 }
 .bLabels{
 	position: absolute;
@@ -11,4 +14,26 @@
 .bRuble{
 	font-family: 'Rouble';
 	font-size: 0.85em;
+}
+.bSlider{
+	overflow: hidden;
+	position: relative;
+	width: 100%;
+	&_eArrow{
+		display: block;
+		height: 100%;
+		position: absolute;
+		width: 179px;
+		z-index: 10;
+		&.mLeft{
+
+		}
+		&.mRight{
+			background: url('@{base-url}/common/img/card_shadow.png') repeat-y 0 0;
+			right: 0;
+		}
+	}
+	&_eWrap{
+		width: 10000px; // HARCODE
+	}
 }
