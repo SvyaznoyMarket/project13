@@ -8,7 +8,7 @@ class Session implements \Http\SessionInterface {
     public function start() {
         $cookieDefaults = session_get_cookie_params();
 
-        $options = array(
+        $options = [
             'session_name'            => \App::config()->session['name'],
             'session_id'              => null,
             'auto_start'              => true,
@@ -18,7 +18,7 @@ class Session implements \Http\SessionInterface {
             'session_cookie_secure'   => $cookieDefaults['secure'],
             'session_cookie_httponly' => isset($cookieDefaults['httponly']) ? $cookieDefaults['httponly'] : false,
             'session_cache_limiter'   => null,
-        );
+        ];
 
 
         // set session name

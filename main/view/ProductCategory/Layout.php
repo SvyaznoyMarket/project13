@@ -110,6 +110,8 @@ class Layout extends \View\DefaultLayout {
             return;
         }
 
+        $region = \App::user()->getRegion();
+
         $seoTemplate = null;
         foreach (array_reverse(array_merge($category->getAncestor(), [$category])) as $iCategory) {
             /** @var $iCategory \Model\Product\Category\Entity */
@@ -119,8 +121,8 @@ class Layout extends \View\DefaultLayout {
         if (!$seoTemplate) return;
 
         $patterns = [
-            'категория' => $dataStore->query(sprintf('inflect/product-category/%s.json', $category->getId())),
-            'город'     => $dataStore->query(sprintf('inflect/region/%s.json', \App::user()->getRegion()->getId())),
+            'категория' => $dataStore->query(sprintf('inflect/product-category/%s.json', $category->getId())) ?: [$category->getName()],
+            'город'     => $dataStore->query(sprintf('inflect/region/%s.json', $region->getId())) ?: [$region->getName()],
             'сайт'      => $dataStore->query('inflect/сайт.json'),
         ];
 

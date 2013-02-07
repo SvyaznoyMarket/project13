@@ -13,9 +13,9 @@ class Client {
      * @param \Curl\Client $curl
      */
     public function __construct(array $config, \Curl\Client $curl) {
-        $this->config = array_merge(array(
+        $this->config = array_merge([
             'url' => null,
-        ), $config);
+        ], $config);
 
         $this->curl = $curl;
     }

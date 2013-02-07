@@ -19,6 +19,7 @@ $c->coreV2['retryTimeout'] = [
 $c->wordpress['url'] = 'http://content.enter.ru/';
 
 $c->dataStore['url'] = 'http://www.enter.ru/';
+$c->dataStore['timeout'] = 0.25;
 
 $c->analytics['enabled'] = true;
 $c->googleAnalytics['enabled'] = true;
@@ -42,5 +43,7 @@ $c->paymentPsbInvoice['payUrl'] = 'https://retail.payment.ru/invoice.aspx';
 $c->database['host']     = '10.20.33.2';
 
 $c->smartEngine['cert'] = $c->dataDir . '/cert/gsorganizationvalg2.crt';
+
+$c->user['corporateRegister'] = false;
 
 return $c;

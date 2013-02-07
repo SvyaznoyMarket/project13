@@ -71,18 +71,16 @@ class Action {
         }
 
         if ((bool)$request->getQueryString()) {
-            $redirectTo .= '?'.$request->getQueryString();
-        }
-
-        if (!$regionId) {
-            return new \Http\RedirectResponse($redirectTo);
+            $redirectTo .= '?' . $request->getQueryString();
         }
 
         $response = new \Http\RedirectResponse($redirectTo);
 
-        $region = \RepositoryManager::region()->getEntityById($regionId);
+        $region = $regionId ? \RepositoryManager::region()->getEntityById($regionId) : null;
         if ($region) {
             \App::user()->changeRegion($region, $response);
+        } else {
+            \App::logger()->warn(sprintf('Region #%s not found for link %s', $regionId, $redirectTo));
         }
 
         return $response;

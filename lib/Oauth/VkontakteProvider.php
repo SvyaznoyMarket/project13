@@ -35,13 +35,13 @@ class VkontakteProvider implements ProviderInterface {
         $code = $request->get('code');
 
         if (empty($code)) {
-            \App::logger()->warn(array('provider' => self::NAME, 'request' => $request->query->all()));
+            \App::logger()->warn(['provider' => self::NAME, 'request' => $request->query->all()]);
             return null;
         }
 
         $response = $this->query($this->getAccessTokenUrl($code));
         if (empty($response['access_token']) || empty($response['user_id'])) {
-            \App::logger()->warn(array('provider' => self::NAME, 'url' => $this->getAccessTokenUrl($code), 'response' => $response));
+            \App::logger()->warn(['provider' => self::NAME, 'url' => $this->getAccessTokenUrl($code), 'response' => $response]);
             return null;
         }
         $userId = $response['user_id'];
@@ -49,7 +49,7 @@ class VkontakteProvider implements ProviderInterface {
         $response = $this->query($this->getProfileUrl($userId));
         $response = (isset($response['response']) && is_array($response['response'])) ? reset($response['response']) : [];
         if (empty($response['uid']) || empty($response['first_name']) || ('DELETED' == $response['first_name'])) {
-            \App::logger()->warn(array('provider' => self::NAME, 'url' => $this->getProfileUrl($userId), 'response' => $response));
+            \App::logger()->warn(['provider' => self::NAME, 'url' => $this->getProfileUrl($userId), 'response' => $response]);
             return null;
         }
 

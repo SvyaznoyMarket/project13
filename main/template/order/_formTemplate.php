@@ -37,7 +37,7 @@
                 <input type="radio" name="order[delivery_type_id]" class="bBuyingLine__eRadio" id="order_delivery_type_id_3"
                        value="3" autocomplete="off"/>
             </label>
-            <i>Вы можете самостоятельно забрать товар из ближайшего к вам магазина Enter. Услуга бесплатная! Пожалуйста, выберите магазин.</i>
+            <i>Вы можете самостоятельно забрать товар из ближайшего к вам магазина Enter. Услуга бесплатная! Резерв товара сохраняется 3 дня. Пожалуйста, выберите магазин.</i>
         </div>
         <!-- /ko -->
         <div class="pl20 pt5">

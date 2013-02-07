@@ -47,6 +47,9 @@ $hasModel = (isset($hasModel) ? $hasModel : true) && $product->getModel() && (bo
 
         </div>
         <div class="extrainfo">
+            <? if ($product->getPriceOld() && !$user->getRegion()->getHasTransportCompany()): ?>
+            <p class="font16 crossText"><span class="price"><?= $page->helper->formatPrice($product->getPriceOld()) ?></span> <span class="rubl">p</span></p>
+            <? endif ?>
             <span class="db font18 pb10"><b><span class="price"><?= $page->helper->formatPrice($product->getPrice()) ?></span> <span class="rubl">p</span></b></span>
 
             <div class="goodsbar mSmallBtns">

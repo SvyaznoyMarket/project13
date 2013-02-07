@@ -13,7 +13,7 @@ class ClearAction {
         \App::user()->getCart()->clear();
 
         return $request->isXmlHttpRequest()
-            ? new \Http\JsonResponse(array('success' => true))
+            ? new \Http\JsonResponse(['success' => true])
             : new \Http\RedirectResponse($request->headers->get('referer') ?: \App::router()->generate('homepage'));
     }
 }

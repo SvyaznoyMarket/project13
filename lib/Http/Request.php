@@ -194,7 +194,7 @@ class Request {
         $request = new static($_GET, $_POST, [], $_COOKIE, $_FILES, $_SERVER);
 
         if (0 === strpos($request->server->get('CONTENT_TYPE'), 'application/x-www-form-urlencoded')
-            && in_array(strtoupper($request->server->get('REQUEST_METHOD', 'GET')), array('PUT', 'DELETE', 'PATCH'))
+            && in_array(strtoupper($request->server->get('REQUEST_METHOD', 'GET')), ['PUT', 'DELETE', 'PATCH'])
         ) {
             parse_str($request->getContent(), $data);
             $request->request = new ParameterBag($data);
@@ -219,7 +219,7 @@ class Request {
      * @api
      */
     public static function create($uri, $method = 'GET', $parameters = [], $cookies = [], $files = [], $server = [], $content = null) {
-        $defaults = array(
+        $defaults = [
             'SERVER_NAME'          => 'localhost',
             'SERVER_PORT'          => 80,
             'HTTP_HOST'            => 'localhost',
@@ -232,7 +232,7 @@ class Request {
             'SCRIPT_FILENAME'      => '',
             'SERVER_PROTOCOL'      => 'HTTP/1.1',
             'REQUEST_TIME'         => time(),
-        );
+        ];
 
         $components = parse_url($uri);
         if (isset($components['host'])) {
@@ -287,12 +287,12 @@ class Request {
 
         $uri = $components['path'] . ('' !== $queryString ? '?' . $queryString : '');
 
-        $server = array_replace($defaults, $server, array(
+        $server = array_replace($defaults, $server, [
             'REQUEST_METHOD' => strtoupper($method),
             'PATH_INFO'      => '',
             'REQUEST_URI'    => $uri,
             'QUERY_STRING'   => $queryString,
-        ));
+        ]);
 
         return new static($query, $request, [], $cookies, $files, $server, $content);
     }
@@ -386,14 +386,14 @@ class Request {
 
         foreach ($this->headers->all() as $key => $value) {
             $key = strtoupper(str_replace('-', '_', $key));
-            if (in_array($key, array('CONTENT_TYPE', 'CONTENT_LENGTH'))) {
+            if (in_array($key, ['CONTENT_TYPE', 'CONTENT_LENGTH'])) {
                 $_SERVER[$key] = implode(', ', $value);
             } else {
                 $_SERVER['HTTP_' . $key] = implode(', ', $value);
             }
         }
 
-        $request = array('g' => $_GET, 'p' => $_POST, 'c' => $_COOKIE);
+        $request = ['g' => $_GET, 'p' => $_POST, 'c' => $_COOKIE];
 
         $requestOrder = ini_get('request_order') ? : ini_get('variable_order');
         $requestOrder = preg_replace('#[^cgp]#', '', strtolower($requestOrder)) ? : 'gp';
@@ -883,7 +883,7 @@ class Request {
             static::initializeFormats();
         }
 
-        static::$formats[$format] = is_array($mimeTypes) ? $mimeTypes : array($mimeTypes);
+        static::$formats[$format] = is_array($mimeTypes) ? $mimeTypes : [$mimeTypes];
     }
 
     /**
@@ -981,7 +981,7 @@ class Request {
      * @api
      */
     public function isMethodSafe() {
-        return in_array($this->getMethod(), array('GET', 'HEAD'));
+        return in_array($this->getMethod(), ['GET', 'HEAD']);
     }
 
     /**
@@ -1331,17 +1331,17 @@ class Request {
      * Initializes HTTP request formats.
      */
     protected static function initializeFormats() {
-        static::$formats = array(
-            'html' => array('text/html', 'application/xhtml+xml'),
-            'txt'  => array('text/plain'),
-            'js'   => array('application/javascript', 'application/x-javascript', 'text/javascript'),
-            'css'  => array('text/css'),
-            'json' => array('application/json', 'application/x-json'),
-            'xml'  => array('text/xml', 'application/xml', 'application/x-xml'),
-            'rdf'  => array('application/rdf+xml'),
-            'atom' => array('application/atom+xml'),
-            'rss'  => array('application/rss+xml'),
-        );
+        static::$formats = [
+            'html' => ['text/html', 'application/xhtml+xml'],
+            'txt'  => ['text/plain'],
+            'js'   => ['application/javascript', 'application/x-javascript', 'text/javascript'],
+            'css'  => ['text/css'],
+            'json' => ['application/json', 'application/x-json'],
+            'xml'  => ['text/xml', 'application/xml', 'application/x-xml'],
+            'rdf'  => ['application/rdf+xml'],
+            'atom' => ['application/atom+xml'],
+            'rss'  => ['application/rss+xml'],
+        ];
     }
 
     /**

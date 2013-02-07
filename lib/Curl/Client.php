@@ -10,8 +10,8 @@ class Client {
      * @throws \Exception
      * @return mixed|null
      */
-    public function query($url, array $data = []) {
-        $connection = $this->create($url, $data);
+    public function query($url, array $data = [], $timeout = null) {
+        $connection = $this->create($url, $data, $timeout);
 
         $response = null;
         $info = null;
@@ -24,10 +24,10 @@ class Client {
             }
 
             curl_close($connection);
-            //\App::logger('curl')->debug(array('response' => $response, 'info' => $info));
+            //\App::logger('curl')->debug(['response' => $response, 'info' => $info]);
         } catch (\Exception $e) {
             curl_close($connection);
-            //\App::logger('curl')->error(array('response' => $response, 'info' => $info));
+            //\App::logger('curl')->error(['response' => $response, 'info' => $info]);
 
             \App::exception()->add($e);
             throw $e;
@@ -36,7 +36,7 @@ class Client {
         return $response;
     }
 
-    private function create($url, array $data = []) {
+    private function create($url, array $data = [], $timeout = null) {
         //\App::logger()->debug(sprintf('Curl %s %s %s', (bool)$data ? 'POST' : 'GET', $url, json_encode($data, JSON_UNESCAPED_UNICODE)));
 
         $connection = curl_init();
@@ -44,6 +44,10 @@ class Client {
         curl_setopt($connection, CURLOPT_URL, $url);
         curl_setopt($connection, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($connection, CURLOPT_HEADER, 0);
+
+        if ($timeout) {
+            curl_setopt($connection, CURLOPT_TIMEOUT_MS, $timeout * 1000);
+        }
 
         if ((bool)$data) {
             curl_setopt($connection, CURLOPT_POST, true);

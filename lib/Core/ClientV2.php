@@ -18,12 +18,23 @@ class ClientV2 implements ClientInterface
     private $stillExecuting = false;
 
     public function __construct(array $config, \Logger\LoggerInterface $logger = null) {
-        $this->config = array_merge(array(
+        $this->config = array_merge([
             'client_id' => null,
-        ), $config);
+        ], $config);
         $this->logger = $logger;
 
         $this->stillExecuting = false;
+    }
+
+    public function __clone() {
+        $this->isMultiple = null;
+        $this->successCallbacks = [];
+        $this->failCallbacks = [];
+        $this->resources = [];
+        $this->queries = [];
+        $this->queryIndex = [];
+        $this->stillExecuting = false;
+
     }
 
     /**
@@ -63,7 +74,7 @@ class ClientV2 implements ClientInterface
         } catch (\RuntimeException $e) {
             curl_close($connection);
             $spend = \Debug\Timer::stop('core');
-            \App::logger()->error('End core ' . $action . ' in ' . $spend . ' get: ' . json_encode($params, JSON_UNESCAPED_UNICODE) . ' post: ' . json_encode($data, JSON_UNESCAPED_UNICODE) . ' response: ' . json_encode($response, JSON_UNESCAPED_UNICODE) . ' with ' . $e);
+            \App::logger()->error('Fail core ' . $action . ' in ' . $spend . ' get: ' . json_encode($params, JSON_UNESCAPED_UNICODE) . ' post: ' . json_encode($data, JSON_UNESCAPED_UNICODE) . ' response: ' . json_encode($response, JSON_UNESCAPED_UNICODE) . ' with ' . $e);
             \App::exception()->add($e);
 
             throw $e;
@@ -86,20 +97,20 @@ class ClientV2 implements ClientInterface
         /* нужно сохранить исходные данные для retry */
         $hash = md5($action . serialize($params) . serialize($data));
         if (!isset($this->queries[$hash])) {
-            $this->queries[$hash] = array(
-                'resources' => array(
+            $this->queries[$hash] = [
+                'resources' => [
                     $resource,
-                ),
-                'query' => array(
+                ],
+                'query' => [
                     'action' => $action,
                     'params' => $params,
                     'data'   => $data,
-                ),
-            );
+                ],
+            ];
         } else {
             $this->queries[$hash]['resources'][] = $resource;
         }
-        $this->queryIndex[(int)$resource] = $hash;
+        $this->queryIndex[(string)$resource] = $hash;
 
         $this->stillExecuting = true;
     }
@@ -135,11 +146,11 @@ class ClientV2 implements ClientInterface
                     $this->logger->debug('Core response done: ' . print_r($done, 1));
                     $handler = $done['handle'];
 
-                    //$this->logger->info(microtime(true) . ': получен ответ на запрос ' . $this->queries[$this->queryIndex[(int)$handler]]['query']['action'] . '[' . (string)$handler . ']');
+                    //$this->logger->info(microtime(true) . ': получен ответ на запрос ' . $this->queries[$this->queryIndex[(string)$handler]]['query']['action'] . '[' . (string)$handler . ']');
                     $this->logger->debug(microtime(true) . ': <- [' . (string)$handler . ']');
 
                     //удаляем запрос из массива запросов на исполнение и прерываем дублирующие запросы
-                    foreach ($this->queries[$this->queryIndex[(int)$handler]]['resources'] as $resource) {
+                    foreach ($this->queries[$this->queryIndex[(string)$handler]]['resources'] as $resource) {
                         if ($resource !== $handler) {
                             curl_multi_remove_handle($this->isMultiple, $resource);
                         }
@@ -150,15 +161,15 @@ class ClientV2 implements ClientInterface
                     $this->logger->debug('Core response info: ' . $this->encodeInfo($info));
                     if (curl_errno($handler) > 0) {
                         $spend = \Debug\Timer::stop('core');
-                        \Util\RequestLogger::getInstance()->addLog($info['url'], $this->queries[$this->queryIndex[(int)$handler]]['query']['data'], $info['total_time'], 'multi(' . count($this->queries[$this->queryIndex[(int)$handler]]['resources']) . ' try(s)): ' . 'unknown');
+                        \Util\RequestLogger::getInstance()->addLog($info['url'], $this->queries[$this->queryIndex[(string)$handler]]['query']['data'], $info['total_time'], 'multi(' . count($this->queries[$this->queryIndex[(string)$handler]]['resources']) . ' try(s)): ' . 'unknown');
                         throw new \RuntimeException(curl_error($handler), curl_errno($handler));
                     }
                     $content = curl_multi_getcontent($handler);
                     $header = $this->getHeader($content, true);
 
-                    \Util\RequestLogger::getInstance()->addLog($info['url'], $this->queries[$this->queryIndex[(int)$handler]]['query']['data'], $info['total_time'], 'multi(' . count($this->queries[$this->queryIndex[(int)$handler]]['resources']) . ' try(s)): ' . (isset($header['X-Server-Name']) ? $header['X-Server-Name'] : 'unknown'));
+                    \Util\RequestLogger::getInstance()->addLog($info['url'], $this->queries[$this->queryIndex[(string)$handler]]['query']['data'], $info['total_time'], 'multi(' . count($this->queries[$this->queryIndex[(string)$handler]]['resources']) . ' try(s)): ' . (isset($header['X-Server-Name']) ? $header['X-Server-Name'] : 'unknown'));
 
-                    unset($this->queries[$this->queryIndex[(int)$handler]]);
+                    unset($this->queries[$this->queryIndex[(string)$handler]]);
 
                     if ($info['http_code'] >= 300) {
                         $spend = \Debug\Timer::stop('core');
@@ -377,11 +388,11 @@ class ClientV2 implements ClientInterface
     }
 
     private function encodeInfo($info) {
-        return $this->encode(array_intersect_key($info, array_flip(array(
+        return $this->encode(array_intersect_key($info, array_flip([
             'content_type', 'http_code', 'header_size', 'request_size',
             'redirect_count', 'total_time', 'namelookup_time', 'connect_time', 'pretransfer_time', 'size_upload',
             'size_download', 'speed_download',
             'starttransfer_time', 'redirect_time', 'certinfo', 'redirect_url'
-        ))));
+        ])));
     }
 }

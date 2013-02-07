@@ -10,13 +10,13 @@ class Provider implements \Payment\ProviderInterface {
      * @param array $config
      */
     public function __construct(array $config) {
-        $this->config = array_merge(array(
+        $this->config = array_merge([
             'terminal'     => null,
             'merchant'     => null,
             'merchantName' => null,
             'key'          => null,
             'payUrl'       => null,
-        ), $config);
+        ], $config);
     }
 
     /**

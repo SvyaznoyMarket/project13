@@ -121,7 +121,7 @@ class SitemapAction {
                 if (!$category->getPath()) continue;
 
                 $this->putContent(
-                    $this->router->generate('product.category', array('categoryPath' => $category->getPath())),
+                    $this->router->generate('product.category', ['categoryPath' => $category->getPath()]),
                     'daily',
                     '0.8'
                 );
@@ -156,7 +156,7 @@ class SitemapAction {
                         if (!$product->getPath()) continue;
 
                         $this->putContent(
-                            $this->router->generate('product', array('productPath' => $product->getPath())),
+                            $this->router->generate('product', ['productPath' => $product->getPath()]),
                             'daily',
                             '0.8'
                         );
@@ -180,7 +180,7 @@ class SitemapAction {
                 if (!$category->getToken()) continue;
 
                 $this->putContent(
-                    $this->router->generate('service.category', array('categoryToken' => $category->getToken())),
+                    $this->router->generate('service.category', ['categoryToken' => $category->getToken()]),
                     'monthly',
                     '0.6'
                 );
@@ -204,7 +204,7 @@ class SitemapAction {
 
                     /** @var $service \Model\Product\Service\Entity */
                     $this->putContent(
-                        $this->router->generate('service.show', array('serviceToken' => $service->getToken())),
+                        $this->router->generate('service.show', ['serviceToken' => $service->getToken()]),
                         'monthly',
                         '0.5'
                     );
@@ -222,7 +222,7 @@ class SitemapAction {
         foreach (\RepositoryManager::region()->getShopAvailableCollection() as $region) {
             foreach (\RepositoryManager::shop()->getCollectionByRegion($region) as $shop) {
                 $this->putContent(
-                    $this->router->generate('shop.show', array('regionToken' => $region->getToken(), 'shopToken' => $shop->getToken())),
+                    $this->router->generate('shop.show', ['regionToken' => $region->getToken(), 'shopToken' => $shop->getToken()]),
                     'daily',
                     '0.6'
                 );
@@ -245,7 +245,7 @@ class SitemapAction {
     private function putContent($url, $freq, $priority) {
         $content =
             '<url>
-  <loc>' . self::URL_PREFIX . str_replace(array('&', "'", '"', '>', '<'), array('&amp;', '&apos;', '&quot;', '&gt;', '&lt;'), $url) . '</loc>
+  <loc>' . self::URL_PREFIX . str_replace(['&', "'", '"', '>', '<'], ['&amp;', '&apos;', '&quot;', '&gt;', '&lt;'], $url) . '</loc>
   <changefreq>' . $freq . '</changefreq>
   <priority>' . $priority . '</priority>
 </url>

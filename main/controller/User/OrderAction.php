@@ -112,11 +112,15 @@ class OrderAction {
 
         // товары
         if ((bool)$productsById) {
-            \RepositoryManager::product()->prepareCollectionById(array_keys($productsById), $region, function($data) use(&$productsById) {
-                foreach($data as $item){
-                    $productsById[$item['id']] = new \Model\Product\CartEntity($item);
-                }
-            });
+            $chunksProductsById = array_chunk($productsById, 50, true);
+
+            foreach ($chunksProductsById as $i => $chunk) {
+                \RepositoryManager::product()->prepareCollectionById(array_keys($chunk), $region, function($data) use(&$productsById) {
+                    foreach($data as $item){
+                        $productsById[$item['id']] = new \Model\Product\CartEntity($item);
+                    }
+                });
+            }
         }
 
         // услуги
