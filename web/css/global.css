@@ -610,6 +610,14 @@
     border-color: #e4e4e4;
     color: #a6a6a6;
   }
+  .crossText {
+    color: #818181;
+    border-bottom: 1px solid;
+    float: left;
+    height: 0.95em;
+    line-height: 24px;
+    margin: 0 10px 0 0;
+  }
   .pouptitle {
     float: left;
     font-family: "Enter";

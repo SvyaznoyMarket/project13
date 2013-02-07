@@ -19,8 +19,6 @@ $c->coreV2['retryTimeout'] = [
     'forever' => 0,
 ];
 
-$c->dataStore['url'] = 'http://core.ent3.ru/';
-
 $c->mobileHost = 'm.ent3.ru';
 
 $c->smartEngine['pull'] = true;
@@ -28,8 +26,6 @@ $c->smartEngine['push'] = false;
 $c->smartEngine['api_url'] = 'https://selightstage.smartengine.at/se-light/api/1.0/json/';
 $c->smartEngine['cert'] = $c->dataDir . '/cert/gsorganizationvalg2.crt';
 $c->smartEngine['ssl_verify'] = false;
-
-$c->warranty['enabled'] = true;
 
 $c->paymentPsb['terminal'] = '79036768';
 $c->paymentPsb['merchant'] = '790367686219999';

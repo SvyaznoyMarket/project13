@@ -11,7 +11,7 @@ class Client {
 
     public function __construct(array $config,  \Logger\LoggerInterface $logger = null)
     {
-        $this->config = array_merge(array(
+        $this->config = array_merge([
             'api_url'          => null,
             'api_key'          => null,
             'tenantid'         => null,
@@ -19,7 +19,7 @@ class Client {
             'cert'             => null,
             'log_enabled'      => false,
             'log_data_enabled' => false,
-        ), $config);
+        ], $config);
 
         $this->logger = $logger;
     }
@@ -29,7 +29,7 @@ class Client {
      *
      * @param $action
      * @param array $params
-     * @throws SmartengineClientException
+     * @throws \Smartengine\Exception
      * @return array
      */
     public function query($action, array $params = [])
@@ -40,7 +40,7 @@ class Client {
         $response = curl_exec($connection);
         try {
             if (curl_errno($connection) > 0) {
-                throw new SmartengineClientException(curl_error($connection), curl_errno($connection));
+                throw new \Smartengine\Exception(curl_error($connection), curl_errno($connection));
             }
             $info = curl_getinfo($connection);
             $this->logger->debug('Smartengine response resource: ' . $connection);
@@ -52,7 +52,7 @@ class Client {
                 $this->logger->info('Response '.$connection.' : '.(is_array($info) ? json_encode($info, JSON_UNESCAPED_UNICODE) : $info));
             }
             if ($info['http_code'] >= 300) {
-                throw new SmartengineClientException(sprintf("Invalid http code: %d, \nResponse: %s", $info['http_code'], $response));
+                throw new \Smartengine\Exception(sprintf("Invalid http code: %d, \nResponse: %s", $info['http_code'], $response));
             }
 
             if ($this->config['log_data_enabled']) {
@@ -66,7 +66,7 @@ class Client {
 
             return $responseDecoded;
         }
-        catch (SmartengineClientException $e) {
+        catch (\Smartengine\Exception $e) {
             curl_close($connection);
             $spend = \Debug\Timer::stop('smartengine');
             \App::logger()->error('End smartengine ' . $action . ' in ' . $spend . ' get: ' . json_encode($params, JSON_UNESCAPED_UNICODE) . ' response: ' . json_encode($response, JSON_UNESCAPED_UNICODE) . ' with ' . $e);
@@ -88,10 +88,10 @@ class Client {
 
         $query = $this->config['api_url']
             . str_replace('.', '/', $action)
-            . '?' . http_build_query(array_merge(array(
+            . '?' . http_build_query(array_merge([
             'apikey'   => $this->config['api_key'],
             'tenantid' => $this->config['tenantid'],
-        ), $params))
+        ], $params))
         ;
         \App::logger()->info('Start smartengine ' . $action . ' query: ' . $query);
 
@@ -115,12 +115,12 @@ class Client {
     /**
      * @param $response
      * @return array
-     * @throws SmartengineClientException
+     * @throws \Smartengine\Exception
      */
     private function decode($response)
     {
         if (is_null($response)) {
-            throw new SmartengineClientException('Response cannot be null');
+            throw new \Smartengine\Exception('Response cannot be null');
         }
 
         $decoded = json_decode($response, true);
@@ -148,7 +148,7 @@ class Client {
             }
             $errorMessage = sprintf('Json error: "%s", Response: "%s"', $error, $response);
 
-            throw new SmartengineClientException($errorMessage, $code);
+            throw new \Smartengine\Exception($errorMessage, $code);
         }
 
         return $decoded;
@@ -175,16 +175,11 @@ class Client {
 
     private function encodeInfo($info)
     {
-        return $this->encode(array_intersect_key($info, array_flip(array(
+        return $this->encode(array_intersect_key($info, array_flip([
             'content_type', 'http_code', 'header_size', 'request_size',
             'redirect_count', 'total_time', 'namelookup_time', 'connect_time', 'pretransfer_time', 'size_upload',
             'size_download', 'speed_download',
             'starttransfer_time', 'redirect_time', 'certinfo', 'redirect_url'
-        ))));
+        ])));
     }
-}
-
-
-class SmartengineClientException extends \Exception {
-
 }

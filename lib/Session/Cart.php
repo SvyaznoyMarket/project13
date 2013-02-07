@@ -392,11 +392,11 @@ class Cart {
         $return = [];
         foreach($data['warrantyList'] as $warrantyId => $warrantyData) {
             foreach($warrantyData as $productId => $quantity) {
-                $return[] =array(
+                $return[] = [
                     'id'         => $warrantyId,
                     'quantity'   => $quantity,
                     'product_id' => (int)$productId,
-                );
+                ];
             }
         }
 
@@ -499,9 +499,10 @@ class Cart {
         // услуги
         foreach ($data['serviceList'] as $serviceId => $serviceData) {
             foreach ($serviceData as $productId => $quantity) {
-                if ($productId && !array_key_exists($productId, $data['productList'])) {
-                    unset($data['serviceList'][$serviceId][$productId]);
-                } else if (!$quantity) {
+                if (
+                    ($productId && !array_key_exists($productId, $data['productList']))
+                    || !$quantity
+                ) {
                     unset($data['serviceList'][$serviceId][$productId]);
                 }
 
@@ -513,9 +514,10 @@ class Cart {
         // гарантии
         foreach($data['warrantyList'] as $warrantyId => $warrantyData) {
             foreach($warrantyData as $productId => $quantity) {
-                if ($productId && !array_key_exists($productId, $data['productList'])) {
-                    unset($data['warrantyList'][$warrantyId][$productId]);
-                } else if (!$quantity) {
+                if (
+                    ($productId && !array_key_exists($productId, $data['productList']))
+                    || !$quantity
+                ) {
                     unset($data['warrantyList'][$warrantyId][$productId]);
                 }
 

@@ -20,14 +20,22 @@ class Repository {
     public function getCollectionByRegion(\Model\Region\Entity $region) {
         \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
-        $response = $this->client->query('subway/get', array(
-            'geo_id' => $region->getId(),
-        ));
+        $client = clone $this->client;
 
         $collection = [];
-        foreach ($response as $data) {
-            $collection[] = new Entity($data);
-        }
+        $client->addQuery('subway/get',
+            [
+                'geo_id' => $region->getId(),
+            ],
+            [],
+            function ($data) use (&$collection) {
+                foreach ($data as $item) {
+                    $collection[] = new Entity($item);
+                }
+            }
+        );
+
+        $client->execute(\App::config()->coreV2['retryTimeout']['default']);
 
         return $collection;
     }

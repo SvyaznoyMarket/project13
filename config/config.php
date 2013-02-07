@@ -41,7 +41,7 @@ $c->coreV2['retryCount'] = 3;
 
 $c->wordpress['url'] = 'http://content.ent3.ru/';
 
-$c->dataStore['url'] = 'http://core.ent3.ru/';
+$c->dataStore['url'] = 'http://www.enter.ru/';
 
 $c->company['phone'] = '8 (800) 700-00-09';
 $c->company['icq'] = '648198963';
@@ -68,6 +68,8 @@ $c->mediaHost = [
     8 => 'http://fs09.enter.ru',
     9 => 'http://fs10.enter.ru',
 ];
+
+$c->search['itemLimit'] = 1000;
 
 $c->product['itemsPerPage']          = 18;
 $c->product['showAccessories']       = true;
@@ -144,7 +146,7 @@ $c->smartEngine['log_enabled'] = true;
 $c->smartEngine['log_data_enabled'] = true;
 $c->smartEngine['ssl_verify'] = true;
 
-$c->warranty['enabled'] = false;
+$c->warranty['enabled'] = true;
 
 $c->user['corporateRegister'] = true;
 

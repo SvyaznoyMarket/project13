@@ -20,18 +20,24 @@ class Repository {
      */
     public function getCollectionByCategory(\Model\Product\Category\Entity $category, \Model\Region\Entity $region = null) {
         \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
-        $collection = [];
 
-        $params = array(
+        $client = clone $this->client;
+
+        $params = [
             'category_id' => $category->getId(),
-        );
+        ];
         if ($region) {
             $params['region_id'] = $region->getId();
         }
-        $response = $this->client->query('listing/filter', $params);
-        foreach ($response as $data) {
-            $collection[] = new Entity($data);
-        }
+
+        $collection = [];
+        $client->addQuery('listing/filter', $params, [], function ($data) use (&$collection) {
+            foreach ($data as $item) {
+                $collection[] = new Entity($item);
+            }
+        });
+
+        $client->execute(\App::config()->coreV2['retryTimeout']['default']);
 
         return $collection;
     }
@@ -44,9 +50,9 @@ class Repository {
     public function prepareCollectionByCategory(\Model\Product\Category\Entity $category, \Model\Region\Entity $region = null, $callback) {
         \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
-        $params = array(
+        $params = [
             'category_id' => $category->getId(),
-        );
+        ];
         if ($region) {
             $params['region_id'] = $region->getId();
         }

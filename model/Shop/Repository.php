@@ -20,12 +20,23 @@ class Repository {
     public function getEntityById($id) {
         \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
-        $data = $this->client->query('shop/get', array(
-            'id' => array($id),
-        ));
-        $data = (bool)$data ? reset($data) : null;
+        $client = clone $this->client;
 
-        return $data ? new Entity($data) : null;
+        $entity = null;
+        $client->addQuery('shop/get',
+            [
+                'id' => [$id],
+            ],
+            [],
+            function ($data) use (&$entity) {
+                $data = reset($data);
+                $entity = $data ? new Entity($data) : null;
+            }
+        );
+
+        $client->execute(\App::config()->coreV2['retryTimeout']['default']);
+
+        return $entity;
     }
 
     /**
@@ -35,12 +46,23 @@ class Repository {
     public function getEntityByToken($token) {
         \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
-        $data = $this->client->query('shop/get', array(
-            'slug' => array($token),
-        ));
-        $data = (bool)$data ? reset($data) : null;
+        $client = clone $this->client;
 
-        return $data ? new Entity($data) : null;
+        $entity = null;
+        $client->addQuery('shop/get',
+            [
+                'slug' => [$token],
+            ],
+            [],
+            function ($data) use (&$entity) {
+                $data = reset($data);
+                $entity = $data ? new Entity($data) : null;
+            }
+        );
+
+        $client->execute(\App::config()->coreV2['retryTimeout']['default']);
+
+        return $entity;
     }
 
     /**
@@ -62,14 +84,22 @@ class Repository {
     public function getCollectionByRegion(\Model\Region\Entity $region) {
         \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
-        $response = $this->client->query('shop/get', array(
-            'geo_id' => $region->getId(),
-        ));
+        $client = clone $this->client;
 
         $collection = [];
-        foreach ($response as $data) {
-            $collection[] = new Entity($data);
-        }
+        $client->addQuery('shop/get',
+            [
+                'geo_id' => $region->getId(),
+            ],
+            [],
+            function ($data) use (&$collection) {
+                foreach ($data as $item) {
+                    $collection[] = new Entity($item);
+                }
+            }
+        );
+
+        $client->execute(\App::config()->coreV2['retryTimeout']['default']);
 
         return $collection;
     }
@@ -98,14 +128,23 @@ class Repository {
 
         if (!(bool)$ids) return [];
 
-        $response = $this->client->query('shop/get', array(
-            'id' => $ids,
-        ));
+        $client = clone $this->client;
 
         $collection = [];
-        foreach ($response as $data) {
-            $collection[] = new Entity($data);
-        }
+        $client->addQuery('shop/get',
+            [
+                'id' => $ids,
+            ],
+            [],
+            function ($data) use (&$collection) {
+                foreach ($data as $item) {
+                    $collection[] = new Entity($item);
+                }
+            }
+        );
+
+        $client->execute(\App::config()->coreV2['retryTimeout']['default']);
+
         return $collection;
     }
 }

@@ -113,7 +113,7 @@ class HeaderBag implements \IteratorAggregate, \Countable {
                 return $first ? null : [];
             }
 
-            return $first ? $default : array($default);
+            return $first ? $default : [$default];
         }
 
         if ($first) {

@@ -35,6 +35,9 @@ $hasModel = (isset($hasModel) ? $hasModel : true) && $product->getModel() && (bo
             <?= $page->render('cart/_button', array('product' => $product, 'disabled' => !$product->getIsBuyable())) ?>
         </div>
 	    <div class="font18 pb10 mSmallBtns">
+            <? if ($product->getPriceOld() && !$user->getRegion()->getHasTransportCompany()): ?>
+            <p class="font16 crossText"><span class="price"><?= $page->helper->formatPrice($product->getPriceOld()) ?></span> <span class="rubl">p</span></p>
+            <? endif ?>
             <span class="price"><?= $page->helper->formatPrice($product->getPrice()) ?></span> <span class="rubl">p</span>
         </div>
         <? if (!$product->getIsBuyable() && $product->getState()->getIsShop()): ?>

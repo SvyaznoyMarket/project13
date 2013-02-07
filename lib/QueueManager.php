@@ -20,9 +20,9 @@ class QueueManager {
     }
 
     /**
-     * @param string $queueName
-     * @param        $handler
-     * @param int    $limit
+     * @param string   $queueName
+     * @param callback $handler
+     * @param int      $limit
      * @throws LogicException
      * @throws Exception
      */

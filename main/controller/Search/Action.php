@@ -60,7 +60,10 @@ class Action {
             $categoriesById[$item['category_id']] = new \Model\Product\Category\Entity(array(
                 'id'            => $item['category_id'],
                 'name'          => $item['category_name'],
-                'product_count' => $item['count'],
+                'product_count' => \App::config()->search['itemLimit'] < $item['count']
+                    ? \App::config()->search['itemLimit']
+                    : (int)$item['count']
+                ,
             ));
         }
         // если ид категории из http-запроса нет в коллекции категорий ...
@@ -69,6 +72,13 @@ class Action {
         }
         /** @var $selectedCategory \Model\Product\Category\Entity */
         $selectedCategory = $categoryId ? $categoriesById[$categoryId] : null;
+
+        // общее количество найденных товаров
+        $productCount = $selectedCategory ? $selectedCategory->getProductCount() : $result['count'];
+        if (\App::config()->search['itemLimit'] && (\App::config()->search['itemLimit'] < $productCount)) {
+            // ограничиваем количество найденных товаров
+            $productCount = \App::config()->search['itemLimit'];
+        }
 
         // вид товаров
         $productView = $request->get('view', $selectedCategory ? $selectedCategory->getProductView() : \Model\Product\Category\Entity::PRODUCT_VIEW_COMPACT);
@@ -81,7 +91,7 @@ class Action {
             : '\\Model\\Product\\CompactEntity'
         );
         $products = $productRepository->getCollectionById($result['data']);
-        $productPager = new \Iterator\EntityPager($products, $selectedCategory ? $selectedCategory->getProductCount() : $result['count']);
+        $productPager = new \Iterator\EntityPager($products, $productCount);
         $productPager->setPage($pageNum);
         $productPager->setMaxPerPage(\App::config()->product['itemsPerPage']);
 

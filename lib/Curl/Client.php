@@ -24,10 +24,10 @@ class Client {
             }
 
             curl_close($connection);
-            //\App::logger('curl')->debug(array('response' => $response, 'info' => $info));
+            //\App::logger('curl')->debug(['response' => $response, 'info' => $info]);
         } catch (\Exception $e) {
             curl_close($connection);
-            //\App::logger('curl')->error(array('response' => $response, 'info' => $info));
+            //\App::logger('curl')->error(['response' => $response, 'info' => $info]);
 
             \App::exception()->add($e);
             throw $e;

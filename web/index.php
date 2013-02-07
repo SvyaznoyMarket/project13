@@ -42,7 +42,7 @@ if ('main' == \App::$name) {
         $config->controllerPrefix = 'Mobile\\Controller';
     }
 } else if ('terminal' == \App::$name) {
-    $clientId = $request->get('client_id') ? (int)$request->get('client_id') : null;
+    $clientId = $request->get('client_id') ? trim((string)$request->get('client_id')) : null;
     if (!$clientId) die('Не передан параметр client_id');
     $config->coreV2['client_id'] = $clientId;
 

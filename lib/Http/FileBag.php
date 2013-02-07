@@ -10,7 +10,7 @@ use Http\File\UploadedFile;
  * @api
  */
 class FileBag extends ParameterBag {
-    private static $fileKeys = array('error', 'name', 'size', 'tmp_name', 'type');
+    private static $fileKeys = ['error', 'name', 'size', 'tmp_name', 'type'];
 
     /**
      * @param array $parameters An array of HTTP files
@@ -73,7 +73,7 @@ class FileBag extends ParameterBag {
                     $file = new UploadedFile($file['tmp_name'], $file['name'], $file['type'], $file['size'], $file['error']);
                 }
             } else {
-                $file = array_map(array($this, 'convertFileInformation'), $file);
+                $file = array_map([$this, 'convertFileInformation'], $file);
             }
         }
 
@@ -114,13 +114,13 @@ class FileBag extends ParameterBag {
         }
 
         foreach (array_keys($data['name']) as $key) {
-            $files[$key] = $this->fixPhpFilesArray(array(
+            $files[$key] = $this->fixPhpFilesArray([
                 'error'    => $data['error'][$key],
                 'name'     => $data['name'][$key],
                 'type'     => $data['type'][$key],
                 'tmp_name' => $data['tmp_name'][$key],
                 'size'     => $data['size'][$key]
-            ));
+            ]);
         }
 
         return $files;

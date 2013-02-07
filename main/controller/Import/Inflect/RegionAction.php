@@ -23,7 +23,7 @@ class RegionAction {
             }
 
             $isValid = true;
-            foreach (array(
+            foreach ([
                 ' АО', ' мкр', ' п', ' снт', ' пгт',
                 ' обл', ' д', ' с', ' нп', ' край',
                 ' Респ', ' тер', ' те', ' усадьба',
@@ -32,7 +32,7 @@ class RegionAction {
                 ' отделение', ' кв', 'свх ',
                 ' Федеральный Округ', ' Аобл', 'ПФО', 'С-ЗФО', 'Сев-КавФО', 'СибФО', 'УФО', 'ЮФО', 'Госпиталь ', 'Подсобное Хозяйство',
                 '(',
-            ) as $needle) {
+            ] as $needle) {
                 if (false !== strpos($item['name'], $needle)) {
                     $isValid = false;
                     break;
@@ -50,9 +50,9 @@ class RegionAction {
                 //unlink($file);
             }
 
-            $response = file_get_contents('http://export.yandex.ru/inflect.xml?' . http_build_query(array(
+            $response = file_get_contents('http://export.yandex.ru/inflect.xml?' . http_build_query([
                 'name' => $item['name'],
-            )));
+            ]));
             if (!$itemXml = simplexml_load_string($response)) continue;
 
             $data = [];

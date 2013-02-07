@@ -21,16 +21,24 @@ class Repository {
     public function getEntityById($id, \Model\Region\Entity $region = null) {
         \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
-        $params = array(
-            'id' => array($id),
-        );
+        $client = clone $this->client;
+
+        $params = [
+            'id' => [$id],
+        ];
         if ($region instanceof \Model\Region\Entity) {
             $params['geo_id'] = $region->getId();
         }
-        $data = $this->client->query('service/get2', $params, []);
-        $data = reset($data);
 
-        return $data ? new Entity($data) : null;
+        $entity = null;
+        $client->addQuery('service/get2', $params, [], function ($data) use (&$entity) {
+            $data = reset($data);
+            $entity = $data ? new Entity($data) : null;
+        });
+
+        $client->execute(\App::config()->coreV2['retryTimeout']['default']);
+
+        return $entity;
     }
 
     /**
@@ -43,18 +51,23 @@ class Repository {
 
         if (!(bool)$ids) return [];
 
-        $params = array(
+        $client = clone $this->client;
+
+        $params = [
             'id' => $ids,
-        );
+        ];
         if ($region instanceof \Model\Region\Entity) {
             $params['geo_id'] = $region->getId();
         }
-        $data = $this->client->query('service/get2', $params, []);
 
         $collection = [];
-        foreach ($data as $item) {
-            $collection[] = new Entity($item);
-        }
+        $client->addQuery('service/get2', $params, [], function ($data) use (&$collection) {
+            foreach ($data as $item) {
+                $collection[] = new Entity($item);
+            }
+        });
+
+        $client->execute(\App::config()->coreV2['retryTimeout']['default']);
 
         return $collection;
     }
@@ -69,9 +82,9 @@ class Repository {
 
         if (!(bool)$ids) return;
 
-        $params = array(
+        $params = [
             'id' => $ids,
-        );
+        ];
         if ($region instanceof \Model\Region\Entity) {
             $params['geo_id'] = $region->getId();
         }
@@ -86,9 +99,9 @@ class Repository {
     public function prepareEntityByToken($token, \Model\Region\Entity $region = null, $callback) {
         \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
-        $params = array(
+        $params = [
             'slug' => $token,
-        );
+        ];
         if ($region instanceof \Model\Region\Entity) {
             $params['geo_id'] = $region->getId();
         }
@@ -103,9 +116,9 @@ class Repository {
     public function prepareIdsByCategory(Category\Entity $category, \Model\Region\Entity $region = null, $callback) {
         \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
-        $params = array(
+        $params = [
             'category_id' => $category->getId(),
-        );
+        ];
         if ($region instanceof \Model\Region\Entity) {
             $params['geo_id'] = $region->getId();
         }
@@ -120,15 +133,23 @@ class Repository {
     public function getCollectionByCategory(Category\Entity $category, \Model\Region\Entity $region = null) {
         \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
-        $params = array(
+        $client = clone $this->client;
+
+        $params = [
             'category_id' => $category->getId(),
-        );
+        ];
         if ($region instanceof \Model\Region\Entity) {
             $params['geo_id'] = $region->getId();
         }
-        $data = $this->client->query('service/list', $params, []);
-        $ids = isset($data['list']) ? (array)$data['list'] : [];
 
-        return $this->getCollectionById($ids, $region);
+        $collection = [];
+        $client->addQuery('service/list', $params, [], function ($data) use (&$collection, $region) {
+            $ids = isset($data['list']) ? (array)$data['list'] : [];
+            $collection = $this->getCollectionById($ids, $region);
+        });
+
+        $client->execute(\App::config()->coreV2['retryTimeout']['default']);
+
+        return $collection;
     }
 }
