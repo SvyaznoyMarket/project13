@@ -71,19 +71,16 @@ class Action {
         }
 
         if ((bool)$request->getQueryString()) {
-            $redirectTo .= '?'.$request->getQueryString();
+            $redirectTo .= '?' . $request->getQueryString();
         }
 
-        if (!$regionId) {
+        $region = $regionId ? \RepositoryManager::region()->getEntityById($regionId) : null;
+        if (!$region) {
             return new \Http\RedirectResponse($redirectTo);
         }
 
         $response = new \Http\RedirectResponse($redirectTo);
-
-        $region = \RepositoryManager::region()->getEntityById($regionId);
-        if ($region) {
-            \App::user()->changeRegion($region, $response);
-        }
+        \App::user()->changeRegion($region, $response);
 
         return $response;
     }
