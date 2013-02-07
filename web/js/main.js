@@ -802,10 +802,10 @@ $(document).ready(function(){
 	$('input:[name="q"]').bind(
 		{
 			'focusin': function() {
-				if ( $(this).val() == 'Поиск среди 30 000 товаров' ) $(this).val( '' );
+				if ( $(this).val() == 'Поиск среди 45 000 товаров' ) $(this).val( '' );
 			},
 			'blur': function() {
-				if ( $(this).val() == '' ) $(this).val( 'Поиск среди 30 000 товаров' );
+				if ( $(this).val() == '' ) $(this).val( 'Поиск среди 45 000 товаров' );
 			}
 		}
 	)
@@ -815,7 +815,7 @@ $(document).ready(function(){
 		var form = $(this)
 		if (form.find('input:[name="q"]').val().length < 2)
 			return false
-		if( form.find('input:[name="q"]').val() === 'Поиск среди 30 000 товаров' )
+		if( form.find('input:[name="q"]').val() === 'Поиск среди 45 000 товаров' )
 			return false
 		// var wholemessage = form.serializeArray()
 		// function getSearchResults( response ) {
