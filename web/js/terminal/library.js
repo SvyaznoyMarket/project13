@@ -26,10 +26,12 @@ define('library',
 				// myConsole(left)
 				if ( newLeft > stop.start ){ // ограничение слева
 					$(this).css({left: 0})
+					start.left = 0
 					start.x = orig.changedTouches[0].pageX
 				}
 				else if ( newLeft < -stop.end){
 					$(this).css({left: -stop.end})
+					start.left = -stop.end
 					start.x = orig.changedTouches[0].pageX
 				}
 				else{

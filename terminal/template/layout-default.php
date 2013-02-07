@@ -13,5 +13,6 @@
 	<div class="bWrap">
     	<?= $page->slotContent() ?>
     </div>
+    <div id="console"></div>
 </body>
 </html>

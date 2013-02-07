@@ -157,6 +157,4 @@ $warranties = $product->getWarranty();
             <? endforeach ?>
         </div>
     </div>
-    <div id="console">
-    </div>
 </article>
