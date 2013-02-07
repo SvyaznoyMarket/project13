@@ -31,7 +31,7 @@ class IndexPage extends \View\DefaultLayout {
                 'searchQuery' => $this->getParam('searchQuery'),
                 'meanQuery'   => $this->getParam('meanQuery'),
                 'forceMean'   => $this->getParam('forceMean'),
-                'count'       => $productPager ? $productPager->count() : 0,
+                'count'       => $this->getParam('productCount'),
             ))));
         }
     }

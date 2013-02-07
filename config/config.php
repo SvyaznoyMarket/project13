@@ -42,6 +42,7 @@ $c->coreV2['retryCount'] = 3;
 $c->wordpress['url'] = 'http://content.ent3.ru/';
 
 $c->dataStore['url'] = 'http://www.enter.ru/';
+$c->dataStore['timeout'] = 5;
 
 $c->company['phone'] = '8 (800) 700-00-09';
 $c->company['icq'] = '648198963';
@@ -77,7 +78,7 @@ $c->product['showRelated']           = true;
 $c->product['itemsInSlider']         = 5;
 $c->product['itemsInCategorySlider'] = 3;
 $c->product['minCreditPrice']        = 3000;
-$c->product['totalCount']            = 45000;
+$c->product['totalCount']            = 30000;
 // глобальный (без учета региона) список товаров
 $c->product['globalListEnabled']     = true;
 $c->product['showAveragePrice']      = false;
