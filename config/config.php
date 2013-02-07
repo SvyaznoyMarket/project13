@@ -78,7 +78,7 @@ $c->product['showRelated']           = true;
 $c->product['itemsInSlider']         = 5;
 $c->product['itemsInCategorySlider'] = 3;
 $c->product['minCreditPrice']        = 3000;
-$c->product['totalCount']            = 45000;
+$c->product['totalCount']            = 30000;
 // глобальный (без учета региона) список товаров
 $c->product['globalListEnabled']     = true;
 $c->product['showAveragePrice']      = false;
