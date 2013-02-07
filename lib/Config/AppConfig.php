@@ -57,7 +57,8 @@ class AppConfig {
     ];
     /** @var array */
     public $dataStore = [
-        'url' => null,
+        'url'     => null,
+        'timeout' => null,
     ];
     /** @var array */
     public $company = [
