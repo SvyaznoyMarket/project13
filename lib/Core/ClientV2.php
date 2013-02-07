@@ -74,7 +74,7 @@ class ClientV2 implements ClientInterface
         } catch (\RuntimeException $e) {
             curl_close($connection);
             $spend = \Debug\Timer::stop('core');
-            \App::logger()->error('End core ' . $action . ' in ' . $spend . ' get: ' . json_encode($params, JSON_UNESCAPED_UNICODE) . ' post: ' . json_encode($data, JSON_UNESCAPED_UNICODE) . ' response: ' . json_encode($response, JSON_UNESCAPED_UNICODE) . ' with ' . $e);
+            \App::logger()->error('Fail core ' . $action . ' in ' . $spend . ' get: ' . json_encode($params, JSON_UNESCAPED_UNICODE) . ' post: ' . json_encode($data, JSON_UNESCAPED_UNICODE) . ' response: ' . json_encode($response, JSON_UNESCAPED_UNICODE) . ' with ' . $e);
             \App::exception()->add($e);
 
             throw $e;

@@ -14,7 +14,8 @@ class Client {
      */
     public function __construct(array $config, \Curl\Client $curl) {
         $this->config = array_merge([
-            'url' => null,
+            'url'     => null,
+            'timeout' => null,
         ], $config);
 
         $this->curl = $curl;
@@ -37,7 +38,7 @@ class Client {
                 $response = is_file($url) ? file_get_contents($url) : null;
             // http-ресурс
             } else {
-                $response = $this->curl->query($url);
+                $response = $this->curl->query($url, [], $this->config['timeout']);
             }
             $spend = \Debug\Timer::stop('data-store');
             \App::logger()->info('End data-store request ' . $file . ' in ' . $spend);
