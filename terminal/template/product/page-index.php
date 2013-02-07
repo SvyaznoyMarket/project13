@@ -55,8 +55,38 @@ $warranties = $product->getWarranty();
             </div>
         </div>
 
+        <?php if (count($accessories) || count($related)): ?>
         <div class="bGoodSubItems">
-            <p class="bGoodSubItems_eHeader"><a href="#" class="bGoodSubItems_eTitle">Аксессуары</a> <a href="#" class="bGoodSubItems_eTitle">Похожие товары</a></p>
+            <p class="bGoodSubItems_eHeader">
+                <?php if (count($accessories)): ?>
+                <a href="#" class="bGoodSubItems_eTitle active jsAccessorise">Аксессуары</a>
+                <?php endif ?>
+                <?php if (count($related)): ?> 
+                <a href="#" class="bGoodSubItems_eTitle jsSimilar">Похожие товары</a>
+            <?php endif ?>
+            </p>
+
+            <!-- accessorise -->
+            <div class="bGoodSubItem clearfix">
+                <div class="bSlider">
+                    <a class="bSlider_eArrow mLeft" href="#"></a>
+                    <a class="bSlider_eArrow mRight" href="#"></a>
+                    <div id="accessoriseSlider" class="bSlider_eWrap clearfix">
+                        <? foreach ($accessories as $iProduct): ?>
+                        <div class="bGoodSubItem_eGoods mFl">
+                            <a class="bGoodSubItem_eGoodsImg mFl mRounded" href="#" onclick='terminal.screen.push("product", {productId: <?= $iProduct->getId() ?>})'><img width="130" height="130" src="<?= $iProduct->getImageUrl(1) ?>"/></a>
+                            <div class="bGoodSubItem_eGoodsInfo">
+                                <!-- <p class="bGoodSubItem_eRating"><?= $iProduct->getRating() ?></p> -->
+                                <h2 class="bGoodSubItem_eTitle"><a class="bGoodSubItem_eLink" href="#" onclick='terminal.screen.push("product", {productId: <?= $iProduct->getId() ?>})'><?= $iProduct->getName() ?></a></h2>
+                                <p class="bGoodSubItem_ePrice"><?= $page->helper->formatPrice($iProduct->getPrice()) ?> <span class="bRuble">p</span></p>
+                                <a class="bGoodSubItem_eMore bButton mSmallGrayBtn" href="#" onclick='terminal.screen.push("product", {productId: <?= $iProduct->getId() ?>})'>Подробнее</a>
+                            </div>
+                        </div>
+                        <? endforeach ?>
+                    </div>
+                </div>
+            </div>
+            
             <!-- similar goods -->
             <div class="bGoodSubItem">
                 <div class="bSlider">
@@ -78,27 +108,8 @@ $warranties = $product->getWarranty();
                     </div>
                 </div>
             </div>
-            <!-- accessorise -->
-            <div class="bGoodSubItem clearfix">
-                <div class="bSlider">
-                    <a class="bSlider_eArrow mLeft" href="#"></a>
-                    <a class="bSlider_eArrow mRight" href="#"></a>
-                    <div id="accessoriseSlider" class="bSlider_eWrap clearfix">
-                        <? foreach ($accessories as $iProduct): ?>
-                        <div class="bGoodSubItem_eGoods mFl">
-                            <a class="bGoodSubItem_eGoodsImg mFl mRounded" href="#" onclick='terminal.screen.push("product", {productId: <?= $iProduct->getId() ?>})'><img width="130" height="130" src="<?= $iProduct->getImageUrl(1) ?>"/></a>
-                            <div class="bGoodSubItem_eGoodsInfo">
-                                <!-- <p class="bGoodSubItem_eRating"><?= $iProduct->getRating() ?></p> -->
-                                <h2 class="bGoodSubItem_eTitle"><a class="bGoodSubItem_eLink" href="#" onclick='terminal.screen.push("product", {productId: <?= $iProduct->getId() ?>})'><?= $iProduct->getName() ?></a></h2>
-                                <p class="bGoodSubItem_ePrice"><?= $page->helper->formatPrice($iProduct->getPrice()) ?> <span class="bRuble">p</span></p>
-                                <a class="bGoodSubItem_eMore bButton mSmallGrayBtn" href="#" onclick='terminal.screen.push("product", {productId: <?= $iProduct->getId() ?>})'>Подробнее</a>
-                            </div>
-                        </div>
-                        <? endforeach ?>
-                    </div>
-                </div>
-            </div>
         </div>
+        <?php endif ?>
     </div>
 
     <div class="clearfix">
@@ -126,7 +137,6 @@ $warranties = $product->getWarranty();
                         <p class="bGoodServiceItem_eTitle"><?= $warranty->getName() ?></p>
                         <p class="bGoodServiceItem_ePrice"><?= $page->helper->formatPrice($warranty->getPrice()) ?> <span class="bRuble">p</span></p>
                         <a class="bButton mSmallOrangeBtn mFl" href="#" onclick="terminal.cart.setWarranty(<?= $product->getId() ?>, <?= $warranty->getId() ?>)">в корзину</a>
-                        <a class="bButton mSmallGrayBtn mFl" href="#">подробнее</a>
                     </div>
                 </div>
             <? endforeach ?>

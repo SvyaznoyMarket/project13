@@ -18,9 +18,6 @@ define('library',
 					start: 0,
 					end: self.width() - self.parent().width()
 				}
-				myConsole('selfW '+self.width())
-				myConsole('parentW '+self.parent().width())
-				myConsole('stop '+stop.end)
 			}
 			var moveMe = function(e) {
 				e.preventDefault()
@@ -29,9 +26,11 @@ define('library',
 				// myConsole(left)
 				if ( newLeft > stop.start ){ // ограничение слева
 					$(this).css({left: 0})
+					start.x = orig.changedTouches[0].pageX
 				}
 				else if ( newLeft < -stop.end){
 					$(this).css({left: -stop.end})
+					start.x = orig.changedTouches[0].pageX
 				}
 				else{
 					$(this).css({left: newLeft})
