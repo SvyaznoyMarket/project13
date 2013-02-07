@@ -119,6 +119,7 @@ class Action {
         $page->setParam('categories', $categoriesById);
         $page->setParam('selectedCategory', $selectedCategory);
         $page->setParam('productView', $productView);
+        $page->setParam('productCount', $selectedCategory ? $selectedCategory->getProductCount() : $result['count']);
 
         return new \Http\Response($page->show());
     }
