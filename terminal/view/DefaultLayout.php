@@ -9,5 +9,6 @@ class DefaultLayout extends \Templating\HtmlLayout {
         parent::__construct();
 
         $this->addJavascript('/js/jquery-1.6.4.min.js');
+        $this->addJavascript('/js/terminal/product.js');
     }
 }
