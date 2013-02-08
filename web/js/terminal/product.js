@@ -3,7 +3,6 @@ define('product',
 	['jquery', 'library'], function ($) {
     $(document).ready(function() {
 	//product code
-
 		// slider
 		if ($('#similarSlider').length){
 			var slider = $('#similarSlider')

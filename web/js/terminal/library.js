@@ -1,44 +1,50 @@
 define('library',
 	['jquery'], function ($) {
-		function myConsole(text){
+		
+		function myConsole (text){
 			$('#console').prepend('<p>'+text+'</p>')
 		}
 
 		$.fn.draggable = function() {
-			self = $(this)
-			var start = null
-			var stop = null
-			var start = function(e) {
+			self = this
+
+			self.start = null
+			self.stop = null
+
+			self.start = function(e) {
 				var orig = e.originalEvent
-				start = {
+				self.start = {
 					x: orig.changedTouches[0].pageX,
 					left: parseInt(self.css('left'))
 				}
-				stop = {
+				self.stop = {
 					start: 0,
 					end: self.width() - self.parent().width()
 				}
 			}
-			var moveMe = function(e) {
+
+			self.moveMe = function(e) {
 				e.preventDefault()
 				var orig = e.originalEvent
-				var newLeft = orig.changedTouches[0].pageX - start.x + start.left
-				// myConsole(left)
-				if ( newLeft > stop.start ){ // ограничение слева
-					$(this).css({left: 0})
-					start.left = 0
-					start.x = orig.changedTouches[0].pageX
+				var newLeft = orig.changedTouches[0].pageX - self.start.x + self.start.left
+				if ( newLeft > self.stop.start ){ // ограничение слева
+					self.css({left: 0})
+					self.start.left = 0
+					self.start.x = orig.changedTouches[0].pageX
 				}
-				else if ( newLeft < -stop.end){
-					$(this).css({left: -stop.end})
-					start.left = -stop.end
-					start.x = orig.changedTouches[0].pageX
+				else if ( newLeft < -self.stop.end){
+					self.css({left: -self.stop.end})
+					self.start.left = -self.stop.end
+					self.start.x = orig.changedTouches[0].pageX
 				}
 				else{
-					$(this).css({left: newLeft})
+					self.css({left: newLeft})
 				}
 			}
-			this.bind("touchstart", start)
-			this.bind("touchmove", moveMe)
+
+			if (self.width()>self.parent().width()){
+				self.bind("touchstart", self.start)
+				self.bind("touchmove", self.moveMe)
+			}
 		}
 	})
