@@ -134,7 +134,7 @@ $warranties = $product->getWarranty();
             <h2 class="bGoodItemSpecifications_eTitle">Описание</h2>
             <p class="bGoodItemFullDesc"><?= $product->getDescription() ?></p>
         </div>
-        <div id="bHintPopup" class="mRounded mW570 mPad15_30 mFr"></div>
+        
         <div class="bGoodItemF1 mW570 mPad15_30 mRounded mBlackBlock mFr">
             <h2 class="bGoodItemF1_eServiceTitle">Выбирайте услуги вместе с этим товаром</h2>
             
@@ -168,4 +168,5 @@ $warranties = $product->getWarranty();
         </div>
 
     </div>
+    <div id="bHintPopup" class="mRounded mW570 mPad15_30 mFr mHidden"></div>
 </article>

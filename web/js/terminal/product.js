@@ -1,6 +1,6 @@
 // // product terminal
 define('product',
-	['jquery', 'library'], function ($) {
+	['jquery', 'library'], function ($, library) {
     $(document).ready(function() {
 	//product code
 		// slider
@@ -14,7 +14,7 @@ define('product',
 			slider.width( slider.find('.bGoodSubItem_eGoods').length * (slider.find('.bGoodSubItem_eGoods').width()+20) )
 			slider.draggable()
 		}
-
+		library.myConsole('123')
 		// toggle subItems
 		if ($('.bGoodSubItems_eTitle').length){
 			if ( !$('.jsAccessorise').length ){
@@ -40,9 +40,28 @@ define('product',
 
 		// helpers
 		if ( $('.bQuestionIco').length ){
-			$('.bQuestionIco').bind('click', function(){
+
+			var popUped = false
+			var popUp = $('#bHintPopup')
+			$('.bQuestionIco').bind('click', function(e){
 				var hint = $(this).find('.jsHint').html()
-				$('#bHintPopup').html(hint)
+				var title = $(this).parent().find('.bGoodSpecification_eSpecTitle').html()
+				popUp.html(hint)
+				popUp.prepend('<h2>'+title+'</h2>')
+				pH = popUp.height()/2
+				popUp.css('top', e.pageY - pH).fadeIn(300, function(){
+					popUped = true
+				})
+			})
+
+			$('.bWrap').bind('click', function(event){
+				library.myConsole('tick! '+popUped)
+				if (popUped){
+					event.preventDefault()
+					popUp.fadeOut(300, function(){
+						popUped = false
+					})
+				}
 			})
 		}
 

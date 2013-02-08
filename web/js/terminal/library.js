@@ -1,10 +1,7 @@
 define('library',
 	['jquery'], function ($) {
-		
-		function myConsole (text){
-			$('#console').prepend('<p>'+text+'</p>')
-		}
 
+		// drug plugin
 		$.fn.draggable = function() {
 			self = this
 
@@ -47,4 +44,11 @@ define('library',
 				self.bind("touchmove", self.moveMe)
 			}
 		}
+
+		return { // exports fucntion
+			myConsole: function(text){
+				$('#console').prepend('<p>'+text+'</p>')
+			}
+		}
+
 	})
