@@ -16,11 +16,11 @@ $warranties = $product->getWarranty();
         <div class="clearfix">
             <div class="bGoodImgBlock mRounded mFl mW940">
                 <div class="bPreviewImg">
-                    <? foreach ($product->getPhoto() as $photo): ?>
-                        <a class="bPreviewImg_eLink mRounded" href="">
+                    <? $i = 0; foreach ($product->getPhoto() as $photo): if ($i > 4) continue; ?>
+                        <a class="bPreviewImg_eLink mRounded" href="#" onclick="terminal.screen.push('media', {productId: <?= $product->getId() ?>, currentIndex : <?= $i ?>});">
                             <img class="bPreviewImg_eImage" src="<?= $photo->getUrl(2) ?>" alt="<?= $page->escape($product->getName()) ?>"/>
                         </a>
-                    <? endforeach ?>
+                    <?  $i++; endforeach ?>
                 </div>
                 <div class="bGoodImgBlock_eMainImg">
                     <? if ($product->getLabel()): ?>
@@ -69,8 +69,8 @@ $warranties = $product->getWarranty();
             <!-- accessorise -->
             <div class="bGoodSubItem clearfix">
                 <div class="bSlider">
-                    <a class="bSlider_eArrow mLeft" href="#"></a>
-                    <a class="bSlider_eArrow mRight" href="#"></a>
+                   <!--  <a class="bSlider_eArrow mLeft" href="#"></a>
+                    <a class="bSlider_eArrow mRight" href="#"></a> -->
                     <div id="accessoriseSlider" class="bSlider_eWrap clearfix">
                         <? foreach ($accessories as $iProduct): ?>
                         <div class="bGoodSubItem_eGoods mFl">
@@ -90,8 +90,8 @@ $warranties = $product->getWarranty();
             <!-- similar goods -->
             <div class="bGoodSubItem">
                 <div class="bSlider">
-                    <a class="bSlider_eArrow mLeft" href="#"></a>
-                    <a class="bSlider_eArrow mRight" href="#"></a>
+                    <!-- <a class="bSlider_eArrow mLeft" href="#"></a>
+                    <a class="bSlider_eArrow mRight" href="#"></a> -->
                     <div id="similarSlider" class="bSlider_eWrap mHidden clearfix">
                         <? foreach ($related as $iProduct): ?>
                         <!-- terminal.screen.push('product', {productId: <?= $iProduct->getId() ?>}) -->
@@ -119,13 +119,22 @@ $warranties = $product->getWarranty();
             <div class="bGoodSpecification">
                 <h3 class="bGoodSpecification_eBlockName"><?= $group['group']->getName() ?></h3>
                 <? foreach ($group['properties'] as $property): ?>
-                    <p class="bGoodSpecification_eBlockDesc clearfix"><span class="bGoodSpecification_eSpecTitle mFl"><?= $property->getName() ?></span><span class="bGoodSpecification_eSpecValue mFl"><?= $property->getStringValue() ?></span></p>
+                    <div class="bGoodSpecification_eBlockDesc clearfix">
+                        <span class="bGoodSpecification_eSpecTitle mFl"><?= $property->getName() ?></span>
+                        <span class="bGoodSpecification_eSpecValue mFl"><?= $property->getStringValue() ?></span>
+                        <? if ($property->getHint()): ?>
+                        <div class="bQuestionIco mFl">
+                            <span class="jsHint mHidden"><?= $property->getHint() ?></span>
+                        </div>
+                        <? endif ?>
+                    </div>
                 <? endforeach ?>
             </div>
             <? endforeach ?>
             <h2 class="bGoodItemSpecifications_eTitle">Описание</h2>
             <p class="bGoodItemFullDesc"><?= $product->getDescription() ?></p>
         </div>
+        <div id="bHintPopup" class="mRounded mW570 mPad15_30 mFr"></div>
         <div class="bGoodItemF1 mW570 mPad15_30 mRounded mBlackBlock mFr">
             <h2 class="bGoodItemF1_eServiceTitle">Выбирайте услуги вместе с этим товаром</h2>
             
@@ -155,6 +164,8 @@ $warranties = $product->getWarranty();
                     </div>
                 </div>
             <? endforeach ?>
+
         </div>
+
     </div>
 </article>

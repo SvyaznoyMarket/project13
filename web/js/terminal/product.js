@@ -27,16 +27,22 @@ define('product',
 				if ( $(this).hasClass('jsAccessorise') ){
 					$('#similarSlider').hide()
 					$('#accessoriseSlider').show()
-					console.log('1')
 				}
 				else if ( $(this).hasClass('jsSimilar') ){
 					$('#accessoriseSlider').hide()
 					$('#similarSlider').show()
-					console.log('2')
 				}
 				else{
 					return false
 				}
+			})
+		}
+
+		// helpers
+		if ( $('.bQuestionIco').length ){
+			$('.bQuestionIco').bind('click', function(){
+				var hint = $(this).find('.jsHint').html()
+				$('#bHintPopup').html(hint)
 			})
 		}
 
