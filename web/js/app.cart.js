@@ -104,12 +104,15 @@ $(document).ready(function() {
 			if( clearfunction ) 
 				clearfunction()
 			
-			$.getJSON( drop , function( data ) {
+			$.when($.getJSON( drop , function( data ) {
+			})).then( function(data){
 				$(nodes.drop).data('run',false)
 				if( !data.success ) {
 					location.href = location.href
-				} else
+				}
+				else{
 					getTotal()
+				}
 			})
 		}
 
@@ -149,7 +152,8 @@ $(document).ready(function() {
 			// 		sufx = '/0'
 			// 	tmpurl += sufx
 			// }
-			$.getJSON( tmpurl , function( data ) {
+			$.when($.getJSON( tmpurl , function( data ) {
+			})).then( function(data){
 				$(minimax).data('run',false)
 				//if( data.success && data.data.quantity ) {
 					//$(nodes.quan).html( data.data.quantity + ' шт.' )
