@@ -321,7 +321,8 @@ $(document).ready(function () {
                     '4427', 
                     creditWidget.vars.number ,// session
                     'orderProductToBuyOnCredit',
-                    { order_id: creditWidget.vars.number }
+                    { order_id: creditWidget.vars.number,
+                    region: creditWidget.vars.region }
                 )
             }
         })

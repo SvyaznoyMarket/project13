@@ -478,10 +478,22 @@ class Action {
                 } else if ($creditProviderId == \Model\CreditBank\Entity::PROVIDER_DIRECT_CREDIT) {
 
                     $creditData['widget'] = 'direct-credit';
+
+                    $shop = $order->getShopId()
+                        ? \RepositoryManager::shop()->getEntityById($order->getShopId())
+                        : null;
+                    if (!$shop) {
+                        $shops = \RepositoryManager::shop()->getCollectionByRegion($user->getRegion());
+                        $shop = reset($shops);
+                    }
+
                     $creditData['vars'] = array(
                         'number' => $order->getNumber(),
-                        'items' => []
+                        'region' => $shop ? $shop->getId() : null,
+                        'items'  => [],
+
                     );
+
                     foreach ($order->getProduct() as $orderProduct) {
                         /** @var $product \Model\Product\Entity|null */
                         $product = isset($productsById[$orderProduct->getId()]) ? $productsById[$orderProduct->getId()] : null;
@@ -489,21 +501,12 @@ class Action {
                             throw new \Exception(sprintf('Не найден товар #%s, который есть в заказе', $orderProduct->getId()));
                         }
 
-                        $shop = $order->getShopId()
-                            ? \RepositoryManager::shop()->getEntityById($order->getShopId())
-                            : null;
-                        if (!$shop) {
-                            $shops = \RepositoryManager::shop()->getCollectionByRegion($user->getRegion());
-                            $shop = reset($shops);
-                        }
-
                         $creditData['vars']['items'][] = array(
                             'name'     => $product->getName(),
                             'quantity' => (string)$orderProduct->getQuantity(),
                             'price'    => $orderProduct->getPrice(),
                             'articul'  => $product->getArticle(),
-                            'type'     => \RepositoryManager::creditBank()->getCreditTypeByCategoryToken($product->getMainCategory() ? $product->getMainCategory()->getToken() : null),
-                            'region'   => $shop ? $shop->getId() : null,
+                            'type'     => \RepositoryManager::creditBank()->getCreditTypeByCategoryToken($product->getMainCategory() ? $product->getMainCategory()->getToken() : null)
                         );
                     }
                 }
