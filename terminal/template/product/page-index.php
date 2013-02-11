@@ -168,5 +168,9 @@ $warranties = $product->getWarranty();
         </div>
 
     </div>
-    <div id="bHintPopup" class="mRounded mW570 mPad15_30 mFr mHidden"></div>
+    <!-- окно подсказок -->
+    <div id="bHintPopup" class="mRounded mW570 mPad15_30 mFr mHidden">
+        <div class="leftCorner"></div>
+        <div class="bHintPopup_eContent"></div>
+    </div>
 </article>

@@ -46,8 +46,9 @@ define('product',
 			$('.bQuestionIco').bind('click', function(e){
 				var hint = $(this).find('.jsHint').html()
 				var title = $(this).parent().find('.bGoodSpecification_eSpecTitle').html()
-				popUp.html(hint)
-				popUp.prepend('<h2>'+title+'</h2>')
+				var hintContent = popUp.find('.bHintPopup_eContent')
+				hintContent.html(hint)
+				hintContent.prepend('<h2>'+title+'</h2>')
 				pH = popUp.height()/2
 				popUp.css('top', e.pageY - pH).fadeIn(300, function(){
 					popUped = true
