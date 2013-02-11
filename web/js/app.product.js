@@ -151,6 +151,9 @@ $(document).ready(function() {
 
 	// видео в карточке товара
 	if ($('.goodsphoto_eVideoShield').length){
+		var videoStartTime = 0
+		var videoEndTime = 0
+		var productUrl = document.location.href
 		var shield = $('.goodsphoto_eVideoShield')
 		var iframe = $('#productVideo .productVideo_iframe').html()
 		$('#productVideo .productVideo_iframe').empty()
@@ -158,8 +161,17 @@ $(document).ready(function() {
 			$('#productVideo .productVideo_iframe').append(iframe)
 			$('#productVideo').lightbox_me({ 
 				centered: true,
+				onLoad: function(){
+					videoStartTime = new Date().getTime()
+					if (typeof(_gaq) !== 'undefined') 
+						_gaq.push(['_trackEvent', 'Video', 'Play', productUrl]);
+				},
 				onClose: function(){
 					$('#productVideo .productVideo_iframe').empty()
+					videoEndTime = new Date().getTime()
+					var videoSpent = videoEndTime - videoStartTime
+					if (typeof(_gaq) !== 'undefined') 
+						_gaq.push(['_trackEvent', 'Video', 'Stop', productUrl, videoSpent]);
 				}
 			})
 			return false
