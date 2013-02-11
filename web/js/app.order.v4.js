@@ -377,13 +377,17 @@ $(document).ready(function() {
 
 		function buildTightInterval( edges ) {
 			var tightInterval = edges[0]
-			if( edges.length > 1 )
+			if( edges.length > 1 ){
 				for(var i=1, l=edges.length; i<l; i++) {
-					if( edges[i][0] > tightInterval[0] )
+					if( edges[i][0] > tightInterval[0] ){
 						tightInterval[0] = edges[i][0]
-					if( edges[i][1] < tightInterval[1] )
+					}
+					if( edges[i][1] < tightInterval[1] ){
 						tightInterval[1] = edges[i][1]
+					}
 				}
+			}
+			// console.log(tightInterval)
 			return tightInterval
 		}
 
@@ -451,10 +455,9 @@ $(document).ready(function() {
 			// 1) Build Tight Interval
 			var tightInterval = buildTightInterval( edges )
 			// 2) Make Additional Dates				
-			var first = getMonday( tightInterval[0].timestamp )				
+			var first = getMonday( tightInterval[0].timestamp )
 			var last = getSunday( tightInterval[1].timestamp )
- 			//console.info( 'Interval edges for ', bid, ' :', first, last )
-
+ 			// console.info( 'Interval edges for ', bid, ' :', first, last )
 
 			// 3) Make Dates By T Interval
 			var doweeks = ['Вс','Пн','Вт','Ср','Чт','Пт','Сб']
@@ -475,7 +478,7 @@ $(document).ready(function() {
 			}
 			box.nweeks = nweeks-1
 			// 4) Loop
-up:				for( var linedate in box.caclDates ) { // Loop for T Interval
+up:			for( var linedate in box.caclDates ) { // Loop for T Interval
 				var dates = []
 				for(var i=0, l=box.itemList().length; i<l; i++) { // Loop for all intervals
 					var bid = box.token
@@ -485,6 +488,7 @@ up:				for( var linedate in box.caclDates ) { // Loop for T Interval
 						continue up
 					}
 					box.caclDates[linedate].enable( true )
+					// break
 				}
 				//add intervals ATTENTION : NO COMPILATION FOR INTERVALS
 				box.caclDates[linedate].intervals = getIntervalsFromData( dates, 'timestamp', box.caclDates[linedate].tstamp )
@@ -515,15 +519,15 @@ up:				for( var linedate in box.caclDates ) { // Loop for T Interval
 				if( box.caclDates[linedate].enable() ) {
 					box.chosenDate( box.caclDates[linedate].tstamp )
 					box.chosenInterval( box.caclDates[linedate].intervals[0] )
-					for( var key in box.caclDates[linedate].intervals )
+					for( var key in box.caclDates[linedate].intervals ){
 						box.currentIntervals.push( box.caclDates[linedate].intervals[key] )
+					}
 					break
 				}
 				if (i==7){
 					i=0
 					box.curWeek( box.curWeek() + 1 )
 				}
-					
 			}
 			// console.info(box.chosenDate( box.caclDates[linedate].tstamp ) )
 			box.dlvrPrice  = ko.computed(function() {
@@ -544,19 +548,59 @@ up:				for( var linedate in box.caclDates ) { // Loop for T Interval
 					out += this.dlvrPrice()*1
 				return out
 			}, box)
+
 			self.dlvrBoxes.push( box )
 		} // mth addBox
 
+		function onlyStandart(){
+
+			var onlyStandartItems = { // только для доставки
+				type: 'standart',
+				token: 'standart_other',
+				items: [],
+				shop: null
+			}
+			var onlyStandart2 = { // у которых есть самовывоз
+				type: 'standart',
+				token: 'standart_other',
+				items: [],
+				shop: null
+			}
+
+			for (var i in Model.items){
+				if ( (Object.keys(Model.items[i].deliveries).length == 1) && ('standart_other' in Model.items[i].deliveries) ){
+					// товар без самовывоза
+					onlyStandartItems.items.push(Model.items[i].token)
+				}
+				else{
+					// товар у которого есть самовывоз. пойдет в другой box
+					onlyStandart2.items.push(Model.items[i].token)
+				}
+			}
+
+			return {
+				onlyStandartItems:onlyStandartItems,
+				onlyStandart2:onlyStandart2
+			}
+		}
+
 		function fillUpBoxesFromModel() {
 			self.dlvrBoxes.removeAll()
-			for( var tkn in Model.deliveryTypes ) {
-				if( Model.deliveryTypes[tkn].items.length ) {				
-					addBox ( Model.deliveryTypes[tkn].type, Model.deliveryTypes[tkn].token, Model.deliveryTypes[tkn].items, Model.deliveryTypes[tkn].shop )
+			if (nowDelivery == 'self'){
+				// for only standart box
+				var boxes = onlyStandart()
+				addBox(boxes.onlyStandartItems.type, boxes.onlyStandartItems.token, boxes.onlyStandartItems.items, boxes.onlyStandartItems.shop)
+				addBox(boxes.onlyStandart2.type, boxes.onlyStandart2.token, boxes.onlyStandart2.items, boxes.onlyStandart2.shop)
+			}
+			else{
+				for( var tkn in Model.deliveryTypes ) {
+					if( Model.deliveryTypes[tkn].items.length ) {			
+						addBox ( Model.deliveryTypes[tkn].type, Model.deliveryTypes[tkn].token, Model.deliveryTypes[tkn].items, Model.deliveryTypes[tkn].shop )
+					}
 				}
 			}
 		}
-		fillUpBoxesFromModel()
-		
+
 		self.shopsInPopup = ko.observableArray( [] )
 
 		function fillUpShopsFromModel() {
@@ -657,6 +701,7 @@ up:				for( var linedate in box.caclDates ) { // Loop for T Interval
 
 		self.pickShops = function() {
 			nowDelivery = 'self'
+			fillUpBoxesFromModel()
 			self.step2( false )
 			self.shopButtonEnable( true )
 			var data = {
@@ -697,7 +742,7 @@ up:				for( var linedate in box.caclDates ) { // Loop for T Interval
 		}
 
 		self.selectShop = function( d ) {
-			
+
 			if( self.step2() ) {
 				/* Select Shop in Box */
 				var newboxes = [{ shop: self.chosenBox().token.replace('self_','') , items: [] }, { shop: d.id , items: [] } ]
@@ -715,12 +760,13 @@ upi:			for( var item=0, boxitems=self.chosenBox().itemList(); item < boxitems.le
 					item++
 				}
 				
-// console.info( newboxes )							
+				// console.info('newboxes', newboxes )							
 				// create new box for such items and for old box
 				for( var nbox in newboxes ) {
 					if( newboxes[nbox].items.length > 0 ) {
 						var argshop = Model.shops[ newboxes[nbox].shop ]
 						addBox ( 'self', 'self_'+newboxes[nbox].shop, newboxes[nbox].items, argshop )
+						// console.info('add box!')
 					}
 				}
 				// clear this box if it should be
