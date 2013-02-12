@@ -46,6 +46,7 @@ class Client {
         curl_setopt($connection, CURLOPT_HEADER, 0);
 
         if ($timeout) {
+            curl_setopt($connection, CURLOPT_NOSIGNAL, 1);
             curl_setopt($connection, CURLOPT_TIMEOUT_MS, $timeout * 1000);
         }
 

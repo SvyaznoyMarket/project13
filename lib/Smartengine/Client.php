@@ -102,6 +102,7 @@ class Client {
         }
         curl_setopt($connection, CURLOPT_HEADER, 0);
         curl_setopt($connection, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($connection, CURLOPT_NOSIGNAL, 1);
         curl_setopt($connection, CURLOPT_TIMEOUT_MS, $this->config['timeout'] * 1000);
         curl_setopt($connection, CURLOPT_URL, $query);
 
