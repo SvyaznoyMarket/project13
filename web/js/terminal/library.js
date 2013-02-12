@@ -21,6 +21,7 @@ define('library',
 			}
 
 			self.moveMe = function(e) {
+				terminal.interactive = false
 				e.preventDefault()
 				var orig = e.originalEvent
 				var newLeft = orig.changedTouches[0].pageX - self.start.x + self.start.left
@@ -39,9 +40,14 @@ define('library',
 				}
 			}
 
+			self.moveEnd = function() {
+				terminal.interactive = true
+			}
+
 			if (self.width()>self.parent().width()){
 				self.bind("touchstart", self.start)
 				self.bind("touchmove", self.moveMe)
+				self.bind("touchend", self.moveEnd)
 			}
 		}
 

@@ -160,7 +160,7 @@ $warranties = $product->getWarranty();
                         <p class="bGoodServiceItem_eTitle"><?= $service->getName() ?></p>
                         <p class="bGoodServiceItem_ePrice"><?= $page->helper->formatPrice($service->getPrice()) ?> <span class="bRuble">p</span></p>
                         <a class="bButton mSmallOrangeBtn mFl" href="#" onclick="terminal.cart.addService(<?= $product->getId() ?>, <?= $service->getId() ?>)">в корзину</a>
-                        <a class="bButton mSmallGrayBtn mFl" href="#">подробнее</a>
+                        <a class="bButton mSmallGrayBtn mFl" href="#" onclick="terminal.screen.push('service', {serviceId: <?= $service->getId() ?>, productId: <?= $product->getId() ?>, isBuyable: true})">подробнее</a> <!-- isBuyable ??? -->
                     </div>
                 </div>
             <? endforeach ?>
