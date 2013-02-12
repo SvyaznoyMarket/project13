@@ -8,7 +8,7 @@ class Abtest {
     private $config = [];
 
     /** @var \Model\Abtest\Entity[] */
-    private $option;
+    private $option = [];
 
     /** @var \Model\Abtest\Entity */
     private $case;
@@ -104,6 +104,13 @@ class Abtest {
         if (!\App::request()->cookies->has($this->config['cookieName'])) {
             $response->headers->setCookie($cookie);
         }
+    }
+
+    /**
+     * @return array|\Model\Abtest\Entity[]
+     */
+    public function getOption() {
+        return $this->option;
     }
 
     /**
