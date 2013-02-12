@@ -310,6 +310,10 @@ window.ANALYTICS = {
         mtAdvertiserToken = "1989-100-ru";
         document.write(unescape("%3Cscript src='" + mtHost + "/c.aspx?atok="+mtAdvertiserToken+"' type='text/javascript'%3E%3C/script%3E"));
     },
+    testFreak : function() {
+        document.write('<scr'+'ipt type="text/javascript" src="http://js.testfreaks.com/badge/enter.ru/head.js"></scr'+'ipt>')
+    },
+
 
     enable : true
 }
