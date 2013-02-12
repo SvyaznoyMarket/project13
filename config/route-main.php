@@ -7,15 +7,6 @@ return [
         'action'  => ['Main\IndexAction', 'execute'],
     ],
 
-    // установка AB-test cookie
-    'abtest.setcookie' => [
-        'pattern' => '/switch/{redirectTo}',
-        'action'  => ['Abtest\Action', 'setCookie'],
-        'require' => [
-            'redirectTo' => '.+',
-        ],
-    ],
-
     'category.mainMenu' => [
         'pattern' => '/category/main_menu',
         'action'  => ['ProductCategory\MainMenuAction', 'execute'],

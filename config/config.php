@@ -166,7 +166,7 @@ $c->queue['maxLockTime'] = 600;
 
 $c->abtest = [
     'cookieName' => 'switch',
-    'bestBefore' => '2013-02-13', //кука умрет в 00:00
+    'bestBefore' => '2013-01-01', //кука умрет в 00:00
     'enabled'    => false,
     'test'       => [],
 ];

@@ -127,6 +127,9 @@ try {
 
     /* @var $response \Http\Response */
     $response = call_user_func_array($actionCall, $actionParams);
+
+    //сохраняю данные для abtest
+    \App::abTest()->setCookie($response);
 } catch (\Exception\NotFoundException $e) {
     $action = new \Controller\Error\NotFoundAction();
     $response = $action->execute($e, $request);

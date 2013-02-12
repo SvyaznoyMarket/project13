@@ -5,10 +5,8 @@ $c = require __DIR__ . '/config.php';
 
 $c->debug = true;
 
-//$c->coreV2['url'] = 'http://api.enter.ru/v2/';
-//$c->coreV2['url'] = 'http://test2.core.ent3.ru/v2/';
 $c->coreV2['url'] = 'http://core.ent3.ru/v2/';
-//$c->coreV2['retryTimeout'] = 0.5; //500ms
+
 $c->coreV2['retryTimeout'] = [
     'default' => 1,
     'tiny'    => 0.2,
@@ -45,7 +43,5 @@ $c->abtest['test'] = [
         'ga_event' => 'TestFreaks01',
     ],
 ];
-
-//$c->googleAnalytics['enabled'] = true;
 
 return $c;

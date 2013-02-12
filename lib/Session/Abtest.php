@@ -40,7 +40,6 @@ class Abtest {
     private function setCase()
     {
         $luck = mt_rand(0, 99);
-
         $total = 0;
 
         foreach ($this->option as $test) {
@@ -49,10 +48,6 @@ class Abtest {
             $diff = ($test->getTraffic() !== '*') ? (int)$test->getTraffic() : (100 - $total);
             if ($luck < $total + $diff) {
                 $this->case = $test;
-                //\App::response()->cookies->set($this->config['cookieName'], $test['key']);
-
-                //->headers->setCookie($cookie);
-
                 break;
             }
             $total += $diff;
@@ -67,6 +62,10 @@ class Abtest {
         if ((bool)$this->case) {
             return $this->case;
         }
+
+        if (!(bool)$this->config['enabled']) {
+            return $this->option['default'];
+        }
         if (\App::request()->cookies->has($this->config['cookieName'])) {
             $case = \App::request()->cookies->get($this->config['cookieName']);
             if ($this->isValid($case)) {
@@ -76,11 +75,42 @@ class Abtest {
         return null;
     }
 
+    public function setCookie(\Http\Response &$response) {
+        if (strtotime($this->config['bestBefore']) <= strtotime('now') || !(bool)$this->config['enabled'])
+        {
+            $cookie = new \Http\Cookie(
+                $this->config['cookieName'],
+                'default',
+                0,
+                '/',
+                null,
+                false,
+                false // важно httpOnly=false, чтобы js мог получить куку
+            );
+        } else {
+            $case = $this->getCase();
+
+            $cookie = new \Http\Cookie(
+                $this->config['cookieName'],
+                $case->getKey(),
+                strtotime($this->config['bestBefore']),
+                '/',
+                null,
+                false,
+                false // важно httpOnly=false, чтобы js мог получить куку
+            );
+        }
+
+        if (!\App::request()->cookies->has($this->config['cookieName'])) {
+            $response->headers->setCookie($cookie);
+        }
+    }
+
     /**
      * @param string $case
      * @return bool
      */
-    public function isValid($case) {
+    private function isValid($case) {
         foreach ($this->option as $test) {
             if ($test->getKey() == $case) return true;
         }
