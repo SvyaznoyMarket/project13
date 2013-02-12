@@ -63,9 +63,9 @@ foreach ((array)$requestData['api_queries'] as $query) {
 $debug->add('query', $queryString, 80);
 
 if ((bool)\App::config()->abtest['enabled']) {
-    $options = '';
+    $options = '<span style="color: #cccccc;">Тестирование проводится до </span><span style="color: #00ffff;">' . date('d-m-Y H:i', strtotime(\App::config()->abtest['bestBefore'])) . '</span><br />';
     foreach (\App::abTest()->getOption() as $option) {
-        $options .= '<span style="color: #' . ($option->getKey() == \App::abTest()->getCase()->getKey() ? 'color: #00ffff' : 'cccccc') . ';">' . $option->getTraffic() . ($option->getTraffic() === '*' ? ' ' : '% ') . $option->getKey() . ' ' . $option->getName() . '</span><br />';
+        $options .= '<span style="color: #' . ($option->getKey() == \App::abTest()->getCase()->getKey() ? 'color: #11ff11' : 'cccccc') . ';">' . $option->getTraffic() . ($option->getTraffic() === '*' ? ' ' : '% ') . $option->getKey() . ' ' . $option->getName() . '</span><br />';
     }
 }
 $debug->add('abTest', $options, 70);
