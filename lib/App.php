@@ -351,4 +351,14 @@ class App {
 
         return $instance;
     }
+
+    public static function abTest() {
+        static $instance;
+
+        if (!$instance) {
+            $instance = new \Session\Abtest(self::config()->abtest);
+        }
+
+        return $instance;
+    }
 }

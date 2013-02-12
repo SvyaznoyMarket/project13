@@ -20,6 +20,9 @@
     _gaq.push(['_addOrganic', 'ru.search.yahoo.com','p']);
     _gaq.push(['_addOrganic', 'ya.ru', 'q']);
     _gaq.push(['_addOrganic', 'm.yandex.ru','query']);
+<? if (\App::config()->abtest['enabled']): ?>
+    _gaq.push(['_setCustomVar', 1, 'User segment', '<?= \App::abTest()->getCase()->getGaEvent() ?>', 2]);
+<? endif ?>
     _gaq.push(['_trackPageview']);
     _gaq.push(['_trackPageLoadTime']);
     (function()

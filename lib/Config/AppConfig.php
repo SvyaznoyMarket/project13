@@ -195,6 +195,14 @@ class AppConfig {
     ];
 
     /** @var array */
+    public $abtest = [
+        'cookieName' => null,
+        'bestBefore' => null,
+        'enabled'    => null,
+        'test'       => [],
+    ];
+
+    /** @var array */
     public $database = [
         'host'     => null,
         'name'     => null,

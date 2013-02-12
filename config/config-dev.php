@@ -37,4 +37,15 @@ $c->paymentPsbInvoice['contractorId'] = 14;
 $c->paymentPsbInvoice['key'] = $c->dataDir . '/key/privkey.pem';
 $c->paymentPsbInvoice['payUrl'] = 'https://retail-tst.payment.ru/dn/Invoices/ReceiveUniversalInvoices.aspx';
 
+$c->abtest['test'] = [
+    [
+        'traffic'  => '50',
+        'key'      => 'comment',
+        'name'     => 'Тестирование комментариев',
+        'ga_event' => 'TestFreaks01',
+    ],
+];
+
+//$c->googleAnalytics['enabled'] = true;
+
 return $c;

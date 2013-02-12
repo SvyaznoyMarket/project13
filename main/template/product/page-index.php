@@ -130,21 +130,25 @@ $productVideo = reset($productVideos);
 <div class="goodsinfo bGood">
   <div class="bGood__eArticle">
     <div class="fr">
-      <span id="rating" data-url="<?= $page->url('product.rating.create_total', array('rating' => 'score', 'productId' => $product->getId() )) ?>">
+      <?php if ((bool)\App::config()->abtest['enabled'] && \App::abTest()->getCase()->getKey() == 'comment'): ?>
+        testFreak
+      <?php else: ?>
+        <span id="rating" data-url="<?= $page->url('product.rating.create_total', array('rating' => 'score', 'productId' => $product->getId() )) ?>">
         <?
-        echo str_repeat('<img src="/css/skin/img/star_a.png" alt="" />', floor($product->getRating()));
-        if ($product->getRating() - floor($product->getRating()) > 0 and $product->getRating() - floor($product->getRating()) < 0.25) {
-            echo '<img src="/css/skin/img/star_p.png" alt="" />';
-        } elseif ($product->getRating() - floor($product->getRating()) < 0.75) {
-            echo '<img src="/css/skin/img/star_h.png" alt="" />';
-        } else {
-            echo '<img src="/css/skin/img/star_a.png" alt="" />';
-        }
-        echo str_repeat('<img src="/css/skin/img/star_p.png" alt="" />', 5 - ceil($product->getRating()));
-        ?>
+            echo str_repeat('<img src="/css/skin/img/star_a.png" alt="" />', floor($product->getRating()));
+            if ($product->getRating() - floor($product->getRating()) > 0 and $product->getRating() - floor($product->getRating()) < 0.25) {
+                echo '<img src="/css/skin/img/star_p.png" alt="" />';
+            } elseif ($product->getRating() - floor($product->getRating()) < 0.75) {
+                echo '<img src="/css/skin/img/star_h.png" alt="" />';
+            } else {
+                echo '<img src="/css/skin/img/star_a.png" alt="" />';
+            }
+            echo str_repeat('<img src="/css/skin/img/star_p.png" alt="" />', 5 - ceil($product->getRating()));
+            ?>
       </span>
       <strong class="ml5 hf"><?= round($product->getRating(), 1) ?></strong>
       <!--a href="<? //echo $product->getLink().'/comments' ?>" class="underline ml5">Читать отзывы</a> <span>(<?= $product->getCommentCount() ?>)</span-->
+      <?php endif; ?>
     </div>
     <span>Артикул #<?= $product->getArticle() ?></span>
   </div>
