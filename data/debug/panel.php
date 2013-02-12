@@ -15,6 +15,12 @@ $debug->add('env', \App::$env, 144);
 $debug->add('name', \App::$name, 143);
 $debug->add('git.branch', shell_exec(sprintf('cd %s && git rev-parse --abbrev-ref HEAD', realpath(\App::config()->appDir))), 142);
 $debug->add('git.tag', shell_exec(sprintf('cd %s && git describe --always --tag', realpath(\App::config()->appDir))), 141);
+if ((bool)\App::config()->abtest['enabled']) {
+    $debug->add('abTest', \App::abTest()->getCase()->getName(), 140);
+} else {
+    $debug->add('abTest', 'disabled', 140);
+}
+
 
 $action =implode('.', \App::request()->attributes->get('action', []));
 $debug->add('act', $action ?: 'undefined', 138, $action ? \Debug\Collector::TYPE_INFO : \Debug\Collector::TYPE_ERROR);
@@ -55,6 +61,14 @@ foreach ((array)$requestData['api_queries'] as $query) {
         . '<br />';
 }
 $debug->add('query', $queryString, 80);
+
+if ((bool)\App::config()->abtest['enabled']) {
+    $options = '<span style="color: #cccccc;">Тестирование проводится до </span><span style="color: #00ffff;">' . date('d-m-Y H:i', strtotime(\App::config()->abtest['bestBefore'])) . '</span><br />';
+    foreach (\App::abTest()->getOption() as $option) {
+        $options .= '<span style="color: #' . ($option->getKey() == \App::abTest()->getCase()->getKey() ? 'color: #11ff11' : 'cccccc') . ';">' . $option->getTraffic() . ($option->getTraffic() === '*' ? ' ' : '% ') . $option->getKey() . ' ' . $option->getName() . '</span><br />';
+    }
+    $debug->add('abTest', $options, 70);
+}
 
 if (!\App::request()->isXmlHttpRequest()) {
 ?>

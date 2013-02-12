@@ -27,9 +27,11 @@ $hasModel = (isset($hasModel) ? $hasModel : true) && $product->getModel() && (bo
 	            <img class="mainImg" src="<?= $product->getImageUrl(2) ?>" alt="<?= $product->getNameWithCategory() ?>" title="<?= $product->getNameWithCategory() ?>" width="160" height="160"/>
 	        </a>
 	    </div>
-	    <div class="goodsbox__rating rate<?= round($product->getRating())?>">
+        <?php if (!(bool)\App::config()->abtest['enabled'] || 'comment' !== \App::abTest()->getCase()->getKey()): ?>
+        <div class="goodsbox__rating rate<?= round($product->getRating())?>">
 	    	<div class="fill"></div>
 	    </div>
+        <?php endif; ?>
 	    <h3><a href="<?= $product->getLink() ?>"><?= $product->getName() ?></a></h3>
         <div class="goodsbar mSmallBtns mR">
             <?= $page->render('cart/_button', array('product' => $product, 'disabled' => !$product->getIsBuyable())) ?>

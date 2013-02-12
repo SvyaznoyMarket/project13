@@ -110,7 +110,7 @@ $productVideo = reset($productVideos);
 <? endif ?>
 
 <div class="goodsphoto">
-  <? if ($productVideo): ?><a class="goodsphoto_eVideoShield" href="#"></a><? endif ?>
+  <? if ($productVideo && (bool)\App::config()->abtest['enabled'] && \App::abTest()->getCase()->getKey() == 'video'): ?><a class="goodsphoto_eVideoShield" href="#"></a><? endif ?>
 
   <a href="<?= $product->getImageUrl(4) ?>" class="viewme" ref="image" onclick="return false">
     <? if ($product->getLabel()): ?>
@@ -128,10 +128,10 @@ $productVideo = reset($productVideos);
 
 <!-- Goods info -->
 <div class="goodsinfo bGood">
-  <div class="bGood__eArticle">
+  <div class="bGood__eArticle clearfix">
     <div class="fr">
       <?php if ((bool)\App::config()->abtest['enabled'] && \App::abTest()->getCase()->getKey() == 'comment'): ?>
-        testFreak
+        <div id="testFreak" class="jsanalytics"><a id="tfw-badge" href="http://www.testfreaks.ru"></a></div>
       <?php else: ?>
         <span id="rating" data-url="<?= $page->url('product.rating.create_total', array('rating' => 'score', 'productId' => $product->getId() )) ?>">
         <?

@@ -22,9 +22,11 @@ $gaEvent = isset($gaEvent) ? $gaEvent : null;
 				title="<?php echo $product->getNameWithCategory() ?>" width="119" height="120"/>
 			</a>
 		</div>
+        <?php if (!(bool)\App::config()->abtest['enabled'] || 'comment' !== \App::abTest()->getCase()->getKey()): ?>
 	    <div class="goodsbox__rating rate<?= round($product->getRating())?>">
 	    	<div class="fill"></div>
 	    </div>
+        <?php endif; ?>
 	    <h3><a href="<?php echo $product->getLink() ?>"<?php if (!empty($gaEvent)) echo ' data-event="'.$gaEvent.'" data-title="Переход по ссылке" class="gaEvent"'; ?>><?php echo $product->getName() ?></a></h3>
 		<div class="goodsbar mSmallBtns mR">
           <?= $page->render('cart/_button', array('product' => $product, 'disabled' => !$product->getIsBuyable())) ?>

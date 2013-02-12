@@ -37,10 +37,16 @@ $c->paymentPsbInvoice['payUrl'] = 'https://retail-tst.payment.ru/dn/Invoices/Rec
 
 $c->abtest['test'] = [
     [
-        'traffic'  => '50',
+        'traffic'  => '40',
         'key'      => 'comment',
         'name'     => 'Тестирование комментариев',
         'ga_event' => 'TestFreaks01',
+    ],
+    [
+        'traffic'  => '40',
+        'key'      => 'video',
+        'name'     => 'Тестирование видео',
+        'ga_event' => 'video',
     ],
 ];
 
