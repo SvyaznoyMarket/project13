@@ -24,8 +24,10 @@ $hasModel = (isset($hasModel) ? $hasModel : true) && $product->getModel() && (bo
             <h3><a href="<?= $product->getLink() ?>"><?= $product->getName() ?></a></h3>
             <span class="gray bNGB__eArt mInlineBlock">
                 Артикул #<?= $product->getArticle() ?>
+                <?php if (!(bool)\App::config()->abtest['enabled'] || 'comment' !== \App::abTest()->getCase()->getKey()): ?>
                 <?= str_repeat('<span class="ratingview" style="width:13px;vertical-align:middle;display:inline-block;"></span>', round($product->getRating())) ?>
                 <?= str_repeat('<span class="ratingview" style="width:13px;vertical-align:middle;display:inline-block;background-position:-51px 0;"></span>', 5 - round($product->getRating())) ?>
+                <?php endif; ?>
 
                 <span class="bNGB__eDrop"><a href="<?= $product->getLink() ?>" style="display: none"></a></span>
             </span>
