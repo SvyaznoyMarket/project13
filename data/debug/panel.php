@@ -67,8 +67,8 @@ if ((bool)\App::config()->abtest['enabled']) {
     foreach (\App::abTest()->getOption() as $option) {
         $options .= '<span style="color: #' . ($option->getKey() == \App::abTest()->getCase()->getKey() ? 'color: #11ff11' : 'cccccc') . ';">' . $option->getTraffic() . ($option->getTraffic() === '*' ? ' ' : '% ') . $option->getKey() . ' ' . $option->getName() . '</span><br />';
     }
+    $debug->add('abTest', $options, 70);
 }
-$debug->add('abTest', $options, 70);
 
 if (!\App::request()->isXmlHttpRequest()) {
 ?>
