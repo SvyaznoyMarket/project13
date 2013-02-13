@@ -52,32 +52,36 @@
 	switch( document.body.getAttribute('data-template') ) {
 		case 'main':
 			$LAB.queueWait( function() {
-				$LAB.script( getWithVersion('bigjquery.js') )
-				.script( getWithVersion('ports.js') )
+				$LAB
+				.script( getWithVersion('bigjquery.js') )
 				.script( getWithVersion('library.js') )
 				.wait()
 				.script(getWithVersion('main.js'))
 				.script(getWithVersion('welcome.js'))
+				.wait()
+				.script( getWithVersion('ports.js') )
 			}).runQueue()
 			break
 		case 'default':
 			break
 		case 'infopage':
 			$LAB.queueWait( function() {
-				$LAB.script( getWithVersion('bigjquery.js') )
-				.script( getWithVersion('ports.js') )
+				$LAB
+				.script( getWithVersion('bigjquery.js') )
 				.script( getWithVersion('library.js') )
 				.wait()
 				.script(getWithVersion('main.js'))
 				.wait()
 				.script( getWithVersion('dash.js') )
 				.script( getWithVersion('infopages.js') )
+				.wait()
+				.script( getWithVersion('ports.js') )
 			}).runQueue()
 			break
 		case 'cart':
 			$LAB.queueWait( function() {
-				$LAB.script( getWithVersion('bigjquery.js') )
-				.script( getWithVersion('ports.js') )
+				$LAB
+				.script( getWithVersion('bigjquery.js') )
                 .script( getWithVersion('library.js') )
 				.script( 'JsHttpRequest.js' )
                 .script( 'http://direct-credit.ru/widget/api_script_utf.js' )
@@ -86,6 +90,8 @@
 				.wait()
 				.script(getWithVersion('dash.js'))
 				.script(getWithVersion('app.cart.js'))
+				.wait()
+				.script( getWithVersion('ports.js') )
 			}).runQueue()
 			break
 		case 'order':
@@ -93,20 +99,22 @@
             .queueScript( (mapVendor==='yandex') ? 'http://api-maps.yandex.ru/2.0/?load=package.full&lang=ru-RU' : 'http://maps.google.com/maps/api/js?sensor=false')
             .queueScript('http://ajax.aspnetcdn.com/ajax/knockout/knockout-2.2.1.js')
 			.queueWait( function() {
-				$LAB.script( getWithVersion('ports.js') ).wait()
+				$LAB
 				.script( getWithVersion('bigjquery.js') ).script( getWithVersion('library.js') )
 				// .script('shelf/jquery.mockjax.js')	
 				.script( 'JsHttpRequest.js' )                
                 .script( 'http://direct-credit.ru/widget/api_script_utf.js' )
 				.wait()
 				.script(getWithVersion('app.order.v4.js'))
-				.script(getWithVersion('main.js'))				
+				.script(getWithVersion('main.js'))
+				.wait()
+				.script( getWithVersion('ports.js') )			
 			}).runQueue()
 			break
 		case 'order_complete':
 			$LAB.queueScript('bigjquery.min.js')
 				.queueWait( function() {
-				$LAB.script( getWithVersion('ports.js') )
+				$LAB
 				.script( getWithVersion('library.js') )
 				// .script('shelf/jquery.mockjax.js')	
 				// .script( 'JsHttpRequest.js' )
@@ -116,7 +124,8 @@
 				.wait()
 				.script(getWithVersion('app.order.js'))
 				.script(getWithVersion('main.js'))
-
+				.wait()
+				.script( getWithVersion('ports.js') )
 			}).runQueue()
 			break
         case 'order_error':
@@ -129,20 +138,22 @@
             break
 		case 'product_catalog':
 			$LAB.queueWait( function() {
-				$LAB.script( getWithVersion('ports.js') )
+				$LAB
 				.script( getWithVersion('bigjquery.js') )
 				.script( getWithVersion('library.js') )
 				.wait()
 				.script( getWithVersion('main.js') )
 				.wait()
 				.script( getWithVersion('dash.js') )
+				.wait()
+				.script( getWithVersion('ports.js') )
 			}).runQueue()
 			break
 		case 'product_card':
 			$LAB.queueScript('http://ajax.aspnetcdn.com/ajax/knockout/knockout-2.2.1.js')
 			.queueScript( (mapVendor==='yandex') ? 'http://api-maps.yandex.ru/2.0/?load=package.full&lang=ru-RU' : 'http://maps.google.com/maps/api/js?sensor=false' )
 			.queueWait( function() {
-				$LAB.script( getWithVersion('ports.js') )
+				$LAB
 				.script( getWithVersion('bigjquery.js') )
 				.script( getWithVersion('library.js') )
 				.wait()
@@ -156,11 +167,13 @@
 				.wait()
 				.script( getWithVersion('app.product.js') )
 				.script( getWithVersion('app.oneclick.js') )
+				.wait()
+				.script( getWithVersion('ports.js') )
 			}).runQueue()
 			break
 		case 'product_comment':
 			$LAB.queueWait( function() {
-				$LAB.script( getWithVersion('ports.js') )
+				$LAB
 				.script( getWithVersion('bigjquery.js') )
 				.script( getWithVersion('library.js') )
 				.wait()
@@ -171,24 +184,28 @@
 				.wait()
 				.script( getWithVersion('app.product.js') )
 				.script( getWithVersion('app.product.comment.list.js') )
+				.wait()
+				.script( getWithVersion('ports.js') )
 			}).runQueue()
 			break
 		case 'service':
 			$LAB.queueWait( function() {
-				$LAB.script( getWithVersion('ports.js') )
+				$LAB
 				.script( getWithVersion('bigjquery.js') )
 				.script( getWithVersion('library.js') )
 				.wait()
 				.script( getWithVersion('main.js') )
 				.wait()
 				.script( getWithVersion('dash.js') )
+				.wait()
+				.script( getWithVersion('ports.js') )
 			}).runQueue()
 			break
 		case 'shop':
 			$LAB
 			.queueScript( (mapVendor==='yandex') ? 'http://api-maps.yandex.ru/2.0/?load=package.full&lang=ru-RU' : 'http://maps.google.com/maps/api/js?sensor=false' )
 			.queueWait( function() {
-				$LAB.script( getWithVersion('ports.js') ).wait()
+				$LAB
 				.script( getWithVersion('bigjquery.js') ).script( getWithVersion('library.js') )
 				.wait()
 				.script( getWithVersion('app.shop.js') )
@@ -196,6 +213,8 @@
 				.wait()
 				.script( getWithVersion('dash.js') )
 				.script('tour.js')
+				.wait()
+				.script( getWithVersion('ports.js') )
 			}).runQueue()
 			break
 		case 'product_stock':
@@ -203,7 +222,7 @@
 			.queueScript( (mapVendor==='yandex') ? 'http://api-maps.yandex.ru/2.0/?load=package.full&lang=ru-RU' : 'http://maps.google.com/maps/api/js?sensor=false' )
 			.queueScript('http://ajax.aspnetcdn.com/ajax/knockout/knockout-2.2.1.js')
 			.queueWait( function() {
-				$LAB.script( getWithVersion('ports.js') )
+				$LAB
 				.script( getWithVersion('bigjquery.js') )
 				.script( getWithVersion('library.js') )
 				.wait()
@@ -213,6 +232,8 @@
 				.wait()
 				.script( getWithVersion('app.product.js') )
 				.script( getWithVersion('app.oneclick.js') )
+				.wait()
+				.script( getWithVersion('ports.js') )
 			}).runQueue()
 			break
 	}
