@@ -154,6 +154,14 @@ $(document).ready(function(){
 		$(".symbian-load").click( function(){ showQRpopup( ".symbian-block" ); return false; } )
 	}
 
+	// login form toggle
+	if ($('#hideLoginform').length){
+		$('#hideLoginform').bind('click', function(){
+			$('#hideLoginform').hide()
+			$('#loginForm').slideDown(300)
+		})
+	}
+
 	/*paginator*/
 	var EnterPaginator = function(domID,totalPages, visPages, activePage){
 		

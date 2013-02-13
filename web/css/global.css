@@ -535,6 +535,14 @@
     font-size: 90%;
     margin: 0px 0px 0px -5px;
   }
+  .dashed {
+    border-bottom: 1px dashed;
+    text-decoration: none;
+  }
+  .dashed:hover {
+    border-bottom: 1px dashed;
+    text-decoration: none;
+  }
   .line {
     border-top: 1px solid #e6e6e6;
     clear: both;
@@ -7749,6 +7757,45 @@
   }
 }
 /*---END---СТИЛИ КОРЗИНЫ---*/
+/*-------СТИЛИ СТРАНИЦЫ ВХОДА-----*/
+@media all {
+  .bPageLogin {
+    margin-bottom: 40px;
+    padding-top: 30px;
+  }
+  .bPageLogin_eLogo {
+    background: url("/css/order/img/orderSprite.png") no-repeat scroll -55px 0 transparent;
+    height: 87px;
+    width: 200px;
+  }
+  .bLoginPageForms_eTitle {
+    float: none;
+    font-family: 'Enter';
+    font-size: 30px;
+    font-weight: 100;
+    text-transform: uppercase;
+  }
+  .bLoginPageForms_eDesc {
+    font-family: 'Enter Type';
+    font-size: 16px;
+  }
+  .bLoginForm {
+    margin-bottom: 30px;
+  }
+  .bLoginForm_eTitle {
+    color: #ffa901;
+    font-family: 'Enter';
+    font-size: 26px;
+    text-transform: uppercase;
+    font-weight: 100;
+  }
+  .bLoginForm_eUr {
+    display: block;
+    margin-bottom: 10px;
+    margin-top: -10px;
+  }
+}
+/*---END---СТИЛИ СТРАНИЦЫ ВХОДА---*/
 /*-----СТИЛИ ЛАЙТБОКСА-----*/
 @media all {
   .lightbox {
