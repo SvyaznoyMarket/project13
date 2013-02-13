@@ -21,6 +21,15 @@ $creditEnabled = ($cart->getTotalProductPrice() >= \App::config()->product['minC
 
 <? require __DIR__ . '/_show.php' ?>
 
+<div class="bF1SaleCard">
+    <div class="pl35">
+        <h3 class="bF1SaleCard_eTitle ">Скидка по карте «Под защитой F1»</h3>
+        <p class="font11">Введите серийный номер карты «Под защитой F1» для скидки на услуги:</p>
+        <input class="mr20 width370" type="text"/><input class="yellowbutton button" type="button" value="Получить скидку"/>
+    </div>
+    <div class="line mt32 pb30"></div>
+</div>
+
 <div class="fl width345 font14">
     <? if ($creditEnabled): ?>
     <div id="creditFlag" style="display:none">
