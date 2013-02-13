@@ -560,7 +560,7 @@ up:			for( var linedate in box.caclDates ) { // Loop for T Interval
 				items: [],
 				shop: null
 			}
-			var onlyStandart2 = { // у которых есть самовывоз
+			var toSelf = { // у которых есть самовывоз
 				type: 'standart',
 				token: 'standart_other',
 				items: [],
@@ -574,13 +574,13 @@ up:			for( var linedate in box.caclDates ) { // Loop for T Interval
 				}
 				else{
 					// товар у которого есть самовывоз. пойдет в другой box
-					onlyStandart2.items.push(Model.items[i].token)
+					toSelf.items.push(Model.items[i].token)
 				}
 			}
 
 			return {
 				onlyStandartItems:onlyStandartItems,
-				onlyStandart2:onlyStandart2
+				toSelf:toSelf
 			}
 		}
 
@@ -589,8 +589,14 @@ up:			for( var linedate in box.caclDates ) { // Loop for T Interval
 			if (nowDelivery == 'self'){
 				// for only standart box
 				var boxes = onlyStandart()
-				addBox(boxes.onlyStandartItems.type, boxes.onlyStandartItems.token, boxes.onlyStandartItems.items, boxes.onlyStandartItems.shop)
-				addBox(boxes.onlyStandart2.type, boxes.onlyStandart2.token, boxes.onlyStandart2.items, boxes.onlyStandart2.shop)
+				if (boxes.onlyStandartItems.items.length){
+					// console.log('только для доставки')
+					addBox(boxes.onlyStandartItems.type, boxes.onlyStandartItems.token, boxes.onlyStandartItems.items, boxes.onlyStandartItems.shop)	
+				}
+				if (boxes.toSelf.items.length){
+					// console.log('доступные и для самовывоза')
+					addBox(boxes.toSelf.type, boxes.toSelf.token, boxes.toSelf.items, boxes.toSelf.shop)
+				}
 			}
 			else{
 				for( var tkn in Model.deliveryTypes ) {
