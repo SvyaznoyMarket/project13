@@ -1,6 +1,12 @@
 define('library',
 	['jquery'], function ($) {
 
+		// console function
+		myConsole = function(text){
+			$('#console').prepend('<p>'+text+'</p>')
+			console.log(text)
+		}
+
 		// drug plugin
 		$.fn.draggable = function() {
 			self = this
@@ -51,10 +57,35 @@ define('library',
 			}
 		}
 
-		return { // exports fucntion
-			myConsole: function(text){
-				$('#console').prepend('<p>'+text+'</p>')
+		// scrollTo element of or position
+		scrollTo = function(element, offset){
+			var aminateScroll = function(start, stop, step){
+				myConsole('..start '+start+' stop '+stop )
+				if ((start+step) < stop){
+					start += step
+					terminal.flickable.contentY = start
+					myConsole(terminal.flickable.contentY)
+					setTimeout( function(){
+						aminateScroll(start, stop, step)
+					}, 1)
+				}
+				else{
+					terminal.flickable.contentY = stop
+				}
 			}
+			var elementTop = element.offset().top
+			var elementHeight = element.height()
+			var windowHeight = terminal.flickable.height
+			var documentHeight = terminal.flickable.contentHeight
+			var stopScroll = documentHeight-windowHeight
+			var toY = elementTop-elementHeight-offset
+			toY = (toY > stopScroll)?stopScroll:toY
+			aminateScroll(terminal.flickable.contentY, toY, 75)
+		}
+
+		return { // exports fucntion
+			myConsole : myConsole,
+			scrollTo : scrollTo
 		}
 
 	})

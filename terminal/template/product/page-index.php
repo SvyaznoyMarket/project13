@@ -39,6 +39,9 @@ $warranties = $product->getWarranty();
                 <h1 class="bTitle mBold"><?= $product->getName() ?></h1>
             
                 <div class="bGoodDescBlock_eSubBlock clearfix">
+                    <? if($product->getPriceOld()):?>
+                    <div class="bGoodDescBlock_eOldPrice"><?= $page->helper->formatPrice($product->getPriceOld()) ?> <span class="bRuble">p</span></div>
+                    <? endif ?>
                     <div class="bGoodDescBlock_ePrice mFl mBold"><?= $page->helper->formatPrice($product->getPrice()) ?> <span class="bRuble">p</span></div>
                     <ul class="bGoodDescBlock_eDelivery mFl">
                         <li class="mListDisk"><strong class="mBold">Есть на центральном складе</strong></li>
@@ -47,7 +50,11 @@ $warranties = $product->getWarranty();
                 </div>
 
                 <div class="clearfix mMB80">
+                    <!--  print_r($product->getState());   -->
+                    <?php if ($product->getState()->getIsBuyable()):?>
                     <a class="bGoodDescBlock_eBayBtn bButton mOrangeBtn mFl" href="#" onclick="terminal.cart.addProduct(<?= $product->getId() ?>)">В корзину</a>
+                    <?php endif ?>
+                    <!-- <a class="bGoodDescBlock_eCompBtn bButton mGrayBtn mFl" href="#" onclick="terminal.screen.push('other_shops', { productId: <?= $product->getId() ?> })">Где купить?</a> кнопка где купить временно скрыта--> 
                     <a class="bGoodDescBlock_eCompBtn bButton mGrayBtn mFl" href="#" onclick="terminal.compare.addProduct(<?= $product->getId() ?>)">К сравнению</a>
                 </div>
 
@@ -79,7 +86,7 @@ $warranties = $product->getWarranty();
                                 <!-- <p class="bGoodSubItem_eRating"><?= $iProduct->getRating() ?></p> -->
                                 <h2 class="bGoodSubItem_eTitle"><a class="bGoodSubItem_eLink" href="#" onclick='terminal.screen.push("product", {productId: <?= $iProduct->getId() ?>})'><?= $iProduct->getName() ?></a></h2>
                                 <p class="bGoodSubItem_ePrice"><?= $page->helper->formatPrice($iProduct->getPrice()) ?> <span class="bRuble">p</span></p>
-                                <a class="bGoodSubItem_eMore bButton mSmallGrayBtn" href="#" onclick='terminal.screen.push("product", {productId: <?= $iProduct->getId() ?>})'>Подробнее</a>
+                                <a class="bGoodSubItem_eMore bButton mSmallOrangeBtn" href="#" onclick='terminal.cart.addProduct(<?= $iProduct->getId() ?>)'>В корзину</a>
                             </div>
                         </div>
                         <? endforeach ?>
@@ -101,7 +108,7 @@ $warranties = $product->getWarranty();
                                 <!-- <p class="bGoodSubItem_eRating"><?= $iProduct->getRating() ?></p> -->
                                 <h2 class="bGoodSubItem_eTitle"><a class="bGoodSubItem_eLink" href="#" onclick='terminal.screen.push("product", {productId: <?= $iProduct->getId() ?>})'><?= $iProduct->getName() ?></a></h2>
                                 <p class="bGoodSubItem_ePrice"><?= $page->helper->formatPrice($iProduct->getPrice()) ?> <span class="bRuble">p</span></p>
-                                <a class="bGoodSubItem_eMore bButton mSmallGrayBtn" href="#" onclick='terminal.screen.push("product", {productId: <?= $iProduct->getId() ?>})'>Подробнее</a>
+                                <a class="bGoodSubItem_eMore bButton mSmallOrangeBtn" href="#" onclick='terminal.cart.addProduct(<?= $iProduct->getId() ?>)'>В корзину</a>
                             </div>
                         </div>
                         <? endforeach ?>
@@ -155,7 +162,7 @@ $warranties = $product->getWarranty();
                 <div class="bGoodServiceItem clearfix">
                     <!-- <p><?= $service->getToken() ?></p> -->
                     <!-- <p><?= $service->getId() ?></p> -->
-                    <div class="bGoodServiceItem_eLogo mRounded mFl"></div>
+                    <a onclick="terminal.screen.push('service', {serviceId: <?= $service->getId() ?>, productId: <?= $product->getId() ?>, isBuyable: true})" class="bGoodServiceItem_eLogo mRounded mFl"></a>
                     <div class="bFl">
                         <p class="bGoodServiceItem_eTitle"><?= $service->getName() ?></p>
                         <p class="bGoodServiceItem_ePrice"><?= $page->helper->formatPrice($service->getPrice()) ?> <span class="bRuble">p</span></p>

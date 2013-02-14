@@ -3,6 +3,7 @@ define('product',
 	['jquery', 'library'], function ($, library) {
     $(document).ready(function() {
 	//product code
+		library.myConsole('produsct.js and library.js loaded')
 		// slider
 		if ($('#similarSlider').length){
 			var slider = $('#similarSlider')
@@ -14,7 +15,7 @@ define('product',
 			slider.width( slider.find('.bGoodSubItem_eGoods').length * (slider.find('.bGoodSubItem_eGoods').width()+20) )
 			slider.draggable()
 		}
-		library.myConsole('123')
+		// library.myConsole('1234')
 		// toggle subItems
 		if ($('.bGoodSubItems_eTitle').length){
 			if ( !$('.jsAccessorise').length ){
@@ -38,6 +39,11 @@ define('product',
 			})
 		}
 
+		$('.bGoodDescBlock_eMore').bind('click', function(){
+			if ($('.bGoodItemFullDesc').length)
+				library.scrollTo($('.bGoodItemFullDesc'), 50)
+		})
+
 		// helpers
 		if ( $('.bQuestionIco').length ){
 
@@ -56,7 +62,7 @@ define('product',
 			})
 
 			$('.bWrap').bind('click', function(event){
-				library.myConsole('tick! '+popUped)
+				// library.myConsole('tick! '+popUped)
 				if (popUped){
 					event.preventDefault()
 					popUp.fadeOut(300, function(){
