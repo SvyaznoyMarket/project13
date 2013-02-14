@@ -76,3 +76,50 @@
 		width: 105px;
 	}
 }
+
+.bCustomSelect{
+	font-size: 16px;
+	position: relative;
+	width: 166px;
+	&.mActive{
+		.bCustomSelect_eSelected{
+			background: @firmOrange;
+			border-radius: 5px 5px 0 0;
+			color: @gray;
+			z-index: 3;
+		}
+		.bCustomSelect_eElements{
+			display: block;
+		}
+	}
+	&_eSelected{
+		color: @lightGray;
+		float: left;
+		height: 48px;
+		line-height: 48px;
+		padding: 0 7px;
+		position: absolute;
+		text-align: center;
+		width: 166px;
+		z-index: 1;
+	}
+	&_eElements{
+		border-radius: 0 0 5px 5px;
+		background: none repeat scroll 0 0 @gray;
+		display: none;
+	    padding: 48px 7px 5px;
+	    position: absolute;
+	    text-align: center;
+	    z-index: 2;
+	}
+	&_eOption{
+		border-top:1px solid @lightGray;
+		color: @lightGray;
+		font-size: 16px;
+		display: block;
+		line-height: 1.5em;
+		height: 48px;
+		line-height: 48px;
+		width: 166px;
+	}
+}

@@ -7,6 +7,29 @@ define('library',
 			console.log(text)
 		}
 
+		// custom select
+		if ($('.bCustomSelect').length){
+			var selectOpen = false
+			$('.bCustomSelect').toggle(function(){
+				$('.bCustomSelect').removeClass('mActive')
+				$(this).addClass('mActive')
+				selectOpen = true
+			},
+			function(){
+				$(this).removeClass('mActive')
+				selectOpen = false
+			})
+
+			$('.bWrap').bind('click', function(event){
+				if (selectOpen){
+					event.preventDefault()
+					$('.bCustomSelect').removeClass('mActive')
+					selectOpen = false
+				}
+			})
+
+		}
+
 		// drug plugin
 		$.fn.draggable = function() {
 			self = this
@@ -74,11 +97,10 @@ define('library',
 				}
 			}
 			var elementTop = element.offset().top
-			var elementHeight = element.height()
 			var windowHeight = terminal.flickable.height
 			var documentHeight = terminal.flickable.contentHeight
 			var stopScroll = documentHeight-windowHeight
-			var toY = elementTop-elementHeight-offset
+			var toY = elementTop-offset
 			toY = (toY > stopScroll)?stopScroll:toY
 			aminateScroll(terminal.flickable.contentY, toY, 75)
 		}

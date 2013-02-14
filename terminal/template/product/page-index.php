@@ -12,7 +12,7 @@ $warranties = $product->getWarranty();
 
 <article class="bGoodItem">    
     
-    <div class="bGoodItemHead mRounded mBlackBlock clearfix">
+    <div class="bGoodItemHead mMB20 mRounded mBlackBlock clearfix">
         <div class="clearfix">
             <div class="bGoodImgBlock mRounded mFl mW940">
                 <div class="bPreviewImg">
@@ -141,6 +141,32 @@ $warranties = $product->getWarranty();
             <h2 class="bGoodItemSpecifications_eTitle">Описание</h2>
             <p class="bGoodItemFullDesc"><?= $product->getDescription() ?></p>
         </div>
+
+        <!-- models -->
+        <? if((bool)$product->getModel() && (bool)$product->getModel()->getProperty()): ?>
+        <div class="bGoodItemModel mW570 mPad15_30 mRounded mBlackBlock mMB20 mFr">
+            <h2 class="bGoodItemSpecifications_eTitle">Изменить параметры товара</h2>
+            <? foreach ($product->getModel()->getProperty() as $property): ?>
+            <div class="bGoodItemModel_eProperty clearfix">
+                <div class="bGoodItemModel_ePropertyName mFl"><?= $property->getName() ?></div>
+                <div class="bGoodItemModel_ePropertySelect mFl bCustomSelect clearfix">
+                    <?
+                        $productAttribute = $product->getPropertyById($property->getId());
+                        if (!$productAttribute) break;
+                    ?>
+                    <div class="bCustomSelect_eElements">
+                        <? foreach ($property->getOption() as $option): ?>
+                        <? if ($option->getValue() == $productAttribute->getValue())continue; ?>
+                        <a onclick="terminal.screen.push('product', {productId: <?= $option->getProduct()->getId() ?>})" class="bCustomSelect_eOption"><?= $option->getHumanizedName() ?></a>
+                        <? endforeach ?>
+                    </div>
+                    <div class="bCustomSelect_eSelected bButton mGrayBtn"><?= $productAttribute->getStringValue() ?></div>
+                </div>
+            </div>
+            <? endforeach; ?>
+        </div>
+        <? endif ?>
+        <!-- end models -->
 
         <?php if (count($warranties) || count($services)): ?>
         <div class="bGoodItemF1 mW570 mPad15_30 mRounded mBlackBlock mFr">

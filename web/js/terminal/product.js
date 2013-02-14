@@ -41,7 +41,7 @@ define('product',
 
 		$('.bGoodDescBlock_eMore').bind('click', function(){
 			if ($('.bGoodItemFullDesc').length)
-				library.scrollTo($('.bGoodItemFullDesc'), 50)
+				library.scrollTo($('.bGoodItemFullDesc'), 75)
 		})
 
 		// helpers
