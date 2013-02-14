@@ -62,6 +62,8 @@ class IndexPage extends \View\DefaultLayout {
         return ''
             . ($product ? $this->render('product/_odinkod', array('product' => $product)) : '')
             . "\n\n"
+            . (bool)$product ? $this->render('_remarketingGoogle', ['tag_params' => ['prodid' => $product->getId(), 'pagetype' => 'product', 'pname' => $product->getName(), 'pcat' => $product->getMainCategory()->getToken(), 'value' => $product->getPrice()]]) : ''
+            . "\n\n"
             . $this->render('_innerJavascript');
     }
 

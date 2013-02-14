@@ -32,6 +32,8 @@ class IndexPage extends \View\DefaultLayout {
         return ''
             . $this->render('main/_odinkod')
             . "\n\n"
+            . $this->render('_remarketingGoogle', ['tag_params' => ['pagetype' => 'homepage']])
+            . "\n\n"
             . $this->render('_innerJavascript');
     }
 }
