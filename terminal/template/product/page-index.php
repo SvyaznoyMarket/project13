@@ -58,7 +58,11 @@ $warranties = $product->getWarranty();
                     <a class="bGoodDescBlock_eCompBtn bButton mGrayBtn mFl" href="#" onclick="terminal.compare.addProduct(<?= $product->getId() ?>)">К сравнению</a>
                 </div>
 
-                <p class="bGoodDescBlock_eShortDesc"><?= $product->getTagline() ?> <a class="bGoodDescBlock_eMore" href="#">Подробнее...</a></p>
+                <p class="bGoodDescBlock_eShortDesc"><?= $product->getTagline() ?>
+                    <? if (!empty($description)): ?>
+                    <a class="bGoodDescBlock_eMore" href="#">Подробнее...</a>
+                    <? endif ?>
+                </p>
             </div>
         </div>
 
@@ -138,8 +142,10 @@ $warranties = $product->getWarranty();
                 <? endforeach ?>
             </div>
             <? endforeach ?>
+            <? if (!empty($description)): ?>
             <h2 class="bGoodItemSpecifications_eTitle">Описание</h2>
             <p class="bGoodItemFullDesc"><?= $product->getDescription() ?></p>
+            <? endif ?>
         </div>
 
         <!-- models -->
