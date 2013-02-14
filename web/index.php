@@ -43,8 +43,12 @@ if ('main' == \App::$name) {
     }
 } else if ('terminal' == \App::$name) {
     $clientId = $request->get('client_id') ? trim((string)$request->get('client_id')) : null;
+    $shopId = $request->get('shop_id') ? trim((string)$request->get('shop_id')) : null;
     if (!$clientId) die('Не передан параметр client_id');
+    if (!$shopId) die('Не передан параметр shop_id');
     $config->coreV2['client_id'] = $clientId;
+    $config->region['shop_id'] = $shopId;
+
 
     $config->templateDir = $config->appDir . '/terminal/template';
     $config->controllerPrefix = 'Terminal\\Controller';

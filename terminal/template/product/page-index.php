@@ -51,7 +51,7 @@ $warranties = $product->getWarranty();
 
                 <div class="clearfix mMB80">
                     <!--  print_r($product->getState());   -->
-                    <?php if ($product->getState()->getIsBuyable()):?>
+                    <?php if ($product->getState()->getIsBuyableByShop(\App::config()->region['shop_id'])):?>
                     <a class="bGoodDescBlock_eBayBtn bButton mOrangeBtn mFl" href="#" onclick="terminal.cart.addProduct(<?= $product->getId() ?>)">В корзину</a>
                     <?php endif ?>
                     <!-- <a class="bGoodDescBlock_eCompBtn bButton mGrayBtn mFl" href="#" onclick="terminal.screen.push('other_shops', { productId: <?= $product->getId() ?> })">Где купить?</a> кнопка где купить временно скрыта--> 

@@ -25,6 +25,8 @@ class BasicEntity {
     protected $line;
     /** @var Category\Entity */
     protected $mainCategory;
+    /** @var Stock\Entity[] */
+    protected $stock = [];
 
     public function __construct(array $data = []) {
         if (array_key_exists('id', $data)) $this->setId($data['id']);
@@ -41,6 +43,9 @@ class BasicEntity {
         if (array_key_exists('price', $data)) $this->setPrice($data['price']);
         if (array_key_exists('state', $data) && (bool)$data['state']) $this->setState(new State\Entity($data['state']));
         if (array_key_exists('line', $data) && (bool)$data['line']) $this->setLine(new Line\Entity($data['line']));
+        if (array_key_exists('stock', $data) && is_array($data['stock'])) $this->setStock(array_map(function($data) {
+            return new Stock\Entity($data);
+        }, $data['stock']));
     }
 
     /**
@@ -218,6 +223,23 @@ class BasicEntity {
     }
 
     /**
+     * @param int $id
+     * @return bool
+     */
+    public function getIsBuyableByShop($id) {
+        $id = (int)$id;
+        if (!$id) return false;
+
+        $isBuyable = $this->getState()->getIsStore() || $this->getState()->getIsSupplier();
+        foreach ($this->getStock() as $stock) {
+            if ($stock->getShopId() == $id) {
+                $isBuyable |= ($stock->getQuantity() > 0 || $stock->getQuantityShowroom() > 0);
+            }
+        }
+        return $isBuyable;
+    }
+
+    /**
      * @param \Model\Product\Line\Entity $line|null
      */
     public function setLine(Line\Entity $line = null) {
@@ -236,5 +258,20 @@ class BasicEntity {
      */
     public function getPath() {
         return trim(preg_replace('/^\/product\//' , '', $this->link), '/');
+    }
+
+    public function setStock(array $stocks) {
+        $this->stock = [];
+        foreach ($stocks as $stock) {
+            $this->addStock($stock);
+        }
+    }
+
+    public function addStock(Stock\Entity $stock) {
+        $this->stock[] = $stock;
+    }
+
+    public function getStock() {
+        return $this->stock;
     }
 }

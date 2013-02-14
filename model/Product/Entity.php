@@ -65,8 +65,6 @@ class Entity extends BasicEntity {
     protected $priceAverage;
     /** @var int */
     protected $priceOld;
-    /** @var Stock\Entity[] */
-    protected $stock = [];
     /** @var Service\Entity[] */
     protected $service = [];
     /** @var Kit\Entity[] */

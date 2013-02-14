@@ -62,6 +62,9 @@ class ExpandedEntity extends BasicEntity {
         if (array_key_exists('price_old', $data)) $this->setPriceOld($data['price_old']);
         if (array_key_exists('state', $data) && (bool)$data['state']) $this->setState(new State\Entity($data['state']));
         if (array_key_exists('model', $data) && (bool)$data['model']) $this->setModel(new Model\Entity($data['model']));
+        if (array_key_exists('stock', $data) && is_array($data['stock'])) $this->setStock(array_map(function($data) {
+            return new Stock\Entity($data);
+        }, $data['stock']));
     }
 
     /**
