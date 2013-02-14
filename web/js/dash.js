@@ -580,9 +580,6 @@ $(document).ready(function(){
 	// analytics HAS YOU
 	if( 'ANALYTICS' in window ) {
 		PubSub.subscribe( 'productBought', function() {
-			if( 'gooReMaBuy' in ANALYTICS ) {
-				ANALYTICS.gooReMaBuy()
-			}
 		})
 	}
 

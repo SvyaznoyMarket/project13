@@ -43,7 +43,6 @@
     <?= $page->slotMyThings() ?>
 
     <? if (\App::config()->analytics['enabled']): ?>
-        <div id="gooReMaCategories" class="jsanalytics"></div>
         <div id="luxupTracker" class="jsanalytics"></div>
     <? endif ?>
 	
