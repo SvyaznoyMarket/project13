@@ -134,10 +134,10 @@ $warranties = $product->getWarranty();
             <h2 class="bGoodItemSpecifications_eTitle">Описание</h2>
             <p class="bGoodItemFullDesc"><?= $product->getDescription() ?></p>
         </div>
-        
+
+        <?php if (count($warranties) || count($services)): ?>
         <div class="bGoodItemF1 mW570 mPad15_30 mRounded mBlackBlock mFr">
-            <h2 class="bGoodItemF1_eServiceTitle">Выбирайте услуги вместе с этим товаром</h2>
-            
+            <h2 class="bGoodItemF1_eServiceTitle">Выбирайте услуги вместе с этим товаром</h2> 
             <!-- warranty -->
             <? foreach ($warranties as $warranty): ?>
                 <div class="bGoodServiceItem clearfix">
@@ -164,10 +164,10 @@ $warranties = $product->getWarranty();
                     </div>
                 </div>
             <? endforeach ?>
-
         </div>
-
+        <?php endif ?>
     </div>
+
     <!-- окно подсказок -->
     <div id="bHintPopup" class="mRounded mW570 mPad15_30 mFr mHidden">
         <div class="leftCorner"></div>
