@@ -9,6 +9,9 @@ define('product',
 		var productId = $('.bGoodItem').data('productid')
 		library.myConsole(productId)
 
+		// check compare
+		library.checkCompare(productId)
+
 		// slider
 		if ($('#similarSlider').length){
 			var slider = $('#similarSlider')
@@ -42,27 +45,11 @@ define('product',
 					return false
 				}
 			})
-		}
-
-		// compare button
-		compareBtn = $('.bGoodDescBlock_eCompBtn')
-		library.checkCompare(compareBtn, productId)
-		compareBtn.bind('click', function(){
-			if (library.checkCompare(compareBtn, productId)){
-				terminal.compare.removeProduct(productId)
-				library.checkCompare(compareBtn, productId)
-			}
-			else{
-				terminal.compare.addProduct(productId)
-				library.checkCompare(compareBtn, productId)
-			}
-		})
-		
-			
+		}			
 
 		// scroll to full Description
 		$('.bGoodDescBlock_eMore').bind('click', function(){
-			library.scrollTo($('.bGoodItemFullDesc'), 75)
+			library.scrollTo($('.bGoodItemFullDesc'), 100, 300)
 		})
 
 		// helpers
