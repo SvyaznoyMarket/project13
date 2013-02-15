@@ -10,14 +10,18 @@ define('library',
 		// custom select
 		if ($('.bCustomSelect').length){
 			var selectOpen = false
-			$('.bCustomSelect').toggle(function(){
-				$('.bCustomSelect').removeClass('mActive')
-				$(this).addClass('mActive')
-				selectOpen = true
-			},
-			function(){
-				$(this).removeClass('mActive')
-				selectOpen = false
+			$('.bCustomSelect').bind('click', function(e){
+				e.stopPropagation()
+				e.preventDefault()
+				if ($(this).hasClass('mActive')){
+					$('.bCustomSelect').removeClass('mActive')
+					selectOpen = false
+				}
+				else{
+					$('.bCustomSelect').removeClass('mActive')
+					$(this).addClass('mActive')
+					selectOpen = true
+				}
 			})
 
 			$('.bWrap').bind('click', function(event){
@@ -30,7 +34,13 @@ define('library',
 		}
 
 		// compare toggle
-		checkCompare = function(element, productId){
+		createElement = function(productId){
+			var t = $('#compare_'+productId)
+			return t
+		}
+		checkCompare = function(productId){
+			var element = createElement(productId)
+			myConsole('compare '+productId)
 			if (terminal.compare.hasProduct(productId)){
 				element.html('Убрать из сравнения')
 				return true
@@ -40,6 +50,21 @@ define('library',
 				return false
 			}
 		}
+		$('.jsCompare').bind('click', function(){
+			var id = $(this).attr('id')
+			var productId = id.substr(8, 5)
+			myConsole('id '+productId)
+			if (checkCompare(productId)){
+				terminal.compare.removeProduct(productId)
+				checkCompare(productId)
+			}
+			else{
+				terminal.compare.addProduct(productId)
+				checkCompare(productId)
+			}
+		})
+		terminal.compare.productRemoved.connect(checkCompare)
+		terminal.compare.productAdded.connect(checkCompare)
 
 		// drug plugin
 		$.fn.draggable = function() {

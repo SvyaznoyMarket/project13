@@ -56,7 +56,7 @@ $warranties = $product->getWarranty();
                     <?php elseif ($product->getState()->getIsShop() ):?>
                     <a class="bGoodDescBlock_eBayBtn bButton mGrayBtn mFl" href="#" onclick="terminal.screen.push('other_shops', { productId: <?= $product->getId() ?> })">Где купить?</a>
                     <? endif; ?>
-                    <a class="bGoodDescBlock_eCompBtn bButton mGrayBtn mFl" href="#">К сравнению</a>
+                    <a id="compare_<?= $product->getId() ?>" class="bGoodDescBlock_eCompBtn jsCompare bButton mGrayBtn mFl" href="#">К сравнению</a>
                 </div>
 
                 <p class="bGoodDescBlock_eShortDesc"><?= $product->getTagline() ?>
@@ -126,6 +126,31 @@ $warranties = $product->getWarranty();
 
     <div class="clearfix">
         <div class="bGoodItemSpecifications mW960 mPad15_30 mRounded mBlackBlock mFl">
+            <!-- product kit -->
+            <? if (2 == $product->getViewId() && count($product->getKit())): ?>
+            <div class="bGoodItemKit">
+                <h2 class="bGoodItemSpecifications_eTitle">Состав набора</h2>
+                <div class="clearfix">
+                    <? foreach ($product->getKit() as $part): ?>
+                    <div class="bGoodSubItem_eGoods bGoodItemKit_eItem mMB20 mFl">
+                        <a class="bGoodSubItem_eGoodsImg mFl mRounded" href="#" onclick='terminal.screen.push("product", {productId: <?= $part->getId() ?>})'>
+                            <? if ($kit[$part->getId()]->getLabel()): ?>
+                                <img class="bLabels" src="<?= $kit[$part->getId()]->getLabel()->getImageUrl(1) ?>" alt="<?= $kit[$part->getId()]->getLabel()->getName() ?>" height="20" />
+                            <? endif ?>
+                            <img width="130" height="130" src="<?= $kit[$part->getId()]->getImageUrl(1) ?>"/>
+                        </a>
+                        <div class="bGoodSubItem_eGoodsInfo">
+                            <!-- <p class="bGoodSubItem_eRating"><?= $iProduct->getRating() ?></p> -->
+                            <h2 class="bGoodSubItem_eTitle"><a class="bGoodSubItem_eLink" href="#" onclick='terminal.screen.push("product", {productId: <?= $part->getId() ?>})'><?= $kit[$part->getId()]->getName() ?></a></h2>
+                            <p class="bGoodSubItem_ePrice"><?= $page->helper->formatPrice($kit[$part->getId()]->getPrice()) ?> <span class="bRuble">p</span></p>
+                            <a class="bGoodSubItem_eMore bButton mSmallGrayBtn" href="#" onclick='terminal.screen.push("product", {productId: <?= $part->getId() ?>})'>Подробнее</a>
+                        </div>
+                    </div>
+                    <? endforeach ?>
+                </div>
+            </div>
+            <? endif ?>
+            <!-- end product kit -->
             <h2 class="bGoodItemSpecifications_eTitle">Характеристики</h2>
             <? foreach ($product->getGroupedProperties() as $group): ?>
             <div class="bGoodSpecification">
