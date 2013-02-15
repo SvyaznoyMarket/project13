@@ -146,12 +146,15 @@ class Action {
             $productsById = [];
             /** @var $servicesById \Model\Product\Service\Entity[] */
             $servicesById = [];
+            /** @var $productsForRetargeting \Model\Product\Entity */
+            $productsForRetargeting = [];
 
             // запрашиваем список товаров
             if ((bool)$productIds) {
-                \RepositoryManager::product()->prepareCollectionById($productIds, $region, function($data) use(&$productsById, $cartProductsById) {
+                \RepositoryManager::product()->prepareCollectionById($productIds, $region, function($data) use(&$productsById, $cartProductsById, &$productsForRetargeting) {
                     foreach ($data as $item) {
                         $productsById[$item['id']] = new \Model\Product\CartEntity($item);
+                        $productsForRetargeting[] = new \Model\Product\Entity($item);
                     }
                 });
             }
@@ -377,6 +380,7 @@ class Action {
         $page->setParam('backLink', $backLink);
         $page->setParam('paymentMethods', $paymentMethods);
         $page->setParam('selectedPaymentMethodId', $selectedPaymentMethodId);
+        $page->setParam('productsForRetargeting', $productsForRetargeting);
 
         return new \Http\Response($page->show());
     }

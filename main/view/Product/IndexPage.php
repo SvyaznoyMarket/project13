@@ -58,11 +58,12 @@ class IndexPage extends \View\DefaultLayout {
     public function slotInnerJavascript() {
         /** @var $product \Model\Product\Entity */
         $product = $this->getParam('product') instanceof \Model\Product\Entity ? $this->getParam('product') : null;
+        $category = array_pop($product->getCategory());
 
         return ''
             . ($product ? $this->render('product/_odinkod', array('product' => $product)) : '')
             . "\n\n"
-            . (bool)$product ? $this->render('_remarketingGoogle', ['tag_params' => ['prodid' => $product->getId(), 'pagetype' => 'product', 'pname' => $product->getName(), 'pcat' => $product->getMainCategory()->getToken(), 'value' => $product->getPrice()]]) : ''
+            . (bool)$product ? $this->render('_remarketingGoogle', ['tag_params' => ['prodid' => $product->getId(), 'pagetype' => 'product', 'pname' => $product->getName(), 'pcat' => ($category) ? $category->getToken() : '', 'value' => $product->getPrice()]]) : ''
             . "\n\n"
             . $this->render('_innerJavascript');
     }

@@ -40,9 +40,10 @@ class IndexPage extends \View\DefaultLayout {
 
         $tag_params = ['prodid' => [], 'pname' => [], 'pcat' => [], 'value' => [], 'pagetype' => 'cart'];
         foreach ($products as $product) {
+            $category = array_pop($product->getCategory());
             $tag_params['prodid'][] = $product->getId();
             $tag_params['pname'][] = $product->getName();
-            $tag_params['pcat'][] = $product->getMainCategory()->getToken();
+            $tag_params['pcat'][] = $category ? $category->getToken() : '';
             $tag_params['value'][] = $product->getPrice();
         }
 

@@ -101,6 +101,16 @@ class Layout extends \View\DefaultLayout {
         return $this->render('product-category/_sidebar', $this->params);
     }
 
+    public function slotInnerJavascript() {
+        $category = $this->getParam('category');
+
+
+        return ''
+            . $this->render('_remarketingGoogle', ['tag_params' => ['pagetype' => 'category', 'pcat' => $category->getToken(), ]])
+            . "\n\n"
+            . $this->render('_innerJavascript');
+    }
+
     private function applySeoPattern(\Model\Page\Entity $page) {
         $dataStore = \App::dataStoreClient();
 
