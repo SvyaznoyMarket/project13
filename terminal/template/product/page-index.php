@@ -10,7 +10,7 @@ $services = $product->getService();
 $warranties = $product->getWarranty();
 ?>
 
-<article class="bGoodItem">    
+<article class="bGoodItem" data-productid='<?= $product->getId() ?>'>    
     
     <div class="bGoodItemHead mMB20 mRounded mBlackBlock clearfix">
         <div class="clearfix">
@@ -51,15 +51,16 @@ $warranties = $product->getWarranty();
 
                 <div class="clearfix mMB80">
                     <!--  print_r($product->getState());   -->
-                    <?php if ($product->getState()->getIsBuyableByShop(\App::config()->region['shop_id'])):?>
+                    <?php if ($product->getIsBuyableByShop(\App::config()->region['shop_id'])):?>
                     <a class="bGoodDescBlock_eBayBtn bButton mOrangeBtn mFl" href="#" onclick="terminal.cart.addProduct(<?= $product->getId() ?>)">В корзину</a>
-                    <?php endif ?>
-                    <!-- <a class="bGoodDescBlock_eCompBtn bButton mGrayBtn mFl" href="#" onclick="terminal.screen.push('other_shops', { productId: <?= $product->getId() ?> })">Где купить?</a> кнопка где купить временно скрыта--> 
-                    <a class="bGoodDescBlock_eCompBtn bButton mGrayBtn mFl" href="#" onclick="terminal.compare.addProduct(<?= $product->getId() ?>)">К сравнению</a>
+                    <?php elseif ($product->getState()->getIsShop() ):?>
+                    <a class="bGoodDescBlock_eBayBtn bButton mGrayBtn mFl" href="#" onclick="terminal.screen.push('other_shops', { productId: <?= $product->getId() ?> })">Где купить?</a>
+                    <? endif; ?>
+                    <a class="bGoodDescBlock_eCompBtn bButton mGrayBtn mFl" href="#">К сравнению</a>
                 </div>
 
                 <p class="bGoodDescBlock_eShortDesc"><?= $product->getTagline() ?>
-                    <? if (!empty($description)): ?>
+                    <? if ((bool)$product->getDescription()) : ?>
                     <a class="bGoodDescBlock_eMore" href="#">Подробнее...</a>
                     <? endif ?>
                 </p>
@@ -142,7 +143,7 @@ $warranties = $product->getWarranty();
                 <? endforeach ?>
             </div>
             <? endforeach ?>
-            <? if (!empty($description)): ?>
+            <? if ((bool)$product->getDescription() ): ?>
             <h2 class="bGoodItemSpecifications_eTitle">Описание</h2>
             <p class="bGoodItemFullDesc"><?= $product->getDescription() ?></p>
             <? endif ?>
@@ -199,7 +200,7 @@ $warranties = $product->getWarranty();
                         <p class="bGoodServiceItem_eTitle"><?= $service->getName() ?></p>
                         <p class="bGoodServiceItem_ePrice"><?= $page->helper->formatPrice($service->getPrice()) ?> <span class="bRuble">p</span></p>
                         <a class="bButton mSmallOrangeBtn mFl" href="#" onclick="terminal.cart.addService(<?= $product->getId() ?>, <?= $service->getId() ?>)">в корзину</a>
-                        <a class="bButton mSmallGrayBtn mFl" href="#" onclick="terminal.screen.push('service', {serviceId: <?= $service->getId() ?>, productId: <?= $product->getId() ?>, isBuyable: true})">подробнее</a> <!-- isBuyable ??? -->
+                        <a class="bButton mSmallGrayBtn mFl" href="#" onclick="terminal.screen.push('service', {serviceId: <?= $service->getId() ?>, productId: <?= $product->getId() ?>, isBuyable: <?= $product->getIsBuyableByShop(\App::config()->region['shop_id']) ? 'true' : 'false' ?>})">подробнее</a> <!-- isBuyable ??? -->
                     </div>
                 </div>
             <? endforeach ?>

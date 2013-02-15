@@ -27,7 +27,18 @@ define('library',
 					selectOpen = false
 				}
 			})
+		}
 
+		// compare toggle
+		checkCompare = function(element, productId){
+			if (terminal.compare.hasProduct(productId)){
+				element.html('Убрать из сравнения')
+				return true
+			}
+			else{
+				element.html('К сравнению')
+				return false
+			}
 		}
 
 		// drug plugin
@@ -107,7 +118,8 @@ define('library',
 
 		return { // exports fucntion
 			myConsole : myConsole,
-			scrollTo : scrollTo
+			scrollTo : scrollTo,
+			checkCompare: checkCompare
 		}
 
 	})
