@@ -128,7 +128,10 @@ class DefaultLayout extends Layout {
     }
 
     public function slotInnerJavascript() {
-        return $this->render('_innerJavascript');
+        return ''
+            . $this->render('_remarketingGoogle', ['tag_params' => []])
+            . "\n\n"
+            . $this->render('_innerJavascript');
     }
 
     public function slotAuth() {

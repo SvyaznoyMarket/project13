@@ -2,7 +2,7 @@
 /**
 * @var $tag_params []
 */
-$tag_params = array_merge(['prodid' => '', 'pagetype' => '', 'pname' => '', 'pcat' => '', 'value' => ''], $tag_params);
+$tag_params = array_merge(['prodid' => '', 'pagetype' => 'default', 'pname' => '', 'pcat' => '', 'value' => ''], $tag_params);
 ?>
 <? //if (\App::config()->analytics): ?>
 <!-- Google Code for 'Тег ремаркетинга' -->
@@ -10,7 +10,7 @@ $tag_params = array_merge(['prodid' => '', 'pagetype' => '', 'pname' => '', 'pca
 <script type="text/javascript">
     var google_tag_params = {
 <?php $count = count($tag_params); $i = 0; foreach ($tag_params as $param => $value): $i++; ?>
-            <?= $param ?>: '<?= $value ?>'<?= ($i < $count) ? ",\r\n" : "\r\n" ?>
+            <?= $param ?>: <?= is_array($value) ? ("['" . implode($value, "', '") . "']") : ("'" . $value . "'") ?><?= ($i < $count) ? ",\r\n" : "\r\n" ?>
 <?php endforeach; ?>
     }
     /* <![CDATA[ */
