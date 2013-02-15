@@ -59,7 +59,7 @@ $warranties = $product->getWarranty();
                     <a id="compare_<?= $product->getId() ?>" class="bGoodDescBlock_eCompBtn jsCompare bButton mGrayBtn mFl" href="#">К сравнению</a>
                 </div>
 
-                <p class="bGoodDescBlock_eShortDesc"><?= $product->getTagline() ?>
+                <p class="bGoodDescBlock_eShortDesc clearfix"><?= $product->getTagline() ?>
                     <? if ((bool)$product->getDescription()) : ?>
                     <a class="bGoodDescBlock_eMore" href="#">Подробнее...</a>
                     <? endif ?>
@@ -210,7 +210,9 @@ $warranties = $product->getWarranty();
                     <div class="bFl">
                         <p class="bGoodServiceItem_eTitle"><?= $warranty->getName() ?></p>
                         <p class="bGoodServiceItem_ePrice"><?= $page->helper->formatPrice($warranty->getPrice()) ?> <span class="bRuble">p</span></p>
+                        <?php if ($product->getIsBuyableByShop(\App::config()->region['shop_id'])):?>
                         <a class="bButton mSmallOrangeBtn mFl" href="#" onclick="terminal.cart.setWarranty(<?= $product->getId() ?>, <?= $warranty->getId() ?>)">в корзину</a>
+                        <? endif ?>
                     </div>
                 </div>
             <? endforeach ?>
@@ -224,7 +226,9 @@ $warranties = $product->getWarranty();
                     <div class="bFl">
                         <p class="bGoodServiceItem_eTitle"><?= $service->getName() ?></p>
                         <p class="bGoodServiceItem_ePrice"><?= $page->helper->formatPrice($service->getPrice()) ?> <span class="bRuble">p</span></p>
+                        <?php if ($product->getIsBuyableByShop(\App::config()->region['shop_id'])):?>
                         <a class="bButton mSmallOrangeBtn mFl" href="#" onclick="terminal.cart.addService(<?= $product->getId() ?>, <?= $service->getId() ?>)">в корзину</a>
+                        <? endif ?>
                         <a class="bButton mSmallGrayBtn mFl" href="#" onclick="terminal.screen.push('service', {serviceId: <?= $service->getId() ?>, productId: <?= $product->getId() ?>, isBuyable: <?= $product->getIsBuyableByShop(\App::config()->region['shop_id']) ? 'true' : 'false' ?>})">подробнее</a> <!-- isBuyable ??? -->
                     </div>
                 </div>
