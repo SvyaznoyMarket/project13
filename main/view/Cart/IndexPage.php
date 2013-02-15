@@ -34,6 +34,24 @@ class IndexPage extends \View\DefaultLayout {
         return $this->render('order/_footer', $this->params) . "\n\n" . $response['content'];
     }
 
+    public function slotInnerJavascript() {
+        /** @var $products \Model\Product\Entity[] */
+        $products = $this->getParam('products');
+
+        $tag_params = ['prodid' => [], 'pname' => [], 'pcat' => [], 'value' => [], 'pagetype' => 'cart'];
+        foreach ($products as $product) {
+            $tag_params['prodid'][] = $product->getId();
+            $tag_params['pname'][] = $product->getName();
+            $tag_params['pcat'][] = $product->getMainCategory()->getToken();
+            $tag_params['value'][] = $product->getPrice();
+        }
+
+        return ''
+            . $this->render('_remarketingGoogle', ['tag_params' => $tag_params])
+            . "\n\n"
+            . $this->render('_innerJavascript');
+    }
+
     public function slotUserbar() {
         return '';
     }
