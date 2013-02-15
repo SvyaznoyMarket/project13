@@ -10,7 +10,7 @@ $services = $product->getService();
 $warranties = $product->getWarranty();
 ?>
 
-<article class="bGoodItem">    
+<article class="bGoodItem" data-productid='<?= $product->getId() ?>'>    
     
     <div class="bGoodItemHead mMB20 mRounded mBlackBlock clearfix">
         <div class="clearfix">
@@ -56,11 +56,11 @@ $warranties = $product->getWarranty();
                     <?php elseif ($product->getState()->getIsShop() ):?>
                     <a class="bGoodDescBlock_eBayBtn bButton mGrayBtn mFl" href="#" onclick="terminal.screen.push('other_shops', { productId: <?= $product->getId() ?> })">Где купить?</a>
                     <? endif; ?>
-                    <a class="bGoodDescBlock_eCompBtn bButton mGrayBtn mFl" href="#" onclick="terminal.compare.addProduct(<?= $product->getId() ?>)">К сравнению</a>
+                    <a class="bGoodDescBlock_eCompBtn bButton mGrayBtn mFl" href="#">К сравнению</a>
                 </div>
 
                 <p class="bGoodDescBlock_eShortDesc"><?= $product->getTagline() ?>
-                    <? if (!empty($description)): ?>
+                    <? if ((bool)$product->getDescription()) : ?>
                     <a class="bGoodDescBlock_eMore" href="#">Подробнее...</a>
                     <? endif ?>
                 </p>
@@ -143,7 +143,7 @@ $warranties = $product->getWarranty();
                 <? endforeach ?>
             </div>
             <? endforeach ?>
-            <? if (!empty($description)): ?>
+            <? if ((bool)$product->getDescription() ): ?>
             <h2 class="bGoodItemSpecifications_eTitle">Описание</h2>
             <p class="bGoodItemFullDesc"><?= $product->getDescription() ?></p>
             <? endif ?>

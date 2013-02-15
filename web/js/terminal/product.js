@@ -4,6 +4,11 @@ define('product',
     $(document).ready(function() {
 	//product code
 		library.myConsole('produsct.js and library.js loaded')
+
+		// product id
+		var productId = $('.bGoodItem').data('productid')
+		library.myConsole(productId)
+
 		// slider
 		if ($('#similarSlider').length){
 			var slider = $('#similarSlider')
@@ -15,7 +20,7 @@ define('product',
 			slider.width( slider.find('.bGoodSubItem_eGoods').length * (slider.find('.bGoodSubItem_eGoods').width()+20) )
 			slider.draggable()
 		}
-		// library.myConsole('1234')
+
 		// toggle subItems
 		if ($('.bGoodSubItems_eTitle').length){
 			if ( !$('.jsAccessorise').length ){
@@ -39,9 +44,25 @@ define('product',
 			})
 		}
 
+		// compare button
+		compareBtn = $('.bGoodDescBlock_eCompBtn')
+		library.checkCompare(compareBtn, productId)
+		compareBtn.bind('click', function(){
+			if (library.checkCompare(compareBtn, productId)){
+				terminal.compare.removeProduct(productId)
+				library.checkCompare(compareBtn, productId)
+			}
+			else{
+				terminal.compare.addProduct(productId)
+				library.checkCompare(compareBtn, productId)
+			}
+		})
+		
+			
+
+		// scroll to full Description
 		$('.bGoodDescBlock_eMore').bind('click', function(){
-			if ($('.bGoodItemFullDesc').length)
-				library.scrollTo($('.bGoodItemFullDesc'), 75)
+			library.scrollTo($('.bGoodItemFullDesc'), 75)
 		})
 
 		// helpers
