@@ -111,7 +111,7 @@ $warranties = $product->getWarranty();
                             <a class="bGoodSubItem_eGoodsImg mFl mRounded" href="#" onclick='terminal.screen.push("product", {productId: <?= $iProduct->getId() ?>})'><img width="130" height="130" src="<?= $iProduct->getImageUrl(1) ?>"/></a>
                             <div class="bGoodSubItem_eGoodsInfo">
                                 <!-- <p class="bGoodSubItem_eRating"><?= $iProduct->getRating() ?></p> -->
-                                <h2 class="bGoodSubItem_eTitle"><a class="bGoodSubItem_eLink" href="#" onclick='terminal.screen.push("product", {productId: <?= $iProduct->getId() ?>})'><?= $iProduct->getName() ?></a></h2>
+                                <h2 class="bGoodSubItem_eTitle"><a class="bGoodSubItem_eLink" href="#"><?= $iProduct->getName() ?></a></h2>
                                 <p class="bGoodSubItem_ePrice"><?= $page->helper->formatPrice($iProduct->getPrice()) ?> <span class="bRuble">p</span></p>
                                 <a class="bGoodSubItem_eMore bButton mSmallOrangeBtn" href="#" onclick='terminal.cart.addProduct(<?= $iProduct->getId() ?>)'>В корзину</a>
                             </div>

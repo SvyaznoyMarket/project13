@@ -73,7 +73,9 @@ define('library',
 			self.start = null
 			self.stop = null
 
-			self.start = function(e) {
+			self.startTime = 0
+
+			self.moveStart = function(e) {
 				var orig = e.originalEvent
 				self.start = {
 					x: orig.changedTouches[0].pageX,
@@ -83,6 +85,7 @@ define('library',
 					start: 0,
 					end: self.width() - self.parent().width()
 				}
+				self.startTime = new Date().getTime()
 			}
 
 			self.moveMe = function(e) {
@@ -90,27 +93,52 @@ define('library',
 				e.preventDefault()
 				var orig = e.originalEvent
 				var newLeft = orig.changedTouches[0].pageX - self.start.x + self.start.left
-				if ( newLeft > self.stop.start ){ // ограничение слева
+				self.checkMove( newLeft, orig.changedTouches[0].pageX )
+			}
+
+			self.checkMove = function( newLeft, touchEvent ){
+				if ( newLeft > self.stop.start ){
 					self.css({left: 0})
 					self.start.left = 0
-					self.start.x = orig.changedTouches[0].pageX
+					self.start.x = (touchEvent) ? touchEvent : 0
+					return false
 				}
 				else if ( newLeft < -self.stop.end){
 					self.css({left: -self.stop.end})
 					self.start.left = -self.stop.end
-					self.start.x = orig.changedTouches[0].pageX
+					self.start.x = (touchEvent) ? touchEvent : 0
+					return false
 				}
 				else{
 					self.css({left: newLeft})
+					return true
 				}
 			}
 
-			self.moveEnd = function() {
+			self.moveEnd = function(e) {
 				terminal.interactive = true
+				e.preventDefault()
+				e.stopPropagation()
+				var orig = e.originalEvent
+				var stopTime = new Date().getTime()
+				var deltaTime = self.startTime - stopTime
+				var a = (self.start.x - orig.changedTouches[0].pageX) / deltaTime
+				self.autoMove(a)
+				return false
+			}
+
+			self.autoMove = function(a){
+				var left = parseInt(self.css('left')) + (a*15)
+				var acceleration = (a>0) ? (a - 0.05) : (a + 0.05)
+				if ( self.checkMove(left) && ( Math.abs(acceleration)>0.05 ) ){
+					setTimeout( function(){
+						self.autoMove(acceleration)
+					}, 1)
+				}
 			}
 
 			if (self.width()>self.parent().width()){
-				self.bind("touchstart", self.start)
+				self.bind("touchstart", self.moveStart)
 				self.bind("touchmove", self.moveMe)
 				self.bind("touchend", self.moveEnd)
 			}
