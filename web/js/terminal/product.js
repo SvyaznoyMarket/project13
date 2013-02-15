@@ -62,7 +62,7 @@ define('product',
 
 		// scroll to full Description
 		$('.bGoodDescBlock_eMore').bind('click', function(){
-			library.scrollTo($('.bGoodItemFullDesc'), 75)
+			library.scrollTo($('.bGoodItemFullDesc'), 100, 300)
 		})
 
 		// helpers

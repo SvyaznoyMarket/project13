@@ -92,13 +92,11 @@ define('library',
 		}
 
 		// scrollTo element of or position
-		scrollTo = function(element, offset){
+		scrollTo = function(element, offset, time){
 			var aminateScroll = function(start, stop, step){
-				myConsole('..start '+start+' stop '+stop )
 				if ((start+step) < stop){
 					start += step
 					terminal.flickable.contentY = start
-					myConsole(terminal.flickable.contentY)
 					setTimeout( function(){
 						aminateScroll(start, stop, step)
 					}, 1)
@@ -107,13 +105,16 @@ define('library',
 					terminal.flickable.contentY = stop
 				}
 			}
+			var offset = (offset)?offset:0
+			var time = (time)?time:10
 			var elementTop = element.offset().top
 			var windowHeight = terminal.flickable.height
 			var documentHeight = terminal.flickable.contentHeight
 			var stopScroll = documentHeight-windowHeight
 			var toY = elementTop-offset
 			toY = (toY > stopScroll)?stopScroll:toY
-			aminateScroll(terminal.flickable.contentY, toY, 75)
+			var step = (toY - terminal.flickable.contentY)/(time*0.1)
+			aminateScroll(terminal.flickable.contentY, toY, step)
 		}
 
 		return { // exports fucntion
