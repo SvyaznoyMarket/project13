@@ -58,7 +58,8 @@ class IndexPage extends \View\DefaultLayout {
     public function slotInnerJavascript() {
         /** @var $product \Model\Product\Entity */
         $product = $this->getParam('product') instanceof \Model\Product\Entity ? $this->getParam('product') : null;
-        $category = array_pop($product->getCategory());
+        $categories = $product->getCategory();
+        $category = array_pop($categories);
 
         return ''
             . ($product ? $this->render('product/_odinkod', array('product' => $product)) : '')
