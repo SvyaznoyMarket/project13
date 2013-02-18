@@ -14,8 +14,10 @@ class Client {
      */
     public function __construct(array $config, \Curl\Client $curl) {
         $this->config = array_merge([
-            'url'     => null,
-            'timeout' => null,
+            'url'          => null,
+            'timeout'      => null,
+            'retryTimeout' => null,
+            'retryCount'   => null,
         ], $config);
 
         $this->curl = $curl;
@@ -49,5 +51,41 @@ class Client {
         }
 
         return $response;
+    }
+
+    /**
+     * @param $file
+     * @param callback      $successCallback
+     * @param callback|null $failCallback
+     * @param float|null    $timeout
+     * @return bool
+     */
+    public function addQuery($file, $successCallback, $failCallback = null, $timeout = null) {
+        if (null === $timeout) {
+            $timeout = $this->config['timeout'];
+        }
+        if (null === $failCallback) {
+            $failCallback = function(\Exception $e) {
+                \App::exception()->remove($e);
+            };
+        }
+
+        return $this->curl->addQuery($this->config['url'] . $file, [], $successCallback, $failCallback, $timeout);
+    }
+
+    /**
+     * @param int $retryTimeout
+     * @param int $retryCount
+     * @return void
+     */
+    public function execute($retryTimeout = null, $retryCount = 0) {
+        if (null === $retryTimeout) {
+            $retryTimeout = isset($this->config['retryTimeout']['default']) ? $this->config['retryTimeout']['default'] : 0;
+        }
+        if (null === $retryCount) {
+            $retryCount = $this->config['retryCount'];
+        }
+
+        $this->curl->execute($retryTimeout, $retryCount);
     }
 }

@@ -181,22 +181,23 @@ class Client {
 
                     unset($this->queries[$this->queryIndex[(string)$handler]]);
 
-                    if ($info['http_code'] >= 300) {
-                        $spend = \Debug\Timer::stop('curl');
-                        throw new \RuntimeException(sprintf("Invalid http code: %d, \nResponse: %s", $info['http_code'], $content));
-                    }
                     try {
+                        if ($info['http_code'] >= 300) {
+                            throw new \RuntimeException(sprintf("Invalid http code: %d, \nResponse: %s", $info['http_code'], $content));
+                        }
+
                         $decodedResponse = $this->decode($content);
                         $this->logger->debug('Curl response data: ' . $this->encode($decodedResponse));
                         $callback = $this->successCallbacks[(string)$handler];
-                        $callback($decodedResponse);
-                    } catch (Exception $e) {
+                        $callback($decodedResponse, (int)$handler);
+                    } catch (\Exception $e) {
                         \App::exception()->add($e);
                         $this->logger->error($e);
+                        $spend = \Debug\Timer::stop('curl');
 
                         $callback = $this->failCallbacks[(string)$handler];
                         if ($callback) {
-                            $callback($e);
+                            $callback($e, (int)$handler);
                         }
                     }
                 }
@@ -268,7 +269,7 @@ class Client {
      * @return resource
      */
     private function create($url, array $data = [], $timeout = null) {
-        $this->logger->info('Start curl ' . $url . ((bool)$data ? ' data: ' . $this->encode($data) : ''));
+        $this->logger->info('Start curl ' . $url . ((bool)$data ? ' data: ' . $this->encode($data) : '') . ($timeout ? (' timeout: ' . $timeout) : ''));
 
         $connection = curl_init();
         curl_setopt($connection, CURLOPT_HEADER, 1);

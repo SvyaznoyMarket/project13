@@ -20,6 +20,15 @@ $c->wordpress['url'] = 'http://content.enter.ru/';
 
 $c->dataStore['url'] = 'http://www.enter.ru/';
 $c->dataStore['timeout'] = 0.25;
+$c->dataStore['retryTimeout'] = [
+    'default' => 0.5,
+    'tiny'    => 0.05,
+    'short'   => 0.2,
+    'medium'  => 0.5,
+    'long'    => 0.8,
+    'huge'    => 1.5,
+    'forever' => 0,
+];
 
 $c->analytics['enabled'] = true;
 $c->googleAnalytics['enabled'] = true;

@@ -122,19 +122,38 @@ class Layout extends \View\DefaultLayout {
 
         $region = \App::user()->getRegion();
 
-        $seoTemplate = null;
+        $seoTemplates = [];
+        $callback = function ($data, $index) use (&$seoTemplates) {
+            if (is_array($data)) {
+                $seoTemplates[$index] = $data;
+            }
+        };
         foreach (array_reverse(array_merge($category->getAncestor(), [$category])) as $iCategory) {
             /** @var $iCategory \Model\Product\Category\Entity */
-            $seoTemplate = $dataStore->query(sprintf('seo/%s.json', trim($iCategory->getLink(), '/')));
-            if ((bool)$seoTemplate) break;
+            $dataStore->addQuery(sprintf('seo/%s.json', trim($iCategory->getLink(), '/')), $callback);
         }
-        if (!$seoTemplate) return;
 
+        // данные для шаблона
         $patterns = [
-            'категория' => $dataStore->query(sprintf('inflect/product-category/%s.json', $category->getId())) ?: [$category->getName()],
-            'город'     => $dataStore->query(sprintf('inflect/region/%s.json', $region->getId())) ?: [$region->getName()],
-            'сайт'      => $dataStore->query('inflect/сайт.json'),
+            'категория' => [$category->getName()],
+            'город'     => [$region->getName()],
+            'сайт'      => null,
         ];
+        $dataStore->addQuery(sprintf('inflect/product-category/%s.json', $category->getId()), function($data) use (&$patterns) {
+            $patterns['категория'] = $data;
+        });
+        $dataStore->addQuery(sprintf('inflect/region/%s.json', $region->getId()), function($data) use (&$patterns) {
+            $patterns['город'] = $data;
+        });
+        $dataStore->addQuery('inflect/сайт.json', function($data) use (&$patterns) {
+            $patterns['сайт'] = $data;
+        });
+
+        $dataStore->execute();
+
+        ksort($seoTemplates);
+        $seoTemplate = reset($seoTemplates);
+        if (!$seoTemplate) return;
 
         $replacer = new \Util\InflectReplacer($patterns);
         if ($value = $replacer->get($seoTemplate['title'])) {

@@ -48,6 +48,7 @@ class AppConfig {
     public $coreV2 = [
         'url'          => null,
         'client_id'    => null,
+        'timeout'      => null,
         'retryTimeout' => [],
         'retryCount'   => null,
     ];
@@ -57,8 +58,10 @@ class AppConfig {
     ];
     /** @var array */
     public $dataStore = [
-        'url'     => null,
-        'timeout' => null,
+        'url'          => null,
+        'timeout'      => null,
+        'retryTimeout' => [],
+        'retryCount'   => null,
     ];
     /** @var array */
     public $company = [

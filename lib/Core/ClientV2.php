@@ -16,6 +16,7 @@ class ClientV2 implements ClientInterface {
         $this->config = array_merge([
             'url'          => null,
             'client_id'    => null,
+            'timeout'      => null,
             'retryTimeout' => null,
             'retryCount'   => null,
         ], $config);
@@ -31,7 +32,13 @@ class ClientV2 implements ClientInterface {
      * @return mixed
      */
     public function query($action, array $params = [], array $data = [], $timeout = null) {
-         return $this->curl->query($this->getUrl($action, $params), $data, $timeout);
+        \Debug\Timer::start('core');
+
+        $response = $this->curl->query($this->getUrl($action, $params), $data, $timeout);
+
+        \Debug\Timer::stop('core');
+
+        return $response;
     }
 
     /**
@@ -44,7 +51,17 @@ class ClientV2 implements ClientInterface {
      * @return bool
      */
     public function addQuery($action, array $params = [], array $data = [], $successCallback, $failCallback = null, $timeout = null) {
-        return $this->curl->addQuery($this->getUrl($action, $params), $data, $successCallback, $failCallback, $timeout);
+        \Debug\Timer::start('core');
+
+        if (null === $timeout) {
+            $timeout = $this->config['timeout'];
+        }
+
+        $response = $this->curl->addQuery($this->getUrl($action, $params), $data, $successCallback, $failCallback, $timeout);
+
+        \Debug\Timer::stop('core');
+
+        return $response;
     }
 
     /**
@@ -53,11 +70,18 @@ class ClientV2 implements ClientInterface {
      * @return void
      */
     public function execute($retryTimeout = null, $retryCount = 0) {
+        \Debug\Timer::start('core');
+
         if (null === $retryTimeout) {
             $retryTimeout = isset($this->config['retryTimeout']['default']) ? $this->config['retryTimeout']['default'] : 0;
         }
+        if (null === $retryCount) {
+            $retryCount = $this->config['retryCount'];
+        }
 
-        $this->curl->execute($retryTimeout, $this->config['retryCount']);
+        $this->curl->execute($retryTimeout, $retryCount);
+
+        \Debug\Timer::stop('core');
     }
 
     /**
