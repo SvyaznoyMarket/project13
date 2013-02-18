@@ -223,23 +223,6 @@ class BasicEntity {
     }
 
     /**
-     * @param int $shopId
-     * @return bool
-     */
-    public function getIsBuyableByShop($shopId) {
-        $shopId = (int)$shopId;
-        if (!$shopId) return false;
-
-        $isBuyable = $this->getState()->getIsStore() || $this->getState()->getIsSupplier();
-        foreach ($this->getStock() as $stock) {
-            if ($stock->getShopId() == $shopId) {
-                $isBuyable |= ($stock->getQuantity() > 0 || $stock->getQuantityShowroom() > 0);
-            }
-        }
-        return $isBuyable;
-    }
-
-    /**
      * @param \Model\Product\Line\Entity $line|null
      */
     public function setLine(Line\Entity $line = null) {

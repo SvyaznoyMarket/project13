@@ -32,7 +32,7 @@ class IndexAction {
         \RepositoryManager::product()->prepareEntityById($productId, $region, function($data) use (&$product) {
             $data = reset($data);
             if ((bool)$data) {
-                $product = new \Model\Product\Entity($data);
+                $product = new \Model\Product\TerminalEntity($data);
             }
         });
 
@@ -57,6 +57,7 @@ class IndexAction {
 
         if ((bool)$accessoryIds || (bool)$relatedIds || (bool)$partIds) {
             try {
+                \RepositoryManager::product()->setEntityClass('\Model\Product\TerminalEntity');
                 $products = \RepositoryManager::product()->getCollectionById(array_merge($accessoryIds, $relatedIds, $partIds));
             } catch (\Exception $e) {
                 \App::exception()->add($e);
