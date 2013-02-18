@@ -48,16 +48,6 @@ class Client {
             \App::logger()->info('Fail data-store request ' . $file . ' in ' . $spend . ' with ' . $e);
         }
 
-        \Util\RequestLogger::getInstance()->addLog($url, [], $spend, 'unknown');
-
-
-        if ('json' == pathinfo($file, PATHINFO_EXTENSION)) {
-            $response = json_decode($response, true);
-            if ($error = json_last_error()) {
-                throw new \Exception('Json error', $error);
-            }
-        }
-
         return $response;
     }
 }

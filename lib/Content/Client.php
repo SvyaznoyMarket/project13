@@ -41,13 +41,6 @@ class Client {
             \App::logger()->info('Fail content request ' . $action . ' in ' . $spend . ' with ' . $e);
         }
 
-        \Util\RequestLogger::getInstance()->addLog($url, [], $spend, 'unknown');
-
-        $data = json_decode($response, true);
-        if ($error = json_last_error()) {
-            throw new \Exception('Json error', $error);
-        }
-
-        return $data;
+        return $response;
     }
 }
