@@ -16,12 +16,10 @@ class Abtest {
     public function __construct(array $config) {
         $this->config = $config;
 
-        if (!is_array($config['test']) || !count($config['test'])) {
-            throw new \Exception('There must be at least one test');
-        }
-
-        foreach ($config['test'] as $option) {
-            $this->option[$option['key']] = new \Model\Abtest\Entity($option);
+        if (isset($config['test']) && is_array($config['test'])) {
+            foreach ($config['test'] as $option) {
+                $this->option[$option['key']] = new \Model\Abtest\Entity($option);
+            }
         }
 
         $this->option['default'] = new \Model\Abtest\Entity([
