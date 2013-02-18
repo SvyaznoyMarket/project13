@@ -59,7 +59,7 @@ class Abtest {
             return $this->case;
         }
 
-        if (!(bool)$this->config['enabled']) {
+        if (strtotime($this->config['bestBefore']) <= strtotime('now') || !(bool)$this->config['enabled']) {
             return $this->option['default'];
         }
         if (\App::request()->cookies->has($this->config['cookieName'])) {
