@@ -37,8 +37,7 @@ class Abtest {
         }
    }
 
-    private function setCase()
-    {
+    private function setCase() {
         $luck = mt_rand(0, 99);
         $total = 0;
 
@@ -57,8 +56,7 @@ class Abtest {
     /**
      * @return \Model\Abtest\Entity|null
      */
-    public function getCase()
-    {
+    public function getCase() {
         if ((bool)$this->case) {
             return $this->case;
         }
