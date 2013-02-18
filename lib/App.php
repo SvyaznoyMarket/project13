@@ -211,7 +211,7 @@ class App {
         static $instance;
 
         if (!$instance) {
-            $instance = new \Core\ClientV2(self::$config->coreV2, \App::logger('core_v2'));
+            $instance = new \Core\ClientV2(self::$config->coreV2, self::curl());
         }
 
         return $instance;

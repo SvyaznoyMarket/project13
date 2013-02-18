@@ -156,7 +156,7 @@ class Client {
                     $this->logger->debug('Curl response done: ' . print_r($done, 1));
                     $handler = $done['handle'];
 
-                    //$this->logger->info(microtime(true) . ': получен ответ на запрос ' . $this->queries[$this->queryIndex[(string)$handler]]['query']['action'] . '[' . (string)$handler . ']');
+                    //$this->logger->info(microtime(true) . ': получен ответ на запрос ' . $this->queries[$this->queryIndex[(string)$handler]]['query']['url'] . '[' . (string)$handler . ']');
                     $this->logger->debug(microtime(true) . ': <- [' . (string)$handler . ']');
 
                     //удаляем запрос из массива запросов на исполнение и прерываем дублирующие запросы
@@ -227,7 +227,7 @@ class Client {
 
                         foreach ($this->queries as $query) {
                             if (count($query['resources']) >= $retryCount) continue;
-                            $this->logger->debug(microtime(true) . ': посылаю еще один запрос в ядро: ' . $query['query']['action']);
+                            $this->logger->debug(microtime(true) . ': посылаю еще один запрос в ядро: ' . $query['query']['url']);
                             $this->addQuery(
                                 $query['query']['url'],
                                 $query['query']['data'],
