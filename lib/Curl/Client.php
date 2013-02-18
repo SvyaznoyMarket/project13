@@ -268,8 +268,6 @@ class Client {
      * @return resource
      */
     private function create($url, array $data = [], $timeout = null) {
-        $isPostMethod = !empty($data);
-
         $this->logger->info('Start curl ' . $url . ((bool)$data ? ' data: ' . $this->encode($data) : ''));
 
         $connection = curl_init();
@@ -284,7 +282,7 @@ class Client {
             curl_setopt($connection, CURLOPT_TIMEOUT_MS, $timeout * 1000);
         }
 
-        if ($isPostMethod) {
+        if ((bool)$data) {
             curl_setopt($connection, CURLOPT_POST, true);
             curl_setopt($connection, CURLOPT_POSTFIELDS, json_encode($data));
         }
