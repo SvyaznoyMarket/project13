@@ -161,13 +161,13 @@ class ClientV2 implements ClientInterface
                     $this->logger->debug('Core response info: ' . $this->encodeInfo($info));
                     if (curl_errno($handler) > 0) {
                         $spend = \Debug\Timer::stop('core');
-                        \Util\RequestLogger::getInstance()->addLog($info['url'], $this->queries[$this->queryIndex[(string)$handler]]['query']['data'], $info['total_time'], 'multi(' . count($this->queries[$this->queryIndex[(string)$handler]]['resources']) . ' try(s)): ' . 'unknown');
+                        \Util\RequestLogger::getInstance()->addLog($info['url'], $this->queries[$this->queryIndex[(string)$handler]]['query']['data'], $info['total_time'], 'multi(' . count($this->queries[$this->queryIndex[(string)$handler]]['resources']) . '): ' . 'unknown');
                         throw new \RuntimeException(curl_error($handler), curl_errno($handler));
                     }
                     $content = curl_multi_getcontent($handler);
                     $header = $this->getHeader($content, true);
 
-                    \Util\RequestLogger::getInstance()->addLog($info['url'], $this->queries[$this->queryIndex[(string)$handler]]['query']['data'], $info['total_time'], 'multi(' . count($this->queries[$this->queryIndex[(string)$handler]]['resources']) . ' try(s)): ' . (isset($header['X-Server-Name']) ? $header['X-Server-Name'] : 'unknown'));
+                    \Util\RequestLogger::getInstance()->addLog($info['url'], $this->queries[$this->queryIndex[(string)$handler]]['query']['data'], $info['total_time'], 'multi(' . count($this->queries[$this->queryIndex[(string)$handler]]['resources']) . '): ' . (isset($header['X-Server-Name']) ? $header['X-Server-Name'] : 'unknown'));
 
                     unset($this->queries[$this->queryIndex[(string)$handler]]);
 

@@ -197,7 +197,7 @@ class App {
         static $instance;
 
         if (!$instance) {
-            $instance = new \Curl\Client();
+            $instance = new \Curl\Client(\App::logger());
         }
 
         return $instance;
