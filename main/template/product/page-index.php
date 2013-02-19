@@ -74,6 +74,14 @@ $productVideo = reset($productVideos);
         }
     }
 ?>
+
+<style type="text/css">
+    .goodsphoto_eVideoShield {
+        width: 102px;
+        height: 110px;
+    }
+</style>
+
 <script type="text/javascript">
   product_3d_small = <?= json_encode($p3d_res_small) ?>;
   product_3d_big = <?= json_encode($p3d_res_big) ?>;
