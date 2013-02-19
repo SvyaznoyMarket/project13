@@ -18,7 +18,9 @@
 
 			<div class="bLoginForm width327 fl">
 				<h2 class="bLoginForm_eTitle">Я новый пользователь</h2>
-				<a class="bLoginForm_eUr orange underline" href="/corporate-register">Регистрация юридического лица</a>
+                <? if (\App::config()->user['corporateRegister']): ?>
+                <a class="bLoginForm_eUr orange underline" href="/corporate-register">Регистрация юридического лица</a>
+                <? endif ?>
 				<div class="pb5">Как к вам обращаться?</div>
 				<div class="pb5">
 					<input type="text" tabindex="5" value="" name="register[first_name]" class="text width315 mb10" id="register_first_name" required="required">
