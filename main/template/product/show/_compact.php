@@ -11,7 +11,16 @@
 <?php
 $isHidden = isset($isHidden) && $isHidden;
 $hasModel = (isset($hasModel) ? $hasModel : true) && $product->getModel() && (bool)$product->getModel()->getProperty();
+if (!isset($productVideos)) $productVideos = [];
 ?>
+
+<style type="text/css">
+    .goodsphoto_eVideoShield.goodsphoto_eVideoShield_small, .goodsphoto_eVideoShield.goodsphoto_eVideoShield_small:hover {
+        background: url('/css/item/img/videoStiker_small.png') no-repeat 0 0;
+        right: -55px;
+        top: 130px;
+    }
+</style>
 
 <div class="goodsbox"<? if ($isHidden): ?> style="display:none;"<? endif ?> ref="<?= $product->getToken(); ?>">
     <div class="goodsbox__inner" data-url="<?= $product->getLink() ?>">

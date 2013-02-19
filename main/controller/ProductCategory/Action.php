@@ -350,7 +350,24 @@ class Action {
             $productCount += $productPager->count();
         }
 
+
+        // video
+        $productVideosByProduct = [];
+        foreach ($productPagersByCategory as $productPager) {
+            foreach ($productPager as $product) {
+                /** @var $product \Model\Product\Entity */
+                \RepositoryManager::productVideo()->prepareCollectionByProduct($product, function($data) use ($product, &$productVideosByProduct) {
+                    $productVideosByProduct[$product->getId()] = [];
+                    foreach ($data as $item) {
+                        $productVideosByProduct[$product->getId()][] = new \Model\Product\Video\Entity($item);
+                    }
+                });
+            }
+        }
+        \App::curl()->execute();
+
         $page->setParam('productPagersByCategory', $productPagersByCategory);
+        $page->setParam('productVideosByProduct', $productVideosByProduct);
 
         $myThingsData = array(
             'EventType' => 'MyThings.Event.Visit',

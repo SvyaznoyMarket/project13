@@ -4,6 +4,7 @@
  * @var $category                \Model\Product\Category\Entity
  * @var $productFilter           \Model\Product\Filter
  * @var $productPagersByCategory \Iterator\EntityPager[]
+ * @var $productVideosByProduct  array
  */
 ?>
 
@@ -17,8 +18,9 @@
     if (!$pager->count()) continue;
     ?>
     <?= $page->render('product/_slider-inCategory', array(
-        'category'      => $child,
-        'pager'         => $pager,
-        'itemsInSlider' => ceil($pager->getMaxPerPage() / 2),
+        'category'               => $child,
+        'pager'                  => $pager,
+        'itemsInSlider'          => ceil($pager->getMaxPerPage() / 2),
+        'productVideosByProduct' => $productVideosByProduct,
     )) ?>
 <? } ?>

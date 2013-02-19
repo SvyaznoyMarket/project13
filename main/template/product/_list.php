@@ -8,14 +8,6 @@
  **/
 ?>
 
-<style type="text/css">
-    .goodsphoto_eVideoShield.goodsphoto_eVideoShield_small, .goodsphoto_eVideoShield.goodsphoto_eVideoShield_small:hover {
-        background: url('/css/item/img/videoStiker_small.png') no-repeat 0 0;
-        right: -55px;
-        top: 130px;
-    }
-</style>
-
 <?
 if (!isset($isAjax)) $isAjax = false;
 ?>

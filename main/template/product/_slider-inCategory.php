@@ -1,11 +1,12 @@
 <?php
 /**
- * @var $page          \View\Layout
- * @var $request       \Http\Request
- * @var $category      \Model\Product\Category\Entity
- * @var $pager         \Iterator\EntityPager
- * @var $product       \Model\Product\Entity
- * @var $itemsInSlider int
+ * @var $page                   \View\Layout
+ * @var $request                \Http\Request
+ * @var $category               \Model\Product\Category\Entity
+ * @var $pager                  \Iterator\EntityPager
+ * @var $product                \Model\Product\Entity
+ * @var $itemsInSlider          int
+ * @var $productVideosByProduct array
  */
 ?>
 
@@ -46,9 +47,10 @@ if ($filterData = $request->get(\View\Product\FilterForm::$name)) {
 <div class="carousel">
     <? $i = 0; foreach ($pager as $product) { $i++ ?>
         <?= $page->render('product/show/_' . $view, array(
-            'index'    => $i,
-            'product'  => $product,
-            'isHidden' => $i > $itemsInSlider,
+            'index'         => $i,
+            'product'       => $product,
+            'isHidden'      => $i > $itemsInSlider,
+            'productVideos' => isset($productVideosByProduct[$product->getId()]) ? $productVideosByProduct[$product->getId()] : [],
         )) ?>
     <? } ?>
 </div>
