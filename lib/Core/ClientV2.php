@@ -69,7 +69,7 @@ class ClientV2 implements ClientInterface {
      * @param int $retryCount
      * @return void
      */
-    public function execute($retryTimeout = null, $retryCount = 0) {
+    public function execute($retryTimeout = null, $retryCount = null) {
         \Debug\Timer::start('core');
 
         if (null === $retryTimeout) {

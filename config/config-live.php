@@ -22,12 +22,12 @@ $c->wordpress['url'] = 'http://content.enter.ru/';
 $c->dataStore['url'] = 'http://www.enter.ru/';
 $c->dataStore['timeout'] = 0.25;
 $c->dataStore['retryTimeout'] = [
-    'default' => 0.5,
-    'tiny'    => 0.05,
-    'short'   => 0.2,
-    'medium'  => 0.5,
-    'long'    => 0.8,
-    'huge'    => 1.5,
+    'default' => 0.1,
+    'tiny'    => 0.01,
+    'short'   => 0.05,
+    'medium'  => 0.1,
+    'long'    => 0.2,
+    'huge'    => 0.5,
     'forever' => 0,
 ];
 

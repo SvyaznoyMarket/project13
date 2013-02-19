@@ -364,7 +364,7 @@ class Action {
                 });
             }
         }
-        \App::curl()->execute();
+        \App::dataStoreClient()->execute(\App::config()->dataStore['retryTimeout']['tiny'], \App::config()->dataStore['retryCount']);
 
         $page->setParam('productPagersByCategory', $productPagersByCategory);
         $page->setParam('productVideosByProduct', $productVideosByProduct);
@@ -457,7 +457,7 @@ class Action {
                 }
             });
         }
-        \App::curl()->execute();
+        \App::dataStoreClient()->execute(\App::config()->dataStore['retryTimeout']['tiny'], \App::config()->dataStore['retryCount']);
 
         $page->setParam('productPager', $productPager);
         $page->setParam('productSorting', $productSorting);

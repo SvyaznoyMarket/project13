@@ -269,9 +269,6 @@ class Repository {
     public function getIteratorByFilter(array $filter = [], array $sort = [], $offset = null, $limit = null, \Model\Region\Entity $region = null) {
         \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
-        //TODO: выпилить, когда будет реализована задача CORE-675
-        if (isset($sort['default'])) $sort = [];
-
         $response = array();
         $this->client->addQuery('listing/list', array(
             'filter' => array(
@@ -316,8 +313,6 @@ class Repository {
         $response = [];
         $this->client->addQuery('listing/multilist', [], [
             'filter_list' => array_map(function($filter) use ($sort, $offset, $limit) {
-                //TODO: выпилить, когда будет реализована задача CORE-675
-                if (isset($sort['default'])) $sort = [];
 
                 return [
                     'filters' => $filter,
