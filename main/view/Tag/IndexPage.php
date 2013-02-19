@@ -31,9 +31,9 @@ class IndexPage extends \View\DefaultLayout {
         }
 
         // seo: title
-        $this->setTitle(\Util\String::ucfirst_utf8($tag->getName()));
+        $this->setTitle(\Util\String::ucfirst($tag->getName()));
         if (!$this->hasParam('title')) {
-            $this->setParam('title', \Util\String::ucfirst_utf8($tag->getName()));
+            $this->setParam('title', \Util\String::ucfirst($tag->getName()));
         }
     }
 

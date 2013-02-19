@@ -58,6 +58,6 @@ class InflectReplacer {
             }
         }
 
-        return $value;
+        return String::ucfirst($value);
     }
 }
