@@ -69,12 +69,15 @@ class IndexAction {
         $products = [];
         /** @var $services \Model\Product\Service\Entity[] */
         $services = [];
+        /** @var $products \Model\Product\Entity[] */
+        $productEntities = [];
 
         // запрашиваем список товаров
         if ((bool)$productIds) {
-            \RepositoryManager::product()->prepareCollectionById($productIds, $region, function($data) use(&$products, $cartProductsById) {
+            \RepositoryManager::product()->prepareCollectionById($productIds, $region, function($data) use(&$products, $cartProductsById, &$productEntities) {
                 foreach ($data as $item) {
                     $products[] = new \Model\Product\CartEntity($item);
+                    $productEntities[] = new \Model\Product\Entity($item);
                 }
             });
         }
@@ -115,6 +118,7 @@ class IndexAction {
         $page->setParam('regionsToSelect', $regionsToSelect);
         $page->setParam('rootCategories', $rootCategories);
         $page->setParam('selectCredit', 1 == $request->cookies->get('credit_on'));
+        $page->setParam('productEntities', $productEntities);
         $page->setParam('products', $products);
         $page->setParam('services', $services);
         $page->setParam('cartProductsById', $cartProductsById);

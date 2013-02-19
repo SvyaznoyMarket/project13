@@ -36,11 +36,12 @@ class IndexPage extends \View\DefaultLayout {
 
     public function slotInnerJavascript() {
         /** @var $products \Model\Product\Entity[] */
-        $products = $this->getParam('products');
+        $products = $this->getParam('productEntities');
 
         $tag_params = ['prodid' => [], 'pname' => [], 'pcat' => [], 'value' => [], 'pagetype' => 'cart'];
         foreach ($products as $product) {
-            $category = array_pop($product->getCategory());
+            $categories = $product->getCategory();
+            $category = array_pop($categories);
             $tag_params['prodid'][] = $product->getId();
             $tag_params['pname'][] = $product->getName();
             $tag_params['pcat'][] = $category ? $category->getToken() : '';
