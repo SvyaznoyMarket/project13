@@ -1,17 +1,28 @@
 <?php
 /**
- * @var $page    \View\Layout
- * @var $product \Model\Product\ExpandedEntity
- * */
+ * @var $page          \View\Layout
+ * @var $product       \Model\Product\ExpandedEntity
+ * @var $productVideos \Model\Product\Video\Entity[]
+ **/
 ?>
 
 <?php
 $hasModel = (isset($hasModel) ? $hasModel : true) && $product->getModel() && (bool)$product->getModel()->getProperty();
+if (!isset($productVideos)) $productVideos = [];
 ?>
+
+<style type="text/css">
+    .goodsphoto_eVideoShield.goodsphoto_eVideoShield_small, .goodsphoto_eVideoShield.goodsphoto_eVideoShield_small:hover {
+        background: url('/css/item/img/videoStiker_small.png') no-repeat 0 0;
+        right: -55px;
+        top: 130px;
+    }
+</style>
 
 <div class="goodsbox goodsline bNewGoodsBox" ref="<?= $product->getToken() ?>">
     <div class="goodsboxlink" <? if ($product->getIsBuyable()): ?> data-cid="<?= $product->getId() ?>" <? endif ?>>
         <div class="photo">
+            <? if ((bool)$productVideos && (bool)\App::config()->abtest['enabled'] && \App::abTest()->getCase()->getKey() == 'video'): ?><a class="goodsphoto_eVideoShield goodsphoto_eVideoShield_small" href="<?= $product->getLink() ?>"></a><? endif ?>
             <a href="<?= $product->getLink() ?>">
                 <? if ($label = $product->getLabel()): ?>
                     <img class="bLabels" src="<?= $label->getImageUrl() ?>" alt="<?= $label->getName() ?>"/>
