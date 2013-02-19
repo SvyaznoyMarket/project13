@@ -14,7 +14,7 @@ class TerminalEntity extends Entity {
      * @param int $shopId
      * @return bool
      */
-    public function getIsBuyable($shopId) {
+    public function getIsBuyable($shopId = null) {
         $shopId = (int)$shopId;
         if (!$shopId) return false;
 
