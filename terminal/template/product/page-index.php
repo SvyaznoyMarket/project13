@@ -45,10 +45,10 @@ $warranties = $product->getWarranty();
                     <div class="bGoodDescBlock_ePrice mFl mBold"><?= $page->helper->formatPrice($product->getPrice()) ?> <span class="bRuble">p</span></div>
                     <ul class="bGoodDescBlock_eDelivery mFl">
                         <? if ($product->getIsInShop(\App::config()->region['shop_id'])): ?>
-                        <li class="mListDisk"><strong class="mBold" style="color: #f99b1c;">Есть в этом магазине</strong></li>
+                        <li class="mListDisk"><strong class="mBold" style="color: #F99B1C;">Есть в этом магазине</strong></li>
                         <li class="mListDisk">Можно забрать сейчас</li>
                         <? elseif ($product->getIsInShowroom(\App::config()->region['shop_id'])): ?>
-                        <li class="mListDisk"><strong class="mBold" style="color: #f99b1c;">Есть на витрине магазина</strong></li>
+                        <li class="mListDisk"><strong class="mBold">Есть на витрине магазина</strong></li>
                         <li class="mListDisk">Можно забрать сейчас</li>
                         <? elseif ($product->getState()->getIsStore() || $product->getState()->getIsSupplier()): ?>
                         <li class="mListDisk"><strong class="mBold">Есть на центральном складе</strong></li>
@@ -103,7 +103,11 @@ $warranties = $product->getWarranty();
                                 <!-- <p class="bGoodSubItem_eRating"><?= $iProduct->getRating() ?></p> -->
                                 <h2 class="bGoodSubItem_eTitle"><a class="bGoodSubItem_eLink" href="#" onclick='terminal.screen.push("product", {productId: <?= $iProduct->getId() ?>})'><?= $iProduct->getName() ?></a></h2>
                                 <p class="bGoodSubItem_ePrice"><?= $page->helper->formatPrice($iProduct->getPrice()) ?> <span class="bRuble">p</span></p>
-                                <a class="bGoodSubItem_eMore bButton mSmallOrangeBtn" href="#" onclick='terminal.cart.addProduct(<?= $iProduct->getId() ?>)'>В корзину</a>
+                                <?php if ($product->getIsBuyable(\App::config()->region['shop_id'])):?>
+                                <a class="bGoodSubItem_eMore bButton mSmallOrangeBtn" href="#" onclick="terminal.cart.addProduct(<?= $iProduct->getId() ?>)">В корзину</a>
+                                <?php elseif ($product->getState()->getIsShop() ):?>
+                                <a class="bGoodSubItem_eMore bButton mSmallOrangeBtn" href="#" onclick="terminal.screen.push('other_shops', { productId: <?= $iProduct->getId() ?> })">Где купить?</a>
+                                <? endif; ?>
                             </div>
                         </div>
                         <? endforeach ?>
@@ -125,7 +129,11 @@ $warranties = $product->getWarranty();
                                 <!-- <p class="bGoodSubItem_eRating"><?= $iProduct->getRating() ?></p> -->
                                 <h2 class="bGoodSubItem_eTitle"><a class="bGoodSubItem_eLink" href="#"><?= $iProduct->getName() ?></a></h2>
                                 <p class="bGoodSubItem_ePrice"><?= $page->helper->formatPrice($iProduct->getPrice()) ?> <span class="bRuble">p</span></p>
-                                <a class="bGoodSubItem_eMore bButton mSmallOrangeBtn" href="#" onclick='terminal.cart.addProduct(<?= $iProduct->getId() ?>)'>В корзину</a>
+                                <?php if ($product->getIsBuyable(\App::config()->region['shop_id'])):?>
+                                <a class="bGoodSubItem_eMore bButton mSmallOrangeBtn" href="#" onclick="terminal.cart.addProduct(<?= $iProduct->getId() ?>)">В корзину</a>
+                                <?php elseif ($product->getState()->getIsShop() ):?>
+                                <a class="bGoodSubItem_eMore bButton mSmallOrangeBtn" href="#" onclick="terminal.screen.push('other_shops', { productId: <?= $iProduct->getId() ?> })">Где купить?</a>
+                                <? endif; ?>
                             </div>
                         </div>
                         <? endforeach ?>
