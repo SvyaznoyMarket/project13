@@ -174,16 +174,17 @@ class Client {
                         \Util\RequestLogger::getInstance()->addLog($info['url'], $this->queries[$this->queryIndex[(string)$handler]]['query']['data'], $info['total_time'], 'multi(' . count($this->queries[$this->queryIndex[(string)$handler]]['resources']) . '): ' . 'unknown');
                         throw new \RuntimeException(curl_error($handler), curl_errno($handler));
                     }
-                    $content = curl_multi_getcontent($handler);
-                    $header = $this->header($content, true);
-
-                    \Util\RequestLogger::getInstance()->addLog($info['url'], $this->queries[$this->queryIndex[(string)$handler]]['query']['data'], $info['total_time'], 'multi(' . count($this->queries[$this->queryIndex[(string)$handler]]['resources']) . '): ' . (isset($header['X-Server-Name']) ? $header['X-Server-Name'] : 'unknown'));
-
-                    unset($this->queries[$this->queryIndex[(string)$handler]]);
 
                     try {
+                        $content = curl_multi_getcontent($handler);
+                        $header = $this->header($content, true);
+
+                        \Util\RequestLogger::getInstance()->addLog($info['url'], $this->queries[$this->queryIndex[(string)$handler]]['query']['data'], $info['total_time'], 'multi(' . count($this->queries[$this->queryIndex[(string)$handler]]['resources']) . '): ' . (isset($header['X-Server-Name']) ? $header['X-Server-Name'] : 'unknown'));
+
+                        unset($this->queries[$this->queryIndex[(string)$handler]]);
+
                         if ($info['http_code'] >= 300) {
-                            throw new \RuntimeException(sprintf("Invalid http code: %d, \nResponse: %s", $info['http_code'], $content));
+                            throw new \RuntimeException(sprintf('Invalid http code %d, info: %s, response: %s', $info['http_code'], $this->encode($info), $content));
                         }
 
                         $decodedResponse = $this->decode($content);
@@ -239,7 +240,7 @@ class Client {
                     }
                 }
             } while ($this->stillExecuting);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $error = $e;
         }
         // clear multi container

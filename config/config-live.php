@@ -6,6 +6,7 @@ $c = require __DIR__ . '/config.php';
 $c->debug = false;
 
 $c->coreV2['url'] = 'http://api.enter.ru/v2/';
+$c->coreV2['timeout'] = null;
 $c->coreV2['retryTimeout'] = [
     'default' => 0.5,
     'tiny'    => 0.05,

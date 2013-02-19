@@ -429,9 +429,23 @@ class Action {
             )));
         }
 
+        // video
+        $productVideosByProduct = [];
+        foreach ($productPager as $product) {
+            /** @var $product \Model\Product\Entity */
+            \RepositoryManager::productVideo()->prepareCollectionByProduct($product, function($data) use ($product, &$productVideosByProduct) {
+                $productVideosByProduct[$product->getId()] = [];
+                foreach ($data as $item) {
+                    $productVideosByProduct[$product->getId()][] = new \Model\Product\Video\Entity($item);
+                }
+            });
+        }
+        \App::curl()->execute();
+
         $page->setParam('productPager', $productPager);
         $page->setParam('productSorting', $productSorting);
         $page->setParam('productView', $productView);
+        $page->setParam('productVideosByProduct', $productVideosByProduct);
 
         $page->setParam('myThingsData', array(
             'EventType' => 'MyThings.Event.Visit',

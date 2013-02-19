@@ -6,7 +6,6 @@ $c = require __DIR__ . '/config.php';
 $c->debug = true;
 
 $c->coreV2['url'] = 'http://core.ent3.ru/v2/';
-$c->coreV2['timeout'] = 2;
 $c->coreV2['retryTimeout'] = [
     'default' => 1,
     'tiny'    => 0.2,

@@ -1,13 +1,14 @@
 <?php
 /**
- * @var $page           \View\Layout
- * @var $request        \Http\Request
- * @var $pager          \Iterator\EntityPager
- * @var $view           string
- * @var $hasListView    bool                                Показывать контрол "Вид товара"
- * @var $productSorting \Model\Product\Sorting
- * @var $productFilter  \Model\Product\Filter
- * @var $category       \Model\Product\Category\Entity|null
+ * @var $page                   \View\Layout
+ * @var $request                \Http\Request
+ * @var $pager                  \Iterator\EntityPager
+ * @var $view                   string
+ * @var $hasListView            bool                                Показывать контрол "Вид товара"
+ * @var $productSorting         \Model\Product\Sorting
+ * @var $productFilter          \Model\Product\Filter
+ * @var $category               \Model\Product\Category\Entity|null
+ * @var $productVideosByProduct array
  */
 
 $view = $request->get('view', isset($view) ? $view : null);
@@ -15,6 +16,7 @@ $hasListView = isset($hasListView) && (bool)$hasListView ? true : false;
 if (!isset($productSorting)) $productSorting = null;
 if (!isset($category)) $category = null;
 $filterData = isset($productFilter) ? http_build_query(array(\View\Product\FilterForm::$name => $productFilter->getValues())) : '';
+if (!isset($productVideosByProduct)) $productVideosByProduct = [];
 ?>
 
 <? if ('expanded' == $view) : ?>
@@ -45,7 +47,7 @@ $filterData = isset($productFilter) ? http_build_query(array(\View\Product\Filte
     <div class="line"></div>
 <? endif ?>
 
-<?= $page->render('product/_list', array('pager' => $pager, 'view' => $view)) ?>
+<?= $page->render('product/_list', array('pager' => $pager, 'view' => $view, 'productVideosByProduct' => $productVideosByProduct)) ?>
 
 <? if ($pager->hasPages()): ?>
 <div class="fr allpager mBtn" alt="все товары в категории" title="все товары в категории"

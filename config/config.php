@@ -42,7 +42,7 @@ $c->coreV2['retryCount'] = 3;
 $c->wordpress['url'] = 'http://content.ent3.ru/';
 
 $c->dataStore['url'] = 'http://www.enter.ru/';
-$c->dataStore['timeout'] = 2;
+$c->dataStore['timeout'] = 3;
 $c->dataStore['retryTimeout'] = [
     'default' => 1,
     'tiny'    => 0.1,
