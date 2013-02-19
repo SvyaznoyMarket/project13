@@ -174,7 +174,6 @@ $c->queue['pidFile'] = (sys_get_temp_dir() ?: '/tmp').'/enter-queue.pid';
 $c->queue['workerLimit'] = 10;
 $c->queue['maxLockTime'] = 600;
 
-<<<<<<< HEAD
 $c->abtest = [
     'cookieName' => 'switch',
     'bestBefore' => '2013-01-01', //кука умрет в 00:00
@@ -183,6 +182,3 @@ $c->abtest = [
 ];
 
 return $c;
-=======
-return $c;
->>>>>>> release
