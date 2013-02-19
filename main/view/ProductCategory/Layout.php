@@ -128,9 +128,11 @@ class Layout extends \View\DefaultLayout {
                 $seoTemplates[$index] = $data;
             }
         };
-        foreach (array_reverse(array_merge($category->getAncestor(), [$category])) as $iCategory) {
+
+        $dataStore->addQuery(sprintf('seo/%s.json', trim($category->getLink(), '/')), $callback);
+        foreach (array_reverse($category->getAncestor()) as $iCategory) {
             /** @var $iCategory \Model\Product\Category\Entity */
-            $dataStore->addQuery(sprintf('seo/%s.json', trim($iCategory->getLink(), '/')), $callback);
+            $dataStore->addQuery(sprintf('seo/%s/index.json', trim($iCategory->getLink(), '/')), $callback);
         }
 
         // данные для шаблона
@@ -151,7 +153,9 @@ class Layout extends \View\DefaultLayout {
 
         $dataStore->execute();
 
+        // сортируем шаблоны в порядке следования запросов: сначала категория, потом категория-мама, потом кактегория-бабушка и т.д.
         ksort($seoTemplates);
+        // выбираем самый близкий по родословной шаблон
         $seoTemplate = reset($seoTemplates);
         if (!$seoTemplate) return;
 
