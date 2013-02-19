@@ -1,5 +1,4 @@
 User-agent: *
-Disallow: /new_year_information_letter_from_rumyancev
 Disallow: /region/change/*
 Disallow: /orders/*
 Disallow: /private/*
@@ -19,6 +18,11 @@ Disallow: /*comments/new
 Disallow: /qr/*
 Disallow: /*//
 Disallow: /product/*/change/
+Disallow: /corporate-register
+Disallow: /request-password
+Disallow: /*?from=enter_
+Disallow: /index.php
+
 Host: www.enter.ru
 
 Sitemap: http://www.enter.ru/sitemap.xml
