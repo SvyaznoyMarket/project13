@@ -26,7 +26,8 @@ class CreatePage extends Layout {
 
         $tag_params = ['prodid' => [], 'pname' => [], 'pcat' => [], 'value' => [], 'pagetype' => 'cart'];
         foreach ($productsForRetargeting as $product) {
-            $category = array_pop($product->getCategory());
+            $categories = $product->getCategory();
+            $category = array_pop($categories);
 
             $tag_params['prodid'][] = $product->getId();
             $tag_params['pname'][] = $product->getName();

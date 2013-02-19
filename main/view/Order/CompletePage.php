@@ -44,7 +44,8 @@ class CompletePage extends Layout {
                 if (!isset($productsById[$orderProduct->getId()])) continue;
                 /** @var $product \Model\Product\Entity */
                 $product = $productsById[$orderProduct->getId()];
-                $category = array_pop($product->getCategory());
+                $categories = $product->getCategory();
+                $category = array_pop($categories);
 
                 $tag_params['prodid'][] = $product->getId();
                 $tag_params['pname'][] = $product->getName();
