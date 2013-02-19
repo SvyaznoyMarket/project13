@@ -61,6 +61,8 @@ class Client {
      * @return bool
      */
     public function addQuery($file, $successCallback, $failCallback = null, $timeout = null) {
+        \Debug\Timer::start('data-store');
+
         if (null === $timeout) {
             $timeout = $this->config['timeout'];
         }
@@ -70,7 +72,11 @@ class Client {
             };
         }
 
-        return $this->curl->addQuery($this->config['url'] . $file, [], $successCallback, $failCallback, $timeout);
+        $result = $this->curl->addQuery($this->config['url'] . $file, [], $successCallback, $failCallback, $timeout);
+
+        \Debug\Timer::stop('data-store');
+
+        return $result;
     }
 
     /**
@@ -79,6 +85,8 @@ class Client {
      * @return void
      */
     public function execute($retryTimeout = null, $retryCount = 0) {
+        \Debug\Timer::start('data-store');
+
         if (null === $retryTimeout) {
             $retryTimeout = isset($this->config['retryTimeout']['default']) ? $this->config['retryTimeout']['default'] : 0;
         }
@@ -87,5 +95,7 @@ class Client {
         }
 
         $this->curl->execute($retryTimeout, $retryCount);
+
+        \Debug\Timer::stop('data-store');
     }
 }

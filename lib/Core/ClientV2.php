@@ -57,11 +57,11 @@ class ClientV2 implements ClientInterface {
             $timeout = $this->config['timeout'];
         }
 
-        $response = $this->curl->addQuery($this->getUrl($action, $params), $data, $successCallback, $failCallback, $timeout);
+        $result = $this->curl->addQuery($this->getUrl($action, $params), $data, $successCallback, $failCallback, $timeout);
 
         \Debug\Timer::stop('core');
 
-        return $response;
+        return $result;
     }
 
     /**
