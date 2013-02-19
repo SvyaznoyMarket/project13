@@ -37,6 +37,7 @@ class Client {
             $spend = \Debug\Timer::stop('content');
             \App::logger()->info('End content request ' . $action . ' in ' . $spend);
         } catch (\Exception $e) {
+            \App::exception()->remove($e);
             $spend = \Debug\Timer::stop('content');
             \App::logger()->info('Fail content request ' . $action . ' in ' . $spend . ' with ' . $e);
         }
