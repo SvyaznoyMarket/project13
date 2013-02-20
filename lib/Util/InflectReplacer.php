@@ -26,7 +26,7 @@ class InflectReplacer {
     public function get($value) {
         foreach ($this->patterns as $pattern => $replaces) {
             if (!is_array($replaces)) {
-                throw new \Exception(sprintf('Неверный шаблон %s', json_encode($replaces, JSON_UNESCAPED_UNICODE)));
+                $replaces = [$replaces];
             }
 
             $matches = [];
@@ -52,6 +52,12 @@ class InflectReplacer {
                     } else {
                         $replace = $replaces[$caseIndex];
                     }
+
+                    $value = str_replace($match, $replace, $value);
+                }
+            } else if (preg_match_all('/{' . $pattern . '}/ui', $value, $matches)) {
+                foreach ($matches[0] as $match) {
+                    $replace = reset($replaces);
 
                     $value = str_replace($match, $replace, $value);
                 }
