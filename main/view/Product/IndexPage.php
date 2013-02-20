@@ -160,7 +160,8 @@ class IndexPage extends \View\DefaultLayout {
             }
         };
 
-        foreach ($categories as $iCategory) {
+        $dataStore->addQuery(sprintf('seo/%s.json', trim($product->getLink(), '/')), $callback);
+        foreach (array_reverse($categories) as $iCategory) {
             /** @var $iCategory \Model\Product\Category\Entity */
             $dataStore->addQuery(sprintf('seo/%s/index.json', preg_replace('/^catalog/', 'product', trim($iCategory->getLink(), '/'))), $callback);
         }
