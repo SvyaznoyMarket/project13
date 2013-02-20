@@ -92,7 +92,7 @@ return [
     ],
     // сменя региона по прямой ссылке
     'region.redirect' => [
-        'pattern' => '/reg/{regionId}/{redirectTo}',
+        'pattern' => '/reg/{regionId}{redirectTo}',
         'action'  => ['Region\Action', 'redirect'],
         'require' => [
             'regionId'   => '\d+',
