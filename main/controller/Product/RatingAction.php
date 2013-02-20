@@ -31,7 +31,7 @@ class RatingAction {
                     'value' => $rating,
                 ));
             }
-        } catch (\Core\Exception $e) {
+        } catch (\Curl\Exception $e) {
             \App::exception()->remove($e);
 
             return new \Http\JsonResponse(array(

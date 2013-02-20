@@ -23,6 +23,10 @@ class Client {
         $this->curl = $curl;
     }
 
+    public function __clone() {
+        $this->curl = clone $this->curl;
+    }
+
     /**
      * @param string $file
      * @return array|null
