@@ -106,7 +106,7 @@ $warranties = $product->getWarranty();
                                 <?php if ($iProduct->getIsBuyable(\App::config()->region['shop_id'])):?>
                                 <a class="bGoodSubItem_eMore bButton mSmallOrangeBtn" href="#" onclick="terminal.cart.addProduct(<?= $iProduct->getId() ?>)">В корзину</a>
                                 <?php elseif ($iProduct->getState()->getIsShop() ):?>
-                                <a class="bGoodSubItem_eMore bButton mSmallOrangeBtn" href="#" onclick="terminal.screen.push('other_shops', { productId: <?= $iProduct->getId() ?> })">Где купить?</a>
+                                <a class="bGoodSubItem_eMore bButton mSmallGrayBtn" href="#" onclick="terminal.screen.push('other_shops', { productId: <?= $iProduct->getId() ?> })">Где купить?</a>
                                 <? endif; ?>
                             </div>
                         </div>
@@ -132,7 +132,7 @@ $warranties = $product->getWarranty();
                                 <?php if ($iProduct->getIsBuyable(\App::config()->region['shop_id'])):?>
                                 <a class="bGoodSubItem_eMore bButton mSmallOrangeBtn" href="#" onclick="terminal.cart.addProduct(<?= $iProduct->getId() ?>)">В корзину</a>
                                 <?php elseif ($iProduct->getState()->getIsShop() ):?>
-                                <a class="bGoodSubItem_eMore bButton mSmallOrangeBtn" href="#" onclick="terminal.screen.push('other_shops', { productId: <?= $iProduct->getId() ?> })">Где купить?</a>
+                                <a class="bGoodSubItem_eMore bButton mSmallGrayBtn" href="#" onclick="terminal.screen.push('other_shops', { productId: <?= $iProduct->getId() ?> })">Где купить?</a>
                                 <? endif; ?>
                             </div>
                         </div>
