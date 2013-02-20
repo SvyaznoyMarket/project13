@@ -31,20 +31,32 @@ class IndexPage extends \View\DefaultLayout {
             $this->setParam('breadcrumbs', $breadcrumbs);
         }
 
-        // seo: page meta
-        $this->setTitle(sprintf(
+        // seo
+        $page = new \Model\Page\Entity();
+
+        $page->setTitle(sprintf(
             '%s - купить по цене %s руб. в Москве, %s - характеристиками и описанием и фото от интернет-магазина Enter.ru',
             $product->getName(),
             $product->getPrice(),
             $product->getName()
         ));
-        $this->addMeta('description', sprintf(
+        $page->setDescription(sprintf(
             'Интернет магазин Enter.ru предлагает купить: %s по цене %s руб. На нашем сайте Вы найдете подробное описание и характеристики товара %s с фото. Заказать понравившийся товар с доставкой по Москве можно у нас на сайте или по телефону ' . \App::config()->company['phone'] . '.',
             $product->getName(),
             $product->getPrice(),
             $product->getName()
         ));
-        $this->addMeta('keywords', sprintf('%s Москва интернет магазин купить куплю заказать продажа цены', $product->getName()));
+        $page->setKeywords(sprintf('%s Москва интернет магазин купить куплю заказать продажа цены', $product->getName()));
+
+        try {
+            $this->applySeoPattern($page);
+        } catch (\Exception $e) {
+            \App::logger()->error($e);
+        }
+
+        $this->setTitle($page->getTitle());
+        $this->addMeta('description', $page->getDescription());
+        $this->addMeta('keywords', $page->getKeywords());
     }
 
     public function slotContent() {
@@ -122,5 +134,74 @@ class IndexPage extends \View\DefaultLayout {
         }
 
         return "<div id=\"adriverCommon\" data-vars='".json_encode( $data )."' class=\"jsanalytics\"></div>\r\n";
+    }
+
+    private function applySeoPattern(\Model\Page\Entity $page) {
+        $dataStore = \App::dataStoreClient();
+
+        /** @var $product \Model\Product\Entity */
+        $product = $this->getParam('product') instanceof \Model\Product\Entity ? $this->getParam('product') : null;
+        if (!$product) {
+            return;
+        }
+        /** @var $categories \Model\Product\Category\Entity[] */
+        $categories = $product->getCategory();
+        if (!(bool)$categories) {
+            return;
+        }
+        $category = reset($categories);
+
+        $region = \App::user()->getRegion();
+
+        $seoTemplates = [];
+        $callback = function ($data, $index) use (&$seoTemplates) {
+            if (is_array($data)) {
+                $seoTemplates[$index] = $data;
+            }
+        };
+
+        $dataStore->addQuery(sprintf('seo/%s.json', trim($product->getLink(), '/')), $callback);
+        foreach (array_reverse($categories) as $iCategory) {
+            /** @var $iCategory \Model\Product\Category\Entity */
+            $dataStore->addQuery(sprintf('seo/%s/index.json', preg_replace('/^catalog/', 'product', trim($iCategory->getLink(), '/'))), $callback);
+        }
+        $dataStore->addQuery('seo/product/index.json', $callback);
+
+        // данные для шаблона
+        $patterns = [
+            'категория' => [$category->getName()],
+            'город'     => [$region->getName()],
+            'сайт'      => null,
+            'товар'     => $product->getName(),
+            'цена'      => $product->getPrice() . ' руб',
+        ];
+        $dataStore->addQuery(sprintf('inflect/product-category/%s.json', $category->getId()), function($data) use (&$patterns) {
+            $patterns['категория'] = $data;
+        });
+        $dataStore->addQuery(sprintf('inflect/region/%s.json', $region->getId()), function($data) use (&$patterns) {
+            $patterns['город'] = $data;
+        });
+        $dataStore->addQuery('inflect/сайт.json', function($data) use (&$patterns) {
+            $patterns['сайт'] = $data;
+        });
+
+        $dataStore->execute();
+
+        // сортируем шаблоны в порядке следования запросов: сначала категория, потом категория-мама, потом кактегория-бабушка и т.д.
+        ksort($seoTemplates);
+        // выбираем самый близкий по родословной шаблон
+        $seoTemplate = reset($seoTemplates);
+        if (!$seoTemplate) return;
+
+        $replacer = new \Util\InflectReplacer($patterns);
+        if ($value = $replacer->get($seoTemplate['title'])) {
+            $page->setTitle($value);
+        }
+        if ($value = $replacer->get($seoTemplate['description'])) {
+            $page->setDescription($value);
+        }
+        if ($value = $replacer->get($seoTemplate['keywords'])) {
+            $page->setKeywords($value);
+        }
     }
 }
