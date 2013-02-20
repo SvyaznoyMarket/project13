@@ -229,7 +229,7 @@ $productVideo = reset($productVideos);
           <? endforeach ?>
         </ul>
         <?php if (count($shopsWithQuantity) > 3): ?>
-          <a id="slideAvalShop" class="orange strong dashedLink font18" href="#">Еще <?=count($shopsWithQuantity)-3?> магазин<?=((count($shopsWithQuantity)-3) > 5) ? 'ов' : ( ((count($shopsWithQuantity)-3) >1 ) ? 'а' : '')?></a>
+          <a id="slideAvalShop" class="orange strong dashedLink font18" href="#">Еще <?= count($shopsWithQuantity) - 3 ?> <?= $page->helper->numberChoice(count($shopsWithQuantity) - 3, ['магазин', 'магазина', 'магазинов']) ?></a>
         <?php endif ?>
       </div>
   </div>
