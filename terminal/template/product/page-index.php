@@ -103,9 +103,9 @@ $warranties = $product->getWarranty();
                                 <!-- <p class="bGoodSubItem_eRating"><?= $iProduct->getRating() ?></p> -->
                                 <h2 class="bGoodSubItem_eTitle"><a class="bGoodSubItem_eLink" href="#" onclick='terminal.screen.push("product", {productId: <?= $iProduct->getId() ?>})'><?= $iProduct->getName() ?></a></h2>
                                 <p class="bGoodSubItem_ePrice"><?= $page->helper->formatPrice($iProduct->getPrice()) ?> <span class="bRuble">p</span></p>
-                                <?php if ($product->getIsBuyable(\App::config()->region['shop_id'])):?>
+                                <?php if ($iProduct->getIsBuyable(\App::config()->region['shop_id'])):?>
                                 <a class="bGoodSubItem_eMore bButton mSmallOrangeBtn" href="#" onclick="terminal.cart.addProduct(<?= $iProduct->getId() ?>)">В корзину</a>
-                                <?php elseif ($product->getState()->getIsShop() ):?>
+                                <?php elseif ($iProduct->getState()->getIsShop() ):?>
                                 <a class="bGoodSubItem_eMore bButton mSmallOrangeBtn" href="#" onclick="terminal.screen.push('other_shops', { productId: <?= $iProduct->getId() ?> })">Где купить?</a>
                                 <? endif; ?>
                             </div>
@@ -129,9 +129,9 @@ $warranties = $product->getWarranty();
                                 <!-- <p class="bGoodSubItem_eRating"><?= $iProduct->getRating() ?></p> -->
                                 <h2 class="bGoodSubItem_eTitle"><a class="bGoodSubItem_eLink" href="#"><?= $iProduct->getName() ?></a></h2>
                                 <p class="bGoodSubItem_ePrice"><?= $page->helper->formatPrice($iProduct->getPrice()) ?> <span class="bRuble">p</span></p>
-                                <?php if ($product->getIsBuyable(\App::config()->region['shop_id'])):?>
+                                <?php if ($iProduct->getIsBuyable(\App::config()->region['shop_id'])):?>
                                 <a class="bGoodSubItem_eMore bButton mSmallOrangeBtn" href="#" onclick="terminal.cart.addProduct(<?= $iProduct->getId() ?>)">В корзину</a>
-                                <?php elseif ($product->getState()->getIsShop() ):?>
+                                <?php elseif ($iProduct->getState()->getIsShop() ):?>
                                 <a class="bGoodSubItem_eMore bButton mSmallOrangeBtn" href="#" onclick="terminal.screen.push('other_shops', { productId: <?= $iProduct->getId() ?> })">Где купить?</a>
                                 <? endif; ?>
                             </div>
