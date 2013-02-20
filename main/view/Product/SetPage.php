@@ -23,14 +23,23 @@ class SetPage extends \View\DefaultLayout {
 
     public function slotInnerJavascript() {
         /** @var $product \Model\Product\Entity */
-        $product = $this->getParam('product') instanceof \Model\Product\Entity ? $this->getParam('product') : null;
-        $categories = $product->getCategory();
-        $category = array_pop($categories);
+        $products = is_array($this->getParam('products')) ? $this->getParam('products') : [];
+        $tag_params = ['prodid' => [], 'pagetype' => 'product', 'pname' => [], 'pcat' => [], 'value' => []];
+        foreach ($products as $product) {
+            $categories = $product->getCategory();
+            $category = array_pop($categories);
+
+            $tag_params['prodid'][] = $product->getId();
+            $tag_params['pname'][]  = $product->getName();
+            $tag_params['pcat'][]   = $category->getToken();
+            $tag_params['value'][]  = $product->getPrice();
+
+        }
 
         return ''
             . ($product ? $this->render('product/_odinkod', array('product' => $product)) : '')
             . "\n\n"
-            . (bool)$product ? $this->render('_remarketingGoogle', ['tag_params' => ['prodid' => $product->getId(), 'pagetype' => 'product', 'pname' => $product->getName(), 'pcat' => ($category) ? $category->getToken() : '', 'value' => $product->getPrice()]]) : ''
+            . (bool)$product ? $this->render('_remarketingGoogle', ['tag_params' => $tag_params]) : ''
             . "\n\n"
             . $this->render('_innerJavascript');
     }
