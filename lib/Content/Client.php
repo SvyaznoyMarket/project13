@@ -33,7 +33,7 @@ class Client {
         $url = $this->config['url'] . $action . '?json=1';
         $response = null;
         try {
-            $response = $this->curl->query($url, $data);
+            $response = $this->curl->query($url, $data, 2);
             $spend = \Debug\Timer::stop('content');
             \App::logger()->info('End content request ' . $action . ' in ' . $spend);
         } catch (\Exception $e) {
