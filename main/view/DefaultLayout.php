@@ -163,7 +163,19 @@ class DefaultLayout extends Layout {
     }
 
     public function slotRootCategory() {
-        return $this->render('product-category/_root', array('categories' => $this->getParam('rootCategories')));
+        $dataStore = \App::dataStoreClient();
+
+        /** @var $rootCategories \Model\Product\Category\BasicEntity */
+        $rootCategories = $this->getParam('rootCategories');
+        $categories = array_slice($rootCategories, 0, 10);
+
+        // две категории из data-store
+        $menu = \RepositoryManager::menu()->getCollection();
+        $categories = array_merge($categories, array_slice($menu, 0, 2));
+
+        $categories[] = end($rootCategories);
+
+        return $this->render('product-category/_root', array('categories' => $categories));
     }
 
     public function slotBanner() {

@@ -1,7 +1,7 @@
 <?php
 /**
  * @var $page       \View\Layout
- * @var $categories \Model\Product\Category\Entity[]
+ * @var $categories \Model\Product\Category\Entity[]|\Model\Menu\Entity[]
  */
 ?>
 

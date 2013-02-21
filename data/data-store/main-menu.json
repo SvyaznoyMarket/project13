@@ -1,0 +1,50 @@
+[
+    {
+        "name": "Категория 1",
+        "image": "/css/header/img/jew.gif",
+        "action": "link",
+        "item": ["http://www.enter.ru"],
+        "child": [
+        ]
+    },
+    {
+        "name": "Спорт и отдых",
+        "image": "/css/header/img/headerSprite.png",
+        "action": "catalog",
+        "item": [1893],
+        "child": [
+            {
+                "name": "Путешествия",
+                "image": "/css/header/img/headerSprite.png",
+                "action": "catalog",
+                "item": [749],
+                "child": [
+                    {
+                        "name": "Чемоданы",
+                        "image": "/css/header/img/headerSprite.png",
+                        "action": "catalog",
+                        "item": [753]
+                    },
+                    {
+                        "name": "Рюкзаки",
+                        "image": "/css/header/img/headerSprite.png",
+                        "action": "catalog",
+                        "item": [752]
+                    }
+                ]
+            },
+            {
+                "name": "Домашние спортивные игры",
+                "image": "/css/header/img/headerSprite.png",
+                "action": "catalog",
+                "item": [700]
+            },
+            {
+                "name": "Тренажеры, грифы, диски и гантели",
+                "image": "/css/header/img/headerSprite.png",
+                "action": "catalog",
+                "item": [2824]
+            }
+        ]
+    }
+]
