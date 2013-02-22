@@ -100,7 +100,7 @@ $warranties = $product->getWarranty();
                         <div class="bGoodSubItem_eGoods mFl">
                             <a class="bGoodSubItem_eGoodsImg mFl mRounded" href="#" onclick='terminal.screen.push("product", {productId: <?= $iProduct->getId() ?>})'><img width="130" height="130" src="<?= $iProduct->getImageUrl(1) ?>"/></a>
                             <div class="bGoodSubItem_eGoodsInfo">
-                                <!-- <p class="bGoodSubItem_eRating"><?= $iProduct->getRating() ?></p> -->
+                                <!-- <p class="bGoodSubItem_eRating"><? //= $iProduct->getRating() ?></p> -->
                                 <h2 class="bGoodSubItem_eTitle"><a class="bGoodSubItem_eLink" href="#" onclick='terminal.screen.push("product", {productId: <?= $iProduct->getId() ?>})'><?= $iProduct->getName() ?></a></h2>
                                 <p class="bGoodSubItem_ePrice"><?= $page->helper->formatPrice($iProduct->getPrice()) ?> <span class="bRuble">p</span></p>
                                 <?php if ($iProduct->getIsBuyable(\App::config()->region['shop_id'])):?>
@@ -126,7 +126,7 @@ $warranties = $product->getWarranty();
                         <div class="bGoodSubItem_eGoods mFl">
                             <a class="bGoodSubItem_eGoodsImg mFl mRounded" href="#" onclick='terminal.screen.push("product", {productId: <?= $iProduct->getId() ?>})'><img width="130" height="130" src="<?= $iProduct->getImageUrl(1) ?>"/></a>
                             <div class="bGoodSubItem_eGoodsInfo">
-                                <!-- <p class="bGoodSubItem_eRating"><?= $iProduct->getRating() ?></p> -->
+                                <!-- <p class="bGoodSubItem_eRating"><? //= $iProduct->getRating() ?></p> -->
                                 <h2 class="bGoodSubItem_eTitle"><a class="bGoodSubItem_eLink" href="#"><?= $iProduct->getName() ?></a></h2>
                                 <p class="bGoodSubItem_ePrice"><?= $page->helper->formatPrice($iProduct->getPrice()) ?> <span class="bRuble">p</span></p>
                                 <?php if ($iProduct->getIsBuyable(\App::config()->region['shop_id'])):?>
@@ -160,7 +160,7 @@ $warranties = $product->getWarranty();
                             <img width="130" height="130" src="<?= $kit[$part->getId()]->getImageUrl(1) ?>"/>
                         </a>
                         <div class="bGoodSubItem_eGoodsInfo">
-                            <!-- <p class="bGoodSubItem_eRating"><?= $iProduct->getRating() ?></p> -->
+                            <!-- <p class="bGoodSubItem_eRating"><?= $kit[$part->getId()]->getRating() ?></p> -->
                             <h2 class="bGoodSubItem_eTitle"><a class="bGoodSubItem_eLink" href="#" onclick='terminal.screen.push("product", {productId: <?= $part->getId() ?>})'><?= $kit[$part->getId()]->getName() ?></a></h2>
                             <p class="bGoodSubItem_ePrice"><?= $page->helper->formatPrice($kit[$part->getId()]->getPrice()) ?> <span class="bRuble">p</span></p>
                             <a class="bGoodSubItem_eMore bButton mSmallGrayBtn" href="#" onclick='terminal.screen.push("product", {productId: <?= $part->getId() ?>})'>Подробнее</a>

@@ -29,6 +29,18 @@ class CompletePage extends Layout {
         return (\App::config()->yandexMetrika['enabled']) ? $this->render('order/_yandexMetrika') : '';
     }
 
+    public function slotGoogleAnalytics() {
+        $orders = $this->getParam('orders');
+        $productsById = $this->getParam('productsById');
+        $servicesById = $this->getParam('servicesById');
+
+        $isOrderAnalytics = $this->getParam('isOrderAnalytics');
+        $isOrderAnalytics = (null !== $isOrderAnalytics) ? $isOrderAnalytics : true;
+
+
+        return (\App::config()->googleAnalytics['enabled']) ? ($isOrderAnalytics ? $this->render('_googleAnalytics', ['orders' => $orders, 'productsById' => $productsById, 'servicesById' => $servicesById, 'isOrderAnalytics' => $isOrderAnalytics]) : $this->render('_googleAnalytics')) : '';
+    }
+
     public function slotInnerJavascript() {
         /** @var $orders \Model\Order\Entity[] */
         $orders = $this->getParam('orders');
@@ -36,9 +48,9 @@ class CompletePage extends Layout {
 
         $isOrderAnalytics = $this->getParam('isOrderAnalytics');
 
-        $isOrderAnalytics = (null === $isOrderAnalytics) ? $isOrderAnalytics : true;
+        $isOrderAnalytics = (null !== $isOrderAnalytics) ? $isOrderAnalytics : true;
 
-        $tag_params = ['prodid' => [], 'pname' => [], 'pcat' => [], 'value' => [], 'pagetype' => 'purchase'];
+        $tag_params = ['prodid' => [], 'pname' => [], 'pcat' => [], 'purchasevalue' => 0, 'pagetype' => 'purchase'];
         foreach ($orders as $order) {
             foreach ($order->getProduct() as $orderProduct) {
                 if (!isset($productsById[$orderProduct->getId()])) continue;
@@ -50,7 +62,7 @@ class CompletePage extends Layout {
                 $tag_params['prodid'][] = $product->getId();
                 $tag_params['pname'][] = $product->getName();
                 $tag_params['pcat'][] = $category ? $category->getToken() : '';
-                $tag_params['value'][] = $orderProduct->getPrice();
+                $tag_params['purchasevalue'] += $order->getSum();
             }
         }
 

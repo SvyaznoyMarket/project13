@@ -24,6 +24,10 @@ class ClientV2 implements ClientInterface {
         $this->curl = $curl;
     }
 
+    public function __clone() {
+        $this->curl = clone $this->curl;
+    }
+
     /**
      * @param string     $action
      * @param array      $params

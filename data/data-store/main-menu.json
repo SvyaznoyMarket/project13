@@ -1,0 +1,14 @@
+[
+    {
+        "name": "Категория 1",
+        "image": "/css/header/img/jew.gif",
+        "action": "link",
+        "item": ["http://www.enter.ru"]
+    },
+    {
+        "name": "Категория 2",
+        "image": "/css/header/img/headerSprite.png",
+        "action": "category",
+        "item": [2593, 2647]
+    },
+]

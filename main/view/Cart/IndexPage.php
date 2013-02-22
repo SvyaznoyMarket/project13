@@ -38,14 +38,14 @@ class IndexPage extends \View\DefaultLayout {
         /** @var $products \Model\Product\Entity[] */
         $products = $this->getParam('productEntities');
 
-        $tag_params = ['prodid' => [], 'pname' => [], 'pcat' => [], 'value' => [], 'pagetype' => 'cart'];
+        $cart = \App::user()->getCart();
+        $tag_params = ['prodid' => [], 'pname' => [], 'pcat' => [], 'cartvalue' => $cart->getTotalPrice(), 'pagetype' => 'cart'];
         foreach ($products as $product) {
             $categories = $product->getCategory();
             $category = array_pop($categories);
             $tag_params['prodid'][] = $product->getId();
             $tag_params['pname'][] = $product->getName();
             $tag_params['pcat'][] = $category ? $category->getToken() : '';
-            $tag_params['value'][] = $product->getPrice();
         }
 
         return ''

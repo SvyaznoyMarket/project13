@@ -36,7 +36,6 @@ class Client {
         $this->queries = [];
         $this->queryIndex = [];
         $this->stillExecuting = false;
-
     }
 
     /**
