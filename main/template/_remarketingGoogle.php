@@ -8,11 +8,7 @@ $tag_params = array_merge(['prodid' => '', 'pagetype' => 'default', 'pname' => '
 <!-- Google Code for 'Тег ремаркетинга' -->
 <!-- Remarketing tags may not be associated with personally identifiable information or placed on pages related to sensitive categories. For instructions on adding this tag and more information on the above requirements, read the setup guide: google.com/ads/remarketingsetup -->
 <script type="text/javascript">
-    var google_tag_params = {
-<?php $count = count($tag_params); $i = 0; foreach ($tag_params as $param => $value): $i++; ?>
-            <?= $param ?>: <?= is_array($value) ? ("['" . implode($value, "', '") . "']") : ("'" . $value . "'") ?><?= ($i < $count) ? ",\r\n" : "\r\n" ?>
-<?php endforeach; ?>
-    }
+    var google_tag_params = <?= json_encode($tag_params, JSON_HEX_TAG|JSON_HEX_AMP|JSON_HEX_QUOT|JSON_HEX_APOS) ?>
     /* <![CDATA[ */
     var google_conversion_id = 1001659580;
     var google_conversion_label = "nphXCKzK6wMQvLnQ3QM";

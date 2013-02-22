@@ -36,9 +36,9 @@ class CompletePage extends Layout {
 
         $isOrderAnalytics = $this->getParam('isOrderAnalytics');
 
-        $isOrderAnalytics = (null === $isOrderAnalytics) ? $isOrderAnalytics : true;
+        $isOrderAnalytics = (null !== $isOrderAnalytics) ? $isOrderAnalytics : true;
 
-        $tag_params = ['prodid' => [], 'pname' => [], 'pcat' => [], 'value' => [], 'pagetype' => 'purchase'];
+        $tag_params = ['prodid' => [], 'pname' => [], 'pcat' => [], 'purchasevalue' => 0, 'pagetype' => 'purchase'];
         foreach ($orders as $order) {
             foreach ($order->getProduct() as $orderProduct) {
                 if (!isset($productsById[$orderProduct->getId()])) continue;
@@ -50,7 +50,7 @@ class CompletePage extends Layout {
                 $tag_params['prodid'][] = $product->getId();
                 $tag_params['pname'][] = $product->getName();
                 $tag_params['pcat'][] = $category ? $category->getToken() : '';
-                $tag_params['value'][] = $orderProduct->getPrice();
+                $tag_params['purchasevalue'] += $order->getSum();
             }
         }
 

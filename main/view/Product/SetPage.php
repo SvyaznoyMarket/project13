@@ -24,7 +24,7 @@ class SetPage extends \View\DefaultLayout {
     public function slotInnerJavascript() {
         /** @var $product \Model\Product\Entity */
         $products = is_array($this->getParam('products')) ? $this->getParam('products') : [];
-        $tag_params = ['prodid' => [], 'pagetype' => 'product', 'pname' => [], 'pcat' => [], 'value' => []];
+        $tag_params = ['prodid' => [], 'pagetype' => 'productset', 'pname' => [], 'pcat' => [], 'pvalue' => []];
         foreach ($products as $product) {
             $categories = $product->getCategory();
             $category = array_pop($categories);
@@ -32,7 +32,7 @@ class SetPage extends \View\DefaultLayout {
             $tag_params['prodid'][] = $product->getId();
             $tag_params['pname'][]  = $product->getName();
             $tag_params['pcat'][]   = $category->getToken();
-            $tag_params['value'][]  = $product->getPrice();
+            $tag_params['pvalue'][]  = $product->getPrice();
 
         }
 
