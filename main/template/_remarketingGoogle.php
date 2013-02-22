@@ -2,13 +2,13 @@
 /**
 * @var $tag_params []
 */
-$tag_params = array_merge(['prodid' => '', 'pagetype' => 'default', 'pname' => '', 'pcat' => '', 'value' => ''], $tag_params);
+$tag_params = array_merge(['pagetype' => 'default',], $tag_params);
 ?>
 <? //if (\App::config()->analytics): ?>
 <!-- Google Code for 'Тег ремаркетинга' -->
 <!-- Remarketing tags may not be associated with personally identifiable information or placed on pages related to sensitive categories. For instructions on adding this tag and more information on the above requirements, read the setup guide: google.com/ads/remarketingsetup -->
 <script type="text/javascript">
-    var google_tag_params = <?= json_encode($tag_params, JSON_HEX_TAG|JSON_HEX_AMP|JSON_HEX_QUOT|JSON_HEX_APOS) ?>
+    var google_tag_params = <?= json_encode($tag_params, JSON_HEX_TAG|JSON_HEX_AMP|JSON_HEX_QUOT|JSON_HEX_APOS|JSON_UNESCAPED_UNICODE) ?>
     /* <![CDATA[ */
     var google_conversion_id = 1001659580;
     var google_conversion_label = "nphXCKzK6wMQvLnQ3QM";
