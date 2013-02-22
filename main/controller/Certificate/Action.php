@@ -24,7 +24,7 @@ class Action {
         try {
             $result = \App::coreClientV2()->query('certificate/check', ['code' => $code, 'pin' => $pin]);
             if (is_array($result) && array_key_exists('error', $result)) {
-                $e = new \Core\Exception($result['error']['message'], $result['error']['code']);
+                $e = new \Curl\Exception($result['error']['message'], $result['error']['code']);
 
                 throw $e;
             }
