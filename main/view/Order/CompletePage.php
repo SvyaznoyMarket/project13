@@ -29,6 +29,18 @@ class CompletePage extends Layout {
         return (\App::config()->yandexMetrika['enabled']) ? $this->render('order/_yandexMetrika') : '';
     }
 
+    public function slotGoogleAnalytics() {
+        $orders = $this->getParam('orders');
+        $productsById = $this->getParam('productsById');
+        $servicesById = $this->getParam('servicesById');
+
+        $isOrderAnalytics = $this->getParam('isOrderAnalytics');
+        $isOrderAnalytics = (null !== $isOrderAnalytics) ? $isOrderAnalytics : true;
+
+
+        return (\App::config()->googleAnalytics['enabled']) ? ($isOrderAnalytics ? $this->render('_googleAnalytics', ['orders' => $orders, 'productsById' => $productsById, 'servicesById' => $servicesById, 'isOrderAnalytics' => $isOrderAnalytics]) : $this->render('_googleAnalytics')) : '';
+    }
+
     public function slotInnerJavascript() {
         /** @var $orders \Model\Order\Entity[] */
         $orders = $this->getParam('orders');
