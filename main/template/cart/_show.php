@@ -134,7 +134,7 @@ foreach ($products as $product) {
                 </div>
             </div>
             <div class="basketinfo">
-                <div class="left font24"><span class="sum"><?= $page->helper->formatPrice($cartProduct->getTotalPrice()) ?></span> <span class="rubl">p</span></div>
+                <div class="left font24"><span class="sum"><?= $page->helper->formatPrice($cartProduct->getSum()) ?></span> <span class="rubl">p</span></div>
                 <div class="right">
                     <a href="<?= $page->url('cart.product.delete', array('productId' => $product->getId())) ?>" class="button whitelink mr5">Удалить</a>
                 </div>
@@ -221,7 +221,7 @@ foreach ($products as $product) {
                 </div>
             </div>
             <div class="basketinfo">
-                <div class="left font24"><span class="sum"><?= $page->helper->formatPrice($cartService->getTotalPrice()) ?></span> <span class="rubl">p</span></div>
+                <div class="left font24"><span class="sum"><?= $page->helper->formatPrice($cartService->getSum()) ?></span> <span class="rubl">p</span></div>
                 <div class="right">
                     <a href="<?= $page->url('cart.service.delete', array('serviceId' => $service->getId(), 'productId' => 0)) ?>" class="button whitelink mr5">Удалить</a>
                 </div>

@@ -14,6 +14,8 @@ class Cart {
     private $services = null;
     /** @var \Model\Cart\Warranty\Entity[]|null */
     private $warranties = null;
+    /** @var \Model\Cart\Certificate\Entity[] */
+    private $certificates = null;
     /** @var int|null */
     private $totalPrice = null;
     private $productLimit = null;
@@ -26,7 +28,12 @@ class Cart {
 
         // если пользователь впервые, то заводим ему пустую корзину
         if (empty($session[$this->sessionName])) {
-            $this->storage->set($this->sessionName, ['productList' => [], 'serviceList' => [], 'warrantyList' => []]);
+            $this->storage->set($this->sessionName, [
+                'productList'     => [],
+                'serviceList'     => [],
+                'warrantyList'    => [],
+                'certificateList' => [],
+            ]);
             return;
         }
 
@@ -45,6 +52,12 @@ class Cart {
         if (!array_key_exists('warrantyList', $session[$this->sessionName])) {
             $data = $this->storage->get($this->sessionName);
             $data['warrantyList'] = [];
+            $this->storage->set($this->sessionName, $data);
+        }
+
+        if (!array_key_exists('certificateList', $session[$this->sessionName])) {
+            $data = $this->storage->get($this->sessionName);
+            $data['certificateList'] = [];
             $this->storage->set($this->sessionName, $data);
         }
 
@@ -71,6 +84,7 @@ class Cart {
         $this->products = null;
         $this->services = null;
         $this->warranties = null;
+        $this->certificates = null;
     }
 
     /**
@@ -210,7 +224,7 @@ class Cart {
     public function getTotalProductPrice() {
         $price = 0;
         foreach ($this->getProducts() as $product) {
-            $price += $product->getTotalPrice();
+            $price += $product->getSum();
         }
 
         return $price;
@@ -403,6 +417,45 @@ class Cart {
         return $return;
     }
 
+    /**
+     * @param \Model\Cart\Certificate\Entity $certificate
+     */
+    public function setCertificate(\Model\Cart\Certificate\Entity $certificate) {
+        $this->clearCertificates();
+
+        $data = $this->storage->get($this->sessionName);
+        $data['certificateList'][] = [
+            'number' => $certificate->getNumber(),
+        ];
+
+        $this->fill();
+
+        $this->storage->set($this->sessionName, $data);
+    }
+
+    public function clearCertificates() {
+        $data = $this->storage->get($this->sessionName);
+        $data['certificateList'] = [];
+
+        $this->fill();
+
+        $this->storage->set($this->sessionName, $data);
+    }
+
+    /**
+     * @return \Model\Cart\Certificate\Entity[]
+     */
+    public function getCertificates() {
+        if (null === $this->certificates) {
+            $data = $this->storage->get($this->sessionName);
+            foreach ($data['certificateList'] as $certificateData) {
+                $this->certificates[$certificateData['number']] = new \Model\Cart\Certificate\Entity($certificateData);
+            }
+        }
+
+        return $this->certificates ?: [];
+    }
+
     public function fill() {
         // получаем список цен
         $default = [
@@ -413,15 +466,39 @@ class Cart {
         ];
 
         try {
+            // если в корзине есть товары или услуги
             if (((bool)$this->getProductsQuantity() || (bool)$this->getServicesQuantity())) {
-                $response = \App::coreClientV2()->query(
-                    'cart/get-price',
-                    ['geo_id' => \App::user()->getRegion()->getId()],
-                    [
-                        'product_list'  => $this->getProductData(),
-                        'service_list'  => $this->getServiceData(),
-                        'warranty_list' => $this->getWarrantyData(),
-                    ]);
+                // если есть сертификат
+                $certificates = $this->getCertificates();
+                $certificate = is_array($certificates) ? reset($certificates) : null;
+                if ($certificate instanceof \Model\Cart\Certificate\Entity) {
+                    $response = \App::coreClientV2()->query(
+                        'cart/get-price-new',
+                        [
+                            'geo_id'    => \App::user()->getRegion()->getId(),
+                        ],
+                        [
+                            'user_id'       => \App::user()->getEntity() ? \App::user()->getEntity()->getId() : 0,
+                            'timestamp'     => time(),
+                            'product_list'  => $this->getProductData(),
+                            'service_list'  => $this->getServiceData(),
+                            'warranty_list' => $this->getWarrantyData(),
+                            'card_f1_list'  => [
+                                ['number' => $certificate->getNumber()],
+                            ],
+                        ]
+                    );
+                } else {
+                    $response = \App::coreClientV2()->query(
+                        'cart/get-price',
+                        ['geo_id' => \App::user()->getRegion()->getId()],
+                        [
+                            'product_list'  => $this->getProductData(),
+                            'service_list'  => $this->getServiceData(),
+                            'warranty_list' => $this->getWarrantyData(),
+                        ]
+                    );
+                }
             } else {
                 $response = $default;
             }

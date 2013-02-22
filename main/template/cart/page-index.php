@@ -20,7 +20,6 @@ $creditEnabled = ($cart->getTotalProductPrice() >= \App::config()->product['minC
 </div>
 
 <? require __DIR__ . '/_show.php' ?>
-<? if (false): ?>
 <div class="bF1SaleCard">
     <div class="pl35">
         <h3 class="bF1SaleCard_eTitle ">Скидка по карте «Под защитой F1»</h3>
@@ -29,7 +28,6 @@ $creditEnabled = ($cart->getTotalProductPrice() >= \App::config()->product['minC
     </div>
     <div class="line mt32 pb30"></div>
 </div>
-<? endif ?>
 <div class="fl width345 font14">
     <? if ($creditEnabled): ?>
     <div id="creditFlag" style="display:none">

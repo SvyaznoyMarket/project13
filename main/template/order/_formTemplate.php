@@ -196,7 +196,7 @@
         </i>
     </div>
     <!-- /ko -->
-    <? if (false): ?>
+
     <div class="bF1SaleCard">
         <div class="pl35">
             <h3 class="bF1SaleCard_eTitle ">Скидка по карте «Под защитой F1»</h3>
@@ -205,7 +205,7 @@
         </div>
         <div class="line mt32 pb30"></div>
     </div>
-    <? endif ?>
+
     <div style="margin-top: -10px;">*Дату доставки уточнит специалист Контакт-сENTER</div>
 
     <dl class='bBuyingLine mSumm order-total-container' style="margin-top: 0;">
