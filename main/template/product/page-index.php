@@ -562,8 +562,17 @@ $productVideo = reset($productVideos);
                   </div>
                   <? endif ?>
                 </div>
-                <div class="description">
-                    <?= $property->getStringValue() ?>
+                <div class="description fl">
+                    <span><?= $property->getStringValue() ?></span>
+                    <? if ($property->getValueHint()): ?>
+                    <div class="bHint fl">
+                        <a class="bHint_eLink"><?= $property->getStringValue() ?></a>
+                        <div class="bHint_ePopup popup">
+                            <div class="close"></div>
+                            <?= $property->getValueHint() ?>
+                        </div>
+                    </div>
+                    <? endif ?>
                 </div>
             </div>
         <? endforeach ?>
