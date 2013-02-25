@@ -163,19 +163,34 @@ class DefaultLayout extends Layout {
     }
 
     public function slotRootCategory() {
-        $dataStore = \App::dataStoreClient();
+        /** @var $categories \Model\Product\Category\BasicEntity[] */
+        $categories = $this->getParam('rootCategories');
 
-        /** @var $rootCategories \Model\Product\Category\BasicEntity */
-        $rootCategories = $this->getParam('rootCategories');
-        $categories = array_slice($rootCategories, 0, 10);
-
+        $menu = [];
+        foreach (array_slice($categories, 0, 10) as $category) {
+            /** @var $category \Model\Product\Category\BasicEntity */
+            $iMenu = new \Model\Menu\Entity();
+            $iMenu->setAction(\Model\Menu\Entity::ACTION_PRODUCT_CATEGORY);
+            $iMenu->getItem([$category->getId()]);
+            $iMenu->setName($category->getName());
+            $iMenu->setLink($category->getLink());
+            $menu[] = $iMenu;
+        }
         // две категории из data-store
-        $menu = \RepositoryManager::menu()->getCollection();
-        $categories = array_merge($categories, array_slice($menu, 0, 2));
+        foreach (array_slice(\RepositoryManager::menu()->getCollection(), 0, 2) as $iMenu) {
+            $menu[] = $iMenu;
+        }
 
-        $categories[] = end($rootCategories);
+        /** @var $category \Model\Product\Category\BasicEntity */
+        $category = end($categories);
+        $iMenu = new \Model\Menu\Entity();
+        $iMenu->setAction(\Model\Menu\Entity::ACTION_PRODUCT_CATEGORY);
+        $iMenu->getItem([$category->getId()]);
+        $iMenu->setName($category->getName());
+        $iMenu->setLink($category->getLink());
+        $menu[] = $iMenu;
 
-        return $this->render('product-category/_root', array('categories' => $categories));
+        return $this->render('_mainMenu', array('menu' => $menu));
     }
 
     public function slotBanner() {
