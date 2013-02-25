@@ -82,7 +82,7 @@ class Action {
                 $deliveryCalcResult = $data;
                 $shops = array_map(function($data) { return new \Model\Shop\Entity($data); }, $deliveryCalcResult['shops']);
             }, function (\Exception $e) use (&$page) {
-                if (!$e instanceof \Core\Exception) {
+                if (!$e instanceof \Curl\Exception) {
                     throw $e;
                 }
 

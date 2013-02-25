@@ -25,9 +25,12 @@ class SetAction {
         $categoriesById = [];
         /** @var $products \Model\Product\ExpandedEntity */
         $products = [];
-        \RepositoryManager::product()->prepareCollectionByBarcode($productBarcodes, \App::user()->getRegion(), function($data) use (&$products, &$categoriesById) {
+        /** @var $products \Model\Product\Entity */
+        $productsForRetargeting = [];
+        \RepositoryManager::product()->prepareCollectionByBarcode($productBarcodes, \App::user()->getRegion(), function($data) use (&$products, &$categoriesById, &$productsForRetargeting) {
             foreach ($data as $item) {
                 $products[] = new \Model\Product\ExpandedEntity($item);
+                $productsForRetargeting[] = new \Model\Product\Entity($item);
 
                 if (isset($item['category']) && is_array($item['category'])) {
                     $categoryItem = array_pop($item['category']);
@@ -48,6 +51,7 @@ class SetAction {
 
         $page = new \View\Product\SetPage();
         $page->setParam('pager', $pager);
+        $page->setParam('products', $productsForRetargeting);
         $page->setParam('categoriesById', $categoriesById);
 
         return new \Http\Response($page->show());

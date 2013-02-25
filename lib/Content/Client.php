@@ -20,6 +20,10 @@ class Client {
         $this->curl = $curl;
     }
 
+    public function __clone() {
+        $this->curl = clone $this->curl;
+    }
+
     /**
      * @param string $action
      * @param array  $data
@@ -33,7 +37,7 @@ class Client {
         $url = $this->config['url'] . $action . '?json=1';
         $response = null;
         try {
-            $response = $this->curl->query($url, $data);
+            $response = $this->curl->query($url, $data, 2);
             $spend = \Debug\Timer::stop('content');
             \App::logger()->info('End content request ' . $action . ' in ' . $spend);
         } catch (\Exception $e) {
