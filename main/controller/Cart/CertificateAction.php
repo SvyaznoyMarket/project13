@@ -2,11 +2,11 @@
 
 namespace Controller\Cart;
 
-class ServiceCertificateAction {
+class CertificateAction {
     /**
      * @param \Http\Request $request
+     * @throws \Exception\ActionException
      * @throws \Exception\NotFoundException
-     * @throws \Exception
      * @return \Http\Response
      */
     public function apply(\Http\Request $request) {

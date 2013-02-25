@@ -264,9 +264,9 @@ return [
         'require' => ['productId' => '\d+', 'warrantyId' => '\d+'],
         'action'  => ['Cart\WarrantyAction', 'delete'],
     ],
-    'cart.serviceCertificate' => [
+    'cart.certificate.apply' => [
         'pattern' => '/cart/f1-certificate',
-        'action'  => ['Cart\ServiceCertificateAction', 'apply'],
+        'action'  => ['Cart\CertificateAction', 'apply'],
     ],
 
     // заказ

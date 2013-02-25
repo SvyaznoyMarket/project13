@@ -9,15 +9,14 @@
 		<div class="pl35">
             <h3 class="bF1SaleCard_eTitle ">Скидка по карте «Под защитой F1»</h3>
             <? if ((bool)$user->getCart()->getCertificates()): ?>
-		    <? // TODO: верстка примененного сертификата ?>
-			<div class="bF1SaleCard_eComplete mGold">
-				<p class="font14">Для заказа действует скидка по программе «%название программы%»</p>
-			</div>
+                <div class="bF1SaleCard_eComplete mGold">
+                    <p class="font14">Для заказа действует скидка по программе «%название программы%»</p>
+                </div>
 			<? else: ?>			
-			<div class="bF1SaleCard_eForm">
-	            <p class="font11">Введите серийный номер карты «Под защитой F1» для скидки на услуги:</p>
-	            <input class="mr20 width370" type="text"/><input class="yellowbutton button" type="button" value="Получить скидку"/>
-	        </div>
+                <div class="bF1SaleCard_eForm">
+                    <p class="font11">Введите серийный номер карты «Под защитой F1» для скидки на услуги:</p>
+                    <input class="mr20 width370" type="text"/><input data-url="<?= $page->url('cart.certificate.apply') ?>" class="yellowbutton button" type="button" value="Получить скидку"/>
+                </div>
 	         <? endif ?>
         </div>
         <div class="line mt32 pb30"></div>
