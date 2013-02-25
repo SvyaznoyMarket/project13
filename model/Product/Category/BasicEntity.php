@@ -64,7 +64,7 @@ class BasicEntity {
      * @return string
      */
     public function getLink() {
-        return $this->link;
+        return rtrim($this->link, '/');
     }
 
     /**

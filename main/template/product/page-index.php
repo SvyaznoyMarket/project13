@@ -563,7 +563,7 @@ $productVideo = reset($productVideos);
                   <? endif ?>
                 </div>
                 <div class="description fl">
-                    <span><?= $property->getStringValue() ?></span>
+                    <span class="fl mr10"><?= $property->getStringValue() ?></span>
                     <? if ($property->getValueHint()): ?>
                     <div class="bHint fl">
                         <a class="bHint_eLink"><?= $property->getStringValue() ?></a>
