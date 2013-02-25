@@ -1,50 +1,118 @@
-[
-    {
-        "name": "Категория 1",
-        "image": "/css/header/img/jew.gif",
-        "action": "link",
-        "item": ["http://www.enter.ru"],
-        "child": [
-        ]
-    },
-    {
-        "name": "Спорт и отдых",
-        "image": "/css/header/img/headerSprite.png",
-        "action": "catalog",
-        "item": [1893],
-        "child": [
-            {
-                "name": "Путешествия",
-                "image": "/css/header/img/headerSprite.png",
-                "action": "catalog",
-                "item": [749],
-                "child": [
-                    {
-                        "name": "Чемоданы",
-                        "image": "/css/header/img/headerSprite.png",
-                        "action": "catalog",
-                        "item": [753]
-                    },
-                    {
-                        "name": "Рюкзаки",
-                        "image": "/css/header/img/headerSprite.png",
-                        "action": "catalog",
-                        "item": [752]
-                    }
-                ]
-            },
-            {
-                "name": "Домашние спортивные игры",
-                "image": "/css/header/img/headerSprite.png",
-                "action": "catalog",
-                "item": [700]
-            },
-            {
-                "name": "Тренажеры, грифы, диски и гантели",
-                "image": "/css/header/img/headerSprite.png",
-                "action": "catalog",
-                "item": [2824]
-            }
-        ]
-    }
-]
+{
+    "image": "sprite.png",
+    "item": [
+        {
+            "name": "Мебель",
+            "action": "catalog",
+            "item": ["furniture"]
+        },
+        {
+            "name": "Сделай сам",
+            "action": "catalog",
+            "item": ["do_it_yourself"]
+        },
+        {
+            "name": "Товары для дома",
+            "action": "catalog",
+            "item": ["household"]
+        },
+        {
+            "name": "Детские товары",
+            "action": "catalog",
+            "item": ["children"]
+        },
+        {
+            "name": "Зоотовары",
+            "action": "catalog",
+            "item": ["tovari-dlya-givotnih"]
+        },
+        {
+            "name": "Электроника",
+            "action": "catalog",
+            "item": ["electronics"]
+        },
+        {
+            "name": "Бытовая техника",
+            "action": "catalog",
+            "item": ["appliances"]
+        },
+        {
+            "name": "Красота и здоровье",
+            "action": "catalog",
+            "item": ["krasota-i-zdorove-21"]
+        },
+        {
+            "name": "Украшения и часы",
+            "action": "catalog",
+            "item": ["jewel"]
+        },
+        {
+            "name": "Парфюмерия и косметика",
+            "action": "catalog",
+            "item": ["parfyumeriya-i-kosmetika"]
+        },
+
+        {
+            "name": "Акция",
+            "action": "link",
+            "item": ["http://www.enter.ru"],
+            "child": [
+                {
+                    "name": "Зимние виды спорта",
+                    "action": "category",
+                    "item": [710],
+                    "child": [
+                        {
+                            "name": "Беговые лыжи",
+                            "action": "category",
+                            "item": [1273]
+                        },
+                        {
+                            "name": "Горные лыжи",
+                            "action": "category",
+                            "item": [1274]
+                        },
+                        {
+                            "name": "Сноуборды",
+                            "action": "category",
+                            "item": [1275]
+                        }
+                    ]
+                },
+                {
+                    "name": "Специальное предложение 1",
+                    "action": "link",
+                    "item": ["http://www.enter.ru/cardforyou"]
+                },
+                {
+                    "name": "Специальное предложение 2",
+                    "image": "/css/header/img/headerSprite.png",
+                    "item": ["http://www.enter.ru/cardforyou"]
+                }
+            ]
+        },
+
+
+        {
+            "name": "Еще товары",
+            "action": "",
+            "child": [
+                {
+                    "name": "Аксессуары для авто",
+                    "action": "catalog",
+                    "item": ["aksessuari-dlya-avtomobiley-225"]
+                },
+                {
+                    "name": "Подарки и хобби",
+                    "action": "catalog",
+                    "item": ["gift_hobby"]
+                },
+                {
+                    "name": "Спорт и отдых",
+                    "action": "catalog",
+                    "item": ["sport"]
+                }
+            ]
+        }
+    ]
+}

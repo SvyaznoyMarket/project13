@@ -163,32 +163,32 @@ class DefaultLayout extends Layout {
     }
 
     public function slotRootCategory() {
-        /** @var $categories \Model\Product\Category\BasicEntity[] */
-        $categories = $this->getParam('rootCategories');
+        $repository = \RepositoryManager::menu();
 
-        $menu = [];
-        foreach (array_slice($categories, 0, 10) as $category) {
-            /** @var $category \Model\Product\Category\BasicEntity */
-            $iMenu = new \Model\Menu\Entity();
-            $iMenu->setAction(\Model\Menu\Entity::ACTION_PRODUCT_CATEGORY);
-            $iMenu->getItem([$category->getId()]);
-            $iMenu->setName($category->getName());
-            $iMenu->setLink($category->getLink());
-            $menu[] = $iMenu;
-        }
-        // две категории из data-store
-        foreach (array_slice(\RepositoryManager::menu()->getCollection(), 0, 2) as $iMenu) {
-            $menu[] = $iMenu;
+        $productCategoriesById = [];
+
+        /** @var $menu \Model\Menu\Entity[] */
+        $menu = $this->getParam('mainMenu');
+        if (!$menu) {
+            $menu = [];
+            $repository->prepareCollection(function($data) use (&$menu) {
+                foreach ($data as $item) {
+                    $menu[] = new \Model\Menu\Entity($item);
+                }
+            });
         }
 
-        /** @var $category \Model\Product\Category\BasicEntity */
-        $category = end($categories);
-        $iMenu = new \Model\Menu\Entity();
-        $iMenu->setAction(\Model\Menu\Entity::ACTION_PRODUCT_CATEGORY);
-        $iMenu->getItem([$category->getId()]);
-        $iMenu->setName($category->getName());
-        $iMenu->setLink($category->getLink());
-        $menu[] = $iMenu;
+        $walk = function($menu) use (&$walk, $repository) {
+            foreach ($menu as $iMenu) {
+                /** @var \Model\Menu\Entity $iMenu */
+                $repository->setEntityLink($iMenu);
+
+                if ((bool)$iMenu->getChild()) {
+                    $walk($iMenu->getChild());
+                }
+            }
+        };
+        $walk($menu);
 
         return $this->render('_mainMenu', array('menu' => $menu));
     }
