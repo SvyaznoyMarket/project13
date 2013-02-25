@@ -11,9 +11,9 @@
             <? if ((bool)$user->getCart()->getCertificates()): ?>
 		    <? // TODO: верстка примененного сертификата ?>
 			<div class="bF1SaleCard_eComplete mGold">
-				<p class="font18">Ваша скидка на услуги F1 — <b>10%, 90р</b></p>
+				<p class="font14">Для заказа действует скидка по программе «%название программы%»</p>
 			</div>
-			<? else: ?>
+			<? else: ?>			
 			<div class="bF1SaleCard_eForm">
 	            <p class="font11">Введите серийный номер карты «Под защитой F1» для скидки на услуги:</p>
 	            <input class="mr20 width370" type="text"/><input class="yellowbutton button" type="button" value="Получить скидку"/>

@@ -5634,6 +5634,16 @@
   }
 }
 /*---END---СТИЛИ КРЕДИТОВ---*/
+/*-------СТИЛИ КАРТ F1-----*/
+@media all {
+  .bF1SaleCard_eComplete {
+    background: url('/css/F1SaleCard/img/check.png') no-repeat left center;
+    height: 40px;
+    line-height: 40px;
+    padding-left: 40px;
+  }
+}
+/*---END---СТИЛИ КАРТ F1---*/
 /*-------СТИЛИ ОФОРМЛЕНИЯ ЗАКАЗА-----*/
 @media all {
   .bBuyingHead {
