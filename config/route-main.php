@@ -61,7 +61,7 @@ return [
     ],
     // личный кабинет
     'user' => [
-        'pattern' => '/private/',
+        'pattern' => '/private',
         'action'  => ['User\IndexAction', 'execute'],
     ],
     // вход через социальные сети
@@ -116,7 +116,7 @@ return [
 
     // каталог товаров
     'product.category' => [
-        'pattern' => '/catalog/{categoryPath}/',
+        'pattern' => '/catalog/{categoryPath}',
         'action'  => ['ProductCategory\Action', 'category'],
         'require' => ['categoryPath' => '[\w\d-_]+\/?[\w\d-_]+'],
     ],
@@ -220,7 +220,7 @@ return [
 
     // корзина
     'cart' => [
-        'pattern' => '/cart/', // TODO: сделать '/cart'
+        'pattern' => '/cart',
         'action'  => ['Cart\IndexAction', 'execute'],
     ],
     // очистка корзины
@@ -235,11 +235,11 @@ return [
     ],
     // удаление товара из корзины
     'cart.product.delete' => [
-        'pattern' => '/cart/delete/{productId}/_service/', // TODO: сделать поприличнее - '/cart/delete-product/{productId}'
+        'pattern' => '/cart/delete/{productId}/_service', // TODO: сделать поприличнее - '/cart/delete-product/{productId}'
         'action'  => ['Cart\ProductAction', 'delete'],
     ],
     'old.cart.product.add' => [
-        'pattern' => '/cart/add/{productId}/_quantity/', // TODO: Убить, когда полностью переедем на dark, переписать js с учетом наличия кол-ва
+        'pattern' => '/cart/add/{productId}/_quantity', // TODO: Убить, когда полностью переедем на dark, переписать js с учетом наличия кол-ва
         'action'  => ['Cart\ProductAction', 'set'],
     ],
     // удаление услуги из корзины
