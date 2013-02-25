@@ -15,7 +15,8 @@
 			<? else: ?>			
                 <div class="bF1SaleCard_eForm">
                     <p class="font11">Введите серийный номер карты «Под защитой F1» для скидки на услуги:</p>
-                    <input class="mr20 width370" type="text"/><input data-url="<?= $page->url('cart.certificate.apply') ?>" class="yellowbutton button" type="button" value="Получить скидку"/>
+                    <input id="F1SaleCard_number" class="mr20 width370" type="text"/><input id="F1SaleCard_btn" data-url="<?= $page->url('cart.certificate.apply') ?>" class="yellowbutton button" type="button" value="Получить скидку"/>
+                    <p id="bF1SaleCard_eErr" class="bF1SaleCard_eErr"></p>
                 </div>
 	         <? endif ?>
         </div>

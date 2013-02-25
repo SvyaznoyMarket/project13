@@ -1,4 +1,36 @@
 $(document).ready(function(){
+	
+	/* F1 sale card*/
+	if ( $('.bF1SaleCard').length ){
+		var input = $('#F1SaleCard_number')
+		var btn = $('#F1SaleCard_btn')
+		btn.bind('click', function(){
+			var url = btn.data('url')
+
+			function authFromServer(response) {
+				if ( response.success ) {
+					window.location.reload()
+				}
+				else{
+					$('#bF1SaleCard_eErr').html('Извините, карта с таким номером не найдена.')
+				}
+			}
+
+			var data = {
+				number: input.val()
+			}
+
+			$.ajax({
+				type: 'POST',
+				url: url,
+				data: data,
+				success: authFromServer
+			})
+
+		})
+	}
+
+
 	function regEmailValid(){
 		/*register e-mail check*/
 		if ($('#register_username').length){
