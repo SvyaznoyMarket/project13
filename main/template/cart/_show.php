@@ -122,9 +122,7 @@ foreach ($products as $product) {
                 <? endif ?>
             </div>
             <div class="basketinfo pb15">
-                <div class="left font11">Цена:<br/><span class="font12"><span
-                        class="price"><?= $page->helper->formatPrice($product->getPrice()) ?></span> <span class="rubl">p</span></span>
-                </div>
+                <div class="left font11">&nbsp;</div>
                 <div class="right">
                     <?= $page->render('_spinner', array(
                         'quantity' => $cartProduct->getQuantity(),

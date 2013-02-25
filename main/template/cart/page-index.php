@@ -46,7 +46,7 @@ $creditEnabled = ($cart->getTotalProductPrice() >= \App::config()->product['minC
             <div class="font14 width370 creditInfo pb10 grayUnderline">
                 <div class="leftTitle">Сумма заказа:</div>
                 <div class="font24">
-                    <span class="price"><?= $page->helper->formatPrice($cart->getTotalPrice()) ?></span> <span class="rubl">p</span>
+                    <span class="price"><?= $page->helper->formatPrice($cart->getSum()) ?></span> <span class="rubl">p</span>
                 </div>
             </div>
             <div style="display:none" id="blockFromCreditAgent">
@@ -74,7 +74,7 @@ $creditEnabled = ($cart->getTotalProductPrice() >= \App::config()->product['minC
             </div>
             <div class="font30"><strong>
 				<span class="price">
-						<?= $page->helper->formatPrice($cart->getTotalPrice()) ?>
+						<?= $page->helper->formatPrice($cart->getSum()) ?>
 				</span>
                 <span class="rubl">p</span></strong></div>
         </div>

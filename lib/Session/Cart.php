@@ -17,7 +17,7 @@ class Cart {
     /** @var \Model\Cart\Certificate\Entity[] */
     private $certificates = null;
     /** @var int|null */
-    private $totalPrice = null;
+    private $sum = null;
     private $productLimit = null;
 
     public function __construct() {
@@ -80,7 +80,7 @@ class Cart {
 
     public function clear() {
         $this->storage->set($this->sessionName, null);
-        $this->totalPrice = null;
+        $this->sum = null;
         $this->products = null;
         $this->services = null;
         $this->warranties = null;
@@ -233,12 +233,12 @@ class Cart {
     /**
      * @return int
      */
-    public function getTotalPrice() {
-        if (null === $this->totalPrice) {
+    public function getSum() {
+        if (null === $this->sum) {
             $this->fill();
         }
 
-        return $this->totalPrice;
+        return $this->sum;
     }
 
     /**
@@ -507,7 +507,7 @@ class Cart {
             $response = $default;
         }
 
-        $this->totalPrice = array_key_exists('price_total', $response) ? $response['price_total'] : 0;
+        $this->sum = array_key_exists('sum', $response) ? $response['sum'] : 0;
 
         $this->products = [];
         if (array_key_exists('product_list', $response)) {

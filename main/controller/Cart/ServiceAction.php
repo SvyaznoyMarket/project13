@@ -57,7 +57,7 @@ class ServiceAction {
                     'data'    => [
                         'quantity'      => $quantity,
                         'full_quantity' => $cart->getProductsQuantity() + $cart->getServicesQuantity() + $cart->getWarrantiesQuantity(),
-                        'full_price'    => $cart->getTotalPrice(),
+                        'full_price'    => $cart->getSum(),
                         'link'          => \App::router()->generate('order.create'),
                     ],
                 ])

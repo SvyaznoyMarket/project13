@@ -919,7 +919,7 @@ class Action {
                         /** @var $service \Model\Product\Service\Entity */
                         $service = $servicesById[$cartService->getId()];
                         $serviceName .= sprintf(' + <span class="motton">%s (%s шт.)</span>', $service->getName(), $cartService->getQuantity());
-                        $serviceTotal += ($cartService->getPrice() * $cartService->getQuantity());
+                        $serviceTotal += $cartService->getSum();
                     }
                 }
 
@@ -940,7 +940,7 @@ class Action {
                         }
 
                         $serviceName .= sprintf(' + <span class="motton">%s (%s шт.)</span>', $warranty->getName(), $cartWarranty->getQuantity());
-                        $serviceTotal += ($cartWarranty->getPrice() * $cartWarranty->getQuantity());
+                        $serviceTotal += $cartWarranty->getSum();
                     }
                 }
 
@@ -962,7 +962,7 @@ class Action {
                 $itemView->image = $itemData['media_image'];
                 $itemView->price = $itemData['price'];
                 $itemView->quantity = $cartItem->getQuantity();
-                $itemView->total = ($cartItem->getPrice() * $cartItem->getQuantity()) + $serviceTotal;
+                $itemView->total = $cartItem->getSum() + $serviceTotal;
                 if ($cartItem instanceof \Model\Cart\Product\Entity) {
                     $itemView->type = \View\Order\DeliveryCalc\Item::TYPE_PRODUCT;
                 } else if ($cartItem instanceof \Model\Cart\Service\Entity) {
