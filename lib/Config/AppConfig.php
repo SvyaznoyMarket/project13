@@ -81,9 +81,12 @@ class AppConfig {
     public $yandexMetrika = [
         'enabled' => null,
     ];
-
+    /** @var array */
     public $myThings = [
         'feeByCategory' => [],
+    ];
+    public $adFox = [
+        'enabled' => null,
     ];
     /** @var string */
     public $mainHost = null;

@@ -15,7 +15,9 @@
 </head>
 <body class="<?= $page->slotBodyClassAttribute() ?>" data-template="<?= $page->slotBodyDataAttribute() ?>" data-id="<?= \App::$id ?>">
     <div class="allpage" id="page">
-        <div class="adfoxWrapper" id="adfoxbground"></div>
+    <? if (\App::config()->adFox['enabled']): ?>
+    <div class="adfoxWrapper" id="adfoxbground"></div>
+    <? endif ?>
 
         <div class="allpageinner">
             <?= $page->slotHeader() ?>

@@ -274,9 +274,11 @@ $productVideo = reset($productVideos);
     </div>
   <?php endif ?>
 
+  <? if (\App::config()->adFox['enabled']): ?>
   <div style="margin-bottom: 20px;">
     <div class="adfoxWrapper" id="<?= $adfox_id_by_label ?>"></div>
   </div>
+  <? endif ?>
 
   <? if ($product->getIsBuyable()): ?>
     <?= $page->render('service/_listByProduct', array('product' => $product)) ?>
