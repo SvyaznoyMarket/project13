@@ -290,6 +290,15 @@ class Cart {
     }
 
     /**
+     * @return bool
+     */
+    public function hasServices() {
+        $data = $this->getData();
+
+        return count($data['serviceList']) > 0;
+    }
+
+    /**
      * @param int $serviceId
      * @return \Model\Cart\Service\Entity|null
      */
