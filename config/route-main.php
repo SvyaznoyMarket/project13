@@ -223,6 +223,10 @@ return [
         'pattern' => '/cart',
         'action'  => ['Cart\IndexAction', 'execute'],
     ],
+    'cart.info' => [
+        'pattern' => '/cart/info',
+        'action'  => ['Cart\InfoAction', 'execute'],
+    ],
     // очистка корзины
     'cart.clear' => [
         'pattern' => '/cart/clear',
