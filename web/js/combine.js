@@ -4,7 +4,7 @@ window.filesWithVersion = {
 "app.oneclick.js":1360654851,
 "infopages.js":1361782170,
 "library.js":1360654851,
-"app.cart.js":1361892153,
+"app.cart.js":1361893026,
 "bigjquery.min.js":1354085035,
 "welcome.js":1359720546,
 "main.js":1361877140,

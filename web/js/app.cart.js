@@ -38,28 +38,31 @@ $(document).ready(function() {
 		})
 	}
 
-	function checkServF1() {
+	var checkServF1 = function() {
 
 		// console.info('проверка наличия услуг')
-		serv = $('.bBacketServ.F1.mBig')
+		var serv = $('.bBacketServ.F1.mBig')
+		var res = false
 
 		$.each(serv, function(){
 			service = $(this)
 			if ( service.find('tr[ref]').length ){
 				// есть добавленные услуги
-				return true
+				res = true
 			}
 			else if ( service.is(':visible') ){
 				// услуг добавленных нет, но блок большой
 				var good = service.parents('.basketline') //текущий товар
 				good.find('.bBacketServ.F1.mSmall').show()
 				good.find('.bBacketServ.F1.mBig').hide()
-				return false
+				res = false
 			}
 		})
+		return res
 	}
 
-	function checkForSaleCard(){
+	var checkForSaleCard = function() {
+
 		// скрытие-отображение форма ввода карты
 		if (checkServF1()){
 			$('.bF1SaleCard').show()
