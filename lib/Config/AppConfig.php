@@ -66,6 +66,7 @@ class AppConfig {
     /** @var array */
     public $company = [
         'phone' => null,
+        'moscowPhone' => null,
         'icq'   => null,
     ];
     /** @var array */
