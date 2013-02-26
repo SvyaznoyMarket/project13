@@ -19,6 +19,12 @@ $(document).ready(function() {
 		})
 	}
 
+	function showOldPrice(oldPrice) {
+		if ( $('.bF1SaleCard_eComplete').length ){
+			$('#totalOldPrice').html(printPrice( oldPrice )).show()
+		}
+	}
+
 	function getTotal() {
 		for(var i=0, tmp=0; i < basket.length; i++ ) {
 			if( ! basket[i].noview && $.contains( document.body, basket[i].hasnodes[0] ) )
@@ -111,6 +117,7 @@ $(document).ready(function() {
 					location.href = location.href
 				}
 				else{
+					showOldPrice(data.data.old_price)
 					getTotal()
 				}
 			})
@@ -166,6 +173,7 @@ $(document).ready(function() {
 				if( !data.success ) {
 					location.href = location.href
 				}
+				showOldPrice(data.data.old_price)
 			})
 		}
 
@@ -287,10 +295,12 @@ $(document).ready(function() {
 				$(this).val('В корзине').addClass('active')
 				var f1item = $(this).data()
 				$.getJSON( f1item.url, function(data) {
+					showOldPrice(data.data.old_price)
 				})
 				makeWide( bline, f1item )
 				popupIsOpened = false
 		   		f1popup.hide()
+		   		$('.bF1SaleCard').show()
 		   })
 			return false
 		})
@@ -317,7 +327,9 @@ $(document).ready(function() {
 					return false
 				$(this).val('В корзине').addClass('active')
 				var tmpitem = $(this).data()			
-				$.getJSON( tmpitem.url, function(data) { })
+				$.getJSON( tmpitem.url, function(data) {
+					showOldPrice(data.data.old_price)
+				})
 				popupIsOpened = false
 				wrntpopup.hide()
 				makeWideWrnt( bline, tmpitem )
