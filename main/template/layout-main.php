@@ -46,9 +46,9 @@
             <a class="bPromoCategory_eIcon fl" href="/catalog/jewel/ukrasheniya-ko-dnyu-vlyublennih-2826/?from=enter_internal_promo_season"><img src="/css/mainPage/img/bPromoCategory_jewelPink.gif"/></a>
             <div class="fl">
                 <h2 class="bPromoCategory_eTitle">Подарки к весенним праздникам</h2>
-                <a class="bPromoCategory_eLink" href="/catalog/ukrasheniya-na-23-fevralya-2889/?from=enter_internal_promo_season">Украшения на 23 февраля</a>
-                <p class="bPromoCategory_eLink"><a href="/catalog/podarki-na-23-fevralya-1497/?from=enter_internal_promo_season">Подарки на 23 февраля</a></p>
-                <a class="bPromoCategory_eLink" href="/catalog/jewel/pandora-1320/?from=enter_internal_promo_season">Украшения Pandora</a>
+                <a class="bPromoCategory_eLink" href="/catalog/ukrasheniya-k-8-marta-2922/?from=enter_internal_promo_season">Украшения к 8 марта</a>
+                <p class="bPromoCategory_eLink"><a href="/catalog/podarki-na-8-marta-1522/?from=enter_internal_promo_season">Подарки на 8 марта</a></p>
+                <a class="bPromoCategory_eLink" href="/catalog/parfyumeriya-i-kosmetika/podarochnie-nabori-2591/?from=enter_internal_promo_season">Подарочные наборы парфюмерии</a>
             </div>
         </div>
     </div>

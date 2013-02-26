@@ -65,6 +65,15 @@
 <div id="marketgidOrderSuccess" class="jsanalytics"></div>
 
 <?php $myThingsData = []; ?>
+<?php $fee = null; ?>
+<?php foreach ($orders as $order) {
+        foreach ($order->getProduct() as $product) {
+            if (isset($productsById[$product->getId()]) && $productsById[$product->getId()]->getMainCategory()) {
+                $fee = $fee === null ? \App::config()->myThings['feeByCategory'][$productsById[$product->getId()]->getMainCategory()->getId()] : min($fee, \App::config()->myThings['feeByCategory'][$productsById[$product->getId()]->getMainCategory()->getId()]);
+            }
+        }
+    }
+?>
 <?php foreach ($orders as $i => $order):
     $jsonOrdr = array(
     'order_article'    => implode(',', array_map(function ($orderProduct) {
@@ -78,11 +87,13 @@
         return $orderProduct->getQuantity();
     }, $order->getProduct())),
     );
+
     $myThingsData[] = array(
         'EventType' => 'MyThings.Event.Conversion',
         'Action' => '9902',
         'TransactionReference' => $order->getNumber(),
         'TransactionAmount' => str_replace(',', '.', $order->getSum()), // Полная сумма заказа (дроби через точку
+        'Commission' => $fee === null ? 0 : round($order->getSum() * $fee, 2),
         'Products' => array_map(function($orderProduct){
             /** @var $orderProduct \Model\Order\Product\Entity  */
             return array('id' => $orderProduct->getId(), 'price' => $orderProduct->getPrice(), 'qty' => $orderProduct->getQuantity());

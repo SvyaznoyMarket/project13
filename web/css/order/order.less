@@ -78,6 +78,7 @@
       color: @black;
       line-height: 30px;
       margin-left:10px;
+      position: relative;
     }
     &.bSelectWrap_eText{
       line-height: 30px;
@@ -426,10 +427,9 @@ li.bBuyingDates__eRight{
 }
 .phonePH{
   position: relative;
-  // span.placeholder{
-  //   line-height: 31px;
-  //   margin-left: 12px;
-  // }
+  span.placeholder{
+    z-index: 3;
+  }
   #order_recipient_phonenumbers{
     .opacity(0.8);
     filter: alpha(opacity=80);
