@@ -19,30 +19,47 @@ $(document).ready(function() {
 		})
 	}
 
+	function checkServWarranty() {
+		// console.info('проверка наличия расширенных гарантий')
+		warr = $('.bBacketServ.extWarr.mBig')
+		$.each(warr, function(){
+			service = $(this)
+			if ( service.find('tr[ref]').length ){
+				// есть добавленные услуги
+				return true
+			}
+			else if ( service.is(':visible') ){
+				// услуг добавленных нет, но блок большой
+				var good = service.parents('.basketline') //текущий товар
+				good.find('.bBacketServ.extWarr.mSmall').show()
+				good.find('.bBacketServ.extWarr.mBig').hide()
+				return false
+			}
+		})
+	}
+
 	function checkServF1() {
-		// есть ли добаленные услуги F1
-		if ($('.bBacketServ.F1.mBig').is(':visible')) {
-			return true
-		}
-		return false
+
+		// console.info('проверка наличия услуг')
+		serv = $('.bBacketServ.F1.mBig')
+
+		$.each(serv, function(){
+			service = $(this)
+			if ( service.find('tr[ref]').length ){
+				// есть добавленные услуги
+				return true
+			}
+			else if ( service.is(':visible') ){
+				// услуг добавленных нет, но блок большой
+				var good = service.parents('.basketline') //текущий товар
+				good.find('.bBacketServ.F1.mSmall').show()
+				good.find('.bBacketServ.F1.mBig').hide()
+				return false
+			}
+		})
 	}
 
-	function showOldPrice(oldPrice) {
-		$('#totalOldPrice').html(printPrice( oldPrice ))
-	}
-
-	function getTotal() {
-		for(var i=0, tmp=0; i < basket.length; i++ ) {
-			if( ! basket[i].noview && $.contains( document.body, basket[i].hasnodes[0] ) )
-				tmp += basket[i].sum * 1
-		}
-		if( !tmp ) {
-			location.reload(true)
-		}
-		total.html( printPrice( tmp ) )
-		total.typewriter(800)
-		totalCash = tmp
-
+	function checkForSaleCard(){
 		// скрытие-отображение форма ввода карты
 		if (checkServF1()){
 			$('.bF1SaleCard').show()
@@ -58,6 +75,25 @@ $(document).ready(function() {
 		else{
 			$('#commonSum .oldPrice').hide()
 		}
+	}
+
+	function showOldPrice(oldPrice) {
+		$('#totalOldPrice').html(printPrice( oldPrice ))
+	}
+
+	function getTotal() {
+		checkForSaleCard()
+		checkServWarranty()
+		for(var i=0, tmp=0; i < basket.length; i++ ) {
+			if( ! basket[i].noview && $.contains( document.body, basket[i].hasnodes[0] ) )
+				tmp += basket[i].sum * 1
+		}
+		if( !tmp ) {
+			location.reload(true)
+		}
+		total.html( printPrice( tmp ) )
+		total.typewriter(800)
+		totalCash = tmp
 	}
 
 	function basketline ( nodes, clearfunction ) {
@@ -218,6 +254,7 @@ $(document).ready(function() {
 				$(nodes.drop).data('run', true)
 				dropflag = self.clear()
 			}
+			// console.log('удаление')
 			return false
 		})
 
@@ -322,7 +359,6 @@ $(document).ready(function() {
 				makeWide( bline, f1item )
 				popupIsOpened = false
 		   		f1popup.hide()
-		   		$('.bF1SaleCard').show()
 		   })
 			return false
 		})
