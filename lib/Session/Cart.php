@@ -16,8 +16,11 @@ class Cart {
     private $warranties = null;
     /** @var \Model\Cart\Certificate\Entity[] */
     private $certificates = null;
-    /** @var int|null */
+    /** @var int */
     private $sum = null;
+    /** @var int */
+    private $originalSum = null;
+    /** @var int */
     private $productLimit = null;
 
     public function __construct() {
@@ -239,6 +242,17 @@ class Cart {
         }
 
         return $this->sum;
+    }
+
+    /**
+     * @return int
+     */
+    public function getOriginalSum() {
+        if (null === $this->originalSum) {
+            $this->fill();
+        }
+
+        return $this->originalSum;
     }
 
     /**
@@ -508,6 +522,7 @@ class Cart {
         }
 
         $this->sum = array_key_exists('sum', $response) ? $response['sum'] : 0;
+        $this->originalSum = array_key_exists('original_sum', $response) ? $response['original_sum'] : 0;
 
         $this->products = [];
         if (array_key_exists('product_list', $response)) {

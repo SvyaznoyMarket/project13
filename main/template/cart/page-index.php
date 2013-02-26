@@ -72,14 +72,16 @@ $creditEnabled = ($cart->getTotalProductPrice() >= \App::config()->product['minC
             <div class="font14">
                 Сумма заказа:
             </div>
+
+            <? if ($cart->getOriginalSum() && (abs($cart->getOriginalSum() - $cart->getSum()) > 0)): ?>
             <div class="oldPrice font18 clearfix">
-                36 960
+                <?= $page->helper->formatPrice($cart->getOriginalSum()) ?>
                 <span class="rubl">p</span>
             </div>
+            <? endif ?>
+
             <div class="font30"><strong>
-				<span class="price">
-						<?= $page->helper->formatPrice($cart->getSum()) ?>
-				</span>
+				<span class="price"><?= $page->helper->formatPrice($cart->getSum()) ?></span>
                 <span class="rubl">p</span></strong></div>
         </div>
     </div>

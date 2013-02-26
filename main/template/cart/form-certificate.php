@@ -10,7 +10,7 @@
             <h3 class="bF1SaleCard_eTitle ">Скидка по карте «Под защитой F1»</h3>
             <? if ((bool)$user->getCart()->getCertificates()): ?>
                 <div class="bF1SaleCard_eComplete mGold">
-                    <p class="font14">Для заказа действует скидка по программе «%название программы%»</p>
+                    <p class="font14">Для заказа действует скидка по программе «Под защитой F1»</p>
                 </div>
 			<? else: ?>			
                 <div class="bF1SaleCard_eForm">
