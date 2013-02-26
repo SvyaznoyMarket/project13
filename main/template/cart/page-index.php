@@ -72,6 +72,10 @@ $creditEnabled = ($cart->getTotalProductPrice() >= \App::config()->product['minC
             <div class="font14">
                 Сумма заказа:
             </div>
+            <div class="oldPrice font18 clearfix">
+                36 960
+                <span class="rubl">p</span>
+            </div>
             <div class="font30"><strong>
 				<span class="price">
 						<?= $page->helper->formatPrice($cart->getSum()) ?>
