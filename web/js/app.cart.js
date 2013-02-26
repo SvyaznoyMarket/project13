@@ -19,10 +19,16 @@ $(document).ready(function() {
 		})
 	}
 
-	function showOldPrice(oldPrice) {
-		if ( $('.bF1SaleCard_eComplete').length ){
-			$('#totalOldPrice').html(printPrice( oldPrice )).show()
+	function checkServF1() {
+		// есть ли добаленные услуги F1
+		if ($('.bBacketServ.F1.mBig').is(':visible')) {
+			return true
 		}
+		return false
+	}
+
+	function showOldPrice(oldPrice) {
+		$('#totalOldPrice').html(printPrice( oldPrice ))
 	}
 
 	function getTotal() {
@@ -36,6 +42,22 @@ $(document).ready(function() {
 		total.html( printPrice( tmp ) )
 		total.typewriter(800)
 		totalCash = tmp
+
+		// скрытие-отображение форма ввода карты
+		if (checkServF1()){
+			$('.bF1SaleCard').show()
+		}
+		else{
+			$('.bF1SaleCard').hide()
+		}
+
+		// скрытие отображение старой цены
+		if ( $('.bF1SaleCard_eComplete').length && checkServF1() ){
+			$('#commonSum .oldPrice').show()
+		}
+		else{
+			$('#commonSum .oldPrice').hide()
+		}
 	}
 
 	function basketline ( nodes, clearfunction ) {
