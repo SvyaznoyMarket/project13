@@ -20,7 +20,6 @@ class InfoAction {
         $data = [
             'product'     => [],
             'service'     => [],
-            'warranty'    => [],
             'certificate' => [],
             'sum'         => $cart->getSum(),
             'oldSum'   => $cart->getOriginalSum(),
