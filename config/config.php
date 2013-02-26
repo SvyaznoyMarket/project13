@@ -60,6 +60,21 @@ $c->company['icq'] = '648198963';
 $c->analytics['enabled'] = false;
 $c->googleAnalytics['enabled'] = false;
 $c->yandexMetrika['enabled'] = false;
+$c->myThings['feeByCategory'] = [
+    80      => 0.05,
+    224     => 0.03,
+    1438    => 0.04,
+    320     => 0.05,
+    443     => 0.05,
+    788     => 0.015,
+    1       => 0.02,
+    21      => 0.05,
+    923     => 0.06,
+    2545    => 0.03,
+    185     => 0.03,
+    647     => 0.05,
+    225     => 0.03,
+];
 
 $c->onlineCall['enabled'] = false;
 

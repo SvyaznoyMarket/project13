@@ -5720,6 +5720,7 @@
     color: #000000;
     line-height: 30px;
     margin-left: 10px;
+    position: relative;
   }
   .bBuyingInfo span.bSelectWrap_eText {
     line-height: 30px;
@@ -6078,6 +6079,9 @@
   }
   .phonePH {
     position: relative;
+  }
+  .phonePH span.placeholder {
+    z-index: 3;
   }
   .phonePH #order_recipient_phonenumbers {
     -moz-opacity: 0.8;

@@ -80,6 +80,10 @@ class AppConfig {
     public $yandexMetrika = [
         'enabled' => null,
     ];
+
+    public $myThings = [
+        'feeByCategory' => [],
+    ];
     /** @var string */
     public $mainHost = null;
     /** @var string */
