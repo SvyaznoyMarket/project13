@@ -1,5 +1,4 @@
 {
-    "image": "sprite.png",
     "item": [
         {
             "name": "Мебель",
@@ -60,6 +59,7 @@
             "name": "Акция",
             "action": "link",
             "item": ["http://www.enter.ru"],
+            "image": "promo-1.png",
             "child": [
                 {
                     "name": "Зимние виды спорта",
