@@ -4,52 +4,52 @@
         {
             "name": "Мебель",
             "action": "catalog",
-            "item": ["furniture"]
+            "item": [80]
         },
         {
             "name": "Сделай сам",
             "action": "catalog",
-            "item": ["do_it_yourself"]
+            "item": [224]
         },
         {
             "name": "Товары для дома",
             "action": "catalog",
-            "item": ["household"]
+            "item": [443]
         },
         {
             "name": "Детские товары",
             "action": "catalog",
-            "item": ["children"]
+            "item": [320]
         },
         {
             "name": "Зоотовары",
             "action": "catalog",
-            "item": ["tovari-dlya-givotnih"]
+            "item": [1438]
         },
         {
             "name": "Электроника",
             "action": "catalog",
-            "item": ["electronics"]
+            "item": [788]
         },
         {
             "name": "Бытовая техника",
             "action": "catalog",
-            "item": ["appliances"]
+            "item": [1]
         },
         {
             "name": "Красота и здоровье",
             "action": "catalog",
-            "item": ["krasota-i-zdorove-21"]
+            "item": [21]
         },
         {
             "name": "Украшения и часы",
             "action": "catalog",
-            "item": ["jewel"]
+            "item": [923]
         },
         {
             "name": "Парфюмерия и косметика",
             "action": "catalog",
-            "item": ["parfyumeriya-i-kosmetika"]
+            "item": [2545]
         },
 
         {
@@ -100,17 +100,17 @@
                 {
                     "name": "Аксессуары для авто",
                     "action": "catalog",
-                    "item": ["aksessuari-dlya-avtomobiley-225"]
+                    "item": [225]
                 },
                 {
                     "name": "Подарки и хобби",
                     "action": "catalog",
-                    "item": ["gift_hobby"]
+                    "item": [185]
                 },
                 {
                     "name": "Спорт и отдых",
                     "action": "catalog",
-                    "item": ["sport"]
+                    "item": [647]
                 }
             ]
         }

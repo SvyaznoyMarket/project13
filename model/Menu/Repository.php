@@ -19,7 +19,7 @@ class Repository {
         $data = $this->client->query('/main-menu.json');
 
         $collection = [];
-        foreach ($data as $item) {
+        foreach ($data['item'] as $item) {
             $collection[] = new Entity($item);
         }
 
@@ -43,16 +43,12 @@ class Repository {
      * @param \Model\Product\Category\Entity[] $categoriesById
      * @throws \Exception
      */
-    public function setEntityLink(Entity $entity, \Routing\Router $router, $productsById = [], $categoriesById = []) {
+    public function setEntityLink(Entity $entity, \Routing\Router $router, $categoriesById = [], $productsById = []) {
         $link = null;
 
         try {
             $items = $entity->getItem();
             if (!(bool)$items) {
-                return;
-            }
-
-            if (!is_array($entity->getAction())) {
                 return;
             }
 

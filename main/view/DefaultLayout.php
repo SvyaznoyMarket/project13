@@ -165,23 +165,62 @@ class DefaultLayout extends Layout {
     public function slotRootCategory() {
         $repository = \RepositoryManager::menu();
 
-        $productCategoriesById = [];
-
         /** @var $menu \Model\Menu\Entity[] */
-        $menu = $this->getParam('mainMenu');
-        if (!$menu) {
-            $menu = [];
-            $repository->prepareCollection(function($data) use (&$menu) {
-                foreach ($data as $item) {
-                    $menu[] = new \Model\Menu\Entity($item);
-                }
-            });
-        }
+        $menu = [];
+        $repository->prepareCollection(function($data) use (&$menu, $repository) {
+            foreach ($data['item'] as $item) {
+                $menu[] = new \Model\Menu\Entity($item);
+            }
+        });
+        // TODO: вместо синхронного использовать вышеприведенный асинхронный запрос
+        $menu = $repository->getCollection();
 
-        $walk = function($menu) use (&$walk, $repository) {
+        $categories = [];
+        \RepositoryManager::productCategory()->prepareTreeCollection(\App::user()->getRegion(), 3, function($data) use (&$categories) {
+            foreach ($data as $item) {
+                $categories[] = new \Model\Product\Category\TreeEntity($item);
+            }
+        });
+
+        \App::coreClientV2()->execute();
+
+        $categoriesById = [];
+        $walk = function($categories) use (&$walk, &$categoriesById, $repository) {
+            foreach ($categories as $category) {
+                /** @var \Model\Product\Category\Entity $category */
+                $categoriesById[$category->getId()] = $category;
+
+                if ((bool)$category->getChild()) {
+                    $walk($category->getChild());
+                }
+            }
+        };
+        $walk($categories);
+        unset($walk);
+
+        $walk = function($menu) use (&$walk, &$categoriesById, $repository) {
             foreach ($menu as $iMenu) {
                 /** @var \Model\Menu\Entity $iMenu */
-                $repository->setEntityLink($iMenu);
+                $repository->setEntityLink($iMenu, \App::router(), $categoriesById);
+
+                if (\Model\Menu\Entity::ACTION_PRODUCT_CATALOG == $iMenu->getAction()) {
+                    $items = $iMenu->getItem();
+                    $id = reset($items);
+                    /** @var \Model\Product\Category\Entity $category */
+                    $category = ($id && isset($categoriesById[$id])) ? $categoriesById[$id] : null;
+                    if (!$category) {
+                        \App::logger()->error(sprintf('Не найдена категория #%s для элемента меню %s', $id, $iMenu->getName()));
+                        continue;
+                    }
+
+                    foreach ($category->getChild() as $categoryChild) {
+                        $child = new \Model\Menu\Entity();
+                        $child->setAction(\Model\Menu\Entity::ACTION_PRODUCT_CATALOG);
+                        $child->setName($categoryChild->getName());
+                        $child->setItem([$categoryChild->getId()]);
+                        $iMenu->addChild($child);
+                    }
+                }
 
                 if ((bool)$iMenu->getChild()) {
                     $walk($iMenu->getChild());
@@ -189,6 +228,7 @@ class DefaultLayout extends Layout {
             }
         };
         $walk($menu);
+        unset($walk);
 
         return $this->render('_mainMenu', array('menu' => $menu));
     }

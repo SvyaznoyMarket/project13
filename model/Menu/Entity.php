@@ -4,9 +4,9 @@ namespace Model\Menu;
 
 class Entity {
     const ACTION_LINK = 'link';
-    const ACTION_PRODUCT = 'product';
     const ACTION_PRODUCT_CATEGORY = 'category';
     const ACTION_PRODUCT_CATALOG = 'catalog';
+    const ACTION_PRODUCT = 'product';
 
     /** @var string */
     private $name;
