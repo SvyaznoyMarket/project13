@@ -37,7 +37,7 @@ $count = count($menu);
                 </p>
         <? endif ?>
 
-        <? if ((bool)$iMenu->getChild()): ?>
+        <? if ((bool)$iMenu->getChild() && ($level <= 3)): ?>
             <?= $page->render('_mainMenu', ['menu' => $iMenu->getChild(), 'level' => $level + 1]) ?>
         <? endif ?>
     </li>
