@@ -3,6 +3,7 @@
 namespace Model\Menu;
 
 class Entity {
+    const ACTION_SEPARATOR = 'separator';
     const ACTION_LINK = 'link';
     const ACTION_PRODUCT_CATEGORY = 'category';
     const ACTION_PRODUCT_CATALOG = 'catalog';

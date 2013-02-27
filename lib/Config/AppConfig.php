@@ -54,7 +54,8 @@ class AppConfig {
     ];
     /** @var array */
     public $wordpress = [
-        'url' => null,
+        'url'     => null,
+        'timeout' => null,
     ];
     /** @var array */
     public $dataStore = [

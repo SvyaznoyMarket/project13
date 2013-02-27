@@ -12,10 +12,10 @@ $level = isset($level) ? $level : 1;
 
 <ul class="mainMenu_level_<?= $level ?>">
 <? foreach ($menu as $iMenu): ?>
-    <li>
+    <li<? if (\Model\Menu\Entity::ACTION_SEPARATOR === $iMenu->getAction()): ?> bMainMenuLevel-<?= $level ?>__eSeparator<? endif ?>>
         <? if ($iMenu->getLink()): ?>
             <a href="<?= $iMenu->getLink() ?>"><?= $iMenu->getName() ?></a>
-        <? else: ?>
+        <? elseif ($iMenu->getName()): ?>
             <span><?= $iMenu->getName() ?></span>
         <? endif ?>
 

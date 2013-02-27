@@ -53,6 +53,10 @@
         },
 
         {
+            "action": "separator"
+        },
+
+        {
             "name": "Акция",
             "action": "link",
             "item": ["http://www.enter.ru"],
@@ -90,6 +94,10 @@
                     "item": ["http://www.enter.ru/cardforyou"]
                 }
             ]
+        },
+
+        {
+            "action": "separator"
         },
 
 

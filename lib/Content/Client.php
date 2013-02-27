@@ -14,7 +14,8 @@ class Client {
      */
     public function __construct(array $config, \Curl\Client $curl) {
         $this->config = array_merge([
-            'url' => null,
+            'url'     => null,
+            'timeout' => null,
         ], $config);
 
         $this->curl = $curl;
@@ -37,7 +38,7 @@ class Client {
         $url = $this->config['url'] . $action . '?json=1';
         $response = null;
         try {
-            $response = $this->curl->query($url, $data, 2);
+            $response = $this->curl->query($url, $data, $this->config['timeout']);
             $spend = \Debug\Timer::stop('content');
             \App::logger()->info('End content request ' . $action . ' in ' . $spend);
         } catch (\Exception $e) {
