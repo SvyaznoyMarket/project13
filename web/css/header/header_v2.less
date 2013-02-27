@@ -48,13 +48,35 @@
 
 	&__eItem{
 		float: left;
-		height: 110px;
-		margin: 0 5px 0 0;
-		width: 60px;
+		margin-left: 19px;
+		margin-top: 15px;
+		margin-bottom: 15px;
 
 		&.bMainMenuLevel-1__eSeparator{
-			width: 5px;
+			background: url('@{base-url}/header/img/headerSeparator.gif') no-repeat center center;
+			height: 110px;
+			margin-top: 0;
+			margin-bottom: 0;
+			width: 1px;
 		}
+
+		&.mMore{
+
+		}
+	}
+
+	&__eLink{
+		text-decoration: none;
+		&:hover{
+			text-decoration: none;
+		}
+	}
+
+	&__eIcon{
+		display: block;
+		height: 45px;
+		line-height: 45px;
+		text-align: center;
 	}
 
 	&__eTitle{

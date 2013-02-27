@@ -26,9 +26,13 @@ $count = count($menu);
 
     <li class="bMainMenuLevel-<?= $level ?>__eItem<? if ($class) echo ' ' . $class ?>">
         <? if ($iMenu->getLink()): ?>
-            <a class="bMainMenuLevel-<?= $level ?>__eTitle" href="<?= $iMenu->getLink() ?>"><?= $iMenu->getName() ?></a>
+            <a class="bMainMenuLevel-<?= $level ?>__eLink" href="<?= $iMenu->getLink() ?>">
+                <span class="bMainMenuLevel-<?= $level ?>__eIcon"></span>
+                <span class="bMainMenuLevel-<?= $level ?>__eTitle"><?= $iMenu->getName() ?></span>
+            </a>
         <? elseif ($iMenu->getName()): ?>
-            <span class="bMainMenuLevel-<?= $level ?>__eTitle"><?= $iMenu->getName() ?></span>
+                <span class="bMainMenuLevel-<?= $level ?>__eIcon"></span>
+                <span class="bMainMenuLevel-<?= $level ?>__eTitle"><?= $iMenu->getName() ?></span>
         <? endif ?>
 
         <? if ((bool)$iMenu->getChild()): ?>
