@@ -50,27 +50,6 @@ class DefaultLayout extends Layout {
     }
 
     public function slotHeader() {
-        /** @var $categories \Model\Product\Category\Entity[] */
-        $categories = $this->getParam('rootCategories');
-
-        if (null === $categories) {
-            try {
-                $categories = \RepositoryManager::productCategory()->getRootCollection();
-            } catch (\Exception $e) {
-                \App::exception()->add($e);
-                \App::logger()->error($e);
-
-                $categories = [];
-            }
-        }
-
-        foreach($categories as $i => $category){
-            if(!$category->getIsInMenu()){
-                unset($categories[$i]);
-            }
-        }
-        $this->setParam('rootCategories', $categories);
-
         return $this->render('_header', $this->params);
     }
 

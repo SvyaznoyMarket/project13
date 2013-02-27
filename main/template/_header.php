@@ -2,7 +2,6 @@
 /**
  * @var $page           \View\DefaultLayout
  * @var $user           \Session\User
- * @var $rootCategories \Model\Product\Category\Entity[]
  */
 ?>
 

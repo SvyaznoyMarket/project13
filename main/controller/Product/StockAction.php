@@ -53,13 +53,7 @@ class StockAction {
 
         // подготовка 2-го пакета запросов
 
-        // запрашиваем рутовые категории
-        $rootCategories = [];
-        \RepositoryManager::productCategory()->prepareRootCollection($region, function($data) use(&$rootCategories) {
-            foreach ($data as $item) {
-                $rootCategories[] = new \Model\Product\Category\Entity($item);
-            }
-        });
+        // TODO: запрашиваем меню
 
         // запрашиваем товар по токену
         /** @var $product \Model\Product\Entity */
@@ -80,7 +74,6 @@ class StockAction {
 
         $page = new \View\Product\StockPage();
         $page->setParam('regionsToSelect', $regionsToSelect);
-        $page->setParam('rootCategories', $rootCategories);
         $page->setParam('product', $product);
 
         return new \Http\Response($page->show());
