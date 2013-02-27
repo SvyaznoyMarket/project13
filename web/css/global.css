@@ -2862,6 +2862,11 @@
     margin: 0 10px;
     width: 1px;
   }
+  .bMainMenuLevel-1__eItem.mMore a {
+    color: #ffffff;
+    font-family: 'Enter';
+    text-transform: uppercase;
+  }
   .bMainMenuLevel-1__eItem:hover .bMainMenuLevel-2 {
     display: block;
   }
@@ -2900,7 +2905,7 @@
     border-radius: 5px;
     display: none;
     left: 0;
-    top: 154px;
+    top: 152px;
     padding: 30px 0;
     position: absolute;
     width: 916px;
@@ -2924,6 +2929,9 @@
   }
   .bMainMenuLevel-2__eTitle {
     font-size: 16px;
+  }
+  .mMore .bMainMenuLevel-2 {
+    background: #000000;
   }
   .bMainMenuLevel-3 {
     float: left;

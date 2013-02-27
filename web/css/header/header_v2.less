@@ -63,7 +63,12 @@
 		}
 
 		&.mMore{
-
+			a{
+				// временное решение
+				color: @white;
+				font-family: 'Enter';
+				text-transform: uppercase;
+			}
 		}
 
 		&:hover{
@@ -118,7 +123,7 @@
 	// transition: all 0.5s ease-in-out;
 	display: none;
 	left:0;
-	top: 154px;
+	top: 152px;
 	padding: 30px 0;
 	position: absolute;
 	width: 916px;
@@ -130,7 +135,6 @@
 	    border-right: 11px solid transparent;
 	    top: -15px;
 	    display: block;
-	    // left: 100px;
 	    position: absolute;
 	}
 
@@ -146,6 +150,10 @@
 	
 	&__eTitle{
 		font-size: 16px;
+	}
+
+	.mMore &{
+		background: @black;
 	}
 }
 
