@@ -12,6 +12,7 @@ $count = count($menu);
 ?>
 
 <ul class="bMainMenuLevel-<?= $level ?>">
+    <li class="bCorner"></li>
 <? $i = 1; foreach ($menu as $iMenu): ?>
 <?
     $class = '';

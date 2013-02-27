@@ -46,6 +46,10 @@
 	float: left;
 	width: 810px;
 
+	.bCorner{
+		display: none;
+	}
+
 	&__eItem{
 		display: table-cell;
 		vertical-align: middle;
@@ -114,10 +118,21 @@
 	// transition: all 0.5s ease-in-out;
 	display: none;
 	left:0;
+	top: 154px;
 	padding: 30px 0;
 	position: absolute;
 	width: 916px;
 	z-index: 100;
+
+	.bCorner{
+		border-bottom: 10px solid @firmOrange;
+	    border-left: 11px solid transparent;
+	    border-right: 11px solid transparent;
+	    top: -15px;
+	    display: block;
+	    // left: 100px;
+	    position: absolute;
+	}
 
 	&__eLink{
 		display: block;
@@ -136,6 +151,10 @@
 
 .bMainMenuLevel-3{
 	float: left;
+
+	.bCorner{
+		display: none;
+	}
 
 	&__eItem{
 		

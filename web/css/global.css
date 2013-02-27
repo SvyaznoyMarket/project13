@@ -2848,6 +2848,9 @@
     float: left;
     width: 810px;
   }
+  .bMainMenuLevel-1 .bCorner {
+    display: none;
+  }
   .bMainMenuLevel-1__eItem {
     display: table-cell;
     vertical-align: middle;
@@ -2897,10 +2900,19 @@
     border-radius: 5px;
     display: none;
     left: 0;
+    top: 154px;
     padding: 30px 0;
     position: absolute;
     width: 916px;
     z-index: 100;
+  }
+  .bMainMenuLevel-2 .bCorner {
+    border-bottom: 10px solid #ffa901;
+    border-left: 11px solid transparent;
+    border-right: 11px solid transparent;
+    top: -15px;
+    display: block;
+    position: absolute;
   }
   .bMainMenuLevel-2__eLink {
     display: block;
@@ -2915,6 +2927,9 @@
   }
   .bMainMenuLevel-3 {
     float: left;
+  }
+  .bMainMenuLevel-3 .bCorner {
+    display: none;
   }
 }
 /*---END---СТИЛИ ХЕАДЕРА---*/
