@@ -14,8 +14,9 @@ class Client {
      */
     public function __construct(array $config, \Curl\Client $curl) {
         $this->config = array_merge([
-            'url'     => null,
-            'timeout' => null,
+            'url'            => null,
+            'timeout'        => null,
+            'throwException' => null,
         ], $config);
 
         $this->curl = $curl;
@@ -42,7 +43,9 @@ class Client {
             $spend = \Debug\Timer::stop('content');
             \App::logger()->info('End content request ' . $action . ' in ' . $spend);
         } catch (\Exception $e) {
-            //\App::exception()->remove($e); ТУТ НЕ НАДО УДАЛЯТЬ exception !!!
+            if (false === $this->config['throwException']) {
+                \App::exception()->remove($e);
+            }
             $spend = \Debug\Timer::stop('content');
             \App::logger()->info('Fail content request ' . $action . ' in ' . $spend . ' with ' . $e);
         }
