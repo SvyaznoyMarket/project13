@@ -31,7 +31,7 @@
 <!-- /Topbar -->
 
 <!-- Header -->
-<div id="header" class="topmenu newYearTheme">
+<div id="header" class="clearfix">
     <a id="topLogo" href="/">Enter Связной</a>
     <?= $page->slotRootCategory() ?>
 </div>

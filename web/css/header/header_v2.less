@@ -1,0 +1,85 @@
+.topbar {
+  font-size: 14px;
+  font-family:Tahoma, sans-serif;
+  height: 25px;
+  padding-top: 7px;
+  .bRegion, .usermenu {
+    float:left;
+    a {
+      text-decoration: underline;
+    }
+     b {
+      padding: 0px 10px;
+    }
+  }
+  .usermenu {
+    float: right;
+  }
+  .hBasket {
+    background: url("@{base-url}/header/img/h_basket.png") no-repeat;
+    padding: 9px 0px 3px 30px;
+  }
+}
+
+#header{
+	background: @black;
+	.rounded(5px);
+	display: block;
+	height: 110px;
+	margin: 10px 0px 20px;
+	width: 100%;
+}
+
+#topLogo{
+	background: url('@{base-url}/header/img/headerLogo.gif') no-repeat center center;
+	display: block;
+	float: left;
+	height: 70px;
+	padding: 20px 10px;
+	width: 90px;
+	text-indent: -10000px;
+}
+
+.bMainMenuLevel-1{
+	display: block;
+	position: relative;
+	float: left;
+	width: 810px;
+
+	&__eItem{
+		float: left;
+		height: 110px;
+	}
+
+	&__eTitle{
+		color: @white;
+	}
+
+	&__eSeparator{
+
+	}
+}
+
+.bMainMenuLevel-2{
+	display: none;
+
+	&__eItem{
+
+	}
+	
+	&__eTitle{
+
+	}
+}
+
+.bMainMenuLevel-3{
+
+	&__eItem{
+
+	}
+	
+	&__eTitle{
+
+	}
+
+}
