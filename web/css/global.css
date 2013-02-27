@@ -2851,9 +2851,18 @@
   .bMainMenuLevel-1__eItem {
     float: left;
     height: 110px;
+    margin: 0 5px 0 0;
+    width: 60px;
+  }
+  .bMainMenuLevel-1__eItem.bMainMenuLevel-1__eSeparator {
+    width: 5px;
   }
   .bMainMenuLevel-1__eTitle {
     color: #ffffff;
+    font-family: 'Enter';
+    font-size: 11px;
+    font-weight: 100;
+    text-transform: uppercase;
   }
   .bMainMenuLevel-2 {
     display: none;
