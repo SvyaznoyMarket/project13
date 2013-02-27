@@ -41,22 +41,20 @@
 }
 
 .bMainMenuLevel-1{
-	display: block;
+	display: table;
 	position: relative;
 	float: left;
 	width: 810px;
 
 	&__eItem{
-		float: left;
-		margin-left: 19px;
-		margin-top: 15px;
-		margin-bottom: 15px;
+		display: table-cell;
+		vertical-align: middle;
 
 		&.bMainMenuLevel-1__eSeparator{
 			background: url('@{base-url}/header/img/headerSeparator.gif') no-repeat center center;
+			display: block;
 			height: 110px;
-			margin-top: 0;
-			margin-bottom: 0;
+			margin: 0 10px;
 			width: 1px;
 		}
 
@@ -66,9 +64,16 @@
 	}
 
 	&__eLink{
+		display: block;
+		height: 80px;
 		text-decoration: none;
+
 		&:hover{
-			text-decoration: none;
+			.bMainMenuLevel-1__eIcon,
+			.bMainMenuLevel-1__eTitle{
+				color: @firmOrange;
+				text-decoration: none;
+			}
 		}
 	}
 

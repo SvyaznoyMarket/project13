@@ -31,8 +31,10 @@ $count = count($menu);
                 <span class="bMainMenuLevel-<?= $level ?>__eTitle"><?= $iMenu->getName() ?></span>
             </a>
         <? elseif ($iMenu->getName()): ?>
-                <span class="bMainMenuLevel-<?= $level ?>__eIcon"></span>
-                <span class="bMainMenuLevel-<?= $level ?>__eTitle"><?= $iMenu->getName() ?></span>
+                <p class="bMainMenuLevel-<?= $level ?>__eLink">
+                    <span class="bMainMenuLevel-<?= $level ?>__eIcon"></span>
+                    <span class="bMainMenuLevel-<?= $level ?>__eTitle"><?= $iMenu->getName() ?></span>
+                </p>
         <? endif ?>
 
         <? if ((bool)$iMenu->getChild()): ?>

@@ -56,7 +56,48 @@
         },
 
         {
-            "name": "Акция",
+            "name": "Сад<br/>и огород",
+            "action": "link",
+            "item": ["http://www.enter.ru"],
+            "image": "promo-1.png",
+            "child": [
+                {
+                    "name": "Зимние виды спорта",
+                    "action": "category",
+                    "item": [710],
+                    "child": [
+                        {
+                            "name": "Беговые лыжи",
+                            "action": "category",
+                            "item": [1273]
+                        },
+                        {
+                            "name": "Горные лыжи",
+                            "action": "category",
+                            "item": [1274]
+                        },
+                        {
+                            "name": "Сноуборды",
+                            "action": "category",
+                            "item": [1275]
+                        }
+                    ]
+                },
+                {
+                    "name": "Специальное предложение 1",
+                    "action": "link",
+                    "item": ["http://www.enter.ru/cardforyou"]
+                },
+                {
+                    "name": "Специальное предложение 2",
+                    "image": "/css/header/img/headerSprite.png",
+                    "item": ["http://www.enter.ru/cardforyou"]
+                }
+            ]
+        },
+
+        {
+            "name": "Спорт<br/>и отдых",
             "action": "link",
             "item": ["http://www.enter.ru"],
             "image": "promo-1.png",

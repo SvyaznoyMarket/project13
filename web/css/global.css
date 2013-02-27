@@ -2843,28 +2843,30 @@
     text-indent: -10000px;
   }
   .bMainMenuLevel-1 {
-    display: block;
+    display: table;
     position: relative;
     float: left;
     width: 810px;
   }
   .bMainMenuLevel-1__eItem {
-    float: left;
-    margin-left: 19px;
-    margin-top: 15px;
-    margin-bottom: 15px;
+    display: table-cell;
+    vertical-align: middle;
   }
   .bMainMenuLevel-1__eItem.bMainMenuLevel-1__eSeparator {
     background: url('/css/header/img/headerSeparator.gif') no-repeat center center;
+    display: block;
     height: 110px;
-    margin-top: 0;
-    margin-bottom: 0;
+    margin: 0 10px;
     width: 1px;
   }
   .bMainMenuLevel-1__eLink {
+    display: block;
+    height: 80px;
     text-decoration: none;
   }
-  .bMainMenuLevel-1__eLink:hover {
+  .bMainMenuLevel-1__eLink:hover .bMainMenuLevel-1__eIcon,
+  .bMainMenuLevel-1__eLink:hover .bMainMenuLevel-1__eTitle {
+    color: #ffa901;
     text-decoration: none;
   }
   .bMainMenuLevel-1__eIcon {
