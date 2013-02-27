@@ -7,7 +7,7 @@
  * @var $shopsById    \Model\Shop\Entity[]
  */
 ?>
-
+<? if (\App::config()->analytics['enabled']): ?>
 <?php foreach ($orders as $order): ?>
     <div id="adblenderCost" data-vars="<?= $order->getSum() ?>" class="jsanalytics"></div>
 <?php endforeach ?>
@@ -111,3 +111,4 @@
 <?php endforeach ?>
 
     <div id="myThingsTracker" data-value="<?= $page->json($myThingsData) ?>" class="jsanalytics"></div>
+<? endif ?>

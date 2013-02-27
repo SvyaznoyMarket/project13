@@ -31,6 +31,7 @@
 
     <script type="text/javascript">
         function runAnalitics() {
+            <? if (\App::config()->googleAnalytics['enabled']): ?>
             if (typeof(_gaq) !== 'undefined') {
                 _gaq.push(['_addTrans',
                     '<?= $order->getNumber() . '_F' ?>', // Номер заказа
@@ -64,7 +65,9 @@
 
                 _gaq.push(['_trackTrans']);
             }
+            <? endif ?>
 
+            <? if (\App::config()->yandexMetrika['enabled']): ?>
             var yaParams = {
                 order_id:'<?= $order->getNumber() ?>',
                 order_price: <?= str_replace(',', '.', $order->getSum()) ?>,
@@ -82,12 +85,15 @@
                 ]
             };
             if (typeof(yaCounter10503055) !== 'undefined')  yaCounter10503055.reachGoal('QORDER', yaParams);
+            <? endif ?>
 
+            <? if (\App::config()->analytics['enabled']): ?>
             if (typeof(window.adBelnder) != 'undefined') window.adBelnder.addOrder(<?= str_replace(',', '.', $order->getSum()) ?>);
 
             if (typeof(MyThings) != "undefined" && typeof($('#myThingsOrderData').data('value')) == "object") {
                 MyThings.Track($('#myThingsOrderData').data('value'))
             }
+            <? endif ?>
         }
     </script>
 

@@ -27,7 +27,9 @@
 <?= $page->slotBanner() ?>
 
 <div class="allpage">
+    <? if (\App::config()->adFox['enabled']): ?>
     <div class="adfoxWrapper" id="adfox980"></div>
+    <? endif ?>
 
     <?= $page->slotHeader() ?>
     <div class="bPromoCategoryWrap clearfix">
