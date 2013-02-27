@@ -2889,7 +2889,7 @@
   }
   .bMainMenuLevel-2 {
     background: #ffffff;
-    border-width: 4px 2px 2px;
+    border-width: 5px 2px 2px;
     border-color: #ffa901;
     border-style: solid;
     -webkit-border-radius: 5px;
@@ -2897,10 +2897,18 @@
     border-radius: 5px;
     display: none;
     left: 0;
-    padding: 30px 15px;
+    padding: 30px 0;
     position: absolute;
-    width: 886px;
+    width: 916px;
     z-index: 100;
+  }
+  .bMainMenuLevel-2__eLink {
+    display: block;
+  }
+  .bMainMenuLevel-2__eItem {
+    float: left;
+    margin: 0 14px;
+    width: 200px;
   }
   .bMainMenuLevel-2__eTitle {
     font-size: 16px;

@@ -65,6 +65,9 @@
 		&:hover{
 			.bMainMenuLevel-2{
 				display: block;
+				// opacity: 1;
+				// transform: translate(0px, 0px);
+				// transition: all 0.5s ease-in-out;
 			}
 		}
 	}
@@ -102,19 +105,28 @@
 
 .bMainMenuLevel-2{
 	background: @white;
-	border-width: 4px 2px 2px;
+	border-width: 5px 2px 2px;
 	border-color: @firmOrange;
 	border-style: solid;
 	.rounded(5px);
+	// transform: translate(0px, -1500px);
+	// opacity: 0;
+	// transition: all 0.5s ease-in-out;
 	display: none;
 	left:0;
-	padding: 30px 15px;
+	padding: 30px 0;
 	position: absolute;
-	width: 886px;
+	width: 916px;
 	z-index: 100;
 
+	&__eLink{
+		display: block;
+	}
+
 	&__eItem{
-		
+		float: left;
+		margin: 0 14px;
+		width: 200px;
 	}
 	
 	&__eTitle{
