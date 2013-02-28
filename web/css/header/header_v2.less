@@ -141,14 +141,9 @@
 	margin-left: -75px;
 	// left:0;
 	top: 146px;
-	padding: 20px 0;
+	padding: 10px 0;
 	position: absolute;
-	width: 200px;
 	z-index: 100;
-
-	&:hover{
-
-	}
 
 	.bCorner{
 		display: none;
@@ -160,19 +155,32 @@
 
 	&__eLink{
 		display: block;
+		position: relative;
+		z-index: 3;
 	}
 
 	&__eItem{
 		// display: inline-table;
-		margin: 0 14px;
+		display: block;
+		padding: 5px 14px;
 		// width: 195px;
+		&:hover{
+			.bMainMenuLevel-3{
+				display: block;
+				opacity: 1;
+				left: -2px;
+				transition: all 0s ease;
+				transition-delay: 0.5s;
+			}
+		}
 	}
 	
 	&__eTitle{
 		font-size: 14px;
 		line-height: 1.2em;
-		margin: 10px 0;
+		// margin: 10px 0;
 		display: block;
+		width: 200px;
 	}
 
 	.mMore &{
@@ -182,19 +190,38 @@
 }
 
 .bMainMenuLevel-3{
-	// float: left;
-	display: none;
+	background: @white;
+	border-color: @firmOrange;
+	border-style: solid;
+	border-width: 5px 2px 2px;
+	.rounded(5px);
+	display: block;
+	float: left;
+	left: -200px;
+	min-height: 100%;
+	padding-left: 210px;
+	position: absolute;
+	top: -5px;
+	width: 190px;
+
+	opacity: 0;
+	transition: all 0s ease;
+	transition-delay: 0.5s;
 
 	.bCorner{
 		display: none;
 	}
 
 	&__eItem{
-		
+		&:first-child{
+			margin-top: 15px;
+		}
 	}
 	
 	&__eTitle{
-
+		line-height: 1.2em;
+		margin-bottom: 5px;
+		display: block;
 	}
 
 }
