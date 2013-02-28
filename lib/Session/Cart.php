@@ -16,6 +16,8 @@ class Cart {
     private $warranties = null;
     /** @var \Model\Cart\Certificate\Entity[] */
     private $certificates = null;
+    /** @var \Model\Cart\Action\Entity[] */
+    private $actions = null;
     /** @var int */
     private $sum = null;
     /** @var int */
@@ -479,6 +481,17 @@ class Cart {
         return $this->certificates ?: [];
     }
 
+    /**
+     * @return \Model\Cart\Action\Entity[]
+     */
+    public function getActions() {
+        if (null === $this->actions) {
+            $this->fill();
+        }
+
+        return $this->actions ?: [];
+    }
+
     public function fill() {
         // получаем список цен
         $default = [
@@ -532,6 +545,12 @@ class Cart {
 
         $this->sum = array_key_exists('sum', $response) ? $response['sum'] : 0;
         $this->originalSum = array_key_exists('original_sum', $response) ? $response['original_sum'] : 0;
+
+        if (array_key_exists('action_list', $response)) {
+            foreach ($response['action_list'] as $actionData) {
+                $this->actions[$actionData['id']] = new \Model\Cart\Action\Entity($actionData);
+            }
+        }
 
         $this->products = [];
         if (array_key_exists('product_list', $response)) {

@@ -113,14 +113,14 @@ class Action {
                             continue;
                         }
 
-                        $errorItem['product'] = [];
-                        $errorItem['product']['id'] = $product->getId();
-                        $errorItem['product']['token'] = $product->getToken();
-                        $errorItem['product']['name'] = $product->getName();
-                        $errorItem['product']['image'] = $product->getImageUrl(0);
-
-                        $errorItem['product']['quantity'] = $cartProduct->getQuantity();
-                        $errorItem['product']['price'] = $product->getPrice();
+                        $errorItem['product'] = [
+                            'id'       => $product->getId(),
+                            'token'    => $product->getToken(),
+                            'name'     => $product->getName(),
+                            'image'    => $product->getImageUrl(0),
+                            'quantity' => $cartProduct->getQuantity(),
+                            'price'    => $product->getPrice(),
+                        ];
 
                         if (!empty($errorItem['quantity_available'])) {
                             $errorItem['product']['addUrl'] = \App::router()->generate('cart.product.add', array('productId' => $product->getId(), 'quantity' => $errorItem['quantity_available']));
@@ -709,6 +709,20 @@ class Action {
                         'id'       => $cartService->getId(),
                         'quantity' => $cartService->getQuantity(),
                     );
+                }
+
+                // скидки
+                $actionData = [];
+                foreach ($user->getCart()->getActions() as $action) {
+                    $actionData[$action->getId()] = [
+                        'id'            => $action->getId(),
+                        'product_list'  => $action->getProductIds(),
+                        'service_list'  => $action->getServiceIds(),
+                        'warranty_list' => $action->getWarrantyIds(),
+                    ];
+                }
+                if ((bool)$actionData) {
+                    $orderData['action'] = $actionData;
                 }
             }
 
