@@ -1023,11 +1023,11 @@ $(document).ready(function(){
 	/* Top Menu */
 
 	// header_v2
-	$('.bMainMenuLevel-1__eItem').bind('mouseenter', function(){
-		var menuLeft = $(this).offset().left
-		var cornerLeft = menuLeft - $('#header').offset().left + ($(this).find('.bMainMenuLevel-1__eTitle').width()/2) - 11
-		$(this).find('.bCorner').css({'left':cornerLeft})
-	})
+	// $('.bMainMenuLevel-1__eItem').bind('mouseenter', function(){
+	// 	var menuLeft = $(this).offset().left
+	// 	var cornerLeft = menuLeft - $('#header').offset().left + ($(this).find('.bMainMenuLevel-1__eTitle').width()/2) - 11
+	// 	$(this).find('.bCorner').css({'left':cornerLeft})
+	// })
 
 	// header_v1
 	// if( $('.topmenu').length && !$('body#mainPage').length) {

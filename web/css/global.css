@@ -2904,37 +2904,38 @@
     -moz-border-radius: 5px;
     border-radius: 5px;
     display: none;
-    left: 0;
     top: 152px;
-    padding: 30px 0;
+    padding: 20px 0;
     position: absolute;
-    width: 916px;
     z-index: 100;
   }
   .bMainMenuLevel-2 .bCorner {
     border-bottom: 10px solid #ffa901;
     border-left: 11px solid transparent;
     border-right: 11px solid transparent;
-    top: -15px;
+    top: -10px;
+    left: 10px;
     display: block;
     position: absolute;
+  }
+  .bMainMenuLevel-2__eCategoryImage {
+    display: table-cell;
   }
   .bMainMenuLevel-2__eLink {
     display: block;
   }
   .bMainMenuLevel-2__eItem {
-    float: left;
     margin: 0 14px;
-    width: 200px;
   }
   .bMainMenuLevel-2__eTitle {
-    font-size: 16px;
+    font-size: 14px;
+    line-height: 1.7em;
   }
   .mMore .bMainMenuLevel-2 {
     background: #000000;
   }
   .bMainMenuLevel-3 {
-    float: left;
+    display: none;
   }
   .bMainMenuLevel-3 .bCorner {
     display: none;
