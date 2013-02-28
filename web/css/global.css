@@ -2848,9 +2848,6 @@
     float: left;
     width: 810px;
   }
-  .bMainMenuLevel-1 .bCorner {
-    display: none;
-  }
   .bMainMenuLevel-1__eItem {
     display: table-cell;
     vertical-align: middle;
@@ -2870,17 +2867,31 @@
   .bMainMenuLevel-1__eItem:hover .bMainMenuLevel-2 {
     display: block;
   }
+  .bMainMenuLevel-1__eItem:hover .bMainMenuLevel-1__eIcon,
+  .bMainMenuLevel-1__eItem:hover .bMainMenuLevel-1__eTitle {
+    color: #ffa901;
+    text-decoration: none;
+  }
+  .bMainMenuLevel-1__eItem:hover .bCorner {
+    display: block;
+  }
   .bMainMenuLevel-1__eLink {
     display: block;
     height: 80px;
+    position: relative;
   }
   .bMainMenuLevel-1__eLink:hover {
     text-decoration: none;
   }
-  .bMainMenuLevel-1__eLink:hover .bMainMenuLevel-1__eIcon,
-  .bMainMenuLevel-1__eLink:hover .bMainMenuLevel-1__eTitle {
-    color: #ffa901;
-    text-decoration: none;
+  .bMainMenuLevel-1__eLink .bCorner {
+    border-bottom: 10px solid #ffa901;
+    border-left: 11px solid transparent;
+    border-right: 11px solid transparent;
+    bottom: -12px;
+    display: none;
+    left: 50%;
+    margin-left: -17px;
+    position: absolute;
   }
   .bMainMenuLevel-1__eIcon {
     display: block;
@@ -2904,19 +2915,15 @@
     -moz-border-radius: 5px;
     border-radius: 5px;
     display: none;
-    top: 152px;
+    margin-left: -75px;
+    top: 146px;
     padding: 20px 0;
     position: absolute;
+    width: 200px;
     z-index: 100;
   }
   .bMainMenuLevel-2 .bCorner {
-    border-bottom: 10px solid #ffa901;
-    border-left: 11px solid transparent;
-    border-right: 11px solid transparent;
-    top: -10px;
-    left: 10px;
-    display: block;
-    position: absolute;
+    display: none;
   }
   .bMainMenuLevel-2__eCategoryImage {
     display: table-cell;
@@ -2929,10 +2936,13 @@
   }
   .bMainMenuLevel-2__eTitle {
     font-size: 14px;
-    line-height: 1.7em;
+    line-height: 1.2em;
+    margin: 10px 0;
+    display: block;
   }
   .mMore .bMainMenuLevel-2 {
     background: #000000;
+    right: 0;
   }
   .bMainMenuLevel-3 {
     display: none;

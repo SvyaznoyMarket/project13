@@ -12,7 +12,6 @@ $count = count($menu);
 ?>
 
 <ul class="bMainMenuLevel-<?= $level ?>">
-    <li class="bCorner"></li>
 <? $i = 1; foreach ($menu as $iMenu): ?>
 <?
     $class = '';
@@ -33,12 +32,14 @@ $count = count($menu);
             <a class="bMainMenuLevel-<?= $level ?>__eLink" href="<?= $iMenu->getLink() ?>">
                 <span class="bMainMenuLevel-<?= $level ?>__eIcon"></span>
                 <span class="bMainMenuLevel-<?= $level ?>__eTitle"><?= $iMenu->getName() ?></span>
+                <div class="bCorner"></div>
             </a>
         <? elseif ($iMenu->getName()): ?>
-            <p class="bMainMenuLevel-<?= $level ?>__eLink">
+            <div class="bMainMenuLevel-<?= $level ?>__eLink">
                 <span class="bMainMenuLevel-<?= $level ?>__eIcon"></span>
                 <span class="bMainMenuLevel-<?= $level ?>__eTitle"><?= $iMenu->getName() ?></span>
-            </p>
+                <div class="bCorner"></div>
+            </div>
         <? endif ?>
 
         <? if ((bool)$iMenu->getChild()): ?>
