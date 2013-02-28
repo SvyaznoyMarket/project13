@@ -38,7 +38,7 @@ class DefaultLayout extends Layout {
     }
 
     public function slotGoogleAnalytics() {
-        return (\App::config()->googleAnalytics['enabled']) ? $this->render('_googleAnalytics') : '';
+        return $this->render('_googleAnalytics');
     }
 
     public function slotBodyDataAttribute() {

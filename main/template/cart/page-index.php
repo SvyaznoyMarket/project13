@@ -15,9 +15,11 @@ $cart = $user->getCart();
 $creditEnabled = ($cart->getTotalProductPrice() >= \App::config()->product['minCreditPrice']) && \App::config()->payment['creditEnabled'] && !$user->getRegion()->getHasTransportCompany();
 ?>
 
+<? if (\App::config()->adFox['enabled']): ?>
 <div style="float:left; width: 100%; padding-bottom: 20px">
     <div id="adfox920" class="adfoxWrapper"></div>
 </div>
+<? endif ?>
 
 <? require __DIR__ . '/_show.php' ?>
 
@@ -97,7 +99,7 @@ $creditEnabled = ($cart->getTotalProductPrice() >= \App::config()->product['minC
 </div>
 <div class="clear"></div>
 
-
+<? if (\App::config()->analytics['enabled']): ?>
 <!--  AdRiver code START. Type:counter(zeropixel) Site: sventer SZ: baskets PZ: 0 BN: 0 -->
 <script language="javascript" type="text/javascript"><!--
 var RndNum4NoCash = Math.round(Math.random() * 1000000000);
@@ -113,3 +115,4 @@ document.write('<img src="http://ad.adriver.ru/cgi-bin/rle.cgi?' + 'sid=179070&s
 <!--Трэкер "Корзина"-->
 <script>document.write('<img src="http://mixmarket.biz/tr.plx?e=3779415&r='+escape(document.referrer)+'&t='+(new Date()).getTime()+'" width="1" height="1"/>');</script>
 <!--Трэкер "Корзина"-->
+<? endif ?>

@@ -11,6 +11,9 @@
     <div class="bRegion">
         <a href="<?= $page->url('region.change', array('regionId' => $user->getRegion()->getId())) ?>" id="jsregion" data-url="<?= $page->url('region.init') ?>"><?= $user->getRegion()->getName() ?></a>
         <b class="headerContactPhone" >Контакт-cENTER <?= \App::config()->company['phone'] ?></b>
+        <? if (14974 == $user->getRegion()->getId() || 83 == $user->getRegion()->getParentId()): ?>
+        <b class="headerContactPhone" ><?= \App::config()->company['moscowPhone'] ?></b>
+        <? endif ?>
 
         <? if (\App::config()->onlineCall['enabled']): ?>
             <a class="bCall" onclick="typeof(_gaq)=='undefined'?'':_gaq.push(['_trackEvent', 'Zingaya', 'ButtonClick']);typeof(_gat)=='undefined'?'':_gat._getTrackerByName()._setAllowLinker(true); window.open(typeof(_gat)=='undefined'?this.href+'?referrer='+escape(window.location.href):_gat._getTrackerByName()._getLinkerUrl(this.href+'?referrer='+escape(window.location.href)), '_blank', 'width=236,height=220,resizable=no,toolbar=no,menubar=no,location=no,status=no'); return false" href="http://zingaya.com/widget/e990d486d664dfcff5f469b52f6bdb62">Позвонить онлайн</a>

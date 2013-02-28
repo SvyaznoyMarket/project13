@@ -811,7 +811,7 @@ class Action {
                 foreach (array(
                      'recipient_first_name',
                      'recipient_last_name',
-                     'recipient_phonenumbers',
+//                     'recipient_phonenumbers',
                      'address_street',
                      'address_number',
                      'address_building',
