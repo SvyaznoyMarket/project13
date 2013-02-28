@@ -26,6 +26,10 @@ $count = count($menu);
 ?>
 
     <li class="bMainMenuLevel-<?= $level ?>__eItem clearfix <? if ($class) echo ' ' . $class ?>">
+        <? if ((2 == $level) && $iMenu->getImage()): ?>
+            <img src="<?= $iMenu->getImage() ?>" alt="<?= $page->escape($iMenu->getName()) ?>" />
+        <? endif ?>
+
         <? if ($iMenu->getLink()): ?>
             <a class="bMainMenuLevel-<?= $level ?>__eLink" href="<?= $iMenu->getLink() ?>">
                 <span class="bMainMenuLevel-<?= $level ?>__eIcon"></span>
@@ -38,7 +42,7 @@ $count = count($menu);
                 </p>
         <? endif ?>
 
-        <? if ((bool)$iMenu->getChild() && ($level <= 3)): ?>
+        <? if ((bool)$iMenu->getChild()): ?>
             <?= $page->render('_mainMenu', ['menu' => $iMenu->getChild(), 'level' => $level + 1]) ?>
         <? endif ?>
     </li>

@@ -141,7 +141,7 @@ class DefaultLayout extends Layout {
         return '';
     }
 
-    public function slotRootCategory() {
+    public function slotMainMenu() {
         $repository = \RepositoryManager::menu();
 
         /** @var $menu \Model\Menu\Entity[] */
@@ -192,12 +192,31 @@ class DefaultLayout extends Layout {
                         continue;
                     }
 
-                    foreach ($category->getChild() as $categoryChild) {
-                        $child = new \Model\Menu\Entity();
-                        $child->setAction(\Model\Menu\Entity::ACTION_PRODUCT_CATALOG);
-                        $child->setName($categoryChild->getName());
-                        $child->setItem([$categoryChild->getId()]);
-                        $iMenu->addChild($child);
+                    if (2 == $category->getLevel()) {
+                        $iMenu->setImage($category->getImageUrl(0));
+                    }
+
+                    if ($category->getLevel() <= 2) {
+                        $i = 1;
+                        foreach ($category->getChild() as $childCategory) {
+                            if ((2 == $category->getLevel()) && ($i > 5)) {
+                                $child = new \Model\Menu\Entity();
+                                $child->setAction(\Model\Menu\Entity::ACTION_PRODUCT_CATEGORY);
+                                $child->setName('Все');
+                                $child->setItem([$category->getId()]);
+                                $iMenu->addChild($child);
+
+                                break;
+                            }
+
+                            $child = new \Model\Menu\Entity();
+                            $child->setAction(\Model\Menu\Entity::ACTION_PRODUCT_CATALOG);
+                            $child->setName($childCategory->getName());
+                            $child->setItem([$childCategory->getId()]);
+                            $iMenu->addChild($child);
+
+                            $i++;
+                        }
                     }
                 }
 

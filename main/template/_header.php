@@ -33,6 +33,6 @@
 <!-- Header -->
 <div id="header" class="clearfix">
     <a id="topLogo" href="/">Enter Связной</a>
-    <?= $page->slotRootCategory() ?>
+    <?= $page->slotMainMenu() ?>
 </div>
 <!-- /Header -->
