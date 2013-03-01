@@ -2831,6 +2831,15 @@
     background: url("/css/header/img/h_basket.png") no-repeat;
     padding: 9px 0px 3px 30px;
   }
+  .headerContactPhone {
+    font-weight: bold;
+  }
+  .headerContactPhone__eTitle {
+    margin: 0 5px 0 10px;
+  }
+  .headerContactPhone__ePhones {
+    margin: 0 10px 0 5px;
+  }
   #header {
     background: #000000;
     -webkit-border-radius: 5px;
