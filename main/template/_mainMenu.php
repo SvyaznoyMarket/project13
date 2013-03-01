@@ -1,12 +1,14 @@
 <?php
 /**
- * @var $page  \View\Layout
- * @var $menu  \Model\Menu\Entity[]
- * @var $level int
+ * @var $page   \View\Layout
+ * @var $menu   \Model\Menu\Entity[]
+ * @var $parent \Model\Menu\Entity
+ * @var $level  int
  */
 ?>
 
 <?
+if (!isset($parent)) $parent = null;
 $level = isset($level) ? $level : 1;
 $count = count($menu);
 ?>
@@ -25,9 +27,6 @@ $count = count($menu);
 ?>
 
     <li class="bMainMenuLevel-<?= $level ?>__eItem clearfix <? if ($class) echo ' ' . $class ?>">
-        <? if ((2 == $level) && $iMenu->getImage()): ?>
-            <!-- <img src="<?= $iMenu->getImage() ?>" alt="<?= $page->escape($iMenu->getName()) ?>" /> -->
-        <? endif ?>
         <? if ($iMenu->getLink()): ?>
             <a class="bMainMenuLevel-<?= $level ?>__eLink" href="<?= $iMenu->getLink() ?>">
                 <span class="bMainMenuLevel-<?= $level ?>__eIcon"></span>
@@ -42,9 +41,14 @@ $count = count($menu);
             </div>
         <? endif ?>
 
-        <? if ((bool)$iMenu->getChild()): ?>
-            <?= $page->render('_mainMenu', ['menu' => $iMenu->getChild(), 'level' => $level + 1]) ?>
+        <? if ($level <= 2): ?>
+            <?= $page->render('_mainMenu', ['menu' => $iMenu->getChild(), 'level' => $level + 1, 'parent' => $iMenu]) ?>
         <? endif ?>
     </li>
 <? $i++; endforeach ?>
+
+    <? if ((3 ==$level) && $parent instanceof \Model\Menu\Entity && $parent->getImage()): ?>
+        <img src="<?= $parent->getImage() ?>" alt="<?= $page->escape($parent->getName()) ?>" />
+    <? endif ?>
+
 </ul>
