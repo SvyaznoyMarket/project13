@@ -62,16 +62,8 @@
 			width: 1px;
 		}
 
-		&.mMore{
-			a{
-				// временное решение
-				color: @white;
-				font-family: 'Enter';
-				text-transform: uppercase;
-			}
-		}
-
 		&:hover{
+
 			.bMainMenuLevel-2{
 				display: block;
 				// opacity: 1;
@@ -87,6 +79,36 @@
 
 			.bCorner{
 				display: block;
+			}
+		}
+
+
+		// кнопка еще товары
+		&.mMore{
+			a{
+				// временное решение
+				color: @white;
+				font-family: 'Enter';
+				text-transform: uppercase;
+			}
+
+			.bMainMenuLevel-2{
+
+				&:hover{
+					width: 230px;
+				}
+
+				&__eTitle{
+					background: @black;
+					&:hover{
+						background: @black;
+						color: @firmOrange;
+					}
+				}
+			}
+
+			.bMainMenuLevel-3{
+				display: none;
 			}
 		}
 	}
