@@ -2923,7 +2923,18 @@
     top: 146px;
     padding: 10px 0;
     position: absolute;
+    width: 230px;
     z-index: 100;
+  }
+  .bMainMenuLevel-2:hover {
+    -webkit-transition: all 0.2s ease;
+    -moz-transition: all 0.2s ease;
+    transition: all 0.2s ease;
+    -webkit-transition-delay: 0.4s;
+    -o-transition-delay: 0.4s;
+    -moz-transition-delay: 0.4s;
+    transition-delay: 0.4s;
+    width: 400px;
   }
   .bMainMenuLevel-2 .bCorner {
     display: none;
@@ -2938,38 +2949,53 @@
   }
   .bMainMenuLevel-2__eItem {
     display: block;
-    padding: 5px 14px;
   }
-  .bMainMenuLevel-2__eItem:hover {
+  .bMainMenuLevel-2__eItem:hover .bMainMenuLevel-2__eTitle {
     background: #e6e6e6;
+    -webkit-transition: all 0.2s ease;
+    -moz-transition: all 0.2s ease;
+    transition: all 0.2s ease;
+    -webkit-transition-delay: 0.4s;
+    -o-transition-delay: 0.4s;
+    -moz-transition-delay: 0.4s;
+    transition-delay: 0.4s;
   }
   .bMainMenuLevel-2__eItem:hover .bMainMenuLevel-3 {
-    display: block;
     left: -2px;
     -moz-opacity: 1;
     -khtml-opacity: 1;
     -webkit-opacity: 1;
     opacity: 1;
-    -webkit-transition: all 0s ease;
-    -moz-transition: all 0s ease;
-    transition: all 0s ease;
-    -webkit-transition-delay: 0.2s;
-    -o-transition-delay: 0.2s;
-    -moz-transition-delay: 0.2s;
-    transition-delay: 0.2s;
+    -webkit-transition: opacity 0.2s ease;
+    -moz-transition: opacity 0.2s ease;
+    transition: opacity 0.2s ease;
+    -webkit-transition-delay: 0.4s;
+    -o-transition-delay: 0.4s;
+    -moz-transition-delay: 0.4s;
+    transition-delay: 0.4s;
   }
   .bMainMenuLevel-2__eTitle {
+    background: #ffffff;
     font-size: 14px;
     line-height: 1.2em;
+    padding: 5px 14px;
     display: block;
+    float: left;
     width: 200px;
+    -webkit-transition: all 0.2s ease;
+    -moz-transition: all 0.2s ease;
+    transition: all 0.2s ease;
+    -webkit-transition-delay: 0.5s;
+    -o-transition-delay: 0.5s;
+    -moz-transition-delay: 0.5s;
+    transition-delay: 0.5s;
   }
   .mMore .bMainMenuLevel-2 {
     background: #000000;
     right: 0;
   }
   .bMainMenuLevel-3 {
-    background: #ffffff;
+    background: #ffffff url('/css/header/img/border.gif') repeat-y 230px 0;
     border-color: #ffa901;
     border-style: solid;
     border-width: 5px 2px 2px;
@@ -2977,13 +3003,13 @@
     -moz-border-radius: 5px;
     border-radius: 5px;
     display: block;
-    float: left;
-    left: -225px;
+    float: right: ;
+    left: -300px;
     min-height: 100%;
-    padding-left: 210px;
+    padding-left: 240px;
     position: absolute;
     top: -5px;
-    width: 190px;
+    width: 160px;
     -moz-opacity: 0;
     -khtml-opacity: 0;
     -webkit-opacity: 0;

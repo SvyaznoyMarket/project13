@@ -143,7 +143,14 @@
 	top: 146px;
 	padding: 10px 0;
 	position: absolute;
+	width: 230px;
 	z-index: 100;
+
+	&:hover{
+		.transition(all 0.2s ease);
+		.transition-delay(0.4s);
+		width: 400px;
+	}
 
 	.bCorner{
 		display: none;
@@ -162,27 +169,37 @@
 	&__eItem{
 		// display: inline-table;
 		display: block;
-		padding: 5px 14px;
 		// width: 195px;
 		&:hover{
-			background: @typLightGray;
+
+			.bMainMenuLevel-2__eTitle{
+				background: @typLightGray;
+				.transition(all 0.2s ease);
+				.transition-delay(0.4s);
+			}
 
 			.bMainMenuLevel-3{
-				display: block;
+				// display: block;
 				left: -2px;
 				.opacity(1);
-				.transition(0s, ease);
-				.transition-delay(0.2s);
+				.transition(opacity 0.2s ease);
+				.transition-delay(0.4s);
 			}
 		}
 	}
 	
 	&__eTitle{
+		background: @white;
 		font-size: 14px;
 		line-height: 1.2em;
+		padding: 5px 14px;
 		// margin: 10px 0;
 		display: block;
+		float: left;
 		width: 200px;
+
+		.transition(all 0.2s ease);
+		.transition-delay(0.5s);
 	}
 
 	.mMore &{
@@ -192,22 +209,22 @@
 }
 
 .bMainMenuLevel-3{
-	background: @white;
+	background: @white url('@{base-url}/header/img/border.gif') repeat-y 230px 0;
 	border-color: @firmOrange;
 	border-style: solid;
 	border-width: 5px 2px 2px;
 	.rounded(5px);
 	display: block;
-	float: left;
-	left: -225px;
+	float: right: ;
+	left: -300px;
 	min-height: 100%;
-	padding-left: 210px;
+	padding-left: 240px;
 	position: absolute;
 	top: -5px;
-	width: 190px;
+	width: 160px;
 
 	.opacity(0);
-	.transition(0s, ease);
+	.transition(all 0s ease);
 	.transition-delay(0.5s);
 
 	.bCorner{
