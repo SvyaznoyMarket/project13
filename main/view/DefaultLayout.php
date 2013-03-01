@@ -151,8 +151,6 @@ class DefaultLayout extends Layout {
                 $menu[] = new \Model\Menu\Entity($item);
             }
         });
-        // TODO: вместо синхронного использовать вышеприведенный асинхронный запрос
-        $menu = $repository->getCollection();
 
         $categories = [];
         \RepositoryManager::productCategory()->prepareTreeCollection(\App::user()->getRegion(), 3, function($data) use (&$categories) {
