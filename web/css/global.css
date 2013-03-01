@@ -593,6 +593,8 @@
     -khtml-opacity: 0.5;
     -webkit-opacity: 0.5;
     opacity: 0.5;
+    -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=50);
+    filter: alpha(opacity=50);
     position: fixed;
     right: 0px;
     top: 0px;
@@ -683,6 +685,8 @@
     -khtml-opacity: 0;
     -webkit-opacity: 0;
     opacity: 0;
+    -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
+    filter: alpha(opacity=0);
     position: relative;
     z-index: 2;
   }
@@ -948,6 +952,8 @@
     -khtml-opacity: 0.5;
     -webkit-opacity: 0.5;
     opacity: 0.5;
+    -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=50);
+    filter: alpha(opacity=50);
     filter: progid:dximagetransform.microsoft.alpha(opacity=50);
     color: #a6a6a6;
     cursor: default;
@@ -1090,6 +1096,8 @@
     -khtml-opacity: 0;
     -webkit-opacity: 0;
     opacity: 0;
+    -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
+    filter: alpha(opacity=0);
     filter: progid:dximagetransform.microsoft.alpha(opacity=0);
     background-color: transparent;
     border: none;
@@ -2898,6 +2906,8 @@
     position: absolute;
   }
   .bMainMenuLevel-1__eIcon {
+    color: #ffffff;
+    font-size: 18px;
     display: block;
     height: 45px;
     line-height: 45px;
@@ -2926,15 +2936,14 @@
     width: 230px;
     z-index: 100;
   }
+  .bMainMenuLevel-2__eIcon {
+    display: none;
+  }
   .bMainMenuLevel-2:hover {
-    -webkit-transition: all 0.2s ease;
-    -moz-transition: all 0.2s ease;
-    transition: all 0.2s ease;
-    -webkit-transition-delay: 0.4s;
-    -o-transition-delay: 0.4s;
-    -moz-transition-delay: 0.4s;
-    transition-delay: 0.4s;
-    width: 400px;
+    -webkit-transition: width 0.2s ease;
+    -moz-transition: width 0.2s ease;
+    transition: width 0.2s ease;
+    width: 410px;
   }
   .bMainMenuLevel-2 .bCorner {
     display: none;
@@ -2952,13 +2961,7 @@
   }
   .bMainMenuLevel-2__eItem:hover .bMainMenuLevel-2__eTitle {
     background: #e6e6e6;
-    -webkit-transition: all 0.2s ease;
-    -moz-transition: all 0.2s ease;
-    transition: all 0.2s ease;
-    -webkit-transition-delay: 0.4s;
-    -o-transition-delay: 0.4s;
-    -moz-transition-delay: 0.4s;
-    transition-delay: 0.4s;
+    text-decoration: underline;
   }
   .bMainMenuLevel-2__eItem:hover .bMainMenuLevel-3 {
     left: -2px;
@@ -2966,13 +2969,16 @@
     -khtml-opacity: 1;
     -webkit-opacity: 1;
     opacity: 1;
-    -webkit-transition: opacity 0.2s ease;
-    -moz-transition: opacity 0.2s ease;
-    transition: opacity 0.2s ease;
-    -webkit-transition-delay: 0.4s;
-    -o-transition-delay: 0.4s;
-    -moz-transition-delay: 0.4s;
-    transition-delay: 0.4s;
+    -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=100);
+    filter: alpha(opacity=100);
+  }
+  .bMainMenuLevel-2__eItem:hover .bMainMenuLevel-3__eImageItem {
+    -moz-opacity: 1;
+    -khtml-opacity: 1;
+    -webkit-opacity: 1;
+    opacity: 1;
+    -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=100);
+    filter: alpha(opacity=100);
   }
   .bMainMenuLevel-2__eTitle {
     background: #ffffff;
@@ -2982,13 +2988,6 @@
     display: block;
     float: left;
     width: 200px;
-    -webkit-transition: all 0.2s ease;
-    -moz-transition: all 0.2s ease;
-    transition: all 0.2s ease;
-    -webkit-transition-delay: 0.5s;
-    -o-transition-delay: 0.5s;
-    -moz-transition-delay: 0.5s;
-    transition-delay: 0.5s;
   }
   .mMore .bMainMenuLevel-2 {
     background: #000000;
@@ -3003,10 +3002,10 @@
     -moz-border-radius: 5px;
     border-radius: 5px;
     display: block;
-    float: right: ;
-    left: -300px;
+    left: -1300px;
     min-height: 100%;
     padding-left: 240px;
+    padding-right: 10px;
     position: absolute;
     top: -5px;
     width: 160px;
@@ -3014,19 +3013,29 @@
     -khtml-opacity: 0;
     -webkit-opacity: 0;
     opacity: 0;
-    -webkit-transition: all 0s ease;
-    -moz-transition: all 0s ease;
-    transition: all 0s ease;
-    -webkit-transition-delay: 0.5s;
-    -o-transition-delay: 0.5s;
-    -moz-transition-delay: 0.5s;
-    transition-delay: 0.5s;
+    -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
+    filter: alpha(opacity=0);
+  }
+  .bMainMenuLevel-3__eIcon {
+    display: none;
   }
   .bMainMenuLevel-3 .bCorner {
     display: none;
   }
-  .bMainMenuLevel-3__eItem:first-child {
-    margin-top: 15px;
+  .bMainMenuLevel-3__eImageItem {
+    -moz-opacity: 0;
+    -khtml-opacity: 0;
+    -webkit-opacity: 0;
+    opacity: 0;
+    -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
+    filter: alpha(opacity=0);
+    text-align: center;
+    margin: 15px 10px;
+  }
+  .bMainMenuLevel-3__eImage {
+    height: 150px;
+    margin-left: -4px;
+    width: 150px;
   }
   .bMainMenuLevel-3__eTitle {
     line-height: 1.2em;
@@ -5597,6 +5606,8 @@
     -khtml-opacity: 0;
     -webkit-opacity: 0;
     opacity: 0;
+    -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
+    filter: alpha(opacity=0);
     position: absolute;
     z-index: -1;
   }
@@ -5928,6 +5939,8 @@
     -khtml-opacity: 0;
     -webkit-opacity: 0;
     opacity: 0;
+    -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
+    filter: alpha(opacity=0);
     position: absolute;
     z-index: -1;
   }
@@ -6095,6 +6108,8 @@
     -khtml-opacity: 0.8;
     -webkit-opacity: 0.8;
     opacity: 0.8;
+    -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=80);
+    filter: alpha(opacity=80);
     filter: alpha(opacity=80);
     position: absolute;
     left: 0;
@@ -6140,6 +6155,8 @@
     -khtml-opacity: 0.8;
     -webkit-opacity: 0.8;
     opacity: 0.8;
+    -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=80);
+    filter: alpha(opacity=80);
     filter: alpha(opacity=80);
     position: absolute;
     padding-left: 55px;
@@ -6156,6 +6173,8 @@
     -khtml-opacity: 1;
     -webkit-opacity: 1;
     opacity: 1;
+    -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=100);
+    filter: alpha(opacity=100);
     padding-left: 10px;
   }
   #order_address_building {
@@ -7247,6 +7266,8 @@
     -khtml-opacity: 0.5;
     -webkit-opacity: 0.5;
     opacity: 0.5;
+    -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=50);
+    filter: alpha(opacity=50);
     z-index: 1;
   }
   .bMobileCard.mDisable .bMobileCard__eLink {
@@ -8279,6 +8300,8 @@
     -khtml-opacity: 0.5;
     -webkit-opacity: 0.5;
     opacity: 0.5;
+    -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=50);
+    filter: alpha(opacity=50);
     position: absolute;
   }
   .banner3 {
