@@ -165,12 +165,14 @@
 		padding: 5px 14px;
 		// width: 195px;
 		&:hover{
+			background: @typLightGray;
+
 			.bMainMenuLevel-3{
 				display: block;
-				opacity: 1;
 				left: -2px;
-				transition: all 0s ease;
-				transition-delay: 0.5s;
+				.opacity(1);
+				.transition(0s, ease);
+				.transition-delay(0.2s);
 			}
 		}
 	}
@@ -197,16 +199,16 @@
 	.rounded(5px);
 	display: block;
 	float: left;
-	left: -200px;
+	left: -225px;
 	min-height: 100%;
 	padding-left: 210px;
 	position: absolute;
 	top: -5px;
 	width: 190px;
 
-	opacity: 0;
-	transition: all 0s ease;
-	transition-delay: 0.5s;
+	.opacity(0);
+	.transition(0s, ease);
+	.transition-delay(0.5s);
 
 	.bCorner{
 		display: none;

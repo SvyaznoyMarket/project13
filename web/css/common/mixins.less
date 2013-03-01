@@ -82,6 +82,12 @@
   -moz-transition: all @duration @ease;
   transition: all @duration @ease;
 }
+.transition-delay(@delayTime){
+  -webkit-transition-delay: @delayTime;
+  -o-transition-delay: @delayTime;
+  -moz-transition-delay: @delayTime;
+  transition-delay: @delayTime;
+}
 .inner-shadow(@horizontal:0, @vertical:1px, @blur:2px, @color) {
   -webkit-box-shadow: inset @horizontal @vertical @blur @color;
   -moz-box-shadow: inset @horizontal @vertical @blur @color;

@@ -2940,12 +2940,23 @@
     display: block;
     padding: 5px 14px;
   }
+  .bMainMenuLevel-2__eItem:hover {
+    background: #e6e6e6;
+  }
   .bMainMenuLevel-2__eItem:hover .bMainMenuLevel-3 {
     display: block;
-    opacity: 1;
     left: -2px;
+    -moz-opacity: 1;
+    -khtml-opacity: 1;
+    -webkit-opacity: 1;
+    opacity: 1;
+    -webkit-transition: all 0s ease;
+    -moz-transition: all 0s ease;
     transition: all 0s ease;
-    transition-delay: 0.5s;
+    -webkit-transition-delay: 0.2s;
+    -o-transition-delay: 0.2s;
+    -moz-transition-delay: 0.2s;
+    transition-delay: 0.2s;
   }
   .bMainMenuLevel-2__eTitle {
     font-size: 14px;
@@ -2967,14 +2978,22 @@
     border-radius: 5px;
     display: block;
     float: left;
-    left: -200px;
+    left: -225px;
     min-height: 100%;
     padding-left: 210px;
     position: absolute;
     top: -5px;
     width: 190px;
+    -moz-opacity: 0;
+    -khtml-opacity: 0;
+    -webkit-opacity: 0;
     opacity: 0;
+    -webkit-transition: all 0s ease;
+    -moz-transition: all 0s ease;
     transition: all 0s ease;
+    -webkit-transition-delay: 0.5s;
+    -o-transition-delay: 0.5s;
+    -moz-transition-delay: 0.5s;
     transition-delay: 0.5s;
   }
   .bMainMenuLevel-3 .bCorner {
