@@ -200,7 +200,7 @@ class DefaultLayout extends Layout {
                             if ((2 == $category->getLevel()) && ($i > 5)) {
                                 $child = new \Model\Menu\Entity();
                                 $child->setAction(\Model\Menu\Entity::ACTION_PRODUCT_CATEGORY);
-                                $child->setName('Все');
+                                $child->setName('Все разделы');
                                 $child->setItem([$category->getId()]);
                                 $iMenu->addChild($child);
 
