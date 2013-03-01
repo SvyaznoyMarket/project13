@@ -357,11 +357,15 @@ $(document).ready(function() {
 				$(this).val('В корзине').addClass('active')
 				var f1item = $(this).data()
 				$.getJSON( f1item.url, function(data) {
-					showOldPrice(data.data.old_price)
+					if (data.success){
+						f1item.f1price = data.data.sum
+						// console.log(f1item)
+						makeWide( bline, f1item)
+						popupIsOpened = false
+						f1popup.hide()
+					}
 				})
-				makeWide( bline, f1item )
-				popupIsOpened = false
-		   		f1popup.hide()
+				
 		   })
 			return false
 		})
@@ -432,7 +436,7 @@ $(document).ready(function() {
 	function makeWide( bline, f1item ) {
 		$('div.bBacketServ.mSmall.F1', bline).hide()
 		var bBig = $('div.bBacketServ.mBig.F1', bline)
-		bBig.show()		
+		bBig.show()
 		var f1lineshead = $('tr:first', bBig)
 		var f1linecart = tmpl('f1cartline', f1item)
 		f1linecart = f1linecart.replace(/F1ID/g, f1item.fid ).replace(/F1TOKEN/g, f1item.f1token ).replace(/PRID/g, bline.attr('ref') )
