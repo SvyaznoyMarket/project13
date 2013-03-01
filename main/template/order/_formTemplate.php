@@ -197,7 +197,7 @@
     </div>
     <!-- /ko -->
 
-    <?= $page->render('cart/form-certificate') ?>
+    <?= $page->render('cart/form-certificate', ['isForm' => false]) ?>
 
     <div style="margin-top: -10px;">*Дату доставки уточнит специалист Контакт-сENTER</div>
 
