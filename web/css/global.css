@@ -2881,6 +2881,9 @@
     margin: 0 10px;
     width: 1px;
   }
+  .bMainMenuLevel-1__eItem.bMainMenuLevel-1__eSeparator:hover .bMainMenuLevel-2 {
+    display: none;
+  }
   .bMainMenuLevel-1__eItem:hover .bMainMenuLevel-2 {
     display: block;
   }
