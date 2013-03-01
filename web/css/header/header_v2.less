@@ -1,7 +1,7 @@
 .topbar {
   font-size: 14px;
   font-family:Tahoma, sans-serif;
-  height: 25px;
+  // height: 25px;
   padding-top: 7px;
   .bRegion, .usermenu {
     float:left;
@@ -21,11 +21,24 @@
   }
 }
 
+.headerContactPhone{
+  font-weight: bold;
+
+  &__eTitle{
+    margin: 0 5px 0 15px;
+  }
+
+  &__ePhones{
+    margin: 0 15px 0 5px;
+  }
+}
+
 #header{
 	background: @black;
 	.rounded(5px);
 	display: block;
 	height: 110px;
+	position: relative;
 	margin: 10px 0px 20px;
 	width: 100%;
 }
@@ -48,6 +61,7 @@
 
 	&__eItem{
 		display: table-cell;
+		position: relative;
 		*display: block;
 		*float: left;
 		*margin: 12px 7px;
@@ -111,6 +125,20 @@
 				display: none;
 			}
 		}
+
+		// акционные кнопки
+		&.mAction{
+
+			.bMainMenuLevel-2{
+
+				&:hover{
+					width: 230px;
+				}
+			}
+			.bMainMenuLevel-3{
+				display: none;
+			}
+		}
 	}
 
 	&__eLink{
@@ -164,7 +192,7 @@
 	display: none;
 	margin-left: -75px;
 	// left:0;
-	top: 146px;
+	top: 107px;
 	padding: 10px 0;
 	position: absolute;
 	width: 230px;
@@ -262,6 +290,14 @@
 	.opacity(0);
 	// .transition(all 0s ease);
 	// .transition-delay(0.3s);
+
+	&__eHead{
+		color: @firmOrange;
+		font-family: 'Enter';
+		font-size: 18px;
+		margin:10px 0;
+		text-transform: uppercase;
+	}
 
 	&__eIcon{
 		display: none;

@@ -1,8 +1,8 @@
 /*---------ШРИФТЫ----------*/
 @font-face {
   font-family: 'Enter';
-  src: url('/css/common/fonts/enter_brash_01-webfont.eot');
-  src: url('/css/common/fonts/enter_brash_01-webfont.eot?#iefix') format('embedded-opentype'), url('/css/common/fonts/enter_brash_01-webfont.ttf') format('truetype');
+  src: url('/css/common/fonts/new_enter_brush.eot');
+  src: url('/css/common/fonts/new_enter_brush.eot?#iefix') format('embedded-opentype'), url('/css/common/fonts/new_enter_brush.ttf') format('truetype');
 }
 @font-face {
   font-family: 'Rouble';
@@ -2809,7 +2809,6 @@
   .topbar {
     font-size: 14px;
     font-family: Tahoma, sans-serif;
-    height: 25px;
     padding-top: 7px;
   }
   .topbar .bRegion,
@@ -2835,10 +2834,10 @@
     font-weight: bold;
   }
   .headerContactPhone__eTitle {
-    margin: 0 5px 0 10px;
+    margin: 0 5px 0 15px;
   }
   .headerContactPhone__ePhones {
-    margin: 0 10px 0 5px;
+    margin: 0 15px 0 5px;
   }
   #header {
     background: #000000;
@@ -2847,6 +2846,7 @@
     border-radius: 5px;
     display: block;
     height: 110px;
+    position: relative;
     margin: 10px 0px 20px;
     width: 100%;
   }
@@ -2867,6 +2867,7 @@
   }
   .bMainMenuLevel-1__eItem {
     display: table-cell;
+    position: relative;
     *display: block;
     *float: left;
     *margin: 12px 7px;
@@ -2907,6 +2908,12 @@
     color: #ffa901;
   }
   .bMainMenuLevel-1__eItem.mMore .bMainMenuLevel-3 {
+    display: none;
+  }
+  .bMainMenuLevel-1__eItem.mAction .bMainMenuLevel-2:hover {
+    width: 230px;
+  }
+  .bMainMenuLevel-1__eItem.mAction .bMainMenuLevel-3 {
     display: none;
   }
   .bMainMenuLevel-1__eLink {
@@ -2952,7 +2959,7 @@
     border-radius: 5px;
     display: none;
     margin-left: -75px;
-    top: 146px;
+    top: 107px;
     padding: 10px 0;
     position: absolute;
     width: 230px;
@@ -3038,6 +3045,13 @@
     opacity: 0;
     -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
     filter: alpha(opacity=0);
+  }
+  .bMainMenuLevel-3__eHead {
+    color: #ffa901;
+    font-family: 'Enter';
+    font-size: 18px;
+    margin: 10px 0;
+    text-transform: uppercase;
   }
   .bMainMenuLevel-3__eIcon {
     display: none;
@@ -8186,15 +8200,6 @@
   }
   #mainPage .allpage {
     background: #000000;
-  }
-  #mainPage #header {
-    background: none;
-    width: 930px;
-  }
-  #mainPage #topLogo {
-    background: url("/css/header/img/headerSprite.png") no-repeat -550px 0;
-    height: 93px;
-    width: 140px;
   }
   #mainPage .topbar #jsregion,
   #mainPage .topbar .usermenu a {
