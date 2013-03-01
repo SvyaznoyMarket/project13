@@ -28,7 +28,10 @@ class CertificateAction {
 
             $cart->clearCertificates();
 
-            $client->query('cart/check-card-f1', ['number' => $number]);
+            $data = $client->query('cart/check-card-f1', ['number' => $number]);
+            if (true !== $data) {
+                throw new \Exception\ActionException('Неправильный номер карты');
+            }
 
             $certificate = new \Model\Cart\Certificate\Entity();
             $certificate->setNumber($number);
