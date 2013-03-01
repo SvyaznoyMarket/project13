@@ -2961,6 +2961,7 @@
   }
   .bMainMenuLevel-2__eItem:hover .bMainMenuLevel-2__eTitle {
     background: #e6e6e6;
+    color: #000000;
     text-decoration: underline;
   }
   .bMainMenuLevel-2__eItem:hover .bMainMenuLevel-3 {
