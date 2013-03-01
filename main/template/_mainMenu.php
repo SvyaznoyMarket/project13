@@ -16,6 +16,7 @@ $count = count($menu);
 <ul class="bMainMenuLevel-<?= $level ?>">
 
     <? if ((3 ==$level) && $parent instanceof \Model\Menu\Entity && $parent->getImage()): ?>
+        <li class="bMainMenuLevel-<?= $level ?>__eHead"><?= $parent->getName() ?></li>
         <li class="bMainMenuLevel-<?= $level ?>__eImageItem"><img class="bMainMenuLevel-<?= $level ?>__eImage" width="150" src="<?= $parent->getImage() ?>" alt="<?= $page->escape($parent->getName()) ?>" /></li>
     <? endif ?>
 
@@ -27,6 +28,9 @@ $count = count($menu);
     }
     if ((1 == $level) && ($i == $count)) {
         $class .= ' mMore';
+    }
+    if ((1 == $level) && (\Model\Menu\Entity::ACTION_PRODUCT_CATALOG !== $iMenu->getAction()) && (false === strpos($class, 'mMore'))) {
+        $class .= ' mAction';
     }
     $class = trim($class);
 ?>

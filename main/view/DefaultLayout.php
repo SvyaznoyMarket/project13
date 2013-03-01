@@ -197,6 +197,7 @@ class DefaultLayout extends Layout {
                     if ($category->getLevel() <= 2) {
                         $i = 1;
                         foreach ($category->getChild() as $childCategory) {
+                            /*
                             if ((2 == $category->getLevel()) && ($i > 5)) {
                                 $child = new \Model\Menu\Entity();
                                 $child->setAction(\Model\Menu\Entity::ACTION_PRODUCT_CATEGORY);
@@ -206,6 +207,7 @@ class DefaultLayout extends Layout {
 
                                 break;
                             }
+                            */
 
                             $child = new \Model\Menu\Entity();
                             $child->setAction(\Model\Menu\Entity::ACTION_PRODUCT_CATALOG);
