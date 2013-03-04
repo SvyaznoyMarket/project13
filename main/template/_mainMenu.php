@@ -38,7 +38,7 @@ $count = count($menu);
     <li class="bMainMenuLevel-<?= $level ?>__eItem clearfix <? if ($class) echo ' ' . $class ?>">
         <? if ($iMenu->getLink()): ?>
             <a class="bMainMenuLevel-<?= $level ?>__eLink" href="<?= $iMenu->getLink() ?>">
-                <span class="bMainMenuLevel-<?= $level ?>__eIcon"></span>
+                <span class="bMainMenuLevel-<?= $level ?>__eIcon"><?= 0  === strpos($iMenu->getImage(), '&') ? $iMenu->getImage() : '' ?></span>
                 <span class="bMainMenuLevel-<?= $level ?>__eTitle"><?= $iMenu->getName() ?></span>
                 <div class="bCorner"></div>
             </a>
