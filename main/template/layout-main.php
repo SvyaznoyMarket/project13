@@ -16,7 +16,7 @@
 
 </head>
 
-<body id="mainPage" data-template="main" data-id="<?= \App::$id ?>">
+<body id="mainPage" data-template="main" data-id="<?= \App::$id ?>"<? if (\App::config()->debug): ?> data-debug=true<? endif ?>>
 
 <div class="bannersbox">
     <div class="bannersboxinner">

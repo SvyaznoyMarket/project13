@@ -16,7 +16,7 @@
     <?= $page->slotGoogleAnalytics() ?>
 </head>
 
-<body data-template="<?= $page->slotBodyDataAttribute() ?>" data-id="<?= \App::$id ?>">
+<body data-template="<?= $page->slotBodyDataAttribute() ?>" data-id="<?= \App::$id ?>"<? if (\App::config()->debug): ?> data-debug=true<? endif ?>>
 
 <div class="graying" style="opacity: 0.5; display: none;"></div>
 
