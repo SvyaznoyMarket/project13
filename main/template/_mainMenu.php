@@ -19,8 +19,7 @@ $count = count($menu);
 .bMainMenuLevel-1__eIcon.mId<?= $i ?> {
     <?= $iMenu->getCss() ?>
 }
-
-.bMainMenuLevel-1__eIcon.mId<?= $i ?>:hover {
+.bMainMenuLevel-1__eItem:hover .bMainMenuLevel-1__eIcon.mId<?= $i ?>{
     <?= $iMenu->getCssHover() ?>
 }
 
@@ -59,7 +58,7 @@ $count = count($menu);
             </a>
         <? elseif ($iMenu->getName()): ?>
             <div class="bMainMenuLevel-<?= $level ?>__eLink">
-                <span class="bMainMenuLevel-<?= $level ?>__eIcon"></span>
+                <span class="bMainMenuLevel-<?= $level ?>__eIcon<? if (1 == $level): ?> mId<?= $i ?><? endif ?>"></span>
                 <span class="bMainMenuLevel-<?= $level ?>__eTitle"><?= $iMenu->getName() ?></span>
                 <div class="bCorner"></div>
             </div>

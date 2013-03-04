@@ -1,10 +1,8 @@
 /*---------ШРИФТЫ----------*/
 @font-face {
   font-family: 'Enter';
-  src: url('/css/common/fonts/enter_brush_icon6-webfont.eot');
-  src: url('/css/common/fonts/enter_brush_icon6-webfont.eot?#iefix') format('embedded-opentype'), url('/css/common/fonts/enter_brush_icon6-webfont.woff') format('woff'), url('/css/common/fonts/enter_brush_icon6-webfont.ttf') format('truetype'), url('/css/common/fonts/enter_brush_icon6-webfont.svg#enter_brushregular') format('svg');
-  font-weight: normal;
-  font-style: normal;
+  src: url('/css/common/fonts/enter_brash_01-webfont.eot');
+  src: url('/css/common/fonts/enter_brash_01-webfont.eot?#iefix') format('embedded-opentype'), url('/css/common/fonts/enter_brash_01-webfont.ttf') format('truetype');
 }
 @font-face {
   font-family: 'Rouble';
@@ -2942,10 +2940,10 @@
   .bMainMenuLevel-1__eIcon {
     color: #ffffff;
     font-size: 40px;
-    font-family: 'Enter';
     display: block;
-    height: 45px;
-    line-height: 45px;
+    height: 44px;
+    line-height: 44px;
+    margin: 0 auto;
     text-align: center;
   }
   .bMainMenuLevel-1__eTitle {
