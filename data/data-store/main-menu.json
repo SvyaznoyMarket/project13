@@ -1,51 +1,61 @@
 {
     "item": [
         {
+            "image": "&#x00E3;",
             "name": "Мебель",
             "action": "catalog",
             "item": [80]
         },
         {
+            "image": "&#x00EA;",
             "name": "Сделай<br/>сам",
             "action": "catalog",
             "item": [224]
         },
         {
+            "image": "&#x00F3;",
             "name": "Товары<br/>для дома",
             "action": "catalog",
             "item": [443]
         },
         {
+            "image": "&#x00E9;",
             "name": "Детские<br/>товары",
             "action": "catalog",
             "item": [320]
         },
         {
+            "image": "&#x00E8;",
             "name": "Зоотовары",
             "action": "catalog",
             "item": [1438]
         },
         {
+            "image": "&#x00EB;",
             "name": "Электроника",
             "action": "catalog",
             "item": [788]
         },
         {
+            "image": "&#x00E5;",
             "name": "Бытовая<br/>техника",
             "action": "catalog",
             "item": [1]
         },
         {
+            "image": "&#x00E7;",
             "name": "Красота<br/>и здоровье",
             "action": "catalog",
             "item": [21]
         },
         {
+            "image": "&#x00C5;",
             "name": "Украшения<br/>и часы",
             "action": "catalog",
             "item": [923]
         },
         {
+            "image": "&#x00E1;",
             "name": "Парфюмерия<br/>и косметика",
             "action": "catalog",
             "item": [2545]
@@ -56,6 +66,7 @@
         },
 
         {
+            "image": "&#x00D1;",
             "name": "Сад<br/>и огород",
             "action": "link",
             "item": ["http://www.enter.ru"],
@@ -97,6 +108,7 @@
         },
 
         {
+            "image": "&#x00C7;",
             "name": "Спорт<br/>и отдых",
             "action": "link",
             "item": ["http://www.enter.ru"],
@@ -143,6 +155,7 @@
 
 
         {
+            "image": "&#x00F1;",
             "name": "Еще товары",
             "action": "",
             "child": [
