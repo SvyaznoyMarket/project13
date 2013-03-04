@@ -11,26 +11,9 @@
 	//	_gaq.push(['_trackEvent', 'jQuery Error', message, navigator.userAgent])
 	//}
 
-	function getCookie(name) {
-		var dc = document.cookie;
-		var prefix = name + "=";
-		var begin = dc.indexOf("; " + prefix);
-		if (begin == -1) {
-		    begin = dc.indexOf(prefix);
-		    if (begin != 0) return null;
-		} else
-		     begin += 2;
-		var end = document.cookie.indexOf(";", begin);
-		if (end == -1)
-		    end = dc.length;
-		return unescape(dc.substring(begin + prefix.length, end));
-	}
-
-	var debugCookie = getCookie('debug');
-
 	var debug = false;
-	if ( (debugCookie != undefined)&&(debugCookie != 0) ){
-		debug = true;
+	if ( document.body.getAttribute('data-debug') == 'true'){
+		debug = true
 		document.write('<link rel="stylesheet/less" type="text/css" href="/css/global.less" />')
 		document.write('<script src="/js/less-1.3.3.min.js" type="text\/javascript"><\/script>')
 	}
