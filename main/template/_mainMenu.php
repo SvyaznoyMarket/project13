@@ -13,6 +13,21 @@ $level = isset($level) ? $level : 1;
 $count = count($menu);
 ?>
 
+<? if (1 == $level): ?>
+<style type="text/css">
+<? $i = 1; foreach ($menu as $iMenu): ?>
+.bMainMenuLevel-1__eIcon.mId<?= $i ?> {
+    <?= $iMenu->getCss() ?>
+}
+
+.bMainMenuLevel-1__eIcon.mId<?= $i ?>:hover {
+    <?= $iMenu->getCssHover() ?>
+}
+
+<? $i++; endforeach ?>
+</style>
+<? endif ?>
+
 <ul class="bMainMenuLevel-<?= $level ?>">
 
     <? if ((3 ==$level) && $parent instanceof \Model\Menu\Entity && $parent->getImage()): ?>
@@ -38,7 +53,7 @@ $count = count($menu);
     <li class="bMainMenuLevel-<?= $level ?>__eItem clearfix <? if ($class) echo ' ' . $class ?>">
         <? if ($iMenu->getLink()): ?>
             <a class="bMainMenuLevel-<?= $level ?>__eLink" href="<?= $iMenu->getLink() ?>">
-                <span class="bMainMenuLevel-<?= $level ?>__eIcon"><?= 0  === strpos($iMenu->getImage(), '&') ? $iMenu->getImage() : '' ?></span>
+                <span class="bMainMenuLevel-<?= $level ?>__eIcon<? if (1 == $level): ?> mId<?= $i ?><? endif ?>">&nbsp;<?//= 0  === strpos($iMenu->getImage(), '&') ? $iMenu->getImage() : '' ?></span>
                 <span class="bMainMenuLevel-<?= $level ?>__eTitle"><?= $iMenu->getName() ?></span>
                 <div class="bCorner"></div>
             </a>

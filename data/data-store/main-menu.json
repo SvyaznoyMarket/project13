@@ -4,61 +4,81 @@
             "image": "&#x00E3;",
             "name": "Мебель",
             "action": "catalog",
-            "item": [80]
+            "item": [80],
+            "css": "",
+            "cssHover": ""
         },
         {
             "image": "&#x00EA;",
             "name": "Сделай<br/>сам",
             "action": "catalog",
-            "item": [224]
+            "item": [224],
+            "css": "",
+            "cssHover": ""
         },
         {
             "image": "&#x00F3;",
             "name": "Товары<br/>для дома",
             "action": "catalog",
-            "item": [443]
+            "item": [443],
+            "css": "",
+            "cssHover": ""
         },
         {
             "image": "&#x00E9;",
             "name": "Детские<br/>товары",
             "action": "catalog",
-            "item": [320]
+            "item": [320],
+            "css": "",
+            "cssHover": ""
         },
         {
             "image": "&#x00E8;",
             "name": "Зоотовары",
             "action": "catalog",
-            "item": [1438]
+            "item": [1438],
+            "css": "",
+            "cssHover": ""
         },
         {
             "image": "&#x00EB;",
             "name": "Электроника",
             "action": "catalog",
-            "item": [788]
+            "item": [788],
+            "css": "",
+            "cssHover": ""
         },
         {
             "image": "&#x00E5;",
             "name": "Бытовая<br/>техника",
             "action": "catalog",
-            "item": [1]
+            "item": [1],
+            "css": "",
+            "cssHover": ""
         },
         {
             "image": "&#x00E7;",
             "name": "Красота<br/>и здоровье",
             "action": "catalog",
-            "item": [21]
+            "item": [21],
+            "css": "",
+            "cssHover": ""
         },
         {
             "image": "&#x00C5;",
             "name": "Украшения<br/>и часы",
             "action": "catalog",
-            "item": [923]
+            "item": [923],
+            "css": "",
+            "cssHover": ""
         },
         {
             "image": "&#x00E1;",
             "name": "Парфюмерия<br/>и косметика",
             "action": "catalog",
-            "item": [2545]
+            "item": [2545],
+            "css": "",
+            "cssHover": ""
         },
 
         {
@@ -71,6 +91,8 @@
             "action": "link",
             "item": ["http://www.enter.ru"],
             "image": "promo-1.png",
+            "css": "",
+            "cssHover": "",
             "child": [
                 {
                     "name": "Зимние виды спорта",
@@ -113,6 +135,8 @@
             "action": "link",
             "item": ["http://www.enter.ru"],
             "image": "promo-1.png",
+            "css": "",
+            "cssHover": "",
             "child": [
                 {
                     "name": "Зимние виды спорта",
@@ -158,6 +182,8 @@
             "image": "&#x00F1;",
             "name": "Еще товары",
             "action": "",
+            "css": "",
+            "cssHover": "",
             "child": [
                 {
                     "name": "Аксессуары для авто",

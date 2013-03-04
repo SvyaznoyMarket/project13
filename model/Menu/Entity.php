@@ -21,11 +21,17 @@ class Entity {
     private $child = [];
     /** @var string */
     private $link;
+    /** @var string */
+    private $css;
+    /** @var string */
+    private $cssHover;
 
     public function __construct(array $data = []) {
         if (array_key_exists('name', $data)) $this->setName($data['name']);
         if (array_key_exists('image', $data)) $this->setImage($data['image']);
         if (array_key_exists('action', $data)) $this->setAction($data['action']);
+        if (array_key_exists('css', $data)) $this->setCss($data['css']);
+        if (array_key_exists('cssHover', $data)) $this->setCssHover($data['cssHover']);
         if (array_key_exists('item', $data)) {
             if (!is_array($data['item'])) {
                 $data['item'] = [$data['item']];
@@ -120,5 +126,33 @@ class Entity {
      */
     public function getLink() {
         return $this->link;
+    }
+
+    /**
+     * @param string $css
+     */
+    public function setCss($css) {
+        $this->css = (string)$css;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCss() {
+        return $this->css;
+    }
+
+    /**
+     * @param string $cssHover
+     */
+    public function setCssHover($cssHover) {
+        $this->cssHover = (string)$cssHover;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCssHover() {
+        return $this->cssHover;
     }
 }
