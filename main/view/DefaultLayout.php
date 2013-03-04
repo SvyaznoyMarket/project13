@@ -17,6 +17,8 @@ class DefaultLayout extends Layout {
         if (!\App::config()->debug) {
             $this->addStylesheet('/css/global.css');
         }
+
+        $this->addJavascript('/js/loadjs.js');
     }
 
     public function slotRelLink() {
@@ -133,7 +135,6 @@ class DefaultLayout extends Layout {
         foreach ([
             'http://yandex.st/jquery/1.6.4/jquery.min.js',
             '/js/LAB.min.js',
-            '/js/loadjs.js',
         ] as $javascript) {
             $return .= '<script src="' . $javascript . '" type="text/javascript"></script>' . "\n";
         }
