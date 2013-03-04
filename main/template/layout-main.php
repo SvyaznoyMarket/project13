@@ -10,6 +10,7 @@
     <title><?= $page->getTitle() ?></title>
     <link rel="shortcut icon" href="/favicon.ico"/>
     <?= $page->slotStylesheet() ?>
+    <?= $page->slotHeadJavascript() ?>
     <?= $page->slotRelLink() ?>
     <?= $page->slotGoogleAnalytics() ?>
 
@@ -77,7 +78,7 @@
 
 <?= $page->slotRegionSelection() ?>
 <?= $page->slotAuth() ?>
-<?= $page->slotJavascript() ?>
+<?= $page->slotBodyJavascript() ?>
 <?= $page->slotInnerJavascript() ?>
 <?= $page->slotMyThings() ?>
 

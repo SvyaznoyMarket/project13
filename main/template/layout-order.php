@@ -11,6 +11,7 @@
     <title><?= $page->getTitle() ?></title>
     <link rel="shortcut icon" href="/favicon.ico"/>
     <?= $page->slotStylesheet() ?>
+    <?= $page->slotHeadJavascript() ?>
     <?= $page->slotRelLink() ?>
     <?= $page->slotGoogleAnalytics() ?>
 </head>
@@ -47,7 +48,7 @@
 <? if (!(bool)\App::exception()->all()) echo $page->render('order/_footer') ?>
 <?= $page->slotFooter() ?>
 
-<?= $page->slotJavascript() ?>
+<?= $page->slotBodyJavascript() ?>
 <?= $page->slotInnerJavascript() ?>
 <?= $page->slotAuth() ?>
 <?= $page->slotYandexMetrika() ?>

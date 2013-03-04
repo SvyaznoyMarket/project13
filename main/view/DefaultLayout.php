@@ -16,9 +16,9 @@ class DefaultLayout extends Layout {
 
         $this->addStylesheet('/css/global.css');
 
-        $this->addJavascript('/js/jquery-1.6.4.min.js');
-        $this->addJavascript('/js/LAB.min.js');
-        $this->addJavascript('/js/loadjs.js');
+        //$this->addJavascript('/js/jquery-1.6.4.min.js');
+        //$this->addJavascript('/js/LAB.min.js');
+        //$this->addJavascript('/js/loadjs.js');
     }
 
     public function slotRelLink() {
@@ -125,6 +125,22 @@ class DefaultLayout extends Layout {
         }
 
         return $this->render('_regionSelection', array_merge($this->params, array('regions' => $regions)));
+    }
+
+    /**
+     * @return string
+     */
+    public function slotHeadJavascript() {
+        $return = "\n";
+        foreach ([
+            'http://yandex.st/jquery/1.6.4/jquery.min.js',
+            '/js/LAB.min.js',
+            '/js/loadjs.js',
+        ] as $javascript) {
+            $return .= '<script src="' . $javascript . '" type="text/javascript"></script>' . "\n";
+        }
+
+        return $return;
     }
 
     public function slotInnerJavascript() {
