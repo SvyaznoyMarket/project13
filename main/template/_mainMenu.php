@@ -27,7 +27,9 @@ $count = count($menu);
         .mId<?= $i ?> .bMainMenuLevel-1__eTitle{
             color: <?=$iMenu->getColor() ?>;
         }
-        <? // TODO: если есть цвет ?>
+        .mId<?= $i ?>:hover .bMainMenuLevel-1__eTitle{
+            
+        }
     <? endif ?>
 
     <? if ($i == $count): ?>

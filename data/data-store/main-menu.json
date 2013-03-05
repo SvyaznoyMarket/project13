@@ -92,6 +92,8 @@
             "item": ["http://www.enter.ru"],
             "image": "promo-1.png",
             "css": "background: url('http://content.enter.ru/wp-content/uploads/2013/03/icon1.png') no-repeat 0 0;width: 57px; height: 74px; margin-bottom: -31px; position: relative; top: -39px; width: 57px;",
+            "color":"#C1DA20",
+            "colorHover":"#C1DA20",
             "cssHover": "",
             "child": [
                 {
@@ -137,6 +139,8 @@
             "image": "promo-1.png",
             "css": "background: url('http://content.enter.ru/wp-content/uploads/2013/03/icon2.png') no-repeat 0 0;width: 57px; height: 74px; margin-bottom: -31px; position: relative; top: -39px; width: 57px;",
             "cssHover": "",
+            "color":"#C1DA20",
+            "colorHover":"#C1DA20",
             "child": [
                 {
                     "name": "Зимние виды спорта",
