@@ -75,7 +75,7 @@ class Client {
         } catch (\RuntimeException $e) {
             curl_close($connection);
             $spend = \Debug\Timer::stop('curl');
-            $this->logger->error('Fail curl ' . $url . ' in ' . $spend . ((bool)$data ? (' data: ' . $this->encode($data)) : '') . ' response: ' . $this->encode($response) . ' with ' . $e);
+            $this->logger->error('Fail curl ' . $url . ' in ' . $spend . ((bool)$data ? (' ' . $this->encode($data)) : '') . ' response: ' . $this->encode($response) . ' with ' . $e);
             \App::exception()->add($e);
 
             throw $e;
@@ -269,7 +269,7 @@ class Client {
      * @return resource
      */
     private function create($url, array $data = [], $timeout = null) {
-        $this->logger->info('Start curl ' . $url . ((bool)$data ? ' data: ' . $this->encode($data) : '') . ($timeout ? (' timeout: ' . $timeout) : ''));
+        $this->logger->info('Start curl ' . $url . ((bool)$data ? ' ' . $this->encode($data) : '') . ($timeout ? (' timeout: ' . $timeout) : ''));
 
         $connection = curl_init();
         curl_setopt($connection, CURLOPT_HEADER, 1);
