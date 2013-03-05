@@ -187,17 +187,17 @@
             "child": [
                 {
                     "name": "Аксессуары для авто",
-                    "action": "catalog",
+                    "action": "category",
                     "item": [225]
                 },
                 {
                     "name": "Подарки и хобби",
-                    "action": "catalog",
+                    "action": "category",
                     "item": [185]
                 },
                 {
                     "name": "Спорт и отдых",
-                    "action": "catalog",
+                    "action": "category",
                     "item": [647]
                 }
             ]

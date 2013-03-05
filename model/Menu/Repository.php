@@ -16,7 +16,7 @@ class Repository {
     public function getCollection() {
         \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
-        $data = $this->client->query('/main-menu.json');
+        $data = $this->client->query('main-menu.json');
 
         $collection = [];
         foreach ($data['item'] as $item) {

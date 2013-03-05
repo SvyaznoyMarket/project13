@@ -161,7 +161,7 @@ class DefaultLayout extends Layout {
 
         \App::coreClientV2()->execute();
 
-        $menu = $repository->getCollection();
+        //$menu = $repository->getCollection(); для тестирования
 
         $categoriesById = [];
         $walk = function($categories) use (&$walk, &$categoriesById, $repository) {
