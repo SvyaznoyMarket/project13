@@ -115,7 +115,7 @@
 			.bMainMenuLevel-2{
 
 				&:hover{
-					width: 230px;
+					// width: 230px;
 				}
 
 				&__eTitle{
@@ -208,6 +208,13 @@
 
 	&__eIcon{
 		display: none;
+		.mMore &{
+			display: block;
+			float: left;
+			height: 40px;
+			margin-left: 10px;
+			min-width: 40px;
+		}
 	}
 
 	&:hover{
@@ -242,6 +249,11 @@
 				// .transition(all 0.2s ease);
 				// .transition-delay(0.4s);
 				text-decoration: underline;
+
+				.mMore &{
+					background: @black;
+					color: @firmOrange;
+				}
 			}
 
 			.bMainMenuLevel-3{
@@ -270,6 +282,10 @@
 		float: left;
 		width: 200px;
 
+		.mMore &{
+			width: auto;
+		}
+
 		// .transition(all 0.2s ease);
 		// .transition-delay(0.5s);
 	}
@@ -277,6 +293,7 @@
 	.mMore &{
 		background: @black;
 		right: 0;
+		width: auto;
 	}
 }
 

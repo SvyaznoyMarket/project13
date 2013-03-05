@@ -45,8 +45,8 @@
             "name": "Украшения<br/>и часы",
             "action": "catalog",
             "item": [923],
-            "css": "background: url('http://content.enter.ru/wp-content/uploads/2013/03/headersprite.gif') no-repeat -382px 0;width: 32px;",
-            "cssHover": "background-position:-382px -44px;"
+            "css": "background: url('http://content.enter.ru/wp-content/uploads/2013/03/headersprite.gif') no-repeat -378px 0;width: 37px;",
+            "cssHover": "background-position:-378px -44px;"
         },
         {
             "image": "&#x00E1;",
@@ -186,7 +186,7 @@
             "cssHover": "background-position:-666px -44px;",
             "child": [
                 {
-                    "name": "Концелярские товары",
+                    "name": "Кaнцелярские товары",
                     "action": "category",
                     "item": [1388],
                     "css": "background: url('http://content.enter.ru/wp-content/uploads/2013/03/headersprite.gif') no-repeat -898px 0;width: 32px;",
