@@ -23,6 +23,9 @@ $count = count($menu);
 .mId<?= $i ?>:hover .bMainMenuLevel-1__eIcon{
     <?= $iMenu->getCssHover() ?>
 }
+    <? if ($iMenu->getColor()): ?>
+        <? // TODO: если есть цвет ?>
+    <? endif ?>
 
     <? if ($i == $count): ?>
 

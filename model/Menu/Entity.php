@@ -22,6 +22,8 @@ class Entity {
     /** @var string */
     private $link;
     /** @var string */
+    private $color;
+    /** @var string */
     private $css;
     /** @var string */
     private $cssHover;
@@ -170,5 +172,19 @@ class Entity {
      */
     public function getPriority() {
         return $this->priority;
+    }
+
+    /**
+     * @param string $color
+     */
+    public function setColor($color) {
+        $this->color = (string)$color;
+    }
+
+    /**
+     * @return string
+     */
+    public function getColor() {
+        return $this->color;
     }
 }
