@@ -2823,6 +2823,9 @@
   .topbar .usermenu b {
     padding: 0px 10px;
   }
+  .topbar .bRegion {
+    width: 500px;
+  }
   .topbar .usermenu {
     float: right;
   }
@@ -2878,7 +2881,7 @@
     background: url('/css/header/img/headerSeparator.gif') no-repeat center center;
     display: block;
     height: 110px;
-    margin: 0 10px;
+    margin: 0 10px 0 0;
     width: 1px;
   }
   .bMainMenuLevel-1__eItem.bMainMenuLevel-1__eSeparator:hover .bMainMenuLevel-2 {
@@ -2919,6 +2922,7 @@
   .bMainMenuLevel-1__eLink {
     float: left;
     height: 80px;
+    margin-top: 20px;
     position: relative;
   }
   .bMainMenuLevel-1__eLink:hover {
@@ -2928,7 +2932,7 @@
     border-bottom: 10px solid #ffa901;
     border-left: 11px solid transparent;
     border-right: 11px solid transparent;
-    bottom: -12px;
+    bottom: -5px;
     display: none;
     left: 50%;
     margin-left: -17px;
@@ -2945,9 +2949,11 @@
   }
   .bMainMenuLevel-1__eTitle {
     color: #ffffff;
+    display: block;
     font-family: 'Enter';
     font-size: 11px;
     font-weight: 100;
+    text-align: center;
     text-transform: uppercase;
   }
   .bMainMenuLevel-2 {
@@ -2973,7 +2979,7 @@
     display: block;
     float: left;
     height: 40px;
-    margin-left: 10px;
+    margin-left: 20px;
     min-width: 40px;
   }
   .bMainMenuLevel-2:hover {
@@ -3033,11 +3039,12 @@
   }
   .mMore .bMainMenuLevel-2__eTitle {
     width: auto;
+    padding-top: 0;
   }
   .mMore .bMainMenuLevel-2 {
     background: #000000;
     right: 0;
-    width: auto;
+    width: 200px;
   }
   .bMainMenuLevel-3 {
     background: #ffffff url('/css/header/img/border.gif') repeat-y 230px 0;

@@ -13,16 +13,16 @@
             "name": "Товары<br/>для дома",
             "action": "catalog",
             "item": [443],
-            "css": "background: url('http://content.enter.ru/wp-content/uploads/2013/03/headersprite.gif') no-repeat -142px 0;width: 36px;",
-            "cssHover": "background-position:-142px -44px;"
+            "css": "background: url('http://content.enter.ru/wp-content/uploads/2013/03/headersprite.gif') no-repeat -138px 0;width: 40px;",
+            "cssHover": "background-position:-138px -44px;"
         },
         {
             "image": "&#x00E5;",
             "name": "Бытовая<br/>техника",
             "action": "catalog",
             "item": [1],
-            "css": "background: url('http://content.enter.ru/wp-content/uploads/2013/03/headersprite.gif') no-repeat -46px 0;width: 28px;",
-            "cssHover": "background-position:-46px -44px;"
+            "css": "background: url('http://content.enter.ru/wp-content/uploads/2013/03/headersprite.gif') no-repeat -38px 0;width: 42px;",
+            "cssHover": "background-position:-38px -44px;"
         },
         {
             "image": "&#x00EB;",
@@ -37,8 +37,8 @@
             "name": "Детские<br/>товары",
             "action": "catalog",
             "item": [320],
-            "css": "background: url('http://content.enter.ru/wp-content/uploads/2013/03/headersprite.gif') no-repeat -185px 0;width: 33px;",
-            "cssHover": "background-position:-185px -44px;"
+            "css": "background: url('http://content.enter.ru/wp-content/uploads/2013/03/headersprite.gif') no-repeat -180px 0;width: 40px;",
+            "cssHover": "background-position:-180px -44px;"
         },
         {
             "image": "&#x00C5;",
@@ -69,8 +69,8 @@
             "name": "Сделай<br/>сам",
             "action": "catalog",
             "item": [224],
-            "css": "background: url('http://content.enter.ru/wp-content/uploads/2013/03/headersprite.gif') no-repeat -281px 0;width: 23px;",
-            "cssHover": "background-position:-281px -44px;"
+            "css": "background: url('http://content.enter.ru/wp-content/uploads/2013/03/headersprite.gif') no-repeat -274px 0;width: 36px;",
+            "cssHover": "background-position:-274px -44px;"
         },
         {
             "image": "&#x00EA;",
@@ -186,14 +186,14 @@
             "cssHover": "background-position:-666px -44px;",
             "child": [
                 {
-                    "name": "Кaнцелярские товары",
+                    "name": "Кaнцелярские<br/>товары",
                     "action": "category",
                     "item": [1388],
                     "css": "background: url('http://content.enter.ru/wp-content/uploads/2013/03/headersprite.gif') no-repeat -898px 0;width: 32px;",
                     "cssHover": "background-position:-898px -44px;"
                 },
                 {
-                    "name": "Музыкальные инструменты",
+                    "name": "Музыкальные<br/>инструменты",
                     "action": "category",
                     "item": [2396],
                     "css": "background: url('http://content.enter.ru/wp-content/uploads/2013/03/headersprite.gif') no-repeat -760px 0;width: 37px;",
