@@ -91,8 +91,8 @@
             "action": "link",
             "item": ["http://www.enter.ru"],
             "image": "promo-1.png",
-            "css": "background: url('http://content.enter.ru/wp-content/uploads/2013/03/headersprite.gif') no-repeat -508px 0;width: 44px;",
-            "cssHover": "background-position:-508px -44px;",
+            "css": "background: url('http://content.enter.ru/wp-content/uploads/2013/03/icon1.png') no-repeat 0 0;width: 57px; height: 74px; margin-bottom: -31px; position: relative; top: -39px; width: 57px;",
+            "cssHover": "",
             "child": [
                 {
                     "name": "Зимние виды спорта",
@@ -135,8 +135,8 @@
             "action": "link",
             "item": ["http://www.enter.ru"],
             "image": "promo-1.png",
-            "css": "background: url('http://content.enter.ru/wp-content/uploads/2013/03/headersprite.gif') no-repeat -423px 0;width: 46px;",
-            "cssHover": "background-position:-423px -44px;",
+            "css": "background: url('http://content.enter.ru/wp-content/uploads/2013/03/icon2.png') no-repeat 0 0;width: 57px; height: 74px; margin-bottom: -31px; position: relative; top: -39px; width: 57px;",
+            "cssHover": "",
             "child": [
                 {
                     "name": "Зимние виды спорта",

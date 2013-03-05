@@ -153,6 +153,9 @@ $(document).ready(function(){
 			_gaq.push(['_trackEvent', 'CategoryClick', e.data, window.location.pathname ])
 		return true
 	}
+	$('.bMainMenuLevel-1__eLink').bind('click', 'Верхнее меню', categoriesSpy )
+	$('.bMainMenuLevel-2__eLink').bind('click', 'Верхнее меню', categoriesSpy )
+	$('.bMainMenuLevel-3__eLink').bind('click', 'Верхнее меню', categoriesSpy )
 	$('.breadcrumbs').first().find('a').bind( 'click', 'Хлебные крошки сверху', categoriesSpy )
 	$('.breadcrumbs-footer').find('a').bind( 'click', 'Хлебные крошки снизу', categoriesSpy )
 	$('.extramenu').find('a').live('click', 'Верхнее меню', categoriesSpy )
