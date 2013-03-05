@@ -24,6 +24,9 @@ $count = count($menu);
     <?= $iMenu->getCssHover() ?>
 }
     <? if ($iMenu->getColor()): ?>
+        .mId<?= $i ?> .bMainMenuLevel-1__eTitle{
+            color: <?=$iMenu->getColor() ?>;
+        }
         <? // TODO: если есть цвет ?>
     <? endif ?>
 
