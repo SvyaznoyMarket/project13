@@ -25,6 +25,8 @@ class Entity {
     private $css;
     /** @var string */
     private $cssHover;
+    /** @var int */
+    private $priority;
 
     public function __construct(array $data = []) {
         if (array_key_exists('name', $data)) $this->setName($data['name']);
@@ -154,5 +156,19 @@ class Entity {
      */
     public function getCssHover() {
         return $this->cssHover;
+    }
+
+    /**
+     * @param int $priority
+     */
+    public function setPriority($priority) {
+        $this->priority = (int)$priority;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPriority() {
+        return $this->priority;
     }
 }

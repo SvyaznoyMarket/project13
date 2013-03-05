@@ -178,7 +178,12 @@ class DefaultLayout extends Layout {
         unset($walk);
 
         $walk = function($menu) use (&$walk, &$categoriesById, $repository) {
+            /** @var $iMenu \Model\Menu\Entity  */
+            $i = 0;
             foreach ($menu as $iMenu) {
+                $i++;
+                $iMenu->setPriority($i);
+
                 /** @var \Model\Menu\Entity $iMenu */
                 $repository->setEntityLink($iMenu, \App::router(), $categoriesById);
 

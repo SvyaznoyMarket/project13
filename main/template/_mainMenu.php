@@ -2,6 +2,7 @@
 /**
  * @var $page   \View\Layout
  * @var $menu   \Model\Menu\Entity[]
+ * @var $iMenu  \Model\Menu\Entity
  * @var $parent \Model\Menu\Entity
  * @var $level  int
  */
@@ -15,7 +16,7 @@ $count = count($menu);
 
 <? if (1 == $level): ?>
 <style type="text/css">
-<? $i = 1; foreach ($menu as $iMenu): ?>
+<? $count = count($menu); $i = 1; foreach ($menu as $iMenu): ?>
 .bMainMenuLevel-1__eIcon.mId<?= $i ?> {
     <?= $iMenu->getCss() ?>
 }
@@ -23,6 +24,16 @@ $count = count($menu);
     <?= $iMenu->getCssHover() ?>
 }
 
+    <? if ($i == $count): ?>
+        <? $j = 1; foreach ($iMenu->getChild() as $child): ?>
+        .bMainMenuLevel-2__eIcon.mId<?= $iMenu->getPriority() . '-' . $j ?> {
+            <?= $child->getCss() ?>
+        }
+        .bMainMenuLevel-2__eItem:hover .bMainMenuLevel-2__eIcon.mId<?= $iMenu->getPriority() . '-' . $j ?> {
+            <?= $child->getCssHover() ?>
+        }
+        <? $j++; endforeach ?>
+    <? endif ?>
 <? $i++; endforeach ?>
 </style>
 <? endif ?>
@@ -52,13 +63,13 @@ $count = count($menu);
     <li class="bMainMenuLevel-<?= $level ?>__eItem clearfix <? if ($class) echo ' ' . $class ?>">
         <? if ($iMenu->getLink()): ?>
             <a class="bMainMenuLevel-<?= $level ?>__eLink" href="<?= $iMenu->getLink() ?>">
-                <span class="bMainMenuLevel-<?= $level ?>__eIcon<? if (1 == $level): ?> mId<?= $i ?><? endif ?>">&nbsp;<?//= 0  === strpos($iMenu->getImage(), '&') ? $iMenu->getImage() : '' ?></span>
+                <span class="bMainMenuLevel-<?= $level ?>__eIcon mId<?= ($parent ? ($parent->getPriority() . '-') : '') . $i ?>">&nbsp;<?//= 0  === strpos($iMenu->getImage(), '&') ? $iMenu->getImage() : '' ?></span>
                 <span class="bMainMenuLevel-<?= $level ?>__eTitle"><?= $iMenu->getName() ?></span>
                 <div class="bCorner"></div>
             </a>
         <? elseif ($iMenu->getName()): ?>
             <div class="bMainMenuLevel-<?= $level ?>__eLink">
-                <span class="bMainMenuLevel-<?= $level ?>__eIcon<? if (1 == $level): ?> mId<?= $i ?><? endif ?>"></span>
+                <span class="bMainMenuLevel-<?= $level ?>__eIcon mId<?= ($parent ? ($parent->getPriority() . '-') : '') . $i ?>"></span>
                 <span class="bMainMenuLevel-<?= $level ?>__eTitle"><?= $iMenu->getName() ?></span>
                 <div class="bCorner"></div>
             </div>
