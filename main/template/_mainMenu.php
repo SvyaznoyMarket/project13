@@ -27,8 +27,10 @@ $count = count($menu);
         .mId<?= $i ?> .bMainMenuLevel-1__eTitle{
             color: <?=$iMenu->getColor() ?>;
         }
+    <? endif ?>
+    <? if ($iMenu->getColorHover()): ?>
         .mId<?= $i ?>:hover .bMainMenuLevel-1__eTitle{
-            
+            color: <?=$iMenu->getColorHover() ?>;
         }
     <? endif ?>
 
