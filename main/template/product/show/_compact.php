@@ -28,7 +28,7 @@ if (!isset($productVideos)) $productVideos = [];
 <div class="goodsbox"<? if ($isHidden): ?> style="display:none;"<? endif ?> ref="<?= $product->getToken(); ?>">
     <div class="goodsbox__inner" data-url="<?= $product->getLink() ?>">
     	<div class="photo">
-            <? if ((bool)$productVideos && (bool)\App::config()->abtest['enabled'] && \App::abTest()->getCase()->getKey() == 'video'): ?><a class="goodsphoto_eVideoShield goodsphoto_eVideoShield_small" href="<?= $product->getLink() ?>"></a><? endif ?>
+            <? if ((bool)$productVideos): ?><a class="goodsphoto_eVideoShield goodsphoto_eVideoShield_small" href="<?= $product->getLink() ?>"></a><? endif ?>
 	        <a href="<?= $product->getLink() ?>">
 	            <? if (!empty($kit) && $kit->getCount()): ?>
 	                <div class="bLabelsQuantity" src="/images/quantity_shild.png"><?= $kit->getCount() ?> шт.</div>
@@ -41,11 +41,6 @@ if (!isset($productVideos)) $productVideos = [];
 	            <img class="mainImg" src="<?= $product->getImageUrl(2) ?>" alt="<?= $product->getNameWithCategory() ?>" title="<?= $product->getNameWithCategory() ?>" width="160" height="160"/>
 	        </a>
 	    </div>
-        <?php if (!(bool)\App::config()->abtest['enabled'] || 'comment' !== \App::abTest()->getCase()->getKey()): ?>
-        <div class="goodsbox__rating rate<?= round($product->getRating())?>">
-	    	<div class="fill"></div>
-	    </div>
-        <?php endif; ?>
 	    <h3><a href="<?= $product->getLink() ?>"><?= $product->getName() ?></a></h3>
         <div class="goodsbar mSmallBtns mR">
             <?= $page->render('cart/_button', array('product' => $product, 'disabled' => !$product->getIsBuyable())) ?>

@@ -25,7 +25,7 @@ if (!isset($productVideos)) $productVideos = [];
 <div class="goodsbox goodsline bNewGoodsBox" ref="<?= $product->getToken() ?>">
     <div class="goodsboxlink" <? if ($product->getIsBuyable()): ?> data-cid="<?= $product->getId() ?>" <? endif ?>>
         <div class="photo">
-            <? if ((bool)$productVideos && (bool)\App::config()->abtest['enabled'] && \App::abTest()->getCase()->getKey() == 'video'): ?><a class="goodsphoto_eVideoShield goodsphoto_eVideoShield_small" href="<?= $product->getLink() ?>"></a><? endif ?>
+            <? if ((bool)$productVideos): ?><a class="goodsphoto_eVideoShield goodsphoto_eVideoShield_small" href="<?= $product->getLink() ?>"></a><? endif ?>
             <a href="<?= $product->getLink() ?>">
                 <? if ($label = $product->getLabel()): ?>
                     <img class="bLabels" src="<?= $label->getImageUrl() ?>" alt="<?= $label->getName() ?>"/>
@@ -38,10 +38,6 @@ if (!isset($productVideos)) $productVideos = [];
             <h3><a href="<?= $product->getLink() ?>"><?= $product->getName() ?></a></h3>
             <span class="gray bNGB__eArt mInlineBlock">
                 Артикул #<?= $product->getArticle() ?>
-                <?php if (!(bool)\App::config()->abtest['enabled'] || 'comment' !== \App::abTest()->getCase()->getKey()): ?>
-                <?= str_repeat('<span class="ratingview" style="width:13px;vertical-align:middle;display:inline-block;"></span>', round($product->getRating())) ?>
-                <?= str_repeat('<span class="ratingview" style="width:13px;vertical-align:middle;display:inline-block;background-position:-51px 0;"></span>', 5 - round($product->getRating())) ?>
-                <?php endif; ?>
 
                 <span class="bNGB__eDrop"><a href="<?= $product->getLink() ?>" style="display: none"></a></span>
             </span>
