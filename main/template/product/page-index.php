@@ -118,7 +118,7 @@ $productVideo = reset($productVideos);
 <? endif ?>
 
 <div class="goodsphoto">
-  <? if ($productVideo && (bool)\App::config()->abtest['enabled'] && \App::abTest()->getCase()->getKey() == 'video'): ?><a class="goodsphoto_eVideoShield" href="#"></a><? endif ?>
+  <? if ($productVideo): ?><a class="goodsphoto_eVideoShield" href="#"></a><? endif ?>
 
   <a href="<?= $product->getImageUrl(4) ?>" class="viewme" ref="image" onclick="return false">
     <? if ($product->getLabel()): ?>
@@ -138,25 +138,7 @@ $productVideo = reset($productVideos);
 <div class="goodsinfo bGood">
   <div class="bGood__eArticle clearfix">
     <div class="fr">
-      <?php if ((bool)\App::config()->abtest['enabled'] && \App::abTest()->getCase()->getKey() == 'comment'): ?>
         <div id="testFreak" class="jsanalytics"><a id="tfw-badge" href="http://www.testfreaks.ru"></a></div>
-      <?php else: ?>
-        <span id="rating" data-url="<?= $page->url('product.rating.create_total', array('rating' => 'score', 'productId' => $product->getId() )) ?>">
-        <?
-            echo str_repeat('<img src="/css/skin/img/star_a.png" alt="" />', floor($product->getRating()));
-            if ($product->getRating() - floor($product->getRating()) > 0 and $product->getRating() - floor($product->getRating()) < 0.25) {
-                echo '<img src="/css/skin/img/star_p.png" alt="" />';
-            } elseif ($product->getRating() - floor($product->getRating()) < 0.75) {
-                echo '<img src="/css/skin/img/star_h.png" alt="" />';
-            } else {
-                echo '<img src="/css/skin/img/star_a.png" alt="" />';
-            }
-            echo str_repeat('<img src="/css/skin/img/star_p.png" alt="" />', 5 - ceil($product->getRating()));
-            ?>
-      </span>
-      <strong class="ml5 hf"><?= round($product->getRating(), 1) ?></strong>
-      <!--a href="<? //echo $product->getLink().'/comments' ?>" class="underline ml5">Читать отзывы</a> <span>(<?= $product->getCommentCount() ?>)</span-->
-      <?php endif; ?>
     </div>
     <span>Артикул #<?= $product->getArticle() ?></span>
   </div>
