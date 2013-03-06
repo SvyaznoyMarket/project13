@@ -41,7 +41,7 @@
 	.rounded(5px);
 	display: block;
 	height: 110px;
-	position: relative;
+	// position: relative;
 	margin: 10px 0px 20px;
 	width: 100%;
 }
@@ -58,9 +58,11 @@
 }
 
 .bMainMenuLevel-1{
+	position: relative;
 	display: table;
 	float: left;
 	width: 810px;
+	z-index: 998;
 
 	&__eItem{
 		display: table-cell;
@@ -70,6 +72,7 @@
 		// *margin: 12px 5px;
 		vertical-align: middle;
 		*width: 60px;
+		z-index: 999;
 		*zoom: 1;
 
 		&.bMainMenuLevel-1__eSeparator{
@@ -212,6 +215,7 @@
 	margin-left: -75px;
 	// left:0;
 	top: 107px;
+	*top: 103px;
 	padding: 10px 0;
 	position: absolute;
 	width: 230px;
