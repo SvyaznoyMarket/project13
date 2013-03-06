@@ -8,9 +8,6 @@
  */
 ?>
 <? if (\App::config()->analytics['enabled']): ?>
-<?php foreach ($orders as $order): ?>
-    <div id="adblenderCost" data-vars="<?= $order->getSum() ?>" class="jsanalytics"></div>
-<?php endforeach ?>
 
 <script type="text/javascript">
     var yaParams =
