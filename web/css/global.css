@@ -7870,6 +7870,9 @@
     margin-right: 10px;
     padding-left: 23px;
   }
+  .lightboxmenu li .point.bSubscribeLightbox {
+    display: none;
+  }
   .lightboxmenu li .point1 b {
     background-position: 0px -40px;
   }
@@ -7969,8 +7972,47 @@
     margin: 0px;
     padding-top: 18px;
   }
-  .bSubscribeLightbox {
-    display: none;
+  .bSubscribeLightboxPopup {
+    background: #ffffff url('/css/lightbox/img/subscribeForm.gif') no-repeat 10px center;
+    border: 2px solid #ffa901;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    left: 60px;
+    overflow: visible;
+    padding: 20px 20px 15px 150px;
+    position: absolute;
+    top: -190px;
+    width: 270px;
+  }
+  .bSubscribeLightboxPopup__eCorner {
+    background: url("/css/lightbox/img/lightboxSprite.png") no-repeat -906px -80px;
+    bottom: -15px;
+    display: block;
+    font-size: 0px;
+    height: 15px;
+    left: 50%;
+    line-height: 0px;
+    margin-left: -10px;
+    position: absolute;
+    width: 20px;
+  }
+  .bSubscribeLightboxPopup__eTitle {
+    font-family: 'Enter Type';
+    font-size: 20px;
+  }
+  .bSubscribeLightboxPopup__eInput {
+    border: 1px solid #ffa901;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    display: block;
+    font-size: 16px;
+    padding: 3px 0;
+    width: 100%;
+  }
+  .bSubscribeLightboxPopup__eSubmit {
+    margin: 10px 0;
   }
 }
 /*--END---СТИЛИ ЛАЙТБОКСА--*/

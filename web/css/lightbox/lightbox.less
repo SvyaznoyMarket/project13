@@ -54,6 +54,22 @@
         margin-right: 10px;
         padding-left: 23px;
       }
+
+      &.bSubscribeLightbox{
+        display: none;
+
+        &__eIcon{
+
+        }
+
+        //modificators
+        &.mChecked{
+
+          .bSubscribeLightbox__eIcon{
+
+          }
+        }
+      }
     }
     .point1{
       b {
@@ -159,12 +175,45 @@
   }
 }
 
-.bSubscribeLightbox{
-  display: none;
-  &__eIcon{
+.bSubscribeLightboxPopup{
+  background: @white url('@{base-url}/lightbox/img/subscribeForm.gif') no-repeat 10px center;
+  border: 2px solid @firmOrange;
+  .rounded(5px);
+  left: 60px;
+  overflow: visible;
+  padding: 20px 20px 15px 150px;
+  position: absolute;
+  top: -190px;
+  width: 270px;
 
-    .mChecked &{
-      // иконка когда подписка совершена
-    }
+  &__eCorner{
+    background: url("@{base-url}/lightbox/img/lightboxSprite.png") no-repeat -906px -80px;
+    bottom: -15px;
+    display: block;
+    font-size: 0px;
+    height: 15px;
+    left: 50%;
+    line-height: 0px;
+    margin-left: -10px;
+    position: absolute;
+    width: 20px;
+  }
+
+  &__eTitle{
+    font-family: 'Enter Type';
+    font-size: 20px;
+  }
+
+  &__eInput{
+    border: 1px solid @firmOrange;
+    .rounded(4px);
+    display: block;
+    font-size: 16px;
+    padding: 3px 0;
+    width: 100%;
+  }
+
+  &__eSubmit{
+    margin: 10px 0;
   }
 }

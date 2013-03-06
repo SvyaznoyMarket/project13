@@ -10,13 +10,20 @@
         <div class="dropbox" style="left:733px; display:none;">
             <p>Перетащите сюда</p>
         </div>
+        <div class="bSubscribeLightboxPopup popup">
+            <a href="#" class="close" title="Закрыть">Закрыть</a>
+            <h2 class="bSubscribeLightboxPopup__eTitle">Введите e-mail и&nbsp;узнайте первым о&nbsp;скидках и&nbsp;акциях</h2>
+            <input class="bSubscribeLightboxPopup__eInput" type="text"/>
+            <a class="bSubscribeLightboxPopup__eSubmit button bigbuttonlink fr" href="#">Подписаться</a>
+            <div class="bSubscribeLightboxPopup__eCorner"></div>
+        </div>
         <!-- Flybox -->
         <ul class="lightboxmenu">
             <li class="fl">
                 <a href="<?= $page->url('user.login') ?>" class="point point1"><b></b>Личный кабинет</a>
             </li>
             <li class="fl">
-                <a href="#" class="point bSubscribeLightbox"><b class="bSubscribeLightbox__eIcon"></b>Подписаться на рассылку</a>
+                <a href="#" class="point bSubscribeLightbox"><b class="bSubscribeLightbox__eIcon"></b>Подписаться на&nbsp;рассылку</a>
             </li>
             <li>
                 <a href="<?=  $page->url('cart') ?>" class="point point2"><b></b>Моя корзина<span class="total" style="display:none;">
