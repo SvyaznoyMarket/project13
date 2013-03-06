@@ -8224,6 +8224,9 @@
   #mainPage .allpage {
     background: #000000;
   }
+  #mainPage .topbar {
+    margin-bottom: 20px;
+  }
   #mainPage .topbar #jsregion,
   #mainPage .topbar .usermenu a {
     color: #ffffff;
@@ -8234,69 +8237,6 @@
   #mainPage .topbar .headerContactPhone,
   #mainPage .topbar .headerShopLink {
     display: none;
-  }
-  .bPromoCategoryWrap {
-    margin-top: -50px;
-    zoom: 1;
-    z-index: 10;
-  }
-  .bPromoCategoryWrap .bPromoCategory_eArrow {
-    display: none;
-  }
-  .bPromoCategory {
-    position: relative;
-    zoom: 1;
-  }
-  .bPromoCategory_eArrow {
-    height: 31px;
-    width: 21px;
-  }
-  .bPromoCategory_eIcon {
-    margin: 10px;
-  }
-  .bPromoCategory_eTitle {
-    font-family: 'Enter';
-    font-size: 18px;
-    font-weight: 100;
-    line-height: 2em;
-    padding: 0;
-    text-transform: uppercase;
-  }
-  .bPromoCategory_eLink {
-    color: #ffffff;
-    font-family: 'Enter Type';
-    font-size: 15px;
-    display: block;
-    margin: 0;
-    padding: 0;
-  }
-  .bPromoCategory a {
-    color: #ffffff;
-  }
-  .bPromoCategory a:hover {
-    color: #ffffff;
-  }
-  #ogorod_1feb {
-    left: 125px;
-    width: 250px;
-  }
-  #ogorod_1feb .bPromoCategory_eArrow {
-    background: url('/css/mainPage/img/bPromoCategory_greenArrow.gif') no-repeat 0 0;
-    margin-left: 70px;
-  }
-  #ogorod_1feb .bPromoCategory_eTitle {
-    color: #c1d838;
-  }
-  #jew_1feb {
-    left: 300px;
-    width: 310px;
-  }
-  #jew_1feb .bPromoCategory_eArrow {
-    background: url('/css/mainPage/img/bPromoCategory_pinkArrow.gif') no-repeat 0 0;
-    margin-left: 70px;
-  }
-  #jew_1feb .bPromoCategory_eTitle {
-    color: #bf4a96;
   }
   /*--- ПОИСК ---*/
   #mainPageSearch.searchbox {
