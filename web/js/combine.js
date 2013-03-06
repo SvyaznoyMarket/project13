@@ -9,8 +9,8 @@ window.filesWithVersion = {
 "welcome.js":1359720546,
 "main.js":1362572609,
 "dash.js":1362572609,
-"app.order.js":1361782170,
+"app.order.js":1362575177,
 "app.product.comment.list.js":1351763596,
-"app.product.js":1362574649,
+"app.product.js":1362574813,
 "app.shop.js":1356360722
 }
