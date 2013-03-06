@@ -53,13 +53,7 @@ class IndexAction {
 
         // подготовка 2-го пакета запросов
 
-        // запрашиваем рутовые категории
-        $rootCategories = [];
-        \RepositoryManager::productCategory()->prepareRootCollection($region, function($data) use(&$rootCategories) {
-            foreach ($data as $item) {
-                $rootCategories[] = new \Model\Product\Category\Entity($item);
-            }
-        });
+        // TODO: запрашиваем меню
 
         // запрашиваем товар по токену
         /** @var $product \Model\Product\Entity */
@@ -161,7 +155,6 @@ class IndexAction {
 
         $page = new \View\Product\IndexPage();
         $page->setParam('regionsToSelect', $regionsToSelect);
-        $page->setParam('rootCategories', $rootCategories);
         $page->setParam('product', $product);
         $page->setParam('productVideos', $productVideos);
         $page->setParam('title', $product->getName());

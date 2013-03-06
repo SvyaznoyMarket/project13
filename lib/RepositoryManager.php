@@ -234,4 +234,17 @@ class RepositoryManager {
 
         return $instance;
     }
+
+    /**
+     * @return Model\Menu\Repository
+     */
+    static function menu() {
+        static $instance;
+
+        if (!$instance) {
+            $instance = new \Model\Menu\Repository(\App::dataStoreClient());
+        }
+
+        return $instance;
+    }
 }

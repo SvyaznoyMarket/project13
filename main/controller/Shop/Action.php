@@ -72,13 +72,7 @@ class Action {
 
         // подготовка 2-го пакета запросов
 
-        // запрашиваем рутовые категории
-        $rootCategories = [];
-        \RepositoryManager::productCategory()->prepareRootCollection($region, function($data) use(&$rootCategories) {
-            foreach ($data as $item) {
-                $rootCategories[] = new \Model\Product\Category\Entity($item);
-            }
-        });
+        // TODO: запрашиваем меню
 
         // магазины
         /** @var $shops \Model\Shop\Entity[] */
@@ -110,7 +104,6 @@ class Action {
 
         $page = new \View\Shop\RegionPage();
         $page->setParam('shopAvailableRegions', $shopAvailableRegions);
-        $page->setParam('rootCategories', $rootCategories);
         $page->setParam('currentRegion', null);
         $page->setParam('regions', $regions);
         $page->setParam('shops', $shops);
@@ -187,13 +180,7 @@ class Action {
 
         // подготовка 2-го пакета запросов
 
-        // запрашиваем рутовые категории
-        $rootCategories = [];
-        \RepositoryManager::productCategory()->prepareRootCollection($region, function($data) use(&$rootCategories) {
-            foreach ($data as $item) {
-                $rootCategories[] = new \Model\Product\Category\Entity($item);
-            }
-        });
+        // TODO: запрашиваем меню
 
         // магазин
         /** @var $shop \Model\Shop\Entity */
@@ -221,7 +208,6 @@ class Action {
 
         $page = new \View\Shop\ShowPage();
         $page->setParam('regionsToSelect', $regionsToSelect);
-        $page->setParam('rootCategories', $rootCategories);
         $page->setParam('currentRegion', $currentRegion);
         $page->setParam('shop', $shop);
 
