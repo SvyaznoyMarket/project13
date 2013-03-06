@@ -51,14 +51,7 @@ class IndexAction {
 
         // подготовка 2-го пакета запросов
 
-        // запрашиваем рутовые категории
-        $rootCategories = [];
-        \RepositoryManager::productCategory()->prepareRootCollection($region, function($data) use(&$rootCategories) {
-            foreach ($data as $item) {
-                $rootCategories[] = new \Model\Product\Category\Entity($item);
-            }
-        });
-
+        // TODO: запрашиваем меню
         $cartProductsById = $cart->getProducts();
         $cartServicesById = $cart->getServices();
 
@@ -116,7 +109,6 @@ class IndexAction {
 
         $page = new \View\Cart\IndexPage();
         $page->setParam('regionsToSelect', $regionsToSelect);
-        $page->setParam('rootCategories', $rootCategories);
         $page->setParam('selectCredit', 1 == $request->cookies->get('credit_on'));
         $page->setParam('productEntities', $productEntities);
         $page->setParam('products', $products);

@@ -2,7 +2,6 @@
 /**
  * @var $page           \View\DefaultLayout
  * @var $user           \Session\User
- * @var $rootCategories \Model\Product\Category\Entity[]
  */
 ?>
 
@@ -37,8 +36,8 @@
 <!-- /Topbar -->
 
 <!-- Header -->
-<div id="header" class="topmenu newYearTheme">
+<div id="header" class="clearfix">
     <a id="topLogo" href="/">Enter Связной</a>
-    <?= $page->slotRootCategory() ?>
+    <?= $page->slotMainMenu() ?>
 </div>
 <!-- /Header -->

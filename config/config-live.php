@@ -18,6 +18,7 @@ $c->coreV2['retryTimeout'] = [
 ];
 
 $c->wordpress['url'] = 'http://content.enter.ru/';
+$c->wordpress['timeout'] = 2;
 
 $c->dataStore['url'] = 'http://cms.enter.ru/';
 $c->dataStore['timeout'] = 0.25;

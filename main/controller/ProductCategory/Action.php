@@ -197,13 +197,7 @@ class Action {
 
         // подготовка 2-го пакета запросов
 
-        // запрашиваем рутовые категории
-        $rootCategories = [];
-        \RepositoryManager::productCategory()->prepareRootCollection($region, function($data) use(&$rootCategories) {
-            foreach ($data as $item) {
-                $rootCategories[] = new \Model\Product\Category\Entity($item);
-            }
-        });
+        // TODO: запрашиваем меню
 
         // запрашиваем категорию по токену
         /** @var $category \Model\Product\Category\Entity */
@@ -245,12 +239,10 @@ class Action {
         $setPageParameters = function(\View\Layout $page) use (
             &$category,
             &$regionsToSelect,
-            &$rootCategories,
             &$productFilter
         ) {
             $page->setParam('category', $category);
             $page->setParam('regionsToSelect', $regionsToSelect);
-            $page->setParam('rootCategories', $rootCategories);
             $page->setParam('productFilter', $productFilter);
         };
 

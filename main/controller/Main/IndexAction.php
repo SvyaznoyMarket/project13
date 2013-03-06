@@ -13,13 +13,7 @@ class IndexAction {
 
         // подготовка 1-го пакета запросов
 
-        // запрашиваем рутовые категории
-        $rootCategories = [];
-        \RepositoryManager::productCategory()->prepareRootCollection($region, function($data) use(&$rootCategories) {
-            foreach ($data as $item) {
-                $rootCategories[] = new \Model\Product\Category\Entity($item);
-            }
-        });
+        // TODO: запрашиваем меню
 
         // запрашиваем баннеры
         $itemsByBanner = [];
@@ -175,7 +169,6 @@ class IndexAction {
 
         $page = new \View\Main\IndexPage();
         $page->setParam('bannerData', $bannerData);
-        $page->setParam('rootCategories', $rootCategories);
         $page->setParam('myThingsData', [
             'EventType' => 'MyThings.Event.Visit',
             'Action'    => '200'
