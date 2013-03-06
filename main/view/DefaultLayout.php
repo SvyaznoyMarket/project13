@@ -150,6 +150,9 @@ class DefaultLayout extends Layout {
             foreach ($data['item'] as $item) {
                 $menu[] = new \Model\Menu\Entity($item);
             }
+        }, function(\Exception $e) use (&$menu, $repository) {
+            \App::exception()->remove($e);
+            $menu = $repository->getCollection();
         });
 
         $categories = [];

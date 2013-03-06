@@ -4,7 +4,9 @@
             "image": "&#x00E3;",
             "name": "Мебель",
             "action": "catalog",
-            "item": [80],
+            "item": [
+                80
+            ],
             "css": "background: url('http://content.enter.ru/wp-content/uploads/2013/03/headersprite.gif') no-repeat 0 0;width: 37px;",
             "cssHover": "background-position:0 -44px;"
         },
@@ -12,7 +14,9 @@
             "image": "&#x00F3;",
             "name": "Товары<br/>для дома",
             "action": "catalog",
-            "item": [443],
+            "item": [
+                443
+            ],
             "css": "background: url('http://content.enter.ru/wp-content/uploads/2013/03/headersprite.gif') no-repeat -138px 0;width: 40px;",
             "cssHover": "background-position:-138px -44px;"
         },
@@ -20,7 +24,9 @@
             "image": "&#x00E5;",
             "name": "Бытовая<br/>техника",
             "action": "catalog",
-            "item": [1],
+            "item": [
+                1
+            ],
             "css": "background: url('http://content.enter.ru/wp-content/uploads/2013/03/headersprite.gif') no-repeat -38px 0;width: 42px;",
             "cssHover": "background-position:-38px -44px;"
         },
@@ -28,7 +34,9 @@
             "image": "&#x00EB;",
             "name": "Электроника",
             "action": "catalog",
-            "item": [788],
+            "item": [
+                788
+            ],
             "css": "background: url('http://content.enter.ru/wp-content/uploads/2013/03/headersprite.gif') no-repeat -322px 0;width: 40px;",
             "cssHover": "background-position:-322px -44px;"
         },
@@ -36,7 +44,9 @@
             "image": "&#x00E9;",
             "name": "Детские<br/>товары",
             "action": "catalog",
-            "item": [320],
+            "item": [
+                320
+            ],
             "css": "background: url('http://content.enter.ru/wp-content/uploads/2013/03/headersprite.gif') no-repeat -180px 0;width: 40px;",
             "cssHover": "background-position:-180px -44px;"
         },
@@ -44,7 +54,9 @@
             "image": "&#x00C5;",
             "name": "Украшения<br/>и часы",
             "action": "catalog",
-            "item": [923],
+            "item": [
+                923
+            ],
             "css": "background: url('http://content.enter.ru/wp-content/uploads/2013/03/headersprite.gif') no-repeat -378px 0;width: 37px;",
             "cssHover": "background-position:-378px -44px;"
         },
@@ -52,7 +64,9 @@
             "image": "&#x00E1;",
             "name": "Парфюмерия<br/>и косметика",
             "action": "catalog",
-            "item": [2545],
+            "item": [
+                2545
+            ],
             "css": "background: url('http://content.enter.ru/wp-content/uploads/2013/03/headersprite.gif') no-repeat -725px 0;width: 21px;",
             "cssHover": "background-position:-725px -44px;"
         },
@@ -60,7 +74,9 @@
             "image": "&#x00EA;",
             "name": "Подарки<br/>и хобби",
             "action": "catalog",
-            "item": [185],
+            "item": [
+                185
+            ],
             "css": "background: url('http://content.enter.ru/wp-content/uploads/2013/03/headersprite.gif') no-repeat -471px 0;width: 34px;",
             "cssHover": "background-position:-471px -44px;"
         },
@@ -68,7 +84,9 @@
             "image": "&#x00EA;",
             "name": "Сделай<br/>сам",
             "action": "catalog",
-            "item": [224],
+            "item": [
+                224
+            ],
             "css": "background: url('http://content.enter.ru/wp-content/uploads/2013/03/headersprite.gif') no-repeat -274px 0;width: 36px;",
             "cssHover": "background-position:-274px -44px;"
         },
@@ -76,112 +94,179 @@
             "image": "&#x00EA;",
             "name": "Аксессуары<br/>для авто",
             "action": "catalog",
-            "item": [225],
+            "item": [
+                225
+            ],
             "css": "background: url('http://content.enter.ru/wp-content/uploads/2013/03/headersprite.gif') no-repeat -558px 0;width: 56px;",
             "cssHover": "background-position:-558px -44px;"
-        },        
-
+        },
         {
             "action": "separator"
         },
-
         {
-            "image": "&#x00D1;",
+            "image": "promo-1.png",
             "name": "Сад<br/>и огород",
-            "action": "link",
-            "item": ["http://www.enter.ru"],
-            "image": "promo-1.png",
-            "css": "background: url('http://content.enter.ru/wp-content/uploads/2013/03/icon1.png') no-repeat 0 0;width: 57px; height: 74px; margin-bottom: -31px; position: relative; top: -39px; width: 57px;",
-            "color":"#C1DA20",
-            "colorHover":"#C1DA20",
+            "action": "category",
+            "item": [
+                311
+            ],
+            "css": "background: url('http://content.enter.ru/wp-content/uploads/2013/03/icon3.png') no-repeat 0 0;width: 57px; height: 74px; margin-bottom: -31px; position: relative; top: -39px; ",
+            "color": "#C1DA20",
+            "colorHover": "#C1DA20 !important",
             "cssHover": "",
             "child": [
                 {
-                    "name": "Зимние виды спорта",
+                    "name": "Садовая техника",
                     "action": "category",
-                    "item": [710],
-                    "child": [
-                        {
-                            "name": "Беговые лыжи",
-                            "action": "category",
-                            "item": [1273]
-                        },
-                        {
-                            "name": "Горные лыжи",
-                            "action": "category",
-                            "item": [1274]
-                        },
-                        {
-                            "name": "Сноуборды",
-                            "action": "category",
-                            "item": [1275]
-                        }
+                    "item": [
+                        1334
                     ]
                 },
                 {
-                    "name": "Специальное предложение 1",
-                    "action": "link",
-                    "item": ["http://www.enter.ru/cardforyou"]
+                    "name": "Садовый инвентарь",
+                    "action": "category",
+                    "item": [
+                        1554
+                    ]
                 },
                 {
-                    "name": "Специальное предложение 2",
-                    "image": "/css/header/img/headerSprite.png",
-                    "item": ["http://www.enter.ru/cardforyou"]
+                    "name": "Насосы, насосные станции и помпы",
+                    "action": "category",
+                    "item": [
+                        312
+                    ]
+                },
+                {
+                    "name": "Защита в саду",
+                    "action": "category",
+                    "item": [
+                        1553
+                    ]
+                },
+                {
+                    "name": "Защита от насекомых",
+                    "action": "category",
+                    "item": [
+                        1866
+                    ]
+                },
+                {
+                    "name": "Биотуалеты",
+                    "action": "category",
+                    "item": [
+                        1335
+                    ]
+                },
+                {
+                    "name": "Садовые инструменты для детей",
+                    "action": "category",
+                    "item": [
+                        1721
+                    ]
+                },
+                {
+                    "name": "Садовое освещение",
+                    "action": "category",
+                    "item": [
+                        1594
+                    ]
+                },
+                {
+                    "name": "Садовый декор",
+                    "action": "category",
+                    "item": [
+                        1596
+                    ]
+                },
+                {
+                    "name": "Украшение дома",
+                    "action": "category",
+                    "item": [
+                        1861
+                    ]
+                },
+                {
+                    "name": "Садовые ограждения, бордюры",
+                    "action": "category",
+                    "item": [
+                        1869
+                    ]
+                },
+                {
+                    "name": "Поддержки и опоры для растений",
+                    "action": "category",
+                    "item": [
+                        1565
+                    ]
+                },
+                {
+                    "name": "Садовая мебель и качели",
+                    "action": "category",
+                    "item": [
+                        1868
+                    ]
+                },
+                {
+                    "name": "Товары для пикника",
+                    "action": "category",
+                    "item": [
+                        1867
+                    ]
+                },
+                {
+                    "name": "Бассейны",
+                    "action": "category",
+                    "item": [
+                        1957
+                    ]
+                },
+                {
+                    "name": "Орошение",
+                    "action": "category",
+                    "item": [
+                        1333
+                    ]
                 }
             ]
         },
-
         {
-            "image": "&#x00C7;",
-            "name": "Спорт<br/>и отдых",
-            "action": "link",
-            "item": ["http://www.enter.ru"],
             "image": "promo-1.png",
-            "css": "background: url('http://content.enter.ru/wp-content/uploads/2013/03/icon2.png') no-repeat 0 0;width: 57px; height: 74px; margin-bottom: -31px; position: relative; top: -39px; width: 57px;",
+            "name": "Весенние<br/>праздники",
+            "action": "link",
+            "item": [
+                "http://www.enter.ru/catalog/jewel/ukrasheniya-k-8-marta-2922/"
+            ],
+            "css": "background: url('http://content.enter.ru/wp-content/uploads/2013/03/heart82.png') no-repeat 0 0;width: 27px;",
             "cssHover": "",
-            "color":"#C1DA20",
-            "colorHover":"#C1DA20",
+            "color": "#dd69af",
+            "colorHover": "#dd69af !important",
             "child": [
                 {
-                    "name": "Зимние виды спорта",
+                    "name": "Украшения на 8 марта",
                     "action": "category",
-                    "item": [710],
-                    "child": [
-                        {
-                            "name": "Беговые лыжи",
-                            "action": "category",
-                            "item": [1273]
-                        },
-                        {
-                            "name": "Горные лыжи",
-                            "action": "category",
-                            "item": [1274]
-                        },
-                        {
-                            "name": "Сноуборды",
-                            "action": "category",
-                            "item": [1275]
-                        }
+                    "item": [
+                        2922
                     ]
                 },
                 {
-                    "name": "Специальное предложение 1",
-                    "action": "link",
-                    "item": ["http://www.enter.ru/cardforyou"]
+                    "name": "Подарки на 8 марта",
+                    "action": "category",
+                    "item": [
+                        1522
+                    ]
                 },
                 {
-                    "name": "Специальное предложение 2",
+                    "name": "Подарочные наборы парфюмерии",
                     "image": "/css/header/img/headerSprite.png",
-                    "item": ["http://www.enter.ru/cardforyou"]
+                    "item": [
+                        2591
+                    ]
                 }
             ]
         },
-
         {
             "action": "separator"
         },
-
-
         {
             "image": "&#x00F1;",
             "name": "Еще товары",
@@ -192,30 +277,47 @@
                 {
                     "name": "Кaнцелярские<br/>товары",
                     "action": "category",
-                    "item": [1388],
+                    "item": [
+                        1388
+                    ],
                     "css": "background: url('http://content.enter.ru/wp-content/uploads/2013/03/headersprite.gif') no-repeat -898px 0;width: 32px;",
                     "cssHover": "background-position:-898px -44px;"
                 },
                 {
                     "name": "Музыкальные<br/>инструменты",
                     "action": "category",
-                    "item": [2396],
+                    "item": [
+                        2396
+                    ],
                     "css": "background: url('http://content.enter.ru/wp-content/uploads/2013/03/headersprite.gif') no-repeat -760px 0;width: 37px;",
                     "cssHover": "background-position:-760px -44px;"
                 },
                 {
                     "name": "Зоотовары",
                     "action": "category",
-                    "item": [1438],
+                    "item": [
+                        1438
+                    ],
                     "css": "background: url('http://content.enter.ru/wp-content/uploads/2013/03/headersprite.gif') no-repeat -231px 0;width: 34px;",
                     "cssHover": "background-position:-231px -44px;"
                 },
                 {
                     "name": "Красота<br/>и здоровье",
                     "action": "category",
-                    "item": [21],
+                    "item": [
+                        21
+                    ],
                     "css": "background: url('http://content.enter.ru/wp-content/uploads/2013/03/headersprite.gif') no-repeat -91px 0;width: 38px;",
                     "cssHover": "background-position:-91px -44px;"
+                },
+                {
+                    "name": "Спорт<br/>и отдых",
+                    "action": "category",
+                    "item": [
+                        647
+                    ],
+                    "css": "background: url('http://content.enter.ru/wp-content/uploads/2013/03/headersprite.gif') no-repeat -422px 0;width: 48px;",
+                    "cssHover": "background-position:-422px -44px;"
                 }
             ]
         }
