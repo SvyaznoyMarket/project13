@@ -3723,6 +3723,7 @@
     float: left;
     font-size: 11px;
     padding: 3px 0px 9px;
+    min-width: 200px;
   }
   .filter.fr {
     float: right;
@@ -3807,6 +3808,7 @@
     font-size: 11px;
     padding-bottom: 9px;
     text-align: center;
+    min-width: 180px;
   }
   .pageslist ul {
     float: left;
