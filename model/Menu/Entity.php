@@ -24,6 +24,8 @@ class Entity {
     /** @var string */
     private $color;
     /** @var string */
+    private $colorHover;
+    /** @var string */
     private $css;
     /** @var string */
     private $cssHover;
@@ -35,6 +37,7 @@ class Entity {
         if (array_key_exists('image', $data)) $this->setImage($data['image']);
         if (array_key_exists('action', $data)) $this->setAction($data['action']);
         if (array_key_exists('color', $data)) $this->setColor($data['color']);
+        if (array_key_exists('colorHover', $data)) $this->setColorHover($data['colorHover']);
         if (array_key_exists('css', $data)) $this->setCss($data['css']);
         if (array_key_exists('cssHover', $data)) $this->setCssHover($data['cssHover']);
         if (array_key_exists('item', $data)) {
@@ -187,5 +190,19 @@ class Entity {
      */
     public function getColor() {
         return $this->color;
+    }
+
+    /**
+     * @param string $colorHover
+     */
+    public function setColorHover($colorHover) {
+        $this->colorHover = (string)$colorHover;
+    }
+
+    /**
+     * @return string
+     */
+    public function getColorHover() {
+        return $this->colorHover;
     }
 }
