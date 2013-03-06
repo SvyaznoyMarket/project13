@@ -7967,6 +7967,9 @@
     margin: 0px;
     padding-top: 18px;
   }
+  .bSubscribeLightbox {
+    display: none;
+  }
 }
 /*--END---СТИЛИ ЛАЙТБОКСА--*/
 /*-----СТИЛИ ХЛЕБНЫХ КРОШЕК И ХЭДА-----*/

@@ -1,4 +1,14 @@
 $(document).ready(function(){
+
+	var lboxCheckSubscribe = function(data){
+		if (data.isSubscribe){
+			var subscribeItem = $('.bSubscribeLightbox')
+			subscribeItem.show()
+			subscribeItem.bind('click', function(){
+				//
+			})
+		}
+	}
 	
 	var carturl = $('.lightboxinner .point2').attr('href')
 
@@ -49,6 +59,9 @@ $(document).ready(function(){
           			$('#auth-link').hide()
 					$('#auth-link').after(show_user)
 				} else $('#auth-link').show()
+
+				// subscribe
+				lboxCheckSubscribe(data.data)
 			}
 
 	})
