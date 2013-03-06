@@ -23,17 +23,17 @@
                 <?php foreach($product->getWarranty() as $warranty): ?>
             <tr>
                 <td class="bF1Block_eInfo">
-                    <?php echo $warranty->getName() ?><br/>
-                    <a href="/warranty_f1#warranty<?php echo $warranty->getId() ?>">Подробнее об услуге</a>
+                    <?= $warranty->getName() ?><br/>
+                    <a href="/warranty_f1#warranty<?= $warranty->getId() ?>">Подробнее об услуге</a>
                 </td>
-                <td class="bF1Block_eBuy" ref="<?php echo $warranty->getId() ?>">
-                    <span class="bF1Block_ePrice"><?php echo $warranty->getPrice() ?>&nbsp;	<span class="rubl">p</span></span>
-                    <input class="button yellowbutton<?php echo $cart->hasWarranty($product->getId(), $warranty->getId()) ? ' active' : '' ?>" type="button" value="<?php echo $cart->hasWarranty($product->getId(), $warranty->getId()) ? 'В корзине' : 'Выбрать' ?>"
-                           data-ewid="<?php echo $warranty->getId() ?>"
-                           data-f1title="<?php echo $warranty->getName() ?>"
-                           data-f1price="<?php echo $warranty->getPrice() ?>"
-                           data-url="<?php echo $page->url('cart.warranty.set', array('productId' => $product->getId(), 'warrantyId' => $warranty->getId(), 'quantity' => 1)) ?>"
-                           data-deleteurl="<?php echo $page->url('cart.warranty.delete', array('productId' => $product->getId(), 'warrantyId' => $warranty->getId())) ?>" />
+                <td class="bF1Block_eBuy" ref="<?= $warranty->getId() ?>">
+                    <span class="bF1Block_ePrice"><?= $page->helper->formatPrice($warranty->getPrice()) ?>&nbsp;	<span class="rubl">p</span></span>
+                    <input class="button yellowbutton<?= $cart->hasWarranty($product->getId(), $warranty->getId()) ? ' active' : '' ?>" type="button" value="<?= $cart->hasWarranty($product->getId(), $warranty->getId()) ? 'В корзине' : 'Выбрать' ?>"
+                           data-ewid="<?= $warranty->getId() ?>"
+                           data-f1title="<?= $warranty->getName() ?>"
+                           data-f1price="<?= $warranty->getPrice() ?>"
+                           data-url="<?= $page->url('cart.warranty.set', array('productId' => $product->getId(), 'warrantyId' => $warranty->getId(), 'quantity' => 1)) ?>"
+                           data-deleteurl="<?= $page->url('cart.warranty.delete', array('productId' => $product->getId(), 'warrantyId' => $warranty->getId())) ?>" />
                 </td>
             </tr>
                 <?php endforeach ?>
