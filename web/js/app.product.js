@@ -105,6 +105,9 @@ $(document).ready(function() {
 					sliderW = similarSlider.width()
 				})
 			}
+			if (slidesCount < 4){
+				$('.bSimilarGoodsSlider_eArrow.mRight').hide()
+			}
 		}
 
 		$.getJSON( $('#similarGoodsSlider').data('url') , function(data){

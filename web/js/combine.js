@@ -11,6 +11,6 @@ window.filesWithVersion = {
 "dash.js":1362572609,
 "app.order.js":1362575177,
 "app.product.comment.list.js":1351763596,
-"app.product.js":1362574813,
+"app.product.js":1362576781,
 "app.shop.js":1356360722
 }
