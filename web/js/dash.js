@@ -1,4 +1,18 @@
 $(document).ready(function(){
+
+	var lboxCheckSubscribe = function(data){
+		if (!data.isSubscribe) 
+			return false
+		var subPopup = $('.bSubscribeLightboxPopup')
+		var subscribeItem = $('.bSubscribeLightbox')
+		subscribeItem.show()
+		subscribeItem.bind('click', function(){
+			subPopup.show()
+		})
+		subPopup.find('.close').bind('click', function(){
+			subPopup.hide()
+		})
+	}
 	
 	var carturl = $('.lightboxinner .point2').attr('href')
 
@@ -49,6 +63,9 @@ $(document).ready(function(){
           			$('#auth-link').hide()
 					$('#auth-link').after(show_user)
 				} else $('#auth-link').show()
+
+				// subscribe
+				lboxCheckSubscribe(data.data)
 			}
 
 	})

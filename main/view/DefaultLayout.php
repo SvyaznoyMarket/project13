@@ -14,10 +14,10 @@ class DefaultLayout extends Layout {
         $this->addMeta('title', 'Enter - это выход!');
         $this->addMeta('description', 'Enter - новый способ покупать. Любой из ' . \App::config()->product['totalCount'] . ' товаров нашего ассортимента можно купить где угодно, как угодно и когда угодно. Наша миссия: дарить время для настоящего. Честно. С любовью. Как для себя.');
 
-        $this->addStylesheet('/css/global.css');
+        if (!\App::config()->debug) {
+            $this->addStylesheet('/css/global.css');
+        }
 
-        $this->addJavascript('/js/jquery-1.6.4.min.js');
-        $this->addJavascript('/js/LAB.min.js');
         $this->addJavascript('/js/loadjs.js');
     }
 
@@ -50,27 +50,6 @@ class DefaultLayout extends Layout {
     }
 
     public function slotHeader() {
-        /** @var $categories \Model\Product\Category\Entity[] */
-        $categories = $this->getParam('rootCategories');
-
-        if (null === $categories) {
-            try {
-                $categories = \RepositoryManager::productCategory()->getRootCollection();
-            } catch (\Exception $e) {
-                \App::exception()->add($e);
-                \App::logger()->error($e);
-
-                $categories = [];
-            }
-        }
-
-        foreach($categories as $i => $category){
-            if(!$category->getIsInMenu()){
-                unset($categories[$i]);
-            }
-        }
-        $this->setParam('rootCategories', $categories);
-
         return $this->render('_header', $this->params);
     }
 
@@ -127,6 +106,21 @@ class DefaultLayout extends Layout {
         return $this->render('_regionSelection', array_merge($this->params, array('regions' => $regions)));
     }
 
+    /**
+     * @return string
+     */
+    public function slotHeadJavascript() {
+        $return = "\n";
+        foreach ([
+            'http://yandex.st/jquery/1.6.4/jquery.min.js',
+            '/js/LAB.min.js',
+        ] as $javascript) {
+            $return .= '<script src="' . $javascript . '" type="text/javascript"></script>' . "\n";
+        }
+
+        return $return;
+    }
+
     public function slotInnerJavascript() {
         return ''
             . $this->render('_remarketingGoogle', ['tag_params' => []])
@@ -162,8 +156,102 @@ class DefaultLayout extends Layout {
         return '';
     }
 
-    public function slotRootCategory() {
-        return $this->render('product-category/_root', array('categories' => $this->getParam('rootCategories')));
+    public function slotMainMenu() {
+        $repository = \RepositoryManager::menu();
+
+        /** @var $menu \Model\Menu\Entity[] */
+        $menu = [];
+        $repository->prepareCollection(function($data) use (&$menu, $repository) {
+            foreach ($data['item'] as $item) {
+                $menu[] = new \Model\Menu\Entity($item);
+            }
+        }, function(\Exception $e) use (&$menu, $repository) {
+            \App::exception()->remove($e);
+            $menu = $repository->getCollection();
+        });
+
+        $categories = [];
+        \RepositoryManager::productCategory()->prepareTreeCollection(\App::user()->getRegion(), 3, function($data) use (&$categories) {
+            foreach ($data as $item) {
+                $categories[] = new \Model\Product\Category\TreeEntity($item);
+            }
+        });
+
+        \App::coreClientV2()->execute();
+
+        //$menu = $repository->getCollection(); //для тестирования
+
+        $categoriesById = [];
+        $walk = function($categories) use (&$walk, &$categoriesById, $repository) {
+            foreach ($categories as $category) {
+                /** @var \Model\Product\Category\Entity $category */
+                $categoriesById[$category->getId()] = $category;
+
+                if ((bool)$category->getChild()) {
+                    $walk($category->getChild());
+                }
+            }
+        };
+        $walk($categories);
+        unset($walk);
+
+        $walk = function($menu) use (&$walk, &$categoriesById, $repository) {
+            /** @var $iMenu \Model\Menu\Entity  */
+            $i = 0;
+            foreach ($menu as $iMenu) {
+                $i++;
+                $iMenu->setPriority($i);
+
+                /** @var \Model\Menu\Entity $iMenu */
+                $repository->setEntityLink($iMenu, \App::router(), $categoriesById);
+
+                if (\Model\Menu\Entity::ACTION_PRODUCT_CATALOG == $iMenu->getAction()) {
+                    $items = $iMenu->getItem();
+                    $id = reset($items);
+                    /** @var \Model\Product\Category\Entity $category */
+                    $category = ($id && isset($categoriesById[$id])) ? $categoriesById[$id] : null;
+                    if (!$category) {
+                        \App::logger()->error(sprintf('Не найдена категория #%s для элемента меню %s', $id, $iMenu->getName()));
+                        continue;
+                    }
+
+                    if (2 == $category->getLevel()) {
+                        $iMenu->setImage($category->getImageUrl(0));
+                    }
+
+                    if ($category->getLevel() <= 2) {
+                        $i = 1;
+                        foreach ($category->getChild() as $childCategory) {
+                            if ((2 == $category->getLevel()) && ($i > 5)) {
+                                $child = new \Model\Menu\Entity();
+                                $child->setAction(\Model\Menu\Entity::ACTION_PRODUCT_CATEGORY);
+                                $child->setName('Все разделы');
+                                $child->setItem([$category->getId()]);
+                                $iMenu->addChild($child);
+
+                                break;
+                            }
+
+                            $child = new \Model\Menu\Entity();
+                            $child->setAction(\Model\Menu\Entity::ACTION_PRODUCT_CATALOG);
+                            $child->setName($childCategory->getName());
+                            $child->setItem([$childCategory->getId()]);
+                            $iMenu->addChild($child);
+
+                            $i++;
+                        }
+                    }
+                }
+
+                if ((bool)$iMenu->getChild()) {
+                    $walk($iMenu->getChild());
+                }
+            }
+        };
+        $walk($menu);
+        unset($walk);
+
+        return $this->render('_mainMenu', array('menu' => $menu));
     }
 
     public function slotBanner() {

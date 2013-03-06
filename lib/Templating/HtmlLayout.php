@@ -227,7 +227,13 @@ class HtmlLayout {
     /**
      * @return string
      */
-    public function slotJavascript() {
+    public function slotHeadJavascript() {
+    }
+
+    /**
+     * @return string
+     */
+    public function slotBodyJavascript() {
         $return = "\n";
         foreach ($this->javascripts as $javascript) {
             $return .= '<script src="' . $javascript . '" type="text/javascript"></script>' . "\n";

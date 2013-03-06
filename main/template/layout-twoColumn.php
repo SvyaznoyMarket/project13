@@ -10,10 +10,11 @@
     <title><?= $page->getTitle() ?></title>
     <link rel="shortcut icon" href="/favicon.ico"/>
     <?= $page->slotStylesheet() ?>
+    <?= $page->slotHeadJavascript() ?>
     <?= $page->slotRelLink() ?>
     <?= $page->slotGoogleAnalytics() ?>
 </head>
-<body class="<?= $page->slotBodyClassAttribute() ?>" data-template="<?= $page->slotBodyDataAttribute() ?>" data-id="<?= \App::$id ?>">
+<body class="<?= $page->slotBodyClassAttribute() ?>" data-template="<?= $page->slotBodyDataAttribute() ?>" data-id="<?= \App::$id ?>"<? if (\App::config()->debug): ?> data-debug=true<? endif ?>>
     <div class="allpage" id="page">
     <? if (\App::config()->adFox['enabled']): ?>
     <div class="adfoxWrapper" id="adfoxbground"></div>
@@ -43,7 +44,7 @@
     <?= $page->slotUserbar() ?>
 
     <?= $page->slotRegionSelection() ?>
-    <?= $page->slotJavascript() ?>
+    <?= $page->slotBodyJavascript() ?>
     <?= $page->slotInnerJavascript() ?>
     <?= $page->slotAuth() ?>
     <?= $page->slotYandexMetrika() ?>
