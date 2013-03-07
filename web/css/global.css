@@ -200,8 +200,6 @@
   .float100 {
     float: left;
     width: 100%;
-    position: relative;
-    z-index: 1;
   }
   .ar {
     text-align: right;
@@ -5847,8 +5845,9 @@
     zoom: 1;
   }
   .bBuyingLine dd div {
-    margin: 15px 0px 0px;
     position: relative;
+    overflow: hidden;
+    margin: 15px 0px 0px;
   }
   .bBuyingLine dd div:first-child {
     margin-top: 0px;
@@ -8322,8 +8321,6 @@
   /*--- БАННЕР ---*/
   .bigbanner {
     padding: 0px;
-    position: relative;
-    z-index: 1;
   }
   .bannersbox {
     left: 0px;
