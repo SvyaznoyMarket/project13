@@ -122,18 +122,16 @@ class Layout extends \View\DefaultLayout {
 
         $region = \App::user()->getRegion();
 
-        $seoTemplates = [];
-        $callback = function ($data, $index) use (&$seoTemplates) {
-            if (is_array($data)) {
-                $seoTemplates[$index] = $data;
-            }
-        };
-
-        $dataStore->addQuery(sprintf('seo/%s.json', trim($category->getLink(), '/')), $callback);
-        foreach (array_reverse($category->getAncestor()) as $iCategory) {
-            /** @var $iCategory \Model\Product\Category\Entity */
-            $dataStore->addQuery(sprintf('seo/%s/index.json', trim($iCategory->getLink(), '/')), $callback);
+        $seoTemplate = null;
+        $categoryTokens = [];
+        foreach ($category->getAncestor() as $iCategory) {
+            $categoryTokens[] = $iCategory->getToken();
         }
+        $categoryTokens[] = $category->getToken();
+
+        $dataStore->addQuery(sprintf('seo/catalog/%s.json', implode('/', $categoryTokens)), function ($data) use (&$seoTemplate) {
+            $seoTemplate = $data;
+        });
 
         // данные для шаблона
         $patterns = [
@@ -153,10 +151,6 @@ class Layout extends \View\DefaultLayout {
 
         $dataStore->execute();
 
-        // сортируем шаблоны в порядке следования запросов: сначала категория, потом категория-мама, потом кактегория-бабушка и т.д.
-        ksort($seoTemplates);
-        // выбираем самый близкий по родословной шаблон
-        $seoTemplate = reset($seoTemplates);
         if (!$seoTemplate) return;
 
         $replacer = new \Util\InflectReplacer($patterns);
