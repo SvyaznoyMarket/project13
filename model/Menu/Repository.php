@@ -44,7 +44,7 @@ class Repository {
      * @param \Model\Product\Category\Entity[] $categoriesById
      * @throws \Exception
      */
-    public function setEntityLink(Entity $entity, \Routing\Router $router, $categoriesById = [], $productsById = []) {
+    public function setEntityLink(Entity $entity, \Routing\Router $router, &$categoriesById = [], $productsById = []) {
         $link = null;
 
         try {

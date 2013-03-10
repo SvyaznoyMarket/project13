@@ -173,7 +173,7 @@ class DefaultLayout extends Layout {
         $categories = [];
         \RepositoryManager::productCategory()->prepareTreeCollection(\App::user()->getRegion(), 3, function($data) use (&$categories) {
             foreach ($data as $item) {
-                $categories[] = new \Model\Product\Category\TreeEntity($item);
+                $categories[] = new \Model\Product\Category\MenuEntity($item);
             }
         });
 
@@ -184,7 +184,7 @@ class DefaultLayout extends Layout {
         $categoriesById = [];
         $walk = function($categories) use (&$walk, &$categoriesById, $repository) {
             foreach ($categories as $category) {
-                /** @var \Model\Product\Category\Entity $category */
+                /** @var \Model\Product\Category\MenuEntity $category */
                 $categoriesById[$category->getId()] = $category;
 
                 if ((bool)$category->getChild()) {
@@ -208,7 +208,7 @@ class DefaultLayout extends Layout {
                 if (\Model\Menu\Entity::ACTION_PRODUCT_CATALOG == $iMenu->getAction()) {
                     $items = $iMenu->getItem();
                     $id = reset($items);
-                    /** @var \Model\Product\Category\Entity $category */
+                    /** @var \Model\Product\Category\MenuEntity $category */
                     $category = ($id && isset($categoriesById[$id])) ? $categoriesById[$id] : null;
                     if (!$category) {
                         \App::logger()->error(sprintf('Не найдена категория #%s для элемента меню %s', $id, $iMenu->getName()));
@@ -220,25 +220,21 @@ class DefaultLayout extends Layout {
                     }
 
                     if ($category->getLevel() <= 2) {
-                        $i = 1;
                         foreach ($category->getChild() as $childCategory) {
-                            if ((2 == $category->getLevel()) && ($i > 5)) {
-                                $child = new \Model\Menu\Entity();
-                                $child->setAction(\Model\Menu\Entity::ACTION_PRODUCT_CATEGORY);
-                                $child->setName('Все разделы');
-                                $child->setItem([$category->getId()]);
-                                $iMenu->addChild($child);
-
-                                break;
-                            }
-
-                            $child = new \Model\Menu\Entity();
-                            $child->setAction(\Model\Menu\Entity::ACTION_PRODUCT_CATALOG);
-                            $child->setName($childCategory->getName());
-                            $child->setItem([$childCategory->getId()]);
+                            $child = new \Model\Menu\Entity([
+                                'action' => \Model\Menu\Entity::ACTION_PRODUCT_CATALOG,
+                                'name'   => $childCategory->getName(),
+                                'item'   => [$childCategory->getId()],
+                            ]);
                             $iMenu->addChild($child);
-
-                            $i++;
+                        }
+                        if ($category->countChild() > \Model\Product\Category\MenuEntity::MAX_CHILD) {
+                            $child = new \Model\Menu\Entity([
+                                'action' => \Model\Menu\Entity::ACTION_PRODUCT_CATEGORY,
+                                'name'   => 'Все разделы',
+                                'item'   => [$category->getId()],
+                            ]);
+                            $iMenu->addChild($child);
                         }
                     }
                 }
