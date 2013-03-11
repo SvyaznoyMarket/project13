@@ -157,7 +157,15 @@ class DefaultLayout extends Layout {
     }
 
     public function slotMainMenu() {
-        return $this->render('_mainMenu', array('menu' => (new Menu())->generate()));
+        $cache = \App::cache();
+
+        $key = 'mainMenu.html';
+        if (!$content = $cache->get($key, 600)) {
+            $content = $this->render('_mainMenu', array('menu' => (new Menu())->generate()));
+            $cache->set($key, $content);
+        }
+
+        return $content;
     }
 
     public function slotBanner() {
