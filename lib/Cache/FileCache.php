@@ -22,7 +22,7 @@ class FileCache implements CacheInterface {
      */
     public function get($key, $timeout = null) {
         $file = $this->config['dataDir'] . '/' . $key;
-        if (is_file($file) && ($timeout ? ((filemtime($file) + $timeout) > microtime(true)) : true)) {
+        if (is_readable($file) && ($timeout ? ((filemtime($file) + $timeout) > microtime(true)) : true)) {
             return file_get_contents($file);
         }
 
