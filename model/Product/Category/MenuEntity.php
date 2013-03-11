@@ -34,11 +34,12 @@ class MenuEntity {
         if (array_key_exists('media_image', $data)) $this->setImage($data['media_image']);
         if (array_key_exists('children', $data) && is_array($data['children'])) {
             $this->childCount = count($data['children']);
-            $i = 1;
-            foreach ($data['children'] as $childData) {
-                if ((self::MAX_CHILD < $i) && (2 == $data['level'])) break;
-                $this->addChild(new MenuEntity($childData));
-                $i++;
+
+            $limit = (2 == $data['level'])
+                ? ($this->childCount < self::MAX_CHILD ? $this->childCount : self::MAX_CHILD)
+                : $this->childCount;
+            for ($i = 0; $i < $limit; $i++) {
+                $this->addChild(new MenuEntity($data['children'][$i]));
             }
         }
     }

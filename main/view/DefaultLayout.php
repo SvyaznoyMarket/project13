@@ -228,7 +228,7 @@ class DefaultLayout extends Layout {
                             ]);
                             $iMenu->addChild($child);
                         }
-                        if ($category->countChild() > \Model\Product\Category\MenuEntity::MAX_CHILD) {
+                        if ((2 == $category->getLevel()) && ($category->countChild() > \Model\Product\Category\MenuEntity::MAX_CHILD)) {
                             $child = new \Model\Menu\Entity([
                                 'action' => \Model\Menu\Entity::ACTION_PRODUCT_CATEGORY,
                                 'name'   => 'Все разделы',
