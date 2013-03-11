@@ -280,6 +280,31 @@ class App {
     }
 
     /**
+     * @param string|null $name
+     * @return \Cache\CacheInterface
+     */
+    public static function cache($name = null) {
+        static $instances = [];
+
+        if (null == $name) {
+            $name = 'file';
+        }
+
+        if (!isset($instances[$name])) {
+            switch ($name) {
+                case 'file':
+                    $instances[$name] = new \Cache\FileCache(['dataDir' => self::$config->appDir . '/cache']);
+                    break;
+                default:
+                    $instances[$name] = new \Cache\FileCache(['dataDir' => self::$config->appDir . '/cache']);
+                    break;
+            }
+        }
+
+        return $instances[$name];
+    }
+
+    /**
      * @param $name
      * @return \Oauth\ProviderInterface
      * @throws InvalidArgumentException
