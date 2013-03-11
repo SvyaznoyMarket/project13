@@ -30,31 +30,23 @@ class Menu {
             $menu = $this->repository->getCollection();
         });
 
-        $categories = [];
-        \RepositoryManager::productCategory()->prepareTreeCollection(\App::user()->getRegion(), 3, function($data) use (&$categories) {
-            foreach ($data as $item) {
-                $categories[] = new \Model\Product\Category\MenuEntity($item);
-            }
+        \RepositoryManager::productCategory()->prepareTreeCollection(\App::user()->getRegion(), 3, function($data) {
+            $walk = function(&$data) use (&$walk) {
+                foreach ($data as $item) {
+                    $this->categoriesById[$item['id']] = new \Model\Product\Category\MenuEntity($item);
+
+                    if (isset($item['children'])) {
+                        $walk($item['children']);
+                    }
+                }
+            };
+            $walk($data);
         });
 
         \App::coreClientV2()->execute();
 
         //$menu = $this->repository->getCollection(); //для тестирования
-
-        $walk = function($categories) use (&$walk) {
-            foreach ($categories as $category) {
-                /** @var \Model\Product\Category\MenuEntity $category */
-                $this->categoriesById[$category->getId()] = $category;
-
-                if ((bool)$category->getChild()) {
-                    $walk($category->getChild());
-                }
-            }
-        };
-        $walk($categories);
-        unset($walk);
-
-        $this->walkOnCategory($menu);
+        $this->walkOnMenu($menu);
 
         return $menu;
     }
@@ -62,7 +54,7 @@ class Menu {
     /**
      * @param \Model\Menu\Entity[] $menu
      */
-    private function walkOnCategory($menu) {
+    private function walkOnMenu($menu) {
         /** @var $iMenu \Model\Menu\Entity  */
         foreach ($menu as $iMenu) {
             /** @var \Model\Menu\Entity $iMenu */
@@ -104,7 +96,7 @@ class Menu {
             }
 
             if ((bool)$iMenu->getChild()) {
-                $this->walkOnCategory($iMenu->getChild());
+                $this->walkOnMenu($iMenu->getChild());
             }
         }
     }
