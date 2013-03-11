@@ -157,12 +157,20 @@ class DefaultLayout extends Layout {
     }
 
     public function slotMainMenu() {
-        $cache = \App::cache();
+        $client = \App::curl();
 
-        $key = 'mainMenu.html';
-        if (!$content = $cache->get($key, 600)) {
+        $isFailed = false;
+        $content = '';
+        $client->addQuery('http://' . \App::config()->mainHost . \App::router()->generate('category.mainMenu'), [], function($data) use (&$content) {
+            $content = $data['content'];
+        }, function(\Exception $e) use (&$isFailed) {
+            \App::exception()->remove($e);
+            $isFailed = true;
+        });
+        $client->execute(\App::config()->coreV2['retryTimeout']['short'], \App::config()->coreV2['retryCount']);
+
+        if ($isFailed) {
             $content = $this->render('_mainMenu', array('menu' => (new Menu())->generate()));
-            $cache->set($key, $content);
         }
 
         return $content;
