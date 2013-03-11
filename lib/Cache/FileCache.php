@@ -22,10 +22,6 @@ class FileCache implements CacheInterface {
      */
     public function get($key, $timeout = null) {
         $file = $this->config['dataDir'] . '/' . $key;
-        \App::debug()->add('cache.mainMenu', json_encode([
-            date('Y-m-d H:i:s', (filemtime($file))) . ' + ' . $timeout . ' = ' . date('Y-m-d H:i:s', (filemtime($file) + $timeout)),
-            date('Y-m-d H:i:s', microtime(true))
-        ]));
         if (is_file($file) && ($timeout ? ((filemtime($file) + $timeout) > microtime(true)) : true)) {
             return file_get_contents($file);
         }
