@@ -200,8 +200,6 @@
   .float100 {
     float: left;
     width: 100%;
-    position: relative;
-    z-index: 1;
   }
   .ar {
     text-align: right;
@@ -1148,9 +1146,8 @@
     font-size: 14px;
     position: fixed;
     top: 0;
-    left: 50%;
+    left: 20px;
     letter-spacing: 0.1em;
-    margin-left: -25px;
     margin-top: -30px;
     padding: 2px 15px 5px 35px;
     z-index: 2000;
@@ -5847,8 +5844,9 @@
     zoom: 1;
   }
   .bBuyingLine dd div {
-    margin: 15px 0px 0px;
     position: relative;
+    overflow: hidden;
+    margin: 15px 0px 0px;
   }
   .bBuyingLine dd div:first-child {
     margin-top: 0px;
@@ -7434,15 +7432,13 @@
 /*-------СТИЛИ СТРАНИЦЫ F1-----*/
 @media all {
   .servicebanner {
-    background: #4fcbf4 url("/css/f1Page/img/bg_service2.jpg") no-repeat 0px 0px;
+    background: url("/css/f1Page/img/f1Banner_new.jpg") no-repeat 0px 0px;
     clear: both;
     color: #ffffff;
     font-size: 14px;
-    height: 178px;
+    height: 266px;
     line-height: 14px;
-    margin-bottom: 25px;
-    padding: 33px 0px 0px 600px;
-    width: 320px;
+    width: 924px;
   }
   .slogan {
     color: #4fcbf4;
@@ -8324,8 +8320,6 @@
   /*--- БАННЕР ---*/
   .bigbanner {
     padding: 0px;
-    position: relative;
-    z-index: 1;
   }
   .bannersbox {
     left: 0px;

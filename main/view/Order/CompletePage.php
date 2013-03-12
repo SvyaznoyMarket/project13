@@ -25,9 +25,9 @@ class CompletePage extends Layout {
         return 'order_complete';
     }
 
-    public function slotYandexMetrika() {
-        return (\App::config()->yandexMetrika['enabled']) ? $this->render('order/_yandexMetrika') : '';
-    }
+    // public function slotYandexMetrika() {
+    //     return (\App::config()->yandexMetrika['enabled']) ? $this->render('order/_yandexMetrika') : '';
+    // }
 
     public function slotGoogleAnalytics() {
         $orders = $this->getParam('orders');
