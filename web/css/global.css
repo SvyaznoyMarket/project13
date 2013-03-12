@@ -5845,7 +5845,6 @@
   }
   .bBuyingLine dd div {
     position: relative;
-    overflow: hidden;
     margin: 15px 0px 0px;
   }
   .bBuyingLine dd div:first-child {
