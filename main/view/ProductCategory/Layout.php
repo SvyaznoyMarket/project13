@@ -142,13 +142,13 @@ class Layout extends \View\DefaultLayout {
             'сайт'      => null,
         ];
         $dataStore->addQuery(sprintf('inflect/product-category/%s.json', $category->getId()), function($data) use (&$patterns) {
-            $patterns['категория'] = $data;
+            if ($data) $patterns['категория'] = $data;
         });
         $dataStore->addQuery(sprintf('inflect/region/%s.json', $region->getId()), function($data) use (&$patterns) {
-            $patterns['город'] = $data;
+            if ($data) $patterns['город'] = $data;
         });
         $dataStore->addQuery('inflect/сайт.json', function($data) use (&$patterns) {
-            $patterns['сайт'] = $data;
+            if ($data) $patterns['сайт'] = $data;
         });
 
         $dataStore->execute();
