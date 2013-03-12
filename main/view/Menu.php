@@ -131,16 +131,12 @@ class Menu {
                 'item'   => [$childCategory->getId()],
             ]);
             $child->setLink($childCategory->getLink());
+            $child->setImage($childCategory->getImageUrl(0));
             $iMenu->addChild($child);
 
             if ((bool)$childCategory->getChild()) {
                 $this->fillCatalogMenu($child, $childCategory);
             }
-        }
-
-        // фото для категории 2-го уровня
-        if (2 == $category->getLevel()) {
-            $iMenu->setImage($category->getImageUrl(0));
         }
 
         if ((2 == $category->getLevel()) && ($category->countChild() > \Model\Product\Category\MenuEntity::MAX_CHILD)) {
