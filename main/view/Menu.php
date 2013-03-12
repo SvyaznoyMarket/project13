@@ -113,6 +113,7 @@ class Menu {
                     continue;
                 }
 
+                $iMenu->setLink($category->getLink());
                 $this->fillCatalogMenu($iMenu, $category);
             }
 
