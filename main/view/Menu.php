@@ -8,7 +8,11 @@ class Menu {
     /** @var \Routing\Router */
     private $router;
     /** @var \Model\Product\Category\MenuEntity[] */
+    private $rootCategoriesById = [];
+    /** @var \Model\Product\Category\MenuEntity[] */
     private $categoriesById = [];
+    /** @var \Model\Menu\Entity[] */
+    private $menu;
 
     public function __construct() {
         $this->repository = \RepositoryManager::menu();
@@ -19,143 +23,133 @@ class Menu {
      * @return \Model\Menu\Entity[]
      */
     public function generate() {
-        /** @var $menu \Model\Menu\Entity[] */
-        $menu = [];
-        $this->repository->prepareCollection(function($data) use (&$menu) {
-            foreach ($data['item'] as $item) {
-                $menu[] = new \Model\Menu\Entity($item);
-            }
-        }, function(\Exception $e) use (&$menu) {
+        $isFailed = false;
+        $this->repository->prepareCollection(function($data) {
+            $this->prepareMenu($data['item']);
+        }, function(\Exception $e) use (&$isFailed) {
             \App::exception()->remove($e);
-            $menu = $this->repository->getCollection();
+            $isFailed = true;
         });
 
+        \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium'], \App::config()->coreV2['retryCount']);
+
+        if ($isFailed) {
+            $this->menu = $this->repository->getCollection();
+        }
+
+        // сбор категорий для ACTION_PRODUCT_CATALOG
         \RepositoryManager::productCategory()->prepareTreeCollection(\App::user()->getRegion(), 3, function($data) {
-            $walk = function(&$data) use (&$walk) {
-                foreach ($data as $item) {
-                    $this->categoriesById[$item['id']] = new \Model\Product\Category\MenuEntity($item);
-
-                    if (isset($item['children'])) {
-                        $walk($item['children']);
-                    }
-                }
-            };
-            $walk($data);
+            foreach ($data as $item) {
+                $this->rootCategoriesById[$item['id']] = new \Model\Product\Category\MenuEntity($item);
+            }
         });
 
-        \App::coreClientV2()->execute();
+        // сбор категорий для ACTION_PRODUCT_CATEGORY
+        \RepositoryManager::productCategory()->prepareCollectionById(array_keys($this->categoriesById), \App::user()->getRegion(), function($data) {
+            foreach ($data as $item) {
+                $this->categoriesById[$item['id']] = new \Model\Product\Category\MenuEntity($item);
+            }
+        });
 
-        //$menu = $this->repository->getCollection(); //для тестирования
-        $this->walkOnMenu($menu);
+        \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium'], \App::config()->coreV2['retryCount']);
 
-        return $menu;
+        $this->fillMenu($this->menu);
+
+        return $this->menu;
     }
 
     /**
-     * @param \Model\Menu\Entity[] $menu
+     * Создание объектов меню, сбор категорий
+     *
+     * @param $data
+     * @param \Model\Menu\Entity $parent
      */
-    private function walkOnMenu($menu) {
-        /** @var $iMenu \Model\Menu\Entity  */
-        foreach ($menu as $iMenu) {
-            /** @var \Model\Menu\Entity $iMenu */
-            $this->setLink($iMenu, \App::router(), $this->categoriesById);
-
-            if (\Model\Menu\Entity::ACTION_PRODUCT_CATALOG == $iMenu->getAction()) {
-                $items = $iMenu->getItem();
-                $id = reset($items);
-                /** @var \Model\Product\Category\MenuEntity $category */
-                $category = ($id && isset($this->categoriesById[$id])) ? $this->categoriesById[$id] : null;
-                if (!$category) {
-                    \App::logger()->error(sprintf('Не найдена категория #%s для элемента меню %s', $id, $iMenu->getName()));
-                    continue;
-                }
-
-                if (2 == $category->getLevel()) {
-                    $iMenu->setImage($category->getImageUrl(0));
-                }
-
-                if ($category->getLevel() <= 2) {
-                    foreach ($category->getChild() as $childCategory) {
-                        $child = new \Model\Menu\Entity([
-                            'action' => \Model\Menu\Entity::ACTION_PRODUCT_CATALOG,
-                            'name'   => $childCategory->getName(),
-                            'item'   => [$childCategory->getId()],
-                        ]);
-                        $iMenu->addChild($child);
-                    }
-
-                    if ((2 == $category->getLevel()) && ($category->countChild() > \Model\Product\Category\MenuEntity::MAX_CHILD)) {
-                        $child = new \Model\Menu\Entity([
-                            'action' => \Model\Menu\Entity::ACTION_PRODUCT_CATEGORY,
-                            'name'   => 'Все разделы',
-                            'item'   => [$category->getId()],
-                        ]);
-                        $iMenu->addChild($child);
-                    }
+    public function prepareMenu($data, \Model\Menu\Entity $parent = null) {
+        foreach ($data as $item) {
+            $iMenu = new \Model\Menu\Entity($item);
+            if ($parent) {
+                $parent->addChild($iMenu);
+            } else {
+                $this->menu[] = $iMenu;
+            }
+            if (\Model\Menu\Entity::ACTION_PRODUCT_CATEGORY == $iMenu->getAction()) {
+                if ($categoryId = $iMenu->getFirstItem()) {
+                    $this->categoriesById[$categoryId] = null;
                 }
             }
 
-            if ((bool)$iMenu->getChild()) {
-                $this->walkOnMenu($iMenu->getChild());
+            if (isset($item['child']) && is_array($item['child'])) {
+                $this->prepareMenu($item['child'], $iMenu);
             }
         }
     }
 
     /**
-     * @param \Model\Menu\Entity $iMenu
-     * @throws \Exception
+     * @param \Model\Menu\Entity[] $menu
      */
-    public function setLink(\Model\Menu\Entity $iMenu) {
-        $link = null;
+    public function fillMenu($menu) {
+        foreach ($menu as $iMenu) {
+            // ссылка
+            if (\Model\Menu\Entity::ACTION_LINK == $iMenu->getAction()) {
+                $iMenu->setLink($iMenu->getFirstItem());
+            // категория товара
+            } else if (\Model\Menu\Entity::ACTION_PRODUCT_CATEGORY == $iMenu->getAction()) {
+                $categoryId = $iMenu->getFirstItem();
+                /** @var \Model\Product\Category\MenuEntity $category */
+                $category = ($categoryId && isset($this->categoriesById[$categoryId])) ? $this->categoriesById[$categoryId] : null;
+                if (!$category) {
+                    \App::logger()->error(sprintf('Не найдена категория #%s для элемента меню %s', $categoryId, $iMenu->getName()));
+                    continue;
+                }
 
-        try {
-            $items = $iMenu->getItem();
-            if (!(bool)$items) {
-                return;
+                $iMenu->setLink($category->getLink());
+            // ветка категории товара
+            } else if (\Model\Menu\Entity::ACTION_PRODUCT_CATALOG == $iMenu->getAction()) {
+                $categoryId = $iMenu->getFirstItem();
+                /** @var \Model\Product\Category\MenuEntity $category */
+                $category = ($categoryId && isset($this->rootCategoriesById[$categoryId])) ? $this->rootCategoriesById[$categoryId] : null;
+                if (!$category) {
+                    \App::logger()->error(sprintf('Не найдена категория #%s для элемента меню %s', $categoryId, $iMenu->getName()));
+                    continue;
+                }
+
+                $this->fillCatalogMenu($iMenu, $category);
             }
 
-            if (!is_array($items)) {
-                $items = [$items];
+            if ((bool)$iMenu->getChild()) {
+                $this->fillMenu($iMenu->getChild());
             }
+        }
+    }
 
-            switch ($iMenu->getAction()) {
-                case \Model\Menu\Entity::ACTION_LINK:
-                    $iMenu->setLink(is_array($items) ? reset($items) : (string)$items);
-                    break;
-                case \Model\Menu\Entity::ACTION_PRODUCT_CATEGORY:
-                case \Model\Menu\Entity::ACTION_PRODUCT_CATALOG:
-                    $id = reset($items);
-                    /** @var $category \Model\Product\Category\Entity */
-                    $category = ($id && isset($this->categoriesById[$id])) ? $this->categoriesById[$id] : null;
-                    if ($category) {
-                        $iMenu->setLink($category->getLink());
-                    } else {
-                        \App::logger()->error(sprintf('Для меню не найдена категория товара #%s', $id));
-                    }
+    private function fillCatalogMenu(\Model\Menu\Entity $iMenu, \Model\Product\Category\MenuEntity $category) {
+        foreach ($category->getChild() as $childCategory) {
+            $child = new \Model\Menu\Entity([
+                'action' => \Model\Menu\Entity::ACTION_PRODUCT_CATALOG,
+                'name'   => $childCategory->getName(),
+                'item'   => [$childCategory->getId()],
+            ]);
+            $child->setLink($childCategory->getLink());
+            $iMenu->addChild($child);
 
-                    break;
-                case \Model\Menu\Entity::ACTION_PRODUCT:
-                    $products = [];
-                    foreach ($items as $id) {
-                        if (!isset($productsById[$id])) {
-                            \App::logger()->error(sprintf('Для меню не найден товар #%s', $id));
-                            continue;
-                        }
-                        $products[] = $productsById[$id];
-                    }
-
-                    if (1 == count($items)) {
-                        $product = reset($products);
-                        $iMenu->setLink($this->router->generate('product', array('productPath' => $product->getPath())));
-                    } else {
-                        $barcodes = array_map(function ($product) { /** @var $product \Model\Product\Entity */ return $product->getBarcode(); }, $products);
-                        $iMenu->setLink($this->router->generate('product.set', array('productBarcodes' => implode(',', $barcodes))));
-                    }
-
-                    break;
+            if ((bool)$childCategory->getChild()) {
+                $this->fillCatalogMenu($child, $childCategory);
             }
-        } catch (\Exception $e) {
-            \App::logger()->error($e);
+        }
+
+        // фото для категории 2-го уровня
+        if (2 == $category->getLevel()) {
+            $iMenu->setImage($category->getImageUrl(0));
+        }
+
+        if ((2 == $category->getLevel()) && ($category->countChild() > \Model\Product\Category\MenuEntity::MAX_CHILD)) {
+            $child = new \Model\Menu\Entity([
+                'action' => \Model\Menu\Entity::ACTION_PRODUCT_CATEGORY,
+                'name'   => 'Все разделы',
+                'item'   => [$category->getId()],
+            ]);
+            $child->setLink($category->getLink());
+            $iMenu->addChild($child);
         }
     }
 }

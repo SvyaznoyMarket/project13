@@ -157,6 +157,7 @@ class DefaultLayout extends Layout {
     }
 
     public function slotMainMenu() {
+        /*
         $client = \App::curl();
 
         $isFailed = false;
@@ -172,6 +173,9 @@ class DefaultLayout extends Layout {
         if ($isFailed) {
             $content = $this->render('_mainMenu', array('menu' => (new Menu())->generate()));
         }
+        */
+
+        $content = $this->render('_mainMenu', array('menu' => (new Menu())->generate()));
 
         return $content;
     }
