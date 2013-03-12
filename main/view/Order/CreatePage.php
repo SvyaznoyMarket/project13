@@ -15,9 +15,9 @@ class CreatePage extends Layout {
         return 'order';
     }
 
-    public function slotYandexMetrika() {
-        return (\App::config()->yandexMetrika['enabled']) ? $this->render('order/_yandexMetrika') : '';
-    }
+    // public function slotYandexMetrika() {
+        // return (\App::config()->yandexMetrika['enabled']) ? $this->render('order/_yandexMetrika') : '';
+    // }
 
     public function slotInnerJavascript() {
         /** @var $productsForRetargeting \Model\Product\Entity */

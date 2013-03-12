@@ -1,4 +1,3 @@
-/web/.htaccess
 /config/config-local.php
 /config/databases.yml
 /cache

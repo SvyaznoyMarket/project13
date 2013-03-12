@@ -122,13 +122,13 @@ return [
     ],
     // слайдер товаров
     'product.category.slider' => [
-        'pattern' => '/catalog/{categoryPath}/_slider',
+        'pattern' => '/ajax/catalog/{categoryPath}/_slider',
         'action'  => ['ProductCategory\Action', 'slider'],
         'require' => ['categoryPath' => '[\w\d-_]+\/?[\w\d-_]+'],
     ],
     // общее количество отфильтрованных товаров
     'product.category.count' => [
-        'pattern' => '/catalog/{categoryPath}/_count',
+        'pattern' => '/ajax/catalog/{categoryPath}/_count',
         'action'  => ['ProductCategory\Action', 'count'],
         'require' => ['categoryPath' => '[\w\d-_]+\/?[\w\d-_]+'],
     ],
@@ -140,7 +140,7 @@ return [
     ],
     // каталог товаров с бесконечной прокруткой
     'product.category.infinity' => [
-        'pattern' => '/catalog/{categoryPath}/_infinity',
+        'pattern' => '/ajax/catalog/{categoryPath}/_infinity',
         'action'  => ['ProductCategory\Action', 'category'],
         'require' => ['categoryPath' => '[\w\d-_]+\/?[\w\d-_]+'],
     ],

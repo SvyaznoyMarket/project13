@@ -1146,9 +1146,8 @@
     font-size: 14px;
     position: fixed;
     top: 0;
-    left: 50%;
+    left: 20px;
     letter-spacing: 0.1em;
-    margin-left: -25px;
     margin-top: -30px;
     padding: 2px 15px 5px 35px;
     z-index: 2000;
@@ -2849,7 +2848,6 @@
     border-radius: 5px;
     display: block;
     height: 110px;
-    position: relative;
     margin: 10px 0px 20px;
     width: 100%;
   }
@@ -2864,17 +2862,20 @@
     text-indent: -10000px;
   }
   .bMainMenuLevel-1 {
+    position: relative;
     display: table;
     float: left;
     width: 810px;
+    z-index: 998;
   }
   .bMainMenuLevel-1__eItem {
     display: table-cell;
     position: relative;
     *display: block;
     *float: left;
-    *margin: 12px 7px;
     vertical-align: middle;
+    *width: 60px;
+    z-index: 999;
     *zoom: 1;
   }
   .bMainMenuLevel-1__eItem.bMainMenuLevel-1__eSeparator {
@@ -2967,10 +2968,11 @@
     display: none;
     margin-left: -75px;
     top: 107px;
+    *top: 103px;
     padding: 10px 0;
     position: absolute;
     width: 230px;
-    z-index: 100;
+    z-index: 1000;
   }
   .bMainMenuLevel-2__eIcon {
     display: none;
@@ -5857,8 +5859,9 @@
     zoom: 1;
   }
   .bBuyingLine dd div {
-    margin: 15px 0px 0px;
     position: relative;
+    overflow: hidden;
+    margin: 15px 0px 0px;
   }
   .bBuyingLine dd div:first-child {
     margin-top: 0px;
@@ -7444,15 +7447,13 @@
 /*-------СТИЛИ СТРАНИЦЫ F1-----*/
 @media all {
   .servicebanner {
-    background: #4fcbf4 url("/css/f1Page/img/bg_service2.jpg") no-repeat 0px 0px;
+    background: url("/css/f1Page/img/f1Banner_new.jpg") no-repeat 0px 0px;
     clear: both;
     color: #ffffff;
     font-size: 14px;
-    height: 178px;
+    height: 266px;
     line-height: 14px;
-    margin-bottom: 25px;
-    padding: 33px 0px 0px 600px;
-    width: 320px;
+    width: 924px;
   }
   .slogan {
     color: #4fcbf4;

@@ -186,7 +186,12 @@ class Client {
                             throw new \RuntimeException(sprintf('Invalid http code %d, info: %s, response: %s', $info['http_code'], $this->encode($info), $content));
                         }
 
-                        $decodedResponse = $this->decode($content);
+                        try {
+                            $decodedResponse = $this->decode($content);
+                        } catch (\Exception $e) {
+                            $this->logger->error(sprintf('Json error for %s', json_encode($info['url'], JSON_UNESCAPED_UNICODE)));
+                            throw $e;
+                        }
                         $this->logger->debug('Curl response data: ' . $this->encode($decodedResponse));
                         $callback = $this->successCallbacks[(string)$handler];
                         $callback($decodedResponse, (int)$handler);
@@ -305,7 +310,7 @@ class Client {
         }
 
         $header = [];
-        $response = explode("\r\n\r\n", $plainResponse);
+        $response = explode("\r\n\r\n", $plainResponse, 2);
         if ($isUpdateResponse) $plainResponse = isset($response[1]) ? $response[1] : null;
 
         $plainHeader = explode("\r\n", $response[0]);
