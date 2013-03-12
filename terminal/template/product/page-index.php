@@ -11,7 +11,9 @@ $warranties = $product->getWarranty();
 ?>
 
 <article class="bGoodItem" data-productid='<?= $product->getId() ?>'>    
-    
+    <div class="bBreadcrumps mMB20">
+        <a class="bBreadcrumps__eItem" href="#">Крошки</a>
+    </div>
     <div class="bGoodItemHead mMB20 mRounded mBlackBlock clearfix">
         <div class="clearfix">
             <div class="bGoodImgBlock mRounded mFl mW940">
@@ -64,11 +66,11 @@ $warranties = $product->getWarranty();
                 <div class="clearfix mMB80">
                     <!--  print_r($product->getState());   -->
                     <?php if ($product->getIsBuyable(\App::config()->region['shop_id'])):?>
-                    <a class="bGoodDescBlock_eBayBtn bButton mOrangeBtn mFl" href="#" onclick="terminal.cart.addProduct(<?= $product->getId() ?>)">В корзину</a>
+                    <a class="bGoodDescBlock_eBayBtn bButton mOrangeBtn mFl jsBuyButton" data-productid='<?= $product->getId() ?>' href="#">В корзину</a>
                     <?php elseif ($product->getState()->getIsShop() ):?>
-                    <a class="bGoodDescBlock_eBayBtn bButton mGrayBtn mFl" href="#" onclick="terminal.screen.push('other_shops', { productId: <?= $product->getId() ?> })">Где купить?</a>
+                    <a class="bGoodDescBlock_eBayBtn bButton mGrayBtn mFl jsWhereBuy" data-productid='<?= $product->getId() ?>' href="#">Где купить?</a>
                     <? endif; ?>
-                    <a id="compare_<?= $product->getId() ?>" class="bGoodDescBlock_eCompBtn jsCompare bButton mGrayBtn mFl" href="#">К сравнению</a>
+                    <a id="compare_<?= $product->getId() ?>" class="bGoodDescBlock_eCompBtn jsCompare bButton mGrayBtn mFl" data-productid='<?= $product->getId() ?>' href="#">К сравнению</a>
                 </div>
 
                 <p class="bGoodDescBlock_eShortDesc clearfix"><?= $product->getTagline() ?>
@@ -104,9 +106,9 @@ $warranties = $product->getWarranty();
                                 <h2 class="bGoodSubItem_eTitle"><a class="bGoodSubItem_eLink" href="#" onclick='terminal.screen.push("product", {productId: <?= $iProduct->getId() ?>})'><?= $iProduct->getName() ?></a></h2>
                                 <p class="bGoodSubItem_ePrice"><?= $page->helper->formatPrice($iProduct->getPrice()) ?> <span class="bRuble">p</span></p>
                                 <?php if ($iProduct->getIsBuyable(\App::config()->region['shop_id'])):?>
-                                <a class="bGoodSubItem_eMore bButton mSmallOrangeBtn" href="#" onclick="terminal.cart.addProduct(<?= $iProduct->getId() ?>)">В корзину</a>
+                                <a class="bGoodSubItem_eMore bButton mSmallOrangeBtn jsBuyButton" data-productid='<?= $iProduct->getId() ?>' href="#">В корзину</a>
                                 <?php elseif ($iProduct->getState()->getIsShop() ):?>
-                                <a class="bGoodSubItem_eMore bButton mSmallGrayBtn" href="#" onclick="terminal.screen.push('other_shops', { productId: <?= $iProduct->getId() ?> })">Где купить?</a>
+                                <a class="bGoodSubItem_eMore bButton mSmallGrayBtn jsWhereBuy" data-productid='<?= $iProduct->getId() ?>' href="#">Где купить?</a>
                                 <? endif; ?>
                             </div>
                         </div>
@@ -130,9 +132,9 @@ $warranties = $product->getWarranty();
                                 <h2 class="bGoodSubItem_eTitle"><a class="bGoodSubItem_eLink" href="#"><?= $iProduct->getName() ?></a></h2>
                                 <p class="bGoodSubItem_ePrice"><?= $page->helper->formatPrice($iProduct->getPrice()) ?> <span class="bRuble">p</span></p>
                                 <?php if ($iProduct->getIsBuyable(\App::config()->region['shop_id'])):?>
-                                <a class="bGoodSubItem_eMore bButton mSmallOrangeBtn" href="#" onclick="terminal.cart.addProduct(<?= $iProduct->getId() ?>)">В корзину</a>
+                                <a class="bGoodSubItem_eMore bButton mSmallOrangeBtn jsBuyButton" data-productid='<?= $iProduct->getId() ?>' href="#">В корзину</a>
                                 <?php elseif ($iProduct->getState()->getIsShop() ):?>
-                                <a class="bGoodSubItem_eMore bButton mSmallGrayBtn" href="#" onclick="terminal.screen.push('other_shops', { productId: <?= $iProduct->getId() ?> })">Где купить?</a>
+                                <a class="bGoodSubItem_eMore bButton mSmallGrayBtn jsWhereBuy" data-productid='<?= $iProduct->getId() ?>' href="#">Где купить?</a>
                                 <? endif; ?>
                             </div>
                         </div>
@@ -231,7 +233,7 @@ $warranties = $product->getWarranty();
                         <p class="bGoodServiceItem_eTitle"><?= $warranty->getName() ?></p>
                         <p class="bGoodServiceItem_ePrice"><?= $page->helper->formatPrice($warranty->getPrice()) ?> <span class="bRuble">p</span></p>
                         <?php if ($product->getIsBuyable(\App::config()->region['shop_id'])):?>
-                        <a class="bButton mSmallOrangeBtn mFl" href="#" onclick="terminal.cart.setWarranty(<?= $product->getId() ?>, <?= $warranty->getId() ?>)">в корзину</a>
+                        <a class="bButton mSmallOrangeBtn mFl jsBuyButton" data-productid='<?= $product->getId() ?>' data-warrantyid='<?= $warranty->getId() ?>' href="#">в корзину</a>
                         <? endif ?>
                     </div>
                 </div>
@@ -247,7 +249,7 @@ $warranties = $product->getWarranty();
                         <p class="bGoodServiceItem_eTitle"><?= $service->getName() ?></p>
                         <p class="bGoodServiceItem_ePrice"><?= $page->helper->formatPrice($service->getPrice()) ?> <span class="bRuble">p</span></p>
                         <?php if ($product->getIsBuyable(\App::config()->region['shop_id'])):?>
-                        <a class="bButton mSmallOrangeBtn mFl" href="#" onclick="terminal.cart.addService(<?= $product->getId() ?>, <?= $service->getId() ?>)">в корзину</a>
+                        <a class="bButton mSmallOrangeBtn mFl jsBuyButton" data-productid='<?= $product->getId() ?>' data-serviceid='<?= $service->getId() ?>' href="#">в корзину</a>
                         <? endif ?>
                         <a class="bButton mSmallGrayBtn mFl" href="#" onclick="terminal.screen.push('service', {serviceId: <?= $service->getId() ?>, productId: <?= $product->getId() ?>, isBuyable: <?= $product->getIsBuyable(\App::config()->region['shop_id']) ? 'true' : 'false' ?>})">подробнее</a> <!-- isBuyable ??? -->
                     </div>

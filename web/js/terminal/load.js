@@ -16,6 +16,8 @@ requirejs.config({
     }
 });
 
-require(["product"], function($) {
+// for all pages
+require(["termAPI"], function($) {})
 
-})
+// product scripts
+require(["product"], function($) {})

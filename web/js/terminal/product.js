@@ -1,18 +1,20 @@
 // // product terminal
 define('product',
-	['jquery', 'library'], function ($, library) {
+	['jquery', 'library', 'termAPI'], function ($, library, termAPI) {
     $(document).ready(function() {
-	//product code
-		library.myConsole('produsct.js and library.js loaded')
+
+    	library.myConsole('product.js loaded')
 
 		// product id
 		var productId = $('.bGoodItem').data('productid')
-		library.myConsole(productId)
+		library.myConsole('productid '+productId)
 
-		// check compare
-		library.checkCompare(productId)
+		// check compare this product
+		termAPI.checkCompare(productId)
 
+		//
 		// slider
+		//
 		if ($('#similarSlider').length){
 			var slider = $('#similarSlider')
 			slider.width( slider.find('.bGoodSubItem_eGoods').length * (slider.find('.bGoodSubItem_eGoods').width()+20) )
@@ -24,7 +26,9 @@ define('product',
 			slider.draggable()
 		}
 
+		//
 		// toggle subItems
+		//
 		if ($('.bGoodSubItems_eTitle').length){
 			if ( !$('.jsAccessorise').length ){
 				$('.jsSimilar').addClass('active')
@@ -47,12 +51,16 @@ define('product',
 			})
 		}			
 
+		//
 		// scroll to full Description
+		//
 		$('.bGoodDescBlock_eMore').bind('click', function(){
 			library.scrollTo($('.bGoodItemFullDesc'), 100, 300)
 		})
 
+		//
 		// helpers
+		//
 		if ( $('.bQuestionIco').length ){
 
 			var popUped = false

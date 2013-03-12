@@ -7,6 +7,8 @@ define('library',
 			console.log(text)
 		}
 
+		myConsole('library.js loaded')
+
 		// custom select
 		if ($('.bCustomSelect').length){
 			var selectOpen = false
@@ -32,39 +34,6 @@ define('library',
 				}
 			})
 		}
-
-		// compare toggle
-		createElement = function(productId){
-			var t = $('#compare_'+productId)
-			return t
-		}
-		checkCompare = function(productId){
-			var element = createElement(productId)
-			myConsole('compare '+productId)
-			if (terminal.compare.hasProduct(productId)){
-				element.html('Убрать из сравнения')
-				return true
-			}
-			else{
-				element.html('К сравнению')
-				return false
-			}
-		}
-		$('.jsCompare').bind('click', function(){
-			var id = $(this).attr('id')
-			var productId = id.substr(8, 5)
-			myConsole('id '+productId)
-			if (checkCompare(productId)){
-				terminal.compare.removeProduct(productId)
-				checkCompare(productId)
-			}
-			else{
-				terminal.compare.addProduct(productId)
-				checkCompare(productId)
-			}
-		})
-		terminal.compare.productRemoved.connect(checkCompare)
-		terminal.compare.productAdded.connect(checkCompare)
 
 		// drug plugin
 		$.fn.draggable = function() {
@@ -170,10 +139,10 @@ define('library',
 			aminateScroll(terminal.flickable.contentY, toY, step)
 		}
 
-		return { // exports fucntion
+		// exports fucntion
+		return {
 			myConsole : myConsole,
-			scrollTo : scrollTo,
-			checkCompare: checkCompare
+			scrollTo : scrollTo
 		}
 
 	})
