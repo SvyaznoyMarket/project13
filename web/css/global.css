@@ -2848,7 +2848,7 @@
     border-radius: 5px;
     display: block;
     height: 110px;
-    margin: 10px 0px 20px;
+    margin: 10px 0px;
     width: 100%;
   }
   #topLogo {
@@ -7849,6 +7849,69 @@
   }
 }
 /*---END---СТИЛИ КОРЗИНЫ---*/
+/*-------СТИЛИ ПОДСКАЗОК ПОИСКА-----*/
+@media all {
+  .bSearchSuggest {
+    position: absolute;
+    z-index: 10;
+    top: 27px;
+    left: 3px;
+    width: 300px;
+    padding: 5px 10px;
+    color: #000000;
+    border: 1px solid #C9C9C9;
+    -webkit-box-shadow: 0 4px 5px -1px #616161;
+    -moz-box-shadow: 0 4px 5px -1px #616161;
+    box-shadow: 0 4px 5px -1px #616161;
+    background: #ffffff;
+  }
+  .bSearchSuggest__eSelected {
+    background-color: #ffd481;
+  }
+  .bSearchSuggest__eListLine {
+    margin: 7px 0;
+    text-align: right;
+    border-bottom: 1px solid #e6e6e6;
+    line-height: 0.2;
+  }
+  .bSearchSuggest__eListTitle {
+    padding: 1px 0 1px 5px;
+    color: #000000;
+    background: #ffffff;
+    font-size: 11px;
+  }
+  .bSearchSuggest__eCategoryRes {
+    display: block;
+    margin: 0;
+    padding: 5px 0;
+    color: #000000;
+    font-size: 12px;
+    line-height: 1.1em;
+  }
+  .bSearchSuggest__eCategoryRes:hover {
+    color: #000000;
+    background-color: #e6e6e6;
+  }
+  .bSearchSuggest__eGoodRes {
+    display: block;
+    margin-bottom: 5px;
+  }
+  .bSearchSuggest__eGoodRes:hover {
+    color: #000000;
+    background-color: #e6e6e6;
+  }
+  .bSearchSuggest__eGoodRes:hover .bSearchSuggest__eGoodTitleRes {
+    text-decoration: underline;
+  }
+  .bSearchSuggest__eGoodImgRes {
+    margin-right: 10px;
+  }
+  .bSearchSuggest__eGoodTitleRes {
+    width: 230px;
+    font-size: 12px;
+  }
+}
+/*---------END ПОДСКАЗОК ПОИСКА-----*/
 /*-------СТИЛИ СТРАНИЦЫ ВХОДА-----*/
 @media all {
   .bPageLogin {
@@ -8116,15 +8179,13 @@
     color: #a6a6a6;
     float: left;
     font-size: 11px;
-    padding-bottom: 9px;
+    padding: 10px 0;
   }
   .breadcrumbs a {
     color: #a6a6a6;
   }
   .searchbox {
-    float: right;
-    height: 28px;
-    margin-top: 2px;
+    position: relative;
   }
   .searchbox .searchtext {
     -webkit-border-radius: 5px;
@@ -8132,15 +8193,13 @@
     border-radius: 5px;
     background: #ffffff;
     border: 1px solid #c9c9c9;
-    -moz-box-sizing: content-box;
-    -webkit-box-sizing: content-box;
-    box-sizing: content-box;
     float: left;
     height: 26px;
     line-height: 26px;
-    padding: 0px 5px;
+    margin-right: -25px;
+    padding: 0 0 0 10px;
     position: relative;
-    width: 297px;
+    width: 97%;
     behavior: url('/css/common/PIE.htc');
   }
   .searchbox .searchbutton {
@@ -8149,7 +8208,6 @@
     cursor: pointer;
     float: left;
     height: 28px;
-    margin-left: -5px;
     position: relative;
     text-indent: -10000px;
     width: 39px;

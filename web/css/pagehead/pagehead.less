@@ -16,28 +16,25 @@
   color: @typGray;
   float: left;
   font-size: 11px;
-  padding-bottom: 9px;
+  padding: 10px 0;
   a {
     color: @typGray;
   }
 }
 .searchbox {
-  float: right;
-  height: 28px;
-  margin-top: 2px;
+  position: relative;
+
   .searchtext {
     .rounded(5px);
     background: @white;
     border: 1px solid #c9c9c9;
-    -moz-box-sizing:content-box;
-    -webkit-box-sizing:content-box;
-    box-sizing:content-box;
     float: left;
     height: 26px;
     line-height: 26px;
-    padding: 0px 5px;
+    margin-right: -25px;
+    padding: 0 0 0 10px;
     position: relative;
-    width: 297px;
+    width: 97%;
     behavior: url('@{pie}');
   }
   .searchbutton {
@@ -46,7 +43,6 @@
     cursor: pointer;
     float: left;
     height: 28px;
-    margin-left: -5px;
     position: relative;
     text-indent: -10000px;
     width: 39px;
