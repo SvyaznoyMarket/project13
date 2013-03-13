@@ -42,6 +42,18 @@
         <i>Например, 89081234567</i>
     </div>
 
+    <div class="pb5">Организационно правовая форма:</div>
+    
+    <div class="pb5">
+        <select name="register[pravForm]" class="text width315 mb10">
+            <option value="ИП">Индивидуальный предприниматель (ИП)</option>
+            <option value="ООО">Общество с ограниченной ответственностью (ООО)</option>
+            <option value="ОАО">Открытое Акционерное общество (ОАО)</option>
+            <option value="ЗАО">Закрытое Акционерное общество (ЗАО)</option>
+            <option value="Другая форма">Другая форма</option>
+        </select>
+    </div>
+
     <div class="pb5">Наименование организации:</div>
     <div class="pb5">
         <? if ($error = $form->getError('corp_name')) echo $page->render('_formError', array('error' => $error)) ?>
