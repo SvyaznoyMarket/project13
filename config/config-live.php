@@ -75,6 +75,6 @@ $c->abtest['test']       = [
     ],
 ];
 
-$c->requestMainMenu = false;
+$c->requestMainMenu = true;
 
 return $c;
