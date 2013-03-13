@@ -18,8 +18,10 @@
 .bBreadcrumps{
 	&__eItem{
 		color: @firmOrange;
+		display: inline-block;
 		font-size: 20px;
 		line-height: 1.5em;
+		margin: 0 5px;
 	}
 }
 .bSlider{
@@ -27,17 +29,22 @@
 	position: relative;
 	width: 100%;
 	&_eArrow{
-		display: block;
+		display: none;
 		height: 100%;
 		position: absolute;
 		width: 179px;
 		z-index: 10;
 		&.mLeft{
-
+			background: url('@{base-url}/common/img/left_arrow.png'), url('@{base-url}/common/img/card_shadow_l.png');
+			background-position: 30px center, 0 0;
+			background-repeat: no-repeat, repeat-y;
+			left: -15px;
 		}
 		&.mRight{
-			background: url('@{base-url}/common/img/card_shadow.png') repeat-y 0 0;
-			right: 0;
+			background: url('@{base-url}/common/img/right_arrow.png'), url('@{base-url}/common/img/card_shadow.png');
+			background-position: 90px center, 0 0;
+			background-repeat: no-repeat, repeat-y;
+			right: -15px;
 		}
 	}
 	&_eWrap{

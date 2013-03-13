@@ -15,12 +15,15 @@ define('product',
 		//
 		// slider
 		//
-		if ($('#similarSlider').length){
+		// if ( $('.bSlider').length ) {
+		// 	$('.bSlider').horizSlider()
+		// }
+		if ($('#similarSlider').length) {
 			var slider = $('#similarSlider')
 			slider.width( slider.find('.bGoodSubItem_eGoods').length * (slider.find('.bGoodSubItem_eGoods').width()+20) )
 			slider.draggable()
 		}
-		if ($('#accessoriseSlider').length){
+		if ($('#accessoriseSlider').length) {
 			var slider = $('#accessoriseSlider')
 			slider.width( slider.find('.bGoodSubItem_eGoods').length * (slider.find('.bGoodSubItem_eGoods').width()+20) )
 			slider.draggable()

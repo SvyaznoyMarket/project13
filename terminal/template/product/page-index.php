@@ -10,10 +10,8 @@ $services = $product->getService();
 $warranties = $product->getWarranty();
 ?>
 
-<article class="bGoodItem" data-productid='<?= $product->getId() ?>'>    
-    <div class="bBreadcrumps mMB20">
-        <a class="bBreadcrumps__eItem" href="#">Крошки</a>
-    </div>
+<article class="bGoodItem bContent" data-productid='<?= $product->getId() ?>' data-pagetype='product'>    
+    <div class="bBreadcrumps mMB20"></div>
     <div class="bGoodItemHead mMB20 mRounded mBlackBlock clearfix">
         <div class="clearfix">
             <div class="bGoodImgBlock mRounded mFl mW940">
@@ -95,8 +93,8 @@ $warranties = $product->getWarranty();
             <!-- accessorise -->
             <div class="bGoodSubItem clearfix">
                 <div class="bSlider">
-                   <!--  <a class="bSlider_eArrow mLeft" href="#"></a>
-                    <a class="bSlider_eArrow mRight" href="#"></a> -->
+                    <a class="bSlider_eArrow mLeft" href="#"></a>
+                    <a class="bSlider_eArrow mRight" href="#"></a>
                     <div id="accessoriseSlider" class="bSlider_eWrap clearfix">
                         <? foreach ($accessories as $iProduct): ?>
                         <div class="bGoodSubItem_eGoods mFl">
@@ -120,8 +118,8 @@ $warranties = $product->getWarranty();
             <!-- similar goods -->
             <div class="bGoodSubItem">
                 <div class="bSlider">
-                    <!-- <a class="bSlider_eArrow mLeft" href="#"></a>
-                    <a class="bSlider_eArrow mRight" href="#"></a> -->
+                    <a class="bSlider_eArrow mLeft" href="#"></a>
+                    <a class="bSlider_eArrow mRight" href="#"></a>
                     <div id="similarSlider" class="bSlider_eWrap mHidden clearfix">
                         <? foreach ($related as $iProduct): ?>
                         <!-- terminal.screen.push('product', {productId: <?= $iProduct->getId() ?>}) -->
