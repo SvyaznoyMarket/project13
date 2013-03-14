@@ -5,6 +5,10 @@ define('termAPI',
 
 		$(document).ready(function() {
 			// createBreadcrumps()
+			$('.jsRedirect').live('click', redirectHandler)
+			$('.jsBuyButton').live('click', buyHandler)
+			$('.jsWhereBuy').live('click', whereBuyHandler)
+			$('.jsCompare').live('click', compareHandler)
 		})
 
 
@@ -12,6 +16,7 @@ define('termAPI',
 		 * Проверка типа страницы
 		 *
 		 * @author Aleksandr Zaytsev
+		 * @private
 		 * @return {string} pageType тип текущей страницы (product|product_listing|category)
 		 */
 		checkPageType = function() {
@@ -21,6 +26,7 @@ define('termAPI',
 			var pageType = $('.bContent').attr('data-pagetype')
 			return pageType
 		}
+
 
 		/**
 		 * Вывод хлебных крошек
@@ -42,10 +48,12 @@ define('termAPI',
 		// 	}
 		// }
 
+
 		/**
 		 * Переход к экрану
 		 *
 		 * @author Aleksandr Zaytsev
+		 * @private
 		 * @param {string} screenType тип экрана на который нужно перейти
 		 * @param {object} parametrs параметры открываемого экрана
 		 */
@@ -58,6 +66,7 @@ define('termAPI',
 		 * Выбор кнопки у которой будем менять состояние
 		 *
 		 * @author Aleksandr Zaytsev
+		 * @private
 		 * @param {number} productId идентификатор продукта
 		 * @return {jQuery object} t объект кнопки сравнения
 		 */
@@ -70,8 +79,10 @@ define('termAPI',
 		 * Проверка находится ли товар в сравнении. Установка нужного состояния кнопке
 		 *
 		 * @author Aleksandr Zaytsev
+		 * @public
+		 * @requires createElement
 		 * @param {number} productId идентификатор продукта
-		 * @return {bool} состояние того находится ли товар в сравнении
+		 * @return {boolean} true если товар находится в сравнении, false если товар не находится в сравнении
 		 */
 		checkCompare = function(productId) {
 			var element = createElement(productId)
@@ -89,6 +100,8 @@ define('termAPI',
 		 * Обработка кнопки сравнения
 		 * 
 		 * @author Aleksandr Zaytsev
+		 * @private
+		 * @requires checkCompare
 		 */
 		compareHandler = function() {
 			var id = $(this).attr('id')
@@ -102,7 +115,6 @@ define('termAPI',
 				checkCompare(productId)
 			}
 		}
-		$('.jsCompare').live('click', compareHandler)
 		terminal.compare.productRemoved.connect(checkCompare)
 		terminal.compare.productAdded.connect(checkCompare)
 
@@ -111,6 +123,8 @@ define('termAPI',
 		 * Обработка перехода на страницу
 		 * 
 		 * @author Aleksandr Zaytsev
+		 * @private
+		 * @requires toScreen
 		 */
 		redirectHandler = function() {
 			if ( $(this).attr('data-screentype') == undefined )
@@ -138,13 +152,13 @@ define('termAPI',
 					break
 			}
 		}
-		$('.jsRedirect').live('click', redirectHandler)
 
 
 		/**
 		 * Обработка покупки товара\улуги\гарантии
 		 * 
 		 * @author Aleksandr Zaytsev
+		 * @private
 		 */
 		buyHandler = function() {
 			if ( $(this).attr('data-productid') == undefined )
@@ -155,7 +169,6 @@ define('termAPI',
 			if ( $(this).attr('data-warrantyid') !== undefined ) {
 				// buy warranty
 				var warrantyId = $(this).data('warrantyid')
-				library.myConsole('add to cart warranty '+warrantyId+' for '+productId)
 				terminal.cart.setWarranty(productId, warrantyId)
 				return false
 			}
@@ -163,32 +176,31 @@ define('termAPI',
 			if ( $(this).attr('data-serviceid') !== undefined ) {
 				// buy service
 				var serviceId = $(this).data('serviceid')
-				library.myConsole('add to cart service '+serviceId+' for '+productId)
 				terminal.cart.addService(productId, serviceId)
 				return false
 			}
 
-			library.myConsole('add to cart product '+productId)
+			// buy product
 			terminal.cart.addProduct(productId)
 		}
-		$('.jsBuyButton').live('click', buyHandler)
 
 
 		/**
 		 * Обработка кнопки «Где купить»
 		 * 
 		 * @author Aleksandr Zaytsev
+		 * @private
+		 * @requires toScreen
 		 */
 		whereBuyHandler = function() {
 			if ( $(this).attr('data-productid') == undefined )
 				return false
 			
 			var id = $(this).data('productid')
+			var screenType = 'other_shops'
 
-			library.myConsole('other shops for '+id)
-			terminal.screen.push('other_shops', { productId: id })
+			toScreen(screenType, { productId: id })
 		}
-		$('.jsWhereBuy').live('click', whereBuyHandler)
 
 
 		//

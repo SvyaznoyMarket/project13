@@ -5,16 +5,22 @@ define('library',
 		 * Вывод в отладочную консоль
 		 *
 		 * @author Aleksandr Zaytsev
+		 * @public
 		 * @param {string} text текст который нужно вывести
 		 */
 		myConsole = function(text){
 			$('#console').prepend('<p>'+text+'</p>')
 			console.log(text)
 		}
-
 		myConsole('library.js loaded')
 
-		// custom select
+
+		/**
+		 * Обработчик кастомных дроп-даунов
+		 *
+		 * @author Aleksandr Zaytsev
+		 * @private
+		 */
 		if ($('.bCustomSelect').length){
 			var selectOpen = false
 			$('.bCustomSelect').bind('click', function(e){
@@ -30,7 +36,6 @@ define('library',
 					selectOpen = true
 				}
 			})
-
 			$('.bWrap').bind('click', function(event){
 				if (selectOpen){
 					event.preventDefault()
@@ -40,9 +45,11 @@ define('library',
 			})
 		}
 
+
 		/**
 		 * Плагин горизонатльного тач-скроллинга
 		 *
+		 * @public
 		 * @author Aleksandr Zaytsev
 		 */
 		$.fn.draggable = function() {
@@ -60,6 +67,8 @@ define('library',
 			 * @param {event} e
 			 */
 			self.moveStart = function(e) {
+				e.preventDefault()
+				e.stopPropagation()
 				var orig = e.originalEvent
 				self.start = {
 					x: orig.changedTouches[0].pageX,
@@ -81,6 +90,7 @@ define('library',
 			self.moveMe = function(e) {
 				terminal.interactive = false
 				e.preventDefault()
+				e.stopPropagation()
 				var orig = e.originalEvent
 				var newLeft = orig.changedTouches[0].pageX - self.start.x + self.start.left
 				self.checkMove( newLeft, orig.changedTouches[0].pageX )
@@ -168,9 +178,7 @@ define('library',
 		 * Горизонатльный слайдер
 		 *
 		 * @author Aleksandr Zaytsev
-		 * @param {string} wrap селектор обертки которая будет двигаться
-		 * @param {string} leftArrow селектор левой стрелки
-		 * @param {string} rightArrow селектор правой стрелки
+		 * @public
 		 */
 		$.fn.bSlider = function() {
 
@@ -265,6 +273,7 @@ define('library',
 		 * Скролинг до элемента
 		 *
 		 * @author Aleksandr Zaytsev
+		 * @public
 		 * @param {jQuery object} element объект до которого необходимо скролить
 		 * @param {number} [offset="0"] отступ от элемента
 		 * @param {number} [time="300"] время за которое необходимо совершить анимацию
@@ -294,7 +303,9 @@ define('library',
 			aminateScroll(terminal.flickable.contentY, toY, step)
 		}
 
+		//
 		// exports function
+		//
 		return {
 			myConsole : myConsole,
 			scrollTo : scrollTo
