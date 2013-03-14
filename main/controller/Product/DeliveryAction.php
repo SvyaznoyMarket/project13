@@ -37,7 +37,12 @@ class DeliveryAction {
         }
 
         try {
-            $response = \App::coreClientV2()->query('delivery/calc', array('geo_id' => $regionId), $params);
+            $response = [];
+            \App::coreClientV2()->addQuery('delivery/calc', ['geo_id' => $regionId], $params, function ($data) use (&$response) {
+                $response = $data;
+            });
+            \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['default'], \App::config()->coreV2['retryCount']);
+
         } catch (\Exception $e) {
             \App::logger()->error($e);
             \App::exception()->remove($e);
@@ -106,7 +111,11 @@ class DeliveryAction {
 
         $responseData = [];
         try {
-            $response = \App::coreClientV2()->query('delivery/calc', array('geo_id' => $regionId, 'days_num' => 7), $params);
+            $response = [];
+            \App::coreClientV2()->addQuery('delivery/calc', ['geo_id' => $regionId, 'days_num' => 7], $params, function ($data) use (&$response) {
+                $response = $data;
+            });
+            \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['default'], \App::config()->coreV2['retryCount']);
 
             $productData = isset($response['product_list']) ? $response['product_list'] : [];
             $productData = array_pop($productData);

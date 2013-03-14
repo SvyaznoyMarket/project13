@@ -35,7 +35,12 @@ class Action {
             //$params['is_product_category_first_only'] = false;
         }
         // ядерный запрос
-        $result = \App::coreClientV2()->query('search/get', $params);
+        $result = [];
+        \App::coreClientV2()->addQuery('search/get', $params, [], function ($data) use (&$result) {
+            $result = $data;
+        });
+        \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['default'], \App::config()->coreV2['retryCount']);
+
         if (!isset($result[1]) || !isset($result[1]['data'])) {
             $page = new \View\Search\EmptyPage();
 

@@ -37,7 +37,11 @@ class Action {
                 }
 
                 try {
-                    $result = \App::coreClientV2()->query('user/auth', $params);
+                    $result = [];
+                    \App::coreClientV2()->addQuery('user/auth', $params, [], function($data) use(&$result) {
+                        $result = $data;
+                    });
+                    \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium'], \App::config()->coreV2['retryCount']);
                     if (empty($result['token'])) {
                         throw new \Exception('Не удалось получить токен');
                     }

@@ -22,11 +22,16 @@ class BillAction {
         }
 
         try {
-            $content = $client->query(\App::config()->coreV2['url'] . 'order-bill/get', array(
+            $content = [];
+            $content = $client->addQuery(\App::config()->coreV2['url'] . 'order-bill/get', [
                 'client_id' => \App::config()->coreV2['client_id'],
                 'token'     => $userEntity->getToken(),
                 'order_id'  => $order->getId(),
-            ));
+            ], function ($data) use (&$content) {
+                $content = $data;
+            });
+            $client->execute(\App::config()->coreV2['retryTimeout']['default'], \App::config()->coreV2['retryCount']);
+
             if (!empty($content)) {
                 return new \Http\Response($content);
             }
