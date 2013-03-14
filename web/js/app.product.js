@@ -138,6 +138,7 @@ $(document).ready(function() {
 			if ((left <= sliderW-wrapW)){
 				left = sliderW-wrapW
 				$('.bSimilarGoodsSlider_eArrow.mRight').hide()
+				$('.bSimilarGoodsSlider_eArrow.mLeft').show()
 			} 
 			else if (left >= 0 ){
 				left = 0

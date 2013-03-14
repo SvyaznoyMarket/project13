@@ -38,25 +38,15 @@ foreach ($categories as $category) {
         $firstChild = reset($children);
         $link = $firstChild ? $firstChild->getLink() : $category->getLink();
     ?>
-
     <div class="servicebox fl">
-        <div class="serviceboxtop"></div>
-        <div class="serviceboxmiddle">
-            <a href="<?= $link ?>">
-                <i class="<?= $helper->categoryIconClass($category) ?>"></i>
-                <strong class="font16"><?= $category->getName() ?></strong>
-                <?= $category->getDescription() ?>
-            </a>
-            <a class="servicebox__choice" href="<?= $link ?>">
-                выбрать услуги &rsaquo;
-            </a>
-        </div>
-        <div class="serviceboxbottom"></div>
+        <a href="<?= $link ?>">
+            <i class="<?= $helper->categoryIconClass($category) ?>"></i>
+            <strong class="font16"><?= $category->getName() ?></strong>
+            <?= $category->getDescription() ?>
+        </a>
+        <a class="servicebox__choice" href="<?= $link ?>">
+            выбрать услуги &rsaquo;
+        </a>
     </div>
-
-    <? if ($i % 2 == 0): ?>       
-        <div class="pb30 clear"></div>
-    <? endif ?>
+    <? if ($i % 2 == 0): ?><div class="pb30 clear"></div><? endif ?>
 <? endforeach ?>
-
-<div class="pb30 clear"></div>
