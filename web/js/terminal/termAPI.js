@@ -6,7 +6,7 @@ define('termAPI',
 		$(document).ready(function() {
 			// createBreadcrumps()
 		})
-		
+
 
 		/**
 		 * Проверка типа страницы
@@ -67,7 +67,7 @@ define('termAPI',
 		}
 
 		/**
-		 * Проверка находится ли товар в сравнении
+		 * Проверка находится ли товар в сравнении. Установка нужного состояния кнопке
 		 *
 		 * @author Aleksandr Zaytsev
 		 * @param {number} productId идентификатор продукта
@@ -105,6 +105,39 @@ define('termAPI',
 		$('.jsCompare').live('click', compareHandler)
 		terminal.compare.productRemoved.connect(checkCompare)
 		terminal.compare.productAdded.connect(checkCompare)
+
+
+		/**
+		 * Обработка перехода на страницу
+		 * 
+		 * @author Aleksandr Zaytsev
+		 */
+		redirectHandler = function() {
+			if ( $(this).attr('data-screentype') == undefined )
+				return false
+
+			var screenType = $(this).data('screentype')
+			switch (screenType) {
+				/** Показ страницы с картинками, на которой можно посмотреть 3d и увеличить картинку */
+				case 'media':
+					var pId = $(this).data('productid')
+					var iIndex = $(this).data('imageindex')
+					toScreen(screenType, {productId:pId, currentIndex:iIndex})
+					break
+				/** Переход на карточку товара */
+				case 'product':
+					var pId = $(this).data('productid')
+					toScreen(screenType, {productId:pId})
+					break
+				/** Показ попапа для подробной информации по услуге */
+				case 'service':
+					var pId = $(this).data('productid')
+					var sId = $(this).data('serviceid')
+					var isBuy = $(this).data('isbuy')
+					toScreen(screenType, {serviceId: sId, productId: pId, isBuyable: isBuy})
+			}
+		}
+		$('.jsRedirect').live('click', redirectHandler)
 
 
 		/**

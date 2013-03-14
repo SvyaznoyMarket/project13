@@ -193,21 +193,20 @@ define('library',
 			 */
 			var animSlideTo = function(left) {
 				if (left >= stop.start){
-					wrapper.animate({'left':left},300, function(){
+					wrapper.animate({'left':stop.start},300, function(){
 						checkArrow()
 					})
-					return false
 				}
-				if (left <= stop.end){
+				else if (left <= stop.end){
 					wrapper.animate({'left':stop.end},300, function(){
 						checkArrow()
 					})
-					return false
 				}
-				wrapper.animate({'left':left},300, function(){
-					checkArrow()
-				})
-				
+				else{
+					wrapper.animate({'left':left},300, function(){
+						checkArrow()
+					})
+				}	
 			}
 
 			/**
@@ -216,7 +215,7 @@ define('library',
 			 * @inner
 			 */
 			var calcMove = function() {
-				var step = 300
+				var step = 700
 				var direction = ( $(this).hasClass('mLeft') ) ? 1 : -1
 				var nowLeft = parseInt(wrapper.css('left'))
 				var newLeft = nowLeft + (direction * step)
@@ -229,7 +228,6 @@ define('library',
 			 * @inner
 			 */
 			var checkArrow = function() {
-				myConsole('check arrow!')
 				var nowLeft = parseInt(wrapper.css('left'))
 				if (nowLeft >= stop.start){
 					lArrow.hide()

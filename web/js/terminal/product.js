@@ -60,11 +60,12 @@ define('product',
 			library.scrollTo($('.bGoodItemFullDesc'), 100, 300)
 		})
 
-		//
-		// helpers
-		//
+		/**
+		 * Всплывающие подсказки к характеристикам
+		 *
+		 * @author Aleksandr Zaytsev
+		 */
 		if ( $('.bQuestionIco').length ){
-
 			var popUped = false
 			var popUp = $('#bHintPopup')
 			$('.bQuestionIco').bind('click', function(e){
@@ -78,7 +79,6 @@ define('product',
 					popUped = true
 				})
 			})
-
 			$('.bWrap').bind('click', function(event){
 				if (popUped){
 					event.preventDefault()
