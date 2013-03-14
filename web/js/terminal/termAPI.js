@@ -6,6 +6,7 @@ define('termAPI',
 		$(document).ready(function() {
 			// createBreadcrumps()
 		})
+		
 
 		/**
 		 * Проверка типа страницы

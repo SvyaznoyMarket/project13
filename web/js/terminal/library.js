@@ -84,6 +84,7 @@ define('library',
 				var orig = e.originalEvent
 				var newLeft = orig.changedTouches[0].pageX - self.start.x + self.start.left
 				self.checkMove( newLeft, orig.changedTouches[0].pageX )
+				self.trigger('sliderMoved')
 			}
 
 			/**
@@ -98,16 +99,19 @@ define('library',
 					self.css({left: 0})
 					self.start.left = 0
 					self.start.x = (touchEvent) ? touchEvent : 0
+					self.trigger('sliderMoved')
 					return false
 				}
 				else if ( newLeft < -self.stop.end){
 					self.css({left: -self.stop.end})
 					self.start.left = -self.stop.end
 					self.start.x = (touchEvent) ? touchEvent : 0
+					self.trigger('sliderMoved')
 					return false
 				}
 				else{
 					self.css({left: newLeft})
+					self.trigger('sliderMoved')
 					return true
 				}
 			}
@@ -154,60 +158,108 @@ define('library',
 				self.bind("touchmove", self.moveMe)
 				self.bind("touchend", self.moveEnd)
 			}
+
+			return this
 		}
+
+
 
 		/**
 		 * Горизонатльный слайдер
 		 *
 		 * @author Aleksandr Zaytsev
+		 * @param {string} wrap селектор обертки которая будет двигаться
+		 * @param {string} leftArrow селектор левой стрелки
+		 * @param {string} rightArrow селектор правой стрелки
 		 */
-		$.fn.horizSlider = function() {
+		$.fn.bSlider = function() {
+
 			self = this
 
-			self.nowLeft = 0
+			var wrapper = self.find('.bSlider_eWrap')
+			var lArrow = self.find('.bSlider_eArrow.mLeft')
+			var rArrow = self.find('.bSlider_eArrow.mRight')
 
-			sliderWrap = this.find('.bSlider_eWrap')
-			arrowL = this.find('.bSlider_eArrow.mLeft')
-			arrowR = this.find('.bSlider_eArrow.mRight')
+			var stop = {
+				start: 0,
+				end: self.width() - wrapper.width()
+			}
+
+			/**
+			 * Анимация перемещения и проверка возможности перемещения на заданное значение.
+			 *
+			 * @inner
+			 * @param {number} left новое значение отступа
+			 */
+			var animSlideTo = function(left) {
+				if (left >= stop.start){
+					wrapper.animate({'left':left},300, function(){
+						checkArrow()
+					})
+					return false
+				}
+				if (left <= stop.end){
+					wrapper.animate({'left':stop.end},300, function(){
+						checkArrow()
+					})
+					return false
+				}
+				wrapper.animate({'left':left},300, function(){
+					checkArrow()
+				})
+				
+			}
 
 			/**
 			 * Просчет нового значения отступа
 			 *
 			 * @inner
 			 */
-			self.calcMove = function() {
-				myConsole('click!')
-				var step = 200
+			var calcMove = function() {
+				var step = 300
 				var direction = ( $(this).hasClass('mLeft') ) ? 1 : -1
-				myConsole('1! dir '+direction)
-				// self.nowLeft = sliderWrap.css('left')
-				myConsole('2! '+self.nowLeft)
-				var newLeft = self.nowLeft + direction*step
-				myConsole('3! '+newLeft)
-				move(newLeft)
+				var nowLeft = parseInt(wrapper.css('left'))
+				var newLeft = nowLeft + (direction * step)
+				animSlideTo(newLeft)
 			}
 
 			/**
-			 * Анимация перемещения и проверка возможности перемещения на заданное значение.
 			 * Скрытие\отображение стрелок управления
 			 *
 			 * @inner
-			 * @param {number} newLeft новое значение отступа
 			 */
-			var move = function(left) {
-				myConsole('move! '+left)
-				// self.sliderWrap.animate({'left': left})
+			var checkArrow = function() {
+				myConsole('check arrow!')
+				var nowLeft = parseInt(wrapper.css('left'))
+				if (nowLeft >= stop.start){
+					lArrow.hide()
+				}
+				else{
+					lArrow.show()
+				}
+				if (nowLeft <= stop.end){
+					rArrow.hide()
+				}
+				else{
+					rArrow.show()
+				}
+				return false
 			}
+
+			/**
+			 * Подписываемся на событие перемещения обертки
+			 */
+			wrapper.bind('sliderMoved', checkArrow)
 
 			/**
 			 * Вешаем события, только если родительский элемент больше
 			 */
-			myConsole('wrap '+sliderWrap.width())
-			myConsole('self '+self.width())
-			if ( sliderWrap.width() > this.width() ) {
-				arrowR.show().bind('click', self.calcMove)
-				arrowL.bind('click', self.calcMove)
+			if (wrapper.width() > self.width()) {
+				rArrow.show().bind('click', calcMove)
+				lArrow.bind('click', calcMove)
 			}
+			
+			return this
 		}
 
 
