@@ -27,20 +27,20 @@ define('termAPI',
 		 *
 		 * @author Aleksandr Zaytsev
 		 */
-		createBreadcrumps = function() {
-			if ( !$('.bBreadcrumps').length )
-				return false
-			library.myConsole('go!')
-			var aPathList = terminal.screen.path
-			var currPage = checkPageType()
+		// createBreadcrumps = function() {
+		// 	if ( !$('.bBreadcrumps').length )
+		// 		return false
+		// 	library.myConsole('go!')
+		// 	var aPathList = terminal.screen.path
+		// 	var currPage = checkPageType()
 
-			if (!currPage)
-				return false
+		// 	if (!currPage)
+		// 		return false
 
-			for (var i in aPathList){
-				$('.bBreadcrumps').append('/ <a class="bBreadcrumps__eItem" href="#">'+i+'</a>').bind('click', toScreen(aPathList[i].screenType, aPathList[i].parametrs)) 
-			}
-		}
+		// 	for (var i in aPathList){
+		// 		$('.bBreadcrumps').append('/ <a class="bBreadcrumps__eItem" href="#">'+i+'</a>').bind('click', toScreen(aPathList[i].screenType, aPathList[i].parametrs)) 
+		// 	}
+		// }
 
 		/**
 		 * Переход к экрану
@@ -135,6 +135,7 @@ define('termAPI',
 					var sId = $(this).data('serviceid')
 					var isBuy = $(this).data('isbuy')
 					toScreen(screenType, {serviceId: sId, productId: pId, isBuyable: isBuy})
+					break
 			}
 		}
 		$('.jsRedirect').live('click', redirectHandler)
