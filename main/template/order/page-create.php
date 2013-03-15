@@ -160,7 +160,7 @@ if ($form->hasSubway()) $jsValidator['order[address_metro]'] = 'Укажите �
             <dd class="bSClub">
                 <div class="bSClub__eWrap pb25">
                     <input type="text" id="order_sclub_card_number" class="bBuyingLine__eText mInputShort mb15" name="order[sclub_card_number]" />
-                    <i class="mILong">Чтобы получить 1% от суммы заказа<br/>баллами на карту, введите ее номер,<br/>расположенный
+                    <i class="mILong">Чтобы получить 1% от суммы заказа<br/>плюсами на карту, введите ее номер,<br/>расположенный
                         на обороте под штрихкодом</i>
                 </div>
                 <!--<label><b></b> <h5>Сохранить мои данные для следующих покупок</h5> <input class='bBuyingLine__eRadio' name='r1' type='radio'></label>-->
