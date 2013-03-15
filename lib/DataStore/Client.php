@@ -44,8 +44,6 @@ class Client {
             \Util\RequestLogger::getInstance()->addLog($file, [], 0, 'unknown');
         // http-ресурс
         } else {
-            //$response = $this->curl->query($this->config['url'] . $path, [], $this->config['timeout']);
-            $response = '';
             $this->curl->addQuery($this->config['url'] . $path, [], function($data) use (&$response, $path) {
                 $response = $data;
                 $spend = \Debug\Timer::stop('data-store');
