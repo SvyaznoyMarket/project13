@@ -32,21 +32,26 @@ define('termAPI',
 		 * Вывод хлебных крошек
 		 *
 		 * @author Aleksandr Zaytsev
+		 * @private
 		 */
-		// createBreadcrumps = function() {
-		// 	if ( !$('.bBreadcrumps').length )
-		// 		return false
-		// 	library.myConsole('go!')
-		// 	var aPathList = terminal.screen.path
-		// 	var currPage = checkPageType()
+		createBreadcrumps = function() {
+			if ( !$('.bBreadcrumps__eItem').length )
+				return false
 
-		// 	if (!currPage)
-		// 		return false
+			library.myConsole('go!')
+			var aPathList = terminal.screen.path
+			library.myConsole('type '+typeof(aPathList)+' and '+aPathList)
 
-		// 	for (var i in aPathList){
-		// 		$('.bBreadcrumps').append('/ <a class="bBreadcrumps__eItem" href="#">'+i+'</a>').bind('click', toScreen(aPathList[i].screenType, aPathList[i].parametrs)) 
-		// 	}
-		// }
+			// var currPage = checkPageType()
+
+			// if (!currPage)
+			// 	return false
+
+			for (var i in aPathList){
+				library.myConsole('type path '+typeof(aPathList[i].type)+' and '+aPathList[i].type )
+				// $('.bBreadcrumps').append('/ <a class="bBreadcrumps__eItem" href="#">'+i+'</a>').bind('click', toScreen(aPathList[i].screenType, aPathList[i].parametrs)) 
+			}
+		}
 
 
 		/**

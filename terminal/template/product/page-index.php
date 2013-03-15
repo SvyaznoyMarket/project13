@@ -4,6 +4,8 @@
  * @var $product \Model\Product\Entity
  * @var $related \Model\Product\Entity[]
  * @var $accessories \Model\Product\Entity[]
+ * @var $class       string|null
+ * @var $breadcrumbs array('url' => null, 'name' => null)[]
  */
 
 $services = $product->getService();
@@ -11,7 +13,17 @@ $warranties = $product->getWarranty();
 ?>
 
 <article class="bGoodItem bContent" data-productid='<?= $product->getId() ?>' data-pagetype='product'>    
-    <div class="bBreadcrumps mMB20"></div>
+    <div class="bBreadcrumps mMB20">
+
+        <?php if ((bool)$breadcrumbs): ?>
+        <div <?php if (isset($class) && !empty($class)): ?>class="<?php echo $class ?>"<?php endif ?>>
+            <? foreach ($breadcrumbs as $breadcrumb): ?>
+                <a class="bBreadcrumps__eItem" href="#" data-screentype='<?= $breadcrumb['screenType'] ?>' data-categoryid='<?= $breadcrumb['categoryId'] ?>' data-hasline='<?= $breadcrumb['hasLine'] ?>'><?= $breadcrumb['name'] ?></a> &rsaquo;
+            <? endforeach ?>
+        </div>
+        <? endif ?>
+
+    </div>
     <div class="bGoodItemHead mMB20 mRounded mBlackBlock clearfix">
         <div class="clearfix">
             <div class="bGoodImgBlock mRounded mFl mW940">
