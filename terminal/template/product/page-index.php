@@ -46,6 +46,7 @@ $warranties = $product->getWarranty();
             <div class="bGoodDescBlock mFr mW570 mPad15_30">
                 <div class="clearfix">
                     <p class="bGoodDescBlock_eArticle mFl">Код товара:<?= $product->getArticle() ?></p>
+                    <div class="mFr"><div id="testFreak"><a id="tfw-badge" href="http://www.testfreaks.ru"></a></div></div>
                     <p class="bGoodDescBlock_eRating mFr"><span class="bRating"><span class="mRate_<?= round($product->getRating()) ?>"></span></span></p>
                 </div>
                 <h1 class="bTitle mBold"><?= $product->getName() ?></h1>

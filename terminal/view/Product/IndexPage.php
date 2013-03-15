@@ -19,7 +19,7 @@ class IndexPage extends \Terminal\View\DefaultLayout {
                     'name' => $category->getName(),
                     'screenType'  => $category->getHasChild() ? 'category' : 'product_listing',
                     'categoryId' => $category->getId(),
-                    'hasLine' = > $category->getHasLine(),
+                    'hasLine' => $category->getHasLine(),
                 );
             }
 
