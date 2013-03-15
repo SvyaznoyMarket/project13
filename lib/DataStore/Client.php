@@ -45,7 +45,12 @@ class Client {
                 \Util\RequestLogger::getInstance()->addLog($file, [], 0, 'unknown');
             // http-ресурс
             } else {
-                $response = $this->curl->query($this->config['url'] . $path, [], $this->config['timeout']);
+                //$response = $this->curl->query($this->config['url'] . $path, [], $this->config['timeout']);
+                $response = '';
+                $this->curl->addQuery($this->config['url'] . $path, [], function($data) use (&$response) {
+                    $response = $data;
+                }, null, $this->config['timeout']);
+                $this->curl->execute(\App::config()->coreV2['retryTimeout']['tiny'], \App::config()->coreV2['retryCount']);
             }
             $spend = \Debug\Timer::stop('data-store');
             \App::logger()->info('End data-store request ' . $path . ' in ' . $spend);

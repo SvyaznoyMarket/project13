@@ -39,7 +39,13 @@ class Client {
         $url = $this->config['url'] . $action . '?json=1';
         $response = null;
         try {
-            $response = $this->curl->query($url, $data, $this->config['timeout']);
+            //$response = $this->curl->query($url, $data, $this->config['timeout']);
+            $response = [];
+            $this->curl->addQuery($url, $data, function ($data) use (&$response) {
+                $response = $data;
+            }, null, $this->config['timeout']);
+            $this->curl->execute(\App::config()->coreV2['retryTimeout']['tiny'], \App::config()->coreV2['retryCount']);
+
             $spend = \Debug\Timer::stop('content');
             \App::logger()->info('End content request ' . $action . ' in ' . $spend);
         } catch (\Exception $e) {
