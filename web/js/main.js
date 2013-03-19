@@ -1,12 +1,53 @@
 $(document).ready(function(){
 
+	var nowSelectSuggest = -1
 
-	searchSuggest = function(){
+	searchSuggest = function(e){
 		var text = $(this).attr('value')
 		var url = '/search/autocomplete?q='+text
+		
+		markSuggest = function(){
+			$('.bSearchSuggest').trigger('focus')
+			$('.bSearchSuggest__eRes').removeClass('hover')
+			$('.bSearchSuggest__eRes').eq(nowSelectSuggest).addClass('hover')
+		}
+
+		var upSuggestItem = function(){
+			// console.info('вверх')
+			var suggestLen = $('.bSearchSuggest__eRes').length
+			if (nowSelectSuggest-1 >= 0){
+				nowSelectSuggest--
+			}
+			else{
+				nowSelectSuggest = suggestLen-1
+			}
+			markSuggest(nowSelectSuggest)
+		}
+
+		var downSuggestItem = function(){
+			// console.info('вниз')
+			var suggestLen = $('.bSearchSuggest__eRes').length
+			if (nowSelectSuggest+1 <= suggestLen-1){
+				nowSelectSuggest++
+			}
+			else{
+				nowSelectSuggest = 0
+			}
+			markSuggest(nowSelectSuggest)
+		}
 
 		var authFromServer = function(response){
 			$('#searchAutocomplete').html(response)
+			if (e.which == 38){
+				upSuggestItem()
+			}
+			if (e.which == 40){
+				downSuggestItem()
+			}
+			if (e.which == 13){
+				var link = $('.bSearchSuggest__eRes').eq(nowSelectSuggest).attr('href')
+				document.location.href = link
+			}
 		}
 
 		$.ajax({
@@ -16,6 +57,12 @@ $(document).ready(function(){
 		})
 	}
 	$('.searchbox .searchtext').keyup(searchSuggest)
+	$('.bSearchSuggest__eRes').live('mouseover', function(){
+		$('.bSearchSuggest__eRes').removeClass('hover')
+		var index = $(this).addClass('hover').index()
+		nowSelectSuggest = index-1
+		$('.searchbox .searchtext').trigger('focus')
+	})
 
 	function regEmailValid(){
 		/*register e-mail check*/
@@ -820,16 +867,16 @@ $(document).ready(function(){
 	}
 	
 	/* Search */
-	$('input:[name="q"]').bind(
-		{
-			'focusin': function() {
-				if ( $(this).val() == 'Поиск среди 30 000 товаров' ) $(this).val( '' );
-			},
-			'blur': function() {
-				if ( $(this).val() == '' ) $(this).val( 'Поиск среди 30 000 товаров' );
-			}
-		}
-	)
+	// $('input:[name="q"]').bind(
+	// 	{
+	// 		'focusin': function() {
+	// 			if ( $(this).val() == 'Поиск среди 30 000 товаров' ) $(this).val( '' );
+	// 		},
+	// 		'blur': function() {
+	// 			if ( $(this).val() == '' ) $(this).val( 'Поиск среди 30 000 товаров' );
+	// 		}
+	// 	}
+	// )
 	
 	$('.search-form').bind('submit', function(e) {
 		// e.preventDefault()
