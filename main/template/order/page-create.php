@@ -18,7 +18,8 @@
 $region = $user->getRegion();
 $isCorporative = $user->getEntity() && $user->getEntity()->getIsCorporative();
 
-$jsValidator = array('order[recipient_first_name]' => 'Заполните поле', 'order[recipient_last_name]' => 'Заполните поле', 'order[recipient_phonenumbers]' => 'Заполните поле', 'order[address_street]' => 'Укажите адрес', 'order[address_building]' => 'Укажите адрес', 'order[payment_method_id]' => 'Выберите способ оплаты', 'order[agreed]' => 'Необходимо согласие',);
+$jsValidator = array('order[recipient_first_name]' => 'Заполните поле', 'order[recipient_last_name]' => 'Заполните поле', 'order[recipient_phonenumbers]' => 'Заполните поле', 'order[address_street]' => 'Укажите адрес', 'order[address_building]' => 'Укажите адрес', 'order[payment_method_id]' => 'Выберите способ оплаты', 'order[agreed]' => 'Необходимо согласие', 'order[recipient_email]' => 'Некорректный e-mail',
+);
 if ($form->hasSubway()) $jsValidator['order[address_metro]'] = 'Укажите ближайшее метро';
 ?>
 
@@ -87,6 +88,17 @@ if ($form->hasSubway()) $jsValidator['order[address_metro]'] = 'Укажите �
                 <div>
                     <p></p>
                     <input type="text" id="order_recipient_last_name" class="bBuyingLine__eText mInputLong" name="order[recipient_last_name]" value="<?= $form->getLastName() ?>"/>
+                </div>
+            </dd>
+        </dl>
+
+        <dl class='bBuyingLine'>
+
+            <dt>E-mail</dt>
+            <dd>
+                <div>
+                    <p></p>
+                    <input type="text" id="order_recipient_email" class="bBuyingLine__eText mInputLong" name="order[recipient_email]" value="<?= $form->getLastName() ?>"/>
                 </div>
             </dd>
         </dl>
