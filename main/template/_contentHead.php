@@ -21,6 +21,7 @@ $extendedMargin = isset($extendedMargin) ? (bool)$extendedMargin : false;
     <noindex>
         <div class="searchbox">
             <?= $page->render('search/form-default') ?>
+            <div id="searchAutocomplete"></div>
         </div>
     </noindex>
     <? endif ?>

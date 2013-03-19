@@ -1,4 +1,22 @@
 $(document).ready(function(){
+
+
+	searchSuggest = function(){
+		var text = $(this).attr('value')
+		var url = '/search/autocomplete?q='+text
+
+		var authFromServer = function(response){
+			$('#searchAutocomplete').html(response)
+		}
+
+		$.ajax({
+			type: 'GET',
+			url: url,
+			success: authFromServer
+		})
+	}
+	$('.searchbox .searchtext').keyup(searchSuggest)
+
 	function regEmailValid(){
 		/*register e-mail check*/
 		if ($('#register_username').length){
