@@ -5,7 +5,7 @@
      * @var $categories       \Model\Search\Category\Entity[]
      */
 ?>
-    <div class="bSearchSuggest">
+<div class="bSearchSuggest">
     <? if ((bool)$categories): ?>
     <div class="bSearchSuggest__eCategoryList">
         <p class="bSearchSuggest__eListLine"><span class="bSearchSuggest__eListTitle">Категория</span></p>
