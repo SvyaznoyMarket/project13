@@ -22,7 +22,7 @@
         <? foreach ($products as $product): ?>
         <a class="bSearchSuggest__eGoodRes clearfix" href="<?= $product->getLink()?>">
             <img class="bSearchSuggest__eGoodImgRes fl" src="<?= $product->getImageUrl(1) ?>" width="48" height="48"/>
-            <p class="bSearchSuggest__eGoodTitleRes fl"><?= preg_replace('/'.$searchQuery.'/iu', '<span class="bSearchSuggest__eSelected">' . htmlspecialchars('$0', ENT_QUOTES, \App::config()->encoding) . '</span>', $category->getName()) ?></p>
+            <p class="bSearchSuggest__eGoodTitleRes fl"><?= preg_replace('/'.$searchQuery.'/iu', '<span class="bSearchSuggest__eSelected">' . htmlspecialchars('$0', ENT_QUOTES, \App::config()->encoding) . '</span>', $product->getName()) ?></p>
         </a>
         <? endforeach ?>
     </div>

@@ -136,7 +136,7 @@ class Action {
             //throw new \Exception\NotFoundException('Request is not xml http request');
         }
 
-        $limit = 8;
+        $limit = 5;
         $keyword = mb_strtolower($request->get('q'));
         $keyword = strtr($keyword, array(
             'q'=>'й', 'w'=>'ц', 'e'=>'у', 'r'=>'к', 't'=>'е', 'y'=>'н', 'u'=>'г', 'i'=>'ш', 'o'=>'щ', 'p'=>'з', '['=>'х', ']'=>'ъ', 'a'=>'ф', 's'=>'ы', 'd'=>'в', 'f'=>'а', 'g'=>'п', 'h'=>'р', 'j'=>'о', 'k'=>'л', 'l'=>'д', ';'=>'ж', "'"=>'э', 'z'=>'я', 'x'=>'ч', 'c'=>'с', 'v'=>'м', 'b'=>'и', 'n'=>'т', 'm'=>'ь', ','=>'б', '.'=>'ю', '`'=>'ё', 'Q'=>'Й', 'W'=>'Ц', 'E'=>'У', 'R'=>'К', 'T'=>'Е', 'Y'=>'Н', 'U'=>'Г', 'I'=>'Ш', 'O'=>'Щ', 'P'=>'З', '{'=>'Х', '}'=>'Ъ', 'A'=>'Ф', 'S'=>'Ы', 'D'=>'В', 'F'=>'А', 'G'=>'П', 'H'=>'Р', 'J'=>'О', 'K'=>'Л', 'L'=>'Д', ':'=>'Ж', '"'=>'Э', 'Z'=>'Я', 'X'=>'Ч', 'C'=>'С', 'V'=>'М', 'B'=>'И', 'N'=>'Т', 'M'=>'Ь', '<'=>'Б', '>'=>'Ю', '~'=>'Ё',
@@ -145,9 +145,11 @@ class Action {
         $router = \App::router();
 
         $data = [];
+        $mapData = [1 => 'product', 3 => 'category'];
+
         if (mb_strlen($keyword) >= 3) {
-            \App::coreClientV2()->addQuery('search/autocomplete', ['letters' => $keyword], [], function($result) use(&$data, $limit, $router){
-                foreach ([1 => 'product', 3 => 'category'] as $key => $value) {
+            \App::coreClientV2()->addQuery('search/autocomplete', ['letters' => $keyword], [], function($result) use(&$data, $limit, $router, $mapData){
+                foreach ($mapData as $key => $value) {
                     $i = 0;
                     $entity = '\\Model\\Search\\'.ucfirst($value).'\\Entity';
                     foreach ($result[$key] as $item) {
@@ -157,11 +159,14 @@ class Action {
                         $i++;
                     }
                 }
+            }, function ($e) use (&$data, $mapData) {
+                \App::exception()->remove($e);
+                \App::logger()->error($e);
             });
             \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['short'], \App::config()->coreV2['retryCount']);
         }
 
-        $response = new \Http\Response(\App::templating()->render('search/_autocomplete', ['products' => $data['product'], 'categories' => $data['category'], 'searchQuery' => $keyword, ]));
+        $response = new \Http\Response((bool)$data ? \App::templating()->render('search/_autocomplete', ['products' => $data['product'], 'categories' => $data['category'], 'searchQuery' => $keyword, ]) : '');
         $response->setIsShowDebug(false);
 
         return $response;
