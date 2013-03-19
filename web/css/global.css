@@ -5845,7 +5845,6 @@
   }
   .bBuyingLine dd div {
     position: relative;
-    overflow: hidden;
     margin: 15px 0px 0px;
   }
   .bBuyingLine dd div:first-child {
@@ -7447,21 +7446,30 @@
   }
   .slogan strong {
     display: block;
-    font-size: 24px;
+    margin-left: 10px;
     padding-bottom: 5px;
+    text-transform: uppercase;
+    font-family: 'Enter';
+    font-size: 30px;
+    font-weight: 100;
   }
   .servicebox {
+    margin-right: 10px;
+    padding: 13px 10px 10px 112px;
     position: relative;
-    width: 456px;
+    width: 35%;
+  }
+  .servicebox a {
+    display: block;
   }
   .servicebox:hover {
-    background: url("/css/f1Page/img/bg_servicebox.png") repeat-y -922px 0px;
-  }
-  .servicebox:hover .serviceboxtop {
-    background: url("/css/f1Page/img/bg_servicebox.png") no-repeat 0px 0px;
-  }
-  .servicebox:hover .serviceboxbottom {
-    background: url("/css/f1Page/img/bg_servicebox.png") no-repeat -461px 0px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    -webkit-box-shadow: 0 0 6px 2px #e6e6e6;
+    -moz-box-shadow: 0 0 6px 2px #e6e6e6;
+    box-shadow: 0 0 6px 2px #e6e6e6;
+    behavior: url('/css/common/PIE.htc');
   }
   .servicebox:hover .icon1 {
     background-position: 0px -85px;
@@ -7499,20 +7507,6 @@
   }
   .servicebox .icon4 {
     background-position: -276px 0px;
-  }
-  .serviceboxtop,
-  .serviceboxbottom {
-    clear: both;
-    font-size: 0px;
-    height: 7px;
-    line-height: 0px;
-    width: 456px;
-  }
-  .serviceboxmiddle {
-    padding: 13px 10px 10px 112px;
-  }
-  .serviceboxmiddle a {
-    display: block;
   }
   .servicebox__choice {
     color: #4fcbf4;

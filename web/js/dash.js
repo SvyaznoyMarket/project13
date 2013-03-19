@@ -511,7 +511,7 @@ $(document).ready(function(){
 
     function sendAnalytics(item) {
         if (typeof(MyThings) != "undefined") {
-            matches = item.match("\/cart\/add\/(\\d+)/_quantity\/")
+            matches = item.match("\/cart\/add\/(\\d+)/_quantity")
             if (null !== matches) {
                 productId = matches[1]
 

@@ -236,6 +236,9 @@ class AppConfig {
         'maxLockTime' => null,
     ];
 
+    /** @var boolean */
+    public $requestMainMenu = null;
+
     public function __set($name, $value) {
         throw new \LogicException(sprintf('Неизвестный параметр "%s".', $name));
     }

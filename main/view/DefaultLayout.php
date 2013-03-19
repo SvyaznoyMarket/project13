@@ -157,19 +157,23 @@ class DefaultLayout extends Layout {
     }
 
     public function slotMainMenu() {
-        $client = \App::curl();
+        if (\App::config()->requestMainMenu) {
+            $client = \App::curl();
 
-        $isFailed = false;
-        $content = '';
-        $client->addQuery('http://' . \App::config()->mainHost . \App::router()->generate('category.mainMenu'), [], function($data) use (&$content) {
-            $content = $data['content'];
-        }, function(\Exception $e) use (&$isFailed) {
-            \App::exception()->remove($e);
-            $isFailed = true;
-        });
-        $client->execute(\App::config()->coreV2['retryTimeout']['short'], \App::config()->coreV2['retryCount']);
+            $isFailed = false;
+            $content = '';
+            $client->addQuery('http://' . \App::config()->mainHost . \App::router()->generate('category.mainMenu'), [], function($data) use (&$content) {
+                $content = $data['content'];
+            }, function(\Exception $e) use (&$isFailed) {
+                \App::exception()->remove($e);
+                $isFailed = true;
+            });
+            $client->execute(\App::config()->coreV2['retryTimeout']['short'], \App::config()->coreV2['retryCount']);
 
-        if ($isFailed) {
+            if ($isFailed) {
+                $content = $this->render('_mainMenu', array('menu' => (new Menu())->generate()));
+            }
+        } else {
             $content = $this->render('_mainMenu', array('menu' => (new Menu())->generate()));
         }
 
