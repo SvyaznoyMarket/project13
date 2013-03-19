@@ -22,6 +22,11 @@ return [
         'pattern' => '/search/_infinity',
         'action'  => ['Search\Action', 'execute'],
     ],
+    // автоподстановка поиска
+    'search.autocomplete' => [
+        'pattern' => '/search/autocomplete',
+        'action'  => ['Search\Action', 'autocomplete'],
+    ],
 
     // инфо пользователя
     'user.info' => [

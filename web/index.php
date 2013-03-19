@@ -94,7 +94,7 @@ $response = null;
         }
 
         // debug panel
-        if (\App::config()->debug && !$response instanceof \Http\JsonResponse) {
+        if (\App::config()->debug && !$response instanceof \Http\JsonResponse && $response->getIsShowDebug()) {
             $response->setContent(
                 $response->getContent()
                 . "\n\n"

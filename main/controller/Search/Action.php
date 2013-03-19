@@ -128,4 +128,42 @@ class Action {
 
         return new \Http\Response($page->show());
     }
+
+    public function autocomplete(\Http\Request $request) {
+        \App::logger()->debug('Exec ' . __METHOD__);
+
+        if (!$request->isXmlHttpRequest()) {
+            //throw new \Exception\NotFoundException('Request is not xml http request');
+        }
+
+        $limit = 8;
+        $keyword = mb_strtolower($request->get('q'));
+        $keyword = strtr($keyword, array(
+            'q'=>'й', 'w'=>'ц', 'e'=>'у', 'r'=>'к', 't'=>'е', 'y'=>'н', 'u'=>'г', 'i'=>'ш', 'o'=>'щ', 'p'=>'з', '['=>'х', ']'=>'ъ', 'a'=>'ф', 's'=>'ы', 'd'=>'в', 'f'=>'а', 'g'=>'п', 'h'=>'р', 'j'=>'о', 'k'=>'л', 'l'=>'д', ';'=>'ж', "'"=>'э', 'z'=>'я', 'x'=>'ч', 'c'=>'с', 'v'=>'м', 'b'=>'и', 'n'=>'т', 'm'=>'ь', ','=>'б', '.'=>'ю', '`'=>'ё', 'Q'=>'Й', 'W'=>'Ц', 'E'=>'У', 'R'=>'К', 'T'=>'Е', 'Y'=>'Н', 'U'=>'Г', 'I'=>'Ш', 'O'=>'Щ', 'P'=>'З', '{'=>'Х', '}'=>'Ъ', 'A'=>'Ф', 'S'=>'Ы', 'D'=>'В', 'F'=>'А', 'G'=>'П', 'H'=>'Р', 'J'=>'О', 'K'=>'Л', 'L'=>'Д', ':'=>'Ж', '"'=>'Э', 'Z'=>'Я', 'X'=>'Ч', 'C'=>'С', 'V'=>'М', 'B'=>'И', 'N'=>'Т', 'M'=>'Ь', '<'=>'Б', '>'=>'Ю', '~'=>'Ё',
+        ));
+
+        $router = \App::router();
+
+        $data = [];
+        if (mb_strlen($keyword) >= 3) {
+            \App::coreClientV2()->addQuery('search/autocomplete', ['letters' => $keyword], [], function($result) use(&$data, $limit, $router){
+                foreach ([1 => 'product', 3 => 'category'] as $key => $value) {
+                    $i = 0;
+                    $entity = '\\Model\\Search\\'.ucfirst($value).'\\Entity';
+                    foreach ($result[$key] as $item) {
+                        if ($i >= $limit) break;
+
+                        $data[$value][] = new $entity($item);
+                        $i++;
+                    }
+                }
+            });
+            \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['short'], \App::config()->coreV2['retryCount']);
+        }
+
+        $response = new \Http\Response(\App::templating()->render('search/_autocomplete', ['products' => $data['product'], 'categories' => $data['category'], 'searchQuery' => $keyword, ]));
+        $response->setIsShowDebug(false);
+
+        return $response;
+    }
 }
