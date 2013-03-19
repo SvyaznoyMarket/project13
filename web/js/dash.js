@@ -436,7 +436,8 @@ $(document).ready(function(){
                 if( !ext_data.success )
                     return true
                 var line = $(thislink).parent()
-                f1lines_extWarr.find('td[ref='+ line.attr('ref') +']').find('input').val('Купить услугу').removeClass('active')
+                $('input.button',f1lines_extWarr).val('Выбрать').removeClass('active');
+                $('.link1',look_extWarr).text('Выбрать гарантию')
                 line.hide()
                 ltbx.update({ sum: ext_data.data.full_price })
                 ew_look.hide()
