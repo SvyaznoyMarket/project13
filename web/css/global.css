@@ -5845,7 +5845,6 @@
   }
   .bBuyingLine dd div {
     position: relative;
-    overflow: hidden;
     margin: 15px 0px 0px;
   }
   .bBuyingLine dd div:first-child {
@@ -7864,7 +7863,7 @@
     background-color: #ffd481;
   }
   .bSearchSuggest__eListLine {
-    margin: 7px 0;
+    margin: 7px 0 15px;
     text-align: right;
     border-bottom: 1px solid #e6e6e6;
     line-height: 0.2;
@@ -7877,13 +7876,13 @@
   }
   .bSearchSuggest__eCategoryRes {
     display: block;
-    margin: 0;
-    padding: 5px 0;
+    margin: 0 -10px;
+    padding: 5px 10px;
     color: #000000;
     font-size: 12px;
     line-height: 1.1em;
   }
-  .bSearchSuggest__eCategoryRes:hover {
+  .bSearchSuggest__eCategoryRes.hover {
     color: #000000;
     background-color: #e6e6e6;
   }
@@ -7891,18 +7890,17 @@
     display: block;
     margin-bottom: 5px;
   }
-  .bSearchSuggest__eGoodRes:hover {
+  .bSearchSuggest__eGoodRes.hover {
     color: #000000;
-    background-color: #e6e6e6;
   }
-  .bSearchSuggest__eGoodRes:hover .bSearchSuggest__eGoodTitleRes {
+  .bSearchSuggest__eGoodRes.hover .bSearchSuggest__eGoodTitleRes {
     text-decoration: underline;
-  }
-  .bSearchSuggest__eGoodImgRes {
-    margin-right: 10px;
+    background-color: #e6e6e6;
   }
   .bSearchSuggest__eGoodTitleRes {
     width: 230px;
+    margin: 0;
+    padding: 12px 10px;
     font-size: 12px;
   }
 }
