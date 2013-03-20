@@ -522,6 +522,17 @@ $(document).ready(function(){
                 })
             }
         }
+        if ($('#adriverProduct').length || $('#adriverCommon').length){
+        	 (function(s){
+				var d = document, i = d.createElement('IMG'), b = d.body;
+				s = s.replace(/![rnd]/, Math.round(Math.random()*9999999)) + '&tail256=' + escape(d.referrer || 'unknown');
+				i.style.position = 'absolute'; i.style.width = i.style.height = '0px';
+				i.onload = i.onerror = function()
+				{b.removeChild(i); i = b = null}
+				i.src = s;
+				b.insertBefore(i, b.firstChild);
+			})('http://ad.adriver.ru/cgi-bin/rle.cgi?sid=182615&sz=add_basket&custom=10=offer_id;11=category_id&bt=55&pz=0&rnd=![rnd]');
+        }
     }
 
 	var BB = new BuyBottons()
