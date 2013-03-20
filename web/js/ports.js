@@ -96,7 +96,7 @@ window.ANALYTICS = {
         var a = arguments[0]
         //document.write('<script type="text/javascript" src="' + ('https:' == document.location.protocol ? 'https://' : 'http://') + 'bn.adblender.ru/pixel.js?cost=' + escape( orderSum ) + '&r=' + Math.random() + '" ></sc' + 'ript>')
         // 'document.write' for <script/> is overloaded in loadjs.js
-        var script = document.createElement('script'); script.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + unescape('bn.adblender.ru%2Fpixel.js%3Fclient%3Denter%26cost%3D') + escape(a.order_id) + unescape('%26order%3D') + escape(a.order_total) + unescape('%26r%3D') + Math.random(); document.getElementsByTagName('head')[0].appendChild(script);
+        var script = document.createElement('script'); script.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + unescape('bn.adblender.ru%2Fpixel.js%3Fclient%3Denter%26cost%3D') + escape(a.order_total) + unescape('%26order%3D') + escape(a.order_id) + unescape('%26r%3D') + Math.random(); document.getElementsByTagName('head')[0].appendChild(script);
     },
     
     mixmarket : function() {
