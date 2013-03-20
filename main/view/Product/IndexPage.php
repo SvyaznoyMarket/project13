@@ -112,8 +112,8 @@ class IndexPage extends \View\DefaultLayout {
             return '';
         }
 
-        return \App::config()->analytics['enabled'] ? "<div id=\"heiasProduct\" data-vars=\"".$product->getId()."\" class=\"jsanalytics\"></div>\r\n".
-                "<div id=\"marketgidProd\" class=\"jsanalytics\"></div>\r\n" : '';
+        return \App::config()->analytics['enabled'] ? ("<div id=\"heiasProduct\" data-vars=\"".$product->getId()."\" class=\"jsanalytics\"></div>\r\n".
+                "<div id=\"marketgidProd\" class=\"jsanalytics\"></div>\r\n") : '';
     }
 
     public function slotAdriver() {
@@ -129,11 +129,11 @@ class IndexPage extends \View\DefaultLayout {
         else {
             $data = array(
                 'productId' => $product->getId(),
-                'categoryId' => 0,
+                'categoryId' => $product->getMainCategory() ? $product->getMainCategory()->getId() : 0,
             );
         }
 
-        return \App::config()->analytics['enabled'] ? "<div id=\"adriverCommon\" data-vars='".json_encode( $data )."' class=\"jsanalytics\"></div>\r\n" : '';
+        return \App::config()->analytics['enabled'] ? "<div id=\"adriverProduct\" data-vars='".json_encode( $data )."' class=\"jsanalytics\"></div>\r\n" : '';
     }
 
     private function applySeoPattern(\Model\Page\Entity $page) {

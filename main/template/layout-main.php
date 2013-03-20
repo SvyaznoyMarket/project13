@@ -60,6 +60,7 @@
 <?= $page->slotBodyJavascript() ?>
 <?= $page->slotInnerJavascript() ?>
 <?= $page->slotMyThings() ?>
+<?= $page->slotAdriver() ?>
 
 <? if (\App::config()->analytics['enabled']): ?>
     <div id="yandexMetrika" class="jsanalytics"></div>

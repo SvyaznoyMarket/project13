@@ -51,6 +51,7 @@
     <?= $page->slotYandexMetrika() ?>
     <?//= $page->slotAdvanceSeoCounter() ?>
     <?= $page->slotMyThings() ?>
+    <?= $page->slotAdriver() ?>
 
     <? if (\App::config()->analytics['enabled']): ?>
         <div id="luxupTracker" class="jsanalytics"></div>

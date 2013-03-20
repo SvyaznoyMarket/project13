@@ -153,7 +153,7 @@ class DefaultLayout extends Layout {
     }
 
     public function slotAdriver() {
-        return '';
+        return \App::config()->analytics['enabled'] ? "<div id=\"adriverCommon\"  class=\"jsanalytics\"></div>\r\n" : '';
     }
 
     public function slotMainMenu() {

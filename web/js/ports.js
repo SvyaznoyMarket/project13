@@ -29,7 +29,7 @@ window.ANALYTICS = {
             scr.src = (d.location.protocol === 'https:' ? 'https:' : 'http:') + '//ads.heias.com/x/heias.async/p.min.js';
             var elem = d.getElementsByTagName('script')[0];
             elem.parentNode.insertBefore(scr, elem);
-        }(document));            
+        }(document));
     },
 
     heiasOrder : function() {
@@ -92,6 +92,12 @@ window.ANALYTICS = {
     },
 
     adriverCommon : function() {
+        var RndNum4NoCash = Math.round(Math.random() * 1000000000);
+        var ar_Tail='unknown'; if (document.referrer) ar_Tail = escape(document.referrer);
+        document.write('<img src="' + ('https:' == document.location.protocol ? 'https:' : 'http:') + '//ad.adriver.ru/cgi-bin/rle.cgi?' + 'sid=182615&bt=21&pz=0&rnd=' + RndNum4NoCash + '&tail256=' + ar_Tail + '" border=0 width=1 height=1>')
+    },
+
+    adriverProduct : function() {
         var a = arguments[0];
 
         var RndNum4NoCash = Math.round(Math.random() * 1000000000);
