@@ -1,61 +1,24 @@
 $(document).ready(function(){
 
+
+	// Suggest для поля поиска
 	var nowSelectSuggest = -1
 	var suggestLen = 0
 
-	searchSuggest = function(e){
+	/**
+	 * Хандлер на поднятие клавиши в поле поиска
+	 * @param  {event} e
+	 */
+	suggestUp = function(e){
 		var text = $(this).attr('value')
-		
-		markSuggest = function(){
-			$('.bSearchSuggest').trigger('focus')
-			$('.bSearchSuggest__eRes').removeClass('hover').eq(nowSelectSuggest).addClass('hover')
-		}
-
-		upSuggestItem = function(){
-			if (nowSelectSuggest-1 >= 0){
-				nowSelectSuggest--
-			}
-			else{
-				nowSelectSuggest = suggestLen-1
-			}
-			markSuggest()
-		}
-
-		downSuggestItem = function(){
-			if (nowSelectSuggest+1 <= suggestLen-1){
-				nowSelectSuggest++
-			}
-			else{
-				nowSelectSuggest = 0
-			}
-			markSuggest()
-		}
-
 		authFromServer = function(response){
 			$('#searchAutocomplete').html(response)
 			suggestLen = $('.bSearchSuggest__eRes').length
 		}
-
-
-		if (e.which == 38){
-			upSuggestItem()
-		}
-		else if (e.which == 40){
-			downSuggestItem()
-		}
-		else if (e.which == 37 || e.which == 39){
-			$(this).trigger('focus')
-			return false
-		}
-		else if (e.which == 13 && nowSelectSuggest != -1){
-			var link = $('.bSearchSuggest__eRes').eq(nowSelectSuggest).attr('href')
-			document.location.href = link
-		}
-		else{
+		if ((e.which < 37 || e.which>40) && (nowSelectSuggest = -1)){
 			if (!text.length){
 				return false
 			}
-			$(this).trigger('focus')
 			$('.bSearchSuggest__eRes').removeClass('hover')
 			nowSelectSuggest = -1
 
@@ -68,13 +31,76 @@ $(document).ready(function(){
 			})
 		}
 	}
-	$('.searchbox .searchtext').keyup(searchSuggest)
+
+	/**
+	 * Хандлер на нажатие клавиши в поле поиска
+	 * @param  {event} e
+	 */
+	suggestDown = function(e){
+		
+		// маркировка пункта
+		markSuggest = function(){
+			$('.bSearchSuggest__eRes').removeClass('hover').eq(nowSelectSuggest).addClass('hover')
+		}
+
+		// стрелка вверх
+		upSuggestItem = function(){
+			if (nowSelectSuggest-1 >= 0){
+				nowSelectSuggest--
+				markSuggest()
+			}
+			else{
+				nowSelectSuggest = -1
+				$('.bSearchSuggest__eRes').removeClass('hover')
+				$(this).focus()
+			}
+			
+		}
+
+		// стрелка вниз
+		downSuggestItem = function(){
+			if (nowSelectSuggest+1 <= suggestLen-1){
+				nowSelectSuggest++
+				markSuggest()
+			}			
+		}
+
+		// нажатие клавиши 'enter'
+		enterSuggest = function(){
+			var link = $('.bSearchSuggest__eRes').eq(nowSelectSuggest).attr('href')
+			document.location.href = link
+		}
+
+		if (e.which == 38){
+			upSuggestItem()
+		}
+		else if (e.which == 40){
+			downSuggestItem()
+		}
+		else if (e.which == 13 && nowSelectSuggest != -1){
+			enterSuggest()
+		}
+	}
+	suggestInputFocus = function(e){
+		nowSelectSuggest = -1
+		$('.bSearchSuggest__eRes').removeClass('hover')
+	}
+	suggestInputClick = function(){
+		$('#searchAutocomplete').show()
+	}
+	$('.searchbox .searchtext').keydown(suggestDown).keyup(suggestUp).mouseenter(suggestInputFocus).focus(suggestInputFocus).click(suggestInputClick)
 	$('.bSearchSuggest__eRes').live('mouseover', function(){
 		$('.bSearchSuggest__eRes').removeClass('hover')
 		var index = $(this).addClass('hover').index()
 		nowSelectSuggest = index-1
-		$('.searchbox .searchtext').trigger('focus')
 	})
+	$('body').click(function(e){		
+		var targ = e.target.className
+		if (!(targ.indexOf('bSearchSuggest')+1 || targ.indexOf('searchtext')+1)) {
+			$('#searchAutocomplete').hide()
+		}
+	})
+
 
 	function regEmailValid(){
 		/*register e-mail check*/
