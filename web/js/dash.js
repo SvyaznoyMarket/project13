@@ -502,7 +502,7 @@ $(document).ready(function(){
 				$(button).addClass('active')
 				PubSub.publish( 'productBought', currentItem )
 
-                sendAnalytics(ajurl)
+                sendAnalytics($(button))
             }
 		})
 
@@ -511,18 +511,18 @@ $(document).ready(function(){
 
     function sendAnalytics(item) {
         if (typeof(MyThings) != "undefined") {
-            matches = item.match("\/cart\/add\/(\\d+)/_quantity")
-            if (null !== matches) {
-                productId = matches[1]
+            //matches = item.match("\/cart\/add\/(\\d+)/_quantity")
+            if (item.data('product') != "undefined") {
+            //    productId = matches[1]
 
                 MyThings.Track({
                     EventType: MyThings.Event.Visit,
                     Action: "1013",
-                    ProductId: productId
+                    ProductId: item.data('product')
                 })
             }
         }
-        if ($('#adriverProduct').length || $('#adriverCommon').length){
+        if (($('#adriverProduct').length || $('#adriverCommon').length) && (item.data('product') != "undefined")){
         	 (function(s){
 				var d = document, i = d.createElement('IMG'), b = d.body;
 				s = s.replace(/![rnd]/, Math.round(Math.random()*9999999)) + '&tail256=' + escape(d.referrer || 'unknown');
@@ -531,7 +531,7 @@ $(document).ready(function(){
 				{b.removeChild(i); i = b = null}
 				i.src = s;
 				b.insertBefore(i, b.firstChild);
-			})('http://ad.adriver.ru/cgi-bin/rle.cgi?sid=182615&sz=add_basket&custom=10=offer_id;11=category_id&bt=55&pz=0&rnd=![rnd]');
+			})('http://ad.adriver.ru/cgi-bin/rle.cgi?sid=182615&sz=add_basket&custom=10='+item.data('product')+';11='+item.data('category')+'&bt=55&pz=0&rnd=![rnd]');
         }
     }
 
