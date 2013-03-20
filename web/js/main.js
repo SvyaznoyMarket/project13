@@ -1,60 +1,72 @@
 $(document).ready(function(){
 
 	var nowSelectSuggest = -1
+	var suggestLen = 0
 
 	searchSuggest = function(e){
 		var text = $(this).attr('value')
-		var url = '/search/autocomplete?q='+text
 		
 		markSuggest = function(){
 			$('.bSearchSuggest').trigger('focus')
-			$('.bSearchSuggest__eRes').removeClass('hover')
-			$('.bSearchSuggest__eRes').eq(nowSelectSuggest).addClass('hover')
+			$('.bSearchSuggest__eRes').removeClass('hover').eq(nowSelectSuggest).addClass('hover')
 		}
 
-		var upSuggestItem = function(){
-			// console.info('вверх')
-			var suggestLen = $('.bSearchSuggest__eRes').length
+		upSuggestItem = function(){
 			if (nowSelectSuggest-1 >= 0){
 				nowSelectSuggest--
 			}
 			else{
 				nowSelectSuggest = suggestLen-1
 			}
-			markSuggest(nowSelectSuggest)
+			markSuggest()
 		}
 
-		var downSuggestItem = function(){
-			// console.info('вниз')
-			var suggestLen = $('.bSearchSuggest__eRes').length
+		downSuggestItem = function(){
 			if (nowSelectSuggest+1 <= suggestLen-1){
 				nowSelectSuggest++
 			}
 			else{
 				nowSelectSuggest = 0
 			}
-			markSuggest(nowSelectSuggest)
+			markSuggest()
 		}
 
-		var authFromServer = function(response){
+		authFromServer = function(response){
 			$('#searchAutocomplete').html(response)
-			if (e.which == 38){
-				upSuggestItem()
-			}
-			if (e.which == 40){
-				downSuggestItem()
-			}
-			if (e.which == 13){
-				var link = $('.bSearchSuggest__eRes').eq(nowSelectSuggest).attr('href')
-				document.location.href = link
-			}
+			suggestLen = $('.bSearchSuggest__eRes').length
 		}
 
-		$.ajax({
-			type: 'GET',
-			url: url,
-			success: authFromServer
-		})
+
+		if (e.which == 38){
+			upSuggestItem()
+		}
+		else if (e.which == 40){
+			downSuggestItem()
+		}
+		else if (e.which == 37 || e.which == 39){
+			$(this).trigger('focus')
+			return false
+		}
+		else if (e.which == 13 && nowSelectSuggest != -1){
+			var link = $('.bSearchSuggest__eRes').eq(nowSelectSuggest).attr('href')
+			document.location.href = link
+		}
+		else{
+			if (!text.length){
+				return false
+			}
+			$(this).trigger('focus')
+			$('.bSearchSuggest__eRes').removeClass('hover')
+			nowSelectSuggest = -1
+
+			var url = '/search/autocomplete?q='+text
+
+			$.ajax({
+				type: 'GET',
+				url: url,
+				success: authFromServer
+			})
+		}
 	}
 	$('.searchbox .searchtext').keyup(searchSuggest)
 	$('.bSearchSuggest__eRes').live('mouseover', function(){
