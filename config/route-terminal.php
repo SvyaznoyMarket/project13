@@ -13,4 +13,11 @@ return [
         'action'  => ['Product\IndexAction', 'execute'],
         'require' => ['productId' => '[\d]+'],
     ],
+
+    // список товаров
+    'category.show' => [
+        'pattern' => '/catalog/{categoryId}',
+        'action'  => ['ProductCategory\IndexAction', 'execute'],
+        'require' => ['categoryId' => '[\d]+'],
+    ],
 ];
