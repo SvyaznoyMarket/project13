@@ -67,7 +67,13 @@ $(document).ready(function(){
 
 		// нажатие клавиши 'enter'
 		enterSuggest = function(){
+			// suggest analitycs
 			var link = $('.bSearchSuggest__eRes').eq(nowSelectSuggest).attr('href')
+			if ( typeof(_gaq) !== 'undefined' ){
+				var type = ($(this).hasClass('bSearchSuggest__eCategoryRes')) ? 'suggest_category' : 'suggest_product'
+				_gaq.push(['_trackEvent', 'Search', type, url])
+			}
+
 			document.location.href = link
 		}
 
@@ -98,6 +104,14 @@ $(document).ready(function(){
 		var targ = e.target.className
 		if (!(targ.indexOf('bSearchSuggest')+1 || targ.indexOf('searchtext')+1)) {
 			$('#searchAutocomplete').hide()
+		}
+	})
+	// suggest analitycs
+	$('.bSearchSuggest__eRes').live('click', function(){
+		if ( typeof(_gaq) !== 'undefined' ){
+			var type = ($(this).hasClass('bSearchSuggest__eCategoryRes')) ? 'suggest_category' : 'suggest_product'
+			var url = $(this).attr('href')
+			_gaq.push(['_trackEvent', 'Search', type, url])
 		}
 	})
 
