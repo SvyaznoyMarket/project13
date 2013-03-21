@@ -9,7 +9,7 @@ require_once __DIR__ . '/lib/Debug/Timer.php';
 
 // environment
 if (!isset($argv[3])) {
-    throw new \Exception\NotFoundException('Не указана среда окружения');
+    throw new \Exception('Не указана среда окружения');
 } else {
     $env = $argv[3];
 }
@@ -37,7 +37,7 @@ Autoloader::register($config->appDir);
 
 try {
     if (!isset($argv[1])) {
-        throw new \Exception\NotFoundException('Пустой контроллер. Выполните ' . basename(__FILE__) . ' с параметром "help"');
+        throw new \Exception('Пустой контроллер. Выполните ' . basename(__FILE__) . ' с параметром "help"');
     }
     if ('help' == $argv[1]) {
         echo 'Например, "' . basename(__FILE__) . ' Import/RegionAction execute valueOfParam1" выполнит "(new \\Controller\\Import\\RegionAction())->execute(valueOfParam1)"' . "\n";
