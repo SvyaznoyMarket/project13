@@ -39,7 +39,7 @@ $c->coreV2['retryTimeout'] = [
 ];
 $c->coreV2['retryCount'] = 3;
 
-$c->wordpress['url'] = 'http://content.ent3.ru/';
+$c->wordpress['url'] = 'http://content.enter.ru/';
 $c->wordpress['timeout'] = 8;
 $c->wordpress['throwException'] = true;
 
