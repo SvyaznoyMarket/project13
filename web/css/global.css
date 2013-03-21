@@ -5058,6 +5058,9 @@
     margin: 10px 0;
     width: 250px;
   }
+  .bSimilarGoodsSlider_eGoodsImg {
+    margin-right: 5px;
+  }
   .bSimilarGoodsSlider_eGoodsInfo {
     width: 150px;
   }
