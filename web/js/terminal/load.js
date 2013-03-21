@@ -17,7 +17,23 @@ requirejs.config({
 });
 
 // for all pages
-require(["termAPI"], function($) {})
+require(["termAPI"])
 
-// product scripts
-require(["product"], function($) {})
+require(["jquery"], function($) {
+    $(document).ready(function() {
+
+        var pagetype = $('article').data('pagetype')
+
+        switch (pagetype){
+            case 'product_list':
+                // product list scripts
+                require(["product_list"])
+                break
+            case 'product':
+                // product scripts
+                require(["product"])
+                break
+        }
+    })
+})
+
