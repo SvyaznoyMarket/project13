@@ -1,0 +1,21 @@
+<div class="bProductListItem clearfix">
+	<a class="bProductListItem__eImgLink mFl jsRedirect" data-screentype='product' data-productid='<%= id %>' href="#"><img class="bProductListItem__eImg" src="<%= image %>" alt="<%= name %>" /></a>
+	<div class="bProductListItem__eDesc mFl">
+		<p class="bProductListItem__eArticle">#<%= article %></p>
+		<h2 class="bProductListItem__eTitle"><%= name %></h2>
+		<p class="bProductListItem__eFullDesc">full desc</p>
+		<p class="bProductListItem__ePrice"><%= price %> <span class="bRuble">p</span></p>
+		<ul class="bProductListItem__eDlvrBlock">
+			<li class="bProductListItem__eDlvrBlockItem mListDisk">Есть в этом магазине</li>
+			<li class="bProductListItem__eDlvrBlockItem mListDisk">Можно забрать сейчас</li>
+		</ul>
+		<div class="bProductListItem__eBtnBlock">
+		<% if (isBuyable) {%>
+			<a class="bProductListItem__eBtn bButton mOrangeBtn mFl jsBuyButton" data-productid='<%= id %>' href="#">В корзину</a>
+		<%}else {%>
+			<a class="bProductListItem__eBtn bButton mGrayBtn mFl jsWhereBuy" data-productid='<%= id %>' href="#">Где купить?</a>
+		<%}%>
+			<a id="compare_<%= id %>" class="bProductListItem__eBtn jsCompare bButton mGrayBtn mFl" data-productid='<%= id %>' href="#">К сравнению</a>
+		</div>
+	</div>
+</div>
