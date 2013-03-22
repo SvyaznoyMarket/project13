@@ -54,7 +54,9 @@ class AppConfig {
     ];
     /** @var array */
     public $wordpress = [
-        'url' => null,
+        'url'            => null,
+        'timeout'        => null,
+        'throwException' => null,
     ];
     /** @var array */
     public $dataStore = [
@@ -66,6 +68,7 @@ class AppConfig {
     /** @var array */
     public $company = [
         'phone' => null,
+        'moscowPhone' => null,
         'icq'   => null,
     ];
     /** @var array */
@@ -78,6 +81,13 @@ class AppConfig {
     ];
     /** @var array */
     public $yandexMetrika = [
+        'enabled' => null,
+    ];
+    /** @var array */
+    public $myThings = [
+        'feeByCategory' => [],
+    ];
+    public $adFox = [
         'enabled' => null,
     ];
     /** @var string */
@@ -225,6 +235,9 @@ class AppConfig {
         'workerLimit' => null,
         'maxLockTime' => null,
     ];
+
+    /** @var boolean */
+    public $requestMainMenu = null;
 
     public function __set($name, $value) {
         throw new \LogicException(sprintf('Неизвестный параметр "%s".', $name));

@@ -29,7 +29,7 @@ window.ANALYTICS = {
             scr.src = (d.location.protocol === 'https:' ? 'https:' : 'http:') + '//ads.heias.com/x/heias.async/p.min.js';
             var elem = d.getElementsByTagName('script')[0];
             elem.parentNode.insertBefore(scr, elem);
-        }(document));            
+        }(document));
     },
 
     heiasOrder : function() {
@@ -73,18 +73,30 @@ window.ANALYTICS = {
         }(document));
     },
 
-    adblender : function() {
-        document.write('<script type="text/javascript" src="' + ('https:' == document.location.protocol ? 'https://' : 'http://') + 'bn.adblender.ru/view.js?r=' + Math.random() + '" ></sc' + 'ript>')
+    adblenderCommon : function() {
+        //document.write('<script type="text/javascript" src="' + ('https:' == document.location.protocol ? 'https://' : 'http://') + 'bn.adblender.ru/view.js?r=' + Math.random() + '" ></sc' + 'ript>')
         // 'document.write' for <script/> is overloaded in loadjs.js
-        // in fact: 
+        // in fact:
         // var ad = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'bn.adblender.ru/view.js?r=' + Math.random()
         // $LAB.script( ad )
+        var baseUrl = ('https:' == document.location.protocol ? 'https://' : 'http://');
+        baseUrl = baseUrl + 'bn.adblender.ru/view.gif?client=enter';
+        function loadImage(act) {
+            (new Image()).src = baseUrl + '&act=' + act + "&r=" + Math.random();
+        }
+        loadImage('view');
+
+        window.setTimeout(function ()
+            { loadImage('read'); }
+
+            , 60000);
     },
     
-    adblenderCost : function() {
-        var orderSum = arguments[0]
-        document.write('<script type="text/javascript" src="' + ('https:' == document.location.protocol ? 'https://' : 'http://') + 'bn.adblender.ru/pixel.js?cost=' + escape( orderSum ) + '&r=' + Math.random() + '" ></sc' + 'ript>')
-        // 'document.write' for <script/> is overloaded in loadjs.js            
+    adblenderOrder : function() {
+        var a = arguments[0]
+        //document.write('<script type="text/javascript" src="' + ('https:' == document.location.protocol ? 'https://' : 'http://') + 'bn.adblender.ru/pixel.js?cost=' + escape( orderSum ) + '&r=' + Math.random() + '" ></sc' + 'ript>')
+        // 'document.write' for <script/> is overloaded in loadjs.js
+        var script = document.createElement('script'); script.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + unescape('bn.adblender.ru%2Fpixel.js%3Fclient%3Denter%26cost%3D') + escape(a.order_total) + unescape('%26order%3D') + escape(a.order_id) + unescape('%26r%3D') + Math.random(); document.getElementsByTagName('head')[0].appendChild(script);
     },
     
     mixmarket : function() {
@@ -92,6 +104,12 @@ window.ANALYTICS = {
     },
 
     adriverCommon : function() {
+        var RndNum4NoCash = Math.round(Math.random() * 1000000000);
+        var ar_Tail='unknown'; if (document.referrer) ar_Tail = escape(document.referrer);
+        document.write('<img src="' + ('https:' == document.location.protocol ? 'https:' : 'http:') + '//ad.adriver.ru/cgi-bin/rle.cgi?' + 'sid=182615&bt=21&pz=0&rnd=' + RndNum4NoCash + '&tail256=' + ar_Tail + '" border=0 width=1 height=1>')
+    },
+
+    adriverProduct : function() {
         var a = arguments[0];
 
         var RndNum4NoCash = Math.round(Math.random() * 1000000000);
@@ -111,26 +129,26 @@ window.ANALYTICS = {
             '&rnd=' + RndNum4NoCash + '&tail256=' + ar_Tail + '" border=0 width=1 height=1>')
     },
     
-    yandexMetrika : function() {
-        (function (d, w, c) {
-            (w[c] = w[c] || []).push(function() {
-                try {
-                w.yaCounter10503055 = new Ya.Metrika({id:10503055, enableAll: true, webvisor:true});
-                } catch(e) {}
-            });
+    // yandexMetrika : function() {
+    //     (function (d, w, c) {
+    //         (w[c] = w[c] || []).push(function() {
+    //             try {
+    //             w.yaCounter10503055 = new Ya.Metrika({id:10503055, enableAll: true, webvisor:true});
+    //             } catch(e) {}
+    //         });
 
-            var n = d.getElementsByTagName("script")[0],
-            s = d.createElement("script"),
-            f = function () { n.parentNode.insertBefore(s, n); };
-            s.type = "text/javascript";
-            s.async = true;
-            s.src = (d.location.protocol == "https:" ? "https:" : "http:") + "//mc.yandex.ru/metrika/watch.js";
+    //         var n = d.getElementsByTagName("script")[0],
+    //         s = d.createElement("script"),
+    //         f = function () { n.parentNode.insertBefore(s, n); };
+    //         s.type = "text/javascript";
+    //         s.async = true;
+    //         s.src = (d.location.protocol == "https:" ? "https:" : "http:") + "//mc.yandex.ru/metrika/watch.js";
 
-            if (w.opera == "[object Opera]") {
-                d.addEventListener("DOMContentLoaded", f);
-            } else { f(); }
-        })(document, window, "yandex_metrika_callbacks");
-    },
+    //         if (w.opera == "[object Opera]") {
+    //             d.addEventListener("DOMContentLoaded", f);
+    //         } else { f(); }
+    //     })(document, window, "yandex_metrika_callbacks");
+    // },
 
     marketgidProd : function() {
         var MGDate = new Date();
@@ -440,6 +458,7 @@ var ADFOX = {
         } else if( window.attachEvent ) { //IE < 9
             var nativeEL = window.attachEvent
             window.attachEvent = function(){
+//console.info('addEventListener WINDOW', arguments[0])
 //console.info('addEventListener WINDOW', arguments[0])
               //nativeEL.call(window, arguments[0], arguments[1])
               if( arguments[0] === 'onload' )

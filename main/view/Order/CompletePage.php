@@ -25,9 +25,9 @@ class CompletePage extends Layout {
         return 'order_complete';
     }
 
-    public function slotYandexMetrika() {
-        return (\App::config()->yandexMetrika['enabled']) ? $this->render('order/_yandexMetrika') : '';
-    }
+    // public function slotYandexMetrika() {
+    //     return (\App::config()->yandexMetrika['enabled']) ? $this->render('order/_yandexMetrika') : '';
+    // }
 
     public function slotGoogleAnalytics() {
         $orders = $this->getParam('orders');
@@ -38,7 +38,7 @@ class CompletePage extends Layout {
         $isOrderAnalytics = (null !== $isOrderAnalytics) ? $isOrderAnalytics : true;
 
 
-        return (\App::config()->googleAnalytics['enabled']) ? ($isOrderAnalytics ? $this->render('_googleAnalytics', ['orders' => $orders, 'productsById' => $productsById, 'servicesById' => $servicesById, 'isOrderAnalytics' => $isOrderAnalytics]) : $this->render('_googleAnalytics')) : '';
+        return $isOrderAnalytics ? $this->render('_googleAnalytics', ['orders' => $orders, 'productsById' => $productsById, 'servicesById' => $servicesById, 'isOrderAnalytics' => $isOrderAnalytics]) : $this->render('_googleAnalytics');
     }
 
     public function slotInnerJavascript() {
@@ -70,5 +70,10 @@ class CompletePage extends Layout {
             . ($isOrderAnalytics ? $this->render('_remarketingGoogle', ['tag_params' => $tag_params]) : '')
             . "\n\n"
             . $this->render('_innerJavascript');
+    }
+
+    public function slotAdriver() {
+        //Adriver данные выводятся через order/_analitycs
+        return '';
     }
 }

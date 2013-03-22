@@ -84,7 +84,7 @@ function parseJS() {
 
 /* main() */
 	var lessf = []
-	var lessmf = []
+	// var lessmf = []
 	if( typeMode !== 'js' )
 		parseLESS()
 	if( typeMode !== 'css' )
@@ -97,12 +97,12 @@ function parseJS() {
 			parseLESS()
 			watchAllLESS()
 		})
-		fs.watchFile( POINTS.mLess, function() {
-			console.log('LESS CHANGED ' + POINTS.mLess )
-			unwatchCSSbutch( lessmf )
-			parseLESS()
-			watchAllLESS()
-		})
+		// fs.watchFile( POINTS.mLess, function() {
+		// 	console.log('LESS CHANGED ' + POINTS.mLess )
+		// 	unwatchCSSbutch( lessmf )
+		// 	parseLESS()
+		// 	watchAllLESS()
+		// })
 		watchAllLESS()
 
 	}
@@ -115,13 +115,13 @@ function watchAllLESS() {
 		}
 		watchCSSbutch( lessf )
 	})
-	fs.readFile( POINTS.mLess , 'utf8', function(e, data ) { 
-		lessmf = data.match( /@import\ \"([a-zA-Z\.\/]+)\"/g )
-		for( var i in lessmf ) {
-			lessmf[i] = lessmf[i].replace( /@import\ \"([a-za-zA-Z\.\/]+)\"/g , '$1' )
-		}
-		watchCSSbutch( lessmf )
-	})
+	// fs.readFile( POINTS.mLess , 'utf8', function(e, data ) { 
+	// 	lessmf = data.match( /@import\ \"([a-zA-Z\.\/]+)\"/g )
+	// 	for( var i in lessmf ) {
+	// 		lessmf[i] = lessmf[i].replace( /@import\ \"([a-za-zA-Z\.\/]+)\"/g , '$1' )
+	// 	}
+	// 	watchCSSbutch( lessmf )
+	// })
 }
 function reconfig() {
 	console.log( config )

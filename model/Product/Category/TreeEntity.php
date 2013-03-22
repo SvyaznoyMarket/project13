@@ -55,7 +55,7 @@ class TreeEntity extends BasicEntity {
         if (array_key_exists('has_children', $data)) $this->setHasChild($data['has_children']);
 
         if (array_key_exists('children', $data) && is_array($data['children'])) foreach ($data['children'] as $childData) {
-            $this->addChild(new Entity($childData));
+            $this->addChild(new TreeEntity($childData));
         }
     }
 

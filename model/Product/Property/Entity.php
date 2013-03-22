@@ -15,6 +15,8 @@ class Entity {
     private $unit;
     /** @var string */
     private $hint;
+    /** @var string */
+    private $valueHint;
     /** @var bool */
     private $isMultiple;
     /** @var int */
@@ -38,6 +40,7 @@ class Entity {
         if (array_key_exists('name', $data)) $this->setName($data['name']);
         if (array_key_exists('unit', $data)) $this->setUnit($data['unit']);
         if (array_key_exists('hint', $data)) $this->setHint($data['hint']);
+        if (array_key_exists('value_hint', $data)) $this->setValueHint($data['value_hint']);
         if (array_key_exists('is_multiple', $data)) $this->setIsMultiple($data['is_multiple']);
         if (array_key_exists('option_id', $data)) $this->setOptionId($data['option_id']);
         if (array_key_exists('value', $data)) $this->setValue($data['value']);
@@ -232,6 +235,9 @@ class Entity {
         $this->value = (string)$value;
     }
 
+    /**
+     * @return string
+     */
     public function getValue() {
         return $this->value;
     }
@@ -262,5 +268,29 @@ class Entity {
         } else {
             return null;
         }
+    }
+
+    /**
+     * @param string $valueHint
+     */
+    public function setValueHint($valueHint)
+    {
+        $this->valueHint = (string)$valueHint;
+    }
+
+    /**
+     * @return string
+     */
+    public function getValueHint()
+    {
+        $hint = null;
+        if ($this->getIsMultiple()) {
+            foreach ($this->getOption() as $option) {
+                $hint .= $option->getHint();
+            }
+        } else {
+            $hint = $this->valueHint;
+        }
+        return $hint;
     }
 }

@@ -1,4 +1,18 @@
 $(document).ready(function(){
+
+	var lboxCheckSubscribe = function(data){
+		if (!data.isSubscribe) 
+			return false
+		var subPopup = $('.bSubscribeLightboxPopup')
+		var subscribeItem = $('.bSubscribeLightbox')
+		subscribeItem.show()
+		subscribeItem.bind('click', function(){
+			subPopup.show()
+		})
+		subPopup.find('.close').bind('click', function(){
+			subPopup.hide()
+		})
+	}
 	
 	var carturl = $('.lightboxinner .point2').attr('href')
 
@@ -49,6 +63,9 @@ $(document).ready(function(){
           			$('#auth-link').hide()
 					$('#auth-link').after(show_user)
 				} else $('#auth-link').show()
+
+				// subscribe
+				lboxCheckSubscribe(data.data)
 			}
 
 	})
@@ -485,7 +502,7 @@ $(document).ready(function(){
 				$(button).addClass('active')
 				PubSub.publish( 'productBought', currentItem )
 
-                sendAnalytics(ajurl)
+                sendAnalytics($(button))
             }
 		})
 
@@ -494,16 +511,28 @@ $(document).ready(function(){
 
     function sendAnalytics(item) {
         if (typeof(MyThings) != "undefined") {
-            matches = item.match("\/cart\/add\/(\\d+)/_quantity\/")
-            if (null !== matches) {
-                productId = matches[1]
+            //matches = item.match("\/cart\/add\/(\\d+)/_quantity")
+            if (item.data('product') != "undefined") {
+            //    productId = matches[1]
 
                 MyThings.Track({
                     EventType: MyThings.Event.Visit,
                     Action: "1013",
-                    ProductId: productId
+                    ProductId: item.data('product')
                 })
             }
+        }
+
+        if (($('#adriverProduct').length || $('#adriverCommon').length) && (item.data('product') != "undefined")){
+        	 (function(s){
+				var d = document, i = d.createElement('IMG'), b = d.body;
+				s = s.replace(/![rnd]/, Math.round(Math.random()*9999999)) + '&tail256=' + escape(d.referrer || 'unknown');
+				i.style.position = 'absolute'; i.style.width = i.style.height = '0px';
+                i.onload = i.onerror = function()
+				{b.removeChild(i); i = b = null}
+				i.src = s;
+				b.insertBefore(i, b.firstChild);
+			})('http://ad.adriver.ru/cgi-bin/rle.cgi?sid=182615&sz=add_basket&custom=10='+item.data('product')+';11='+item.data('category')+'&bt=55&pz=0&rnd=![rnd]');
         }
     }
 
@@ -568,7 +597,7 @@ $(document).ready(function(){
 							afterpost()
 						PubSub.publish( 'productBought', tmpitem )
 
-                        sendAnalytics(ajurl)
+                        sendAnalytics($(button))
                     }
 				})
 				return false

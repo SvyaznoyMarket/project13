@@ -69,7 +69,7 @@ $isOrderAnalytics = isset($isOrderAnalytics) ? $isOrderAnalytics : true;
 <? endif ?>
 
 
-<? if (\App::config()->analytics['enabled'] && $isOrderAnalytics) echo $page->render('order/_analytics', array(
+<? if ($isOrderAnalytics) echo $page->render('order/_analytics', array(
     'orders'       => $orders,
     'productsById' => $productsById,
     'servicesById' => $servicesById,
