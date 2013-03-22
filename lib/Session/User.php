@@ -154,7 +154,21 @@ class User {
         }
 
         if (!$this->region) {
-            $this->region = \RepositoryManager::region()->getDefaultEntity(\App::config()->region['defaultId']);
+            if ('terminal' == \App::$name) {
+                $shop = \RepositoryManager::shop()->getEntityById(\App::config()->region['shop_id']);
+                if (!$shop) {
+                    \App::logger()->warn(sprintf('Магазин #"%s" не найден.', \App::config()->region['shop_id']));
+                    $this->region = \RepositoryManager::region()->getDefaultEntity(\App::config()->region['defaultId']);
+                } else {
+                    $this->region = \RepositoryManager::region()->getEntityById($shop->getRegion()->getId());
+                    if (!$this->region) {
+                        \App::logger()->warn(sprintf('Регион #"%s" не найден.', $regionId));
+                        $this->region = \RepositoryManager::region()->getDefaultEntity(\App::config()->region['defaultId']);
+                    }
+                }
+            } else {
+                $this->region = \RepositoryManager::region()->getDefaultEntity(\App::config()->region['defaultId']);
+            }
         }
 
         if (!$this->region) {
