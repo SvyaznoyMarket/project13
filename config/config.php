@@ -39,9 +39,11 @@ $c->coreV2['retryTimeout'] = [
 ];
 $c->coreV2['retryCount'] = 3;
 
-$c->wordpress['url'] = 'http://content.ent3.ru/';
+$c->wordpress['url'] = 'http://content.enter.ru/';
+$c->wordpress['timeout'] = 8;
+$c->wordpress['throwException'] = true;
 
-$c->dataStore['url'] = 'http://cms.enter.ru/';
+$c->dataStore['url'] = 'http://cms.enter.ru/v1/';
 $c->dataStore['timeout'] = 3;
 $c->dataStore['retryTimeout'] = [
     'default' => 0.05,
@@ -55,11 +57,28 @@ $c->dataStore['retryTimeout'] = [
 $c->dataStore['retryCount'] = 3;
 
 $c->company['phone'] = '8 (800) 700-00-09';
+$c->company['moscowPhone'] = '8 (495) 775-00-06';
 $c->company['icq'] = '648198963';
 
+$c->adFox['enabled'] = false;
 $c->analytics['enabled'] = false;
 $c->googleAnalytics['enabled'] = false;
 $c->yandexMetrika['enabled'] = false;
+$c->myThings['feeByCategory'] = [
+    80      => 0.07,  //Мебель
+    224     => 0.04,  //Сделай сам
+    1438    => 0.05,  //Зоотовары
+    320     => 0.07,  //Детские товары
+    443     => 0.07,  //Товары для дома
+    788     => 0.02,  //Электроника
+    1       => 0.03,  //Бытовая техника
+    21      => 0.07,  //Красота и здоровье
+    923     => 0.08,  //Украшения и часы
+    2545    => 0.04,  //Парфюмерия и косметика
+    185     => 0.04,  //Подарки и хобби
+    647     => 0.07,  //Спорт и отдых
+    225     => 0.04,  //Аксессуары для авто
+];
 
 $c->onlineCall['enabled'] = false;
 
@@ -180,5 +199,7 @@ $c->abtest = [
     'enabled'    => false,
     'test'       => [],
 ];
+
+$c->requestMainMenu = false;
 
 return $c;

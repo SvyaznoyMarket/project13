@@ -1017,7 +1017,7 @@ $(document).ready(function() {
         // console.info(toSend)
         $.ajax({
             url: form.attr('action'),
-            timeout: 20000,
+            timeout: 120000,
             type: "POST",
             data: toSend,
             success: function( data ) {

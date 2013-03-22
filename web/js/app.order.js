@@ -240,7 +240,7 @@ $(document).ready(function () {
                             if (typeof(_gaq) !== 'undefined') 
                                 _gaq.push(['_trackEvent', 'Errors', 'User error', 'Нет нужного количества товаров'])
                             txt.push('Вы заказали товар '+item.product.name+' в количестве '+item.product.quantity+' шт. <br/ >Доступно только '+item.quantity_available+' шт.<br/ >Будет заказано '+item.quantity_available+'шт')
-                            delUrl.push(item.product.deleteUrl)
+                            // delUrl.push(item.product.deleteUrl)
                             addUrl.push(item.product.addUrl)
                             
                         }
@@ -248,14 +248,14 @@ $(document).ready(function () {
                             if (typeof(_gaq) !== 'undefined') 
                                 _gaq.push(['_trackEvent', 'Errors', 'User error', 'Нет товара для выбранного способа доставки'])
                             txt.push('Товара ' + item.product.name + ' нет в наличии для выбранного способа доставки.<br/>Товар будет удален из корзины.')
-                            delUrl.push(item.product.deleteUrl)
+                            // delUrl.push(item.product.deleteUrl)
                         }
                     }
                     else {
                         if (typeof(_gaq) !== 'undefined') 
                             _gaq.push(['_trackEvent', 'Errors', 'User error', 'Товар недоступен для продажи'])
                         txt.push('Товар ' + item.product.name + ' недоступен для продажи.<br/>Товар будет удален из корзины.')
-                        delUrl.push(item.product.deleteUrl)
+                        // delUrl.push(item.product.deleteUrl)
                     }
                 })
                 orderErrPopup(txt, delUrl, addUrl)

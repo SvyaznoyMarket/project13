@@ -10,10 +10,13 @@ class Entity {
     private $id;
     /* @var string */
     private $value;
+    /* @var string */
+    private $hint;
 
     public function __construct(array $data = []) {
         if (array_key_exists('id', $data)) $this->setId($data['id']);
         if (array_key_exists('value', $data)) $this->setValue($data['value']);
+        if (array_key_exists('hint', $data)) $this->setHint($data['hint']);
     }
 
     /**
@@ -53,5 +56,19 @@ class Entity {
         }
 
         return $this->value;
+    }
+
+    /**
+     * @param $hint
+     */
+    public function setHint($hint) {
+        $this->hint = (string)$hint;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getHint() {
+        return $this->hint;
     }
 }

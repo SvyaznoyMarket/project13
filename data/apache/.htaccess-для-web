@@ -7,6 +7,9 @@ Options +FollowSymLinks +ExecCGI
 <IfModule mod_rewrite.c>
   RewriteEngine On
 
+  # remove trailing slash
+  RewriteRule (.+)/$ /$1 [L,R=301]
+
   # uncomment the following line, if you are having trouble
   # getting no_script_name to work
   #RewriteBase /

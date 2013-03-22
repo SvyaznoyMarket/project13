@@ -17,7 +17,7 @@ class IndexPage extends \View\DefaultLayout {
         $client = \App::contentClient();
 
         try {
-            $response = $client->query('footer_main_v2');
+            $response = (14974 == \App::user()->getRegion()->getId() || 83 == \App::user()->getRegion()->getParentId()) ? $client->query('footer_main_moscow') : $client->query('footer_main_v2');
         } catch (\Exception $e) {
             \App::exception()->add($e);
             \App::logger()->error($e);

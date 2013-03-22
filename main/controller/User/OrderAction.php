@@ -61,13 +61,7 @@ class OrderAction {
 
         // подготовка 2-го пакета запросов
 
-        // запрашиваем рутовые категории
-        $rootCategories = [];
-        \RepositoryManager::productCategory()->prepareRootCollection($region, function($data) use(&$rootCategories) {
-            foreach ($data as $item) {
-                $rootCategories[] = new \Model\Product\Category\Entity($item);
-            }
-        });
+        // TODO: запрашиваем меню
 
         // запрашиваем заказы пользователя
         /** @var $orders \Model\Order\Entity[] */
@@ -139,7 +133,6 @@ class OrderAction {
 
         $page = new \View\User\OrderPage();
         $page->setParam('regionsToSelect', $regionsToSelect);
-        $page->setParam('rootCategories', $rootCategories);
         $page->setParam('deliveryTypesById', $deliveryTypesById);
         $page->setParam('paymentMethodsById', $paymentMethodsById);
         $page->setParam('orders', $orders);

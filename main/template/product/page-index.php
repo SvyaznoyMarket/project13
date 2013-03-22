@@ -256,9 +256,11 @@ $productVideo = reset($productVideos);
     </div>
   <?php endif ?>
 
+  <? if (\App::config()->adFox['enabled']): ?>
   <div style="margin-bottom: 20px;">
     <div class="adfoxWrapper" id="<?= $adfox_id_by_label ?>"></div>
   </div>
+  <? endif ?>
 
   <? if ($product->getIsBuyable()): ?>
     <?= $page->render('service/_listByProduct', array('product' => $product)) ?>
@@ -544,8 +546,17 @@ $productVideo = reset($productVideos);
                   </div>
                   <? endif ?>
                 </div>
-                <div class="description">
-                    <?= $property->getStringValue() ?>
+                <div class="description fl">
+                    <span class="fl mr10"><?= $property->getStringValue() ?></span>
+                    <? if ($property->getValueHint()): ?>
+                    <div class="bHint fl">
+                        <a class="bHint_eLink"><?= $property->getStringValue() ?></a>
+                        <div class="bHint_ePopup popup">
+                            <div class="close"></div>
+                            <?= $property->getValueHint() ?>
+                        </div>
+                    </div>
+                    <? endif ?>
                 </div>
             </div>
         <? endforeach ?>

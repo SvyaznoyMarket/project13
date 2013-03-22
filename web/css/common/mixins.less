@@ -61,6 +61,9 @@
   -khtml-opacity: @opacity;
   -webkit-opacity: @opacity;
   opacity: @opacity;
+  @opperc: @opacity * 100;
+  -ms-filter: ~"progid:DXImageTransform.Microsoft.Alpha(opacity=@{opperc})";
+  filter: ~"alpha(opacity=@{opperc})";
 }
 .transition-duration(@duration: 0.2s) {
   -moz-transition-duration: @duration;
@@ -77,10 +80,16 @@
   -moz-transform:scale(@ratio);
   transform:scale(@ratio);
 }
-.transition(@duration:0.2s, @ease:ease-out) {
-  -webkit-transition: all @duration @ease;
-  -moz-transition: all @duration @ease;
-  transition: all @duration @ease;
+.transition(@arguments) {
+  -webkit-transition: @arguments;
+  -moz-transition: @arguments;
+  transition: @arguments;
+}
+.transition-delay(@delayTime){
+  -webkit-transition-delay: @delayTime;
+  -o-transition-delay: @delayTime;
+  -moz-transition-delay: @delayTime;
+  transition-delay: @delayTime;
 }
 .inner-shadow(@horizontal:0, @vertical:1px, @blur:2px, @color) {
   -webkit-box-shadow: inset @horizontal @vertical @blur @color;

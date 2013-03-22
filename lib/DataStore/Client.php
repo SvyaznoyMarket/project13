@@ -28,30 +28,31 @@ class Client {
     }
 
     /**
-     * @param string $file
+     * @param string $path
      * @return array|null
      * @throws \Exception
      */
-    public function query($file) {
+    public function query($path) {
         \Debug\Timer::start('data-store');
-        \App::logger()->info('Start data-store request ' . $file);
+        \App::logger()->info('Start data-store request ' . $path);
 
-        $url = $this->config['url'] . $file;
         $response = null;
         try {
             // локальный файл
-            if (0 === strpos($url, '/')) {
-                $response = is_file($url) ? file_get_contents($url) : null;
+            if (0 === strpos($path, '/')) {
+                $file = \App::config()->dataDir . '/data-store' . $path;
+                $response = is_file($file) ? json_decode(file_get_contents($file), true) : null;
+                \Util\RequestLogger::getInstance()->addLog($file, [], 0, 'unknown');
             // http-ресурс
             } else {
-                $response = $this->curl->query($url, [], $this->config['timeout']);
+                $response = $this->curl->query($this->config['url'] . $path, [], $this->config['timeout']);
             }
             $spend = \Debug\Timer::stop('data-store');
-            \App::logger()->info('End data-store request ' . $file . ' in ' . $spend);
+            \App::logger()->info('End data-store request ' . $path . ' in ' . $spend);
         } catch (\Exception $e) {
             $spend = \Debug\Timer::stop('data-store');
             \App::exception()->remove($e);
-            \App::logger()->info('Fail data-store request ' . $file . ' in ' . $spend . ' with ' . $e);
+            \App::logger()->info('Fail data-store request ' . $path . ' in ' . $spend . ' with ' . $e);
         }
 
         return $response;
