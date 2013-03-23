@@ -38,7 +38,7 @@ class Client {
 
         $url = $this->config['url'] . $action . '?json=1';
         $response = null;
-        $this->curl->addQuery($url, $data, function ($data) use (&$response) {
+        $this->curl->addQuery($url, $data, function ($data) use (&$response, $action) {
             $response = $data;
             $spend = \Debug\Timer::stop('content');
             \App::logger()->info('End content request ' . $action . ' in ' . $spend);

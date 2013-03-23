@@ -65,6 +65,24 @@ class App {
             \App::shutdown();
         });
 
+        if (('terminal' == self::$name) && self::$config->loadMediaHost) {
+            try {
+                $data = \App::coreClientV2()->query('terminal/get', [
+                    'ip'  => '0.0.0.0',
+                    'uid' => '443ecd0b-d914-4c2e-b1ea-a190e6b2ffb6',
+                ]);
+
+                $imageUrl = isset($data['config']['image_host'])
+                    ? ('http://' . $data['config']['image_host'] . '/')
+                    : null;
+                if ($imageUrl) {
+                    self::$config->mediaHost = [trim($imageUrl, '/')];
+                }
+            } catch (\Exception $e) {
+                \App::logger()->error($e);
+            }
+        }
+
         self::$initialized = true;
     }
 

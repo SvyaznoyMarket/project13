@@ -32,6 +32,8 @@ $c->dataStore['retryTimeout'] = [
     'forever' => 0,
 ];
 
+$c->loadMediaHost = true;
+
 $c->analytics['enabled'] = true;
 $c->googleAnalytics['enabled'] = true;
 $c->yandexMetrika['enabled'] = true;

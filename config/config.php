@@ -86,6 +86,7 @@ $c->region['cookieName']     = 'geoshop';
 $c->region['cookieLifetime'] = 31536000; // 365 дней
 $c->region['defaultId']      = 14974;
 
+$c->loadMediaHost = false;
 $c->mediaHost = [
     0 => 'http://fs01.enter.ru',
     1 => 'http://fs02.enter.ru',
@@ -126,41 +127,41 @@ $c->productPhoto3d['url'] = [
 ];
 
 $c->productLabel['url'] = [
-    0 => 'http://fs01.enter.ru/7/1/66x23/',
-    1 => 'http://fs01.enter.ru/7/1/124x38/',
+    0 => '/7/1/66x23/',
+    1 => '/7/1/124x38/',
 ];
 
 $c->productCategory['url'] = [
-    0 => 'http://fs01.enter.ru/6/1/163/',
+    0 => '/6/1/163/',
 ];
 
 $c->service['url'] = [
-    0 => 'http://fs01.enter.ru/11/1/160/',
-    1 => 'http://fs01.enter.ru/11/1/500/',
-    2 => 'http://fs01.enter.ru/11/1/120/',
+    0 => '/11/1/160/',
+    1 => '/11/1/500/',
+    2 => '/11/1/120/',
 ];
 
 $c->serviceCategory['url'] = [
-    0 => 'http://fs01.enter.ru/10/1/160/',
-    1 => 'http://fs01.enter.ru/10/1/500/',
+    0 => '/10/1/160/',
+    1 => '/10/1/500/',
 ];
 
 $c->service['minPriceForDelivery'] = 950;
 
 $c->shopPhoto['url'] = [
-    0 => 'http://fs01.enter.ru/8/1/40/',
-    1 => 'http://fs01.enter.ru/8/1/120/',
-    2 => 'http://fs01.enter.ru/8/1/163/',
-    3 => 'http://fs01.enter.ru/8/1/500/',
-    4 => 'http://fs01.enter.ru/8/1/2500/',
-    5 => 'http://fs01.enter.ru/8/1/original/',
+    0 => '/8/1/40/',
+    1 => '/8/1/120/',
+    2 => '/8/1/163/',
+    3 => '/8/1/500/',
+    4 => '/8/1/2500/',
+    5 => '/8/1/original/',
 ];
 
 $c->banner['timeout'] = 6000;
 $c->banner['url'] = [
-    0 => 'http://fs01.enter.ru/4/1/230x302/',
-    1 => 'http://fs01.enter.ru/4/1/768x302/',
-    2 => 'http://fs01.enter.ru/4/1/920x320/',
+    0 => '/4/1/230x302/',
+    1 => '/4/1/768x302/',
+    2 => '/4/1/920x320/',
 ];
 
 $c->cart['productLimit'] = 50;

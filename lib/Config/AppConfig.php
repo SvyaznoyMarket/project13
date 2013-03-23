@@ -111,6 +111,8 @@ class AppConfig {
         'cookieLifetime' => null,
         'defaultId'      => null,
     ];
+    /** @var bool */
+    public $loadMediaHost = null;
     /** @var array */
     public $mediaHost = [];
     /** @var array */
