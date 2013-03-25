@@ -73,10 +73,10 @@ class App {
                 ]);
 
                 $imageUrl = isset($data['config']['image_host'])
-                    ? ('http://' . $data['config']['image_host'] . '/')
+                    ? ('http://' . trim($data['config']['image_host'], '/'))
                     : null;
                 if ($imageUrl) {
-                    self::$config->mediaHost = [trim($imageUrl, '/')];
+                    self::$config->mediaHost = [$imageUrl];
                 }
             } catch (\Exception $e) {
                 \App::logger()->error($e);
