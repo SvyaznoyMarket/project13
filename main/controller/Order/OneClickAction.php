@@ -128,7 +128,7 @@ class OneClickAction {
                 'product_quantity' => implode(',', array_map(function($orderProduct) { /** @var $orderProduct \Model\Order\Product\Entity */ return $orderProduct->getQuantity(); }, $order->getProduct())),
             ));
 
-            $fee = $product->getMainCategory() ? \App::config()->myThings['feeByCategory'][$product->getId()->getMainCategory()->getId()] : min(\App::config()->myThings['feeByCategory'][$productsById[$product->getId()]->getMainCategory()->getId()]);
+            $fee = $product->getMainCategory() ? \App::config()->myThings['feeByCategory'][$product->getMainCategory()->getId()] : min(\App::config()->myThings['feeByCategory']);
             $myThingsOrderData = array(
                 'EventType' => 'MyThings.Event.Conversion',
                 'Action' => '9902',

@@ -76,7 +76,7 @@ class IndexPage extends \View\DefaultLayout {
         return ''
             . ($product ? $this->render('product/_odinkod', array('product' => $product)) : '')
             . "\n\n"
-            . (bool)$product ? $this->render('_remarketingGoogle', ['tag_params' => ['prodid' => $product->getId(), 'pagetype' => 'product', 'pname' => $product->getName(), 'pcat' => ($category) ? $category->getToken() : '', 'pvalue' => $product->getPrice()]]) : ''
+            . ($product ? $this->render('_remarketingGoogle', ['tag_params' => ['prodid' => $product->getId(), 'pagetype' => 'product', 'pname' => $product->getName(), 'pcat' => ($category) ? $category->getToken() : '', 'pvalue' => $product->getPrice()]]) : '')
             . "\n\n"
             . $this->render('_innerJavascript');
     }
@@ -112,8 +112,8 @@ class IndexPage extends \View\DefaultLayout {
             return '';
         }
 
-        return \App::config()->analytics['enabled'] ? "<div id=\"heiasProduct\" data-vars=\"".$product->getId()."\" class=\"jsanalytics\"></div>\r\n".
-                "<div id=\"marketgidProd\" class=\"jsanalytics\"></div>\r\n" : '';
+        return \App::config()->analytics['enabled'] ? ("<div id=\"heiasProduct\" data-vars=\"".$product->getId()."\" class=\"jsanalytics\"></div>\r\n".
+                "<div id=\"marketgidProd\" class=\"jsanalytics\"></div>\r\n") : '';
     }
 
     public function slotAdriver() {
@@ -129,11 +129,11 @@ class IndexPage extends \View\DefaultLayout {
         else {
             $data = array(
                 'productId' => $product->getId(),
-                'categoryId' => 0,
+                'categoryId' => $product->getMainCategory() ? $product->getMainCategory()->getId() : 0,
             );
         }
 
-        return \App::config()->analytics['enabled'] ? "<div id=\"adriverCommon\" data-vars='".json_encode( $data )."' class=\"jsanalytics\"></div>\r\n" : '';
+        return \App::config()->analytics['enabled'] ? "<div id=\"adriverProduct\" data-vars='".json_encode( $data )."' class=\"jsanalytics\"></div>\r\n" : '';
     }
 
     private function applySeoPattern(\Model\Page\Entity $page) {
@@ -149,23 +149,25 @@ class IndexPage extends \View\DefaultLayout {
         if (!(bool)$categories) {
             return;
         }
+        /** @var $category \Model\Product\Category\Entity */
         $category = reset($categories);
 
         $region = \App::user()->getRegion();
 
-        $seoTemplates = [];
-        $callback = function ($data, $index) use (&$seoTemplates) {
-            if (is_array($data)) {
-                $seoTemplates[$index] = $data;
-            }
-        };
-
-        $dataStore->addQuery(sprintf('seo/%s.json', trim($product->getLink(), '/')), $callback);
-        foreach (array_reverse($categories) as $iCategory) {
-            /** @var $iCategory \Model\Product\Category\Entity */
-            $dataStore->addQuery(sprintf('seo/%s/index.json', preg_replace('/^catalog/', 'product', trim($iCategory->getLink(), '/'))), $callback);
+        $seoTemplate = null;
+        $categoryTokens = [];
+        foreach ($category->getAncestor() as $iCategory) {
+            $categoryTokens[] = $iCategory->getToken();
         }
-        $dataStore->addQuery('seo/product/index.json', $callback);
+        $categoryTokens[] = $category->getToken();
+
+        $dataStore->addQuery(sprintf('seo/product/%s/%s.json', implode('/', $categoryTokens), $product->getToken()), function ($data) use (&$seoTemplate) {
+            $seoTemplate = array_merge([
+                'title'       => null,
+                'description' => null,
+                'keywords'    => null,
+            ], $data);
+        });
 
         // данные для шаблона
         $patterns = [
@@ -176,21 +178,17 @@ class IndexPage extends \View\DefaultLayout {
             'цена'      => $product->getPrice() . ' руб',
         ];
         $dataStore->addQuery(sprintf('inflect/product-category/%s.json', $category->getId()), function($data) use (&$patterns) {
-            $patterns['категория'] = $data;
+            if ($data) $patterns['категория'] = $data;
         });
         $dataStore->addQuery(sprintf('inflect/region/%s.json', $region->getId()), function($data) use (&$patterns) {
-            $patterns['город'] = $data;
+            if ($data) $patterns['город'] = $data;
         });
         $dataStore->addQuery('inflect/сайт.json', function($data) use (&$patterns) {
-            $patterns['сайт'] = $data;
+            if ($data) $patterns['сайт'] = $data;
         });
 
         $dataStore->execute();
 
-        // сортируем шаблоны в порядке следования запросов: сначала категория, потом категория-мама, потом кактегория-бабушка и т.д.
-        ksort($seoTemplates);
-        // выбираем самый близкий по родословной шаблон
-        $seoTemplate = reset($seoTemplates);
         if (!$seoTemplate) return;
 
         $replacer = new \Util\InflectReplacer($patterns);
