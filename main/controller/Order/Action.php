@@ -724,6 +724,17 @@ class Action {
                 if ((bool)$actionData) {
                     $orderData['action'] = $actionData;
                 }
+
+                if ((bool)$user->getCart()->getCertificates()) {
+                    $certificates = $user->getCart()->getCertificates();
+                    /** @var $certificate \Model\Cart\Certificate\Entity */
+                    $certificate = reset($certificates);
+                    if ($certificate instanceof \Model\Cart\Certificate\Entity) {
+                        $orderData['card_f1_list'] = [
+                            ['number' => $certificate->getNumber()],
+                        ];
+                    }
+                }
             }
 
             $data[] = $orderData;
