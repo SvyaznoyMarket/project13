@@ -473,6 +473,16 @@ $(document).ready(function(){
 	}
 
 	$('.goodsbox a.link1').live('click', function(e) {
+		//
+		// AB test https://jira.enter.ru/browse/SITE-909
+		// 
+		var ABtestCockie = docCookies.getItem("switch")
+		if ((ABtestCockie !== null) && (ABtestCockie !=='default')){
+			console.log('123!')
+			var href = $(this).attr('href')
+			window.location.href = href
+			return false
+		}
 		e.stopPropagation()
 		var button = this
 		if( $(button).hasClass('disabled') )
@@ -581,6 +591,16 @@ $(document).ready(function(){
 					button.val('В корзине')
 					ajurl = jsond.url
 				}
+
+				//
+				// AB test https://jira.enter.ru/browse/SITE-909
+				// 
+				var ABtestCockie = docCookies.getItem("switch")
+				if ((ABtestCockie !== null) && (ABtestCockie !=='default')){
+					window.location.href = ajurl
+					return false
+				}
+
 				$('body').addClass('bought')
 				$.getJSON( ajurl, function( data ) {
 					if ( data.success && ltbx ) {
