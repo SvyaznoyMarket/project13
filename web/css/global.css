@@ -5719,6 +5719,73 @@
   }
 }
 /*---END---СТИЛИ КРЕДИТОВ---*/
+/*-------СТИЛИ АПСЕЙЛА-----*/
+@media all {
+  .bUpsale {
+    margin: 15px 0 30px;
+  }
+  .bUpsaleGoodBlock__eImg {
+    margin-right: 15px;
+  }
+  .bUpsaleGoodBlock__eTitle {
+    font-size: 14px;
+  }
+  .bUpsaleGoodBlock__ePrice {
+    font-size: 14px;
+    font-weight: bold;
+  }
+  .bUpsaleGoodBlock__ePrice .rubl {
+    margin: 0;
+  }
+  .bUpsaleGoodBlock__eBackLink {
+    border: 1px solid #ffa901;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    padding: 0.7em 1.3em;
+  }
+  .bUpsaleRedirectBlock {
+    background: #ffffff url('/css/upsale/img/cart.png') no-repeat 10px 15px;
+    border: 1px solid #ffa901;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    padding: 15px 10px;
+  }
+  .bUpsaleRedirectBlock__eTitle {
+    font-size: 14px;
+    line-height: 1.5em;
+    margin-bottom: 15px;
+    margin-left: 45px;
+  }
+  .bUpsaleRedirectBlock__eCounter {
+    font-size: 14px;
+  }
+  .bUpsaleRedirectBlock__ePrice {
+    font-size: 14px;
+  }
+  .bUpsaleRedirectBlock__ePrice .rubl {
+    margin: 0;
+  }
+  .bUpsaleRedirectBlock__eLink {
+    border: 1px solid #ffa901;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    padding: 0.7em 1.3em;
+  }
+  .bUpsaleRedirectBlock__eLink.mFullOrange {
+    background-color: #ffa901;
+    color: #ffffff;
+  }
+}
+/*---END---СТИЛИ АПСЕЙЛА---*/
 /*-------СТИЛИ ОФОРМЛЕНИЯ ЗАКАЗА-----*/
 @media all {
   .bBuyingHead {
