@@ -1,11 +1,12 @@
 <?php
 /**
- * @var $page         \View\Layout
- * @var $order        \Model\Order\Entity
- * @var $orderData    array
- * @var $shop         \Model\Shop\Entity
- * @var $orderProduct \Model\Order\Product\Entity
- * @var $product      \Model\Product\Entity
+ * @var $page               \View\Layout
+ * @var $order              \Model\Order\Entity
+ * @var $orderData          array
+ * @var $myThingsOrderData  array
+ * @var $shop               \Model\Shop\Entity
+ * @var $orderProduct       \Model\Order\Product\Entity
+ * @var $product            \Model\Product\Entity
  */
 ?>
 

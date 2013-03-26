@@ -121,12 +121,12 @@ class OneClickAction {
                 ));
             }
 
-            $orderData = json_encode(array (
+            $orderData = array (
                 'order_article'    => implode(',', array_map(function($orderProduct) { /** @var $orderProduct \Model\Order\Product\Entity */ return $orderProduct->getId(); }, $order->getProduct())),
                 'order_id'         => $order->getNumber(),
                 'order_total'      => $order->getSum(),
                 'product_quantity' => implode(',', array_map(function($orderProduct) { /** @var $orderProduct \Model\Order\Product\Entity */ return $orderProduct->getQuantity(); }, $order->getProduct())),
-            ));
+            );
 
             $fee = ($product->getMainCategory() && isset(\App::config()->myThings['feeByCategory'][$product->getMainCategory()->getId()])) ? \App::config()->myThings['feeByCategory'][$product->getMainCategory()->getId()] : min(\App::config()->myThings['feeByCategory']);
             $myThingsOrderData = array(
