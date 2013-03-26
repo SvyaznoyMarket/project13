@@ -5724,15 +5724,20 @@
   .bUpsale {
     margin: 15px 0 30px;
   }
+  .bUpsaleGoodBlock {
+    width: 500px;
+  }
   .bUpsaleGoodBlock__eImg {
     margin-right: 15px;
   }
   .bUpsaleGoodBlock__eTitle {
     font-size: 14px;
+    width: 400px;
   }
   .bUpsaleGoodBlock__ePrice {
     font-size: 14px;
     font-weight: bold;
+    margin-bottom: 15px;
   }
   .bUpsaleGoodBlock__ePrice .rubl {
     margin: 0;
