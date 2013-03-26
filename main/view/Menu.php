@@ -53,7 +53,11 @@ class Menu {
 
         \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium'], \App::config()->coreV2['retryCount']);
 
+        \Debug\Timer::start('main-menu');
         $this->fillMenu($this->menu);
+        $spend = \Debug\Timer::stop('main-menu');
+        \App::debug()->add('time.main-menu', sprintf('%s ms', round($spend, 3) * 1000));
+        \App::debug()->add('main-menu.catalog', sprintf('%s ms', round(\Debug\Timer::get('main-menu.catalog')['total'], 3) * 1000));
 
         return $this->menu;
     }
@@ -89,6 +93,10 @@ class Menu {
      */
     public function fillMenu($menu) {
         foreach ($menu as $iMenu) {
+            if ((bool)$iMenu->getChild()) {
+                $this->fillMenu($iMenu->getChild());
+            }
+
             // ссылка
             if (\Model\Menu\Entity::ACTION_LINK == $iMenu->getAction()) {
                 $iMenu->setLink($iMenu->getFirstItem());
@@ -114,11 +122,9 @@ class Menu {
                 }
 
                 $iMenu->setLink($category->getLink());
+                \Debug\Timer::start('main-menu.catalog');
                 $this->fillCatalogMenu($iMenu, $category);
-            }
-
-            if ((bool)$iMenu->getChild()) {
-                $this->fillMenu($iMenu->getChild());
+                \Debug\Timer::stop('main-menu.catalog');
             }
         }
     }

@@ -28,6 +28,7 @@ class InfoAction {
             'bingo'            => false,
             'region_id'        => $region->getId(),
             'is_credit'        => 1 == $request->cookies->get('credit_on'),
+            'is_subscribed'    => 0,
         );
 
         // запрашиваем пользователя, если он авторизован
@@ -98,6 +99,7 @@ class InfoAction {
             if ($userEntity = $user->getEntity()) {
                 $responseData['name'] = $userEntity->getName();
                 $responseData['link'] = \App::router()->generate('user');
+                $responseData['is_subscribed'] = $user->getEntity()->getIsSubscribed();
             }
 
             $totalQuantity = $cart->getProductsQuantity();

@@ -379,6 +379,10 @@ return [
         'action'  => ['User\SubscribeAction', 'execute'],
         'method'  => ['POST'],
     ],
+    'user.addEmail' => [
+        'pattern' => '/subscribe/{email}',
+        'action'  => 'User\SubscribeAction', 'addEmail',
+    ],
 
     // qrcode
     'qrcode' => [
