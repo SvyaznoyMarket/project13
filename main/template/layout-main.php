@@ -34,11 +34,8 @@
     <? endif ?>
 
     <?= $page->slotHeader() ?>
-    <noindex>
-        <div id="mainPageSearch" class="searchbox">
-            <?= $page->render('search/form-main') ?>
-        </div>
-    </noindex>
+
+    <?= $page->slotContentHead() ?>
 
     <div class="bigbanner">
         <div class='bCarouselWrap'>
