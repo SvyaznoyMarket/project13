@@ -46,9 +46,11 @@ class Entity {
             }
             $this->setItem($data['item']);
         }
+        /*
         if (array_key_exists('child', $data) && is_array($data['child'])) foreach ($data['child'] as $childData) {
             $this->addChild(new Entity($childData));
         }
+        */
     }
 
     /**
@@ -106,6 +108,13 @@ class Entity {
      */
     public function getItem() {
         return $this->item;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFirstItem() {
+        return reset($this->item);
     }
 
     /**

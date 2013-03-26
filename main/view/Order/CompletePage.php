@@ -71,4 +71,9 @@ class CompletePage extends Layout {
             . "\n\n"
             . $this->render('_innerJavascript');
     }
+
+    public function slotAdriver() {
+        //Adriver данные выводятся через order/_analitycs
+        return '';
+    }
 }
