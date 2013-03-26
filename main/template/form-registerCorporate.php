@@ -45,11 +45,10 @@
     <div class="pb5">Организационно правовая форма:</div>
     
     <div class="pb5">
-        <select name="register[pravForm]" class="text width315 mb10">
-            <option value="ИП">Индивидуальный предприниматель (ИП)</option>
-            <option value="ООО">Общество с ограниченной ответственностью (ООО)</option>
-            <option value="ОАО">Открытое Акционерное общество (ОАО)</option>
-            <option value="ЗАО">Закрытое Акционерное общество (ЗАО)</option>
+        <select name="register[corp_form]" class="text width315 mb10">
+        <? foreach ($form->getCorpFormSelection() as $value => $name): ?>
+            <option value="<?= $value ?>"<? if ($value == $form->getCorpForm()): ?> selected="selected" <? endif ?>><?= $name ?></option>
+        <? endforeach ?>
             <option value="Другая форма">Другая форма</option>
         </select>
     </div>

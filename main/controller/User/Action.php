@@ -306,7 +306,8 @@ class Action {
                         //'legal_type' => null,
                         //'name'          => $form->getCorpName(),
                         'legal_type'    => 'ЮЛ',
-                        'name_full'     => $form->getCorpName(),
+                        'name_full'     =>
+                            trim($form->getCorpForm() . ' ' . '«' . trim(preg_replace('/[^\d\w\- ]/ui', '', $form->getCorpName())) . '»'),
                         'address_legal' => $form->getCorpLegalAddress(),
                         'address_real'  => $form->getCorpRealAddress(),
                         'okpo'          => $form->getCorpOKPO(),
