@@ -9,7 +9,7 @@
 <h1>Вы добавили в корзину</h1>
 <div class="clear"></div>
 
-<div class="bUpsale clearfix">
+<div id="upsale" class="bUpsale clearfix">
     <div class="bUpsaleGoodBlock fl">
         <div class="clearfix">
             <img class="bUpsaleGoodBlock__eImg fl" src="<?= $product->getImageUrl(1) ?>" width="83" height="83" alt="<?=$product->getName()?>"/>
@@ -22,7 +22,7 @@
     </div>
 
     <div class="bUpsaleRedirectBlock fr">
-        <h2 class="bUpsaleRedirectBlock__eTitle">В корзине <strong class="bUpsaleRedirectBlock__eCounter">2</strong> товара на сумму <strong class="bUpsaleRedirectBlock__ePrice">25 000 <span class="rubl">p</span></strong></h2>
+        <h2 class="bUpsaleRedirectBlock__eTitle">В корзине <strong id="upsaleCounter" class="bUpsaleRedirectBlock__eCounter"></strong> товара на сумму <strong class="bUpsaleRedirectBlock__ePrice"><span id="upsalePrice"></span> <span class="rubl">p</span></strong></h2>
         <div class="clearfix">
             <a class="bUpsaleRedirectBlock__eLink fl" href="">Перейти в корзину</a>
             <a class="bUpsaleRedirectBlock__eLink fr mFullOrange" href="">Оформить заказ ></a>
