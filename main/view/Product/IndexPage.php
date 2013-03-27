@@ -149,17 +149,16 @@ class IndexPage extends \View\DefaultLayout {
         if (!(bool)$categories) {
             return;
         }
-        /** @var $category \Model\Product\Category\Entity */
-        $category = reset($categories);
 
         $region = \App::user()->getRegion();
 
         $seoTemplate = null;
         $categoryTokens = [];
-        foreach ($category->getAncestor() as $iCategory) {
+        foreach ($categories as $iCategory) {
             $categoryTokens[] = $iCategory->getToken();
         }
-        $categoryTokens[] = $category->getToken();
+        /** @var $category \Model\Product\Category\Entity */
+        $category = end($categories);
 
         $dataStore->addQuery(sprintf('seo/product/%s/%s.json', implode('/', $categoryTokens), $product->getToken()), function ($data) use (&$seoTemplate) {
             $seoTemplate = array_merge([
