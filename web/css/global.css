@@ -2899,7 +2899,7 @@
   .bMainMenuLevel-1__eItem:hover .bCorner {
     display: block;
   }
-  .bMainMenuLevel-1__eItem.mMore a {
+  .bMainMenuLevel-1__eItem.mMore .bMainMenuLevel-2__eTitle {
     color: #ffffff;
     font-family: 'Enter';
     text-transform: uppercase;
