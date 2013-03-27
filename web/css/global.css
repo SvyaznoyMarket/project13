@@ -8455,6 +8455,9 @@
     -moz-box-shadow: 0 0 10px 2px #444443;
     box-shadow: 0 0 10px 2px #444443;
   }
+  #mainPage .bSearchSuggest {
+    left: 18px;
+  }
   #mainPageSearch.searchbox {
     background: url("/css/mainPage/img/mainPageSprite.png") no-repeat 0 0;
     float: right;
