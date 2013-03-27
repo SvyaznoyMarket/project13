@@ -173,10 +173,6 @@ class HtmlLayout {
      * @throws \InvalidArgumentException
      */
     public function addMeta($name, $content) {
-        if (!array_key_exists($name, $this->metas)) {
-            throw new \InvalidArgumentException(sprintf('Неизвестый мета-тег "%s"', $name));
-        }
-
         $this->metas[$name] = (string)$content;
     }
 

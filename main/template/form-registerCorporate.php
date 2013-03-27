@@ -45,7 +45,7 @@
     <div class="pb5">Организационно правовая форма:</div>
     
     <div class="pb5">
-        <select name="register[corp_form]" class="text width315 mb10">
+        <select id="corp_select" name="register[corp_form]" class="text width315 mb10">
         <? foreach ($form->getCorpFormSelection() as $value => $name): ?>
             <option value="<?= $value ?>"<? if ($value == $form->getCorpForm()): ?> selected="selected" <? endif ?>><?= $name ?></option>
         <? endforeach ?>
@@ -130,3 +130,8 @@
     <input type="submit" tabindex="4" value="Регистрация" class="button bigbutton" />
 
 </form>
+<div id="corpNotice" class="popup width315">
+    <a class="close" href="#">Закрыть</a>
+    <p class="font16">Для дальнейшей регистрации на нашем сайте просим выслать карточку основных сведений организации по адресу <a href="mailto:partner@enter.ru">partner@enter.ru</a></p>
+    <p class="font16">Мы свяжемся с вами в течение 10 минут.</p>
+</div>

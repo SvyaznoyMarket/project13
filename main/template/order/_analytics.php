@@ -66,9 +66,14 @@
 <?php foreach ($orders as $order) {
         foreach ($order->getProduct() as $product) {
             if (isset($productsById[$product->getId()]) && $productsById[$product->getId()]->getMainCategory()) {
-                $fee = $fee === null ? \App::config()->myThings['feeByCategory'][$productsById[$product->getId()]->getMainCategory()->getId()] : min($fee, \App::config()->myThings['feeByCategory'][$productsById[$product->getId()]->getMainCategory()->getId()]);
+                if (isset(\App::config()->myThings['feeByCategory'][$productsById[$product->getId()]->getMainCategory()->getId()])) {
+                    $fee = $fee === null ? \App::config()->myThings['feeByCategory'][$productsById[$product->getId()]->getMainCategory()->getId()] : min($fee, \App::config()->myThings['feeByCategory'][$productsById[$product->getId()]->getMainCategory()->getId()]);
+                }
             }
         }
+    }
+    if (null === $fee) {
+        $fee = min(\App::config()->myThings['feeByCategory']);
     }
 ?>
 <?php foreach ($orders as $i => $order):

@@ -119,6 +119,18 @@ return [
         'action'  => ['Shop\Action', 'show'],
     ],
 
+    // показывать глобальный список товаров
+    'product.category.global.short' => [
+        'pattern' => '/catalog/{categoryPath}/_global',
+        'action'  => ['ProductCategory\Action', 'setGlobal'],
+        'require' => ['categoryPath' => '[\w\d-_]+'],
+    ],
+    // показывать глобальный список товаров
+    'product.category.global' => [
+        'pattern' => '/catalog/{categoryPath}/_global',
+        'action'  => ['ProductCategory\Action', 'setGlobal'],
+        'require' => ['categoryPath' => '[\w\d-_]+\/[\w\d-_]+'],
+    ],
     // каталог товаров
     'product.category' => [
         'pattern' => '/catalog/{categoryPath}',
@@ -135,12 +147,6 @@ return [
     'product.category.count' => [
         'pattern' => '/ajax/catalog/{categoryPath}/_count',
         'action'  => ['ProductCategory\Action', 'count'],
-        'require' => ['categoryPath' => '[\w\d-_]+\/?[\w\d-_]+'],
-    ],
-    // показывать глобальный список товаров
-    'product.category.global' => [
-        'pattern' => '/catalog/{categoryPath}/_global',
-        'action'  => ['ProductCategory\Action', 'setGlobal'],
         'require' => ['categoryPath' => '[\w\d-_]+\/?[\w\d-_]+'],
     ],
     // каталог товаров с бесконечной прокруткой
