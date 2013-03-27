@@ -716,6 +716,7 @@ class Action {
                 foreach ($user->getCart()->getActions() as $action) {
                     $actionData[$action->getId()] = [
                         'id'            => $action->getId(),
+                        'number'        => $action->getNumber(),
                         'product_list'  => $action->getProductIds(),
                         'service_list'  => $action->getServiceIds(),
                         'warranty_list' => $action->getWarrantyIds(),
@@ -723,17 +724,6 @@ class Action {
                 }
                 if ((bool)$actionData) {
                     $orderData['action'] = $actionData;
-                }
-
-                if ((bool)$user->getCart()->getCertificates()) {
-                    $certificates = $user->getCart()->getCertificates();
-                    /** @var $certificate \Model\Cart\Certificate\Entity */
-                    $certificate = reset($certificates);
-                    if ($certificate instanceof \Model\Cart\Certificate\Entity) {
-                        $orderData['card_f1_list'] = [
-                            ['number' => $certificate->getNumber()],
-                        ];
-                    }
                 }
             }
 
