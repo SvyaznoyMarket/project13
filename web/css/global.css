@@ -7924,10 +7924,10 @@
   .bSearchSuggest {
     position: absolute;
     z-index: 15;
-    top: 27px;
+    top: 37px;
     left: 3px;
     width: 300px;
-    padding: 5px 10px;
+    padding: 0px 10px;
     color: #000000;
     border: 1px solid #C9C9C9;
     -webkit-box-shadow: 0 4px 5px -1px #616161;
@@ -7939,7 +7939,7 @@
     background-color: #ffd481;
   }
   .bSearchSuggest__eListLine {
-    margin: 7px 0 15px;
+    margin: 15px 0;
     text-align: right;
     border-bottom: 1px solid #e6e6e6;
     line-height: 0.2;
@@ -8231,7 +8231,6 @@
 /*-----СТИЛИ ХЛЕБНЫХ КРОШЕК И ХЭДА-----*/
 @media all {
   .pagehead {
-    float: left;
     padding-bottom: 20px;
     width: 100%;
   }
@@ -8246,22 +8245,23 @@
   }
   .breadcrumbs {
     color: #a6a6a6;
-    float: left;
     font-size: 11px;
-    padding: 10px 0;
+    padding: 5px 0;
   }
   .breadcrumbs a {
     color: #a6a6a6;
   }
   .searchbox {
     position: relative;
+    margin-bottom: 20px;
+    padding-top: 10px;
   }
   .searchbox .searchtext {
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     border-radius: 4px;
     background: #ffffff;
-    border: 2px solid #c9c9c9;
+    border: 1px solid #c9c9c9;
     float: left;
     height: 26px;
     line-height: 26px;
@@ -8305,7 +8305,7 @@
     cursor: pointer;
     display: block;
     float: right;
-    height: 30px;
+    height: 28px;
     padding: 0 19px;
     position: relative;
     z-index: 2;
@@ -8451,9 +8451,9 @@
     width: 805px;
   }
   #mainPage .searchbutton {
-    -webkit-box-shadow: 0 0 10px 4px #444443;
-    -moz-box-shadow: 0 0 10px 4px #444443;
-    box-shadow: 0 0 10px 4px #444443;
+    -webkit-box-shadow: 0 0 10px 2px #444443;
+    -moz-box-shadow: 0 0 10px 2px #444443;
+    box-shadow: 0 0 10px 2px #444443;
   }
   #mainPageSearch.searchbox {
     background: url("/css/mainPage/img/mainPageSprite.png") no-repeat 0 0;
