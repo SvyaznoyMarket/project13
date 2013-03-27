@@ -200,6 +200,11 @@ return [
         'pattern' => '/products/set/{productBarcodes}',
         'action'  => ['Product\SetAction', 'execute'],
     ],
+    'product.upsell' => [
+        'pattern' => '/upsell/{productToken}',
+        'action'  => ['Product\UpsellAction', 'execute'],
+        'require' => ['productToken' => '[\w\d-_]+'],
+    ],
     'tag' => [
         'pattern' => '/tags/{tagToken}',
         'action'  => ['Tag\Action', 'index'],
