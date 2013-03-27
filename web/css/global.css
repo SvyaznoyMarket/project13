@@ -2949,13 +2949,14 @@
     text-align: center;
   }
   .bMainMenuLevel-1__eTitle {
-    color: #ffffff;
     display: block;
+    text-align: center;
+    text-transform: uppercase;
+    color: #ffffff;
     font-family: 'Enter Type';
     font-size: 11px;
     font-weight: 100;
-    text-align: center;
-    text-transform: uppercase;
+    font-style: italic;
   }
   .bMainMenuLevel-2 {
     background: #ffffff;
