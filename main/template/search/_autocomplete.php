@@ -11,7 +11,7 @@
         <p class="bSearchSuggest__eListLine"><span class="bSearchSuggest__eListTitle">Категории</span></p>
         <? foreach ($categories as $category): ?>
         <a class="bSearchSuggest__eCategoryRes bSearchSuggest__eRes" href="<?= $category->getLink() ?>">
-            <?= preg_replace('/'.$searchQuery.'/iu', '<span class="bSearchSuggest__eSelected">' . htmlspecialchars('$0', ENT_QUOTES, \App::config()->encoding) . '</span>', $category->getName()) ?>
+            <?= preg_replace('/' . $searchQuery . '/iu', '<span class="bSearchSuggest__eSelected">' . htmlspecialchars('$0', ENT_QUOTES, \App::config()->encoding) . '</span>', $category->getName()) ?>
         </a>
         <? endforeach ?>
     </div>

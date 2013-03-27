@@ -3,6 +3,11 @@
 namespace Controller\Search;
 
 class Action {
+    /**
+     * @param \Http\Request $request
+     * @return \Http\Response
+     * @throws \Exception\NotFoundException
+     */
     public function execute(\Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
@@ -129,6 +134,11 @@ class Action {
         return new \Http\Response($page->show());
     }
 
+    /**
+     * @param \Http\Request $request
+     * @return \Http\Response
+     * @throws \Exception\NotFoundException
+     */
     public function autocomplete(\Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
@@ -138,7 +148,10 @@ class Action {
 
         $limit = 5;
         $keyword = mb_strtolower($request->get('q'));
-        $data = [];
+        $data = [
+            'products'    => [],
+            'category'    => null,
+        ];
         $mapData = [1 => 'product', 3 => 'category'];
 
         if (mb_strlen($keyword) >= 3) {
@@ -160,7 +173,7 @@ class Action {
             \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['short'], \App::config()->coreV2['retryCount']);
         }
 
-        $response = new \Http\Response((bool)$data ? \App::templating()->render('search/_autocomplete', ['products' => $data['product'], 'categories' => $data['category'], 'searchQuery' => $keyword, ]) : '');
+        $response = new \Http\Response((bool)$data ? \App::templating()->render('search/_autocomplete', ['products' => $data['product'], 'categories' => $data['category'], 'searchQuery' => $keyword]) : '');
         $response->setIsShowDebug(false);
 
         return $response;
