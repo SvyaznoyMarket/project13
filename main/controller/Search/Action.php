@@ -149,8 +149,8 @@ class Action {
         $limit = 5;
         $keyword = mb_strtolower($request->get('q'));
         $data = [
-            'products'    => [],
-            'category'    => null,
+            'product'  => null,
+            'category' => null,
         ];
         $mapData = [1 => 'product', 3 => 'category'];
 
