@@ -17,6 +17,8 @@ $extendedMargin = isset($extendedMargin) ? (bool)$extendedMargin : false;
 
 <div class="pagehead">
 
+    <?php echo $page->render('_breadcrumbs', array('breadcrumbs' => $breadcrumbs, 'class' => 'breadcrumbs')) ?>
+
     <? if ($hasSearch): ?>
     <noindex>
         <div class="searchbox">
@@ -25,8 +27,6 @@ $extendedMargin = isset($extendedMargin) ? (bool)$extendedMargin : false;
         </div>
     </noindex>
     <? endif ?>
-
-    <?php echo $page->render('_breadcrumbs', array('breadcrumbs' => $breadcrumbs, 'class' => 'breadcrumbs')) ?>
 
     <div class="clear"></div>
 

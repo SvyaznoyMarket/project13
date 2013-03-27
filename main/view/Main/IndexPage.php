@@ -7,6 +7,7 @@ class IndexPage extends \View\DefaultLayout {
 
     protected function prepare() {
         $this->addMeta('viewport', 'width=960');
+        $this->addMeta('mailru', '0b3a117efddc65ad');
     }
 
     public function slotBanner() {

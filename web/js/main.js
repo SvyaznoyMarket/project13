@@ -73,7 +73,7 @@ $(document).ready(function(){
 				var type = ($(this).hasClass('bSearchSuggest__eCategoryRes')) ? 'suggest_category' : 'suggest_product'
 				_gaq.push(['_trackEvent', 'Search', type, url])
 			}
-
+			console.log('123!!')
 			document.location.href = link
 		}
 
@@ -84,6 +84,7 @@ $(document).ready(function(){
 			downSuggestItem()
 		}
 		else if (e.which == 13 && nowSelectSuggest != -1){
+			e.preventDefault()
 			enterSuggest()
 		}
 	}
