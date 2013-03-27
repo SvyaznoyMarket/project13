@@ -18,7 +18,7 @@
                 <div class="bUpsaleGoodBlock__ePrice"><?= $page->helper->formatPrice($product->getPrice()) ?> <span class="rubl">p</span></div>
             </div>
         </div>
-        <a class="bUpsaleGoodBlock__eBackLink" href="#">< Продолжить покупки</a>
+        <a class="bUpsaleGoodBlock__eBackLink" href="#" onclick="history.back(); return false;">< Продолжить покупки</a>
     </div>
 
     <div class="bUpsaleRedirectBlock fr">
