@@ -53,10 +53,7 @@ class Menu {
 
         \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium'], \App::config()->coreV2['retryCount']);
 
-        \Debug\Timer::start('main-menu');
         $this->fillMenu($this->menu);
-        $spend = \Debug\Timer::stop('main-menu');
-        \App::debug()->add('time.main-menu', sprintf('%s ms', round($spend, 3) * 1000));
         \App::debug()->add('main-menu.catalog', sprintf('%s ms', round(\Debug\Timer::get('main-menu.catalog')['total'], 3) * 1000));
 
         return $this->menu;
@@ -129,6 +126,10 @@ class Menu {
         }
     }
 
+    /**
+     * @param \Model\Menu\Entity                 $iMenu
+     * @param \Model\Product\Category\MenuEntity $category
+     */
     private function fillCatalogMenu(\Model\Menu\Entity $iMenu, \Model\Product\Category\MenuEntity $category) {
         foreach ($category->getChild() as $childCategory) {
             $child = new \Model\Menu\Entity([
@@ -140,7 +141,7 @@ class Menu {
             $child->setImage($childCategory->getImageUrl(0));
             $iMenu->addChild($child);
 
-            if ((bool)$childCategory->getChild()) {
+            if ($childCategory->countChild()) {
                 $this->fillCatalogMenu($child, $childCategory);
             }
         }
