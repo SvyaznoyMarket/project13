@@ -20,18 +20,23 @@ class Repository {
         $data = $this->client->query(sprintf('video/product/%s.json', $product->getId()));
 
         return is_array($data)
-            ? array_map(function (array $item) { return new Entity($item); }, $data)
+            ? array_map(function (array $item) { return new Entity($item); }, reset($data))
             : [];
     }
 
     /**
-     * @param \Model\Product\BasicEntity $product
-     * @param callback                   $done
-     * @param callback|null              $fail
+     * @param \Model\Product\BasicEntity[] $products
+     * @param callback                     $done
+     * @param callback|null                $fail
      */
-    public function prepareCollectionByProduct(\Model\Product\BasicEntity $product, $done, $fail = null) {
+    public function prepareCollectionByProducts(array $products, $done, $fail = null) {
         \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
-        $this->client->addQuery(sprintf('video/product/%s.json', $product->getId()), $done, $fail);
+        $ids = array_map(function($product) {
+            /** @var $product \Model\Product\BasicEntity */
+            return $product->getId();
+        }, $products);
+
+        $this->client->addQuery(sprintf('video/product/%s.json', implode(',', $ids)), $done, $fail);
     }
 }
