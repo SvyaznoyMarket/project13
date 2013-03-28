@@ -64,6 +64,12 @@ $(document).ready(function(){
 					$('#auth-link').after(show_user)
 				} else $('#auth-link').show()
 
+				if ( $('#upsale').length ){
+					console.info(data.data)
+					$('#upsaleCounter').html(data.data.vitems)
+					$('#upsalePrice').html(data.data.sum)
+				}
+
 				// subscribe
 				lboxCheckSubscribe(data.data)
 			}

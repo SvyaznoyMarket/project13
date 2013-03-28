@@ -76,7 +76,6 @@ $(document).ready(function(){
 			console.log('123!!')
 			document.location.href = link
 		}
-
 		if (e.which == 38){
 			upSuggestItem()
 		}
@@ -87,6 +86,7 @@ $(document).ready(function(){
 			e.preventDefault()
 			enterSuggest()
 		}
+		// console.log(nowSelectSuggest)
 	}
 	suggestInputFocus = function(e){
 		nowSelectSuggest = -1

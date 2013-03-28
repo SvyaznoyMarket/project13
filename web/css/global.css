@@ -94,12 +94,11 @@
     border: 0px;
   }
   h1 {
-    float: left;
     font-family: "Enter";
     font-size: 30px;
     font-weight: 100;
     margin: 0px;
-    width: 560px;
+    width: 100%;
   }
   h2 {
     font-size: 16px;
@@ -2900,9 +2899,10 @@
     display: block;
   }
   .bMainMenuLevel-1__eItem.mMore .bMainMenuLevel-2__eTitle {
-    color: #ffffff;
-    font-family: 'Enter';
     text-transform: uppercase;
+    color: #ffffff;
+    font-family: 'Enter Type';
+    font-style: italic;
   }
   .bMainMenuLevel-1__eItem.mMore .bMainMenuLevel-2__eTitle {
     background: #000000;
