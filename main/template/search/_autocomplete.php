@@ -10,11 +10,12 @@ $searchQuery = preg_quote($searchQuery, '/');
 $replaceWords = explode(' ', $searchQuery);
 foreach ($replaceWords as $key => &$item) {
     if ((bool)$item) {
-        $item = '/' . $item . '/iu';
+        //$item = '/' . $item . '/iu';
     } else {
         unset($replaceWords[$key]);
     }
 }
+$pattern = '/' . implode('|', $replaceWords) . '/iu'
 ?>
 <div class="bSearchSuggest">
     <? if ((bool)$categories): ?>
@@ -22,7 +23,7 @@ foreach ($replaceWords as $key => &$item) {
         <p class="bSearchSuggest__eListLine"><span class="bSearchSuggest__eListTitle">Категории</span></p>
         <? foreach ($categories as $category): ?>
         <a class="bSearchSuggest__eCategoryRes bSearchSuggest__eRes" href="<?= $category->getLink() ?>">
-            <?= preg_replace($replaceWords, '<span class="bSearchSuggest__eSelected">' . htmlspecialchars('$0', ENT_QUOTES, \App::config()->encoding) . '</span>', $category->getName()) ?>
+            <?= preg_replace($pattern, '<span class="bSearchSuggest__eSelected">' . htmlspecialchars('$0', ENT_QUOTES, \App::config()->encoding) . '</span>', $category->getName()) ?>
         </a>
         <? endforeach ?>
     </div>
@@ -33,7 +34,7 @@ foreach ($replaceWords as $key => &$item) {
         <? foreach ($products as $product): ?>
         <a class="bSearchSuggest__eGoodRes bSearchSuggest__eRes clearfix" href="<?= $product->getLink()?>">
             <img class="bSearchSuggest__eGoodImgRes fl" src="<?= $product->getImageUrl(1) ?>" width="48" height="48"/>
-            <p class="bSearchSuggest__eGoodTitleRes fl"><?= preg_replace($replaceWords, '<span class="bSearchSuggest__eSelected">' . htmlspecialchars('$0', ENT_QUOTES, \App::config()->encoding) . '</span>', $product->getName()) ?></p>
+            <p class="bSearchSuggest__eGoodTitleRes fl"><?= preg_replace($pattern, '<span class="bSearchSuggest__eSelected">' . htmlspecialchars('$0', ENT_QUOTES, \App::config()->encoding) . '</span>', $product->getName()) ?></p>
         </a>
         <? endforeach ?>
     </div>
