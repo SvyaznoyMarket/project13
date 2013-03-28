@@ -445,14 +445,16 @@ class Action {
         $productVideosByProduct = [];
         foreach ($productPager as $product) {
             /** @var $product \Model\Product\Entity */
-            \RepositoryManager::productVideo()->prepareCollectionByProductIds($product, function($data) use ($product, &$productVideosByProduct) {
-                $productVideosByProduct[$product->getId()] = [];
-                foreach ($data as $item) {
-                    $productVideosByProduct[$product->getId()][] = new \Model\Product\Video\Entity($item);
+            $productVideosByProduct[$product->getId()] = [];
+        }
+        if ((bool)$productVideosByProduct) {
+            \RepositoryManager::productVideo()->prepareCollectionByProductIds(array_keys($productVideosByProduct), function($data) use (&$productVideosByProduct) {
+                foreach ($data as $id => $item) {
+                    $productVideosByProduct[$id][] = new \Model\Product\Video\Entity($item);
                 }
             });
+            \App::dataStoreClient()->execute(\App::config()->dataStore['retryTimeout']['tiny'], \App::config()->dataStore['retryCount']);
         }
-        \App::dataStoreClient()->execute(\App::config()->dataStore['retryTimeout']['tiny'], \App::config()->dataStore['retryCount']);
 
         $page->setParam('productPager', $productPager);
         $page->setParam('productSorting', $productSorting);
