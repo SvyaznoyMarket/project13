@@ -54,7 +54,7 @@ $c->paymentPsbInvoice['contractorId'] = 14;
 $c->paymentPsbInvoice['key'] = $c->dataDir . '/key/live.privkey.pem';
 $c->paymentPsbInvoice['payUrl'] = 'https://retail.payment.ru/invoice.aspx';
 
-$c->database['host']     = '10.20.33.2';
+$c->database['host']     = 'site-db'; // был 10.20.33.2
 
 $c->smartEngine['cert'] = $c->dataDir . '/cert/gsorganizationvalg2.crt';
 
