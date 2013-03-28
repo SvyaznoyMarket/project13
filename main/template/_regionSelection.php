@@ -7,7 +7,7 @@
 
 <?php
 $colCount = 4;
-$rowCount = 11;
+$rowCount = 13;
 $count = count($regions);
 ?>
 
@@ -28,7 +28,7 @@ $count = count($regions);
     </div>
     <div class="BlackArrow fl leftArr"></div>
     <div class="regionSlidesWrap fl">
-        <div class="regionSlides">
+        <div class="regionSlides clearfix">
             <!-- 2 слайда по 4 колонки -->
             <div class="regionSlides_slide">
                     <div class="colomn font14">

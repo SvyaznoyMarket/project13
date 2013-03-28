@@ -2209,7 +2209,7 @@
   }
   .popupRegion .colomn {
     float: left;
-    height: 240px;
+    height: 300px;
     margin-top: 20px;
     width: 205px;
   }
@@ -2224,7 +2224,7 @@
   }
   .popupRegion .BlackArrow {
     background: none;
-    height: 240px;
+    height: 300px;
     margin-top: 20px;
     width: 30px;
   }
@@ -2954,7 +2954,7 @@
     text-transform: uppercase;
     color: #ffffff;
     font-family: 'Enter Type';
-    font-size: 11px;
+    font-size: 12px;
     font-weight: 100;
     font-style: italic;
   }
@@ -6037,7 +6037,7 @@
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     border-radius: 5px;
-    border: 1px solid #ddd;
+    border: 1px solid #9e9e9e;
     height: 30px;
     line-height: 30px;
     outline: none;
@@ -6052,7 +6052,7 @@
     width: 132px;
   }
   .bBuyingLine__eText.mInputLong {
-    padding-left: 25px;
+    padding-left: 10px;
     width: 460px;
   }
   .mInputLong.mRed,
