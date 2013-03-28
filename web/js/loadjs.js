@@ -14,8 +14,6 @@
 	var debug = false;
 	if ( document.body.getAttribute('data-debug') == 'true'){
 		debug = true
-		document.write('<link rel="stylesheet/less" type="text/css" href="/css/global.less" />')
-		document.write('<script src="/js/less-1.3.3.min.js" type="text\/javascript"><\/script>')
 	}
 
 	if( typeof($LAB) === 'undefined' )
