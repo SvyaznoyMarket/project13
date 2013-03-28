@@ -98,7 +98,7 @@ if ($form->hasSubway()) $jsValidator['order[address_metro]'] = 'Укажите �
             <dd>
                 <div>
                     <p></p>
-                    <input type="text" id="order_recipient_email" class="bBuyingLine__eText mInputLong" name="order[recipient_email]" value="<?= $form->getLastName() ?>"/>
+                    <input type="text" id="order_recipient_email" class="bBuyingLine__eText mInputLong" name="order[recipient_email]" value="<?= $form->getEmail() ?>"/>
                 </div>
             </dd>
         </dl>

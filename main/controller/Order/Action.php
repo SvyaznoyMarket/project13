@@ -234,6 +234,7 @@ class Action {
                         'recipient_first_name'   => $form->getFirstName(),
                         'recipient_last_name'    => $form->getLastName(),
                         'recipient_phonenumbers' => $form->getMobilePhone(),
+                        'recipient_email'        => $form->getEmail(),
                         'address_street'         => $form->getAddressStreet(),
                         'address_number'         => $form->getAddressNumber(),
                         'address_building'       => $form->getAddressBuilding(),
@@ -619,6 +620,7 @@ class Action {
                 'credit_bank_id'            => $form->getCreditBankId(),
                 'last_name'                 => $form->getLastName(),
                 'first_name'                => $form->getFirstName(),
+                'email'                     => $form->getEmail(),
                 'mobile'                    => $form->getMobilePhone(),
                 'address_street'            => $form->getAddressStreet(),
                 'address_number'            => $form->getAddressNumber(),
@@ -803,6 +805,7 @@ class Action {
                     ? substr($userEntity->getMobilePhone(), -10)
                     : $userEntity->getMobilePhone()
             );
+            $form->setEmail($userEntity->getEmail());
         } else {
             $cookieValue = $request->cookies->get(self::ORDER_COOKIE_NAME);
             if (!empty($cookieValue)) {
@@ -812,6 +815,7 @@ class Action {
                      'recipient_first_name',
                      'recipient_last_name',
 //                     'recipient_phonenumbers',
+                     'recipient_email',
                      'address_street',
                      'address_number',
                      'address_building',
