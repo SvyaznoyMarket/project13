@@ -284,7 +284,18 @@ $(document).ready(function(){
     function gaClickCounter() {
         if( typeof(_gaq) !== 'undefined' ) {
             var title =  ($(this).data('title') !== 'undefined') ?  $(this).data('title') : 'без названия';
-            _gaq.push(['_trackEvent', $(this).data('event'), title,,,false])
+            var nowUrl = window.location.href
+            nowUrl.replace('http://www.enter.ru','')
+            var linkUrl = $(this).attr('href')
+            if ( $(this).data('event') == 'accessorize'){
+            	_gaq.push(['_trackEvent', 'AdvisedAccessorises', nowUrl, linkUrl]);
+            }
+            else if( $(this).data('event') == 'related'){
+				_gaq.push(['_trackEvent', 'AdvisedAlsoBuy', nowUrl, linkUrl]);
+			}
+			else{
+				_gaq.push(['_trackEvent', $(this).data('event'), title,,,false])	
+			}
         }
         return true
     }
