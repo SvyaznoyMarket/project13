@@ -129,7 +129,7 @@ class Layout extends \View\DefaultLayout {
         }
         $categoryTokens[] = $category->getToken();
 
-        $dataStore->addQuery(sprintf('seo/catalog/%s.json', implode('/', $categoryTokens)), function ($data) use (&$seoTemplate) {
+        $dataStore->addQuery(sprintf('seo/catalog/%s.json', implode('/', $categoryTokens)), [], function ($data) use (&$seoTemplate) {
             $seoTemplate = array_merge([
                 'title'       => null,
                 'description' => null,
@@ -143,13 +143,13 @@ class Layout extends \View\DefaultLayout {
             'город'     => [$region->getName()],
             'сайт'      => null,
         ];
-        $dataStore->addQuery(sprintf('inflect/product-category/%s.json', $category->getId()), function($data) use (&$patterns) {
+        $dataStore->addQuery(sprintf('inflect/product-category/%s.json', $category->getId()), [], function($data) use (&$patterns) {
             if ($data) $patterns['категория'] = $data;
         });
-        $dataStore->addQuery(sprintf('inflect/region/%s.json', $region->getId()), function($data) use (&$patterns) {
+        $dataStore->addQuery(sprintf('inflect/region/%s.json', $region->getId()), [], function($data) use (&$patterns) {
             if ($data) $patterns['город'] = $data;
         });
-        $dataStore->addQuery('inflect/сайт.json', function($data) use (&$patterns) {
+        $dataStore->addQuery('inflect/сайт.json', [], function($data) use (&$patterns) {
             if ($data) $patterns['сайт'] = $data;
         });
 

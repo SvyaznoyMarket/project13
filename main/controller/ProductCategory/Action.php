@@ -343,6 +343,7 @@ class Action {
         }
 
 
+
         // video
         $productVideosByProduct = [];
         foreach ($productPagersByCategory as $productPager) {
@@ -352,10 +353,9 @@ class Action {
             }
         }
         if ((bool)$productVideosByProduct) {
-            \RepositoryManager::productVideo()->prepareCollectionByProducts($product, function($data) use ($product, &$productVideosByProduct) {
-                $productVideosByProduct[$product->getId()] = [];
-                foreach ($data as $item) {
-                    $productVideosByProduct[$product->getId()][] = new \Model\Product\Video\Entity($item);
+            \RepositoryManager::productVideo()->prepareCollectionByProductIds(array_keys($productVideosByProduct), function($data) use (&$productVideosByProduct) {
+                foreach ($data as $id => $item) {
+                    $productVideosByProduct[$id][] = new \Model\Product\Video\Entity($item);
                 }
             });
             \App::dataStoreClient()->execute(\App::config()->dataStore['retryTimeout']['tiny'], \App::config()->dataStore['retryCount']);
@@ -445,7 +445,7 @@ class Action {
         $productVideosByProduct = [];
         foreach ($productPager as $product) {
             /** @var $product \Model\Product\Entity */
-            \RepositoryManager::productVideo()->prepareCollectionByProducts($product, function($data) use ($product, &$productVideosByProduct) {
+            \RepositoryManager::productVideo()->prepareCollectionByProductIds($product, function($data) use ($product, &$productVideosByProduct) {
                 $productVideosByProduct[$product->getId()] = [];
                 foreach ($data as $item) {
                     $productVideosByProduct[$product->getId()][] = new \Model\Product\Video\Entity($item);

@@ -61,12 +61,13 @@ class Client {
 
     /**
      * @param $file
+     * @param array         $data
      * @param callback      $successCallback
      * @param callback|null $failCallback
      * @param float|null    $timeout
      * @return bool
      */
-    public function addQuery($file, $successCallback, $failCallback = null, $timeout = null) {
+    public function addQuery($file, $data = [], $successCallback, $failCallback = null, $timeout = null) {
         \Debug\Timer::start('data-store');
 
         if (null === $timeout) {
@@ -78,7 +79,7 @@ class Client {
             };
         }
 
-        $result = $this->curl->addQuery($this->config['url'] . $file, [], $successCallback, $failCallback, $timeout);
+        $result = $this->curl->addQuery($this->config['url'] . $file, $data, $successCallback, $failCallback, $timeout);
 
         \Debug\Timer::stop('data-store');
 
