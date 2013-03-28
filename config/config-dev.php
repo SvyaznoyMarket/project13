@@ -45,18 +45,20 @@ $c->paymentPsbInvoice['contractorId'] = 14;
 $c->paymentPsbInvoice['key'] = $c->dataDir . '/key/privkey.pem';
 $c->paymentPsbInvoice['payUrl'] = 'https://retail-tst.payment.ru/dn/Invoices/ReceiveUniversalInvoices.aspx';
 
-$c->abtest['test'] = [
+$c->abtest['bestBefore'] = '2013-04-14';
+$c->abtest['enabled']    = true;
+$c->abtest['test']       = [
     [
         'traffic'  => '40',
-        'key'      => 'comment',
-        'name'     => 'Тестирование комментариев',
-        'ga_event' => 'TestFreaks01',
+        'key'      => 'upsell',
+        'name'     => 'Страница tocart',
+        'ga_event' => 'tocart',
     ],
     [
         'traffic'  => '40',
-        'key'      => 'video',
-        'name'     => 'Тестирование видео',
-        'ga_event' => 'video',
+        'key'      => 'order2cart',
+        'name'     => 'Страница cart',
+        'ga_event' => 'cart',
     ],
 ];
 
