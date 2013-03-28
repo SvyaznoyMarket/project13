@@ -6,16 +6,7 @@
      */
 ?>
 <?
-$searchQuery = preg_quote($searchQuery, '/');
-$replaceWords = explode(' ', $searchQuery);
-foreach ($replaceWords as $key => &$item) {
-    if ((bool)$item) {
-        //$item = '/' . $item . '/iu';
-    } else {
-        unset($replaceWords[$key]);
-    }
-}
-$pattern = '/' . implode('|', $replaceWords) . '/iu'
+$pattern = '/' . preg_replace('/\s+/', '|', preg_quote($searchQuery, '/')) . '/iu';
 ?>
 <div class="bSearchSuggest">
     <? if ((bool)$categories): ?>
