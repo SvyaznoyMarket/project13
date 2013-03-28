@@ -107,7 +107,7 @@ class SitemapAction {
         $this->putContent(
             $this->router->generate('homepage'),
             'hourly',
-            '0.8'
+            '1'
         );
     }
 
