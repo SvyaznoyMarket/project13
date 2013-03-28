@@ -45,7 +45,7 @@ $c->paymentPsbInvoice['contractorId'] = 14;
 $c->paymentPsbInvoice['key'] = $c->dataDir . '/key/privkey.pem';
 $c->paymentPsbInvoice['payUrl'] = 'https://retail-tst.payment.ru/dn/Invoices/ReceiveUniversalInvoices.aspx';
 
-$c->abtest['bestBefore'] = '2013-04-14';
+$c->abtest['bestBefore'] = '2013-04-23';
 $c->abtest['enabled']    = true;
 $c->abtest['test']       = [
     [

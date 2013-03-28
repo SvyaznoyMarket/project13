@@ -60,20 +60,20 @@ $c->smartEngine['cert'] = $c->dataDir . '/cert/gsorganizationvalg2.crt';
 
 $c->user['corporateRegister'] = false;
 
-$c->abtest['bestBefore'] = '2013-03-06';
+$c->abtest['bestBefore'] = '2013-04-23';
 $c->abtest['enabled']    = true;
 $c->abtest['test']       = [
     [
         'traffic'  => '40',
-        'key'      => 'comment',
-        'name'     => 'Тестирование комментариев',
-        'ga_event' => 'TestFreaks01',
+        'key'      => 'upsell',
+        'name'     => 'Страница tocart',
+        'ga_event' => 'tocart',
     ],
     [
         'traffic'  => '40',
-        'key'      => 'video',
-        'name'     => 'Тестирование видео',
-        'ga_event' => 'video',
+        'key'      => 'order2cart',
+        'name'     => 'Страница cart',
+        'ga_event' => 'cart',
     ],
 ];
 
