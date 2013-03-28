@@ -28,7 +28,8 @@ class BillAction {
                 'token'     => $userEntity->getToken(),
                 'order_id'  => $order->getId(),
             ]), [], function ($data) use (&$content) {
-                $content = $data;
+                $bill = reset($data);
+                $content = base64_decode($bill['bill']);
             });
             $client->execute(\App::config()->coreV2['retryTimeout']['default'], \App::config()->coreV2['retryCount']);
 
