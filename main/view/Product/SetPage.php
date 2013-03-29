@@ -37,7 +37,7 @@ class SetPage extends \View\DefaultLayout {
         }
 
         return ''
-            . ($product ? $this->render('product/_odinkod', array('product' => $product)) : '')
+            . ($product ? $this->render('product/partner-counter/_odinkod', array('product' => $product)) : '')
             . "\n\n"
             . (bool)$product ? $this->render('_remarketingGoogle', ['tag_params' => $tag_params]) : ''
             . "\n\n"

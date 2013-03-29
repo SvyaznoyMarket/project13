@@ -80,6 +80,9 @@ $c->myThings['feeByCategory'] = [
     225     => 0.04,  //Аксессуары для авто
 ];
 
+$c->partner['cookieName'] = '_partner';
+$c->partner['cookieLifetime'] = 2592000; // 30 дней
+
 $c->onlineCall['enabled'] = false;
 
 $c->region['cookieName']     = 'geoshop';

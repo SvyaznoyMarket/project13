@@ -3,6 +3,8 @@
 namespace Partner\Counter;
 
 class Admitad {
+    const NAME = 'admitad';
+
     /**
      * @param \Model\Order\Entity     $order
      * @param \Model\Product\Entity[] $productsById
@@ -29,7 +31,7 @@ class Admitad {
                 $link = strtr('http://ad.admitad.com/register/cdaf092422/script_type/img/payment_type/sale/product/{admitad.category.type}/cart/{order.sum}/order_id/{order.number}/uid/{user.id}/tracking/{category.token}/', [
                     '{admitad.category.type}' => $categoryType,
                     '{order.sum}'             => (int)$order->getSum(),
-                    '{order.number}'          => $order->getNumber(),
+                    '{order.number}'          => $order->getNumber() . '_' . uniqid(),
                     '{user.id}'               => $order->getUserId(),
                     '{category.token}'        => $category ? $category->getToken() : null,
                 ]);

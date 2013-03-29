@@ -3,6 +3,8 @@
 namespace Partner\Counter;
 
 class Odinkod {
+    const NAME = 'odinkod';
+
     public static function getCusId(\Model\Region\Entity $region) {
         $return = null;
 

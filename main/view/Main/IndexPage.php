@@ -31,7 +31,7 @@ class IndexPage extends \View\DefaultLayout {
 
     public function slotInnerJavascript() {
         return ''
-            . $this->render('main/_odinkod')
+            . $this->render('main/partner-counter/_odinkod')
             . "\n\n"
             . $this->render('_remarketingGoogle', ['tag_params' => ['pagetype' => 'homepage']])
             . "\n\n"

@@ -87,8 +87,14 @@ class AppConfig {
     public $myThings = [
         'feeByCategory' => [],
     ];
+    /** @var array */
     public $adFox = [
         'enabled' => null,
+    ];
+    /** @var array */
+    public $partner = [
+        'cookieName'     => null,
+        'cookieLifetime' => null,
     ];
     /** @var string */
     public $mainHost = null;
