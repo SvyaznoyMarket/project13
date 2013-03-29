@@ -1,6 +1,6 @@
 <?php
 
-namespace PartnerCounter;
+namespace Partner\Counter;
 
 class Admitad {
     /**

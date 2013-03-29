@@ -8,7 +8,7 @@
 ?>
 
 <? foreach ($orders as $order): ?>
-    <? foreach (\PartnerCounter\Admitad::getLinks($order, $productsById) as $link): ?>
+    <? foreach (\Partner\Counter\Admitad::getLinks($order, $productsById) as $link): ?>
         <img src="<?= $link ?>" width="1" height="1" alt="" />
     <? endforeach ?>
 <? endforeach ?>

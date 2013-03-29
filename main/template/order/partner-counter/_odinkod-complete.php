@@ -5,7 +5,7 @@
  */
 ?>
 
-<? if ($cusId = \PartnerCounter\Odinkod::getCusId($user->getRegion())): ?>
+<? if ($cusId = \Partner\Counter\Odinkod::getCusId($user->getRegion())): ?>
     <? foreach ($orders as $order): ?>
         <script language="javascript">
             var odinkod = {
