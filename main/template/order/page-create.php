@@ -291,5 +291,5 @@ if ($form->hasSubway()) $jsValidator['order[address_metro]'] = 'Укажите �
 <?php if (\App::config()->analytics['enabled']): ?>
     <div id="marketgidOrder" class="jsanalytics"></div>
     <div id="heiasOrder" data-vars="<?= $user->getCart()->getAnalyticsData() ?>" class="jsanalytics"></div>
-    <?= $page->render('order/_odinkodForCreate') ?>
+    <?= $page->render('order/partner-counter/_odinkod-create') ?>
 <?php endif ?>

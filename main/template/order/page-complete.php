@@ -90,4 +90,5 @@ $isOrderAnalytics = isset($isOrderAnalytics) ? $isOrderAnalytics : true;
 <? endif ?>
 
 
-<? if (\App::config()->googleAnalytics['enabled']) echo $page->render('order/_odinkodForComplete', array('orders' => $orders)) ?>
+<? if (\App::config()->googleAnalytics['enabled']) echo $page->render('order/partner-counter/_odinkod-complete', array('orders' => $orders)) ?>
+<? if (\App::config()->googleAnalytics['enabled']) echo $page->render('order/partner-counter/_admitad-complete', array('orders' => $orders, 'productsById' => $productsById)) ?>
