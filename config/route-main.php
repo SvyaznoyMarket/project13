@@ -201,7 +201,7 @@ return [
         'action'  => ['Product\SetAction', 'execute'],
     ],
     'product.upsell' => [
-        'pattern' => '/upsell/{productToken}',
+        'pattern' => '/tocart/{productToken}',
         'action'  => ['Product\UpsellAction', 'execute'],
         'require' => ['productToken' => '[\w\d-_]+'],
     ],
