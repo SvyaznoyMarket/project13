@@ -5,7 +5,7 @@
  */
 ?>
 
-<? if (\App::config()->analytics['enabled'] && ($cusId = \Analytics\Odinkod::getCusId($user->getRegion()))): ?>
+<? if (\App::config()->analytics['enabled'] && ($cusId = \PartnerCounter\Odinkod::getCusId($user->getRegion()))): ?>
 <script language="javascript">
     var odinkod = {
         "type": "product",

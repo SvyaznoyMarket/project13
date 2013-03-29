@@ -1,6 +1,6 @@
 <?php
 
-namespace Analytics;
+namespace PartnerCounter;
 
 class Admitad {
     /**

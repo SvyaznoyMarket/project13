@@ -1,6 +1,6 @@
 <?php
 
-namespace Analytics;
+namespace PartnerCounter;
 
 class Odinkod {
     public static function getCusId(\Model\Region\Entity $region) {
