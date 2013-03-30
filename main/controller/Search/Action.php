@@ -173,7 +173,12 @@ class Action {
             \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['short'], \App::config()->coreV2['retryCount']);
         }
 
-        $response = new \Http\Response((bool)$data ? \App::templating()->render('search/_autocomplete', ['products' => $data['product'], 'categories' => $data['category'], 'searchQuery' => $keyword]) : '');
+        if (!(bool)$data['product'] && !(bool)$data['category'] && preg_match('/^enter разработка$/iu', $keyword)) {
+            $response = new \Http\Response(\App::templating()->render('search/_autocomplete_eastern_egg'));
+        } else {
+            $response = new \Http\Response((bool)$data['product'] || (bool)$data['category'] ? \App::templating()->render('search/_autocomplete', ['products' => $data['product'], 'categories' => $data['category'], 'searchQuery' => $keyword]) : '');
+        }
+        
         $response->setIsShowDebug(false);
 
         return $response;
