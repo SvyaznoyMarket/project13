@@ -174,7 +174,7 @@ class Action {
         }
 
         if (!(bool)$data['product'] && !(bool)$data['category'] && preg_match('/^enter разработка$/iu', $keyword)) {
-            $response = new \Http\Response(\App::templating()->render('search/_autocomplete_eastern_egg'));
+            $response = new \Http\Response(\App::templating()->render('search/_autocomplete_easter_egg'));
         } else {
             $response = new \Http\Response((bool)$data['product'] || (bool)$data['category'] ? \App::templating()->render('search/_autocomplete', ['products' => $data['product'], 'categories' => $data['category'], 'searchQuery' => $keyword]) : '');
         }
