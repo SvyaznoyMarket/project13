@@ -1,7 +1,6 @@
 <?php
 /**
  * @var $user    \Session\User
- * @var $order   \Model\Order\Entity
  */
 ?>
 

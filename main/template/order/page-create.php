@@ -292,4 +292,5 @@ if ($form->hasSubway()) $jsValidator['order[address_metro]'] = 'Укажите �
     <div id="marketgidOrder" class="jsanalytics"></div>
     <div id="heiasOrder" data-vars="<?= $user->getCart()->getAnalyticsData() ?>" class="jsanalytics"></div>
     <?= $page->render('order/partner-counter/_etargeting-create') ?>
+    <?= $page->render('order/partner-counter/_cityads-create') ?>
 <?php endif ?>
