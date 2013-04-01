@@ -2,8 +2,8 @@
 
 namespace Partner\Counter;
 
-class Odinkod {
-    const NAME = 'odinkod';
+class Etargeting {
+    const NAME = 'etargeting';
 
     public static function getCusId(\Model\Region\Entity $region) {
         $return = null;

@@ -62,7 +62,7 @@ class UpsellPage extends \View\DefaultLayout {
         }
 
         return ''
-            . ($product ? $this->render('product/partner-counter/_odinkod', array('product' => $product)) : '')
+            . ($product ? $this->render('product/partner-counter/_etargeting', array('product' => $product)) : '')
             . "\n\n"
             . (bool)$product ? $this->render('_remarketingGoogle', ['tag_params' => ['prodid' => $product->getId(), 'pagetype' => 'product', 'pname' => $product->getName(), 'pcat' => ($category) ? $category->getToken() : '', 'pvalue' => $product->getPrice()]]) : ''
             . "\n\n"

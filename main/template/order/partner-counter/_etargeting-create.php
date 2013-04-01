@@ -7,7 +7,7 @@
 
 <? $productIds = array_map(function($cartProduct) { /** @var $cartProduct \Model\Cart\Product\Entity */ return $cartProduct->getId(); }, $user->getCart()->getProducts()) ?>
 
-<? if (\App::config()->analytics['enabled'] && (bool)$productIds && ($cusId = \Partner\Counter\Odinkod::getCusId($user->getRegion()))): ?>
+<? if (\App::config()->analytics['enabled'] && (bool)$productIds && ($cusId = \Partner\Counter\Etargeting::getCusId($user->getRegion()))): ?>
 <script language="javascript">
     var odinkod = {
         "type": "basket",

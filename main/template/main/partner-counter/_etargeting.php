@@ -4,7 +4,7 @@
  */
 ?>
 
-<? if (\App::config()->analytics['enabled'] && ($cusId = \Partner\Counter\Odinkod::getCusId($user->getRegion()))): ?>
+<? if (\App::config()->analytics['enabled'] && ($cusId = \Partner\Counter\Etargeting::getCusId($user->getRegion()))): ?>
 <script language="javascript">
     var odinkod = {
         "type": "homepage"
