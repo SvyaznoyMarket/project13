@@ -25,14 +25,20 @@ class Admitad {
                 $category = reset($categories);
                 if (!$category) continue;
 
-                $categoryType = self::getCategoryType($category);
-                if (!$categoryType) continue;
+                $admitadCategoryType = self::getCategoryType($category);
+                if (!$admitadCategoryType) continue;
 
-                $link = strtr('http://ad.admitad.com/register/cdaf092422/script_type/img/payment_type/sale/product/{admitad.category.type}/cart/{order.sum}/order_id/{order.number}/uid/{user.id}/tracking/{category.token}/', [
-                    '{admitad.category.type}' => $categoryType,
+                $admitadUserId = \App::request()->cookies->get('admitad_uid');
+                if (!$admitadUserId) {
+                    \App::logger()->error(sprintf('В куках отсутсвует admitad_uid'));
+                    continue;
+                }
+
+                $link = strtr('http://ad.admitad.com/register/cdaf092422/script_type/img/payment_type/sale/product/{admitad.category.type}/cart/{order.sum}/order_id/{order.number}/uid/{admitad.user.id}/tracking/{category.token}/', [
+                    '{admitad.category.type}' => $admitadCategoryType,
                     '{order.sum}'             => (int)$order->getSum(),
                     '{order.number}'          => $order->getNumber() . '_' . uniqid(),
-                    '{user.id}'               => $order->getUserId(),
+                    '{admitad.user.id}'       => $admitadUserId,
                     '{category.token}'        => $category ? $category->getToken() : null,
                 ]);
 

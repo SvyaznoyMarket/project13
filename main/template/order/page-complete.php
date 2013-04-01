@@ -89,4 +89,4 @@ $isOrderAnalytics = isset($isOrderAnalytics) ? $isOrderAnalytics : true;
     <? endforeach ?>
 <? endif ?>
 
-<? require __DIR__ . '/partner-counter.php' ?>
+<? require __DIR__ . '/partner-counter/_complete.php' ?>

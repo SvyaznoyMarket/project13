@@ -13,6 +13,9 @@
         case \Partner\Counter\Admitad::NAME:
             echo $page->render('order/partner-counter/_admitad-complete', array('orders' => $orders, 'productsById' => $productsById));
             break;
+        case \Partner\Counter\Etargeting::NAME:
+            echo $page->render('order/partner-counter/_admitad-complete', array('orders' => $orders, 'productsById' => $productsById));
+            break;
     }
     ?>
 <? endif ?>
