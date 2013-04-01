@@ -54,6 +54,7 @@
 
 <?= $page->slotRegionSelection() ?>
 <?= $page->slotAuth() ?>
+<?= $page->slotYandexMetrika() ?>
 <?= $page->slotBodyJavascript() ?>
 <?= $page->slotInnerJavascript() ?>
 <?= $page->slotMyThings() ?>
