@@ -8,6 +8,6 @@
 
 <? foreach ($orders as $order): ?>
     <? if ($link = \Partner\Counter\CityAds::getLink($order)): ?>
-        <img src="<?= $link ?>" width="1" height="1" alt="" />
+        <img src="<?= $link ?>" />
     <? endif ?>
 <? endforeach ?>
