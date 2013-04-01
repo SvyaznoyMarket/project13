@@ -91,6 +91,8 @@ $response = null;
                 $action = new \Debug\ErrorAction();
                 $response = $action->execute();
             }
+        } else {
+            \App::partner()->set($response);
         }
 
         // debug panel

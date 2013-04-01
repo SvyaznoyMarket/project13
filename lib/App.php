@@ -360,6 +360,9 @@ class App {
         return self::$loggers[$name];
     }
 
+    /**
+     * @return \Debug\Collector
+     */
     public static function debug() {
         static $instance;
 
@@ -370,11 +373,27 @@ class App {
         return $instance;
     }
 
+    /**
+     * @return \Session\Abtest
+     */
     public static function abTest() {
         static $instance;
 
         if (!$instance) {
             $instance = new \Session\Abtest(self::config()->abtest);
+        }
+
+        return $instance;
+    }
+
+    /**
+     * @return \Partner\Manager
+     */
+    public static function partner() {
+        static $instance;
+
+        if (!$instance) {
+            $instance = new \Partner\Manager();
         }
 
         return $instance;
