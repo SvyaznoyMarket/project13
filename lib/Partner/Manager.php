@@ -19,7 +19,7 @@ class Manager {
             $request = \App::request();
             $cookie = null;
 
-            // admitad
+            // Admitad
             if ($userId = $request->get('admitad_uid')) {
                 $response->headers->setCookie(new \Http\Cookie(
                     'admitad_uid',
@@ -40,6 +40,28 @@ class Manager {
                     false,
                     true //false // важно httpOnly=false, чтобы js мог получить куку
                 );
+            // CityAds
+            } else if ('ca' == $request->get('ref') && ($prx = $request->get('prx'))) {
+                $response->headers->setCookie(new \Http\Cookie(
+                    'prx',
+                    $prx,
+                    time() + $this->cookieLifetime,
+                    '/',
+                    null,
+                    false,
+                    true //false // важно httpOnly=false, чтобы js мог получить куку
+                ));
+
+                $cookie = new \Http\Cookie(
+                    $this->cookieName,
+                    \Partner\Counter\CityAds::NAME,
+                    time() + $this->cookieLifetime,
+                    '/',
+                    null,
+                    false,
+                    true //false // важно httpOnly=false, чтобы js мог получить куку
+                );
+            // eTargeting
             } else if ($utmSource = $request->get('utm_source')) {
                 if (0 === strpos($utmSource, 'etargeting')) {
                     $cookie = new \Http\Cookie(
