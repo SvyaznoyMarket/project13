@@ -4,14 +4,20 @@ define('product_list',
 
 	library.myConsole('product_list.js loaded')
 
-	library.myConsole('EJS '+typeof(EJS))
-	
+	library.myConsole('render template from JSON...')
 	var data = $('#productList').data('product')
 	for (var i = 0; i< data.length; i++){
-		var html = new EJS ({url: '/js/terminal/view/listing_itemProduct.ejs'}).render(data[i])
+		var template = {
+			id : data[i].id,
+			article : data[i].article,
+			image : data[i].image,
+			name : data[i].name,
+			price : library.formatMoney(data[i].price),
+			isBuyable : data[i].isBuyable
+		}
+		var html = new EJS ({url: '/js/terminal/view/listing_itemProduct.ejs'}).render(template)
 		$('.bProductListWrap').append(html)
 	}
-
-	library.myConsole('off..')
+	library.myConsole('render done')
 
 })

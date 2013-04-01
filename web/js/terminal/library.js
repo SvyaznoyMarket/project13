@@ -303,12 +303,27 @@ define('library',
 			aminateScroll(terminal.flickable.contentY, toY, step)
 		}
 
+
+		/**
+		 * Разбиение числа по разрядам
+		 *
+		 * @public
+		 * @param  {number|string}
+		 * @return {string} отформатированное число
+		 */
+		formatMoney = function(num){
+			var str = num+' '
+			return str.replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1 ')
+		}
+
+
 		//
 		// exports function
 		//
 		return {
 			myConsole : myConsole,
-			scrollTo : scrollTo
+			scrollTo : scrollTo,
+			formatMoney: formatMoney
 		}
 
 	})

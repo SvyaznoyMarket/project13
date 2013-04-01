@@ -93,8 +93,8 @@ define('product',
 		// test freaks
 		// 
 		if ( $('#testFreak').length){
-			myConsole('testfreaks')
-			$('head').append('<scr'+'ipt type="text/javascript" src="http://js.testfreaks.com/badge/enter.ru/head.js"></scr'+'ipt>')
+			// myConsole('testfreaks')
+			// $('head').append('<scr'+'ipt type="text/javascript" src="http://js.testfreaks.com/badge/enter.ru/head.js"></scr'+'ipt>')
 			// document.write('<scr'+'ipt type="text/javascript" src="http://js.testfreaks.com/badge/enter.ru/head.js"></scr'+'ipt>')	
 		}
 
