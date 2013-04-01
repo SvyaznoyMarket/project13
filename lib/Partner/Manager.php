@@ -21,6 +21,16 @@ class Manager {
 
             // admitad
             if ($userId = $request->get('admitad_uid')) {
+                $response->headers->setCookie(new \Http\Cookie(
+                    'admitad_uid',
+                    $userId,
+                    time() + $this->cookieLifetime,
+                    '/',
+                    null,
+                    false,
+                    true //false // важно httpOnly=false, чтобы js мог получить куку
+                ));
+
                 $cookie = new \Http\Cookie(
                     $this->cookieName,
                     \Partner\Counter\Admitad::NAME,
@@ -30,17 +40,21 @@ class Manager {
                     false,
                     true //false // важно httpOnly=false, чтобы js мог получить куку
                 );
-                $response->headers->setCookie($cookie);
+            } else if ($utmSource = $request->get('utm_source')) {
+                if (0 === strpos($utmSource, 'etargeting')) {
+                    $cookie = new \Http\Cookie(
+                        $this->cookieName,
+                        \Partner\Counter\Etargeting::NAME,
+                        time() + $this->cookieLifetime,
+                        '/',
+                        null,
+                        false,
+                        true //false // важно httpOnly=false, чтобы js мог получить куку
+                    );
+                }
+            }
 
-                $cookie = new \Http\Cookie(
-                    'admitad_uid',
-                    $userId,
-                    time() + $this->cookieLifetime,
-                    '/',
-                    null,
-                    false,
-                    true //false // важно httpOnly=false, чтобы js мог получить куку
-                );
+            if ($cookie instanceof \Http\Cookie) {
                 $response->headers->setCookie($cookie);
             }
         } catch (\Exception $e) {
