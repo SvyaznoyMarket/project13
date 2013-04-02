@@ -22,6 +22,9 @@
         case \Partner\Counter\Reactive::NAME:
             echo $page->render('order/partner-counter/_reactive-complete', array('orders' => $orders));
             break;
+        case \Partner\Counter\Recreative::NAME:
+            echo $page->render('order/partner-counter/_recreative-complete', array('orders' => $orders));
+            break;
     }
     ?>
 <? endif ?>
