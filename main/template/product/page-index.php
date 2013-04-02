@@ -635,4 +635,5 @@ $productVideo = reset($productVideos);
 
 <? if (\App::config()->analytics['enabled']): ?>
     <?= $page->render('product/partner-counter/_cityads', ['product' => $product]) ?>
+    <?= $page->render('product/partner-counter/_recreative', ['product' => $product]) ?>
 <? endif ?>
