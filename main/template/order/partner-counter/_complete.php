@@ -7,7 +7,7 @@
  */
 ?>
 
-<? if (\App::config()->googleAnalytics['enabled']): ?>
+<? if (\App::config()->analytics['enabled']): ?>
     <?
     switch (\App::partner()->getName()) {
         case \Partner\Counter\Admitad::NAME:
@@ -18,6 +18,9 @@
             break;
         case \Partner\Counter\CityAds::NAME:
             echo $page->render('order/partner-counter/_cityads-complete', array('orders' => $orders));
+            break;
+        case \Partner\Counter\Reactive::NAME:
+            echo $page->render('order/partner-counter/_reactive-complete', array('orders' => $orders));
             break;
     }
     ?>
