@@ -28,7 +28,7 @@ class Manager {
                     '/',
                     null,
                     false,
-                    true //false // важно httpOnly=false, чтобы js мог получить куку
+                    true
                 ));
 
                 $cookie = new \Http\Cookie(
@@ -38,7 +38,7 @@ class Manager {
                     '/',
                     null,
                     false,
-                    true //false // важно httpOnly=false, чтобы js мог получить куку
+                    true
                 );
             // CityAds
             } else if ('ca' == $request->get('ref') && ($prx = $request->get('prx'))) {
@@ -49,7 +49,7 @@ class Manager {
                     '/',
                     null,
                     false,
-                    true //false // важно httpOnly=false, чтобы js мог получить куку
+                    true
                 ));
 
                 $cookie = new \Http\Cookie(
@@ -59,10 +59,10 @@ class Manager {
                     '/',
                     null,
                     false,
-                    true //false // важно httpOnly=false, чтобы js мог получить куку
+                    true
                 );
-            // eTargeting
             } else if ($utmSource = $request->get('utm_source')) {
+                // eTargeting
                 if (0 === strpos($utmSource, 'etargeting')) {
                     $cookie = new \Http\Cookie(
                         $this->cookieName,
@@ -71,7 +71,18 @@ class Manager {
                         '/',
                         null,
                         false,
-                        true //false // важно httpOnly=false, чтобы js мог получить куку
+                        true
+                    );
+                // Recreative
+                } else if (0 === strpos($utmSource, 'recreative')) {
+                    $cookie = new \Http\Cookie(
+                        $this->cookieName,
+                        \Partner\Counter\Recreative::NAME,
+                        time() + $this->cookieLifetime,
+                        '/',
+                        null,
+                        false,
+                        true
                     );
                 }
             }
