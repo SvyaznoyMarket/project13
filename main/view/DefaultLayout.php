@@ -116,6 +116,8 @@ class DefaultLayout extends Layout {
             $return .= '<script src="' . $javascript . '" type="text/javascript"></script>' . "\n";
         }
 
+        $return .= $this->render('_headJavascript');
+
         return $return;
     }
 
