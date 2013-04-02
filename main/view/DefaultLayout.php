@@ -191,12 +191,22 @@ class DefaultLayout extends Layout {
 
         if (\App::config()->analytics['enabled']) {
             $routeName = \App::request()->attributes->get('route');
+
+            // на всех страницах сайта, кроме...
             if (!in_array($routeName, [
                 'product',
                 'order.create',
                 'order.complete',
             ])) {
                 $return .= "\n\n" . $this->render('partner-counter/_cityads');
+            }
+
+            // на всех страницах сайта, кроме shop.*
+            if ((0 !== strpos($routeName, 'shop')) && !in_array($routeName, [
+                'order.create',
+                'order.complete',
+            ])) {
+                $return .= "\n\n" . $this->render('partner-counter/_reactive');
             }
         }
 
