@@ -5,8 +5,14 @@
  */
 ?>
 
+<div class="bSubscribeLightboxPopup clearfix">
+    <h3 class="bSubscribeLightboxPopup__eTitle fl">дружить с нами выгодно!</h3>
+    <input class="bSubscribeLightboxPopup__eInput fl" placeholder="Оставьте ваш e-mail и узнайте почему"/>
+    <button class="bSubscribeLightboxPopup__eBtn fl">Хочу все знать</button>
+    <a class="bSubscribeLightboxPopup__eNotNow fr" href="#">Спасибо, не сейчас</a>
+</div>
 <!-- Topbar -->
-<div class="topbar clearfix">
+<div class="topbar clearfix">    
     <div class="bRegion">
         <a class="fl" href="<?= $page->url('region.change', array('regionId' => $user->getRegion()->getId())) ?>" id="jsregion" data-url="<?= $page->url('region.init') ?>"><?= $user->getRegion()->getName() ?></a>
         

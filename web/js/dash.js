@@ -4,14 +4,7 @@ $(document).ready(function(){
 		if (!data.isSubscribe) 
 			return false
 		var subPopup = $('.bSubscribeLightboxPopup')
-		var subscribeItem = $('.bSubscribeLightbox')
-		subscribeItem.show()
-		subscribeItem.bind('click', function(){
-			subPopup.show()
-		})
-		subPopup.find('.close').bind('click', function(){
-			subPopup.hide()
-		})
+
 	}
 	
 	var carturl = $('.lightboxinner .point2').attr('href')
