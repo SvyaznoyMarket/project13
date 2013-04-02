@@ -58,7 +58,7 @@ $warranties = $product->getWarranty();
                     <div class="bGoodDescBlock_ePrice mFl mBold"><?= $page->helper->formatPrice($product->getPrice()) ?> <span class="bRuble">p</span></div>
                     <ul class="bGoodDescBlock_eDelivery mFl">
                         <? if ($product->getIsInShop(\App::config()->region['shop_id'])): ?>
-                        <li class="mListDisk"><strong class="mBold" style="color: #F99B1C;">Есть в этом магазине</strong></li>
+                        <li class="mListDisk"><strong class="mBold mOrange">Есть в этом магазине</strong></li>
                         <li class="mListDisk">Можно забрать сейчас</li>
                         <? elseif ($product->getIsInShowroom(\App::config()->region['shop_id'])): ?>
                         <li class="mListDisk"><strong class="mBold">Есть на витрине магазина</strong></li>

@@ -140,6 +140,7 @@
 			
 			&__eTitle{
 				font-size: 14px;
+				font-weight: bold;
 			}
 			
 			&__eFullDesc{
@@ -156,6 +157,10 @@
 			
 			&__eDlvrBlockItem{
 				font-size: 14px;
+				display: none;
+				&:first-child{
+					display: list-item;
+				}
 			}
 			
 			&__eBtnBlock{
@@ -163,14 +168,16 @@
 			}
 
 			&__eBtn{
-				width: 105px;
+				width: 80px;
 				height: 32px;
-
-				font-size: 15px;
+				font-size: 12px;
 				line-height: 32px;
-
+				margin-right: 10px;
 				&.jsCompare{
-					display: none;
+					width: 100px;
+
+					// display: none;
+					margin: 0px;
 				}
 			}
 		}
@@ -223,6 +230,8 @@
 
 		color: @white;
 		background: @darkGray;
+
+		font-weight: bold;
 	}
 	
 	&__eDlvrBlock{

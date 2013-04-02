@@ -33,7 +33,7 @@ define('product_list',
 	listingZoom = function(el){
 
 		var startTouches = []
-		var nowZoom = 2
+		var nowZoom = 0
 		var sizes = ['mSizeLittle','mSizeMid','mSizeBig']
 
 		/**
@@ -107,11 +107,11 @@ define('product_list',
 				var startDelta = Math.abs(startTouches[0].x - startTouches[1].x) + Math.abs(startTouches[0].y - startTouches[1].y)
 				var nowDelta = Math.abs(moveTouches[0].x - moveTouches[1].x) + Math.abs(moveTouches[0].y - moveTouches[1].y)
 
-				if ( (startDelta > nowDelta) && (Math.abs(startDelta-nowDelta) > 200) ){
+				if ( (startDelta > nowDelta) && (Math.abs(startDelta-nowDelta) > 100) ){
 					startTouches = moveTouches
 					changeZoom('down')
 				}
-				else if ( (startDelta < nowDelta) && (Math.abs(startDelta-nowDelta) > 200) ){
+				else if ( (startDelta < nowDelta) && (Math.abs(startDelta-nowDelta) > 100) ){
 					startTouches = moveTouches
 					changeZoom('up')
 				}

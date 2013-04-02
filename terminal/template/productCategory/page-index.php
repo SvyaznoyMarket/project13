@@ -21,7 +21,7 @@ $productData = [];
 
 	<div id="productList" data-product="<?= $page->json($productData) ?>"></div>
 
-	<div class="bProductListWrap mSizeBig clearfix">
+	<div class="bProductListWrap mSizeLittle clearfix">
 		
 	</div>
 
