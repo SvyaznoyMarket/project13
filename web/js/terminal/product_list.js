@@ -25,10 +25,10 @@ define('product_list',
 	 * Изменение масштаба карточек товаров в листинге
 	 *
 	 * @author  Aleksandr Zaytsev
-	 * @param   {jQuery Object}   el            обертка карточек товара
-	 * @param   {array}           startTouches  координаты начала касания
-	 * @param   {array}           sizes         массив названия классов размеров
-	 * @param   {number}          nowZoom       текущий масштаб
+	 * @param   {jQuery}   el            обертка карточек товара
+	 * @param   {array}    startTouches  координаты начала касания
+	 * @param   {array}    sizes         массив названия классов размеров
+	 * @param   {number}   nowZoom       текущий масштаб
 	 */
 	listingZoom = function(el){
 
@@ -107,12 +107,12 @@ define('product_list',
 				var startDelta = Math.abs(startTouches[0].x - startTouches[1].x) + Math.abs(startTouches[0].y - startTouches[1].y)
 				var nowDelta = Math.abs(moveTouches[0].x - moveTouches[1].x) + Math.abs(moveTouches[0].y - moveTouches[1].y)
 
-				if ( (startDelta > nowDelta) && (Math.abs(startDelta-nowDelta) > 100) ){
-					startTouches = moveTouches
+				if ( (startDelta > nowDelta) && (Math.abs(startDelta-nowDelta) > 120) ){
+					startTouches = moveTouches.slice()
 					changeZoom('down')
 				}
-				else if ( (startDelta < nowDelta) && (Math.abs(startDelta-nowDelta) > 100) ){
-					startTouches = moveTouches
+				else if ( (startDelta < nowDelta) && (Math.abs(startDelta-nowDelta) > 120) ){
+					startTouches = moveTouches.slice()
 					changeZoom('up')
 				}
 			}
