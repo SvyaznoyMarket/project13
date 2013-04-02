@@ -103,7 +103,7 @@ class Menu {
                 /** @var \Model\Product\Category\MenuEntity $category */
                 $category = ($categoryId && isset($this->categoriesById[$categoryId])) ? $this->categoriesById[$categoryId] : null;
                 if (!$category) {
-                    \App::logger()->error(sprintf('Не найдена категория #%s для элемента меню %s', $categoryId, $iMenu->getName()));
+                    \App::logger()->warn(sprintf('Не найдена категория #%s для элемента меню %s', $categoryId, $iMenu->getName()));
                     continue;
                 }
 
@@ -114,7 +114,7 @@ class Menu {
                 /** @var \Model\Product\Category\MenuEntity $category */
                 $category = ($categoryId && isset($this->rootCategoriesById[$categoryId])) ? $this->rootCategoriesById[$categoryId] : null;
                 if (!$category) {
-                    \App::logger()->error(sprintf('Не найдена категория #%s для элемента меню %s', $categoryId, $iMenu->getName()));
+                    \App::logger()->warn(sprintf('Не найдена категория #%s для элемента меню %s', $categoryId, $iMenu->getName()));
                     continue;
                 }
 

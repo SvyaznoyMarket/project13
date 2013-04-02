@@ -3,7 +3,12 @@
 namespace Controller\Product;
 
 class UpsellAction {
-
+    /**
+     * @param string        $productToken
+     * @param \Http\Request $request
+     * @return \Http\Response
+     * @throws \Exception\NotFoundException
+     */
     public function execute($productToken, \Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
@@ -24,6 +29,7 @@ class UpsellAction {
 
         $region = $user->getRegion();
 
+        /** @var $product \Model\Product\Entity */
         $product = null;
         \RepositoryManager::product()->prepareEntityByToken($productToken, $region, function($data) use (&$product) {
             $data = reset($data);
