@@ -1,10 +1,15 @@
 $(document).ready(function(){
 
 	var lboxCheckSubscribe = function(data){
-		if (!data.isSubscribe) 
+		console.info('sc '+data.is_subscribed)
+		if (data.is_subscribed) 
 			return false
 		var subPopup = $('.bSubscribeLightboxPopup')
+		subPopup.slideDown(300)
 
+		$('.bSubscribeLightboxPopup__eNotNow').bind('click', function(){
+			subPopup.slideUp(300)
+		})
 	}
 	
 	var carturl = $('.lightboxinner .point2').attr('href')
