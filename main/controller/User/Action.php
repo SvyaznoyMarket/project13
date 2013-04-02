@@ -38,9 +38,17 @@ class Action {
 
                 try {
                     $result = [];
-                    \App::coreClientV2()->addQuery('user/auth', $params, [], function($data) use(&$result) {
-                        $result = $data;
-                    });
+                    \App::coreClientV2()->addQuery(
+                        'user/auth',
+                        $params,
+                        [],
+                        function($data) use(&$result) {
+                            $result = $data;
+                        },
+                        function(\Exception $e) {
+                            \App::exception()->remove($e);
+                        }
+                    );
                     \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium'], \App::config()->coreV2['retryCount']);
                     if (empty($result['token'])) {
                         throw new \Exception('Не удалось получить токен');
@@ -79,7 +87,6 @@ class Action {
 
                     return $response;
                 } catch(\Exception $e) {
-                    \App::exception()->remove($e);
                     $form->setError('global', 'Неверно указан логин или пароль' . (\App::config()->debug ? (': ' . $e->getMessage()) : ''));
                 }
             }
