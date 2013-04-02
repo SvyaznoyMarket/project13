@@ -122,10 +122,12 @@ class DefaultLayout extends Layout {
     }
 
     public function slotInnerJavascript() {
-        return ''
+        $return = ''
             . $this->render('_remarketingGoogle', ['tag_params' => []])
             . "\n\n"
             . $this->render('_innerJavascript');
+
+        return $return;
     }
 
     public function slotAuth() {
@@ -182,5 +184,22 @@ class DefaultLayout extends Layout {
 
     public function slotBanner() {
         return '';
+    }
+
+    public function slotPartnerCounter() {
+        $return = '';
+
+        if (\App::config()->analytics['enabled']) {
+            $routeName = \App::request()->attributes->get('route');
+            if (!in_array($routeName, [
+                'product',
+                'order.create',
+                'order.complete',
+            ])) {
+                $return .= "\n\n" . $this->render('partner-counter/_cityads');
+            }
+        }
+
+        return $return;
     }
 }
