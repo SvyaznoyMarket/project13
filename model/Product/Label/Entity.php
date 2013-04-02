@@ -3,6 +3,8 @@
 namespace Model\Product\Label;
 
 class Entity {
+    use \Model\MediaHostTrait;
+
     // Распродажа
     const LABEL_SALE = 1;
     // Акция
@@ -73,7 +75,7 @@ class Entity {
         if ($this->image) {
             $urls = \App::config()->productLabel['url'];
 
-            return $urls[$size] . $this->image;
+            return $this->getHost() . $urls[$size] . $this->image;
         } else {
             return null;
         }

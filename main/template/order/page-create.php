@@ -18,7 +18,8 @@
 $region = $user->getRegion();
 $isCorporative = $user->getEntity() && $user->getEntity()->getIsCorporative();
 
-$jsValidator = array('order[recipient_first_name]' => 'Заполните поле', 'order[recipient_last_name]' => 'Заполните поле', 'order[recipient_phonenumbers]' => 'Заполните поле', 'order[address_street]' => 'Укажите адрес', 'order[address_building]' => 'Укажите адрес', 'order[payment_method_id]' => 'Выберите способ оплаты', 'order[agreed]' => 'Необходимо согласие',);
+$jsValidator = array('order[recipient_first_name]' => 'Заполните поле', 'order[recipient_last_name]' => 'Заполните поле', 'order[recipient_phonenumbers]' => 'Заполните поле', 'order[address_street]' => 'Укажите адрес', 'order[address_building]' => 'Укажите адрес', 'order[payment_method_id]' => 'Выберите способ оплаты', 'order[agreed]' => 'Необходимо согласие', 'order[recipient_email]' => 'Некорректный e-mail',
+);
 if ($form->hasSubway()) $jsValidator['order[address_metro]'] = 'Укажите ближайшее метро';
 ?>
 
@@ -92,10 +93,21 @@ if ($form->hasSubway()) $jsValidator['order[address_metro]'] = 'Укажите �
         </dl>
 
         <dl class='bBuyingLine'>
+
+            <dt>E-mail</dt>
+            <dd>
+                <div>
+                    <p></p>
+                    <input type="text" id="order_recipient_email" class="bBuyingLine__eText mInputLong" name="order[recipient_email]" value="<?= $form->getEmail() ?>"/>
+                </div>
+            </dd>
+        </dl>
+
+        <dl class='bBuyingLine'>
             <dt>Телефон для связи*</dt>
             <dd>
                 <div class="phonePH">
-                    <span class="placeholder">8</span>
+                    <p></p>
                     <input type="text" id="order_recipient_phonenumbers" class="bBuyingLine__eText mInputLong" name="order[recipient_phonenumbers]" maxlength="11" value="<?= $form->getMobilePhone() ?>"/>
                 </div>
             </dd>
@@ -279,5 +291,7 @@ if ($form->hasSubway()) $jsValidator['order[address_metro]'] = 'Укажите �
 <?php if (\App::config()->analytics['enabled']): ?>
     <div id="marketgidOrder" class="jsanalytics"></div>
     <div id="heiasOrder" data-vars="<?= $user->getCart()->getAnalyticsData() ?>" class="jsanalytics"></div>
-    <?= $page->render('order/_odinkodForCreate') ?>
+    <?= $page->render('order/partner-counter/_etargeting-create') ?>
+    <?= $page->render('order/partner-counter/_cityads-create') ?>
+    <?= $page->render('order/partner-counter/_reactive-create') ?>
 <?php endif ?>

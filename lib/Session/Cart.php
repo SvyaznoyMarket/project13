@@ -504,11 +504,13 @@ class Cart {
         try {
             // если в корзине есть товары или услуги
             if (((bool)$this->getProductsQuantity() || (bool)$this->getServicesQuantity())) {
+                $response = $default;
+
                 // если есть сертификат
                 $certificates = $this->getCertificates();
                 $certificate = is_array($certificates) ? reset($certificates) : null;
                 if ($certificate instanceof \Model\Cart\Certificate\Entity) {
-                    $response = \App::coreClientV2()->query(
+                    \App::coreClientV2()->addQuery(
                         'cart/get-price-new',
                         [
                             'geo_id'    => \App::user()->getRegion()->getId(),
@@ -522,18 +524,26 @@ class Cart {
                             'card_f1_list'  => [
                                 ['number' => $certificate->getNumber()],
                             ],
-                        ]
+                        ],
+                        function ($data) use (&$response) {
+                            $response = $data;
+                        }
                     );
+                    \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['default'], \App::config()->coreV2['retryCount']);
                 } else {
-                    $response = \App::coreClientV2()->query(
+                    \App::coreClientV2()->addQuery(
                         'cart/get-price',
                         ['geo_id' => \App::user()->getRegion()->getId()],
                         [
                             'product_list'  => $this->getProductData(),
                             'service_list'  => $this->getServiceData(),
                             'warranty_list' => $this->getWarrantyData(),
-                        ]
+                        ],
+                        function ($data) use (&$response) {
+                            $response = $data;
+                        }
                     );
+                    \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['default'], \App::config()->coreV2['retryCount']);
                 }
             } else {
                 $response = $default;

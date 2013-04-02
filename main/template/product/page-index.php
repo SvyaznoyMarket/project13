@@ -631,3 +631,9 @@ $productVideo = reset($productVideos);
 <? endif ?>
 
 <? if ($product->getIsBuyable()): echo $page->render('order/form-oneClick'); endif; ?>
+
+
+<? if (\App::config()->analytics['enabled']): ?>
+    <?= $page->render('product/partner-counter/_cityads', ['product' => $product]) ?>
+    <?= $page->render('product/partner-counter/_recreative', ['product' => $product]) ?>
+<? endif ?>

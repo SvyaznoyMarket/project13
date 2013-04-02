@@ -42,7 +42,7 @@
 	display: block;
 	height: 110px;
 	// position: relative;
-	margin: 10px 0px 20px;
+	margin: 10px 0px;
 	width: 100%;
 }
 
@@ -112,11 +112,13 @@
 
 		// кнопка еще товары
 		&.mMore{
-			a{
-				// временное решение
-				color: @white;
-				font-family: 'Enter';
+			.bMainMenuLevel-2__eTitle{
 				text-transform: uppercase;
+
+				color: @white;
+
+				font-family: 'Enter Type';
+				font-style: italic;
 			}
 
 			.bMainMenuLevel-2{
@@ -192,13 +194,17 @@
 	}
 
 	&__eTitle{
-		color: @white;
 		display: block;
-		font-family: 'Enter';
-		font-size: 11px;
-		font-weight: 100;
+
 		text-align: center;
 		text-transform: uppercase;
+
+		color: @white;
+
+		font-family: 'Enter Type';
+		font-size: 12px;
+		font-weight: 100;
+		font-style: italic;
 	}
 }
 

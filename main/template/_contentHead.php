@@ -19,17 +19,19 @@ $extendedMargin = isset($extendedMargin) ? (bool)$extendedMargin : false;
 
     <?php echo $page->render('_breadcrumbs', array('breadcrumbs' => $breadcrumbs, 'class' => 'breadcrumbs')) ?>
 
-    <div class="clear"></div>
-
-    <? if ($title): ?><h1><?= $title ?></h1><? endif ?>
-
     <? if ($hasSearch): ?>
     <noindex>
         <div class="searchbox">
             <?= $page->render('search/form-default') ?>
+            <div id="searchAutocomplete"></div>
         </div>
     </noindex>
     <? endif ?>
+
+    <div class="clear"></div>
+
+    <? if ($title): ?><h1><?= $title ?></h1><? endif ?>
+
     <div class="clear<? if ($extendedMargin): ?> pb20<? endif ?>"></div>
     <? if ($hasSeparateLine): ?>
     <div class="line"></div>

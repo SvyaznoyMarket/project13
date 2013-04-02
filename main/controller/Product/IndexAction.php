@@ -72,6 +72,10 @@ class IndexAction {
             throw new \Exception\NotFoundException(sprintf('Товар @%s не найден.', $productToken));
         }
 
+        if ($request->getPathInfo() !== $product->getLink()) {
+            return new \Http\RedirectResponse($product->getLink() . ((bool)$request->getQueryString() ? ('?' . $request->getQueryString()) : ''), 302);
+        }
+
         if ($product->getConnectedProductsViewMode() == $product::DEFAULT_CONNECTED_PRODUCTS_VIEW_MODE) {
             $showRelatedUpper = false;
         } else {

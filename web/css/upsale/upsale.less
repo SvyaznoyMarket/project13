@@ -1,0 +1,65 @@
+.bUpsale{
+	margin: 15px 0 30px;
+}
+.bUpsaleGoodBlock{
+	width: 500px;
+
+	&__eImg{
+		margin-right: 15px;
+	}
+	&__eTitle{
+		font-size: 14px;
+		width: 400px;
+	}
+	&__ePrice{
+		font-size: 14px;
+		font-weight: bold;
+		margin-bottom: 15px;
+		.rubl{
+			margin: 0;
+		}
+	}
+	&__eBackLink{
+		border: 1px solid @firmOrange;
+		.rounded(4px);
+		display: inline-block;
+		*display: inline;
+		*zoom:1;
+		padding: 0.7em 1.3em;
+	}
+}
+.bUpsaleRedirectBlock{
+	background: @white url('@{base-url}/upsale/img/cart.png') no-repeat 10px 15px;
+	border: 1px solid @firmOrange;
+	.rounded(4px);
+	padding: 15px 10px;
+
+	&__eTitle{
+		font-size: 14px;
+		line-height: 1.5em;
+		margin-bottom: 15px;
+		margin-left: 45px;
+	}
+	&__eCounter{
+		font-size: 14px;
+	}
+	&__ePrice{
+		font-size: 14px;
+		.rubl{
+			margin: 0;
+		}
+	}
+	&__eLink{
+		border: 1px solid @firmOrange;
+		.rounded(4px);
+		display: inline-block;
+		*display: inline;
+		*zoom:1;
+		padding: 0.7em 1.3em;
+
+		&.mFullOrange{
+			background-color: @firmOrange;
+			color: @white;
+		}
+	}
+}

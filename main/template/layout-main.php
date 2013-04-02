@@ -34,11 +34,8 @@
     <? endif ?>
 
     <?= $page->slotHeader() ?>
-    <noindex>
-        <div id="mainPageSearch" class="searchbox">
-            <?= $page->render('search/form-main') ?>
-        </div>
-    </noindex>
+
+    <?= $page->slotContentHead() ?>
 
     <div class="bigbanner">
         <div class='bCarouselWrap'>
@@ -57,10 +54,12 @@
 
 <?= $page->slotRegionSelection() ?>
 <?= $page->slotAuth() ?>
+<?= $page->slotYandexMetrika() ?>
 <?= $page->slotBodyJavascript() ?>
 <?= $page->slotInnerJavascript() ?>
 <?= $page->slotMyThings() ?>
 <?= $page->slotAdriver() ?>
+<?= $page->slotPartnerCounter() ?>
 
 <? if (\App::config()->analytics['enabled']): ?>
     <div id="yandexMetrika" class="jsanalytics"></div>

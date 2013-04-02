@@ -3,6 +3,8 @@
 namespace Model\Product\Media;
 
 class Entity {
+    use \Model\MediaHostTrait;
+
     CONST TYPE_IMAGE = 1;
     CONST TYPE_3D = 2;
 
@@ -181,24 +183,11 @@ class Entity {
         if (!$urls) $urls = \App::config()->productPhoto['url'];
         if (!$urls3d) $urls3d = \App::config()->productPhoto3d['url'];
         if ($this->typeId == self::TYPE_IMAGE) {
-            return $this->host . $urls[$size] . $this->source;
+            return $this->getHost() . $urls[$size] . $this->source;
         } else if ($this->typeId == self::TYPE_3D) {
-            return $this->host . $urls3d[$size] . $this->source;
+            return $this->getHost() . $urls3d[$size] . $this->source;
         }
 
         return null;
     }
-
-    static public function getHost($id = null) {
-        $hosts = \App::config()->mediaHost;
-
-        $index = $id ? ($id % 10) : rand(0, count($hosts) - 1);
-        if (!isset($hosts[$index])) {
-            $hosts = array(0 => 'http://fs01.enter.ru');
-            $index = 0;
-        }
-
-        return $hosts[$index];
-    }
-
 }

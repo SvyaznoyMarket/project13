@@ -65,6 +65,24 @@ class App {
             \App::shutdown();
         });
 
+        if (('terminal' == self::$name) && self::$config->loadMediaHost) {
+            try {
+                $data = \App::coreClientV2()->query('terminal/get', [
+                    'ip'  => '0.0.0.0',
+                    'uid' => '443ecd0b-d914-4c2e-b1ea-a190e6b2ffb6',
+                ]);
+
+                $imageUrl = isset($data['config']['image_host'])
+                    ? ('http://' . trim($data['config']['image_host'], '/'))
+                    : null;
+                if ($imageUrl) {
+                    self::$config->mediaHost = [$imageUrl];
+                }
+            } catch (\Exception $e) {
+                \App::logger()->error($e);
+            }
+        }
+
         self::$initialized = true;
     }
 
@@ -342,6 +360,9 @@ class App {
         return self::$loggers[$name];
     }
 
+    /**
+     * @return \Debug\Collector
+     */
     public static function debug() {
         static $instance;
 
@@ -352,11 +373,27 @@ class App {
         return $instance;
     }
 
+    /**
+     * @return \Session\Abtest
+     */
     public static function abTest() {
         static $instance;
 
         if (!$instance) {
             $instance = new \Session\Abtest(self::config()->abtest);
+        }
+
+        return $instance;
+    }
+
+    /**
+     * @return \Partner\Manager
+     */
+    public static function partner() {
+        static $instance;
+
+        if (!$instance) {
+            $instance = new \Partner\Manager();
         }
 
         return $instance;

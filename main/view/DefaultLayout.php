@@ -14,9 +14,7 @@ class DefaultLayout extends Layout {
         $this->addMeta('title', 'Enter - это выход!');
         $this->addMeta('description', 'Enter - новый способ покупать. Любой из ' . \App::config()->product['totalCount'] . ' товаров нашего ассортимента можно купить где угодно, как угодно и когда угодно. Наша миссия: дарить время для настоящего. Честно. С любовью. Как для себя.');
 
-        if (!\App::config()->debug) {
-            $this->addStylesheet('/css/global.css');
-        }
+        $this->addStylesheet('/css/global.css');
 
         $this->addJavascript('/js/loadjs.js');
     }
@@ -118,14 +116,18 @@ class DefaultLayout extends Layout {
             $return .= '<script src="' . $javascript . '" type="text/javascript"></script>' . "\n";
         }
 
+        $return .= $this->render('_headJavascript');
+
         return $return;
     }
 
     public function slotInnerJavascript() {
-        return ''
+        $return = ''
             . $this->render('_remarketingGoogle', ['tag_params' => []])
             . "\n\n"
             . $this->render('_innerJavascript');
+
+        return $return;
     }
 
     public function slotAuth() {
@@ -182,5 +184,32 @@ class DefaultLayout extends Layout {
 
     public function slotBanner() {
         return '';
+    }
+
+    public function slotPartnerCounter() {
+        $return = '';
+
+        if (\App::config()->analytics['enabled']) {
+            $routeName = \App::request()->attributes->get('route');
+
+            // на всех страницах сайта, кроме...
+            if (!in_array($routeName, [
+                'product',
+                'order.create',
+                'order.complete',
+            ])) {
+                $return .= "\n\n" . $this->render('partner-counter/_cityads');
+            }
+
+            // на всех страницах сайта, кроме shop.*
+            if ((0 !== strpos($routeName, 'shop')) && !in_array($routeName, [
+                'order.create',
+                'order.complete',
+            ])) {
+                $return .= "\n\n" . $this->render('partner-counter/_reactive');
+            }
+        }
+
+        return $return;
     }
 }

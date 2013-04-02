@@ -16,11 +16,11 @@ class Entity {
     const STATUS_DELIVERED = 5;
     const STATUS_CANCELED = 100;
 
-    const PAYMENT_STATUS_NOT_PAID = 1;
-    const PAYMENT_STATUS_TRANSFER = 2;
-    const PAYMENT_STATUS_ADVANCE = 3;
-    const PAYMENT_STATUS_PAID = 4;
-    const PAYMENT_STATUS_CANCELED = 5;
+    const PAYMENT_STATUS_NOT_PAID = 1;  // не оплачен
+    const PAYMENT_STATUS_TRANSFER = 4;  // начало оплаты
+    const PAYMENT_STATUS_ADVANCE = 3;   // частично оплачен
+    const PAYMENT_STATUS_PAID = 2;      // оплачен
+    const PAYMENT_STATUS_CANCELED = 5;  // отмена оплаты
 
     /** @var int */
     private $id;

@@ -45,17 +45,19 @@ class Action {
 
         $data = [];
         if (mb_strlen($keyword) >= 3) {
-            $result = \App::coreClientV2()->query('geo/autocomplete', array('letters' => $keyword));
-            $i = 0;
-            foreach ($result as $item) {
-                if ($i >= $limit) break;
+            \App::coreClientV2()->addQuery('geo/autocomplete', ['letters' => $keyword], [], function($result) use(&$data, $limit, $router){
+                $i = 0;
+                foreach ($result as $item) {
+                    if ($i >= $limit) break;
 
-                $data[] = array(
-                    'name'  => $item['name'] . ((!empty($item['region']['name']) && ($item['name'] != $item['region']['name'])) ? (" ({$item['region']['name']})") : ''),
-                    'url'   => $router->generate('region.change', array('regionId' => $item['id'])),
-                );
-                $i++;
-            }
+                    $data[] = array(
+                        'name'  => $item['name'] . ((!empty($item['region']['name']) && ($item['name'] != $item['region']['name'])) ? (" ({$item['region']['name']})") : ''),
+                        'url'   => $router->generate('region.change', array('regionId' => $item['id'])),
+                    );
+                    $i++;
+                }
+            });
+            \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['short'], \App::config()->coreV2['retryCount']);
         }
 
         return new \Http\JsonResponse(array('data' => $data));

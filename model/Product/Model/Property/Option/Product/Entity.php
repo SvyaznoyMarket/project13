@@ -3,6 +3,8 @@
 namespace Model\Product\Model\Property\Option\Product;
 
 class Entity {
+    use \Model\MediaHostTrait;
+
     /** @var int */
     protected $id;
     /** @var string */
@@ -100,7 +102,7 @@ class Entity {
         if ($this->image) {
             $urls = \App::config()->productPhoto['url'];
 
-            return \Model\Product\Media\Entity::getHost($this->id) . $urls[$size] . $this->image;
+            return $this->getHost() . $urls[$size] . $this->image;
         } else {
             return null;
         }

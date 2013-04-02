@@ -20,6 +20,8 @@ class IndexAction {
         $bannerData = [];
         \RepositoryManager::banner()->prepareCollection($region, function ($data) use (&$bannerData, &$itemsByBanner) {
             $timeout = \App::config()->banner['timeout'];
+            $hosts = \App::config()->mediaHost;
+            $host = reset($hosts);
             $urls = \App::config()->banner['url'];
 
             foreach ($data as $i => $item) {
@@ -37,8 +39,8 @@ class IndexAction {
                 $bannerData[] = [
                     'id'    => $bannerId,
                     'alt'   => $item['name'],
-                    'imgs'  => $item['image'] ? ($urls[0] . $item['image']) : null,
-                    'imgb'  => $item['image'] ? ($urls[1] . $item['image']) : null,
+                    'imgs'  => $item['image'] ? ($host . $urls[0] . $item['image']) : null,
+                    'imgb'  => $item['image'] ? ($host . $urls[1] . $item['image']) : null,
                     'url'   => $item['url'],
                     't'     => $i > 0 ? $timeout : $timeout + 4000,
                     'ga'    => $bannerId . ' - ' . $item['name'],
