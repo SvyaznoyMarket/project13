@@ -95,7 +95,7 @@ class HtmlLayout {
         $return = '';
 
         try {
-            $return = $this->engine->render($template, $params);
+            $return = $this->render($template, $params);
         } catch (\Exception $e) {
             \App::logger()->error($e);
         }
