@@ -485,7 +485,7 @@ class Action {
         $region = $isGlobal ? null : \App::user()->getRegion();
 
         // filter values
-        $values = $request->get(\View\Product\FilterForm::$name, []);
+        $values = (array)$request->get(\View\Product\FilterForm::$name, []);
         if ($isGlobal) {
             $values['global'] = 1;
         }
