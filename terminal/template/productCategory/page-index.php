@@ -7,7 +7,7 @@
 $productData = [];
 ?>
 
-<article id="categoryData" data-data="<?= $page->json($data) ?>" class="bGoodItem bContent" data-pagetype='product_list'>
+<article id="categoryData" data-data="<?= $page->json($data) ?>" class="bListing bContent" data-pagetype='product_list'>
 	<? foreach ($products as $product): ?>
 	    <? $productData[] = [
 	        'id' => $product->getId(),

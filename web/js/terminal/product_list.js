@@ -73,6 +73,7 @@ define('product_list',
 			}
 			
 			startTouches.push(nowTouch)
+
 		}
 
 		/**
@@ -88,13 +89,12 @@ define('product_list',
 		 */
 		moveMe = function(e){
 			e.preventDefault()
-			e.stopPropagation()
 			var orig = e.originalEvent
 			var len = orig.changedTouches.length
 			
 			if (startTouches.length > 1){
 				terminal.interactive = false
-
+				e.stopPropagation()
 				var moveTouches = []
 				for (var i = 0; i< len; i++){
 					var moveTouch = {
@@ -139,5 +139,9 @@ define('product_list',
 		el.bind('touchend', moveEnd)
 	}
 	listingZoom($('.bProductListWrap'))
+
+
+	// terminal.interactive = false
+	// $('.bProductListWrap').draggable('vert')
 
 })

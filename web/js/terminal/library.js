@@ -50,15 +50,23 @@ define('library',
 		 * Плагин горизонатльного тач-скроллинга
 		 *
 		 * @public
+		 * @param {string} [direction="horiz"] направление
 		 * @author Aleksandr Zaytsev
 		 */
-		$.fn.draggable = function() {
+		$.fn.draggable = function(direction) {
 			self = this
 
 			self.start = null
 			self.stop = null
 
 			self.startTime = 0
+
+			/*
+			 * Направление скролинга
+			 * 0 - вертикальное 
+			 * 1 - горизонтальное
+			 */
+			var dir = (direction=='vert') ? 0 : 1
 
 			/**
 			 * Обработчик для первого касания пальца
@@ -71,12 +79,12 @@ define('library',
 				e.stopPropagation()
 				var orig = e.originalEvent
 				self.start = {
-					x: orig.changedTouches[0].pageX,
-					left: parseInt(self.css('left'))
+					x: (dir) ? orig.changedTouches[0].pageX : orig.changedTouches[0].pageY,
+					offset: (dir) ? parseInt(self.css('left')) : parseInt(self.css('top'))
 				}
 				self.stop = {
 					start: 0,
-					end: self.width() - self.parent().width()
+					end: (dir) ? self.width() - self.parent().width() : self.height() - self.parent().height()
 				}
 				self.startTime = new Date().getTime()
 			}
@@ -92,8 +100,9 @@ define('library',
 				e.preventDefault()
 				e.stopPropagation()
 				var orig = e.originalEvent
-				var newLeft = orig.changedTouches[0].pageX - self.start.x + self.start.left
-				self.checkMove( newLeft, orig.changedTouches[0].pageX )
+				var touch = (dir) ? orig.changedTouches[0].pageX : orig.changedTouches[0].pageY
+				var newOffset = touch - self.start.x + self.start.offset
+				self.checkMove( newOffset, touch )
 				self.trigger('sliderMoved')
 			}
 
@@ -101,26 +110,41 @@ define('library',
 			 * Проверка возможности совершать движение на заданное значение
 			 *
 			 * @inner
-			 * @param {number} newLeft новое значение позиции элемента
+			 * @param {number} newOffset новое значение позиции элемента
 			 * @param {number} touchEvent текущее положение пальца
 			 */
-			self.checkMove = function( newLeft, touchEvent ){
-				if ( newLeft > self.stop.start ){
-					self.css({left: 0})
-					self.start.left = 0
+			self.checkMove = function( newOffset, touchEvent ){
+				if ( newOffset > self.stop.start ){
+					if (dir){
+						self.css({left: 0})
+					}
+					else{
+						self.css({top: 0})
+					}
+					self.start.offset = 0
 					self.start.x = (touchEvent) ? touchEvent : 0
 					self.trigger('sliderMoved')
 					return false
 				}
-				else if ( newLeft < -self.stop.end){
-					self.css({left: -self.stop.end})
-					self.start.left = -self.stop.end
+				else if ( newOffset < -self.stop.end){
+					if (dir){
+						self.css({left: -self.stop.end})
+					}
+					else{
+						self.css({top: -self.stop.end})
+					}
+					self.start.offset = -self.stop.end
 					self.start.x = (touchEvent) ? touchEvent : 0
 					self.trigger('sliderMoved')
 					return false
 				}
 				else{
-					self.css({left: newLeft})
+					if (dir){
+						self.css({left: newOffset})
+					}
+					else{
+						self.css({top: newOffset})
+					}
 					self.trigger('sliderMoved')
 					return true
 				}
@@ -139,7 +163,8 @@ define('library',
 				var orig = e.originalEvent
 				var stopTime = new Date().getTime()
 				var deltaTime = self.startTime - stopTime
-				var a = (self.start.x - orig.changedTouches[0].pageX) / deltaTime
+				var touch = (dir) ? orig.changedTouches[0].pageX : orig.changedTouches[0].pageY
+				var a = (self.start.x - touch) / deltaTime
 				self.autoMove(a)
 				return false
 			}
@@ -151,9 +176,10 @@ define('library',
 			 * @param {number} a вычесленное значение акселерации
 			 */
 			self.autoMove = function(a){
-				var left = parseInt(self.css('left')) + (a*15)
+				var nowOffset = (dir) ? parseInt(self.css('left')) : parseInt(self.css('top'))
+				var offset = nowOffset + (a*15) 
 				var acceleration = (a>0) ? (a - 0.05) : (a + 0.05)
-				if ( self.checkMove(left) && ( Math.abs(acceleration)>0.05 ) ){
+				if ( self.checkMove(offset) && ( Math.abs(acceleration)>0.05 ) ){
 					setTimeout( function(){
 						self.autoMove(acceleration)
 					}, 1)
@@ -163,11 +189,11 @@ define('library',
 			/**
 			 * Вешаем события, только если родительский элемент больше
 			 */
-			if (self.width()>self.parent().width()){
+			// if (self.width()>self.parent().width()){
 				self.bind("touchstart", self.moveStart)
 				self.bind("touchmove", self.moveMe)
 				self.bind("touchend", self.moveEnd)
-			}
+			// }
 
 			return this
 		}
