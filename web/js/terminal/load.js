@@ -29,7 +29,7 @@ require(["jquery"], function($) {
     $(document).ready(function() {
 
         var pagetype = $('article').data('pagetype')
-        // $('article').append('<h1>L O A D !!! '+pagetype+'</h1>')
+
         switch (pagetype){
             case 'product_list':
                 // product list scripts

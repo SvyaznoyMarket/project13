@@ -3,14 +3,6 @@ define('termAPI',
 
 		library.myConsole('termAPI.js loaded')
 
-		$(document).ready(function() {
-			// createBreadcrumps()
-			$('.jsRedirect').live('click', redirectHandler)
-			$('.jsBuyButton').live('click', buyHandler)
-			$('.jsWhereBuy').live('click', whereBuyHandler)
-			$('.jsCompare').live('click', compareHandler)
-		})
-
 
 		/**
 		 * Проверка типа страницы
@@ -206,6 +198,15 @@ define('termAPI',
 
 			toScreen(screenType, { productId: id })
 		}
+
+
+		$(document).ready(function() {
+			// createBreadcrumps()
+			$('.jsRedirect').live('click', redirectHandler)
+			$('.jsBuyButton').live('click', buyHandler)
+			$('.jsWhereBuy').live('click', whereBuyHandler)
+			$('.jsCompare').live('click', compareHandler)
+		})
 
 
 		//
