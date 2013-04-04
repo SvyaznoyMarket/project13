@@ -22,7 +22,7 @@ class Repository {
 
         $client = clone $this->client;
 
-        $entity = null;
+        $collection = null;
 
         $params = [];
         if ($user) {
@@ -30,14 +30,15 @@ class Repository {
         }
         $client->addQuery('subscribe/get-channel', $params,
             [],
-            function($data) use(&$entity) {
-                $data = reset($data);
-                $entity = $data ? new Entity($data) : null;
+            function($data) use(&$collection) {
+                foreach ($data as $item) {
+                    $collection[] = new Entity($item);
+                }
             }
         );
 
         $client->execute(\App::config()->coreV2['retryTimeout']['short']);
 
-        return $entity;
+        return $collection;
     }
 }

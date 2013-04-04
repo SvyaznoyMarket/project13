@@ -390,10 +390,10 @@ return [
         'action'  => ['User\SubscribeAction', 'execute'],
         'method'  => ['POST'],
     ],
-    'user.addEmail' => [
-        'pattern' => '/subscribe',
-        'action'  => 'User\SubscribeAction', 'addEmail',
-        //'method'  => ['POST'],
+    'subscribe.create' => [
+        'pattern' => '/subscribe/create',
+        'action'  => ['Subscribe\Action', 'create'],
+        'method'  => ['POST'],
     ],
 
     // qrcode

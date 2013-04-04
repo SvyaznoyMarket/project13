@@ -255,7 +255,7 @@ class RepositoryManager {
         static $instance;
 
         if (!$instance) {
-            $instance = new \Model\Subscribe\Channel\Repository(\App::dataStoreClient());
+            $instance = new \Model\Subscribe\Channel\Repository(\App::coreClientV2());
         }
 
         return $instance;
