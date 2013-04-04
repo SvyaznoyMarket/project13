@@ -4,6 +4,13 @@ define('product_list',
 
 	library.myConsole('product_list.js loaded')
 
+
+	/**
+	 * Прорисовка карточки для товара. Прелоад изображения.
+	 *
+	 * @author  Aleksandr Zaytsev
+	 * @param  {object} data данные для рендеринга
+	 */
 	renderItem = function(data){
 		var html = new EJS ({url: '/js/terminal/view/listing_itemProduct.ejs'}).render(data)
 
@@ -30,6 +37,14 @@ define('product_list',
 		renderItem(template)
 	}
 	library.myConsole('render done')
+
+
+
+	var terminalScrolling = function(){
+		var y = terminal.flickable.contentY
+		// library.myConsole('scroll... '+y)
+	}
+	terminal.flickable.scrollValueChanged.connect(terminalScrolling)
 
 
 	/**

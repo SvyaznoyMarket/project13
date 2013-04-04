@@ -9,7 +9,8 @@ define('library',
 		 * @param {string} text текст который нужно вывести
 		 */
 		myConsole = function(text){
-			$('#console').prepend('<p>'+text+'</p>')
+			if ($('#console').length)
+				$('#console').prepend('<p>'+text+'</p>')
 			console.log(text)
 		}
 		myConsole('library.js loaded')
@@ -21,29 +22,28 @@ define('library',
 		 * @author Aleksandr Zaytsev
 		 * @private
 		 */
-		if ($('.bCustomSelect').length){
-			var selectOpen = false
-			$('.bCustomSelect').bind('click', function(e){
-				e.stopPropagation()
-				e.preventDefault()
-				if ($(this).hasClass('mActive')){
-					$('.bCustomSelect').removeClass('mActive')
-					selectOpen = false
-				}
-				else{
-					$('.bCustomSelect').removeClass('mActive')
-					$(this).addClass('mActive')
-					selectOpen = true
-				}
-			})
-			$('.bWrap').bind('click', function(event){
-				if (selectOpen){
-					event.preventDefault()
-					$('.bCustomSelect').removeClass('mActive')
-					selectOpen = false
-				}
-			})
-		}
+		var selectOpen = false
+		$('.bCustomSelect').live('click', function(e){
+			e.stopPropagation()
+			e.preventDefault()
+			if ($(this).hasClass('mActive')){
+				$('.bCustomSelect').removeClass('mActive')
+				selectOpen = false
+			}
+			else{
+				$('.bCustomSelect').removeClass('mActive')
+				$(this).addClass('mActive')
+				selectOpen = true
+			}
+		})
+		$('.bWrap').live('click', function(event){
+			if (selectOpen){
+				event.preventDefault()
+				$('.bCustomSelect').removeClass('mActive')
+				selectOpen = false
+			}
+		})
+
 
 
 		/**
