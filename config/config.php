@@ -56,6 +56,8 @@ $c->dataStore['retryTimeout'] = [
 ];
 $c->dataStore['retryCount'] = 3;
 
+$c->connectTerminal = true;
+
 $c->company['phone'] = '8 (800) 700-00-09';
 $c->company['moscowPhone'] = '8 (495) 775-00-06';
 $c->company['icq'] = '648198963';

@@ -65,6 +65,8 @@ class AppConfig {
         'retryTimeout' => [],
         'retryCount'   => null,
     ];
+    /** @var bool */
+    public $connectTerminal = null;
     /** @var array */
     public $company = [
         'phone' => null,

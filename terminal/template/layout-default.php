@@ -9,7 +9,7 @@
 	<script src="/js/less-1.3.3.min.js" type="text/javascript"></script>
 	<script data-main="/js/terminal/load" src="/js/require.js"></script>
 </head>
-<body>
+<body data-connect-terminal="<?= (false !== \App::config()->connectTerminal) ? 'true' : 'false' ?>">
 	<div class="bWrap">
     	<?= $page->slotContent() ?>
     </div>
