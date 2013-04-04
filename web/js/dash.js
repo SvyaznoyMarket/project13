@@ -9,14 +9,11 @@ $(document).ready(function(){
 			var url = $(this).data('url')
 			var email = input.val()
 
-			console.log('url '+url)
-			console.log('email '+email)
 			if ( email.search('@') !== -1 ){
 				$.post(url, email, function(res){
 					if( !res.success ){
 						console.log('error')
 					}
-					console.log('complete')
 					subPopup.html('<span class="bSubscribeLightboxPopup__eTitle mType">Спасибо! подтверждение подписки отправлено на указанный e-mail</span>')
 					setTimeout(function(){
 						subPopup.slideUp(300)
@@ -26,7 +23,6 @@ $(document).ready(function(){
 			else{
 				// email invalid
 				input.addClass('mError')
-				console.log('email invalid')
 				return false
 			}
 		}
