@@ -14,9 +14,6 @@ class Etargeting {
         // Санкт-Петербург
         } else if (108136 == $region->getId()) {
             $return = '16201-394f47';
-        // Нижний Новгород
-        } else if (99958 == $region->getId()) {
-            $return = '16202-ec0cb1';
         // Воронежская область
         } else if (76 == $region->getParentId()) {
             $return = '17408-e29adc';
