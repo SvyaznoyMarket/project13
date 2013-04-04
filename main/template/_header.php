@@ -30,8 +30,8 @@
         <? endif ?>
 
         <a class="headerShopLink" href="<?= $page->url('shop') ?>">Магазины Enter</a>
+        <div class="bSubscribeLightboxPopupNotNow mFl"></div>
     </div>
-
     <noindex>
         <div class="usermenu">
             <?= $page->render('_user') ?>

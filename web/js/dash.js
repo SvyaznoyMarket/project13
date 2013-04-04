@@ -1,16 +1,11 @@
 $(document).ready(function(){
 
-	var lboxCheckSubscribe = function(data){
-		console.info('sc '+data.showSubscribe)
-		if (!data.showSubscribe) 
-			return false
-		
+	var lboxCheckSubscribe = function(subscribe){
+		var notNowShield = $('.bSubscribeLightboxPopupNotNow')
 		var subPopup = $('.bSubscribeLightboxPopup')
 		var input = $('.bSubscribeLightboxPopup__eInput')
-		
-		subPopup.slideDown(300)
 
-		var subscribeNow = function(){
+		var subscribing = function(){
 			var url = $(this).data('url')
 			var email = input.val()
 
@@ -36,17 +31,45 @@ $(document).ready(function(){
 			}
 		}
 
-		input.keydown(function(){
-			$(this).removeClass('mError')
-		})
+		var subscribeNow = function(){
+			subPopup.slideDown(300)
 
-		$('.bSubscribeLightboxPopup__eBtn').bind('click', subscribeNow)
+			input.keydown(function(){
+				$(this).removeClass('mError')
+			})
 
-		$('.bSubscribeLightboxPopup__eNotNow').bind('click', function(){
-			subPopup.slideUp(300)
-			var url = $(this).data('url')
-			$.post(url)
-		})
+			$('.bSubscribeLightboxPopup__eBtn').bind('click', subscribing)
+
+			$('.bSubscribeLightboxPopup__eNotNow').bind('click', function(){
+				var url = $(this).data('url')
+
+				subPopup.slideUp(300, subscribeLater)
+				$.post(url)
+			})
+		}
+
+		var subscribeLater = function(){
+			notNowShield.slideDown(300)
+			notNowShield.bind('click', function(){
+				$(this).slideUp(300)
+				subscribeNow()
+			})
+		}
+
+		if (!subscribe.show){
+			if (!subscribe.agrred){
+				subscribeLater()
+			}
+			return false
+		}
+		else{
+			subscribeNow()
+		}
+	}
+
+	var startAction = function(action){
+		if (action.subscribe !== undefined)
+			lboxCheckSubscribe(action.subscribe)
 	}
 	
 	var carturl = $('.lightboxinner .point2').attr('href')
@@ -106,7 +129,8 @@ $(document).ready(function(){
 				}
 
 				// subscribe
-				lboxCheckSubscribe(data.data)
+				if (data.data.action !== undefined)
+					startAction(data.data.action)
 			}
 
 	})
