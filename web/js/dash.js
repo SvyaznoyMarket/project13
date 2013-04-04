@@ -10,7 +10,7 @@ $(document).ready(function(){
 			var email = input.val()
 
 			if ( email.search('@') !== -1 ){
-				$.post(url, email, function(res){
+				$.post(url, {email: email}, function(res){
 					if( !res.success ){
 						console.log('error')
 					}

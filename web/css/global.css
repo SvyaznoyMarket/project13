@@ -7987,9 +7987,9 @@
     position: absolute;
     top: 0;
     right: 175px;
+    display: none;
     width: 40px;
     height: 36px;
-    display: none;
     background: url('/css/subscribeLightboxPopup/img/icon.png') no-repeat 0 0;
   }
   .bSubscribeLightboxPopup {
