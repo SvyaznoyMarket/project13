@@ -247,4 +247,17 @@ class RepositoryManager {
 
         return $instance;
     }
+
+    /**
+     * @return Model\Subscribe\Channel\Repository
+     */
+    static function subscribeChannel() {
+        static $instance;
+
+        if (!$instance) {
+            $instance = new \Model\Subscribe\Channel\Repository(\App::dataStoreClient());
+        }
+
+        return $instance;
+    }
 }

@@ -22,7 +22,7 @@ if ((bool)\App::config()->abtest['enabled']) {
 }
 
 
-$action =implode('.', \App::request()->attributes->get('action', []));
+$action =implode('.', (array)\App::request()->attributes->get('action', []));
 $debug->add('act', $action ?: 'undefined', 138, $action ? \Debug\Collector::TYPE_INFO : \Debug\Collector::TYPE_ERROR);
 
 if (\App::user()->getToken()) {
