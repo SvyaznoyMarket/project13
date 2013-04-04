@@ -93,8 +93,9 @@ class Repository {
         $entity = null;
         $client->addQuery('product/get',
             [
-                'id'     => $id,
-                'geo_id' => $region ? $region->getId() : \App::user()->getRegion()->getId(),
+                'select_type' => 'id',
+                'id'          => $id,
+                'geo_id'      => $region ? $region->getId() : \App::user()->getRegion()->getId(),
             ],
             [],
             function($data) use(&$entity) {
