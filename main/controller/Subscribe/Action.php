@@ -43,7 +43,7 @@ class Action {
             $client->execute(\App::config()->coreV2['retryTimeout']['huge'], \App::config()->coreV2['retryCount']);
 
             $cookie = new \Http\Cookie(
-                'subscribed',
+                \App::config()->subscribe['cookieName'],
                 1,
                 time() + 3 * 365 * 24 * 60 * 60,
                 '/',
@@ -68,7 +68,7 @@ class Action {
 
         try {
             $cookie = new \Http\Cookie(
-                'subscribed',
+                \App::config()->subscribe['cookieName'],
                 0,
                 time() + 3 * 365 * 24 * 60 * 60,
                 '/',

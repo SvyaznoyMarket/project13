@@ -214,7 +214,6 @@ class AppConfig {
     public $user = [
         'corporateRegister' => null,
     ];
-
     /** @var array */
     public $abtest = [
         'cookieName' => null,
@@ -222,13 +221,16 @@ class AppConfig {
         'enabled'    => null,
         'test'       => [],
     ];
-
     /** @var array */
     public $database = [
         'host'     => null,
         'name'     => null,
         'user'     => null,
         'password' => null,
+    ];
+    /** @var array */
+    public $subscribe = [
+        'cookieName' => null,
     ];
 
     public function __construct() {

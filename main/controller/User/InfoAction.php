@@ -29,6 +29,7 @@ class InfoAction {
             'region_id'        => $region->getId(),
             'is_credit'        => 1 == $request->cookies->get('credit_on'),
             'is_subscribed'    => 0,
+            'showSubscribe'    => !$request->cookies->has(\App::config()->subscribe['cookieName']),
         );
 
         // запрашиваем пользователя, если он авторизован
