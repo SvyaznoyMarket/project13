@@ -44,7 +44,32 @@ class Action {
 
             $cookie = new \Http\Cookie(
                 'subscribed',
-                true,
+                1,
+                time() + 3 * 365 * 24 * 60 * 60,
+                '/',
+                null,
+                false,
+                false // важно httpOnly=false, чтобы js мог получить куку
+            );
+            $response = new \Http\JsonResponse(['success' => true]);
+            $response->headers->setCookie($cookie);
+        } catch (\Exception $e) {
+            \App::logger()->error($e);
+        }
+
+        return $response;
+    }
+
+    /**
+     * @return \Http\JsonResponse
+     */
+    public function cancel() {
+        $response = new \Http\JsonResponse(['success' => false]);
+
+        try {
+            $cookie = new \Http\Cookie(
+                'subscribed',
+                0,
                 time() + 3 * 365 * 24 * 60 * 60,
                 '/',
                 null,
