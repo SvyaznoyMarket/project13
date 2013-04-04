@@ -362,6 +362,10 @@ class Repository {
         foreach ($response as $data) {
             $collection = [];
             foreach ($data['list'] as $id) {
+                if (!isset($collectionById[$id])) {
+                    \App::logger()->error(sprintf('В списке %s отсутствует товар #%s', json_encode($collectionById), $id));
+                    continue;
+                }
                 $collection[] = $collectionById[$id];
             }
 
