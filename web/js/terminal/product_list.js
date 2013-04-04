@@ -4,6 +4,18 @@ define('product_list',
 
 	library.myConsole('product_list.js loaded')
 
+	renderItem = function(data){
+		var html = new EJS ({url: '/js/terminal/view/listing_itemProduct.ejs'}).render(data)
+
+		$('.bProductListWrap').append(html)
+		
+		var img = $('#productInList'+data.id+' .bProductListItem__eImg')
+		var src = img.attr('src')
+		img.load(src, function(){
+			$(this).fadeIn(300)
+		})
+	}
+
 	library.myConsole('render template from JSON...')
 	var data = $('#productList').data('product')
 	for (var i = 0; i< data.length; i++){
@@ -15,8 +27,7 @@ define('product_list',
 			price : library.formatMoney(data[i].price),
 			isBuyable : data[i].isBuyable
 		}
-		var html = new EJS ({url: '/js/terminal/view/listing_itemProduct.ejs'}).render(template)
-		$('.bProductListWrap').append(html)
+		renderItem(template)
 	}
 	library.myConsole('render done')
 
