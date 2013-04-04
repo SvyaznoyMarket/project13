@@ -27,12 +27,13 @@ class SetPage extends \View\DefaultLayout {
         $tag_params = ['prodid' => [], 'pagetype' => 'productset', 'pname' => [], 'pcat' => [], 'pvalue' => []];
         foreach ($products as $product) {
             $categories = $product->getCategory();
-            $category = array_pop($categories);
+            $category = end($categories);
+            if (!$category) continue;
 
             $tag_params['prodid'][] = $product->getId();
-            $tag_params['pname'][]  = $product->getName();
-            $tag_params['pcat'][]   = $category->getToken();
-            $tag_params['pvalue'][]  = $product->getPrice();
+            $tag_params['pname'][] = $product->getName();
+            $tag_params['pcat'][] = $category->getToken();
+            $tag_params['pvalue'][] = $product->getPrice();
 
         }
 
