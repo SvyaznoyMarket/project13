@@ -6,6 +6,8 @@
   margin: 0 -20px 7px;
   padding: 0 20px;
 
+  text-align: center;
+
   background: url('@{base-url}/subscribeLightboxPopup/img/bg.jpg') repeat-x 0 0;
 
   &__eTitle{
@@ -19,20 +21,28 @@
     font-size: 19px;
     font-weight: 100;
     line-height: 40px;
+
+    &.mType{
+      font-family: 'Enter Type';
+    }
   }
 
   &__eInput{
+    .rounded(4px);
     width: 260px;
     height: 25px;
     margin: 5px 0 0 20px;
     padding: 0 5px;
 
     border: 1px solid @black;
-    .rounded(4px);
+
+    &.mError{
+      background: lighten(@typRed, 20%);
+    }
   }
 
   &__eBtn{
-    
+    .rounded(4px);
     height: 26px;
     margin: 5px;
 
@@ -40,7 +50,6 @@
 
     color: white;
     border: none;
-    .rounded(4px);
     background: @black;
 
     font-size: 12px;

@@ -1,14 +1,51 @@
 $(document).ready(function(){
 
 	var lboxCheckSubscribe = function(data){
-		console.info('sc '+data.is_subscribed)
-		if (data.is_subscribed) 
+		console.info('sc '+data.showSubscribe)
+		if (!data.showSubscribe) 
 			return false
+		
 		var subPopup = $('.bSubscribeLightboxPopup')
+		var input = $('.bSubscribeLightboxPopup__eInput')
+		
 		subPopup.slideDown(300)
+
+		var subscribeNow = function(){
+			var url = $(this).data('url')
+			var email = input.val()
+
+			console.log('url '+url)
+			console.log('email '+email)
+			if ( email.search('@') !== -1 ){
+				$.post(url, email, function(res){
+					if( !res.success ){
+						console.log('error')
+					}
+					console.log('complete')
+					subPopup.html('<span class="bSubscribeLightboxPopup__eTitle mType">Спасибо! подтверждение подписки отправлено на указанный e-mail</span>')
+					setTimeout(function(){
+						subPopup.slideUp(300)
+					}, 3000)
+				})
+			}
+			else{
+				// email invalid
+				input.addClass('mError')
+				console.log('email invalid')
+				return false
+			}
+		}
+
+		input.keydown(function(){
+			$(this).removeClass('mError')
+		})
+
+		$('.bSubscribeLightboxPopup__eBtn').bind('click', subscribeNow)
 
 		$('.bSubscribeLightboxPopup__eNotNow').bind('click', function(){
 			subPopup.slideUp(300)
+			var url = $(this).data('url')
+			$.post(url)
 		})
 	}
 	

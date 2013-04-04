@@ -7989,6 +7989,7 @@
     height: 43px;
     margin: 0 -20px 7px;
     padding: 0 20px;
+    text-align: center;
     background: url('/css/subscribeLightboxPopup/img/bg.jpg') repeat-x 0 0;
   }
   .bSubscribeLightboxPopup__eTitle {
@@ -8000,25 +8001,31 @@
     font-weight: 100;
     line-height: 40px;
   }
+  .bSubscribeLightboxPopup__eTitle.mType {
+    font-family: 'Enter Type';
+  }
   .bSubscribeLightboxPopup__eInput {
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
     width: 260px;
     height: 25px;
     margin: 5px 0 0 20px;
     padding: 0 5px;
     border: 1px solid #000000;
+  }
+  .bSubscribeLightboxPopup__eInput.mError {
+    background: #f28c92;
+  }
+  .bSubscribeLightboxPopup__eBtn {
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     border-radius: 4px;
-  }
-  .bSubscribeLightboxPopup__eBtn {
     height: 26px;
     margin: 5px;
     cursor: pointer;
     color: white;
     border: none;
-    -webkit-border-radius: 4px;
-    -moz-border-radius: 4px;
-    border-radius: 4px;
     background: #000000;
     font-size: 12px;
     line-height: 26px;
