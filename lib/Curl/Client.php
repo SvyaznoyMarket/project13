@@ -76,7 +76,7 @@ class Client {
         } catch (\RuntimeException $e) {
             curl_close($connection);
             $spend = \Debug\Timer::stop('curl');
-            $this->logger->error('Fail curl ' . $url . ' in ' . $spend . ((bool)$data ? (' data: ' . $this->encode($data)) : '') . ' response: ' . $this->encode($response) . ' with ' . $e);
+            $this->logger->error('Fail curl ' . $url . ' in ' . $spend . ((bool)$data ? (' ' . $this->encode($data)) : '') . ' response: ' . $this->encode($response) . ' with ' . $e);
             \App::exception()->add($e);
 
             throw $e;
@@ -191,7 +191,7 @@ class Client {
                         try {
                             $decodedResponse = $this->decode($content);
                         } catch (\Exception $e) {
-                            $this->logger->error(sprintf('Json error for %s', json_encode($info['url'], JSON_UNESCAPED_UNICODE)));
+                            $this->logger->error(sprintf('Json error for %s', (string)(isset($info['url']) ? $info['url'] : null)));
                             throw $e;
                         }
                         $this->logger->debug('Curl response data: ' . $this->encode($decodedResponse));
@@ -338,7 +338,7 @@ class Client {
      */
     private function decode($response) {
         if (is_null($response)) {
-            throw new \RuntimeException('Response cannot be null');
+            throw new \RuntimeException('Пустой ответ');
         }
 
         $decoded = json_decode($response, true);
@@ -363,18 +363,15 @@ class Client {
                     $error = 'Unknown error';
                     break;
             }
-            $message = sprintf('Json error: "%s", Response: "%s"', $error, $response);
-            $e = new \RuntimeException($message, $code);
+            $e = new \RuntimeException(sprintf('Json error: "%s", Response: "%s"', $error, $response), $code);
             \App::exception()->add($e);
             throw $e;
         }
 
         if (is_array($decoded)) {
             if (array_key_exists('error', $decoded)) {
-                $message = $decoded['error']['message'] . ' ' . $this->encode($decoded);
-
                 $e = new Exception(
-                    $message,
+                    $this->encode($decoded),
                     (int)$decoded['error']['code']
                 );
 
