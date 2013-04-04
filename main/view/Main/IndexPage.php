@@ -7,6 +7,7 @@ class IndexPage extends \View\DefaultLayout {
 
     protected function prepare() {
         $this->addMeta('viewport', 'width=960');
+        $this->addMeta('mailru', '0b3a117efddc65ad');
     }
 
     public function slotBanner() {
@@ -30,7 +31,7 @@ class IndexPage extends \View\DefaultLayout {
 
     public function slotInnerJavascript() {
         return ''
-            . $this->render('main/_odinkod')
+            . $this->tryRender('main/partner-counter/_etargeting')
             . "\n\n"
             . $this->render('_remarketingGoogle', ['tag_params' => ['pagetype' => 'homepage']])
             . "\n\n"

@@ -15,6 +15,8 @@ class CorporateRegistrationForm {
     private $phone;
 
     /** @var string */
+    private $corpForm;
+    /** @var string */
     private $corpName;
     /** @var string */
     private $corpLegalAddress;
@@ -45,6 +47,7 @@ class CorporateRegistrationForm {
         'last_name'          => null,
         'email'              => null,
         'phone'              => null,
+        'corp_form'          => null,
         'corp_name'          => null,
         'corp_legal_address' => null,
         'corp_real_address'  => null,
@@ -70,6 +73,7 @@ class CorporateRegistrationForm {
         if (array_key_exists('last_name', $data)) $this->setLastName($data['last_name']);
         if (array_key_exists('email', $data)) $this->setEmail($data['email']);
         if (array_key_exists('phone', $data)) $this->setPhone($data['phone']);
+        if (array_key_exists('corp_form', $data)) $this->setCorpForm($data['corp_form']);
         if (array_key_exists('corp_name', $data)) $this->setCorpName($data['corp_name']);
         if (array_key_exists('corp_legal_address', $data)) $this->setCorpLegalAddress($data['corp_legal_address']);
         if (array_key_exists('corp_real_address', $data)) $this->setCorpRealAddress($data['corp_real_address']);
@@ -323,6 +327,22 @@ class CorporateRegistrationForm {
     }
 
     /**
+     * @param string $form
+     */
+    public function setCorpForm($form)
+    {
+        $this->corpForm = trim((string)$form);
+    }
+
+    /**
+     * @return string
+     */
+    public function getCorpForm()
+    {
+        return $this->corpForm;
+    }
+
+    /**
      * @param $name
      * @param $value
      * @throws \InvalidArgumentException
@@ -368,5 +388,14 @@ class CorporateRegistrationForm {
         }
 
         return $isValid;
+    }
+
+    public function getCorpFormSelection() {
+        return [
+            'ИП' => 'Индивидуальный предприниматель (ИП)',
+            'ООО' => 'Общество с ограниченной ответственностью (ООО)',
+            'ОАО' => 'Открытое Акционерное общество (ОАО)',
+            'ЗАО' => 'Закрытое Акционерное общество (ЗАО)',
+        ];
     }
 }

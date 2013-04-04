@@ -74,7 +74,7 @@ class IndexPage extends \View\DefaultLayout {
         $category = array_pop($categories);
 
         return ''
-            . ($product ? $this->render('product/_odinkod', array('product' => $product)) : '')
+            . ($product ? $this->tryRender('product/partner-counter/_etargeting', array('product' => $product)) : '')
             . "\n\n"
             . ($product ? $this->render('_remarketingGoogle', ['tag_params' => ['prodid' => $product->getId(), 'pagetype' => 'product', 'pname' => $product->getName(), 'pcat' => ($category) ? $category->getToken() : '', 'pvalue' => $product->getPrice()]]) : '')
             . "\n\n"
@@ -149,19 +149,18 @@ class IndexPage extends \View\DefaultLayout {
         if (!(bool)$categories) {
             return;
         }
-        /** @var $category \Model\Product\Category\Entity */
-        $category = reset($categories);
 
         $region = \App::user()->getRegion();
 
         $seoTemplate = null;
         $categoryTokens = [];
-        foreach ($category->getAncestor() as $iCategory) {
+        foreach ($categories as $iCategory) {
             $categoryTokens[] = $iCategory->getToken();
         }
-        $categoryTokens[] = $category->getToken();
+        /** @var $category \Model\Product\Category\Entity */
+        $category = end($categories);
 
-        $dataStore->addQuery(sprintf('seo/product/%s/%s.json', implode('/', $categoryTokens), $product->getToken()), function ($data) use (&$seoTemplate) {
+        $dataStore->addQuery(sprintf('seo/product/%s/%s.json', implode('/', $categoryTokens), $product->getToken()), [], function ($data) use (&$seoTemplate) {
             $seoTemplate = array_merge([
                 'title'       => null,
                 'description' => null,
@@ -177,13 +176,13 @@ class IndexPage extends \View\DefaultLayout {
             'товар'     => $product->getName(),
             'цена'      => $product->getPrice() . ' руб',
         ];
-        $dataStore->addQuery(sprintf('inflect/product-category/%s.json', $category->getId()), function($data) use (&$patterns) {
+        $dataStore->addQuery(sprintf('inflect/product-category/%s.json', $category->getId()), [], function($data) use (&$patterns) {
             if ($data) $patterns['категория'] = $data;
         });
-        $dataStore->addQuery(sprintf('inflect/region/%s.json', $region->getId()), function($data) use (&$patterns) {
+        $dataStore->addQuery(sprintf('inflect/region/%s.json', $region->getId()), [], function($data) use (&$patterns) {
             if ($data) $patterns['город'] = $data;
         });
-        $dataStore->addQuery('inflect/сайт.json', function($data) use (&$patterns) {
+        $dataStore->addQuery('inflect/сайт.json', [], function($data) use (&$patterns) {
             if ($data) $patterns['сайт'] = $data;
         });
 

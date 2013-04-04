@@ -29,7 +29,8 @@ class Client {
      *
      * @param $action
      * @param array $params
-     * @throws \Smartengine\Exception
+     * @throws Exception
+     * @throws \Exception|Exception
      * @return array
      */
     public function query($action, array $params = [])

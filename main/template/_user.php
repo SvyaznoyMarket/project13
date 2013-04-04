@@ -9,4 +9,4 @@
     &nbsp;<a href="<?= $page->url('user.logout') ?>">(выйти)</a>
 </script>
 
-<a id="auth-link" href="<?= $page->url('user.login') ?>">Войти на сайт</a>
+<a id="auth-link" href="<?= $page->url('user.login') ?>">Войти</a>

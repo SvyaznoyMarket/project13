@@ -54,6 +54,12 @@ class Filter {
                 switch ($filter->getTypeId()) {
                     case FilterEntity::TYPE_NUMBER:
                     case FilterEntity::TYPE_SLIDER:
+                        if (!isset($value['to'])) {
+                            $value['to'] = null;
+                        }
+                        if (!isset($value['from'])) {
+                            $value['from'] = null;
+                        }
                         if ($filter->getMax() != $value['to'] || $filter->getMin() != $value['from']) {
                             $return[] = array($filter->getId(), 2, $value['from'], $value['to']);
                         }

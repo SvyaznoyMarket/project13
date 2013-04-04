@@ -39,10 +39,11 @@ class Client {
     }
 
     /**
-     * @param string     $url
-     * @param array      $data
+     * @param string $url
+     * @param array $data
      * @param float|null $timeout
      * @throws \RuntimeException
+     * @throws \Exception|\RuntimeException
      * @return mixed
      */
     public function query($url, array $data = [], $timeout = null) {
@@ -126,8 +127,9 @@ class Client {
 
     /**
      * @param float|null $retryTimeout
-     * @param int        $retryCount
+     * @param int $retryCount
      * @throws \RuntimeException
+     * @throws \Exception
      */
     public function execute($retryTimeout = null, $retryCount = 0) {
         \Debug\Timer::start('curl');

@@ -54,6 +54,7 @@ class Menu {
         \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium'], \App::config()->coreV2['retryCount']);
 
         $this->fillMenu($this->menu);
+        \App::debug()->add('main-menu.catalog', sprintf('%s ms', round(\Debug\Timer::get('main-menu.catalog')['total'], 3) * 1000));
 
         return $this->menu;
     }
@@ -89,6 +90,10 @@ class Menu {
      */
     public function fillMenu($menu) {
         foreach ($menu as $iMenu) {
+            if ((bool)$iMenu->getChild()) {
+                $this->fillMenu($iMenu->getChild());
+            }
+
             // ссылка
             if (\Model\Menu\Entity::ACTION_LINK == $iMenu->getAction()) {
                 $iMenu->setLink($iMenu->getFirstItem());
@@ -98,7 +103,7 @@ class Menu {
                 /** @var \Model\Product\Category\MenuEntity $category */
                 $category = ($categoryId && isset($this->categoriesById[$categoryId])) ? $this->categoriesById[$categoryId] : null;
                 if (!$category) {
-                    \App::logger()->error(sprintf('Не найдена категория #%s для элемента меню %s', $categoryId, $iMenu->getName()));
+                    \App::logger()->warn(sprintf('Не найдена категория #%s для элемента меню %s', $categoryId, $iMenu->getName()));
                     continue;
                 }
 
@@ -109,20 +114,22 @@ class Menu {
                 /** @var \Model\Product\Category\MenuEntity $category */
                 $category = ($categoryId && isset($this->rootCategoriesById[$categoryId])) ? $this->rootCategoriesById[$categoryId] : null;
                 if (!$category) {
-                    \App::logger()->error(sprintf('Не найдена категория #%s для элемента меню %s', $categoryId, $iMenu->getName()));
+                    \App::logger()->warn(sprintf('Не найдена категория #%s для элемента меню %s', $categoryId, $iMenu->getName()));
                     continue;
                 }
 
                 $iMenu->setLink($category->getLink());
+                \Debug\Timer::start('main-menu.catalog');
                 $this->fillCatalogMenu($iMenu, $category);
-            }
-
-            if ((bool)$iMenu->getChild()) {
-                $this->fillMenu($iMenu->getChild());
+                \Debug\Timer::stop('main-menu.catalog');
             }
         }
     }
 
+    /**
+     * @param \Model\Menu\Entity                 $iMenu
+     * @param \Model\Product\Category\MenuEntity $category
+     */
     private function fillCatalogMenu(\Model\Menu\Entity $iMenu, \Model\Product\Category\MenuEntity $category) {
         foreach ($category->getChild() as $childCategory) {
             $child = new \Model\Menu\Entity([
@@ -134,7 +141,7 @@ class Menu {
             $child->setImage($childCategory->getImageUrl(0));
             $iMenu->addChild($child);
 
-            if ((bool)$childCategory->getChild()) {
+            if ($childCategory->countChild()) {
                 $this->fillCatalogMenu($child, $childCategory);
             }
         }

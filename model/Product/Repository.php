@@ -118,16 +118,21 @@ class Repository {
 
         if (!(bool)$tokens) return [];
 
-        $response = $this->client->query('product/get', array(
+        $client = clone $this->client;
+
+        $collection = [];
+        $entityClass = $this->entityClass;
+        $client->addQuery('product/get', [
             'select_type' => 'slug',
             'slug'        => $tokens,
             'geo_id'      => $region ? $region->getId() : \App::user()->getRegion()->getId(),
-        ));
+        ], [], function($data) use (&$collection, $entityClass) {
+            foreach ($data as $entity) {
+                $collection[] = new $entityClass($entity);
+            }
+        });
 
-        $collection = [];
-        foreach ($response as $data) {
-            $collection[] = new $this->entityClass($data);
-        }
+        $client->execute(\App::config()->coreV2['retryTimeout']['short'], \App::config()->coreV2['retryCount']);
 
         return $collection;
     }
@@ -142,16 +147,22 @@ class Repository {
 
         if (!(bool)$barcodes) return [];
 
-        $response = $this->client->query('product/get', array(
+        $client = clone $this->client;
+
+        $collection = [];
+        $entityClass = $this->entityClass;
+
+        $client->addQuery('product/get', [
             'select_type' => 'bar_code',
             'bar_code'    => $barcodes,
             'geo_id'      => $region ? $region->getId() : \App::user()->getRegion()->getId(),
-        ));
-
-        $collection = [];
-        foreach ($response as $data) {
-            $collection[] = new $this->entityClass($data);
-        }
+        ], [], function($data) use (&$collection, $entityClass) {
+            foreach ($data as $entity) {
+                $collection[] = new $entityClass($entity);
+            }
+        });
+        
+        $client->execute(\App::config()->coreV2['retryTimeout']['short'], \App::config()->coreV2['retryCount']);
 
         return $collection;
     }

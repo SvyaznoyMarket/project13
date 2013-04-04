@@ -3,6 +3,8 @@
 namespace Model\Product\Category;
 
 class MenuEntity {
+    use \Model\MediaHostTrait;
+
     const MAX_CHILD = 5;
 
     /** @var int */
@@ -167,10 +169,12 @@ class MenuEntity {
     }
 
     public function getImageUrl($size = 0) {
-        if ($this->image) {
-            $urls = \App::config()->productCategory['url'];
+        static $urls;
 
-            return $urls[$size] . $this->image;
+        if (!$urls) $urls = \App::config()->productCategory['url'];
+
+        if ($this->image) {
+            return $this->getHost() . $urls[$size] . $this->image;
         } else {
             return null;
         }

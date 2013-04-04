@@ -1,4 +1,21 @@
 $(document).ready(function(){
+
+	/**
+	 * form register corporate
+	 */
+	if( $('#corp_select').length ) {
+		$('#corp_select').change(function() {
+			console.info('val '+$(this).find('option:selected').val())
+			if ($(this).find('option:selected').val() === 'Другая форма'){
+				console.log('OK')
+				$('#corpNotice').lightbox_me({
+					centered: true,
+					closeSelector: ".close"
+				})
+			}
+		})
+	}
+
 	/* iPadPromo*/
 	if( $('#oneClickPromo').length ) {
 		$('.halfline .bOrangeButton.active').click( function() {

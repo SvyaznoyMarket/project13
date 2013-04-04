@@ -3,6 +3,8 @@
 namespace Model\Product\Service\Category;
 
 class Entity {
+    use \Model\MediaHostTrait;
+
     /** @var int */
     private $id;
     /** @var int */
@@ -118,7 +120,9 @@ class Entity {
      * @return null|string
      */
     public function getImageUrl($size = 1) {
-        return $this->image ? \App::config()->serviceCategory['url'][$size] . $this->image : null;
+        return $this->image
+            ? ($this->getHost() . \App::config()->serviceCategory['url'][$size] . $this->image)
+            : null;
     }
 
     /**

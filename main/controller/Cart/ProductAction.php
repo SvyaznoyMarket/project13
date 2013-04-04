@@ -65,6 +65,15 @@ class ProductAction {
                     \App::logger()->error($e);
                 }
             }
+            $returnRedirect = $request->headers->get('referer') ?: \App::router()->generate('homepage');
+            switch (\App::abTest()->getCase()->getKey()) {
+                case 'upsell':
+                    $returnRedirect = \App::router()->generate('product.upsell', ['productToken' => $product->getToken()]);
+                    break;
+                case 'order2cart':
+                    $returnRedirect = \App::router()->generate('cart');
+                    break;
+            }
 
             return $request->isXmlHttpRequest()
                 ? new \Http\JsonResponse([
@@ -76,7 +85,7 @@ class ProductAction {
                         'link'          => \App::router()->generate('order.create'),
                     ],
                 ])
-                : new \Http\RedirectResponse($request->headers->get('referer') ?: \App::router()->generate('homepage'));
+                : new \Http\RedirectResponse($returnRedirect);
         } catch (\Exception $e) {
             return $request->isXmlHttpRequest()
                 ? new \Http\JsonResponse([

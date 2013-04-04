@@ -3,6 +3,8 @@
 namespace Model\Shop;
 
 class Entity {
+    use \Model\MediaHostTrait;
+
     /* @var int */
     private $id;
     /* @var string */
@@ -286,7 +288,7 @@ class Entity {
         if ($this->image) {
             $urls = \App::config()->shopPhoto['url'];
 
-            return $urls[$size] . $this->image;
+            return $this->getHost() . $urls[$size] . $this->image;
         } else {
             return null;
         }

@@ -143,6 +143,7 @@ $(document).ready(function() {
 			else if (left >= 0 ){
 				left = 0
 				$('.bSimilarGoodsSlider_eArrow.mLeft').hide()
+				$('.bSimilarGoodsSlider_eArrow.mRight').show()
 			}
 			else{
 				similarArrow.show()

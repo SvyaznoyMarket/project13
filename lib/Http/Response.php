@@ -39,6 +39,11 @@ class Response {
     protected $charset;
 
     /**
+     * @var boolean
+     */
+    protected $isShowDebug;
+
+    /**
      * Status codes translation table.
      *
      * The list of codes is complete according to the
@@ -129,6 +134,7 @@ class Response {
         if (!$this->headers->has('Date')) {
             $this->setDate(new \DateTime(null, new \DateTimeZone('UTC')));
         }
+        $this->setIsShowDebug(true);
     }
 
     /**
@@ -1076,5 +1082,21 @@ class Response {
      */
     public function isEmpty() {
         return in_array($this->statusCode, [201, 204, 304]);
+    }
+
+    /**
+     * @param boolean $isShowDebug
+     */
+    public function setIsShowDebug($isShowDebug)
+    {
+        $this->isShowDebug = (bool)$isShowDebug;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getIsShowDebug()
+    {
+        return $this->isShowDebug;
     }
 }

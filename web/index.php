@@ -91,10 +91,12 @@ $response = null;
                 $action = new \Debug\ErrorAction();
                 $response = $action->execute();
             }
+        } else {
+            \App::partner()->set($response);
         }
 
         // debug panel
-        if (\App::config()->debug && !$response instanceof \Http\JsonResponse) {
+        if (\App::config()->debug && !$response instanceof \Http\JsonResponse && $response->getIsShowDebug()) {
             $response->setContent(
                 $response->getContent()
                 . "\n\n"

@@ -22,7 +22,12 @@ class Action {
 
         $error = 'Неверный сертификат';
         try {
-            $result = \App::coreClientV2()->query('certificate/check', ['code' => $code, 'pin' => $pin]);
+            $result = null;
+            \App::coreClientV2()->addQuery('certificate/check', ['code' => $code, 'pin' => $pin], [], function($data) use (&$result) {
+                $result = $data;
+            });
+            \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['default'], \App::config()->coreV2['retryCount']);
+
             if (is_array($result) && array_key_exists('error', $result)) {
                 $e = new \Curl\Exception($result['error']['message'], $result['error']['code']);
 

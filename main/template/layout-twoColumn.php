@@ -49,9 +49,9 @@
     <?= $page->slotInnerJavascript() ?>
     <?= $page->slotAuth() ?>
     <?= $page->slotYandexMetrika() ?>
-    <?//= $page->slotAdvanceSeoCounter() ?>
     <?= $page->slotMyThings() ?>
     <?= $page->slotAdriver() ?>
+    <?= $page->slotPartnerCounter() ?>
 
     <? if (\App::config()->analytics['enabled']): ?>
         <div id="luxupTracker" class="jsanalytics"></div>
@@ -59,9 +59,6 @@
     <? endif ?>
 	
 	<a id="upper" href="#">Наверх</a>
-
-	
-    <?//= $page->slotAdriver() ?>
 
 </body>
 </html>
