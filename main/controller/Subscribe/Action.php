@@ -59,4 +59,41 @@ class Action {
 
         return $response;
     }
+
+    /**
+     * @param \Http\Request $request
+     * @return \Http\Response
+     * @throws \Exception
+     */
+    public function confirm(\Http\Request $request) {
+        $client = \App::coreClientV2();
+
+        $action = null;
+        try {
+            $token = $request->get('IdSL');
+            if (!$token) {
+                throw new \Exception('Не получен токен подтверждения подписки');
+            }
+
+            $client->addQuery('subscribe/use-token', ['token' => $token], [],
+                function($data) use (&$action) {
+                    if (isset($data['action'])) {
+                        $action = (string)$data['action'];
+                    }
+                },
+                function (\Exception $e) {
+                    \App::logger()->error($e);
+                    \App::exception()->remove($e);
+                }
+            );
+            $client->execute(\App::config()->coreV2['retryTimeout']['huge'], \App::config()->coreV2['retryCount']);
+        } catch (\Exception $e) {
+            \App::logger()->error($e);
+        }
+
+        $page = new \View\Subscribe\ConfirmPage();
+        $page->setParam('action', $action);
+
+        return new \Http\Response($page->show());
+    }
 }

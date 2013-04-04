@@ -390,10 +390,15 @@ return [
         'action'  => ['User\SubscribeAction', 'execute'],
         'method'  => ['POST'],
     ],
+    // подписка
     'subscribe.create' => [
         'pattern' => '/subscribe/create',
         'action'  => ['Subscribe\Action', 'create'],
         'method'  => ['POST'],
+    ],
+    'subscribe.confirm' => [
+        'pattern' => '/subscribe/confirm',
+        'action'  => ['Subscribe\Action', 'confirm'],
     ],
 
     // qrcode
