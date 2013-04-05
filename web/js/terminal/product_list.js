@@ -41,12 +41,15 @@ define('product_list',
 
 
 	var terminalScrolling = function(){
+		if (!$('.bProductListItem').length)
+			return false
+
 		var y = terminal.flickable.contentY
 		var windowHeight = terminal.flickable.height
 		var documentHeight = terminal.flickable.contentHeight
+		var offset = parseInt($('.bProductListItem').height())
 
-		$('#console').css('top', y)
-		if (documentHeight - y - 100 <= windowHeight )
+		if (documentHeight - y - offset <= windowHeight )
 			library.myConsole('end')
 	}
 	terminal.flickable.scrollValueChanged.connect(terminalScrolling)

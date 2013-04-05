@@ -13,7 +13,20 @@ define('library',
 				$('#console').prepend('<p>'+text+'</p>')
 			console.log(text)
 		}
-		myConsole('library.js loaded')
+
+
+		/**
+		 * Позиция консоли при скролинге
+		 * @return {[type]} [description]
+		 */
+		consolePos = function(){
+			var y = terminal.flickable.contentY
+			$('#console').css('top', y)
+		}
+		terminal.flickable.scrollValueChanged.connect(consolePos)
+		
+
+		myConsole('library.js v2 loaded')
 
 
 		/**
