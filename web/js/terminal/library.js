@@ -26,7 +26,7 @@ define('library',
 		terminal.flickable.scrollValueChanged.connect(consolePos)
 		
 
-		myConsole('library.js v2 loaded')
+		myConsole('library.js v4 loaded')
 
 
 		/**
@@ -58,6 +58,41 @@ define('library',
 		})
 
 
+		/**
+		 * Плагин имитации тач тапа
+		 *
+		 * @param {function} callback
+		 */
+		$.fn.tapEvent = function(callback) {
+			var touchStartTime = null
+			var touchEndTime = null
+
+			var doTouchLogic = function(el) {
+				var duration = touchEndTime - touchStartTime
+
+				if ((duration <= 100) && (duration > 0)) {
+					callback.apply(el)
+					return true
+				}
+				return false
+			}
+
+			this.live('touchstart', function() {
+				var d = new Date()
+
+				touchStartTime = d.getTime()
+			})
+
+			this.live('touchend', function(e) {
+				var d = new Date()
+				var self = $(this)
+				touchEndTime= d.getTime()
+				if (doTouchLogic(self))
+					e.preventDefault()
+					e.stopPropagation()
+			})
+		}
+
 
 		/**
 		 * Плагин горизонатльного тач-скроллинга
@@ -67,7 +102,8 @@ define('library',
 		 * @author Aleksandr Zaytsev
 		 */
 		$.fn.draggable = function(direction) {
-			self = this
+
+			var self = this
 
 			self.start = null
 			self.stop = null
@@ -202,11 +238,11 @@ define('library',
 			/**
 			 * Вешаем события, только если родительский элемент больше
 			 */
-			// if (self.width()>self.parent().width()){
+			if (self.width()>self.parent().width()){
 				self.bind("touchstart", self.moveStart)
 				self.bind("touchmove", self.moveMe)
 				self.bind("touchend", self.moveEnd)
-			// }
+			}
 
 			return this
 		}
@@ -221,7 +257,7 @@ define('library',
 		 */
 		$.fn.bSlider = function() {
 
-			self = this
+			var self = this
 
 			var wrapper = self.find('.bSlider_eWrap')
 			var lArrow = self.find('.bSlider_eArrow.mLeft')

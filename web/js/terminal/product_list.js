@@ -174,8 +174,4 @@ define('product_list',
 	}
 	listingZoom($('.bProductListWrap'))
 
-
-	// terminal.interactive = false
-	// $('.bProductListWrap').draggable('vert')
-
 })

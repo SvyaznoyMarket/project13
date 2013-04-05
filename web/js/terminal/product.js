@@ -1,7 +1,6 @@
 // // product terminal
 define('product',
 	['jquery', 'library', 'termAPI'], function ($, library, termAPI) {
-    $(document).ready(function() {
 
     	library.myConsole('product.js loaded')
 
@@ -11,6 +10,7 @@ define('product',
 
 		// check compare this product
 		termAPI.checkCompare(productId)
+		
 
 		//
 		// slider
@@ -27,6 +27,7 @@ define('product',
 			slider.parent().bSlider()
 			slider.draggable()
 		}
+
 
 		//
 		// toggle subItems
@@ -59,6 +60,7 @@ define('product',
 		$('.bGoodDescBlock_eMore').bind('click', function(){
 			library.scrollTo($('.bGoodItemFullDesc'), 100, 300)
 		})
+
 
 		/**
 		 * Всплывающие подсказки к характеристикам
@@ -99,5 +101,4 @@ define('product',
 		}
 
 	// end of DOM-ready
-	})
 })

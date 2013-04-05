@@ -202,6 +202,10 @@ define('termAPI',
 
 		$(document).ready(function() {
 			// createBreadcrumps()
+			// $('.jsRedirect').tapEvent(redirectHandler)
+			// $('.jsBuyButton').tapEvent(buyHandler)
+			// $('.jsWhereBuy').tapEvent(whereBuyHandler)
+			// $('.jsCompare').tapEvent(compareHandler)
 			$('.jsRedirect').live('click', redirectHandler)
 			$('.jsBuyButton').live('click', buyHandler)
 			$('.jsWhereBuy').live('click', whereBuyHandler)
