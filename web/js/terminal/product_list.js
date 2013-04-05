@@ -97,9 +97,6 @@ define('product_list',
 		 * @param  {object} nowTouch координаты текущего касания
 		 */
 		moveStart = function(e){
-			e.preventDefault()
-			e.stopPropagation()
-
 			var orig = e.originalEvent
 			var nowTouch = {
 				x:orig.changedTouches[0].pageX,
@@ -122,13 +119,11 @@ define('product_list',
 		 * @param  {number} nowDelta разница координат текущих положений пальцев
 		 */
 		moveMe = function(e){
-			e.preventDefault()
 			var orig = e.originalEvent
 			var len = orig.changedTouches.length
 			
 			if (startTouches.length > 1){
 				terminal.interactive = false
-				e.stopPropagation()
 				var moveTouches = []
 				for (var i = 0; i< len; i++){
 					var moveTouch = {
@@ -159,9 +154,6 @@ define('product_list',
 		 * @param  {event} e
 		 */
 		moveEnd = function(e){
-			e.preventDefault()
-			e.stopPropagation()
-			
 			var orig = e.originalEvent
 			
 			startTouches = []
