@@ -30,7 +30,7 @@
 
 <div class="bigcarousel">
     <?php foreach ($productList as $i => $item): ?>
-        <?php echo $page->render('product/show/_extra_compact', array('product' => $item, 'isHidden' => $i >= $itemsInSlider, 'gaEvent' => $gaEvent)) ?>
+        <?= $page->render('product/show/_extra_compact', array('product' => $item, 'isHidden' => $i >= $itemsInSlider, 'gaEvent' => $gaEvent)) ?>
     <?php endforeach ?>
 </div>
 

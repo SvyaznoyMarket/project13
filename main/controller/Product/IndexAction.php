@@ -113,6 +113,20 @@ class IndexAction {
                 if (isset($kit[$item->getId()])) $kit[$item->getId()] = $item;
             }
         }
+
+        // фильтрация связанных товаров
+        $notEmpty = function ($related) use ($product) {
+            $return = $related instanceof \Model\Product\BasicEntity;
+            if (!$return) {
+                \App::logger()->error(sprintf('Для товара #%s не найден связанный товар', $product->getId()));
+            }
+
+            return $return;
+        };
+        $accessories = array_filter($accessories, $notEmpty);
+        $related = array_filter($related, $notEmpty);
+        $kit = array_filter($kit, $notEmpty);
+
         $dataForCredit = $this->getDataForCredit($product);
 
         $shopsWithQuantity = [];
