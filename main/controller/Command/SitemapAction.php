@@ -243,6 +243,10 @@ class SitemapAction {
     }
 
     private function putContent($url, $freq, $priority) {
+        static $count = 0;
+
+        $count++;
+
         $content =
             '<url>
   <loc>' . self::URL_PREFIX . str_replace(['&', "'", '"', '>', '<'], ['&amp;', '&apos;', '&quot;', '&gt;', '&lt;'], $url) . '</loc>
@@ -267,11 +271,11 @@ class SitemapAction {
         }
 
         file_put_contents($this->fileName, $content, FILE_APPEND);
-        $count = (int)shell_exec('grep -c "<url>" ' . $this->fileName);
 
         if (0 == ($count % self::ENTITY_LIMIT)) echo '.';
 
         if (($count >= self::URL_LIMIT) || ((filesize($this->fileName) / 1048576) >= self::FILE_SIZE_LIMIT)) {
+            $count = 0;
             $this->closeContent();
         }
     }
