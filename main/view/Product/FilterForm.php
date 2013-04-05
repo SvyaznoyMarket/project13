@@ -25,8 +25,8 @@ class FilterForm {
                 case FilterEntity::TYPE_NUMBER:
                     if (empty($value['from']) && empty($value['to'])) continue;
                     $name = [];
-                    if (!($this->isEqualNumeric($value['from'], $filter->getMin()))) $name[] = sprintf('от %d', $value['from']);
-                    if (!($this->isEqualNumeric($value['to'], $filter->getMax()))) $name[] = sprintf('до %d', $value['to']);
+                    if (isset($value['from']) && !($this->isEqualNumeric($value['from'], $filter->getMin()))) $name[] = sprintf('от %d', $value['from']);
+                    if (isset($value['to']) && !($this->isEqualNumeric($value['to'], $filter->getMax()))) $name[] = sprintf('до %d', $value['to']);
                     if (!$name) continue;
                     if ($filter->getId() == 'price') $name[] .= 'р.';
                     $return[] = array(

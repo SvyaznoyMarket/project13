@@ -18,7 +18,8 @@
 $region = $user->getRegion();
 $isCorporative = $user->getEntity() && $user->getEntity()->getIsCorporative();
 
-$jsValidator = array('order[recipient_first_name]' => 'Заполните поле', 'order[recipient_last_name]' => 'Заполните поле', 'order[recipient_phonenumbers]' => 'Заполните поле', 'order[address_street]' => 'Укажите адрес', 'order[address_building]' => 'Укажите адрес', 'order[payment_method_id]' => 'Выберите способ оплаты', 'order[agreed]' => 'Необходимо согласие',);
+$jsValidator = array('order[recipient_first_name]' => 'Заполните поле', 'order[recipient_last_name]' => 'Заполните поле', 'order[recipient_phonenumbers]' => 'Заполните поле', 'order[address_street]' => 'Укажите адрес', 'order[address_building]' => 'Укажите адрес', 'order[payment_method_id]' => 'Выберите способ оплаты', 'order[agreed]' => 'Необходимо согласие', 'order[recipient_email]' => 'Некорректный e-mail',
+);
 if ($form->hasSubway()) $jsValidator['order[address_metro]'] = 'Укажите ближайшее метро';
 ?>
 
@@ -30,7 +31,9 @@ if ($form->hasSubway()) $jsValidator['order[address_metro]'] = 'Укажите �
 </div>
 <!-- /Header -->
 
+<? if (\App::config()->adFox['enabled']): ?>
 <div id="adfox920" class="adfoxWrapper"></div>
+<? endif ?>
 
 <input disabled="disabled" id="order-validator" type="hidden" data-value="<?= $page->json($jsValidator) ?>"/>
 
@@ -90,10 +93,21 @@ if ($form->hasSubway()) $jsValidator['order[address_metro]'] = 'Укажите �
         </dl>
 
         <dl class='bBuyingLine'>
+
+            <dt>E-mail</dt>
+            <dd>
+                <div>
+                    <p></p>
+                    <input type="text" id="order_recipient_email" class="bBuyingLine__eText mInputLong" name="order[recipient_email]" value="<?= $form->getEmail() ?>"/>
+                </div>
+            </dd>
+        </dl>
+
+        <dl class='bBuyingLine'>
             <dt>Телефон для связи*</dt>
             <dd>
                 <div class="phonePH">
-                    <span class="placeholder">8</span>
+                    <p></p>
                     <input type="text" id="order_recipient_phonenumbers" class="bBuyingLine__eText mInputLong" name="order[recipient_phonenumbers]" maxlength="11" value="<?= $form->getMobilePhone() ?>"/>
                 </div>
             </dd>
@@ -158,7 +172,7 @@ if ($form->hasSubway()) $jsValidator['order[address_metro]'] = 'Укажите �
             <dd class="bSClub">
                 <div class="bSClub__eWrap pb25">
                     <input type="text" id="order_sclub_card_number" class="bBuyingLine__eText mInputShort mb15" name="order[sclub_card_number]" />
-                    <i class="mILong">Чтобы получить 1% от суммы заказа<br/>баллами на карту, введите ее номер,<br/>расположенный
+                    <i class="mILong">Чтобы получить 1% от суммы заказа<br/>плюсами на карту, введите ее номер,<br/>расположенный
                         на обороте под штрихкодом</i>
                 </div>
                 <!--<label><b></b> <h5>Сохранить мои данные для следующих покупок</h5> <input class='bBuyingLine__eRadio' name='r1' type='radio'></label>-->
@@ -274,8 +288,10 @@ if ($form->hasSubway()) $jsValidator['order[address_metro]'] = 'Укажите �
 </div>
 
 
-<?php if (\App::config()->analytics): ?>
+<?php if (\App::config()->analytics['enabled']): ?>
     <div id="marketgidOrder" class="jsanalytics"></div>
     <div id="heiasOrder" data-vars="<?= $user->getCart()->getAnalyticsData() ?>" class="jsanalytics"></div>
-    <?= $page->render('order/_odinkodForCreate') ?>
+    <?= $page->tryRender('order/partner-counter/_etargeting-create') ?>
+    <?= $page->tryRender('order/partner-counter/_cityads-create') ?>
+    <?= $page->tryRender('order/partner-counter/_reactive-create') ?>
 <?php endif ?>

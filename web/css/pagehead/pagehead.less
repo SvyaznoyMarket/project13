@@ -1,5 +1,5 @@
 .pagehead {
-  float: left;
+  // float: left;
   padding-bottom: 20px;
   width: 100%;
 }
@@ -14,42 +14,57 @@
 }
 .breadcrumbs {
   color: @typGray;
-  float: left;
+  // float: left;
   font-size: 11px;
-  padding-bottom: 9px;
+  padding: 5px 0;
   a {
     color: @typGray;
   }
 }
 .searchbox {
-  float: right;
-  height: 28px;
-  margin-top: 2px;
+  position: relative;
+  margin-bottom: 20px;
+  padding-top: 10px;
+
   .searchtext {
-    .rounded(5px);
+    .rounded(4px);
     background: @white;
     border: 1px solid #c9c9c9;
-    -moz-box-sizing:content-box;
-    -webkit-box-sizing:content-box;
-    box-sizing:content-box;
     float: left;
     height: 26px;
     line-height: 26px;
-    padding: 0px 5px;
+    // margin-right: -25px;
+    padding: 0 0 0 10px;
     position: relative;
-    width: 297px;
+    width: 820px;
     behavior: url('@{pie}');
+    -webkit-appearance: none;
   }
   .searchbutton {
-    background: url("@{base-url}/pagehead/img/searchBtn.png") no-repeat;
-    border: 0px;
+    -webkit-appearance: none;
+    // .orangeGradLight();
+    // .darkGrad();
+    .darkGradLigtenBottom();
+    // background: url("@{base-url}/pagehead/img/searchBtn.png") no-repeat;
+    // border: 0px;
+    // cursor: pointer;
+    // float: left;
+    // height: 28px;
+    // position: relative;
+    // text-indent: -10000px;
+    // width: 39px;
+    // z-index: 2;
+    // 
+    border: 0 none;
+    .rounded(4px);
+    color: @white;
     cursor: pointer;
-    float: left;
+    display: block;
+    float: right;
     height: 28px;
-    margin-left: -5px;
+    // margin: 0 0 0 10px;
+    padding: 0 19px;
     position: relative;
-    text-indent: -10000px;
-    width: 39px;
     z-index: 2;
   }
 }

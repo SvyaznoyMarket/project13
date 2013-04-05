@@ -197,13 +197,7 @@ class Action {
 
         // подготовка 2-го пакета запросов
 
-        // запрашиваем рутовые категории
-        $rootCategories = [];
-        \RepositoryManager::productCategory()->prepareRootCollection($region, function($data) use(&$rootCategories) {
-            foreach ($data as $item) {
-                $rootCategories[] = new \Model\Product\Category\Entity($item);
-            }
-        });
+        // TODO: запрашиваем меню
 
         // запрашиваем категорию по токену
         /** @var $category \Model\Product\Category\Entity */
@@ -245,12 +239,10 @@ class Action {
         $setPageParameters = function(\View\Layout $page) use (
             &$category,
             &$regionsToSelect,
-            &$rootCategories,
             &$productFilter
         ) {
             $page->setParam('category', $category);
             $page->setParam('regionsToSelect', $regionsToSelect);
-            $page->setParam('rootCategories', $rootCategories);
             $page->setParam('productFilter', $productFilter);
         };
 
@@ -351,20 +343,23 @@ class Action {
         }
 
 
+
         // video
         $productVideosByProduct = [];
         foreach ($productPagersByCategory as $productPager) {
             foreach ($productPager as $product) {
                 /** @var $product \Model\Product\Entity */
-                \RepositoryManager::productVideo()->prepareCollectionByProduct($product, function($data) use ($product, &$productVideosByProduct) {
-                    $productVideosByProduct[$product->getId()] = [];
-                    foreach ($data as $item) {
-                        $productVideosByProduct[$product->getId()][] = new \Model\Product\Video\Entity($item);
-                    }
-                });
+                $productVideosByProduct[$product->getId()] = [];
             }
         }
-        \App::dataStoreClient()->execute(\App::config()->dataStore['retryTimeout']['tiny'], \App::config()->dataStore['retryCount']);
+        if ((bool)$productVideosByProduct) {
+            \RepositoryManager::productVideo()->prepareCollectionByProductIds(array_keys($productVideosByProduct), function($data) use (&$productVideosByProduct) {
+                foreach ($data as $id => $item) {
+                    $productVideosByProduct[$id][] = new \Model\Product\Video\Entity($item);
+                }
+            });
+            \App::dataStoreClient()->execute(\App::config()->dataStore['retryTimeout']['tiny'], \App::config()->dataStore['retryCount']);
+        }
 
         $page->setParam('productPagersByCategory', $productPagersByCategory);
         $page->setParam('productVideosByProduct', $productVideosByProduct);
@@ -376,7 +371,7 @@ class Action {
         if ($category->isRoot()) {
             $myThingsData['Category'] = $category->getName();
         } else {
-            $myThingsData['Category'] = $category->getAncestor()[0]->getName();
+            $myThingsData['Category'] = isset($category->getAncestor()[0]) ? $category->getAncestor()[0]->getName() : null;
             $myThingsData['SubCategory'] = $category->getName();
         }
         $page->setParam('myThingsData', $myThingsData);
@@ -450,14 +445,16 @@ class Action {
         $productVideosByProduct = [];
         foreach ($productPager as $product) {
             /** @var $product \Model\Product\Entity */
-            \RepositoryManager::productVideo()->prepareCollectionByProduct($product, function($data) use ($product, &$productVideosByProduct) {
-                $productVideosByProduct[$product->getId()] = [];
-                foreach ($data as $item) {
-                    $productVideosByProduct[$product->getId()][] = new \Model\Product\Video\Entity($item);
+            $productVideosByProduct[$product->getId()] = [];
+        }
+        if ((bool)$productVideosByProduct) {
+            \RepositoryManager::productVideo()->prepareCollectionByProductIds(array_keys($productVideosByProduct), function($data) use (&$productVideosByProduct) {
+                foreach ($data as $id => $item) {
+                    $productVideosByProduct[$id][] = new \Model\Product\Video\Entity($item);
                 }
             });
+            \App::dataStoreClient()->execute(\App::config()->dataStore['retryTimeout']['tiny'], \App::config()->dataStore['retryCount']);
         }
-        \App::dataStoreClient()->execute(\App::config()->dataStore['retryTimeout']['tiny'], \App::config()->dataStore['retryCount']);
 
         $page->setParam('productPager', $productPager);
         $page->setParam('productSorting', $productSorting);
@@ -467,7 +464,7 @@ class Action {
         $page->setParam('myThingsData', array(
             'EventType' => 'MyThings.Event.Visit',
             'Action' => '1011',
-            'Category' => $category->getAncestor()[0]->getName(),
+            'Category' => isset($category->getAncestor()[0]) ? $category->getAncestor()[0]->getName() : null,
             'SubCategory' => $category->getName()
         ));
 
@@ -488,7 +485,7 @@ class Action {
         $region = $isGlobal ? null : \App::user()->getRegion();
 
         // filter values
-        $values = $request->get(\View\Product\FilterForm::$name, []);
+        $values = (array)$request->get(\View\Product\FilterForm::$name, []);
         if ($isGlobal) {
             $values['global'] = 1;
         }

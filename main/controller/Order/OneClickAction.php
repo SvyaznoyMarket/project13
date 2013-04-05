@@ -121,18 +121,20 @@ class OneClickAction {
                 ));
             }
 
-            $orderData = json_encode(array (
+            $orderData = array (
                 'order_article'    => implode(',', array_map(function($orderProduct) { /** @var $orderProduct \Model\Order\Product\Entity */ return $orderProduct->getId(); }, $order->getProduct())),
                 'order_id'         => $order->getNumber(),
                 'order_total'      => $order->getSum(),
                 'product_quantity' => implode(',', array_map(function($orderProduct) { /** @var $orderProduct \Model\Order\Product\Entity */ return $orderProduct->getQuantity(); }, $order->getProduct())),
-            ));
+            );
 
+            $fee = ($product->getMainCategory() && isset(\App::config()->myThings['feeByCategory'][$product->getMainCategory()->getId()])) ? \App::config()->myThings['feeByCategory'][$product->getMainCategory()->getId()] : min(\App::config()->myThings['feeByCategory']);
             $myThingsOrderData = array(
                 'EventType' => 'MyThings.Event.Conversion',
                 'Action' => '9902',
                 'TransactionReference' => $order->getNumber(),
                 'TransactionAmount' => str_replace(',', '.', $order->getSum()), // Полная сумма заказа (дроби через точку
+                'Commission' => round($order->getSum() * $fee, 2),
                 'Products' => array_map(function($orderProduct){
                     /** @var $orderProduct \Model\Order\Product\Entity  */
                     return array('id' => $orderProduct->getId(), 'price' => $orderProduct->getPrice(), 'qty' => $orderProduct->getQuantity());

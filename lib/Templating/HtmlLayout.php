@@ -86,6 +86,27 @@ class HtmlLayout {
         return $this->engine->render($template, $params);
     }
 
+    /**
+     * @param string $template
+     * @param array $params
+     * @throws \Exception
+     * @return string
+     */
+    final public function tryRender($template, array $params = []) {
+        $return = '';
+
+        try {
+            if (!$this->engine->exists($template)) {
+                throw new \Exception(sprintf('Шаблон %s не найден', $template));
+            }
+            $return = $this->render($template, $params);
+        } catch (\Exception $e) {
+            \App::logger()->error($e);
+        }
+
+        return $return;
+    }
+
     public function startEscape() {
         ob_start();
     }
@@ -173,10 +194,6 @@ class HtmlLayout {
      * @throws \InvalidArgumentException
      */
     public function addMeta($name, $content) {
-        if (!array_key_exists($name, $this->metas)) {
-            throw new \InvalidArgumentException(sprintf('Неизвестый мета-тег "%s"', $name));
-        }
-
         $this->metas[$name] = (string)$content;
     }
 
@@ -227,7 +244,13 @@ class HtmlLayout {
     /**
      * @return string
      */
-    public function slotJavascript() {
+    public function slotHeadJavascript() {
+    }
+
+    /**
+     * @return string
+     */
+    public function slotBodyJavascript() {
         $return = "\n";
         foreach ($this->javascripts as $javascript) {
             $return .= '<script src="' . $javascript . '" type="text/javascript"></script>' . "\n";

@@ -42,6 +42,17 @@
         <i>Например, 89081234567</i>
     </div>
 
+    <div class="pb5">Организационно правовая форма:</div>
+    
+    <div class="pb5">
+        <select id="corp_select" name="register[corp_form]" class="text width315 mb10">
+        <? foreach ($form->getCorpFormSelection() as $value => $name): ?>
+            <option value="<?= $value ?>"<? if ($value == $form->getCorpForm()): ?> selected="selected" <? endif ?>><?= $name ?></option>
+        <? endforeach ?>
+            <option value="Другая форма">Другая форма</option>
+        </select>
+    </div>
+
     <div class="pb5">Наименование организации:</div>
     <div class="pb5">
         <? if ($error = $form->getError('corp_name')) echo $page->render('_formError', array('error' => $error)) ?>
@@ -119,3 +130,8 @@
     <input type="submit" tabindex="4" value="Регистрация" class="button bigbutton" />
 
 </form>
+<div id="corpNotice" class="popup width315">
+    <a class="close" href="#">Закрыть</a>
+    <p class="font16">Для дальнейшей регистрации на нашем сайте просим выслать карточку основных сведений организации по адресу <a href="mailto:partner@enter.ru">partner@enter.ru</a></p>
+    <p class="font16">Мы свяжемся с вами в течение 10 минут.</p>
+</div>

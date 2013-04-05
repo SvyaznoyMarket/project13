@@ -37,7 +37,19 @@ class Action {
                 }
 
                 try {
-                    $result = \App::coreClientV2()->query('user/auth', $params);
+                    $result = [];
+                    \App::coreClientV2()->addQuery(
+                        'user/auth',
+                        $params,
+                        [],
+                        function($data) use(&$result) {
+                            $result = $data;
+                        },
+                        function(\Exception $e) {
+                            \App::exception()->remove($e);
+                        }
+                    );
+                    \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium'], \App::config()->coreV2['retryCount']);
                     if (empty($result['token'])) {
                         throw new \Exception('Не удалось получить токен');
                     }
@@ -75,7 +87,6 @@ class Action {
 
                     return $response;
                 } catch(\Exception $e) {
-                    \App::exception()->remove($e);
                     $form->setError('global', 'Неверно указан логин или пароль' . (\App::config()->debug ? (': ' . $e->getMessage()) : ''));
                 }
             }
@@ -302,7 +313,8 @@ class Action {
                         //'legal_type' => null,
                         //'name'          => $form->getCorpName(),
                         'legal_type'    => 'ЮЛ',
-                        'name_full'     => $form->getCorpName(),
+                        'name_full'     =>
+                            trim($form->getCorpForm() . ' ' . '«' . trim(preg_replace('/[^\d\w\- ]/ui', '', $form->getCorpName())) . '»'),
                         'address_legal' => $form->getCorpLegalAddress(),
                         'address_real'  => $form->getCorpRealAddress(),
                         'okpo'          => $form->getCorpOKPO(),

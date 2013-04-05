@@ -16,8 +16,6 @@ class DefaultLayout extends Layout {
 
         $this->addStylesheet('/css/global.css');
 
-        $this->addJavascript('/js/jquery-1.6.4.min.js');
-        $this->addJavascript('/js/LAB.min.js');
         $this->addJavascript('/js/loadjs.js');
     }
 
@@ -38,7 +36,7 @@ class DefaultLayout extends Layout {
     }
 
     public function slotGoogleAnalytics() {
-        return (\App::config()->googleAnalytics['enabled']) ? $this->render('_googleAnalytics') : '';
+        return $this->render('_googleAnalytics');
     }
 
     public function slotBodyDataAttribute() {
@@ -50,27 +48,6 @@ class DefaultLayout extends Layout {
     }
 
     public function slotHeader() {
-        /** @var $categories \Model\Product\Category\Entity[] */
-        $categories = $this->getParam('rootCategories');
-
-        if (null === $categories) {
-            try {
-                $categories = \RepositoryManager::productCategory()->getRootCollection();
-            } catch (\Exception $e) {
-                \App::exception()->add($e);
-                \App::logger()->error($e);
-
-                $categories = [];
-            }
-        }
-
-        foreach($categories as $i => $category){
-            if(!$category->getIsInMenu()){
-                unset($categories[$i]);
-            }
-        }
-        $this->setParam('rootCategories', $categories);
-
         return $this->render('_header', $this->params);
     }
 
@@ -127,11 +104,30 @@ class DefaultLayout extends Layout {
         return $this->render('_regionSelection', array_merge($this->params, array('regions' => $regions)));
     }
 
+    /**
+     * @return string
+     */
+    public function slotHeadJavascript() {
+        $return = "\n";
+        foreach ([
+            'http://yandex.st/jquery/1.6.4/jquery.min.js',
+            '/js/LAB.min.js',
+        ] as $javascript) {
+            $return .= '<script src="' . $javascript . '" type="text/javascript"></script>' . "\n";
+        }
+
+        $return .= $this->render('_headJavascript');
+
+        return $return;
+    }
+
     public function slotInnerJavascript() {
-        return ''
+        $return = ''
             . $this->render('_remarketingGoogle', ['tag_params' => []])
             . "\n\n"
             . $this->render('_innerJavascript');
+
+        return $return;
     }
 
     public function slotAuth() {
@@ -159,14 +155,61 @@ class DefaultLayout extends Layout {
     }
 
     public function slotAdriver() {
-        return '';
+        return \App::config()->analytics['enabled'] ? "<div id=\"adriverCommon\"  class=\"jsanalytics\"></div>\r\n" : '';
     }
 
-    public function slotRootCategory() {
-        return $this->render('product-category/_root', array('categories' => $this->getParam('rootCategories')));
+    public function slotMainMenu() {
+        if (\App::config()->requestMainMenu) {
+            $client = \App::curl();
+
+            $isFailed = false;
+            $content = '';
+            $client->addQuery('http://' . \App::config()->mainHost . \App::router()->generate('category.mainMenu'), [], function($data) use (&$content) {
+                $content = $data['content'];
+            }, function(\Exception $e) use (&$isFailed) {
+                \App::exception()->remove($e);
+                $isFailed = true;
+            });
+            $client->execute(\App::config()->coreV2['retryTimeout']['short'], \App::config()->coreV2['retryCount']);
+
+            if ($isFailed) {
+                $content = $this->render('_mainMenu', array('menu' => (new Menu())->generate()));
+            }
+        } else {
+            $content = $this->render('_mainMenu', array('menu' => (new Menu())->generate()));
+        }
+
+        return $content;
     }
 
     public function slotBanner() {
         return '';
+    }
+
+    public function slotPartnerCounter() {
+        $return = '';
+
+        if (\App::config()->analytics['enabled']) {
+            $routeName = \App::request()->attributes->get('route');
+
+            // на всех страницах сайта, кроме...
+            if (!in_array($routeName, [
+                'product',
+                'order.create',
+                'order.complete',
+            ])) {
+                $return .= "\n\n" . $this->tryRender('partner-counter/_cityads');
+            }
+
+            // на всех страницах сайта, кроме shop.*
+            if ((0 !== strpos($routeName, 'shop')) && !in_array($routeName, [
+                'order.create',
+                'order.complete',
+            ])) {
+                $return .= "\n\n" . $this->tryRender('partner-counter/_reactive');
+            }
+        }
+
+        return $return;
     }
 }

@@ -69,7 +69,7 @@ $isOrderAnalytics = isset($isOrderAnalytics) ? $isOrderAnalytics : true;
 <? endif ?>
 
 
-<? if (\App::config()->analytics['enabled'] && $isOrderAnalytics) echo $page->render('order/_analytics', array(
+<? if ($isOrderAnalytics) echo $page->render('order/_analytics', array(
     'orders'       => $orders,
     'productsById' => $productsById,
     'servicesById' => $servicesById,
@@ -89,5 +89,4 @@ $isOrderAnalytics = isset($isOrderAnalytics) ? $isOrderAnalytics : true;
     <? endforeach ?>
 <? endif ?>
 
-
-<? if (\App::config()->googleAnalytics['enabled']) echo $page->render('order/_odinkodForComplete', array('orders' => $orders)) ?>
+<? require __DIR__ . '/partner-counter/_complete.php' ?>

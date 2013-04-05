@@ -39,9 +39,11 @@ $c->coreV2['retryTimeout'] = [
 ];
 $c->coreV2['retryCount'] = 3;
 
-$c->wordpress['url'] = 'http://content.ent3.ru/';
+$c->wordpress['url'] = 'http://content.enter.ru/';
+$c->wordpress['timeout'] = 8;
+$c->wordpress['throwException'] = true;
 
-$c->dataStore['url'] = 'http://cms.enter.ru/';
+$c->dataStore['url'] = 'http://cms.enter.ru/v1/';
 $c->dataStore['timeout'] = 3;
 $c->dataStore['retryTimeout'] = [
     'default' => 0.05,
@@ -55,11 +57,31 @@ $c->dataStore['retryTimeout'] = [
 $c->dataStore['retryCount'] = 3;
 
 $c->company['phone'] = '8 (800) 700-00-09';
+$c->company['moscowPhone'] = '8 (495) 775-00-06';
 $c->company['icq'] = '648198963';
 
+$c->adFox['enabled'] = false;
 $c->analytics['enabled'] = false;
 $c->googleAnalytics['enabled'] = false;
 $c->yandexMetrika['enabled'] = false;
+$c->myThings['feeByCategory'] = [
+    80      => 0.07,  //Мебель
+    224     => 0.04,  //Сделай сам
+    1438    => 0.05,  //Зоотовары
+    320     => 0.07,  //Детские товары
+    443     => 0.07,  //Товары для дома
+    788     => 0.02,  //Электроника
+    1       => 0.03,  //Бытовая техника
+    21      => 0.07,  //Красота и здоровье
+    923     => 0.08,  //Украшения и часы
+    2545    => 0.04,  //Парфюмерия и косметика
+    185     => 0.04,  //Подарки и хобби
+    647     => 0.07,  //Спорт и отдых
+    225     => 0.04,  //Аксессуары для авто
+];
+
+$c->partner['cookieName'] = '_partner';
+$c->partner['cookieLifetime'] = 2592000; // 30 дней
 
 $c->onlineCall['enabled'] = false;
 
@@ -67,6 +89,7 @@ $c->region['cookieName']     = 'geoshop';
 $c->region['cookieLifetime'] = 31536000; // 365 дней
 $c->region['defaultId']      = 14974;
 
+$c->loadMediaHost = false;
 $c->mediaHost = [
     0 => 'http://fs01.enter.ru',
     1 => 'http://fs02.enter.ru',
@@ -107,41 +130,41 @@ $c->productPhoto3d['url'] = [
 ];
 
 $c->productLabel['url'] = [
-    0 => 'http://fs01.enter.ru/7/1/66x23/',
-    1 => 'http://fs01.enter.ru/7/1/124x38/',
+    0 => '/7/1/66x23/',
+    1 => '/7/1/124x38/',
 ];
 
 $c->productCategory['url'] = [
-    0 => 'http://fs01.enter.ru/6/1/163/',
+    0 => '/6/1/163/',
 ];
 
 $c->service['url'] = [
-    0 => 'http://fs01.enter.ru/11/1/160/',
-    1 => 'http://fs01.enter.ru/11/1/500/',
-    2 => 'http://fs01.enter.ru/11/1/120/',
+    0 => '/11/1/160/',
+    1 => '/11/1/500/',
+    2 => '/11/1/120/',
 ];
 
 $c->serviceCategory['url'] = [
-    0 => 'http://fs01.enter.ru/10/1/160/',
-    1 => 'http://fs01.enter.ru/10/1/500/',
+    0 => '/10/1/160/',
+    1 => '/10/1/500/',
 ];
 
 $c->service['minPriceForDelivery'] = 950;
 
 $c->shopPhoto['url'] = [
-    0 => 'http://fs01.enter.ru/8/1/40/',
-    1 => 'http://fs01.enter.ru/8/1/120/',
-    2 => 'http://fs01.enter.ru/8/1/163/',
-    3 => 'http://fs01.enter.ru/8/1/500/',
-    4 => 'http://fs01.enter.ru/8/1/2500/',
-    5 => 'http://fs01.enter.ru/8/1/original/',
+    0 => '/8/1/40/',
+    1 => '/8/1/120/',
+    2 => '/8/1/163/',
+    3 => '/8/1/500/',
+    4 => '/8/1/2500/',
+    5 => '/8/1/original/',
 ];
 
 $c->banner['timeout'] = 6000;
 $c->banner['url'] = [
-    0 => 'http://fs01.enter.ru/4/1/230x302/',
-    1 => 'http://fs01.enter.ru/4/1/768x302/',
-    2 => 'http://fs01.enter.ru/4/1/920x320/',
+    0 => '/4/1/230x302/',
+    1 => '/4/1/768x302/',
+    2 => '/4/1/920x320/',
 ];
 
 $c->cart['productLimit'] = 50;
@@ -180,5 +203,7 @@ $c->abtest = [
     'enabled'    => false,
     'test'       => [],
 ];
+
+$c->requestMainMenu = false;
 
 return $c;

@@ -22,6 +22,11 @@ return [
         'pattern' => '/search/_infinity',
         'action'  => ['Search\Action', 'execute'],
     ],
+    // автоподстановка поиска
+    'search.autocomplete' => [
+        'pattern' => '/search/autocomplete',
+        'action'  => ['Search\Action', 'autocomplete'],
+    ],
 
     // инфо пользователя
     'user.info' => [
@@ -61,7 +66,7 @@ return [
     ],
     // личный кабинет
     'user' => [
-        'pattern' => '/private/',
+        'pattern' => '/private',
         'action'  => ['User\IndexAction', 'execute'],
     ],
     // вход через социальные сети
@@ -114,33 +119,39 @@ return [
         'action'  => ['Shop\Action', 'show'],
     ],
 
-    // каталог товаров
-    'product.category' => [
-        'pattern' => '/catalog/{categoryPath}/',
-        'action'  => ['ProductCategory\Action', 'category'],
-        'require' => ['categoryPath' => '[\w\d-_]+\/?[\w\d-_]+'],
-    ],
-    // слайдер товаров
-    'product.category.slider' => [
-        'pattern' => '/catalog/{categoryPath}/_slider',
-        'action'  => ['ProductCategory\Action', 'slider'],
-        'require' => ['categoryPath' => '[\w\d-_]+\/?[\w\d-_]+'],
-    ],
-    // общее количество отфильтрованных товаров
-    'product.category.count' => [
-        'pattern' => '/catalog/{categoryPath}/_count',
-        'action'  => ['ProductCategory\Action', 'count'],
-        'require' => ['categoryPath' => '[\w\d-_]+\/?[\w\d-_]+'],
+    // показывать глобальный список товаров
+    'product.category.global.short' => [
+        'pattern' => '/catalog/{categoryPath}/_global',
+        'action'  => ['ProductCategory\Action', 'setGlobal'],
+        'require' => ['categoryPath' => '[\w\d-_]+'],
     ],
     // показывать глобальный список товаров
     'product.category.global' => [
         'pattern' => '/catalog/{categoryPath}/_global',
         'action'  => ['ProductCategory\Action', 'setGlobal'],
+        'require' => ['categoryPath' => '[\w\d-_]+\/[\w\d-_]+'],
+    ],
+    // каталог товаров
+    'product.category' => [
+        'pattern' => '/catalog/{categoryPath}',
+        'action'  => ['ProductCategory\Action', 'category'],
+        'require' => ['categoryPath' => '[\w\d-_]+\/?[\w\d-_]+'],
+    ],
+    // слайдер товаров
+    'product.category.slider' => [
+        'pattern' => '/ajax/catalog/{categoryPath}/_slider',
+        'action'  => ['ProductCategory\Action', 'slider'],
+        'require' => ['categoryPath' => '[\w\d-_]+\/?[\w\d-_]+'],
+    ],
+    // общее количество отфильтрованных товаров
+    'product.category.count' => [
+        'pattern' => '/ajax/catalog/{categoryPath}/_count',
+        'action'  => ['ProductCategory\Action', 'count'],
         'require' => ['categoryPath' => '[\w\d-_]+\/?[\w\d-_]+'],
     ],
     // каталог товаров с бесконечной прокруткой
     'product.category.infinity' => [
-        'pattern' => '/catalog/{categoryPath}/_infinity',
+        'pattern' => '/ajax/catalog/{categoryPath}/_infinity',
         'action'  => ['ProductCategory\Action', 'category'],
         'require' => ['categoryPath' => '[\w\d-_]+\/?[\w\d-_]+'],
     ],
@@ -189,6 +200,11 @@ return [
         'pattern' => '/products/set/{productBarcodes}',
         'action'  => ['Product\SetAction', 'execute'],
     ],
+    'product.upsell' => [
+        'pattern' => '/tocart/{productToken}',
+        'action'  => ['Product\UpsellAction', 'execute'],
+        'require' => ['productToken' => '[\w\d-_]+'],
+    ],
     'tag' => [
         'pattern' => '/tags/{tagToken}',
         'action'  => ['Tag\Action', 'index'],
@@ -220,7 +236,7 @@ return [
 
     // корзина
     'cart' => [
-        'pattern' => '/cart/', // TODO: сделать '/cart'
+        'pattern' => '/cart',
         'action'  => ['Cart\IndexAction', 'execute'],
     ],
     // очистка корзины
@@ -235,11 +251,11 @@ return [
     ],
     // удаление товара из корзины
     'cart.product.delete' => [
-        'pattern' => '/cart/delete/{productId}/_service/', // TODO: сделать поприличнее - '/cart/delete-product/{productId}'
+        'pattern' => '/cart/delete/{productId}/_service', // TODO: сделать поприличнее - '/cart/delete-product/{productId}'
         'action'  => ['Cart\ProductAction', 'delete'],
     ],
     'old.cart.product.add' => [
-        'pattern' => '/cart/add/{productId}/_quantity/', // TODO: Убить, когда полностью переедем на dark, переписать js с учетом наличия кол-ва
+        'pattern' => '/cart/add/{productId}/_quantity', // TODO: Убить, когда полностью переедем на dark, переписать js с учетом наличия кол-ва
         'action'  => ['Cart\ProductAction', 'set'],
     ],
     // удаление услуги из корзины
@@ -373,6 +389,10 @@ return [
         'pattern' => '/private/subscribe',
         'action'  => ['User\SubscribeAction', 'execute'],
         'method'  => ['POST'],
+    ],
+    'user.addEmail' => [
+        'pattern' => '/subscribe/{email}',
+        'action'  => 'User\SubscribeAction', 'addEmail',
     ],
 
     // qrcode

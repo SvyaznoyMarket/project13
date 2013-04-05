@@ -5,7 +5,9 @@
  */
 ?>
 
+<? if (\App::config()->adFox['enabled']): ?>
 <div class="adfoxWrapper" id="adfox683"></div>
+<? endif ?>
 
 <div class="clear"></div>
 

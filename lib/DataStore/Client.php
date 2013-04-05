@@ -28,30 +28,32 @@ class Client {
     }
 
     /**
-     * @param string $file
+     * @param string $path
      * @return array|null
      * @throws \Exception
      */
-    public function query($file) {
+    public function query($path) {
         \Debug\Timer::start('data-store');
-        \App::logger()->info('Start data-store request ' . $file);
+        \App::logger()->info('Start data-store request ' . $path);
 
-        $url = $this->config['url'] . $file;
         $response = null;
-        try {
-            // локальный файл
-            if (0 === strpos($url, '/')) {
-                $response = is_file($url) ? file_get_contents($url) : null;
-            // http-ресурс
-            } else {
-                $response = $this->curl->query($url, [], $this->config['timeout']);
-            }
-            $spend = \Debug\Timer::stop('data-store');
-            \App::logger()->info('End data-store request ' . $file . ' in ' . $spend);
-        } catch (\Exception $e) {
-            $spend = \Debug\Timer::stop('data-store');
-            \App::exception()->remove($e);
-            \App::logger()->info('Fail data-store request ' . $file . ' in ' . $spend . ' with ' . $e);
+        // локальный файл
+        if (0 === strpos($path, '/')) {
+            $file = \App::config()->dataDir . '/data-store' . $path;
+            $response = is_file($file) ? json_decode(file_get_contents($file), true) : null;
+            \Util\RequestLogger::getInstance()->addLog($file, [], 0, 'unknown');
+        // http-ресурс
+        } else {
+            $this->curl->addQuery($this->config['url'] . $path, [], function($data) use (&$response, $path) {
+                $response = $data;
+                $spend = \Debug\Timer::stop('data-store');
+                \App::logger()->info('End data-store request ' . $path . ' in ' . $spend);
+            }, function($e) use ($path) {
+                $spend = \Debug\Timer::stop('data-store');
+                \App::exception()->remove($e);
+                \App::logger()->info('Fail data-store request ' . $path . ' in ' . $spend . ' with ' . $e);
+            }, $this->config['timeout']);
+            $this->curl->execute(\App::config()->coreV2['retryTimeout']['tiny'], \App::config()->coreV2['retryCount']);
         }
 
         return $response;
@@ -59,12 +61,13 @@ class Client {
 
     /**
      * @param $file
+     * @param array         $data
      * @param callback      $successCallback
      * @param callback|null $failCallback
      * @param float|null    $timeout
      * @return bool
      */
-    public function addQuery($file, $successCallback, $failCallback = null, $timeout = null) {
+    public function addQuery($file, $data = [], $successCallback, $failCallback = null, $timeout = null) {
         \Debug\Timer::start('data-store');
 
         if (null === $timeout) {
@@ -76,7 +79,7 @@ class Client {
             };
         }
 
-        $result = $this->curl->addQuery($this->config['url'] . $file, [], $successCallback, $failCallback, $timeout);
+        $result = $this->curl->addQuery($this->config['url'] . $file, $data, $successCallback, $failCallback, $timeout);
 
         \Debug\Timer::stop('data-store');
 

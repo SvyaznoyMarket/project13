@@ -1,4 +1,18 @@
 $(document).ready(function(){
+
+	var lboxCheckSubscribe = function(data){
+		if (!data.isSubscribe) 
+			return false
+		var subPopup = $('.bSubscribeLightboxPopup')
+		var subscribeItem = $('.bSubscribeLightbox')
+		subscribeItem.show()
+		subscribeItem.bind('click', function(){
+			subPopup.show()
+		})
+		subPopup.find('.close').bind('click', function(){
+			subPopup.hide()
+		})
+	}
 	
 	var carturl = $('.lightboxinner .point2').attr('href')
 
@@ -49,6 +63,15 @@ $(document).ready(function(){
           			$('#auth-link').hide()
 					$('#auth-link').after(show_user)
 				} else $('#auth-link').show()
+
+				if ( $('#upsale').length ){
+					console.info(data.data)
+					$('#upsaleCounter').html(data.data.vitems)
+					$('#upsalePrice').html(data.data.sum)
+				}
+
+				// subscribe
+				lboxCheckSubscribe(data.data)
 			}
 
 	})
@@ -419,7 +442,8 @@ $(document).ready(function(){
                 if( !ext_data.success )
                     return true
                 var line = $(thislink).parent()
-                f1lines_extWarr.find('td[ref='+ line.attr('ref') +']').find('input').val('Купить услугу').removeClass('active')
+                $('input.button',f1lines_extWarr).val('Выбрать').removeClass('active');
+                $('.link1',look_extWarr).text('Выбрать гарантию')
                 line.hide()
                 ltbx.update({ sum: ext_data.data.full_price })
                 ew_look.hide()
@@ -455,6 +479,15 @@ $(document).ready(function(){
 	}
 
 	$('.goodsbox a.link1').live('click', function(e) {
+		//
+		// AB test https://jira.enter.ru/browse/SITE-909
+		// 
+		var ABtestCockie = docCookies.getItem("switch")
+		if ((ABtestCockie !== null) && (ABtestCockie !=='default')){
+			var href = $(this).attr('href')
+			window.location.href = href
+			return false
+		}
 		e.stopPropagation()
 		var button = this
 		if( $(button).hasClass('disabled') )
@@ -485,7 +518,7 @@ $(document).ready(function(){
 				$(button).addClass('active')
 				PubSub.publish( 'productBought', currentItem )
 
-                sendAnalytics(ajurl)
+                sendAnalytics($(button))
             }
 		})
 
@@ -494,16 +527,28 @@ $(document).ready(function(){
 
     function sendAnalytics(item) {
         if (typeof(MyThings) != "undefined") {
-            matches = item.match("\/cart\/add\/(\\d+)/_quantity\/")
-            if (null !== matches) {
-                productId = matches[1]
+            //matches = item.match("\/cart\/add\/(\\d+)/_quantity")
+            if (item.data('product') != "undefined") {
+            //    productId = matches[1]
 
                 MyThings.Track({
                     EventType: MyThings.Event.Visit,
                     Action: "1013",
-                    ProductId: productId
+                    ProductId: item.data('product')
                 })
             }
+        }
+
+        if (($('#adriverProduct').length || $('#adriverCommon').length) && (item.data('product') != "undefined")){
+        	 (function(s){
+				var d = document, i = d.createElement('IMG'), b = d.body;
+				s = s.replace(/![rnd]/, Math.round(Math.random()*9999999)) + '&tail256=' + escape(d.referrer || 'unknown');
+				i.style.position = 'absolute'; i.style.width = i.style.height = '0px';
+                i.onload = i.onerror = function()
+				{b.removeChild(i); i = b = null}
+				i.src = s;
+				b.insertBefore(i, b.firstChild);
+			})('http://ad.adriver.ru/cgi-bin/rle.cgi?sid=182615&sz=add_basket&custom=10='+item.data('product')+';11='+item.data('category')+'&bt=55&pz=0&rnd=![rnd]');
         }
     }
 
@@ -551,6 +596,16 @@ $(document).ready(function(){
 					button.val('В корзине')
 					ajurl = jsond.url
 				}
+
+				//
+				// AB test https://jira.enter.ru/browse/SITE-909
+				// 
+				var ABtestCockie = docCookies.getItem("switch")
+				if ((ABtestCockie !== null) && (ABtestCockie !=='default')){
+					window.location.href = ajurl
+					return false
+				}
+
 				$('body').addClass('bought')
 				$.getJSON( ajurl, function( data ) {
 					if ( data.success && ltbx ) {
@@ -568,7 +623,7 @@ $(document).ready(function(){
 							afterpost()
 						PubSub.publish( 'productBought', tmpitem )
 
-                        sendAnalytics(ajurl)
+                        sendAnalytics($(button))
                     }
 				})
 				return false

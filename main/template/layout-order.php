@@ -7,15 +7,17 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <?= $page->slotMeta() ?>
     <title><?= $page->getTitle() ?></title>
     <link rel="shortcut icon" href="/favicon.ico"/>
     <?= $page->slotStylesheet() ?>
+    <?= $page->slotHeadJavascript() ?>
     <?= $page->slotRelLink() ?>
     <?= $page->slotGoogleAnalytics() ?>
 </head>
 
-<body data-template="<?= $page->slotBodyDataAttribute() ?>" data-id="<?= \App::$id ?>">
+<body data-template="<?= $page->slotBodyDataAttribute() ?>" data-id="<?= \App::$id ?>"<? if (\App::config()->debug): ?> data-debug=true<? endif ?>>
 
 <div class="graying" style="opacity: 0.5; display: none;"></div>
 
@@ -47,11 +49,13 @@
 <? if (!(bool)\App::exception()->all()) echo $page->render('order/_footer') ?>
 <?= $page->slotFooter() ?>
 
-<?= $page->slotJavascript() ?>
+<?= $page->slotBodyJavascript() ?>
 <?= $page->slotInnerJavascript() ?>
 <?= $page->slotAuth() ?>
 <?= $page->slotYandexMetrika() ?>
 <?= $page->slotAdvanceSeoCounter() ?>
+<?= $page->slotAdriver() ?>
+<?= $page->slotPartnerCounter() ?>
 
 <? if (\App::config()->analytics['enabled']): ?>
     <div id="luxupTracker" class="jsanalytics"></div>

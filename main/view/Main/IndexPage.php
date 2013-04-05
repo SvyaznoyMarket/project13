@@ -7,6 +7,7 @@ class IndexPage extends \View\DefaultLayout {
 
     protected function prepare() {
         $this->addMeta('viewport', 'width=960');
+        $this->addMeta('mailru', '0b3a117efddc65ad');
     }
 
     public function slotBanner() {
@@ -17,7 +18,7 @@ class IndexPage extends \View\DefaultLayout {
         $client = \App::contentClient();
 
         try {
-            $response = $client->query('footer_main_v2');
+            $response = (14974 == \App::user()->getRegion()->getId() || 83 == \App::user()->getRegion()->getParentId()) ? $client->query('footer_main_moscow') : $client->query('footer_main_v2');
         } catch (\Exception $e) {
             \App::exception()->add($e);
             \App::logger()->error($e);
@@ -30,7 +31,7 @@ class IndexPage extends \View\DefaultLayout {
 
     public function slotInnerJavascript() {
         return ''
-            . $this->render('main/_odinkod')
+            . $this->tryRender('main/partner-counter/_etargeting')
             . "\n\n"
             . $this->render('_remarketingGoogle', ['tag_params' => ['pagetype' => 'homepage']])
             . "\n\n"

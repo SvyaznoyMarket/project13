@@ -18,8 +18,9 @@ $c->coreV2['retryTimeout'] = [
 ];
 
 $c->wordpress['url'] = 'http://content.enter.ru/';
+$c->wordpress['timeout'] = 2;
 
-$c->dataStore['url'] = 'http://cms.enter.ru/';
+$c->dataStore['url'] = 'http://cms.enter.ru/v1/';
 $c->dataStore['timeout'] = 0.25;
 $c->dataStore['retryTimeout'] = [
     'default' => 0.1,
@@ -31,9 +32,12 @@ $c->dataStore['retryTimeout'] = [
     'forever' => 0,
 ];
 
+$c->loadMediaHost = true;
+
 $c->analytics['enabled'] = true;
 $c->googleAnalytics['enabled'] = true;
 $c->yandexMetrika['enabled'] = true;
+$c->adFox['enabled'] = true;
 
 $c->mainHost = 'www.enter.ru';
 $c->mobileHost = 'm.enter.ru';
@@ -50,27 +54,29 @@ $c->paymentPsbInvoice['contractorId'] = 14;
 $c->paymentPsbInvoice['key'] = $c->dataDir . '/key/live.privkey.pem';
 $c->paymentPsbInvoice['payUrl'] = 'https://retail.payment.ru/invoice.aspx';
 
-$c->database['host']     = '10.20.33.2';
+$c->database['host']     = 'site-db'; // был 10.20.33.2
 
 $c->smartEngine['cert'] = $c->dataDir . '/cert/gsorganizationvalg2.crt';
 
-$c->user['corporateRegister'] = false;
+$c->user['corporateRegister'] = true;
 
-$c->abtest['bestBefore'] = '2013-03-06';
+$c->abtest['bestBefore'] = '2013-04-23';
 $c->abtest['enabled']    = true;
 $c->abtest['test']       = [
     [
         'traffic'  => '40',
-        'key'      => 'comment',
-        'name'     => 'Тестирование комментариев',
-        'ga_event' => 'TestFreaks01',
+        'key'      => 'upsell',
+        'name'     => 'Страница tocart',
+        'ga_event' => 'tocart',
     ],
     [
         'traffic'  => '40',
-        'key'      => 'video',
-        'name'     => 'Тестирование видео',
-        'ga_event' => 'video',
+        'key'      => 'order2cart',
+        'name'     => 'Страница cart',
+        'ga_event' => 'cart',
     ],
 ];
+
+$c->requestMainMenu = true;
 
 return $c;

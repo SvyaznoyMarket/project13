@@ -3,6 +3,8 @@
 namespace Model\Product\Category;
 
 class TreeEntity extends BasicEntity {
+    use \Model\MediaHostTrait;
+
     /** @var bool */
     protected $isFurniture;
     /** @var string */
@@ -55,7 +57,7 @@ class TreeEntity extends BasicEntity {
         if (array_key_exists('has_children', $data)) $this->setHasChild($data['has_children']);
 
         if (array_key_exists('children', $data) && is_array($data['children'])) foreach ($data['children'] as $childData) {
-            $this->addChild(new Entity($childData));
+            $this->addChild(new TreeEntity($childData));
         }
     }
 
@@ -296,7 +298,7 @@ class TreeEntity extends BasicEntity {
         if ($this->image) {
             $urls = \App::config()->productCategory['url'];
 
-            return $urls[$size] . $this->image;
+            return $this->getHost() . $urls[$size] . $this->image;
         } else {
             return null;
         }

@@ -226,6 +226,28 @@ class Repository {
     }
 
     /**
+     * @param \Model\Region\Entity $region
+     * @param int                  $maxLevel
+     * @param callback             $done
+     * @param callback|null        $fail
+     */
+    public function prepareTreeCollection(\Model\Region\Entity $region = null, $maxLevel = null, $done, $fail = null) {
+        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
+
+        $params = [
+            'is_load_parents' => true,
+        ];
+        if (null !== $maxLevel) {
+            $params['max_level'] = $maxLevel;
+        }
+        if ($region instanceof \Model\Region\Entity) {
+            $params['region_id'] = $region->getId();
+        }
+
+        $this->client->addQuery('category/tree', $params, [], $done, $fail);
+    }
+
+    /**
      * @param Entity               $category
      * @param \Model\Region\Entity $region
      */

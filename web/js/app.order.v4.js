@@ -924,14 +924,12 @@ $(document).ready(function() {
     function markError( field, mess ) {
         broken++
         $('body').delegate('input[name="'+field+'"]', 'change', function() {
-            if( $(this).val().replace(/\s+/g,'') != '' ) {
-                broken--
-                $('input[name="'+field+'"]').removeClass('mRed')
-                $('input[name="'+field+'"]').prev('.placeholder').removeClass('mRed')
-                var line = $('input[name="'+field+'"]').closest('.bBuyingLine')
-                if( !line.find('.mRed').length )
-                    line.find('.bFormError').remove()
-            }
+            broken--
+            $('input[name="'+field+'"]').removeClass('mRed')
+            $('input[name="'+field+'"]').prev('.placeholder').removeClass('mRed')
+            var line = $('input[name="'+field+'"]').closest('.bBuyingLine')
+            if( !line.find('.mRed').length )
+                line.find('.bFormError').remove()
         })
         var node = $('input[name="'+field+'"]:first')
         if( node.hasClass('mRed') ) return
@@ -980,9 +978,15 @@ $(document).ready(function() {
                     markError(field, 'Маловато цифр');
                 }
             }
+            if (field=='order[recipient_email]'){
+                var emailVal = $('#order_recipient_email').val()
+                if ( (emailVal.length > 0) && (emailVal.search('@') == -1)){
+                    markError(field, 'Некорректный e-mail');
+                }
+            }
             for(var i=0, l=serArray.length; i<l; i++) {
                 if( serArray[i].name == field ) {
-                    if( serArray[i].value == '' )
+                    if( (serArray[i].value == '') && (field != 'order[recipient_email]') )
                         markError( field, fieldsToValidate[field] ) // cause is empty
                     continue flds
                 }
@@ -1017,7 +1021,7 @@ $(document).ready(function() {
         // console.info(toSend)
         $.ajax({
             url: form.attr('action'),
-            timeout: 20000,
+            timeout: 120000,
             type: "POST",
             data: toSend,
             success: function( data ) {

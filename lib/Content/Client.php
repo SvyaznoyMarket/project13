@@ -14,7 +14,9 @@ class Client {
      */
     public function __construct(array $config, \Curl\Client $curl) {
         $this->config = array_merge([
-            'url' => null,
+            'url'            => null,
+            'timeout'        => null,
+            'throwException' => null,
         ], $config);
 
         $this->curl = $curl;
@@ -36,15 +38,18 @@ class Client {
 
         $url = $this->config['url'] . $action . '?json=1';
         $response = null;
-        try {
-            $response = $this->curl->query($url, $data);
+        $this->curl->addQuery($url, $data, function ($data) use (&$response, $action) {
+            $response = $data;
             $spend = \Debug\Timer::stop('content');
             \App::logger()->info('End content request ' . $action . ' in ' . $spend);
-        } catch (\Exception $e) {
-            \App::exception()->remove($e);
+        }, function ($e) use ($action) {
+            if (false === $this->config['throwException']) {
+                \App::exception()->remove($e);
+            }
             $spend = \Debug\Timer::stop('content');
             \App::logger()->info('Fail content request ' . $action . ' in ' . $spend . ' with ' . $e);
-        }
+        }, $this->config['timeout']);
+        $this->curl->execute(\App::config()->coreV2['retryTimeout']['tiny'], \App::config()->coreV2['retryCount']);
 
         return $response;
     }

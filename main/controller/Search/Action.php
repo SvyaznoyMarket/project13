@@ -3,6 +3,11 @@
 namespace Controller\Search;
 
 class Action {
+    /**
+     * @param \Http\Request $request
+     * @return \Http\Response
+     * @throws \Exception\NotFoundException
+     */
     public function execute(\Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
@@ -35,7 +40,12 @@ class Action {
             //$params['is_product_category_first_only'] = false;
         }
         // ядерный запрос
-        $result = \App::coreClientV2()->query('search/get', $params);
+        $result = [];
+        \App::coreClientV2()->addQuery('search/get', $params, [], function ($data) use (&$result) {
+            $result = $data;
+        });
+        \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['default'], \App::config()->coreV2['retryCount']);
+
         if (!isset($result[1]) || !isset($result[1]['data'])) {
             $page = new \View\Search\EmptyPage();
 
@@ -122,5 +132,55 @@ class Action {
         $page->setParam('productCount', $selectedCategory ? $selectedCategory->getProductCount() : $result['count']);
 
         return new \Http\Response($page->show());
+    }
+
+    /**
+     * @param \Http\Request $request
+     * @return \Http\Response
+     * @throws \Exception\NotFoundException
+     */
+    public function autocomplete(\Http\Request $request) {
+        \App::logger()->debug('Exec ' . __METHOD__);
+
+        if (!$request->isXmlHttpRequest()) {
+            throw new \Exception\NotFoundException('Request is not xml http request');
+        }
+
+        $limit = 5;
+        $keyword = mb_strtolower($request->get('q'));
+        $data = [
+            'product'  => null,
+            'category' => null,
+        ];
+        $mapData = [1 => 'product', 3 => 'category'];
+
+        if (mb_strlen($keyword) >= 3) {
+            \App::coreClientV2()->addQuery('search/autocomplete', ['letters' => $keyword], [], function($result) use(&$data, $limit, $mapData){
+                foreach ($mapData as $key => $value) {
+                    $i = 0;
+                    $entity = '\\Model\\Search\\'.ucfirst($value).'\\Entity';
+                    foreach ($result[$key] as $item) {
+                        if ($i >= $limit) break;
+
+                        $data[$value][] = new $entity($item);
+                        $i++;
+                    }
+                }
+            }, function ($e) use (&$data, $mapData) {
+                \App::exception()->remove($e);
+                \App::logger()->error($e);
+            });
+            \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['short'], \App::config()->coreV2['retryCount']);
+        }
+
+        if (!(bool)$data['product'] && !(bool)$data['category'] && preg_match('/^enter разработка$/iu', $keyword)) {
+            $response = new \Http\Response(\App::templating()->render('search/_autocomplete_easter_egg'));
+        } else {
+            $response = new \Http\Response((bool)$data['product'] || (bool)$data['category'] ? \App::templating()->render('search/_autocomplete', ['products' => $data['product'], 'categories' => $data['category'], 'searchQuery' => $keyword]) : '');
+        }
+        
+        $response->setIsShowDebug(false);
+
+        return $response;
     }
 }

@@ -6,16 +6,18 @@
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <?= $page->slotMeta() ?>
     <title><?= $page->getTitle() ?></title>
     <link rel="shortcut icon" href="/favicon.ico"/>
     <?= $page->slotStylesheet() ?>
+    <?= $page->slotHeadJavascript() ?>
     <?= $page->slotRelLink() ?>
     <?= $page->slotGoogleAnalytics() ?>
 
 </head>
 
-<body id="mainPage" data-template="main" data-id="<?= \App::$id ?>">
+<body id="mainPage" data-template="main" data-id="<?= \App::$id ?>"<? if (\App::config()->debug): ?> data-debug=true<? endif ?>>
 
 <div class="bannersbox">
     <div class="bannersboxinner">
@@ -27,15 +29,13 @@
 <?= $page->slotBanner() ?>
 
 <div class="allpage">
+    <? if (\App::config()->adFox['enabled']): ?>
     <div class="adfoxWrapper" id="adfox980"></div>
+    <? endif ?>
 
     <?= $page->slotHeader() ?>
-    
-    <noindex>
-        <div id="mainPageSearch" class="searchbox">
-            <?= $page->render('search/form-main') ?>
-        </div>
-    </noindex>
+
+    <?= $page->slotContentHead() ?>
 
     <div class="bigbanner">
         <div class='bCarouselWrap'>
@@ -54,15 +54,18 @@
 
 <?= $page->slotRegionSelection() ?>
 <?= $page->slotAuth() ?>
-<?= $page->slotJavascript() ?>
+<?= $page->slotYandexMetrika() ?>
+<?= $page->slotBodyJavascript() ?>
 <?= $page->slotInnerJavascript() ?>
 <?= $page->slotMyThings() ?>
+<?= $page->slotAdriver() ?>
+<?= $page->slotPartnerCounter() ?>
 
 <? if (\App::config()->analytics['enabled']): ?>
-    <div id="adblender" class="jsanalytics"></div>
     <div id="yandexMetrika" class="jsanalytics"></div>
     <div id="heiasMain" class="jsanalytics"></div>
     <div id="luxupTracker" class="jsanalytics"></div>
+    <div id="adblenderCommon" class="jsanalytics"></div>
 <? endif ?>
 
 </body>

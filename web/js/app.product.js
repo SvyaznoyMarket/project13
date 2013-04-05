@@ -105,6 +105,9 @@ $(document).ready(function() {
 					sliderW = similarSlider.width()
 				})
 			}
+			if (slidesCount < 4){
+				$('.bSimilarGoodsSlider_eArrow.mRight').hide()
+			}
 		}
 
 		$.getJSON( $('#similarGoodsSlider').data('url') , function(data){
@@ -135,10 +138,12 @@ $(document).ready(function() {
 			if ((left <= sliderW-wrapW)){
 				left = sliderW-wrapW
 				$('.bSimilarGoodsSlider_eArrow.mRight').hide()
+				$('.bSimilarGoodsSlider_eArrow.mLeft').show()
 			} 
 			else if (left >= 0 ){
 				left = 0
 				$('.bSimilarGoodsSlider_eArrow.mLeft').hide()
+				$('.bSimilarGoodsSlider_eArrow.mRight').show()
 			}
 			else{
 				similarArrow.show()
@@ -330,8 +335,8 @@ $(document).ready(function() {
 					$('.bCountSet__eP', np).removeClass('disabled')
 			}
 			np.find('span').text( hm + '  шт.')
-			l1.attr('href', l1href +  hm )
-			l1cl.attr('href', l1clhref + '&quantity=' + hm )
+			l1.attr('href', l1href + '/' + hm )
+			l1cl.attr('href', l1clhref + '&quantity' + hm )
 		})
 		
 		$('.bCountSet__eP', np).click( function() {

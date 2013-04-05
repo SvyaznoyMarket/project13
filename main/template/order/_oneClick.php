@@ -1,11 +1,12 @@
 <?php
 /**
- * @var $page         \View\Layout
- * @var $order        \Model\Order\Entity
- * @var $orderData    array
- * @var $shop         \Model\Shop\Entity
- * @var $orderProduct \Model\Order\Product\Entity
- * @var $product      \Model\Product\Entity
+ * @var $page               \View\Layout
+ * @var $order              \Model\Order\Entity
+ * @var $orderData          array
+ * @var $myThingsOrderData  array
+ * @var $shop               \Model\Shop\Entity
+ * @var $orderProduct       \Model\Order\Product\Entity
+ * @var $product            \Model\Product\Entity
  */
 ?>
 
@@ -23,6 +24,7 @@
     <? if (\App::config()->analytics['enabled']): ?>
         <div id="adriverOrder" data-vars="<?= $page->json($orderData) ?>" class="jsanalytics"></div>
         <div id="heiasComplete" data-vars="<?= $page->json($orderData) ?>" class="jsanalytics"></div>
+        <div id="adblenderOrder" data-vars="<?= $page->json($orderData) ?>" class="jsanalytics"></div>
         <div id="myThingsOrderData" data-value="<?= $page->json($myThingsOrderData) ?>"></div>
         <!-- Efficient Frontiers -->
         <img src="http://pixel.everesttech.net/3252/t?ev_Orders=0&amp;ev_Revenue=0&amp;ev_Quickorders=1&amp;ev_Quickrevenue=<?= $order->getSum() ?>&amp;ev_transid=<?= $order->getNumber() ?>" width="1" height="1" />
@@ -31,6 +33,7 @@
 
     <script type="text/javascript">
         function runAnalitics() {
+            <? if (\App::config()->googleAnalytics['enabled']): ?>
             if (typeof(_gaq) !== 'undefined') {
                 _gaq.push(['_addTrans',
                     '<?= $order->getNumber() . '_F' ?>', // Номер заказа
@@ -64,7 +67,9 @@
 
                 _gaq.push(['_trackTrans']);
             }
+            <? endif ?>
 
+            <? if (\App::config()->yandexMetrika['enabled']): ?>
             var yaParams = {
                 order_id:'<?= $order->getNumber() ?>',
                 order_price: <?= str_replace(',', '.', $order->getSum()) ?>,
@@ -82,12 +87,15 @@
                 ]
             };
             if (typeof(yaCounter10503055) !== 'undefined')  yaCounter10503055.reachGoal('QORDER', yaParams);
+            <? endif ?>
 
+            <? if (\App::config()->analytics['enabled']): ?>
             if (typeof(window.adBelnder) != 'undefined') window.adBelnder.addOrder(<?= str_replace(',', '.', $order->getSum()) ?>);
 
             if (typeof(MyThings) != "undefined" && typeof($('#myThingsOrderData').data('value')) == "object") {
                 MyThings.Track($('#myThingsOrderData').data('value'))
             }
+            <? endif ?>
         }
     </script>
 

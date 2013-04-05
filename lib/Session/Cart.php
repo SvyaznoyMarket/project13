@@ -414,14 +414,19 @@ class Cart {
 
         try {
             if (((bool)$this->getProductsQuantity() || (bool)$this->getServicesQuantity())) {
-                $response = \App::coreClientV2()->query(
+                $response = $default;
+                \App::coreClientV2()->addQuery(
                     'cart/get-price',
                     ['geo_id' => \App::user()->getRegion()->getId()],
                     [
                         'product_list'  => $this->getProductData(),
                         'service_list'  => $this->getServiceData(),
                         'warranty_list' => $this->getWarrantyData(),
-                    ]);
+                    ],
+                    function ($data) use (&$response) {
+                        $response = $data;
+                    });
+                \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['default'], \App::config()->coreV2['retryCount']);
             } else {
                 $response = $default;
             }

@@ -86,10 +86,10 @@ if (!\App::request()->isXmlHttpRequest()) {
         <span style="color: #ffffff"><?= $item['name'] ?>:</span>
 
         <? if ($isHidden) { ?>
-            <span onclick="var el = $(this).next(); el.is(':hidden') ? el.show() : el.hide()" style="cursor: pointer; color: #00ffff;">...</span>
+            <span onclick="var el = $(this).next(); el.is(':hidden') ? el.css('display', 'block') : el.css('display', 'none')" style="cursor: pointer; color: #00ffff;">...</span>
         <? } ?>
 
-        <span<? if ($isHidden) { ?> style="display: none;" <? } ?>>
+        <span<? if ($isHidden) { ?> style="display: block; display: none; max-height: 600px; max-width: 1400px; overflow: auto;" <? } ?>>
             <? if (\Debug\Collector::TYPE_ERROR == $item['type']) { ?><span style="color: #ff0000;"><?= $item['value'] ?></span><? } else { ?><?= $item['value'] ?><? } ?>
         </span>
         <br />

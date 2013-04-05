@@ -52,13 +52,7 @@ class Action {
 
         // подготовка 2-го пакета запросов
 
-        // запрашиваем рутовые категории
-        $rootCategories = [];
-        \RepositoryManager::productCategory()->prepareRootCollection($region, function($data) use(&$rootCategories) {
-            foreach ($data as $item) {
-                $rootCategories[] = new \Model\Product\Category\Entity($item);
-            }
-        });
+        // TODO: запрашиваем меню
 
         // услуги
         /** @var $services \Model\Product\Service\Entity[] */
@@ -80,7 +74,6 @@ class Action {
 
         $page = new \View\Service\IndexPage();
         $page->setParam('regionsToSelect', $regionsToSelect);
-        $page->setParam('rootCategories', $rootCategories);
         $page->setParam('categories', $categories);
 
         return new \Http\Response($page->show());
@@ -132,13 +125,7 @@ class Action {
 
         // подготовка 2-го пакета запросов
 
-        // запрашиваем рутовые категории
-        $rootCategories = [];
-        \RepositoryManager::productCategory()->prepareRootCollection($region, function($data) use(&$rootCategories) {
-            foreach ($data as $item) {
-                $rootCategories[] = new \Model\Product\Category\Entity($item);
-            }
-        });
+        // TODO: запрашиваем меню
 
         // запрашиваем категорию услуги
         /** @var $category \Model\Product\Service\Category\Entity */
@@ -224,7 +211,6 @@ class Action {
 
         $page = new \View\Service\CategoryPage();
         $page->setParam('regionsToSelect', $regionsToSelect);
-        $page->setParam('rootCategories', $rootCategories);
         $page->setParam('category', $category);
         $page->setParam('servicesByCategory', $servicesByCategory);
         $page->setParam('allCategories', $allCategories);
@@ -278,13 +264,7 @@ class Action {
 
         // подготовка 2-го пакета запросов
 
-        // запрашиваем рутовые категории
-        $rootCategories = [];
-        \RepositoryManager::productCategory()->prepareRootCollection($region, function($data) use(&$rootCategories) {
-            foreach ($data as $item) {
-                $rootCategories[] = new \Model\Product\Category\Entity($item);
-            }
-        });
+        // TODO: запрашиваем меню
 
         // услуга
         /** @var $service \Model\Product\Service\Entity */
@@ -319,7 +299,6 @@ class Action {
 
         $page = new \View\Service\ShowPage();
         $page->setParam('regionsToSelect', $regionsToSelect);
-        $page->setParam('rootCategories', $rootCategories);
         $page->setParam('service', $service);
 
         return new \Http\Response($page->show());

@@ -14,6 +14,8 @@ class Form {
     /** @var string */
     private $mobilePhone;
     /** @var string */
+    private $email;
+    /** @var string */
     private $addressStreet;
     /** @var int */
     private $subwayId;
@@ -45,6 +47,7 @@ class Form {
         'recipient_first_name'   => null,
         'recipient_last_name'    => null,
         'recipient_phonenumbers' => null,
+        'recipient_email'        => null,
         'address_street'         => null,
         'address_number'         => null,
         'address_building'       => null,
@@ -69,6 +72,7 @@ class Form {
         if (array_key_exists('recipient_first_name', $data))   $this->setFirstName($data['recipient_first_name']);
         if (array_key_exists('recipient_last_name', $data))    $this->setLastName($data['recipient_last_name']);
         if (array_key_exists('recipient_phonenumbers', $data)) $this->setMobilePhone($data['recipient_phonenumbers']);
+        if (array_key_exists('recipient_email', $data))        $this->setEmail($data['recipient_email']);
         if (array_key_exists('address_street', $data))         $this->setAddressStreet($data['address_street']);
         if (array_key_exists('address_number', $data))         $this->setAddressNumber($data['address_number']);
         if (array_key_exists('address_building', $data))       $this->setAddressBuilding($data['address_building']);
@@ -327,6 +331,22 @@ class Form {
      */
     public function hasSubway() {
         return \App::user()->getRegion()->getHasSubway();
+    }
+
+    /**
+     * @param string $email
+     */
+    public function setEmail($email)
+    {
+        $this->email = trim((string)$email);
+    }
+
+    /**
+     * @return string
+     */
+    public function getEmail()
+    {
+        return $this->email;
     }
 
 

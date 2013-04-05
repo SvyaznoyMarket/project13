@@ -11,11 +11,16 @@
 	//	_gaq.push(['_trackEvent', 'jQuery Error', message, navigator.userAgent])
 	//}
 
+	var debug = false;
+	if ( document.body.getAttribute('data-debug') == 'true'){
+		debug = true
+	}
+
 	if( typeof($LAB) === 'undefined' )
 		throw new Error( "Невозможно загрузить файлы JavaScript" )
 	function getWithVersion( flnm ) { 
 		if( typeof( filesWithVersion[''+flnm] ) !== 'undefined' ){
-			if( !document.location.search.match(/jsdbg/) ) {
+			if( (!document.location.search.match(/jsdbg/))&&(!debug) ) {
 			flnm += '?' + filesWithVersion[''+flnm]
 			flnm = flnm.replace('js', 'min.js')
 			}	

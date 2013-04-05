@@ -122,18 +122,20 @@ class Layout extends \View\DefaultLayout {
 
         $region = \App::user()->getRegion();
 
-        $seoTemplates = [];
-        $callback = function ($data, $index) use (&$seoTemplates) {
-            if (is_array($data)) {
-                $seoTemplates[$index] = $data;
-            }
-        };
-
-        $dataStore->addQuery(sprintf('seo/%s.json', trim($category->getLink(), '/')), $callback);
-        foreach (array_reverse($category->getAncestor()) as $iCategory) {
-            /** @var $iCategory \Model\Product\Category\Entity */
-            $dataStore->addQuery(sprintf('seo/%s/index.json', trim($iCategory->getLink(), '/')), $callback);
+        $seoTemplate = null;
+        $categoryTokens = [];
+        foreach ($category->getAncestor() as $iCategory) {
+            $categoryTokens[] = $iCategory->getToken();
         }
+        $categoryTokens[] = $category->getToken();
+
+        $dataStore->addQuery(sprintf('seo/catalog/%s.json', implode('/', $categoryTokens)), [], function ($data) use (&$seoTemplate) {
+            $seoTemplate = array_merge([
+                'title'       => null,
+                'description' => null,
+                'keywords'    => null,
+            ], $data);
+        });
 
         // данные для шаблона
         $patterns = [
@@ -141,22 +143,18 @@ class Layout extends \View\DefaultLayout {
             'город'     => [$region->getName()],
             'сайт'      => null,
         ];
-        $dataStore->addQuery(sprintf('inflect/product-category/%s.json', $category->getId()), function($data) use (&$patterns) {
-            $patterns['категория'] = $data;
+        $dataStore->addQuery(sprintf('inflect/product-category/%s.json', $category->getId()), [], function($data) use (&$patterns) {
+            if ($data) $patterns['категория'] = $data;
         });
-        $dataStore->addQuery(sprintf('inflect/region/%s.json', $region->getId()), function($data) use (&$patterns) {
-            $patterns['город'] = $data;
+        $dataStore->addQuery(sprintf('inflect/region/%s.json', $region->getId()), [], function($data) use (&$patterns) {
+            if ($data) $patterns['город'] = $data;
         });
-        $dataStore->addQuery('inflect/сайт.json', function($data) use (&$patterns) {
-            $patterns['сайт'] = $data;
+        $dataStore->addQuery('inflect/сайт.json', [], function($data) use (&$patterns) {
+            if ($data) $patterns['сайт'] = $data;
         });
 
         $dataStore->execute();
 
-        // сортируем шаблоны в порядке следования запросов: сначала категория, потом категория-мама, потом кактегория-бабушка и т.д.
-        ksort($seoTemplates);
-        // выбираем самый близкий по родословной шаблон
-        $seoTemplate = reset($seoTemplates);
         if (!$seoTemplate) return;
 
         $replacer = new \Util\InflectReplacer($patterns);

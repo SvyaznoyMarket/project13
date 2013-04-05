@@ -4,16 +4,17 @@
   .allpage {
     background: @black;
   }
-  #header{
-    background:none;
-    width:930px;
-  }
-  #topLogo{
-    background: url("@{base-url}/header/img/headerSprite.png") no-repeat -550px 0;
-    height: 93px;
-    width: 140px;
-  }
+  // #header{
+  //   background:none;
+  //   width:930px;
+  // }
+  // #topLogo{
+  //   background: url("@{base-url}/header/img/headerSprite.png") no-repeat -550px 0;
+  //   height: 93px;
+  //   width: 140px;
+  // }
   .topbar{
+    margin-bottom: 20px;
     #jsregion,
     .usermenu a{
       color:@white;
@@ -26,9 +27,21 @@
       display: none;
     }
   }  
+  /*--- ПОИСК ---*/
+  .searchtext{
+    .box-shadow(0 0 10px 4px #444443);
+    margin-left: 15px;
+    width: 805px;
+  }
+  .searchbutton{
+    .box-shadow(0 0 10px 2px #444443);
+  }
+  .bSearchSuggest{
+    left: 18px;
+  }
 }
 
-/*--- ПОИСК ---*/
+
 #mainPageSearch{
   &.searchbox {
     background: url("@{mainPageSprite-url}") no-repeat 0 0;

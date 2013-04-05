@@ -9,7 +9,7 @@
     <title><?= $page->getTitle() ?></title>
     <link rel="shortcut icon" href="/favicon.ico"/>
     <?= $page->slotStylesheet() ?>
-    <?= $page->slotJavascript() ?>
+    <?= $page->slotHeadJavascript() ?>
 </head>
 <body>
 <div class="bWrap">

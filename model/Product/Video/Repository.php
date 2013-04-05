@@ -25,13 +25,15 @@ class Repository {
     }
 
     /**
-     * @param \Model\Product\BasicEntity $product
-     * @param callback                   $done
-     * @param callback|null              $fail
+     * @param array         $productIds
+     * @param callback      $done
+     * @param callback|null $fail
      */
-    public function prepareCollectionByProduct(\Model\Product\BasicEntity $product, $done, $fail = null) {
+    public function prepareCollectionByProductIds(array $productIds, $done, $fail = null) {
         \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
-        $this->client->addQuery(sprintf('video/product/%s.json', $product->getId()), $done, $fail);
+        $this->client->addQuery(sprintf('video/product/index.json'), [
+            'id' => $productIds,
+        ], $done, $fail);
     }
 }
