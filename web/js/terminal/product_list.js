@@ -97,6 +97,8 @@ define('product_list',
 		 * @param  {object} nowTouch координаты текущего касания
 		 */
 		moveStart = function(e){
+			e.preventDefault()
+
 			var orig = e.originalEvent
 			var nowTouch = {
 				x:orig.changedTouches[0].pageX,
@@ -119,6 +121,7 @@ define('product_list',
 		 * @param  {number} nowDelta разница координат текущих положений пальцев
 		 */
 		moveMe = function(e){
+			e.preventDefault()
 			var orig = e.originalEvent
 			var len = orig.changedTouches.length
 			
@@ -154,6 +157,8 @@ define('product_list',
 		 * @param  {event} e
 		 */
 		moveEnd = function(e){
+			e.preventDefault()
+			
 			var orig = e.originalEvent
 			
 			startTouches = []
