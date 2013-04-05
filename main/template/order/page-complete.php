@@ -89,4 +89,7 @@ $isOrderAnalytics = isset($isOrderAnalytics) ? $isOrderAnalytics : true;
     <? endforeach ?>
 <? endif ?>
 
-<? require __DIR__ . '/partner-counter/_complete.php' ?>
+<?= $page->tryRender('order/partner-counter/_complete', [
+    'orders'       => $orders,
+    'productsById' => $productsById,
+]) ?>
