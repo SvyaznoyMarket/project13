@@ -124,8 +124,6 @@ define('library',
 			 * @param {event} e
 			 */
 			self.moveStart = function(e) {
-				e.preventDefault()
-				e.stopPropagation()
 				var orig = e.originalEvent
 				self.start = {
 					x: (dir) ? orig.changedTouches[0].pageX : orig.changedTouches[0].pageY,
@@ -146,8 +144,6 @@ define('library',
 			 */
 			self.moveMe = function(e) {
 				terminal.interactive = false
-				e.preventDefault()
-				e.stopPropagation()
 				var orig = e.originalEvent
 				var touch = (dir) ? orig.changedTouches[0].pageX : orig.changedTouches[0].pageY
 				var newOffset = touch - self.start.x + self.start.offset
@@ -163,6 +159,8 @@ define('library',
 			 * @param {number} touchEvent текущее положение пальца
 			 */
 			self.checkMove = function( newOffset, touchEvent ){
+				self.trigger('sliderMoved')
+
 				if ( newOffset > self.stop.start ){
 					if (dir){
 						self.css({left: 0})
@@ -172,7 +170,6 @@ define('library',
 					}
 					self.start.offset = 0
 					self.start.x = (touchEvent) ? touchEvent : 0
-					self.trigger('sliderMoved')
 					return false
 				}
 				else if ( newOffset < -self.stop.end){
@@ -184,7 +181,6 @@ define('library',
 					}
 					self.start.offset = -self.stop.end
 					self.start.x = (touchEvent) ? touchEvent : 0
-					self.trigger('sliderMoved')
 					return false
 				}
 				else{
@@ -194,7 +190,6 @@ define('library',
 					else{
 						self.css({top: newOffset})
 					}
-					self.trigger('sliderMoved')
 					return true
 				}
 			}
@@ -207,15 +202,12 @@ define('library',
 			 */
 			self.moveEnd = function(e) {
 				terminal.interactive = true
-				e.preventDefault()
-				e.stopPropagation()
 				var orig = e.originalEvent
 				var stopTime = new Date().getTime()
 				var deltaTime = self.startTime - stopTime
 				var touch = (dir) ? orig.changedTouches[0].pageX : orig.changedTouches[0].pageY
 				var a = (self.start.x - touch) / deltaTime
 				self.autoMove(a)
-				return false
 			}
 
 			/**
