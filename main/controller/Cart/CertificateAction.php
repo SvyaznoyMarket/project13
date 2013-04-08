@@ -56,4 +56,36 @@ class CertificateAction {
 
         return new \Http\JsonResponse($result);
     }
+
+    /**
+     * @param \Http\Request $request
+     * @throws \Exception\NotFoundException
+     */
+    public function delete(\Http\Request $request) {
+        \App::logger()->debug('Exec ' . __METHOD__);
+
+        if (!$request->isXmlHttpRequest()) {
+            throw new \Exception\NotFoundException('Request is not xml http request');
+        }
+
+        try {
+            \App::user()->getCart()->clearCertificates();
+
+            $result = [
+                'success' => true,
+            ];
+        } catch (\Exception\ActionException $e) {
+            \App::exception()->remove($e);
+
+            $result = [
+                'success' => false,
+                'error'   => $e instanceof \Exception\ActionException ? $e->getMessage() : 'Неудалось активировать карту',
+            ];
+            if (\App::config()->debug) {
+                $result['error'] = $e;
+            }
+        }
+
+        return new \Http\JsonResponse($result);
+    }
 }

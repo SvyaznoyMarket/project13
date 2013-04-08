@@ -288,6 +288,10 @@ return [
         'pattern' => '/cart/f1-certificate',
         'action'  => ['Cart\CertificateAction', 'apply'],
     ],
+    'cart.certificate.delete' => [
+        'pattern' => '/cart/f1-certificate/delete',
+        'action'  => ['Cart\CertificateAction', 'delete'],
+    ],
 
     // заказ
     'order.1click' => [
