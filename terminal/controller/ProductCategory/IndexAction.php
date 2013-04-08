@@ -3,24 +3,35 @@
 namespace Terminal\Controller\ProductCategory;
 
 class IndexAction {
+    /**
+     * @param $categoryId
+     * @param \Http\Request $request
+     * @throws \Exception\NotFoundException
+     * @return \Http\Response
+     */
     public function execute($categoryId, \Http\Request $request) {
+        \App::logger()->debug('Exec ' . __METHOD__);
+
+        $category = \RepositoryManager::productCategory()->getEntityById($categoryId);
+        if (!$category) {
+            throw new \Exception\NotFoundException(sprintf('Категория #% не найдена', $category->getId()));
+        }
+
+        $page = new \Terminal\View\ProductCategory\IndexPage();
+        $page->setParam('category', $category);
+
+        return new \Http\Response($page->show());
+    }
+
+    public function product($categoryId, \Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
         $client = \App::coreClientV2();
         $user = \App::user();
         $sorting = $request->get('sort', ['type' => 'score', 'direction' => 'desc']);
         $filter = $request->get('filter', []);
-        $is_json = $request->get('is_json', false);
         $offset =  (int)$request->get('offset', 0);
         $limit = (int)$request->get('limit', 32);
-
-        $data = [
-            'client_id' => \App::config()->coreV2['client_id'],
-            'shop_id'   => \App::config()->region['shop_id'],
-            'category'  => $categoryId,
-            'sorting'   => $sorting,
-            'filter'    => $filter,
-        ];
 
         // запрашиваем категорию по id
         $category = \RepositoryManager::productCategory()->getEntityById($categoryId);
@@ -49,6 +60,7 @@ class IndexAction {
         });
         $client->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
+        /** @var $collection \Model\Product\TerminalEntity[] */
         $collection = [];
         $entityClass = '\Model\Product\TerminalEntity';
         if (!empty($response['list'])) {
@@ -60,26 +72,22 @@ class IndexAction {
         }
         $client->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
-        $response = null;
-        if ($is_json) {
-            $response = new \Http\JsonResponse(array_map(function ($item) {
-                return [
-                    'id' => $item->getId(),
-                    'name' => $item->getName(),
-                    'image' => $item->getImageUrl(3),
-                    'article' => $item->getArticle(),
-                    'price' => $item->getPrice(),
-                    'isBuyable' => $item->getIsBuyable(\App::config()->region['shop_id']),
-                ];
-            }, $collection));
-        } else {
-            $page = new \Terminal\View\ProductCategory\IndexPage();
-            $page->setParam('data', $data);
-            $page->setParam('products', $collection);
-
-            $response = new \Http\Response($page->show());
+        $productData = [];
+        foreach ($collection as $product) {
+            $productData[] = [
+                'id'          => $product->getId(),
+                'name'        => $product->getName(),
+                'image'       => $product->getImageUrl(3),
+                'article'     => $product->getArticle(),
+                'price'       => $product->getPrice(),
+                'description' => $product->getDescription(),
+                'isBuyable'   => $product->getIsBuyable(\App::config()->region['shop_id']),
+            ];
         }
 
-        return $response;
+        return new \Http\JsonResponse([
+            'success'  => true,
+            'products' => $productData,
+        ]);
     }
 }

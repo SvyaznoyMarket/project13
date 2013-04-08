@@ -1,5 +1,5 @@
 AddDefaultCharset utf-8
-SetEnv APPLICATION_NAME main
+SetEnv APPLICATION_NAME terminal
 #SetEnv APPLICATION_ENV live
 
 Options +FollowSymLinks +ExecCGI

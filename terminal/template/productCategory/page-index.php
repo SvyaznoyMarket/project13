@@ -1,28 +1,11 @@
 <?php
 /**
- * @var $page    \Terminal\View\Product\IndexPage
- * @var $data[]
- * @var $products \Model\Product\TerminalEntity[]
+ * @var $page     \Terminal\View\Product\IndexPage
+ * @var $category \Model\Product\Category\Entity
  */
-$productData = [];
 ?>
 
-<article id="categoryData" data-data="<?= $page->json($data) ?>" class="bListing bContent" data-pagetype='product_list'>
-	<? foreach ($products as $product): ?>
-	    <? $productData[] = [
-	        'id' => $product->getId(),
-	        'name' => $product->getName(),
-	        'image' => $product->getImageUrl(3),
-	        'article' => $product->getArticle(),
-	        'price' => $product->getPrice(),
-	        'isBuyable' => $product->getIsBuyable(\App::config()->region['shop_id']),
-	    ] ?>
-	<? endforeach ?>
-
-	<div id="productList" data-product="<?= $page->json($productData) ?>"></div>
-
-	<div class="bProductListWrap mSizeLittle clearfix">
-		
-	</div>
-
+<article id="categoryData" data-url="<?= $page->url('category.product', ['categoryId' => $category->getId()]) ?>" class="bListing bContent" data-pagetype='product_list'>
+	<div id="productList"></div>
+	<div class="bProductListWrap mSizeLittle clearfix"></div>
 </article>

@@ -112,8 +112,8 @@ define('termAPI',
 				checkCompare(productId)
 			}
 		}
-		terminal.compare.productRemoved.connect(checkCompare)
-		terminal.compare.productAdded.connect(checkCompare)
+		//terminal.compare.productRemoved.connect(checkCompare)
+		//terminal.compare.productAdded.connect(checkCompare)
 
 
 		/**
