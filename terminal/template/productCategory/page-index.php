@@ -6,7 +6,7 @@
  */
 ?>
 
-<article id="categoryData" data-url="<?= $page->url('category.product', ['categoryId' => $category->getId()]) ?>" data-sort="<?= $page->json($productSorting->dump()) ?>" class="bListing bContent" data-pagetype='product_list'>
+<article id="categoryData" data-url="<?= $page->url('category.product', ['categoryId' => $category->getId()]) ?>" data-sort="<?= $page->json($productSorting->all()) ?>" class="bListing bContent" data-pagetype='product_list'>
 	<div id="productList"></div>
 	<div class="bProductListWrap mSizeLittle clearfix"></div>
 </article>

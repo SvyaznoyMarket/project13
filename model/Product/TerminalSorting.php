@@ -98,4 +98,11 @@ class TerminalSorting {
             ? [$this->getActiveSort() => $this->getActiveDirection()]
             : [];
     }
+
+    /**
+     * @return array
+     */
+    public function all() {
+        return $this->sort;
+    }
 }
