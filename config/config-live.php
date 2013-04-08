@@ -77,6 +77,8 @@ $c->abtest['test']       = [
     ],
 ];
 
+$c->f1Certificate['enabled'] = true;
+
 $c->requestMainMenu = true;
 
 return $c;

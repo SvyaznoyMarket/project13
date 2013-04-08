@@ -509,7 +509,7 @@ class Cart {
                 // если есть сертификат
                 $certificates = $this->getCertificates();
                 $certificate = is_array($certificates) ? reset($certificates) : null;
-                if ($certificate instanceof \Model\Cart\Certificate\Entity) {
+                if (\App::config()->f1Certificate['enabled'] && $certificate instanceof \Model\Cart\Certificate\Entity) {
                     \App::coreClientV2()->addQuery(
                         'cart/get-price-new',
                         [
