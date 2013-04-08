@@ -97,7 +97,7 @@ class Action {
 
         $action = null;
         try {
-            $token = $request->get('IdSL');
+            $token = $request->get('confirm_token');
             if (!$token) {
                 throw new \Exception('Не получен токен подтверждения подписки');
             }
