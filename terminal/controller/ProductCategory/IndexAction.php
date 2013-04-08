@@ -96,15 +96,18 @@ class IndexAction {
         $productData = [];
         foreach ($collection as $product) {
             $productData[] = [
-                'id'           => $product->getId(),
-                'name'         => $product->getName(),
-                'image'        => $product->getImageUrl(3),
-                'article'      => $product->getArticle(),
-                'price'        => $product->getPrice(),
-                'description'  => $product->getDescription(),
-                'isBuyable'    => $product->getIsBuyable($shopId),
-                'isInShop'     => $product->getIsInShop($shopId),
-                'isInShowroom' => $product->getIsInShowroom($shopId),
+                'id'            => $product->getId(),
+                'name'          => $product->getName(),
+                'image'         => $product->getImageUrl(3),
+                'article'       => $product->getArticle(),
+                'price'         => $product->getPrice(),
+                'description'   => $product->getDescription(),
+                'isBuyable'     => $product->getIsBuyable($shopId),
+                'isInShop'      => $product->getIsInShop($shopId),
+                'isInShowroom'  => $product->getIsInShowroom($shopId),
+                'isInStore'     => $product->getState()->getIsStore(),
+                'hasSupplier'   => $product->getState()->getIsSupplier(),
+                'isInOtherShop' => $product->getState()->getIsShop(), //
             ];
         }
 
