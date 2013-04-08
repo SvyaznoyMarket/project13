@@ -561,6 +561,7 @@ class Action {
         $page->setParam('paymentProvider', null);
         $page->setParam('creditData', []);
         $page->setParam('isOrderAnalytics', false);
+        $page->setParam('productsById', []);
 
         return new \Http\Response($page->show());
     }
