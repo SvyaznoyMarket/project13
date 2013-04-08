@@ -17,8 +17,11 @@ class IndexAction {
             throw new \Exception\NotFoundException(sprintf('Категория #% не найдена', $category->getId()));
         }
 
+        $productSorting = new \Model\Product\TerminalSorting();
+
         $page = new \Terminal\View\ProductCategory\IndexPage();
         $page->setParam('category', $category);
+        $page->setParam('productSorting', $productSorting);
 
         return new \Http\Response($page->show());
     }
@@ -32,10 +35,24 @@ class IndexAction {
     public function product($categoryId, \Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
+        $productSorting = new \Model\Product\TerminalSorting();
+
         $client = \App::coreClientV2();
         $user = \App::user();
-        $sorting = $request->get('sort', ['type' => 'score', 'direction' => 'desc']);
-        $filter = $request->get('filter', []);
+
+        $sortData = (array)$request->get('sort');
+        if ((bool)$sortData) {
+            $sortName = key($sortData);
+            $sortDirection = current($sortData);
+            try {
+                $productSorting->setActiveSort($sortName);
+                $productSorting->setActiveDirection($sortDirection);
+            } catch (\Exception $e) {
+                \App::logger()->error($e);
+            }
+        }
+
+        $filterData = (array)$request->get('filter', []);
         $offset =  (int)$request->get('offset', 0);
         $limit = (int)$request->get('limit', 32);
 
@@ -46,11 +63,8 @@ class IndexAction {
             throw new \Exception\NotFoundException(sprintf('Категория товара #%s не найдена.', $categoryId));
         }
 
-        $productFilter = new \Model\Product\Filter($filter, false);
+        $productFilter = new \Model\Product\Filter($filterData, false);
         $productFilter->setCategory($category);
-
-        $productSorting = new \Model\Product\Sorting();
-        $productSorting->setActive($sorting['type'], $sorting['direction']);
 
         $response = array();
         $client->addQuery('listing/list', array(
