@@ -77,6 +77,8 @@ $c->abtest['test']       = [
     ],
 ];
 
+$c->subscribe['enabled'] = true;
+
 $c->requestMainMenu = true;
 
 return $c;

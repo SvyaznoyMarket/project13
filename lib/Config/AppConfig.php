@@ -230,6 +230,7 @@ class AppConfig {
     ];
     /** @var array */
     public $subscribe = [
+        'enabled'    => null,
         'cookieName' => null,
     ];
 
