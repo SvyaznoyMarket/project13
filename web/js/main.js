@@ -4,10 +4,11 @@ $(document).ready(function(){
 	if ( $('.bF1SaleCard').length ){
 		var input = $('#F1SaleCard_number')
 		var btn = $('#F1SaleCard_btn')
+		var delBtn = $('.bF1SaleCard_eDel')
 		btn.bind('click', function(){
 			var url = btn.data('url')
 
-			function authFromServer(response) {
+			var authFromServer = function(response) {
 				if ( response.success ) {
 					window.location.reload()
 				}
@@ -28,6 +29,20 @@ $(document).ready(function(){
 			})
 
 		})
+		delBtn.live('click',function(){
+			var delUrl = $(this).data('url')
+			var authFromServer = function(response) {
+				if ( response.success ) {
+					window.location.reload()
+				}
+			}
+			$.ajax({
+				type: 'POST',
+				url: delUrl,
+				success: authFromServer
+			})
+		})
+
 	}
 
 
