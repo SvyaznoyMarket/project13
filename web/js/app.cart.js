@@ -363,6 +363,7 @@ $(document).ready(function() {
 						makeWide( bline, f1item)
 						popupIsOpened = false
 						f1popup.hide()
+						showOldPrice(data.data.old_price)
 					}
 				})
 				
@@ -487,7 +488,8 @@ $(document).ready(function() {
 			$($('tr:eq(1)', bBig)).remove()
 		f1lineshead.after( f1linecart )
 		addLineWrnt( $('tr:eq(1)', bBig), bline )
-		getTotal()	
+		getTotal()
+		showOldPrice(data.data.old_price)
 	}
 	
 	/* credit */
