@@ -150,7 +150,13 @@ class SitemapAction {
 
                 $offset = 0;
                 while (($category->getGlobalProductCount() - ($offset + $limit)) > 0) {
-                    $products = $productRepository->getIteratorByFilter($filter->dump(), [], $offset, $limit, $this->region);
+                    try {
+                        $products = $productRepository->getIteratorByFilter($filter->dump(), [], $offset, $limit, $this->region);
+                    } catch (\Exception $e) {
+                        \App::logger()->error($e);
+                        continue;
+                    }
+
                     foreach ($products as $product) {
                         /** @var \Model\Product\BasicEntity $product */
                         if (!$product->getPath()) continue;
@@ -198,7 +204,13 @@ class SitemapAction {
         $walk = function($categories) use (&$walk, $serviceRepository) {
             /** @var $category \Model\Product\Service\Category\Entity */
             foreach ($categories as $category) {
-                $services = $serviceRepository->getCollectionByCategory($category, $this->region);
+                try {
+                    $services = $serviceRepository->getCollectionByCategory($category, $this->region);
+                } catch (\Exception $e) {
+                    \App::logger()->error($e);
+                    continue;
+                }
+
                 foreach ($services as $service) {
                     if (!$service->getToken()) continue;
 
@@ -220,7 +232,14 @@ class SitemapAction {
 
     private function fillShop() {
         foreach (\RepositoryManager::region()->getShopAvailableCollection() as $region) {
-            foreach (\RepositoryManager::shop()->getCollectionByRegion($region) as $shop) {
+            try {
+                $shops = \RepositoryManager::shop()->getCollectionByRegion($region);
+            } catch (\Exception $e) {
+                \App::logger()->error($e);
+                continue;
+            }
+
+            foreach ($shops as $shop) {
                 $this->putContent(
                     $this->router->generate('shop.show', ['regionToken' => $region->getToken(), 'shopToken' => $shop->getToken()]),
                     'daily',
@@ -232,7 +251,13 @@ class SitemapAction {
 
     private function fillPage() {
         $result = \App::contentClient()->query('api/page/list/');
-        $pages = (array)json_decode($result, true);
+
+        try {
+            $pages = (array)json_decode($result, true);
+        } catch (\Exception $e) {
+            \App::logger()->error($e);
+            $pages = [];
+        }
         foreach ($pages as $page) {
             $this->putContent(
                 '/' . $page['token'],
@@ -243,6 +268,10 @@ class SitemapAction {
     }
 
     private function putContent($url, $freq, $priority) {
+        static $count = 0;
+
+        $count++;
+
         $content =
             '<url>
   <loc>' . self::URL_PREFIX . str_replace(['&', "'", '"', '>', '<'], ['&amp;', '&apos;', '&quot;', '&gt;', '&lt;'], $url) . '</loc>
@@ -267,11 +296,11 @@ class SitemapAction {
         }
 
         file_put_contents($this->fileName, $content, FILE_APPEND);
-        $count = (int)shell_exec('grep -c "<url>" ' . $this->fileName);
 
         if (0 == ($count % self::ENTITY_LIMIT)) echo '.';
 
         if (($count >= self::URL_LIMIT) || ((filesize($this->fileName) / 1048576) >= self::FILE_SIZE_LIMIT)) {
+            $count = 0;
             $this->closeContent();
         }
     }

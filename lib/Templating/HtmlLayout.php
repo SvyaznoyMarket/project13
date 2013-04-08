@@ -86,6 +86,27 @@ class HtmlLayout {
         return $this->engine->render($template, $params);
     }
 
+    /**
+     * @param string $template
+     * @param array $params
+     * @throws \Exception
+     * @return string
+     */
+    final public function tryRender($template, array $params = []) {
+        $return = '';
+
+        try {
+            if (!$this->engine->exists($template)) {
+                throw new \Exception(sprintf('Шаблон %s не найден', $template));
+            }
+            $return = $this->render($template, $params);
+        } catch (\Exception $e) {
+            \App::logger()->error($e);
+        }
+
+        return $return;
+    }
+
     public function startEscape() {
         ob_start();
     }

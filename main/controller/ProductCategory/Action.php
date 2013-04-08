@@ -371,7 +371,7 @@ class Action {
         if ($category->isRoot()) {
             $myThingsData['Category'] = $category->getName();
         } else {
-            $myThingsData['Category'] = $category->getAncestor()[0]->getName();
+            $myThingsData['Category'] = isset($category->getAncestor()[0]) ? $category->getAncestor()[0]->getName() : null;
             $myThingsData['SubCategory'] = $category->getName();
         }
         $page->setParam('myThingsData', $myThingsData);
@@ -464,7 +464,7 @@ class Action {
         $page->setParam('myThingsData', array(
             'EventType' => 'MyThings.Event.Visit',
             'Action' => '1011',
-            'Category' => $category->getAncestor()[0]->getName(),
+            'Category' => isset($category->getAncestor()[0]) ? $category->getAncestor()[0]->getName() : null,
             'SubCategory' => $category->getName()
         ));
 
@@ -485,7 +485,7 @@ class Action {
         $region = $isGlobal ? null : \App::user()->getRegion();
 
         // filter values
-        $values = $request->get(\View\Product\FilterForm::$name, []);
+        $values = (array)$request->get(\View\Product\FilterForm::$name, []);
         if ($isGlobal) {
             $values['global'] = 1;
         }

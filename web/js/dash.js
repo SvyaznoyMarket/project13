@@ -484,7 +484,6 @@ $(document).ready(function(){
 		// 
 		var ABtestCockie = docCookies.getItem("switch")
 		if ((ABtestCockie !== null) && (ABtestCockie !=='default')){
-			console.log('123!')
 			var href = $(this).attr('href')
 			window.location.href = href
 			return false

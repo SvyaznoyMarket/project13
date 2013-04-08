@@ -27,4 +27,12 @@ class PhpEngine implements EngineInterface {
 
         return ob_get_clean();
     }
+
+    /**
+     * @param $template
+     * @return bool
+     */
+    public function exists($template) {
+        return is_file($this->templateDir . '/' . $template . '.php');
+    }
 }

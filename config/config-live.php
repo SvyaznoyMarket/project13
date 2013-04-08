@@ -58,7 +58,7 @@ $c->database['host']     = 'site-db'; // был 10.20.33.2
 
 $c->smartEngine['cert'] = $c->dataDir . '/cert/gsorganizationvalg2.crt';
 
-$c->user['corporateRegister'] = false;
+$c->user['corporateRegister'] = true;
 
 $c->abtest['bestBefore'] = '2013-04-23';
 $c->abtest['enabled']    = true;
@@ -77,6 +77,6 @@ $c->abtest['test']       = [
     ],
 ];
 
-//$c->requestMainMenu = true;
+$c->requestMainMenu = true;
 
 return $c;

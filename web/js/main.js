@@ -69,7 +69,7 @@ $(document).ready(function(){
 	 * @param  {event} e
 	 */
 	suggestDown = function(e){
-		
+
 		// маркировка пункта
 		markSuggest = function(){
 			$('.bSearchSuggest__eRes').removeClass('hover').eq(nowSelectSuggest).addClass('hover')
@@ -101,13 +101,14 @@ $(document).ready(function(){
 		enterSuggest = function(){
 			// suggest analitycs
 			var link = $('.bSearchSuggest__eRes').eq(nowSelectSuggest).attr('href')
-			if ( typeof(_gaq) !== 'undefined' ){
-				var type = ($(this).hasClass('bSearchSuggest__eCategoryRes')) ? 'suggest_category' : 'suggest_product'
-				_gaq.push(['_trackEvent', 'Search', type, url])
+			var type = ($('.bSearchSuggest__eRes').eq(nowSelectSuggest).hasClass('bSearchSuggest__eCategoryRes')) ? 'suggest_category' : 'suggest_product'
+			
+			if ( typeof(_gaq) !== 'undefined' ){	
+				_gaq.push(['_trackEvent', 'Search', type, link])
 			}
-			console.log('123!!')
 			document.location.href = link
 		}
+
 		if (e.which == 38){
 			upSuggestItem()
 		}

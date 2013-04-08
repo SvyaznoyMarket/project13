@@ -198,7 +198,7 @@ class DefaultLayout extends Layout {
                 'order.create',
                 'order.complete',
             ])) {
-                $return .= "\n\n" . $this->render('partner-counter/_cityads');
+                $return .= "\n\n" . $this->tryRender('partner-counter/_cityads');
             }
 
             // на всех страницах сайта, кроме shop.*
@@ -206,7 +206,7 @@ class DefaultLayout extends Layout {
                 'order.create',
                 'order.complete',
             ])) {
-                $return .= "\n\n" . $this->render('partner-counter/_reactive');
+                $return .= "\n\n" . $this->tryRender('partner-counter/_reactive');
             }
         }
 

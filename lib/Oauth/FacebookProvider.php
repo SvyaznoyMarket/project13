@@ -89,7 +89,7 @@ class FacebookProvider implements ProviderInterface {
      * @throws \Exception
      */
     private function query($url, array $data = [], $jsonDecode = true) {
-        $client = new \Curl\Client();
+        $client = new \Curl\Client(\App::logger());
 
         try {
             $response = $client->query($url, $data);
