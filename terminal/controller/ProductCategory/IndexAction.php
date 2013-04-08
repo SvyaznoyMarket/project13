@@ -23,6 +23,12 @@ class IndexAction {
         return new \Http\Response($page->show());
     }
 
+    /**
+     * @param $categoryId
+     * @param \Http\Request $request
+     * @return \Http\JsonResponse
+     * @throws \Exception\NotFoundException
+     */
     public function product($categoryId, \Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
@@ -72,16 +78,19 @@ class IndexAction {
         }
         $client->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
+        $shopId = \App::config()->region['shop_id'];
         $productData = [];
         foreach ($collection as $product) {
             $productData[] = [
-                'id'          => $product->getId(),
-                'name'        => $product->getName(),
-                'image'       => $product->getImageUrl(3),
-                'article'     => $product->getArticle(),
-                'price'       => $product->getPrice(),
-                'description' => $product->getDescription(),
-                'isBuyable'   => $product->getIsBuyable(\App::config()->region['shop_id']),
+                'id'           => $product->getId(),
+                'name'         => $product->getName(),
+                'image'        => $product->getImageUrl(3),
+                'article'      => $product->getArticle(),
+                'price'        => $product->getPrice(),
+                'description'  => $product->getDescription(),
+                'isBuyable'    => $product->getIsBuyable($shopId),
+                'isInShop'     => $product->getIsInShop($shopId),
+                'isInShowroom' => $product->getIsInShowroom($shopId),
             ];
         }
 
