@@ -103,6 +103,7 @@ define('product_list',
 				return false
 			currentLoadedItems += res.products.length
 			preparedData(res.products)
+			getItems(5 - currentZoom())
 		}
 
 		var itemsLimit = (4 - currentZoom())*lines
@@ -141,7 +142,7 @@ define('product_list',
 		if (documentHeight - y - offset <= windowHeight )
 			getItems(6 - currentZoom())
 	}
-	terminal.flickable.scrollValueChanged.connect(terminalScrolling)
+	// terminal.flickable.scrollValueChanged.connect(terminalScrolling)
 
 
 	/**
@@ -266,7 +267,7 @@ define('product_list',
 		/**
 		 * Прогрузка товаров при инициализации страницы
 		 */
-		var initalLinesCount = 6 - currentZoom()
+		var initalLinesCount = 5 - currentZoom()
 		getItems(initalLinesCount)
 	}())
 

@@ -66,27 +66,40 @@ define('library',
 		$.fn.tapEvent = function(callback) {
 			var touchStartTime = null
 			var touchEndTime = null
+			var startX = null
+			var startY = null
+			var stopX = null
+			var stopY = null
 
 			var doTouchLogic = function(el) {
 				var duration = touchEndTime - touchStartTime
+				var deltaX =  Math.abs(startX - stopX)
+				var deltaY = Math.abs(startY - stopY)
 
-				if ((duration <= 100) && (duration > 0)) {
+				if ((duration <= 100) && (duration > 0) && (deltaY < 10) && (deltaX < 10)) {
 					callback.apply(el)
 					return true
 				}
 				return false
 			}
 
-			this.live('touchstart', function() {
+			this.live('touchstart', function(e) {
 				var d = new Date()
+				var orig = e.originalEvent
 
 				touchStartTime = d.getTime()
+				startX = orig.changedTouches[0].pageX
+				startY = orig.changedTouches[0].pageY
 			})
 
 			this.live('touchend', function(e) {
 				var d = new Date()
 				var self = $(this)
+				var orig = e.originalEvent
+
 				touchEndTime= d.getTime()
+				stopX = orig.changedTouches[0].pageX
+				stopY = orig.changedTouches[0].pageY
 				if (doTouchLogic(self))
 					e.preventDefault()
 					e.stopPropagation()
