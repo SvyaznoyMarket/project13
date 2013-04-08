@@ -8,7 +8,7 @@ define('library',
 		 * @public
 		 * @param {string} text текст который нужно вывести
 		 */
-		myConsole = function(text){
+		var myConsole = function(text){
 			if ($('#console').length)
 				$('#console').prepend('<p>'+text+'</p>')
 			console.log(text)
@@ -19,7 +19,7 @@ define('library',
 		 * Позиция консоли при скролинге
 		 * @return {[type]} [description]
 		 */
-		consolePos = function(){
+		var consolePos = function(){
 			var y = terminal.flickable.contentY
 			$('#console').css('top', y)
 		}
@@ -345,7 +345,7 @@ define('library',
 		 * @param {number} [offset="0"] отступ от элемента
 		 * @param {number} [time="300"] время за которое необходимо совершить анимацию
 		 */
-		scrollTo = function(element, offset, time){
+		var scrollTo = function(element, offset, time){
 			var aminateScroll = function(start, stop, step){
 				if ((start+step) < stop){
 					start += step
@@ -378,7 +378,7 @@ define('library',
 		 * @param  {number|string}
 		 * @return {string} отформатированное число
 		 */
-		formatMoney = function(num){
+		var formatMoney = function(num){
 			var str = num+' '
 			return str.replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1 ')
 		}

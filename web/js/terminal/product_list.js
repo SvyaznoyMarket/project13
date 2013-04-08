@@ -6,40 +6,129 @@ define('product_list',
 
 
 	/**
+	 * URL по которому необходимо получать товары
+	 */
+	var listingGetUrl = $('#categoryData').data('url')
+
+	/**
+	 * Количество уже прогруженных товаров
+	 */
+	var currentLoadedItems = 0
+
+	/**
+	 * Происходит ли загрузка в данный момент
+	 */
+	var loadingItems = false
+
+
+	/**
+	 * Определение текущего масштаба
+	 *
+	 * @author  Aleksandr Zaytsev
+	 * @return {number} текущий масштаб
+	 */
+	var currentZoom = function(){
+		var zoom = null
+		if ($('.bProductListWrap').hasClass('mSizeLittle')){
+			zoom = 0
+		}
+		else if ($('.bProductListWrap').hasClass('mSizeMid')){
+			zoom = 1
+		}
+		else if ($('.bProductListWrap').hasClass('mSizeBig')){
+			zoom = 2
+		}
+
+		return zoom
+	}
+
+
+	/**
 	 * Прорисовка карточки для товара. Прелоад изображения.
 	 *
 	 * @author  Aleksandr Zaytsev
 	 * @param  {object} data данные для рендеринга
 	 */
-	renderItem = function(data){
+	var renderItem = function(data){
 		var html = new EJS ({url: '/js/terminal/view/listing_itemProduct.ejs'}).render(data)
 
 		$('.bProductListWrap').append(html)
 		
 		var img = $('#productInList'+data.id+' .bProductListItem__eImg')
 		var src = img.attr('src')
+
 		img.load(src, function(){
 			$(this).fadeIn(300)
 		})
 	}
 
-	library.myConsole('render template from JSON...')
-	var data = $('#productList').data('product')
-	for (var i = 0; i< data.length; i++){
-		var template = {
-			id : data[i].id,
-			article : data[i].article,
-			image : data[i].image,
-			name : data[i].name,
-			price : library.formatMoney(data[i].price),
-			isBuyable : data[i].isBuyable
+
+
+	/**
+	 * Формирование данных для шаблона
+	 *
+	 * @author  Aleksandr Zaytsev
+	 * @param  {Object} data данные для рендеринга шаблона
+	 */
+	var preparedData = function(data){
+		for (var i = 0; i< data.length; i++){
+			var template = {
+				id : data[i].id,
+				article : data[i].article,
+				image : data[i].image,
+				name : data[i].name,
+				price : library.formatMoney(data[i].price),
+				isBuyable : data[i].isBuyable
+			}
+			renderItem(template)
 		}
-		renderItem(template)
 	}
-	library.myConsole('render done')
+
+	
+	/**
+	 * Прогрузка строк с новыми товарами
+	 *
+	 * @author  Aleksandr Zaytsev
+	 * @param {number} lines количество строк, которое необходиом прогрузить
+	 */
+	var getItems = function(lines){
+		if (loadingItems)
+			return false
+
+		loadingItems = true
+
+		var resFromServer = function(res){
+			loadingItems = false
+			if (!res.success)
+				return false
+			currentLoadedItems += res.products.length
+			preparedData(res.products)
+		}
+
+		var itemsLimit = (4 - currentZoom())*lines
+		var data = {
+			limit : itemsLimit,
+			offset : currentLoadedItems
+		}
+
+		$.ajax({
+			type: "POST",
+			url: listingGetUrl,
+			data: data,
+			success: resFromServer
+		})
+	}
 
 
-
+	/**
+	 * Обработка скролинга страницы
+	 *
+	 * @author  Aleksandr Zaytsev
+	 * @param {number} y текущий отступ прокрутки
+	 * @param {number} windowHeight высота окна
+	 * @param {number} documentHeight высота документа
+	 * @param {number} offset отступ снизу, после которого срабатывает загрузка новых элементов
+	 */
 	var terminalScrolling = function(){
 		if (!$('.bProductListItem').length)
 			return false
@@ -47,10 +136,10 @@ define('product_list',
 		var y = terminal.flickable.contentY
 		var windowHeight = terminal.flickable.height
 		var documentHeight = terminal.flickable.contentHeight
-		var offset = parseInt($('.bProductListItem').height())
+		var offset = windowHeight
 
 		if (documentHeight - y - offset <= windowHeight )
-			library.myConsole('end')
+			getItems(6 - currentZoom())
 	}
 	terminal.flickable.scrollValueChanged.connect(terminalScrolling)
 
@@ -64,11 +153,12 @@ define('product_list',
 	 * @param   {array}    sizes         массив названия классов размеров
 	 * @param   {number}   nowZoom       текущий масштаб
 	 */
-	listingZoom = function(el){
-
+	var listingZoom = function(el){
+		var nowZoom = currentZoom()
 		var startTouches = []
-		var nowZoom = 0
 		var sizes = ['mSizeLittle','mSizeMid','mSizeBig']
+		// var heights = [143, 210, 340]
+
 
 		/**
 		 * Смена масшаба
@@ -76,7 +166,7 @@ define('product_list',
 		 * @inner
 		 * @param  {string} zoom вверх или вниз
 		 */
-		changeZoom = function(zoom){
+		var changeZoom = function(zoom){
 			el.removeClass(sizes[nowZoom])
 			if (zoom == 'up'){
 				nowZoom = ((nowZoom + 1) > 2) ? 2 : nowZoom + 1
@@ -96,7 +186,7 @@ define('product_list',
 		 * @param  {event}  e
 		 * @param  {object} nowTouch координаты текущего касания
 		 */
-		moveStart = function(e){
+		var moveStart = function(e){
 			e.preventDefault()
 
 			var orig = e.originalEvent
@@ -120,7 +210,7 @@ define('product_list',
 		 * @param  {number} startDelta разница координат начала движения
 		 * @param  {number} nowDelta разница координат текущих положений пальцев
 		 */
-		moveMe = function(e){
+		var moveMe = function(e){
 			e.preventDefault()
 			var orig = e.originalEvent
 			var len = orig.changedTouches.length
@@ -156,7 +246,7 @@ define('product_list',
 		 * @inner
 		 * @param  {event} e
 		 */
-		moveEnd = function(e){
+		var moveEnd = function(e){
 			e.preventDefault()
 			
 			var orig = e.originalEvent
@@ -170,5 +260,14 @@ define('product_list',
 		el.bind('touchend', moveEnd)
 	}
 	listingZoom($('.bProductListWrap'))
+	
+
+	(initPage = function(){
+		/**
+		 * Прогрузка товаров при инициализации страницы
+		 */
+		var initalLinesCount = 6 - currentZoom()
+		getItems(initalLinesCount)
+	}())
 
 })
