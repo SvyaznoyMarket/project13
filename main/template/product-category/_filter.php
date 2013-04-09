@@ -24,6 +24,11 @@ $formName = \View\Product\FilterForm::$name;
         <dt class="filterHeader">Выбираем:<i></i></dt>
         <? require __DIR__ . '/_selectedFilter.php' ?>
 
+        <? if ($category->getIsFurniture()): ?>
+            <?= $page->tryRender('product-category/filter/_instore', ['category' => $category]) ?>
+            <input type="hidden" name="instore" value="<?= $productFilter->inStore() ? 1 : '' ?>" />
+        <? endif ?>
+
         <? $openNum = 0 ?>
         <? $index = 0; foreach ($productFilter->getFilterCollection() as $filter): ?>
             <? if (!$filter->getIsInList()) continue ?>
