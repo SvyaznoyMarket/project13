@@ -101,7 +101,7 @@ class IndexAction {
                 'image'         => $product->getImageUrl(3),
                 'article'       => $product->getArticle(),
                 'price'         => $product->getPrice(),
-                'description'   => $product->getAnnounce(),
+                'description'   => $product->getTagline(),
                 'isBuyable'     => $product->getIsBuyable($shopId),
                 'isInShop'      => $product->getIsInShop($shopId),
                 'isInShowroom'  => $product->getIsInShowroom($shopId),

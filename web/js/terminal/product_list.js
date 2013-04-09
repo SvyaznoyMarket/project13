@@ -111,7 +111,7 @@ define('product_list',
 				return false
 			currentLoadedItems += res.products.length
 			preparedData(res.products)
-			// getItems(5 - currentZoom())
+			getItems(5 - currentZoom())
 		}
 
 		var itemsLimit = (4 - currentZoom())*lines
@@ -150,7 +150,7 @@ define('product_list',
 		if (documentHeight - y - offset <= windowHeight )
 			getItems(6 - currentZoom())
 	}
-	terminal.flickable.scrollValueChanged.connect(terminalScrolling)
+	// terminal.flickable.scrollValueChanged.connect(terminalScrolling)
 
 
 	/**
@@ -179,11 +179,9 @@ define('product_list',
 			el.removeClass(sizes[nowZoom])
 			if (zoom == 'up'){
 				nowZoom = ((nowZoom + 1) > 2) ? 2 : nowZoom + 1
-				// library.myConsole('увеличиваем ' + nowZoom)
 			}
 			if (zoom == 'down'){
 				nowZoom = ((nowZoom - 1) < 0) ? 0 : nowZoom - 1
-				// library.myConsole('уменьшаем ' + nowZoom)
 			}
 			el.addClass(sizes[nowZoom])
 		}
@@ -268,7 +266,7 @@ define('product_list',
 		el.bind('touchmove', moveMe)
 		el.bind('touchend', moveEnd)
 	}
-	listingZoom($('.bProductListWrap'))
+	listingZoom($('.bProductListWrap'));
 	
 
 	(initPage = function(){
