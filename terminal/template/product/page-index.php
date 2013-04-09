@@ -81,7 +81,7 @@ $warranties = $product->getWarranty();
                     <?php elseif ($product->getState()->getIsShop() ):?>
                     <a class="bGoodDescBlock_eBayBtn bButton mGrayBtn mFl jsWhereBuy" data-productid='<?= $product->getId() ?>' href="#">Где купить?</a>
                     <? endif; ?>
-                    <a id="compare_<?= $product->getId() ?>" class="bGoodDescBlock_eCompBtn jsCompare bButton mGrayBtn mFl" data-productid='<?= $product->getId() ?>' href="#">К сравнению</a>
+                    <a id="compare_<?= $product->getId() ?>" class="bGoodDescBlock_eCompBtn jsCompare bButton mGrayBtn mFl" data-productid='<?= $product->getId() ?>' href="#">Сравнить</a>
                 </div>
 
                 <p class="bGoodDescBlock_eShortDesc clearfix"><?= $product->getTagline() ?>

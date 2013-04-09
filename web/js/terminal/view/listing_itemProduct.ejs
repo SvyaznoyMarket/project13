@@ -3,19 +3,33 @@
 	<div class="bProductListItem__eDesc mFl">
 		<p class="bProductListItem__eArticle">#<%= article %></p>
 		<h2 class="bProductListItem__eTitle"><%= name %></h2>
-		<p class="bProductListItem__eFullDesc">full desc</p>
+		<p class="bProductListItem__eFullDesc"><%= description%></p>
 		<p class="bProductListItem__ePrice"><%= price %> <span class="bRuble">p</span></p>
 		<ul class="bProductListItem__eDlvrBlock">
+			
+		<% if (isInShop) {%>
 			<li class="bProductListItem__eDlvrBlockItem mListDisk mBold mOrange">Есть в этом магазине</li>
 			<li class="bProductListItem__eDlvrBlockItem mListDisk">Можно забрать сейчас</li>
+		<%}else if (isInShowroom) {%>
+			<li class="bProductListItem__eDlvrBlockItem mListDisk"><strong class="mBold">Есть на витрине магазина</strong></li>
+			<li class="bProductListItem__eDlvrBlockItem mListDisk">Можно забрать сейчас</li>
+		<%}else if (isInStore || hasSupplier) {%>
+			<li class="bProductListItem__eDlvrBlockItem mListDisk"><strong class="mBold">Есть на центральном складе</strong></li>
+			<li class="bProductListItem__eDlvrBlockItem mListDisk">Можно оформить доставку</li>
+		<%}else if (isInOtherShop) {%>
+			<li class="bProductListItem__eDlvrBlockItem mListDisk"><strong class="mBold">Есть в другом магазине</strong></li>
+		<%}else {%>
+			<li class="bProductListItem__eDlvrBlockItem mListDisk"><strong class="mBold">Товар закончился</strong></li>
+		<%}%>
+
 		</ul>
 		<div class="bProductListItem__eBtnBlock">
 		<% if (isBuyable) {%>
-			<a class="bProductListItem__eBtn bButton mGrayBtn mFl jsWhereBuy" data-productid='<%= id %>' href="#">Где купить?</a>
-		<%}else {%>
 			<a class="bProductListItem__eBtn bButton mOrangeBtn mFl jsBuyButton" data-productid='<%= id %>' href="#">В корзину</a>
+		<%}else if (isInOtherShop) {%>
+			<a class="bProductListItem__eBtn bButton mGrayBtn mFl jsWhereBuy" data-productid='<%= id %>' href="#">Где купить?</a>
 		<%}%>
-			<a id="compare_<%= id %>" class="bProductListItem__eBtn jsCompare bButton mGrayBtn mFl" data-productid='<%= id %>' href="#">К сравнению</a>
+			<a id="compare_<%= id %>" class="bProductListItem__eBtn jsCompare bButton mGrayBtn mFl" data-productid='<%= id %>' href="#">Сравнить</a>
 		</div>
 	</div>
 </div>

@@ -84,11 +84,11 @@ define('termAPI',
 		checkCompare = function(productId) {
 			var element = createElement(productId)
 			if (terminal.compare.hasProduct(productId)){
-				element.html('Убрать из сравнения')
+				element.html('Убрать из&nbsp;сравнения').addClass('mActive')
 				return true
 			}
 			else{
-				element.html('К сравнению')
+				element.html('Сравнить').removeClass('mActive')
 				return false
 			}
 		}
@@ -112,8 +112,8 @@ define('termAPI',
 				checkCompare(productId)
 			}
 		}
-		//terminal.compare.productRemoved.connect(checkCompare)
-		//terminal.compare.productAdded.connect(checkCompare)
+		terminal.compare.productRemoved.connect(checkCompare)
+		terminal.compare.productAdded.connect(checkCompare)
 
 
 		/**

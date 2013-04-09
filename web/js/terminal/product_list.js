@@ -57,6 +57,8 @@ define('product_list',
 		var img = $('#productInList'+data.id+' .bProductListItem__eImg')
 		var src = img.attr('src')
 
+		termAPI.checkCompare(data.id)
+
 		img.load(src, function(){
 			$(this).fadeIn(300)
 		})
@@ -78,7 +80,13 @@ define('product_list',
 				image : data[i].image,
 				name : data[i].name,
 				price : library.formatMoney(data[i].price),
-				isBuyable : data[i].isBuyable
+				description : data[i].description,
+				isBuyable : data[i].isBuyable,
+				isInShop : data[i].isInShop,
+				isInShowroom : data[i].isInShowroom,
+				isInStore : data[i].isInStore,
+				hasSupplier : data[i].hasSupplier,
+				isInOtherShop : data[i].isInOtherShop
 			}
 			renderItem(template)
 		}
@@ -103,7 +111,7 @@ define('product_list',
 				return false
 			currentLoadedItems += res.products.length
 			preparedData(res.products)
-			getItems(5 - currentZoom())
+			// getItems(5 - currentZoom())
 		}
 
 		var itemsLimit = (4 - currentZoom())*lines
@@ -142,7 +150,7 @@ define('product_list',
 		if (documentHeight - y - offset <= windowHeight )
 			getItems(6 - currentZoom())
 	}
-	// terminal.flickable.scrollValueChanged.connect(terminalScrolling)
+	terminal.flickable.scrollValueChanged.connect(terminalScrolling)
 
 
 	/**
