@@ -245,6 +245,10 @@ return [
         'pattern' => '/cart',
         'action'  => ['Cart\IndexAction', 'execute'],
     ],
+    'cart.info' => [
+        'pattern' => '/cart/info',
+        'action'  => ['Cart\InfoAction', 'execute'],
+    ],
     // очистка корзины
     'cart.clear' => [
         'pattern' => '/cart/clear',
@@ -285,6 +289,14 @@ return [
         'pattern' => '/cart/warranty/{productId}/delete/{warrantyId}',
         'require' => ['productId' => '\d+', 'warrantyId' => '\d+'],
         'action'  => ['Cart\WarrantyAction', 'delete'],
+    ],
+    'cart.certificate.apply' => [
+        'pattern' => '/cart/f1-certificate',
+        'action'  => ['Cart\CertificateAction', 'apply'],
+    ],
+    'cart.certificate.delete' => [
+        'pattern' => '/cart/f1-certificate/delete',
+        'action'  => ['Cart\CertificateAction', 'delete'],
     ],
 
     // заказ

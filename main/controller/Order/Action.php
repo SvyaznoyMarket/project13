@@ -113,14 +113,14 @@ class Action {
                             continue;
                         }
 
-                        $errorItem['product'] = [];
-                        $errorItem['product']['id'] = $product->getId();
-                        $errorItem['product']['token'] = $product->getToken();
-                        $errorItem['product']['name'] = $product->getName();
-                        $errorItem['product']['image'] = $product->getImageUrl(0);
-
-                        $errorItem['product']['quantity'] = $cartProduct->getQuantity();
-                        $errorItem['product']['price'] = $product->getPrice();
+                        $errorItem['product'] = [
+                            'id'       => $product->getId(),
+                            'token'    => $product->getToken(),
+                            'name'     => $product->getName(),
+                            'image'    => $product->getImageUrl(0),
+                            'quantity' => $cartProduct->getQuantity(),
+                            'price'    => $product->getPrice(),
+                        ];
 
                         if (!empty($errorItem['quantity_available'])) {
                             $errorItem['product']['addUrl'] = \App::router()->generate('cart.product.add', array('productId' => $product->getId(), 'quantity' => $errorItem['quantity_available']));
@@ -713,6 +713,21 @@ class Action {
                         'quantity' => $cartService->getQuantity(),
                     );
                 }
+
+                // скидки
+                $actionData = [];
+                foreach ($user->getCart()->getActions() as $action) {
+                    $actionData[$action->getId()] = [
+                        'id'            => $action->getId(),
+                        'number'        => $action->getNumber(),
+                        'product_list'  => $action->getProductIds(),
+                        'service_list'  => $action->getServiceIds(),
+                        'warranty_list' => $action->getWarrantyIds(),
+                    ];
+                }
+                if ((bool)$actionData) {
+                    $orderData['action'] = $actionData;
+                }
             }
 
             $data[] = $orderData;
@@ -924,7 +939,7 @@ class Action {
                         /** @var $service \Model\Product\Service\Entity */
                         $service = $servicesById[$cartService->getId()];
                         $serviceName .= sprintf(' + <span class="motton">%s (%s шт.)</span>', $service->getName(), $cartService->getQuantity());
-                        $serviceTotal += ($cartService->getPrice() * $cartService->getQuantity());
+                        $serviceTotal += $cartService->getSum();
                     }
                 }
 
@@ -945,7 +960,7 @@ class Action {
                         }
 
                         $serviceName .= sprintf(' + <span class="motton">%s (%s шт.)</span>', $warranty->getName(), $cartWarranty->getQuantity());
-                        $serviceTotal += ($cartWarranty->getPrice() * $cartWarranty->getQuantity());
+                        $serviceTotal += $cartWarranty->getSum();
                     }
                 }
 
@@ -967,7 +982,7 @@ class Action {
                 $itemView->image = $itemData['media_image'];
                 $itemView->price = $itemData['price'];
                 $itemView->quantity = $cartItem->getQuantity();
-                $itemView->total = ($cartItem->getPrice() * $cartItem->getQuantity()) + $serviceTotal;
+                $itemView->total = $cartItem->getSum() + $serviceTotal;
                 if ($cartItem instanceof \Model\Cart\Product\Entity) {
                     $itemView->type = \View\Order\DeliveryCalc\Item::TYPE_PRODUCT;
                 } else if ($cartItem instanceof \Model\Cart\Service\Entity) {

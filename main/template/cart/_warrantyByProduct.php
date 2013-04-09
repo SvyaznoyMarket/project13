@@ -86,7 +86,7 @@ foreach ($product->getWarranty() as $warranty) {
                         <!--a class="bBacketServ__eMore" href="#">Подробнее об услуге</a-->
                     </td>
                     <td class="mPrice">
-                        <span class="price"><?= $page->helper->formatPrice($selectedWarranty->getPrice() * $cartWarranty->getQuantity()) ?></span>&nbsp;<span class="rubl">p</span>
+                        <span class="price"><?= $page->helper->formatPrice($cartWarranty->getSum()) ?></span>&nbsp;<span class="rubl">p</span>
                     </td>
                     <td class="mEdit">
                         <?= $page->render('_spinner', array(

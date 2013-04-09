@@ -14,8 +14,15 @@ class Cart {
     private $services = null;
     /** @var \Model\Cart\Warranty\Entity[]|null */
     private $warranties = null;
-    /** @var int|null */
-    private $totalPrice = null;
+    /** @var \Model\Cart\Certificate\Entity[] */
+    private $certificates = null;
+    /** @var \Model\Cart\Action\Entity[] */
+    private $actions = null;
+    /** @var int */
+    private $sum = null;
+    /** @var int */
+    private $originalSum = null;
+    /** @var int */
     private $productLimit = null;
 
     public function __construct() {
@@ -26,7 +33,12 @@ class Cart {
 
         // если пользователь впервые, то заводим ему пустую корзину
         if (empty($session[$this->sessionName])) {
-            $this->storage->set($this->sessionName, ['productList' => [], 'serviceList' => [], 'warrantyList' => []]);
+            $this->storage->set($this->sessionName, [
+                'productList'     => [],
+                'serviceList'     => [],
+                'warrantyList'    => [],
+                'certificateList' => [],
+            ]);
             return;
         }
 
@@ -45,6 +57,12 @@ class Cart {
         if (!array_key_exists('warrantyList', $session[$this->sessionName])) {
             $data = $this->storage->get($this->sessionName);
             $data['warrantyList'] = [];
+            $this->storage->set($this->sessionName, $data);
+        }
+
+        if (!array_key_exists('certificateList', $session[$this->sessionName])) {
+            $data = $this->storage->get($this->sessionName);
+            $data['certificateList'] = [];
             $this->storage->set($this->sessionName, $data);
         }
 
@@ -67,10 +85,11 @@ class Cart {
 
     public function clear() {
         $this->storage->set($this->sessionName, null);
-        $this->totalPrice = null;
+        $this->sum = null;
         $this->products = null;
         $this->services = null;
         $this->warranties = null;
+        $this->certificates = null;
     }
 
     /**
@@ -210,7 +229,7 @@ class Cart {
     public function getTotalProductPrice() {
         $price = 0;
         foreach ($this->getProducts() as $product) {
-            $price += $product->getTotalPrice();
+            $price += $product->getSum();
         }
 
         return $price;
@@ -219,12 +238,23 @@ class Cart {
     /**
      * @return int
      */
-    public function getTotalPrice() {
-        if (null === $this->totalPrice) {
+    public function getSum() {
+        if (null === $this->sum) {
             $this->fill();
         }
 
-        return $this->totalPrice;
+        return $this->sum;
+    }
+
+    /**
+     * @return int
+     */
+    public function getOriginalSum() {
+        if (null === $this->originalSum) {
+            $this->fill();
+        }
+
+        return $this->originalSum;
     }
 
     /**
@@ -259,6 +289,15 @@ class Cart {
         }
 
         return $this->services;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasServices() {
+        $data = $this->getData();
+
+        return count($data['serviceList']) > 0;
     }
 
     /**
@@ -403,6 +442,56 @@ class Cart {
         return $return;
     }
 
+    /**
+     * @param \Model\Cart\Certificate\Entity $certificate
+     */
+    public function setCertificate(\Model\Cart\Certificate\Entity $certificate) {
+        $this->clearCertificates();
+
+        $data = $this->storage->get($this->sessionName);
+        $data['certificateList'][] = [
+            'number' => $certificate->getNumber(),
+        ];
+
+        $this->fill();
+
+        $this->storage->set($this->sessionName, $data);
+    }
+
+    public function clearCertificates() {
+        $data = $this->storage->get($this->sessionName);
+        $data['certificateList'] = [];
+
+        $this->fill();
+
+        $this->storage->set($this->sessionName, $data);
+    }
+
+    /**
+     * @return \Model\Cart\Certificate\Entity[]
+     */
+    public function getCertificates() {
+        if (null === $this->certificates) {
+            $data = $this->storage->get($this->sessionName);
+            foreach ($data['certificateList'] as $certificateData) {
+                $this->certificates[$certificateData['number']] = new \Model\Cart\Certificate\Entity($certificateData);
+            }
+        }
+
+        return $this->certificates ?: [];
+    }
+
+    /**
+     * @return \Model\Cart\Action\Entity[]
+     */
+    public function getActions() {
+        if (null === $this->actions) {
+            $this->fill();
+        }
+
+        return $this->actions ?: [];
+    }
+
     public function fill() {
         // получаем список цен
         $default = [
@@ -413,20 +502,49 @@ class Cart {
         ];
 
         try {
+            // если в корзине есть товары или услуги
             if (((bool)$this->getProductsQuantity() || (bool)$this->getServicesQuantity())) {
                 $response = $default;
-                \App::coreClientV2()->addQuery(
-                    'cart/get-price',
-                    ['geo_id' => \App::user()->getRegion()->getId()],
-                    [
-                        'product_list'  => $this->getProductData(),
-                        'service_list'  => $this->getServiceData(),
-                        'warranty_list' => $this->getWarrantyData(),
-                    ],
-                    function ($data) use (&$response) {
-                        $response = $data;
-                    });
-                \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['default'], \App::config()->coreV2['retryCount']);
+
+                // если есть сертификат
+                $certificates = $this->getCertificates();
+                $certificate = is_array($certificates) ? reset($certificates) : null;
+                if (\App::config()->f1Certificate['enabled'] && $certificate instanceof \Model\Cart\Certificate\Entity) {
+                    \App::coreClientV2()->addQuery(
+                        'cart/get-price-new',
+                        [
+                            'geo_id'    => \App::user()->getRegion()->getId(),
+                        ],
+                        [
+                            'user_id'       => \App::user()->getEntity() ? \App::user()->getEntity()->getId() : 0,
+                            'timestamp'     => time(),
+                            'product_list'  => $this->getProductData(),
+                            'service_list'  => $this->getServiceData(),
+                            'warranty_list' => $this->getWarrantyData(),
+                            'card_f1_list'  => [
+                                ['number' => $certificate->getNumber()],
+                            ],
+                        ],
+                        function ($data) use (&$response) {
+                            $response = $data;
+                        }
+                    );
+                    \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['default'], \App::config()->coreV2['retryCount']);
+                } else {
+                    \App::coreClientV2()->addQuery(
+                        'cart/get-price',
+                        ['geo_id' => \App::user()->getRegion()->getId()],
+                        [
+                            'product_list'  => $this->getProductData(),
+                            'service_list'  => $this->getServiceData(),
+                            'warranty_list' => $this->getWarrantyData(),
+                        ],
+                        function ($data) use (&$response) {
+                            $response = $data;
+                        }
+                    );
+                    \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['default'], \App::config()->coreV2['retryCount']);
+                }
             } else {
                 $response = $default;
             }
@@ -435,7 +553,14 @@ class Cart {
             $response = $default;
         }
 
-        $this->totalPrice = array_key_exists('price_total', $response) ? $response['price_total'] : 0;
+        $this->sum = array_key_exists('sum', $response) ? $response['sum'] : 0;
+        $this->originalSum = array_key_exists('original_sum', $response) ? $response['original_sum'] : 0;
+
+        if (array_key_exists('action_list', $response)) {
+            foreach ($response['action_list'] as $actionData) {
+                $this->actions[$actionData['id']] = new \Model\Cart\Action\Entity($actionData);
+            }
+        }
 
         $this->products = [];
         if (array_key_exists('product_list', $response)) {

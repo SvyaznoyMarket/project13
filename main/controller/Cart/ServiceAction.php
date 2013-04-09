@@ -51,13 +51,22 @@ class ServiceAction {
 
             $cart->setService($service, $quantity, $productId);
 
+            $cartService = null;
+            if ($product && $cartProduct = $cart->getProductById($product->getId())) {
+                $cartService = $cartProduct->getServiceById($service->getId());
+            } else {
+                $cartService = $cart->getServiceById($service->getId());
+            }
+
             return $request->isXmlHttpRequest()
                 ? new \Http\JsonResponse([
                     'success' => true,
                     'data'    => [
+                        'sum'           => $cartService ? $cartService->getSum() : 0,
                         'quantity'      => $quantity,
                         'full_quantity' => $cart->getProductsQuantity() + $cart->getServicesQuantity() + $cart->getWarrantiesQuantity(),
-                        'full_price'    => $cart->getTotalPrice(),
+                        'full_price'    => $cart->getSum(),
+                        'old_price'     => $cart->getOriginalSum(),
                         'link'          => \App::router()->generate('order.create'),
                     ],
                 ])

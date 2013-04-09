@@ -276,7 +276,7 @@ class Client {
      * @return resource
      */
     private function create($url, array $data = [], $timeout = null) {
-        $this->logger->info('Start curl ' . $url . ((bool)$data ? ' data: ' . $this->encode($data) : '') . ($timeout ? (' timeout: ' . $timeout) : ''));
+        $this->logger->info('Start curl ' . $url . ((bool)$data ? ' ' . $this->encode($data) : '') . ($timeout ? (' timeout: ' . $timeout) : ''));
 
         $connection = curl_init();
         curl_setopt($connection, CURLOPT_HEADER, 1);

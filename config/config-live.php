@@ -79,6 +79,8 @@ $c->abtest['test']       = [
 
 $c->subscribe['enabled'] = true;
 
+$c->f1Certificate['enabled'] = true;
+
 $c->requestMainMenu = true;
 
 return $c;
