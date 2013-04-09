@@ -22,6 +22,8 @@ requirejs.config({
     urlArgs : "bust="+new Date().getTime()
 });
 
+var develop = false
+
 // for all pages
 require(["termAPI"])
 

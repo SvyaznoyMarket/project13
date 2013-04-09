@@ -1,6 +1,7 @@
 define('library',
 	['jquery'], function ($) {
 
+
 		/**
 		 * Вывод в отладочную консоль
 		 *
@@ -9,23 +10,27 @@ define('library',
 		 * @param {string} text текст который нужно вывести
 		 */
 		var myConsole = function(text){
-			if ($('#console').length)
-				$('#console').prepend('<p>'+text+'</p>')
+			var c = $('#console')
+
+			if (!develop)
+				return false
+
+			if (!c.length)
+				return false
+			
+			/**
+			 * Позиция консоли при скролинге
+			 */
+			var consolePos = function(){
+				var y = terminal.flickable.contentY
+				c.css('top', y)
+			}
+
+			c.prepend('<p>'+text+'</p>')
 			console.log(text)
-		}
-
-
-		/**
-		 * Позиция консоли при скролинге
-		 * @return {[type]} [description]
-		 */
-		var consolePos = function(){
-			var y = terminal.flickable.contentY
-			$('#console').css('top', y)
-		}
-		terminal.flickable.scrollValueChanged.connect(consolePos)
-		
-
+			c.show()
+			terminal.flickable.scrollValueChanged.connect(consolePos)
+		}		
 		myConsole('library.js v4 loaded')
 
 
