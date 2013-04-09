@@ -13,7 +13,7 @@ class Action {
     public function setGlobal($categoryPath, \Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
-        $response = new \Http\RedirectResponse($request->headers->get('referer') ?: \App::router()->generate('product.category', array($categoryPath => $categoryPath)));
+        $response = new \Http\RedirectResponse($request->headers->get('referer') ?: \App::router()->generate('product.category', [$categoryPath => $categoryPath]));
 
         if ($request->query->has('global')) {
             if ($request->query->get('global')) {
@@ -23,6 +23,22 @@ class Action {
                 $response->headers->clearCookie(self::$globalCookieName);
             }
         }
+
+        return $response;
+    }
+
+    /**
+     * @param string        $categoryPath
+     * @param \Http\Request $request
+     * @return \Http\RedirectResponse
+     */
+    public function setInstore($categoryPath, \Http\Request $request) {
+        \App::logger()->debug('Exec ' . __METHOD__);
+
+        $response = new \Http\RedirectResponse($request->headers->get('referer') ?: \App::router()->generate('product.category', [
+            'categoryPath' => $categoryPath,
+            'instore'      => 1,
+        ]));
 
         return $response;
     }
@@ -478,8 +494,10 @@ class Action {
      * @return \Model\Product\Filter
      */
     private function getFilter(array $filters, \Model\Product\Category\Entity $category, \Http\Request $request) {
-        // проверяем флаг глобального списка в параметрах запроса
+        // флаг глобального списка в параметрах запроса
         $isGlobal = self::isGlobal();
+        //
+        $inStore = self::inStore();
 
         // регион для фильтров
         $region = $isGlobal ? null : \App::user()->getRegion();
@@ -488,6 +506,9 @@ class Action {
         $values = (array)$request->get(\View\Product\FilterForm::$name, []);
         if ($isGlobal) {
             $values['global'] = 1;
+        }
+        if ($inStore) {
+            $values['instore'] = 1;
         }
 
         // проверяем есть ли в запросе фильтры
@@ -521,7 +542,7 @@ class Action {
             }
         }
 
-        $productFilter = new \Model\Product\Filter($filters, $isGlobal);
+        $productFilter = new \Model\Product\Filter($filters, $isGlobal, $inStore);
         $productFilter->setCategory($category);
         $productFilter->setValues($values);
 
@@ -534,5 +555,12 @@ class Action {
     public static function isGlobal() {
         return \App::user()->getRegion()->getHasTransportCompany()
             && (bool)(\App::request()->cookies->get(self::$globalCookieName, false));
+    }
+
+    /**
+     * @return bool
+     */
+    public static function inStore() {
+        return (bool)\App::request()->get('instore');
     }
 }
