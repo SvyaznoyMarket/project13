@@ -205,7 +205,7 @@ $c->abtest = [
     'test'       => [],
 ];
 
-$c->subscribe['enabled'] = false;
+$c->subscribe['enabled'] = true;
 $c->subscribe['cookieName'] = 'subscribed';
 
 $c->requestMainMenu = false;
