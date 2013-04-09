@@ -212,4 +212,8 @@ class DefaultLayout extends Layout {
 
         return $return;
     }
+
+    public function slotConfig() {
+        return $this->tryRender('_config');
+    }
 }
