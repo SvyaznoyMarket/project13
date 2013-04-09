@@ -177,8 +177,6 @@ define('library',
 			 * @param {number} touchEvent текущее положение пальца
 			 */
 			self.checkMove = function( newOffset, touchEvent ){
-				self.trigger('sliderMoved')
-
 				if ( newOffset > self.stop.start ){
 					if (dir){
 						self.css({left: 0})
@@ -188,6 +186,7 @@ define('library',
 					}
 					self.start.offset = 0
 					self.start.x = (touchEvent) ? touchEvent : 0
+					self.trigger('sliderMoved')
 					return false
 				}
 				else if ( newOffset < -self.stop.end){
@@ -199,6 +198,7 @@ define('library',
 					}
 					self.start.offset = -self.stop.end
 					self.start.x = (touchEvent) ? touchEvent : 0
+					self.trigger('sliderMoved')
 					return false
 				}
 				else{
@@ -208,6 +208,7 @@ define('library',
 					else{
 						self.css({top: newOffset})
 					}
+					self.trigger('sliderMoved')
 					return true
 				}
 			}
