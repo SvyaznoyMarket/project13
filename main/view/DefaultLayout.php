@@ -36,7 +36,7 @@ class DefaultLayout extends Layout {
     }
 
     public function slotGoogleAnalytics() {
-        return $this->render('_googleAnalytics');
+        return $this->tryRender('_googleAnalytics');
     }
 
     public function slotBodyDataAttribute() {
