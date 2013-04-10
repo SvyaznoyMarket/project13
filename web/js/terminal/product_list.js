@@ -167,7 +167,7 @@ define('product_list',
 		var nowZoom = currentZoom()
 		var startTouches = []
 		var sizes = ['mSizeLittle','mSizeMid','mSizeBig']
-		var heights = [178, 245, 375]
+		var heights = [180, 247, 377]
 
 
 		/**
@@ -194,8 +194,10 @@ define('product_list',
 			el.addClass(sizes[nowZoom])
 
 			cols = 4 - nowZoom
+
 			var nowRows = nowElCount/cols | 0
 			var newY = (nowRows*heights[nowZoom]) + 30
+
 			library.scrollTo(newY, 0 , 10)
 		}
 
