@@ -6,7 +6,7 @@ class NotFoundAction {
     public function execute(\Exception $e, \Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
-        \App::logger()->error([
+        \App::logger()->warn([
             'message'   => 'Страница не найдена.',
             'exception' => (string)$e,
         ]);
