@@ -237,22 +237,24 @@ class AppConfig {
         'enabled'    => null,
         'cookieName' => null,
     ];
-
-    public function __construct() {
-        $this->vkontakteOauth = new OAuth\VkontakteConfig();
-        $this->odnoklassnikiOauth = new OAuth\OdnoklassnikiConfig();
-        $this->facebookOauth = new OAuth\FacebookConfig();
-    }
-
     /** @var array */
     public $queue = [
         'pidFile' => null,
         'workerLimit' => null,
         'maxLockTime' => null,
     ];
-
     /** @var boolean */
     public $requestMainMenu = null;
+    /** @var array */
+    public $mobileModify = [ // SITE-1035
+        'enabled' => null,
+    ];
+
+    public function __construct() {
+        $this->vkontakteOauth = new OAuth\VkontakteConfig();
+        $this->odnoklassnikiOauth = new OAuth\OdnoklassnikiConfig();
+        $this->facebookOauth = new OAuth\FacebookConfig();
+    }
 
     public function __set($name, $value) {
         throw new \LogicException(sprintf('Неизвестный параметр "%s".', $name));

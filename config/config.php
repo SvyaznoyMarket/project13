@@ -210,4 +210,6 @@ $c->subscribe['cookieName'] = 'subscribed';
 
 $c->requestMainMenu = false;
 
+$c->mobileModify['enabled'] = false;
+
 return $c;
