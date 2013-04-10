@@ -2,7 +2,7 @@
 define('product_list',
 	['jquery', 'ejs', 'library', 'termAPI'], function ($, EJS, library, termAPI) {
 
-	library.myConsole('product_list.js loaded')
+	library.myConsole('product_list.js v_2 loaded')
 
 
 	/**
@@ -111,7 +111,7 @@ define('product_list',
 				return false
 			currentLoadedItems += res.products.length
 			preparedData(res.products)
-			getItems(5 - currentZoom())
+			// getItems(5 - currentZoom())
 		}
 
 		var itemsLimit = (4 - currentZoom())*lines
@@ -154,6 +154,29 @@ define('product_list',
 
 
 	/**
+	 * Автодоводка скрола под текущий размер сетки
+	 *
+	 * @author  Aleksandr Zaytsev
+	 */
+	var rowScrolling = function(){		
+		var nowZoom = currentZoom()
+		var heights = [180, 247, 377]
+		var windowHeight = terminal.flickable.height
+		var documentHeight = terminal.flickable.contentHeight
+
+		if ( terminal.flickable.contentY + windowHeight + heights[nowZoom]/2 >= documentHeight ){
+			return false
+		}
+
+		var toY = Math.round((terminal.flickable.contentY-30)/heights[nowZoom])*heights[nowZoom] + 30
+
+		library.scrollTo(toY, 0, 150)
+	}
+	terminal.flickable.movementEnded.connect(rowScrolling)
+	// terminal.flickable.flickEnded.connect(rowScrolling)
+
+
+	/**
 	 * Изменение масштаба карточек товаров в листинге
 	 *
 	 * @author  Aleksandr Zaytsev
@@ -180,9 +203,9 @@ define('product_list',
 		 * @param  {number} nowelCount количество элементов, которые мы уже проскролили
 		 */
 		var changeZoom = function(zoom){
-			var y = terminal.flickable.contentY - 30
-			var cols = 4 - nowZoom
-			var nowElCount = (y/heights[nowZoom])*cols
+			// var y = terminal.flickable.contentY - 30
+			// var cols = 4 - nowZoom
+			// var nowElCount = (y/heights[nowZoom])*cols
 
 			el.removeClass(sizes[nowZoom])
 			if (zoom == 'up'){
@@ -193,12 +216,15 @@ define('product_list',
 			}
 			el.addClass(sizes[nowZoom])
 
-			cols = 4 - nowZoom
+			
+			// cols = 4 - nowZoom
 
-			var nowRows = nowElCount/cols | 0
-			var newY = (nowRows*heights[nowZoom]) + 30
+			// var nowRows = nowElCount/cols | 0
+			// var newY = (nowRows*heights[nowZoom]) + 30
 
-			library.scrollTo(newY, 0 , 10)
+			// library.scrollTo(newY, 0 , 10)
+			// terminal.flickable.contentY = newY
+			rowScrolling()
 		}
 
 		/**
@@ -288,7 +314,7 @@ define('product_list',
 		/**
 		 * Прогрузка товаров при инициализации страницы
 		 */
-		var initalLinesCount = 5 - currentZoom()
+		var initalLinesCount = 12 - currentZoom()
 		getItems(initalLinesCount)
 	}())
 

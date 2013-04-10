@@ -365,23 +365,38 @@ define('library',
 		 * @param {number} [time="300"] время за которое необходимо совершить анимацию
 		 */
 		var scrollTo = function(element, offset, time){
-			var aminateScroll = function(start, stop, step){
-				if ((start+step) < stop){
+			var aminateScrollUp = function(start, stop, step){
+				if ( (start+step) > stop ){
 					start += step
 					terminal.flickable.contentY = start
 					setTimeout( function(){
-						aminateScroll(start, stop, step)
+						aminateScrollUp(start, stop, step)
 					}, 1)
 				}
-				else{
+				else {
 					terminal.flickable.contentY = stop
 					terminal.interactive = true
 				}
 			}
+			var aminateScrollDown = function(start, stop, step){
+				if ((start+step) < stop){
+					start += step
+					terminal.flickable.contentY = start
+					setTimeout( function(){
+						aminateScrollDown(start, stop, step)
+					}, 1)
+				}
+				else {
+					terminal.flickable.contentY = stop
+					terminal.interactive = true
+				}
+			}
+
 			terminal.interactive = false
 
 			var offset = (offset)?offset:0
 			var time = (time)?time:300
+			var nowY = terminal.flickable.contentY
 			var elementTop = (typeof(element) == 'number') ? element : element.offset().top
 			var windowHeight = terminal.flickable.height
 			var documentHeight = terminal.flickable.contentHeight
@@ -390,9 +405,14 @@ define('library',
 
 			toY = (toY > stopScroll)?stopScroll:toY
 
-			var step = (toY - terminal.flickable.contentY)/(time*0.1)
+			var step = (toY - nowY)/(time*0.1)
 
-			aminateScroll(terminal.flickable.contentY, toY, step)
+			if (nowY < toY){
+				aminateScrollDown(nowY, toY, step)
+			}
+			else{
+				aminateScrollUp(nowY, toY, step)
+			}
 		}
 
 
