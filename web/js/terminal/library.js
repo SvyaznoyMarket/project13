@@ -375,17 +375,23 @@ define('library',
 				}
 				else{
 					terminal.flickable.contentY = stop
+					terminal.interactive = true
 				}
 			}
+			terminal.interactive = false
+
 			var offset = (offset)?offset:0
 			var time = (time)?time:300
-			var elementTop = element.offset().top
+			var elementTop = (typeof(element) == 'number') ? element : element.offset().top
 			var windowHeight = terminal.flickable.height
 			var documentHeight = terminal.flickable.contentHeight
 			var stopScroll = documentHeight-windowHeight
 			var toY = elementTop-offset
+
 			toY = (toY > stopScroll)?stopScroll:toY
+
 			var step = (toY - terminal.flickable.contentY)/(time*0.1)
+
 			aminateScroll(terminal.flickable.contentY, toY, step)
 		}
 

@@ -160,13 +160,14 @@ define('product_list',
 	 * @param   {jQuery}   el            обертка карточек товара
 	 * @param   {array}    startTouches  координаты начала касания
 	 * @param   {array}    sizes         массив названия классов размеров
+	 * @param   {array}    heights 		 высоты элементов при разных масштабав с учетом margin-bottom и padding-top + padding-bottom
 	 * @param   {number}   nowZoom       текущий масштаб
 	 */
 	var listingZoom = function(el){
 		var nowZoom = currentZoom()
 		var startTouches = []
 		var sizes = ['mSizeLittle','mSizeMid','mSizeBig']
-		// var heights = [143, 210, 340]
+		var heights = [178, 245, 375]
 
 
 		/**
@@ -174,8 +175,15 @@ define('product_list',
 		 *
 		 * @inner
 		 * @param  {string} zoom вверх или вниз
+		 * @param  {number} y отступ до верха документа
+		 * @param  {number} cols количество колонок при текущем зуме
+		 * @param  {number} nowelCount количество элементов, которые мы уже проскролили
 		 */
 		var changeZoom = function(zoom){
+			var y = terminal.flickable.contentY - 30
+			var cols = 4 - nowZoom
+			var nowElCount = (y/heights[nowZoom])*cols
+
 			el.removeClass(sizes[nowZoom])
 			if (zoom == 'up'){
 				nowZoom = ((nowZoom + 1) > 2) ? 2 : nowZoom + 1
@@ -184,6 +192,11 @@ define('product_list',
 				nowZoom = ((nowZoom - 1) < 0) ? 0 : nowZoom - 1
 			}
 			el.addClass(sizes[nowZoom])
+
+			cols = 4 - nowZoom
+			var nowRows = nowElCount/cols | 0
+			var newY = (nowRows*heights[nowZoom]) + 30
+			library.scrollTo(newY, 0 , 10)
 		}
 
 		/**
