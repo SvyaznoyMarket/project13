@@ -4,10 +4,14 @@ $(document).ready(function(){
 	 * form register corporate
 	 */
 	if( $('#corp_select').length ) {
+        $('form[action="/corporate-register"]').bind('submit', function(){
+            if ($('#corp_select').find('option:selected').val() === 'Другая форма'){
+                return false;
+            }
+        })
+
 		$('#corp_select').change(function() {
-			console.info('val '+$(this).find('option:selected').val())
 			if ($(this).find('option:selected').val() === 'Другая форма'){
-				console.log('OK')
 				$('#corpNotice').lightbox_me({
 					centered: true,
 					closeSelector: ".close"
