@@ -19,29 +19,8 @@ class Manager {
             $request = \App::request();
             $cookie = null;
 
-            // Admitad
-            if ($userId = $request->get('admitad_uid')) {
-                $response->headers->setCookie(new \Http\Cookie(
-                    'admitad_uid',
-                    $userId,
-                    time() + $this->cookieLifetime,
-                    '/',
-                    null,
-                    false,
-                    true
-                ));
-
-                $cookie = new \Http\Cookie(
-                    $this->cookieName,
-                    \Partner\Counter\Admitad::NAME,
-                    time() + $this->cookieLifetime,
-                    '/',
-                    null,
-                    false,
-                    true
-                );
             // CityAds
-            } else if ('ca' == $request->get('ref') && ($prx = $request->get('prx'))) {
+            if ('ca' == $request->get('ref') && ($prx = $request->get('prx'))) {
                 $response->headers->setCookie(new \Http\Cookie(
                     'prx',
                     $prx,
@@ -67,6 +46,27 @@ class Manager {
                     $cookie = new \Http\Cookie(
                         $this->cookieName,
                         \Partner\Counter\Etargeting::NAME,
+                        time() + $this->cookieLifetime,
+                        '/',
+                        null,
+                        false,
+                        true
+                    );
+                // Admitad
+                } else if (0 === strpos($utmSource, 'admitad')) {
+                    $response->headers->setCookie(new \Http\Cookie(
+                        'admitad_uid',
+                        $request->get('admitad_uid'),
+                        time() + $this->cookieLifetime,
+                        '/',
+                        null,
+                        false,
+                        true
+                    ));
+
+                    $cookie = new \Http\Cookie(
+                        $this->cookieName,
+                        \Partner\Counter\Admitad::NAME,
                         time() + $this->cookieLifetime,
                         '/',
                         null,
