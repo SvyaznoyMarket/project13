@@ -49,11 +49,10 @@ $debug->add('session', json_encode(\App::session()->all(), JSON_PRETTY_PRINT), 8
 
 // log
 try {
-    $debug->add('log', str_replace(' error ', '<span style="color: #ff0000"> error </span>', shell_exec(sprintf('cd %s && tail -n 200 %s', \App::config()->logDir, 'app.log'))), 88);
+    if ('local' === \App::$env) $debug->add('log', str_replace(' error ', '<span style="color: #ff0000"> error </span>', shell_exec(sprintf('cd %s && tail -n 200 %s', \App::config()->logDir, 'app.log'))), 88);
 } catch (\Exception $e) {
     \App::logger()->error($e);
 }
-
 
 $requestLogger = \Util\RequestLogger::getInstance();
 $requestData = $requestLogger->getStatistics();
@@ -64,8 +63,9 @@ foreach ((array)$requestData['api_queries'] as $query) {
     $queryString .=
         (round($query['time'], 3) * 1000)
         . ' ' . '<span style="color: #cccccc;">' . $query['host'] . '</span>'
-        . ' ' . '<a style="color: #00ffff" href="' . $page->escape($query['url']) . '" target="_blank" data-method="' . ((bool)$query['post'] ? 'post' : 'get') . '">' . $page->escape(rawurldecode($query['url'])) . '</a>'
+        . ' ' . '<a class="curl-link" style="color: #00ffff" href="' . $query['url'] . '" target="_blank" data-data="' . $page->escape((bool)$query['post'] ? json_encode($query['post'], JSON_UNESCAPED_UNICODE) : '') . '" onclick="var el = $(this); el.next(\'.curl-response:first\').html(\'...\'); $.post(\'\/curl\', {\'url\': el.attr(\'href\'), \'data\': el.data(\'data\')}, function(data) { el.next(\'.curl-response:first\').html(data) }); return false">' . $page->escape(rawurldecode($query['url'])) . '</a>'
         . ' ' . ((bool)$query['post'] ? json_encode($query['post'], JSON_UNESCAPED_UNICODE) : '')
+        . ' ' . '<span class="curl-response"></span>'
         . '<br />';
 }
 $debug->add('query', $queryString, 80);
@@ -95,7 +95,7 @@ if (!\App::request()->isXmlHttpRequest()) {
             <span onclick="var el = $(this).next(); el.is(':hidden') ? el.css('display', 'block') : el.css('display', 'none')" style="cursor: pointer; color: #00ffff;">...</span>
         <? } ?>
 
-        <span<? if ($isHidden) { ?> style="display: block; display: none; max-height: 600px; max-width: 1400px; overflow: auto;" <? } ?>>
+        <span<? if ($isHidden) { ?> style="display: block; display: none; max-height: 600px; max-width: 1200px; overflow: auto;" <? } ?>>
             <? if (\Debug\Collector::TYPE_ERROR == $item['type']) { ?><span style="color: #ff0000;"><?= $item['value'] ?></span><? } else { ?><?= $item['value'] ?><? } ?>
         </span>
         <br />

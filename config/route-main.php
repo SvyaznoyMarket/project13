@@ -429,6 +429,12 @@ return [
         'action'  => ['Qrcode\Action', 'execute'],
     ],
 
+    'curl' => [
+        'pattern' => '/curl',
+        'action'  => ['CurlAction', 'execute'],
+        'method'  => ['POST'],
+    ],
+
     //content
     'content' => [
         'pattern' => '/{token}',
