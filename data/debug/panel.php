@@ -45,9 +45,15 @@ $debug->add('time.total', sprintf('%s ms', round($appTimer['total'], 3) * 1000),
 $debug->add('memory', sprintf('%s Mb', round(memory_get_peak_usage() / 1048576, 2)), 90);
 
 // session
-if ('local' == \App::$env) {
-    $debug->add('session', json_encode(\App::session()->all(), JSON_PRETTY_PRINT), 89);
+$debug->add('session', json_encode(\App::session()->all(), JSON_PRETTY_PRINT), 89);
+
+// log
+try {
+    $debug->add('log', str_replace(' error ', '<span style="color: #ff0000"> error </span>', shell_exec(sprintf('cd %s && tail -n 200 %s', \App::config()->logDir, 'app.log'))), 88);
+} catch (\Exception $e) {
+    \App::logger()->error($e);
 }
+
 
 $requestLogger = \Util\RequestLogger::getInstance();
 $requestData = $requestLogger->getStatistics();
