@@ -62,6 +62,6 @@ $c->abtest['test']       = [
     ],
 ];
 
-$c->mobileModify['enabled'] = true;
+$c->mobileModify['enabled'] = false;
 
 return $c;
