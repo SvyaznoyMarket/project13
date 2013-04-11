@@ -225,8 +225,18 @@ class Action {
             }
         });
 
+        // запрашиваем бренд по токену
+        /** @var $brand \Model\Brand\Entity */
+        $brand = null;
+        \RepositoryManager::brand()->prepareEntityByToken($categoryToken, $region, function($data) use (&$brand) {
+            $data = reset($data);
+            if ((bool)$data) {
+                $brand = new \Model\Brand\Entity($data);
+            }
+        });
+
         // выполнение 2-го пакета запросов
-        $client->execute(\App::config()->coreV2['retryTimeout']['tiny']);
+        $client->execute(\App::config()->coreV2['retryTimeout']['short']);
 
         if (!$category) {
             throw new \Exception\NotFoundException(sprintf('Категория товара @%s не найдена.', $categoryToken));
