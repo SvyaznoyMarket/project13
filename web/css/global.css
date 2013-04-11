@@ -8011,7 +8011,7 @@
   .bSubscribeLightboxPopupNotNow {
     position: absolute;
     top: 0;
-    right: 175px;
+    right: -60px;
     display: none;
     width: 40px;
     height: 36px;
