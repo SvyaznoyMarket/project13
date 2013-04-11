@@ -11,6 +11,11 @@ class Action {
 
     ];
 
+    /**
+     * @param \Http\Request $request
+     * @throws \Exception
+     * @return \Http\JsonResponse
+     */
     public function check(\Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
@@ -22,16 +27,27 @@ class Action {
 
         $error = 'Неверный сертификат';
         try {
+            $exception = null;
             $result = null;
-            \App::coreClientV2()->addQuery('certificate/check', ['code' => $code, 'pin' => $pin], [], function($data) use (&$result) {
-                $result = $data;
-            });
+            \App::coreClientV2()->addQuery('certificate/check',
+                ['code' => $code, 'pin' => $pin],
+                [],
+                function($data) use (&$result) {
+                    $result = $data;
+                },
+                function(\Exception $e) use (&$exception) {
+                    $exception = $e;
+                    \App::exception()->remove($e);
+                }
+            );
             \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['default'], \App::config()->coreV2['retryCount']);
+            // TODO SITE-1008
+            if ($exception instanceof \Exception) {
+                throw $exception;
+            }
 
-            if (is_array($result) && array_key_exists('error', $result)) {
-                $e = new \Curl\Exception($result['error']['message'], $result['error']['code']);
-
-                throw $e;
+            if (!isset($result['status_code'])) {
+                throw new \Exception('Не удалось проверить сертификат');
             }
 
             $statusCode = (int)$result['status_code'];
@@ -45,7 +61,7 @@ class Action {
         } catch (\Exception $e) {
             \App::exception()->remove($e);
             \App::logger()->warn('Error when checking certificate ' . $e);
-            if (-1 == $e->getCode()) {
+            if (743 == $e->getCode()) {
                 $error = 'Сертификат не найден';
             }
         }
