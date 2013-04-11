@@ -360,7 +360,7 @@ class Action {
             $creditData[] = array(
                 'id'       => $product->getId(),
                 'quantity' => $cartProduct->getQuantity(),
-                'price'    => $cartProduct->getPrice(),
+                'price'    => $product->getPrice(),
                 'type'     => \RepositoryManager::creditBank()->getCreditTypeByCategoryToken($product->getMainCategory() ? $product->getMainCategory()->getToken() : null),
             );
         }
