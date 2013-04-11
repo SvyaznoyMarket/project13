@@ -19,7 +19,7 @@ foreach ($products as $product) {
     $creditData[] = array(
         'id'       => $product->getId(),
         'quantity' => $cartProduct->getQuantity(),
-        'price'    => $cartProduct->getPrice(),
+        'price'    => $product->getPrice(),
         'type'     => \Model\CreditBank\Repository::getCreditTypeByCategoryToken($product->getMainCategory() ? $product->getMainCategory()->getToken() : null),
     );
 }
