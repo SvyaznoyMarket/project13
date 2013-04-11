@@ -10,6 +10,8 @@
 if (!isset($isForm)) $isForm = true;
 ?>
 
+<? if (\App::config()->f1Certificate['enabled']): ?>
+
 <div class="clear"></div>
 
 <div class="bF1SaleCard<? if (!$user->getCart()->hasServices()): ?> hidden<? endif ?>">
@@ -31,3 +33,5 @@ if (!isset($isForm)) $isForm = true;
     </div>
     <div class="line mt32 pb30"></div>
 </div>
+
+<? endif ?>
