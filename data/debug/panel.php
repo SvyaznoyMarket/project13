@@ -63,7 +63,7 @@ foreach ((array)$requestData['api_queries'] as $query) {
     $queryString .=
         (round($query['time'], 3) * 1000)
         . ' ' . '<span style="color: #cccccc;">' . $query['host'] . '</span>'
-        . ' ' . '<a class="curl-link" style="color: #00ffff" href="' . $query['url'] . '" target="_blank" data-data="' . $page->escape((bool)$query['post'] ? json_encode($query['post'], JSON_UNESCAPED_UNICODE) : '') . '" onclick="var el = $(this); el.next(\'.curl-response:first\').html(\'...\'); $.post(\'\/curl\', {\'url\': el.attr(\'href\'), \'data\': el.data(\'data\')}, function(data) { el.next(\'.curl-response:first\').html(data) }); return false">' . $page->escape(rawurldecode($query['url'])) . '</a>'
+        . ' ' . '<a class="curl-link" style="color: #00ffff" href="' . $query['url'] . '" target="_blank" data-data="' . $page->escape((bool)$query['post'] ? json_encode($query['post'], JSON_UNESCAPED_UNICODE) : '') . '" onclick="var el = $(this); if (el.next(\'.curl-response:first\').text().length) { el.next(\'.curl-response:first\').html(\'\'); return false; }; el.next(\'.curl-response:first\').html(\'...\'); $.post(\'\/curl\', {\'url\': el.attr(\'href\'), \'data\': el.data(\'data\')}, function(data) { el.next(\'.curl-response:first\').html(data) }); return false">' . $page->escape(rawurldecode($query['url'])) . '</a>'
         . ' ' . ((bool)$query['post'] ? json_encode($query['post'], JSON_UNESCAPED_UNICODE) : '')
         . ' ' . '<span class="curl-response"></span>'
         . '<br />';
