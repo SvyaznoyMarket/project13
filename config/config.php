@@ -181,7 +181,7 @@ $c->smartEngine['log_data_enabled'] = true;
 $c->smartEngine['ssl_verify'] = true;
 
 $c->warranty['enabled'] = true;
-$c->f1Certificate['enabled'] = true;
+$c->f1Certificate['enabled'] = false;
 
 $c->user['corporateRegister'] = true;
 
