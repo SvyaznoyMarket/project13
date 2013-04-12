@@ -106,11 +106,15 @@ define('product_list',
 		loadingItems = true
 
 		var resFromServer = function(res){
-			loadingItems = false
 			if (!res.success)
 				return false
+			
+			if (res.products.length == 0)
+				return false
+			
 			currentLoadedItems += res.products.length
 			preparedData(res.products)
+			loadingItems = false
 			getItems(5 - currentZoom())
 		}
 
