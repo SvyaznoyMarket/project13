@@ -55,7 +55,7 @@ define('library',
 			cache:false,
 			timeout: 10000,
 			error: function (jqXHR, textStatus, errorThrown){
-				terminal.log.write('AJAX error '+textStatus+' '+errorThrown+' '+jqXHR)
+				terminal.log.write('AJAX error '+textStatus+' '+errorThrown+' '+jqXHR.status)
 			}
 		})
 
