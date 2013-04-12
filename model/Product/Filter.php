@@ -17,7 +17,8 @@ class Filter {
 
     /**
      * @param FilterEntity[] $filterCollection
-     * @param bool $isGlobal
+     * @param bool           $isGlobal
+     * @param bool           $inStore
      */
     public function __construct(array $filterCollection, $isGlobal = false, $inStore = false) {
         $this->filters = $filterCollection;

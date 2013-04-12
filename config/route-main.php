@@ -161,6 +161,18 @@ return [
         'action'  => ['ProductCategory\Action', 'category'],
         'require' => ['categoryPath' => '[\w\d-_]+\/?[\w\d-_]+'],
     ],
+    // каталог товаров бренда
+    'product.category.brand' => [
+        'pattern' => '/catalog/{categoryPath}/{brandToken}',
+        'action'  => ['ProductCategory\Action', 'category'],
+        'require' => ['categoryPath' => '[\w\d-_]+\/[\w\d-_]+', 'brand' => '[\w\d-_]+'],
+    ],
+    // каталог товаров бренда
+    'product.category.brand.infinity' => [
+        'pattern' => '/ajax/catalog/{categoryPath}/{brandToken}/_infinity',
+        'action'  => ['ProductCategory\Action', 'category'],
+        'require' => ['categoryPath' => '[\w\d-_]+\/[\w\d-_]+', 'brand' => '[\w\d-_]+'],
+    ],
     // карточка товара
     'product' => [
         'pattern' => '/product/{productPath}',

@@ -14,9 +14,12 @@ class Layout extends \View\DefaultLayout {
         /** @var $regionName string */
         $regionName = \App::user()->getRegion()->getName();
 
+        /** @var $brand \Model\Brand\Entity */
+        $brand = $this->getParam('brand') instanceof \Model\Brand\Entity ? $this->getParam('brand') : null;
+
         // content title
         if (!$this->getParam('title')) {
-            $this->setParam('title', $category->getName());
+            $this->setParam('title', $category->getName() . ($brand ? (' ' . $brand->getName()) : ''));
         }
 
         // breadcrumbs
