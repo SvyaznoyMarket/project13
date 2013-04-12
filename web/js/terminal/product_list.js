@@ -111,7 +111,7 @@ define('product_list',
 				return false
 			currentLoadedItems += res.products.length
 			preparedData(res.products)
-			// getItems(5 - currentZoom())
+			getItems(5 - currentZoom())
 		}
 
 		var itemsLimit = (4 - currentZoom())*lines
@@ -138,18 +138,18 @@ define('product_list',
 	 * @param {number} documentHeight высота документа
 	 * @param {number} offset отступ снизу, после которого срабатывает загрузка новых элементов
 	 */
-	var terminalScrolling = function(){
-		if (!$('.bProductListItem').length)
-			return false
+	// var terminalScrolling = function(){
+	// 	if (!$('.bProductListItem').length)
+	// 		return false
 
-		var y = terminal.flickable.contentY
-		var windowHeight = terminal.flickable.height
-		var documentHeight = terminal.flickable.contentHeight
-		var offset = windowHeight
+	// 	var y = terminal.flickable.contentY
+	// 	var windowHeight = terminal.flickable.height
+	// 	var documentHeight = terminal.flickable.contentHeight
+	// 	var offset = windowHeight
 
-		if (documentHeight - y - offset <= windowHeight )
-			getItems(6 - currentZoom())
-	}
+	// 	if (documentHeight - y - offset <= windowHeight )
+	// 		getItems(6 - currentZoom())
+	// }
 	// terminal.flickable.scrollValueChanged.connect(terminalScrolling)
 
 

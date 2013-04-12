@@ -3,6 +3,19 @@ define('library',
 
 
 		/**
+		 * Отлавливание ошибок
+		 * 
+		 * @param  {string} msg  сообщение об ошибке
+		 * @param  {string} url  
+		 * @param  {number} line строка
+		 * @return {boolean}
+		 */
+		window.onerror = function(msg, url, line) {
+			terminal.log.write(line + ' - ' +msg)
+			return true
+		}
+
+		/**
 		 * Вывод в отладочную консоль
 		 *
 		 * @author Aleksandr Zaytsev
@@ -10,6 +23,8 @@ define('library',
 		 * @param {string} text текст который нужно вывести
 		 */
 		var myConsole = function(text){
+			terminal.log.write(text)
+
 			var c = $('#console')
 
 			if (!develop)
@@ -31,7 +46,18 @@ define('library',
 			c.show()
 			terminal.flickable.scrollValueChanged.connect(consolePos)
 		}		
+		myConsole('user agent '+navigator.userAgent)
 		myConsole('library.js v4 loaded')
+
+
+		$.ajaxSetup({
+			async:true,
+			cache:false,
+			timeout: 10000,
+			error: function (jqXHR, textStatus, errorThrown){
+				terminal.log.write('AJAX error '+textStatus+' '+errorThrown+' '+jqXHR)
+			}
+		})
 
 
 		/**
