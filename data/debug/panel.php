@@ -48,10 +48,8 @@ $debug->add('memory', sprintf('%s Mb', round(memory_get_peak_usage() / 1048576, 
 $debug->add('session', json_encode(\App::session()->all(), JSON_PRETTY_PRINT), 89);
 
 // log
-try {
-    if ('local' === \App::$env) $debug->add('log', str_replace(' error ', '<span style="color: #ff0000"> error </span>', shell_exec(sprintf('cd %s && tail -n 200 %s', \App::config()->logDir, 'app.log'))), 88);
-} catch (\Exception $e) {
-    \App::logger()->error($e);
+if ('local' === \App::$env) {
+    $debug->add('log', '<a style="color: #00ffff" href="/debug/log/' . \App::$id . '" onclick="var el = $(this); $.post(el.attr(\'href\'), function(response) { el.html(\'\'); el.after(\'<pre>\' + response + \'</pre>\'); el.next(\'pre\').css({\'color\': \'#ffffff\', \'max-height\': \'300px\', \'max-width\': \'1200px\', \'overflow\': \'auto\'}) }); return false">...</a>', 88);
 }
 
 $requestLogger = \Util\RequestLogger::getInstance();
@@ -63,7 +61,7 @@ foreach ((array)$requestData['api_queries'] as $query) {
     $queryString .=
         (round($query['time'], 3) * 1000)
         . ' ' . '<span style="color: #cccccc;">' . $query['host'] . '</span>'
-        . ' ' . '<a class="curl-link" style="color: #00ffff" href="' . $query['url'] . '" target="_blank" data-data="' . $page->escape((bool)$query['post'] ? json_encode($query['post'], JSON_UNESCAPED_UNICODE) : '') . '" onclick="var el = $(this); if (el.next(\'.curl-response:first\').text().length) { el.next(\'.curl-response:first\').html(\'\'); return false; }; el.next(\'.curl-response:first\').html(\'...\'); $.post(\'\/curl\', {\'url\': el.attr(\'href\'), \'data\': el.data(\'data\')}, function(data) { el.next(\'.curl-response:first\').html(data) }); return false">' . $page->escape(rawurldecode($query['url'])) . '</a>'
+        . ' ' . '<a class="curl-link" style="color: #00ffff" href="' . $query['url'] . '" target="_blank" data-data="' . $page->escape((bool)$query['post'] ? json_encode($query['post'], JSON_UNESCAPED_UNICODE) : '') . '" onclick="var el = $(this); if (el.next(\'.curl-response:first\').text().length) { el.next(\'.curl-response:first\').html(\'\'); return false; }; el.next(\'.curl-response:first\').html(\'...\'); $.post(\'\/debug\/curl\', {\'url\': el.attr(\'href\'), \'data\': el.data(\'data\')}, function(data) { el.next(\'.curl-response:first\').html(data) }); return false">' . $page->escape(rawurldecode($query['url'])) . '</a>'
         . ' ' . ((bool)$query['post'] ? json_encode($query['post'], JSON_UNESCAPED_UNICODE) : '')
         . ' ' . '<span class="curl-response"></span>'
         . '<br />';
@@ -86,7 +84,7 @@ if (!\App::request()->isXmlHttpRequest()) {
 
     <? foreach ($debug->getAll() as $item) { ?>
         <?
-            $isHidden = mb_strlen($item['value']) > 40;
+            $isHidden = mb_strlen(strip_tags($item['value'])) > 40;
             if ($isHidden) $item['value'] = '<pre>' . $item['value'] . '</pre>';
         ?>
         <span style="color: #ffffff"><?= $item['name'] ?>:</span>

@@ -429,9 +429,15 @@ return [
         'action'  => ['Qrcode\Action', 'execute'],
     ],
 
-    'curl' => [
-        'pattern' => '/curl',
+    'debug-curl' => [
+        'pattern' => '/debug/curl',
         'action'  => ['CurlAction', 'execute'],
+        'method'  => ['POST'],
+    ],
+
+    'debug-log' => [
+        'pattern' => '/debug/log/{id}',
+        'action'  => ['LogAction', 'execute'],
         'method'  => ['POST'],
     ],
 
