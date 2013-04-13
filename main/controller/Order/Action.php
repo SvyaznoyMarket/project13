@@ -813,7 +813,7 @@ class Action {
         $request = \App::request();
         $form = new \View\Order\Form();
 
-        // вытащить из куки значения для формы, если пользователь неавторизован
+        // если пользователь авторизован
         if ($userEntity = \App::user()->getEntity()) {
             $form->setFirstName($userEntity->getFirstName());
             $form->setLastName($userEntity->getLastName());
@@ -822,10 +822,16 @@ class Action {
                     : $userEntity->getMobilePhone()
             );
             $form->setEmail($userEntity->getEmail());
+        // иначе, если пользователь неавторизован, то вытащить из куки значения для формы
         } else {
             $cookieValue = $request->cookies->get(self::ORDER_COOKIE_NAME);
             if (!empty($cookieValue)) {
-                $cookieValue = (array)unserialize(base64_decode(strtr($cookieValue, '-_', '+/')));
+                try {
+                    $cookieValue = (array)unserialize(base64_decode(strtr($cookieValue, '-_', '+/')));
+                } catch (\Exception $e) {
+                    \App::logger()->error($e, ['order']);
+                    $cookieValue = [];
+                }
                 $data = [];
                 foreach (array(
                      'recipient_first_name',
