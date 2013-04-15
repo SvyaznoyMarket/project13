@@ -371,6 +371,7 @@ class Action {
         if ((bool)$productVideosByProduct) {
             \RepositoryManager::productVideo()->prepareCollectionByProductIds(array_keys($productVideosByProduct), function($data) use (&$productVideosByProduct) {
                 foreach ($data as $id => $item) {
+                    if (!$item) continue;
                     $productVideosByProduct[$id][] = new \Model\Product\Video\Entity($item);
                 }
             });
@@ -466,6 +467,7 @@ class Action {
         if ((bool)$productVideosByProduct) {
             \RepositoryManager::productVideo()->prepareCollectionByProductIds(array_keys($productVideosByProduct), function($data) use (&$productVideosByProduct) {
                 foreach ($data as $id => $item) {
+                    if (!$item) continue;
                     $productVideosByProduct[$id][] = new \Model\Product\Video\Entity($item);
                 }
             });
