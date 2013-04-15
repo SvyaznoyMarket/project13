@@ -1,5 +1,5 @@
 $(document).ready(function(){
-	
+
 	/* F1 sale card*/
 	if ( $('.bF1SaleCard').length ){
 		var input = $('#F1SaleCard_number')
@@ -143,7 +143,7 @@ $(document).ready(function(){
 	suggestInputClick = function(){
 		$('#searchAutocomplete').show()
 	}
-	$('.searchbox .searchtext').keydown(suggestDown).keyup(suggestUp).mouseenter(suggestInputFocus).focus(suggestInputFocus).click(suggestInputClick)
+	$('.searchbox .searchtext').keydown(suggestDown).keyup(suggestUp).mouseenter(suggestInputFocus).focus(suggestInputFocus).click(suggestInputClick).placeholder()
 	$('.bSearchSuggest__eRes').live('mouseover', function(){
 		$('.bSearchSuggest__eRes').removeClass('hover')
 		var index = $(this).addClass('hover').index()

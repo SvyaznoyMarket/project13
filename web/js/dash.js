@@ -4,7 +4,9 @@ $(document).ready(function(){
 		var notNowShield = $('.bSubscribeLightboxPopupNotNow')
 		var subPopup = $('.bSubscribeLightboxPopup')
 		var input = $('.bSubscribeLightboxPopup__eInput')
-
+		
+		input.placeholder()
+		
 		var subscribing = function(){
 			var url = $(this).data('url')
 			var email = input.val()
