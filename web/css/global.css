@@ -2902,7 +2902,6 @@
     text-transform: uppercase;
     color: #ffffff;
     font-family: 'Enter Type';
-    font-style: italic;
   }
   .bMainMenuLevel-1__eItem.mMore .bMainMenuLevel-2__eTitle {
     background: #000000;
@@ -2954,9 +2953,8 @@
     text-transform: uppercase;
     color: #ffffff;
     font-family: 'Enter Type';
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 100;
-    font-style: italic;
   }
   .bMainMenuLevel-2 {
     background: #ffffff;
