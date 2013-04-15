@@ -58,13 +58,22 @@ class WarrantyAction {
 
             $cart->setWarranty($warranty, $quantity, $productId);
 
+            $cartWarranty = null;
+            if ($product && $cartProduct = $cart->getProductById($product->getId())) {
+                $cartWarranty = $cartProduct->getWarrantyById($warranty->getId());
+            } else {
+                $cartWarranty = $cart->getWarrantyById($warranty->getId());
+            }
+
             return $request->isXmlHttpRequest()
                 ? new \Http\JsonResponse([
                     'success' => true,
                     'data'    => [
+                        'sum'           => $cartWarranty ? $cartWarranty->getSum() : 0,
                         'quantity'      => $quantity,
                         'full_quantity' => $cart->getProductsQuantity() + $cart->getServicesQuantity() +$cart->getWarrantiesQuantity(),
-                        'full_price'    => $cart->getTotalPrice(),
+                        'full_price'    => $cart->getSum(),
+                        'old_price'     => $cart->getOriginalSum(),
                         'link'          => \App::router()->generate('order.create'),
                     ],
                 ])

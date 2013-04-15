@@ -13,14 +13,16 @@ class Filter {
     /** @var array */
     private $values = [];
     private $isGlobal = false;
+    private $inStore = false;
 
     /**
      * @param FilterEntity[] $filterCollection
      * @param bool $isGlobal
      */
-    public function __construct(array $filterCollection, $isGlobal = false) {
+    public function __construct(array $filterCollection, $isGlobal = false, $inStore = false) {
         $this->filters = $filterCollection;
         $this->isGlobal = $isGlobal;
+        $this->inStore = $inStore;
     }
 
     /**
@@ -85,11 +87,15 @@ class Filter {
             $return[] = array('is_global_buyable', 1, 1);
         }
 
+        if (array_key_exists('instore', $this->values) && $this->values['instore']) {
+            $return[] = array('is_store', 1, 1);
+        }
+
         return $return;
     }
 
     /**
-     * @param array $values
+     * @param array $valuesadmitad_uid
      */
     public function setValues(array $values) {
         $this->values = $values;
@@ -147,7 +153,17 @@ class Filter {
         return $this->filters;
     }
 
+    /**
+     * @return bool
+     */
     public function isGlobal() {
         return $this->isGlobal;
+    }
+
+    /**
+     * @return bool
+     */
+    public function inStore() {
+        return $this->inStore;
     }
 }

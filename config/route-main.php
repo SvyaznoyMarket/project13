@@ -131,6 +131,12 @@ return [
         'action'  => ['ProductCategory\Action', 'setGlobal'],
         'require' => ['categoryPath' => '[\w\d-_]+\/[\w\d-_]+'],
     ],
+    // показывать товары на складе
+    'product.category.instore' => [
+        'pattern' => '/catalog/{categoryPath}/_instore',
+        'action'  => ['ProductCategory\Action', 'setInstore'],
+        'require' => ['categoryPath' => '[\w\d-_]+\/?[\w\d-_]+'],
+    ],
     // каталог товаров
     'product.category' => [
         'pattern' => '/catalog/{categoryPath}',
@@ -239,6 +245,10 @@ return [
         'pattern' => '/cart',
         'action'  => ['Cart\IndexAction', 'execute'],
     ],
+    'cart.info' => [
+        'pattern' => '/cart/info',
+        'action'  => ['Cart\InfoAction', 'execute'],
+    ],
     // очистка корзины
     'cart.clear' => [
         'pattern' => '/cart/clear',
@@ -279,6 +289,14 @@ return [
         'pattern' => '/cart/warranty/{productId}/delete/{warrantyId}',
         'require' => ['productId' => '\d+', 'warrantyId' => '\d+'],
         'action'  => ['Cart\WarrantyAction', 'delete'],
+    ],
+    'cart.certificate.apply' => [
+        'pattern' => '/cart/f1-certificate',
+        'action'  => ['Cart\CertificateAction', 'apply'],
+    ],
+    'cart.certificate.delete' => [
+        'pattern' => '/cart/f1-certificate/delete',
+        'action'  => ['Cart\CertificateAction', 'delete'],
     ],
 
     // заказ
@@ -390,15 +408,37 @@ return [
         'action'  => ['User\SubscribeAction', 'execute'],
         'method'  => ['POST'],
     ],
-    'user.addEmail' => [
-        'pattern' => '/subscribe/{email}',
-        'action'  => 'User\SubscribeAction', 'addEmail',
+    // подписка
+    'subscribe.create' => [
+        'pattern' => '/subscribe/create',
+        'action'  => ['Subscribe\Action', 'create'],
+        'method'  => ['POST'],
+    ],
+    'subscribe.cancel' => [
+        'pattern' => '/subscribe/cancel',
+        'action'  => ['Subscribe\Action', 'cancel'],
+    ],
+    'subscribe.confirm' => [
+        'pattern' => '/subscribe/confirm',
+        'action'  => ['Subscribe\Action', 'confirm'],
     ],
 
     // qrcode
     'qrcode' => [
         'pattern' => '/qr/{qrcode}',
         'action'  => ['Qrcode\Action', 'execute'],
+    ],
+
+    'debug-curl' => [
+        'pattern' => '/debug/curl',
+        'action'  => ['CurlAction', 'execute'],
+        'method'  => ['POST'],
+    ],
+
+    'debug-log' => [
+        'pattern' => '/debug/log/{id}',
+        'action'  => ['LogAction', 'execute'],
+        'method'  => ['POST'],
     ],
 
     //content

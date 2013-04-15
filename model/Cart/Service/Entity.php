@@ -9,6 +9,8 @@ class Entity {
     private $quantity;
     /** @var int */
     private $price;
+    /** @var int  */
+    private $sum;
     /** @var bool */
     private $isBuyable = true;
 
@@ -16,6 +18,7 @@ class Entity {
         if (array_key_exists('id', $data)) $this->setId($data['id']);
         if (array_key_exists('quantity', $data)) $this->setQuantity($data['quantity']);
         if (array_key_exists('price', $data)) $this->setPrice($data['price']);
+        if (array_key_exists('sum', $data)) $this->setSum($data['sum']);
         if (array_key_exists('error', $data)){
             // TODO: подумать - а надо ли это
             $this->setQuantity(0);
@@ -61,13 +64,6 @@ class Entity {
     }
 
     /**
-     * @return int
-     */
-    public function getTotalPrice() {
-        return $this->quantity * $this->getPrice();
-    }
-
-    /**
      * @param bool $isBuyable
      */
     public function setIsBuyable($isBuyable) {
@@ -79,5 +75,19 @@ class Entity {
      */
     public function getIsBuyable() {
         return $this->isBuyable;
+    }
+
+    /**
+     * @param int $sum
+     */
+    public function setSum($sum) {
+        $this->sum = (int)$sum;
+    }
+
+    /**
+     * @return int
+     */
+    public function getSum() {
+        return $this->sum;
     }
 }

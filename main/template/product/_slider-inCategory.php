@@ -20,6 +20,10 @@ if ($filterData = $request->get(\View\Product\FilterForm::$name)) {
         $categoryLink .= '?' . http_build_query($request->query->all());
     }
 }
+
+if (\App::request()->get('instore')) {
+    $categoryLink .= (false === strpos($categoryLink, '?') ? '?' : '&') . 'instore=1';
+}
 ?>
 
 <!-- Carousel -->

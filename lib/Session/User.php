@@ -39,7 +39,9 @@ class User {
 
         if (!$this->entity) {
             try {
-                $user = \RepositoryManager::user()->getEntityByToken($this->token);
+                if (!$user = \RepositoryManager::user()->getEntityByToken($this->token)) {
+                    return null;
+                }
                 $user->setToken($this->token);
             } catch (\Exception $e) {
                 $user = null;

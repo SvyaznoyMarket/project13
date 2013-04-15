@@ -15,6 +15,14 @@ class InfoAction {
         $cart = $user->getCart();
         $region = $user->getRegion();
 
+        $actions = [];
+        if (\App::config()->subscribe['enabled']) {
+            $actions['subscribe'] = [
+                'show'   => !$request->cookies->has(\App::config()->subscribe['cookieName']),
+                'agrred' => 1 == (int)$request->cookies->get(\App::config()->subscribe['cookieName']),
+            ];
+        }
+
         $responseData = array(
             'name'             => '',
             'link'             => \App::router()->generate('user.login'),
@@ -29,6 +37,7 @@ class InfoAction {
             'region_id'        => $region->getId(),
             'is_credit'        => 1 == $request->cookies->get('credit_on'),
             'is_subscribed'    => 0,
+            'action'           => $actions,
         );
 
         // запрашиваем пользователя, если он авторизован
