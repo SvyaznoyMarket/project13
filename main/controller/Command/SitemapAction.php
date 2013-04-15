@@ -115,7 +115,9 @@ class SitemapAction {
         $productCategoryRepository = \RepositoryManager::productCategory();
         $productCategoryRepository->setEntityClass('\Model\Product\Category\TreeEntity');
 
-        $walk = function($categories) use (&$walk) {
+        $defaultRegion = \RepositoryManager::region()->getDefaultEntity();
+
+        $walk = function($categories) use (&$walk, &$defaultRegion) {
             foreach ($categories as $category) {
                 /** @var \Model\Product\Category\TreeEntity $category */
                 if (!$category->getPath()) continue;
@@ -125,6 +127,21 @@ class SitemapAction {
                     'daily',
                     '0.8'
                 );
+
+                try {
+                    foreach (\RepositoryManager::brand()->getCollectionByCategory($category, $defaultRegion) as $brand) {
+                        $this->putContent(
+                            $this->router->generate('product.category.brand', [
+                                'brandToken'   => $brand->getToken(),
+                                'categoryPath' => $category->getPath(),
+                            ]),
+                            'daily',
+                            '0.8'
+                        );
+                    }
+                } catch (\Exception $e) {
+                    \App::logger()->error($e);
+                }
 
                 if ((bool)$category->getChild()) {
                     $walk($category->getChild());
