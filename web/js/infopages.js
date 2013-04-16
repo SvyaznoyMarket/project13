@@ -1,6 +1,26 @@
 $(document).ready(function(){
 
 	/**
+	 * Получение продуктов
+	 */
+	if ( $('.getProductList').length){
+		console.log('yes!')
+		$('.getProductList').each(function(i){
+			var wrapper = $(this)
+			var productList = wrapper.data('product')
+			var url = '/products/widget/'+productList
+
+			$.get(url, function(res){
+				if (!res.success)
+					return false
+
+				wrapper.html(res.content)
+			})
+		})
+	}
+
+
+	/**
 	 * form register corporate
 	 */
 	if( $('#corp_select').length ) {
