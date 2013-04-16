@@ -4,7 +4,9 @@ $(document).ready(function(){
 		var notNowShield = $('.bSubscribeLightboxPopupNotNow')
 		var subPopup = $('.bSubscribeLightboxPopup')
 		var input = $('.bSubscribeLightboxPopup__eInput')
-
+		
+		input.placeholder()
+		
 		var subscribing = function(){
 			var url = $(this).data('url')
 			var email = input.val()
@@ -15,6 +17,9 @@ $(document).ready(function(){
 						console.log('error')
 					}
 					subPopup.html('<span class="bSubscribeLightboxPopup__eTitle mType">Спасибо! подтверждение подписки отправлено на указанный e-mail</span>')
+					if( typeof(_gaq) !== 'undefined' ){
+						_gaq.push(['_trackEvent', 'Account', 'Emailing sign up', 'Page top'])
+					}
 					setTimeout(function(){
 						subPopup.slideUp(300)
 					}, 3000)

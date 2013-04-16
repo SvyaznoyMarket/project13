@@ -180,6 +180,8 @@ $(document).ready(function(){
 		$('#hideLoginform').bind('click', function(){
 			$('#hideLoginform').hide()
 			$('#loginForm').slideDown(300)
+			$.scrollTo(loginForm,500)
+			return false
 		})
 	}
 
