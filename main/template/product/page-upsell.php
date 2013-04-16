@@ -1,10 +1,10 @@
 <?php
 /**
- * @var $page           \View\Product\StockPage
- * @var $user           \Session\User
- * @var $product        \Model\Product\Entity
- * @var $accessories    \Model\Product\Entity[]
- * @var $related        \Model\Product\Entity[]
+ * @var $page        \View\Product\StockPage
+ * @var $user        \Session\User
+ * @var $product     \Model\Product\Entity
+ * @var $accessories \Model\Product\Entity[]
+ * @var $related     \Model\Product\Entity[]
  */
 ?>
 
@@ -24,7 +24,7 @@
     </div>
 
     <div class="bUpsaleRedirectBlock fr">
-        <h2 class="bUpsaleRedirectBlock__eTitle">В корзине <strong id="upsaleCounter" class="bUpsaleRedirectBlock__eCounter"></strong> товара на сумму <strong class="bUpsaleRedirectBlock__ePrice"><span id="upsalePrice"></span> <span class="rubl">p</span></strong></h2>
+        <h2 class="bUpsaleRedirectBlock__eTitle">В корзине <strong id="upsaleCounter" class="bUpsaleRedirectBlock__eCounter"></strong> <?= $page->helper->numberChoice($user->getCart()->getProductsQuantity(), array('товар', 'товара', 'товаров')) ?> на сумму <strong class="bUpsaleRedirectBlock__ePrice"><span id="upsalePrice"></span> <span class="rubl">p</span></strong></h2>
         <div class="clearfix">
             <a class="bUpsaleRedirectBlock__eLink fl" href="<?= $page->url('cart') ?>">Перейти в корзину</a>
             <a class="bUpsaleRedirectBlock__eLink fr mFullOrange" href="<?= $page->url('order.create') ?>">Оформить заказ ></a>
