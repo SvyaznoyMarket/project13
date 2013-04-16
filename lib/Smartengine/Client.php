@@ -44,34 +44,34 @@ class Client {
                 throw new \Smartengine\Exception(curl_error($connection), curl_errno($connection));
             }
             $info = curl_getinfo($connection);
-            $this->logger->debug('Smartengine response resource: ' . $connection);
-            $this->logger->debug('Smartengine response info: ' . $this->encodeInfo($info));
+            $this->logger->debug('Smartengine response resource: ' . $connection, ['smartengine']);
+            $this->logger->debug('Smartengine response info: ' . $this->encodeInfo($info), ['smartengine']);
 
             \Util\RequestLogger::getInstance()->addLog($info['url'], '', $info['total_time'], 'smartengine');
 
             if ($this->config['log_enabled']) {
-                $this->logger->info('Response '.$connection.' : '.(is_array($info) ? json_encode($info, JSON_UNESCAPED_UNICODE) : $info));
+                $this->logger->info('Response '.$connection.' : '.(is_array($info) ? json_encode($info, JSON_UNESCAPED_UNICODE) : $info), ['smartengine']);
             }
             if ($info['http_code'] >= 300) {
                 throw new \Smartengine\Exception(sprintf("Invalid http code: %d, \nResponse: %s", $info['http_code'], $response));
             }
 
             if ($this->config['log_data_enabled']) {
-                $this->logger->info('Response data: '.$response);
+                $this->logger->info('Response data: ' . $response, ['smartengine']);
             }
             $responseDecoded = $this->decode($response);
             curl_close($connection);
 
             $spend = \Debug\Timer::stop('smartengine');
-            \App::logger()->info('End smartengine ' . $action . ' in ' . $spend);
+            \App::logger()->info('End smartengine ' . $action . ' in ' . $spend, ['smartengine']);
 
             return $responseDecoded;
         }
         catch (\Smartengine\Exception $e) {
             curl_close($connection);
             $spend = \Debug\Timer::stop('smartengine');
-            \App::logger()->error('End smartengine ' . $action . ' in ' . $spend . ' get: ' . json_encode($params, JSON_UNESCAPED_UNICODE) . ' response: ' . json_encode($response, JSON_UNESCAPED_UNICODE) . ' with ' . $e);
-            $this->logger->error($e->__toString());
+            \App::logger()->error('End smartengine ' . $action . ' in ' . $spend . ' get: ' . json_encode($params, JSON_UNESCAPED_UNICODE) . ' response: ' . json_encode($response, JSON_UNESCAPED_UNICODE) . ' with ' . $e, ['smartengine']);
+            $this->logger->error($e, ['smartengine']);
             throw $e;
         }
     }
@@ -94,7 +94,7 @@ class Client {
             'tenantid' => $this->config['tenantid'],
         ], $params))
         ;
-        \App::logger()->info('Start smartengine ' . $action . ' query: ' . $query);
+        \App::logger()->info('Start smartengine ' . $action . ' query: ' . $query, ['smartengine']);
 
         $connection = curl_init();
         curl_setopt($connection, CURLOPT_SSL_VERIFYPEER, $this->config['ssl_verify']);
@@ -108,7 +108,7 @@ class Client {
         curl_setopt($connection, CURLOPT_URL, $query);
 
         if ($this->config['log_enabled']) {
-            $this->logger->info('Send smartengine requset '.$connection);
+            $this->logger->info('Send smartengine requset ' . $connection, ['smartengine']);
         }
 
         return $connection;

@@ -72,7 +72,7 @@ class Cart {
         if ($productCount > $this->productLimit) {
             $data['productList'] = array_slice($data['productList'], $productCount - $this->productLimit, $this->productLimit, true);
             $this->storage->set($this->sessionName, $data);
-            \App::logger()->warn(sprintf('Пользователь sessionId=%s добавил %s-й товар в корзину', $this->storage->getId(), $productCount));
+            \App::logger()->warn(sprintf('Пользователь sessionId=%s добавил %s-й товар в корзину', $this->storage->getId(), $productCount), ['session', 'cart']);
         }
     }
 
@@ -549,7 +549,7 @@ class Cart {
                 $response = $default;
             }
         } catch(\Exception $e) {
-            \App::logger()->error($e);
+            \App::logger()->error($e, ['session', 'cart']);
             $response = $default;
         }
 

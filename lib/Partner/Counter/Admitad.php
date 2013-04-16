@@ -47,7 +47,7 @@ class Admitad {
                 $links[] = $link;
             }
         } catch (\Exception $e) {
-            \App::logger()->error($e);
+            \App::logger()->error($e, ['partner', 'admitad']);
         }
 
         return $links;
