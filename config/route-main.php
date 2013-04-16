@@ -206,6 +206,10 @@ return [
         'pattern' => '/products/set/{productBarcodes}',
         'action'  => ['Product\SetAction', 'execute'],
     ],
+    'product.widget' => [
+        'pattern' => '/products/widget/{productBarcodes}',
+        'action'  => ['Product\SetAction', 'widget'],
+    ],
     'product.upsell' => [
         'pattern' => '/tocart/{productToken}',
         'action'  => ['Product\UpsellAction', 'execute'],
