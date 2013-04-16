@@ -22,8 +22,9 @@ class LogAction {
                 $id
             ));
             $result = strtr($result, [
-                $id     => '<span style="color: #00ff00;">' . $id . '</span>',
-                'error' => '<span style="color: #ff0000;">error</span>',
+                $id     => '<span style="color: green;">' . $id . '</span>',
+                'error' => '<span style="color: red;">error</span>',
+                'warn'  => '<span style="color: orange;">warn</span>',
             ]);
         } catch (\Exception $e) {
             $result = (string)$e;
