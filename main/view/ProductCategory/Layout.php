@@ -114,6 +114,9 @@ class Layout extends \View\DefaultLayout {
             . $this->render('_innerJavascript');
     }
 
+    /**
+     * @param \Model\Page\Entity $page
+     */
     private function applySeoPattern(\Model\Page\Entity $page) {
         $dataStore = \App::dataStoreClient();
 
@@ -123,25 +126,40 @@ class Layout extends \View\DefaultLayout {
             return;
         }
 
+        /** @var $brand \Model\Brand\Entity */
+        $brand = $this->getParam('brand') instanceof \Model\Brand\Entity ? $this->getParam('brand') : null;
+
         $region = \App::user()->getRegion();
 
         $seoTemplate = null;
-        $categoryTokens = [];
-        foreach ($category->getAncestor() as $iCategory) {
-            $categoryTokens[] = $iCategory->getToken();
-        }
-        $categoryTokens[] = $category->getToken();
 
-        $dataStore->addQuery(sprintf('seo/catalog/%s.json', implode('/', $categoryTokens)), [], function ($data) use (&$seoTemplate) {
-            $seoTemplate = array_merge([
-                'title'       => null,
-                'description' => null,
-                'keywords'    => null,
-            ], $data);
-        });
+        if ($brand) {
+            $dataStore->addQuery(sprintf('seo/brand/%s/%s.json', $category->getToken(), $category->getToken() . '-' . $brand->getToken()), [], function ($data) use (&$seoTemplate) {
+                $seoTemplate = array_merge([
+                    'title'       => null,
+                    'description' => null,
+                    'keywords'    => null,
+                ], $data);
+            });
+        } else {
+            $categoryTokens = [];
+            foreach ($category->getAncestor() as $iCategory) {
+                $categoryTokens[] = $iCategory->getToken();
+            }
+            $categoryTokens[] = $category->getToken();
+
+            $dataStore->addQuery(sprintf('seo/catalog/%s.json', implode('/', $categoryTokens)), [], function ($data) use (&$seoTemplate) {
+                $seoTemplate = array_merge([
+                    'title'       => null,
+                    'description' => null,
+                    'keywords'    => null,
+                ], $data);
+            });
+        }
 
         // данные для шаблона
         $patterns = [
+            'бренд'     => [$brand->getName()],
             'категория' => [$category->getName()],
             'город'     => [$region->getName()],
             'сайт'      => null,
