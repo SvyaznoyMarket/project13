@@ -291,7 +291,7 @@ class App {
         static $instance;
 
         if (!$instance) {
-            $instance = new \Smartengine\Client(self::$config->smartEngine, \App::logger('smartengine'));
+            $instance = new \Smartengine\Client(self::$config->smartEngine, \App::logger());
         }
 
         return $instance;
@@ -338,17 +338,11 @@ class App {
 
         if (!isset(self::$loggers[$name])) {
             switch ($name) {
-                case 'core_v2':
-                    self::$loggers[$name] = new \Logger\DefaultLogger(new \Logger\Appender\FileAppender(self::$config->logDir . '/core_v2.log'), $name, $config[$name]['level']);
-                    break;
                 case 'timer':
                     self::$loggers[$name] = new \Logger\DefaultLogger(new \Logger\Appender\FileAppender(self::$config->logDir . '/timer.log'), $name, $config[$name]['level']);
                     break;
                 case 'request_compatible':
                     self::$loggers[$name] = new \Logger\DefaultLogger(new \Logger\Appender\FileAppender(self::$config->logDir . '/site_page_time.log'), 'RequestLogger', $config[$name]['level']);
-                    break;
-                case 'smartengine':
-                    self::$loggers[$name] = new \Logger\DefaultLogger(new \Logger\Appender\FileAppender(self::$config->logDir . '/smartengine.log'), $name, $config[$name]['level']);
                     break;
                 default:
                     self::$loggers[$name] = new \Logger\DefaultLogger(new \Logger\Appender\FileAppender(self::$config->logDir . '/app.log'), $name, $config[$name]['level']);
