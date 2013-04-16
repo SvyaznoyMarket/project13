@@ -11,7 +11,7 @@ define('termAPI',
 		 * @private
 		 * @return {string} pageType тип текущей страницы (product|product_listing|category)
 		 */
-		checkPageType = function() {
+		var checkPageType = function() {
 			if ( $('.bContent').attr('data-pagetype') == undefined )
 				return false
 
@@ -26,7 +26,7 @@ define('termAPI',
 		 * @author Aleksandr Zaytsev
 		 * @private
 		 */
-		createBreadcrumps = function() {
+		var createBreadcrumps = function() {
 			if ( !$('.bBreadcrumps__eItem').length )
 				return false
 
@@ -54,44 +54,30 @@ define('termAPI',
 		 * @param {string} screenType тип экрана на который нужно перейти
 		 * @param {object} parametrs параметры открываемого экрана
 		 */
-		toScreen = function(screenType, parametrs) {
+		var toScreen = function(screenType, parametrs) {
 			terminal.screen.push(screenType, parametrs)
 		}
 
-
-		/**
-		 * Выбор кнопки у которой будем менять состояние
-		 *
-		 * @author Aleksandr Zaytsev
-		 * @private
-		 * @param {number} productId идентификатор продукта
-		 * @return {jQuery object} t объект кнопки сравнения
-		 */
-		createElement = function(productId) {
-			var obj = $('#compare_'+productId)
-			return obj
-		}
 
 		/**
 		 * Проверка находится ли товар в сравнении. Установка нужного состояния кнопке
 		 *
 		 * @author Aleksandr Zaytsev
 		 * @public
-		 * @requires createElement
 		 * @param {number} productId идентификатор продукта
 		 * @return {boolean} true если товар находится в сравнении, false если товар не находится в сравнении
 		 */
-		checkCompare = function(productId) {
-			var element = createElement(productId)
+		var checkCompare = function(productId) {
+			var element = $('#compare_'+productId)
+
 			if (terminal.compare.hasProduct(productId)){
 				element.html('Убрать из&nbsp;сравнения').addClass('mActive')
-				return true
 			}
 			else{
 				element.html('Сравнить').removeClass('mActive')
-				return false
 			}
 		}
+
 
 		/**
 		 * Обработка кнопки сравнения
@@ -100,20 +86,29 @@ define('termAPI',
 		 * @private
 		 * @requires checkCompare
 		 */
-		compareHandler = function() {
-			var id = $(this).attr('id')
-			var productId = id.substr(8, 5)
-			if (checkCompare(productId)){
+		var compareHandler = function() {
+			var productId = $(this).data('productid')
+
+			if (terminal.compare.hasProduct(productId)){
 				terminal.compare.removeProduct(productId)
-				checkCompare(productId)
 			}
 			else{
 				terminal.compare.addProduct(productId)
-				checkCompare(productId)
 			}
 		}
-		terminal.compare.productRemoved.connect(checkCompare)
-		terminal.compare.productAdded.connect(checkCompare)
+
+
+		/**
+		 * События удаления\добавление товара в сравнения на терминале
+		 * 
+		 * @param  {number} pid идентификатор продукта
+		 */
+		terminal.compare.productRemoved.connect(function(pid){
+			checkCompare(pid)
+		})
+		terminal.compare.productAdded.connect(function(pid){
+			checkCompare(pid)
+		})
 
 
 		/**
@@ -123,7 +118,7 @@ define('termAPI',
 		 * @private
 		 * @requires toScreen
 		 */
-		redirectHandler = function() {
+		var redirectHandler = function() {
 			if ( $(this).attr('data-screentype') == undefined )
 				return false
 
@@ -157,7 +152,7 @@ define('termAPI',
 		 * @author Aleksandr Zaytsev
 		 * @private
 		 */
-		buyHandler = function() {
+		var buyHandler = function() {
 			if ( $(this).attr('data-productid') == undefined )
 				return false
 			
@@ -189,7 +184,7 @@ define('termAPI',
 		 * @private
 		 * @requires toScreen
 		 */
-		whereBuyHandler = function() {
+		var whereBuyHandler = function() {
 			if ( $(this).attr('data-productid') == undefined )
 				return false
 			
