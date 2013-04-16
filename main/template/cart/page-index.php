@@ -22,16 +22,9 @@ $creditEnabled = ($cart->getTotalProductPrice() >= \App::config()->product['minC
 <? endif ?>
 
 <? require __DIR__ . '/_show.php' ?>
-<? if (false): ?>
-<div class="bF1SaleCard">
-    <div class="pl35">
-        <h3 class="bF1SaleCard_eTitle ">Скидка по карте «Под защитой F1»</h3>
-        <p class="font11">Введите серийный номер карты «Под защитой F1» для скидки на услуги:</p>
-        <input class="mr20 width370" type="text"/><input class="yellowbutton button" type="button" value="Получить скидку"/>
-    </div>
-    <div class="line mt32 pb30"></div>
-</div>
-<? endif ?>
+
+<?= $page->render('cart/form-certificate') ?>
+
 <div class="fl width345 font14">
     <? if ($creditEnabled): ?>
     <div id="creditFlag" style="display:none">
@@ -55,7 +48,7 @@ $creditEnabled = ($cart->getTotalProductPrice() >= \App::config()->product['minC
             <div class="font14 width370 creditInfo pb10 grayUnderline">
                 <div class="leftTitle">Сумма заказа:</div>
                 <div class="font24">
-                    <span class="price"><?= $page->helper->formatPrice($cart->getTotalPrice()) ?></span> <span class="rubl">p</span>
+                    <span class="price"><?= $page->helper->formatPrice($cart->getSum()) ?></span> <span class="rubl">p</span>
                 </div>
             </div>
             <div style="display:none" id="blockFromCreditAgent">
@@ -81,10 +74,16 @@ $creditEnabled = ($cart->getTotalProductPrice() >= \App::config()->product['minC
             <div class="font14">
                 Сумма заказа:
             </div>
+
+            <div class="oldPrice font18 clearfix<? if (!$cart->getOriginalSum() || (abs($cart->getOriginalSum() - $cart->getSum()) == 0)): ?> hidden<? endif ?>">
+                <span id="totalOldPrice">
+                    <?= $page->helper->formatPrice($cart->getOriginalSum()) ?>
+                </span>
+                <span class="rubl">p</span>
+            </div>
+
             <div class="font30"><strong>
-				<span class="price">
-						<?= $page->helper->formatPrice($cart->getTotalPrice()) ?>
-				</span>
+				<span class="price"><?= $page->helper->formatPrice($cart->getSum()) ?></span>
                 <span class="rubl">p</span></strong></div>
         </div>
     </div>
@@ -101,8 +100,6 @@ $creditEnabled = ($cart->getTotalProductPrice() >= \App::config()->product['minC
 <div class="clear"></div>
 
 <? if (\App::config()->analytics['enabled']): ?>
-    <div id="heiasOrder" data-vars="<?= $cart->getAnalyticsData() ?>" class="jsanalytics"></div>
-
     <!--Трэкер "Корзина"-->
     <script>document.write('<img src="http://mixmarket.biz/tr.plx?e=3779415&r='+escape(document.referrer)+'&t='+(new Date()).getTime()+'" width="1" height="1"/>');</script>
     <!--Трэкер "Корзина"-->

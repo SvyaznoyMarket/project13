@@ -31,7 +31,7 @@
             <h3>Вы выбрали гарантию:</h3>
             <div id="ew_look" ref="<?= $warranty->getId() ?>">
                 <span class="ew_title"><?= $warranty->getName() ?></span>
-                - <span class="ew_price"><?= $page->helper->formatPrice($cartWarranty->getPrice()) ?></span>&nbsp;
+                - <span class="ew_price"><?= $page->helper->formatPrice($cartWarranty->getSum()) ?></span>&nbsp;
                 <span class="rubl"> p</span>
                 <br>
                 <a class="bBacketServ__eMore" href="<?= $page->url('cart.warranty.delete', array('warrantyId' => $warranty->getId(), 'productId' => $product->getId())) ?>">Отказаться</a>

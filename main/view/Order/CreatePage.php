@@ -24,7 +24,7 @@ class CreatePage extends Layout {
 
         $productsForRetargeting = $this->getParam('productsForRetargeting');
 
-        $tag_params = ['prodid' => [], 'pname' => [], 'pcat' => [], 'ordervalue' => \App::user()->getCart()->getTotalPrice(), 'pagetype' => 'try2order'];
+        $tag_params = ['prodid' => [], 'pname' => [], 'pcat' => [], 'ordervalue' => \App::user()->getCart()->getSum(), 'pagetype' => 'try2order'];
         foreach ($productsForRetargeting as $product) {
             $categories = $product->getCategory();
             $category = array_pop($categories);

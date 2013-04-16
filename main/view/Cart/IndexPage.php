@@ -39,7 +39,7 @@ class IndexPage extends \View\DefaultLayout {
         $products = $this->getParam('productEntities');
 
         $cart = \App::user()->getCart();
-        $tag_params = ['prodid' => [], 'pname' => [], 'pcat' => [], 'cartvalue' => $cart->getTotalPrice(), 'pagetype' => 'cart'];
+        $tag_params = ['prodid' => [], 'pname' => [], 'pcat' => [], 'cartvalue' => $cart->getSum(), 'pagetype' => 'cart'];
         foreach ($products as $product) {
             $categories = $product->getCategory();
             $category = array_pop($categories);

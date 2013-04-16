@@ -5,10 +5,16 @@
  */
 ?>
 
+<div class="bSubscribeLightboxPopup clearfix">
+    <h3 class="bSubscribeLightboxPopup__eTitle fl">дружить с нами выгодно!</h3>
+    <input class="bSubscribeLightboxPopup__eInput fl" placeholder="Оставьте ваш email и узнайте почему"/>
+    <button class="bSubscribeLightboxPopup__eBtn fl" data-url="<?= $page->url('subscribe.create') ?>">Хочу все знать</button>
+    <a class="bSubscribeLightboxPopup__eNotNow fr" data-url="<?= $page->url('subscribe.cancel') ?>" href="#">Спасибо, не сейчас</a>
+</div>
 <!-- Topbar -->
-<div class="topbar clearfix">
+<div class="topbar clearfix">    
     <div class="bRegion">
-        <a class="fl" href="<?= $page->url('region.change', array('regionId' => $user->getRegion()->getId())) ?>" id="jsregion" data-url="<?= $page->url('region.init') ?>"><?= $user->getRegion()->getName() ?></a>
+        <a class="fl" href="<?= $page->url('region.change', ['regionId' => $user->getRegion()->getId()]) ?>" id="jsregion" data-url="<?= $page->url('region.init') ?>"><?= ((mb_strlen($user->getRegion()->getName()) > 20) ? (mb_substr($user->getRegion()->getName(), 0, 20) . '...') : $user->getRegion()->getName()) ?></a>
         
         <div class="headerContactPhone fl" >
             <p class="fl headerContactPhone__eTitle">Контакт-cENTER</p>
@@ -24,8 +30,8 @@
         <? endif ?>
 
         <a class="headerShopLink" href="<?= $page->url('shop') ?>">Магазины Enter</a>
+        <div class="bSubscribeLightboxPopupNotNow mFl"></div>
     </div>
-
     <noindex>
         <div class="usermenu">
             <?= $page->render('_user') ?>

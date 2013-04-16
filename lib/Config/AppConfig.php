@@ -209,6 +209,10 @@ class AppConfig {
         'enabled' => null,
     ];
     /** @var array */
+    public $f1Certificate = [
+        'enabled' => null,
+    ];
+    /** @var array */
     public $cart = [
         'productLimit' => null, // максимальное количество товаров в корзине, при котором добавляемый товар не будет вытеснять первый товар из корзины
     ];
@@ -216,7 +220,6 @@ class AppConfig {
     public $user = [
         'corporateRegister' => null,
     ];
-
     /** @var array */
     public $abtest = [
         'cookieName' => null,
@@ -224,7 +227,6 @@ class AppConfig {
         'enabled'    => null,
         'test'       => [],
     ];
-
     /** @var array */
     public $database = [
         'host'     => null,
@@ -232,22 +234,29 @@ class AppConfig {
         'user'     => null,
         'password' => null,
     ];
-
-    public function __construct() {
-        $this->vkontakteOauth = new OAuth\VkontakteConfig();
-        $this->odnoklassnikiOauth = new OAuth\OdnoklassnikiConfig();
-        $this->facebookOauth = new OAuth\FacebookConfig();
-    }
-
+    /** @var array */
+    public $subscribe = [
+        'enabled'    => null,
+        'cookieName' => null,
+    ];
     /** @var array */
     public $queue = [
         'pidFile' => null,
         'workerLimit' => null,
         'maxLockTime' => null,
     ];
-
     /** @var boolean */
     public $requestMainMenu = null;
+    /** @var array */
+    public $mobileModify = [ // SITE-1035
+        'enabled' => null,
+    ];
+
+    public function __construct() {
+        $this->vkontakteOauth = new OAuth\VkontakteConfig();
+        $this->odnoklassnikiOauth = new OAuth\OdnoklassnikiConfig();
+        $this->facebookOauth = new OAuth\FacebookConfig();
+    }
 
     public function __set($name, $value) {
         throw new \LogicException(sprintf('Неизвестный параметр "%s".', $name));

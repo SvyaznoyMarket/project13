@@ -2822,7 +2822,7 @@
     padding: 0px 10px;
   }
   .topbar .bRegion {
-    width: 500px;
+    width: 720px;
   }
   .topbar .usermenu {
     float: right;
@@ -2902,7 +2902,6 @@
     text-transform: uppercase;
     color: #ffffff;
     font-family: 'Enter Type';
-    font-style: italic;
   }
   .bMainMenuLevel-1__eItem.mMore .bMainMenuLevel-2__eTitle {
     background: #000000;
@@ -2954,9 +2953,8 @@
     text-transform: uppercase;
     color: #ffffff;
     font-family: 'Enter Type';
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 100;
-    font-style: italic;
   }
   .bMainMenuLevel-2 {
     background: #ffffff;
@@ -5720,6 +5718,27 @@
   }
 }
 /*---END---СТИЛИ КРЕДИТОВ---*/
+/*-------СТИЛИ КАРТ F1-----*/
+@media all {
+  .bF1SaleCard_eComplete {
+    background: url('/css/F1SaleCard/img/check.png') no-repeat left center;
+    height: 50px;
+    line-height: 50px;
+    padding-left: 50px;
+  }
+  .bF1SaleCard_eErr {
+    color: #e8303c;
+    font-size: 12px;
+    margin: 3px 0;
+  }
+  .bF1SaleCard_eDel {
+    display: inline-block;
+    font-size: 12px;
+    margin: 0 20px;
+    text-decoration: underline;
+  }
+}
+/*---END---СТИЛИ КАРТ F1---*/
 /*-------СТИЛИ АПСЕЙЛА-----*/
 @media all {
   .bUpsale {
@@ -7917,6 +7936,10 @@
   .bKitPopupLine:last-child {
     border-bottom: none;
   }
+  #commonSum .oldPrice {
+    color: #a6a6a6;
+    text-decoration: line-through;
+  }
 }
 /*---END---СТИЛИ КОРЗИНЫ---*/
 /*-------СТИЛИ ПОДСКАЗОК ПОИСКА-----*/
@@ -7981,6 +8004,85 @@
   }
 }
 /*---------END ПОДСКАЗОК ПОИСКА-----*/
+/*-------СТИЛИ ВСПЛЫВАЮЩЕЙ ПОДПИСКИ-----*/
+@media all {
+  .bSubscribeLightboxPopupNotNow {
+    position: absolute;
+    top: 0;
+    right: -60px;
+    display: none;
+    width: 40px;
+    height: 36px;
+    background: url('/css/subscribeLightboxPopup/img/icon.png') no-repeat 0 0;
+  }
+  .bSubscribeLightboxPopup {
+    display: none;
+    width: 100%;
+    height: 43px;
+    margin: 0 -20px 7px;
+    padding: 0 20px;
+    text-align: center;
+    background: url('/css/subscribeLightboxPopup/img/bg.jpg') repeat-x 0 0;
+  }
+  .bSubscribeLightboxPopup__eTitle {
+    margin: 0 0 0 65px;
+    text-transform: uppercase;
+    color: #ffffff;
+    font-family: 'Enter';
+    font-size: 19px;
+    font-weight: 100;
+    line-height: 40px;
+  }
+  .bSubscribeLightboxPopup__eTitle.mType {
+    font-family: 'Enter Type';
+  }
+  .bSubscribeLightboxPopup__eInput {
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    width: 260px;
+    height: 25px;
+    margin: 5px 0 0 20px;
+    padding: 0 5px;
+    border: 1px solid #000000;
+  }
+  .bSubscribeLightboxPopup__eInput.mError {
+    background: #f28c92;
+  }
+  .bSubscribeLightboxPopup__eBtn {
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    height: 26px;
+    margin: 5px;
+    cursor: pointer;
+    color: white;
+    border: none;
+    background: #000000;
+    font-size: 12px;
+    line-height: 26px;
+  }
+  .bSubscribeLightboxPopup__eNotNow {
+    position: relative;
+    margin-right: 15px;
+    text-decoration: underline;
+    color: #ffffff;
+    font-family: 'Enter Type';
+    font-size: 16px;
+    line-height: 35px;
+  }
+  .bSubscribeLightboxPopup__eNotNow:hover {
+    color: #ffffff;
+  }
+  .bSubscribeLightboxPopup__eNotNow:after {
+    position: absolute;
+    right: -15px;
+    content: '✘';
+    color: #ffffff;
+    font-size: 15px;
+  }
+}
+/*---------END ВСПЛЫВАЮЩЕЙ ПОДПИСКИ-----*/
 /*-------СТИЛИ СТРАНИЦЫ ВХОДА-----*/
 @media all {
   .bPageLogin {
@@ -8183,48 +8285,6 @@
   .dropbox p {
     margin: 0px;
     padding-top: 18px;
-  }
-  .bSubscribeLightboxPopup {
-    background: #ffffff url('/css/lightbox/img/subscribeForm.gif') no-repeat 10px center;
-    border: 2px solid #ffa901;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
-    left: 60px;
-    overflow: visible;
-    padding: 20px 20px 15px 150px;
-    position: absolute;
-    top: -190px;
-    width: 270px;
-  }
-  .bSubscribeLightboxPopup__eCorner {
-    background: url("/css/lightbox/img/lightboxSprite.png") no-repeat -906px -80px;
-    bottom: -15px;
-    display: block;
-    font-size: 0px;
-    height: 15px;
-    left: 50%;
-    line-height: 0px;
-    margin-left: -10px;
-    position: absolute;
-    width: 20px;
-  }
-  .bSubscribeLightboxPopup__eTitle {
-    font-family: 'Enter Type';
-    font-size: 20px;
-  }
-  .bSubscribeLightboxPopup__eInput {
-    border: 1px solid #ffa901;
-    -webkit-border-radius: 4px;
-    -moz-border-radius: 4px;
-    border-radius: 4px;
-    display: block;
-    font-size: 16px;
-    padding: 3px 0;
-    width: 100%;
-  }
-  .bSubscribeLightboxPopup__eSubmit {
-    margin: 10px 0;
   }
 }
 /*--END---СТИЛИ ЛАЙТБОКСА--*/

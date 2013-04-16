@@ -183,6 +183,7 @@ $c->smartEngine['log_data_enabled'] = true;
 $c->smartEngine['ssl_verify'] = true;
 
 $c->warranty['enabled'] = true;
+$c->f1Certificate['enabled'] = false;
 
 $c->user['corporateRegister'] = true;
 
@@ -206,6 +207,11 @@ $c->abtest = [
     'test'       => [],
 ];
 
+$c->subscribe['enabled'] = true;
+$c->subscribe['cookieName'] = 'subscribed';
+
 $c->requestMainMenu = false;
+
+$c->mobileModify['enabled'] = false;
 
 return $c;

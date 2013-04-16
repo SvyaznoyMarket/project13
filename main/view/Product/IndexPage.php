@@ -112,8 +112,9 @@ class IndexPage extends \View\DefaultLayout {
             return '';
         }
 
-        return \App::config()->analytics['enabled'] ? ("<div id=\"heiasProduct\" data-vars=\"".$product->getId()."\" class=\"jsanalytics\"></div>\r\n".
-                "<div id=\"marketgidProd\" class=\"jsanalytics\"></div>\r\n") : '';
+        return \App::config()->analytics['enabled']
+            ? ("<div id=\"marketgidProd\" class=\"jsanalytics\"></div>\r\n")
+            : '';
     }
 
     public function slotAdriver() {

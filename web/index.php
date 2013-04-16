@@ -63,7 +63,7 @@ $response = null;
     if ($error && (error_reporting() & $error['type'])) {
 
         $spend = \Debug\Timer::stop('app');
-        \App::logger()->error('Fail app ' . $spend . ' ' . round(memory_get_peak_usage() / 1048576, 2) . 'Mb' . ' with error ' . json_encode($error, JSON_UNESCAPED_UNICODE));
+        \App::logger()->error('Fail app ' . $spend . ' ' . round(memory_get_peak_usage() / 1048576, 2) . 'Mb ' . \App::request()->getMethod()  . ' ' . \App::request()->getRequestUri() . ' with error ' . json_encode($error, JSON_UNESCAPED_UNICODE));
 
         // очищаем буфер вывода
         $previous = null;

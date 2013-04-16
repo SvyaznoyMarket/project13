@@ -56,6 +56,7 @@
                 $categories = $product->getCategory();
                 $category = array_pop($categories);
                 $rootCategory = array_shift($categories);
+                if (!$category || !$rootCategory) continue;
 
                 $categoryName = ($rootCategory && ($rootCategory->getId() != $category->getId()))
                     ? ($rootCategory->getName() . ' - ' . $category->getName())

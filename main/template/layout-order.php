@@ -18,6 +18,7 @@
 </head>
 
 <body data-template="<?= $page->slotBodyDataAttribute() ?>" data-id="<?= \App::$id ?>"<? if (\App::config()->debug): ?> data-debug=true<? endif ?>>
+<?= $page->slotConfig() ?>
 
 <div class="graying" style="opacity: 0.5; display: none;"></div>
 

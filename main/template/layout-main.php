@@ -18,7 +18,7 @@
 </head>
 
 <body id="mainPage" data-template="main" data-id="<?= \App::$id ?>"<? if (\App::config()->debug): ?> data-debug=true<? endif ?>>
-
+<?= $page->slotConfig() ?>
 <div class="bannersbox">
     <div class="bannersboxinner">
         <div class="banner banner3"><img class="rightImage" src="" alt=""/></div>
@@ -63,7 +63,6 @@
 
 <? if (\App::config()->analytics['enabled']): ?>
     <div id="yandexMetrika" class="jsanalytics"></div>
-    <div id="heiasMain" class="jsanalytics"></div>
     <div id="luxupTracker" class="jsanalytics"></div>
     <div id="adblenderCommon" class="jsanalytics"></div>
 <? endif ?>
