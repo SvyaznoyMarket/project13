@@ -56,7 +56,7 @@ class HtmlLayout {
      */
     public function getParam($name) {
         if (!array_key_exists($name, $this->params)) {
-            \App::logger()->warn(sprintf('Неизвестный параметр шаблона "%s".', $name));
+            \App::logger()->warn(sprintf('Неизвестный параметр шаблона "%s"', $name));
         }
 
         return array_key_exists($name, $this->params) ? $this->params[$name] : null;

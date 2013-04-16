@@ -39,23 +39,23 @@ class DefaultLogger implements LoggerInterface {
         $this->immediatelyDump = $immediatelyDump;
     }
 
-    public function debug($message) {
-        $this->log($message, self::LEVEL_DEBUG);
+    public function debug($message, array $tags = []) {
+        $this->log($message, self::LEVEL_DEBUG, $tags);
     }
 
-    public function info($message) {
-        $this->log($message, self::LEVEL_INFO);
+    public function info($message, array $tags = []) {
+        $this->log($message, self::LEVEL_INFO, $tags);
     }
 
-    public function warn($message) {
-        $this->log($message, self::LEVEL_WARN);
+    public function warn($message, array $tags = []) {
+        $this->log($message, self::LEVEL_WARN, $tags);
     }
 
-    public function error($message) {
-        $this->log($message, self::LEVEL_ERROR);
+    public function error($message, array $tags = []) {
+        $this->log($message, self::LEVEL_ERROR, $tags);
     }
 
-    protected function log($message, $level) {
+    protected function log($message, $level, array $tags = []) {
         if ($level > $this->level) return;
 
         $logData = [
@@ -64,6 +64,7 @@ class DefaultLogger implements LoggerInterface {
             'name'    => $this->id,
             'level'   => $this->levelNames[$level],
             'message' => is_array($message) ? json_encode($message, JSON_UNESCAPED_UNICODE) : (string)$message,
+            'tag'     => (bool)$tags ? ('+' . implode('+', $tags)) : '',
         ];
         if ($this->immediatelyDump) {
             $this->appender->dump([$logData]);
