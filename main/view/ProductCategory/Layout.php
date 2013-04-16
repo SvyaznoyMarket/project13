@@ -134,7 +134,12 @@ class Layout extends \View\DefaultLayout {
         $seoTemplate = null;
 
         if ($brand) {
-            $dataStore->addQuery(sprintf('seo/brand/%s/%s.json', $category->getToken(), $category->getToken() . '-' . $brand->getToken()), [], function ($data) use (&$seoTemplate) {
+            $categoryTokens = [];
+            foreach ($category->getAncestor() as $iCategory) {
+                $categoryTokens[] = $iCategory->getToken();
+            }
+
+            $dataStore->addQuery(sprintf('seo/brand/%s/%s.json', implode('/', $categoryTokens), $category->getToken() . '-' . $brand->getToken()), [], function ($data) use (&$seoTemplate) {
                 $seoTemplate = array_merge([
                     'title'       => null,
                     'description' => null,
