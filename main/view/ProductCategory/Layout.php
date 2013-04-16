@@ -159,11 +159,14 @@ class Layout extends \View\DefaultLayout {
 
         // данные для шаблона
         $patterns = [
-            'бренд'     => [$brand->getName()],
             'категория' => [$category->getName()],
             'город'     => [$region->getName()],
             'сайт'      => null,
         ];
+        if ($brand) {
+            $patterns['бренд'] = [$brand->getName()];
+        }
+
         $dataStore->addQuery(sprintf('inflect/product-category/%s.json', $category->getId()), [], function($data) use (&$patterns) {
             if ($data) $patterns['категория'] = $data;
         });
