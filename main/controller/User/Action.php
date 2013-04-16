@@ -19,7 +19,7 @@ class Action {
 
         $form = new \View\User\LoginForm();
         if ($request->isMethod('post')) {
-            $form->fromArray($request->request->get('signin'));
+            $form->fromArray((array)$request->request->get('signin'));
             if (!$form->getUsername()) {
                 $form->setError('username', 'Не указан логин');
             }
