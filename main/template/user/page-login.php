@@ -13,14 +13,15 @@
 		<p class="bLoginPageForms_eDesc">Зарегистрируйтесь и получайте актуальную информацию<br/>
 			о новых поступлениях, акциях и распродажах!</p>
 		
-		<form method="post" class="form" action="/register" id="register-form">
-			<input type="hidden" value="/login" name="redirect_to">
+		<form method="post" class="form" action="<?= $page->url('user.register') ?>" id="register-form">
+			<input type="hidden" value="<?= $page->url('user.login') ?>" name="redirect_to">
 
 			<div class="bLoginForm width327 fl">
 				<h2 class="bLoginForm_eTitle">Я новый пользователь</h2>
                 <? if (\App::config()->user['corporateRegister']): ?>
-                <a class="bLoginForm_eUr orange underline" href="/corporate-register">Регистрация юридического лица</a>
+                    <a class="bLoginForm_eUr orange underline" href="<?= $page->url('user.registerCorporate') ?>">Регистрация юридического лица</a>
                 <? endif ?>
+
 				<div class="pb5">Как к вам обращаться?</div>
 				<div class="pb5">
 					<input type="text" tabindex="5" value="" name="register[first_name]" class="text width315 mb10" id="register_first_name" required="required">
@@ -44,20 +45,20 @@
 		</form>
 		<div class="clear"></div>
 		<a id="hideLoginform" class="font18 dashed" href="#">У меня уже есть логин и пароль</a>
-		<form id="loginForm" method="post" class="form hf" action="/login" id="login-form">
-			<input type="hidden" value="http://Developer:dEl23sTOas@sasha.ent3.ru/login" name="redirect_to">
+		<form id="loginForm" method="post" class="form hf" action="<?= $page->url('user.login') ?>" id="login-form">
+			<input type="hidden" value="<?= $page->url('user.login') ?>" name="redirect_to">
 			<div class="width327 bLoginForm clearfix">
 				<h2 class="bLoginForm_eTitle">У меня есть логин и пароль</h2>
 				<div class="pb5">E-mail или мобильный телефон:</div>
 				<div class="pb5">
-					<input type="text" name="signin[username]" value="" tabindex="1" class="text width315 mb10" id="signin_username" required="required">
+					<input type="text" name="signin[username]" value="" tabindex="1" class="text width315 mb10" id="signin_username" required="required" />
 				</div>
 				<div class="pb5">
-					<a class="fr orange underline" href="/request-password" id="forgot-pwd-trigger">Забыли пароль?</a>
+					<a class="fr orange underline" href="<?= $page->url('user.forgot') ?>" id="forgot-pwd-trigger">Забыли пароль?</a>
 					Пароль:
 				</div>
 				<div class="pb5">
-					<input type="password" tabindex="2" name="signin[password]" class="text width315 mb10" id="signin_password" required="required">
+					<input type="password" tabindex="2" name="signin[password]" class="text width315 mb10" id="signin_password" required="required" />
 				</div>
 				<input type="submit" tabindex="3" value="Войти" class="fr button bigbutton">
 			</div>
