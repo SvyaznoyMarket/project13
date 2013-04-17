@@ -45,7 +45,8 @@
 		</form>
 		<div class="clear"></div>
 		<a id="hideLoginform" class="font18 dashed" href="#">У меня уже есть логин и пароль</a>
-		<form id="loginForm" method="post" class="form hf" action="<?= $page->url('user.login') ?>" id="login-form">
+		<div class="clearfix"><?= $page->render('form-forgot') ?></div>
+		<form id="login-form" method="post" class="form hf" action="<?= $page->url('user.login') ?>" id="login-form">
 			<input type="hidden" value="<?= $page->url('user.login') ?>" name="redirect_to">
 			<div class="width327 bLoginForm clearfix">
 				<h2 class="bLoginForm_eTitle">У меня есть логин и пароль</h2>
