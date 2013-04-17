@@ -13,9 +13,9 @@ $(document).ready(function(){
 
 			if ( email.search('@') !== -1 ){
 				$.post(url, {email: email}, function(res){
-					if( !res.success ){
-						console.log('error')
-					}
+					if( !res.success )
+						return false
+					
 					subPopup.html('<span class="bSubscribeLightboxPopup__eTitle mType">Спасибо! подтверждение подписки отправлено на указанный e-mail</span>')
 					if( typeof(_gaq) !== 'undefined' ){
 						_gaq.push(['_trackEvent', 'Account', 'Emailing sign up', 'Page top'])
@@ -28,8 +28,8 @@ $(document).ready(function(){
 			else{
 				// email invalid
 				input.addClass('mError')
-				return false
 			}
+			return false
 		}
 
 		var subscribeNow = function(){
@@ -46,6 +46,8 @@ $(document).ready(function(){
 
 				subPopup.slideUp(300, subscribeLater)
 				$.post(url)
+
+				return false;
 			})
 		}
 
