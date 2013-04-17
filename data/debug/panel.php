@@ -18,6 +18,7 @@ $debug->add('git.tag', shell_exec(sprintf('cd %s && git describe --always --tag'
 
 $action =implode('.', (array)\App::request()->attributes->get('action', []));
 $debug->add('act', $action ?: 'undefined', 138, $action ? \Debug\Collector::TYPE_INFO : \Debug\Collector::TYPE_ERROR);
+$debug->add('route', \App::request()->attributes->get('route'), 137);
 
 if (\App::user()->getToken()) {
     $debug->add('user', \App::user()->getToken(), 135);
