@@ -54,7 +54,7 @@ class Action {
                 false // важно httpOnly=false, чтобы js мог получить куку
             );
             $response = new \Http\JsonResponse(['success' => true]);
-            $response->headers->setCookie($cookie);
+            //$response->headers->setCookie($cookie);
         } catch (\Exception $e) {
             \App::logger()->error($e);
         }
@@ -79,7 +79,7 @@ class Action {
                 false // важно httpOnly=false, чтобы js мог получить куку
             );
             $response = new \Http\JsonResponse(['success' => true]);
-            $response->headers->setCookie($cookie);
+            //$response->headers->setCookie($cookie);
         } catch (\Exception $e) {
             \App::logger()->error($e);
         }
