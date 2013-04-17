@@ -3987,6 +3987,11 @@
     margin-right: 20px;
     padding: 10px;
     width: 195px;
+    min-height: 300px;
+  }
+  .goodsbox.mCatalog {
+    height: 250px;
+    min-height: 250px;
   }
   .goodsbox .photo {
     margin-bottom: 9px;
