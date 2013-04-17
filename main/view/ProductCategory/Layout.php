@@ -133,12 +133,14 @@ class Layout extends \View\DefaultLayout {
 
         $seoTemplate = null;
 
-        if ($brand) {
-            $categoryTokens = [];
-            foreach ($category->getAncestor() as $iCategory) {
-                $categoryTokens[] = $iCategory->getToken();
-            }
+        // токены категорий
+        $categoryTokens = [];
+        foreach ($category->getAncestor() as $iCategory) {
+            $categoryTokens[] = $iCategory->getToken();
+        }
+        $categoryTokens[] = $category->getToken();
 
+        if ($brand) {
             $dataStore->addQuery(sprintf('seo/brand/%s/%s.json', implode('/', $categoryTokens), $category->getToken() . '-' . $brand->getToken()), [], function ($data) use (&$seoTemplate) {
                 $seoTemplate = array_merge([
                     'title'       => null,
@@ -147,12 +149,6 @@ class Layout extends \View\DefaultLayout {
                 ], $data);
             });
         } else {
-            $categoryTokens = [];
-            foreach ($category->getAncestor() as $iCategory) {
-                $categoryTokens[] = $iCategory->getToken();
-            }
-            $categoryTokens[] = $category->getToken();
-
             $dataStore->addQuery(sprintf('seo/catalog/%s.json', implode('/', $categoryTokens)), [], function ($data) use (&$seoTemplate) {
                 $seoTemplate = array_merge([
                     'title'       => null,
