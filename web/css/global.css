@@ -4345,12 +4345,12 @@
     z-index: 3;
   }
   .bPromoCatalogSlider_eArrow.mArLeft {
-    background: url('/css/catalog/img/leftarrow.jpg') no-repeat 0 0;
+    background: url('/css/catalog/img/leftarrow.png') no-repeat 0 0;
     display: none;
     left: 16%;
   }
   .bPromoCatalogSlider_eArrow.mArRight {
-    background: url('/css/catalog/img/rightarrow.jpg') no-repeat 0 0;
+    background: url('/css/catalog/img/rightarrow.png') no-repeat 0 0;
     right: 16%;
   }
   .bPromoCatalogNavArrow {
