@@ -393,6 +393,7 @@ $(document).ready(function() {
 			wrntpopup.find('input.button').click( function() {
 		   		if( $(this).hasClass('active') )
 					return false
+				wrntpopup.find('input.button').val('Выбрать').removeClass('active')
 				$(this).val('В корзине').addClass('active')
 				var tmpitem = $(this).data()			
 				$.getJSON( tmpitem.url, function(data) {
@@ -474,7 +475,7 @@ $(document).ready(function() {
 					'sum': tr.find('.price'),
 					'drop': tr.find('.whitelink'),
 					'linked': bline.attr('ref')
-					}, checkWide())
+					}, checkWide)
 		basket.push( tmpline )
 	}	
 
