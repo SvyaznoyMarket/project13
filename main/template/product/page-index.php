@@ -88,7 +88,7 @@ $productVideo = reset($productVideos);
 </script>
 
 <!-- похожие товары -->
-<? if (!$product->getIsBuyable() && $product->getState()->getIsShop()  && \App::config()->smartEngine['pull']): ?>
+<? if (!$product->getIsBuyable() && $product->getState()->getIsShop()  && \App::config()->smartengine['pull']): ?>
 <div class="clear"></div>
 
 <div class="lifted">
@@ -355,17 +355,17 @@ $productVideo = reset($productVideos);
     <?= $page->render('product/_slider', array('product' => $product, 'productList' => array_values($related), 'totalProducts' => count($product->getRelatedId()), 'itemsInSlider' => \App::config()->product['itemsInSlider'], 'page' => 1, 'title' => 'С этим товаром также покупают', 'url' => $page->url('product.related', array('productToken' => $product->getToken())))) ?>
 <? endif ?>
 
-<? if (false && \App::config()->smartEngine['pull']): ?>
+<? if (false && \App::config()->smartengine['pull']): ?>
 <!--div class="clear"></div>
 <div id="product_also_bought-container" data-url="<? //echo url_for('smartengine_alsoBought', array('product' => $product->getId())) ?>" style="margin-top: 20px;"></div-->
 <? endif ?>
 
-<?php if (\App::config()->smartEngine['pull']): ?>
+<?php if (\App::config()->smartengine['pull']): ?>
 <div class="clear"></div>
-<div id="product_user-also_viewed-container" data-url="<?= $page->url('smartengine.pull.product_alsoViewed', array('productId' => $product->getId())) ?>" style="margin-top: 20px;"></div>
+<div id="product_user-also_viewed-container" data-url="<?= $page->url('product.recommended', ['productId' => $product->getId()]) ?>" style="margin-top: 20px;"></div>
 <? endif ?>
 
-<? if (false && \App::config()->smartEngine['pull']): ?>
+<? if (false && \App::config()->smartengine['pull']): ?>
 <!--div class="clear"></div>
 <div id="product_user-recommendation-container" data-url="<? //echo url_for('smartengine_userRecommendation', array('product' => $product->getId())) ?>" style="margin-top: 20px;"><h3>Recommendations for user...</h3></div-->
 <? endif ?>
@@ -627,7 +627,7 @@ $productVideo = reset($productVideos);
 
 <?= $page->render('_breadcrumbs', array('breadcrumbs' => $breadcrumbs, 'class' => 'breadcrumbs-footer')) ?>
 
-<? if (\App::config()->smartEngine['push']): ?>
+<? if (\App::config()->smartengine['push']): ?>
 <div id="product_view-container" data-url="<?= $page->url('smartengine.push.product_view', array('productId' => $product->getId())) ?>"></div>
 <? endif ?>
 

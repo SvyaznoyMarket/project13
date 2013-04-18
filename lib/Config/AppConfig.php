@@ -198,9 +198,21 @@ class AppConfig {
         'payUrl'       => null,
     ];
     /** @var array */
-    public $smartEngine = [
-        'pull' => null,
-        'push' => null,
+    public $smartengine = [
+        'pull'           => null,
+        'push'           => null,
+        'apiUrl'         => null,
+        'apiKey'         => null,
+        'tenantid'       => null,
+        'logEnabled'     => null,
+        'logDataEnabled' => null,
+    ];
+    /** @var array */
+    public $crossss = [
+        'pull'   => null,
+        'push'   => null,
+        'apiUrl' => null,
+        'userId' => null,
     ];
     /** @var array */
     public $warranty = [

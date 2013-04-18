@@ -171,14 +171,19 @@ $c->cart['productLimit'] = 50;
 
 $c->payment['creditEnabled'] = true;
 
-$c->smartEngine['pull'] = true;
-$c->smartEngine['push'] = true;
-$c->smartEngine['api_url'] = 'https://www.selightprod.smartengine.at/se-light/api/1.0/json/';
-$c->smartEngine['api_key'] = 'c41851b19511c20acc84f47b7816fb8e';
-$c->smartEngine['tenantid'] = 'ENojUTRcD8';
-$c->smartEngine['log_enabled'] = true;
-$c->smartEngine['log_data_enabled'] = true;
-$c->smartEngine['ssl_verify'] = true;
+$c->smartengine['pull'] = true;
+$c->smartengine['push'] = true;
+$c->smartengine['apiUrl'] = 'https://www.selightprod.smartengine.at/se-light/api/1.0/json/';
+$c->smartengine['apiKey'] = 'c41851b19511c20acc84f47b7816fb8e';
+$c->smartengine['tenantid'] = 'ENojUTRcD8';
+$c->smartengine['logEnabled'] = true;
+$c->smartengine['logDataEnabled'] = true;
+$c->smartengine['sslVerify'] = true;
+
+$c->crossss['pull'] = true;
+$c->crossss['push'] = true;
+$c->crossss['apiUrl'] = 'http://crossss.com/api.ashx';
+$c->crossss['userId'] = 45;
 
 $c->warranty['enabled'] = true;
 $c->f1Certificate['enabled'] = false;

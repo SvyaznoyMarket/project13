@@ -12,13 +12,13 @@ class Client {
     public function __construct(array $config,  \Logger\LoggerInterface $logger = null)
     {
         $this->config = array_merge([
-            'api_url'          => null,
-            'api_key'          => null,
-            'tenantid'         => null,
-            'timeout'          => 0.5, //в секундах
-            'cert'             => null,
-            'log_enabled'      => false,
-            'log_data_enabled' => false,
+            'apiUrl'         => null,
+            'apiKey'         => null,
+            'tenantid'       => null,
+            'timeout'        => 0.5, //в секундах
+            'cert'           => null,
+            'logEnabled'     => false,
+            'logDataEnabled' => false,
         ], $config);
 
         $this->logger = $logger;
@@ -49,14 +49,14 @@ class Client {
 
             \Util\RequestLogger::getInstance()->addLog($info['url'], '', $info['total_time'], 'smartengine');
 
-            if ($this->config['log_enabled']) {
+            if ($this->config['logEnabled']) {
                 $this->logger->info('Response '.$connection.' : '.(is_array($info) ? json_encode($info, JSON_UNESCAPED_UNICODE) : $info), ['smartengine']);
             }
             if ($info['http_code'] >= 300) {
                 throw new \Smartengine\Exception(sprintf("Invalid http code: %d, \nResponse: %s", $info['http_code'], $response));
             }
 
-            if ($this->config['log_data_enabled']) {
+            if ($this->config['logDataEnabled']) {
                 $this->logger->info('Response data: ' . $response, ['smartengine']);
             }
             $responseDecoded = $this->decode($response);
@@ -87,17 +87,17 @@ class Client {
             $param = rawurlencode($param);
         } if (isset($param)) unset($param);
 
-        $query = $this->config['api_url']
+        $query = $this->config['apiUrl']
             . str_replace('.', '/', $action)
             . '?' . http_build_query(array_merge([
-            'apikey'   => $this->config['api_key'],
+            'apikey'   => $this->config['apiKey'],
             'tenantid' => $this->config['tenantid'],
         ], $params))
         ;
         \App::logger()->info('Start smartengine ' . $action . ' query: ' . $query, ['smartengine']);
 
         $connection = curl_init();
-        curl_setopt($connection, CURLOPT_SSL_VERIFYPEER, $this->config['ssl_verify']);
+        curl_setopt($connection, CURLOPT_SSL_VERIFYPEER, $this->config['sslVerify']);
         if ($this->config['cert']) {
             curl_setopt($connection, CURLOPT_CAINFO, $this->config['cert']);
         }
@@ -107,7 +107,7 @@ class Client {
         curl_setopt($connection, CURLOPT_TIMEOUT_MS, $this->config['timeout'] * 1000);
         curl_setopt($connection, CURLOPT_URL, $query);
 
-        if ($this->config['log_enabled']) {
+        if ($this->config['logEnabled']) {
             $this->logger->info('Send smartengine requset ' . $connection, ['smartengine']);
         }
 

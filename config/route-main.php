@@ -366,9 +366,9 @@ return [
     ],
 
     // smartengine
-    'smartengine.pull.product_alsoViewed' => [
+    'product.recommended' => [
         'pattern' => '/product-also-viewed/{productId}',
-        'action' => ['Smartengine\Action', 'pullProductAlsoViewed'],
+        'action' => ['Product\RecommendedAction', 'execute'],
         'require' => ['productId' => '\d+'],
     ],
     'smartengine.pull.product_similar' => [
