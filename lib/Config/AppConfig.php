@@ -198,7 +198,7 @@ class AppConfig {
         'payUrl'       => null,
     ];
     /** @var array */
-    public $smartEngine = [
+    public $smartengine = [
         'pull' => null,
         'push' => null,
     ];

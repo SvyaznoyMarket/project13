@@ -56,7 +56,7 @@ $c->paymentPsbInvoice['payUrl'] = 'https://retail.payment.ru/invoice.aspx';
 
 $c->database['host']     = 'site-db'; // был 10.20.33.2
 
-$c->smartEngine['cert'] = $c->dataDir . '/cert/gsorganizationvalg2.crt';
+$c->smartengine['cert'] = $c->dataDir . '/cert/gsorganizationvalg2.crt';
 
 $c->user['corporateRegister'] = true;
 
