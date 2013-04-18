@@ -361,7 +361,7 @@ $productVideo = reset($productVideos);
 
 <?php if (\App::config()->smartengine['pull']): ?>
 <div class="clear"></div>
-<div id="product_user-also_viewed-container" data-url="<?= $page->url('smartengine.pull.product_alsoViewed', array('productId' => $product->getId())) ?>" style="margin-top: 20px;"></div>
+<div id="product_user-also_viewed-container" data-url="<?= $page->url('product.recommended', ['productId' => $product->getId()]) ?>" style="margin-top: 20px;"></div>
 <? endif ?>
 
 <? if (false && \App::config()->smartengine['pull']): ?>
