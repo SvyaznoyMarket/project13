@@ -14,9 +14,12 @@ class Layout extends \View\DefaultLayout {
         /** @var $regionName string */
         $regionName = \App::user()->getRegion()->getName();
 
+        /** @var $brand \Model\Brand\Entity */
+        $brand = $this->getParam('brand') instanceof \Model\Brand\Entity ? $this->getParam('brand') : null;
+
         // content title
         if (!$this->getParam('title')) {
-            $this->setParam('title', $category->getName());
+            $this->setParam('title', $category->getName() . ($brand ? (' ' . $brand->getName()) : ''));
         }
 
         // breadcrumbs
@@ -111,6 +114,9 @@ class Layout extends \View\DefaultLayout {
             . $this->render('_innerJavascript');
     }
 
+    /**
+     * @param \Model\Page\Entity $page
+     */
     private function applySeoPattern(\Model\Page\Entity $page) {
         $dataStore = \App::dataStoreClient();
 
@@ -120,22 +126,37 @@ class Layout extends \View\DefaultLayout {
             return;
         }
 
+        /** @var $brand \Model\Brand\Entity */
+        $brand = $this->getParam('brand') instanceof \Model\Brand\Entity ? $this->getParam('brand') : null;
+
         $region = \App::user()->getRegion();
 
         $seoTemplate = null;
+
+        // токены категорий
         $categoryTokens = [];
         foreach ($category->getAncestor() as $iCategory) {
             $categoryTokens[] = $iCategory->getToken();
         }
         $categoryTokens[] = $category->getToken();
 
-        $dataStore->addQuery(sprintf('seo/catalog/%s.json', implode('/', $categoryTokens)), [], function ($data) use (&$seoTemplate) {
-            $seoTemplate = array_merge([
-                'title'       => null,
-                'description' => null,
-                'keywords'    => null,
-            ], $data);
-        });
+        if ($brand) {
+            $dataStore->addQuery(sprintf('seo/brand/%s/%s.json', implode('/', $categoryTokens), $category->getToken() . '-' . $brand->getToken()), [], function ($data) use (&$seoTemplate) {
+                $seoTemplate = array_merge([
+                    'title'       => null,
+                    'description' => null,
+                    'keywords'    => null,
+                ], $data);
+            });
+        } else {
+            $dataStore->addQuery(sprintf('seo/catalog/%s.json', implode('/', $categoryTokens)), [], function ($data) use (&$seoTemplate) {
+                $seoTemplate = array_merge([
+                    'title'       => null,
+                    'description' => null,
+                    'keywords'    => null,
+                ], $data);
+            });
+        }
 
         // данные для шаблона
         $patterns = [
@@ -143,6 +164,10 @@ class Layout extends \View\DefaultLayout {
             'город'     => [$region->getName()],
             'сайт'      => null,
         ];
+        if ($brand) {
+            $patterns['бренд'] = [$brand->getName()];
+        }
+
         $dataStore->addQuery(sprintf('inflect/product-category/%s.json', $category->getId()), [], function($data) use (&$patterns) {
             if ($data) $patterns['категория'] = $data;
         });

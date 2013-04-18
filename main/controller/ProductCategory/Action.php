@@ -156,12 +156,13 @@ class Action {
     }
 
     /**
-     * @param string        $categoryPath
      * @param \Http\Request $request
-     * @return \Http\Response
+     * @param string        $categoryPath
+     * @param string|null   $brandToken
      * @throws \Exception\NotFoundException
+     * @return \Http\Response
      */
-    public function category($categoryPath, \Http\Request $request) {
+    public function category(\Http\Request $request, $categoryPath, $brandToken = null) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
         $client = \App::coreClientV2();
@@ -171,19 +172,6 @@ class Action {
         $categoryToken = end($categoryToken);
 
         // подготовка 1-го пакета запросов
-
-        // запрашиваем пользователя, если он авторизован
-        /*if ($user->getToken()) {
-            \RepositoryManager::user()->prepareEntityByToken($user->getToken(), function($data) {
-                if ((bool)$data) {
-                    \App::user()->setEntity(new \Model\User\Entity($data));
-                }
-            }, function (\Exception $e) {
-                \App::exception()->remove($e);
-                $token = \App::user()->removeToken();
-                throw new \Exception\AccessDeniedException(sprintf('Время действия токена %s истекло', $token));
-            });
-        }*/
 
         // запрашиваем текущий регион, если есть кука региона
         if ($user->getRegionId()) {
@@ -225,11 +213,23 @@ class Action {
             }
         });
 
+        // запрашиваем бренд по токену
+        /** @var $brand \Model\Brand\Entity */
+        $brand = null;
+        if ($brandToken) {
+            \RepositoryManager::brand()->prepareEntityByToken($brandToken, $region, function($data) use (&$brand) {
+                $data = reset($data);
+                if ((bool)$data) {
+                    $brand = new \Model\Brand\Entity($data);
+                }
+            });
+        }
+
         // выполнение 2-го пакета запросов
-        $client->execute(\App::config()->coreV2['retryTimeout']['tiny']);
+        $client->execute(\App::config()->coreV2['retryTimeout']['short']);
 
         if (!$category) {
-            throw new \Exception\NotFoundException(sprintf('Категория товара @%s не найдена.', $categoryToken));
+            throw new \Exception\NotFoundException(sprintf('Категория товара @%s не найдена', $categoryToken));
         }
 
         // подготовка 3-го пакета запросов
@@ -250,16 +250,18 @@ class Action {
         $client->execute(\App::config()->coreV2['retryTimeout']['tiny']);
 
         // фильтры
-        $productFilter = $this->getFilter($filters, $category, $request);
+        $productFilter = $this->getFilter($filters, $category, $brand, $request);
 
         $setPageParameters = function(\View\Layout $page) use (
             &$category,
             &$regionsToSelect,
-            &$productFilter
+            &$productFilter,
+            &$brand
         ) {
             $page->setParam('category', $category);
             $page->setParam('regionsToSelect', $regionsToSelect);
             $page->setParam('productFilter', $productFilter);
+            $page->setParam('brand', $brand);
         };
 
         // если категория содержится во внешнем узле дерева
@@ -307,11 +309,11 @@ class Action {
             throw new \Exception(sprintf('У категории "%s" отстутсвуют дочерние узлы', $category->getId()));
         }
 
-        $page->setParam('myThingsData', array(
+        $page->setParam('myThingsData', [
             'EventType' => 'MyThings.Event.Visit',
-            'Action' => '1011',
-	        'Category' => $category->getName(),
-        ));
+            'Action'    => '1011',
+	        'Category'  => $category->getName(),
+        ]);
 
         return new \Http\Response($page->show());
     }
@@ -479,12 +481,30 @@ class Action {
         $page->setParam('productView', $productView);
         $page->setParam('productVideosByProduct', $productVideosByProduct);
 
-        $page->setParam('myThingsData', array(
-            'EventType' => 'MyThings.Event.Visit',
-            'Action' => '1011',
-            'Category' => isset($category->getAncestor()[0]) ? $category->getAncestor()[0]->getName() : null,
+        $page->setParam('myThingsData', [
+            'EventType'   => 'MyThings.Event.Visit',
+            'Action'      => '1011',
+            'Category'    => isset($category->getAncestor()[0]) ? $category->getAncestor()[0]->getName() : null,
             'SubCategory' => $category->getName()
-        ));
+        ]);
+
+        return new \Http\Response($page->show());
+    }
+
+    /**
+     * @param \Model\Product\Category\Entity $category
+     * @param \Model\Brand\Entity            $brand
+     * @param \Model\Product\Filter          $productFilter
+     * @param \View\Layout                   $page
+     * @param \Http\Request                  $request
+     * @return \Http\Response
+     */
+    public function brand(\Model\Product\Category\Entity $category, \Model\Brand\Entity $brand, \Model\Product\Filter $productFilter, \View\Layout $page, \Http\Request $request) {
+        \App::logger()->debug('Exec ' . __METHOD__);
+
+        if (\App::config()->debug) \App::debug()->add('sub.act', 'ProductCategory\\Action.brand', 138);
+
+        $page->setParam('brand', $brand);
 
         return new \Http\Response($page->show());
     }
@@ -492,10 +512,11 @@ class Action {
     /**
      * @param \Model\Product\Filter\Entity[] $filters
      * @param \Model\Product\Category\Entity $category
-     * @param \Http\Request                  $request
+     * @param \Model\Brand\Entity|null       $brand
+     * @param \Http\Request $request
      * @return \Model\Product\Filter
      */
-    private function getFilter(array $filters, \Model\Product\Category\Entity $category, \Http\Request $request) {
+    private function getFilter(array $filters, \Model\Product\Category\Entity $category, \Model\Brand\Entity $brand = null, \Http\Request $request) {
         // флаг глобального списка в параметрах запроса
         $isGlobal = self::isGlobal();
         //
@@ -511,6 +532,11 @@ class Action {
         }
         if ($inStore) {
             $values['instore'] = 1;
+        }
+        if ($brand) {
+            $values['brand'] = [
+                $brand->getId(),
+            ];
         }
 
         // проверяем есть ли в запросе фильтры
