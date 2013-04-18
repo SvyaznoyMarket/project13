@@ -140,10 +140,10 @@ $productVideo = reset($productVideos);
     <div class="fr">
         <div id="testFreak" class="jsanalytics"><a id="tfw-badge" href="http://www.testfreaks.ru"></a></div>
     </div>
-    <span>Артикул #<?= $product->getArticle() ?></span>
+    <span>Артикул #<span  itemprop="productID"><?= $product->getArticle() ?></span></span>
   </div>
 
-  <div class="font14 pb15"><?= $product->getTagline() ?></div>
+  <div class="font14 pb15" itemprop="description"><?= $product->getTagline() ?></div>
   <div class="clear"></div>
 
   <? if($product->getPriceOld() && !$user->getRegion()->getHasTransportCompany()): ?>
@@ -156,8 +156,9 @@ $productVideo = reset($productVideos);
   <div class="clear mOur pt10 <? if ($product->hasSaleLabel()) echo 'red'; ?>">Наша цена</div>
   <? endif ?>
 
-  <div class="fl pb15">
-    <div class="pb10 <? if ($product->hasSaleLabel()) echo 'red'; ?>"><strong class="font34"><span class="price"><?= $page->helper->formatPrice($product->getPrice()) ?></span> <span class="rubl">p</span></strong></div>
+  <div class="fl pb15" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+    <link itemprop="availability" href="http://schema.org/OutOfStock" />  
+    <div class="pb10 <? if ($product->hasSaleLabel()) echo 'red'; ?>"><strong class="font34"><span class="price" itemprop="price"><?= $page->helper->formatPrice($product->getPrice()) ?></span> <meta itemprop="priceCurrency" content="RUB"><span class="rubl">p</span></strong></div>
     <? if ($product->getIsBuyable()): ?>
     <div class="pb5"><strong class="orange">Есть в наличии</strong></div>
     <? endif ?>
