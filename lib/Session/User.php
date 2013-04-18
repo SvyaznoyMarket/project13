@@ -150,7 +150,7 @@ class User {
             if ($regionId) {
                 $this->region = \RepositoryManager::region()->getEntityById($regionId);
                 if (!$this->region) {
-                    \App::logger()->warn(sprintf('Регион #"%s" не найден.', $regionId));
+                    \App::logger()->warn(sprintf('Регион #"%s" не найден.', $regionId), ['session', 'user']);
                 }
             }
         }
@@ -209,7 +209,7 @@ class User {
     public function setCacheCookie(\Http\Response $response) {
         $value = md5(strval(\App::session()->getId()) . strval(time()));
         $cookie = new \Http\Cookie(\App::config()->cacheCookieName, $value);
-        \App::logger()->debug(sprintf('Cache cookie %s cooked', $value));
+        \App::logger()->debug(sprintf('Cache cookie %s cooked', $value), ['session', 'user']);
 
         $response->headers->setCookie($cookie);
     }

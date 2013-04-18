@@ -20,7 +20,7 @@ class Action {
         echo "Executing '{$queueName}' with: limit={$limit} ...\n";
         \App::logger()->debug('Exec ' . __METHOD__);
 
-        $this->logger = \App::logger('smartengine');
+        $this->logger = \App::logger();
 
         $this->touchWorkerNum(1);
 

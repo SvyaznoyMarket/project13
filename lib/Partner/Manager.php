@@ -102,7 +102,7 @@ class Manager {
                 $response->headers->setCookie($cookie);
             }
         } catch (\Exception $e) {
-            \App::logger()->error($e);
+            \App::logger()->error($e, ['partner']);
         }
     }
 

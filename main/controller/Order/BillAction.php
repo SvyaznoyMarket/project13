@@ -10,7 +10,7 @@ class BillAction {
     }
 
     public function execute(\Http\Request $request, $orderNumber) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        \App::logger()->debug('Exec ' . __METHOD__, ['order']);
 
         $client = \App::curl();
 
@@ -37,7 +37,7 @@ class BillAction {
                 return new \Http\Response($content);
             }
         } catch (\Exception $e) {
-            \App::logger()->error($e);
+            \App::logger()->error($e, ['order']);
         }
 
         $page = new \View\Order\BillPage();

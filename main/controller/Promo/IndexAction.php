@@ -37,14 +37,16 @@ class IndexAction {
         // подготовка 2-го пакета запросов
         // запрашиваем товары
         if ((bool)$productsById) {
-            \RepositoryManager::product()->prepareCollectionById(array_keys($productsById), $region, function($data) use (&$productsById) {
-                foreach ($data as $item) {
-                    $productsById[(int)$item['id']] = new \Model\Product\BasicEntity($item);
-                }
-            }, function(\Exception $e) {
-                \App::exception()->remove($e);
-                \App::logger()->error('Не удалось получить товары для промо-каталога');
-            });
+            foreach (array_chunk(array_keys($productsById), 50) as $ids) {
+                \RepositoryManager::product()->prepareCollectionById($ids, $region, function($data) use (&$productsById) {
+                    foreach ($data as $item) {
+                        $productsById[(int)$item['id']] = new \Model\Product\BasicEntity($item);
+                    }
+                }, function(\Exception $e) {
+                    \App::exception()->remove($e);
+                    \App::logger()->error('Не удалось получить товары для промо-каталога');
+                });
+            }
         }
         // запрашиваем услуги
         if ((bool)$servicesById) {

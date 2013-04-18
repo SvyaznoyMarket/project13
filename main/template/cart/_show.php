@@ -15,7 +15,12 @@
 $creditData = [];
 
 foreach ($products as $product) {
-    $cartProduct = $cartProductsById[$product->getId()];
+    $cartProduct = isset($cartProductsById[$product->getId()]) ? $cartProductsById[$product->getId()] : null;
+    if (!$cartProduct) {
+        \App::logger()->error(sprintf('Товар #%s не найден в корзине', $product->getId()));
+        continue;
+    }
+
     $creditData[] = array(
         'id'       => $product->getId(),
         'quantity' => $cartProduct->getQuantity(),
