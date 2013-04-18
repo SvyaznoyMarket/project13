@@ -212,6 +212,7 @@ class AppConfig {
         'pull'   => null,
         'push'   => null,
         'apiUrl' => null,
+        'userId' => null,
     ];
     /** @var array */
     public $warranty = [

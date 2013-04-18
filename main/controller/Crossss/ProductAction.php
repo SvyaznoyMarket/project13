@@ -20,13 +20,13 @@ class ProductAction {
             }
 
             $curl->query(\App::config()->crossss['apiUrl'] . '?' . http_build_query([
+                'userid'          => \App::config()->crossss['userId'],
                 'sessionid'       => session_id(),
                 'itemid'          => $product->getId(),
                 'itemdescription' => $product->getName(),
                 'itemurl'         => \App::router()->generate('product', ['productPath' => $product->getPath()], true),
                 'actiontime'      => time(),
                 'itemtype'        => $product->getMainCategory() ? $product->getMainCategory()->getId() : null,
-                'userid'          => \App::user()->getEntity() ? \App::user()->getEntity()->getId() : null,
             ]));
 
             //return new \Http\JsonResponse(['success' => true]);
