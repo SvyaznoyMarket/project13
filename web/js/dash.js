@@ -126,7 +126,6 @@ $(document).ready(function(){
 				} else $('#auth-link').show()
 
 				if ( $('#upsale').length ){
-					console.info(data.data)
 					$('#upsaleCounter').html(data.data.vitems)
 					$('#upsalePrice').html(data.data.sum)
 				}
