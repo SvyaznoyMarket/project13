@@ -99,16 +99,23 @@ define('termAPI',
 
 
 		/**
-		 * События удаления\добавление товара в сравнения на терминале
-		 * 
+		 * Прослойка для вызова функции проверки сравнения товара
+		 *
+		 * @author Aleksandr Zaytsev
 		 * @param  {number} pid идентификатор продукта
+		 * @private
+		 * @requires checkCompare
 		 */
-		terminal.compare.productRemoved.connect(function(pid){
+		var compareMiddleWare = function(pid){
 			checkCompare(pid)
-		})
-		terminal.compare.productAdded.connect(function(pid){
-			checkCompare(pid)
-		})
+		}
+
+
+		/**
+		 * События удаления\добавление товара в сравнения на терминале
+		 */
+		terminal.compare.productRemoved.connect(compareMiddleWare)
+		terminal.compare.productAdded.connect(compareMiddleWare)
 
 
 		/**
@@ -192,6 +199,17 @@ define('termAPI',
 			var screenType = 'other_shops'
 
 			toScreen(screenType, { productId: id })
+		}
+
+
+		/**
+		 * Функция разрыва существующих коннектов
+		 * 
+		 * @public
+		 */
+		diconnectTERM = function(){
+			terminal.compare.productRemoved.disconnect(compareMiddleWare)
+			terminal.compare.productAdded.disconnect(compareMiddleWare)
 		}
 
 

@@ -50,6 +50,10 @@ define('library',
 		myConsole('library.js v4 loaded')
 
 
+
+		/**
+		 * Настройки AJAX
+		 */
 		$.ajaxSetup({
 			async:true,
 			cache:false,
