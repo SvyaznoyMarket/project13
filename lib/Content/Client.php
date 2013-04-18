@@ -34,20 +34,20 @@ class Client {
      */
     public function query ($action, array $data = []) {
         \Debug\Timer::start('content');
-        \App::logger()->info('Start content request ' . $action);
+        \App::logger()->debug('Start content request ' . $action, ['content']);
 
         $url = $this->config['url'] . $action . '?json=1';
         $response = null;
         $this->curl->addQuery($url, $data, function ($data) use (&$response, $action) {
             $response = $data;
             $spend = \Debug\Timer::stop('content');
-            \App::logger()->info('End content request ' . $action . ' in ' . $spend);
+            \App::logger()->debug('End content request ' . $action . ' in ' . $spend, ['content']);
         }, function ($e) use ($action) {
             if (false === $this->config['throwException']) {
                 \App::exception()->remove($e);
             }
             $spend = \Debug\Timer::stop('content');
-            \App::logger()->info('Fail content request ' . $action . ' in ' . $spend . ' with ' . $e);
+            \App::logger()->debug('Fail content request ' . $action . ' in ' . $spend . ' with ' . $e, ['content']);
         }, $this->config['timeout']);
         $this->curl->execute(\App::config()->coreV2['retryTimeout']['tiny'], \App::config()->coreV2['retryCount']);
 

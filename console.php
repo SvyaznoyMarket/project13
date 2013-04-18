@@ -27,13 +27,13 @@ Autoloader::register($config->appDir);
 // application
 \App::init($env, $config, function() {
     if ($error = error_get_last()) {
-        \App::logger()->error($error);
+        \App::logger()->error($error, ['cli']);
     }
 
     \App::shutdown();
 });
 
-\App::logger()->info('Start cli app');
+\App::logger()->info('Start cli app', ['cli']);
 
 try {
     if (!isset($argv[1])) {
@@ -58,10 +58,10 @@ try {
     call_user_func_array($actionCall[0], $actionCall[1]);
 } catch (\Exception $e) {
     $spend = \Debug\Timer::stop('app');
-    \App::logger()->error('End cli app ' . $spend . ' ' . round(memory_get_peak_usage() / 1048576, 2) . 'Mb' . ' with ' . $e);
+    \App::logger()->error('End cli app ' . $spend . ' ' . round(memory_get_peak_usage() / 1048576, 2) . 'Mb' . ' with ' . $e, ['cli']);
 
     throw $e;
 }
 
 $spend = \Debug\Timer::stop('app');
-\App::logger()->info('End cli app in ' . $spend . ' used ' . round(memory_get_peak_usage() / 1048576, 2) . 'Mb');
+\App::logger()->info('End cli app in ' . $spend . ' used ' . round(memory_get_peak_usage() / 1048576, 2) . 'Mb', ['cli']);

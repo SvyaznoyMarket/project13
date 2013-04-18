@@ -15,15 +15,10 @@ $debug->add('env', \App::$env, 144);
 $debug->add('name', \App::$name, 143);
 $debug->add('git.branch', shell_exec(sprintf('cd %s && git rev-parse --abbrev-ref HEAD', realpath(\App::config()->appDir))), 142);
 $debug->add('git.tag', shell_exec(sprintf('cd %s && git describe --always --tag', realpath(\App::config()->appDir))), 141);
-if ((bool)\App::config()->abtest['enabled']) {
-    $debug->add('abTest', \App::abTest()->getCase()->getName(), 140);
-} else {
-    $debug->add('abTest', 'disabled', 140);
-}
-
 
 $action =implode('.', (array)\App::request()->attributes->get('action', []));
 $debug->add('act', $action ?: 'undefined', 138, $action ? \Debug\Collector::TYPE_INFO : \Debug\Collector::TYPE_ERROR);
+$debug->add('route', \App::request()->attributes->get('route'), 137);
 
 if (\App::user()->getToken()) {
     $debug->add('user', \App::user()->getToken(), 135);

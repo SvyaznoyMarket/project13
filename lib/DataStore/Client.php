@@ -34,7 +34,7 @@ class Client {
      */
     public function query($path) {
         \Debug\Timer::start('data-store');
-        \App::logger()->info('Start data-store request ' . $path);
+        \App::logger()->info('Start data-store request ' . $path, ['data-store']);
 
         $response = null;
         // локальный файл
@@ -47,11 +47,11 @@ class Client {
             $this->curl->addQuery($this->config['url'] . $path, [], function($data) use (&$response, $path) {
                 $response = $data;
                 $spend = \Debug\Timer::stop('data-store');
-                \App::logger()->info('End data-store request ' . $path . ' in ' . $spend);
+                \App::logger()->info('End data-store request ' . $path . ' in ' . $spend, ['data-store']);
             }, function($e) use ($path) {
                 $spend = \Debug\Timer::stop('data-store');
                 \App::exception()->remove($e);
-                \App::logger()->info('Fail data-store request ' . $path . ' in ' . $spend . ' with ' . $e);
+                \App::logger()->info('Fail data-store request ' . $path . ' in ' . $spend . ' with ' . $e, ['data-store']);
             }, $this->config['timeout']);
             $this->curl->execute(\App::config()->coreV2['retryTimeout']['tiny'], \App::config()->coreV2['retryCount']);
         }

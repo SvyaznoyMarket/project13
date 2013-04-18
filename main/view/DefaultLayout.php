@@ -131,7 +131,7 @@ class DefaultLayout extends Layout {
     }
 
     public function slotAuth() {
-        return $this->render('_auth');
+        return ('user.login' != \App::request()->attributes->get('route')) ? $this->render('_auth') : '';
     }
 
     public function slotUserbar() {

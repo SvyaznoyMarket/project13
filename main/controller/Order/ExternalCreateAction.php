@@ -17,7 +17,7 @@ class ExternalCreateAction {
         $region = $regionId ? \RepositoryManager::region()->getById($regionId) : null;
         if (!$region) {
             $region = \RepositoryManager::region()->getDefaultEntity();
-            \App::logger()->warn('Не передан регион для заказа извне');
+            \App::logger()->warn('Не передан регион для заказа извне', ['order']);
         }
 
         if (!(bool)$productInCart) {
@@ -40,7 +40,7 @@ class ExternalCreateAction {
             /** @var $product \Model\Product\Entity|null */
             $product = isset($productsById[$id]) ? $productsById[$id] : null;
             if (!$product) {
-                \App::logger()->error(sprintf('Товар #%s из заказа извне не найден', $product->getId()));
+                \App::logger()->error(sprintf('Товар #%s из заказа извне не найден', $product->getId()), ['order']);
                 continue;
             }
 

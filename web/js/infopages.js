@@ -1,5 +1,26 @@
 $(document).ready(function(){
 
+
+	/**
+	 * Получение продуктов
+	 */
+	if ( $('.getProductList').length){
+		console.log('yes!')
+		$('.getProductList').each(function(i){
+			var wrapper = $(this)
+			var productList = wrapper.data('product')
+			var url = '/products/widget/'+productList
+
+			$.get(url, function(res){
+				if (!res.success)
+					return false
+
+				wrapper.html(res.content)
+			})
+		})
+	}
+
+
 	/**
 	 * form register corporate
 	 */
@@ -178,9 +199,11 @@ $(document).ready(function(){
 	// login form toggle
 	if ($('#hideLoginform').length){
 		$('#hideLoginform').bind('click', function(){
+			var loginform = $('#login-form')
 			$('#hideLoginform').hide()
-			$('#loginForm').slideDown(300)
-			$.scrollTo(loginForm,500)
+			loginform.slideDown(300)
+			$.scrollTo(loginform,500)
+			console.log('123')
 			return false
 		})
 	}
