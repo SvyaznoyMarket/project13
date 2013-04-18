@@ -199,8 +199,19 @@ class AppConfig {
     ];
     /** @var array */
     public $smartengine = [
-        'pull' => null,
-        'push' => null,
+        'pull'           => null,
+        'push'           => null,
+        'apiUrl'         => null,
+        'apiKey'         => null,
+        'tenantid'       => null,
+        'logEnabled'     => null,
+        'logDataEnabled' => null,
+    ];
+    /** @var array */
+    public $crossss = [
+        'pull'   => null,
+        'push'   => null,
+        'apiUrl' => null,
     ];
     /** @var array */
     public $warranty = [

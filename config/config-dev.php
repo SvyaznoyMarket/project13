@@ -31,9 +31,9 @@ $c->mobileHost = 'm.ent3.ru';
 
 $c->smartengine['pull'] = true;
 $c->smartengine['push'] = false;
-$c->smartengine['api_url'] = 'https://selightstage.smartengine.at/se-light/api/1.0/json/';
+$c->smartengine['apiUrl'] = 'https://selightstage.smartengine.at/se-light/api/1.0/json/';
 $c->smartengine['cert'] = $c->dataDir . '/cert/gsorganizationvalg2.crt';
-$c->smartengine['ssl_verify'] = false;
+$c->smartengine['sslVerify'] = false;
 
 $c->paymentPsb['terminal'] = '79036768';
 $c->paymentPsb['merchant'] = '790367686219999';
