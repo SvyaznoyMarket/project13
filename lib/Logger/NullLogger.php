@@ -6,13 +6,13 @@ class NullLogger implements LoggerInterface {
     public function __construct() {
     }
 
-    public function debug($message) {}
+    public function debug($message, array $tags = []) {}
 
-    public function info($message) {}
+    public function info($message, array $tags = []) {}
 
-    public function warn($message) {}
+    public function warn($message, array $tags = []) {}
 
-    public function error($message) {}
+    public function error($message, array $tags = []) {}
 
     public function dump() {}
 

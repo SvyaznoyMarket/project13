@@ -34,14 +34,14 @@ class FacebookProvider implements ProviderInterface {
         $code = $request->get('code');
 
         if (empty($code)) {
-            \App::logger()->warn(['provider' => self::NAME, 'request' => $request->query->all()]);
+            \App::logger()->warn(['provider' => self::NAME, 'request' => $request->query->all()], ['oauth']);
             return null;
         }
 
         $response = $this->query($this->getAccessTokenUrl($code), [], false);
         parse_str($response, $response);
         if (empty($response['access_token'])) {
-            \App::logger()->warn(['provider' => self::NAME, 'url' => $this->getAccessTokenUrl($code), 'response' => $response]);
+            \App::logger()->warn(['provider' => self::NAME, 'url' => $this->getAccessTokenUrl($code), 'response' => $response], ['oauth']);
             return null;
         }
         $accessToken = $response['access_token'];
@@ -49,7 +49,7 @@ class FacebookProvider implements ProviderInterface {
         $response = $this->query($this->getProfileUrl($accessToken));
         $response = is_array($response) ? $response : [];
         if (empty($response['id']) || empty($response['first_name'])) {
-            \App::logger()->warn(['provider' => self::NAME, 'url' => $this->getProfileUrl($accessToken), 'response' => $response]);
+            \App::logger()->warn(['provider' => self::NAME, 'url' => $this->getProfileUrl($accessToken), 'response' => $response], ['oauth']);
             return null;
         }
 
@@ -99,13 +99,13 @@ class FacebookProvider implements ProviderInterface {
                 // TODO: json_last_error()
 
                 if (!$response || !empty($response['error']['code'])) {
-                    \App::logger()->warn(['provider' => self::NAME, 'url' => $url, 'data' => $data, 'response' => $response]);
+                    \App::logger()->warn(['provider' => self::NAME, 'url' => $url, 'data' => $data, 'response' => $response], ['oauth']);
                     throw new \Exception($response['error']['code'] . (isset($response['error']['message']) ? (': ' . $response['error']['message']) : ''));
                 }
             }
         } catch (\Exception $e) {
             $response = null;
-            \App::logger()->error($e);
+            \App::logger()->error($e, ['oauth']);
         }
 
         return $response;

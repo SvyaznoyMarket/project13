@@ -16,7 +16,7 @@ class InflectAction {
     public function execute($limit = 10000) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
-        $manager = new \QueueManager(\App::config()->queue, \App::logger('task'));
+        $manager = new \QueueManager(\App::config()->queue, \App::logger());
         $manager->process('inflect', function($taskName, $taskData = []) {
             foreach ($taskData as $data) {
                 $original = isset($data['original']) ? $data['original'] : null;

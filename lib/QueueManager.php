@@ -27,7 +27,7 @@ class QueueManager {
      * @throws Exception
      */
     public function process($queueName, $handler, $limit = 1000) {
-        $this->logger->debug(sprintf('Executing %s with limit %s', $queueName, $limit));
+        $this->logger->debug(sprintf('Executing %s with limit %s', $queueName, $limit), ['queue']);
 
         if (!is_callable($handler)) {
             throw new \Exception(sprintf('Для задания %s передан неправильный обработчик', $queueName));
@@ -71,7 +71,7 @@ class QueueManager {
                     $handler($name, $data);
                 } catch (\Exception $e) {
                     // TODO: добавить attempt
-                    $this->logger->error($e);
+                    $this->logger->error($e, ['queue']);
                 }
             }
 
@@ -79,7 +79,7 @@ class QueueManager {
                 $this->dbh->exec("DELETE FROM `queue` WHERE id IN (".implode(',', $ids).")");
             }
         } catch (\Exception $e) {
-            $this->logger->error($e);
+            $this->logger->error($e, ['queue']);
         }
 
         // important!
@@ -97,7 +97,7 @@ class QueueManager {
         $fp = fopen($file, 'c+');
         while (!$fp) {
             $pause = rand(100000, 3000000);
-            $this->logger->warn(sprintf('Кажется, файл заблокирован. Жду %s ms...', $pause / 1000));
+            $this->logger->warn(sprintf('Кажется, файл заблокирован. Жду %s ms...', $pause / 1000), ['queue']);
             usleep($pause);
             $fp = fopen($file, 'c+');
         }
@@ -114,7 +114,7 @@ class QueueManager {
             fclose($fp);
         }
         else {
-            $this->logger->warn(sprintf('Не удалось открыть файл %s', $file));
+            $this->logger->warn(sprintf('Не удалось открыть файл %s', $file), ['queue']);
         }
     }
 }

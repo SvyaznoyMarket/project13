@@ -34,7 +34,7 @@ class OdnoklassnikiProvider implements ProviderInterface {
         $code = $request->get('code');
 
         if (empty($code)) {
-            \App::logger()->warn(['provider' => self::NAME, 'request' => $request->query->all()]);
+            \App::logger()->warn(['provider' => self::NAME, 'request' => $request->query->all()], ['oauth']);
             return null;
         }
 
@@ -46,14 +46,14 @@ class OdnoklassnikiProvider implements ProviderInterface {
             'client_secret' => $this->config->secretKey,
         ]);
         if (empty($response['access_token'])) {
-            \App::logger()->warn(['provider' => self::NAME, 'url' => $this->getAccessTokenUrl($code), 'response' => $response]);
+            \App::logger()->warn(['provider' => self::NAME, 'url' => $this->getAccessTokenUrl($code), 'response' => $response], ['oauth']);
             return null;
         }
         $accessToken = $response['access_token'];
 
         $response = $this->query($this->getProfileUrl($accessToken));
         if (empty($response['uid']) || empty($response['first_name'])) {
-            \App::logger()->warn(['provider' => self::NAME, 'url' => $this->getProfileUrl($accessToken), 'response' => $response]);
+            \App::logger()->warn(['provider' => self::NAME, 'url' => $this->getProfileUrl($accessToken), 'response' => $response], ['oauth']);
             return null;
         }
 
@@ -99,12 +99,12 @@ class OdnoklassnikiProvider implements ProviderInterface {
             // TODO: json_last_error()
 
             if (!$response || !empty($response['error'])) {
-                \App::logger()->warn(['provider' => self::NAME, 'url' => $url, 'data' => $data, 'response' => $response]);
+                \App::logger()->warn(['provider' => self::NAME, 'url' => $url, 'data' => $data, 'response' => $response], ['oauth']);
                 throw new \Exception($response['error'] . (isset($response['error_description']) ? (': ' . $response['error_description']) : ''));
             }
         } catch (\Exception $e) {
             $response = null;
-            \App::logger()->error($e);
+            \App::logger()->error($e, ['oauth']);
         }
 
         return $response;

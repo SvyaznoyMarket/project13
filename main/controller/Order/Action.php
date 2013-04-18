@@ -25,7 +25,7 @@ class Action {
         try {
             // проверка на пустую корзину
             if ($cart->isEmpty()) {
-                \App::logger()->warn('Невозможно начать оформление заказа: в корзине нет товаров и услуг');
+                \App::logger()->warn('Невозможно начать оформление заказа: в корзине нет товаров и услуг', ['order']);
 
                 return $request->isXmlHttpRequest()
                     ? new \Http\JsonResponse(array(
@@ -104,12 +104,12 @@ class Action {
                         /** @var $product \Model\Product\Entity */
                         $product = isset($productsById[$errorItem['id']]) ? $productsById[$errorItem['id']] : null;
                         if (!$product) {
-                            \App::logger()->error(sprintf('Товар #%s из данных об ошибке %s не найден', $errorItem['id'], json_encode($errorItem, JSON_UNESCAPED_UNICODE)));
+                            \App::logger()->error(sprintf('Товар #%s из данных об ошибке %s не найден', $errorItem['id'], json_encode($errorItem, JSON_UNESCAPED_UNICODE)), ['order']);
                             continue;
                         }
                         $cartProduct = \App::user()->getCart()->getProductById($product->getId());
                         if (!$cartProduct) {
-                            \App::logger()->error(sprintf('Товар #%s не найден в корзине', $errorItem['id']));
+                            \App::logger()->error(sprintf('Товар #%s не найден в корзине', $errorItem['id']), ['order']);
                             continue;
                         }
 
@@ -176,7 +176,7 @@ class Action {
                 return new \Http\Response($page->show());
             }
             if (!$deliveryCalcResult) {
-                $e = new \Exception('Калькулятор доставки вернул пустой результат');
+                $e = new \Exception('Калькулятор доставки вернул пустой результат', ['order']);
                 \App::logger()->error($e->getMessage());
 
                 throw $e;
@@ -353,7 +353,7 @@ class Action {
             /** @var $product \Model\Product\CartEntity|null */
             $product = isset($productsById[$cartProduct->getId()]) ? $productsById[$cartProduct->getId()] : null;
             if (!$product) {
-                \App::logger()->error(sprintf('Товар #%s не найден', $cartProduct->getId()));
+                \App::logger()->error(sprintf('Товар #%s не найден', $cartProduct->getId()), ['order']);
                 continue;
             }
 
@@ -392,7 +392,7 @@ class Action {
      * @throws \Exception
      */
     public function complete(\Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        \App::logger()->debug('Exec ' . __METHOD__, ['order']);
 
         $user = \App::user();
 
@@ -402,7 +402,7 @@ class Action {
         /** @var $order \Model\Order\Entity */
         $order = reset($orders);
         if (!$order) {
-            \App::logger()->error(sprintf('В сессии нет созданных заказов. Запрос: %s, сессия: %s', json_encode($request->query->all(), JSON_UNESCAPED_UNICODE), json_encode((array)\App::session()->get(self::ORDER_SESSION_NAME), JSON_UNESCAPED_UNICODE)));
+            \App::logger()->error(sprintf('В сессии нет созданных заказов. Запрос: %s, сессия: %s', json_encode($request->query->all(), JSON_UNESCAPED_UNICODE), json_encode((array)\App::session()->get(self::ORDER_SESSION_NAME), JSON_UNESCAPED_UNICODE)), ['order']);
             return new \Http\RedirectResponse(\App::router()->generate('cart'));
 
         }
@@ -539,7 +539,7 @@ class Action {
      * @throws \Exception\NotFoundException
      */
     public function paymentComplete($orderNumber, \Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        \App::logger()->debug('Exec ' . __METHOD__, ['order']);
 
         $orderNumber = trim((string)$orderNumber);
         if (!$orderNumber) {
@@ -597,7 +597,7 @@ class Action {
         $deliveryData = json_decode($request->get('delivery_map'), true);
         if (empty($deliveryData['deliveryTypes']) ) {
             $e = new \Exception(sprintf('Пустая карта доставки %s', json_encode($request->request->all(), JSON_UNESCAPED_UNICODE)));
-            \App::logger()->error($e->getMessage());
+            \App::logger()->error($e->getMessage(), ['order']);
 
             throw $e;
         }
@@ -605,7 +605,7 @@ class Action {
         $data = [];
         foreach ($deliveryData['deliveryTypes'] as $deliveryItem) {
             if (!isset($deliveryTypesById[$deliveryItem['id']])) {
-                \App::logger()->error(sprintf('Неизвестный тип доставки %s', json_encode($deliveryItem, JSON_UNESCAPED_UNICODE)));
+                \App::logger()->error(sprintf('Неизвестный тип доставки %s', json_encode($deliveryItem, JSON_UNESCAPED_UNICODE)), ['order']);
                 continue;
             }
 
@@ -647,7 +647,7 @@ class Action {
             if ('self' == $deliveryType->getToken()) {
                 $shopId = (int)$deliveryItem['shop']['id'];
                 if (!array_key_exists($shopId, $shopsById)) {
-                    \App::logger()->error(sprintf('Неизвестный магазин %s', json_encode($deliveryItem['shop'], JSON_UNESCAPED_UNICODE)));
+                    \App::logger()->error(sprintf('Неизвестный магазин %s', json_encode($deliveryItem['shop'], JSON_UNESCAPED_UNICODE)), ['order']);
                 }
                 $orderData['shop_id'] = $shopId;
                 $orderData['subway_id'] = null;
@@ -662,7 +662,7 @@ class Action {
             // товары и услуги
             foreach ($deliveryItem['items'] as $itemToken) {
                 if (false === strpos($itemToken, '-')) {
-                    \App::logger()->error(sprintf('Неправильный элемент заказа %s', json_encode($itemToken, JSON_UNESCAPED_UNICODE)));
+                    \App::logger()->error(sprintf('Неправильный элемент заказа %s', json_encode($itemToken, JSON_UNESCAPED_UNICODE)), ['order']);
                     continue;
                 }
 
@@ -672,7 +672,7 @@ class Action {
                 if ('product' == $itemType) {
                     $cartProduct = $user->getCart()->getProductById($itemId);
                     if (!$cartProduct) {
-                        \App::logger()->error(sprintf('Элемент заказа %s не найден в корзине', json_encode($itemToken, JSON_UNESCAPED_UNICODE)));
+                        \App::logger()->error(sprintf('Элемент заказа %s не найден в корзине', json_encode($itemToken, JSON_UNESCAPED_UNICODE)), ['order']);
                         continue;
                     }
 
@@ -705,7 +705,7 @@ class Action {
                 } else if ('service' == $itemType) {
                     $cartService = $user->getCart()->getServiceById($itemId);
                     if (!$cartService) {
-                        \App::logger()->error(sprintf('Элемент заказа %s не найден в корзине', json_encode($itemToken, JSON_UNESCAPED_UNICODE)));
+                        \App::logger()->error(sprintf('Элемент заказа %s не найден в корзине', json_encode($itemToken, JSON_UNESCAPED_UNICODE)), ['order']);
                         continue;
                     }
                     $orderData['service'][] = array(
@@ -745,7 +745,7 @@ class Action {
         $orderNumbers = [];
         foreach ($result as $orderData) {
             if (empty($orderData['number'])) {
-                \App::logger()->error(sprintf('Ошибка при создании заказа %s', json_encode($orderData, JSON_UNESCAPED_UNICODE)));
+                \App::logger()->error(sprintf('Ошибка при создании заказа %s', json_encode($orderData, JSON_UNESCAPED_UNICODE)), ['order']);
                 continue;
             }
             \App::logger()->debug(sprintf('Заказ %s успешно создан %s', $orderData['number'], json_encode($orderData, JSON_UNESCAPED_UNICODE)));
@@ -915,21 +915,21 @@ class Action {
                 $cartItem = null;
                 if ('products' == $itemType) {
                     if (!isset($cartProductsById[$itemData['id']])) {
-                        \App::logger()->error(sprintf('В корзине отсутсвует товар #%s', $itemData['id']));
+                        \App::logger()->error(sprintf('В корзине отсутсвует товар #%s', $itemData['id']), ['order']);
                         continue;
                     }
 
                     $cartItem = $cartProductsById[$itemData['id']];
                 } else if ('services' == $itemType) {
                     if (!isset($cartServicesById[$itemData['id']])) {
-                        //\App::logger()->error(sprintf('В корзине отсутсвует услуга #%s', $itemData['id']));
+                        //\App::logger()->error(sprintf('В корзине отсутсвует услуга #%s', $itemData['id']), ['order']);
                         continue;
                     }
 
                     $cartItem = $cartServicesById[$itemData['id']];
                 }
                 if (!$cartItem) {
-                    \App::logger()->error(sprintf('Не найден элемент корзины %s-%s', $itemType, $itemData['id']));
+                    \App::logger()->error(sprintf('Не найден элемент корзины %s-%s', $itemType, $itemData['id']), ['order']);
                     continue;
                 }
 
@@ -938,7 +938,7 @@ class Action {
 
                     foreach ($cartItem->getService() as $cartService) {
                         if (!isset($servicesById[$cartService->getId()])) {
-                            \App::logger()->error(sprintf('В индексном массиве услуга #%s отсутсвует', $cartService->getId()));
+                            \App::logger()->error(sprintf('В индексном массиве услуга #%s отсутсвует', $cartService->getId()), ['order']);
                             continue;
                         }
 
@@ -961,7 +961,7 @@ class Action {
                         /** @var $warranty \Model\Product\Warranty\Entity */
                         $warranty = isset($warrantiesById[$cartWarranty->getId()]) ? $warrantiesById[$cartWarranty->getId()] : null;
                         if (!$warranty) {
-                            \App::logger()->error(sprintf('Не найдена гарантия #%s для товара #%s', $cartWarranty->getId(), $product->getId()));
+                            \App::logger()->error(sprintf('Не найдена гарантия #%s для товара #%s', $cartWarranty->getId(), $product->getId()), ['order']);
                             continue;
                         }
 
@@ -1039,7 +1039,7 @@ class Action {
 
             $deliveryType = isset($deliveryTypesById[$itemData['mode_id']]) ? $deliveryTypesById[$itemData['mode_id']] : null;
             if (!$deliveryType) {
-                \App::logger()->error(sprintf('Не найден тип доставки #%s', $itemData['mode_id']));
+                \App::logger()->error(sprintf('Не найден тип доставки #%s', $itemData['mode_id']), ['order']);
                 continue;
             }
 
@@ -1117,14 +1117,14 @@ class Action {
         $orders = [];
         foreach ($orderData as $orderItem) {
             if (!$orderItem['number'] || !$orderItem['phone']) {
-                \App::logger()->error(sprintf('Невалидные данные о заказе в сессии %s', json_encode($orderItem, JSON_UNESCAPED_UNICODE)));
+                \App::logger()->error(sprintf('Невалидные данные о заказе в сессии %s', json_encode($orderItem, JSON_UNESCAPED_UNICODE)), ['order']);
                 continue;
             }
 
             // TODO: запрашивать несколько заказов асинхронно
             $order = \RepositoryManager::order()->getEntityByNumberAndPhone($orderItem['number'], $orderItem['phone']);
             if (!$order) {
-                \App::logger()->error(sprintf('Заказ из сессии не найден %s', json_encode($orderItem, JSON_UNESCAPED_UNICODE)));
+                \App::logger()->error(sprintf('Заказ из сессии не найден %s', json_encode($orderItem, JSON_UNESCAPED_UNICODE)), ['order']);
                 continue;
             }
 

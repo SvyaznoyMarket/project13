@@ -18,7 +18,7 @@ $totalText = $productCount . ' ' . ($category->getHasLine()
 $link = $category->getLink() . (\App::request()->get('instore') ? '?instore=1' : '');
 ?>
 
-<div class="goodsbox height250">
+<div class="goodsbox mCatalog">
     <div class="goodsbox__inner">
     	<div class="photo">
 	        <a href="<?= $link ?>">
