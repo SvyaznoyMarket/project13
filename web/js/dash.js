@@ -1,5 +1,83 @@
 $(document).ready(function(){
 
+	/* вывод слайдера со схожими товарами, если товар доступен только на витрине*/
+	if ( $('#similarGoodsSlider').length){
+
+		// основные элементы
+		var similarSlider = $('#similarGoodsSlider')
+		var similarWrap = similarSlider.find('.bSimilarGoodsSlider_eWrap')
+		var similarArrow = similarSlider.find('.bSimilarGoodsSlider_eArrow')
+
+		var slidesW = 250
+		var sliderW = 0
+		var slidesCount = 0
+		var wrapW = 0
+		var left = 0
+		
+		// init
+		var init = function(data){
+			for (var item in data){
+				var similarGood = tmpl('similarGoodTmpl',data[item])
+				similarWrap.append(similarGood)
+			}
+			var similarGoods = similarSlider.find('.bSimilarGoodsSlider_eGoods')
+			slidesCount = similarGoods.length
+			wrapW = slidesW * slidesCount
+			similarWrap.width(wrapW)
+			if (slidesCount > 0){
+				$('.bSimilarGoods').fadeIn(300, function(){
+					sliderW = similarSlider.width()
+				})
+			}
+			if (slidesCount < 4){
+				$('.bSimilarGoodsSlider_eArrow.mRight').hide()
+			}
+		}
+
+		$.getJSON( $('#similarGoodsSlider').data('url') , function(data){
+			if (!($.isEmptyObject(data))){
+				var initData = data
+				init(initData)
+			}
+		}).done(function(){
+			var similarGoods = similarSlider.find('.bSimilarGoodsSlider_eGoods')
+			slidesCount = similarGoods.length
+			wrapW = slidesW * slidesCount
+			similarWrap.width(wrapW)
+			if (slidesCount > 0){
+				$('.bSimilarGoods').fadeIn(300, function(){
+					sliderW = similarSlider.width()
+				})
+			}
+		})
+		
+		similarArrow.bind('click', function(){
+			if ($(this).hasClass('mLeft')){
+				left += (slidesW * 2)
+			}
+			else{
+				left -= (slidesW * 2)
+			}
+			// left *= ($(this).hasClass('mLeft'))?-1:1
+			if ((left <= sliderW-wrapW)){
+				left = sliderW-wrapW
+				$('.bSimilarGoodsSlider_eArrow.mRight').hide()
+				$('.bSimilarGoodsSlider_eArrow.mLeft').show()
+			} 
+			else if (left >= 0 ){
+				left = 0
+				$('.bSimilarGoodsSlider_eArrow.mLeft').hide()
+				$('.bSimilarGoodsSlider_eArrow.mRight').show()
+			}
+			else{
+				similarArrow.show()
+			}
+			similarWrap.animate({'left':left})
+			return false
+		})
+
+	}
+
 	var lboxCheckSubscribe = function(subscribe){
 		var notNowShield = $('.bSubscribeLightboxPopupNotNow')
 		var subPopup = $('.bSubscribeLightboxPopup')
