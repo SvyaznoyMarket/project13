@@ -40,7 +40,8 @@ class ProductCategoryAction {
 
         try {
             $result = $curl->query(\App::config()->crossss['apiUrl'] . '?' . http_build_query([
-                'userid'          => \App::config()->crossss['userId'],
+                'apikey'          => \App::config()->crossss['apiKey'],
+                'userid'          => \App::user()->getEntity() ? \App::user()->getEntity()->getId() : null,
                 'sessionid'       => session_id(),
                 'categoryid'      => $category->getId(),
                 'actiontime'      => time(),
@@ -75,8 +76,7 @@ class ProductCategoryAction {
             $productPager->setMaxPerPage($limit);
 
             return (new \Controller\Product\SliderAction())->execute($productPager, $productView, $request);
-        }
-        catch (\Exception $e) {
+        } catch (\Exception $e) {
             \App::logger()->error($e, ['crossss']);
         }
 

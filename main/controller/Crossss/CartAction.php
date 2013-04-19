@@ -1,25 +1,21 @@
 <?php
 namespace Controller\Crossss;
 
-class ProductAction {
+class CartAction {
     /**
-     * @param \Http\Request $request
-     * @param int           $productId
-     * @throws \Exception
+     * @param \Model\Product\BasicEntity $product
      * @return \Http\JsonResponse
      */
-    public function recommended(\Http\Request $request, $productId) {
+    public function product(\Model\Product\BasicEntity $product) {
         \App::logger()->debug('Exec ' . __METHOD__, ['action', 'crossss']);
 
-        $curl = \App::curl();
-
         try {
-            $product = \RepositoryManager::product()->getEntityById($productId);
-            if (!$product) {
-                throw new \Exception(sprintf('Товар #%s не найден', $productId));
+            $cartProduct = \App::user()->getCart()->getProductById($product->getId());
+            if (!$cartProduct) {
+                throw new \Exception(sprintf('Товар #%s не найден в корзине', $product->getId()));
             }
 
-            $result = $curl->query(\App::config()->crossss['apiUrl'] . '?' . http_build_query([
+            $data = [
                 'apikey'          => \App::config()->crossss['apiKey'],
                 'userid'          => \App::user()->getEntity() ? \App::user()->getEntity()->getId() : null,
                 'sessionid'       => session_id(),
@@ -28,13 +24,17 @@ class ProductAction {
                 'itemurl'         => \App::router()->generate('product', ['productPath' => $product->getPath()], true),
                 'actiontime'      => time(),
                 'itemtype'        => $product->getMainCategory() ? $product->getMainCategory()->getId() : null,
-            ]));
+                'unitprice'       => $product->getPrice(),
+                'quantity'        => $cartProduct->getQuantity(),
+            ];
 
-            //return new \Http\JsonResponse(['success' => true]);
+            \App::database()->exec("INSERT INTO `queue` (`name`, `body`) VALUES ('crossss.cart.product.create', '".addslashes(json_encode($data, JSON_HEX_APOS | JSON_HEX_QUOT))."')");
         } catch (\Exception $e) {
             \App::logger()->error($e, ['crossss']);
 
-            //return new \Http\JsonResponse(['success' => false, 'error' => \App::config()->debug ? $e->getMessage() : 'Ошибка']);
+            return new \Http\JsonResponse(['success' => false, 'error' => \App::config()->debug ? $e->getMessage() : 'Ошибка']);
         }
+
+        return new \Http\JsonResponse(['success' => true]);
     }
 }

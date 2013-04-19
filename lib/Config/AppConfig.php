@@ -211,7 +211,8 @@ class AppConfig {
     public $crossss = [
         'enabled' => null,
         'apiUrl'  => null,
-        'userId'  => null,
+        'apiKey'  => null,
+        'id'      => null,
     ];
     /** @var array */
     public $warranty = [
