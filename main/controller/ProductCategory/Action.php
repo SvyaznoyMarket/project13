@@ -86,7 +86,7 @@ class Action {
 
             $filters = [];
         }
-        $productFilter = $this->getFilter($filters, $category, $request);
+        $productFilter = $this->getFilter($filters, $category, null, $request);
         // листалка
         $limit = \App::config()->product['itemsInCategorySlider'];
         $repository = \RepositoryManager::product();
@@ -99,17 +99,8 @@ class Action {
         );
         $productPager->setPage($pageNum);
         $productPager->setMaxPerPage($limit);
-        // проверка на максимально допустимый номер страницы
-        if (($productPager->getPage() - $productPager->getLastPage()) > 0) {
-            throw new \Exception\NotFoundException(sprintf('Неверный номер страницы "%s".', $productPager->getPage()));
-        }
 
-        return new \Http\Response(\App::templating()->render('product/_list', array(
-            'page'   => new \View\Layout(),
-            'pager'  => $productPager,
-            'view'   => $productView,
-            'isAjax' => true,
-        )));
+        return (new \Controller\Product\SliderAction())->execute($productPager, $productView, $request);
     }
 
     /**
@@ -145,7 +136,7 @@ class Action {
 
             $filters = [];
         }
-        $productFilter = $this->getFilter($filters, $category, $request);
+        $productFilter = $this->getFilter($filters, $category, null, $request);
 
         $count = \RepositoryManager::product()->countByFilter($productFilter->dump());
 

@@ -173,6 +173,13 @@ return [
         'action'  => ['ProductCategory\Action', 'category'],
         'require' => ['categoryPath' => '[\w\d-_]+\/[\w\d-_]+', 'brand' => '[\w\d-_]+'],
     ],
+    // слайдер рекомендованных товаров
+    'product.category.recommended.slider' => [
+        'pattern' => '/ajax/catalog/{categoryPath}/_slider-recommended',
+        'action'  => ['Crossss\ProductCategoryAction', 'recommended'],
+        'require' => ['categoryPath' => '[\w\d-_]+\/?[\w\d-_]+'],
+    ],
+
     // карточка товара
     'product' => [
         'pattern' => '/product/{productPath}',
