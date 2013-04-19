@@ -180,8 +180,7 @@ $c->smartengine['logEnabled'] = true;
 $c->smartengine['logDataEnabled'] = true;
 $c->smartengine['sslVerify'] = true;
 
-$c->crossss['pull'] = true;
-$c->crossss['push'] = true;
+$c->crossss['enabled'] = true;
 $c->crossss['apiUrl'] = 'http://crossss.com/api.ashx';
 $c->crossss['userId'] = 45;
 
