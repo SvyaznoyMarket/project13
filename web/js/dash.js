@@ -1,17 +1,78 @@
 $(document).ready(function(){
 
-	var lboxCheckSubscribe = function(data){
-		if (!data.isSubscribe) 
-			return false
+	var lboxCheckSubscribe = function(subscribe){
+		var notNowShield = $('.bSubscribeLightboxPopupNotNow')
 		var subPopup = $('.bSubscribeLightboxPopup')
-		var subscribeItem = $('.bSubscribeLightbox')
-		subscribeItem.show()
-		subscribeItem.bind('click', function(){
-			subPopup.show()
-		})
-		subPopup.find('.close').bind('click', function(){
-			subPopup.hide()
-		})
+		var input = $('.bSubscribeLightboxPopup__eInput')
+		
+		input.placeholder()
+		
+		var subscribing = function(){
+			var url = $(this).data('url')
+			var email = input.val()
+
+			if ( email.search('@') !== -1 ){
+				$.post(url, {email: email}, function(res){
+					if( !res.success ){
+						console.log('error')
+					}
+					subPopup.html('<span class="bSubscribeLightboxPopup__eTitle mType">Спасибо! подтверждение подписки отправлено на указанный e-mail</span>')
+					docCookies.setItem(false, 'subscribed', 1, 157680000, '/')
+					if( typeof(_gaq) !== 'undefined' ){
+						_gaq.push(['_trackEvent', 'Account', 'Emailing sign up', 'Page top'])
+					}
+					setTimeout(function(){
+						subPopup.slideUp(300)
+					}, 3000)
+				})
+			}
+			else{
+				// email invalid
+				input.addClass('mError')
+				return false
+			}
+		}
+
+		var subscribeNow = function(){
+			subPopup.slideDown(300)
+
+			input.keydown(function(){
+				$(this).removeClass('mError')
+			})
+
+			$('.bSubscribeLightboxPopup__eBtn').bind('click', subscribing)
+
+			$('.bSubscribeLightboxPopup__eNotNow').bind('click', function(){
+				var url = $(this).data('url')
+
+				subPopup.slideUp(300, subscribeLater)
+				docCookies.setItem(false, 'subscribed', 0, 157680000, '/')
+				$.post(url)
+			})
+		}
+
+		var subscribeLater = function(){
+			notNowShield.slideDown(300)
+			notNowShield.bind('click', function(){
+				$(this).slideUp(300)
+				subscribeNow()
+			})
+		}
+
+		if (!subscribe.show){
+			if (!subscribe.agrred){
+				subscribeLater()
+			}
+			return false
+		}
+		else{
+			subscribeNow()
+		}
+	}
+
+	var startAction = function(action){
+		if (action.subscribe !== undefined)
+			lboxCheckSubscribe(action.subscribe)
 	}
 	
 	var carturl = $('.lightboxinner .point2').attr('href')
@@ -71,7 +132,8 @@ $(document).ready(function(){
 				}
 
 				// subscribe
-				lboxCheckSubscribe(data.data)
+				if (data.data.action !== undefined)
+					startAction(data.data.action)
 			}
 
 	})

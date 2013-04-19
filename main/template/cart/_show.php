@@ -15,11 +15,16 @@
 $creditData = [];
 
 foreach ($products as $product) {
-    $cartProduct = $cartProductsById[$product->getId()];
+    $cartProduct = isset($cartProductsById[$product->getId()]) ? $cartProductsById[$product->getId()] : null;
+    if (!$cartProduct) {
+        \App::logger()->error(sprintf('Товар #%s не найден в корзине', $product->getId()));
+        continue;
+    }
+
     $creditData[] = array(
         'id'       => $product->getId(),
         'quantity' => $cartProduct->getQuantity(),
-        'price'    => $cartProduct->getPrice(),
+        'price'    => $product->getPrice(),
         'type'     => \Model\CreditBank\Repository::getCreditTypeByCategoryToken($product->getMainCategory() ? $product->getMainCategory()->getToken() : null),
     );
 }
@@ -122,9 +127,7 @@ foreach ($products as $product) {
                 <? endif ?>
             </div>
             <div class="basketinfo pb15">
-                <div class="left font11">Цена:<br/><span class="font12"><span
-                        class="price"><?= $page->helper->formatPrice($product->getPrice()) ?></span> <span class="rubl">p</span></span>
-                </div>
+                <div class="left font11">&nbsp;</div>
                 <div class="right">
                     <?= $page->render('_spinner', array(
                         'quantity' => $cartProduct->getQuantity(),
@@ -134,7 +137,7 @@ foreach ($products as $product) {
                 </div>
             </div>
             <div class="basketinfo">
-                <div class="left font24"><span class="sum"><?= $page->helper->formatPrice($cartProduct->getTotalPrice()) ?></span> <span class="rubl">p</span></div>
+                <div class="left font24"><span class="sum"><?= $page->helper->formatPrice($cartProduct->getSum()) ?></span> <span class="rubl">p</span></div>
                 <div class="right">
                     <a href="<?= $page->url('cart.product.delete', array('productId' => $product->getId())) ?>" class="button whitelink mr5">Удалить</a>
                 </div>
@@ -221,7 +224,7 @@ foreach ($products as $product) {
                 </div>
             </div>
             <div class="basketinfo">
-                <div class="left font24"><span class="sum"><?= $page->helper->formatPrice($cartService->getTotalPrice()) ?></span> <span class="rubl">p</span></div>
+                <div class="left font24"><span class="sum"><?= $page->helper->formatPrice($cartService->getSum()) ?></span> <span class="rubl">p</span></div>
                 <div class="right">
                     <a href="<?= $page->url('cart.service.delete', array('serviceId' => $service->getId(), 'productId' => 0)) ?>" class="button whitelink mr5">Удалить</a>
                 </div>

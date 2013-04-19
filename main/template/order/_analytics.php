@@ -103,8 +103,6 @@
     );
     ?>
 
-    <div id="heiasComplete" data-vars="<?= $page->json($jsonOrdr) ?>" class="jsanalytics"></div>
-
     <div id="adriverOrder" data-vars="<?= $page->json($jsonOrdr) ?>" class="jsanalytics"></div>
 
     <div id="adblenderOrder" data-vars="<?= $page->json($jsonOrdr) ?>" class="jsanalytics"></div>

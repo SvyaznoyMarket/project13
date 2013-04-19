@@ -18,7 +18,7 @@ class CityAds {
                 '{sig}'      => md5('2085' . $order->getNumber()),
             ]);
         } catch (\Exception $e) {
-            \App::logger()->error($e);
+            \App::logger()->error($e, ['partner', 'cityads']);
         }
 
         return $link;

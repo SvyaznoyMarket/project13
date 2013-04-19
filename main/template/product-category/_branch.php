@@ -63,7 +63,7 @@ $globalTotalText = $category->getGlobalProductCount() . ' ' .$page->helper->numb
             if ($node->getId() == $category->getId()) $class .= ' mSelected';
             ?>
 
-            <li class="<?= $class ?>"><a href="<?= $node->getLink() ?>"><span><?= $node->getName() ?></span></a></li>
+            <li class="<?= $class ?>"><a href="<?= $node->getLink()  . (\App::request()->get('instore') ? '?instore=1' : '') ?>"><span><?= $node->getName() ?></span></a></li>
         <? endforeach ?>
         </ul>
     </dd>

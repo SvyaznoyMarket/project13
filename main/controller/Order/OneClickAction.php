@@ -10,7 +10,7 @@ class OneClickAction {
      * @throws \Exception
      */
     public function execute(\Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        \App::logger()->debug('Exec ' . __METHOD__, ['order']);
 
         if (!$request->isXmlHttpRequest()) {
             throw new \Exception\NotFoundException('Request is not xml http request');
@@ -22,14 +22,14 @@ class OneClickAction {
             $productToken = $request->get('product');
             if (!$productToken) {
                 $e = new \Exception\NotFoundException(sprintf('В GET запросе %s не содержится токена товара для заказа в один клик', json_encode($request->query->all(), JSON_UNESCAPED_UNICODE)));
-                \App::logger()->error($e);
+                \App::logger()->error($e, ['order']);
                 throw $e;
             }
 
             $formData = (array)$request->request->get('order');
             if (!(bool)$formData) {
                 $e = new \Exception\NotFoundException(sprintf('В POST запросе %s не содержится данных о заказе в один клик', json_encode($request->request->all(), JSON_UNESCAPED_UNICODE)));
-                \App::logger()->error($e);
+                \App::logger()->error($e, ['order']);
                 throw $e;
             }
 
@@ -46,7 +46,7 @@ class OneClickAction {
             $product = \RepositoryManager::product()->getEntityByToken($productToken);
             if (!$product) {
                 $e = new \Exception\NotFoundException(sprintf('Товар @%s не найден в ядре', $productToken));
-                \App::logger()->error($e);
+                \App::logger()->error($e, ['order']);
                 throw $e;
             }
 
@@ -108,11 +108,11 @@ class OneClickAction {
 
                 $order = \RepositoryManager::order()->getEntityByNumberAndPhone($orderNumber, $formData['recipient_phonenumbers']);
                 if (!$order) {
-                    \App::logger()->error(sprintf('Заказ №%s не найден в ядре', $result['number']));
+                    \App::logger()->error(sprintf('Заказ №%s не найден в ядре', $result['number']), ['order']);
                     $order = new \Model\Order\Entity(array('number' => $result['number']));
                 }
             } catch (\Exception $e) {
-                \App::logger()->warn($e);
+                \App::logger()->warn($e, ['order']);
                 \App::exception()->remove($e);
 
                 return new \Http\JsonResponse(array(
@@ -146,7 +146,7 @@ class OneClickAction {
                 try {
                     $shop = \RepositoryManager::shop()->getEntityById($order->getShopId());
                 } catch(\Exception $e) {
-                    \App::logger()->error($e);
+                    \App::logger()->error($e, ['order']);
                 }
             }
 
@@ -156,7 +156,7 @@ class OneClickAction {
             try {
                 $product = $orderProduct ? \RepositoryManager::product()->getEntityById($orderProduct->getId()) : null;
             } catch (\Exception $e) {
-                \App::logger()->error($e);
+                \App::logger()->error($e, ['order']);
                 $product = null;
             }
 

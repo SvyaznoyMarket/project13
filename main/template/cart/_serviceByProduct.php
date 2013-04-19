@@ -84,7 +84,7 @@ foreach ($product->getService() as $service) {
                             <?= $service->getName() ?><br>
                             <a class="bBacketServ__eMore" href="<?= $page->url('service.show', array('serviceToken' => $service->getToken())) ?>">Подробнее об услуге</a>
                         </td>
-                        <td class="mPrice"><span class="price"><?= $page->helper->formatPrice($cartService->getTotalPrice()) ?></span>&nbsp;<span class="rubl">p</span></td>
+                        <td class="mPrice"><span class="price"><?= $page->helper->formatPrice($cartService->getSum()) ?></span>&nbsp;<span class="rubl">p</span></td>
                         <td class="mEdit">
                             <?= $page->render('_spinner', array(
                                 'quantity' => $cartService->getQuantity(),

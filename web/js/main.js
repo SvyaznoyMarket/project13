@@ -1,5 +1,52 @@
 $(document).ready(function(){
 
+	/* F1 sale card*/
+	if ( $('.bF1SaleCard').length ){
+		var input = $('#F1SaleCard_number')
+		var btn = $('#F1SaleCard_btn')
+		var delBtn = $('.bF1SaleCard_eDel')
+		btn.bind('click', function(){
+			var url = btn.data('url')
+
+			var authFromServer = function(response) {
+				if ( response.success ) {
+					window.location.reload()
+				}
+				else{
+					$('#bF1SaleCard_eErr').html('Извините, карта с таким номером не найдена.')
+				}
+			}
+
+			var data = {
+				number: input.val()
+			}
+
+			$.ajax({
+				type: 'POST',
+				url: url,
+				data: data,
+				success: authFromServer
+			})
+
+		})
+		delBtn.live('click',function(){
+			var delUrl = $(this).data('url')
+			var authFromServer = function(response) {
+				if ( response.success ) {
+					window.location.reload()
+				}
+			}
+			$.ajax({
+				type: 'POST',
+				url: delUrl,
+				success: authFromServer
+			})
+		})
+
+	}
+
+
+
 
 	// Suggest для поля поиска
 	var nowSelectSuggest = -1
@@ -96,7 +143,7 @@ $(document).ready(function(){
 	suggestInputClick = function(){
 		$('#searchAutocomplete').show()
 	}
-	$('.searchbox .searchtext').keydown(suggestDown).keyup(suggestUp).mouseenter(suggestInputFocus).focus(suggestInputFocus).click(suggestInputClick)
+	$('.searchbox .searchtext').keydown(suggestDown).keyup(suggestUp).mouseenter(suggestInputFocus).focus(suggestInputFocus).click(suggestInputClick).placeholder()
 	$('.bSearchSuggest__eRes').live('mouseover', function(){
 		$('.bSearchSuggest__eRes').removeClass('hover')
 		var index = $(this).addClass('hover').index()

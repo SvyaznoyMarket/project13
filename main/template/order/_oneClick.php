@@ -23,7 +23,6 @@
 
     <? if (\App::config()->analytics['enabled']): ?>
         <div id="adriverOrder" data-vars="<?= $page->json($orderData) ?>" class="jsanalytics"></div>
-        <div id="heiasComplete" data-vars="<?= $page->json($orderData) ?>" class="jsanalytics"></div>
         <div id="adblenderOrder" data-vars="<?= $page->json($orderData) ?>" class="jsanalytics"></div>
         <div id="myThingsOrderData" data-value="<?= $page->json($myThingsOrderData) ?>"></div>
         <!-- Efficient Frontiers -->

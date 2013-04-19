@@ -19,7 +19,76 @@ $(document).ready(function() {
 		})
 	}
 
+	function checkServWarranty() {
+		// console.info('проверка наличия расширенных гарантий')
+		warr = $('.bBacketServ.extWarr.mBig')
+		$.each(warr, function(){
+			service = $(this)
+			if ( service.find('tr[ref]').length ){
+				// есть добавленные услуги
+				return true
+			}
+			else if ( service.is(':visible') ){
+				// услуг добавленных нет, но блок большой
+				var good = service.parents('.basketline') //текущий товар
+				good.find('.bBacketServ.extWarr.mSmall').show()
+				good.find('.bBacketServ.extWarr.mBig').hide()
+				return false
+			}
+		})
+	}
+
+	var checkServF1 = function() {
+
+		// console.info('проверка наличия услуг')
+		var serv = $('.bBacketServ.F1.mBig')
+		var res = false
+
+		$.each(serv, function(){
+			service = $(this)
+			if ( service.find('tr[ref]').length ){
+				// есть добавленные услуги
+				res = true
+			}
+			else if ( service.is(':visible') ){
+				// услуг добавленных нет, но блок большой
+				var good = service.parents('.basketline') //текущий товар
+				good.find('.bBacketServ.F1.mSmall').show()
+				good.find('.bBacketServ.F1.mBig').hide()
+				res = false
+			}
+		})
+		return res
+	}
+
+	var checkForSaleCard = function() {
+
+		// скрытие-отображение форма ввода карты
+		if (checkServF1()){
+			$('.bF1SaleCard').show()
+		}
+		else{
+			$('.bF1SaleCard').hide()
+		}
+
+		// скрытие отображение старой цены
+		if ( $('.bF1SaleCard_eComplete').length && checkServF1() ){
+			$('#commonSum .oldPrice').show()
+		}
+		else{
+			$('#commonSum .oldPrice').hide()
+		}
+	}
+
+	function showOldPrice(oldPrice) {
+		$('#totalOldPrice').html(printPrice( oldPrice ))
+	}
+
 	function getTotal() {
+		if ($('#site-config').data('f1-certificate') === 'true')
+			checkForSaleCard()
+		
+		checkServWarranty()
 		for(var i=0, tmp=0; i < basket.length; i++ ) {
 			if( ! basket[i].noview && $.contains( document.body, basket[i].hasnodes[0] ) )
 				tmp += basket[i].sum * 1
@@ -111,6 +180,7 @@ $(document).ready(function() {
 					location.href = location.href
 				}
 				else{
+					showOldPrice(data.data.old_price)
 					getTotal()
 				}
 			})
@@ -166,6 +236,7 @@ $(document).ready(function() {
 				if( !data.success ) {
 					location.href = location.href
 				}
+				showOldPrice(data.data.old_price)
 			})
 		}
 
@@ -188,6 +259,7 @@ $(document).ready(function() {
 				$(nodes.drop).data('run', true)
 				dropflag = self.clear()
 			}
+			// console.log('удаление')
 			return false
 		})
 
@@ -287,10 +359,16 @@ $(document).ready(function() {
 				$(this).val('В корзине').addClass('active')
 				var f1item = $(this).data()
 				$.getJSON( f1item.url, function(data) {
+					if (data.success){
+						f1item.f1price = data.data.sum
+						// console.log(f1item)
+						makeWide( bline, f1item)
+						popupIsOpened = false
+						f1popup.hide()
+						showOldPrice(data.data.old_price)
+					}
 				})
-				makeWide( bline, f1item )
-				popupIsOpened = false
-		   		f1popup.hide()
+				
 		   })
 			return false
 		})
@@ -317,7 +395,9 @@ $(document).ready(function() {
 					return false
 				$(this).val('В корзине').addClass('active')
 				var tmpitem = $(this).data()			
-				$.getJSON( tmpitem.url, function(data) { })
+				$.getJSON( tmpitem.url, function(data) {
+					showOldPrice(data.data.old_price)
+				})
 				popupIsOpened = false
 				wrntpopup.hide()
 				makeWideWrnt( bline, tmpitem )
@@ -359,7 +439,7 @@ $(document).ready(function() {
 	function makeWide( bline, f1item ) {
 		$('div.bBacketServ.mSmall.F1', bline).hide()
 		var bBig = $('div.bBacketServ.mBig.F1', bline)
-		bBig.show()		
+		bBig.show()
 		var f1lineshead = $('tr:first', bBig)
 		var f1linecart = tmpl('f1cartline', f1item)
 		f1linecart = f1linecart.replace(/F1ID/g, f1item.fid ).replace(/F1TOKEN/g, f1item.f1token ).replace(/PRID/g, bline.attr('ref') )
@@ -410,7 +490,8 @@ $(document).ready(function() {
 			$($('tr:eq(1)', bBig)).remove()
 		f1lineshead.after( f1linecart )
 		addLineWrnt( $('tr:eq(1)', bBig), bline )
-		getTotal()	
+		getTotal()
+		showOldPrice(data.data.old_price)
 	}
 	
 	/* credit */

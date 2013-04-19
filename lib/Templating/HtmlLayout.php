@@ -56,7 +56,7 @@ class HtmlLayout {
      */
     public function getParam($name) {
         if (!array_key_exists($name, $this->params)) {
-            \App::logger()->warn(sprintf('Неизвестный параметр шаблона "%s".', $name));
+            \App::logger()->warn(sprintf('Неизвестный параметр шаблона "%s"', $name), ['view']);
         }
 
         return array_key_exists($name, $this->params) ? $this->params[$name] : null;
@@ -101,7 +101,7 @@ class HtmlLayout {
             }
             $return = $this->render($template, $params);
         } catch (\Exception $e) {
-            \App::logger()->error($e);
+            \App::logger()->error($e, ['view']);
         }
 
         return $return;
@@ -139,7 +139,7 @@ class HtmlLayout {
             $timestamp = filectime(\App::config()->webDir . '/' . trim($stylesheet, '/'));
             $stylesheet .= '?' . $timestamp;
         } catch (\Exception $e) {
-            \App::logger()->error($e);
+            \App::logger()->error($e, ['view']);
         }
 
         $this->stylesheets[] = $stylesheet;
@@ -160,7 +160,7 @@ class HtmlLayout {
             $timestamp = filectime(\App::config()->webDir . '/' . trim($javascript, '/'));
             $javascript .= '?' . $timestamp;
         } catch (\Exception $e) {
-            \App::logger()->error($e);
+            \App::logger()->error($e, ['view']);
         }
 
         $this->javascripts[] = $javascript;

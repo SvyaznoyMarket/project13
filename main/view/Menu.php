@@ -54,7 +54,7 @@ class Menu {
         \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium'], \App::config()->coreV2['retryCount']);
 
         $this->fillMenu($this->menu);
-        \App::debug()->add('main-menu.catalog', sprintf('%s ms', round(\Debug\Timer::get('main-menu.catalog')['total'], 3) * 1000));
+        \App::debug()->add('time.main-menu.catalog', sprintf('%s ms', round(\Debug\Timer::get('main-menu.catalog')['total'], 3) * 1000), 92);
 
         return $this->menu;
     }
