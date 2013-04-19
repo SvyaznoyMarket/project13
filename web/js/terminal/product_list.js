@@ -4,21 +4,43 @@ define('product_list',
 
 	library.myConsole('product_list.js v_2 loaded')
 
+	terminal.interactive = false
 
 	/**
 	 * URL по которому необходимо получать товары
+	 * @type {String}
 	 */
 	var listingGetUrl = $('#categoryData').data('url')
 
 	/**
-	 * Количество уже прогруженных товаров
+	 * Количество загруженных товаров
+	 * @type {Number}
 	 */
 	var currentLoadedItems = 0
 
 	/**
-	 * Происходит ли загрузка в данный момент
+	 * Количество отрисованных элементов
+	 * @type {Number}
 	 */
-	var loadingItems = false
+	var currentRenderedItem = 0
+
+	/**
+	 * высоты элементов при разных масштах с учетом margin-bottom и padding-top + padding-bottom
+	 * @type {Array}
+	 */
+	var heights = [180, 247, 377]
+
+	/**
+	 * Данные продуктов
+	 * @type {Array}
+	 */
+	var productData = []
+
+	/**
+	 * Признак того что загружены все товары в категории
+	 * @type {Boolean}
+	 */
+	var endProducts = false
 
 
 	/**
@@ -60,7 +82,7 @@ define('product_list',
 		termAPI.checkCompare(data.id)
 
 		img.load(src, function(){
-			$(this).fadeIn(300)
+			$(this).fadeIn(300).parent().removeClass('mLoading')
 		})
 	}
 
@@ -72,21 +94,22 @@ define('product_list',
 	 * @author  Aleksandr Zaytsev
 	 * @param  {Object} data данные для рендеринга шаблона
 	 */
-	var preparedData = function(data){
-		for (var i = 0; i< data.length; i++){
+	var preparedData = function(start, end){
+		currentRenderedItem = currentRenderedItem+(end-start)
+		for (var i = start; i< end; i++){
 			var template = {
-				id : data[i].id,
-				article : data[i].article,
-				image : data[i].image,
-				name : data[i].name,
-				price : library.formatMoney(data[i].price),
-				description : data[i].description,
-				isBuyable : data[i].isBuyable,
-				isInShop : data[i].isInShop,
-				isInShowroom : data[i].isInShowroom,
-				isInStore : data[i].isInStore,
-				hasSupplier : data[i].hasSupplier,
-				isInOtherShop : data[i].isInOtherShop
+				id : productData[i].id,
+				article : productData[i].article,
+				image : productData[i].image,
+				name : productData[i].name,
+				price : library.formatMoney(productData[i].price),
+				description : productData[i].description,
+				isBuyable : productData[i].isBuyable,
+				isInShop : productData[i].isInShop,
+				isInShowroom : productData[i].isInShowroom,
+				isInStore : productData[i].isInStore,
+				hasSupplier : productData[i].hasSupplier,
+				isInOtherShop : productData[i].isInOtherShop
 			}
 			renderItem(template)
 		}
@@ -97,24 +120,26 @@ define('product_list',
 	 * Прогрузка строк с новыми товарами
 	 *
 	 * @author  Aleksandr Zaytsev
-	 * @param {number} lines количество строк, которое необходиом прогрузить
+	 * @param {Number} lines количество строк, которое необходиом прогрузить
 	 */
 	var getItems = function(lines){
-		if (loadingItems)
-			return false
-
-		loadingItems = true
 
 		var resFromServer = function(res){
 			if (!res.success)
 				return false
-			
-			if (res.products.length == 0)
+
+			if (res.products.length == 0){
+				endProducts = true
 				return false
+			}
 			
 			currentLoadedItems += res.products.length
-			preparedData(res.products)
-			loadingItems = false
+			productData = productData.concat(res.products)
+
+			if (currentRenderedItem == 0){
+				preparedData(currentRenderedItem, currentRenderedItem+res.products.length)
+			}
+			
 			getItems(5 - currentZoom())
 		}
 
@@ -132,69 +157,171 @@ define('product_list',
 		})
 	}
 
-
+	
 	/**
-	 * Обработка скролинга страницы
+	 * Свайп-скролинг товаров
 	 *
 	 * @author  Aleksandr Zaytsev
-	 * @param {number} y текущий отступ прокрутки
-	 * @param {number} windowHeight высота окна
-	 * @param {number} documentHeight высота документа
-	 * @param {number} offset отступ снизу, после которого срабатывает загрузка новых элементов
+	 * @param {jQuery object} el Селектор элемента скролинга
 	 */
-	// var terminalScrolling = function(){
-	// 	if (!$('.bProductListItem').length)
-	// 		return false
+	var listingSwipe = function(el){
 
-	// 	var y = terminal.flickable.contentY
-	// 	var windowHeight = terminal.flickable.height
-	// 	var documentHeight = terminal.flickable.contentHeight
-	// 	var offset = windowHeight
+		/**
+		 * Кордината начала движения
+		 * @type {Number}
+		 */
+		var startY = null
 
-	// 	if (documentHeight - y - offset <= windowHeight )
-	// 		getItems(6 - currentZoom())
-	// }
-	// terminal.flickable.scrollValueChanged.connect(terminalScrolling)
+		/**
+		 * Первоначальный отступ
+		 * @type {Number}
+		 */
+		var startOffset = null
 
+		/**
+		 * Новое значение отступа
+		 * @type {Number}
+		 */
+		var newOffset = null
 
-	/**
-	 * Автодоводка скрола под текущий размер сетки
-	 *
-	 * @author  Aleksandr Zaytsev
-	 */
-	var rowScrolling = function(){		
-		var nowZoom = currentZoom()
-		var heights = [180, 247, 377]
-		var windowHeight = terminal.flickable.height
-		var documentHeight = terminal.flickable.contentHeight
+		/**
+		 * Время анимации
+		 * @type {Number}
+		 */
+		var time = 150
 
-		if ( terminal.flickable.contentY + windowHeight + heights[nowZoom]/2 >= documentHeight ){
-			return false
+		/**
+		 * Флаг происходящей анимации
+		 * @type {Boolean}
+		 */
+		var animated = false
+
+		/**
+		 * Анимация доводки скролинга
+		 *
+		 * @author  Aleksandr Zaytsev
+		 * @param  {number} start Координата начала скролинга
+		 * @param  {number} stop  Координата конеца скролинга
+		 * @param  {number} step  Шаг анимации
+		 */
+		var aminateScroll = function(start, stop, step){
+			animated = true
+			if (start > stop){
+				if (start - step > stop) {
+					start -= step
+					setTimeout( function(){
+						el.css('top',start)
+						aminateScroll(start, stop, step)
+					}, 1)
+				}
+				else {
+					animated = false
+					el.css('top',stop)
+					preparedData(currentRenderedItem, currentRenderedItem + Math.pow((4-currentZoom()),2) )
+				}
+
+			}
+			else{
+				if (start + step < stop) {
+					start += step
+					setTimeout( function(){
+						el.css('top',start)
+						aminateScroll(start, stop, step)
+					}, 1)
+				}
+				else {
+					animated = false
+					el.css('top',stop)
+				}
+			}
 		}
 
-		var toY = Math.round((terminal.flickable.contentY-30)/heights[nowZoom])*heights[nowZoom] + 30
+		/**
+		 * Хандлер начала скролинга
+		 * 
+		 * @param  {event} e
+		 */
+		var moveStart = function(e){
+			e.preventDefault()
 
-		library.scrollTo(toY, 0, 150)
+			var orig = e.originalEvent
+
+			startY = orig.changedTouches[0].pageY
+			startOffset = parseInt(el.css('top'))
+		}
+
+		/**
+		 * Хандлер движения
+		 * 
+		 * @param  {event} e
+		 */
+		var moveMe = function(e){
+			e.preventDefault()
+		
+			var orig = e.originalEvent
+			var touch = orig.changedTouches[0].pageY
+			
+			newOffset = touch - startY + startOffset
+			el.css('top',newOffset)
+		}
+
+		/**
+		 * Хандлер окончания движения
+		 * 
+		 * @param  {event} e
+		 */
+		var moveEnd = function(e){
+			e.preventDefault()
+			
+			if (animated) 
+				return false
+
+			var orig = e.originalEvent
+			var stopY = orig.changedTouches[0].pageY
+			var diff = Math.abs(startY-stopY)
+			var zoom = currentZoom()
+			var listingWindowH = heights[zoom]*(4-zoom)
+			var step = (Math.abs(startOffset - newOffset))/(time*0.1)
+
+			if ( diff >= listingWindowH/4 ){
+				startOffset = (startOffset > newOffset) ? startOffset - listingWindowH : startOffset + listingWindowH
+				startOffset = (startOffset > 0) ? 0 : startOffset
+			}
+			aminateScroll(newOffset, startOffset, step)
+		}
+
+		el.bind("touchstart", moveStart)
+		el.bind("touchmove", moveMe)
+		el.bind("touchend", moveEnd)
 	}
-	terminal.flickable.movementEnded.connect(rowScrolling)
-	// terminal.flickable.flickEnded.connect(rowScrolling)
+	listingSwipe($('.bProductListWrap'));
 
 
 	/**
 	 * Изменение масштаба карточек товаров в листинге
 	 *
 	 * @author  Aleksandr Zaytsev
-	 * @param   {jQuery}   el            обертка карточек товара
-	 * @param   {array}    startTouches  координаты начала касания
-	 * @param   {array}    sizes         массив названия классов размеров
-	 * @param   {array}    heights 		 высоты элементов при разных масштабав с учетом margin-bottom и padding-top + padding-bottom
-	 * @param   {number}   nowZoom       текущий масштаб
+	 * @param   {jQuery}   el   обертка карточек товара
 	 */
 	var listingZoom = function(el){
+
+		/**
+		 * Текущий масштаб листинга
+		 * @type {Number}
+		 */
 		var nowZoom = currentZoom()
+
+		/**
+		 * Массив текущих пальцев на экране
+		 * @type {Array}
+		 */
 		var startTouches = []
+
+		/**
+		 * Массив названий классов масштабов для обертки
+		 * @type {Array}
+		 */
 		var sizes = ['mSizeLittle','mSizeMid','mSizeBig']
-		var heights = [180, 247, 377]
 
 
 		/**
@@ -207,10 +334,6 @@ define('product_list',
 		 * @param  {number} nowelCount количество элементов, которые мы уже проскролили
 		 */
 		var changeZoom = function(zoom){
-			// var y = terminal.flickable.contentY - 30
-			// var cols = 4 - nowZoom
-			// var nowElCount = (y/heights[nowZoom])*cols
-
 			el.removeClass(sizes[nowZoom])
 			if (zoom == 'up'){
 				nowZoom = ((nowZoom + 1) > 2) ? 2 : nowZoom + 1
@@ -219,16 +342,6 @@ define('product_list',
 				nowZoom = ((nowZoom - 1) < 0) ? 0 : nowZoom - 1
 			}
 			el.addClass(sizes[nowZoom])
-
-			
-			// cols = 4 - nowZoom
-
-			// var nowRows = nowElCount/cols | 0
-			// var newY = (nowRows*heights[nowZoom]) + 30
-
-			// library.scrollTo(newY, 0 , 10)
-			// terminal.flickable.contentY = newY
-			rowScrolling()
 		}
 
 		/**
@@ -268,7 +381,6 @@ define('product_list',
 			var len = orig.changedTouches.length
 			
 			if (startTouches.length > 1){
-				terminal.interactive = false
 				var moveTouches = []
 				for (var i = 0; i< len; i++){
 					var moveTouch = {
@@ -304,7 +416,6 @@ define('product_list',
 			var orig = e.originalEvent
 			
 			startTouches = []
-			terminal.interactive = true
 		}
 
 		el.bind('touchstart', moveStart)
@@ -318,7 +429,7 @@ define('product_list',
 		/**
 		 * Прогрузка товаров при инициализации страницы
 		 */
-		var initalLinesCount = 12 - currentZoom()
+		var initalLinesCount = 10 - currentZoom()
 		getItems(initalLinesCount)
 	}())
 

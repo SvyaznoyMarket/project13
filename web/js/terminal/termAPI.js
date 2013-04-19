@@ -1,7 +1,7 @@
 define('termAPI',
 	['jquery', 'library'], function ($, library) {
 
-		library.myConsole('termAPI.js loaded')
+		library.myConsole('termAPI.js v2 loaded')
 
 
 		/**
