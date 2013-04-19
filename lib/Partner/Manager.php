@@ -52,6 +52,27 @@ class Manager {
                         false,
                         true
                     );
+                // Actionpay
+                } else if (0 === strpos($utmSource, 'actionpay')) {
+                    $response->headers->setCookie(new \Http\Cookie(
+                        'actionpay',
+                        $request->get('actionpay'),
+                        time() + $this->cookieLifetime,
+                        '/',
+                        null,
+                        false,
+                        true
+                    ));
+
+                    $cookie = new \Http\Cookie(
+                        $this->cookieName,
+                        \Partner\Counter\Actionpay::NAME,
+                        time() + $this->cookieLifetime,
+                        '/',
+                        null,
+                        false,
+                        true
+                    );
                 // Admitad
                 } else if (0 === strpos($utmSource, 'admitad')) {
                     $response->headers->setCookie(new \Http\Cookie(

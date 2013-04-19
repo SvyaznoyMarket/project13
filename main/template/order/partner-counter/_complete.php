@@ -20,6 +20,9 @@
             echo $page->tryRender('order/partner-counter/_etargeting-complete', array('orders' => $orders, 'productsById' => $productsById));
             break;
         */
+        case \Partner\Counter\Actionpay::NAME:
+            echo $page->tryRender('order/partner-counter/_actionpay-complete', array('orders' => $orders, 'productsById' => $productsById));
+            break;
         case \Partner\Counter\CityAds::NAME:
             echo $page->tryRender('order/partner-counter/_cityads-complete', array('orders' => $orders));
             break;
