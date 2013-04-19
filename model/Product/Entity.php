@@ -111,6 +111,9 @@ class Entity extends BasicEntity {
             $categoryData = reset($data['category']);
             if ((bool)$categoryData) $this->setMainCategory(new Category\Entity($categoryData));
 
+            $categoryData = end($data['category']);
+            if ((bool)$categoryData) $this->setParentCategory(new Category\Entity($categoryData));
+
             foreach ($data['category'] as $categoryData) {
                 $this->addCategory(new Category\Entity($categoryData));
             }

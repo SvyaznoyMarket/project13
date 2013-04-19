@@ -565,16 +565,7 @@ $productVideo = reset($productVideos);
 
 </div>
 
-<? if (count($product->getTag())): ?>
-<noindex>
-    <div class="pb25">
-        <strong>Теги:</strong>
-        <? $i = 0; $count = count($product->getTag()); foreach ($product->getTag() as $tag): $i++ ?>
-            <a href="<?= $page->url('tag', array('tagToken' => $tag->getToken())) ?>" class="underline" rel="nofollow"><?= $tag->getName() ?></a><? if ($i < $count) echo ', ' ?>
-        <? endforeach ?>
-    </div>
-</noindex>
-<? endif ?>
+<?= $page->tryRender('product/_tag', ['product' => $product]) ?>
 
 <? if (!$showAccessoryUpper && count($product->getAccessoryId()) && \App::config()->product['showAccessories']): ?>
     <?= $page->render('product/_slider', array('product' => $product, 'productList' => array_values($accessories), 'totalProducts' => count($product->getAccessoryId()), 'itemsInSlider' => \App::config()->product['itemsInSlider'], 'page' => 1, 'title' => 'Аксессуары', 'url' => $page->url('product.accessory', array('productToken' => $product->getToken())), 'gaEvent' => 'Accessorize')) ?>
