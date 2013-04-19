@@ -19,7 +19,7 @@ class ProductAction {
                 throw new \Exception(sprintf('Товар #%s не найден', $productId));
             }
 
-            $curl->query(\App::config()->crossss['apiUrl'] . '?' . http_build_query([
+            $result = $curl->query(\App::config()->crossss['apiUrl'] . '?' . http_build_query([
                 'userid'          => \App::config()->crossss['userId'],
                 'sessionid'       => session_id(),
                 'itemid'          => $product->getId(),
