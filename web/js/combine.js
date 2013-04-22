@@ -8,7 +8,7 @@ window.filesWithVersion = {
 "bigjquery.min.js":1366108138,
 "welcome.js":1360754713,
 "main.js":1366627555,
-"dash.js":1366635358,
+"dash.js":1366639112,
 "app.order.js":1364194169,
 "app.product.comment.list.js":1360754713,
 "app.product.js":1366627563,

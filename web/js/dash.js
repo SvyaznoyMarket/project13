@@ -15,6 +15,13 @@ $(document).ready(function(){
 		var wrapW = 0
 		var left = 0
 		
+		var sliderTracking = function(){
+			var nowUrl = document.location
+			var toUrl = $(this).attr('href')
+			
+			_trackEvent("AdvisedCrossss", nowUrl, toUrl)
+		}
+
 		// init
 		var init = function(data){
 			for (var item in data){
@@ -22,16 +29,18 @@ $(document).ready(function(){
 				similarWrap.append(similarGood)
 			}
 			var similarGoods = similarSlider.find('.bSimilarGoodsSlider_eGoods')
-			slidesW = similarGoods.width() + parseInt(similarGoods.css('paddingLeft'))*2
 
+			slidesW = similarGoods.width() + parseInt(similarGoods.css('paddingLeft'))*2
 			slidesCount = similarGoods.length
 			wrapW = slidesW * slidesCount
 			similarWrap.width(wrapW)
+
 			if (slidesCount > 0){
 				$('.bSimilarGoods').fadeIn(300, function(){
 					sliderW = similarSlider.width()
 				})
 			}
+
 			if (slidesCount < 4){
 				$('.bSimilarGoodsSlider_eArrow.mRight').hide()
 			}
@@ -79,6 +88,8 @@ $(document).ready(function(){
 			return false
 		})
 
+
+		$('.bSimilarGoods.mCatalog .bSimilarGoodsSlider_eGoods a').live('click', sliderTracking)
 	}
 
 	var lboxCheckSubscribe = function(subscribe){
