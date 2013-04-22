@@ -183,7 +183,7 @@ $c->smartengine['sslVerify'] = true;
 $c->crossss['enabled'] = true;
 $c->crossss['apiUrl'] = 'http://crossss.com/api.ashx';
 $c->crossss['id'] = 45;
-$c->crossss['apiKey'] = null;
+$c->crossss['apiKey'] = '5a0bb0cb92a94f7db8a9bf4bfacdbe39';
 
 $c->warranty['enabled'] = true;
 $c->f1Certificate['enabled'] = false;

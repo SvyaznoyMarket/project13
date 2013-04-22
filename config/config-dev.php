@@ -35,6 +35,9 @@ $c->smartengine['apiUrl'] = 'https://selightstage.smartengine.at/se-light/api/1.
 $c->smartengine['cert'] = $c->dataDir . '/cert/gsorganizationvalg2.crt';
 $c->smartengine['sslVerify'] = false;
 
+$c->crossss['id'] = 68; // *.ent3.ru
+$c->crossss['apiKey'] = 'fe7fbe9540e14f1db1f9f047d1e54b25';
+
 $c->paymentPsb['terminal'] = '79036768';
 $c->paymentPsb['merchant'] = '790367686219999';
 $c->paymentPsb['merchantName'] = 'Enter';
