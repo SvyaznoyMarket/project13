@@ -8,7 +8,8 @@ $(document).ready(function(){
 		var similarWrap = similarSlider.find('.bSimilarGoodsSlider_eWrap')
 		var similarArrow = similarSlider.find('.bSimilarGoodsSlider_eArrow')
 
-		var slidesW = 250
+		var slidesW = 0
+
 		var sliderW = 0
 		var slidesCount = 0
 		var wrapW = 0
@@ -21,6 +22,8 @@ $(document).ready(function(){
 				similarWrap.append(similarGood)
 			}
 			var similarGoods = similarSlider.find('.bSimilarGoodsSlider_eGoods')
+			slidesW = similarGoods.width() + parseInt(similarGoods.css('paddingLeft'))*2
+
 			slidesCount = similarGoods.length
 			wrapW = slidesW * slidesCount
 			similarWrap.width(wrapW)
