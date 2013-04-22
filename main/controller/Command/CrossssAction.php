@@ -25,7 +25,7 @@ class CrossssAction {
                     //throw new \Exception(sprintf('task.%s: не содержит параметра apikey', $taskName));
                 }
 
-                $result = $curl->query(\App::config()->crossss['apiUrl'] . '?' . http_build_query($data));
+                $curl->query(\App::config()->crossss['apiUrl'] . '?' . http_build_query($data));
             }
         }, $limit);
     }
