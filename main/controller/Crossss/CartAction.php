@@ -28,13 +28,13 @@ class CartAction {
                 'quantity'        => $cartProduct->getQuantity(),
             ];
 
-            \App::database()->exec("INSERT INTO `queue` (`name`, `body`) VALUES ('crossss.cart.product.create', '".addslashes(json_encode($data, JSON_HEX_APOS | JSON_HEX_QUOT))."')");
+            \App::database()->exec("INSERT INTO `queue` (`name`, `body`) VALUES ('crossss.push', '".addslashes(json_encode($data, JSON_HEX_APOS | JSON_HEX_QUOT | JSON_UNESCAPED_UNICODE))."')");
         } catch (\Exception $e) {
             \App::logger()->error($e, ['crossss']);
 
-            return new \Http\JsonResponse(['success' => false, 'error' => \App::config()->debug ? $e->getMessage() : 'Ошибка']);
+            //return new \Http\JsonResponse(['success' => false, 'error' => \App::config()->debug ? $e->getMessage() : 'Ошибка']);
         }
 
-        return new \Http\JsonResponse(['success' => true]);
+        //return new \Http\JsonResponse(['success' => true]);
     }
 }

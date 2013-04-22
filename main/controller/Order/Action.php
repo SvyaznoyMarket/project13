@@ -521,6 +521,17 @@ class Action {
 
         // TODO: удалять из сессии успешный заказ, время создания которого больше 1 часа
 
+        // crossss
+        if (\App::config()->crossss['enabled']) {
+            try {
+                foreach ($orders as $order) {
+                    (new \Controller\Crossss\OrderAction())->create($order, $productsById);
+                }
+            } catch (\Exception $e) {
+                \App::logger()->error($e, ['crossss']);
+            }
+        }
+
         $page = new \View\Order\CompletePage();
         $page->setParam('orders', $orders);
         $page->setParam('shopsById', $shopsById);
