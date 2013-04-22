@@ -188,7 +188,7 @@ define('product_list',
 		 * Время анимации
 		 * @type {Number}
 		 */
-		var time = 150
+		var time = 100
 
 		/**
 		 * Флаг происходящей анимации
@@ -282,12 +282,21 @@ define('product_list',
 			var zoom = currentZoom()
 			var listingWindowH = heights[zoom]*(4-zoom)
 			var step = (Math.abs(startOffset - newOffset))/(time*0.1)
+			var toY = null
 
-			if ( diff >= listingWindowH/4 ){
-				startOffset = (startOffset > newOffset) ? startOffset - listingWindowH : startOffset + listingWindowH
-				startOffset = (startOffset > 0) ? 0 : startOffset
+			if ( diff >= listingWindowH/5 ){
+				toY = (startOffset > newOffset) ? startOffset - listingWindowH : startOffset + listingWindowH
+				toY = (toY > 0) ? 0 : toY
+				toY = (Math.abs(toY) > el.height()) ? startOffset : toY
 			}
-			aminateScroll(newOffset, startOffset, step)
+			else{
+				toY = startOffset
+			}
+
+			// el.animate({'top':toY},150, function(){
+			// 	preparedData(currentRenderedItem, currentRenderedItem + Math.pow((4-currentZoom()),2) )
+			// })
+			aminateScroll(newOffset, toY, step)
 		}
 
 		el.bind("touchstart", moveStart)
