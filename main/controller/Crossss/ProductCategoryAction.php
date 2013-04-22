@@ -27,17 +27,6 @@ class ProductCategoryAction {
             throw new \Exception\NotFoundException(sprintf('Категория товара @%s не найдена.', $categoryToken));
         }
 
-        $pageNum = (int)$request->get('page', 1);
-        if ($pageNum < 1) {
-            throw new \Exception\NotFoundException(sprintf('Неверный номер страницы "%s".', $pageNum));
-        }
-
-        // вид товаров
-        $productView = 'compact';
-
-        // листалка
-        $limit = \App::config()->product['itemsInCategorySlider'];
-
         try {
             $result = $curl->query(\App::config()->crossss['apiUrl'] . '?' . http_build_query([
                 'apikey'          => \App::config()->crossss['apiKey'],
@@ -55,9 +44,8 @@ class ProductCategoryAction {
             if (!(bool)$ids) {
                 throw new \Exception(sprintf('Для категории @%s не получены рекоммендации от crossss', $category->getToken()));
             }
-            $count = count($ids);
-            $ids = array_slice($ids, ($pageNum - 1) * $limit, $limit);
 
+            /** @var \Model\Product\CompactEntity[] $products */
             $products = [];
             \RepositoryManager::product()->prepareCollectionById($ids, $region,
                 function($data) use (&$products) {
@@ -71,15 +59,28 @@ class ProductCategoryAction {
             );
             \App::coreClientV2()->execute();
 
-            $productPager = new \Iterator\EntityPager($products, $count);
-            $productPager->setPage($pageNum);
-            $productPager->setMaxPerPage($limit);
+            $return = [];
+            foreach ($products as $product) {
+                if (!$product->getIsBuyable()) continue;
 
-            return (new \Controller\Product\SliderAction())->execute($productPager, $productView, $request);
+                $return[] = [
+                    'id'     => $product->getId(),
+                    'name'   => $product->getName(),
+                    'image'  => $product->getImageUrl(),
+                    'rating' => $product->getRating(),
+                    'link'   => $product->getLink(),
+                    'price'  => $product->getPrice(),
+                ];
+            }
+            if (!count($return)) {
+                throw new \Exception();
+            }
+
+            return new \Http\JsonResponse($return);
         } catch (\Exception $e) {
             \App::logger()->error($e, ['crossss']);
         }
 
-        return new \Http\Response('');
+        return new \Http\JsonResponse();
     }
 }
