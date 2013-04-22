@@ -112,6 +112,7 @@ define('product_list',
 				isInOtherShop : productData[i].isInOtherShop
 			}
 			renderItem(template)
+			$('.bListing').removeClass('mLoading')
 		}
 	}
 
