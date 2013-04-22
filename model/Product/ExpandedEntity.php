@@ -35,6 +35,9 @@ class ExpandedEntity extends BasicEntity {
         if (array_key_exists('category', $data) && (bool)$data['category']) {
             $categoryData = reset($data['category']);
             $this->setMainCategory(new Category\Entity($categoryData));
+
+            $categoryData = end($data['category']);
+            if ((bool)$categoryData) $this->setParentCategory(new Category\Entity($categoryData));
         };
         if (array_key_exists('property', $data) && (bool)$data['property']) {
             usort($data['property'], function(array $a, array $b) {

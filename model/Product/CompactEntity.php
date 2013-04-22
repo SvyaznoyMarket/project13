@@ -31,6 +31,9 @@ class CompactEntity extends BasicEntity {
         if (array_key_exists('category', $data) && (bool)$data['category']) {
             $categoryData = reset($data['category']);
             $this->setMainCategory(new Category\Entity($categoryData));
+
+            $categoryData = end($data['category']);
+            if ((bool)$categoryData) $this->setParentCategory(new Category\Entity($categoryData));
         };
         if (array_key_exists('label', $data)) {
             if (isset($data['label'][0]) && (bool)$data['label'][0]) {
