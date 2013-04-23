@@ -1055,6 +1055,7 @@ $(document).ready(function() {
             error: function() {
                 button.text('Попробовать еще раз')
                 Blocker.unblock()
+                sended = false
             }
         })
 
