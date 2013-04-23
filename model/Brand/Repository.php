@@ -26,4 +26,31 @@ class Repository {
             'geo_id' => $region ? $region->getId() : \App::user()->getRegion()->getId(),
         ], [], $callback);
     }
+
+    /**
+     * @param \Model\Product\Category\BasicEntity $category
+     * @param int                                 $limit
+     * @param int                                 $offset
+     * @return array
+     */
+    public function getCollectionByCategory(\Model\Product\Category\BasicEntity $category, $limit, $offset) {
+        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
+
+        $client = clone $this->client;
+
+        $collection = [];
+        $client->addQuery('brand/get-by-category', [
+            'category_id' => [$category->getId()],
+            'limit'       => $limit,
+            'offset'      => $offset,
+        ], [], function($data) use (&$collection) {
+            foreach ($data as $entity) {
+                $collection[] = new Entity($entity);
+            }
+        });
+
+        $client->execute(\App::config()->coreV2['retryTimeout']['short'], \App::config()->coreV2['retryCount']);
+
+        return $collection;
+    }
 }

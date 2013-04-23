@@ -129,15 +129,17 @@ class SitemapAction {
                 );
 
                 try {
-                    foreach (\RepositoryManager::brand()->getCollectionByCategory($category, $defaultRegion) as $brand) {
-                        $this->putContent(
-                            $this->router->generate('product.category.brand', [
-                                'brandToken'   => $brand->getToken(),
-                                'categoryPath' => $category->getPath(),
-                            ]),
-                            'daily',
-                            '0.8'
-                        );
+                    for ($i = 0; $i < 10; $i++) {
+                        foreach (\RepositoryManager::brand()->getCollectionByCategory($category, $i * 100, 100) as $brand) {
+                            $this->putContent(
+                                $this->router->generate('product.category.brand', [
+                                    'brandToken'   => $brand->getToken(),
+                                    'categoryPath' => $category->getPath(),
+                                ]),
+                                'daily',
+                                '0.8'
+                            );
+                        }
                     }
                 } catch (\Exception $e) {
                     \App::logger()->error($e);
