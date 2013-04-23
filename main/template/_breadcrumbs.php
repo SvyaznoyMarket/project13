@@ -12,7 +12,7 @@
     <? if ($i < $count): ?>
         <a href="<?= $breadcrumb['url'] ?>"><?= $breadcrumb['name'] ?></a> &rsaquo;
         <? else: ?>
-        <strong><?= $breadcrumb['name'] ?></strong>
+        <!-- <strong><?= $breadcrumb['name'] ?></strong> -->
         <? endif ?>
     <? $i++; endforeach ?>
 </div>
