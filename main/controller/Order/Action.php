@@ -742,7 +742,19 @@ class Action {
 
                 // мета-теги
                 if (\App::config()->order['enableMetaTag']) {
+                    try {
+                        if ($partnerName = \App::partner()->getName()) {
+                            \App::logger()->info(sprintf('Создается заказ от партнера %s', $partnerName), ['order', 'partner']);
 
+                            $orderData['meta_data'] = [
+                                'partner' => [
+                                    \App::partner()->getMeta($partnerName)
+                                ],
+                            ];
+                        }
+                    } catch (\Exception $e) {
+                        \App::logger()->error($e, ['order', 'partner']);
+                    }
                 }
             }
 
