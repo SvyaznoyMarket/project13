@@ -11,10 +11,10 @@ $brand = $product->getBrand();
 $category = $product->getParentCategory();
 ?>
 
-<? if ((bool)$tags || ($brand && $category)): ?>
+<? if ((bool)$tags || ($brand && $brand->getToken() && $category)): ?>
     <div class="pb25">
         <strong>Теги:</strong>
-        <? if ($brand && $category): ?>
+        <? if ($brand && $brand->getToken() && $category): ?>
             <a href="<?= $page->url('product.category.brand', ['categoryPath' => $category->getPath(), 'brandToken' => $brand->getToken()]) ?>" class="underline" rel="nofollow"><?= $category->getName() . ' ' . $brand->getName() ?></a>
             <? if ((bool)$tags): ?>, <? endif ?>
         <? endif ?>
