@@ -261,6 +261,10 @@ class AppConfig {
     public $mobileModify = [ // SITE-1035
         'enabled' => null,
     ];
+    /** @var array  */
+    public $order = [
+        'enableMetaTag' => null,
+    ];
 
     public function __construct() {
         $this->vkontakteOauth = new OAuth\VkontakteConfig();

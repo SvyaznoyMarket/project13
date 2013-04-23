@@ -83,4 +83,6 @@ $c->f1Certificate['enabled'] = false;
 
 $c->requestMainMenu = true;
 
+$c->order['enableMetaTag'] = true;
+
 return $c;

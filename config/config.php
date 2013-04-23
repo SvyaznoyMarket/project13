@@ -217,4 +217,6 @@ $c->requestMainMenu = false;
 
 $c->mobileModify['enabled'] = false;
 
+$c->order['enableMetaTag'] = true;
+
 return $c;

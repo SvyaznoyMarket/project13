@@ -739,6 +739,11 @@ class Action {
                 if ((bool)$actionData) {
                     $orderData['action'] = $actionData;
                 }
+
+                // мета-теги
+                if (\App::config()->order['enableMetaTag']) {
+
+                }
             }
 
             $data[] = $orderData;
