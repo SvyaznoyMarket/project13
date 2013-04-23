@@ -38,7 +38,7 @@
     <div class="pb5">Мобильный телефон:</div>
     <div class="pb5">
         <? if ($error = $form->getError('phone')) echo $page->render('_formError', array('error' => $error)) ?>
-        <input type="text" class="text width315 mb10" name="register[phone]" value="<?= $form->getPhone() ?>" />
+        <input type="text" class="text width315 mb10" name="register[phone]" value="<?= $form->getPhone() ?>" maxlength="11" />
         <i>Например, 89081234567</i>
     </div>
 

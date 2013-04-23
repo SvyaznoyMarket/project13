@@ -2615,10 +2615,11 @@
     position: relative;
   }
   .bFastInner #phonemask {
-    padding-left: 30px;
+    padding-left: 27px;
+    width: 383px;
   }
   .bFastInner #phonePH {
-    line-height: 29px;
+    line-height: 33px;
     margin: 0px 5px;
     position: absolute;
   }
@@ -2822,7 +2823,7 @@
     padding: 0px 10px;
   }
   .topbar .bRegion {
-    width: 720px;
+    width: 600px;
   }
   .topbar .usermenu {
     float: right;
@@ -6285,6 +6286,7 @@
     position: relative;
   }
   .phonePH span.placeholder {
+    line-height: 33px;
     z-index: 3;
   }
   .phonePH #order_recipient_phonenumbers {
@@ -6297,6 +6299,8 @@
     filter: alpha(opacity=80);
     position: absolute;
     left: 0;
+    padding-left: 30px;
+    width: 440px;
   }
   #addressField dd div {
     float: left;
@@ -8085,7 +8089,7 @@
     border: none;
     background: #000000;
     font-size: 12px;
-    line-height: 26px;
+    line-height: 24px;
   }
   .bSubscribeLightboxPopup__eNotNow {
     position: relative;
@@ -8580,6 +8584,7 @@
   .bannersbox {
     left: 0px;
     overflow: hidden;
+    padding: 100px 0 50px;
     position: absolute;
     top: 234px;
     width: 100%;
