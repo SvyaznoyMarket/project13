@@ -19,7 +19,7 @@ class DeliveryAction {
 
         $productIds = $request->get('ids');
         if (!(bool)$productIds) {
-            return new \Http\JsonResponse(array('success' => false));
+            return new \Http\JsonResponse(['success' => false]);
         }
 
         $regionId =
@@ -31,9 +31,9 @@ class DeliveryAction {
             $regionId = $user->getRegion()->getId();
         }
 
-        $params = array('product_list' => []);
+        $params = ['product_list' => []];
         foreach($productIds as $productId) {
-            $params['product_list'][] = array('id' => (int)$productId, 'quantity' => 1);
+            $params['product_list'][] = ['id' => (int)$productId, 'quantity' => 1];
         }
 
         try {
@@ -46,7 +46,7 @@ class DeliveryAction {
         } catch (\Exception $e) {
             \App::logger()->error($e);
             \App::exception()->remove($e);
-            return new \Http\JsonResponse(array('success' => false));
+            return new \Http\JsonResponse(['success' => false]);
         }
 
         if (empty($response['product_list'])) {
@@ -54,7 +54,7 @@ class DeliveryAction {
             \App::exception()->add($e);
             \App::logger()->error($e);
 
-            return new \Http\JsonResponse(array('success' => false));
+            return new \Http\JsonResponse(['success' => false]);
         }
 
         $helper = new \View\Helper();
@@ -68,17 +68,17 @@ class DeliveryAction {
                 $date = reset($delivery['date_list']);
                 $date = $date['date'];
 
-                $data[$productId][] = array(
+                $data[$productId][] = [
                     'typeId'           => $delivery['id'],
                     'date'             => $helper->humanizeDate($date),
                     'token'            => $delivery['token'],
                     'price'            => $delivery['price'],
                     'transportCompany' => \App::user()->getRegion()->getHasTransportCompany(),
-                );
+                ];
             }
         }
 
-        return new \Http\JsonResponse(array('success' => true, 'data' => $data));
+        return new \Http\JsonResponse(['success' => true, 'data' => $data]);
     }
 
     /**
@@ -102,12 +102,14 @@ class DeliveryAction {
             $regionId = \App::user()->getRegion()->getId();
         }
 
-        $params = array('product_list' => array(
-            array(
-                'id'       => $productId,
-                'quantity' => $productQuantity
-            ),
-        ));
+        $params = [
+            'product_list' => [
+                [
+                    'id'       => $productId,
+                    'quantity' => $productQuantity
+                ],
+            ]
+        ];
 
         $responseData = [];
         try {
@@ -132,10 +134,10 @@ class DeliveryAction {
                     $day++;
                     if ($day > 7) continue;
 
-                    $date = array(
+                    $date = [
                         'name'  => $helper->humanizeDate($dateData['date']),
                         'value' => $dateData['date']
-                    );
+                    ];
 
                     if('self' == $token) {
                         $date['shopIds'] = [];
@@ -145,13 +147,13 @@ class DeliveryAction {
                                 $address = $regionData[$shopData[$dateShopData['id']]['geo_id']]['name'] . ', ' . $address;
                             }
 
-                            $shop = array(
+                            $shop = [
                                 'id'        => (int)$dateShopData['id'],
                                 'regtime'   => $shopData[$dateShopData['id']]['working_time'], // что за описка "regtime"?
                                 'address'   => $address,
                                 'latitude'  => $shopData[$dateShopData['id']]['coord_lat'],
                                 'longitude' => $shopData[$dateShopData['id']]['coord_long'],
-                            );
+                            ];
 
                             if (!in_array($shop, $shops)) {
                                 $shops[] = $shop;
@@ -171,14 +173,14 @@ class DeliveryAction {
                     $dates[] = $date;
                 }
 
-                $item = array(
+                $item = [
                     'modeId' => $deliveryData['id'],
                     'name'   => $token =='standart' ? 'курьерская доставка' : $deliveryData['name'],
                     'token'  => $token,
                     'price'  => (int)$deliveryData['price'],
                     'shops'  => $shops,
                     'dates'  => $dates,
-                );
+                ];
                 $responseData[$token] = $item;
             }
         } catch (\Exception $e) {
@@ -187,18 +189,18 @@ class DeliveryAction {
 
             $responseData['data'] = [];
 
-            return new \Http\JsonResponse(array(
+            return new \Http\JsonResponse([
                 'success'     => false,
                 'error'       => \App::config()->debug ? $e->getMessage() : 'Ошибка',
                 'currentDate' => date('Y-m-d'),
-            ));
+            ]);
         }
 
 
-        return new \Http\JsonResponse(array(
+        return new \Http\JsonResponse([
             'success'     => true,
             'data'        => $responseData,
             'currentDate' => date('Y-m-d'),
-        ));
+        ]);
     }
 }

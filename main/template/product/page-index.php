@@ -34,15 +34,15 @@ $productVideo = reset($productVideos);
   foreach ($shopsWithQuantity as $shopWithQuantity) {
       /** @var $shop \Model\Shop\Entity */
       $shop = $shopWithQuantity['shop'];
-      $availableShops[] = array(
+      $availableShops[] = [
           'id'        => $shop->getId(),
           'name'      => $shop->getName(),
           'address'   => $shop->getAddress(),
           'regtime'   => $shop->getRegime(),
           'longitude' => $shop->getLongitude(),
           'latitude'  => $shop->getLatitude(),
-          'url'       => $page->url('shop.show', array('shopToken' => $shop->getToken(), 'regionToken' => $user->getRegion()->getToken())),
-      );
+          'url'       => $page->url('shop.show', ['shopToken' => $shop->getToken(), 'regionToken' => $user->getRegion()->getToken()]),
+      ];
   }
   $jsonAvailableShops = json_encode($availableShops, JSON_HEX_QUOT | JSON_HEX_APOS);
 ?>
@@ -107,7 +107,7 @@ $productVideo = reset($productVideos);
     <div class="bSimilarGoods_eLeftCaption fl">
       Товар есть только в&nbsp;магазинах. Вы&nbsp;можете заказать похожий товар.
     </div>
-    <div id="similarGoodsSlider" class="bSimilarGoodsSlider fr" data-url="<?= $page->url('smartengine.pull.product_similar', array('productId' => $product->getId())) ?>">
+    <div id="similarGoodsSlider" class="bSimilarGoodsSlider fr" data-url="<?= $page->url('smartengine.pull.product_similar', ['productId' => $product->getId()]) ?>">
       <a class="bSimilarGoodsSlider_eArrow mLeft" href="#"></a>
       <a class="bSimilarGoodsSlider_eArrow mRight" href="#"></a>
       <div class="bSimilarGoodsSlider_eWrap clearfix">
@@ -178,7 +178,7 @@ $productVideo = reset($productVideos);
         <span><?= $user->getCart()->hasProduct($product->getId()) ? $user->getCart()->getQuantityByProduct($product->getId()) : 1 ?> шт.</span>
       </div>
     <?php endif ?>
-      <?= $page->render('cart/_button', array('product' => $product, 'disabled' => !$product->getIsBuyable())) ?>
+      <?= $page->render('cart/_button', ['product' => $product, 'disabled' => !$product->getIsBuyable()]) ?>
     </div>
     <? if (!$product->getIsBuyable() && $product->getState()->getIsShop()): ?>
       <div class="notBuying font12">
@@ -190,7 +190,7 @@ $productVideo = reset($productVideos);
     <div class="pb5"><strong>
       <a href=""
          data-model='<?= $json ?>'
-         link-output='<?= $page->url('order.1click', array('product' => $product->getToken())) ?>'
+         link-output='<?= $page->url('order.1click', ['product' => $product->getToken()]) ?>'
          link-input='<?= $page->url('product.delivery_1click') ?>'
          class="red underline order1click-link-new">Купить быстро в 1 клик</a>
     </strong></div>
@@ -206,7 +206,7 @@ $productVideo = reset($productVideos);
           <? $i = 0; foreach ($shopsWithQuantity as $shopWithQuantity): $i++?>
               <li<?= $i > 3 ? ' class="hidden"' : ''?>>
                 <a class="fr dashedLink shopLookAtMap" href="#">Посмотреть на карте</a>
-                <?= '<a class="avalShopAddr" href="'.$page->url('shop.show', array('shopToken' => $shopWithQuantity['shop']->getToken(), 'regionToken' => $user->getRegion()->getToken())).'" class="underline">'.$shopWithQuantity['shop']->getName().'</a>' ?>
+                <?= '<a class="avalShopAddr" href="'.$page->url('shop.show', ['shopToken' => $shopWithQuantity['shop']->getToken(), 'regionToken' => $user->getRegion()->getToken()]) . '" class="underline">' . $shopWithQuantity['shop']->getName() . '</a>' ?>
                 <strong class="font12 orange db pt10"><?= ($shopWithQuantity['quantity'] > 5 ? 'есть в наличии' : ($shopWithQuantity['quantity'] > 0 ? 'осталось мало' : ($shopWithQuantity['quantityShowroom'] > 0 ? 'есть только на витрине' : ''))) ?></strong>
               </li>
           <? endforeach ?>
@@ -240,14 +240,14 @@ $productVideo = reset($productVideos);
 
   <? elseif ($user->getRegion()->getHasTransportCompany()): ?>
     <? if (\App::config()->product['globalListEnabled'] && (bool)$product->getNearestCity()): ?>
-        <?= $page->render('product/_nearestCity', array('product' => $product)) ?>
+        <?= $page->render('product/_nearestCity', ['product' => $product]) ?>
     <? else: ?>
         <p>Этот товар мы доставляем только в регионах нашего присутствия</p>
     <? endif ?>
   <?php endif ?>
 
   <? if ($product->getIsBuyable()): ?>
-    <div class="bDeliver2 delivery-info" id="product-id-<?= $product->getId() ?>" data-shoplink="<?= $page->url('product.stock', array('productPath' => $product->getPath())) ?>" data-calclink="<?= $page->url('product.delivery') ?>">
+    <div class="bDeliver2 delivery-info" id="product-id-<?= $product->getId() ?>" data-shoplink="<?= $page->url('product.stock', ['productPath' => $product->getPath()]) ?>" data-calclink="<?= $page->url('product.delivery') ?>">
       <h4>Как получить заказ?</h4>
       <ul>
         <li>
@@ -264,8 +264,8 @@ $productVideo = reset($productVideos);
   <? endif ?>
 
   <? if ($product->getIsBuyable()): ?>
-    <?= $page->render('service/_listByProduct', array('product' => $product)) ?>
-    <?= $page->render('warranty/_listByProduct', array('product' => $product)) ?>
+    <?= $page->render('service/_listByProduct', ['product' => $product]) ?>
+    <?= $page->render('warranty/_listByProduct', ['product' => $product]) ?>
   <? endif ?>
 
 </div>
@@ -348,16 +348,16 @@ $productVideo = reset($productVideos);
 
 
 <? if ($showAccessoryUpper && (bool)$accessories && \App::config()->product['showAccessories']): ?>
-    <?= $page->render('product/_slider', array('product' => $product, 'productList' => array_values($accessories), 'totalProducts' => count($product->getAccessoryId()), 'itemsInSlider' => \App::config()->product['itemsInSlider'], 'page' => 1, 'title' => 'Аксессуары', 'url' => $page->url('product.accessory', array('productToken' => $product->getToken())), 'gaEvent' => 'Accessorize')) ?>
+    <?= $page->render('product/_slider', ['product' => $product, 'productList' => array_values($accessories), 'totalProducts' => count($product->getAccessoryId()), 'itemsInSlider' => \App::config()->product['itemsInSlider'], 'page' => 1, 'title' => 'Аксессуары', 'url' => $page->url('product.accessory', ['productToken' => $product->getToken()]), 'gaEvent' => 'Accessorize']) ?>
 <? endif ?>
 
 <? if ($showRelatedUpper && (bool)$related && \App::config()->product['showRelated']): ?>
-    <?= $page->render('product/_slider', array('product' => $product, 'productList' => array_values($related), 'totalProducts' => count($product->getRelatedId()), 'itemsInSlider' => \App::config()->product['itemsInSlider'], 'page' => 1, 'title' => 'С этим товаром также покупают', 'url' => $page->url('product.related', array('productToken' => $product->getToken())))) ?>
+    <?= $page->render('product/_slider', ['product' => $product, 'productList' => array_values($related), 'totalProducts' => count($product->getRelatedId()), 'itemsInSlider' => \App::config()->product['itemsInSlider'], 'page' => 1, 'title' => 'С этим товаром также покупают', 'url' => $page->url('product.related', ['productToken' => $product->getToken()])]) ?>
 <? endif ?>
 
 <? if (false && \App::config()->smartengine['pull']): ?>
 <!--div class="clear"></div>
-<div id="product_also_bought-container" data-url="<? //echo url_for('smartengine_alsoBought', array('product' => $product->getId())) ?>" style="margin-top: 20px;"></div-->
+<div id="product_also_bought-container" data-url="<? //echo url_for('smartengine_alsoBought', ['product' => $product->getId()]) ?>" style="margin-top: 20px;"></div-->
 <? endif ?>
 
 <?php if (\App::config()->smartengine['pull']): ?>
@@ -367,7 +367,7 @@ $productVideo = reset($productVideos);
 
 <? if (false && \App::config()->smartengine['pull']): ?>
 <!--div class="clear"></div>
-<div id="product_user-recommendation-container" data-url="<? //echo url_for('smartengine_userRecommendation', array('product' => $product->getId())) ?>" style="margin-top: 20px;"><h3>Recommendations for user...</h3></div-->
+<div id="product_user-recommendation-container" data-url="<? //echo url_for('smartengine_userRecommendation', ['product' => $product->getId()]) ?>" style="margin-top: 20px;"><h3>Recommendations for user...</h3></div-->
 <? endif ?>
 
 <? $description = $product->getDescription(); ?>
@@ -404,7 +404,7 @@ $productVideo = reset($productVideos);
           <strong class="font34"><span class="price"><?= $page->helper->formatPrice($product->getPrice()) ?></span> <span class="rubl">p</span></strong>
       </div>
       <div class="goodsbarbig mSmallBtns pb40" ref="<?= $product->getToken() ?>" data-value='<?= $json ?>'>
-        <?= $page->render('cart/_button', array('product' => $product, 'disabled' => !$product->getIsBuyable())) ?>
+        <?= $page->render('cart/_button', ['product' => $product, 'disabled' => !$product->getIsBuyable()]) ?>
       </div>
 
       <h2>Фото:</h2>
@@ -452,7 +452,7 @@ $productVideo = reset($productVideos);
     <h2>Покупка в 1 клик!</h2>
     <div class="clear line pb20"></div>
 
-    <form id="order1click-form" action="<?= $page->url('order.1click', array('product' => $product->getBarcode())) ?>" method="post"></form>
+    <form id="order1click-form" action="<?= $page->url('order.1click', ['product' => $product->getBarcode()]) ?>" method="post"></form>
 
   </div>
 </div>
