@@ -8580,6 +8580,7 @@
   .bannersbox {
     left: 0px;
     overflow: hidden;
+    padding: 100px 0 50px;
     position: absolute;
     top: 234px;
     width: 100%;
