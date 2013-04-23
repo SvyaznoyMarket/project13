@@ -134,4 +134,48 @@ class Manager {
             ? $request->cookies->get($this->cookieName)
             : null;
     }
+
+    public function getMeta($name) {
+        $return = [];
+
+        $request = \App::request();
+
+        switch ($name) {
+            case \Partner\Counter\CityAds::NAME:
+                $return = [
+                    'name' => \Partner\Counter\CityAds::NAME,
+                    'prx'  => $request->cookies->get('prx'),
+                ];
+                break;
+            case \Partner\Counter\Etargeting::NAME:
+                $return = [
+                    'name' => \Partner\Counter\Etargeting::NAME,
+                ];
+                break;
+            case \Partner\Counter\Actionpay::NAME:
+                $return = [
+                    'name'      => \Partner\Counter\Actionpay::NAME,
+                    'actionpay' => $request->cookies->get('actionpay'),
+                ];
+                break;
+            case \Partner\Counter\Admitad::NAME:
+                $return = [
+                    'name'        => \Partner\Counter\Admitad::NAME,
+                    'admitad_uid' => $request->cookies->get('admitad_uid'),
+                ];
+                break;
+            case \Partner\Counter\Recreative::NAME:
+                $return = [
+                    'name' => \Partner\Counter\Recreative::NAME,
+                ];
+                break;
+            case \Partner\Counter\Reactive::NAME:
+                $return = [
+                    'name' => \Partner\Counter\Reactive::NAME,
+                ];
+                break;
+        }
+
+        return $return;
+    }
 }
