@@ -5,5 +5,4 @@
  * @var $category \Model\Product\Category\Entity
  */
 ?>
-
-<div id="adfox_categoryFilterBanner" class="jsanalytics"></div>
+<div id="adfox_categoryFilterBanner" class="adfoxWrapper"></div>
