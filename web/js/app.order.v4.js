@@ -202,19 +202,19 @@ $(document).ready(function() {
     })
     /* Address Fields */
     // region changer (handler) describes in another file, its common call
-    $("#order_recipient_phonenumbers").focusin(function(){
-        $(this).attr('maxlength','11')
-        $(this).bind('keyup',function(e){
-            if ( ((e.which>=96)&&(e.which<=105))||((e.which>=48)&&(e.which<=57))||(e.which==8) ){//если это цифра или бэкспэйс
-                //
-            }
-            else{
-                //если это не цифра
-                var clearVal = $(this).val().replace(/\D/g,'')
-                $(this).val(clearVal)
-            }
-        })
-    })
+    // $("#order_recipient_phonenumbers").focusin(function(){
+    //     $(this).attr('maxlength','11')
+    //     $(this).bind('keyup',function(e){
+    //         if ( ((e.which>=96)&&(e.which<=105))||((e.which>=48)&&(e.which<=57))||(e.which==8) ){//если это цифра или бэкспэйс
+    //             //
+    //         }
+    //         else{
+    //             //если это не цифра
+    //             var clearVal = $(this).val().replace(/\D/g,'')
+    //             $(this).val(clearVal)
+    //         }
+    //     })
+    // })
 
     if( typeof( $.mask ) !== 'undefined' ) {
         // $.mask.definitions['n'] = "[()0-9\ \-]"
@@ -224,6 +224,10 @@ $(document).ready(function() {
         //           $('#order_recipient_phonenumbers').val( predefPhone + '       ' )
         //       else
         //           $("#order_recipient_phonenumbers").val('8')
+
+        $("#order_recipient_phonenumbers").mask("(999) 999-99-99");
+        if( $("#order_recipient_phonenumbers")[0].getAttribute('value') )
+            $("#order_recipient_phonenumbers").val( $("#phonemask")[0].getAttribute('value') )
 
         $.mask.definitions['*'] = "[0-9*]"
         $("#order_sclub_card_number").mask("* ****** ******", { placeholder: "*" } )
