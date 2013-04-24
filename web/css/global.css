@@ -197,8 +197,8 @@
   }
   /* IE7 */
   .float100 {
-    float: left;
-    width: 100%;
+    float: right;
+    margin-right: -15px;
   }
   .ar {
     text-align: right;
@@ -502,13 +502,12 @@
   }
   .column215 {
     float: left;
-    margin-left: -100%;
     position: relative;
     width: 215px;
     z-index: 5;
   }
   .column685 {
-    margin: 0px 0px 0px 235px;
+    width: 685px;
     position: relative;
     z-index: 1;
   }

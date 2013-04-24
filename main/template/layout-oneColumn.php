@@ -23,7 +23,7 @@
     <div class="adfoxWrapper" id="adfoxbground"></div>
     <? endif ?>
 
-        <div class="allpageinner<? if ('cart' == $page->slotBodyDataAttribute()): ?> buyingpage<? endif ?>" <? if ('product_card' == $page->slotBodyDataAttribute()): ?>itemscope itemtype="http://schema.org/Product"<? endif ?>>
+        <div class="clearfix allpageinner<? if ('cart' == $page->slotBodyDataAttribute()): ?> buyingpage<? endif ?>" <? if ('product_card' == $page->slotBodyDataAttribute()): ?>itemscope itemtype="http://schema.org/Product"<? endif ?>>
             <?= $page->slotHeader() ?>
 
             <?= $page->slotContentHead() ?>
