@@ -77,13 +77,16 @@ define('product',
 				hintContent.html(hint)
 				hintContent.prepend('<h2>'+title+'</h2>')
 				pH = popUp.height()/2
-				popUp.css('top', e.pageY - pH).fadeIn(300, function(){
+
+				var elTop = $(this).offset().top
+
+				popUp.css({'top': elTop - pH + 10, 'left':e.pageX + 50}).fadeIn(300, function(){
 					popUped = true
 				})
 			})
-			$('.bWrap').bind('click', function(event){
+			$('.bWrap').bind('click', function(e){
 				if (popUped){
-					event.preventDefault()
+					e.preventDefault()
 					popUp.fadeOut(300, function(){
 						popUped = false
 					})
