@@ -73,7 +73,8 @@ class AppConfig {
     ];
     /** @var array */
     public $analytics = [
-        'enabled' => null,
+        'enabled'           => null,
+        'optimizelyEnabled' => null,
     ];
     /** @var array */
     public $googleAnalytics = [

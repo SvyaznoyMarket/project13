@@ -62,6 +62,7 @@ $c->company['icq'] = '648198963';
 
 $c->adFox['enabled'] = false;
 $c->analytics['enabled'] = false;
+$c->analytics['optimizelyEnabled'] = false;
 $c->googleAnalytics['enabled'] = false;
 $c->yandexMetrika['enabled'] = false;
 $c->myThings['feeByCategory'] = [
