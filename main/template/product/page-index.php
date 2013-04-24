@@ -122,9 +122,9 @@ $productVideo = reset($productVideos);
 
   <a href="<?= $product->getImageUrl(4) ?>" class="viewme" ref="image" onclick="return false">
     <? if ($product->getLabel()): ?>
-    <img class="bLabels" src="<?= $product->getLabel()->getImageUrl(1) ?>" alt="<?= $product->getLabel()->getName() ?>" />
+    <img class="bLabels" src="<?= $product->getLabel()->getImageUrl(1) ?>" alt="<?= $page->escape($product->getLabel()->getName()) ?>" />
     <? endif ?>
-    <img class="mainImg" src="<?= $product->getImageUrl(3) ?>" alt="<?=$product->getName()?>" title="<?=$product->getName()?>" width="500" height="500" />
+    <img class="mainImg" src="<?= $product->getImageUrl(3) ?>" alt="<?= $page->escape($product->getName()) ?>" title="<?= $page->escape($product->getName()) ?>" width="500" height="500" />
   </a>
 </div>
 <div style="display:none;" id="stock">
@@ -282,7 +282,7 @@ $productVideo = reset($productVideos);
     <? foreach ($photoList as $photo): ?>
     <li class="viewstock" ref="photo<?= $photo->getId() ?>">
     	<a href="<?= $photo->getUrl(4) ?>" class="viewme" ref="image">
-    		<img src="<?= $photo->getUrl(2) ?>" alt="<?=$product->getName()?>" title="<?=$product->getName()?>" width="48" height="48" />
+    		<img src="<?= $photo->getUrl(2) ?>" alt="<?= $page->escape($product->getName()) ?>" title="<?= $page->escape($product->getName()) ?>" width="48" height="48" />
     	</a>
     </li>
     <? endforeach ?>
@@ -306,7 +306,7 @@ $productVideo = reset($productVideos);
             <ul class="previewlist">
                 <? foreach ($property->getOption() as $option): ?>
                 <li>
-                    <a href="<?= $option->getProduct()->getLink() ?>" <?= ($product->getId() == $option->getProduct()->getId()) ? ' class="current"' : '' ?> title="<?= $option->getHumanizedName() ?>">
+                    <a href="<?= $option->getProduct()->getLink() ?>" <?= ($product->getId() == $option->getProduct()->getId()) ? ' class="current"' : '' ?> title="<?= $page->escape($option->getHumanizedName()) ?>">
                     	<img src="<?= $option->getProduct()->getImageUrl(1) ?>" alt="<?= $option->getHumanizedName() ?>" width="48" height="48"/>
                     </a>
                 </li>
@@ -412,7 +412,7 @@ $productVideo = reset($productVideos);
         <? foreach ($photoList as $photo): ?>
         <li class="viewstock" ref="photo<?= $photo->getId() ?>">
         	<a href="<?= $photo->getUrl(4) ?>" class="viewme" ref="image" id="try-3">
-        		<img src="<?= $photo->getUrl(2) ?>" alt="<?=$product->getName()?>" title="<?=$product->getName()?>" width="48" height="48" />
+        		<img src="<?= $photo->getUrl(2) ?>" alt="<?= $page->escape($product->getName()) ?>" title="<?= $page->escape($product->getName()) ?>" width="48" height="48" />
         	</a>
         </li>
         <? endforeach ?>
