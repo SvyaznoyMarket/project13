@@ -91,6 +91,7 @@ class ProductAction {
                         'old_price'     => $cart->getOriginalSum(),
                         'link'          => \App::router()->generate('order.create'),
                     ],
+                    'result'  => \Kissmetrics\Manager::getCartEvent($product),
                 ])
                 : new \Http\RedirectResponse($returnRedirect);
         } catch (\Exception $e) {
