@@ -35,18 +35,22 @@ define('product',
 		if ($('.bGoodSubItems_eTitle').length){
 			if ( !$('.jsAccessorise').length ){
 				$('.jsSimilar').addClass('active')
-				$('#similarSlider').show()
+				$('#similarSlider').fadeIn(300)
 			}
+			else{
+				$('#accessoriseSlider').fadeIn(300)
+			}
+			
 			$('.bGoodSubItems_eTitle').bind('click', function(){
 				$('.bGoodSubItems_eTitle').removeClass('active')
 				$(this).addClass('active')
 				if ( $(this).hasClass('jsAccessorise') ){
 					$('#similarSlider').hide()
-					$('#accessoriseSlider').show()
+					$('#accessoriseSlider').fadeIn(300)
 				}
 				else if ( $(this).hasClass('jsSimilar') ){
 					$('#accessoriseSlider').hide()
-					$('#similarSlider').show()
+					$('#similarSlider').fadeIn(300)
 				}
 				else{
 					return false

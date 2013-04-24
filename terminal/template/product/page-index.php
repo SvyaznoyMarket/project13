@@ -129,7 +129,7 @@ $warranties = $product->getWarranty();
             </div>
             
             <!-- similar goods -->
-            <div class="bGoodSubItem">
+            <div class="bGoodSubItem clearfix">
                 <div class="bSlider">
                     <a class="bSlider_eArrow mLeft" href="#"></a>
                     <a class="bSlider_eArrow mRight" href="#"></a>
