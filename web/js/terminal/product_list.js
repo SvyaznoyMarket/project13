@@ -37,12 +37,6 @@ define('product_list',
 	var productData = []
 
 	/**
-	 * Признак того что загружены все товары в категории
-	 * @type {Boolean}
-	 */
-	var endProducts = false
-
-	/**
 	 * Количество проскроленных элементов
 	 * @type {Number}
 	 */
@@ -141,10 +135,8 @@ define('product_list',
 			if (!res.success)
 				return false
 
-			if (res.products.length == 0){
-				endProducts = true
+			if (res.products.length == 0)
 				return false
-			}
 			
 			currentLoadedItems += res.products.length
 			productData = productData.concat(res.products)
@@ -275,7 +267,7 @@ define('product_list',
 			var touch = orig.changedTouches[0].pageY
 			var len = orig.changedTouches.length
 
-			if (len > 1)
+			if (animated||changingZoom||(len > 1))
 				return false
 			
 			newOffset = touch - startY + startOffset
@@ -290,10 +282,7 @@ define('product_list',
 		var moveEnd = function(e){
 			e.preventDefault()
 			
-			if (animated) 
-				return false
-
-			if (changingZoom)
+			if (animated||changingZoom) 
 				return false
 
 			var orig = e.originalEvent
