@@ -42,6 +42,18 @@ define('product_list',
 	 */
 	var endProducts = false
 
+	/**
+	 * Количество проскроленных элементов
+	 * @type {Number}
+	 */
+	var scrolingElements = 0
+
+	/**
+	 * Тригер изменения зума
+	 * @type {Boolean}
+	 */
+	var changingZoom = false
+
 
 	/**
 	 * Определение текущего масштаба
@@ -261,6 +273,10 @@ define('product_list',
 		
 			var orig = e.originalEvent
 			var touch = orig.changedTouches[0].pageY
+			var len = orig.changedTouches.length
+
+			if (len > 1)
+				return false
 			
 			newOffset = touch - startY + startOffset
 			el.css('top',newOffset)
@@ -275,6 +291,9 @@ define('product_list',
 			e.preventDefault()
 			
 			if (animated) 
+				return false
+
+			if (changingZoom)
 				return false
 
 			var orig = e.originalEvent
@@ -298,6 +317,9 @@ define('product_list',
 			// 	preparedData(currentRenderedItem, currentRenderedItem + Math.pow((4-currentZoom()),2) )
 			// })
 			aminateScroll(newOffset, toY, step)
+
+			scrolingElements = Math.abs((toY/listingWindowH)*(4-zoom)*(4-zoom))
+			library.myConsole('scEl '+scrolingElements)
 		}
 
 		el.bind("touchstart", moveStart)
@@ -344,6 +366,9 @@ define('product_list',
 		 * @param  {number} nowelCount количество элементов, которые мы уже проскролили
 		 */
 		var changeZoom = function(zoom){
+
+			changingZoom = true
+
 			el.removeClass(sizes[nowZoom])
 			if (zoom == 'up'){
 				nowZoom = ((nowZoom + 1) > 2) ? 2 : nowZoom + 1
@@ -352,6 +377,13 @@ define('product_list',
 				nowZoom = ((nowZoom - 1) < 0) ? 0 : nowZoom - 1
 			}
 			el.addClass(sizes[nowZoom])
+			var stringCount = Math.round(scrolingElements/(4-nowZoom))
+			library.myConsole('strC '+stringCount)
+			var newOffset = -stringCount*heights[nowZoom]
+			library.myConsole('newOf '+newOffset)
+			el.animate({'top':newOffset},50, function(){
+				changingZoom = false
+			})
 		}
 
 		/**
