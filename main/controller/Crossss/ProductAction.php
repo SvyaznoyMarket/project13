@@ -28,7 +28,7 @@ class ProductAction {
                 'itemurl'         => \App::router()->generate('product', ['productPath' => $product->getPath()], true),
                 'actiontime'      => time(),
                 'itemtype'        => $product->getMainCategory() ? $product->getMainCategory()->getId() : null,
-            ]));
+            ]), [], \App::config()->crossss['timeout']);
 
             //return new \Http\JsonResponse(['success' => true]);
         } catch (\Exception $e) {

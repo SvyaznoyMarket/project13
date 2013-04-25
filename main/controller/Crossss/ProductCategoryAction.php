@@ -20,21 +20,21 @@ class ProductCategoryAction {
         $categoryToken = explode('/', $categoryPath);
         $categoryToken = end($categoryToken);
 
-        $region = \Controller\ProductCategory\Action::isGlobal() ? null : \App::user()->getRegion();
-
-        $category = \RepositoryManager::productCategory()->getEntityByToken($categoryToken);
-        if (!$category) {
-            throw new \Exception\NotFoundException(sprintf('Категория товара @%s не найдена.', $categoryToken));
-        }
-
         try {
+            $region = \Controller\ProductCategory\Action::isGlobal() ? null : \App::user()->getRegion();
+
+            $category = \RepositoryManager::productCategory()->getEntityByToken($categoryToken);
+            if (!$category) {
+                throw new \Exception\NotFoundException(sprintf('Категория товара @%s не найдена.', $categoryToken));
+            }
+
             $result = $curl->query(\App::config()->crossss['apiUrl'] . '?' . http_build_query([
                 'apikey'          => \App::config()->crossss['apiKey'],
                 'userid'          => \App::user()->getEntity() ? \App::user()->getEntity()->getId() : null,
                 'sessionid'       => session_id(),
                 'categoryid'      => $category->getId(),
                 'actiontime'      => time(),
-            ]));
+            ]), [], \App::config()->crossss['timeout']);
             \App::logger()->debug(json_encode($result, JSON_UNESCAPED_UNICODE), ['crossss']);
 
             $title = !empty($result['title']) ? $result['title'] : 'Популярные товары';
