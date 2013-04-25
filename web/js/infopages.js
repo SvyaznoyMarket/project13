@@ -317,13 +317,11 @@ $(document).ready(function(){
 				}
 				$('.bPromoCatalogNav').append('<a id="promoCatalogSlide'+slide+'" href="#'+slide+'" class="bPromoCatalogNav_eLink">'+((slide*1)+1)+'</a>')
 			}
-			
 		}
 		initSlider() //запуск слайдера
 
 		//переменные
 		var slider_SlideW = $('.bPromoCatalogSliderWrap_eSlide').width()	// ширина одного слайда
-		
 		var slider_WrapW = $('.bPromoCatalogSliderWrap').width( slider_SlideW * slider_SlideCount + (920/2 - slider_SlideW/2))	// установка ширины обертки
 		var nowSlide = 0 	//текущий слайд
 
@@ -359,8 +357,19 @@ $(document).ready(function(){
 			$('.bPromoCatalogSliderWrap').animate({'left':-(slider_SlideW*slide)},500, function(){
 				nowSlide = slide
 			})
+
+			window.location.hash="slide"+(slide+1)
 			catalogPaginator.setActive(slide)
 		}
+
+		var hash = window.location.hash
+
+		if (hash.indexOf('slide')+1){
+			var toSlide = parseInt(hash.slice(6))-1
+
+			moveSlide(toSlide)
+		}
+
 
 	}
 })
