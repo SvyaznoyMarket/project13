@@ -101,11 +101,7 @@ class OneClickAction {
                     if ($partnerName = \App::partner()->getName()) {
                         \App::logger()->info(sprintf('Создается 1click заказ от партнера %s', $partnerName), ['order', 'partner']);
 
-                        $data['meta_data'] = [
-                            'partner' => [
-                                \App::partner()->getMeta($partnerName)
-                            ],
-                        ];
+                        $data['meta_data'] = \App::partner()->getMeta($partnerName);
                     }
                 } catch (\Exception $e) {
                     \App::logger()->error($e, ['order', 'partner']);
