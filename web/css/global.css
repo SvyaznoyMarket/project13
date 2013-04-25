@@ -5103,6 +5103,9 @@
   .lifted.mCatalog {
     width: 704px;
   }
+  .lifted.mCatalog:after {
+    right: 22px;
+  }
   .lifted:before,
   .lifted:after {
     -webkit-box-shadow: 0 12px 17px #616161;
