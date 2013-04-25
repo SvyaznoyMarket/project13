@@ -2,6 +2,11 @@ $(document).ready(function(){
 
 
 	/**
+	 * Бесконечный скролл
+	 */
+	$('.infiniteCarousel').infiniteCarousel();
+
+	/**
 	 * Получение продуктов
 	 */
 	if ( $('.getProductList').length){
