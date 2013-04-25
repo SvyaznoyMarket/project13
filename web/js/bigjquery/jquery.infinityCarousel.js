@@ -1,4 +1,4 @@
-// JavaScript Document
+ï»¿// JavaScript Document
 /*Caruosel ------------------------------------------------------------------------------------------------------*/
 $.fn.infiniteCarousel = function () {
 
@@ -56,7 +56,7 @@ $.fn.infiniteCarousel = function () {
             return false;
         }
         
-        $wrapper.after('<a class="arrow back" title="Íàçàä">&lt;</a><a class="arrow forward" title="Âïåðåä">&gt;</a>');
+        $wrapper.after('<a class="arrow back" title="ÐÐ°Ð·Ð°Ð´">&lt;</a><a class="arrow forward" title="Ð’Ð¿ÐµÑ€ÐµÐ´">&gt;</a>');
         
         // 5. Bind to the forward and back buttons
         $('a.back', this).click(function () {
