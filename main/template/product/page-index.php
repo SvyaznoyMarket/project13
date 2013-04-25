@@ -388,7 +388,7 @@ $productVideo = reset($productVideos);
 <div class="popup mediablock" id="bigpopup"><!-- IVN block #bigpopup is media gallery popup  -->
   <i title="Закрыть" class="close">Закрыть</i>
 
-  <div class="fl mW100ps">
+  <div class="mediablock__eImgWrapper fl mW100ps">
     <div class="photoview">
       <div class="photobox" id="photobox"></div>
       <div class="scrollbox"><div><b></b></div></div>

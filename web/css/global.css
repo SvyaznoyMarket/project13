@@ -2376,7 +2376,7 @@
   .mediablock.popup {
     padding: 0;
   }
-  .mediablock .float100 {
+  .mediablock__eImgWrapper {
     height: 100%;
   }
   .mediablock .leftpanel {
