@@ -8589,7 +8589,7 @@
   .bannersbox {
     left: 0px;
     overflow: hidden;
-    padding: 100px 0 50px;
+    padding: 50px 0 50px;
     position: absolute;
     top: 234px;
     width: 100%;
@@ -8622,7 +8622,7 @@
     left: -245px;
   }
   .bCarouselWrap {
-    padding: 100px 0px 50px;
+    padding: 50px 0px 50px;
     text-align: center;
     width: 100%;
   }
