@@ -63,9 +63,7 @@ $(document).ready(function(){
 			suggestLen = $('.bSearchSuggest__eRes').length
 		}
 		if ((e.which < 37 || e.which>40) && (nowSelectSuggest = -1)){
-			if (!text.length){
-				return false
-			}
+			
 			$('.bSearchSuggest__eRes').removeClass('hover')
 			nowSelectSuggest = -1
 
@@ -84,7 +82,6 @@ $(document).ready(function(){
 	 * @param  {event} e
 	 */
 	suggestDown = function(e){
-
 		// маркировка пункта
 		markSuggest = function(){
 			$('.bSearchSuggest__eRes').removeClass('hover').eq(nowSelectSuggest).addClass('hover')
@@ -144,6 +141,12 @@ $(document).ready(function(){
 		$('#searchAutocomplete').show()
 	}
 	$('.searchbox .searchtext').keydown(suggestDown).keyup(suggestUp).mouseenter(suggestInputFocus).focus(suggestInputFocus).click(suggestInputClick).placeholder()
+	$('.searchbox .search-form').submit(function(){
+		var text = $('.searchbox .searchtext').attr('value')
+		if (!text.length){
+			return false
+		}
+	})
 	$('.bSearchSuggest__eRes').live('mouseover', function(){
 		$('.bSearchSuggest__eRes').removeClass('hover')
 		var index = $(this).addClass('hover').index()
