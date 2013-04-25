@@ -32,6 +32,7 @@ class ProductAction {
 
             //return new \Http\JsonResponse(['success' => true]);
         } catch (\Exception $e) {
+            \App::exception()->remove($e);
             \App::logger()->error($e, ['crossss']);
 
             //return new \Http\JsonResponse(['success' => false, 'error' => \App::config()->debug ? $e->getMessage() : 'Ошибка']);

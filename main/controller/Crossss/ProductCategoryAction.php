@@ -78,6 +78,7 @@ class ProductCategoryAction {
 
             return new \Http\JsonResponse($return);
         } catch (\Exception $e) {
+            \App::exception()->remove($e);
             \App::logger()->error($e, ['crossss']);
         }
 
