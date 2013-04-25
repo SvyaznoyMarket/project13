@@ -211,6 +211,7 @@ class AppConfig {
     /** @var array */
     public $crossss = [
         'enabled' => null,
+        'timeout' => null,
         'apiUrl'  => null,
         'apiKey'  => null,
         'id'      => null,
