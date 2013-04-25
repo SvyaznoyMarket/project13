@@ -500,6 +500,9 @@
   .mW1000 {
     width: 1000px;
   }
+  .mW100ps {
+    width: 100%;
+  }
   .column215 {
     float: left;
     position: relative;
