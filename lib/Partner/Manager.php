@@ -140,39 +140,39 @@ class Manager {
 
         $request = \App::request();
 
-        $prefix = 'partner.';
+        $prefix = 'partner';
         switch ($name) {
             case \Partner\Counter\CityAds::NAME:
                 $return = [
-                    $prefix . \Partner\Counter\CityAds::NAME          => \Partner\Counter\CityAds::NAME,
-                    $prefix . \Partner\Counter\CityAds::NAME . '.prx' => $request->cookies->get('prx'),
+                    $prefix                                                 => [\Partner\Counter\CityAds::NAME],
+                    $prefix . '.' . \Partner\Counter\CityAds::NAME . '.prx' => $request->cookies->get('prx'),
                 ];
                 break;
             case \Partner\Counter\Etargeting::NAME:
                 $return = [
-                    $prefix . \Partner\Counter\Etargeting::NAME => \Partner\Counter\Etargeting::NAME,
+                    $prefix => [\Partner\Counter\Etargeting::NAME],
                 ];
                 break;
             case \Partner\Counter\Actionpay::NAME:
                 $return = [
-                    $prefix . \Partner\Counter\Actionpay::NAME                => \Partner\Counter\Actionpay::NAME,
-                    $prefix . \Partner\Counter\Actionpay::NAME . '.actionpay' => $request->cookies->get('actionpay'),
+                    $prefix                                                         => [\Partner\Counter\Actionpay::NAME],
+                    $prefix . '.' . \Partner\Counter\Actionpay::NAME . '.actionpay' => $request->cookies->get('actionpay'),
                 ];
                 break;
             case \Partner\Counter\Admitad::NAME:
                 $return = [
-                    $prefix . \Partner\Counter\Admitad::NAME                  => \Partner\Counter\Admitad::NAME,
-                    $prefix . \Partner\Counter\Admitad::NAME . '.admitad_uid' => $request->cookies->get('admitad_uid'),
+                    $prefix                                                         => [\Partner\Counter\Admitad::NAME],
+                    $prefix . '.' . \Partner\Counter\Admitad::NAME . '.admitad_uid' => $request->cookies->get('admitad_uid'),
                 ];
                 break;
             case \Partner\Counter\Recreative::NAME:
                 $return = [
-                    $prefix . \Partner\Counter\Recreative::NAME => \Partner\Counter\Recreative::NAME,
+                    $prefix => [\Partner\Counter\Recreative::NAME],
                 ];
                 break;
             case \Partner\Counter\Reactive::NAME:
                 $return = [
-                    $prefix . \Partner\Counter\Reactive::NAME => \Partner\Counter\Reactive::NAME,
+                    $prefix => [\Partner\Counter\Reactive::NAME],
                 ];
                 break;
         }
