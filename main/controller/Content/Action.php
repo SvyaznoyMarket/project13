@@ -12,8 +12,9 @@ class Action {
         try {
             $content = $client->query($token);
         } catch(\Exception $e) {
-            \App::logger()->error($e, ['content']);
+            \App::exception()->remove($e);
             $content = null;
+            \App::logger()->error($e, ['content']);
         }
 
         if (!(bool)$content) {
