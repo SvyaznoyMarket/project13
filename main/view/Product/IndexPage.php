@@ -59,6 +59,19 @@ class IndexPage extends \View\DefaultLayout {
         $this->addMeta('keywords', $page->getKeywords());
     }
 
+    public function slotContentHead() {
+        // заголовок контента страницы
+        if (!$this->hasParam('title')) {
+            $this->setParam('title', null);
+        }
+        // навигация
+        if (!$this->hasParam('breadcrumbs')) {
+            $this->setParam('breadcrumbs', []);
+        }
+
+        return $this->render('product/_contentHead', $this->params);
+    }
+
     public function slotContent() {
         return $this->render('product/page-index', $this->params);
     }
@@ -97,9 +110,9 @@ class IndexPage extends \View\DefaultLayout {
             $description = 'Enter - новый способ покупать. Любой из ' . number_format(\App::config()->product['totalCount'], 0, ',', ' ') . ' товаров нашего ассортимента можно купить где угодно, как угодно и когда угодно. Наша миссия: дарить время для настоящего. Честно. С любовью. Как для себя.';
         }
 
-        return "<meta property=\"og:title\" content=\"".$product->getName()."\"/>\r\n".
-                "<meta property=\"og:description\" content=\"".$description."\"/>\r\n".
-                "<meta property=\"og:image\" content=\"".$product->getImageUrl(3)."\"/>\r\n".
+        return "<meta property=\"og:title\" content=\"" . $this->escape($product->getName()) . "\"/>\r\n" .
+                "<meta property=\"og:description\" content=\"" . $this->escape($description) . "\"/>\r\n" .
+                "<meta property=\"og:image\" content=\"" . $this->escape($product->getImageUrl(3)) . "\"/>\r\n".
                 "<meta property=\"og:site_name\" content=\"ENTER\"/>\r\n".
                 "<meta property=\"og:type\" content=\"website\"/>\r\n";
     }

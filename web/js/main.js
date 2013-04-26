@@ -990,34 +990,34 @@ $(document).ready(function(){
 	// 	}
 	// )
 	
-	$('.search-form').bind('submit', function(e) {
-		// e.preventDefault()
-		var form = $(this)
-		if (form.find('input:[name="q"]').val().length < 2)
-			return false
-		if( form.find('input:[name="q"]').val() === 'Поиск среди 30 000 товаров' )
-			return false
-		// var wholemessage = form.serializeArray()
-		// function getSearchResults( response ) {
-		// 		if( response.success ) {
-		// 			form.unbind('submit')
-		// 			form.submit()
-		// 		} else {
-		// 			var el = $(response.data.content)
-		// 			el.appendTo('body')
-		// 			$('#search_popup-block').lightbox_me({
-		// 				centered: true//,
-		// 				//onLoad: function() { $(this).find('input:first').focus() }
-		// 			})
-		// 		}
-		// }
-		// $.ajax({
-		// 	type: 'GET',
-		// 	url: form.attr('action'),
-		// 	data: wholemessage,
-		// 	success: getSearchResults
-		// })
-	})
+	// $('.search-form').bind('submit', function(e) {
+	// 	// e.preventDefault()
+	// 	var form = $(this)
+	// 	if (form.find('input:[name="q"]').val().length < 2)
+	// 		return false
+	// 	if( form.find('input:[name="q"]').val() === 'Поиск среди 30 000 товаров' )
+	// 		return false
+	// 	// var wholemessage = form.serializeArray()
+	// 	// function getSearchResults( response ) {
+	// 	// 		if( response.success ) {
+	// 	// 			form.unbind('submit')
+	// 	// 			form.submit()
+	// 	// 		} else {
+	// 	// 			var el = $(response.data.content)
+	// 	// 			el.appendTo('body')
+	// 	// 			$('#search_popup-block').lightbox_me({
+	// 	// 				centered: true//,
+	// 	// 				//onLoad: function() { $(this).find('input:first').focus() }
+	// 	// 			})
+	// 	// 		}
+	// 	// }
+	// 	// $.ajax({
+	// 	// 	type: 'GET',
+	// 	// 	url: form.attr('action'),
+	// 	// 	data: wholemessage,
+	// 	// 	success: getSearchResults
+	// 	// })
+	// })
 
 	$('.bCtg__eMore').bind('click', function(e) {
 		e.preventDefault()

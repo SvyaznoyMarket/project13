@@ -23,7 +23,7 @@
     <div class="adfoxWrapper" id="adfoxbground"></div>
     <? endif ?>
 
-        <div class="allpageinner">
+        <div class="allpageinner clearfix">
 
             <?= $page->slotContent() ?>
 

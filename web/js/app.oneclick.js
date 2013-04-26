@@ -596,25 +596,25 @@ levup:			for(var i=0, l=numbers.length; i<l; i++)
 	/* Inputs */
 	function enableHandlers() {
 		$("#phonemask").parent().prepend('<span id="phonePH">+7</span>')
-		$("#phonemask").focusin(function(){
-	    	$(this).attr('maxlength','10')
-	    	$(this).bind('keyup',function(e){
-				if (((e.which>=48)&&(e.which<=57))||(e.which==8)){//если это цифра или бэкспэйс
-					//
-				}
-				else{
-					//если это не цифра
-					var clearVal = $(this).val().replace(/\D/g,'')
-					$(this).val(clearVal)
-				}
-			})
-	    })
+		// $("#phonemask").focusin(function(){
+	 //    	$(this).attr('maxlength','10')
+	 //    	$(this).bind('keyup',function(e){
+		// 		if (((e.which>=48)&&(e.which<=57))||(e.which==8)){//если это цифра или бэкспэйс
+		// 			//
+		// 		}
+		// 		else{
+		// 			//если это не цифра
+		// 			var clearVal = $(this).val().replace(/\D/g,'')
+		// 			$(this).val(clearVal)
+		// 		}
+		// 	})
+	 //    })
 		if( typeof( $.mask ) !== 'undefined' ) {
 			// $.mask.definitions['n'] = "[()0-9\ \-]"
 			// $("#phonemask").mask("+7 nnnnnnnnnnnnnnnnn", { placeholder: " ", maxlength: 10 } )
-			// if( $("#phonemask")[0].getAttribute('value') )
-			// 	$("#phonemask").val( $("#phonemask")[0].getAttribute('value') )
-			
+			$("#phonemask").mask("(999) 999-99-99");
+			if( $("#phonemask")[0].getAttribute('value') )
+				$("#phonemask").val( $("#phonemask")[0].getAttribute('value') )
 			$.mask.definitions['*'] = "[0-9*]"
 	        $("#scCard").mask("* ****** ******", { placeholder: "*" } )
 			if( $("#scCard")[0].getAttribute('value') )

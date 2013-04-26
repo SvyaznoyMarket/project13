@@ -77,7 +77,7 @@ $isOrderAnalytics = isset($isOrderAnalytics) ? $isOrderAnalytics : true;
 )) ?>
 
 
-<? if (\App::config()->smartEngine['push']): ?>
+<? if (\App::config()->smartengine['push']): ?>
     <? foreach ($orders as $order): ?>
     <?
         $jsonOrdersData = array('order' => array('id' => $order->getId(), 'product' => array_map(function ($orderProduct) {

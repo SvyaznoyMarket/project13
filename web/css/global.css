@@ -197,8 +197,8 @@
   }
   /* IE7 */
   .float100 {
-    float: left;
-    width: 100%;
+    float: right;
+    margin-right: -15px;
   }
   .ar {
     text-align: right;
@@ -500,15 +500,17 @@
   .mW1000 {
     width: 1000px;
   }
+  .mW100ps {
+    width: 100%;
+  }
   .column215 {
     float: left;
-    margin-left: -100%;
     position: relative;
     width: 215px;
     z-index: 5;
   }
   .column685 {
-    margin: 0px 0px 0px 235px;
+    width: 685px;
     position: relative;
     z-index: 1;
   }
@@ -2374,7 +2376,7 @@
   .mediablock.popup {
     padding: 0;
   }
-  .mediablock .float100 {
+  .mediablock__eImgWrapper {
     height: 100%;
   }
   .mediablock .leftpanel {
@@ -2615,10 +2617,11 @@
     position: relative;
   }
   .bFastInner #phonemask {
-    padding-left: 30px;
+    padding-left: 27px;
+    width: 383px;
   }
   .bFastInner #phonePH {
-    line-height: 29px;
+    line-height: 33px;
     margin: 0px 5px;
     position: absolute;
   }
@@ -2822,7 +2825,7 @@
     padding: 0px 10px;
   }
   .topbar .bRegion {
-    width: 720px;
+    width: 600px;
   }
   .topbar .usermenu {
     float: right;
@@ -3970,7 +3973,6 @@
     width: 65px;
   }
   .goodslist {
-    float: left;
     margin-left: -4px;
     padding-bottom: 5px;
     position: relative;
@@ -4097,6 +4099,7 @@
     float: left;
     margin-bottom: 0px;
     padding: 10px 0px 10px 10px;
+    min-height: 175px;
     width: 675px;
   }
   .goodsline:hover .goodsbar {
@@ -4334,6 +4337,7 @@
     display: block;
     margin: 0 auto;
     width: 450px;
+    height: 648px;
     z-index: 1;
   }
   .bPromoCatalogSlider_eArrow {
@@ -4345,12 +4349,12 @@
     z-index: 3;
   }
   .bPromoCatalogSlider_eArrow.mArLeft {
-    background: url('/css/catalog/img/leftarrow.jpg') no-repeat 0 0;
+    background: url('/css/catalog/img/leftarrow.png') no-repeat 0 0;
     display: none;
     left: 16%;
   }
   .bPromoCatalogSlider_eArrow.mArRight {
-    background: url('/css/catalog/img/rightarrow.jpg') no-repeat 0 0;
+    background: url('/css/catalog/img/rightarrow.png') no-repeat 0 0;
     right: 16%;
   }
   .bPromoCatalogNavArrow {
@@ -4488,6 +4492,7 @@
   }
   .bPaginator_eWrap {
     position: relative;
+    left: 0;
   }
   .bPaginator_eLink {
     background: #F3F3F3;
@@ -4528,6 +4533,7 @@
     background: #888;
     position: relative;
     height: 5px;
+    left: 0;
   }
 }
 /*---END---СТИЛИ КАТАЛОГА---*/
@@ -5031,6 +5037,20 @@
     padding: 15px 0 15px 10px;
     width: 150px;
   }
+  .bSimilarGoods.mCatalog {
+    border-left: none;
+    border-top: none;
+    width: 98%;
+  }
+  .bSimilarGoods.mCatalog .bSimilarGoodsSlider {
+    border-left: none;
+    width: 100%;
+  }
+  .bSimilarGoods.mCatalog .bSimilarGoodsSlider_eGoods {
+    margin: 10px 0;
+    padding: 0 24px;
+    width: 180px;
+  }
   .bSimilarGoodsSlider {
     border-left: 1px solid #e6e6e6;
     overflow: hidden;
@@ -5079,6 +5099,12 @@
     border-radius: 4px;
     position: relative;
     z-index: 1;
+  }
+  .lifted.mCatalog {
+    width: 704px;
+  }
+  .lifted.mCatalog:after {
+    right: 22px;
   }
   .lifted:before,
   .lifted:after {
@@ -6265,6 +6291,7 @@
     position: relative;
   }
   .phonePH span.placeholder {
+    line-height: 33px;
     z-index: 3;
   }
   .phonePH #order_recipient_phonenumbers {
@@ -6277,6 +6304,8 @@
     filter: alpha(opacity=80);
     position: absolute;
     left: 0;
+    padding-left: 30px;
+    width: 440px;
   }
   #addressField dd div {
     float: left;
@@ -8065,7 +8094,7 @@
     border: none;
     background: #000000;
     font-size: 12px;
-    line-height: 26px;
+    line-height: 24px;
   }
   .bSubscribeLightboxPopup__eNotNow {
     position: relative;
@@ -8560,6 +8589,7 @@
   .bannersbox {
     left: 0px;
     overflow: hidden;
+    padding: 50px 0 50px;
     position: absolute;
     top: 234px;
     width: 100%;
@@ -8592,7 +8622,7 @@
     left: -245px;
   }
   .bCarouselWrap {
-    padding: 100px 0px 50px;
+    padding: 50px 0px 50px;
     text-align: center;
     width: 100%;
   }

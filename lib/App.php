@@ -291,7 +291,7 @@ class App {
         static $instance;
 
         if (!$instance) {
-            $instance = new \Smartengine\Client(self::$config->smartEngine, \App::logger());
+            $instance = new \Smartengine\Client(self::$config->smartengine, \App::logger());
         }
 
         return $instance;

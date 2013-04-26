@@ -495,6 +495,22 @@
     padding: 15px 0 15px 10px;
     width: 150px;
   }
+  &.mCatalog{
+    border-left: none;
+    border-top: none;
+    width: 98%;
+    
+    .bSimilarGoodsSlider{
+      border-left: none;
+      width: 100%;
+
+      &_eGoods{
+        margin: 10px 0;
+        padding: 0 24px;
+        width: 180px;
+      }
+    }
+  }
 }
 .bSimilarGoodsSlider{
   border-left: 1px solid @typLightGray;
@@ -544,6 +560,13 @@
   .rounded(4px);
   position: relative;
   z-index: 1;
+  &.mCatalog{
+    width: 704px;
+
+    &:after{
+      right: 22px;
+    }
+  }
 } 
 .lifted:before,
 .lifted:after {

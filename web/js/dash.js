@@ -1,5 +1,97 @@
 $(document).ready(function(){
 
+	/* вывод слайдера со схожими товарами, если товар доступен только на витрине*/
+	if ( $('#similarGoodsSlider').length){
+
+		// основные элементы
+		var similarSlider = $('#similarGoodsSlider')
+		var similarWrap = similarSlider.find('.bSimilarGoodsSlider_eWrap')
+		var similarArrow = similarSlider.find('.bSimilarGoodsSlider_eArrow')
+
+		var slidesW = 0
+
+		var sliderW = 0
+		var slidesCount = 0
+		var wrapW = 0
+		var left = 0
+		
+		var sliderTracking = function(){
+			var nowUrl = document.location
+			var toUrl = $(this).attr('href')
+			
+			_trackEvent("AdvisedCrossss", nowUrl, toUrl)
+		}
+
+		// init
+		var init = function(data){
+			for (var item in data){
+				var similarGood = tmpl('similarGoodTmpl',data[item])
+				similarWrap.append(similarGood)
+			}
+			var similarGoods = similarSlider.find('.bSimilarGoodsSlider_eGoods')
+
+			slidesW = similarGoods.width() + parseInt(similarGoods.css('paddingLeft'))*2
+			slidesCount = similarGoods.length
+			wrapW = slidesW * slidesCount
+			similarWrap.width(wrapW)
+
+			if (slidesCount > 0){
+				$('.bSimilarGoods').fadeIn(300, function(){
+					sliderW = similarSlider.width()
+				})
+			}
+
+			if (slidesCount < 4){
+				$('.bSimilarGoodsSlider_eArrow.mRight').hide()
+			}
+		}
+
+		$.getJSON( $('#similarGoodsSlider').data('url') , function(data){
+			if (!($.isEmptyObject(data))){
+				var initData = data
+				init(initData)
+			}
+		}).done(function(){
+			var similarGoods = similarSlider.find('.bSimilarGoodsSlider_eGoods')
+			slidesCount = similarGoods.length
+			wrapW = slidesW * slidesCount
+			similarWrap.width(wrapW)
+			if (slidesCount > 0){
+				$('.bSimilarGoods').fadeIn(300, function(){
+					sliderW = similarSlider.width()
+				})
+			}
+		})
+		
+		similarArrow.bind('click', function(){
+			if ($(this).hasClass('mLeft')){
+				left += (slidesW * 2)
+			}
+			else{
+				left -= (slidesW * 2)
+			}
+			// left *= ($(this).hasClass('mLeft'))?-1:1
+			if ((left <= sliderW-wrapW)){
+				left = sliderW-wrapW
+				$('.bSimilarGoodsSlider_eArrow.mRight').hide()
+				$('.bSimilarGoodsSlider_eArrow.mLeft').show()
+			} 
+			else if (left >= 0 ){
+				left = 0
+				$('.bSimilarGoodsSlider_eArrow.mLeft').hide()
+				$('.bSimilarGoodsSlider_eArrow.mRight').show()
+			}
+			else{
+				similarArrow.show()
+			}
+			similarWrap.animate({'left':left})
+			return false
+		})
+
+
+		$('.bSimilarGoods.mCatalog .bSimilarGoodsSlider_eGoods a').live('click', sliderTracking)
+	}
+
 	var lboxCheckSubscribe = function(subscribe){
 		var notNowShield = $('.bSubscribeLightboxPopupNotNow')
 		var subPopup = $('.bSubscribeLightboxPopup')
@@ -13,9 +105,9 @@ $(document).ready(function(){
 
 			if ( email.search('@') !== -1 ){
 				$.post(url, {email: email}, function(res){
-					if( !res.success ){
-						console.log('error')
-					}
+					if( !res.success )
+						return false
+					
 					subPopup.html('<span class="bSubscribeLightboxPopup__eTitle mType">Спасибо! подтверждение подписки отправлено на указанный e-mail</span>')
 					docCookies.setItem(false, 'subscribed', 1, 157680000, '/')
 					if( typeof(_gaq) !== 'undefined' ){
@@ -29,8 +121,8 @@ $(document).ready(function(){
 			else{
 				// email invalid
 				input.addClass('mError')
-				return false
 			}
+			return false
 		}
 
 		var subscribeNow = function(){
@@ -48,6 +140,8 @@ $(document).ready(function(){
 				subPopup.slideUp(300, subscribeLater)
 				docCookies.setItem(false, 'subscribed', 0, 157680000, '/')
 				$.post(url)
+
+				return false;
 			})
 		}
 
@@ -126,7 +220,6 @@ $(document).ready(function(){
 				} else $('#auth-link').show()
 
 				if ( $('#upsale').length ){
-					console.info(data.data)
 					$('#upsaleCounter').html(data.data.vitems)
 					$('#upsalePrice').html(data.data.sum)
 				}

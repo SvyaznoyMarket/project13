@@ -521,6 +521,17 @@ class Action {
 
         // TODO: удалять из сессии успешный заказ, время создания которого больше 1 часа
 
+        // crossss
+        if (\App::config()->crossss['enabled']) {
+            try {
+                foreach ($orders as $order) {
+                    (new \Controller\Crossss\OrderAction())->create($order, $productsById);
+                }
+            } catch (\Exception $e) {
+                \App::logger()->error($e, ['crossss']);
+            }
+        }
+
         $page = new \View\Order\CompletePage();
         $page->setParam('orders', $orders);
         $page->setParam('shopsById', $shopsById);
@@ -727,6 +738,19 @@ class Action {
                 }
                 if ((bool)$actionData) {
                     $orderData['action'] = $actionData;
+                }
+
+                // мета-теги
+                if (\App::config()->order['enableMetaTag']) {
+                    try {
+                        if ($partnerName = \App::partner()->getName()) {
+                            \App::logger()->info(sprintf('Создается заказ от партнера %s', $partnerName), ['order', 'partner']);
+
+                            $orderData['meta_data'] = \App::partner()->getMeta($partnerName);
+                        }
+                    } catch (\Exception $e) {
+                        \App::logger()->error($e, ['order', 'partner']);
+                    }
                 }
             }
 

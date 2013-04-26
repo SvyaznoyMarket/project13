@@ -3,6 +3,12 @@
 namespace Controller\Product;
 
 class IndexAction {
+    /**
+     * @param string        $productPath
+     * @param \Http\Request $request
+     * @return \Http\RedirectResponse|\Http\Response
+     * @throws \Exception\NotFoundException
+     */
     public function execute($productPath, \Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
