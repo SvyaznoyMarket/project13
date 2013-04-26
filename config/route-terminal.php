@@ -25,4 +25,10 @@ return [
         'action'  => ['ProductCategory\IndexAction', 'product'],
         'require' => ['categoryId' => '[\d]+'],
     ],
+    // список моделей в категории товара
+    'category.show.model' => [
+        'pattern' => '/catalog/{categoryId}/model',
+        'action'  => ['ProductCategory\ModelAction', 'execute'],
+        'require' => ['categoryId' => '[\d]+'],
+    ],
 ];
