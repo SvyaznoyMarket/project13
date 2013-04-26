@@ -9,7 +9,12 @@ class Action {
 
         $client = \App::contentClient();
 
-        $content = $client->query($token);
+        try {
+            $content = $client->query($token);
+        } catch(\Exception $e) {
+            \App::logger()->error($e, ['content']);
+            $content = null;
+        }
 
         if (!(bool)$content) {
             throw new \Exception\NotFoundException();
