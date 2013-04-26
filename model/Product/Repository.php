@@ -376,4 +376,99 @@ class Repository {
 
         return $iterators;
     }
+
+
+    /**
+     * Фильтрует аксессуары согласно разрешенным в json категориям
+     * Возвращает массив с аксессуарами, сгруппированными по категориям
+     *
+     * @param $product
+     * @return array
+     */
+    public static function filterAccessoryId(&$product, $category = null, $limit = null) {
+
+        // формируем запрос к апи получаем json с разрешенными в качестве аксессуаров категориями
+
+        /** @var $categories \Model\Product\Category\Entity[] */
+        $categories = $product->getCategory();
+        if (!(bool)$categories) {
+            return array();
+        }
+
+        $categoryTokens = [];
+        foreach ($categories as $iCategory) {
+            $categoryTokens[] = $iCategory->getToken();
+        }
+
+        $productJson = array();
+
+        $dataStore = \App::dataStoreClient();
+        $query = sprintf('catalog/%s/%s.json', implode('/', $categoryTokens), $product->getToken());
+        $dataStore->addQuery($query, [], function ($data) use (&$productJson) {
+            if($data) $productJson = $data;
+        });
+        $dataStore->execute();
+
+        if (!$productJson) return array();
+
+        // массив токенов категорий, разрешенных в json
+        $jsonCategoryToken = $productJson['accessory_category_token'];
+
+        // текущие аксессуары
+        $productAccessoryId = $product->getAccessoryId();
+        $repository = \RepositoryManager::product();
+        if ((bool)$productAccessoryId) {
+            try {
+                $accessories = $repository->getCollectionById($productAccessoryId);
+            } catch (\Exception $e) {
+                \App::exception()->add($e);
+                \App::logger()->error($e);
+                $accessories = [];
+            }
+        }
+
+        // отсеиваем аксессуары, которые не относятся к разрешенным категориям
+        $accessories = array_filter($accessories, function($accessory) use(&$jsonCategoryToken) {
+
+            // массив токенов категорий к которым относится аксессуар
+            $accessoryCategoryToken = array_map(function($accessoryCategory) {
+                return $accessoryCategory->getToken();
+            }, $accessory->getCategory());
+
+            // есть ли общие категории между категориями аксессуара и разрешенными в json
+            $commonCategories = array_intersect($jsonCategoryToken, $accessoryCategoryToken);
+            
+            return !empty($commonCategories);
+        });
+
+        // собираем id аксессуаров после фильтрации и устанавливаем их продукту
+        $productAccessoryId = array_map(function($accessory){ return $accessory->getId(); }, $accessories);
+
+        // ограничиваем количество аксессуаров, которое нужно показывать
+        // например на вкладка Популярные аксессуары, открывающаяся при загрузке карточки товара
+        // должна содержать максимум 8 аксессуаров
+        if($limit) {
+            $productAccessoryId = array_slice($productAccessoryId, 0, $limit);
+        }
+
+        // устанавливаем продукту id его аксессуаров
+        $product->setAccessoryId($productAccessoryId);
+
+        // группируем аксессуары по родительским категориям и возвращаем ($limit при этом не учитывается)
+        $accessoriesGrouped = array();
+        foreach ($accessories as $accessory) {
+            $categories = $accessory->getCategory();
+            $parentCategory = end($categories);
+
+            if(isset($accessoriesGrouped[$parentCategory->getToken()])) {
+                array_push($accessoriesGrouped[$parentCategory->getToken()]['accessories'], $accessory);
+            } else {
+                $accessoriesGrouped[$parentCategory->getToken()]['category'] = $parentCategory;
+                $accessoriesGrouped[$parentCategory->getToken()]['accessories'] = array($accessory);
+            }
+        }
+
+        return $accessoriesGrouped;
+    }
+
 }

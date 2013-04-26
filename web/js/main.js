@@ -1451,6 +1451,8 @@ $(document).ready(function(){
 		var self = this
 		var current = 1
 
+		var current_accessory_category = '';
+
 		var wi  = nodes.width*1
 		var viswi = nodes.viswidth*1
 
@@ -1500,6 +1502,7 @@ $(document).ready(function(){
 						if( $('form.product_filter-block').length )
 							getData = $('form.product_filter-block').serializeArray()
 						getData.push( {name: 'page', value: buffer+1 } )	
+						getData.push( {name: 'categoryToken', value: current_accessory_category } )	
 						$.get( $(nodes.prev).attr('data-url') , getData, function(data) {
 							buffer++
 							$(nodes.next).css('opacity','1')
@@ -1531,10 +1534,45 @@ $(document).ready(function(){
 			return false
 		})
 
+		var grouped_accessories = {'':$(nodes.wrap).html()}
+
+		$('.categoriesmenuitem').click(function(){
+			if( !$(this).hasClass('active') ) {
+				$('.active').addClass('link')
+				$('.active').removeClass('active')
+				$(this).addClass('active')
+				$(this).removeClass('link')
+
+				current_accessory_category = $(this).attr('data-category-token');
+				if (current_accessory_category == undefined) {
+					current_accessory_category = ''
+				}
+
+				if(grouped_accessories[current_accessory_category]) {
+					$(nodes.wrap).html(grouped_accessories[current_accessory_category])
+				} else {
+					ajaxflag = true
+					var getData = []
+					getData.push( {name: 'page', value: 1 } )	
+					getData.push( {name: 'categoryToken', value: current_accessory_category } )	
+					$.get( $(this).attr('data-url') , getData, function(data) {
+						buffer = 2
+						ajaxflag = false
+						grouped_accessories[current_accessory_category] = data
+						$(nodes.wrap).html(data)
+					})
+				}
+
+				current = 1
+				shiftme()
+			}
+			return false
+		});
+
 	} // cardsCarousel object
 
 	$('.carouseltitle').each( function(){
-		if( $(this).hasClass('carbig') ) {
+		if( $(this).hasClass('carbig') && !$(this).hasClass('accessories') ) {
 			var tmpline = new cardsCarousel ({
 					'prev'  : $(this).find('.back'),
 					'next'  : $(this).find('.forvard'),
@@ -1543,6 +1581,16 @@ $(document).ready(function(){
 					'width' : $(this).find('.scroll').data('quantity'),
 					'wrap'  : $(this).find('~ .bigcarousel').first(),
 					'viswidth' : 5
+				})		
+		} else if( $(this).hasClass('carbig') && $(this).hasClass('accessories') ) {
+			var tmpline = new cardsCarousel ({
+					'prev'  : $(this).find('.back'),
+					'next'  : $(this).find('.forvard'),
+					'crnt'  : $(this).find('span:first'),
+					'times' : $(this).find('span:eq(1)'),
+					'width' : $(this).find('.scroll').data('quantity'),
+					'wrap'  : $(this).find('~ .bigcarousel').first(),
+					'viswidth' : 4
 				})		
 		} else {
 			if( $(this).find('.jshm').length ) {

@@ -4,7 +4,7 @@ namespace Controller\Product;
 
 class AccessoryAction {
 
-    CONST NUM_RELATED_ON_PAGE = 5;
+    CONST NUM_RELATED_ON_PAGE = 4;
 
     /**
      * @param \Http\Request $request
@@ -21,6 +21,22 @@ class AccessoryAction {
             return new \Http\JsonResponse(array('success' => false, 'data' => 'Не найден товар ' . $productToken));
 
         $begin = self::NUM_RELATED_ON_PAGE * ($page - 1);
+
+        // фильтруем аксессуары согласно разрешенным в json категориям
+        // и получаем аксессуары, сгруппированные по категориям
+        $accessoriesGrouped = \Model\Product\Repository::filterAccessoryId($product);
+
+        $categoryToken = $request->get('categoryToken', 1);
+
+        if(!empty($categoryToken)) {
+            if(!isset($accessoriesGrouped[$categoryToken]))
+                return new \Http\JsonResponse(array('success' => false, 'data' => 'Не найдена категория ' . $categoryToken));
+
+            $product->setAccessoryId(array_map(function($accessory){
+                return $accessory->getId();
+            }, $accessoriesGrouped[$categoryToken]['accessories']));
+        }
+
         $accessoryIdList = array_slice($product->getAccessoryId(), $begin, self::NUM_RELATED_ON_PAGE);
         $accessoryProductList = \RepositoryManager::product()->getCollectionById($accessoryIdList);
 
