@@ -29,12 +29,14 @@ class Client {
     /**
      * @param string $action
      * @param array  $data
+     * @param bool $throwException
      * @return array|null
-     * @throws \Exception
      */
-    public function query ($action, array $data = []) {
+    public function query ($action, array $data = [], $throwException = null) {
         \Debug\Timer::start('content');
         \App::logger()->debug('Start content request ' . $action, ['content']);
+
+        $throwException = null === $throwException ? $this->config['throwException'] : $throwException;
 
         $url = $this->config['url'] . $action . '?json=1';
         $response = null;
@@ -42,8 +44,8 @@ class Client {
             $response = $data;
             $spend = \Debug\Timer::stop('content');
             \App::logger()->debug('End content request ' . $action . ' in ' . $spend, ['content']);
-        }, function ($e) use ($action) {
-            if (false === $this->config['throwException']) {
+        }, function ($e) use ($action, $throwException) {
+            if (false === $throwException) {
                 \App::exception()->remove($e);
             }
             $spend = \Debug\Timer::stop('content');
