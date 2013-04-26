@@ -188,7 +188,7 @@ $c->crossss['id'] = 45;
 $c->crossss['apiKey'] = '5a0bb0cb92a94f7db8a9bf4bfacdbe39';
 
 $c->warranty['enabled'] = true;
-$c->f1Certificate['enabled'] = false;
+$c->f1Certificate['enabled'] = true;
 
 $c->user['corporateRegister'] = true;
 
