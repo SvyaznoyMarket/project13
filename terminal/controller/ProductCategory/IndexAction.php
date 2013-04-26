@@ -108,6 +108,15 @@ class IndexAction {
                 'isInStore'     => $product->getState()->getIsStore(),
                 'hasSupplier'   => $product->getState()->getIsSupplier(),
                 'isInOtherShop' => $product->getState()->getIsShop(), //
+                'line'          => $product->getLine() ? [
+                    'id'              =>  $product->getLine()->getId(),
+                    'token'           =>  $product->getLine()->getToken(),
+                    'name'            =>  $product->getLine()->getName(),
+                    'image'           =>  $product->getLine()->getImage(),
+                    'kitQuantity'     =>  $product->getLine()->getKitCount(),
+                    'productQuantity' =>  $product->getLine()->getProductCount(),
+                    'totalQuantity'   =>  $product->getLine()->getTotalCount(),
+                ] : null,
             ];
         }
 
