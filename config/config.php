@@ -62,6 +62,7 @@ $c->company['icq'] = '648198963';
 
 $c->adFox['enabled'] = false;
 $c->analytics['enabled'] = false;
+$c->analytics['optimizelyEnabled'] = false;
 $c->googleAnalytics['enabled'] = false;
 $c->yandexMetrika['enabled'] = false;
 $c->myThings['feeByCategory'] = [
@@ -181,6 +182,7 @@ $c->smartengine['logDataEnabled'] = true;
 $c->smartengine['sslVerify'] = true;
 
 $c->crossss['enabled'] = true;
+$c->crossss['timeout'] = 0.3;
 $c->crossss['apiUrl'] = 'http://crossss.com/api.ashx';
 $c->crossss['id'] = 45;
 $c->crossss['apiKey'] = '5a0bb0cb92a94f7db8a9bf4bfacdbe39';

@@ -21,7 +21,7 @@
 <? endif ?>
 
 
-<? if (\App::config()->analytics['enabled']): ?>
+<? if (\App::config()->analytics['optimizelyEnabled']): ?>
     <!-- KISS -->
     <script src="//cdn.optimizely.com/js/204544654.js"></script>
 <? endif ?>

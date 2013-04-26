@@ -500,6 +500,9 @@
   .mW1000 {
     width: 1000px;
   }
+  .mW100ps {
+    width: 100%;
+  }
   .column215 {
     float: left;
     position: relative;
@@ -2373,7 +2376,7 @@
   .mediablock.popup {
     padding: 0;
   }
-  .mediablock .float100 {
+  .mediablock__eImgWrapper {
     height: 100%;
   }
   .mediablock .leftpanel {
@@ -5037,7 +5040,7 @@
   .bSimilarGoods.mCatalog {
     border-left: none;
     border-top: none;
-    width: 100%;
+    width: 98%;
   }
   .bSimilarGoods.mCatalog .bSimilarGoodsSlider {
     border-left: none;
@@ -5099,6 +5102,9 @@
   }
   .lifted.mCatalog {
     width: 704px;
+  }
+  .lifted.mCatalog:after {
+    right: 22px;
   }
   .lifted:before,
   .lifted:after {
@@ -8583,7 +8589,7 @@
   .bannersbox {
     left: 0px;
     overflow: hidden;
-    padding: 100px 0 50px;
+    padding: 50px 0 50px;
     position: absolute;
     top: 234px;
     width: 100%;
@@ -8616,7 +8622,7 @@
     left: -245px;
   }
   .bCarouselWrap {
-    padding: 100px 0px 50px;
+    padding: 50px 0px 50px;
     text-align: center;
     width: 100%;
   }

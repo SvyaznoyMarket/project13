@@ -28,10 +28,11 @@ class ProductAction {
                 'itemurl'         => \App::router()->generate('product', ['productPath' => $product->getPath()], true),
                 'actiontime'      => time(),
                 'itemtype'        => $product->getMainCategory() ? $product->getMainCategory()->getId() : null,
-            ]));
+            ]), [], \App::config()->crossss['timeout']);
 
             //return new \Http\JsonResponse(['success' => true]);
         } catch (\Exception $e) {
+            \App::exception()->remove($e);
             \App::logger()->error($e, ['crossss']);
 
             //return new \Http\JsonResponse(['success' => false, 'error' => \App::config()->debug ? $e->getMessage() : 'Ошибка']);

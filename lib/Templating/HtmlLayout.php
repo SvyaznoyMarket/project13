@@ -222,7 +222,7 @@ class HtmlLayout {
         foreach ($this->metas as $name => $content) {
             if (null == $content) continue;
 
-            $return .= '<meta name="' . $name .'" content="' . $content . '" />' . "\n";
+            $return .= '<meta name="' . $name .'" content="' . $this->escape($content) . '" />' . "\n";
         }
 
         return $return;

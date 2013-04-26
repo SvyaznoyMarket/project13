@@ -105,4 +105,5 @@ $creditEnabled = ($cart->getTotalProductPrice() >= \App::config()->product['minC
     <!--Трэкер "Корзина"-->
 
     <?= $page->tryRender('cart/partner-counter/_etargeting') ?>
+    <?= $page->tryRender('cart/partner-counter/_cityads') ?>
 <? endif ?>

@@ -28,10 +28,10 @@ if (!isset($productVideos)) $productVideos = [];
             <? if ((bool)$productVideos): ?><a class="goodsphoto_eVideoShield goodsphoto_eVideoShield_small" href="<?= $product->getLink() ?>"></a><? endif ?>
             <a href="<?= $product->getLink() ?>">
                 <? if ($label = $product->getLabel()): ?>
-                    <img class="bLabels" src="<?= $label->getImageUrl() ?>" alt="<?= $label->getName() ?>"/>
+                    <img class="bLabels" src="<?= $label->getImageUrl() ?>" alt="<?= $page->escape($label->getName()) ?>"/>
                 <? endif ?>
 
-                <img height="160" width="160" title="<?= $product->getName() ?>" alt="<?= $product->getName() ?>" src="<?= $product->getImageUrl() ?>" class="mainImg"/>
+                <img height="160" width="160" title="<?= $page->escape($product->getName()) ?>" alt="<?= $page->escape($product->getName()) ?>" src="<?= $product->getImageUrl() ?>" class="mainImg"/>
             </a>
         </div>
         <div class="info">
