@@ -89,6 +89,6 @@ class RequestLogger {
             $data['api_queries'][] = ['host' => $log['host'], 'url' => $log['url'], 'post' => $log['post'], 'time' => $log['time']];
         }
 
-        return json_encode($data, JSON_UNESCAPED_UNICODE);
+        return json_encode($data);
     }
 }
