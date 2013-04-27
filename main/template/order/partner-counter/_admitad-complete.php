@@ -1,9 +1,9 @@
 <?php
 /**
- * @var $page               \View\Order\CreatePage
- * @var $user               \Session\User
- * @var $orders             \Model\Order\Entity[]
- * @var $productsById       \Model\Product\Entity[]
+ * @var $page         \View\Order\CreatePage
+ * @var $user         \Session\User
+ * @var $orders       \Model\Order\Entity[]
+ * @var $productsById \Model\Product\Entity[]
  */
 ?>
 

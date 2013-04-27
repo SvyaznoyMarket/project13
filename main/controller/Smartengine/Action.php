@@ -123,7 +123,7 @@ class Action {
                 'gaEvent'       => 'SmartEngine',
             ]));
         } catch (\Exception $e) {
-            \App::logger()->error($e);
+            \App::logger()->error($e, ['smartengine']);
 
             return new \Http\Response();
         }
@@ -195,7 +195,7 @@ class Action {
             return new \Http\JsonResponse($return);
 
         } catch (\Exception $e) {
-            \App::logger()->error($e);
+            \App::logger()->error($e, ['smartengine']);
 
             return new \Http\JsonResponse();
         }

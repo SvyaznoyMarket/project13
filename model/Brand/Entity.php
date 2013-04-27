@@ -6,6 +6,8 @@ class Entity {
     /** @var int */
     private $id;
     /** @var string */
+    private $token;
+    /** @var string */
     private $name;
     /** @var string */
     private $description;
@@ -16,6 +18,7 @@ class Entity {
 
     public function __construct(array $data = []) {
         if (array_key_exists('id', $data)) $this->setId($data['id']);
+        if (array_key_exists('token', $data)) $this->setToken($data['token']);
         if (array_key_exists('name', $data)) $this->setName($data['name']);
         if (array_key_exists('description', $data)) $this->setDescription($data['description']);
         if (array_key_exists('media_image', $data)) $this->setImage($data['media_image']);
@@ -47,6 +50,7 @@ class Entity {
      * @return int
      */
     public function getId() {
+
         return $this->id;
     }
 
@@ -90,5 +94,19 @@ class Entity {
      */
     public function getName() {
         return $this->name;
+    }
+
+    /**
+     * @param string $token
+     */
+    public function setToken($token) {
+        $this->token = (string)$token;
+    }
+
+    /**
+     * @return string
+     */
+    public function getToken() {
+        return $this->token;
     }
 }

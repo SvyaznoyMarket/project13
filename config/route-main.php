@@ -161,6 +161,25 @@ return [
         'action'  => ['ProductCategory\Action', 'category'],
         'require' => ['categoryPath' => '[\w\d-_]+\/?[\w\d-_]+'],
     ],
+    // каталог товаров бренда
+    'product.category.brand' => [
+        'pattern' => '/catalog/{categoryPath}/{brandToken}',
+        'action'  => ['ProductCategory\Action', 'category'],
+        'require' => ['categoryPath' => '[\w\d-_]+\/[\w\d-_]+', 'brand' => '[\w\d-_]+'],
+    ],
+    // каталог товаров бренда
+    'product.category.brand.infinity' => [
+        'pattern' => '/ajax/catalog/{categoryPath}/{brandToken}/_infinity',
+        'action'  => ['ProductCategory\Action', 'category'],
+        'require' => ['categoryPath' => '[\w\d-_]+\/[\w\d-_]+', 'brand' => '[\w\d-_]+'],
+    ],
+    // слайдер рекомендованных товаров
+    'product.category.recommended.slider' => [
+        'pattern' => '/ajax/catalog/{categoryPath}/_slider-recommended',
+        'action'  => ['Crossss\ProductCategoryAction', 'recommended'],
+        'require' => ['categoryPath' => '[\w\d-_]+\/?[\w\d-_]+'],
+    ],
+
     // карточка товара
     'product' => [
         'pattern' => '/product/{productPath}',
@@ -354,9 +373,9 @@ return [
     ],
 
     // smartengine
-    'smartengine.pull.product_alsoViewed' => [
+    'product.recommended' => [
         'pattern' => '/product-also-viewed/{productId}',
-        'action' => ['Smartengine\Action', 'pullProductAlsoViewed'],
+        'action' => ['Product\RecommendedAction', 'execute'],
         'require' => ['productId' => '\d+'],
     ],
     'smartengine.pull.product_similar' => [

@@ -32,12 +32,19 @@ class SitemapAction {
         \App::logger()->debug('Exec ' . __METHOD__);
 
         $this->fillHomepage();
+        \App::logger()->info('Sitemap: главная страница готова', ['sitemap']);
         $this->fillProductCategory();
+        \App::logger()->info('Sitemap: каталог товаров готов', ['sitemap']);
         $this->fillProduct();
+        \App::logger()->info('Sitemap: товары готовы', ['sitemap']);
         $this->fillServiceCategory();
+        \App::logger()->info('Sitemap: категории услуг готовы', ['sitemap']);
         $this->fillService();
+        \App::logger()->info('Sitemap: услуги готовы', ['sitemap']);
         $this->fillShop();
+        \App::logger()->info('Sitemap: магазины готовы', ['sitemap']);
         $this->fillPage();
+        \App::logger()->info('Sitemap: информационные страницы готовы', ['sitemap']);
 
         $this->closeContent();
 
@@ -65,13 +72,13 @@ class SitemapAction {
         for ($i = 1; $i <= $this->fileCount; $i++) {
             $source = $this->basePath . str_replace('{num}', $i, $this->fileTemplate) . '.new';
             if (!is_file($source)) {
-                \App::logger()->error(sprintf('File %s does not exist', $source));
+                \App::logger()->error(sprintf('File %s does not exist', $source), ['sitemap']);
                 continue;
             }
 
             $destination = $this->basePath . str_replace('{num}', $i, $this->fileTemplate);
             if (!copy($source, $destination)) {
-                \App::logger()->error(sprintf('Can\'t copy sitemap file from %s to %s', $source, $destination));
+                \App::logger()->error(sprintf('Can\'t copy sitemap file from %s to %s', $source, $destination), ['sitemap']);
                 continue;
             }
 
@@ -115,7 +122,9 @@ class SitemapAction {
         $productCategoryRepository = \RepositoryManager::productCategory();
         $productCategoryRepository->setEntityClass('\Model\Product\Category\TreeEntity');
 
-        $walk = function($categories) use (&$walk) {
+        $defaultRegion = \RepositoryManager::region()->getDefaultEntity();
+
+        $walk = function($categories) use (&$walk, &$defaultRegion) {
             foreach ($categories as $category) {
                 /** @var \Model\Product\Category\TreeEntity $category */
                 if (!$category->getPath()) continue;
@@ -125,6 +134,27 @@ class SitemapAction {
                     'daily',
                     '0.8'
                 );
+
+                try {
+                    for ($i = 0; $i < 10; $i++) {
+                        foreach (\RepositoryManager::brand()->getCollectionByCategory($category, $i * 100, 100) as $brand) {
+                            if (!$brand->getToken()) {
+                                \App::logger()->warn(sprintf('Бренд #%s не содержит токена', $brand->getId()));
+                                continue;
+                            }
+                            $this->putContent(
+                                $this->router->generate('product.category.brand', [
+                                    'brandToken'   => $brand->getToken(),
+                                    'categoryPath' => $category->getPath(),
+                                ]),
+                                'daily',
+                                '0.8'
+                            );
+                        }
+                    }
+                } catch (\Exception $e) {
+                    \App::logger()->error($e, ['sitemap']);
+                }
 
                 if ((bool)$category->getChild()) {
                     $walk($category->getChild());
@@ -153,7 +183,7 @@ class SitemapAction {
                     try {
                         $products = $productRepository->getIteratorByFilter($filter->dump(), [], $offset, $limit, $this->region);
                     } catch (\Exception $e) {
-                        \App::logger()->error($e);
+                        \App::logger()->error($e, ['sitemap']);
                         continue;
                     }
 
@@ -207,7 +237,7 @@ class SitemapAction {
                 try {
                     $services = $serviceRepository->getCollectionByCategory($category, $this->region);
                 } catch (\Exception $e) {
-                    \App::logger()->error($e);
+                    \App::logger()->error($e, ['sitemap']);
                     continue;
                 }
 
@@ -235,7 +265,7 @@ class SitemapAction {
             try {
                 $shops = \RepositoryManager::shop()->getCollectionByRegion($region);
             } catch (\Exception $e) {
-                \App::logger()->error($e);
+                \App::logger()->error($e, ['sitemap']);
                 continue;
             }
 
@@ -255,7 +285,7 @@ class SitemapAction {
         try {
             $pages = (array)json_decode($result, true);
         } catch (\Exception $e) {
-            \App::logger()->error($e);
+            \App::logger()->error($e, ['sitemap']);
             $pages = [];
         }
         foreach ($pages as $page) {
@@ -314,7 +344,7 @@ class SitemapAction {
 
         $destination = $this->basePath . basename($this->fileName) . '.new';
         if (!copy($this->fileName, $destination)) {
-            \App::logger()->error(sprintf('Can\'t copy sitemap file from %s to %s', $this->fileName, $destination));
+            \App::logger()->error(sprintf('Can\'t copy sitemap file from %s to %s', $this->fileName, $destination), ['sitemap']);
         }
         unlink($this->fileName);
         $this->fileName = null;

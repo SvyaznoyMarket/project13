@@ -75,6 +75,11 @@ class ProductAction {
                     break;
             }
 
+            // crossss
+            if (\App::config()->crossss['enabled'] && ($quantity > 0)) {
+                (new \Controller\Crossss\CartAction())->product($product);
+            }
+
             return $request->isXmlHttpRequest()
                 ? new \Http\JsonResponse([
                     'success' => true,

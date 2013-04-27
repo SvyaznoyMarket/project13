@@ -35,6 +35,7 @@ $c->dataStore['retryTimeout'] = [
 $c->loadMediaHost = true;
 
 $c->analytics['enabled'] = true;
+$c->analytics['optimizelyEnabled'] = true;
 $c->googleAnalytics['enabled'] = true;
 $c->yandexMetrika['enabled'] = true;
 $c->adFox['enabled'] = true;
@@ -56,7 +57,7 @@ $c->paymentPsbInvoice['payUrl'] = 'https://retail.payment.ru/invoice.aspx';
 
 $c->database['host']     = 'site-db'; // был 10.20.33.2
 
-$c->smartEngine['cert'] = $c->dataDir . '/cert/gsorganizationvalg2.crt';
+$c->smartengine['cert'] = $c->dataDir . '/cert/gsorganizationvalg2.crt';
 
 $c->user['corporateRegister'] = true;
 
@@ -79,8 +80,10 @@ $c->abtest['test']       = [
 
 $c->subscribe['enabled'] = true;
 
-$c->f1Certificate['enabled'] = false;
+$c->f1Certificate['enabled'] = true;
 
 $c->requestMainMenu = true;
+
+$c->order['enableMetaTag'] = true;
 
 return $c;

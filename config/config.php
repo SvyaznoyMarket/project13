@@ -62,6 +62,7 @@ $c->company['icq'] = '648198963';
 
 $c->adFox['enabled'] = false;
 $c->analytics['enabled'] = false;
+$c->analytics['optimizelyEnabled'] = false;
 $c->googleAnalytics['enabled'] = false;
 $c->yandexMetrika['enabled'] = false;
 $c->myThings['feeByCategory'] = [
@@ -171,17 +172,23 @@ $c->cart['productLimit'] = 50;
 
 $c->payment['creditEnabled'] = true;
 
-$c->smartEngine['pull'] = true;
-$c->smartEngine['push'] = true;
-$c->smartEngine['api_url'] = 'https://www.selightprod.smartengine.at/se-light/api/1.0/json/';
-$c->smartEngine['api_key'] = 'c41851b19511c20acc84f47b7816fb8e';
-$c->smartEngine['tenantid'] = 'ENojUTRcD8';
-$c->smartEngine['log_enabled'] = true;
-$c->smartEngine['log_data_enabled'] = true;
-$c->smartEngine['ssl_verify'] = true;
+$c->smartengine['pull'] = true;
+$c->smartengine['push'] = true;
+$c->smartengine['apiUrl'] = 'https://www.selightprod.smartengine.at/se-light/api/1.0/json/';
+$c->smartengine['apiKey'] = 'c41851b19511c20acc84f47b7816fb8e';
+$c->smartengine['tenantid'] = 'ENojUTRcD8';
+$c->smartengine['logEnabled'] = true;
+$c->smartengine['logDataEnabled'] = true;
+$c->smartengine['sslVerify'] = true;
+
+$c->crossss['enabled'] = true;
+$c->crossss['timeout'] = 0.3;
+$c->crossss['apiUrl'] = 'http://crossss.com/api.ashx';
+$c->crossss['id'] = 45;
+$c->crossss['apiKey'] = '5a0bb0cb92a94f7db8a9bf4bfacdbe39';
 
 $c->warranty['enabled'] = true;
-$c->f1Certificate['enabled'] = false;
+$c->f1Certificate['enabled'] = true;
 
 $c->user['corporateRegister'] = true;
 
@@ -211,5 +218,7 @@ $c->subscribe['cookieName'] = 'subscribed';
 $c->requestMainMenu = false;
 
 $c->mobileModify['enabled'] = false;
+
+$c->order['enableMetaTag'] = true;
 
 return $c;

@@ -197,6 +197,7 @@ class DefaultLayout extends Layout {
                 'product',
                 'order.create',
                 'order.complete',
+                'cart',
             ])) {
                 $return .= "\n\n" . $this->tryRender('partner-counter/_cityads');
             }

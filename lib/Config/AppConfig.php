@@ -73,7 +73,8 @@ class AppConfig {
     ];
     /** @var array */
     public $analytics = [
-        'enabled' => null,
+        'enabled'           => null,
+        'optimizelyEnabled' => null,
     ];
     /** @var array */
     public $googleAnalytics = [
@@ -198,9 +199,22 @@ class AppConfig {
         'payUrl'       => null,
     ];
     /** @var array */
-    public $smartEngine = [
-        'pull' => null,
-        'push' => null,
+    public $smartengine = [
+        'pull'           => null,
+        'push'           => null,
+        'apiUrl'         => null,
+        'apiKey'         => null,
+        'tenantid'       => null,
+        'logEnabled'     => null,
+        'logDataEnabled' => null,
+    ];
+    /** @var array */
+    public $crossss = [
+        'enabled' => null,
+        'timeout' => null,
+        'apiUrl'  => null,
+        'apiKey'  => null,
+        'id'      => null,
     ];
     /** @var array */
     public $warranty = [
@@ -248,6 +262,10 @@ class AppConfig {
     /** @var array */
     public $mobileModify = [ // SITE-1035
         'enabled' => null,
+    ];
+    /** @var array  */
+    public $order = [
+        'enableMetaTag' => null,
     ];
 
     public function __construct() {

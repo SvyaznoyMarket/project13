@@ -14,9 +14,9 @@ class Admitad {
         $links = [];
 
         try {
-            foreach ($order->getProduct() as $cartProduct) {
+            foreach ($order->getProduct() as $orderProduct) {
                 /** @var $product \Model\Product\Entity */
-                $product = isset($productsById[$cartProduct->getId()]) ? $productsById[$cartProduct->getId()] : null;
+                $product = isset($productsById[$orderProduct->getId()]) ? $productsById[$orderProduct->getId()] : null;
                 if (!$product) continue;
 
 
@@ -38,7 +38,7 @@ class Admitad {
 
                 $link = strtr('http://ad.admitad.com/register/cdaf092422/script_type/img/payment_type/sale/product/{admitad.category.type}/cart/{order.sum}/order_id/{order.number}/uid/{admitad.user.id}/tracking/{category.token}/', [
                     '{admitad.category.type}' => $admitadCategoryType,
-                    '{order.sum}'             => (int)$cartProduct->getPrice(),
+                    '{order.sum}'             => (int)$orderProduct->getPrice(),
                     '{order.number}'          => $order->getNumber() . '_' . uniqid(),
                     '{admitad.user.id}'       => $admitadUserId,
                     '{category.token}'        => $category ? $category->getToken() : null,

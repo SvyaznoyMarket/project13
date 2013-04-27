@@ -37,7 +37,7 @@ foreach ($products as $product) {
         <td>
             <%=f1title%>
             <br/>
-            <a class="bBacketServ__eMore" href="<?= $page->url('service.show', array('serviceToken' => '<%=fid%>')); ?>">Подробнее об услуге</a>
+            <a class="bBacketServ__eMore" href="<?= $page->url('service.show', array('serviceToken' => 'F1TOKEN')); ?>">Подробнее об услуге</a>
         </td>
         <td class="mPrice">
             <span class="price"><%=f1price%> </span>

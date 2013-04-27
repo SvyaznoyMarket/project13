@@ -2,6 +2,11 @@ $(document).ready(function(){
 
 
 	/**
+	 * Бесконечный скролл
+	 */
+	$('.infiniteCarousel').infiniteCarousel();
+
+	/**
 	 * Получение продуктов
 	 */
 	if ( $('.getProductList').length){
@@ -312,6 +317,9 @@ $(document).ready(function(){
 			for (var slide in data){
 				var slideTmpl = tmpl("slide_tmpl",data[slide])
 				$('.bPromoCatalogSliderWrap').append(slideTmpl)
+				if ($('.bPromoCatalogSliderWrap_eSlideLink').eq(slide).attr('href')==''){
+					$('.bPromoCatalogSliderWrap_eSlideLink').eq(slide).removeAttr('href')
+				}
 				$('.bPromoCatalogNav').append('<a id="promoCatalogSlide'+slide+'" href="#'+slide+'" class="bPromoCatalogNav_eLink">'+((slide*1)+1)+'</a>')
 			}
 			

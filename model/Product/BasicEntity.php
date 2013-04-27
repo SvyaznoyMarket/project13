@@ -27,6 +27,8 @@ class BasicEntity {
     protected $line;
     /** @var Category\Entity */
     protected $mainCategory;
+    /** @var Category\Entity */
+    protected $parentCategory;
     /** @var Stock\Entity[] */
     protected $stock = [];
 
@@ -40,7 +42,10 @@ class BasicEntity {
         if (array_key_exists('media_image', $data)) $this->setImage($data['media_image']);
         if (array_key_exists('category', $data) && (bool)$data['category']) {
             $categoryData = reset($data['category']);
-            $this->setMainCategory(new Category\Entity($categoryData));
+            if ((bool)$categoryData) $this->setMainCategory(new Category\Entity($categoryData));
+
+            $categoryData = end($data['category']);
+            if ((bool)$categoryData) $this->setParentCategory(new Category\Entity($categoryData));
         };
         if (array_key_exists('price', $data)) $this->setPrice($data['price']);
         if (array_key_exists('state', $data) && (bool)$data['state']) $this->setState(new State\Entity($data['state']));
@@ -258,5 +263,19 @@ class BasicEntity {
 
     public function getStock() {
         return $this->stock;
+    }
+
+    /**
+     * @param \Model\Product\Category\Entity $parentCategory
+     */
+    public function setParentCategory(\Model\Product\Category\Entity $parentCategory) {
+        $this->parentCategory = $parentCategory;
+    }
+
+    /**
+     * @return \Model\Product\Category\Entity
+     */
+    public function getParentCategory() {
+        return $this->parentCategory;
     }
 }
