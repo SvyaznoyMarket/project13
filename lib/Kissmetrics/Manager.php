@@ -4,12 +4,12 @@ namespace Kissmetrics;
 
 class Manager {
     /**
-     * @param \Model\Product\BasicEntity $product
-     * @param \Model\Product\Service\Entity $service
+     * @param \Model\Product\Entity          $product
+     * @param \Model\Product\Service\Entity  $service
      * @param \Model\Product\Warranty\Entity $warranty
      * @return array
      */
-    public static function getCartEvent(\Model\Product\BasicEntity $product = null, \Model\Product\Service\Entity $service = null, \Model\Product\Warranty\Entity $warranty = null) {
+    public static function getCartEvent(\Model\Product\Entity $product = null, \Model\Product\Service\Entity $service = null, \Model\Product\Warranty\Entity $warranty = null) {
         $return = [];
 
         $cart = \App::user()->getCart();
@@ -26,31 +26,47 @@ class Manager {
 
                 $return = [
                     'product' => [
-                        'name'     => $product->getName(),
-                        'category' => $categoryData,
-                        'sum'      => $product->getPrice(),
-                        'quantity' => $cartProduct->getQuantity(),
+                        'name'            => $product->getName(),
+                        'article'         => $product->getArticle(),
+                        'category'        => $categoryData,
+                        'price'           => $product->getPrice(),
+                        'quantity'        => $cartProduct->getQuantity(),
+                        'serviceQuantity' => $cart->getServicesQuantityByProduct($product->getId()),
                     ],
                 ];
             }
-            if ($service && ($cartService = $cart->getServiceById($service->getId()))) {
-                $result['service'] = [
+            if ($service) {
+                $cartService = null;
+                if ($product && $cartProduct = $cart->getProductById($product->getId())) {
+                    $cartService = $cartProduct->getServiceById($service->getId());
+                } else {
+                    $cartService = $cart->getServiceById($service->getId());
+                }
+
+                $return['service'] = [
                     'name'     => $service->getName(),
-                    'sum'      => $service->getPrice(),
-                    'quantity' => $cartService->getQuantity(),
+                    'price'    => $service->getPrice(),
+                    'quantity' => $cartService ? $cartService->getQuantity() : 0,
                 ];
-                if (isset($result['product'])) {
-                    $result['product']['serviceQuantity'] = $product ? $cart->getServicesQuantityByProduct($product->getId()) : 0;
+                if (isset($return['product'])) {
+                    $return['product']['serviceQuantity'] = $product ? $cart->getServicesQuantityByProduct($product->getId()) : 0;
                 }
             }
-            if ($warranty && ($cartWarranty = $cart->getWarrantyById($warranty->getId()))) {
-                $result['warranty'] = [
+            if ($warranty) {
+                $cartWarranty = null;
+                if ($product && $cartProduct = $cart->getProductById($product->getId())) {
+                    $cartWarranty = $cartProduct->getWarrantyById($warranty->getId());
+                } else {
+                    $cartWarranty = $cart->getWarrantyById($warranty->getId());
+                }
+
+                $return['warranty'] = [
                     'name'     => $warranty->getName(),
-                    'sum'      => $warranty->getPrice(),
-                    'quantity' => $cartWarranty->getQuantity(),
+                    'price'    => $warranty->getPrice(),
+                    'quantity' => $cartWarranty ? $cartWarranty->getQuantity() : null,
                 ];
-                if (isset($result['product'])) {
-                    $result['product']['warrantyQuantity'] = $cartWarranty->getQuantity();
+                if (isset($return['product'])) {
+                    $return['product']['warrantyQuantity'] = $cartWarranty->getQuantity();
                 }
             }
         } catch (\Exception $e) {

@@ -40,7 +40,6 @@ class ProductAction {
 
             // обновить количество гарантий для товара
             if ($cartProduct && (bool)$cartProduct->getWarranty()) {
-
                 try {
                     $cartWarranties = $cartProduct->getWarranty();
                     /** @var $cartWarranty \Model\Cart\Warranty\Entity|null */
