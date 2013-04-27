@@ -23,7 +23,7 @@ $cartServicesById = $cartProduct ? $cartProduct->getService() : [];
             <? foreach ($services as $service): ?>
             <tr>
 
-                <td class="bF1Block_eInfo"><?= $service->getName() ?><br/>
+                <td class="bF1Block_eInfo"><?= $page->escape($service->getName()) ?><br/>
                     <a href="<?= $page->url('service.show', array('serviceToken' => $service->getToken())) ?>">Подробнее об услуге</a>
                 </td>
                 <td class="bF1Block_eBuy" ref="<?= $service->getToken() ?>">
@@ -36,14 +36,14 @@ $cartServicesById = $cartProduct ? $cartProduct->getService() : [];
                     <? if (!$service->getIsDelivered() && $service->getIsInShop()) { ?>
                     <span class='bF1Block__eInShop'>доступна в магазине</span>
                     <? } elseif ($user->getRegion()->getHasService() && $service->isInSale() && $cartProduct && $cartProduct->hasService($service->getId())) { ?>
-                    <input data-f1title="<?= $service->getName() ?>" data-f1price="<?= $service->getPrice() ?>"
+                    <input data-f1title="<?= $page->escape($service->getName()) ?>" data-f1price="<?= $service->getPrice() ?>"
                            data-fid="<?= $service->getId() ?>"
                            data-url="<?= $page->url('cart.service.add', array('serviceId' => $service->getId(), 'productId' => $product->getId(), 'quantity' => 1)) ?>"
                            data-f1token="<?= $service->getToken() ?>"
                            ref="<?= addslashes($service->getToken()) ?>"
                            type="button" class="active button yellowbutton" value="В корзине" />
                     <? } elseif ($user->getRegion()->getHasService() && $service->isInSale()) { ?>
-                    <input data-f1title="<?= $service->getName() ?>"
+                    <input data-f1title="<?= $page->escape($service->getName()) ?>"
                            data-f1price="<?= $page->helper->formatPrice($service->getPrice()) ?>"
                            data-fid="<?= $service->getId() ?>"
                            data-url="<?= $page->url('cart.service.add', array('serviceId' => $service->getId(), 'productId' => $product->getId(), 'quantity' => 1)) ?>"

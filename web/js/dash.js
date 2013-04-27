@@ -19,7 +19,9 @@ $(document).ready(function(){
 			var nowUrl = document.location
 			var toUrl = $(this).attr('href')
 			
-			_trackEvent("AdvisedCrossss", nowUrl, toUrl)
+			if( typeof(_gaq) !== 'undefined' ){
+				_gaq.push(['_trackEvent', 'AdvisedCrossss', nowUrl, toUrl])
+			}
 		}
 
 		// init

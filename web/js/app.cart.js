@@ -85,8 +85,9 @@ $(document).ready(function() {
 	}
 
 	function getTotal() {
-		if ($('#site-config').data('f1-certificate') === 'true')
+		if ($('#site-config').data('f1-certificate')){
 			checkForSaleCard()
+		}
 		
 		checkServWarranty()
 		for(var i=0, tmp=0; i < basket.length; i++ ) {

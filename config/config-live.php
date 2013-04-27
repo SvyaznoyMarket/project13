@@ -35,6 +35,7 @@ $c->dataStore['retryTimeout'] = [
 $c->loadMediaHost = true;
 
 $c->analytics['enabled'] = true;
+$c->analytics['optimizelyEnabled'] = true;
 $c->googleAnalytics['enabled'] = true;
 $c->yandexMetrika['enabled'] = true;
 $c->adFox['enabled'] = true;
@@ -79,7 +80,7 @@ $c->abtest['test']       = [
 
 $c->subscribe['enabled'] = true;
 
-$c->f1Certificate['enabled'] = false;
+$c->f1Certificate['enabled'] = true;
 
 $c->requestMainMenu = true;
 

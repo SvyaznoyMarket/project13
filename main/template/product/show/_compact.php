@@ -35,10 +35,10 @@ if (!isset($productVideos)) $productVideos = [];
 	            <? endif ?>
 	
 	            <? if ($label = $product->getLabel()): ?>
-	                <img class="bLabels" src="<?= $label->getImageUrl() ?>" alt="<?= $label->getName() ?>"/>
+	                <img class="bLabels" src="<?= $label->getImageUrl() ?>" alt="<?= $page->escape($label->getName()) ?>"/>
 	            <? endif ?>
 	
-	            <img class="mainImg" src="<?= $product->getImageUrl(2) ?>" alt="<?= $product->getNameWithCategory() ?>" title="<?= $product->getNameWithCategory() ?>" width="160" height="160"/>
+	            <img class="mainImg" src="<?= $product->getImageUrl(2) ?>" alt="<?= $page->escape($product->getNameWithCategory()) ?>" title="<?= $page->escape($product->getNameWithCategory()) ?>" width="160" height="160"/>
 	        </a>
 	    </div>
 	    <h3><a href="<?= $product->getLink() ?>"><?= $product->getName() ?></a></h3>

@@ -226,8 +226,7 @@ $(document).ready(function() {
         //           $("#order_recipient_phonenumbers").val('8')
 
         $("#order_recipient_phonenumbers").mask("(999) 999-99-99");
-        if( $("#order_recipient_phonenumbers")[0].getAttribute('value') )
-            $("#order_recipient_phonenumbers").val( $("#phonemask")[0].getAttribute('value') )
+        $("#order_recipient_phonenumbers").val($("#order_recipient_phonenumbers").val())
 
         $.mask.definitions['*'] = "[0-9*]"
         $("#order_sclub_card_number").mask("* ****** ******", { placeholder: "*" } )

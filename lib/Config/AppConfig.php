@@ -73,7 +73,8 @@ class AppConfig {
     ];
     /** @var array */
     public $analytics = [
-        'enabled' => null,
+        'enabled'           => null,
+        'optimizelyEnabled' => null,
     ];
     /** @var array */
     public $googleAnalytics = [
@@ -210,6 +211,7 @@ class AppConfig {
     /** @var array */
     public $crossss = [
         'enabled' => null,
+        'timeout' => null,
         'apiUrl'  => null,
         'apiKey'  => null,
         'id'      => null,
