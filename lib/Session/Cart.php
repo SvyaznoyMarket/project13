@@ -238,6 +238,37 @@ class Cart {
     /**
      * @return int
      */
+    public function getTotalServicePrice() {
+        $price = 0;
+        foreach ($this->getProducts() as $product) {
+            foreach ($product->getService() as $service) {
+                $price += $service->getSum();
+            }
+        }
+        foreach ($this->getServices() as $service) {
+            $price += $service->getPrice();
+        }
+
+        return $price;
+    }
+
+    /**
+     * @return int
+     */
+    public function getTotalWarrantyPrice() {
+        $price = 0;
+        foreach ($this->getProducts() as $product) {
+            foreach ($product->getWarranty() as $warranty) {
+                $price += $warranty->getSum();
+            }
+        }
+
+        return $price;
+    }
+
+    /**
+     * @return int
+     */
     public function getSum() {
         if (null === $this->sum) {
             $this->fill();

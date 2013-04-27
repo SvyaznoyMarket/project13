@@ -75,4 +75,20 @@ class Manager {
 
         return $return;
     }
+
+    public static function getOrderNewEvent() {
+        $cart = \App::user()->getCart();
+
+        $return = [
+            'productQuantity'  => $cart->getProductsQuantity(),
+            'productSum'       => $cart->getTotalProductPrice(),
+            'serviceQuantity'  => $cart->getServicesQuantity(),
+            'serviceSum'       => $cart->getTotalServicePrice(),
+            'warrantyQuantity' => $cart->getWarrantiesQuantity(),
+            'warrantySum'      => $cart->getTotalWarrantyPrice(),
+            'sum'              => $cart->getSum(),
+        ];
+
+        return $return;
+    }
 }
