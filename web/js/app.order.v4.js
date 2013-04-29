@@ -1086,30 +1086,99 @@ $(document).ready(function() {
 
                 var phoneNumber = '8' + $('#order_recipient_phonenumbers').val().replace(/\D/g, "")
                 var emailVal = $('#order_recipient_email').val()
+                
+                /**
+                 * Стоимость доставки
+                 * @type {Number}
+                 */
                 var dlvr_total = 0
 
                 $.each(MVM.dlvrBoxes(), function(i, product){
                     dlvr_total += product.dlvrPrice()
                 })
+
+                /**
+                 * количество товаров
+                 * @type {Number}
+                 */
+                var itemQ = 0
+                /**
+                 * Стоимость всех товаров
+                 * @type {Number}
+                 */
+                var itemT = 0
+                /**
+                 * Количество услуг
+                 * @type {Number}
+                 */
+                var servQ = 0
+                /**
+                 * Стоимость всех услуг
+                 * @type {Number}
+                 */
+                var servT = 0
+                /**
+                 * Количество расширенных гарантий
+                 * @type {Number}
+                 */
+                var warrQ = 0
+                /**
+                 * Стоимость всех расширенных гарантий
+                 * @type {Number}
+                 */
+                var warrT = 0
+
+                for( var tkn in MVM.dlvrBoxes() ) {
+                    var dlvr = MVM.dlvrBoxes()[tkn]
+                    for( var i in dlvr.itemList() ){
+                        itemQ += dlvr.itemList()[i].quantity
+                        itemT += dlvr.itemList()[i].price
+                        servQ += dlvr.itemList()[i].serviceQ
+                        servT += dlvr.itemList()[i].serviceTotal
+                        warrQ += dlvr.itemList()[i].warrantyQ
+                        warrT += dlvr.itemList()[i].warrantyTotal
+                    }
+                }
                 var toKISS_complete = {
                     'Checkout Complete Order ID':data.orderNumber, 
-                    // 'Checkout Complete SKU Quantity':5,
-                    // 'Checkout Complete SKU Total':500.0,
-                    // 'Checkout Complete F1 Quantity':0,
-                    // 'Checkout Complete F1 Total':0,
-                    'Checkout Complete Order Subtotal':MVM.totalSum() - parseInt(dlvr_total),
+                    'Checkout Complete SKU Quantity':itemQ,
+                    'Checkout Complete SKU Total':itemT,
+                    'Checkout Complete F1 Quantity':servQ,
+                    'Checkout Complete F1 Total':servT,
+                    'Checkout Complete Warranty Quantity':warrQ,
+                    'Checkout Complete Warranty Total':warrT,
+                    'Checkout Complete Order Subtotal':itemT + servT + warrT,
                     'Checkout Complete Delivery Total':parseInt(dlvr_total),
                     'Checkout Complete Order Total':MVM.totalSum(),
                     'Checkout Complete Order Type':'cart order',
                     'Checkout Complete Delivery':nowDelivery,
                     'Checkout Complete Payment':data.paymentMethodId,
                 }
+                // console.log(toKISS_complete)
 
                 if ((typeof(_kmq) !== 'undefined') && (KM !== 'undefined')) {
                     _kmq.push(['alias', phoneNumber, KM.i()]);
                     _kmq.push(['alias', emailVal, KM.i()]);
                     _kmq.push(['identify', phoneNumber]);
                     _kmq.push(['record', 'Checkout Complete', toKISS_complete])
+                    for( var tkn in MVM.dlvrBoxes() ) {
+                        var dlvr = MVM.dlvrBoxes()[tkn]
+                        for( var i in dlvr.itemList() ){
+                            var toKISS_pr =  {
+                                // 'Checkout Complete SKU':123,
+                                'Checkout Complete SKU Quantity':dlvr.itemList()[i].quantity,
+                                'Checkout Complete F1 Quantity':dlvr.itemList()[i].serviceQ,
+                                'Checkout Complete F1 Total':dlvr.itemList()[i].serviceTotal,
+                                'Checkout Complete Warranty Quantity':dlvr.itemList()[i].warrantyQ,
+                                'Checkout Complete Warranty Total':dlvr.itemList()[i].warrantyTotal,
+                                // 'Checkout Complete Parent category':'Электроника',
+                                'Checkout Complete Category name':dlvr.itemList()[i].name,
+                                '_t':KM.ts() + tkn + i  ,
+                                '_d':1,
+                            }
+                            _kmq.push(['set', toKISS_pr])
+                        }
+                    }
                 }
 
                 if (typeof(yaCounter10503055) !== 'undefined')

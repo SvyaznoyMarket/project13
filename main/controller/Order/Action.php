@@ -959,7 +959,7 @@ class Action {
                     continue;
                 }
 
-                $serviceTotal = 0; $serviceName = '';
+                $serviceTotal = 0; $serviceName = ''; $serviceQuan = 0;
                 if ($cartItem instanceof \Model\Cart\Product\Entity) {
 
                     foreach ($cartItem->getService() as $cartService) {
@@ -971,11 +971,13 @@ class Action {
                         /** @var $service \Model\Product\Service\Entity */
                         $service = $servicesById[$cartService->getId()];
                         $serviceName .= sprintf(' + <span class="motton">%s (%s шт.)</span>', $service->getName(), $cartService->getQuantity());
+                        $serviceQuan += $cartService->getQuantity();
                         $serviceTotal += $cartService->getSum();
                     }
                 }
 
                 // дополнительные гарантии для товара
+                $warrantyTotal = 0; $warrantyQuan = 0; 
                 if ($cartItem instanceof \Model\Cart\Product\Entity) {
                     /** @var $product \Model\Product\CartEntity */
                     $product = $productsById[$cartItem->getId()];
@@ -992,7 +994,8 @@ class Action {
                         }
 
                         $serviceName .= sprintf(' + <span class="motton">%s (%s шт.)</span>', $warranty->getName(), $cartWarranty->getQuantity());
-                        $serviceTotal += $cartWarranty->getSum();
+                        $warrantyTotal += $cartWarranty->getSum();
+                        $warrantyQuan += $cartWarranty->getQuantity();
                     }
                 }
 
@@ -1014,7 +1017,12 @@ class Action {
                 $itemView->image = $itemData['media_image'];
                 $itemView->price = $itemData['price'];
                 $itemView->quantity = $cartItem->getQuantity();
-                $itemView->total = $cartItem->getSum() + $serviceTotal;
+                $itemView->total = $cartItem->getSum() + $serviceTotal +$warrantyTotal;
+                $itemView->serviceQ = $serviceQuan;
+                $itemView->serviceTotal = $serviceTotal;
+                $itemView->warrantyTotal = $warrantyTotal;
+                $itemView->warrantyQ = $warrantyQuan;
+
                 if ($cartItem instanceof \Model\Cart\Product\Entity) {
                     $itemView->type = \View\Order\DeliveryCalc\Item::TYPE_PRODUCT;
                 } else if ($cartItem instanceof \Model\Cart\Service\Entity) {
