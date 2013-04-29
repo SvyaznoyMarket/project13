@@ -21,6 +21,7 @@ class AccessoryAction {
             return new \Http\JsonResponse(array('success' => false, 'data' => 'Не найден товар ' . $productToken));
 
         $begin = self::NUM_RELATED_ON_PAGE * ($page - 1);
+        $limit = $page == 1 ? self::NUM_RELATED_ON_PAGE * 2 : self::NUM_RELATED_ON_PAGE;
 
         // фильтруем аксессуары согласно разрешенным в json категориям
         // и получаем аксессуары, сгруппированные по категориям
@@ -37,7 +38,7 @@ class AccessoryAction {
             }, $accessoriesGrouped[$categoryToken]['accessories']));
         }
 
-        $accessoryIdList = array_slice($product->getAccessoryId(), $begin, self::NUM_RELATED_ON_PAGE);
+        $accessoryIdList = array_slice($product->getAccessoryId(), $begin, $limit);
         $accessoryProductList = \RepositoryManager::product()->getCollectionById($accessoryIdList);
 
         $response = " ";
@@ -45,6 +46,9 @@ class AccessoryAction {
             $response .= \App::templating()->render('product/show/_extra_compact', array(
                 'page'   => new \View\Layout(),
                 'product'   => $accessory,
+                'totalPages'   => (int)ceil(count($product->getAccessoryId()) / self::NUM_RELATED_ON_PAGE),
+                'totalProducts'   => count($product->getAccessoryId()),
+                'categoryToken'   => empty($categoryToken) ? '' : $categoryToken,
                 'isHidden'  => false,
                 'gaEvent'   => 'SmartEngine',
             ));

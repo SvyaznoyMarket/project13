@@ -1451,8 +1451,6 @@ $(document).ready(function(){
 		var self = this
 		var current = 1
 
-		var current_accessory_category = '';
-
 		var wi  = nodes.width*1
 		var viswi = nodes.viswidth*1
 
@@ -1465,6 +1463,7 @@ $(document).ready(function(){
 
 		this.notify = function() {
 			$(nodes.crnt).html( current )
+			$(nodes.times).html( max )
 			if ( current == 1 )
 				$(nodes.prev).addClass('disabled')
 			else
@@ -1485,6 +1484,10 @@ $(document).ready(function(){
 		}
 
 		$(nodes.next).bind('click', function() {
+			if(grouped_accessories[current_accessory_category]) {
+				buffer = grouped_accessories[current_accessory_category]['buffer']
+				wi = grouped_accessories[current_accessory_category]['quantity']
+			}
 			if( current < max && !ajaxflag ) {
 				if( current + 1 == max ) { //the last pull is loaded , so special shift
 					var boxes = $(nodes.wrap).find('.goodsbox')
@@ -1511,6 +1514,10 @@ $(document).ready(function(){
 							$(tr).html( data )
 							$(tr).find('.goodsbox').css('display','none')
 							$(nodes.wrap).html( $(nodes.wrap).html() + tr.html() )
+							if(grouped_accessories[current_accessory_category]) {
+								grouped_accessories[current_accessory_category]['accessories'] = $(nodes.wrap).html()
+								grouped_accessories[current_accessory_category]['buffer']++
+							}
 							tr = null
 						})
 						current++
@@ -1534,12 +1541,21 @@ $(document).ready(function(){
 			return false
 		})
 
-		var grouped_accessories = {'':$(nodes.wrap).html()}
+		var current_accessory_category = '';
+		var grouped_accessories = {
+			'':{
+				'quantity':parseInt($($(nodes.wrap).find('.goodsbox')[0]).attr('data-quantity')),
+				'totalpages':parseInt($($(nodes.wrap).find('.goodsbox')[0]).attr('data-total-pages')),
+				'accessories':$(nodes.wrap).html(),
+				'buffer':buffer
+			}
+		}
 
 		$('.categoriesmenuitem').click(function(){
+			var menuitem = $(this)
 			if( !$(this).hasClass('active') ) {
-				$('.active').addClass('link')
-				$('.active').removeClass('active')
+				$(this).siblings('.active').addClass('link')
+				$(this).siblings('.active').removeClass('active')
 				$(this).addClass('active')
 				$(this).removeClass('link')
 
@@ -1549,7 +1565,13 @@ $(document).ready(function(){
 				}
 
 				if(grouped_accessories[current_accessory_category]) {
-					$(nodes.wrap).html(grouped_accessories[current_accessory_category])
+					$(nodes.wrap).html(grouped_accessories[current_accessory_category]['accessories'])
+					max = grouped_accessories[current_accessory_category]['totalpages']
+					width = grouped_accessories[current_accessory_category]['quantity']
+
+					current = 1
+					shiftme()
+					self.notify()
 				} else {
 					ajaxflag = true
 					var getData = []
@@ -1557,14 +1579,23 @@ $(document).ready(function(){
 					getData.push( {name: 'categoryToken', value: current_accessory_category } )	
 					$.get( $(this).attr('data-url') , getData, function(data) {
 						buffer = 2
-						ajaxflag = false
-						grouped_accessories[current_accessory_category] = data
 						$(nodes.wrap).html(data)
-					})
+						width = parseInt($($(nodes.wrap).find('.goodsbox')[0]).attr('data-quantity'))
+						max = parseInt($($(nodes.wrap).find('.goodsbox')[0]).attr('data-total-pages'))
+						var xhr_category = $($(nodes.wrap).find('.goodsbox')[0]).attr('data-category')
+						grouped_accessories[xhr_category] = {
+							'quantity':width,
+							'totalpages':max,
+							'accessories':data,
+							'buffer':buffer
+						}
+						current = 1
+						shiftme()
+						self.notify()
+					}).done(function(data) {
+						ajaxflag = false
+				  })
 				}
-
-				current = 1
-				shiftme()
 			}
 			return false
 		});
