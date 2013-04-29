@@ -717,8 +717,7 @@ $(document).ready(function(){
                 type: 'POST',
                 global: false,
                 url: '/log-json',
-                data: data,
-                error: console.log('log err')
+                data: data
             })
         }
 	}

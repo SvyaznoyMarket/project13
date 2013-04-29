@@ -226,6 +226,8 @@ class Action {
                 $response = new \Http\JsonResponse(array(
                     'success' => true,
                     'data'    => array('redirect' => \App::router()->generate('order.complete')),
+                    'orderNumber' => $orderNumbers,
+                    'paymentMethodId' => $form->getPaymentMethodId(),
                 ));
 
                 try {
