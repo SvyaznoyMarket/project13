@@ -80,14 +80,63 @@ class Manager {
         $cart = \App::user()->getCart();
 
         $return = [
-            'productQuantity'  => $cart->getProductsQuantity(),
-            'productSum'       => $cart->getTotalProductPrice(),
-            'serviceQuantity'  => $cart->getServicesQuantity(),
-            'serviceSum'       => $cart->getTotalServicePrice(),
-            'warrantyQuantity' => $cart->getWarrantiesQuantity(),
-            'warrantySum'      => $cart->getTotalWarrantyPrice(),
-            'sum'              => $cart->getSum(),
+            'cart' => [
+                'productQuantity'  => $cart->getProductsQuantity(),
+                'productSum'       => $cart->getTotalProductPrice(),
+                'serviceQuantity'  => $cart->getServicesQuantity(),
+                'serviceSum'       => $cart->getTotalServicePrice(),
+                'warrantyQuantity' => $cart->getWarrantiesQuantity(),
+                'warrantySum'      => $cart->getTotalWarrantyPrice(),
+                'sum'              => $cart->getSum(),
+            ],
         ];
+
+        return $return;
+    }
+
+    /**
+     * @param \Model\Order\Entity[] $orders
+     * @return array
+     */
+    public static function getOrderCompleteEvent(array $orders) {
+        $cart = \App::user()->getCart();
+
+        try {
+            foreach ($orders as $order) {
+                $productSum = 0;
+                foreach ($order->getProduct() as $orderProduct) {
+                    $productSum += $orderProduct->getPrice();
+                }
+
+                $serviceQuantity = 0;
+                $serviceSum = 0;
+                foreach ($order->getService() as $orderService) {
+                    $serviceSum += $orderService->getPrice();
+                    $serviceQuantity++;
+                }
+
+                $warrantyQuantity = 0;
+                $warrantySum = 0;
+                foreach ($order->getProduct() as $orderProduct) {
+                    $warrantyQuantity += $orderProduct->getWarrantyQuantity();
+                    $warrantySum += $orderProduct->getWarrantyPrice();
+                }
+
+                $orderData = [
+                    'number'           => $order->getNumber(),
+                    'productQuantity'  => count($order->getProduct()),
+                    'productSum'       => $productSum,
+                    'serviceQuantity'  => $serviceQuantity,
+                    'serviceSum'       => $serviceSum,
+                    'warrantyQuantity' => $warrantyQuantity,
+                    'warrantySum'      => $warrantySum,
+                ];
+
+                $return[] = $orderData;
+            }
+        } catch(\Exception $e) {
+            $return = [];
+        }
 
         return $return;
     }
