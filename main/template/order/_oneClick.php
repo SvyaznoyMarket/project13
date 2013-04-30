@@ -27,6 +27,7 @@
         <div id="myThingsOrderData" data-value="<?= $page->json($myThingsOrderData) ?>"></div>
         <!-- Efficient Frontiers -->
         <img src="http://pixel.everesttech.net/3252/t?ev_Orders=0&amp;ev_Revenue=0&amp;ev_Quickorders=1&amp;ev_Quickrevenue=<?= $order->getSum() ?>&amp;ev_transid=<?= $order->getNumber() ?>" width="1" height="1" />
+        <img src="http://rs.mail.ru/g632.gif" style="width:0;height:0;position:absolute;" alt=""/> 
     <? endif ?>
 
 
