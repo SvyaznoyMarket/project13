@@ -171,6 +171,9 @@ $(document).ready(function() {
 				
 				var curq =  self.quantity() * 1
 				setTimeout( function(){ self.loadData( curq, 1 ) } , 500 )
+
+				kissAnalitycs()
+
 				return false
 			}
 			self.minusItem = function() {
@@ -188,7 +191,21 @@ $(document).ready(function() {
 
 				var curq =  self.quantity() * 1
 				setTimeout( function(){ self.loadData( curq, -1 ) } , 500 )
+
+				kissAnalitycs()
+
 				return false
+			}
+
+			var kissAnalitycs = function(){
+				toKISS_set = {
+					'Checkout Step 1 SKU Quantity':self.quantity() * 1,
+					'Checkout Step 1 SKU Total':self.price * self.quantity() * 1,
+					'Checkout Step 1 Order Total':self.price * self.quantity() * 1 + self.chosenDlvr().price * 1,
+				}
+				if (typeof(_kmq) !== 'undefined'){
+					_kmq.push(['set',toKISS_set]) 
+				}
 			}
 			
 			self.preparedData = function( data ) {
@@ -221,7 +238,7 @@ $(document).ready(function() {
 			}
 			
 			self.loadData = function( momentq, direction ) {
-				console.info('loadData')
+				// console.info('loadData')
 				if( ( direction > 0 && self.quantity() > momentq ) || ( direction < 0 && self.quantity() < momentq ) )
 					return
 				var postData = {
@@ -714,6 +731,18 @@ levup:			for(var i=0, l=numbers.length; i<l; i++)
 				// if( 'marketgidOrder' in ANALYTICS ) {
 				// 	ANALYTICS.marketgidOrder()
 				// }
+			}
+
+			// KISS
+			var toKISS_oc = {
+				'Checkout Step 1 SKU Quantity':OC_MVM.quantity(),
+				'Checkout Step 1 SKU Total':OC_MVM.price * OC_MVM.quantity(),
+				'Checkout Step 1 Order Total':OC_MVM.price * OC_MVM.quantity() + OC_MVM.chosenDlvr().price * 1,
+				'Checkout Step 1 Order Type':'one click order'
+			}
+
+			if (typeof(_kmq) !== 'undefined'){
+				_kmq.push(['record', 'Checkout Step 1', toKISS_oc])
 			}
 
 			$('#order1click-container-new').lightbox_me({
