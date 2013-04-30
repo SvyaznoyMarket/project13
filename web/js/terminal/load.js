@@ -32,6 +32,10 @@ require(["jquery"], function($) {
                 // product list scripts
                 require(["product_list"])
                 break
+            case 'product_model_list':
+                // product line scripts
+                require(["product_list"])
+                break
             case 'product':
                 // product scripts
                 require(["product"])
