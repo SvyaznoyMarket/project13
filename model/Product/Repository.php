@@ -386,13 +386,48 @@ class Repository {
      * @return array
      */
     public static function filterAccessoryId(&$product, $category = null, $limit = null) {
+        // массив токенов категорий, разрешенных в json
+        $jsonCategoryToken = self::getJsonCategoryToken($product);
 
+        if(empty($jsonCategoryToken)) {
+            return [];
+        }
+
+        // получаем аксессуары продукта отфильтрованные согласно разрешенным в json категориям
+        $accessories = self::getAccessoriesFilteredByJson($product, $jsonCategoryToken);
+
+        // собираем id аксессуаров после фильтрации, чтобы установить их продукту
+        $productAccessoryId = array_map(function($accessory){ return $accessory->getId(); }, $accessories);
+
+        // ограничиваем количество аксессуаров, которое нужно показывать
+        // например вкладка Популярные аксессуары, открывающаяся при загрузке карточки товара,
+        // должна содержать максимум 8 первых аксессуаров
+        if($limit) {
+            $productAccessoryId = array_slice($productAccessoryId, 0, $limit);
+        }
+
+        // устанавливаем продукту id его аксессуаров
+        $product->setAccessoryId($productAccessoryId);
+
+        // группируем аксессуары по родительским категориям и возвращаем ($limit при этом не учитывается)
+        return self::groupByCategory($accessories, 'accessories');
+    }
+
+
+    /**
+     * Получает разрешенные в json для аксессуаров категории
+     * Возвращает массив с токенами категорий
+     *
+     * @param $product
+     * @return array
+     */
+    public static function getJsonCategoryToken($product) {
         // формируем запрос к апи получаем json с разрешенными в качестве аксессуаров категориями
 
         /** @var $categories \Model\Product\Category\Entity[] */
         $categories = $product->getCategory();
         if (!(bool)$categories) {
-            return array();
+            return [];
         }
 
         $categoryTokens = [];
@@ -400,7 +435,7 @@ class Repository {
             $categoryTokens[] = $iCategory->getToken();
         }
 
-        $productJson = array();
+        $productJson = [];
 
         $dataStore = \App::dataStoreClient();
         $query = sprintf('catalog/%s/%s.json', implode('/', $categoryTokens), $product->getToken());
@@ -409,11 +444,18 @@ class Repository {
         });
         $dataStore->execute();
 
-        if (!$productJson) return array();
+        return empty($productJson) ? $productJson : $productJson['accessory_category_token'];
+    }
 
-        // массив токенов категорий, разрешенных в json
-        $jsonCategoryToken = $productJson['accessory_category_token'];
 
+    /**
+     * Получает текущие аксессуары продукта
+     * Возвращает массив с продуктами-аксессуарами
+     *
+     * @param $product
+     * @return array
+     */
+    public static function getAccessories($product) {
         // текущие аксессуары
         $productAccessoryId = $product->getAccessoryId();
         $repository = \RepositoryManager::product();
@@ -426,9 +468,21 @@ class Repository {
                 $accessories = [];
             }
         }
+        return $accessories;
+    }
 
-        // отсеиваем аксессуары, которые не относятся к разрешенным категориям
-        $accessories = array_filter($accessories, function($accessory) use(&$jsonCategoryToken) {
+
+    /**
+     * Получает аксессуары продукта отфильтрованные согласно разрешенным в json категориям
+     * Возвращает массив с продуктами-аксессуарами
+     *
+     * @param $product
+     * @param $jsonCategoryToken
+     * @return array
+     */
+    public static function getAccessoriesFilteredByJson($product, $jsonCategoryToken) {
+        // отсеиваем среди текущих аксессуаров те аксессуары, которые не относятся к разрешенным категориям
+        return array_filter(self::getAccessories($product), function($accessory) use(&$jsonCategoryToken) {
 
             // массив токенов категорий к которым относится аксессуар
             $accessoryCategoryToken = array_map(function($accessoryCategory) {
@@ -440,35 +494,34 @@ class Repository {
             
             return !empty($commonCategories);
         });
+    }
 
-        // собираем id аксессуаров после фильтрации и устанавливаем их продукту
-        $productAccessoryId = array_map(function($accessory){ return $accessory->getId(); }, $accessories);
 
-        // ограничиваем количество аксессуаров, которое нужно показывать
-        // например на вкладка Популярные аксессуары, открывающаяся при загрузке карточки товара
-        // должна содержать максимум 8 аксессуаров
-        if($limit) {
-            $productAccessoryId = array_slice($productAccessoryId, 0, $limit);
-        }
-
-        // устанавливаем продукту id его аксессуаров
-        $product->setAccessoryId($productAccessoryId);
-
-        // группируем аксессуары по родительским категориям и возвращаем ($limit при этом не учитывается)
-        $accessoriesGrouped = array();
-        foreach ($accessories as $accessory) {
-            $categories = $accessory->getCategory();
+    /**
+     * Группирует продукты по их родительским категориям
+     * Возвращает массив с токенами категорий в качестве ключей и в качестве значений имеющий
+     * массив с категорией и продуктами
+     *
+     * @param $products
+     * @param $type
+     * @return array
+     */
+    public static function groupByCategory($products, $type) {
+        $productsGrouped = [];
+        foreach ($products as $product) {
+            $categories = $product->getCategory();
             $parentCategory = end($categories);
+            if (!$parentCategory) continue;
 
-            if(isset($accessoriesGrouped[$parentCategory->getToken()])) {
-                array_push($accessoriesGrouped[$parentCategory->getToken()]['accessories'], $accessory);
+            if(isset($productsGrouped[$parentCategory->getToken()])) {
+                array_push($productsGrouped[$parentCategory->getToken()][$type], $product);
             } else {
-                $accessoriesGrouped[$parentCategory->getToken()]['category'] = $parentCategory;
-                $accessoriesGrouped[$parentCategory->getToken()]['accessories'] = array($accessory);
+                $productsGrouped[$parentCategory->getToken()] = [];
+                $productsGrouped[$parentCategory->getToken()]['category'] = $parentCategory;
+                $productsGrouped[$parentCategory->getToken()][$type] = [$product];
             }
         }
-
-        return $accessoriesGrouped;
+        return $productsGrouped;
     }
 
 }

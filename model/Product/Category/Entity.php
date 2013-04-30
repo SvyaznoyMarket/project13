@@ -60,16 +60,6 @@ class Entity extends BasicEntity {
     }
 
     /**
-     * возвращает токен категории
-     * используется при выборке уникальных значений из массива категорий
-     *
-     * @return string
-     */
-    public function __toString() {
-        return $this->getToken();
-    }
-
-    /**
      * Является ли категория корневым узлом дерева (root node)
      *
      * @return bool
