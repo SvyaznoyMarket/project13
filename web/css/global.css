@@ -2886,6 +2886,7 @@
     height: 110px;
     margin: 0 10px 0 0;
     width: 1px;
+    z-index: 99;
   }
   .bMainMenuLevel-1__eItem.bMainMenuLevel-1__eSeparator:hover .bMainMenuLevel-2 {
     display: none;
