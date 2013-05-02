@@ -393,8 +393,16 @@ class Repository {
             return [];
         }
 
-        // получаем аксессуары продукта отфильтрованные согласно разрешенным в json категориям
-        $accessories = self::getAccessoriesFilteredByJson($product, $jsonCategoryToken);
+        // если передана категория - фильтруем, иначе - нет
+        // например на вкладке "популярные" (токен категории не передается)
+        // надо выводить первые 8 продуктов без фильтрации
+        if($category) {
+            // получаем аксессуары продукта отфильтрованные согласно разрешенным в json категориям
+            $accessories = self::getAccessoriesFilteredByJson($product, $jsonCategoryToken);
+        } else {
+            // получаем аксессуары продукта
+            $accessories = self::getAccessories($product);
+        }
 
         // собираем id аксессуаров после фильтрации, чтобы установить их продукту
         $productAccessoryId = array_map(function($accessory){ return $accessory->getId(); }, $accessories);
@@ -410,6 +418,8 @@ class Repository {
         $product->setAccessoryId($productAccessoryId);
 
         // группируем аксессуары по родительским категориям и возвращаем ($limit при этом не учитывается)
+        // используется для построения списка категорий аксессуаров - должно быть отфильтрованным
+        if(!$category) $accessories = self::filterAccessoriesByJson($accessories, $jsonCategoryToken); 
         return self::groupByCategory($accessories, 'accessories');
     }
 
@@ -459,13 +469,13 @@ class Repository {
         // текущие аксессуары
         $productAccessoryId = $product->getAccessoryId();
         $repository = \RepositoryManager::product();
+        $accessories = [];
         if ((bool)$productAccessoryId) {
             try {
                 $accessories = $repository->getCollectionById($productAccessoryId);
             } catch (\Exception $e) {
                 \App::exception()->add($e);
                 \App::logger()->error($e);
-                $accessories = [];
             }
         }
         return $accessories;
@@ -498,6 +508,56 @@ class Repository {
 
 
     /**
+     * Фильтрует переданные аксессуары продукта согласно разрешенным в json категориям
+     * Возвращает массив с продуктами-аксессуарами
+     *
+     * @param $product
+     * @param $jsonCategoryToken
+     * @return array
+     */
+    public static function filterAccessoriesByJson($accessories, $jsonCategoryToken) {
+        // отсеиваем среди текущих аксессуаров те аксессуары, которые не относятся к разрешенным категориям
+        return array_filter($accessories, function($accessory) use(&$jsonCategoryToken) {
+
+            // массив токенов категорий к которым относится аксессуар
+            $accessoryCategoryToken = array_map(function($accessoryCategory) {
+                return $accessoryCategory->getToken();
+            }, $accessory->getCategory());
+
+            // есть ли общие категории между категориями аксессуара и разрешенными в json
+            $commonCategories = array_intersect($jsonCategoryToken, $accessoryCategoryToken);
+            
+            return !empty($commonCategories);
+        });
+    }
+
+
+    /**
+     * Получает аксессуары продукта из категорий, не разрешенных в json
+     * Возвращает массив с продуктами-аксессуарами
+     *
+     * @param $product
+     * @param $jsonCategoryToken
+     * @return array
+     */
+    public static function getAccessoriesNotInJson($product, $jsonCategoryToken) {
+        // отсеиваем среди текущих аксессуаров те аксессуары, которые относятся к разрешенным категориям
+        return array_filter(self::getAccessories($product), function($accessory) use(&$jsonCategoryToken) {
+
+            // массив токенов категорий к которым относится аксессуар
+            $accessoryCategoryToken = array_map(function($accessoryCategory) {
+                return $accessoryCategory->getToken();
+            }, $accessory->getCategory());
+
+            // есть ли общие категории между категориями аксессуара и разрешенными в json
+            $commonCategories = array_intersect($jsonCategoryToken, $accessoryCategoryToken);
+            
+            return empty($commonCategories);
+        });
+    }
+
+
+    /**
      * Группирует продукты по их родительским категориям
      * Возвращает массив с токенами категорий в качестве ключей и в качестве значений имеющий
      * массив с категорией и продуктами
@@ -523,5 +583,7 @@ class Repository {
         }
         return $productsGrouped;
     }
+
+
 
 }

@@ -23,13 +23,14 @@ class AccessoryAction {
         $begin = self::NUM_RELATED_ON_PAGE * ($page - 1);
         $limit = $page == 1 ? self::NUM_RELATED_ON_PAGE * 2 : self::NUM_RELATED_ON_PAGE;
 
-        // фильтруем аксессуары согласно разрешенным в json категориям
-        // и получаем аксессуары, сгруппированные по категориям
-        $accessoriesGrouped = \Model\Product\Repository::filterAccessoryId($product);
-
         $categoryToken = $request->get('categoryToken', 1);
 
+        // фильтруем аксессуары для всех табов кроме "популярные"
         if(!empty($categoryToken)) {
+            // фильтруем аксессуары согласно разрешенным в json категориям
+            // и получаем аксессуары, сгруппированные по категориям
+            $accessoriesGrouped = \Model\Product\Repository::filterAccessoryId($product, $categoryToken);
+
             if(!isset($accessoriesGrouped[$categoryToken]))
                 return new \Http\JsonResponse(array('success' => false, 'data' => 'Не найдена категория ' . $categoryToken));
 
