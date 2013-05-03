@@ -1463,7 +1463,9 @@ $(document).ready(function(){
 
 		this.notify = function() {
 			$(nodes.crnt).html( current )
-			$(nodes.times).html( max )
+			if(refresh_max_page) {
+				$(nodes.times).html( max )
+			}
 			if ( current == 1 )
 				$(nodes.prev).addClass('disabled')
 			else
@@ -1486,7 +1488,9 @@ $(document).ready(function(){
 		$(nodes.next).bind('click', function() {
 			if(grouped_accessories[current_accessory_category]) {
 				buffer = grouped_accessories[current_accessory_category]['buffer']
-				wi = grouped_accessories[current_accessory_category]['quantity']
+				if(!isNaN(grouped_accessories[current_accessory_category]['quantity'])) {
+					wi = grouped_accessories[current_accessory_category]['quantity']
+				}
 			}
 			if( current < max && !ajaxflag ) {
 				if( current + 1 == max ) { //the last pull is loaded , so special shift
@@ -1541,6 +1545,7 @@ $(document).ready(function(){
 			return false
 		})
 
+		var refresh_max_page = false
 		var current_accessory_category = '';
 		var grouped_accessories = {
 			'':{
@@ -1552,6 +1557,7 @@ $(document).ready(function(){
 		}
 
 		$('.categoriesmenuitem').click(function(){
+			refresh_max_page = true
 			var menuitem = $(this)
 			if( !$(this).hasClass('active') ) {
 				$(this).siblings('.active').addClass('link')
@@ -1566,8 +1572,12 @@ $(document).ready(function(){
 
 				if(grouped_accessories[current_accessory_category]) {
 					$(nodes.wrap).html(grouped_accessories[current_accessory_category]['accessories'])
-					max = grouped_accessories[current_accessory_category]['totalpages']
-					width = grouped_accessories[current_accessory_category]['quantity']
+					if(!isNaN(grouped_accessories[current_accessory_category]['totalpages'])) {
+						max = grouped_accessories[current_accessory_category]['totalpages']
+					}
+					if(!isNaN(grouped_accessories[current_accessory_category]['quantity'])) {
+						width = grouped_accessories[current_accessory_category]['quantity']
+					}
 
 					current = 1
 					shiftme()
