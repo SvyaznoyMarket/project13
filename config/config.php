@@ -111,6 +111,7 @@ $c->product['showAccessories']       = true;
 $c->product['showRelated']           = true;
 $c->product['itemsInSlider']         = 5;
 $c->product['itemsInCategorySlider'] = 3;
+$c->product['itemsInAccessorySlider'] = 4;
 $c->product['minCreditPrice']        = 3000;
 $c->product['totalCount']            = 30000;
 // глобальный (без учета региона) список товаров
