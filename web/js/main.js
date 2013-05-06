@@ -490,6 +490,14 @@ $(document).ready(function(){
 					var type = ((form.find('#signin_username').val().search('@')) != -1)?'email':'mobile'
 					_gaq.push(['_trackEvent', 'Account', 'Log in', type, window.location.href]);
 				}
+				if (typeof(_kmq) !== 'undefined') {
+					_kmq.push(['identify', form.find('#signin_username').val() ]);
+				}
+          	}
+          	else{
+          		if (typeof(_kmq) !== 'undefined') {
+					_kmq.push(['identify', form.find('#register_username').val() ]);
+				}
           	}
             if ( form.data('redirect') ) {
               if (response.data.link) {
