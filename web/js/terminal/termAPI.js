@@ -114,8 +114,8 @@ define('termAPI',
 		/**
 		 * События удаления\добавление товара в сравнения на терминале
 		 */
-		// terminal.compare.productRemoved.connect(compareMiddleWare)
-		// terminal.compare.productAdded.connect(compareMiddleWare)
+		terminal.compare.productRemoved.connect(compareMiddleWare)
+		terminal.compare.productAdded.connect(compareMiddleWare)
 
 
 		/**
@@ -208,8 +208,8 @@ define('termAPI',
 		 * @public
 		 */
 		diconnectTERM = function(){
-			// terminal.compare.productRemoved.disconnect(compareMiddleWare)
-			// terminal.compare.productAdded.disconnect(compareMiddleWare)
+			terminal.compare.productRemoved.disconnect(compareMiddleWare)
+			terminal.compare.productAdded.disconnect(compareMiddleWare)
 		}
 
 
