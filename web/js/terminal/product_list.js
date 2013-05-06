@@ -6,6 +6,13 @@ define('product_list',
 
 	terminal.interactive = false
 
+
+	/**
+	 * Тип загружаемой страницы
+	 * @type {String}
+	 */
+	var pageType = $('article').data('pagetype')
+
 	/**
 	 * URL по которому необходимо получать товары
 	 * @type {String}
@@ -28,7 +35,7 @@ define('product_list',
 	 * высоты элементов при разных масштах с учетом margin-bottom и padding-top + padding-bottom
 	 * @type {Array}
 	 */
-	var heights = [180, 247, 377]
+	var heights = (pageType === 'product_model_list') ? [195.5] : [180, 247, 377]
 
 	/**
 	 * Данные продуктов
@@ -66,6 +73,10 @@ define('product_list',
 		else if ($('.bProductListWrap').hasClass('mSizeBig')){
 			zoom = 2
 		}
+		else if ($('.bProductListWrap').hasClass('mModelList')){
+			// zoom = 3
+			zoom = 0
+		}
 
 		return zoom
 	}
@@ -78,7 +89,12 @@ define('product_list',
 	 * @param  {object} data данные для рендеринга
 	 */
 	var renderItem = function(data){
-		var html = new EJS ({url: '/js/terminal/view/listing_itemProduct.ejs'}).render(data)
+		if (pageType === 'product_model_list'){
+			var html = new EJS ({url: '/js/terminal/view/listing_itemLine.ejs'}).render(data)
+		}
+		else{
+			var html = new EJS ({url: '/js/terminal/view/listing_itemProduct.ejs'}).render(data)
+		}
 
 		$('.bProductListWrap').append(html)
 		
@@ -103,19 +119,31 @@ define('product_list',
 	var preparedData = function(start, end){
 		currentRenderedItem = currentRenderedItem+(end-start)
 		for (var i = start; i< end; i++){
-			var template = {
-				id : productData[i].id,
-				article : productData[i].article,
-				image : productData[i].image,
-				name : productData[i].name,
-				price : library.formatMoney(productData[i].price),
-				description : productData[i].description,
-				isBuyable : productData[i].isBuyable,
-				isInShop : productData[i].isInShop,
-				isInShowroom : productData[i].isInShowroom,
-				isInStore : productData[i].isInStore,
-				hasSupplier : productData[i].hasSupplier,
-				isInOtherShop : productData[i].isInOtherShop
+			if (pageType === 'product_model_list'){
+				var template = {
+					id : productData[i].line.id,
+					image : productData[i].image,
+					name : productData[i].line.name,
+					price : library.formatMoney(productData[i].price),
+					kitCount: productData[i].line.kitQuantity,
+					productCount: productData[i].line.productQuantity,
+				}
+			}
+			else{
+				var template = {
+					id : productData[i].id,
+					article : productData[i].article,
+					image : productData[i].image,
+					name : productData[i].name,
+					price : library.formatMoney(productData[i].price),
+					description : productData[i].description,
+					isBuyable : productData[i].isBuyable,
+					isInShop : productData[i].isInShop,
+					isInShowroom : productData[i].isInShowroom,
+					isInStore : productData[i].isInStore,
+					hasSupplier : productData[i].hasSupplier,
+					isInOtherShop : productData[i].isInOtherShop
+				}
 			}
 			renderItem(template)
 			$('.bListing').removeClass('mLoading')
@@ -223,6 +251,8 @@ define('product_list',
 					animated = false
 					el.css('top',stop)
 					preparedData(currentRenderedItem, currentRenderedItem + Math.pow((4-currentZoom()),2) )
+					// var moreLoad = (pageType === 'product_model_list') ? currentRenderedItem + 4 : currentRenderedItem + Math.pow((4-currentZoom()),2)
+					// preparedData(currentRenderedItem, moreLoad )
 				}
 
 			}
@@ -296,26 +326,23 @@ define('product_list',
 			if ( diff >= listingWindowH/5 ){
 				toY = (startOffset > newOffset) ? startOffset - listingWindowH : startOffset + listingWindowH
 				toY = (toY > 0) ? 0 : toY
-				toY = (Math.abs(toY) > el.height()) ? startOffset : toY
+				toY = (Math.abs(toY) >= el.height()) ? startOffset : toY
 			}
 			else{
 				toY = startOffset
 			}
 
-			// el.animate({'top':toY},150, function(){
-			// 	preparedData(currentRenderedItem, currentRenderedItem + Math.pow((4-currentZoom()),2) )
-			// })
 			aminateScroll(newOffset, toY, step)
 
+			// scrolingElements = (pageType === 'product_model_list') ? scrolingElements = Math.abs((toY/listingWindowH)*(4-zoom)*4) : Math.abs((toY/listingWindowH)*(4-zoom)*(4-zoom))
 			scrolingElements = Math.abs((toY/listingWindowH)*(4-zoom)*(4-zoom))
-			library.myConsole('scEl '+scrolingElements)
+			// library.myConsole('scEl '+scrolingElements)
 		}
 
 		el.bind("touchstart", moveStart)
 		el.bind("touchmove", moveMe)
 		el.bind("touchend", moveEnd)
-	}
-	listingSwipe($('.bProductListWrap'));
+	};
 
 
 	/**
@@ -452,9 +479,7 @@ define('product_list',
 		el.bind('touchstart', moveStart)
 		el.bind('touchmove', moveMe)
 		el.bind('touchend', moveEnd)
-	}
-	listingZoom($('.bProductListWrap'));
-	
+	};
 
 	(initPage = function(){
 		/**
@@ -462,6 +487,18 @@ define('product_list',
 		 */
 		var initalLinesCount = 10 - currentZoom()
 		getItems(initalLinesCount)
+
+		/**
+		 * Инициалзация зумирования
+		 */
+		if (pageType !== 'product_model_list'){
+			listingZoom($('.bProductListWrap'))
+		}
+
+		/**
+		 * Инициализация прокрутки свайпами
+		 */
+		listingSwipe($('.bProductListWrap'))
 	}())
 
 })

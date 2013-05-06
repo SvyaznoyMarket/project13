@@ -8,5 +8,5 @@
 
 <article id="categoryData" data-url="<?= $page->url('category.product', ['categoryId' => $category->getId()]) ?>" data-sort="<?= $page->json($productSorting->all()) ?>" class="bListing bContent mLoading" data-pagetype='product_model_list'>
 	<div id="productList"></div>
-	<div class="bProductListWrap mSizeLittle clearfix"></div>
+	<div class="bProductListWrap mModelList clearfix"></div>
 </article>
