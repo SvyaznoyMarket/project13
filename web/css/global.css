@@ -154,6 +154,12 @@
   .green {
     color: #6ea428;
   }
+  hr.orange {
+    color:#ffa901;
+    background-color:#ffa901;
+    height: 1px;
+    border-width:0px;
+  }
   .motton,
   a.motton:hover {
     color: #4fcbf4;
@@ -312,6 +318,9 @@
   }
   .mt5 {
     margin-top: 5px;
+  }
+  .mt15 {
+    margin-top: 15px;
   }
   .mt-30 {
     margin-top: -30px;

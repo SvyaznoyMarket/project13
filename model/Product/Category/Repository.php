@@ -362,9 +362,11 @@ class Repository {
      * Возвращает массив с SEO-данными
      *
      * @param $category
+     * @param $folder
+     * @param $brand
      * @return array
      */
-    public static function getJsonHotlinks($category) {
+    public static function getSeoJson($category, $brand = null) {
         // формируем ветку категорий для последующего формирования запроса к json-апи
         $branch = [$category->getToken()];
         if(!$category->isRoot()) {
@@ -377,16 +379,40 @@ class Repository {
         }
 
         // формируем запрос к апи и получаем json с SEO-данными
-        $categoryJson = [];
+        $seoJson = [];
 
         $dataStore = \App::dataStoreClient();
-        $query = sprintf('seo/catalog/%s.json', implode('/', $branch));
-        $dataStore->addQuery($query, [], function ($data) use (&$categoryJson) {
-            if($data) $categoryJson = $data;
+        $query = sprintf('seo/'.($brand ? 'brand' : 'catalog').'/%s.json', implode('/', $branch).(empty($brand) ? '' : '-'.$brand->getToken()));
+        $dataStore->addQuery($query, [], function ($data) use (&$seoJson) {
+            if($data) $seoJson = $data;
         });
+        
+        // данные для шаблона
+        $patterns = [
+            'категория' => [$category->getName()],
+            'сайт'      => null,
+        ];
+        if ($brand) {
+            $patterns['бренд'] = [$brand->getName()];
+        }
+
+        $dataStore->addQuery('inflect/сайт.json', [], function($data) use (&$patterns) {
+            if ($data) $patterns['сайт'] = $data;
+        });
+
         $dataStore->execute();
 
-        return empty($categoryJson['hotlinks']) ? [] : $categoryJson['hotlinks'];
+        if(!empty($seoJson['content'])) {
+            $replacer = new \Util\InflectReplacer($patterns);
+            foreach ($seoJson['content'] as $key => $content) {
+                if ($value = $replacer->get($seoJson['content'][$key])) {
+                    $seoJson['content'][$key] = $value;
+                }
+            }
+        }
+
+        return empty($seoJson) ? [] : $seoJson;
     }
+
 
 }

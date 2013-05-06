@@ -51,6 +51,10 @@ class DefaultLayout extends Layout {
         return $this->render('_header', $this->params);
     }
 
+    public function slotSeoContent() {
+        return $this->render('_seoContent', $this->params);
+    }
+
     public function slotFooter() {
         $client = \App::contentClient();
 

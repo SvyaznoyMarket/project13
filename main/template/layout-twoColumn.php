@@ -37,6 +37,9 @@
             </div>
 
             <div class="clear"></div>
+
+            <?= $page->slotSeoContent() ?>
+            
         </div>
         <div class="clear"></div>
     </div>
