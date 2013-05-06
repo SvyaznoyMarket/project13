@@ -126,7 +126,7 @@ define('termAPI',
 		 * @requires toScreen
 		 */
 		var redirectHandler = function() {
-			if ( $(this).attr('data-screentype') == undefined )
+			if ( ($(this).attr('data-screentype') == undefined) || ($(this).hasClass('mDisabled')) )
 				return false
 
 			var screenType = $(this).data('screentype')
@@ -149,6 +149,17 @@ define('termAPI',
 					var isBuy = $(this).data('isbuy')
 					toScreen(screenType, {serviceId: sId, productId: pId, isBuyable: isBuy})
 					break
+				case 'product_set':
+					var lId = $(this).data('lineid')
+					toScreen(screenType, {lineId: lId})
+					break
+				case 'create_line':
+					var lId = $(this).data('lineid')
+					var pId = $(this).data('productid')
+					library.myConsole('pid '+pId)
+					toScreen(screenType, {lineId: lId, mainProductId: pId})
+					break
+
 			}
 		}
 

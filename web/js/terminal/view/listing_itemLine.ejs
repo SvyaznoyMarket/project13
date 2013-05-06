@@ -1,15 +1,19 @@
 <div id="productInList<%= id %>" class="bProductListItem clearfix mFl">
-<a class="bProductListItem__eImgLink jsRedirect mLoading" data-screentype='product' data-productid='<%= id %>' href="#"><img class="bProductListItem__eImg" src="<%= image %>" alt="<%= name %>" /></a>
+<a class="bProductListItem__eImgLink mLoading" href="#"><img class="bProductListItem__eImg" src="<%= image %>" alt="<%= name %>" /></a>
 	<div class="bProductListItem__eDesc">
 		<h2 class="bProductListItem__eTitle">Серия <%= name %></h2>
 		<p class="bProductListItem__ePriceBlock">Средняя цена <span class="bProductListItem__ePrice"><%= price %></span> <span class="bProductListItem__ePrice bRuble">p</span> за набор</p>
 		<div class="bProductListItem__eBtnBlock">
 			<ul class="bProductListItem__eAboutBlock">
+				<% if (kitCount !== 0) {%>
 				<li class="bProductListItem__eAboutBlockItem mListDisk">Наборов: <%= kitCount %></li>
+				<%}%>
+				<% if (productCount !== 0) {%>
 				<li class="bProductListItem__eAboutBlockItem mListDisk">Предметов: <%= productCount %></li>
+				<%}%>
 			</ul>
-			<a class="bProductListItem__eBtn bButton mOrangeBtn" href="#">смотреть наборы</a>
-			<a class="bProductListItem__eBtn bButton mOrangeBtn" href="#">собрать свой набор</a>
+			<a class="bProductListItem__eBtn bButton mOrangeBtn jsRedirect <% if (kitCount === 0) {%> mDisabled<%}%>" data-screentype='product_set' data-lineid='<%= id %>' href="#">смотреть наборы</a>
+			<a class="bProductListItem__eBtn bButton mOrangeBtn jsRedirect <% if (productCount === 0) {%> mDisabled<%}%>" data-screentype='create_line' data-lineid='<%= id %>' data-productid='<%= productid %>' href="#">собрать свой набор</a>
 			<p class="bProductListItem__eF1Block">Доставит и соберет</p>
 		</div>
 	</div>

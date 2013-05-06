@@ -3,6 +3,7 @@
 		width: 352px;
 		height: 740px;
 		margin: 0 38px 20px 0;
+
 		border-radius: 15px;
 
 		&__eImgLink{
@@ -17,9 +18,9 @@
 		}
 	
 		&__eDesc{
-			margin-left: 10px;
 			width: 330px;
 			height: 375px;
+			margin-left: 10px;
 		}
 		
 		&__eTitle{
@@ -29,20 +30,25 @@
 		}
 		
 		&__ePriceBlock{
+			margin: 10px 0;
+
 			font-size: 24px;
-			margin: 15px 0;
 		}
 
 		&__ePrice{
-			background: none;
-			font-weight: bold;
 			padding: 0;
+
+			background: none;
+
+			font-weight: bold;
 		}
 		
 		&__eAboutBlock{
-			font-size: 19px;
-			list-style: inside;
 			margin: 20px 0;
+
+			list-style: inside;
+
+			font-size: 19px;
 			line-height: 1.4em;
 		}
 		
@@ -55,24 +61,32 @@
 		}
 
 		&__eBtn{
-			margin-top: 15px;
 			display: block;
-			font-size: 21px;
-			// font-weight: bold;
+
 			width: 100%;
+			margin-top: 15px;
+
 			text-transform: uppercase;
+
+			font-size: 21px;
+
+			// font-weight: bold;
+			&.mDisabled{
+				color: lighten(@gray, 15%);
+			}
 		}
 
 		&__eF1Block{
-			background: url('@{base-url}/productLine/img/f1logo.gif') no-repeat 20% 140%;
-			color: @firmBlue;
-			font-size: 19px;
 			margin: 18px -24px 0 -23px;
-			padding: 20px 0 10px;
-			border-top: 1px solid @gray;
+			padding: 20px 0 10px 30px;
+
 			text-align: center;
+
+			color: @firmBlue;
+			border-top: 1px solid @gray;
+			background: url('@{base-url}/productLine/img/f1logo.gif') no-repeat 25% 140%;
+
+			font-size: 19px;
 		}
 	}
 }
-
-// f1logo.gif

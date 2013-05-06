@@ -127,6 +127,7 @@ define('product_list',
 					price : library.formatMoney(productData[i].price),
 					kitCount: productData[i].line.kitQuantity,
 					productCount: productData[i].line.productQuantity,
+					productid : productData[i].id,
 				}
 			}
 			else{
