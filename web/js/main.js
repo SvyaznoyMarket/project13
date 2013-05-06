@@ -472,6 +472,12 @@ $(document).ready(function(){
 
   $('#signin_password').warnings()
 
+	$('#bUserlogoutLink').live('click', function(){
+		if (typeof(_kmq) !== 'undefined') {
+			_kmq.push(['clearIdentity']);
+		}
+	})
+
   $('#login-form, #register-form')
 	.data('redirect', true)
 	.bind('submit', function(e, param) {
