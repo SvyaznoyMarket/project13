@@ -355,4 +355,38 @@ class Repository {
             $iterateLevel($data);
         });
     }
+
+
+    /**
+     * Получает SEO-данные для категории из json
+     * Возвращает массив с SEO-данными
+     *
+     * @param $category
+     * @return array
+     */
+    public static function getJsonHotlinks($category) {
+        // формируем ветку категорий для последующего формирования запроса к json-апи
+        $branch = [$category->getToken()];
+        if(!$category->isRoot()) {
+            $currentCategory = $category;
+            while($parent = $currentCategory->getParent()) {
+                array_unshift($branch, $parent->getToken());
+                $currentCategory = $parent;
+            }
+            array_unshift($branch, $category->getRoot()->getToken());
+        }
+
+        // формируем запрос к апи и получаем json с SEO-данными
+        $categoryJson = [];
+
+        $dataStore = \App::dataStoreClient();
+        $query = sprintf('seo/catalog/%s.json', implode('/', $branch));
+        $dataStore->addQuery($query, [], function ($data) use (&$categoryJson) {
+            if($data) $categoryJson = $data;
+        });
+        $dataStore->execute();
+
+        return empty($categoryJson['hotlinks']) ? [] : $categoryJson['hotlinks'];
+    }
+
 }

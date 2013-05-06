@@ -243,16 +243,20 @@ class Action {
         // фильтры
         $productFilter = $this->getFilter($filters, $category, $brand, $request);
 
+        $hotlinks = \Model\Product\Category\Repository::getJsonHotlinks($category);
+
         $setPageParameters = function(\View\Layout $page) use (
             &$category,
             &$regionsToSelect,
             &$productFilter,
-            &$brand
+            &$brand,
+            &$hotlinks
         ) {
             $page->setParam('category', $category);
             $page->setParam('regionsToSelect', $regionsToSelect);
             $page->setParam('productFilter', $productFilter);
             $page->setParam('brand', $brand);
+            $page->setParam('hotlinks', $hotlinks);
         };
 
         // если категория содержится во внешнем узле дерева
@@ -299,6 +303,8 @@ class Action {
         if (!$category->getHasChild()) {
             throw new \Exception(sprintf('У категории "%s" отстутсвуют дочерние узлы', $category->getId()));
         }
+
+        $page->setParam('sidebarHotlinks', true);
 
         $page->setParam('myThingsData', [
             'EventType' => 'MyThings.Event.Visit',
@@ -373,6 +379,7 @@ class Action {
 
         $page->setParam('productPagersByCategory', $productPagersByCategory);
         $page->setParam('productVideosByProduct', $productVideosByProduct);
+        $page->setParam('sidebarHotlinks', true);
 
         $myThingsData = array(
             'EventType' => 'MyThings.Event.Visit',
@@ -471,6 +478,7 @@ class Action {
         $page->setParam('productSorting', $productSorting);
         $page->setParam('productView', $productView);
         $page->setParam('productVideosByProduct', $productVideosByProduct);
+        $page->setParam('sidebarHotlinks', false);
 
         $page->setParam('myThingsData', [
             'EventType'   => 'MyThings.Event.Visit',

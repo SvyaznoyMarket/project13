@@ -1805,4 +1805,18 @@ $(document).ready(function(){
 		dajax.post( dlvr_node.data('calclink'), coreid )
     }
 
+
+	if ( $('.hotlinksToggle').length ){
+		$('.hotlinksToggle').toggle(
+			function(){
+				$(this).parent().parent().find('.toHide').show()
+				$(this).html('Основные метки')
+			},
+			function(){
+				$(this).parent().parent().find('.toHide').hide()
+				$(this).html('Все метки')
+			}
+		);
+	}
+
 });
