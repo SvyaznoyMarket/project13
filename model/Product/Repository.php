@@ -697,7 +697,7 @@ $timeGetJson = 0;
 $timeExistingCategories = 0;
 
                 while ($part <= (int)ceil(count($productsCsv) / $step)) {
-                    if($part > $max_parts) break;
+                    // if($part > $max_parts) break;
 
                     // получение массива товаров и определение не найденных товаров
                     $productIdsPart = array_slice(array_keys($productsCsv), ($part - 1) * $step, $step);
