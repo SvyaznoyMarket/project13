@@ -157,10 +157,13 @@ $productVideo = reset($productVideos);
   <? endif ?>
 
   <div class="fl pb15" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
-    <link itemprop="availability" href="http://schema.org/OutOfStock" />  
+
     <div class="pb10 <? if ($product->hasSaleLabel()) echo 'red'; ?>"><strong class="font34"><span class="price" itemprop="price"><?= $page->helper->formatPrice($product->getPrice()) ?></span> <meta itemprop="priceCurrency" content="RUB"><span class="rubl">p</span></strong></div>
     <? if ($product->getIsBuyable()): ?>
+    <link itemprop="availability" href="http://schema.org/InStock" />
     <div class="pb5"><strong class="orange">Есть в наличии</strong></div>
+    <? else: ?>
+    <link itemprop="availability" href="http://schema.org/OutOfStock" />
     <? endif ?>
   </div>
 
