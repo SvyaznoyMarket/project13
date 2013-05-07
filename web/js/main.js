@@ -1458,7 +1458,13 @@ $(document).ready(function(){
 			var max = $(nodes.times).html() * 1
 		else
 			var max = Math.ceil(wi / viswi)			
-		var buffer = (noajax) ? 100 : 2 
+
+		if(noajax) {
+			var buffer = 100
+		} else {
+			$(nodes.times).parent().parent().hasClass('accessories') ? 6 : 2
+		}
+
 		var ajaxflag = false
 
 		this.notify = function() {

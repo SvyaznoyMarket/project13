@@ -94,9 +94,9 @@ class IndexAction {
         // для построения меню категорий в блоке аксессуаров
         $accessoryCategory = array_map(function($accessoryGrouped){
             return $accessoryGrouped['category'];
-        }, \Model\Product\Repository::filterAccessoryId($product, null, \App::config()->product['itemsInAccessorySlider'] * 2));
+        }, \Model\Product\Repository::filterAccessoryId($product, null, \App::config()->product['itemsInAccessorySlider'] * 6));
 
-        $accessoriesId =  array_slice($product->getAccessoryId(), 0, \App::config()->product['itemsInAccessorySlider'] * 2);
+        $accessoriesId =  array_slice($product->getAccessoryId(), 0, \App::config()->product['itemsInAccessorySlider'] * 6);
         $relatedId = array_slice($product->getRelatedId(), 0, \App::config()->product['itemsInSlider'] * 2);
         $partsId = [];
 
