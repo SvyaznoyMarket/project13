@@ -649,10 +649,12 @@ class Repository {
      */
     public static function generateReports() {
         ini_set("auto_detect_line_endings", true);
-        $source_csv_dir = \App::config()->appDir . '/report/source';
+        $sourceCsvDir = \App::config()->appDir . '/report/source';
         $client = \App::coreClientV2();
+        $inCsvDelimiter = ",";
+        $outCsvDelimiter = "\t";
 
-        foreach (scandir($source_csv_dir) as $file) {
+        foreach (scandir($sourceCsvDir) as $file) {
             if(preg_match('/^(.+)\.csv$/', $file, $matches)) {
 
                 $dateStart = new \DateTime();
@@ -666,13 +668,13 @@ class Repository {
                 $reportSeo = fopen($reportSeoFilepath, 'a');
 
                 //шапки выходных csv
-                fwrite($reportBu, "Тип проблемы;URL категории товара;id,bar_code;Название товара;URL категории аксессуара;accessories bar_code;Название товара-аксессуара;Значение флага is_buyable\n");
-                fwrite($reportSeo, "URL родительской категории;Кол-во товаров в родительской категории;URL категории аксессуара;Кол-во товаров в родительской категории к которым привязан хотя бы один аксессуар из категории аксессуара\n");
+                fwrite($reportBu, "Тип проблемы" . $outCsvDelimiter . "URL категории товара" . $outCsvDelimiter . "id" . $outCsvDelimiter . "bar_code" . $outCsvDelimiter . "Название товара" . $outCsvDelimiter . "URL категории аксессуара" . $outCsvDelimiter . "accessories bar_code" . $outCsvDelimiter . "Название товара-аксессуара" . $outCsvDelimiter . "Значение флага is_buyable\n");
+                fwrite($reportSeo, "URL родительской категории" . $outCsvDelimiter . "Кол-во товаров в родительской категории" . $outCsvDelimiter . "URL категории аксессуара" . $outCsvDelimiter . "Кол-во товаров в родительской категории к которым привязан хотя бы один аксессуар из категории аксессуара\n");
 
                 // парсим csv с входными данными по продуктам
                 $productsCsv = [];
-                if (($source_csv = fopen($sourceCsvFilepath, "r")) !== FALSE) {
-                    while (($data = fgetcsv($source_csv, 0, ",")) !== FALSE) {
+                if (($sourceCsv = fopen($sourceCsvFilepath, "r")) !== FALSE) {
+                    while (($data = fgetcsv($sourceCsv, 0, $inCsvDelimiter)) !== FALSE) {
                         if(!empty($data[0])) {
                             $productsCsv[$data[0]] = [
                                 // 'article' => empty($data[1]) ? '' : $data[1],
@@ -681,7 +683,7 @@ class Repository {
                             ];
                         }
                     }
-                    fclose($source_csv);
+                    fclose($sourceCsv);
                 }
 
                 // аккумулятор для SEO-данных
@@ -705,7 +707,7 @@ $timeExistingCategories = 0;
                     $productIdsPartApi = array_map(function($product){ return $product->getId();}, $products);
                     $notFoundProductIds = array_diff($productIdsPart, $productIdsPartApi);
                     foreach ($notFoundProductIds as $notFoundProductId) {
-                        fwrite($reportBu, "Не найден товар;;" . $notFoundProductId . ";" . $productsCsv[$notFoundProductId]['barcode'] . ";;;;;\n");
+                        fwrite($reportBu, "Не найден товар" . $outCsvDelimiter . $outCsvDelimiter . $notFoundProductId . $outCsvDelimiter . $productsCsv[$notFoundProductId]['barcode'] . $outCsvDelimiter . $outCsvDelimiter . $outCsvDelimiter . $outCsvDelimiter . $outCsvDelimiter . "\n");
                     }
 
                     foreach ($products as $product) {
@@ -725,7 +727,7 @@ $timeGetJson += $date2->getTimestamp() - $date1->getTimestamp();
 
                         // если в json не заданы категории аксессуаров
                         if(empty($jsonCategoryToken)) {
-                            fwrite($reportBu, "Не установлены категории аксессуаров в json;;".$product->getId().";".$product->getBarcode().";".$product->getName().";;;;".$isBuyable."\n");
+                            fwrite($reportBu, "Не установлены категории аксессуаров в json" . $outCsvDelimiter . $outCsvDelimiter . $product->getId() . $outCsvDelimiter . $product->getBarcode() . $outCsvDelimiter . $product->getName() . $outCsvDelimiter . $outCsvDelimiter . $outCsvDelimiter  . $outCsvDelimiter . $isBuyable."\n");
                         }
  
                         // получаем родительскую категорию товара
@@ -734,7 +736,7 @@ $timeGetJson += $date2->getTimestamp() - $date1->getTimestamp();
 
                         // если родительская категория не задана
                         if(empty($productParentCategory)) {
-                            fwrite($reportBu, "Не установлена категория продукта;;".$product->getId().";".$product->getBarcode().";".$product->getName().";;;;".$isBuyable."\n");
+                            fwrite($reportBu, "Не установлена категория продукта" . $outCsvDelimiter . $outCsvDelimiter . $product->getId() . $outCsvDelimiter . $product->getBarcode() . $outCsvDelimiter . $product->getName() . $outCsvDelimiter . $outCsvDelimiter . $outCsvDelimiter . $outCsvDelimiter . $isBuyable."\n");
                         }
 
                         // фильтруем аксессуары товара, оставляя только разрешенные в json
@@ -749,17 +751,17 @@ $timeExistingCategories += $date2->getTimestamp() - $date1->getTimestamp();
                         foreach ($jsonCategoryToken as $categoryToken) {
                             // проверяем существуют ли категории, указанные в json
                             if(!in_array($categoryToken, array_map(function($category){return $category->getToken();}, $existingCategories))) {
-                                fwrite($reportBu, "Категории не существует (json);;;;;http://www.enter.ru/catalog/".$rootCategory."/".$categoryToken.";;;".$isBuyable."\n");
+                                fwrite($reportBu, "Категории не существует (json)" . $outCsvDelimiter . $outCsvDelimiter . $outCsvDelimiter . $outCsvDelimiter . $outCsvDelimiter . "http://www.enter.ru/catalog/".$rootCategory."/".$categoryToken . $outCsvDelimiter . $outCsvDelimiter . $outCsvDelimiter . $isBuyable."\n");
                             }
 
                             // проверяем есть ли привязанные к товару аксессуары из данной категории json
                             if(!in_array($categoryToken, $accessoryCategoryTokens)) {
-                                fwrite($reportBu, "Не привязан аксессуар из категории в json;http://www.enter.ru/catalog/".$rootCategory."/".($productParentCategory ? $productParentCategory->getToken() : '').";".$product->getId().";".$product->getBarcode().";".$product->getName().";http://www.enter.ru/catalog/".$rootCategory."/".$categoryToken.";;;".$isBuyable."\n");
+                                fwrite($reportBu, "Не привязан аксессуар из категории в json" . $outCsvDelimiter . "http://www.enter.ru/catalog/".$rootCategory."/".($productParentCategory ? $productParentCategory->getToken() : '') . $outCsvDelimiter . $product->getId() . $outCsvDelimiter . $product->getBarcode() . $outCsvDelimiter . $product->getName() . $outCsvDelimiter . "http://www.enter.ru/catalog/".$rootCategory."/".$categoryToken . $outCsvDelimiter . $outCsvDelimiter . $outCsvDelimiter .$isBuyable."\n");
                             }
 
                             // проверяем количество привязанных к товару аксессуаров из данной категории json
                             if(in_array($categoryToken, $accessoryCategoryTokens) && count($accessoriesGrouped[$categoryToken]['accessories']) < 4) {
-                                fwrite($reportBu, "В категории меньше четырех аксессуаров (json);http://www.enter.ru/catalog/".$rootCategory."/".($productParentCategory ? $productParentCategory->getToken() : '').";".$product->getId().";".$product->getBarcode().";".$product->getName().";http://www.enter.ru/catalog/".$rootCategory."/".$categoryToken.";;;".$isBuyable."\n");
+                                fwrite($reportBu, "В категории меньше четырех аксессуаров (json)" . $outCsvDelimiter . "http://www.enter.ru/catalog/".$rootCategory."/".($productParentCategory ? $productParentCategory->getToken() : '') . $outCsvDelimiter . $product->getId() . $outCsvDelimiter . $product->getBarcode() . $outCsvDelimiter . $product->getName() . $outCsvDelimiter . "http://www.enter.ru/catalog/".$rootCategory."/".$categoryToken . $outCsvDelimiter . $outCsvDelimiter . $outCsvDelimiter . $isBuyable."\n");
                             }
                         }
 
@@ -769,7 +771,7 @@ $timeExistingCategories += $date2->getTimestamp() - $date1->getTimestamp();
                             $accessoryCategories = $accessoryNotInJson->getCategory();
                             $accessoryParentCategory = end($accessoryCategories);
 
-                            fwrite($reportBu, "Привязан неверный аксессуар;http://www.enter.ru/catalog/".$rootCategory."/".($productParentCategory ? $productParentCategory->getToken() : '').";".$product->getId().";".$product->getBarcode().";".$product->getName().";http://www.enter.ru/catalog/".$rootCategory."/".($accessoryParentCategory ? $accessoryParentCategory->getToken() : '').";".$accessoryNotInJson->getBarcode().";".$accessoryNotInJson->getName().";".$isBuyable."\n");
+                            fwrite($reportBu, "Привязан неверный аксессуар" . $outCsvDelimiter . "http://www.enter.ru/catalog/".$rootCategory."/".($productParentCategory ? $productParentCategory->getToken() : '') . $outCsvDelimiter . $product->getId() . $outCsvDelimiter . $product->getBarcode() . $outCsvDelimiter . $product->getName() . $outCsvDelimiter . "http://www.enter.ru/catalog/".$rootCategory."/".($accessoryParentCategory ? $accessoryParentCategory->getToken() : '') . $outCsvDelimiter . $accessoryNotInJson->getBarcode() . $outCsvDelimiter . $accessoryNotInJson->getName() . $outCsvDelimiter . $isBuyable."\n");
                         }
 
                         // если у продукта не установлена родительская категория, то в формировании SEO-отчета
@@ -801,8 +803,10 @@ $timeExistingCategories += $date2->getTimestamp() - $date1->getTimestamp();
 
                 // формируем отчет для SEO
                 foreach ($categoryProductsData as $parentCategoryToken => $parentCategoryData) {
-                    foreach ($parentCategoryData['jsonCategories'] as $accessoryCategoryToken => $accessoryCategoryData) {
-                        fwrite($reportSeo, "http://www.enter.ru/catalog/".$rootCategory."/".$parentCategoryToken.";".$parentCategoryData['count'].";http://www.enter.ru/catalog/".$rootCategory."/".$accessoryCategoryToken.";".$accessoryCategoryData['count']."\n");
+                    if(!empty($parentCategoryData['jsonCategories'])) {
+                        foreach ($parentCategoryData['jsonCategories'] as $accessoryCategoryToken => $accessoryCategoryData) {
+                            fwrite($reportSeo, "http://www.enter.ru/catalog/".$rootCategory."/".$parentCategoryToken . $outCsvDelimiter . $parentCategoryData['count'] . $outCsvDelimiter . "http://www.enter.ru/catalog/".$rootCategory."/".$accessoryCategoryToken . $outCsvDelimiter . $accessoryCategoryData['count']."\n");
+                        }
                     }
                 }
 
