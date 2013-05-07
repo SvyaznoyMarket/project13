@@ -220,8 +220,27 @@
 			&__eTitle{
 				font-size: 14px;
 				font-weight: bold;
+				height: 2.4em;
+				overflow: hidden;
+				position: relative;
 				
 				.productListAnimation();
+
+				&:after{
+					content: '';
+					position: absolute;
+					right: 0;
+					bottom: 0;
+					width: 40px;
+					height: 16px;
+
+					background: -moz-linear-gradient(left,  rgba(0,0,0,0) 0%, rgba(0,0,0,1) 100%);
+					background: -webkit-gradient(linear, left top, right top, color-stop(0%,rgba(0,0,0,0)), color-stop(100%,rgba(0,0,0,1)));
+					background: -webkit-linear-gradient(left,  rgba(0,0,0,0) 0%,rgba(0,0,0,1) 100%);
+					background: -o-linear-gradient(left,  rgba(0,0,0,0) 0%,rgba(0,0,0,1) 100%);
+					background: -ms-linear-gradient(left,  rgba(0,0,0,0) 0%,rgba(0,0,0,1) 100%);
+					background: linear-gradient(to right,  rgba(0,0,0,0) 0%,rgba(0,0,0,1) 100%);
+				}
 			}
 			
 			&__eFullDesc{

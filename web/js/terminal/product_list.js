@@ -251,7 +251,9 @@ define('product_list',
 				else {
 					animated = false
 					el.css('top',stop)
-					preparedData(currentRenderedItem, currentRenderedItem + Math.pow((4-currentZoom()),2) )
+					setTimeout( function(){
+						preparedData(currentRenderedItem, currentRenderedItem + Math.pow((4-currentZoom()),2) )
+					}, 10)
 					// var moreLoad = (pageType === 'product_model_list') ? currentRenderedItem + 4 : currentRenderedItem + Math.pow((4-currentZoom()),2)
 					// preparedData(currentRenderedItem, moreLoad )
 				}
@@ -321,7 +323,7 @@ define('product_list',
 			var diff = Math.abs(startY-stopY)
 			var zoom = currentZoom()
 			var listingWindowH = heights[zoom]*(4-zoom)
-			var step = (Math.abs(startOffset - newOffset))/(time*0.1)
+			var step = (Math.abs(startOffset - newOffset))/(time*0.08)
 			var toY = null
 
 			if ( diff >= listingWindowH/5 ){
