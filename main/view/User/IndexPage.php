@@ -53,7 +53,7 @@ class IndexPage extends \View\DefaultLayout {
                 'links' => array(
                     array(
                         'name' => 'Адвокат клиента',
-                        'url'  => $this->url('user.consultation'),
+                        'url'  => 'http://my.enter.ru/community/pravo',
                     ),
                 )
             ),
