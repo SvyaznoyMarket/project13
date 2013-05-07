@@ -654,14 +654,18 @@ class Repository {
         $inCsvDelimiter = ",";
         $outCsvDelimiter = "\t";
 
+        $dateStart = new \DateTime();
+
+        // если отчет в процессе генерации, то выходим, иначе создаем лок-файл
+        $lockFilepath = \App::config()->appDir . '/report/' . $dateStart->format('YmdH') . '.lock';
+        if(is_file($lockFilepath)) return;
+        touch($lockFilepath);
+
         foreach (scandir($sourceCsvDir) as $file) {
             if(preg_match('/^(.+)\.csv$/', $file, $matches)) {
-
-                $dateStart = new \DateTime();
-
                 $rootCategory = $matches[1];
-                $reportBuFilepath = \App::config()->appDir . '/report/' . $dateStart->format('YmdHis') . '_' . $rootCategory . '_accessories_bu.csv';
-                $reportSeoFilepath = \App::config()->appDir . '/report/' . $dateStart->format('YmdHis') . '_' . $rootCategory . '_accessories_seo.csv';
+                $reportBuFilepath = \App::config()->appDir . '/report/' . $dateStart->format('YmdH') . '_' . $rootCategory . '_accessories_bu.csv';
+                $reportSeoFilepath = \App::config()->appDir . '/report/' . $dateStart->format('YmdH') . '_' . $rootCategory . '_accessories_seo.csv';
                 $sourceCsvFilepath = \App::config()->appDir . '/report/source/' . $file;
                 $benchmarkFilepath = \App::config()->appDir . '/report/source/benchmark.txt';
                 $reportBu = fopen($reportBuFilepath, 'a');
@@ -825,6 +829,9 @@ fclose($benchmark);
                 fclose($reportSeo);
             }
         }
+
+        // удаляем лок-файл, чтобы при необходимости можно было перезапустить таск
+        unlink($lockFilepath);
     }
 
 
