@@ -908,6 +908,7 @@ class Action {
 
         // карта доставки
         $deliveryMapView = new \View\Order\DeliveryCalc\Map();
+        $modelProductRepository = new \Model\Product\Repository($client);
 
         $deliveryMapView->unavailable = [];
         if (array_key_exists('unavailable', $deliveryCalcResult)) {
@@ -1012,7 +1013,11 @@ class Action {
                     $itemView->addUrl = $router->generate('cart.service.add', array('serviceId' => $itemData['id'], 'quantity' => 1, 'productId' => 0));
                 }
 
+                $productEntity = $modelProductRepository->getEntityById($itemData['id'], $region);
                 $itemView->id = $itemData['id'];
+                $itemView->article = $productEntity->getArticle();
+                $itemView->parent_category = $productEntity->getMainCategory()->getName();
+                $itemView->categoty = $productEntity->getParentCategory()->getName();
                 $itemView->name = $itemData['name'] . $serviceName;
                 $itemView->image = $itemData['media_image'];
                 $itemView->price = $itemData['price'];
