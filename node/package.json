@@ -1,0 +1,20 @@
+{
+  "name": "Enter",
+  "description": "Enter",
+  "version": "40",
+  "homepage": "http://enter.ru/",
+  "author": {
+    "name": "Enter Team",
+    "url": "http://enter.ru/"
+  },
+  "main": "Gruntfile.js",
+  "engines": {
+    "node": ">= 0.8.0"
+  },
+  "scripts": {
+    "test": "grunt test"
+  },
+  "keywords": [
+    "gruntplugin"
+  ]
+}
