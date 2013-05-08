@@ -353,16 +353,21 @@ $(document).ready(function() {
     var price = 0
     var totalPrice = 0
     var totalQuan = 0
+    var f1total = 0
+    var warrTotal = 0
     $.each(Model.items, function(i, product){
         items_num += product.quantity
         price += product.price
         totalPrice += product.total
         totalQuan += product.quantity
+        f1total += product.serviceQ
+        warrTotal += product.warrantyQ
     })
     var toKISS = {
         'Checkout Step 1 SKU Quantity':totalQuan,
         'Checkout Step 1 SKU Total':price,
-        // 'Checkout Step 1 F1 Quantity':0,
+        'Checkout Step 1 F1 Quantity':f1total,
+        'Checkout Step 1 Warranty Quantity':warrTotal,
         'Checkout Step 1 F1 Total':totalPrice - price,
         'Checkout Step 1 Order Total':totalPrice,
         'Checkout Step 1 Order Type':'cart order',
@@ -635,7 +640,8 @@ $(document).ready(function() {
                 toKISS_del = {
                     'Checkout Step 1 SKU Quantity':d.quantity,
                     'Checkout Step 1 SKU Total':d.price,
-                    // 'Checkout Step 1 F1 Quantity':0,
+                    'Checkout Step 1 F1 Quantity':d.serviceQ,
+                    'Checkout Step 1 Warranty Quantity':d.warrantyQ,
                     'Checkout Step 1 F1 Total':d.total - d.price,
                     'Checkout Step 1 Order Total':box.totalPrice() - d.total,
                 }
@@ -1165,14 +1171,14 @@ $(document).ready(function() {
                         var dlvr = MVM.dlvrBoxes()[tkn]
                         for( var i in dlvr.itemList() ){
                             var toKISS_pr =  {
-                                // 'Checkout Complete SKU':123,
+                                'Checkout Complete SKU':dlvr.itemList()[i].article,
                                 'Checkout Complete SKU Quantity':dlvr.itemList()[i].quantity,
                                 'Checkout Complete F1 Quantity':dlvr.itemList()[i].serviceQ,
                                 'Checkout Complete F1 Total':dlvr.itemList()[i].serviceTotal,
                                 'Checkout Complete Warranty Quantity':dlvr.itemList()[i].warrantyQ,
                                 'Checkout Complete Warranty Total':dlvr.itemList()[i].warrantyTotal,
-                                // 'Checkout Complete Parent category':'Электроника',
-                                'Checkout Complete Category name':dlvr.itemList()[i].name,
+                                'Checkout Complete Parent category':dlvr.itemList()[i].parent_category,
+                                'Checkout Complete Category name':dlvr.itemList()[i].categoty,
                                 '_t':KM.ts() + tkn + i  ,
                                 '_d':1,
                             }
