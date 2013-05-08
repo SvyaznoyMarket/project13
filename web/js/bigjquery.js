@@ -1,4 +1,30 @@
-/*! Enter - v.40 - 2013-05-07 */var checkboxHeight = "14";
+'use strict';
+// Source: ../web/js/bigjquery/custom-form-elements.js
+/*
+
+CUSTOM FORM ELEMENTS
+
+Created by Ryan Fait
+www.ryanfait.com
+
+The only things you may need to change in this file are the following
+variables: checkboxHeight, radioHeight and selectWidth (lines 24, 25, 26)
+
+The numbers you set for checkboxHeight and radioHeight should be one quarter
+of the total height of the image want to use for checkboxes and radio
+buttons. Both images should contain the four stages of both inputs stacked
+on top of each other in this order: unchecked, unchecked-clicked, checked,
+checked-clicked.
+
+You may need to adjust your images a bit if there is a slight vertical
+movement during the different stages of the button activation.
+
+The value of selectWidth should be the width of your select list image.
+
+Visit http://ryanfait.com/ for more information.
+
+*/
+var checkboxHeight = "14";
 var radioHeight = "20";
 var selectWidth = "190";
 
@@ -120,7 +146,8 @@ var Custom = {
 	}
 }
 //window.onload = 
-Custom.init();;/*!
+Custom.init();;// Source: ../web/js/bigjquery/jquery.effects.blind.js
+/*!
  * jQuery UI Effects Blind 1.8.20
  *
  * Copyright 2012, AUTHORS.txt (http://jqueryui.com/about)
@@ -169,7 +196,8 @@ $.effects.blind = function(o) {
 };
 
 })(jQuery);
-;/*!
+;// Source: ../web/js/bigjquery/jquery.effects.core.js
+/*!
  * jQuery UI Effects 1.8.20
  *
  * Copyright 2012, AUTHORS.txt (http://jqueryui.com/about)
@@ -932,7 +960,20 @@ $.extend($.easing,
  */
 
 })(jQuery);
-;(function( $, undefined ) {
+;// Source: ../web/js/bigjquery/jquery.effects.transfer.js
+/*
+ * jQuery UI Effects Transfer 1.8.16
+ *
+ * Copyright 2011, AUTHORS.txt (http://jqueryui.com/about)
+ * Dual licensed under the MIT or GPL Version 2 licenses.
+ * http://jquery.org/license
+ *
+ * http://docs.jquery.com/UI/Effects/Transfer
+ *
+ * Depends:
+ *	jquery.effects.core.js
+ */
+(function( $, undefined ) {
 
 $.effects.transfer = function(o) {
 	return this.queue(function() {
@@ -966,7 +1007,8 @@ $.effects.transfer = function(o) {
 };
 
 })(jQuery);
-;// JavaScript Document
+;// Source: ../web/js/bigjquery/jquery.infinityCarousel.js
+// JavaScript Document
 /*Caruosel ------------------------------------------------------------------------------------------------------*/
 $.fn.infiniteCarousel = function () {
 
@@ -1042,7 +1084,14 @@ $.fn.infiniteCarousel = function () {
     });  
 };
 /* /Carousel ----------------------------------------------------------------------------------------------------------*/
-;/*
+;// Source: ../web/js/bigjquery/jquery.lightbox_me.js
+/*
+ * Copyright (C) 1999-2009 Jive Software. All rights reserved.
+ *
+ * This software is the proprietary information of Jive Software. Use is subject to license terms.
+ */
+
+/*
 * $ lightbox_me
 * By: Buck Wilson
 * Version : 2.2 + fix by ivn
@@ -1314,7 +1363,17 @@ $.fn.infiniteCarousel = function () {
     }
 
 
-})(jQuery);;(function($) {
+})(jQuery);;// Source: ../web/js/bigjquery/jquery.maskedinput.js
+/*
+	Masked Input plugin for jQuery
+	Copyright (c) 2007-@Year Josh Bush (digitalbush.com)
+	Licensed under the MIT license (http://digitalbush.com/projects/masked-input-plugin/#license) 
+	Version: @version
+	
+	modified by ivn
+	setting 'maxlength' added 
+*/
+(function($) {
 	var pasteEventName = ($.browser.msie ? 'paste' : 'input') + ".mask";
 	var iPhone = (window.orientation != undefined);
 
@@ -1569,7 +1628,26 @@ $.fn.infiniteCarousel = function () {
 		}
 	});
 })(jQuery);
-;(function(c){var a=["DOMMouseScroll","mousewheel"];c.event.special.mousewheel={setup:function(){if(this.addEventListener){for(var d=a.length;d;){this.addEventListener(a[--d],b,false)}}else{this.onmousewheel=b}},teardown:function(){if(this.removeEventListener){for(var d=a.length;d;){this.removeEventListener(a[--d],b,false)}}else{this.onmousewheel=null}}};c.fn.extend({mousewheel:function(d){return d?this.bind("mousewheel",d):this.trigger("mousewheel")},unmousewheel:function(d){return this.unbind("mousewheel",d)}});function b(i){var g=i||window.event,f=[].slice.call(arguments,1),j=0,h=true,e=0,d=0;i=c.event.fix(g);i.type="mousewheel";if(i.wheelDelta){j=i.wheelDelta/120}if(i.detail){j=-i.detail/3}d=j;if(g.axis!==undefined&&g.axis===g.HORIZONTAL_AXIS){d=0;e=-1*j}if(g.wheelDeltaY!==undefined){d=g.wheelDeltaY/120}if(g.wheelDeltaX!==undefined){e=-1*g.wheelDeltaX/120}f.unshift(i,j,e,d);return c.event.handle.apply(this,f)}})(jQuery);;(function($) {
+;// Source: ../web/js/bigjquery/jquery.mousewheel.min.js
+/* Copyright (c) 2010 Brandon Aaron (http://brandonaaron.net)
+ * Licensed under the MIT License (LICENSE.txt).
+ *
+ * Thanks to: http://adomas.org/javascript-mouse-wheel/ for some pointers.
+ * Thanks to: Mathias Bank(http://www.mathias-bank.de) for a scope bug fix.
+ * Thanks to: Seamus Leahy for adding deltaX and deltaY
+ *
+ * Version: 3.0.4
+ *
+ * Requires: 1.2.2+
+ */
+(function(c){var a=["DOMMouseScroll","mousewheel"];c.event.special.mousewheel={setup:function(){if(this.addEventListener){for(var d=a.length;d;){this.addEventListener(a[--d],b,false)}}else{this.onmousewheel=b}},teardown:function(){if(this.removeEventListener){for(var d=a.length;d;){this.removeEventListener(a[--d],b,false)}}else{this.onmousewheel=null}}};c.fn.extend({mousewheel:function(d){return d?this.bind("mousewheel",d):this.trigger("mousewheel")},unmousewheel:function(d){return this.unbind("mousewheel",d)}});function b(i){var g=i||window.event,f=[].slice.call(arguments,1),j=0,h=true,e=0,d=0;i=c.event.fix(g);i.type="mousewheel";if(i.wheelDelta){j=i.wheelDelta/120}if(i.detail){j=-i.detail/3}d=j;if(g.axis!==undefined&&g.axis===g.HORIZONTAL_AXIS){d=0;e=-1*j}if(g.wheelDeltaY!==undefined){d=g.wheelDeltaY/120}if(g.wheelDeltaX!==undefined){e=-1*g.wheelDeltaX/120}f.unshift(i,j,e,d);return c.event.handle.apply(this,f)}})(jQuery);;// Source: ../web/js/bigjquery/jquery.placeholder.js
+/*
+* Placeholder plugin for jQuery
+* ---
+* Copyright 2010, Daniel Stocks (http://webcloud.se)
+* Released under the MIT, BSD, and GPL Licenses.
+*/
+(function($) {
     function Placeholder(input) {
         this.input = input;
         if (input.attr('type') == 'password') {
@@ -1668,7 +1746,8 @@ $.fn.infiniteCarousel = function () {
             }
         });
     }
-})(jQuery);;// jQuery plugin: PutCursorAtEnd 1.0
+})(jQuery);;// Source: ../web/js/bigjquery/jquery.put_cursor_at_end.js
+// jQuery plugin: PutCursorAtEnd 1.0
 // http://plugins.jquery.com/project/PutCursorAtEnd
 // by teedyay
 //
@@ -1705,7 +1784,39 @@ $.fn.infiniteCarousel = function () {
         this.scrollTop = 999999;
     });
     };
-})(jQuery);;;(function($) {
+})(jQuery);;// Source: ../web/js/bigjquery/jquery.raty.js
+/**
+ * jQuery Raty - A Star Rating Plugin - http://wbotelhos.com/raty
+ * ---------------------------------------------------------------------------------
+ *
+ * jQuery Raty is a plugin that generates a customizable star rating automatically.
+ *
+ * Licensed under The MIT License
+ *
+ * @version			1.4.3
+ * @since			06.11.2010
+ * @author			Washington Botelho dos Santos
+ * @documentation	http://wbotelhos.com/raty
+ * @twitter			http://twitter.com/wbotelhos
+ * @license			http://opensource.org/licenses/mit-license.php
+ * @package			jQuery Plugins
+ *
+ * Usage with default values:
+ * ---------------------------------------------------------------------------------
+ * $('#star').raty();
+ *
+ * <div id="star"></div>
+ *
+ *
+ * $('.star').raty();
+ *
+ * <div class="star"></div>
+ * <div class="star"></div>
+ * <div class="star"></div>
+ *
+ */
+
+;(function($) {
 
 	$.fn.raty = function(settings) {
 
@@ -2130,7 +2241,19 @@ $.fn.infiniteCarousel = function () {
 		width:			null
 	};
 
-})(jQuery);;;(function(d){var k=d.scrollTo=function(a,i,e){d(window).scrollTo(a,i,e)};k.defaults={axis:'xy',duration:parseFloat(d.fn.jquery)>=1.3?0:1};k.window=function(a){return d(window)._scrollable()};d.fn._scrollable=function(){return this.map(function(){var a=this,i=!a.nodeName||d.inArray(a.nodeName.toLowerCase(),['iframe','#document','html','body'])!=-1;if(!i)return a;var e=(a.contentWindow||a).document||a.ownerDocument||a;return d.browser.safari||e.compatMode=='BackCompat'?e.body:e.documentElement})};d.fn.scrollTo=function(n,j,b){if(typeof j=='object'){b=j;j=0}if(typeof b=='function')b={onAfter:b};if(n=='max')n=9e9;b=d.extend({},k.defaults,b);j=j||b.speed||b.duration;b.queue=b.queue&&b.axis.length>1;if(b.queue)j/=2;b.offset=p(b.offset);b.over=p(b.over);return this._scrollable().each(function(){var q=this,r=d(q),f=n,s,g={},u=r.is('html,body');switch(typeof f){case'number':case'string':if(/^([+-]=)?\d+(\.\d+)?(px|%)?$/.test(f)){f=p(f);break}f=d(f,this);case'object':if(f.is||f.style)s=(f=d(f)).offset()}d.each(b.axis.split(''),function(a,i){var e=i=='x'?'Left':'Top',h=e.toLowerCase(),c='scroll'+e,l=q[c],m=k.max(q,i);if(s){g[c]=s[h]+(u?0:l-r.offset()[h]);if(b.margin){g[c]-=parseInt(f.css('margin'+e))||0;g[c]-=parseInt(f.css('border'+e+'Width'))||0}g[c]+=b.offset[h]||0;if(b.over[h])g[c]+=f[i=='x'?'width':'height']()*b.over[h]}else{var o=f[h];g[c]=o.slice&&o.slice(-1)=='%'?parseFloat(o)/100*m:o}if(/^\d+$/.test(g[c]))g[c]=g[c]<=0?0:Math.min(g[c],m);if(!a&&b.queue){if(l!=g[c])t(b.onAfterFirst);delete g[c]}});t(b.onAfter);function t(a){r.animate(g,j,b.easing,a&&function(){a.call(this,n,b)})}}).end()};k.max=function(a,i){var e=i=='x'?'Width':'Height',h='scroll'+e;if(!d(a).is('html,body'))return a[h]-d(a)[e.toLowerCase()]();var c='client'+e,l=a.ownerDocument.documentElement,m=a.ownerDocument.body;return Math.max(l[h],m[h])-Math.min(l[c],m[c])};function p(a){return typeof a=='object'?a:{top:a,left:a}}})(jQuery);;/*!
+})(jQuery);;// Source: ../web/js/bigjquery/jquery.scrollto.js
+/**
+ * jQuery.ScrollTo - Easy element scrolling using jQuery.
+ * Copyright (c) 2007-2009 Ariel Flesler - aflesler(at)gmail(dot)com | http://flesler.blogspot.com
+ * Dual licensed under MIT and GPL.
+ * Date: 5/25/2009
+ * @author Ariel Flesler
+ * @version 1.4.2
+ *
+ * http://flesler.blogspot.com/2007/10/jqueryscrollto.html
+ */
+;(function(d){var k=d.scrollTo=function(a,i,e){d(window).scrollTo(a,i,e)};k.defaults={axis:'xy',duration:parseFloat(d.fn.jquery)>=1.3?0:1};k.window=function(a){return d(window)._scrollable()};d.fn._scrollable=function(){return this.map(function(){var a=this,i=!a.nodeName||d.inArray(a.nodeName.toLowerCase(),['iframe','#document','html','body'])!=-1;if(!i)return a;var e=(a.contentWindow||a).document||a.ownerDocument||a;return d.browser.safari||e.compatMode=='BackCompat'?e.body:e.documentElement})};d.fn.scrollTo=function(n,j,b){if(typeof j=='object'){b=j;j=0}if(typeof b=='function')b={onAfter:b};if(n=='max')n=9e9;b=d.extend({},k.defaults,b);j=j||b.speed||b.duration;b.queue=b.queue&&b.axis.length>1;if(b.queue)j/=2;b.offset=p(b.offset);b.over=p(b.over);return this._scrollable().each(function(){var q=this,r=d(q),f=n,s,g={},u=r.is('html,body');switch(typeof f){case'number':case'string':if(/^([+-]=)?\d+(\.\d+)?(px|%)?$/.test(f)){f=p(f);break}f=d(f,this);case'object':if(f.is||f.style)s=(f=d(f)).offset()}d.each(b.axis.split(''),function(a,i){var e=i=='x'?'Left':'Top',h=e.toLowerCase(),c='scroll'+e,l=q[c],m=k.max(q,i);if(s){g[c]=s[h]+(u?0:l-r.offset()[h]);if(b.margin){g[c]-=parseInt(f.css('margin'+e))||0;g[c]-=parseInt(f.css('border'+e+'Width'))||0}g[c]+=b.offset[h]||0;if(b.over[h])g[c]+=f[i=='x'?'width':'height']()*b.over[h]}else{var o=f[h];g[c]=o.slice&&o.slice(-1)=='%'?parseFloat(o)/100*m:o}if(/^\d+$/.test(g[c]))g[c]=g[c]<=0?0:Math.min(g[c],m);if(!a&&b.queue){if(l!=g[c])t(b.onAfterFirst);delete g[c]}});t(b.onAfter);function t(a){r.animate(g,j,b.easing,a&&function(){a.call(this,n,b)})}}).end()};k.max=function(a,i){var e=i=='x'?'Width':'Height',h='scroll'+e;if(!d(a).is('html,body'))return a[h]-d(a)[e.toLowerCase()]();var c='client'+e,l=a.ownerDocument.documentElement,m=a.ownerDocument.body;return Math.max(l[h],m[h])-Math.min(l[c],m[c])};function p(a){return typeof a=='object'?a:{top:a,left:a}}})(jQuery);;// Source: ../web/js/bigjquery/jquery.ui.autocomplete.js
+/*!
  * jQuery UI Autocomplete 1.8.20
  *
  * Copyright 2012, AUTHORS.txt (http://jqueryui.com/about)
@@ -2761,7 +2884,8 @@ $.widget("ui.menu", {
 });
 
 }(jQuery));
-;/*!
+;// Source: ../web/js/bigjquery/jquery.ui.core.js
+/*!
  * jQuery UI 1.8.20
  *
  * Copyright 2012, AUTHORS.txt (http://jqueryui.com/about)
@@ -3080,7 +3204,8 @@ $.extend( $.ui, {
 });
 
 })( jQuery );
-;/*!
+;// Source: ../web/js/bigjquery/jquery.ui.mouse.js
+/*!
  * jQuery UI Mouse 1.8.20
  *
  * Copyright 2012, AUTHORS.txt (http://jqueryui.com/about)
@@ -3245,7 +3370,8 @@ $.widget("ui.mouse", {
 });
 
 })(jQuery);
-;/*!
+;// Source: ../web/js/bigjquery/jquery.ui.position.js
+/*!
  * jQuery UI Position 1.8.20
  *
  * Copyright 2012, AUTHORS.txt (http://jqueryui.com/about)
@@ -3543,7 +3669,8 @@ if ( !$.offset.setOffset ) {
 })();
 
 }( jQuery ));
-;/*!
+;// Source: ../web/js/bigjquery/jquery.ui.slider.js
+/*!
  * jQuery UI Slider 1.8.20
  *
  * Copyright 2012, AUTHORS.txt (http://jqueryui.com/about)
@@ -4205,7 +4332,8 @@ $.extend( $.ui.slider, {
 });
 
 }(jQuery));
-;/*!
+;// Source: ../web/js/bigjquery/jquery.ui.touch-punch.js
+/*!
  * jQuery UI Touch Punch 0.2.2
  *
  * Copyright 2011, Dave Furfero
@@ -4364,7 +4492,8 @@ $.extend( $.ui.slider, {
     _mouseInit.call(self);
   };
 
-})(jQuery);;/*!
+})(jQuery);;// Source: ../web/js/bigjquery/jquery.ui.widget.js
+/*!
  * jQuery UI Widget 1.8.20
  *
  * Copyright 2012, AUTHORS.txt (http://jqueryui.com/about)
@@ -4636,7 +4765,19 @@ $.Widget.prototype = {
 };
 
 })( jQuery );
-;jQuery.fn.prettyCheckboxes=function(a) {
+;// Source: ../web/js/bigjquery/prettyCheckboxes.js
+/* ------------------------------------------------------------------------
+	prettyCheckboxes
+	
+	Developped By: Stephane Caron (http://www.no-margin-for-errors.com)
+	Inspired By: All the non user friendly custom checkboxes solutions ;)
+	Version: 1.1
+	
+	Copyright: Feel free to redistribute the script/modify it, as
+			   long as you leave my infos at the top.
+------------------------------------------------------------------------- */
+	
+jQuery.fn.prettyCheckboxes=function(a) {
 	a=jQuery.extend({checkboxWidth:13,checkboxHeight:13,className:"prettyCheckbox",display:"list"},a);
 	$(this).each(function(){$label=$('label[for="'+$(this).attr("id")+'"]');
     $label.prepend("<span class='holderWrap'><span class='holder'></span></span>");
@@ -4672,7 +4813,21 @@ checkAllPrettyCheckboxes=function(b,a) {
 	}else{
 		$(a).find("input[type=checkbox]:checked").each(function(){$('label[for="'+$(this).attr("id")+'"]').trigger("click");
 	if($.browser.msie){
-		$(this).attr("checked","")}else{$(this).trigger("click")}})}};;;(function($){
+		$(this).attr("checked","")}else{$(this).trigger("click")}})}};;// Source: ../web/js/bigjquery/typewriter.js
+/*
+* jQuery.fn.typewriter( speed, callback );
+*
+* Typewriter, writes your text in a flow
+*
+* USAGE:
+* $('.element').typewriter( speed, callback );
+*
+*
+* Version 1.0.1
+* www.labs.skengdon.com/typewriter/
+* www.labs.skengdon.com/typewriter/js/typewriter.min.js
+*/
+;(function($){
 	$.fn.typewriter = function( speed, callback ) {
 		if ( typeof callback !== 'function' ) callback = function(){};
 		var write = function( e, text, time ) {
