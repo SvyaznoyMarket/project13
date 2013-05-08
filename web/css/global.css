@@ -198,7 +198,7 @@
   /* IE7 */
   .float100 {
     float: right;
-    margin-right: -15px;
+    margin-right: -5px;
   }
   .ar {
     text-align: right;
@@ -768,6 +768,7 @@
     border: 1px solid #e6e6e6;
     padding: 7px;
     position: relative;
+    margin-top: 10px;
   }
   .notBuying .corner {
     border-bottom: 9px solid #e6e6e6;

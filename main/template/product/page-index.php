@@ -126,7 +126,29 @@ $productVideo = reset($productVideos);
     <? endif ?>
     <img class="mainImg" src="<?= $product->getImageUrl(3) ?>" alt="<?= $page->escape($product->getName()) ?>" title="<?= $page->escape($product->getName()) ?>" width="500" height="500" />
   </a>
+
+  <!-- Photo video -->
+  <? if (count($photo3dList) > 0 || count($photoList) > 0): ?>
+  <div class="fl width500">
+    <h2>Фото товара:</h2>
+    <div class="font11 gray pb10">Всего фотографий <?= count($photoList) ?></div>
+    <ul class="previewlist">
+      <? foreach ($photoList as $photo): ?>
+      <li class="viewstock" ref="photo<?= $photo->getId() ?>">
+        <a href="<?= $photo->getUrl(4) ?>" class="viewme" ref="image">
+          <img src="<?= $photo->getUrl(2) ?>" alt="<?= $page->escape($product->getName()) ?>" title="<?= $page->escape($product->getName()) ?>" width="48" height="48" />
+        </a>
+      </li>
+      <? endforeach ?>
+      <? if (count($photo3dList) > 0): ?>
+      <li><a href="#" class="axonometric viewme" ref="360" title="Объемное изображение">Объемное изображение</a></li>
+      <? endif ?>
+    </ul>
+  </div>
+  <? endif ?>
+  <!-- /Photo video -->
 </div>
+
 <div style="display:none;" id="stock">
   <!-- list of images 500*500 for preview -->
   <? foreach ($photoList as $photo): ?>
@@ -157,10 +179,13 @@ $productVideo = reset($productVideos);
   <? endif ?>
 
   <div class="fl pb15" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
-    <link itemprop="availability" href="http://schema.org/OutOfStock" />  
+
     <div class="pb10 <? if ($product->hasSaleLabel()) echo 'red'; ?>"><strong class="font34"><span class="price" itemprop="price"><?= $page->helper->formatPrice($product->getPrice()) ?></span> <meta itemprop="priceCurrency" content="RUB"><span class="rubl">p</span></strong></div>
     <? if ($product->getIsBuyable()): ?>
+    <link itemprop="availability" href="http://schema.org/InStock" />
     <div class="pb5"><strong class="orange">Есть в наличии</strong></div>
+    <? else: ?>
+    <link itemprop="availability" href="http://schema.org/OutOfStock" />
     <? endif ?>
   </div>
 
@@ -272,27 +297,6 @@ $productVideo = reset($productVideos);
 <!-- /Goods info -->
 
 <div class="clear"></div>
-
-<!-- Photo video -->
-<? if (count($photo3dList) > 0 || count($photoList) > 0): ?>
-<div class="fl width500">
-  <h2>Фото товара:</h2>
-  <div class="font11 gray pb10">Всего фотографий <?= count($photoList) ?></div>
-  <ul class="previewlist">
-    <? foreach ($photoList as $photo): ?>
-    <li class="viewstock" ref="photo<?= $photo->getId() ?>">
-    	<a href="<?= $photo->getUrl(4) ?>" class="viewme" ref="image">
-    		<img src="<?= $photo->getUrl(2) ?>" alt="<?= $page->escape($product->getName()) ?>" title="<?= $page->escape($product->getName()) ?>" width="48" height="48" />
-    	</a>
-    </li>
-    <? endforeach ?>
-    <? if (count($photo3dList) > 0): ?>
-    <li><a href="#" class="axonometric viewme" ref="360" title="Объемное изображение">Объемное изображение</a></li>
-    <? endif ?>
-  </ul>
-</div>
-<? endif ?>
-<!-- /Photo video -->
 
 <? if((bool)$product->getModel() && (bool)$product->getModel()->getProperty()): //модели ?>
 <!-- Variation -->

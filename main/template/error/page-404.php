@@ -10,7 +10,7 @@
     <title>Enter.ru</title>
     <meta name="description" content=""/>
     <meta name="keywords" content=""/>
-    <link href="/css/global.css" rel="stylesheet" type="text/css"/>
+    <link href="/css/global.min.css" rel="stylesheet" type="text/css"/>
 </head>
 <body class='b404'>
 <table class='b404InnerWrap'>
