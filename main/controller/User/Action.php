@@ -277,9 +277,9 @@ class Action {
             if (!$form->getCorpINN()) {
                 $form->setError('corp_inn', 'Укажите ИНН');
             }
-            if (!$form->getCorpKPP()) {
+            /*if (!$form->getCorpKPP()) {
                 $form->setError('corp_kpp', 'Укажите КПП');
-            }
+            }*/
             if (!$form->getCorpAccount()) {
                 $form->setError('corp_account', 'Укажите расчетный счет');
             }
