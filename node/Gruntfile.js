@@ -41,18 +41,19 @@ module.exports = function(grunt) {
     "jquery.put_cursor_at_end.js"
   ];
 
-  var compilerPath = 'closure-compiler/build/compiler.jar';
-  var execCommand = 'java -jar '+compilerPath;
-  for (var i=0, len=bigjqueryFiles.length; i<len; i++){
-    execCommand += ' --js ../web/js/bigjquery/'+bigjqueryFiles[i];
-  }
-  execCommand += ' --js_output_file ../web/js/bigjquery.js';
-
   grunt.initConfig({
 
     exec: {
       compileBJ:{
-        command: execCommand,
+        command: function(){
+          var compilerPath = 'closure-compiler/build/compiler.jar';
+          var execCommand = 'java -jar '+compilerPath;
+          for (var i=0, len=bigjqueryFiles.length; i<len; i++){
+            execCommand += ' --js ../web/js/bigjquery/'+bigjqueryFiles[i];
+          }
+          execCommand += ' --js_output_file ../web/js/bigjquery.js';
+          return execCommand;
+        },
       }
     },
 
@@ -92,11 +93,11 @@ module.exports = function(grunt) {
       },
       bigjquery: {
         files: ['../web/js/bigjquery/*.js'],
-        tasks: ['exec','uglify'],
+        tasks: ['exec','uglify','set_version'],
       },
       scripts: {
         files: ['../web/js/*.js', '!../web/js/*.min.js', '!../web/js/combine.js'],
-        tasks: ['uglify'],
+        tasks: ['uglify','set_version'],
       },
     },
 
@@ -122,18 +123,24 @@ module.exports = function(grunt) {
 
   });
 
-  // These plugins provide necessary tasks.
   grunt.loadNpmTasks('grunt-contrib-less');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-exec');
 
-  grunt.registerTask('set_version', 'Set version for js files', function() {
-    grunt.log.writeln('set version activate...');
-    grunt.log.writeln('set version activate...done');
+  grunt.registerTask('set_version', 'Set compilation timestamp for js files', function() {
+    var combine = 'window.filesWithVersion = {\n';
+    var data = new Date();
+    for(var i=0, len=jsFiles.length; i<len; i++) {
+      grunt.log.writeln(jsFiles[i]+'...');
+      combine += '"' + jsFiles[i] + '":' + Math.round(data.getTime()/1000) +',\n';
+    }
+    combine += '\n}';
+    grunt.file.write('../web/js/combine.js' , combine);
+    grunt.log.writeln('Done');
   });
 
   grunt.registerTask('css', ['less']);
-  grunt.registerTask('js', ['exec','uglify']);
-  grunt.registerTask('default', ['less','uglify']);
+  grunt.registerTask('js', ['exec','uglify','set_version']);
+  grunt.registerTask('default', ['less','uglify','set_version']);
 };
