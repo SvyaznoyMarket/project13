@@ -7,7 +7,7 @@ module.exports = function(grunt) {
     "infopages.js",
     "library.js",
     "app.cart.js",
-    // "bigjquery.js",
+    "bigjquery.js",
     "welcome.js",
     "main.js",
     "dash.js",
@@ -17,7 +17,44 @@ module.exports = function(grunt) {
     "app.shop.js"
   ];
 
+  var bigjqueryFiles = [
+    "custom-form-elements.js",
+    "jquery.ui.core.js",
+    "jquery.ui.widget.js",
+    "jquery.ui.position.js",
+    "jquery.ui.mouse.js",
+    "jquery.ui.autocomplete.js",
+    "jquery.ui.slider.js",
+    "jquery.effects.core.js",
+    "jquery.effects.transfer.js",
+    "jquery.effects.blind.js",
+    "jquery.lightbox_me.js",
+    "jquery.mousewheel.min.js",
+    "jquery.raty.js",
+    "jquery.scrollto.js",
+    "jquery.placeholder.js",
+    "prettyCheckboxes.js",
+    "jquery.infinityCarousel.js",
+    "typewriter.js",
+    "jquery.ui.touch-punch.js",
+    "jquery.maskedinput.js",
+    "jquery.put_cursor_at_end.js"
+  ];
+
+  var compilerPath = 'closure-compiler/build/compiler.jar';
+  var execCommand = 'java -jar '+compilerPath;
+  for (var i=0, len=bigjqueryFiles.length; i<len; i++){
+    execCommand += ' --js ../web/js/bigjquery/'+bigjqueryFiles[i];
+  }
+  execCommand += ' --js_output_file ../web/js/bigjquery.js';
+
   grunt.initConfig({
+
+    exec: {
+      compileBJ:{
+        command: execCommand,
+      }
+    },
 
     less: {
       compile: {
@@ -53,10 +90,10 @@ module.exports = function(grunt) {
         files: ['../web/css/*.less', '../web/css/**/*.less'],
         tasks: ['less'],
       },
-      // bigjquery: {
-      //   files: ['../web/js/bigjquery/*.js'],
-      //   tasks: ['uglify','set_version'],
-      // },
+      bigjquery: {
+        files: ['../web/js/bigjquery/*.js'],
+        tasks: ['exec','uglify'],
+      },
       scripts: {
         files: ['../web/js/*.js', '!../web/js/*.min.js', '!../web/js/combine.js'],
         tasks: ['uglify'],
@@ -89,6 +126,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-less');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-exec');
 
   grunt.registerTask('set_version', 'Set version for js files', function() {
     grunt.log.writeln('set version activate...');
@@ -96,6 +134,6 @@ module.exports = function(grunt) {
   });
 
   grunt.registerTask('css', ['less']);
-  grunt.registerTask('js', ['uglify']);
+  grunt.registerTask('js', ['exec','uglify']);
   grunt.registerTask('default', ['less','uglify']);
 };
