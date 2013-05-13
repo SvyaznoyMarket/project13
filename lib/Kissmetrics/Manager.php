@@ -95,6 +95,21 @@ class Manager {
     }
 
     /**
+     * @param \Model\Product\Entity $product
+     * @param int $position
+     * @return array
+     */
+    public static function getProductEvent($product, $position = 1) {
+        $return = [
+            'place'     =>  'product',
+            'article'   =>  $product->getArticle(),
+            'name'      =>  $product->getName(),
+            'position'  =>  $position,
+        ];
+        return $return;
+    }
+
+    /**
      * @param \Model\Order\Entity[] $orders
      * @return array
      */

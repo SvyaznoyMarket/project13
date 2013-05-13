@@ -116,7 +116,7 @@ class Action {
             }
             $additionalData = [];
             foreach ($products as $i => $product) {
-                $additionalData[$product->getId()] = ['place'=>'product', 'article'=>$product->getArticle(), 'name'=>$product->getName(), 'position'=>$i+1];
+                $additionalData[$product->getId()] = \Kissmetrics\Manager::getProductEvent($product, $i+1);
             }
 
             return new \Http\Response(\App::templating()->render('product/_slider', [
