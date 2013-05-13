@@ -938,8 +938,8 @@ class Action {
         $servicesEntityById = [];
 
         foreach ($deliveryCalcResult as $itemType => $itemData) {
-            if ($itemType == 'products') $productsEntityById[$itemData->getId()] = null;
-            if ($itemType == 'services') $servicesEntityById[$itemData->getId()] = null;
+            if ($itemType == 'products') $productsEntityById[(int)$itemData['id']] = null;
+            if ($itemType == 'services') $servicesEntityById[(int)$itemData['id']] = null;
         }
 
         if ((bool)$productsEntityById) {
@@ -1061,8 +1061,8 @@ class Action {
                     $itemView->article = $serviceEntity->getToken();
                     $category = $serviceEntity->getCategory();
                     if ($category) {
-                        $itemView->parent_category = $category[0];
-                        $itemView->categoty = $category[count($category)-1];
+                        $itemView->parent_category = $category[0]->getName();
+                        $itemView->categoty = $category[count($category)-1]->getName();
                     }
                 }
                 $itemView->name = $itemData['name'] . $serviceName;
