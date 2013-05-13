@@ -106,11 +106,17 @@ class Action {
             }
 
             $products = \RepositoryManager::product()->getCollectionById($ids);
+
             foreach ($products as $i => $product) {
                 if (!$product->getIsBuyable()) unset($products[$i]);
             }
+
             if (!count($products)) {
                 throw new \Exception();
+            }
+            $additionalData = [];
+            foreach ($products as $i => $product) {
+                $additionalData[$product->getId()] = ['place'=>'product', 'article'=>$product->getArticle(), 'name'=>$product->getName(), 'position'=>$i+1];
             }
 
             return new \Http\Response(\App::templating()->render('product/_slider', [
@@ -121,6 +127,7 @@ class Action {
                 'totalProducts' => count($products),
                 'url'           => '',
                 'gaEvent'       => 'SmartEngine',
+                'additionalData'    =>  $additionalData,
             ]));
         } catch (\Exception $e) {
             \App::logger()->error($e, ['smartengine']);
@@ -176,7 +183,7 @@ class Action {
             $products = \RepositoryManager::product()->getCollectionById($ids);
 
             $return = [];
-            foreach ($products as $product) {
+            foreach ($products as $i => $product) {
                 if (!$product->getIsBuyable()) continue;
 
                 $return[] = [
@@ -186,6 +193,7 @@ class Action {
                     'rating' => $product->getRating(),
                     'link'   => $product->getLink(),
                     'price'  => $product->getPrice(),
+                    'data'   => \Kissmetrics\Manager::getProductEvent($product, $i+1),
                 ];
             }
             if (!count($return)) {
