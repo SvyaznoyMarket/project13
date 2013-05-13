@@ -173,6 +173,14 @@ class OneClickAction {
                 $product = null;
             }
 
+            $categoryData = [];
+            foreach ($product->getCategory() as $category) {
+                $categoryData[] = [
+                    'id'   => $category->getId(),
+                    'name' => $category->getName(),
+                ];
+            }
+
             return new \Http\JsonResponse(array(
                 'success' => true,
                 'message' => 'Заказ успешно создан',
@@ -188,6 +196,10 @@ class OneClickAction {
                         'product'           => $product,
                     )),
                     'shop'    => $shop,
+                    'orderNumber' => $order->getNumber(),
+                    'productArticle' => $product->getArticle(),
+                    'productCategory' => $categoryData,
+
                 ),
             ));
         } catch(\InvalidArgumentException $e){

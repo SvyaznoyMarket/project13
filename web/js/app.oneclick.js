@@ -171,6 +171,9 @@ $(document).ready(function() {
 				
 				var curq =  self.quantity() * 1
 				setTimeout( function(){ self.loadData( curq, 1 ) } , 500 )
+
+				kissAnalitycs()
+
 				return false
 			}
 			self.minusItem = function() {
@@ -188,7 +191,21 @@ $(document).ready(function() {
 
 				var curq =  self.quantity() * 1
 				setTimeout( function(){ self.loadData( curq, -1 ) } , 500 )
+
+				kissAnalitycs()
+
 				return false
+			}
+
+			var kissAnalitycs = function(){
+				toKISS_set = {
+					'Checkout Step 1 SKU Quantity':self.quantity() * 1,
+					'Checkout Step 1 SKU Total':self.price * self.quantity() * 1,
+					'Checkout Step 1 Order Total':self.price * self.quantity() * 1 + self.chosenDlvr().price * 1,
+				}
+				if (typeof(_kmq) !== 'undefined'){
+					_kmq.push(['set',toKISS_set]) 
+				}
 			}
 			
 			self.preparedData = function( data ) {
@@ -221,7 +238,7 @@ $(document).ready(function() {
 			}
 			
 			self.loadData = function( momentq, direction ) {
-				console.info('loadData')
+				// console.info('loadData')
 				if( ( direction > 0 && self.quantity() > momentq ) || ( direction < 0 && self.quantity() < momentq ) )
 					return
 				var postData = {
@@ -402,6 +419,38 @@ $(document).ready(function() {
 							$('.bFastInner tbody tr:last').append('<td colspan="2" class="red">'+data.message+'</td>')
 							return
 						}
+						
+						// ANALITICS
+						var phoneNumber = '8' + $('#phonemask').val().replace(/\D/g, "")
+						var toKISS_order = {
+							'Checkout Complete Order ID':data.data.orderNumber, 
+							'Checkout Complete SKU Quantity':self.quantity(),
+							'Checkout Complete SKU Total':self.price * self.quantity() * 1,
+							'Checkout Complete Delivery Total':self.chosenDlvr().price * 1,
+							'Checkout Complete Order Total':self.price * self.quantity() * 1 + self.chosenDlvr().price * 1,
+							'Checkout Complete Order Type':'one click order',
+							'Checkout Complete Delivery':self.chosenDlvr().type,
+						}
+
+						if ((typeof(_kmq) !== 'undefined') && (KM !== 'undefined')) {
+							_kmq.push(['alias', phoneNumber, KM.i()]);
+							_kmq.push(['identify', phoneNumber]);
+							_kmq.push(['record', 'Checkout Complete', toKISS_order])
+							var toKISS_pr = {
+								'Checkout Complete SKU':data.data.productArticle,  
+								'Checkout Complete SKU Quantity':self.quantity() * 1,
+								'Checkout Complete Parent category':data.data.productCategory[0],
+								'Checkout Complete Category name':data.data.productCategory[data.data.productCategory.length-1],
+								'_t':KM.ts() +  1  ,
+								'_d':1
+							}
+							_kmq.push(['set', toKISS_pr])
+						}
+
+						if( typeof(runAnalitics) !== 'undefined' )
+							runAnalitics()
+						ANALYTICS.parseAllAnalDivs( $('.jsanalytics') )
+
 						// console.log(data)
 						//process
 						$('.bFast').parent().append( data.data.content )
@@ -409,9 +458,6 @@ $(document).ready(function() {
 						$('.p0').removeClass('p0')
 						//$('.top0').removeClass('top0')
 						// $('.order1click-link-new').remove()
-						if( typeof(runAnalitics) !== 'undefined' )
-							runAnalitics()
-						ANALYTICS.parseAllAnalDivs( $('.jsanalytics') )
 					},
 					error: function( jqXHR, textStatus ) {
 						self.formStatus('typing')
@@ -714,6 +760,18 @@ levup:			for(var i=0, l=numbers.length; i<l; i++)
 				// if( 'marketgidOrder' in ANALYTICS ) {
 				// 	ANALYTICS.marketgidOrder()
 				// }
+			}
+
+			// KISS
+			var toKISS_oc = {
+				'Checkout Step 1 SKU Quantity':OC_MVM.quantity(),
+				'Checkout Step 1 SKU Total':OC_MVM.price * OC_MVM.quantity(),
+				'Checkout Step 1 Order Total':OC_MVM.price * OC_MVM.quantity() + OC_MVM.chosenDlvr().price * 1,
+				'Checkout Step 1 Order Type':'one click order'
+			}
+
+			if (typeof(_kmq) !== 'undefined'){
+				_kmq.push(['record', 'Checkout Step 1', toKISS_oc])
 			}
 
 			$('#order1click-container-new').lightbox_me({

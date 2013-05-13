@@ -472,6 +472,12 @@ $(document).ready(function(){
 
   $('#signin_password').warnings()
 
+	$('#bUserlogoutLink').live('click', function(){
+		if (typeof(_kmq) !== 'undefined') {
+			_kmq.push(['clearIdentity']);
+		}
+	})
+
   $('#login-form, #register-form')
 	.data('redirect', true)
 	.bind('submit', function(e, param) {
@@ -489,6 +495,14 @@ $(document).ready(function(){
           		if ( typeof(_gaq) !== 'undefined' ){
 					var type = ((form.find('#signin_username').val().search('@')) != -1)?'email':'mobile'
 					_gaq.push(['_trackEvent', 'Account', 'Log in', type, window.location.href]);
+				}
+				if (typeof(_kmq) !== 'undefined') {
+					_kmq.push(['identify', form.find('#signin_username').val() ]);
+				}
+          	}
+          	else{
+          		if (typeof(_kmq) !== 'undefined') {
+					_kmq.push(['identify', form.find('#register_username').val() ]);
 				}
           	}
             if ( form.data('redirect') ) {
@@ -717,8 +731,7 @@ $(document).ready(function(){
                 type: 'POST',
                 global: false,
                 url: '/log-json',
-                data: data,
-                error: console.log('log err')
+                data: data
             })
         }
 	}
