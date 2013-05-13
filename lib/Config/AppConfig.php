@@ -53,6 +53,16 @@ class AppConfig {
         'retryCount'   => null,
     ];
     /** @var array */
+    public $corePrivate = [
+        'url'          => null,
+        'client_id'    => null,
+        'user'         => null,
+        'password'     => null,
+        'timeout'      => null,
+        'retryTimeout' => [],
+        'retryCount'   => null,
+    ];
+    /** @var array */
     public $wordpress = [
         'url'            => null,
         'timeout'        => null,

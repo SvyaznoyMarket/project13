@@ -17,6 +17,20 @@ $c->coreV2['retryTimeout'] = [
     'forever' => 0,
 ];
 
+$c->corePrivate['url'] = 'http://api.enter.ru/private/';
+$c->corePrivate['user'] = 'Developer';
+$c->corePrivate['password'] = 'dEl23sTOas';
+$c->corePrivate['timeout'] = null;
+$c->corePrivate['retryTimeout'] = [
+    'default' => 0.5,
+    'tiny'    => 0.05,
+    'short'   => 0.2,
+    'medium'  => 0.5,
+    'long'    => 0.8,
+    'huge'    => 1.5,
+    'forever' => 0,
+];
+
 $c->wordpress['url'] = 'http://content.enter.ru/';
 $c->wordpress['timeout'] = 2;
 

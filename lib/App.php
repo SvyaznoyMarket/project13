@@ -237,6 +237,20 @@ class App {
 
     /**
      * @static
+     * @return \Core\ClientPrivate
+     */
+    public static function coreClientPrivate() {
+        static $instance;
+
+        if (!$instance) {
+            $instance = new \Core\ClientPrivate(self::$config->corePrivate, self::curl());
+        }
+
+        return $instance;
+    }
+
+    /**
+     * @static
      * @return \Content\Client
      */
     public static function contentClient() {
