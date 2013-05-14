@@ -116,7 +116,7 @@ class Action {
             }
             $additionalData = [];
             foreach ($products as $i => $product) {
-                $additionalData[$product->getId()] = \Kissmetrics\Manager::getProductEvent($product, $i+1);
+                $additionalData[$product->getId()] = \Kissmetrics\Manager::getProductEvent($product, $i+1, 'Also Viewed');
             }
 
             return new \Http\Response(\App::templating()->render('product/_slider', [
@@ -193,7 +193,7 @@ class Action {
                     'rating' => $product->getRating(),
                     'link'   => $product->getLink(),
                     'price'  => $product->getPrice(),
-                    'data'   => \Kissmetrics\Manager::getProductEvent($product, $i+1),
+                    'data'   => \Kissmetrics\Manager::getProductEvent($product, $i+1, 'Similar'),
                 ];
             }
             if (!count($return)) {

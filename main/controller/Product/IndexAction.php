@@ -118,12 +118,12 @@ class IndexAction {
             $relatedCount = 1;
             foreach ($products as $item) {
                 if (isset($accessories[$item->getId()])) {
-                    $additionalData[$item->getId()] = \Kissmetrics\Manager::getProductEvent($item, $accessoriesCount);
+                    $additionalData[$item->getId()] = \Kissmetrics\Manager::getProductEvent($item, $accessoriesCount, 'Accessorize');
                     $accessoriesCount++;
                     $accessories[$item->getId()] = $item;
                 }
                 if (isset($related[$item->getId()])) {
-                    $additionalData[$item->getId()] = \Kissmetrics\Manager::getProductEvent($item, $relatedCount);
+                    $additionalData[$item->getId()] = \Kissmetrics\Manager::getProductEvent($item, $relatedCount, 'Also Bought');
                     $relatedCount++;
                     $related[$item->getId()] = $item;
                 }

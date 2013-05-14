@@ -32,7 +32,7 @@ class AccessoryAction {
                 'product'   => $accessory,
                 'isHidden'  => false,
                 'gaEvent'   => 'SmartEngine',
-                'additionalData'    =>  \Kissmetrics\Manager::getProductEvent($accessory, $begin),
+                'additionalData'    =>  \Kissmetrics\Manager::getProductEvent($accessory, $begin, 'Accessorize'),
             ));
             $begin++;
         }

@@ -97,14 +97,16 @@ class Manager {
     /**
      * @param \Model\Product\Entity $product
      * @param int $position
+     * @param string $type
      * @return array
      */
-    public static function getProductEvent($product, $position = 1) {
+    public static function getProductEvent($product, $position = 1, $type = '') {
         $return = [
             'place'     =>  'product',
             'article'   =>  $product->getArticle(),
             'name'      =>  $product->getName(),
             'position'  =>  $position,
+            'type'      =>  $type,
         ];
         return $return;
     }
