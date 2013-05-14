@@ -46,6 +46,15 @@ $productVideo = reset($productVideos);
       ];
   }
   $jsonAvailableShops = json_encode($availableShops, JSON_HEX_QUOT | JSON_HEX_APOS);
+
+  // инфо о товаре
+  $productData = [
+      'id'          => $product->getId(),
+      'token'       => $product->getToken(),
+      'article'     => $product->getArticle(),
+      'name'        => $product->getName(),
+      'isSupplied'  => $product->getState() ? $product->getState()->getIsSupplier() : false,
+  ];
 ?>
 <?
   $photoList = $product->getPhoto();
@@ -87,6 +96,8 @@ $productVideo = reset($productVideos);
   product_3d_small = <?= json_encode($p3d_res_small) ?>;
   product_3d_big = <?= json_encode($p3d_res_big) ?>;
 </script>
+
+<div id="productInfo" data-value="<?= $page->json($productData) ?>"></div>
 
 <!-- похожие товары -->
 <? if (!$product->getIsBuyable() && $product->getState()->getIsShop()  && \App::config()->smartengine['pull']): ?>
