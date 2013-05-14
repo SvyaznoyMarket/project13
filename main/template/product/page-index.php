@@ -505,8 +505,8 @@ $productVideo = reset($productVideos);
 
 <!-- product video pop-up -->
 <? if ($productVideo): ?>
-    <div id="productVideo" class="blackPopup">
-      <div class="close">X</div>
+    <div id="productVideo" class="blackPopup blackPopupVideo">
+      <div class="close"></div>
       <!-- <iframe width="640" height="360" src="http://rutube.ru/video/embed/6125142" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowfullscreen scrolling="no"></iframe>  -->
       <!--<iframe src="http://player.vimeo.com/video/58429056?badge=0" width="500" height="250" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>-->
       <div class="productVideo_iframe"><?= $productVideo->getContent() ?></div>

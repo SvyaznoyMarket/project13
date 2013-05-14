@@ -727,3 +727,23 @@ ul.lh15 li {
     }
   }
 }
+
+.blackPopupVideo.blackPopup {
+  border: 2px solid @firmOrange;
+  .rounded(6px);
+  .productVideo_iframe {
+    border: 2px solid @white;
+    .rounded(3px);
+    position: relative;
+    z-index: 2;
+    background: @white;
+  }
+  .close {
+    height: 39px;
+    right: -30px;
+    top: -11px;
+    width: 54px;
+    z-index: 1;
+    background: url("@{base-url}/common/img/bg_btn_closer.png") no-repeat 0px 0;
+    }
+}
