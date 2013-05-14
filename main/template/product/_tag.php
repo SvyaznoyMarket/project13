@@ -15,8 +15,7 @@ $category = $product->getParentCategory();
     <div class="pb25">
         <strong>Теги:</strong>
         <? if ($brand && $brand->getToken() && $category): ?>
-            <a href="<?= $page->url('product.category.brand', ['categoryPath' => $category->getPath(), 'brandToken' => $brand->getToken()]) ?>" class="underline" rel="nofollow"><?= $category->getName() . ' ' . $brand->getName() ?></a>
-            <? if ((bool)$tags): ?>, <? endif ?>
+            <a href="<?= $page->url('product.category.brand', ['categoryPath' => $category->getPath(), 'brandToken' => $brand->getToken()]) ?>" class="underline" rel="nofollow"><?= $category->getName() . ' ' . $brand->getName() ?></a><? if ((bool)$tags): ?>, <? endif ?>
         <? endif ?>
 
         <noindex>

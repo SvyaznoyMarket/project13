@@ -314,6 +314,46 @@ $(document).ready(function(){
 			_gaq.push(['_trackEvent', 'accessories_down', accessoriesMsg['atcl'], accessoriesMsg['uri'] ])
 	})
 
+	//KISS
+	$('.bigcarousel .goodsbox__inner').bind('click', function(){
+		var data = $(this).data('product')
+		switch (data.type) {
+			case 'Accessorize':
+				var toKISS = {
+					'Recommended Item Clicked Accessorize Recommendation Place':'product',
+					'Recommended Item Clicked Accessorize Clicked SKU':data.article,
+					'Recommended Item Clicked Accessorize Clicked Product Name':data.name,
+					'Recommended Item Clicked Accessorize Product Position':data.position
+				}
+				if (typeof(_kmq) !== 'undefined') {
+					_kmq.push(['record', 'Recommended Item Clicked Accessorize', toKISS])
+				}
+				break
+			case 'Also Bought':
+				var toKISS = {
+					'Recommended Item Clicked Also Bought Recommendation Place':'product',
+					'Recommended Item Clicked Also Bought Clicked SKU':data.article,
+					'Recommended Item Clicked Also Bought Clicked Product Name':data.name,
+					'Recommended Item Clicked Also Bought Product Position':data.position
+				}
+				if (typeof(_kmq) !== 'undefined') {
+					_kmq.push(['record', 'Recommended Item Clicked Also Bought', toKISS])
+				}
+				break
+			case 'Also Viewed':
+				var toKISS = {
+					'Recommended Item Clicked Also Viewed Recommendation Place':'product',
+					'Recommended Item Clicked Also Viewed Clicked SKU':data.article,
+					'Recommended Item Clicked Also Viewed Clicked Product Name':data.name,
+					'Recommended Item Clicked Also Viewed Product Position':data.position
+				}
+				if (typeof(_kmq) !== 'undefined') {
+					_kmq.push(['record', 'Recommended Item Clicked Also Viewed', toKISS])
+				}
+				break
+		}
+	})
+
 	/* F1 */
 	if( $('div.bF1Info').length ) {
 		var look    = $('div.bF1Info')
@@ -802,8 +842,10 @@ $(document).ready(function(){
 				'Add to Cart SKU':productData.article,
 				'Add to Cart SKU Quantity':productData.quantity,
 				'Add to Cart Product Name':productData.name,
-				'Add to Cart Root category':productData.category[0],
-				'Add to Cart Category name':productData.category[productData.category.length-1],
+				'Add to Cart Root category':productData.category[0].name,
+				'Add to Cart Root ID':productData.category[0].id,
+				'Add to Cart Category name':productData.category[productData.category.length-1].name,
+				'Add to Cart Category ID':productData.category[productData.category.length-1].id,
 				'Add to Cart SKU Price':productData.price,
 				'Add to Cart Page URL':nowUrl,
 				'Add to Cart F1 Quantity':productData.serviceQuantity,
@@ -814,15 +856,17 @@ $(document).ready(function(){
 			}
 		}
 		if (data.result.service){
-			var productData = data.result.product
+			var serviceData = data.result.service
 			var productData = data.result.product
 			var toKISS_serv = {
 				'Add F1 F1 Name':serviceData.name,
 				'Add F1 F1 Price':serviceData.price,
 				'Add F1 SKU':productData.article,
 				'Add F1 Product Name':productData.name,
-				'Add F1 Root category':productData.category[0],
-				'Add F1 Category name':productData.category[productData.category.length-1],
+				'Add F1 Root category':productData.category[0].name,
+				'Add F1 Root ID':productData.category[0].id,
+				'Add F1 Category name':productData.category[productData.category.length-1].name,
+				'Add F1 Category ID':productData.category[productData.category.length-1].id,
 			}
 			// console.log(toKISS_serv)
 			if (typeof(_kmq) !== 'undefined') {
@@ -837,8 +881,10 @@ $(document).ready(function(){
 				'Add Warranty Warranty Price':warrantyData.price,
 				'Add Warranty SKU':productData.article,
 				'Add Warranty Product Name':productData.name,
-				'Add Warranty Root category':productData.category[0],
-				'Add Warranty Category name':productData.category[productData.category.length-1],
+				'Add Warranty Root category':productData.category[0].name,
+				'Add Warranty Root ID':productData.category[0].id,
+				'Add Warranty Category name':productData.category[productData.category.length-1].name,
+				'Add Warranty Category ID':productData.category[productData.category.length-1].id,
 			}
 			// console.log(toKISS_wrnt)
 			if (typeof(_kmq) !== 'undefined') {
@@ -853,5 +899,20 @@ $(document).ready(function(){
 		})
 	}
 
+
+	// KISS view category
+	if ($('#_categoryData').length){
+		var data = $('#_categoryData').data('category')
+		var toKISS = {
+			'Viewed Category Category Type':data.type,
+			'Viewed Category Category Level':data.level,
+			'Viewed Category Parent category':data.parent_category,
+			'Viewed Category Category name':data.category,
+			'Viewed Category Category ID':data.id
+		}
+		if (typeof(_kmq) !== 'undefined') {
+			_kmq.push(['record', 'Viewed Category', toKISS]);
+		}
+	}
 })
 
