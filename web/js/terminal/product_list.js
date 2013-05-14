@@ -89,8 +89,11 @@ define('product_list',
 	 * @param  {object} data данные для рендеринга
 	 */
 	var renderItem = function(data){
-		if (pageType === 'product_model_list'){
+		if ((pageType === 'product_model_list')&&($('#categoryData').hasClass('mLine'))){
 			var html = new EJS ({url: '/js/terminal/view/listing_itemLine.ejs'}).render(data)
+		}
+		else if (pageType === 'product_model_list'){
+			var html = new EJS ({url: '/js/terminal/view/listing_itemModel.ejs'}).render(data)
 		}
 		else{
 			var html = new EJS ({url: '/js/terminal/view/listing_itemProduct.ejs'}).render(data)
@@ -119,7 +122,15 @@ define('product_list',
 	var preparedData = function(start, end){
 		currentRenderedItem = currentRenderedItem+(end-start)
 		for (var i = start; i< end; i++){
-			if (pageType === 'product_model_list'){
+			if ((pageType === 'product_model_list')&&($('#categoryData').hasClass('mLine'))){
+				var template = {
+					id : productData[i].id,
+					image : productData[i].image,
+					name : productData[i].name,
+					price : library.formatMoney(productData[i].price),
+				}
+			}
+			else if (pageType === 'product_model_list'){
 				var template = {
 					id : productData[i].line.id,
 					image : productData[i].image,
