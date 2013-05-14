@@ -6450,6 +6450,19 @@
     display: inline;
     float: none;
   }
+  .socnet-ico-box p {
+    float: left;
+    width: 500px;
+  }
+  .socnet-ico-box .socnet-ico-list {
+    float: right;
+  }
+  .socnet-ico-box .socnet-ico-list li {
+    float: right;
+    background: url("/css/order/img/img_ico_socnet.gif") no-repeat 0 0;
+    width: 30px;
+    height: 30px;
+  }
   /*.bSelect:hover .bSelect__eDropmenu {
     display: block;;
   }
