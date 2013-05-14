@@ -6459,9 +6459,33 @@
   }
   .socnet-ico-box .socnet-ico-list li {
     float: right;
+  }
+  .socnet-ico-box .socnet-ico-list li a {
+    float: right;
     background: url("/css/order/img/img_ico_socnet.gif") no-repeat 0 0;
     width: 30px;
     height: 30px;
+    display: block;
+  }
+  .socnet-ico-box .socnet-ico-list li.socnet-ico-list__tw a {
+    background-position: -32px 0;
+  }
+  .socnet-ico-box .socnet-ico-list li.socnet-ico-list__vk a {
+    background-position: -64px 0;
+  }
+  .socnet-ico-box .socnet-ico-list li.socnet-ico-list__yt a {
+    background-position: -94px 0;
+  }
+  .socnet-ico-box .socnet-ico-list li.socnet-ico-list__inst a {
+    background-position: -120px 0;
+  }
+  .socnet-ico-box .socnet-ico-list li.socnet-ico-list__fs a {
+    background-position: -152px 0;
+  }
+  .socnet-ico-box .socnet-ico-list li.socnet-ico-list__yam a {
+    background-position: -180px 0;
+    height: 36px;
+    width: 119px;
   }
   /*.bSelect:hover .bSelect__eDropmenu {
     display: block;;

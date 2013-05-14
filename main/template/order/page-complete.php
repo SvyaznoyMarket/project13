@@ -29,7 +29,8 @@ $isOrderAnalytics = isset($isOrderAnalytics) ? $isOrderAnalytics : true;
 <!-- /Header -->
 
 <? foreach ($orders as $order): ?>
-    <p class="font16">Спасибо за заказ!</p>
+    <p class="title-font16 font16">Сейчас он отправлен на склад для сборки!<br/>
+Ожидайте смс или звонок от оператора контакт-сEnter по статусу доставки!</p>
     <p class="font19">Номер заказа: <?= $order->getNumber() ?></p>
 
     <? if ($order->getDeliveredAt() instanceof \DateTime): ?>
@@ -49,15 +50,14 @@ $isOrderAnalytics = isset($isOrderAnalytics) ? $isOrderAnalytics : true;
 
 <? if (!$isCredit && !$isCorporative): ?>
 <div class="mt32 clearfix socnet-ico-box">
-    <p>Сейчас он отправлен на склад для сборки!<br />Ожидайте смс или звонок от оператора контакт-сEnter по статусу доставки!</p>
     <ul class="socnet-ico-list">
-        <li class="socnet-ico-list__fb"><a href="http://www.facebook.com/enter.ru"></a></li>
-        <li class="socnet-ico-list__tw"><a href="http://vk.com/youcanenter"></a></li>
-        <li class="socnet-ico-list__vk"><a href="http://twitter.com/enter_ru"></a></li>
-        <li class="socnet-ico-list__yt"><a href="http://www.youtube.com/user/EnterLLC"></a></li>
-        <li class="socnet-ico-list__inst"><a href="http://instagram.com/enterllc"></a></li>
-        <li class="socnet-ico-list__fs"><a href="http://ru.foursquare.com/enter_ru"></a></li>
-        <li class="socnet-ico-list__yam"><a href="http://www.enter.ru/market"></a></li>
+        <li class="socnet-ico-list__yam"><a target="_blank" href="http://www.enter.ru/market"></a></li>
+        <li class="socnet-ico-list__fs"><a target="_blank" href="http://ru.foursquare.com/enter_ru"></a></li>
+        <li class="socnet-ico-list__inst"><a target="_blank" href="http://instagram.com/enterllc"></a></li>
+        <li class="socnet-ico-list__yt"><a target="_blank" href="http://www.youtube.com/user/EnterLLC"></a></li>
+        <li class="socnet-ico-list__vk"><a target="_blank" href="http://vk.com/youcanenter"></a></li>
+        <li class="socnet-ico-list__tw"><a target="_blank" href="http://twitter.com/enter_ru"></a></li>
+        <li class="socnet-ico-list__fb"><a target="_blank" href="http://www.facebook.com/enter.ru"></a></li>
     </ul>
 
 </div>
