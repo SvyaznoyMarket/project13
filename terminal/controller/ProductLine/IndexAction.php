@@ -35,6 +35,9 @@ class IndexAction {
         $client = \App::coreClientV2();
         $user = \App::user();
 
+        $offset =  (int)$request->get('offset', 0);
+        $limit = (int)$request->get('limit', 32);
+
         // запрашиваем линию товаров по id
         $line = \RepositoryManager::line()->getEntityById($lineId);
 
@@ -42,11 +45,13 @@ class IndexAction {
             throw new \Exception\NotFoundException(sprintf('Линия товара #%s не найдена.', $lineId));
         }
 
+        $kitIds = array_slice($line->getKitId(), $offset, $limit);
+
         /** @var $collection \Model\Product\TerminalEntity[] */
         $collection = [];
         $entityClass = '\Model\Product\TerminalEntity';
-        if ((bool)$line->getKitId()) {
-            \RepositoryManager::product()->prepareCollectionById($line->getKitId(), $user->getRegion(), function($data) use(&$collection, $entityClass) {
+        if ((bool)$kitIds) {
+            \RepositoryManager::product()->prepareCollectionById($kitIds, $user->getRegion(), function($data) use(&$collection, $entityClass) {
                 foreach ($data as $item) {
                     $collection[] = new $entityClass($item);
                 }
