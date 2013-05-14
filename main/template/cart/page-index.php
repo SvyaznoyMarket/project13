@@ -25,7 +25,7 @@ $creditEnabled = ($cart->getTotalProductPrice() >= \App::config()->product['minC
 
 <?= $page->render('cart/form-certificate') ?>
 
-<div id="_cartKiss" style="display: none" data-cart="<?=$page->json(['count'=>(count($cart->getProducts() + $cart->getServices())), 'price'=>$cart->getSum()]);?>"></div>
+<div id="_cartKiss" style="display: none" data-cart="<?=$page->json(['count'=>(count($cart->getProducts()) + count($cart->getServices())), 'price'=>$cart->getSum()]);?>"></div>
 
 <div class="fl width345 font14">
     <? if ($creditEnabled): ?>
