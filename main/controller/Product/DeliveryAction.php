@@ -67,13 +67,17 @@ class DeliveryAction {
             foreach($productData['delivery_mode_list'] as $delivery) {
                 $date = reset($delivery['date_list']);
                 $date = $date['date'];
-
+                if (!is_object($date) || !is_a($date, 'DateTime')) {
+                    $dateObj = new \DateTime($date);
+                } else $dateObj = null;
                 $data[$productId][] = [
                     'typeId'           => $delivery['id'],
                     'date'             => $helper->humanizeDate($date),
                     'token'            => $delivery['token'],
                     'price'            => $delivery['price'],
                     'transportCompany' => \App::user()->getRegion()->getHasTransportCompany(),
+                    'days'             => $helper->getDaysDiff($date),
+                    'origin_date'      => $dateObj?$dateObj->format('d.m.Y'):$dateObj,
                 ];
             }
         }

@@ -40,7 +40,6 @@ class ProductAction {
 
             // обновить количество гарантий для товара
             if ($cartProduct && (bool)$cartProduct->getWarranty()) {
-
                 try {
                     $cartWarranties = $cartProduct->getWarranty();
                     /** @var $cartWarranty \Model\Cart\Warranty\Entity|null */
@@ -91,6 +90,7 @@ class ProductAction {
                         'old_price'     => $cart->getOriginalSum(),
                         'link'          => \App::router()->generate('order.create'),
                     ],
+                    'result'  => \Kissmetrics\Manager::getCartEvent($product),
                 ])
                 : new \Http\RedirectResponse($returnRedirect);
         } catch (\Exception $e) {

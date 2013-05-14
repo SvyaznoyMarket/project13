@@ -60,7 +60,7 @@
 
 <div id="mixmarket" class="jsanalytics"></div>
 <div id="marketgidOrderSuccess" class="jsanalytics"></div>
-
+<img src="http://rs.mail.ru/g632.gif" style="width:0;height:0;position:absolute;" alt=""/> 
 <?php $myThingsData = []; ?>
 <?php $fee = null; ?>
 <?php foreach ($orders as $order) {
