@@ -9,6 +9,7 @@
  * @var $productFilter          \Model\Product\Filter
  * @var $category               \Model\Product\Category\Entity|null
  * @var $productVideosByProduct array
+ * @var $isAddInfo              bool                                Показывать ли дополнительную информацию
  */
 
 $view = $request->get('view', isset($view) ? $view : null);
@@ -17,6 +18,7 @@ if (!isset($productSorting)) $productSorting = null;
 if (!isset($category)) $category = null;
 $filterData = isset($productFilter) ? http_build_query(array(\View\Product\FilterForm::$name => $productFilter->getValues())) : '';
 if (!isset($productVideosByProduct)) $productVideosByProduct = [];
+if (!isset($isAddInfo)) $isAddInfo = false;
 ?>
 
 <? if ('expanded' == $view) : ?>
@@ -47,7 +49,7 @@ if (!isset($productVideosByProduct)) $productVideosByProduct = [];
     <div class="line"></div>
 <? endif ?>
 
-<?= $page->render('product/_list', array('pager' => $pager, 'view' => $view, 'productVideosByProduct' => $productVideosByProduct)) ?>
+<?= $page->render('product/_list', array('pager' => $pager, 'view' => $view, 'productVideosByProduct' => $productVideosByProduct, 'isAddInfo' => $isAddInfo)) ?>
 
 <? if ($pager->hasPages()): ?>
 <div class="fr allpager mBtn" alt="все товары в категории" title="все товары в категории"

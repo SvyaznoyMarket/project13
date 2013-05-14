@@ -3,6 +3,7 @@
  * @var $page          \View\Layout
  * @var $product       \Model\Product\ExpandedEntity
  * @var $productVideos \Model\Product\Video\Entity[]
+ * @var $addInfo       array
  **/
 ?>
 
@@ -23,7 +24,7 @@ if (!isset($productVideos)) $productVideos = [];
 </style>
 
 <div class="goodsbox goodsline bNewGoodsBox" ref="<?= $product->getToken() ?>">
-    <div class="goodsboxlink" <? if ($product->getIsBuyable()): ?> data-cid="<?= $product->getId() ?>" <? endif ?>>
+    <div class="goodsboxlink" <? if ($product->getIsBuyable()): ?> data-cid="<?= $product->getId() ?>" <? endif ?> <?php if (count($addInfo)) print 'data-add="'.$page->json($addInfo).'"'; ?>>
         <div class="photo">
             <? if ((bool)$productVideos): ?><a class="goodsphoto_eVideoShield goodsphoto_eVideoShield_small" href="<?= $product->getLink() ?>"></a><? endif ?>
             <a href="<?= $product->getLink() ?>">

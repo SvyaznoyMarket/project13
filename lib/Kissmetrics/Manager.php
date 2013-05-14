@@ -97,6 +97,23 @@ class Manager {
     /**
      * @param \Model\Product\Entity $product
      * @param int $position
+     * @param int $page
+     * @return array
+     */
+    public static function getProductSearchEvent($product, $position = 1, $page = 1) {
+        $position = (($page - 1) * \App::config()->product['itemsPerPage']) + $position;
+        $return = [
+            'article'   =>  $product->getArticle(),
+            'name'      =>  $product->getName(),
+            'position'  =>  $position,
+            'page'      =>  $page,
+        ];
+        return $return;
+    }
+
+    /**
+     * @param \Model\Product\Entity $product
+     * @param int $position
      * @param string $type
      * @return array
      */

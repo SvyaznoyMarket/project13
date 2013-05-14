@@ -31,6 +31,8 @@ class BasicEntity {
     protected $parentCategory;
     /** @var Stock\Entity[] */
     protected $stock = [];
+    /** @var array */
+    protected $ean;
 
     public function __construct(array $data = []) {
         if (array_key_exists('id', $data)) $this->setId($data['id']);
@@ -53,6 +55,7 @@ class BasicEntity {
         if (array_key_exists('stock', $data) && is_array($data['stock'])) $this->setStock(array_map(function($data) {
             return new Stock\Entity($data);
         }, $data['stock']));
+        if (array_key_exists('ean', $data)) $this->setEan($data['ean']);
     }
 
     /**
@@ -278,4 +281,15 @@ class BasicEntity {
     public function getParentCategory() {
         return $this->parentCategory;
     }
+
+    public function setEan($ean)
+    {
+        $this->ean = $ean;
+    }
+
+    public function getEan()
+    {
+        return $this->ean;
+    }
+
 }
