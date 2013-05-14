@@ -40,8 +40,7 @@ class ServiceAction {
 
             // если в корзине нет товара
             if ($product && !$cart->hasProduct($product->getId())) {
-                $action = new ProductAction();
-                $action->set($product->getId(), $quantity, $request);
+                (new ProductAction())->set($product->getId(), $quantity, $request);
             }
 
             $service = \RepositoryManager::service()->getEntityById($serviceId, \App::user()->getRegion());
@@ -53,6 +52,7 @@ class ServiceAction {
 
             $cartService = null;
             if ($product && $cartProduct = $cart->getProductById($product->getId())) {
+                $cart->fill(); // костыль
                 $cartService = $cartProduct->getServiceById($service->getId());
             } else {
                 $cartService = $cart->getServiceById($service->getId());
@@ -69,6 +69,7 @@ class ServiceAction {
                         'old_price'     => $cart->getOriginalSum(),
                         'link'          => \App::router()->generate('order.create'),
                     ],
+                    'result'  => \Kissmetrics\Manager::getCartEvent($product, $service),
                 ])
                 : new \Http\RedirectResponse($request->headers->get('referer') ?: \App::router()->generate('homepage'));
         } catch (\Exception $e) {
