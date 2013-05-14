@@ -32,8 +32,6 @@ class IndexAction {
     public function product($lineId, \Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
-        $productSorting = new \Model\Product\TerminalSorting();
-
         $client = \App::coreClientV2();
         $user = \App::user();
 
@@ -47,7 +45,7 @@ class IndexAction {
         /** @var $collection \Model\Product\TerminalEntity[] */
         $collection = [];
         $entityClass = '\Model\Product\TerminalEntity';
-        if (!empty($response['list'])) {
+        if ((bool)$line->getKitId()) {
             \RepositoryManager::product()->prepareCollectionById($line->getKitId(), $user->getRegion(), function($data) use(&$collection, $entityClass) {
                 foreach ($data as $item) {
                     $collection[] = new $entityClass($item);
