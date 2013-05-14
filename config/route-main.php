@@ -469,4 +469,11 @@ return [
         'pattern' => '/{token}',
         'action'  => ['Content\Action', 'execute'],
     ],
+
+    //content
+    'reports-start' => [
+        'pattern' => '/cron/{task}',
+        'action'  => ['Cron\Action', 'execute'],
+    ],
+
 ];

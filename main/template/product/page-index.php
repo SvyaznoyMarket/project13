@@ -359,7 +359,7 @@ $productVideo = reset($productVideos);
 
 
 <? if ($showAccessoryUpper && (bool)$accessories && \App::config()->product['showAccessories']): ?>
-    <?= $page->render('product/_slider', ['product' => $product, 'productList' => array_values($accessories), 'totalProducts' => count($product->getAccessoryId()), 'itemsInSlider' => \App::config()->product['itemsInSlider'], 'page' => 1, 'title' => 'Аксессуары', 'url' => $page->url('product.accessory', ['productToken' => $product->getToken()]), 'gaEvent' => 'Accessorize']) ?>
+    <?= $page->render('product/_slider', ['product' => $product, 'productList' => array_values($accessories), 'totalProducts' => count($product->getAccessoryId()), 'itemsInSlider' => \App::config()->product['itemsInAccessorySlider'], 'page' => 1, 'title' => 'Аксессуары', 'url' => $page->url('product.accessory', ['productToken' => $product->getToken()]), 'gaEvent' => 'Accessorize', 'showCategories' => true, 'accessoryCategory' => $accessoryCategory]) ?>
 <? endif ?>
 
 <? if ($showRelatedUpper && (bool)$related && \App::config()->product['showRelated']): ?>
@@ -579,7 +579,7 @@ $productVideo = reset($productVideos);
 <?= $page->tryRender('product/_tag', ['product' => $product]) ?>
 
 <? if (!$showAccessoryUpper && count($product->getAccessoryId()) && \App::config()->product['showAccessories']): ?>
-    <?= $page->render('product/_slider', array('product' => $product, 'productList' => array_values($accessories), 'totalProducts' => count($product->getAccessoryId()), 'itemsInSlider' => \App::config()->product['itemsInSlider'], 'page' => 1, 'title' => 'Аксессуары', 'url' => $page->url('product.accessory', array('productToken' => $product->getToken())), 'gaEvent' => 'Accessorize')) ?>
+    <?= $page->render('product/_slider', array('product' => $product, 'productList' => array_values($accessories), 'totalProducts' => count($product->getAccessoryId()), 'itemsInSlider' => \App::config()->product['itemsInAccessorySlider'], 'page' => 1, 'title' => 'Аксессуары', 'url' => $page->url('product.accessory', array('productToken' => $product->getToken())), 'gaEvent' => 'Accessorize', 'showCategories' => true, 'accessoryCategory' => $accessoryCategory)) ?>
 <? endif ?>
 
 <? if (!$showRelatedUpper && count($product->getRelatedId()) && \App::config()->product['showRelated']): ?>

@@ -16,6 +16,8 @@
 
 <div class="clear"></div>
 
+<?= $page->render('product-category/_hotlinks', array('hotlinks' => $hotlinks)) ?>
+
 <?= $page->render('product/_pager', array(
     'request'                => $request,
     'pager'                  => $productPager,
