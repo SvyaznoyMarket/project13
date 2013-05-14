@@ -154,6 +154,12 @@
   .green {
     color: #6ea428;
   }
+  hr.orange {
+    color:#ffa901;
+    background-color:#ffa901;
+    height: 1px;
+    border-width:0px;
+  }
   .motton,
   a.motton:hover {
     color: #4fcbf4;
@@ -313,6 +319,9 @@
   .mt5 {
     margin-top: 5px;
   }
+  .mt15 {
+    margin-top: 15px;
+  }
   .mt-30 {
     margin-top: -30px;
   }
@@ -321,6 +330,9 @@
   }
   .ml5 {
     margin-left: 5px;
+  }
+  .ml10 {
+    margin-left: 10px;
   }
   .ml20 {
     margin-left: 20px;
@@ -4826,10 +4838,30 @@
     background: #ffffff url("/css/item/img/itemSprite.png") 100% -135px no-repeat;
     cursor: default;
   }
+  .categoriesmenu {
+    float: left;
+    width: 180px;
+    padding-right: 2px;
+    border-right: 2px solid #ddd;
+  }
+  .categoriesmenuitem {
+    margin-bottom: 10px;
+  }
+  .categoriesmenuitem.active {
+    padding: 3px 5px;
+    background-color: #ddd;
+  }
+  .link {
+    cursor: pointer;
+    text-decoration: none;
+  }
+  .link:hover {
+    text-decoration: underline;
+  }
   .bigcarousel {
     float: left;
     margin-right: -15px;
-    width: 935px;
+    width: 750px;
   }
   .bigcarousel .goodsbox {
     margin-bottom: 14px;

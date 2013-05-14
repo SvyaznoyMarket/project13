@@ -146,6 +146,35 @@ class Repository {
     }
 
     /**
+     * @param array $tokens
+     * @param \Model\Region\Entity $region
+     * @return Entity[]
+     */
+    public function getCollectionByToken(array $tokens, \Model\Region\Entity $region = null) {
+        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
+
+        if (!(bool)$tokens) return [];
+
+        $client = clone $this->client;
+
+        $collection = [];
+        $entityClass = $this->entityClass;
+        $client->addQuery('category/get', [
+            'select_type' => 'slug',
+            'slug'        => $tokens,
+            'geo_id'      => $region ? $region->getId() : \App::user()->getRegion()->getId(),
+        ], [], function($data) use (&$collection, $entityClass) {
+            foreach ($data as $entity) {
+                $collection[] = new $entityClass($entity);
+            }
+        });
+
+        $client->execute(\App::config()->coreV2['retryTimeout']['short'], \App::config()->coreV2['retryCount']);
+
+        return $collection;
+    }
+
+    /**
      * @return Entity[]
      */
     public function getRootCollection() {
@@ -326,4 +355,64 @@ class Repository {
             $iterateLevel($data);
         });
     }
+
+
+    /**
+     * Получает SEO-данные для категории из json
+     * Возвращает массив с SEO-данными
+     *
+     * @param $category
+     * @param $folder
+     * @param $brand
+     * @return array
+     */
+    public static function getSeoJson($category, $brand = null) {
+        // формируем ветку категорий для последующего формирования запроса к json-апи
+        $branch = [$category->getToken()];
+        if(!$category->isRoot()) {
+            $currentCategory = $category;
+            while($parent = $currentCategory->getParent()) {
+                array_unshift($branch, $parent->getToken());
+                $currentCategory = $parent;
+            }
+            array_unshift($branch, $category->getRoot()->getToken());
+        }
+
+        // формируем запрос к апи и получаем json с SEO-данными
+        $seoJson = [];
+
+        $dataStore = \App::dataStoreClient();
+        $query = sprintf('seo/'.($brand ? 'brand' : 'catalog').'/%s.json', implode('/', $branch).(empty($brand) ? '' : '-'.$brand->getToken()));
+        $dataStore->addQuery($query, [], function ($data) use (&$seoJson) {
+            if($data) $seoJson = $data;
+        });
+        
+        // данные для шаблона
+        $patterns = [
+            'категория' => [$category->getName()],
+            'сайт'      => null,
+        ];
+        if ($brand) {
+            $patterns['бренд'] = [$brand->getName()];
+        }
+
+        $dataStore->addQuery('inflect/сайт.json', [], function($data) use (&$patterns) {
+            if ($data) $patterns['сайт'] = $data;
+        });
+
+        $dataStore->execute();
+
+        if(!empty($seoJson['content'])) {
+            $replacer = new \Util\InflectReplacer($patterns);
+            foreach ($seoJson['content'] as $key => $content) {
+                if ($value = $replacer->get($seoJson['content'][$key])) {
+                    $seoJson['content'][$key] = $value;
+                }
+            }
+        }
+
+        return empty($seoJson) ? [] : $seoJson;
+    }
+
+
 }

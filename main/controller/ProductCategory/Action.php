@@ -243,16 +243,31 @@ class Action {
         // фильтры
         $productFilter = $this->getFilter($filters, $category, $brand, $request);
 
+        // получаем из json данные о горячих ссылках и content
+        $seoCatalogJson = \Model\Product\Category\Repository::getSeoJson($category);
+        $hotlinks = empty($seoCatalogJson['hotlinks']) ? [] : $seoCatalogJson['hotlinks'];
+        // в json-файле в свойстве content содержится массив
+        if(empty($brand)) {
+            $seoContent = empty($seoCatalogJson['content']) ? '' : implode('<br>', $seoCatalogJson['content']);
+        } else {
+            $seoBrandJson = \Model\Product\Category\Repository::getSeoJson($category, $brand);
+            $seoContent = empty($seoBrandJson['content']) ? '' : implode('<br>', $seoBrandJson['content']);
+        }
+
         $setPageParameters = function(\View\Layout $page) use (
             &$category,
             &$regionsToSelect,
             &$productFilter,
-            &$brand
+            &$brand,
+            &$hotlinks,
+            &$seoContent
         ) {
             $page->setParam('category', $category);
             $page->setParam('regionsToSelect', $regionsToSelect);
             $page->setParam('productFilter', $productFilter);
             $page->setParam('brand', $brand);
+            $page->setParam('hotlinks', $hotlinks);
+            $page->setParam('seoContent', $seoContent);
         };
 
         // если категория содержится во внешнем узле дерева
@@ -299,6 +314,8 @@ class Action {
         if (!$category->getHasChild()) {
             throw new \Exception(sprintf('У категории "%s" отстутсвуют дочерние узлы', $category->getId()));
         }
+
+        $page->setParam('sidebarHotlinks', true);
 
         $page->setParam('myThingsData', [
             'EventType' => 'MyThings.Event.Visit',
@@ -373,6 +390,7 @@ class Action {
 
         $page->setParam('productPagersByCategory', $productPagersByCategory);
         $page->setParam('productVideosByProduct', $productVideosByProduct);
+        $page->setParam('sidebarHotlinks', true);
 
         $myThingsData = array(
             'EventType' => 'MyThings.Event.Visit',
@@ -471,6 +489,7 @@ class Action {
         $page->setParam('productSorting', $productSorting);
         $page->setParam('productView', $productView);
         $page->setParam('productVideosByProduct', $productVideosByProduct);
+        $page->setParam('sidebarHotlinks', false);
 
         $page->setParam('myThingsData', [
             'EventType'   => 'MyThings.Event.Visit',

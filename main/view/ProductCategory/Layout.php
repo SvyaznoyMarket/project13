@@ -99,7 +99,6 @@ class Layout extends \View\DefaultLayout {
         return 'product_catalog';
     }
 
-
     public function slotSidebar() {
         return $this->render('product-category/_sidebar', $this->params);
     }

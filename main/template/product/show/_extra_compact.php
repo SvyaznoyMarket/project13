@@ -1,10 +1,11 @@
 <?php
 /**
- * @var $page      \View\Layout
- * @var $product   \Model\Product\CompactEntity
- * @var $isHidden  bool
- * @var $maxHeight bool
- * @var $gaEvent   string
+ * @var $page       \View\Layout
+ * @var $product    \Model\Product\CompactEntity
+ * @var $isHidden   bool
+ * @var $maxHeight  bool
+ * @var $gaEvent    string
+ * @var $totalPages int
  * */
 ?>
 
@@ -14,7 +15,7 @@ $maxHeight = isset($maxHeight) && $maxHeight;
 $gaEvent = isset($gaEvent) ? $gaEvent : null;
 ?>
 
-<div class="goodsbox<? if ($maxHeight): ?> height220<? endif ?>"<? if ($isHidden): ?> style="display:none;"<? endif ?> ref="<?php echo $product->getToken(); ?>">
+<div class="goodsbox<? if ($maxHeight): ?> height220<? endif ?>"<? if ($isHidden): ?> style="display:none;"<? endif ?> ref="<?php echo $product->getToken(); ?>" data-quantity="<?php echo empty($totalProducts) ? '' : $totalProducts; ?>" data-category="<?php echo empty($categoryToken) ? '' : $categoryToken; ?>" data-total-pages="<?php echo empty($totalPages) ? '' : $totalPages; ?>" data-category="<?php echo empty($categoryToken) ? '' : $categoryToken; ?>">
     <div class="goodsbox__inner" data-url="<?= $product->getLink() ?>">
     	<div class="photo">
 			<a href="<?php echo $product->getLink() ?>"<?php if (!empty($gaEvent)) echo ' data-event="'.$gaEvent.'" data-title="Переход по ссылке" class="gaEvent"'; ?>>
