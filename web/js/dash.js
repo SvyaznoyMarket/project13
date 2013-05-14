@@ -893,5 +893,20 @@ $(document).ready(function(){
 		})
 	}
 
+
+	// KISS view category
+	if ($('#_categoryData').length){
+		var data = $('#_categoryData').data('category')
+		var toKISS = {
+			'Viewed Category Category Type':data.type,
+			'Viewed Category Category Level':data.level,
+			'Viewed Category Parent category':data.parent_category,
+			'Viewed Category Category name':data.category,
+			'Viewed Category Category ID':data.id
+		}
+		if (typeof(_kmq) !== 'undefined') {
+			_kmq.push(['record', 'Viewed Category', toKISS]);
+		}
+	}
 })
 
