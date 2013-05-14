@@ -110,6 +110,24 @@ class Manager {
     }
 
     /**
+     * @param \Model\Product\Category\Entity $category
+     * @return array
+     */
+    public static function getCategoryEvent($category) {
+        if ($category->isRoot()) {
+            $type = 'category';
+        } else $type = 'listing';
+        $return = [
+            'type'              =>  $type,
+            'level'             =>  $category->getLevel(),
+            'parent_category'   =>  $category->getParent()?$category->getParent()->getName():$category->getName(),
+            'category'          =>  $category->getName(),
+            'id'                =>  $category->getId(),
+        ];
+        return $return;
+    }
+
+    /**
      * @param \Model\Order\Entity[] $orders
      * @return array
      */
