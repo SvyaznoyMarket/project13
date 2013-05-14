@@ -60,6 +60,7 @@ class WarrantyAction {
 
             $cartWarranty = null;
             if ($product && $cartProduct = $cart->getProductById($product->getId())) {
+                $cart->fill(); // костыль
                 $cartWarranty = $cartProduct->getWarrantyById($warranty->getId());
             } else {
                 $cartWarranty = $cart->getWarrantyById($warranty->getId());
@@ -76,6 +77,7 @@ class WarrantyAction {
                         'old_price'     => $cart->getOriginalSum(),
                         'link'          => \App::router()->generate('order.create'),
                     ],
+                    'result'  => \Kissmetrics\Manager::getCartEvent($product, null, $warranty),
                 ])
                 : new \Http\RedirectResponse($request->headers->get('referer') ?: \App::router()->generate('homepage'));
         } catch (\Exception $e) {

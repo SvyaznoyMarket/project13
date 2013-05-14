@@ -347,12 +347,36 @@ $(document).ready(function() {
     var Model = $('#order-delivery_map-data').data('value')
     // Check Consistency TODO
 
-    // GA items count log
+    // analitycs
+    // console.log(Model.items)
+    var items_num = 0
+    var price = 0
+    var totalPrice = 0
+    var totalQuan = 0
+    var f1total = 0
+    var warrTotal = 0
+    $.each(Model.items, function(i, product){
+        items_num += product.quantity
+        price += product.price
+        totalPrice += product.total
+        totalQuan += product.quantity
+        f1total += product.serviceQ
+        warrTotal += product.warrantyQ
+    })
+    var toKISS = {
+        'Checkout Step 1 SKU Quantity':totalQuan,
+        'Checkout Step 1 SKU Total':price,
+        'Checkout Step 1 F1 Quantity':f1total,
+        'Checkout Step 1 Warranty Quantity':warrTotal,
+        'Checkout Step 1 F1 Total':totalPrice - price,
+        'Checkout Step 1 Order Total':totalPrice,
+        'Checkout Step 1 Order Type':'cart order',
+    }
     if (typeof(_gaq) !== 'undefined') {
-        $.each(Model.items, function(i, product){
-            items_num += product.quantity
-        })
         _gaq.push(['_trackEvent', 'New order', 'Items', items_num]);
+    }
+    if (typeof(_kmq) !== 'undefined') {
+        _kmq.push(['record', 'Checkout Step 1', toKISS])
     }
 
     function OrderModel() {
@@ -611,9 +635,23 @@ $(document).ready(function() {
         self.deleteItem = function( box, d, e ) {
             // ajax del
             $.get( d.deleteUrl, function(){
-                // GA
-                if (typeof(_gaq) !== 'undefined')
-                    _gaq.push(['_trackEvent', 'Order card', 'Item deleted']);
+                // Analitycs
+
+                toKISS_del = {
+                    'Checkout Step 1 SKU Quantity':d.quantity,
+                    'Checkout Step 1 SKU Total':d.price,
+                    'Checkout Step 1 F1 Quantity':d.serviceQ,
+                    'Checkout Step 1 Warranty Quantity':d.warrantyQ,
+                    'Checkout Step 1 F1 Total':d.total - d.price,
+                    'Checkout Step 1 Order Total':box.totalPrice() - d.total,
+                }
+
+                if (typeof(_kmq) !== 'undefined'){
+                    _kmq.push(['set', toKISS_del])
+                }
+                if (typeof(_gaq) !== 'undefined'){
+                    _gaq.push(['_trackEvent', 'Order card', 'Item deleted'])
+                }
                 // drop from box
                 box.itemList.remove( d )
                 if( !box.itemList().length )
@@ -1038,6 +1076,8 @@ $(document).ready(function() {
                     return
                 }
                 Blocker.bye()
+
+                // analitycs
                 if (typeof(_gaq) !== 'undefined') {
                     for (var i in MVM.getServerModel().deliveryTypes){
                         var tmpLog = 'выбрана '+nowDelivery+' доставят '+MVM.getServerModel().deliveryTypes[i].type
@@ -1048,6 +1088,103 @@ $(document).ready(function() {
                     var endAjaxOrderTime = new Date().getTime()
                     var AjaxOrderSpent = endAjaxOrderTime - startAjaxOrderTime
                     _gaq.push(['_trackTiming', 'Order complete', 'DB response', AjaxOrderSpent])
+                }
+
+                var phoneNumber = '8' + $('#order_recipient_phonenumbers').val().replace(/\D/g, "")
+                var emailVal = $('#order_recipient_email').val()
+                
+                /**
+                 * Стоимость доставки
+                 * @type {Number}
+                 */
+                var dlvr_total = 0
+
+                $.each(MVM.dlvrBoxes(), function(i, product){
+                    dlvr_total += product.dlvrPrice()
+                })
+
+                /**
+                 * количество товаров
+                 * @type {Number}
+                 */
+                var itemQ = 0
+                /**
+                 * Стоимость всех товаров
+                 * @type {Number}
+                 */
+                var itemT = 0
+                /**
+                 * Количество услуг
+                 * @type {Number}
+                 */
+                var servQ = 0
+                /**
+                 * Стоимость всех услуг
+                 * @type {Number}
+                 */
+                var servT = 0
+                /**
+                 * Количество расширенных гарантий
+                 * @type {Number}
+                 */
+                var warrQ = 0
+                /**
+                 * Стоимость всех расширенных гарантий
+                 * @type {Number}
+                 */
+                var warrT = 0
+
+                for( var tkn in MVM.dlvrBoxes() ) {
+                    var dlvr = MVM.dlvrBoxes()[tkn]
+                    for( var i in dlvr.itemList() ){
+                        itemQ += dlvr.itemList()[i].quantity
+                        itemT += dlvr.itemList()[i].price
+                        servQ += dlvr.itemList()[i].serviceQ
+                        servT += dlvr.itemList()[i].serviceTotal
+                        warrQ += dlvr.itemList()[i].warrantyQ
+                        warrT += dlvr.itemList()[i].warrantyTotal
+                    }
+                }
+                var toKISS_complete = {
+                    'Checkout Complete Order ID':data.orderNumber, 
+                    'Checkout Complete SKU Quantity':itemQ,
+                    'Checkout Complete SKU Total':itemT,
+                    'Checkout Complete F1 Quantity':servQ,
+                    'Checkout Complete F1 Total':servT,
+                    'Checkout Complete Warranty Quantity':warrQ,
+                    'Checkout Complete Warranty Total':warrT,
+                    'Checkout Complete Order Subtotal':itemT + servT + warrT,
+                    'Checkout Complete Delivery Total':parseInt(dlvr_total),
+                    'Checkout Complete Order Total':MVM.totalSum(),
+                    'Checkout Complete Order Type':'cart order',
+                    'Checkout Complete Delivery':nowDelivery,
+                    'Checkout Complete Payment':data.paymentMethodId,
+                }
+                // console.log(toKISS_complete)
+
+                if ((typeof(_kmq) !== 'undefined') && (KM !== 'undefined')) {
+                    _kmq.push(['alias', phoneNumber, KM.i()]);
+                    _kmq.push(['alias', emailVal, KM.i()]);
+                    _kmq.push(['identify', phoneNumber]);
+                    _kmq.push(['record', 'Checkout Complete', toKISS_complete])
+                    for( var tkn in MVM.dlvrBoxes() ) {
+                        var dlvr = MVM.dlvrBoxes()[tkn]
+                        for( var i in dlvr.itemList() ){
+                            var toKISS_pr =  {
+                                'Checkout Complete SKU':dlvr.itemList()[i].article,
+                                'Checkout Complete SKU Quantity':dlvr.itemList()[i].quantity,
+                                'Checkout Complete F1 Quantity':dlvr.itemList()[i].serviceQ,
+                                'Checkout Complete F1 Total':dlvr.itemList()[i].serviceTotal,
+                                'Checkout Complete Warranty Quantity':dlvr.itemList()[i].warrantyQ,
+                                'Checkout Complete Warranty Total':dlvr.itemList()[i].warrantyTotal,
+                                'Checkout Complete Parent category':dlvr.itemList()[i].parent_category,
+                                'Checkout Complete Category name':dlvr.itemList()[i].categoty,
+                                '_t':KM.ts() + tkn + i  ,
+                                '_d':1,
+                            }
+                            _kmq.push(['set', toKISS_pr])
+                        }
+                    }
                 }
 
                 if (typeof(yaCounter10503055) !== 'undefined')
