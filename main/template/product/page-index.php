@@ -54,6 +54,14 @@ $productVideo = reset($productVideos);
       'article'     => $product->getArticle(),
       'name'        => $product->getName(),
       'isSupplied'  => $product->getState() ? $product->getState()->getIsSupplier() : false,
+      'stockState'  =>
+          $product->getIsBuyable()
+          ? 'in stock'
+          : (
+              ($product->getState() && $product->getState()->getIsShop())
+              ? 'at shop'
+              : 'out of stock'
+          ),
   ];
 ?>
 <?
