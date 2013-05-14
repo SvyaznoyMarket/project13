@@ -472,6 +472,12 @@ $(document).ready(function(){
 
   $('#signin_password').warnings()
 
+	$('#bUserlogoutLink').live('click', function(){
+		if (typeof(_kmq) !== 'undefined') {
+			_kmq.push(['clearIdentity']);
+		}
+	})
+
   $('#login-form, #register-form')
 	.data('redirect', true)
 	.bind('submit', function(e, param) {
@@ -489,6 +495,14 @@ $(document).ready(function(){
           		if ( typeof(_gaq) !== 'undefined' ){
 					var type = ((form.find('#signin_username').val().search('@')) != -1)?'email':'mobile'
 					_gaq.push(['_trackEvent', 'Account', 'Log in', type, window.location.href]);
+				}
+				if (typeof(_kmq) !== 'undefined') {
+					_kmq.push(['identify', form.find('#signin_username').val() ]);
+				}
+          	}
+          	else{
+          		if (typeof(_kmq) !== 'undefined') {
+					_kmq.push(['identify', form.find('#register_username').val() ]);
 				}
           	}
             if ( form.data('redirect') ) {
@@ -717,8 +731,7 @@ $(document).ready(function(){
                 type: 'POST',
                 global: false,
                 url: '/log-json',
-                data: data,
-                error: console.log('log err')
+                data: data
             })
         }
 	}
@@ -1643,7 +1656,7 @@ $(document).ready(function(){
 								that.self = dlvr.date
 								break
 							default:
-								that.other.push( { date: dlvr.date, price: dlvr.price, tc: ( typeof(dlvr.transportCompany) !== 'undefined') ? dlvr.transportCompany : false } )
+								that.other.push( { date: dlvr.date, price: dlvr.price, tc: ( typeof(dlvr.transportCompany) !== 'undefined') ? dlvr.transportCompany : false, days: dlvr.days, origin_date:dlvr.origin_date } )
 						}
 					}
 					that.processHTML( coreid[i] )
@@ -1684,6 +1697,11 @@ $(document).ready(function(){
     if ( $('.delivery-info').length ) { // Product Card
     	var dlvr_node = $('.delivery-info')
     	var dajax = new dlvrajax()
+    	var isSupplied = false
+    	if ($('#productInfo').length){
+    		var prData = $('#productInfo').data('value')
+    		isSupplied = prData.isSupplied
+    	}
     	dajax.node = dlvr_node
     	dlvrajax.prototype.processHTML = function( id ) {
 			var self = this.self,
@@ -1694,8 +1712,9 @@ $(document).ready(function(){
 						self + '</h5><div>&mdash; <a target="blank" href="' +
 						dlvr_node.data('shoplink') + '">В каких магазинах ENTER можно забрать?</a></div></li>'	
 			// console.log(other.length)
-			if( other.length > 0 )
+			if( other.length > 0 ){
 				html += '<li><h5>Можно заказать сейчас с доставкой</h5>'
+			}
 			for(var i in other) {
 				// console.info(other[i].date)
 				// console.info(this.formatPrice(other[i].price))
@@ -1706,8 +1725,13 @@ $(document).ready(function(){
 					html += '<div>&mdash; <a href="/how_get_order">Доставка осуществляется партнерскими транспортными компаниями</a></div>'
 				}
 			}
-
-			html += '</ul>'
+			if( other.length > 0 && isSupplied){
+				html = '<h4>Доставка</h4><p>Через ~'+other[0].days+' дней<br/>планируемая дата поставки '+other[0].origin_date+'</p><p>Оператор контакт-cENTER согласует точную дату за 2-3 дня</p><p class="price">'+other[i].price+' <span class="rubl">p</span></p>'
+			}
+			else{
+				html += '</ul>'	
+			}
+			
 			dlvr_node.html(html)
 		}
     

@@ -371,6 +371,7 @@ $(document).ready(function(){
 				if( isInCart )
 					tmpitem.f1.only = 'yes'
 				ltbx.getBasket( tmpitem )
+				kissAnalytics(data)
 				if( !isInCart ) {
 					isInCart = true
 					markPageButtons()
@@ -528,6 +529,7 @@ $(document).ready(function(){
 								tmpitem.vitems = data.data.full_quantity
 								tmpitem.sum = data.data.full_price
 								ltbx.getBasket( tmpitem )
+								kissAnalytics(data)
 							}	
 						})
 						//lightbox.getBasket( itemdata )
@@ -585,6 +587,7 @@ $(document).ready(function(){
                 if( isInCart )
                     tmpitem.f1.only = 'yes'
                 ltbx.getBasket( tmpitem )
+                kissAnalytics(ext_data)
                 if( !isInCart ) {
                     isInCart = true
                     markPageButtons()
@@ -671,6 +674,7 @@ $(document).ready(function(){
 				tmpitem.sum = data.data.full_price
 				tmpitem.link = data.data.link
 				ltbx.getBasket( tmpitem )
+				kissAnalytics(data)
 				$(button).attr('href', $('.lightboxinner .point2').attr('href') )
 				$(button).addClass('active')
 				PubSub.publish( 'productBought', currentItem )
@@ -776,6 +780,7 @@ $(document).ready(function(){
 							'link'  : data.data.link
 						}
 						ltbx.getBasket( tmpitem )
+						kissAnalytics(data)
 						if( afterpost )
 							afterpost()
 						PubSub.publish( 'productBought', tmpitem )
@@ -788,6 +793,59 @@ $(document).ready(function(){
 		}
 
 	} // object BuyBottons
+
+	var kissAnalytics = function(data){
+		if (data.result.product){
+			var productData = data.result.product
+			var nowUrl = window.location.href
+			var toKISS_pr = {
+				'Add to Cart SKU':productData.article,
+				'Add to Cart SKU Quantity':productData.quantity,
+				'Add to Cart Product Name':productData.name,
+				'Add to Cart Root category':productData.category[0],
+				'Add to Cart Category name':productData.category[productData.category.length-1],
+				'Add to Cart SKU Price':productData.price,
+				'Add to Cart Page URL':nowUrl,
+				'Add to Cart F1 Quantity':productData.serviceQuantity,
+			}
+			// console.log(toKISS_pr)
+			if (typeof(_kmq) !== 'undefined') {
+				_kmq.push(['record', 'Add to Cart', toKISS_pr ])
+			}
+		}
+		if (data.result.service){
+			var productData = data.result.product
+			var productData = data.result.product
+			var toKISS_serv = {
+				'Add F1 F1 Name':serviceData.name,
+				'Add F1 F1 Price':serviceData.price,
+				'Add F1 SKU':productData.article,
+				'Add F1 Product Name':productData.name,
+				'Add F1 Root category':productData.category[0],
+				'Add F1 Category name':productData.category[productData.category.length-1],
+			}
+			// console.log(toKISS_serv)
+			if (typeof(_kmq) !== 'undefined') {
+				_kmq.push(['record', 'Add F1', toKISS_serv ])
+			}
+		}
+		if (data.result.warranty){
+			var warrantyData = data.result.warranty
+			var productData = data.result.product
+			var toKISS_wrnt = {
+				'Add Warranty Warranty Name':warrantyData.name,
+				'Add Warranty Warranty Price':warrantyData.price,
+				'Add Warranty SKU':productData.article,
+				'Add Warranty Product Name':productData.name,
+				'Add Warranty Root category':productData.category[0],
+				'Add Warranty Category name':productData.category[productData.category.length-1],
+			}
+			// console.log(toKISS_wrnt)
+			if (typeof(_kmq) !== 'undefined') {
+				_kmq.push(['record', 'Add Warranty', toKISS_wrnt ])
+			}
+		}
+	}
 
 	// analytics HAS YOU
 	if( 'ANALYTICS' in window ) {
