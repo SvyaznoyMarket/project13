@@ -914,5 +914,32 @@ $(document).ready(function(){
 			_kmq.push(['record', 'Viewed Category', toKISS]);
 		}
 	}
+
+	// KISS Search
+	if ( $('#_searchKiss').length){
+		var data = $('#_searchKiss').data('search')
+		var toKISS = {
+			'Search String':data.query,
+			'Search Page URL':data.url,
+			'Search Items Found':data.count
+		}
+		if (typeof(_kmq) !== 'undefined') {
+			_kmq.push(['record', 'Search', toKISS]);
+		}
+
+		$('.goodsbox__inner').live('click', function(){
+			var productData = $(this).data('add')
+			var prToKISS = {
+				'Search Results Clicked Search String':data.query,
+				'Search Results Clicked SKU':productData.article,
+				'Search Results Clicked Product Name':productData.name,
+				'Search Results Clicked Page Number':productData.page,
+				'Search Results Clicked Product Position':productData.position,
+			}
+			if (typeof(_kmq) !== 'undefined') {
+				_kmq.push(['record', 'Search Results Clicked',  toKISS]);
+			}
+		})
+	}
 })
 
