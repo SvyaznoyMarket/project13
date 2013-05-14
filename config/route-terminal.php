@@ -20,6 +20,7 @@ return [
         'action'  => ['ProductCategory\IndexAction', 'execute'],
         'require' => ['categoryId' => '[\d]+'],
     ],
+    // товары в категории
     'category.product' => [
         'pattern' => '/catalog/{categoryId}/product',
         'action'  => ['ProductCategory\IndexAction', 'product'],
@@ -30,5 +31,17 @@ return [
         'pattern' => '/catalog/{categoryId}/model',
         'action'  => ['ProductCategory\ModelAction', 'execute'],
         'require' => ['categoryId' => '[\d]+'],
+    ],
+    // линия товара
+    'line.show' => [
+        'pattern' => '/line/{lineId}',
+        'action'  => ['ProductLine\IndexAction', 'execute'],
+        'require' => ['lineId' => '[\d]+'],
+    ],
+    // товары в линии
+    'line.product' => [
+        'pattern' => '/line/{lineId}/product',
+        'action'  => ['ProductLine\IndexAction', 'product'],
+        'require' => ['lineId' => '[\d]+'],
     ],
 ];

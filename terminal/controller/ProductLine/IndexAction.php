@@ -1,38 +1,35 @@
 <?php
 
-namespace Terminal\Controller\ProductCategory;
+namespace Terminal\Controller\ProductLine;
 
 class IndexAction {
     /**
-     * @param $categoryId
+     * @param $lineId
      * @param \Http\Request $request
      * @throws \Exception\NotFoundException
      * @return \Http\Response
      */
-    public function execute($categoryId, \Http\Request $request) {
+    public function execute($lineId, \Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
-        $category = \RepositoryManager::productCategory()->getEntityById($categoryId);
-        if (!$category) {
-            throw new \Exception\NotFoundException(sprintf('Категория #% не найдена', $category->getId()));
+        $line = \RepositoryManager::line()->getEntityById($lineId);
+        if (!$line) {
+            throw new \Exception\NotFoundException(sprintf('Категория #% не найдена', $line->getId()));
         }
 
-        $productSorting = new \Model\Product\TerminalSorting();
-
-        $page = new \Terminal\View\ProductCategory\IndexPage();
-        $page->setParam('category', $category);
-        $page->setParam('productSorting', $productSorting);
+        $page = new \Terminal\View\ProductLine\IndexPage();
+        $page->setParam('line', $line);
 
         return new \Http\Response($page->show());
     }
 
     /**
-     * @param $categoryId
+     * @param integer       $lineId
      * @param \Http\Request $request
      * @return \Http\JsonResponse
      * @throws \Exception\NotFoundException
      */
-    public function product($categoryId, \Http\Request $request) {
+    public function product($lineId, \Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
         $productSorting = new \Model\Product\TerminalSorting();
@@ -40,51 +37,18 @@ class IndexAction {
         $client = \App::coreClientV2();
         $user = \App::user();
 
-        $sortData = (array)$request->get('sort');
-        if ((bool)$sortData) {
-            $sortName = key($sortData);
-            $sortDirection = current($sortData);
-            try {
-                $productSorting->setActiveSort($sortName);
-                $productSorting->setActiveDirection($sortDirection);
-            } catch (\Exception $e) {
-                \App::logger()->error($e);
-            }
+        // запрашиваем линию товаров по id
+        $line = \RepositoryManager::line()->getEntityById($lineId);
+
+        if (!$line) {
+            throw new \Exception\NotFoundException(sprintf('Линия товара #%s не найдена.', $lineId));
         }
-
-        $filterData = (array)$request->get('filter', []);
-        $offset =  (int)$request->get('offset', 0);
-        $limit = (int)$request->get('limit', 32);
-
-        // запрашиваем категорию по id
-        $category = \RepositoryManager::productCategory()->getEntityById($categoryId);
-
-        if (!$category) {
-            throw new \Exception\NotFoundException(sprintf('Категория товара #%s не найдена.', $categoryId));
-        }
-
-        $productFilter = new \Model\Product\Filter($filterData, false);
-        $productFilter->setCategory($category);
-
-        $response = [];
-        $client->addQuery('listing/list', [
-            'filter' => [
-                'filters' => $productFilter->dump(),
-                'sort'    => $productSorting->dump(),
-                'offset'  => $offset,
-                'limit'   => $limit,
-            ],
-            'region_id' => $user->getRegion()->getId(),
-        ], [], function($data) use(&$response) {
-            $response = $data;
-        });
-        $client->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
         /** @var $collection \Model\Product\TerminalEntity[] */
         $collection = [];
         $entityClass = '\Model\Product\TerminalEntity';
         if (!empty($response['list'])) {
-            \RepositoryManager::product()->prepareCollectionById($response['list'], $user->getRegion(), function($data) use(&$collection, $entityClass) {
+            \RepositoryManager::product()->prepareCollectionById($line->getKitId(), $user->getRegion(), function($data) use(&$collection, $entityClass) {
                 foreach ($data as $item) {
                     $collection[] = new $entityClass($item);
                 }
