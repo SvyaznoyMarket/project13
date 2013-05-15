@@ -441,16 +441,6 @@ class Action {
             throw new \Exception\NotFoundException(sprintf('Неверный номер страницы "%s".', $productPager->getPage()));
         }
 
-        // ajax
-        if ($request->isXmlHttpRequest()) {
-            return new \Http\Response(\App::templating()->render('product/_list', array(
-                'page'   => new \View\Layout(),
-                'pager'  => $productPager,
-                'view'   => $productView,
-                'isAjax' => true,
-            )));
-        }
-
         // video
         $productVideosByProduct = [];
         foreach ($productPager as $product) {
@@ -465,6 +455,17 @@ class Action {
                 }
             });
             \App::dataStoreClient()->execute(\App::config()->dataStore['retryTimeout']['tiny'], \App::config()->dataStore['retryCount']);
+        }
+
+        // ajax
+        if ($request->isXmlHttpRequest()) {
+            return new \Http\Response(\App::templating()->render('product/_list', array(
+                'page'                   => new \View\Layout(),
+                'pager'                  => $productPager,
+                'view'                   => $productView,
+                'productVideosByProduct' => $productVideosByProduct,
+                'isAjax'                 => true,
+            )));
         }
 
         $page->setParam('productPager', $productPager);
