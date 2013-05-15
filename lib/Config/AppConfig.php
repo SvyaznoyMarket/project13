@@ -28,6 +28,8 @@ class AppConfig {
     /** @var string */
     public $templateDir;
     /** @var string */
+    public $cmsDir;
+    /** @var string */
     public $controllerPrefix;
     /** @var string */
     public $routePrefix;

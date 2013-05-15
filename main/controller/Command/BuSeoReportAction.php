@@ -15,9 +15,13 @@ class BuSeoReportAction {
      *
      */
     public static function generate($max_parts = 0) {
+        system('cd ' . \App::config()->cmsDir . ' && git pull && git checkout sandbox');
         ini_set("auto_detect_line_endings", true);
         $repository = \RepositoryManager::product();
-        $sourceCsvDir = \App::config()->appDir . '/report/source';
+        $sourceCsvDir = \App::config()->cmsDir . '/v1/logs/accessory';
+        if(!is_dir($sourceCsvDir)){
+            throw new \Exception(sprintf('BuSeoReport: не найден каталог с исходными файлами csv %s', $sourceCsvDir));
+        }
         $client = \App::coreClientV2();
         $inCsvDelimiter = ",";
         $outCsvDelimiter = "\t";

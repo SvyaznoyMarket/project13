@@ -13,6 +13,7 @@ $c->dataDir = $c->appDir . '/data';
 $c->logDir = $c->appDir . '/log';
 $c->webDir = $c->appDir . '/web';
 $c->templateDir = $c->appDir . '/main/template';
+$c->cmsDir = $c->appDir . '/../../cms.enter.ru/wwwroot';
 
 $c->controllerPrefix = 'Controller';
 $c->routePrefix = '';
