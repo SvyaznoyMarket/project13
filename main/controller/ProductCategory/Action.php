@@ -495,7 +495,7 @@ class Action {
         $page->setParam('productSorting', $productSorting);
         $page->setParam('productView', $productView);
         $page->setParam('productVideosByProduct', $productVideosByProduct);
-        $page->setParam('sidebarHotlinks', false);
+        $page->setParam('sidebarHotlinks', true);
 
         $page->setParam('myThingsData', [
             'EventType'   => 'MyThings.Event.Visit',
