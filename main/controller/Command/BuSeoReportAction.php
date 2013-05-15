@@ -213,10 +213,10 @@ fclose($benchmark);
 
         // закидываем отчеты в репозиторий
         system('cd ' . \App::config()->cmsDir . ' && ' .
-               'git pull > /tmp/logger.txt && ' .
-               'git add ' . $outputCsvDir . '/* > /tmp/logger.txt && ' .
-               'git commit -m "Отчеты для БЮ и SEO (' . $dateStart->format('YmdH') . ')" > /tmp/logger.txt && ' .
-               'git push > /tmp/logger.txt');
+               'git pull > /dev/null && ' .
+               'git add ' . $outputCsvDir . '/* > /dev/null && ' .
+               'git commit -m "Отчеты для БЮ и SEO (' . $dateStart->format('YmdH') . ')" > /dev/null && ' .
+               'git push > /dev/null');
     }
 
 

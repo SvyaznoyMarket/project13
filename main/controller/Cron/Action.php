@@ -25,16 +25,7 @@ class Action {
                     $content = '<h2>Задание планировщика "'.$task.'" уже было запущено ранее</h2>';
                 }
 
-                $content .= '<div class="mb15">После завершения генерации отчеты будут доступны по ссылкам:</div><ul class="mb25">';
-
-                foreach (scandir($sourceCsvDir) as $file) {
-                    if(preg_match('/^(.+)\.csv$/', $file, $matches)) {
-                        $rootCategory = $matches[1];
-                        $content .= "<li><a href='http://www.enter.ru/report/" . $dateStart->format('YmdH') . '_' . $rootCategory . "_accessories_bu.csv'>Скачать отчет для БЮ (" . $rootCategory . ")</a></li>".
-                        "<li><a href='http://www.enter.ru/report/" . $dateStart->format('YmdH') . '_' . $rootCategory . "_accessories_seo.csv'>Скачать отчет для SEO (" . $rootCategory . ")</a></li>";
-                    }
-                }
-                $content .= '</ul>';
+                $content .= '<div class="mb15">После завершения генерации отчеты будут доступны на <a href="https://github.com/SvyaznoyMarket/cms/tree/sandbox/v1/logs/accessory/report">GitHub</a></div>';
                 break;
             
             default:
