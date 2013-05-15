@@ -1173,6 +1173,7 @@ $(document).ready(function() {
                             var toKISS_pr =  {
                                 'Checkout Complete SKU':dlvr.itemList()[i].article,
                                 'Checkout Complete SKU Quantity':dlvr.itemList()[i].quantity,
+                                'Checkout Complete SKU Price':dlvr.itemList()[i].price,
                                 'Checkout Complete F1 Quantity':dlvr.itemList()[i].serviceQ,
                                 'Checkout Complete F1 Total':dlvr.itemList()[i].serviceTotal,
                                 'Checkout Complete Warranty Quantity':dlvr.itemList()[i].warrantyQ,

@@ -1,4 +1,17 @@
 $(document).ready(function() {
+
+	//KISS
+	if ($('#_cartKiss').length){
+		var data = $('#_cartKiss').data('cart')
+		var toKISS = {
+			'View Cart SKU Quantity':data.count,
+			'View Cart SKU Total':data.price,
+		}
+		if (typeof(_kmq) !== 'undefined') {
+			_kmq.push(['record', 'View Cart', toKISS])
+		}
+	}
+
 	/* basket */
 	var total = $('#total .price')
 	var totalCash = 0
