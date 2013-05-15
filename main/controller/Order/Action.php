@@ -937,10 +937,13 @@ class Action {
         /** @var $productsById \Model\Product\Service\Entity[] */
         $servicesEntityById = [];
 
-        foreach ($deliveryCalcResult as $itemType => $itemData) {
-            if ($itemType == 'products') $productsEntityById[(int)$itemData['id']] = null;
-            if ($itemType == 'services') $servicesEntityById[(int)$itemData['id']] = null;
+        foreach (array('products', 'services') as $itemType) {
+            foreach ($deliveryCalcResult[$itemType] as $itemData) {
+                if ($itemType == 'products') $productsEntityById[(int)$itemData['id']] = null;
+                if ($itemType == 'services') $servicesEntityById[(int)$itemData['id']] = null;
+            }
         }
+
 
         if ((bool)$productsEntityById) {
             \RepositoryManager::product()->prepareCollectionById(array_keys($productsById), $region, function($data) use (&$productsEntityById) {
