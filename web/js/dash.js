@@ -927,7 +927,7 @@ $(document).ready(function(){
 			_kmq.push(['record', 'Search', toKISS]);
 		}
 
-		$('.goodsbox__inner').live('click', function(){
+		var KISSsearchClick = function(){
 			var productData = $(this).data('add')
 			var prToKISS = {
 				'Search Results Clicked Search String':data.query,
@@ -939,7 +939,10 @@ $(document).ready(function(){
 			if (typeof(_kmq) !== 'undefined') {
 				_kmq.push(['record', 'Search Results Clicked',  toKISS]);
 			}
-		})
+		}
+
+		$('.goodsbox__inner').live('click', KISSsearchClick)
+		$('.goodsboxlink').live('click', KISSsearchClick)
 	}
 })
 
