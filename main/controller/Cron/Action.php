@@ -13,8 +13,10 @@ class Action {
 
         switch ($task) {
             case 'report':
-                $reportDir = \App::config()->appDir . '/report';
-                $sourceCsvDir = \App::config()->appDir . '/report/source';
+                $sourceCsvDir = \App::config()->cmsDir . '/v1/logs/accessory';
+                $reportDir = $sourceCsvDir . '/report';
+                if(!is_dir($sourceCsvDir)) mkdir($sourceCsvDir);
+                if(!is_dir($reportDir)) mkdir($reportDir);
 
                 if(!is_file($reportDir . '/' . $dateStart->format('YmdH') . '.lock')) {
                     system("php ". $consoleFilepath . " Command/BuSeoReportAction generate " . \App::$env . " > /dev/null &");
