@@ -14,6 +14,7 @@ $hasModel = (isset($hasModel) ? $hasModel : true) && $product->getModel() && (bo
 if (!isset($productVideos)) $productVideos = [];
 ?>
 
+
 <style type="text/css">
     .goodsbox .photo .goodsphoto_eVideoShield.goodsphoto_eVideoShield_small,
     .goodsbox .photo .goodsphoto_eVideoShield.goodsphoto_eVideoShield_small:hover {
