@@ -7,6 +7,8 @@ class Action {
     public function execute(\Http\Request $request, $task) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
+        if(!$request->isXmlHttpRequest()) throw new \Exception\NotFoundException();
+
         $consoleFilepath = \App::config()->appDir . '/console.php';
         $host = $request->getHost();
 
