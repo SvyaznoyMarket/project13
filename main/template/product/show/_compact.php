@@ -13,6 +13,7 @@
 $isHidden = isset($isHidden) && $isHidden;
 $hasModel = (isset($hasModel) ? $hasModel : true) && $product->getModel() && (bool)$product->getModel()->getProperty();
 if (!isset($productVideos)) $productVideos = [];
+$addInfo = isset($addInfo)?$addInfo:[];
 ?>
 
 <style type="text/css">

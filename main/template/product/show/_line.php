@@ -11,6 +11,7 @@
 <?php
 $isHidden = isset($isHidden) && $isHidden;
 $url = $page->url('product.line', array('lineToken' => $product->getLine()->getToken()));
+$addInfo = isset($addInfo)?$addInfo:[];
 ?>
 
 <div class="goodsbox height250"<? if ($isHidden): ?> style="display:none;"<? endif ?>>
