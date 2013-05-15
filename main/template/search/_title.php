@@ -27,4 +27,5 @@
 <? } else { // ...иначе, если товары не найдены ?>
 Товары не найдены
 <? } ?>
-<div id="_searchKiss" style="display: none" data-search='<?=$page->json(['query'=>$searchQuery, 'url'=>$_SERVER['HTTP_REFERER'], 'count'=>$count])?>'></div>
+
+<div id="_searchKiss" style="display: none" data-search='<?=$page->json(['query' => $searchQuery, 'url' => \App::request()->headers->get('referer'), 'count' => $count])?>'></div>
