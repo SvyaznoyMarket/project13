@@ -1,11 +1,14 @@
 <?php
 /**
- * @var $page    \View\Layout
- * @var $regions \Model\Region\Entity[]
+ * @var $page               \View\Layout
+ * @var $regions            \Model\Region\Entity[]
+ * @var $autoresolvedRegion \Model\Region\Entity|null
  */
 ?>
 
-<?php
+<?
+if (!isset($autoresolvedRegion)) $autoresolvedRegion = null;
+
 $colCount = 4;
 $rowCount = 13;
 $count = count($regions);
@@ -23,8 +26,11 @@ $count = count($regions);
         <div id="jscities" style="position:relative"></div>
     </form>
     <div class="cityInline font14 clearfix">
-        <div class="cityItem"><a href="<?= $page->url('region.change', array('regionId' => 14974)) ?>">Москва</a></div>
-        <div class="cityItem"><a href="<?= $page->url('region.change', array('regionId' => 108136)) ?>">Санкт-Петербург</a></div>
+        <? if ($autoresolvedRegion): ?>
+            <div class="cityItem"><a href="<?= $page->url('region.change', ['regionId' => $autoresolvedRegion->getId()]) ?>"><?= $autoresolvedRegion->getName() ?></a></div>
+        <? endif ?>
+        <div class="cityItem"><a href="<?= $page->url('region.change', ['regionId' => 14974]) ?>">Москва</a></div>
+        <div class="cityItem"><a href="<?= $page->url('region.change', ['regionId' => 108136]) ?>">Санкт-Петербург</a></div>
     </div>
     <div class="BlackArrow fl leftArr"></div>
     <div class="regionSlidesWrap fl">
@@ -36,7 +42,7 @@ $count = count($regions);
                         /** @var $region  \Model\Region\Entity */
                         $cols = 0; $rows = 0; $i = 0; foreach ($regions as $region): $i++;  $rows++;
                     ?>
-                        <a href="<?= $page->url('region.change', array('regionId' => $region->getId())) ?>"><?= $region->getName(); ?></a>
+                        <a href="<?= $page->url('region.change', ['regionId' => $region->getId()]) ?>"><?= $region->getName(); ?></a>
                         <?php if ($i == $count) break; ?>
                         <?php if ($rows == $rowCount): $rows = 0; $cols++;?>
                     </div>

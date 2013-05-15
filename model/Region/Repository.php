@@ -105,12 +105,12 @@ class Repository {
     }
 
     /**
-     * @param $callback
+     * @param $done
      */
-    public function prepareShopAvailableCollection($callback) {
+    public function prepareShopAvailableCollection($done) {
         \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
-        $this->client->addQuery('geo/get-shop-available', [], [], $callback);
+        $this->client->addQuery('geo/get-shop-available', [], [], $done);
     }
 
     /**
@@ -134,11 +134,22 @@ class Repository {
     }
 
     /**
-     * @param $callback
+     * @param $done
      */
-    public function prepareShownInMenuCollection($callback) {
+    public function prepareShownInMenuCollection($done) {
         \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
-        $this->client->addQuery('geo/get-menu-cities', [], [], $callback);
+        $this->client->addQuery('geo/get-menu-cities', [], [], $done);
+    }
+
+    /**
+     * @param string        $ip
+     * @param callback      $done
+     * @param callback|null $fail
+     */
+    public function prepareCollectionByIp($ip, $done, $fail = null) {
+        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
+
+        $this->client->addQuery('geo/locate', ['ip' => $ip], [], $done, $fail);
     }
 }
