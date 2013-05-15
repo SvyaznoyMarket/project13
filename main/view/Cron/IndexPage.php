@@ -10,7 +10,7 @@ class IndexPage extends \View\DefaultLayout {
         if (!$this->hasParam('breadcrumbs')) {
             $breadcrumbs = array(
                 array(
-                    'name' => 'Задание планировщика',
+                    'name' => 'Задания планировщика',
                     'url' => null,
                     ),
             );

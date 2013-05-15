@@ -15,21 +15,19 @@ class BuSeoReportAction {
      *
      */
     public static function generate($max_parts = 0, $step = 100) {
-        // исходные csv хранятся в cms в ветке sandbox, туда же складываем отчеты
+        // исходные csv хранятся в cms в ветке sandbox
         system('cd ' . \App::config()->cmsDir . ' && git pull > /dev/null && git checkout sandbox > /dev/null');
         ini_set("auto_detect_line_endings", true);
         $repository = \RepositoryManager::product();
         $sourceCsvDir = \App::config()->cmsDir . '/v1/logs/accessory';
+        $reportDir = \App::config()->appDir . '/report';
+        $infoDir = $reportDir . '/info';
+        if(!is_dir($reportDir)) mkdir($reportDir);
+        if(!is_dir($infoDir)) mkdir($infoDir);
+
+
         if(!is_dir($sourceCsvDir)){
             throw new \Exception(sprintf('BuSeoReport: не найден каталог с исходными файлами csv %s', $sourceCsvDir));
-        }
-        $outputCsvDir = $sourceCsvDir . '/report';
-        if(!is_dir($outputCsvDir)){
-            mkdir($outputCsvDir);
-        }
-        $infoDir = $sourceCsvDir . '/info';
-        if(!is_dir($infoDir)){
-            mkdir($infoDir);
         }
         $client = \App::coreClientV2();
         $inCsvDelimiter = ",";
@@ -38,15 +36,15 @@ class BuSeoReportAction {
         $dateStart = new \DateTime();
 
         // если отчет в процессе генерации, то выходим, иначе создаем лок-файл
-        $lockFilepath = $outputCsvDir . '/' . $dateStart->format('YmdH') . '.lock';
+        $lockFilepath = $reportDir . '/' . $dateStart->format('YmdH') . '.lock';
         if(is_file($lockFilepath)) return;
         touch($lockFilepath);
 
         foreach (scandir($sourceCsvDir) as $file) {
             if(preg_match('/^(.+)\.csv$/', $file, $matches)) {
                 $rootCategory = $matches[1];
-                $reportBuFilepath = $outputCsvDir . '/' . $dateStart->format('YmdH') . '_' . $rootCategory . '_accessories_bu.csv';
-                $reportSeoFilepath = $outputCsvDir . '/' . $dateStart->format('YmdH') . '_' . $rootCategory . '_accessories_seo.csv';
+                $reportBuFilepath = $reportDir . '/' . $dateStart->format('YmdH') . '_' . $rootCategory . '_accessories_bu.csv';
+                $reportSeoFilepath = $reportDir . '/' . $dateStart->format('YmdH') . '_' . $rootCategory . '_accessories_seo.csv';
                 $sourceCsvFilepath = $sourceCsvDir . '/' . $file;
                 $benchmarkFilepath = $infoDir . '/benchmark.txt';
                 $reportBu = fopen($reportBuFilepath, 'a');
@@ -210,13 +208,6 @@ fclose($benchmark);
 
         // удаляем лок-файл, чтобы при необходимости можно было перезапустить таск
         unlink($lockFilepath);
-
-        // закидываем отчеты в репозиторий
-        system('cd ' . \App::config()->cmsDir . ' && ' .
-               'git pull > /dev/null && ' .
-               'git add ' . $outputCsvDir . '/* > /dev/null && ' .
-               'git commit -m "Отчеты для БЮ и SEO (' . $dateStart->format('YmdH') . ')" > /dev/null && ' .
-               'git push > /dev/null');
     }
 
 
