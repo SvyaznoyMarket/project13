@@ -254,6 +254,12 @@ class Action {
             $seoContent = empty($seoBrandJson['content']) ? '' : implode('<br>', $seoBrandJson['content']);
         }
 
+        $pageNum = (int)$request->get('page', 1);
+        // на страницах пагинации сео-контент не показываем
+        if ($pageNum > 1) {
+            $seoContent = '';
+        }
+
         $setPageParameters = function(\View\Layout $page) use (
             &$category,
             &$regionsToSelect,
@@ -489,7 +495,7 @@ class Action {
         $page->setParam('productSorting', $productSorting);
         $page->setParam('productView', $productView);
         $page->setParam('productVideosByProduct', $productVideosByProduct);
-        $page->setParam('sidebarHotlinks', false);
+        $page->setParam('sidebarHotlinks', true);
 
         $page->setParam('myThingsData', [
             'EventType'   => 'MyThings.Event.Visit',

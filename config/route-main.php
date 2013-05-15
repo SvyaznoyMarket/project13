@@ -464,16 +464,25 @@ return [
         'method'  => ['POST'],
     ],
 
+    //cron
+    'cron-index' => [
+        'pattern' => '/cron',
+        'action'  => ['Cron\IndexAction', 'execute'],
+    ],
+    'cron-task' => [
+        'pattern' => '/cron/{task}',
+        'action'  => ['Cron\Action', 'execute'],
+    ],
+    'cron-task-links' => [
+        'pattern' => '/cron/{task}/links',
+        'action'  => ['Cron\LinksAction', 'execute'],
+    ],
+
     //content
     'content' => [
         'pattern' => '/{token}',
         'action'  => ['Content\Action', 'execute'],
     ],
 
-    //content
-    'reports-start' => [
-        'pattern' => '/cron/{task}',
-        'action'  => ['Cron\Action', 'execute'],
-    ],
 
 ];

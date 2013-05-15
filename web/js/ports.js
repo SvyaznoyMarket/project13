@@ -73,32 +73,6 @@ window.ANALYTICS = {
             elem.parentNode.insertBefore(scr, elem);
         }(document));
     },
-
-    adblenderCommon : function() {
-        //document.write('<script type="text/javascript" src="' + ('https:' == document.location.protocol ? 'https://' : 'http://') + 'bn.adblender.ru/view.js?r=' + Math.random() + '" ></sc' + 'ript>')
-        // 'document.write' for <script/> is overloaded in loadjs.js
-        // in fact:
-        // var ad = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'bn.adblender.ru/view.js?r=' + Math.random()
-        // $LAB.script( ad )
-        var baseUrl = ('https:' == document.location.protocol ? 'https://' : 'http://');
-        baseUrl = baseUrl + 'bn.adblender.ru/view.gif?client=enter';
-        function loadImage(act) {
-            (new Image()).src = baseUrl + '&act=' + act + "&r=" + Math.random();
-        }
-        loadImage('view');
-
-        window.setTimeout(function ()
-            { loadImage('read'); }
-
-            , 60000);
-    },
-    
-    adblenderOrder : function() {
-        var a = arguments[0]
-        //document.write('<script type="text/javascript" src="' + ('https:' == document.location.protocol ? 'https://' : 'http://') + 'bn.adblender.ru/pixel.js?cost=' + escape( orderSum ) + '&r=' + Math.random() + '" ></sc' + 'ript>')
-        // 'document.write' for <script/> is overloaded in loadjs.js
-        var script = document.createElement('script'); script.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + unescape('bn.adblender.ru%2Fpixel.js%3Fclient%3Denter%26cost%3D') + escape(a.order_total) + unescape('%26order%3D') + escape(a.order_id) + unescape('%26r%3D') + Math.random(); document.getElementsByTagName('head')[0].appendChild(script);
-    },
     
     mixmarket : function() {
         document.write('<img src="http://mixmarket.biz/tr.plx?e=3779408&r=' + escape(document.referrer) + '&t=' + (new Date()).getTime() + '" width="1" height="1"/>')

@@ -14,10 +14,21 @@ class BuSeoReportAction {
      * Создает отчеты для Бизнес-юнитов и для SEO-подрядчиков о состоянии аксессуаров
      *
      */
-    public static function generate($max_parts = 0) {
+    public static function generate($max_parts = 0, $step = 100) {
+        // исходные csv хранятся в cms в ветке sandbox
+        system('cd ' . \App::config()->cmsDir . ' && git pull > /dev/null && git checkout sandbox > /dev/null');
         ini_set("auto_detect_line_endings", true);
         $repository = \RepositoryManager::product();
-        $sourceCsvDir = \App::config()->appDir . '/report/source';
+        $sourceCsvDir = \App::config()->cmsDir . '/v1/logs/accessory';
+        $reportDir = \App::config()->appDir . '/report';
+        $infoDir = $reportDir . '/info';
+        if(!is_dir($reportDir)) mkdir($reportDir);
+        if(!is_dir($infoDir)) mkdir($infoDir);
+
+
+        if(!is_dir($sourceCsvDir)){
+            throw new \Exception(sprintf('BuSeoReport: не найден каталог с исходными файлами csv %s', $sourceCsvDir));
+        }
         $client = \App::coreClientV2();
         $inCsvDelimiter = ",";
         $outCsvDelimiter = "\t";
@@ -25,17 +36,17 @@ class BuSeoReportAction {
         $dateStart = new \DateTime();
 
         // если отчет в процессе генерации, то выходим, иначе создаем лок-файл
-        $lockFilepath = \App::config()->appDir . '/report/' . $dateStart->format('YmdH') . '.lock';
+        $lockFilepath = $reportDir . '/' . $dateStart->format('YmdH') . '.lock';
         if(is_file($lockFilepath)) return;
         touch($lockFilepath);
 
         foreach (scandir($sourceCsvDir) as $file) {
             if(preg_match('/^(.+)\.csv$/', $file, $matches)) {
                 $rootCategory = $matches[1];
-                $reportBuFilepath = \App::config()->appDir . '/report/' . $dateStart->format('YmdH') . '_' . $rootCategory . '_accessories_bu.csv';
-                $reportSeoFilepath = \App::config()->appDir . '/report/' . $dateStart->format('YmdH') . '_' . $rootCategory . '_accessories_seo.csv';
-                $sourceCsvFilepath = \App::config()->appDir . '/report/source/' . $file;
-                $benchmarkFilepath = \App::config()->appDir . '/report/source/benchmark.txt';
+                $reportBuFilepath = $reportDir . '/' . $dateStart->format('YmdH') . '_' . $rootCategory . '_accessories_bu.csv';
+                $reportSeoFilepath = $reportDir . '/' . $dateStart->format('YmdH') . '_' . $rootCategory . '_accessories_seo.csv';
+                $sourceCsvFilepath = $sourceCsvDir . '/' . $file;
+                $benchmarkFilepath = $infoDir . '/benchmark.txt';
                 $reportBu = fopen($reportBuFilepath, 'a');
                 $reportSeo = fopen($reportSeoFilepath, 'a');
 
@@ -61,14 +72,12 @@ class BuSeoReportAction {
                 // аккумулятор для SEO-данных
                 $categoryProductsData = [];
 
-                // проводим анализ по частям для снижения нагрузки
-                $step = 100;
-                $part = 1;
-
 $timeGetAccessories = 0;
 $timeGetJson = 0;
 $timeExistingCategories = 0;
 
+                // проводим анализ по частям для снижения нагрузки
+                $part = 1;
                 while ($part <= (int)ceil(count($productsCsv) / $step)) {
                     if($max_parts && $part > $max_parts) break;
 
