@@ -31,4 +31,6 @@
             break;
     }
     ?>
+
+    <?= $page->tryRender('order/partner-counter/_ad4u-complete', array('orders' => $orders)) ?>
 <? endif ?>
