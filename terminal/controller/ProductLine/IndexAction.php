@@ -59,6 +59,20 @@ class IndexAction {
         }
         $client->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
+        $kitsByOwner = [];
+        foreach ($collection as $product) {
+            $kitsByOwner[$product->getId()] = [];
+            if (!(bool)$product->getKit()) continue;
+
+            \RepositoryManager::product()->prepareCollectionById(array_map(function(\Model\Product\Kit\Entity $kit) { return $kit->getId(); }, $product->getKit()), $user->getRegion(), function($data) use(&$kitsByOwner, &$product, $entityClass) {
+
+                foreach ($data as $item) {
+                    $kitsByOwner[$product->getId()][] = new $entityClass($item);
+                }
+            });
+        }
+        $client->execute(\App::config()->coreV2['retryTimeout']['medium']);
+
         $shopId = \App::config()->region['shop_id'];
         $productData = [];
         foreach ($collection as $product) {
