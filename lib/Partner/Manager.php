@@ -144,7 +144,7 @@ class Manager {
         switch ($name) {
             case \Partner\Counter\CityAds::NAME:
                 $return = [
-                    $prefix                                                 => [\Partner\Counter\CityAds::NAME],
+                    $prefix => [\Partner\Counter\CityAds::NAME],
                     $prefix . '.' . \Partner\Counter\CityAds::NAME . '.prx' => $request->cookies->get('prx'),
                 ];
                 break;
@@ -155,13 +155,13 @@ class Manager {
                 break;
             case \Partner\Counter\Actionpay::NAME:
                 $return = [
-                    $prefix                                                         => [\Partner\Counter\Actionpay::NAME],
+                    $prefix => [\Partner\Counter\Actionpay::NAME],
                     $prefix . '.' . \Partner\Counter\Actionpay::NAME . '.actionpay' => $request->cookies->get('actionpay'),
                 ];
                 break;
             case \Partner\Counter\Admitad::NAME:
                 $return = [
-                    $prefix                                                         => [\Partner\Counter\Admitad::NAME],
+                    $prefix => [\Partner\Counter\Admitad::NAME],
                     $prefix . '.' . \Partner\Counter\Admitad::NAME . '.admitad_uid' => $request->cookies->get('admitad_uid'),
                 ];
                 break;
