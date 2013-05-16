@@ -17,6 +17,7 @@ class Maybe3dImportAction {
 
         \App::logger()->debug('Exec ' . __METHOD__);
         $client = \App::coreClientV2();
+        clearstatcache();
 
         /** @var  $allowedModels array */
         $allowedModels = [];
@@ -98,9 +99,9 @@ class Maybe3dImportAction {
                                     }
                                     if (!isset($product['maybe3d'])) $bNewest = true;
                                     $product['maybe3d'] = $swfUrl;
-                                    $json = json_encode([$product]);
+                                    $jsonInsert = json_encode([$product]);
                                     try {
-                                        file_put_contents($file_name, $json);
+                                        file_put_contents($file_name, $jsonInsert);
                                     } catch (\Exception $e) {
                                         \App::logger()->error("Fail save json to file: {$file_name}");
                                     }
@@ -135,7 +136,7 @@ class Maybe3dImportAction {
 
         $deleteCount=0;
         $productFiles = glob($pathToCms.'*.{json,JSON}', GLOB_BRACE);
-        if (!count($productFiles)) throw new \RuntimeException('Нет ни одного json для обновления!');
+        if (!count($productFiles)) throw new \RuntimeException("В папке {$pathToCms} нет ни одного json для обновления!");
         foreach ($productFiles as $productFile) {
             $baseName = str_ireplace(['.JSON','.json'], '', basename($productFile));
             if ((int)$baseName &&  !isset($completeProducts[(int)$baseName])) {
@@ -167,11 +168,11 @@ class Maybe3dImportAction {
             }
         }
 
-        print "Всего моделей: ".count($allowedModels)."\n";
-        print "Добавлено моделей: {$completeCount}\n";
-        print "Добавлено новых: {$newestCount}\n";
-        print "Не доступно .SWF: {$noSwfCount}";
-        print "Моделей отвалилось: {$deleteCount}";
+        print "All count: ".count($allowedModels)."\n";
+        print "Added models: {$completeCount}\n";
+        print "Newest models: {$newestCount}\n";
+        print "Not existing .SWF: {$noSwfCount}\n";
+        print "Deleted models: {$deleteCount}";
 
     }
 }
