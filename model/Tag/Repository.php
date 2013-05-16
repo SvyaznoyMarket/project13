@@ -66,4 +66,61 @@ class Repository {
 
         return $entity;
     }
+
+
+   /**
+     * Получает SEO-данные для тэга из json
+     * Возвращает массив с SEO-данными
+     *
+     * @param $category
+     * @param $folder
+     * @param $brand
+     * @return array
+     */
+    public static function getSeoJson($tag) {
+        // формируем запрос к апи и получаем json с SEO-данными
+        $seoJson = [];
+
+        $dataStore = \App::dataStoreClient();
+        $query = sprintf('seo/tag/%s.json', $tag->getToken());
+        $dataStore->addQuery($query, [], function ($data) use (&$seoJson) {
+            if($data) $seoJson = $data;
+        });
+        
+        // данные для шаблона
+        $patterns = [
+            'тэг' => [$tag->getName()],
+            'сайт'      => null,
+        ];
+
+        $dataStore->addQuery('inflect/сайт.json', [], function($data) use (&$patterns) {
+            if ($data) $patterns['сайт'] = $data;
+        });
+        $dataStore->addQuery(sprintf('inflect/tag/%s.json', $tag->getToken()), [], function($data) use (&$patterns) {
+            if ($data) $patterns['тэг'] = $data;
+        });
+
+        $dataStore->execute();
+
+        if(!empty($seoJson)) {
+            $replacer = new \Util\InflectReplacer($patterns);
+            foreach ($seoJson as $property => $value) {
+                if(is_array($value)) {
+                    foreach ($value as $key => $part) {
+                        if(is_array($part)) continue;
+                        if ($partValue = $replacer->get($part)) {
+                            $seoJson[$property][$key] = $partValue;
+                        }
+                    }
+                } else {
+                    if ($value = $replacer->get($seoJson[$property])) {
+                        $seoJson[$property] = $value;
+                    }
+                }
+            }
+        }
+
+        return empty($seoJson) ? [] : $seoJson;
+    }
+
 }

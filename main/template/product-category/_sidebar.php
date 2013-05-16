@@ -10,7 +10,7 @@
 <? if (isset($productFilter)) require __DIR__ . '/_filter.php' ?>
 
 <? if(!empty($sidebarHotlinks)): ?>
-  <?= $page->render('product-category/_hotlinks', array('hotlinks' => $hotlinks)) ?>
+  <?= $page->render('_hotlinks', array('hotlinks' => $hotlinks)) ?>
 <? endif ?>
 
 <? if (\App::config()->adFox['enabled']): ?>
