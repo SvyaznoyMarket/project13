@@ -117,6 +117,7 @@ class IndexAction {
                     'productQuantity' =>  $product->getLine()->getProductCount(),
                     'totalQuantity'   =>  $product->getLine()->getTotalCount(),
                 ] : null,
+                'partQuantity'  => count($product->getKit()),
             ];
         }
 
