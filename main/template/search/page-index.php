@@ -15,4 +15,5 @@
     'hasListView' => true,
     'category'    => $selectedCategory,
     'view'        => $productView,
+    'isAddInfo'    => true,
 )) ?>

@@ -18,6 +18,9 @@ class Item {
     public $url;
     public $addUrl;
     public $deleteUrl;
+    public $parent_category;
+    public $article;
+    public $category;
 
     /* @var $deliveries Delivery[] */
     public $deliveries = [];

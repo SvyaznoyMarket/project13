@@ -13,6 +13,7 @@
 <? endif ?>
 
 <div class="clear"></div>
+<?= $page->tryRender('product-category/_categoryData', array('page' => $page, 'category' => $category)) ?>
 
 <? foreach ($category->getChild() as $child) { ?>
     <?

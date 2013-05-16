@@ -368,7 +368,7 @@ class Client {
                     break;
             }
             $e = new \RuntimeException(sprintf('Json error: "%s", Response: "%s"', $error, $response), $code);
-            \App::exception()->add($e);
+            //\App::exception()->add($e); похоже, что здесь не нужно добавлять исключение
             throw $e;
         }
 
