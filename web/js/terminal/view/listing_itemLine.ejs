@@ -3,8 +3,11 @@
 	<div class="bProductListItem__eDesc">
 		<h2 class="bProductListItem__eTitle">Серия <%= name %></h2>
 		<p class="bProductListItem__ePriceBlock">Цена за набор <span class="bProductListItem__ePrice"><%= price %></span> <span class="bProductListItem__ePrice bRuble">p</span></p>
+
 		<div class="bProductListItem__eBtnBlock">
-			
+			<ul class="bProductListItem__eAboutBlock">
+				<li class="bProductListItem__eAboutBlockItem mListDisk">Предметов: <%= partQ %></li>
+			</ul>			
 			<a class="bProductListItem__eBtn bButton mOrangeBtn jsBuyButton" data-productid='<%= id %>' href="#">купить набор</a>
 			<p class="bProductListItem__eF1Block">Доставит и соберет</p>
 		</div>

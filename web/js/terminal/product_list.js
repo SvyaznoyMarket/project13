@@ -128,6 +128,7 @@ define('product_list',
 					image : productData[i].image,
 					name : productData[i].name,
 					price : library.formatMoney(productData[i].price),
+					partQ : productData[i].partQuantity,
 				}
 			}
 			else if (pageType === 'product_model_list'){
