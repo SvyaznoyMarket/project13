@@ -244,6 +244,24 @@ class Repository {
     }
 
     /**
+     * @param array                 $eans
+     * @param \Model\Region\Entity  $region
+     * @param                       $done
+     * @param                       $fail
+     */
+    public function prepareCollectionByEan(array $eans, \Model\Region\Entity $region = null, $done, $fail = null) {
+        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
+
+        if (!(bool)$eans) return;
+
+        $this->client->addQuery('product/get', array(
+            'select_type' => 'id',
+            'ean'          => $eans,
+            'geo_id'      => $region ? $region->getId() : \App::user()->getRegion()->getId(),
+        ), [], $done, $fail);
+    }
+
+    /**
      * @param array $filter
      * @param \Model\Region\Entity $region
      * @return int
