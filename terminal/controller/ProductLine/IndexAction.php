@@ -59,20 +59,6 @@ class IndexAction {
         }
         $client->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
-        $kitsByOwner = [];
-        foreach ($collection as $product) {
-            $kitsByOwner[$product->getId()] = [];
-            if (!(bool)$product->getKit()) continue;
-
-            \RepositoryManager::product()->prepareCollectionById(array_map(function(\Model\Product\Kit\Entity $kit) { return $kit->getId(); }, $product->getKit()), $user->getRegion(), function($data) use(&$kitsByOwner, &$product, $entityClass) {
-
-                foreach ($data as $item) {
-                    $kitsByOwner[$product->getId()][] = new $entityClass($item);
-                }
-            });
-        }
-        $client->execute(\App::config()->coreV2['retryTimeout']['medium']);
-
         $shopId = \App::config()->region['shop_id'];
         $productData = [];
         foreach ($collection as $product) {
@@ -98,22 +84,7 @@ class IndexAction {
                     'productQuantity' =>  $product->getLine()->getProductCount(),
                     'totalQuantity'   =>  $product->getLine()->getTotalCount(),
                 ] : null,
-                'kit'           => array_map(function(\Model\Product\TerminalEntity $product) use ($shopId) {
-                    return [
-                        'id'            => $product->getId(),
-                        'name'          => $product->getName(),
-                        'image'         => $product->getImageUrl(3),
-                        'article'       => $product->getArticle(),
-                        'price'         => $product->getPrice(),
-                        'description'   => $product->getTagline(),
-                        'isBuyable'     => $product->getIsBuyable($shopId),
-                        'isInShop'      => $product->getIsInShop($shopId),
-                        'isInShowroom'  => $product->getIsInShowroom($shopId),
-                        'isInStore'     => $product->getState()->getIsStore(),
-                        'hasSupplier'   => $product->getState()->getIsSupplier(),
-                        'isInOtherShop' => $product->getState()->getIsShop(),
-                    ];
-                }, $kitsByOwner[$product->getId()]),
+                'kitQuantity'   => count($product->getKit()),
             ];
         }
 
