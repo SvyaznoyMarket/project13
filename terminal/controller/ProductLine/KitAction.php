@@ -2,7 +2,7 @@
 
 namespace Terminal\Controller\ProductLine;
 
-class IndexAction {
+class KitAction {
     /**
      * @param $lineId
      * @param \Http\Request $request
@@ -17,7 +17,7 @@ class IndexAction {
             throw new \Exception\NotFoundException(sprintf('Категория #% не найдена', $line->getId()));
         }
 
-        $page = new \Terminal\View\ProductLine\IndexPage();
+        $page = new \Terminal\View\ProductLine\KitPage();
         $page->setParam('line', $line);
 
         return new \Http\Response($page->show());

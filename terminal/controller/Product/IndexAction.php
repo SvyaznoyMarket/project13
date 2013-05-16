@@ -3,6 +3,11 @@
 namespace Terminal\Controller\Product;
 
 class IndexAction {
+    /**
+     * @param $productId
+     * @return \Http\Response
+     * @throws \Exception\NotFoundException
+     */
     public function execute($productId) {
         \App::logger()->debug('Exec ' . __METHOD__);
 

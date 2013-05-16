@@ -33,15 +33,21 @@ return [
         'require' => ['categoryId' => '[\d]+'],
     ],
     // линия товара
-    'line.show' => [
+    'line.kit' => [
         'pattern' => '/line/{lineId}',
-        'action'  => ['ProductLine\IndexAction', 'execute'],
+        'action'  => ['ProductLine\KitAction', 'execute'],
         'require' => ['lineId' => '[\d]+'],
     ],
-    // товары в линии
-    'line.product' => [
+    // наборы товаров в линии
+    'line.kit.product' => [
         'pattern' => '/line/{lineId}/product',
-        'action'  => ['ProductLine\IndexAction', 'product'],
+        'action'  => ['ProductLine\KitAction', 'product'],
+        'require' => ['lineId' => '[\d]+'],
+    ],
+    // список товаров в линии
+    'line.part' => [
+        'pattern' => '/line/{lineId}/part',
+        'action'  => ['ProductLine\PartAction', 'execute'],
         'require' => ['lineId' => '[\d]+'],
     ],
 ];
