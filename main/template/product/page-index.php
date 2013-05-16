@@ -357,9 +357,12 @@ $productVideo = reset($productVideos);
 <!-- /Variation -->
 <? endif ?>
 
+<div class="clear"></div>
 
 <? if ($showAccessoryUpper && (bool)$accessories && \App::config()->product['showAccessories']): ?>
-    <?= $page->render('product/_slider', ['product' => $product, 'productList' => array_values($accessories), 'totalProducts' => count($product->getAccessoryId()), 'itemsInSlider' => \App::config()->product['itemsInAccessorySlider'], 'page' => 1, 'title' => 'Аксессуары', 'url' => $page->url('product.accessory', ['productToken' => $product->getToken()]), 'gaEvent' => 'Accessorize', 'showCategories' => true, 'accessoryCategory' => $accessoryCategory]) ?>
+    <div class="acess-box">
+      <?= $page->render('product/_slider', ['product' => $product, 'productList' => array_values($accessories), 'totalProducts' => count($product->getAccessoryId()), 'itemsInSlider' => \App::config()->product['itemsInAccessorySlider'], 'page' => 1, 'title' => 'Аксессуары', 'url' => $page->url('product.accessory', ['productToken' => $product->getToken()]), 'gaEvent' => 'Accessorize', 'showCategories' => true, 'accessoryCategory' => $accessoryCategory]) ?>
+    </div>
 <? endif ?>
 
 <? if ($showRelatedUpper && (bool)$related && \App::config()->product['showRelated']): ?>

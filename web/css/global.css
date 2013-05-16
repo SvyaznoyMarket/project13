@@ -4838,67 +4838,12 @@
     background: #ffffff url("/css/item/img/itemSprite.png") 100% -135px no-repeat;
     cursor: default;
   }
-  .categoriesmenu {
-    float: left;
-    width: 180px;
-    padding-right: 2px;
-    border-right: 2px solid #ddd;
-  }
-  .categoriesmenuitem {
-    margin-bottom: 10px;
-  }
-  .categoriesmenuitem.active {
-    padding: 3px 5px;
-    background-color: #ddd;
-  }
   .link {
     cursor: pointer;
     text-decoration: none;
   }
   .link:hover {
     text-decoration: underline;
-  }
-  .bigcarousel {
-    float: left;
-    margin-right: -15px;
-    width: 750px;
-  }
-  .bigcarousel .goodsbox {
-    margin-bottom: 14px;
-    margin-right: 20px;
-    padding: 10px;
-    position: relative;
-    width: 147px;
-  }
-  .bigcarousel .goodsbox .buy {
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
-    background-color: #ffa901;
-    color: #ffffff;
-    font-size: 11px;
-    left: 0px;
-    padding: 3px 6px 4px;
-    position: absolute;
-    top: 0px;
-  }
-  .bigcarousel .goodsbox .goodsbox__inner {
-    width: 150px;
-  }
-  .bigcarousel .goodsrating {
-    color: #a6a6a6;
-    display: block;
-    font-size: 10px;
-    padding-bottom: 5px;
-  }
-  .bigcarousel .ratingview {
-    display: inline-block;
-    margin: 0px 5px 0px 0px;
-    vertical-align: -1px;
-    width: 63px;
-  }
-  .bigcarousel .goodsbar {
-    margin-top: 10px;
   }
   .descriptionlist .point {
     float: left;
