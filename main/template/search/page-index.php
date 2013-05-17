@@ -9,10 +9,22 @@
  **/
 ?>
 
+<? if(!$selectedCategory) { ?>
+  <?= $page->render('product-category/_twoColumnList', array(
+      'categories'  => $categoriesFound,
+      'searchQuery' => $searchQuery,
+  )) ?>
+<? } ?>
+
+<?= $page->render('search/_searchboxValue', array(
+    'searchQuery' => $searchQuery,
+)) ?>
+
 <?= $page->render('product/_pager', array(
     'request'     => $request,
     'pager'       => $productPager,
     'hasListView' => true,
     'category'    => $selectedCategory,
     'view'        => $productView,
+    'showPagerHeader' => true,
 )) ?>
