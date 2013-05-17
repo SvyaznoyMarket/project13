@@ -140,7 +140,43 @@ module.exports = function(grunt) {
     grunt.log.writeln('Done');
   });
 
+  grunt.registerTask('ymaps_generate', 'Generate Ymap XML', function(){
+
+    // LONGITUDE -180 to + 180
+    function generateRandomLong(from, to, fixed) {
+        return (Math.random() * (to - from) + from).toFixed(fixed) * 1;
+    }
+    // LATITUDE -90 to +90
+    function generateRandomLat(from, to, fixed) {
+        return (Math.random() * (to - from) + from).toFixed(fixed) * 1;
+    }
+
+
+    var count = 2000;
+    grunt.log.writeln('Generate '+count+' random polygons');
+    var outXML = '<ymaps:ymaps xmlns:ymaps="http://maps.yandex.ru/ymaps/1.x" xmlns:repr="http://maps.yandex.ru/representation/1.x" xmlns:gml="http://www.opengis.net/gml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maps.yandex.ru/schemas/ymaps/1.x/ymaps.xsd"><ymaps:GeoObjectCollection><gml:featureMember>';
+    for (var i=0; i<count; i++){
+      grunt.log.writeln('Generating '+i+' polygon...');
+      outXML += '<ymaps:GeoObject>'+
+                    '<gml:name>Многоугольник '+i+'</gml:name>'+
+                    '<gml:description>'+i+'ый многоугольник из '+count+'</gml:description>'+
+                    '<gml:Polygon>'+
+                        '<gml:exterior>'+
+                            '<gml:LinearRing>'+
+                                '<gml:posList>'+generateRandomLong(-180, 180, 3)+' '+generateRandomLat(-90, 90, 3)+' '+generateRandomLong(-180, 180, 3)+' '+generateRandomLat(-90, 90, 3)+' '+generateRandomLong(-180, 180, 3)+' '+generateRandomLat(-90, 90, 3)+' '+generateRandomLong(-180, 180, 3)+' '+generateRandomLat(-90, 90, 3)+'</gml:posList>'+
+                            '</gml:LinearRing>'+
+                        '</gml:exterior>'+
+                    '</gml:Polygon>'+
+                '</ymaps:GeoObject>';
+    }
+    outXML += '</gml:featureMember></ymaps:GeoObjectCollection></ymaps:ymaps>';
+
+    grunt.file.write('../web/js/tests/polygons'+count+'.xml' , outXML);
+    grunt.log.writeln('Done');
+  })
+
   grunt.registerTask('css', ['less']);
   grunt.registerTask('js', ['exec','uglify','set_version']);
   grunt.registerTask('default', ['less','uglify','set_version']);
+  grunt.registerTask('ymaps', ['ymaps_generate']);
 };
