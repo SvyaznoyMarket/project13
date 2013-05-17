@@ -97,7 +97,7 @@ class Maybe3dImportAction {
                                         $product['content'] = '';
                                     }
                                     $product['maybe3d'] = $swfUrl;
-                                    $jsonInsert = json_encode([$product]);
+                                    $jsonInsert = json_encode([$product], JSON_PRETTY_PRINT);
                                     try {
                                         file_put_contents($file_name, $jsonInsert);
                                     } catch (\Exception $e) {
@@ -112,7 +112,7 @@ class Maybe3dImportAction {
                                 \App::logger()->error("Fail open file: {$file_name}");
                             }
                         } else {
-                            $json = json_encode([['content' => '', 'maybe3d' => $swfUrl]]);
+                            $json = json_encode([['content' => '', 'maybe3d' => $swfUrl]], JSON_PRETTY_PRINT);
                             try {
                                 file_put_contents($file_name, $json);
                             } catch (\Exception $e) {
@@ -145,7 +145,7 @@ class Maybe3dImportAction {
                             if (isset($product[0])) {
                                 if (isset($product[0]['maybe3d'])) {
                                     unset($product[0]['maybe3d']);
-                                    $json = json_encode($product);
+                                    $json = json_encode($product, JSON_PRETTY_PRINT);
                                     try {
                                         file_put_contents($productFile, $json);
                                     } catch (\Exception $e) {
