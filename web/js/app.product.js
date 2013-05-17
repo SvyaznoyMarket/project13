@@ -360,6 +360,19 @@ $(document).ready(function() {
             $('.product_comment_response-block').find('textarea:first').focus()
         }
     })
+
+    // KISS
+    if ($('#productInfo').length){
+    	var data = $('#productInfo').data('value')
+    	var toKISS = {
+			'Viewed Product SKU':data.article,
+			'Viewed Product Product Name':data.name,
+			'Viewed Product Product Status':data.stockState,
+		}
+		if (typeof(_kmq) !== 'undefined'){
+			_kmq.push(['record', 'Viewed Product',toKISS]);
+		}
+    }
     
    
 });

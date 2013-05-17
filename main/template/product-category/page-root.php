@@ -17,6 +17,8 @@
 <? endforeach ?>
 </div>
 
+<?= $page->tryRender('product-category/_categoryData', array('page' => $page, 'category' => $category)) ?>
+
 <? if (\App::config()->crossss['enabled']): ?>
 	<div class="lifted mCatalog">
 	  <script type="text/html" id="similarGoodTmpl">

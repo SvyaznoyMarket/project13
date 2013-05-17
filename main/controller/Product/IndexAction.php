@@ -104,6 +104,7 @@ class IndexAction {
             $partsId[] = $part->getId();
         }
 
+        $additionalData = [];
         $accessories = array_flip($accessoriesId);
         $related = array_flip($relatedId);
         $kit = array_flip($partsId);
@@ -121,9 +122,19 @@ class IndexAction {
                 $kit = [];
             }
 
+            $accessoriesCount = 1;
+            $relatedCount = 1;
             foreach ($products as $item) {
-                if (isset($accessories[$item->getId()])) $accessories[$item->getId()] = $item;
-                if (isset($related[$item->getId()])) $related[$item->getId()] = $item;
+                if (isset($accessories[$item->getId()])) {
+                    $additionalData[$item->getId()] = \Kissmetrics\Manager::getProductEvent($item, $accessoriesCount, 'Accessorize');
+                    $accessoriesCount++;
+                    $accessories[$item->getId()] = $item;
+                }
+                if (isset($related[$item->getId()])) {
+                    $additionalData[$item->getId()] = \Kissmetrics\Manager::getProductEvent($item, $relatedCount, 'Also Bought');
+                    $relatedCount++;
+                    $related[$item->getId()] = $item;
+                }
                 if (isset($kit[$item->getId()])) $kit[$item->getId()] = $item;
             }
         }
@@ -196,6 +207,7 @@ class IndexAction {
         $page->setParam('accessoryCategory', $accessoryCategory);
         $page->setParam('related', $related);
         $page->setParam('kit', $kit);
+        $page->setParam('additionalData', $additionalData);
         $page->setParam('dataForCredit', $dataForCredit);
         $page->setParam('shopsWithQuantity', $shopsWithQuantity);
         $page->setParam('myThingsData', array(

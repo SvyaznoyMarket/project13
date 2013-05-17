@@ -35,6 +35,14 @@ class DefaultLayout extends Layout {
         return '<link rel="canonical" href="' . $relLink . '" />';
     }
 
+    public function slotMobileModify() {
+        if (\App::config()->mobileModify['enabled']) {
+            return $this->tryRender('_mobileModify');
+        }
+
+        return '';
+    }
+
     public function slotGoogleAnalytics() {
         return $this->tryRender('_googleAnalytics');
     }

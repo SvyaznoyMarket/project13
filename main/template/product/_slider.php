@@ -8,7 +8,8 @@
  * @var $url                string
  * @var $gaEvent            string
  * @var $showCategories     bool
- * @var $accessoryCategory  \Model\Category\Entity[]
+ * @var $accessoryCategory  \Model\Product\Category\Entity[]
+ * @var $additionalData     array
  */
 ?>
 
@@ -19,11 +20,11 @@
     <div class="carouseltitle carbig<?php if(!empty($showCategories)) echo ' accessories'; ?>">
         <div class="rubrictitle"><h3><?php echo $title ?></h3></div>
         <?php if ($totalPages > 1) { ?>
-        <div class="scroll" data-quantity="<?php echo $totalProducts ?>">
-            (страница <span>1</span> из <span><?php echo $totalPages ?></span>)
-            <a title="Предыдущие <?php echo $itemsInSlider ?>" class="srcoll_link_button back disabled" data-url="<?php echo $url ?>" href="javascript:void(0)"></a>
-            <a title="Следующие <?php echo $itemsInSlider ?>" class="srcoll_link_button forvard" data-url="<?php echo $url ?>" href="javascript:void(0)"></a>
-        </div>
+            <div class="scroll" data-quantity="<?php echo $totalProducts ?>">
+                (страница <span>1</span> из <span><?php echo $totalPages ?></span>)
+                <a title="Предыдущие <?php echo $itemsInSlider ?>" class="srcoll_link_button back disabled" data-url="<?php echo $url ?>" href="javascript:void(0)"></a>
+                <a title="Следующие <?php echo $itemsInSlider ?>" class="srcoll_link_button forvard" data-url="<?php echo $url ?>" href="javascript:void(0)"></a>
+            </div>
         <?php } ?>
     </div>
 
@@ -42,7 +43,8 @@
 
     <div class="bigcarousel">
         <?php foreach ($productList as $i => $item): ?>
-            <?= $page->render('product/show/_extra_compact', array('product' => $item, 'isHidden' => $i >= $itemsInSlider, 'gaEvent' => $gaEvent, 'totalPages' => $totalPages, 'categoryToken' => '', 'totalProducts' => $totalProducts)) ?>
+            <? $currentAdditionalData = isset($additionalData[$item->getId()]) ? $additionalData[$item->getId()] : null ?>
+            <?= $page->render('product/show/_extra_compact', ['product' => $item, 'isHidden' => $i >= $itemsInSlider, 'gaEvent' => $gaEvent, 'totalPages' => $totalPages, 'categoryToken' => '', 'totalProducts' => $totalProducts, 'additionalData' => $currentAdditionalData]) ?>
         <?php endforeach ?>
     </div>
 

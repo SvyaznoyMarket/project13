@@ -25,14 +25,17 @@ class RelatedAction {
         $accessoryProductList = \RepositoryManager::product()->getCollectionById($accessoryIdList);
 
         $response = " ";
-        foreach ($accessoryProductList as $accessory)
+        $begin++;
+        foreach ($accessoryProductList as $accessory) {
             $response .= \App::templating()->render('product/show/_extra_compact', array(
                 'page'   => new \View\Layout(),
                 'product'   => $accessory,
                 'isHidden'  => false,
                 'gaEvent'   => 'SmartEngine',
+                'additionalData'    =>  \Kissmetrics\Manager::getProductEvent($accessory, $begin, 'Also Bought'),
             ));
-
+            $begin++;
+        }
         return new \Http\Response($response);
 
     }
