@@ -59,6 +59,10 @@ class DefaultLayout extends Layout {
         return $this->render('_header', $this->params);
     }
 
+    public function slotSeoContent() {
+        return $this->render('_seoContent', $this->params);
+    }
+
     public function slotFooter() {
         $client = \App::contentClient();
 
@@ -210,12 +214,12 @@ class DefaultLayout extends Layout {
                 $return .= "\n\n" . $this->tryRender('partner-counter/_cityads');
             }
 
-            // на всех страницах сайта, кроме shop.*
-            if ((0 !== strpos($routeName, 'shop')) && !in_array($routeName, [
+            // на всех страницах сайта, кроме...
+            if (!in_array($routeName, [
                 'order.create',
                 'order.complete',
             ])) {
-                $return .= "\n\n" . $this->tryRender('partner-counter/_reactive');
+                $return .= "\n\n" . $this->tryRender('partner-counter/_ad4u');
             }
         }
 

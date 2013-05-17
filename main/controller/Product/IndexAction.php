@@ -66,6 +66,7 @@ class IndexAction {
         $product = null;
         \RepositoryManager::product()->prepareEntityByToken($productToken, $region, function($data) use (&$product) {
             $data = reset($data);
+
             if ((bool)$data) {
                 $product = new \Model\Product\Entity($data);
             }
@@ -88,7 +89,14 @@ class IndexAction {
             $showRelatedUpper = true;
         }
 
-        $accessoriesId =  array_slice($product->getAccessoryId(), 0, \App::config()->product['itemsInSlider'] * 2);
+        // фильтруем аксессуары согласно разрешенным в json категориям
+        // и получаем уникальные категории-родители аксессуаров
+        // для построения меню категорий в блоке аксессуаров
+        $accessoryCategory = array_map(function($accessoryGrouped){
+            return $accessoryGrouped['category'];
+        }, \Model\Product\Repository::filterAccessoryId($product, null, \App::config()->product['itemsInAccessorySlider'] * 6));
+
+        $accessoriesId =  array_slice($product->getAccessoryId(), 0, \App::config()->product['itemsInAccessorySlider'] * 6);
         $relatedId = array_slice($product->getRelatedId(), 0, \App::config()->product['itemsInSlider'] * 2);
         $partsId = [];
 
@@ -196,6 +204,7 @@ class IndexAction {
         $page->setParam('showRelatedUpper', $showRelatedUpper);
         $page->setParam('showAccessoryUpper', !$showRelatedUpper);
         $page->setParam('accessories', $accessories);
+        $page->setParam('accessoryCategory', $accessoryCategory);
         $page->setParam('related', $related);
         $page->setParam('kit', $kit);
         $page->setParam('additionalData', $additionalData);
@@ -243,4 +252,6 @@ class IndexAction {
 
         return $result;
     }
+
+
 }

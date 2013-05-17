@@ -114,7 +114,7 @@ class IndexAction {
 
         // формируем ссылки для баннеров
         // TODO: перенести код в метод репозитория
-        foreach ($bannerData as $i => &$item) {
+        foreach ($bannerData as &$item) {
             $url = $item['url'];
 
             $bannerItems = isset($itemsByBanner[$item['id']]) ? (array)$itemsByBanner[$item['id']] : [];
@@ -138,7 +138,7 @@ class IndexAction {
                     if (1 == count($products)) {
                         /** @var $product \Model\Product\Entity */
                         $product = reset($products);
-                        $url = $router->generate('product', ['productPath' => $product->getPath()]);
+                        $url = $product->getLink();
                     } else {
                         $barcodes = array_map(function ($product) { /** @var $product \Model\Product\Entity */ return $product->getBarcode(); }, $products);
                         $url = $router->generate('product.set', [
@@ -148,13 +148,13 @@ class IndexAction {
                 } else if ($bannerItem->getServiceId()) {
                     \App::logger()->error('Услуги для баннера еще не реализованы');
                 } else if ($bannerItem->getProductCategoryId()) {
-                    $category = reset($categoriesById);
+                    $category = isset($categoriesById[$bannerItem->getProductCategoryId()]) ? $categoriesById[$bannerItem->getProductCategoryId()] : null;
                     if (!$category instanceof \Model\Product\Category\Entity) {
                         \App::logger()->error(sprintf('Категория #%s не найдена', $bannerItem->getProductCategoryId()));
                         continue;
                     }
 
-                    $url = $router->generate('product.category', ['categoryPath' => $category->getPath()]);
+                    $url = $category->getLink();
                 }
             }
 
