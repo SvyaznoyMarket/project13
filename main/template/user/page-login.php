@@ -22,7 +22,7 @@
                     <a class="bLoginForm_eUr orange underline" href="<?= $page->url('user.registerCorporate') ?>">Регистрация юридического лица</a>
                 <? endif ?>
 
-				<div class="pb5">Как к вам обращаться?</div>
+				<div class="pb5">Ваше имя:</div>
 				<div class="pb5">
 					<input type="text" tabindex="5" value="" name="register[first_name]" class="text width315 mb10" id="register_first_name" required="required">
 				</div>
