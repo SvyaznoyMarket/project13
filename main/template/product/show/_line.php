@@ -4,16 +4,18 @@
  * @var $product  \Model\Product\CompactEntity
  * @var $isHidden bool
  * @var $kit      \Model\Product\Kit\Entity
+ * @var $addInfo  array
  * */
 ?>
 
 <?php
 $isHidden = isset($isHidden) && $isHidden;
 $url = $page->url('product.line', array('lineToken' => $product->getLine()->getToken()));
+$addInfo = isset($addInfo)?$addInfo:[];
 ?>
 
 <div class="goodsbox height250"<? if ($isHidden): ?> style="display:none;"<? endif ?>>
-    <div class="goodsbox__inner" data-url="<?= $product->getLink() ?>">
+    <div class="goodsbox__inner" data-url="<?= $product->getLink() ?>" <?php if (count($addInfo)) print 'data-add="'.$page->json($addInfo).'"'; ?>>
 	    <div class="photo">
 	        <a href="<?= $url ?>">
 	            <? if ($label = $product->getLabel()): ?>

@@ -4,6 +4,7 @@
  * @var $pager   \Iterator\EntityPager
  * @var $product \Model\Product\Entity
  * @var $isAjax  bool
+ * @var $isAddInfo bool
  * */
 ?>
 
@@ -12,7 +13,7 @@
 <? endif ?>
 
     <? $i = 0; foreach ($pager as $product): $i++ ?>
-    <?= $page->render('product/show/_line', array('product' => $product)) ?>
+    <?= $page->render('product/show/_line', array('product' => $product, 'addInfo' => $isAddInfo?\Kissmetrics\Manager::getProductSearchEvent($product, $i, $pager->getPage()):[])) ?>
 
     <? if (!($i % 3) && !$isAjax): ?>
         <div class="line"></div>

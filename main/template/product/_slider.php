@@ -7,6 +7,7 @@
  * @var $totalProducts  int
  * @var $url            string
  * @var $gaEvent        string
+ * @var $additionalData array
  */
 ?>
 
@@ -30,7 +31,8 @@
 
 <div class="bigcarousel">
     <?php foreach ($productList as $i => $item): ?>
-        <?= $page->render('product/show/_extra_compact', array('product' => $item, 'isHidden' => $i >= $itemsInSlider, 'gaEvent' => $gaEvent)) ?>
+        <?php $currentAdditionalData = isset($additionalData[$item->getId()]) ? $additionalData[$item->getId()] : null ?>
+        <?= $page->render('product/show/_extra_compact', array('product' => $item, 'isHidden' => $i >= $itemsInSlider, 'gaEvent' => $gaEvent, 'additionalData' => $currentAdditionalData)) ?>
     <?php endforeach ?>
 </div>
 

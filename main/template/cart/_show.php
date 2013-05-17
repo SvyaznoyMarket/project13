@@ -105,7 +105,8 @@ foreach ($products as $product) {
 
 <? foreach ($products as $product): ?>
 <?
-    $cartProduct = $cartProductsById[$product->getId()];
+    $cartProduct = isset($cartProductsById[$product->getId()]) ? $cartProductsById[$product->getId()] : null;
+    if (!$cartProduct) continue;
 ?>
     <div class="basketline mWrap" ref="<?= $product->getId() ?>">
         <div class="basketleft">

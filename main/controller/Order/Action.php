@@ -908,7 +908,6 @@ class Action {
 
         // карта доставки
         $deliveryMapView = new \View\Order\DeliveryCalc\Map();
-        $modelProductRepository = new \Model\Product\Repository($client);
 
         $deliveryMapView->unavailable = [];
         if (array_key_exists('unavailable', $deliveryCalcResult)) {
@@ -931,6 +930,45 @@ class Action {
             $shopView->regime = $shop->getRegime();
 
             $deliveryMapView->shops[$shopView->id] = $shopView;
+        }
+
+        /** @var $productsById \Model\Product\BasicEntity[] */
+        $productsEntityById = [];
+        /** @var $productsById \Model\Product\Service\Entity[] */
+        $servicesEntityById = [];
+
+        foreach (array('products', 'services') as $itemType) {
+            foreach ($deliveryCalcResult[$itemType] as $itemData) {
+                if ($itemType == 'products') $productsEntityById[(int)$itemData['id']] = null;
+                if ($itemType == 'services') $servicesEntityById[(int)$itemData['id']] = null;
+            }
+        }
+
+
+        if ((bool)$productsEntityById) {
+            \RepositoryManager::product()->prepareCollectionById(array_keys($productsById), $region, function($data) use (&$productsEntityById) {
+                foreach ($data as $item) {
+                    $productsEntityById[(int)$item['id']] = new \Model\Product\BasicEntity($item);
+                }
+            }, function(\Exception $e) {
+                \App::exception()->remove($e);
+                \App::logger()->error('Не удалось получить товары для баннеров');
+            });
+        }
+        // запрашиваем услуги
+        if ((bool)$servicesEntityById) {
+            \RepositoryManager::service()->prepareCollectionById(array_keys($servicesById), $region, function($data) use (&$servicesEntityById) {
+                foreach ($data as $item) {
+                    $servicesEntityById[(int)$item['id']] = new \Model\Product\Service\Entity($item);
+                }
+            }, function(\Exception $e) {
+                \App::exception()->remove($e);
+                \App::logger()->error('Не удалось получить услуги для баннеров');
+            });
+        }
+
+        if ((bool)$productsEntityById || (bool)$servicesEntityById) {
+            $client->execute();
         }
 
         // сборка товаров и услуг
@@ -1013,11 +1051,23 @@ class Action {
                     $itemView->addUrl = $router->generate('cart.service.add', array('serviceId' => $itemData['id'], 'quantity' => 1, 'productId' => 0));
                 }
 
-                $productEntity = $modelProductRepository->getEntityById($itemData['id'], $region);
                 $itemView->id = $itemData['id'];
-                $itemView->article = $productEntity->getArticle();
-                $itemView->parent_category = $productEntity->getMainCategory()->getName();
-                $itemView->categoty = $productEntity->getParentCategory()->getName();
+                if ('products' == $itemType && $productsEntityById[$itemData['id']]) {
+                    /** @var $productEntity \Model\Product\Entity */
+                    $productEntity = $productsEntityById[$itemData['id']];
+                    $itemView->article = $productEntity->getArticle();
+                    $itemView->parent_category = $productEntity->getMainCategory()->getName();
+                    $itemView->category = $productEntity->getParentCategory()->getName();
+                } else if ('services' == $itemType && $servicesEntityById[$itemData['id']]) {
+                    /** @var $serviceEntity \Model\Product\Service\Entity */
+                    $serviceEntity = $servicesEntityById[$itemData['id']];
+                    $itemView->article = $serviceEntity->getToken();
+                    $category = $serviceEntity->getCategory();
+                    if ($category) {
+                        $itemView->parent_category = $category[0]->getName();
+                        $itemView->category = $category[count($category)-1]->getName();
+                    }
+                }
                 $itemView->name = $itemData['name'] . $serviceName;
                 $itemView->image = $itemData['media_image'];
                 $itemView->price = $itemData['price'];
