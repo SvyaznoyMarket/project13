@@ -9,6 +9,7 @@
     $(document).ready(function(){
       if($('.searchtext').length) {
         $('.searchtext').val('<?= $searchQuery ?>');
+        $('.searchtextClear').removeClass('vh');
       }
     });
   </script>
