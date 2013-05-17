@@ -68,7 +68,7 @@ class ProductCategoryAction {
                     'name'   => $product->getName(),
                     'image'  => $product->getImageUrl(),
                     'rating' => $product->getRating(),
-                    'link'   => $product->getLink(),
+                    'link'   => $product->getLink() . sprintf('#crossss_%s_%s', isset($result['type']) ? $result['type'] : 0, $product->getId()),
                     'price'  => $product->getPrice(),
                 ];
             }
