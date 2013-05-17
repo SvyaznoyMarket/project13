@@ -154,12 +154,6 @@
   .green {
     color: #6ea428;
   }
-  hr.orange {
-    color:#ffa901;
-    background-color:#ffa901;
-    height: 1px;
-    border-width:0px;
-  }
   .motton,
   a.motton:hover {
     color: #4fcbf4;
@@ -319,9 +313,6 @@
   .mt5 {
     margin-top: 5px;
   }
-  .mt15 {
-    margin-top: 15px;
-  }
   .mt-30 {
     margin-top: -30px;
   }
@@ -330,9 +321,6 @@
   }
   .ml5 {
     margin-left: 5px;
-  }
-  .ml10 {
-    margin-left: 10px;
   }
   .ml20 {
     margin-left: 20px;
@@ -4838,12 +4826,47 @@
     background: #ffffff url("/css/item/img/itemSprite.png") 100% -135px no-repeat;
     cursor: default;
   }
-  .link {
-    cursor: pointer;
-    text-decoration: none;
+  .bigcarousel {
+    float: left;
+    margin-right: -15px;
+    width: 935px;
   }
-  .link:hover {
-    text-decoration: underline;
+  .bigcarousel .goodsbox {
+    margin-bottom: 14px;
+    margin-right: 20px;
+    padding: 10px;
+    position: relative;
+    width: 147px;
+  }
+  .bigcarousel .goodsbox .buy {
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    background-color: #ffa901;
+    color: #ffffff;
+    font-size: 11px;
+    left: 0px;
+    padding: 3px 6px 4px;
+    position: absolute;
+    top: 0px;
+  }
+  .bigcarousel .goodsbox .goodsbox__inner {
+    width: 150px;
+  }
+  .bigcarousel .goodsrating {
+    color: #a6a6a6;
+    display: block;
+    font-size: 10px;
+    padding-bottom: 5px;
+  }
+  .bigcarousel .ratingview {
+    display: inline-block;
+    margin: 0px 5px 0px 0px;
+    vertical-align: -1px;
+    width: 63px;
+  }
+  .bigcarousel .goodsbar {
+    margin-top: 10px;
   }
   .descriptionlist .point {
     float: left;
@@ -5145,6 +5168,95 @@
     top: 20px;
     width: 350px;
     z-index: 2;
+  }
+  /** **/
+  .categoriesmenu {
+    float: left;
+    width: 190px;
+    margin-left: -19px;
+    margin-top: 12px;
+  }
+  .categoriesmenuitem {
+    margin-bottom: 2px;
+    padding: 5px 5px 5px 19px;
+    cursor: pointer;
+  }
+  .categoriesmenuitem.active {
+    background-color: #e6e6e6;
+    cursor: default;
+  }
+  .acess-box .bigcarousel {
+    float: left;
+    margin-right: -15px;
+    width: 760px;
+    border-left: 3px solid #e6e6e6;
+  }
+  .acess-box .bigcarousel .goodsbox {
+    margin: 0 0 0 14px;
+    padding: 10px;
+    position: relative;
+    width: 147px;
+    height: 310px;
+  }
+  .acess-box {
+    position: relative;
+    margin: 35px 0 50px;
+  }
+  .acess-box .scroll .srcoll_link_button {
+    background: url("/css/item/img/btn_acess_box.png") no-repeat 4px 50%;
+    width: 11px;
+    height: 332px;
+    position: absolute;
+    top: 40px;
+    z-index: 100;
+    padding: 0 4px;
+  }
+  .acess-box .scroll .srcoll_link_button.back.disabled,
+  .acess-box .scroll .srcoll_link_button.forvard.disabled {
+    display: none;
+  }
+  .acess-box .scroll .srcoll_link_button.back:hover {
+    background: url("/css/item/img/btn_acess_box.png") no-repeat 4px 50% #f6f6f6;
+  }
+  .acess-box .scroll .srcoll_link_button.forvard:hover {
+    background: url("/css/item/img/btn_acess_box.png") no-repeat -20px 50% #f6f6f6;
+  }
+  .acess-box .scroll .srcoll_link_button.back {
+    left: 174px;
+  }
+  .acess-box .scroll .srcoll_link_button.forvard {
+    background-position: -20px 50%;
+    right: -12px;
+  }
+  .bigcarousel .goodsbox .buy {
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    background-color: #ffa901;
+    color: #ffffff;
+    font-size: 11px;
+    left: 0px;
+    padding: 3px 6px 4px;
+    position: absolute;
+    top: 0px;
+  }
+  .bigcarousel .goodsbox .goodsbox__inner {
+    width: 150px;
+  }
+  .bigcarousel .goodsrating {
+    color: #a6a6a6;
+    display: block;
+    font-size: 10px;
+    padding-bottom: 5px;
+  }
+  .bigcarousel .ratingview {
+    display: inline-block;
+    margin: 0px 5px 0px 0px;
+    vertical-align: -1px;
+    width: 63px;
+  }
+  .bigcarousel .goodsbar {
+    margin-top: 10px;
   }
 }
 /*стили для продуктов f1*/
