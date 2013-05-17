@@ -1906,6 +1906,13 @@ $(document).ready(function(){
 
 
 	if ( $('.searchtextClear').length ){
+		$('.searchtextClear').each(function(){
+			if(!$(this).val().length) {
+				$(this).addClass('vh')
+			} else {
+				$(this).removeClass('vh')
+			}
+		});
 		$('.searchtextClear').click(function(){
 			$(this).siblings('.searchtext').val('')
 			$(this).addClass('vh')
