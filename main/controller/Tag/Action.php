@@ -87,6 +87,15 @@ class Action {
             )));
         }
 
+        // получаем из json данные о горячих ссылках и content
+        $seoTagJson = \Model\Tag\Repository::getSeoJson($tag);
+        $hotlinks = empty($seoTagJson['hotlinks']) ? [] : $seoTagJson['hotlinks'];
+        // в json-файле в свойстве content содержится массив
+        $seoContent = empty($seoTagJson['content']) ? '' : implode('<br>', $seoTagJson['content']);
+
+        // на страницах пагинации сео-контент не показываем
+        if ($pageNum > 1) $seoContent = '';
+
         $page = new \View\Tag\IndexPage();
         $page->setParam('tag', $tag);
         $page->setParam('productPager', $productPager);
@@ -94,6 +103,9 @@ class Action {
         $page->setParam('productView', $productView);
         $page->setParam('category', $category);
         $page->setParam('categories', array_values($categoriesByToken));
+        $page->setParam('hotlinks', $hotlinks);
+        $page->setParam('seoContent', $seoContent);
+        $page->setParam('sidebarHotlinks', true);
 
         return new \Http\Response($page->show());
     }
