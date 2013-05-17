@@ -65,7 +65,7 @@ class Action {
         }
 
         // категории
-        $categoriesFound = \RepositoryManager::productCategory()->getCollectionById($resultCategories['data']);
+        $categoriesFound = empty($resultCategories['data']) ? [] : \RepositoryManager::productCategory()->getCollectionById($resultCategories['data']);
 
         $categoriesById = [];
         foreach ($result['category_list'] as $item) {
