@@ -69,7 +69,7 @@ $(document).ready(function(){
 			$('.bSearchSuggest__eRes').removeClass('hover')
 			nowSelectSuggest = -1
 
-			var url = '/search/autocomplete?q='+text
+			var url = '/search/autocomplete?q='+encodeURI(text)
 
 			$.ajax({
 				type: 'GET',
