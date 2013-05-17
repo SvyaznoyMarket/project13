@@ -53,7 +53,7 @@ class Maybe3dImportAction {
                     foreach ($data as $item) {
                         if (isset($item['ean']) && is_array($item['ean'])) {
                             foreach ($item['ean'] as $ean) {
-                                if (isset($productsByEan[(string)$ean]) && $productsByEan[(string)$ean]->getId() !=  (int)$item['id']) {
+                                if (isset($productsByEan[(string)$ean]) && $productsByEan[(string)$ean]->getId() != (int)$item['id']) {
                                     \App::logger()->error("Same EAN codes on products id:  {$productsByEan[(string)$ean]->getId()} and {$item['id']}");
                                 }
                                 $productsByEan[(string)$ean] = new \Model\Product\BasicEntity($item);
@@ -79,7 +79,6 @@ class Maybe3dImportAction {
         foreach ($allowedModels as $mtd_id => $allowedModel) {
             if (!is_array($allowedModel)) continue;
             foreach ($allowedModel as $allowedSingleModel) {
-                $bNewest = false;
                 if (isset($productsByEan[$allowedSingleModel['ean']])) {
                     $swfUrl = \App::config()->maybe3d['swfUrl'].$allowedSingleModel['file_name'].'/'.$allowedSingleModel['file_name'].'.swf';
                     $fileHeaders = @get_headers($swfUrl);
@@ -97,7 +96,6 @@ class Maybe3dImportAction {
                                     if (!isset($product['content'])) {
                                         $product['content'] = '';
                                     }
-                                    if (!isset($product['maybe3d'])) $bNewest = true;
                                     $product['maybe3d'] = $swfUrl;
                                     $jsonInsert = json_encode([$product]);
                                     try {
@@ -105,7 +103,6 @@ class Maybe3dImportAction {
                                     } catch (\Exception $e) {
                                         \App::logger()->error("Fail save json to file: {$file_name}");
                                     }
-                                    if ($bNewest) $newestCount++;
                                     $completeCount++;
                                     $completeProducts[$productsByEan[$allowedSingleModel['ean']]->getId()] = true;
                                 } catch (\Exception $e) {
@@ -127,9 +124,8 @@ class Maybe3dImportAction {
                         }
                     } else {
                         $noSwfCount++;
-                        \App::logger()->error(".SWF not exists for model: ean => {$allowedSingleModel['ean']}, mtd => {$mtd_id}, name => {$allowedSingleModel['file_name']}");
+                        \App::logger()->error(".SWF not exists for model: ean => {$allowedSingleModel['ean']}, mtd => {$mtd_id}, name => {$allowedSingleModel['file_name']}, product => {$productsByEan[$allowedSingleModel['ean']]->getId()}");
                     }
-                    break;
                 }
             }
         }
@@ -170,7 +166,6 @@ class Maybe3dImportAction {
 
         print "All count: ".count($allowedModels)."\n";
         print "Added models: {$completeCount}\n";
-        print "Newest models: {$newestCount}\n";
         print "Not existing .SWF: {$noSwfCount}\n";
         print "Deleted models: {$deleteCount}";
 
