@@ -307,6 +307,9 @@
   .mb25 {
     margin-bottom: 25px;
   }
+  .mb35 {
+    margin-bottom: 35px;
+  }
   .mb70 {
     margin-bottom: 70px;
   }
@@ -558,6 +561,9 @@
   }
   .hf {
     display: none;
+  }
+  .vh {
+    visibility: hidden;
   }
   .f1 {
     background: url("/css/common/img/icons.png") no-repeat 0px -111px;
@@ -3403,6 +3409,10 @@
     color: #ffa901;
   }
   .mBold {
+    font-weight: bold;
+  }
+  .mBoldh3 {
+    font-size: 1.17em;
     font-weight: bold;
   }
   .mSelected {
@@ -8504,6 +8514,28 @@
     padding: 0 19px;
     position: relative;
     z-index: 2;
+  }
+  .searchtextWrapper {
+    width: 800px;
+    padding-right: 25px;
+    position: relative;
+    display: block;
+  }
+  .searchtextClear {
+    position: absolute;
+    display: block;
+    right: 0;
+    width: 13px;
+    height: 13px;
+    z-index: 10;
+    margin: 8px 0 0 7px;
+    padding: 0;
+    background: url(/images/search_clear.png) 50% 50% no-repeat;
+    opacity: 0.6;
+  }
+  .searchtextClear:hover {
+    opacity: 1.0;
+    cursor: pointer;
   }
 }
 /*--END---СТИЛИ ХЛЕБНЫХ КРОШЕК И ХЭДА--*/

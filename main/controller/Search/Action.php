@@ -28,7 +28,6 @@ class Action {
         // параметры ядерного запроса
         $params = array(
             'request'  => $searchQuery,
-            'type_id'  => 1, // тип искомых сущностей: 1 - товары
             'geo_id'   => \App::user()->getRegion()->getId(),
             'start'    => $offset,
             'limit'    => $limit,
@@ -54,6 +53,7 @@ class Action {
         $forceMean = isset($result['forced_mean']) ? $result['forced_mean'] : false;
         $meanQuery = isset($result['did_you_mean']) ? $result['did_you_mean'] : '';
 
+        $resultCategories = $result[3];
         $result = $result[1];
 
         // проверка на пустоту
@@ -65,6 +65,8 @@ class Action {
         }
 
         // категории
+        $categoriesFound = empty($resultCategories['data']) ? [] : \RepositoryManager::productCategory()->getCollectionById($resultCategories['data']);
+
         $categoriesById = [];
         foreach ($result['category_list'] as $item) {
             $categoriesById[$item['category_id']] = new \Model\Product\Category\Entity(array(
@@ -76,6 +78,7 @@ class Action {
                 ,
             ));
         }
+
         // если ид категории из http-запроса нет в коллекции категорий ...
         if ($categoryId && !isset($categoriesById[$categoryId])) {
             throw new \Exception\NotFoundException(sprintf('Не найдена категория #%s', $categoryId));
@@ -127,6 +130,7 @@ class Action {
         $page->setParam('forceMean', $forceMean);
         $page->setParam('productPager', $productPager);
         $page->setParam('categories', $categoriesById);
+        $page->setParam('categoriesFound', $categoriesFound);
         $page->setParam('selectedCategory', $selectedCategory);
         $page->setParam('productView', $productView);
         $page->setParam('productCount', $selectedCategory ? $selectedCategory->getProductCount() : $result['count']);

@@ -32,6 +32,9 @@ if (!isset($productVideosByProduct)) $productVideosByProduct = [];
     data-lastpage="<?= $pager->getLastPage() ?>"
     data-filter="<?= $filterData ?>"
 ></div>
+<? if(!empty($showPagerHeader)): ?>
+<span class="mBoldh3"><?= $pager->count() . ' ' . $page->helper->numberChoice($pager->count(), array('товар', 'товара', 'товаров')) ?></span>
+<? endif ?>
 <?= $page->render('_pagination', array('pager' => $pager)) ?>
 <? endif ?>
 

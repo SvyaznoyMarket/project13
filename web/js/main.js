@@ -58,6 +58,17 @@ $(document).ready(function(){
 	 */
 	suggestUp = function(e){
 		var text = $(this).attr('value')
+
+		if (!text.length){
+			if($(this).siblings('.searchtextClear').length) {
+				$(this).siblings('.searchtextClear').addClass('vh')
+			}
+		} else {
+			if($(this).siblings('.searchtextClear').length) {
+				$(this).siblings('.searchtextClear').removeClass('vh')
+			}
+		}
+
 		authFromServer = function(response){
 			$('#searchAutocomplete').html(response)
 			suggestLen = $('.bSearchSuggest__eRes').length
@@ -66,6 +77,11 @@ $(document).ready(function(){
 			if (!text.length){
 				return false
 			}
+
+			if($(this).siblings('.searchtextClear').length) {
+				$(this).siblings('.searchtextClear').removeClass('vh')
+			}
+
 			$('.bSearchSuggest__eRes').removeClass('hover')
 			nowSelectSuggest = -1
 
@@ -1886,6 +1902,17 @@ $(document).ready(function(){
 				$(this).html('Ссылки')
 			}
 		);
+	}
+
+
+	if ( $('.searchtextClear').length ){
+		$('.searchtextClear').click(function(){
+			$(this).siblings('.searchtext').val('')
+			$(this).addClass('vh')
+			if($('#searchAutocomplete').length) {
+				$('#searchAutocomplete').html('')
+			}
+		});
 	}
 
 });
