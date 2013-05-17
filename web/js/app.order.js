@@ -3,6 +3,14 @@ $(document).ready(function () {
     if (($('body').attr('data-template')=='order_complete')&&(typeof(orderAnalyticsRun) !== 'undefined')){
         orderAnalyticsRun()
     }
+    if ($('.socnet-ico-list-link').length){
+        $('.socnet-ico-list-link').bind('click', function(){
+            var type = $(this).data('type')
+            if (typeof(_gaq) !== 'undefined') {
+                _gaq.push(['_trackEvent', 'SMM', 'Complete order', type]);
+            }
+        });
+    }
     /* sertificate */
 	if( $('.orderFinal__certificate').length ) {
         var code = $(".cardNumber"),
