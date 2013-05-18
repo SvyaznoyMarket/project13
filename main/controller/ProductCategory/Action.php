@@ -254,6 +254,9 @@ class Action {
             $seoContent = empty($seoBrandJson['content']) ? '' : implode('<br>', $seoBrandJson['content']);
         }
 
+        // получаем catalog json для категории (например, тип раскладки)
+        $catalogJson = \RepositoryManager::productCategory()->getCatalogJson($category);
+
         $pageNum = (int)$request->get('page', 1);
         // на страницах пагинации сео-контент не показываем
         if ($pageNum > 1) {
@@ -266,7 +269,8 @@ class Action {
             &$productFilter,
             &$brand,
             &$hotlinks,
-            &$seoContent
+            &$seoContent,
+            &$catalogJson
         ) {
             $page->setParam('category', $category);
             $page->setParam('regionsToSelect', $regionsToSelect);
@@ -274,6 +278,7 @@ class Action {
             $page->setParam('brand', $brand);
             $page->setParam('hotlinks', $hotlinks);
             $page->setParam('seoContent', $seoContent);
+            $page->setParam('catalogJson', $catalogJson);
         };
 
         // если категория содержится во внешнем узле дерева

@@ -415,4 +415,35 @@ class Repository {
     }
 
 
+    /**
+     * Получает catalog json для данной категории
+     * Возвращает массив с токенами категорий
+     *
+     * @param $product
+     * @return array
+     */
+    public function getCatalogJson($category) {
+         // формируем ветку категорий для последующего формирования запроса к json-апи
+        $branch = [$category->getToken()];
+        if(!$category->isRoot()) {
+            $currentCategory = $category;
+            while($parent = $currentCategory->getParent()) {
+                array_unshift($branch, $parent->getToken());
+                $currentCategory = $parent;
+            }
+            array_unshift($branch, $category->getRoot()->getToken());
+        }
+
+        // формируем запрос к апи и получаем json
+        $catalogJson = [];
+        $dataStore = \App::dataStoreClient();
+        $query = sprintf('catalog/%s.json', implode('/', $branch));
+        $dataStore->addQuery($query, [], function ($data) use (&$catalogJson) {
+            if($data) $catalogJson = $data;
+        });
+        $dataStore->execute();
+
+        return $catalogJson;
+    }
+
 }
