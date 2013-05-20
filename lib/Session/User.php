@@ -152,6 +152,22 @@ class User {
                 if (!$this->region) {
                     \App::logger()->warn(sprintf('Регион #"%s" не найден.', $regionId), ['session', 'user']);
                 }
+            // иначе автоопределение
+            } else if ($ip = \App::request()->getClientIp()) {
+                $region = null;
+                \RepositoryManager::region()->prepareEntityByIp($ip,
+                    function($data) use (&$region) {
+                        if ((bool)$data) {
+                            $region = new \Model\Region\Entity($data);
+                        }
+                    },
+                    function(\Exception $e) {
+                        \App::exception()->remove($e);
+                        \App::logger()->error('Не удалось определить регион пользователя');
+                    }
+                );
+                \App::coreClientV2()->execute();
+                $this->region = $region;
             }
         }
 
