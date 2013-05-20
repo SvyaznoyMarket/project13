@@ -1,13 +1,13 @@
 <?php
 /**
- * @var $page               \View\Layout
- * @var $regions            \Model\Region\Entity[]
- * @var $autoresolvedRegion \Model\Region\Entity|null
+ * @var $page     \View\Layout
+ * @var $user     \Session\User
+ * @var $regions  \Model\Region\Entity[]
  */
 ?>
 
 <?
-if (!isset($autoresolvedRegion)) $autoresolvedRegion = null;
+$currentRegion = $user->getRegion();
 
 $colCount = 4;
 $rowCount = 13;
@@ -26,8 +26,8 @@ $count = count($regions);
         <div id="jscities" style="position:relative"></div>
     </form>
     <div class="cityInline font14 clearfix">
-        <? if ($autoresolvedRegion): ?>
-            <div class="cityItem"><a href="<?= $page->url('region.change', ['regionId' => $autoresolvedRegion->getId()]) ?>"><?= $autoresolvedRegion->getName() ?></a></div>
+        <? if (!in_array($currentRegion->getId(), [14974, 108136])): ?>
+            <div class="cityItem"><a href="<?= $page->url('region.change', ['regionId' => $currentRegion->getId()]) ?>"><?= $currentRegion->getName() ?></a></div>
         <? endif ?>
         <div class="cityItem"><a href="<?= $page->url('region.change', ['regionId' => 14974]) ?>">Москва</a></div>
         <div class="cityItem"><a href="<?= $page->url('region.change', ['regionId' => 108136]) ?>">Санкт-Петербург</a></div>

@@ -105,6 +105,7 @@ $c->onlineCall['enabled'] = false;
 $c->region['cookieName']     = 'geoshop';
 $c->region['cookieLifetime'] = 31536000; // 365 дней
 $c->region['defaultId']      = 14974;
+$c->region['autoresolve']    = true;
 
 $c->loadMediaHost = false;
 $c->mediaHost = [
