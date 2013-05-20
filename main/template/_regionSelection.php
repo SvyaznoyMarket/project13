@@ -25,9 +25,9 @@ $count = count($regions);
 
         <div id="jscities" style="position:relative"></div>
     </form>
-    <div class="cityInline font14 clearfix" data-autoresolve-url="<?= $page->url('region.autoresolve') ?>">
+    <div class="cityInline font14 clearfix">
         <? if (!in_array($currentRegion->getId(), [14974, 108136])): ?>
-            <div class="cityItem"><a href="<?= $page->url('region.change', ['regionId' => $currentRegion->getId()]) ?>"><?= $currentRegion->getName() ?></a></div>
+            <div class="cityItem mAutoresolve"><a href="<?= $page->url('region.change', ['regionId' => $currentRegion->getId()]) ?>"><?= $currentRegion->getName() ?></a></div>
         <? endif ?>
         <div class="cityItem"><a href="<?= $page->url('region.change', ['regionId' => 14974]) ?>">Москва</a></div>
         <div class="cityItem"><a href="<?= $page->url('region.change', ['regionId' => 108136]) ?>">Санкт-Петербург</a></div>

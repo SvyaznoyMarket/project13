@@ -14,7 +14,7 @@
 <!-- Topbar -->
 <div class="topbar clearfix">    
     <div class="bRegion">
-        <a class="fl" href="<?= $page->url('region.change', ['regionId' => $user->getRegion()->getId()]) ?>" id="jsregion" data-url="<?= $page->url('region.init') ?>" data-region-id="<?= $user->getRegion()->getId() ?>"><?= ((mb_strlen($user->getRegion()->getName()) > 20) ? (mb_substr($user->getRegion()->getName(), 0, 20) . '...') : $user->getRegion()->getName()) ?></a>
+        <a class="fl" href="<?= $page->url('region.change', ['regionId' => $user->getRegion()->getId()]) ?>" id="jsregion" data-url="<?= $page->url('region.init') ?>" data-region-id="<?= $user->getRegion()->getId() ?>" data-autoresolve-url="<?= $page->url('region.autoresolve') ?>"><?= ((mb_strlen($user->getRegion()->getName()) > 20) ? (mb_substr($user->getRegion()->getName(), 0, 20) . '...') : $user->getRegion()->getName()) ?></a>
         
         <div class="headerContactPhone fl" >
             <p class="fl headerContactPhone__eTitle">Контакт-cENTER</p>

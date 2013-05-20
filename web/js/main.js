@@ -912,6 +912,27 @@ $(document).ready(function(){
 	}
 
 	$('#jsregion, .jsChangeRegion').click( function() {
+		var autoResolve = $(this).data("autoresolve-url")
+
+		var authFromServer = function(res){
+			console.log(res)
+			var url = res.data[0].url
+			var name = res.data[0].name
+			console.log(url)
+			console.log(name)
+			if ($('.popupRegion .mAutoresolve').length){
+				$('.popupRegion .mAutoresolve').html('<a href="'+url+'">'+name+'</a>')	
+			}
+			else{
+				$('.popupRegion .cityInline').prepend('<div class="cityItem mAutoresolve"><a href="'+url+'">'+name+'</a></div>')
+			}
+			
+		}
+		$.ajax({
+			type: 'GET',
+			url: autoResolve,
+			success: authFromServer
+		})
 		getRegions()
 		return false
 	})
