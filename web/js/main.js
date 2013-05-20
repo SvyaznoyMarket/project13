@@ -903,8 +903,9 @@ $(document).ready(function(){
 			autofocus: true,
 			onClose: function() {			
 				if( !docCookies.hasItem('geoshop') ) {
-					docCookies.setItem( false, "geoshop", "14974", 31536e3, "/") //moscow city
-					document.location.reload()
+					var id = $('#jsregion').data('region-id');
+					docCookies.setItem( false, "geoshop", id, 31536e3, "/")
+					// document.location.reload()
 				}
 			}
 		} )		
