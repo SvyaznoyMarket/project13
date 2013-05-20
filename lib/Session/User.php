@@ -153,7 +153,7 @@ class User {
                     \App::logger()->warn(sprintf('Регион #"%s" не найден.', $regionId), ['session', 'user']);
                 }
             // иначе автоопределение
-            } else if ($ip = \App::request()->getClientIp()) {
+            } else if (\App::config()->region['autoresolve'] && ($ip = \App::request()->getClientIp())) {
                 $region = null;
                 \RepositoryManager::region()->prepareEntityByIp($ip,
                     function($data) use (&$region) {
