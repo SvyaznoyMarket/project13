@@ -14,6 +14,7 @@
 ?>
 
 <?
+/** @var $productVideo \Model\Product\Video\Entity */
 $productVideo = reset($productVideos);
 ?>
 <?
@@ -56,17 +57,29 @@ $productVideo = reset($productVideos);
   ];
 ?>
 <?
-  $photoList = $product->getPhoto();
-  $photo3dList = $product->getPhoto3d();
-  $p3d_res_small = [];
-  $p3d_res_big = [];
-  foreach ($photo3dList as $photo3d)
-  {
-    $p3d_res_small[] = $photo3d->getUrl(0);
-    $p3d_res_big[] = $photo3d->getUrl(1);
-  }
+    $photoList = $product->getPhoto();
 
-  $showAveragePrice = \App::config()->product['showAveragePrice'] && !$product->getPriceOld() && $product->getPriceAverage();
+    /** @var string $model3dExternalUrl */
+    $model3dExternalUrl = ($productVideo instanceof \Model\Product\Video\Entity) ? $productVideo->getMaybe3d() : false;
+    /** @var array $photo3dList */
+    $photo3dList = [];
+    /** @var array $p3d_res_small */
+    $p3d_res_small = [];
+    /** @var array $p3d_res_big */
+    $p3d_res_big = [];
+
+    if (!$model3dExternalUrl) {
+        $photo3dList = $product->getPhoto3d();
+        foreach ($photo3dList as $photo3d) {
+            $p3d_res_small[] = $photo3d->getUrl(0);
+            $p3d_res_big[] = $photo3d->getUrl(1);
+        }
+    } elseif ($model3dExternalUrl) {
+        $model3dName = str_ireplace(array('.SWF', '.swf'), '', basename($model3dExternalUrl));
+        if (!strlen($model3dName)) $model3dExternalUrl = false;
+    }
+
+    $showAveragePrice = \App::config()->product['showAveragePrice'] && !$product->getPriceOld() && $product->getPriceAverage();
 
     $adfox_id_by_label = 'adfox400';
     if ($product->getLabel()) {
@@ -91,9 +104,53 @@ $productVideo = reset($productVideos);
     }
 </style>
 
+<? if ($model3dExternalUrl) : ?>
+    <div id="maybe3dModel" style="display: none;">
+        <a href="http://www.adobe.com/go/getflashplayer">
+            <img src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Get Adobe Flash player" />
+        </a>
+    </div>
+    <script type="text/javascript">
+
+        var model3d = {};
+        model3d.flashvars = {
+            language: "ru"
+        };
+        model3d.params = {
+            menu: "false",
+            scale: "noScale",
+            allowFullscreen: "true",
+            allowScriptAccess: "always",
+            wmode: "direct"
+        };
+
+        model3d.attributes = {
+            id: "<?=$model3dName?>"
+        };
+        model3d.init = {
+            'swf'       : "<?=$model3dExternalUrl?>",
+            'container' : "maybe3dModel",
+            'width'     : "700px",
+            'height'    : "500px",
+            'version'   : "10.0.0",
+            'install'   : "js/expressInstall.swf"
+        };
+
+        function babah() {
+            swfobject.embedSWF(model3d.init.swf, model3d.init.container, model3d.init.width, model3d.init.height, model3d.init.version, model3d.init.install, model3d.flashvars, model3d.params, model3d.attributes);
+        };
+
+    </script>
+    <!--<input type="button" onclick="babah();" value="babah"/>-->
+<? endif ?>
+
 <script type="text/javascript">
-  product_3d_small = <?= json_encode($p3d_res_small) ?>;
-  product_3d_big = <?= json_encode($p3d_res_big) ?>;
+    <? if ($model3dExternalUrl) : ?>
+    product_3d_url = <?= json_encode($model3dExternalUrl) ?>;
+    <? elseif (count($photo3dList) > 0) : ?>
+    product_3d_small = <?= json_encode($p3d_res_small) ?>;
+    product_3d_big = <?= json_encode($p3d_res_big) ?>;
+    <? endif ?>
 </script>
 
 <div id="productInfo" data-value="<?= $page->json($productData) ?>"></div>
@@ -297,7 +354,7 @@ $productVideo = reset($productVideos);
     	</a>
     </li>
     <? endforeach ?>
-    <? if (count($photo3dList) > 0): ?>
+    <? if (count($photo3dList) > 0 || $model3dExternalUrl): ?>
     <li><a href="#" class="axonometric viewme" ref="360" title="Объемное изображение">Объемное изображение</a></li>
     <? endif ?>
   </ul>
@@ -427,7 +484,7 @@ $productVideo = reset($productVideos);
         	</a>
         </li>
         <? endforeach ?>
-        <? if (count($photo3dList) > 0): ?>
+        <? if (count($photo3dList) > 0 || $model3dExternalUrl): ?>
         <li><a href="#" class="axonometric viewme" ref="360" title="Объемное изображение">Объемное изображение</a></li>
         <? endif ?>
       </ul>
