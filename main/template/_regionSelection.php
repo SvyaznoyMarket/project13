@@ -26,7 +26,7 @@ $count = count($regions);
         <div id="jscities" style="position:relative"></div>
     </form>
     <div class="cityInline font14 clearfix">
-        <? if ($currentRegion && !in_array($currentRegion->getId(), [14974, 108136])): ?>
+        <? if (!in_array($currentRegion->getId(), [14974, 108136])): ?>
             <div class="cityItem"><a href="<?= $page->url('region.change', ['regionId' => $currentRegion->getId()]) ?>"><?= $currentRegion->getName() ?></a></div>
         <? endif ?>
         <div class="cityItem"><a href="<?= $page->url('region.change', ['regionId' => 14974]) ?>">Москва</a></div>
