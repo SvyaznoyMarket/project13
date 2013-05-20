@@ -113,7 +113,7 @@ $productVideo = reset($productVideos);
 
 <div class="lifted">
   <script type="text/html" id="similarGoodTmpl">
-    <div class="bSimilarGoodsSlider_eGoods fl">
+    <div class="bSimilarGoodsSlider_eGoods fl" <% if (data != undefined ) { %> data-article="<%=data.article%>" data-pos="<%=data.position%>" data-name="<%=data.name%>" <% } %> >
       <a class="bSimilarGoodsSlider_eGoodsImg fl" href="<%=link%>"><img width="83" height="83" src="<%=image%>"/></a>
       <div class="bSimilarGoodsSlider_eGoodsInfo fl">
         <div class="goodsbox__rating rate<%=rating%>"><div class="fill"></div></div>
@@ -122,7 +122,7 @@ $productVideo = reset($productVideos);
       </div>
     </div>
   </script>
-  <div class="bSimilarGoods clearfix">
+  <div class="bSimilarGoods mProduct clearfix">
     <div class="bSimilarGoods_eCorner"><div></div></div>
     <div class="bSimilarGoods_eLeftCaption fl">
       Товар есть только в&nbsp;магазинах. Вы&nbsp;можете заказать похожий товар.
