@@ -19,13 +19,13 @@ $count = count($regions);
     <h2 class="popuptitle">Из какого вы города?</h2>
     <p class="font16">Цены товаров и доставки зависят от региона.</p>
     <form class="ui-css">
-        <input id="jscity" data-url-autocomplete="<?= $page->url('region.autocomplete') ?>" placeholder="Введите свой город" class="bBuyingLine__eText font18"/>
+        <input id="jscity" data-url-autocomplete="<?= $page->url('region.autocomplete') ?>" placeholder="Введите свой город" class="bBuyingLine__eText font18" value="<?= $currentRegion->getName() ?>" />
         <a class="inputClear" href="#">x</a>
         <input id="jschangecity" type="submit" value="Сохранить" class="button bigbutton mDisabled"/>
 
         <div id="jscities" style="position:relative"></div>
     </form>
-    <div class="cityInline font14 clearfix">
+    <div class="cityInline font14 clearfix" data-autoresolve-url="<?= $page->url('region.autoresolve') ?>">
         <? if (!in_array($currentRegion->getId(), [14974, 108136])): ?>
             <div class="cityItem"><a href="<?= $page->url('region.change', ['regionId' => $currentRegion->getId()]) ?>"><?= $currentRegion->getName() ?></a></div>
         <? endif ?>

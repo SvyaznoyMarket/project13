@@ -95,6 +95,11 @@ return [
         'pattern' => '/region/autocomplete',
         'action'  => ['Region\Action', 'autocomplete'],
     ],
+    // автоопределение города
+    'region.autoresolve' => [
+        'pattern' => '/region/autoresolve',
+        'action'  => ['Region\Action', 'autoresolve'],
+    ],
     // сменя региона по прямой ссылке
     'region.redirect' => [
         'pattern' => '/reg/{regionId}{redirectTo}',
