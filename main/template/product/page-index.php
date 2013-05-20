@@ -116,7 +116,7 @@ $productVideo = reset($productVideos);
         model3d.flashvars = {
             language: "ru"
         };
-        
+
         model3d.params = {
             menu: "false",
             scale: "noScale",
