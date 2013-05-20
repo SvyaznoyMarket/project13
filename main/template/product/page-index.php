@@ -116,6 +116,7 @@ $productVideo = reset($productVideos);
         model3d.flashvars = {
             language: "ru"
         };
+        
         model3d.params = {
             menu: "false",
             scale: "noScale",
@@ -127,6 +128,7 @@ $productVideo = reset($productVideos);
         model3d.attributes = {
             id: "<?=$model3dName?>"
         };
+
         model3d.init = {
             'swf'       : "<?=$model3dExternalUrl?>",
             'container' : "maybe3dModel",

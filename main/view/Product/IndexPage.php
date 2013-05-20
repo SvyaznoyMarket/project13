@@ -13,15 +13,6 @@ class IndexPage extends \View\DefaultLayout {
             return;
         }
 
-        //swfobject
-        if (is_array($this->getParam('productVideos'))) {
-            $productVideos = $this->getParam('productVideos');
-            $productVideos = reset($productVideos);
-            if ($productVideos instanceof \Model\Product\Video\Entity) {
-                $this->addJavascript('/js/swfobject.js');
-            }
-        }
-
         // breadcrumbs
         if (!$this->hasParam('breadcrumbs')) {
             $breadcrumbs = [];
