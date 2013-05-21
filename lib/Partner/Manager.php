@@ -106,17 +106,6 @@ class Manager {
                     false,
                     true
                 );
-            // Reactive
-            } else if ((0 === strpos($utmSource, 'vk.com')) && (0 === strpos($request->get('utm_campaing'), 'social_target'))) {
-                $cookie = new \Http\Cookie(
-                    $this->cookieName,
-                    \Partner\Counter\Reactive::NAME,
-                    time() + $this->cookieLifetime,
-                    '/',
-                    null,
-                    false,
-                    true
-                );
             }
 
             if ($cookie instanceof \Http\Cookie) {
@@ -168,11 +157,6 @@ class Manager {
             case \Partner\Counter\Recreative::NAME:
                 $return = [
                     $prefix => [\Partner\Counter\Recreative::NAME],
-                ];
-                break;
-            case \Partner\Counter\Reactive::NAME:
-                $return = [
-                    $prefix => [\Partner\Counter\Reactive::NAME],
                 ];
                 break;
         }

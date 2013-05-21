@@ -10,6 +10,7 @@
     <?= $page->slotMeta() ?>
     <title><?= $page->getTitle() ?></title>
     <link rel="shortcut icon" href="/favicon.ico"/>
+    <?= $page->slotMobileModify() ?>
     <?= $page->slotStylesheet() ?>
     <?= $page->slotHeadJavascript() ?>
     <?= $page->slotRelLink() ?>
@@ -64,7 +65,6 @@
 <? if (\App::config()->analytics['enabled']): ?>
     <div id="yandexMetrika" class="jsanalytics"></div>
     <div id="luxupTracker" class="jsanalytics"></div>
-    <div id="adblenderCommon" class="jsanalytics"></div>
 <? endif ?>
 
 </body>

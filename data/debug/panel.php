@@ -43,7 +43,7 @@ $debug->add('memory', sprintf('%s Mb', round(memory_get_peak_usage() / 1048576, 
 $debug->add('session', json_encode(\App::session()->all(), JSON_PRETTY_PRINT), 89);
 
 // log
-if ('local' === \App::$env) {
+if ('live' != \App::$env) {
     $debug->add('log', '<a style="color: #00ffff" href="/debug/log/' . \App::$id . '" onclick="var el = $(this); $.post(el.attr(\'href\'), function(response) { el.html(\'\'); el.after(\'<pre>\' + response + \'</pre>\'); el.next(\'pre\').css({\'color\': \'#ffffff\', \'max-height\': \'300px\', \'max-width\': \'1200px\', \'overflow\': \'auto\'}) }); return false">...</a>', 88);
 }
 

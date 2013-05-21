@@ -28,6 +28,8 @@ class AppConfig {
     /** @var string */
     public $templateDir;
     /** @var string */
+    public $cmsDir;
+    /** @var string */
     public $controllerPrefix;
     /** @var string */
     public $routePrefix;
@@ -48,6 +50,16 @@ class AppConfig {
     public $coreV2 = [
         'url'          => null,
         'client_id'    => null,
+        'timeout'      => null,
+        'retryTimeout' => [],
+        'retryCount'   => null,
+    ];
+    /** @var array */
+    public $corePrivate = [
+        'url'          => null,
+        'client_id'    => null,
+        'user'         => null,
+        'password'     => null,
         'timeout'      => null,
         'retryTimeout' => [],
         'retryCount'   => null,
@@ -268,6 +280,14 @@ class AppConfig {
     /** @var array  */
     public $order = [
         'enableMetaTag' => null,
+    ];
+    /** @var array */
+    public $maybe3d = [
+        'xmlUrl' => null,
+        'customerId' => null,
+        'swfUrl' => null,
+        'cmsFolder' => null,
+        'timeout' => null,
     ];
 
     public function __construct() {

@@ -1,0 +1,1 @@
+<img src="http://vk.com/rtrg?r=p1/36hEaDd0J4OsA9Bop6esUU*pEqwYSmMilGdDLpW*WOzm7QFVyG7k/yrGboeYx1173/xA7i6ostAsYFLhV1RC9jr2D/IQmFDA*5K4HLlN5aGr*p2HgFjrhCNtQG4EBa4j/MUaFokrw2gwjheXkLBrnj4vTQuliY4LtmBwcalw-" width="1" height="1" border="0" />

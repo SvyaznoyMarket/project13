@@ -35,6 +35,14 @@ class DefaultLayout extends Layout {
         return '<link rel="canonical" href="' . $relLink . '" />';
     }
 
+    public function slotMobileModify() {
+        if (\App::config()->mobileModify['enabled']) {
+            return $this->tryRender('_mobileModify');
+        }
+
+        return '';
+    }
+
     public function slotGoogleAnalytics() {
         return $this->tryRender('_googleAnalytics');
     }
@@ -49,6 +57,10 @@ class DefaultLayout extends Layout {
 
     public function slotHeader() {
         return $this->render('_header', $this->params);
+    }
+
+    public function slotSeoContent() {
+        return $this->render('_seoContent', $this->params);
     }
 
     public function slotFooter() {
@@ -202,12 +214,12 @@ class DefaultLayout extends Layout {
                 $return .= "\n\n" . $this->tryRender('partner-counter/_cityads');
             }
 
-            // на всех страницах сайта, кроме shop.*
-            if ((0 !== strpos($routeName, 'shop')) && !in_array($routeName, [
+            // на всех страницах сайта, кроме...
+            if (!in_array($routeName, [
                 'order.create',
                 'order.complete',
             ])) {
-                $return .= "\n\n" . $this->tryRender('partner-counter/_reactive');
+                $return .= "\n\n" . $this->tryRender('partner-counter/_ad4u');
             }
         }
 

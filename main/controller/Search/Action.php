@@ -120,6 +120,11 @@ class Action {
             )));
         }
 
+        // если по поиску нашелся только один товар, то редиректим сразу в карточку товара
+        if(count($products) == 1) {
+            return new \Http\RedirectResponse(reset($products)->getLink());
+        }
+
         // страница
         $page = new \View\Search\IndexPage();
         $page->setParam('searchQuery', $searchQuery);
