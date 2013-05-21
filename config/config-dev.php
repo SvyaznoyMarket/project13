@@ -29,6 +29,9 @@ $c->corePrivate['retryTimeout'] = [
     'forever' => 0,
 ];
 
+$c->wordpress['throwException'] = false;
+$c->wordpress['timeout'] = 0.2;
+
 $c->dataStore['timeout'] = 2;
 $c->dataStore['retryTimeout'] = [
     'default' => 1,
