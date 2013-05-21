@@ -24,6 +24,20 @@ $(document).ready(function(){
 			}
 		}
 
+		var kissSimilar = function(){
+			var clicked = $(this)
+			var toKISS = {
+				'Recommended Item Clicked Similar Recommendation Place':'product',
+				'Recommended Item Clicked Similar Clicked SKU':clicked.data('article'),
+				'Recommended Item Clicked Similar Clicked Product Name':clicked.data('name'),
+				'Recommended Item Clicked Similar Product Position':clicked.data('pos'),
+			}
+
+			if (typeof(_kmq) !== 'undefined') {
+				_kmq.push(['record', 'Recommended Item Clicked Similar', toKISS])
+			}
+		}
+
 		// init
 		var init = function(data){
 			for (var item in data){
@@ -89,6 +103,10 @@ $(document).ready(function(){
 			similarWrap.animate({'left':left})
 			return false
 		})
+
+
+		// KISS
+		$('.bSimilarGoods.mProduct .bSimilarGoodsSlider_eGoods').live('click', kissSimilar)
 
 
 		$('.bSimilarGoods.mCatalog .bSimilarGoodsSlider_eGoods a').live('click', sliderTracking)
