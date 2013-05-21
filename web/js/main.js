@@ -926,6 +926,11 @@ $(document).ready(function(){
 		var autoResolve = $(this).data("autoresolve-url")
 
 		var authFromServer = function(res){
+			if (!res.data.length){
+				$('.popupRegion .mAutoresolve').html('')
+				return false
+			}
+
 			var url = res.data[0].url
 			var name = res.data[0].name
 			if ($('.popupRegion .mAutoresolve').length){

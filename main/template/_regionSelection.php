@@ -16,8 +16,9 @@ $count = count($regions);
 
 <div class="popup popupRegion clearfix" style="display:none">
     <a href="#" class="close">Закрыть</a>
-    <h2 class="popuptitle">Из какого вы города?</h2>
-    <p class="font16">Цены товаров и доставки зависят от региона.</p>
+    <h2 class="popuptitle">Ваш город</h2>
+    <p class="font14 popupRegion__eTopText">Выберите город, в котором собираетесь получать товары.<br/>
+От выбора зависит стоимость товаров и доставки.</p>
     <form class="ui-css popupRegion__eForm">
         <input id="jscity" data-url-autocomplete="<?= $page->url('region.autocomplete') ?>" placeholder="Введите свой город" class="bBuyingLine__eText font18" value="<?= $currentRegion->getName() ?>" />
         <a class="inputClear" href="#">&times;</a>

@@ -2186,6 +2186,9 @@
   .popupRegion.popup {
     padding: 50px;
   }
+  .popupRegion__eTopText {
+    margin: 10px 0 20px;
+  }
   .popupRegion__eForm {
     position: relative;
   }
