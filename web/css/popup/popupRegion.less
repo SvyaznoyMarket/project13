@@ -1,11 +1,14 @@
 .popupRegion{
   @colomnW:205px;
   @colomnH:300px;
-  @controlW:30px;
+  @controlW:50px;
   @colomnMarginT:20px;
   width:(@colomnW * 4);
   &.popup{
     padding: @controlW;
+  }
+  &__eForm{
+    position: relative;
   }
   .popuptitle{
     font-family: "Enter";
@@ -20,19 +23,29 @@
     display:none;
   }
   .bBuyingLine__eText{
-    margin: 0 -20px 0 0;
-    height: 33px;
-    line-height: 33px;
+    margin: 0 10px 0 0;
+    height: 30px;
+    line-height: 30px;
     padding-left: 20px;
     width:(@colomnW*3)+20;
   }
   .inputClear{
-    color: @typGray;
-    font-size: 14px;
+    background: @typGray;
+    .rounded(50%);
+    color: @white;
+    font-family: Tahoma;
+    font-size: 20px;
     height: 20px;
-    margin:0 15px 0 0;
+    left: 629px;
+    line-height: 18px;
+    position: absolute;
     text-align: center;
+    top: 6px;
     width: 20px;
+    text-decoration: none;
+    &:hover{
+      text-decoration: none;
+    }
   }
   .bigbutton{
     //margin:-1px 0 0 -1px;  
@@ -41,14 +54,30 @@
   }
   .cityInline{
     margin: 20px 0 0;
-    word-spacing: 15px;
+    // word-spacing: 15px;
     .cityItem {
-      width: @colomnW;
-      float:left;
+      // width: @colomnW;
+      // float:left;
+      display: inline;
       a {
-        border-bottom: 1px dashed black;
+        border-bottom: 1px dotted black;
         display: inline;
         margin-left:20px;
+        &.moreCity{
+          &:before{
+            display: inline-block;
+            content: '▶';
+            margin-right: 5px;
+          }
+
+          &.mExpand{
+            &:before{
+              display: inline-block;
+              content: '▼';
+              margin-right: 5px;
+            }
+          }
+        }
       }
     }
     a:hover{
@@ -57,7 +86,7 @@
   }
   .colomn{
     float:left;
-    height: @colomnH;
+    // height: @colomnH;
     margin-top: @colomnMarginT;
     width:@colomnW;
     a {
@@ -72,13 +101,16 @@
   }
   .BlackArrow{
     background: none;
-    height: @colomnH;
+    height: 100%;
     margin-top: @colomnMarginT;
     width: @controlW;
+    position: absolute;
+    top: 0;
     &.leftArr{
       background: lighten(@firmOrange, 45%) url('@{base-url}/popup/img/arrow1.png') no-repeat 50% 50%;
       display: none;
       margin-left: -@controlW;
+      left: 0;
       &:hover{
         background-color: lighten(@firmOrange, 25%);
       }
@@ -86,6 +118,7 @@
     &.rightArr{
       background: lighten(@firmOrange, 45%) url('@{base-url}/popup/img/arrow2.png') no-repeat 50% 50%;
       margin-right: -@controlW;
+      right: 0;
       &:hover{
         background-color: lighten(@firmOrange, 25%);
       }
@@ -93,7 +126,9 @@
   }
   .regionSlidesWrap{
     width: @colomnW * 4;
-    overflow: hidden;
+    // overflow: hidden;
+    position: relative;
+    display: none;
   }
   .regionSlides{
     position: relative;

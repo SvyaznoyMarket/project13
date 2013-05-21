@@ -2184,7 +2184,10 @@
     width: 820px;
   }
   .popupRegion.popup {
-    padding: 30px;
+    padding: 50px;
+  }
+  .popupRegion__eForm {
+    position: relative;
   }
   .popupRegion .popuptitle {
     font-family: "Enter";
@@ -2199,19 +2202,31 @@
     display: none;
   }
   .popupRegion .bBuyingLine__eText {
-    margin: 0 -20px 0 0;
-    height: 33px;
-    line-height: 33px;
+    margin: 0 10px 0 0;
+    height: 30px;
+    line-height: 30px;
     padding-left: 20px;
     width: 635px;
   }
   .popupRegion .inputClear {
-    color: #a6a6a6;
-    font-size: 14px;
+    background: #a6a6a6;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+    color: #ffffff;
+    font-family: Tahoma;
+    font-size: 20px;
     height: 20px;
-    margin: 0 15px 0 0;
+    left: 629px;
+    line-height: 18px;
+    position: absolute;
     text-align: center;
+    top: 6px;
     width: 20px;
+    text-decoration: none;
+  }
+  .popupRegion .inputClear:hover {
+    text-decoration: none;
   }
   .popupRegion .bigbutton {
     height: 33px;
@@ -2219,23 +2234,30 @@
   }
   .popupRegion .cityInline {
     margin: 20px 0 0;
-    word-spacing: 15px;
   }
   .popupRegion .cityInline .cityItem {
-    width: 205px;
-    float: left;
+    display: inline;
   }
   .popupRegion .cityInline .cityItem a {
-    border-bottom: 1px dashed black;
+    border-bottom: 1px dotted black;
     display: inline;
     margin-left: 20px;
+  }
+  .popupRegion .cityInline .cityItem a.moreCity:before {
+    display: inline-block;
+    content: '▶';
+    margin-right: 5px;
+  }
+  .popupRegion .cityInline .cityItem a.moreCity.mExpand:before {
+    display: inline-block;
+    content: '▼';
+    margin-right: 5px;
   }
   .popupRegion .cityInline a:hover {
     text-decoration: none;
   }
   .popupRegion .colomn {
     float: left;
-    height: 300px;
     margin-top: 20px;
     width: 205px;
   }
@@ -2250,28 +2272,33 @@
   }
   .popupRegion .BlackArrow {
     background: none;
-    height: 300px;
+    height: 100%;
     margin-top: 20px;
-    width: 30px;
+    width: 50px;
+    position: absolute;
+    top: 0;
   }
   .popupRegion .BlackArrow.leftArr {
     background: #fff7e6 url('/css/popup/img/arrow1.png') no-repeat 50% 50%;
     display: none;
-    margin-left: -30px;
+    margin-left: -50px;
+    left: 0;
   }
   .popupRegion .BlackArrow.leftArr:hover {
     background-color: #ffd481;
   }
   .popupRegion .BlackArrow.rightArr {
     background: #fff7e6 url('/css/popup/img/arrow2.png') no-repeat 50% 50%;
-    margin-right: -30px;
+    margin-right: -50px;
+    right: 0;
   }
   .popupRegion .BlackArrow.rightArr:hover {
     background-color: #ffd481;
   }
   .popupRegion .regionSlidesWrap {
     width: 820px;
-    overflow: hidden;
+    position: relative;
+    display: none;
   }
   .popupRegion .regionSlides {
     position: relative;

@@ -901,6 +901,12 @@ $(document).ready(function(){
 	function getRegions() {
 		$('.popupRegion').lightbox_me( {
 			autofocus: true,
+			onLoad: function(){
+				if ($('#jscity').val().length){
+					$('#jscity').putCursorAtEnd()
+					$('#jschangecity').removeClass('mDisabled')
+				}
+			},
 			onClose: function() {			
 				if( !docCookies.hasItem('geoshop') ) {
 					var id = $('#jsregion').data('region-id');
@@ -911,15 +917,17 @@ $(document).ready(function(){
 		} )		
 	}
 
+	$('.cityItem .moreCity').bind('click',function(){
+		$(this).toggleClass('mExpand')
+		$('.regionSlidesWrap').slideToggle(300)
+	})
+
 	$('#jsregion, .jsChangeRegion').click( function() {
 		var autoResolve = $(this).data("autoresolve-url")
 
 		var authFromServer = function(res){
-			console.log(res)
 			var url = res.data[0].url
 			var name = res.data[0].name
-			console.log(url)
-			console.log(name)
 			if ($('.popupRegion .mAutoresolve').length){
 				$('.popupRegion .mAutoresolve').html('<a href="'+url+'">'+name+'</a>')	
 			}
