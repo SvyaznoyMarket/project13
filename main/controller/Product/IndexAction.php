@@ -191,6 +191,7 @@ class IndexAction {
 
         try {
             $productVideos = \RepositoryManager::productVideo()->getCollectionByProduct($product);
+            
         } catch (\Exception $e) {
             \App::logger()->error($e);
             $productVideos = [];
