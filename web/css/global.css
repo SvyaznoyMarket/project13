@@ -2213,9 +2213,9 @@
   }
   .popupRegion .inputClear {
     background: #a6a6a6;
-    -webkit-border-radius: 50%;
-    -moz-border-radius: 50%;
-    border-radius: 50%;
+    -webkit-border-radius: 15%;
+    -moz-border-radius: 15%;
+    border-radius: 15%;
     color: #ffffff;
     font-family: Tahoma;
     font-size: 20px;
