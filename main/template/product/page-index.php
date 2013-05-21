@@ -204,27 +204,6 @@ $productVideo = reset($productVideos);
     <? endif ?>
     <img class="mainImg" src="<?= $product->getImageUrl(3) ?>" alt="<?= $page->escape($product->getName()) ?>" title="<?= $page->escape($product->getName()) ?>" width="500" height="500" />
   </a>
-
-  <!-- Photo video -->
-  <? if (count($photo3dList) > 0 || count($photoList) > 0): ?>
-  <div class="fl width500">
-    <h2>Фото товара:</h2>
-    <div class="font11 gray pb10">Всего фотографий <?= count($photoList) ?></div>
-    <ul class="previewlist">
-      <? foreach ($photoList as $photo): ?>
-      <li class="viewstock" ref="photo<?= $photo->getId() ?>">
-        <a href="<?= $photo->getUrl(4) ?>" class="viewme" ref="image">
-          <img src="<?= $photo->getUrl(2) ?>" alt="<?= $page->escape($product->getName()) ?>" title="<?= $page->escape($product->getName()) ?>" width="48" height="48" />
-        </a>
-      </li>
-      <? endforeach ?>
-      <? if (count($photo3dList) > 0): ?>
-      <li><a href="#" class="axonometric viewme" ref="360" title="Объемное изображение">Объемное изображение</a></li>
-      <? endif ?>
-    </ul>
-  </div>
-  <? endif ?>
-  <!-- /Photo video -->
 </div>
 
 <div style="display:none;" id="stock">
