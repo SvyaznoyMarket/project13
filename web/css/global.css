@@ -4298,6 +4298,11 @@
     position: absolute;
     width: 50px;
   }
+  .hotlinksToggle {
+    color: #a6a6a6;
+    border-bottom: 1px dotted #a6a6a6;
+    cursor: pointer;
+  }
 }
 /*страница с промо каталогом */
 @media all {
@@ -5857,6 +5862,23 @@
     height: 50px;
     line-height: 50px;
     padding-left: 50px;
+  }
+  .bF1SaleCard_eRadiogroup {
+    display: none;
+  }
+  .m2Coupon .bF1SaleCard_eRadiogroup {
+    display: block;
+  }
+  .bF1SaleCard_eSingleCoupon {
+    display: block;
+  }
+  .m2Coupon .bF1SaleCard_eSingleCoupon {
+    display: none;
+  }
+  .bF1SaleCard_eLabel {
+    display: inline-block;
+    font-size: 14px;
+    margin: 0 0 10px;
   }
   .bF1SaleCard_eErr {
     color: #e8303c;
