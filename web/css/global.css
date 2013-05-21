@@ -2858,6 +2858,13 @@
   }
   */
 }
+/*окно maybe 3D*/
+@media all {
+  #maybe3dModelPopup {
+    width: 700px;
+    height: 500px;
+  }
+}
 /*---END---СТИЛИ ВСПЛЫВАЮЩИХ ОКОН---*/
 /*------СТИЛИ ХЕАДЕРА------*/
 @media all {
