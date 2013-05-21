@@ -104,46 +104,45 @@ $productVideo = reset($productVideos);
     }
 </style>
 
-<? if ($model3dExternalUrl) : ?>
-    <div id="maybe3dModel" style="display: none;">
+<? if ($model3dExternalUrl) : 
+
+  $arrayToMaybe3D = [
+    'init' => [
+      'swf'=>$model3dExternalUrl,
+      'container'=>'maybe3dModel',
+      'width'=>'700px',
+      'height'=>'500px',
+      'version'=>'10.0.0',
+      'install'=>'js/expressInstall.swf',
+    ],
+    'params' => [
+      'menu'=> "false",
+      'scale'=> "noScale",
+      'allowFullscreen'=> "true",
+      'allowScriptAccess'=> "always",
+      'wmode'=> "direct"
+    ],
+    'attributes' => [
+      'id'=> "<?=$model3dName?>",
+    ],
+    'flashvars'=> [
+      'language'=> "auto",
+    ]
+    
+  ];
+  
+?>
+
+
+  <div id="maybe3dModelPopup" class="popup" data-value="<?php print $page->json($arrayToMaybe3D); ?>">
+    <i class="close" title="Закрыть">Закрыть</i>
+    <div id="maybe3dModel">
         <a href="http://www.adobe.com/go/getflashplayer">
             <img src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Get Adobe Flash player" />
         </a>
     </div>
-    <script type="text/javascript">
+  </div>
 
-        var model3d = {};
-        model3d.flashvars = {
-            language: "ru"
-        };
-
-        model3d.params = {
-            menu: "false",
-            scale: "noScale",
-            allowFullscreen: "true",
-            allowScriptAccess: "always",
-            wmode: "direct"
-        };
-
-        model3d.attributes = {
-            id: "<?=$model3dName?>"
-        };
-
-        model3d.init = {
-            'swf'       : "<?=$model3dExternalUrl?>",
-            'container' : "maybe3dModel",
-            'width'     : "700px",
-            'height'    : "500px",
-            'version'   : "10.0.0",
-            'install'   : "js/expressInstall.swf"
-        };
-
-        function babah() {
-            swfobject.embedSWF(model3d.init.swf, model3d.init.container, model3d.init.width, model3d.init.height, model3d.init.version, model3d.init.install, model3d.flashvars, model3d.params, model3d.attributes);
-        };
-
-    </script>
-    <!--<input type="button" onclick="babah();" value="babah"/>-->
 <? endif ?>
 
 <script type="text/javascript">
@@ -357,7 +356,7 @@ $productVideo = reset($productVideos);
     </li>
     <? endforeach ?>
     <? if (count($photo3dList) > 0 || $model3dExternalUrl): ?>
-    <li><a href="#" class="axonometric viewme" ref="360" title="Объемное изображение">Объемное изображение</a></li>
+    <li><a href="#" class="axonometric viewme <? if ($model3dExternalUrl): ?>maybe3d<? endif ?>" ref="360" title="Объемное изображение">Объемное изображение</a></li>
     <? endif ?>
   </ul>
 </div>
