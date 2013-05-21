@@ -578,6 +578,8 @@ class Cart {
             'product_list'  => [],
             'service_list'  => [],
             'warranty_list' => [],
+            'card_f1_list'  => [],
+            'coupon_list'   => [],
             'price_total'   => 0,
         ];
 
@@ -661,6 +663,20 @@ class Cart {
         if (array_key_exists('action_list', $response)) {
             foreach ($response['action_list'] as $actionData) {
                 $this->actions[$actionData['id']] = new \Model\Cart\Action\Entity($actionData);
+            }
+        }
+
+        $this->certificates = [];
+        if (array_key_exists('card_f1_list', $response)) {
+            foreach ($response['card_f1_list'] as $certificateData) {
+                $this->certificates[$certificateData['number']] = new \Model\Cart\Certificate\Entity($certificateData);
+            }
+        }
+
+        $this->coupons = [];
+        if (array_key_exists('coupon_list', $response)) {
+            foreach ($response['coupon_list'] as $couponData) {
+                $this->coupons[$couponData['number']] = new \Model\Cart\Coupon\Entity($couponData);
             }
         }
 

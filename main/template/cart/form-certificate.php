@@ -21,6 +21,10 @@ if (!isset($isForm)) $isForm = true;
             <div class="bF1SaleCard_eComplete mGold">
                 <p class="font14">Для заказа действует скидка по программе «Под защитой F1» <a class="bF1SaleCard_eDel" href="#" data-url="<?= $page->url('cart.certificate.delete') ?>">отменить</a></p>
             </div>
+        <? elseif ((bool)$user->getCart()->getCoupons()): ?>
+            <div class="bF1SaleCard_eComplete mGold">
+                <p class="font14">Для заказа действует скидка для товаров <a class="bF1SaleCard_eDel" href="#" data-url="<?= $page->url('cart.coupon.delete') ?>">отменить</a></p>
+            </div>
         <? elseif ($isForm): ?>
             <div class="bF1SaleCard_eForm">
                 <p class="font11">Введите серийный номер карты «Под защитой F1» для скидки на услуги:</p>
