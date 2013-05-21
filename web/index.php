@@ -29,6 +29,7 @@ if (isset($_GET['APPLICATION_DEBUG'])) {
 }
 
 // request
+\Http\Request::trustProxyData();
 // TODO: придумать, как по другому можно получить имя хоста
 $request = \Http\Request::createFromGlobals();
 
