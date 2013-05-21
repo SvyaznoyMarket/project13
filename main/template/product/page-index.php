@@ -15,6 +15,7 @@
 ?>
 
 <?
+/** @var $productVideo \Model\Product\Video\Entity */
 $productVideo = reset($productVideos);
 ?>
 <?
@@ -65,17 +66,29 @@ $productVideo = reset($productVideos);
   ];
 ?>
 <?
-  $photoList = $product->getPhoto();
-  $photo3dList = $product->getPhoto3d();
-  $p3d_res_small = [];
-  $p3d_res_big = [];
-  foreach ($photo3dList as $photo3d)
-  {
-    $p3d_res_small[] = $photo3d->getUrl(0);
-    $p3d_res_big[] = $photo3d->getUrl(1);
-  }
+    $photoList = $product->getPhoto();
 
-  $showAveragePrice = \App::config()->product['showAveragePrice'] && !$product->getPriceOld() && $product->getPriceAverage();
+    /** @var string $model3dExternalUrl */
+    $model3dExternalUrl = ($productVideo instanceof \Model\Product\Video\Entity) ? $productVideo->getMaybe3d() : false;
+    /** @var array $photo3dList */
+    $photo3dList = [];
+    /** @var array $p3d_res_small */
+    $p3d_res_small = [];
+    /** @var array $p3d_res_big */
+    $p3d_res_big = [];
+
+    if (!$model3dExternalUrl) {
+        $photo3dList = $product->getPhoto3d();
+        foreach ($photo3dList as $photo3d) {
+            $p3d_res_small[] = $photo3d->getUrl(0);
+            $p3d_res_big[] = $photo3d->getUrl(1);
+        }
+    } elseif ($model3dExternalUrl) {
+        $model3dName = str_ireplace(array('.SWF', '.swf'), '', basename($model3dExternalUrl));
+        if (!strlen($model3dName)) $model3dExternalUrl = false;
+    }
+
+    $showAveragePrice = \App::config()->product['showAveragePrice'] && !$product->getPriceOld() && $product->getPriceAverage();
 
     $adfox_id_by_label = 'adfox400';
     if ($product->getLabel()) {
@@ -100,9 +113,54 @@ $productVideo = reset($productVideos);
     }
 </style>
 
+<? if ($model3dExternalUrl) : 
+
+  $arrayToMaybe3D = [
+    'init' => [
+      'swf'=>$model3dExternalUrl,
+      'container'=>'maybe3dModel',
+      'width'=>'700px',
+      'height'=>'500px',
+      'version'=>'10.0.0',
+      'install'=>'js/expressInstall.swf',
+    ],
+    'params' => [
+      'menu'=> "false",
+      'scale'=> "noScale",
+      'allowFullscreen'=> "true",
+      'allowScriptAccess'=> "always",
+      'wmode'=> "direct"
+    ],
+    'attributes' => [
+      'id'=> "<?=$model3dName?>",
+    ],
+    'flashvars'=> [
+      'language'=> "auto",
+    ]
+    
+  ];
+  
+?>
+
+
+  <div id="maybe3dModelPopup" class="popup" data-value="<?php print $page->json($arrayToMaybe3D); ?>">
+    <i class="close" title="Закрыть">Закрыть</i>
+    <div id="maybe3dModel">
+        <a href="http://www.adobe.com/go/getflashplayer">
+            <img src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Get Adobe Flash player" />
+        </a>
+    </div>
+  </div>
+
+<? endif ?>
+
 <script type="text/javascript">
-  product_3d_small = <?= json_encode($p3d_res_small) ?>;
-  product_3d_big = <?= json_encode($p3d_res_big) ?>;
+    <? if ($model3dExternalUrl) : ?>
+    product_3d_url = <?= json_encode($model3dExternalUrl) ?>;
+    <? elseif (count($photo3dList) > 0) : ?>
+    product_3d_small = <?= json_encode($p3d_res_small) ?>;
+    product_3d_big = <?= json_encode($p3d_res_big) ?>;
+    <? endif ?>
 </script>
 
 <div id="productInfo" data-value="<?= $page->json($productData) ?>"></div>
@@ -199,7 +257,7 @@ $productVideo = reset($productVideos);
   <? endif ?>
 
   <div class="fl pb15" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
-
+    <link itemprop="availability" href="http://schema.org/OutOfStock" />  
     <div class="pb10 <? if ($product->hasSaleLabel()) echo 'red'; ?>"><strong class="font34"><span class="price" itemprop="price"><?= $page->helper->formatPrice($product->getPrice()) ?></span> <meta itemprop="priceCurrency" content="RUB"><span class="rubl">p</span></strong></div>
     <? if ($product->getIsBuyable()): ?>
     <link itemprop="availability" href="http://schema.org/InStock" />
@@ -317,6 +375,27 @@ $productVideo = reset($productVideos);
 <!-- /Goods info -->
 
 <div class="clear"></div>
+
+<!-- Photo video -->
+<? if (count($photo3dList) > 0 || count($photoList) > 0): ?>
+<div class="fl width500">
+  <h2>Фото товара:</h2>
+  <div class="font11 gray pb10">Всего фотографий <?= count($photoList) ?></div>
+  <ul class="previewlist">
+    <? foreach ($photoList as $photo): ?>
+    <li class="viewstock" ref="photo<?= $photo->getId() ?>">
+    	<a href="<?= $photo->getUrl(4) ?>" class="viewme" ref="image">
+    		<img src="<?= $photo->getUrl(2) ?>" alt="<?= $page->escape($product->getName()) ?>" title="<?= $page->escape($product->getName()) ?>" width="48" height="48" />
+    	</a>
+    </li>
+    <? endforeach ?>
+    <? if (count($photo3dList) > 0 || $model3dExternalUrl): ?>
+    <li><a href="#" class="axonometric viewme <? if ($model3dExternalUrl): ?>maybe3d<? endif ?>" ref="360" title="Объемное изображение">Объемное изображение</a></li>
+    <? endif ?>
+  </ul>
+</div>
+<? endif ?>
+<!-- /Photo video -->
 
 <? if((bool)$product->getModel() && (bool)$product->getModel()->getProperty()): //модели ?>
 <!-- Variation -->
@@ -443,7 +522,7 @@ $productVideo = reset($productVideos);
         	</a>
         </li>
         <? endforeach ?>
-        <? if (count($photo3dList) > 0): ?>
+        <? if (count($photo3dList) > 0 || $model3dExternalUrl): ?>
         <li><a href="#" class="axonometric viewme" ref="360" title="Объемное изображение">Объемное изображение</a></li>
         <? endif ?>
       </ul>
