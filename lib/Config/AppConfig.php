@@ -279,6 +279,14 @@ class AppConfig {
     public $order = [
         'enableMetaTag' => null,
     ];
+    /** @var array */
+    public $maybe3d = [
+        'xmlUrl' => null,
+        'customerId' => null,
+        'swfUrl' => null,
+        'cmsFolder' => null,
+        'timeout' => null,
+    ];
 
     public function __construct() {
         $this->vkontakteOauth = new OAuth\VkontakteConfig();
