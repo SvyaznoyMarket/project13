@@ -48,6 +48,7 @@ class CompactEntity extends BasicEntity {
         if (array_key_exists('stock', $data) && is_array($data['stock'])) $this->setStock(array_map(function($data) {
             return new Stock\Entity($data);
         }, $data['stock']));
+        if (array_key_exists('ean', $data)) $this->setEan($data['ean']);
     }
 
     /**

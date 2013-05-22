@@ -9,6 +9,10 @@
 <? require __DIR__ . '/_branch.php' ?>
 <? if (isset($productFilter)) require __DIR__ . '/_filter.php' ?>
 
+<? if(!empty($sidebarHotlinks)): ?>
+  <?= $page->render('_hotlinks', array('hotlinks' => $hotlinks)) ?>
+<? endif ?>
+
 <? if (\App::config()->adFox['enabled']): ?>
 <div class="pb15">
     <div class="adfoxWrapper" id="adfox215"></div>

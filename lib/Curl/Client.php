@@ -201,7 +201,6 @@ class Client {
                         \App::exception()->add($e);
                         $this->logger->error($e, ['curl']);
                         $spend = \Debug\Timer::stop('curl');
-
                         $callback = $this->failCallbacks[(string)$handler];
                         if ($callback) {
                             $callback($e, (int)$handler);
@@ -284,6 +283,12 @@ class Client {
         curl_setopt($connection, CURLOPT_URL, $url);
         curl_setopt($connection, CURLOPT_HTTPHEADER, ['X-Request-Id: '.\Util\RequestLogger::getInstance()->getId(), 'Expect:']);
         curl_setopt($connection, CURLOPT_ENCODING, 'gzip,deflate');
+
+        if(isset($data['http_user']) && isset($data['http_password'])) {
+            curl_setopt($connection, CURLOPT_USERPWD, $data['http_user'].":".$data['http_password']);
+            unset($data['http_user']);
+            unset($data['http_password']);
+        }
 
         if ($timeout) {
             curl_setopt($connection, CURLOPT_NOSIGNAL, 1);
@@ -368,7 +373,7 @@ class Client {
                     break;
             }
             $e = new \RuntimeException(sprintf('Json error: "%s", Response: "%s"', $error, $response), $code);
-            \App::exception()->add($e);
+            //\App::exception()->add($e); похоже, что здесь не нужно добавлять исключение
             throw $e;
         }
 

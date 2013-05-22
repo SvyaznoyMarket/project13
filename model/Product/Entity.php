@@ -164,6 +164,7 @@ class Entity extends BasicEntity {
         if (array_key_exists('nearest_city', $data) && is_array($data['nearest_city'])) foreach ($data['nearest_city'] as $city) {
             $this->addNearestCity(new \Model\Region\Entity($city));
         }
+        if (array_key_exists('ean', $data)) $this->setEan($data['ean']);
 
         foreach ($this->propertyGroup as $group) {
             if (!isset($this->groupedProperties[$group->getId()])) {
