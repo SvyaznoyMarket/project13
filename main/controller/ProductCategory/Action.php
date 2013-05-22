@@ -13,7 +13,7 @@ class Action {
     public function setGlobal($categoryPath, \Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
-        $response = new \Http\RedirectResponse($request->headers->get('referer') ?: \App::router()->generate('product.category', [$categoryPath => $categoryPath]));
+        $response = new \Http\RedirectResponse($request->headers->get('referer') ?: \App::router()->generate('product.category', ['categoryPath' => $categoryPath]));
 
         if ($request->query->has('global')) {
             if ($request->query->get('global')) {
