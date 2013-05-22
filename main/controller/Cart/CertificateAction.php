@@ -42,7 +42,7 @@ class CertificateAction {
                 'success' => true,
             ];
 
-        } catch (\Exception\ActionException $e) {
+        } catch (\Exception $e) {
             \App::exception()->remove($e);
 
             $result = [
