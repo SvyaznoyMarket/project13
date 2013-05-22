@@ -23,7 +23,8 @@ class EditAction {
         $session->remove('flash');
 
         if ($request->isMethod('post')) {
-            $form->fromArray($request->request->get('user'));
+            $userData = (array)$request->request->get('user');
+            $form->fromArray($userData);
 
             try {
                 $response = \App::coreClientV2()->query('user/update', array('token' => \App::user()->getToken()), array(
