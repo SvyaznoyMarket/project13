@@ -667,7 +667,7 @@ class Action {
             }
 
             // подарочный сертификат
-            if (1 == count($deliveryData['deliveryTypes'])) {
+            if (1 == count($deliveryData['deliveryTypes']) && $form->getPaymentMethodId() == \Model\PaymentMethod\Entity::CERTIFICATE_ID) {
                 $orderData['certificate'] = $form->getCertificateCardnumber();
                 $orderData['certificate_pin'] = $form->getCertificatePin();
             }
