@@ -728,7 +728,7 @@ $(document).ready(function(){
 		$('#ajaxerror div.fl').append('<small>'+ settings.url.replace(/(.*)\?ts=/,'')+'</small>')
 	})
 	*/
-	var logError = function(data) {
+	logError = function(data) {
         if (data.ajaxUrl !== '/log-json') {
             $.ajax({
                 type: 'POST',
@@ -744,16 +744,12 @@ $(document).ready(function(){
 			404: function() {
 				// errorpopup(' 404 ошибка, страница не найдена')
 				var ajaxUrl = this.url
-				var date = new Date();
-				var time = date.getHours()+':'+date.getMinutes()+':'+date.getSeconds()
-				var nowUrl = window.location.pathname
-				var userAgent = navigator.userAgent
+				var pageID = $('body').data('id')
 				var data = {
-					time:time,
+					event: 'ajax_error',
 					type:'404 ошибка',
+					pageID: pageID,
 					ajaxUrl:ajaxUrl,
-					nowUrl:nowUrl,
-					userAgent:userAgent
 				}
 				logError(data)
 				if( typeof(_gaq) !== 'undefined' )
@@ -777,16 +773,12 @@ $(document).ready(function(){
 			500: function() {
 				// errorpopup(' сервер перегружен')
 				var ajaxUrl = this.url
-				var date = new Date();
-				var time = date.getHours()+':'+date.getMinutes()+':'+date.getSeconds()
-				var nowUrl = window.location.pathname
-				var userAgent = navigator.userAgent
+				var pageID = $('body').data('id')
 				var data = {
-					time:time,
+					event: 'ajax_error',
 					type:'500 ошибка',
+					pageID: pageID,
 					ajaxUrl:ajaxUrl,
-					nowUrl:nowUrl,
-					userAgent:userAgent
 				}
 				logError(data)
 				if( typeof(_gaq) !== 'undefined' )
@@ -795,16 +787,12 @@ $(document).ready(function(){
 			503: function() {
 				// errorpopup(' 503 ошибка, сервер перегружен')
 				var ajaxUrl = this.url
-				var date = new Date();
-				var time = date.getHours()+':'+date.getMinutes()+':'+date.getSeconds()
-				var nowUrl = window.location.pathname
-				var userAgent = navigator.userAgent
+				var pageID = $('body').data('id')
 				var data = {
-					time:time,
+					event: 'ajax_error',
 					type:'503 ошибка',
+					pageID: pageID,
 					ajaxUrl:ajaxUrl,
-					nowUrl:nowUrl,
-					userAgent:userAgent
 				}
 				logError(data)
 				if( typeof(_gaq) !== 'undefined' )
@@ -813,16 +801,12 @@ $(document).ready(function(){
 			504: function() {
 				// errorpopup(' 504 ошибка, проверьте соединение с интернетом')
 				var ajaxUrl = this.url
-				var date = new Date();
-				var time = date.getHours()+':'+date.getMinutes()+':'+date.getSeconds()
-				var nowUrl = window.location.pathname
-				var userAgent = navigator.userAgent
+				var pageID = $('body').data('id')
 				var data = {
-					time:time,
+					event: 'ajax_error',
 					type:'504 ошибка',
+					pageID: pageID,
 					ajaxUrl:ajaxUrl,
-					nowUrl:nowUrl,
-					userAgent:userAgent
 				}
 				logError(data)
 				if( typeof(_gaq) !== 'undefined' )
@@ -836,16 +820,12 @@ $(document).ready(function(){
 				console.error(' неизвестная ajax ошибка')
 				if( typeof(_gaq) !== 'undefined' )
 					_gaq.push(['_trackEvent', 'Errors', 'Ajax Errors', 'неизвестная ajax ошибка'])
-				var date = new Date();
-				var time = date.getHours()+':'+date.getMinutes()+':'+date.getSeconds()
-				var nowUrl = window.location.pathname
-				var userAgent = navigator.userAgent
+				var pageID = $('body').data('id')
 				var data = {
-					time:time,
+					event: 'ajax_error',
 					type:'неизвестная ajax ошибка',
+					pageID: pageID,
 					ajaxUrl:ajaxUrl,
-					nowUrl:nowUrl,
-					userAgent:userAgent
 				}
 				logError(data)
 			}

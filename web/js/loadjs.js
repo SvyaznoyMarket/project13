@@ -16,6 +16,19 @@
 		debug = true
 	}
 
+	// page load log
+	var pageID = document.body.getAttribute('data-id')
+	var dataToLog = {
+		event: 'page_load',
+    	pageID: pageID,
+	}
+	$.ajax({
+        type: 'POST',
+        global: false,
+        url: '/log-json',
+        data: dataToLog
+    })
+
 	if( typeof($LAB) === 'undefined' )
 		throw new Error( "Невозможно загрузить файлы JavaScript" )
 	function getWithVersion( flnm ) { 
