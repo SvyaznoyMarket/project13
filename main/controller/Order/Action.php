@@ -1057,7 +1057,7 @@ class Action {
                     $productEntity = $productsEntityById[$itemData['id']];
                     $itemView->article = $productEntity->getArticle();
                     $itemView->parent_category = $productEntity->getMainCategory() ? $productEntity->getMainCategory()->getName() : null;
-                    $itemView->category = $productEntity->getParentCategory()->getName();
+                    $itemView->category = $productEntity->getParentCategory() ? $productEntity->getParentCategory()->getName() : null;
                 } else if ('services' == $itemType && $servicesEntityById[$itemData['id']]) {
                     /** @var $serviceEntity \Model\Product\Service\Entity */
                     $serviceEntity = $servicesEntityById[$itemData['id']];
