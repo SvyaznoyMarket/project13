@@ -786,6 +786,13 @@
     left: -8px;
     position: absolute;
   }
+  .toLink {
+    cursor: pointer;
+    text-decoration: none;
+  }
+  .toLink:hover {
+    text-decoration: underline;
+  }
 }
 @media all {
   .bGrayButton {
