@@ -13,7 +13,7 @@ class Action {
 
         if (\App::user()->getEntity()) {
             return $request->isXmlHttpRequest()
-                ? new \Http\JsonResponse(array('success' => true))
+                ? new \Http\JsonResponse(['success' => true])
                 : new \Http\RedirectResponse(\App::router()->generate('user'));
         }
 
@@ -28,7 +28,7 @@ class Action {
             }
 
             if ($form->isValid()) {
-                $params = array('password' => $form->getPassword());
+                $params = ['password' => $form->getPassword()];
                 if (strpos($form->getUsername(), '@')) {
                     $params['email'] = $form->getUsername();
                 }
@@ -65,25 +65,33 @@ class Action {
                         : \App::router()->generate('user');
 
                     $response = $request->isXmlHttpRequest()
-                        ? new \Http\JsonResponse(array(
+                        ? new \Http\JsonResponse([
                             'success' => true,
-                            'data'    => array(
-                                'content' => \App::templating()->render('form-login', array(
+                            'data'    => [
+                                'content' => \App::templating()->render('form-login', [
                                     'page'    => new \View\Layout(),
                                     'form'    => $form,
                                     'request' => \App::request(),
-                                )),
-                                'user' => array(
+                                ]),
+                                'user' => [
                                     'first_name'   => $userEntity->getFirstName(),
                                     'last_name'    => $userEntity->getLastName(),
                                     'mobile_phone' => $userEntity->getMobilePhone(),
-                                ),
+                                ],
                                 'link' => $redirect,
-                            ),
-                        ))
+                            ],
+                        ])
                         : new \Http\RedirectResponse($redirect);
 
                     \App::user()->signIn($userEntity, $response);
+
+                    try {
+                        \App::coreClientV2()->query('user/update', ['token' => \App::user()->getToken()], [
+                            'geo_id' => \App::user()->getRegion() ? \App::user()->getRegion()->getId() : null,
+                        ]);
+                    } catch (\Exception $e) {
+                        \App::logger()->error(sprintf('Не удалось обновить регион у пользователя token=%s', \App::user()->getToken()), ['user']);
+                    }
 
                     return $response;
                 } catch(\Exception $e) {
@@ -93,16 +101,16 @@ class Action {
 
             // xhr
             if ($request->isXmlHttpRequest()) {
-                return new \Http\JsonResponse(array(
+                return new \Http\JsonResponse([
                     'success' => $form->isValid(),
-                    'data'    => array(
-                        'content' => \App::templating()->render('form-login', array(
+                    'data'    => [
+                        'content' => \App::templating()->render('form-login', [
                             'page'    => new \View\Layout(),
                             'form'    => $form,
                             'request' => \App::request(),
-                        )),
-                    ),
-                ));
+                        ]),
+                    ],
+                ]);
             }
         }
 
@@ -138,7 +146,7 @@ class Action {
 
         if (\App::user()->getEntity()) {
             return $request->isXmlHttpRequest()
-                ? new \Http\JsonResponse(array('success' => true))
+                ? new \Http\JsonResponse(['success' => true])
                 : new \Http\RedirectResponse(\App::router()->generate('user'));
         }
 
@@ -153,7 +161,10 @@ class Action {
             }
 
             if ($form->isValid()) {
-                $data = array('first_name' => $form->getFirstName());
+                $data = [
+                    'first_name' => $form->getFirstName(),
+                    'geo_id'     => \App::user()->getRegion() ? \App::user()->getRegion()->getId() : null,
+                ];
                 if (strpos($form->getUsername(), '@')) {
                     $data['email'] = $form->getUsername();
                 }
@@ -179,16 +190,16 @@ class Action {
                     $user->setToken($result['token']);
 
                     $response = $request->isXmlHttpRequest()
-                        ? new \Http\JsonResponse(array(
+                        ? new \Http\JsonResponse([
                             'success' => true,
-                            'data'    => array(
-                                'content' => \App::templating()->render('form-register', array(
+                            'data'    => [
+                                'content' => \App::templating()->render('form-register', [
                                     'page'    => new \View\Layout(),
                                     'form'    => $form,
                                     'request' => \App::request(),
-                                )),
-                            ),
-                        ))
+                                ]),
+                            ],
+                        ])
                         : new \Http\RedirectResponse(\App::router()->generate('user'));
 
                     \App::user()->signIn($user, $response);
@@ -211,16 +222,16 @@ class Action {
 
             // xhr
             if ($request->isXmlHttpRequest()) {
-                return new \Http\JsonResponse(array(
+                return new \Http\JsonResponse([
                     'success' => $form->isValid(),
-                    'data'    => array(
-                        'content' => \App::templating()->render('form-register', array(
+                    'data'    => [
+                        'content' => \App::templating()->render('form-register', [
                             'page'    => new \View\Layout(),
                             'form'    => $form,
                             'request' => \App::request(),
-                        )),
-                    ),
-                ));
+                        ]),
+                    ],
+                ]);
             }
         }
 
@@ -240,7 +251,7 @@ class Action {
 
         if (\App::user()->getEntity()) {
             return $request->isXmlHttpRequest()
-                ? new \Http\JsonResponse(array('success' => true))
+                ? new \Http\JsonResponse(['success' => true])
                 : new \Http\RedirectResponse(\App::router()->generate('user'));
         }
 
@@ -298,7 +309,7 @@ class Action {
                 $phone = preg_replace('/^\+7/', '8', $phone);
                 $phone = preg_replace('/[^\d]/', '', $phone);
 
-                $data = array(
+                $data = [
                     'first_name'    => $form->getFirstName(),
                     'last_name'     => $form->getLastName(),
                     'middle_name'   => $form->getMiddleName(),
@@ -309,7 +320,7 @@ class Action {
                     'mobile'        => $phone,
                     'is_subscribe'  => (bool)$request->get('subscribe', false),
                     'occupation'    => null,
-                    'detail'        => array(
+                    'detail'        => [
                         //'legal_type' => null,
                         //'name'          => $form->getCorpName(),
                         'legal_type'    => 'ЮЛ',
@@ -323,13 +334,13 @@ class Action {
                         'bik'           => $form->getCorpBIK(),
                         'account'       => $form->getCorpAccount(),
                         'korr_account'  => $form->getCorpKorrAccount(),
-                    ),
-                );
+                    ],
+                ];
 
                 try {
-                    $result = \App::coreClientV2()->query('user/create-legal', array(
+                    $result = \App::coreClientV2()->query('user/create-legal', [
                         'geo_id' => \App::user()->getRegion()->getId(),
-                    ), $data);
+                    ], $data);
                     if (empty($result['token'])) {
                         throw new \Exception('Не удалось получить токен');
                     }
@@ -341,16 +352,16 @@ class Action {
                     $user->setToken($result['token']);
 
                     $response = $request->isXmlHttpRequest()
-                        ? new \Http\JsonResponse(array(
+                        ? new \Http\JsonResponse([
                             'success' => true,
-                            'data'    => array(
-                                'content' => \App::templating()->render('form-registerCorporate', array(
+                            'data'    => [
+                                'content' => \App::templating()->render('form-registerCorporate', [
                                     'page'    => new \View\Layout(),
                                     'form'    => $form,
                                     'request' => \App::request(),
-                                )),
-                            ),
-                        ))
+                                ]),
+                            ],
+                        ])
                         : new \Http\RedirectResponse(\App::router()->generate('user'));
 
                     \App::user()->signIn($user, $response);
@@ -401,16 +412,16 @@ class Action {
 
             // xhr
             if ($request->isXmlHttpRequest()) {
-                return new \Http\JsonResponse(array(
+                return new \Http\JsonResponse([
                     'success' => $form->isValid(),
-                    'data'    => array(
-                        'content' => \App::templating()->render('form-registerCorporate', array(
+                    'data'    => [
+                        'content' => \App::templating()->render('form-registerCorporate', [
                             'page'    => new \View\Layout(),
                             'form'    => $form,
                             'request' => \App::request(),
-                        )),
-                    ),
-                ));
+                        ]),
+                    ],
+                ]);
             }
         }
 
@@ -437,11 +448,11 @@ class Action {
                 throw new \Exception($error);
             }
 
-            $result = \App::coreClientV2()->query('user/reset-password', array(
+            $result = \App::coreClientV2()->query('user/reset-password', [
                 (strpos($username, '@') ? 'email' : 'mobile') => $username,
-            ));
+            ]);
             if (isset($result['confirmed']) && $result['confirmed']) {
-                return new \Http\JsonResponse(array('success' => true));
+                return new \Http\JsonResponse(['success' => true]);
             }
         } catch(\Exception $e) {
             \App::exception()->remove($e);
@@ -449,7 +460,7 @@ class Action {
             $error = $error ?: ('Не удалось запросить пароль. Попробуйте позже' . (\App::config()->debug ? (': ' . $e->getMessage()) : ''));
         }
 
-        return new \Http\JsonResponse(array('success' => false, 'error' => $error));
+        return new \Http\JsonResponse(['success' => false, 'error' => $error]);
     }
 
     public function reset(\Http\Request $request) {

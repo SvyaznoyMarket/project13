@@ -25,6 +25,16 @@ class Action {
 
         \App::user()->changeRegion($region, $response);
 
+        if (\App::user()->getToken()) {
+            try {
+                \App::coreClientV2()->query('user/update', ['token' => \App::user()->getToken()], [
+                    'geo_id' => \App::user()->getRegion() ? \App::user()->getRegion()->getId() : null,
+                ]);
+            } catch (\Exception $e) {
+                \App::logger()->error(sprintf('Не удалось обновить регион у пользователя token=%s', \App::user()->getToken()), ['user']);
+            }
+        }
+
         return $response;
     }
 
