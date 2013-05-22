@@ -153,7 +153,10 @@ class Action {
             }
 
             if ($form->isValid()) {
-                $data = array('first_name' => $form->getFirstName());
+                $data = [
+                    'first_name' => $form->getFirstName(),
+                    'geo_id'     => \App::user()->getRegion() ? \App::user()->getRegion()->getId() : null,
+                ];
                 if (strpos($form->getUsername(), '@')) {
                     $data['email'] = $form->getUsername();
                 }
