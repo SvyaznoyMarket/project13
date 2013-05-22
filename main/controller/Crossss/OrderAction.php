@@ -14,7 +14,7 @@ class OrderAction {
         $database = \App::database();
 
         try {
-            if ($database) {
+            if (!$database) {
                 throw new \Exception('Нет доступа к бд');
             }
 
