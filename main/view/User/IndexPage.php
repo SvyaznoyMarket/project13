@@ -7,10 +7,10 @@ class IndexPage extends \View\DefaultLayout {
         // breadcrumbs
         if (!$this->hasParam('breadcrumbs')) {
             $breadcrumbs = [];
-            $breadcrumbs[] = array(
+            $breadcrumbs[] = [
                 'name' => 'Личный кабинет',
                 'url'  => null,
-            );
+            ];
 
             $this->setParam('breadcrumbs', $breadcrumbs);
         }
@@ -22,42 +22,46 @@ class IndexPage extends \View\DefaultLayout {
     public function slotContent() {
         $orderCount = $this->getParam('orderCount');
 
-        $this->params['menu'] = array(
-            array(
+        $this->params['menu'] = [
+            [
                 'title' => 'Моя персональная информация',
-                'links' => array(
-                    array(
+                'links' => [
+                    [
                         'name' => 'Изменить мои данные',
                         'url'  => $this->url('user.edit'),
-                    ),
-                    array(
+                    ],
+                    [
                         'name' => 'Изменить пароль',
                         'url'  => $this->url('user.changePassword'),
-                    ),
-                )
-            ),
+                    ],
+                    [
+                        'name' => 'Регион: <strong>' . (\App::user()->getEntity()->getCity() ? \App::user()->getEntity()->getCity()->getName() : null) . '</strong> (<a data-url="' . $this->url('region.init') . '">изменить</a>)',
+                        'url'  => null,
+                    ],
+                ],
+            ],
 
-            array(
+            [
                 'title' => 'Мои товары',
-                'links' => array(
-                    array(
+                'links' => [
+                    [
                         'name' => 'Мои заказы',
                         'num'  => $orderCount,
                         'url'  => $this->url('user.order'),
-                    ),
-                )
-            ),
+                    ],
+                ],
+            ],
 
-            array(
+            [
                 'title' => 'cEnter защиты прав потребителей ',
-                'links' => array(
-                    array(
+                'links' => [
+                    [
                         'name' => 'Адвокат клиента',
                         'url'  => 'http://my.enter.ru/community/pravo',
-                    ),
-                )
-            ),
-        );
+                    ],
+                ],
+            ],
+        ];
 
         return $this->render('user/page-index', $this->params);
     }

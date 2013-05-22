@@ -27,7 +27,7 @@ class EditAction {
             $form->fromArray($userData);
 
             try {
-                $response = \App::coreClientV2()->query('user/update', array('token' => \App::user()->getToken()), array(
+                $response = \App::coreClientV2()->query('user/update', array('token' => \App::user()->getToken()), [
                     'first_name'  => $form->getFirstName(),
                     'middle_name' => $form->getMiddleName(),
                     'last_name'   => $form->getLastName(),
@@ -38,7 +38,7 @@ class EditAction {
                     'skype'       => $form->getSkype(),
                     'birthday'    => $form->getBirthday() ? $form->getBirthday()->format('Y-m-d') : null,
                     'occupation'  => $form->getOccupation(),
-                ));
+                ]);
 
                 if (!isset($response['confirmed']) || !$response['confirmed']) {
                     throw new \Exception('Не удалось сохранить форму');
@@ -49,7 +49,7 @@ class EditAction {
                 return new \Http\RedirectResponse(\App::router()->generate('user.edit'));
             } catch (\Exception $e) {
                 \App::exception()->remove($e);
-                \App::logger()->error($e);
+                \App::logger()->error($e, ['user']);
 
                 $form->setError('global', 'Не удалось сохранить форму');
             }
