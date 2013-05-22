@@ -118,23 +118,27 @@ define('library',
 				return false
 			}
 
-			this.live('touchstart', function(e) {
+			this.live('mousedown', function(e) {
 				var d = new Date()
 				var orig = e.originalEvent
 
 				touchStartTime = d.getTime()
-				startX = orig.changedTouches[0].pageX
-				startY = orig.changedTouches[0].pageY
+				// startX = orig.changedTouches[0].pageX
+				startX = e.pageX
+				// startY = orig.changedTouches[0].pageY
+				startY = e.pageY
 			})
 
-			this.live('touchend', function(e) {
+			this.live('mouseup', function(e) {
 				var d = new Date()
 				var self = $(this)
 				var orig = e.originalEvent
 
 				touchEndTime= d.getTime()
-				stopX = orig.changedTouches[0].pageX
-				stopY = orig.changedTouches[0].pageY
+				// stopX = orig.changedTouches[0].pageX
+				stopX = e.pageX
+				// stopY = orig.changedTouches[0].pageY
+				stopY = e.pageY
 				if (doTouchLogic(self))
 					e.preventDefault()
 					e.stopPropagation()
