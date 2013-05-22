@@ -70,6 +70,8 @@ $productVideo = reset($productVideos);
 
     /** @var string $model3dExternalUrl */
     $model3dExternalUrl = ($productVideo instanceof \Model\Product\Video\Entity) ? $productVideo->getMaybe3d() : false;
+    /** @var string $model3dImg */
+    $model3dImg = ($productVideo instanceof \Model\Product\Video\Entity) ? $productVideo->getImg3d() : false;
     /** @var array $photo3dList */
     $photo3dList = [];
     /** @var array $p3d_res_small */
@@ -77,7 +79,7 @@ $productVideo = reset($productVideos);
     /** @var array $p3d_res_big */
     $p3d_res_big = [];
 
-    if (!$model3dExternalUrl) {
+    if (!$model3dExternalUrl && !$model3dImg) {
         $photo3dList = $product->getPhoto3d();
         foreach ($photo3dList as $photo3d) {
             $p3d_res_small[] = $photo3d->getUrl(0);
