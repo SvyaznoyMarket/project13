@@ -188,7 +188,7 @@ class IndexPage extends \View\DefaultLayout {
             'город'     => [$region->getName()],
             'сайт'      => null,
             'товар'     => $product->getName(),
-            'краткое описание товара'     => $product->getAnnounce(),
+            'анонс товара'     => $product->getAnnounce(),
             'цена'      => $product->getPrice() . ' руб',
         ];
         $dataStore->addQuery(sprintf('inflect/product-category/%s.json', $category->getId()), [], function($data) use (&$patterns) {
