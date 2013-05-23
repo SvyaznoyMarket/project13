@@ -64,8 +64,18 @@ class Action {
             return new \Http\Response($page->show());
         }
 
-        // категории
-        $categoriesFound = empty($resultCategories['data']) ? [] : \RepositoryManager::productCategory()->getCollectionById($resultCategories['data']);
+        // категории (фильтруем дубли, оставляем из дублей ту категорию, которая вернулась первой)
+        $categoriesFoundTmp = empty($resultCategories['data']) ? [] : \RepositoryManager::productCategory()->getCollectionById($resultCategories['data']);
+        $categoriesFound = [];
+        foreach ($categoriesFoundTmp as $category) {
+            $tokenPrefix = str_replace('-'.$category->getId(), '', $category->getToken());
+            $doubleFound = (bool)array_filter($categoriesFound, function($cat) use (&$tokenPrefix) {
+                return $tokenPrefix == str_replace('-'.$cat->getId(), '', $cat->getToken());
+            });
+            if(!$doubleFound) {
+                $categoriesFound[] = $category;
+            }
+        }
 
         $categoriesById = [];
         foreach ($result['category_list'] as $item) {
