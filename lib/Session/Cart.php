@@ -607,16 +607,15 @@ class Cart {
                         'card_f1_list'  =>
                         $certificate
                             ? [
-                            ['number' => $certificate->getNumber()],
-                        ]
+                                ['number' => $certificate->getNumber()],
+                            ]
                             : [],
-                        'coupon_list'  => [
+                        'coupon_list'  =>
                             $coupon
-                                ? [
+                            ? [
                                 ['number' => $coupon->getNumber()],
                             ]
-                                : [],
-                        ],
+                            : [],
                     ];
 
                     \App::coreClientV2()->addQuery(

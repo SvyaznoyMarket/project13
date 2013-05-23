@@ -10,17 +10,17 @@
 if (!isset($isForm)) $isForm = true;
 ?>
 
-<? if (\App::config()->f1Certificate['enabled']): ?>
+<? if (\App::config()->f1Certificate['enabled'] || \App::config()->coupon['enabled']): ?>
 
 <div class="clear"></div>
 
 <div class="bF1SaleCard">
     <div class="pl35">
-        <? if ((bool)$user->getCart()->getCertificates()): ?>
+        <? if (\App::config()->f1Certificate['enabled'] && (bool)$user->getCart()->getCertificates()): ?>
             <div class="bF1SaleCard_eComplete mGold">
                 <p class="font14">Для заказа действует скидка по программе «Под защитой F1» <a class="bF1SaleCard_eDel" href="#" data-url="<?= $page->url('cart.certificate.delete') ?>">отменить</a></p>
             </div>
-        <? elseif ((bool)$user->getCart()->getCoupons()): ?>
+        <? elseif (\App::config()->coupon['enabled'] && (bool)$user->getCart()->getCoupons()): ?>
             <? foreach ($user->getCart()->getCoupons() as $coupon): ?>
             <div class="bF1SaleCard_eComplete mGold">
                 <p class="font14">Для заказа действует скидка «<?= $coupon->getName() ?>» <a class="bF1SaleCard_eDel" href="#" data-url="<?= $page->url('cart.coupon.delete') ?>">отменить</a></p>
