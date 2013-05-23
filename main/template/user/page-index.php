@@ -13,10 +13,14 @@
     <ul class="leftmenu pb20">
         <? foreach ($item['links'] as $link): ?>
         <li>
+            <? if ($link['url']): ?>
             <a href="<?= $link['url'] ?>">
                 <?= $link['name'] ?>
                 <? if (isset($link['num'])) echo '(' . $link['num'] . ')' ?>
             </a>
+            <? else: ?>
+                <?= $link['name'] ?>
+            <? endif ?>
         </li>
         <? endforeach ?>
     </ul>

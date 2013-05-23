@@ -18,7 +18,7 @@ $helper = $page->helper;
 </div>
 
 <?php
-$icons = array('icon1', 'icon2', 'icon3', 'icon4');
+$icons = array('icon3', 'icon2', 'icon1', 'icon4');
 
 $categoriesByIcon = [];
 foreach ($categories as $category) {
