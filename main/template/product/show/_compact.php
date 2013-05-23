@@ -14,6 +14,9 @@ $isHidden = isset($isHidden) && $isHidden;
 $hasModel = (isset($hasModel) ? $hasModel : true) && $product->getModel() && (bool)$product->getModel()->getProperty();
 if (!isset($productVideos)) $productVideos = [];
 $addInfo = isset($addInfo)?$addInfo:[];
+
+/** @var $productVideo \Model\Product\Video\Entity|null */
+$productVideo = reset($productVideos);
 ?>
 
 <style type="text/css">
@@ -30,7 +33,7 @@ $addInfo = isset($addInfo)?$addInfo:[];
 <div class="goodsbox"<? if ($isHidden): ?> style="display:none;"<? endif ?> ref="<?= $product->getToken(); ?>">
     <div class="goodsbox__inner" data-url="<?= $product->getLink() ?>" <?php if (count($addInfo)) print 'data-add="'.$page->json($addInfo).'"'; ?>>
     	<div class="photo">
-            <? if ((bool)$productVideos): ?><a class="goodsphoto_eVideoShield goodsphoto_eVideoShield_small" href="<?= $product->getLink() ?>"></a><? endif ?>
+            <? if ($productVideo && $productVideo->getContent()): ?><a class="goodsphoto_eVideoShield goodsphoto_eVideoShield_small" href="<?= $product->getLink() ?>"></a><? endif ?>
 	        <a href="<?= $product->getLink() ?>">
 	            <? if (!empty($kit) && $kit->getCount()): ?>
 	                <div class="bLabelsQuantity" src="/images/quantity_shild.png"><?= $kit->getCount() ?> шт.</div>
