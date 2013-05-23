@@ -15,12 +15,12 @@ use Model\Product\Filter\Entity as FilterEntity;
 
 <?php $values = $productFilter->getValue($filter) ?>
 
-<dt<? if (5 > $index) { ?> class="<?= ((1 == $index) ? ' first' : '') ?>"<? } ?>>
+<dt class="bFilter__eName <? if (5 > $index) { ?> <?= ((1 == $index) ? ' first' : '') ?><? } ?>">
     <?= $filter->getName() ?>
 </dt>
 
-<dd style="display: <?= $isOpened ? 'block' : 'none' ?>;">
-    <ul class="checkbox_list">
+<dd class="bFilter__eProp">
+    <ul class="checkbox_list clearfix">
         <? foreach (array('нет', 'да') as $id => $name) { $id = (int)$id ?>
         <li>
             <input name="<?= $formName ?>[<?= $filter->getId()?>][]" type="checkbox" value="<?= $id?>" <? if (in_array($id, $values)) echo 'checked' ?> id="<?= $formName ?>_<?= $filter->getId()?>_<?= $id?>" class="hiddenCheckbox"/>
@@ -34,3 +34,4 @@ use Model\Product\Filter\Entity as FilterEntity;
         <? } ?>
     </ul>
 </dd>
+<hr class="bFilter__eHR"/>

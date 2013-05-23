@@ -1,0 +1,131 @@
+.bFilter{
+	width: 550px;
+	background: @black;
+	padding: 25px 20px;
+
+	margin: -30px -40px;
+	
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+
+	&__eName{
+		color: @lightGray;
+		font-size: 20px;
+		&.mCurrent{
+			color: @white;
+			// font-weight: bold;
+		}
+	}
+
+	&__eHR{
+		color:  @gray;
+		border-color: @gray;
+		margin: 15px 0;
+	}
+
+	&__eProp{
+		margin: 15px 0;
+		display: none;
+	}
+
+	&__eSubmit{
+		float: right;
+	}
+
+	&__eSubmitBtn{
+		border: 0;
+		-webkit-appearance: none;
+	}
+	.checkbox_list{
+		li{
+			input{
+				display: none;
+
+				&:checked{
+					& + label{
+						color: @firmOrange;
+						&:before{
+							
+							background: url('@{base-url}/filter/img/check_box.png') no-repeat center center;
+							-moz-background-size: cover;
+							-webkit-background-size: cover;
+							background-size: cover;
+							border: 2px solid @firmOrange;
+						}	
+					}
+				}
+			}
+			label{
+				display: inline-block;
+				font-size: 18px;
+				height: 30px;
+				line-height: 30px;
+				color: @white;
+				&:before{
+					background: @black;
+					content: '';
+					width: 28px;
+					height: 28px;
+					margin-right: 10px;
+					float: left;
+					border: 2px solid @white;
+					border-radius: 3px;
+					display: block;
+				}
+			}
+			margin: 5px 0;
+			float: left;
+			width: 50%;
+		}
+
+	}
+}
+
+
+.bSlide .pb5,
+.bSlide .pb5 span {
+	text-align: center;
+}
+.bSlide .pb5 span {
+	/* color: @typGray; */
+	background: none repeat scroll 0px 0px transparent;
+	border: 0px none;
+	font-size: 20px;
+	line-height: 1.5em;
+	padding: 0px;
+}
+.sliderbox {
+	margin: 0px auto 10px;
+	width: 100%;
+}
+.filter-range {
+	border-radius: 5px;
+	background: @gray;
+	height: 30px;
+	position: relative;
+	margin: 0 12px;
+	.ui-slider-range {
+		// background: lighten(@firmOrange, 25%);
+		background: @firmOrange;
+		-moz-opacity: 0.5;
+		-webkit-opacity: 0.5;
+		opacity: 0.5;
+		bottom: 0px;
+		height: 100%;
+		position: absolute;
+		z-index: 1;
+	}
+	.ui-slider-handle {
+		border-radius: 5px;
+		background: @firmOrange;
+		cursor: default;
+		height: 40px;
+		margin-left: -12px;
+		outline: none;
+		position: absolute;
+		top: -5px;
+		width: 24px;
+		z-index: 2;
+	}
+}

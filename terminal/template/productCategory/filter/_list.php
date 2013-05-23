@@ -15,14 +15,14 @@ use Model\Product\Filter\Entity as FilterEntity;
 
 <?php $values = $productFilter->getValue($filter) ?>
 
-<dt<? if (5 > $index) { ?> class="<?= ((1 == $index) ? ' first' : '') ?>"<? } ?>>
+<dt class="bFilter__eName <? if (5 > $index) { ?> <?= ((1 == $index) ? ' first' : '') ?><? } ?>">
     <?= $filter->getName() ?>
 </dt>
 
-<dd style="display: <?= $isOpened ? 'block' : 'none' ?>;">
-    <ul class="checkbox_list">
+<dd class="bFilter__eProp">
+    <ul class="checkbox_list clearfix">
         <? $i = 0; foreach ($filter->getOption() as $option) { $id = $option->getId() ?>
-        <li<? if ($i > 4) { ?> class="hf" style="display: none"<? } ?>>
+        <li>
             <input name="<?= $formName ?>[<?= $filter->getId()?>][]" type="checkbox" value="<?= $id ?>"<? if (in_array($id, $values)) { ?> checked="checked"<? } ?> id="<?= $formName ?>_<?= $filter->getId() ?>_<?= $id ?>" class="hiddenCheckbox" />
             <label for="<?= $formName ?>_<?= $filter->getId() ?>_<?= $id?>" class="prettyCheckbox checkbox list">
                 <span class="holderWrap" style="width: 13px; height: 13px; ">
@@ -32,11 +32,7 @@ use Model\Product\Filter\Entity as FilterEntity;
             </label>
         </li>
         <? $i++; } ?>
-
-        <? if ($i > 5) { ?>
-        <li class="bCtg__eMore" style="padding-left: 10px;">
-            <a href="#">еще...</a>
-        </li>
-        <? } ?>
     </ul>
 </dd>
+
+<hr class="bFilter__eHR"/>

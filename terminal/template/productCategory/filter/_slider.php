@@ -10,29 +10,31 @@
  */
 ?>
 
-<dt<? if (5 > $index) { ?> class="<?= ((1 == $index) ? ' first' : '') ?>"<? } ?>>
+<dt class="bFilter__eName <? if (5 > $index) { ?> <?= ((1 == $index) ? ' first' : '') ?><? } ?>">
     <?= $filter->getName() ?>
 </dt>
 
-<dd style="display: <?= $isOpened ? 'block' : 'none' ?>;">
+<dd class="bFilter__eProp">
     <div class="bSlide">
         <input type="hidden" name="<?= $formName ?>[<?= $filter->getId() ?>][from]" value="<?= $page->helper->clearZeroValue($productFilter->getValueMin($filter)) ?>" id="f_<?= $filter->getId()?>_from"/>
         <input type="hidden" name="<?= $formName ?>[<?= $filter->getId() ?>][to]" value="<?= $page->helper->clearZeroValue($productFilter->getValueMax($filter)) ?>" id="f_<?= $filter->getId()?>_to"/>
-
-        <div class="sliderbox">
-            <div id="slider-<?= uniqid()?>" class="filter-range"></div>
-        </div>
         <div class="pb5">
             <input class="slider-from" type="hidden" disabled="disabled" value="<?= $page->helper->clearZeroValue($filter->getMin())?>"/>
             <input class="slider-to" type="hidden" disabled="disabled" value="<?= $page->helper->clearZeroValue($filter->getMax())?>"/>
             <span class="slider-interval"></span>
 
             <?if ($filter->getId() == 'price') { ?>
-                <span class="rubl">p</span>
+                <span class="bRuble">p</span>
             <? } else { ?>
-                <?= $filter->getUnit() ?>
+                <span><?= $filter->getUnit() ?></span>
             <? } ?>
         </div>
+        <div class="sliderbox">
+            <div id="slider-<?= uniqid()?>" class="filter-range"></div>
+        </div>
+        
     </div>
     <div class="clear"></div>
 </dd>
+
+<hr class="bFilter__eHR"/>

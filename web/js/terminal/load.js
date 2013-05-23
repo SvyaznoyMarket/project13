@@ -3,7 +3,8 @@ requirejs.config({
 	baseUrl: "/js/terminal/",
     paths:{
         'jquery': '/js/jquery-1.6.4.min',
-        'ejs': '/js/ejs_production'
+        'ejs': '/js/ejs_production',
+        'bigjquery':'/js/bigjquery.min'
     },
     shim: {
         'jquery': {
@@ -12,15 +13,18 @@ requirejs.config({
         "ejs": {
             exports: 'EJS',
             deps: ['jquery']
+        },
+        "bigjquery": {
+            deps: ['jquery']
         }
     },
     urlArgs : "bust="+new Date().getTime()
 });
 
-var develop = true
+var develop = false
 
 // for all pages
-require(["termAPI"])
+// require(["termAPI"])
 
 require(["jquery"], function($) {
     $(document).ready(function() {
@@ -39,6 +43,10 @@ require(["jquery"], function($) {
             case 'product':
                 // product scripts
                 require(["product"])
+                break
+            case 'filter':
+                // catalog filter scripts
+                require(["filter"])
                 break
         }
     })
