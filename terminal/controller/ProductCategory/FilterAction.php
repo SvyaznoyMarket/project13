@@ -17,8 +17,24 @@ class FilterAction {
             throw new \Exception\NotFoundException(sprintf('Категория #% не найдена', $category->getId()));
         }
 
+        $region = \App::user()->getRegion();
+
+        // фильтры
+        try {
+            $filters = \RepositoryManager::productFilter()->getCollectionByCategory($category, $region);
+        } catch (\Exception $e) {
+            \App::exception()->add($e);
+            \App::logger()->error($e);
+
+            $filters = [];
+        }
+        $productFilter = new \Model\Product\Filter($filters);
+        $productFilter->setCategory($category);
+
+
         $page = new \Terminal\View\ProductCategory\FilterPage();
         $page->setParam('category', $category);
+        $page->setParam('productFilter', $productFilter);
 
         return new \Http\Response($page->show());
     }

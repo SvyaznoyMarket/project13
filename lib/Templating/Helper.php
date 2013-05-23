@@ -62,4 +62,17 @@ class Helper {
     public function formatPrice($price) {
         return number_format($price, 0, ',', ' ');
     }
+
+    /**
+     * @param $value
+     * @return int|string
+     */
+    public function clearZeroValue($value) {
+        $frac = $value - floor($value);
+        if (0 == $frac) {
+            return intval($value);
+        } else {
+            return rtrim($value, '0');
+        }
+    }
 }
