@@ -903,8 +903,6 @@ $(document).ready(function(){
 	})
 
 	$('#jsregion, .jsChangeRegion').click( function() {
-		var autoResolve = $(this).data("autoresolve-url")
-
 		var authFromServer = function(res){
 			if (!res.data.length){
 				$('.popupRegion .mAutoresolve').html('')
@@ -921,11 +919,16 @@ $(document).ready(function(){
 			}
 			
 		}
-		$.ajax({
-			type: 'GET',
-			url: autoResolve,
-			success: authFromServer
-		})
+
+		var autoResolve = $(this).data("autoresolve-url")
+		if (autoResolve !=='undefined'){
+			$.ajax({
+				type: 'GET',
+				url: autoResolve,
+				success: authFromServer
+			})
+		}
+		
 		getRegions()
 		return false
 	})

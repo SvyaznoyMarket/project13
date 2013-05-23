@@ -35,7 +35,7 @@ class IndexPage extends \View\DefaultLayout {
                         'url'  => $this->url('user.changePassword'),
                     ],
                     [
-                        'name' => 'Регион: <strong>' . (\App::user()->getEntity()->getCity() ? \App::user()->getEntity()->getCity()->getName() : null) . '</strong> (<a data-url="' . $this->url('region.init') . '">изменить</a>)',
+                        'name' => 'Регион: <strong>' . (\App::user()->getEntity()->getCity() ? \App::user()->getEntity()->getCity()->getName() : null) . '</strong> (<a class="jsChangeRegion" data-url="' . $this->url('region.init') . '" data-autoresolve-url="'. $this->url('region.autoresolve') .'">изменить</a>)',
                         'url'  => null,
                     ],
                 ],
