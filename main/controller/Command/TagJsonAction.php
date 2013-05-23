@@ -78,14 +78,11 @@ class TagJsonAction {
 
                     $filtersCollection = [];
                     foreach ($filterValues as $filterId => $filterValue) {
-// чтобы в выборке были хоть какие-то товары, потом убрать условие
-if($filterId == 'brand') {
                         $filter = new \Model\Product\Filter\Entity();
                         $filter->setId($filterId);
                         if (array_key_exists('from', $filterValue)) $filter->setMin($filterValue['from']);
                         if (array_key_exists('to', $filterValue)) $filter->setMax($filterValue['to']);
                         array_push($filtersCollection, $filter);
-}
                     }
 
                     $productFilter = new \Model\Product\Filter($filtersCollection);
