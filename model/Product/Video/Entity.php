@@ -9,7 +9,7 @@ class Entity {
     /** @var string */
     private $maybe3d;
 
-    /** @var string */
+    /** @var array */
     private $img3d;
 
     /**

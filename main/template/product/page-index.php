@@ -144,7 +144,6 @@ $productVideo = reset($productVideos);
   
 ?>
 
-
   <div id="maybe3dModelPopup" class="popup" data-value="<?php print $page->json($arrayToMaybe3D); ?>">
     <i class="close" title="Закрыть">Закрыть</i>
     <div id="maybe3dModel">
@@ -154,6 +153,10 @@ $productVideo = reset($productVideos);
     </div>
   </div>
 
+<? endif ?>
+
+<? if ($model3dImg) : ?>
+    <div id="3dModelImg" class="popup" data-value="<?php print $page->json($model3dImg); ?>"></div>
 <? endif ?>
 
 <script type="text/javascript">
@@ -366,8 +369,8 @@ $productVideo = reset($productVideos);
     	</a>
     </li>
     <? endforeach ?>
-    <? if (count($photo3dList) > 0 || $model3dExternalUrl): ?>
-    <li><a href="#" class="axonometric viewme <? if ($model3dExternalUrl): ?>maybe3d<? endif ?>" ref="360" title="Объемное изображение">Объемное изображение</a></li>
+    <? if (count($photo3dList) > 0 || $model3dExternalUrl || $model3dImg): ?>
+    <li><a href="#" class="axonometric viewme <? if ($model3dExternalUrl): ?>maybe3d<? elseif ($model3dImg): ?>3dimg<? endif ?>" ref="360" title="Объемное изображение">Объемное изображение</a></li>
     <? endif ?>
   </ul>
 </div>
