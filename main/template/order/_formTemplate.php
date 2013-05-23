@@ -197,7 +197,13 @@
     </div>
     <!-- /ko -->
 
-    <?= $page->render('cart/form-certificate', ['isForm' => false]) ?>
+    <? if (\App::config()->coupon['enabled']): ?>
+        <p class="font11"><a href="<?= $page->url('cart') ?>">Введите код скидки на товары</a></p>
+    <? endif ?>
+
+    <? if (\App::config()->f1Certificate['enabled']): ?>
+        <p class="font11"><a href="<?= $page->url('cart') ?>">Введите номер карты «Под защитой F1» для скидки на услуги</a></p>
+    <? endif ?>
 
     <div style="margin-top: -10px;">*Дату доставки уточнит специалист Контакт-сENTER</div>
 
