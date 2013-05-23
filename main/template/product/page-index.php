@@ -108,7 +108,7 @@ $productVideo = reset($productVideos);
 <div id="productInfo" data-value="<?= $page->json($productData) ?>"></div>
 
 <!-- похожие товары -->
-<? if (!$product->getIsBuyable() && $product->getState()->getIsShop()  && \App::config()->smartengine['pull']): ?>
+<? if (\App::config()->smartengine['pull']): ?>
 <div class="clear"></div>
 
 <div class="lifted">
