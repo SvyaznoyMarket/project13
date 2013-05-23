@@ -134,7 +134,7 @@ $productVideo = reset($productVideos);
       'wmode'=> "direct"
     ],
     'attributes' => [
-      'id'=> "$model3dName",
+      'id'=> $model3dName,
     ],
     'flashvars'=> [
       'language'=> "auto",
