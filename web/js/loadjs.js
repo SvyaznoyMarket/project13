@@ -51,6 +51,7 @@
 	$LAB.setGlobalDefaults({ AllowDuplicates: true, AlwaysPreserveOrder:true, UseLocalXHR:false, BasePath:"/js/"})
 	.queueScript('combine.js')
 	// .queueScript('jquery-1.6.4.min.js')
+	.queueScript('//cdn.optimizely.com/js/204544654.js')
 	.queueScript('/js/asyn.code.ver3.js')	
 	.queueWait( function(){
 		document.write = function(){
