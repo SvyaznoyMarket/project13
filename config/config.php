@@ -134,6 +134,7 @@ $c->product['totalCount']            = 30000;
 // глобальный (без учета региона) список товаров
 $c->product['globalListEnabled']     = true;
 $c->product['showAveragePrice']      = false;
+$c->product['allowBuyOnlyInshop']    = false;
 
 $c->productPhoto['url'] = [
     0 => '/1/1/60/',
