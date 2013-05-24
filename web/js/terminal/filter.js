@@ -29,10 +29,10 @@ define('filter',
 				var from = papa.find('input:first')
 				var to   = papa.find('input:eq(1)')
 				informator.html( library.formatMoney( from.val() ) + ' - ' + library.formatMoney( to.val() ) )
-				var stepf = (/price/.test( from.attr('id') ) ) ?  10 : 1
+				var stepf = (/price/.test( from.attr('id') ) ) ?  100 : 1
 				if( maxi - mini <= 3 && stepf != 10 )
 					stepf = 0.1
-				
+
 				sliderRange.slider({
 					range: true,
 					step: stepf,
