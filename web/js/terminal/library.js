@@ -11,7 +11,7 @@ define('library',
 		 * @return {boolean}
 		 */
 		window.onerror = function(msg, url, line) {
-			// terminal.log.write(line + ' - ' +msg)
+			terminal.log.write(line + ' - ' +msg)
 			return true
 		}
 
@@ -23,7 +23,7 @@ define('library',
 		 * @param {string} text текст который нужно вывести
 		 */
 		var myConsole = function(text){
-			// terminal.log.write(text)
+			terminal.log.write(text)
 
 			var c = $('#console')
 
@@ -37,14 +37,14 @@ define('library',
 			 * Позиция консоли при скролинге
 			 */
 			var consolePos = function(){
-				// var y = terminal.flickable.contentY
+				var y = terminal.flickable.contentY
 				c.css('top', y)
 			}
 
 			c.prepend('<p>'+text+'</p>')
 			console.log(text)
 			c.show()
-			// terminal.flickable.scrollValueChanged.connect(consolePos)
+			terminal.flickable.scrollValueChanged.connect(consolePos)
 		}		
 		myConsole('user agent '+navigator.userAgent)
 		myConsole('library.js v4 loaded')
@@ -59,7 +59,7 @@ define('library',
 			cache:false,
 			timeout: 10000,
 			error: function (jqXHR, textStatus, errorThrown){
-				// terminal.log.write('AJAX error '+textStatus+' '+errorThrown+' '+jqXHR.status)
+				terminal.log.write('AJAX error '+textStatus+' '+errorThrown+' '+jqXHR.status)
 			}
 		})
 
@@ -195,7 +195,7 @@ define('library',
 			 * @param {event} e
 			 */
 			self.moveMe = function(e) {
-				// terminal.interactive = false
+				terminal.interactive = false
 				var orig = e.originalEvent
 				var touch = (dir) ? orig.changedTouches[0].pageX : orig.changedTouches[0].pageY
 				var newOffset = touch - self.start.x + self.start.offset
@@ -254,7 +254,7 @@ define('library',
 			 * @param {event} e
 			 */
 			self.moveEnd = function(e) {
-				// terminal.interactive = true
+				terminal.interactive = true
 				var orig = e.originalEvent
 				var stopTime = new Date().getTime()
 				var deltaTime = self.startTime - stopTime
@@ -402,38 +402,38 @@ define('library',
 			var aminateScrollUp = function(start, stop, step){
 				if ( (start+step) > stop ){
 					start += step
-					// terminal.flickable.contentY = start
+					terminal.flickable.contentY = start
 					setTimeout( function(){
 						aminateScrollUp(start, stop, step)
 					}, 1)
 				}
 				else {
-					// terminal.flickable.contentY = stop
-					// terminal.interactive = true
+					terminal.flickable.contentY = stop
+					terminal.interactive = true
 				}
 			}
 			var aminateScrollDown = function(start, stop, step){
 				if ((start+step) < stop){
 					start += step
-					// terminal.flickable.contentY = start
+					terminal.flickable.contentY = start
 					setTimeout( function(){
 						aminateScrollDown(start, stop, step)
 					}, 1)
 				}
 				else {
-					// terminal.flickable.contentY = stop
-					// terminal.interactive = true
+					terminal.flickable.contentY = stop
+					terminal.interactive = true
 				}
 			}
 
-			// terminal.interactive = false
+			terminal.interactive = false
 
 			var offset = (offset)?offset:0
 			var time = (time)?time:300
-			// var nowY = terminal.flickable.contentY
+			var nowY = terminal.flickable.contentY
 			var elementTop = (typeof(element) == 'number') ? element : element.offset().top
-			// var windowHeight = terminal.flickable.height
-			// var documentHeight = terminal.flickable.contentHeight
+			var windowHeight = terminal.flickable.height
+			var documentHeight = terminal.flickable.contentHeight
 			var stopScroll = documentHeight-windowHeight
 			var toY = elementTop-offset
 
