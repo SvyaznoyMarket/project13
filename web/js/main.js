@@ -1493,10 +1493,10 @@ $(document).ready(function(){
 		else
 			var max = Math.ceil(wi / viswi)			
 
-		if(noajax) {
+		if((noajax !== undefined) && (noajax === true)) {
 			var buffer = 100
 		} else {
-			$(nodes.times).parent().parent().hasClass('accessories') ? 6 : 2
+			var buffer = ($(nodes.times).parent().parent().hasClass('accessories')) ? 6 : 2
 		}
 
 		var ajaxflag = false
@@ -1534,6 +1534,7 @@ $(document).ready(function(){
 			}
 			if( current < max && !ajaxflag ) {
 				if( current + 1 == max ) { //the last pull is loaded , so special shift
+
 					var boxes = $(nodes.wrap).find('.goodsbox')
 					$(boxes).hide()
 					var le = boxes.length
@@ -1543,6 +1544,7 @@ $(document).ready(function(){
 					current++
 				} else {
 					if( current + 1 >= buffer ) { // we have to get new pull from server
+
 						$(nodes.next).css('opacity','0.4') // addClass dont work ((
 						ajaxflag = true
 						var getData = []
