@@ -31,7 +31,7 @@
 <form action="<?= $page->url('user.subscribe') ?>" method="post">
     <div class="fr width315">
         <div class="font16 orange pb10">Рассылка по электронной почте</div>
-         <label class="bSubscibe">
+        <label class="bSubscibe <? if ($user->getEntity()->getIsSubscribed()): ?>checked<? endif ?>">
             <b></b> Хочу знать об интересных<br />предложениях
             <input type="checkbox" name="subscribe" value="1" autocomplete="off" class="subscibe"<? if ($user->getEntity()->getIsSubscribed()): ?> checked="checked" <? endif ?> />
         </label>
