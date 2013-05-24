@@ -15,8 +15,9 @@
 ?>
 
 <?
-/** @var $productVideo \Model\Product\Video\Entity */
+/** @var  $productVideo \Model\Product\Video\Entity|null */
 $productVideo = reset($productVideos);
+$productVideo = $productVideo && $productVideo->getContent() ? $productVideo : null;
 ?>
 <?
   $json = json_encode(array (
