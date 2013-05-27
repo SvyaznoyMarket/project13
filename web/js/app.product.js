@@ -331,8 +331,9 @@ $(document).ready(function() {
 			return false
 		}
         if ($(this).hasClass('3dimg')){
-            var data = $('#3dModelImg').data('value')
-            var host = $('#3dModelImg').data('host')
+            var object = $('#3dModelImg')
+            var data = object.data('value')
+            var host = object.data('host')
             try {
                 if (!$('#3dImgContainer').length) {
                     var AnimFramePlayer = new DAnimFramePlayer(document.getElementById('3dModelImg'), host)
