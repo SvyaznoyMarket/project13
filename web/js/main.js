@@ -254,22 +254,21 @@ $(document).ready(function(){
 			}
 
 		}
-		/*subscribe*/
-		if ($('.bSubscibe').length){
-			$('.bSubscibe').bind('click', function(){
-				if ($(this).hasClass('checked')){
-					$(this).removeClass('checked')
-					$(this).find('.subscibe').removeAttr('checked')
-				}
-				else{
-					$(this).addClass('checked')
-					$(this).find('.subscibe').attr('checked','checked')
-				}
-				return false
-			})
-		}
 	}
 	regEmailValid()
+
+	/*subscribe*/
+	$('.bSubscibe').live('click', function(){
+		if ($(this).hasClass('checked')){
+			$(this).removeClass('checked')
+			$(this).find('.subscibe').removeAttr('checked')
+		}
+		else{
+			$(this).addClass('checked')
+			$(this).find('.subscibe').attr('checked','checked')
+		}
+		return false
+	})
 
 	/* upper */
 	var upper = $('#upper');
