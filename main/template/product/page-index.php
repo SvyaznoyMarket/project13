@@ -18,7 +18,6 @@
 
 /** @var  $productVideo \Model\Product\Video\Entity|null */
 $productVideo = reset($productVideos);
-$productVideo = $productVideo ? $productVideo : null;
 ?>
 <?
   $json = json_encode(array (
