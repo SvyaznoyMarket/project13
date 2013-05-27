@@ -119,14 +119,23 @@ class DeliveryAction {
         try {
             $response = [];
             \App::coreClientV2()->addQuery('delivery/calc', ['geo_id' => $regionId, 'days_num' => 7], $params, function ($data) use (&$response) {
-                $response = $data;
+                if ((bool)$data) {
+                    $response = $data;
+                    if (!isset($response['product_list'])) $response['product_list'] = [];
+                    if (!isset($response['geo_list'])) $response['geo_list'] = [];
+                    if (!isset($response['shop_list'])) $response['shop_list'] = [];
+                }
             });
             \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['forever'], \App::config()->coreV2['retryCount']);
 
-            $productData = isset($response['product_list']) ? $response['product_list'] : [];
+            $productData = $response['product_list'];
             $productData = array_pop($productData);
-            $shopData = isset($response['shop_list']) ? $response['shop_list'] : [];
-            $regionData = isset($response['geo_list']) ? $response['geo_list'] : [];
+            $shopData = $response['shop_list'];
+            $regionData = [];
+            foreach ($response['geo_list'] as $regionItem) {
+                if (!isset($regionItem['id'])) continue;
+                $regionData[$regionItem['id']] = $regionItem;
+            }
 
             foreach ($productData['delivery_mode_list'] as $deliveryData) {
                 $token = $deliveryData['token'];
@@ -153,7 +162,7 @@ class DeliveryAction {
 
                             $shop = [
                                 'id'        => (int)$dateShopData['id'],
-                                'regtime'   => $shopData[$dateShopData['id']]['working_time'], // что за описка "regtime"?
+                                'regtime'   => $shopData[$dateShopData['id']]['working_time'],
                                 'address'   => $address,
                                 'latitude'  => $shopData[$dateShopData['id']]['coord_lat'],
                                 'longitude' => $shopData[$dateShopData['id']]['coord_long'],
