@@ -1848,7 +1848,13 @@ $(document).ready(function(){
 				}
 			}
 			if( other.length > 0 && isSupplied){
-				html = '<h4>Доставка</h4><p>Через ~'+other[0].days+' дней<br/>планируемая дата поставки '+other[0].origin_date+'</p><p>Оператор контакт-cENTER согласует точную дату за 2-3 дня</p><p class="price">'+other[i].price+' <span class="rubl">p</span></p>'
+				html = '<h4>Доставка</h4><p>Через ~'+other[0].days+' дней<br/>планируемая дата поставки '+other[0].origin_date+'</p><p>Оператор контакт-cENTER согласует точную дату за 2-3 дня</p>'
+				if (other[i].price === 0){
+					html += '<p class="price">Бесплатно</p>'
+				}
+				else{
+					html += '<p class="price">'+other[i].price+' <span class="rubl">p</span></p>'
+				}
 			}
 			else{
 				html += '</ul>'	
