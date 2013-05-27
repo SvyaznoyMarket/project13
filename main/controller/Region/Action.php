@@ -18,9 +18,19 @@ class Action {
 
         $response = new \Http\RedirectResponse($request->headers->get('referer') ?: \App::router()->generate('homepage'));
 
-        $region = \RepositoryManager::region()->getEntityById($regionId);
+        $region = null;
+        \RepositoryManager::region()->prepareEntityById($regionId, function($data) use (&$region) {
+            $data = reset($data);
+            $region = $data ? new \Model\Region\Entity($data) : null;
+        });
+        \App::coreClientV2()->execute();
+
         if (!$region) {
-            throw new \Exception\NotFoundException(sprintf('Region #%s not found', $regionId));
+            \App::logger()->error(sprintf('Регион #%s не найден', $regionId));
+            $region = \RepositoryManager::region()->getDefaultEntity();
+            if (!$region) {
+                throw new \Exception\NotFoundException(sprintf('Регион #%s не найден', $regionId));
+            }
         }
 
         \App::user()->changeRegion($region, $response);

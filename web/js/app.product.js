@@ -405,5 +405,8 @@ $(document).ready(function() {
 		}
     }
     
-   
+   //Класс для аксессуаров по категориям
+   if ($('.categoriesmenu').length) {
+   		$('.acess-box-section').addClass('acess-box');
+   }
 });
