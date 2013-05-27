@@ -1,4 +1,4 @@
-var DAnimFramePlayer = function (ParentItem) {
+var DAnimFramePlayer = function (ParentItem, Host) {
 
 	var strBasePath;
 	var MainJsonData=null;
@@ -18,20 +18,21 @@ var DAnimFramePlayer = function (ParentItem) {
 	var progDAnim=null;
 
 	var MainDiv=document.createElement( 'DIV');
+    MainDiv.setAttribute('id', '3dImgContainer');
 	MainDiv.style.position='relative';
 	ParentItem.appendChild(MainDiv);
 
 	var ButtPlay=document.createElement('DIV');
 	ButtPlay.style.display='none';
-	ButtPlay.innerHTML='<img src="../imgages/icon_play.png" width=80 height=80 border=0>';
+	ButtPlay.innerHTML='<img src="' + Host +'/images/icon_play.png" width=80 height=80 border=0>';
 	MainDiv.appendChild(ButtPlay);
 	var RotateL=document.createElement('DIV');
 	RotateL.style.display='none';
-	RotateL.innerHTML='<img src="../imgages/rotate_l.png" width=51 height=47 border=0>';
+	RotateL.innerHTML='<img src="' + Host +'/images/rotate_l.png" width=51 height=47 border=0>';
 	MainDiv.appendChild(RotateL);
 	var RotateR=document.createElement('DIV');
 	RotateR.style.display='none';
-	RotateR.innerHTML='<img src="../imgages/rotate_r.png" width=55 height=47 border=0>';
+	RotateR.innerHTML='<img src="' + Host +'/images/rotate_r.png" width=55 height=47 border=0>';
 	MainDiv.appendChild(RotateR);
 
 
@@ -209,7 +210,7 @@ var DAnimFramePlayer = function (ParentItem) {
 
 	function onMainData() {
 		if (MainJsonData)
-		{			
+		{
 			Window3dWidth=MainJsonData.width;
 			Window3dHeight=MainJsonData.height;
 

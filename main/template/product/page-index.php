@@ -156,7 +156,9 @@ $productVideo = reset($productVideos);
 <? endif ?>
 
 <? if ($model3dImg) : ?>
-    <div id="3dModelImg" class="popup" data-value="<?php print $page->json($model3dImg); ?>"></div>
+    <div id="3dModelImg" class="popup" data-value="<?php print $page->json($model3dImg); ?>" data-host="<?=$page->json(['http://'.App::request()->getHost()])?>">
+        <i class="close" title="Закрыть">Закрыть</i>
+    </div>
 <? endif ?>
 
 <script type="text/javascript">

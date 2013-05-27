@@ -339,6 +339,40 @@ $(document).ready(function() {
 			}
 			return false
 		}
+        if ($(this).hasClass('3dimg')){
+            var data = $('#3dModelImg').data('value')
+            var host = $('#3dModelImg').data('host')
+            try {
+                if (!$('#3dImgContainer').length) {
+                    var AnimFramePlayer = new DAnimFramePlayer(document.getElementById('3dModelImg'), host)
+                    AnimFramePlayer.DoLoadModel(data)
+                }
+                $('#3dModelImg').lightbox_me({
+                    centered: true,
+                    closeSelector: ".close",
+                })
+            }
+            catch (err){
+                var date = new Date();
+                var time = date.getHours()+':'+date.getMinutes()+':'+date.getSeconds()
+                var nowUrl = window.location.pathname
+                var userAgent = navigator.userAgent
+                var data = {
+                    time:time,
+                    type:'ошибка загрузки 3dimg для мебели',
+                    nowUrl:nowUrl,
+                    userAgent:userAgent,
+                    err: err,
+                }
+                $.ajax({
+                    type: 'POST',
+                    global: false,
+                    url: '/log-json',
+                    data: data
+                })
+            }
+            return false
+        }
 		
 		if( mLib )
 			mLib.show( $(this).attr('ref') , $(this).attr('href'))
