@@ -911,6 +911,11 @@ $(document).ready(function(){
 
 			var url = res.data[0].url
 			var name = res.data[0].name
+			var id = res.data[0].id
+
+			if (id === 14974 || id === 108136)
+				return false
+			
 			if ($('.popupRegion .mAutoresolve').length){
 				$('.popupRegion .mAutoresolve').html('<a href="'+url+'">'+name+'</a>')	
 			}
