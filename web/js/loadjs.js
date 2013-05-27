@@ -134,7 +134,7 @@
 			}).runQueue()
 			break
         case 'order_error':
-            $LAB.queueScript('bigjquery.min.js').queueWait( function() {
+            $LAB.queueScript( getWithVersion('bigjquery.js') ).queueWait( function() {
                 $LAB.script( getWithVersion('library.js') )
                     .wait()
                     .script(getWithVersion('app.order.js'))

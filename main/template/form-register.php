@@ -19,7 +19,7 @@ if (!isset($form)) $form = new \View\User\RegistrationForm();
 
         <? if ($error = $form->getError('global')) echo $page->render('_formError', array('error' => $error)) ?>
 
-        <div class="pb5">Как к вам обращаться?</div>
+        <div class="pb5">Ваше имя:</div>
         <div class="pb5">
             <? if ($error = $form->getError('first_name')) echo $page->render('_formError', array('error' => $error)) ?>
             <input required="required" type="text" id="register_first_name" class="text width315 mb10" name="register[first_name]" value="<?= $form->getFirstName() ?>" tabindex="5"/>

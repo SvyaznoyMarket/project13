@@ -210,6 +210,7 @@ $productVideo = reset($productVideos);
     <img class="mainImg" src="<?= $product->getImageUrl(3) ?>" alt="<?= $page->escape($product->getName()) ?>" title="<?= $page->escape($product->getName()) ?>" width="500" height="500" />
   </a>
 </div>
+
 <div style="display:none;" id="stock">
   <!-- list of images 500*500 for preview -->
   <? foreach ($photoList as $photo): ?>
@@ -243,7 +244,10 @@ $productVideo = reset($productVideos);
     <link itemprop="availability" href="http://schema.org/OutOfStock" />  
     <div class="pb10 <? if ($product->hasSaleLabel()) echo 'red'; ?>"><strong class="font34"><span class="price" itemprop="price"><?= $page->helper->formatPrice($product->getPrice()) ?></span> <meta itemprop="priceCurrency" content="RUB"><span class="rubl">p</span></strong></div>
     <? if ($product->getIsBuyable()): ?>
+    <link itemprop="availability" href="http://schema.org/InStock" />
     <div class="pb5"><strong class="orange">Есть в наличии</strong></div>
+    <? else: ?>
+    <link itemprop="availability" href="http://schema.org/OutOfStock" />
     <? endif ?>
   </div>
 
@@ -576,8 +580,8 @@ $productVideo = reset($productVideos);
 
 <!-- product video pop-up -->
 <? if ($productVideo): ?>
-    <div id="productVideo" class="blackPopup">
-      <div class="close">X</div>
+    <div id="productVideo" class="blackPopup blackPopupVideo">
+      <div class="close"></div>
       <!-- <iframe width="640" height="360" src="http://rutube.ru/video/embed/6125142" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowfullscreen scrolling="no"></iframe>  -->
       <!--<iframe src="http://player.vimeo.com/video/58429056?badge=0" width="500" height="250" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>-->
       <div class="productVideo_iframe"><?= $productVideo->getContent() ?></div>

@@ -86,6 +86,7 @@ $(document).ready(function() {
 		$('#productVideo .productVideo_iframe').empty()
 		shield.bind('click', function(){
 			$('#productVideo .productVideo_iframe').append(iframe)
+			$(".productVideo_iframe iframe").attr("src", $(".productVideo_iframe iframe").attr("src")+"?autoplay=1")
 			$('#productVideo').lightbox_me({ 
 				centered: true,
 				onLoad: function(){

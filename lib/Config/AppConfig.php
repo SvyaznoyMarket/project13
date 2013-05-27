@@ -129,6 +129,7 @@ class AppConfig {
         'cookieName'     => null,
         'cookieLifetime' => null,
         'defaultId'      => null,
+        'autoresolve'    => null,
     ];
     /** @var bool */
     public $loadMediaHost = null;

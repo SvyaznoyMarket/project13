@@ -25,7 +25,7 @@ class DefaultLayout extends \Templating\HtmlLayout {
 
         if (null === $regions) {
             try {
-                $regions = \RepositoryManager::region()->getShowInMenuCollection();
+                $regions = \RepositoryManager::region()->getShownInMenuCollection();
             } catch (\Exception $e) {
                 \App::logger()->error($e);
 

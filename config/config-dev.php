@@ -29,6 +29,9 @@ $c->corePrivate['retryTimeout'] = [
     'forever' => 0,
 ];
 
+$c->wordpress['throwException'] = false;
+$c->wordpress['timeout'] = 0.2;
+
 $c->dataStore['timeout'] = 2;
 $c->dataStore['retryTimeout'] = [
     'default' => 1,
@@ -50,6 +53,7 @@ $c->smartengine['sslVerify'] = false;
 
 $c->crossss['id'] = 68; // *.ent3.ru
 $c->crossss['apiKey'] = 'fe7fbe9540e14f1db1f9f047d1e54b25';
+$c->crossss['timeout'] = 0.8;
 
 $c->paymentPsb['terminal'] = '79036768';
 $c->paymentPsb['merchant'] = '790367686219999';

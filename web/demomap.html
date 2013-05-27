@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>ymaps polygons</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<script src="http://api-maps.yandex.ru/2.0-stable/?load=package.standard,geoXml.load&lang=ru-RU" type="text/javascript"></script>
+		<script src="http://yandex.st/jquery/1.6.4/jquery.min.js" type="text/javascript"></script>
+	</head>
+	<body>
+		<div id="map" style="width: 800px; height: 600px"></div>
+		<script type="text/javascript">
+			ymaps.ready(init);
+			var myMap;
+
+			var url = "http://selected.jino.ru/polygons10.xml"; 
+			// var url = 'http://simbio.narod.ru/polygons100.xml';
+
+			function init(){     
+				myMap = new ymaps.Map ("map", {
+					center: [55.76, 37.64],
+					zoom: 1,
+				});
+				myMap.controls.add(
+					new ymaps.control.ZoomControl()
+				);
+				console.log('loading...')
+				ymaps.geoXml.load(url).then(function (res) {
+					console.log('load complete')
+					console.info(res)
+					myMap.geoObjects.add(res.geoObjects);
+				},
+				function (error) { // Вызывается в случае неудачной загрузки YMapsML-файла
+					console.log(error);
+					alert("При загрузке YMapsML-файла произошла ошибка: " + error);
+				});
+
+			}
+		</script>
+	</body>
+</html>

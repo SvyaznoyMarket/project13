@@ -162,7 +162,7 @@ a.motton:hover {
 *:first-child+html .clearfix { zoom: 1; } /* IE7 */
 .float100 {
   float: right;
-  margin-right: -15px;
+  margin-right: -5px;
   // width: 100%;
 }
 
@@ -708,6 +708,7 @@ ul.lh15 li {
   border:1px solid @typLightGray;
   padding:7px;
   position: relative;
+  margin-top: 10px;
   .corner{
     border-bottom: 9px solid @typLightGray;
     border-left: 10px solid transparent;
@@ -725,4 +726,24 @@ ul.lh15 li {
       position: absolute;
     }
   }
+}
+
+.blackPopupVideo.blackPopup {
+  border: 2px solid @firmOrange;
+  .rounded(6px);
+  .productVideo_iframe {
+    border: 2px solid @white;
+    .rounded(3px);
+    position: relative;
+    z-index: 2;
+    background: @white;
+  }
+  .close {
+    height: 39px;
+    right: -30px;
+    top: -11px;
+    width: 54px;
+    z-index: 1;
+    background: url("@{base-url}/common/img/bg_btn_closer.png") no-repeat 0px 0;
+    }
 }

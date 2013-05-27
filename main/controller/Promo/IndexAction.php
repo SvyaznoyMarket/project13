@@ -85,7 +85,7 @@ class IndexAction {
             $slideData[] = [
                 'imgUrl'  => \App::config()->dataStore['url'] . 'promo/' . $promo->getToken() . '/' . trim($image->getUrl(), '/'),
                 'title'   => $image->getName(),
-                'linkUrl' => $image->getLink(),
+                'linkUrl' => $image->getLink()?($image->getLink().'?from='.$promo->getToken()):'',
             ];
         }
 

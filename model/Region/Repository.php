@@ -105,18 +105,18 @@ class Repository {
     }
 
     /**
-     * @param $callback
+     * @param $done
      */
-    public function prepareShopAvailableCollection($callback) {
+    public function prepareShopAvailableCollection($done) {
         \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
-        $this->client->addQuery('geo/get-shop-available', [], [], $callback);
+        $this->client->addQuery('geo/get-shop-available', [], [], $done);
     }
 
     /**
      * @return Entity[]
      */
-    public function getShowInMenuCollection() {
+    public function getShownInMenuCollection() {
         \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         $client = clone $this->client;
@@ -134,11 +134,22 @@ class Repository {
     }
 
     /**
-     * @param $callback
+     * @param $done
      */
-    public function prepareShowInMenuCollection($callback) {
+    public function prepareShownInMenuCollection($done) {
         \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
-        $this->client->addQuery('geo/get-menu-cities', [], [], $callback);
+        $this->client->addQuery('geo/get-menu-cities', [], [], $done);
+    }
+
+    /**
+     * @param string        $ip
+     * @param callback      $done
+     * @param callback|null $fail
+     */
+    public function prepareEntityByIp($ip, $done, $fail = null) {
+        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
+
+        $this->client->addQuery('geo/locate', ['ip' => $ip], [], $done, $fail);
     }
 }

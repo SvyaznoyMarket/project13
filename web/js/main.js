@@ -63,9 +63,7 @@ $(document).ready(function(){
 			suggestLen = $('.bSearchSuggest__eRes').length
 		}
 		if ((e.which < 37 || e.which>40) && (nowSelectSuggest = -1)){
-			if (!text.length){
-				return false
-			}
+			
 			$('.bSearchSuggest__eRes').removeClass('hover')
 			nowSelectSuggest = -1
 
@@ -84,7 +82,6 @@ $(document).ready(function(){
 	 * @param  {event} e
 	 */
 	suggestDown = function(e){
-
 		// маркировка пункта
 		markSuggest = function(){
 			$('.bSearchSuggest__eRes').removeClass('hover').eq(nowSelectSuggest).addClass('hover')
@@ -144,6 +141,12 @@ $(document).ready(function(){
 		$('#searchAutocomplete').show()
 	}
 	$('.searchbox .searchtext').keydown(suggestDown).keyup(suggestUp).mouseenter(suggestInputFocus).focus(suggestInputFocus).click(suggestInputClick).placeholder()
+	$('.searchbox .search-form').submit(function(){
+		var text = $('.searchbox .searchtext').attr('value')
+		if (!text.length){
+			return false
+		}
+	})
 	$('.bSearchSuggest__eRes').live('mouseover', function(){
 		$('.bSearchSuggest__eRes').removeClass('hover')
 		var index = $(this).addClass('hover').index()
@@ -898,16 +901,51 @@ $(document).ready(function(){
 	function getRegions() {
 		$('.popupRegion').lightbox_me( {
 			autofocus: true,
+			onLoad: function(){
+				if ($('#jscity').val().length){
+					$('#jscity').putCursorAtEnd()
+					$('#jschangecity').removeClass('mDisabled')
+				}
+			},
 			onClose: function() {			
 				if( !docCookies.hasItem('geoshop') ) {
-					docCookies.setItem( false, "geoshop", "14974", 31536e3, "/") //moscow city
-					document.location.reload()
+					var id = $('#jsregion').data('region-id');
+					docCookies.setItem( false, "geoshop", id, 31536e3, "/")
+					// document.location.reload()
 				}
 			}
 		} )		
 	}
 
+	$('.cityItem .moreCity').bind('click',function(){
+		$(this).toggleClass('mExpand')
+		$('.regionSlidesWrap').slideToggle(300)
+	})
+
 	$('#jsregion, .jsChangeRegion').click( function() {
+		var autoResolve = $(this).data("autoresolve-url")
+
+		var authFromServer = function(res){
+			if (!res.data.length){
+				$('.popupRegion .mAutoresolve').html('')
+				return false
+			}
+
+			var url = res.data[0].url
+			var name = res.data[0].name
+			if ($('.popupRegion .mAutoresolve').length){
+				$('.popupRegion .mAutoresolve').html('<a href="'+url+'">'+name+'</a>')	
+			}
+			else{
+				$('.popupRegion .cityInline').prepend('<div class="cityItem mAutoresolve"><a href="'+url+'">'+name+'</a></div>')
+			}
+			
+		}
+		$.ajax({
+			type: 'GET',
+			url: autoResolve,
+			success: authFromServer
+		})
 		getRegions()
 		return false
 	})
