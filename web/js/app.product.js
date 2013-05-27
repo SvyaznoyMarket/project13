@@ -319,23 +319,14 @@ $(document).ready(function() {
 				})
 			}
 			catch (err){
-				var date = new Date();
-				var time = date.getHours()+':'+date.getMinutes()+':'+date.getSeconds()
-				var nowUrl = window.location.pathname
-				var userAgent = navigator.userAgent
-				var data = {
-					time:time,
+				var pageID = $(body).data(id)
+				var dataToLog = {
+					event: 'swfobject_error',
 					type:'ошибка загрузки swf maybe3d',
-					nowUrl:nowUrl,
-					userAgent:userAgent,
+					pageID: pageID,
 					err: err,
 				}
-				$.ajax({
-	                type: 'POST',
-	                global: false,
-	                url: '/log-json',
-	                data: data
-	            })
+				logError(dataToLog)
 			}
 			return false
 		}

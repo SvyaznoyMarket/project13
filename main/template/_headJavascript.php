@@ -1,5 +1,5 @@
 <? if (\App::config()->analytics['enabled']): ?>
-    <!-- Optimizely -->
+    <!-- KISS -->
     <script type="text/javascript">
         var _kmq = _kmq || [];
         var _kmk = _kmk || '3cb5e4fbdc85838975bae7d45d9ee9a2e045399c';
@@ -18,7 +18,7 @@
 
 
 <? if (\App::config()->analytics['optimizelyEnabled']): ?>
-    <!-- KISS -->
-    <script src="//cdn.optimizely.com/js/204544654.js"></script>
+    <!-- Optimizely -->
+    <!-- <script src="//cdn.optimizely.com/js/204544654.js"></script>-->
 <? endif ?>
 
