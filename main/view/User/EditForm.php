@@ -54,6 +54,9 @@ class EditForm {
             else try {
                 if (is_array($data['birthday'])) {
                     $data['birthday'] = sprintf('%04d-%02d-%02d 00:00:00', $data['birthday']['year'], $data['birthday']['month'], $data['birthday']['day']);
+                    if ('0000-00-00 00:00:00' == $data['birthday']) {
+                        throw new \Exception();
+                    }
                 }
                 $this->setBirthday(new \DateTime($data['birthday']));
             } catch (\Exception $e) {
