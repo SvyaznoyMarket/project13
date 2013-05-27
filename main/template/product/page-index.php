@@ -18,7 +18,7 @@
 
 /** @var  $productVideo \Model\Product\Video\Entity|null */
 $productVideo = reset($productVideos);
-$productVideo = $productVideo && $productVideo->getContent() ? $productVideo : null;
+$productVideo = $productVideo ? $productVideo : null;
 ?>
 <?
   $json = json_encode(array (
@@ -205,7 +205,7 @@ $productVideo = $productVideo && $productVideo->getContent() ? $productVideo : n
 <? endif ?>
 
 <div class="goodsphoto">
-  <? if ($productVideo): ?><a class="goodsphoto_eVideoShield" href="#"></a><? endif ?>
+  <? if ($productVideo && $productVideo->getContent()): ?><a class="goodsphoto_eVideoShield" href="#"></a><? endif ?>
 
   <a href="<?= $product->getImageUrl(4) ?>" class="viewme" ref="image" onclick="return false">
     <? if ($product->getLabel()): ?>
