@@ -15,7 +15,7 @@ class CurlAction {
         $data = (array)$request->get('data');
 
         $domain = implode('.', array_slice(array_pad(explode('.', parse_url($url, PHP_URL_HOST)), 2, null), -2, 2));
-        if (!in_array($domain, ['enter.ru', 'ent3.ru', 'enter.loc', 'ent3.dev'])) {
+        if (!in_array($domain, ['enter.ru', 'ent3.ru', 'enter.loc', 'ent3.dev', 'enter-cms.loc'])) {
             throw new \Exception\NotFoundException();
         }
 
