@@ -8,6 +8,8 @@ class Entity {
     /** @var string */
     private $name;
     /** @var string */
+    private $type;
+    /** @var string */
     private $number;
     /** @var array */
     private $productIds = [];
@@ -22,6 +24,7 @@ class Entity {
     public function __construct(array $data = []) {
         if (array_key_exists('id', $data)) $this->setId($data['id']);
         if (array_key_exists('name', $data)) $this->setName($data['name']);
+        if (array_key_exists('type', $data)) $this->setType($data['type']);
         if (array_key_exists('number', $data)) $this->setNumber($data['number']);
         if (array_key_exists('product_list', $data) && is_array($data['product_list'])) $this->setProductIds($data['product_list']);
         if (array_key_exists('service_list', $data) && is_array($data['service_list'])) $this->setServiceIds($data['service_list']);
@@ -54,6 +57,20 @@ class Entity {
      */
     public function getName() {
         return $this->name;
+    }
+
+    /**
+     * @param string $type
+     */
+    public function setType($type) {
+        $this->type = (string)$type;
+    }
+
+    /**
+     * @return string
+     */
+    public function getType() {
+        return $this->type;
     }
 
     /**
