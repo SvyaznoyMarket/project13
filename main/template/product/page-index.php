@@ -196,7 +196,7 @@ $productVideo = reset($productVideos);
 <? endif ?>
 
 <div class="goodsphoto">
-  <? if ($productVideo): ?><a class="goodsphoto_eVideoShield" href="#"></a><? endif ?>
+  <? if ($productVideo && $productVideo->getContent()): ?><a class="goodsphoto_eVideoShield" href="#"></a><? endif ?>
 
   <a href="<?= $product->getImageUrl(4) ?>" class="viewme" ref="image" onclick="return false">
     <? if ($product->getLabel()): ?>
