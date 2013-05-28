@@ -121,6 +121,9 @@
                 <!-- ko if: dlvrPrice() <= 0 -->
                 Бесплатно
                 <!-- /ko -->
+                <!-- ko if: supplied() -->
+                <span class="red db pt20">Оператор контакт-cEnter<br/>подтвердит точную дату<br/>доставки за 2-3 дня.</span>
+                <!-- /ko -->
             </i>
             </dt>
             <i>
