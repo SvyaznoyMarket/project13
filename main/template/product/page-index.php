@@ -659,23 +659,28 @@ $productVideo = reset($productVideos);
 
 <?= $page->tryRender('product/_tag', ['product' => $product]) ?>
 
-<h2 class="bold"><?= $product->getName() ?> - Обзоры и отзывы</h2>
-<div class="line pb5"></div>
-<div id="reviewsSummary">
-    <?= $page->render('product/_reviewsSummary', ['reviewsData' => $reviewsData, 'reviewsDataPro' => $reviewsDataPro, 'reviewsDataSummary' => $reviewsDataSummary]) ?>
-</div>
-<div id="reviewsWrapper" data-product-id="<?= $product->getId() ?>" data-page-count="<?= $reviewsData['page_count'] ?>" data-container="reviewsUser" data-reviews-type="user">
-    <?= $page->render('product/_reviews', ['reviewsData' => $reviewsData]) ?>
-</div>
+<? if(!empty($reviewsData['review_list']) || !empty($reviewsDataPro['review_list'])) { ?>
+  <h2 class="bold"><?= $product->getName() ?> - Обзоры и отзывы</h2>
+  <div class="line pb5"></div>
+  <div id="reviewsSummary">
+      <?= $page->render('product/_reviewsSummary', ['reviewsData' => $reviewsData, 'reviewsDataPro' => $reviewsDataPro, 'reviewsDataSummary' => $reviewsDataSummary]) ?>
+  </div>
+
+  <? if(!empty($reviewsData['review_list'])) { ?>
+    <div id="reviewsWrapper" data-product-id="<?= $product->getId() ?>" data-page-count="<?= $reviewsData['page_count'] ?>" data-container="reviewsUser" data-reviews-type="user">
+  <? } elseif(!empty($reviewsDataPro['review_list'])) { ?>
+    <div id="reviewsWrapper" data-product-id="<?= $product->getId() ?>" data-page-count="<?= $reviewsDataPro['page_count'] ?>" data-container="reviewsPro" data-reviews-type="pro">
+  <? } ?>
+      <?= $page->render('product/_reviews', ['reviewsData' => $reviewsData, 'reviewsDataPro' => $reviewsDataPro]) ?>
+  </div>
+<? } ?>
 
 <? if (!$showAccessoryUpper && count($product->getAccessoryId()) && \App::config()->product['showAccessories']): ?>
     <?= $page->render('product/_slider', ['product' => $product, 'productList' => array_values($accessories), 'totalProducts' => count($product->getAccessoryId()), 'itemsInSlider' => \App::config()->product['itemsInAccessorySlider'], 'page' => 1, 'title' => 'Аксессуары', 'url' => $page->url('product.accessory', array('productToken' => $product->getToken())), 'gaEvent' => 'Accessorize', 'showCategories' => true, 'accessoryCategory' => $accessoryCategory, 'additionalData' => $additionalData]) ?>
-    <div class="line"></div>
 <? endif ?>
 
-<? if (!$showRelatedUpper && count($product->getRelatedId()) && \App::config()->product['showRelated']): ?>
+<? if (!$showRelatedUpper && count($related) && \App::config()->product['showRelated']): ?>
     <?= $page->render('product/_slider', ['product' => $product, 'productList' => array_values($related), 'totalProducts' => count($product->getRelatedId()), 'itemsInSlider' => \App::config()->product['itemsInSlider'], 'page' => 1, 'title' => 'С этим товаром также покупают', 'url' => $page->url('product.related', array('productToken' => $product->getToken())), 'additionalData' => $additionalData]) ?>
-    <div class="line"></div>
 <? endif ?>
 
 <div class="fr ar">

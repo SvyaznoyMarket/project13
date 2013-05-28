@@ -426,7 +426,7 @@ $(document).ready(function() {
 
  	// текущая страница для каждой вкладки
  	var reviewCurrentPage = {
- 		user: 0,
+ 		user: -1,
  		pro: -1
  	}
  	// количество страниц для каждой вкладки
@@ -441,8 +441,11 @@ $(document).ready(function() {
 	// карточка товара - отзывы - переключение по табам
  	if($('.reviewsTab').length) {
  		// начальная инициализация
-	 	reviewPageCount['user'] = $('#reviewsWrapper').attr('data-page-count')
-	 	if(reviewPageCount['user']) {
+ 		var initialType = $('#reviewsWrapper').attr('data-reviews-type')
+		reviewCurrentPage[initialType]++
+
+	 	reviewPageCount[initialType] = $('#reviewsWrapper').attr('data-page-count')
+	 	if(reviewPageCount[initialType]) {
 	 		$('#getMoreReviewsButton').show()
 	 	}
 	 	reviewsProductId = $('#reviewsWrapper').attr('data-product-id')
@@ -452,7 +455,6 @@ $(document).ready(function() {
  		$('.reviewsTab').click(function(){
 			reviewsContainerClass = $(this).attr('data-container')
 	 		reviewsType = $(this).attr('data-reviews-type')
-	 		console.log(reviewsType)
 			$('.reviewsTab').removeClass('active')
 			$(this).addClass('active')
 			$('.reviewsTabContent').hide()

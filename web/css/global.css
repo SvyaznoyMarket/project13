@@ -562,6 +562,9 @@
   .hf {
     display: none;
   }
+  .hfImportant {
+    display: none!important;
+  }
   .f1 {
     background: url("/css/common/img/icons.png") no-repeat 0px -111px;
     padding: 3px 0px 3px 29px;

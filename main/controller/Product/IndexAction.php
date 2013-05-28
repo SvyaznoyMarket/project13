@@ -278,6 +278,7 @@ class IndexAction {
             'pro' => [5 => 0, 4 => 0, 3 => 0, 2 => 0, 1 => 0],
         ];
         foreach (['user' => $userData, 'pro' => $proData] as $type => $data) {
+            if(empty($data['num_users_by_score'])) continue;
             foreach ($data['num_users_by_score'] as $grade) {
                 $score = (float)($grade['score']);
                 if($score < 2.0) {

@@ -21,11 +21,13 @@ class ReviewsAction {
 
         $response = '';
 
-        foreach ($reviewsData['review_list'] as $key => $review) {
-            $response .= \App::templating()->render('product/_review', [
-                'review' => $review,
-                'last' => empty($reviewsData['review_list'][$key + 1])
-            ]);
+        if(!empty($reviewsData['review_list'])) {
+            foreach ($reviewsData['review_list'] as $key => $review) {
+                $response .= \App::templating()->render('product/_review', [
+                    'review' => $review,
+                    'last' => empty($reviewsData['review_list'][$key + 1])
+                ]);
+            }
         }
 
         return new \Http\JsonResponse(['content' => $response, 'pageCount' => $reviewsData['page_count']]);
