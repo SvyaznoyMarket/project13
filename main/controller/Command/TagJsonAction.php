@@ -80,8 +80,14 @@ class TagJsonAction {
                     foreach ($filterValues as $filterId => $filterValue) {
                         $filter = new \Model\Product\Filter\Entity();
                         $filter->setId($filterId);
-                        if (array_key_exists('from', $filterValue)) $filter->setMin($filterValue['from']);
-                        if (array_key_exists('to', $filterValue)) $filter->setMax($filterValue['to']);
+                        if (array_key_exists('from', $filterValue)) {
+                            $filter->setMin($filterValue['from']);
+                            $filter->setTypeId(\Model\Product\Filter\Entity::TYPE_SLIDER);
+                        }
+                        if (array_key_exists('to', $filterValue)) {
+                            $filter->setMax($filterValue['to']);
+                            $filter->setTypeId(\Model\Product\Filter\Entity::TYPE_SLIDER);
+                        }
                         array_push($filtersCollection, $filter);
                     }
 
@@ -117,7 +123,6 @@ class TagJsonAction {
 
                         $part++;
                     }
-
                 }
 
                 /*
