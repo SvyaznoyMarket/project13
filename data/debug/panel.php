@@ -29,6 +29,12 @@ if ('live' != \App::$env) {
     $debug->add('server', json_encode(isset($_SERVER) ? $_SERVER : [], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), 134);
 }
 
+// session
+$debug->add('session', json_encode(\App::session()->all(), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), 133);
+
+// memory
+$debug->add('memory', sprintf('%s Mb', round(memory_get_peak_usage() / 1048576, 2)), 132);
+
 // timers
 $appTimer = \Debug\Timer::get('app');
 $coreTimer = \Debug\Timer::get('core');
@@ -40,12 +46,6 @@ $debug->add('time.core', sprintf('%s ms [%s]', round($coreTimer['total'], 3) * 1
 $debug->add('time.data-store', sprintf('%s ms [%s]', round($dataStoreTimer['total'], 3) * 1000, $dataStoreTimer['count']), 96);
 $debug->add('time.content', sprintf('%s ms [%s]', round($contentTimer['total'], 3) * 1000, $contentTimer['count']), 95);
 $debug->add('time.total', sprintf('%s ms', round($appTimer['total'], 3) * 1000), 94);
-
-// memory
-$debug->add('memory', sprintf('%s Mb', round(memory_get_peak_usage() / 1048576, 2)), 90);
-
-// session
-$debug->add('session', json_encode(\App::session()->all(), JSON_PRETTY_PRINT), 89);
 
 // log
 if ('live' != \App::$env) {
