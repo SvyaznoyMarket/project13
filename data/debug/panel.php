@@ -24,6 +24,11 @@ if (\App::user()->getToken()) {
     $debug->add('user', \App::user()->getToken(), 135);
 }
 
+// server
+if ('live' != \App::$env) {
+    $debug->add('server', json_encode(isset($_SERVER) ? $_SERVER : [], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), 134);
+}
+
 // timers
 $appTimer = \Debug\Timer::get('app');
 $coreTimer = \Debug\Timer::get('core');
