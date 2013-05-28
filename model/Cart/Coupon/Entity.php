@@ -78,13 +78,34 @@ class Entity {
         $message = null;
         switch ($code) {
             case 300: case 303: case 305: case 306: case 307: case 308: case 309: case 310: case 311: case 312: case 313:
-            $message = 'Купона с таким номером не существует';
-            break;
+                $message = 'Купона с таким номером не существует';
+                break;
             case 301: case 304:
-            $message = 'Купон неактивный';
-            break;
+                $message = 'Купон неактивный';
+                break;
             case 302:
                 $message = 'Купон уже был использован ранее';
+                break;
+            case 314:
+                $message = 'Скидка не действует на такие товары в корзине';
+                break;
+            case 315:
+                $message = 'Слишком высокая общая стоимость товаров в корзине';
+                break;
+            case 316:
+                $message = 'Слишком низкая общая стоимость товаров в корзине';
+                break;
+            case 317:
+                $message = 'Слишком много товаров в корзине';
+                break;
+            case 318:
+                $message = 'Слишком мало товаров в корзине';
+                break;
+            case 319:
+                $message = 'Слишком много наименований товаров в корзине';
+                break;
+            case 320:
+                $message = 'Слишком мало наименований товаров в корзине';
                 break;
         }
 
