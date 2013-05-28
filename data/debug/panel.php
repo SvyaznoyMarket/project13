@@ -47,6 +47,16 @@ $debug->add('time.data-store', sprintf('%s ms [%s]', round($dataStoreTimer['tota
 $debug->add('time.content', sprintf('%s ms [%s]', round($contentTimer['total'], 3) * 1000, $contentTimer['count']), 95);
 $debug->add('time.total', sprintf('%s ms', round($appTimer['total'], 3) * 1000), 94);
 
+
+// ab test
+if ((bool)\App::config()->abtest['enabled']) {
+    $options = '<span style="color: #cccccc;">Тестирование проводится до </span><span style="color: #00ffff;">' . date('d-m-Y H:i', strtotime(\App::config()->abtest['bestBefore'])) . '</span><br />';
+    foreach (\App::abTest()->getOption() as $option) {
+        $options .= '<span style="color: #' . ($option->getKey() == \App::abTest()->getCase()->getKey() ? 'color: #11ff11' : 'cccccc') . ';">' . $option->getTraffic() . ($option->getTraffic() === '*' ? ' ' : '% ') . $option->getKey() . ' ' . $option->getName() . '</span><br />';
+    }
+}
+$debug->add('abTest', $options, 89);
+
 // log
 if ('live' != \App::$env) {
     $debug->add('log', '<a style="color: #00ffff" href="/debug/log/' . \App::$id . '" onclick="var el = $(this); $.post(el.attr(\'href\'), function(response) { el.html(\'\'); el.after(\'<pre>\' + response + \'</pre>\'); el.next(\'pre\').css({\'color\': \'#ffffff\', \'max-height\': \'300px\', \'max-width\': \'1200px\', \'overflow\': \'auto\'}) }); return false">...</a>', 88);
@@ -67,14 +77,6 @@ foreach ((array)$requestData['api_queries'] as $query) {
         . '<br />';
 }
 $debug->add('query', $queryString, 80);
-
-if ((bool)\App::config()->abtest['enabled']) {
-    $options = '<span style="color: #cccccc;">Тестирование проводится до </span><span style="color: #00ffff;">' . date('d-m-Y H:i', strtotime(\App::config()->abtest['bestBefore'])) . '</span><br />';
-    foreach (\App::abTest()->getOption() as $option) {
-        $options .= '<span style="color: #' . ($option->getKey() == \App::abTest()->getCase()->getKey() ? 'color: #11ff11' : 'cccccc') . ';">' . $option->getTraffic() . ($option->getTraffic() === '*' ? ' ' : '% ') . $option->getKey() . ' ' . $option->getName() . '</span><br />';
-    }
-    $debug->add('abTest', $options, 70);
-}
 
 if (!\App::request()->isXmlHttpRequest()) {
 ?>
