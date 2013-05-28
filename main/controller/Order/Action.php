@@ -1017,7 +1017,7 @@ class Action {
                 $itemView->id = $itemData['id'];
                 $itemView->article = $productEntity->getArticle();
                 $itemView->parent_category = $productEntity->getMainCategory()->getName();
-                $itemView->categoty = $productEntity->getParentCategory()->getName();
+                $itemView->category = $productEntity->getParentCategory()->getName();
                 $itemView->name = $itemData['name'] . $serviceName;
                 $itemView->image = $itemData['media_image'];
                 $itemView->price = $itemData['price'];
@@ -1041,6 +1041,7 @@ class Action {
                     $deliveryView->price = $deliveryData['price'];
                     $deliveryView->token = $deliveryToken;
                     $deliveryView->name = 0 === strpos($deliveryToken, 'self') ? 'В самовывоз' : 'В доставку';
+                    $deliveryView->isSupplied = $productEntity->getState() ? $productEntity->getState()->getIsSupplier() : false;
 
                     foreach ($deliveryData['dates'] as $dateData) {
                         $dateView = new \View\Order\DeliveryCalc\Date();
