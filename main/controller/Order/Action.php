@@ -1091,6 +1091,9 @@ class Action {
                     $deliveryView->price = $deliveryData['price'];
                     $deliveryView->token = $deliveryToken;
                     $deliveryView->name = 0 === strpos($deliveryToken, 'self') ? 'В самовывоз' : 'В доставку';
+                    if ('products' == $itemType && $productsEntityById[$itemData['id']] instanceof \Model\Product\BasicEntity) {
+                        $deliveryView->isSupplied = $productsEntityById[$itemData['id']]->getState() ? $productsEntityById[$itemData['id']]->getState()->getIsSupplier() : false;
+                    } else $deliveryView->isSupplied = false;
 
                     foreach ($deliveryData['dates'] as $dateData) {
                         $dateView = new \View\Order\DeliveryCalc\Date();
