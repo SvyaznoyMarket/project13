@@ -39,6 +39,7 @@ class IndexAction {
 
         $client = \App::coreClientV2();
         $user = \App::user();
+        $region = \App::user()->getRegion();
 
         $sortData = (array)$request->get('sort');
         if ((bool)$sortData) {
@@ -52,24 +53,49 @@ class IndexAction {
             }
         }
 
-        $filterData = (array)$request->get('filter', []);
+        $filterData = (array)$request->get('f', []);
         $offset =  (int)$request->get('offset', 0);
         $limit = (int)$request->get('limit', 32);
 
         // запрашиваем категорию по id
-        $category = \RepositoryManager::productCategory()->getEntityById($categoryId);
+        $category = null;
+        \RepositoryManager::productCategory()->prepareCollectionById([$categoryId], $region, function($data) use (&$category) {
+            if ((bool)$data) {
+                $item = reset($data);
+                $category = new \Model\Product\Category\Entity($item);
+            }
+        });
+
+        // фильтры
+        $filters = [];
+        \RepositoryManager::productFilter()->prepareCollectionByCategory(new \Model\Product\Category\Entity(['id' => $categoryId]), $region,
+            function($data) use (&$filters) {
+                foreach ($data as $item) {
+                    $filters[] = new \Model\Product\Filter\Entity($item);
+                }
+            },
+            function (\Exception $e) use ($categoryId) {
+                \App::exception()->remove($e);
+                \App::logger()->error(sprintf('Не удалось получить фильтры для категории #%s', $categoryId));
+            }
+        );
+        \App::coreClientV2()->execute();
 
         if (!$category) {
             throw new \Exception\NotFoundException(sprintf('Категория товара #%s не найдена.', $categoryId));
         }
 
-        $productFilter = new \Model\Product\Filter($filterData, false);
-        $productFilter->setCategory($category);
+        $productFilter = null;
+        if ((bool)$filters) {
+            $productFilter = new \Model\Product\Filter($filters);
+            $productFilter->setCategory($category);
+            $productFilter->setValues($filterData);
+        }
 
         $response = [];
         $client->addQuery('listing/list', [
             'filter' => [
-                'filters' => $productFilter->dump(),
+                'filters' => $productFilter ? $productFilter->dump() : [],
                 'sort'    => $productSorting->dump(),
                 'offset'  => $offset,
                 'limit'   => $limit,
