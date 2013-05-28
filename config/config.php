@@ -13,6 +13,7 @@ $c->dataDir = $c->appDir . '/data';
 $c->logDir = $c->appDir . '/log';
 $c->webDir = $c->appDir . '/web';
 $c->templateDir = $c->appDir . '/main/template';
+$c->cmsDir = $c->appDir . '/../../cms.enter.ru/wwwroot';
 
 $c->controllerPrefix = 'Controller';
 $c->routePrefix = '';
@@ -38,6 +39,21 @@ $c->coreV2['retryTimeout'] = [
     'forever' => 0,
 ];
 $c->coreV2['retryCount'] = 3;
+
+$c->corePrivate['url']       = 'http://core.ent3.ru/private/';
+$c->corePrivate['client_id'] = 'site';
+$c->corePrivate['user'] = 'Developer';
+$c->corePrivate['password'] = 'dEl23sTOas';
+$c->corePrivate['retryTimeout'] = [
+    'default' => 1,
+    'tiny'    => 0.1,
+    'short'   => 0.4,
+    'medium'  => 1,
+    'long'    => 1.6,
+    'huge'    => 3,
+    'forever' => 0,
+];
+$c->corePrivate['retryCount'] = 3;
 
 $c->wordpress['url'] = 'http://content.enter.ru/';
 $c->wordpress['timeout'] = 8;
@@ -111,6 +127,7 @@ $c->product['showAccessories']       = true;
 $c->product['showRelated']           = true;
 $c->product['itemsInSlider']         = 5;
 $c->product['itemsInCategorySlider'] = 3;
+$c->product['itemsInAccessorySlider'] = 4;
 $c->product['minCreditPrice']        = 3000;
 $c->product['totalCount']            = 30000;
 // глобальный (без учета региона) список товаров
@@ -217,8 +234,14 @@ $c->subscribe['cookieName'] = 'subscribed';
 
 $c->requestMainMenu = false;
 
-$c->mobileModify['enabled'] = false;
+$c->mobileModify['enabled'] = true;
 
 $c->order['enableMetaTag'] = true;
+
+$c->maybe3d['xmlUrl'] = 'http://hq.maybe3d.com/MappingService.svc/GetMappings?customerId=';
+$c->maybe3d['customerId'] = 'BE2016EF-32D8-41E6-976F-A8D32EB20ACF';
+$c->maybe3d['swfUrl'] = 'http://fs01.enter.ru/3d/';
+$c->maybe3d['cmsFolder'] = '/opt/wwwroot/cms.enter.ru/wwwroot/v1/video/product/';
+$c->maybe3d['timeout'] = 30;
 
 return $c;

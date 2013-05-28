@@ -7,6 +7,7 @@
  * @var $accessories        \Model\Product\Entity[]
  * @var $related            \Model\Product\Entity[]
  * @var $kit                \Model\Product\Entity[]
+ * @var $additionalData     array
  * @var $showAccessoryUpper bool
  * @var $showRelatedUpper   bool
  * @var $shopsWithQuantity  array
@@ -14,6 +15,7 @@
 ?>
 
 <?
+/** @var $productVideo \Model\Product\Video\Entity */
 $productVideo = reset($productVideos);
 ?>
 <?
@@ -53,20 +55,40 @@ $productVideo = reset($productVideos);
       'article'     => $product->getArticle(),
       'name'        => $product->getName(),
       'isSupplied'  => $product->getState() ? $product->getState()->getIsSupplier() : false,
+      'stockState'  =>
+          $product->getIsBuyable()
+          ? 'in stock'
+          : (
+              ($product->getState() && $product->getState()->getIsShop())
+              ? 'at shop'
+              : 'out of stock'
+          ),
   ];
 ?>
 <?
-  $photoList = $product->getPhoto();
-  $photo3dList = $product->getPhoto3d();
-  $p3d_res_small = [];
-  $p3d_res_big = [];
-  foreach ($photo3dList as $photo3d)
-  {
-    $p3d_res_small[] = $photo3d->getUrl(0);
-    $p3d_res_big[] = $photo3d->getUrl(1);
-  }
+    $photoList = $product->getPhoto();
 
-  $showAveragePrice = \App::config()->product['showAveragePrice'] && !$product->getPriceOld() && $product->getPriceAverage();
+    /** @var string $model3dExternalUrl */
+    $model3dExternalUrl = ($productVideo instanceof \Model\Product\Video\Entity) ? $productVideo->getMaybe3d() : false;
+    /** @var array $photo3dList */
+    $photo3dList = [];
+    /** @var array $p3d_res_small */
+    $p3d_res_small = [];
+    /** @var array $p3d_res_big */
+    $p3d_res_big = [];
+
+    if (!$model3dExternalUrl) {
+        $photo3dList = $product->getPhoto3d();
+        foreach ($photo3dList as $photo3d) {
+            $p3d_res_small[] = $photo3d->getUrl(0);
+            $p3d_res_big[] = $photo3d->getUrl(1);
+        }
+    } elseif ($model3dExternalUrl) {
+        $model3dName = str_ireplace(array('.SWF', '.swf'), '', basename($model3dExternalUrl));
+        if (!strlen($model3dName)) $model3dExternalUrl = false;
+    }
+
+    $showAveragePrice = \App::config()->product['showAveragePrice'] && !$product->getPriceOld() && $product->getPriceAverage();
 
     $adfox_id_by_label = 'adfox400';
     if ($product->getLabel()) {
@@ -91,9 +113,54 @@ $productVideo = reset($productVideos);
     }
 </style>
 
+<? if ($model3dExternalUrl) : 
+
+  $arrayToMaybe3D = [
+    'init' => [
+      'swf'=>$model3dExternalUrl,
+      'container'=>'maybe3dModel',
+      'width'=>'700px',
+      'height'=>'500px',
+      'version'=>'10.0.0',
+      'install'=>'js/expressInstall.swf',
+    ],
+    'params' => [
+      'menu'=> "false",
+      'scale'=> "noScale",
+      'allowFullscreen'=> "true",
+      'allowScriptAccess'=> "always",
+      'wmode'=> "direct"
+    ],
+    'attributes' => [
+      'id'=> "<?=$model3dName?>",
+    ],
+    'flashvars'=> [
+      'language'=> "auto",
+    ]
+    
+  ];
+  
+?>
+
+
+  <div id="maybe3dModelPopup" class="popup" data-value="<?php print $page->json($arrayToMaybe3D); ?>">
+    <i class="close" title="Закрыть">Закрыть</i>
+    <div id="maybe3dModel">
+        <a href="http://www.adobe.com/go/getflashplayer">
+            <img src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Get Adobe Flash player" />
+        </a>
+    </div>
+  </div>
+
+<? endif ?>
+
 <script type="text/javascript">
-  product_3d_small = <?= json_encode($p3d_res_small) ?>;
-  product_3d_big = <?= json_encode($p3d_res_big) ?>;
+    <? if ($model3dExternalUrl) : ?>
+    product_3d_url = <?= json_encode($model3dExternalUrl) ?>;
+    <? elseif (count($photo3dList) > 0) : ?>
+    product_3d_small = <?= json_encode($p3d_res_small) ?>;
+    product_3d_big = <?= json_encode($p3d_res_big) ?>;
+    <? endif ?>
 </script>
 
 <div id="productInfo" data-value="<?= $page->json($productData) ?>"></div>
@@ -104,7 +171,7 @@ $productVideo = reset($productVideos);
 
 <div class="lifted">
   <script type="text/html" id="similarGoodTmpl">
-    <div class="bSimilarGoodsSlider_eGoods fl">
+    <div class="bSimilarGoodsSlider_eGoods fl" <% if (data != undefined ) { %> data-article="<%=data.article%>" data-pos="<%=data.position%>" data-name="<%=data.name%>" <% } %> >
       <a class="bSimilarGoodsSlider_eGoodsImg fl" href="<%=link%>"><img width="83" height="83" src="<%=image%>"/></a>
       <div class="bSimilarGoodsSlider_eGoodsInfo fl">
         <div class="goodsbox__rating rate<%=rating%>"><div class="fill"></div></div>
@@ -113,7 +180,7 @@ $productVideo = reset($productVideos);
       </div>
     </div>
   </script>
-  <div class="bSimilarGoods clearfix">
+  <div class="bSimilarGoods mProduct clearfix">
     <div class="bSimilarGoods_eCorner"><div></div></div>
     <div class="bSimilarGoods_eLeftCaption fl">
       Товар есть только в&nbsp;магазинах. Вы&nbsp;можете заказать похожий товар.
@@ -297,8 +364,8 @@ $productVideo = reset($productVideos);
     	</a>
     </li>
     <? endforeach ?>
-    <? if (count($photo3dList) > 0): ?>
-    <li><a href="#" class="axonometric viewme" ref="360" title="Объемное изображение">Объемное изображение</a></li>
+    <? if (count($photo3dList) > 0 || $model3dExternalUrl): ?>
+    <li><a href="#" class="axonometric viewme <? if ($model3dExternalUrl): ?>maybe3d<? endif ?>" ref="360" title="Объемное изображение">Объемное изображение</a></li>
     <? endif ?>
   </ul>
 </div>
@@ -357,13 +424,16 @@ $productVideo = reset($productVideos);
 <!-- /Variation -->
 <? endif ?>
 
+<div class="clear"></div>
 
 <? if ($showAccessoryUpper && (bool)$accessories && \App::config()->product['showAccessories']): ?>
-    <?= $page->render('product/_slider', ['product' => $product, 'productList' => array_values($accessories), 'totalProducts' => count($product->getAccessoryId()), 'itemsInSlider' => \App::config()->product['itemsInSlider'], 'page' => 1, 'title' => 'Аксессуары', 'url' => $page->url('product.accessory', ['productToken' => $product->getToken()]), 'gaEvent' => 'Accessorize']) ?>
+    <div class="acess-box">
+      <?= $page->render('product/_slider', ['product' => $product, 'productList' => array_values($accessories), 'totalProducts' => count($product->getAccessoryId()), 'itemsInSlider' => \App::config()->product['itemsInAccessorySlider'], 'page' => 1, 'title' => 'Аксессуары', 'url' => $page->url('product.accessory', ['productToken' => $product->getToken()]), 'gaEvent' => 'Accessorize', 'showCategories' => true, 'accessoryCategory' => $accessoryCategory, 'additionalData' => $additionalData]) ?>
+    </div>
 <? endif ?>
 
 <? if ($showRelatedUpper && (bool)$related && \App::config()->product['showRelated']): ?>
-    <?= $page->render('product/_slider', ['product' => $product, 'productList' => array_values($related), 'totalProducts' => count($product->getRelatedId()), 'itemsInSlider' => \App::config()->product['itemsInSlider'], 'page' => 1, 'title' => 'С этим товаром также покупают', 'url' => $page->url('product.related', ['productToken' => $product->getToken()])]) ?>
+    <?= $page->render('product/_slider', ['product' => $product, 'productList' => array_values($related), 'totalProducts' => count($product->getRelatedId()), 'itemsInSlider' => \App::config()->product['itemsInSlider'], 'page' => 1, 'title' => 'С этим товаром также покупают', 'url' => $page->url('product.related', ['productToken' => $product->getToken()]), 'additionalData' => $additionalData]) ?>
 <? endif ?>
 
 <? if (false && \App::config()->smartengine['pull']): ?>
@@ -427,7 +497,7 @@ $productVideo = reset($productVideos);
         	</a>
         </li>
         <? endforeach ?>
-        <? if (count($photo3dList) > 0): ?>
+        <? if (count($photo3dList) > 0 || $model3dExternalUrl): ?>
         <li><a href="#" class="axonometric viewme" ref="360" title="Объемное изображение">Объемное изображение</a></li>
         <? endif ?>
       </ul>
@@ -579,11 +649,11 @@ $productVideo = reset($productVideos);
 <?= $page->tryRender('product/_tag', ['product' => $product]) ?>
 
 <? if (!$showAccessoryUpper && count($product->getAccessoryId()) && \App::config()->product['showAccessories']): ?>
-    <?= $page->render('product/_slider', array('product' => $product, 'productList' => array_values($accessories), 'totalProducts' => count($product->getAccessoryId()), 'itemsInSlider' => \App::config()->product['itemsInSlider'], 'page' => 1, 'title' => 'Аксессуары', 'url' => $page->url('product.accessory', array('productToken' => $product->getToken())), 'gaEvent' => 'Accessorize')) ?>
+    <?= $page->render('product/_slider', ['product' => $product, 'productList' => array_values($accessories), 'totalProducts' => count($product->getAccessoryId()), 'itemsInSlider' => \App::config()->product['itemsInAccessorySlider'], 'page' => 1, 'title' => 'Аксессуары', 'url' => $page->url('product.accessory', array('productToken' => $product->getToken())), 'gaEvent' => 'Accessorize', 'showCategories' => true, 'accessoryCategory' => $accessoryCategory, 'additionalData' => $additionalData]) ?>
 <? endif ?>
 
 <? if (!$showRelatedUpper && count($product->getRelatedId()) && \App::config()->product['showRelated']): ?>
-    <?= $page->render('product/_slider', array('product' => $product, 'productList' => array_values($related), 'totalProducts' => count($product->getRelatedId()), 'itemsInSlider' => \App::config()->product['itemsInSlider'], 'page' => 1, 'title' => 'С этим товаром также покупают', 'url' => $page->url('product.related', array('productToken' => $product->getToken())))) ?>
+    <?= $page->render('product/_slider', ['product' => $product, 'productList' => array_values($related), 'totalProducts' => count($product->getRelatedId()), 'itemsInSlider' => \App::config()->product['itemsInSlider'], 'page' => 1, 'title' => 'С этим товаром также покупают', 'url' => $page->url('product.related', array('productToken' => $product->getToken())), 'additionalData' => $additionalData]) ?>
 <? endif ?>
 
 <div class="line"></div>

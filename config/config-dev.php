@@ -16,6 +16,19 @@ $c->coreV2['retryTimeout'] = [
     'forever' => 0,
 ];
 
+$c->corePrivate['url'] = 'http://tester.core.ent3.ru/private/';
+$c->corePrivate['user'] = 'Developer';
+$c->corePrivate['password'] = 'dEl23sTOas';
+$c->corePrivate['retryTimeout'] = [
+    'default' => 1,
+    'tiny'    => 0.2,
+    'short'   => 0.4,
+    'medium'  => 0.6,
+    'long'    => 1,
+    'huge'    => 1.5,
+    'forever' => 0,
+];
+
 $c->dataStore['timeout'] = 2;
 $c->dataStore['retryTimeout'] = [
     'default' => 1,
@@ -64,7 +77,5 @@ $c->abtest['test']       = [
         'ga_event' => 'cart',
     ],
 ];
-
-$c->mobileModify['enabled'] = false;
 
 return $c;

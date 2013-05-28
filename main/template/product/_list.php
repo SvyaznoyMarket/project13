@@ -5,11 +5,13 @@
  * @var $view                   string
  * @var $isAjax                 bool
  * @var $productVideosByProduct array
+ * @var $isAddInfo              bool
  **/
 ?>
 
 <?
 if (!isset($isAjax)) $isAjax = false;
+if (!isset($isAddInfo)) $isAddInfo = false;
 ?>
 
 <? if (!$pager->count()) { ?>

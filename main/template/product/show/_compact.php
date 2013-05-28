@@ -5,6 +5,7 @@
  * @var $isHidden      bool
  * @var $kit           \Model\Product\Kit\Entity
  * @var $productVideos \Model\Product\Video\Entity[]
+ * @var $addInfo       array
  **/
 ?>
 
@@ -12,6 +13,7 @@
 $isHidden = isset($isHidden) && $isHidden;
 $hasModel = (isset($hasModel) ? $hasModel : true) && $product->getModel() && (bool)$product->getModel()->getProperty();
 if (!isset($productVideos)) $productVideos = [];
+$addInfo = isset($addInfo)?$addInfo:[];
 ?>
 
 <style type="text/css">
@@ -26,7 +28,7 @@ if (!isset($productVideos)) $productVideos = [];
 </style>
 
 <div class="goodsbox"<? if ($isHidden): ?> style="display:none;"<? endif ?> ref="<?= $product->getToken(); ?>">
-    <div class="goodsbox__inner" data-url="<?= $product->getLink() ?>">
+    <div class="goodsbox__inner" data-url="<?= $product->getLink() ?>" <?php if (count($addInfo)) print 'data-add="'.$page->json($addInfo).'"'; ?>>
     	<div class="photo">
             <? if ((bool)$productVideos): ?><a class="goodsphoto_eVideoShield goodsphoto_eVideoShield_small" href="<?= $product->getLink() ?>"></a><? endif ?>
 	        <a href="<?= $product->getLink() ?>">

@@ -308,6 +308,37 @@ $(document).ready(function() {
 		var mLib = new mediaLib( $('#bigpopup') )
 
 	$('.viewme').click( function(){
+		if ($(this).hasClass('maybe3d')){
+			var data = $('#maybe3dModelPopup').data('value')
+			try {
+				swfobject.embedSWF(data.init.swf, data.init.container, data.init.width, data.init.height, data.init.version, data.init.install, data.flashvars, data.params, data.attributes);
+				$('#maybe3dModelPopup').lightbox_me({
+					centered: true,
+					closeSelector: ".close",
+				})
+			}
+			catch (err){
+				var date = new Date();
+				var time = date.getHours()+':'+date.getMinutes()+':'+date.getSeconds()
+				var nowUrl = window.location.pathname
+				var userAgent = navigator.userAgent
+				var data = {
+					time:time,
+					type:'ошибка загрузки swf maybe3d',
+					nowUrl:nowUrl,
+					userAgent:userAgent,
+					err: err,
+				}
+				$.ajax({
+	                type: 'POST',
+	                global: false,
+	                url: '/log-json',
+	                data: data
+	            })
+			}
+			return false
+		}
+		
 		if( mLib )
 			mLib.show( $(this).attr('ref') , $(this).attr('href'))
 		return false
@@ -360,6 +391,19 @@ $(document).ready(function() {
             $('.product_comment_response-block').find('textarea:first').focus()
         }
     })
+
+    // KISS
+    if ($('#productInfo').length){
+    	var data = $('#productInfo').data('value')
+    	var toKISS = {
+			'Viewed Product SKU':data.article,
+			'Viewed Product Product Name':data.name,
+			'Viewed Product Product Status':data.stockState,
+		}
+		if (typeof(_kmq) !== 'undefined'){
+			_kmq.push(['record', 'Viewed Product',toKISS]);
+		}
+    }
     
    
 });

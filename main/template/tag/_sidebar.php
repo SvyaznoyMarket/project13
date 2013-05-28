@@ -23,3 +23,7 @@
     <div class="bCtg__eMore"><a href="#">еще...</a></div>
     <?php endif ?>
 </dl>
+
+<? if(!empty($sidebarHotlinks)): ?>
+    <?= $page->render('_hotlinks', array('hotlinks' => $hotlinks)) ?>
+<? endif ?>
