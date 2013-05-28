@@ -80,6 +80,7 @@ if (!\App::request()->isXmlHttpRequest()) {
 ?>
     <span style="position: fixed; bottom: 30px; left: 2px; z-index: 999; background: #000000; color: #11ff11; opacity: 0.9; padding: 4px 6px; border-radius: 5px; font-size: 11px; font-weight: normal; font-family: Courier New; box-shadow: 0 0 10px rgba(0,0,0,0.5);">
         <span onclick="$(this).parent().remove()" style="cursor: pointer; font-size: 16px; color: #999999;" title="закрыть">&times;</span>
+        <span onclick="window.location.replace('<?= $page->helper->replacedUrl(['APPLICATION_DEBUG' => 0]) ?>')" style="cursor: pointer; font-size: 16px; color: #999999;" title="отключить">■</span>
         <br />
 
     <? foreach ($debug->getAll() as $item) { ?>
