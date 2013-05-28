@@ -137,22 +137,26 @@ class TagJsonAction {
                  */
                 foreach ($productCategories as $category) {
                     $seoJsonFilepath = $categoryJsonDir . '/' . $category->getToken() . '.json';
-                    if(is_file($seoJsonFilepath)) {
-                        $seoJson = json_decode(file_get_contents($seoJsonFilepath));
-                        $newHotLink = new \StdClass();
-                        $newHotLink->title = $tagJson['name'];
-                        $newHotLink->url = '/tags/' . $tagToken;
-                        foreach ($seoJson as $accessLevel) {
-                            if(isset($accessLevel->hotlinks) && !in_array($newHotLink, $accessLevel->hotlinks)) {
-                                array_push($accessLevel->hotlinks, $newHotLink);
-                            } elseif(!isset($accessLevel->hotlinks)) {
-                                $accessLevel->hotlinks = [$newHotLink];
-                            }
+                    if(!is_file($seoJsonFilepath)) {
+                        $newSeoJson = new \StdClass();
+                        $newSeoJson->private = new \StdClass();
+                        $newSeoJson->public = new \StdClass();
+                        file_put_contents($seoJsonFilepath, str_replace('\/', '/', json_encode($newSeoJson, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT)));
+                    }
+                    $seoJson = json_decode(file_get_contents($seoJsonFilepath));
+                    $newHotLink = new \StdClass();
+                    $newHotLink->title = $tagJson['name'];
+                    $newHotLink->url = '/tags/' . $tagToken;
+                    foreach ($seoJson as $accessLevel) {
+                        if(isset($accessLevel->hotlinks) && !in_array($newHotLink, $accessLevel->hotlinks)) {
+                            array_push($accessLevel->hotlinks, $newHotLink);
+                        } elseif(!isset($accessLevel->hotlinks)) {
+                            $accessLevel->hotlinks = [$newHotLink];
                         }
+                    }
 
-                        if(!file_put_contents($seoJsonFilepath, str_replace('\/', '/', json_encode($seoJson, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT)))) {
-                            throw new \Exception(sprintf('TagJson: не удалось записать данные в %s', $seoJsonFilepath));
-                        }
+                    if(!file_put_contents($seoJsonFilepath, str_replace('\/', '/', json_encode($seoJson, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT)))) {
+                        throw new \Exception(sprintf('TagJson: не удалось записать данные в %s', $seoJsonFilepath));
                     }
                 }
             }
