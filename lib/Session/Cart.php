@@ -18,7 +18,7 @@ class Cart {
     private $certificates = null;
     /** @var \Model\Cart\Coupon\Entity[] */
     private $coupons = null;
-    /** @var \Model\Cart\Action\Entity[] */
+    /** @var array */
     private $actions = null;
     /** @var int */
     private $sum = null;
@@ -562,9 +562,9 @@ class Cart {
     }
 
     /**
-     * @return \Model\Cart\Action\Entity[]
+     * @return array
      */
-    public function getActions() {
+    public function getActionData() {
         if (null === $this->actions) {
             $this->fill();
         }
@@ -660,9 +660,7 @@ class Cart {
         $this->originalSum = array_key_exists('original_sum', $response) ? $response['original_sum'] : 0;
 
         if (array_key_exists('action_list', $response)) {
-            foreach ($response['action_list'] as $actionData) {
-                $this->actions[$actionData['id']] = new \Model\Cart\Action\Entity($actionData);
-            }
+            $this->actions = $response['action_list'];
         }
 
         $this->certificates = [];

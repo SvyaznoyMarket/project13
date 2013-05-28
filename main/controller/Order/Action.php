@@ -728,18 +728,7 @@ class Action {
                 }
 
                 // скидки
-                $actionData = [];
-                foreach ($user->getCart()->getActions() as $action) {
-                    $actionData[$action->getId()] = [
-                        'id'            => $action->getId(),
-                        'name'          => $action->getName(),
-                        'type'          => $action->getType(),
-                        'number'        => $action->getNumber(),
-                        'product_list'  => $action->getProductIds(),
-                        'service_list'  => $action->getServiceIds(),
-                        'warranty_list' => $action->getWarrantyIds(),
-                    ];
-                }
+                $actionData = $user->getCart()->getActionData();
                 if ((bool)$actionData) {
                     $orderData['action'] = $actionData;
                 }
