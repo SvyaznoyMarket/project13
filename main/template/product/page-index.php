@@ -502,7 +502,7 @@ $productVideo = reset($productVideos);
         	</a>
         </li>
         <? endforeach ?>
-        <? if (count($photo3dList) > 0 || $model3dExternalUrl): ?>
+        <? if (count($photo3dList) > 0): ?>
         <li><a href="#" class="axonometric viewme" ref="360" title="Объемное изображение">Объемное изображение</a></li>
         <? endif ?>
       </ul>
