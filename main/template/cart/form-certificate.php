@@ -26,8 +26,17 @@ if (!isset($isForm)) $isForm = true;
 
         <? if (\App::config()->coupon['enabled'] && (bool)$user->getCart()->getCoupons()): ?>
             <? foreach ($user->getCart()->getCoupons() as $coupon): ?>
-            <div class="bF1SaleCard_eComplete mGold">
-                <span class="font14">Для заказа действует скидка «<?= $coupon->getName() ?>» <a class="bF1SaleCard_eDel" href="#" data-url="<?= $page->url('cart.coupon.delete') ?>">отменить</a></span>
+            <div class="bF1SaleCard_eComplete mGold<? if ($coupon->getError()): ?> mError<? else: ?><? endif ?>">
+                <? if ($coupon->getError()): ?>
+                <span class="font14">
+                    Невозможно применить скидку «<?= $coupon->getName() ?>»: <?= \App::config()->debug ? $coupon->getError()->getMessage() : \Model\Cart\Coupon\Entity::getErrorMessage($coupon->getError()->getCode()) ?>
+                </span>
+                <? else: ?>
+                <span class="font14">
+                    Для заказа действует скидка «<?= $coupon->getName() ?>»
+                </span>
+                <? endif ?>
+                <a class="bF1SaleCard_eDel" href="#" data-url="<?= $page->url('cart.coupon.delete') ?>">отменить</a>
             </div>
             <? endforeach ?>
         <? endif ?>

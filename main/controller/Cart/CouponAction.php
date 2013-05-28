@@ -30,7 +30,7 @@ class CouponAction {
 
             $data = $client->query('cart/check-coupon', ['number' => $number]);
             if (true !== $data) {
-                throw new \Exception\ActionException('Неправильный номер карты');
+                throw new \Exception();
             }
 
             $coupon = new \Model\Cart\Coupon\Entity();
@@ -45,9 +45,11 @@ class CouponAction {
         } catch (\Exception $e) {
             \App::exception()->remove($e);
 
+            $message = \Model\Cart\Coupon\Entity::getErrorMessage($e->getCode()) ?: 'Неудалось активировать купон';
+
             $result = [
                 'success' => false,
-                'error'   => $e instanceof \Exception\ActionException ? $e->getMessage() : 'Неудалось активировать купон',
+                'error'   => (\App::config()->debug ? sprintf('Ошибка #%s: ', $e->getCode()) : '') . $message,
             ];
             if (\App::config()->debug) {
                 $result['error'] = $e;

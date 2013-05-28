@@ -5863,6 +5863,9 @@
     line-height: 50px;
     padding-left: 50px;
   }
+  .bF1SaleCard_eComplete.mError {
+    background: url('/css/F1SaleCard/img/error.png') no-repeat left center;
+  }
   .bF1SaleCard_eRadiogroup {
     display: none;
   }

@@ -677,7 +677,6 @@ class Cart {
             foreach ($response['coupon_list'] as $couponData) {
                 if (isset($couponData['error']) && (bool)$couponData['error']) {
                     \App::logger()->error($couponData['error'], ['cart']);
-                    continue;
                 }
                 $this->coupons[$couponData['number']] = new \Model\Cart\Coupon\Entity($couponData);
             }
