@@ -405,5 +405,92 @@ $(document).ready(function() {
 		}
     }
     
-   
+  	// карточка товара - характеристики товара краткие/полные
+	 	if($('.descriptionWrapper .productDescriptionToggle').length) {
+	 		$('.descriptionWrapper .productDescriptionToggle').toggle(
+		 		function(e){
+		 			e.preventDefault()
+		 			var toggle = $(this);
+		 			toggle.parent().parent().find('.descriptionlistShort').hide()
+		 			toggle.parent().parent().find('.descriptionlist').slideDown(500)
+		 		},
+		 		function(e){
+		 			e.preventDefault()
+		 			var toggle = $(this);
+		 			toggle.parent().parent().find('.descriptionlist').slideUp(500, function(){
+			 			toggle.parent().parent().find('.descriptionlistShort').slideDown(100)
+		 			})
+		 		}
+		 	);
+	 	}
+
+ 	// текущая страница для каждой вкладки
+ 	var reviewCurrentPage = {
+ 		user: 0,
+ 		pro: -1
+ 	}
+ 	// количество страниц для каждой вкладки
+ 	var reviewPageCount = {
+ 		user: 0,
+ 		pro: 0
+ 	}
+ 	var reviewsProductId = null
+ 	var reviewsType = null
+ 	var reviewsContainerClass = null
+
+	// карточка товара - отзывы - переключение по табам
+ 	if($('.reviewsTab').length) {
+ 		// начальная инициализация
+	 	reviewPageCount['user'] = $('#reviewsWrapper').attr('data-page-count')
+	 	if(reviewPageCount['user']) {
+	 		$('#getMoreReviewsButton').show()
+	 	}
+	 	reviewsProductId = $('#reviewsWrapper').attr('data-product-id')
+ 		reviewsType = $('#reviewsWrapper').attr('data-reviews-type')
+ 		reviewsContainerClass = $('#reviewsWrapper').attr('data-container')
+
+ 		$('.reviewsTab').click(function(){
+			reviewsContainerClass = $(this).attr('data-container')
+	 		reviewsType = $(this).attr('data-reviews-type')
+	 		console.log(reviewsType)
+			$('.reviewsTab').removeClass('active')
+			$(this).addClass('active')
+			$('.reviewsTabContent').hide()
+			$('.'+reviewsContainerClass).show()
+
+			if(!$('.'+reviewsContainerClass).html()) {
+				getReviews(reviewsProductId, reviewsType, reviewsContainerClass)
+			} else {
+		 		// проверяем что делать с кнопкой "показать еще" - скрыть/показать
+			 	if(reviewCurrentPage[reviewsType] + 1 >= reviewPageCount[reviewsType]) {
+			 		$('#getMoreReviewsButton').hide()
+			 	} else {
+			 		$('#getMoreReviewsButton').show()
+			 	}
+			}
+ 		});
+
+ 		$('#getMoreReviewsButton').click(function(){
+			getReviews(reviewsProductId, reviewsType, reviewsContainerClass)
+ 		})
+ 	}
+
+ 	// получение отзывов
+ 	function getReviews(productId, type, containerClass) {
+		var page = reviewCurrentPage[type] + 1
+ 		$.get('/product-reviews/'+productId, {
+ 			page: page,
+ 			type: type
+ 		}, function(data){
+			$('.'+containerClass).html($('.'+containerClass).html() + data.content)
+			reviewCurrentPage[type]++
+		 	reviewPageCount[type] = data.pageCount
+		 	if(reviewCurrentPage[type] + 1 >= reviewPageCount[type]) {
+		 		$('#getMoreReviewsButton').hide()
+		 	} else {
+		 		$('#getMoreReviewsButton').show()
+		 	}
+ 		})
+ 	}
+
 });

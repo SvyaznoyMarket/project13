@@ -29,6 +29,19 @@ $c->corePrivate['retryTimeout'] = [
     'forever' => 0,
 ];
 
+$c->reviewsStore['url']       = 'http://reviews.ent3.ru/reviews/';
+$c->reviewsStore['timeout'] = null;
+$c->reviewsStore['retryTimeout'] = [
+    'default' => 1,
+    'tiny'    => 0.1,
+    'short'   => 0.4,
+    'medium'  => 1,
+    'long'    => 1.6,
+    'huge'    => 3,
+    'forever' => 0,
+];
+$c->reviewsStore['retryCount'] = 3;
+
 $c->dataStore['timeout'] = 2;
 $c->dataStore['retryTimeout'] = [
     'default' => 1,

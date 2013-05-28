@@ -64,10 +64,13 @@ class IndexAction {
         // запрашиваем товар по токену
         /** @var $product \Model\Product\Entity */
         $product = null;
-        \RepositoryManager::product()->prepareEntityByToken($productToken, $region, function($data) use (&$product) {
+        $productExpanded = null;
+        $dataR = null;
+        \RepositoryManager::product()->prepareEntityByToken($productToken, $region, function($data) use (&$product, &$productExpanded) {
             $data = reset($data);
 
             if ((bool)$data) {
+                $productExpanded = new \Model\Product\ExpandedEntity($data);
                 $product = new \Model\Product\Entity($data);
             }
         });
@@ -88,6 +91,11 @@ class IndexAction {
         } else {
             $showRelatedUpper = true;
         }
+
+        // получаем отзывы для товара
+        $reviewsData = (new \Controller\Product\ReviewsAction())->getReviews($product->getId(), 'user');
+        $reviewsDataPro = (new \Controller\Product\ReviewsAction())->getReviews($product->getId(), 'pro');
+        $reviewsDataSummary = $this->prepareReviewsDataSummary($reviewsData, $reviewsDataPro);
 
         // фильтруем аксессуары согласно разрешенным в json категориям
         // и получаем уникальные категории-родители аксессуаров
@@ -199,6 +207,7 @@ class IndexAction {
         $page = new \View\Product\IndexPage();
         $page->setParam('regionsToSelect', $regionsToSelect);
         $page->setParam('product', $product);
+        $page->setParam('productExpanded', $productExpanded);
         $page->setParam('productVideos', $productVideos);
         $page->setParam('title', $product->getName());
         $page->setParam('showRelatedUpper', $showRelatedUpper);
@@ -215,6 +224,9 @@ class IndexAction {
             'Action' => '1010',
             'ProductId' => $product->getId(),
         ));
+        $page->setParam('reviewsData', $reviewsData);
+        $page->setParam('reviewsDataPro', $reviewsDataPro);
+        $page->setParam('reviewsDataSummary', $reviewsDataSummary);
 
         return new \Http\Response($page->show());
     }
@@ -253,5 +265,35 @@ class IndexAction {
         return $result;
     }
 
+
+    /**
+     * Подготавливает данные для отображения рейтингов отзывов
+     *
+     * @param $reviewsData
+     * @return array
+     */
+    private function prepareReviewsDataSummary($userData, $proData) {
+        $summaryData = [
+            'user' => [5 => 0, 4 => 0, 3 => 0, 2 => 0, 1 => 0],
+            'pro' => [5 => 0, 4 => 0, 3 => 0, 2 => 0, 1 => 0],
+        ];
+        foreach (['user' => $userData, 'pro' => $proData] as $type => $data) {
+            foreach ($data['num_users_by_score'] as $grade) {
+                $score = (float)($grade['score']);
+                if($score < 2.0) {
+                    $summaryData[$type][1] += $grade['count'];
+                } elseif($score >= 2.0 && $score < 4.0) {
+                    $summaryData[$type][2] += $grade['count'];
+                } elseif($score >= 4.0 && $score < 6.0) {
+                    $summaryData[$type][3] += $grade['count'];
+                } elseif($score >= 6.0 && $score < 8.0) {
+                    $summaryData[$type][4] += $grade['count'];
+                } elseif($score >= 8.0) {
+                    $summaryData[$type][5] += $grade['count'];
+                }
+            }
+        }
+        return $summaryData;
+    }
 
 }
