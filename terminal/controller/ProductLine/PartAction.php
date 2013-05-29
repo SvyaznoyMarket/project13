@@ -22,13 +22,23 @@ class PartAction {
 
         $productIds = $line->getProductId();
 
-        /** @var $parts \Model\Product\TerminalEntity[] */
-        $parts = [];
+
         $entityClass = '\Model\Product\TerminalEntity';
+        /** @var $partsById \Model\Product\TerminalEntity[] */
+        $partsById = [];
         if ((bool)$productIds) {
-            \RepositoryManager::product()->prepareCollectionById($productIds, $user->getRegion(), function($data) use(&$parts, $entityClass) {
+            \RepositoryManager::product()->prepareCollectionById($productIds, $user->getRegion(), function($data) use(&$partsById, $entityClass) {
                 foreach ($data as $item) {
-                    $parts[] = new $entityClass($item);
+                    $partsById[$item['id']] = new $entityClass($item);
+                }
+            });
+        }
+
+        $mainProduct = null;
+        if ($line->getMainProductId()) {
+            \RepositoryManager::product()->prepareCollectionById([$line->getMainProductId()], $user->getRegion(), function($data) use(&$mainProduct, $entityClass) {
+                if ((bool)$data) {
+                    $mainProduct = new $entityClass(reset($data));
                 }
             });
         }
@@ -36,7 +46,8 @@ class PartAction {
 
         $page = new \Terminal\View\ProductLine\PartPage();
         $page->setParam('line', $line);
-        $page->setParam('parts', $parts);
+        $page->setParam('partsById', $partsById);
+        $page->setParam('mainProduct', $mainProduct);
 
         return new \Http\Response($page->show());
     }
