@@ -406,20 +406,17 @@ $(document).ready(function() {
     }
     
   	// карточка товара - характеристики товара краткие/полные
-	 	if($('.descriptionWrapper .productDescriptionToggle').length) {
-	 		$('.descriptionWrapper .productDescriptionToggle').toggle(
+	 	if($('#productDescriptionToggle').length) {
+	 		$('#productDescriptionToggle').toggle(
 		 		function(e){
 		 			e.preventDefault()
-		 			var toggle = $(this);
-		 			toggle.parent().parent().find('.descriptionlistShort').hide()
-		 			toggle.parent().parent().find('.descriptionlist').slideDown(500)
+		 			$(this).parent().parent().find('.descriptionlist:not(.short)').slideDown(250)
+		 			$(this).html('Скрыть все характеристики')
 		 		},
 		 		function(e){
 		 			e.preventDefault()
-		 			var toggle = $(this);
-		 			toggle.parent().parent().find('.descriptionlist').slideUp(500, function(){
-			 			toggle.parent().parent().find('.descriptionlistShort').slideDown(100)
-		 			})
+		 			$(this).parent().parent().find('.descriptionlist:not(.short)').slideUp(250)
+		 			$(this).html('Показать все характеристики')
 		 		}
 		 	);
 	 	}

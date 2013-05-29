@@ -35,4 +35,4 @@
 
 <? } ?>
 
-<div id="getMoreReviewsButton" class="auto button getMoreReviews<?= $showMore ? '' : ' hf' ?>">Показать ещё обзоры</div>
+<div id="getMoreReviewsButton" class="mb15 button getMoreReviews<?= $showMore ? '' : ' hf' ?>">Показать ещё обзоры</div>

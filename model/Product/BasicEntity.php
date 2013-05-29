@@ -33,6 +33,12 @@ class BasicEntity {
     protected $stock = [];
     /** @var array */
     protected $ean;
+    /** @var float */
+    protected $avgScore;
+    /** @var float */
+    protected $avgStarScore;
+    /** @var int */
+    protected $numReviews;
 
     public function __construct(array $data = []) {
         if (array_key_exists('id', $data)) $this->setId($data['id']);
@@ -56,6 +62,9 @@ class BasicEntity {
             return new Stock\Entity($data);
         }, $data['stock']));
         if (array_key_exists('ean', $data)) $this->setEan($data['ean']);
+        if (array_key_exists('avg_score', $data)) $this->setAvgScore($data['avg_score']);
+        if (array_key_exists('avg_star_score', $data)) $this->setAvgStarScore($data['avg_star_score']);
+        if (array_key_exists('num_reviews', $data)) $this->setNumReviews($data['num_reviews']);
     }
 
     /**
@@ -290,6 +299,36 @@ class BasicEntity {
     public function getEan()
     {
         return $this->ean;
+    }
+
+    public function setAvgScore($avgScore)
+    {
+        $this->avgScore = $avgScore;
+    }
+
+    public function getAvgScore()
+    {
+        return $this->avgScore;
+    }
+
+    public function setAvgStarScore($avgStarScore)
+    {
+        $this->avgStarScore = $avgStarScore;
+    }
+
+    public function getAvgStarScore()
+    {
+        return $this->avgStarScore;
+    }
+
+    public function setNumReviews($numReviews)
+    {
+        $this->numReviews = $numReviews;
+    }
+
+    public function getNumReviews()
+    {
+        return $this->numReviews;
     }
 
 }

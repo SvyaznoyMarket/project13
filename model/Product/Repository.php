@@ -47,6 +47,7 @@ class Repository {
 
         $client->execute(\App::config()->coreV2['retryTimeout']['short']);
 
+
         return $entity;
     }
 
@@ -135,6 +136,8 @@ class Repository {
 
         $client->execute(\App::config()->coreV2['retryTimeout']['short'], \App::config()->coreV2['retryCount']);
 
+        $collection = (new \Controller\Product\ReviewsAction())->addScores($collection);
+
         return $collection;
     }
 
@@ -164,6 +167,8 @@ class Repository {
         });
         
         $client->execute(\App::config()->coreV2['retryTimeout']['short'], \App::config()->coreV2['retryCount']);
+
+        $collection = (new \Controller\Product\ReviewsAction())->addScores($collection);
 
         return $collection;
     }
@@ -221,6 +226,8 @@ class Repository {
         foreach ($collection as $chunk) {
             $result = array_merge($result, $chunk);
         }
+
+        $result = (new \Controller\Product\ReviewsAction())->addScores($result);
 
         return $result;
     }
@@ -324,6 +331,8 @@ class Repository {
         }
         $this->client->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
+        $collection = (new \Controller\Product\ReviewsAction())->addScores($collection);
+
         return new \Iterator\EntityPager($collection, (int)$response['count']);
     }
 
@@ -362,6 +371,8 @@ class Repository {
             });
         }
         $this->client->execute(\App::config()->coreV2['retryTimeout']['medium']);
+
+        $collection = (new \Controller\Product\ReviewsAction())->addScores($collection);
 
         return $collection;
     }

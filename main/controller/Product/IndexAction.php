@@ -269,7 +269,8 @@ class IndexAction {
     /**
      * Подготавливает данные для отображения рейтингов отзывов
      *
-     * @param $reviewsData
+     * @param $userData
+     * @param $proData
      * @return array
      */
     private function prepareReviewsDataSummary($userData, $proData) {

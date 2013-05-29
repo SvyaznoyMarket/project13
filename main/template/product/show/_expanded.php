@@ -44,6 +44,8 @@ $addInfo = isset($addInfo)?$addInfo:[];
                 <span class="bNGB__eDrop"><a href="<?= $product->getLink() ?>" style="display: none"></a></span>
             </span>
 
+            <?= $page->render('product/_reviewsStarsCompact', ['product' => $product]) ?>
+
             <div class="pb5 bNGB__eDesc">
                 <?php foreach ($product->getProperty() as $property): ?>
                 <?= $property->getName() ?>: <?= $property->getStringValue() ?><br/>

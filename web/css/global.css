@@ -124,6 +124,13 @@
   a.underline:hover {
     color: #404040;
   }
+  span.underline {
+    text-decoration: underline;
+    cursor: pointer;
+  }
+  span.underline:hover {
+    color: #404040;
+  }
   .dashedLink {
     text-decoration: none;
     border-bottom: 1px dashed;
@@ -5728,6 +5735,12 @@
   .reviewsBarCount {
     text-align: right;
     padding-right: 10px;
+  }
+  .contourButton {
+    padding:10px;
+    border: 1px solid #ffa901;
+    text-align: center;
+    text-decoration: underline;
   }
 }
 /*---END---СТИЛИ КАРТОЧКИ ТОВАРА---*/
