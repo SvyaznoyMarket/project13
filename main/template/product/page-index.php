@@ -87,7 +87,9 @@ $productVideo = reset($productVideos);
             $p3d_res_big[] = $photo3d->getUrl(1);
         }
     } elseif ($model3dExternalUrl) {
-        $model3dName = str_ireplace(array('.SWF', '.swf'), '', basename($model3dExternalUrl));
+
+        $model3dName = preg_replace('/\.swf|\.swf$/iu', '', basename($model3dExternalUrl));
+        //$model3dName = str_ireplace(array('.SWF', '.swf'), '', basename($model3dExternalUrl));
         if (!strlen($model3dName)) $model3dExternalUrl = false;
     }
 
