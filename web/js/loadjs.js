@@ -185,6 +185,7 @@
 				.script( getWithVersion('dash.js') )
 				.script( 'watch3dv2.min.js' )
 				.script( 'swfobject.js' )
+                .script( 'DAnimFramePlayer.js' )
 				.wait()
 				.script( getWithVersion('app.product.js') )
 				.script( getWithVersion('app.oneclick.js') )
