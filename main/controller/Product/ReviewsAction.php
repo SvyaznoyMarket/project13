@@ -70,6 +70,7 @@ class ReviewsAction {
 
         $client = \App::reviewsClient();
         $result = [];
+
         $client->addQuery('scores-list', [
                 'product_list' => $productIdList,
             ], [], function($data) use(&$result) {
@@ -79,7 +80,7 @@ class ReviewsAction {
         });
         $client->execute(\App::config()->corePrivate['retryTimeout']['medium']);
 
-        return $result;
+        return is_array($result) ? $result : [];
     }
 
 
