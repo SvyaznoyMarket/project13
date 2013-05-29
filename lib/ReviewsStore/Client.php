@@ -82,7 +82,9 @@ class Client {
             $retryCount = $this->config['retryCount'];
         }
 
-        $this->curl->execute($retryTimeout, $retryCount);
+        try {
+            $this->curl->execute($retryTimeout, $retryCount);
+        } catch(\Exception $e) {}
 
         \Debug\Timer::stop('reviews');
     }
