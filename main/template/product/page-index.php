@@ -88,8 +88,8 @@ $productVideo = reset($productVideos);
         }
     } elseif ($model3dExternalUrl) {
 
-        $model3dName = preg_replace('/\.swf|\.swf$/iu', '', basename($model3dExternalUrl));
-        //$model3dName = str_ireplace(array('.SWF', '.swf'), '', basename($model3dExternalUrl));
+        //$model3dName = preg_replace('/\.swf|\.swf$/iu', '', basename($model3dExternalUrl));
+        $model3dName = str_ireplace(array('.SWF', '.swf'), '', basename($model3dExternalUrl));
         if (!strlen($model3dName)) $model3dExternalUrl = false;
     }
 
@@ -150,9 +150,14 @@ $productVideo = reset($productVideos);
   <div id="maybe3dModelPopup" class="popup" data-value="<?php print $page->json($arrayToMaybe3D); ?>">
     <i class="close" title="Закрыть">Закрыть</i>
     <div id="maybe3dModel">
-        <a href="http://www.adobe.com/go/getflashplayer">
-            <img src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Get Adobe Flash player" />
-        </a>
+        <object id="<?=$model3dName?>" width="700px" height="500px" type="application/x-shockwave-flash" data="<?=$model3dExternalUrl?>">
+            <param name="menu" value="false">
+            <param name="scale" value="noScale">
+            <param name="allowFullscreen" value="true">
+            <param name="allowScriptAccess" value="always">
+            <param name="wmode" value="direct">
+            <param name="flashvars" value="language=auto">
+        </object>
     </div>
   </div>
 
