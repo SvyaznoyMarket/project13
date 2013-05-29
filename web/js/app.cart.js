@@ -30,6 +30,8 @@ $(document).ready(function() {
 			})
 
 		})
+
+
 		delBtn.live('click',function(){
 			var delUrl = $(this).data('url')
 			var authFromServer = function(response) {
@@ -130,19 +132,43 @@ $(document).ready(function() {
 	}
 
 	var checkForSaleCard = function() {
+		var hasF1 = checkServF1()
+		var hasCoupon = $('.bF1SaleCard_eComplete.mCoupon').length
+		var hasSertificate = $('.bF1SaleCard_eComplete.mSertificate').length
+		var form = $('.bF1SaleCard_eForm')
+		var input = $('#F1SaleCard_number')
 
-		// скрытие-отображение форма ввода карты
-		if (checkServF1()){
-			$('.bF1SaleCard_eForm').addClass('m2Coupon')
+		if (!hasF1 && !hasCoupon && !hasSertificate){
+			form.show().removeClass('m2Coupon')
 		}
-		else{
-			$('.bF1SaleCard_eForm').removeClass('m2Coupon')
-			$('#F1SaleCard_number').attr('placeholder','Код скидки')
-			$('#cartCertificateAll').prop('checked', true);
+		else if (hasF1 && !hasCoupon && !hasSertificate){
+			form.show().addClass('m2Coupon')
 		}
+		else if (!hasF1 && hasCoupon){
+			form.hide()
+		}
+		else if (hasF1 && hasCoupon && !hasSertificate){
+			form.show().removeClass('m2Coupon')
+			input.attr('placeholder', 'Номер карты «Под защитой F1»')
+			$('.bF1SaleCard_eRadio').removeAttr('checked');
+			$('#cartCertificateF1').attr('checked', 'checked')
+		}
+		else if (hasCoupon && hasSertificate){
+			form.hide()
+		}
+
+		// // скрытие-отображение форма ввода карты
+		// if (hasF1){
+		// 	$('.bF1SaleCard_eForm').addClass('m2Coupon')
+		// }
+		// else{
+		// 	$('.bF1SaleCard_eForm').removeClass('m2Coupon')
+		// 	$('#F1SaleCard_number').attr('placeholder','Код скидки')
+		// 	$('#cartCertificateAll').prop('checked', true);
+		// }
 
 		// скрытие отображение старой цены
-		if ( $('.bF1SaleCard_eComplete').length && checkServF1() ){
+		if ( $('.bF1SaleCard_eComplete').length && hasF1 ){
 			$('#commonSum .oldPrice').show()
 		}
 		else{
@@ -628,5 +654,9 @@ $(document).ready(function() {
 		DirectCredit.init( $('#tsCreditCart').data('value'), $('#creditPrice') )
 		PubSub.subscribe( 'quantityChange', DirectCredit.change )
 	} // credit 
+
+
+	// init f1 sale card
+	checkForSaleCard()
     
 })
