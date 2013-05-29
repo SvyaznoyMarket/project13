@@ -5,6 +5,7 @@
 		height: 50px;
 		line-height: 50px;
 		padding-left: 50px;
+		width: 600px;
 		
 		// personal modificators
 		// &.mGold{
@@ -20,6 +21,13 @@
         &.mError{
           background: url('@{base-url}/F1SaleCard/img/error.png') no-repeat left center;
         }
+	}
+
+	&.mOrder{
+		border-bottom: 1px solid @typLightGray;
+		margin: 30px 0;
+		padding-bottom: 20px;
+		padding-left: 30px;
 	}
 
 	&_eRadiogroup{
@@ -61,9 +69,8 @@
 	}
 
 	&_eDel{
-		display: inline-block;
-		font-size: 12px;
-		margin: 0 20px;
-		text-decoration: underline;
+		line-height: 1em;
+		margin:15px;
+		float: right;
 	}
 }
