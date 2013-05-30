@@ -62,7 +62,13 @@ class Action {
         $region = self::isGlobal() ? null : \App::user()->getRegion();
 
         $repository = \RepositoryManager::productCategory();
-        $category = $repository->getEntityByToken($categoryToken);
+
+        $category = null;
+        $repository->prepareEntityByToken($categoryToken, $region, function($data) use (&$category) {
+            $category = new \Model\Product\Category\Entity(reset($data));
+        });
+        \App::coreClientV2()->execute();
+
         if (!$category) {
             throw new \Exception\NotFoundException(sprintf('Категория товара @%s не найдена.', $categoryToken));
         }
@@ -401,10 +407,10 @@ class Action {
         $page->setParam('productVideosByProduct', $productVideosByProduct);
         $page->setParam('sidebarHotlinks', true);
 
-        $myThingsData = array(
+        $myThingsData = [
             'EventType' => 'MyThings.Event.Visit',
-            'Action' => '1011',
-        );
+            'Action'    => '1011',
+        ];
         if ($category->isRoot()) {
             $myThingsData['Category'] = $category->getName();
         } else {
@@ -571,11 +577,15 @@ class Action {
             if ((bool)$diff) {
                 foreach ($category->getAncestor() as $ancestor) {
                     try {
-                        $ancestorFilters = \RepositoryManager::productFilter()->getCollectionByCategory($ancestor, $region);
+                        /** @var $ancestorFilters \Model\Product\Filter\Entity[] */
+                        $ancestorFilters = [];
+                        \RepositoryManager::productFilter()->prepareCollectionByCategory($ancestor, $region, function($data) use (&$ancestorFilters) {
+                            foreach ($data as $item) {
+                                $ancestorFilters[] = new \Model\Product\Filter\Entity($item);
+                            }
+                        });
+                        \App::coreClientV2()->execute();
                     } catch (\Exception $e) {
-                        \App::exception()->add($e);
-                        \App::logger()->error($e);
-
                         $ancestorFilters = [];
                     }
                     foreach ($ancestorFilters as $filter) {
