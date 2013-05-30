@@ -36,11 +36,11 @@ if (!isset($isForm)) $isForm = true;
                     Для заказа действует скидка<?= $coupon->getName() ? (sprintf(' «%s»', $coupon->getName())) : '' ?>
                 </span>
                 <? endif ?>
-
-                <? if ($coupon->getDiscountSum()): ?>
-                    <span class="price">-<?= $page->helper->formatPrice($coupon->getDiscountSum()) ?> </span><span class="rubl">p</span>
-                <? endif ?>
+                
                 <a class="bF1SaleCard_eDel button whitelink ml5 mInlineBlock" href="#" data-url="<?= $page->url('cart.coupon.delete') ?>">Удалить</a>
+                <? if ($coupon->getDiscountSum()): ?>
+                    <div class="font14 fr"><span class="price">-<?= $page->helper->formatPrice($coupon->getDiscountSum()) ?> </span><span class="rubl">p</span></div>
+                <? endif ?>
             </div>
             <? endforeach ?>
         <? endif ?>
