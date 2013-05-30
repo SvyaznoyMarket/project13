@@ -198,7 +198,7 @@
   /* IE7 */
   .float100 {
     float: right;
-    margin-right: -15px;
+    margin-right: -5px;
   }
   .ar {
     text-align: right;
@@ -326,6 +326,9 @@
     margin-left: 20px;
   }
   .ml70 {
+    margin-left: 70px;
+  }
+  .ml90 {
     margin-left: 70px;
   }
   .ml30 {
@@ -768,6 +771,7 @@
     border: 1px solid #e6e6e6;
     padding: 7px;
     position: relative;
+    margin-top: 10px;
   }
   .notBuying .corner {
     border-bottom: 9px solid #e6e6e6;
@@ -785,6 +789,29 @@
     bottom: -9px;
     left: -8px;
     position: absolute;
+  }
+  .blackPopupVideo.blackPopup {
+    border: 2px solid #ffa901;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+  }
+  .blackPopupVideo.blackPopup .productVideo_iframe {
+    border: 2px solid #ffffff;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    position: relative;
+    z-index: 2;
+    background: #ffffff;
+  }
+  .blackPopupVideo.blackPopup .close {
+    height: 39px;
+    right: -30px;
+    top: -11px;
+    width: 54px;
+    z-index: 1;
+    background: url("/css/common/img/bg_btn_closer.png") no-repeat 0px 0;
   }
 }
 @media all {
@@ -2160,7 +2187,13 @@
     width: 820px;
   }
   .popupRegion.popup {
-    padding: 30px;
+    padding: 50px;
+  }
+  .popupRegion__eTopText {
+    margin: 10px 0 20px;
+  }
+  .popupRegion__eForm {
+    position: relative;
   }
   .popupRegion .popuptitle {
     font-family: "Enter";
@@ -2175,19 +2208,31 @@
     display: none;
   }
   .popupRegion .bBuyingLine__eText {
-    margin: 0 -20px 0 0;
-    height: 33px;
-    line-height: 33px;
+    margin: 0 10px 0 0;
+    height: 30px;
+    line-height: 30px;
     padding-left: 20px;
     width: 635px;
   }
   .popupRegion .inputClear {
-    color: #a6a6a6;
-    font-size: 14px;
+    background: #a6a6a6;
+    -webkit-border-radius: 15%;
+    -moz-border-radius: 15%;
+    border-radius: 15%;
+    color: #ffffff;
+    font-family: Tahoma;
+    font-size: 20px;
     height: 20px;
-    margin: 0 15px 0 0;
+    left: 629px;
+    line-height: 18px;
+    position: absolute;
     text-align: center;
+    top: 6px;
     width: 20px;
+    text-decoration: none;
+  }
+  .popupRegion .inputClear:hover {
+    text-decoration: none;
   }
   .popupRegion .bigbutton {
     height: 33px;
@@ -2195,23 +2240,30 @@
   }
   .popupRegion .cityInline {
     margin: 20px 0 0;
-    word-spacing: 15px;
   }
   .popupRegion .cityInline .cityItem {
-    width: 205px;
-    float: left;
+    display: inline;
   }
   .popupRegion .cityInline .cityItem a {
-    border-bottom: 1px dashed black;
+    border-bottom: 1px dotted black;
     display: inline;
     margin-left: 20px;
+  }
+  .popupRegion .cityInline .cityItem a.moreCity:before {
+    display: inline-block;
+    content: '▶';
+    margin-right: 5px;
+  }
+  .popupRegion .cityInline .cityItem a.moreCity.mExpand:before {
+    display: inline-block;
+    content: '▼';
+    margin-right: 5px;
   }
   .popupRegion .cityInline a:hover {
     text-decoration: none;
   }
   .popupRegion .colomn {
     float: left;
-    height: 300px;
     margin-top: 20px;
     width: 205px;
   }
@@ -2226,28 +2278,33 @@
   }
   .popupRegion .BlackArrow {
     background: none;
-    height: 300px;
+    height: 100%;
     margin-top: 20px;
-    width: 30px;
+    width: 50px;
+    position: absolute;
+    top: 0;
   }
   .popupRegion .BlackArrow.leftArr {
     background: #fff7e6 url('/css/popup/img/arrow1.png') no-repeat 50% 50%;
     display: none;
-    margin-left: -30px;
+    margin-left: -50px;
+    left: 0;
   }
   .popupRegion .BlackArrow.leftArr:hover {
     background-color: #ffd481;
   }
   .popupRegion .BlackArrow.rightArr {
     background: #fff7e6 url('/css/popup/img/arrow2.png') no-repeat 50% 50%;
-    margin-right: -30px;
+    margin-right: -50px;
+    right: 0;
   }
   .popupRegion .BlackArrow.rightArr:hover {
     background-color: #ffd481;
   }
   .popupRegion .regionSlidesWrap {
     width: 820px;
-    overflow: hidden;
+    position: relative;
+    display: none;
   }
   .popupRegion .regionSlides {
     position: relative;
@@ -2804,6 +2861,13 @@
   }
   */
 }
+/*окно maybe 3D*/
+@media all {
+  #maybe3dModelPopup {
+    width: 700px;
+    height: 500px;
+  }
+}
 /*---END---СТИЛИ ВСПЛЫВАЮЩИХ ОКОН---*/
 /*------СТИЛИ ХЕАДЕРА------*/
 @media all {
@@ -2886,6 +2950,7 @@
     height: 110px;
     margin: 0 10px 0 0;
     width: 1px;
+    z-index: 99;
   }
   .bMainMenuLevel-1__eItem.bMainMenuLevel-1__eSeparator:hover .bMainMenuLevel-2 {
     display: none;
@@ -3973,7 +4038,7 @@
     width: 65px;
   }
   .goodslist {
-    margin-left: -4px;
+    margin-left: -10px;
     padding-bottom: 5px;
     position: relative;
     width: 705px;
@@ -4298,6 +4363,11 @@
     position: absolute;
     width: 50px;
   }
+  .hotlinksToggle {
+    color: #a6a6a6;
+    border-bottom: 1px dotted #a6a6a6;
+    cursor: pointer;
+  }
 }
 /*страница с промо каталогом */
 @media all {
@@ -4399,8 +4469,12 @@
   }
   .bottomLifted {
     position: relative;
+    width: 100%;
+    height: 100%;
+    -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     border-radius: 4px;
+    background: #ffffff;
   }
   .bottomLifted:before,
   .bottomLifted:after {
@@ -5198,9 +5272,11 @@
     width: 147px;
     height: 310px;
   }
+  .acess-box-section {
+    margin: 35px 0 50px;
+  }
   .acess-box {
     position: relative;
-    margin: 35px 0 50px;
   }
   .acess-box .scroll .srcoll_link_button {
     background: url("/css/item/img/btn_acess_box.png") no-repeat 4px 50%;
@@ -5857,6 +5933,33 @@
     height: 50px;
     line-height: 50px;
     padding-left: 50px;
+    width: 600px;
+  }
+  .bF1SaleCard_eComplete.mError {
+    background: url('/css/F1SaleCard/img/error.png') no-repeat left center;
+  }
+  .bF1SaleCard.mOrder {
+    border-bottom: 1px solid #e6e6e6;
+    margin: 30px 0;
+    padding-bottom: 20px;
+    padding-left: 30px;
+  }
+  .bF1SaleCard_eRadiogroup {
+    display: none;
+  }
+  .m2Coupon .bF1SaleCard_eRadiogroup {
+    display: block;
+  }
+  .bF1SaleCard_eSingleCoupon {
+    display: block;
+  }
+  .m2Coupon .bF1SaleCard_eSingleCoupon {
+    display: none;
+  }
+  .bF1SaleCard_eLabel {
+    display: inline-block;
+    font-size: 14px;
+    margin: 0 0 10px;
   }
   .bF1SaleCard_eErr {
     color: #e8303c;
@@ -5864,10 +5967,9 @@
     margin: 3px 0;
   }
   .bF1SaleCard_eDel {
-    display: inline-block;
-    font-size: 12px;
-    margin: 0 20px;
-    text-decoration: underline;
+    line-height: 1em;
+    margin: 15px;
+    float: right;
   }
 }
 /*---END---СТИЛИ КАРТ F1---*/
@@ -6544,6 +6646,46 @@
     line-height: 1.5em;
     display: inline;
     float: none;
+  }
+  .title-font16 {
+    margin-bottom: 32px;
+  }
+  .socnet-ico-box {
+    margin-top: 0;
+  }
+  .socnet-ico-box .socnet-ico-list {
+    float: left;
+    margin: 4px 1px 0 0;
+  }
+  .socnet-ico-box .socnet-ico-list li {
+    float: right;
+  }
+  .socnet-ico-box .socnet-ico-list li a {
+    background: url("/css/order/img/img_ico_socnet.gif") no-repeat 0 0;
+    width: 30px;
+    height: 30px;
+    display: block;
+  }
+  .socnet-ico-box .socnet-ico-list li.socnet-ico-list__tw a {
+    background-position: -30px 0;
+  }
+  .socnet-ico-box .socnet-ico-list li.socnet-ico-list__vk a {
+    background-position: -60px 0;
+  }
+  .socnet-ico-box .socnet-ico-list li.socnet-ico-list__yt a {
+    background-position: -90px 0;
+  }
+  .socnet-ico-box .socnet-ico-list li.socnet-ico-list__inst a {
+    background-position: -120px 0;
+  }
+  .socnet-ico-box .socnet-ico-list li.socnet-ico-list__fs a {
+    background-position: -150px 0;
+  }
+  .socnet-ico-box .socnet-ico-list li.socnet-ico-list__yam a {
+    background-position: -180px 0;
+    height: 36px;
+    width: 119px;
+    margin-left: 14px;
   }
   /*.bSelect:hover .bSelect__eDropmenu {
     display: block;;
@@ -8157,7 +8299,7 @@
     margin: 0 -20px 7px;
     padding: 0 20px;
     text-align: center;
-    background: url('/css/subscribeLightboxPopup/img/bg.jpg') repeat-x 0 0;
+    background: url('/css/subscribeLightboxPopup/img/bg.png') repeat-x 0 0;
   }
   .bSubscribeLightboxPopup__eTitle {
     margin: 0 0 0 65px;

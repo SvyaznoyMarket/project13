@@ -28,10 +28,10 @@ class Action {
         $form = new \View\Refurbished\SubscribeForm();
         $form->fromArray($request->request->get('subscriber'));
 
-        $response['post_data'] = $_POST;
+        $response['post_data'] = $request->request->all();
 
         if (!$form->getName()) {
-            $form->setError('username', 'Не указан логин');
+            $form->setError('name', 'Не указано имя');
         }
         if (!$form->getEmail()) {
             $form->setError('email', 'Не указана почта');
@@ -40,7 +40,7 @@ class Action {
 
         if ($form->isValid()) {
             try {
-                $name = explode(" ", $form->getName());
+                $name = explode(' ', $form->getName());
                 $response = \App::coreClientV2()->query('user/callback-create', [], array(
                     'channel_id' => $this->channelId,
                     'first_name' => isset($name[0]) ? $name[0] : null,
@@ -68,7 +68,7 @@ class Action {
         $response = array(
             'succsess' => $form->isValid(),
             'data'     => array(
-                'content' => \App::templating()->render('form-login', array(
+                'content' => \App::templating()->render('refurbished/form-subscribe', array(
                     'page'    => new \View\Layout(),
                     'form'    => $form,
                     'request' => \App::request(),
