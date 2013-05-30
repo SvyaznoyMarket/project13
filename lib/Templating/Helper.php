@@ -103,7 +103,7 @@ class Helper {
           'November' => 'ноября',
           'December' => 'декабря',
         ];
-        $dateEn = (new DateTime($date))->format('j F Y');
+        $dateEn = (new \DateTime($date))->format('j F Y');
         $dateRu = $dateEn;
         foreach ($monthsEnRu as $monthsEn => $monthsRu) {
           if(preg_match("/$monthsEn/", $dateEn)) {
