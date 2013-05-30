@@ -46,7 +46,7 @@ class IndexAction {
 
         // запрашиваем список регионов для выбора
         $regionsToSelect = [];
-        \RepositoryManager::region()->prepareShowInMenuCollection(function($data) use (&$regionsToSelect) {
+        \RepositoryManager::region()->prepareShownInMenuCollection(function($data) use (&$regionsToSelect) {
             foreach ($data as $item) {
                 $regionsToSelect[] = new \Model\Region\Entity($item);
             }
@@ -96,7 +96,7 @@ class IndexAction {
             return $accessoryGrouped['category'];
         }, \Model\Product\Repository::filterAccessoryId($product, null, \App::config()->product['itemsInAccessorySlider'] * 6));
 
-        $accessoriesId =  array_slice($product->getAccessoryId(), 0, \App::config()->product['itemsInAccessorySlider'] * 6);
+        $accessoriesId =  array_slice($product->getAccessoryId(), 0, $accessoryCategory ? \App::config()->product['itemsInAccessorySlider'] * 6 : \App::config()->product['itemsInSlider'] * 6);
         $relatedId = array_slice($product->getRelatedId(), 0, \App::config()->product['itemsInSlider'] * 2);
         $partsId = [];
 

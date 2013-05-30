@@ -667,7 +667,7 @@ class Action {
             }
 
             // подарочный сертификат
-            if (1 == count($deliveryData['deliveryTypes'])) {
+            if (1 == count($deliveryData['deliveryTypes']) && $form->getPaymentMethodId() == \Model\PaymentMethod\Entity::CERTIFICATE_ID) {
                 $orderData['certificate'] = $form->getCertificateCardnumber();
                 $orderData['certificate_pin'] = $form->getCertificatePin();
             }
@@ -728,16 +728,7 @@ class Action {
                 }
 
                 // скидки
-                $actionData = [];
-                foreach ($user->getCart()->getActions() as $action) {
-                    $actionData[$action->getId()] = [
-                        'id'            => $action->getId(),
-                        'number'        => $action->getNumber(),
-                        'product_list'  => $action->getProductIds(),
-                        'service_list'  => $action->getServiceIds(),
-                        'warranty_list' => $action->getWarrantyIds(),
-                    ];
-                }
+                $actionData = $user->getCart()->getActionData();
                 if ((bool)$actionData) {
                     $orderData['action'] = $actionData;
                 }
@@ -1091,6 +1082,9 @@ class Action {
                     $deliveryView->price = $deliveryData['price'];
                     $deliveryView->token = $deliveryToken;
                     $deliveryView->name = 0 === strpos($deliveryToken, 'self') ? 'В самовывоз' : 'В доставку';
+                    if ('products' == $itemType && $productsEntityById[$itemData['id']] instanceof \Model\Product\BasicEntity) {
+                        $deliveryView->isSupplied = $productsEntityById[$itemData['id']]->getState() ? $productsEntityById[$itemData['id']]->getState()->getIsSupplier() : false;
+                    } else $deliveryView->isSupplied = false;
 
                     foreach ($deliveryData['dates'] as $dateData) {
                         $dateView = new \View\Order\DeliveryCalc\Date();

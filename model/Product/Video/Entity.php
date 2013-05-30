@@ -9,12 +9,32 @@ class Entity {
     /** @var string */
     private $maybe3d;
 
+    /** @var array */
+    private $img3d;
+
     /**
      * @param array $data
      */
     public function __construct(array $data = []) {
         if (array_key_exists('content', $data)) $this->setContent($data['content']);
         if (array_key_exists('maybe3d', $data)) $this->setMaybe3d($data['maybe3d']);
+        if (array_key_exists('img3d', $data)) $this->setImg3d($data['img3d']);
+    }
+
+    /**
+     * @param string $img3d
+     */
+    public function setImg3d($img3d)
+    {
+        $this->img3d = $img3d;
+    }
+
+    /**
+     * @return string
+     */
+    public function getImg3d()
+    {
+        return $this->img3d;
     }
 
     /**

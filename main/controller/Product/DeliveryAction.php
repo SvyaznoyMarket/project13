@@ -58,27 +58,61 @@ class DeliveryAction {
         }
 
         $helper = new \View\Helper();
-
         $data = [];
+        $shopData = isset($response['shop_list']) ? $response['shop_list'] : [];
+
         foreach($response['product_list'] as $productId => $productData){
             if (!isset($productData['delivery_mode_list'])) continue;
 
             $data[$productId] = [];
             foreach($productData['delivery_mode_list'] as $delivery) {
+
+                $token = $delivery['token'];
                 $date = reset($delivery['date_list']);
-                $date = $date['date'];
-                if (!is_object($date) || !is_a($date, 'DateTime')) {
-                    $dateObj = new \DateTime($date);
+                $day = 0;
+                $dateOriginal = $date['date'];
+                $shops = [];
+                if (!is_object($dateOriginal) || !is_a($dateOriginal, 'DateTime')) {
+                    $dateObj = new \DateTime($dateOriginal);
                 } else $dateObj = null;
+
+                foreach ($delivery['date_list'] as $dateData) {
+                    $day++;
+                    if ($day > 7) continue;
+
+                    if('self' == $token) {
+                        foreach ($dateData['shop_list'] as $dateShopData) {
+                            $address = $shopData[$dateShopData['id']]['address'];
+                            if (($regionId != $shopData[$dateShopData['id']]['geo_id']) && isset($regionData[$shopData[$dateShopData['id']]['geo_id']]['name'])) {
+                                $address = $regionData[$shopData[$dateShopData['id']]['geo_id']]['name'] . ', ' . $address;
+                            }
+
+                            $shop = [
+                                'id'        => (int)$dateShopData['id'],
+                                'regtime'   => $shopData[$dateShopData['id']]['working_time'], // что за описка "regtime"?
+                                'address'   => $address,
+                                'latitude'  => $shopData[$dateShopData['id']]['coord_lat'],
+                                'longitude' => $shopData[$dateShopData['id']]['coord_long'],
+                            ];
+
+                            if (!in_array($shop, $shops)) {
+                                $shops[] = $shop;
+                            }
+                        }
+                    }
+                }
+
                 $data[$productId][] = [
                     'typeId'           => $delivery['id'],
-                    'date'             => $helper->humanizeDate($date),
+                    'date'             => $helper->humanizeDate($dateOriginal),
                     'token'            => $delivery['token'],
                     'price'            => $delivery['price'],
                     'transportCompany' => \App::user()->getRegion()->getHasTransportCompany(),
-                    'days'             => $helper->getDaysDiff($date),
+                    'days'             => $helper->getDaysDiff($dateOriginal),
                     'origin_date'      => $dateObj?$dateObj->format('d.m.Y'):$dateObj,
+                    'shops'            => $shops,
                 ];
+
             }
         }
 

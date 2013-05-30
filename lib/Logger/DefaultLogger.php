@@ -63,7 +63,7 @@ class DefaultLogger implements LoggerInterface {
             //'name'    => $this->name,
             'name'    => $this->id,
             'level'   => $this->levelNames[$level],
-            'message' => is_array($message) ? json_encode($message, JSON_UNESCAPED_UNICODE) : (string)$message,
+            'message' => is_array($message) ? json_encode($message, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) : (string)$message,
             'tag'     => (bool)$tags ? ('+' . implode('+', $tags)) : '',
         ];
         if ($this->immediatelyDump) {

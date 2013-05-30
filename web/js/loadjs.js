@@ -16,6 +16,19 @@
 		debug = true
 	}
 
+	// page load log
+	var pageID = document.body.getAttribute('data-id')
+	var dataToLog = {
+		event: 'page_load',
+    	pageID: pageID,
+	}
+	$.ajax({
+        type: 'POST',
+        global: false,
+        url: '/log-json',
+        data: dataToLog
+    })
+
 	if( typeof($LAB) === 'undefined' )
 		throw new Error( "Невозможно загрузить файлы JavaScript" )
 	function getWithVersion( flnm ) { 
@@ -38,6 +51,7 @@
 	$LAB.setGlobalDefaults({ AllowDuplicates: true, AlwaysPreserveOrder:true, UseLocalXHR:false, BasePath:"/js/"})
 	.queueScript('combine.js')
 	// .queueScript('jquery-1.6.4.min.js')
+	.queueScript('//cdn.optimizely.com/js/204544654.js')
 	.queueScript('/js/asyn.code.ver3.js')	
 	.queueWait( function(){
 		document.write = function(){
@@ -134,12 +148,14 @@
 			}).runQueue()
 			break
         case 'order_error':
-            $LAB.queueScript('bigjquery.min.js').queueWait( function() {
-                $LAB.script( getWithVersion('library.js') )
-                    .wait()
-                    .script(getWithVersion('app.order.js'))
-                    .script(getWithVersion('main.js'))
-            }).runQueue()
+        	$LAB.queueWait( function() {
+				$LAB
+				.script( getWithVersion('bigjquery.js') )
+				.script( getWithVersion('library.js') )
+				.wait()
+				.script(getWithVersion('app.order.js'))
+				.script( getWithVersion('main.js') )
+			}).runQueue()
             break
 		case 'product_catalog':
 			$LAB.queueWait( function() {
@@ -171,6 +187,7 @@
 				.script( getWithVersion('dash.js') )
 				.script( 'watch3dv2.min.js' )
 				.script( 'swfobject.js' )
+                .script( 'DAnimFramePlayer.js' )
 				.wait()
 				.script( getWithVersion('app.product.js') )
 				.script( getWithVersion('app.oneclick.js') )
