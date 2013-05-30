@@ -148,12 +148,15 @@
 			}).runQueue()
 			break
         case 'order_error':
-            $LAB.queueScript( getWithVersion('bigjquery.js') ).queueWait( function() {
-                $LAB.script( getWithVersion('library.js') )
-                    .wait()
-                    .script(getWithVersion('app.order.js'))
-                    .script(getWithVersion('main.js'))
-            }).runQueue()
+        	console.log('123')
+        	$LAB.queueWait( function() {
+				$LAB
+				.script( getWithVersion('bigjquery.js') )
+				.script( getWithVersion('library.js') )
+				.wait()
+				.script(getWithVersion('app.order.js'))
+				.script( getWithVersion('main.js') )
+			}).runQueue()
             break
 		case 'product_catalog':
 			$LAB.queueWait( function() {
