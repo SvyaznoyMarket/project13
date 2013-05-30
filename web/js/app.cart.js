@@ -5,17 +5,21 @@ $(document).ready(function() {
 	var f1Certificate = config.f1Certificate;
 	var coupon = config.coupon;
 
+
 	if (coupon && f1Certificate){
 		$('.bF1SaleCard_eRadio').removeAttr('checked');
 		$('#cartCertificateAll').attr('checked', 'checked')
+		$('#F1SaleCard_number').attr('placeholder','Код скидки')
 	}
 	else if(!coupon && f1Certificate){
 		$('.bF1SaleCard_eRadio').removeAttr('checked');
 		$('#cartCertificateF1').attr('checked', 'checked')
+		$('#F1SaleCard_number').attr('placeholder', 'Номер карты «Под защитой F1»')
 	}
 	else{
 		$('.bF1SaleCard_eRadio').removeAttr('checked');
 		$('#cartCertificateAll').attr('checked', 'checked')
+		$('#F1SaleCard_number').attr('placeholder','Код скидки')
 	}
 
 
@@ -160,8 +164,11 @@ $(document).ready(function() {
 		if (!hasF1 && !hasCoupon && !hasSertificate){
 			form.show().removeClass('m2Coupon')
 		}
-		else if (hasF1 && !hasCoupon && !hasSertificate){
+		else if (hasF1 && !hasCoupon && !hasSertificate && (f1Certificate && coupon)){
 			form.show().addClass('m2Coupon')
+		}
+		else if (hasF1 && !hasCoupon && !hasSertificate && !(f1Certificate && coupon)){
+			form.show().removeClass('m2Coupon')
 		}
 		else if (!hasF1 && hasCoupon){
 			form.hide()
