@@ -7,6 +7,8 @@ class Entity {
     private $number;
     /** @var string */
     private $name;
+    /** @var int */
+    private $discountSum;
     /** @var \Exception|null */
     private $error;
 
@@ -15,6 +17,7 @@ class Entity {
      */
     public function __construct(array $data = []) {
         if (array_key_exists('number', $data)) $this->setNumber($data['number']);
+        if (array_key_exists('discount_sum', $data)) $this->setDiscountSum($data['discount_sum']);
         if (array_key_exists('name', $data)) $this->setName($data['name']);
         if (array_key_exists('error', $data)) {
             $e = $data['error'];
@@ -58,6 +61,20 @@ class Entity {
      */
     public function getName() {
         return $this->name;
+    }
+
+    /**
+     * @param int $discountSum
+     */
+    public function setDiscountSum($discountSum) {
+        $this->discountSum = (int)$discountSum;
+    }
+
+    /**
+     * @return int
+     */
+    public function getDiscountSum() {
+        return $this->discountSum;
     }
 
     /**
