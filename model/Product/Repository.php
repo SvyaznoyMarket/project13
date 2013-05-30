@@ -457,7 +457,7 @@ class Repository {
         $this->client->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
 
-        $iterators = [];
+        $collections = [];
         foreach ($response as $data) {
             $collection = [];
             foreach ($data['list'] as $id) {
@@ -469,6 +469,13 @@ class Repository {
                 $collection[] = $collectionById[$id];
             }
 
+            $collections[] = $collection;
+        }
+
+        $collections = (new \Controller\Product\ReviewsAction())->addScoresGrouped($collections);
+
+        $iterators = [];
+        foreach ($collections as $collection) {
             $iterators[] = new \Iterator\EntityPager($collection, $data['count']);
         }
 

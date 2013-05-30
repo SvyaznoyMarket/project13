@@ -104,6 +104,8 @@ $productVideo = reset($productVideos);
                 break;
         }
     }
+  
+    $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro['review_list']));
 ?>
 
 <style type="text/css">
@@ -217,21 +219,11 @@ $productVideo = reset($productVideos);
   <div class="bGood__eArticle clearfix">
     <span>Артикул #<span  itemprop="productID"><?= $product->getArticle() ?></span></span>
     <div class="pt10 pb10">
+      <? $avgStarScore = empty($reviewsData['avg_star_score']) ? 0 : $reviewsData['avg_star_score'] ?>
+      <?= $page->render('product/_starsFive', ['score' => $avgStarScore]) ?>
       <? if(!empty($reviewsData['avg_star_score'])) { ?>
-          <? for ($i=0; $i < (int)$reviewsData['avg_star_score']; $i++) { ?>
-            <img src="/images/reviews_star.png">
-          <? } ?>
-          <? if(ceil($reviewsData['avg_star_score']) > $reviewsData['avg_star_score']) { ?>
-            <img src="/images/reviews_star_half.png">
-          <? } ?>
-          <? for ($i=5; $i > ceil($reviewsData['avg_star_score']); $i--) { ?>
-            <img src="/images/reviews_star_empty.png">
-          <? } ?>
           <span class="underline" onclick="scrollToId('reviewsSectionHeader')"><?= $reviewsData['num_reviews'] ?> <?= $page->helper->numberChoice($reviewsData['num_reviews'], array('отзыв', 'отзыва', 'отзывов')) ?></span>
       <? } else { ?>
-          <? for ($i=0; $i < 5; $i++) { ?>
-            <img src="/images/reviews_star_empty.png">
-          <? } ?>
           <span>отзывов нет</span>
       <? } ?>
       <span>(<span class="underline" onclick="popupWriteReviewForm('productid', 'Название продукта'); return false">оставить отзыв</span>)</span>
@@ -633,43 +625,45 @@ $productVideo = reset($productVideos);
 <div class="line pb5"></div>
 <div class="descriptionWrapper">
   <? $groupedProperties = $product->getGroupedProperties();?>
-  <div class="descriptionlist short">
-      <? foreach ($groupedProperties as $group): ?>
-      <? if (!count($group['properties'])) continue ?>
-          <div class="pb15"><strong><?= $group['group']->getName() ?></strong></div>
-          <? foreach ($group['properties'] as $property): ?>
-          <? /** @var $property \Model\Product\Property\Entity  */?>
-              <div class="point">
-                  <div class="title"><h3><?= $property->getName() ?></h3>
-                    <? if ($property->getHint()): ?>
-                    <div class="bHint fl">
-                      <a class="bHint_eLink"><?= $property->getName() ?></a>
-                      <div class="bHint_ePopup popup">
-                        <div class="close"></div>
-                        <?= $property->getHint() ?>
-                      </div>
-                    </div>
-                    <? endif ?>
-                  </div>
-                  <div class="description fl">
-                      <span class="fl mr10"><?= $property->getStringValue() ?></span>
-                      <? if ($property->getValueHint()): ?>
+  <? if($reviewsPresent) { ?>
+    <div class="descriptionlist short">
+        <? foreach ($groupedProperties as $group): ?>
+        <? if (!count($group['properties'])) continue ?>
+            <div class="pb15"><strong><?= $group['group']->getName() ?></strong></div>
+            <? foreach ($group['properties'] as $property): ?>
+            <? /** @var $property \Model\Product\Property\Entity  */?>
+                <div class="point">
+                    <div class="title"><h3><?= $property->getName() ?></h3>
+                      <? if ($property->getHint()): ?>
                       <div class="bHint fl">
-                          <a class="bHint_eLink"><?= $property->getStringValue() ?></a>
-                          <div class="bHint_ePopup popup">
-                              <div class="close"></div>
-                              <?= $property->getValueHint() ?>
-                          </div>
+                        <a class="bHint_eLink"><?= $property->getName() ?></a>
+                        <div class="bHint_ePopup popup">
+                          <div class="close"></div>
+                          <?= $property->getHint() ?>
+                        </div>
                       </div>
                       <? endif ?>
-                  </div>
-              </div>
-          <? endforeach ?>
-          <? break; ?>
-      <? endforeach ?>
-  </div>
-  <? array_shift($groupedProperties); ?>
-  <div class="descriptionlist hf">
+                    </div>
+                    <div class="description fl">
+                        <span class="fl mr10"><?= $property->getStringValue() ?></span>
+                        <? if ($property->getValueHint()): ?>
+                        <div class="bHint fl">
+                            <a class="bHint_eLink"><?= $property->getStringValue() ?></a>
+                            <div class="bHint_ePopup popup">
+                                <div class="close"></div>
+                                <?= $property->getValueHint() ?>
+                            </div>
+                        </div>
+                        <? endif ?>
+                    </div>
+                </div>
+            <? endforeach ?>
+            <? break; ?>
+        <? endforeach ?>
+    </div>
+    <? array_shift($groupedProperties); ?>
+  <? } ?>
+  <div class="descriptionlist<?= $reviewsPresent ? ' hf' : '' ?>">
       <? foreach ($groupedProperties as $key => $group): ?>
       <? if (!count($group['properties'])) continue ?>
           <div class="pb15"><strong><?= $group['group']->getName() ?></strong></div>
@@ -705,9 +699,11 @@ $productVideo = reset($productVideos);
   </div>
 </div>
 <div class="clear"></div>
-<div id="productDescriptionToggle" class="contourButton mb15 button width250">Показать все характеристики</div>
+<? if($reviewsPresent) { ?>
+  <div id="productDescriptionToggle" class="contourButton mb15 button width250">Показать все характеристики</div>
+<? } ?>
 
-<? if(!empty($reviewsData['review_list']) || !empty($reviewsDataPro['review_list'])) { ?>
+<? if($reviewsPresent) { ?>
   <h2 id="reviewsSectionHeader" class="bold"><?= $product->getName() ?> - Обзоры и отзывы</h2>
   <div class="line pb5"></div>
   <div id="reviewsSummary">
@@ -720,7 +716,7 @@ $productVideo = reset($productVideos);
     <div id="reviewsWrapper" data-product-id="<?= $product->getId() ?>" data-page-count="<?= $reviewsDataPro['page_count'] ?>" data-container="reviewsPro" data-reviews-type="pro">
   <? } ?>
       <?= $page->render('product/_reviews', ['reviewsData' => $reviewsData, 'reviewsDataPro' => $reviewsDataPro]) ?>
-  </div>
+    </div>
 <? } ?>
 
 <?= $page->tryRender('product/_tag', ['product' => $product]) ?>

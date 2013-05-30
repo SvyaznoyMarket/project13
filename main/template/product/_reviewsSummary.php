@@ -4,9 +4,9 @@
   $maxPro = max($reviewsDataSummary['pro']);
 ?>
 <? if(!empty($reviewsData['review_list']) || !empty($reviewsDataPro['review_list'])) { ?>
-  <div id="reviewsRatingWrapper" class="fl width500">
+  <div id="reviewsRatingWrapper" class="<?= empty($alignRight) ? 'fl' : 'fr' ?> width500">
 
-    <? if(empty($reviewsData['review_list']) || empty($reviewsDataPro['review_list'])) { ?>
+    <? if(!empty($alignRight) && (empty($reviewsData['review_list']) || empty($reviewsDataPro['review_list']))) { ?>
       <div class="width181 fl">&nbsp;</div>
     <? } ?>
 

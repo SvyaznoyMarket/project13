@@ -5715,6 +5715,14 @@
     padding-left: 30px;
     background: url(/images/reviews_quote.png) no-repeat;
   }
+  .productReview .plus {
+    padding-left: 30px;
+    background: url(/images/reviews_plus.png) no-repeat;
+  }
+  .productReview .minus {
+    padding-left: 30px;
+    background: url(/images/reviews_minus.png) no-repeat;
+  }
   .getMoreReviews {
     width:200px;
     padding:10px;

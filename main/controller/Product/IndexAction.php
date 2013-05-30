@@ -282,15 +282,15 @@ class IndexAction {
             if(empty($data['num_users_by_score'])) continue;
             foreach ($data['num_users_by_score'] as $grade) {
                 $score = (float)($grade['score']);
-                if($score < 2.0) {
+                if($score <= 2.0) {
                     $summaryData[$type][1] += $grade['count'];
-                } elseif($score >= 2.0 && $score < 4.0) {
+                } elseif($score > 2.0 && $score <= 4.0) {
                     $summaryData[$type][2] += $grade['count'];
-                } elseif($score >= 4.0 && $score < 6.0) {
+                } elseif($score > 4.0 && $score <= 6.0) {
                     $summaryData[$type][3] += $grade['count'];
-                } elseif($score >= 6.0 && $score < 8.0) {
+                } elseif($score > 6.0 && $score <= 8.0) {
                     $summaryData[$type][4] += $grade['count'];
-                } elseif($score >= 8.0) {
+                } elseif($score > 8.0) {
                     $summaryData[$type][5] += $grade['count'];
                 }
             }

@@ -62,4 +62,13 @@ class Helper {
     public function formatPrice($price) {
         return number_format($price, 0, ',', ' ');
     }
+
+    /**
+     * @param $string
+     * @return string
+     */
+    public function nofollowExternalLinks($string) {
+        return $string;
+    }
+
 }

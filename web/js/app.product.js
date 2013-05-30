@@ -410,12 +410,12 @@ $(document).ready(function() {
 	 		$('#productDescriptionToggle').toggle(
 		 		function(e){
 		 			e.preventDefault()
-		 			$(this).parent().parent().find('.descriptionlist:not(.short)').slideDown(250)
+		 			$(this).parent().parent().find('.descriptionlist:not(.short)').show()
 		 			$(this).html('Скрыть все характеристики')
 		 		},
 		 		function(e){
 		 			e.preventDefault()
-		 			$(this).parent().parent().find('.descriptionlist:not(.short)').slideUp(250)
+		 			$(this).parent().parent().find('.descriptionlist:not(.short)').hide()
 		 			$(this).html('Показать все характеристики')
 		 		}
 		 	);
@@ -442,7 +442,7 @@ $(document).ready(function() {
 		reviewCurrentPage[initialType]++
 
 	 	reviewPageCount[initialType] = $('#reviewsWrapper').attr('data-page-count')
-	 	if(reviewPageCount[initialType]) {
+	 	if(reviewPageCount[initialType] > 1) {
 	 		$('#getMoreReviewsButton').show()
 	 	}
 	 	reviewsProductId = $('#reviewsWrapper').attr('data-product-id')
