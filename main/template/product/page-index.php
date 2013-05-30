@@ -220,11 +220,11 @@ $productVideo = reset($productVideos);
     <span>Артикул #<span  itemprop="productID"><?= $product->getArticle() ?></span></span>
     <div class="pt10 pb10">
       <? $avgStarScore = empty($reviewsData['avg_star_score']) ? 0 : $reviewsData['avg_star_score'] ?>
-      <?= $page->render('product/_starsFive', ['score' => $avgStarScore]) ?>
-      <? if(!empty($reviewsData['avg_star_score'])) { ?>
+      <?= empty($avgStarScore) ? '' : $page->render('product/_starsFive', ['score' => $avgStarScore]) ?>
+      <? if(!empty($avgStarScore)) { ?>
           <span class="underline" onclick="scrollToId('reviewsSectionHeader')"><?= $reviewsData['num_reviews'] ?> <?= $page->helper->numberChoice($reviewsData['num_reviews'], array('отзыв', 'отзыва', 'отзывов')) ?></span>
       <? } else { ?>
-          <span>отзывов нет</span>
+          <span>Отзывов нет</span>
       <? } ?>
       <div class="hf" id="reviewsProductName"><?= $product->getName() ?></div>
       <span>(<span class="underline newReviewPopupLink" data-pid="productid">оставить отзыв</span>)</span>
@@ -628,10 +628,11 @@ $productVideo = reset($productVideos);
   <? $groupedProperties = $product->getGroupedProperties();?>
   <? if($reviewsPresent) { ?>
     <div class="descriptionlist short">
-        <? foreach ($groupedProperties as $group): ?>
+        <? $propertiesShown = 0; ?>
+        <? foreach ($groupedProperties as $groupKey => $group): ?>
         <? if (!count($group['properties'])) continue ?>
             <div class="pb15"><strong><?= $group['group']->getName() ?></strong></div>
-            <? foreach ($group['properties'] as $property): ?>
+            <? foreach ($group['properties'] as $propertyKey => $property): ?>
             <? /** @var $property \Model\Product\Property\Entity  */?>
                 <div class="point">
                     <div class="title"><h3><?= $property->getName() ?></h3>
@@ -658,16 +659,25 @@ $productVideo = reset($productVideos);
                         <? endif ?>
                     </div>
                 </div>
+                <? 
+                  $propertiesShown++;
+                  unset($group['properties'][$propertyKey]);
+                  if(empty($group['properties'])) unset($groupedProperties[$groupKey]);
+                  if($propertiesShown >= 10) break;
+                ?>
             <? endforeach ?>
-            <? break; ?>
+            <? if($propertiesShown >= 10) break; ?>
         <? endforeach ?>
     </div>
-    <? array_shift($groupedProperties); ?>
   <? } ?>
   <div class="descriptionlist<?= $reviewsPresent ? ' hf' : '' ?>">
+      <? $showGroupName = false ?>
       <? foreach ($groupedProperties as $key => $group): ?>
       <? if (!count($group['properties'])) continue ?>
-          <div class="pb15"><strong><?= $group['group']->getName() ?></strong></div>
+          <? if($showGroupName) { ?>
+            <div class="pb15"><strong><?= $group['group']->getName() ?></strong></div>
+          <? } ?>
+          <? $showGroupName = true ?>
           <? foreach ($group['properties'] as $property): ?>
           <? /** @var $property \Model\Product\Property\Entity  */?>
               <div class="point">

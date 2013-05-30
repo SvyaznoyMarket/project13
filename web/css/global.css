@@ -5740,6 +5740,9 @@
     border-radius: 5px;
     height:15px;
   }
+  .reviewsBarBg {
+    background-color: #e0e0e0;
+  }
   .reviewsBarCount {
     text-align: right;
     padding-right: 10px;

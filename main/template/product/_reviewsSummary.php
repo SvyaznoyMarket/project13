@@ -19,7 +19,9 @@
         </div>
         <? foreach ($reviewsDataSummary['user'] as $numStars => $count) { ?>
           <div class="reviewsBarCount width50 fl"><?= $count ?></div>
-          <div class="reviewsBar fl" style="width:<?= $maxUser ? $count/$maxUser*$full : 0 ?>px;"></div>
+          <div class="reviewsBar reviewsBarBg fl" style="width:<?= $full ?>px;">
+            <div class="reviewsBar fl" style="width:<?= $maxUser ? $count/$maxUser*$full : 0 ?>px;"></div>
+          </div>
           <div class="clear pb5"></div>
         <? } ?>
       </div>
@@ -34,7 +36,9 @@
         </div>
         <? foreach ($reviewsDataSummary['pro'] as $numStars => $count) { ?>
           <div class="reviewsBarCount width50 fl"><?= $count ?></div>
-          <div class="reviewsBar fl" style="width:<?= $maxPro ? $count/$maxPro*$full : 0 ?>px;"></div>
+          <div class="reviewsBar reviewsBarBg fl" style="width:<?= $full ?>px;">
+            <div class="reviewsBar fl" style="width:<?= $maxPro ? $count/$maxPro*$full : 0 ?>px;"></div>
+          </div>
           <div class="clear pb5"></div>
         <? } ?>
       </div>
