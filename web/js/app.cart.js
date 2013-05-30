@@ -1,5 +1,24 @@
 $(document).ready(function() {
 
+	var config = $('#site-config').data('value');
+
+	var f1Certificate = config.f1Certificate;
+	var coupon = config.coupon;
+
+	if (coupon && f1Certificate){
+		$('.bF1SaleCard_eRadio').removeAttr('checked');
+		$('#cartCertificateAll').attr('checked', 'checked')
+	}
+	else if(!coupon && f1Certificate){
+		$('.bF1SaleCard_eRadio').removeAttr('checked');
+		$('#cartCertificateF1').attr('checked', 'checked')
+	}
+	else{
+		$('.bF1SaleCard_eRadio').removeAttr('checked');
+		$('#cartCertificateAll').attr('checked', 'checked')
+	}
+
+
 	/* F1 sale card*/
 	if ( $('.bF1SaleCard').length ){
 		var input = $('#F1SaleCard_number')
