@@ -226,7 +226,8 @@ $productVideo = reset($productVideos);
       <? } else { ?>
           <span>отзывов нет</span>
       <? } ?>
-      <span>(<span class="underline" onclick="popupWriteReviewForm('productid', '<?= $product->getName() ?>'); return false">оставить отзыв</span>)</span>
+      <div class="hf" id="reviewsProductName"><?= $product->getName() ?></div>
+      <span>(<span class="underline newReviewPopupLink" data-pid="productid">оставить отзыв</span>)</span>
       <div style="position:fixed; top:40px; left:50%; margin-left:-442px; z-index:1002; display:none; width:700px; height:480px" class="reviewPopup popup clearfix">
         <a class="close" href="#">Закрыть</a>
         <iframe id="rframe" frameborder="0" scrolling="auto" height="480" width="700"></iframe>
