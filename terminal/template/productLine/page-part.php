@@ -10,13 +10,13 @@
 <article id="categoryData" class="bListing bContent mLine" data-pagetype='product_model_list'>
 	<div class="bLinePart mModelList">
 		<div class="bLinePart__eMainInfo">
-			<a class="bProductListItem__eImgLink" data-screentype='product_set' data-lineid='' href="#"><img class="bProductListItem__eImg" src="<?= $mainProduct ? $mainProduct->getImageUrl(3) : '' ?>" alt="" /></a>
+			<a class="bProductListItem__eImgLink jsRedirect" data-screentype='product_set' data-lineid='<?= $line->getId() ?>' href="#"><img class="bProductListItem__eImg" src="<?= $mainProduct ? $mainProduct->getImageUrl(3) : '' ?>" alt="" /></a>
 			<h1 class="bProductListItem__eTitle">Серия <?= $line->getName() ?></h1>
 			<ul class="bProductListItem__eAboutBlock">
 				<li class="bProductListItem__eAboutBlockItem mListDisk">Наборов: <?= count($line->getKitId()) ?></li>
 				<li class="bProductListItem__eAboutBlockItem mListDisk">Предметов: <?= count($line->getProductId()) ?></li>
 			</ul>
-			<a class="bProductListItem__eBtn bButton mOrangeBtn jsRedirect" data-screentype='product_set' data-lineid='' href="#">смотреть наборы</a>
+			<a class="bProductListItem__eBtn bButton mOrangeBtn jsRedirect" data-screentype='product_set' data-lineid='<?= $line->getId() ?>' href="#">смотреть наборы</a>
 			<p class="bProductListItem__eF1Block">Доставит и соберет</p>
 		</div>
 		<div class="bLinePart__eParts">
@@ -34,7 +34,7 @@
                         </a>
                         <div class="bGoodSubItem_eGoodsInfo">
                             <h2 class="bGoodSubItem_eTitle"><a class="bGoodSubItem_eLink jsRedirect" href="#" data-screentype='product' data-productid='<?= $part->getId() ?>'><?= $part->getName() ?></a></h2>
-                            <p class="bGoodSubItem_ePrice">2000 <?= $page->helper->formatPrice($part->getPrice()) ?> <span class="bRuble">p</span></p>
+                            <p class="bGoodSubItem_ePrice"><?= $page->helper->formatPrice($part->getPrice()) ?> <span class="bRuble">p</span></p>
                             <a class="bGoodSubItem_eMore bButton mSmallOrangeBtn jsBuyButton" href="#" data-productid='<?= $part->getId() ?>'>в корзину</a>
                         </div>
                     </div>
