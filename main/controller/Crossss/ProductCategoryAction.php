@@ -35,7 +35,7 @@ class ProductCategoryAction {
                 'categoryid'      => $category->getId(),
                 'actiontime'      => time(),
             ]), [], \App::config()->crossss['timeout']);
-            \App::logger()->debug(json_encode($result, JSON_UNESCAPED_UNICODE), ['crossss']);
+            \App::logger()->debug($result, ['crossss']);
 
             $title = !empty($result['title']) ? $result['title'] : 'Популярные товары';
 
