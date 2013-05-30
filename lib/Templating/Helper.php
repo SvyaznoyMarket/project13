@@ -83,4 +83,35 @@ class Helper {
         return $dom->saveHTML();
     }
 
+
+    /**
+     * @param string $date
+     * @return string
+     */
+    public function dateToRu($date) {
+        $monthsEnRu = [
+          'January' => 'января',
+          'February' => 'февраля',
+          'March' => 'марта',
+          'April' => 'апреля',
+          'May' => 'мая',
+          'June' => 'июня',
+          'July' => 'июля',
+          'August' => 'августа',
+          'September' => 'сентября',
+          'October' => 'октября',
+          'November' => 'ноября',
+          'December' => 'декабря',
+        ];
+        $dateEn = (new DateTime($date))->format('j F Y');
+        $dateRu = $dateEn;
+        foreach ($monthsEnRu as $monthsEn => $monthsRu) {
+          if(preg_match("/$monthsEn/", $dateEn)) {
+            $dateRu = preg_replace("/$monthsEn/", $monthsRu, $dateEn);
+          }
+        }
+
+        return $dateRu;
+    }
+
 }

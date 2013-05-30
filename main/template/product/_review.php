@@ -5,6 +5,9 @@
   <div class="fl width140">
     <div><?= $page->render('product/_starsFive', ['score' => $review['star_score']]) ?></div>  
     <h3><?= empty($review['author']) ? $review['source_name'] : $review['author'] ?></h3>
+    <div class="gray">
+      <?= $page->helper->dateToRu($review['date']) ?>
+    </div>
   </div>
   <div class="fl width545 quote">
     <? if($review['origin'] != 'enter') { ?>
