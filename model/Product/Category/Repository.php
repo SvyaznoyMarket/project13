@@ -375,7 +375,10 @@ class Repository {
                 array_unshift($branch, $parent->getToken());
                 $currentCategory = $parent;
             }
-            array_unshift($branch, $category->getRoot()->getToken());
+
+            if ($category->getRoot()) {
+                array_unshift($branch, $category->getRoot()->getToken());
+            }
         }
 
         // формируем запрос к апи и получаем json с SEO-данными
