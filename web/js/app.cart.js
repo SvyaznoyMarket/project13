@@ -1,5 +1,62 @@
 $(document).ready(function() {
 
+	/* F1 sale card*/
+	if ( $('.bF1SaleCard').length ){
+		var input = $('#F1SaleCard_number')
+		var btn = $('#F1SaleCard_btn')
+		var delBtn = $('.bF1SaleCard_eDel')
+		btn.bind('click', function(){
+			// var url = btn.data('url')
+			var url = $('.bF1SaleCard_eRadio:checked').data('url')
+
+			var authFromServer = function(response) {
+				if ( response.success ) {
+					window.location.reload()
+				}
+				else{
+					$('#bF1SaleCard_eErr').html('Извините, карта с таким номером не найдена.')
+				}
+			}
+
+			var data = {
+				number: input.val()
+			}
+
+			$.ajax({
+				type: 'POST',
+				url: url,
+				data: data,
+				success: authFromServer
+			})
+
+		})
+
+
+		delBtn.live('click',function(){
+			var delUrl = $(this).data('url')
+			var authFromServer = function(response) {
+				if ( response.success ) {
+					window.location.reload()
+				}
+			}
+			$.ajax({
+				type: 'POST',
+				url: delUrl,
+				success: authFromServer
+			})
+		})
+
+		$(".bF1SaleCard_eRadio").bind('change', function(){
+			if ( $('#cartCertificateAll').is(':checked')){
+				input.attr('placeholder','Код скидки')
+			}
+			else if ($('#cartCertificateF1').is(':checked')){
+				input.attr('placeholder', 'Номер карты «Под защитой F1»')
+			}
+		})
+	}
+
+
 	//KISS
 	if ($('#_cartKiss').length){
 		var data = $('#_cartKiss').data('cart')
@@ -75,17 +132,43 @@ $(document).ready(function() {
 	}
 
 	var checkForSaleCard = function() {
+		var hasF1 = checkServF1()
+		var hasCoupon = $('.bF1SaleCard_eComplete.mCoupon').length
+		var hasSertificate = $('.bF1SaleCard_eComplete.mSertificate').length
+		var form = $('.bF1SaleCard_eForm')
+		var input = $('#F1SaleCard_number')
 
-		// скрытие-отображение форма ввода карты
-		if (checkServF1()){
-			$('.bF1SaleCard').show()
+		if (!hasF1 && !hasCoupon && !hasSertificate){
+			form.show().removeClass('m2Coupon')
 		}
-		else{
-			$('.bF1SaleCard').hide()
+		else if (hasF1 && !hasCoupon && !hasSertificate){
+			form.show().addClass('m2Coupon')
 		}
+		else if (!hasF1 && hasCoupon){
+			form.hide()
+		}
+		else if (hasF1 && hasCoupon && !hasSertificate){
+			form.show().removeClass('m2Coupon')
+			input.attr('placeholder', 'Номер карты «Под защитой F1»')
+			$('.bF1SaleCard_eRadio').removeAttr('checked');
+			$('#cartCertificateF1').attr('checked', 'checked')
+		}
+		else if (hasCoupon && hasSertificate){
+			form.hide()
+		}
+
+		// // скрытие-отображение форма ввода карты
+		// if (hasF1){
+		// 	$('.bF1SaleCard_eForm').addClass('m2Coupon')
+		// }
+		// else{
+		// 	$('.bF1SaleCard_eForm').removeClass('m2Coupon')
+		// 	$('#F1SaleCard_number').attr('placeholder','Код скидки')
+		// 	$('#cartCertificateAll').prop('checked', true);
+		// }
 
 		// скрытие отображение старой цены
-		if ( $('.bF1SaleCard_eComplete').length && checkServF1() ){
+		if ( $('.bF1SaleCard_eComplete').length){
 			$('#commonSum .oldPrice').show()
 		}
 		else{
@@ -571,5 +654,9 @@ $(document).ready(function() {
 		DirectCredit.init( $('#tsCreditCart').data('value'), $('#creditPrice') )
 		PubSub.subscribe( 'quantityChange', DirectCredit.change )
 	} // credit 
+
+
+	// init f1 sale card
+	checkForSaleCard()
     
 })

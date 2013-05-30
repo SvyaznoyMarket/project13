@@ -326,6 +326,14 @@ return [
         'pattern' => '/cart/f1-certificate/delete',
         'action'  => ['Cart\CertificateAction', 'delete'],
     ],
+    'cart.coupon.apply' => [
+        'pattern' => '/cart/coupon',
+        'action'  => ['Cart\CouponAction', 'apply'],
+    ],
+    'cart.coupon.delete' => [
+        'pattern' => '/cart/coupon/delete',
+        'action'  => ['Cart\CouponAction', 'delete'],
+    ],
 
     // заказ
     'order.1click' => [
