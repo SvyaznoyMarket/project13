@@ -10,7 +10,7 @@
     <? if($review['origin'] != 'enter') { ?>
       <?= $page->helper->nofollowExternalLinks($review['extract']) ?>
     <? } else { ?>
-      <?= $review['extract'] ?>
+      <div><?= $review['extract'] ?></div>
     <? } ?>
     <? if(!empty($review['pros'])) { ?>
       <div class="plus mt5">
