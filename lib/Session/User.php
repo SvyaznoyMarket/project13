@@ -184,7 +184,6 @@ class User {
                 },
                 function(\Exception $e) {
                     \App::exception()->remove($e);
-                    \App::logger()->error('Не удалось определить регион пользователя');
                 }
             );
             \App::coreClientV2()->execute();
