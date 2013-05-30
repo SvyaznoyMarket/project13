@@ -148,7 +148,6 @@
 			}).runQueue()
 			break
         case 'order_error':
-        	console.log('123')
         	$LAB.queueWait( function() {
 				$LAB
 				.script( getWithVersion('bigjquery.js') )
