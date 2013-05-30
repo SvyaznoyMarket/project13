@@ -168,7 +168,7 @@ $(document).ready(function() {
 		// }
 
 		// скрытие отображение старой цены
-		if ( $('.bF1SaleCard_eComplete').length && hasF1 ){
+		if ( $('.bF1SaleCard_eComplete').length){
 			$('#commonSum .oldPrice').show()
 		}
 		else{
