@@ -96,7 +96,7 @@ class IndexAction {
             return $accessoryGrouped['category'];
         }, \Model\Product\Repository::filterAccessoryId($product, null, \App::config()->product['itemsInAccessorySlider'] * 6));
 
-        $accessoriesId =  array_slice($product->getAccessoryId(), 0, \App::config()->product['itemsInAccessorySlider'] * 6);
+        $accessoriesId =  array_slice($product->getAccessoryId(), 0, $accessoryCategory ? \App::config()->product['itemsInAccessorySlider'] * 6 : \App::config()->product['itemsInSlider'] * 6);
         $relatedId = array_slice($product->getRelatedId(), 0, \App::config()->product['itemsInSlider'] * 2);
         $partsId = [];
 
