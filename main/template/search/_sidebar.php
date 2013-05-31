@@ -12,13 +12,20 @@
 $selectedId = $selectedCategory ? $selectedCategory->getId() : null;
 ?>
 
+
 <dl class="bCtg">
-    <dt class="bCtg__eOrange">Найдено в категориях</dt>
+    <dt class="mBold"></dt>
     <dd>
         <ul>
-            <li class="bCtg__eL2<? if (null === $selectedId) echo ' mSelected' ?>">
-                <a href="<?= $page->url('search', array('q' => $searchQuery)) ?>"><span>Все товары</span></a>
+            <li class="mBold<? if (null === $selectedId) echo ' mSelected' ?>">
+                <a href="<?= $page->url('search', array('q' => $searchQuery)) ?>"><span>Все результаты</span></a>
             </li>
+        </ul>
+    </dd>
+
+    <dt class="mBold">Товары по категориям</dt>
+    <dd>
+        <ul>
             <? $i = 0; $count = count($categories); foreach ($categories as $category): $i++ ?>
                 <? $selected = $selectedId == $category->getId() ?>
                 <li class="bCtg__eL2<? if ($selected) echo ' mSelected' ?><?php if (!$selected && ($i > $limit)) echo ' hf' ?>">

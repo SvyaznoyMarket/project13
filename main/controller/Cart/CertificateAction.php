@@ -42,7 +42,7 @@ class CertificateAction {
                 'success' => true,
             ];
 
-        } catch (\Exception\ActionException $e) {
+        } catch (\Exception $e) {
             \App::exception()->remove($e);
 
             $result = [
@@ -60,6 +60,7 @@ class CertificateAction {
     /**
      * @param \Http\Request $request
      * @throws \Exception\NotFoundException
+     * @return \Http\JsonResponse
      */
     public function delete(\Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);

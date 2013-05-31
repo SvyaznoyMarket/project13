@@ -3,14 +3,21 @@ namespace Controller\Crossss;
 
 class OrderAction {
     /**
-     * @param \Model\Order\Entity   $order
+     * @param \Model\Order\Entity $order
      * @param \Model\Order\Entity[] $productsById
+     * @throws \Exception
      * @return \Http\JsonResponse
      */
     public function create(\Model\Order\Entity $order = null, array $productsById) {
         \App::logger()->debug('Exec ' . __METHOD__, ['action', 'crossss']);
 
+        $database = \App::database();
+
         try {
+            if (!$database) {
+                throw new \Exception('Нет доступа к бд');
+            }
+
             foreach ($order->getProduct() as $orderProduct) {
                 /** @var $product \Model\Product\Entity|null */
                 $product = isset($productsById[$orderProduct->getId()]) ? $productsById[$orderProduct->getId()] : null;
@@ -30,7 +37,7 @@ class OrderAction {
                     'quantity'        => $orderProduct->getQuantity(),
                 ];
 
-                \App::database()->exec("INSERT INTO `queue` (`name`, `body`) VALUES ('crossss.push', '".addslashes(json_encode($data, JSON_HEX_APOS | JSON_HEX_QUOT | JSON_UNESCAPED_UNICODE))."')");
+                $database->exec("INSERT INTO `queue` (`name`, `body`) VALUES ('crossss.push', '".addslashes(json_encode($data, JSON_HEX_APOS | JSON_HEX_QUOT | JSON_UNESCAPED_UNICODE))."')");
             }
         } catch (\Exception $e) {
             \App::logger()->error($e, ['crossss']);

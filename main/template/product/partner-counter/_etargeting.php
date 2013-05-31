@@ -5,7 +5,7 @@
  */
 ?>
 
-<? if (\App::config()->analytics['enabled'] && ($cusId = \Partner\Counter\Etargeting::getCusId($user->getRegion()))): ?>
+<? if (false && \App::config()->analytics['enabled'] && ($cusId = \Partner\Counter\Etargeting::getCusId($user->getRegion()))): // TODO: временно закрыто из-за неполадок с maybe3d?>
 <script language="javascript">
     var odinkod = {
         "type": "product",

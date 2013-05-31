@@ -152,6 +152,9 @@ class User {
                 if (!$this->region) {
                     \App::logger()->warn(sprintf('Регион #"%s" не найден.', $regionId), ['session', 'user']);
                 }
+            // иначе автоопределение
+            } else if (\App::config()->region['autoresolve']) {
+                $this->region = $this->getAutoresolvedRegion();
             }
         }
 
@@ -164,6 +167,29 @@ class User {
         }
 
         return $this->region;
+    }
+
+    /**
+     * @return \Model\Region\Entity|null
+     */
+    public function getAutoresolvedRegion() {
+        $region = null;
+
+        if ($ip = \App::request()->getClientIp()) {
+            \RepositoryManager::region()->prepareEntityByIp($ip,
+                function($data) use (&$region) {
+                    if ((bool)$data) {
+                        $region = new \Model\Region\Entity($data);
+                    }
+                },
+                function(\Exception $e) {
+                    \App::exception()->remove($e);
+                }
+            );
+            \App::coreClientV2()->execute();
+        }
+
+        return $region;
     }
 
     /**
