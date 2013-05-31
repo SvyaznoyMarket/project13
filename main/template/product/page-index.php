@@ -315,7 +315,6 @@ $productVideo = reset($productVideos);
         <p class="font18 orange">Этот товар вы можете купить только в магазин<?= (count($shopsWithQuantity) == 1) ? 'е' : 'ах' ?></p>
         <ul id="listAvalShop">
           <? $i = 0; foreach ($shopsWithQuantity as $shopWithQuantity): $i++?>
-  </div>
               <li<?= $i > 3 ? ' class="hidden"' : ''?>>
                 <a class="fr dashedLink shopLookAtMap" href="#">Посмотреть на карте</a>
                 <?= '<a class="avalShopAddr" href="'.$page->url('shop.show', ['shopToken' => $shopWithQuantity['shop']->getToken(), 'regionToken' => $user->getRegion()->getToken()]) . '" class="underline">' . $shopWithQuantity['shop']->getName() . '</a>' ?>
