@@ -362,14 +362,13 @@ class Repository {
      * Возвращает массив с SEO-данными
      *
      * @param $category
-     * @param $folder
      * @param $brand
      * @return array
      */
     public static function getSeoJson($category, $brand = null) {
         // формируем ветку категорий для последующего формирования запроса к json-апи
         $branch = [$category->getToken()];
-        if(!$category->isRoot()) {
+        if (!$category->isRoot()) {
             $currentCategory = $category;
             while($parent = $currentCategory->getParent()) {
                 array_unshift($branch, $parent->getToken());
@@ -422,7 +421,7 @@ class Repository {
      * Получает catalog json для данной категории
      * Возвращает массив с токенами категорий
      *
-     * @param $product
+     * @param $category
      * @return array
      */
     public function getCatalogJson($category) {

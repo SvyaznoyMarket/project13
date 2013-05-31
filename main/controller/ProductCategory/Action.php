@@ -250,14 +250,19 @@ class Action {
         $productFilter = $this->getFilter($filters, $category, $brand, $request);
 
         // получаем из json данные о горячих ссылках и content
-        $seoCatalogJson = \Model\Product\Category\Repository::getSeoJson($category);
-        $hotlinks = empty($seoCatalogJson['hotlinks']) ? [] : $seoCatalogJson['hotlinks'];
-        // в json-файле в свойстве content содержится массив
-        if(empty($brand)) {
-            $seoContent = empty($seoCatalogJson['content']) ? '' : implode('<br>', $seoCatalogJson['content']);
-        } else {
-            $seoBrandJson = \Model\Product\Category\Repository::getSeoJson($category, $brand);
-            $seoContent = empty($seoBrandJson['content']) ? '' : implode('<br>', $seoBrandJson['content']);
+        try {
+            $seoCatalogJson = \Model\Product\Category\Repository::getSeoJson($category);
+            $hotlinks = empty($seoCatalogJson['hotlinks']) ? [] : $seoCatalogJson['hotlinks'];
+            // в json-файле в свойстве content содержится массив
+            if (empty($brand)) {
+                $seoContent = empty($seoCatalogJson['content']) ? '' : implode('<br />', $seoCatalogJson['content']);
+            } else {
+                $seoBrandJson = \Model\Product\Category\Repository::getSeoJson($category, $brand);
+                $seoContent = empty($seoBrandJson['content']) ? '' : implode('<br />', $seoBrandJson['content']);
+            }
+        } catch (\Exception $e) {
+            $hotlinks = [];
+            $seoContent = '';
         }
 
         // получаем catalog json для категории (например, тип раскладки)
