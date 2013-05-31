@@ -5,6 +5,7 @@
  * @var $productVideos      \Model\Product\Video\Entity[]
  * @var $user               \Session\User
  * @var $accessories        \Model\Product\Entity[]
+ * @var $accessoryCategory  array
  * @var $related            \Model\Product\Entity[]
  * @var $kit                \Model\Product\Entity[]
  * @var $additionalData     array
@@ -87,7 +88,7 @@ $productVideo = reset($productVideos);
             $p3d_res_big[] = $photo3d->getUrl(1);
         }
     } elseif ($model3dExternalUrl) {
-        $model3dName = str_ireplace(array('.SWF', '.swf'), '', basename($model3dExternalUrl));
+        $model3dName = preg_replace('/\.swf|\.swf$/iu', '', basename($model3dExternalUrl));
         if (!strlen($model3dName)) $model3dExternalUrl = false;
     }
 
@@ -439,8 +440,8 @@ $productVideo = reset($productVideos);
 <div class="clear"></div>
 
 <? if ($showAccessoryUpper && (bool)$accessories && \App::config()->product['showAccessories']): ?>
-    <div class="acess-box">
-      <?= $page->render('product/_slider', ['product' => $product, 'productList' => array_values($accessories), 'totalProducts' => count($product->getAccessoryId()), 'itemsInSlider' => \App::config()->product['itemsInAccessorySlider'], 'page' => 1, 'title' => 'Аксессуары', 'url' => $page->url('product.accessory', ['productToken' => $product->getToken()]), 'gaEvent' => 'Accessorize', 'showCategories' => true, 'accessoryCategory' => $accessoryCategory, 'additionalData' => $additionalData]) ?>
+    <div <? if ($accessoryCategory) print 'class="acess-box"'; ?>>
+      <?= $page->render('product/_slider', ['product' => $product, 'productList' => array_values($accessories), 'totalProducts' => count($product->getAccessoryId()), 'itemsInSlider' =>  $accessoryCategory ? \App::config()->product['itemsInAccessorySlider'] : \App::config()->product['itemsInSlider'], 'page' => 1, 'title' => 'Аксессуары', 'url' => $page->url('product.accessory', ['productToken' => $product->getToken()]), 'gaEvent' => 'Accessorize', 'showCategories' => (bool)$accessoryCategory, 'accessoryCategory' => $accessoryCategory, 'additionalData' => $additionalData]) ?>
     </div>
 <? endif ?>
 
@@ -661,7 +662,7 @@ $productVideo = reset($productVideos);
 <?= $page->tryRender('product/_tag', ['product' => $product]) ?>
 
 <? if (!$showAccessoryUpper && count($product->getAccessoryId()) && \App::config()->product['showAccessories']): ?>
-    <?= $page->render('product/_slider', ['product' => $product, 'productList' => array_values($accessories), 'totalProducts' => count($product->getAccessoryId()), 'itemsInSlider' => \App::config()->product['itemsInAccessorySlider'], 'page' => 1, 'title' => 'Аксессуары', 'url' => $page->url('product.accessory', array('productToken' => $product->getToken())), 'gaEvent' => 'Accessorize', 'showCategories' => true, 'accessoryCategory' => $accessoryCategory, 'additionalData' => $additionalData]) ?>
+    <?= $page->render('product/_slider', ['product' => $product, 'productList' => array_values($accessories), 'totalProducts' => count($product->getAccessoryId()), 'itemsInSlider' => $accessoryCategory ? \App::config()->product['itemsInAccessorySlider'] : \App::config()->product['itemsInSlider'], 'page' => 1, 'title' => 'Аксессуары', 'url' => $page->url('product.accessory', array('productToken' => $product->getToken())), 'gaEvent' => 'Accessorize', 'showCategories' => (bool)$accessoryCategory, 'accessoryCategory' => $accessoryCategory, 'additionalData' => $additionalData]) ?>
 <? endif ?>
 
 <? if (!$showRelatedUpper && count($product->getRelatedId()) && \App::config()->product['showRelated']): ?>

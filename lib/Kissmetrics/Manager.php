@@ -66,7 +66,7 @@ class Manager {
                     'quantity' => $cartWarranty ? $cartWarranty->getQuantity() : null,
                 ];
                 if (isset($return['product'])) {
-                    $return['product']['warrantyQuantity'] = $cartWarranty->getQuantity();
+                    $return['product']['warrantyQuantity'] = $cartWarranty ? $cartWarranty->getQuantity() : null;
                 }
             }
         } catch (\Exception $e) {

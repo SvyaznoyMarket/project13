@@ -328,6 +328,9 @@
   .ml70 {
     margin-left: 70px;
   }
+  .ml90 {
+    margin-left: 70px;
+  }
   .ml30 {
     margin-left: 30px;
   }
@@ -5928,6 +5931,33 @@
     height: 50px;
     line-height: 50px;
     padding-left: 50px;
+    width: 600px;
+  }
+  .bF1SaleCard_eComplete.mError {
+    background: url('/css/F1SaleCard/img/error.png') no-repeat left center;
+  }
+  .bF1SaleCard.mOrder {
+    border-bottom: 1px solid #e6e6e6;
+    margin: 30px 0;
+    padding-bottom: 20px;
+    padding-left: 30px;
+  }
+  .bF1SaleCard_eRadiogroup {
+    display: none;
+  }
+  .m2Coupon .bF1SaleCard_eRadiogroup {
+    display: block;
+  }
+  .bF1SaleCard_eSingleCoupon {
+    display: block;
+  }
+  .m2Coupon .bF1SaleCard_eSingleCoupon {
+    display: none;
+  }
+  .bF1SaleCard_eLabel {
+    display: inline-block;
+    font-size: 14px;
+    margin: 0 0 10px;
   }
   .bF1SaleCard_eErr {
     color: #e8303c;
@@ -5935,10 +5965,9 @@
     margin: 3px 0;
   }
   .bF1SaleCard_eDel {
-    display: inline-block;
-    font-size: 12px;
-    margin: 0 20px;
-    text-decoration: underline;
+    line-height: 1em;
+    margin: 15px;
+    float: right;
   }
 }
 /*---END---СТИЛИ КАРТ F1---*/

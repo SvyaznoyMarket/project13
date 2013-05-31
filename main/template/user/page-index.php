@@ -28,6 +28,7 @@
 
 </div>
 
+<? if (false): // TODO: временно убрали из-за проблем с ofsys ?>
 <form action="<?= $page->url('user.subscribe') ?>" method="post">
     <div class="fr width315">
         <div class="font16 orange pb10">Рассылка по электронной почте</div>
@@ -39,3 +40,4 @@
         <div class="clear"></div>
     </div>
 </form>
+<? endif ?>

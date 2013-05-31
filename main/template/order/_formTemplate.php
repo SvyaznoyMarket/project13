@@ -121,6 +121,9 @@
                 <!-- ko if: dlvrPrice() <= 0 -->
                 Бесплатно
                 <!-- /ko -->
+                <!-- ko if: supplied() -->
+                <span class="red db pt20">Оператор контакт-cEnter<br/>подтвердит точную дату<br/>доставки за 2-3 дня.</span>
+                <!-- /ko -->
             </i>
             </dt>
             <i>
@@ -196,8 +199,16 @@
         </i>
     </div>
     <!-- /ko -->
-
-    <?= $page->render('cart/form-certificate', ['isForm' => false]) ?>
+    <div class="bF1SaleCard mOrder">
+        <h3 class="bF1SaleCard_eTitle">Скидки</h3>
+        <? if (\App::config()->coupon['enabled']): ?>
+            <p class="font11"><a href="<?= $page->url('cart') ?>">Введите код скидки на товары</a></p>
+        <? endif ?>
+    
+        <? if (\App::config()->f1Certificate['enabled']): ?>
+            <p class="font11"><a href="<?= $page->url('cart') ?>">Введите номер карты «Под защитой F1» для скидки на услуги</a></p>
+        <? endif ?>
+    </div>
 
     <div style="margin-top: -10px;">*Дату доставки уточнит специалист Контакт-сENTER</div>
 

@@ -2,7 +2,7 @@
 
 namespace Controller\Cart;
 
-class CertificateAction {
+class CouponAction {
     /**
      * @param \Http\Request $request
      * @throws \Exception\ActionException
@@ -26,17 +26,17 @@ class CertificateAction {
                 throw new \Exception\ActionException('Не передан номер карты');
             }
 
-            $cart->clearCertificates();
+            $cart->clearCoupons();
 
-            $data = $client->query('cart/check-card-f1', ['number' => $number]);
+            $data = $client->query('cart/check-coupon', ['number' => $number]);
             if (true !== $data) {
-                throw new \Exception\ActionException('Неправильный номер карты');
+                throw new \Exception();
             }
 
-            $certificate = new \Model\Cart\Certificate\Entity();
-            $certificate->setNumber($number);
+            $coupon = new \Model\Cart\Coupon\Entity();
+            $coupon->setNumber($number);
 
-            $cart->setCertificate($certificate);
+            $cart->setCoupon($coupon);
 
             $result = [
                 'success' => true,
@@ -45,9 +45,11 @@ class CertificateAction {
         } catch (\Exception $e) {
             \App::exception()->remove($e);
 
+            $message = \Model\Cart\Coupon\Entity::getErrorMessage($e->getCode()) ?: 'Неудалось активировать купон';
+
             $result = [
                 'success' => false,
-                'error'   => $e instanceof \Exception\ActionException ? $e->getMessage() : 'Неудалось активировать карту',
+                'error'   => (\App::config()->debug ? sprintf('Ошибка #%s: ', $e->getCode()) : '') . $message,
             ];
             if (\App::config()->debug) {
                 $result['error'] = $e;
@@ -70,7 +72,7 @@ class CertificateAction {
         }
 
         try {
-            \App::user()->getCart()->clearCertificates();
+            \App::user()->getCart()->clearCoupons();
 
             $result = [
                 'success' => true,
