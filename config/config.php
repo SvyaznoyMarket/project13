@@ -106,6 +106,7 @@ $c->onlineCall['enabled'] = false;
 $c->region['cookieName']     = 'geoshop';
 $c->region['cookieLifetime'] = 31536000; // 365 дней
 $c->region['defaultId']      = 14974;
+$c->region['autoresolve']    = true;
 
 $c->loadMediaHost = false;
 $c->mediaHost = [
@@ -134,6 +135,7 @@ $c->product['totalCount']            = 30000;
 // глобальный (без учета региона) список товаров
 $c->product['globalListEnabled']     = true;
 $c->product['showAveragePrice']      = false;
+$c->product['allowBuyOnlyInshop']    = false;
 
 $c->productPhoto['url'] = [
     0 => '/1/1/60/',
@@ -207,6 +209,7 @@ $c->crossss['apiKey'] = '5a0bb0cb92a94f7db8a9bf4bfacdbe39';
 
 $c->warranty['enabled'] = true;
 $c->f1Certificate['enabled'] = true;
+$c->coupon['enabled'] = false;
 
 $c->user['corporateRegister'] = true;
 
@@ -241,7 +244,7 @@ $c->order['enableMetaTag'] = true;
 
 $c->maybe3d['xmlUrl'] = 'http://hq.maybe3d.com/MappingService.svc/GetMappings?customerId=';
 $c->maybe3d['customerId'] = 'BE2016EF-32D8-41E6-976F-A8D32EB20ACF';
-$c->maybe3d['swfUrl'] = 'http://fs01.enter.ru/3d/';
+$c->maybe3d['swfUrl'] = 'http://fs01.enter.ru/3d/flash/';
 $c->maybe3d['cmsFolder'] = '/opt/wwwroot/cms.enter.ru/wwwroot/v1/video/product/';
 $c->maybe3d['timeout'] = 30;
 

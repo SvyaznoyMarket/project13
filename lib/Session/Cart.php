@@ -16,7 +16,9 @@ class Cart {
     private $warranties = null;
     /** @var \Model\Cart\Certificate\Entity[] */
     private $certificates = null;
-    /** @var \Model\Cart\Action\Entity[] */
+    /** @var \Model\Cart\Coupon\Entity[] */
+    private $coupons = null;
+    /** @var array */
     private $actions = null;
     /** @var int */
     private $sum = null;
@@ -38,6 +40,7 @@ class Cart {
                 'serviceList'     => [],
                 'warrantyList'    => [],
                 'certificateList' => [],
+                'couponList'      => [],
             ]);
             return;
         }
@@ -66,6 +69,12 @@ class Cart {
             $this->storage->set($this->sessionName, $data);
         }
 
+        if (!array_key_exists('couponList', $session[$this->sessionName])) {
+            $data = $this->storage->get($this->sessionName);
+            $data['couponList'] = [];
+            $this->storage->set($this->sessionName, $data);
+        }
+
         // лимит товаров
         $data = $this->storage->get($this->sessionName);
         $productCount = count($data['productList']);
@@ -90,6 +99,7 @@ class Cart {
         $this->services = null;
         $this->warranties = null;
         $this->certificates = null;
+        $this->coupons = null;
     }
 
     /**
@@ -513,9 +523,48 @@ class Cart {
     }
 
     /**
-     * @return \Model\Cart\Action\Entity[]
+     * @param \Model\Cart\Coupon\Entity $coupon
      */
-    public function getActions() {
+    public function setCoupon(\Model\Cart\Coupon\Entity $coupon) {
+        $this->clearCoupons();
+
+        $data = $this->storage->get($this->sessionName);
+        $data['couponList'][] = [
+            'number' => $coupon->getNumber(),
+        ];
+
+        $this->fill();
+
+        $this->storage->set($this->sessionName, $data);
+    }
+
+    public function clearCoupons() {
+        $data = $this->storage->get($this->sessionName);
+        $data['couponList'] = [];
+
+        $this->fill();
+
+        $this->storage->set($this->sessionName, $data);
+    }
+
+    /**
+     * @return \Model\Cart\Coupon\Entity[]
+     */
+    public function getCoupons() {
+        if (null === $this->coupons) {
+            $data = $this->storage->get($this->sessionName);
+            foreach ($data['couponList'] as $couponData) {
+                $this->coupons[$couponData['number']] = new \Model\Cart\Coupon\Entity($couponData);
+            }
+        }
+
+        return $this->coupons ?: [];
+    }
+
+    /**
+     * @return array
+     */
+    public function getActionData() {
         if (null === $this->actions) {
             $this->fill();
         }
@@ -529,6 +578,8 @@ class Cart {
             'product_list'  => [],
             'service_list'  => [],
             'warranty_list' => [],
+            'card_f1_list'  => [],
+            'coupon_list'   => [],
             'price_total'   => 0,
         ];
 
@@ -537,27 +588,48 @@ class Cart {
             if (((bool)$this->getProductsQuantity() || (bool)$this->getServicesQuantity())) {
                 $response = $default;
 
-                // если есть сертификат
+                // если есть сертификат или купон
                 $certificates = $this->getCertificates();
                 $certificate = is_array($certificates) ? reset($certificates) : null;
-                if (\App::config()->f1Certificate['enabled'] && $certificate instanceof \Model\Cart\Certificate\Entity) {
+
+                $coupons = $this->getCoupons();
+                $coupon = is_array($coupons) ? reset($coupons) : null;
+                if (
+                    (\App::config()->f1Certificate['enabled'] && $certificate instanceof \Model\Cart\Certificate\Entity)
+                    || (\App::config()->coupon['enabled'] && $coupon instanceof \Model\Cart\Coupon\Entity)
+                ) {
+                    $data = [
+                        'user_id'       => \App::user()->getEntity() ? \App::user()->getEntity()->getId() : 0,
+                        'timestamp'     => time(),
+                        'product_list'  => $this->getProductData(),
+                        'service_list'  => $this->getServiceData(),
+                        'warranty_list' => $this->getWarrantyData(),
+                        'card_f1_list'  =>
+                        $certificate
+                            ? [
+                                ['number' => $certificate->getNumber()],
+                            ]
+                            : [],
+                        'coupon_list'  =>
+                            $coupon
+                            ? [
+                                ['number' => $coupon->getNumber()],
+                            ]
+                            : [],
+                    ];
+
                     \App::coreClientV2()->addQuery(
                         'cart/get-price-new',
                         [
                             'geo_id'    => \App::user()->getRegion()->getId(),
                         ],
-                        [
-                            'user_id'       => \App::user()->getEntity() ? \App::user()->getEntity()->getId() : 0,
-                            'timestamp'     => time(),
-                            'product_list'  => $this->getProductData(),
-                            'service_list'  => $this->getServiceData(),
-                            'warranty_list' => $this->getWarrantyData(),
-                            'card_f1_list'  => [
-                                ['number' => $certificate->getNumber()],
-                            ],
-                        ],
+                        $data,
                         function ($data) use (&$response) {
                             $response = $data;
+                        },
+                        function(\Exception $e) {
+                            \App::logger()->error($e, ['cart']);
+                            // TODO: попробовать запросить обычный cart/get-price
                         }
                     );
                     \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['default'], \App::config()->coreV2['retryCount']);
@@ -588,8 +660,23 @@ class Cart {
         $this->originalSum = array_key_exists('original_sum', $response) ? $response['original_sum'] : 0;
 
         if (array_key_exists('action_list', $response)) {
-            foreach ($response['action_list'] as $actionData) {
-                $this->actions[$actionData['id']] = new \Model\Cart\Action\Entity($actionData);
+            $this->actions = $response['action_list'];
+        }
+
+        $this->certificates = [];
+        if (array_key_exists('card_f1_list', $response)) {
+            foreach ($response['card_f1_list'] as $certificateData) {
+                $this->certificates[$certificateData['number']] = new \Model\Cart\Certificate\Entity($certificateData);
+            }
+        }
+
+        $this->coupons = [];
+        if (array_key_exists('coupon_list', $response)) {
+            foreach ($response['coupon_list'] as $couponData) {
+                if (isset($couponData['error']) && (bool)$couponData['error']) {
+                    \App::logger()->error($couponData['error'], ['cart']);
+                }
+                $this->coupons[$couponData['number']] = new \Model\Cart\Coupon\Entity($couponData);
             }
         }
 

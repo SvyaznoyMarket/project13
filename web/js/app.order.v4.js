@@ -564,6 +564,16 @@ $(document).ready(function() {
                 return out
             }, box)
 
+            box.supplied = ko.computed(function(){
+                var bid = this.token
+                for(var i=0, l=this.itemList().length; i<l; i++) {
+                    var out = this.itemList()[i].deliveries[bid].isSupplied
+                    if (out)
+                        return out
+                }
+                return out
+            }, box)
+
             box.totalPrice  = ko.computed(function() {
                 var out = 0
                 for(var i=0, l=this.itemList().length; i<l; i++)

@@ -15,15 +15,25 @@
 <div class="clear"></div>
 <?= $page->tryRender('product-category/_categoryData', array('page' => $page, 'category' => $category)) ?>
 
-<? foreach ($category->getChild() as $child) { ?>
-    <?
-    $pager = $productPagersByCategory[$child->getId()];
-    if (!$pager->count()) continue;
-    ?>
-    <?= $page->render('product/_slider-inCategory', array(
-        'category'               => $child,
-        'pager'                  => $pager,
-        'itemsInSlider'          => ceil($pager->getMaxPerPage() / 2),
-        'productVideosByProduct' => $productVideosByProduct,
-    )) ?>
-<? } ?>
+<? // в зависимости от настроек категории в json показываем иконки или линейки (линейки по умолчанию) ?>
+<? if(!empty($catalogJson['category_layout_type']) && $catalogJson['category_layout_type'] == 'icons'): ?>
+    <div class="goodslist clearfix">
+    <? foreach ($category->getChild() as $child): ?>
+        <?= $page->render('product-category/_preview', array('category' => $child, 'rootCategory' => $category)) ?>
+    <? endforeach ?>
+    </div>
+<? else: ?>
+    <? foreach ($category->getChild() as $child) { ?>
+        <?
+        $pager = $productPagersByCategory[$child->getId()];
+        if (!$pager->count()) continue;
+        ?>
+        <?= $page->render('product/_slider-inCategory', array(
+            'category'               => $child,
+            'pager'                  => $pager,
+            'itemsInSlider'          => ceil($pager->getMaxPerPage() / 2),
+            'productVideosByProduct' => $productVideosByProduct,
+        )) ?>
+    <? } ?>
+<? endif ?>
+

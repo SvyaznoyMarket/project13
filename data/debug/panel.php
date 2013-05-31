@@ -24,6 +24,17 @@ if (\App::user()->getToken()) {
     $debug->add('user', \App::user()->getToken(), 135);
 }
 
+// server
+if ('live' != \App::$env) {
+    $debug->add('server', json_encode(isset($_SERVER) ? $_SERVER : [], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), 134);
+}
+
+// session
+$debug->add('session', json_encode(\App::session()->all(), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), 133);
+
+// memory
+$debug->add('memory', sprintf('%s Mb', round(memory_get_peak_usage() / 1048576, 2)), 132);
+
 // timers
 $appTimer = \Debug\Timer::get('app');
 $coreTimer = \Debug\Timer::get('core');
@@ -36,11 +47,15 @@ $debug->add('time.data-store', sprintf('%s ms [%s]', round($dataStoreTimer['tota
 $debug->add('time.content', sprintf('%s ms [%s]', round($contentTimer['total'], 3) * 1000, $contentTimer['count']), 95);
 $debug->add('time.total', sprintf('%s ms', round($appTimer['total'], 3) * 1000), 94);
 
-// memory
-$debug->add('memory', sprintf('%s Mb', round(memory_get_peak_usage() / 1048576, 2)), 90);
 
-// session
-$debug->add('session', json_encode(\App::session()->all(), JSON_PRETTY_PRINT), 89);
+// ab test
+if ((bool)\App::config()->abtest['enabled']) {
+    $options = '<span style="color: #cccccc;">Тестирование проводится до </span><span style="color: #00ffff;">' . date('d-m-Y H:i', strtotime(\App::config()->abtest['bestBefore'])) . '</span><br />';
+    foreach (\App::abTest()->getOption() as $option) {
+        $options .= '<span style="color: #' . ($option->getKey() == \App::abTest()->getCase()->getKey() ? 'color: #11ff11' : 'cccccc') . ';">' . $option->getTraffic() . ($option->getTraffic() === '*' ? ' ' : '% ') . $option->getKey() . ' ' . $option->getName() . '</span><br />';
+    }
+}
+$debug->add('abTest', $options, 89);
 
 // log
 if ('live' != \App::$env) {
@@ -63,18 +78,11 @@ foreach ((array)$requestData['api_queries'] as $query) {
 }
 $debug->add('query', $queryString, 80);
 
-if ((bool)\App::config()->abtest['enabled']) {
-    $options = '<span style="color: #cccccc;">Тестирование проводится до </span><span style="color: #00ffff;">' . date('d-m-Y H:i', strtotime(\App::config()->abtest['bestBefore'])) . '</span><br />';
-    foreach (\App::abTest()->getOption() as $option) {
-        $options .= '<span style="color: #' . ($option->getKey() == \App::abTest()->getCase()->getKey() ? 'color: #11ff11' : 'cccccc') . ';">' . $option->getTraffic() . ($option->getTraffic() === '*' ? ' ' : '% ') . $option->getKey() . ' ' . $option->getName() . '</span><br />';
-    }
-    $debug->add('abTest', $options, 70);
-}
-
 if (!\App::request()->isXmlHttpRequest()) {
 ?>
     <span style="position: fixed; bottom: 30px; left: 2px; z-index: 999; background: #000000; color: #11ff11; opacity: 0.9; padding: 4px 6px; border-radius: 5px; font-size: 11px; font-weight: normal; font-family: Courier New; box-shadow: 0 0 10px rgba(0,0,0,0.5);">
         <span onclick="$(this).parent().remove()" style="cursor: pointer; font-size: 16px; color: #999999;" title="закрыть">&times;</span>
+        <span onclick="window.location.replace('<?= $page->helper->replacedUrl(['APPLICATION_DEBUG' => 0]) ?>')" style="cursor: pointer; font-size: 16px; color: #999999;" title="отключить">■</span>
         <br />
 
     <? foreach ($debug->getAll() as $item) { ?>
