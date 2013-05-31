@@ -790,6 +790,13 @@
     left: -8px;
     position: absolute;
   }
+  .notBuying .toLink {
+    cursor: pointer;
+    text-decoration: none;
+  }
+  .notBuying .toLink:hover {
+    text-decoration: underline;
+  }
   .blackPopupVideo.blackPopup {
     border: 2px solid #ffa901;
     -webkit-border-radius: 6px;
