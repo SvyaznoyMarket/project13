@@ -1,6 +1,6 @@
 <?php
 
-namespace Controller\ProductCategory;
+namespace Controller\Jewel\ProductCategory;
 
 class Action {
     private static $globalCookieName = 'global';
@@ -160,6 +160,7 @@ class Action {
      * @return \Http\Response
      */
     public function category(\Http\Request $request, $categoryPath, $brandToken = null) {
+
         \App::logger()->debug('Exec ' . __METHOD__);
 
         $client = \App::coreClientV2();
@@ -227,10 +228,6 @@ class Action {
 
         if (!$category) {
             throw new \Exception\NotFoundException(sprintf('Категория товара @%s не найдена', $categoryToken));
-        }
-        // все, что связано с этими категориями, обрабатываем специальным контроллером
-        elseif(in_array((int)$category->getId(), [1320])) {
-            return (new \Controller\Jewel\ProductCategory\Action())->category($request, $categoryPath, $brandToken);
         }
 
         // подготовка 3-го пакета запросов
@@ -313,27 +310,27 @@ class Action {
 
         // если категория содержится во внешнем узле дерева
         if ($category->isLeaf()) {
-            $page = new \View\ProductCategory\LeafPage();
+            $page = new \View\Jewel\ProductCategory\LeafPage();
             $setPageParameters($page);
 
             return $this->leafCategory($category, $productFilter, $page, $request);
         }
         // иначе, если в запросе есть фильтрация
         else if ($request->get(\View\Product\FilterForm::$name)) {
-            $page = new \View\ProductCategory\BranchPage();
+            $page = new \View\Jewel\ProductCategory\BranchPage();
             $setPageParameters($page);
 
             return $this->branchCategory($category, $productFilter, $page, $request);
         }
         // иначе, если категория самого верхнего уровня
         else if ($category->isRoot()) {
-            $page = new \View\ProductCategory\RootPage();
+            $page = new \View\Jewel\ProductCategory\RootPage();
             $setPageParameters($page);
 
             return $this->rootCategory($category, $productFilter, $page, $request);
         }
 
-        $page = new \View\ProductCategory\BranchPage();
+        $page = new \View\Jewel\ProductCategory\BranchPage();
         $setPageParameters($page);
 
         return $this->branchCategory($category, $productFilter, $page, $request);
