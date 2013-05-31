@@ -274,8 +274,8 @@ $productVideo = reset($productVideos);
     <? else: ?>
     <link itemprop="availability" href="http://schema.org/OutOfStock" />
     <? endif ?>
-
-
+  </div>
+ 
   <div class="fr ar pb15">
     
     <div class="goodsbarbig mSmallBtns" ref="<?= $product->getToken() ?>" data-value='<?= $json ?>'>
