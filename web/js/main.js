@@ -9,12 +9,30 @@ $(document).ready(function(){
 	 * @param  {event} e
 	 */
 	suggestUp = function(e){
-		var text = $(this).attr('value')
+        var text = $(this).attr('value')
+
+        if (!text.length){
+            if($(this).siblings('.searchtextClear').length) {
+                $(this).siblings('.searchtextClear').addClass('vh')
+            }
+        } else {
+            if($(this).siblings('.searchtextClear').length) {
+                $(this).siblings('.searchtextClear').removeClass('vh')
+            }
+        }
+
 		authFromServer = function(response){
 			$('#searchAutocomplete').html(response)
 			suggestLen = $('.bSearchSuggest__eRes').length
 		}
-		if ((e.which < 37 || e.which>40) && (nowSelectSuggest = -1)){
+        if ((e.which < 37 || e.which>40) && (nowSelectSuggest = -1)){
+            if (!text.length){
+                return false
+            }
+
+            if($(this).siblings('.searchtextClear').length) {
+                $(this).siblings('.searchtextClear').removeClass('vh')
+            }
 			
 			$('.bSearchSuggest__eRes').removeClass('hover')
 			nowSelectSuggest = -1
@@ -1877,5 +1895,22 @@ $(document).ready(function(){
 			}
 		);
 	}
+
+    if ( $('.searchtextClear').length ){
+        $('.searchtextClear').each(function(){
+            if(!$(this).val().length) {
+                $(this).addClass('vh')
+            } else {
+                $(this).removeClass('vh')
+            }
+        });
+        $('.searchtextClear').click(function(){
+            $(this).siblings('.searchtext').val('')
+            $(this).addClass('vh')
+            if($('#searchAutocomplete').length) {
+                $('#searchAutocomplete').html('')
+            }
+        });
+    }
 
 });
