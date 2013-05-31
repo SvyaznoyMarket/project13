@@ -60,11 +60,21 @@
 
 <div id="mixmarket" class="jsanalytics"></div>
 <div id="marketgidOrderSuccess" class="jsanalytics"></div>
-<img src="http://rs.mail.ru/g632.gif" style="width:0;height:0;position:absolute;" alt=""/> 
-<?php $myThingsData = []; ?>
-<?php $fee = null; ?>
-<?php foreach ($orders as $order) {
+<img src="http://rs.mail.ru/g632.gif" style="width:0;height:0;position:absolute;" alt=""/>
+    <?php $myThingsData = []; ?>
+    <?php $fee = null; ?>
+    <?php $orderSum = 0; ?>
+    <?php foreach ($orders as $order) {
         foreach ($order->getProduct() as $product) {
+            $categoryFee = 1;
+            if (isset($productsById[$product->getId()])) {
+                if ($productsById[$product->getId()]->getParentCategory() && isset(\App::config()->myThings['feeByCategory'][$productsById[$product->getId()]->getParentCategory()->getId()])) {
+                    $categoryFee = \App::config()->myThings['feeByCategory'][$productsById[$product->getId()]->getParentCategory()->getId()];
+                } elseif ($productsById[$product->getId()]->getMainCategory() && isset(\App::config()->myThings['feeByCategory'][$productsById[$product->getId()]->getMainCategory()->getId()])) {
+                    $categoryFee = \App::config()->myThings['feeByCategory'][$productsById[$product->getId()]->getMainCategory()->getId()];
+                }
+            }
+            $orderSum += round($product->getPrice() * $categoryFee, 2);
             if (isset($productsById[$product->getId()]) && $productsById[$product->getId()]->getMainCategory()) {
                 if (isset(\App::config()->myThings['feeByCategory'][$productsById[$product->getId()]->getMainCategory()->getId()])) {
                     $fee = $fee === null ? \App::config()->myThings['feeByCategory'][$productsById[$product->getId()]->getMainCategory()->getId()] : min($fee, \App::config()->myThings['feeByCategory'][$productsById[$product->getId()]->getMainCategory()->getId()]);
@@ -100,6 +110,7 @@
             /** @var $orderProduct \Model\Order\Product\Entity  */
             return array('id' => $orderProduct->getId(), 'price' => $orderProduct->getPrice(), 'qty' => $orderProduct->getQuantity());
         }, $order->getProduct()),
+        'gg' => [$categoryFee, $fee]
     );
     ?>
 
