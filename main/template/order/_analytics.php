@@ -67,11 +67,20 @@
     <?php foreach ($orders as $order) {
         foreach ($order->getProduct() as $product) {
             $categoryFee = 1;
+            $categoryTreeIds = [];
             if (isset($productsById[$product->getId()])) {
-                if ($productsById[$product->getId()]->getParentCategory() && isset(\App::config()->myThings['feeByCategory'][$productsById[$product->getId()]->getParentCategory()->getId()])) {
-                    $categoryFee = \App::config()->myThings['feeByCategory'][$productsById[$product->getId()]->getParentCategory()->getId()];
-                } elseif ($productsById[$product->getId()]->getMainCategory() && isset(\App::config()->myThings['feeByCategory'][$productsById[$product->getId()]->getMainCategory()->getId()])) {
-                    $categoryFee = \App::config()->myThings['feeByCategory'][$productsById[$product->getId()]->getMainCategory()->getId()];
+                if (is_array($productsById[$product->getId()]->getCategory())) {
+                    $categoryTreeIds = array_map(function($category){
+                        return $category->getId();
+                    }, $productsById[$product->getId()]->getCategory());
+                }
+                if (count($categoryTreeIds)) {
+                    foreach ($categoryTreeIds as $categoryId) {
+                        print $categoryId."<br>";
+                        if (isset(\App::config()->myThings['feeByCategory'][$categoryId])) {
+                            $categoryFee = \App::config()->myThings['feeByCategory'][$categoryId];
+                        }
+                    }
                 }
             }
             $orderSum += round($product->getPrice() * $categoryFee, 2);
