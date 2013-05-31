@@ -218,6 +218,21 @@ class Action {
             }
 
             try {
+                $deliveryData = array_merge([
+                    'deliveryTypes' => [],
+                ], json_decode($request->get('delivery_map'), true));
+
+                $actions = [];
+                if (\App::config()->coupon['enabled'] && (bool)$cart->getCoupons() && (count($deliveryData['deliveryTypes']) > 0)) {
+                    $cart->clearCoupons();
+                    $cart->fill();
+
+                    $actions['alert'] = [
+                        'message' => 'Не удалось применить скидку. Свяжитесь с оператором Контакт-cENTER ' . \App::config()->company['phone'],
+                        'cancel'  => false,
+                    ];
+                }
+
                 // сохранение заказов в ядре
                 $orderNumbers = $this->saveOrder($form, $deliveryMap);
 
@@ -231,6 +246,7 @@ class Action {
                     'data'            => ['redirect' => \App::router()->generate('order.complete')],
                     'orderNumber'     => $orderNumbers,
                     'paymentMethodId' => $form->getPaymentMethodId(),
+                    'action'          => $actions,
                 ]);
 
                 try {

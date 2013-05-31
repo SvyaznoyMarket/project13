@@ -94,8 +94,6 @@ $c->abtest['test']       = [
 
 $c->subscribe['enabled'] = true;
 
-$c->coupon['enabled'] = false;
-
 $c->requestMainMenu = true;
 
 $c->order['enableMetaTag'] = true;
