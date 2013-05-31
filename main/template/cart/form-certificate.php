@@ -29,7 +29,7 @@ if (!isset($isForm)) $isForm = true;
             <div class="bF1SaleCard_eComplete mCoupon mGold ml90 <? if ($coupon->getError()): ?> mError<? else: ?><? endif ?>">
                 <? if ($coupon->getError()): ?>
                 <span class="font14">
-                    Невозможно применить скидку<?= $coupon->getName() ? (sprintf(' «%s»', $coupon->getName())) : '' ?>: <?= \App::config()->debug ? $coupon->getError()->getMessage() : \Model\Cart\Coupon\Entity::getErrorMessage($coupon->getError()->getCode()) ?>
+                    Невозможно применить скидку<?= $coupon->getName() ? (sprintf(' «%s»', $coupon->getName())) : '' ?>: <?= \Model\Cart\Coupon\Entity::getErrorMessage($coupon->getError()->getCode()) . (\App::config()->debug ? sprintf('. <span class="gray">%s</span>', $coupon->getError()->getMessage()) : '') ?>
                 </span>
                 <? else: ?>
                 <span class="font14">

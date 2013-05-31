@@ -5,7 +5,6 @@ $(document).ready(function() {
 	var f1Certificate = config.f1Certificate;
 	var coupon = config.coupon;
 
-
 	if (coupon && f1Certificate){
 		$('.bF1SaleCard_eRadio').removeAttr('checked');
 		$('#cartCertificateAll').attr('checked', 'checked')
@@ -21,7 +20,6 @@ $(document).ready(function() {
 		$('#cartCertificateAll').attr('checked', 'checked')
 		$('#F1SaleCard_number').attr('placeholder','Код скидки')
 	}
-
 
 	/* F1 sale card*/
 	if ( $('.bF1SaleCard').length ){
@@ -207,9 +205,7 @@ $(document).ready(function() {
 	}
 
 	function getTotal() {
-		if ($('#site-config').data('f1-certificate')){
-			checkForSaleCard()
-		}
+		checkForSaleCard()
 		
 		checkServWarranty()
 		for(var i=0, tmp=0; i < basket.length; i++ ) {
@@ -681,8 +677,7 @@ $(document).ready(function() {
 		PubSub.subscribe( 'quantityChange', DirectCredit.change )
 	} // credit 
 
-
 	// init f1 sale card
-	checkForSaleCard()
+	checkForSaleCard();
     
 })
