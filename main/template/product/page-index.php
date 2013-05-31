@@ -730,8 +730,6 @@ $productVideo = reset($productVideos);
     </div>
 <? } ?>
 
-<?= $page->tryRender('product/_tag', ['product' => $product]) ?>
-
 <? if (!$showAccessoryUpper && count($product->getAccessoryId()) && \App::config()->product['showAccessories']): ?>
     <?= $page->render('product/_slider', ['product' => $product, 'productList' => array_values($accessories), 'totalProducts' => count($product->getAccessoryId()), 'itemsInSlider' => \App::config()->product['itemsInAccessorySlider'], 'page' => 1, 'title' => 'Аксессуары', 'url' => $page->url('product.accessory', array('productToken' => $product->getToken())), 'gaEvent' => 'Accessorize', 'showCategories' => true, 'accessoryCategory' => $accessoryCategory, 'additionalData' => $additionalData]) ?>
 <? endif ?>
@@ -739,6 +737,8 @@ $productVideo = reset($productVideos);
 <? if (!$showRelatedUpper && count($related) && \App::config()->product['showRelated']): ?>
     <?= $page->render('product/_slider', ['product' => $product, 'productList' => array_values($related), 'totalProducts' => count($product->getRelatedId()), 'itemsInSlider' => \App::config()->product['itemsInSlider'], 'page' => 1, 'title' => 'С этим товаром также покупают', 'url' => $page->url('product.related', array('productToken' => $product->getToken())), 'additionalData' => $additionalData]) ?>
 <? endif ?>
+
+<?= $page->tryRender('product/_tag', ['product' => $product]) ?>
 
 <div class="fr ar">
     <? //if ($product->getIsBuyable() || !$product->getState()->getIsShop()): ?>

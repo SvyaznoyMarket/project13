@@ -22,6 +22,7 @@
   </div>
   <div class="reviewsTabContent reviewsPro hf"></div>
   <? $showMore = !(empty($reviewsData['review_list']) || (!empty($reviewsData['review_list']) && $reviewsData['page_count'] == 1)); ?>
+  <? $showMoreText = 'Показать ещё отзывы' ?>
 
 <? } elseif (!empty($reviewsDataPro['review_list'])) { ?>
 
@@ -32,7 +33,7 @@
     <? } ?>
   </div>
   <? $showMore = !(empty($reviewsDataPro['review_list']) || (!empty($reviewsDataPro['review_list']) && $reviewsDataPro['page_count'] == 1)); ?>
-
+  <? $showMoreText = 'Показать ещё обзоры' ?>
 <? } ?>
 
-<div id="getMoreReviewsButton" class="mb15 button getMoreReviews<?= $showMore ? '' : ' hf' ?>">Показать ещё обзоры</div>
+<div id="getMoreReviewsButton" class="mb15 button getMoreReviews<?= $showMore ? '' : ' hf' ?>"><?= $showMoreText ?></div>

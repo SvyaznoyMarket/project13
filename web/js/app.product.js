@@ -457,6 +457,13 @@ $(document).ready(function() {
 			$('.reviewsTabContent').hide()
 			$('.'+reviewsContainerClass).show()
 
+	 		$('#getMoreReviewsButton').hide()
+			if(reviewsType == 'user') {
+		 		$('#getMoreReviewsButton').html('Показать ещё отзывы')
+			} else if(reviewsType == 'pro') {
+		 		$('#getMoreReviewsButton').html('Показать ещё обзоры')
+			}
+
 			if(!$('.'+reviewsContainerClass).html()) {
 				getReviews(reviewsProductId, reviewsType, reviewsContainerClass)
 			} else {

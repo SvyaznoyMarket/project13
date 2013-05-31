@@ -3,7 +3,7 @@
 <? } ?>
 <div class="productReview<?= $last ? '' : ' bottomLine'?>">
   <div class="fl width140">
-    <div><?= $page->render('product/_starsFive', ['score' => $review['star_score']]) ?></div>  
+    <div><?= $page->render('product/_starsFive', ['score' => $review['star_score'], 'emptyText' => 'нет оценки']) ?></div>  
     <h3><?= empty($review['author']) ? $review['source_name'] : $review['author'] ?></h3>
     <div class="gray">
       <?= $page->helper->dateToRu($review['date']) ?>
