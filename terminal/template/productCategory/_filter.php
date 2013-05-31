@@ -48,6 +48,7 @@ $formName = \View\Product\FilterForm::$name;
                 } ?>
             <? endforeach ?>
 
+            <dt class="bFilter__eClear pb10"><input type="button" class="bFilter__eClearBtn bButton mSmallGrayBtn" value="Очистить"/></dt>
             <dt class="bFilter__eSubmit pb10"><input type="submit" class="bFilter__eSubmitBtn bButton mSmallOrangeBtn" value="Подобрать"/></dt>
         </dl>
     </form>

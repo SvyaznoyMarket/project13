@@ -2,6 +2,11 @@ define('filter',
 	['jquery', 'library', 'bigjquery'], function ($, library) {
 
 
+			$('.bFilter__eClearBtn').live('click', function(){
+				terminal.filterObject.clear()
+				return false
+			})
+
 			$('.bFilter').submit(function(){
 				var filterString = $(this).serialize().toString()
 				// console.log(filterString)

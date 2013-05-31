@@ -12,6 +12,8 @@
 	&__eName{
 		color: @lightGray;
 		font-size: 20px;
+		padding: 15px 0;
+		display: block;
 		&.mCurrent{
 			color: @white;
 			// font-weight: bold;
@@ -21,7 +23,7 @@
 	&__eHR{
 		color:  @gray;
 		border-color: @gray;
-		margin: 15px 0;
+		margin: 0 0;
 	}
 
 	&__eProp{
@@ -32,11 +34,17 @@
 	&__eSubmit{
 		float: right;
 	}
-
+	
+	&__eClearBtn,
 	&__eSubmitBtn{
 		border: 0;
 		-webkit-appearance: none;
 	}
+	
+	&__eClear{
+		float: left;
+	}
+
 	.checkbox_list{
 		li{
 			input{
