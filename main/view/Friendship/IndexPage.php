@@ -10,6 +10,6 @@ class IndexPage extends \View\DefaultLayout {
     }
 
     public function slotContent() {
-        $this->render('friendship/page-index');
+        return $this->render('friendship/page-index');
     }
 }
