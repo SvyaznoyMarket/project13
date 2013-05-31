@@ -152,7 +152,7 @@ class Action {
         }
 
         $limit = 5;
-        $keyword = mb_strtolower($request->get('q'));
+        $keyword = trim(mb_strtolower($request->get('q')));
         $data = [
             'product'  => null,
             'category' => null,

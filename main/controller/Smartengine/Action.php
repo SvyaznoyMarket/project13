@@ -163,7 +163,7 @@ class Action {
             if ($user) {
                 $params['userid'] = $user->getId();
             }
-            $params['itemtype'] = $product->getMainCategory()->getId();
+            $params['itemtype'] = $product->getMainCategory() ? $product->getMainCategory()->getId() : null;
             $r = $client->query('relateditems', $params);
 
             if (isset($r['error'])) {

@@ -319,26 +319,52 @@ $(document).ready(function() {
 				})
 			}
 			catch (err){
-				var date = new Date();
-				var time = date.getHours()+':'+date.getMinutes()+':'+date.getSeconds()
-				var nowUrl = window.location.pathname
-				var userAgent = navigator.userAgent
-				var data = {
-					time:time,
+				var pageID = $(body).data(id)
+				var dataToLog = {
+					event: 'swfobject_error',
 					type:'ошибка загрузки swf maybe3d',
-					nowUrl:nowUrl,
-					userAgent:userAgent,
+					pageID: pageID,
 					err: err,
 				}
-				$.ajax({
-	                type: 'POST',
-	                global: false,
-	                url: '/log-json',
-	                data: data
-	            })
+				logError(dataToLog)
 			}
 			return false
 		}
+        if ($(this).hasClass('3dimg')){
+            var object = $('#3dModelImg')
+            var data = object.data('value')
+            var host = object.data('host')
+            try {
+                if (!$('#3dImgContainer').length) {
+                    var AnimFramePlayer = new DAnimFramePlayer(document.getElementById('3dModelImg'), host)
+                    AnimFramePlayer.DoLoadModel(data)
+                }
+                $('#3dModelImg').lightbox_me({
+                    centered: true,
+                    closeSelector: ".close",
+                })
+            }
+            catch (err){
+                var date = new Date();
+                var time = date.getHours()+':'+date.getMinutes()+':'+date.getSeconds()
+                var nowUrl = window.location.pathname
+                var userAgent = navigator.userAgent
+                var data = {
+                    time:time,
+                    type:'ошибка загрузки 3dimg для мебели',
+                    nowUrl:nowUrl,
+                    userAgent:userAgent,
+                    err: err,
+                }
+                $.ajax({
+                    type: 'POST',
+                    global: false,
+                    url: '/log-json',
+                    data: data
+                })
+            }
+            return false
+        }
 		
 		if( mLib )
 			mLib.show( $(this).attr('ref') , $(this).attr('href'))

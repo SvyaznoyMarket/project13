@@ -15,7 +15,8 @@
 ?>
 
 <?
-/** @var $productVideo \Model\Product\Video\Entity */
+
+/** @var  $productVideo \Model\Product\Video\Entity|null */
 $productVideo = reset($productVideos);
 ?>
 <?
@@ -70,6 +71,8 @@ $productVideo = reset($productVideos);
 
     /** @var string $model3dExternalUrl */
     $model3dExternalUrl = ($productVideo instanceof \Model\Product\Video\Entity) ? $productVideo->getMaybe3d() : false;
+    /** @var string $model3dImg */
+    $model3dImg = ($productVideo instanceof \Model\Product\Video\Entity) ? $productVideo->getImg3d() : false;
     /** @var array $photo3dList */
     $photo3dList = [];
     /** @var array $p3d_res_small */
@@ -77,7 +80,7 @@ $productVideo = reset($productVideos);
     /** @var array $p3d_res_big */
     $p3d_res_big = [];
 
-    if (!$model3dExternalUrl) {
+    if (!$model3dExternalUrl && !$model3dImg) {
         $photo3dList = $product->getPhoto3d();
         foreach ($photo3dList as $photo3d) {
             $p3d_res_small[] = $photo3d->getUrl(0);
@@ -132,7 +135,7 @@ $productVideo = reset($productVideos);
       'wmode'=> "direct"
     ],
     'attributes' => [
-      'id'=> "<?=$model3dName?>",
+      'id'=> $model3dName,
     ],
     'flashvars'=> [
       'language'=> "auto",
@@ -141,7 +144,6 @@ $productVideo = reset($productVideos);
   ];
   
 ?>
-
 
   <div id="maybe3dModelPopup" class="popup" data-value="<?php print $page->json($arrayToMaybe3D); ?>">
     <i class="close" title="Закрыть">Закрыть</i>
@@ -152,6 +154,12 @@ $productVideo = reset($productVideos);
     </div>
   </div>
 
+<? endif ?>
+
+<? if ($model3dImg) : ?>
+    <div id="3dModelImg" class="popup" data-value="<?php print $page->json($model3dImg); ?>" data-host="<?=$page->json(['http://'.App::request()->getHost()])?>">
+        <i class="close" title="Закрыть">Закрыть</i>
+    </div>
 <? endif ?>
 
 <script type="text/javascript">
@@ -196,7 +204,7 @@ $productVideo = reset($productVideos);
 <? endif ?>
 
 <div class="goodsphoto">
-  <? if ($productVideo): ?><a class="goodsphoto_eVideoShield" href="#"></a><? endif ?>
+  <? if ($productVideo && $productVideo->getContent()): ?><a class="goodsphoto_eVideoShield" href="#"></a><? endif ?>
 
   <a href="<?= $product->getImageUrl(4) ?>" class="viewme" ref="image" onclick="return false">
     <? if ($product->getLabel()): ?>
@@ -501,7 +509,7 @@ $productVideo = reset($productVideos);
         	</a>
         </li>
         <? endforeach ?>
-        <? if (count($photo3dList) > 0 || $model3dExternalUrl): ?>
+        <? if (count($photo3dList) > 0): ?>
         <li><a href="#" class="axonometric viewme" ref="360" title="Объемное изображение">Объемное изображение</a></li>
         <? endif ?>
       </ul>

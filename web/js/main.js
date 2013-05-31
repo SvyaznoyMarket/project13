@@ -254,22 +254,21 @@ $(document).ready(function(){
 			}
 
 		}
-		/*subscribe*/
-		if ($('.bSubscibe').length){
-			$('.bSubscibe').bind('click', function(){
-				if ($(this).hasClass('checked')){
-					$(this).removeClass('checked')
-					$(this).find('.subscibe').removeAttr('checked')
-				}
-				else{
-					$(this).addClass('checked')
-					$(this).find('.subscibe').attr('checked','checked')
-				}
-				return false
-			})
-		}
 	}
 	regEmailValid()
+
+	/*subscribe*/
+	$('.bSubscibe').live('click', function(){
+		if ($(this).hasClass('checked')){
+			$(this).removeClass('checked')
+			$(this).find('.subscibe').removeAttr('checked')
+		}
+		else{
+			$(this).addClass('checked')
+			$(this).find('.subscibe').attr('checked','checked')
+		}
+		return false
+	})
 
 	/* upper */
 	var upper = $('#upper');
@@ -728,7 +727,7 @@ $(document).ready(function(){
 		$('#ajaxerror div.fl').append('<small>'+ settings.url.replace(/(.*)\?ts=/,'')+'</small>')
 	})
 	*/
-	var logError = function(data) {
+	logError = function(data) {
         if (data.ajaxUrl !== '/log-json') {
             $.ajax({
                 type: 'POST',
@@ -744,16 +743,12 @@ $(document).ready(function(){
 			404: function() {
 				// errorpopup(' 404 ошибка, страница не найдена')
 				var ajaxUrl = this.url
-				var date = new Date();
-				var time = date.getHours()+':'+date.getMinutes()+':'+date.getSeconds()
-				var nowUrl = window.location.pathname
-				var userAgent = navigator.userAgent
+				var pageID = $('body').data('id')
 				var data = {
-					time:time,
+					event: 'ajax_error',
 					type:'404 ошибка',
+					pageID: pageID,
 					ajaxUrl:ajaxUrl,
-					nowUrl:nowUrl,
-					userAgent:userAgent
 				}
 				logError(data)
 				if( typeof(_gaq) !== 'undefined' )
@@ -777,16 +772,12 @@ $(document).ready(function(){
 			500: function() {
 				// errorpopup(' сервер перегружен')
 				var ajaxUrl = this.url
-				var date = new Date();
-				var time = date.getHours()+':'+date.getMinutes()+':'+date.getSeconds()
-				var nowUrl = window.location.pathname
-				var userAgent = navigator.userAgent
+				var pageID = $('body').data('id')
 				var data = {
-					time:time,
+					event: 'ajax_error',
 					type:'500 ошибка',
+					pageID: pageID,
 					ajaxUrl:ajaxUrl,
-					nowUrl:nowUrl,
-					userAgent:userAgent
 				}
 				logError(data)
 				if( typeof(_gaq) !== 'undefined' )
@@ -795,16 +786,12 @@ $(document).ready(function(){
 			503: function() {
 				// errorpopup(' 503 ошибка, сервер перегружен')
 				var ajaxUrl = this.url
-				var date = new Date();
-				var time = date.getHours()+':'+date.getMinutes()+':'+date.getSeconds()
-				var nowUrl = window.location.pathname
-				var userAgent = navigator.userAgent
+				var pageID = $('body').data('id')
 				var data = {
-					time:time,
+					event: 'ajax_error',
 					type:'503 ошибка',
+					pageID: pageID,
 					ajaxUrl:ajaxUrl,
-					nowUrl:nowUrl,
-					userAgent:userAgent
 				}
 				logError(data)
 				if( typeof(_gaq) !== 'undefined' )
@@ -813,16 +800,12 @@ $(document).ready(function(){
 			504: function() {
 				// errorpopup(' 504 ошибка, проверьте соединение с интернетом')
 				var ajaxUrl = this.url
-				var date = new Date();
-				var time = date.getHours()+':'+date.getMinutes()+':'+date.getSeconds()
-				var nowUrl = window.location.pathname
-				var userAgent = navigator.userAgent
+				var pageID = $('body').data('id')
 				var data = {
-					time:time,
+					event: 'ajax_error',
 					type:'504 ошибка',
+					pageID: pageID,
 					ajaxUrl:ajaxUrl,
-					nowUrl:nowUrl,
-					userAgent:userAgent
 				}
 				logError(data)
 				if( typeof(_gaq) !== 'undefined' )
@@ -836,16 +819,12 @@ $(document).ready(function(){
 				console.error(' неизвестная ajax ошибка')
 				if( typeof(_gaq) !== 'undefined' )
 					_gaq.push(['_trackEvent', 'Errors', 'Ajax Errors', 'неизвестная ajax ошибка'])
-				var date = new Date();
-				var time = date.getHours()+':'+date.getMinutes()+':'+date.getSeconds()
-				var nowUrl = window.location.pathname
-				var userAgent = navigator.userAgent
+				var pageID = $('body').data('id')
 				var data = {
-					time:time,
+					event: 'ajax_error',
 					type:'неизвестная ajax ошибка',
+					pageID: pageID,
 					ajaxUrl:ajaxUrl,
-					nowUrl:nowUrl,
-					userAgent:userAgent
 				}
 				logError(data)
 			}
@@ -923,8 +902,6 @@ $(document).ready(function(){
 	})
 
 	$('#jsregion, .jsChangeRegion').click( function() {
-		var autoResolve = $(this).data("autoresolve-url")
-
 		var authFromServer = function(res){
 			if (!res.data.length){
 				$('.popupRegion .mAutoresolve').html('')
@@ -933,6 +910,12 @@ $(document).ready(function(){
 
 			var url = res.data[0].url
 			var name = res.data[0].name
+			var id = res.data[0].id
+
+			if (id === 14974 || id === 108136){
+				return false
+			}
+			
 			if ($('.popupRegion .mAutoresolve').length){
 				$('.popupRegion .mAutoresolve').html('<a href="'+url+'">'+name+'</a>')	
 			}
@@ -941,19 +924,28 @@ $(document).ready(function(){
 			}
 			
 		}
-		$.ajax({
-			type: 'GET',
-			url: autoResolve,
-			success: authFromServer
-		})
+
+		var autoResolve = $(this).data("autoresolve-url")
+		if (autoResolve !=='undefined'){
+			$.ajax({
+				type: 'GET',
+				url: autoResolve,
+				success: authFromServer
+			})
+		}
+		
 		getRegions()
 		return false
 	})
 	
 	$('body').delegate('#jschangecity', 'click', function(e) {
 		e.preventDefault()
-		if( $(this).data('url') )
+		if( $(this).data('url') ){
 			window.location = $(this).data('url')
+		}
+		else{
+			$('.popupRegion').trigger('close');
+		}
 	})
 	
 	$('.inputClear').bind('click', function(e) {
@@ -1510,10 +1502,10 @@ $(document).ready(function(){
 		else
 			var max = Math.ceil(wi / viswi)			
 
-		if(noajax) {
+		if((noajax !== undefined) && (noajax === true)) {
 			var buffer = 100
 		} else {
-			$(nodes.times).parent().parent().hasClass('accessories') ? 6 : 2
+			var buffer = ($(nodes.times).parent().parent().hasClass('accessories')) ? 6 : 2
 		}
 
 		var ajaxflag = false
@@ -1551,6 +1543,7 @@ $(document).ready(function(){
 			}
 			if( current < max && !ajaxflag ) {
 				if( current + 1 == max ) { //the last pull is loaded , so special shift
+
 					var boxes = $(nodes.wrap).find('.goodsbox')
 					$(boxes).hide()
 					var le = boxes.length
@@ -1560,6 +1553,7 @@ $(document).ready(function(){
 					current++
 				} else {
 					if( current + 1 >= buffer ) { // we have to get new pull from server
+
 						$(nodes.next).css('opacity','0.4') // addClass dont work ((
 						ajaxflag = true
 						var getData = []
@@ -1859,7 +1853,13 @@ $(document).ready(function(){
 				}
 			}
 			if( other.length > 0 && isSupplied){
-				html = '<h4>Доставка</h4><p>Через ~'+other[0].days+' дней<br/>планируемая дата поставки '+other[0].origin_date+'</p><p>Оператор контакт-cENTER согласует точную дату за 2-3 дня</p><p class="price">'+other[i].price+' <span class="rubl">p</span></p>'
+				html = '<h4>Доставка</h4><p>Через ~'+other[0].days+' дней<br/>планируемая дата поставки '+other[0].origin_date+'</p><p>Оператор контакт-cENTER согласует точную дату за 2-3 дня</p>'
+				if (other[i].price === 0){
+					html += '<p class="price">Бесплатно</p>'
+				}
+				else{
+					html += '<p class="price">'+other[i].price+' <span class="rubl">p</span></p>'
+				}
 			}
 			else{
 				html += '</ul>'	
