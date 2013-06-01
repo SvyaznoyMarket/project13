@@ -223,7 +223,7 @@ class Action {
                 ], json_decode($request->get('delivery_map'), true));
 
                 $actions = [];
-                if (\App::config()->coupon['enabled'] && (bool)$cart->getCoupons() && (count($deliveryData['deliveryTypes']) > 0)) {
+                if (\App::config()->coupon['enabled'] && (bool)$cart->getCoupons() && (count($deliveryData['deliveryTypes']) > 1)) {
                     $cart->clearCoupons();
                     $cart->fill();
 
