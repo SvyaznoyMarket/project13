@@ -3,6 +3,8 @@
 namespace View\Jewel\ProductCategory;
 
 class Layout extends \View\DefaultLayout {
+    protected $layout  = 'layout-oneColumn';
+
     public function prepare() {
         /** @var $category \Model\Product\Category\Entity */
         $category = $this->getParam('category') instanceof \Model\Product\Category\Entity ? $this->getParam('category') : null;
@@ -99,13 +101,8 @@ class Layout extends \View\DefaultLayout {
         return 'product_catalog';
     }
 
-    public function slotSidebar() {
-        return $this->render('product-category/_sidebar', $this->params);
-    }
-
     public function slotInnerJavascript() {
         $category = $this->getParam('category');
-
 
         return ''
             . $this->render('_remarketingGoogle', ['tag_params' => ['pagetype' => 'category', 'pcat' => $category->getToken(), ]])

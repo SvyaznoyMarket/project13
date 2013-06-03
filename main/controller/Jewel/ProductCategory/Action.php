@@ -152,6 +152,8 @@ class Action {
         ));
     }
 
+
+
     /**
      * @param \Http\Request $request
      * @param string        $categoryPath
@@ -159,7 +161,7 @@ class Action {
      * @throws \Exception\NotFoundException
      * @return \Http\Response
      */
-    public function category(\Http\Request $request, $categoryPath, $brandToken = null) {
+    public function prepareCategory(\Http\Request $request, $categoryPath, $brandToken = null) {
 
         \App::logger()->debug('Exec ' . __METHOD__);
 
@@ -246,6 +248,23 @@ class Action {
 
         // выполнение 3-го пакета запросов
         $client->execute(\App::config()->coreV2['retryTimeout']['tiny']);
+
+        return $this->category($filters, $category, $brand, $request, $regionsToSelect);
+    }
+
+
+    /**
+     * @param \Model\Product\Filter\Entity[]  $filters
+     * @param \Model\Product\Category\Entity  $category
+     * @param \Model\Brand\Entity|null        $brand
+     * @param \Http\Request                   $request
+     * @param \Model\Region\Entity[]          $regionsToSelect
+     * @throws \Exception\NotFoundException
+     * @return \Http\Response
+     */
+    public function category($filters, $category, $brand, $request, $regionsToSelect) {
+
+        \App::logger()->debug('Exec ' . __METHOD__);
 
         // фильтры
         $productFilter = $this->getFilter($filters, $category, $brand, $request);
@@ -375,75 +394,6 @@ class Action {
         \App::logger()->debug('Exec ' . __METHOD__);
 
         if (\App::config()->debug) \App::debug()->add('sub.act', 'ProductCategory\\Action.branchCategory', 138);
-
-        // сортировка
-        $productSorting = new \Model\Product\Sorting();
-        // дочерние категории сгруппированные по идентификаторам
-        $childrenById = [];
-        foreach ($category->getChild() as $child) {
-            $childrenById[$child->getId()] = $child;
-        }
-        // листалки сгруппированные по идентификаторам категорий
-        $limit = \App::config()->product['itemsInCategorySlider'] * 2;
-        $repository = \RepositoryManager::product();
-        $repository->setEntityClass('\\Model\\Product\\CompactEntity');
-        // массив фильтров для каждой дочерней категории
-        $filterData = array_map(function(\Model\Product\Category\Entity $category) use ($productFilter) {
-            $productFilter = clone $productFilter;
-            $productFilter->setCategory($category);
-
-            return $productFilter->dump();
-        }, $childrenById);
-        /** @var $child \Model\Product\Category\Entity */
-        $child = reset($childrenById);
-        $productPagersByCategory = [];
-        $productCount = 0;
-        foreach ($repository->getIteratorsByFilter($filterData, $productSorting->dump(), null, $limit) as $productPager) {
-            $productPager->setPage(1);
-            $productPager->setMaxPerPage($limit);
-            $productPagersByCategory[$child->getId()] = $productPager;
-            $child = next($childrenById);
-            $productCount += $productPager->count();
-        }
-
-
-
-        // video
-        $productVideosByProduct = [];
-        foreach ($productPagersByCategory as $productPager) {
-            foreach ($productPager as $product) {
-                /** @var $product \Model\Product\Entity */
-                $productVideosByProduct[$product->getId()] = [];
-            }
-        }
-        if ((bool)$productVideosByProduct) {
-            \RepositoryManager::productVideo()->prepareCollectionByProductIds(array_keys($productVideosByProduct), function($data) use (&$productVideosByProduct) {
-                foreach ($data as $id => $items) {
-                    if (!is_array($items)) continue;
-                    foreach ($items as $item) {
-                        if (!$item) continue;
-                        $productVideosByProduct[$id][] = new \Model\Product\Video\Entity((array)$item);
-                    }
-                }
-            });
-            \App::dataStoreClient()->execute(\App::config()->dataStore['retryTimeout']['tiny'], \App::config()->dataStore['retryCount']);
-        }
-
-        $page->setParam('productPagersByCategory', $productPagersByCategory);
-        $page->setParam('productVideosByProduct', $productVideosByProduct);
-        $page->setParam('sidebarHotlinks', true);
-
-        $myThingsData = [
-            'EventType' => 'MyThings.Event.Visit',
-            'Action'    => '1011',
-        ];
-        if ($category->isRoot()) {
-            $myThingsData['Category'] = $category->getName();
-        } else {
-            $myThingsData['Category'] = isset($category->getAncestor()[0]) ? $category->getAncestor()[0]->getName() : null;
-            $myThingsData['SubCategory'] = $category->getName();
-        }
-        $page->setParam('myThingsData', $myThingsData);
 
         return new \Http\Response($page->show());
     }

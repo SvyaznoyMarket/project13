@@ -228,10 +228,6 @@ class Action {
         if (!$category) {
             throw new \Exception\NotFoundException(sprintf('Категория товара @%s не найдена', $categoryToken));
         }
-        // все, что связано с этими категориями, обрабатываем специальным контроллером
-        elseif(in_array((int)$category->getId(), [1320])) {
-            return (new \Controller\Jewel\ProductCategory\Action())->category($request, $categoryPath, $brandToken);
-        }
 
         // подготовка 3-го пакета запросов
 
@@ -249,6 +245,11 @@ class Action {
 
         // выполнение 3-го пакета запросов
         $client->execute(\App::config()->coreV2['retryTimeout']['tiny']);
+
+        // все, что связано с этими категориями, обрабатываем специальным контроллером
+        if(in_array((int)$category->getId(), [1320])) {
+            return (new \Controller\Jewel\ProductCategory\Action())->category($filters, $category, $brand, $request, $regionsToSelect);
+        }
 
         // фильтры
         $productFilter = $this->getFilter($filters, $category, $brand, $request);
