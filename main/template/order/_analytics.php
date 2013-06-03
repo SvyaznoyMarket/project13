@@ -82,7 +82,7 @@
                     }
                 }
             }*/
-            $categoryFee = 1;
+            $categoryFee = 0;
             if (isset($productsById[$product->getId()]) && $productsById[$product->getId()]->getMainCategory()) {
                 if (isset(\App::config()->myThings['feeByCategory'][$productsById[$product->getId()]->getMainCategory()->getId()])) {
                     $categoryFee = \App::config()->myThings['feeByCategory'][$productsById[$product->getId()]->getMainCategory()->getId()];
