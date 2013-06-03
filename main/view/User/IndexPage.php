@@ -20,6 +20,16 @@ class IndexPage extends \View\DefaultLayout {
     }
 
     public function slotContent() {
+        if (!$this->hasParam('orderCount')) {
+            $orderCount = 0;
+            \RepositoryManager::order()->prepareCollectionByUserToken(\App::user()->getToken(), function($data) use(&$orderCount) {
+                $orderCount = (bool)$data ? count($data) : 0;
+            });
+            \App::coreClientV2()->execute();
+
+            $this->setParam('orderCount', $orderCount);
+        }
+
         return $this->render('user/page-index', $this->params);
     }
 
