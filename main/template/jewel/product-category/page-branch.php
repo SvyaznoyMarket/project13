@@ -15,6 +15,18 @@
 
 <?= $promoContent ?>
 
+<script>
+  $(document).ready(function(){
+    $(".items-section__list .item").hover(
+    	function() {
+    	$(this).addClass('hover');
+    },
+    	function() {
+    	$(this).removeClass('hover');
+    });
+  });
+</script>
+
 <div class="logo-section">Ювелирные Украшения</div>
 
 <nav class="brand-nav">
@@ -46,103 +58,115 @@
 </nav>
 
 <div class="filter-section">
-	<ul class="filter-section__title clearfix">
-		<li>Металлы</li>
-		<li>Материалы</li>
-		<li>Камни</li>
-		<li>Темы</li>
-		<li>Сортировать</li>
-	</ul>
-
-	<ul class="filter-section__value clearfix">
-		<li><a href="">Все металлы</a>
-			<ul class="filter-section__value__dd">
-				<li><a href="">золото</a></li>
-				<li><a href="">серебро</a></li>
-				<li><a href="">бронза</a></li>
-				<li><a href="">медь</a></li>
-			</ul>
+	<ul class="clearfix">
+		<li>
+			<div class="filter-section__title">Металлы</div>
+			<div class="filter-section__value">
+				<a href="">Все металлы</a>
+				<ul class="filter-section__value__dd">
+					<li><a href="">золото</a></li>
+					<li><a href="">серебро</a></li>
+					<li><a href="">бронза</a></li>
+					<li><a href="">медь</a></li>
+				</ul>
+			</div>
 		</li>
-		<li><a href="">Все материалы</a>
-			<ul class="filter-section__value__dd">
-				<li><a href="">золото</a></li>
-				<li><a href="">серебро</a></li>
-				<li><a href="">бронза</a></li>
-				<li><a href="">медь</a></li>
-			</ul>
+		<li>
+			<div class="filter-section__title">Металлы</div>
+			<div class="filter-section__value">
+				<a href="">Все металлы</a>
+				<ul class="filter-section__value__dd">
+					<li><a href="">золото</a></li>
+					<li><a href="">серебро</a></li>
+					<li><a href="">бронза</a></li>
+					<li><a href="">медь</a></li>
+				</ul>
+			</div>
 		</li>
-		<li><a href="">Все камни</a>
-			<ul class="filter-section__value__dd">
-				<li><a href="">золото</a></li>
-				<li><a href="">серебро</a></li>
-				<li><a href="">бронза</a></li>
-				<li><a href="">медь</a></li>
-			</ul>
+		<li>
+			<div class="filter-section__title">Металлы</div>
+			<div class="filter-section__value">
+				<a href="">Все металлы</a>
+				<ul class="filter-section__value__dd">
+					<li><a href="">золото</a></li>
+					<li><a href="">серебро</a></li>
+					<li><a href="">бронза</a></li>
+					<li><a href="">медь</a></li>
+				</ul>
+			</div>
 		</li>
-		<li><a href="">Все темы</a>
-			<ul class="filter-section__value__dd">
-				<li><a href="">золото</a></li>
-				<li><a href="">серебро</a></li>
-				<li><a href="">бронза</a></li>
-				<li><a href="">медь</a></li>
-			</ul>
+		<li>
+			<div class="filter-section__title">Металлы</div>
+			<div class="filter-section__value">
+				<a href="">Все металлы</a>
+				<ul class="filter-section__value__dd">
+					<li><a href="">золото</a></li>
+					<li><a href="">серебро</a></li>
+					<li><a href="">бронза</a></li>
+					<li><a href="">медь</a></li>
+				</ul>
+			</div>
 		</li>
-		<li><a href="">Как для себя</a>
-			<ul class="filter-section__value__dd">
-				<li><a href="">золото</a></li>
-				<li><a href="">серебро</a></li>
-				<li><a href="">бронза</a></li>
-				<li><a href="">медь</a></li>
-			</ul>
+		<li class="last">
+			<div class="filter-section__title">Металлы</div>
+			<div class="filter-section__value">
+				<a href="">Все металлы</a>
+				<ul class="filter-section__value__dd">
+					<li><a href="">золото</a></li>
+					<li><a href="">серебро</a></li>
+					<li><a href="">бронза</a></li>
+					<li><a href="">медь</a></li>
+				</ul>
+			</div>
 		</li>
 	</ul>
 </div>
 
 <div class="items-section">
 	<ul class="items-section__list">
-		<li>
+		<li class="item">
 			<div class="item-name"><a href="">Название няши</a></div>
 			<div class="item-img"><a href=""><img src="http://fs06.enter.ru/1/1/163/2d/58848.jpg" alt="" /></a></div>
 			<div class="item-price">1,950 RUB</div>
 			<div class="item-buy"><a href="">Купить</a></div>
 		</li>
 
-		<li>
+		<li class="item">
 			<div class="item-name"><a href="">Название няши</a></div>
 			<div class="item-img"><a href=""><img src="http://fs06.enter.ru/1/1/163/2d/58848.jpg" alt="" /></a></div>
 			<div class="item-price">1,950 RUB</div>
 			<div class="item-buy"><a href="">Купить</a></div>
 		</li>
 
-		<li>
+		<li class="item">
 			<div class="item-name"><a href="">Название няши</a></div>
 			<div class="item-img"><a href=""><img src="http://fs06.enter.ru/1/1/163/2d/58848.jpg" alt="" /></a></div>
 			<div class="item-price">1,950 RUB</div>
 			<div class="item-buy"><a href="">Купить</a></div>
 		</li>
 
-		<li>
+		<li class="item">
 			<div class="item-name"><a href="">Название няши</a></div>
 			<div class="item-img"><a href=""><img src="http://fs06.enter.ru/1/1/163/2d/58848.jpg" alt="" /></a></div>
 			<div class="item-price">1,950 RUB</div>
 			<div class="item-buy"><a href="">Купить</a></div>
 		</li>
 
-		<li>
+		<li class="item">
 			<div class="item-name"><a href="">Название няши</a></div>
 			<div class="item-img"><a href=""><img src="http://fs06.enter.ru/1/1/163/2d/58848.jpg" alt="" /></a></div>
 			<div class="item-price">1,950 RUB</div>
 			<div class="item-buy"><a href="">Купить</a></div>
 		</li>
 
-		<li>
+		<li class="item">
 			<div class="item-name"><a href="">Название няши</a></div>
 			<div class="item-img"><a href=""><img src="http://fs06.enter.ru/1/1/163/2d/58848.jpg" alt="" /></a></div>
 			<div class="item-price">1,950 RUB</div>
 			<div class="item-buy"><a href="">Купить</a></div>
 		</li>
 
-		<li>
+		<li class="item">
 			<div class="item-name"><a href="">Название няши</a></div>
 			<div class="item-img"><a href=""><img src="http://fs06.enter.ru/1/1/163/2d/58848.jpg" alt="" /></a></div>
 			<div class="item-price">1,950 RUB</div>
