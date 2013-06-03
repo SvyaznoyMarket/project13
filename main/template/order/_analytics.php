@@ -66,8 +66,7 @@
     <?php $orderSum = 0; ?>
     <?php foreach ($orders as $order) {
         foreach ($order->getProduct() as $product) {
-            $categoryFee = 1;
-            $categoryTreeIds = [];
+            /*$categoryTreeIds = [];
             if (isset($productsById[$product->getId()])) {
                 if (is_array($productsById[$product->getId()]->getCategory())) {
                     $categoryTreeIds = array_map(function($category){
@@ -82,44 +81,41 @@
                         }
                     }
                 }
-            }
-            $orderSum += round($product->getPrice() * $categoryFee, 2);
+            }*/
+            $categoryFee = 1;
             if (isset($productsById[$product->getId()]) && $productsById[$product->getId()]->getMainCategory()) {
                 if (isset(\App::config()->myThings['feeByCategory'][$productsById[$product->getId()]->getMainCategory()->getId()])) {
-                    $fee = $fee === null ? \App::config()->myThings['feeByCategory'][$productsById[$product->getId()]->getMainCategory()->getId()] : min($fee, \App::config()->myThings['feeByCategory'][$productsById[$product->getId()]->getMainCategory()->getId()]);
+                    $categoryFee = \App::config()->myThings['feeByCategory'][$productsById[$product->getId()]->getMainCategory()->getId()];
                 }
             }
+            $orderSum += round($product->getPrice() * $categoryFee, 2);
         }
-    }
-    if (null === $fee) {
-        $fee = min(\App::config()->myThings['feeByCategory']);
     }
 ?>
 <?php foreach ($orders as $i => $order):
     $jsonOrdr = array(
-    'order_article'    => implode(',', array_map(function ($orderProduct) {
-        /** @var $orderProduct \Model\Order\Product\Entity */
-        return $orderProduct->getId();
-    }, $order->getProduct())),
-    'order_id'         => $order->getNumber(),
-    'order_total'      => $order->getSum(),
-    'product_quantity' => implode(',', array_map(function ($orderProduct) {
-        /** @var $orderProduct \Model\Order\Product\Entity */
-        return $orderProduct->getQuantity();
-    }, $order->getProduct())),
+        'order_article'    => implode(',', array_map(function ($orderProduct) {
+            /** @var $orderProduct \Model\Order\Product\Entity */
+            return $orderProduct->getId();
+        }, $order->getProduct())),
+        'order_id'         => $order->getNumber(),
+        'order_total'      => $order->getSum(),
+        'product_quantity' => implode(',', array_map(function ($orderProduct) {
+            /** @var $orderProduct \Model\Order\Product\Entity */
+            return $orderProduct->getQuantity();
+        }, $order->getProduct())),
     );
 
     $myThingsData[] = array(
         'EventType' => 'MyThings.Event.Conversion',
         'Action' => '9902',
         'TransactionReference' => $order->getNumber(),
-        'TransactionAmount' => str_replace(',', '.', $order->getSum()), // Полная сумма заказа (дроби через точку
-        'Commission' => $fee === null ? 0 : round($order->getSum() * $fee, 2),
+        'TransactionAmount' => str_replace(',', '.', $order->getSum()), // Полная сумма заказа (дроби через точку)
+        'Commission' => $orderSum,
         'Products' => array_map(function($orderProduct){
             /** @var $orderProduct \Model\Order\Product\Entity  */
             return array('id' => $orderProduct->getId(), 'price' => $orderProduct->getPrice(), 'qty' => $orderProduct->getQuantity());
         }, $order->getProduct()),
-        'gg' => [$categoryFee, $fee]
     );
     ?>
 

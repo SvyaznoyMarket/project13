@@ -61,20 +61,27 @@ class Admitad {
         foreach ($categories as $category) {
             switch ($category->getId()) {
                 case 80:  // Мебель
+                    return 7;
                 case 320: // Детские товары
+                    return 9;
                 case 443: // Товары для дома
+                    return 7;
                 case 647: // Спорт и отдых
+                    return 12;
                 case 21:  // Красота и здоровье
-                    return 1;
+                    return 13;
                 case 224:  // Сделай сам
+                    return 15;
                 case 225:  // Аксессуары для авто
+                    return 15;
                 case 185:  // Подарки и хобби
+                    return 11;
                 case 2545: // Парфюмерия и косметика
-                    return 2;
+                    return 10;
                 case 1438: // Зоотовары
                     return 3;
                 case 788: // Электроника
-                    return 4;
+                    return 8;
                 case 1: // Бытовая техника
                     return 5;
                 case 923: // Украшения и часы

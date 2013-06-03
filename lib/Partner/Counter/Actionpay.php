@@ -27,7 +27,9 @@ class Actionpay {
 
             $sum = 0;
             $rate = 0;
+            $orderSum = 0;
             foreach ($orders as $order) {
+                $orderSum = 0;
                 $sum += $order->getSum();
 
                 foreach ($order->getProduct() as $orderProduct) {
@@ -65,11 +67,11 @@ class Actionpay {
                             $categoryRate = 0.136;
                             break;
                         case 788: // Электроника
-                            $categoryRate = 0;
-                            break;
-                        case 1024: //Электроника => Аксессуары
                             $categoryRate = 0.065;
                             break;
+                        /*case 1024: //Электроника => Аксессуары
+                            $categoryRate = 0.065;
+                            break;*/
                         case 185:  // Подарки и хобби
                             $categoryRate = 0.127;
                             break;
@@ -90,16 +92,18 @@ class Actionpay {
                             break;
                     }
 
-                    if ((0 == $rate) || ($categoryRate < $rate)) {
+                    $orderSum += $product->getPrice() * $categoryRate;
+
+                    /*if ((0 == $rate) || ($categoryRate < $rate)) {
                         $rate = $categoryRate;
-                    }
+                    }*/
                 }
             }
-
+            
             $link = strtr('http://n.actionpay.ru/ok/3781.png?actionpay={actionpayId}&apid={order.id}&price={sum}', [
                 '{actionpayId}' => $actionpayId,
                 '{order.id}'    => $order->getNumber(),
-                '{sum}'         => $sum * $rate,
+                '{sum}'         => $orderSum,
             ]);
         } catch (\Exception $e) {
             \App::logger()->error($e, ['partner', 'actionpay']);
