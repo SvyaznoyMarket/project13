@@ -9103,3 +9103,95 @@
 /*---END---СТИЛИ ЛИЧНОГО КАБИНЕТА---*/
 /*------НОВОГОДНЕЕ ОФОРМЛЕНИЕ------*/
 /*---END---НОВОГОДНЕЕ ОФОРМЛЕНИЕ---*/
+/*------СТИЛИ БРЕНД РАЗДЕЛА PANDORA------*/
+@media all {
+  .logo-section {
+    background: url("/css/pandoraCatalog/img/pandora_logo.gif") no-repeat 50% 0;
+    font-size: 20px;
+    font-family: 'Enter Type';
+    text-transform: uppercase;
+    padding: 10px 0 0;
+    margin: 0 0 25px;
+  }
+  .brand-nav {
+    border-top: 2px solid #EDEDED;
+    width: 960px;
+    margin: 0 0 0 -20px;
+  }
+  .brand-nav .brand-nav__list li {
+    float: left;
+    font-size: 16px;
+    font-family: 'Enter Type';
+    text-transform: uppercase;
+    border-right: 1px solid #EDEDED;
+  }
+  .brand-nav .brand-nav__list li a {
+    display: block;
+    padding: 0 40px;
+    line-height: 50px;
+  }
+  .brand-nav .brand-nav__list .new {
+    font-family: Tahoma;
+    font-size: 24px;
+    border: none;
+  }
+  .brand-nav .brand-nav__list .new a {
+    padding: 0 50px;
+  }
+  .brand-nav .brand-nav__list .kolye_kuloni a {
+    padding: 8px 35px 6px;
+    line-height: 18px;
+  }
+  .brand-nav .brand-nav__list .braslets a {
+    padding: 0 48px;
+  }
+  .banner-categories {
+    position: relative;
+    overflow: hidden;
+    width: 960px;
+    margin: 0 0 0 -20px;
+    height: 300px;
+  }
+  .banner-categories .banner-categories__img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+  }
+  .banner-categories .banner-categories__title {
+    font-size: 48px;
+    font-family: 'Enter Type';
+    text-transform: uppercase;
+    padding: 90px 0 0 20px;
+    position: relative;
+    z-index: 2;
+  }
+  .brand-subnav {
+    border-bottom: 3px solid #5E5E5E;
+    text-transform: uppercase;
+    width: 940px;
+    margin: 10px 0 10px -10px;
+  }
+  .brand-subnav .brand-subnav__title {
+    color: #5E5E5E;
+    font-family: 'Enter Type';
+    font-size: 16px;
+    float: left;
+  }
+  .brand-subnav .brand-subnav__list li {
+    float: left;
+    font-family: Tahoma;
+    font-size: 11px;
+  }
+  .brand-subnav .brand-subnav__list li a {
+    display: block;
+    padding: 0 15px;
+    line-height: 18px;
+  }
+  .brand-subnav .brand-subnav__list li .active {
+    background: #D7D7D7;
+    border: 1px solid #5E5E5E;
+    border-bottom: none;
+  }
+}
+/*---END---СТИЛИ БРЕНД РАЗДЕЛА PANDORA---*/
