@@ -109,7 +109,7 @@ class HtmlLayout {
      * @return string
      */
     final public function render($template, array $params = []) {
-        $params = $this->globalParams;
+        $params = array_merge($this->globalParams, $params);
         $params['page'] = $this;
         $params['user'] = \App::user();
         $params['request'] = \App::request();
