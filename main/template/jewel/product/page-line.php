@@ -73,10 +73,10 @@ $json = array(
 
 <h2 class="bold fl">Еще другие модели в серии <?php echo $line->getName() ?></h2>
 
-<?php echo $page->render('product/_listView', array('view' => $productView, 'request' => $request, 'category' => null)) ?>
+<?php echo $page->render('jewel/product/_listView', array('view' => $productView, 'request' => $request, 'category' => null)) ?>
 
 <div class="line"></div>
 
-<?php echo $page->render('product/_list', array('pager' => $productPager, 'view' => $productView, 'itemsPerRow' => 4)) ?>
+<?php echo $page->render('jewel/product/_list', array('pager' => $productPager, 'view' => $productView, 'itemsPerRow' => 4)) ?>
 
 <?php endif ?>

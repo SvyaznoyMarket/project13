@@ -29,7 +29,7 @@ class LinePage extends \View\DefaultLayout {
         $this->setTitle('Серия ' . $line->getName());
     }
     public function slotContent() {
-        return $this->render('product/page-line', $this->params);
+        return $this->render('jewel/product/page-line', $this->params);
     }
 
     public function slotBodyDataAttribute() {
@@ -45,7 +45,7 @@ class LinePage extends \View\DefaultLayout {
         }
 
         return ''
-            . ($product ? $this->tryRender('product/partner-counter/_etargeting', array('product' => $product)) : '')
+            . ($product ? $this->tryrender('jewel/product/partner-counter/_etargeting', array('product' => $product)) : '')
             . "\n\n"
             . (bool)$product ? $this->render('_remarketingGoogle', ['tag_params' => ['prodid' => $product->getId(), 'pagetype' => 'product', 'pname' => $product->getName(), 'pcat' => ($category) ? $category->getToken() : '', 'pvalue' => $product->getPrice()]]) : ''
             . "\n\n"

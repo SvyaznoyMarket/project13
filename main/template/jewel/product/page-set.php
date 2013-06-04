@@ -6,4 +6,4 @@
  */
 ?>
 
-<?= $page->render('product/_list', array('pager' => $pager, 'view' => 'expanded')) ?>
+<?= $page->render('jewel/product/_list', array('pager' => $pager, 'view' => 'expanded')) ?>

@@ -41,18 +41,19 @@ if (!isset($isAddInfo)) $isAddInfo = false;
 <? endif ?>
 
 <? if ($pager->count() && $hasListView): ?>
-<?= $page->render('product/_listView', array('view' => $view, 'request' => $request, 'category' => $category)) ?>
+<?= $page->render('jewel/product/_listView', array('view' => $view, 'request' => $request, 'category' => $category)) ?>
 <? endif ?>
 
 <? if ($productSorting && $pager->count()): ?>
-<?= $page->render('product/_sorting', array('productSorting' => $productSorting)) ?>
+<?= $page->render('jewel/product/_sorting', array('productSorting' => $productSorting)) ?>
 <? endif ?>
 
 <? if ($pager->count()): ?>
     <div class="line"></div>
 <? endif ?>
 
-<?= $page->render('product/_list', array('pager' => $pager, 'view' => $view, 'productVideosByProduct' => $productVideosByProduct, 'isAddInfo' => $isAddInfo)) ?>
+<? $itemsPerRow = empty($itemsPerRow) ? null : $itemsPerRow ?>
+<?= $page->render('jewel/product/_list', array('pager' => $pager, 'view' => $view, 'productVideosByProduct' => $productVideosByProduct, 'isAddInfo' => $isAddInfo, 'itemsPerRow' => $itemsPerRow)) ?>
 
 <? if ($pager->hasPages()): ?>
 <div class="fr allpager mBtn" alt="все товары в категории" title="все товары в категории"

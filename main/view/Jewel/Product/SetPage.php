@@ -10,7 +10,7 @@ class SetPage extends \View\DefaultLayout {
     }
 
     public function slotContent() {
-        return $this->render('product/page-set', $this->params);
+        return $this->render('jewel/product/page-set', $this->params);
     }
 
     public function slotBodyDataAttribute() {
@@ -18,7 +18,7 @@ class SetPage extends \View\DefaultLayout {
     }
 
     public function slotSidebar() {
-        return $this->render('product/page-set-sidebar', $this->params);
+        return $this->render('jewel/product/page-set-sidebar', $this->params);
     }
 
     public function slotInnerJavascript() {
@@ -39,7 +39,7 @@ class SetPage extends \View\DefaultLayout {
         $product = end($products);
 
         return ''
-            . ($product ? $this->tryRender('product/partner-counter/_etargeting', array('product' => $product)) : '')
+            . ($product ? $this->tryrender('jewel/product/partner-counter/_etargeting', array('product' => $product)) : '')
             . "\n\n"
             . (bool)$product ? $this->render('_remarketingGoogle', ['tag_params' => $tagData]) : ''
             . "\n\n"

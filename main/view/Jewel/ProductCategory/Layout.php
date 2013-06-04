@@ -5,6 +5,13 @@ namespace View\Jewel\ProductCategory;
 class Layout extends \View\DefaultLayout {
     protected $layout  = 'layout-oneColumn';
 
+    public function __construct() {
+        parent::__construct();
+
+        $this->addStylesheet('/css/global.css');
+    }
+
+
     public function prepare() {
         /** @var $category \Model\Product\Category\Entity */
         $category = $this->getParam('category') instanceof \Model\Product\Category\Entity ? $this->getParam('category') : null;

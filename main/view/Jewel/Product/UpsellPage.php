@@ -33,7 +33,7 @@ class UpsellPage extends \View\DefaultLayout {
         $this->setTitle('');
     }
     public function slotContent() {
-        return $this->render('product/page-upsell', $this->params);
+        return $this->render('jewel/product/page-upsell', $this->params);
     }
 
     public function slotBodyDataAttribute() {
@@ -62,7 +62,7 @@ class UpsellPage extends \View\DefaultLayout {
         }
 
         return ''
-            . ($product ? $this->tryRender('product/partner-counter/_etargeting', array('product' => $product)) : '')
+            . ($product ? $this->tryrender('jewel/product/partner-counter/_etargeting', array('product' => $product)) : '')
             . "\n\n"
             . (bool)$product ? $this->render('_remarketingGoogle', ['tag_params' => ['prodid' => $product->getId(), 'pagetype' => 'product', 'pname' => $product->getName(), 'pcat' => ($category) ? $category->getToken() : '', 'pvalue' => $product->getPrice()]]) : ''
             . "\n\n"

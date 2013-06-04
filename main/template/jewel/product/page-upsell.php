@@ -34,7 +34,7 @@
 
 <div class="pb30">
 	<? if ((bool)$accessories && \App::config()->product['showAccessories']): ?>
-	    <?= $page->render('product/_slider', [
+	    <?= $page->render('jewel/product/_slider', [
             'product'       => $product,
             'productList'   => array_values($accessories),
             'totalProducts' => count($product->getAccessoryId()),
@@ -47,7 +47,7 @@
 	<? endif ?>
 
 	<? if ((bool)$related && \App::config()->product['showRelated']): ?>
-	    <?= $page->render('product/_slider', [
+	    <?= $page->render('jewel/product/_slider', [
             'product'       => $product,
             'productList'   => array_values($related),
             'totalProducts' => count($product->getRelatedId()),

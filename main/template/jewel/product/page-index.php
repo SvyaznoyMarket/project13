@@ -351,7 +351,7 @@ $productVideo = reset($productVideos);
 
   <? elseif ($user->getRegion()->getHasTransportCompany()): ?>
     <? if (\App::config()->product['globalListEnabled'] && (bool)$product->getNearestCity()): ?>
-        <?= $page->render('product/_nearestCity', ['product' => $product]) ?>
+        <?= $page->render('jewel/product/_nearestCity', ['product' => $product]) ?>
     <? else: ?>
         <p>Этот товар мы доставляем только в регионах нашего присутствия</p>
     <? endif ?>
@@ -440,12 +440,12 @@ $productVideo = reset($productVideos);
 
 <? if ($showAccessoryUpper && (bool)$accessories && \App::config()->product['showAccessories']): ?>
     <div<? if ($accessoryCategory) print ' class="acess-box"' ?>>
-      <?= $page->render('product/_slider', ['product' => $product, 'productList' => array_values($accessories), 'totalProducts' => count($product->getAccessoryId()), 'itemsInSlider' =>  $accessoryCategory ? \App::config()->product['itemsInAccessorySlider'] : \App::config()->product['itemsInSlider'], 'page' => 1, 'title' => 'Аксессуары', 'url' => $page->url('product.accessory', ['productToken' => $product->getToken()]), 'gaEvent' => 'Accessorize', 'showCategories' => (bool)$accessoryCategory, 'accessoryCategory' => $accessoryCategory, 'additionalData' => $additionalData]) ?>
+      <?= $page->render('jewel/product/_slider', ['product' => $product, 'productList' => array_values($accessories), 'totalProducts' => count($product->getAccessoryId()), 'itemsInSlider' =>  $accessoryCategory ? \App::config()->product['itemsInAccessorySlider'] : \App::config()->product['itemsInSlider'], 'page' => 1, 'title' => 'Аксессуары', 'url' => $page->url('product.accessory', ['productToken' => $product->getToken()]), 'gaEvent' => 'Accessorize', 'showCategories' => (bool)$accessoryCategory, 'accessoryCategory' => $accessoryCategory, 'additionalData' => $additionalData]) ?>
     </div>
 <? endif ?>
 
 <? if ($showRelatedUpper && (bool)$related && \App::config()->product['showRelated']): ?>
-    <?= $page->render('product/_slider', ['product' => $product, 'productList' => array_values($related), 'totalProducts' => count($product->getRelatedId()), 'itemsInSlider' => \App::config()->product['itemsInSlider'], 'page' => 1, 'title' => 'С этим товаром также покупают', 'url' => $page->url('product.related', ['productToken' => $product->getToken()]), 'additionalData' => $additionalData]) ?>
+    <?= $page->render('jewel/product/_slider', ['product' => $product, 'productList' => array_values($related), 'totalProducts' => count($product->getRelatedId()), 'itemsInSlider' => \App::config()->product['itemsInSlider'], 'page' => 1, 'title' => 'С этим товаром также покупают', 'url' => $page->url('product.related', ['productToken' => $product->getToken()]), 'additionalData' => $additionalData]) ?>
 <? endif ?>
 
 <? if (false && \App::config()->smartengine['pull']): ?>
@@ -610,7 +610,7 @@ $productVideo = reset($productVideos);
     <div class="line"></div>
     <div style="width: 940px; float: none; margin: 0;" class="goodslist">
         <? $i = 0; foreach ($product->getKit() as $part): $i++ ?>
-        <?= $page->render('product/show/_compact', array('product' => $kit[$part->getId()], 'kit' => $part)) ?>
+        <?= $page->render('jewel/product/show/_compact', array('product' => $kit[$part->getId()], 'kit' => $part)) ?>
         <? if (0 == ($i % 4)): ?><br class="clear" /><? endif ?>
         <? endforeach ?>
 
@@ -658,14 +658,14 @@ $productVideo = reset($productVideos);
 
 </div>
 
-<?= $page->tryRender('product/_tag', ['product' => $product]) ?>
+<?= $page->tryrender('jewel/product/_tag', ['product' => $product]) ?>
 
 <? if (!$showAccessoryUpper && count($product->getAccessoryId()) && \App::config()->product['showAccessories']): ?>
-    <?= $page->render('product/_slider', ['product' => $product, 'productList' => array_values($accessories), 'totalProducts' => count($product->getAccessoryId()), 'itemsInSlider' => $accessoryCategory ? \App::config()->product['itemsInAccessorySlider'] : \App::config()->product['itemsInSlider'], 'page' => 1, 'title' => 'Аксессуары', 'url' => $page->url('product.accessory', array('productToken' => $product->getToken())), 'gaEvent' => 'Accessorize', 'showCategories' => (bool)$accessoryCategory, 'accessoryCategory' => $accessoryCategory, 'additionalData' => $additionalData]) ?>
+    <?= $page->render('jewel/product/_slider', ['product' => $product, 'productList' => array_values($accessories), 'totalProducts' => count($product->getAccessoryId()), 'itemsInSlider' => $accessoryCategory ? \App::config()->product['itemsInAccessorySlider'] : \App::config()->product['itemsInSlider'], 'page' => 1, 'title' => 'Аксессуары', 'url' => $page->url('product.accessory', array('productToken' => $product->getToken())), 'gaEvent' => 'Accessorize', 'showCategories' => (bool)$accessoryCategory, 'accessoryCategory' => $accessoryCategory, 'additionalData' => $additionalData]) ?>
 <? endif ?>
 
 <? if (!$showRelatedUpper && count($product->getRelatedId()) && \App::config()->product['showRelated']): ?>
-    <?= $page->render('product/_slider', ['product' => $product, 'productList' => array_values($related), 'totalProducts' => count($product->getRelatedId()), 'itemsInSlider' => \App::config()->product['itemsInSlider'], 'page' => 1, 'title' => 'С этим товаром также покупают', 'url' => $page->url('product.related', array('productToken' => $product->getToken())), 'additionalData' => $additionalData]) ?>
+    <?= $page->render('jewel/product/_slider', ['product' => $product, 'productList' => array_values($related), 'totalProducts' => count($product->getRelatedId()), 'itemsInSlider' => \App::config()->product['itemsInSlider'], 'page' => 1, 'title' => 'С этим товаром также покупают', 'url' => $page->url('product.related', array('productToken' => $product->getToken())), 'additionalData' => $additionalData]) ?>
 <? endif ?>
 
 <div class="line"></div>
@@ -719,6 +719,6 @@ $productVideo = reset($productVideos);
 
 
 <? if (\App::config()->analytics['enabled']): ?>
-    <?= $page->tryRender('product/partner-counter/_cityads', ['product' => $product]) ?>
-    <?= $page->tryRender('product/partner-counter/_recreative', ['product' => $product]) ?>
+    <?= $page->tryrender('jewel/product/partner-counter/_cityads', ['product' => $product]) ?>
+    <?= $page->tryrender('jewel/product/partner-counter/_recreative', ['product' => $product]) ?>
 <? endif ?>

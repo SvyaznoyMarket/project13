@@ -246,9 +246,22 @@ class Action {
         // выполнение 3-го пакета запросов
         $client->execute(\App::config()->coreV2['retryTimeout']['tiny']);
 
-        // все, что связано с этими категориями, обрабатываем специальным контроллером
-        if(in_array((int)$category->getId(), [1320])) {
-            return (new \Controller\Jewel\ProductCategory\Action())->category($filters, $category, $brand, $request, $regionsToSelect);
+        // получаем catalog json для категории (например, тип раскладки)
+        $catalogJson = \RepositoryManager::productCategory()->getCatalogJson($category);
+
+        // если в catalogJson'e указан category_layout_type == 'promo', то подгружаем промо-контент
+        if(!empty($catalogJson['category_layout_type']) &&
+            $catalogJson['category_layout_type'] == 'promo' &&
+            !empty($catalogJson['promo_token'])) {
+            $client = \App::contentClient();
+            $content = $client->query($catalogJson['promo_token'], [], false);
+            $promoContent = empty($content['content']) ? '' : $content['content'];
+        }
+
+        // если в catalogJson'e указан category_class, то обрабатываем запрос соответствующим контроллером
+        if(!empty($catalogJson['category_class'])) {
+            $controller = '\\Controller\\'.ucfirst($catalogJson['category_class']).'\\ProductCategory\\Action' ;
+            return (new $controller())->categoryDirect($filters, $category, $brand, $request, $regionsToSelect, $catalogJson, $promoContent);
         }
 
         // фильтры
@@ -268,18 +281,6 @@ class Action {
         } catch (\Exception $e) {
             $hotlinks = [];
             $seoContent = '';
-        }
-
-        // получаем catalog json для категории (например, тип раскладки)
-        $catalogJson = \RepositoryManager::productCategory()->getCatalogJson($category);
-
-        // если в catalogJson'e указан category_layout_type == 'promo', то подгружаем промо-контент
-        if(!empty($catalogJson['category_layout_type']) &&
-            $catalogJson['category_layout_type'] == 'promo' &&
-            !empty($catalogJson['promo_token'])) {
-            $client = \App::contentClient();
-            $content = $client->query($catalogJson['promo_token'], [], false);
-            $promoContent = empty($content['content']) ? '' : $content['content'];
         }
 
         $pageNum = (int)$request->get('page', 1);
@@ -348,7 +349,7 @@ class Action {
      * @return \Http\Response
      * @throws \Exception
      */
-    private function rootCategory(\Model\Product\Category\Entity $category, \Model\Product\Filter $productFilter, \View\Layout $page, \Http\Request $request) {
+    protected function rootCategory(\Model\Product\Category\Entity $category, \Model\Product\Filter $productFilter, \View\Layout $page, \Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
         if (\App::config()->debug) \App::debug()->add('sub.act', 'ProductCategory\\Action.rootCategory', 138);
@@ -375,7 +376,7 @@ class Action {
      * @param \Http\Request                  $request
      * @return \Http\Response
      */
-    private function branchCategory(\Model\Product\Category\Entity $category, \Model\Product\Filter $productFilter, \View\Layout $page, \Http\Request $request) {
+    protected function branchCategory(\Model\Product\Category\Entity $category, \Model\Product\Filter $productFilter, \View\Layout $page, \Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
         if (\App::config()->debug) \App::debug()->add('sub.act', 'ProductCategory\\Action.branchCategory', 138);
@@ -460,7 +461,7 @@ class Action {
      * @return \Http\Response
      * @throws \Exception\NotFoundException
      */
-    private function leafCategory(\Model\Product\Category\Entity $category, \Model\Product\Filter $productFilter, \View\Layout $page, \Http\Request $request) {
+    protected function leafCategory(\Model\Product\Category\Entity $category, \Model\Product\Filter $productFilter, \View\Layout $page, \Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
         if (\App::config()->debug) \App::debug()->add('sub.act', 'ProductCategory\\Action.leafCategory', 138);
@@ -574,7 +575,7 @@ class Action {
      * @param \Http\Request $request
      * @return \Model\Product\Filter
      */
-    private function getFilter(array $filters, \Model\Product\Category\Entity $category, \Model\Brand\Entity $brand = null, \Http\Request $request) {
+    protected function getFilter(array $filters, \Model\Product\Category\Entity $category, \Model\Brand\Entity $brand = null, \Http\Request $request) {
         // флаг глобального списка в параметрах запроса
         $isGlobal = self::isGlobal();
         //

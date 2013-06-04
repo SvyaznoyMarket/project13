@@ -50,7 +50,7 @@ if (\App::request()->get('instore')) {
 
 <div class="carousel">
     <? $i = 0; foreach ($pager as $product) { $i++ ?>
-        <?= $page->render('product/show/_' . $view, array(
+        <?= $page->render('jewel/product/show/_' . $view, array(
             'index'         => $i,
             'product'       => $product,
             'isHidden'      => $i > $itemsInSlider,
