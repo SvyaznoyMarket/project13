@@ -13,15 +13,25 @@ use Model\Product\Filter\Entity as FilterEntity;
  */
 ?>
 
-<?php $values = $productFilter->getValue($filter) ?>
+<?
+$values = $productFilter->getValue($filter);
+
+$isOpened = false;
+foreach (['нет', 'да'] as $id => $name) {
+    if (in_array($id, $values)) {
+        $isOpened = true;
+        break;
+    }
+}
+?>
 
 <dt class="bFilter__eName <? if (5 > $index) { ?> <?= ((1 == $index) ? ' first' : '') ?><? } ?>">
     <?= $filter->getName() ?>
 </dt>
 
-<dd class="bFilter__eProp"<? if (in_array($id, $values)): ?> style="display: block"<? endif ?>>
+<dd class="bFilter__eProp"<? if ($isOpened): ?> style="display: block"<? endif ?>>
     <ul class="checkbox_list clearfix">
-        <? foreach (array('нет', 'да') as $id => $name) { $id = (int)$id ?>
+        <? foreach (['нет', 'да'] as $id => $name) { $id = (int)$id ?>
         <li>
             <input name="<?= $formName ?>[<?= $filter->getId()?>][]" type="checkbox" value="<?= $id?>" <? if (in_array($id, $values)) echo 'checked' ?> id="<?= $formName ?>_<?= $filter->getId()?>_<?= $id?>" class="hiddenCheckbox"/>
             <label for="<?= $formName ?>_<?= $filter->getId()?>_<?= $id?>" class="prettyCheckbox checkbox list">

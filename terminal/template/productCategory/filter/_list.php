@@ -13,13 +13,23 @@ use Model\Product\Filter\Entity as FilterEntity;
  */
 ?>
 
-<?php $values = $productFilter->getValue($filter) ?>
+<?
+$values = $productFilter->getValue($filter);
+
+$isOpened = false;
+foreach ($filter->getOption() as $option) {
+    if (in_array($option->getId(), $values)) {
+        $isOpened = true;
+        break;
+    }
+}
+?>
 
 <dt class="bFilter__eName <? if (5 > $index) { ?> <?= ((1 == $index) ? ' first' : '') ?><? } ?>">
     <?= $filter->getName() ?>
 </dt>
 
-<dd class="bFilter__eProp"<? if (in_array($id, $values)): ?> style="display: block"<? endif ?>>
+<dd class="bFilter__eProp"<? if ($isOpened): ?> style="display: block"<? endif ?>>
     <ul class="checkbox_list clearfix">
         <? $i = 0; foreach ($filter->getOption() as $option) { $id = $option->getId() ?>
         <li>

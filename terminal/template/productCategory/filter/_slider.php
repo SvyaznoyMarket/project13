@@ -10,11 +10,18 @@
  */
 ?>
 
+<?
+$isOpened =
+    ($productFilter->getValueMin($filter) != $filter->getMin())
+    || ($productFilter->getValueMax($filter) != $filter->getMax())
+    ;
+?>
+
 <dt class="bFilter__eName <? if (5 > $index) { ?> <?= ((1 == $index) ? ' first' : '') ?><? } ?>">
     <?= $filter->getName() ?>
 </dt>
 
-<dd class="bFilter__eProp">
+<dd class="bFilter__eProp"<? if ($isOpened): ?> style="display: block"<? endif ?>>
     <div class="bSlide">
         <input type="hidden" name="<?= $formName ?>[<?= $filter->getId() ?>][from]" value="<?= $page->helper->clearZeroValue($productFilter->getValueMin($filter)) ?>" id="f_<?= $filter->getId()?>_from"/>
         <input type="hidden" name="<?= $formName ?>[<?= $filter->getId() ?>][to]" value="<?= $page->helper->clearZeroValue($productFilter->getValueMax($filter)) ?>" id="f_<?= $filter->getId()?>_to"/>
