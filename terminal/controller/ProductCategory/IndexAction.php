@@ -43,13 +43,18 @@ class IndexAction {
 
         $sortData = (array)$request->get('sort');
         if ((bool)$sortData) {
-            $sortName = key($sortData);
-            $sortDirection = current($sortData);
-            try {
-                $productSorting->setActiveSort($sortName);
-                $productSorting->setActiveDirection($sortDirection);
-            } catch (\Exception $e) {
-                \App::logger()->error($e);
+            foreach ($sortData as $sortItem) {
+                if (!is_array($sortItem)) {
+                    \App::logger()->error(sprintf('Неправильная сортировка %s', $sortItem));
+                    continue;
+                }
+                $sortName = (string)key($sortItem);
+                $sortDirection = (string)current($sortItem);
+                try {
+                    $productSorting->setActiveSort($sortName, $sortDirection);
+                } catch (\Exception $e) {
+                    \App::logger()->error($e);
+                }
             }
         }
 

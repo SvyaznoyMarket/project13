@@ -28,44 +28,27 @@ class TerminalSorting {
         ],
     ];
     /** @var string */
-    private $activeSort;
-    /** @var string */
-    private $activeDirection;
+    private $activeSort = [];
 
     public function __construct() {
-        $this->setActiveSort('score');
-        $this->setActiveDirection('desc');
+        $this->setActiveSort('score', 'desc');
     }
 
     /**
-     * @param string $activeDirection
+     * @param string $name
+     * @param string $direction
      * @throws \Exception
      */
-    public function setActiveDirection($activeDirection) {
-        if (!is_null($activeDirection) && !in_array($activeDirection, ['asc', 'desc'])) {
-            throw new \Exception(sprintf('Неправильное направление сортировки %s', $activeDirection));
+    public function setActiveSort($name, $direction) {
+        if (!array_key_exists($name, $this->sort)) {
+            throw new \Exception(sprintf('Неправильное название сортировки %s', $name));
         }
 
-        $this->activeDirection = (string)$activeDirection;
-    }
-
-    /**
-     * @return string
-     */
-    public function getActiveDirection() {
-        return $this->activeDirection;
-    }
-
-    /**
-     * @param string $activeSort
-     * @throws \Exception
-     */
-    public function setActiveSort($activeSort) {
-        if (!is_null($activeSort) && !array_key_exists($activeSort, $this->sort)) {
-            throw new \Exception(sprintf('Неправильное название сортировки %s', $activeSort));
+        if (!in_array($direction, ['asc', 'desc'])) {
+            throw new \Exception(sprintf('Неправильное направление сортировки %s', $direction));
         }
 
-        $this->activeSort = (string)$activeSort;
+        $this->activeSort[] = [$name => $direction];
     }
 
     /**
@@ -93,10 +76,7 @@ class TerminalSorting {
      * @return array
      */
     public function dump() {
-        return
-            $this->getActiveSort() && $this->getActiveDirection()
-            ? [$this->getActiveSort() => $this->getActiveDirection()]
-            : [];
+        return $this->getActiveSort();
     }
 
     /**
