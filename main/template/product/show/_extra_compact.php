@@ -24,7 +24,10 @@ $additionalData = isset($additionalData) ? $additionalData : null;
 				title="<?php echo $product->getNameWithCategory() ?>" width="119" height="120"/>
 			</a>
 		</div>
-	    <h3><a href="<?php echo $product->getLink() ?>"<?php if (!empty($gaEvent)) echo ' data-event="'.$gaEvent.'" data-title="Переход по ссылке" class="gaEvent"'; ?>><?php echo $product->getName() ?></a></h3>
+
+    <?= $page->render('product/_reviewsStarsCompact', ['product' => $product, 'twoLines' => true]) ?>
+
+    <h3><a href="<?php echo $product->getLink() ?>"<?php if (!empty($gaEvent)) echo ' data-event="'.$gaEvent.'" data-title="Переход по ссылке" class="gaEvent"'; ?>><?php echo $product->getName() ?></a></h3>
 		<div class="goodsbar mSmallBtns mR">
           <?= $page->render('cart/_button', array('product' => $product, 'disabled' => !$product->getIsBuyable())) ?>
         </div>

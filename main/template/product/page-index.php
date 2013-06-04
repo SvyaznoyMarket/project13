@@ -108,6 +108,8 @@ $productVideo = reset($productVideos);
                 break;
         }
     }
+  
+    $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro['review_list']));
 ?>
 
 <style type="text/css">
@@ -247,10 +249,22 @@ $productVideo = reset($productVideos);
 <!-- Goods info -->
 <div class="goodsinfo bGood">
   <div class="bGood__eArticle clearfix">
-    <div class="fr">
-        <div id="testFreak" class="jsanalytics"><a id="tfw-badge" href="http://www.testfreaks.ru"></a></div>
-    </div>
     <span>Артикул #<span  itemprop="productID"><?= $product->getArticle() ?></span></span>
+    <div class="pt10 pb10">
+      <? $avgStarScore = empty($reviewsData['avg_star_score']) ? 0 : $reviewsData['avg_star_score'] ?>
+      <?= empty($avgStarScore) ? '' : $page->render('product/_starsFive', ['score' => $avgStarScore]) ?>
+      <? if(!empty($avgStarScore)) { ?>
+          <span class="underline" onclick="scrollToId('reviewsSectionHeader')"><?= $reviewsData['num_reviews'] ?> <?= $page->helper->numberChoice($reviewsData['num_reviews'], array('отзыв', 'отзыва', 'отзывов')) ?></span>
+      <? } else { ?>
+          <span>Отзывов нет</span>
+      <? } ?>
+      <div class="hf" id="reviewsProductName"><?= $product->getName() ?></div>
+      <span>(<span class="underline newReviewPopupLink" data-pid="productid">оставить отзыв</span>)</span>
+      <div style="position:fixed; top:40px; left:50%; margin-left:-442px; z-index:1002; display:none; width:700px; height:480px" class="reviewPopup popup clearfix">
+        <a class="close" href="#">Закрыть</a>
+        <iframe id="rframe" frameborder="0" scrolling="auto" height="480" width="700"></iframe>
+      </div>
+    </div>
   </div>
 
   <div class="font14 pb15" itemprop="description"><?= $product->getTagline() ?></div>
@@ -619,56 +633,125 @@ $productVideo = reset($productVideos);
 <div class="clear pb25"></div>
 <? endif ?>
 
-<h2 class="bold"><?= $product->getName() ?> - Характеристики</h2>
-<div class="line pb25"></div>
-<div class="descriptionlist">
 
-    <? foreach ($product->getGroupedProperties() as $group): ?>
-    <? if (!count($group['properties'])) continue ?>
-        <div class="pb15"><strong><?= $group['group']->getName() ?></strong></div>
-        <? foreach ($group['properties'] as $property): ?>
-        <? /** @var $property \Model\Product\Property\Entity  */?>
-            <div class="point">
-                <div class="title"><h3><?= $property->getName() ?></h3>
-                  <? if ($property->getHint()): ?>
-                  <div class="bHint fl">
-                    <a class="bHint_eLink"><?= $property->getName() ?></a>
-                    <div class="bHint_ePopup popup">
-                      <div class="close"></div>
-                      <?= $property->getHint() ?>
-                    </div>
-                  </div>
-                  <? endif ?>
-                </div>
-                <div class="description fl">
-                    <span class="fl mr10"><?= $property->getStringValue() ?></span>
-                    <? if ($property->getValueHint()): ?>
-                    <div class="bHint fl">
-                        <a class="bHint_eLink"><?= $property->getStringValue() ?></a>
+<h2 class="bold"><?= $product->getName() ?> - Характеристики</h2>
+<div class="line pb5"></div>
+<div class="descriptionWrapper">
+  <? $groupedProperties = $product->getGroupedProperties();?>
+  <? if($reviewsPresent) { ?>
+    <div class="descriptionlist short">
+        <? $propertiesShown = 0; ?>
+        <? foreach ($groupedProperties as $groupKey => $group): ?>
+        <? if (!count($group['properties'])) continue ?>
+            <div class="pb15"><strong><?= $group['group']->getName() ?></strong></div>
+            <? foreach ($group['properties'] as $propertyKey => $property): ?>
+            <? /** @var $property \Model\Product\Property\Entity  */?>
+                <div class="point">
+                    <div class="title"><h3><?= $property->getName() ?></h3>
+                      <? if ($property->getHint()): ?>
+                      <div class="bHint fl">
+                        <a class="bHint_eLink"><?= $property->getName() ?></a>
                         <div class="bHint_ePopup popup">
-                            <div class="close"></div>
-                            <?= $property->getValueHint() ?>
+                          <div class="close"></div>
+                          <?= $property->getHint() ?>
                         </div>
+                      </div>
+                      <? endif ?>
+                    </div>
+                    <div class="description fl">
+                        <span class="fl mr10"><?= $property->getStringValue() ?></span>
+                        <? if ($property->getValueHint()): ?>
+                        <div class="bHint fl">
+                            <a class="bHint_eLink"><?= $property->getStringValue() ?></a>
+                            <div class="bHint_ePopup popup">
+                                <div class="close"></div>
+                                <?= $property->getValueHint() ?>
+                            </div>
+                        </div>
+                        <? endif ?>
+                    </div>
+                </div>
+                <? 
+                  $propertiesShown++;
+                  unset($group['properties'][$propertyKey]);
+                  if(empty($group['properties'])) unset($groupedProperties[$groupKey]);
+                  if($propertiesShown >= 10) break;
+                ?>
+            <? endforeach ?>
+            <? if($propertiesShown >= 10) break; ?>
+        <? endforeach ?>
+    </div>
+  <? } ?>
+  <div class="descriptionlist<?= $reviewsPresent ? ' hf' : '' ?>">
+      <? $showGroupName = false ?>
+      <? foreach ($groupedProperties as $key => $group): ?>
+      <? if (!count($group['properties'])) continue ?>
+          <? if($showGroupName) { ?>
+            <div class="pb15"><strong><?= $group['group']->getName() ?></strong></div>
+          <? } ?>
+          <? $showGroupName = true ?>
+          <? foreach ($group['properties'] as $property): ?>
+          <? /** @var $property \Model\Product\Property\Entity  */?>
+              <div class="point">
+                  <div class="title"><h3><?= $property->getName() ?></h3>
+                    <? if ($property->getHint()): ?>
+                    <div class="bHint fl">
+                      <a class="bHint_eLink"><?= $property->getName() ?></a>
+                      <div class="bHint_ePopup popup">
+                        <div class="close"></div>
+                        <?= $property->getHint() ?>
+                      </div>
                     </div>
                     <? endif ?>
-                </div>
-            </div>
-        <? endforeach ?>
-    <? endforeach ?>
-
+                  </div>
+                  <div class="description fl">
+                      <span class="fl mr10"><?= $property->getStringValue() ?></span>
+                      <? if ($property->getValueHint()): ?>
+                      <div class="bHint fl">
+                          <a class="bHint_eLink"><?= $property->getStringValue() ?></a>
+                          <div class="bHint_ePopup popup">
+                              <div class="close"></div>
+                              <?= $property->getValueHint() ?>
+                          </div>
+                      </div>
+                      <? endif ?>
+                  </div>
+              </div>
+          <? endforeach ?>
+      <? endforeach ?>
+  </div>
 </div>
+<div class="clear"></div>
+<? if($reviewsPresent) { ?>
+  <div id="productDescriptionToggle" class="contourButton mb15 button width250">Показать все характеристики</div>
+<? } ?>
 
-<?= $page->tryRender('product/_tag', ['product' => $product]) ?>
+<? if($reviewsPresent) { ?>
+  <h2 id="reviewsSectionHeader" class="bold"><?= $product->getName() ?> - Обзоры и отзывы</h2>
+  <div class="line pb5"></div>
+  <div id="reviewsSummary">
+      <?= $page->render('product/_reviewsSummary', ['reviewsData' => $reviewsData, 'reviewsDataPro' => $reviewsDataPro, 'reviewsDataSummary' => $reviewsDataSummary]) ?>
+  </div>
+
+  <? if(!empty($reviewsData['review_list'])) { ?>
+    <div id="reviewsWrapper" data-product-id="<?= $product->getId() ?>" data-page-count="<?= $reviewsData['page_count'] ?>" data-container="reviewsUser" data-reviews-type="user">
+  <? } elseif(!empty($reviewsDataPro['review_list'])) { ?>
+    <div id="reviewsWrapper" data-product-id="<?= $product->getId() ?>" data-page-count="<?= $reviewsDataPro['page_count'] ?>" data-container="reviewsPro" data-reviews-type="pro">
+  <? } ?>
+      <?= $page->render('product/_reviews', ['reviewsData' => $reviewsData, 'reviewsDataPro' => $reviewsDataPro]) ?>
+    </div>
+<? } ?>
 
 <? if (!$showAccessoryUpper && count($product->getAccessoryId()) && \App::config()->product['showAccessories']): ?>
     <?= $page->render('product/_slider', ['product' => $product, 'productList' => array_values($accessories), 'totalProducts' => count($product->getAccessoryId()), 'itemsInSlider' => $accessoryCategory ? \App::config()->product['itemsInAccessorySlider'] : \App::config()->product['itemsInSlider'], 'page' => 1, 'title' => 'Аксессуары', 'url' => $page->url('product.accessory', array('productToken' => $product->getToken())), 'gaEvent' => 'Accessorize', 'showCategories' => (bool)$accessoryCategory, 'accessoryCategory' => $accessoryCategory, 'additionalData' => $additionalData]) ?>
 <? endif ?>
 
-<? if (!$showRelatedUpper && count($product->getRelatedId()) && \App::config()->product['showRelated']): ?>
+<? if (!$showRelatedUpper && count($related) && \App::config()->product['showRelated']): ?>
     <?= $page->render('product/_slider', ['product' => $product, 'productList' => array_values($related), 'totalProducts' => count($product->getRelatedId()), 'itemsInSlider' => \App::config()->product['itemsInSlider'], 'page' => 1, 'title' => 'С этим товаром также покупают', 'url' => $page->url('product.related', array('productToken' => $product->getToken())), 'additionalData' => $additionalData]) ?>
 <? endif ?>
 
-<div class="line"></div>
+<?= $page->tryRender('product/_tag', ['product' => $product]) ?>
+
 <div class="fr ar">
     <? //if ($product->getIsBuyable() || !$product->getState()->getIsShop()): ?>
     <div class="goodsbarbig mSmallBtns" ref="<?= $product->getToken() ?>" data-value='<?= $json ?>'>

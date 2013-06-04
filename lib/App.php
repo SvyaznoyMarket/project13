@@ -251,6 +251,20 @@ class App {
 
     /**
      * @static
+     * @return \ReviewsStore\Client
+     */
+    public static function reviewsClient() {
+        static $instance;
+
+        if (!$instance) {
+            $instance = new \ReviewsStore\Client(self::config()->reviewsStore, self::curl());
+        }
+
+        return $instance;
+    }
+
+    /**
+     * @static
      * @return \Content\Client
      */
     public static function contentClient() {
