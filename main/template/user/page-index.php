@@ -30,6 +30,34 @@
         </li>
     </ul>
 
+    <? if (\App::config()->subscribe['enabled']): ?>
+    <div class="font16 orange pb10">Подписка</div>
+    <ul class="leftmenu pb20">
+        <li>
+            Акции, новости и специальные предложения
+            <form action="<?= $page->url('user.subscribe') ?>" method="post">
+                <ul>
+                    <li>
+                        <label class="bSubscibe <? if ($user->getEntity()->getIsSubscribed()): ?>checked<? endif ?>">
+                            <b></b> Email
+                            <input type="checkbox" name="subscribe" value="1" autocomplete="off" class="subscibe"<? if ($user->getEntity()->getIsSubscribed()): ?> checked="checked" <? endif ?> />
+                        </label>
+                    </li>
+                    <li>
+                        <label class="bSubscibe <? if ($user->getEntity()->getIsSubscribedViaSms()): ?>checked<? endif ?>">
+                            <b></b> SMS
+                            <input type="checkbox" name="subscribe_sms" value="1" autocomplete="off" class="subscibe"<? if ($user->getEntity()->getIsSubscribedViaSms()): ?> checked="checked" <? endif ?> />
+                        </label>
+                    </li>
+                </ul>
+
+                <input type="submit" class="fr button bigbutton" value="Сохранить" tabindex="10"/>
+                <div class="clear"></div>
+            </form>
+        </li>
+    </ul>
+    <? endif ?>
+
     <div class="font16 orange pb10">cEnter защиты прав потребителей </div>
     <ul class="leftmenu pb20">
         <li>
@@ -38,17 +66,3 @@
     </ul>
 
 </div>
-
-<? if (false): // TODO: временно убрали из-за проблем с ofsys ?>
-<form action="<?= $page->url('user.subscribe') ?>" method="post">
-    <div class="fr width315">
-        <div class="font16 orange pb10">Рассылка по электронной почте</div>
-        <label class="bSubscibe <? if ($user->getEntity()->getIsSubscribed()): ?>checked<? endif ?>">
-            <b></b> Хочу знать об интересных<br />предложениях
-            <input type="checkbox" name="subscribe" value="1" autocomplete="off" class="subscibe"<? if ($user->getEntity()->getIsSubscribed()): ?> checked="checked" <? endif ?> />
-        </label>
-        <input type="submit" class="fr button bigbutton" value="Сохранить" tabindex="10"/>
-        <div class="clear"></div>
-    </div>
-</form>
-<? endif ?>
