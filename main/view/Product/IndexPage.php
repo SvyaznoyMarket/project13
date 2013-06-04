@@ -196,6 +196,7 @@ class IndexPage extends \View\DefaultLayout {
             'город'     => [$region->getName()],
             'сайт'      => null,
             'товар'     => $product->getName(),
+            'анонс товара'     => $product->getAnnounce(),
             'цена'      => $product->getPrice() . ' руб',
         ];
         $dataStore->addQuery(sprintf('inflect/product-category/%s.json', $category->getId()), [], function($data) use (&$patterns) {
@@ -209,6 +210,21 @@ class IndexPage extends \View\DefaultLayout {
         });
 
         $dataStore->execute();
+
+        // переменные для характеристик товара
+        $properties = $product->getProperty();
+        foreach ($properties as $property) {
+            if($property->getValue() == 'true') {
+                $value = 'да';
+            } elseif($property->getValue() == 'false') {
+                $value = 'нет';
+            } elseif($property->getValue()) {
+                $value = $property->getValue();
+            } else {
+                $value = 'не указано';
+            }
+            $patterns[mb_strtolower($property->getName())] = $value;
+        }
 
         if (!$seoTemplate) return;
 

@@ -1,0 +1,5 @@
+NameError: variable @black is undefined in /home/green/www/enter/web/css/common/common.less:8:9
+7   background: #f6f1e9;
+8   color: @black;
+9   font: normal 75% tahoma, verdana, arial, helvetica, sans-serif;[0m
+
