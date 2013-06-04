@@ -88,7 +88,7 @@
                     $categoryFee = \App::config()->myThings['feeByCategory'][$productsById[$product->getId()]->getMainCategory()->getId()];
                 }
             }
-            $orderSum += round($product->getPrice() * $categoryFee, 2);
+            $orderSum += round($product->getPrice() * $categoryFee * $product->getQuantity(), 2);
         }
     }
 ?>

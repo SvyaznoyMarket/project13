@@ -92,7 +92,7 @@ class Actionpay {
                             break;
                     }
 
-                    $orderSum += $product->getPrice() * $categoryRate;
+                    $orderSum += $orderProduct->getPrice() * $categoryRate * $orderProduct->getQuantity();
 
                     /*if ((0 == $rate) || ($categoryRate < $rate)) {
                         $rate = $categoryRate;

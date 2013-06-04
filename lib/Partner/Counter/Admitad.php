@@ -38,7 +38,7 @@ class Admitad {
 
                 $link = strtr('http://ad.admitad.com/register/cdaf092422/script_type/img/payment_type/sale/product/{admitad.category.type}/cart/{order.sum}/order_id/{order.number}/uid/{admitad.user.id}/tracking/{category.token}/', [
                     '{admitad.category.type}' => $admitadCategoryType,
-                    '{order.sum}'             => (int)$orderProduct->getPrice(),
+                    '{order.sum}'             => (int)$orderProduct->getPrice() * $orderProduct->getQuantity(),
                     '{order.number}'          => $order->getNumber() . '_' . uniqid(),
                     '{admitad.user.id}'       => $admitadUserId,
                     '{category.token}'        => $category ? $category->getToken() : null,
