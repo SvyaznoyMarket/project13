@@ -15,27 +15,10 @@
 <? endif ?>
 <div class="clear"></div>
 
-<? if(!empty($promoContent)): ?>
-    <?= $promoContent ?>
-<? endif ?>
-
 <div class="clear"></div>
 <?= $page->tryRender('product-category/_categoryData', array('page' => $page, 'category' => $category)) ?>
 
-
-<script>
-  $(document).ready(function(){
-    $(".items-section__list .item").hover(
-      function() {
-      $(this).addClass('hover');
-    },
-      function() {
-      $(this).removeClass('hover');
-    });
-  });
-</script>
-
-<div class="logo-section" style="background: url('/css/pandoraCatalog/img/pandora_logo.gif') no-repeat 50% 0;">Ювелирные Украшения</div>
+<div class="logo-section">Ювелирные Украшения</div>
 
 <nav class="brand-nav">
   <ul class="brand-nav__list clearfix">
@@ -48,10 +31,9 @@
   </ul>
 </nav>
 
-<div class="banner-categories">
-  <img class="banner-categories__img" src="/css/pandoraCatalog/img/pandora_catalog_banner.jpg" alt="" />
-  <div class="banner-categories__title">Подвески -<br/>шармы</div>
-</div>
+<? if(!empty($promoContent)): ?>
+    <?= $promoContent ?>
+<? endif ?>
 
 <nav class="brand-subnav clearfix">
   <div class="brand-subnav__title">Подвески - шармы</div>
@@ -80,9 +62,9 @@
       </div>
     </li>
     <li>
-      <div class="filter-section__title">Металлы</div>
+      <div class="filter-section__title">Материалы</div>
       <div class="filter-section__value">
-        <a href="">Все металлы</a>
+        <a href="">Все материалы</a>
         <ul class="filter-section__value__dd">
           <li><a href="">золото</a></li>
           <li><a href="">серебро</a></li>
@@ -92,9 +74,9 @@
       </div>
     </li>
     <li>
-      <div class="filter-section__title">Металлы</div>
+      <div class="filter-section__title">Камни</div>
       <div class="filter-section__value">
-        <a href="">Все металлы</a>
+        <a href="">Все камни</a>
         <ul class="filter-section__value__dd">
           <li><a href="">золото</a></li>
           <li><a href="">серебро</a></li>
@@ -104,9 +86,9 @@
       </div>
     </li>
     <li>
-      <div class="filter-section__title">Металлы</div>
+      <div class="filter-section__title">Темы</div>
       <div class="filter-section__value">
-        <a href="">Все металлы</a>
+        <a href="">Все все</a>
         <ul class="filter-section__value__dd">
           <li><a href="">золото</a></li>
           <li><a href="">серебро</a></li>
@@ -116,9 +98,9 @@
       </div>
     </li>
     <li class="last">
-      <div class="filter-section__title">Металлы</div>
+      <div class="filter-section__title">Сортировать</div>
       <div class="filter-section__value">
-        <a href="">Все металлы</a>
+        <a href="">Как для своих</a>
         <ul class="filter-section__value__dd">
           <li><a href="">золото</a></li>
           <li><a href="">серебро</a></li>

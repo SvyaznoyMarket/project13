@@ -117,6 +117,18 @@ class Layout extends \View\DefaultLayout {
             . $this->render('_innerJavascript');
     }
 
+    public function slotContentHead() {
+        // заголовок контента страницы - убираем, его роль выполняет баннер из сервиса контента
+        $this->setParam('title', null);
+
+        // навигация
+        if (!$this->hasParam('breadcrumbs')) {
+            $this->setParam('breadcrumbs', []);
+        }
+
+        return $this->render('_contentHead', $this->params);
+    }
+
     /**
      * @param \Model\Page\Entity $page
      */

@@ -1913,4 +1913,13 @@ $(document).ready(function(){
         });
     }
 
+
+    $(".items-section__list .item").hover(
+      function() {
+      $(this).addClass('hover');
+    },
+      function() {
+      $(this).removeClass('hover');
+    });
+
 });

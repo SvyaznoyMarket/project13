@@ -59,7 +59,7 @@ class Helper {
      * @param $price
      * @return string
      */
-    public function formatPrice($price) {
-        return number_format($price, 0, ',', ' ');
+    public function formatPrice($price, $numDecimals = 0, $decimalsDelimiter = ',', $thousandsDelimiter = ' ') {
+        return number_format($price, $numDecimals, $decimalsDelimiter, $thousandsDelimiter);
     }
 }

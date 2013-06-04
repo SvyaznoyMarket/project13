@@ -124,7 +124,7 @@ $c->mediaHost = [
 $c->search['itemLimit'] = 1000;
 
 $c->product['itemsPerPage']          = 18;
-$c->product['itemsPerPageJewel']     = 16;
+$c->product['itemsPerPageJewel']     = 24;
 $c->product['itemsPerRowJewel']      = 4;
 $c->product['showAccessories']       = true;
 $c->product['showRelated']           = true;
