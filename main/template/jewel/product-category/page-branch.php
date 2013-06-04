@@ -29,33 +29,37 @@
 
 <div class="logo-section">Ювелирные Украшения</div>
 
-<nav class="brand-nav">
-	<ul class="brand-nav__list clearfix">
-		<li><a href="">Подвески-шармы</a></li>
-		<li class="braslets"><a href="">Браслеты</a></li>
-		<li><a href="">Кольца</a></li>
-		<li><a href="">Серьги</a></li>
-		<li class="kolye_kuloni"><a href="">Колье и<br/>кулоны</a></li>
-		<li class="new"><a href="">Новинки</a></li>
-	</ul>
-</nav>
+<div class="brand-nav">
+	<nav>
+		<ul class="brand-nav__list clearfix">
+			<li><a href="">Подвески-шармы</a></li>
+			<li><a href="">Браслеты</a></li>
+			<li><a href="">Кольца</a></li>
+			<li><a href="">Серьги</a></li>
+			<li class="row_2line"><a href="">Колье и<br/>кулоны</a></li>
+			<li class="new"><a href="">Новинки</a></li>
+		</ul>
+	</nav>
+</div>
 
 <div class="banner-categories">
 	<img class="banner-categories__img" src="/css/pandoraCatalog/img/pandora_catalog_banner.jpg" alt="" />
 	<div class="banner-categories__title">Подвески -<br/>шармы</div>
 </div>
 
-<nav class="brand-subnav clearfix">
-	<div class="brand-subnav__title">Подвески - шармы</div>
-	<ul class="brand-subnav__list">
-		<li><a href="">Все</a></li>
-		<li><a href="">Подвески-шармы</a></li>
-		<li><a class="active" href="">Красивости</a></li>
-		<li><a href="">Няшеньки</a></li>
-		<li><a href="">Украшения</a></li>
-		<li><a href="">Соединительные цепочки</a></li>
-	</ul>
-</nav>
+<div class="brand-subnav clearfix">
+	<nav>
+		<div class="brand-subnav__title">Подвески - шармы</div>
+		<ul class="brand-subnav__list">
+			<li><a href="">Все</a></li>
+			<li><a href="">Подвески-шармы</a></li>
+			<li><a class="active" href="">Красивости</a></li>
+			<li><a href="">Няшеньки</a></li>
+			<li><a href="">Украшения</a></li>
+			<li><a href="">Соединительные цепочки</a></li>
+		</ul>
+	</nav>
+</div>
 
 <div class="filter-section">
 	<ul class="clearfix">
@@ -123,7 +127,7 @@
 </div>
 
 <div class="items-section">
-	<ul class="items-section__list">
+	<ul class="items-section__list clearfix">
 		<li class="item">
 			<div class="item-name"><a href="">Название няши</a></div>
 			<div class="item-img"><a href=""><img src="http://fs06.enter.ru/1/1/163/2d/58848.jpg" alt="" /></a></div>
