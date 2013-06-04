@@ -1,9 +1,9 @@
 .logo-section {
-  background: url("@{base-url}/pandoraCatalog/img/pandora_logo.gif") no-repeat 50% 0; 
+  background: url("@{base-url}/pandoraCatalog/img/pandora_logo.gif") no-repeat 370px 2px; 
   font-size: 20px; 
   font-family: 'Enter Type'; 
   text-transform: uppercase; 
-  padding: 10px 0 0; 
+  padding: 12px 0 0; 
   margin: 0 0 25px;
 }
 .brand-nav {
@@ -24,7 +24,6 @@
       }
     }
     .new {
-      font-family: Tahoma;
       font-size: 24px;
       border: none;
       a {
@@ -47,11 +46,11 @@
 
 .items-section {
   width: 960px;
-  margin: 0 0 0 -20px; 
+  margin: 1px 0 30px -20px; 
   .items-section__list {
     li {
       width: 215px;
-      border: 1px solid #fff;
+      border: 1px solid #f9f9f9;
       display: inline-block;
       vertical-align: top;
       height: 215px;
@@ -61,25 +60,14 @@
         position: absolute;
         bottom: 10px;
         right: 10px;
-        border: solid 1px #43384C;
-        background: #685F6D;
-        .rounded(4px);
-        border-radius: 4px;
-        background-image: -webkit-gradient(linear,left top,left bottom,from(#89808E),to(#4A414F));
-        background-image: -webkit-linear-gradient(top,#89808E,#4A414F);
-        background-image: -moz-linear-gradient(top,#89808E,#4A414F);
-        background-image: -o-linear-gradient(top,#89808E,#4A414F);
-        background-image: linear-gradient(to bottom,#89808E,#4A414F);
-        line-height: 21px;
+        background: url("@{base-url}/pandoraCatalog/img/btn_buy.gif") no-repeat 0 0; 
         opacity: 0;
+        width: 57px;
+        display: block;
+        height: 23px;
         -webkit-transition: opacity 0.2s ease-in-out;
         -moz-transition: opacity 0.2s ease-in-out;
         transition: opacity 0.2s ease-in-out;
-        a {
-          color: #fff;
-          display: block;
-          padding: 0 8px;
-        }
       }
       .item-price {
         position: absolute;
@@ -132,14 +120,14 @@
     font-size: 48px;
     font-family: 'Enter Type'; 
     text-transform: uppercase; 
-    padding: 90px 0 0 20px;
+    padding: 95px 0 0 15px;
     position: relative;
     z-index: 2;
   }
 }
 
 .brand-subnav {
-  border-bottom: 3px solid #5E5E5E;
+  border-bottom: 2px solid #5E5E5E;
   text-transform: uppercase; 
   width: 930px;
   padding: 0 5px;
@@ -149,6 +137,7 @@
     font-family: 'Enter Type'; 
     font-size: 16px;
     float: left;
+    margin-right: 90px;
   }
   .brand-subnav__list {
     li {
@@ -157,7 +146,7 @@
       font-size: 11px;
       a {
         display: block;
-        padding: 0 15px;
+        padding: 0 14px;
         line-height: 18px;
       }
       .active {
@@ -170,18 +159,22 @@
 }
 
 .filter-section {
-  width: 930px;
-  padding: 0 5px;
-  margin: 0 0 0 -10px; 
+  width: 960px;
+  margin: 0 0 0 -20px; 
   font-family: tahoma;
-  padding-bottom: 10px;
+  border-bottom: 1px solid #D9D9D9;
+  ul {
+    border-bottom: 1px solid #D9D9D9;
+    padding: 0 0 0 15px
+  }
   li {
     float: left;
-    margin-right: 50px;
+    margin: 0 55px 0 0;
+    padding-bottom: 10px;
   }
   .last {
     float: right;
-    margin-right: 35px;
+    margin-right: 45px;
   }
   .filter-section__title {
       color: #A6A6A6;
@@ -191,20 +184,37 @@
   .filter-section__value {
       position: relative;
       a {
-        background: url("@{base-url}/pandoraCatalog/img/categories_corner.gif") no-repeat 100% 6px; 
+        background: url("@{base-url}/pandoraCatalog/img/categories_corner.gif") no-repeat 100% 7px; 
         text-decoration: underline;
         padding-right: 11px;
+        &:hover {
+          text-decoration: none;
+        }
       }
       .filter-section__value__dd {
-        position: absolute;
-        top:15px;
-        left: 0;
+        .box-shadow(0px 0px 5px #bbb);
+        background: @white;
+        border: 1px solid #aeaeae;
         display: none;
-        background: #fff;
-        padding: 5px;
+        left: -10px;
+        width: 100%;
+        padding-bottom: 7px;
+        position: absolute;
+        top: 20px;
+        z-index: 100;
+        padding-left: 0;
+        width: 100px;
+        li {
+          padding: 5px 0 5px 10px;
+          float: none;
+          a{
+            background: none;
+            padding: 0;
+          }
+        }
       }
     }
     li:hover .filter-section__value__dd {
-        display: block;
-      }
+      display: block;
+    }
   }

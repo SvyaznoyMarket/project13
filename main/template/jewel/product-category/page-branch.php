@@ -72,9 +72,9 @@
 			</div>
 		</li>
 		<li>
-			<div class="filter-section__title">Металлы</div>
+			<div class="filter-section__title">Материалы</div>
 			<div class="filter-section__value">
-				<a href="">Все металлы</a>
+				<a href="">Все материалы</a>
 				<ul class="filter-section__value__dd">
 					<li><a href="">золото</a></li>
 					<li><a href="">серебро</a></li>
@@ -84,9 +84,9 @@
 			</div>
 		</li>
 		<li>
-			<div class="filter-section__title">Металлы</div>
+			<div class="filter-section__title">Камни</div>
 			<div class="filter-section__value">
-				<a href="">Все металлы</a>
+				<a href="">Все камни</a>
 				<ul class="filter-section__value__dd">
 					<li><a href="">золото</a></li>
 					<li><a href="">серебро</a></li>
@@ -96,9 +96,9 @@
 			</div>
 		</li>
 		<li>
-			<div class="filter-section__title">Металлы</div>
+			<div class="filter-section__title">Темы</div>
 			<div class="filter-section__value">
-				<a href="">Все металлы</a>
+				<a href="">Все все</a>
 				<ul class="filter-section__value__dd">
 					<li><a href="">золото</a></li>
 					<li><a href="">серебро</a></li>
@@ -108,9 +108,9 @@
 			</div>
 		</li>
 		<li class="last">
-			<div class="filter-section__title">Металлы</div>
+			<div class="filter-section__title">Сортировать</div>
 			<div class="filter-section__value">
-				<a href="">Все металлы</a>
+				<a href="">Как для своих</a>
 				<ul class="filter-section__value__dd">
 					<li><a href="">золото</a></li>
 					<li><a href="">серебро</a></li>
@@ -128,49 +128,49 @@
 			<div class="item-name"><a href="">Название няши</a></div>
 			<div class="item-img"><a href=""><img src="http://fs06.enter.ru/1/1/163/2d/58848.jpg" alt="" /></a></div>
 			<div class="item-price">1,950 RUB</div>
-			<div class="item-buy"><a href="">Купить</a></div>
+			<a href="" class="item-buy"></a>
 		</li>
 
 		<li class="item">
 			<div class="item-name"><a href="">Название няши</a></div>
 			<div class="item-img"><a href=""><img src="http://fs06.enter.ru/1/1/163/2d/58848.jpg" alt="" /></a></div>
 			<div class="item-price">1,950 RUB</div>
-			<div class="item-buy"><a href="">Купить</a></div>
+			<a href="" class="item-buy"></a>
 		</li>
 
 		<li class="item">
 			<div class="item-name"><a href="">Название няши</a></div>
 			<div class="item-img"><a href=""><img src="http://fs06.enter.ru/1/1/163/2d/58848.jpg" alt="" /></a></div>
 			<div class="item-price">1,950 RUB</div>
-			<div class="item-buy"><a href="">Купить</a></div>
+			<a href="" class="item-buy"></a>
+		</li>
+
+		<li class="item">
+			<div class="item-name"><a href="">Название няши Название няши Название няши</a></div>
+			<div class="item-img"><a href=""><img src="http://fs06.enter.ru/1/1/163/2d/58848.jpg" alt="" /></a></div>
+			<div class="item-price">1,950 RUB</div>
+			<a href="" class="item-buy"></a>
 		</li>
 
 		<li class="item">
 			<div class="item-name"><a href="">Название няши</a></div>
 			<div class="item-img"><a href=""><img src="http://fs06.enter.ru/1/1/163/2d/58848.jpg" alt="" /></a></div>
 			<div class="item-price">1,950 RUB</div>
-			<div class="item-buy"><a href="">Купить</a></div>
+			<a href="" class="item-buy"></a>
 		</li>
 
 		<li class="item">
 			<div class="item-name"><a href="">Название няши</a></div>
 			<div class="item-img"><a href=""><img src="http://fs06.enter.ru/1/1/163/2d/58848.jpg" alt="" /></a></div>
 			<div class="item-price">1,950 RUB</div>
-			<div class="item-buy"><a href="">Купить</a></div>
+			<a href="" class="item-buy"></a>
 		</li>
 
 		<li class="item">
 			<div class="item-name"><a href="">Название няши</a></div>
 			<div class="item-img"><a href=""><img src="http://fs06.enter.ru/1/1/163/2d/58848.jpg" alt="" /></a></div>
 			<div class="item-price">1,950 RUB</div>
-			<div class="item-buy"><a href="">Купить</a></div>
-		</li>
-
-		<li class="item">
-			<div class="item-name"><a href="">Название няши</a></div>
-			<div class="item-img"><a href=""><img src="http://fs06.enter.ru/1/1/163/2d/58848.jpg" alt="" /></a></div>
-			<div class="item-price">1,950 RUB</div>
-			<div class="item-buy"><a href="">Купить</a></div>
+			<a href="" class="item-buy"></a>
 		</li>
 	</ul>
 </div>
