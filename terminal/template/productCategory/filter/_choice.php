@@ -19,7 +19,7 @@ use Model\Product\Filter\Entity as FilterEntity;
     <?= $filter->getName() ?>
 </dt>
 
-<dd class="bFilter__eProp">
+<dd class="bFilter__eProp"<? if (in_array($id, $values)): ?> style="display: block"<? endif ?>>
     <ul class="checkbox_list clearfix">
         <? foreach (array('нет', 'да') as $id => $name) { $id = (int)$id ?>
         <li>
