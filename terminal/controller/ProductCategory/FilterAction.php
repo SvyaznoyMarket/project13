@@ -19,6 +19,8 @@ class FilterAction {
 
         $region = \App::user()->getRegion();
 
+        $filterData = (array)$request->get('f', []);
+
         // фильтры
         try {
             $filters = \RepositoryManager::productFilter()->getCollectionByCategory($category, $region);
@@ -28,8 +30,17 @@ class FilterAction {
 
             $filters = [];
         }
-        $productFilter = new \Model\Product\Filter($filters);
-        $productFilter->setCategory($category);
+
+        $productFilter = null;
+        if ((bool)$filters) {
+            $productFilter = new \Model\Product\Filter($filters);
+            $productFilter->setCategory($category);
+            $productFilter->setValues($filterData);
+        }
+
+        if (!$productFilter) {
+            return '';
+        }
 
 
         $page = new \Terminal\View\ProductCategory\FilterPage();
