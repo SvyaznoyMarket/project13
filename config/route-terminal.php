@@ -26,6 +26,12 @@ return [
         'action'  => ['ProductCategory\FilterAction', 'execute'],
         'require' => ['categoryId' => '[\d]+'],
     ],
+    // сортировка для категории
+    'category.sorting' => [
+        'pattern' => '/catalog/{categoryId}/sorting',
+        'action'  => ['ProductCategory\SortingAction', 'execute'],
+        'require' => ['categoryId' => '[\d]+'],
+    ],
     // товары в категории
     'category.product' => [
         'pattern' => '/catalog/{categoryId}/product',
