@@ -25,13 +25,9 @@ class Actionpay {
                 throw new \Exception('Заказ не передан');
             }
 
-            $sum = 0;
-            $rate = 0;
             $orderSum = 0;
             foreach ($orders as $order) {
                 $orderSum = 0;
-                $sum += $order->getSum();
-
                 foreach ($order->getProduct() as $orderProduct) {
                     /** @var $product \Model\Product\Entity */
                     $product = isset($productsById[$orderProduct->getId()]) ? $productsById[$orderProduct->getId()] : null;
