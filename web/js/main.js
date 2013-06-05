@@ -1896,6 +1896,7 @@ $(document).ready(function(){
 		);
 	}
 
+
     if ( $('.searchtextClear').length ){
         $('.searchtextClear').each(function(){
             if(!$(this).val().length) {
@@ -1913,4 +1914,25 @@ $(document).ready(function(){
         });
     }
 
+	if($('.newReviewPopupLink').length) {
+		$('.newReviewPopupLink').click(function(){
+			popupWriteReviewForm($(this).attr('data-pid'), $('#reviewsProductName').html())
+			return false
+		})
+	}
+
 });
+
+function popupWriteReviewForm(pid, name) {
+  var src = "http://reviews.testfreaks.com/reviews/new?client_id=enter.ru&" + $.param({key: pid, name: name});
+  $(".reviewPopup").lightbox_me({onLoad: function() { $("#rframe").attr("src", src) }});
+}
+
+
+
+function scrollToId(scrollToId) {
+   $('html, body').animate({
+       scrollTop: $("#"+scrollToId).offset().top
+   }, 500);
+}
+

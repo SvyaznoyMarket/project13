@@ -124,6 +124,12 @@ class Entity {
             case 320:
                 $message = 'Слишком мало наименований товаров в корзине';
                 break;
+            case 321:
+                $message = 'Скидка не может быть применена сегодня';
+                break;
+            case 322:
+                $message = 'Купон просрочен';
+                break;
         }
 
         return $message;

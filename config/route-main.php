@@ -239,6 +239,13 @@ return [
         'action'  => ['Product\UpsellAction', 'execute'],
         'require' => ['productToken' => '[\w\d-_]+'],
     ],
+    //reviews
+    'product.reviews' => [
+        'pattern' => '/product-reviews/{productId}',
+        'require' => ['productId' => '\d+'],
+        'action'  => ['Product\ReviewsAction', 'execute'],
+    ],
+
     'tag' => [
         'pattern' => '/tags/{tagToken}',
         'action'  => ['Tag\Action', 'index'],

@@ -62,4 +62,56 @@ class Helper {
     public function formatPrice($price) {
         return number_format($price, 0, ',', ' ');
     }
+
+    /**
+     * @param $string
+     * @return string
+     */
+    public function nofollowExternalLinks($string) {
+        $string = '<div>' . $string . '</div>';
+
+        $dom = new \DOMDocument;
+        $dom->loadXML($string);
+
+        $links = $dom->getElementsByTagName('a');
+        foreach ($links as $link) {
+            if (!preg_match('/enter\.ru/', $link->getAttribute('href')) && $link->getAttribute('rel') != 'nofollow') {
+                $link->setAttribute('rel', 'nofollow');
+            }
+        }
+
+        return $dom->saveHTML();
+    }
+
+
+    /**
+     * @param string $date
+     * @return string
+     */
+    public function dateToRu($date) {
+        $monthsEnRu = [
+          'January' => 'января',
+          'February' => 'февраля',
+          'March' => 'марта',
+          'April' => 'апреля',
+          'May' => 'мая',
+          'June' => 'июня',
+          'July' => 'июля',
+          'August' => 'августа',
+          'September' => 'сентября',
+          'October' => 'октября',
+          'November' => 'ноября',
+          'December' => 'декабря',
+        ];
+        $dateEn = (new \DateTime($date))->format('j F Y');
+        $dateRu = $dateEn;
+        foreach ($monthsEnRu as $monthsEn => $monthsRu) {
+          if(preg_match("/$monthsEn/", $dateEn)) {
+            $dateRu = preg_replace("/$monthsEn/", $monthsRu, $dateEn);
+          }
+        }
+
+        return $dateRu;
+    }
+
 }
