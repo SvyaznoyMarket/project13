@@ -22,6 +22,8 @@
         <?= $page->render('product-category/_preview', array('category' => $child, 'rootCategory' => $category)) ?>
     <? endforeach ?>
     </div>
+<? elseif(!empty($promoContent)): ?>
+    <?= $promoContent ?>
 <? else: ?>
     <? foreach ($category->getChild() as $child) { ?>
         <?

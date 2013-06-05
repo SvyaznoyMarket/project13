@@ -93,6 +93,13 @@ a.underline {
 a.underline:hover {
   color: @typLinkColor;
 }
+span.underline {
+  text-decoration: underline;
+  cursor: pointer;
+}
+span.underline:hover {
+  color: @typLinkColor;
+}
 .dashedLink{
   text-decoration: none;
   border-bottom: 1px dashed;
@@ -366,6 +373,9 @@ table {
 .lh15,
 ul.lh15 li {
   line-height: 1.5em;
+}
+.width50 {
+  width: 50px;
 }
 .width70 {
   width: 70px;
@@ -756,4 +766,10 @@ ul.lh15 li {
     z-index: 1;
     background: url("@{base-url}/common/img/bg_btn_closer.png") no-repeat 0px 0;
     }
+}
+.bold {
+  font-weight: bold;
+}
+.hfImportant {
+  display: none!important;
 }

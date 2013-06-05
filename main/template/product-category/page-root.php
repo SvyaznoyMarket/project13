@@ -11,11 +11,16 @@
 
 <div class="clear"></div>
 
-<div class="goodslist clearfix">
-<? foreach ($category->getChild() as $child): ?>
-    <?= $page->render('product-category/_preview', array('category' => $child, 'rootCategory' => $category)) ?>
-<? endforeach ?>
-</div>
+
+<? if(!empty($promoContent)): ?>
+    <?= $promoContent ?>
+<? else: ?>
+	<div class="goodslist clearfix">
+	<? foreach ($category->getChild() as $child): ?>
+	    <?= $page->render('product-category/_preview', array('category' => $child, 'rootCategory' => $category)) ?>
+	<? endforeach ?>
+	</div>
+<? endif ?>
 
 <?= $page->tryRender('product-category/_categoryData', array('page' => $page, 'category' => $category)) ?>
 
@@ -43,5 +48,4 @@
 	    </div>
 	  </div>
 	</div>
-
 <? endif ?>
