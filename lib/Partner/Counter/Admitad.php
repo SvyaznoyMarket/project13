@@ -86,6 +86,8 @@ class Admitad {
                     return 5;
                 case 923: // Украшения и часы
                     return 6;
+                case 311: // Сад и огород
+                    return 15;
             }
         }
 
