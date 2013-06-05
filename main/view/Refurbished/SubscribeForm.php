@@ -4,13 +4,10 @@ namespace View\Refurbished;
 
 class SubscribeForm {
     /** @var string */
-    private $name;
-    /** @var string */
     private $email;
     /** @var array */
     private $errors = array(
         'global'  => null,
-        'name'    => null,
         'email'   => null,
     );
 
@@ -19,7 +16,6 @@ class SubscribeForm {
     }
 
     public function fromArray(array $data) {
-        if (array_key_exists('name', $data)) $this->setName($data['name']);
         if (array_key_exists('email', $data)) $this->setEmail($data['email']);
     }
 
@@ -35,20 +31,6 @@ class SubscribeForm {
      */
     public function getEmail() {
         return $this->email;
-    }
-
-    /**
-     * @param string $name
-     */
-    public function setName($name) {
-        $this->name = trim((string)$name);
-    }
-
-    /**
-     * @return string
-     */
-    public function getName() {
-        return $this->name;
     }
 
     /**
