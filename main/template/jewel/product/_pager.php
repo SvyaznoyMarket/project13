@@ -40,14 +40,6 @@ if (!isset($isAddInfo)) $isAddInfo = false;
 <?= $page->render('_pagination', array('pager' => $pager)) ?>
 <? endif ?>
 
-<? if ($pager->count() && $hasListView): ?>
-<?= $page->render('jewel/product/_listView', array('view' => $view, 'request' => $request, 'category' => $category)) ?>
-<? endif ?>
-
-<? if ($productSorting && $pager->count()): ?>
-<?= $page->render('jewel/product/_sorting', array('productSorting' => $productSorting)) ?>
-<? endif ?>
-
 <? if ($pager->count()): ?>
     <div class="line"></div>
 <? endif ?>

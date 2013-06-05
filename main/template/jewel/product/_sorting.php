@@ -20,18 +20,17 @@ foreach ($productSorting->getAll() as $item)
 ?>
 
 <!-- Filter -->
-<div id="sorting" class="filter" data-sort="<?= implode('-', array($active['name'], $active['direction'])) ?>">
-    <span class="fl">Сортировать:</span>
-    <div class="filterchoice">
-        <a href="<?= $active['url'] ?>" class="filterlink"><?= $active['title'] ?></a>
-        <div class="filterlist">
-            <a href="<?= $active['url'] ?>" class="filterlink"><?= $active['title'] ?></a>
-            <ul>
-            <? foreach ($list as $item): ?>
-                <li><a href="<?= $item['url'] ?>"><?= $item['title'] ?></a></li>
-            <? endforeach ?>
+
+    <li id="sorting" class="last" data-sort="<?= implode('-', array($active['name'], $active['direction'])) ?>">
+        <div class="filter-section__title">Сортировать</div>
+        <div class="filter-section__value">
+            <a href="<?= $active['url'] ?>"><?= $active['title'] ?></a>
+            <ul class="filter-section__value__dd">
+                <? foreach ($list as $item): ?>
+                    <li><a href="<?= $item['url'] ?>"><?= $item['title'] ?></a></li>
+                <? endforeach ?>
             </ul>
         </div>
-    </div>
-</div>
+    </li>
+
 <!-- /Filter -->

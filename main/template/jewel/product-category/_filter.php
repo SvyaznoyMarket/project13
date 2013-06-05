@@ -42,10 +42,6 @@ $formName = \View\Product\FilterForm::$name;
             } ?>
 
             <? switch ($filter->getTypeId()) {
-                case FilterEntity::TYPE_NUMBER:
-                case FilterEntity::TYPE_SLIDER:
-                    require __DIR__ . '/filter/_slider.php';
-                    break;
                 case FilterEntity::TYPE_LIST:
                     require __DIR__ . '/filter/_list.php';
                     break;

@@ -297,7 +297,7 @@ class Action extends \Controller\ProductCategory\Action {
 
         // ajax
         if ($request->isXmlHttpRequest()) {
-            return new \Http\Response(\App::templating()->render('product/_list', array(
+            return new \Http\Response(\App::templating()->render('jewel/product/_list', array(
                 'page'                   => new \View\Layout(),
                 'pager'                  => $productPager,
                 'view'                   => $productView,

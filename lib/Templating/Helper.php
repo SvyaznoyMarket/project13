@@ -2,6 +2,8 @@
 
 namespace Templating;
 
+use Model\Product\Filter\Entity as FilterEntity;
+
 class Helper {
     /**
      * @param array $replaces
@@ -62,4 +64,54 @@ class Helper {
     public function formatPrice($price, $numDecimals = 0, $decimalsDelimiter = ',', $thousandsDelimiter = ' ') {
         return number_format($price, $numDecimals, $decimalsDelimiter, $thousandsDelimiter);
     }
+
+    /**
+     * @param $category
+     * @param $productFilter
+     * @return string
+     */
+    public function getFilterItemAllLink($category, $productFilter, $filter) {
+        $allLink = $category->getLink();
+        foreach ($productFilter->dump() as $filterItem) {
+            if(!in_array($filterItem[0], [$filter->getId(), 'is_view_list', 'category', 'is_model'])) {
+                $allLink .= preg_match('/.*\?.*/', $allLink) ? '&' : '?';
+                $allLink .= urlencode('f['.$filterItem[0].'][]').'='.reset($filterItem[2]);
+            }
+        }
+
+        return $allLink;
+    }
+
+    /**
+     * @param $allLink
+     * @param $option
+     * @param $filter
+     * @return string
+     */
+    public function getFilterItemOptionLink($allLink, $option, $filter) {
+        $id = $option->getId();
+        $optionLink = preg_match('/.*\?.*/', $allLink) ? $allLink.'&' : $allLink.'?';
+
+        switch ($filter->getTypeId()) {
+            case FilterEntity::TYPE_NUMBER:
+            case FilterEntity::TYPE_SLIDER:
+                if (!isset($values['to'])) {
+                    $values['to'] = null;
+                }
+                if (!isset($values['from'])) {
+                    $values['from'] = null;
+                }
+                if ($filter->getMax() != $values['to'] || $filter->getMin() != $values['from']) {
+                    $optionLink .= urlencode('f['.strtolower($filter->getId()).'][from]').'='.$values['from'];
+                    $optionLink .= urlencode('f['.strtolower($filter->getId()).'][to]').'='.$values['to'];
+                }
+                break;
+            default:
+                $optionLink .= urlencode('f['.strtolower($filter->getId()).'][]').'='.$id;
+                break;
+        }
+
+        return $optionLink;
+    }
+
 }

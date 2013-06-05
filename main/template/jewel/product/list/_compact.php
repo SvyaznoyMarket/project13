@@ -11,7 +11,7 @@
 
 <? if (!$isAjax): // убрать декорацию div-ом, если ajax-запрос ?>
   <div class="items-section">
-    <ul class="items-section__list">
+    <ul class="items-section__list clearfix">
 <? endif ?>
 
     <? $i = 0; foreach ($pager as $product): $i++ ?>

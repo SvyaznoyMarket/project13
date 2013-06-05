@@ -19,7 +19,7 @@
       border-right: 1px solid #EDEDED;
       a {
         display: block;
-        padding: 0 40px;
+        padding: 0 42px;
         line-height: 50px;
       }
     }
@@ -30,15 +30,11 @@
         padding: 0 50px;
       }
     }
-    .kolye_kuloni {
+    .row_2line {
       a {
-        padding: 8px 35px 6px;
+        padding-top: 8px;
+        padding-bottom: 6px;
         line-height: 18px;
-      }
-    }
-    .braslets {
-      a{
-        padding: 0 48px;
       }
     }
   }
@@ -46,14 +42,15 @@
 
 .items-section {
   width: 960px;
-  margin: 1px 0 30px -20px; 
+  margin: -3px 0 30px -20px;
+  position: relative;
+  z-index: 1;
   .items-section__list {
     li {
-      width: 215px;
+      width: 218px;
       border: 1px solid #f9f9f9;
-      display: inline-block;
-      vertical-align: top;
-      height: 215px;
+      float: left;
+      height: 218px;
       padding: 10px;
       position: relative;
       .item-buy {
@@ -162,10 +159,11 @@
   width: 960px;
   margin: 0 0 0 -20px; 
   font-family: tahoma;
-  border-bottom: 1px solid #D9D9D9;
+  background: url("@{base-url}/pandoraCatalog/img/bg_items_list.png") repeat-x 0 100%; 
+  z-index: 2;
+  position: relative;
   ul {
-    border-bottom: 1px solid #D9D9D9;
-    padding: 0 0 0 15px
+    padding: 0 0 0 15px;
   }
   li {
     float: left;
