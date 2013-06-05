@@ -653,7 +653,7 @@ $productVideo = reset($productVideos);
                         <a class="bHint_eLink"><?= $property->getName() ?></a>
                         <div class="bHint_ePopup popup">
                           <div class="close"></div>
-                          <?= $property->getHint() ?>
+                          <div class="bHint-text"><?= $property->getHint() ?></div>
                         </div>
                       </div>
                       <? endif ?>
@@ -665,7 +665,7 @@ $productVideo = reset($productVideos);
                             <a class="bHint_eLink"><?= $property->getStringValue() ?></a>
                             <div class="bHint_ePopup popup">
                                 <div class="close"></div>
-                                <?= $property->getValueHint() ?>
+                                <div class="bHint-text"><?= $property->getValueHint() ?></div>
                             </div>
                         </div>
                         <? endif ?>
@@ -699,7 +699,7 @@ $productVideo = reset($productVideos);
                       <a class="bHint_eLink"><?= $property->getName() ?></a>
                       <div class="bHint_ePopup popup">
                         <div class="close"></div>
-                        <?= $property->getHint() ?>
+                        <div class="bHint-text"><?= $property->getHint() ?></div>
                       </div>
                     </div>
                     <? endif ?>
@@ -711,7 +711,7 @@ $productVideo = reset($productVideos);
                           <a class="bHint_eLink"><?= $property->getStringValue() ?></a>
                           <div class="bHint_ePopup popup">
                               <div class="close"></div>
-                              <?= $property->getValueHint() ?>
+                              <div class="bHint-text"><?= $property->getValueHint() ?></div>
                           </div>
                       </div>
                       <? endif ?>
