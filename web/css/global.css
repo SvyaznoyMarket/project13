@@ -9192,9 +9192,132 @@
 /*---END---СТИЛИ ЛИЧНОГО КАБИНЕТА---*/
 /*------СТИЛИ СТРАНИЦЫ ПОДПИСКИ НА РАССЫЛКУ------*/
 @media all {
+  .friendship .pagehead {
+    background: url("/css/subscribe/img/bg_subscribe_friend.gif") no-repeat 50% 50px;
+  }
+  .friendship .pagehead h1 {
+    color: #CE65A4;
+    text-transform: uppercase;
+    padding: 141px 0 0 35px;
+  }
   .content-section {
-    background: url("/css/subscribe/img/bg_subscribe_friend.gif") no-repeat 50% 0;
-    padding: 120px 0 0;
+    padding: 0 35px 50px;
+  }
+  .content-section .content-section__text {
+    float: left;
+    font-size: 18px;
+    font-family: 'Enter Type';
+    line-height: 25px;
+    width: 460px;
+  }
+  .content-section .content-section__text a {
+    color: #43C6ED;
+  }
+  .content-section .content-section__text .title {
+    font-size: 24px;
+    text-transform: uppercase;
+    font-family: "Enter";
+  }
+  .content-section .content-section__text .title_blue {
+    color: #43C6ED;
+  }
+  .content-section .content-section__text .title_green {
+    color: #C0D737;
+  }
+  .content-section .content-section__text .title_orange {
+    color: #F69A31;
+  }
+  .content-section__form {
+    display: block;
+    float: right;
+    width: 320px;
+  }
+  .content-section__form .subscribe-form__title {
+    font-size: 24px;
+    text-transform: uppercase;
+    font-family: "Enter";
+    text-align: center;
+    padding: 19px 0 0 26px;
+  }
+  .content-section__form .subscribe-form__email {
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    background: #ffffff;
+    border: 1px solid #c9c9c9;
+    float: left;
+    height: 26px;
+    line-height: 26px;
+    margin: 16px 0;
+    padding: 0 0 0 10px;
+    position: relative;
+    behavior: url('/css/common/PIE.htc');
+    -webkit-appearance: none;
+    width: 308px;
+  }
+  .content-section__form .subscribe-form__btn {
+    background: #ffc000;
+    background: -moz-linear-gradient(top, #ffc000 0%, #ffaa01 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffc000), color-stop(100%, #ffaa01));
+    background: -webkit-linear-gradient(top, #ffc000 0%, #ffaa01 100%);
+    background: -o-linear-gradient(top, #ffc000 0%, #ffaa01 100%);
+    background: -ms-linear-gradient(top, #ffc000 0%, #ffaa01 100%);
+    background: linear-gradient(to bottom, #ffc000 0%, #ffaa01 100%);
+    filter: progid:dximagetransform.microsoft.gradient(startColorstr='#ffc000', endColorstr='#ffaa01', GradientType=0);
+    border: 1px solid #DB8A00;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    width: 160px;
+    height: 33px;
+    font-family: Tahoma;
+    font-size: 16px;
+    color: #fff;
+    cursor: pointer;
+    margin: 0 0 0 93px;
+    padding: 0;
+    display: block;
+  }
+  .content-section__form .subscribe-form__btn:hover {
+    background: #ffa200;
+    background: -moz-linear-gradient(top, #ffa200 0%, #f79200 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffa200), color-stop(100%, #f79200));
+    background: -webkit-linear-gradient(top, #ffa200 0%, #f79200 100%);
+    background: -o-linear-gradient(top, #ffa200 0%, #f79200 100%);
+    background: -ms-linear-gradient(top, #ffa200 0%, #f79200 100%);
+    background: linear-gradient(to bottom, #ffa200 0%, #f79200 100%);
+    filter: progid:dximagetransform.microsoft.gradient(startColorstr='#ffa200', endColorstr='#f79200', GradientType=0);
+  }
+  .share-section {
+    margin: 80px 0 0;
+    font-size: 21px;
+    font-family: 'Enter Type';
+  }
+  .share-section .share-sectio__action {
+    float: left;
+  }
+  .share-section .share-sectio__action a {
+    color: #44C7EE;
+  }
+  .share-section .share-sectio__link {
+    float: right;
+  }
+  .share-section .share-sectio__link ul {
+    margin: 8px 0 0;
+  }
+  .share-section .share-sectio__link ul li a {
+    background: url("/css/subscribe/img/ico_share.gif") no-repeat 0 0;
+    float: left;
+    width: 16px;
+    height: 16px;
+    margin-left: 8px;
+    display: block;
+  }
+  .share-section .share-sectio__link ul .fb {
+    background-position: -21px 0;
+  }
+  .share-section .share-sectio__link ul .tw {
+    background-position: -42px 0;
   }
 }
 /*---END---СТИЛИ СТРАНИЦЫ ПОДПИСКИ НА РАССЫЛКУ---*/
