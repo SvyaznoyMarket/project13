@@ -106,15 +106,6 @@ class Action extends \Controller\ProductCategory\Action {
         // получаем catalog json для категории (например, тип раскладки)
         $catalogJson = \RepositoryManager::productCategory()->getCatalogJson($category);
 
-        // если в catalogJson'e указан category_layout_type == 'promo', то подгружаем промо-контент
-        if(!empty($catalogJson['category_layout_type']) &&
-            $catalogJson['category_layout_type'] == 'promo' &&
-            !empty($catalogJson['promo_token'])) {
-            $client = \App::contentClient();
-            $content = $client->query($catalogJson['promo_token'], [], false);
-            $promoContent = empty($content['content']) ? '' : $content['content'];
-        }
-
         return $this->category($filters, $category, $brand, $request, $regionsToSelect, $catalogJson, $promoContent);
     }
 
@@ -128,9 +119,14 @@ class Action extends \Controller\ProductCategory\Action {
      * @throws \Exception\NotFoundException
      * @return \Http\Response
      */
-    public function categoryDirect($filters, $category, $brand, $request, $regionsToSelect, $catalogJson, $promoContent) {
+    public function categoryDirect($filters, $category, $brand, $request, $regionsToSelect, $catalogJson) {
 
         \App::logger()->debug('Exec ' . __METHOD__);
+
+        // если в catalogJson'e указан category_layout_type == 'promo', то подгружаем промо-контент
+        if(!empty($catalogJson['category_layout_type']) && $catalogJson['category_layout_type'] == 'promo') {
+            $promoContent = \RepositoryManager::productCategory()->getCatalogHtml($category);
+        }
 
         // фильтры
         $productFilter = $this->getFilter($filters, $category, $brand, $request);

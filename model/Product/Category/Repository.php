@@ -443,4 +443,26 @@ class Repository {
         return $catalogJson;
     }
 
+    /**
+     * Получает html-контент из catalog'а для данной категории
+     * Возвращает html в виде строки
+     *
+     * @param $category
+     * @return array
+     */
+    public function getCatalogHtml($category) {
+        // наследования здесь нет, поэтому обращаемся напрямую по токену категории
+        // формируем запрос к апи и получаем html
+        $catalogHtml = [];
+        $dataStore = \App::dataStoreClient();
+        $query = sprintf('catalog/html/%s.json', $category->getToken());
+
+        $dataStore->addQuery($query, [], function ($data) use (&$catalogHtml) {
+            if($data) $catalogHtml = $data;
+        });
+        $dataStore->execute();
+
+        return isset($catalogHtml['html']) ? $catalogHtml['html'] : '';
+    }
+
 }
