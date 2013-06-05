@@ -285,6 +285,8 @@ $productVideo = reset($productVideos);
     <? if ($product->getIsBuyable()): ?>
     <link itemprop="availability" href="http://schema.org/InStock" />
     <div class="pb5"><strong class="orange">Есть в наличии</strong></div>
+    <? elseif (!$product->getIsBuyable() && $product->getState()->getIsShop()): ?>
+    <link itemprop="availability" href="http://schema.org/InStoreOnly" />
     <? else: ?>
     <link itemprop="availability" href="http://schema.org/OutOfStock" />
     <? endif ?>
