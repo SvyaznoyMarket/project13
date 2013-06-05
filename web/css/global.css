@@ -790,6 +790,13 @@
     left: -8px;
     position: absolute;
   }
+  .notBuying .toLink {
+    cursor: pointer;
+    text-decoration: none;
+  }
+  .notBuying .toLink:hover {
+    text-decoration: underline;
+  }
   .blackPopupVideo.blackPopup {
     border: 2px solid #ffa901;
     -webkit-border-radius: 6px;
@@ -5272,9 +5279,11 @@
     width: 147px;
     height: 310px;
   }
+  .acess-box-section {
+    margin: 35px 0 50px;
+  }
   .acess-box {
     position: relative;
-    margin: 35px 0 50px;
   }
   .acess-box .scroll .srcoll_link_button {
     background: url("/css/item/img/btn_acess_box.png") no-repeat 4px 50%;
