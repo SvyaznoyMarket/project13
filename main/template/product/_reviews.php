@@ -10,6 +10,10 @@
     }
   ?>
   <li class="reviewsTab pro<?= $tabProClass ?>" data-container="reviewsPro" data-reviews-type="pro"><span>Обзоры экспертов</span></li>
+
+  <li style="float: right;">
+    <span onclick="$('.newReviewPopupLink').click()">Оставить отзыв</span>
+  </li> 
 </ul>
 
 <? if(!empty($reviewsData['review_list'])) { ?>
