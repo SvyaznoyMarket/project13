@@ -68,19 +68,25 @@ class Helper {
      * @return string
      */
     public function nofollowExternalLinks($string) {
-        $string = '<div>' . $string . '</div>';
+        try {
+            $string = '<div>' . $string . '</div>';
 
-        $dom = new \DOMDocument;
-        $dom->loadXML($string);
+            $dom = new \DOMDocument;
+            $dom->loadXML($string);
 
-        $links = $dom->getElementsByTagName('a');
-        foreach ($links as $link) {
-            if (!preg_match('/enter\.ru/', $link->getAttribute('href')) && $link->getAttribute('rel') != 'nofollow') {
-                $link->setAttribute('rel', 'nofollow');
+            $links = $dom->getElementsByTagName('a');
+            foreach ($links as $link) {
+                if (!preg_match('/enter\.ru/', $link->getAttribute('href')) && $link->getAttribute('rel') != 'nofollow') {
+                    $link->setAttribute('rel', 'nofollow');
+                }
             }
-        }
 
-        return $dom->saveHTML();
+            return $dom->saveHTML();
+        } catch (\Exception $e) {
+            \App::logger()->error($e);
+
+            return '';
+        }
     }
 
 

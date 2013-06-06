@@ -230,8 +230,8 @@ $productVideo = reset($productVideos);
         </a>
       </li>
       <? endforeach ?>
-      <? if (count($photo3dList) > 0 || $model3dExternalUrl): ?>
-      <li><a href="#" class="axonometric viewme <? if ($model3dExternalUrl): ?>maybe3d<? endif ?>" ref="360" title="Объемное изображение">Объемное изображение</a></li>
+      <? if (count($photo3dList) > 0 || $model3dExternalUrl || $model3dImg): ?>
+      <li><a href="#" class="axonometric viewme <? if ($model3dExternalUrl): ?>maybe3d<? endif ?>  <? if ($model3dImg): ?>3dimg<? endif ?>" ref="360" title="Объемное изображение">Объемное изображение</a></li>
       <? endif ?>
     </ul>
   </div>
@@ -258,19 +258,22 @@ $productVideo = reset($productVideos);
         <?= empty($avgStarScore) ? '' : $page->render('product/_starsFive', ['score' => $avgStarScore]) ?>
       </div>
 
-      <div class="reviewSection__link">
-        <? if(!empty($avgStarScore)) { ?>
-            <span class="border" onclick="scrollToId('reviewsSectionHeader')">(<?= $reviewsData['num_reviews'] ?> <?= $page->helper->numberChoice($reviewsData['num_reviews'], array('отзыв', 'отзыва', 'отзывов')) ?>)</span>
-        <? } else { ?>
-            <span>Отзывов нет</span>
-        <? } ?>
-        <span class="reviewSection__link__write newReviewPopupLink" data-pid="productid">Оставить отзыв</span>
-        <div class="hf" id="reviewsProductName"><?= $product->getName() ?></div>
-      </div>
-      <div style="position:fixed; top:40px; left:50%; margin-left:-442px; z-index:1002; display:none; width:700px; height:480px" class="reviewPopup popup clearfix">
-        <a class="close" href="#">Закрыть</a>
-        <iframe id="rframe" frameborder="0" scrolling="auto" height="480" width="700"></iframe>
-      </div>
+      <? if (\App::config()->product['reviewEnabled']): ?>
+          <div class="reviewSection__link">
+            <? if(!empty($avgStarScore)) { ?>
+                <span class="border" onclick="scrollToId('reviewsSectionHeader')">(<?= $reviewsData['num_reviews'] ?> <?= $page->helper->numberChoice($reviewsData['num_reviews'], array('отзыв', 'отзыва', 'отзывов')) ?>)</span>
+            <? } else { ?>
+                <span>Отзывов нет</span>
+            <? } ?>
+            <span class="reviewSection__link__write newReviewPopupLink" data-pid="productid">Оставить отзыв</span>
+            <div class="hf" id="reviewsProductName"><?= $product->getName() ?></div>
+          </div>
+          <div style="position:fixed; top:40px; left:50%; margin-left:-442px; z-index:1002; display:none; width:700px; height:480px" class="reviewPopup popup clearfix">
+            <a class="close" href="#">Закрыть</a>
+            <iframe id="rframe" frameborder="0" scrolling="auto" height="480" width="700"></iframe>
+          </div>
+      <? endif ?>
+
   </div>
 
   <div class="font14 pb15" itemprop="description"><?= $product->getTagline() ?></div>
@@ -291,6 +294,8 @@ $productVideo = reset($productVideos);
     <? if ($product->getIsBuyable()): ?>
     <link itemprop="availability" href="http://schema.org/InStock" />
     <div class="pb5"><strong class="orange">Есть в наличии</strong></div>
+    <? elseif (!$product->getIsBuyable() && $product->getState()->getIsShop()): ?>
+    <link itemprop="availability" href="http://schema.org/InStoreOnly" />
     <? else: ?>
     <link itemprop="availability" href="http://schema.org/OutOfStock" />
     <? endif ?>
@@ -659,7 +664,7 @@ $productVideo = reset($productVideos);
                         <a class="bHint_eLink"><?= $property->getName() ?></a>
                         <div class="bHint_ePopup popup">
                           <div class="close"></div>
-                          <?= $property->getHint() ?>
+                          <div class="bHint-text"><?= $property->getHint() ?></div>
                         </div>
                       </div>
                       <? endif ?>
@@ -671,7 +676,7 @@ $productVideo = reset($productVideos);
                             <a class="bHint_eLink"><?= $property->getStringValue() ?></a>
                             <div class="bHint_ePopup popup">
                                 <div class="close"></div>
-                                <?= $property->getValueHint() ?>
+                                <div class="bHint-text"><?= $property->getValueHint() ?></div>
                             </div>
                         </div>
                         <? endif ?>
@@ -705,7 +710,7 @@ $productVideo = reset($productVideos);
                       <a class="bHint_eLink"><?= $property->getName() ?></a>
                       <div class="bHint_ePopup popup">
                         <div class="close"></div>
-                        <?= $property->getHint() ?>
+                        <div class="bHint-text"><?= $property->getHint() ?></div>
                       </div>
                     </div>
                     <? endif ?>
@@ -717,7 +722,7 @@ $productVideo = reset($productVideos);
                           <a class="bHint_eLink"><?= $property->getStringValue() ?></a>
                           <div class="bHint_ePopup popup">
                               <div class="close"></div>
-                              <?= $property->getValueHint() ?>
+                              <div class="bHint-text"><?= $property->getValueHint() ?></div>
                           </div>
                       </div>
                       <? endif ?>
@@ -728,25 +733,25 @@ $productVideo = reset($productVideos);
   </div>
 </div>
 <div class="clear"></div>
-<? if($reviewsPresent) { ?>
+<? if ($reviewsPresent) { ?>
   <div id="productDescriptionToggle" class="mb15 product-btn-toggle"><span>Показать все характеристики</span></div>
 <? } ?>
 
-<? if($reviewsPresent) { ?>
+<? if (\App::config()->product['reviewEnabled'] && $reviewsPresent): ?>
   <h2 id="reviewsSectionHeader" class="bold">Обзоры и отзывы</h2>
   <div class="line pb5"></div>
   <div id="reviewsSummary">
       <?= $page->render('product/_reviewsSummary', ['reviewsData' => $reviewsData, 'reviewsDataPro' => $reviewsDataPro, 'reviewsDataSummary' => $reviewsDataSummary]) ?>
   </div>
 
-  <? if(!empty($reviewsData['review_list'])) { ?>
+  <? if (!empty($reviewsData['review_list'])) { ?>
     <div id="reviewsWrapper" class="reviewsWrapper" data-product-id="<?= $product->getId() ?>" data-page-count="<?= $reviewsData['page_count'] ?>" data-container="reviewsUser" data-reviews-type="user">
   <? } elseif(!empty($reviewsDataPro['review_list'])) { ?>
     <div id="reviewsWrapper" data-product-id="<?= $product->getId() ?>" data-page-count="<?= $reviewsDataPro['page_count'] ?>" data-container="reviewsPro" data-reviews-type="pro">
   <? } ?>
       <?= $page->render('product/_reviews', ['reviewsData' => $reviewsData, 'reviewsDataPro' => $reviewsDataPro]) ?>
     </div>
-<? } ?>
+<? endif ?>
 
 <? if (!$showAccessoryUpper && count($product->getAccessoryId()) && \App::config()->product['showAccessories']): ?>
     <?= $page->render('product/_slider', ['product' => $product, 'productList' => array_values($accessories), 'totalProducts' => count($product->getAccessoryId()), 'itemsInSlider' => $accessoryCategory ? \App::config()->product['itemsInAccessorySlider'] : \App::config()->product['itemsInSlider'], 'page' => 1, 'title' => 'Аксессуары', 'url' => $page->url('product.accessory', array('productToken' => $product->getToken())), 'gaEvent' => 'Accessorize', 'showCategories' => (bool)$accessoryCategory, 'accessoryCategory' => $accessoryCategory, 'additionalData' => $additionalData]) ?>

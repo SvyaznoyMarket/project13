@@ -1,26 +1,5 @@
 $(document).ready(function() {
 
-	var config = $('#site-config').data('value');
-
-	var f1Certificate = config.f1Certificate;
-	var coupon = config.coupon;
-
-	if (coupon && f1Certificate){
-		$('.bF1SaleCard_eRadio').removeAttr('checked');
-		$('#cartCertificateAll').attr('checked', 'checked')
-		$('#F1SaleCard_number').attr('placeholder','Код скидки')
-	}
-	else if(!coupon && f1Certificate){
-		$('.bF1SaleCard_eRadio').removeAttr('checked');
-		$('#cartCertificateF1').attr('checked', 'checked')
-		$('#F1SaleCard_number').attr('placeholder', 'Номер карты «Под защитой F1»')
-	}
-	else{
-		$('.bF1SaleCard_eRadio').removeAttr('checked');
-		$('#cartCertificateAll').attr('checked', 'checked')
-		$('#F1SaleCard_number').attr('placeholder','Код скидки')
-	}
-
 	/* F1 sale card*/
 	if ( $('.bF1SaleCard').length ){
 		var input = $('#F1SaleCard_number')
@@ -154,43 +133,88 @@ $(document).ready(function() {
 
 	var checkForSaleCard = function() {
 		var hasF1 = checkServF1()
+		var allBlock = $('.bF1SaleCard')
 		var hasCoupon = $('.bF1SaleCard_eComplete.mCoupon').length
 		var hasSertificate = $('.bF1SaleCard_eComplete.mSertificate').length
+		var config = $('#site-config').data('value');
+		var f1Certificate = config.f1Certificate;
+		var coupon = config.coupon;
 		var form = $('.bF1SaleCard_eForm')
 		var input = $('#F1SaleCard_number')
 
-		if (!hasF1 && !hasCoupon && !hasSertificate){
-			form.show().removeClass('m2Coupon')
-		}
-		else if (hasF1 && !hasCoupon && !hasSertificate && (f1Certificate && coupon)){
-			form.show().addClass('m2Coupon')
-		}
-		else if (hasF1 && !hasCoupon && !hasSertificate && !(f1Certificate && coupon)){
-			form.show().removeClass('m2Coupon')
-		}
-		else if (!hasF1 && hasCoupon){
-			form.hide()
-		}
-		else if (hasF1 && hasCoupon && !hasSertificate){
-			form.show().removeClass('m2Coupon')
-			input.attr('placeholder', 'Номер карты «Под защитой F1»')
+		
+		// console.log('c '+coupon)
+		// console.log('s '+f1Certificate)
+		// console.log('hasC '+hasCoupon)
+		// console.log('hasS '+hasSertificate)
+		// console.log('hasF1 '+hasF1)
+
+
+		if (coupon && !f1Certificate){ // купоны включены, сертификаты выключены
+			form.removeClass('m2Coupon')
+			input.attr('placeholder','Код скидки')
 			$('.bF1SaleCard_eRadio').removeAttr('checked');
-			$('#cartCertificateF1').attr('checked', 'checked')
+			$('#cartCertificateAll').attr('checked', 'checked');
+			
+			if (!hasCoupon){
+				form.show();
+			}
+			if (hasCoupon){
+				form.hide();
+			}
 		}
-		else if (hasCoupon && hasSertificate){
+		else if (!coupon && f1Certificate){ // купоны выключены, сертификаты включены
+			form.removeClass('m2Coupon')
+			input.attr('placeholder', 'Номер карты «Под защитой F1»');
+			$('.bF1SaleCard_eRadio').removeAttr('checked');
+			$('#cartCertificateF1').attr('checked', 'checked');
+
+			if (hasF1){
+				allBlock.show();
+				form.show();
+			}
+			if (!hasF1){
+				allBlock.hide();
+				form.hide();
+			}
+		}
+		else if (coupon && f1Certificate){ // купоны и сертификаты включены
+
+			if (!hasF1 && !hasCoupon){ // нет выбранных услуг F1 и нет оформленных купонов
+				form.show().removeClass('m2Coupon')
+				input.attr('placeholder','Код скидки')
+				$('.bF1SaleCard_eRadio').removeAttr('checked');
+				$('#cartCertificateAll').attr('checked', 'checked');
+			}
+			else if (hasF1 && !hasCoupon && !hasSertificate){ // есть выбранная услуга F1, нет оформленных купонов и сертификатов
+				form.show().addClass('m2Coupon');
+				input.attr('placeholder','Код скидки')
+				$('.bF1SaleCard_eRadio').removeAttr('checked');
+				$('#cartCertificateAll').attr('checked', 'checked');
+			}
+			else if (hasF1 && hasCoupon && !hasSertificate){ // есть выбранная услуга F1, нет оформленных сертификатов, есть оформленный купон
+				form.show().removeClass('m2Coupon')
+				input.attr('placeholder', 'Номер карты «Под защитой F1»');
+				$('.bF1SaleCard_eRadio').removeAttr('checked');
+				$('#cartCertificateF1').attr('checked', 'checked');
+			}
+			else if (hasCoupon && hasSertificate){ // есть оформленный сертификат и есть оформленный купон
+				form.hide()
+			}
+
+		}
+		else{ // все выключено
 			form.hide()
 		}
 
-		// // скрытие-отображение форма ввода карты
-		// if (hasF1){
-		// 	$('.bF1SaleCard_eForm').addClass('m2Coupon')
-		// }
-		// else{
-		// 	$('.bF1SaleCard_eForm').removeClass('m2Coupon')
-		// 	$('#F1SaleCard_number').attr('placeholder','Код скидки')
-		// 	$('#cartCertificateAll').prop('checked', true);
-		// }
+	}
 
+	function showOldPrice(oldPrice) {
+
+		if ( $('.bF1SaleCard_eComplete').length === 1 && $('.bF1SaleCard_eComplete.mError').length){
+			$('#commonSum .oldPrice').hide()
+			return false
+		}
 		// скрытие отображение старой цены
 		if ( $('.bF1SaleCard_eComplete').length){
 			$('#commonSum .oldPrice').show()
@@ -198,15 +222,21 @@ $(document).ready(function() {
 		else{
 			$('#commonSum .oldPrice').hide()
 		}
-	}
 
-	function showOldPrice(oldPrice) {
 		$('#totalOldPrice').html(printPrice( oldPrice ))
 	}
 
-	function getTotal() {
+	function showPrice(price){
+		if( !price ) {
+			location.reload(true)
+		}
 		checkForSaleCard()
-		
+		total.html( printPrice( price ) )
+		total.typewriter(800)
+		totalCash = price
+	}
+
+	function getTotal() {
 		checkServWarranty()
 		for(var i=0, tmp=0; i < basket.length; i++ ) {
 			if( ! basket[i].noview && $.contains( document.body, basket[i].hasnodes[0] ) )
@@ -300,7 +330,8 @@ $(document).ready(function() {
 				}
 				else{
 					showOldPrice(data.data.old_price)
-					getTotal()
+					showPrice(data.data.full_price)
+					// getTotal()
 				}
 			})
 		}
@@ -356,6 +387,7 @@ $(document).ready(function() {
 					location.href = location.href
 				}
 				showOldPrice(data.data.old_price)
+				showPrice(data.data.full_price)
 			})
 		}
 
@@ -485,6 +517,7 @@ $(document).ready(function() {
 						popupIsOpened = false
 						f1popup.hide()
 						showOldPrice(data.data.old_price)
+						showPrice(data.data.full_price)
 					}
 				})
 				
@@ -517,6 +550,7 @@ $(document).ready(function() {
 				var tmpitem = $(this).data()			
 				$.getJSON( tmpitem.url, function(data) {
 					showOldPrice(data.data.old_price)
+					showPrice(data.data.full_price)
 				})
 				popupIsOpened = false
 				wrntpopup.hide()
@@ -610,8 +644,10 @@ $(document).ready(function() {
 			$($('tr:eq(1)', bBig)).remove()
 		f1lineshead.after( f1linecart )
 		addLineWrnt( $('tr:eq(1)', bBig), bline )
-		getTotal()
+		// getTotal()
+
 		showOldPrice(data.data.old_price)
+		showPrice(data.data.full_price)
 	}
 	
 	/* credit */

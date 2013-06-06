@@ -631,6 +631,12 @@
     width: 350px;
     z-index: 2;
   }
+  /*** принудительное форматирование подсказок ***/
+  .bHint-text span {
+    font-size: 13px !important;
+    font-family: Tahoma !important;
+    line-height: 1.2 !important;
+  }
 }
 
 .tag-section {
@@ -647,11 +653,17 @@
     margin-bottom: 2px;
     padding: 5px 5px 5px 19px;
     cursor: pointer;
+  &:hover {
+    text-decoration: underline;
   }
+}
   .categoriesmenuitem.active {
     background-color: #e6e6e6;
     cursor: default;
+  &:hover {
+    text-decoration: none;
   }
+}
 .acess-box .bigcarousel {
     float: left;
     margin-right: -15px;

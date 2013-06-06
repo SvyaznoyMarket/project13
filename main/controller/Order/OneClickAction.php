@@ -141,13 +141,23 @@ class OneClickAction {
                 'product_quantity' => implode(',', array_map(function($orderProduct) { /** @var $orderProduct \Model\Order\Product\Entity */ return $orderProduct->getQuantity(); }, $order->getProduct())),
             );
 
-            $fee = ($product->getMainCategory() && isset(\App::config()->myThings['feeByCategory'][$product->getMainCategory()->getId()])) ? \App::config()->myThings['feeByCategory'][$product->getMainCategory()->getId()] : min(\App::config()->myThings['feeByCategory']);
+            $orderSum = 0;
+            foreach ($order->getProduct() as $product) {
+                $categoryFee = 0;
+                if (isset($productsById[$product->getId()]) && $productsById[$product->getId()]->getMainCategory()) {
+                    if (isset(\App::config()->myThings['feeByCategory'][$productsById[$product->getId()]->getMainCategory()->getId()])) {
+                        $categoryFee = \App::config()->myThings['feeByCategory'][$productsById[$product->getId()]->getMainCategory()->getId()];
+                    }
+                }
+                $orderSum += round($product->getPrice() * $categoryFee * $product->getQuantity(), 2);
+            }
+
             $myThingsOrderData = array(
                 'EventType' => 'MyThings.Event.Conversion',
                 'Action' => '9902',
                 'TransactionReference' => $order->getNumber(),
                 'TransactionAmount' => str_replace(',', '.', $order->getSum()), // Полная сумма заказа (дроби через точку
-                'Commission' => round($order->getSum() * $fee, 2),
+                'Commission' => $orderSum,
                 'Products' => array_map(function($orderProduct){
                     /** @var $orderProduct \Model\Order\Product\Entity  */
                     return array('id' => $orderProduct->getId(), 'price' => $orderProduct->getPrice(), 'qty' => $orderProduct->getQuantity());
