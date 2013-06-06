@@ -96,6 +96,9 @@ class IndexAction extends \Controller\Product\IndexAction {
      * @return \Http\Response
      */
     public function executeDirect($product, $regionsToSelect) {
+        // убираем уши
+        \App::config()->adFox['enabled'] = false;
+
         $repository = \RepositoryManager::product();
 
         if ($product->getConnectedProductsViewMode() == $product::DEFAULT_CONNECTED_PRODUCTS_VIEW_MODE) {

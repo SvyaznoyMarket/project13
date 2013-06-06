@@ -120,6 +120,8 @@ class Action extends \Controller\ProductCategory\Action {
      * @return \Http\Response
      */
     public function categoryDirect($filters, $category, $brand, $request, $regionsToSelect, $catalogJson) {
+        // убираем уши
+        \App::config()->adFox['enabled'] = false;
 
         \App::logger()->debug('Exec ' . __METHOD__);
 
