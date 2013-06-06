@@ -253,17 +253,21 @@ $productVideo = reset($productVideos);
     <div class="pt10 pb10">
       <? $avgStarScore = empty($reviewsData['avg_star_score']) ? 0 : $reviewsData['avg_star_score'] ?>
       <?= empty($avgStarScore) ? '' : $page->render('product/_starsFive', ['score' => $avgStarScore]) ?>
-      <? if(!empty($avgStarScore)) { ?>
-          <span class="underline" onclick="scrollToId('reviewsSectionHeader')"><?= $reviewsData['num_reviews'] ?> <?= $page->helper->numberChoice($reviewsData['num_reviews'], array('отзыв', 'отзыва', 'отзывов')) ?></span>
-      <? } else { ?>
-          <span>Отзывов нет</span>
-      <? } ?>
-      <div class="hf" id="reviewsProductName"><?= $product->getName() ?></div>
-      <span>(<span class="underline newReviewPopupLink" data-pid="productid">оставить отзыв</span>)</span>
-      <div style="position:fixed; top:40px; left:50%; margin-left:-442px; z-index:1002; display:none; width:700px; height:480px" class="reviewPopup popup clearfix">
-        <a class="close" href="#">Закрыть</a>
-        <iframe id="rframe" frameborder="0" scrolling="auto" height="480" width="700"></iframe>
-      </div>
+
+      <? if (\App::config()->product['reviewEnabled']): ?>
+          <? if(!empty($avgStarScore)) { ?>
+              <span class="underline" onclick="scrollToId('reviewsSectionHeader')"><?= $reviewsData['num_reviews'] ?> <?= $page->helper->numberChoice($reviewsData['num_reviews'], array('отзыв', 'отзыва', 'отзывов')) ?></span>
+          <? } else { ?>
+              <span>Отзывов нет</span>
+          <? } ?>
+          <div class="hf" id="reviewsProductName"><?= $product->getName() ?></div>
+          <span>(<span class="underline newReviewPopupLink" data-pid="productid">оставить отзыв</span>)</span>
+          <div style="position:fixed; top:40px; left:50%; margin-left:-442px; z-index:1002; display:none; width:700px; height:480px" class="reviewPopup popup clearfix">
+            <a class="close" href="#">Закрыть</a>
+            <iframe id="rframe" frameborder="0" scrolling="auto" height="480" width="700"></iframe>
+          </div>
+      <? endif ?>
+
     </div>
   </div>
 
@@ -724,25 +728,25 @@ $productVideo = reset($productVideos);
   </div>
 </div>
 <div class="clear"></div>
-<? if($reviewsPresent) { ?>
+<? if ($reviewsPresent): ?>
   <div id="productDescriptionToggle" class="contourButton mb15 button width250">Показать все характеристики</div>
-<? } ?>
+<? endif ?>
 
-<? if($reviewsPresent) { ?>
+<? if (\App::config()->product['reviewEnabled'] && $reviewsPresent): ?>
   <h2 id="reviewsSectionHeader" class="bold"><?= $product->getName() ?> - Обзоры и отзывы</h2>
   <div class="line pb5"></div>
   <div id="reviewsSummary">
       <?= $page->render('product/_reviewsSummary', ['reviewsData' => $reviewsData, 'reviewsDataPro' => $reviewsDataPro, 'reviewsDataSummary' => $reviewsDataSummary]) ?>
   </div>
 
-  <? if(!empty($reviewsData['review_list'])) { ?>
+  <? if (!empty($reviewsData['review_list'])) { ?>
     <div id="reviewsWrapper" data-product-id="<?= $product->getId() ?>" data-page-count="<?= $reviewsData['page_count'] ?>" data-container="reviewsUser" data-reviews-type="user">
-  <? } elseif(!empty($reviewsDataPro['review_list'])) { ?>
+  <? } elseif (!empty($reviewsDataPro['review_list'])) { ?>
     <div id="reviewsWrapper" data-product-id="<?= $product->getId() ?>" data-page-count="<?= $reviewsDataPro['page_count'] ?>" data-container="reviewsPro" data-reviews-type="pro">
   <? } ?>
       <?= $page->render('product/_reviews', ['reviewsData' => $reviewsData, 'reviewsDataPro' => $reviewsDataPro]) ?>
     </div>
-<? } ?>
+<? endif ?>
 
 <? if (!$showAccessoryUpper && count($product->getAccessoryId()) && \App::config()->product['showAccessories']): ?>
     <?= $page->render('product/_slider', ['product' => $product, 'productList' => array_values($accessories), 'totalProducts' => count($product->getAccessoryId()), 'itemsInSlider' => $accessoryCategory ? \App::config()->product['itemsInAccessorySlider'] : \App::config()->product['itemsInSlider'], 'page' => 1, 'title' => 'Аксессуары', 'url' => $page->url('product.accessory', array('productToken' => $product->getToken())), 'gaEvent' => 'Accessorize', 'showCategories' => (bool)$accessoryCategory, 'accessoryCategory' => $accessoryCategory, 'additionalData' => $additionalData]) ?>
