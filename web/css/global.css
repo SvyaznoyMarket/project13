@@ -4658,6 +4658,7 @@
   .bGood__eArticle {
     font-size: 12px;
     font-family: Tahoma, sans-serif;
+    color: #a6a6a6;
   }
   .bGood__eArticle a,
   .bGood__eArticle img {
@@ -4668,13 +4669,6 @@
   }
   .bGood__eArticle img.rating {
     padding: 0px;
-  }
-  .bGood__eArticle span {
-    font-size: 14px;
-    color: #a6a6a6;
-  }
-  .bGood__eArticle .productID {
-    color: #000;
   }
   .bGood .goodsbarbig {
     margin-bottom: 14px;
@@ -5379,164 +5373,6 @@
     cursor: pointer;
     display: inline-block;
   }
-  .productReview {
-    margin-bottom: 25px;
-  }
-  .reviewsBar {
-    background-color: #fb9c00;
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
-    border-radius: 3px;
-    height: 15px;
-    margin: 0 0 4px;
-  }
-  .reviewsBarBg {
-    background-color: #edecee;
-  }
-  .reviewsBarCount {
-    text-align: right;
-    padding-right: 5px;
-    font-weight: bold;
-    font-size: 10px;
-    width: 40px;
-    clear: both;
-  }
-  .contourButton {
-    padding: 10px;
-    border: 1px solid #ffa901;
-    text-align: center;
-    text-decoration: underline;
-  }
-  .reviewSection {
-    border-bottom: 1px solid #e6e6e6;
-    margin: 10px 0px 15px;
-    padding: 0px 0px 10px;
-    font-size: 14px;
-  }
-  .reviewSection__star,
-  .reviewSection__link {
-    float: left;
-    color: #a6a6a6;
-  }
-  .reviewSection__star__write,
-  .reviewSection__link__write {
-    border-bottom: 1px dotted;
-    cursor: pointer;
-    margin: 0 0 0 3px;
-    color: #000;
-  }
-  .reviewSection__star span.border,
-  .reviewSection__link span.border {
-    cursor: pointer;
-    border-bottom: 1px solid;
-  }
-  .reviewSection__star {
-    margin: 2px 0 0 0px;
-  }
-  .reviewSection__star img:last-child {
-    margin-right: 12px;
-  }
-  .reviewSection12 {
-    font-size: 12px;
-    border: none;
-    margin: 0;
-  }
-  .reviewSection12__star {
-    margin: 0;
-  }
-  .reviewSection12__star img:last-child {
-    margin-right: 5px;
-  }
-  .reviewsWrapper {
-    border-bottom: 1px solid #c7c7c7;
-    margin: 0;
-    padding: 0 0 10px;
-  }
-  .reviewsWrapper .product-btn-toggle {
-    margin: -10px 0 0 165px;
-    font-size: 14px;
-  }
-  .reviewsRatingWrapper {
-    margin: 0 0 10px;
-  }
-  .reviewsRatingWrapper .reviewsRatingCol__title {
-    margin: 0 0 6px 45px;
-  }
-  .reviewsRatingWrapper__colstar {
-    margin: 20px 0 0 20px;
-  }
-  .reviewsRatingWrapper__colstar__row {
-    margin: 0 0 3px;
-  }
-  .reviewsTabs {
-    border-bottom: 1px solid #c7c7c7;
-    margin: 0 0 10px;
-  }
-  .reviewsTabs li {
-    float: left;
-    font-size: 14px;
-    padding: 8px 10px 6px;
-  }
-  .reviewsTabs li span {
-    border-bottom: 1px dotted;
-    cursor: pointer;
-  }
-  .reviewsTabs .active {
-    font-weight: bold;
-    border: 1px solid #c7c7c7;
-    -webkit-border-radius: 5px 5px 0 0;
-    -moz-border-radius: 5px 5px 0 0;
-    border-radius: 5px 5px 0 0;
-    border-bottom: none;
-  }
-  .reviewsTabs .active span {
-    border-bottom: none;
-  }
-  .comments .commentAuthtor {
-    float: left;
-    width: 120px;
-    margin: 5px 15px 0 0;
-  }
-  .comments .commentAuthtor__name {
-    margin: 6px 0;
-    font-weight: normal;
-  }
-  .comments .commentAuthtor__date {
-    color: #a6a6a6;
-  }
-  .comments .commentWrap {
-    float: left;
-    width: 640px;
-    font-size: 14px;
-  }
-  .comments .commentWrap__text .mark {
-    display: block;
-    float: left;
-    font: bold 24px/24px Tahoma;
-    color: #616161;
-    width: 30px;
-  }
-  .comments .commentWrap__text p,
-  .comments .commentWrap__text .p {
-    float: left;
-    width: 610px;
-    margin: 2px 0 5px;
-  }
-  .comments .commentWrap__minus .mark {
-    font-size: 20px;
-  }
-  .comments .commentWrap__plus .mark,
-  .comments .commentWrap__minus .mark {
-    margin-top: -2px;
-  }
-  .comments .commentWrap__quote .mark {
-    margin-top: -4px;
-  }
-  .comments .commentLogo {
-    float: right;
-    width: 140px;
-    text-align: right;
-  }
 }
 /*стили для продуктов f1*/
 @media all {
@@ -5978,7 +5814,7 @@
   .reviewSection {
     border-bottom: 1px solid #e6e6e6;
     margin: 10px 0px 15px;
-    padding: 0px 0px 10px;
+    padding: 0px 0px 6px;
     font-size: 14px;
   }
   .reviewSection__star,
@@ -5986,15 +5822,17 @@
     float: left;
     color: #a6a6a6;
   }
-  .reviewSection__star__write,
+  .reviewSection__link {
+    width: 100%;
+  }
   .reviewSection__link__write {
     border-bottom: 1px dotted;
     cursor: pointer;
     margin: 0 0 0 3px;
     color: #000;
+    float: right;
   }
-  .reviewSection__star span.border,
-  .reviewSection__link span.border {
+  .reviewSection span.border {
     cursor: pointer;
     border-bottom: 1px solid;
   }
@@ -6045,6 +5883,9 @@
     font-size: 14px;
     padding: 8px 10px 6px;
   }
+  .reviewsTabs li:last-child {
+    padding-right: 0;
+  }
   .reviewsTabs li span {
     border-bottom: 1px dotted;
     cursor: pointer;
@@ -6056,6 +5897,9 @@
     -moz-border-radius: 5px 5px 0 0;
     border-radius: 5px 5px 0 0;
     border-bottom: none;
+    background: #fff;
+    margin: 0 0 -1px;
+    padding: 8px 9px 6px;
   }
   .reviewsTabs .active span {
     border-bottom: none;
@@ -6074,7 +5918,7 @@
   }
   .comments .commentWrap {
     float: left;
-    width: 640px;
+    width: 650px;
     font-size: 14px;
   }
   .comments .commentWrap__text .mark {
@@ -6082,27 +5926,26 @@
     float: left;
     font: bold 24px/24px Tahoma;
     color: #616161;
-    width: 30px;
+    width: 20px;
+    margin-right: 5px;
+    text-align: right;
   }
   .comments .commentWrap__text p,
   .comments .commentWrap__text .p {
     float: left;
-    width: 610px;
+    width: 620px;
     margin: 2px 0 5px;
-  }
-  .comments .commentWrap__minus .mark {
-    font-size: 20px;
   }
   .comments .commentWrap__plus .mark,
   .comments .commentWrap__minus .mark {
     margin-top: -2px;
   }
   .comments .commentWrap__quote .mark {
-    margin-top: -4px;
+    margin-top: -2px;
   }
   .comments .commentLogo {
     float: right;
-    width: 140px;
+    width: 120px;
     text-align: right;
   }
 }

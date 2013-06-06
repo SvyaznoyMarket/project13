@@ -23,7 +23,7 @@
     <? } ?>
     <? if(!empty($review['cons'])) { ?>
       <div class="commentWrap__text commentWrap__minus clearfix">
-          <span class="mark">&#8212;</span><p><?= str_replace(';', '<br>', $review['cons']) ?></p>
+          <span class="mark">&#8722;</span><p><?= str_replace(';', '<br>', $review['cons']) ?></p>
       </div>
     <? } ?>
   </div>

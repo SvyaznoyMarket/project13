@@ -249,19 +249,20 @@ $productVideo = reset($productVideos);
 <!-- Goods info -->
 <div class="goodsinfo bGood">
   <div class="bGood__eArticle clearfix">
-    <span>Артикул <span class="productID" itemprop="productID"><?= $product->getArticle() ?></span></span>
+    <span>Артикул: <span itemprop="productID"><?= $product->getArticle() ?></span></span>
   </div>
 
   <div class="reviewSection clearfix">
-      <div class="reviewSection__star">
-        <? $avgStarScore = empty($reviewsData['avg_star_score']) ? 0 : $reviewsData['avg_star_score'] ?>
-        <?= empty($avgStarScore) ? '' : $page->render('product/_starsFive', ['score' => $avgStarScore]) ?>
-      </div>
 
-      <? if (\App::config()->product['reviewEnabled']): ?>
-          <div class="reviewSection__link">
+      <div class="reviewSection__link">
+        <div class="reviewSection__star">
+          <? $avgStarScore = empty($reviewsData['avg_star_score']) ? 0 : $reviewsData['avg_star_score'] ?>
+          <?= empty($avgStarScore) ? '' : $page->render('product/_starsFive', ['score' => $avgStarScore]) ?>
+        </div>
+
+        <? if (\App::config()->product['reviewEnabled']): ?>
             <? if(!empty($avgStarScore)) { ?>
-                <span class="border" onclick="scrollToId('reviewsSectionHeader')">(<?= $reviewsData['num_reviews'] ?> <?= $page->helper->numberChoice($reviewsData['num_reviews'], array('отзыв', 'отзыва', 'отзывов')) ?>)</span>
+                <span class="border" onclick="scrollToId('reviewsSectionHeader')"><?= $reviewsData['num_reviews'] ?> <?= $page->helper->numberChoice($reviewsData['num_reviews'], array('отзыв', 'отзыва', 'отзывов')) ?></span>
             <? } else { ?>
                 <span>Отзывов нет</span>
             <? } ?>
@@ -272,8 +273,7 @@ $productVideo = reset($productVideos);
             <a class="close" href="#">Закрыть</a>
             <iframe id="rframe" frameborder="0" scrolling="auto" height="480" width="700"></iframe>
           </div>
-      <? endif ?>
-
+        <? endif ?>
   </div>
 
   <div class="font14 pb15" itemprop="description"><?= $product->getTagline() ?></div>

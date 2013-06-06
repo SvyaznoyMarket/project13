@@ -1,5 +1,5 @@
 <ul class="reviewsTabs clearfix">
-  <li class="reviewsTab user<?= !empty($reviewsData['review_list']) ? ' active' : ' hfImportant' ?>" data-container="reviewsUser" data-reviews-type="user"><span>Отзывы пользователей</span></li>
+  <li style="width: 173px;" class="reviewsTab user<?= !empty($reviewsData['review_list']) ? ' active' : ' hfImportant' ?>" data-container="reviewsUser" data-reviews-type="user"><span>Отзывы пользователей</span></li>
   <?
     if(!empty($reviewsData['review_list']) && !empty($reviewsDataPro['review_list'])) {
       $tabProClass = '';
