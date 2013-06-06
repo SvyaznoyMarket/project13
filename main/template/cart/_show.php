@@ -138,7 +138,7 @@ foreach ($products as $product) {
                 </div>
             </div>
             <div class="basketinfo">
-                <div class="left font24"><span class="sum"><?= $page->helper->formatPrice($cartProduct->getSum()) ?></span> <span class="rubl">p</span></div>
+                <div class="left font24"><span class="sum"><?= $page->helper->formatPrice($cartProduct->getPrice() * $cartProduct->getQuantity()) ?></span> <span class="rubl">p</span></div>
                 <div class="right">
                     <a href="<?= $page->url('cart.product.delete', array('productId' => $product->getId())) ?>" class="button whitelink mr5">Удалить</a>
                 </div>
