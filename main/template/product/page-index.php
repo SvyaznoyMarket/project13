@@ -249,22 +249,28 @@ $productVideo = reset($productVideos);
 <!-- Goods info -->
 <div class="goodsinfo bGood">
   <div class="bGood__eArticle clearfix">
-    <span>Артикул #<span  itemprop="productID"><?= $product->getArticle() ?></span></span>
-    <div class="pt10 pb10">
-      <? $avgStarScore = empty($reviewsData['avg_star_score']) ? 0 : $reviewsData['avg_star_score'] ?>
-      <?= empty($avgStarScore) ? '' : $page->render('product/_starsFive', ['score' => $avgStarScore]) ?>
-      <? if(!empty($avgStarScore)) { ?>
-          <span class="underline" onclick="scrollToId('reviewsSectionHeader')"><?= $reviewsData['num_reviews'] ?> <?= $page->helper->numberChoice($reviewsData['num_reviews'], array('отзыв', 'отзыва', 'отзывов')) ?></span>
-      <? } else { ?>
-          <span>Отзывов нет</span>
-      <? } ?>
-      <div class="hf" id="reviewsProductName"><?= $product->getName() ?></div>
-      <span>(<span class="underline newReviewPopupLink" data-pid="productid">оставить отзыв</span>)</span>
+    <span>Артикул <span class="productID" itemprop="productID"><?= $product->getArticle() ?></span></span>
+  </div>
+
+  <div class="reviewSection clearfix">
+      <div class="reviewSection__star">
+        <? $avgStarScore = empty($reviewsData['avg_star_score']) ? 0 : $reviewsData['avg_star_score'] ?>
+        <?= empty($avgStarScore) ? '' : $page->render('product/_starsFive', ['score' => $avgStarScore]) ?>
+      </div>
+
+      <div class="reviewSection__link">
+        <? if(!empty($avgStarScore)) { ?>
+            <span class="border" onclick="scrollToId('reviewsSectionHeader')">(<?= $reviewsData['num_reviews'] ?> <?= $page->helper->numberChoice($reviewsData['num_reviews'], array('отзыв', 'отзыва', 'отзывов')) ?>)</span>
+        <? } else { ?>
+            <span>Отзывов нет</span>
+        <? } ?>
+        <span class="reviewSection__link__write newReviewPopupLink" data-pid="productid">Оставить отзыв</span>
+        <div class="hf" id="reviewsProductName"><?= $product->getName() ?></div>
+      </div>
       <div style="position:fixed; top:40px; left:50%; margin-left:-442px; z-index:1002; display:none; width:700px; height:480px" class="reviewPopup popup clearfix">
         <a class="close" href="#">Закрыть</a>
         <iframe id="rframe" frameborder="0" scrolling="auto" height="480" width="700"></iframe>
       </div>
-    </div>
   </div>
 
   <div class="font14 pb15" itemprop="description"><?= $product->getTagline() ?></div>
@@ -481,7 +487,7 @@ $productVideo = reset($productVideos);
 <? if (!empty($description)): ?>
 <!-- Information -->
 <div class="clear"></div>
-<h2 class="bold"><?= $product->getName() ?> - Информация о товаре</h2>
+<h2 class="bold">Информация о товаре</h2>
 <div class="line pb15"></div>
 <ul class="pb10">
   <?= $description ?>
@@ -634,7 +640,7 @@ $productVideo = reset($productVideos);
 <? endif ?>
 
 
-<h2 class="bold"><?= $product->getName() ?> - Характеристики</h2>
+<h2 class="bold">Характеристики</h2>
 <div class="line pb5"></div>
 <div class="descriptionWrapper">
   <? $groupedProperties = $product->getGroupedProperties();?>
@@ -723,18 +729,18 @@ $productVideo = reset($productVideos);
 </div>
 <div class="clear"></div>
 <? if($reviewsPresent) { ?>
-  <div id="productDescriptionToggle" class="contourButton mb15 button width250">Показать все характеристики</div>
+  <div id="productDescriptionToggle" class="mb15 product-btn-toggle"><span>Показать все характеристики</span></div>
 <? } ?>
 
 <? if($reviewsPresent) { ?>
-  <h2 id="reviewsSectionHeader" class="bold"><?= $product->getName() ?> - Обзоры и отзывы</h2>
+  <h2 id="reviewsSectionHeader" class="bold">Обзоры и отзывы</h2>
   <div class="line pb5"></div>
   <div id="reviewsSummary">
       <?= $page->render('product/_reviewsSummary', ['reviewsData' => $reviewsData, 'reviewsDataPro' => $reviewsDataPro, 'reviewsDataSummary' => $reviewsDataSummary]) ?>
   </div>
 
   <? if(!empty($reviewsData['review_list'])) { ?>
-    <div id="reviewsWrapper" data-product-id="<?= $product->getId() ?>" data-page-count="<?= $reviewsData['page_count'] ?>" data-container="reviewsUser" data-reviews-type="user">
+    <div id="reviewsWrapper" class="reviewsWrapper" data-product-id="<?= $product->getId() ?>" data-page-count="<?= $reviewsData['page_count'] ?>" data-container="reviewsUser" data-reviews-type="user">
   <? } elseif(!empty($reviewsDataPro['review_list'])) { ?>
     <div id="reviewsWrapper" data-product-id="<?= $product->getId() ?>" data-page-count="<?= $reviewsDataPro['page_count'] ?>" data-container="reviewsPro" data-reviews-type="pro">
   <? } ?>
@@ -749,8 +755,6 @@ $productVideo = reset($productVideos);
 <? if (!$showRelatedUpper && count($related) && \App::config()->product['showRelated']): ?>
     <?= $page->render('product/_slider', ['product' => $product, 'productList' => array_values($related), 'totalProducts' => count($product->getRelatedId()), 'itemsInSlider' => \App::config()->product['itemsInSlider'], 'page' => 1, 'title' => 'С этим товаром также покупают', 'url' => $page->url('product.related', array('productToken' => $product->getToken())), 'additionalData' => $additionalData]) ?>
 <? endif ?>
-
-<?= $page->tryRender('product/_tag', ['product' => $product]) ?>
 
 <div class="fr ar">
     <? //if ($product->getIsBuyable() || !$product->getState()->getIsShop()): ?>
@@ -793,6 +797,8 @@ $productVideo = reset($productVideos);
 <? endif ?>
 
 <?= $page->render('_breadcrumbs', array('breadcrumbs' => $breadcrumbs, 'class' => 'breadcrumbs-footer')) ?>
+
+<?= $page->tryRender('product/_tag', ['product' => $product]) ?>
 
 <? if (\App::config()->smartengine['push']): ?>
 <div id="product_view-container" data-url="<?= $page->url('smartengine.push.product_view', array('productId' => $product->getId())) ?>"></div>
