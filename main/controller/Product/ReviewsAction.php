@@ -124,7 +124,7 @@ class ReviewsAction {
     /**
      * Устанавливает коллекции коллекций товаров рейтинги
      *
-     * @param array $products
+     * @param $collection
      * @return array $products
      */
     public function addScoresGrouped(&$collection) {
@@ -144,7 +144,7 @@ class ReviewsAction {
 
         foreach ($collection as $products) {
             foreach ($products as $product) {
-                if(in_array($product->getId(), $scoredIds)) {
+                if (in_array($product->getId(), $scoredIds)) {
                     $productScore = null;
                     foreach ($scoresData['product_scores'] as $key => $score) {
                         if($score['product_id'] == $product->getId()) {
@@ -152,10 +152,10 @@ class ReviewsAction {
                             unset($scoresData['product_scores'][$key]);
                         }
                     }
-                    if(!$productScore) continue;
-                    if(!empty($productScore['score'])) $product->setAvgScore($productScore['score']);
-                    if(!empty($productScore['star_score'])) $product->setAvgStarScore($productScore['star_score']);
-                    if(!empty($productScore['num_reviews'])) $product->setNumReviews($productScore['num_reviews']);
+                    if (!$productScore) continue;
+                    if (!empty($productScore['score'])) $product->setAvgScore($productScore['score']);
+                    if (!empty($productScore['star_score'])) $product->setAvgStarScore($productScore['star_score']);
+                    if (!empty($productScore['num_reviews'])) $product->setNumReviews($productScore['num_reviews']);
                 }
             }
         }

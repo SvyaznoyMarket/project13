@@ -149,6 +149,7 @@ $c->product['totalCount']            = 30000;
 $c->product['globalListEnabled']     = true;
 $c->product['showAveragePrice']      = false;
 $c->product['allowBuyOnlyInshop']    = false;
+$c->product['reviewEnabled']         = false;
 
 $c->productPhoto['url'] = [
     0 => '/1/1/60/',
