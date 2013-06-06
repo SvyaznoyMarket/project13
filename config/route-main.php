@@ -435,6 +435,12 @@ return [
         'action'  => ['User\ChangePasswordAction', 'execute'],
     ],
 
+    // подписка
+    'friendship' => [
+        'pattern' => '/be-friends',
+        'action'  => ['Friendship\Action', 'execute'],
+    ],
+
     //подписка на уцененные товары
     'refurbished' => [
         'pattern' => '/refurbished',

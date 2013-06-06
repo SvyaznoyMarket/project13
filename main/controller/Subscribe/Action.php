@@ -2,8 +2,6 @@
 
 namespace Controller\Subscribe;
 
-use Http\RedirectResponse;
-
 class Action {
     /**
      * @param \Http\Request $request
@@ -125,6 +123,6 @@ class Action {
         return new \Http\Response($page->show());
         */
 
-        return new RedirectResponse(\App::router()->generate('content', ['token' => 'subscribe_friends'], true));
+        return new \Http\RedirectResponse(\App::router()->generate('content', ['token' => 'subscribe_friends'], true));
     }
 }
