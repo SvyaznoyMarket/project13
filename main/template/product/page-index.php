@@ -249,18 +249,18 @@ $productVideo = reset($productVideos);
 <!-- Goods info -->
 <div class="goodsinfo bGood">
   <div class="bGood__eArticle clearfix">
-    <span>Артикул <span class="productID" itemprop="productID"><?= $product->getArticle() ?></span></span>
+    <span>Артикул: <span itemprop="productID"><?= $product->getArticle() ?></span></span>
   </div>
 
   <div class="reviewSection clearfix">
-      <div class="reviewSection__star">
-        <? $avgStarScore = empty($reviewsData['avg_star_score']) ? 0 : $reviewsData['avg_star_score'] ?>
-        <?= empty($avgStarScore) ? '' : $page->render('product/_starsFive', ['score' => $avgStarScore]) ?>
-      </div>
-
       <div class="reviewSection__link">
+        <div class="reviewSection__star">
+          <? $avgStarScore = empty($reviewsData['avg_star_score']) ? 0 : $reviewsData['avg_star_score'] ?>
+          <?= empty($avgStarScore) ? '' : $page->render('product/_starsFive', ['score' => $avgStarScore]) ?>
+        </div>
+      
         <? if(!empty($avgStarScore)) { ?>
-            <span class="border" onclick="scrollToId('reviewsSectionHeader')">(<?= $reviewsData['num_reviews'] ?> <?= $page->helper->numberChoice($reviewsData['num_reviews'], array('отзыв', 'отзыва', 'отзывов')) ?>)</span>
+            <span class="border" onclick="scrollToId('reviewsSectionHeader')"><?= $reviewsData['num_reviews'] ?> <?= $page->helper->numberChoice($reviewsData['num_reviews'], array('отзыв', 'отзыва', 'отзывов')) ?></span>
         <? } else { ?>
             <span>Отзывов нет</span>
         <? } ?>

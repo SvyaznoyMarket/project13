@@ -28,24 +28,26 @@
 .reviewSection {
   border-bottom: 1px solid @typLightGray;
   margin: 10px 0px 15px;
-  padding: 0px 0px 10px;
+  padding: 0px 0px 6px;
   font-size: 14px;
   &__star, &__link {
     float: left;
     color: @typGray;
   }
-  &__star, &__link {
+  &__link {
+    width: 100%;
     &__write {
       border-bottom: 1px dotted;
       cursor: pointer;
       margin: 0 0 0 3px;
       color: #000;
+      float: right;
     }
+  }  
     span.border {
       cursor: pointer;
       border-bottom: 1px solid;
     }
-  }
   &__star {
     margin: 2px 0 0 0px;
     img {
@@ -101,6 +103,9 @@
     float: left;
     font-size: 14px;
     padding: 8px 10px 6px;
+    &:last-child {
+      padding-right: 0;
+    }
     span {
       border-bottom: 1px dotted;
       cursor: pointer;
@@ -111,6 +116,9 @@
     border: 1px solid #c7c7c7;
     .rounded(5px 5px 0 0);
     border-bottom: none;
+    background: #fff;
+    margin: 0 0 -1px;
+    padding: 8px 9px 6px;
     span {
       border-bottom: none;
     }
@@ -132,7 +140,7 @@
   }
   .commentWrap {
     float: left;
-    width: 640px;
+    width: 650px;
     font-size: 14px;
     &__text {
       .mark {
@@ -140,17 +148,14 @@
         float: left;
         font: bold 24px/24px Tahoma;
         color: @typBoxShadowColor;
-        width: 30px;
+        width: 20px;
+        margin-right: 5px;
+        text-align: right;
       }
       p, .p {
         float: left;
-        width: 610px;
+        width: 620px;
         margin: 2px 0 5px;
-      }
-    }
-    &__minus {
-      .mark {
-        font-size: 20px;
       }
     }
     &__plus, &__minus {
@@ -160,13 +165,13 @@
     }
     &__quote {
       .mark {
-        margin-top: -4px;
+        margin-top: -2px;
       }
     }
   }
   .commentLogo {
     float: right;
-    width: 140px;
+    width: 120px;
     text-align: right;
   }
 }
