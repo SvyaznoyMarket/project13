@@ -421,6 +421,8 @@ class Repository {
      * @return array
      */
     public function getCatalogJson($category) {
+        if(empty($category) || !is_object($category)) return [];
+
          // формируем ветку категорий для последующего формирования запроса к json-апи
         $branch = [$category->getToken()];
         if(!$category->isRoot()) {

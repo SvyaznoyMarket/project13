@@ -120,8 +120,10 @@ class Action extends \Controller\ProductCategory\Action {
      * @return \Http\Response
      */
     public function categoryDirect($filters, $category, $brand, $request, $regionsToSelect, $catalogJson) {
-        // убираем уши
-        \App::config()->adFox['enabled'] = false;
+        // убираем/показываем уши
+        if(isset($catalogJson['show_side_panels'])) {
+            \App::config()->adFox['enabled'] = (bool)$catalogJson['show_side_panels'];
+        }
 
         \App::logger()->debug('Exec ' . __METHOD__);
 

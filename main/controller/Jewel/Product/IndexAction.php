@@ -86,7 +86,13 @@ class IndexAction extends \Controller\Product\IndexAction {
             return new \Http\RedirectResponse($product->getLink() . ((bool)$request->getQueryString() ? ('?' . $request->getQueryString()) : ''), 302);
         }
 
-        return $this->executeDirect($product, $regionsToSelect);
+        // получаем catalog json для категории второго уровня (Пандора)
+        $productCategories = $product->getCategory();
+        array_shift($productCategories);
+        $productCategory = reset($productCategories);
+        $catalogJson = \RepositoryManager::productCategory()->getCatalogJson($productCategory);
+
+        return $this->executeDirect($product, $regionsToSelect, $catalogJson);
     }
 
 
@@ -95,9 +101,11 @@ class IndexAction extends \Controller\Product\IndexAction {
      * @param \Model\Region\Entity[]   $regionsToSelect
      * @return \Http\Response
      */
-    public function executeDirect($product, $regionsToSelect) {
-        // убираем уши
-        \App::config()->adFox['enabled'] = false;
+    public function executeDirect($product, $regionsToSelect, $catalogJson) {
+        // убираем/показываем уши
+        if(isset($catalogJson['show_side_panels'])) {
+            \App::config()->adFox['enabled'] = (bool)$catalogJson['show_side_panels'];
+        }
 
         $repository = \RepositoryManager::product();
 
