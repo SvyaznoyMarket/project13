@@ -1,15 +1,18 @@
 <?php
 
-namespace Controller\Product;
+namespace Controller\Jewel\Product;
 
-class IndexAction {
+class IndexAction extends \Controller\Product\IndexAction {
     /**
+     * Сейчас executeDirect() вызывается из \Controller\Product\IndexAction напрямую
+     * Чтобы вызывать через роутинг, надо обращаться к этой функции
+     *
      * @param string        $productPath
      * @param \Http\Request $request
      * @return \Http\RedirectResponse|\Http\Response
      * @throws \Exception\NotFoundException
      */
-    public function execute($productPath, \Http\Request $request) {
+    public function prepareExecute($productPath, \Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
         $client = \App::coreClientV2();
@@ -82,6 +85,18 @@ class IndexAction {
         if ($request->getPathInfo() !== $product->getLink()) {
             return new \Http\RedirectResponse($product->getLink() . ((bool)$request->getQueryString() ? ('?' . $request->getQueryString()) : ''), 302);
         }
+
+        return $this->executeDirect($product, $regionsToSelect);
+    }
+
+
+    /**
+     * @param \Model\Product\Entity    $product
+     * @param \Model\Region\Entity[]   $regionsToSelect
+     * @return \Http\Response
+     */
+    public function executeDirect($product, $regionsToSelect) {
+        $repository = \RepositoryManager::product();
 
         if ($product->getConnectedProductsViewMode() == $product::DEFAULT_CONNECTED_PRODUCTS_VIEW_MODE) {
             $showRelatedUpper = false;
@@ -196,7 +211,7 @@ class IndexAction {
             $productVideos = [];
         }
 
-        $page = new \View\Product\IndexPage();
+        $page = new \View\Jewel\Product\IndexPage();
         $page->setParam('regionsToSelect', $regionsToSelect);
         $page->setParam('product', $product);
         $page->setParam('productVideos', $productVideos);
@@ -219,39 +234,5 @@ class IndexAction {
         return new \Http\Response($page->show());
     }
 
-    /**
-     * Собирает в массив данные, необходимые для плагина online кредитовария // скопировано из symfony
-     *
-     * @param $product
-     * @return array
-     */
-    private function getDataForCredit(\Model\Product\Entity $product) {
-        $result = [];
-
-        $category = $product->getMainCategory();
-        $cart = \App::user()->getCart();
-        try {
-            $productType = $category ? \RepositoryManager::creditBank()->getCreditTypeByCategoryToken($category->getToken()) : '';
-        } catch (\Exception $e) {
-            \App::exception()->add($e);
-            \App::logger()->error($e);
-
-            $productType = '';
-        }
-
-        $dataForCredit = array(
-            'price'        => $product->getPrice(),
-            //'articul'      => $product->getArticle(),
-            'name'         => $product->getName(),
-            'count'        => $cart->getQuantityByProduct($product->getId()),
-            'product_type' => $productType,
-            'session_id'   => session_id()
-        );
-        $result['creditIsAllowed'] = (bool) (($product->getPrice() * (($cart->getQuantityByProduct($product->getId()) > 0)? $cart->getQuantityByProduct($product->getId()) : 1)) > \App::config()->product['minCreditPrice']);
-        $result['creditData'] = json_encode($dataForCredit);
-
-        return $result;
-    }
-
-
+ 
 }

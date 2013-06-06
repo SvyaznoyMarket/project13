@@ -83,6 +83,19 @@ class IndexAction {
             return new \Http\RedirectResponse($product->getLink() . ((bool)$request->getQueryString() ? ('?' . $request->getQueryString()) : ''), 302);
         }
 
+        // получаем catalog json для категории второго уровня (Пандора)
+        $productCategories = $product->getCategory();
+        array_shift($productCategories);
+        $productCategory = reset($productCategories);
+        $catalogJson = \RepositoryManager::productCategory()->getCatalogJson($productCategory);
+
+        // если в catalogJson'e указан category_class, то обрабатываем запрос соответствующим контроллером
+        if(!empty($catalogJson['category_class'])) {
+            $controller = '\\Controller\\'.ucfirst($catalogJson['category_class']).'\\Product\\IndexAction';
+            return (new $controller())->executeDirect($product, $regionsToSelect);
+        }
+
+
         if ($product->getConnectedProductsViewMode() == $product::DEFAULT_CONNECTED_PRODUCTS_VIEW_MODE) {
             $showRelatedUpper = false;
         } else {
@@ -225,7 +238,7 @@ class IndexAction {
      * @param $product
      * @return array
      */
-    private function getDataForCredit(\Model\Product\Entity $product) {
+    protected function getDataForCredit(\Model\Product\Entity $product) {
         $result = [];
 
         $category = $product->getMainCategory();
