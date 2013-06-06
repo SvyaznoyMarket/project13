@@ -303,6 +303,11 @@ return [
         'pattern' => '/cart/add/{productId}/_quantity', // TODO: Убить, когда полностью переедем на dark, переписать js с учетом наличия кол-ва
         'action'  => ['Cart\ProductAction', 'set'],
     ],
+    // добавление списка товаров в корзину
+    'cart.product.setList' => [
+        'pattern' => '/cart/set-products',
+        'action'  => ['Cart\ProductAction', 'setList'],
+    ],
     // удаление услуги из корзины
     'cart.service.delete' => [
         'pattern' => '/cart/delete_service/{productId}/_service/{serviceId}',
