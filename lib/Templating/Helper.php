@@ -67,11 +67,11 @@ class Helper {
      * @param $string
      * @return string
      */
-    public function nofollowExternalLinks($string) {
-        $string = '<div>' . $string . '</div>';
+    public function nofollowExternalLinks($stringOriginal) {
+        $stringWrapped = '<div>' . $stringOriginal . '</div>';
 
         $dom = new \DOMDocument;
-        $dom->loadXML($string);
+        $this->loadXML($stringWrapped, $dom, $stringOriginal);
 
         $links = $dom->getElementsByTagName('a');
         foreach ($links as $link) {
@@ -83,6 +83,25 @@ class Helper {
         return $dom->saveHTML();
     }
 
+    /**
+     * @param string $stringWrapped
+     * @param \DOMDocument $dom
+     * @param string $stringOriginal
+     */
+    private function loadXML(&$stringWrapped, &$dom, $stringOriginal) {
+        try {
+            $dom->loadXML($stringWrapped);
+        } catch (\Exception $e) {
+            if(preg_match('/^.*mismatch: ([^ ]+) line.*$/i', $e->getMessage(), $matches) ||
+                preg_match('/^.*attribute ([^ ]+) in.*$/i', $e->getMessage(), $matches)) {
+                $brokenTag = array_pop($matches);
+                $stringWrapped = preg_replace('/<([^<]*'.$brokenTag.'[^>]*)>/i', htmlentities('<$1>'), $stringWrapped);
+            } else {
+                $stringWrapped = '<div>' . htmlentities($stringOriginal) . '</div>';
+            }
+            $this->loadXML($stringWrapped, $dom, $stringOriginal);
+        }
+    }
 
     /**
      * @param string $date

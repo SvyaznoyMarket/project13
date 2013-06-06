@@ -626,9 +626,9 @@ $productVideo = reset($productVideos);
 <div class="line pb5"></div>
 <div class="descriptionWrapper">
   <? $groupedProperties = $product->getGroupedProperties();?>
+  <? $propertiesShown = 0; ?>
   <? if($reviewsPresent) { ?>
     <div class="descriptionlist short">
-        <? $propertiesShown = 0; ?>
         <? foreach ($groupedProperties as $groupKey => $group): ?>
         <? if (!count($group['properties'])) continue ?>
             <div class="pb15"><strong><?= $group['group']->getName() ?></strong></div>
@@ -661,8 +661,8 @@ $productVideo = reset($productVideos);
                 </div>
                 <? 
                   $propertiesShown++;
-                  unset($group['properties'][$propertyKey]);
-                  if(empty($group['properties'])) unset($groupedProperties[$groupKey]);
+                  unset($groupedProperties[$groupKey]['properties'][$propertyKey]);
+                  if(empty($groupedProperties[$groupKey]['properties'])) unset($groupedProperties[$groupKey]);
                   if($propertiesShown >= 10) break;
                 ?>
             <? endforeach ?>
@@ -705,12 +705,13 @@ $productVideo = reset($productVideos);
                       <? endif ?>
                   </div>
               </div>
+              <? $propertiesShown++; ?>
           <? endforeach ?>
       <? endforeach ?>
   </div>
 </div>
 <div class="clear"></div>
-<? if($reviewsPresent) { ?>
+<? if($reviewsPresent && $propertiesShown > 10) { ?>
   <div id="productDescriptionToggle" class="contourButton mb15 button width250">Показать все характеристики</div>
 <? } ?>
 
