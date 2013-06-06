@@ -21,6 +21,18 @@ class Manager {
 
             $utmSource = $request->get('utm_source');
 
+            // myThings
+            if (0 === strpos($utmSource, 'mythings')) {
+                $cookie = new \Http\Cookie(
+                    $this->cookieName,
+                    \Partner\Counter\MyThings::NAME,
+                    time() + $this->cookieLifetime,
+                    '/',
+                    null,
+                    false,
+                    true
+                );
+            }
             // CityAds
             if (0 === strpos($utmSource, 'cityads')) {
                 $response->headers->setCookie(new \Http\Cookie(
@@ -159,6 +171,10 @@ class Manager {
                     $prefix => [\Partner\Counter\Recreative::NAME],
                 ];
                 break;
+            case \Partner\Counter\MyThings::NAME:
+                $return = [
+                    $prefix => [\Partner\Counter\MyThings::NAME],
+                ];
         }
 
         return $return;
