@@ -43,6 +43,7 @@ if (!isset($isForm)) $isForm = true;
                 <? endif ?>
             </div>
             <? endforeach ?>
+            <a class="ml90 underline bold db pt20" href="/coupons">Условия применения купонов</a>
         <? endif ?>
 
         <div class="bF1SaleCard_eForm pt20 ml90 <? if ($user->getCart()->hasServices()): ?> m2Coupon<? endif ?>" style="display:none">

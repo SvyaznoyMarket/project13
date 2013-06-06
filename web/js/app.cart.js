@@ -226,9 +226,17 @@ $(document).ready(function() {
 		$('#totalOldPrice').html(printPrice( oldPrice ))
 	}
 
-	function getTotal() {
+	function showPrice(price){
+		if( !price ) {
+			location.reload(true)
+		}
 		checkForSaleCard()
-		
+		total.html( printPrice( price ) )
+		total.typewriter(800)
+		totalCash = price
+	}
+
+	function getTotal() {
 		checkServWarranty()
 		for(var i=0, tmp=0; i < basket.length; i++ ) {
 			if( ! basket[i].noview && $.contains( document.body, basket[i].hasnodes[0] ) )
@@ -322,7 +330,8 @@ $(document).ready(function() {
 				}
 				else{
 					showOldPrice(data.data.old_price)
-					getTotal()
+					showPrice(data.data.full_price)
+					// getTotal()
 				}
 			})
 		}
@@ -378,6 +387,7 @@ $(document).ready(function() {
 					location.href = location.href
 				}
 				showOldPrice(data.data.old_price)
+				showPrice(data.data.full_price)
 			})
 		}
 
@@ -507,6 +517,7 @@ $(document).ready(function() {
 						popupIsOpened = false
 						f1popup.hide()
 						showOldPrice(data.data.old_price)
+						showPrice(data.data.full_price)
 					}
 				})
 				
@@ -539,6 +550,7 @@ $(document).ready(function() {
 				var tmpitem = $(this).data()			
 				$.getJSON( tmpitem.url, function(data) {
 					showOldPrice(data.data.old_price)
+					showPrice(data.data.full_price)
 				})
 				popupIsOpened = false
 				wrntpopup.hide()
@@ -632,8 +644,10 @@ $(document).ready(function() {
 			$($('tr:eq(1)', bBig)).remove()
 		f1lineshead.after( f1linecart )
 		addLineWrnt( $('tr:eq(1)', bBig), bline )
-		getTotal()
+		// getTotal()
+
 		showOldPrice(data.data.old_price)
+		showPrice(data.data.full_price)
 	}
 	
 	/* credit */
