@@ -11,7 +11,7 @@
   ?>
   <li class="reviewsTab pro<?= $tabProClass ?>" data-container="reviewsPro" data-reviews-type="pro"><span>Обзоры экспертов</span></li>
 
-  <li style="float: right;">
+  <li class="last">
     <span onclick="$('.newReviewPopupLink').click()">Оставить отзыв</span>
   </li> 
 </ul>

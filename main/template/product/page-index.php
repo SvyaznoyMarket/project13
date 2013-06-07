@@ -252,11 +252,11 @@ $productVideo = reset($productVideos);
     <span>Артикул: <span itemprop="productID"><?= $product->getArticle() ?></span></span>
   </div>
 
-  <div class="reviewSection clearfix">
+  <div class="reviewSection reviewSection100 clearfix">
 
       <? if (\App::config()->product['reviewEnabled']): ?>
       <div class="reviewSection__link">
-        <div class="reviewSection__star">
+        <div class="reviewSection__star reviewSection100__star">
           <? $avgStarScore = empty($reviewsData['avg_star_score']) ? 0 : $reviewsData['avg_star_score'] ?>
           <?= empty($avgStarScore) ? '' : $page->render('product/_starsFive', ['score' => $avgStarScore]) ?>
         </div>

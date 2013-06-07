@@ -47,14 +47,16 @@
     span.border {
       cursor: pointer;
       border-bottom: 1px solid;
+      float: left;
     }
   &__star {
     margin: 2px 0 0 0px;
-    img {
-      &:last-child {
-        margin-right: 12px;
-      }
-    }
+  }
+}
+
+.reviewSection100 {
+  &__star {
+    margin-right: 12px;
   }
 }
 
@@ -106,13 +108,14 @@
     float: left;
     font-size: 14px;
     padding: 8px 10px 6px;
-    &:last-child {
-      padding-right: 0;
-    }
     span {
       border-bottom: 1px dotted;
       cursor: pointer;
     }
+  }
+  .last {
+    padding-right: 0;
+    float: right;
   }
   .active {
     font-weight: bold;
