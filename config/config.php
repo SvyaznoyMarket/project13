@@ -57,7 +57,7 @@ $c->corePrivate['retryCount'] = 3;
 
 $c->wordpress['url'] = 'http://content.enter.ru/';
 $c->wordpress['timeout'] = 8;
-$c->wordpress['throwException'] = true;
+$c->wordpress['throwException'] = false;
 
 $c->dataStore['url'] = 'http://cms.enter.ru/v1/';
 $c->dataStore['timeout'] = 3;
