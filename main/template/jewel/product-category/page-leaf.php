@@ -33,7 +33,7 @@
   
   <div class="brand-subnav clearfix">
     <nav>
-      <div class="brand-subnav__title">Подвески - шармы</div>
+      <div class="brand-subnav__title"><?= $category->getName() ?></div>
       <? foreach($filters as $key => $filter) { ?>
         <? if(mb_strtolower($catalogJson['sub_category_filter_menu']) == mb_strtolower($filter->getName())) { ?>
           <? require __DIR__ . '/filter/_tabs.php' ?>
