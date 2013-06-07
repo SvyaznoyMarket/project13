@@ -32,11 +32,12 @@ if ($parent) {
 ?>
 
 <div class="brand-nav">
-    <nav>
-        <ul class="brand-nav__list clearfix">
+    <table class="brand-nav__list">
+        <tr>
             <? foreach ($categories as $node): ?>
-                <li><a href="<?= $node->getLink()  . (\App::request()->get('instore') ? '?instore=1' : '') ?>"><span><?= $node->getName() ?></span></a></li>
+                <td><a href="<?= $node->getLink()  . (\App::request()->get('instore') ? '?instore=1' : '') ?>"><span><?= $node->getName() ?></span></a></td>
             <? endforeach ?>
-        </ul>
-    </nav>
+        </tr>
+    </table>
 </div>
+
