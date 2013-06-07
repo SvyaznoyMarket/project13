@@ -635,6 +635,7 @@ class Action {
         }
 
         $data = [];
+        $bMeta = false;
         foreach ($deliveryData['deliveryTypes'] as $deliveryItem) {
             if (!isset($deliveryTypesById[$deliveryItem['id']])) {
                 \App::logger()->error(sprintf('Неизвестный тип доставки %s', json_encode($deliveryItem, JSON_UNESCAPED_UNICODE)), ['order']);
@@ -692,6 +693,7 @@ class Action {
             }
 
             // товары и услуги
+
             foreach ($deliveryItem['items'] as $itemToken) {
                 if (false === strpos($itemToken, '-')) {
                     \App::logger()->error(sprintf('Неправильный элемент заказа %s', json_encode($itemToken, JSON_UNESCAPED_UNICODE)), ['order']);
@@ -753,10 +755,10 @@ class Action {
                 }
 
                 // мета-теги
-                if (\App::config()->order['enableMetaTag']) {
+                if (\App::config()->order['enableMetaTag'] && !$bMeta) {
                     try {
-                        $partners = [];
                         foreach ($products as $product) {
+                            $partners = [];
                             if ($partnerName = \App::partner()->getName()) {
                                 $partners[] = \App::partner()->getName();
                             }
@@ -765,12 +767,13 @@ class Action {
                                     $partners[] = \Smartengine\Client::NAME;
                                 }
                             }
-                            $orderData['meta_data'] = \App::partner()->fabricateMetaByPartners($partners, $product);
+                            $orderData['meta_data'] =  \App::partner()->fabricateCompleteMeta(isset($orderData['meta_data']) ? $orderData['meta_data'] : [], \App::partner()->fabricateMetaByPartners($partners, $product));
                         }
-                        \App::logger()->info(sprintf('Создается заказ от партнеров %s', implode(', ', $partners)), ['order', 'partner']);
+                        \App::logger()->info(sprintf('Создается заказ от партнеров %s', implode(', ', $orderData['meta_data']['partner'])), ['order', 'partner']);
                     } catch (\Exception $e) {
                         \App::logger()->error($e, ['order', 'partner']);
                     }
+                    $bMeta = true;
                 }
             }
 

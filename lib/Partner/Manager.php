@@ -198,10 +198,15 @@ class Manager {
         }
 
         if ((bool)$product) {
+            $keyName = $prefix . '.' . $name;
             if (is_array($product->getEan()) && count($product->getEan())) {
-                $return[$prefix . '.' . $name . '.ean'] = implode(',', $product->getEan());
-            } else $return[$prefix . '.' . $name . '.article'] = $product->getArticle();
-            if ($product->getMainCategory()) $return[$prefix . '.' . $name . '.category'] = $product->getMainCategory()->getId();
+                $keyName .= '.ean.' . $product->getEan()[0];
+            } elseif ($product->getArticle()) {
+                $keyName .= '.article.' . $product->getArticle();
+            } else {
+                $keyName .= '.id.' . $product->getId();
+            }
+            if ($product->getMainCategory()) $return[$keyName . '.category'] = $product->getMainCategory()->getId();
         }
 
         return $return;
@@ -212,15 +217,29 @@ class Manager {
 
         $return = [];
         $prefix = 'partner';
+        $partnerNames = [];
 
         foreach ($partners as $partnerName) {
             $partnerData = $this->getMeta($partnerName, $product);
-            isset($return[$prefix]) ? array_push($return[$prefix], $partnerData[$prefix][0]) : $return[$prefix] = $partnerData[$prefix];
-            unset($partnerData[$prefix]);
+            if (isset($partnerData[$prefix])) {
+                $partnerNames[$partnerData[$prefix][0]] = 1;
+                unset($partnerData[$prefix]);
+            }
             $return = array_merge($return, $partnerData);
         }
 
-        return $return;
+        return array_merge($return, [$prefix => array_keys($partnerNames)]);
+    }
+
+    public function fabricateCompleteMeta($mainMeta, $mergedMeta) {
+        if (!$mainMeta) return $mergedMeta;
+        $prefix = 'partner';
+        $partnerNames = array_unique(array_merge( isset($mainMeta[$prefix]) ? $mainMeta[$prefix] : [], isset($mergedMeta[$prefix]) ? $mergedMeta[$prefix] : []));
+        if (isset($mainMeta[$prefix])) unset($mainMeta[$prefix]);
+        if (isset($mergedMeta[$prefix])) unset($mergedMeta[$prefix]);
+
+        return array_merge_recursive($mainMeta, $mergedMeta, [$prefix => $partnerNames]);
+
     }
 
 }
