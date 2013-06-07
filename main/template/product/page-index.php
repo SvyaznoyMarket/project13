@@ -627,7 +627,7 @@ $productVideo = reset($productVideos);
 <div class="descriptionWrapper">
   <? $groupedProperties = $product->getGroupedProperties();?>
   <? $propertiesShown = 0; ?>
-  <? if($reviewsPresent) { ?>
+  <? if(false && $reviewsPresent) { ?>
     <div class="descriptionlist short">
         <? foreach ($groupedProperties as $groupKey => $group): ?>
         <? if (!count($group['properties'])) continue ?>
@@ -670,8 +670,8 @@ $productVideo = reset($productVideos);
         <? endforeach ?>
     </div>
   <? } ?>
-  <div class="descriptionlist<?= $reviewsPresent ? ' hf' : '' ?>">
-      <? $showGroupName = false ?>
+  <div class="descriptionlist<?= false && $reviewsPresent ? ' hf' : '' ?>">
+      <? $showGroupName = true ?>
       <? foreach ($groupedProperties as $key => $group): ?>
       <? if (!count($group['properties'])) continue ?>
           <? if($showGroupName) { ?>
@@ -711,7 +711,7 @@ $productVideo = reset($productVideos);
   </div>
 </div>
 <div class="clear"></div>
-<? if($reviewsPresent && $propertiesShown > 10) { ?>
+<? if(false && $reviewsPresent && $propertiesShown > 10) { ?>
   <div id="productDescriptionToggle" class="contourButton mb15 button width250">Показать все характеристики</div>
 <? } ?>
 
