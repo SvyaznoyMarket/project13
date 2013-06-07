@@ -1923,7 +1923,7 @@ $(document).ready(function(){
     handle_custom_items();
 
   if($('#smalltabs').length && $('#smalltabs').attr('data-scrollto-passed')) {
-  	setTimeout(function(){$('html, body').scrollTo($('#smalltabs'),500)},1000);
+  	setTimeout(function(){$('html, body').scrollTo($('#smalltabs'),50)},700);
   }
 
 });
