@@ -30,7 +30,7 @@ $c->corePrivate['retryTimeout'] = [
 ];
 
 $c->wordpress['throwException'] = false;
-$c->wordpress['timeout'] = 0.2;
+$c->wordpress['timeout'] = 2;
 
 $c->dataStore['timeout'] = 2;
 $c->dataStore['retryTimeout'] = [
