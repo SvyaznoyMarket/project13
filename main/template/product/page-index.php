@@ -689,7 +689,7 @@ $productVideo = reset($productVideos);
     </div>
   <? } ?>
   <div class="descriptionlist<?= $reviewsPresent ? ' hf' : '' ?>">
-      <? $showGroupName = false ?>
+      <? $showGroupName = true ?>
       <? foreach ($groupedProperties as $key => $group): ?>
       <? if (!count($group['properties'])) continue ?>
           <? if($showGroupName) { ?>
