@@ -250,11 +250,12 @@ $productVideo = reset($productVideos);
 <div class="goodsinfo bGood">
   <div class="bGood__eArticle clearfix">
     <span>Артикул #<span  itemprop="productID"><?= $product->getArticle() ?></span></span>
+
+    <? if (\App::config()->product['reviewEnabled']): ?>
     <div class="pt10 pb10">
       <? $avgStarScore = empty($reviewsData['avg_star_score']) ? 0 : $reviewsData['avg_star_score'] ?>
       <?= empty($avgStarScore) ? '' : $page->render('product/_starsFive', ['score' => $avgStarScore]) ?>
 
-      <? if (\App::config()->product['reviewEnabled']): ?>
           <? if(!empty($avgStarScore)) { ?>
               <span class="underline" onclick="scrollToId('reviewsSectionHeader')"><?= $reviewsData['num_reviews'] ?> <?= $page->helper->numberChoice($reviewsData['num_reviews'], array('отзыв', 'отзыва', 'отзывов')) ?></span>
           <? } else { ?>
@@ -266,9 +267,9 @@ $productVideo = reset($productVideos);
             <a class="close" href="#">Закрыть</a>
             <iframe id="rframe" frameborder="0" scrolling="auto" height="480" width="700"></iframe>
           </div>
-      <? endif ?>
-
     </div>
+    <? endif ?>
+
   </div>
 
   <div class="font14 pb15" itemprop="description"><?= $product->getTagline() ?></div>
@@ -644,7 +645,7 @@ $productVideo = reset($productVideos);
 <div class="line pb5"></div>
 <div class="descriptionWrapper">
   <? $groupedProperties = $product->getGroupedProperties();?>
-  <? if($reviewsPresent) { ?>
+  <? if (\App::config()->product['reviewEnabled'] && $reviewsPresent) { ?>
     <div class="descriptionlist short">
         <? $propertiesShown = 0; ?>
         <? foreach ($groupedProperties as $groupKey => $group): ?>
@@ -688,7 +689,7 @@ $productVideo = reset($productVideos);
         <? endforeach ?>
     </div>
   <? } ?>
-  <div class="descriptionlist<?= $reviewsPresent ? ' hf' : '' ?>">
+  <div class="descriptionlist<?= \App::config()->product['reviewEnabled'] && $reviewsPresent ? ' hf' : '' ?>">
       <? $showGroupName = true ?>
       <? foreach ($groupedProperties as $key => $group): ?>
       <? if (!count($group['properties'])) continue ?>
@@ -728,7 +729,7 @@ $productVideo = reset($productVideos);
   </div>
 </div>
 <div class="clear"></div>
-<? if ($reviewsPresent): ?>
+<? if (\App::config()->product['reviewEnabled'] && $reviewsPresent): ?>
   <div id="productDescriptionToggle" class="contourButton mb15 button width250">Показать все характеристики</div>
 <? endif ?>
 
