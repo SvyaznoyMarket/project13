@@ -9108,24 +9108,24 @@
     font-size: 20px;
     font-family: 'Enter Type';
     text-transform: uppercase;
-    padding: 12px 0 0;
+    padding: 12px 0 0 20px;
     margin: 0 0 25px;
   }
   .brand-nav {
     border-top: 2px solid #EDEDED;
-    width: 960px;
-    margin: 0 0 0 -20px;
   }
-  .brand-nav .brand-nav__list li {
-    float: left;
+  .brand-nav .brand-nav__list {
+    width: 100%;
+  }
+  .brand-nav .brand-nav__list tr td {
     font-size: 16px;
     font-family: 'Enter Type';
     text-transform: uppercase;
     border-right: 1px solid #EDEDED;
+    text-align: center;
   }
-  .brand-nav .brand-nav__list li a {
+  .brand-nav .brand-nav__list tr td a {
     display: block;
-    padding: 0 42px;
     line-height: 50px;
   }
   .brand-nav .brand-nav__list .new {
@@ -9141,8 +9141,7 @@
     line-height: 18px;
   }
   .items-section {
-    width: 960px;
-    margin: -3px 0 30px -20px;
+    margin: 0 0 30px 0;
     position: relative;
     z-index: 1;
   }
@@ -9199,8 +9198,6 @@
   .banner-categories {
     position: relative;
     overflow: hidden;
-    width: 960px;
-    margin: 0 0 0 -20px;
     height: 300px;
   }
   .banner-categories .banner-categories__img {
@@ -9220,9 +9217,8 @@
   .brand-subnav {
     border-bottom: 2px solid #5E5E5E;
     text-transform: uppercase;
-    width: 930px;
     padding: 0 5px;
-    margin: 10px 0 10px -10px;
+    margin: 10px;
   }
   .brand-subnav .brand-subnav__title {
     color: #5E5E5E;
@@ -9247,8 +9243,7 @@
     border-bottom: none;
   }
   .filter-section {
-    width: 960px;
-    margin: 0 0 0 -20px;
+    margin: 0 0 20px 0;
     font-family: tahoma;
     background: url("/css/pandoraCatalog/img/bg_items_list.png") repeat-x 0 100%;
     z-index: 2;
@@ -9264,7 +9259,7 @@
   }
   .filter-section .last {
     float: right;
-    margin-right: 45px;
+    margin-right: 20px;
   }
   .filter-section .filter-section__title {
     color: #A6A6A6;
@@ -9293,21 +9288,37 @@
     width: 100%;
     padding-bottom: 7px;
     position: absolute;
-    top: 20px;
+    top: 17px;
     z-index: 100;
     padding-left: 0;
-    width: 100px;
+    width: 135px;
   }
   .filter-section .filter-section__value .filter-section__value__dd li {
     padding: 5px 0 5px 10px;
     float: none;
+    margin: 0;
   }
   .filter-section .filter-section__value .filter-section__value__dd li a {
     background: none;
     padding: 0;
   }
+  .filter-section li.last .filter-section__value__dd {
+    left: -92px;
+    width: 183px;
+  }
   .filter-section li:hover .filter-section__value__dd {
     display: block;
+  }
+  /*** ***/
+  .brandSectionPandora {
+    width: 960px;
+    margin: 0 0 0 -20px;
+  }
+  .brandSectionPandora__catalog .line {
+    border: none;
+  }
+  .brandSectionPandora__catalog .allpager {
+    margin-right: 20px;
   }
 }
 /*---END---СТИЛИ БРЕНД РАЗДЕЛА PANDORA---*/
