@@ -156,10 +156,8 @@ class Action extends \Controller\ProductCategory\Action {
         if ($pageNum > 1) {
             $seoContent = '';
         }
-        // промо-контент не показываем на страницах пагинации, брэнда, фильтров
-        if ($pageNum > 1 || !empty($brand) || (bool)((array)$request->get(\View\Product\FilterForm::$name, []))) {
-            $promoContent = '';
-        }
+
+        $scrollToPassed = (bool)$request->get('scrollTo', false);
 
         $setPageParameters = function(\View\Layout $page) use (
             &$category,
@@ -169,7 +167,8 @@ class Action extends \Controller\ProductCategory\Action {
             &$hotlinks,
             &$seoContent,
             &$catalogJson,
-            &$promoContent
+            &$promoContent,
+            &$scrollToPassed
         ) {
             $page->setParam('category', $category);
             $page->setParam('regionsToSelect', $regionsToSelect);
@@ -180,6 +179,8 @@ class Action extends \Controller\ProductCategory\Action {
             $page->setParam('catalogJson', $catalogJson);
             $page->setParam('promoContent', $promoContent);
             $page->setParam('itemsPerRow', \App::config()->product['itemsPerRowJewel']);
+            $page->setParam('scrollTo', 'smalltabs');
+            $page->setParam('scrollToPassed', $scrollToPassed);
         };
 
         // если категория содержится во внешнем узле дерева

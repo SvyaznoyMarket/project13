@@ -70,8 +70,10 @@ class Helper {
      * @param $productFilter
      * @return string
      */
-    public function getFilterItemAllLink($category, $productFilter, $filter) {
+    public function getFilterItemAllLink($category, $productFilter, $filter, $scrollTo) {
         $allLink = $category->getLink();
+        $allLink .= preg_match('/.*\?.*/', $allLink) ? '&' : '?';
+        $allLink .= 'scrollTo='.$scrollTo;
         foreach ($productFilter->dump() as $filterItem) {
             if(!in_array($filterItem[0], [$filter->getId(), 'is_view_list', 'category', 'is_model'])) {
                 $allLink .= preg_match('/.*\?.*/', $allLink) ? '&' : '?';

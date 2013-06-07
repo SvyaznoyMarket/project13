@@ -15,7 +15,7 @@
 $values = $productFilter->getValue($filter);
 $options = $filter->getOption();
 
-$allLink = $page->helper->getFilterItemAllLink($category, $productFilter, $filter);
+$allLink = $page->helper->getFilterItemAllLink($category, $productFilter, $filter, $scrollTo);
 
 foreach ($options as $option) {
     if (in_array($option->getId(), $values)) continue;

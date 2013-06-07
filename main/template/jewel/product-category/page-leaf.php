@@ -31,7 +31,7 @@
   <? $filters = $productFilter->getFilterCollection() ?>
 
   
-  <div class="brand-subnav clearfix">
+  <div id="smalltabs" data-scrollto-passed="<?= $scrollToPassed ?>" class="brand-subnav clearfix">
     <nav>
       <div class="brand-subnav__title"><?= $category->getName() ?></div>
       <? foreach($filters as $key => $filter) { ?>
@@ -58,7 +58,7 @@
       <? } ?>
 
       <? if ($productSorting && $productPager->count()): ?>
-        <?= $page->render('jewel/product/_sorting', array('productSorting' => $productSorting)) ?>
+        <?= $page->render('jewel/product/_sorting', array('productSorting' => $productSorting, 'scrollTo' => $scrollTo)) ?>
       <? endif ?>
      </ul>
   </div>
