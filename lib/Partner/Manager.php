@@ -20,6 +20,20 @@ class Manager {
             $cookie = null;
 
             $utmSource = $request->get('utm_source');
+            $sender = $request->get('sender');
+
+            //SmartEngine & SmartAssistant
+            if ((bool)$sender) {
+                $sender = explode('|', $sender); // ?sender=SmartEngine|product_id
+                if ((bool)$sender[0] && (bool)$sender[1]) {
+                    switch ($sender[0]) {
+                        case \Smartengine\Client::NAME: {
+                            \App::user()->setRecommendedProductByParams($sender[1], \Smartengine\Client::NAME, 'viewed_at', time());
+                            break;
+                        }
+                    }
+                }
+            }
 
             // myThings
             if (0 === strpos($utmSource, 'mythings')) {
@@ -136,7 +150,7 @@ class Manager {
             : null;
     }
 
-    public function getMeta($name) {
+    public function getMeta($name, \Model\Product\Entity $product = null) {
         $return = [];
 
         $request = \App::request();
@@ -175,8 +189,38 @@ class Manager {
                 $return = [
                     $prefix => [\Partner\Counter\MyThings::NAME],
                 ];
+                break;
+            case \Smartengine\Client::NAME:
+                $return = [
+                    $prefix => [\Smartengine\Client::NAME],
+                ];
+                break;
+        }
+
+        if ((bool)$product) {
+            if (is_array($product->getEan()) && count($product->getEan())) {
+                $return[$prefix . '.' . $name . '.ean'] = implode(',', $product->getEan());
+            } else $return[$prefix . '.' . $name . '.article'] = $product->getArticle();
+            if ($product->getMainCategory()) $return[$prefix . '.' . $name . '.category'] = $product->getMainCategory()->getId();
         }
 
         return $return;
     }
+
+    public function fabricateMetaByPartners($partners = [], $product = null) {
+        if (!is_array($partners) || !count($partners) || !$product) return false;
+
+        $return = [];
+        $prefix = 'partner';
+
+        foreach ($partners as $partnerName) {
+            $partnerData = $this->getMeta($partnerName, $product);
+            isset($return[$prefix]) ? array_push($return[$prefix], $partnerData[$prefix][0]) : $return[$prefix] = $partnerData[$prefix];
+            unset($partnerData[$prefix]);
+            $return = array_merge($return, $partnerData);
+        }
+
+        return $return;
+    }
+
 }
