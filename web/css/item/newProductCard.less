@@ -1,0 +1,112 @@
+.bProductCard{
+	&__eArticle{
+		color: @typGray;
+		font-size: 14px;
+	}
+}
+
+.bProductCardRightCol{
+	position: relative;
+	width: 200px;
+	
+	margin-left: 19px;
+	margin-right: -1px;
+	
+
+	&__eInner{
+		padding: 10px;
+		border: 1px solid @typDarkGray;
+		.rounded(4px);
+		margin-bottom: 25px;
+	}
+
+	&__ePrice{
+		font-size: 34px;
+		font-weight: bold;
+	}
+	&__eCurrency{
+		font-size: 28px;
+	}
+	&__eCreditBox{
+		
+		&.creditbox{
+			.rounded(0px);
+			border-top: none;
+			border-left: none;
+			border-right: none;
+			border-bottom: 1px solid @typDarkGray;
+			padding: 0 0 10px;
+		}
+
+		.creditboxinner{
+			padding: 0;
+			border: none;
+		}
+		.bigcheck{
+			margin: 5px 0;
+		}
+
+		&-Take{
+			font-size: 16px;
+			font-weight: 100;
+			border-bottom: 1px dotted;
+		}
+		&-Sum{
+			font-size: 14px;
+			margin-left: 40px;
+		}
+	}
+
+	.bCountSet{
+		position: relative;
+		left: 0;
+		margin: 0 auto;
+		display: block;
+		width: 120px;
+		left: 10px;
+		border: none;
+		font-size: 14px;
+		color: @black;
+
+		.bCountSet__eP,
+		.bCountSet__eM{
+			background: none;
+			float: none;
+			color: @black;
+			width: 20px;
+			height: 25px;
+			line-height: 25px;
+			display: inline-block;
+			*display: inline;
+			border: 1px solid @typDarkGray;
+			.rounded(4px);
+			.grayGradDark();
+
+			&.disabled{
+				color: @typGray;
+				.grayGradLight();
+			}
+		}
+
+		span {
+			display: inline-block;
+			*display: inline;
+			height: 25px;
+			line-height: 25px;
+			width: 35px;
+			border: 1px solid @typDarkGray;
+			margin: 0 -1px;
+			.rounded(4px);
+		}
+	}
+	.goodsbarbig{
+		width: 100% !important;
+		height: auto;
+		margin: 0;
+		text-align: center;
+		a.link1{
+			margin: 10px auto;
+		}
+	}
+
+}

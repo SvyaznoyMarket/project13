@@ -234,7 +234,7 @@ $(document).ready(function() {
 	
 	/* Product Counter */
 	if( $('#page .bCountSet').length ) {
-		var np = $('.goodsbarbig .bCountSet')
+		var np = $('.bCountSet')
 		var l1 = np.parent().find('.link1')
 		var l1href = l1.attr('href')
 		var l1cl = $('a.order1click-link')

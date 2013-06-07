@@ -3,25 +3,29 @@
   width: 100%;
 }
 .lightboxinner {
-  background: url("@{base-url}/lightbox/img/lightboxSprite.png") no-repeat 0px -200px;
+  // background: url("@{base-url}/lightbox/img/lightboxSprite.png") no-repeat 0px -200px;
+  background: @black;
   bottom: 0;
   height: 40px;
   left: 50%;
-  margin: 0 auto 0 -463px;
-  padding-top: 1px;
+  margin: 0 auto 0 -470px;
+  // padding-top: 1px;
+  // overflow: hidden;
   position: fixed;
-  width: 926px;
+  width: 940px;
   z-index: 200;
+  .box-shadow(0 0 3px 1px @typGray);
+  .border-radius(4px, 0, 0, 4px);
 }
 .lightboxmenu {
   float: left;
-  width: 923px;
+  width: 100%;
   li {
-    background: url("@{base-url}/lightbox/img/lightboxSprite.png") no-repeat 0px 0px;
+    // background: url("@{base-url}/lightbox/img/lightboxSprite.png") no-repeat 0px 0px;
     float: right;
     padding-left: 1px;
     &.fl {
-      background: none;
+      background:none;
       float: left;
       padding-left: 0px;
     }
@@ -30,12 +34,13 @@
       display: block;
       float: left;
       font-size: 14px;
-      height: 29px;
+      height: 30px;
       padding: 11px 20px 0px;
       text-decoration: none;
       &:hover {
         /*background-position: -10px -46px;*/
-        background: url("@{base-url}/lightbox/img/lightboxSprite.png") no-repeat;
+        // background: url("@{base-url}/lightbox/img/lightboxSprite.png") no-repeat;
+        background: #333;
         color: @firmOrange;
       }
       .total {
@@ -46,13 +51,14 @@
       }
       b {
         background: url("@{base-url}/lightbox/img/lightboxSprite.png") no-repeat;
+        color: @white;
         display: block;
         float: left;
-        font-size: 9px;
+        font-size: 16px;
         height: 19px;
-        line-height: 9px;
+        line-height: 3px;
         margin-right: 10px;
-        padding-left: 23px;
+        padding-left: 25px;
       }
 
       &.bSubscribeLightbox{
@@ -76,7 +82,8 @@
         background-position: 0px -40px;
       }
       &:hover{
-        background-position: -3px -246px;
+        .border-radius(0, 0, 0, 4px);
+        // background-position: 0px -246px;
         b {
           background-position: 0px -80px;
         }
@@ -87,7 +94,8 @@
         background-position: 0px -120px;
       }
       &:hover{
-        background-position: 100% -246px;
+        .border-radius(4px, 0, 0, 0);
+        // background-position: 100% -246px;
         b {
           background-position: 0px -160px;
         }
@@ -103,7 +111,7 @@
         background-position: -277px -109px;
       }
       &:hover{
-        background-position: -3px -246px;
+        // background-position: 0px -246px;
         b{
           background-position: -277px -159px;
         }
