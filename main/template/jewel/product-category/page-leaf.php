@@ -18,55 +18,62 @@
 <div class="clear"></div>
 <?= $page->tryRender('product-category/_categoryData', array('page' => $page, 'category' => $category)) ?>
 
-<div class="logo-section" style="background: url('/css/pandoraCatalog/img/pandora_logo.gif') no-repeat 50% 0;">Ювелирные Украшения</div>
+<div class="brandSection brandSectionPandora brandSectionPandora__catalog">
 
-<? require __DIR__ . '/_branch.php' ?>
+  <div class="logo-section" style="background: url('/css/pandoraCatalog/img/pandora_logo.gif') no-repeat 50% 0;">Ювелирные Украшения</div>
 
-<? if(!empty($promoContent)): ?>
-    <?= $promoContent ?>
-<? endif ?>
+  <? require __DIR__ . '/_branch.php' ?>
 
-<? $filters = $productFilter->getFilterCollection() ?>
+  <? if(!empty($promoContent)): ?>
+      <?= $promoContent ?>
+  <? endif ?>
 
-<nav class="brand-subnav clearfix">
-  <div class="brand-subnav__title">Подвески - шармы</div>
-  <? foreach($filters as $key => $filter) { ?>
-    <? if(mb_strtolower($catalogJson['sub_category_filter_menu']) == mb_strtolower($filter->getName())) { ?>
-      <? require __DIR__ . '/filter/_tabs.php' ?>
-    <? } ?>
-  <? } ?>
-</nav>
+  <? $filters = $productFilter->getFilterCollection() ?>
 
-<div class="filter-section">
-  <ul class="clearfix">
-    <? foreach($filters as $key => $filter) { ?>
-      <? // не выводим фильтры, запрещенные в json и указанный в качестве табов
-        if((!empty($catalogJson['sub_category_filters_exclude']) && is_array($catalogJson['sub_category_filters_exclude']) &&
-            in_array(mb_strtolower($filter->getName()), array_map(function($filterName){
-              return mb_strtolower($filterName);
-            }, $catalogJson['sub_category_filters_exclude']))) ||
-            (mb_strtolower($catalogJson['sub_category_filter_menu']) == mb_strtolower($filter->getName()))) {
-          continue;
-        } 
-      ?>
-      <? require __DIR__ . '/filter/_dropdown.php' ?>
-    <? } ?>
+  
+  <div class="brand-subnav clearfix">
+    <nav>
+      <div class="brand-subnav__title">Подвески - шармы</div>
+      <? foreach($filters as $key => $filter) { ?>
+        <? if(mb_strtolower($catalogJson['sub_category_filter_menu']) == mb_strtolower($filter->getName())) { ?>
+          <? require __DIR__ . '/filter/_tabs.php' ?>
+        <? } ?>
+      <? } ?>
+    </nav>
+  </div>
 
-    <? if ($productSorting && $productPager->count()): ?>
-      <?= $page->render('jewel/product/_sorting', array('productSorting' => $productSorting)) ?>
-    <? endif ?>
-   </ul>
+  <div class="filter-section">
+    <ul class="clearfix">
+      <? foreach($filters as $key => $filter) { ?>
+        <? // не выводим фильтры, запрещенные в json и указанный в качестве табов
+          if((!empty($catalogJson['sub_category_filters_exclude']) && is_array($catalogJson['sub_category_filters_exclude']) &&
+              in_array(mb_strtolower($filter->getName()), array_map(function($filterName){
+                return mb_strtolower($filterName);
+              }, $catalogJson['sub_category_filters_exclude']))) ||
+              (mb_strtolower($catalogJson['sub_category_filter_menu']) == mb_strtolower($filter->getName()))) {
+            continue;
+          } 
+        ?>
+        <? require __DIR__ . '/filter/_dropdown.php' ?>
+      <? } ?>
+
+      <? if ($productSorting && $productPager->count()): ?>
+        <?= $page->render('jewel/product/_sorting', array('productSorting' => $productSorting)) ?>
+      <? endif ?>
+     </ul>
+  </div>
+
+
+  <?= $page->render('jewel/product/_pager', array(
+      'request'                => $request,
+      'pager'                  => $productPager,
+      'productFilter'          => $productFilter,
+      'productSorting'         => $productSorting,
+      'hasListView'            => true,
+      'category'               => $category,
+      'view'                   => $productView,
+      'productVideosByProduct' => $productVideosByProduct,
+      'itemsPerRow'            => $itemsPerRow,
+  )) ?>
+
 </div>
-
-
-<?= $page->render('jewel/product/_pager', array(
-    'request'                => $request,
-    'pager'                  => $productPager,
-    'productFilter'          => $productFilter,
-    'productSorting'         => $productSorting,
-    'hasListView'            => true,
-    'category'               => $category,
-    'view'                   => $productView,
-    'productVideosByProduct' => $productVideosByProduct,
-    'itemsPerRow'            => $itemsPerRow,
-)) ?>
