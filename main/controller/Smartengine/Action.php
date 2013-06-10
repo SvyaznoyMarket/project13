@@ -87,6 +87,8 @@ class Action {
                 $params['userid'] = $user->getId();
             }
             $params['itemtype'] = $product->getMainCategory() ? $product->getMainCategory()->getId() : null;
+            $params['requesteditemtype'] = $product->getMainCategory() ? $product->getMainCategory()->getId() : null;
+
             $r = $client->query('otherusersalsoviewed', $params);
 
             if (isset($r['error'])) {
@@ -163,7 +165,7 @@ class Action {
             if ($user) {
                 $params['userid'] = $user->getId();
             }
-            $params['itemtype'] = $product->getMainCategory()->getId();
+            $params['itemtype'] = $product->getMainCategory() ? $product->getMainCategory()->getId() : null;
             $r = $client->query('relateditems', $params);
 
             if (isset($r['error'])) {

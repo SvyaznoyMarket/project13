@@ -1735,6 +1735,16 @@ function Flybox( parent ){
 		box.fadeIn(1000)
 		hidei = setTimeout( self.jinny, 7000 )
 	}
+    var flyboxcloser = function(e){
+        var targ = e.target.className
+
+        if (!(targ.indexOf('flybox')+1) || !(targ.indexOf('fillup')+1)) {
+            box.hide()
+            $('body').unbind('click', flyboxcloser)
+        }
+    }
+
+
 	var hrefcart = $('.point2', parent).attr('href') //OLD: /orders/new
 	this.showBasket = function( f1 ) {
 		if( typeof( thestuff.link ) !== 'undefined' )
@@ -1780,7 +1790,8 @@ function Flybox( parent ){
 		crnr.css('left','132px')	
 		this.fillup (basket)
 		box.fadeIn(500)
-		hidei = setTimeout( self.jinny, 5000 )
+		// hidei = setTimeout( self.jinny, 5000 )
+        $('body').bind('click', flyboxcloser)
 	}
 	this.showBasketF1 = function( f1 ) {
 		if ( typeof(f1) === "undefined" )
@@ -1811,7 +1822,8 @@ function Flybox( parent ){
 		crnr.css('left','132px')	
 		this.fillup (basket)
 		box.fadeIn(500)
-		hidei = setTimeout( self.jinny, 5000 )
+		// hidei = setTimeout( self.jinny, 5000 )
+        $('body').bind('click', flyboxcloser)
 	}
 	
 	this.fillup = function( nodes ) {

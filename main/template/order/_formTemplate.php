@@ -56,7 +56,7 @@
     </div>
     <div class='bMapShops__eList'>
         <h3>Выберите магазин Enter для самовывоза</h3>
-        <p class="pl20">Регион <?= $user->getRegion()->getName() ?>  ( <a id="jsregion" data-url="<?= $page->url('region.init') ?>" href="<?= $page->url('region.change', array('regionId' => $user->getRegion()->getId())) ?>" style="font-weight: normal">изменить</a> )</p>
+        <p class="pl20">Регион <?= $user->getRegion()->getName() ?>  ( <a id="jsregion" data-url="<?= $page->url('region.init') ?>" data-region-id="<?= $user->getRegion()->getId() ?>" href="<?= $page->url('region.change', array('regionId' => $user->getRegion()->getId())) ?>" style="font-weight: normal">изменить</a> )</p>
         <ul id="mapPopup_shopInfo">
             <!-- ko foreach: shopsInPopup -->
             <li data-bind="attr: {ref: id}, click: $root.selectShop ">
@@ -120,6 +120,9 @@
                 <!-- /ko -->
                 <!-- ko if: dlvrPrice() <= 0 -->
                 Бесплатно
+                <!-- /ko -->
+                <!-- ko if: supplied() -->
+                <span class="red db pt20">Оператор контакт-cEnter<br/>подтвердит точную дату<br/>доставки за 2-3 дня.</span>
                 <!-- /ko -->
             </i>
             </dt>
@@ -196,8 +199,16 @@
         </i>
     </div>
     <!-- /ko -->
-
-    <?= $page->render('cart/form-certificate', ['isForm' => false]) ?>
+    <div class="bF1SaleCard mOrder">
+        <h3 class="bF1SaleCard_eTitle">Скидки</h3>
+        <? if (\App::config()->coupon['enabled']): ?>
+            <p class="font11"><a href="<?= $page->url('cart') ?>">Введите код скидки на товары</a></p>
+        <? endif ?>
+    
+        <? if (\App::config()->f1Certificate['enabled']): ?>
+            <p class="font11"><a href="<?= $page->url('cart') ?>">Введите номер карты «Под защитой F1» для скидки на услуги</a></p>
+        <? endif ?>
+    </div>
 
     <div style="margin-top: -10px;">*Дату доставки уточнит специалист Контакт-сENTER</div>
 

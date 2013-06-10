@@ -107,7 +107,7 @@ $c->abtest['test']       = [
 
 $c->subscribe['enabled'] = true;
 
-$c->f1Certificate['enabled'] = true;
+$c->coupon['enabled'] = false;
 
 $c->requestMainMenu = true;
 

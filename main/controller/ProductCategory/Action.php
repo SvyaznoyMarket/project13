@@ -13,7 +13,7 @@ class Action {
     public function setGlobal($categoryPath, \Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
-        $response = new \Http\RedirectResponse($request->headers->get('referer') ?: \App::router()->generate('product.category', [$categoryPath => $categoryPath]));
+        $response = new \Http\RedirectResponse($request->headers->get('referer') ?: \App::router()->generate('product.category', ['categoryPath' => $categoryPath]));
 
         if ($request->query->has('global')) {
             if ($request->query->get('global')) {
@@ -62,7 +62,13 @@ class Action {
         $region = self::isGlobal() ? null : \App::user()->getRegion();
 
         $repository = \RepositoryManager::productCategory();
-        $category = $repository->getEntityByToken($categoryToken);
+
+        $category = null;
+        $repository->prepareEntityByToken($categoryToken, $region, function($data) use (&$category) {
+            $category = new \Model\Product\Category\Entity(reset($data));
+        });
+        \App::coreClientV2()->execute();
+
         if (!$category) {
             throw new \Exception\NotFoundException(sprintf('Категория товара @%s не найдена.', $categoryToken));
         }
@@ -178,7 +184,7 @@ class Action {
 
         // запрашиваем список регионов для выбора
         $regionsToSelect = [];
-        \RepositoryManager::region()->prepareShowInMenuCollection(function($data) use (&$regionsToSelect) {
+        \RepositoryManager::region()->prepareShownInMenuCollection(function($data) use (&$regionsToSelect) {
             foreach ($data as $item) {
                 $regionsToSelect[] = new \Model\Region\Entity($item);
             }
@@ -244,20 +250,41 @@ class Action {
         $productFilter = $this->getFilter($filters, $category, $brand, $request);
 
         // получаем из json данные о горячих ссылках и content
-        $seoCatalogJson = \Model\Product\Category\Repository::getSeoJson($category);
-        $hotlinks = empty($seoCatalogJson['hotlinks']) ? [] : $seoCatalogJson['hotlinks'];
-        // в json-файле в свойстве content содержится массив
-        if(empty($brand)) {
-            $seoContent = empty($seoCatalogJson['content']) ? '' : implode('<br>', $seoCatalogJson['content']);
-        } else {
-            $seoBrandJson = \Model\Product\Category\Repository::getSeoJson($category, $brand);
-            $seoContent = empty($seoBrandJson['content']) ? '' : implode('<br>', $seoBrandJson['content']);
+        try {
+            $seoCatalogJson = \Model\Product\Category\Repository::getSeoJson($category);
+            $hotlinks = empty($seoCatalogJson['hotlinks']) ? [] : $seoCatalogJson['hotlinks'];
+            // в json-файле в свойстве content содержится массив
+            if (empty($brand)) {
+                $seoContent = empty($seoCatalogJson['content']) ? '' : implode('<br />', $seoCatalogJson['content']);
+            } else {
+                $seoBrandJson = \Model\Product\Category\Repository::getSeoJson($category, $brand);
+                $seoContent = empty($seoBrandJson['content']) ? '' : implode('<br />', $seoBrandJson['content']);
+            }
+        } catch (\Exception $e) {
+            $hotlinks = [];
+            $seoContent = '';
+        }
+
+        // получаем catalog json для категории (например, тип раскладки)
+        $catalogJson = \RepositoryManager::productCategory()->getCatalogJson($category);
+
+        // если в catalogJson'e указан category_layout_type == 'promo', то подгружаем промо-контент
+        if(!empty($catalogJson['category_layout_type']) &&
+            $catalogJson['category_layout_type'] == 'promo' &&
+            !empty($catalogJson['promo_token'])) {
+            $client = \App::contentClient();
+            $content = $client->query($catalogJson['promo_token'], [], false);
+            $promoContent = empty($content['content']) ? '' : $content['content'];
         }
 
         $pageNum = (int)$request->get('page', 1);
         // на страницах пагинации сео-контент не показываем
         if ($pageNum > 1) {
             $seoContent = '';
+        }
+        // промо-контент не показываем на страницах пагинации, брэнда, фильтров
+        if ($pageNum > 1 || !empty($brand) || (bool)((array)$request->get(\View\Product\FilterForm::$name, []))) {
+            $promoContent = '';
         }
 
         $setPageParameters = function(\View\Layout $page) use (
@@ -266,7 +293,9 @@ class Action {
             &$productFilter,
             &$brand,
             &$hotlinks,
-            &$seoContent
+            &$seoContent,
+            &$catalogJson,
+            &$promoContent
         ) {
             $page->setParam('category', $category);
             $page->setParam('regionsToSelect', $regionsToSelect);
@@ -274,6 +303,8 @@ class Action {
             $page->setParam('brand', $brand);
             $page->setParam('hotlinks', $hotlinks);
             $page->setParam('seoContent', $seoContent);
+            $page->setParam('catalogJson', $catalogJson);
+            $page->setParam('promoContent', $promoContent);
         };
 
         // если категория содержится во внешнем узле дерева
@@ -386,9 +417,12 @@ class Action {
         }
         if ((bool)$productVideosByProduct) {
             \RepositoryManager::productVideo()->prepareCollectionByProductIds(array_keys($productVideosByProduct), function($data) use (&$productVideosByProduct) {
-                foreach ($data as $id => $item) {
-                    if (!$item) continue;
-                    $productVideosByProduct[$id][] = new \Model\Product\Video\Entity($item);
+                foreach ($data as $id => $items) {
+                    if (!is_array($items)) continue;
+                    foreach ($items as $item) {
+                        if (!$item) continue;
+                        $productVideosByProduct[$id][] = new \Model\Product\Video\Entity((array)$item);
+                    }
                 }
             });
             \App::dataStoreClient()->execute(\App::config()->dataStore['retryTimeout']['tiny'], \App::config()->dataStore['retryCount']);
@@ -398,10 +432,10 @@ class Action {
         $page->setParam('productVideosByProduct', $productVideosByProduct);
         $page->setParam('sidebarHotlinks', true);
 
-        $myThingsData = array(
+        $myThingsData = [
             'EventType' => 'MyThings.Event.Visit',
-            'Action' => '1011',
-        );
+            'Action'    => '1011',
+        ];
         if ($category->isRoot()) {
             $myThingsData['Category'] = $category->getName();
         } else {
@@ -465,16 +499,6 @@ class Action {
             throw new \Exception\NotFoundException(sprintf('Неверный номер страницы "%s".', $productPager->getPage()));
         }
 
-        // ajax
-        if ($request->isXmlHttpRequest()) {
-            return new \Http\Response(\App::templating()->render('product/_list', array(
-                'page'   => new \View\Layout(),
-                'pager'  => $productPager,
-                'view'   => $productView,
-                'isAjax' => true,
-            )));
-        }
-
         // video
         $productVideosByProduct = [];
         foreach ($productPager as $product) {
@@ -483,12 +507,25 @@ class Action {
         }
         if ((bool)$productVideosByProduct) {
             \RepositoryManager::productVideo()->prepareCollectionByProductIds(array_keys($productVideosByProduct), function($data) use (&$productVideosByProduct) {
-                foreach ($data as $id => $item) {
-                    if (!$item) continue;
-                    $productVideosByProduct[$id][] = new \Model\Product\Video\Entity($item);
+                foreach ($data as $id => $items) {
+                    if (!is_array($items)) continue;
+                    foreach ($items as $item) {
+                        $productVideosByProduct[$id][] = new \Model\Product\Video\Entity((array)$item);
+                    }
                 }
             });
             \App::dataStoreClient()->execute(\App::config()->dataStore['retryTimeout']['tiny'], \App::config()->dataStore['retryCount']);
+        }
+
+        // ajax
+        if ($request->isXmlHttpRequest()) {
+            return new \Http\Response(\App::templating()->render('product/_list', array(
+                'page'                   => new \View\Layout(),
+                'pager'                  => $productPager,
+                'view'                   => $productView,
+                'productVideosByProduct' => $productVideosByProduct,
+                'isAjax'                 => true,
+            )));
         }
 
         $page->setParam('productPager', $productPager);
@@ -565,11 +602,15 @@ class Action {
             if ((bool)$diff) {
                 foreach ($category->getAncestor() as $ancestor) {
                     try {
-                        $ancestorFilters = \RepositoryManager::productFilter()->getCollectionByCategory($ancestor, $region);
+                        /** @var $ancestorFilters \Model\Product\Filter\Entity[] */
+                        $ancestorFilters = [];
+                        \RepositoryManager::productFilter()->prepareCollectionByCategory($ancestor, $region, function($data) use (&$ancestorFilters) {
+                            foreach ($data as $item) {
+                                $ancestorFilters[] = new \Model\Product\Filter\Entity($item);
+                            }
+                        });
+                        \App::coreClientV2()->execute();
                     } catch (\Exception $e) {
-                        \App::exception()->add($e);
-                        \App::logger()->error($e);
-
                         $ancestorFilters = [];
                     }
                     foreach ($ancestorFilters as $filter) {

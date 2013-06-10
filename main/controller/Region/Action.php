@@ -7,6 +7,12 @@ class Action {
 
     }
 
+    /**
+     * @param $regionId
+     * @param \Http\Request $request
+     * @return \Http\RedirectResponse
+     * @throws \Exception\NotFoundException
+     */
     public function change($regionId, \Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
@@ -18,9 +24,19 @@ class Action {
 
         $response = new \Http\RedirectResponse($request->headers->get('referer') ?: \App::router()->generate('homepage'));
 
-        $region = \RepositoryManager::region()->getEntityById($regionId);
+        $region = null;
+        \RepositoryManager::region()->prepareEntityById($regionId, function($data) use (&$region) {
+            $data = reset($data);
+            $region = $data ? new \Model\Region\Entity($data) : null;
+        });
+        \App::coreClientV2()->execute();
+
         if (!$region) {
-            throw new \Exception\NotFoundException(sprintf('Region #%s not found', $regionId));
+            \App::logger()->error(sprintf('Регион #%s не найден', $regionId));
+            $region = \RepositoryManager::region()->getDefaultEntity();
+            if (!$region) {
+                throw new \Exception\NotFoundException(sprintf('Регион #%s не найден', $regionId));
+            }
         }
 
         \App::user()->changeRegion($region, $response);
@@ -38,6 +54,11 @@ class Action {
         return $response;
     }
 
+    /**
+     * @param \Http\Request $request
+     * @return \Http\JsonResponse
+     * @throws \Exception\NotFoundException
+     */
     public function autocomplete(\Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
@@ -47,9 +68,9 @@ class Action {
 
         $limit = 8;
         $keyword = mb_strtolower($request->get('q'));
-        $keyword = strtr($keyword, array(
+        $keyword = strtr($keyword, [
             'q'=>'й', 'w'=>'ц', 'e'=>'у', 'r'=>'к', 't'=>'е', 'y'=>'н', 'u'=>'г', 'i'=>'ш', 'o'=>'щ', 'p'=>'з', '['=>'х', ']'=>'ъ', 'a'=>'ф', 's'=>'ы', 'd'=>'в', 'f'=>'а', 'g'=>'п', 'h'=>'р', 'j'=>'о', 'k'=>'л', 'l'=>'д', ';'=>'ж', "'"=>'э', 'z'=>'я', 'x'=>'ч', 'c'=>'с', 'v'=>'м', 'b'=>'и', 'n'=>'т', 'm'=>'ь', ','=>'б', '.'=>'ю', '`'=>'ё', 'Q'=>'Й', 'W'=>'Ц', 'E'=>'У', 'R'=>'К', 'T'=>'Е', 'Y'=>'Н', 'U'=>'Г', 'I'=>'Ш', 'O'=>'Щ', 'P'=>'З', '{'=>'Х', '}'=>'Ъ', 'A'=>'Ф', 'S'=>'Ы', 'D'=>'В', 'F'=>'А', 'G'=>'П', 'H'=>'Р', 'J'=>'О', 'K'=>'Л', 'L'=>'Д', ':'=>'Ж', '"'=>'Э', 'Z'=>'Я', 'X'=>'Ч', 'C'=>'С', 'V'=>'М', 'B'=>'И', 'N'=>'Т', 'M'=>'Ь', '<'=>'Б', '>'=>'Ю', '~'=>'Ё',
-        ));
+        ]);
 
         $router = \App::router();
 
@@ -60,19 +81,49 @@ class Action {
                 foreach ($result as $item) {
                     if ($i >= $limit) break;
 
-                    $data[] = array(
+                    $data[] = [
                         'name'  => $item['name'] . ((!empty($item['region']['name']) && ($item['name'] != $item['region']['name'])) ? (" ({$item['region']['name']})") : ''),
-                        'url'   => $router->generate('region.change', array('regionId' => $item['id'])),
-                    );
+                        'url'   => $router->generate('region.change', ['regionId' => $item['id']]),
+                    ];
                     $i++;
                 }
             });
             \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['short'], \App::config()->coreV2['retryCount']);
         }
 
-        return new \Http\JsonResponse(array('data' => $data));
+        return new \Http\JsonResponse(['data' => $data]);
     }
 
+    /**
+     * @param \Http\Request $request
+     * @return \Http\JsonResponse
+     * @throws \Exception\NotFoundException
+     */
+    public function autoresolve(\Http\Request $request) {
+        \App::logger()->debug('Exec ' . __METHOD__);
+
+        if (!$request->isXmlHttpRequest()) {
+            throw new \Exception\NotFoundException('Request is not xml http request');
+        }
+
+        $data = [];
+        if ($region = \App::user()->getAutoresolvedRegion()) {
+            $data[] = [
+                'id'   => $region->getId(),
+                'name' => $region->getName(),
+                'url'  => \App::router()->generate('region.change', ['regionId' => $region->getId()]),
+            ];
+        }
+
+        return new \Http\JsonResponse(['data' => $data]);
+    }
+
+    /**
+     * @param \Http\Request $request
+     * @param $regionId
+     * @param $redirectTo
+     * @return \Http\RedirectResponse
+     */
     public function redirect(\Http\Request $request, $regionId, $redirectTo) {
         \App::logger()->debug('Exec ' . __METHOD__);
 

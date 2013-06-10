@@ -29,19 +29,24 @@ if (isset($_GET['APPLICATION_DEBUG'])) {
 }
 
 // request
+\Http\Request::trustProxyData();
 // TODO: придумать, как по другому можно получить имя хоста
-$request = \Http\Request::createFromGlobals();
+//$request = \Http\Request::createFromGlobals(); // TODO: временно убрал проверку на мобильное приложение
 
 // app name
 \App::$name = isset($_SERVER['APPLICATION_NAME']) ? $_SERVER['APPLICATION_NAME'] : 'main';
 if ('main' == \App::$name) {
     // определение флага {десктопное|мобильное приложение} на основе домена
+    /* // TODO: временно убрал проверку на мобильное приложение
     if ($config->mobileHost && ($config->mobileHost == $request->getHttpHost())) {
         \App::$name = 'mobile';
         $config->templateDir = $config->appDir . '/mobile/template';
         $config->controllerPrefix = 'Mobile\\Controller';
     }
+    */
 } else if ('terminal' == \App::$name) {
+    $request = \Http\Request::createFromGlobals();
+
     $clientId = $request->get('client_id') ? trim((string)$request->get('client_id')) : null;
     $shopId = $request->get('shop_id') ? trim((string)$request->get('shop_id')) : null;
     if (!$clientId) die('Не передан параметр client_id');
@@ -63,7 +68,7 @@ $response = null;
     if ($error && (error_reporting() & $error['type'])) {
 
         $spend = \Debug\Timer::stop('app');
-        \App::logger()->error('Fail app ' . $spend . ' ' . round(memory_get_peak_usage() / 1048576, 2) . 'Mb ' . \App::request()->getMethod()  . ' ' . \App::request()->getRequestUri() . ' with error ' . json_encode($error, JSON_UNESCAPED_UNICODE));
+        \App::logger()->error('Fail app ' . $spend . ' ' . round(memory_get_peak_usage() / 1048576, 2) . 'Mb ' . \App::request()->getMethod()  . ' ' . \App::request()->getRequestUri() . ' with error ' . json_encode($error, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
 
         // очищаем буфер вывода
         $previous = null;

@@ -362,20 +362,22 @@ class Repository {
      * Возвращает массив с SEO-данными
      *
      * @param $category
-     * @param $folder
      * @param $brand
      * @return array
      */
     public static function getSeoJson($category, $brand = null) {
         // формируем ветку категорий для последующего формирования запроса к json-апи
         $branch = [$category->getToken()];
-        if(!$category->isRoot()) {
+        if (!$category->isRoot()) {
             $currentCategory = $category;
             while($parent = $currentCategory->getParent()) {
                 array_unshift($branch, $parent->getToken());
                 $currentCategory = $parent;
             }
-            array_unshift($branch, $category->getRoot()->getToken());
+
+            if ($category->getRoot()) {
+                array_unshift($branch, $category->getRoot()->getToken());
+            }
         }
 
         // формируем запрос к апи и получаем json с SEO-данными
@@ -414,5 +416,36 @@ class Repository {
         return empty($seoJson) ? [] : $seoJson;
     }
 
+
+    /**
+     * Получает catalog json для данной категории
+     * Возвращает массив с токенами категорий
+     *
+     * @param $category
+     * @return array
+     */
+    public function getCatalogJson($category) {
+         // формируем ветку категорий для последующего формирования запроса к json-апи
+        $branch = [$category->getToken()];
+        if(!$category->isRoot()) {
+            $currentCategory = $category;
+            while($parent = $currentCategory->getParent()) {
+                array_unshift($branch, $parent->getToken());
+                $currentCategory = $parent;
+            }
+            array_unshift($branch, $category->getRoot()->getToken());
+        }
+
+        // формируем запрос к апи и получаем json
+        $catalogJson = [];
+        $dataStore = \App::dataStoreClient();
+        $query = sprintf('catalog/%s.json', implode('/', $branch));
+        $dataStore->addQuery($query, [], function ($data) use (&$catalogJson) {
+            if($data) $catalogJson = $data;
+        });
+        $dataStore->execute();
+
+        return $catalogJson;
+    }
 
 }

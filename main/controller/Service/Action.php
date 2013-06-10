@@ -39,7 +39,7 @@ class Action {
 
         // запрашиваем список регионов для выбора
         $regionsToSelect = [];
-        \RepositoryManager::region()->prepareShowInMenuCollection(function($data) use (&$regionsToSelect) {
+        \RepositoryManager::region()->prepareShownInMenuCollection(function($data) use (&$regionsToSelect) {
             foreach ($data as $item) {
                 $regionsToSelect[] = new \Model\Region\Entity($item);
             }
@@ -112,7 +112,7 @@ class Action {
 
         // запрашиваем список регионов для выбора
         $regionsToSelect = [];
-        \RepositoryManager::region()->prepareShowInMenuCollection(function($data) use (&$regionsToSelect) {
+        \RepositoryManager::region()->prepareShownInMenuCollection(function($data) use (&$regionsToSelect) {
             foreach ($data as $item) {
                 $regionsToSelect[] = new \Model\Region\Entity($item);
             }
@@ -251,7 +251,7 @@ class Action {
 
         // запрашиваем список регионов для выбора
         $regionsToSelect = [];
-        \RepositoryManager::region()->prepareShowInMenuCollection(function($data) use (&$regionsToSelect) {
+        \RepositoryManager::region()->prepareShownInMenuCollection(function($data) use (&$regionsToSelect) {
             foreach ($data as $item) {
                 $regionsToSelect[] = new \Model\Region\Entity($item);
             }

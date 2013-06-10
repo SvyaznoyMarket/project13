@@ -136,6 +136,7 @@ class AppConfig {
         'cookieName'     => null,
         'cookieLifetime' => null,
         'defaultId'      => null,
+        'autoresolve'    => null,
     ];
     /** @var bool */
     public $loadMediaHost = null;
@@ -157,6 +158,7 @@ class AppConfig {
         // глобальный (без учета региона) список товаров
         'globalListEnabled'     => null,
         'showAveragePrice'      => null,
+        'allowBuyOnlyInshop'    => null, // позволять покупать товар, который находится только в магазине
     ];
     /** @var array */
     public $productPhoto = [
@@ -244,8 +246,12 @@ class AppConfig {
         'enabled' => null,
     ];
     /** @var array */
+    public $coupon = [
+        'enabled' => null,
+    ];
+    /** @var array */
     public $cart = [
-        'productLimit' => null, // максимальное количество товаров в корзине, при котором добавляемый товар не будет вытеснять первый товар из корзины
+        'productLimit'    => null, // максимальное количество товаров в корзине, при котором добавляемый товар не будет вытеснять первый товар из корзины
     ];
     /** @var array */
     public $user = [
@@ -284,7 +290,7 @@ class AppConfig {
     ];
     /** @var array  */
     public $order = [
-        'enableMetaTag' => null,
+        'enableMetaTag'   => null,
     ];
     /** @var array */
     public $maybe3d = [

@@ -30,7 +30,7 @@ $c->corePrivate['retryTimeout'] = [
 ];
 
 $c->reviewsStore['url']       = 'http://reviews.ent3.ru/reviews/';
-$c->reviewsStore['timeout'] = null;
+$c->reviewsStore['timeout'] = 2;
 $c->reviewsStore['retryTimeout'] = [
     'default' => 1,
     'tiny'    => 0.1,
@@ -41,6 +41,9 @@ $c->reviewsStore['retryTimeout'] = [
     'forever' => 0,
 ];
 $c->reviewsStore['retryCount'] = 3;
+
+$c->wordpress['throwException'] = false;
+$c->wordpress['timeout'] = 2;
 
 $c->dataStore['timeout'] = 2;
 $c->dataStore['retryTimeout'] = [
@@ -63,6 +66,7 @@ $c->smartengine['sslVerify'] = false;
 
 $c->crossss['id'] = 68; // *.ent3.ru
 $c->crossss['apiKey'] = 'fe7fbe9540e14f1db1f9f047d1e54b25';
+$c->crossss['timeout'] = 0.8;
 
 $c->paymentPsb['terminal'] = '79036768';
 $c->paymentPsb['merchant'] = '790367686219999';

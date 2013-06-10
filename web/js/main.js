@@ -1,53 +1,5 @@
 $(document).ready(function(){
 
-	/* F1 sale card*/
-	if ( $('.bF1SaleCard').length ){
-		var input = $('#F1SaleCard_number')
-		var btn = $('#F1SaleCard_btn')
-		var delBtn = $('.bF1SaleCard_eDel')
-		btn.bind('click', function(){
-			var url = btn.data('url')
-
-			var authFromServer = function(response) {
-				if ( response.success ) {
-					window.location.reload()
-				}
-				else{
-					$('#bF1SaleCard_eErr').html('Извините, карта с таким номером не найдена.')
-				}
-			}
-
-			var data = {
-				number: input.val()
-			}
-
-			$.ajax({
-				type: 'POST',
-				url: url,
-				data: data,
-				success: authFromServer
-			})
-
-		})
-		delBtn.live('click',function(){
-			var delUrl = $(this).data('url')
-			var authFromServer = function(response) {
-				if ( response.success ) {
-					window.location.reload()
-				}
-			}
-			$.ajax({
-				type: 'POST',
-				url: delUrl,
-				success: authFromServer
-			})
-		})
-
-	}
-
-
-
-
 	// Suggest для поля поиска
 	var nowSelectSuggest = -1
 	var suggestLen = 0
@@ -57,15 +9,31 @@ $(document).ready(function(){
 	 * @param  {event} e
 	 */
 	suggestUp = function(e){
-		var text = $(this).attr('value')
+        var text = $(this).attr('value')
+
+        if (!text.length){
+            if($(this).siblings('.searchtextClear').length) {
+                $(this).siblings('.searchtextClear').addClass('vh')
+            }
+        } else {
+            if($(this).siblings('.searchtextClear').length) {
+                $(this).siblings('.searchtextClear').removeClass('vh')
+            }
+        }
+
 		authFromServer = function(response){
 			$('#searchAutocomplete').html(response)
 			suggestLen = $('.bSearchSuggest__eRes').length
 		}
-		if ((e.which < 37 || e.which>40) && (nowSelectSuggest = -1)){
-			if (!text.length){
-				return false
-			}
+        if ((e.which < 37 || e.which>40) && (nowSelectSuggest = -1)){
+            if (!text.length){
+                return false
+            }
+
+            if($(this).siblings('.searchtextClear').length) {
+                $(this).siblings('.searchtextClear').removeClass('vh')
+            }
+			
 			$('.bSearchSuggest__eRes').removeClass('hover')
 			nowSelectSuggest = -1
 
@@ -84,7 +52,6 @@ $(document).ready(function(){
 	 * @param  {event} e
 	 */
 	suggestDown = function(e){
-
 		// маркировка пункта
 		markSuggest = function(){
 			$('.bSearchSuggest__eRes').removeClass('hover').eq(nowSelectSuggest).addClass('hover')
@@ -144,6 +111,12 @@ $(document).ready(function(){
 		$('#searchAutocomplete').show()
 	}
 	$('.searchbox .searchtext').keydown(suggestDown).keyup(suggestUp).mouseenter(suggestInputFocus).focus(suggestInputFocus).click(suggestInputClick).placeholder()
+	$('.searchbox .search-form').submit(function(){
+		var text = $('.searchbox .searchtext').attr('value')
+		if (!text.length){
+			return false
+		}
+	})
 	$('.bSearchSuggest__eRes').live('mouseover', function(){
 		$('.bSearchSuggest__eRes').removeClass('hover')
 		var index = $(this).addClass('hover').index()
@@ -251,22 +224,21 @@ $(document).ready(function(){
 			}
 
 		}
-		/*subscribe*/
-		if ($('.bSubscibe').length){
-			$('.bSubscibe').bind('click', function(){
-				if ($(this).hasClass('checked')){
-					$(this).removeClass('checked')
-					$(this).find('.subscibe').removeAttr('checked')
-				}
-				else{
-					$(this).addClass('checked')
-					$(this).find('.subscibe').attr('checked','checked')
-				}
-				return false
-			})
-		}
 	}
 	regEmailValid()
+
+	/*subscribe*/
+	$('.bSubscibe').live('click', function(){
+		if ($(this).hasClass('checked')){
+			$(this).removeClass('checked')
+			$(this).find('.subscibe').removeAttr('checked')
+		}
+		else{
+			$(this).addClass('checked')
+			$(this).find('.subscibe').attr('checked','checked')
+		}
+		return false
+	})
 
 	/* upper */
 	var upper = $('#upper');
@@ -725,7 +697,7 @@ $(document).ready(function(){
 		$('#ajaxerror div.fl').append('<small>'+ settings.url.replace(/(.*)\?ts=/,'')+'</small>')
 	})
 	*/
-	var logError = function(data) {
+	logError = function(data) {
         if (data.ajaxUrl !== '/log-json') {
             $.ajax({
                 type: 'POST',
@@ -741,16 +713,12 @@ $(document).ready(function(){
 			404: function() {
 				// errorpopup(' 404 ошибка, страница не найдена')
 				var ajaxUrl = this.url
-				var date = new Date();
-				var time = date.getHours()+':'+date.getMinutes()+':'+date.getSeconds()
-				var nowUrl = window.location.pathname
-				var userAgent = navigator.userAgent
+				var pageID = $('body').data('id')
 				var data = {
-					time:time,
+					event: 'ajax_error',
 					type:'404 ошибка',
+					pageID: pageID,
 					ajaxUrl:ajaxUrl,
-					nowUrl:nowUrl,
-					userAgent:userAgent
 				}
 				logError(data)
 				if( typeof(_gaq) !== 'undefined' )
@@ -774,16 +742,12 @@ $(document).ready(function(){
 			500: function() {
 				// errorpopup(' сервер перегружен')
 				var ajaxUrl = this.url
-				var date = new Date();
-				var time = date.getHours()+':'+date.getMinutes()+':'+date.getSeconds()
-				var nowUrl = window.location.pathname
-				var userAgent = navigator.userAgent
+				var pageID = $('body').data('id')
 				var data = {
-					time:time,
+					event: 'ajax_error',
 					type:'500 ошибка',
+					pageID: pageID,
 					ajaxUrl:ajaxUrl,
-					nowUrl:nowUrl,
-					userAgent:userAgent
 				}
 				logError(data)
 				if( typeof(_gaq) !== 'undefined' )
@@ -792,16 +756,12 @@ $(document).ready(function(){
 			503: function() {
 				// errorpopup(' 503 ошибка, сервер перегружен')
 				var ajaxUrl = this.url
-				var date = new Date();
-				var time = date.getHours()+':'+date.getMinutes()+':'+date.getSeconds()
-				var nowUrl = window.location.pathname
-				var userAgent = navigator.userAgent
+				var pageID = $('body').data('id')
 				var data = {
-					time:time,
+					event: 'ajax_error',
 					type:'503 ошибка',
+					pageID: pageID,
 					ajaxUrl:ajaxUrl,
-					nowUrl:nowUrl,
-					userAgent:userAgent
 				}
 				logError(data)
 				if( typeof(_gaq) !== 'undefined' )
@@ -810,16 +770,12 @@ $(document).ready(function(){
 			504: function() {
 				// errorpopup(' 504 ошибка, проверьте соединение с интернетом')
 				var ajaxUrl = this.url
-				var date = new Date();
-				var time = date.getHours()+':'+date.getMinutes()+':'+date.getSeconds()
-				var nowUrl = window.location.pathname
-				var userAgent = navigator.userAgent
+				var pageID = $('body').data('id')
 				var data = {
-					time:time,
+					event: 'ajax_error',
 					type:'504 ошибка',
+					pageID: pageID,
 					ajaxUrl:ajaxUrl,
-					nowUrl:nowUrl,
-					userAgent:userAgent
 				}
 				logError(data)
 				if( typeof(_gaq) !== 'undefined' )
@@ -833,16 +789,12 @@ $(document).ready(function(){
 				console.error(' неизвестная ajax ошибка')
 				if( typeof(_gaq) !== 'undefined' )
 					_gaq.push(['_trackEvent', 'Errors', 'Ajax Errors', 'неизвестная ajax ошибка'])
-				var date = new Date();
-				var time = date.getHours()+':'+date.getMinutes()+':'+date.getSeconds()
-				var nowUrl = window.location.pathname
-				var userAgent = navigator.userAgent
+				var pageID = $('body').data('id')
 				var data = {
-					time:time,
+					event: 'ajax_error',
 					type:'неизвестная ajax ошибка',
+					pageID: pageID,
 					ajaxUrl:ajaxUrl,
-					nowUrl:nowUrl,
-					userAgent:userAgent
 				}
 				logError(data)
 			}
@@ -898,24 +850,72 @@ $(document).ready(function(){
 	function getRegions() {
 		$('.popupRegion').lightbox_me( {
 			autofocus: true,
+			onLoad: function(){
+				if ($('#jscity').val().length){
+					$('#jscity').putCursorAtEnd()
+					$('#jschangecity').removeClass('mDisabled')
+				}
+			},
 			onClose: function() {			
 				if( !docCookies.hasItem('geoshop') ) {
-					docCookies.setItem( false, "geoshop", "14974", 31536e3, "/") //moscow city
-					document.location.reload()
+					var id = $('#jsregion').data('region-id');
+					docCookies.setItem( false, "geoshop", id, 31536e3, "/")
+					// document.location.reload()
 				}
 			}
 		} )		
 	}
 
+	$('.cityItem .moreCity').bind('click',function(){
+		$(this).toggleClass('mExpand')
+		$('.regionSlidesWrap').slideToggle(300)
+	})
+
 	$('#jsregion, .jsChangeRegion').click( function() {
+		var authFromServer = function(res){
+			if (!res.data.length){
+				$('.popupRegion .mAutoresolve').html('')
+				return false
+			}
+
+			var url = res.data[0].url
+			var name = res.data[0].name
+			var id = res.data[0].id
+
+			if (id === 14974 || id === 108136){
+				return false
+			}
+			
+			if ($('.popupRegion .mAutoresolve').length){
+				$('.popupRegion .mAutoresolve').html('<a href="'+url+'">'+name+'</a>')	
+			}
+			else{
+				$('.popupRegion .cityInline').prepend('<div class="cityItem mAutoresolve"><a href="'+url+'">'+name+'</a></div>')
+			}
+			
+		}
+
+		var autoResolve = $(this).data("autoresolve-url")
+		if (autoResolve !=='undefined'){
+			$.ajax({
+				type: 'GET',
+				url: autoResolve,
+				success: authFromServer
+			})
+		}
+		
 		getRegions()
 		return false
 	})
 	
 	$('body').delegate('#jschangecity', 'click', function(e) {
 		e.preventDefault()
-		if( $(this).data('url') )
+		if( $(this).data('url') ){
 			window.location = $(this).data('url')
+		}
+		else{
+			$('.popupRegion').trigger('close');
+		}
 	})
 	
 	$('.inputClear').bind('click', function(e) {
@@ -1472,10 +1472,10 @@ $(document).ready(function(){
 		else
 			var max = Math.ceil(wi / viswi)			
 
-		if(noajax) {
+		if((noajax !== undefined) && (noajax === true)) {
 			var buffer = 100
 		} else {
-			$(nodes.times).parent().parent().hasClass('accessories') ? 6 : 2
+			var buffer = ($(nodes.times).parent().parent().hasClass('accessories')) ? 6 : 2
 		}
 
 		var ajaxflag = false
@@ -1513,6 +1513,7 @@ $(document).ready(function(){
 			}
 			if( current < max && !ajaxflag ) {
 				if( current + 1 == max ) { //the last pull is loaded , so special shift
+
 					var boxes = $(nodes.wrap).find('.goodsbox')
 					$(boxes).hide()
 					var le = boxes.length
@@ -1522,6 +1523,7 @@ $(document).ready(function(){
 					current++
 				} else {
 					if( current + 1 >= buffer ) { // we have to get new pull from server
+
 						$(nodes.next).css('opacity','0.4') // addClass dont work ((
 						ajaxflag = true
 						var getData = []
@@ -1821,7 +1823,13 @@ $(document).ready(function(){
 				}
 			}
 			if( other.length > 0 && isSupplied){
-				html = '<h4>Доставка</h4><p>Через ~'+other[0].days+' дней<br/>планируемая дата поставки '+other[0].origin_date+'</p><p>Оператор контакт-cENTER согласует точную дату за 2-3 дня</p><p class="price">'+other[i].price+' <span class="rubl">p</span></p>'
+				html = '<h4>Доставка</h4><p>Через ~'+other[0].days+' дней<br/>планируемая дата поставки '+other[0].origin_date+'</p><p>Оператор контакт-cENTER согласует точную дату за 2-3 дня</p>'
+				if (other[i].price === 0){
+					html += '<p class="price">Бесплатно</p>'
+				}
+				else{
+					html += '<p class="price">'+other[i].price+' <span class="rubl">p</span></p>'
+				}
 			}
 			else{
 				html += '</ul>'	
@@ -1894,6 +1902,23 @@ $(document).ready(function(){
 			return false
 		})
 	}
+
+  if ( $('.searchtextClear').length ){
+      $('.searchtextClear').each(function(){
+          if(!$(this).val().length) {
+              $(this).addClass('vh')
+          } else {
+              $(this).removeClass('vh')
+          }
+      });
+      $('.searchtextClear').click(function(){
+          $(this).siblings('.searchtext').val('')
+          $(this).addClass('vh')
+          if($('#searchAutocomplete').length) {
+              $('#searchAutocomplete').html('')
+          }
+      });
+  }
 
 });
 

@@ -46,7 +46,7 @@ class IndexAction {
 
         // запрашиваем список регионов для выбора
         $regionsToSelect = [];
-        \RepositoryManager::region()->prepareShowInMenuCollection(function($data) use (&$regionsToSelect) {
+        \RepositoryManager::region()->prepareShownInMenuCollection(function($data) use (&$regionsToSelect) {
             foreach ($data as $item) {
                 $regionsToSelect[] = new \Model\Region\Entity($item);
             }
@@ -93,9 +93,9 @@ class IndexAction {
         }
 
         // получаем отзывы для товара
-        $reviewsData = (new \Controller\Product\ReviewsAction())->getReviews($product->getId(), 'user');
-        $reviewsDataPro = (new \Controller\Product\ReviewsAction())->getReviews($product->getId(), 'pro');
-        $reviewsDataSummary = $this->prepareReviewsDataSummary($reviewsData, $reviewsDataPro);
+        $reviewsData = \RepositoryManager::review()->getReviews($product->getId(), 'user');
+        $reviewsDataPro = \RepositoryManager::review()->getReviews($product->getId(), 'pro');
+        $reviewsDataSummary = \RepositoryManager::review()->prepareReviewsDataSummary($reviewsData, $reviewsDataPro);
 
         // фильтруем аксессуары согласно разрешенным в json категориям
         // и получаем уникальные категории-родители аксессуаров
@@ -104,7 +104,7 @@ class IndexAction {
             return $accessoryGrouped['category'];
         }, \Model\Product\Repository::filterAccessoryId($product, null, \App::config()->product['itemsInAccessorySlider'] * 6));
 
-        $accessoriesId =  array_slice($product->getAccessoryId(), 0, \App::config()->product['itemsInAccessorySlider'] * 6);
+        $accessoriesId =  array_slice($product->getAccessoryId(), 0, $accessoryCategory ? \App::config()->product['itemsInAccessorySlider'] * 6 : \App::config()->product['itemsInSlider'] * 6);
         $relatedId = array_slice($product->getRelatedId(), 0, \App::config()->product['itemsInSlider'] * 2);
         $partsId = [];
 
@@ -265,37 +265,5 @@ class IndexAction {
         return $result;
     }
 
-
-    /**
-     * Подготавливает данные для отображения рейтингов отзывов
-     *
-     * @param $userData
-     * @param $proData
-     * @return array
-     */
-    private function prepareReviewsDataSummary($userData, $proData) {
-        $summaryData = [
-            'user' => [5 => 0, 4 => 0, 3 => 0, 2 => 0, 1 => 0],
-            'pro' => [5 => 0, 4 => 0, 3 => 0, 2 => 0, 1 => 0],
-        ];
-        foreach (['user' => $userData, 'pro' => $proData] as $type => $data) {
-            if(empty($data['num_users_by_score'])) continue;
-            foreach ($data['num_users_by_score'] as $grade) {
-                $score = (float)($grade['score']);
-                if($score <= 2.0) {
-                    $summaryData[$type][1] += $grade['count'];
-                } elseif($score > 2.0 && $score <= 4.0) {
-                    $summaryData[$type][2] += $grade['count'];
-                } elseif($score > 4.0 && $score <= 6.0) {
-                    $summaryData[$type][3] += $grade['count'];
-                } elseif($score > 6.0 && $score <= 8.0) {
-                    $summaryData[$type][4] += $grade['count'];
-                } elseif($score > 8.0) {
-                    $summaryData[$type][5] += $grade['count'];
-                }
-            }
-        }
-        return $summaryData;
-    }
 
 }

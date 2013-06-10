@@ -35,7 +35,7 @@ class ProductCategoryAction {
                 'categoryid'      => $category->getId(),
                 'actiontime'      => time(),
             ]), [], \App::config()->crossss['timeout']);
-            \App::logger()->debug(json_encode($result, JSON_UNESCAPED_UNICODE), ['crossss']);
+            \App::logger()->debug($result, ['crossss']);
 
             $title = !empty($result['title']) ? $result['title'] : 'Популярные товары';
 
@@ -68,7 +68,7 @@ class ProductCategoryAction {
                     'name'   => $product->getName(),
                     'image'  => $product->getImageUrl(),
                     'rating' => $product->getRating(),
-                    'link'   => $product->getLink(),
+                    'link'   => $product->getLink() . sprintf('#crossss_%s_%s', isset($result['type']) ? $result['type'] : 0, $product->getId()),
                     'price'  => $product->getPrice(),
                 ];
             }

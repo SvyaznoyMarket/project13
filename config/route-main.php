@@ -95,6 +95,11 @@ return [
         'pattern' => '/region/autocomplete',
         'action'  => ['Region\Action', 'autocomplete'],
     ],
+    // автоопределение города
+    'region.autoresolve' => [
+        'pattern' => '/region/autoresolve',
+        'action'  => ['Region\Action', 'autoresolve'],
+    ],
     // сменя региона по прямой ссылке
     'region.redirect' => [
         'pattern' => '/reg/{regionId}{redirectTo}',
@@ -327,6 +332,14 @@ return [
     'cart.certificate.delete' => [
         'pattern' => '/cart/f1-certificate/delete',
         'action'  => ['Cart\CertificateAction', 'delete'],
+    ],
+    'cart.coupon.apply' => [
+        'pattern' => '/cart/coupon',
+        'action'  => ['Cart\CouponAction', 'apply'],
+    ],
+    'cart.coupon.delete' => [
+        'pattern' => '/cart/coupon/delete',
+        'action'  => ['Cart\CouponAction', 'delete'],
     ],
 
     // заказ

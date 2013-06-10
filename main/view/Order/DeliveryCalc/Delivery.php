@@ -7,4 +7,5 @@ class Delivery {
     public $name;
     public $price;
     public $dates = [];
+    public $isSupplied;
 }

@@ -9,11 +9,23 @@
  **/
 ?>
 
-<?= $page->render('product/_pager', array(
-    'request'     => $request,
-    'pager'       => $productPager,
-    'hasListView' => true,
-    'category'    => $selectedCategory,
-    'view'        => $productView,
-    'isAddInfo'    => true,
-)) ?>
+<? if (!$selectedCategory): ?>
+  <?= $page->render('product-category/_twoColumnList', [
+      'categories'  => $categoriesFound,
+      'searchQuery' => $searchQuery,
+  ]) ?>
+<? endif ?>
+
+<?= $page->render('search/_searchboxValue', [
+    'searchQuery' => $searchQuery,
+]) ?>
+
+<?= $page->render('product/_pager', [
+    'request'         => $request,
+    'pager'           => $productPager,
+    'hasListView'     => true,
+    'category'        => $selectedCategory,
+    'view'            => $productView,
+    'isAddInfo'       => true,
+    'showPagerHeader' => true,
+]) ?>

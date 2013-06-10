@@ -5,12 +5,10 @@
 ?>
 
 <?
-$config = \App::config();
-$attributes = [];
-
-if ($config->f1Certificate['enabled']) {
-    $attributes[] = 'data-f1-certificate="true"';
-}
+$config = [
+    'f1Certificate' => \App::config()->f1Certificate['enabled'],
+    'coupon'        => \App::config()->coupon['enabled'],
+];
 ?>
 
-<div id="site-config" <?= implode(' ', $attributes) ?>></div>
+<div id="site-config" data-value="<?= $page->json($config) ?>"></div>
