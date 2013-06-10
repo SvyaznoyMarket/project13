@@ -196,7 +196,11 @@ class Client {
                         }
                         $this->logger->debug('Curl response data: ' . $this->encode($decodedResponse), ['curl']);
                         $callback = $this->successCallbacks[(string)$handler];
-                        $callback($decodedResponse, (int)$handler);
+                        if (is_callable($callback)) {
+                            $callback($decodedResponse, (int)$handler);
+                        } else {
+                            throw new \Exception(sprintf('Неверная функция %s', gettype($callback)));
+                        }
                     } catch (\Exception $e) {
                         \App::exception()->add($e);
                         $this->logger->error($e, ['curl']);
