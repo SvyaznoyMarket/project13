@@ -17,7 +17,7 @@
       <ul>
         <? foreach ($categoriesLeft as $category) { ?>
           <li><a href="<?= $category->getLink(); ?>">
-            <?= preg_replace("/($searchQuery)/ui", '<span class="bSearchSuggest__eSelected">$1</span>', $category->getName()); ?>
+            <?= preg_replace("/(" . preg_quote($searchQuery, '/') . ")/ui", '<span class="bSearchSuggest__eSelected">$1</span>', $category->getName()); ?>
           </a></li>
         <? } ?>
       </ul>
@@ -26,7 +26,7 @@
       <ul>
         <? foreach ($categoriesRight as $category) { ?>
           <li><a href="<?= $category->getLink(); ?>">
-            <?= preg_replace("/($searchQuery)/ui", '<span class="bSearchSuggest__eSelected">$1</span>', $category->getName()); ?>
+            <?= preg_replace("/(" . preg_quote($searchQuery, '/') . ")/ui", '<span class="bSearchSuggest__eSelected">$1</span>', $category->getName()); ?>
           </a></li>
         <? } ?>
       </ul>
