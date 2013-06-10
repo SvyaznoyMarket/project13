@@ -3,6 +3,9 @@
 namespace Session;
 
 class User {
+
+    const PRODUCT_HISTORY = 100;
+
     /** @var string */
     private $tokenName;
     /** @var string|null */
@@ -15,10 +18,14 @@ class User {
     private $region;
     /** @var Cart */
     private $cart;
+    /** @var array */
+    private $recommendedProduct;
+
 
     public function __construct() {
         $this->tokenName = \App::config()->authToken['name'];
         $this->token = \App::session()->get($this->tokenName);
+        $this->recommendedProduct = \App::session()->get('recommendedProduct');
     }
 
     /**
@@ -224,5 +231,73 @@ class User {
         \App::logger()->debug(sprintf('Cache cookie %s cooked', $value), ['session', 'user']);
 
         $response->headers->setCookie($cookie);
+    }
+
+    /**
+     * @param int $productId
+     * @param string $partnerName
+     * @param string $key
+     * @param $value
+     */
+    public function setRecommendedProductByParams($productId, $partnerName, $key, $value) {
+        try {
+            if (!is_array($this->recommendedProduct)) $this->recommendedProduct = [];
+            if (count($this->recommendedProduct) >= self::PRODUCT_HISTORY) {
+                reset($this->recommendedProduct);
+                $count = (count($this->recommendedProduct) - (self::PRODUCT_HISTORY - 1));
+                for ($i = 0; $i < $count; $i++) {
+                    unset($this->recommendedProduct[key($this->recommendedProduct)]);
+                }
+            }
+            if (!isset($this->recommendedProduct[$productId]) || !is_array($this->recommendedProduct[$productId])) $this->recommendedProduct[$productId] = [];
+            if (!isset($this->recommendedProduct[$productId][$partnerName]) || !is_array($this->recommendedProduct[$productId][$partnerName])) $this->recommendedProduct[$productId][$partnerName] = [];
+            $currentVal = false;
+            if (isset($this->recommendedProduct[$productId][$partnerName][$key])) $currentVal = $this->recommendedProduct[$productId][$partnerName][$key];
+            if (!$currentVal) {
+                $this->recommendedProduct[$productId][$partnerName][$key] = $value;
+            } else {
+                switch ($key) {
+                    case 'viewed_at':
+                        if ((int)$currentVal < (int)$value) $this->recommendedProduct[$productId][$partnerName][$key] = (int)$value;
+                        break;
+                    default:
+                        $this->recommendedProduct[$productId][$partnerName][$key] = $value;
+                        break;
+                }
+            }
+            \App::session()->set('recommendedProduct', $this->recommendedProduct);
+        } catch (\Exception $e) {
+            \App::logger()->warn(sprintf('Не удалось добавить рекоммендацию товара #"%s" от партнера #"%s".', $productId, $partnerName), ['session', 'user']);
+        }
+    }
+
+    /**
+     * @param int $productId
+     * @param string $partnerName
+     * @param string $key
+     * @return bool
+     */
+    public function getRecommendedProductByParams($productId, $partnerName, $key) {
+        try {
+            return $this->recommendedProduct[$productId][$partnerName][$key];
+        } catch (\Exception $e) {
+            return false;
+        }
+    }
+
+    /**
+     * @param array $recommendedProduct
+     */
+    public function setRecommendedProduct($recommendedProduct)
+    {
+        $this->recommendedProduct = $recommendedProduct;
+    }
+
+    /**
+     * @return array
+     */
+    public function getRecommendedProduct()
+    {
+        return $this->recommendedProduct;
     }
 }

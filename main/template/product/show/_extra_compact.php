@@ -14,12 +14,13 @@ $isHidden = isset($isHidden) && $isHidden;
 $maxHeight = isset($maxHeight) && $maxHeight;
 $gaEvent = isset($gaEvent) ? $gaEvent : null;
 $additionalData = isset($additionalData) ? $additionalData : null;
+$productLink = $product->getLink().($page->hasGlobalParam('sender')?(false === strpos($product->getLink(), '?') ? '?' : '&') . 'sender='.$page->getGlobalParam('sender').'|'.$product->getId():'');
 ?>
 
 <div class="goodsbox<? if ($maxHeight): ?> height220<? endif ?>"<? if ($isHidden): ?> style="display:none;"<? endif ?> ref="<?php echo $product->getToken(); ?>" data-quantity="<?php echo empty($totalProducts) ? '' : $totalProducts; ?>" data-category="<?php echo empty($categoryToken) ? '' : $categoryToken; ?>" data-total-pages="<?php echo empty($totalPages) ? '' : $totalPages; ?>" data-category="<?php echo empty($categoryToken) ? '' : $categoryToken; ?>">
-    <div class="goodsbox__inner" data-url="<?= $product->getLink() ?>" <?php if (isset($additionalData)) echo 'data-product="' . $page->json($additionalData) . '"' ?>>
+    <div class="goodsbox__inner" data-url="<?= $productLink ?>" <?php if (isset($additionalData)) echo 'data-product="' . $page->json($additionalData) . '"' ?>>
     	<div class="photo">
-			<a href="<?php echo $product->getLink() ?>"<?php if (!empty($gaEvent)) echo ' data-event="'.$gaEvent.'" data-title="Переход по ссылке" class="gaEvent"'; ?>>
+			<a href="<?= $productLink ?>"<?php if (!empty($gaEvent)) echo ' data-event="'.$gaEvent.'" data-title="Переход по ссылке" class="gaEvent"'; ?>>
 			  <img class="mainImg" src="<?php echo $product->getImageUrl() ?>" alt="<?php echo $product->getNameWithCategory() ?>"
 				title="<?php echo $product->getNameWithCategory() ?>" width="119" height="120"/>
 			</a>
@@ -27,7 +28,7 @@ $additionalData = isset($additionalData) ? $additionalData : null;
 
     <?= $page->render('product/_reviewsStarsCompact', ['product' => $product, 'twoLines' => true]) ?>
 
-    <h3><a href="<?php echo $product->getLink() ?>"<?php if (!empty($gaEvent)) echo ' data-event="'.$gaEvent.'" data-title="Переход по ссылке" class="gaEvent"'; ?>><?php echo $product->getName() ?></a></h3>
+    <h3><a href="<?= $productLink ?>"<?php if (!empty($gaEvent)) echo ' data-event="'.$gaEvent.'" data-title="Переход по ссылке" class="gaEvent"'; ?>><?php echo $product->getName() ?></a></h3>
 		<div class="goodsbar mSmallBtns mR">
           <?= $page->render('cart/_button', array('product' => $product, 'disabled' => !$product->getIsBuyable())) ?>
         </div>
