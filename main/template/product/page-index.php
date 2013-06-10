@@ -639,6 +639,9 @@ $productVideo = reset($productVideos);
 <div class="descriptionWrapper">
   <? $groupedProperties = $product->getGroupedProperties();?>
   <? $propertiesShown = 0; ?>
+  <? // код в условии if(false) нужен для сворачивающихся/разворачивающихся характеристик ?>
+  <? // Оля просила не удалять, а закоментировать, на случай если они решат их вернуть ?>
+  <? // перед удалением уточнить у Оли не нужен ли он больше ?>
   <? if(false && $reviewsPresent) { ?>
     <div class="descriptionlist short">
         <? foreach ($groupedProperties as $groupKey => $group): ?>
@@ -682,6 +685,9 @@ $productVideo = reset($productVideos);
         <? endforeach ?>
     </div>
   <? } ?>
+  <? // код в условии if(false) нужен для сворачивающихся/разворачивающихся характеристик ?>
+  <? // Оля просила не удалять, а закоментировать, на случай если они решат их вернуть ?>
+  <? // перед удалением уточнить у Оли не нужен ли он больше ?>
   <div class="descriptionlist<?= false && $reviewsPresent ? ' hf' : '' ?>">
       <? $showGroupName = true ?>
       <? foreach ($groupedProperties as $key => $group): ?>
@@ -723,6 +729,10 @@ $productVideo = reset($productVideos);
   </div>
 </div>
 <div class="clear"></div>
+<? // код в условии if(false) нужен для сворачивающихся/разворачивающихся характеристик ?>
+<? // Оля просила не удалять, а закоментировать, на случай если они решат их вернуть ?>
+<? // перед удалением уточнить у Оли не нужен ли он больше ?>
+<?  ?>
 <? if(false && $reviewsPresent && $propertiesShown > 10) { ?>
   <div id="productDescriptionToggle" class="contourButton mb15 button width250">Показать все характеристики</div>
 <? } ?>
