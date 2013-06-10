@@ -237,8 +237,8 @@
 				.wait()
 				.script( getWithVersion('dash.js') )
 				.script('tour.js')
-				.wait()
-				.script( getWithVersion('ports.js') )
+				// .wait()
+				// .script( getWithVersion('ports.js') )
 			}).runQueue()
 			break
 		case 'product_stock':
