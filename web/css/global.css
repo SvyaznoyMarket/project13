@@ -9371,6 +9371,9 @@
     -webkit-appearance: none;
     width: 308px;
   }
+  .content-section__form .subscribe-form__email.mError {
+    background: #F28C92;
+  }
   .content-section__form .subscribe-form__btn {
     background: #ffc000;
     background: -moz-linear-gradient(top, #ffc000 0%, #ffaa01 100%);
