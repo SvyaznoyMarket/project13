@@ -279,7 +279,7 @@ class Entity {
         }
 
         try {
-            $data = \App::dataStoreClient()->query(sprintf('inflect/region/%s.json', $this->id));
+            $data = (array)\App::dataStoreClient()->query(sprintf('inflect/region/%s.json', $this->id));
 
             return array_key_exists($inflect, $data) ? $data[$inflect] : $this->name;
         } catch (\Exception $e) {
@@ -287,7 +287,7 @@ class Entity {
             if ($dbh = \App::database()) {
                 $dbh->exec("INSERT INTO `queue` (`name`, `body`) VALUES ('inflect', '" . addslashes(json_encode([
                     'original' => $this->name,
-                    'file'     => \App::config()->dataDir . '/inflect/region/' . $this->id . '.json',
+                    'file'     => \App::config()->dataDir . '/data-store/inflect/region/' . $this->id . '.json',
                 ], JSON_HEX_APOS | JSON_HEX_QUOT | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT))."')");
             }
         }
