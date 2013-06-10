@@ -51,7 +51,6 @@
 	$LAB.setGlobalDefaults({ AllowDuplicates: true, AlwaysPreserveOrder:true, UseLocalXHR:false, BasePath:"/js/"})
 	.queueScript('combine.js')
 	// .queueScript('jquery-1.6.4.min.js')
-	.queueScript('//cdn.optimizely.com/js/204544654.js')
 	.queueScript('/js/asyn.code.ver3.js')	
 	.queueWait( function(){
 		document.write = function(){
@@ -79,6 +78,7 @@
 				.script(getWithVersion('welcome.js'))
 				.wait()
 				.script( getWithVersion('ports.js') )
+				.script('//cdn.optimizely.com/js/204544654.js')
 			}).runQueue()
 			break
 		case 'default':
@@ -95,6 +95,7 @@
 				.script( getWithVersion('infopages.js') )
 				.wait()
 				.script( getWithVersion('ports.js') )
+				.script('//cdn.optimizely.com/js/204544654.js')
 			}).runQueue()
 			break
 		case 'cart':
@@ -111,6 +112,7 @@
 				.script(getWithVersion('app.cart.js'))
 				.wait()
 				.script( getWithVersion('ports.js') )
+				.script('//cdn.optimizely.com/js/204544654.js')
 			}).runQueue()
 			break
 		case 'order':
@@ -128,6 +130,7 @@
 				.script(getWithVersion('main.js'))
 				.wait()
 				.script( getWithVersion('ports.js') )			
+				.script('//cdn.optimizely.com/js/204544654.js')
 			}).runQueue()
 			break
 		case 'order_complete':
@@ -145,6 +148,7 @@
 				.script(getWithVersion('main.js'))
 				.wait()
 				.script( getWithVersion('ports.js') )
+				.script('//cdn.optimizely.com/js/204544654.js')
 			}).runQueue()
 			break
         case 'order_error':
@@ -155,6 +159,8 @@
 				.wait()
 				.script(getWithVersion('app.order.js'))
 				.script( getWithVersion('main.js') )
+				.wait()
+				.script('//cdn.optimizely.com/js/204544654.js')
 			}).runQueue()
             break
 		case 'product_catalog':
@@ -169,6 +175,7 @@
 				.wait()
 				.script( getWithVersion('ports.js') )
 				.script( 'adfox.asyn.code.ver3.js' )
+				.script('//cdn.optimizely.com/js/204544654.js')
 			}).runQueue()
 			break
 		case 'product_card':
@@ -193,6 +200,7 @@
 				.script( getWithVersion('app.oneclick.js') )
 				.wait()
 				.script( getWithVersion('ports.js') )
+				.script('//cdn.optimizely.com/js/204544654.js')
 			}).runQueue()
 			break
 		case 'product_comment':
@@ -210,6 +218,7 @@
 				.script( getWithVersion('app.product.comment.list.js') )
 				.wait()
 				.script( getWithVersion('ports.js') )
+				.script('//cdn.optimizely.com/js/204544654.js')
 			}).runQueue()
 			break
 		case 'service':
@@ -223,6 +232,7 @@
 				.script( getWithVersion('dash.js') )
 				.wait()
 				.script( getWithVersion('ports.js') )
+				.script('//cdn.optimizely.com/js/204544654.js')
 			}).runQueue()
 			break
 		case 'shop':
@@ -239,6 +249,8 @@
 				.script('tour.js')
 				// .wait()
 				// .script( getWithVersion('ports.js') )
+				.wait()
+				.script('//cdn.optimizely.com/js/204544654.js')
 			}).runQueue()
 			break
 		case 'product_stock':
@@ -258,6 +270,7 @@
 				.script( getWithVersion('app.oneclick.js') )
 				.wait()
 				.script( getWithVersion('ports.js') )
+				.script('//cdn.optimizely.com/js/204544654.js')
 			}).runQueue()
 			break
 	}
