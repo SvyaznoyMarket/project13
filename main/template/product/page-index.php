@@ -252,9 +252,9 @@ $productVideo = reset($productVideos);
     <span>Артикул: <span itemprop="productID"><?= $product->getArticle() ?></span></span>
   </div>
 
+  <? if (\App::config()->product['reviewEnabled']): ?>
   <div class="reviewSection reviewSection100 clearfix">
 
-      <? if (\App::config()->product['reviewEnabled']): ?>
       <div class="reviewSection__link">
         <div class="reviewSection__star reviewSection100__star">
           <? $avgStarScore = empty($reviewsData['avg_star_score']) ? 0 : $reviewsData['avg_star_score'] ?>
@@ -273,9 +273,8 @@ $productVideo = reset($productVideos);
         <a class="close" href="#">Закрыть</a>
         <iframe id="rframe" frameborder="0" scrolling="auto" height="480" width="700"></iframe>
       </div>
-      <? endif ?>
-
   </div>
+  <? endif ?>
 
   <div class="font14 pb15" itemprop="description"><?= $product->getTagline() ?></div>
   <div class="clear"></div>

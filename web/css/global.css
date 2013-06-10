@@ -5835,11 +5835,12 @@
   .reviewSection span.border {
     cursor: pointer;
     border-bottom: 1px solid;
+    float: left;
   }
   .reviewSection__star {
     margin: 2px 0 0 0px;
   }
-  .reviewSection__star img:last-child {
+  .reviewSection100__star {
     margin-right: 12px;
   }
   .reviewSection12 {
@@ -5852,6 +5853,9 @@
   }
   .reviewSection12__star img:last-child {
     margin-right: 5px;
+  }
+  .reviewSection12__link {
+    width: auto;
   }
   .reviewsWrapper {
     border-bottom: 1px solid #c7c7c7;
@@ -5883,12 +5887,13 @@
     font-size: 14px;
     padding: 8px 10px 6px;
   }
-  .reviewsTabs li:last-child {
-    padding-right: 0;
-  }
   .reviewsTabs li span {
     border-bottom: 1px dotted;
     cursor: pointer;
+  }
+  .reviewsTabs .last {
+    padding-right: 0;
+    float: right;
   }
   .reviewsTabs .active {
     font-weight: bold;

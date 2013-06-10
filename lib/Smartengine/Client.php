@@ -3,6 +3,9 @@
 namespace Smartengine;
 
 class Client {
+
+    CONST NAME = 'smartengine';
+
     /* @var array */
     private $config = null;
     /* @var \Logger\LoggerInterface */

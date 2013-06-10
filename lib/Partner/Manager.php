@@ -20,7 +20,33 @@ class Manager {
             $cookie = null;
 
             $utmSource = $request->get('utm_source');
+            $sender = $request->get('sender');
 
+            //SmartEngine & SmartAssistant
+            if ((bool)$sender) {
+                $sender = explode('|', $sender); // ?sender=SmartEngine|product_id
+                if ((bool)$sender[0] && (bool)$sender[1]) {
+                    switch ($sender[0]) {
+                        case \Smartengine\Client::NAME: {
+                            \App::user()->setRecommendedProductByParams($sender[1], \Smartengine\Client::NAME, 'viewed_at', time());
+                            break;
+                        }
+                    }
+                }
+            }
+
+            // myThings
+            if (0 === strpos($utmSource, 'mythings')) {
+                $cookie = new \Http\Cookie(
+                    $this->cookieName,
+                    \Partner\Counter\MyThings::NAME,
+                    time() + $this->cookieLifetime,
+                    '/',
+                    null,
+                    false,
+                    true
+                );
+            }
             // CityAds
             if (0 === strpos($utmSource, 'cityads')) {
                 $response->headers->setCookie(new \Http\Cookie(
@@ -124,7 +150,7 @@ class Manager {
             : null;
     }
 
-    public function getMeta($name) {
+    public function getMeta($name, \Model\Product\Entity $product = null) {
         $return = [];
 
         $request = \App::request();
@@ -159,8 +185,61 @@ class Manager {
                     $prefix => [\Partner\Counter\Recreative::NAME],
                 ];
                 break;
+            case \Partner\Counter\MyThings::NAME:
+                $return = [
+                    $prefix => [\Partner\Counter\MyThings::NAME],
+                ];
+                break;
+            case \Smartengine\Client::NAME:
+                $return = [
+                    $prefix => [\Smartengine\Client::NAME],
+                ];
+                break;
+        }
+
+        if ((bool)$product) {
+            $keyName = $prefix . '.' . $name;
+            if (is_array($product->getEan()) && count($product->getEan())) {
+                $keyName .= '.ean.' . $product->getEan()[0];
+            } elseif ($product->getArticle()) {
+                $keyName .= '.article.' . $product->getArticle();
+            } else {
+                $keyName .= '.id.' . $product->getId();
+            }
+            if ($product->getMainCategory()) $return[$keyName . '.category'] = $product->getMainCategory()->getId();
         }
 
         return $return;
     }
+
+    public function fabricateMetaByPartners($partners = [], $product = null) {
+        if (!is_array($partners) || !count($partners) || !$product) return false;
+
+        $return = [];
+        $prefix = 'partner';
+        $partnerNames = [];
+
+        foreach ($partners as $partnerName) {
+            $partnerData = $this->getMeta($partnerName, $product);
+            if (isset($partnerData[$prefix])) {
+                $partnerNames[$partnerData[$prefix][0]] = 1;
+                unset($partnerData[$prefix]);
+            }
+            $return = array_merge($return, $partnerData);
+        }
+
+        return array_merge($return, [$prefix => array_keys($partnerNames)]);
+    }
+
+    public function fabricateCompleteMeta($mainMeta, $mergedMeta) {
+        if (!$mainMeta) return $mergedMeta;
+        $prefix = 'partner';
+        $partnerNames = array_unique(array_merge( isset($mainMeta[$prefix]) ? $mainMeta[$prefix] : [], isset($mergedMeta[$prefix]) ? $mergedMeta[$prefix] : []));
+        if (isset($mainMeta[$prefix])) unset($mainMeta[$prefix]);
+        if (isset($mergedMeta[$prefix])) unset($mergedMeta[$prefix]);
+
+        return array_merge_recursive($mainMeta, $mergedMeta, [$prefix => $partnerNames]);
+
+    }
+
 }
