@@ -32,6 +32,7 @@ $c->corePrivate['retryTimeout'] = [
 $c->wordpress['throwException'] = false;
 $c->wordpress['timeout'] = 0.2;
 
+$c->dataStore['url'] = 'http://olga.cms.ent3.ru/v1/';
 $c->dataStore['timeout'] = 2;
 $c->dataStore['retryTimeout'] = [
     'default' => 1,
