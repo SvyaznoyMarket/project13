@@ -1896,30 +1896,29 @@ $(document).ready(function(){
 		);
 	}
 
-
-    if ( $('.searchtextClear').length ){
-        $('.searchtextClear').each(function(){
-            if(!$(this).val().length) {
-                $(this).addClass('vh')
-            } else {
-                $(this).removeClass('vh')
-            }
-        });
-        $('.searchtextClear').click(function(){
-            $(this).siblings('.searchtext').val('')
-            $(this).addClass('vh')
-            if($('#searchAutocomplete').length) {
-                $('#searchAutocomplete').html('')
-            }
-        });
-    }
-
 	if($('.newReviewPopupLink').length) {
 		$('.newReviewPopupLink').click(function(){
 			popupWriteReviewForm($(this).attr('data-pid'), $('#reviewsProductName').html())
 			return false
 		})
 	}
+
+  if ( $('.searchtextClear').length ){
+      $('.searchtextClear').each(function(){
+          if(!$(this).val().length) {
+              $(this).addClass('vh')
+          } else {
+              $(this).removeClass('vh')
+          }
+      });
+      $('.searchtextClear').click(function(){
+          $(this).siblings('.searchtext').val('')
+          $(this).addClass('vh')
+          if($('#searchAutocomplete').length) {
+              $('#searchAutocomplete').html('')
+          }
+      });
+  }
 
 });
 

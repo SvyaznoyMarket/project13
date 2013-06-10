@@ -649,9 +649,12 @@ $productVideo = reset($productVideos);
 <div class="line pb5"></div>
 <div class="descriptionWrapper">
   <? $groupedProperties = $product->getGroupedProperties();?>
-  <? if($reviewsPresent) { ?>
+  <? $propertiesShown = 0; ?>
+  <? // код в условии if(false) нужен для сворачивающихся/разворачивающихся характеристик ?>
+  <? // Оля просила не удалять, а закоментировать, на случай если они решат их вернуть ?>
+  <? // перед удалением уточнить у Оли не нужен ли он больше ?>
+  <? if(false && $reviewsPresent) { ?>
     <div class="descriptionlist short">
-        <? $propertiesShown = 0; ?>
         <? foreach ($groupedProperties as $groupKey => $group): ?>
         <? if (!count($group['properties'])) continue ?>
             <div class="pb15"><strong><?= $group['group']->getName() ?></strong></div>
@@ -684,8 +687,8 @@ $productVideo = reset($productVideos);
                 </div>
                 <? 
                   $propertiesShown++;
-                  unset($group['properties'][$propertyKey]);
-                  if(empty($group['properties'])) unset($groupedProperties[$groupKey]);
+                  unset($groupedProperties[$groupKey]['properties'][$propertyKey]);
+                  if(empty($groupedProperties[$groupKey]['properties'])) unset($groupedProperties[$groupKey]);
                   if($propertiesShown >= 10) break;
                 ?>
             <? endforeach ?>
@@ -693,8 +696,11 @@ $productVideo = reset($productVideos);
         <? endforeach ?>
     </div>
   <? } ?>
-  <div class="descriptionlist<?= $reviewsPresent ? ' hf' : '' ?>">
-      <? $showGroupName = false ?>
+  <? // код в условии if(false) нужен для сворачивающихся/разворачивающихся характеристик ?>
+  <? // Оля просила не удалять, а закоментировать, на случай если они решат их вернуть ?>
+  <? // перед удалением уточнить у Оли не нужен ли он больше ?>
+  <div class="descriptionlist<?= false && $reviewsPresent ? ' hf' : '' ?>">
+      <? $showGroupName = true ?>
       <? foreach ($groupedProperties as $key => $group): ?>
       <? if (!count($group['properties'])) continue ?>
           <? if($showGroupName) { ?>
@@ -728,13 +734,17 @@ $productVideo = reset($productVideos);
                       <? endif ?>
                   </div>
               </div>
+              <? $propertiesShown++; ?>
           <? endforeach ?>
       <? endforeach ?>
   </div>
 </div>
 <div class="clear"></div>
-<? if ($reviewsPresent) { ?>
-  <div id="productDescriptionToggle" class="mb15 product-btn-toggle"><span>Показать все характеристики</span></div>
+<? // код в условии if(false) нужен для сворачивающихся/разворачивающихся характеристик ?>
+<? // Оля просила не удалять, а закоментировать, на случай если они решат их вернуть ?>
+<? // перед удалением уточнить у Оли не нужен ли он больше ?>
+<? if(false && $reviewsPresent && $propertiesShown > 10) { ?>
+  <div id="productDescriptionToggle" class="contourButton mb15 button width250">Показать все характеристики</div>
 <? } ?>
 
 <? if (\App::config()->product['reviewEnabled'] && $reviewsPresent): ?>

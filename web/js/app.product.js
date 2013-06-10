@@ -432,12 +432,6 @@ $(document).ready(function() {
 		}
     }
     
-
-   //Класс для аксессуаров по категориям
-   if ($('.categoriesmenu').length) {
-   		$('.acess-box-section').addClass('acess-box');
-   }
-
   	// карточка товара - характеристики товара краткие/полные
     if($('#productDescriptionToggle').length) {
         $('#productDescriptionToggle').toggle(
@@ -531,5 +525,10 @@ $(document).ready(function() {
 		 	}
  		})
  	}
+
+  //Класс для аксессуаров по категориям
+  if ($('.categoriesmenu').length) {
+   		$('.acess-box-section').addClass('acess-box');
+  }
 
 });

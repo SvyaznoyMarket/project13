@@ -273,4 +273,18 @@ class RepositoryManager {
 
         return $instance;
     }
+
+    /**
+     * @return Model\Review\Repository
+     */
+    static function review() {
+        static $instance;
+
+        if (!$instance) {
+            $instance = new \Model\Review\Repository(\App::reviewsClient());
+        }
+
+        return $instance;
+    }
+
 }
