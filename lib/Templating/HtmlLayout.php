@@ -9,6 +9,8 @@ class HtmlLayout {
     private $templateDir;
     /** @var array */
     protected $params = [];
+    /** @var array */
+    protected $globalParams = [];
     /** @var string */
     protected $title;
     /** @var array */
@@ -62,6 +64,34 @@ class HtmlLayout {
         return array_key_exists($name, $this->params) ? $this->params[$name] : null;
     }
 
+    /**
+     * @param $name
+     * @param $value
+     */
+    public function setGlobalParam($name, $value) {
+        $this->globalParams[$name] = $value;
+    }
+
+    /**
+     * @param $name
+     * @return bool
+     */
+    public function hasGlobalParam($name) {
+        return array_key_exists($name, $this->globalParams);
+    }
+
+    /**
+     * @param $name
+     * @return null
+     */
+    public function getGlobalParam($name) {
+        if (!array_key_exists($name, $this->globalParams)) {
+            \App::logger()->warn(sprintf('Неизвестный глобальный параметр шаблона "%s"', $name), ['view']);
+        }
+
+        return array_key_exists($name, $this->globalParams) ? $this->globalParams[$name] : null;
+    }
+
     protected function prepare() {}
 
     /**
@@ -79,6 +109,7 @@ class HtmlLayout {
      * @return string
      */
     final public function render($template, array $params = []) {
+        $params = array_merge($this->globalParams, $params);
         $params['page'] = $this;
         $params['user'] = \App::user();
         $params['request'] = \App::request();

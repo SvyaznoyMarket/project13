@@ -31,7 +31,7 @@ $c->corePrivate['retryTimeout'] = [
     'forever' => 0,
 ];
 
-$c->reviewsStore['url']       = 'http://reviews.ent3.ru/reviews/';
+$c->reviewsStore['url']       = 'http://reviews.enter.ru/reviews/';
 $c->reviewsStore['timeout'] = null;
 $c->reviewsStore['retryTimeout'] = [
     'default' => 1,
@@ -106,8 +106,6 @@ $c->abtest['test']       = [
 ];
 
 $c->subscribe['enabled'] = true;
-
-$c->coupon['enabled'] = false;
 
 $c->requestMainMenu = true;
 

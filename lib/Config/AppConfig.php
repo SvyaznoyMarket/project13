@@ -159,6 +159,7 @@ class AppConfig {
         'globalListEnabled'     => null,
         'showAveragePrice'      => null,
         'allowBuyOnlyInshop'    => null, // позволять покупать товар, который находится только в магазине
+        'reviewEnabled'         => null, // отзывы о товаре
     ];
     /** @var array */
     public $productPhoto = [

@@ -433,20 +433,20 @@ $(document).ready(function() {
     }
     
   	// карточка товара - характеристики товара краткие/полные
-	 	if($('#productDescriptionToggle').length) {
-	 		$('#productDescriptionToggle').toggle(
-		 		function(e){
-		 			e.preventDefault()
-		 			$(this).parent().parent().find('.descriptionlist:not(.short)').show()
-		 			$(this).html('Скрыть все характеристики')
-		 		},
-		 		function(e){
-		 			e.preventDefault()
-		 			$(this).parent().parent().find('.descriptionlist:not(.short)').hide()
-		 			$(this).html('Показать все характеристики')
-		 		}
-		 	);
-	 	}
+    if($('#productDescriptionToggle').length) {
+        $('#productDescriptionToggle').toggle(
+            function(e){
+                e.preventDefault()
+                $(this).parent().parent().find('.descriptionlist:not(.short)').show()
+                $(this).html('Скрыть все характеристики')
+            },
+            function(e){
+                e.preventDefault()
+                $(this).parent().parent().find('.descriptionlist:not(.short)').hide()
+                $(this).html('Показать все характеристики')
+            }
+        );
+    }
 
  	// текущая страница для каждой вкладки
  	var reviewCurrentPage = {

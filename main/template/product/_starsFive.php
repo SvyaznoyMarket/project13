@@ -1,3 +1,4 @@
+
 <? if(empty($score) && empty($emptyText)) { ?>
   <? for ($i=5; $i > ceil($score); $i--) { ?>
     <img src="/images/reviews_star_empty.png">

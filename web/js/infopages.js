@@ -1,5 +1,35 @@
 $(document).ready(function(){
 
+	if ( $('.subscribe-form__btn').length){
+		var input = $('.subscribe-form__email')
+		var form = $('.subscribe-form')
+		var subscribing = function(){
+			var url = $(this).data('url')
+			var email = input.val()
+
+			if ( email.search('@') !== -1 ){
+				$.post(url, {email: email}, function(res){
+					if( !res.success )
+						return false
+					
+					form.html('<div class="subscribe-form__title">Спасибо! подтверждение подписки отправлено на указанный e-mail</div>')
+					docCookies.setItem(false, 'subscribed', 1, 157680000, '/')
+					if( typeof(_gaq) !== 'undefined' ){
+						_gaq.push(['_trackEvent', 'Account', 'Emailing sign up', 'Page be-friends'])
+					}
+				})
+			}
+			else{
+				// email invalid
+				input.addClass('mError')
+			}
+			return false
+		}
+
+		$('.subscribe-form__btn').bind('click', subscribing)
+	}
+	
+
 
 	/**
 	 * Бесконечный скролл

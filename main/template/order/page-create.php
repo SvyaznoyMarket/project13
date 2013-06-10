@@ -18,7 +18,7 @@
 $region = $user->getRegion();
 $isCorporative = $user->getEntity() && $user->getEntity()->getIsCorporative();
 
-$jsValidator = array('order[recipient_first_name]' => 'Заполните поле', 'order[recipient_last_name]' => 'Заполните поле', 'order[recipient_phonenumbers]' => 'Заполните поле', 'order[address_street]' => 'Укажите адрес', 'order[address_building]' => 'Укажите адрес', 'order[payment_method_id]' => 'Выберите способ оплаты', 'order[agreed]' => 'Необходимо согласие', 'order[recipient_email]' => 'Некорректный e-mail',
+$jsValidator = array('order[recipient_first_name]' => 'Заполните поле', 'order[recipient_phonenumbers]' => 'Заполните поле', 'order[address_street]' => 'Укажите адрес', 'order[address_building]' => 'Укажите адрес', 'order[payment_method_id]' => 'Выберите способ оплаты', 'order[agreed]' => 'Необходимо согласие', 'order[recipient_email]' => 'Некорректный e-mail',
 );
 if ($form->hasSubway()) $jsValidator['order[address_metro]'] = 'Укажите ближайшее метро';
 ?>
@@ -71,7 +71,6 @@ if ($form->hasSubway()) $jsValidator['order[address_metro]'] = 'Укажите �
         </div>
 
         <dl class='bBuyingLine'>
-
             <dt>Имя получателя*</dt>
             <dd>
                 <div>
@@ -82,8 +81,7 @@ if ($form->hasSubway()) $jsValidator['order[address_metro]'] = 'Укажите �
         </dl>
 
         <dl class='bBuyingLine'>
-
-            <dt>Фамилия получателя*</dt>
+            <dt>Фамилия получателя</dt>
             <dd>
                 <div>
                     <p></p>
@@ -93,7 +91,6 @@ if ($form->hasSubway()) $jsValidator['order[address_metro]'] = 'Укажите �
         </dl>
 
         <dl class='bBuyingLine'>
-
             <dt>E-mail</dt>
             <dd>
                 <div>
@@ -158,7 +155,6 @@ if ($form->hasSubway()) $jsValidator['order[address_metro]'] = 'Укажите �
 
         <dl class='bBuyingLine'>
             <dt>Пожелания и дополнения</dt>
-
             <dd>
                 <div>
                     <p></p>
@@ -183,7 +179,6 @@ if ($form->hasSubway()) $jsValidator['order[address_metro]'] = 'Укажите �
 
         <dl class='bBuyingLine'>
             <dt>Выберите удобный для вас способ*</dt>
-
             <dd id="payTypes">
                 <? foreach ($paymentMethods as $paymentMethod): ?>
                 <div id="payment_method_<?= $paymentMethod->getId() ?>-field">

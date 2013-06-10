@@ -60,55 +60,26 @@
 
 <div id="mixmarket" class="jsanalytics"></div>
 <div id="marketgidOrderSuccess" class="jsanalytics"></div>
-<img src="http://rs.mail.ru/g632.gif" style="width:0;height:0;position:absolute;" alt=""/> 
-<?php $myThingsData = []; ?>
-<?php $fee = null; ?>
-<?php foreach ($orders as $order) {
-        foreach ($order->getProduct() as $product) {
-            if (isset($productsById[$product->getId()]) && $productsById[$product->getId()]->getMainCategory()) {
-                if (isset(\App::config()->myThings['feeByCategory'][$productsById[$product->getId()]->getMainCategory()->getId()])) {
-                    $fee = $fee === null ? \App::config()->myThings['feeByCategory'][$productsById[$product->getId()]->getMainCategory()->getId()] : min($fee, \App::config()->myThings['feeByCategory'][$productsById[$product->getId()]->getMainCategory()->getId()]);
-                }
-            }
-        }
-    }
-    if (null === $fee) {
-        $fee = min(\App::config()->myThings['feeByCategory']);
-    }
-?>
-<?php foreach ($orders as $i => $order):
-    $jsonOrdr = array(
-    'order_article'    => implode(',', array_map(function ($orderProduct) {
-        /** @var $orderProduct \Model\Order\Product\Entity */
-        return $orderProduct->getId();
-    }, $order->getProduct())),
-    'order_id'         => $order->getNumber(),
-    'order_total'      => $order->getSum(),
-    'product_quantity' => implode(',', array_map(function ($orderProduct) {
-        /** @var $orderProduct \Model\Order\Product\Entity */
-        return $orderProduct->getQuantity();
-    }, $order->getProduct())),
-    );
+<img src="http://rs.mail.ru/g632.gif" style="width:0;height:0;position:absolute;" alt=""/>
+    <?php foreach ($orders as $i => $order):
+        $jsonOrdr = array(
+            'order_article'    => implode(',', array_map(function ($orderProduct) {
+                /** @var $orderProduct \Model\Order\Product\Entity */
+                return $orderProduct->getId();
+            }, $order->getProduct())),
+            'order_id'         => $order->getNumber(),
+            'order_total'      => $order->getSum(),
+            'product_quantity' => implode(',', array_map(function ($orderProduct) {
+                /** @var $orderProduct \Model\Order\Product\Entity */
+                return $orderProduct->getQuantity();
+            }, $order->getProduct())),
+        );
+        ?>
 
-    $myThingsData[] = array(
-        'EventType' => 'MyThings.Event.Conversion',
-        'Action' => '9902',
-        'TransactionReference' => $order->getNumber(),
-        'TransactionAmount' => str_replace(',', '.', $order->getSum()), // Полная сумма заказа (дроби через точку
-        'Commission' => $fee === null ? 0 : round($order->getSum() * $fee, 2),
-        'Products' => array_map(function($orderProduct){
-            /** @var $orderProduct \Model\Order\Product\Entity  */
-            return array('id' => $orderProduct->getId(), 'price' => $orderProduct->getPrice(), 'qty' => $orderProduct->getQuantity());
-        }, $order->getProduct()),
-    );
-    ?>
+        <div id="adriverOrder" data-vars="<?= $page->json($jsonOrdr) ?>" class="jsanalytics"></div>
 
-    <div id="adriverOrder" data-vars="<?= $page->json($jsonOrdr) ?>" class="jsanalytics"></div>
+        <!-- Efficient Frontiers -->
+        <img src="http://pixel.everesttech.net/3252/t?ev_Orders=1&amp;ev_Revenue=<?= $order->getSum() ?>&amp;ev_Quickorders=0&amp;ev_Quickrevenue=0&amp;ev_transid=<?= $order->getNumber() ?>" width="1" height="1" />
 
-    <!-- Efficient Frontiers -->
-    <img src="http://pixel.everesttech.net/3252/t?ev_Orders=1&amp;ev_Revenue=<?= $order->getSum() ?>&amp;ev_Quickorders=0&amp;ev_Quickrevenue=0&amp;ev_transid=<?= $order->getNumber() ?>" width="1" height="1" />
-
-<?php endforeach ?>
-
-    <div id="myThingsTracker" data-value="<?= $page->json($myThingsData) ?>" class="jsanalytics"></div>
+    <?php endforeach ?>
 <? endif ?>

@@ -397,15 +397,18 @@ class Action {
         $child = reset($childrenById);
         $productPagersByCategory = [];
         $productCount = 0;
+
         foreach ($repository->getIteratorsByFilter($filterData, $productSorting->dump(), null, $limit) as $productPager) {
             $productPager->setPage(1);
             $productPager->setMaxPerPage($limit);
             $productPagersByCategory[$child->getId()] = $productPager;
-            $child = next($childrenById);
             $productCount += $productPager->count();
+
+            $child = next($childrenById);
+            if (!$child) {
+                break;
+            }
         }
-
-
 
         // video
         $productVideosByProduct = [];

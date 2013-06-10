@@ -230,8 +230,8 @@ $productVideo = reset($productVideos);
         </a>
       </li>
       <? endforeach ?>
-      <? if (count($photo3dList) > 0 || $model3dExternalUrl): ?>
-      <li><a href="#" class="axonometric viewme <? if ($model3dExternalUrl): ?>maybe3d<? endif ?>" ref="360" title="Объемное изображение">Объемное изображение</a></li>
+      <? if (count($photo3dList) > 0 || $model3dExternalUrl || $model3dImg): ?>
+      <li><a href="#" class="axonometric viewme <? if ($model3dExternalUrl): ?>maybe3d<? endif ?>  <? if ($model3dImg): ?>3dimg<? endif ?>" ref="360" title="Объемное изображение">Объемное изображение</a></li>
       <? endif ?>
     </ul>
   </div>
@@ -249,23 +249,32 @@ $productVideo = reset($productVideos);
 <!-- Goods info -->
 <div class="goodsinfo bGood">
   <div class="bGood__eArticle clearfix">
-    <span>Артикул #<span  itemprop="productID"><?= $product->getArticle() ?></span></span>
-    <div class="pt10 pb10">
-      <? $avgStarScore = empty($reviewsData['avg_star_score']) ? 0 : $reviewsData['avg_star_score'] ?>
-      <?= empty($avgStarScore) ? '' : $page->render('product/_starsFive', ['score' => $avgStarScore]) ?>
-      <? if(!empty($avgStarScore)) { ?>
-          <span class="underline" onclick="scrollToId('reviewsSectionHeader')"><?= $reviewsData['num_reviews'] ?> <?= $page->helper->numberChoice($reviewsData['num_reviews'], array('отзыв', 'отзыва', 'отзывов')) ?></span>
-      <? } else { ?>
+    <span>Артикул: <span itemprop="productID"><?= $product->getArticle() ?></span></span>
+  </div>
+
+  <? if (\App::config()->product['reviewEnabled']): ?>
+  <div class="reviewSection reviewSection100 clearfix">
+
+      <div class="reviewSection__link">
+        <div class="reviewSection__star reviewSection100__star">
+          <? $avgStarScore = empty($reviewsData['avg_star_score']) ? 0 : $reviewsData['avg_star_score'] ?>
+          <?= empty($avgStarScore) ? '' : $page->render('product/_starsFive', ['score' => $avgStarScore]) ?>
+        </div>
+
+        <? if (!empty($avgStarScore)) { ?>
+          <span class="border" onclick="scrollToId('reviewsSectionHeader')"><?= $reviewsData['num_reviews'] ?> <?= $page->helper->numberChoice($reviewsData['num_reviews'], array('отзыв', 'отзыва', 'отзывов')) ?></span>
+        <? } else { ?>
           <span>Отзывов нет</span>
-      <? } ?>
-      <div class="hf" id="reviewsProductName"><?= $product->getName() ?></div>
-      <span>(<span class="underline newReviewPopupLink" data-pid="productid">оставить отзыв</span>)</span>
+        <? } ?>
+        <span class="reviewSection__link__write newReviewPopupLink" data-pid="productid">Оставить отзыв</span>
+        <div class="hf" id="reviewsProductName"><?= $product->getName() ?></div>
+      </div>
       <div style="position:fixed; top:40px; left:50%; margin-left:-442px; z-index:1002; display:none; width:700px; height:480px" class="reviewPopup popup clearfix">
         <a class="close" href="#">Закрыть</a>
         <iframe id="rframe" frameborder="0" scrolling="auto" height="480" width="700"></iframe>
       </div>
-    </div>
   </div>
+  <? endif ?>
 
   <div class="font14 pb15" itemprop="description"><?= $product->getTagline() ?></div>
   <div class="clear"></div>
@@ -285,6 +294,8 @@ $productVideo = reset($productVideos);
     <? if ($product->getIsBuyable()): ?>
     <link itemprop="availability" href="http://schema.org/InStock" />
     <div class="pb5"><strong class="orange">Есть в наличии</strong></div>
+    <? elseif (!$product->getIsBuyable() && $product->getState()->getIsShop()): ?>
+    <link itemprop="availability" href="http://schema.org/InStoreOnly" />
     <? else: ?>
     <link itemprop="availability" href="http://schema.org/OutOfStock" />
     <? endif ?>
@@ -481,7 +492,7 @@ $productVideo = reset($productVideos);
 <? if (!empty($description)): ?>
 <!-- Information -->
 <div class="clear"></div>
-<h2 class="bold"><?= $product->getName() ?> - Информация о товаре</h2>
+<h2 class="bold">Информация о товаре</h2>
 <div class="line pb15"></div>
 <ul class="pb10">
   <?= $description ?>
@@ -634,7 +645,7 @@ $productVideo = reset($productVideos);
 <? endif ?>
 
 
-<h2 class="bold"><?= $product->getName() ?> - Характеристики</h2>
+<h2 class="bold">Характеристики</h2>
 <div class="line pb5"></div>
 <div class="descriptionWrapper">
   <? $groupedProperties = $product->getGroupedProperties();?>
@@ -656,7 +667,7 @@ $productVideo = reset($productVideos);
                         <a class="bHint_eLink"><?= $property->getName() ?></a>
                         <div class="bHint_ePopup popup">
                           <div class="close"></div>
-                          <?= $property->getHint() ?>
+                          <div class="bHint-text"><?= $property->getHint() ?></div>
                         </div>
                       </div>
                       <? endif ?>
@@ -668,7 +679,7 @@ $productVideo = reset($productVideos);
                             <a class="bHint_eLink"><?= $property->getStringValue() ?></a>
                             <div class="bHint_ePopup popup">
                                 <div class="close"></div>
-                                <?= $property->getValueHint() ?>
+                                <div class="bHint-text"><?= $property->getValueHint() ?></div>
                             </div>
                         </div>
                         <? endif ?>
@@ -705,7 +716,7 @@ $productVideo = reset($productVideos);
                       <a class="bHint_eLink"><?= $property->getName() ?></a>
                       <div class="bHint_ePopup popup">
                         <div class="close"></div>
-                        <?= $property->getHint() ?>
+                        <div class="bHint-text"><?= $property->getHint() ?></div>
                       </div>
                     </div>
                     <? endif ?>
@@ -717,7 +728,7 @@ $productVideo = reset($productVideos);
                           <a class="bHint_eLink"><?= $property->getStringValue() ?></a>
                           <div class="bHint_ePopup popup">
                               <div class="close"></div>
-                              <?= $property->getValueHint() ?>
+                              <div class="bHint-text"><?= $property->getValueHint() ?></div>
                           </div>
                       </div>
                       <? endif ?>
@@ -732,26 +743,25 @@ $productVideo = reset($productVideos);
 <? // код в условии if(false) нужен для сворачивающихся/разворачивающихся характеристик ?>
 <? // Оля просила не удалять, а закоментировать, на случай если они решат их вернуть ?>
 <? // перед удалением уточнить у Оли не нужен ли он больше ?>
-<?  ?>
 <? if(false && $reviewsPresent && $propertiesShown > 10) { ?>
   <div id="productDescriptionToggle" class="contourButton mb15 button width250">Показать все характеристики</div>
 <? } ?>
 
-<? if($reviewsPresent) { ?>
-  <h2 id="reviewsSectionHeader" class="bold"><?= $product->getName() ?> - Обзоры и отзывы</h2>
+<? if (\App::config()->product['reviewEnabled'] && $reviewsPresent): ?>
+  <h2 id="reviewsSectionHeader" class="bold">Обзоры и отзывы</h2>
   <div class="line pb5"></div>
   <div id="reviewsSummary">
       <?= $page->render('product/_reviewsSummary', ['reviewsData' => $reviewsData, 'reviewsDataPro' => $reviewsDataPro, 'reviewsDataSummary' => $reviewsDataSummary]) ?>
   </div>
 
-  <? if(!empty($reviewsData['review_list'])) { ?>
-    <div id="reviewsWrapper" data-product-id="<?= $product->getId() ?>" data-page-count="<?= $reviewsData['page_count'] ?>" data-container="reviewsUser" data-reviews-type="user">
+  <? if (!empty($reviewsData['review_list'])) { ?>
+    <div id="reviewsWrapper" class="reviewsWrapper" data-product-id="<?= $product->getId() ?>" data-page-count="<?= $reviewsData['page_count'] ?>" data-container="reviewsUser" data-reviews-type="user">
   <? } elseif(!empty($reviewsDataPro['review_list'])) { ?>
     <div id="reviewsWrapper" data-product-id="<?= $product->getId() ?>" data-page-count="<?= $reviewsDataPro['page_count'] ?>" data-container="reviewsPro" data-reviews-type="pro">
   <? } ?>
       <?= $page->render('product/_reviews', ['reviewsData' => $reviewsData, 'reviewsDataPro' => $reviewsDataPro]) ?>
     </div>
-<? } ?>
+<? endif ?>
 
 <? if (!$showAccessoryUpper && count($product->getAccessoryId()) && \App::config()->product['showAccessories']): ?>
     <?= $page->render('product/_slider', ['product' => $product, 'productList' => array_values($accessories), 'totalProducts' => count($product->getAccessoryId()), 'itemsInSlider' => $accessoryCategory ? \App::config()->product['itemsInAccessorySlider'] : \App::config()->product['itemsInSlider'], 'page' => 1, 'title' => 'Аксессуары', 'url' => $page->url('product.accessory', array('productToken' => $product->getToken())), 'gaEvent' => 'Accessorize', 'showCategories' => (bool)$accessoryCategory, 'accessoryCategory' => $accessoryCategory, 'additionalData' => $additionalData]) ?>
@@ -760,8 +770,6 @@ $productVideo = reset($productVideos);
 <? if (!$showRelatedUpper && count($related) && \App::config()->product['showRelated']): ?>
     <?= $page->render('product/_slider', ['product' => $product, 'productList' => array_values($related), 'totalProducts' => count($product->getRelatedId()), 'itemsInSlider' => \App::config()->product['itemsInSlider'], 'page' => 1, 'title' => 'С этим товаром также покупают', 'url' => $page->url('product.related', array('productToken' => $product->getToken())), 'additionalData' => $additionalData]) ?>
 <? endif ?>
-
-<?= $page->tryRender('product/_tag', ['product' => $product]) ?>
 
 <div class="fr ar">
     <? //if ($product->getIsBuyable() || !$product->getState()->getIsShop()): ?>
@@ -804,6 +812,8 @@ $productVideo = reset($productVideos);
 <? endif ?>
 
 <?= $page->render('_breadcrumbs', array('breadcrumbs' => $breadcrumbs, 'class' => 'breadcrumbs-footer')) ?>
+
+<?= $page->tryRender('product/_tag', ['product' => $product]) ?>
 
 <? if (\App::config()->smartengine['push']): ?>
 <div id="product_view-container" data-url="<?= $page->url('smartengine.push.product_view', array('productId' => $product->getId())) ?>"></div>

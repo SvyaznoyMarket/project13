@@ -45,8 +45,10 @@ $productVideo = reset($productVideos);
 	            <img class="mainImg" src="<?= $product->getImageUrl(2) ?>" alt="<?= $page->escape($product->getNameWithCategory()) ?>" title="<?= $page->escape($product->getNameWithCategory()) ?>" width="160" height="160"/>
 	        </a>
 	    </div>
-        
-        <?= $page->render('product/_reviewsStarsCompact', ['product' => $product]) ?>
+
+        <? if (\App::config()->product['reviewEnabled']): ?>
+            <?= $page->render('product/_reviewsStarsCompact', ['product' => $product]) ?>
+        <? endif ?>
 
 	    <h3><a href="<?= $product->getLink() ?>"><?= $product->getName() ?></a></h3>
         <div class="goodsbar mSmallBtns mR">
