@@ -9,6 +9,10 @@ class IndexPage extends \View\DefaultLayout {
         $this->setParam('title', 'Дружить с нами интересно!');
     }
 
+    public function slotBodyDataAttribute() {
+        return 'infopage';
+    }
+
     public function slotContent() {
         return $this->render('friendship/page-index');
     }
