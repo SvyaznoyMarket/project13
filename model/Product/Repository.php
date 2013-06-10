@@ -136,7 +136,7 @@ class Repository {
 
         $client->execute(\App::config()->coreV2['retryTimeout']['short'], \App::config()->coreV2['retryCount']);
 
-        $collection = (new \Controller\Product\ReviewsAction())->addScores($collection);
+        $collection = \RepositoryManager::review()->addScores($collection);
 
         return $collection;
     }
@@ -168,7 +168,7 @@ class Repository {
         
         $client->execute(\App::config()->coreV2['retryTimeout']['short'], \App::config()->coreV2['retryCount']);
 
-        $collection = (new \Controller\Product\ReviewsAction())->addScores($collection);
+        $collection = \RepositoryManager::review()->addScores($collection);
 
         return $collection;
     }
@@ -227,7 +227,7 @@ class Repository {
             $result = array_merge($result, $chunk);
         }
 
-        $result = (new \Controller\Product\ReviewsAction())->addScores($result);
+        $result = \RepositoryManager::review()->addScores($result);
 
         return $result;
     }
@@ -331,7 +331,7 @@ class Repository {
         }
         $this->client->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
-        $collection = (new \Controller\Product\ReviewsAction())->addScores($collection);
+        $collection = \RepositoryManager::review()->addScores($collection);
 
         return new \Iterator\EntityPager($collection, (int)$response['count']);
     }
@@ -372,7 +372,7 @@ class Repository {
         }
         $this->client->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
-        $collection = (new \Controller\Product\ReviewsAction())->addScores($collection);
+        $collection = \RepositoryManager::review()->addScores($collection);
 
         return $collection;
     }
@@ -469,14 +469,14 @@ class Repository {
                 $collection[] = $collectionById[$id];
             }
 
-            $collections[] = $collection;
+            $collections[] = ['collection' => $collection, 'count' => $data['count']];
         }
 
-        $collections = (new \Controller\Product\ReviewsAction())->addScoresGrouped($collections);
+        $collections = \RepositoryManager::review()->addScoresGrouped($collections);
 
         $iterators = [];
-        foreach ($collections as $collection) {
-            $iterators[] = new \Iterator\EntityPager($collection, $data['count']);
+        foreach ($collections as $collectionData) {
+            $iterators[] = new \Iterator\EntityPager($collectionData['collection'], $collectionData['count']);
         }
         */
 
