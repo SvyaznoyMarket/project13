@@ -456,7 +456,6 @@ class Repository {
         });
         $this->client->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
-        /*
         $collections = [];
         foreach ($response as $data) {
             $collection = [];
@@ -477,21 +476,6 @@ class Repository {
         $iterators = [];
         foreach ($collections as $collectionData) {
             $iterators[] = new \Iterator\EntityPager($collectionData['collection'], $collectionData['count']);
-        }
-        */
-
-        $iterators = [];
-        foreach ($response as $data) {
-            $collection = [];
-            foreach ($data['list'] as $id) {
-                if (!isset($collectionById[$id])) {
-                    \App::logger()->error(sprintf('В списке %s отсутствует товар #%s', json_encode($collectionById), $id));
-                    \App::exception()->add(new \Exception(sprintf('В списке %s отсутсвует один или несколько товаров', json_encode($collectionById))));
-                    continue;
-                }
-                $collection[] = $collectionById[$id];
-            }
-            $iterators[] = new \Iterator\EntityPager($collection, $data['count']);
         }
 
         return $iterators;
