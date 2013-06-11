@@ -50,6 +50,8 @@ class Entity {
     private $zipCode;
     /** @var bool */
     private $isSubscribed;
+    /** @var bool */
+    private $isSubscribedViaSms;
     /** @var string */
     private $ipAddress;
     /** @var \DateTime|null */
@@ -83,6 +85,7 @@ class Entity {
         if (array_key_exists('address', $data)) $this->setAddress($data['address']);
         if (array_key_exists('zip_code', $data)) $this->setZipCode($data['zip_code']);
         if (array_key_exists('is_subscribe', $data)) $this->setIsSubscribed($data['is_subscribe']);
+        if (array_key_exists('is_sms_subscribe', $data)) $this->setIsSubscribedViaSms($data['is_sms_subscribe']);
         if (array_key_exists('ip', $data)) $this->setIpAddress($data['ip']);
         if (array_key_exists('last_login', $data)) $this->setLastLoginAt($data['last_login'] ? new \DateTime($data['last_login']) : null);
         if (array_key_exists('added', $data)) $this->setCreatedAt($data['added'] ? new \DateTime($data['added']) : null);
@@ -284,6 +287,20 @@ class Entity {
      */
     public function getIsSubscribed() {
         return $this->isSubscribed;
+    }
+
+    /**
+     * @param boolean $isSubscribedViaSms
+     */
+    public function setIsSubscribedViaSms($isSubscribedViaSms) {
+        $this->isSubscribedViaSms = (bool)$isSubscribedViaSms;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getIsSubscribedViaSms() {
+        return $this->isSubscribedViaSms;
     }
 
     /**

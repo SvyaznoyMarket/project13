@@ -19,11 +19,6 @@ if (!isset($form)) $form = new \View\Refurbished\SubscribeForm();
         	<p>Мы предлагаем уникальную возможность для оптовых партнеров! Enter начинает распродажу уцененных товаров.</p>
 			<p>Всю интересующую Вас информацию можете получить по телефону +7 (915) 494-67-93</p>
  			<p>Подписка! Получай первым информацию о новых товарах и лотах</p>
-            <? if ($error = $form->getError('name')) echo $page->render('_formError', array('error' => $error)) ?>
-            <label class="mInlineBlock mb10">
-            	<span class="mInlineBlock width70">Ваше имя</span>&nbsp;
-            	<input type="text" id="subcriber_name" value="<?= $form->getName() ?>" name="subscriber[name]"/>
-            </label><br />
 
             <? if ($error = $form->getError('email')) echo $page->render('_formError', array('error' => $error)) ?>
             <label class="mInlineBlock mb10">

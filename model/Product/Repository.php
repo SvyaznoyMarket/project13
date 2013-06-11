@@ -47,6 +47,7 @@ class Repository {
 
         $client->execute(\App::config()->coreV2['retryTimeout']['short']);
 
+
         return $entity;
     }
 
@@ -135,6 +136,8 @@ class Repository {
 
         $client->execute(\App::config()->coreV2['retryTimeout']['short'], \App::config()->coreV2['retryCount']);
 
+        $collection = \RepositoryManager::review()->addScores($collection);
+
         return $collection;
     }
 
@@ -164,6 +167,8 @@ class Repository {
         });
         
         $client->execute(\App::config()->coreV2['retryTimeout']['short'], \App::config()->coreV2['retryCount']);
+
+        $collection = \RepositoryManager::review()->addScores($collection);
 
         return $collection;
     }
@@ -221,6 +226,8 @@ class Repository {
         foreach ($collection as $chunk) {
             $result = array_merge($result, $chunk);
         }
+
+        $result = \RepositoryManager::review()->addScores($result);
 
         return $result;
     }
@@ -324,6 +331,8 @@ class Repository {
         }
         $this->client->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
+        $collection = \RepositoryManager::review()->addScores($collection);
+
         return new \Iterator\EntityPager($collection, (int)$response['count']);
     }
 
@@ -362,6 +371,8 @@ class Repository {
             });
         }
         $this->client->execute(\App::config()->coreV2['retryTimeout']['medium']);
+
+        $collection = \RepositoryManager::review()->addScores($collection);
 
         return $collection;
     }
@@ -428,7 +439,7 @@ class Repository {
                 $ids = array_merge($ids, $item['list']);
             }
         });
-        $this->client->execute(\App::config()->coreV2['retryTimeout']['medium']);
+        $this->client->execute(\App::config()->coreV2['retryTimeout']['huge']);
 
         if (!(bool)$response) {
             return [];
@@ -443,10 +454,9 @@ class Repository {
                 $collectionById[$item['id']] = new $entityClass($item);
             }
         });
-        $this->client->execute(\App::config()->coreV2['retryTimeout']['medium']);
+        $this->client->execute(\App::config()->coreV2['retryTimeout']['huge']);
 
-
-        $iterators = [];
+        $collections = [];
         foreach ($response as $data) {
             $collection = [];
             foreach ($data['list'] as $id) {
@@ -458,7 +468,14 @@ class Repository {
                 $collection[] = $collectionById[$id];
             }
 
-            $iterators[] = new \Iterator\EntityPager($collection, $data['count']);
+            $collections[] = ['collection' => $collection, 'count' => $data['count']];
+        }
+
+        $collections = \RepositoryManager::review()->addScoresGrouped($collections);
+
+        $iterators = [];
+        foreach ($collections as $collectionData) {
+            $iterators[] = new \Iterator\EntityPager($collectionData['collection'], $collectionData['count']);
         }
 
         return $iterators;
@@ -470,6 +487,8 @@ class Repository {
      * Возвращает массив с аксессуарами, сгруппированными по категориям
      *
      * @param $product
+     * @param int|null $category
+     * @param int|null $limit
      * @return array
      */
     public static function filterAccessoryId(&$product, $category = null, $limit = null) {

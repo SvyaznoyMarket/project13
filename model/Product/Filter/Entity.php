@@ -9,6 +9,8 @@ class Entity {
     const TYPE_STRING = 4;
     const TYPE_LIST = 5;
     const TYPE_SLIDER = 6;
+    const TYPE_STEP_INTEGER = 'integer';
+    const TYPE_STEP_FLOAT = 'fractional';
 
     /** @var string */
     private $id;
@@ -35,6 +37,9 @@ class Entity {
      */
     private $isInList = true;
 
+    /** @var  string */
+    private $stepType;
+
     public function __construct(array $data = []) {
         if (array_key_exists('filter_id', $data)) $this->setId($data['filter_id']);
         if (array_key_exists('name', $data)) $this->setName($data['name']);
@@ -49,6 +54,7 @@ class Entity {
                 $this->addOption(new Option\Entity($optionData));
             }
         }
+        if (array_key_exists('step', $data)) $this->setStepType($data['step']);
     }
 
     public function toArray() {
@@ -215,5 +221,33 @@ class Entity {
      */
     public function getIsInList() {
         return $this->isInList;
+    }
+
+    /**
+     * @param string $step_type
+     */
+    public function setStepType($stepType)
+    {
+        $this->stepType = $stepType;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStepType()
+    {
+        return $this->stepType;
+    }
+
+    public function getStepByFilter() {
+        switch ($this->getStepType()) {
+            case self::TYPE_STEP_INTEGER : {
+                return ($this->getId() == 'price') ? 100 : 1;
+            }
+            case self::TYPE_STEP_FLOAT : {
+                return 0.1;
+            }
+            default: return false;
+        }
     }
 }

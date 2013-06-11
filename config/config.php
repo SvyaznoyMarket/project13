@@ -55,6 +55,19 @@ $c->corePrivate['retryTimeout'] = [
 ];
 $c->corePrivate['retryCount'] = 3;
 
+$c->reviewsStore['url']       = 'http://reviews.ent3.ru/reviews/';
+$c->reviewsStore['timeout'] = null;
+$c->reviewsStore['retryTimeout'] = [
+    'default' => 1,
+    'tiny'    => 0.1,
+    'short'   => 0.4,
+    'medium'  => 1,
+    'long'    => 1.6,
+    'huge'    => 3,
+    'forever' => 0,
+];
+$c->reviewsStore['retryCount'] = 3;
+
 $c->wordpress['url'] = 'http://content.enter.ru/';
 $c->wordpress['timeout'] = 8;
 $c->wordpress['throwException'] = true;
@@ -84,19 +97,20 @@ $c->analytics['optimizelyEnabled'] = false;
 $c->googleAnalytics['enabled'] = false;
 $c->yandexMetrika['enabled'] = false;
 $c->myThings['feeByCategory'] = [
-    80      => 0.07,  //Мебель
-    224     => 0.04,  //Сделай сам
-    1438    => 0.05,  //Зоотовары
-    320     => 0.07,  //Детские товары
-    443     => 0.07,  //Товары для дома
-    788     => 0.02,  //Электроника
-    1       => 0.03,  //Бытовая техника
-    21      => 0.07,  //Красота и здоровье
-    923     => 0.08,  //Украшения и часы
-    2545    => 0.04,  //Парфюмерия и косметика
-    185     => 0.04,  //Подарки и хобби
-    647     => 0.07,  //Спорт и отдых
-    225     => 0.04,  //Аксессуары для авто
+    80      => 0.105,   //Мебель
+    224     => 0.065,   //Сделай сам
+    1438    => 0.06,    //Зоотовары
+    320     => 0.07,    //Детские товары
+    443     => 0.105,   //Товары для дома
+    788     => 0.05,       //Электроника
+    //1024    => 0.05,    //Электроника => Аксессуары
+    1       => 0.038,   //Бытовая техника
+    21      => 0.064,   //Красота и здоровье
+    923     => 0.123,   //Украшения и часы
+    2545    => 0.061,   //Парфюмерия и косметика
+    185     => 0.098,   //Подарки и хобби
+    647     => 0.114,   //Спорт и отдых
+    225     => 0.065,   //Аксессуары для авто
 ];
 
 $c->partner['cookieName'] = '_partner';
@@ -137,6 +151,7 @@ $c->product['totalCount']            = 30000;
 $c->product['globalListEnabled']     = true;
 $c->product['showAveragePrice']      = false;
 $c->product['allowBuyOnlyInshop']    = false;
+$c->product['reviewEnabled']         = true;
 
 $c->productPhoto['url'] = [
     0 => '/1/1/60/',
@@ -210,7 +225,7 @@ $c->crossss['apiKey'] = '5a0bb0cb92a94f7db8a9bf4bfacdbe39';
 
 $c->warranty['enabled'] = true;
 $c->f1Certificate['enabled'] = true;
-$c->coupon['enabled'] = false;
+$c->coupon['enabled'] = true;
 
 $c->user['corporateRegister'] = true;
 

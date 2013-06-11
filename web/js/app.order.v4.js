@@ -1055,6 +1055,25 @@ $(document).ready(function() {
         button.text('Оформляется...')
         Blocker.block()
 
+
+        var showOrderAlert = function(msg, redirect){
+            var id = 'orderAlert'
+            var block = '<div id="'+id+'" class="popup">' +
+                            '<div class="popupbox width290">' +
+                                '<div class="font18 pb18"> '+msg+'</div>'+
+                            '</div>' +
+                            '<p style="text-align:center"><a href="#" class="closePopup bBigOrangeButton">OK</a></p>'
+                        '</div> '
+            $('body').append( $(block) )
+            $('#'+id).lightbox_me({
+              centered: true,
+              closeSelector: ".closePopup",
+              onClose: function(){
+                    window.location = redirect
+                }
+            })
+        }
+
         // Prepare Data & Send
         sended = true
         var toSend = form.serializeArray()
@@ -1085,6 +1104,7 @@ $(document).ready(function() {
                     // TODO display data.error info
                     return
                 }
+
                 Blocker.bye()
 
                 // analitycs
@@ -1200,8 +1220,16 @@ $(document).ready(function() {
 
                 if (typeof(yaCounter10503055) !== 'undefined')
                     yaCounter10503055.reachGoal('\orders\complete')
-                if( 'redirect' in data.data )
+
+
+                if (data.action.alert !==undefined){
+                    showOrderAlert(data.action.alert.message, data.data.redirect)
+                }
+                else if( 'redirect' in data.data ){
                     window.location = data.data.redirect
+                }
+
+                
             },
             error: function() {
                 button.text('Попробовать еще раз')

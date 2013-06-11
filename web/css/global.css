@@ -124,6 +124,13 @@
   a.underline:hover {
     color: #404040;
   }
+  span.underline {
+    text-decoration: underline;
+    cursor: pointer;
+  }
+  span.underline:hover {
+    color: #404040;
+  }
   .dashedLink {
     text-decoration: none;
     border-bottom: 1px dashed;
@@ -401,6 +408,9 @@
   ul.lh15 li {
     line-height: 1.5em;
   }
+  .width50 {
+    width: 50px;
+  }
   .width70 {
     width: 70px;
   }
@@ -508,6 +518,7 @@
   }
   .column215 {
     float: left;
+    margin-right: -100%;
     position: relative;
     width: 215px;
     z-index: 5;
@@ -790,11 +801,17 @@
     left: -8px;
     position: absolute;
   }
-  .notBuying .toLink {
+  .bold {
+    font-weight: bold;
+  }
+  .hfImportant {
+    display: none!important;
+  }
+  .toLink {
     cursor: pointer;
     text-decoration: none;
   }
-  .notBuying .toLink:hover {
+  .toLink:hover {
     text-decoration: underline;
   }
   .blackPopupVideo.blackPopup {
@@ -2192,6 +2209,7 @@
 @media all {
   .popupRegion {
     width: 820px;
+    overflow: visible;
   }
   .popupRegion.popup {
     padding: 50px;
@@ -4639,15 +4657,12 @@
     background: url('/css/item/img/videoStikerHover.png') no-repeat 0 0;
   }
   .bGood__eArticle {
-    border-bottom: 1px solid #e6e6e6;
     font-size: 12px;
     font-family: Tahoma, sans-serif;
-    margin: 0px 0px 15px;
-    padding: 0px 0px 10px;
+    color: #a6a6a6;
   }
   .bGood__eArticle a,
-  .bGood__eArticle img,
-  .bGood__eArticle span {
+  .bGood__eArticle img {
     vertical-align: middle;
   }
   .bGood__eArticle img {
@@ -4655,9 +4670,6 @@
   }
   .bGood__eArticle img.rating {
     padding: 0px;
-  }
-  .bGood__eArticle span {
-    font-size: 14px;
   }
   .bGood .goodsbarbig {
     margin-bottom: 14px;
@@ -5230,6 +5242,8 @@
   .bHint {
     margin-bottom: -5px;
     position: relative;
+    /*** принудительное форматирование подсказок ***/
+  
   }
   .bHint_eLink {
     background: #ffffff url('/css/item/img/hintQ.gif') no-repeat left center;
@@ -5250,6 +5264,14 @@
     width: 350px;
     z-index: 2;
   }
+  .bHint .bHint-text span {
+    font-size: 13px !important;
+    font-family: Tahoma !important;
+    line-height: 1.2 !important;
+  }
+  .tag-section {
+    margin: 0 0 0 10px;
+  }
   /** **/
   .categoriesmenu {
     float: left;
@@ -5262,9 +5284,15 @@
     padding: 5px 5px 5px 19px;
     cursor: pointer;
   }
+  .categoriesmenuitem:hover {
+    text-decoration: underline;
+  }
   .categoriesmenuitem.active {
     background-color: #e6e6e6;
     cursor: default;
+  }
+  .categoriesmenuitem.active:hover {
+    text-decoration: none;
   }
   .acess-box .bigcarousel {
     float: left;
@@ -5340,6 +5368,11 @@
   }
   .bigcarousel .goodsbar {
     margin-top: 10px;
+  }
+  .product-btn-toggle {
+    border-bottom: 1px dotted;
+    cursor: pointer;
+    display: inline-block;
   }
 }
 /*стили для продуктов f1*/
@@ -5747,6 +5780,179 @@
     display: none;
     float: left;
     width: 100%;
+  }
+}
+/*новые стили отзывов к продукту*/
+@media all {
+  .productReview {
+    margin-bottom: 25px;
+  }
+  .reviewsBar {
+    background-color: #fb9c00;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    height: 15px;
+    margin: 0 0 4px;
+  }
+  .reviewsBarBg {
+    background-color: #edecee;
+  }
+  .reviewsBarCount {
+    text-align: right;
+    padding-right: 5px;
+    font-weight: bold;
+    font-size: 10px;
+    width: 40px;
+    clear: both;
+  }
+  .contourButton {
+    padding: 10px;
+    border: 1px solid #ffa901;
+    text-align: center;
+    text-decoration: underline;
+  }
+  .reviewSection {
+    border-bottom: 1px solid #e6e6e6;
+    margin: 10px 0px 15px;
+    padding: 0px 0px 6px;
+    font-size: 14px;
+  }
+  .reviewSection__star,
+  .reviewSection__link {
+    float: left;
+    color: #a6a6a6;
+  }
+  .reviewSection__link {
+    width: 100%;
+  }
+  .reviewSection__link__write {
+    border-bottom: 1px dotted;
+    cursor: pointer;
+    margin: 0 0 0 3px;
+    color: #000;
+    float: right;
+  }
+  .reviewSection span.border {
+    cursor: pointer;
+    border-bottom: 1px solid;
+    float: left;
+  }
+  .reviewSection__star {
+    margin: 2px 0 0 0px;
+  }
+  .reviewSection100__star {
+    margin-right: 12px;
+  }
+  .reviewSection12 {
+    font-size: 12px;
+    border: none;
+    margin: 0;
+  }
+  .reviewSection12__star {
+    margin: 0;
+  }
+  .reviewSection12__star img:last-child {
+    margin-right: 5px;
+  }
+  .reviewSection12__link {
+    width: auto;
+  }
+  .reviewsWrapper {
+    border-bottom: 1px solid #c7c7c7;
+    margin: 0;
+    padding: 0 0 10px;
+  }
+  .reviewsWrapper .product-btn-toggle {
+    margin: -10px 0 0 165px;
+    font-size: 14px;
+  }
+  .reviewsRatingWrapper {
+    margin: 0 0 10px;
+  }
+  .reviewsRatingWrapper .reviewsRatingCol__title {
+    margin: 0 0 6px 45px;
+  }
+  .reviewsRatingWrapper__colstar {
+    margin: 20px 0 0 20px;
+  }
+  .reviewsRatingWrapper__colstar__row {
+    margin: 0 0 3px;
+  }
+  .reviewsTabs {
+    border-bottom: 1px solid #c7c7c7;
+    margin: 0 0 10px;
+  }
+  .reviewsTabs li {
+    float: left;
+    font-size: 14px;
+    padding: 8px 10px 6px;
+  }
+  .reviewsTabs li span {
+    border-bottom: 1px dotted;
+    cursor: pointer;
+  }
+  .reviewsTabs .last {
+    padding-right: 0;
+    float: right;
+  }
+  .reviewsTabs .active {
+    font-weight: bold;
+    border: 1px solid #c7c7c7;
+    -webkit-border-radius: 5px 5px 0 0;
+    -moz-border-radius: 5px 5px 0 0;
+    border-radius: 5px 5px 0 0;
+    border-bottom: none;
+    background: #fff;
+    margin: 0 0 -1px;
+    padding: 8px 9px 6px;
+  }
+  .reviewsTabs .active span {
+    border-bottom: none;
+  }
+  .comments .commentAuthtor {
+    float: left;
+    width: 120px;
+    margin: 5px 15px 0 0;
+  }
+  .comments .commentAuthtor__name {
+    margin: 6px 0;
+    font-weight: normal;
+  }
+  .comments .commentAuthtor__date {
+    color: #a6a6a6;
+  }
+  .comments .commentWrap {
+    float: left;
+    width: 650px;
+    font-size: 14px;
+  }
+  .comments .commentWrap__text .mark {
+    display: block;
+    float: left;
+    font: bold 24px/24px Tahoma;
+    color: #616161;
+    width: 20px;
+    margin-right: 5px;
+    text-align: right;
+  }
+  .comments .commentWrap__text p,
+  .comments .commentWrap__text .p {
+    float: left;
+    width: 620px;
+    margin: 2px 0 5px;
+  }
+  .comments .commentWrap__plus .mark,
+  .comments .commentWrap__minus .mark {
+    margin-top: -2px;
+  }
+  .comments .commentWrap__quote .mark {
+    margin-top: -2px;
+  }
+  .comments .commentLogo {
+    float: right;
+    width: 120px;
+    text-align: right;
   }
 }
 /*---END---СТИЛИ КАРТОЧКИ ТОВАРА---*/
@@ -9101,5 +9307,139 @@
   }
 }
 /*---END---СТИЛИ ЛИЧНОГО КАБИНЕТА---*/
+/*------СТИЛИ СТРАНИЦЫ ПОДПИСКИ НА РАССЫЛКУ------*/
+@media all {
+  .friendship .pagehead {
+    background: url("/css/subscribe/img/bg_subscribe_friend.gif") no-repeat 50% 50px;
+  }
+  .friendship .pagehead h1 {
+    color: #CE65A4;
+    text-transform: uppercase;
+    padding: 141px 0 0 35px;
+  }
+  .content-section {
+    padding: 0 35px 50px;
+  }
+  .content-section .content-section__text {
+    float: left;
+    font-size: 18px;
+    font-family: 'Enter Type';
+    line-height: 25px;
+    width: 460px;
+  }
+  .content-section .content-section__text a {
+    color: #43C6ED;
+  }
+  .content-section .content-section__text .title {
+    font-size: 24px;
+    text-transform: uppercase;
+    font-family: "Enter";
+  }
+  .content-section .content-section__text .title_blue {
+    color: #43C6ED;
+  }
+  .content-section .content-section__text .title_green {
+    color: #C0D737;
+  }
+  .content-section .content-section__text .title_orange {
+    color: #F69A31;
+  }
+  .content-section__form {
+    display: block;
+    float: right;
+    width: 320px;
+  }
+  .content-section__form .subscribe-form__title {
+    font-size: 24px;
+    text-transform: uppercase;
+    font-family: "Enter";
+    text-align: center;
+    padding: 19px 0 0 26px;
+  }
+  .content-section__form .subscribe-form__email {
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    background: #ffffff;
+    border: 1px solid #c9c9c9;
+    float: left;
+    height: 26px;
+    line-height: 26px;
+    margin: 16px 0;
+    padding: 0 0 0 10px;
+    position: relative;
+    behavior: url('/css/common/PIE.htc');
+    -webkit-appearance: none;
+    width: 308px;
+  }
+  .content-section__form .subscribe-form__email.mError {
+    background: #F28C92;
+  }
+  .content-section__form .subscribe-form__btn {
+    background: #ffc000;
+    background: -moz-linear-gradient(top, #ffc000 0%, #ffaa01 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffc000), color-stop(100%, #ffaa01));
+    background: -webkit-linear-gradient(top, #ffc000 0%, #ffaa01 100%);
+    background: -o-linear-gradient(top, #ffc000 0%, #ffaa01 100%);
+    background: -ms-linear-gradient(top, #ffc000 0%, #ffaa01 100%);
+    background: linear-gradient(to bottom, #ffc000 0%, #ffaa01 100%);
+    filter: progid:dximagetransform.microsoft.gradient(startColorstr='#ffc000', endColorstr='#ffaa01', GradientType=0);
+    border: 1px solid #DB8A00;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    width: 160px;
+    height: 33px;
+    font-family: Tahoma;
+    font-size: 16px;
+    color: #fff;
+    cursor: pointer;
+    margin: 0 0 0 93px;
+    padding: 0;
+    display: block;
+  }
+  .content-section__form .subscribe-form__btn:hover {
+    background: #ffa200;
+    background: -moz-linear-gradient(top, #ffa200 0%, #f79200 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffa200), color-stop(100%, #f79200));
+    background: -webkit-linear-gradient(top, #ffa200 0%, #f79200 100%);
+    background: -o-linear-gradient(top, #ffa200 0%, #f79200 100%);
+    background: -ms-linear-gradient(top, #ffa200 0%, #f79200 100%);
+    background: linear-gradient(to bottom, #ffa200 0%, #f79200 100%);
+    filter: progid:dximagetransform.microsoft.gradient(startColorstr='#ffa200', endColorstr='#f79200', GradientType=0);
+  }
+  .share-section {
+    margin: 80px 0 0;
+    font-size: 21px;
+    font-family: 'Enter Type';
+  }
+  .share-section .share-sectio__action {
+    float: left;
+  }
+  .share-section .share-sectio__action a {
+    color: #44C7EE;
+  }
+  .share-section .share-sectio__link {
+    float: right;
+  }
+  .share-section .share-sectio__link ul {
+    margin: 8px 0 0;
+  }
+  .share-section .share-sectio__link ul li a {
+    background: url("/css/subscribe/img/ico_share.gif") no-repeat 0 0;
+    float: left;
+    width: 16px;
+    height: 16px;
+    margin-left: 8px;
+    display: block;
+  }
+  .share-section .share-sectio__link ul .fb {
+    background-position: -21px 0;
+  }
+  .share-section .share-sectio__link ul .tw {
+    background-position: -42px 0;
+  }
+}
+/*---END---СТИЛИ СТРАНИЦЫ ПОДПИСКИ НА РАССЫЛКУ---*/
 /*------НОВОГОДНЕЕ ОФОРМЛЕНИЕ------*/
 /*---END---НОВОГОДНЕЕ ОФОРМЛЕНИЕ---*/
