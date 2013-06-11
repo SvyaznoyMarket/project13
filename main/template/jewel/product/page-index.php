@@ -145,7 +145,6 @@ $productVideo = reset($productVideos);
   ];
   
 ?>
-
   <div id="maybe3dModelPopup" class="popup" data-value="<?php print $page->json($arrayToMaybe3D); ?>">
     <i class="close" title="Закрыть">Закрыть</i>
     <div id="maybe3dModel">
@@ -171,6 +170,13 @@ $productVideo = reset($productVideos);
     product_3d_big = <?= json_encode($p3d_res_big) ?>;
     <? endif ?>
 </script>
+
+  <div class="bGood__eArticle clearfix">
+    <div class="fr">
+        <div id="testFreak" class="jsanalytics"><a id="tfw-badge" href="http://www.testfreaks.ru"></a></div>
+    </div>
+    <span>Артикул: <span  itemprop="productID"><?= $product->getArticle() ?></span></span>
+  </div>
 
 <div id="productInfo" data-value="<?= $page->json($productData) ?>"></div>
 
@@ -245,16 +251,16 @@ $productVideo = reset($productVideos);
 </div>
 
 <!-- Goods info -->
-<div class="goodsinfo bGood">
-  <div class="bGood__eArticle clearfix">
-    <div class="fr">
-        <div id="testFreak" class="jsanalytics"><a id="tfw-badge" href="http://www.testfreaks.ru"></a></div>
-    </div>
-    <span>Артикул #<span  itemprop="productID"><?= $product->getArticle() ?></span></span>
+<div class="goodsinfo product-desc bGood">
+  <div class="pb15 product-desc__shopinfo clearfix" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+    <div class="product-price <? if ($product->hasSaleLabel()) echo 'red'; ?>"><span class="price" itemprop="price"><?= $page->helper->formatPrice($product->getPrice()) ?></span> <meta itemprop="priceCurrency" content="RUB"><span class="rubl">p</span></div>
+    <? if ($product->getIsBuyable()): ?>
+    <div class="available">Есть в наличии</div>
+    <link itemprop="availability" href="http://schema.org/InStock" />
+    <? else: ?>
+    <link itemprop="availability" href="http://schema.org/OutOfStock" />
+    <? endif ?>
   </div>
-
-  <div class="font14 pb15" itemprop="description"><?= $product->getTagline() ?></div>
-  <div class="clear"></div>
 
   <? if($product->getPriceOld() && !$user->getRegion()->getHasTransportCompany()): ?>
   <div style="text-decoration: line-through; font: normal 18px verdana; letter-spacing: -0.05em; color: #6a6a6a;"><span class="price"><?= $page->helper->formatPrice($product->getPriceOld()) ?></span> <span class="rubl">p</span></div>
@@ -265,82 +271,160 @@ $productVideo = reset($productVideos);
   <div class="clear"></div>
   <div class="clear mOur pt10 <? if ($product->hasSaleLabel()) echo 'red'; ?>">Наша цена</div>
   <? endif ?>
-
-  <div class="fl pb15" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
-    <div class="pb10 <? if ($product->hasSaleLabel()) echo 'red'; ?>"><strong class="font34"><span class="price" itemprop="price"><?= $page->helper->formatPrice($product->getPrice()) ?></span> <meta itemprop="priceCurrency" content="RUB"><span class="rubl">p</span></strong></div>
-    <? if ($product->getIsBuyable()): ?>
-    <link itemprop="availability" href="http://schema.org/InStock" />
-    <div class="pb5"><strong class="orange">Есть в наличии</strong></div>
-    <? else: ?>
-    <link itemprop="availability" href="http://schema.org/OutOfStock" />
-    <? endif ?>
-  </div>
  
-  <div class="fr ar pb15">
-    
-    <div class="goodsbarbig mSmallBtns" ref="<?= $product->getToken() ?>" data-value='<?= $json ?>'>
+  <div class="ar pb15">
+
+    <div class="goodsbarbig product-desc__buy mSmallBtns" ref="<?= $product->getToken() ?>" data-value='<?= $json ?>'>
     <? if ($product->getIsBuyable()): ?>
-    <div class='bCountSet'>
+      <div class='bCountSet ptoduct-count'>
         <? if (!$user->getCart()->hasProduct($product->getId())): ?>
         <a class='bCountSet__eP' href="#">+</a><a class='bCountSet__eM' href="#">-</a>
         <? else: ?>
         <a class='bCountSet__eP disabled' href="#">&nbsp;</a><a class='bCountSet__eM disabled' href="#">&nbsp;</a>
         <? endif ?>
-        <span><?= $user->getCart()->hasProduct($product->getId()) ? $user->getCart()->getQuantityByProduct($product->getId()) : 1 ?> шт.</span>
+        <span><?= $user->getCart()->hasProduct($product->getId()) ? $user->getCart()->getQuantityByProduct($product->getId()) : 1 ?></span>
       </div>
     <?php endif ?>
       <?= $page->render('cart/_button', ['product' => $product, 'disabled' => !$product->getIsBuyable()]) ?>
-    </div>
-    <? if (!$product->getIsBuyable() && $product->getState()->getIsShop()): ?>
+      <? if (!$product->getIsBuyable() && $product->getState()->getIsShop()): ?>
       <div class="notBuying font12">
           <div class="corner"><div></div></div>
           Только в магазинах
       </div>
+      <div class="clear"></div>
     <? endif ?>
+    </div>
+
+
     <? if ($product->getIsBuyable()): ?>
-    <div class="pb5"><strong>
+    <div class="pb5 buy1click"><strong>
       <a href=""
          data-model='<?= $json ?>'
          link-output='<?= $page->url('order.1click', ['product' => $product->getToken()]) ?>'
          link-input='<?= $page->url('product.delivery_1click') ?>'
-         class="red underline order1click-link-new">Купить быстро в 1 клик</a>
+         class="underline order1click-link-new">Купить быстро в 1 клик</a>
     </strong></div>
     <? endif ?>
   </div>
-  <? if (!$product->getIsBuyable() && $product->getState()->getIsShop()): ?>
-  <div class="fr ar pb15">
 
+  <div class="product-desc__text pb15" itemprop="description"><?= $product->getTagline() ?></div>
+
+  <div class="descriptionlist pb15 clearfix">
+      <? foreach ($product->getGroupedProperties() as $group): ?>
+      <? if (!count($group['properties'])) continue ?>
+          <? foreach ($group['properties'] as $property): ?>
+          <? /** @var $property \Model\Product\Property\Entity  */?>
+              <div class="point">
+                  <div class="title"><h3><?= $property->getName() ?></h3>
+                    <? if ($property->getHint()): ?>
+                    <div class="bHint fl">
+                      <a class="bHint_eLink"><?= $property->getName() ?></a>
+                      <div class="bHint_ePopup popup">
+                        <div class="close"></div>
+                        <?= $property->getHint() ?>
+                      </div>
+                    </div>
+                    <? endif ?>
+                  </div>
+                  <div class="description fl">
+                      <span class="fl mr10"><?= $property->getStringValue() ?></span>
+                      <? if ($property->getValueHint()): ?>
+                      <div class="bHint fl">
+                          <a class="bHint_eLink"><?= $property->getStringValue() ?></a>
+                          <div class="bHint_ePopup popup">
+                              <div class="close"></div>
+                              <?= $property->getValueHint() ?>
+                          </div>
+                      </div>
+                      <? endif ?>
+                  </div>
+              </div>
+          <? endforeach ?>
+      <? endforeach ?>
+  </div>
+
+  <? if (!$product->getIsBuyable() && $product->getState()->getIsShop()): ?>
+  <div class="ar pb15">
       <div class="vitrin" id="availableShops" data-shops='<?= $jsonAvailableShops ?>'>
-        <div class="line pb15"></div>
-        <p class="font18 orange">Этот товар вы можете купить только в магазин<?= (count($shopsWithQuantity) == 1) ? 'е' : 'ах' ?></p>
-        <ul id="listAvalShop">
+        <p>Этот товар вы можете купить только в магазин<?= (count($shopsWithQuantity) == 1) ? 'е' : 'ах' ?></p>
+        <ul class="listAvalShop" id="listAvalShop">
           <? $i = 0; foreach ($shopsWithQuantity as $shopWithQuantity): $i++?>
               <li<?= $i > 3 ? ' class="hidden"' : ''?>>
                 <a class="fr dashedLink shopLookAtMap" href="#">Посмотреть на карте</a>
                 <?= '<a class="avalShopAddr" href="'.$page->url('shop.show', ['shopToken' => $shopWithQuantity['shop']->getToken(), 'regionToken' => $user->getRegion()->getToken()]) . '" class="underline">' . $shopWithQuantity['shop']->getName() . '</a>' ?>
-                <strong class="font12 orange db pt10"><?= ($shopWithQuantity['quantity'] > 5 ? 'есть в наличии' : ($shopWithQuantity['quantity'] > 0 ? 'осталось мало' : ($shopWithQuantity['quantityShowroom'] > 0 ? 'есть только на витрине' : ''))) ?></strong>
+                <strong class="font12 db"><?= ($shopWithQuantity['quantity'] > 5 ? 'есть в наличии' : ($shopWithQuantity['quantity'] > 0 ? 'осталось мало' : ($shopWithQuantity['quantityShowroom'] > 0 ? 'есть только на витрине' : ''))) ?></strong>
               </li>
           <? endforeach ?>
         </ul>
         <?php if (count($shopsWithQuantity) > 3): ?>
-          <a id="slideAvalShop" class="orange strong dashedLink font18" href="#">Еще <?= count($shopsWithQuantity) - 3 ?> <?= $page->helper->numberChoice(count($shopsWithQuantity) - 3, ['магазин', 'магазина', 'магазинов']) ?></a>
+          <a id="slideAvalShop" class=" trong dashedLink" href="#">Еще <?= count($shopsWithQuantity) - 3 ?> <?= $page->helper->numberChoice(count($shopsWithQuantity) - 3, ['магазин', 'магазина', 'магазинов']) ?></a>
         <?php endif ?>
       </div>
   </div>
   <? endif ?>
-  <div class="line pb15"></div>
+
+  <? if((bool)$product->getModel() && (bool)$product->getModel()->getProperty()): //модели ?>
+  <!-- Variation -->
+  <div class="product-desc__variation clearfix">
+      <h2>Этот товар с другими параметрами:</h2>
+      <? foreach ($product->getModel()->getProperty() as $property): ?>
+          <? if($property->getIsImage()): ?>
+          <div class="bDropWrap">
+              <h5><?= $property->getName() ?>:</h5>
+
+              <ul class="previewlist">
+                  <? foreach ($property->getOption() as $option): ?>
+                  <li>
+                      <a href="<?= $option->getProduct()->getLink() ?>" <?= ($product->getId() == $option->getProduct()->getId()) ? ' class="current"' : '' ?> title="<?= $page->escape($option->getHumanizedName()) ?>">
+                        <img src="<?= $option->getProduct()->getImageUrl(1) ?>" alt="<?= $option->getHumanizedName() ?>" width="48" height="48"/>
+                      </a>
+                  </li>
+                  <? endforeach ?>
+              </ul>
+          </div>
+
+          <div class="clear"></div>
+          <? else: ?>
+              <?
+                  $productAttribute = $product->getPropertyById($property->getId());
+                  if (!$productAttribute) break;
+              ?>
+              <div class="bDropWrap">
+                  <h5><?= $property->getName() ?>:</h5>
+
+                  <div class="bDropMenu">
+                      <span class="bold"><a href="<?= $product->getLink() ?>"><?= $productAttribute->getStringValue() ?></a></span>
+                      <div>
+                          <span class="bold"><a href="<?= $product->getLink() ?>"><?= $productAttribute->getStringValue() ?></a></span>
+
+                  <? foreach ($property->getOption() as $option):?>
+                      <? if ($option->getValue() == $productAttribute->getValue())continue; ?>
+                      <span>
+                          <a href="<?= $option->getProduct()->getLink() ?>">
+                              <?= $option->getHumanizedName() ?>
+                          </a>
+                      </span>
+                  <? endforeach ?>
+                      </div>
+
+                  </div>
+              </div>
+          <? endif ?>
+      <? endforeach; ?>
+  </div>
+  <!-- /Variation -->
+  <? endif ?>
 
 
   <? if ($product->getIsBuyable()): ?>
 
   <? if ($dataForCredit['creditIsAllowed'] && !$user->getRegion()->getHasTransportCompany()) : ?>
   <div class="creditbox">
-    <div class="creditboxinner">
-      <div class="creditLeft">от <span class="font24"><b class="price"></b> <b class="rubl">p</b></span> в кредит</div>
-      <div class="fr pt5"><label class="bigcheck " for="creditinput"><b></b>Беру в кредит
+    <div class="creditboxinner clearfix">
+      <div class="fl"><label class="bigcheck " for="creditinput"><b></b>Беру в кредит
         <input id="creditinput" type="checkbox" name="creditinput" autocomplete="off"/></label>
       </div>
-      <div class="clear"></div>
+      <div class="creditLeft">от <span><b class="price"></b> P в кредит</div>
     </div>
   </div>
   <? endif; ?>
@@ -384,60 +468,6 @@ $productVideo = reset($productVideos);
 
 <div class="clear"></div>
 
-<? if((bool)$product->getModel() && (bool)$product->getModel()->getProperty()): //модели ?>
-<!-- Variation -->
-<div class="fr width400">
-    <h2>Этот товар с другими параметрами:</h2>
-    <? foreach ($product->getModel()->getProperty() as $property): ?>
-        <? if($property->getIsImage()): ?>
-        <div class="bDropWrap">
-            <h5><?= $property->getName() ?>:</h5>
-
-            <ul class="previewlist">
-                <? foreach ($property->getOption() as $option): ?>
-                <li>
-                    <a href="<?= $option->getProduct()->getLink() ?>" <?= ($product->getId() == $option->getProduct()->getId()) ? ' class="current"' : '' ?> title="<?= $page->escape($option->getHumanizedName()) ?>">
-                    	<img src="<?= $option->getProduct()->getImageUrl(1) ?>" alt="<?= $option->getHumanizedName() ?>" width="48" height="48"/>
-                    </a>
-                </li>
-                <? endforeach ?>
-            </ul>
-        </div>
-
-        <div class="clear"></div>
-        <? else: ?>
-            <?
-                $productAttribute = $product->getPropertyById($property->getId());
-                if (!$productAttribute) break;
-            ?>
-            <div class="bDropWrap">
-                <h5><?= $property->getName() ?>:</h5>
-
-                <div class="bDropMenu">
-                    <span class="bold"><a href="<?= $product->getLink() ?>"><?= $productAttribute->getStringValue() ?></a></span>
-                    <div>
-                        <span class="bold"><a href="<?= $product->getLink() ?>"><?= $productAttribute->getStringValue() ?></a></span>
-
-                <? foreach ($property->getOption() as $option):?>
-                    <? if ($option->getValue() == $productAttribute->getValue())continue; ?>
-                    <span>
-                        <a href="<?= $option->getProduct()->getLink() ?>">
-                            <?= $option->getHumanizedName() ?>
-                        </a>
-                    </span>
-                <? endforeach ?>
-                    </div>
-
-                </div>
-            </div>
-        <? endif ?>
-    <? endforeach; ?>
-</div>
-<!-- /Variation -->
-<? endif ?>
-
-<div class="clear"></div>
-
 <? if ($showAccessoryUpper && (bool)$accessories && \App::config()->product['showAccessories']): ?>
     <div<? if ($accessoryCategory) print ' class="acess-box"' ?>>
       <?= $page->render('jewel/product/_slider', ['product' => $product, 'productList' => array_values($accessories), 'totalProducts' => count($product->getAccessoryId()), 'itemsInSlider' =>  $accessoryCategory ? \App::config()->product['itemsInAccessorySlider'] : \App::config()->product['itemsInSlider'], 'page' => 1, 'title' => 'Аксессуары', 'url' => $page->url('product.accessory', ['productToken' => $product->getToken()]), 'gaEvent' => 'Accessorize', 'showCategories' => (bool)$accessoryCategory, 'accessoryCategory' => $accessoryCategory, 'additionalData' => $additionalData]) ?>
@@ -466,12 +496,13 @@ $productVideo = reset($productVideos);
 <? $description = $product->getDescription(); ?>
 <? if (!empty($description)): ?>
 <!-- Information -->
-<div class="clear"></div>
+<? /*<div class="clear"></div>
 <h2 class="bold"><?= $product->getName() ?> - Информация о товаре</h2>
 <div class="line pb15"></div>
 <ul class="pb10">
   <?= $description ?>
 </ul>
+*/ ?>
 <!-- /Information  -->
 
 <? endif ?>
@@ -619,47 +650,6 @@ $productVideo = reset($productVideos);
 <div class="clear pb25"></div>
 <? endif ?>
 
-<h2 class="bold"><?= $product->getName() ?> - Характеристики</h2>
-<div class="line pb25"></div>
-<div class="descriptionlist">
-
-    <? foreach ($product->getGroupedProperties() as $group): ?>
-    <? if (!count($group['properties'])) continue ?>
-        <div class="pb15"><strong><?= $group['group']->getName() ?></strong></div>
-        <? foreach ($group['properties'] as $property): ?>
-        <? /** @var $property \Model\Product\Property\Entity  */?>
-            <div class="point">
-                <div class="title"><h3><?= $property->getName() ?></h3>
-                  <? if ($property->getHint()): ?>
-                  <div class="bHint fl">
-                    <a class="bHint_eLink"><?= $property->getName() ?></a>
-                    <div class="bHint_ePopup popup">
-                      <div class="close"></div>
-                      <?= $property->getHint() ?>
-                    </div>
-                  </div>
-                  <? endif ?>
-                </div>
-                <div class="description fl">
-                    <span class="fl mr10"><?= $property->getStringValue() ?></span>
-                    <? if ($property->getValueHint()): ?>
-                    <div class="bHint fl">
-                        <a class="bHint_eLink"><?= $property->getStringValue() ?></a>
-                        <div class="bHint_ePopup popup">
-                            <div class="close"></div>
-                            <?= $property->getValueHint() ?>
-                        </div>
-                    </div>
-                    <? endif ?>
-                </div>
-            </div>
-        <? endforeach ?>
-    <? endforeach ?>
-
-</div>
-
-<?= $page->tryrender('jewel/product/_tag', ['product' => $product]) ?>
-
 <? if (!$showAccessoryUpper && count($product->getAccessoryId()) && \App::config()->product['showAccessories']): ?>
     <?= $page->render('jewel/product/_slider', ['product' => $product, 'productList' => array_values($accessories), 'totalProducts' => count($product->getAccessoryId()), 'itemsInSlider' => $accessoryCategory ? \App::config()->product['itemsInAccessorySlider'] : \App::config()->product['itemsInSlider'], 'page' => 1, 'title' => 'Аксессуары', 'url' => $page->url('product.accessory', array('productToken' => $product->getToken())), 'gaEvent' => 'Accessorize', 'showCategories' => (bool)$accessoryCategory, 'accessoryCategory' => $accessoryCategory, 'additionalData' => $additionalData]) ?>
 <? endif ?>
@@ -669,18 +659,18 @@ $productVideo = reset($productVideos);
 <? endif ?>
 
 <div class="line"></div>
-<div class="fr ar">
+<div class="fr product-desc goodBarBottom ar">
     <? //if ($product->getIsBuyable() || !$product->getState()->getIsShop()): ?>
-    <div class="goodsbarbig mSmallBtns" ref="<?= $product->getToken() ?>" data-value='<?= $json ?>'>
+    <div class="goodsbarbig product-desc__buy mSmallBtns" ref="<?= $product->getToken() ?>" data-value='<?= $json ?>'>
 
     <?php if ($product->getIsBuyable()): ?>
-        <div class='bCountSet'>
+        <div class='bCountSet ptoduct-count'>
             <? if (!$user->getCart()->hasProduct($product->getId())): ?>
             <a class='bCountSet__eP' href="#">+</a><a class='bCountSet__eM' href="#">-</a>
             <? else: ?>
             <a class='bCountSet__eP disabled' href="#">&nbsp;</a><a class='bCountSet__eM disabled' href="#">&nbsp;</a>
             <? endif ?>
-            <span><?= $user->getCart()->getQuantityByProduct($product->getId()) ? $user->getCart()->getQuantityByProduct($product->getId()) : 1 ?> шт.</span>
+            <span><?= $user->getCart()->getQuantityByProduct($product->getId()) ? $user->getCart()->getQuantityByProduct($product->getId()) : 1 ?></span>
         </div>
     <?php endif ?>
 
@@ -711,6 +701,8 @@ $productVideo = reset($productVideos);
 
 <?= $page->render('_breadcrumbs', array('breadcrumbs' => $breadcrumbs, 'class' => 'breadcrumbs-footer')) ?>
 
+<?= $page->tryrender('jewel/product/_tag', ['product' => $product]) ?>
+
 <? if (\App::config()->smartengine['push']): ?>
 <div id="product_view-container" data-url="<?= $page->url('smartengine.push.product_view', array('productId' => $product->getId())) ?>"></div>
 <? endif ?>
@@ -722,3 +714,7 @@ $productVideo = reset($productVideos);
     <?= $page->tryrender('jewel/product/partner-counter/_cityads', ['product' => $product]) ?>
     <?= $page->tryrender('jewel/product/partner-counter/_recreative', ['product' => $product]) ?>
 <? endif ?>
+
+</div>
+
+
