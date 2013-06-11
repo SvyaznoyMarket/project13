@@ -9598,12 +9598,15 @@
     width: auto !important;
     margin-left: 15px;
   }
+  .brandSectionPandora__product .product-desc.goodBarBottom .product-desc__buy .countTitle {
+    margin: 5px 15px 0 0px;
+  }
   .brandSectionPandora__product .product-desc.goodBarBottom .product-desc__buy.goodsbarbig.mSmallBtns .cart-add {
     float: right;
     margin-left: 0;
   }
   .brandSectionPandora__product .product-desc.goodBarBottom .product-desc__buy .ptoduct-count {
-    margin: 0 15px 0 0;
+    margin: 0 5px 0 0;
   }
   .brandSectionPandora__product .bCountSet span {
     line-height: 22px;
