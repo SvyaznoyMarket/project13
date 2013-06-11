@@ -16,7 +16,7 @@ $extendedMargin = isset($extendedMargin) ? (bool)$extendedMargin : false;
 ?>
 
 <div class="brandSection brandSectionPandora brandSectionPandora__product">
-    
+
 <div class="pagehead">
 
     <?php echo $page->render('_breadcrumbs', array('breadcrumbs' => $breadcrumbs, 'class' => 'breadcrumbs')) ?>
@@ -32,6 +32,7 @@ $extendedMargin = isset($extendedMargin) ? (bool)$extendedMargin : false;
 
     <div class="clear"></div>
 
+    <div class="category-name">ПОДВЕСКА-ШАРМ PANDORA</div>
     <? if ($title): ?><h1 itemprop="name"><?= $title ?></h1><? endif ?>
 
     <div class="clear<? if ($extendedMargin): ?> pb20<? endif ?>"></div>

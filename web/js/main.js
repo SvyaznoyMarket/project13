@@ -1932,4 +1932,12 @@ function handle_custom_items() {
     function() {
     $(this).removeClass('hover');
   });
+
+  $(".bigcarousel-brand .goodsbox").hover(
+    function() {
+    $(this).addClass('hover');
+  },
+    function() {
+    $(this).removeClass('hover');
+  });
 }
