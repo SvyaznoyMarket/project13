@@ -1931,7 +1931,7 @@ $(document).ready(function(){
 });
 
 function handle_custom_items() {
-  $(".items-section__list .item, .bigcarousel li.item").hover(
+  $(".items-section__list .item").hover(
     function() {
     $(this).addClass('hover')
   },

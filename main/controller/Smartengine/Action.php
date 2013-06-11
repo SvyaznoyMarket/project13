@@ -64,10 +64,11 @@ class Action {
     /**
      * @param \Http\Request $request
      * @param int $productId
+     * @param [] $data
      * @return \Http\Response
      * @throws \Exception
      */
-    public function pullProductAlsoViewed(\Http\Request $request, $productId) {
+    public function pullProductAlsoViewed(\Http\Request $request, $productId, $data = []) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
         try {
@@ -121,7 +122,9 @@ class Action {
                 $additionalData[$product->getId()] = \Kissmetrics\Manager::getProductEvent($product, $i+1, 'Also Viewed');
             }
 
-            return new \Http\Response(\App::templating()->render('product/_slider', [
+            $categoryClass = empty($data['categoryClass']) ? '' : $data['categoryClass'] . '/';
+
+            return new \Http\Response(\App::templating()->render($categoryClass . 'product/_slider', [
                 'page'          => new \View\Layout(),
                 'productList'   => array_values($products),
                 'title'         => 'С этим товаром также смотрят',

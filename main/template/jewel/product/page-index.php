@@ -276,7 +276,7 @@ $productVideo = reset($productVideos);
 
     <div class="goodsbarbig product-desc__buy mSmallBtns" ref="<?= $product->getToken() ?>" data-value='<?= $json ?>'>
     <? if ($product->getIsBuyable()): ?>
-      <div class='bCountSet ptoduct-count'>
+      <div class='bCountSet ptoduct-count' data-category-class="jewel">
         <? if (!$user->getCart()->hasProduct($product->getId())): ?>
         <a class='bCountSet__eP' href="#">+</a><a class='bCountSet__eM' href="#">-</a>
         <? else: ?>
@@ -306,6 +306,22 @@ $productVideo = reset($productVideos);
     </strong></div>
     <? endif ?>
   </div>
+
+  <? if ($product->getIsBuyable()): ?>
+    <? if ($dataForCredit['creditIsAllowed'] && !$user->getRegion()->getHasTransportCompany()) : ?>
+      <div class="creditbox">
+        <div class="creditboxinner clearfix">
+          <div class="fl"><label class="bigcheck " for="creditinput"><b></b>Беру в кредит
+            <input id="creditinput" type="checkbox" name="creditinput" autocomplete="off"/></label>
+          </div>
+          <div class="creditLeft">от <span><b class="price"></b> P в месяц</div>
+        </div>
+      </div>
+    <? endif; ?>
+    <? if ($dataForCredit['creditIsAllowed']) : ?>
+      <input data-model="<?= $page->escape($dataForCredit['creditData']) ?>" id="dc_buy_on_credit_<?= $product->getArticle(); ?>" name="dc_buy_on_credit" type="hidden" />
+    <? endif; ?>
+  <? endif; ?>
 
   <div class="product-desc__text pb15" itemprop="description"><?= $product->getTagline() ?></div>
 
@@ -415,25 +431,7 @@ $productVideo = reset($productVideos);
   <!-- /Variation -->
   <? endif ?>
 
-
-  <? if ($product->getIsBuyable()): ?>
-
-  <? if ($dataForCredit['creditIsAllowed'] && !$user->getRegion()->getHasTransportCompany()) : ?>
-  <div class="creditbox">
-    <div class="creditboxinner clearfix">
-      <div class="fl"><label class="bigcheck " for="creditinput"><b></b>Беру в кредит
-        <input id="creditinput" type="checkbox" name="creditinput" autocomplete="off"/></label>
-      </div>
-      <div class="creditLeft">от <span><b class="price"></b> P в кредит</div>
-    </div>
-  </div>
-  <? endif; ?>
-
-  <? if ($dataForCredit['creditIsAllowed']) : ?>
-    <input data-model="<?= $page->escape($dataForCredit['creditData']) ?>" id="dc_buy_on_credit_<?= $product->getArticle(); ?>" name="dc_buy_on_credit" type="hidden" />
-  <? endif; ?>
-
-  <? elseif ($user->getRegion()->getHasTransportCompany()): ?>
+  <? if (!$product->getIsBuyable() && $user->getRegion()->getHasTransportCompany()): ?>
     <? if (\App::config()->product['globalListEnabled'] && (bool)$product->getNearestCity()): ?>
         <?= $page->render('jewel/product/_nearestCity', ['product' => $product]) ?>
     <? else: ?>
@@ -485,7 +483,7 @@ $productVideo = reset($productVideos);
 
 <?php if (\App::config()->smartengine['pull']): ?>
 <div class="clear"></div>
-<div id="product_user-also_viewed-container" data-url="<?= $page->url('product.recommended', ['productId' => $product->getId()]) ?>" style="margin-top: 20px;"></div>
+<div id="product_user-also_viewed-container" data-url="<?= $page->url('product.recommended.jewel', ['productId' => $product->getId()]) ?>" style="margin-top: 20px;"></div>
 <? endif ?>
 
 <? if (false && \App::config()->smartengine['pull']): ?>
