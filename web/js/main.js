@@ -1185,9 +1185,14 @@ $(document).ready(function(){
 		var from = papa.find('input:first')
 		var to   = papa.find('input:eq(1)')
 		informator.html( printPrice( from.val() ) + ' - ' + printPrice( to.val() ) )
-		var stepf = (/price/.test( from.attr('id') ) ) ?  10 : 1
-		if( maxi - mini <= 3 && stepf != 10 )
-			stepf = 0.1
+		// var stepf = (/price/.test( from.attr('id') ) ) ?  10 : 1
+		var stepf = papa.find('.slider-interval').data('step');
+		if(typeof(stepf)== undefined){
+			var stepf = (/price/.test( from.attr('id') ) ) ?  10 : 1
+		}
+		
+		// if( maxi - mini <= 3 && stepf != 10 )
+		// 	stepf = 0.1
 		sliderRange.slider({
 			range: true,
 			step: stepf,

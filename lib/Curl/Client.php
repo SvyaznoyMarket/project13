@@ -199,7 +199,7 @@ class Client {
                         if (is_callable($callback)) {
                             $callback($decodedResponse, (int)$handler);
                         } else {
-                            throw new \Exception(sprintf('Неверная функция %s', gettype($callback)));
+                            throw new \Exception(sprintf('Неверная функция %s для %s', gettype($callback), $info['url']));
                         }
                     } catch (\Exception $e) {
                         \App::exception()->add($e);

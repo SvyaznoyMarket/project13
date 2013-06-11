@@ -286,6 +286,21 @@ class User {
     }
 
     /**
+     * @param int $productId
+     * @param string $partnerName
+     * @param string $key
+     * @return bool
+     */
+    public function deleteRecommendedProductByParams($productId, $partnerName, $key) {
+        try {
+            unset($this->recommendedProduct[$productId][$partnerName][$key]);
+            return true;
+        } catch (\Exception $e) {
+            return false;
+        }
+    }
+
+    /**
      * @param array $recommendedProduct
      */
     public function setRecommendedProduct($recommendedProduct)
