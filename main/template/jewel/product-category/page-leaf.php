@@ -29,7 +29,6 @@
   <? endif ?>
 
   <? $filters = $productFilter->getFilterCollection() ?>
-
   
   <div id="smalltabs" data-scrollto-passed="<?= $scrollToPassed ?>" class="brand-subnav clearfix">
     <nav>
@@ -42,27 +41,9 @@
     </nav>
   </div>
 
-  <div class="filter-section">
-    <ul class="clearfix">
-      <? foreach($filters as $key => $filter) { ?>
-        <? // не выводим фильтры, запрещенные в json и указанный в качестве табов
-          if((!empty($catalogJson['sub_category_filters_exclude']) && is_array($catalogJson['sub_category_filters_exclude']) &&
-              in_array(mb_strtolower($filter->getName()), array_map(function($filterName){
-                return mb_strtolower($filterName);
-              }, $catalogJson['sub_category_filters_exclude']))) ||
-              (mb_strtolower($catalogJson['sub_category_filter_menu']) == mb_strtolower($filter->getName()))) {
-            continue;
-          } 
-        ?>
-        <? require __DIR__ . '/filter/_dropdown.php' ?>
-      <? } ?>
+  <?= $page->render('jewel/product-category/_filters', ['filters' => $filters, 'catalogJson' => $catalogJson, 'productSorting' => $productSorting, 'productPager' => $productPager, 'productFilter' => $productFilter, 'category' => $category, 'scrollTo' => $scrollTo]) ?>
 
-      <? if ($productSorting && $productPager->count()): ?>
-        <?= $page->render('jewel/product/_sorting', array('productSorting' => $productSorting, 'scrollTo' => $scrollTo)) ?>
-      <? endif ?>
-     </ul>
-  </div>
-
+  <?= $page->render('jewel/product-category/_loading_top') ?>
 
   <?= $page->render('jewel/product/_pager', array(
       'request'                => $request,

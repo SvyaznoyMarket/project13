@@ -297,15 +297,36 @@ class Action extends \Controller\ProductCategory\Action {
         }
 
         // ajax
+        $productFilter = $page->getParam('productFilter');
+        $scrollTo = $page->getParam('scrollTo');
         if ($request->isXmlHttpRequest()) {
-            return new \Http\Response(\App::templating()->render('jewel/product/_list', array(
+            $responseData = ['items' => \App::templating()->render('jewel/product/_list', [
                 'page'                   => new \View\Layout(),
                 'pager'                  => $productPager,
                 'view'                   => $productView,
                 'productVideosByProduct' => $productVideosByProduct,
                 'isAjax'                 => true,
                 'itemsPerRow'            => \App::config()->product['itemsPerRowJewel'],
-            )));
+            ])];
+            // бесконечный скролл
+            if(empty($scrollTo)) {
+                return new \Http\Response($responseData['items']);
+            }
+            // фильтры
+            else {
+                $responseData['filters'] = \App::templating()->render('jewel/product-category/_filters', [
+                    'page'              => new \View\Layout(),
+                    'filters'           => $productFilter->getFilterCollection(),
+                    'catalogJson'       => $page->getParam('catalogJson'),
+                    'productSorting'    => $productSorting,
+                    'productPager'      => $productPager,
+                    'productFilter'     => $productFilter,
+                    'category'          => $page->getParam('category'),
+                    'scrollTo'          => $scrollTo,
+                    'isAjax'            => true,
+                ]);
+                return new \Http\JsonResponse($responseData);
+            }
         }
 
         $page->setParam('productPager', $productPager);

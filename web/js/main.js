@@ -622,7 +622,7 @@ $(document).ready(function(){
 				})
 				dajax.post( dlvr_node.data('calclink'), coreid )
 			}
-	    handle_custom_items();
+	    handle_custom_items()
 		})
 	}
 
@@ -1920,7 +1920,7 @@ $(document).ready(function(){
         });
     }
 
-    handle_custom_items();
+    handle_custom_items()
 
   if($('#smalltabs').length && $('#smalltabs').attr('data-scrollto-passed')) {
   	setTimeout(function(){$('html, body').scrollTo($('#smalltabs'),50)},700);
@@ -1931,9 +1931,9 @@ $(document).ready(function(){
 function handle_custom_items() {
   $(".items-section__list .item").hover(
     function() {
-    $(this).addClass('hover');
+    $(this).addClass('hover')
   },
     function() {
-    $(this).removeClass('hover');
+    $(this).removeClass('hover')
   });
 }
