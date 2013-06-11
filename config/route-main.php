@@ -216,6 +216,11 @@ return [
         'action'  => ['Product\AccessoryAction', 'execute'],
         'require' => ['productToken' => '[\w\d-_]+'],
     ],
+    'product.accessory.jewel' => [
+        'pattern' => '/jewel/products/accessories/{productToken}',
+        'action'  => ['Jewel\Product\AccessoryAction', 'execute'],
+        'require' => ['productToken' => '[\w\d-_]+'],
+    ],
     'product.related' => [
         'pattern' => '/products/related/{productToken}',
         'action'  => ['Product\RelatedAction', 'execute'],

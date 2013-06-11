@@ -282,8 +282,10 @@ $productVideo = reset($productVideos);
         <? else: ?>
         <a class='bCountSet__eP disabled' href="#">&nbsp;</a><a class='bCountSet__eM disabled' href="#">&nbsp;</a>
         <? endif ?>
-        <span><?= $user->getCart()->hasProduct($product->getId()) ? $user->getCart()->getQuantityByProduct($product->getId()) : 1 ?></span>
+        <span><?= $user->getCart()->hasProduct($product->getId()) ? $user->getCart()->getQuantityByProduct($product->getId()) : 1 ?></span> 
       </div>
+
+      <div class="countTitle fl">шт.</div>
     <?php endif ?>
       <?= $page->render('cart/_button', ['product' => $product, 'disabled' => !$product->getIsBuyable()]) ?>
       <? if (!$product->getIsBuyable() && $product->getState()->getIsShop()): ?>
@@ -468,12 +470,12 @@ $productVideo = reset($productVideos);
 
 <? if ($showAccessoryUpper && (bool)$accessories && \App::config()->product['showAccessories']): ?>
     <div<? if ($accessoryCategory) print ' class="acess-box"' ?>>
-      <?= $page->render('jewel/product/_slider', ['product' => $product, 'productList' => array_values($accessories), 'totalProducts' => count($product->getAccessoryId()), 'itemsInSlider' =>  $accessoryCategory ? \App::config()->product['itemsInAccessorySlider'] : \App::config()->product['itemsInSlider'], 'page' => 1, 'title' => 'Аксессуары', 'url' => $page->url('product.accessory', ['productToken' => $product->getToken()]), 'gaEvent' => 'Accessorize', 'showCategories' => (bool)$accessoryCategory, 'accessoryCategory' => $accessoryCategory, 'additionalData' => $additionalData]) ?>
+      <?= $page->render('jewel/product/_slider', ['product' => $product, 'productList' => array_values($accessories), 'totalProducts' => count($product->getAccessoryId()), 'itemsInSlider' =>  $accessoryCategory ? \App::config()->product['itemsInAccessorySlider'] : \App::config()->product['itemsInSlider'], 'page' => 1, 'title' => 'Аксессуары', 'url' => $page->url('product.accessory.jewel', ['productToken' => $product->getToken()]), 'gaEvent' => 'Accessorize', 'showCategories' => (bool)$accessoryCategory, 'accessoryCategory' => $accessoryCategory, 'additionalData' => $additionalData]) ?>
     </div>
 <? endif ?>
 
 <? if ($showRelatedUpper && (bool)$related && \App::config()->product['showRelated']): ?>
-    <?= $page->render('jewel/product/_slider', ['product' => $product, 'productList' => array_values($related), 'totalProducts' => count($product->getRelatedId()), 'itemsInSlider' => \App::config()->product['itemsInSlider'], 'page' => 1, 'title' => 'С этим товаром также покупают', 'url' => $page->url('product.related', ['productToken' => $product->getToken()]), 'additionalData' => $additionalData]) ?>
+    <?= $page->render('jewel/product/_slider', ['product' => $product, 'productList' => array_values($related), 'totalProducts' => count($product->getRelatedId()), 'itemsInSlider' => \App::config()->product['itemsInSlider'], 'page' => 1, 'title' => 'С этим товаром также покупают', 'url' => $page->url('product.related.jewel', ['productToken' => $product->getToken()]), 'additionalData' => $additionalData]) ?>
 <? endif ?>
 
 <? if (false && \App::config()->smartengine['pull']): ?>
@@ -649,11 +651,11 @@ $productVideo = reset($productVideos);
 <? endif ?>
 
 <? if (!$showAccessoryUpper && count($product->getAccessoryId()) && \App::config()->product['showAccessories']): ?>
-    <?= $page->render('jewel/product/_slider', ['product' => $product, 'productList' => array_values($accessories), 'totalProducts' => count($product->getAccessoryId()), 'itemsInSlider' => $accessoryCategory ? \App::config()->product['itemsInAccessorySlider'] : \App::config()->product['itemsInSlider'], 'page' => 1, 'title' => 'Аксессуары', 'url' => $page->url('product.accessory', array('productToken' => $product->getToken())), 'gaEvent' => 'Accessorize', 'showCategories' => (bool)$accessoryCategory, 'accessoryCategory' => $accessoryCategory, 'additionalData' => $additionalData]) ?>
+    <?= $page->render('jewel/product/_slider', ['product' => $product, 'productList' => array_values($accessories), 'totalProducts' => count($product->getAccessoryId()), 'itemsInSlider' => $accessoryCategory ? \App::config()->product['itemsInAccessorySlider'] : \App::config()->product['itemsInSlider'], 'page' => 1, 'title' => 'Аксессуары', 'url' => $page->url('product.accessory.jewel', array('productToken' => $product->getToken())), 'gaEvent' => 'Accessorize', 'showCategories' => (bool)$accessoryCategory, 'accessoryCategory' => $accessoryCategory, 'additionalData' => $additionalData]) ?>
 <? endif ?>
 
 <? if (!$showRelatedUpper && count($product->getRelatedId()) && \App::config()->product['showRelated']): ?>
-    <?= $page->render('jewel/product/_slider', ['product' => $product, 'productList' => array_values($related), 'totalProducts' => count($product->getRelatedId()), 'itemsInSlider' => \App::config()->product['itemsInSlider'], 'page' => 1, 'title' => 'С этим товаром также покупают', 'url' => $page->url('product.related', array('productToken' => $product->getToken())), 'additionalData' => $additionalData]) ?>
+    <?= $page->render('jewel/product/_slider', ['product' => $product, 'productList' => array_values($related), 'totalProducts' => count($product->getRelatedId()), 'itemsInSlider' => \App::config()->product['itemsInSlider'], 'page' => 1, 'title' => 'С этим товаром также покупают', 'url' => $page->url('product.related.jewel', array('productToken' => $product->getToken())), 'additionalData' => $additionalData]) ?>
 <? endif ?>
 
 <div class="line"></div>

@@ -45,7 +45,7 @@ class AccessoryAction {
         $response = " ";
         $begin++;
         foreach ($accessoryProductList as $accessory) {
-            $response .= \App::templating()->render('product/show/_extra_compact', array(
+            $response .= \App::templating()->render('jewel/product/show/_extra_compact', array(
                 'page'   => new \View\Layout(),
                 'product'   => $accessory,
                 'totalPages'   => (int)ceil(count($product->getAccessoryId()) / self::NUM_RELATED_ON_PAGE),

@@ -27,7 +27,7 @@ class RelatedAction {
         $response = " ";
         $begin++;
         foreach ($accessoryProductList as $accessory) {
-            $response .= \App::templating()->render('jewel/product/show/_compact', array(
+            $response .= \App::templating()->render('jewel/product/show/_extra_compact', array(
                 'page'   => new \View\Layout(),
                 'product'   => $accessory,
                 'isHidden'  => false,

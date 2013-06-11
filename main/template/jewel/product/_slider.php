@@ -41,7 +41,7 @@
         </div>
     <?php } ?>
 
-    <div class="bigcarousel">
+    <div class="bigcarousel bigcarousel-brand">
         <?php foreach ($productList as $i => $item): ?>
             <? $currentAdditionalData = isset($additionalData[$item->getId()]) ? $additionalData[$item->getId()] : null ?>
             <?= $page->render('jewel/product/show/_extra_compact', ['product' => $item, 'isHidden' => $i >= $itemsInSlider, 'gaEvent' => $gaEvent, 'totalPages' => $totalPages, 'categoryToken' => '', 'totalProducts' => $totalProducts, 'additionalData' => $currentAdditionalData]) ?>

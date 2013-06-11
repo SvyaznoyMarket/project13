@@ -936,7 +936,7 @@ $(document).ready(function(){
   		var sliderLeft = parseInt($('.popupRegion .regionSlides').css('left'))
   		$('.popupRegion .leftArr').show()
   		$('.popupRegion .regionSlides').animate({'left':sliderLeft-regionSlideW})
-		if ((sliderLeft-(regionSlideW*2)) <= -sliderW){
+			if ((sliderLeft-(regionSlideW*2)) <= -sliderW){
   			$('.popupRegion .rightArr').hide()
   		}
   	})
@@ -1551,6 +1551,7 @@ $(document).ready(function(){
 								grouped_accessories[current_accessory_category]['buffer']++
 							}
 							tr = null
+				  		handle_custom_items()
 						})
 						current++
 						shiftme()
@@ -1937,5 +1938,13 @@ function handle_custom_items() {
   },
     function() {
     $(this).removeClass('hover')
+  });
+
+  $(".bigcarousel-brand .goodsbox").hover(
+    function() {
+    $(this).addClass('hover');
+  },
+    function() {
+    $(this).removeClass('hover');
   });
 }
