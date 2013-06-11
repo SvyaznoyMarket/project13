@@ -53,7 +53,7 @@ $globalTotalText = $category->getGlobalProductCount() . ' ' .$page->helper->numb
                 foreach ($shops as $shop) {
                     print "<option value=".$page->url('product.category.shop', ['categoryPath' => $category->getPath(), 'shopid' => $shop->getId() ]).">{$shop->getAddress()}</a></option>";
                 }
-                print "</select>";
+                print "</select><br>";
                 if ( (bool)$productFilter->getShop() ) print "<a href=". $page->url('product.category.shop', ['categoryPath' => $category->getPath(), 'shopid' => 0]) .">Показать во всех магазинах</a><br>";
             }
         }
