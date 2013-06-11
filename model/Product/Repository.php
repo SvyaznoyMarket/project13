@@ -439,7 +439,7 @@ class Repository {
                 $ids = array_merge($ids, $item['list']);
             }
         });
-        $this->client->execute(\App::config()->coreV2['retryTimeout']['huge'], \App::config()->coreV2['retryCount'] * 2);
+        $this->client->execute(\App::config()->coreV2['retryTimeout']['huge']);
 
         if (!(bool)$response) {
             return [];
@@ -454,7 +454,7 @@ class Repository {
                 $collectionById[$item['id']] = new $entityClass($item);
             }
         });
-        $this->client->execute();
+        $this->client->execute(\App::config()->coreV2['retryTimeout']['huge']);
 
         $collections = [];
         foreach ($response as $data) {
