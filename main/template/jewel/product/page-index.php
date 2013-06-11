@@ -282,8 +282,10 @@ $productVideo = reset($productVideos);
         <? else: ?>
         <a class='bCountSet__eP disabled' href="#">&nbsp;</a><a class='bCountSet__eM disabled' href="#">&nbsp;</a>
         <? endif ?>
-        <span><?= $user->getCart()->hasProduct($product->getId()) ? $user->getCart()->getQuantityByProduct($product->getId()) : 1 ?></span>
+        <span><?= $user->getCart()->hasProduct($product->getId()) ? $user->getCart()->getQuantityByProduct($product->getId()) : 1 ?></span> 
       </div>
+
+      <div class="countTitle fl">шт.</div>
     <?php endif ?>
       <?= $page->render('cart/_button', ['product' => $product, 'disabled' => !$product->getIsBuyable()]) ?>
       <? if (!$product->getIsBuyable() && $product->getState()->getIsShop()): ?>
@@ -424,7 +426,7 @@ $productVideo = reset($productVideos);
       <div class="fl"><label class="bigcheck " for="creditinput"><b></b>Беру в кредит
         <input id="creditinput" type="checkbox" name="creditinput" autocomplete="off"/></label>
       </div>
-      <div class="creditLeft">от <span><b class="price"></b> P в кредит</div>
+      <div class="creditLeft">от <span><b class="price"></b> <b class="rubl">p</b></span> в кредит</div>
     </div>
   </div>
   <? endif; ?>
