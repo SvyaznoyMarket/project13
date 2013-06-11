@@ -42,4 +42,4 @@
   <? $showMoreText = 'Показать другие обзоры...' ?>
 <? } ?>
 
-<div id="getMoreReviewsButton" class="product-btn-toggle getMoreReviews<?= $showMore ? '' : ' hf' ?>"><?= $showMoreText ?></div>
+<div id="getMoreReviewsButton" class="product-btn-toggle getMoreReviews<?= $showMore ? '' : ' hfImportant' ?>"><?= $showMoreText ?></div>
