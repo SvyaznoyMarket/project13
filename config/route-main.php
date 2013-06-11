@@ -142,6 +142,12 @@ return [
         'action'  => ['ProductCategory\Action', 'setInstore'],
         'require' => ['categoryPath' => '[\w\d-_]+\/?[\w\d-_]+'],
     ],
+    // показать товары в конкретном магазине
+    'product.category.shop' => [
+        'pattern' => '/catalog/{categoryPath}/_inshop',
+        'action'  => ['ProductCategory\Action', 'setShopId'],
+        'require' => ['categoryPath' => '[\w\d-_]+\/?[\w\d-_]+'],
+    ],
     // каталог товаров
     'product.category' => [
         'pattern' => '/catalog/{categoryPath}',

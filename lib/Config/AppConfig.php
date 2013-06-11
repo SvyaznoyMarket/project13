@@ -138,6 +138,12 @@ class AppConfig {
         'defaultId'      => null,
         'autoresolve'    => null,
     ];
+    /** @var array */
+    public $shop = [
+        'cookieName'     => null,
+        'cookieLifetime' => null,
+        'autoresolve'    => null,
+    ];
     /** @var bool */
     public $loadMediaHost = null;
     /** @var array */
