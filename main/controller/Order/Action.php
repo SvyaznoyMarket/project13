@@ -765,6 +765,8 @@ class Action {
                             if ($viewedAt = \App::user()->getRecommendedProductByParams($product->getId(), \Smartengine\Client::NAME, 'viewed_at')) {
                                 if ((time() - $viewedAt) <= 30 * 24 * 60 * 60) { //30days
                                     $partners[] = \Smartengine\Client::NAME;
+                                } else {
+                                    \App::user()->deleteRecommendedProductByParams($product->getId(), \Smartengine\Client::NAME, 'viewed_at');
                                 }
                             }
                             $orderData['meta_data'] =  \App::partner()->fabricateCompleteMeta(isset($orderData['meta_data']) ? $orderData['meta_data'] : [], \App::partner()->fabricateMetaByPartners($partners, $product));
