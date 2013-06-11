@@ -7,18 +7,25 @@
  */
 ?>
 
-<article id="categoryData" class="bListing bContent mLine" data-pagetype='product_model_list'>
-	<div class="bLinePart mModelList">
-		<div class="bLinePart__eMainInfo">
-			<a class="bProductListItem__eImgLink jsRedirect" data-screentype='product_set' data-lineid='<?= $line->getId() ?>' href="#"><img class="bProductListItem__eImg" src="<?= $mainProduct ? $mainProduct->getImageUrl(3) : '' ?>" alt="" /></a>
-			<h1 class="bProductListItem__eTitle">Серия <?= $line->getName() ?></h1>
-			<ul class="bProductListItem__eAboutBlock">
-				<li class="bProductListItem__eAboutBlockItem mListDisk">Наборов: <?= count($line->getKitId()) ?></li>
-				<li class="bProductListItem__eAboutBlockItem mListDisk">Предметов: <?= count($line->getProductId()) ?></li>
-			</ul>
-			<a class="bProductListItem__eBtn bButton mOrangeBtn jsRedirect" data-screentype='product_set' data-lineid='<?= $line->getId() ?>' href="#">смотреть наборы</a>
-			<p class="bProductListItem__eF1Block">Доставит и соберет</p>
-		</div>
+<article id="categoryData clearfix" class="bListing bContent mLine" data-pagetype='product_model_list'>
+	<div class="bLinePart mModelList clearfix">
+
+        <div class="bProductListItem clearfix mFl">
+            <a class="bProductListItem__eImgLink jsRedirect" data-screentype='product_set' data-lineid='<?= $line->getId() ?>' href="#"><img class="bProductListItem__eImg" src="<?= $mainProduct ? $mainProduct->getImageUrl(3) : '' ?>" alt="" /></a>
+            <div class="bProductListItem__eDesc">
+                <h2 class="bProductListItem__eTitle">Серия <?= $line->getName() ?></h2>
+
+                <div class="bProductListItem__eBtnBlock">
+                    <ul class="bProductListItem__eAboutBlock">
+                        <li class="bProductListItem__eAboutBlockItem mListDisk">Наборов: <?= count($line->getKitId()) ?></li>
+                        <li class="bProductListItem__eAboutBlockItem mListDisk">Предметов: <?= count($line->getProductId()) ?></li>
+                    </ul>           
+                    <a class="bProductListItem__eBtn bButton mOrangeBtn jsRedirect" data-screentype='product_set' data-productid='<?= $line->getId() ?>' href="#">смотреть наборы</a>
+                    <p class="bProductListItem__eF1Block">Доставит и соберет</p>
+                </div>
+            </div>
+        </div>
+
 		<div class="bLinePart__eParts">
 			<h2 class="bLinePart__ePartsTitle bProductListItem__eTitle">Собрать свой набор</h2>
 			<div class="bGoodItemKit">
