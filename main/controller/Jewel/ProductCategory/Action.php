@@ -300,20 +300,20 @@ class Action extends \Controller\ProductCategory\Action {
         $productFilter = $page->getParam('productFilter');
         $scrollTo = $page->getParam('scrollTo');
         if ($request->isXmlHttpRequest()) {
-            $responseData = ['items' => \App::templating()->render('jewel/product/_list', [
-                'page'                   => new \View\Layout(),
-                'pager'                  => $productPager,
-                'view'                   => $productView,
-                'productVideosByProduct' => $productVideosByProduct,
-                'isAjax'                 => true,
-                'itemsPerRow'            => \App::config()->product['itemsPerRowJewel'],
-            ])];
             // бесконечный скролл
             if(empty($scrollTo)) {
-                return new \Http\Response($responseData['items']);
+                return new \Http\Response(\App::templating()->render('jewel/product/_list', [
+                    'page'                   => new \View\Layout(),
+                    'pager'                  => $productPager,
+                    'view'                   => $productView,
+                    'productVideosByProduct' => $productVideosByProduct,
+                    'isAjax'                 => true,
+                    'itemsPerRow'            => \App::config()->product['itemsPerRowJewel'],
+                ]));
             }
-            // фильтры
+            // фильтры, сортировка и товары с пагинацией
             else {
+                $responseData = [];
                 $responseData['filters'] = \App::templating()->render('jewel/product-category/_filters', [
                     'page'              => new \View\Layout(),
                     'filters'           => $productFilter->getFilterCollection(),
@@ -324,6 +324,18 @@ class Action extends \Controller\ProductCategory\Action {
                     'category'          => $page->getParam('category'),
                     'scrollTo'          => $scrollTo,
                     'isAjax'            => true,
+                ]);
+                $responseData['pager'] = \App::templating()->render('jewel/product/_pager', [
+                    'page'                      => new \View\Layout(),
+                    'request'                   => $request,
+                    'pager'                     => $productPager,
+                    'productFilter'             => $productFilter,
+                    'productSorting'            => $productSorting,
+                    'hasListView'               => true,
+                    'category'                  => $page->getParam('category'),
+                    'productVideosByProduct'    => $productVideosByProduct,
+                    'view'                      => $productView,
+                    'itemsPerRow'               => $page->getParam('itemsPerRow'),
                 ]);
                 return new \Http\JsonResponse($responseData);
             }

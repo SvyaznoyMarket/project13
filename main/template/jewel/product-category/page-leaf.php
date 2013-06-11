@@ -45,16 +45,18 @@
 
   <?= $page->render('jewel/product-category/_loading_top') ?>
 
-  <?= $page->render('jewel/product/_pager', array(
-      'request'                => $request,
-      'pager'                  => $productPager,
-      'productFilter'          => $productFilter,
-      'productSorting'         => $productSorting,
-      'hasListView'            => true,
-      'category'               => $category,
-      'view'                   => $productView,
-      'productVideosByProduct' => $productVideosByProduct,
-      'itemsPerRow'            => $itemsPerRow,
-  )) ?>
+  <div id="pagerWrapper">
+    <?= $page->render('jewel/product/_pager', array(
+        'request'                => $request,
+        'pager'                  => $productPager,
+        'productFilter'          => $productFilter,
+        'productSorting'         => $productSorting,
+        'hasListView'            => true,
+        'category'               => $category,
+        'view'                   => $productView,
+        'productVideosByProduct' => $productVideosByProduct,
+        'itemsPerRow'            => $itemsPerRow,
+    )) ?>
+  </div>
 
 </div>

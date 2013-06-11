@@ -25,7 +25,7 @@ use Model\Product\Filter\Entity as FilterEntity;
 <script type="text/javascript">
   $(document).ready(function(){
     handle_small_tabs()
-    handle_jewel_filters()
+    handle_jewel_filters_pagination()
 
     function handle_small_tabs() {
       $('.brand-subnav__list a').click(function(event){
@@ -33,9 +33,9 @@ use Model\Product\Filter\Entity as FilterEntity;
         $(this).addClass('active')
         $('#ajaxgoods_top').show()
         $.get($(this).attr('href'),{},function(data){
-          $('.items-section__list').html(data.items)
           $('.filter-section').html(data.filters)
-          handle_jewel_filters()
+          $('#pagerWrapper').html(data.pager)
+          handle_jewel_filters_pagination()
           handle_custom_items()
         }).done(function(){
           $('#ajaxgoods_top').hide()
@@ -45,17 +45,14 @@ use Model\Product\Filter\Entity as FilterEntity;
       })
     }
 
-    function handle_jewel_filters() {
-      $('.filter-section a').click(function(event){
+    function handle_jewel_filters_pagination() {
+      $('.filter-section a, .pageslist a, .allpager a').click(function(event){
         $('#ajaxgoods_top').show()
         $.get($(this).attr('href'),{},function(data){
-          $('.items-section__list').html(data.items)
           $('.filter-section').html(data.filters)
-          handle_jewel_filters()
+          $('#pagerWrapper').html(data.pager)
+          handle_jewel_filters_pagination()
           handle_custom_items()
-          console.log('>>>>>>')
-          console.log(data.items)
-          console.log('>>>>>>')
         }).done(function(){
           $('#ajaxgoods_top').hide()
         })
@@ -63,5 +60,6 @@ use Model\Product\Filter\Entity as FilterEntity;
         return false
       })
     }
+    
   })
 </script>
