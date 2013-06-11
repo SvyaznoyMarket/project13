@@ -133,4 +133,17 @@ class Helper {
         return $dateRu;
     }
 
+    /**
+     * @param $value
+     * @return int|string
+     */
+    public function clearZeroValue($value) {
+        $frac = $value - floor($value);
+        if (0 == $frac) {
+            return intval($value);
+        } else {
+            return rtrim($value, '0');
+        }
+    }
+
 }
