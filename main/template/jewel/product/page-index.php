@@ -674,6 +674,8 @@ $productVideo = reset($productVideos);
             <? endif ?>
             <span><?= $user->getCart()->getQuantityByProduct($product->getId()) ? $user->getCart()->getQuantityByProduct($product->getId()) : 1 ?></span>
         </div>
+
+        <div class="countTitle fl">шт.</div>
     <?php endif ?>
 
         <?= $page->render('cart/_button', array('product' => $product, 'disabled' => !$product->getIsBuyable(), 'gaEvent' => 'Add2Basket_vnizu', 'gaTitle' => 'Добавление в корзину')) ?>
