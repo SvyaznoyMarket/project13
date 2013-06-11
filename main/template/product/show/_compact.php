@@ -29,7 +29,6 @@ $productVideo = reset($productVideos);
         height: 35px;
     }
 </style>
-
 <div class="goodsbox"<? if ($isHidden): ?> style="display:none;"<? endif ?> ref="<?= $product->getToken(); ?>">
     <div class="goodsbox__inner" data-url="<?= $product->getLink() ?>" <?php if (count($addInfo)) print 'data-add="'.$page->json($addInfo).'"'; ?>>
     	<div class="photo">
@@ -46,6 +45,11 @@ $productVideo = reset($productVideos);
 	            <img class="mainImg" src="<?= $product->getImageUrl(2) ?>" alt="<?= $page->escape($product->getNameWithCategory()) ?>" title="<?= $page->escape($product->getNameWithCategory()) ?>" width="160" height="160"/>
 	        </a>
 	    </div>
+
+        <? if (\App::config()->product['reviewEnabled']): ?>
+            <?= $page->render('product/_reviewsStarsCompact', ['product' => $product]) ?>
+        <? endif ?>
+
 	    <h3><a href="<?= $product->getLink() ?>"><?= $product->getName() ?></a></h3>
         <div class="goodsbar mSmallBtns mR">
             <?= $page->render('cart/_button', array('product' => $product, 'disabled' => !$product->getIsBuyable())) ?>

@@ -239,6 +239,13 @@ return [
         'action'  => ['Product\UpsellAction', 'execute'],
         'require' => ['productToken' => '[\w\d-_]+'],
     ],
+    //reviews
+    'product.reviews' => [
+        'pattern' => '/product-reviews/{productId}',
+        'require' => ['productId' => '\d+'],
+        'action'  => ['Product\ReviewsAction', 'execute'],
+    ],
+
     'tag' => [
         'pattern' => '/tags/{tagToken}',
         'action'  => ['Tag\Action', 'index'],
@@ -295,6 +302,11 @@ return [
     'old.cart.product.add' => [
         'pattern' => '/cart/add/{productId}/_quantity', // TODO: Убить, когда полностью переедем на dark, переписать js с учетом наличия кол-ва
         'action'  => ['Cart\ProductAction', 'set'],
+    ],
+    // добавление списка товаров в корзину
+    'cart.product.setList' => [
+        'pattern' => '/cart/set-products',
+        'action'  => ['Cart\ProductAction', 'setList'],
     ],
     // удаление услуги из корзины
     'cart.service.delete' => [
@@ -426,6 +438,12 @@ return [
     'user.changePassword' => [
         'pattern' => '/private/password',
         'action'  => ['User\ChangePasswordAction', 'execute'],
+    ],
+
+    // подписка
+    'friendship' => [
+        'pattern' => '/be-friends',
+        'action'  => ['Friendship\Action', 'execute'],
     ],
 
     //подписка на уцененные товары

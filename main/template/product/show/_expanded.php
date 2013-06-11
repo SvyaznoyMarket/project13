@@ -47,6 +47,10 @@ $productVideo = reset($productVideos);
                 <span class="bNGB__eDrop"><a href="<?= $product->getLink() ?>" style="display: none"></a></span>
             </span>
 
+            <? if (\App::config()->product['reviewEnabled']): ?>
+                <?= $page->render('product/_reviewsStarsCompact', ['product' => $product]) ?>
+            <? endif ?>
+
             <div class="pb5 bNGB__eDesc">
                 <?php foreach ($product->getProperty() as $property): ?>
                 <?= $property->getName() ?>: <?= $property->getStringValue() ?><br/>

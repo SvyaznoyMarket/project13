@@ -18,12 +18,10 @@
   }
 }
 .bGood__eArticle {
-  border-bottom: 1px solid @typLightGray;
   font-size:12px;
   font-family:Tahoma, sans-serif;
-  margin: 0px 0px 15px;
-  padding: 0px 0px 10px;
-  a, img, span{
+  color: #a6a6a6;
+  a, img {
     vertical-align: middle;
   }
   img{
@@ -31,9 +29,6 @@
     &.rating {
     padding: 0px;
     }
-  }
-  span {
-    font-size: 14px;
   }
 }
 .bGood .goodsbarbig {
@@ -630,8 +625,17 @@
     width: 350px;
     z-index: 2;
   }
+  /*** принудительное форматирование подсказок ***/
+  .bHint-text span {
+    font-size: 13px !important;
+    font-family: Tahoma !important;
+    line-height: 1.2 !important;
+  }
 }
 
+.tag-section {
+  margin: 0 0 0 10px;
+}
 /** **/
 .categoriesmenu {
   float: left;
@@ -643,11 +647,17 @@
     margin-bottom: 2px;
     padding: 5px 5px 5px 19px;
     cursor: pointer;
+  &:hover {
+    text-decoration: underline;
   }
+}
   .categoriesmenuitem.active {
     background-color: #e6e6e6;
     cursor: default;
+  &:hover {
+    text-decoration: none;
   }
+}
 .acess-box .bigcarousel {
     float: left;
     margin-right: -15px;
@@ -723,3 +733,9 @@
   .bigcarousel .goodsbar {
     margin-top: 10px;
   }
+
+.product-btn-toggle {
+    border-bottom: 1px dotted;
+    cursor: pointer;
+    display: inline-block;
+}

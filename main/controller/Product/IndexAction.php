@@ -64,10 +64,13 @@ class IndexAction {
         // запрашиваем товар по токену
         /** @var $product \Model\Product\Entity */
         $product = null;
-        \RepositoryManager::product()->prepareEntityByToken($productToken, $region, function($data) use (&$product) {
+        $productExpanded = null;
+        $dataR = null;
+        \RepositoryManager::product()->prepareEntityByToken($productToken, $region, function($data) use (&$product, &$productExpanded) {
             $data = reset($data);
 
             if ((bool)$data) {
+                $productExpanded = new \Model\Product\ExpandedEntity($data);
                 $product = new \Model\Product\Entity($data);
             }
         });
@@ -88,6 +91,11 @@ class IndexAction {
         } else {
             $showRelatedUpper = true;
         }
+
+        // получаем отзывы для товара
+        $reviewsData = \RepositoryManager::review()->getReviews($product->getId(), 'user');
+        $reviewsDataPro = \RepositoryManager::review()->getReviews($product->getId(), 'pro');
+        $reviewsDataSummary = \RepositoryManager::review()->prepareReviewsDataSummary($reviewsData, $reviewsDataPro);
 
         // фильтруем аксессуары согласно разрешенным в json категориям
         // и получаем уникальные категории-родители аксессуаров
@@ -199,6 +207,7 @@ class IndexAction {
         $page = new \View\Product\IndexPage();
         $page->setParam('regionsToSelect', $regionsToSelect);
         $page->setParam('product', $product);
+        $page->setParam('productExpanded', $productExpanded);
         $page->setParam('productVideos', $productVideos);
         $page->setParam('title', $product->getName());
         $page->setParam('showRelatedUpper', $showRelatedUpper);
@@ -215,6 +224,9 @@ class IndexAction {
             'Action' => '1010',
             'ProductId' => $product->getId(),
         ));
+        $page->setParam('reviewsData', $reviewsData);
+        $page->setParam('reviewsDataPro', $reviewsDataPro);
+        $page->setParam('reviewsDataSummary', $reviewsDataSummary);
 
         return new \Http\Response($page->show());
     }

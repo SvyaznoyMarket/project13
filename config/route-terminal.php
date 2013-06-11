@@ -62,4 +62,14 @@ return [
         'action'  => ['ProductLine\PartAction', 'execute'],
         'require' => ['lineId' => '[\d]+'],
     ],
+    // результаты поиска по товарам
+    'search.product' => [
+        'pattern' => '/search/product/{searchQuery}',
+        'action'  => ['Search\IndexAction', 'product'],
+    ],
+    // поиск
+    'search' => [
+        'pattern' => '/search/{searchQuery}',
+        'action'  => ['Search\IndexAction', 'execute'],
+    ],
 ];

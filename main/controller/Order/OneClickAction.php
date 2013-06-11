@@ -96,18 +96,6 @@ class OneClickAction {
             }
 
             // мета-теги
-            if (\App::config()->order['enableMetaTag']) {
-                try {
-                    if ($partnerName = \App::partner()->getName()) {
-                        \App::logger()->info(sprintf('Создается 1click заказ от партнера %s', $partnerName), ['order', 'partner']);
-
-                        $data['meta_data'] = \App::partner()->getMeta($partnerName);
-                    }
-                } catch (\Exception $e) {
-                    \App::logger()->error($e, ['order', 'partner']);
-                }
-            }
-
             try {
                 $params = [];
                 if ($userEntity && $userEntity->getToken()) {
@@ -139,19 +127,6 @@ class OneClickAction {
                 'order_id'         => $order->getNumber(),
                 'order_total'      => $order->getSum(),
                 'product_quantity' => implode(',', array_map(function($orderProduct) { /** @var $orderProduct \Model\Order\Product\Entity */ return $orderProduct->getQuantity(); }, $order->getProduct())),
-            );
-
-            $fee = ($product->getMainCategory() && isset(\App::config()->myThings['feeByCategory'][$product->getMainCategory()->getId()])) ? \App::config()->myThings['feeByCategory'][$product->getMainCategory()->getId()] : min(\App::config()->myThings['feeByCategory']);
-            $myThingsOrderData = array(
-                'EventType' => 'MyThings.Event.Conversion',
-                'Action' => '9902',
-                'TransactionReference' => $order->getNumber(),
-                'TransactionAmount' => str_replace(',', '.', $order->getSum()), // Полная сумма заказа (дроби через точку
-                'Commission' => round($order->getSum() * $fee, 2),
-                'Products' => array_map(function($orderProduct){
-                    /** @var $orderProduct \Model\Order\Product\Entity  */
-                    return array('id' => $orderProduct->getId(), 'price' => $orderProduct->getPrice(), 'qty' => $orderProduct->getQuantity());
-                }, $order->getProduct()),
             );
 
             $shop = null;
@@ -190,7 +165,6 @@ class OneClickAction {
                         'page'              => new \View\Layout(),
                         'order'             => $order,
                         'orderData'         => $orderData,
-                        'myThingsOrderData' => $myThingsOrderData,
                         'shop'              => $shop,
                         'orderProduct'      => $orderProduct,
                         'product'           => $product,

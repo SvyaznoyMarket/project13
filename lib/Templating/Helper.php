@@ -64,15 +64,73 @@ class Helper {
     }
 
     /**
-     * @param $value
-     * @return int|string
+     * @param $string
+     * @return string
      */
-    public function clearZeroValue($value) {
-        $frac = $value - floor($value);
-        if (0 == $frac) {
-            return intval($value);
-        } else {
-            return rtrim($value, '0');
+    public function nofollowExternalLinks($stringOriginal) {
+        $stringWrapped = '<div>' . $stringOriginal . '</div>';
+
+        $dom = new \DOMDocument;
+        $this->loadXML($stringWrapped, $dom, $stringOriginal);
+
+        $links = $dom->getElementsByTagName('a');
+        foreach ($links as $link) {
+            if (!preg_match('/enter\.ru/', $link->getAttribute('href')) && $link->getAttribute('rel') != 'nofollow') {
+                $link->setAttribute('rel', 'nofollow');
+            }
+        }
+
+        return $dom->saveHTML();
+    }
+
+    /**
+     * @param string $stringWrapped
+     * @param \DOMDocument $dom
+     * @param string $stringOriginal
+     */
+    private function loadXML(&$stringWrapped, &$dom, $stringOriginal) {
+        try {
+            $dom->loadXML($stringWrapped);
+        } catch (\Exception $e) {
+            if(preg_match('/^.*mismatch: ([^ ]+) line.*$/i', $e->getMessage(), $matches) ||
+                preg_match('/^.*attribute ([^ ]+) in.*$/i', $e->getMessage(), $matches)) {
+                $brokenTag = array_pop($matches);
+                $stringWrapped = preg_replace('/<([^<]*'.$brokenTag.'[^>]*)>/i', htmlentities('<$1>'), $stringWrapped);
+            } else {
+                $stringWrapped = '<div>' . htmlentities($stringOriginal) . '</div>';
+            }
+            $this->loadXML($stringWrapped, $dom, $stringOriginal);
         }
     }
+
+    /**
+     * @param string $date
+     * @return string
+     */
+    public function dateToRu($date) {
+        $monthsEnRu = [
+          'January' => 'января',
+          'February' => 'февраля',
+          'March' => 'марта',
+          'April' => 'апреля',
+          'May' => 'мая',
+          'June' => 'июня',
+          'July' => 'июля',
+          'August' => 'августа',
+          'September' => 'сентября',
+          'October' => 'октября',
+          'November' => 'ноября',
+          'December' => 'декабря',
+        ];
+        $dateEn = (new \DateTime($date))->format('j F Y');
+        $dateRu = $dateEn;
+        foreach ($monthsEnRu as $monthsEn => $monthsRu) {
+          if(preg_match("/$monthsEn/", $dateEn)) {
+            $dateRu = preg_replace("/$monthsEn/", $monthsRu, $dateEn);
+          }
+        }
+
+        return $dateRu;
+    }
+
 }

@@ -19,7 +19,7 @@ class TerminalSorting {
                 'asc'  => ['name' => 'Я-А'],
             ],
         ],
-        'score'   => [
+        'rating'   => [
             'name'      => 'По рейтингу',
             'direction' => [
                 'desc' => ['name' => 'По возрастанию'],
@@ -31,7 +31,7 @@ class TerminalSorting {
     private $activeSort = [];
 
     public function __construct() {
-        $this->setActiveSort('score', 'desc');
+        $this->setActiveSort('rating', 'desc');
     }
 
     /**
@@ -48,7 +48,7 @@ class TerminalSorting {
             throw new \Exception(sprintf('Неправильное направление сортировки %s', $direction));
         }
 
-        $this->activeSort[] = [$name => $direction];
+        $this->activeSort = [$name => $direction];
     }
 
     /**

@@ -1185,9 +1185,14 @@ $(document).ready(function(){
 		var from = papa.find('input:first')
 		var to   = papa.find('input:eq(1)')
 		informator.html( printPrice( from.val() ) + ' - ' + printPrice( to.val() ) )
-		var stepf = (/price/.test( from.attr('id') ) ) ?  10 : 1
-		if( maxi - mini <= 3 && stepf != 10 )
-			stepf = 0.1
+		// var stepf = (/price/.test( from.attr('id') ) ) ?  10 : 1
+		var stepf = papa.find('.slider-interval').data('step');
+		if(typeof(stepf)== undefined){
+			var stepf = (/price/.test( from.attr('id') ) ) ?  10 : 1
+		}
+		
+		// if( maxi - mini <= 3 && stepf != 10 )
+		// 	stepf = 0.1
 		sliderRange.slider({
 			range: true,
 			step: stepf,
@@ -1896,21 +1901,42 @@ $(document).ready(function(){
 		);
 	}
 
-    if ( $('.searchtextClear').length ){
-        $('.searchtextClear').each(function(){
-            if(!$(this).val().length) {
-                $(this).addClass('vh')
-            } else {
-                $(this).removeClass('vh')
-            }
-        });
-        $('.searchtextClear').click(function(){
-            $(this).siblings('.searchtext').val('')
-            $(this).addClass('vh')
-            if($('#searchAutocomplete').length) {
-                $('#searchAutocomplete').html('')
-            }
-        });
-    }
+	if($('.newReviewPopupLink').length) {
+		$('.newReviewPopupLink').click(function(){
+			popupWriteReviewForm($(this).attr('data-pid'), $('#reviewsProductName').html())
+			return false
+		})
+	}
+
+  if ( $('.searchtextClear').length ){
+      $('.searchtextClear').each(function(){
+          if(!$(this).val().length) {
+              $(this).addClass('vh')
+          } else {
+              $(this).removeClass('vh')
+          }
+      });
+      $('.searchtextClear').click(function(){
+          $(this).siblings('.searchtext').val('')
+          $(this).addClass('vh')
+          if($('#searchAutocomplete').length) {
+              $('#searchAutocomplete').html('')
+          }
+      });
+  }
 
 });
+
+function popupWriteReviewForm(pid, name) {
+  var src = "http://reviews.testfreaks.com/reviews/new?client_id=enter.ru&" + $.param({key: pid, name: name});
+  $(".reviewPopup").lightbox_me({onLoad: function() { $("#rframe").attr("src", src) }});
+}
+
+
+
+function scrollToId(scrollToId) {
+   $('html, body').animate({
+       scrollTop: $("#"+scrollToId).offset().top
+   }, 500);
+}
+

@@ -29,6 +29,9 @@
         case \Partner\Counter\Recreative::NAME:
             echo $page->tryRender('order/partner-counter/_recreative-complete', array('orders' => $orders));
             break;
+        case \Partner\Counter\MyThings::NAME:
+            echo $page->tryRender('order/partner-counter/_mythings-complete', array('orders' => $orders, 'productsById' => $productsById));
+            break;
     }
     ?>
 

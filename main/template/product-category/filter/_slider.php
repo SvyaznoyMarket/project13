@@ -25,7 +25,7 @@
         <div class="pb5">
             <input class="slider-from" type="hidden" disabled="disabled" value="<?= $page->helper->clearZeroValue($filter->getMin())?>"/>
             <input class="slider-to" type="hidden" disabled="disabled" value="<?= $page->helper->clearZeroValue($filter->getMax())?>"/>
-            <span class="slider-interval"></span>
+            <span class="slider-interval"  <?php if ($filter->getStepType()): ?>  data-step="<?= $page->json($filter->getStepByFilter()) ?>" <?php endif ?>  ></span>
 
             <?if ($filter->getId() == 'price') { ?>
                 <span class="rubl">p</span>
