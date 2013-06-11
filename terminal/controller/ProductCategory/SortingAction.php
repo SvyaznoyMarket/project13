@@ -19,21 +19,11 @@ class SortingAction {
 
         $productSorting = new \Model\Product\TerminalSorting();
 
-        $sortData = (array)$request->get('sort');
-        if ((bool)$sortData) {
-            foreach ($sortData as $sortItem) {
-                if (!is_array($sortItem)) {
-                    \App::logger()->error(sprintf('Неправильная сортировка %s', $sortItem));
-                    continue;
-                }
-                $sortName = (string)key($sortItem);
-                $sortDirection = (string)current($sortItem);
-                try {
-                    $productSorting->setActiveSort($sortName, $sortDirection);
-                } catch (\Exception $e) {
-                    \App::logger()->error($e);
-                }
-            }
+        list($sortName, $sortDirection) = array_pad(explode('-', (string)$request->get('sort')), 2, '');
+        if ($sortName && $sortDirection) try {
+            $productSorting->setActiveSort($sortName, $sortDirection);
+        } catch (\Exception $e) {
+            \App::logger()->error($e);
         }
 
         $page = new \Terminal\View\ProductCategory\SortingPage();
