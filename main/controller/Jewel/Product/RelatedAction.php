@@ -1,6 +1,6 @@
 <?php
 
-namespace Controller\Product;
+namespace Controller\Jewel\Product;
 
 class RelatedAction {
 
@@ -27,7 +27,7 @@ class RelatedAction {
         $response = " ";
         $begin++;
         foreach ($accessoryProductList as $accessory) {
-            $response .= \App::templating()->render('product/show/_extra_compact', array(
+            $response .= \App::templating()->render('jewel/product/show/_compact', array(
                 'page'   => new \View\Layout(),
                 'product'   => $accessory,
                 'isHidden'  => false,

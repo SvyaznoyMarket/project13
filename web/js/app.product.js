@@ -234,6 +234,7 @@ $(document).ready(function() {
 	
 	/* Product Counter */
 	if( $('#page .bCountSet').length ) {
+		var category_class = $('.bCountSet').attr('data-category-class')
 		var np = $('.goodsbarbig .bCountSet')
 		var l1 = np.parent().find('.link1')
 		var l1href = l1.attr('href')
@@ -257,7 +258,12 @@ $(document).ready(function() {
 				if( $('.bCountSet__eP', np).hasClass('disabled') )
 					$('.bCountSet__eP', np).removeClass('disabled')
 			}
-			np.find('span').text( hm + '  шт.')
+
+			if(category_class == undefined) {
+				np.find('span').text( hm + '  шт.')
+			} else {
+				np.find('span').text( hm )
+			}
 			l1.attr('href', l1href + '/' + hm )
 			l1cl.attr('href', l1clhref + '&quantity' + hm )
 		})

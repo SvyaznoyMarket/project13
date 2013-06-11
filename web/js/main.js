@@ -1690,6 +1690,8 @@ $(document).ready(function(){
                 timeout: 20000
             }).success(function(result) {
                     container.html(result)
+                    console.log(111)
+								    handle_custom_items()
                     container.fadeIn()      
                     var tmpline = new cardsCarousel ({
                             'prev'  : container.find('.back'),
@@ -1920,7 +1922,7 @@ $(document).ready(function(){
         });
     }
 
-    handle_custom_items();
+    handle_custom_items()
 
   if($('#smalltabs').length && $('#smalltabs').attr('data-scrollto-passed')) {
   	setTimeout(function(){$('html, body').scrollTo($('#smalltabs'),50)},700);
@@ -1929,11 +1931,11 @@ $(document).ready(function(){
 });
 
 function handle_custom_items() {
-  $(".items-section__list .item").hover(
+  $(".items-section__list .item, .bigcarousel li.item").hover(
     function() {
-    $(this).addClass('hover');
+    $(this).addClass('hover')
   },
     function() {
-    $(this).removeClass('hover');
+    $(this).removeClass('hover')
   });
 }

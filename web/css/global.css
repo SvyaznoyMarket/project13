@@ -9145,6 +9145,9 @@
     position: relative;
     z-index: 1;
   }
+  .items-section .items-section__list {
+    border-top: 1px solid #f9f9f9;
+  }
   .items-section .items-section__list li {
     width: 218px;
     border: 1px solid #f9f9f9;
@@ -9152,6 +9155,8 @@
     height: 218px;
     padding: 10px;
     position: relative;
+    border-top: 1px solid #ffffff;
+    border-left: 1px solid #ffffff;
   }
   .items-section .items-section__list li .item-buy {
     position: absolute;
@@ -9193,6 +9198,61 @@
     opacity: 1;
   }
   .items-section .items-section__list .hover .item-price {
+    left: 10px;
+  }
+  .bigcarousel {
+    border-top: 1px solid #f9f9f9;
+  }
+  .bigcarousel li {
+    width: 168px;
+    border: 1px solid #f9f9f9;
+    float: left;
+    height: 238px;
+    padding: 5px;
+    position: relative;
+    border-top: 1px solid #ffffff;
+    border-left: 1px solid #ffffff;
+  }
+  .bigcarousel li .item-buy {
+    position: absolute;
+    bottom: 0px;
+    right: 10px;
+    background: url("/css/pandoraCatalog/img/btn_buy.gif") no-repeat 0 0;
+    opacity: 0;
+    width: 57px;
+    display: block;
+    height: 23px;
+    -webkit-transition: opacity 0.2s ease-in-out;
+    -moz-transition: opacity 0.2s ease-in-out;
+    transition: opacity 0.2s ease-in-out;
+  }
+  .bigcarousel li .item-price {
+    position: absolute;
+    bottom: 10px;
+    left: 60px;
+    -webkit-transition: left 0.3s ease-in-out;
+    -moz-transition: left 0.3s ease-in-out;
+    transition: left 0.3s ease-in-out;
+  }
+  .bigcarousel li .item-name {
+    opacity: 0;
+    -webkit-transition: opacity 0.2s ease-in-out;
+    -moz-transition: opacity 0.2s ease-in-out;
+    transition: opacity 0.2s ease-in-out;
+  }
+  .bigcarousel li .item-img {
+    text-align: center;
+  }
+  .bigcarousel .hover {
+    border: 1px solid #AAAAAA;
+  }
+  .bigcarousel .hover .item-name {
+    opacity: 1;
+  }
+  .bigcarousel .hover .item-buy {
+    opacity: 1;
+  }
+  .bigcarousel .hover .item-price {
     left: 10px;
   }
   .banner-categories {
@@ -9319,6 +9379,272 @@
   }
   .brandSectionPandora__catalog .allpager {
     margin-right: 20px;
+  }
+  .brandSectionPandora__catalog .goodsbox {
+    padding: 0;
+  }
+}
+/*---END---СТИЛИ БРЕНД РАЗДЕЛА PANDORA---*/
+/*------СТИЛИ БРЕНД РАЗДЕЛА PANDORA - КАРТОЧКА ТОВАРА------*/
+@media all {
+  .brandSectionPandora__product {
+    padding: 0 10px 0 20px;
+    width: 930px;
+  }
+  .brandSectionPandora__product .pagehead {
+    padding-bottom: 5px;
+  }
+  .brandSectionPandora__product .pagehead h1 {
+    font-weight: normal;
+    font-family: 'Enter Type';
+    text-transform: uppercase;
+  }
+  .brandSectionPandora__product .goodsphoto {
+    width: 590px;
+  }
+  .brandSectionPandora__product .goodsinfo {
+    padding: 0 0px 0 10px;
+    width: 329px;
+    border-left: 1px solid #ededed;
+    margin: -18px 0 0;
+  }
+  .brandSectionPandora__product .bGood__eArticle {
+    border-bottom: none;
+    font-size: 10px;
+    margin: 0;
+    padding: 0;
+    color: #6D6D6D;
+  }
+  .brandSectionPandora__product .bGood__eArticle span {
+    font-size: 10px;
+  }
+  .brandSectionPandora__product .descriptionlist {
+    color: #6E6E6E;
+  }
+  .brandSectionPandora__product .descriptionlist h3 {
+    background: url("/css/pandoraProduct/img/h3_corner.gif") no-repeat 0 4px;
+    padding-left: 7px;
+  }
+  .brandSectionPandora__product .descriptionlist .point .title {
+    border-bottom: none;
+    width: 150px;
+  }
+  .brandSectionPandora__product .descriptionlist .point .description {
+    padding-left: 0;
+    width: 175px;
+  }
+  .brandSectionPandora__product .descriptionlist .point {
+    padding-bottom: 5px;
+  }
+  .brandSectionPandora__product .buy1click {
+    margin-right: 43px;
+  }
+  .brandSectionPandora__product .rubrictitle h3 {
+    font-weight: normal;
+    font-family: 'Enter Type';
+    text-transform: uppercase;
+  }
+  .brandSectionPandora__product .product-desc__buy {
+    width: 330px !important;
+    margin-bottom: 5px;
+  }
+  .brandSectionPandora__product .product-desc__buy .ptoduct-count {
+    position: relative;
+    left: 0;
+    float: left;
+    border-radius: 0;
+    border: none;
+    width: 86px;
+    margin-right: 76px;
+  }
+  .brandSectionPandora__product .product-desc__buy .ptoduct-count .bCountSet__eM,
+  .brandSectionPandora__product .product-desc__buy .ptoduct-count .bCountSet__eP {
+    background: #e5e5e5;
+    background: -moz-linear-gradient(top, #ffffff 0%, #e3e3e3 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffffff), color-stop(100%, #e3e3e3));
+    background: -webkit-linear-gradient(top, #ffffff 0%, #e3e3e3 100%);
+    background: -o-linear-gradient(top, #ffffff 0%, #e3e3e3 100%);
+    background: -ms-linear-gradient(top, #ffffff 0%, #e3e3e3 100%);
+    background: linear-gradient(to bottom, #ffffff 0%, #e3e3e3 100%);
+    filter: progid:dximagetransform.microsoft.gradient(startColorstr='#ffffff', endColorstr='#e3e3e3', GradientType=0);
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    width: 18px;
+    border: 1px solid #c7c7c7;
+    line-height: 22px;
+    color: #000;
+    font-weight: bold;
+  }
+  .brandSectionPandora__product .product-desc__buy.goodsbarbig.mSmallBtns .cart-add {
+    float: left;
+    display: block;
+    background: url("/css/pandoraProduct/img/btn-buy.gif") no-repeat;
+    width: 125px;
+    height: 29px;
+    margin: -3px 0 0 0;
+  }
+  .brandSectionPandora__product .product-desc__buy.goodsbarbig.mSmallBtns a.link1.disabled {
+    opacity: 0.1;
+    float: right;
+  }
+  .brandSectionPandora__product .product-desc .notBuying {
+    padding: 9px;
+    margin-top: -5px;
+    float: right;
+    margin-right: 15px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    width: 110px;
+  }
+  .brandSectionPandora__product .product-desc .notBuying .corner {
+    border-left: 9px solid #e6e6e6;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    top: 6px;
+    right: -19px;
+  }
+  .brandSectionPandora__product .product-desc .notBuying .corner div {
+    border-left: 7px solid #ffffff;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    bottom: -8px;
+    left: -9px;
+  }
+  .brandSectionPandora__product .product-desc.goodBarBottom .product-desc__buy {
+    margin-bottom: 5px;
+    width: auto !important;
+    margin-left: 15px;
+  }
+  .brandSectionPandora__product .product-desc.goodBarBottom .product-desc__buy.goodsbarbig.mSmallBtns .cart-add {
+    float: right;
+    margin-left: 0;
+  }
+  .brandSectionPandora__product .product-desc.goodBarBottom .product-desc__buy .ptoduct-count {
+    margin: 0 15px 0 0;
+  }
+  .brandSectionPandora__product .bCountSet span {
+    line-height: 22px;
+    border: 1px solid #c7c7c7;
+    text-align: center;
+    display: block;
+    float: left;
+    color: #000;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    width: 32px;
+    margin-left: 4px;
+  }
+  .brandSectionPandora__product .mBuyButtonBottom {
+    padding: 16px 0 0px 0px;
+  }
+  .brandSectionPandora__product .mBuyButtonBottom h2 {
+    font-weight: normal;
+    font-family: 'Enter Type';
+    text-transform: uppercase;
+    font-size: 16px;
+    padding: 10px 0 0;
+  }
+  .brandSectionPandora__product .product-desc {
+    padding: 0 0 0 5px;
+    font-size: 12px;
+  }
+  .brandSectionPandora__product .product-desc .creditbox {
+    border: none;
+    background: #E6E8E7;
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    border-radius: 0px;
+  }
+  .brandSectionPandora__product .product-desc .creditbox .creditboxinner {
+    border-bottom: none;
+    padding: 6px;
+  }
+  .brandSectionPandora__product .product-desc .creditbox .creditboxinner .creditLeft {
+    margin-left: 50px;
+  }
+  .brandSectionPandora__product .product-desc .creditbox .bigcheck {
+    font-size: 12px;
+    line-height: 14px;
+    color: #6E6E72;
+  }
+  .brandSectionPandora__product .product-desc .creditbox .bigcheck b {
+    background: #fff;
+    height: 13px;
+    margin: 0px 7px 0px 0px;
+    width: 13px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    border: 1px solid #ccc;
+  }
+  .brandSectionPandora__product .product-desc .creditbox .bigcheck.checked {
+    color: #000 !important;
+  }
+  .brandSectionPandora__product .product-desc .creditbox .bigcheck.checked b {
+    background: #000;
+  }
+  .brandSectionPandora__product .product-desc .product-price {
+    font-size: 34px;
+    float: left;
+    font-weight: bold;
+    width: 170px;
+    padding-left: 5px;
+  }
+  .brandSectionPandora__product .product-desc__variation {
+    margin: 15px 0 0;
+  }
+  .brandSectionPandora__product .product-desc__variation h2 {
+    font-weight: normal;
+    font-family: 'Enter Type';
+    text-transform: uppercase;
+    font-size: 15px;
+  }
+  .brandSectionPandora__product .product-desc__variation .bDropWrap h5 {
+    color: #6E6E6E;
+    margin: 0px 10px 3px 0;
+    font-weight: normal;
+    float: left;
+    line-height: 29px;
+  }
+  .brandSectionPandora__product .product-desc .available {
+    float: left;
+    padding: 13px 0 0;
+    font-size: 14px;
+  }
+  .brandSectionPandora__product .product-desc__text {
+    font-size: 13px;
+    color: #6E6E6E;
+    line-height: 1.4;
+  }
+  .brandSectionPandora__product .product-desc .vitrin {
+    width: auto;
+  }
+  .brandSectionPandora__product .product-desc .vitrin p {
+    font-weight: normal;
+    font-family: 'Enter Type';
+    text-transform: uppercase;
+    font-size: 15px;
+    color: #000;
+  }
+  .brandSectionPandora__product .product-desc .vitrin .listAvalShop li {
+    color: #6E6E6E;
+    padding: 0 0 0 30px;
+    margin: 10px 0 15px;
+    background: url("/css/pandoraProduct/img/shop.png") no-repeat 0 3px;
+    font-size: 12px;
+  }
+  .brandSectionPandora__product .product-desc .vitrin .listAvalShop li .shopLookAtMap {
+    font-size: 11px;
+  }
+  .brandSectionPandora__product .product-desc .vitrin .listAvalShop li .avalShopAddr {
+    display: inline-block;
+    width: 165px;
+  }
+  .brandSectionPandora__product .product-desc .vitrin .listAvalShop li a {
+    color: #6E6E6E;
   }
 }
 /*---END---СТИЛИ БРЕНД РАЗДЕЛА PANDORA---*/

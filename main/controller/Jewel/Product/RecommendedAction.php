@@ -1,6 +1,6 @@
 <?php
 
-namespace Controller\Product;
+namespace Controller\Jewel\Product;
 
 class RecommendedAction {
     /**
@@ -15,6 +15,7 @@ class RecommendedAction {
             (new \Controller\Crossss\ProductAction())->recommended($request, $productId);
         }
 
-        return (new \Controller\Smartengine\Action())->pullProductAlsoViewed($request, $productId);
+        return (new \Controller\Smartengine\Action())
+            ->pullProductAlsoViewed($request, $productId, ['categoryClass' => 'jewel']);
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Controller\Product;
+namespace Controller\Jewel\Product;
 
 class AccessoryAction {
 
