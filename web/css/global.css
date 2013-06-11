@@ -837,6 +837,14 @@
     z-index: 1;
     background: url("/css/common/img/bg_btn_closer.png") no-repeat 0px 0;
   }
+  .mBoldh3 {
+    font-size: 14px;
+    font-weight: bold;
+    height: 17px;
+  }
+  .mb35 {
+    margin-bottom: 35px;
+  }
 }
 @media all {
   .bGrayButton {
