@@ -15,6 +15,8 @@ $hasSeparateLine = isset($hasSeparateLine) ? (bool)$hasSeparateLine : false;
 $extendedMargin = isset($extendedMargin) ? (bool)$extendedMargin : false;
 ?>
 
+<div class="brandSection brandSectionPandora brandSectionPandora__product">
+    
 <div class="pagehead">
 
     <?php echo $page->render('_breadcrumbs', array('breadcrumbs' => $breadcrumbs, 'class' => 'breadcrumbs')) ?>

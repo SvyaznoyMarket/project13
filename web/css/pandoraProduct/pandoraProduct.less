@@ -1,13 +1,22 @@
 .brandSectionPandora__product {
   padding: 0 10px 0 20px;
   width: 930px;
+  .pagehead {
+    padding-bottom: 5px;
+    h1 {
+      font-weight: normal;
+      font-family: 'Enter Type';
+      text-transform: uppercase;
+    }
+  } 
   .goodsphoto {
     width: 590px;
     }
   .goodsinfo {
-    padding: 10px 0px 0 10px;
+    padding: 0 0px 0 10px;
     width: 329px;
     border-left: 1px solid #ededed;
+    margin: -18px 0 0;
   }
   .bGood__eArticle {
     border-bottom: none;
@@ -45,41 +54,6 @@
     font-family: 'Enter Type';
     text-transform: uppercase;
   }
-}
-
-.product-desc {
-  padding: 0 0 0 5px;
-  font-size: 12px;
-  .product-price {
-    font-size: 34px;
-    float: left;
-    font-weight: bold;
-    width: 170px;
-    padding-left: 5px;
-  }
-  .available {
-    float: left;
-    padding: 13px 0 0;
-    font-size: 14px;
-  }
-  .bCountSet span {
-    line-height: 22px;
-    border: 1px solid #c7c7c7;
-    text-align: center;
-    display: block;
-    float: left;
-    color: #000;
-    .rounded(3px);
-    width: 32px;
-    margin-left: 4px;
-  }
-  &__text {
-    font-size: 13px;
-    color: #6E6E6E;
-    line-height: 1.4;
-  }
-}
-.bGood {
   .product-desc__buy {
     width: 330px !important;
     margin-bottom: 5px;
@@ -90,6 +64,7 @@
       border-radius: 0;
       border: none;
       width: 86px;
+      margin-right: 76px;
       .bCountSet__eM, .bCountSet__eP {
         .grayGradDark();
         .rounded(3px);
@@ -106,13 +81,167 @@
       background: url("@{base-url}/pandoraProduct/img/btn-buy.gif") no-repeat;
       width: 125px;
       height: 29px;
-      margin: -3px 0 0 71px;
+      margin: -3px 0 0 0;
     }
     &.goodsbarbig.mSmallBtns a.link1.disabled {
-      background: url("/css/item/img/itemSprite.png") 0px -93px no-repeat !important;
-      cursor: default;
+      opacity: 0.1;
       float: right;
-      width: 120px;
     }
   }
+  .product-desc {
+    .notBuying {
+      padding: 9px;
+      margin-top: -5px;
+      float: right;
+      margin-right: 15px;
+      .rounded(3px);
+      width: 110px;
+      .corner {
+        border-left: 9px solid #e6e6e6;
+        border-top: 10px solid transparent;
+        border-bottom: 10px solid transparent;
+        top: 6px;
+        right: -19px;
+        div {
+          border-left: 7px solid #ffffff;
+          border-top: 8px solid transparent;
+          border-bottom: 8px solid transparent;
+          bottom: -8px;
+          left: -9px;
+        }
+      }
+    }
+    &.goodBarBottom {
+      .product-desc__buy {
+        margin-bottom: 5px;
+        width: auto !important;
+        margin-left: 15px;
+        &.goodsbarbig.mSmallBtns .cart-add {
+          float: right;
+          margin-left: 0;
+        }
+        .ptoduct-count {
+          margin: 0 15px 0 0;
+        }
+      }
+    }
+  }
+  .bCountSet span {
+    line-height: 22px;
+    border: 1px solid #c7c7c7;
+    text-align: center;
+    display: block;
+    float: left;
+    color: #000;
+    .rounded(3px);
+    width: 32px;
+    margin-left: 4px;
+  }
+  .mBuyButtonBottom {
+    padding: 16px 0 0px 0px;
+    h2 {
+      font-weight: normal;
+      font-family: 'Enter Type';
+      text-transform: uppercase;
+      font-size: 16px;
+      padding: 10px 0 0;
+    }
+  }
+  .product-desc {
+    padding: 0 0 0 5px;
+    font-size: 12px;
+    .creditbox{
+      border: none;
+      background: #E6E8E7;
+      .rounded(0px);
+      .creditboxinner {
+        border-bottom: none;
+        padding: 6px;
+        .creditLeft {
+          margin-left: 50px;
+        }
+      }
+      .bigcheck {
+        font-size: 12px;
+        line-height: 14px;
+        color: #6E6E72;
+        b {
+          background: #fff;
+          height: 13px;
+          margin: 0px 7px 0px 0px;
+          width: 13px;
+          .rounded(3px);
+          border: 1px solid #ccc;
+        }
+        &.checked {
+          color: #000 !important; 
+          b {
+            background: #000;
+          }
+        }
+      }
+    }
+
+    .product-price {
+      font-size: 34px;
+      float: left;
+      font-weight: bold;
+      width: 170px;
+      padding-left: 5px;
+    }
+    &__variation {
+      margin: 15px 0 0;
+      h2 {
+        font-weight: normal;
+        font-family: 'Enter Type';
+        text-transform: uppercase;
+        font-size: 15px;
+      }
+      .bDropWrap h5 {
+        color: #6E6E6E;
+        margin: 0px 10px 3px 0;
+        font-weight: normal;
+        float: left;
+        line-height: 29px;
+      }
+    }
+    .available {
+      float: left;
+      padding: 13px 0 0;
+      font-size: 14px;
+    }
+    &__text {
+      font-size: 13px;
+      color: #6E6E6E;
+      line-height: 1.4;
+    }
+    .vitrin {
+      width: auto;
+      p {
+      font-weight: normal;
+      font-family: 'Enter Type';
+      text-transform: uppercase;
+      font-size: 15px;
+      color: #000;
+      }
+      .listAvalShop li {
+        color: #6E6E6E;
+        padding: 0 0 0 30px;
+        margin: 10px 0 15px;
+        background: url("@{base-url}/pandoraProduct/img/shop.png") no-repeat 0 3px;
+        font-size: 12px;
+        .shopLookAtMap {
+          font-size: 11px;
+        }
+        .avalShopAddr {
+          display: inline-block;
+          width: 165px;
+        }
+        a {
+          color: #6E6E6E;
+        }
+      }
+    }
+  } 
 }
+
