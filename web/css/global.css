@@ -4236,16 +4236,16 @@
     text-decoration: none;
   }
   .goodsbar a.link1 {
-    background: url("/css/catalog/img/catalogSprite.png") -64px 0 no-repeat;
+    background: url("11/css/catalog/img/catalogSprite.png") -64px 0 no-repeat;
     height: 24px;
     width: 37px;
   }
   .goodsbar a.link1:hover,
   .goodsbar a.link1.link1active {
-    background: url("/css/catalog/img/catalogSprite.png") -102px 0 no-repeat;
+    background: url("22/css/catalog/img/catalogSprite.png") -102px 0 no-repeat;
   }
   .goodsbar a.link1.disabled {
-    background: url("/css/catalog/img/catalogSprite.png") -64px -26px no-repeat;
+    background: url("33/css/catalog/img/catalogSprite.png") -64px -26px no-repeat;
     height: 24px;
     width: 37px;
   }
@@ -9176,6 +9176,9 @@
     -moz-transition: opacity 0.1s ease-in-out;
     transition: opacity 0.1s ease-in-out;
   }
+  .items-section .items-section__list li .item-buy.link1active {
+    background: url("/css/pandoraCatalog/img/btn_cart.gif") no-repeat 0 0;
+  }
   .items-section .items-section__list li .item-price {
     position: absolute;
     bottom: 10px;
@@ -9410,6 +9413,9 @@
     -moz-transition: opacity 0.1s ease-in-out;
     transition: opacity 0.1s ease-in-out;
   }
+  .brandSectionPandora__product .bigcarousel-brand .goodsbox .goodsbox__inner a.link1.link1active {
+    background: url("/css/pandoraCatalog/img/btn_cart.gif") no-repeat 0 0;
+  }
   .brandSectionPandora__product .bigcarousel-brand .goodsbox .goodsbox__inner .font18.mSmallBtns {
     position: absolute;
     bottom: -8px;
@@ -9564,6 +9570,9 @@
     width: 125px;
     height: 29px;
     margin: -3px 0 0 0;
+  }
+  .brandSectionPandora__product .product-desc__buy.goodsbarbig.mSmallBtns .cart-add.link1active {
+    background: url("/css/pandoraProduct/img/btn-cart.gif") no-repeat;
   }
   .brandSectionPandora__product .product-desc__buy.goodsbarbig.mSmallBtns a.link1.disabled {
     opacity: 0.1;

@@ -275,26 +275,25 @@ $productVideo = reset($productVideos);
   <div class="ar pb15">
 
     <div class="goodsbarbig product-desc__buy mSmallBtns" ref="<?= $product->getToken() ?>" data-value='<?= $json ?>'>
-    <? if ($product->getIsBuyable()): ?>
-      <div class='bCountSet ptoduct-count' data-category-class="jewel">
-        <? if (!$user->getCart()->hasProduct($product->getId())): ?>
-        <a class='bCountSet__eP' href="#">+</a><a class='bCountSet__eM' href="#">-</a>
-        <? else: ?>
-        <a class='bCountSet__eP disabled' href="#">&nbsp;</a><a class='bCountSet__eM disabled' href="#">&nbsp;</a>
-        <? endif ?>
-        <span><?= $user->getCart()->hasProduct($product->getId()) ? $user->getCart()->getQuantityByProduct($product->getId()) : 1 ?></span> 
-      </div>
-
-      <div class="countTitle fl">шт.</div>
-    <?php endif ?>
-      <?= $page->render('cart/_button', ['product' => $product, 'disabled' => !$product->getIsBuyable()]) ?>
+      <? if ($product->getIsBuyable()): ?>
+        <div class='bCountSet ptoduct-count' data-category-class="jewel" <?= $user->getCart()->hasProduct($product->getId()) ? 'style="visibility:hidden;"': '' ?>>
+          <? if (!$user->getCart()->hasProduct($product->getId())): ?>
+          <a class='bCountSet__eP' href="#">+</a><a class='bCountSet__eM' href="#">-</a>
+          <? else: ?>
+          <a class='bCountSet__eP disabled' href="#">&nbsp;</a><a class='bCountSet__eM disabled' href="#">&nbsp;</a>
+          <? endif ?>
+          <span><?= $user->getCart()->hasProduct($product->getId()) ? $user->getCart()->getQuantityByProduct($product->getId()) : 1 ?></span> 
+        </div>
+        <div class="countTitle fl" <?= $user->getCart()->hasProduct($product->getId()) ? 'style="visibility:hidden;"': '' ?>>шт.</div>
+      <?php endif ?>
+      <?= $page->render('cart/_button', ['product' => $product, 'disabled' => !$product->getIsBuyable(), 'bought' => ($user->getCart()->hasProduct($product->getId()) ? 'style="visibility:hidden;"': '')]) ?>
       <? if (!$product->getIsBuyable() && $product->getState()->getIsShop()): ?>
-      <div class="notBuying font12">
-          <div class="corner"><div></div></div>
-          Только в магазинах
-      </div>
-      <div class="clear"></div>
-    <? endif ?>
+        <div class="notBuying font12">
+            <div class="corner"><div></div></div>
+            Только в магазинах
+        </div>
+        <div class="clear"></div>
+      <? endif ?>
     </div>
 
 
@@ -662,27 +661,25 @@ $productVideo = reset($productVideos);
 <div class="fr product-desc goodBarBottom ar">
     <? //if ($product->getIsBuyable() || !$product->getState()->getIsShop()): ?>
     <div class="goodsbarbig product-desc__buy mSmallBtns" ref="<?= $product->getToken() ?>" data-value='<?= $json ?>'>
-
-    <?php if ($product->getIsBuyable()): ?>
-        <div class='bCountSet ptoduct-count'>
-            <? if (!$user->getCart()->hasProduct($product->getId())): ?>
-            <a class='bCountSet__eP' href="#">+</a><a class='bCountSet__eM' href="#">-</a>
-            <? else: ?>
-            <a class='bCountSet__eP disabled' href="#">&nbsp;</a><a class='bCountSet__eM disabled' href="#">&nbsp;</a>
-            <? endif ?>
-            <span><?= $user->getCart()->getQuantityByProduct($product->getId()) ? $user->getCart()->getQuantityByProduct($product->getId()) : 1 ?></span>
+      <? if ($product->getIsBuyable()): ?>
+        <div class='bCountSet ptoduct-count' data-category-class="jewel" <?= $user->getCart()->hasProduct($product->getId()) ? 'style="visibility:hidden;"': '' ?>>
+          <? if (!$user->getCart()->hasProduct($product->getId())): ?>
+          <a class='bCountSet__eP' href="#">+</a><a class='bCountSet__eM' href="#">-</a>
+          <? else: ?>
+          <a class='bCountSet__eP disabled' href="#">&nbsp;</a><a class='bCountSet__eM disabled' href="#">&nbsp;</a>
+          <? endif ?>
+          <span><?= $user->getCart()->hasProduct($product->getId()) ? $user->getCart()->getQuantityByProduct($product->getId()) : 1 ?></span> 
         </div>
-
-        <div class="countTitle fl">шт.</div>
-    <?php endif ?>
-
-        <?= $page->render('cart/_button', array('product' => $product, 'disabled' => !$product->getIsBuyable(), 'gaEvent' => 'Add2Basket_vnizu', 'gaTitle' => 'Добавление в корзину')) ?>
-        <? if (!$product->getIsBuyable() && $product->getState()->getIsShop()): ?>
+        <div class="countTitle fl" <?= $user->getCart()->hasProduct($product->getId()) ? 'style="visibility:hidden;"': '' ?>>шт.</div>
+      <?php endif ?>
+      <?= $page->render('cart/_button', ['product' => $product, 'disabled' => !$product->getIsBuyable(), 'bought' => ($user->getCart()->hasProduct($product->getId()) ? 'style="visibility:hidden;"': '')]) ?>
+      <? if (!$product->getIsBuyable() && $product->getState()->getIsShop()): ?>
         <div class="notBuying font12">
             <div class="corner"><div></div></div>
             Только в магазинах
         </div>
-        <? endif ?>
+        <div class="clear"></div>
+      <? endif ?>
     </div>
     <? //endif ?>
 </div>

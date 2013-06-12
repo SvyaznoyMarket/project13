@@ -14,4 +14,4 @@ if ($disabled) {
 }
 ?>
 
-<a href="<?= $url ?>" data-product="<?= $product->getId() ?>" data-category="<?= $product->getMainCategory() ? $product->getMainCategory()->getId() : 0 ?>" class="link1 bOrangeButton<?php if ($disable): ?> disabled<? endif ?>"><i></i><span>Положить в корзину</span></a>
+<a href="<?= $url ?>" data-product="<?= $product->getId() ?>" data-category="<?= $product->getMainCategory() ? $product->getMainCategory()->getId() : 0 ?>" class="link1 bOrangeButton<?php if ($disable): ?> disabled<? endif ?><?php if (!empty($bought)): ?> link1active<? endif ?>"><i></i><span>Положить в корзину</span></a>

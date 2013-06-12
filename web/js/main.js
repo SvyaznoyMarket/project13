@@ -1220,6 +1220,12 @@ $(document).ready(function(){
         $(this).addClass("link1active")
     })
 
+    $(".goodsbarbig .link1").bind( 'click.css', function()   {
+        $(".goodsbarbig .link1").addClass("link1active")
+        $('.bCountSet').css('visibility','hidden')
+        $('.countTitle').css('visibility','hidden')
+    })
+
 
 	/* Top Menu */
 	var hoverMainMenu = false

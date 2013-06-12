@@ -28,7 +28,7 @@ $additionalData = isset($additionalData) ? $additionalData : null;
 		</div>
 	    
 		<div class="goodsbar mSmallBtns mR">
-          <?= $page->render('cart/_button', array('product' => $product, 'disabled' => !$product->getIsBuyable())) ?>
+          <?= $page->render('cart/_button', ['product' => $product, 'disabled' => !$product->getIsBuyable(), 'bought' => ($user->getCart()->hasProduct($product->getId()) ? 'style="visibility:hidden;"': '')]) ?>
         </div>
 	    <div class="font18 pb10 mSmallBtns"><span class="price"><?php echo $page->helper->formatPrice($product->getPrice()) ?></span> <span class="rubl">p</span></div>
 	    <? if (!$product->getIsBuyable() && $product->getState()->getIsShop()): ?>
