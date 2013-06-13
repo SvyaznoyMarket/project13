@@ -136,7 +136,7 @@ class Repository {
 
         $client->execute(\App::config()->coreV2['retryTimeout']['short'], \App::config()->coreV2['retryCount']);
 
-        $collection = (new \Controller\Product\ReviewsAction())->addScores($collection);
+        $collection = \RepositoryManager::review()->addScores($collection);
 
         return $collection;
     }
@@ -168,7 +168,7 @@ class Repository {
         
         $client->execute(\App::config()->coreV2['retryTimeout']['short'], \App::config()->coreV2['retryCount']);
 
-        $collection = (new \Controller\Product\ReviewsAction())->addScores($collection);
+        $collection = \RepositoryManager::review()->addScores($collection);
 
         return $collection;
     }
@@ -227,7 +227,7 @@ class Repository {
             $result = array_merge($result, $chunk);
         }
 
-        $result = (new \Controller\Product\ReviewsAction())->addScores($result);
+        $result = \RepositoryManager::review()->addScores($result);
 
         return $result;
     }
@@ -331,7 +331,7 @@ class Repository {
         }
         $this->client->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
-        $collection = (new \Controller\Product\ReviewsAction())->addScores($collection);
+        $collection = \RepositoryManager::review()->addScores($collection);
 
         return new \Iterator\EntityPager($collection, (int)$response['count']);
     }
@@ -372,7 +372,7 @@ class Repository {
         }
         $this->client->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
-        $collection = (new \Controller\Product\ReviewsAction())->addScores($collection);
+        $collection = \RepositoryManager::review()->addScores($collection);
 
         return $collection;
     }
@@ -439,7 +439,7 @@ class Repository {
                 $ids = array_merge($ids, $item['list']);
             }
         });
-        $this->client->execute(\App::config()->coreV2['retryTimeout']['medium']);
+        $this->client->execute(\App::config()->coreV2['retryTimeout']['huge']);
 
         if (!(bool)$response) {
             return [];
@@ -454,9 +454,8 @@ class Repository {
                 $collectionById[$item['id']] = new $entityClass($item);
             }
         });
-        $this->client->execute(\App::config()->coreV2['retryTimeout']['medium']);
+        $this->client->execute(\App::config()->coreV2['retryTimeout']['huge']);
 
-        /*
         $collections = [];
         foreach ($response as $data) {
             $collection = [];
@@ -469,29 +468,14 @@ class Repository {
                 $collection[] = $collectionById[$id];
             }
 
-            $collections[] = $collection;
+            $collections[] = ['collection' => $collection, 'count' => $data['count']];
         }
 
-        $collections = (new \Controller\Product\ReviewsAction())->addScoresGrouped($collections);
+        $collections = \RepositoryManager::review()->addScoresGrouped($collections);
 
         $iterators = [];
-        foreach ($collections as $collection) {
-            $iterators[] = new \Iterator\EntityPager($collection, $data['count']);
-        }
-        */
-
-        $iterators = [];
-        foreach ($response as $data) {
-            $collection = [];
-            foreach ($data['list'] as $id) {
-                if (!isset($collectionById[$id])) {
-                    \App::logger()->error(sprintf('В списке %s отсутствует товар #%s', json_encode($collectionById), $id));
-                    \App::exception()->add(new \Exception(sprintf('В списке %s отсутсвует один или несколько товаров', json_encode($collectionById))));
-                    continue;
-                }
-                $collection[] = $collectionById[$id];
-            }
-            $iterators[] = new \Iterator\EntityPager($collection, $data['count']);
+        foreach ($collections as $collectionData) {
+            $iterators[] = new \Iterator\EntityPager($collectionData['collection'], $collectionData['count']);
         }
 
         return $iterators;

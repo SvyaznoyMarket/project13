@@ -121,16 +121,20 @@ class Action {
                 $additionalData[$product->getId()] = \Kissmetrics\Manager::getProductEvent($product, $i+1, 'Also Viewed');
             }
 
-            return new \Http\Response(\App::templating()->render('product/_slider', [
-                'page'          => new \View\Layout(),
-                'productList'   => array_values($products),
-                'title'         => 'С этим товаром также смотрят',
-                'itemsInSlider' => 5,
-                'totalProducts' => count($products),
-                'url'           => '',
-                'gaEvent'       => 'SmartEngine',
-                'additionalData'    =>  $additionalData,
-            ]));
+            $layout = new \Templating\HtmlLayout();
+            $layout->setGlobalParam('sender', \Smartengine\Client::NAME);
+            return new \Http\Response($layout->render('product/_slider',  [
+                    'page'          => new \View\Layout(),
+                    'productList'   => array_values($products),
+                    'title'         => 'С этим товаром также смотрят',
+                    'itemsInSlider' => 5,
+                    'totalProducts' => count($products),
+                    'url'           => '',
+                    'gaEvent'       => 'SmartEngine',
+                    'additionalData'    =>  $additionalData,
+                ]
+            ));
+
         } catch (\Exception $e) {
             \App::logger()->error($e, ['smartengine']);
 
@@ -193,7 +197,7 @@ class Action {
                     'name'   => $product->getName(),
                     'image'  => $product->getImageUrl(),
                     'rating' => $product->getRating(),
-                    'link'   => $product->getLink(),
+                    'link'   => $product->getLink().(false === strpos($product->getLink(), '?') ? '?' : '&') . 'sender='.\Smartengine\Client::NAME.'|'.$product->getId(),
                     'price'  => $product->getPrice(),
                     'data'   => \Kissmetrics\Manager::getProductEvent($product, $i+1, 'Similar'),
                 ];

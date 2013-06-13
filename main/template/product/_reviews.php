@@ -1,5 +1,5 @@
 <ul class="reviewsTabs clearfix">
-  <li style="width: 173px;" class="reviewsTab user<?= !empty($reviewsData['review_list']) ? ' active' : ' hfImportant' ?>" data-container="reviewsUser" data-reviews-type="user"><span>Отзывы пользователей</span></li>
+  <li class="reviewsTab user<?= !empty($reviewsData['review_list']) ? ' active' : ' hfImportant' ?>" data-container="reviewsUser" data-reviews-type="user"><span>Отзывы пользователей</span></li>
   <?
     if(!empty($reviewsData['review_list']) && !empty($reviewsDataPro['review_list'])) {
       $tabProClass = '';
@@ -11,7 +11,7 @@
   ?>
   <li class="reviewsTab pro<?= $tabProClass ?>" data-container="reviewsPro" data-reviews-type="pro"><span>Обзоры экспертов</span></li>
 
-  <li style="float: right;">
+  <li class="last">
     <span onclick="$('.newReviewPopupLink').click()">Оставить отзыв</span>
   </li> 
 </ul>
@@ -42,4 +42,4 @@
   <? $showMoreText = 'Показать другие обзоры...' ?>
 <? } ?>
 
-<div id="getMoreReviewsButton" class="product-btn-toggle getMoreReviews<?= $showMore ? '' : ' hf' ?>"><?= $showMoreText ?></div>
+<div id="getMoreReviewsButton" class="product-btn-toggle getMoreReviews<?= $showMore ? '' : ' hfImportant' ?>"><?= $showMoreText ?></div>

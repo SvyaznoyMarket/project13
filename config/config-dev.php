@@ -29,11 +29,8 @@ $c->corePrivate['retryTimeout'] = [
     'forever' => 0,
 ];
 
-$c->wordpress['throwException'] = false;
-$c->wordpress['timeout'] = 0.2;
-
 $c->reviewsStore['url']       = 'http://reviews.ent3.ru/reviews/';
-$c->reviewsStore['timeout'] = null;
+$c->reviewsStore['timeout'] = 2;
 $c->reviewsStore['retryTimeout'] = [
     'default' => 1,
     'tiny'    => 0.1,
@@ -44,6 +41,9 @@ $c->reviewsStore['retryTimeout'] = [
     'forever' => 0,
 ];
 $c->reviewsStore['retryCount'] = 3;
+
+$c->wordpress['throwException'] = false;
+$c->wordpress['timeout'] = 2;
 
 $c->dataStore['timeout'] = 2;
 $c->dataStore['retryTimeout'] = [

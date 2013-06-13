@@ -234,7 +234,7 @@ class Action {
                 }
 
                 // сохранение заказов в ядре
-                $orderNumbers = $this->saveOrder($form, $deliveryMap);
+                $orderNumbers = $this->saveOrder($form, $deliveryMap, $productsForRetargeting);
 
                 // сохранение заказов в сессии
                 \App::session()->set(self::ORDER_SESSION_NAME, array_map(function($orderNumber) use ($form) {
@@ -605,7 +605,7 @@ class Action {
      * @throws \Exception
      * @return array Номера созданных заказов
      */
-    private function saveOrder(\View\Order\Form $form, \View\Order\DeliveryCalc\Map $deliveryMap) {
+    private function saveOrder(\View\Order\Form $form, \View\Order\DeliveryCalc\Map $deliveryMap, $products) {
         $request = \App::request();
         $user = \App::user();
         $userEntity = $user->getEntity();
@@ -635,6 +635,7 @@ class Action {
         }
 
         $data = [];
+        $bMeta = false;
         foreach ($deliveryData['deliveryTypes'] as $deliveryItem) {
             if (!isset($deliveryTypesById[$deliveryItem['id']])) {
                 \App::logger()->error(sprintf('Неизвестный тип доставки %s', json_encode($deliveryItem, JSON_UNESCAPED_UNICODE)), ['order']);
@@ -692,6 +693,7 @@ class Action {
             }
 
             // товары и услуги
+
             foreach ($deliveryItem['items'] as $itemToken) {
                 if (false === strpos($itemToken, '-')) {
                     \App::logger()->error(sprintf('Неправильный элемент заказа %s', json_encode($itemToken, JSON_UNESCAPED_UNICODE)), ['order']);
@@ -753,16 +755,27 @@ class Action {
                 }
 
                 // мета-теги
-                if (\App::config()->order['enableMetaTag']) {
+                if (\App::config()->order['enableMetaTag'] && !$bMeta) {
                     try {
-                        if ($partnerName = \App::partner()->getName()) {
-                            \App::logger()->info(sprintf('Создается заказ от партнера %s', $partnerName), ['order', 'partner']);
-
-                            $orderData['meta_data'] = \App::partner()->getMeta($partnerName);
+                        foreach ($products as $product) {
+                            $partners = [];
+                            if ($partnerName = \App::partner()->getName()) {
+                                $partners[] = \App::partner()->getName();
+                            }
+                            if ($viewedAt = \App::user()->getRecommendedProductByParams($product->getId(), \Smartengine\Client::NAME, 'viewed_at')) {
+                                if ((time() - $viewedAt) <= 30 * 24 * 60 * 60) { //30days
+                                    $partners[] = \Smartengine\Client::NAME;
+                                } else {
+                                    \App::user()->deleteRecommendedProductByParams($product->getId(), \Smartengine\Client::NAME, 'viewed_at');
+                                }
+                            }
+                            $orderData['meta_data'] =  \App::partner()->fabricateCompleteMeta(isset($orderData['meta_data']) ? $orderData['meta_data'] : [], \App::partner()->fabricateMetaByPartners($partners, $product));
                         }
+                        \App::logger()->info(sprintf('Создается заказ от партнеров %s', implode(', ', $orderData['meta_data']['partner'])), ['order', 'partner']);
                     } catch (\Exception $e) {
                         \App::logger()->error($e, ['order', 'partner']);
                     }
+                    $bMeta = true;
                 }
             }
 

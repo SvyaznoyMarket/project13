@@ -43,7 +43,7 @@ class Repository {
             }
         );
 
-        $client->execute(\App::config()->coreV2['retryTimeout']['short']);
+        $client->execute();
 
         return $entity;
     }

@@ -47,14 +47,16 @@
     span.border {
       cursor: pointer;
       border-bottom: 1px solid;
+      float: left;
     }
   &__star {
     margin: 2px 0 0 0px;
-    img {
-      &:last-child {
-        margin-right: 12px;
-      }
-    }
+  }
+}
+
+.reviewSection100 {
+  &__star {
+    margin-right: 12px;
   }
 }
 
@@ -69,6 +71,9 @@
         margin-right: 5px;
       }
     }
+  }
+  &__link {
+    width: auto;
   }
 } 
 
@@ -103,13 +108,19 @@
     float: left;
     font-size: 14px;
     padding: 8px 10px 6px;
-    &:last-child {
-      padding-right: 0;
-    }
     span {
       border-bottom: 1px dotted;
       cursor: pointer;
     }
+  }
+  .user {
+    width: 190px; 
+    text-align: center; 
+    padding: 8px 0 6px;
+  }
+  .last {
+    padding-right: 0;
+    float: right;
   }
   .active {
     font-weight: bold;
@@ -118,7 +129,6 @@
     border-bottom: none;
     background: #fff;
     margin: 0 0 -1px;
-    padding: 8px 9px 6px;
     span {
       border-bottom: none;
     }

@@ -518,6 +518,7 @@
   }
   .column215 {
     float: left;
+    margin-right: -100%;
     position: relative;
     width: 215px;
     z-index: 5;
@@ -800,11 +801,17 @@
     left: -8px;
     position: absolute;
   }
-  .notBuying .toLink {
+  .bold {
+    font-weight: bold;
+  }
+  .hfImportant {
+    display: none!important;
+  }
+  .toLink {
     cursor: pointer;
     text-decoration: none;
   }
-  .notBuying .toLink:hover {
+  .toLink:hover {
     text-decoration: underline;
   }
   .blackPopupVideo.blackPopup {
@@ -830,11 +837,13 @@
     z-index: 1;
     background: url("/css/common/img/bg_btn_closer.png") no-repeat 0px 0;
   }
-  .bold {
+  .mBoldh3 {
+    font-size: 14px;
     font-weight: bold;
+    height: 17px;
   }
-  .hfImportant {
-    display: none!important;
+  .mb35 {
+    margin-bottom: 35px;
   }
 }
 @media all {
@@ -5835,11 +5844,12 @@
   .reviewSection span.border {
     cursor: pointer;
     border-bottom: 1px solid;
+    float: left;
   }
   .reviewSection__star {
     margin: 2px 0 0 0px;
   }
-  .reviewSection__star img:last-child {
+  .reviewSection100__star {
     margin-right: 12px;
   }
   .reviewSection12 {
@@ -5852,6 +5862,9 @@
   }
   .reviewSection12__star img:last-child {
     margin-right: 5px;
+  }
+  .reviewSection12__link {
+    width: auto;
   }
   .reviewsWrapper {
     border-bottom: 1px solid #c7c7c7;
@@ -5883,12 +5896,18 @@
     font-size: 14px;
     padding: 8px 10px 6px;
   }
-  .reviewsTabs li:last-child {
-    padding-right: 0;
-  }
   .reviewsTabs li span {
     border-bottom: 1px dotted;
     cursor: pointer;
+  }
+  .reviewsTabs .user {
+    width: 190px;
+    text-align: center;
+    padding: 8px 0 6px;
+  }
+  .reviewsTabs .last {
+    padding-right: 0;
+    float: right;
   }
   .reviewsTabs .active {
     font-weight: bold;
@@ -5899,7 +5918,6 @@
     border-bottom: none;
     background: #fff;
     margin: 0 0 -1px;
-    padding: 8px 9px 6px;
   }
   .reviewsTabs .active span {
     border-bottom: none;
@@ -9373,13 +9391,18 @@
 /*------СТИЛИ ЛИЧНОГО КАБИНЕТА------*/
 @media all {
   .leftmenu li {
-    background: url("/css/user/img/arrow.png") no-repeat 0 0;
     padding: 0px 0px 5px 16px;
+    background: url("/css/user/img/arrow.png") no-repeat 0 0;
+  }
+  .leftmenu .bSubscibe {
+    display: block;
+    margin-top: 5px;
+    line-height: 25px;
   }
   .cabinethelp {
+    padding: 20px 0px 10px;
     background: url("/css/user/img/attention.gif") no-repeat 0px 0px;
     font-size: 11px;
-    padding: 20px 0px 10px;
   }
 }
 @media all {
@@ -9525,6 +9548,9 @@
     behavior: url('/css/common/PIE.htc');
     -webkit-appearance: none;
     width: 308px;
+  }
+  .content-section__form .subscribe-form__email.mError {
+    background: #F28C92;
   }
   .content-section__form .subscribe-form__btn {
     background: #ffc000;
