@@ -46,10 +46,13 @@ $(document).ready(function() {
 		 * Функция должна находится в глобальной области видимости
 		 */
 		Planner3d_UpdatePrice = function (IdsWithInfo) {
-			var url = $('#planner3D').data('url')
+			var url = $('#planner3D').data('cart-sum-url')
 			var product = {}
 
 			var authFromServer = function(res){
+				if (!res.success)
+					return false
+
 				$('.bProductCardRightCol__ePrice').html(res.sum)
 				$('.bProductCardRightCol__ePrice').html(res.sum)
 			}
