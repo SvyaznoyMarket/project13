@@ -28,7 +28,6 @@ use Model\Product\Filter\Entity as FilterEntity;
     handle_jewel_filters_pagination()
     handle_jewel_infinity_scroll()
 
-
     function handle_small_tabs() {
       $('.brand-subnav__list a').click(function(event){
         $('.brand-subnav__list a').removeClass('active')
@@ -65,7 +64,6 @@ use Model\Product\Filter\Entity as FilterEntity;
       })
     }
 
-
     /* Infinity scroll */
     var ableToLoad = true
     function liveScrollJewel( lsURL, filters, pageid ) {
@@ -90,12 +88,12 @@ use Model\Product\Filter\Entity as FilterEntity;
       $.get( lsURL, params, function(data){
         if ( data != "" && !data.data ) { // JSON === error
           ableToLoad = true
-          tmpnode.append(data)
+          tmpnode.append(data.products)
         }
         $('#ajaxgoods').remove()
         if( $('#dlvrlinks').length ) {
           var coreid = []
-          var nodd = $('<div>').html( data )
+          var nodd = $('<div>').html( data.products )
           nodd.find('div.boxhover, div.goodsboxlink').each( function() {
             var cid = $(this).data('cid') || 0
             if( cid )
@@ -116,9 +114,7 @@ use Model\Product\Filter\Entity as FilterEntity;
         var vlast = parseInt('0' + $(this).data('lastpage') , 10)
 
         function checkScrollJewel(){
-          console.log(111)
           if ( ableToLoad && $(window).scrollTop() + 800 > $(document).height() - $(window).height() ){
-          console.log(222)
             ableToLoad = false
             if( vlast + vinit > vnext ) {
               liveScrollJewel( lsURL, filters, ((vnext % vlast) ? (vnext % vlast) : vnext ))
@@ -129,15 +125,16 @@ use Model\Product\Filter\Entity as FilterEntity;
 
         $(this).click(function(){
           docCookies.setItem( false, 'infScroll', 1, 4*7*24*60*60, '/' )
-          switch_to_scroll()
+          switch_to_scroll(checkScrollJewel)
 
           $('#ajaxgoods_top').show()
           $.get(lsURL,{},function(data){
-            $('.filter-section').html(data.filters)
-            $('#pagerWrapper').html(data.pager)
-            handle_jewel_filters_pagination()
-            handle_custom_items()
-            handle_jewel_infinity_scroll()
+            // $('.filter-section').html(data.filters)
+            // $('#pagerWrapper').html(data.pager)
+            // handle_jewel_filters_pagination()
+            // handle_custom_items()
+            // handle_jewel_infinity_scroll()
+            // switch_to_scroll(checkScrollJewel)
             $(window).bind('scroll', function(){
               checkScrollJewel()
             })
@@ -148,13 +145,12 @@ use Model\Product\Filter\Entity as FilterEntity;
       })
       setTimeout(function(){
         if( docCookies.hasItem( 'infScroll' ) ) {
-          switch_to_scroll()
-          handle_jewel_filters_pagination()
+          switch_to_scroll(checkScrollJewel)
         }
       },600)
     }
 
-    function switch_to_scroll() {
+    function switch_to_scroll(checkScrollJewel) {
       var next = $('div.pageslist:first li:first')
       if( next.hasClass('current') )
         next = next.next()
@@ -165,10 +161,12 @@ use Model\Product\Filter\Entity as FilterEntity;
       $('div.pageslist li').remove()
       $('div.pageslist ul').append( next )
                  .find('a')
-                 .bind('click', function(){
+                 .bind('click', function(event){
                     docCookies.removeItem( 'infScroll' )
                     $(window).unbind('scroll')
+                    return false
                   })
+      handle_jewel_filters_pagination()
       $('div.allpagerJewel').addClass('mChecked')
       checkScrollJewel()
       $(window).scroll(checkScrollJewel)

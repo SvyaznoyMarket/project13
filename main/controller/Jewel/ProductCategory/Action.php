@@ -300,20 +300,21 @@ class Action extends \Controller\ProductCategory\Action {
         $productFilter = $page->getParam('productFilter');
         $scrollTo = $page->getParam('scrollTo');
         if ($request->isXmlHttpRequest()) {
+            $responseData = [];
+            $responseData['products'] = \App::templating()->render('jewel/product/_list', [
+                'page'                   => new \View\Layout(),
+                'pager'                  => $productPager,
+                'view'                   => $productView,
+                'productVideosByProduct' => $productVideosByProduct,
+                'isAjax'                 => true,
+                'itemsPerRow'            => \App::config()->product['itemsPerRowJewel'],
+            ]);
             // бесконечный скролл
             if(empty($scrollTo)) {
-                return new \Http\Response(\App::templating()->render('jewel/product/_list', [
-                    'page'                   => new \View\Layout(),
-                    'pager'                  => $productPager,
-                    'view'                   => $productView,
-                    'productVideosByProduct' => $productVideosByProduct,
-                    'isAjax'                 => true,
-                    'itemsPerRow'            => \App::config()->product['itemsPerRowJewel'],
-                ]));
+                return new \Http\Response($responseData['products']);
             }
             // фильтры, сортировка и товары с пагинацией
             else {
-                $responseData = [];
                 $responseData['filters'] = \App::templating()->render('jewel/product-category/_filters', [
                     'page'              => new \View\Layout(),
                     'filters'           => $productFilter->getFilterCollection(),
