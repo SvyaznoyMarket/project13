@@ -1,4 +1,4 @@
-//#ff9e18 border
+﻿//#ff9e18 border
 var DKupe3dConstructor = function (ParentItem, HostImgs, HostTextures) {
 
 var container, stats;
@@ -63,7 +63,7 @@ function Initialize(strJsonFile)
 	MainDiv.setAttribute('id', 'Planner3d_MainDiv');
 	MainDiv.style.position='relative';
 	ParentItem.appendChild(MainDiv);
-	MainDiv.innerHTML='<div id="Planner3d_tab_info" style="color: #666666;font-family:\'Enter Type\';font-size:18px;position: absolute;top: 0px;left: 50%;width: 200px;position:absolute;z-index: 100;display:none;">\
+	MainDiv.innerHTML='<div id="Planner3d_tab_info" style="color: #666666;font-family:\'Enter Type Bold\';font-size:18px;position: absolute;top: 0px;left: 50%;width: 200px;position:absolute;z-index: 100;display:none;">\
 	<table cellpadding=0 cellspacing=0 width=250>\
 	<tr><td height=25 id=Planner3d_TabInfo1Header width=120 align=center>Выбор корпуса</td><td height=25 width=5>&nbsp;</td><td id=Planner3d_TabInfo2Header width=120 align=center>Выбор фасада</td></tr>\
 	<tr><td id=Planner3d_KorpusVariantsDiv height=80 colspan=3 style="padding-left:5px;border:1px solid #c1c1bf;"></td></tr>\
@@ -1230,8 +1230,8 @@ var last_pan_Y;
 
 function onDocumentMouseDown( event ) 
 {
-	var clientX=event.clientX-getGlobalOffsetX(MainDiv);
-	var clientY=event.clientY-getGlobalOffsetY(MainDiv);
+	var clientX=event.pageX-getGlobalOffsetX(MainDiv);
+	var clientY=event.pageY-getGlobalOffsetY(MainDiv);
 	 if (event.button==2)
 	 {
 		 event.preventDefault();
@@ -1331,8 +1331,8 @@ function onDocumentMouseDown( event )
 
 function onDocumentMouseMove( event ) {
 
-	var clientX=event.clientX-getGlobalOffsetX(MainDiv);
-	var clientY=event.clientY-getGlobalOffsetY(MainDiv);
+	var clientX=event.pageX-getGlobalOffsetX(MainDiv);
+	var clientY=event.pageY-getGlobalOffsetY(MainDiv);
 
 	if (bMouseNavigationActive)
 	{
@@ -1850,8 +1850,8 @@ function onDragMatEnd()
 
 function onDropHandler(event)
 {
-	var clientX=event.clientX-getGlobalOffsetX(MainDiv);
-	var clientY=event.clientY-getGlobalOffsetY(MainDiv);
+	var clientX=event.pageX-getGlobalOffsetX(MainDiv);
+	var clientY=event.pageY-getGlobalOffsetY(MainDiv);
 	if (((clientX>=0)&&(clientX<Window3dWidth)) && ((clientY>=0)&&(clientY<Window3dHeight)))
 	{
 		mouse2D.x = ( clientX / Window3dWidth ) * 2 - 1;

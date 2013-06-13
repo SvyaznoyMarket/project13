@@ -19,11 +19,11 @@ $(document).ready(function() {
 			}
 			logError(dataToLog)
 		}
-		function Planner3d_Init(ApiIds){
+		Planner3d_Init = function (ApiIds){
 			console.info(ApiIds)
 			// ApiInitDiv.innerHTML='Planner3d_Init:'+ApiIds.length;
 		}
-		function Planner3d_UpdatePrice(IdsWithInfo) {
+		Planner3d_UpdatePrice = function (IdsWithInfo) {
 			console.info(IdsWithInfo);
 		}
 	}
