@@ -239,4 +239,21 @@ class IndexPage extends \View\DefaultLayout {
             $page->setKeywords($value);
         }
     }
+
+    public function slotConfig() {
+        $config = [];
+
+        $productVideos =(array)$this->getParam('productVideos');
+        $productVideo = reset($productVideos);
+        if ($productVideo instanceof \Model\Product\Video\Entity) {
+            if ($productVideo->getImg3d()) {
+                $config['product.img3d'] = true;
+            }
+            if ($productVideo->getMaybe3d()) {
+                $config['product.maybe3d'] = true;
+            }
+        }
+
+        return $this->tryRender('_config', ['config' => $config]);
+    }
 }
