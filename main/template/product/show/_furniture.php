@@ -1,8 +1,14 @@
+<?php
+/**
+ * @var $page \View\DefaultLayout
+ */
+?>
+
 <div class="bProductCard__eArticle clearfix">
 	<span>Артикул: <span itemprop="productID"><?= $product->getArticle() ?></span></span>
 </div>
 
-<div id="planner3D" class="bPlanner3D fl"></div>
+<div id="planner3D" class="bPlanner3D fl" data-cart-sum-url="<?= $page->url('cart.sum') ?>"></div>
 
 <div class="bProductCardRightCol fr">
 	<div class="bProductCardRightCol__eInner">
