@@ -9364,6 +9364,12 @@
   .brandSectionPandora__catalog .goodsbox {
     padding: 0;
   }
+  .brandSectionPandora__catalog .goodsbox .notBuying {
+    visibility: hidden;
+  }
+  .brandSectionPandora__catalog .goodsbox:hover .notBuying {
+    visibility: visible;
+  }
   .brandSectionPandora__catalog .goodsbox__inner {
     width: 201px;
     margin: 0;
@@ -9374,9 +9380,6 @@
     box-shadow: none;
     border: none;
     background-color: transparent;
-  }
-  .brandSectionPandora__catalog .goodsbox__inner .notBuying {
-    margin-top: 31px;
   }
   .pagehead {
     padding-bottom: 0;

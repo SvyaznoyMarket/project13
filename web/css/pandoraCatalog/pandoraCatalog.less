@@ -250,6 +250,12 @@
   }
   .goodsbox {
     padding: 0;
+    .notBuying {
+      visibility: hidden;
+    }
+    &:hover .notBuying {
+      visibility: visible;
+    }
   }
   .goodsbox__inner {
     width: 201px;
@@ -258,9 +264,6 @@
     border: 1px solid #fff;
     position: relative;
     height: 201px;
-    .notBuying {
-      margin-top: 31px;
-    }
     box-shadow: none;
     border: none;
     background-color:transparent;
