@@ -622,7 +622,7 @@ $(document).ready(function(){
 				})
 				dajax.post( dlvr_node.data('calclink'), coreid )
 			}
-	    handle_custom_items()
+
 		})
 	}
 
