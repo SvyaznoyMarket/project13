@@ -1,3 +1,10 @@
+/**
+ * Имя объекта для конструктора шкафов купе
+ *
+ * ВНИМАНИЕ
+ * Имя переменной менять нельзя. Захардкожено в файле KupeConstructorScript.js
+ * Переменная должна находится в глобальной области видимости
+ */
 var Planner3dKupeConstructor = null;
 
 $(document).ready(function() {
@@ -19,12 +26,60 @@ $(document).ready(function() {
 			}
 			logError(dataToLog)
 		}
+
+		/**
+		 * Callback Инициализации конструктора шкафов
+		 *
+		 * ВНИМАНИЕ
+		 * Название функции менять нельзя. Захардкожено в файле KupeConstructorScript.js
+		 * Функция должна находится в глобальной области видимости
+		 */
 		Planner3d_Init = function (ApiIds){
-			console.info(ApiIds)
-			// ApiInitDiv.innerHTML='Planner3d_Init:'+ApiIds.length;
+			// console.info(ApiIds)
 		}
+
+		/**
+		 * Callback изменений в конструкторе шкафов
+		 * 
+		 * ВНИМАНИЕ
+		 * Название функции менять нельзя. Захардкожено в файле KupeConstructorScript.js
+		 * Функция должна находится в глобальной области видимости
+		 */
 		Planner3d_UpdatePrice = function (IdsWithInfo) {
-			console.info(IdsWithInfo);
+			var url = $('#planner3D').data('url')
+			var product = {}
+
+			var authFromServer = function(res){
+				$('.bProductCardRightCol__ePrice').html(res.sum)
+				$('.bProductCardRightCol__ePrice').html(res.sum)
+			}
+
+			for (var i = 0, len = IdsWithInfo.length; i < len; i++){
+				var prodID = IdsWithInfo[i].id
+
+				if (IdsWithInfo[i].error !== ''){
+					console.log(IdsWithInfo[i].error)
+					$('.cart-add').addClass('disabled')
+					return false
+				}
+				$('.cart-add').removeClass('disabled')
+				if (product[prodID+''] !== undefined){
+					product[prodID+''].quantity++;
+				}
+				else{
+					product[prodID+''] = {
+						id : prodID,
+						quantity : 1,
+					}
+				}
+			}
+
+			$.ajax({
+				type: 'POST',
+				url: url,
+				data: product,
+				success: authFromServer
+			})
 		}
 	}
 	

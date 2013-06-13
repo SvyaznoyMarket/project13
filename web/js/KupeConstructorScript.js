@@ -559,7 +559,7 @@ function MyCreateMaterial(m)
 			api_id=SceneApiIds[k];
 			var ii=api_id.indexOf('/');
 			if (ii>0)
-				out.push({'id':parseInt(api_id.substring(0,ii)), error:'Вставки продаютя только комплектом по 2шт!'});
+				out.push({'id':parseInt(api_id.substring(0,ii)), error:'Вставки продаютcя только комплектом по 2шт!'});
 			else
 				out.push({'id':parseInt(api_id), error:''});
 		}
