@@ -18,6 +18,7 @@ class Action {
         if ($request->query->has('global')) {
             if ($request->query->get('global')) {
                 $cookie = new \Http\Cookie(self::$globalCookieName, 1, strtotime('+7 days' ));
+                $response->headers->clearCookie(\App::config()->shop['cookieName']);
                 $response->headers->setCookie($cookie);
             } else {
                 $response->headers->clearCookie(self::$globalCookieName);
@@ -57,7 +58,7 @@ class Action {
                 $cookie = new \Http\Cookie( \App::config()->shop['cookieName'] ,(int)$request->query->get('shopid'), strtotime('+7 days' ));
                 $response->headers->setCookie($cookie);
             } else {
-                $response->headers->clearCookie( \App::config()->shop['cookieName']);
+                $response->headers->clearCookie(\App::config()->shop['cookieName']);
             }
         }
 
