@@ -20,7 +20,7 @@
                         <li class="bProductListItem__eAboutBlockItem mListDisk">Наборов: <?= count($line->getKitId()) ?></li>
                         <li class="bProductListItem__eAboutBlockItem mListDisk">Предметов: <?= count($line->getProductId()) ?></li>
                     </ul>           
-                    <a class="bProductListItem__eBtn bButton mOrangeBtn jsRedirect" data-screentype='product_set' data-productid='<?= $line->getId() ?>' href="#">смотреть наборы</a>
+                    <a class="bProductListItem__eBtn bButton mOrangeBtn jsRedirect" data-screentype='product_set' data-lineid='<?= $line->getId() ?>' data-productid='<?= $line->getId() ?>' href="#">смотреть наборы</a>
                     <p class="bProductListItem__eF1Block">Доставит и соберет</p>
                 </div>
             </div>
