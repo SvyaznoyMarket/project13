@@ -2,9 +2,7 @@
 	<span>Артикул: <span itemprop="productID"><?= $product->getArticle() ?></span></span>
 </div>
 
-<div class="bPlanner3D fl">
-	Здесь могла быть ваша реклама, но будут шкафы-купе
-</div>
+<div id="planner3D" class="bPlanner3D fl"></div>
 
 <div class="bProductCardRightCol fr">
 	<div class="bProductCardRightCol__eInner">

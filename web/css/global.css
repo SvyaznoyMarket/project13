@@ -5970,7 +5970,16 @@
 /*планировщик мебели*/
 @media all {
   .bPlanner3D {
+    position: relative;
     width: 700px;
+    height: 550px;
+  }
+  #planner3D table {
+    border-collapse: separate;
+  }
+  #Planner3d_TabInfo2Header,
+  #Planner3d_TabInfo1Header {
+    font-size: 14px;
   }
 }
 /* новая карточка товара*/
@@ -5978,6 +5987,7 @@
   .bProductCard__eArticle {
     color: #a6a6a6;
     font-size: 14px;
+    margin-bottom: 15px;
   }
   .bProductCardRightCol {
     position: relative;

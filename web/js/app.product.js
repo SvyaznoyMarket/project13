@@ -1,4 +1,36 @@
+var Planner3dKupeConstructor = null;
+
 $(document).ready(function() {
+	/**
+	 * Планировщик шкафов купе
+	 */
+	if ($('#planner3D').length){
+		try {
+			Planner3dKupeConstructor = new DKupe3dConstructor(document.getElementById('planner3D'),'/css/item/coupe_img/','/css/item/coupe_tex/');
+			Planner3dKupeConstructor.Initialize('/js/KupeConstructorData.json');
+		}
+		catch (err){
+			var pageID = $(body).data(id)
+			var dataToLog = {
+				event: 'Kupe3dConstructor error',
+				type:'ошибка загрузки Kupe3dConstructor',
+				pageID: pageID,
+				err: err,
+			}
+			logError(dataToLog)
+		}
+		function Planner3d_Init(ApiIds){
+			console.info(ApiIds)
+			// ApiInitDiv.innerHTML='Planner3d_Init:'+ApiIds.length;
+		}
+		function Planner3d_UpdatePrice(IdsWithInfo) {
+			console.info(IdsWithInfo);
+		}
+	}
+	
+
+
+
 	/*Вывод магазинов, когда товар доступен только в них
 	*/
 	if ($('#availableShops').length){
@@ -345,23 +377,14 @@ $(document).ready(function() {
                 })
             }
             catch (err){
-                var date = new Date();
-                var time = date.getHours()+':'+date.getMinutes()+':'+date.getSeconds()
-                var nowUrl = window.location.pathname
-                var userAgent = navigator.userAgent
-                var data = {
-                    time:time,
-                    type:'ошибка загрузки 3dimg для мебели',
-                    nowUrl:nowUrl,
-                    userAgent:userAgent,
-                    err: err,
-                }
-                $.ajax({
-                    type: 'POST',
-                    global: false,
-                    url: '/log-json',
-                    data: data
-                })
+            	var pageID = $(body).data(id)
+				var dataToLog = {
+					event: '3dimg',
+					type:'ошибка загрузки 3dimg для мебели',
+					pageID: pageID,
+					err: err,
+				}
+				logError(dataToLog)
             }
             return false
         }
