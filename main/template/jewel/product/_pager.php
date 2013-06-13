@@ -27,19 +27,6 @@ if (!isset($isAddInfo)) $isAddInfo = false;
     data-calclink="<?= $page->url('product.delivery') ?>" />
 <?php endif ?>
 
-<? if ($pager->hasPages()): ?>
-<div class="fr allpager mBtn" alt="все товары в категории" title="все товары в категории"
-    data-url="<?= $page->helper->replacedUrl(array('page' => null), null, $request->attributes->get('route').'.infinity') ?>"
-    data-page="<?= $pager->getPage() ?>"
-    data-lastpage="<?= $pager->getLastPage() ?>"
-    data-filter="<?= $filterData ?>"
-></div>
-<? if(!empty($showPagerHeader)): ?>
-<span class="mBoldh3"><?= $pager->count() . ' ' . $page->helper->numberChoice($pager->count(), array('товар', 'товара', 'товаров')) ?></span>
-<? endif ?>
-<?= $page->render('_pagination', array('pager' => $pager)) ?>
-<? endif ?>
-
 <? if ($pager->count()): ?>
     <div class="line"></div>
 <? endif ?>

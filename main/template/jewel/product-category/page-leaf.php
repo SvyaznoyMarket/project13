@@ -20,8 +20,6 @@
 
 <div class="brandSection brandSectionPandora brandSectionPandora__catalog">
 
-  <div class="logo-section" style="background: url('/css/pandoraCatalog/img/pandora_logo.gif') no-repeat 50% 0;">Ювелирные Украшения</div>
-
   <? require __DIR__ . '/_branch.php' ?>
 
   <? if(!empty($promoContent)): ?>
@@ -29,7 +27,6 @@
   <? endif ?>
 
   <? $filters = $productFilter->getFilterCollection() ?>
-
   
   <div id="smalltabs" data-scrollto-passed="<?= $scrollToPassed ?>" class="brand-subnav clearfix">
     <nav>

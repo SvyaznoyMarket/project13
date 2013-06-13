@@ -34,6 +34,7 @@ if ($parent) {
 <div class="brand-nav">
     <table class="brand-nav__list">
         <tr>
+            <td><a href="<?= $category->getParent()->getLink() ?>"><span><img src="/css/pandoraCatalog/img/pandora_logo.gif"></span></a></td>
             <? foreach ($categories as $node): ?>
                 <td><a href="<?= $node->getLink()  . (\App::request()->get('instore') ? '?instore=1' : '') ?>"><span><?= $node->getName() ?></span></a></td>
             <? endforeach ?>
