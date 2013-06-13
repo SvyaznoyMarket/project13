@@ -18,6 +18,7 @@ if ($disabled) {
 
 <li class="item">
   <div class="goodsbox" ref="<?= $product->getToken(); ?>" style="min-height:218px;height:218px;"><? //для корректной работы js ?>
+    <div class="goodsbox__inner" data-url="<?= $product->getLink() ?>" <?php if (isset($additionalData)) echo 'data-product="' . $page->json($additionalData) . '"' ?>>
       <div class="item-name"><a href="<?= $product->getLink() ?>"><?= $product->getName() ?></a></div>
       <div class="item-img"><a href="<?= $product->getLink() ?>"><img class="mainImg" src="<?= $product->getImageUrl(2) ?>" alt="<?= $page->escape($product->getNameWithCategory()) ?>" title="<?= $page->escape($product->getNameWithCategory()) ?>" /></a></div>
       <div class="item-price"><span><?= $page->helper->formatPrice($product->getPrice(), 2) ?> RUB</span></div>
@@ -27,8 +28,18 @@ if ($disabled) {
       <h3 class="hf"><a href="<?= $product->getLink() ?>"><?= $product->getName() ?></a></h3>
       <span class="hf price"><?= $page->helper->formatPrice($product->getPrice()) ?></span>
 
-      <div class="goodsbar"><? //для корректной работы js ?>
-        <a href="<?= $url ?>"<?php echo (!empty($gaEvent) ? (' data-event="'.$gaEvent.'"') : '').(!empty($gaTitle) ? (' data-title="'.$gaTitle.'"') : '') ?> data-product="<?= $product->getId() ?>" data-category="<?= $product->getMainCategory() ? $product->getMainCategory()->getId() : 0 ?>" class="link1 event-click item-buy cart cart-add<?php if ($disabled): ?> disabled<? endif ?><?php if ($gaEvent): ?> gaEvent<? endif ?><?php if (\App::user()->getCart()->hasProduct($product->getId())): ?> link1active<? endif ?>"></a>
+      <? if ($product->getIsBuyable()): ?>
+        <div class="goodsbar"><? //для корректной работы js ?>
+          <a href="<?= $url ?>"<?php echo (!empty($gaEvent) ? (' data-event="'.$gaEvent.'"') : '').(!empty($gaTitle) ? (' data-title="'.$gaTitle.'"') : '') ?> data-product="<?= $product->getId() ?>" data-category="<?= $product->getMainCategory() ? $product->getMainCategory()->getId() : 0 ?>" class="link1 event-click item-buy cart cart-add<?php if ($disabled): ?> disabled<? endif ?><?php if ($gaEvent): ?> gaEvent<? endif ?><?php if (\App::user()->getCart()->hasProduct($product->getId())): ?> link1active<? endif ?>"></a>
+        </div>
+      <? endif ?>
+    </div>
+
+    <? if (!$product->getIsBuyable() && $product->getState()->getIsShop()): ?>
+      <div class="notBuying font12" style="bottom:0;left:0;">
+          <div class="corner"><div></div></div>
+          Только в магазинах
       </div>
+    <? endif ?>
   </div>
 </li>

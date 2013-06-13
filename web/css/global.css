@@ -9203,6 +9203,7 @@
   }
   .items-section .items-section__list .hover {
     border: 1px solid #AAAAAA;
+    background-color: #fff;
   }
   .items-section .items-section__list .hover .item-name {
     -moz-opacity: 1;
@@ -9350,6 +9351,20 @@
   }
   .brandSectionPandora__catalog .goodsbox {
     padding: 0;
+  }
+  .brandSectionPandora__catalog .goodsbox__inner {
+    width: 201px;
+    margin: 0;
+    padding: 10px;
+    border: 1px solid #fff;
+    position: relative;
+    height: 201px;
+    box-shadow: none;
+    border: none;
+    background-color: transparent;
+  }
+  .brandSectionPandora__catalog .goodsbox__inner .notBuying {
+    margin-top: 31px;
   }
 }
 /*---END---СТИЛИ БРЕНД РАЗДЕЛА PANDORA---*/

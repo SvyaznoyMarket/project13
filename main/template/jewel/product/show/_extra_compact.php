@@ -27,10 +27,14 @@ $additionalData = isset($additionalData) ? $additionalData : null;
 			</a>
 		</div>
 	    
-		<div class="goodsbar mSmallBtns mR">
-          <?= $page->render('cart/_button', ['product' => $product, 'disabled' => !$product->getIsBuyable(), 'bought' => (\App::user()->getCart()->hasProduct($product->getId()) ? 'style="visibility:hidden;"': '')]) ?>
-        </div>
+        <? if ($product->getIsBuyable()): ?>
+    		<div class="goodsbar mSmallBtns mR">
+              <?= $page->render('cart/_button', ['product' => $product, 'disabled' => !$product->getIsBuyable(), 'bought' => (\App::user()->getCart()->hasProduct($product->getId()) ? 'style="visibility:hidden;"': '')]) ?>
+            </div>
+        <? endif ?>
+
 	    <div class="font18 pb10 mSmallBtns"><span class="price"><?php echo $page->helper->formatPrice($product->getPrice()) ?></span> <span class="rubl">p</span></div>
+
 	    <? if (!$product->getIsBuyable() && $product->getState()->getIsShop()): ?>
         	<div class="notBuying font12">
                 <div class="corner"><div></div></div>
