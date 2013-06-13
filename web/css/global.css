@@ -9177,6 +9177,7 @@
     transition: opacity 0.1s ease-in-out;
   }
   .items-section .items-section__list li .item-buy.link1active {
+    padding-right: 12px;
     background: url("/css/pandoraCatalog/img/btn_cart.gif") no-repeat 0 0;
   }
   .items-section .items-section__list li .item-price {
@@ -9341,7 +9342,7 @@
   /*** ***/
   .brandSectionPandora {
     width: 960px;
-    margin: -25px 0 0 -20px;
+    margin: 0px 0 0 -20px;
   }
   .brandSectionPandora__catalog .line {
     border: none;
@@ -9429,6 +9430,7 @@
     transition: opacity 0.1s ease-in-out;
   }
   .brandSectionPandora__product .bigcarousel-brand .goodsbox .goodsbox__inner a.link1.link1active {
+    padding-right: 12px;
     background: url("/css/pandoraCatalog/img/btn_cart.gif") no-repeat 0 0;
   }
   .brandSectionPandora__product .bigcarousel-brand .goodsbox .goodsbox__inner .font18.mSmallBtns {
