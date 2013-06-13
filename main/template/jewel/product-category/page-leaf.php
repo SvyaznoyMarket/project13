@@ -54,7 +54,16 @@
         <? require __DIR__ . '/filter/_dropdown.php' ?>
       <? } ?>
 
-      <li class="reset_filters"><a <?= empty($values) ? 'class="active"' : '' ?> href="<?= $category->getLink()?>?scrollTo=<?= $scrollTo ?>"><div>Показать<br>все</div></a></li>
+      <? $filtersEmpty = true; 
+        foreach ($filters as $filter) {
+          $values = $productFilter->getValue($filter);
+          if(!empty($values)) $filtersEmpty = false;
+        }
+      ?>
+
+      <? if(!$filtersEmpty) { ?>
+        <li class="reset_filters"><a <?= empty($values) ? 'class="active"' : '' ?> href="<?= $category->getLink()?>?scrollTo=<?= $scrollTo ?>"><div>Показать<br>все</div></a></li>
+      <? } ?>
 
       <? if ($productSorting && $productPager->count()): ?>
         <?= $page->render('jewel/product/_sorting', array('productSorting' => $productSorting, 'scrollTo' => $scrollTo)) ?>
