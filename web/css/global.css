@@ -837,6 +837,14 @@
     z-index: 1;
     background: url("/css/common/img/bg_btn_closer.png") no-repeat 0px 0;
   }
+  .mBoldh3 {
+    font-size: 14px;
+    font-weight: bold;
+    height: 17px;
+  }
+  .mb35 {
+    margin-bottom: 35px;
+  }
 }
 @media all {
   .bGrayButton {
@@ -5892,6 +5900,11 @@
     border-bottom: 1px dotted;
     cursor: pointer;
   }
+  .reviewsTabs .user {
+    width: 190px;
+    text-align: center;
+    padding: 8px 0 6px;
+  }
   .reviewsTabs .last {
     padding-right: 0;
     float: right;
@@ -5905,7 +5918,6 @@
     border-bottom: none;
     background: #fff;
     margin: 0 0 -1px;
-    padding: 8px 9px 6px;
   }
   .reviewsTabs .active span {
     border-bottom: none;
@@ -9219,13 +9231,18 @@
 /*------СТИЛИ ЛИЧНОГО КАБИНЕТА------*/
 @media all {
   .leftmenu li {
-    background: url("/css/user/img/arrow.png") no-repeat 0 0;
     padding: 0px 0px 5px 16px;
+    background: url("/css/user/img/arrow.png") no-repeat 0 0;
+  }
+  .leftmenu .bSubscibe {
+    display: block;
+    margin-top: 5px;
+    line-height: 25px;
   }
   .cabinethelp {
+    padding: 20px 0px 10px;
     background: url("/css/user/img/attention.gif") no-repeat 0px 0px;
     font-size: 11px;
-    padding: 20px 0px 10px;
   }
 }
 @media all {

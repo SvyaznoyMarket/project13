@@ -36,20 +36,14 @@
         <li>
             Акции, новости и специальные предложения
             <form action="<?= $page->url('user.subscribe') ?>" method="post">
-                <ul>
-                    <li>
-                        <label class="bSubscibe <? if ($user->getEntity()->getIsSubscribed()): ?>checked<? endif ?>">
-                            <b></b> Email
-                            <input type="checkbox" name="subscribe" value="1" autocomplete="off" class="subscibe"<? if ($user->getEntity()->getIsSubscribed()): ?> checked="checked" <? endif ?> />
-                        </label>
-                    </li>
-                    <li>
-                        <label class="bSubscibe <? if ($user->getEntity()->getIsSubscribedViaSms()): ?>checked<? endif ?>">
-                            <b></b> SMS
-                            <input type="checkbox" name="subscribe_sms" value="1" autocomplete="off" class="subscibe"<? if ($user->getEntity()->getIsSubscribedViaSms()): ?> checked="checked" <? endif ?> />
-                        </label>
-                    </li>
-                </ul>
+                <label class="bSubscibe clearfix <? if ($user->getEntity()->getIsSubscribed()): ?>checked<? endif ?>">
+                    <b></b> Email
+                    <input type="checkbox" name="subscribe" value="1" autocomplete="off" class="subscibe"<? if ($user->getEntity()->getIsSubscribed()): ?> checked="checked" <? endif ?> />
+                </label>
+                <label class="bSubscibe clearfix <? if ($user->getEntity()->getIsSubscribedViaSms()): ?>checked<? endif ?>">
+                    <b></b> SMS
+                    <input type="checkbox" name="subscribe_sms" value="1" autocomplete="off" class="subscibe"<? if ($user->getEntity()->getIsSubscribedViaSms()): ?> checked="checked" <? endif ?> />
+                </label>
 
                 <input type="submit" class="fr button bigbutton" value="Сохранить" tabindex="10"/>
                 <div class="clear"></div>

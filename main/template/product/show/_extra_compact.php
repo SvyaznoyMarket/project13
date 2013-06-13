@@ -26,7 +26,9 @@ $productLink = $product->getLink().($page->hasGlobalParam('sender')?(false === s
 			</a>
 		</div>
 
-    <?= $page->render('product/_reviewsStarsCompact', ['product' => $product, 'twoLines' => true]) ?>
+    <? if (\App::config()->product['reviewEnabled']): ?>
+        <?= $page->render('product/_reviewsStarsCompact', ['product' => $product, 'twoLines' => true]) ?>
+    <? endif ?>
 
     <h3><a href="<?= $productLink ?>"<?php if (!empty($gaEvent)) echo ' data-event="'.$gaEvent.'" data-title="Переход по ссылке" class="gaEvent"'; ?>><?php echo $product->getName() ?></a></h3>
 		<div class="goodsbar mSmallBtns mR">
