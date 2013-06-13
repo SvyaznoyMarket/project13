@@ -414,7 +414,7 @@ function MyCreateMaterial(m)
 			else
 				stats=null;
 
-			document.body.addEventListener( 'mousewheel', onMouseWheel, false );
+			MainDiv.addEventListener( 'mousewheel', onMouseWheel, false );
 
 			document.addEventListener( 'mousedown', onDocumentMouseDown, false );
 			document.addEventListener( 'touchstart', onDocumentTouchStart, false );
@@ -1490,6 +1490,8 @@ function onMouseWheel( event ) {
 		cameraDistance*=(1-Math.min(0.2,0.0005*event.wheelDelta));
 	else
 		cameraDistance/=(1-Math.min(0.2,-0.0005*event.wheelDelta));
+	event.preventDefault();
+	event.stopPropagation();
 }
 
 function hidePopup()
