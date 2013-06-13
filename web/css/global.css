@@ -9339,6 +9339,17 @@
   .filter-section li:hover .filter-section__value__dd {
     display: block;
   }
+  .filter-section .reset_filters {
+    margin-top: -3px;
+    display: inline-block;
+    border: 1px solid #444;
+    padding: 3px;
+    border-radius: 4px;
+    text-align: center;
+  }
+  .filter-section .reset_filters:hover a {
+    text-decoration: none!important;
+  }
   /*** ***/
   .brandSectionPandora {
     width: 960px;
