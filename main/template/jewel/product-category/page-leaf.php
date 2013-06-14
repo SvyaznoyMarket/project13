@@ -28,35 +28,11 @@
       <?= $promoContent ?>
   <? endif ?>
 
-  <? $filters = $productFilter->getFilterCollection() ?>
-  
-  <div id="smalltabs" data-scrollto-passed="<?= $scrollToPassed ?>" class="brand-subnav clearfix">
-    <nav>
-      <div class="brand-subnav__title"><?= $category->getName() ?></div>
-      <? foreach($filters as $key => $filter) { ?>
-        <? if(mb_strtolower($catalogJson['sub_category_filter_menu']) == mb_strtolower($filter->getName())) { ?>
-          <? require __DIR__ . '/filter/_tabs.php' ?>
-        <? } ?>
-      <? } ?>
-    </nav>
-  </div>
+  <div id="smalltabs" data-scrollto-passed="<?= (bool)$scrollTo ?>" class="brand-subnav clearfix"></div>
 
-  <?= $page->render('jewel/product-category/_filters', ['filters' => $filters, 'catalogJson' => $catalogJson, 'productSorting' => $productSorting, 'productPager' => $productPager, 'productFilter' => $productFilter, 'category' => $category, 'scrollTo' => $scrollTo]) ?>
+  <div class="filter-section"></div>
 
   <?= $page->render('jewel/product-category/_loading_top') ?>
 
-  <div id="pagerWrapper">
-    <?= $page->render('jewel/product/_pager', array(
-        'request'                => $request,
-        'pager'                  => $productPager,
-        'productFilter'          => $productFilter,
-        'productSorting'         => $productSorting,
-        'hasListView'            => true,
-        'category'               => $category,
-        'view'                   => $productView,
-        'productVideosByProduct' => $productVideosByProduct,
-        'itemsPerRow'            => $itemsPerRow,
-    )) ?>
-  </div>
-
+  <div id="pagerWrapper"></div>
 </div>

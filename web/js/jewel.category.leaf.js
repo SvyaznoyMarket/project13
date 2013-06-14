@@ -1,25 +1,14 @@
 $(document).ready(function(){
-  if($('.brand-subnav__list').length) {
+  if($('body.jewel .filter-section').length) {
 
-    handle_small_tabs()
-    handle_jewel_filters_pagination()
-    handle_jewel_infinity_scroll()
+    handle_url_hash()
 
     function handle_small_tabs() {
       $('.brand-subnav__list a').click(function(event){
         $('.brand-subnav__list a').removeClass('active')
         $(this).addClass('active')
         $('#ajaxgoods_top').show()
-        $.get($(this).attr('href'),{},function(data){
-          $('.filter-section').html(data.filters)
-          $('#pagerWrapper').html(data.pager)
-          console.log(data.request)
-          handle_jewel_filters_pagination()
-          handle_custom_items()
-          handle_jewel_infinity_scroll()
-        }).done(function(){
-          $('#ajaxgoods_top').hide()
-        })
+        get_jewel_content($(this).attr('href'))
         event.stopPropagation()
         return false
       })
@@ -28,22 +17,14 @@ $(document).ready(function(){
     function handle_jewel_filters_pagination() {
       $('.filter-section a, .pageslist a').click(function(event){
         $('#ajaxgoods_top').show()
-        $.get($(this).attr('href'),{},function(data){
-          $('.filter-section').html(data.filters)
-          $('#pagerWrapper').html(data.pager)
-          handle_jewel_filters_pagination()
-          handle_custom_items()
-          handle_jewel_infinity_scroll()
-        }).done(function(){
-          $('#ajaxgoods_top').hide()
-        })
+        get_jewel_content($(this).attr('href'))
         event.stopPropagation()
         return false
       })
     }
 
     /* Infinity scroll */
-    var ableToLoad = true
+    var ableToLoadJewel = true
     function liveScrollJewel( lsURL, filters, pageid ) {
       var params = []
       tmpnode = $('.items-section__list')
@@ -65,7 +46,7 @@ $(document).ready(function(){
 
       $.get( lsURL, params, function(data){
         if ( data != "" && !data.data ) { // JSON === error
-          ableToLoad = true
+          ableToLoadJewel = true
           tmpnode.append(data.products)
         }
         $('#ajaxgoods').remove()
@@ -92,8 +73,8 @@ $(document).ready(function(){
         var vlast = parseInt('0' + $(this).data('lastpage') , 10)
 
         function checkScrollJewel(){
-          if ( ableToLoad && $(window).scrollTop() + 800 > $(document).height() - $(window).height() ){
-            ableToLoad = false
+          if ( ableToLoadJewel && $(window).scrollTop() + 800 > $(document).height() - $(window).height() ){
+            ableToLoadJewel = false
             if( vlast + vinit > vnext ) {
               liveScrollJewel( lsURL, filters, ((vnext % vlast) ? (vnext % vlast) : vnext ))
             }
@@ -122,6 +103,31 @@ $(document).ready(function(){
       },600)
     }
 
+    function get_jewel_content(url, slide) {
+      $.get(url,{},function(data){
+        if(slide) {
+          $('#smalltabs').slideUp(20)
+          $('.filter-section').slideUp(20)
+          $('#pagerWrapper').slideUp(150)
+        }
+        $('#smalltabs').html(data.tabs)
+        $('.filter-section').html(data.filters)
+        $('#pagerWrapper').html(data.pager)
+        if(slide) {
+          $('#smalltabs').slideDown(30)
+          $('.filter-section').slideDown(30)
+          $('#pagerWrapper').slideDown(150)
+        }
+        handle_small_tabs()
+        handle_jewel_filters_pagination()
+        handle_custom_items()
+        handle_jewel_infinity_scroll()
+        window.location.hash = data.query_string
+      }).done(function(){
+        $('#ajaxgoods_top').hide()
+      })
+    }
+
     function switch_to_scroll(checkScrollJewel) {
       var next = $('div.pageslist:first li:first')
       if( next.hasClass('current') )
@@ -143,5 +149,19 @@ $(document).ready(function(){
       checkScrollJewel()
       $(window).scroll(checkScrollJewel)
     }
+
+    function handle_url_hash() {
+      if(window.location.hash) {
+        join = '?'
+        if(matches = window.location.hash.match(/.*(scrollTo=[^&]*)/)) {
+          join = join + matches[1] + '&'
+        }
+        url = window.location.origin + window.location.pathname + join + window.location.hash.replace('#','').replace(/((\?|&)scrollTo=[^&]*)/,'')
+      } else {
+        url = window.location.origin + window.location.pathname + '?' + window.location.search
+      }
+      get_jewel_content(url, true)
+    }
+
   }
 })
