@@ -41,24 +41,11 @@ $globalTotalText = $category->getGlobalProductCount() . ' ' .$page->helper->numb
 <div class="catProductNum">
     <? if ($category->getProductCount()): ?>
         <b>В <?= $regionInflectedName ?> <?= $totalText ?></b>
+        <?
+            if ($productFilter->getShop() && !$category->isRoot() && $page->hasGlobalParam('productCount')) : ?>
+                <br><b>В <?= $productFilter->getShop()->getAddress() ?><br><?=$page->getGlobalParam('productCount').' '.$page->helper->numberChoice($page->getGlobalParam('productCount'), array('товар', 'товара', 'товаров')); ?></b>
+            <? endif ?>
     <? endif ?>
-
-    <?
-        if (!$isGlobal) {
-            $shops = \RepositoryManager::shop()->getCollectionByRegion( \App::user()->getRegion() );
-            if ((bool)$shops) {
-                if ( (bool)$productFilter->getShop() ) print "<br><br>Показаны товары в магазине:<br> ".$productFilter->getShop()->getAddress();
-                print "<br><br>Показать товары в магазине:<br>";
-                print "<select style='width: 220px;' onchange=\"document.location=this.options[this.selectedIndex].value;\">";
-                foreach ($shops as $shop) {
-                    print "<option value=".$page->url('product.category.shop', ['categoryPath' => $category->getPath(), 'shopid' => $shop->getId() ]).">{$shop->getAddress()}</a></option>";
-                }
-                print "</select><br>";
-                if ( (bool)$productFilter->getShop() ) print "<a href=". $page->url('product.category.shop', ['categoryPath' => $category->getPath(), 'shopid' => 0]) .">Показать во всех магазинах</a><br>";
-            }
-        }
-    ?>
-
     <? if ($category->getGlobalProductCount() && \App::config()->product['globalListEnabled'] && $user->getRegion()->getHasTransportCompany()): ?>
         <br />
         Всего в категории <?= $globalTotalText ?>

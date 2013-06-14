@@ -30,7 +30,7 @@ $formName = \View\Product\FilterForm::$name;
         <? endif ?>
 
         <? $openNum = 0 ?>
-        <? $index = 0; foreach ($productFilter->getFilterCollection() as $filter): ?>
+        <? $index = 0; foreach ($productFilter->getFilterCollection() as $i => $filter): ?>
             <? if (!$filter->getIsInList()) continue ?>
             <? if ('price' == $filter->getId() || 'brand' == $filter->getId()) {
                 $isOpened = true;
@@ -53,6 +53,12 @@ $formName = \View\Product\FilterForm::$name;
                     require __DIR__ . '/filter/_choice.php';
                     break;
             } ?>
+            <?
+            if (($filter->getId() == 'label' || $i === 0) && $page->hasGlobalParam('shops')) {
+                require __DIR__ . '/_shops.php';
+            }
+            ?>
+
         <? endforeach ?>
 
         <dt class="submit pb10"><input type="submit" class="button yellowbutton" value="Подобрать"/></dt>

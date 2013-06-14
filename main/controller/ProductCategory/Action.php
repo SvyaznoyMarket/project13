@@ -327,7 +327,7 @@ class Action {
             $page->setParam('seoContent', $seoContent);
             $page->setParam('catalogJson', $catalogJson);
             $page->setParam('promoContent', $promoContent);
-            if ($productFilter->getShop()) $page->setGlobalParam('shop', $productFilter->getShop());
+            if (!self::isGlobal() && !$category->isRoot()) $page->setGlobalParam('shops', \RepositoryManager::shop()->getCollectionByRegion(\App::user()->getRegion()));
         };
 
         // если категория содержится во внешнем узле дерева

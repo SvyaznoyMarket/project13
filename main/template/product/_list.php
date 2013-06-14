@@ -12,6 +12,7 @@
 <?
 if (!isset($isAjax)) $isAjax = false;
 if (!isset($isAddInfo)) $isAddInfo = false;
+
 ?>
 
 <? if (!$pager->count()) { ?>
