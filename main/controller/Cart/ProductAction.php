@@ -81,6 +81,7 @@ class ProductAction {
     public function setList(\Http\Request $request) {
         $region = \App::user()->getRegion();
         $cart = \App::user()->getCart();
+        $client = \App::coreClientV2();
 
         $responseData = [];
 
@@ -124,7 +125,6 @@ class ProductAction {
             \App::coreClientV2()->execute();
 
             $quantity = 0;
-            $sum = 0;
             foreach ($productsById as $productId => $product) {
                 if (!$product) {
                     \App::logger()->error(sprintf('Не получен товар #%s', $productId), ['cart']);
@@ -138,13 +138,39 @@ class ProductAction {
                 $this->updateCartWarranty($product, $cartProduct, $productQuantity);
 
                 $quantity += $productQuantity;
-                $sum += $product->getPrice() * $productQuantity;
             }
+
+            $result = [];
+            $client->addQuery(
+                'cart/get-price',
+                ['geo_id' => \App::user()->getRegion()->getId()],
+                [
+                    'product_list'  => $productData,
+                    'service_list'  => [],
+                    'warranty_list' => [],
+                ],
+                function ($data) use (&$result) {
+                    $result = $data;
+                },
+                function(\Exception $e) use (&$result) {
+                    \App::exception()->remove($e);
+                    $result = $e;
+                }
+            );
+            $client->execute();
+
+            if ($result instanceof \Exception) {
+                throw $result;
+            }
+
+            $result = array_merge([
+                'sum' => 0,
+            ], (array)$result);
 
             $responseData = [
                 'success' => true,
                 'data'    => [
-                    'sum'           => $sum,
+                    'sum'           => $result['sum'],
                     'quantity'      => $quantity,
                     'full_quantity' => $cart->getProductsQuantity() + $cart->getServicesQuantity() + $cart->getWarrantiesQuantity(),
                     'full_price'    => $cart->getSum(),
@@ -152,6 +178,8 @@ class ProductAction {
                     'link'          => \App::router()->generate('order.create'),
                 ],
             ];
+
+
         } catch(\Exception $e) {
             $responseData = [
                 'success' => false,
