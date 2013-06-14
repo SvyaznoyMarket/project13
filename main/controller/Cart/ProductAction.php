@@ -123,6 +123,8 @@ class ProductAction {
             }
             \App::coreClientV2()->execute();
 
+            $quantity = 0;
+            $sum = 0;
             foreach ($productsById as $productId => $product) {
                 if (!$product) {
                     \App::logger()->error(sprintf('Не получен товар #%s', $productId), ['cart']);
@@ -134,15 +136,26 @@ class ProductAction {
                 $cart->setProduct($product, $productQuantity);
                 $cartProduct = $cart->getProductById($product->getId());
                 $this->updateCartWarranty($product, $cartProduct, $productQuantity);
+
+                $quantity += $productQuantity;
+                $sum += $cartProduct->getSum();
             }
 
             $responseData = [
                 'success' => true,
+                'data'    => [
+                    'sum'           => $sum,
+                    'quantity'      => $quantity,
+                    'full_quantity' => $cart->getProductsQuantity() + $cart->getServicesQuantity() + $cart->getWarrantiesQuantity(),
+                    'full_price'    => $cart->getSum(),
+                    'old_price'     => $cart->getOriginalSum(),
+                    'link'          => \App::router()->generate('order.create'),
+                ],
             ];
         } catch(\Exception $e) {
             $responseData = [
                 'success' => false,
-                'message' => 'Не удалось положить товары в корзину' . (\App::config()->debug ? sprintf(': %s', $e->getMessage()) : ''),
+                'data'    => ['error' => 'Не удалось товар услугу в корзину', 'debug' => $e->getMessage()],
             ];
         }
 
