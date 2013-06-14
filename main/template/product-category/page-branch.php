@@ -28,7 +28,7 @@
     <? foreach ($category->getChild() as $child) { ?>
         <?
         $pager = $productPagersByCategory[$child->getId()];
-        if (!$pager->count()) continue;
+        if (!$pager || !$pager->count()) continue;
         ?>
         <?= $page->render('product/_slider-inCategory', array(
             'category'               => $child,
