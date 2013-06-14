@@ -491,7 +491,7 @@ class Repository {
      * @param int|null $limit
      * @return array
      */
-    public static function filterAccessoryId(&$product, $category = null, $limit = null) {
+    public static function filterAccessoryId(&$product, &$accessoryItems, $category = null, $limit = null) {
         // массив токенов категорий, разрешенных в json
         $jsonCategoryToken = self::getJsonCategoryToken($product);
 
@@ -510,6 +510,8 @@ class Repository {
             $accessories = self::getAccessories($product);
         }
 
+        $accessoriesClone = $accessories;
+
         // собираем id аксессуаров после фильтрации, чтобы установить их продукту
         $productAccessoryId = array_map(function($accessory){ return $accessory->getId(); }, $accessories);
 
@@ -518,7 +520,11 @@ class Repository {
         // должна содержать максимум 8 первых аксессуаров
         if($limit) {
             $productAccessoryId = array_slice($productAccessoryId, 0, $limit);
+            $accessoriesClone = array_slice($accessoriesClone, 0, $limit);
         }
+
+        // чтобы в IndexAction не делать повторный запрос к ядру для получения объектов-аксессуаров
+        $accessoryItems = $accessoriesClone;
 
         // устанавливаем продукту id его аксессуаров
         $product->setAccessoryId($productAccessoryId);
