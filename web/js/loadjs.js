@@ -169,6 +169,8 @@
 				.wait()
 				.script( getWithVersion('ports.js') )
 				.script( 'adfox.asyn.code.ver3.js' )
+				.wait()
+				.script( getWithVersion('jewel.category.leaf.js') )
 			}).runQueue()
 			break
 		case 'product_card':
