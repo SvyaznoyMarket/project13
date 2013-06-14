@@ -416,9 +416,9 @@ function MyCreateMaterial(m)
 
 			MainDiv.addEventListener( 'mousewheel', onMouseWheel, false );
 
-			document.addEventListener( 'mousedown', onDocumentMouseDown, false );
-			document.addEventListener( 'touchstart', onDocumentTouchStart, false );
-			document.addEventListener( 'touchmove', onDocumentTouchMove, false );
+			MainDiv.addEventListener( 'mousedown', onDocumentMouseDown, false );
+			MainDiv.addEventListener( 'touchstart', onDocumentTouchStart, false );
+			MainDiv.addEventListener( 'touchmove', onDocumentTouchMove, false );
 			document.addEventListener( 'mousemove', onDocumentMouseMove, false );
 
 			//document.body.addEventListener( 'selectStart', stopStart, false );
@@ -483,7 +483,7 @@ function MyCreateMaterial(m)
 		}
 	}
 
-	function UpdatePrice()
+	function GetSceneApiIds()
 	{
 		var SceneApiIds=[];
 
@@ -502,7 +502,7 @@ function MyCreateMaterial(m)
 			{
 				if (Korpus.width==MainJsonData.articuls.profiles[ii].width)
 				{
-					AppendSceneApiIdsIds(SceneApiIds,MainJsonData.articuls.korpuses[ii].variants,KupeParams.ProfileMaterial);
+					AppendSceneApiIdsIds(SceneApiIds,MainJsonData.articuls.profiles[ii].variants,KupeParams.ProfileMaterial);
 					break;
 				}
 			}
@@ -552,18 +552,47 @@ function MyCreateMaterial(m)
 				}
 			}
 		}
+		return SceneApiIds;
+	}
+
+	function UpdatePrice()
+	{
+		var SceneApiIds=GetSceneApiIds();
 
 		var out=[];
 		for(var k=0;k<SceneApiIds.length;k++)
 		{
-			api_id=SceneApiIds[k];
+			var api_id=SceneApiIds[k];
 			var ii=api_id.indexOf('/');
 			if (ii>0)
-				out.push({'id':parseInt(api_id.substring(0,ii)), error:'Вставки продаютcя только комплектом по 2шт!'});
+				out.push({id:parseInt(api_id.substring(0,ii)), error:'Вставки продаютcя только комплектом по 2шт!'});
 			else
-				out.push({'id':parseInt(api_id), error:''});
+				out.push({id:parseInt(api_id), error:''});
 		}
 		Planner3d_UpdatePrice(out);
+	}
+
+	function GetBasketContent()
+	{
+		var SceneApiIds=GetSceneApiIds();
+
+		var out=[];
+		for(var k=0;k<SceneApiIds.length;k++)
+		{
+			var ii=SceneApiIds[k].indexOf('/');
+			var api_id=parseInt((ii>0)?SceneApiIds[k].substring(0,ii):SceneApiIds[k]);
+			for(ii=0;ii<out.length;ii++)
+			{
+				if (out[ii].id==api_id)
+				{
+					out[ii].quantity++;
+					break;
+				}
+			}
+			if (ii==out.length)
+				out.push({id:api_id, quantity:1});
+		}
+		return out;
 	}
 
 	function OnShapeLoaded(geomType,geomIndex,geometry,materials)
@@ -2014,6 +2043,8 @@ function render() {
 	return {
 		Initialize:Initialize,
 		Uninitialize:Uninitialize,
+		GetBasketContent:GetBasketContent,
+
 		SetKorpusMaterial:SetKorpusMaterial,
 		SetCurrentVstavkaMaterial:SetCurrentVstavkaMaterial,
 		SetProfileMaterial:SetProfileMaterial,
