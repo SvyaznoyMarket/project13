@@ -58,12 +58,20 @@ class DefaultLogger implements LoggerInterface {
     protected function log($message, $level, array $tags = []) {
         if ($level > $this->level) return;
 
+        if ($message instanceof \Exception) {
+            $message = [
+                'error' => '#' . $message->getCode() . ' ' . $message->getMessage(),
+                'file'  => $message->getFile() . ' (' . $message->getLine() . ')',
+                'trace' => $message->getTrace(),
+            ];
+        }
+
         $logData = [
             'time'    => date('M d H:i:s'),
             //'name'    => $this->name,
             'name'    => $this->id,
             'level'   => $this->levelNames[$level],
-            'message' => is_array($message) ? json_encode($message, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) : (string)$message,
+            'message' => !is_string($message) ? json_encode($message, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) : $message,
             'tag'     => (bool)$tags ? ('+' . implode('+', $tags)) : '',
         ];
         if ($this->immediatelyDump) {
