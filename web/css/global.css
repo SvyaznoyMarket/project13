@@ -2339,6 +2339,10 @@
     position: relative;
     display: none;
   }
+  .popupRegion .regionSlides__inner {
+    position: relative;
+    overflow: hidden;
+  }
   .popupRegion .regionSlides {
     position: relative;
     left: 0;
