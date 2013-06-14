@@ -11,11 +11,11 @@ $shop = $productFilter->getShop()?$productFilter->getShop():null;
 if (!$page->hasGlobalParam('shops')) {
     $shops = null;
 } else $shops = $page->getGlobalParam('shops');
-
 ?>
 
-<dt>Наличие в магазинах</dt>
-<dd style="display: <?= $shop ? 'block' : 'none' ?>;">
+<? if ($shops) : ?>
+    <dt>Наличие в магазинах</dt>
+    <dd style="display: <?= $shop ? 'block' : 'none' ?>;">
     <ul class="checkbox_list">
         <li onclick="document.location='<?=$page->url('product.category.shop', ['categoryPath' => $category->getPath(), 'shopid' => 0 ])?>';">
             <input name="" type="radio" class="hiddenCheckbox"/>
@@ -38,8 +38,9 @@ if (!$page->hasGlobalParam('shops')) {
                     <?=$singleShop->getAddress();?>
                 </label>
             </li>
-        <?
-        }
-        ?>
-    </ul>
-</dd>
+            <?
+            }
+            ?>
+        </ul>
+    </dd>
+<? endif ?>
