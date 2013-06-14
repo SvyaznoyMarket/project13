@@ -91,10 +91,25 @@ $(document).ready(function() {
 			}
 			var structure = Planner3dKupeConstructor.GetBasketContent()
 			var url = $(this).attr('href')
-			console.log(structure)
 
-			var resFromServer = function(){
+			var resFromServer = function(res){
 				console.log('res from server')
+				if ( res.success && ltbx ) {
+					console.log('true')
+					var tmpitem = {
+						'id'    : data.id,
+						'title' : data.name,
+						'price' : res.data.sum,
+						'img'   : '/images/logo.png',
+						'vitems': res.data.full_quantity,
+						'sum'   : res.data.full_price,
+						'link'  : res.data.link
+					}
+					ltbx.getBasket( tmpitem )
+					// kissAnalytics(data)
+					// PubSub.publish( 'productBought', tmpitem )
+					// sendAnalytics($(button))
+				}
 			}
 
 			$.ajax({
