@@ -31,6 +31,10 @@ $formName = \View\Product\FilterForm::$name;
 
         <? $openNum = 0 ?>
         <? $index = 0; foreach ($productFilter->getFilterCollection() as $i => $filter): ?>
+            <? if (($filter->getId() != 'label' && $i == 0) && $page->hasGlobalParam('shops')) {
+                require __DIR__ . '/_shops.php';
+            } ?>
+
             <? if (!$filter->getIsInList()) continue ?>
             <? if ('price' == $filter->getId() || 'brand' == $filter->getId()) {
                 $isOpened = true;
@@ -54,7 +58,7 @@ $formName = \View\Product\FilterForm::$name;
                     break;
             } ?>
             <?
-            if (($filter->getId() == 'label' || $i === 0) && $page->hasGlobalParam('shops')) {
+            if ($filter->getId() == 'label' && $page->hasGlobalParam('shops')) {
                 require __DIR__ . '/_shops.php';
             }
             ?>
