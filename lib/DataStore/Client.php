@@ -41,7 +41,6 @@ class Client {
         if (0 === strpos($path, '/')) {
             $file = \App::config()->dataDir . '/data-store' . $path;
             $response = is_file($file) ? json_decode(file_get_contents($file), true) : null;
-            \Util\RequestLogger::getInstance()->addLog($file, [], 0, 'unknown');
         // http-ресурс
         } else {
             $this->curl->addQuery($this->config['url'] . $path, [], function($data) use (&$response, $path) {

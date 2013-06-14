@@ -2339,6 +2339,10 @@
     position: relative;
     display: none;
   }
+  .popupRegion .regionSlides__inner {
+    position: relative;
+    overflow: hidden;
+  }
   .popupRegion .regionSlides {
     position: relative;
     left: 0;
@@ -5900,6 +5904,11 @@
     border-bottom: 1px dotted;
     cursor: pointer;
   }
+  .reviewsTabs .user {
+    width: 190px;
+    text-align: center;
+    padding: 8px 0 6px;
+  }
   .reviewsTabs .last {
     padding-right: 0;
     float: right;
@@ -5913,7 +5922,6 @@
     border-bottom: none;
     background: #fff;
     margin: 0 0 -1px;
-    padding: 8px 9px 6px;
   }
   .reviewsTabs .active span {
     border-bottom: none;
