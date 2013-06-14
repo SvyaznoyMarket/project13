@@ -138,7 +138,7 @@ class ProductAction {
                 $this->updateCartWarranty($product, $cartProduct, $productQuantity);
 
                 $quantity += $productQuantity;
-                $sum += $cartProduct->getSum();
+                $sum += $product->getPrice() * $productQuantity;
             }
 
             $responseData = [
