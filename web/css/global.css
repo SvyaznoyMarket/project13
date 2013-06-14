@@ -3794,8 +3794,12 @@
     background: url("/css/leftNav/img/leftNavSprite.png") 0px 0px no-repeat;
     height: 32px;
   }
+  label.radio {
+    line-height: 15px;
+  }
   label.radio span.holder {
-    background: url("/css/leftNav/img/leftNavSprite.png") 0px 0px no-repeat;
+    background: url("/css/leftNav/img/leftNavSprite.png") -65px -13px no-repeat;
+    top: 0 !important;
     height: 32px;
   }
   label.checkbox:hover span.holder,
@@ -3805,15 +3809,19 @@
   label.checked span.holder {
     top: -16px !important;
   }
+  label.radio.checked span.holder {
+    background-position: -65px 0;
+    top: 0 !important;
+  }
   label.checked:hover span.holder {
     top: -16px !important;
+  }
+  label.radio.checked:hover span.holder {
+    top: 0 !important;
   }
   input.hiddenCheckbox {
     left: -10000px;
     position: absolute;
-  }
-  label.prettyCheckbox {
-    lline-height: 19px;
   }
   label.prettyCheckbox span.holderWrap {
     display: block;
@@ -5900,6 +5908,11 @@
     border-bottom: 1px dotted;
     cursor: pointer;
   }
+  .reviewsTabs .user {
+    width: 190px;
+    text-align: center;
+    padding: 8px 0 6px;
+  }
   .reviewsTabs .last {
     padding-right: 0;
     float: right;
@@ -5913,7 +5926,6 @@
     border-bottom: none;
     background: #fff;
     margin: 0 0 -1px;
-    padding: 8px 9px 6px;
   }
   .reviewsTabs .active span {
     border-bottom: none;
