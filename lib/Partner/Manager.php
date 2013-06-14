@@ -201,10 +201,10 @@ class Manager {
 
         if ((bool)$product) {
             $keyName = $prefix . '.' . $name;
-            if (is_array($product->getEan()) && count($product->getEan())) {
-                $keyName .= '.ean.' . $product->getEan()[0];
-            } elseif ($product->getArticle()) {
+            if ($product->getArticle()) {
                 $keyName .= '.article.' . $product->getArticle();
+            } elseif (is_array($product->getEan()) && count($product->getEan())) {
+                $keyName .= '.ean.' . $product->getEan()[0];
             } else {
                 $keyName .= '.id.' . $product->getId();
             }

@@ -518,6 +518,7 @@
   }
   .column215 {
     float: left;
+    margin-right: -100%;
     position: relative;
     width: 215px;
     z-index: 5;
