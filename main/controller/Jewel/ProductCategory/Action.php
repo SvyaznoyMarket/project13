@@ -339,10 +339,6 @@ class Action extends \Controller\ProductCategory\Action {
                     'view'                      => $productView,
                     'itemsPerRow'               => $page->getParam('itemsPerRow'),
                 ]);
-// file_put_contents('/tmp/logger.txt', json_encode(get_class_methods($request))."\n", FILE_APPEND);
-file_put_contents('/tmp/logger.txt', json_encode(get_class_methods($request))."\n", FILE_APPEND);
-file_put_contents('/tmp/logger.txt', json_encode(get_class_methods($request))."\n", FILE_APPEND);
-file_put_contents('/tmp/logger.txt', json_encode(get_class_methods($request))."\n", FILE_APPEND);
                 $responseData['request'] = $request;
                 return new \Http\JsonResponse($responseData);
             }
