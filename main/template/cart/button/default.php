@@ -12,7 +12,7 @@
 <?php
 if ($disabled) {
     $url = '#';
-} else {
+} else if (!isset($url)) {
     $url = $page->url('old.cart.product.add', array('productId' => $product->getId())).($page->hasGlobalParam('sender')?(false === strpos($product->getLink(), '?') ? '?' : '&') . 'sender='.$page->getGlobalParam('sender').'|'.$product->getId():'');
 }
 

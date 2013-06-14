@@ -85,7 +85,7 @@ class ProductAction {
         $responseData = [];
 
         try {
-            $productData = (array)$request->get('orders');
+            $productData = (array)$request->get('product');
             if (!(bool)$productData) {
                 throw new \Exception('Не получены данные о товарах');
             }

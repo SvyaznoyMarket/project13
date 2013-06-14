@@ -69,7 +69,7 @@
 					<a class="bCountSet__eP <? if ($user->getCart()->hasProduct($product->getId())) echo 'disabled'; ?>" href="#">+</a> шт.
 				</div>
 			<?php endif ?>
-			<?= $page->render('cart/_button', ['product' => $product, 'disabled' => !$product->getIsBuyable()]) ?>
+			<?= $page->render('cart/_button', ['product' => $product, 'disabled' => !$product->getIsBuyable(), 'url' => $page->url('cart.product.setList')]) ?>
 			<a href=""
 				data-model='<?= $json ?>'
 				link-output='<?= $page->url('order.1click', ['product' => $product->getToken()]) ?>'
