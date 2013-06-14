@@ -762,6 +762,9 @@ class Action {
                             if ($partnerName = \App::partner()->getName()) {
                                 $partners[] = \App::partner()->getName();
                             }
+                            if (\Partner\Counter\MyThings::isTracking()) {
+                                $partners[] = \Partner\Counter\MyThings::NAME;
+                            }
                             if ($viewedAt = \App::user()->getRecommendedProductByParams($product->getId(), \Smartengine\Client::NAME, 'viewed_at')) {
                                 if ((time() - $viewedAt) <= 30 * 24 * 60 * 60) { //30days
                                     $partners[] = \Smartengine\Client::NAME;

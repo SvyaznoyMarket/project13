@@ -29,11 +29,15 @@
         case \Partner\Counter\Recreative::NAME:
             echo $page->tryRender('order/partner-counter/_recreative-complete', array('orders' => $orders));
             break;
-        case \Partner\Counter\MyThings::NAME:
+        /*case \Partner\Counter\MyThings::NAME:
             echo $page->tryRender('order/partner-counter/_mythings-complete', array('orders' => $orders, 'productsById' => $productsById));
-            break;
+            break;*/
     }
     ?>
-
+    <?
+    if (\Partner\Counter\MyThings::isTracking()) {
+        echo $page->tryRender('order/partner-counter/_mythings-complete', array('orders' => $orders, 'productsById' => $productsById));
+    }
+    ?>
     <?= $page->tryRender('order/partner-counter/_ad4u-complete', array('orders' => $orders)) ?>
 <? endif ?>

@@ -37,4 +37,8 @@ class MyThings {
 
     }
 
+    public static function isTracking() {
+        return (bool)(\App::request()->cookies->get( \App::config()->myThings['cookieName'] , false));
+    }
+
 }

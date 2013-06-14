@@ -5,10 +5,12 @@ namespace Partner;
 class Manager {
     private $cookieName;
     private $cookieLifetime;
+    private $cookieNames = [];
 
     public function __construct() {
         $this->cookieName = \App::config()->partner['cookieName'];
         $this->cookieLifetime = \App::config()->partner['cookieLifetime'];
+        $this->cookieNames[\Partner\Counter\MyThings::NAME] = \App::config()->myThings['cookieName'];
     }
 
     /**
@@ -38,7 +40,7 @@ class Manager {
             // myThings
             if (0 === strpos($utmSource, 'mythings')) {
                 $cookie = new \Http\Cookie(
-                    $this->cookieName,
+                    $this->cookieNames[\Partner\Counter\MyThings::NAME],
                     \Partner\Counter\MyThings::NAME,
                     time() + $this->cookieLifetime,
                     '/',
