@@ -300,8 +300,12 @@ label.checkbox span.holder {
   background: url("@{leftNavSprite-url}") 0px 0px no-repeat;
   height: 32px;
 }
+label.radio {
+  line-height: 15px;
+}
 label.radio span.holder {
-  background: url("@{leftNavSprite-url}") 0px 0px no-repeat;
+  background: url("@{leftNavSprite-url}") -65px -13px no-repeat;
+  top: 0 !important;
   height: 32px;
 }
 label.checkbox:hover span.holder,
@@ -311,15 +315,19 @@ label.radio:hover span.holder {
 label.checked span.holder {
   top: -16px !important;
 }
+label.radio.checked span.holder {
+  background-position: -65px 0;
+  top: 0 !important;
+}
 label.checked:hover span.holder {
   top: -16px !important;
+}
+label.radio.checked:hover span.holder {
+  top: 0 !important;
 }
 input.hiddenCheckbox {
   left: -10000px;
   position: absolute;
-}
-label.prettyCheckbox {
-  lline-height: 19px;
 }
 label.prettyCheckbox span.holderWrap {
   display: block;
