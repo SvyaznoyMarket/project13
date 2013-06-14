@@ -28,7 +28,7 @@ if ($parent) {
         $categories[] = $child;
     }
 }
-
+//var_dump($category->isLeaf()); exit;
 // total text
 $totalText = $category->getProductCount() . ' ' . ($category->getHasLine()
     ? $page->helper->numberChoice($category->getProductCount(), array('серия', 'серии', 'серий'))
@@ -40,10 +40,14 @@ $globalTotalText = $category->getGlobalProductCount() . ' ' .$page->helper->numb
 
 <div class="catProductNum">
     <? if ($category->getProductCount()): ?>
-        <b>В <?= $regionInflectedName ?> <?= $totalText ?></b>
+        <? if (!$category->isLeaf()) { ?>
+            <b>В <?= $regionInflectedName ?> <?= $totalText ?></b>
+        <? } elseif ($category->isLeaf() && !$productFilter->getShop()) { ?>
+            <b>В <?= $regionInflectedName ?> <?= $totalText ?></b>
+        <? } ?>
         <?
             if ($productFilter->getShop() && !$category->isRoot() && $page->hasGlobalParam('productCount')) : ?>
-                <br><b>В <?= $productFilter->getShop()->getAddress() ?><br><?=$page->getGlobalParam('productCount').' '.$page->helper->numberChoice($page->getGlobalParam('productCount'), array('товар', 'товара', 'товаров')); ?></b>
+                <br><b>В магазине <?= $productFilter->getShop()->getAddress() ?><br><?=$page->getGlobalParam('productCount').' '.$page->helper->numberChoice($page->getGlobalParam('productCount'), array('товар', 'товара', 'товаров')); ?></b>
             <? endif ?>
     <? endif ?>
     <? if ($category->getGlobalProductCount() && \App::config()->product['globalListEnabled'] && $user->getRegion()->getHasTransportCompany()): ?>
