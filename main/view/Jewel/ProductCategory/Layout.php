@@ -104,6 +104,10 @@ class Layout extends \View\DefaultLayout {
         $this->addMeta('keywords', $page->getKeywords());
     }
 
+    public function slotBodyClassAttribute() {
+        return 'jewel';
+    }
+
     public function slotBodyDataAttribute() {
         return 'product_catalog';
     }

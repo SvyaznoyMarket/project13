@@ -67,6 +67,10 @@ class IndexPage extends \View\DefaultLayout {
         $this->addMeta('keywords', $page->getKeywords());
     }
 
+    public function slotBodyClassAttribute() {
+        return 'jewel';
+    }
+
     public function slotContentHead() {
         // заголовок контента страницы
         if (!$this->hasParam('title')) {
