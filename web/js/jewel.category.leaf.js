@@ -13,6 +13,7 @@ $(document).ready(function(){
         $.get($(this).attr('href'),{},function(data){
           $('.filter-section').html(data.filters)
           $('#pagerWrapper').html(data.pager)
+          console.log(data.request)
           handle_jewel_filters_pagination()
           handle_custom_items()
           handle_jewel_infinity_scroll()
