@@ -48,12 +48,12 @@ $(document).ready(function() {
 		Planner3d_UpdatePrice = function (IdsWithInfo) {
 			var url = $('#planner3D').data('cart-sum-url')
 			var product = {}
+			product.product = {}
 
 			var authFromServer = function(res){
 				if (!res.success)
 					return false
 
-				$('.bProductCardRightCol__ePrice').html(res.sum)
 				$('.bProductCardRightCol__ePrice').html(res.sum)
 			}
 
@@ -66,16 +66,17 @@ $(document).ready(function() {
 					return false
 				}
 				$('.cart-add').removeClass('disabled')
-				if (product[prodID+''] !== undefined){
-					product[prodID+''].quantity++;
+				if (product.product[prodID+''] !== undefined){
+					product.product[prodID+''].quantity++;
 				}
 				else{
-					product[prodID+''] = {
+					product.product[prodID+''] = {
 						id : prodID,
 						quantity : 1,
 					}
 				}
 			}
+			console.log(product)
 
 			$.ajax({
 				type: 'POST',
@@ -111,11 +112,13 @@ $(document).ready(function() {
 					// sendAnalytics($(button))
 				}
 			}
-
+			var product = {}
+			product.product = structure
+			console.log(product)
 			$.ajax({
 				type: 'POST',
 				url: url,
-				data: structure,
+				data: product,
 				success: resFromServer
 			})
 			return false
