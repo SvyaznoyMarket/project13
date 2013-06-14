@@ -61,7 +61,6 @@ $(document).ready(function() {
 				var prodID = IdsWithInfo[i].id
 
 				if (IdsWithInfo[i].error !== ''){
-					console.log(IdsWithInfo[i].error)
 					$('.cart-add').addClass('disabled')
 					return false
 				}
@@ -76,7 +75,6 @@ $(document).ready(function() {
 					}
 				}
 			}
-			console.log(product)
 
 			$.ajax({
 				type: 'POST',
@@ -86,17 +84,19 @@ $(document).ready(function() {
 			})
 		}
 
+		/**
+		 * Добавление шкафа купе в корзину
+		 */
 		var kupe2basket = function(){
 			if ($(this).hasClass('disabled')){
 				return false
 			}
+
 			var structure = Planner3dKupeConstructor.GetBasketContent()
 			var url = $(this).attr('href')
 
 			var resFromServer = function(res){
-				console.log('res from server')
 				if ( res.success && ltbx ) {
-					console.log('true')
 					var tmpitem = {
 						'id'    : data.id,
 						'title' : data.name,
@@ -112,9 +112,10 @@ $(document).ready(function() {
 					// sendAnalytics($(button))
 				}
 			}
+
 			var product = {}
+
 			product.product = structure
-			console.log(product)
 			$.ajax({
 				type: 'POST',
 				url: url,
