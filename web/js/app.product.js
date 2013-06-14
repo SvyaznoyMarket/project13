@@ -84,6 +84,30 @@ $(document).ready(function() {
 				success: authFromServer
 			})
 		}
+
+		var kupe2basket = function(){
+			if ($(this).hasClass('disabled')){
+				return false
+			}
+			var structure = Planner3dKupeConstructor.GetBasketContent()
+			var url = $(this).attr('href')
+			console.log(structure)
+
+			var resFromServer = function(){
+				console.log('res from server')
+			}
+
+			$.ajax({
+				type: 'POST',
+				url: url,
+				data: structure,
+				success: resFromServer
+			})
+			return false
+		}
+
+		$('.goodsbarbig .link1').unbind();
+		$('.goodsbarbig .link1').bind('click', kupe2basket)
 	}
 	
 
