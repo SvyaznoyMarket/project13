@@ -56,7 +56,7 @@ class ReviewsAction {
                 $exception = $e;
                 \App::exception()->remove($e);
         });
-        $client->execute(\App::config()->corePrivate['retryTimeout']['medium']);
+        $client->execute();
 
         return $result;
     }
@@ -81,7 +81,7 @@ class ReviewsAction {
                 $exception = $e;
                 \App::exception()->remove($e);
         });
-        $client->execute(\App::config()->corePrivate['retryTimeout']['medium']);
+        $client->execute();
 
         return is_array($result) ? $result : [];
     }

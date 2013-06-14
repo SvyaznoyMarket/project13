@@ -307,7 +307,9 @@ class Repository {
         \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         $response = array();
-        $this->client->addQuery('listing/list', array(
+
+        $client = clone $this->client;
+        $client->addQuery('listing/list', array(
             'filter' => array(
                 'filters' => $filter,
                 'sort'    => $sort,
@@ -318,7 +320,7 @@ class Repository {
             ), array(), function($data) use(&$response) {
             $response = $data;
         });
-        $this->client->execute(\App::config()->coreV2['retryTimeout']['medium']);
+        $client->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
         $collection = [];
         $entityClass = $this->entityClass;
@@ -347,8 +349,10 @@ class Repository {
     public function getCollectionByFilter(array $filter = [], array $sort = [], $offset = null, $limit = null, \Model\Region\Entity $region = null) {
         \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
+        $client = clone $this->client;
+
         $response = array();
-        $this->client->addQuery('listing/list', array(
+        $client->addQuery('listing/list', array(
             'filter' => array(
                 'filters' => $filter,
                 'sort'    => $sort,
@@ -359,7 +363,7 @@ class Repository {
             ), array(), function($data) use(&$response) {
             $response = $data;
         });
-        $this->client->execute(\App::config()->coreV2['retryTimeout']['medium']);
+        $client->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
         $collection = [];
         $entityClass = $this->entityClass;
@@ -389,8 +393,10 @@ class Repository {
     public function getIdsByFilter(array $filter = [], array $sort = [], $offset = null, $limit = null, \Model\Region\Entity $region = null) {
         \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
+        $client = clone $this->client;
+
         $response = [];
-        $this->client->addQuery('listing/list', array(
+        $client->addQuery('listing/list', array(
             'filter' => array(
                 'filters' => $filter,
                 'sort'    => $sort,
@@ -401,7 +407,7 @@ class Repository {
             ), array(), function($data) use(&$response) {
             $response = $data;
         });
-        $this->client->execute(\App::config()->coreV2['retryTimeout']['medium']);
+        $client->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
         return empty($response['list']) ? [] : $response['list'];
     }
@@ -418,10 +424,12 @@ class Repository {
     public function getIteratorsByFilter(array $filters = [], array $sort = [], $offset = null, $limit = null, \Model\Region\Entity $region = null) {
         \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
+        $client = clone $this->client;
+
         // собираем все идентификаторы товаров, чтобы сделать один запрос в ядро
         $ids = [];
         $response = [];
-        $this->client->addQuery('listing/multilist', [], [
+        $client->addQuery('listing/multilist', [], [
             'filter_list' => array_map(function($filter) use ($sort, $offset, $limit) {
 
                 return [
@@ -439,7 +447,7 @@ class Repository {
                 $ids = array_merge($ids, $item['list']);
             }
         });
-        $this->client->execute(\App::config()->coreV2['retryTimeout']['medium']);
+        $client->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
         if (!(bool)$response) {
             return [];
