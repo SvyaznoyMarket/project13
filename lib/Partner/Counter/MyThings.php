@@ -12,6 +12,7 @@ class MyThings {
     */
     public static function getCompleteOrder($orders, $productsById) {
         $orderSum = 0;
+        $myThingsData = [];
         foreach ($orders as $order) {
             foreach ($order->getProduct() as $product) {
                 $categoryFee = 0;
@@ -22,7 +23,7 @@ class MyThings {
                 }
                 $orderSum += round($product->getPrice() * $categoryFee * $product->getQuantity(), 2);
             }
-            return array(
+            $myThingsData[] = array(
                 'EventType' => 'MyThings.Event.Conversion',
                 'Action' => '9902',
                 'TransactionReference' => $order->getNumber(),
@@ -34,6 +35,7 @@ class MyThings {
                 }, $order->getProduct()),
             );
         }
+        return $myThingsData;
 
     }
 
