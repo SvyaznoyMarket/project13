@@ -447,7 +447,6 @@ class Repository {
                 $ids = array_merge($ids, $item['list']);
             }
         });
-
         $client->execute();
 
         if (!(bool)$response) {
@@ -457,13 +456,25 @@ class Repository {
         // товары сгруппированные по идентификаторам
         $collectionById = [];
 
-        $entityClass = $this->entityClass;
-        $this->prepareCollectionById($ids, null, function($data) use(&$collectionById, $entityClass){
-            foreach ($data as $item) {
-                $collectionById[$item['id']] = new $entityClass($item);
+        if ((bool)$ids) {
+            $entityClass = $this->entityClass;
+            foreach (array_chunk($ids, 60) as $idsInChunk) {
+                $client->addQuery('product/get',
+                    [
+                        'select_type' => 'id',
+                        'id'          => $idsInChunk,
+                        'geo_id'      => $region ? $region->getId() : \App::user()->getRegion()->getId(),
+                    ],
+                    [],
+                    function($data) use(&$collectionById, $entityClass) {
+                        foreach ($data as $item) {
+                            $collectionById[$item['id']] = new $entityClass($item);
+                        }
+                    }
+                );
             }
-        });
-        $this->client->execute();
+            $client->execute();
+        }
 
         $collections = [];
         foreach ($response as $data) {
