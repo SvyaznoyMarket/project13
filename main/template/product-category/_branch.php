@@ -45,9 +45,9 @@ $globalTotalText = $category->getGlobalProductCount() . ' ' .$page->helper->numb
         <? } elseif ($category->isLeaf() && !$productFilter->getShop()) { ?>
             <b>В <?= $regionInflectedName ?> <?= $totalText ?></b>
         <? } ?>
-        <?
-            if ($productFilter->getShop() && !$category->isRoot() && $page->hasGlobalParam('productCount')) : ?>
-                <br><b>В магазине <?= $productFilter->getShop()->getAddress() ?><br><?=$page->getGlobalParam('productCount').' '.$page->helper->numberChoice($page->getGlobalParam('productCount'), array('товар', 'товара', 'товаров')); ?></b>
+        <? if ($productFilter->getShop() && !$category->isRoot() && $page->hasGlobalParam('productCount')) : ?>
+                <b>В магазине<br></b><?= $productFilter->getShop()->getAddress() ?><br><b><?=$page->getGlobalParam('productCount').' '.$page->helper->numberChoice($page->getGlobalParam('productCount'), array('товар', 'товара', 'товаров')); ?></b>
+                <a rel="nofollow" href="<?=$page->url('product.category.shop', ['categoryPath' => $category->getPath(), 'shopid' => 0 ])?>">Показать все</a>
             <? endif ?>
     <? endif ?>
     <? if ($category->getGlobalProductCount() && \App::config()->product['globalListEnabled'] && $user->getRegion()->getHasTransportCompany()): ?>
