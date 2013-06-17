@@ -150,10 +150,12 @@ $productVideo = reset($productVideos);
 
   <div id="maybe3dModelPopup" class="popup" data-value="<?php print $page->json($arrayToMaybe3D); ?>">
     <i class="close" title="Закрыть">Закрыть</i>
-    <div id="maybe3dModel">
+    <div id="maybe3dModelPopup_inner" style="position: relative;">
+      <div id="maybe3dModel">
         <a href="http://www.adobe.com/go/getflashplayer">
             <img src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Get Adobe Flash player" />
         </a>
+      </div>
     </div>
   </div>
 
