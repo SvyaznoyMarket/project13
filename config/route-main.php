@@ -69,6 +69,11 @@ return [
         'pattern' => '/private',
         'action'  => ['User\IndexAction', 'execute'],
     ],
+    // данные по авторизованному пользователю
+    'user.get' => [
+        'pattern' => '/user/get-auth',
+        'action'  => ['User\GetAction', 'execute'],
+    ],
     // вход через социальные сети
     'user.login.external' => [
         'pattern' => '/login-{providerName}',
