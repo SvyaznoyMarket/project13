@@ -63,18 +63,14 @@
 
 		<div class="goodsbarbig mSmallBtns" ref="<?= $product->getToken() ?>" data-value='<?= $json ?>'>
 			<? if ($product->getIsBuyable()): ?>
-				<div class='bCountSet'>
+				<!-- <div class='bCountSet'>
 					<a class="bCountSet__eM <? if ($user->getCart()->hasProduct($product->getId())) echo 'disabled'; ?>" href="#">-</a>
 					<span><?= $user->getCart()->hasProduct($product->getId()) ? $user->getCart()->getQuantityByProduct($product->getId()) : 1 ?></span>
 					<a class="bCountSet__eP <? if ($user->getCart()->hasProduct($product->getId())) echo 'disabled'; ?>" href="#">+</a> шт.
-				</div>
+				</div> -->
 			<?php endif ?>
 			<?= $page->render('cart/_button', ['product' => $product, 'disabled' => !$product->getIsBuyable(), 'url' => $page->url('cart.product.setList')]) ?>
-			<a href=""
-				data-model='<?= $json ?>'
-				link-output='<?= $page->url('order.1click', ['product' => $product->getToken()]) ?>'
-				link-input='<?= $page->url('product.delivery_1click') ?>'
-				class="font14 underline order1click-link-new">Купить быстро в 1 клик</a>
+			<span id="coupeError" class="red"></span>
 		</div>
 	</div>
 	<? if ($product->getIsBuyable()): ?>

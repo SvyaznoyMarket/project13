@@ -62,6 +62,7 @@ $(document).ready(function() {
 
 				if (IdsWithInfo[i].error !== ''){
 					$('.cart-add').addClass('disabled')
+					$('#coupeError').html('Вставки продаются только парами!')
 					return false
 				}
 				$('.cart-add').removeClass('disabled')
