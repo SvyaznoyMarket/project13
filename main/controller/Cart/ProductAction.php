@@ -139,6 +139,7 @@ class ProductAction {
 
                 $quantity += $productQuantity;
             }
+            $cart->fill();
 
             $result = [];
             $client->addQuery(
