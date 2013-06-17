@@ -34,6 +34,8 @@ if (!isset($isAddInfo)) $isAddInfo = false;
 <? $itemsPerRow = empty($itemsPerRow) ? null : $itemsPerRow ?>
 <?= $page->render('jewel/product/_list', array('pager' => $pager, 'view' => $view, 'productVideosByProduct' => $productVideosByProduct, 'isAddInfo' => $isAddInfo, 'itemsPerRow' => $itemsPerRow)) ?>
 
+<?= $page->render('jewel/product-category/_loading_bottom') ?>
+
 <? if ($pager->hasPages()): ?>
 <div class="fr allpagerJewel mBtn" alt="все товары в категории" title="все товары в категории"
      data-url="<?= $page->helper->replacedUrl(array('page' => null), null, $request->attributes->get('route')) ?>"

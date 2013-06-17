@@ -33,4 +33,5 @@
   <?= $page->render('jewel/product-category/_loading_top') ?>
 
   <div id="pagerWrapper"></div>
+
 </div>

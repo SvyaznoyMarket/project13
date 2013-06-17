@@ -21,23 +21,16 @@ $(document).ready(function(){
         event.stopPropagation()
         return false
       })
+      handle_jewel_infinity_scroll()
     }
 
     /* Infinity scroll */
     var ableToLoadJewel = true
     function liveScrollJewel( lsURL, filters, pageid ) {
       var params = []
-      tmpnode = $('.items-section__list')
+      var tmpnodeJewel = $('.items-section__list')
 
-      var loader =
-        "<div id='ajaxgoods' class='bNavLoader'>" +
-          "<div class='bNavLoader__eIco'><img src='/images/ajar.gif'></div>" +
-          "<div class='bNavLoader__eM'>" +
-            "<p class='bNavLoader__eText'>Подождите немного</p>"+
-            "<p class='bNavLoader__eText'>Идет загрузка</p>"+
-          "</div>" +
-        "</div>"
-      tmpnode.after( loader )
+      $('#ajaxgoods').show()
 
       if( lsURL.match(/\?/) )
         lsURL += '&page=' + pageid
@@ -47,9 +40,10 @@ $(document).ready(function(){
       $.get( lsURL, params, function(data){
         if ( data != "" && !data.data ) { // JSON === error
           ableToLoadJewel = true
-          tmpnode.append(data.products)
+          tmpnodeJewel.append(data.products)
+          handle_jewel_items()
         }
-        $('#ajaxgoods').remove()
+        $('#ajaxgoods').hide()
         if( $('#dlvrlinks').length ) {
           var coreid = []
           var nodd = $('<div>').html( data.products )
@@ -71,6 +65,7 @@ $(document).ready(function(){
         var vnext = ( $(this).data('page') !== '') ? $(this).data('page') * 1 + 1 : 2
         var vinit = vnext - 1
         var vlast = parseInt('0' + $(this).data('lastpage') , 10)
+        var tmpnodeJewel = $('.items-section__list')
 
         function checkScrollJewel(){
           if ( ableToLoadJewel && $(window).scrollTop() + 800 > $(document).height() - $(window).height() ){
@@ -82,18 +77,9 @@ $(document).ready(function(){
           }
         }
 
-        $(this).click(function(){
-          docCookies.setItem( false, 'infScroll', 1, 4*7*24*60*60, '/' )
+        $(this).unbind('click')
+        $(this).bind('click', function(){
           switch_to_scroll(checkScrollJewel)
-
-          $('#ajaxgoods_top').show()
-          $.get(lsURL,{},function(data){
-            $(window).bind('scroll', function(){
-              checkScrollJewel()
-            })
-          }).done(function(){
-            $('#ajaxgoods_top').hide()
-          })
         })
       })
       setTimeout(function(){
@@ -104,6 +90,10 @@ $(document).ready(function(){
     }
 
     function get_jewel_content(url, slide) {
+      var tmpnodeJewel = $('.items-section__list')
+      if(tmpnodeJewel.length) {
+        $('#ajaxgoods').show()
+      }
       $.get(url,{},function(data){
         if(slide) {
           $('#smalltabs').slideUp(20)
@@ -121,16 +111,18 @@ $(document).ready(function(){
         handle_small_tabs()
         handle_jewel_filters_pagination()
         handle_custom_items()
-        handle_jewel_infinity_scroll()
+        handle_jewel_items()
         if(data.query_string) {
           window.location.hash = data.query_string
         }
       }).done(function(){
         $('#ajaxgoods_top').hide()
+        $('#ajaxgoods').hide()
       })
     }
 
     function switch_to_scroll(checkScrollJewel) {
+      docCookies.setItem( false, 'infScroll', 1, 4*7*24*60*60, '/' )
       var next = $('div.pageslist:first li:first')
       if( next.hasClass('current') )
         next = next.next()
@@ -143,6 +135,7 @@ $(document).ready(function(){
                  .find('a')
                  .bind('click', function(event){
                     docCookies.removeItem( 'infScroll' )
+                    ableToLoadJewel = true
                     $(window).unbind('scroll')
                     return false
                   })
@@ -165,5 +158,12 @@ $(document).ready(function(){
       get_jewel_content(url, true)
     }
 
+  }
+
+  function handle_jewel_items() {
+    $(".goodsbar .link1.link1active").attr('href', '/cart')
+    $(".goodsbar .link1").bind( 'click', function()   {
+        $(this).addClass("link1active")
+    })
   }
 })
