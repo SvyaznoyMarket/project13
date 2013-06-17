@@ -122,7 +122,9 @@ $(document).ready(function(){
         handle_jewel_filters_pagination()
         handle_custom_items()
         handle_jewel_infinity_scroll()
-        window.location.hash = data.query_string
+        if(data.query_string) {
+          window.location.hash = data.query_string
+        }
       }).done(function(){
         $('#ajaxgoods_top').hide()
       })
