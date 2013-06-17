@@ -5985,6 +5985,11 @@
   #Planner3d_TabInfo1Header {
     font-size: 14px;
   }
+  #coupeError {
+    background: url("/css/user/img/attention.gif") no-repeat scroll left top;
+    display: block;
+    padding-left: 25px;
+  }
 }
 /* новая карточка товара*/
 @media all {

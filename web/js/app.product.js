@@ -62,10 +62,12 @@ $(document).ready(function() {
 
 				if (IdsWithInfo[i].error !== ''){
 					$('.cart-add').addClass('disabled')
-					$('#coupeError').html('Вставки продаются только парами!')
+					$('#coupeError').html('Вставки продаются только парами!').show()
 					return false
 				}
 				$('.cart-add').removeClass('disabled')
+				$('#coupeError').hide()
+
 				if (product.product[prodID+''] !== undefined){
 					product.product[prodID+''].quantity++;
 				}
