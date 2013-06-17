@@ -3565,7 +3565,7 @@
     font-size: 12px;
     padding: 11px 0px 3px;
   }
-  .catProductNum a {
+  .catProductNum__eLink {
     background: url("/css/leftNav/img/leftNavSprite.png") no-repeat scroll -38px 1px;
     color: #ffa901;
     display: block;
@@ -3576,7 +3576,7 @@
     padding-left: 25px;
     text-decoration: underline;
   }
-  .catProductNum a.hidden {
+  .catProductNum__eLink.hidden {
     display: none;
   }
   .mSelected,
@@ -3798,7 +3798,7 @@
     line-height: 15px;
   }
   label.radio span.holder {
-    background: url("/css/leftNav/img/leftNavSprite.png") -65px -13px no-repeat;
+    background: url("/css/leftNav/img/leftNavSprite.png") -14px -164px no-repeat;
     top: 0 !important;
     height: 32px;
   }
@@ -3810,7 +3810,7 @@
     top: -16px !important;
   }
   label.radio.checked span.holder {
-    background-position: -65px 0;
+    background-position: 0 -164px;
     top: 0 !important;
   }
   label.checked:hover span.holder {
