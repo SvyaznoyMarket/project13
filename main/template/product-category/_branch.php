@@ -47,14 +47,14 @@ $globalTotalText = $category->getGlobalProductCount() . ' ' .$page->helper->numb
         <? } ?>
         <?
             if ($productFilter->getShop() && !$category->isRoot() && $page->hasGlobalParam('productCount')) : ?>
-                <br><b>В магазине <?= $productFilter->getShop()->getAddress() ?><br><?=$page->getGlobalParam('productCount').' '.$page->helper->numberChoice($page->getGlobalParam('productCount'), array('товар', 'товара', 'товаров')); ?></b>
+                <br><b>В магазине <?= $productFilter->getShop()->getAddress() ?><br><?=$page->getGlobalParam('productCount').' '.$page->helper->numberChoice($page->getGlobalParam('productCount'), array('товар', 'товара', 'товаров')); ?></b> <a href="" class="orange underline">Показать все</a>
             <? endif ?>
     <? endif ?>
     <? if ($category->getGlobalProductCount() && \App::config()->product['globalListEnabled'] && $user->getRegion()->getHasTransportCompany()): ?>
         <br />
         Всего в категории <?= $globalTotalText ?>
         <noindex>
-            <a rel="nofollow" href="<?= $page->url('product.category.global', array('categoryPath' => $category->getPath(), 'global' => $isGlobal ? 0 : 1)) ?>"><?= ($isGlobal ? ('показать товары в ' . $regionInflectedName) : 'показать все товары') ?></a>
+            <a class="catProductNum__eLink" rel="nofollow" href="<?= $page->url('product.category.global', array('categoryPath' => $category->getPath(), 'global' => $isGlobal ? 0 : 1)) ?>"><?= ($isGlobal ? ('показать товары в ' . $regionInflectedName) : 'показать все товары') ?></a>
         </noindex>
     <? endif ?>
 </div>
