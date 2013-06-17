@@ -66,7 +66,7 @@ $c->reviewsStore['retryTimeout'] = [
     'huge'    => 3,
     'forever' => 0,
 ];
-$c->reviewsStore['retryCount'] = 3;
+$c->reviewsStore['retryCount'] = 2;
 
 $c->wordpress['url'] = 'http://content.enter.ru/';
 $c->wordpress['timeout'] = 8;

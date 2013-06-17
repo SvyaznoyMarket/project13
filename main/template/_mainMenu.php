@@ -62,11 +62,14 @@ $count = count($menu);
     if (\Model\Menu\Entity::ACTION_SEPARATOR === $iMenu->getAction()) {
         $class .= ' bMainMenuLevel-' . $level . '__eSeparator';
     }
-    if ((1 == $level) && ($i == $count)) {
+    if ((1 == $level) && !$iMenu->getAction()) {
         $class .= ' mMore';
     }
     if ((1 == $level) && (\Model\Menu\Entity::ACTION_PRODUCT_CATALOG !== $iMenu->getAction()) && (false === strpos($class, 'mMore'))) {
         $class .= ' mAction';
+    }
+    if ((1 == $level) && (($count - $i) < 2)) {
+        $class .= ' mMenuLeft';
     }
     $class = trim($class);
 ?>

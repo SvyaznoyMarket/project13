@@ -307,7 +307,9 @@ class Repository {
         \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         $response = array();
-        $this->client->addQuery('listing/list', array(
+
+        $client = clone $this->client;
+        $client->addQuery('listing/list', array(
             'filter' => array(
                 'filters' => $filter,
                 'sort'    => $sort,
@@ -318,7 +320,7 @@ class Repository {
             ), array(), function($data) use(&$response) {
             $response = $data;
         });
-        $this->client->execute(\App::config()->coreV2['retryTimeout']['medium']);
+        $client->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
         $collection = [];
         $entityClass = $this->entityClass;
@@ -347,30 +349,45 @@ class Repository {
     public function getCollectionByFilter(array $filter = [], array $sort = [], $offset = null, $limit = null, \Model\Region\Entity $region = null) {
         \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
-        $response = array();
-        $this->client->addQuery('listing/list', array(
-            'filter' => array(
-                'filters' => $filter,
-                'sort'    => $sort,
-                'offset'  => $offset,
-                'limit'   => $limit,
-            ),
-            'region_id' => $region ? $region->getId() : \App::user()->getRegion()->getId(),
-            ), array(), function($data) use(&$response) {
-            $response = $data;
-        });
-        $this->client->execute(\App::config()->coreV2['retryTimeout']['medium']);
+        $client = clone $this->client;
+
+        $response = [];
+        $client->addQuery('listing/list', [
+            'filter' => [
+                    'filters' => $filter,
+                    'sort'    => $sort,
+                    'offset'  => $offset,
+                    'limit'   => $limit,
+                ],
+                'region_id' => $region ? $region->getId() : \App::user()->getRegion()->getId(),
+            ],
+            [],
+            function($data) use(&$response) {
+                $response = $data;
+            }
+        );
+        $client->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
         $collection = [];
         $entityClass = $this->entityClass;
         if (!empty($response['list'])) {
-            $this->prepareCollectionById($response['list'], $region, function($data) use(&$collection, $entityClass) {
-                foreach ($data as $item) {
-                    $collection[] = new $entityClass($item);
-                }
-            });
+            foreach (array_chunk($response['list'], 60) as $idsInChunk) {
+                $client->addQuery('product/get',
+                    [
+                        'select_type' => 'id',
+                        'id'          => $idsInChunk,
+                        'geo_id'      => $region ? $region->getId() : \App::user()->getRegion()->getId(),
+                    ],
+                    [],
+                    function($data) use(&$collection, $entityClass) {
+                        foreach ($data as $item) {
+                            $collection[] = new $entityClass($item);
+                        }
+                    }
+                );
+            }
+            $client->execute(\App::config()->coreV2['retryTimeout']['medium']);
         }
-        $this->client->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
         $collection = \RepositoryManager::review()->addScores($collection);
 
@@ -389,8 +406,10 @@ class Repository {
     public function getIdsByFilter(array $filter = [], array $sort = [], $offset = null, $limit = null, \Model\Region\Entity $region = null) {
         \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
+        $client = clone $this->client;
+
         $response = [];
-        $this->client->addQuery('listing/list', array(
+        $client->addQuery('listing/list', array(
             'filter' => array(
                 'filters' => $filter,
                 'sort'    => $sort,
@@ -401,7 +420,7 @@ class Repository {
             ), array(), function($data) use(&$response) {
             $response = $data;
         });
-        $this->client->execute(\App::config()->coreV2['retryTimeout']['medium']);
+        $client->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
         return empty($response['list']) ? [] : $response['list'];
     }
@@ -418,10 +437,12 @@ class Repository {
     public function getIteratorsByFilter(array $filters = [], array $sort = [], $offset = null, $limit = null, \Model\Region\Entity $region = null) {
         \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
+        $client = clone $this->client;
+
         // собираем все идентификаторы товаров, чтобы сделать один запрос в ядро
         $ids = [];
         $response = [];
-        $this->client->addQuery('listing/multilist', [], [
+        $client->addQuery('listing/multilist', [], [
             'filter_list' => array_map(function($filter) use ($sort, $offset, $limit) {
 
                 return [
@@ -439,7 +460,7 @@ class Repository {
                 $ids = array_merge($ids, $item['list']);
             }
         });
-        $this->client->execute(\App::config()->coreV2['retryTimeout']['huge']);
+        $client->execute();
 
         if (!(bool)$response) {
             return [];
@@ -448,13 +469,25 @@ class Repository {
         // товары сгруппированные по идентификаторам
         $collectionById = [];
 
-        $entityClass = $this->entityClass;
-        $this->prepareCollectionById($ids, null, function($data) use(&$collectionById, $entityClass){
-            foreach ($data as $item) {
-                $collectionById[$item['id']] = new $entityClass($item);
+        if ((bool)$ids) {
+            $entityClass = $this->entityClass;
+            foreach (array_chunk($ids, 60) as $idsInChunk) {
+                $client->addQuery('product/get',
+                    [
+                        'select_type' => 'id',
+                        'id'          => $idsInChunk,
+                        'geo_id'      => $region ? $region->getId() : \App::user()->getRegion()->getId(),
+                    ],
+                    [],
+                    function($data) use(&$collectionById, $entityClass) {
+                        foreach ($data as $item) {
+                            $collectionById[$item['id']] = new $entityClass($item);
+                        }
+                    }
+                );
             }
-        });
-        $this->client->execute(\App::config()->coreV2['retryTimeout']['huge']);
+            $client->execute();
+        }
 
         $collections = [];
         foreach ($response as $data) {
@@ -491,7 +524,7 @@ class Repository {
      * @param int|null $limit
      * @return array
      */
-    public static function filterAccessoryId(&$product, $category = null, $limit = null) {
+    public static function filterAccessoryId(&$product, &$accessoryItems, $category = null, $limit = null) {
         // массив токенов категорий, разрешенных в json
         $jsonCategoryToken = self::getJsonCategoryToken($product);
 
@@ -510,6 +543,8 @@ class Repository {
             $accessories = self::getAccessories($product);
         }
 
+        $accessoriesClone = $accessories;
+
         // собираем id аксессуаров после фильтрации, чтобы установить их продукту
         $productAccessoryId = array_map(function($accessory){ return $accessory->getId(); }, $accessories);
 
@@ -518,7 +553,11 @@ class Repository {
         // должна содержать максимум 8 первых аксессуаров
         if($limit) {
             $productAccessoryId = array_slice($productAccessoryId, 0, $limit);
+            $accessoriesClone = array_slice($accessoriesClone, 0, $limit);
         }
+
+        // чтобы в IndexAction не делать повторный запрос к ядру для получения объектов-аксессуаров
+        $accessoryItems = $accessoriesClone;
 
         // устанавливаем продукту id его аксессуаров
         $product->setAccessoryId($productAccessoryId);

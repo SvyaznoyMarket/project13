@@ -36,26 +36,28 @@ $count = count($regions);
     </div>
     
     <div class="regionSlidesWrap fl">
-        <div class="regionSlides clearfix">
-            <!-- 2 слайда по 4 колонки -->
-            <div class="regionSlides_slide">
-                    <div class="colomn font12">
-                    <?php
-                        /** @var $region  \Model\Region\Entity */
-                        $cols = 0; $rows = 0; $i = 0; foreach ($regions as $region): $i++;  $rows++;
-                    ?>
-                        <a href="<?= $page->url('region.change', ['regionId' => $region->getId()]) ?>"><?= $region->getName(); ?></a>
-                        <?php if ($i == $count) break; ?>
-                        <?php if ($rows == $rowCount): $rows = 0; $cols++;?>
-                    </div>
-                            <?php if ($cols == $colCount): $cols = 0; ?>
-            </div>
-            <div class="regionSlides_slide">
+        <div class="regionSlides__inner">
+            <div class="regionSlides clearfix">
+                <!-- 2 слайда по 4 колонки -->
+                <div class="regionSlides_slide">
+                        <div class="colomn font12">
+                        <?php
+                            /** @var $region  \Model\Region\Entity */
+                            $cols = 0; $rows = 0; $i = 0; foreach ($regions as $region): $i++;  $rows++;
+                        ?>
+                            <a href="<?= $page->url('region.change', ['regionId' => $region->getId()]) ?>"><?= $region->getName(); ?></a>
+                            <?php if ($i == $count) break; ?>
+                            <?php if ($rows == $rowCount): $rows = 0; $cols++;?>
+                        </div>
+                                <?php if ($cols == $colCount): $cols = 0; ?>
+                </div>
+                <div class="regionSlides_slide">
+                                <?php endif ?>
+                        <div class="colomn font12">
                             <?php endif ?>
-                    <div class="colomn font12">
-                        <?php endif ?>
-                    <?php endforeach ?>
-                    </div>
+                        <?php endforeach ?>
+                        </div>
+                </div>
             </div>
         </div>
         <div class="BlackArrow fl leftArr"></div>

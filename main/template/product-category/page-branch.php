@@ -27,8 +27,8 @@
 <? else: ?>
     <? foreach ($category->getChild() as $child) { ?>
         <?
-        $pager = $productPagersByCategory[$child->getId()];
-        if (!$pager->count()) continue;
+        $pager = isset($productPagersByCategory[$child->getId()]) ? $productPagersByCategory[$child->getId()] : null;
+        if (!$pager || !$pager->count()) continue;
         ?>
         <?= $page->render('product/_slider-inCategory', array(
             'category'               => $child,
