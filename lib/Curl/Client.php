@@ -58,6 +58,9 @@ class Client {
             $info = curl_getinfo($connection);
             //$this->logger->debug('Curl response resource: ' . $connection, ['curl']);
             //$this->logger->debug('Curl response info: ' . $this->encodeInfo($info), ['curl']);
+            if (null === $response) {
+                throw new \RuntimeException(sprintf('Пустой ответ %s %s', $info['url'], json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)));
+            }
             $header = $this->header($response, true);
 
             \Util\RequestLogger::getInstance()->addLog($info['url'], $data, $info['total_time'], isset($header['X-Server-Name']) ? $header['X-Server-Name'] : 'unknown');
@@ -178,6 +181,9 @@ class Client {
 
                     try {
                         $content = curl_multi_getcontent($handler);
+                        if (null === $content) {
+                            throw new \RuntimeException(sprintf('Пустой ответ %s %s', $info['url'], json_encode($this->queries[$this->queryIndex[(string)$handler]]['query']['data'], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)));
+                        }
                         $header = $this->header($content, true);
 
                         \Util\RequestLogger::getInstance()->addLog($info['url'], $this->queries[$this->queryIndex[(string)$handler]]['query']['data'], $info['total_time'], '∞ ' . count($this->queries[$this->queryIndex[(string)$handler]]['resources']) . ' ' . (isset($header['X-Server-Name']) ? $header['X-Server-Name'] : '?'));
@@ -320,10 +326,6 @@ class Client {
      * @throws \RuntimeException
      */
     private function header(&$plainResponse, $isUpdateResponse = true) {
-        if (is_null($plainResponse)) {
-            throw new \RuntimeException('Response cannot be null');
-        }
-
         $header = [];
         $response = explode("\r\n\r\n", $plainResponse, 2);
         if ($isUpdateResponse) $plainResponse = isset($response[1]) ? $response[1] : null;

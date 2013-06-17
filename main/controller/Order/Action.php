@@ -1043,6 +1043,11 @@ class Action {
                 if ($cartItem instanceof \Model\Cart\Product\Entity) {
                     /** @var $product \Model\Product\CartEntity */
                     $product = $productsById[$cartItem->getId()];
+                    if (!$product) {
+                        \App::logger()->error(sprintf('Товар в корзине #%s не найден', $cartItem->getId()), ['order']);
+                        continue;
+                    }
+
                     $warrantiesById = [];
                     foreach ($product->getWarranty() as $warranty) {
                         $warrantiesById[$warranty->getId()] = $warranty;

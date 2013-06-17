@@ -29,7 +29,7 @@ $count = 0;
     <? foreach ($category->getChild() as $child) { ?>
         <?
         $pager = $productPagersByCategory[$child->getId()];
-        if (!$pager->count()) continue;
+        if (!$pager || !$pager->count()) continue;
         $count += $pager->count();
         ?>
         <?= $page->render('product/_slider-inCategory', array(
