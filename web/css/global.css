@@ -5986,9 +5986,12 @@
     font-size: 14px;
   }
   #coupeError {
-    background: url("/css/user/img/attention.gif") no-repeat scroll left top;
     display: block;
+    width: 110px;
+    margin: 0 auto;
     padding-left: 25px;
+    text-align: left;
+    background: url("/css/user/img/attention.gif") no-repeat scroll left top;
   }
 }
 /* новая карточка товара*/

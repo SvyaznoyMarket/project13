@@ -70,7 +70,7 @@
 				</div> -->
 			<?php endif ?>
 			<?= $page->render('cart/_button', ['product' => $product, 'disabled' => !$product->getIsBuyable(), 'url' => $page->url('cart.product.setList')]) ?>
-			<span id="coupeError" class="red" style="display:none"></span>
+			<div id="coupeError" class="red" style="display:none"></div>
 		</div>
 	</div>
 	<? if ($product->getIsBuyable()): ?>
