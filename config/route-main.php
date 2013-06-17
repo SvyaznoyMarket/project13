@@ -70,7 +70,7 @@ return [
         'action'  => ['User\IndexAction', 'execute'],
     ],
     // данные по авторизованному пользователю
-    'user.get' => [
+    'user.getAuth' => [
         'pattern' => '/user/get-auth',
         'action'  => ['User\GetAction', 'execute'],
     ],
