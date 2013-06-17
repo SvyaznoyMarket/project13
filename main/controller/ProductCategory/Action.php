@@ -249,6 +249,7 @@ class Action {
         // получаем catalog json для категории (например, тип раскладки)
         $catalogJson = \RepositoryManager::productCategory()->getCatalogJson($category);
 
+        $promoContent = '';
         // если в catalogJson'e указан category_layout_type == 'promo', то подгружаем промо-контент
         if(!empty($catalogJson['category_layout_type']) &&
             $catalogJson['category_layout_type'] == 'promo' &&

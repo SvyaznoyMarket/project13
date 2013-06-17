@@ -119,7 +119,7 @@ class Action extends \Controller\ProductCategory\Action {
      * @throws \Exception\NotFoundException
      * @return \Http\Response
      */
-    public function categoryDirect($filters, $category, $brand, $request, $regionsToSelect, $catalogJson) {
+    public function categoryDirect($filters, $category, $brand, $request, $regionsToSelect, $catalogJson, $promoContent) {
         // убираем/показываем уши
         if(isset($catalogJson['show_side_panels'])) {
             \App::config()->adFox['enabled'] = (bool)$catalogJson['show_side_panels'];
@@ -129,7 +129,10 @@ class Action extends \Controller\ProductCategory\Action {
 
         // если в catalogJson'e указан category_layout_type == 'promo', то подгружаем промо-контент
         if(!empty($catalogJson['category_layout_type']) && $catalogJson['category_layout_type'] == 'promo') {
-            $promoContent = \RepositoryManager::productCategory()->getCatalogHtml($category);
+            $htmlPromoContent = \RepositoryManager::productCategory()->getCatalogHtml($category);
+            if(!empty($htmlPromoContent)) {
+                $promoContent = $htmlPromoContent;
+            }
         }
 
         // фильтры
