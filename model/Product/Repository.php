@@ -351,30 +351,43 @@ class Repository {
 
         $client = clone $this->client;
 
-        $response = array();
-        $client->addQuery('listing/list', array(
-            'filter' => array(
-                'filters' => $filter,
-                'sort'    => $sort,
-                'offset'  => $offset,
-                'limit'   => $limit,
-            ),
-            'region_id' => $region ? $region->getId() : \App::user()->getRegion()->getId(),
-            ), array(), function($data) use(&$response) {
-            $response = $data;
-        });
+        $response = [];
+        $client->addQuery('listing/list', [
+            'filter' => [
+                    'filters' => $filter,
+                    'sort'    => $sort,
+                    'offset'  => $offset,
+                    'limit'   => $limit,
+                ],
+                'region_id' => $region ? $region->getId() : \App::user()->getRegion()->getId(),
+            ],
+            [],
+            function($data) use(&$response) {
+                $response = $data;
+            }
+        );
         $client->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
         $collection = [];
         $entityClass = $this->entityClass;
         if (!empty($response['list'])) {
-            $this->prepareCollectionById($response['list'], $region, function($data) use(&$collection, $entityClass) {
-                foreach ($data as $item) {
-                    $collection[] = new $entityClass($item);
-                }
-            });
+            foreach (array_chunk($response['list'], 60) as $idsInChunk) {
+                $client->addQuery('product/get',
+                    [
+                        'select_type' => 'id',
+                        'id'          => $idsInChunk,
+                        'geo_id'      => $region ? $region->getId() : \App::user()->getRegion()->getId(),
+                    ],
+                    [],
+                    function($data) use(&$collection, $entityClass) {
+                        foreach ($data as $item) {
+                            $collection[] = new $entityClass($item);
+                        }
+                    }
+                );
+            }
+            $client->execute(\App::config()->coreV2['retryTimeout']['medium']);
         }
-        $this->client->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
         $collection = \RepositoryManager::review()->addScores($collection);
 
