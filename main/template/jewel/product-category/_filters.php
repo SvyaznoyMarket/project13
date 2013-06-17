@@ -12,7 +12,19 @@
     <? require __DIR__ . '/filter/_dropdown.php' ?>
   <? } ?>
 
+  <? $filtersEmpty = true; 
+    foreach ($filters as $filter) {
+      $values = $productFilter->getValue($filter);
+      if(!empty($values)) $filtersEmpty = false;
+    }
+  ?>
+
+  <? if(!$filtersEmpty) { ?>
+    <li class="reset_filters"><a <?= empty($values) ? 'class="active"' : '' ?> href="<?= $category->getLink()?>?scrollTo=<?= $scrollTo ?>"><div>Показать<br>все</div></a></li>
+  <? } ?>
+
   <? if ($productSorting && $productPager->count()): ?>
     <?= $page->render('jewel/product/_sorting', ['productSorting' => $productSorting, 'scrollTo' => $scrollTo]) ?>
   <? endif ?>
 </ul>
+ 
