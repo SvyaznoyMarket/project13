@@ -16,8 +16,7 @@ if (!isset($isAddInfo)) $isAddInfo = false;
 
 <? if (!$pager->count()) { ?>
     <div class="clear"></div>
-    <p class="ml30">нет товаров</p>
-
+    <div style="margin:0 auto;width:260px;padding: 160px 0;">Нет товаров с такими характеристиками</div>
 <? } else { ?>
     <?php switch ($view) {
         case 'compact':
