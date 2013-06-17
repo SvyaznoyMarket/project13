@@ -26,9 +26,7 @@ if (!$page->hasGlobalParam('shops')) {
                 Не важно
             </label>
         </li>
-        <?
-        foreach ($shops as $i => $singleShop) {
-            ?>
+        <? foreach ($shops as $i => $singleShop) { ?>
             <li onclick="document.location='<?=$page->url('product.category.shop', ['categoryPath' => $category->getPath(), 'shopid' => $singleShop->getId() ])?>';">
                 <input name="shop" id="shop_<?=$i+1?>" type="radio" class="hiddenCheckbox"/>
                 <label for="shop_<?=$i+1?>" class="prettyCheckbox radio list <?=($shop&&$shop->getId() == $singleShop->getId())?'checked':'';?>">
@@ -38,9 +36,7 @@ if (!$page->hasGlobalParam('shops')) {
                     <?=$singleShop->getAddress();?>
                 </label>
             </li>
-            <?
-            }
-            ?>
-        </ul>
+        <? } ?>
+    </ul>
     </dd>
 <? endif ?>
