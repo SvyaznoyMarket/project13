@@ -32,6 +32,10 @@
 
   <?= $page->render('jewel/product-category/_loading_top') ?>
 
-  <div id="pagerWrapper"></div>
+  <div id="pagerWrapper">
+    <div style="padding:70px 0;">
+      <? //чтобы лоадер корректно показывался при первоначальной загрузке ?>
+    </div>
+  </div>
 
 </div>

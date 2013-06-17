@@ -7,7 +7,6 @@ $(document).ready(function(){
       $('.brand-subnav__list a').click(function(event){
         $('.brand-subnav__list a').removeClass('active')
         $(this).addClass('active')
-        $('#ajaxgoods_top').show()
         get_jewel_content($(this).attr('href'))
         event.stopPropagation()
         return false
@@ -16,7 +15,6 @@ $(document).ready(function(){
 
     function handle_jewel_filters_pagination() {
       $('.filter-section a, .pageslist a').click(function(event){
-        $('#ajaxgoods_top').show()
         get_jewel_content($(this).attr('href'))
         event.stopPropagation()
         return false
@@ -90,10 +88,8 @@ $(document).ready(function(){
     }
 
     function get_jewel_content(url, slide) {
-      var tmpnodeJewel = $('.items-section__list')
-      if(tmpnodeJewel.length) {
-        $('#ajaxgoods').show()
-      }
+      $('#ajaxgoods_top').show()
+      $('#ajaxgoods').show()
       $.get(url,{},function(data){
         if(slide) {
           $('#smalltabs').slideUp(20)
