@@ -26,62 +26,11 @@
       <?= $promoContent ?>
   <? endif ?>
 
-  <? $filters = $productFilter->getFilterCollection() ?>
-  
-  <div id="smalltabs" data-scrollto-passed="<?= $scrollToPassed ?>" class="brand-subnav clearfix">
-    <nav>
-      <div class="brand-subnav__title"><?= $category->getName() ?></div>
-      <? foreach($filters as $key => $filter) { ?>
-        <? if(mb_strtolower($catalogJson['sub_category_filter_menu']) == mb_strtolower($filter->getName())) { ?>
-          <? require __DIR__ . '/filter/_tabs.php' ?>
-        <? } ?>
-      <? } ?>
-    </nav>
-  </div>
+  <div id="smalltabs" data-scrollto-passed="<?= (bool)$scrollTo ?>" class="brand-subnav clearfix"></div>
 
-  <div class="filter-section">
-    <ul class="clearfix">
-      <? foreach($filters as $key => $filter) { ?>
-        <? // не выводим фильтры, запрещенные в json и указанный в качестве табов
-          if((!empty($catalogJson['sub_category_filters_exclude']) && is_array($catalogJson['sub_category_filters_exclude']) &&
-              in_array(mb_strtolower($filter->getName()), array_map(function($filterName){
-                return mb_strtolower($filterName);
-              }, $catalogJson['sub_category_filters_exclude']))) ||
-              (mb_strtolower($catalogJson['sub_category_filter_menu']) == mb_strtolower($filter->getName()))) {
-            continue;
-          } 
-        ?>
-        <? require __DIR__ . '/filter/_dropdown.php' ?>
-      <? } ?>
+  <div class="filter-section"></div>
 
-      <? $filtersEmpty = true; 
-        foreach ($filters as $filter) {
-          $values = $productFilter->getValue($filter);
-          if(!empty($values)) $filtersEmpty = false;
-        }
-      ?>
+  <?= $page->render('jewel/product-category/_loading_top') ?>
 
-      <? if(!$filtersEmpty) { ?>
-        <li class="reset_filters"><a <?= empty($values) ? 'class="active"' : '' ?> href="<?= $category->getLink()?>?scrollTo=<?= $scrollTo ?>"><div>Показать<br>все</div></a></li>
-      <? } ?>
-
-      <? if ($productSorting && $productPager->count()): ?>
-        <?= $page->render('jewel/product/_sorting', array('productSorting' => $productSorting, 'scrollTo' => $scrollTo)) ?>
-      <? endif ?>
-     </ul>
-  </div>
-
-
-  <?= $page->render('jewel/product/_pager', array(
-      'request'                => $request,
-      'pager'                  => $productPager,
-      'productFilter'          => $productFilter,
-      'productSorting'         => $productSorting,
-      'hasListView'            => true,
-      'category'               => $category,
-      'view'                   => $productView,
-      'productVideosByProduct' => $productVideosByProduct,
-      'itemsPerRow'            => $itemsPerRow,
-  )) ?>
-
+  <div id="pagerWrapper"></div>
 </div>

@@ -16,7 +16,7 @@ if (!isset($isAddInfo)) $isAddInfo = false;
 
 <? if (!$pager->count()) { ?>
     <div class="clear"></div>
-    <p>нет товаров</p>
+    <p class="ml30">нет товаров</p>
 
 <? } else { ?>
     <?php switch ($view) {

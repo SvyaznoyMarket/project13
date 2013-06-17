@@ -14,7 +14,8 @@ module.exports = function(grunt) {
     "app.order.js",
     "app.product.comment.list.js",
     "app.product.js",
-    "app.shop.js"
+    "app.shop.js",
+    "jewel.category.leaf.js"
   ];
 
   var bigjqueryFiles = [

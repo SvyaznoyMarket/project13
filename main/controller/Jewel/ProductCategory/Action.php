@@ -157,8 +157,6 @@ class Action extends \Controller\ProductCategory\Action {
             $seoContent = '';
         }
 
-        $scrollToPassed = (bool)$request->get('scrollTo', false);
-
         $setPageParameters = function(\View\Layout $page) use (
             &$category,
             &$regionsToSelect,
@@ -167,8 +165,7 @@ class Action extends \Controller\ProductCategory\Action {
             &$hotlinks,
             &$seoContent,
             &$catalogJson,
-            &$promoContent,
-            &$scrollToPassed
+            &$promoContent
         ) {
             $page->setParam('category', $category);
             $page->setParam('regionsToSelect', $regionsToSelect);
@@ -180,7 +177,6 @@ class Action extends \Controller\ProductCategory\Action {
             $page->setParam('promoContent', $promoContent);
             $page->setParam('itemsPerRow', \App::config()->product['itemsPerRowJewel']);
             $page->setParam('scrollTo', 'smalltabs');
-            $page->setParam('scrollToPassed', $scrollToPassed);
         };
 
         // если категория содержится во внешнем узле дерева
@@ -239,80 +235,129 @@ class Action extends \Controller\ProductCategory\Action {
 
         if (\App::config()->debug) \App::debug()->add('sub.act', 'ProductCategory\\Action.leafCategory', 138);
 
-        $pageNum = (int)$request->get('page', 1);
-        if ($pageNum < 1) {
-            throw new \Exception\NotFoundException(sprintf('Неверный номер страницы "%s".', $pageNum));
-        }
-
-        // сортировка
-        $productSorting = new \Model\Product\Sorting();
-        list($sortingName, $sortingDirection) = array_pad(explode('-', $request->get('sort')), 2, null);
-        $productSorting->setActive($sortingName, $sortingDirection);
-
-        // вид товаров
-        $productView = $request->get('view', $category->getHasLine() ? 'line' : $category->getProductView());
-        // листалка
-        $limit = \App::config()->product['itemsPerPageJewel'];
-        $repository = \RepositoryManager::product();
-        $repository->setEntityClass(
-            \Model\Product\Category\Entity::PRODUCT_VIEW_EXPANDED == $productView
-                ? '\\Model\\Product\\ExpandedEntity'
-                : '\\Model\\Product\\CompactEntity'
-        );
-        $productPager = $repository->getIteratorByFilter(
-            $productFilter->dump(),
-            $productSorting->dump(),
-            ($pageNum - 1) * $limit,
-            $limit
-        );
-        $productPager->setPage($pageNum);
-        $productPager->setMaxPerPage($limit);
-        if (self::isGlobal()) {
-            $category->setGlobalProductCount($productPager->count());
-        } else {
-            $category->setProductCount($productPager->count());
-        }
-
-        // проверка на максимально допустимый номер страницы
-        if (($productPager->getPage() - $productPager->getLastPage()) > 0) {
-            throw new \Exception\NotFoundException(sprintf('Неверный номер страницы "%s".', $productPager->getPage()));
-        }
-
-        // video
-        $productVideosByProduct = [];
-        foreach ($productPager as $product) {
-            /** @var $product \Model\Product\Entity */
-            $productVideosByProduct[$product->getId()] = [];
-        }
-        if ((bool)$productVideosByProduct) {
-            \RepositoryManager::productVideo()->prepareCollectionByProductIds(array_keys($productVideosByProduct), function($data) use (&$productVideosByProduct) {
-                foreach ($data as $id => $items) {
-                    if (!is_array($items)) continue;
-                    foreach ($items as $item) {
-                        $productVideosByProduct[$id][] = new \Model\Product\Video\Entity((array)$item);
-                    }
-                }
-            });
-            \App::dataStoreClient()->execute(\App::config()->dataStore['retryTimeout']['tiny'], \App::config()->dataStore['retryCount']);
-        }
-
-        // ajax
+        // если не-ajax то практически никаких действий не производим, чтобы ускорить загрузку,
+        // так как при загрузке сразу же будет отправлен аякс-запрос для получения табов, фильтров, товаров
+        // такой подход нужен для поддержки урлов с хэшем, чтобы не было такого UX когда страница открывается
+        // с одним списком товаром на определенной вкладке, а затем переключается на другую вкладку
+        // и список товаров меняется
         if ($request->isXmlHttpRequest()) {
-            return new \Http\Response(\App::templating()->render('jewel/product/_list', array(
+            $pageNum = (int)$request->get('page', 1);
+            if ($pageNum < 1) {
+                throw new \Exception\NotFoundException(sprintf('Неверный номер страницы "%s".', $pageNum));
+            }
+
+            $productFilter = $page->getParam('productFilter');
+            // был нажат фильтр или сортировка
+            $scrollTo = $page->getParam('scrollTo');
+
+             // сортировка
+            $productSorting = new \Model\Product\Sorting();
+            list($sortingName, $sortingDirection) = array_pad(explode('-', $request->get('sort')), 2, null);
+            $productSorting->setActive($sortingName, $sortingDirection);
+
+            // вид товаров
+            $productView = $request->get('view', $category->getHasLine() ? 'line' : $category->getProductView());
+            // листалка
+            $limit = \App::config()->product['itemsPerPageJewel'];
+            $repository = \RepositoryManager::product();
+            $repository->setEntityClass(
+                \Model\Product\Category\Entity::PRODUCT_VIEW_EXPANDED == $productView
+                    ? '\\Model\\Product\\ExpandedEntity'
+                    : '\\Model\\Product\\CompactEntity'
+            );
+            $productPager = $repository->getIteratorByFilter(
+                $productFilter->dump(),
+                $productSorting->dump(),
+                ($pageNum - 1) * $limit,
+                $limit
+            );
+            $productPager->setPage($pageNum);
+            $productPager->setMaxPerPage($limit);
+            if (self::isGlobal()) {
+                $category->setGlobalProductCount($productPager->count());
+            } else {
+                $category->setProductCount($productPager->count());
+            }
+
+            // проверка на максимально допустимый номер страницы
+            if (($productPager->getPage() - $productPager->getLastPage()) > 0) {
+                throw new \Exception\NotFoundException(sprintf('Неверный номер страницы "%s".', $productPager->getPage()));
+            }
+
+            // video
+            $productVideosByProduct = [];
+            foreach ($productPager as $product) {
+                /** @var $product \Model\Product\Entity */
+                $productVideosByProduct[$product->getId()] = [];
+            }
+            if ((bool)$productVideosByProduct) {
+                \RepositoryManager::productVideo()->prepareCollectionByProductIds(array_keys($productVideosByProduct), function($data) use (&$productVideosByProduct) {
+                    foreach ($data as $id => $items) {
+                        if (!is_array($items)) continue;
+                        foreach ($items as $item) {
+                            $productVideosByProduct[$id][] = new \Model\Product\Video\Entity((array)$item);
+                        }
+                    }
+                });
+                \App::dataStoreClient()->execute(\App::config()->dataStore['retryTimeout']['tiny'], \App::config()->dataStore['retryCount']);
+            }
+
+            $responseData = [];
+            $responseData['products'] = \App::templating()->render('jewel/product/_list', [
                 'page'                   => new \View\Layout(),
                 'pager'                  => $productPager,
                 'view'                   => $productView,
                 'productVideosByProduct' => $productVideosByProduct,
                 'isAjax'                 => true,
                 'itemsPerRow'            => \App::config()->product['itemsPerRowJewel'],
-            )));
+            ]);
+            // бесконечный скролл
+            if(empty($scrollTo)) {
+                return new \Http\Response($responseData['products']);
+            }
+            // фильтры, сортировка и товары с пагинацией
+            else {
+                $responseData['tabs'] = \App::templating()->render('jewel/product-category/filter/_tabs', [
+                    'filters'           => $productFilter->getFilterCollection(),
+                    'catalogJson'       => $page->getParam('catalogJson'),
+                    'productFilter'     => $productFilter,
+                    'category'          => $page->getParam('category'),
+                    'scrollTo'          => $scrollTo,
+                ]);
+                $responseData['filters'] = \App::templating()->render('jewel/product-category/_filters', [
+                    'page'              => new \View\Layout(),
+                    'filters'           => $productFilter->getFilterCollection(),
+                    'catalogJson'       => $page->getParam('catalogJson'),
+                    'productSorting'    => $productSorting,
+                    'productPager'      => $productPager,
+                    'productFilter'     => $productFilter,
+                    'category'          => $page->getParam('category'),
+                    'scrollTo'          => $scrollTo,
+                    'isAjax'            => true,
+                ]);
+                $responseData['pager'] = \App::templating()->render('jewel/product/_pager', [
+                    'page'                      => new \View\Layout(),
+                    'request'                   => $request,
+                    'pager'                     => $productPager,
+                    'productFilter'             => $productFilter,
+                    'productSorting'            => $productSorting,
+                    'hasListView'               => true,
+                    'category'                  => $page->getParam('category'),
+                    'productVideosByProduct'    => $productVideosByProduct,
+                    'view'                      => $productView,
+                    'itemsPerRow'               => $page->getParam('itemsPerRow'),
+                ]);
+                $responseData['query_string'] = $request->getQueryString();
+
+                return new \Http\JsonResponse($responseData);
+            }
         }
 
-        $page->setParam('productPager', $productPager);
-        $page->setParam('productSorting', $productSorting);
-        $page->setParam('productView', $productView);
-        $page->setParam('productVideosByProduct', $productVideosByProduct);
-        $page->setParam('sidebarHotlinks', true);
+        // $page->setParam('productPager', $productPager);
+        // $page->setParam('productSorting', $productSorting);
+        // $page->setParam('productView', $productView);
+        // $page->setParam('productVideosByProduct', $productVideosByProduct);
+        // $page->setParam('sidebarHotlinks', true);
 
         $page->setParam('myThingsData', [
             'EventType'   => 'MyThings.Event.Visit',
