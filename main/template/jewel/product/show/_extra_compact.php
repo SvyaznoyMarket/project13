@@ -23,7 +23,7 @@ $additionalData = isset($additionalData) ? $additionalData : null;
     	<div class="photo">
 			<a href="<?php echo $product->getLink() ?>"<?php if (!empty($gaEvent)) echo ' data-event="'.$gaEvent.'" data-title="Переход по ссылке" class="gaEvent"'; ?>>
 			  <img class="mainImg" src="<?php echo $product->getImageUrl() ?>" alt="<?php echo $product->getNameWithCategory() ?>"
-				title="<?php echo $product->getNameWithCategory() ?>" width="119" height="120"/>
+				 width="119" height="120"/>
 			</a>
 		</div>
 	    
