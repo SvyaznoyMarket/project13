@@ -36,6 +36,7 @@ var Doors3dHolders=[];
 var Doors3dHoldersMax=3;
 
 var CurrentVstavkaMaterial;
+var ProblemVstavkaMaterials=[];
 var KupeParams=new Object();
 KupeParams.nDoors=0;
 
@@ -63,7 +64,7 @@ function Initialize(strJsonFile)
 	MainDiv.setAttribute('id', 'Planner3d_MainDiv');
 	MainDiv.style.position='relative';
 	ParentItem.appendChild(MainDiv);
-	MainDiv.innerHTML='<div id="Planner3d_tab_info" style="color: #666666;font-family:\'Enter Type Bold\';font-size:18px;position: absolute;top: 0px;left: 50%;width: 200px;position:absolute;z-index: 100;display:none;">\
+	MainDiv.innerHTML='<div id="Planner3d_tab_info" style="color: #666666;font-family:\'Enter Type Bold\';font-size:18px;position: absolute;top: 0px;left: 50%;width: 200px;position:absolute;z-index: 1;display:none;">\
 	<table cellpadding=0 cellspacing=0 width=250>\
 	<tr><td height=25 id=Planner3d_TabInfo1Header width=120 align=center>Выбор корпуса</td><td height=25 width=5>&nbsp;</td><td id=Planner3d_TabInfo2Header width=120 align=center>Выбор фасада</td></tr>\
 	<tr><td id=Planner3d_KorpusVariantsDiv height=80 colspan=3 style="padding-left:5px;border:1px solid #c1c1bf;"></td></tr>\
@@ -81,7 +82,7 @@ function Initialize(strJsonFile)
 
 	PopupMenuDiv=document.createElement('DIV');
 	PopupMenuDiv.style.position='absolute';
-	PopupMenuDiv.style.zIndex='200';
+	PopupMenuDiv.style.zIndex='2';
 	PopupMenuDiv.style.display='none';
 	PopupMenuDiv.addEventListener( 'mouseover', showPopupMenu, false );
 	PopupMenuDiv.addEventListener( 'mouseout', OnPopupOut, false );
@@ -559,17 +560,49 @@ function MyCreateMaterial(m)
 	{
 		var SceneApiIds=GetSceneApiIds();
 
+		var ProblemVstavkaMaterialsOld=ProblemVstavkaMaterials;
+		ProblemVstavkaMaterials=[];
 		var out=[];
 		for(var k=0;k<SceneApiIds.length;k++)
 		{
 			var api_id=SceneApiIds[k];
 			var ii=api_id.indexOf('/');
 			if (ii>0)
+			{
 				out.push({id:parseInt(api_id.substring(0,ii)), error:'Вставки продаютcя только комплектом по 2шт!'});
+				for(var iv=0;iv<MainJsonData.articuls.vstavki.length;iv++)
+					for(var ik=0;ik<MainJsonData.articuls.vstavki[iv].variants.length;ik++)
+						if (MainJsonData.articuls.vstavki[iv].variants[ik].api_id==api_id)
+							ProblemVstavkaMaterials.push(MainJsonData.articuls.vstavki[iv].variants[ik].color)
+			}
 			else
 				out.push({id:parseInt(api_id), error:''});
 		}
 		Planner3d_UpdatePrice(out);
+		if ((iActiveTab==2) && (ProblemVstavkaMaterialsOld.length || ProblemVstavkaMaterials.length))
+		{
+			var ScrollContentDivChildNodes=document.getElementById('Planner3d_scrollcontent').childNodes;
+			if (ScrollContentDivChildNodes.length && (ScrollContentDivChildNodes[ScrollContentDivChildNodes.length-1].tagName=='TABLE'))
+			{
+				var rows=ScrollContentDivChildNodes[ScrollContentDivChildNodes.length-1].rows;
+				for(var i=0;i<rows.length;i++)
+				{
+					var cells=rows.item(i).cells;
+					for(var j=0;j<cells.length;j++)
+					{
+						var cell=cells.item(j);
+						if (cell && cell.childNodes.length && (cell.childNodes[0].tagName=='DIV') && (cell.childNodes[0].id.substring(0,4)=='mat_'))
+						{
+							var bValid=!ArrayHasItem(ProblemVstavkaMaterials,cell.childNodes[0].id.substring(4));
+							if (bValid && cell.childNodes[0].childNodes.length)
+								cell.childNodes[0].innerHTML='';
+							else if (!bValid && (cell.childNodes[0].childNodes.length==0))
+								cell.childNodes[0].innerHTML='<img draggable="false" src="'+HostImgs+'attention.gif" border=0>';
+						}
+					}
+				}
+			}
+		}
 	}
 
 	function GetBasketContent()
@@ -687,7 +720,10 @@ function MyCreateMaterial(m)
 					syn+='<td onmouseover="Planner3dKupeConstructor.showPopupMenu(\'mat_'+colors[k]+'\')" onmouseout="Planner3dKupeConstructor.OnPopupOut()" width='+(iconSize+4)+' height='+(iconSize+4)+' valign=middle align=center style="';
 					syn+='border:2px solid '+((CurrentVstavkaMaterial==colors[k])?'#ff9e18;':'#ffffff;');
 					syn+='">';
-					syn+='<div draggable="true" id="mat_'+colors[k]+'" style="width:'+iconSize+'px;height:'+iconSize+'px;background-image:url('+mat.icon+');cursor:pointer;" ondragstart="Planner3dKupeConstructor.onDragMatStart(\''+colors[k]+'\', event)" ondragend="Planner3dKupeConstructor.onDragMatEnd()"  title="'+mat.description+'"></div>';
+					syn+='<div draggable="true" id="mat_'+colors[k]+'" style="width:'+iconSize+'px;height:'+iconSize+'px;background-image:url('+mat.icon+');cursor:pointer;text-align:right;" ondragstart="Planner3dKupeConstructor.onDragMatStart(\''+colors[k]+'\', event)" ondragend="Planner3dKupeConstructor.onDragMatEnd()"  title="'+mat.description+'">';
+					if (ArrayHasItem(ProblemVstavkaMaterials,colors[k]))
+						syn+='<img draggable="false" src="'+HostImgs+'attention.gif" border=0>';
+					syn+='</div>';
 					syn+='</td>';
 				}
 			}
@@ -805,26 +841,29 @@ function MyCreateMaterial(m)
 	{
 		if (SetCurrentVstavkaMaterial.arguments.length>=2)
 		{
-			if (((event.target.tagName=='DIV')||(event.target.tagName=='IMG'))&&(event.target.id.substring(0,4)=='mat_'))
+			var targetTag=event.target;
+			if ((targetTag.tagName=='IMG') && (targetTag.parentNode.tagName=='DIV') && (targetTag.parentNode.id.substring(0,4)=='mat_'))
+				targetTag=targetTag.parentNode;
+
+			if (((targetTag.tagName=='DIV')||(targetTag.tagName=='IMG'))&&(targetTag.id.substring(0,4)=='mat_'))
 			{
-				matName=event.target.id.substring(4);
+				matName=targetTag.id.substring(4);
 				LoadMaterialByName(matName);
 			}
 			else
 				return;
-		}
 
-		CurrentVstavkaMaterial=matName;
+			CurrentVstavkaMaterial=matName;
 
-		if (SetCurrentVstavkaMaterial.arguments.length>=2)
-		{
-			var td=event.target?event.target.offsetParent:null;
-			if (td.tagName=='TD')
+			var td=targetTag?targetTag.offsetParent:null;
+			if (td && (td.tagName=='TD'))
 			{
 				UnborderTableCells(td.offsetParent,td)
 				td.style.borderColor='#ff9e18';
 			}
 		}
+		else
+			CurrentVstavkaMaterial=matName;
 	}
 
 	function SetProfileMaterial(matName,event)
@@ -1077,12 +1116,10 @@ function MyCreateMaterial(m)
 					Doors3dHolders[n].position.x=0;
 
 				for(var k=0;k<DoorVaraint.shapes.length;k++)
-				{
 					loader.createModel( DoorVaraint.shapes[k], function ( geometry,materials ) {
 						OnShapeLoaded('Door'+n,k,geometry,materials);
 
 					}, '' );
-				}
 				UpdateKupeDoorMaterial(n);
 			}
 		}
@@ -1217,19 +1254,15 @@ function CreateFullKupe()
 	KupeParams.DoorsType=Korpus.doors.type;
 
 	for(var k=0;k<Korpus.shapes.length;k++)
-	{
 		loader.createModel( Korpus.shapes[k], function ( geometry,materials ) {
 			OnShapeLoaded('Korpus',k,geometry,materials);
 
 		}, '' );
-	}
 
 	for(var k=0;k<MainJsonData.lamp.length;k++)
-	{
 		loader.createModel( MainJsonData.lamp[k], function ( geometry,materials ) {
 			OnShapeLoaded('Lamp',k,geometry,materials);
 		}, '' );
-	}
 
 	var Door=GetDoorByType(KupeParams.DoorsType);
 	if (Door)
@@ -1399,9 +1432,6 @@ function onDocumentMouseMove( event ) {
 			last_pan_X=clientX;
 			last_pan_Y=clientY;
 		}
-
-
-
 	}
 	On3dMouseMove(clientX,clientY);
 	event.stopPropagation();
@@ -1412,6 +1442,7 @@ function On3dMouseMove(clientX,clientY)
 	var iActiveDoorPrev=iActiveDoor;
 	if (((clientX>=0)&&(clientX<Window3dWidth)) && ((clientY>=0)&&(clientY<Window3dHeight)))
 	{
+		var MouseCursor='default';
 		if (iActiveTab==2)
 		{
 			mouse2D.x = ( clientX / Window3dWidth ) * 2 - 1;
@@ -1439,6 +1470,9 @@ function On3dMouseMove(clientX,clientY)
 								if (intersects[0].object==Doors3dHolders[n].children[1+k])
 								{
 									iActiveDoorSection=k;
+									var colors=GetVstavkaPossibleMaterials(KupeParams.DoorsType,KupeParams.doors[n].variantType,k);
+									if (ArrayHasItem(colors,CurrentVstavkaMaterial))
+										MouseCursor='url('+HostImgs+'brush.cur), pointer';
 									break;
 								}
 							}
@@ -1450,6 +1484,7 @@ function On3dMouseMove(clientX,clientY)
 				}
 			}
 		}
+		renderer.domElement.style.cursor=MouseCursor;
 	}
 	else
 		iActiveDoor=-1;
@@ -1932,16 +1967,52 @@ function onDropHandler(event)
 function onDragOver(event)
 {
 	var matName=event.dataTransfer.getData('text');
+	
+	event.dataTransfer.dropEffect='none';
 	if (curDragMat && curDragMat.length)
 	{
 		if (event.preventDefault)
-		{
     		event.preventDefault();
-    	}
-		event.dataTransfer.dropEffect='copy';
+
+		var clientX=event.pageX-getGlobalOffsetX(MainDiv);
+		var clientY=event.pageY-getGlobalOffsetY(MainDiv);
+		if (((clientX>=0)&&(clientX<Window3dWidth)) && ((clientY>=0)&&(clientY<Window3dHeight)))
+		{
+			mouse2D.x = ( clientX / Window3dWidth ) * 2 - 1;
+			mouse2D.y = - ( clientY / Window3dHeight ) * 2 + 1;
+
+			raycaster = projector.pickingRay( mouse2D.clone(), camera );
+
+			var intersects = raycaster.intersectObjects( scene.children,true );
+
+			if (intersects.length && (intersects[0].object.parent!=Korpus3dHolder))
+			{
+				for(var n=0;n<KupeParams.nDoors;n++)
+				{
+					if (intersects[0].object.parent==Doors3dHolders[n])
+					{
+						var Door=GetDoorByType(KupeParams.DoorsType)
+						if (Door!=undefined)
+						{
+							for(var k=0;k<KupeParams.doors[n].sections.length;k++)
+							{
+								if (intersects[0].object==Doors3dHolders[n].children[1+k])
+								{
+									var colors=GetVstavkaPossibleMaterials(KupeParams.DoorsType,KupeParams.doors[n].variantType,k);
+									if (ArrayHasItem(colors,curDragMat))
+										event.dataTransfer.dropEffect='copy';
+									break;
+								}
+							}
+						}
+						return;
+					}
+				}
+
+			}
+		}
+
 	}
-	else
-		event.dataTransfer.dropEffect='none';
 }
 
 function onDragEnter(event)
@@ -1998,9 +2069,9 @@ function animate() {
 			{
 				Doors3dHolders[iActiveDoor].children[1+iActiveDoorSection].geometry.computeBoundingBox();
 				var bb = Doors3dHolders[iActiveDoor].children[1+iActiveDoorSection].geometry.boundingBox;
-				var pnt2d=Project3dPointTo2d(0.5*(bb.min.x+bb.max.x)+Doors3dHolders[iActiveDoor].position.x, 0.5*(bb.min.y+bb.max.y)+Doors3dHolders[iActiveDoor].position.y, bb.max.z+Doors3dHolders[iActiveDoor].position.z);
-				ButtColorPicker.style.left=(pnt2d.x-13)+'px';
-				ButtColorPicker.style.top=Math.round(pnt2d.y-13)+'px';
+				var pnt2d=Project3dPointTo2d(bb.min.x+Doors3dHolders[iActiveDoor].position.x, bb.min.y+Doors3dHolders[iActiveDoor].position.y, bb.max.z+Doors3dHolders[iActiveDoor].position.z);
+				ButtColorPicker.style.left=pnt2d.x+'px';
+				ButtColorPicker.style.top=Math.round(pnt2d.y-26)+'px';
 
 				ButtColorPicker.style.display='block';
 			}
