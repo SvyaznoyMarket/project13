@@ -9179,11 +9179,15 @@
     height: 23px;
     padding: 0 10px;
   }
+  .items-section .items-section__list li .item-buy.link1 {
+    text-align: center;
+  }
   .items-section .items-section__list li .item-buy.link1active {
     background: #fff;
     border: 1px solid #000;
     color: #000;
     height: 21px;
+    width: 65px;
   }
   .items-section .items-section__list li .item-price {
     position: absolute;
