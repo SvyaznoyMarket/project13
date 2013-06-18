@@ -57,17 +57,20 @@
         position: absolute;
         bottom: 0;
         right: 0;
-        background: url("@{base-url}/pandoraCatalog/img/btn_buy.gif") no-repeat 0 0; 
-        .opacity(0);
-        width: 57px;
+        background: #000;
+        color: @white;
+        .rounded(7px);
+        text-align: center;
+        line-height: 21px;
+        opacity: 0;
         display: block;
         height: 23px;
-        -webkit-transition: opacity 0.2s ease-in-out;
-        -moz-transition: opacity 0.2s ease-in-out;
-        transition: opacity 0.2s ease-in-out;
+        padding: 0 10px;
         &.link1active {
-          padding-right:12px;
-          background: url("@{base-url}/pandoraCatalog/img/btn_cart.gif") no-repeat 0 0; 
+          background: #fff;
+          border: 1px solid #000;
+          color: #000;
+          height: 21px;
         }
       }
       .item-price {
