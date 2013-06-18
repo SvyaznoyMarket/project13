@@ -9391,6 +9391,15 @@
     width: 218px;
     height: 221px;
   }
+  .brandSectionPandora__catalog .bNavLoader__eIco {
+    background: url("/css/ajaxPopup/img/arrow_bg_b.png") no-repeat;
+  }
+  .brandSectionPandora__catalog #ajaxgoods_top.popup {
+    border: 2px solid #000;
+  }
+  .brandSectionPandora__catalog .bNavLoader__eM p {
+    color: #000;
+  }
   .pagehead {
     padding-bottom: 0;
   }
