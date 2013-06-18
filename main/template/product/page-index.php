@@ -17,7 +17,7 @@
 
 <?
 
-$hasFurnitureBuilder = $product->getMainCategory() && $product->getMainCategory()->getIsFurniture();
+$hasFurnitureBuilder = $product->getLine() && (256 == $product->getLine()->getId()); // Серия Байкал
 
 /** @var  $productVideo \Model\Product\Video\Entity|null */
 $productVideo = reset($productVideos);
