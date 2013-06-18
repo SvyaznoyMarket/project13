@@ -286,7 +286,7 @@ $productVideo = reset($productVideos);
         </div>
         <div class="countTitle fl" <?= $user->getCart()->hasProduct($product->getId()) ? 'style="visibility:hidden;"': '' ?>>шт.</div>
       <?php endif ?>
-      <?= $page->render('cart/_button', ['product' => $product, 'disabled' => !$product->getIsBuyable(), 'bought' => ($user->getCart()->hasProduct($product->getId()) ? 'style="visibility:hidden;"': '')]) ?>
+      <?= $page->render('jewel/cart/_button', ['product' => $product, 'disabled' => !$product->getIsBuyable(), 'bought' => ($user->getCart()->hasProduct($product->getId()) ? 'style="visibility:hidden;"': '')]) ?>
       <? if (!$product->getIsBuyable() && $product->getState()->getIsShop()): ?>
         <div class="notBuying font12">
             <div class="corner"><div></div></div>
@@ -527,7 +527,7 @@ $productVideo = reset($productVideos);
           <strong class="font34"><span class="price"><?= $page->helper->formatPrice($product->getPrice()) ?></span> <span class="rubl">p</span></strong>
       </div>
       <div class="goodsbarbig mSmallBtns pb40" ref="<?= $product->getToken() ?>" data-value='<?= $json ?>'>
-        <?= $page->render('cart/_button', ['product' => $product, 'disabled' => !$product->getIsBuyable()]) ?>
+        <?= $page->render('jewel/cart/_button', ['product' => $product, 'disabled' => !$product->getIsBuyable()]) ?>
       </div>
 
       <h2>Фото:</h2>
@@ -672,7 +672,7 @@ $productVideo = reset($productVideos);
         </div>
         <div class="countTitle fl" <?= $user->getCart()->hasProduct($product->getId()) ? 'style="visibility:hidden;"': '' ?>>шт.</div>
       <?php endif ?>
-      <?= $page->render('cart/_button', ['product' => $product, 'disabled' => !$product->getIsBuyable(), 'bought' => ($user->getCart()->hasProduct($product->getId()) ? 'style="visibility:hidden;"': '')]) ?>
+      <?= $page->render('jewel/cart/_button', ['product' => $product, 'disabled' => !$product->getIsBuyable(), 'bought' => ($user->getCart()->hasProduct($product->getId()) ? 'style="visibility:hidden;"': '')]) ?>
       <? if (!$product->getIsBuyable() && $product->getState()->getIsShop()): ?>
         <div class="notBuying font12">
             <div class="corner"><div></div></div>

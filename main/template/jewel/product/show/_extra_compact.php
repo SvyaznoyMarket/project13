@@ -29,7 +29,7 @@ $additionalData = isset($additionalData) ? $additionalData : null;
 	    
         <? if ($product->getIsBuyable()): ?>
     		<div class="goodsbar mSmallBtns mR">
-              <?= $page->render('cart/_button', ['product' => $product, 'disabled' => !$product->getIsBuyable(), 'bought' => (\App::user()->getCart()->hasProduct($product->getId()) ? 'style="visibility:hidden;"': '')]) ?>
+              <?= $page->render('jewel/cart/_button', ['product' => $product, 'disabled' => !$product->getIsBuyable(), 'bought' => (\App::user()->getCart()->hasProduct($product->getId()) ? 'style="visibility:hidden;"': '')]) ?>
             </div>
         <? endif ?>
 
