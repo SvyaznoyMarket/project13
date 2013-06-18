@@ -132,7 +132,42 @@ $(document).ready(function() {
 		$('.goodsbarbig .link1').bind('click', kupe2basket)
 	}
 	
+    /**
+	 * Уведомления о снижении цены
+	 */
+	if ($('.jsLowPriceNotifer').length){
+		var notiferButton = $('.jsLowPriceNotifer')
+		var submitBtn = $('.bLowPriceNotiferPopup__eSubmitEmail')
+		var input = $('.bLowPriceNotiferPopup__eInputEmail')
+		var notiferPopup = $('.bLowPriceNotiferPopup')
 
+
+		var lowPriceNitiferHide = function(){
+			notiferPopup.fadeOut(300)
+			return false
+		}
+
+		var lowPriceNitiferShow = function(){
+			notiferPopup.fadeIn(300)
+			notiferPopup.find('.close').bind('click', lowPriceNitiferHide)
+			return false
+		}
+
+		var lowPriceNitiferSubmit = function(){
+			if ((input.val().search('@')) != -1){
+				var url = input.data('url')
+				lowPriceNitiferHide()
+			}
+			else{
+				input.addClass('red')
+			}
+			return false
+		}
+
+		input.placeholder()
+		submitBtn.bind('click', lowPriceNitiferSubmit)
+		notiferButton.bind('click', lowPriceNitiferShow)
+	}
 
 
 	/*Вывод магазинов, когда товар доступен только в них
