@@ -9165,8 +9165,8 @@
   }
   .items-section .items-section__list li .item-buy {
     position: absolute;
-    bottom: 10px;
-    right: 10px;
+    bottom: 0;
+    right: 0;
     background: url("/css/pandoraCatalog/img/btn_buy.gif") no-repeat 0 0;
     -moz-opacity: 0;
     -khtml-opacity: 0;
@@ -9177,9 +9177,9 @@
     width: 57px;
     display: block;
     height: 23px;
-    -webkit-transition: opacity 0.1s ease-in-out;
-    -moz-transition: opacity 0.1s ease-in-out;
-    transition: opacity 0.1s ease-in-out;
+    -webkit-transition: opacity 0.2s ease-in-out;
+    -moz-transition: opacity 0.2s ease-in-out;
+    transition: opacity 0.2s ease-in-out;
   }
   .items-section .items-section__list li .item-buy.link1active {
     padding-right: 12px;
@@ -9187,11 +9187,11 @@
   }
   .items-section .items-section__list li .item-price {
     position: absolute;
-    bottom: 10px;
+    bottom: 0;
     left: 80px;
-    -webkit-transition: left 0.1s ease-in-out;
-    -moz-transition: left 0.1s ease-in-out;
-    transition: left 0.1s ease-in-out;
+    -webkit-transition: left 0.2s ease-in-out;
+    -moz-transition: left 0.2s ease-in-out;
+    transition: left 0.2s ease-in-out;
   }
   .items-section .items-section__list li .item-name {
     -moz-opacity: 0;
@@ -9200,9 +9200,9 @@
     opacity: 0;
     -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
     filter: alpha(opacity=0);
-    -webkit-transition: opacity 0.1s ease-in-out;
-    -moz-transition: opacity 0.1s ease-in-out;
-    transition: opacity 0.1s ease-in-out;
+    -webkit-transition: opacity 0.2s ease-in-out;
+    -moz-transition: opacity 0.2s ease-in-out;
+    transition: opacity 0.2s ease-in-out;
   }
   .items-section .items-section__list li .item-img {
     text-align: center;
@@ -9228,7 +9228,7 @@
     filter: alpha(opacity=100);
   }
   .items-section .items-section__list .hover .item-price {
-    left: 10px;
+    left: 0;
   }
   .banner-categories {
     position: relative;
@@ -9369,6 +9369,10 @@
   }
   .brandSectionPandora__catalog .goodsbox {
     padding: 0;
+    margin: 0;
+    width: 218px;
+    height: 221px;
+    min-height: 221px;
   }
   .brandSectionPandora__catalog .goodsbox .notBuying {
     visibility: hidden;
@@ -9377,15 +9381,15 @@
     visibility: visible;
   }
   .brandSectionPandora__catalog .goodsbox__inner {
-    width: 201px;
     margin: 0;
-    padding: 10px;
+    padding: 0;
     border: 1px solid #fff;
     position: relative;
-    height: 201px;
     box-shadow: none;
     border: none;
     background-color: transparent;
+    width: 218px;
+    height: 221px;
   }
   .pagehead {
     padding-bottom: 0;
@@ -9785,6 +9789,40 @@
   }
   .brandSectionPandora__product .product-desc .vitrin .listAvalShop li a {
     color: #6E6E6E;
+  }
+}
+/*---END---СТИЛИ БРЕНД РАЗДЕЛА PANDORA---*/
+/*------СТИЛИ БРЕНД РАЗДЕЛА PANDORA - КАРТОЧКА ТОВАРА------*/
+@media all {
+  .jewel .flybox,
+  .jewel .bMobDown {
+    border: 2px solid #000;
+  }
+  .jewel .flybox .close,
+  .jewel .bMobDown .close {
+    background: url("/css/pandoraPopups/img/closeBtnBlack.png") no-repeat 0 0;
+  }
+  .jewel .flybox .bigbuttonlink,
+  .jewel .bMobDown .bigbuttonlink {
+    background-color: #000;
+    border-color: #000;
+    font-weight: normal;
+  }
+  .jewel .flybox .corner,
+  .jewel .bMobDown .corner {
+    background: url("/css/pandoraPopups/img/corner.png") no-repeat 0 0;
+    bottom: -14px;
+  }
+  .jewel .bFast__eMapLink {
+    color: #000;
+  }
+  .jewel #upper {
+    background-color: #000;
+  }
+  .jewel .bBigOrangeButton {
+    background: #000;
+    border: 1px solid #000;
+    font-weight: normal;
   }
 }
 /*---END---СТИЛИ БРЕНД РАЗДЕЛА PANDORA---*/

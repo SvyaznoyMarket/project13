@@ -5,7 +5,7 @@
 ?>
 
 <!-- Lightbox -->
-<div class="lightbox jewel">
+<div class="lightbox">
     <div class="lightboxinner">
         <div class="dropbox" style="left:733px; display:none;">
             <p>Перетащите сюда</p>

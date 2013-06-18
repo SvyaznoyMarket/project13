@@ -534,9 +534,9 @@ $productVideo = reset($productVideos);
       <ul class="previewlist">
         <? foreach ($photoList as $photo): ?>
         <li class="viewstock" ref="photo<?= $photo->getId() ?>">
-        	<a href="<?= $photo->getUrl(4) ?>" class="viewme" ref="image" id="try-3">
-        		<img src="<?= $photo->getUrl(2) ?>" alt="<?= $page->escape($product->getName()) ?>" title="<?= $page->escape($product->getName()) ?>" width="48" height="48" />
-        	</a>
+          <a href="<?= $photo->getUrl(4) ?>" class="viewme" ref="image" id="try-3">
+            <img src="<?= $photo->getUrl(2) ?>" alt="<?= $page->escape($product->getName()) ?>" title="<?= $page->escape($product->getName()) ?>" width="48" height="48" />
+          </a>
         </li>
         <? endforeach ?>
         <? if (count($photo3dList) > 0): ?>
@@ -715,5 +715,3 @@ $productVideo = reset($productVideos);
 <? endif ?>
 
 </div>
-
-
