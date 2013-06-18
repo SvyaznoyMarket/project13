@@ -27,9 +27,10 @@ class AccessoryAction {
 
         // фильтруем аксессуары для всех табов кроме "популярные"
         if(!empty($categoryToken)) {
+            $accessoryItems = [];
             // фильтруем аксессуары согласно разрешенным в json категориям
             // и получаем аксессуары, сгруппированные по категориям
-            $accessoriesGrouped = \Model\Product\Repository::filterAccessoryId($product, $categoryToken);
+            $accessoriesGrouped = \Model\Product\Repository::filterAccessoryId($product, $accessoryItems, $categoryToken);
 
             if(!isset($accessoriesGrouped[$categoryToken]))
                 return new \Http\JsonResponse(array('success' => false, 'data' => 'Не найдена категория ' . $categoryToken));
