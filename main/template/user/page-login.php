@@ -1,8 +1,13 @@
 <?php
 /**
- * @var $page \View\User\LoginPage
- * @var $form \View\User\LoginForm|\View\User\RegistrationForm|null
+ * @var $page     \View\User\LoginPage
+ * @var $form     \View\User\LoginForm|\View\User\RegistrationForm|null
+ * @var $redirect string|null
  */
+?>
+
+<?
+if (!isset($redirect)) $redirect = '';
 ?>
 
 <div class="bPageLogin clearfix">
@@ -14,7 +19,7 @@
 			о новых поступлениях, акциях и распродажах!</p>
 		
 		<form method="post" class="form" action="<?= $page->url('user.register') ?>" id="register-form">
-			<input type="hidden" value="<?= $page->url('user.login') ?>" name="redirect_to">
+			<input type="hidden" value="<?= $redirect ?: $page->url('user.login') ?>" name="redirect_to">
 
 			<div class="bLoginForm width327 fl">
 				<h2 class="bLoginForm_eTitle">Я новый пользователь</h2>
@@ -47,7 +52,7 @@
 		<a id="hideLoginform" class="font18 dashed" href="#">У меня уже есть логин и пароль</a>
 		<div class="clearfix"><?= $page->render('form-forgot') ?></div>
 		<form id="login-form" method="post" class="form hf" action="<?= $page->url('user.login') ?>" id="login-form">
-			<input type="hidden" value="<?= $page->url('user.login') ?>" name="redirect_to">
+			<input type="hidden" value="<?= $redirect ?: $page->url('user.login') ?>" name="redirect_to">
 			<div class="width327 bLoginForm clearfix">
 				<h2 class="bLoginForm_eTitle">У меня есть логин и пароль</h2>
 				<div class="pb5">E-mail или мобильный телефон:</div>
