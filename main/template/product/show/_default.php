@@ -83,13 +83,17 @@
 
     <div class="fl pb15" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
         <div class="pb10 <? if ($product->hasSaleLabel()) echo 'red'; ?>"><strong class="font34"><span class="price" itemprop="price"><?= $page->helper->formatPrice($product->getPrice()) ?></span> <meta itemprop="priceCurrency" content="RUB"><span class="rubl">p</span></strong></div>
+
+        <? if (\App::config()->product['lowerPriceNotification']): ?>
         <a href="#" class="bLowPriceNotifer jsLowPriceNotifer">Сообщить о снижении цены</a>
         <div class="bLowPriceNotiferPopup popup">
             <i class="close"></i>
-            <h2 class="bLowPriceNotiferPopup__eTitle">Вы получите письмо,<br/>когда цена станет ниже <strong class="price">SUM</strong> <span class="rubl">p</span></h2>
+            <h2 class="bLowPriceNotiferPopup__eTitle">Вы получите письмо,<br/>когда цена станет ниже <strong class="price"><?= $page->helper->formatPrice($product->getPrice()) ?></strong> <span class="rubl">p</span></h2>
             <input class="bLowPriceNotiferPopup__eInputEmail" placeholder="Ваш email">
             <a href="#" class="bLowPriceNotiferPopup__eSubmitEmail button bigbuttonlink" data-url="">Сохранить</a>
         </div>
+        <? endif ?>
+
         <? if ($product->getIsBuyable()): ?>
             <link itemprop="availability" href="http://schema.org/InStock" />
             <div class="pb5"><strong class="orange">Есть в наличии</strong></div>

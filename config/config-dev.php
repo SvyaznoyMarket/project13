@@ -95,4 +95,6 @@ $c->abtest['test']       = [
     ],
 ];
 
+$c->product['lowerPriceNotification'] = true;
+
 return $c;
