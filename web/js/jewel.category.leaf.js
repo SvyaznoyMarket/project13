@@ -3,6 +3,8 @@ $(document).ready(function(){
 
     handle_url_hash()
 
+    var prevent_request_on_hashchange = false
+
     function handle_small_tabs() {
       $('.brand-subnav__list a').click(function(event){
         $('.brand-subnav__list a').removeClass('active')
@@ -87,7 +89,7 @@ $(document).ready(function(){
       },600)
     }
 
-    function get_jewel_content(url, slide) {
+    function get_jewel_content(url, slide, browser_buttons) {
       $('#ajaxgoods_top').show()
       $('#ajaxgoods').show()
       $.get(url,{},function(data){
@@ -109,6 +111,9 @@ $(document).ready(function(){
         handle_custom_items()
         handle_jewel_items()
         if(data.query_string) {
+          if(!browser_buttons) {
+            prevent_request_on_hashchange = true
+          }
           window.location.hash = data.query_string
         }
       }).done(function(){
@@ -141,7 +146,7 @@ $(document).ready(function(){
       $(window).scroll(checkScrollJewel)
     }
 
-    function handle_url_hash() {
+    function handle_url_hash(browser_buttons) {
       if(window.location.hash) {
         join = '?'
         if(matches = window.location.hash.match(/.*(scrollTo=[^&]*)/)) {
@@ -151,7 +156,7 @@ $(document).ready(function(){
       } else {
         url = window.location.origin + window.location.pathname + '?' + window.location.search
       }
-      get_jewel_content(url, true)
+      get_jewel_content(url, true, browser_buttons)
     }
 
   }
@@ -161,5 +166,13 @@ $(document).ready(function(){
     $(".goodsbar .link1").bind( 'click', function()   {
         $(this).addClass("link1active")
     })
+  }
+
+  window.onhashchange = function () {
+    if(!prevent_request_on_hashchange) {
+      var url = window.location.origin + window.location.pathname + window.location.hash
+      handle_url_hash(true)
+    }
+    prevent_request_on_hashchange = false
   }
 })
