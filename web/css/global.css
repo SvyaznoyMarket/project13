@@ -9164,6 +9164,7 @@
     border-left: 1px solid #ffffff;
   }
   .items-section .items-section__list li .item-buy {
+    width: auto;
     position: absolute;
     bottom: 0;
     right: 0;
@@ -9180,7 +9181,7 @@
     padding: 0 10px;
   }
   .items-section .items-section__list li .item-buy.link1 {
-    text-align: center;
+    width: auto;
   }
   .items-section .items-section__list li .item-buy.link1active {
     background: #fff;
