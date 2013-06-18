@@ -164,6 +164,7 @@ $(document).ready(function(){
   function handle_jewel_items() {
     $(".goodsbar .link1.link1active").attr('href', '/cart')
     $(".goodsbar .link1").bind( 'click', function()   {
+        $(this).html("В корзине")
         $(this).addClass("link1active")
     })
   }
