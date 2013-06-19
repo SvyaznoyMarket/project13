@@ -864,6 +864,59 @@ window.docCookies = {
 
 
 /**
+ * Проверка является ли строка e-mail
+ * 
+ * @return {Boolean} 
+ */
+function isTrueEmail(){
+    var t = this.toString(),
+        re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(t)
+}
+String.prototype.isEmail = isTrueEmail; // добавляем методом для всех строк
+
+
+/**
+ * jQuery плагин валидации e-mail'ов
+ * 
+ * @param  {[type]} $ [description]
+ * @return {jQuery object}   [description]
+ */
+(function($) {
+    $.fn.emailValidate = function(params) {
+
+        return this.each(function() {
+            var options = $.extend(
+                            {},
+                            $.fn.emailValidate.defaults,
+                            params)
+            var $self = $(this)
+
+            var validate = function(e){
+                var email = $self.val();
+                
+                if (email.isEmail()){
+                    options.onValid();
+                }
+                else{
+                    options.onInvalid();
+                }
+            }
+
+            $self.bind('keyup', validate)
+        });
+    };
+
+    $.fn.emailValidate.defaults = {
+        // callbacks
+        onValid: function() {},
+        onInvalid: function() {},
+    }
+
+})(jQuery);
+
+
+/**
  * Разбиение числа по разрядам
  *
  * @public
