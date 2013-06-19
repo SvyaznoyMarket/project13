@@ -1,5 +1,5 @@
 ﻿//#ff9e18 border
-var DKupe3dConstructor = function (ParentItem, HostImgs, HostTextures) {
+var DKupe3dConstructor = function (ParentItem, HostImgs, HostTextures, HostIcons) {
 
 var container, stats;
 
@@ -714,7 +714,7 @@ function MyCreateMaterial(m)
 					syn+='<td onmouseover="Planner3dKupeConstructor.showPopupMenu(\'mat_'+colors[k]+'\')" onmouseout="Planner3dKupeConstructor.OnPopupOut()" width='+(iconSize+4)+' height='+(iconSize+4)+' valign=middle align=center style="';
 					syn+='border:2px solid '+((KupeParams.KorpusMaterial==colors[k])?'#ff9e18;':'#ffffff;');
 					syn+='">';
-					syn+='<div id="mat_'+colors[k]+'" style="width:'+iconSize+'px;height:'+iconSize+'px;background-image:url('+mat.icon+');cursor:pointer;" title="'+mat.description+'"></div>';
+					syn+='<div id="mat_'+colors[k]+'" style="width:'+iconSize+'px;height:'+iconSize+'px;background-image:url('+HostIcons+mat.icon+');cursor:pointer;" title="'+mat.description+'"></div>';
 					syn+='</td>';
 				}
 			}
@@ -742,7 +742,7 @@ function MyCreateMaterial(m)
 					syn+='<td onmouseover="Planner3dKupeConstructor.showPopupMenu(\'mat_'+colors[k]+'\')" onmouseout="Planner3dKupeConstructor.OnPopupOut()" width='+(iconSize+4)+' height='+(iconSize+4)+' valign=middle align=center style="';
 					syn+='border:2px solid '+((CurrentVstavkaMaterial==colors[k])?'#ff9e18;':'#ffffff;');
 					syn+='">';
-					syn+='<div draggable="true" id="mat_'+colors[k]+'" style="width:'+iconSize+'px;height:'+iconSize+'px;background-image:url('+mat.icon+');cursor:pointer;text-align:right;" ondragstart="Planner3dKupeConstructor.onDragMatStart(\''+colors[k]+'\', event)" ondragend="Planner3dKupeConstructor.onDragMatEnd()"  title="'+mat.description+'">';
+					syn+='<div draggable="true" id="mat_'+colors[k]+'" style="width:'+iconSize+'px;height:'+iconSize+'px;background-image:url('+HostIcons+mat.icon+');cursor:pointer;text-align:right;" ondragstart="Planner3dKupeConstructor.onDragMatStart(\''+colors[k]+'\', event)" ondragend="Planner3dKupeConstructor.onDragMatEnd()"  title="'+mat.description+'">';
 					if (ArrayHasItem(ProblemVstavkaMaterials,colors[k]))
 						syn+='<img draggable="false" src="'+HostImgs+'attention.gif" border=0>';
 					syn+='</div>';
@@ -779,7 +779,7 @@ function MyCreateMaterial(m)
 				else
 					syn+='border:2px solid #ffffff;';
 				syn+='">';
-				syn+='<img ondragstart="Planner3dKupeConstructor.stopStart(event)" onclick="Planner3dKupeConstructor.SetProfileMaterial(\''+colors[k]+'\',event)" width='+iconW+' height='+iconH+' src="'+mat.icon+'" title="'+mat.description+'">';
+				syn+='<img ondragstart="Planner3dKupeConstructor.stopStart(event)" onclick="Planner3dKupeConstructor.SetProfileMaterial(\''+colors[k]+'\',event)" width='+iconW+' height='+iconH+' src="'+HostIcons+mat.icon+'" title="'+mat.description+'">';
 				syn+='</td>';
 			}
 		}
@@ -1647,7 +1647,7 @@ function CreateDoorPopup(popupMenu,sz)
 					syn+=' align=center';
 				syn+=' onclick="Planner3dKupeConstructor.SetKorpus(\''+MainJsonData.korpuses[k].name+'\')">';
 				if (iCell==0)
-					syn+='<img src="'+MainJsonData.korpuses[k].icon+'" height=37>';
+					syn+='<img src="'+HostIcons+MainJsonData.korpuses[k].icon+'" height=37>';
 				else
 					syn+='глубина '+Math.round(MainJsonData.korpuses[k].depth*1000)+' мм<br>'+MainJsonData.korpuses[k].doors.count+' двери';
 				syn+='</td>';
@@ -1762,7 +1762,7 @@ function showPopupMenu(pmType,srcElement)
 			var mat=GetMaterial(cPopupMenu.substring(4));
 			if (mat!=undefined)
 			{
-				var syn='<div style="width:149px;height:89px;background-image:url('+mat.icon+');"></div>';
+				var syn='<div style="width:149px;height:89px;background-image:url('+HostIcons+mat.icon+');"></div>';
 				syn+='<div style="width:149px;text-align:center;font-family:Arial;font-size:9px;color:#666666;">'+mat.description+'</div>';
 
 				popupMenu.innerHTML=syn;
