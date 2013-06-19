@@ -139,6 +139,10 @@ $c->region['defaultId']      = 14974;
 $c->region['autoresolve']    = true;
 
 $c->loadMediaHost = true;
+$c->shop['cookieName'] = 'shopid';
+$c->shop['cookieLifetime'] = 31536000; // 365 дней
+$c->shop['autoresolve']    = true;
+
 $c->mediaHost = [
     0 => 'http://fs01.enter.ru',
     1 => 'http://fs02.enter.ru',
