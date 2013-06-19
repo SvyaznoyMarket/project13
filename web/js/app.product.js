@@ -442,4 +442,16 @@ $(document).ready(function() {
    if ($('.categoriesmenu').length) {
    		$('.acess-box-section').addClass('acess-box');
    }
+
+  function handle_jewel_items() {
+  	if($('.jewel').length) {
+	    $(".link1.link1active").attr('href', '/cart')
+	    $(".link1").bind( 'click', function()   {
+	        $(this).html("В корзине")
+	        $(this).addClass("link1active")
+	    })
+  	}
+  }
+  handle_jewel_items()
+
 });
