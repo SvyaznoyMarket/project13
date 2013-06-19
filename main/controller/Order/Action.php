@@ -682,7 +682,7 @@ class Action {
             }
 
             // данные для самовывоза
-            if ('self' == $deliveryType->getToken()) {
+            if (in_array($deliveryType->getToken(), ['self', 'now'])) {
                 $shopId = (int)$deliveryItem['shop']['id'];
                 if (!array_key_exists($shopId, $shopsById)) {
                     \App::logger()->error(sprintf('Неизвестный магазин %s', json_encode($deliveryItem['shop'], JSON_UNESCAPED_UNICODE)), ['order']);
