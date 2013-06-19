@@ -39,7 +39,9 @@ if (!isset($isAddInfo)) $isAddInfo = false;
 <? endif ?>
 <?= $page->render('_pagination', array('pager' => $pager)) ?>
 <? endif ?>
-
+<?
+if ($pager->count()) $page->setGlobalParam('productCount', $pager->count());
+?>
 <? if ($pager->count() && $hasListView): ?>
 <?= $page->render('product/_listView', array('view' => $view, 'request' => $request, 'category' => $category)) ?>
 <? endif ?>

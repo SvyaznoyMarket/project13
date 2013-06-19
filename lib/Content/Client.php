@@ -27,16 +27,22 @@ class Client {
     }
 
     /**
-     * @param string $action
-     * @param array  $data
-     * @param bool $throwException
-     * @return array|null
+     * @param $action
+     * @param array $data
+     * @param null $throwException
+     * @param null $retryTimeout
+     * @return null
      */
-    public function query ($action, array $data = [], $throwException = null) {
+    public function query ($action, array $data = [], $throwException = null, $retryTimeout = null) {
         \Debug\Timer::start('content');
         \App::logger()->debug('Start content request ' . $action, ['content']);
 
-        $throwException = null === $throwException ? $this->config['throwException'] : $throwException;
+        if (null === $this->config['throwException']) {
+            $throwException = $this->config['throwException'];
+        }
+        if (null === $retryTimeout) {
+            $retryTimeout = \App::config()->coreV2['retryTimeout']['short'];
+        }
 
         $url = $this->config['url'] . $action . '?json=1';
         $response = null;
@@ -51,7 +57,7 @@ class Client {
             $spend = \Debug\Timer::stop('content');
             \App::logger()->debug('Fail content request ' . $action . ' in ' . $spend . ' with ' . $e, ['content']);
         }, $this->config['timeout']);
-        $this->curl->execute(\App::config()->coreV2['retryTimeout']['tiny'], \App::config()->coreV2['retryCount']);
+        $this->curl->execute($retryTimeout, \App::config()->coreV2['retryCount']);
 
         return $response;
     }

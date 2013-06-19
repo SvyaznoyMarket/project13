@@ -739,3 +739,38 @@
     cursor: pointer;
     display: inline-block;
 }
+
+
+.bLowPriceNotifer{
+  font-size: 13px;
+  text-decoration: none;
+  border-bottom: 1px dotted;
+  display: block;
+  margin: -5px 0 5px;
+  &:hover{
+    text-decoration: none;
+  }
+}
+.bLowPriceNotiferPopup{
+  display: none;
+  position: absolute;
+  z-index: 3;
+
+  &__eTitle{
+
+  }
+  &__ePrice{
+
+  }
+  &__eInputEmail{
+    background: @white;
+    border: 1px solid #C9C9C9;
+    .rounded(4px);
+    height: 26px;
+    line-height: 26px;
+    padding: 0 0 0 10px;
+    display: block;
+    width: 100%;
+    margin: 10px 0;
+  }
+}

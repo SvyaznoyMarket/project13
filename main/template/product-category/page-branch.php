@@ -6,6 +6,7 @@
  * @var $productPagersByCategory \Iterator\EntityPager[]
  * @var $productVideosByProduct  array
  */
+$count = 0;
 ?>
 
 <? if (\App::config()->adFox['enabled']): ?>
@@ -27,8 +28,9 @@
 <? else: ?>
     <? foreach ($category->getChild() as $child) { ?>
         <?
-        $pager = isset($productPagersByCategory[$child->getId()]) ? $productPagersByCategory[$child->getId()] : null;
+        $pager = $productPagersByCategory[$child->getId()];
         if (!$pager || !$pager->count()) continue;
+        $count += $pager->count();
         ?>
         <?= $page->render('product/_slider-inCategory', array(
             'category'               => $child,
@@ -36,6 +38,9 @@
             'itemsInSlider'          => ceil($pager->getMaxPerPage() / 2),
             'productVideosByProduct' => $productVideosByProduct,
         )) ?>
-    <? } ?>
+    <? }
+    if (!$count) print "нет товаров";
+    $page->setGlobalParam('productCount', $count);
+    ?>
 <? endif ?>
 

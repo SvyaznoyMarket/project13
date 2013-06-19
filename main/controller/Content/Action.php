@@ -9,7 +9,7 @@ class Action {
 
         $client = \App::contentClient();
 
-        $content = $client->query($token, [], false);
+        $content = $client->query($token, [], false, \App::config()->coreV2['retryTimeout']['huge']);
 
         if (!(bool)$content) {
             throw new \Exception\NotFoundException();

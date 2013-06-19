@@ -5,7 +5,7 @@ $c = require __DIR__ . '/config.php';
 
 $c->debug = true;
 
-$c->coreV2['url'] = 'http://tester.core.ent3.ru/v2/';
+$c->coreV2['url']          = 'http://tester.core.ent3.ru/v2/';
 $c->coreV2['retryTimeout'] = [
     'default' => 1,
     'tiny'    => 0.2,
@@ -16,9 +16,6 @@ $c->coreV2['retryTimeout'] = [
     'forever' => 0,
 ];
 
-$c->corePrivate['url'] = 'http://tester.core.ent3.ru/private/';
-$c->corePrivate['user'] = 'Developer';
-$c->corePrivate['password'] = 'dEl23sTOas';
 $c->corePrivate['retryTimeout'] = [
     'default' => 1,
     'tiny'    => 0.2,
@@ -29,8 +26,9 @@ $c->corePrivate['retryTimeout'] = [
     'forever' => 0,
 ];
 
-$c->reviewsStore['url']       = 'http://reviews.ent3.ru/reviews/';
-$c->reviewsStore['timeout'] = 2;
+$c->reviewsStore['url']          = 'http://reviews.ent3.ru/reviews/';
+$c->reviewsStore['timeout']      = 2;
+$c->reviewsStore['retryCount']   = 3;
 $c->reviewsStore['retryTimeout'] = [
     'default' => 1,
     'tiny'    => 0.1,
@@ -40,12 +38,11 @@ $c->reviewsStore['retryTimeout'] = [
     'huge'    => 3,
     'forever' => 0,
 ];
-$c->reviewsStore['retryCount'] = 3;
 
 $c->wordpress['throwException'] = false;
-$c->wordpress['timeout'] = 2;
+$c->wordpress['timeout']        = 3;
 
-$c->dataStore['timeout'] = 2;
+$c->dataStore['timeout']      = 2;
 $c->dataStore['retryTimeout'] = [
     'default' => 1,
     'tiny'    => 0.2,
@@ -56,27 +53,37 @@ $c->dataStore['retryTimeout'] = [
     'forever' => 0,
 ];
 
+$c->database['host'] = 'localhost';
+
 $c->mobileHost = 'm.ent3.ru';
 
-$c->smartengine['pull'] = true;
-$c->smartengine['push'] = false;
-$c->smartengine['apiUrl'] = 'https://selightstage.smartengine.at/se-light/api/1.0/json/';
-$c->smartengine['cert'] = $c->dataDir . '/cert/gsorganizationvalg2.crt';
+$c->loadMediaHost = false;
+
+$c->analytics['enabled'] = false;
+$c->analytics['optimizelyEnabled'] = false;
+$c->googleAnalytics['enabled'] = false;
+$c->yandexMetrika['enabled'] = false;
+$c->adFox['enabled'] = false;
+
+$c->smartengine['pull']      = true;
+$c->smartengine['push']      = false;
+$c->smartengine['apiUrl']    = 'https://selightstage.smartengine.at/se-light/api/1.0/json/';
+$c->smartengine['cert']      = $c->dataDir . '/cert/gsorganizationvalg2.crt';
 $c->smartengine['sslVerify'] = false;
 
-$c->crossss['id'] = 68; // *.ent3.ru
-$c->crossss['apiKey'] = 'fe7fbe9540e14f1db1f9f047d1e54b25';
+$c->crossss['id']      = 68; // *.ent3.ru
+$c->crossss['apiKey']  = 'fe7fbe9540e14f1db1f9f047d1e54b25';
 $c->crossss['timeout'] = 0.8;
 
-$c->paymentPsb['terminal'] = '79036768';
-$c->paymentPsb['merchant'] = '790367686219999';
+$c->paymentPsb['terminal']     = '79036768';
+$c->paymentPsb['merchant']     = '790367686219999';
 $c->paymentPsb['merchantName'] = 'Enter';
-$c->paymentPsb['key'] = 'C50E41160302E0F5D6D59F1AA3925C45';
-$c->paymentPsb['payUrl'] = 'http://193.200.10.117:8080/cgi-bin/cgi_link';
+$c->paymentPsb['key']          = 'C50E41160302E0F5D6D59F1AA3925C45';
+$c->paymentPsb['payUrl']       = 'http://193.200.10.117:8080/cgi-bin/cgi_link';
 
 $c->paymentPsbInvoice['contractorId'] = 14;
-$c->paymentPsbInvoice['key'] = $c->dataDir . '/key/privkey.pem';
-$c->paymentPsbInvoice['payUrl'] = 'https://retail-tst.payment.ru/dn/Invoices/ReceiveUniversalInvoices.aspx';
+$c->paymentPsbInvoice['key']          = $c->dataDir . '/key/privkey.pem';
+$c->paymentPsbInvoice['payUrl']       = 'https://retail-tst.payment.ru/dn/Invoices/ReceiveUniversalInvoices.aspx';
 
 $c->abtest['bestBefore'] = '2013-04-23';
 $c->abtest['enabled']    = true;
@@ -94,5 +101,9 @@ $c->abtest['test']       = [
         'ga_event' => 'cart',
     ],
 ];
+
+$c->product['lowerPriceNotification'] = true;
+
+$c->requestMainMenu = false;
 
 return $c;

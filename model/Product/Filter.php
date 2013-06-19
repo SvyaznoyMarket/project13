@@ -14,16 +14,23 @@ class Filter {
     private $values = [];
     private $isGlobal = false;
     private $inStore = false;
+    /** @var \Model\Shop\Entity[] */
+    private $shop;
 
     /**
      * @param FilterEntity[] $filterCollection
      * @param bool           $isGlobal
      * @param bool           $inStore
      */
-    public function __construct(array $filterCollection, $isGlobal = false, $inStore = false) {
+    public function __construct(array $filterCollection, $isGlobal = false, $inStore = false, $shop = null) {
         $this->filters = $filterCollection;
         $this->isGlobal = $isGlobal;
         $this->inStore = $inStore;
+        $this->shop = $shop;
+    }
+
+    public function getShop() {
+        return $this->shop;
     }
 
     /**
@@ -90,6 +97,10 @@ class Filter {
 
         if (array_key_exists('instore', $this->values) && $this->values['instore']) {
             $return[] = array('is_store', 1, 1);
+        }
+
+        if (array_key_exists('shop', $this->values) && $this->values['shop'] && $this->shop && $this->shop instanceof \Model\Shop\Entity) {
+            $return[] = array('shop', 1, $this->shop->getId());
         }
 
         return $return;
