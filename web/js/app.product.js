@@ -7,6 +7,7 @@ $(document).ready(function() {
 		var submitBtn = $('.bLowPriceNotiferPopup__eSubmitEmail')
 		var input = $('.bLowPriceNotiferPopup__eInputEmail')
 		var notiferPopup = $('.bLowPriceNotiferPopup')
+		var error = $('.bLowPriceNotiferPopup__eError')
 
 
 		var lowPriceNitiferHide = function(){
@@ -22,10 +23,27 @@ $(document).ready(function() {
 
 		var lowPriceNitiferSubmit = function(){
 			if ((input.val().search('@')) != -1){
-				var url = input.data('url')
-				lowPriceNitiferHide()
+				var submitUrl = submitBtn.data('url')
+				submitUrl += encodeURI('?email='+input.val())
+
+				var resFromServer = function(res){
+					if (!res.success){
+						input.addClass('red')
+						if (res.error.message){
+							error.html(res.error.message)
+						}
+						return false
+					}
+
+					lowPriceNitiferHide()
+					notiferPopup.remove();
+					notiferButton.remove();
+				}
+				
+				$.get( submitUrl, resFromServer)
 			}
 			else{
+				error.html('Неправильный email')
 				input.addClass('red')
 			}
 			return false
