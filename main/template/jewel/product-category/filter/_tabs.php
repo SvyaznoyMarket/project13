@@ -16,7 +16,7 @@ use Model\Product\Filter\Entity as FilterEntity;
 <nav>
   <div class="brand-subnav__title"><?= $category->getName() ?></div>
   <? foreach($filters as $key => $filter) { ?>
-    <? if(mb_strtolower($catalogJson['sub_category_filter_menu']) == mb_strtolower($filter->getName())) { ?>
+    <? if(!empty($catalogJson['sub_category_filter_menu']) && mb_strtolower($catalogJson['sub_category_filter_menu']) == mb_strtolower($filter->getName())) { ?>
       <?php $values = $productFilter->getValue($filter) ?>
       <ul class="brand-subnav__list">
         <li><a <?= empty($values) ? 'class="active"' : '' ?> href="<?= $category->getLink()?>?scrollTo=<?= $scrollTo ?>">Все</a></li>

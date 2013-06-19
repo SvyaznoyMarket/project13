@@ -5,7 +5,7 @@
           in_array(mb_strtolower($filter->getName()), array_map(function($filterName){
             return mb_strtolower($filterName);
           }, $catalogJson['sub_category_filters_exclude']))) ||
-          (mb_strtolower($catalogJson['sub_category_filter_menu']) == mb_strtolower($filter->getName()))) {
+          (!empty($catalogJson['sub_category_filter_menu']) && mb_strtolower($catalogJson['sub_category_filter_menu']) == mb_strtolower($filter->getName()))) {
         continue;
       } 
     ?>

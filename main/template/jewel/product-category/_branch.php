@@ -23,22 +23,25 @@ if (!$category->isRoot() && $category->isBranch()) {
     $categories[] = $category;
 }
 
-$parent = ($category->isRoot() || $category->isBranch()) ? $category : $category->getParent();
-if ($parent) {
+$parent = ($category->isRoot() || $category->isBranch()) ? null : $category->getParent();
+$showMenu = false;
+if ($parent && !$parent->isRoot()) {
+    $showMenu = true;
     foreach ($parent->getChild() as $child) {
         $categories[] = $child;
     }
 }
 ?>
 
-<div class="brand-nav">
-    <table class="brand-nav__list">
-        <tr>
-            <td><a href="<?= $category->getParent()->getLink() ?>"><span><?= $page->helper->getCategoryLogoOrName($catalogJson, $category->getParent()) ?></span></a></td>
-            <? foreach ($categories as $node): ?>
-                <td><a href="<?= $node->getLink()  . (\App::request()->get('instore') ? '?instore=1' : '') ?>"><span><?= $node->getName() ?></span></a></td>
-            <? endforeach ?>
-        </tr>
-    </table>
-</div>
-
+<? if($showMenu) { ?>
+    <div class="brand-nav">
+        <table class="brand-nav__list">
+            <tr>
+                <td><a href="<?= $category->getParent()->getLink() ?>"><span><?= $page->helper->getCategoryLogoOrName($catalogJson, $category->getParent()) ?></span></a></td>
+                <? foreach ($categories as $node): ?>
+                    <td><a href="<?= $node->getLink()  . (\App::request()->get('instore') ? '?instore=1' : '') ?>"><span><?= $node->getName() ?></span></a></td>
+                <? endforeach ?>
+            </tr>
+        </table>
+    </div>
+<? } ?>
