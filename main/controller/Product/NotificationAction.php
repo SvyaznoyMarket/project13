@@ -33,7 +33,7 @@ class NotificationAction {
             $params = [
                 'email'      => $email,
                 'geo_id'     => $region->getId(),
-                'channel_id' => 4,
+                'channel_id' => 2,
             ];
             if ($userEntity = \App::user()->getEntity()) {
                 $params['token'] = $userEntity->getToken();
