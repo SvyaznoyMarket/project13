@@ -256,6 +256,11 @@ return [
         'require' => ['productId' => '\d+'],
         'action'  => ['Product\ReviewsAction', 'execute'],
     ],
+    'product.notification.lowerPrice' => [
+        'pattern' => '/ajax/product-notification/{productId}',
+        'require' => ['productId' => '\d+'],
+        'action'  => ['Product\NotificationAction', 'lowerPrice'],
+    ],
 
     'tag' => [
         'pattern' => '/tags/{tagToken}',

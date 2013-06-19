@@ -1,3 +1,17 @@
+<?php
+/**
+ * @var $page    \View\Layout
+ * @var $user    \Session\User
+ * @var $product \Model\Product\Entity
+ */
+?>
+
+<?
+$hasLowerPriceNotification =
+    \App::config()->product['lowerPriceNotification']
+    && $product->getMainCategory() && $product->getMainCategory()->getPriceChangeTriggerEnabled();
+?>
+
 <div class="goodsphoto">
     <? if ($productVideo && $productVideo->getContent()): ?><a class="goodsphoto_eVideoShield" href="#"></a><? endif ?>
 
@@ -84,13 +98,24 @@
     <div class="fl pb15" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
         <div class="pb10 <? if ($product->hasSaleLabel()) echo 'red'; ?>"><strong class="font34"><span class="price" itemprop="price"><?= $page->helper->formatPrice($product->getPrice()) ?></span> <meta itemprop="priceCurrency" content="RUB"><span class="rubl">p</span></strong></div>
 
-        <? if (\App::config()->product['lowerPriceNotification']): ?>
+        <? if ($hasLowerPriceNotification): ?>
+        <?
+            $lowerPrice =
+                ($product->getMainCategory() && $product->getMainCategory()->getPriceChangePercentTrigger())
+                ? round($product->getPrice() * $product->getMainCategory()->getPriceChangePercentTrigger())
+                : 0;
+        ?>
         <a href="#" class="bLowPriceNotifer jsLowPriceNotifer">Сообщить о снижении цены</a>
         <div class="bLowPriceNotiferPopup popup">
             <i class="close"></i>
-            <h2 class="bLowPriceNotiferPopup__eTitle">Вы получите письмо,<br/>когда цена станет ниже <strong class="price"><?= $page->helper->formatPrice($product->getPrice()) ?></strong> <span class="rubl">p</span></h2>
-            <input class="bLowPriceNotiferPopup__eInputEmail" placeholder="Ваш email">
-            <a href="#" class="bLowPriceNotiferPopup__eSubmitEmail button bigbuttonlink" data-url="">Сохранить</a>
+            <h2 class="bLowPriceNotiferPopup__eTitle">
+                Вы получите письмо,<br/>когда цена станет ниже
+                <? if ($lowerPrice && ($lowerPrice < $product->getPrice())): ?>
+                    <strong class="price"><?= $page->helper->formatPrice($lowerPrice) ?></strong> <span class="rubl">p</span>
+                <? endif ?>
+            </h2>
+            <input class="bLowPriceNotiferPopup__eInputEmail" placeholder="Ваш email" value="<?= $user->getEntity() ? $user->getEntity()->getEmail() : '' ?>" />
+            <a href="<?= $page->url('product.notification.lowerPrice', ['productId' => $product->getId()]) ?>" class="bLowPriceNotiferPopup__eSubmitEmail button bigbuttonlink" data-url="">Сохранить</a>
         </div>
         <? endif ?>
 
