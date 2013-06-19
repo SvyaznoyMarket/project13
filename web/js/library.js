@@ -862,26 +862,19 @@ window.docCookies = {
   hasItem: function (sKey) { return (new RegExp("(?:^|;\\s*)" + escape(sKey).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=")).test(document.cookie); }  
 };
 
-function printPrice ( val ) {
-	var floatv = (val+'').split('.')
-	var out = floatv[0]
-	var le = floatv[0].length
-    if ( le > 7){
-        out = out.substr( 0, le - 6) + ' ' + out.substr( le - 6, le - 5) + ' ' + out.substr( le - 3, le )
-    }
-	else if( le > 6 ) {
-		out = out.substr( 0, le - 6) + ' ' + out.substr( le - 6, le - 4) + ' ' + out.substr( le - 3, le )
-	} 
-    else if ( le > 3 ) {
-		out = out.substr( 0, le - 3) + ' ' + out.substr( le - 3, le )
-	}
-	if( floatv.length == 2 && floatv[1]*1 > 0 ) {
-        if( floatv[1].length === 1)
-            floatv[1] += '0'
-		out += '.' + floatv[1]
-    }
-	return out
+
+/**
+ * Разбиение числа по разрядам
+ *
+ * @public
+ * @param  {number|string}  число которое нужно отформатировать
+ * @return {string}         отформатированное число
+ */
+window.printPrice = function(num){
+    var str = num+' '
+    return str.replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1 ')
 }
+
 
 function brwsr () {
 	var userag      = navigator.userAgent.toLowerCase()
