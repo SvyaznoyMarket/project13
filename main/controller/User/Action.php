@@ -17,6 +17,10 @@ class Action {
                 : new \Http\RedirectResponse(\App::router()->generate('user'));
         }
 
+        $redirect = (false !== strpos($request->get('redirect_to'), \App::config()->mainHost))
+            ? $request->get('redirect_to')
+            : \App::router()->generate('user');
+
         $form = new \View\User\LoginForm();
         if ($request->isMethod('post')) {
             $form->fromArray((array)$request->request->get('signin'));
@@ -59,10 +63,6 @@ class Action {
                         throw new \Exception(sprintf('Не удалось получить пользователя по токену %s', $result['token']));
                     }
                     $userEntity->setToken($result['token']);
-
-                    $redirect = (0 === strpos($request->get('redirect_to'), $request->getSchemeAndHttpHost()))
-                        ? $request->get('redirect_to')
-                        : \App::router()->generate('user');
 
                     $response = $request->isXmlHttpRequest()
                         ? new \Http\JsonResponse([
@@ -116,6 +116,7 @@ class Action {
 
         $page = new \View\User\LoginPage();
         $page->setParam('form', $form);
+        $page->setParam('redirect', $redirect);
 
         return new \Http\Response($page->show());
     }

@@ -1,4 +1,41 @@
 $(document).ready(function() {
+	/**
+	 * Уведомления о снижении цены
+	 */
+	if ($('.jsLowPriceNotifer').length){
+		var notiferButton = $('.jsLowPriceNotifer')
+		var submitBtn = $('.bLowPriceNotiferPopup__eSubmitEmail')
+		var input = $('.bLowPriceNotiferPopup__eInputEmail')
+		var notiferPopup = $('.bLowPriceNotiferPopup')
+
+
+		var lowPriceNitiferHide = function(){
+			notiferPopup.fadeOut(300)
+			return false
+		}
+
+		var lowPriceNitiferShow = function(){
+			notiferPopup.fadeIn(300)
+			notiferPopup.find('.close').bind('click', lowPriceNitiferHide)
+			return false
+		}
+
+		var lowPriceNitiferSubmit = function(){
+			if ((input.val().search('@')) != -1){
+				var url = input.data('url')
+				lowPriceNitiferHide()
+			}
+			else{
+				input.addClass('red')
+			}
+			return false
+		}
+
+		input.placeholder()
+		submitBtn.bind('click', lowPriceNitiferSubmit)
+		notiferButton.bind('click', lowPriceNitiferShow)
+	}
+
 	/*Вывод магазинов, когда товар доступен только в них
 	*/
 	if ($('#availableShops').length){
@@ -312,10 +349,16 @@ $(document).ready(function() {
 		if ($(this).hasClass('maybe3d')){
 			var data = $('#maybe3dModelPopup').data('value')
 			try {
+				if (!$('#maybe3dModel').length){
+					$('#maybe3dModelPopup_inner').append('<div id="maybe3dModel"></div>')
+				}
 				swfobject.embedSWF(data.init.swf, data.init.container, data.init.width, data.init.height, data.init.version, data.init.install, data.flashvars, data.params, data.attributes);
 				$('#maybe3dModelPopup').lightbox_me({
 					centered: true,
 					closeSelector: ".close",
+					onClose: function() {
+						swfobject.removeSWF(data.attributes.id)
+					}
 				})
 			}
 			catch (err){

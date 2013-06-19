@@ -108,6 +108,7 @@ class AppConfig {
     /** @var array */
     public $myThings = [
         'feeByCategory' => [],
+        'cookieName'    =>  null,
     ];
     /** @var array */
     public $adFox = [
@@ -140,6 +141,12 @@ class AppConfig {
         'defaultId'      => null,
         'autoresolve'    => null,
     ];
+    /** @var array */
+    public $shop = [
+        'cookieName'     => null,
+        'cookieLifetime' => null,
+        'autoresolve'    => null,
+    ];
     /** @var bool */
     public $loadMediaHost = null;
     /** @var array */
@@ -150,18 +157,19 @@ class AppConfig {
     ];
     /** @var array */
     public $product = [
-        'itemsPerPage'          => null,
-        'showAccessories'       => null,
-        'showRelated'           => null,
-        'itemsInSlider'         => null,
-        'itemsInCategorySlider' => null,
-        'minCreditPrice'        => null,
-        'totalCount'            => null,
+        'itemsPerPage'           => null,
+        'showAccessories'        => null,
+        'showRelated'            => null,
+        'itemsInSlider'          => null,
+        'itemsInCategorySlider'  => null,
+        'minCreditPrice'         => null,
+        'totalCount'             => null,
         // глобальный (без учета региона) список товаров
-        'globalListEnabled'     => null,
-        'showAveragePrice'      => null,
-        'allowBuyOnlyInshop'    => null, // позволять покупать товар, который находится только в магазине
-        'reviewEnabled'         => null, // отзывы о товаре
+        'globalListEnabled'      => null,
+        'showAveragePrice'       => null,
+        'allowBuyOnlyInshop'     => null, // позволять покупать товар, который находится только в магазине
+        'reviewEnabled'          => null, // отзывы о товаре
+        'lowerPriceNotification' => null,
     ];
     /** @var array */
     public $productPhoto = [

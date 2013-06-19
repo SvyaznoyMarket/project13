@@ -69,6 +69,11 @@ return [
         'pattern' => '/private',
         'action'  => ['User\IndexAction', 'execute'],
     ],
+    // данные по авторизованному пользователю
+    'user.getAuth' => [
+        'pattern' => '/user/get-auth',
+        'action'  => ['User\GetAction', 'execute'],
+    ],
     // вход через социальные сети
     'user.login.external' => [
         'pattern' => '/login-{providerName}',
@@ -140,6 +145,12 @@ return [
     'product.category.instore' => [
         'pattern' => '/catalog/{categoryPath}/_instore',
         'action'  => ['ProductCategory\Action', 'setInstore'],
+        'require' => ['categoryPath' => '[\w\d-_]+\/?[\w\d-_]+'],
+    ],
+    // показать товары в конкретном магазине
+    'product.category.shop' => [
+        'pattern' => '/catalog/{categoryPath}/_inshop',
+        'action'  => ['ProductCategory\Action', 'setShopId'],
         'require' => ['categoryPath' => '[\w\d-_]+\/?[\w\d-_]+'],
     ],
     // каталог товаров
