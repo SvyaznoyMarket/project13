@@ -3,6 +3,12 @@
 namespace Controller\Product;
 
 class LineAction {
+    /**
+     * @param $lineToken
+     * @param \Http\Request $request
+     * @return \Http\Response
+     * @throws \Exception\NotFoundException
+     */
     public function execute($lineToken, \Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
@@ -18,18 +24,17 @@ class LineAction {
         $mainProduct = $productRepository->getEntityById($line->getMainProductId());
 
         //Собираем все id для товров: наборов серии, простых товаров серии
-        $productInLineId = array_merge($line->getKitId(), $line->getProductId());
-        $productsInLine = array_flip($productInLineId);
-        $productRepository->setEntityClass( '\Model\Product\ExpandedEntity');
+        $productInLineIds = array_merge($line->getKitId(), $line->getProductId());
+        $productsInLine = array_flip($productInLineIds);
+        $productRepository->setEntityClass('\Model\Product\ExpandedEntity');
 
-        try {
-            $globalProducts = $productRepository->getCollectionById($productInLineId);
-        } catch (\Exception $e) {
-            \App::exception()->add($e);
-            \App::logger()->error($e);
-
-            $globalProducts = [];
-        }
+        $globalProducts = [];
+        $productRepository->prepareCollectionById($productInLineIds, \App::user()->getRegion(), function($data) use(&$globalProducts) {
+            foreach ($data as $item) {
+                $globalProducts[] = new \Model\Product\ExpandedEntity($item);
+            }
+        });
+        \App::coreClientV2()->execute();
 
         foreach ($globalProducts as $product) {
             if (isset($productsInLine[$product->getId()])) {
@@ -40,7 +45,7 @@ class LineAction {
         //Запрашиваю составные части набора
         $parts = [];
         if ((bool)$mainProduct->getKit()) {
-            $productRepository->setEntityClass( '\Model\Product\CompactEntity');
+            $productRepository->setEntityClass('\Model\Product\CompactEntity');
             $partId = [];
             foreach ($mainProduct->getKit() as $part) {
                 $partId[] = $part->getId();
