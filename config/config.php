@@ -116,6 +116,8 @@ $c->myThings['feeByCategory'] = [
     225     => 0.065,   //Аксессуары для авто
 ];
 
+$c->myThings['cookieName'] = '_mythings';
+
 $c->partner['cookieName'] = '_partner';
 $c->partner['cookieLifetime'] = 2592000; // 30 дней
 
@@ -139,6 +141,10 @@ $c->region['defaultId']      = 14974;
 $c->region['autoresolve']    = true;
 
 $c->loadMediaHost = true;
+$c->shop['cookieName'] = 'shopid';
+$c->shop['cookieLifetime'] = 31536000; // 365 дней
+$c->shop['autoresolve']    = true;
+
 $c->mediaHost = [
     0 => 'http://fs01.enter.ru',
     1 => 'http://fs02.enter.ru',

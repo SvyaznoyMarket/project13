@@ -40,6 +40,7 @@ class Action {
         }
 
         \App::user()->changeRegion($region, $response);
+        $response->headers->clearCookie(\App::config()->shop['cookieName']);
 
         if (\App::user()->getToken()) {
             try {

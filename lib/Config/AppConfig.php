@@ -106,6 +106,7 @@ class AppConfig {
     /** @var array */
     public $myThings = [
         'feeByCategory' => [],
+        'cookieName'    =>  null,
     ];
     /** @var array */
     public $adFox = [
@@ -136,6 +137,12 @@ class AppConfig {
         'cookieName'     => null,
         'cookieLifetime' => null,
         'defaultId'      => null,
+        'autoresolve'    => null,
+    ];
+    /** @var array */
+    public $shop = [
+        'cookieName'     => null,
+        'cookieLifetime' => null,
         'autoresolve'    => null,
     ];
     /** @var bool */
