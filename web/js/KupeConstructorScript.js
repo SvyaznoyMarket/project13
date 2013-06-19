@@ -53,9 +53,11 @@ var MSIE=0;
 var MainDiv=null;
 var PopupMenuDiv=null;
 var ButtColorPicker=null;
+var StartKupeSetId;
 
-function Initialize(strJsonFile)
+function Initialize(strJsonFile,KupeSetId)
 {
+	StartKupeSetId=KupeSetId;
 	var arr=navigator.userAgent.match(/MSIE ([\d\.]+)/);
 	if (arr)
 	   MSIE=parseFloat(arr[1]);
@@ -377,6 +379,26 @@ function MyCreateMaterial(m)
 			mouse2D = new THREE.Vector3( 0, 10000, 0.5 );
 
 			loader = new THREE.JSONLoader();
+
+			if ((StartKupeSetId!=undefined) && (StartKupeSetId!=null) && MainJsonData.sets)
+			{
+				for(var k=0;k<MainJsonData.sets.length;k++)
+				{
+					if (MainJsonData.sets[k].set_id==StartKupeSetId)
+					{
+						KupeParams.KorpusName=MainJsonData.sets[k].KorpusName;
+						KupeParams.KorpusMaterial=MainJsonData.sets[k].KorpusMaterial;
+						KupeParams.ProfileMaterial=MainJsonData.sets[k].ProfileMaterial;
+						for(var n=0;n<MainJsonData.sets[k].doors.length;n++)
+						{
+							KupeParams.doors[n].variantType=MainJsonData.sets[k].doors[n].type;
+							KupeParams.doors[n].materials=MainJsonData.sets[k].doors[n].colors;
+						}
+						break;
+					}
+				}
+			}
+
 			if (KupeParams.KorpusName==undefined)
 				KupeParams.KorpusName=MainJsonData.korpuses[0].name;
 			if (KupeParams.KorpusMaterial==undefined)

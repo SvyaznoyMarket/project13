@@ -13,8 +13,10 @@ $(document).ready(function() {
 	 */
 	if ($('#planner3D').length){
 		try {
+			var coupeInfo = $('#planner3D').data('product')
 			Planner3dKupeConstructor = new DKupe3dConstructor(document.getElementById('planner3D'),'/css/item/coupe_img/','/css/item/coupe_tex/');
-			Planner3dKupeConstructor.Initialize('/js/KupeConstructorData.json');
+
+			Planner3dKupeConstructor.Initialize('/js/KupeConstructorData.json', coupeInfo.id);
 		}
 		catch (err){
 			var pageID = $(body).data(id)
