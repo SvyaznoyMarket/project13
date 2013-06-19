@@ -349,10 +349,16 @@ $(document).ready(function() {
 		if ($(this).hasClass('maybe3d')){
 			var data = $('#maybe3dModelPopup').data('value')
 			try {
+				if (!$('#maybe3dModel').length){
+					$('#maybe3dModelPopup_inner').append('<div id="maybe3dModel"></div>')
+				}
 				swfobject.embedSWF(data.init.swf, data.init.container, data.init.width, data.init.height, data.init.version, data.init.install, data.flashvars, data.params, data.attributes);
 				$('#maybe3dModelPopup').lightbox_me({
 					centered: true,
 					closeSelector: ".close",
+					onClose: function() {
+						swfobject.removeSWF(data.attributes.id)
+					}
 				})
 			}
 			catch (err){

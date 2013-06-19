@@ -116,6 +116,8 @@ $c->myThings['feeByCategory'] = [
     225     => 0.065,   //Аксессуары для авто
 ];
 
+$c->myThings['cookieName'] = '_mythings';
+
 $c->partner['cookieName'] = '_partner';
 $c->partner['cookieLifetime'] = 2592000; // 30 дней
 
