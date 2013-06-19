@@ -24,12 +24,18 @@ $disabled = !$product->getIsBuyable();
 $gaEvent = !empty($gaEvent) ? $gaEvent : null;
 $gaTitle = !empty($gaTitle) ? $gaTitle : null;
 
-switch ($view) {
-    case 'default':
-        require __DIR__ . '/button/default.php';
-        break;
-    case 'large':
-        require __DIR__ . '/button/large.php';
-        break;
+if ($disabled) {
+    $url = '#';
+} else {
+    $url = $page->url('cart.product.add', array('productId' => $product->getId())).($page->hasGlobalParam('sender')?(false === strpos($product->getLink(), '?') ? '?' : '&') . 'sender='.$page->getGlobalParam('sender').'|'.$product->getId():'');
 }
+
+if (empty($value)) $value = 'Купить';
+
+$productData = [
+    'id'           => $product->getId(),
+    'mainCategory' => $product->getMainCategory() ? ['id' => $product->getMainCategory()->getId()] : null,
+];
 ?>
+
+<a href="<?= $url ?>"  data-ga-event="<?= $page->escape($gaEvent) ?>" data-ga-title="<?= $page->escape($gaTitle) ?>" data-product="<?= $page->json($productData) ?>" class="js-buy<?php if ($disabled): ?> disabled<? endif ?><?php if ($gaEvent): ?> gaEvent<? endif ?>"><?= $value ?></a>
