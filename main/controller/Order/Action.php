@@ -65,14 +65,14 @@ class Action {
             }
 
             // подготовка пакета запросов
-            // страница с уточнением количества товаров или с ошибкой
-            $page = null;
 
             // магазины
             /** @var $shops \Model\Shop\Entity[] */
             $shops = [];
             // карта доставки
             $deliveryCalcResult = null;
+
+            $calcException = null;
             \App::coreClientV2()->addQuery('order/calc-tmp',
                 [
                     'geo_id'  => $user->getRegion()->getId(),
@@ -83,66 +83,10 @@ class Action {
                 ], function($data) use (&$deliveryCalcResult, &$shops) {
                     $deliveryCalcResult = $data;
                     $shops = array_map(function($data) { return new \Model\Shop\Entity($data); }, $deliveryCalcResult['shops']);
-                }, function (\Exception $e) use (&$page) {
-                    if (!$e instanceof \Curl\Exception) {
-                        throw $e;
-                    }
-
-                    \App::exception()->remove($e);
-
-                    $errorData = (array)$e->getContent();
-                    $errorData = isset($errorData['product_error_list']) ? (array)$errorData['product_error_list'] : [];
-
-                    // товары
-                    $productIds = array_map(function ($item) { return $item['id']; }, $errorData);
-                    /** @var $productsById \Model\Product\Entity[] */
-                    $productsById = [];
-                    foreach (\RepositoryManager::product()->getCollectionById($productIds) as $product) {
-                        $productsById[$product->getId()] = $product;
-                    }
-
-                    if ((bool)$errorData && (bool)$productsById) {
-                        foreach ($errorData as &$errorItem) {
-                            /** @var $product \Model\Product\Entity */
-                            $product = isset($productsById[$errorItem['id']]) ? $productsById[$errorItem['id']] : null;
-                            if (!$product) {
-                                \App::logger()->error(sprintf('Товар #%s из данных об ошибке %s не найден', $errorItem['id'], json_encode($errorItem, JSON_UNESCAPED_UNICODE)), ['order']);
-                                continue;
-                            }
-                            $cartProduct = \App::user()->getCart()->getProductById($product->getId());
-                            if (!$cartProduct) {
-                                \App::logger()->error(sprintf('Товар #%s не найден в корзине', $errorItem['id']), ['order']);
-                                continue;
-                            }
-
-                            $errorItem['product'] = [
-                                'id'       => $product->getId(),
-                                'token'    => $product->getToken(),
-                                'name'     => $product->getName(),
-                                'image'    => $product->getImageUrl(0),
-                                'quantity' => $cartProduct->getQuantity(),
-                                'price'    => $product->getPrice(),
-                            ];
-
-                            if (!empty($errorItem['quantity_available'])) {
-                                $errorItem['product']['addUrl'] = \App::router()->generate('cart.product.add', array('productId' => $product->getId(), 'quantity' => $errorItem['quantity_available']));
-                            }
-                            $errorItem['product']['deleteUrl'] = \App::router()->generate('cart.product.delete', array('productId' => $product->getId()));
-
-                            if (708 == $errorItem['code']) {
-                                $errorItem['message'] = !empty($errorItem['quantity_available']) ? sprintf('Доступно только %s шт.', $errorItem['quantity_available']) : $errorItem['message'];
-                            }
-
-                        } if (isset($errorItem)) unset($errorItem);
-
-                        $page = new \View\Order\WarnPage();
-                        $page->setParam('errorData', $errorData);
-
-                        return;
-                    }
+                }, function (\Exception $e) use (&$calcException) {
+                    $calcException = $e;
                 }
             );
-            //$result = json_decode(file_get_contents(\App::config()->dataDir . '/core/v2-order-calc.json'), true);
 
             // товары и услуги индексированные по ид
             /** @var $productsById \Model\Product\CartEntity[] */
@@ -164,20 +108,81 @@ class Action {
 
             // запрашиваем список услуг
             if ((bool)$serviceIds) {
-                \RepositoryManager::service()->prepareCollectionById($serviceIds, $region, function($data) use(&$servicesById, $cartServicesById) {
-                    foreach ($data as $item) {
-                        $servicesById[$item['id']] = new \Model\Product\Service\Entity($item);
+                \RepositoryManager::service()->prepareCollectionById(
+                    $serviceIds,
+                    $region,
+                    function($data) use(&$servicesById, $cartServicesById) {
+                        foreach ($data as $item) {
+                            $servicesById[$item['id']] = new \Model\Product\Service\Entity($item);
+                        }
+                    },
+                    function(\Exception $e) {
+                        \App::exception()->remove($e);
                     }
-                });
+                );
             }
 
             // выполнение пакета запросов
             $client->execute();
 
-            // если кто-то из обратных функции асинхронных запросов в ядро определил $page, то выдать результат
-            if ($page instanceof \View\Layout) {
-                return new \Http\Response($page->show());
+            // проверка на ошибки калькуляции
+            if ($calcException instanceof \Curl\Exception) {
+                \App::exception()->remove($calcException);
+
+                $errorData = (array)$calcException->getContent();
+                $errorData = isset($errorData['product_error_list']) ? (array)$errorData['product_error_list'] : [];
+
+                // товары
+                $productIds = array_map(function ($item) { return $item['id']; }, $errorData);
+                /** @var $productsById \Model\Product\Entity[] */
+                $productsById = [];
+                foreach (\RepositoryManager::product()->getCollectionById($productIds) as $product) {
+                    $productsById[$product->getId()] = $product;
+                }
+
+                if ((bool)$errorData && (bool)$productsById) {
+                    foreach ($errorData as &$errorItem) {
+                        /** @var $product \Model\Product\Entity */
+                        $product = isset($productsById[$errorItem['id']]) ? $productsById[$errorItem['id']] : null;
+                        if (!$product) {
+                            \App::logger()->error(sprintf('Товар #%s из данных об ошибке %s не найден', $errorItem['id'], json_encode($errorItem, JSON_UNESCAPED_UNICODE)), ['order']);
+                            continue;
+                        }
+                        $cartProduct = \App::user()->getCart()->getProductById($product->getId());
+                        if (!$cartProduct) {
+                            \App::logger()->error(sprintf('Товар #%s не найден в корзине', $errorItem['id']), ['order']);
+                            continue;
+                        }
+
+                        $errorItem['product'] = [
+                            'id'       => $product->getId(),
+                            'token'    => $product->getToken(),
+                            'name'     => $product->getName(),
+                            'image'    => $product->getImageUrl(0),
+                            'quantity' => $cartProduct->getQuantity(),
+                            'price'    => $product->getPrice(),
+                        ];
+
+                        if (!empty($errorItem['quantity_available'])) {
+                            $errorItem['product']['addUrl'] = \App::router()->generate('cart.product.add', array('productId' => $product->getId(), 'quantity' => $errorItem['quantity_available']));
+                        }
+                        $errorItem['product']['deleteUrl'] = \App::router()->generate('cart.product.delete', array('productId' => $product->getId()));
+
+                        if (708 == $errorItem['code']) {
+                            $errorItem['message'] = !empty($errorItem['quantity_available']) ? sprintf('Доступно только %s шт.', $errorItem['quantity_available']) : $errorItem['message'];
+                        }
+
+                    } if (isset($errorItem)) unset($errorItem);
+
+                    $page = new \View\Order\WarnPage();
+                    $page->setParam('errorData', $errorData);
+
+                    return new \Http\Response($page->show());
+                }
+            } else if ($calcException instanceof \Exception) {
+                throw $calcException;
             }
+
             if (!$deliveryCalcResult) {
                 $e = new \Exception('Калькулятор доставки вернул пустой результат', ['order']);
                 \App::logger()->error($e->getMessage());
