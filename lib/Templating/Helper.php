@@ -116,4 +116,13 @@ class Helper {
         return $optionLink;
     }
 
+
+    /**
+     * @param $catalogJson
+     * @param $category
+     * @return string
+     */
+    function getCategoryLogoOrName($catalogJson, $category) {
+        return !empty($catalogJson['logo_path']) && !empty($catalogJson['use_logo']) ? '<img src="'.$catalogJson['logo_path'].'">' : $category->getName();
+    }
 }

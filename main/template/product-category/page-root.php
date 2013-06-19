@@ -11,13 +11,12 @@
 
 <div class="clear"></div>
 
-
 <? if(!empty($promoContent)): ?>
     <?= $promoContent ?>
 <? else: ?>
 	<div class="goodslist clearfix">
 	<? foreach ($category->getChild() as $child): ?>
-	    <?= $page->render('product-category/_preview', array('category' => $child, 'rootCategory' => $category)) ?>
+	    <?= $page->render('product-category/_preview', array('category' => $child, 'rootCategory' => $category, 'catalogJsonBulk' => $catalogJsonBulk)) ?>
 	<? endforeach ?>
 	</div>
 <? endif ?>

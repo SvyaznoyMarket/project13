@@ -361,6 +361,13 @@ class Action {
 
         $page->setParam('sidebarHotlinks', true);
 
+        $catalogJson = $page->getParam('catalogJson');
+        $catalogJsonBulk = [];
+        if(empty($catalogJson['category_layout_type']) || (!empty($catalogJson['category_layout_type']) && $catalogJson['category_layout_type'] == 'icons')) {
+            $catalogJsonBulk = \RepositoryManager::productCategory()->getCatalogJsonBulk();
+        }
+        $page->setParam('catalogJsonBulk', $catalogJsonBulk);
+
         $page->setParam('myThingsData', [
             'EventType' => 'MyThings.Event.Visit',
             'Action'    => '1011',
@@ -438,6 +445,13 @@ class Action {
         $page->setParam('productPagersByCategory', $productPagersByCategory);
         $page->setParam('productVideosByProduct', $productVideosByProduct);
         $page->setParam('sidebarHotlinks', true);
+
+        $catalogJson = $page->getParam('catalogJson');
+        $catalogJsonBulk = [];
+        if(!empty($catalogJson['category_layout_type']) && $catalogJson['category_layout_type'] == 'icons') {
+            $catalogJsonBulk = \RepositoryManager::productCategory()->getCatalogJsonBulk();
+        }
+        $page->setParam('catalogJsonBulk', $catalogJsonBulk);
 
         $myThingsData = [
             'EventType' => 'MyThings.Event.Visit',

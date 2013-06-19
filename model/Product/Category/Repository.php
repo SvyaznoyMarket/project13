@@ -445,6 +445,28 @@ class Repository {
         return $catalogJson;
     }
 
+
+    /**
+     * Получает catalog json для всех категорий
+     * Возвращает массив с токенами категорий в качестве ключей и их catalogJson'ом (raw)
+     * в качестве значений
+     *
+     * @param $category
+     * @return array
+     */
+    public function getCatalogJsonBulk() {
+        // формируем запрос к апи и получаем json
+        $catalogJsonBulk = [];
+        $dataStore = \App::dataStoreClient();
+        $dataStore->addQuery('catalog/*.json', [], function ($data) use (&$catalogJsonBulk) {
+            if($data) $catalogJsonBulk = $data;
+        });
+        $dataStore->execute();
+
+        return $catalogJsonBulk;
+    }
+
+
     /**
      * Получает html-контент из catalog'а для данной категории
      * Возвращает html в виде строки

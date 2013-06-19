@@ -34,7 +34,7 @@ if ($parent) {
 <div class="brand-nav">
     <table class="brand-nav__list">
         <tr>
-            <td><a href="<?= $category->getParent()->getLink() ?>"><span><img src="<?= !empty($catalogJson['logo_path']) ? $catalogJson['logo_path'] : '' ?>"></span></a></td>
+            <td><a href="<?= $category->getParent()->getLink() ?>"><span><?= $page->helper->getCategoryLogoOrName($catalogJson, $category->getParent()) ?></span></a></td>
             <? foreach ($categories as $node): ?>
                 <td><a href="<?= $node->getLink()  . (\App::request()->get('instore') ? '?instore=1' : '') ?>"><span><?= $node->getName() ?></span></a></td>
             <? endforeach ?>

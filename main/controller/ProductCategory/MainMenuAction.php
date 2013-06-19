@@ -12,6 +12,7 @@ class MainMenuAction {
 
         return new \Http\JsonResponse([
             'content' => (new \View\Layout())->render('_mainMenu', array('menu' => (new \View\Menu())->generate())),
+            'catalogJsonBulk' => \RepositoryManager::productCategory()->getCatalogJsonBulk(),
         ]);
     }
 }
