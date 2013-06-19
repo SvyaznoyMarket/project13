@@ -60,13 +60,12 @@ class DeliveryAction {
         $helper = new \View\Helper();
         $data = [];
         $shopData = isset($response['shop_list']) ? $response['shop_list'] : [];
-
+        //print "<pre>"; var_dump($response['product_list']); exit;
         foreach($response['product_list'] as $productId => $productData){
             if (!isset($productData['delivery_mode_list'])) continue;
 
             $data[$productId] = [];
             foreach($productData['delivery_mode_list'] as $delivery) {
-
                 $token = $delivery['token'];
                 $date = reset($delivery['date_list']);
                 $day = 0;
@@ -80,7 +79,7 @@ class DeliveryAction {
                     $day++;
                     if ($day > 7) continue;
 
-                    if('self' == $token) {
+                    if(in_array($token, ['self', 'now'])) {
                         foreach ($dateData['shop_list'] as $dateShopData) {
                             $address = $shopData[$dateShopData['id']]['address'];
                             if (($regionId != $shopData[$dateShopData['id']]['geo_id']) && isset($regionData[$shopData[$dateShopData['id']]['geo_id']]['name'])) {
@@ -186,7 +185,7 @@ class DeliveryAction {
                         'value' => $dateData['date']
                     ];
 
-                    if('self' == $token) {
+                    if(in_array($token, ['self', 'now'])) {
                         $date['shopIds'] = [];
                         foreach ($dateData['shop_list'] as $dateShopData) {
                             $address = $shopData[$dateShopData['id']]['address'];
