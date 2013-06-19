@@ -203,6 +203,7 @@ window.ANALYTICS = {
     myThingsTracker: function() {
         //трекинг от MyThings. Вызывается при загрузке внешнего скрипта
         window._mt_ready = function (){
+            alert(1)
             if (typeof(MyThings) != "undefined") {
                 var sendData = $('#myThingsTracker').data('value')
                 if (!$.isArray(sendData)) {
@@ -217,10 +218,11 @@ window.ANALYTICS = {
                 })
             }
         }
-
+        alert(typeof(_mt_ready()))
         mtHost = (("https:" == document.location.protocol) ? "https" : "http") + "://rainbow-ru.mythings.com";
         mtAdvertiserToken = "1989-100-ru";
         document.write(unescape("%3Cscript src='" + mtHost + "/c.aspx?atok="+mtAdvertiserToken+"' type='text/javascript'%3E%3C/script%3E"));
+        alert(3)
     },
     testFreak : function() {
         document.write('<scr'+'ipt type="text/javascript" src="http://js.testfreaks.com/badge/enter.ru/head.js"></scr'+'ipt>')
