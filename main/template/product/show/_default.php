@@ -115,7 +115,8 @@ $hasLowerPriceNotification =
                 <? endif ?>
             </h2>
             <input class="bLowPriceNotiferPopup__eInputEmail" placeholder="Ваш email" value="<?= $user->getEntity() ? $user->getEntity()->getEmail() : '' ?>" />
-            <a href="<?= $page->url('product.notification.lowerPrice', ['productId' => $product->getId()]) ?>" class="bLowPriceNotiferPopup__eSubmitEmail button bigbuttonlink" data-url="">Сохранить</a>
+            <p class="bLowPriceNotiferPopup__eError red"></p>
+            <a href="#" class="bLowPriceNotiferPopup__eSubmitEmail button bigbuttonlink" data-url="<?= $page->url('product.notification.lowerPrice', ['productId' => $product->getId()]) ?>">Сохранить</a>
         </div>
         <? endif ?>
 
