@@ -886,7 +886,7 @@ $(document).ready(function() {
                     date: formateDate( dlvr.chosenDate() ),
                     interval: dlvr.chosenInterval().match(/\d{2}:\d{2}/g).join(','),
                     shop: {
-                        id: dlvr.token.replace('self_','')
+                        id: dlvr.token.replace('/now_|self_/','')
                     }
                 }
                 var boxitems = []

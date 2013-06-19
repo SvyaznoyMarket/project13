@@ -1121,12 +1121,12 @@ class Action {
                 }
                 $itemView->token = $itemView->type . '-' . $itemView->id;
                 $itemView->stock = isset($itemData['stock']) ? $itemData['stock'] : 0;
-
                 foreach ($itemData['deliveries'] as $deliveryToken => $deliveryData) {
                     $deliveryView = new \View\Order\DeliveryCalc\Delivery();
                     $deliveryView->price = $deliveryData['price'];
                     $deliveryView->token = $deliveryToken;
-                    $deliveryView->name = 0 === strpos($deliveryToken, 'self') ? 'В самовывоз' : 'В доставку';
+                    $deliveryView->name = in_array($deliveryToken, ['self', 'now']) ? 'В самовывоз' : 'В доставку';
+
                     if ('products' == $itemType && $productsEntityById[$itemData['id']] instanceof \Model\Product\BasicEntity) {
                         $deliveryView->isSupplied = $productsEntityById[$itemData['id']]->getState() ? $productsEntityById[$itemData['id']]->getState()->getIsSupplier() : false;
                     } else $deliveryView->isSupplied = false;
@@ -1162,6 +1162,7 @@ class Action {
         foreach (\RepositoryManager::deliveryType()->getCollection() as $deliveryType) {
             $deliveryTypesById[$deliveryType->getId()] = $deliveryType;
         }
+
         foreach ($deliveryCalcResult['possible_deliveries'] as $deliveryTypeToken => $itemData) {
             $itemData['mode_id'] = (int)$itemData['mode_id'];
 
@@ -1175,9 +1176,9 @@ class Action {
             $deliveryTypeView->description = $deliveryType->getDescription();
             $deliveryTypeView->id = $itemData['mode_id'];
             $deliveryTypeView->name = $deliveryType->getName();
-            $deliveryTypeView->type = $deliveryType->getToken();
+            $deliveryTypeView->type = $deliveryType->getToken() == 'now' ? 'self' : $deliveryType->getToken();
             $deliveryTypeView->token = $deliveryTypeToken;
-            $deliveryTypeView->shortName = 0 === strpos($deliveryTypeView->type, 'self') ? 'Самовывоз' : 'Доставим';
+            $deliveryTypeView->shortName =  in_array($deliveryTypeView->type, ['self', 'now']) ? 'Самовывоз' : 'Доставим';
 
             $deliveryTypeView->shop =
                 array_key_exists($itemData['shop_id'], $deliveryMapView->shops)
