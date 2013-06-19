@@ -67,6 +67,7 @@ class DeliveryAction {
             $data[$productId] = [];
             foreach($productData['delivery_mode_list'] as $delivery) {
                 $token = $delivery['token'];
+                if ($token == 'now') $token = 'self';
                 $date = reset($delivery['date_list']);
                 $day = 0;
                 $dateOriginal = $date['date'];
@@ -104,7 +105,7 @@ class DeliveryAction {
                 $data[$productId][] = [
                     'typeId'           => $delivery['id'],
                     'date'             => $helper->humanizeDate($dateOriginal),
-                    'token'            => $delivery['token'],
+                    'token'            => $token,
                     'price'            => $delivery['price'],
                     'transportCompany' => \App::user()->getRegion()->getHasTransportCompany(),
                     'days'             => $helper->getDaysDiff($dateOriginal),
@@ -172,6 +173,7 @@ class DeliveryAction {
 
             foreach ($productData['delivery_mode_list'] as $deliveryData) {
                 $token = $deliveryData['token'];
+                if ($token == 'now') $token = 'self';
 
                 $dates = [];
                 $shops = [];
