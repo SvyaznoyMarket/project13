@@ -779,7 +779,7 @@ class Action {
                             }
                             $orderData['meta_data'] =  \App::partner()->fabricateCompleteMeta(isset($orderData['meta_data']) ? $orderData['meta_data'] : [], \App::partner()->fabricateMetaByPartners($partners, $product));
                         }
-                        \App::logger()->info(sprintf('Создается заказ от партнеров %s', implode(', ', $orderData['meta_data']['partner'])), ['order', 'partner']);
+                        \App::logger()->info(sprintf('Создается заказ от партнеров %s', json_encode($orderData['meta_data']['partner'])), ['order', 'partner']);
                     } catch (\Exception $e) {
                         \App::logger()->error($e, ['order', 'partner']);
                     }
