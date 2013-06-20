@@ -169,6 +169,7 @@ class AppConfig {
         'allowBuyOnlyInshop'     => null, // позволять покупать товар, который находится только в магазине
         'reviewEnabled'          => null, // отзывы о товаре
         'lowerPriceNotification' => null,
+        'furnitureConstructor'   => null, // конструктор шкафов-купе
     ];
     /** @var array */
     public $productPhoto = [

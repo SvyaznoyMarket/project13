@@ -69,6 +69,8 @@ class Helper {
      */
     public function nofollowExternalLinks($stringOriginal) {
         $stringWrapped = '<div>' . $stringOriginal . '</div>';
+        $stringWrapped = str_replace('&', '&amp;', $stringWrapped);
+        $stringWrapped = preg_replace('/<([a-z]*[^>\/a-z]+[^>]*)>/i', '&lt;$1&gt;', $stringWrapped);
 
         $dom = new \DOMDocument;
         $this->loadXML($stringWrapped, $dom, $stringOriginal);
@@ -95,9 +97,9 @@ class Helper {
             if(preg_match('/^.*mismatch: ([^ ]+) line.*$/i', $e->getMessage(), $matches) ||
                 preg_match('/^.*attribute ([^ ]+) in.*$/i', $e->getMessage(), $matches)) {
                 $brokenTag = array_pop($matches);
-                $stringWrapped = preg_replace('/<([^<]*'.$brokenTag.'[^>]*)>/i', htmlentities('<$1>'), $stringWrapped);
+                $stringWrapped = preg_replace('/<([^<]*'.$brokenTag.'[^>]*)>/i', str_replace('>', '&gt;', str_replace('<', '&lt;', '<$1>')), $stringWrapped);
             } else {
-                $stringWrapped = '<div>' . htmlentities($stringOriginal) . '</div>';
+                $stringWrapped = '<div>' . str_replace('>', '&gt;', str_replace('<', '&lt;', $stringOriginal)) . '</div>';
             }
             $this->loadXML($stringWrapped, $dom, $stringOriginal);
         }

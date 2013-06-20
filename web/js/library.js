@@ -1786,8 +1786,8 @@ function Flybox( parent ){
 				'<a class="button bigbuttonlink" value="" href="'+ hrefcart +'">Оформить заказ</a>'+
 			'</div>'	
 	
-		box.css({'left':'588px','width':'290px'})	
-		crnr.css('left','132px')	
+		box.css({'left':'605px','width':'290px'})	
+		crnr.css('left','142px')	
 		this.fillup (basket)
 		box.fadeIn(500)
 		// hidei = setTimeout( self.jinny, 5000 )

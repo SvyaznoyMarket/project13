@@ -81,11 +81,12 @@ class ProductAction {
     public function setList(\Http\Request $request) {
         $region = \App::user()->getRegion();
         $cart = \App::user()->getCart();
+        $client = \App::coreClientV2();
 
         $responseData = [];
 
         try {
-            $productData = (array)$request->get('orders');
+            $productData = (array)$request->get('product');
             if (!(bool)$productData) {
                 throw new \Exception('Не получены данные о товарах');
             }
@@ -123,6 +124,7 @@ class ProductAction {
             }
             \App::coreClientV2()->execute();
 
+            $quantity = 0;
             foreach ($productsById as $productId => $product) {
                 if (!$product) {
                     \App::logger()->error(sprintf('Не получен товар #%s', $productId), ['cart']);
@@ -134,15 +136,55 @@ class ProductAction {
                 $cart->setProduct($product, $productQuantity);
                 $cartProduct = $cart->getProductById($product->getId());
                 $this->updateCartWarranty($product, $cartProduct, $productQuantity);
+
+                $quantity += $productQuantity;
             }
+            $cart->fill();
+
+            $result = [];
+            $client->addQuery(
+                'cart/get-price',
+                ['geo_id' => \App::user()->getRegion()->getId()],
+                [
+                    'product_list'  => $productData,
+                    'service_list'  => [],
+                    'warranty_list' => [],
+                ],
+                function ($data) use (&$result) {
+                    $result = $data;
+                },
+                function(\Exception $e) use (&$result) {
+                    \App::exception()->remove($e);
+                    $result = $e;
+                }
+            );
+            $client->execute();
+
+            if ($result instanceof \Exception) {
+                throw $result;
+            }
+
+            $result = array_merge([
+                'sum' => 0,
+            ], (array)$result);
 
             $responseData = [
                 'success' => true,
+                'data'    => [
+                    'sum'           => $result['sum'],
+                    'quantity'      => $quantity,
+                    'full_quantity' => $cart->getProductsQuantity() + $cart->getServicesQuantity() + $cart->getWarrantiesQuantity(),
+                    'full_price'    => $cart->getSum(),
+                    'old_price'     => $cart->getOriginalSum(),
+                    'link'          => \App::router()->generate('order.create'),
+                ],
             ];
+
+
         } catch(\Exception $e) {
             $responseData = [
                 'success' => false,
-                'message' => 'Не удалось положить товары в корзину' . (\App::config()->debug ? sprintf(': %s', $e->getMessage()) : ''),
+                'data'    => ['error' => 'Не удалось товар услугу в корзину', 'debug' => $e->getMessage()],
             ];
         }
 

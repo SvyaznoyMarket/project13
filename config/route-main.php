@@ -362,6 +362,10 @@ return [
         'pattern' => '/cart/coupon/delete',
         'action'  => ['Cart\CouponAction', 'delete'],
     ],
+    'cart.sum' => [
+        'pattern' => '/cart/sum',
+        'action'  => ['Cart\SumAction', 'execute'],
+    ],
 
     // заказ
     'order.1click' => [
