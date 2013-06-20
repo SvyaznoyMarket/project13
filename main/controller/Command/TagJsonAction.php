@@ -119,14 +119,14 @@ class TagJsonAction {
 
                         $productIds = array_merge($productIds, $productIdsPart);
 
-                        // TODO: сейчас ответ после тэгирования никак не обрабатывается, так как результат ни на что не влияет
-                        // в будущем возможно будет иметь смысл как-то его обрабатываеть
-
                         $part++;
                     }
-file_put_contents('/tmp/logger.txt', count($productIds)."\n", FILE_APPEND);
+
                     // массово устанавливаем товарам тэги
                     $response = self::tagProducts($tagToken, $productIds);
+                    // TODO: сейчас ответ после тэгирования никак не обрабатывается,
+                    // так как результат ни на что не влияет
+                    // в будущем возможно будет иметь смысл как-то его обрабатываеть
                 }
 
                 /*
@@ -157,10 +157,10 @@ file_put_contents('/tmp/logger.txt', count($productIds)."\n", FILE_APPEND);
                     $newHotLink->title = $tagJson['name'];
                     $newHotLink->url = '/tags/' . $tagToken;
                     foreach ($seoJson as $accessLevel) {
-                        if(isset($accessLevel->hotlinks) && !in_array($newHotLink, $accessLevel->hotlinks)) {
-                            array_push($accessLevel->hotlinks, $newHotLink);
-                        } elseif(!isset($accessLevel->hotlinks)) {
-                            $accessLevel->hotlinks = [$newHotLink];
+                        if(isset($accessLevel->autohotlinks) && !in_array($newHotLink, $accessLevel->autohotlinks)) {
+                            array_push($accessLevel->autohotlinks, $newHotLink);
+                        } elseif(!isset($accessLevel->autohotlinks)) {
+                            $accessLevel->autohotlinks = [$newHotLink];
                         }
                     }
 
