@@ -30,29 +30,33 @@
           height: 130px;
         }
         a.link1 {
+          width: auto;
           position: absolute;
-          bottom: 9px;
+          bottom: 10px;
           right: 10px;
-          background: url("@{base-url}/pandoraCatalog/img/btn_buy.gif") no-repeat 0 0; 
+          background: #000;
+          color: #ffffff;
+          .rounded(7px);
           .opacity(0);
-          width: 57px;
+          text-align: center;
+          line-height: 21px;
           display: block;
           height: 23px;
-          -webkit-transition: opacity 0.1s ease-in-out;
-          -moz-transition: opacity 0.1s ease-in-out;
-          transition: opacity 0.1s ease-in-out;
+          padding: 0 10px;
+          .transition(opacity 0.1s ease-in-out);
           &.link1active {
-            padding-right:12px;
-            background: url("@{base-url}/pandoraCatalog/img/btn_cart.gif") no-repeat 0 0; 
+            background: #fff;
+            border: 1px solid #000;
+            color: #000;
+            height: 21px;
+            width: auto;
           }
         }
         .font18.mSmallBtns {
           position: absolute;
           bottom: -8px;
           left: 71px;
-          -webkit-transition: left 0.1s ease-in-out;
-          -moz-transition: left 0.1s ease-in-out;
-          transition: left 0.1s ease-in-out;
+          .transition(left 0.1s ease-in-out);
           span {
             font-size: 12px;
           }
@@ -168,18 +172,29 @@
     &.goodsbarbig.mSmallBtns .cart-add {
       float: left;
       display: block;
-      background: url("@{base-url}/pandoraProduct/img/btn-buy.gif") no-repeat;
+      background: #000;
       width: 125px;
       height: 29px;
+      line-height: 29px;
+      color: #fff;
       margin: -3px 0 0 0;
+      text-indent: 0;
+      font-size: 16px;
+      text-align: center;
+      .rounded(5px);
+      border: 1px solid #000;
       &.link1active {
-        background: url("@{base-url}/pandoraProduct/img/btn-cart.gif") no-repeat;
+        background: #fff;
+        color: #000;
       }
     }
     &.goodsbarbig.mSmallBtns a.link1.disabled {
       opacity: 0.1;
       float: right;
     }
+  } 
+  .jewel {
+
   }
   .product-desc {
     .notBuying {

@@ -1,7 +1,7 @@
 .jewel {
   .flybox, .bMobDown {
     border: 2px solid #000;
-    .close {
+    .close{
       background: url("@{base-url}/pandoraPopups/img/closeBtnBlack.png") no-repeat 0 0; 
     }
     .bigbuttonlink {
@@ -14,6 +14,9 @@
       bottom: -14px;
     }
   }
+  .mediablock .close {
+    background: url("@{base-url}/pandoraPopups/img/closeBtnBlack.png") no-repeat 0 0; 
+  }
   .bFast__eMapLink {
     color: #000;
   }
@@ -24,5 +27,44 @@
     background: #000;
     border: 1px solid #000;
     font-weight: normal;
+  }
+  .mediablock.popup {
+    border: 1px solid #000;
+  }
+
+  .scale {
+    background: url("@{base-url}/pandoraPopups/img/bg_scale_btn_black.png") no-repeat 0 0;
+    height: 124px;
+    div b {
+      background: url("@{base-url}/pandoraPopups/img/bg_scale_btn_black.png") no-repeat 0 -124px;
+      height: 20px;
+      left: 2px;
+      position: absolute;
+      width: 22px;
+    }
+  }
+  .goodsbarbig.mSmallBtns a.link1 {
+    float: left;
+    display: block;
+    background: #000;
+    width: 125px;
+    height: 29px;
+    line-height: 29px;
+    color: #fff;
+    margin: -3px 0 0 0;
+    text-indent: 0;
+    font-size: 16px;
+    text-align: center;
+    .rounded(5px);
+    border: 1px solid #000;
+  }
+  &.bought {
+    .goodsbarbig.mSmallBtns a.link1 {
+      background: #fff;
+      color: #000;
+    }
+  }
+  .previewlist a:hover {
+    border-color: #000;
   }
 }
