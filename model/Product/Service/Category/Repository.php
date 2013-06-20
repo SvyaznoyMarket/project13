@@ -12,9 +12,10 @@ class Repository {
 
     /**
      * @param \Model\Region\Entity $region
-     * @param                      $callback
+     * @param                      $done
+     * @param                      $fail
      */
-    public function prepareRootCollection(\Model\Region\Entity $region = null, $callback) {
+    public function prepareRootCollection(\Model\Region\Entity $region = null, $done, $fail = null) {
         \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         $params = [
@@ -23,7 +24,7 @@ class Repository {
         if ($region instanceof \Model\Region\Entity) {
             $params['geo_id'] = $region->getId();
         }
-        $this->client->addQuery('service/get-category-tree', $params, [], $callback);
+        $this->client->addQuery('service/get-category-tree', $params, [], $done, $fail);
     }
 
     /**
