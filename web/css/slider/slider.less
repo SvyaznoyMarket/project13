@@ -1,0 +1,138 @@
+.bSliderAction {
+    position: relative;
+    z-index: 10;
+    ul {
+        li {
+            float: left;
+        }
+    }
+    &__elist {
+        width: 600px;
+        margin: 0 auto;
+        li {
+            width: 120px;
+            height: 210px;
+            .product__inner {
+                padding: 10px;
+                .transition(all 0.05s linear);      
+                &:hover {
+                    .box-shadow(0 0 5px rgba(0,0,0,0.3));
+                    background: #fff;
+                    .rounded(3px);
+                    .btnBuy {
+                        .opacity(1);
+                    }
+                }    
+            }
+        }
+        .reviewSection__star {
+            float: none;
+            margin: 0;
+            text-align: center;
+        }
+        .productImg {
+            display: table-cell;
+            width: 100px;
+            height: 100px;
+            vertical-align: middle;
+            img {
+                max-width: 100px;
+                max-height: 100px;
+            }
+        }
+        .productName {
+            margin: 5px 0 8px;
+            height: 40px;
+            overflow: hidden;
+            font-size: 11px;
+        }
+        .productPrice {
+            font-size: 14px;
+            margin: 0 0 10px;
+        }
+        .btnBuy {
+            width: 100px;
+            height: 25px;
+            line-height: 25px;
+            font-size: 14px;
+            .opacity(0);
+            .transition(all 0.05s linear);
+        }
+    }
+    &__eBtn {
+        position: absolute;
+        background-color: #fff7e6;
+        .rounded(4px);
+        height: 58px;
+        width: 40px;
+        top: 76px;
+        cursor: pointer;
+        span {
+            background-image: url("@{base-url}/newProductCard/img/btn_slider.png");
+            background-repeat: no-repeat;
+            margin: 6px auto 0;
+            height: 46px;
+            width: 24px;
+            display: block;
+        }
+    }
+    &__eDisable {
+        background: #f2f2f2;
+        .opacity(0.3);
+        span {
+            cursor: default;
+        }
+    }
+    &__mNext {
+        right: 0;
+        span {
+            background-position: -54px 0px;
+        }
+    }
+    &__mPrev {
+        span {
+            background-position: -37px 0px;
+        }
+    }
+}
+
+.bAccessory {
+    border-top: 1px solid #c7c7c7;
+    border-bottom: 1px solid #c7c7c7;
+    height: 220px;
+    &__eCat {
+        float: left;
+        width: 219px;
+        height: 215px;
+        overflow: scroll;
+        border-right: 1px solid #c7c7c7;
+        padding: 5px 0 0;
+        li {
+            cursor: pointer;
+            span {
+                display: inline-block;
+                padding: 5px;
+                &:hover {
+                    text-decoration: underline;
+                }
+            }
+            &.active {
+                cursor: default;
+                span {
+                    background: #e4e4e4;
+                    &:hover {
+                        text-decoration: none;
+                    }
+                }
+            }
+        }
+    }
+    .bSliderAction {
+        width: 460px;
+        float: right;
+        margin: 5px 0 0;
+        &__elist {
+            width: 360px;
+        }
+    }
+}

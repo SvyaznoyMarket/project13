@@ -606,6 +606,8 @@
 .bHint{
   margin-bottom: -5px;
   position: relative;
+  display: inline-block;
+  vertical-align: top;
   &_eLink{
     background: @white url('@{base-url}/item/img/hintQ.gif') no-repeat left center;
     cursor: pointer;
@@ -613,7 +615,7 @@
     font-size: 0;
     height: 16px;
     text-indent: -10000px;
-    width: 20px;
+    width: 16px;
   }
   &_ePopup{
     display: none;
@@ -626,7 +628,8 @@
     z-index: 2;
   }
   /*** принудительное форматирование подсказок ***/
-  .bHint-text span {
+  &-text span,
+  &-text p {
     font-size: 13px !important;
     font-family: Tahoma !important;
     line-height: 1.2 !important;

@@ -316,7 +316,19 @@
                 	<dl class="bSpecifications__eList clearfix">
                 		<dd><span>Тип</span></dd>
                 		<dt>GSM (800/900/1800/1900 МГц), HSPA+ (850/900/1700/1900/2100 МГц)</dt>
-                		<dd><span>Двухъядерный процессор</span></dd>
+                		<dd>
+                			<span>Двухъядерный процессор 
+                			<div class="bHint">
+		                      <a class="bHint_eLink">Разрешение дисплея</a>
+		                      <div class="bHint_ePopup popup">
+		                        <div class="close"></div>
+		                        <div class="bHint-text">
+		                        	<p>Разрешение дисплея – это количество мельчайших точек, из которых складывается общая картинка. Каждая точка называется пикселем. Так как этих точек в современных экранах очень много, разрешение записывается двумя числами: первое отражает количество пикселей по горизонтали, второе по вертикали. От разрешения дисплея зависит многое. Как будут выглядеть фотографии и сайты, нужно ли вам будет конвертировать видео, запустится ли игра. И это тот случай, когда чем больше – тем лучше.</p>
+		                        </div>
+		                      </div>
+		                    </div>
+			                </span>
+			            </dd>
                 		<dt>GSM (800/900/1800/1900 МГц), HSPA+ (850/900/1700/1900/2100 МГц)</dt>
                 		<dd><span>Тип</span></dd>
                 		<dt>GSM (800/900/1800/1900 МГц), HSPA+ (850/900/1700/1900/2100 МГц)</dt>
@@ -336,7 +348,7 @@
                 		<dt>GSM (800/900/1800/1900 МГц), HSPA+ (850/9100 МГц)</dt>
                 		<dd><span>Тип</span></dd>
                 		<dt>GSM (800/900/1800/1900 МГц), HSPA+ (850/900/1700/1900/2100 МГц)</dt>
-                		<dd><span>Разрешение видео</span></dd>
+                		<dd><span>Разрешение видео </dd>
                 		<dt>GSM (800/900/1800/1900 МГц), HSPA+ </dt>
                 		<dd><span>Тип</span></dd>
                 		<dt>GSM (800/900/1800/1900 МГц), HSPA+ (850/900/1700/1900/2100 МГц)</dt>
@@ -470,10 +482,46 @@
                             <span>Самовывоз <strong>бесплатно</strong></span>
                             <div>Завтра, 16.05.2013</div>
                         </li>
-                        <li class="bWidgetBuy__eDelivery-item bWidgetBuy__eDelivery-now">
+
+                        <li class="bWidgetBuy__eDelivery-item bWidgetBuy__eDelivery-now click">
                             <span class="dotted">Есть в магазинах</span>
                             <div>Купить сегодня без предзаказа</div>
                         </li>
+
+                        <ul style="display: block;" class="bDeliveryFreeAddress">
+                        	<li>
+                        		м. Белорусская,<br/> 
+								ул. Грузинский вал, д. 31
+							</li>
+                        	<li>
+								м. Ленинский проспект, <br/> 
+								ул. Орджоникидзе, д. 11, стр. 10
+                        	</li>
+                        	<li>
+                        		м. Белорусская, <br/> 
+								ул. Грузинский вал, д. 31
+							</li>
+                        	<li>
+								м. Ленинский проспект, <br/> 
+								ул. Орджоникидзе, д. 11, стр. 10
+                        	</li>
+                        	<li>
+                        		м. Белорусская, <br/> 
+								ул. Грузинский вал, д. 31
+							</li>
+                        	<li>
+								м. Ленинский проспект, <br/> 
+								ул. Орджоникидзе, д. 11, стр. 10
+                        	</li>
+                        	<li>
+                        		м. Белорусская, <br/> 
+								ул. Грузинский вал, д. 31
+							</li>
+                        	<li>
+								м. Ленинский проспект, <br/> 
+								ул. Орджоникидзе, д. 11, стр. 10
+                        	</li>
+                        </ul>
                     </ul>
 
                     <div class="bAwardSection"><figure><img src="/css/newProductCard/img/award.jpg" alt="" /></figure></div>
@@ -494,7 +542,16 @@
 
 		                		<div class="labelText">
 			                		<div>
-			                			<span class="dotted">Black: 2 годa</span> <img src="/css/newProductCard/img/ico_q.gif" alt="" />
+			                			<span class="dotted">Black: 2 годa</span> 
+			                			<div class="bHint">
+					                      <a class="bHint_eLink">Разрешение дисплея</a>
+					                      <div class="bHint_ePopup popup">
+					                        <div class="close"></div>
+					                        <div class="bHint-text">
+					                        	<p>конвертировать видео, запустится ли игра. И это тот случай, когда чем больше – тем лучше.</p>
+					                        </div>
+					                      </div>
+					                    </div>
 			                		</div>
 			                		<strong>1 490</strong>p
 			                		<div style="display: none;" class="deSelect"><a class="">Отменить</a></div>
@@ -510,8 +567,17 @@
 
 		                    	<div class="labelText">
 			                    	<div>
-			                    		<span class="dotted">Gold: 2,5 годa</span> <img src="/css/newProductCard/img/ico_q.gif" alt="" />
-			                    	</div>
+			                    		<span class="dotted">Gold: 2,5 годa</span>
+			                    		<div class="bHint">
+						                      <a class="bHint_eLink">Разрешение дисплея</a>
+						                      <div class="bHint_ePopup popup">
+						                        <div class="close"></div>
+						                        <div class="bHint-text">
+						                        	<p>конвертировать видео, запустится ли игра. И это тот случай, когда чем больше – тем лучше.</p>
+						                        </div>
+						                      </div>
+						                    </div>
+				                    	</div>
 			                    	<strong>1 490</strong>p
 			                    	<div style="display: block;" class="deSelect"><a class="">Отменить</a></div>
 		                    	</div>
@@ -526,7 +592,16 @@
 
 		                    	<div class="labelText">
 			                    	<div>
-			                    		<span class="dotted">Platinum: 3 годa</span> <img src="/css/newProductCard/img/ico_q.gif" alt="" />
+			                    		<span class="dotted">Platinum: 3 годa</span>
+			                    		<div class="bHint">
+						                    <a class="bHint_eLink">Разрешение дисплея</a>
+						                    <div class="bHint_ePopup popup">
+						                        <div class="close"></div>
+						                        <div class="bHint-text">
+						                        	<p>конвертировать видео, запустится ли игра. И это тот случай, когда чем больше – тем лучше.</p>
+						                        </div>
+						                    </div>
+				                    	</div>
 			                    	</div>
 			                    	<strong>1 490</strong>p
 			                    	<div style="display: none;" class="deSelect"><a class="">Отменить</a></div>
@@ -551,7 +626,16 @@
 
 		                		<div class="labelText">
 			                		<div>
-			                			<span class="dotted">Подключение<br/>электричества</span> <img src="/css/newProductCard/img/ico_q.gif" alt="" />
+			                			<span class="dotted">Подключение<br/>электричества</span>
+			                			<div class="bHint">
+						                    <a class="bHint_eLink">Разрешение дисплея</a>
+						                    <div class="bHint_ePopup popup">
+						                        <div class="close"></div>
+						                        <div class="bHint-text">
+						                        	<p>конвертировать видео, запустится ли игра. И это тот случай, когда чем больше – тем лучше.</p>
+						                        </div>
+						                    </div>
+				                    	</div>
 			                		</div>
 			                		<strong>1 490</strong>p
 			                		<div style="display: none;" class="deSelect"><a class="">Отменить</a></div>
