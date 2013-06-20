@@ -9146,7 +9146,7 @@
     line-height: 18px;
   }
   .items-section {
-    margin: 0 0 30px 0;
+    margin: -4px 0 30px 0;
     position: relative;
     z-index: 1;
   }
@@ -9173,22 +9173,27 @@
     -webkit-border-radius: 7px;
     -moz-border-radius: 7px;
     border-radius: 7px;
+    -moz-opacity: 0;
+    -khtml-opacity: 0;
+    -webkit-opacity: 0;
+    opacity: 0;
+    -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
+    filter: alpha(opacity=0);
     text-align: center;
     line-height: 21px;
-    opacity: 0;
     display: block;
     height: 23px;
     padding: 0 10px;
-  }
-  .items-section .items-section__list li .item-buy.link1 {
-    width: auto;
+    -webkit-transition: opacity 0.2s ease-in-out;
+    -moz-transition: opacity 0.2s ease-in-out;
+    transition: opacity 0.2s ease-in-out;
   }
   .items-section .items-section__list li .item-buy.link1active {
     background: #fff;
     border: 1px solid #000;
     color: #000;
     height: 21px;
-    width: 65px;
+    width: auto;
   }
   .items-section .items-section__list li .item-price {
     position: absolute;
@@ -9283,7 +9288,7 @@
     border-bottom: none;
   }
   .filter-section {
-    margin: 0 0 20px 0;
+    margin: 0;
     font-family: tahoma;
     background: url("/css/pandoraCatalog/img/bg_items_list.png") repeat-x 0 100%;
     z-index: 2;
@@ -9331,7 +9336,7 @@
     top: 17px;
     z-index: 100;
     padding-left: 0;
-    width: 135px;
+    width: 145px;
   }
   .filter-section .filter-section__value .filter-section__value__dd li {
     padding: 5px 0 5px 10px;
@@ -9369,6 +9374,18 @@
     border: none;
   }
   .brandSectionPandora__catalog .allpager,
+  .brandSectionPandora__catalog .allpagerJewel {
+    margin-right: 20px;
+  }
+  .brandSectionPandora__catalog #ajaxgoods_top.popup {
+    border: 2px solid #000;
+  }
+  .brandSectionPandora__catalog .bNavLoader__eM p {
+    color: #000;
+  }
+  .brandSectionPandora__catalog .bNavLoader__eIco {
+    background: url("/css/ajaxPopup/img/arrow_bg_b.png") no-repeat;
+  }
   .brandSectionPandora__catalog .allpagerJewel {
     margin-right: 20px;
   }
@@ -9453,19 +9470,26 @@
     height: 130px;
   }
   .brandSectionPandora__product .bigcarousel-brand .goodsbox .goodsbox__inner a.link1 {
+    width: auto;
     position: absolute;
-    bottom: 9px;
+    bottom: 10px;
     right: 10px;
-    background: url("/css/pandoraCatalog/img/btn_buy.gif") no-repeat 0 0;
+    background: #000;
+    color: #ffffff;
+    -webkit-border-radius: 7px;
+    -moz-border-radius: 7px;
+    border-radius: 7px;
     -moz-opacity: 0;
     -khtml-opacity: 0;
     -webkit-opacity: 0;
     opacity: 0;
     -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
     filter: alpha(opacity=0);
-    width: 57px;
+    text-align: center;
+    line-height: 21px;
     display: block;
     height: 23px;
+    padding: 0 10px;
     -webkit-transition: opacity 0.1s ease-in-out;
     -moz-transition: opacity 0.1s ease-in-out;
     transition: opacity 0.1s ease-in-out;
@@ -9474,6 +9498,8 @@
     background: #fff;
     border: 1px solid #000;
     color: #000;
+    height: 21px;
+    width: auto;
   }
   .brandSectionPandora__product .bigcarousel-brand .goodsbox .goodsbox__inner .font18.mSmallBtns {
     position: absolute;
@@ -9625,13 +9651,23 @@
   .brandSectionPandora__product .product-desc__buy.goodsbarbig.mSmallBtns .cart-add {
     float: left;
     display: block;
-    background: url("/css/pandoraProduct/img/btn-buy.gif") no-repeat;
+    background: #000;
     width: 125px;
     height: 29px;
+    line-height: 29px;
+    color: #fff;
     margin: -3px 0 0 0;
+    text-indent: 0;
+    font-size: 16px;
+    text-align: center;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    border: 1px solid #000;
   }
   .brandSectionPandora__product .product-desc__buy.goodsbarbig.mSmallBtns .cart-add.link1active {
-    background: url("/css/pandoraProduct/img/btn-cart.gif") no-repeat;
+    background: #fff;
+    color: #000;
   }
   .brandSectionPandora__product .product-desc__buy.goodsbarbig.mSmallBtns a.link1.disabled {
     opacity: 0.1;
@@ -9828,6 +9864,9 @@
     background: url("/css/pandoraPopups/img/corner.png") no-repeat 0 0;
     bottom: -14px;
   }
+  .jewel .mediablock .close {
+    background: url("/css/pandoraPopups/img/closeBtnBlack.png") no-repeat 0 0;
+  }
   .jewel .bFast__eMapLink {
     color: #000;
   }
@@ -9838,6 +9877,44 @@
     background: #000;
     border: 1px solid #000;
     font-weight: normal;
+  }
+  .jewel .mediablock.popup {
+    border: 1px solid #000;
+  }
+  .jewel .scale {
+    background: url("/css/pandoraPopups/img/bg_scale_btn_black.png") no-repeat 0 0;
+    height: 124px;
+  }
+  .jewel .scale div b {
+    background: url("/css/pandoraPopups/img/bg_scale_btn_black.png") no-repeat 0 -124px;
+    height: 20px;
+    left: 2px;
+    position: absolute;
+    width: 22px;
+  }
+  .jewel .goodsbarbig.mSmallBtns a.link1 {
+    float: left;
+    display: block;
+    background: #000;
+    width: 125px;
+    height: 29px;
+    line-height: 29px;
+    color: #fff;
+    margin: -3px 0 0 0;
+    text-indent: 0;
+    font-size: 16px;
+    text-align: center;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    border: 1px solid #000;
+  }
+  .jewel.bought .goodsbarbig.mSmallBtns a.link1 {
+    background: #fff;
+    color: #000;
+  }
+  .jewel .previewlist a:hover {
+    border-color: #000;
   }
 }
 /*---END---СТИЛИ БРЕНД РАЗДЕЛА PANDORA---*/

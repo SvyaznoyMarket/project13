@@ -447,8 +447,13 @@ $(document).ready(function() {
   	if($('.jewel').length) {
 	    $(".link1.link1active").attr('href', '/cart')
 	    $(".link1").bind( 'click', function()   {
-	        $(this).html("В корзине")
-	        $(this).addClass("link1active")
+	    		if($(this).parent().hasClass('goodsbarbig')) {
+		        $('.goodsbarbig .link1').html("В корзине")
+		        $('.goodsbarbig .link1').addClass("link1active")
+	    		} else {
+		        $(this).html("В корзине")
+		        $(this).addClass("link1active")
+	    		}
 	    })
   	}
   }

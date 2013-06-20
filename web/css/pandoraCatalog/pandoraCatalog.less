@@ -39,7 +39,7 @@
 }
 
 .items-section {
-  margin: 0 0 30px 0;
+  margin: -4px 0 30px 0;
   position: relative;
   z-index: 1;
   .items-section__list {
@@ -59,38 +59,32 @@
         bottom: 0;
         right: 0;
         background: #000;
-        color: @white;
+        color: #ffffff;
         .rounded(7px);
+        .opacity(0);
         text-align: center;
         line-height: 21px;
-        opacity: 0;
         display: block;
         height: 23px;
         padding: 0 10px;
-        &.link1 {
-          width: auto;
-        }
+        .transition(opacity 0.2s ease-in-out);
         &.link1active {
           background: #fff;
           border: 1px solid #000;
           color: #000;
           height: 21px;
-          width: 65px;
+          width: auto;
         }
       }
       .item-price {
         position: absolute;
         bottom: 0;
         left: 80px;
-        -webkit-transition: left 0.2s ease-in-out;
-        -moz-transition: left 0.2s ease-in-out;
-        transition: left 0.2s ease-in-out;
+        .transition(left 0.2s ease-in-out);
       }
       .item-name {
         .opacity(0);
-        -webkit-transition: opacity 0.2s ease-in-out;
-        -moz-transition: opacity 0.2s ease-in-out;
-        transition: opacity 0.2s ease-in-out;
+        .transition(opacity 0.2s ease-in-out);
       }
       .item-img {
         text-align: center;
@@ -166,7 +160,7 @@
 }
 
 .filter-section {
-  margin: 0 0 20px 0;
+  margin: 0;
   font-family: tahoma;
   background: url("@{base-url}/pandoraCatalog/img/bg_items_list.png") repeat-x 0 100%; 
   z-index: 2;
@@ -210,7 +204,7 @@
       top: 17px;
       z-index: 100;
       padding-left: 0;
-      width: 135px;
+      width: 145px;
       li {
         padding: 5px 0 5px 10px;
         float: none;
@@ -254,6 +248,18 @@
     border: none;
   }
   .allpager, .allpagerJewel {
+    margin-right: 20px;
+  }
+  #ajaxgoods_top.popup {
+    border: 2px solid #000;
+  }
+  .bNavLoader__eM p {
+    color: #000;
+  }
+  .bNavLoader__eIco {
+    background: url("/css/ajaxPopup/img/arrow_bg_b.png") no-repeat;
+  }
+  .allpagerJewel {
     margin-right: 20px;
   }
   .goodsbox {
