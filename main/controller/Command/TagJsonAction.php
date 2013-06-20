@@ -150,12 +150,15 @@ class TagJsonAction {
                         $newSeoJson = new \StdClass();
                         $newSeoJson->private = new \StdClass();
                         $newSeoJson->public = new \StdClass();
-                        file_put_contents($seoJsonFilepath, str_replace('\/', '/', json_encode($newSeoJson, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT)));
+                        if(!file_put_contents($seoJsonFilepath, str_replace('\/', '/', json_encode($newSeoJson, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT)))) {
+                            throw new \Exception(sprintf('TagJson: не удалось записать данные в %s', $seoJsonFilepath));
+                        }
                     }
                     $seoJson = json_decode(file_get_contents($seoJsonFilepath));
                     $newHotLink = new \StdClass();
                     $newHotLink->title = $tagJson['name'];
                     $newHotLink->url = '/tags/' . $tagToken;
+                    $newHotLink->active = 1;
                     foreach ($seoJson as $accessLevel) {
                         if(isset($accessLevel->autohotlinks) && !in_array($newHotLink, $accessLevel->autohotlinks)) {
                             array_push($accessLevel->autohotlinks, $newHotLink);
@@ -213,5 +216,12 @@ class TagJsonAction {
         return $response;
     }
 
+
+    /**
+     * удаляет тэги из json-фалов категорий, для которых нет связей с данным тэгом после
+     * получения из ядра списка категорий для тэга
+     */
+    private static function removeTagFromCategoryJson($token, array $productIds) {
+    }
 
 }
