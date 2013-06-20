@@ -68,7 +68,9 @@ class Helper {
      * @return string
      */
     public function nofollowExternalLinks($stringOriginal) {
-        $stringWrapped = '<div>' . str_replace('&', '&amp;', $stringOriginal) . '</div>';
+        $stringWrapped = '<div>' . $stringOriginal . '</div>';
+        $stringWrapped = str_replace('&', '&amp;', $stringWrapped);
+        $stringWrapped = preg_replace('/<([a-z]*[^>\/a-z]+[^>]*)>/i', '&lt;$1&gt;', $stringWrapped);
 
         $dom = new \DOMDocument;
         $this->loadXML($stringWrapped, $dom, $stringOriginal);
