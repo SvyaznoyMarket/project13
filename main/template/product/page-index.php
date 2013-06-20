@@ -17,7 +17,7 @@
 
 <?
 
-$hasFurnitureBuilder = $product->getLine() && (256 == $product->getLine()->getId()); // Серия Байкал
+$hasFurnitureBuilder = \App::config()->product['furnitureConstructor'] && $product->getLine() && (256 == $product->getLine()->getId()); // Серия Байкал
 
 /** @var  $productVideo \Model\Product\Video\Entity|null */
 $productVideo = reset($productVideos);
