@@ -151,18 +151,29 @@ figure {
                     .rounded(9px);
                     background-image: url("@{base-url}/newProductCard/img/btn_slider.png");
                     background-repeat: no-repeat;
+                    &:hover {
+                        border: 2px solid #fb9c00;
+                        width: 46px;
+                        height: 46px;
+                    }
                 }
             }
             &-video {
                 float: left;
                 a {
                     background-position: 7px 0;
+                    &:hover {
+                        background-position: 6px -1px;
+                    }
                 }
             } 
             &-grad360 {
                 float: right;
                 a {
                     background-position: 6px -49px;
+                    &:hover {
+                        background-position: 5px -50px;
+                    }
                 }
             }
         }
