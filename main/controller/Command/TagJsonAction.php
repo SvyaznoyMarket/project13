@@ -105,24 +105,28 @@ class TagJsonAction {
                     // если по текущим фильтрам товаров не найдено, переходим к следующему файлу
                     if(empty($count)) continue;
 
+                    $productIds = [];
+
                     while ($part <= (int)ceil($count / $step)) {
                         if($max_parts && $part > $max_parts) break;
 
-                        $productIds = \RepositoryManager::product()->getIdsByFilter(
+                        $productIdsPart = \RepositoryManager::product()->getIdsByFilter(
                             $productFilter->dump(),
                             [],
                             ($part - 1) * $step,
                             $step
                         );
 
-                        // массово устанавливаем товарам тэги
-                        $response = self::tagProducts($tagToken, $productIds);
+                        $productIds = array_merge($productIds, $productIdsPart);
 
                         // TODO: сейчас ответ после тэгирования никак не обрабатывается, так как результат ни на что не влияет
                         // в будущем возможно будет иметь смысл как-то его обрабатываеть
 
                         $part++;
                     }
+file_put_contents('/tmp/logger.txt', count($productIds)."\n", FILE_APPEND);
+                    // массово устанавливаем товарам тэги
+                    $response = self::tagProducts($tagToken, $productIds);
                 }
 
                 /*
