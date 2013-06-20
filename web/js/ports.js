@@ -217,7 +217,6 @@ window.ANALYTICS = {
                 })
             }
         }
-
         mtHost = (("https:" == document.location.protocol) ? "https" : "http") + "://rainbow-ru.mythings.com";
         mtAdvertiserToken = "1989-100-ru";
         document.write(unescape("%3Cscript src='" + mtHost + "/c.aspx?atok="+mtAdvertiserToken+"' type='text/javascript'%3E%3C/script%3E"));
