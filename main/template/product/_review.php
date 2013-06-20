@@ -12,7 +12,7 @@
 
   <div class="commentWrap">
     <? if($review['origin'] != 'enter') { ?>
-      <div class="commentWrap__text commentWrap__quote clearfix"><span class="mark">&#171;</span><div class="p"><?= $page->helper->nofollowExternalLinks($review['extract']) ?></div></div>
+      <div class="commentWrap__text commentWrap__quote clearfix"><span class="mark">&#171;</span><div class="p"><?= empty($review['extract']) ? '' : $page->helper->nofollowExternalLinks($review['extract']) ?></div></div>
     <? } else { ?>
       <div class="commentWrap__text clearfix"><span class="mark">&#171;</span><p><?= $review['extract'] ?></p></div>
     <? } ?>
