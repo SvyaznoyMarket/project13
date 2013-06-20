@@ -37,6 +37,11 @@ class LineAction {
             }
         }
 
+        // фильтрация связанных товаров
+        $productsInLine = array_filter($productsInLine, function ($product) {
+            return $product instanceof \Model\Product\ExpandedEntity;
+        });
+
         //Запрашиваю составные части набора
         $parts = [];
         if ((bool)$mainProduct->getKit()) {
