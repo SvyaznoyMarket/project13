@@ -15,7 +15,7 @@ module.exports = function(grunt) {
     "app.product.comment.list.js",
     "app.product.js",
     "app.shop.js",
-	"DAnimFramePlayer.js",
+    "DAnimFramePlayer.js",
   ];
 
   var bigjqueryFiles = [
@@ -27,8 +27,8 @@ module.exports = function(grunt) {
     "jquery.ui.autocomplete.js",
     "jquery.ui.slider.js",
     "jquery.effects.core.js",
-    "jquery.effects.transfer.js",
-    "jquery.effects.blind.js",
+    // "jquery.effects.transfer.js",
+    // "jquery.effects.blind.js",
     "jquery.lightbox_me.js",
     "jquery.mousewheel.min.js",
     "jquery.raty.js",
@@ -55,6 +55,15 @@ module.exports = function(grunt) {
           execCommand += ' --js_output_file ../web/js/bigjquery.js';
           return execCommand;
         },
+      },
+      getVersion: {
+        stdout: true,
+        stderr: true,
+        command: function(){
+          grunt.log.writeln('getVersion ');
+          var execCommand = 'filename="../web/js/combine.js"; rm ../web/js/combine.js; printf \'window.release = { "version":"\'>> $filename \r; res=$(git describe --always --tag); printf $res >> $filename \r; printf \'"}\'>> $filename \r;';
+          return execCommand
+        }
       }
     },
 
@@ -129,18 +138,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-exec');
 
-  grunt.registerTask('set_version', 'Set compilation timestamp for js files', function() {
-    var combine = 'window.filesWithVersion = {\n';
-    var data = new Date();
-    for(var i=0, len=jsFiles.length; i<len; i++) {
-      grunt.log.writeln(jsFiles[i]+'...');
-      combine += '"' + jsFiles[i] + '":' + Math.round(data.getTime()/1000) +',\n';
-    }
-    combine += '\n}';
-    grunt.file.write('../web/js/combine.js' , combine);
-    grunt.log.writeln('Done');
-  });
-
   grunt.registerTask('ymaps_generate', 'Generate Ymap XML', function(){
 
     // LONGITUDE -180 to + 180
@@ -177,7 +174,7 @@ module.exports = function(grunt) {
   })
 
   grunt.registerTask('css', ['less']);
-  grunt.registerTask('js', ['exec','uglify','set_version']);
-  grunt.registerTask('default', ['less','uglify','set_version']);
+  grunt.registerTask('js', ['exec:compileBJ','uglify','exec:getVersion']);
+  grunt.registerTask('default', ['less','uglify','exec:getVersion']);
   grunt.registerTask('ymaps', ['ymaps_generate']);
 };
