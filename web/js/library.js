@@ -808,8 +808,25 @@ var PubSub = {};
   };
 })();
 
-/* https://developer.mozilla.org/en/DOM/document.cookie */
-/* IVN: object into cookie is available */
+
+/** 
+  * docCookies.setItem(obj, sKey, sValue, vEnd, sPath, sDomain, bSecure) 
+  *
+  * https://developer.mozilla.org/en/DOM/document.cookie
+  *
+  * IVN: object into cookie is available
+  * 
+  * @argument obj (Boolean): flag if object is saved
+  * @argument sKey (String): the name of the cookie; 
+  * @argument sValue (String): the value of the cookie; 
+  * @optional argument vEnd (Number, String, Date Object or null): the max-age in seconds (e.g., 31536e3 for a year) or the 
+  *  expires date in GMTString format or in Date Object format; if not specified it will expire at the end of session;  
+  * @optional argument sPath (String or null): e.g., "/", "/mydir"; if not specified, defaults to the current path of the current document location; 
+  * @optional argument sDomain (String or null): e.g., "example.com", ".example.com" (includes all subdomains) or "subdomain.example.com"; if not 
+  * specified, defaults to the host portion of the current document location; 
+  * @optional argument bSecure (Boolean or null): cookie will be transmitted only over secure protocol as https; 
+  * @return undefined; 
+  **/  
 window.docCookies = {  
   getItem: function (sKey, obj) {  
     if (!sKey || !this.hasItem(sKey)) { return null; }  
@@ -824,20 +841,7 @@ window.docCookies = {
     	out = JSON.parse( out );
     return out
   },  
-  /** 
-  * docCookies.setItem(obj, sKey, sValue, vEnd, sPath, sDomain, bSecure) 
-  * 
-  * @argument obj (Boolean): flag if object is saved
-  * @argument sKey (String): the name of the cookie; 
-  * @argument sValue (String): the value of the cookie; 
-  * @optional argument vEnd (Number, String, Date Object or null): the max-age in seconds (e.g., 31536e3 for a year) or the 
-  *  expires date in GMTString format or in Date Object format; if not specified it will expire at the end of session;  
-  * @optional argument sPath (String or null): e.g., "/", "/mydir"; if not specified, defaults to the current path of the current document location; 
-  * @optional argument sDomain (String or null): e.g., "example.com", ".example.com" (includes all subdomains) or "subdomain.example.com"; if not 
-  * specified, defaults to the host portion of the current document location; 
-  * @optional argument bSecure (Boolean or null): cookie will be transmitted only over secure protocol as https; 
-  * @return undefined; 
-  **/  
+  
   setItem: function (obj, sKey, sValue, vEnd, sPath, sDomain, bSecure) {
     if (!sKey || /^(?:expires|max\-age|path|domain|secure)$/.test(sKey)) { return; }  
     var sExpires = "";  
@@ -851,37 +855,85 @@ window.docCookies = {
     if( obj )
     	sValue = JSON.stringify( sValue );  	
     document.cookie = escape(sKey) + "=" + escape(sValue) + sExpires + (sDomain ? "; domain=" + sDomain : "") + (sPath ? "; path=" + sPath : "") + (bSecure ? "; secure" : "");  
-  },  
+  },
+
   removeItem: function (sKey) {  
     if (!sKey || !this.hasItem(sKey)) { return; }  
     var oExpDate = new Date();  
     oExpDate.setDate(oExpDate.getDate() - 1);
     document.cookie = escape(sKey) + "=; expires=" + oExpDate.toGMTString() + "; path=/";  
 //console.info(escape(sKey) + "=; expires=" + oExpDate.toGMTString() + "; path=/")
-  },  
+  },
+
   hasItem: function (sKey) { return (new RegExp("(?:^|;\\s*)" + escape(sKey).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=")).test(document.cookie); }  
 };
 
-function printPrice ( val ) {
-	var floatv = (val+'').split('.')
-	var out = floatv[0]
-	var le = floatv[0].length
-    if ( le > 7){
-        out = out.substr( 0, le - 6) + ' ' + out.substr( le - 6, le - 5) + ' ' + out.substr( le - 3, le )
-    }
-	else if( le > 6 ) {
-		out = out.substr( 0, le - 6) + ' ' + out.substr( le - 6, le - 4) + ' ' + out.substr( le - 3, le )
-	} 
-    else if ( le > 3 ) {
-		out = out.substr( 0, le - 3) + ' ' + out.substr( le - 3, le )
-	}
-	if( floatv.length == 2 && floatv[1]*1 > 0 ) {
-        if( floatv[1].length === 1)
-            floatv[1] += '0'
-		out += '.' + floatv[1]
-    }
-	return out
+
+/**
+ * Проверка является ли строка e-mail
+ * 
+ * @return {Boolean} 
+ */
+function isTrueEmail(){
+    var t = this.toString(),
+        re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(t)
 }
+String.prototype.isEmail = isTrueEmail; // добавляем методом для всех строк
+
+
+/**
+ * jQuery плагин валидации e-mail'ов
+ * 
+ * @param  {[type]} $ [description]
+ * @return {jQuery object}   [description]
+ */
+(function($) {
+    $.fn.emailValidate = function(params) {
+
+        return this.each(function() {
+            var options = $.extend(
+                            {},
+                            $.fn.emailValidate.defaults,
+                            params)
+            var $self = $(this)
+
+            var validate = function(e){
+                var email = $self.val();
+                
+                if (email.isEmail()){
+                    options.onValid();
+                }
+                else{
+                    options.onInvalid();
+                }
+            }
+
+            $self.bind('keyup', validate)
+        });
+    };
+
+    $.fn.emailValidate.defaults = {
+        // callbacks
+        onValid: function() {},
+        onInvalid: function() {},
+    }
+
+})(jQuery);
+
+
+/**
+ * Разбиение числа по разрядам
+ *
+ * @public
+ * @param  {number|string}  число которое нужно отформатировать
+ * @return {string}         отформатированное число
+ */
+window.printPrice = function(num){
+    var str = num+' '
+    return str.replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1 ')
+}
+
 
 function brwsr () {
 	var userag      = navigator.userAgent.toLowerCase()
@@ -1462,21 +1514,7 @@ function Lightbox( jn, data ){
 					'sum': 0, // текущая сумма покупок
 					'bingo': {}
 				}
-	}
-	
-	function printPrice ( val ) {
-		var floatv = (val+'').split('.')
-		var out = floatv[0]
-		var le = floatv[0].length
-		if( le > 6 ) { // billions
-			out = out.substr( 0, le - 6) + ' ' + out.substr( le - 6, le - 4) + ' ' + out.substr( le - 3, le )
-		} else if ( le > 3 ) { // thousands
-			out = out.substr( 0, le - 3) + ' ' + out.substr( le - 3, le )
-		}
-		if( floatv.length == 2 )
-			out += '.' + floatv[1]
-		return out// + '&nbsp;'
-	}		
+	}	
 	
 	this.getBasket = function( item ) {
 		item.price +=''

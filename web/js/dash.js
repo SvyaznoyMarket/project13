@@ -112,47 +112,54 @@ $(document).ready(function(){
 		$('.bSimilarGoods.mCatalog .bSimilarGoodsSlider_eGoods a').live('click', sliderTracking)
 	}
 
+
 	var lboxCheckSubscribe = function(subscribe){
-		var notNowShield = $('.bSubscribeLightboxPopupNotNow')
-		var subPopup = $('.bSubscribeLightboxPopup')
-		var input = $('.bSubscribeLightboxPopup__eInput')
+		var notNowShield = $('.bSubscribeLightboxPopupNotNow'),
+			subPopup = $('.bSubscribeLightboxPopup'),
+			input = $('.bSubscribeLightboxPopup__eInput'),
+			submitBtn = $('.bSubscribeLightboxPopup__eBtn')
 		
 		input.placeholder()
+
+		input.emailValidate({
+			onValid: function(){
+				input.removeClass('mError');
+				submitBtn.removeClass('mDisabled');
+			},
+			onInvalid: function(){
+				submitBtn.addClass('mDisabled');
+				input.addClass('mError');
+			}
+		});
 		
 		var subscribing = function(){
-			var url = $(this).data('url')
-			var email = input.val()
+			if (submitBtn.hasClass('mDisabled'))
+				return false
 
-			if ( email.search('@') !== -1 ){
-				$.post(url, {email: email}, function(res){
-					if( !res.success )
-						return false
-					
-					subPopup.html('<span class="bSubscribeLightboxPopup__eTitle mType">Спасибо! подтверждение подписки отправлено на указанный e-mail</span>')
-					docCookies.setItem(false, 'subscribed', 1, 157680000, '/')
-					if( typeof(_gaq) !== 'undefined' ){
-						_gaq.push(['_trackEvent', 'Account', 'Emailing sign up', 'Page top'])
-					}
-					setTimeout(function(){
-						subPopup.slideUp(300)
-					}, 3000)
-				})
-			}
-			else{
-				// email invalid
-				input.addClass('mError')
-			}
+			var email = input.val(),
+				url = $(this).data('url');
+
+			$.post(url, {email: email}, function(res){
+				if( !res.success )
+					return false
+				
+				subPopup.html('<span class="bSubscribeLightboxPopup__eTitle mType">Спасибо! подтверждение подписки отправлено на указанный e-mail</span>')
+				docCookies.setItem(false, 'subscribed', 1, 157680000, '/')
+				if( typeof(_gaq) !== 'undefined' ){
+					_gaq.push(['_trackEvent', 'Account', 'Emailing sign up', 'Page top'])
+				}
+				setTimeout(function(){
+					subPopup.slideUp(300)
+				}, 3000)
+			})
+
 			return false
 		}
 
 		var subscribeNow = function(){
 			subPopup.slideDown(300)
 
-			input.keydown(function(){
-				$(this).removeClass('mError')
-			})
-
-			$('.bSubscribeLightboxPopup__eBtn').bind('click', subscribing)
+			submitBtn.bind('click', subscribing)
 
 			$('.bSubscribeLightboxPopup__eNotNow').bind('click', function(){
 				var url = $(this).data('url')
@@ -185,8 +192,9 @@ $(document).ready(function(){
 	}
 
 	var startAction = function(action){
-		if (action.subscribe !== undefined)
+		if (action.subscribe !== undefined){
 			lboxCheckSubscribe(action.subscribe)
+		}
 	}
 	
 	var carturl = $('.lightboxinner .point2').attr('href')
