@@ -60,14 +60,14 @@ class DeliveryAction {
         $helper = new \View\Helper();
         $data = [];
         $shopData = isset($response['shop_list']) ? $response['shop_list'] : [];
-
+        //print "<pre>"; var_dump($response['product_list']); exit;
         foreach($response['product_list'] as $productId => $productData){
             if (!isset($productData['delivery_mode_list'])) continue;
 
             $data[$productId] = [];
             foreach($productData['delivery_mode_list'] as $delivery) {
-
                 $token = $delivery['token'];
+                if ($token == 'now') $token = 'self';
                 $date = reset($delivery['date_list']);
                 $day = 0;
                 $dateOriginal = $date['date'];
@@ -80,7 +80,7 @@ class DeliveryAction {
                     $day++;
                     if ($day > 7) continue;
 
-                    if('self' == $token) {
+                    if(in_array($token, ['self', 'now'])) {
                         foreach ($dateData['shop_list'] as $dateShopData) {
                             $address = $shopData[$dateShopData['id']]['address'];
                             if (($regionId != $shopData[$dateShopData['id']]['geo_id']) && isset($regionData[$shopData[$dateShopData['id']]['geo_id']]['name'])) {
@@ -105,7 +105,7 @@ class DeliveryAction {
                 $data[$productId][] = [
                     'typeId'           => $delivery['id'],
                     'date'             => $helper->humanizeDate($dateOriginal),
-                    'token'            => $delivery['token'],
+                    'token'            => $token,
                     'price'            => $delivery['price'],
                     'transportCompany' => \App::user()->getRegion()->getHasTransportCompany(),
                     'days'             => $helper->getDaysDiff($dateOriginal),
@@ -173,6 +173,7 @@ class DeliveryAction {
 
             foreach ($productData['delivery_mode_list'] as $deliveryData) {
                 $token = $deliveryData['token'];
+                if ($token == 'now') $token = 'self';
 
                 $dates = [];
                 $shops = [];
@@ -186,7 +187,7 @@ class DeliveryAction {
                         'value' => $dateData['date']
                     ];
 
-                    if('self' == $token) {
+                    if(in_array($token, ['self', 'now'])) {
                         $date['shopIds'] = [];
                         foreach ($dateData['shop_list'] as $dateShopData) {
                             $address = $shopData[$dateShopData['id']]['address'];

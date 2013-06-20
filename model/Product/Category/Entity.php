@@ -33,8 +33,14 @@ class Entity extends BasicEntity {
     protected $globalProductCount;
     /** @var bool */
     protected $hasChild;
+    /** @var float */
+    protected $priceChangePercentTrigger;
+    /** @var bool */
+    protected $priceChangeTriggerEnabled;
 
     public function __construct(array $data = []) {
+        $data['price_change_trigger_enabled'] = true;
+        $data['price_change_percent_trigger'] = 90;
         if (array_key_exists('id', $data)) $this->setId($data['id']);
         if (array_key_exists('parent_id', $data)) $this->setParentId($data['parent_id']);
         if (array_key_exists('is_furniture', $data)) $this->setIsFurniture($data['is_furniture']);
@@ -55,6 +61,8 @@ class Entity extends BasicEntity {
         if (array_key_exists('product_count', $data)) $this->setProductCount($data['product_count']);
         if (array_key_exists('product_count_global', $data)) $this->setGlobalProductCount($data['product_count_global']);
         if (array_key_exists('has_children', $data)) $this->setHasChild($data['has_children']);
+        if (array_key_exists('price_change_percent_trigger', $data)) $this->setPriceChangePercentTrigger($data['price_change_percent_trigger'] / 100);
+        if (array_key_exists('price_change_trigger_enabled', $data)) $this->setPriceChangeTriggerEnabled($data['price_change_trigger_enabled']);
 
         // в отличие от TreeEntity нет автозагрузки дочерних элементов
     }
@@ -300,5 +308,33 @@ class Entity extends BasicEntity {
         } else {
             return null;
         }
+    }
+
+    /**
+     * @param float $priceChangePercentTrigger
+     */
+    public function setPriceChangePercentTrigger($priceChangePercentTrigger) {
+        $this->priceChangePercentTrigger = (float)$priceChangePercentTrigger;
+    }
+
+    /**
+     * @return float
+     */
+    public function getPriceChangePercentTrigger() {
+        return $this->priceChangePercentTrigger;
+    }
+
+    /**
+     * @param bool $priceChangeTriggerEnabled
+     */
+    public function setPriceChangeTriggerEnabled($priceChangeTriggerEnabled) {
+        $this->priceChangeTriggerEnabled = (bool)$priceChangeTriggerEnabled;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getPriceChangeTriggerEnabled() {
+        return $this->priceChangeTriggerEnabled;
     }
 }
