@@ -16,6 +16,8 @@ module.exports = function(grunt) {
     "app.product.js",
     "app.shop.js",
     "DAnimFramePlayer.js",
+    "KupeConstructorScript.js",
+    "three.js"
   ];
 
   var bigjqueryFiles = [

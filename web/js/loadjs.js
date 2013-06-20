@@ -194,8 +194,10 @@
 				.wait()
 				.script( getWithVersion('dash.js') )
 				.script( 'watch3dv2.min.js' )
-				.script( 'swfobject.js' )
-                .script( 'DAnimFramePlayer.js' )
+				.script( 'swfobject.js' ) // maybe 3d
+                .script( getWithVersion('DAnimFramePlayer.js') ) // 3d furniture
+                .script( getWithVersion('KupeConstructorScript.js') ) // furniture constuctor
+                .script( getWithVersion('three.js') ) // furniture constuctor
 				.wait()
 				.script( getWithVersion('app.product.js') )
 				.script( getWithVersion('app.oneclick.js') )

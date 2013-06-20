@@ -48,8 +48,8 @@
     height: auto;
     margin: 0px auto;
     min-height: 100%;
-    padding: 0px 20px;
-    width: 920px;
+    padding: 0px 10px;
+    width: 940px;
   }
   * html .allpage {
     height: 100%;
@@ -3238,16 +3238,16 @@
     height: 438px;
     margin: -438px auto 0px;
     position: relative;
-    width: 920px;
+    width: 940px;
   }
   .lowfooter {
     height: 66px;
     margin: 30px auto 0px auto;
   }
   .bFooter {
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
     background: #000000;
     color: #ffffff;
   }
@@ -6008,6 +6008,151 @@
     text-align: right;
   }
 }
+/*планировщик мебели*/
+@media all {
+  .bPlanner3D {
+    position: relative;
+    width: 700px;
+    height: 550px;
+  }
+  #planner3D table {
+    border-collapse: separate;
+  }
+  #Planner3d_TabInfo2Header,
+  #Planner3d_TabInfo1Header {
+    font-size: 14px;
+  }
+  #coupeError {
+    display: block;
+    width: 110px;
+    margin: 0 auto;
+    padding-left: 25px;
+    text-align: left;
+    background: url("/css/user/img/attention.gif") no-repeat scroll left top;
+  }
+}
+/* новая карточка товара*/
+@media all {
+  .bProductCard__eArticle {
+    color: #a6a6a6;
+    font-size: 14px;
+    margin-bottom: 15px;
+  }
+  .bProductCardRightCol {
+    position: relative;
+    width: 200px;
+    margin-left: 19px;
+    margin-right: -1px;
+  }
+  .bProductCardRightCol__eInner {
+    padding: 10px;
+    border: 1px solid #c9c9c9;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    margin-bottom: 25px;
+  }
+  .bProductCardRightCol__ePrice {
+    font-size: 34px;
+    font-weight: bold;
+  }
+  .bProductCardRightCol__eCurrency {
+    font-size: 28px;
+  }
+  .bProductCardRightCol__eCreditBox.creditbox {
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    border-radius: 0px;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-bottom: 1px solid #c9c9c9;
+    padding: 0 0 10px;
+  }
+  .bProductCardRightCol__eCreditBox .creditboxinner {
+    padding: 0;
+    border: none;
+  }
+  .bProductCardRightCol__eCreditBox .bigcheck {
+    margin: 5px 0;
+  }
+  .bProductCardRightCol__eCreditBox-Take {
+    font-size: 16px;
+    font-weight: 100;
+    border-bottom: 1px dotted;
+  }
+  .bProductCardRightCol__eCreditBox-Sum {
+    font-size: 14px;
+    margin-left: 40px;
+  }
+  .bProductCardRightCol .bCountSet {
+    position: relative;
+    left: 0;
+    margin: 0 auto;
+    display: block;
+    width: 120px;
+    left: 10px;
+    border: none;
+    font-size: 14px;
+    color: #000000;
+  }
+  .bProductCardRightCol .bCountSet .bCountSet__eP,
+  .bProductCardRightCol .bCountSet .bCountSet__eM {
+    background: none;
+    float: none;
+    color: #000000;
+    width: 20px;
+    height: 25px;
+    line-height: 25px;
+    display: inline-block;
+    *display: inline;
+    border: 1px solid #c9c9c9;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    background: #e5e5e5;
+    background: -moz-linear-gradient(top, #ffffff 0%, #e3e3e3 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffffff), color-stop(100%, #e3e3e3));
+    background: -webkit-linear-gradient(top, #ffffff 0%, #e3e3e3 100%);
+    background: -o-linear-gradient(top, #ffffff 0%, #e3e3e3 100%);
+    background: -ms-linear-gradient(top, #ffffff 0%, #e3e3e3 100%);
+    background: linear-gradient(to bottom, #ffffff 0%, #e3e3e3 100%);
+    filter: progid:dximagetransform.microsoft.gradient(startColorstr='#ffffff', endColorstr='#e3e3e3', GradientType=0);
+  }
+  .bProductCardRightCol .bCountSet .bCountSet__eP.disabled,
+  .bProductCardRightCol .bCountSet .bCountSet__eM.disabled {
+    color: #a6a6a6;
+    background: #ffffff;
+    background: -moz-linear-gradient(top, #ffffff 0%, #ebebeb 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffffff), color-stop(100%, #ebebeb));
+    background: -webkit-linear-gradient(top, #ffffff 0%, #ebebeb 100%);
+    background: -o-linear-gradient(top, #ffffff 0%, #ebebeb 100%);
+    background: -ms-linear-gradient(top, #ffffff 0%, #ebebeb 100%);
+    background: linear-gradient(to bottom, #ffffff 0%, #ebebeb 100%);
+    filter: progid:dximagetransform.microsoft.gradient(startColorstr='#ffffff', endColorstr='#ebebeb', GradientType=0);
+  }
+  .bProductCardRightCol .bCountSet span {
+    display: inline-block;
+    *display: inline;
+    height: 25px;
+    line-height: 25px;
+    width: 35px;
+    border: 1px solid #c9c9c9;
+    margin: 0 -1px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+  }
+  .bProductCardRightCol .goodsbarbig {
+    width: 100% !important;
+    height: auto;
+    margin: 0;
+    text-align: center;
+  }
+  .bProductCardRightCol .goodsbarbig a.link1 {
+    margin: 10px auto;
+  }
+}
 /*---END---СТИЛИ КАРТОЧКИ ТОВАРА---*/
 /*-------СТИЛИ РАСШИРЕННОЙ ГАРАНТИИ-----*/
 /*стили расширенной гарантии в корзине*/
@@ -8562,8 +8707,8 @@
     display: none;
     width: 100%;
     height: 43px;
-    margin: 0 -20px 7px;
-    padding: 0 20px;
+    margin: 0 -10px 7px;
+    padding: 0 10px;
     text-align: center;
     background: url('/css/subscribeLightboxPopup/img/bg.png') repeat-x 0 0;
   }
@@ -8672,22 +8817,35 @@
     width: 100%;
   }
   .lightboxinner {
-    background: url("/css/lightbox/img/lightboxSprite.png") no-repeat 0px -200px;
+    background: #000000;
     bottom: 0;
     height: 40px;
     left: 50%;
-    margin: 0 auto 0 -463px;
-    padding-top: 1px;
+    margin: 0 auto 0 -470px;
     position: fixed;
-    width: 926px;
+    width: 940px;
     z-index: 200;
+    -webkit-box-shadow: 0 0 3px 1px #a6a6a6;
+    -moz-box-shadow: 0 0 3px 1px #a6a6a6;
+    box-shadow: 0 0 3px 1px #a6a6a6;
+    -webkit-border-top-right-radius: 4px;
+    -webkit-border-bottom-right-radius: 0;
+    -webkit-border-bottom-left-radius: 0;
+    -webkit-border-top-left-radius: 4px;
+    -moz-border-radius-topright: 4px;
+    -moz-border-radius-bottomright: 0;
+    -moz-border-radius-bottomleft: 0;
+    -moz-border-radius-topleft: 4px;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 4px;
   }
   .lightboxmenu {
     float: left;
-    width: 923px;
+    width: 100%;
   }
   .lightboxmenu li {
-    background: url("/css/lightbox/img/lightboxSprite.png") no-repeat 0px 0px;
     float: right;
     padding-left: 1px;
   }
@@ -8701,14 +8859,14 @@
     display: block;
     float: left;
     font-size: 14px;
-    height: 29px;
+    height: 30px;
     padding: 11px 20px 0px;
     text-decoration: none;
   }
   .lightboxmenu li .point:hover {
     /*background-position: -10px -46px;*/
   
-    background: url("/css/lightbox/img/lightboxSprite.png") no-repeat;
+    background: #333;
     color: #ffa901;
   }
   .lightboxmenu li .point .total {
@@ -8719,13 +8877,14 @@
   }
   .lightboxmenu li .point b {
     background: url("/css/lightbox/img/lightboxSprite.png") no-repeat;
+    color: #ffffff;
     display: block;
     float: left;
-    font-size: 9px;
+    font-size: 16px;
     height: 19px;
-    line-height: 9px;
+    line-height: 3px;
     margin-right: 10px;
-    padding-left: 23px;
+    padding-left: 25px;
   }
   .lightboxmenu li .point.bSubscribeLightbox {
     display: none;
@@ -8734,7 +8893,18 @@
     background-position: 0px -40px;
   }
   .lightboxmenu li .point1:hover {
-    background-position: -3px -246px;
+    -webkit-border-top-right-radius: 0;
+    -webkit-border-bottom-right-radius: 0;
+    -webkit-border-bottom-left-radius: 0;
+    -webkit-border-top-left-radius: 4px;
+    -moz-border-radius-topright: 0;
+    -moz-border-radius-bottomright: 0;
+    -moz-border-radius-bottomleft: 0;
+    -moz-border-radius-topleft: 4px;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 4px;
   }
   .lightboxmenu li .point1:hover b {
     background-position: 0px -80px;
@@ -8743,7 +8913,18 @@
     background-position: 0px -120px;
   }
   .lightboxmenu li .point2:hover {
-    background-position: 100% -246px;
+    -webkit-border-top-right-radius: 4px;
+    -webkit-border-bottom-right-radius: 0;
+    -webkit-border-bottom-left-radius: 0;
+    -webkit-border-top-left-radius: 0;
+    -moz-border-radius-topright: 4px;
+    -moz-border-radius-bottomright: 0;
+    -moz-border-radius-bottomleft: 0;
+    -moz-border-radius-topleft: 0;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
   }
   .lightboxmenu li .point2:hover b {
     background-position: 0px -160px;
@@ -8753,9 +8934,6 @@
   }
   .lightboxmenu li .point6 b {
     background-position: -277px -109px;
-  }
-  .lightboxmenu li .point6:hover {
-    background-position: -3px -246px;
   }
   .lightboxmenu li .point6:hover b {
     background-position: -277px -159px;
@@ -8870,7 +9048,7 @@
     line-height: 26px;
     padding: 0 0 0 10px;
     position: relative;
-    width: 820px;
+    width: 840px;
     behavior: url('/css/common/PIE.htc');
     -webkit-appearance: none;
   }
