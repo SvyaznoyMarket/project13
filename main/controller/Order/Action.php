@@ -1237,7 +1237,6 @@ class Action {
                     }
                 }
             }
-
         }
 
         foreach ($deliveryMapView->items as $itemView) {

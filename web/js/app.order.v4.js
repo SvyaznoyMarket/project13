@@ -348,7 +348,6 @@ $(document).ready(function() {
     // Check Consistency TODO
 
     // analitycs
-    console.log(Model.items)
     var items_num = 0
     var price = 0
     var totalPrice = 0
@@ -599,7 +598,9 @@ $(document).ready(function() {
         function fillUpShopsFromModel() {
             self.shopsInPopup.removeAll()
             for( var key in Model.deliveryTypes ){
-                self.shopsInPopup.push( Model.deliveryTypes[key].shop )
+                if (Model.deliveryTypes[key].shop){
+                    self.shopsInPopup.push( Model.deliveryTypes[key].shop )
+                }
             }
         }
 
@@ -725,8 +726,6 @@ $(document).ready(function() {
                 for( var key in itemDlvrs ) {
                     if( key.match('self_'))
                         shopIds.push( key.replace('self_','')*1)
-                    if( key.match('now_'))
-                        shopIds.push( key.replace('now_','')*1)
                 }
             }
 
@@ -744,7 +743,9 @@ $(document).ready(function() {
         self.showAllShops = function() {
             self.shopsInPopup.removeAll()
             for( var key in Model.deliveryTypes ){
-                self.shopsInPopup.push( Model.deliveryTypes[key].shop )
+                if (Model.deliveryTypes[key].shop){
+                    self.shopsInPopup.push( Model.deliveryTypes[key].shop )
+                }
             }
         }
 
@@ -887,7 +888,7 @@ $(document).ready(function() {
                     date: formateDate( dlvr.chosenDate() ),
                     interval: dlvr.chosenInterval().match(/\d{2}:\d{2}/g).join(','),
                     shop: {
-                        id: dlvr.token.replace('now_','').replace('self_','')
+                        id: dlvr.token.replace('self_','')
                     }
                 }
                 var boxitems = []
@@ -1254,7 +1255,7 @@ $(document).ready(function() {
     //deprecated: shopsStack    = $('#order-delivery_map-data').data().value.shops
 
     function getShopsStack() {
-        // MVM.showAllShops();
+        MVM.showAllShops();
         var shopsStack = {}
         for( var sh in MVM.shopsInPopup() ){
             shopsStack[ MVM.shopsInPopup()[sh].id ] = MVM.shopsInPopup()[sh]
@@ -1263,7 +1264,7 @@ $(document).ready(function() {
     }
 
     /* Shop Popup */
-    $('#OrderView').delegate( '.selectShop', 'click', function() {
+    $('#OrderView').delegate('.selectShop','click', function() {
         $('#orderMapPopup').lightbox_me({
             centered: true,
             onLoad: function() {
