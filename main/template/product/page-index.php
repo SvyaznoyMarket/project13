@@ -17,7 +17,7 @@
 
 <?
 
-$hasFurnitureBuilder = \App::config()->product['furnitureConstructor'] && $product->getLine() && (256 == $product->getLine()->getId()); // Серия Байкал
+$hasFurnitureConstructor = \App::config()->product['furnitureConstructor'] && $product->getLine() && (256 == $product->getLine()->getId()); // Серия Байкал
 
 /** @var  $productVideo \Model\Product\Video\Entity|null */
 $productVideo = reset($productVideos);
@@ -210,7 +210,7 @@ $productVideo = reset($productVideos);
 </div>
 <? endif ?>
 
-<? if ($hasFurnitureBuilder): ?>
+<? if ($hasFurnitureConstructor): ?>
     <? require __DIR__ . '/show/_furniture.php' ?>
 <? else: ?>
     <? require __DIR__ . '/show/_default.php' ?>
@@ -331,7 +331,7 @@ $productVideo = reset($productVideos);
           <strong class="font34"><span class="price"><?= $page->helper->formatPrice($product->getPrice()) ?></span> <span class="rubl">p</span></strong>
       </div>
       <div class="goodsbarbig mSmallBtns pb40" ref="<?= $product->getToken() ?>" data-value='<?= $json ?>'>
-        <?= $page->render('cart/_button', ['product' => $product, 'disabled' => !$product->getIsBuyable(), 'url' => $hasFurnitureBuilder ? $page->url('cart.product.setList') : null]) ?>
+        <?= $page->render('cart/_button', ['product' => $product, 'disabled' => !$product->getIsBuyable(), 'url' => $hasFurnitureConstructor ? $page->url('cart.product.setList') : null]) ?>
       </div>
 
       <h2>Фото:</h2>
@@ -595,7 +595,7 @@ $productVideo = reset($productVideos);
         </div>
     <?php endif ?>
 
-        <?= $page->render('cart/_button', array('product' => $product, 'disabled' => !$product->getIsBuyable(), 'url' => $hasFurnitureBuilder ? $page->url('cart.product.setList') : null, 'gaEvent' => 'Add2Basket_vnizu', 'gaTitle' => 'Добавление в корзину')) ?>
+        <?= $page->render('cart/_button', array('product' => $product, 'disabled' => !$product->getIsBuyable(), 'url' => $hasFurnitureConstructor ? $page->url('cart.product.setList') : null, 'gaEvent' => 'Add2Basket_vnizu', 'gaTitle' => 'Добавление в корзину')) ?>
         <? if (!$product->getIsBuyable() && $product->getState()->getIsShop()): ?>
         <div class="notBuying font12">
             <div class="corner"><div></div></div>
