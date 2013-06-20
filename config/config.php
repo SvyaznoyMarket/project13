@@ -173,7 +173,8 @@ $c->product['globalListEnabled']      = true;
 $c->product['showAveragePrice']       = false;
 $c->product['allowBuyOnlyInshop']     = false;
 $c->product['reviewEnabled']          = true;
-$c->product['lowerPriceNotification'] = false;
+$c->product['lowerPriceNotification'] = true;
+$c->product['furnitureConstructor']   = true;
 
 $c->productPhoto['url'] = [
     0 => '/1/1/60/',

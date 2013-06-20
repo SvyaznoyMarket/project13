@@ -38,7 +38,7 @@ class Manager {
             }
 
             // myThings
-            if (0 === strpos($utmSource, 'mythings')) {
+            if (0 === strpos($utmSource, 'mythinqs')) {
                 $cookie = new \Http\Cookie(
                     $this->cookieNames[\Partner\Counter\MyThings::NAME],
                     \Partner\Counter\MyThings::NAME,

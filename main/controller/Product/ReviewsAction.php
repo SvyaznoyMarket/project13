@@ -17,9 +17,10 @@ class ReviewsAction {
 
         $reviewsData = \RepositoryManager::review()->getReviews($productId, $reviewsType, $page);
 
-        $response = '';
+        $response = $reviewsType == 'user' ? 'Нет отзывов' : 'Нет обзоров';
 
         if(!empty($reviewsData['review_list'])) {
+            $response = '';
             foreach ($reviewsData['review_list'] as $key => $review) {
                 $response .= \App::templating()->render('product/_review', [
                     'page' => (new \View\Product\IndexPage()),
@@ -29,7 +30,7 @@ class ReviewsAction {
             }
         }
 
-        return new \Http\JsonResponse(['content' => $response, 'pageCount' => $reviewsData['page_count']]);
+        return new \Http\JsonResponse(['content' => $response, 'pageCount' => empty($reviewsData['page_count']) ? 0 : $reviewsData['page_count']]);
     }
 
 }
