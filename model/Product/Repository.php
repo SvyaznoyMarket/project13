@@ -201,7 +201,7 @@ class Repository {
 
         $client = clone $this->client;
 
-        $chunckedIds = array_chunk($ids, 50);
+        $chunckedIds = array_chunk($ids, 60);
 
         $collection = [];
         $entityClass = $this->entityClass;
@@ -216,8 +216,9 @@ class Repository {
                 function($data) use(&$collection, $entityClass, $i) {
                     foreach ($data as $item) {
                         $collection[$i][] = new $entityClass($item);
+                    }
                 }
-            });
+            );
         }
 
         $client->execute(\App::config()->coreV2['retryTimeout']['medium']);
