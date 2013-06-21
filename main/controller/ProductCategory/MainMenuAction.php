@@ -11,7 +11,7 @@ class MainMenuAction {
         \App::logger()->debug('Exec ' . __METHOD__);
 
         return new \Http\JsonResponse([
-            'content' => (new \View\Layout())->render('_mainMenu', array('menu' => (new \View\Menu())->generate())),
+            'content' => \App::closureTemplating()->render('__mainMenu', ['menu' => (new \View\Menu())->generate()]),
         ]);
     }
 }

@@ -209,6 +209,21 @@ class App {
 
     /**
      * @static
+     * @return Templating\PhpClosureEngine
+     */
+    public static function closureTemplating() {
+        static $instance;
+
+        if (!$instance) {
+            $instance = new \Templating\PhpClosureEngine(self::$config->templateDir);
+            $instance->setParam('helper', new \Helper\TemplateHelper());
+        }
+
+        return $instance;
+    }
+
+    /**
+     * @static
      * @return Curl\Client
      */
     public static function curl() {
