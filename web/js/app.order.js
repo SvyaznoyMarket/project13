@@ -200,7 +200,6 @@ $(document).ready(function () {
         if (!$('#product_errors').length) return;
         // var dfd = $.Deferred()
         var orderErrPopup = function( txt, delUrl, addUrl ) {
-            console.log(txt, delUrl, addUrl)
             var id = 'tmpErrPopup'+Math.floor(Math.random()*22)
             var block = '<div id="'+id+'" class="popup">' +
                             '<div class="popupbox width290">' +
