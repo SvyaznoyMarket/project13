@@ -20,7 +20,7 @@ $count = 0;
 <? if(!empty($catalogJson['category_layout_type']) && $catalogJson['category_layout_type'] == 'icons'): ?>
     <div class="goodslist clearfix">
     <? foreach ($category->getChild() as $child): ?>
-        <?= $page->render('product-category/_preview', array('category' => $child, 'rootCategory' => $category)) ?>
+        <?= $page->render('product-category/_preview', array('category' => $child, 'rootCategory' => $category, 'catalogJsonBulk' => $catalogJsonBulk)) ?>
     <? endforeach ?>
     </div>
 <? elseif(!empty($promoContent)): ?>

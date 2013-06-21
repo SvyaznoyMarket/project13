@@ -175,7 +175,9 @@
 				.wait()
 				.script( getWithVersion('ports.js') )
 				.script( 'adfox.asyn.code.ver3.js' )
-				.script('//cdn.optimizely.com/js/204544654.js')
+                .wait()
+                .script( getWithVersion('jewel.category.leaf.js') )
+                .script('//cdn.optimizely.com/js/204544654.js')
 			}).runQueue()
 			break
 		case 'product_card':

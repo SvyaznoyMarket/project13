@@ -173,6 +173,8 @@ class DefaultLayout extends Layout {
     public function slotMainMenu() {
         $renderer = \App::closureTemplating();
 
+        $catalogJsonBulk = \RepositoryManager::productCategory()->getCatalogJsonBulk();
+
         if (\App::config()->requestMainMenu) {
             $client = \App::curl();
 
@@ -187,10 +189,16 @@ class DefaultLayout extends Layout {
             $client->execute(\App::config()->coreV2['retryTimeout']['short'], \App::config()->coreV2['retryCount']);
 
             if ($isFailed) {
-                $content = $renderer->render('__mainMenu', ['menu' => (new Menu())->generate()]);
+                $content = $renderer->render('__mainMenu', [
+                    'menu'            => (new Menu())->generate(),
+                    'catalogJsonBulk' => $catalogJsonBulk,
+                ]);
             }
         } else {
-            $content = $renderer->render('__mainMenu', ['menu' => (new Menu())->generate()]);
+            $content = $renderer->render('__mainMenu', [
+                'menu'            => (new Menu())->generate(),
+                'catalogJsonBulk' => $catalogJsonBulk,
+            ]);
         }
 
         return $content;

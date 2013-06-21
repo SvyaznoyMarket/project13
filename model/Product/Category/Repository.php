@@ -374,10 +374,6 @@ class Repository {
                 array_unshift($branch, $parent->getToken());
                 $currentCategory = $parent;
             }
-
-            if ($category->getRoot()) {
-                array_unshift($branch, $category->getRoot()->getToken());
-            }
         }
 
         // формируем запрос к апи и получаем json с SEO-данными
@@ -425,17 +421,15 @@ class Repository {
      * @return array
      */
     public function getCatalogJson($category) {
-         // формируем ветку категорий для последующего формирования запроса к json-апи
+        if(empty($category) || !is_object($category)) return [];
+
+        // формируем ветку категорий для последующего формирования запроса к json-апи
         $branch = [$category->getToken()];
         if(!$category->isRoot()) {
             $currentCategory = $category;
             while($parent = $currentCategory->getParent()) {
                 array_unshift($branch, $parent->getToken());
                 $currentCategory = $parent;
-            }
-
-            if ($category->getRoot()) {
-                array_unshift($branch, $category->getRoot()->getToken());
             }
         }
 
@@ -449,6 +443,47 @@ class Repository {
         $dataStore->execute();
 
         return $catalogJson;
+    }
+
+    /**
+     * Получает catalog json для всех категорий
+     * Возвращает массив с токенами категорий в качестве ключей и их catalogJson'ом (raw)
+     * в качестве значений
+     *
+     * @return array
+     */
+    public function getCatalogJsonBulk() {
+        // формируем запрос к апи и получаем json
+        $catalogJsonBulk = [];
+        $dataStore = \App::dataStoreClient();
+        $dataStore->addQuery('catalog/*.json', [], function ($data) use (&$catalogJsonBulk) {
+            if($data) $catalogJsonBulk = $data;
+        });
+        $dataStore->execute();
+
+        return $catalogJsonBulk;
+    }
+
+    /**
+     * Получает html-контент из catalog'а для данной категории
+     * Возвращает html в виде строки
+     *
+     * @param $category
+     * @return array
+     */
+    public function getCatalogHtml($category) {
+        // наследования здесь нет, поэтому обращаемся напрямую по токену категории
+        // формируем запрос к апи и получаем html
+        $catalogHtml = [];
+        $dataStore = \App::dataStoreClient();
+        $query = sprintf('catalog/html/%s.json', $category->getToken());
+
+        $dataStore->addQuery($query, [], function ($data) use (&$catalogHtml) {
+            if($data) $catalogHtml = $data;
+        });
+        $dataStore->execute();
+
+        return isset($catalogHtml['html']) ? $catalogHtml['html'] : '';
     }
 
 }

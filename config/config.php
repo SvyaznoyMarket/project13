@@ -176,6 +176,9 @@ $c->product['allowBuyOnlyInshop']     = false;
 $c->product['reviewEnabled']          = true;
 $c->product['lowerPriceNotification'] = false;
 $c->product['furnitureConstructor']   = true;
+// jewel
+$c->product['itemsPerPageJewel']     = 24;
+$c->product['itemsPerRowJewel']      = 4;
 
 $c->productPhoto['url'] = [
     0 => '/1/1/60/',

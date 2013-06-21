@@ -571,6 +571,7 @@ $(document).ready(function(){
 	/* Infinity scroll */
 	var ableToLoad = true
 	var compact = $("div.goodslist").length
+	var custom_jewel = $('.items-section__list').length
 	function liveScroll( lsURL, filters, pageid ) {
 		var params = []
 		/* RETIRED cause data-filter
@@ -579,6 +580,11 @@ $(document).ready(function(){
 		*/
 		// lsURL += '/' +pageid + '/' + (( compact ) ? 'compact' : 'expanded')
 		var tmpnode = ( compact ) ? $('div.goodslist') : $('div.goodsline:last')
+
+		if(custom_jewel) {
+			tmpnode = $('.items-section__list')
+		}
+
 		var loader =
 			"<div id='ajaxgoods' class='bNavLoader'>" +
 				"<div class='bNavLoader__eIco'><img src='/images/ajar.gif'></div>" +
@@ -600,7 +606,7 @@ $(document).ready(function(){
 		$.get( lsURL, params, function(data){
 			if ( data != "" && !data.data ) { // JSON === error
 				ableToLoad = true
-				if( compact )
+				if( compact || custom_jewel )
 					tmpnode.append(data)
 				else
 					tmpnode.after(data)
@@ -616,6 +622,7 @@ $(document).ready(function(){
 				})
 				dajax.post( dlvr_node.data('calclink'), coreid )
 			}
+
 		})
 	}
 
@@ -929,7 +936,7 @@ $(document).ready(function(){
   		var sliderLeft = parseInt($('.popupRegion .regionSlides').css('left'))
   		$('.popupRegion .leftArr').show()
   		$('.popupRegion .regionSlides').animate({'left':sliderLeft-regionSlideW})
-		if ((sliderLeft-(regionSlideW*2)) <= -sliderW){
+			if ((sliderLeft-(regionSlideW*2)) <= -sliderW){
   			$('.popupRegion .rightArr').hide()
   		}
   	})
@@ -1216,6 +1223,12 @@ $(document).ready(function(){
 	
     $(".goodsbar .link1").bind( 'click.css', function()   {
         $(this).addClass("link1active")
+    })
+
+    $(".goodsbarbig .link1").bind( 'click.css', function()   {
+        $(".goodsbarbig .link1").addClass("link1active")
+        $('.bCountSet').css('visibility','hidden')
+        $('.countTitle').css('visibility','hidden')
     })
 
 
@@ -1549,6 +1562,7 @@ $(document).ready(function(){
 								grouped_accessories[current_accessory_category]['buffer']++
 							}
 							tr = null
+				  		handle_custom_items()
 						})
 						current++
 						shiftme()
@@ -1688,6 +1702,8 @@ $(document).ready(function(){
                 timeout: 20000
             }).success(function(result) {
                     container.html(result)
+                    console.log(111)
+								    handle_custom_items()
                     container.fadeIn()      
                     var tmpline = new cardsCarousel ({
                             'prev'  : container.find('.back'),
@@ -1925,7 +1941,10 @@ $(document).ready(function(){
       });
   }
 
+    handle_custom_items()
+
 });
+
 
 function popupWriteReviewForm(pid, name) {
   var src = "http://reviews.testfreaks.com/reviews/new?client_id=enter.ru&" + $.param({key: pid, name: name});
@@ -1938,5 +1957,24 @@ function scrollToId(scrollToId) {
    $('html, body').animate({
        scrollTop: $("#"+scrollToId).offset().top
    }, 500);
+}
+
+
+function handle_custom_items() {
+  $(".items-section__list .item").hover(
+    function() {
+    $(this).addClass('hover')
+  },
+    function() {
+    $(this).removeClass('hover')
+  });
+
+  $(".bigcarousel-brand .goodsbox").hover(
+    function() {
+    $(this).addClass('hover');
+  },
+    function() {
+    $(this).removeClass('hover');
+  });
 }
 

@@ -1,0 +1,302 @@
+.logo-section {
+  background: url("@{base-url}/pandoraCatalog/img/pandora_logo.gif") no-repeat 370px 2px; 
+  font-size: 20px; 
+  font-family: 'Enter Type'; 
+  text-transform: uppercase; 
+  padding: 12px 0 0 20px;
+  margin: 0 0 25px;
+}
+.brand-nav {
+  border-top: 2px solid #EDEDED;
+  .brand-nav__list {
+    width: 100%;
+    tr td {
+      font-size: 16px; 
+      font-family: 'Enter Type'; 
+      text-transform: uppercase; 
+      border-right: 1px solid #EDEDED;
+      text-align: center;
+      a {
+        display: block;
+        line-height: 50px;
+      }
+    }
+    .new {
+      font-size: 24px;
+      border: none;
+      a {
+        padding: 0 50px;
+      }
+    }
+    .row_2line {
+      a {
+        padding-top: 8px;
+        padding-bottom: 6px;
+        line-height: 18px;
+      }
+    }
+  }
+}
+
+.items-section {
+  margin: -4px 0 30px 0;
+  position: relative;
+  z-index: 1;
+  .items-section__list {
+    border-top: 1px solid #f9f9f9;
+    li {
+      width: 218px;
+      border: 1px solid #f9f9f9;
+      float: left;
+      height: 221px;
+      padding: 7px 10px 10px;
+      position: relative;
+      border-top: 1px solid @white;
+      border-left: 1px solid @white;
+      .item-buy {
+        width: auto;
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        background: #000;
+        color: #ffffff;
+        .rounded(7px);
+        .opacity(0);
+        text-align: center;
+        line-height: 21px;
+        display: block;
+        height: 23px;
+        padding: 0 10px;
+        .transition(opacity 0.2s ease-in-out);
+        &.link1active {
+          background: #fff;
+          border: 1px solid #000;
+          color: #000;
+          height: 21px;
+          width: auto;
+        }
+      }
+      .item-price {
+        position: absolute;
+        bottom: 0;
+        left: 80px;
+        .transition(left 0.2s ease-in-out);
+      }
+      .item-name {
+        .opacity(0);
+        .transition(opacity 0.2s ease-in-out);
+      }
+      .item-img {
+        text-align: center;
+      }
+    }
+    .hover {
+      border: 1px solid #AAAAAA;
+      background-color: #fff;
+    }
+    .hover {
+      .item-name {
+        .opacity(1);
+      }
+      .item-buy {
+        .opacity(1);
+      }
+      .item-price {
+        left: 0;
+      }
+    }
+  }
+}
+
+.banner-categories {
+  position: relative;
+  overflow: hidden;
+  height: 300px;
+  .banner-categories__img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+  }
+  .banner-categories__title {
+    font-size: 48px;
+    font-family: 'Enter Type'; 
+    text-transform: uppercase; 
+    padding: 95px 0 0 15px;
+    position: relative;
+    z-index: 2;
+  }
+}
+
+.brand-subnav {
+  border-bottom: 2px solid #5E5E5E;
+  text-transform: uppercase; 
+  padding: 0 5px;
+  margin: 10px; 
+  .brand-subnav__title {
+    color: #5E5E5E;
+    font-family: 'Enter Type'; 
+    font-size: 16px;
+    float: left;
+    margin-right: 90px;
+  }
+  .brand-subnav__list {
+    li {
+      float: left;
+      font-family: Tahoma;
+      font-size: 11px;
+      a {
+        display: block;
+        padding: 0 14px;
+        line-height: 18px;
+      }
+      .active {
+        background: #D7D7D7;
+        border: 1px solid #5E5E5E;
+        border-bottom: none;
+      }
+    }
+  }
+}
+
+.filter-section {
+  margin: 0;
+  font-family: tahoma;
+  background: url("@{base-url}/pandoraCatalog/img/bg_items_list.png") repeat-x 0 100%; 
+  z-index: 2;
+  position: relative;
+  ul {
+    padding: 0 0 0 15px;
+  }
+  li {
+    float: left;
+    margin: 0 55px 0 0;
+    padding-bottom: 10px;
+  }
+  .last {
+    float: right;
+    margin-right: 20px;
+  }
+  .filter-section__title {
+    color: #A6A6A6;
+    font-family: Tahoma;
+    margin: 0 0 2px;
+  }
+  .filter-section__value {
+    position: relative;
+    a {
+      background: url("@{base-url}/pandoraCatalog/img/categories_corner.gif") no-repeat 100% 7px; 
+      text-decoration: underline;
+      padding-right: 11px;
+      &:hover {
+        text-decoration: none;
+      }
+    }
+    .filter-section__value__dd {
+      .box-shadow(0px 0px 5px #bbb);
+      background: @white;
+      border: 1px solid #aeaeae;
+      display: none;
+      left: -10px;
+      width: 100%;
+      padding-bottom: 7px;
+      position: absolute;
+      top: 17px;
+      z-index: 100;
+      padding-left: 0;
+      width: 145px;
+      li {
+        padding: 5px 0 5px 10px;
+        float: none;
+        margin: 0;
+        a{
+          background: none;
+          padding: 0;
+        }
+      }
+    }
+  }
+  li.last {
+    .filter-section__value__dd {
+      left: -92px;
+      width: 183px;
+    }
+  }
+  li:hover .filter-section__value__dd {
+    display: block;
+  }
+  .reset_filters {
+    margin-top: -3px;
+    display:inline-block;
+    border: 1px solid #444;
+    padding: 3px;
+    border-radius: 4px;
+    text-align: center;
+    &:hover a {
+      text-decoration: none!important;
+    }
+  }
+}
+
+/*** ***/
+.brandSectionPandora {
+  width: 960px;
+  margin: 0 0 0 -20px;
+}
+.brandSectionPandora__catalog {
+  .line {
+    border: none;
+  }
+  .allpager, .allpagerJewel {
+    margin-right: 20px;
+  }
+  #ajaxgoods_top.popup {
+    border: 2px solid #000;
+  }
+  .bNavLoader__eM p {
+    color: #000;
+  }
+  .bNavLoader__eIco {
+    background: url("/css/ajaxPopup/img/arrow_bg_b.png") no-repeat;
+  }
+  .allpagerJewel {
+    margin-right: 20px;
+  }
+  .goodsbox {
+    padding: 0;
+    margin: 0;
+    width: 218px;
+    height: 221px;
+    min-height: 221px;
+    .notBuying {
+      visibility: hidden;
+    }
+    &:hover .notBuying {
+      visibility: visible;
+    }
+  }
+  .goodsbox__inner {
+    margin: 0;
+    padding: 0;
+    border: 1px solid #fff;
+    position: relative;
+    box-shadow: none;
+    border: none;
+    background-color:transparent;
+    width: 218px;
+    height: 221px;
+  }
+  .bNavLoader__eIco {
+    background: url("/css/ajaxPopup/img/arrow_bg_b.png") no-repeat;
+  }
+  #ajaxgoods_top.popup {
+    border: 2px solid #000;
+  }
+  .bNavLoader__eM p {
+    color: #000;
+  }
+}
+
+.pagehead {
+  padding-bottom: 0;
+}

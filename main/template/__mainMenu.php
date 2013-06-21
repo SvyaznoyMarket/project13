@@ -1,6 +1,6 @@
 <?php
 
-return function(\Helper\TemplateHelper $helper, array $menu, \Model\Menu\Entity $parent = null, $level = 1) {
+return function(\Helper\TemplateHelper $helper, array $menu, \Model\Menu\Entity $parent = null, $catalogJsonBulk = [], $level = 1) {
 
 /**
  * @var $menu   \Model\Menu\Entity[]
@@ -71,22 +71,39 @@ $count = count($menu);
         ?>
 
         <li class="bMainMenuLevel-<?= $level ?>__eItem clearfix mId<?= ($parent ? ($parent->getPriority() . '-') : '') . $i ?> <? if ($class) echo ' ' . $class ?>">
+        <?
+            $token = preg_replace('/.*\//', '', $iMenu->getLink());
+            $showImage = !empty($catalogJsonBulk[$token]) && !empty($catalogJsonBulk[$token]['logo_path']) && !empty($catalogJsonBulk[$token]['use_logo']);
+        ?>
+
             <? if ($iMenu->getLink()): ?>
                 <a class="bMainMenuLevel-<?= $level ?>__eLink" href="<?= $iMenu->getLink() ?>">
                     <span class="bMainMenuLevel-<?= $level ?>__eIcon">&nbsp;<?//= 0  === strpos($iMenu->getImage(), '&') ? $iMenu->getImage() : '' ?></span>
-                    <span class="bMainMenuLevel-<?= $level ?>__eTitle"><?= $iMenu->getName() ?></span>
+                    <span class="bMainMenuLevel-<?= $level ?>__eTitle">
+                    <? if ($showImage): ?>
+                        <img src="<?= $catalogJsonBulk[$token]['logo_path'] ?>">
+                    <? else: ?>
+                        <?= $iMenu->getName() ?>
+                    <? endif ?>
+                    </span>
                     <div class="bCorner"></div>
                 </a>
             <? elseif ($iMenu->getName()): ?>
                 <div class="bMainMenuLevel-<?= $level ?>__eLink">
                     <span class="bMainMenuLevel-<?= $level ?>__eIcon"></span>
-                    <span class="bMainMenuLevel-<?= $level ?>__eTitle"><?= $iMenu->getName() ?></span>
+                    <span class="bMainMenuLevel-<?= $level ?>__eTitle">
+                    <? if ($showImage): ?>
+                            <img src="<?= $catalogJsonBulk[$token]['logo_path'] ?>">
+                        <? else: ?>
+                            <?= $iMenu->getName() ?>
+                        <? endif ?>
+                    </span>
                     <div class="bCorner"></div>
                 </div>
             <? endif ?>
 
             <? if ($level <= 2): ?>
-                <?= $helper->render('__mainMenu', ['menu' => $iMenu->getChild(), 'level' => $level + 1, 'parent' => $iMenu]) ?>
+                <?= $helper->render('__mainMenu', ['menu' => $iMenu->getChild(), 'level' => $level + 1, 'parent' => $iMenu, 'catalogJsonBulk' => $catalogJsonBulk]) ?>
             <? endif ?>
         </li>
         <? $i++; endforeach ?>

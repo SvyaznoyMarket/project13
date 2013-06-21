@@ -11,7 +11,8 @@ class MainMenuAction {
         \App::logger()->debug('Exec ' . __METHOD__);
 
         return new \Http\JsonResponse([
-            'content' => \App::closureTemplating()->render('__mainMenu', ['menu' => (new \View\Menu())->generate()]),
+            'content'         => \App::closureTemplating()->render('__mainMenu', ['menu' => (new \View\Menu())->generate()]),
+            'catalogJsonBulk' => \RepositoryManager::productCategory()->getCatalogJsonBulk(),
         ]);
     }
 }

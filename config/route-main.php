@@ -227,9 +227,19 @@ return [
         'action'  => ['Product\AccessoryAction', 'execute'],
         'require' => ['productToken' => '[\w\d-_]+'],
     ],
+    'product.accessory.jewel' => [
+        'pattern' => '/jewel/products/accessories/{productToken}',
+        'action'  => ['Jewel\Product\AccessoryAction', 'execute'],
+        'require' => ['productToken' => '[\w\d-_]+'],
+    ],
     'product.related' => [
         'pattern' => '/products/related/{productToken}',
         'action'  => ['Product\RelatedAction', 'execute'],
+        'require' => ['productToken' => '[\w\d-_]+'],
+    ],
+    'product.related.jewel' => [
+        'pattern' => '/jewel/products/related/{productToken}',
+        'action'  => ['Jewel\Product\RelatedAction', 'execute'],
         'require' => ['productToken' => '[\w\d-_]+'],
     ],
     'product.comment' => [
@@ -421,6 +431,11 @@ return [
     'product.recommended' => [
         'pattern' => '/product-also-viewed/{productId}',
         'action' => ['Product\RecommendedAction', 'execute'],
+        'require' => ['productId' => '\d+'],
+    ],
+    'product.recommended.jewel' => [
+        'pattern' => '/jewel/product-also-viewed/{productId}',
+        'action' => ['Jewel\Product\RecommendedAction', 'execute'],
         'require' => ['productId' => '\d+'],
     ],
     'smartengine.pull.product_similar' => [
