@@ -68,6 +68,7 @@ define('termAPI',
 		 * @return {boolean} true если товар находится в сравнении, false если товар не находится в сравнении
 		 */
 		var checkCompare = function(productId) {
+			terminal.log.write('checkCompare for '+productId)
 			var element = $('#compare_'+productId)
 
 			if (terminal.compare.hasProduct(productId)){
@@ -88,12 +89,15 @@ define('termAPI',
 		 */
 		var compareHandler = function() {
 			var productId = $(this).data('productid')
+			terminal.log.write('compareHandler for '+productId)
 
 			if (terminal.compare.hasProduct(productId)){
 				terminal.compare.removeProduct(productId)
+				terminal.log.write('remove product from compare')
 			}
 			else{
 				terminal.compare.addProduct(productId)
+				terminal.log.write('add product to compare')
 			}
 		}
 
@@ -219,6 +223,7 @@ define('termAPI',
 		 * @public
 		 */
 		diconnectTERM = function(){
+			terminal.log.write('diconnectTERM')
 			terminal.compare.productRemoved.disconnect(compareMiddleWare)
 			terminal.compare.productAdded.disconnect(compareMiddleWare)
 		}
