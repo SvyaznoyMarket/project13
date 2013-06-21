@@ -379,3 +379,46 @@
 	}
 
 }
+
+.mMenuLeft {
+	.bMainMenuLevel-2{
+		&:hover{
+			.transition(all 0.2s ease);
+			// .transition-delay(0.4s);
+			width: 230px;
+		}
+
+		&__eItem{
+			// display: inline-table;
+			display: block;
+			// width: 195px;
+
+			&:hover{
+
+				.bMainMenuLevel-2__eTitle{
+					background: @typLightGray;
+					color: @black;
+					// .transition(all 0.2s ease);
+					// .transition-delay(0.4s);
+					text-decoration: underline;
+				}
+
+				.bMainMenuLevel-3{
+					// display: block;
+					left: -200px;
+					.opacity(1);
+					// .transition(opacity 0s ease);
+					// .transition-delay(0.2s);
+				}
+			}
+		}
+	}
+
+	.bMainMenuLevel-3 {
+		padding-left: 10px;
+		padding-right: 238px;
+		width: 180px;
+		background-position: 195px 0;
+		border-width: 5px 2px 2px 2px;
+	}
+}
