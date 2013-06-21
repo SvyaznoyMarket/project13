@@ -200,6 +200,7 @@ $(document).ready(function () {
         if (!$('#product_errors').length) return;
         // var dfd = $.Deferred()
         var orderErrPopup = function( txt, delUrl, addUrl ) {
+            console.log(txt, delUrl, addUrl)
             var id = 'tmpErrPopup'+Math.floor(Math.random()*22)
             var block = '<div id="'+id+'" class="popup">' +
                             '<div class="popupbox width290">' +
@@ -226,7 +227,7 @@ $(document).ready(function () {
                             })
                         }
                         else{
-                            // console.log('complete!')
+                            console.log('complete!')
                             window.location.reload()
                         }
 
@@ -243,6 +244,8 @@ $(document).ready(function () {
         if (length) {
             var checkItemQuantity = function() {
                 $.each($('#product_errors').data('value'), function(i, item) {
+                    if (item.product.deleteUrl) delUrl.push(item.product.deleteUrl)
+                    if (item.product.addUrl) addUrl.push(item.product.addUrl)
                     if (708 == item.code) {
                         if (item.quantity_available > 0) {
                             if (typeof(_gaq) !== 'undefined') 
