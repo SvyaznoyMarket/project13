@@ -64,7 +64,7 @@ $count = count($menu);
         if ((1 == $level) && (\Model\Menu\Entity::ACTION_PRODUCT_CATALOG !== $iMenu->getAction()) && (false === strpos($class, 'mMore'))) {
             $class .= ' mAction';
         }
-        if ((1 == $level) && (($count - $i) < 3) && ($count != $i)) {
+        if ((1 == $level) && (($count - $i) < 4) && (($count - $i) > 1)) {
             $class .= ' mMenuLeft';
         }
         $class = trim($class);
