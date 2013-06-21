@@ -9,6 +9,7 @@ figure {
     padding: 0 10px;
     margin: 0 0 0 -20px;
     background: #fff;
+    //head section
     &__eHeader {
         font-family: tahoma;
         &-subtitle {
@@ -23,18 +24,22 @@ figure {
         }
     }
 }
+
 .bProductSection {
+    //left section
     &__eLeft {
         float: left;
         width: 700px;
     }
+    //product shop description section
     .bProductDesc {
         margin: 0 0 25px;
+        //product images section
         &__ePhoto {
             float: left;
             width: 400px;
             position: relative;
-
+            //product big image section
             &-bigImg {
                 display: block;
                 text-align: center;
@@ -52,7 +57,7 @@ figure {
                 }
             }
         }
-
+        //product shop description box
         &__eStore {
             float: right;
             width: 280px;
@@ -86,6 +91,7 @@ figure {
                     }
                 }
             }
+            //additional product options
             &-select {
                 .descSelectItem {
                     border: 1px solid #c7c7c7;
@@ -139,6 +145,7 @@ figure {
     }
 
     .bPhotoAction {
+        //view product section
         &__eOtherAction {
             float: left;
             width: 110px;
@@ -177,7 +184,7 @@ figure {
                 }
             }
         }
-
+        //slider mini product images
         &__eOtherPhoto {
             float: right;
             width: 220px;
@@ -185,6 +192,7 @@ figure {
             ul {
                 li {
                     margin: 0 3px 0 2px;
+                    float: left;
                     a {
                         display: table-cell;
                         width: 48px;
@@ -211,41 +219,36 @@ figure {
                     }
                 }
             }
-            .bSliderAction__eBtn {
-                width: 20px;
-                height: 40px;
+        }
+        .mSliderActionMiniPhoto {
+            position: relative;
+            &__eBtn {
+                position: absolute;
+                background-color: rgba(255,255,255,0.9);
+                -webkit-box-shadow: -4px 0 3px -2px rgba(146,146,146,0.3);
+                -moz-box-shadow: -4px 0 3px -2px rgba(146,146,146,0.3);
+                box-shadow: -4px 0 3px -2px rgba(146,146,146,0.3);
+                height: 50px;
+                width: 15px;
+                cursor: pointer;
+                top: 0;
                 span {
-                    height: 27px;
-                    width: 8px;
+                    text-align: center;
+                    line-height: 48px;
                 }
             }
-            .bSliderAction__mPrev {
-                top: 5px;
-                left: -23px;
-                span {
-                    background-position: -44px -49px;
-                    margin-top: 5px;
-                }
+            &__mPrev {
+                left: -6px;
+                -webkit-box-shadow: 4px 0 3px -2px rgba(146,146,146,0.3);
+                -moz-box-shadow: 4px 0 3px -2px rgba(146,146,146,0.3);
+                box-shadow: 4px 0 3px -2px rgba(146,146,146,0.3);
             }
-            .bSliderAction__mNext {
-                right: -22px;
-                top: 5px;
-                span {
-                    margin-top: 5px;
-                    background-position: -65px -49px;
-                }
+            &__mNext {
+                right: -5px;
             }
         }
     }
 
-    &__eRight {
-        float: right;
-        width: 220px;
-        margin: 10px 0 0;
-        .btnBuy {
-            margin: 0 auto;
-        }
-    }
     .bDescriptionProduct {
         font-size: 14px;
     }
@@ -255,6 +258,7 @@ figure {
         padding: 0;
     }
 
+    //product specifications section
     .bSpecifications {
         &__eHead {
             font-weight: bold;
@@ -282,6 +286,16 @@ figure {
                 padding: 3px 0 0;
                 margin: 5px 0;
             }
+        }
+    }
+
+    //right section
+    &__eRight {
+        float: right;
+        width: 220px;
+        margin: 10px 0 0;
+        .btnBuy {
+            margin: 0 auto;
         }
     }
 }
