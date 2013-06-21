@@ -118,9 +118,11 @@ class IndexAction extends \Controller\Product\IndexAction {
         // фильтруем аксессуары согласно разрешенным в json категориям
         // и получаем уникальные категории-родители аксессуаров
         // для построения меню категорий в блоке аксессуаров
+        // сразу сохраняем аксессуары, чтобы позже не делать для них повторный запрос
+        $accessoryItems = [];
         $accessoryCategory = array_map(function($accessoryGrouped){
             return $accessoryGrouped['category'];
-        }, \Model\Product\Repository::filterAccessoryId($product, null, \App::config()->product['itemsInAccessorySlider'] * 6));
+        }, \Model\Product\Repository::filterAccessoryId($product, $accessoryItems, null, \App::config()->product['itemsInAccessorySlider'] * 6));
 
         $accessoriesId =  array_slice($product->getAccessoryId(), 0, $accessoryCategory ? \App::config()->product['itemsInAccessorySlider'] * 6 : \App::config()->product['itemsInSlider'] * 6);
         $relatedId = array_slice($product->getRelatedId(), 0, \App::config()->product['itemsInSlider'] * 2);
@@ -137,7 +139,13 @@ class IndexAction extends \Controller\Product\IndexAction {
 
         if ((bool)$accessoriesId || (bool)$relatedId || (bool)$partsId) {
             try {
-                $products = $repository->getCollectionById(array_merge($accessoriesId, $relatedId, $partsId));
+                // если аксессуары уже получены в filterAccessoryId для них запрос не делаем
+                if(!empty($accessoryItems)) {
+                    $products = $repository->getCollectionById(array_merge($relatedId, $partsId));
+                    $products = array_merge($accessoryItems, $products);
+                } else {
+                    $products = $repository->getCollectionById(array_merge($accessoriesId, $relatedId, $partsId));
+                }
             } catch (\Exception $e) {
                 \App::exception()->add($e);
                 \App::logger()->error($e);
