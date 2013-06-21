@@ -18,26 +18,29 @@ class TagJsonAction {
      */
     public static function generate($max_parts = 0) {
         ini_set("auto_detect_line_endings", true);
-        $sourceJsonDir = \App::config()->cmsDir . '/v1/seo/tag';
+        $tagJsonDir = \App::config()->cmsDir . '/v1/seo/tag';
         $categoryJsonDir = \App::config()->cmsDir . '/v1/seo/catalog';
-        if(!is_dir($sourceJsonDir) || !is_dir($categoryJsonDir)){
-            throw new \Exception(sprintf('TagJson: не найден один или оба каталога %s, %s', $sourceJsonDir, $categoryJsonDir));
+        if(!is_dir($tagJsonDir) || !is_dir($categoryJsonDir)){
+            throw new \Exception(sprintf('TagJson: не найден один или оба каталога %s, %s', $tagJsonDir, $categoryJsonDir));
         }
         $client = \App::coreClientV2();
         $categoryTags = [];
 
-        foreach (scandir($sourceJsonDir) as $file) {
+        foreach (scandir($tagJsonDir) as $file) {
             if(preg_match('/^(.+)\.json$/', $file, $matches)) {
-                $dateStart = new \DateTime();
-
-                $sourceJsonFilePath = $sourceJsonDir . '/' . $file;
+                $tagJsonFilePath = $tagJsonDir . '/' . $file;
 
                 // парсим json с входными данными по тэгу
                 $tagJson = null;
-                if (($sourceJson = file_get_contents($sourceJsonFilePath)) !== FALSE) {
-                    $tagJson = json_decode($sourceJson, true);
+                if (($tagJson = file_get_contents($tagJsonFilePath)) !== FALSE) {
+                    $tagJson = json_decode($tagJson, true);
                 }
-                
+
+                if(!$tagJson) {
+                    echo sprintf('TagJson: не удалось загрузить json из файла %s', $tagJsonFilePath)."\n";
+                    continue;
+                }
+
                 // пробуем создать новый тэг
                 $response = self::createTags([$tagJson['name']]);
 
@@ -48,7 +51,7 @@ class TagJsonAction {
                 // если тэг создался, получаем его токен
                 elseif(is_array($response) && !empty($response[0]['token'])) {
                     $tagToken = $response[0]['token'];
-                    rename($sourceJsonDir.'/'.$file, $sourceJsonDir.'/'.$tagToken.'.json');
+                    rename($tagJsonDir.'/'.$file, $tagJsonDir.'/'.$tagToken.'.json');
                 }
                 // иначе - произошла ошибка и токен неизвестен, переходим к следующему файлу
                 else {
@@ -173,6 +176,9 @@ class TagJsonAction {
                 }
             }
         }
+
+        // удаляем тэги из json-фалов категорий, для которых не найден json-файл тэга
+        self::removeHotlinksForNonExistingTags($tagJsonDir, $categoryJsonDir);
     }
 
 
@@ -218,10 +224,50 @@ class TagJsonAction {
 
 
     /**
-     * удаляет тэги из json-фалов категорий, для которых нет связей с данным тэгом после
-     * получения из ядра списка категорий для тэга
+     * удаляет тэги из json-фалов категорий, для которых не найден json-файл тэга
      */
-    private static function removeTagFromCategoryJson($token, array $productIds) {
+    private static function removeHotlinksForNonExistingTags($tagJsonDir, $categoryJsonDir) {
+        foreach (scandir($categoryJsonDir) as $file) {
+            if(preg_match('/^(.+)\.json$/', $file, $matches)) {
+                $categoryJsonFilePath = $categoryJsonDir . '/' . $file;
+
+                // парсим json с входными данными по категории
+                $categoryJson = null;
+                if (($categoryJson = file_get_contents($categoryJsonFilePath)) !== FALSE) {
+                    $categoryJson = json_decode($categoryJson, true);
+                }
+
+                if(!$categoryJson) {
+                    echo sprintf('TagJson: не удалось загрузить json из файла %s', $categoryJsonFilePath)."\n";
+                    continue;
+                }
+
+                if(empty($categoryJson['public']['hotlinks']) && 
+                   empty($categoryJson['private']['hotlinks']) && 
+                   empty($categoryJson['public']['autohotlinks']) && 
+                   empty($categoryJson['private']['autohotlinks'])) {
+                    continue;
+                }
+
+                foreach ($categoryJson as $accessLevelKey => $accessLevel) {
+                    foreach (['hotlinks', 'autohotlinks'] as $typeKey => $type) {
+                        if(isset($accessLevel[$type])) {
+                            foreach ($accessLevel[$type] as $hotlinkKey => $hotlink) {
+                                if(isset($hotlink['url']) && preg_match('/([^\/]+)$/', $hotlink['url'], $matches) && !file_exists($tagJsonDir . '/' . $matches[1] . '.json')) {
+
+                                    unset($categoryJson[$accessLevelKey][$type][$hotlinkKey]);
+
+                                    if(!file_put_contents($categoryJsonFilePath, str_replace('\/', '/', json_encode($categoryJson, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT)))) {
+                                        throw new \Exception(sprintf('removeHotlinksForNonExistingTags: не удалось записать данные в %s', $categoryJsonFilePath));
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
+
 
 }

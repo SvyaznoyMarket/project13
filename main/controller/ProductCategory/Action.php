@@ -245,7 +245,10 @@ class Action {
 
         // получаем из json данные о горячих ссылках и content
         $seoCatalogJson = \Model\Product\Category\Repository::getSeoJson($category);
-        $hotlinks = empty($seoCatalogJson['hotlinks']) ? [] : $seoCatalogJson['hotlinks'];
+
+        // получаем горячие ссылки
+        $hotlinks = \RepositoryManager::productCategory()->getHotlinksBySeoCatalogJson($seoCatalogJson);
+
         // в json-файле в свойстве content содержится массив
         if(empty($brand)) {
             $seoContent = empty($seoCatalogJson['content']) ? '' : implode('<br>', $seoCatalogJson['content']);
