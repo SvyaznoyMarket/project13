@@ -161,6 +161,7 @@ class TagJsonAction {
                     $newHotLink = new \StdClass();
                     $newHotLink->title = $tagJson['name'];
                     $newHotLink->url = '/tags/' . $tagToken;
+                    $newHotLink->token = $tagToken;
                     $newHotLink->active = 1;
                     foreach ($seoJson as $accessLevel) {
                         if(isset($accessLevel->autohotlinks) && !in_array($newHotLink, $accessLevel->autohotlinks)) {
@@ -253,7 +254,7 @@ class TagJsonAction {
                     foreach (['hotlinks', 'autohotlinks'] as $typeKey => $type) {
                         if(isset($accessLevel[$type])) {
                             foreach ($accessLevel[$type] as $hotlinkKey => $hotlink) {
-                                if(isset($hotlink['url']) && preg_match('/([^\/]+)$/', $hotlink['url'], $matches) && !file_exists($tagJsonDir . '/' . $matches[1] . '.json')) {
+                                if(isset($hotlink['token']) && !file_exists($tagJsonDir . '/' . $hotlink['token'] . '.json')) {
 
                                     unset($categoryJson[$accessLevelKey][$type][$hotlinkKey]);
 
