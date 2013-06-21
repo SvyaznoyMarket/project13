@@ -461,7 +461,7 @@ class Repository {
                 $ids = array_merge($ids, $item['list']);
             }
         });
-        $client->execute();
+        $client->execute(\App::config()->coreV2['retryTimeout']['long']);
 
         if (!(bool)$response) {
             return [];
@@ -487,7 +487,7 @@ class Repository {
                     }
                 );
             }
-            $client->execute();
+            $client->execute(\App::config()->coreV2['retryTimeout']['long']);
         }
 
         $collections = [];
