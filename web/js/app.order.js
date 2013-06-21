@@ -226,7 +226,6 @@ $(document).ready(function () {
                             })
                         }
                         else{
-                            console.log('complete!')
                             window.location.reload()
                         }
 
