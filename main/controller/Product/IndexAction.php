@@ -170,7 +170,8 @@ class IndexAction {
 
         $dataForCredit = $this->getDataForCredit($product);
 
-        $shopsWithQuantity = [];
+        /** @var $shopStates \Model\Product\ShopState\Entity[] */
+        $shopStates = [];
         //загружаем магазины, если товар доступен только на витрине
         if (!$product->getIsBuyable() && $product->getState()->getIsShop()) {
             $quantityByShop = [];
@@ -185,23 +186,22 @@ class IndexAction {
                     );
                 }
             }
-            if (count($quantityByShop)) {
-                try {
-                    $shops = \RepositoryManager::shop()->getCollectionById(array_keys($quantityByShop));
-                    foreach ($shops as $shop) {
-                        $shopsWithQuantity[] = array(
-                            'shop' => $shop,
-                            'quantity' => $quantityByShop[$shop->getId()]['quantity'],
-                            'quantityShowroom' => $quantityByShop[$shop->getId()]['quantityShowroom'],
-                        );
+            if ((bool)$quantityByShop) {
+                \RepositoryManager::shop()->prepareCollectionById(
+                    array_keys($quantityByShop),
+                    function($data) use (&$shopStates, &$quantityByShop) {
+                        foreach ($data as $item) {
+                            $shop = new \Model\Shop\Entity($item);
+
+                            $shopState = new \Model\Product\ShopState\Entity();
+                            $shopState->setShop($shop);
+                            $shopState->setQuantity(isset($quantityByShop[$shop->getId()]['quantity']) ? $quantityByShop[$shop->getId()]['quantity'] : 0);
+                            $shopState->setQuantityInShowroom(isset($quantityByShop[$shop->getId()]['quantityShowroom']) ? $quantityByShop[$shop->getId()]['quantityShowroom'] : 0);
+
+                            $shopStates[] = $shopState;
+                        }
                     }
-                } catch (\Exception $e) {
-                    \App::exception()->add($e);
-                    \App::logger()->error($e);
-
-                    $shopsWithQuantity = [];
-                }
-
+                );
             }
         }
 
@@ -226,12 +226,12 @@ class IndexAction {
         $page->setParam('kit', $kit);
         $page->setParam('additionalData', $additionalData);
         $page->setParam('dataForCredit', $dataForCredit);
-        $page->setParam('shopsWithQuantity', $shopsWithQuantity);
-        $page->setParam('myThingsData', array(
+        $page->setParam('shopStates', $shopStates);
+        $page->setParam('myThingsData', [
             'EventType' => 'MyThings.Event.Visit',
-            'Action' => '1010',
+            'Action'    => '1010',
             'ProductId' => $product->getId(),
-        ));
+        ]);
         $page->setParam('reviewsData', $reviewsData);
         $page->setParam('reviewsDataPro', $reviewsDataPro);
         $page->setParam('reviewsDataSummary', $reviewsDataSummary);
