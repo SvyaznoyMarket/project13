@@ -348,7 +348,6 @@ $(document).ready(function() {
     // Check Consistency TODO
 
     // analitycs
-    // console.log(Model.items)
     var items_num = 0
     var price = 0
     var totalPrice = 0
@@ -598,8 +597,10 @@ $(document).ready(function() {
 
         function fillUpShopsFromModel() {
             self.shopsInPopup.removeAll()
-            for( var key in Model.shops ){
-                self.shopsInPopup.push( Model.shops[key] )
+            for( var key in Model.deliveryTypes ){
+                if (Model.deliveryTypes[key].shop){
+                    self.shopsInPopup.push( Model.deliveryTypes[key].shop )
+                }
             }
         }
 
@@ -723,13 +724,12 @@ $(document).ready(function() {
             for( var i=0, l=box.itemList().length; i<l; i++ ) {
                 var itemDlvrs = box.itemList()[i].deliveries
                 for( var key in itemDlvrs ) {
-                    if( key.match('self_') )
-                        shopIds.push( key.replace('self_','')*1 )
+                    if( key.match('self_'))
+                        shopIds.push( key.replace('self_','')*1)
                 }
             }
 
             fillUpShopsFromModel()
-            // console.log( self.shopsInPopup() )
             for( var i=0; i<self.shopsInPopup().length; ) {
                 if( $.inArray( self.shopsInPopup()[i].id , shopIds ) === -1 ){
                     self.shopsInPopup.remove( self.shopsInPopup()[i] )
@@ -742,8 +742,10 @@ $(document).ready(function() {
 
         self.showAllShops = function() {
             self.shopsInPopup.removeAll()
-            for( var key in Model.shops ){
-                self.shopsInPopup.push( Model.shops[key] )
+            for( var key in Model.deliveryTypes ){
+                if (Model.deliveryTypes[key].shop){
+                    self.shopsInPopup.push( Model.deliveryTypes[key].shop )
+                }
             }
         }
 
@@ -886,7 +888,7 @@ $(document).ready(function() {
                     date: formateDate( dlvr.chosenDate() ),
                     interval: dlvr.chosenInterval().match(/\d{2}:\d{2}/g).join(','),
                     shop: {
-                        id: dlvr.token.replace('now_','').replace('self_','')
+                        id: dlvr.token.replace('self_','')
                     }
                 }
                 var boxitems = []
@@ -1059,16 +1061,16 @@ $(document).ready(function() {
         var showOrderAlert = function(msg, redirect){
             var id = 'orderAlert'
             var block = '<div id="'+id+'" class="popup">' +
-                            '<div class="popupbox width290">' +
-                                '<div class="font18 pb18"> '+msg+'</div>'+
-                            '</div>' +
-                            '<p style="text-align:center"><a href="#" class="closePopup bBigOrangeButton">OK</a></p>'
-                        '</div> '
+                '<div class="popupbox width290">' +
+                '<div class="font18 pb18"> '+msg+'</div>'+
+                '</div>' +
+                '<p style="text-align:center"><a href="#" class="closePopup bBigOrangeButton">OK</a></p>'
+            '</div> '
             $('body').append( $(block) )
             $('#'+id).lightbox_me({
-              centered: true,
-              closeSelector: ".closePopup",
-              onClose: function(){
+                centered: true,
+                closeSelector: ".closePopup",
+                onClose: function(){
                     window.location = redirect
                 }
             })
@@ -1122,7 +1124,7 @@ $(document).ready(function() {
 
                 var phoneNumber = '8' + $('#order_recipient_phonenumbers').val().replace(/\D/g, "")
                 var emailVal = $('#order_recipient_email').val()
-                
+
                 /**
                  * Стоимость доставки
                  * @type {Number}
@@ -1176,7 +1178,7 @@ $(document).ready(function() {
                     }
                 }
                 var toKISS_complete = {
-                    'Checkout Complete Order ID':data.orderNumber, 
+                    'Checkout Complete Order ID':data.orderNumber,
                     'Checkout Complete SKU Quantity':itemQ,
                     'Checkout Complete SKU Total':itemT,
                     'Checkout Complete F1 Quantity':servQ,
@@ -1229,7 +1231,7 @@ $(document).ready(function() {
                     window.location = data.data.redirect
                 }
 
-                
+
             },
             error: function() {
                 button.text('Попробовать еще раз')
@@ -1253,7 +1255,7 @@ $(document).ready(function() {
     //deprecated: shopsStack    = $('#order-delivery_map-data').data().value.shops
 
     function getShopsStack() {
-        // MVM.showAllShops();
+        MVM.showAllShops();
         var shopsStack = {}
         for( var sh in MVM.shopsInPopup() ){
             shopsStack[ MVM.shopsInPopup()[sh].id ] = MVM.shopsInPopup()[sh]
@@ -1262,7 +1264,7 @@ $(document).ready(function() {
     }
 
     /* Shop Popup */
-    $('#OrderView').delegate( '.selectShop', 'click', function() {
+    $('#OrderView').delegate('.selectShop','click', function() {
         $('#orderMapPopup').lightbox_me({
             centered: true,
             onLoad: function() {
