@@ -73,8 +73,10 @@ module.exports = function(grunt) {
 				"boss": true,
 				"eqnull": true,
 				"node": true,
+				"browser": true,
 				"globals": {
-					"jQuery": true
+					"jQuery": true,
+					"$" : true,
 				},
 			},
 		},

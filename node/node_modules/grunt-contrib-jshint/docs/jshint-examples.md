@@ -1,7 +1,7 @@
 # Usage examples
 
 ## Wildcards
-In this example, running `grunt jshint:all` (or `grunt jshint` because `jshint` is a [multi task][]) will lint the project's Gruntfile as well as all JavaScript files in the `lib` and `test` directories and their subdirectores, using the default JSHint options.
+In this example, running `grunt jshint:all` (or `grunt jshint` because `jshint` is a [multi task](http://gruntjs.com/configuring-tasks#task-configuration-and-targets)) will lint the project's Gruntfile as well as all JavaScript files in the `lib` and `test` directories and their subdirectores, using the default JSHint options.
 
 ```js
 // Project configuration.
@@ -60,6 +60,29 @@ grunt.initConfig({
         src: ['dir3/**/*.js', 'dir4/**/*.js']
       },
     }
+  },
+});
+```
+
+## Ignoring specific warnings
+
+If you would like to ignore a specific warning:
+
+```shell
+[L24:C9] W015: Expected '}' to have an indentation at 11 instead at 9.
+```
+
+You can toggle it by prepending `-` to the warning id as an option:
+
+```js
+grunt.initConfig({
+  jshint: {
+    ignore_warning: {
+      options: {
+        '-W015': true,
+      },
+      src: ['**/*.js'],
+    },
   },
 });
 ```
