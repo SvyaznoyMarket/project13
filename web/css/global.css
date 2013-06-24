@@ -5346,7 +5346,7 @@
   }
   .categoriesmenuitem {
     margin-bottom: 2px;
-    padding: 5px 5px 5px 19px;
+    padding: 5px 5px 5px 10px;
     cursor: pointer;
   }
   .categoriesmenuitem:hover {
@@ -5381,9 +5381,9 @@
   .acess-box .scroll .srcoll_link_button {
     background: url("/css/item/img/btn_acess_box.png") no-repeat 4px 50%;
     width: 11px;
-    height: 332px;
+    height: 331px;
     position: absolute;
-    top: 40px;
+    top: 31px;
     z-index: 100;
     padding: 0 4px;
   }
@@ -5906,12 +5906,10 @@
     text-decoration: underline;
   }
   .reviewSection {
-    margin: 0 0 25px;
-    padding: 0;
-    font-size: 12px;
-  }
-  .reviewSection span {
-    margin: 2px 0 0;
+    border-bottom: 1px solid #e6e6e6;
+    margin: 10px 0px 15px;
+    padding: 0px 0px 6px;
+    font-size: 14px;
   }
   .reviewSection__star,
   .reviewSection__link {
@@ -5937,7 +5935,7 @@
     margin: 2px 0 0 0px;
   }
   .reviewSection100__star {
-    margin-right: 5px;
+    margin-right: 12px;
   }
   .reviewSection12 {
     font-size: 12px;
@@ -5955,7 +5953,7 @@
   }
   .reviewsWrapper {
     border-bottom: 1px solid #c7c7c7;
-    margin: 0;
+    margin: 0 0 30px;
     padding: 0 0 10px;
   }
   .reviewsWrapper .product-btn-toggle {
