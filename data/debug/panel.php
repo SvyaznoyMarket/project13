@@ -40,11 +40,13 @@ $appTimer = \Debug\Timer::get('app');
 $coreTimer = \Debug\Timer::get('core');
 $contentTimer = \Debug\Timer::get('content');
 $dataStoreTimer = \Debug\Timer::get('data-store');
+$closureRenderer = \Debug\Timer::get('renderer.get');
 
 $debug->add('time.app', sprintf('%s ms', round($appTimer['total'] - $coreTimer['total'] - $dataStoreTimer['total'] - $contentTimer['total'], 3) * 1000), 98);
 $debug->add('time.core', sprintf('%s ms [%s]', round($coreTimer['total'], 3) * 1000, $coreTimer['count']), 97);
 $debug->add('time.data-store', sprintf('%s ms [%s]', round($dataStoreTimer['total'], 3) * 1000, $dataStoreTimer['count']), 96);
 $debug->add('time.content', sprintf('%s ms [%s]', round($contentTimer['total'], 3) * 1000, $contentTimer['count']), 95);
+$debug->add('time.closureRenderer', sprintf('%s ms [%s]', round($closureRenderer['total'], 3) * 1000, $closureRenderer['count']), 95);
 $debug->add('time.total', sprintf('%s ms', round($appTimer['total'], 3) * 1000), 94);
 
 

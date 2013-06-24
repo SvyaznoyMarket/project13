@@ -51,4 +51,15 @@ class TemplateHelper {
     public function json($value) {
         return htmlspecialchars(json_encode($value, JSON_HEX_TAG|JSON_HEX_AMP|JSON_HEX_QUOT|JSON_HEX_APOS), ENT_QUOTES, 'UTF-8');
     }
+
+    /**
+     * @param $price
+     * @param int $numDecimals
+     * @param string $decimalsDelimiter
+     * @param string $thousandsDelimiter
+     * @return string
+     */
+    public function formatPrice($price, $numDecimals = 0, $decimalsDelimiter = ',', $thousandsDelimiter = ' ') {
+        return number_format($price, $numDecimals, $decimalsDelimiter, $thousandsDelimiter);
+    }
 }

@@ -8674,6 +8674,12 @@
     color: #a6a6a6;
     text-decoration: line-through;
   }
+  .bEmptyCart {
+    background: url("/css/basket/img/bgEmptyCart.gif") no-repeat 0 0;
+    height: 329px;
+    width: 889px;
+    margin: -47px 0 20px 38px;
+  }
 }
 /*---END---СТИЛИ КОРЗИНЫ---*/
 /*-------СТИЛИ ПОДСКАЗОК ПОИСКА-----*/

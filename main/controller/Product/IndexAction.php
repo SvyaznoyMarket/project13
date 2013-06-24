@@ -96,12 +96,6 @@ class IndexAction {
             return (new $controller())->executeDirect($product, $regionsToSelect, $catalogJson);
         }
 
-        if ($product->getConnectedProductsViewMode() == $product::DEFAULT_CONNECTED_PRODUCTS_VIEW_MODE) {
-            $showRelatedUpper = false;
-        } else {
-            $showRelatedUpper = true;
-        }
-
         // получаем отзывы для товара
         $reviewsData = \RepositoryManager::review()->getReviews($product->getId(), 'user');
         $reviewsDataPro = \RepositoryManager::review()->getReviews($product->getId(), 'pro');
@@ -229,8 +223,6 @@ class IndexAction {
         $page->setParam('productExpanded', $productExpanded);
         $page->setParam('productVideos', $productVideos);
         $page->setParam('title', $product->getName());
-        $page->setParam('showRelatedUpper', $showRelatedUpper);
-        $page->setParam('showAccessoryUpper', !$showRelatedUpper);
         $page->setParam('accessories', $accessories);
         $page->setParam('accessoryCategory', $accessoryCategory);
         $page->setParam('related', $related);

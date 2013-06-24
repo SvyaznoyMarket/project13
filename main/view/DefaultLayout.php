@@ -186,7 +186,7 @@ class DefaultLayout extends Layout {
                 \App::exception()->remove($e);
                 $isFailed = true;
             });
-            $client->execute(\App::config()->coreV2['retryTimeout']['short'], \App::config()->coreV2['retryCount']);
+            $client->execute(\App::config()->coreV2['retryTimeout']['short']);
 
             if ($isFailed) {
                 $content = $renderer->render('__mainMenu', [

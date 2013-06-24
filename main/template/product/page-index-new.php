@@ -10,8 +10,6 @@
  * @var $related            \Model\Product\Entity[]
  * @var $kit                \Model\Product\Entity[]
  * @var $additionalData     array
- * @var $showAccessoryUpper bool
- * @var $showRelatedUpper   bool
  * @var $shopStates         \Model\Product\ShopState\Entity[]
  * @var $creditData         array
  */
@@ -157,6 +155,7 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
 
 <section class="bProductSection__eLeft">
     <div class="bProductDesc clearfix">
+
         <div class="bProductDesc__ePhoto">
             <figure class="bProductDesc__ePhoto-bigImg">
                 <a class="bigImgLink" href="<?= $product->getImageUrl(4) ?>"><img src="<?= $product->getImageUrl(3) ?>" alt="<?= $page->escape($product->getName()) ?>" /></a>
@@ -275,163 +274,43 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
         <?= $product->getDescription() ?>
     </div>
 
+    <? if ((bool)$accessories && \App::config()->product['showAccessories']): ?>
     <h3 class="bHeadSection">Аксессуары</h3>
-
     <div class="bAccessory clearfix">
 
+        <? if ((bool)$accessoryCategory): ?>
         <div class="bAccessory__eCat">
             <ul>
-                <li class="active"><span>Сумки и чехлы для планшетов</span></li>
-                <li><span>Сумки и чехлы для планшетов</span></li>
-                <li><span>Стилусы и защитные пленки для планшетов</span></li>
-                <li><span>Сумки и чехлы для планшетов</span></li>
-                <li><span>Стилусы и защитные пленки для планшетов</span></li>
-                <li><span>Сумки и чехлы для планшетов</span></li>
-                <li><span>Сумки и чехлы для планшетов</span></li>
-                <li><span>Стилусы и защитные пленки для планшетов</span></li>
-                <li><span>Сумки и чехлы для планшетов</span></li>
-                <li><span>Стилусы и защитные пленки для планшетов</span></li>
+            <? $i = 0; foreach ($accessoryCategory as $iCategory): ?>
+                <li<? if (0 == $i): ?> class="active"<? endif ?>><span><?= $iCategory->getName() ?></span></li>
+            <? $i++; endforeach ?>
             </ul>
         </div>
+        <? endif ?>
 
-        <div class="bSliderAction">
-            <ul class="bSliderAction__elist clearfix">
-                <li>
-                    <div class="product__inner">
-                        <a class="productImg" href=""><img src="http://fs01.enter.ru/1/1/500/77/142788.jpg" alt="" /></a>
-                        <div class="reviewSection__star clearfix reviewSection100__star">
-                            <img src="/images/reviews_star.png">
-                            <img src="/images/reviews_star.png">
-                            <img src="/images/reviews_star.png">
-                            <img src="/images/reviews_star.png">
-                            <img src="/images/reviews_star_empty.png">
-                        </div>
-                        <div class="productName"><a href="">Сетевое зарядное устройство Prolife (miniUSB)</a></div>
-                        <div class="productPrice"><span class="price">180p</span></div>
-                        <div class="btnBuy"><a class="btnBuy__eLink" href="">В корзину</a></div>
-                    </div>
-                </li>
-                <li>
-                    <div class="product__inner">
-                        <a class="productImg" href=""><img src="http://fs01.enter.ru/1/1/500/77/142788.jpg" alt="" /></a>
-                        <div class="reviewSection__star clearfix reviewSection100__star">
-                            <img src="/images/reviews_star.png">
-                            <img src="/images/reviews_star.png">
-                            <img src="/images/reviews_star.png">
-                            <img src="/images/reviews_star.png">
-                            <img src="/images/reviews_star_empty.png">
-                        </div>
-                        <div class="productName"><a href="">Сетевое зарядное устройство Prolife (miniUSB)</a></div>
-                        <div class="productPrice"><span class="price">180p</span></div>
-                        <div class="btnBuy"><a class="btnBuy__eLink" href="">В корзину</a></div>
-                    </div>
-                </li>
-                <li>
-                    <div class="product__inner">
-                        <a class="productImg" href=""><img src="http://fs01.enter.ru/1/1/500/77/142788.jpg" alt="" /></a>
-                        <div class="reviewSection__star clearfix reviewSection100__star">
-                            <img src="/images/reviews_star.png">
-                            <img src="/images/reviews_star.png">
-                            <img src="/images/reviews_star.png">
-                            <img src="/images/reviews_star.png">
-                            <img src="/images/reviews_star_empty.png">
-                        </div>
-                        <div class="productName"><a href="">Сетевое зарядное устройство Prolife (miniUSB)</a></div>
-                        <div class="productPrice"><span class="price">180p</span></div>
-                        <div class="btnBuy"><a class="btnBuy__eLink" href="">В корзину</a></div>
-                    </div>
-                </li>
-            </ul>
-            <div class="bSliderAction__eBtn bSliderAction__eDisable bSliderAction__mPrev"><span></span></div>
-            <div class="bSliderAction__eBtn bSliderAction__mNext"><span></span></div>
-        </div>
+        <?= $renderer->render('product/__slider', [
+            'products'       => array_values($accessories),
+            'count'          => count($product->getAccessoryId()),
+            'limit'          => $accessoryCategory ? \App::config()->product['itemsInAccessorySlider'] : \App::config()->product['itemsInSlider'],
+            'page'           => 1,
+            'url'            => $page->url('product.accessory', ['productToken' => $product->getToken()]),
+            'gaEvent'        => 'Accessorize',
+            'additionalData' => $additionalData,
+        ]) ?>
     </div><!--/product accessory section -->
+    <? endif ?>
 
-    <h3 class="bHeadSection">С этим товаром также смотрят</h3>
-
-    <div class="bSliderAction">
-        <ul class="bSliderAction__elist clearfix">
-            <li>
-                <div class="product__inner">
-                    <a class="productImg" href=""><img src="http://fs01.enter.ru/1/1/500/77/142788.jpg" alt="" /></a>
-                    <div class="reviewSection__star clearfix reviewSection100__star">
-                        <img src="/images/reviews_star.png">
-                        <img src="/images/reviews_star.png">
-                        <img src="/images/reviews_star.png">
-                        <img src="/images/reviews_star.png">
-                        <img src="/images/reviews_star_empty.png">
-                    </div>
-                    <div class="productName"><a href="">Сетевое зарядное устройство Prolife (miniUSB)</a></div>
-                    <div class="productPrice"><span class="price">180p</span></div>
-                    <div class="btnBuy"><a class="btnBuy__eLink" href="">В корзину</a></div>
-                </div>
-            </li>
-
-            <li>
-                <div class="product__inner">
-                    <a class="productImg" href=""><img src="http://fs01.enter.ru/1/1/500/77/142788.jpg" alt="" /></a>
-                    <div class="reviewSection__star clearfix reviewSection100__star">
-                        <img src="/images/reviews_star.png">
-                        <img src="/images/reviews_star.png">
-                        <img src="/images/reviews_star.png">
-                        <img src="/images/reviews_star.png">
-                        <img src="/images/reviews_star_empty.png">
-                    </div>
-                    <div class="productName"><a href="">Сетевое зарядное устройство Prolife (miniUSB)</a></div>
-                    <div class="productPrice"><span class="price">180p</span></div>
-                    <div class="btnBuy"><a class="btnBuy__eLink" href="">В корзину</a></div>
-                </div>
-            </li>
-
-            <li>
-                <div class="product__inner">
-                    <a class="productImg" href=""><img src="http://fs01.enter.ru/1/1/500/77/142788.jpg" alt="" /></a>
-                    <div class="reviewSection__star clearfix reviewSection100__star">
-                        <img src="/images/reviews_star.png">
-                        <img src="/images/reviews_star.png">
-                        <img src="/images/reviews_star.png">
-                        <img src="/images/reviews_star.png">
-                        <img src="/images/reviews_star_empty.png">
-                    </div>
-                    <div class="productName"><a href="">Сетевое зарядное устройство Prolife (miniUSB)</a></div>
-                    <div class="productPrice"><span class="price">180p</span></div>
-                    <div class="btnBuy"><a class="btnBuy__eLink" href="">В корзину</a></div>
-                </div>
-            </li>
-
-            <li>
-                <div class="product__inner">
-                    <a class="productImg" href=""><img src="http://fs01.enter.ru/1/1/500/77/142788.jpg" alt="" /></a>
-                    <div class="reviewSection__star clearfix reviewSection100__star">
-                        <img src="/images/reviews_star.png">
-                        <img src="/images/reviews_star.png">
-                        <img src="/images/reviews_star.png">
-                        <img src="/images/reviews_star.png">
-                        <img src="/images/reviews_star_empty.png">
-                    </div>
-                    <div class="productName"><a href="">Сетевое зарядное устройство Prolife (miniUSB)</a></div>
-                    <div class="productPrice"><span class="price">180p</span></div>
-                    <div class="btnBuy"><a class="btnBuy__eLink" href="">В корзину</a></div>
-                </div>
-            <li>
-                <div class="product__inner">
-                    <a class="productImg" href=""><img src="http://fs01.enter.ru/1/1/500/77/142788.jpg" alt="" /></a>
-                    <div class="reviewSection__star clearfix reviewSection100__star">
-                        <img src="/images/reviews_star.png">
-                        <img src="/images/reviews_star.png">
-                        <img src="/images/reviews_star.png">
-                        <img src="/images/reviews_star.png">
-                        <img src="/images/reviews_star_empty.png">
-                    </div>
-                    <div class="productName"><a href="">Сетевое зарядное устройство Prolife (miniUSB)</a></div>
-                    <div class="productPrice"><span class="price">180p</span></div>
-                    <div class="btnBuy"><a class="btnBuy__eLink" href="">В корзину</a></div>
-                </div>
-            </li>
-        </ul>
-        <div class="bSliderAction__eBtn bSliderAction__eDisable bSliderAction__mPrev"><span></span></div>
-        <div class="bSliderAction__eBtn bSliderAction__mNext"><span></span></div>
-    </div><!--/product more section -->
+    <? if ((bool)$related && \App::config()->product['showRelated']): ?>
+        <h3 class="bHeadSection">С этим товаром также покупают</h3>
+        <?= $renderer->render('product/__slider', [
+            'products'       => array_values($related),
+            'count'          => count($product->getRelatedId()),
+            'limit'          => \App::config()->product['itemsInSlider'],
+            'page'           => 1,
+            'url'            => $page->url('product.related', ['productToken' => $product->getToken()]),
+            'additionalData' => $additionalData,
+        ]) ?>
+    <? endif ?>
 
     <h3 class="bHeadSection">Характеристики</h3>
     <? $groupedProperties = $product->getGroupedProperties() ?>
@@ -464,7 +343,6 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
 
 
     <h3 class="bHeadSection">Похожие товары</h3>
-
     <div class="bSliderAction mNoSliderAction">
         <ul class="bSliderAction__elist clearfix">
             <li>
