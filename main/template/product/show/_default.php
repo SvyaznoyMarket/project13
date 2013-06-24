@@ -1,9 +1,10 @@
 <?php
 /**
- * @var $page        \View\Layout
- * @var $user        \Session\User
- * @var $product     \Model\Product\Entity
- * @var $creditData  array
+ * @var $page       \View\Layout
+ * @var $user       \Session\User
+ * @var $product    \Model\Product\Entity
+ * @var $creditData array
+ * @var $shopStates \Model\Product\ShopState\Entity[]
  */
 ?>
 
@@ -167,18 +168,18 @@ $hasLowerPriceNotification =
 
             <div class="vitrin" id="availableShops" data-shops='<?= $jsonAvailableShops ?>'>
                 <div class="line pb15"></div>
-                <p class="font18 orange">Этот товар вы можете купить только в магазин<?= (count($shopsWithQuantity) == 1) ? 'е' : 'ах' ?></p>
+                <p class="font18 orange">Этот товар вы можете купить только в магазин<?= (count($shopStates) == 1) ? 'е' : 'ах' ?></p>
                 <ul id="listAvalShop">
-                    <? $i = 0; foreach ($shopsWithQuantity as $shopWithQuantity): $i++?>
+                    <? $i = 0; foreach ($shopStates as $shopState): $i++?>
                         <li<?= $i > 3 ? ' class="hidden"' : ''?>>
                             <a class="fr dashedLink shopLookAtMap" href="#">Посмотреть на карте</a>
-                            <?= '<a class="avalShopAddr" href="'.$page->url('shop.show', ['shopToken' => $shopWithQuantity['shop']->getToken(), 'regionToken' => $user->getRegion()->getToken()]) . '" class="underline">' . $shopWithQuantity['shop']->getName() . '</a>' ?>
-                            <strong class="font12 orange db pt10"><?= ($shopWithQuantity['quantity'] > 5 ? 'есть в наличии' : ($shopWithQuantity['quantity'] > 0 ? 'осталось мало' : ($shopWithQuantity['quantityShowroom'] > 0 ? 'есть только на витрине' : ''))) ?></strong>
+                            <?= '<a class="avalShopAddr" href="'.$page->url('shop.show', ['shopToken' => $shopState->getShop()->getToken(), 'regionToken' => $user->getRegion()->getToken()]) . '" class="underline">' . $shopState->getShop()->getName() . '</a>' ?>
+                            <strong class="font12 orange db pt10"><?= ($shopState->getQuantity() > 5 ? 'есть в наличии' : ($shopState->getQuantity() > 0 ? 'осталось мало' : ($shopState->getQuantityInShowroom() > 0 ? 'есть только на витрине' : ''))) ?></strong>
                         </li>
                     <? endforeach ?>
                 </ul>
-                <?php if (count($shopsWithQuantity) > 3): ?>
-                    <a id="slideAvalShop" class="orange strong dashedLink font18" href="#">Еще <?= count($shopsWithQuantity) - 3 ?> <?= $page->helper->numberChoice(count($shopsWithQuantity) - 3, ['магазин', 'магазина', 'магазинов']) ?></a>
+                <?php if (count($shopStates) > 3): ?>
+                    <a id="slideAvalShop" class="orange strong dashedLink font18" href="#">Еще <?= count($shopStates) - 3 ?> <?= $page->helper->numberChoice(count($shopStates) - 3, ['магазин', 'магазина', 'магазинов']) ?></a>
                 <?php endif ?>
             </div>
         </div>
