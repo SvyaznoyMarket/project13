@@ -1,8 +1,9 @@
 <?php
 /**
- * @var $page    \View\Layout
- * @var $user    \Session\User
- * @var $product \Model\Product\Entity
+ * @var $page        \View\Layout
+ * @var $user        \Session\User
+ * @var $product     \Model\Product\Entity
+ * @var $creditData  array
  */
 ?>
 
@@ -187,7 +188,7 @@ $hasLowerPriceNotification =
 
     <? if ($product->getIsBuyable()): ?>
 
-        <? if ($dataForCredit['creditIsAllowed'] && !$user->getRegion()->getHasTransportCompany()) : ?>
+        <? if ($creditData['creditIsAllowed'] && !$user->getRegion()->getHasTransportCompany()) : ?>
             <div class="creditbox">
                 <div class="creditboxinner">
                     <div class="creditLeft">от <span class="font24"><b class="price"></b> <b class="rubl">p</b></span> в кредит</div>
@@ -199,8 +200,8 @@ $hasLowerPriceNotification =
             </div>
         <? endif; ?>
 
-        <? if ($dataForCredit['creditIsAllowed']) : ?>
-            <input data-model="<?= $page->escape($dataForCredit['creditData']) ?>" id="dc_buy_on_credit_<?= $product->getArticle(); ?>" name="dc_buy_on_credit" type="hidden" />
+        <? if ($creditData['creditIsAllowed']) : ?>
+            <input data-model="<?= $page->escape($creditData['creditData']) ?>" id="dc_buy_on_credit_<?= $product->getArticle(); ?>" name="dc_buy_on_credit" type="hidden" />
         <? endif; ?>
 
     <? elseif ($user->getRegion()->getHasTransportCompany()): ?>

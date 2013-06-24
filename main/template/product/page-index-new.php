@@ -1,5 +1,6 @@
 <?php
 /**
+ * @var $renderer           \Templating\PhpClosureEngine
  * @var $page               \View\Product\IndexPage
  * @var $product            \Model\Product\Entity
  * @var $productVideos      \Model\Product\Video\Entity[]
@@ -12,10 +13,15 @@
  * @var $showAccessoryUpper bool
  * @var $showRelatedUpper   bool
  * @var $shopStates         \Model\Product\ShopState\Entity[]
+ * @var $creditData         array
  */
 ?>
 
 <?
+
+$hasLowerPriceNotification =
+    \App::config()->product['lowerPriceNotification']
+    && $product->getMainCategory() && $product->getMainCategory()->getPriceChangeTriggerEnabled();
 
 $hasFurnitureConstructor = \App::config()->product['furnitureConstructor'] && $product->getLine() && (256 == $product->getLine()->getId()); // Серия Байкал
 
@@ -109,25 +115,25 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
 
     $arrayToMaybe3D = [
         'init' => [
-            'swf'=>$model3dExternalUrl,
-            'container'=>'maybe3dModel',
-            'width'=>'700px',
-            'height'=>'500px',
-            'version'=>'10.0.0',
-            'install'=>'js/expressInstall.swf',
+            'swf'       => $model3dExternalUrl,
+            'container' => 'maybe3dModel',
+            'width'     => '700px',
+            'height'    => '500px',
+            'version'   => '10.0.0',
+            'install'   => 'js/expressInstall.swf',
         ],
         'params' => [
-            'menu'=> "false",
-            'scale'=> "noScale",
-            'allowFullscreen'=> "true",
-            'allowScriptAccess'=> "always",
-            'wmode'=> "direct"
+            'menu'              => 'false',
+            'scale'             => 'noScale',
+            'allowFullscreen'   => 'true',
+            'allowScriptAccess' => 'always',
+            'wmode'             => 'direct',
         ],
         'attributes' => [
-            'id'=> $model3dName,
+            'id' => $model3dName,
         ],
-        'flashvars'=> [
-            'language'=> "auto",
+        'flashvars' => [
+            'language' => "auto",
         ]
 
     ];
@@ -188,18 +194,27 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
             <? else: ?>
                 <link itemprop="availability" href="http://schema.org/OutOfStock" />
             <? endif ?>
-            <div class="priceOld"><span>7 320</span>p</div>
-            <div class="price"><strong>6 890</strong>р</div>
-            <div class="priceSale"><span class="dotted">Узнать о снижении цены</span></div>
 
+            <? if($product->getPriceOld() && !$user->getRegion()->getHasTransportCompany()): ?>
+                <div class="priceOld"><span><?= $page->helper->formatPrice($product->getPriceOld()) ?></span>p</div>
+            <? endif ?>
+            <div class="price"><strong><?= $page->helper->formatPrice($product->getPrice()) ?></strong>р</div>
+
+            <? if ($hasLowerPriceNotification): ?>
+            <div class="priceSale"><span class="dotted">Узнать о снижении цены</span></div>
+            <? endif ?>
+
+            <? if ($creditData['creditIsAllowed'] && !$user->getRegion()->getHasTransportCompany()) : ?>
             <div class="creditbox" style="display: block;">
                 <label class="bigcheck" for="creditinput"><b></b>
                     <span class="dotted">Беру в кредит</span>
                     <input id="creditinput" type="checkbox" name="creditinput" autocomplete="off">
                 </label>
 
-                <div class="creditbox__sum">от <strong>518</strong>p в месяц</div>
+                <div class="creditbox__sum">от <strong></strong>p в месяц</div>
+                <input data-model="<?= $page->escape($creditData['creditData']) ?>" id="dc_buy_on_credit_<?= $product->getArticle(); ?>" name="dc_buy_on_credit" type="hidden" />
             </div><!--/credit box -->
+            <? endif ?>
 
             <div class="bProductDesc__eStore-text">
                 <?= $product->getTagline() ?>
@@ -222,49 +237,37 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
                 </div>
             </div><!--/review section -->
 
+            <? if ((bool)$product->getModel() && (bool)$product->getModel()->getProperty()): //модели ?>
             <div class="bProductDesc__eStore-select">
+            <? foreach ($product->getModel()->getProperty() as $property): ?>
+                <? if ($property->getIsImage()): ?>
+                <? else: ?>
+                <?
+                    $productAttribute = $product->getPropertyById($property->getId());
+                    if (!$productAttribute) break;
+                ?>
+
+                <? endif ?>
                 <div class="descSelectItem clearfix">
-                    <strong class="descSelectItem__eName">Цвет</strong>
-                    <span class="descSelectItem__eValue">16 GB</span>
+                    <strong class="descSelectItem__eName"><?= $property->getName() ?></strong>
+                    <span class="descSelectItem__eValue"><?= $productAttribute->getStringValue() ?></span>
 
                     <div class="descSelectItem__eDdm" style="display: none;">
                         <ul>
-                            <li>1111</li>
-                            <li>2222</li>
-                            <li>333</li>
-                            <li>444</li>
+                        <? foreach ($property->getOption() as $option): ?>
+                        <? if ($option->getValue() == $productAttribute->getValue()) continue ?>
+                            <li>
+                                <a href="<?= $option->getProduct()->getLink() ?>"><?= $option->getHumanizedName() ?></a>
+                            </li>
+                        <? endforeach ?>
                         </ul>
                     </div>
                 </div>
+            <? endforeach ?>
 
-                <div class="descSelectItem clearfix">
-                    <strong class="descSelectItem__eName">Цвет</strong>
-                    <span class="descSelectItem__eValue">16 GB</span>
-
-                    <div class="descSelectItem__eDdm" style="display: none;">
-                        <ul>
-                            <li>1111</li>
-                            <li>2222</li>
-                            <li>333</li>
-                            <li>444</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="descSelectItem clearfix">
-                    <strong class="descSelectItem__eName">Цвет</strong>
-                    <span class="descSelectItem__eValue">16 GB</span>
-
-                    <div class="descSelectItem__eDdm" style="display: none;">
-                        <ul>
-                            <li>1111</li>
-                            <li>2222</li>
-                            <li>333</li>
-                            <li>444</li>
-                        </ul>
-                    </div>
-                </div>
             </div><!--/additional product options -->
+            <? endif ?>
+
         </div><!--/product shop description box -->
     </div><!--/product shop description section -->
 
@@ -431,68 +434,34 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
     </div><!--/product more section -->
 
     <h3 class="bHeadSection">Характеристики</h3>
+    <? $groupedProperties = $product->getGroupedProperties() ?>
 
     <div class="bSpecifications">
-        <div class="bSpecifications__eHead">Общие</div>
+    <? foreach ($groupedProperties as $key => $group): ?>
+    <? if (!(bool)$group['properties']) continue ?>
+
+        <div class="bSpecifications__eHead"><?= $group['group']->getName() ?></div>
         <dl class="bSpecifications__eList clearfix">
-            <dd><span>Тип</span></dd>
-            <dt>GSM (800/900/1800/1900 МГц), HSPA+ (850/900/1700/1900/2100 МГц)</dt>
+        <? foreach ($group['properties'] as $property): ?>
+        <? /** @var $property \Model\Product\Property\Entity  */?>
             <dd>
-                <span>Двухъядерный процессор
-                <div class="bHint">
-                  <a class="bHint_eLink">Разрешение дисплея</a>
-                  <div class="bHint_ePopup popup">
-                    <div class="close"></div>
-                    <div class="bHint-text">
-                        <p>Разрешение дисплея – это количество мельчайших точек, из которых складывается общая картинка. Каждая точка называется пикселем. Так как этих точек в современных экранах очень много, разрешение записывается двумя числами: первое отражает количество пикселей по горизонтали, второе по вертикали. От разрешения дисплея зависит многое. Как будут выглядеть фотографии и сайты, нужно ли вам будет конвертировать видео, запустится ли игра. И это тот случай, когда чем больше – тем лучше.</p>
-                    </div>
-                  </div>
-                </div>
+                <span><?= $property->getName() ?>
+                <? if ($property->getHint()): ?>
+                    <?= $renderer->render('product/__propertyHint', ['name' => $property->getName(), 'value' => $property->getHint()]) ?>
+                <? endif ?>
                 </span>
             </dd>
-            <dt>GSM (800/900/1800/1900 МГц), HSPA+ (850/900/1700/1900/2100 МГц)</dt>
-            <dd><span>Тип</span></dd>
-            <dt>GSM (800/900/1800/1900 МГц), HSPA+ (850/900/1700/1900/2100 МГц)</dt>
-            <dd><span>Разрешение видео</span></dd>
-            <dt>GSM (800/900/1800/1900 МГц), HSPA+ </dt>
-            <dd><span>Тип</span></dd>
-            <dt>GSM (800/900/1800/1900 МГц), HSPA+ (850/900/1700/1900/2100 МГц)</dt>
-            <dd><span>Тип</span></dd>
-            <dt>GSM (800/900/1800/1900 МГц), HSPA+ (850/900/1700/1900/2100 МГц)</dt>
+            <dt>
+                <?= $property->getStringValue() ?>
+                <? if ($property->getValueHint()): ?>
+                    <?= $renderer->render('product/__propertyHint', ['name' => $property->getStringValue(), 'value' => $property->getValueHint()]) ?>
+                <? endif ?>
+            </dt>
+        <? endforeach ?>
         </dl>
-
-        <div class="bSpecifications__eHead">Общие</div>
-        <dl class="bSpecifications__eList clearfix">
-            <dd><span>Тип</span></dd>
-            <dt>GSM (800/900/1800/1900 МГц), HSPA+ (850/900/1700/1900/2100 МГц)</dt>
-            <dd><span>Двухъядерный процессор</span></dd>
-            <dt>GSM (800/900/1800/1900 МГц), HSPA+ (850/9100 МГц)</dt>
-            <dd><span>Тип</span></dd>
-            <dt>GSM (800/900/1800/1900 МГц), HSPA+ (850/900/1700/1900/2100 МГц)</dt>
-            <dd><span>Разрешение видео </dd>
-            <dt>GSM (800/900/1800/1900 МГц), HSPA+ </dt>
-            <dd><span>Тип</span></dd>
-            <dt>GSM (800/900/1800/1900 МГц), HSPA+ (850/900/1700/1900/2100 МГц)</dt>
-            <dd><span>Тип</span></dd>
-            <dt>GSM (800/900/1800/1900 МГц), HSPA+ (850/900/1700/1900/2100 МГц)</dt>
-        </dl>
-
-        <div class="bSpecifications__eHead">Общие</div>
-        <dl class="bSpecifications__eList clearfix">
-            <dd><span>Тип</span></dd>
-            <dt>GSM (800/900/1800/1900 МГц), HSPA+ (850/900/1700/1900/)</dt>
-            <dd><span>Двухъядерный процессор</span></dd>
-            <dt>GSM (800/900/1800/1900 МГц), HSPA+ (850/900/12100 МГц)</dt>
-            <dd><span>Тип</span></dd>
-            <dt>GSM (800/900/1800/1900 МГц), HSPA+ (850/900/1700/1900/2100 МГц)</dt>
-            <dd><span>Разрешение видео</span></dd>
-            <dt>GSM (800/900/1800/1900 МГц), HSPA+ (850/9/2100 МГц)</dt>
-            <dd><span>Тип</span></dd>
-            <dt>GSM (800/900/1800/1900 МГц), HSPA+ (850/900/1700/1900/2100 МГц)</dt>
-            <dd><span>Тип</span></dd>
-            <dt>GSM (800/900/1800/1900 МГц), HSPA+ (800 МГц)</dt>
-        </dl>
+    <? endforeach ?>
     </div><!--/product specifications section -->
+
 
     <h3 class="bHeadSection">Похожие товары</h3>
 
@@ -590,7 +559,10 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
 
         <div class="bWidgetBuy__eBuy btnBuy"><a class="btnBuy__eLink" href="">В корзину</a></div><!--/button buy -->
 
-        <div class="bWidgetBuy__eClick"><a href="">Купить быстро в 1 клик</a></div>
+        <? if ($product->getIsBuyable()): ?>
+            <div class="bWidgetBuy__eClick"><a href="">Купить быстро в 1 клик</a></div>
+            <form id="order1click-form" action="<?= $page->url('order.1click', ['product' => $product->getBarcode()]) ?>" method="post"></form>
+        <? endif ?>
 
         <ul class="bWidgetBuy__eDelivery">
             <li class="bWidgetBuy__eDelivery-item bWidgetBuy__eDelivery-price">
