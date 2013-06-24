@@ -18,7 +18,7 @@ return function (
     ];
 ?>
 
-<div class="bSliderAction" data-slider="<?= $helper->json($sliderData) ?>">
+<div class="bSliderAction<? if (!$limit): ?> mNoSliderAction<? endif ?>" data-slider="<?= $helper->json($sliderData) ?>">
 
     <ul class="bSliderAction__elist clearfix">
     <? foreach ($products as $product): ?>

@@ -314,7 +314,6 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
 
     <h3 class="bHeadSection">Характеристики</h3>
     <? $groupedProperties = $product->getGroupedProperties() ?>
-
     <div class="bSpecifications">
     <? foreach ($groupedProperties as $key => $group): ?>
     <? if (!(bool)$group['properties']) continue ?>
@@ -342,88 +341,19 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
     </div><!--/product specifications section -->
 
 
-    <h3 class="bHeadSection">Похожие товары</h3>
-    <div class="bSliderAction mNoSliderAction">
-        <ul class="bSliderAction__elist clearfix">
-            <li>
-                <div class="product__inner">
-                    <a class="productImg" href=""><img src="http://fs01.enter.ru/1/1/500/77/142788.jpg" alt="" /></a>
-                    <div class="reviewSection__star clearfix reviewSection100__star">
-                        <img src="/images/reviews_star.png">
-                        <img src="/images/reviews_star.png">
-                        <img src="/images/reviews_star.png">
-                        <img src="/images/reviews_star.png">
-                        <img src="/images/reviews_star_empty.png">
-                    </div>
-                    <div class="productName"><a href="">Сетевое зарядное устройство Prolife (miniUSB)</a></div>
-                    <div class="productPrice"><span class="price">180p</span></div>
-                    <div class="btnBuy"><a class="btnBuy__eLink" href="">В корзину</a></div>
-                </div>
-            </li>
+    <? if (!$product->getIsBuyable() && $product->getState()->getIsShop()  && \App::config()->smartengine['pull']): ?>
+        <h3 class="bHeadSection">Похожие товары</h3>
+        <?= $renderer->render('product/__slider', [
+            'products'       => [],
+            'count'          => null,
+            'limit'          => \App::config()->product['itemsInSlider'],
+            'page'           => 1,
+            'url'            => $page->url('smartengine.pull.product_similar', ['productId' => $product->getId()]),
+            //'additionalData' => $additionalData,
+        ]) ?>
+    <? endif ?>
 
-            <li>
-                <div class="product__inner">
-                    <a class="productImg" href=""><img src="http://fs01.enter.ru/1/1/500/77/142788.jpg" alt="" /></a>
-                    <div class="reviewSection__star clearfix reviewSection100__star">
-                        <img src="/images/reviews_star.png">
-                        <img src="/images/reviews_star.png">
-                        <img src="/images/reviews_star.png">
-                        <img src="/images/reviews_star.png">
-                        <img src="/images/reviews_star_empty.png">
-                    </div>
-                    <div class="productName"><a href="">Сетевое зарядное устройство Prolife (miniUSB)</a></div>
-                    <div class="productPrice"><span class="price">180p</span></div>
-                    <div class="btnBuy"><a class="btnBuy__eLink" href="">В корзину</a></div>
-                </div>
-            </li>
 
-            <li>
-                <div class="product__inner">
-                    <a class="productImg" href=""><img src="http://fs01.enter.ru/1/1/500/77/142788.jpg" alt="" /></a>
-                    <div class="reviewSection__star clearfix reviewSection100__star">
-                        <img src="/images/reviews_star.png">
-                        <img src="/images/reviews_star.png">
-                        <img src="/images/reviews_star.png">
-                        <img src="/images/reviews_star.png">
-                        <img src="/images/reviews_star_empty.png">
-                    </div>
-                    <div class="productName"><a href="">Сетевое зарядное устройство Prolife (miniUSB)</a></div>
-                    <div class="productPrice"><span class="price">180p</span></div>
-                    <div class="btnBuy"><a class="btnBuy__eLink" href="">В корзину</a></div>
-                </div>
-            </li>
-
-            <li>
-                <div class="product__inner">
-                    <a class="productImg" href=""><img src="http://fs01.enter.ru/1/1/500/77/142788.jpg" alt="" /></a>
-                    <div class="reviewSection__star clearfix reviewSection100__star">
-                        <img src="/images/reviews_star.png">
-                        <img src="/images/reviews_star.png">
-                        <img src="/images/reviews_star.png">
-                        <img src="/images/reviews_star.png">
-                        <img src="/images/reviews_star_empty.png">
-                    </div>
-                    <div class="productName"><a href="">Сетевое зарядное устройство Prolife (miniUSB)</a></div>
-                    <div class="productPrice"><span class="price">180p</span></div>
-                    <div class="btnBuy"><a class="btnBuy__eLink" href="">В корзину</a></div>
-                </div>
-            <li>
-                <div class="product__inner">
-                    <a class="productImg" href=""><img src="http://fs01.enter.ru/1/1/500/77/142788.jpg" alt="" /></a>
-                    <div class="reviewSection__star clearfix reviewSection100__star">
-                        <img src="/images/reviews_star.png">
-                        <img src="/images/reviews_star.png">
-                        <img src="/images/reviews_star.png">
-                        <img src="/images/reviews_star.png">
-                        <img src="/images/reviews_star_empty.png">
-                    </div>
-                    <div class="productName"><a href="">Сетевое зарядное устройство Prolife (miniUSB)</a></div>
-                    <div class="productPrice"><span class="price">180p</span></div>
-                    <div class="btnBuy"><a class="btnBuy__eLink" href="">В корзину</a></div>
-                </div>
-            </li>
-        </ul>
-    </div><!--/product more section -->
 </section><!--/left section -->
 
 <aside class="bProductSection__eRight">
