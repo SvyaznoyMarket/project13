@@ -29,7 +29,7 @@ if (!isset($isAddInfo)) $isAddInfo = false;
 
 <? if ($pager->hasPages()): ?>
 <div class="fr allpager mBtn" alt="все товары в категории" title="все товары в категории"
-    data-url="<?= $page->helper->replacedUrl(array('page' => null), null, $request->attributes->get('route').'.infinity') ?>"
+    data-url="<?= $page->helper->replacedUrl(array('page' => null), null, $request->attributes->get('route')) . (strpos($request->attributes->get('route'), 'infinity') !== false ? '' : '.infinity') ?>"
     data-page="<?= $pager->getPage() ?>"
     data-lastpage="<?= $pager->getLastPage() ?>"
     data-filter="<?= $filterData ?>"
@@ -58,7 +58,7 @@ if ($pager->count()) $page->setGlobalParam('productCount', $pager->count());
 
 <? if ($pager->hasPages()): ?>
 <div class="fr allpager mBtn" alt="все товары в категории" title="все товары в категории"
-     data-url="<?= $page->helper->replacedUrl(array('page' => null), null, $request->attributes->get('route').'.infinity') ?>"
+     data-url="<?= $page->helper->replacedUrl(array('page' => null), null, $request->attributes->get('route') . (strpos($request->attributes->get('route'), 'infinity') !== false ? '' : '.infinity')) ?>"
      data-page="<?= $pager->getPage() ?>"
      data-lastpage="<?= $pager->getLastPage() ?>"
      data-filter="<?= $filterData ?>"
