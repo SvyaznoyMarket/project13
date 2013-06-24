@@ -76,7 +76,10 @@ module.exports = function(grunt) {
 				"browser": true,
 				"globals": {
 					"jQuery": true,
-					"$" : true,
+					"$": true,
+					"google": true,
+					"ymaps": true,
+					"_gaq": true,
 				},
 			},
 		},
@@ -138,7 +141,7 @@ module.exports = function(grunt) {
 				command: function(){
 					grunt.log.writeln('getVersion ');
 					var execCommand = 'filename="../web/js/combine.js"; rm ../web/js/combine.js; printf \'window.release = { "version":"\'>> $filename \r; res=$(git describe --always --tag); printf $res >> $filename \r; printf \'"}\'>> $filename \r;';
-					return execCommand
+					return execCommand;
 				}
 			}
 		},
