@@ -11,7 +11,8 @@
  * @var $additionalData     array
  * @var $showAccessoryUpper bool
  * @var $showRelatedUpper   bool
- * @var $shopsWithQuantity  array
+ * @var $shopStates         \Model\Product\ShopState\Entity[]
+ * @var $creditData         array
  */
 ?>
 
@@ -37,9 +38,10 @@ $productVideo = reset($productVideos);
   ),  JSON_HEX_QUOT | JSON_HEX_APOS);
 
   $availableShops = [];
-  foreach ($shopsWithQuantity as $shopWithQuantity) {
-      /** @var $shop \Model\Shop\Entity */
-      $shop = $shopWithQuantity['shop'];
+  foreach ($shopStates as $shopState) {
+      $shop = $shopState->getShop();
+      if (!$shop) continue;
+
       $availableShops[] = [
           'id'        => $shop->getId(),
           'name'      => $shop->getName(),
@@ -164,7 +166,7 @@ $productVideo = reset($productVideos);
 <? endif ?>
 
 <? if ($model3dImg) : ?>
-    <div id="3dModelImg" class="popup" data-value="<?php print $page->json($model3dImg); ?>" data-host="<?=$page->json(['http://'.App::request()->getHost()])?>">
+    <div id="3dModelImg" class="popup" data-value="<?php print $page->json($model3dImg); ?>" data-host="<?= $page->json(['http://'.App::request()->getHost()]) ?>">
         <i class="close" title="Закрыть">Закрыть</i>
     </div>
 <? endif ?>
@@ -218,12 +220,12 @@ $productVideo = reset($productVideos);
 
 <div class="clear"></div>
 
-<? if((bool)$product->getModel() && (bool)$product->getModel()->getProperty()): //модели ?>
+<? if ((bool)$product->getModel() && (bool)$product->getModel()->getProperty()): //модели ?>
 <!-- Variation -->
 <div class="fr width400">
     <h2>Этот товар с другими параметрами:</h2>
     <? foreach ($product->getModel()->getProperty() as $property): ?>
-        <? if($property->getIsImage()): ?>
+        <? if ($property->getIsImage()): ?>
         <div class="bDropWrap">
             <h5><?= $property->getName() ?>:</h5>
 

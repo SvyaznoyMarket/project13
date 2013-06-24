@@ -82,6 +82,7 @@ class IndexPage extends \View\DefaultLayout {
 
     public function slotContent() {
         return $this->render('product/page-index-new', $this->params);
+        //return $this->render('product/page-index', $this->params);
     }
 
     public function slotBodyDataAttribute() {

@@ -178,7 +178,7 @@ class IndexAction {
         $related = array_filter($related, $notEmpty);
         $kit = array_filter($kit, $notEmpty);
 
-        $dataForCredit = $this->getDataForCredit($product);
+        $creditData = $this->getDataForCredit($product);
 
         /** @var $shopStates \Model\Product\ShopState\Entity[] */
         $shopStates = [];
@@ -223,6 +223,7 @@ class IndexAction {
         }
 
         $page = new \View\Product\IndexPage();
+        $page->setParam('renderer', \App::closureTemplating());
         $page->setParam('regionsToSelect', $regionsToSelect);
         $page->setParam('product', $product);
         $page->setParam('productExpanded', $productExpanded);
@@ -235,7 +236,7 @@ class IndexAction {
         $page->setParam('related', $related);
         $page->setParam('kit', $kit);
         $page->setParam('additionalData', $additionalData);
-        $page->setParam('dataForCredit', $dataForCredit);
+        $page->setParam('creditData', $creditData);
         $page->setParam('shopStates', $shopStates);
         $page->setParam('myThingsData', [
             'EventType' => 'MyThings.Event.Visit',

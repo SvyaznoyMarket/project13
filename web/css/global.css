@@ -2966,6 +2966,7 @@
     position: relative;
     width: 90px;
     text-indent: -10000px;
+    margin-right: 10px;
   }
   .bMainMenuLevel-1 {
     position: relative;
@@ -3005,6 +3006,9 @@
   }
   .bMainMenuLevel-1__eItem:hover .bCorner {
     display: block;
+  }
+  .bMainMenuLevel-1__eItem.mMore {
+    width: 45px;
   }
   .bMainMenuLevel-1__eItem.mMore .bMainMenuLevel-2__eTitle {
     text-transform: uppercase;
@@ -3152,8 +3156,8 @@
   }
   .mMore .bMainMenuLevel-2 {
     background: #000000;
-    right: 0;
     width: 200px;
+    right: -11px;
   }
   .bMainMenuLevel-3 {
     background: #ffffff url('/css/header/img/border.gif') repeat-y 230px 0;
@@ -3210,6 +3214,9 @@
     line-height: 1em;
     margin-bottom: 10px;
     display: block;
+  }
+  .mMenuLeft .bMainMenuLevel-2 {
+    left: -34px;
   }
   .mMenuLeft .bMainMenuLevel-2:hover {
     -webkit-transition: all 0.2s ease;
