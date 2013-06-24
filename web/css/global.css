@@ -10428,7 +10428,8 @@
     line-height: 18px;
   }
   .items-section {
-    margin: -4px 0 30px 0;
+    margin: 0 0 30px;
+    top: -4px;
     position: relative;
     z-index: 1;
   }
@@ -10648,7 +10649,7 @@
     text-decoration: none!important;
   }
   /*** ***/
-  .brandSectionPandora {
+  .brandSectionPandora__catalog {
     width: 960px;
     margin: 0 0 0 -10px;
   }
@@ -10657,7 +10658,7 @@
   }
   .brandSectionPandora__catalog .allpager,
   .brandSectionPandora__catalog .allpagerJewel {
-    margin-right: 20px;
+    margin-right: 10px;
   }
   .brandSectionPandora__catalog #ajaxgoods_top.popup {
     border: 2px solid #000;
@@ -10716,8 +10717,8 @@
 /*------СТИЛИ БРЕНД РАЗДЕЛА PANDORA - КАРТОЧКА ТОВАРА------*/
 @media all {
   .brandSectionPandora__product {
-    padding: 0 10px 0 20px;
-    width: 930px;
+    padding: 0;
+    margin: 0;
   }
   .brandSectionPandora__product .bigcarousel-brand {
     margin: 0 0 30px;
