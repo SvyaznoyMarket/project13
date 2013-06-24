@@ -243,7 +243,9 @@ class Action extends \Controller\ProductCategory\Action {
         // такой подход нужен для поддержки урлов с хэшем, чтобы не было такого UX когда страница открывается
         // с одним списком товаром на определенной вкладке, а затем переключается на другую вкладку
         // и список товаров меняется
-        if ($request->isXmlHttpRequest()) {
+
+        // TODO: после правки аякса для 
+        // if ($request->isXmlHttpRequest()) {
             $pageNum = (int)$request->get('page', 1);
             if ($pageNum < 1) {
                 throw new \Exception\NotFoundException(sprintf('Неверный номер страницы "%s".', $pageNum));
@@ -305,6 +307,7 @@ class Action extends \Controller\ProductCategory\Action {
                 \App::dataStoreClient()->execute(\App::config()->dataStore['retryTimeout']['tiny'], \App::config()->dataStore['retryCount']);
             }
 
+        if ($request->isXmlHttpRequest()) {
             $responseData = [];
             $responseData['products'] = \App::templating()->render('jewel/product/_list', [
                 'page'                   => new \View\Layout(),
@@ -356,11 +359,11 @@ class Action extends \Controller\ProductCategory\Action {
             }
         }
 
-        // $page->setParam('productPager', $productPager);
-        // $page->setParam('productSorting', $productSorting);
-        // $page->setParam('productView', $productView);
-        // $page->setParam('productVideosByProduct', $productVideosByProduct);
-        // $page->setParam('sidebarHotlinks', true);
+        $page->setParam('productPager', $productPager);
+        $page->setParam('productSorting', $productSorting);
+        $page->setParam('productView', $productView);
+        $page->setParam('productVideosByProduct', $productVideosByProduct);
+        $page->setParam('sidebarHotlinks', true);
 
         $page->setParam('myThingsData', [
             'EventType'   => 'MyThings.Event.Visit',
