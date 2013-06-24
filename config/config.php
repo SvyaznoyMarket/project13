@@ -270,10 +270,10 @@ $c->queue['pidFile'] = (sys_get_temp_dir() ?: '/tmp').'/enter-queue.pid';
 $c->queue['workerLimit'] = 10;
 $c->queue['maxLockTime'] = 600;
 
-$c->abtest = ['cookieName'] = 'switch';
-$c->abtest['bestBefore']    = '2013-04-23';
-$c->abtest['enabled']       = true;
-$c->abtest['test']          = [
+$c->abtest['cookieName'] = 'switch';
+$c->abtest['bestBefore'] = '2013-04-23';
+$c->abtest['enabled']    = true;
+$c->abtest['test']       = [
     [
         'traffic'  => '40',
         'key'      => 'upsell',
