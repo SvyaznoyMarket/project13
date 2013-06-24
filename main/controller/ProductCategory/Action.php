@@ -47,27 +47,6 @@ class Action {
     /**
      * @param string        $categoryPath
      * @param \Http\Request $request
-     * @return \Http\RedirectResponse
-     */
-    public function setShopId($categoryPath, \Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
-
-        $response = new \Http\RedirectResponse($request->headers->get('referer') ?: \App::router()->generate('product.category', ['categoryPath' => $categoryPath]));
-        if ($request->query->has('shopid')) {
-            if ($request->query->get('shopid')) {
-                $cookie = new \Http\Cookie( \App::config()->shop['cookieName'] ,(int)$request->query->get('shopid'), strtotime('+7 days' ));
-                $response->headers->setCookie($cookie);
-            } else {
-                $response->headers->clearCookie(\App::config()->shop['cookieName']);
-            }
-        }
-
-        return $response;
-    }
-
-    /**
-     * @param string        $categoryPath
-     * @param \Http\Request $request
      * @return \Http\Response
      * @throws \Exception\NotFoundException
      */
@@ -622,8 +601,8 @@ class Action {
 
         //если есть в куках магазин
         $shop = null;
-        if (!$isGlobal && self::isShop())  {
-            $shop = \RepositoryManager::shop()->getEntityById( \App::request()->cookies->get(\App::config()->shop['cookieName'], false) );
+        if (!$isGlobal && \App::request()->get('shop'))  {
+            $shop = \RepositoryManager::shop()->getEntityById( \App::request()->get('shop') );
             $values['shop'] = $shop->getId();
         }
 

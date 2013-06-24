@@ -7,6 +7,7 @@
  * @var $productVideosByProduct  array
  */
 $count = 0;
+if ($productFilter->getShop()) $page->setGlobalParam('shop', $productFilter->getShop());
 ?>
 
 <? if (\App::config()->adFox['enabled']): ?>
@@ -26,11 +27,16 @@ $count = 0;
 <? elseif(!empty($promoContent)): ?>
     <?= $promoContent ?>
 <? else: ?>
+    <? foreach ($category->getChild() as $child) {
+        $pager = $productPagersByCategory[$child->getId()];
+        if (!$pager || !$pager->count()) continue;
+        $count += $pager->count();
+    } ?>
+    <?= $page->render('product/_inshop', ['count' => $count]); ?>
     <? foreach ($category->getChild() as $child) { ?>
         <?
         $pager = $productPagersByCategory[$child->getId()];
         if (!$pager || !$pager->count()) continue;
-        $count += $pager->count();
         ?>
         <?= $page->render('product/_slider-inCategory', array(
             'category'               => $child,
@@ -39,7 +45,6 @@ $count = 0;
             'productVideosByProduct' => $productVideosByProduct,
         )) ?>
     <? }
-    if (!$count) print "нет товаров";
     $page->setGlobalParam('productCount', $count);
     ?>
 <? endif ?>

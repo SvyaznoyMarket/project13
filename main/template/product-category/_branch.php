@@ -40,16 +40,7 @@ $globalTotalText = $category->getGlobalProductCount() . ' ' .$page->helper->numb
 
 <div class="catProductNum">
     <? if ($category->getProductCount()): ?>
-        <? if (!$category->isLeaf()) { ?>
-            <b>В <?= $regionInflectedName ?> <?= $totalText ?></b>
-        <? } elseif ($category->isLeaf() && !$productFilter->getShop()) { ?>
-            <b>В <?= $regionInflectedName ?> <?= $totalText ?></b>
-        <? } ?>
-        <? if ($productFilter->getShop() && !$category->isRoot() && $page->hasGlobalParam('productCount')) : ?>
-                <? if (!$category->isLeaf() || ($category->isLeaf() && !$productFilter->getShop())) print "<br><br>"; ?>
-                <b>В магазине<br></b><?= $productFilter->getShop()->getAddress() ?><br><b><?=$page->getGlobalParam('productCount').' '.$page->helper->numberChoice($page->getGlobalParam('productCount'), array('товар', 'товара', 'товаров')); ?></b>
-                <a class="orange underline" href="<?=$page->url('product.category.shop', ['categoryPath' => $category->getPath(), 'shopid' => 0 ])?>">Показать все</a>
-            <? endif ?>
+        <b>В <?= $regionInflectedName ?> <?= $totalText ?></b>
     <? endif ?>
     <? if ($category->getGlobalProductCount() && \App::config()->product['globalListEnabled'] && $user->getRegion()->getHasTransportCompany()): ?>
         <br />
@@ -70,8 +61,12 @@ $globalTotalText = $category->getGlobalProductCount() . ' ' .$page->helper->numb
             if ($node->getLevel() < $category->getLevel()) $class .= ' mBold';
             if ($node->getId() == $category->getId()) $class .= ' mSelected';
             ?>
-
-            <li class="<?= $class ?>"><a href="<?= $node->getLink()  . (\App::request()->get('instore') ? '?instore=1' : '') ?>"><span><?= $node->getName() ?></span></a></li>
+            <?
+                $link = $node->getLink();
+                $link .= \App::request()->get('instore') ? '?instore=1' : '';
+                if (\App::request()->get('shop')) $link .= (false === strpos($link, '?') ? '?' : '&') . 'shop='. \App::request()->get('shop');
+            ?>
+            <li class="<?= $class ?>"><a href="<?= $link ?>"><span><?= $node->getName() ?></span></a></li>
         <? endforeach ?>
         </ul>
     </dd>
