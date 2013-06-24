@@ -46,6 +46,47 @@ module.exports = function(grunt) {
 
   grunt.initConfig({
 
+    jshint: {
+      // allFiles: [
+      //   'Gruntfile.js',
+      //   '../web/js/library.js',
+      // ],
+
+      // individualFiles: {
+      //   files: [
+      //     {src: 'Gruntfile.js'},
+      //     {src: '../web/js/library.js'},
+      //   ],
+      // },
+      
+      withReporterShouldFail: {
+        options: {
+          reporter: 'checkstyle',
+          reporterOutput: '../web/js/jsHintReport/report.xml',
+          force: true,
+        },
+        src: ['../web/js/library.js'],
+      },
+
+      options: {
+        "-W034": true,
+        "curly": true,
+        "eqeqeq": true,
+        "immed": true,
+        "latedef": true,
+        "newcap": true,
+        "noarg": true,
+        "sub": true,
+        "undef": true,
+        "boss": true,
+        "eqnull": true,
+        "node": true,
+        "globals": {
+          "jQuery": true
+        },
+      },
+    },
+
     exec: {
       compileBJ:{
         command: function(){
@@ -138,6 +179,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-less');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-exec');
 
   grunt.registerTask('ymaps_generate', 'Generate Ymap XML', function(){
@@ -177,6 +219,6 @@ module.exports = function(grunt) {
 
   grunt.registerTask('css', ['less']);
   grunt.registerTask('js', ['exec:compileBJ','uglify','exec:getVersion']);
-  grunt.registerTask('default', ['less','uglify','exec:getVersion']);
+  grunt.registerTask('default', ['less','uglify','exec:getVersion','jshint']);
   grunt.registerTask('ymaps', ['ymaps_generate']);
 };

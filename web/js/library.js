@@ -930,8 +930,8 @@ String.prototype.isEmail = isTrueEmail; // добавляем методом д�
  * @return {string}         отформатированное число
  */
 window.printPrice = function(num){
-    var str = num+' '
-    return str.replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1 ')
+    var str = num+'';
+    return str.replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1 ');
 }
 
 

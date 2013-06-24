@@ -1,24 +1,27 @@
 <!DOCTYPE html>
 <link rel="stylesheet" href="./qunit.css">
 <script src="/js/tests/qunit.js"></script>
+<script src="/js/jquery-1.6.4.min.js"></script>
 <script src="/js/library.js"></script>
 <script>
 
 module('printPrice function')
 test("pricing 1234", function() {
     equal( printPrice(1234) , "1 234")
-    equal( printPrice(1234.3) , "1 234.30")
+    equal( printPrice(1234.3) , "1 234.3")
     equal( printPrice(1234.56) , "1 234.56")    
     equal( printPrice(12345) , "12 345")
     equal( printPrice(123456) , "123 456")
     equal( printPrice(1234567) , "1 234 567")
 })
+
 module('brwsr object')
 test("brwsr object", function() {
 	var br = new brwsr()
     equal( br.isAndroid , false, 'isAndroid')
     equal( br.isTouch , false, 'isTouch')
 })
+
 module('JSON object')
 test("JSON", function(){
 	var foo = {};  
