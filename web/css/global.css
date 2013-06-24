@@ -10654,6 +10654,9 @@
   .brandSectionPandora__catalog .line {
     border: none;
   }
+  .brandSectionPandora__catalog .notBuying {
+    z-index: 9;
+  }
   .brandSectionPandora__catalog .allpager,
   .brandSectionPandora__catalog .allpagerJewel {
     margin-right: 10px;
