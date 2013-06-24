@@ -27,6 +27,6 @@ $hasSearch = isset($hasSearch) ? (bool)$hasSearch : true;
     <div class="bMainContainer__eHeader">
         <!-- <div class="bMainContainer__eHeader-subtitle"><?//= $product->getType()->getName() ?></div>-->
         <h1 class="bMainContainer__eHeader-title"><?= $title ?></h1>
-        <span class="bMainContainer__eHeader-article">Артикул: <?= $product->getArticle() ?></span>
+        <!-- <span class="bMainContainer__eHeader-article">Артикул: <//?= $product->getArticle() ?></span> -->
     </div><!--/head section -->
 

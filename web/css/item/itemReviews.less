@@ -25,13 +25,18 @@
   text-decoration: underline;
 }
 
-.reviewSection {
-  margin: 0 0 25px;
-  padding: 0;
-  font-size: 12px;
-  span {
-    margin: 2px 0 0;
-  }
+// .reviewSection {
+//   margin: 0 0 25px;
+//   padding: 0;
+//   font-size: 12px;
+//   span {
+//     margin: 2px 0 0;
+//   }
+ .reviewSection {
+    border-bottom: 1px solid @typLightGray;
+    margin: 10px 0px 15px;
+    padding: 0px 0px 6px;
+    font-size: 14px;
   &__star, &__link {
     float: left;
     color: @typGray;
@@ -56,9 +61,15 @@
   }
 }
 
+// .reviewSection100 {
+//   &__star {
+//     margin-right: 5px;
+//   }
+// }
+
 .reviewSection100 {
   &__star {
-    margin-right: 5px;
+    margin-right: 12px;
   }
 }
 
@@ -81,7 +92,7 @@
 
 .reviewsWrapper {
   border-bottom: 1px solid #c7c7c7;
-  margin: 0;
+  margin: 0 0 30px;
   padding: 0 0 10px;
   .product-btn-toggle {
     margin: -10px 0 0 165px;

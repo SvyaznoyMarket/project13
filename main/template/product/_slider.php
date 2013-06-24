@@ -28,7 +28,7 @@
         <?php } ?>
     </div>
 
-    <div class="line pb10"></div>
+    <div class="line"></div>
 
     <div class="clear"></div>
 
