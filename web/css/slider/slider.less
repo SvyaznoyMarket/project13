@@ -2,13 +2,21 @@
 .bSliderAction {
     position: relative;
     z-index: 10;
+    height: 210px;
+    &__eInner {
+        overflow: hidden;
+        margin: 0 auto;
+        width: 600px;
+        padding: 3px 3px 0;
+        height: 246px;
+    }
     ul {
+        width: 5000px;
         li {
             float: left;
         }
     }
     &__elist {
-        width: 600px;
         margin: 0 auto;
         li {
             width: 120px;
@@ -43,9 +51,10 @@
         }
         .productName {
             margin: 5px 0 8px;
-            height: 40px;
+            height: 37px;
             overflow: hidden;
             font-size: 11px;
+            line-height: 1.1;
         }
         .productPrice {
             font-size: 14px;
@@ -132,13 +141,14 @@
         width: 460px;
         float: right;
         margin: 5px 0 0;
-        &__elist {
+        &__eInner {
             width: 360px;
         }
     }
 }
 
 .mNoSliderAction {
+
     .bSliderAction__elist {
         width: 100%;
     }
