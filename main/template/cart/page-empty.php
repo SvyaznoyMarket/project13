@@ -1,1 +1,1 @@
-<p>в корзине нет товаров</p>
+<div class="bEmptyCart"></div>
