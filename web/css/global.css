@@ -10696,6 +10696,10 @@
   .pagehead {
     padding-bottom: 0;
   }
+  body.jewel .banners-section,
+  body.jewel .big-banner-section {
+    margin-left: -10px !important;
+  }
 }
 /*---END---СТИЛИ БРЕНД РАЗДЕЛА PANDORA---*/
 /*------СТИЛИ БРЕНД РАЗДЕЛА PANDORA - КАРТОЧКА ТОВАРА------*/
