@@ -26,16 +26,53 @@
       <?= $promoContent ?>
   <? endif ?>
 
-  <div id="smalltabs" data-scrollto-passed="<?= (bool)$scrollTo ?>" class="brand-subnav clearfix"></div>
+  <div id="smalltabs" data-scrollto-passed="<?= (bool)$scrollTo ?>" class="brand-subnav clearfix">
+    <?= $page->render('jewel/product-category/filter/_tabs', [
+        'filters'           => $productFilter->getFilterCollection(),
+        'catalogJson'       => $catalogJson,
+        'productFilter'     => $productFilter,
+        'category'          => $category,
+        'scrollTo'          => $scrollTo,
+    ]) ?>
+  </div>
 
-  <div class="filter-section"></div>
+  <div class="filter-section">
+    <?= $page->render('jewel/product-category/_filters', [
+        'page'              => $page,
+        'filters'           => $productFilter->getFilterCollection(),
+        'catalogJson'       => $catalogJson,
+        'productSorting'    => $productSorting,
+        'productPager'      => $productPager,
+        'productFilter'     => $productFilter,
+        'category'          => $category,
+        'scrollTo'          => $scrollTo,
+        'isAjax'            => true,
+    ]) ?>
+  </div>
 
   <?= $page->render('jewel/product-category/_loading_top') ?>
+
+  <?= $page->render('jewel/product/_pager', array(
+      'request'                => $request,
+      'pager'                  => $productPager,
+      'productFilter'          => $productFilter,
+      'productSorting'         => $productSorting,
+      'hasListView'            => true,
+      'category'               => $category,
+      'view'                   => $productView,
+      'productVideosByProduct' => $productVideosByProduct,
+      'itemsPerRow'            => $itemsPerRow,
+  )) ?>
+
+
+<? /*
 
   <div id="pagerWrapper">
     <div style="padding:70px 0;">
       <? //чтобы лоадер корректно показывался при первоначальной загрузке ?>
     </div>
   </div>
+
+*/ ?>
 
 </div>
