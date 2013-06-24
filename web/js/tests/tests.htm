@@ -33,6 +33,15 @@ test("JSON", function(){
 	deepEqual( foo, backToJS, 'parse')
 });
 
+module('isEmail method')
+test("JSON", function(){
+	equal( '123'.isEmail() , false, 'EMAIL is not email');
+	equal( 'EMAIL@'.isEmail() , false, 'EMAIL@ is not email');
+	equal( 'EMAIL@domen'.isEmail() , false, 'EMAIL@domen is not email');
+	equal( 'EMAIL@domen.'.isEmail() , false, 'EMAIL@domen. is not email');
+	equal( 'EMAIL@domen.ru'.isEmail() , true, 'EMAIL@domen.ru is email');
+});
+
 module('Cookie manager')
 test("get-set", function() {
 	var objectFlag = false
