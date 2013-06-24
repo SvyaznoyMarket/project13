@@ -3216,7 +3216,7 @@
     display: block;
   }
   .mMenuLeft .bMainMenuLevel-2 {
-    left: -34px;
+    margin-left: -111px;
   }
   .mMenuLeft .bMainMenuLevel-2:hover {
     -webkit-transition: all 0.2s ease;
@@ -10012,12 +10012,22 @@
   .bSliderAction {
     position: relative;
     z-index: 10;
+    height: 210px;
+  }
+  .bSliderAction__eInner {
+    overflow: hidden;
+    margin: 0 auto;
+    width: 600px;
+    padding: 3px 3px 0;
+    height: 246px;
+  }
+  .bSliderAction ul {
+    width: 5000px;
   }
   .bSliderAction ul li {
     float: left;
   }
   .bSliderAction__elist {
-    width: 600px;
     margin: 0 auto;
   }
   .bSliderAction__elist li {
@@ -10064,9 +10074,10 @@
   }
   .bSliderAction__elist .productName {
     margin: 5px 0 8px;
-    height: 40px;
+    height: 37px;
     overflow: hidden;
     font-size: 11px;
+    line-height: 1.1;
   }
   .bSliderAction__elist .productPrice {
     font-size: 14px;
@@ -10164,7 +10175,7 @@
     float: right;
     margin: 5px 0 0;
   }
-  .bAccessory .bSliderAction__elist {
+  .bAccessory .bSliderAction__eInner {
     width: 360px;
   }
   .mNoSliderAction .bSliderAction__elist {
