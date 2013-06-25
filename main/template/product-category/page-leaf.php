@@ -22,7 +22,7 @@ if ($productFilter->getShop()) $page->setGlobalParam('shop', $productFilter->get
 
 <div class="clear"></div>
 <?= $page->tryRender('product-category/_categoryData', array('page' => $page, 'category' => $category)) ?>
-<?= $page->render('product/_inshop', ['count' => $productPager->count(), 'renderInfo' => false]); ?>
+<?= $page->render('product/_inshop', ['count' => $productPager->count(), 'renderInfo' => false, 'category' => $category]); ?>
 <?= $page->render('product/_pager', array(
     'request'                => $request,
     'pager'                  => $productPager,

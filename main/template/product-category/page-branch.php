@@ -32,7 +32,7 @@ if ($productFilter->getShop()) $page->setGlobalParam('shop', $productFilter->get
         if (!$pager || !$pager->count()) continue;
         $count += $pager->count();
     } ?>
-    <?= $page->render('product/_inshop', ['count' => $count]); ?>
+    <?= $page->render('product/_inshop', ['count' => $count, 'category' => $category]); ?>
     <? foreach ($category->getChild() as $child) { ?>
         <?
         $pager = $productPagersByCategory[$child->getId()];
