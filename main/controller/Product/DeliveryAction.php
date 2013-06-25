@@ -173,7 +173,7 @@ class DeliveryAction {
 
             foreach ($productData['delivery_mode_list'] as $deliveryData) {
                 $token = $deliveryData['token'];
-                if ($token == 'now') $token = 'self';
+                //if ($token == 'now') $token = 'self';
 
                 $dates = [];
                 $shops = [];
