@@ -185,7 +185,8 @@ class AppConfig {
     ];
     /** @var array */
     public $productCategory = [
-        'url' => [],
+        'url'             => [],
+        'jewelController' => null,
     ];
     /** @var array */
     public $service = [
