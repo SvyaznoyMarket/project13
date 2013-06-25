@@ -60,14 +60,13 @@ class DeliveryAction {
         $helper = new \View\Helper();
         $data = [];
         $shopData = isset($response['shop_list']) ? $response['shop_list'] : [];
-        //print "<pre>"; var_dump($response['product_list']); exit;
+
         foreach($response['product_list'] as $productId => $productData){
             if (!isset($productData['delivery_mode_list'])) continue;
 
             $data[$productId] = [];
             foreach($productData['delivery_mode_list'] as $delivery) {
                 $token = $delivery['token'];
-                if ($token == 'now') $token = 'self';
                 $date = reset($delivery['date_list']);
                 $day = 0;
                 $dateOriginal = $date['date'];
