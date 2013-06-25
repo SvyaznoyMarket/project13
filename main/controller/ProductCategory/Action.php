@@ -283,7 +283,7 @@ class Action {
 
         // если в catalogJson'e указан category_class, то обрабатываем запрос соответствующим контроллером
         $categoryClass = !empty($catalogJson['category_class']) ? strtolower(trim((string)$catalogJson['category_class'])) : null;
-        //$categoryClass = 'jewel';
+        $categoryClass = 'jewel';
         if ($categoryClass) {
             $controller = null;
             if (('jewel' == $categoryClass) && \App::config()->productCategory['jewelController']) {
