@@ -660,7 +660,7 @@ class Action {
      * @return bool
      */
     public static function isShop() {
-        return  \App::config()->shop['enabled'] && (bool)(\App::request()->cookies->get(\App::config()->shop['cookieName'], false));
+        return  \App::config()->shop['enabled'] && (bool)\App::request()->get('instore');
     }
 
     /**

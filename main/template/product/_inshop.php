@@ -5,7 +5,7 @@
  * @var $renderInfo              boolean
  */
 /** @var \Model\Shop\Entity $shop */
-$shop = $page->getGlobalParam('shop') ? $page->getGlobalParam('shop') : null;
+$shop = $page->getGlobalParam('shop') && \App::config()->shop['enabled'] ? $page->getGlobalParam('shop') : null;
 $renderInfo = isset($renderInfo) ? $renderInfo : true;
 if (!$shop) return;
 ?>
