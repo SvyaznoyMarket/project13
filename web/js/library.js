@@ -1770,7 +1770,6 @@ function Lightbox( jn, data ){
 		if ( typeof(_gaq) !== 'undefined') {
 			_gaq.push(['_trackEvent', 'Add2Basket', _gafrom, item.title + ' ' + item.id, Math.round( item.price.replace(/\D/g,'') ) ]);
 		}
-
 		flybox.clear();
 		item.price = item.price.replace(/\s+/,'');
 		init.basket = item;

@@ -38,4 +38,4 @@ $productData = [
 ];
 ?>
 
-<a href="<?= $url ?>"  data-ga-event="<?= $page->escape($gaEvent) ?>" data-ga-title="<?= $page->escape($gaTitle) ?>" data-product="<?= $page->json($productData) ?>" class="js-buy<?php if ($disabled): ?> disabled<? endif ?><?php if ($gaEvent): ?> gaEvent<? endif ?>"><?= $value ?></a>
+<a href="<?= $url ?>"  data-ga-event="<?= $page->escape($gaEvent) ?>" data-ga-title="<?= $page->escape($gaTitle) ?>" data-product="<?= $page->json($productData) ?>" class="jsBuyButton<?php if ($disabled): ?> disabled<? endif ?><?php if ($gaEvent): ?> gaEvent<? endif ?>"><?= $value ?></a>
