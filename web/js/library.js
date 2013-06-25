@@ -1944,7 +1944,177 @@ function Lightbox( jn, data ){
 	//setTimeout( function () { plashka.fadeIn('slow') }, 2000)
 	flybox = new Flybox( jn );
 	
-} // Lightbox object
+}
+
+
+/**
+ * Создает объект для обновления данных с сервера и отображения текущих покупок
+ *
+ * @author 	Zaytsev Alexandr
+ * @this 	{BlackBox}
+ * @param  	{String} updateUrl URL по которому будут запрашиватся данные о пользователе и корзине.
+ * @param  	{jQuery node} mainNode  DOM элемент бокса
+ * @constructor
+ */
+var BlackBox = function(updateUrl, mainNode){
+	console.info('BlackBox created');
+
+	this.updUrl = (!docCookies.hasItem('enter') ||  !docCookies.hasItem('enter_auth')) ? updateUrl += '?ts=' + new Date().getTime() + Math.floor(Math.random() * 1000) : updateUrl;
+	this.blackBox = mainNode;
+
+	console.log('updateUrl: '+this.updUrl);
+}
+
+/**
+ * Объект по работе с корзиной
+ *
+ * @author 	Zaytsev Alexandr
+ * @this 	{BlackBox}
+ * @return 	{function} update обновление данных о корзине
+ * @return 	{function} add добавление в корзину
+ */
+BlackBox.prototype.basket = function() {
+	var self = this;
+
+	/**
+	 * Обновление данных о корзине
+	 *
+	 * @author Zaytsev Alexandr
+	 * @param  {Object} basketInfo
+	 * @public
+	 */
+	var update = function(basketInfo) {
+		console.info('basket update');
+	}
+
+	/**
+	 * Добавление товара в корзину
+	 *
+	 * @author 	Zaytsev Alexandr
+	 * @param  	{Object} item
+	 * @param 	{Number} item.id Идентификатор товара
+	 * @param 	{String} item.title Название товара
+	 * @param 	{Number} item.price Стоимость товара
+	 * @param 	{String} item.imgSrc Ссылка на изображение товара
+	 * @param 	{Number} item.TotalQuan Общее количество товаров в корзине
+	 * @param 	{Number} item.totalSum Общая стоимость корзины
+	 * @param 	{String} item.linkToOrder Ссылка на оформление заказа
+	 * @public
+	 */
+	var add = function(item) {
+		console.info('basket add');
+		console.log(item);
+	}
+
+	return {
+		'update': update,
+		'add': add
+	};
+}
+
+/**
+ * Объект по работе с данными пользователя
+ *
+ * @author 	Zaytsev Alexandr
+ * @this 	{BlackBox}
+ * @return 	{function} update
+ */
+BlackBox.prototype.user = function() {
+	var self = this;
+
+	/**
+	 * Обновление пользователя
+	 *
+	 * @author 	Zaytsev Alexandr
+	 * @param  	{String} userName имя пользователя
+	 * @public
+	 */
+	var update = function(userName) {
+		console.info('user update');
+
+		var topAuth = $('#auth-link');
+
+		if (userName !== '') {
+			console.log('пользователь авторизован');
+
+			var dtmpl={
+				user: userName
+			};
+			var show_user = tmpl('auth_tmpl', dtmpl);
+			topAuth.after(show_user);
+		}
+		else {
+			console.log('пользователь не авторизован');
+			topAuth.show();
+		}
+
+	}
+
+	return {
+		'update': update
+	};
+}
+
+
+/**
+ * Инициализация BlackBox.
+ * Получение данных о корзине и пользователе с сервера.
+ *
+ * @author 	Zaytsev Alexandr
+ * @this 	{BlackBox}
+ */
+BlackBox.prototype.init = function() {
+	console.info('blackbox init');
+
+	var self = this;
+
+	/**
+	 * Обработчик Action присланных с сервера
+	 * 
+	 * @param  {Object} action список действий которые необходимо выполнить
+	 * @private
+	 */
+	var startAction = function() {
+		if (action.subscribe !== undefined) {
+			lboxCheckSubscribe(action.subscribe);
+		}
+	}
+
+	/**
+	 * Обработчик данных о корзине и пользователе
+	 * 
+	 * @param  {Object} data
+	 * @private
+	 */
+	var parseUserInfo = function(data) {
+		if (data.success !== true) {
+			return false;
+		}
+
+		var userInfo = data.data;
+
+		console.log(userInfo);
+		self.user().update(userInfo.name);
+		
+		if (userInfo.vitems > 0) {
+			self.basket().update();
+		}
+
+		if (userInfo.action !== undefined) {
+			startAction(userInfo.action);
+		}
+	}
+
+	$.get(self.updUrl, parseUserInfo);
+}
+
+/**
+ * Создание и иницилизация объекта для работы с корзиной и данными пользователя
+ * @type {BlackBox}
+ */
+var blackBox = new BlackBox('/user/shortinfo', $('.lightboxinner'));
+blackBox.init();
+
 
 
 var ltbx = null;

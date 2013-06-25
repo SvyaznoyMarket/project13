@@ -1,72 +1,7 @@
 $(document).ready(function(){
-
-	/**
-	 * Объект лайтбокса
-	 * @type {Lightbox}
-	 */
-	var ltbx = new Lightbox( $('.lightboxinner'), {} );
-
-	/**
-	 * Обработчик Action присланных с сервера
-	 * 
-	 * @param  {Object} action список действий которые необходимо выполнить
-	 */
-	var startAction = function(action) {
-		if (action.subscribe !== undefined) {
-			lboxCheckSubscribe(action.subscribe);
-		}
-	}
-
-
-	/**
-	 * URL по которому можно забрать данные о пользователе
-	 * @type {String}
-	 */
-	var shortinfo = '/user/shortinfo';
-	if( !docCookies.hasItem('enter') ||  !docCookies.hasItem('enter_auth')) {
-		shortinfo += '?ts=' + new Date().getTime() + Math.floor(Math.random() * 1000);
-	}
-
-	/**
-	 * Обработчик данных пользователя
-	 * 
-	 * @param  {Object} data данные пользователя
-	 */
-	var parseUserInfo = function(data){
-		if (data.success !== true) {
-			return false
-		}
-
-		var userInfo = data.data;
-		var topBasket = $('#topBasket')
-		var topAuth = $('#auth-link')
-		var lbox = userInfo;
-
-		ltbx.update(lbox);
-
-		if (userInfo.vitems >0) {
-			topBasket.text('('+userInfo.vitems+')')
-		}
-
-		if (userInfo.name) {
-			var dtmpl={}
-			dtmpl.user = userInfo.name
-			var show_user = tmpl('auth_tmpl', dtmpl)
-			topAuth.hide()
-			topAuth.after(show_user)
-		} 
-		else {
-			topAuth.show()
-		}
-
-		if (userInfo.action !== undefined) {
-			startAction(userInfo.action);
-		}
-	}
-	$.get(shortinfo, parseUserInfo);
-
 	
 	// var carturl = $('.lightboxinner .point2').attr('href')
+
 
 	/**
 	 * Обработчик для кнопок купить
@@ -93,20 +28,20 @@ $(document).ready(function(){
 				button.addClass('mBought');
 				kissAnalytics(data);
 				sendAnalytics(button);
-				
-				if (ltbx) {
+
+				if (blackBox) {
 					var basket = data.data;
 					var product = data.result.product;
 					var tmpitem = {
-						'id'    : productInfo.id,
-						'title' : product.name,
-						'vitems': basket.full_quantity,
-						'sum'   : basket.full_price,
-						'link'  : basket.link,
+						'id': productInfo.id,
+						'title': product.name,
 						'price' : product.price,
-						'img'   : 'need image link'
+						'imgSrc': 'need image link',
+						'totalQuan': basket.full_quantity,
+						'totalSum': basket.full_price,
+						'linkToOrder': basket.link,
 					}
-					ltbx.getBasket(tmpitem);
+					blackBox.basket().add(tmpitem);
 				}
 			}
 		}
