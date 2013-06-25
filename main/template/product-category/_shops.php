@@ -14,6 +14,9 @@ if (!$page->hasGlobalParam('shops')) {
 ?>
 
 <? if ($shops) : ?>
+    <? if (\App::request()->get('shop')): ?>
+        <input type="hidden" name="shop" value="<?=\App::request()->get('shop')?>"/>
+    <? endif ?>
     <dt>Наличие в магазинах</dt>
     <dd style="display: <?= $shop ? 'block' : 'none' ?>;">
     <ul class="checkbox_list">

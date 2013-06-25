@@ -17,7 +17,6 @@ $formName = \View\Product\FilterForm::$name;
 <?
     if ('product.category.brand' == \App::request()->attributes->get('route') || \App::request()->get('shop')) {
         $link = $page->url('product.category', ['categoryPath' => $category->getPath()]);
-        if (\App::request()->get('shop')) $link .= (false === strpos($link, '?') ? '?' : '&') . 'shop='. \App::request()->get('shop');
     } else $link = '';
 
     $linkCount = $page->url('product.category.count', array('categoryPath' => $category->getPath()));
