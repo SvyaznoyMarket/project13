@@ -273,7 +273,7 @@ class Action {
 
         $promoContent = '';
         // если в catalogJson'e указан category_layout_type == 'promo', то подгружаем промо-контент
-        if(!empty($catalogJson['category_layout_type']) &&
+        if (!empty($catalogJson['category_layout_type']) &&
             $catalogJson['category_layout_type'] == 'promo' &&
             !empty($catalogJson['promo_token'])) {
             $client = \App::contentClient();
@@ -282,9 +282,17 @@ class Action {
         }
 
         // если в catalogJson'e указан category_class, то обрабатываем запрос соответствующим контроллером
-        if(!empty($catalogJson['category_class'])) {
-            $controller = '\\Controller\\'.ucfirst($catalogJson['category_class']).'\\ProductCategory\\Action' ;
-            return (new $controller())->categoryDirect($filters, $category, $brand, $request, $regionsToSelect, $catalogJson, $promoContent);
+        $categoryClass = !empty($catalogJson['category_class']) ? strtolower(trim((string)$catalogJson['category_class'])) : null;
+        //$categoryClass = 'jewel';
+        if ($categoryClass) {
+            $controller = null;
+            if (('jewel' == $categoryClass) && \App::config()->productCategory['jewelController']) {
+                $controller = new \Controller\Jewel\ProductCategory\Action();
+
+                return $controller->categoryDirect($filters, $category, $brand, $request, $regionsToSelect, $catalogJson, $promoContent);
+            }
+
+            \App::logger()->error(sprintf('Контроллер для категории @%s класса %s не найден или не активирован', $category->getToken(), $categoryClass));
         }
 
         // фильтры

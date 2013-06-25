@@ -201,6 +201,7 @@ $c->productLabel['url'] = [
 $c->productCategory['url'] = [
     0 => '/6/1/163/',
 ];
+$c->productCategory['jewelController'] = true;
 
 $c->service['url'] = [
     0 => '/11/1/160/',
