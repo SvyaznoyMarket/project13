@@ -11,11 +11,8 @@ if (!$shop) return;
 ?>
 <div class="bShopInStock clearfix">
 	<div class="bShopInStock__eAddress">Только товары из магазина <strong><?=$shop->getAddress()?></strong></div>
-	<a href="" class="bShopInStock__eAll">показать все</a>
-</div>
-<div style="float: right">
-    <a>показать все.</a>
+	<a href="<?=$page->url('product.category', ['categoryPath' => $category->getPath()])?>" class="bShopInStock__eAll">показать все</a>
 </div>
 <? if (!$count && $renderInfo): ?>
-   <div class="bShopInStockNoItem"><strong>Нет товаров</strong></div>
+   нет товаров
 <? endif ?>
