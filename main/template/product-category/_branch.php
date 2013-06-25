@@ -28,7 +28,6 @@ if ($parent) {
         $categories[] = $child;
     }
 }
-//var_dump($category->isLeaf()); exit;
 // total text
 $totalText = $category->getProductCount() . ' ' . ($category->getHasLine()
     ? $page->helper->numberChoice($category->getProductCount(), array('серия', 'серии', 'серий'))
