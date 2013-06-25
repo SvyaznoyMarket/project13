@@ -140,9 +140,9 @@ function switch_to_scroll(checkScrollJewel) {
              .find('a')
              .bind('click', function(event){
                 docCookies.removeItem( 'infScroll' )
-                ableToLoadJewel = true
-                $(window).unbind('scroll')
-                return false
+                // ableToLoadJewel = true
+                // $(window).unbind('scroll')
+                // return false
               })
   // handle_jewel_filters_pagination()
   $('div.allpagerJewel').addClass('mChecked')
