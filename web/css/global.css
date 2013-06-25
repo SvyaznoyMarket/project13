@@ -3303,8 +3303,8 @@
   .bFooter__eLeft {
     background: url("/css/footer/img/footerSprite.png") 0 0 no-repeat;
     min-height: 282px;
-    padding: 15px 0px 0px 25px;
-    width: 145px;
+    padding: 15px 0px 0px 10px;
+    width: 160px;
   }
   .bFooter__eLeft a {
     color: #ffffff;
@@ -3442,7 +3442,8 @@
   }
   a[title="vkontakte"],
   a[title="twitter"],
-  a[title="facebook"] {
+  a[title="facebook"],
+  a[title="youtube"] {
     width: 26px;
     height: 26px;
     cursor: pointer;
@@ -3457,9 +3458,13 @@
   }
   a[title="facebook"] {
     background: url('/css/common/img/socIcons.png') no-repeat -26px -26px;
+    margin-left: -1px;
   }
   a[title="vkontakte"] {
     background: url('/css/common/img/socIcons.png') no-repeat -52px -26px;
+  }
+  a[title="youtube"] {
+    background: url('/css/common/img/socIcons.png') no-repeat -78px -26px;
   }
 }
 /*---END---СТИЛИ ФУТЕРА---*/
@@ -8749,7 +8754,7 @@
   .bSubscribeLightboxPopupNotNow {
     position: absolute;
     top: 0;
-    right: -60px;
+    right: -50px;
     display: none;
     width: 40px;
     height: 36px;
@@ -9474,7 +9479,7 @@
   }
   #mainPageFooter .social_network {
     float: right;
-    width: 180px;
+    width: 195px;
   }
   #mainPageFooter .social_network span {
     padding-right: 6px;
@@ -9496,6 +9501,12 @@
   }
   #mainPageFooter .social_network a[title="vkontakte"]:hover {
     background: url("/css/common/img/socIcons.png") no-repeat -52px -26px;
+  }
+  #mainPageFooter .social_network a[title="youtube"] {
+    background: url("/css/common/img/socIcons.png") no-repeat -78px 0px;
+  }
+  #mainPageFooter .social_network a[title="youtube"]:hover {
+    background: url("/css/common/img/socIcons.png") no-repeat -78px -26px;
   }
 }
 /*---END---СТИЛИ ГЛАВНОЙ---*/

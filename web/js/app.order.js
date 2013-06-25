@@ -226,7 +226,6 @@ $(document).ready(function () {
                             })
                         }
                         else{
-                            // console.log('complete!')
                             window.location.reload()
                         }
 
@@ -243,6 +242,8 @@ $(document).ready(function () {
         if (length) {
             var checkItemQuantity = function() {
                 $.each($('#product_errors').data('value'), function(i, item) {
+                    if (item.product.deleteUrl) delUrl.push(item.product.deleteUrl)
+                    if (item.product.addUrl) addUrl.push(item.product.addUrl)
                     if (708 == item.code) {
                         if (item.quantity_available > 0) {
                             if (typeof(_gaq) !== 'undefined') 
