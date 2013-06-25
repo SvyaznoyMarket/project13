@@ -80,6 +80,8 @@ module.exports = function(grunt) {
 					"google": true,
 					"ymaps": true,
 					"_gaq": true,
+					"escape": true,
+					"unescape": true
 				},
 			},
 		},
