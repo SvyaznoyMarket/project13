@@ -1216,23 +1216,25 @@ class Action {
             $deliveryMapView->deliveryTypes[$deliveryTypeView->token] = $deliveryTypeView;
         }
 
-        if ((bool)$deliveryMapView->deliveryTypes) {
-            foreach ($deliveryMapView->deliveryTypes as $key => $delivery) {
-                if (strpos($key, 'now_') !== false) {
-                    if (isset($deliveryMapView->deliveryTypes[$key])) unset($deliveryMapView->deliveryTypes[$key]);
-                    $delivery->token = str_replace('now_', 'self_', $delivery->token);
-                    $deliveryMapView->deliveryTypes[str_replace('now_', 'self_', $key)] = $delivery;
+        if (\App::config()->product['allowBuyOnlyInshop']) {
+            if ((bool)$deliveryMapView->deliveryTypes) {
+                foreach ($deliveryMapView->deliveryTypes as $key => $delivery) {
+                    if (strpos($key, 'now_') !== false) {
+                        if (isset($deliveryMapView->deliveryTypes[$key])) unset($deliveryMapView->deliveryTypes[$key]);
+                        $delivery->token = str_replace('now_', 'self_', $delivery->token);
+                        $deliveryMapView->deliveryTypes[str_replace('now_', 'self_', $key)] = $delivery;
+                    }
                 }
             }
-        }
-        if ((bool)$deliveryMapView->items) {
-            foreach ($deliveryMapView->items as $product => $deliveries) {
-                if ((bool)$deliveries->deliveries) {
-                    foreach ($deliveries->deliveries as $token => $delivery) {
-                        if (strpos($token, 'now_') !== false) {
-                            if (isset($deliveryMapView->items[$product]->deliveries[$token])) unset($deliveryMapView->items[$product]->deliveries[$token]);
-                            $delivery->token = str_replace('now_', 'self_', $delivery->token);
-                            $deliveryMapView->items[$product]->deliveries[str_replace('now_', 'self_', $token)] = $delivery;
+            if ((bool)$deliveryMapView->items) {
+                foreach ($deliveryMapView->items as $product => $deliveries) {
+                    if ((bool)$deliveries->deliveries) {
+                        foreach ($deliveries->deliveries as $token => $delivery) {
+                            if (strpos($token, 'now_') !== false) {
+                                if (isset($deliveryMapView->items[$product]->deliveries[$token])) unset($deliveryMapView->items[$product]->deliveries[$token]);
+                                $delivery->token = str_replace('now_', 'self_', $delivery->token);
+                                $deliveryMapView->items[$product]->deliveries[str_replace('now_', 'self_', $token)] = $delivery;
+                            }
                         }
                     }
                 }
