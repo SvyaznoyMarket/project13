@@ -659,13 +659,6 @@ class Action {
     /**
      * @return bool
      */
-    public static function isShop() {
-        return  \App::config()->shop['enabled'] && (bool)\App::request()->get('instore');
-    }
-
-    /**
-     * @return bool
-     */
     public static function inStore() {
         return (bool)\App::request()->get('instore');
     }
