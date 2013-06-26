@@ -9479,7 +9479,7 @@
   }
   #mainPageFooter .social_network {
     float: right;
-    width: 195px;
+    width: 200px;
   }
   #mainPageFooter .social_network span {
     padding-right: 6px;
@@ -9492,6 +9492,7 @@
   }
   #mainPageFooter .social_network a[title="facebook"] {
     background: url("/css/common/img/socIcons.png") no-repeat -26px 0px;
+    margin-left: 0;
   }
   #mainPageFooter .social_network a[title="facebook"]:hover {
     background: url("/css/common/img/socIcons.png") no-repeat -26px -26px;
@@ -10478,9 +10479,9 @@
     display: block;
     height: 23px;
     padding: 0 10px;
-    -webkit-transition: opacity 0.2s ease-in-out;
-    -moz-transition: opacity 0.2s ease-in-out;
-    transition: opacity 0.2s ease-in-out;
+    -webkit-transition: opacity 0.1s ease-in-out;
+    -moz-transition: opacity 0.1s ease-in-out;
+    transition: opacity 0.1s ease-in-out;
   }
   .items-section .items-section__list li .item-buy.link1active {
     background: #fff;
@@ -10493,9 +10494,9 @@
     position: absolute;
     bottom: 0;
     left: 80px;
-    -webkit-transition: left 0.2s ease-in-out;
-    -moz-transition: left 0.2s ease-in-out;
-    transition: left 0.2s ease-in-out;
+    -webkit-transition: left 0 ease-in-out;
+    -moz-transition: left 0 ease-in-out;
+    transition: left 0 ease-in-out;
   }
   .items-section .items-section__list li .item-name {
     -moz-opacity: 0;
@@ -10504,18 +10505,18 @@
     opacity: 0;
     -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
     filter: alpha(opacity=0);
-    -webkit-transition: opacity 0.2s ease-in-out;
-    -moz-transition: opacity 0.2s ease-in-out;
-    transition: opacity 0.2s ease-in-out;
+    -webkit-transition: opacity 0.1s ease-in-out;
+    -moz-transition: opacity 0.1s ease-in-out;
+    transition: opacity 0.1s ease-in-out;
   }
   .items-section .items-section__list li .item-img {
     text-align: center;
   }
-  .items-section .items-section__list .hover {
+  .items-section .items-section__list li:hover {
     border: 1px solid #AAAAAA;
     background-color: #fff;
   }
-  .items-section .items-section__list .hover .item-name {
+  .items-section .items-section__list li:hover .item-name {
     -moz-opacity: 1;
     -khtml-opacity: 1;
     -webkit-opacity: 1;
@@ -10523,7 +10524,7 @@
     -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=100);
     filter: alpha(opacity=100);
   }
-  .items-section .items-section__list .hover .item-buy {
+  .items-section .items-section__list li:hover .item-buy {
     -moz-opacity: 1;
     -khtml-opacity: 1;
     -webkit-opacity: 1;
@@ -10531,8 +10532,11 @@
     -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=100);
     filter: alpha(opacity=100);
   }
-  .items-section .items-section__list .hover .item-price {
+  .items-section .items-section__list li:hover .item-price {
     left: 0;
+    -webkit-transition: left 0.1s ease-in-out;
+    -moz-transition: left 0.1s ease-in-out;
+    transition: left 0.1s ease-in-out;
   }
   .banner-categories {
     position: relative;
@@ -10564,7 +10568,7 @@
     font-family: 'Enter Type';
     font-size: 16px;
     float: left;
-    margin-right: 90px;
+    margin-right: 70px;
   }
   .brand-subnav .brand-subnav__list li {
     float: left;
@@ -10573,7 +10577,7 @@
   }
   .brand-subnav .brand-subnav__list li a {
     display: block;
-    padding: 0 14px;
+    padding: 0 8px;
     line-height: 18px;
   }
   .brand-subnav .brand-subnav__list li .active {
@@ -10702,13 +10706,14 @@
   .brandSectionPandora__catalog .goodsbox__inner {
     margin: 0;
     padding: 0;
-    border: 1px solid #fff;
     position: relative;
     box-shadow: none;
-    border: none;
-    background-color: transparent;
+    border: none !important;
     width: 218px;
     height: 221px;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
   }
   .brandSectionPandora__catalog .bNavLoader__eIco {
     background: url("/css/ajaxPopup/img/arrow_bg_b.png") no-repeat;
@@ -10766,6 +10771,8 @@
     -webkit-transition: opacity 0.1s ease-in-out;
     -moz-transition: opacity 0.1s ease-in-out;
     transition: opacity 0.1s ease-in-out;
+    position: relative;
+    z-index: 1;
   }
   .brandSectionPandora__product .bigcarousel-brand .goodsbox .goodsbox__inner .photo a {
     height: 130px;
@@ -10791,9 +10798,9 @@
     display: block;
     height: 23px;
     padding: 0 10px;
-    -webkit-transition: opacity 0.1s ease-in-out;
-    -moz-transition: opacity 0.1s ease-in-out;
-    transition: opacity 0.1s ease-in-out;
+    -webkit-transition: opacity 0.2s ease-in-out;
+    -moz-transition: opacity 0.2s ease-in-out;
+    transition: opacity 0.2s ease-in-out;
   }
   .brandSectionPandora__product .bigcarousel-brand .goodsbox .goodsbox__inner a.link1.link1active {
     background: #fff;
@@ -10806,21 +10813,21 @@
     position: absolute;
     bottom: -8px;
     left: 71px;
-    -webkit-transition: left 0.1s ease-in-out;
-    -moz-transition: left 0.1s ease-in-out;
-    transition: left 0.1s ease-in-out;
+    -webkit-transition: left 0 ease-in-out;
+    -moz-transition: left 0 ease-in-out;
+    transition: left 0 ease-in-out;
   }
   .brandSectionPandora__product .bigcarousel-brand .goodsbox .goodsbox__inner .font18.mSmallBtns span {
     font-size: 12px;
   }
-  .brandSectionPandora__product .bigcarousel-brand .hover .goodsbox__inner {
+  .brandSectionPandora__product .bigcarousel-brand .goodsbox:hover .goodsbox__inner {
     box-shadow: none;
     border: 1px solid #AAAAAA;
     -webkit-border-radius: 0;
     -moz-border-radius: 0;
     border-radius: 0;
   }
-  .brandSectionPandora__product .bigcarousel-brand .hover .goodsbox__inner .item-name {
+  .brandSectionPandora__product .bigcarousel-brand .goodsbox:hover .goodsbox__inner .item-name {
     -moz-opacity: 1;
     -khtml-opacity: 1;
     -webkit-opacity: 1;
@@ -10828,7 +10835,7 @@
     -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=100);
     filter: alpha(opacity=100);
   }
-  .brandSectionPandora__product .bigcarousel-brand .hover .goodsbox__inner a.link1 {
+  .brandSectionPandora__product .bigcarousel-brand .goodsbox:hover .goodsbox__inner a.link1 {
     -moz-opacity: 1;
     -khtml-opacity: 1;
     -webkit-opacity: 1;
@@ -10836,7 +10843,7 @@
     -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=100);
     filter: alpha(opacity=100);
   }
-  .brandSectionPandora__product .bigcarousel-brand .hover .goodsbox__inner h3 {
+  .brandSectionPandora__product .bigcarousel-brand .goodsbox:hover .goodsbox__inner h3 {
     -moz-opacity: 1;
     -khtml-opacity: 1;
     -webkit-opacity: 1;
@@ -10844,10 +10851,13 @@
     -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=100);
     filter: alpha(opacity=100);
   }
-  .brandSectionPandora__product .bigcarousel-brand .hover .goodsbox__inner .font18.mSmallBtns {
+  .brandSectionPandora__product .bigcarousel-brand .goodsbox:hover .goodsbox__inner .font18.mSmallBtns {
     left: 10px;
+    -webkit-transition: left 0.1s ease-in-out;
+    -moz-transition: left 0.1s ease-in-out;
+    transition: left 0.1s ease-in-out;
   }
-  .brandSectionPandora__product .bigcarousel-brand .hover .goodsbox__inner .link1.disabled {
+  .brandSectionPandora__product .bigcarousel-brand .goodsbox:hover .goodsbox__inner .link1.disabled {
     -moz-opacity: 0.1;
     -khtml-opacity: 0.1;
     -webkit-opacity: 0.1;
