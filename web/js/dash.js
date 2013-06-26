@@ -26,10 +26,9 @@ $(document).ready(function(){
 		var addToCart = function(data) {
 			if (data.success) {
 				button.addClass('mBought');
+				button.html('В корзине');
 				kissAnalytics(data);
 				sendAnalytics(button);
-				console.log('ништяк погнали')
-				console.log(typeof(blackBox))
 				
 				if (blackBox) {
 					var basket = data.data;

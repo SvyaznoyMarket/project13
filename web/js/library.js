@@ -1952,8 +1952,8 @@ function Lightbox( jn, data ){
  *
  * @author	Zaytsev Alexandr
  * @this	{BlackBox}
- * @param	{String} updateUrl URL по которому будут запрашиватся данные о пользователе и корзине.
- * @param	{jQuery node} mainNode  DOM элемент бокса
+ * @param	{String}		updateUrl URL по которому будут запрашиватся данные о пользователе и корзине.
+ * @param	{jQuery node}	mainNode  DOM элемент бокса
  * @constructor
  */
 var BlackBox = function(updateUrl, mainContatiner){
@@ -1966,8 +1966,8 @@ var BlackBox = function(updateUrl, mainContatiner){
  *
  * @author	Zaytsev Alexandr
  * @this	{BlackBox}
- * @return	{function} update обновление данных о корзине
- * @return	{function} add добавление в корзину
+ * @return	{function} update	обновление данных о корзине
+ * @return	{function} add		добавление в корзину
  */
 BlackBox.prototype.basket = function() {
 	var self = this;
@@ -1980,12 +1980,26 @@ BlackBox.prototype.basket = function() {
 	var flyboxBasket = self.mainNode.find('.bBlackBox__eFlybox.mBasket');
 	var flyboxInner = self.mainNode.find('.bBlackBox__eFlyboxInner');
 
+
+	/**
+	 * Уничтожение содержимого flybox и его скрытие
+	 *
+	 * @author	Zaytsev Alexandr
+	 * @private
+	 */
 	var flyboxDestroy = function(){
 		flyboxBasket.fadeOut(300, function(){
 			flyboxInner.remove();
 		});
 	}
 
+	/**
+	 * Закрытие flybox по клику
+	 * 
+	 * @author	Zaytsev Alexandr
+	 * @param	{Event} e
+	 * @private
+	 */
 	var flyboxcloser = function(e){
 		var targ = e.target.className;
 
@@ -2064,7 +2078,7 @@ BlackBox.prototype.user = function() {
 	 * Обновление пользователя
 	 *
 	 * @author	Zaytsev Alexandr
-	 * @param	{String} userName имя пользователя
+	 * @param	{String} userName Имя пользователя
 	 * @public
 	 */
 	var update = function(userName) {
@@ -2077,6 +2091,7 @@ BlackBox.prototype.user = function() {
 			};
 			var show_user = tmpl('auth_tmpl', dtmpl);
 
+			topAuth.hide();
 			topAuth.after(show_user);
 			bottomAuth.html(userName).addClass('mAuth');
 		}
@@ -2105,7 +2120,7 @@ BlackBox.prototype.init = function() {
 	/**
 	 * Обработчик Action присланных с сервера
 	 * 
-	 * @param	{Object} action список действий которые необходимо выполнить
+	 * @param	{Object} action Список действий которые необходимо выполнить
 	 * @private
 	 */
 	var startAction = function() {
