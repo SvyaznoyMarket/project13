@@ -151,7 +151,20 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
 
 <? endif ?>
 
+<? if ($model3dImg) : ?>
+    <div id="3dModelImg" class="popup" data-value="<?php print $page->json($model3dImg); ?>" data-host="<?= $page->json(['http://'.App::request()->getHost()]) ?>">
+        <i class="close" title="Закрыть">Закрыть</i>
+    </div>
+<? endif ?>
 
+<script type="text/javascript">
+    <? if ($model3dExternalUrl) : ?>
+    product_3d_url = <?= json_encode($model3dExternalUrl) ?>;
+    <? elseif (count($photo3dList) > 0) : ?>
+    product_3d_small = <?= json_encode($p3d_res_small) ?>;
+    product_3d_big = <?= json_encode($p3d_res_big) ?>;
+    <? endif ?>
+</script>
 
 <section class="bProductSection__eLeft">
     <div class="bProductDesc clearfix">
@@ -163,8 +176,12 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
 
             <div class="bPhotoAction">
                 <ul class="bPhotoAction__eOtherAction">
-                    <li class="bPhotoAction__eOtherAction-video"><a href=""></a></li>
-                    <li class="bPhotoAction__eOtherAction-grad360"><a href=""></a></li>
+                    <? if ($productVideo && $productVideo->getContent()): ?>
+                        <li class="bPhotoAction__eOtherAction-video"><a href=""></a></li>
+                    <? endif ?>
+                    <? if (count($photoList) || $model3dExternalUrl || $model3dImg):  ?>
+                        <li class="bPhotoAction__eOtherAction-grad360 <?=$model3dExternalUrl?'maybe3d':''?><?=$model3dImg?'3dimg':''?>"><a href=""></a></li>
+                    <? endif ?>
                 </ul><!--/view product section -->
 
                 <div class="bPhotoAction__eOtherPhoto mSliderActionMiniPhoto">
