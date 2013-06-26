@@ -148,7 +148,7 @@ class Action {
 
         $shop = null;
         try {
-            if (!self::isGlobal() && \App::request()->get('shop')) {
+            if (!self::isGlobal() && \App::request()->get('shop') && \App::config()->shop['enabled']) {
                 $shop = \RepositoryManager::shop()->getEntityById( \App::request()->get('shop') );
             }
         } catch (Exception $e) {
@@ -262,7 +262,7 @@ class Action {
         //пытаемся получить магазин
         $shop = null;
         try {
-            if (!self::isGlobal() && \App::request()->get('shop')) {
+            if (!self::isGlobal() && \App::request()->get('shop') && \App::config()->shop['enabled']) {
                 $shop = \RepositoryManager::shop()->getEntityById( \App::request()->get('shop') );
                 if (\App::user()->getRegion() && $shop && $shop->getRegion()) {
                     if ((int)\App::user()->getRegion()->getId() != (int)$shop->getRegion()->getId()) {
