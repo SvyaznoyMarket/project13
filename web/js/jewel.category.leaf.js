@@ -167,7 +167,7 @@ function switch_to_scroll(checkScrollJewel) {
 
 function handle_jewel_items() {
   $(".goodsbar .link1.link1active").attr('href', '/cart')
-  $(".goodsbar .link1").bind( 'click', function(event)   {
+  $(".goodsbar .link1").bind( 'click', function()   {
       $(this).html("В корзине")
       $(this).addClass("link1active")
   })
