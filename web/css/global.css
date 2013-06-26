@@ -9492,7 +9492,7 @@
   }
   #mainPageFooter .social_network a[title="facebook"] {
     background: url("/css/common/img/socIcons.png") no-repeat -26px 0px;
-    margin-left: 0;
+    margin-left: 2px;
   }
   #mainPageFooter .social_network a[title="facebook"]:hover {
     background: url("/css/common/img/socIcons.png") no-repeat -26px -26px;
@@ -10568,7 +10568,7 @@
     font-family: 'Enter Type';
     font-size: 16px;
     float: left;
-    margin-right: 70px;
+    margin-right: 60px;
   }
   .brand-subnav .brand-subnav__list li {
     float: left;
@@ -10577,7 +10577,7 @@
   }
   .brand-subnav .brand-subnav__list li a {
     display: block;
-    padding: 0 8px;
+    padding: 0 7px;
     line-height: 18px;
   }
   .brand-subnav .brand-subnav__list li .active {
