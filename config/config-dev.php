@@ -8,11 +8,11 @@ $c->debug = true;
 $c->coreV2['url']          = 'http://tester.core.ent3.ru/v2/';
 $c->coreV2['retryTimeout'] = [
     'default' => 1,
-    'tiny'    => 0.4,
-    'short'   => 0.8,
-    'medium'  => 1,
-    'long'    => 1.5,
-    'huge'    => 2,
+    'tiny'    => 0.6,
+    'short'   => 1,
+    'medium'  => 1.4,
+    'long'    => 2,
+    'huge'    => 3,
     'forever' => 0,
 ];
 
@@ -40,7 +40,7 @@ $c->reviewsStore['retryTimeout'] = [
 ];
 
 $c->wordpress['throwException'] = false;
-$c->wordpress['timeout'] = 2;
+$c->wordpress['timeout'] = 4;
 
 $c->dataStore['timeout'] = 2;
 
