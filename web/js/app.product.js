@@ -728,7 +728,7 @@ $(document).ready(function() {
 
 
     function handle_jewel_items() {
-        if($('.jewel').length) {
+        if($('body.jewel').length) {
             $(".link1.link1active").attr('href', '/cart')
             $(".link1").bind( 'click', function()   {
                 if($(this).parent().hasClass('goodsbarbig')) {
