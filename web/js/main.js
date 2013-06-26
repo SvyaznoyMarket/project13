@@ -1703,7 +1703,7 @@ $(document).ready(function(){
                 timeout: 20000
             }).success(function(result) {
                     container.html(result)
-                    console.log(111)
+                    // console.log(111)
 								    handle_custom_items()
                     container.fadeIn()      
                     var tmpline = new cardsCarousel ({
@@ -1961,21 +1961,21 @@ function scrollToId(scrollToId) {
 }
 
 
-// function handle_custom_items() {
-//   $(".items-section__list .item").hover(
-//     function() {
-//     $(this).addClass('hover')
-//   },
-//     function() {
-//     $(this).removeClass('hover')
-//   });
+function handle_custom_items() {
+  $(".items-section__list .item").hover(
+    function() {
+    $(this).addClass('hover')
+  },
+    function() {
+    $(this).removeClass('hover')
+  });
 
-//   $(".bigcarousel-brand .goodsbox").hover(
-//     function() {
-//     $(this).addClass('hover');
-//   },
-//     function() {
-//     $(this).removeClass('hover');
-//   });
-// }
+  $(".bigcarousel-brand .goodsbox").hover(
+    function() {
+    $(this).addClass('hover');
+  },
+    function() {
+    $(this).removeClass('hover');
+  });
+}
 
