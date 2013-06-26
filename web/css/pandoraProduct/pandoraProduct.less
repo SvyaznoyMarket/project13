@@ -22,9 +22,9 @@
           padding-bottom: 0;
           height: 42px;
           .opacity(0);
-          -webkit-transition: opacity 0.1s ease-in-out;
-          -moz-transition: opacity 0.1s ease-in-out;
-          transition: opacity 0.1s ease-in-out;
+          .transition(opacity 0.1s ease-in-out);
+          position: relative;
+          z-index: 1;
         }
         .photo a {
           height: 130px;
@@ -62,8 +62,8 @@
           }
         }
       }
-    }
-    .hover {
+
+     &:hover {
       .goodsbox__inner {
         box-shadow: none;
         border: 1px solid #AAAAAA;
@@ -86,6 +86,7 @@
         }
       } 
     }
+  }
   }
   .pagehead {
     padding-bottom: 5px;

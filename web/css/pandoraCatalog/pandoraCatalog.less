@@ -90,12 +90,10 @@
       .item-img {
         text-align: center;
       }
-    }
-    .hover {
+    
+    &:hover {
       border: 1px solid #AAAAAA;
       background-color: #fff;
-    }
-    .hover {
       .item-name {
         .opacity(1);
       }
@@ -104,6 +102,7 @@
       }
       .item-price {
         left: 0;
+      }
       }
     }
   }
@@ -280,13 +279,12 @@
   .goodsbox__inner {
     margin: 0;
     padding: 0;
-    border: 1px solid #fff;
     position: relative;
     box-shadow: none;
-    border: none;
-    background-color:transparent;
+    border: none !important;
     width: 218px;
     height: 221px;
+    .rounded(0);
   }
   .bNavLoader__eIco {
     background: url("/css/ajaxPopup/img/arrow_bg_b.png") no-repeat;
