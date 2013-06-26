@@ -8812,135 +8812,6 @@
 /*---END---СТИЛИ СТРАНИЦЫ ВХОДА---*/
 /*-----СТИЛИ ЛАЙТБОКСА-----*/
 @media all {
-  .lightbox {
-    height: 41px;
-    width: 100%;
-  }
-  .lightboxinner {
-    background: #000000;
-    bottom: 0;
-    height: 40px;
-    left: 50%;
-    margin: 0 auto 0 -470px;
-    position: fixed;
-    width: 940px;
-    z-index: 200;
-    -webkit-box-shadow: 0 0 3px 1px #a6a6a6;
-    -moz-box-shadow: 0 0 3px 1px #a6a6a6;
-    box-shadow: 0 0 3px 1px #a6a6a6;
-    -webkit-border-top-right-radius: 4px;
-    -webkit-border-bottom-right-radius: 0;
-    -webkit-border-bottom-left-radius: 0;
-    -webkit-border-top-left-radius: 4px;
-    -moz-border-radius-topright: 4px;
-    -moz-border-radius-bottomright: 0;
-    -moz-border-radius-bottomleft: 0;
-    -moz-border-radius-topleft: 4px;
-    border-top-right-radius: 4px;
-    border-bottom-right-radius: 0;
-    border-bottom-left-radius: 0;
-    border-top-left-radius: 4px;
-  }
-  .lightboxmenu {
-    float: left;
-    width: 100%;
-  }
-  .lightboxmenu li {
-    float: right;
-    padding-left: 1px;
-  }
-  .lightboxmenu li.fl {
-    background: none;
-    float: left;
-    padding-left: 0px;
-  }
-  .lightboxmenu li .point {
-    color: #ffffff;
-    display: block;
-    float: left;
-    font-size: 14px;
-    height: 30px;
-    padding: 11px 20px 0px;
-    text-decoration: none;
-  }
-  .lightboxmenu li .point:hover {
-    /*background-position: -10px -46px;*/
-  
-    background: #333;
-    color: #ffa901;
-  }
-  .lightboxmenu li .point .total {
-    color: #ffa901;
-    font-size: 12px;
-    font-weight: normal;
-    margin-left: 10px;
-  }
-  .lightboxmenu li .point b {
-    background: url("/css/lightbox/img/lightboxSprite.png") no-repeat;
-    color: #ffffff;
-    display: block;
-    float: left;
-    font-size: 16px;
-    height: 19px;
-    line-height: 3px;
-    margin-right: 10px;
-    padding-left: 25px;
-  }
-  .lightboxmenu li .point.bSubscribeLightbox {
-    display: none;
-  }
-  .lightboxmenu li .point1 b {
-    background-position: 0px -40px;
-  }
-  .lightboxmenu li .point1:hover {
-    -webkit-border-top-right-radius: 0;
-    -webkit-border-bottom-right-radius: 0;
-    -webkit-border-bottom-left-radius: 0;
-    -webkit-border-top-left-radius: 4px;
-    -moz-border-radius-topright: 0;
-    -moz-border-radius-bottomright: 0;
-    -moz-border-radius-bottomleft: 0;
-    -moz-border-radius-topleft: 4px;
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
-    border-bottom-left-radius: 0;
-    border-top-left-radius: 4px;
-  }
-  .lightboxmenu li .point1:hover b {
-    background-position: 0px -80px;
-  }
-  .lightboxmenu li .point2 b {
-    background-position: 0px -120px;
-  }
-  .lightboxmenu li .point2:hover {
-    -webkit-border-top-right-radius: 4px;
-    -webkit-border-bottom-right-radius: 0;
-    -webkit-border-bottom-left-radius: 0;
-    -webkit-border-top-left-radius: 0;
-    -moz-border-radius-topright: 4px;
-    -moz-border-radius-bottomright: 0;
-    -moz-border-radius-bottomleft: 0;
-    -moz-border-radius-topleft: 0;
-    border-top-right-radius: 4px;
-    border-bottom-right-radius: 0;
-    border-bottom-left-radius: 0;
-    border-top-left-radius: 0;
-  }
-  .lightboxmenu li .point2:hover b {
-    background-position: 0px -160px;
-  }
-  .lightboxmenu li .point2.orangeme b {
-    background-position: 0 -160px;
-  }
-  .lightboxmenu li .point6 b {
-    background-position: -277px -109px;
-  }
-  .lightboxmenu li .point6:hover b {
-    background-position: -277px -159px;
-  }
-  .lightboxmenu li .orangeme {
-    color: #ffa901;
-  }
   .flybox {
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
@@ -9006,6 +8877,132 @@
   .dropbox p {
     margin: 0px;
     padding-top: 18px;
+  }
+  /**
+   * New styles for BlackBox
+   */
+  .bBlackBox {
+    height: 41px;
+    width: 940px;
+  }
+  .bBlackBox__eInner {
+    background: #000000;
+    bottom: 0;
+    height: 41px;
+    left: 50%;
+    margin: 0 auto 0 -470px;
+    position: fixed;
+    width: 940px;
+    z-index: 200;
+    -webkit-box-shadow: 0 0 3px 1px #a6a6a6;
+    -moz-box-shadow: 0 0 3px 1px #a6a6a6;
+    box-shadow: 0 0 3px 1px #a6a6a6;
+    -webkit-border-top-right-radius: 4px;
+    -webkit-border-bottom-right-radius: 0;
+    -webkit-border-bottom-left-radius: 0;
+    -webkit-border-top-left-radius: 4px;
+    -moz-border-radius-topright: 4px;
+    -moz-border-radius-bottomright: 0;
+    -moz-border-radius-bottomleft: 0;
+    -moz-border-radius-topleft: 4px;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 4px;
+  }
+  .bBlackBox__eMenu {
+    display: block;
+    width: 940px;
+  }
+  .bBlackBox__eMenuItem {
+    display: block;
+    height: 41px;
+  }
+  .bBlackBox__eMenuItemLink {
+    background: url("/css/lightbox/img/lightboxSprite.png") no-repeat;
+    color: #ffffff;
+    display: inline-block;
+    *display: inline;
+    font-size: 14px;
+    height: 41px;
+    line-height: 41px;
+    padding-left: 40px;
+    padding-right: 20px;
+    text-decoration: none;
+  }
+  .bBlackBox__eMenuItemLink:hover {
+    background: #333333 url("/css/lightbox/img/lightboxSprite.png") no-repeat;
+    color: #ffa901;
+    text-decoration: none;
+  }
+  .bBlackBox__eFlybox.mBasket {
+    left: 605px;
+    width: 290px;
+  }
+  .bBlackBox__eFlybox.mBasket .corner {
+    left: 142px;
+  }
+  .bBlackBox__eUser {
+    float: left;
+  }
+  .bBlackBox__eUserLink {
+    background-position: 10px -30px;
+  }
+  .bBlackBox__eUserLink:hover {
+    -webkit-border-top-right-radius: 0;
+    -webkit-border-bottom-right-radius: 0;
+    -webkit-border-bottom-left-radius: 0;
+    -webkit-border-top-left-radius: 4px;
+    -moz-border-radius-topright: 0;
+    -moz-border-radius-bottomright: 0;
+    -moz-border-radius-bottomleft: 0;
+    -moz-border-radius-topleft: 4px;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 4px;
+    background-position: 10px -70px;
+  }
+  .bBlackBox__eCart {
+    float: right;
+  }
+  .bBlackBox__eCartLink {
+    background-position: 10px -110px;
+  }
+  .bBlackBox__eCartLink:hover {
+    -webkit-border-top-right-radius: 4px;
+    -webkit-border-bottom-right-radius: 0;
+    -webkit-border-bottom-left-radius: 0;
+    -webkit-border-top-left-radius: 0;
+    -moz-border-radius-topright: 4px;
+    -moz-border-radius-bottomright: 0;
+    -moz-border-radius-bottomleft: 0;
+    -moz-border-radius-topleft: 0;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
+    background-position: 10px -150px;
+  }
+  .mBought .bBlackBox__eCartLink {
+    color: #ffa901;
+    background-position: 10px -150px;
+  }
+  .bBlackBox__eCartQuan {
+    color: #ffffff;
+    float: left;
+    font-size: 16px;
+    line-height: 25px;
+    margin-right: 10px;
+  }
+  .bBlackBox__eCartTotal {
+    color: #ffa901;
+    font-size: 13px;
+    margin-left: 5px;
+    display: none;
+  }
+  .bBlackBox__eCartSum {
+    font-weight: bold;
   }
 }
 /*--END---СТИЛИ ЛАЙТБОКСА--*/

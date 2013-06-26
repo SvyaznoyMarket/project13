@@ -1,127 +1,3 @@
-.lightbox {
-	height: 41px;
-	width: 100%;
-}
-.lightboxinner {
-	// background: url("@{base-url}/lightbox/img/lightboxSprite.png") no-repeat 0px -200px;
-	background: @black;
-	bottom: 0;
-	height: 40px;
-	left: 50%;
-	margin: 0 auto 0 -470px;
-	// padding-top: 1px;
-	// overflow: hidden;
-	position: fixed;
-	width: 940px;
-	z-index: 200;
-	.box-shadow(0 0 3px 1px @typGray);
-	.border-radius(4px, 0, 0, 4px);
-}
-.lightboxmenu {
-	float: left;
-	width: 100%;
-	li {
-		// background: url("@{base-url}/lightbox/img/lightboxSprite.png") no-repeat 0px 0px;
-		float: right;
-		padding-left: 1px;
-		&.fl {
-			background:none;
-			float: left;
-			padding-left: 0px;
-		}
-		.point {
-			color: @white;
-			display: block;
-			float: left;
-			font-size: 14px;
-			height: 30px;
-			padding: 11px 20px 0px;
-			text-decoration: none;
-			&:hover {
-				/*background-position: -10px -46px;*/
-				// background: url("@{base-url}/lightbox/img/lightboxSprite.png") no-repeat;
-				background: #333;
-				color: @firmOrange;
-			}
-			.total {
-				color: @firmOrange;
-				font-size: 12px;
-				font-weight: normal;
-				margin-left: 10px;
-			}
-			b {
-				background: url("@{base-url}/lightbox/img/lightboxSprite.png") no-repeat;
-				color: @white;
-				display: block;
-				float: left;
-				font-size: 16px;
-				height: 19px;
-				line-height: 3px;
-				margin-right: 10px;
-				padding-left: 25px;
-			}
-
-			&.bSubscribeLightbox{
-				display: none;
-
-				&__eIcon{
-
-				}
-
-				//modificators
-				&.mChecked{
-
-					.bSubscribeLightbox__eIcon{
-
-					}
-				}
-			}
-		}
-		.point1{
-			b {
-				background-position: 0px -40px;
-			}
-			&:hover{
-				.border-radius(0, 0, 0, 4px);
-				// background-position: 0px -246px;
-				b {
-					background-position: 0px -80px;
-				}
-			}
-		}
-		.point2{
-			b {
-				background-position: 0px -120px;
-			}
-			&:hover{
-				.border-radius(4px, 0, 0, 0);
-				// background-position: 100% -246px;
-				b {
-					background-position: 0px -160px;
-				}
-			}
-			&.orangeme{
-				b{
-					background-position:0 -160px;
-				}
-			}
-		}
-		.point6{
-			b{
-				background-position: -277px -109px;
-			}
-			&:hover{
-				// background-position: 0px -246px;
-				b{
-					background-position: -277px -159px;
-				}
-			}
-		}
-		.orangeme{
-			color:@firmOrange;
-		}
-	}
-}
 .flybox {
 	.rounded(5px);
 	.box-shadow(0px 0px 9px @typBoxShadowColor);
@@ -189,18 +65,120 @@
  */
 
 .bBlackBox{
+	@bbHeight: 41px;
+	@bbWidth: 940px;
+
+	height: @bbHeight;
+	width: @bbWidth;
+
+	&__eInner{
+		background: @black;
+		bottom: 0;
+		height: @bbHeight;
+		left: 50%;
+		margin: 0 auto 0 -(@bbWidth/2);
+		position: fixed;
+		width: @bbWidth;
+		z-index: 200;
+		.box-shadow(0 0 3px 1px @typGray);
+		.border-radius(4px, 0, 0, 4px);
+	}
+
+	&__eMenu{
+		display: block;
+		width: @bbWidth;
+	}
+
+	&__eMenuItem{
+		display: block;
+		
+		height: @bbHeight;
+		
+	}
+
+	&__eMenuItemLink{
+		background: url("@{base-url}/lightbox/img/lightboxSprite.png") no-repeat;
+		color: @white;
+		display: inline-block;
+		*display: inline;
+		font-size: 14px;
+		height: @bbHeight;
+		line-height: @bbHeight;
+		padding-left: 40px;
+		padding-right: 20px;
+		text-decoration: none;
+
+		&:hover{
+			background: #333 url("@{base-url}/lightbox/img/lightboxSprite.png") no-repeat;
+			color: @firmOrange;
+			text-decoration: none;
+		}
+	}
+
+	// всплывающие окна
+	&__eFlybox{
+		&.mBasket{
+			left: 605px;
+
+			width: 290px;
+
+			.corner{
+				left: 142px;
+			}
+		}
+	}
+
+	// личный кабинет
+	&__eUser{
+		float: left;
+
+		&Link{
+			background-position: 10px -30px;
+
+			&:hover{
+				.border-radius(0, 0, 0, 4px);
+				background-position: 10px -70px;
+			}
+		}
+	}
 
 	// корзина
 	&__eCart{
+		float: right;
+
+		&Link{
+			background-position: 10px -110px;
+
+			&:hover{
+				.border-radius(4px, 0, 0, 0);
+				background-position: 10px -150px;
+			}
+
+			.mBought &{
+				color: @firmOrange;
+				background-position: 10px -150px;
+			}
+		}
 
 		// количество товаров в корзине
 		&Quan{
-
+			color: @white;
+			float: left;
+			font-size: 16px;
+			line-height: 25px;
+			margin-right: 10px;
+		}
+		
+		&Total{
+			color: @firmOrange;
+		    font-size: 13px;
+		    margin-left: 5px;
+		    display:none;
 		}
 
 		// сумма корзины
 		&Sum{
-			
+			font-weight: bold;
 		}
 	}
 }

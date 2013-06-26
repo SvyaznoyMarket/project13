@@ -1957,12 +1957,8 @@ function Lightbox( jn, data ){
  * @constructor
  */
 var BlackBox = function(updateUrl, mainContatiner){
-	console.info('BlackBox created');
-
 	this.updUrl = (!docCookies.hasItem('enter') ||  !docCookies.hasItem('enter_auth')) ? updateUrl += '?ts=' + new Date().getTime() + Math.floor(Math.random() * 1000) : updateUrl;
 	this.mainNode = mainContatiner;
-
-	console.log('updateUrl: '+this.updUrl);
 };
 
 /**
@@ -1979,17 +1975,22 @@ BlackBox.prototype.basket = function() {
 	var headQ = $('#topBasket');
 	var bottomQ = self.mainNode.find('.bBlackBox__eCartQuan');
 	var bottomSum = self.mainNode.find('.bBlackBox__eCartSum');
-	var total = self.mainNode.find('.bBlackBox__eCart .total');
-	var cartInner = self.mainNode.find('.bBlackBox__eCart .point');
+	var total = self.mainNode.find('.bBlackBox__eCartTotal');
+	var bottomCart = self.mainNode.find('.bBlackBox__eCart');
+	var flyboxBasket = self.mainNode.find('.bBlackBox__eFlybox.mBasket');
+	var flyboxInner = self.mainNode.find('.bBlackBox__eFlyboxInner');
+
+	var flyboxDestroy = function(){
+		flyboxBasket.fadeOut(300, function(){
+			flyboxInner.remove();
+		});
+	}
 
 	var flyboxcloser = function(e){
 		var targ = e.target.className;
-		var box = self.mainNode.find('flybox');
 
-		if (!(targ.indexOf('flybox')+1) || !(targ.indexOf('fillup')+1)) {
-			box.fadeOut(300, function(){
-				box.html('');	
-			});
+		if (!(targ.indexOf('bBlackBox__eFlybox')+1) || !(targ.indexOf('fillup')+1)) {
+			flyboxDestroy();
 			$('body').unbind('click', flyboxcloser);
 		}
 	};
@@ -2004,13 +2005,11 @@ BlackBox.prototype.basket = function() {
 	 * @public
 	 */
 	var update = function(basketInfo) {
-		console.info('basket update');
-		console.log(basketInfo);
 		headQ.html('('+basketInfo.cartQ+')');
 		bottomQ.html(basketInfo.cartQ);
 		bottomSum.html(basketInfo.cartSum);
-		cartInner.addClass('orangeme');
-		total.show(300);
+		bottomCart.addClass('mBought');
+		total.show();
 	};
 
 	/**
@@ -2028,12 +2027,19 @@ BlackBox.prototype.basket = function() {
 	 * @public
 	 */
 	var add = function(item) {
-		console.info('basket add');
-		console.log(item);
+		var flyboxTmpl = tmpl('blackbox_basketshow_tmpl', item);
 
-		var popup = tmpl('blackbox_basketshow_tmpl', item);
-		console.log(popup);
-		self.mainNode.append(popup).fadeIn(500);
+		flyboxDestroy();
+		flyboxBasket.append(flyboxTmpl);
+		flyboxBasket.show(300);
+
+		var nowBasket = {
+			cartQ: item.totalQuan,
+			cartSum: item.totalSum
+		};
+
+		self.basket().update(nowBasket);
+
 		$('body').bind('click', flyboxcloser);
 
 	};
@@ -2062,21 +2068,19 @@ BlackBox.prototype.user = function() {
 	 * @public
 	 */
 	var update = function(userName) {
-		console.info('user update');
-
 		var topAuth = $('#auth-link');
+		var bottomAuth = self.mainNode.find('.bBlackBox__eUserLink')
 
 		if (userName !== '') {
-			console.log('пользователь авторизован');
-
 			var dtmpl={
 				user: userName
 			};
 			var show_user = tmpl('auth_tmpl', dtmpl);
+
 			topAuth.after(show_user);
+			bottomAuth.html(userName).addClass('mAuth');
 		}
 		else {
-			console.log('пользователь не авторизован');
 			topAuth.show();
 			
 		}
@@ -2096,8 +2100,6 @@ BlackBox.prototype.user = function() {
  * @this	{BlackBox}
  */
 BlackBox.prototype.init = function() {
-	console.info('blackbox init');
-
 	var self = this;
 
 	/**
@@ -2125,8 +2127,6 @@ BlackBox.prototype.init = function() {
 
 		var userInfo = data.data;
 
-		console.log(userInfo);
-
 		self.user().update(userInfo.name);
 
 		// if (userInfo.action !== undefined) {
@@ -2150,7 +2150,7 @@ BlackBox.prototype.init = function() {
  * Создание и иницилизация объекта для работы с корзиной и данными пользователя
  * @type	{BlackBox}
  */
-var blackBox = new BlackBox('/user/shortinfo', $('.lightboxinner'));
+var blackBox = new BlackBox('/user/shortinfo', $('.bBlackBox__eInner'));
 blackBox.init();
 
 
