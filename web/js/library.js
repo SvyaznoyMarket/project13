@@ -1976,6 +1976,18 @@ var BlackBox = function(updateUrl, mainNode){
 BlackBox.prototype.basket = function() {
 	var self = this;
 
+	var flyboxcloser = function(e){
+		var targ = e.target.className;
+		var box = self.mainNode.find('flybox');
+
+		if (!(targ.indexOf('flybox')+1) || !(targ.indexOf('fillup')+1)) {
+			box.fadeOut(300, function(){
+				box.html('');	
+			});
+			$('body').unbind('click', flyboxcloser);
+		}
+	};
+
 	/**
 	 * Обновление данных о корзине
 	 *
@@ -2004,6 +2016,11 @@ BlackBox.prototype.basket = function() {
 	var add = function(item) {
 		console.info('basket add');
 		console.log(item);
+
+		var popup = tmpl('blackBoxBasketShow', item);
+		console.log(popup);
+		self.mainNode.append(popup).fadeIn(500);
+		$('body').bind('click', flyboxcloser);
 	};
 
 	return {
