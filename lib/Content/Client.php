@@ -37,7 +37,7 @@ class Client {
         \Debug\Timer::start('content');
         \App::logger()->debug('Start content request ' . $action, ['content']);
 
-        if (null === $this->config['throwException']) {
+        if (null === $throwException) {
             $throwException = $this->config['throwException'];
         }
         if (null === $retryTimeout) {
