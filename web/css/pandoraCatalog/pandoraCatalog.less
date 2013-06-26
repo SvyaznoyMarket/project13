@@ -68,7 +68,7 @@
         display: block;
         height: 23px;
         padding: 0 10px;
-        .transition(opacity 0.2s ease-in-out);
+        .transition(opacity 0.1s ease-in-out);
         &.link1active {
           background: #fff;
           border: 1px solid #000;
@@ -81,11 +81,11 @@
         position: absolute;
         bottom: 0;
         left: 80px;
-        .transition(left 0.2s ease-in-out);
+        .transition(left 0 ease-in-out);
       }
       .item-name {
         .opacity(0);
-        .transition(opacity 0.2s ease-in-out);
+        .transition(opacity 0.1s ease-in-out);
       }
       .item-img {
         text-align: center;
@@ -102,6 +102,7 @@
       }
       .item-price {
         left: 0;
+        .transition(left 0.1s ease-in-out);
       }
       }
     }
