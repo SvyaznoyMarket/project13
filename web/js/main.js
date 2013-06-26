@@ -1223,7 +1223,6 @@ $(document).ready(function(){
 	
     $(".goodsbar .link1").bind( 'click.css', function()   {
         $(this).addClass("link1active")
-        $(this).html('В корзине')
     })
 
     $(".goodsbarbig .link1").bind( 'click.css', function()   {
