@@ -9477,7 +9477,7 @@
   }
   #mainPageFooter .social_network {
     float: right;
-    width: 195px;
+    width: 200px;
   }
   #mainPageFooter .social_network span {
     padding-right: 6px;
@@ -9490,6 +9490,7 @@
   }
   #mainPageFooter .social_network a[title="facebook"] {
     background: url("/css/common/img/socIcons.png") no-repeat -26px 0px;
+    margin-left: 0;
   }
   #mainPageFooter .social_network a[title="facebook"]:hover {
     background: url("/css/common/img/socIcons.png") no-repeat -26px -26px;
