@@ -2,6 +2,8 @@
 
 namespace Controller\ProductCategory;
 
+use Smartengine\Exception;
+
 class Action {
     private static $globalCookieName = 'global';
 
@@ -143,7 +145,17 @@ class Action {
 
             $filters = [];
         }
-        $productFilter = $this->getFilter($filters, $category, null, $request);
+
+        $shop = null;
+        try {
+            if (!self::isGlobal() && \App::request()->get('shop')) {
+                $shop = \RepositoryManager::shop()->getEntityById( \App::request()->get('shop') );
+            }
+        } catch (Exception $e) {
+            \App::logger()->error(sprintf('Не удалось отфильтровать товары по магазину #%s', \App::request()->get('shop')));
+        }
+
+        $productFilter = $this->getFilter($filters, $category, null, $request, $shop);
 
         $count = \RepositoryManager::product()->countByFilter($productFilter->dump());
 
@@ -247,8 +259,26 @@ class Action {
         // выполнение 3-го пакета запросов
         $client->execute(\App::config()->coreV2['retryTimeout']['tiny']);
 
+        //пытаемся получить магазин
+        $shop = null;
+        try {
+            if (!self::isGlobal() && \App::request()->get('shop')) {
+                $shop = \RepositoryManager::shop()->getEntityById( \App::request()->get('shop') );
+                if (\App::user()->getRegion() && $shop && $shop->getRegion()) {
+                    if ((int)\App::user()->getRegion()->getId() != (int)$shop->getRegion()->getId()) {
+                        $controller = new \Controller\Region\Action();
+                        \App::logger()->info(sprintf('Смена региона #%s на #%s', \App::user()->getRegion()->getId(), $shop->getRegion()->getId()));
+                        $response = $controller->change($shop->getRegion()->getId(), \App::request(), \App::request()->getUri());
+                        return $response;
+                    }
+                }
+            }
+        } catch (Exception $e) {
+            \App::logger()->error(sprintf('Не удалось отфильтровать товары по магазину #%s', \App::request()->get('shop')));
+        }
+
         // фильтры
-        $productFilter = $this->getFilter($filters, $category, $brand, $request);
+        $productFilter = $this->getFilter($filters, $category, $brand, $request, $shop);
 
         // получаем из json данные о горячих ссылках и content
         try {
@@ -576,7 +606,7 @@ class Action {
      * @param \Http\Request $request
      * @return \Model\Product\Filter
      */
-    private function getFilter(array $filters, \Model\Product\Category\Entity $category, \Model\Brand\Entity $brand = null, \Http\Request $request) {
+    private function getFilter(array $filters, \Model\Product\Category\Entity $category, \Model\Brand\Entity $brand = null, \Http\Request $request, $shop = null) {
         // флаг глобального списка в параметрах запроса
         $isGlobal = self::isGlobal();
         //
@@ -599,10 +629,9 @@ class Action {
             ];
         }
 
-        //если есть в куках магазин
-        $shop = null;
-        if (!$isGlobal && \App::request()->get('shop'))  {
-            $shop = \RepositoryManager::shop()->getEntityById( \App::request()->get('shop') );
+        //если есть фильтр по магазину
+        if ($shop) {
+            /** @var \Model\Shop\Entity $shop */
             $values['shop'] = $shop->getId();
         }
 

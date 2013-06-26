@@ -20,7 +20,7 @@ $formName = \View\Product\FilterForm::$name;
     } else $link = '';
 
     $linkCount = $page->url('product.category.count', array('categoryPath' => $category->getPath()));
-    if (\App::request()->get('shop')) $linkCount .= (false === strpos($linkCount, '?') ? '?' : '&') . 'shop='. \App::request()->get('shop');
+    //if (\App::request()->get('shop')) $linkCount .= (false === strpos($linkCount, '?') ? '?' : '&') . 'shop='. \App::request()->get('shop');
 
 ?>
 <form class="product_filter-block" action="<?=$link?>" method="get" data-action-count="<?= $linkCount ?>">
