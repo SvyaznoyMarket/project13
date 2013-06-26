@@ -1956,11 +1956,11 @@ function Lightbox( jn, data ){
  * @param	{jQuery node} mainNode  DOM элемент бокса
  * @constructor
  */
-var BlackBox = function(updateUrl, mainNode){
+var BlackBox = function(updateUrl, mainContatiner){
 	console.info('BlackBox created');
 
 	this.updUrl = (!docCookies.hasItem('enter') ||  !docCookies.hasItem('enter_auth')) ? updateUrl += '?ts=' + new Date().getTime() + Math.floor(Math.random() * 1000) : updateUrl;
-	this.blackBox = mainNode;
+	this.mainNode = mainContatiner;
 
 	console.log('updateUrl: '+this.updUrl);
 };
@@ -1975,6 +1975,12 @@ var BlackBox = function(updateUrl, mainNode){
  */
 BlackBox.prototype.basket = function() {
 	var self = this;
+
+	var headQ = $('#topBasket');
+	var bottomQ = self.mainNode.find('.bBlackBox__eCartQuan');
+	var bottomSum = self.mainNode.find('.bBlackBox__eCartSum');
+	var total = self.mainNode.find('.bBlackBox__eCart .total');
+	var cartInner = self.mainNode.find('.bBlackBox__eCart .point');
 
 	var flyboxcloser = function(e){
 		var targ = e.target.className;
@@ -1992,11 +1998,19 @@ BlackBox.prototype.basket = function() {
 	 * Обновление данных о корзине
 	 *
 	 * @author	Zaytsev Alexandr
-	 * @param	{Object} basketInfo
+	 * @param	{Object} basketInfo			Информация о корзине
+	 * @param	{Number} basketInfo.cartQ	Количество товаров в корзине
+	 * @param	{Number} basketInfo.cartSum	Стоимость товаров в корзине
 	 * @public
 	 */
 	var update = function(basketInfo) {
 		console.info('basket update');
+		console.log(basketInfo);
+		headQ.html('('+basketInfo.cartQ+')');
+		bottomQ.html(basketInfo.cartQ);
+		bottomSum.html(basketInfo.cartSum);
+		cartInner.addClass('orangeme');
+		total.show(300);
 	};
 
 	/**
@@ -2004,23 +2018,24 @@ BlackBox.prototype.basket = function() {
 	 *
 	 * @author	Zaytsev Alexandr
 	 * @param	{Object} item
-	 * @param	{Number} item.id Идентификатор товара
-	 * @param	{String} item.title Название товара
-	 * @param	{Number} item.price Стоимость товара
-	 * @param	{String} item.imgSrc Ссылка на изображение товара
-	 * @param	{Number} item.TotalQuan Общее количество товаров в корзине
-	 * @param	{Number} item.totalSum Общая стоимость корзины
-	 * @param	{String} item.linkToOrder Ссылка на оформление заказа
+	 * @param	{Number} item.id			Идентификатор товара
+	 * @param	{String} item.title			Название товара
+	 * @param	{Number} item.price			Стоимость товара
+	 * @param	{String} item.imgSrc		Ссылка на изображение товара
+	 * @param	{Number} item.TotalQuan		Общее количество товаров в корзине
+	 * @param	{Number} item.totalSum		Общая стоимость корзины
+	 * @param	{String} item.linkToOrder	Ссылка на оформление заказа
 	 * @public
 	 */
 	var add = function(item) {
 		console.info('basket add');
 		console.log(item);
 
-		var popup = tmpl('blackBoxBasketShow', item);
+		var popup = tmpl('blackbox_basketshow_tmpl', item);
 		console.log(popup);
 		self.mainNode.append(popup).fadeIn(500);
 		$('body').bind('click', flyboxcloser);
+
 	};
 
 	return {
@@ -2063,8 +2078,8 @@ BlackBox.prototype.user = function() {
 		else {
 			console.log('пользователь не авторизован');
 			topAuth.show();
+			
 		}
-
 	};
 
 	return {
@@ -2111,14 +2126,20 @@ BlackBox.prototype.init = function() {
 		var userInfo = data.data;
 
 		console.log(userInfo);
-		self.user().update(userInfo.name);
-		
-		if (userInfo.vitems > 0) {
-			self.basket().update();
-		}
 
-		if (userInfo.action !== undefined) {
-			startAction(userInfo.action);
+		self.user().update(userInfo.name);
+
+		// if (userInfo.action !== undefined) {
+		// 	startAction(userInfo.action);
+		// }
+
+		if (userInfo.vitems !== 0) {
+			var nowBasket = {
+				cartQ: userInfo.vitems,
+				cartSum: userInfo.sum
+			};
+
+			self.basket().update(nowBasket);
 		}
 	};
 

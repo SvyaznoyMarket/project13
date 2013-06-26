@@ -15,16 +15,16 @@
             <li class="fl">
                 <a href="<?//= $page->url(user.login) ?>" class="point point1"><b></b>Личный кабинет</a>
             </li>
-            <li>
-                <a href="<?=  $page->url(cart) ?>" class="point point2"><b></b>Моя корзина<span class="total" style="display:none;">
-                    <span id="sum"></span> &nbsp;<span class="rubl">p</span></span>
+            <li class="bBlackBox__eCart">
+                <a href="<?=  $page->url(cart) ?>" class="point point2"><b class="bBlackBox__eCartQuan"></b>Моя корзина<span class="total" style="display:none;">
+                    <span id="sum" class="bBlackBox__eCartSum"></span> &nbsp;<span class="rubl">p</span></span>
                 </a>
             </li>
         </ul>
     </div>
 </div>
 
-<script type="text/html" id="blackBoxBasketShow">
+<script type="text/html" id="blackbox_basketshow_tmpl">
     <div class="flybox">
         <div class="font16 pb20">Только что был добавлен в корзину:</div>
         <div class="fl width70">

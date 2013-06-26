@@ -28,7 +28,9 @@ $(document).ready(function(){
 				button.addClass('mBought');
 				kissAnalytics(data);
 				sendAnalytics(button);
-
+				console.log('ништяк погнали')
+				console.log(typeof(blackBox))
+				
 				if (blackBox) {
 					var basket = data.data;
 					var product = data.result.product;
