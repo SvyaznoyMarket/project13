@@ -71,11 +71,10 @@ $count = count($menu);
         ?>
 
         <li class="bMainMenuLevel-<?= $level ?>__eItem clearfix mId<?= ($parent ? ($parent->getPriority() . '-') : '') . $i ?> <? if ($class) echo ' ' . $class ?>">
-        <?
+            <?
             $token = preg_replace('/.*\//', '', $iMenu->getLink());
             $showImage = !empty($catalogJsonBulk[$token]) && !empty($catalogJsonBulk[$token]['logo_path']) && !empty($catalogJsonBulk[$token]['use_logo']);
-        ?>
-
+            ?>
             <? if ($iMenu->getLink()): ?>
                 <a class="bMainMenuLevel-<?= $level ?>__eLink" href="<?= $iMenu->getLink() ?>">
                     <span class="bMainMenuLevel-<?= $level ?>__eIcon">&nbsp;<?//= 0  === strpos($iMenu->getImage(), '&') ? $iMenu->getImage() : '' ?></span>
@@ -106,8 +105,7 @@ $count = count($menu);
                 <?= $helper->render('__mainMenu', ['menu' => $iMenu->getChild(), 'level' => $level + 1, 'parent' => $iMenu, 'catalogJsonBulk' => $catalogJsonBulk]) ?>
             <? endif ?>
         </li>
-        <? $i++; endforeach ?>
-
+    <? $i++; endforeach ?>
 </ul>
 
 <? };
