@@ -62,7 +62,9 @@ function liveScrollJewel( lsURL, filters, pageid ) {
   })
 }
 
+
 function handle_jewel_infinity_scroll() {
+  var checkScrollJewel = function(){}
   $('div.allpagerJewel').each(function() {
     var lsURL = $(this).data('url') 
     var filters = ''//$(this).data('filter')
@@ -71,7 +73,7 @@ function handle_jewel_infinity_scroll() {
     var vlast = parseInt('0' + $(this).data('lastpage') , 10)
     var tmpnodeJewel = $('.items-section__list')
 
-    function checkScrollJewel(){
+    checkScrollJewel = function(){
       if ( ableToLoadJewel && $(window).scrollTop() + 800 > $(document).height() - $(window).height() ){
         ableToLoadJewel = false
         if( vlast + vinit > vnext ) {
@@ -165,7 +167,7 @@ function switch_to_scroll(checkScrollJewel) {
 
 function handle_jewel_items() {
   $(".goodsbar .link1.link1active").attr('href', '/cart')
-  $(".goodsbar .link1").bind( 'click', function()   {
+  $(".goodsbar .link1").bind( 'click', function(event)   {
       $(this).html("В корзине")
       $(this).addClass("link1active")
   })
