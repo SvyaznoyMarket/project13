@@ -10476,9 +10476,9 @@
     display: block;
     height: 23px;
     padding: 0 10px;
-    -webkit-transition: opacity 0.2s ease-in-out;
-    -moz-transition: opacity 0.2s ease-in-out;
-    transition: opacity 0.2s ease-in-out;
+    -webkit-transition: opacity 0.1s ease-in-out;
+    -moz-transition: opacity 0.1s ease-in-out;
+    transition: opacity 0.1s ease-in-out;
   }
   .items-section .items-section__list li .item-buy.link1active {
     background: #fff;
@@ -10491,9 +10491,9 @@
     position: absolute;
     bottom: 0;
     left: 80px;
-    -webkit-transition: left 0.2s ease-in-out;
-    -moz-transition: left 0.2s ease-in-out;
-    transition: left 0.2s ease-in-out;
+    -webkit-transition: left 0 ease-in-out;
+    -moz-transition: left 0 ease-in-out;
+    transition: left 0 ease-in-out;
   }
   .items-section .items-section__list li .item-name {
     -moz-opacity: 0;
@@ -10502,9 +10502,9 @@
     opacity: 0;
     -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
     filter: alpha(opacity=0);
-    -webkit-transition: opacity 0.2s ease-in-out;
-    -moz-transition: opacity 0.2s ease-in-out;
-    transition: opacity 0.2s ease-in-out;
+    -webkit-transition: opacity 0.1s ease-in-out;
+    -moz-transition: opacity 0.1s ease-in-out;
+    transition: opacity 0.1s ease-in-out;
   }
   .items-section .items-section__list li .item-img {
     text-align: center;
@@ -10531,6 +10531,9 @@
   }
   .items-section .items-section__list li:hover .item-price {
     left: 0;
+    -webkit-transition: left 0.1s ease-in-out;
+    -moz-transition: left 0.1s ease-in-out;
+    transition: left 0.1s ease-in-out;
   }
   .banner-categories {
     position: relative;
@@ -10792,9 +10795,9 @@
     display: block;
     height: 23px;
     padding: 0 10px;
-    -webkit-transition: opacity 0.1s ease-in-out;
-    -moz-transition: opacity 0.1s ease-in-out;
-    transition: opacity 0.1s ease-in-out;
+    -webkit-transition: opacity 0.2s ease-in-out;
+    -moz-transition: opacity 0.2s ease-in-out;
+    transition: opacity 0.2s ease-in-out;
   }
   .brandSectionPandora__product .bigcarousel-brand .goodsbox .goodsbox__inner a.link1.link1active {
     background: #fff;
@@ -10807,9 +10810,9 @@
     position: absolute;
     bottom: -8px;
     left: 71px;
-    -webkit-transition: left 0.1s ease-in-out;
-    -moz-transition: left 0.1s ease-in-out;
-    transition: left 0.1s ease-in-out;
+    -webkit-transition: left 0 ease-in-out;
+    -moz-transition: left 0 ease-in-out;
+    transition: left 0 ease-in-out;
   }
   .brandSectionPandora__product .bigcarousel-brand .goodsbox .goodsbox__inner .font18.mSmallBtns span {
     font-size: 12px;
@@ -10847,6 +10850,9 @@
   }
   .brandSectionPandora__product .bigcarousel-brand .goodsbox:hover .goodsbox__inner .font18.mSmallBtns {
     left: 10px;
+    -webkit-transition: left 0.1s ease-in-out;
+    -moz-transition: left 0.1s ease-in-out;
+    transition: left 0.1s ease-in-out;
   }
   .brandSectionPandora__product .bigcarousel-brand .goodsbox:hover .goodsbox__inner .link1.disabled {
     -moz-opacity: 0.1;
