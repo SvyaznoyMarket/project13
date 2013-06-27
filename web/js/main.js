@@ -1625,21 +1625,21 @@ function scrollToId(scrollToId) {
 }
 
 
-function handle_custom_items() {
-  $(".items-section__list .item").hover(
-    function() {
-    $(this).addClass('hover')
-  },
-    function() {
-    $(this).removeClass('hover')
-  });
+// function handle_custom_items() {
+//   $(".items-section__list .item").hover(
+//     function() {
+//     $(this).addClass('hover')
+//   },
+//     function() {
+//     $(this).removeClass('hover')
+//   });
 
-  $(".bigcarousel-brand .goodsbox").hover(
-    function() {
-    $(this).addClass('hover');
-  },
-    function() {
-    $(this).removeClass('hover');
-  });
-}
+//   $(".bigcarousel-brand .goodsbox").hover(
+//     function() {
+//     $(this).addClass('hover');
+//   },
+//     function() {
+//     $(this).removeClass('hover');
+//   });
+// }
 
