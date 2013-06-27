@@ -30,8 +30,13 @@ return [
 
     // инфо пользователя
     'user.info' => [
-        'pattern' => '/user/shortinfo',
+        'pattern' => '/ajax/user/info',
         'action'  => ['User\InfoAction', 'execute'],
+    ],
+    // инфо пользователя
+    'old.user.info' => [
+        'pattern' => '/user/shortinfo',
+        'action'  => ['User\OldInfoAction', 'execute'],
     ],
     // вход пользователя
     'user.login' => [
@@ -192,6 +197,11 @@ return [
     // каталог товаров бренда
     'product.category.brand.infinity' => [
         'pattern' => '/ajax/catalog/{categoryPath}/{brandToken}/_infinity',
+        'action'  => ['ProductCategory\Action', 'category'],
+        'require' => ['categoryPath' => '[\w\d-_]+\/[\w\d-_]+', 'brand' => '[\w\d-_]+'],
+    ],
+    'product.category.brand.sliderInfinity' => [
+        'pattern' => '/catalog/{categoryPath}/{brandToken}/_sliderInfinity',
         'action'  => ['ProductCategory\Action', 'category'],
         'require' => ['categoryPath' => '[\w\d-_]+\/[\w\d-_]+', 'brand' => '[\w\d-_]+'],
     ],
