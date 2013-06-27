@@ -1,15 +1,19 @@
 .brandSectionPandora__product {
   padding: 0;
   margin: 0;
+  .breadcrumbs-footer {
+    padding: 10px 0px 10px 0;
+  }
   .bigcarousel-brand {
     margin: 0 0 30px;
+    width: 940px;
     .goodsbox {
       margin-right: 0;
       padding: 0;
-      width: 187px;
+      width: 188px;
       min-height: 210px;
       .goodsbox__inner {
-        width: 160px;
+        width: 166px;
         padding: 0;
         padding: 10px;
         border: 1px solid #fff;
@@ -36,14 +40,14 @@
           right: 10px;
           background: #000;
           color: #ffffff;
-          .rounded(7px);
+          .rounded(4px);
           .opacity(0);
           text-align: center;
           line-height: 21px;
           display: block;
           height: 23px;
           padding: 0 10px;
-          .transition(opacity 0.2s ease-in-out);
+          .transition(opacity 0.1s ease-in-out);
           &.link1active {
             background: #fff;
             border: 1px solid #000;
@@ -57,6 +61,7 @@
           bottom: -8px;
           left: 71px;
           .transition(left 0 ease-in-out);
+          -webkit-backface-visibility: hidden; -webkit-tap-highlight-color: rgba(255,255,255,0);
           span {
             font-size: 12px;
           }
@@ -80,6 +85,7 @@
         .font18.mSmallBtns {
           left: 10px;
           .transition(left 0.1s ease-in-out);
+          -webkit-backface-visibility: hidden; -webkit-tap-highlight-color: rgba(255,255,255,0);
         }
         .link1.disabled {
           .opacity(0.1);
@@ -108,7 +114,7 @@
     }
   .goodsinfo {
     padding: 0 0px 0 10px;
-    width: 329px;
+    width: 339px;
     border-left: 1px solid #ededed;
     margin: -18px 0 0;
   }
@@ -183,7 +189,7 @@
       text-indent: 0;
       font-size: 16px;
       text-align: center;
-      .rounded(5px);
+      .rounded(4px);
       border: 1px solid #000;
       &.link1active {
         background: #fff;
@@ -252,6 +258,10 @@
   }
   .mBuyButtonBottom {
     padding: 16px 0 0px 0px;
+    width: 175px;
+    &.onleft {
+      width: 455px;
+    }
     h2 {
       font-weight: normal;
       font-family: 'Enter Type';
@@ -263,8 +273,11 @@
   .product-desc {
     padding: 0 0 0 10px;
     font-size: 12px;
+    &.goodBarBottom {
+      width: 280px;
+    }
     .bDeliver2 {
-      padding: 1px 15px 5px 6px;
+      padding: 1px 10px 5px 10px;
       li {
         margin-top: 10px;
         margin-bottom: 0;
@@ -306,7 +319,7 @@
       font-size: 34px;
       float: left;
       font-weight: bold;
-      width: 170px;
+      width: 179px;
       padding-left: 5px;
     }
     &__variation {

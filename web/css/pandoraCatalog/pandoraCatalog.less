@@ -16,16 +16,12 @@
       text-transform: uppercase; 
       border-right: 1px solid #EDEDED;
       text-align: center;
+      &:last-child {
+        border: none;
+      }
       a {
         display: block;
         line-height: 50px;
-      }
-    }
-    .new {
-      font-size: 24px;
-      border: none;
-      a {
-        padding: 0 50px;
       }
     }
     .row_2line {
@@ -46,14 +42,9 @@
   .items-section__list {
     border-top: 1px solid #f9f9f9;
     li {
-      width: 218px;
-      border: 1px solid #f9f9f9;
+      width: 240px;
       float: left;
-      height: 221px;
-      padding: 7px 10px 10px;
-      position: relative;
-      border-top: 1px solid @white;
-      border-left: 1px solid @white;
+      height: 240px;
       .item-buy {
         width: auto;
         position: absolute;
@@ -61,7 +52,7 @@
         right: 0;
         background: #000;
         color: #ffffff;
-        .rounded(7px);
+        .rounded(4px);
         .opacity(0);
         text-align: center;
         line-height: 21px;
@@ -82,6 +73,7 @@
         bottom: 0;
         left: 80px;
         .transition(left 0 ease-in-out);
+        -webkit-backface-visibility: hidden; -webkit-tap-highlight-color: rgba(255,255,255,0);
       }
       .item-name {
         .opacity(0);
@@ -92,8 +84,10 @@
       }
     
     &:hover {
-      border: 1px solid #AAAAAA;
-      background-color: #fff;
+      .goodsbox {
+        border: 1px solid #AAAAAA;
+        z-index: 10;
+      }
       .item-name {
         .opacity(1);
       }
@@ -103,6 +97,7 @@
       .item-price {
         left: 0;
         .transition(left 0.1s ease-in-out);
+        -webkit-backface-visibility: hidden; -webkit-tap-highlight-color: rgba(255,255,255,0);
       }
       }
     }
@@ -243,6 +238,9 @@
 .brandSectionPandora__catalog {
   width: 960px;
   margin: 0 0 0 -10px;
+  .goodsbar {
+
+  }
   .line {
     border: none;
   }
@@ -268,13 +266,21 @@
     padding: 0;
     margin: 0;
     width: 218px;
-    height: 221px;
-    min-height: 221px;
+    border: 1px solid #f9f9f9;
+    height: 220px;
+    min-height: 220px;
+    padding: 7px 10px 10px;
+    position: relative;
+    border-top: 1px solid @white;
+    border-left: 1px solid @white;
     .notBuying {
       visibility: hidden;
     }
     &:hover .notBuying {
       visibility: visible;
+    }
+    .photo {
+      display: none;
     }
   }
   .goodsbox__inner {

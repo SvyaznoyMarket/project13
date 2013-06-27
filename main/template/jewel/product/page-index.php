@@ -683,7 +683,7 @@ $productVideo = reset($productVideos);
     </div>
     <? //endif ?>
 </div>
-<div class="fr mBuyButtonBottom">
+<div style="text-align: right;" class="fr mBuyButtonBottom">
     <div class="pb10"><strong class="font34"><span class="price"><?= $page->helper->formatPrice($product->getPrice()) ?></span> <span class="rubl">p</span></strong></div>
 </div>
 <div class="fl mBuyButtonBottom onleft" >
