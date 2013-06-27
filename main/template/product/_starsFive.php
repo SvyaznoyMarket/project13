@@ -1,13 +1,13 @@
 <?
-  if(!empty($layout) && $layout == 'jewel') {
+if(!empty($layout) && $layout == 'jewel') {
     $reviewsStarSrc = "/images/jewel/reviews_star.png";
     $reviewsStarHalfSrc = "/images/jewel/reviews_star_half.png";
     $reviewsStarEmptySrc = "/images/jewel/reviews_star_empty.png";
-  } else {
+} else {
     $reviewsStarSrc = "/images/reviews_star.png";
     $reviewsStarHalfSrc = "/images/reviews_star_half.png";
-    $reviewsStarEmptySrc = "/images/reviews_star_empty.png";
-  }
+    $reviewsStarEmptySrc = "/images/reviews_star.png";
+}
 ?>
 
 <? if(empty($score) && empty($emptyText)) { ?>
