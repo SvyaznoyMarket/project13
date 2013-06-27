@@ -30,8 +30,13 @@ return [
 
     // инфо пользователя
     'user.info' => [
-        'pattern' => '/user/shortinfo',
+        'pattern' => '/ajax/user/info',
         'action'  => ['User\InfoAction', 'execute'],
+    ],
+    // инфо пользователя
+    'old.user.info' => [
+        'pattern' => '/user/shortinfo',
+        'action'  => ['User\OldInfoAction', 'execute'],
     ],
     // вход пользователя
     'user.login' => [

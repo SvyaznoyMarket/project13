@@ -6,10 +6,13 @@
 ?>
 
 <?
+$appConfig = \App::config();
+
 $config = array_merge([
-    'f1Certificate' => \App::config()->f1Certificate['enabled'],
-    'coupon'        => \App::config()->coupon['enabled'],
+    'userUrl'       => \App::router()->generate('user.info'),
+    'f1Certificate' => $appConfig->f1Certificate['enabled'],
+    'coupon'        => $appConfig->coupon['enabled'],
 ], isset($config) ? (array)$config : []);
 ?>
 
-<div id="site-config" data-value="<?= $page->json($config) ?>"></div>
+<div id="page-config" data-value="<?= $page->json($config) ?>"></div>
