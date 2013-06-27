@@ -14,6 +14,7 @@ class ReviewsAction {
 
         $page = $request->get('page', 0);
         $reviewsType = $request->get('type', 'user');
+        $layout = $request->get('layout', false);
 
         $reviewsData = \RepositoryManager::review()->getReviews($productId, $reviewsType, $page);
 
@@ -25,7 +26,8 @@ class ReviewsAction {
                 $response .= \App::templating()->render('product/_review', [
                     'page' => (new \View\Product\IndexPage()),
                     'review' => $review,
-                    'last' => empty($reviewsData['review_list'][$key + 1])
+                    'last' => empty($reviewsData['review_list'][$key + 1]),
+                    'layout' => $layout
                 ]);
             }
         }

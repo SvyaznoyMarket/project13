@@ -108,6 +108,8 @@ $productVideo = reset($productVideos);
                 break;
         }
     }
+
+    $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro['review_list']));
 ?>
 
 <style type="text/css">
@@ -432,6 +434,30 @@ $productVideo = reset($productVideos);
   <!-- /Variation -->
   <? endif ?>
 
+  <? if (\App::config()->product['reviewEnabled']): ?>
+      <div class="reviewSection reviewSection100 clearfix">
+
+          <div class="reviewSection__link">
+              <div class="reviewSection__star reviewSection100__star">
+                  <? $avgStarScore = empty($reviewsData['avg_star_score']) ? 0 : $reviewsData['avg_star_score'] ?>
+                  <?= empty($avgStarScore) ? '' : $page->render('product/_starsFive', ['score' => $avgStarScore, 'layout' => 'jewel']) ?>
+              </div>
+
+              <? if (!empty($avgStarScore)) { ?>
+                  <span class="border" onclick="scrollToId('reviewsSectionHeader')"><?= $reviewsData['num_reviews'] ?> <?= $page->helper->numberChoice($reviewsData['num_reviews'], array('отзыв', 'отзыва', 'отзывов')) ?></span>
+              <? } else { ?>
+                  <span>Отзывов нет</span>
+              <? } ?>
+              <span class="reviewSection__link__write newReviewPopupLink" data-pid="<?= $product->getId() ?>">Оставить отзыв</span>
+              <div class="hf" id="reviewsProductName"><?= $product->getName() ?></div>
+          </div>
+          <div style="position:fixed; top:40px; left:50%; margin-left:-442px; z-index:1002; display:none; width:700px; height:480px" class="reviewPopup popup clearfix">
+              <a class="close" href="#">Закрыть</a>
+              <iframe id="rframe" frameborder="0" scrolling="auto" height="480" width="700"></iframe>
+          </div>
+      </div>
+  <? endif ?>
+
   <? if (!$product->getIsBuyable() && $user->getRegion()->getHasTransportCompany()): ?>
     <? if (\App::config()->product['globalListEnabled'] && (bool)$product->getNearestCity()): ?>
         <?= $page->render('jewel/product/_nearestCity', ['product' => $product]) ?>
@@ -647,6 +673,24 @@ $productVideo = reset($productVideos);
 
 <div class="clear pb25"></div>
 <? endif ?>
+
+
+<? if (\App::config()->product['reviewEnabled'] && $reviewsPresent): ?>
+  <h2 id="reviewsSectionHeader" class="bold">Обзоры и отзывы</h2>
+  <div class="line pb5"></div>
+  <div id="reviewsSummary">
+      <?= $page->render('product/_reviewsSummary', ['reviewsData' => $reviewsData, 'reviewsDataPro' => $reviewsDataPro, 'reviewsDataSummary' => $reviewsDataSummary, 'layout' => 'jewel']) ?>
+  </div>
+
+  <? if (!empty($reviewsData['review_list'])) { ?>
+    <div id="reviewsWrapper" class="reviewsWrapper" data-product-id="<?= $product->getId() ?>" data-page-count="<?= $reviewsData['page_count'] ?>" data-container="reviewsUser" data-reviews-type="user">
+  <? } elseif(!empty($reviewsDataPro['review_list'])) { ?>
+    <div id="reviewsWrapper" data-product-id="<?= $product->getId() ?>" data-page-count="<?= $reviewsDataPro['page_count'] ?>" data-container="reviewsPro" data-reviews-type="pro">
+  <? } ?>
+      <?= $page->render('product/_reviews', ['reviewsData' => $reviewsData, 'reviewsDataPro' => $reviewsDataPro, 'layout' => 'jewel']) ?>
+    </div>
+<? endif ?>
+
 
 <? if (!$showAccessoryUpper && count($product->getAccessoryId()) && \App::config()->product['showAccessories']): ?>
     <?= $page->render('jewel/product/_slider', ['product' => $product, 'productList' => array_values($accessories), 'totalProducts' => count($product->getAccessoryId()), 'itemsInSlider' => $accessoryCategory ? \App::config()->product['itemsInAccessorySlider'] : \App::config()->product['itemsInSlider'], 'page' => 1, 'title' => 'Аксессуары', 'url' => $page->url('product.accessory.jewel', array('productToken' => $product->getToken())), 'gaEvent' => 'Accessorize', 'showCategories' => (bool)$accessoryCategory, 'accessoryCategory' => $accessoryCategory, 'additionalData' => $additionalData]) ?>
