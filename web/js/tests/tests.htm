@@ -1,24 +1,27 @@
 <!DOCTYPE html>
 <link rel="stylesheet" href="./qunit.css">
 <script src="/js/tests/qunit.js"></script>
+<script src="/js/jquery-1.6.4.min.js"></script>
 <script src="/js/library.js"></script>
 <script>
 
 module('printPrice function')
 test("pricing 1234", function() {
     equal( printPrice(1234) , "1 234")
-    equal( printPrice(1234.3) , "1 234.30")
+    equal( printPrice(1234.3) , "1 234.3")
     equal( printPrice(1234.56) , "1 234.56")    
     equal( printPrice(12345) , "12 345")
     equal( printPrice(123456) , "123 456")
     equal( printPrice(1234567) , "1 234 567")
 })
+
 module('brwsr object')
 test("brwsr object", function() {
 	var br = new brwsr()
     equal( br.isAndroid , false, 'isAndroid')
     equal( br.isTouch , false, 'isTouch')
 })
+
 module('JSON object')
 test("JSON", function(){
 	var foo = {};  
@@ -28,6 +31,15 @@ test("JSON", function(){
 	equal( JSONfoo, '{"bar":"new property","baz":3}', 'stringify');
 	var backToJS = JSON.parse(JSONfoo);
 	deepEqual( foo, backToJS, 'parse')
+});
+
+module('isEmail method')
+test("JSON", function(){
+	equal( '123'.isEmail() , false, 'EMAIL is not email');
+	equal( 'EMAIL@'.isEmail() , false, 'EMAIL@ is not email');
+	equal( 'EMAIL@domen'.isEmail() , false, 'EMAIL@domen is not email');
+	equal( 'EMAIL@domen.'.isEmail() , false, 'EMAIL@domen. is not email');
+	equal( 'EMAIL@domen.ru'.isEmail() , true, 'EMAIL@domen.ru is email');
 });
 
 module('Cookie manager')

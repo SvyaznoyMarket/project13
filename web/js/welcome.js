@@ -6,49 +6,7 @@ $(document).ready(function () {
             _gaq.push(['_trackEvent', 'CategoryClick', 'Верхнее меню', link ])
     })
     
-	/* admitad */
-	if( document.location.search.match(/admitad_uid/) ) {
-		var url_s = parse_url( document.location.search )
-		docCookies.setItem( false, "admitad_uid", url_s.admitad_uid, 31536e3, '/') // 31536e3 == one year
-	}
 
-	/* sclub card number */
-	if( document.location.search.match(/scid/) ) {
-		var url_s = parse_url( document.location.search )
-		docCookies.setItem( false, "scId", url_s.scid, 31536e3, '/') // 31536e3 == one year
-	}
-    
-    var shortinfo = '/user/shortinfo'
-    if( !docCookies.hasItem('enter') ||  !docCookies.hasItem('enter_auth'))
-        shortinfo += '?ts=' + new Date().getTime() + Math.floor(Math.random() * 1000)
-    if( $('#topBasket') ) {
-        $.getJSON( shortinfo, function(data) {
-            if( data.success ) {
-                if (data.data.vitems>0) {
-                    $('#topBasket').text( '('+data.data.vitems+')' )
-                }
-                if( data.data.name ) {
-                    var dtmpl={}
-                    dtmpl.user = data.data.name
-                    var show_user = tmpl('auth_tmpl', dtmpl)
-                    $('#auth-link').hide()
-                    $('#auth-link').after(show_user)
-                } else $('#auth-link').show()
-            }
-        })
-    }
-
-    /* Search */
-    $('.startse').bind({
-        'blur':function () {
-            if (this.value == '')
-                this.value = 'Поиск среди 30 000 товаров'
-        },
-        'focus':function () {
-            if (this.value == 'Поиск среди 30 000 товаров')
-                this.value = ''
-        }
-    })
     if (!$('#main_banner-data').length)
         return
     var promos = $('#main_banner-data').data('value')
