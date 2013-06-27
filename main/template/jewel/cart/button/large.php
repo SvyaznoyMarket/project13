@@ -10,7 +10,7 @@
 if ($disabled) {
     $url = '#';
 } else {
-    $url = $page->url('old.cart.product.add', array('productId' => $product->getId()));
+    $url = $page->url('cart.product.add', array('productId' => $product->getId()));
 }
 $btnText = \App::user()->getCart()->hasProduct($product->getId()) ? 'В корзине' : 'Купить';
 ?>
