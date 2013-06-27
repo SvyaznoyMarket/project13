@@ -240,14 +240,14 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
             <div class="reviewSection reviewSection100 clearfix">
                 <div class="reviewSection__link">
                     <div class="reviewSection__star reviewSection100__star">
-                        <img src="/images/reviews_star.png">
-                        <img src="/images/reviews_star.png">
-                        <img src="/images/reviews_star.png">
-                        <img src="/images/reviews_star.png">
-                        <img src="/images/reviews_star_empty.png">
+                        <? $avgStarScore = empty($reviewsData['avg_star_score']) ? 0 : $reviewsData['avg_star_score'] ?>
+                        <?= empty($avgStarScore) ? '' : $page->render('product/_starsFive', ['score' => $avgStarScore]) ?>
                     </div>
-
-                    <span class="border" onclick="scrollToId('reviewsSectionHeader')">13 отзывов</span>
+                    <? if (!empty($avgStarScore)) { ?>
+                        <span class="border" onclick="scrollToId('reviewsSectionHeader')"><?= $reviewsData['num_reviews'] ?> <?= $page->helper->numberChoice($reviewsData['num_reviews'], array('отзыв', 'отзыва', 'отзывов')) ?></span>
+                    <? } else { ?>
+                        <span>Отзывов нет</span>
+                    <? } ?>
                     <span class="reviewSection__link__write newReviewPopupLink" data-pid="productid">Оставить отзыв</span>
                     <div class="hf" id="reviewsProductName">Смартфон HTC One S черный</div>
                 </div>
@@ -333,7 +333,7 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
     <? $groupedProperties = $product->getGroupedProperties() ?>
     <div class="bSpecifications">
     <? foreach ($groupedProperties as $key => $group): ?>
-    <? if (!(bool)$group['properties']) continue ?>
+        <? if (!(bool)$group['properties']) continue ?>
 
         <div class="bSpecifications__eHead"><?= $group['group']->getName() ?></div>
         <dl class="bSpecifications__eList clearfix">
@@ -356,6 +356,22 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
         </dl>
     <? endforeach ?>
     </div><!--/product specifications section -->
+
+    <? if (\App::config()->product['reviewEnabled'] && $reviewsPresent): ?>
+        <h2 id="reviewsSectionHeader" class="bold">Обзоры и отзывы</h2>
+        <div class="line pb5"></div>
+        <div id="reviewsSummary">
+            <?= $page->render('product/_reviewsSummary', ['reviewsData' => $reviewsData, 'reviewsDataPro' => $reviewsDataPro, 'reviewsDataSummary' => $reviewsDataSummary]) ?>
+        </div>
+
+        <? if (!empty($reviewsData['review_list'])) { ?>
+            <div id="reviewsWrapper" class="reviewsWrapper" data-product-id="<?= $product->getId() ?>" data-page-count="<?= $reviewsData['page_count'] ?>" data-container="reviewsUser" data-reviews-type="user">
+        <? } elseif(!empty($reviewsDataPro['review_list'])) { ?>
+        <div id="reviewsWrapper" data-product-id="<?= $product->getId() ?>" data-page-count="<?= $reviewsDataPro['page_count'] ?>" data-container="reviewsPro" data-reviews-type="pro">
+            <? } ?>
+        <?= $page->render('product/_reviews', ['reviewsData' => $reviewsData, 'reviewsDataPro' => $reviewsDataPro]) ?>
+        </div>
+     <? endif ?>
 
 
     <? if (!$product->getIsBuyable() && $product->getState()->getIsShop()  && \App::config()->smartengine['pull']): ?>
