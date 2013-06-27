@@ -126,7 +126,7 @@ $productVideo = reset($productVideos);
       'width'=>'700px',
       'height'=>'500px',
       'version'=>'10.0.0',
-      'install'=>'js/expressInstall.swf',
+      'install'=>'js/vendor/expressInstall.swf',
     ],
     'params' => [
       'menu'=> "false",

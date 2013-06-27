@@ -10,32 +10,29 @@
  */
 ?>
 
-<?php
-if (empty($view)) {
-    $view = 'default';
+<?
+if (!isset($class)) {
+    $class = '';
 }
 
 if (empty($quantity)) {
     $quantity = 1;
 }
 
+if (empty($value)) $value = 'Купить';
+
 $disabled = !$product->getIsBuyable();
-
-$gaEvent = !empty($gaEvent) ? $gaEvent : null;
-$gaTitle = !empty($gaTitle) ? $gaTitle : null;
-
 if ($disabled) {
     $url = '#';
 } else {
-    $url = $page->url('cart.product.add', array('productId' => $product->getId())).($page->hasGlobalParam('sender')?(false === strpos($product->getLink(), '?') ? '?' : '&') . 'sender='.$page->getGlobalParam('sender').'|'.$product->getId():'');
+    $urlParams = [
+        'productId' => $product->getId(),
+    ];
+    if ($page->hasGlobalParam('sender')) {
+        $urlParams['sender'] = $page->getGlobalParam('sender') . '|' . $product->getId();
+    }
+    $url = $page->url('cart.product.add', $urlParams);
 }
-
-if (empty($value)) $value = 'Купить';
-
-$productData = [
-    'id'           => $product->getId(),
-    'mainCategory' => $product->getMainCategory() ? ['id' => $product->getMainCategory()->getId()] : null,
-];
 ?>
 
-<a href="<?= $url ?>"  data-ga-event="<?= $page->escape($gaEvent) ?>" data-ga-title="<?= $page->escape($gaTitle) ?>" data-product="<?= $page->json($productData) ?>" class="jsBuyButton<?php if ($disabled): ?> disabled<? endif ?><?php if ($gaEvent): ?> gaEvent<? endif ?>"><?= $value ?></a>
+<a href="<?= $url ?>" class="jsBuyButton<?php if ($disabled): ?> mDisabled<? endif ?><?php if ($class): ?> <?= $class ?><? endif ?>"><?= $value ?></a>
