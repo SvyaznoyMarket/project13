@@ -321,21 +321,18 @@ $(document).ready(function(){
     }
     $('.gaEvent').bind('click', gaClickCounter )
 
-    /* admitad */
-	if( document.location.search.match(/admitad_uid/) ) {
-		var url_s = parse_url( document.location.search )
-		docCookies.setItem( false, "admitad_uid", url_s.admitad_uid, 31536e3, '/') // 31536e3 == one year
-	}
 
-	/* Jira */
+
+	/**
+	 * JIRA
+	 */
 	$.ajax({
 	    url: "https://jira.enter.ru/s/en_US-istibo/773/3/1.2.4/_/download/batch/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector.js?collectorId=2e17c5d6",
 	    type: "get",
 	    cache: true,
 	    dataType: "script"
 	});
-
-	 window.ATL_JQ_PAGE_PROPS =  {
+	window.ATL_JQ_PAGE_PROPS =  {
 		"triggerFunction": function(showCollectorDialog) {
 			$("#jira").click(function(e) {
 				e.preventDefault()
@@ -343,12 +340,7 @@ $(document).ready(function(){
 			})
 		}
 	}
-
-	/* sclub card number */
-	if( document.location.search.match(/scid/) ) {
-		var url_s = parse_url( document.location.search )
-		docCookies.setItem( false, "scId", url_s.scid, 31536e3, '/') // 31536e3 == one year
-	}
+	
 	
 	/* mobile fix for Lbox position='fixed' */
 	var clientBrowser = new brwsr()
@@ -383,6 +375,7 @@ $(document).ready(function(){
 		}
 
 	} // isAndroid || isOSX4
+
 
 	/* Authorization process */
 	$('.open_auth-link').bind('click', function(e) {
@@ -550,23 +543,7 @@ $(document).ready(function(){
 
 		return false;
 	})
-	/* RETIRED
-	$('#reset-pwd-key-form').submit(function(){
-		var form = $(this);
-		form.find('.error_list').html('');
-		$.post(form.prop('action'), form.serializeArray(), function(resp){
-			if (resp.success == true) {
-				$('#reset-pwd-form').hide();
-				$('#reset-pwd-key-form').hide();
-				$('#login-form').show();
-				alert('Новый пароль был вам выслан по почте или смс');
-			} else {
-				form.find('.error_list').html('Вы ввели неправильный ключ');
-			}
-		}, 'json');
-		return false;
-	})	
-	*/
+
 	
 	/* Infinity scroll */
 	var ableToLoad = true
@@ -673,38 +650,15 @@ $(document).ready(function(){
 		if( docCookies.hasItem( 'infScroll' ) )
 			$('div.allpager:first').trigger('click')
 	}
-	
-	/* AJAX */
-	$('body').append('<div style="display:none"><img src="/images/error_ajax.gif" alt=""/></div>')
-	var errorpopup = function( txt ) {
-	var block =	'<div id="ajaxerror" class="popup">' +
-					'<i class="close" title="Закрыть">Закрыть</i>' +
-					'<div class="popupbox width650 height170">' +
-						'<h2 class="pouptitle">Непредвиденная ошибка</h2><div class="clear"></div>' +
-						'<div class="fl"><div class="font16 pb20 width345"> Что-то произошло, но мы постараемся это починить :) Попробуйте повторить ваше последнее действие еще раз.<br/>' +
-						'Причина ошибки: ' + txt + ' </div></div>' +
-						'<div class="clear"></div><div style="position:absolute; right:30px; top: 20px; margin-bottom:20px;"><img src="/images/error_ajax.gif" width="" height="" alt=""/></div>' +
-					'</div>' +
-				'</div>	'
-		$('body').append( $(block) )
-		$('#ajaxerror').lightbox_me({
-		  centered: true,
-		  onClose: function(){
-		  		$('#ajaxerror').remove()
-		  	}
-		})
-	}
-	/* RETIRED
-	$.ajaxPrefilter(function( options ) {
-		if( !options.url.match('search') )
-			options.url += '?ts=' + new Date().getTime()
-	})
 
-	$('body').ajaxError(function(e, jqxhr, settings, exception) {
-		$('#ajaxerror div.fl').append('<small>'+ settings.url.replace(/(.*)\?ts=/,'')+'</small>')
-	})
-	*/
-	logError = function(data) {
+	
+	/**
+	 * Логирование данных с клиента на сервер
+	 * https://wiki.enter.ru/pages/viewpage.action?pageId=11239960
+	 * 
+	 * @param  {Object} data данные отсылаемы на сервер
+	 */
+	window.logError = function(data) {
         if (data.ajaxUrl !== '/log-json') {
             $.ajax({
                 type: 'POST',
@@ -714,6 +668,10 @@ $(document).ready(function(){
             })
         }
 	}
+
+	/**
+	 * Общие настройки AJAX
+	 */
 	$.ajaxSetup({
 		timeout: 10000,
 		statusCode: {
@@ -936,7 +894,7 @@ $(document).ready(function(){
   		var sliderLeft = parseInt($('.popupRegion .regionSlides').css('left'))
   		$('.popupRegion .leftArr').show()
   		$('.popupRegion .regionSlides').animate({'left':sliderLeft-regionSlideW})
-			if ((sliderLeft-(regionSlideW*2)) <= -sliderW){
+		if ((sliderLeft-(regionSlideW*2)) <= -sliderW){
   			$('.popupRegion .rightArr').hide()
   		}
   	})
@@ -983,61 +941,7 @@ $(document).ready(function(){
 		$(this).parent().find('.hf').slideUp()
 		$(this).html('еще...')
 	})
-	
-	/* search tags */
-	if( $('#plus10').length ) {
-		if( $('#filter_product_type-form li').length < 10 )
-			$('#plus10').hide()
-		else
-			$('#plus10').html( 'еще '+ ($('#filter_product_type-form .hf').length % 10 + 1) +' из ' + $('#filter_product_type-form li').length )
-		$('#plus10').click( function(){
-			$('#filter_product_type-form .hf').slice(0,10).removeClass('hf')
-			if ( !$('#filter_product_type-form .hf').length )
-				$(this).parent().hide()
-			return false
-		})
-	}
-	
-	/* Search */
-	// $('input:[name="q"]').bind(
-	// 	{
-	// 		'focusin': function() {
-	// 			if ( $(this).val() == 'Поиск среди 30 000 товаров' ) $(this).val( '' );
-	// 		},
-	// 		'blur': function() {
-	// 			if ( $(this).val() == '' ) $(this).val( 'Поиск среди 30 000 товаров' );
-	// 		}
-	// 	}
-	// )
-	
-	// $('.search-form').bind('submit', function(e) {
-	// 	// e.preventDefault()
-	// 	var form = $(this)
-	// 	if (form.find('input:[name="q"]').val().length < 2)
-	// 		return false
-	// 	if( form.find('input:[name="q"]').val() === 'Поиск среди 30 000 товаров' )
-	// 		return false
-	// 	// var wholemessage = form.serializeArray()
-	// 	// function getSearchResults( response ) {
-	// 	// 		if( response.success ) {
-	// 	// 			form.unbind('submit')
-	// 	// 			form.submit()
-	// 	// 		} else {
-	// 	// 			var el = $(response.data.content)
-	// 	// 			el.appendTo('body')
-	// 	// 			$('#search_popup-block').lightbox_me({
-	// 	// 				centered: true//,
-	// 	// 				//onLoad: function() { $(this).find('input:first').focus() }
-	// 	// 			})
-	// 	// 		}
-	// 	// }
-	// 	// $.ajax({
-	// 	// 	type: 'GET',
-	// 	// 	url: form.attr('action'),
-	// 	// 	data: wholemessage,
-	// 	// 	success: getSearchResults
-	// 	// })
-	// })
+
 
 	$('.bCtg__eMore').bind('click', function(e) {
 		e.preventDefault()
@@ -1223,7 +1127,6 @@ $(document).ready(function(){
 	
     $(".goodsbar .link1").bind( 'click.css', function()   {
         $(this).addClass("link1active")
-        $(this).html('В корзине')
     })
 
     $(".goodsbarbig .link1").bind( 'click.css', function()   {
@@ -1233,245 +1136,6 @@ $(document).ready(function(){
     })
 
 
-	/* Top Menu */
-	var hoverMainMenu = false
-	var checkedItem = null
-	var pointA = {
-		x: 0,
-		y: 0
-	}
-	var pointB = {
-		x: 0,
-		y: 0
-	}
-	var pointC = {
-		x: 0,
-		y: 0
-	}
-	var cursorNow = {
-		x: 0,
-		y: 0
-	}
-
-	/**
-	 * Получение площади треугольника по координатам вершин
-	 * 
-	 * @param {object} A      верхняя вершина треугольника
-	 * @param {object} A.x    координата по оси x верхней вершины
-	 * @param {object} A.y    координата по оси y верхней вершины
-	 * 
-	 * @param {object} B      левая вершина треугольника
-	 * @param {object} B.x    координата по оси x левой вершины
-	 * @param {object} B.y    координата по оси y левой вершины
-	 * 
-	 * @param {object} C      правая вершина треугольника
-	 * @param {object} C.x    координата по оси x правой вершины
-	 * @param {object} A.y    координата по оси y правой вершины
-	 *
-	 * @return {number} S площадь треульника
-	 *
-	 * @see <a href="http://ru.wikipedia.org/wiki/%D0%A4%D0%BE%D1%80%D0%BC%D1%83%D0%BB%D0%B0_%D0%93%D0%B5%D1%80%D0%BE%D0%BD%D0%B0">Формула Герона</a>
-	 */
-	getTriangleS = function(A, B, C){
-		// получение длинн сторон треугольника
-		var AB = Math.sqrt(Math.pow((A.x - B.x),2)+Math.pow((A.y - B.y),2))
-		var BC = Math.sqrt(Math.pow((B.x - C.x),2)+Math.pow((B.y - C.y),2))
-		var CA = Math.sqrt(Math.pow((C.x - A.x),2)+Math.pow((C.y - A.y),2))
-
-		// получение площади треугольника по формуле Герона
-		var p = (AB + BC + CA)/2
-		var S = Math.sqrt(p*(p-AB)*(p-BC)*(p-CA))
-
-		return S
-	}
-
-	/**
-	 * Проверка входит ли точка в треугольник.
-	 * Соединяем точку со всеми вершинами и считаем площадь маленьких треугольников.
-	 * Если она равна площади большого треугольника, то точка входит в треугольник. Иначе не входит.
-	 * 
-	 * @param  {object} now    координаты точки, которую необходимо проверить
-	 * 
-	 * @param  {object} A      верхняя вершина большого треугольника
-	 * @param  {object} A.x    координата по оси x верхней вершины
-	 * @param  {object} A.y    координата по оси y верхней вершины
-	 * 
-	 * @param  {object} B      левая вершина большого треугольника
-	 * @param  {object} B.x    координата по оси x левой вершины
-	 * @param  {object} B.y    координата по оси y левой вершины
-	 * 
-	 * @param  {object} C      правая вершина большого треугольника
-	 * @param  {object} C.x    координата по оси x правой вершины
-	 * @param  {object} A.y    координата по оси y правой вершины
-	 * 
-	 * @return {boolean}       true - входит, false - не входит
-	 */
-	menuCheckTriangle = function(){
-		var res1 = (pointA.x-cursorNow.x)*(pointB.y-A.y)-(pointB.x-pointA.x)*(pointA.y-cursorNow.y)
-		var res2 = (pointB.x-cursorNow.x)*(pointC.y-pointB.y)-(pointC.x-pointB.x)*(pointB.y-cursorNow.y)
-		var res3 = (pointC.x-cursorNow.x)*(pointA.y-pointC.y)-(pointA.x-pointC.x)*(pointC.y-cursorNow.y)
-
-		if ((res1 >= 0 && res2 >= 0 && res3 >= 0)||
-			(res1 <= 0 && res2 <= 0 && res3 <= 0)){
-			console.info('принадлежит')
-			return true
-		}
-		else{
-			console.info('не принадлежит')
-			return false
-		}
-	}
-
-	/**
-	 * Отслеживание перемещения мыши по меню
-	 * @param  {event} e
-	 */
-	menuMove = function(e){
-		// console.info(e.currentTarget.nodeName)
-		// console.log('движение...')
-		cursorNow = {
-			x: e.pageX,
-			y: e.pageY
-		}
-	}
-
-	menuHoverOut = function(e){
-		var now = {
-			x: e.pageX,
-			y: e.pageY
-		}
-		console.log('убираем')
-		if (!menuCheckTriangle(now, pointA, pointB, pointC)){
-			$('.bMainMenuLevel-1__eItem').removeClass('hover')
-			hoverMainMenu = false
-			$(this).trigger('mouseenter')
-		}
-	}
-
-	activateItem = function(el){
-		console.log('activate')
-		checkedItem = el
-		el.addClass('hover')
-	}
-
-	createMenuTriangle = function(el){
-		// верхняя точка
-		pointA = {
-			x: cursorNow.x,
-			y: cursorNow.y
-		}
-		// левый угол
-		pointB = {
-			x: dropMenu.offset().left,
-			y: dropMenu.offset().top
-		}
-		// правый угол
-		pointC = {
-			x: dropMenu.offset().left + dropMenu.width(),
-			y: dropMenu.offset().top
-		}
-	}
-
-	checkItem = function(el){
-		console.log('checkedItem')
-		if (pointA.x == 0 && pointA.y == 0)
-			createMenuTriangle(el)
-		if (menuCheckTriangle()){
-			console.log('входит')
-			activateItem(el)
-		}
-		else{
-			console.log('не входит')
-			createMenuTriangle(el)
-			checkedItem.removeClass('hover')
-			checkedItem = el
-		}
-	}
-
-	/**
-	 * Обработчик наведения на элемент меню первого уровня
-	 */
-	menuHoverIn = function(){
-		console.log('handler')
-		if (this != checkedItem){
-			console.log('new hover')
-			checkItem(this)
-		}
-		
-	}
-
-	// $('.bMainMenuLevel-1__eItem').mouseenter(menuHoverIn)
-	// $(document).mousemove(menuMove)
-	
-
-	// header_v2
-	// $('.bMainMenuLevel-1__eItem').bind('mouseenter', function(){
-	// 	var menuLeft = $(this).offset().left
-	// 	var cornerLeft = menuLeft - $('#header').offset().left + ($(this).find('.bMainMenuLevel-1__eTitle').width()/2) - 11
-	// 	$(this).find('.bCorner').css({'left':cornerLeft})
-	// })
-
-	// header_v1
-	// if( $('.topmenu').length && !$('body#mainPage').length) {
-	// 	$.get('/category/main_menu', function(data){
-	// 		$('#header').append( data )
-	// 	})
-	// }
-
-	// var idcm          = null // setTimeout
-	// var currentMenu = 0 // ref= product ID
-	// function showList( self ) {	
-	// 	if(	$(self).data('run') ) {
-	// 		var dmenu = $(self).position().left*1 + $(self).width()*1 / 2 + 5
-	// 		var punkt = $( '#extramenu-root-'+ $(self).attr('id').replace(/\D+/,'') )
-	// 		if( punkt.length && punkt.find('dl').html().replace(/\s/g,'') != '' )
-	// 			punkt.show()//.find('.corner').css('left', dmenu)
-	// 	}
-	// }
-	// if( clientBrowser.isTouch ) {
-	// 	$('#header .bToplink').bind ('click', function(){
-	// 		if( $(this).data('run') )
-	// 			return true
-	// 		$('.extramenu').hide()	
-	// 		$('.topmenu a.bToplink').each( function() { $(this).data('run', false) } )
-	// 		$(this).data('run', true)
-	// 		showList( this )
-	// 		return false
-	// 	})
-	// } else {	
-	// 	$('#header .bToplink').bind( {
-	// 		'mouseenter': function() {
-	// 			$('.extramenu').hide()
-	// 			var self = this				
-	// 			$(self).data('run', true)
-	// 			currentMenu = $(self).attr('id').replace(/\D+/,'')
-	// 			var menuLeft = $(self).offset().left
-	// 			var cornerLeft = menuLeft-$('#header').offset().left+($('#topmenu-root-'+currentMenu+'').width()/2)-13
-	// 			$('#extramenu-root-'+currentMenu+' .corner').css({'left':cornerLeft})
-	// 			idcm = setTimeout( function() { showList( self ) }, 300)
-	// 		},
-	// 		'mouseleave': function() {
-	// 			var self = this
-	
-	// 			if(	$(self).data('run') ) {
-	// 				clearTimeout( idcm )
-	// 				$(self).data('run',false)
-	// 			}
-	// 			//currentMenu = 0
-	// 		}
-	// 	})
-	// }
-
-	// $(document).click( function(e){
-	// 	if (currentMenu) {
-	// 		if( e.which == 1 )
-	// 			$( '#extramenu-root-'+currentMenu+'').data('run', false).hide()
-	// 	}
-	// })
-
-	// $('.extramenu').click( function(e){
-	// 	e.stopPropagation()
-	// })
 	
 	/* ---- */
 	if( $('.error_list').length && $('.basketheader').length ) {

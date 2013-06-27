@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<checkstyle version="4.3">
+	<file name="../web/js/library.js">
+		<error line="786" column="25" severity="error" message="The Function constructor is a form of eval." source="jshint.W054" />
+		<error line="1620" column="13" severity="error" message="Confusing use of &apos;!&apos;." source="jshint.W018" />
+		<error line="1620" column="44" severity="error" message="Confusing use of &apos;!&apos;." source="jshint.W018" />
+		<error line="1987" column="6" severity="error" message="Missing semicolon." source="jshint.W033" />
+		<error line="1992" column="13" severity="error" message="Confusing use of &apos;!&apos;." source="jshint.W018" />
+		<error line="1992" column="56" severity="error" message="Confusing use of &apos;!&apos;." source="jshint.W018" />
+		<error line="2072" column="69" severity="error" message="Missing semicolon." source="jshint.W033" />
+		<error line="2133" column="5" severity="error" message="Mixed spaces and tabs." source="jshint.W099" />
+		<error line="2200" column="31" severity="error" message="A constructor name should start with an uppercase letter." source="jshint.W055" />
+		<error line="2237" column="19" severity="error" message="A constructor name should start with an uppercase letter." source="jshint.W055" />
+		<error line="2304" column="31" severity="error" message="Expected &apos;===&apos; and instead saw &apos;==&apos;." source="jshint.W116" />
+		<error line="2313" column="31" severity="error" message="Expected &apos;===&apos; and instead saw &apos;==&apos;." source="jshint.W116" />
+		<error line="2380" column="19" severity="error" message="Expected &apos;!==&apos; and instead saw &apos;!=&apos;." source="jshint.W116" />
+		<error line="2030" column="26" severity="error" message="&apos;tmpl&apos; is not defined." source="jshint.W117" />
+		<error line="2078" column="29" severity="error" message="&apos;tmpl&apos; is not defined." source="jshint.W117" />
+		<error line="2112" column="13" severity="error" message="&apos;action&apos; is not defined." source="jshint.W117" />
+		<error line="2113" column="13" severity="error" message="&apos;lboxCheckSubscribe&apos; is not defined." source="jshint.W117" />
+		<error line="2113" column="32" severity="error" message="&apos;action&apos; is not defined." source="jshint.W117" />
+		<error line="2200" column="31" severity="error" message="&apos;gigaimage&apos; is not defined." source="jshint.W117" />
+		<error line="2205" column="36" severity="error" message="&apos;lkmv&apos; is not defined." source="jshint.W117" />
+		<error line="2206" column="29" severity="error" message="&apos;lkmv&apos; is not defined." source="jshint.W117" />
+		<error line="2211" column="36" severity="error" message="&apos;lkmv&apos; is not defined." source="jshint.W117" />
+		<error line="2212" column="29" severity="error" message="&apos;lkmv&apos; is not defined." source="jshint.W117" />
+		<error line="2228" column="28" severity="error" message="&apos;lkmv&apos; is not defined." source="jshint.W117" />
+		<error line="2229" column="24" severity="error" message="&apos;lkmv&apos; is not defined." source="jshint.W117" />
+		<error line="2230" column="17" severity="error" message="&apos;lkmv&apos; is not defined." source="jshint.W117" />
+		<error line="2237" column="19" severity="error" message="&apos;gigaimage&apos; is not defined." source="jshint.W117" />
+		<error line="2243" column="24" severity="error" message="&apos;lkmv&apos; is not defined." source="jshint.W117" />
+		<error line="2244" column="17" severity="error" message="&apos;lkmv&apos; is not defined." source="jshint.W117" />
+		<error line="2248" column="24" severity="error" message="&apos;lkmv&apos; is not defined." source="jshint.W117" />
+		<error line="2249" column="17" severity="error" message="&apos;lkmv&apos; is not defined." source="jshint.W117" />
+		<error line="2322" column="9" severity="error" message="&apos;dc_getCreditForTheProduct&apos; is not defined." source="jshint.W117" />
+		<error line="2030,2078" column="0" severity="warning" message="Implied global &apos;tmpl&apos;" source="jshint.implied-globals" />
+		<error line="2112,2113" column="0" severity="warning" message="Implied global &apos;action&apos;" source="jshint.implied-globals" />
+		<error line="2113" column="0" severity="warning" message="Implied global &apos;lboxCheckSubscribe&apos;" source="jshint.implied-globals" />
+		<error line="2200,2237" column="0" severity="warning" message="Implied global &apos;gigaimage&apos;" source="jshint.implied-globals" />
+		<error line="2205,2206,2211,2212,2228,2229,2230,2243,2244,2248,2249" column="0" severity="warning" message="Implied global &apos;lkmv&apos;" source="jshint.implied-globals" />
+		<error line="2322" column="0" severity="warning" message="Implied global &apos;dc_getCreditForTheProduct&apos;" source="jshint.implied-globals" />
+		<error line="961" column="0" severity="warning" message="Unused variable: &apos;parse_url&apos;" source="jshint.implied-unuseds" />
+		<error line="1409" column="0" severity="warning" message="Unused variable: &apos;calcMCenter&apos;" source="jshint.implied-unuseds" />
+		<error line="1731" column="0" severity="warning" message="Unused variable: &apos;Lightbox&apos;" source="jshint.implied-unuseds" />
+		<error line="2158" column="0" severity="warning" message="Unused variable: &apos;ltbx&apos;" source="jshint.implied-unuseds" />
+		<error line="2160" column="0" severity="warning" message="Unused variable: &apos;mediaLib&apos;" source="jshint.implied-unuseds" />
+		<error line="2372" column="0" severity="warning" message="Unused variable: &apos;parseISO8601&apos;" source="jshint.implied-unuseds" />
+		<error line="163" column="0" severity="warning" message="Unused variable: &apos;cx&apos;" source="jshint.implied-unuseds" />
+		<error line="145" column="0" severity="warning" message="Unused variable: &apos;key&apos;" source="jshint.implied-unuseds" />
+		<error line="158" column="0" severity="warning" message="Unused variable: &apos;key&apos;" source="jshint.implied-unuseds" />
+		<error line="599" column="0" severity="warning" message="Unused variable: &apos;a&apos;" source="jshint.implied-unuseds" />
+		<error line="914" column="0" severity="warning" message="Unused variable: &apos;e&apos;" source="jshint.implied-unuseds" />
+		<error line="1050" column="0" severity="warning" message="Unused variable: &apos;i&apos;" source="jshint.implied-unuseds" />
+		<error line="1060" column="0" severity="warning" message="Unused variable: &apos;i&apos;" source="jshint.implied-unuseds" />
+		<error line="1085" column="0" severity="warning" message="Unused variable: &apos;h&apos;" source="jshint.implied-unuseds" />
+		<error line="1153" column="0" severity="warning" message="Unused variable: &apos;infoWindow&apos;" source="jshint.implied-unuseds" />
+		<error line="1154" column="0" severity="warning" message="Unused variable: &apos;positionC&apos;" source="jshint.implied-unuseds" />
+		<error line="1156" column="0" severity="warning" message="Unused variable: &apos;currMarker&apos;" source="jshint.implied-unuseds" />
+		<error line="1158" column="0" severity="warning" message="Unused variable: &apos;infoWindowTemplate&apos;" source="jshint.implied-unuseds" />
+		<error line="1194" column="0" severity="warning" message="Unused variable: &apos;handlers&apos;" source="jshint.implied-unuseds" />
+		<error line="1160" column="0" severity="warning" message="Unused variable: &apos;marker&apos;" source="jshint.implied-unuseds" />
+		<error line="1196" column="0" severity="warning" message="Unused variable: &apos;callback&apos;" source="jshint.implied-unuseds" />
+		<error line="1196" column="0" severity="warning" message="Unused variable: &apos;e&apos;" source="jshint.implied-unuseds" />
+		<error line="1214" column="0" severity="warning" message="Unused variable: &apos;i&apos;" source="jshint.implied-unuseds" />
+		<error line="1251" column="0" severity="warning" message="Unused variable: &apos;item&apos;" source="jshint.implied-unuseds" />
+		<error line="1400" column="0" severity="warning" message="Unused variable: &apos;marker&apos;" source="jshint.implied-unuseds" />
+		<error line="2111" column="0" severity="warning" message="Unused variable: &apos;startAction&apos;" source="jshint.implied-unuseds" />
+		<error line="2282" column="0" severity="warning" message="Unused variable: &apos;message&apos;" source="jshint.implied-unuseds" />
+	</file>
+	<file name="Gruntfile.js">
+	</file>
+</checkstyle>

@@ -31,16 +31,17 @@
 
 	if( typeof($LAB) === 'undefined' )
 		throw new Error( "Невозможно загрузить файлы JavaScript" )
+
 	function getWithVersion( flnm ) { 
-		if( typeof( filesWithVersion[''+flnm] ) !== 'undefined' ){
+		if( typeof( window.release['version']) !== 'undefined' ){
 			if( (!document.location.search.match(/jsdbg/))&&(!debug) ) {
-			flnm += '?' + filesWithVersion[''+flnm]
-			flnm = flnm.replace('js', 'min.js')
+			flnm += '?' + window.release['version'];
+			flnm = flnm.replace('js', 'min.js');
 			}	
 		} else {
 			flnm = flnm.replace('js', 'min.js')
-			if( typeof( filesWithVersion[''+flnm] ) !== 'undefined' ) {
-				flnm += '?' + filesWithVersion[''+flnm]
+			if( typeof( window.release['version'] ) !== 'undefined' ) {
+				flnm += '?' + window.release['version'];
 			}
 		}
 		return flnm
