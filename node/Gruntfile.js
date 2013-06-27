@@ -59,7 +59,7 @@ module.exports = function(grunt) {
 					reporterOutput: '../web/js/jsHintReport/report.xml',
 					force: true,
 				},
-				src: ['../web/js/library.js', 'Gruntfile.js'],
+				src: ['../web/js/dev/**/*.js', 'Gruntfile.js'],
 			},
 			options: {
 				"-W034": true,
@@ -188,14 +188,137 @@ module.exports = function(grunt) {
 				files: ['../web/css/*.less', '../web/css/**/*.less'],
 				tasks: ['less'],
 			},
-			bigjquery: {
-				files: ['../web/js/bigjquery/*.js'],
-				tasks: ['exec:compileBJ', 'uglify', 'exec:getVersion'],
+			partnerScripts: {
+				files: ['../web/js/partner/*.js'],
+				tasks: ['uglify:partnerScripts', 'connect', 'qunit', 'exec:getVersion'],
 			},
-			scripts: {
-				files: ['../web/js/*.js', '!../web/js/*.min.js', '!../web/js/combine.js'],
-				tasks: ['connect', 'qunit', 'jshint', 'uglify', 'exec:getVersion'],
+			vendorScripts: {
+				files: ['../web/js/vendor/*.js'],
+				tasks: ['uglify:vendorScripts', 'connect', 'qunit', 'exec:getVersion'],
 			},
+			cartJS:{
+				files: ['../web/js/dev/cart/*.js'],
+				tasks: ['uglify:cartJS', 'connect', 'qunit', 'exec:getVersion'],
+			},
+			commonJS:{
+				files: ['../web/js/dev/common/*.js'],
+				tasks: ['uglify:commonJS', 'connect', 'qunit', 'exec:getVersion'],
+			},
+			infopageJS:{
+				files: ['../web/js/dev/infopage/*.js'],
+				tasks: ['uglify:infopageJS', 'connect', 'qunit', 'exec:getVersion'],
+			},
+			jqueryPluginsJS:{
+				files: ['../web/js/dev/jquery-plugins/*.js'],
+				tasks: ['uglify:jqueryPluginsJS', 'connect', 'qunit', 'exec:getVersion'],
+			},
+			libraryJS:{
+				files: ['../web/js/dev/library/*.js'],
+				tasks: ['uglify:libraryJS', 'connect', 'qunit', 'exec:getVersion'],
+			},
+			mainJS:{
+				files: ['../web/js/dev/main/*.js'],
+				tasks: ['uglify:mainJS', 'connect', 'qunit', 'exec:getVersion'],
+			},
+			oneclickJS:{
+				files: ['../web/js/dev/oneclick/*.js'],
+				tasks: ['uglify:oneclickJS', 'connect', 'qunit', 'exec:getVersion'],
+			},
+			orderJS:{
+				files: ['../web/js/dev/order/*.js'],
+				tasks: ['uglify:orderJS', 'connect', 'qunit', 'exec:getVersion'],
+			},
+			orderNewJS:{
+				files: ['../web/js/dev/order-new/*.js'],
+				tasks: ['uglify:orderNewJS', 'connect', 'qunit', 'exec:getVersion'],
+			},
+			pandoraJS:{
+				files: ['../web/js/dev/pandora/*.js'],
+				tasks: ['uglify:pandoraJS', 'connect', 'qunit', 'exec:getVersion'],
+			},
+			portsJS:{
+				files: ['../web/js/dev/ports/*.js'],
+				tasks: ['uglify:portsJS', 'connect', 'qunit', 'exec:getVersion'],
+			},
+			productJS:{
+				files: ['../web/js/dev/product/*.js'],
+				tasks: ['uglify:productJS', 'connect', 'qunit', 'exec:getVersion'],
+			},
+			shopJS:{
+				files: ['../web/js/dev/shop/*.js'],
+				tasks: ['uglify:shopJS', 'connect', 'qunit', 'exec:getVersion'],
+			},
+			watch3dJS:{
+				files: ['../web/js/dev/watch3d/*.js'],
+				tasks: ['uglify:watch3dJS', 'connect', 'qunit', 'exec:getVersion'],
+			},
+		},
+
+
+		/**
+		 * Конкатенация файлов
+		 */
+		concat: {
+			options: {
+				separator: '\n \n \n/** \n * NEW FILE!!! \n' + ' */\n \n \n',
+			},
+			cartJS : {
+				src: ['../web/js/dev/cart/*.js'],
+				dest: '../web/js/prod/cart.js'
+			},
+			commonJS : {
+				src: ['../web/js/dev/common/*.js'],
+				dest: '../web/js/prod/common.js'
+			},
+			infopageJS : {
+				src: ['../web/js/dev/infopage/*.js'],
+				dest: '../web/js/prod/infopage.js'
+			},
+			jqueryPluginsJS : {
+				src: ['../web/js/dev/jquery-plugins/*.js'],
+				dest: '../web/js/prod/jquery-plugins.js'
+			},
+			libraryJS : {
+				src: ['../web/js/dev/library/*.js'],
+				dest: '../web/js/prod/library.js'
+			},
+			mainJS : {
+				src: ['../web/js/dev/main/*.js'],
+				dest: '../web/js/prod/main.js'
+			},
+			oneclickJS : {
+				src: ['../web/js/dev/oneclick/*.js'],
+				dest: '../web/js/prod/oneclick.js'
+			},
+			orderJS : {
+				src: ['../web/js/dev/order/*.js'],
+				dest: '../web/js/prod/order.js'
+			},
+			orderNewJS : {
+				src: ['../web/js/dev/order-new/*.js'],
+				dest: '../web/js/prod/order-new.js'
+			},
+			pandoraJS : {
+				src: ['../web/js/dev/pandora/*.js'],
+				dest: '../web/js/prod/pandora.js'
+			},
+			portsJS : {
+				src: ['../web/js/dev/ports/*.js'],
+				dest: '../web/js/prod/ports.js'
+			},
+			productJS : {
+				src: ['../web/js/dev/product/*.js'],
+				dest: '../web/js/prod/product.js'
+			},
+			shopJS : {
+				src: ['../web/js/dev/shop/*.js'],
+				dest: '../web/js/prod/shop.js'
+			},
+			watch3dJS : {
+				src: ['../web/js/dev/watch3d/*.js'],
+				dest: '../web/js/prod/watch3d.js'
+			},
+
 		},
 
 
@@ -205,22 +328,116 @@ module.exports = function(grunt) {
 		 * @link https://github.com/gruntjs/grunt-contrib-uglify
 		 */
 		uglify: {
-			scripts: {
-				options: {
-					// report : 'gzip',
-					// compress : true,
-				},
+			partnerScripts: {
 				files: [
 					{
 						expand: true,
-						cwd: '../web/js/',
-						src: jsFiles,
-						dest: '../web/js/',
+						cwd: '../web/js/partner/',
+						src: ['*.js'],
+						dest: '../web/js/prod/',
 						rename: function(destBase, destPath) {
 							return destBase + destPath.replace('js', 'min.js');
 						},
 					},
-				],
+				]
+			},
+
+			vendorScripts: {
+				files: [
+					{
+						expand: true,
+						cwd: '../web/js/vendor/',
+						src: ['*.js'],
+						dest: '../web/js/prod/',
+						rename: function(destBase, destPath) {
+							return destBase + destPath.replace('js', 'min.js');
+						},
+					},
+				]
+			},
+
+			cartJS: {
+				files: {
+					'../web/js/prod/cart.min.js': ['../web/js/dev/cart/*.js']
+				}
+			},
+
+			commonJS: {
+				files: {
+					'../web/js/prod/common.min.js': ['../web/js/dev/common/*.js']
+				}
+			},
+
+			infopageJS: {
+				files: {
+					'../web/js/prod/infopage.min.js': ['../web/js/dev/infopage/*.js']
+				}
+			},
+
+			jqueryPluginsJS: {
+				files: {
+					'../web/js/prod/jquery-plugins.min.js': ['../web/js/dev/jquery-plugins/*.js']
+				}
+			},
+
+			libraryJS: {
+				files: {
+					'../web/js/prod/library.min.js': ['../web/js/dev/library/*.js']
+				}
+			},
+
+			mainJS: {
+				files: {
+					'../web/js/prod/main.min.js': ['../web/js/dev/main/*.js']
+				}
+			},
+
+			oneclickJS: {
+				files: {
+					'../web/js/prod/oneclick.min.js': ['../web/js/dev/oneclick/*.js']
+				}
+			},
+
+			orderJS: {
+				files: {
+					'../web/js/prod/order.min.js': ['../web/js/dev/order/*.js']
+				}
+			},
+
+			orderNewJS: {
+				files: {
+					'../web/js/prod/order-new.min.js': ['../web/js/dev/order-new/*.js']
+				}
+			},
+
+			pandoraJS: {
+				files: {
+					'../web/js/prod/pandora.min.js': ['../web/js/dev/pandora/*.js']
+				}
+			},
+
+			portsJS: {
+				files: {
+					'../web/js/prod/ports.min.js': ['../web/js/dev/ports/*.js']
+				}
+			},
+
+			productJS: {
+				files: {
+					'../web/js/prod/product.min.js': ['../web/js/dev/product/*.js']
+				}
+			},
+
+			shopJS: {
+				files: {
+					'../web/js/prod/shop.min.js': ['../web/js/dev/shop/*.js']
+				}
+			},
+
+			watch3dJS: {
+				files: {
+					'../web/js/prod/watch3d.min.js': ['../web/js/dev/watch3d/*.js']
+				}
 			},
 		}
 
@@ -232,6 +449,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-jshint');
 	grunt.loadNpmTasks('grunt-contrib-qunit');
 	grunt.loadNpmTasks('grunt-contrib-connect');
+	grunt.loadNpmTasks('grunt-contrib-concat');
 	grunt.loadNpmTasks('grunt-exec');
 
 

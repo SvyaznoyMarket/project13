@@ -47,12 +47,11 @@
 		return flnm
 	}
 
-	var mapVendor = 'yandex'
+	var mapVendor = 'yandex';
 
-	$LAB.setGlobalDefaults({ AllowDuplicates: true, AlwaysPreserveOrder:true, UseLocalXHR:false, BasePath:"/js/"})
-	.queueScript('combine.js')
-	// .queueScript('jquery-1.6.4.min.js')
-	.queueScript('/js/asyn.code.ver3.js')	
+	$LAB.setGlobalDefaults({ AllowDuplicates: true, AlwaysPreserveOrder:true, UseLocalXHR:false, BasePath:"/js/prod/"})
+	.queueScript('/js/combine.js')
+	.script('adfox.asyn.code.ver3.min.js')
 	.queueWait( function(){
 		document.write = function(){
 /*			if( arguments[0].match('javascript') )
@@ -72,11 +71,11 @@
 		case 'main':
 			$LAB.queueWait( function() {
 				$LAB
-				.script( getWithVersion('bigjquery.js') )
+				.script( getWithVersion('jquery-plugins.js') )
 				.script( getWithVersion('library.js') )
 				.wait()
+				.script(getWithVersion('common.js'))
 				.script(getWithVersion('main.js'))
-				.script(getWithVersion('welcome.js'))
 				.wait()
 				.script( getWithVersion('ports.js') )
 				.script('//cdn.optimizely.com/js/204544654.js')
@@ -87,13 +86,12 @@
 		case 'infopage':
 			$LAB.queueWait( function() {
 				$LAB
-				.script( getWithVersion('bigjquery.js') )
+				.script( getWithVersion('jquery-plugins.js') )
 				.script( getWithVersion('library.js') )
 				.wait()
-				.script(getWithVersion('main.js'))
+				.script(getWithVersion('common.js'))
 				.wait()
-				.script( getWithVersion('dash.js') )
-				.script( getWithVersion('infopages.js') )
+				.script( getWithVersion('infopage.js') )
 				.wait()
 				.script( getWithVersion('ports.js') )
 				.script('//cdn.optimizely.com/js/204544654.js')
@@ -102,15 +100,13 @@
 		case 'cart':
 			$LAB.queueWait( function() {
 				$LAB
-				.script( getWithVersion('bigjquery.js') )
+				.script( getWithVersion('jquery-plugins.js') )
                 .script( getWithVersion('library.js') )
-				.script( 'JsHttpRequest.js' )
                 .script( 'http://direct-credit.ru/widget/api_script_utf.js' )
 				.wait()
-				.script(getWithVersion('main.js'))
+				.script(getWithVersion('common.js'))
 				.wait()
-				.script(getWithVersion('dash.js'))
-				.script(getWithVersion('app.cart.js'))
+				.script(getWithVersion('cart.js'))
 				.wait()
 				.script( getWithVersion('ports.js') )
 				.script('//cdn.optimizely.com/js/204544654.js')
@@ -122,20 +118,19 @@
             .queueScript('http://ajax.aspnetcdn.com/ajax/knockout/knockout-2.2.1.js')
 			.queueWait( function() {
 				$LAB
-				.script( getWithVersion('bigjquery.js') ).script( getWithVersion('library.js') )
-				// .script('shelf/jquery.mockjax.js')	
-				.script( 'JsHttpRequest.js' )                
+				.script( getWithVersion('jquery-plugins.js') ).script( getWithVersion('library.js') )
+				// .script('shelf/jquery.mockjax.js')	               
                 .script( 'http://direct-credit.ru/widget/api_script_utf.js' )
 				.wait()
-				.script(getWithVersion('app.order.v4.js'))
-				.script(getWithVersion('main.js'))
+				.script(getWithVersion('order-new.js'))
+				.script(getWithVersion('common.js'))
 				.wait()
 				.script( getWithVersion('ports.js') )			
 				.script('//cdn.optimizely.com/js/204544654.js')
 			}).runQueue()
 			break
 		case 'order_complete':
-			$LAB.queueScript('bigjquery.min.js')
+			$LAB.queueScript('jquery-plugins.min.js')
 				.queueWait( function() {
 				$LAB
 				.script( getWithVersion('library.js') )
@@ -145,8 +140,8 @@
     //             .script( 'http://direct-credit.ru/widget/script_utf.js' )
     //             .script( 'https://kupivkredit-test-fe.tcsbank.ru:8100/widget/vkredit.js' )
 				.wait()
-				.script(getWithVersion('app.order.js'))
-				.script(getWithVersion('main.js'))
+				.script(getWithVersion('order.js'))
+				.script(getWithVersion('common.js'))
 				.wait()
 				.script( getWithVersion('ports.js') )
 				.script('//cdn.optimizely.com/js/204544654.js')
@@ -155,11 +150,11 @@
         case 'order_error':
         	$LAB.queueWait( function() {
 				$LAB
-				.script( getWithVersion('bigjquery.js') )
+				.script( getWithVersion('jquery-plugins.js') )
 				.script( getWithVersion('library.js') )
 				.wait()
-				.script(getWithVersion('app.order.js'))
-				.script( getWithVersion('main.js') )
+				.script(getWithVersion('order.js'))
+				.script( getWithVersion('common.js') )
 				.wait()
 				.script('//cdn.optimizely.com/js/204544654.js')
 			}).runQueue()
@@ -167,15 +162,12 @@
 		case 'product_catalog':
 			$LAB.queueWait( function() {
 				$LAB
-				.script( getWithVersion('bigjquery.js') )
+				.script( getWithVersion('jquery-plugins.js') )
 				.script( getWithVersion('library.js') )
 				.wait()
-				.script( getWithVersion('main.js') )
-				.wait()
-				.script( getWithVersion('dash.js') )
+				.script( getWithVersion('common.js') )
 				.wait()
 				.script( getWithVersion('ports.js') )
-				.script( 'adfox.asyn.code.ver3.js' )
                 .wait()
                 .script( getWithVersion('jewel.category.leaf.js') )
                 .script('//cdn.optimizely.com/js/204544654.js')
@@ -186,41 +178,22 @@
 			.queueScript( (mapVendor==='yandex') ? 'http://api-maps.yandex.ru/2.0/?load=package.full&lang=ru-RU' : 'http://maps.google.com/maps/api/js?sensor=false' )
 			.queueWait( function() {
 				$LAB
-				.script( getWithVersion('bigjquery.js') )
+				.script( getWithVersion('jquery-plugins.js') )
 				.script( getWithVersion('library.js') )
 				.wait()
-                .script( 'JsHttpRequest.js' )
+                .script( 'JsHttpRequest.min.js' )
                 //.script( 'http://direct-credit.ru/widget/dc_script_utf.js' )				
                 .script( 'http://direct-credit.ru/widget/api_script_utf.js' )
-				.script( getWithVersion('main.js') )
+				.script( getWithVersion('common.js') )
 				.wait()
-				.script( getWithVersion('dash.js') )
-				.script( 'watch3dv2.min.js' )
-				.script( 'swfobject.js' ) // maybe 3d
+				.script( getWithVersion('watch3d.min.js') )
+				.script( 'swfobject.min.js' ) // maybe 3d
                 .script( getWithVersion('DAnimFramePlayer.js') ) // 3d furniture
                 .script( getWithVersion('KupeConstructorScript.js') ) // furniture constuctor
                 .script( getWithVersion('three.js') ) // furniture constuctor
 				.wait()
-				.script( getWithVersion('app.product.js') )
-				.script( getWithVersion('app.oneclick.js') )
-				.wait()
-				.script( getWithVersion('ports.js') )
-				.script('//cdn.optimizely.com/js/204544654.js')
-			}).runQueue()
-			break
-		case 'product_comment':
-			$LAB.queueWait( function() {
-				$LAB
-				.script( getWithVersion('bigjquery.js') )
-				.script( getWithVersion('library.js') )
-				.wait()
-				.script( getWithVersion('main.js') )
-				.wait()
-				.script( getWithVersion('dash.js') )
-				.script( 'watch3dv2.min.js' )
-				.wait()
-				.script( getWithVersion('app.product.js') )
-				.script( getWithVersion('app.product.comment.list.js') )
+				.script( getWithVersion('product.js') )
+				.script( getWithVersion('oneclick.js') )
 				.wait()
 				.script( getWithVersion('ports.js') )
 				.script('//cdn.optimizely.com/js/204544654.js')
@@ -229,10 +202,10 @@
 		case 'service':
 			$LAB.queueWait( function() {
 				$LAB
-				.script( getWithVersion('bigjquery.js') )
+				.script( getWithVersion('jquery-plugins.js') )
 				.script( getWithVersion('library.js') )
 				.wait()
-				.script( getWithVersion('main.js') )
+				.script( getWithVersion('common.js') )
 				.wait()
 				.script( getWithVersion('dash.js') )
 				.wait()
@@ -245,10 +218,10 @@
 			.queueScript( (mapVendor==='yandex') ? 'http://api-maps.yandex.ru/2.0/?load=package.full&lang=ru-RU' : 'http://maps.google.com/maps/api/js?sensor=false' )
 			.queueWait( function() {
 				$LAB
-				.script( getWithVersion('bigjquery.js') ).script( getWithVersion('library.js') )
+				.script( getWithVersion('jquery-plugins.js') ).script( getWithVersion('library.js') )
 				.wait()
-				.script( getWithVersion('app.shop.js') )
-				.script( getWithVersion('main.js') )
+				.script( getWithVersion('shop.js') )
+				.script( getWithVersion('common.js') )
 				.wait()
 				.script( getWithVersion('dash.js') )
 				.script('tour.js')
@@ -264,15 +237,15 @@
 			.queueScript('http://ajax.aspnetcdn.com/ajax/knockout/knockout-2.2.1.js')
 			.queueWait( function() {
 				$LAB
-				.script( getWithVersion('bigjquery.js') )
+				.script( getWithVersion('jquery-plugins.js') )
 				.script( getWithVersion('library.js') )
 				.wait()
-				.script( getWithVersion('main.js') )
+				.script( getWithVersion('common.js') )
 				.wait()
 				.script( getWithVersion('dash.js') )
 				.wait()
-				.script( getWithVersion('app.product.js') )
-				.script( getWithVersion('app.oneclick.js') )
+				.script( getWithVersion('product.js') )
+				.script( getWithVersion('oneclick.js') )
 				.wait()
 				.script( getWithVersion('ports.js') )
 				.script('//cdn.optimizely.com/js/204544654.js')
