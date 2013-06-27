@@ -10927,7 +10927,7 @@
     padding-bottom: 5px;
   }
   .brandSectionPandora__product .buy1click {
-    margin-right: 43px;
+    margin-right: 0px;
   }
   .brandSectionPandora__product .rubrictitle h3 {
     font-weight: normal;
@@ -10969,7 +10969,7 @@
     font-weight: bold;
   }
   .brandSectionPandora__product .product-desc__buy.goodsbarbig.mSmallBtns .cart-add {
-    float: left;
+    float: right;
     display: block;
     background: #000;
     width: 125px;
@@ -11167,6 +11167,25 @@
   }
   .brandSectionPandora__product .product-desc .vitrin .listAvalShop li a {
     color: #6E6E6E;
+  }
+  body.jewel #reviewsWrapper {
+    border-bottom: 0;
+  }
+  body.jewel .reviewsBar {
+    background-color: #999;
+  }
+  body.jewel .reviewsBarBg {
+    background-color: #edecee;
+  }
+  body.jewel .popup {
+    border: 2px solid #000;
+  }
+  body.jewel .popup .close {
+    background: url("/css/pandoraPopups/img/closeBtnBlack.png") no-repeat 0 0;
+  }
+  div.submit input {
+    background: #444;
+    border: 1px solid #000;
   }
 }
 /*---END---СТИЛИ БРЕНД РАЗДЕЛА PANDORA---*/
