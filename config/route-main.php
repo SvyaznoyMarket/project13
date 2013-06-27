@@ -195,6 +195,11 @@ return [
         'action'  => ['ProductCategory\Action', 'category'],
         'require' => ['categoryPath' => '[\w\d-_]+\/[\w\d-_]+', 'brand' => '[\w\d-_]+'],
     ],
+    'product.category.brand.sliderInfinity' => [
+        'pattern' => '/catalog/{categoryPath}/{brandToken}/_sliderInfinity',
+        'action'  => ['ProductCategory\Action', 'category'],
+        'require' => ['categoryPath' => '[\w\d-_]+\/[\w\d-_]+', 'brand' => '[\w\d-_]+'],
+    ],
     // слайдер рекомендованных товаров
     'product.category.recommended.slider' => [
         'pattern' => '/ajax/catalog/{categoryPath}/_slider-recommended',
