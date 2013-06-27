@@ -2123,9 +2123,10 @@ BlackBox.prototype.init = function() {
 	 * @param	{Object} action Список действий которые необходимо выполнить
 	 * @private
 	 */
-	var startAction = function() {
+	var startAction = function(action) {
 		if (action.subscribe !== undefined) {
-			lboxCheckSubscribe(action.subscribe);
+			//  TODO: перевести action на события
+			// lboxCheckSubscribe(action.subscribe);
 		}
 	};
 
@@ -2144,10 +2145,6 @@ BlackBox.prototype.init = function() {
 
 		self.user().update(userInfo.name);
 
-		// if (userInfo.action !== undefined) {
-		// 	startAction(userInfo.action);
-		// }
-
 		if (userInfo.vitems !== 0) {
 			var nowBasket = {
 				cartQ: userInfo.vitems,
@@ -2155,6 +2152,10 @@ BlackBox.prototype.init = function() {
 			};
 
 			self.basket().update(nowBasket);
+		}
+
+		if (userInfo.action !== undefined) {
+			startAction(userInfo.action);
 		}
 	};
 
