@@ -317,42 +317,40 @@ return [
     ],
     // добавление товара в корзину
     'cart.product.add' => [
-        'pattern' => '/cart/add/{productId}/_quantity/{quantity}', // TODO: сделать поприличнее - '/cart/add-product/{productId}/{quantity}'
+        'pattern' => '/cart/add-product/{productId}',
         'action'  => ['Cart\ProductAction', 'set'],
     ],
     // удаление товара из корзины
     'cart.product.delete' => [
-        'pattern' => '/cart/delete/{productId}/_service', // TODO: сделать поприличнее - '/cart/delete-product/{productId}'
+        'pattern' => '/cart/delete-product/{productId}',
         'action'  => ['Cart\ProductAction', 'delete'],
-    ],
-    'old.cart.product.add' => [
-        'pattern' => '/cart/add/{productId}/_quantity', // TODO: Убить, когда полностью переедем на dark, переписать js с учетом наличия кол-ва
-        'action'  => ['Cart\ProductAction', 'set'],
     ],
     // добавление списка товаров в корзину
     'cart.product.setList' => [
         'pattern' => '/cart/set-products',
         'action'  => ['Cart\ProductAction', 'setList'],
     ],
-    // удаление услуги из корзины
-    'cart.service.delete' => [
-        'pattern' => '/cart/delete_service/{productId}/_service/{serviceId}',
-        'require' => ['productId' => '\d+', 'serviceId' => '\d+'],
-        'action'  => ['Cart\ServiceAction', 'delete'],
-    ],
     // добавление услуги в корзину
     'cart.service.add' => [
-        'pattern' => '/cart/add_service/{productId}/_service/{serviceId}/_quantity/{quantity}',
+        'pattern' => '/cart/add-service/{serviceId}/for-product/{productId}',
         'require' => ['productId' => '\d+', 'serviceId' => '\d+'],
         'action'  => ['Cart\ServiceAction', 'set'],
     ],
+    // удаление услуги из корзины
+    'cart.service.delete' => [
+        'pattern' => '/cart/delete-service/{serviceId}/for-product/{productId}',
+        'require' => ['productId' => '\d+', 'serviceId' => '\d+'],
+        'action'  => ['Cart\ServiceAction', 'delete'],
+    ],
+    // добавление гарантии в корзину
     'cart.warranty.set' => [
-        'pattern' => '/cart/warranty/{productId}/set/{warrantyId}/_quantity/{quantity}',
+        'pattern' => '/cart/add-warranty/{warrantyId}/for-product/{productId}/',
         'require' => ['productId' => '\d+', 'warrantyId' => '\d+'],
         'action'  => ['Cart\WarrantyAction', 'set'],
     ],
+    // удаление гарантии из корзины
     'cart.warranty.delete' => [
-        'pattern' => '/cart/warranty/{productId}/delete/{warrantyId}',
+        'pattern' => '/cart/delete-warranty/{warrantyId}/for-product/{productId}',
         'require' => ['productId' => '\d+', 'warrantyId' => '\d+'],
         'action'  => ['Cart\WarrantyAction', 'delete'],
     ],
