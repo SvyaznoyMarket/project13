@@ -19,13 +19,16 @@ $regionInflectedName = $user->getRegion()->getInflectedName(5);
 $categories = [];
 
 // включить в список категорию, если она не рутовая (root) и внутренняя (inner)
-if (!$category->isRoot() && $category->isBranch()) {
+// и страница не branch (например на главной пандоры саму пандору не включаем в список)
+if (!$category->isRoot() && $category->isBranch() && empty($isBranchPage)) {
     $categories[] = $category;
 }
 
 $parent = ($category->isRoot() || $category->isBranch()) ? null : $category->getParent();
+if(!empty($isBranchPage)) $parent = $category;
+
 $showMenu = false;
-if ($parent && !$parent->isRoot()) {
+if (!empty($catalogJson['show_branch_menu']) && ($parent && !$parent->isRoot() || !empty($isBranchPage))) {
     $showMenu = true;
     foreach ($parent->getChild() as $child) {
         $categories[] = $child;
@@ -37,11 +40,13 @@ if ($parent && !$parent->isRoot()) {
     <div class="brand-nav">
         <table class="brand-nav__list">
             <tr>
-                <td><a href="<?= $category->getParent()->getLink() ?>"><span><?= $page->helper->getCategoryLogoOrName($catalogJson, $category->getParent()) ?></span></a></td>
+                <td><a href="<?= $parent->getLink() ?>"><span><?= $page->helper->getCategoryLogoOrName($catalogJson, $parent) ?></span></a></td>
                 <? foreach ($categories as $node): ?>
                     <td><a href="<?= $node->getLink()  . (\App::request()->get('instore') ? '?instore=1' : '') ?>"><span><?= $node->getName() ?></span></a></td>
                 <? endforeach ?>
             </tr>
         </table>
     </div>
+<? } else { ?>
+    <div class="pt20 pb20"></div>
 <? } ?>
