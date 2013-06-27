@@ -180,8 +180,8 @@ class DefaultLayout extends Layout {
 
             $isFailed = false;
             $content = '';
-            $client->addQuery('http://' . \App::config()->mainHost . \App::router()->generate('category.mainMenu'), [], function($data) use (&$content) {
-                $content = $data['content'];
+            $client->addQuery('http://' . \App::config()->mainHost . \App::router()->generate('category.mainMenu'), [], function($data) use (&$content, &$isFailed) {
+                isset($data['content']) ? $content = $data['content'] : $isFailed = true;
             }, function(\Exception $e) use (&$isFailed) {
                 \App::exception()->remove($e);
                 $isFailed = true;
