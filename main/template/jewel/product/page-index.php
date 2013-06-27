@@ -495,13 +495,12 @@ $productVideo = reset($productVideos);
 <? $description = $product->getDescription(); ?>
 <? if (!empty($description)): ?>
 <!-- Information -->
-<? /*<div class="clear"></div>
+<div class="clear"></div>
 <h2 class="bold"><?= $product->getName() ?> - Информация о товаре</h2>
 <div class="line pb15"></div>
 <ul class="pb10">
   <?= $description ?>
 </ul>
-*/ ?>
 <!-- /Information  -->
 
 <? endif ?>
