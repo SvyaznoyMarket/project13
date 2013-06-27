@@ -13,4 +13,7 @@
 <div class="clear"></div>
 <?= $page->tryRender('product-category/_categoryData', array('page' => $page, 'category' => $category)) ?>
 
+<? $isBranchPage = true ?>
+<? require __DIR__ . '/_branch.php' ?>
+
 <?= $promoContent ?>
