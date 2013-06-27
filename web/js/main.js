@@ -1463,7 +1463,7 @@ $(document).ready(function(){
                 timeout: 20000
             }).success(function(result) {
                     container.html(result)
-                    console.log(111)
+                    // console.log(111)
 								    handle_custom_items()
                     container.fadeIn()      
                     var tmpline = new cardsCarousel ({

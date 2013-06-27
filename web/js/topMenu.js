@@ -1,4 +1,5 @@
 /* Top Menu */
+var dropMenuWIdth = 230
 var hoverMainMenu = false
 var checkedItem = null
 var pointA = {
@@ -92,8 +93,8 @@ menuCheckTriangle = function(){
  * @param  {event} e
  */
 menuMove = function(e){
-	console.info(e.currentTarget.nodeName)
-	console.log('движение...')
+	// console.info(e.currentTarget.nodeName)
+	// console.log('движение...')
 	cursorNow = {
 		x: e.pageX,
 		y: e.pageY
@@ -120,16 +121,19 @@ activateItem = function(el){
 }
 
 createMenuTriangle = function(el){
+	console.log('aaa')
 	// верхняя точка
 	pointA = {
 		x: cursorNow.x,
 		y: cursorNow.y
 	}
+	console.log(pointA.x+':'+pointA.y)
 	// левый угол
 	pointB = {
 		x: dropMenu.offset().left,
 		y: dropMenu.offset().top
 	}
+	console.log('ccc')
 	// правый угол
 	pointC = {
 		x: dropMenu.offset().left + dropMenu.width(),
@@ -139,9 +143,15 @@ createMenuTriangle = function(el){
 
 checkItem = function(el){
 	console.log('checkedItem')
-	if (pointA.x == 0 && pointA.y == 0)
-		createMenuTriangle(el)
+	// console.log(111)
+	// if (pointA.x == 0 && pointA.y == 0) {
+	// console.log(222)
+	createMenuTriangle(el)
+	// console.log(333)
+	// }
+	// console.log(444)
 	if (menuCheckTriangle()){
+	// console.log(555)
 		console.log('входит')
 		activateItem(el)
 	}
@@ -160,6 +170,8 @@ menuHoverIn = function(){
 	console.log('handler')
 	if (this != checkedItem){
 		console.log('new hover')
+		console.log(this)
+		console.log(checkedItem)
 		checkItem(this)
 	}
 	
