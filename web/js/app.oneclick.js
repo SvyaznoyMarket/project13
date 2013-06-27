@@ -295,10 +295,14 @@ $(document).ready(function() {
 					self.showMarkers()	
 			}
 			
-			self.pickShop = function( ) {
-				self.chosenShop( item )
-				// console.log(self.chosenShop())
+			self.pickShop = function( shid ) {
+				for(var i=0, l=self.shops.length; i<l; i++)
+				if( self.shops[i].id == shid ) {
+					self.chosenShop( self.shops[i] )
+					return
+				}
 			}
+
 			self.pickShopOnMap = function( shid ) {
 				for(var i=0, l=self.shops().length; i<l; i++)
 					if( self.shops()[i].id == shid ) {
