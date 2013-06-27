@@ -20,7 +20,7 @@
 
 <div class="brandSection brandSectionPandora brandSectionPandora__catalog">
 
-  <? require __DIR__ . '/_branch.php'; ?>
+  <? require __DIR__ . '/_branch.php' ?>
 
   <? if(!empty($promoContent)): ?>
       <?= $promoContent ?>
