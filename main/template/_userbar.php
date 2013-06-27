@@ -13,10 +13,10 @@
         <!-- Flybox -->
         <ul class="bBlackBox__eMenu">
             <li class="bBlackBox__eMenuItem bBlackBox__eUser">
-                <a href="<?//= $page->url(user.login) ?>" class="bBlackBox__eUserLink bBlackBox__eMenuItemLink">Личный кабинет</a>
+                <a href="<?= $page->url('user.login') ?>" class="bBlackBox__eUserLink bBlackBox__eMenuItemLink">Личный кабинет</a>
             </li>
             <li class="bBlackBox__eMenuItem bBlackBox__eCart">
-                <a href="<?=  $page->url(cart) ?>" class="bBlackBox__eCartLink bBlackBox__eMenuItemLink"><b class="bBlackBox__eCartQuan"></b>Моя корзина<span class="bBlackBox__eCartTotal">
+                <a href="<?=  $page->url('cart') ?>" class="bBlackBox__eCartLink bBlackBox__eMenuItemLink"><b class="bBlackBox__eCartQuan"></b>Моя корзина<span class="bBlackBox__eCartTotal">
                     <span class="bBlackBox__eCartSum"></span> &nbsp;<span class="rubl">p</span></span>
                 </a>
             </li>
