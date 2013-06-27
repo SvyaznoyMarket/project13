@@ -398,7 +398,9 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
             <span>шт.</span>
         </div><!--/counter -->
 
-        <div class="bWidgetBuy__eBuy btnBuy"><a class="btnBuy__eLink" href="">В корзину</a></div><!--/button buy -->
+        <div class="bWidgetBuy__eBuy btnBuy">
+            <?= $page->render('cart/_button', ['product' => $product, 'class' => 'btnBuy__eLink', 'value' => 'В корзину']) ?>
+        </div><!--/button buy -->
 
         <? if ($product->getIsBuyable()): ?>
             <div class="bWidgetBuy__eClick"><a href="">Купить быстро в 1 клик</a></div>
