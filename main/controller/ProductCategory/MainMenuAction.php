@@ -10,9 +10,14 @@ class MainMenuAction {
     public function execute(\Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
-        return new \Http\JsonResponse([
-            'content'         => \App::closureTemplating()->render('__mainMenu', ['menu' => (new \View\Menu())->generate()]),
-            'catalogJsonBulk' => \RepositoryManager::productCategory()->getCatalogJsonBulk(),
+        $renderer = \App::closureTemplating();
+        $catalogJsonBulk = \RepositoryManager::productCategory()->getCatalogJsonBulk();
+
+        $content = $renderer->render('__mainMenu', [
+            'menu'            => (new \View\Menu())->generate(),
+            'catalogJsonBulk' => $catalogJsonBulk,
         ]);
+
+        return new \Http\JsonResponse([$content]);
     }
 }
