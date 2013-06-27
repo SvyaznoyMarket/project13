@@ -1991,7 +1991,7 @@ BlackBox.prototype.basket = function() {
 		flyboxBasket.fadeOut(300, function(){
 			flyboxInner.remove();
 		});
-	}
+	};
 
 	/**
 	 * Закрытие flybox по клику
@@ -2083,7 +2083,7 @@ BlackBox.prototype.user = function() {
 	 */
 	var update = function(userName) {
 		var topAuth = $('#auth-link');
-		var bottomAuth = self.mainNode.find('.bBlackBox__eUserLink')
+		var bottomAuth = self.mainNode.find('.bBlackBox__eUserLink');
 
 		if (userName !== '') {
 			var dtmpl={

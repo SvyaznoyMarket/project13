@@ -17,7 +17,7 @@ module.exports = function(grunt) {
     "app.shop.js",
     "DAnimFramePlayer.js",
     "KupeConstructorScript.js",
-    "three.js",
+    // "three.js",
     "jewel.category.leaf.js"
   ];
 
@@ -82,7 +82,8 @@ module.exports = function(grunt) {
 					"ymaps": true,
 					"_gaq": true,
 					"escape": true,
-					"unescape": true
+					"unescape": true,
+					"tmpl": true
 				},
 			},
 		},
