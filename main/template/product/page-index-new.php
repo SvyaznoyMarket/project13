@@ -217,7 +217,21 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
             <div class="price"><strong><?= $page->helper->formatPrice($product->getPrice()) ?></strong>р</div>
 
             <? if ($hasLowerPriceNotification): ?>
-            <div class="priceSale"><span class="dotted">Узнать о снижении цены</span></div>
+            <div class="priceSale">
+                <span class="dotted jsLowPriceNotifer">Узнать о снижении цены</span>
+                <div class="bLowPriceNotiferPopup popup">
+                    <i class="close"></i>
+                    <h2 class="bLowPriceNotiferPopup__eTitle">
+                        Вы получите письмо,<br/>когда цена станет ниже
+                        <? if ($lowerPrice && ($lowerPrice < $product->getPrice())): ?>
+                            <strong class="price"><?= $page->helper->formatPrice($lowerPrice) ?></strong> <span class="rubl">p</span>
+                        <? endif ?>
+                    </h2>
+                    <input class="bLowPriceNotiferPopup__eInputEmail" placeholder="Ваш email" value="<?= $user->getEntity() ? $user->getEntity()->getEmail() : '' ?>" />
+                    <p class="bLowPriceNotiferPopup__eError red"></p>
+                    <a href="#" class="bLowPriceNotiferPopup__eSubmitEmail button bigbuttonlink mDisabled" data-url="<?= $page->url('product.notification.lowerPrice', ['productId' => $product->getId()]) ?>">Сохранить</a>
+                </div>
+            </div>
             <? endif ?>
 
             <? if ($creditData['creditIsAllowed'] && !$user->getRegion()->getHasTransportCompany()) : ?>

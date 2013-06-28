@@ -190,9 +190,9 @@
 				.wait()
 				.script( getWithVersion('watch3d.js') )
 				.script( 'swfobject.min.js' ) // maybe 3d
-                .script( getWithVersion('DAnimFramePlayer.js') ) // 3d furniture
-                .script( getWithVersion('KupeConstructorScript.js') ) // furniture constuctor
-                .script( getWithVersion('three.js') ) // furniture constuctor
+                .script( 'DAnimFramePlayer.min.js' ) // 3d furniture
+                .script( 'KupeConstructorScript.min.js' ) // furniture constuctor
+                .script( 'three.min.js' ) // for furniture constuctor
 				.wait()
 				.script( getWithVersion('product.js') )
 				.script( getWithVersion('oneclick.js') )
