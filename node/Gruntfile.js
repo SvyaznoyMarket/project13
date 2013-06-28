@@ -193,8 +193,9 @@ module.exports = function(grunt) {
 				files: ['../web/js/dev/jquery-plugins/*.js'],
 				tasks: ['exec:compileBJ', 'exec:getVersion'],
 			},
+			// для library.js очень важен порядок следования модулей!
 			libraryJS:{
-				files: ['../web/js/dev/library/*.js'],
+				files: ['../web/js/dev/library/library.js','../web/js/dev/library/doc_cookies.js', '../web/js/dev/library/simple_templating.js', '../web/js/dev/library/black_box.js'],
 				tasks: ['concat:libraryJS','uglify:libraryJS', 'jshint', 'connect', 'qunit', 'exec:getVersion'],
 			},
 			mainJS:{
