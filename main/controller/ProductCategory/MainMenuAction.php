@@ -18,6 +18,6 @@ class MainMenuAction {
             'catalogJsonBulk' => $catalogJsonBulk,
         ]);
 
-        return new \Http\JsonResponse([$content]);
+        return new \Http\JsonResponse(['content' => $content]);
     }
 }
