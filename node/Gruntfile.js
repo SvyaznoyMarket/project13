@@ -39,10 +39,16 @@ module.exports = function(grunt) {
 	 */
 	var libraryFiles = [
 		jsDevPath+'library/JSON.js',
-		jsDevPath+'library/library.js',
+		jsDevPath+'library/pubSub.js',
+		jsDevPath+'library/isTrueEmail.js',
+		jsDevPath+'library/printPrice.js',
 		jsDevPath+'library/doc_cookies.js',
 		jsDevPath+'library/simple_templating.js',
-		jsDevPath+'library/black_box.js'
+		jsDevPath+'library/library.js',
+		jsDevPath+'library/mapDriver.js',
+		jsDevPath+'library/black_box.js',
+		jsDevPath+'library/*.js',
+		// jsDevPath+'library/isTrueEmail.js',
 	];
 
 	grunt.initConfig({
