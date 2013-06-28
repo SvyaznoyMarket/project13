@@ -77,7 +77,7 @@ class Helper {
         foreach ($productFilter->dump() as $filterItem) {
             if(!in_array($filterItem[0], [$filter->getId(), 'is_view_list', 'category', 'is_model'])) {
                 $allLink .= preg_match('/.*\?.*/', $allLink) ? '&' : '?';
-                $allLink .= urlencode('f['.$filterItem[0].'][]').'='.reset($filterItem[2]);
+                $allLink .= urlencode('f['.$filterItem[0].'][]').'='.(is_array($filterItem[2]) ? reset($filterItem[2]) : $filterItem[2]);
             }
         }
 
