@@ -48,6 +48,6 @@ class Helper extends \Templating\Helper {
             $date = new \DateTime($date);
         }
         $interval = $today->diff($date);
-        return ($interval->days-1<0)?(0):($interval->days-1);
+        return ($interval->days - 1 < 0) ? 0 : ($interval->days - 1);
     }
 }

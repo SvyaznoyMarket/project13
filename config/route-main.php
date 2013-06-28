@@ -224,14 +224,20 @@ return [
         'action'  => ['Product\LineAction', 'execute'],
     ],
     // расчет доставки товара
-    'product.delivery' => [
+    'old.product.delivery' => [
         'pattern' => '/product/delivery-info',
-        'action'  => ['Product\DeliveryAction', 'info'],
+        'action'  => ['Product\OldDeliveryAction', 'info'],
         'method'  => ['POST'],
     ],
     'product.delivery_1click' => [
         'pattern' => '/product/delivery1click',
-        'action'  => ['Product\DeliveryAction', 'oneClick'],
+        'action'  => ['Product\OldDeliveryAction', 'oneClick'],
+    ],
+    // расчет доставки товара
+    'product.delivery' => [
+        'pattern' => '/ajax/product/delivery',
+        'action'  => ['Product\DeliveryAction', 'execute'],
+        'method'  => ['POST'],
     ],
     'product.stock' => [
         'pattern' => '/product/{productPath}/stock',

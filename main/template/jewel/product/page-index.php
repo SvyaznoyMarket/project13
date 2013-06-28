@@ -441,7 +441,7 @@ $productVideo = reset($productVideos);
   <?php endif ?>
 
   <? if ($product->getIsBuyable()): ?>
-    <div class="bDeliver2 delivery-info" id="product-id-<?= $product->getId() ?>" data-shoplink="<?= $page->url('product.stock', ['productPath' => $product->getPath()]) ?>" data-calclink="<?= $page->url('product.delivery') ?>">
+    <div class="bDeliver2 delivery-info" id="product-id-<?= $product->getId() ?>" data-shoplink="<?= $page->url('product.stock', ['productPath' => $product->getPath()]) ?>" data-calclink="<?= $page->url('old.product.delivery') ?>">
       <h4>Как получить заказ?</h4>
       <ul>
         <li>
