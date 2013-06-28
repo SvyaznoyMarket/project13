@@ -1,5 +1,7 @@
 /* Top Menu */
 var dropMenuWIdth = 230
+var parentDimensions = null
+
 var hoverMainMenu = false
 var checkedItem = null
 var pointA = {
@@ -122,23 +124,26 @@ activateItem = function(el){
 
 createMenuTriangle = function(el){
 	console.log('aaa')
-	// верхняя точка
+	// левый угол
 	pointA = {
 		x: cursorNow.x,
 		y: cursorNow.y
 	}
 	console.log(pointA.x+':'+pointA.y)
-	// левый угол
+	// верхний угол
 	pointB = {
 		x: dropMenu.offset().left,
 		y: dropMenu.offset().top
 	}
+	console.log(pointB.x+':'+pointB.y)
+
 	console.log('ccc')
-	// правый угол
+	// нижний угол
 	pointC = {
 		x: dropMenu.offset().left + dropMenu.width(),
 		y: dropMenu.offset().top
 	}
+	console.log(pointC.x+':'+pointC.y)
 }
 
 checkItem = function(el){
@@ -167,14 +172,33 @@ checkItem = function(el){
  * Обработчик наведения на элемент меню первого уровня
  */
 menuHoverIn = function(){
-	console.log('handler')
-	if (this != checkedItem){
-		console.log('new hover')
-		console.log(this)
-		console.log(checkedItem)
-		checkItem(this)
-	}
+	// console.log('handler')
+	// if (this != checkedItem){
+		// console.log('new hover')
+	parentDimensions = getDimensions($(this).parent())
+	console.log(parentDimensions)
+
+		// console.log(checkedItem)
+		// checkItem(this)
+	// }
 	
+}
+
+/**
+ * Получение абсолютных координат элемента и его размеров
+ */
+getDimensions = function(el) {
+		var width = $(el).width()
+		var height = $(el).height()
+		el = el[0]
+    var x = 0
+    var y = 0
+    while(el && !isNaN(el.offsetLeft) && !isNaN(el.offsetTop)) {
+        x += el.offsetLeft - el.scrollLeft
+        y += el.offsetTop - el.scrollTop
+        el = el.offsetParent
+    }
+    return { top: y, left: x, width: width, height: height }
 }
 
 $('.bMainMenuLevel-2__eItem').mouseenter(menuHoverIn)
