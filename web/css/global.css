@@ -5993,9 +5993,7 @@
     cursor: pointer;
   }
   .reviewsTabs .user {
-    width: 190px;
     text-align: center;
-    padding: 8px 0 6px;
   }
   .reviewsTabs .last {
     padding-right: 0;
