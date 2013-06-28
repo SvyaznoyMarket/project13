@@ -1614,7 +1614,7 @@ $(document).ready(function(){
 function popupWriteReviewForm(pid, name) {
   var src = "http://reviews.testfreaks.com/reviews/new?client_id=enter.ru&" + $.param({key: pid, name: name});
   $(".reviewPopup").lightbox_me({onLoad: function() { $("#rframe").attr("src", src) }});
-}
+};
 
 
 
@@ -1622,7 +1622,7 @@ function scrollToId(scrollToId) {
    $('html, body').animate({
        scrollTop: $("#"+scrollToId).offset().top
    }, 500);
-}
+};
 
 
 // function handle_custom_items() {

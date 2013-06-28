@@ -32,46 +32,48 @@
 	if( typeof($LAB) === 'undefined' )
 		throw new Error( "Невозможно загрузить файлы JavaScript" )
 
-	function getWithVersion( flnm ) { 
+	function getWithVersion( flnm ) {
 		if( typeof( window.release['version']) !== 'undefined' ){
 			if( (!document.location.search.match(/jsdbg/))&&(!debug) ) {
-			flnm += '?' + window.release['version'];
-			flnm = flnm.replace('js', 'min.js');
+				flnm += '?' + window.release['version'];
+				flnm = flnm.replace('js', 'min.js');
 			}	
-		} else {
+		} 
+		else {
 			flnm = flnm.replace('js', 'min.js')
 			if( typeof( window.release['version'] ) !== 'undefined' ) {
 				flnm += '?' + window.release['version'];
 			}
 		}
-		return flnm
-	}
+		return flnm;
+	};
 
 	var mapVendor = 'yandex';
 
 	$LAB.setGlobalDefaults({ AllowDuplicates: true, AlwaysPreserveOrder:true, UseLocalXHR:false, BasePath:"/js/prod/"})
 	.queueScript('/js/combine.js')
-	.script('adfox.asyn.code.ver3.min.js')
-	.queueWait( function(){
-		document.write = function(){
-/*			if( arguments[0].match('javascript') )
-				$LAB.script( arguments[0].match(/src="(.*?)"/)[1])
-			else
-				$('head').append( arguments[0] )
-*/
-			if( arguments[0].match( /<script(.?)* type=(\'|")text\/javascript(\'|")(.?)*><\/script>/ ) ) {
-				$LAB.script( arguments[0].match( /src=(\'|")([^"\']?)+/ )[0].replace(/src=(\'|")/,'') )
-			} else {
-				document.writeln( arguments[0] )
-			}
-		}
-	})
+	.script('adfox.asyn.code.ver3.min.js');
+// 	.queueWait( function(){
+// 		document.write = function(){
+// /*			if( arguments[0].match('javascript') )
+// 				$LAB.script( arguments[0].match(/src="(.*?)"/)[1])
+// 			else
+// 				$('head').append( arguments[0] )
+// */
+// 			console.log(arguments[0])
+// 			if( arguments[0].match( /<script(.?)* type=(\'|")text\/javascript(\'|")(.?)*><\/script>/ ) ) {
+// 				$LAB.script( arguments[0].match( /src=(\'|")([^"\']?)+/ )[0].replace(/src=(\'|")/,'') )
+// 			} else {
+// 				document.writeln( arguments[0] )
+// 			}
+// 		}
+// 	});
 
 	switch( document.body.getAttribute('data-template') ) {
 		case 'main':
 			$LAB.queueWait( function() {
 				$LAB
-				.script( getWithVersion('jquery-plugins.js') )
+				.script('jquery-plugins.min.js')
 				.script( getWithVersion('library.js') )
 				.wait()
 				.script(getWithVersion('common.js'))
@@ -86,7 +88,7 @@
 		case 'infopage':
 			$LAB.queueWait( function() {
 				$LAB
-				.script( getWithVersion('jquery-plugins.js') )
+				.script('jquery-plugins.min.js')
 				.script( getWithVersion('library.js') )
 				.wait()
 				.script(getWithVersion('common.js'))
@@ -100,7 +102,7 @@
 		case 'cart':
 			$LAB.queueWait( function() {
 				$LAB
-				.script( getWithVersion('jquery-plugins.js') )
+				.script('jquery-plugins.min.js')
                 .script( getWithVersion('library.js') )
                 .script( 'http://direct-credit.ru/widget/api_script_utf.js' )
 				.wait()
@@ -118,7 +120,7 @@
             .queueScript('http://ajax.aspnetcdn.com/ajax/knockout/knockout-2.2.1.js')
 			.queueWait( function() {
 				$LAB
-				.script( getWithVersion('jquery-plugins.js') ).script( getWithVersion('library.js') )
+				.script('jquery-plugins.min.js').script( getWithVersion('library.js') )
 				// .script('shelf/jquery.mockjax.js')	               
                 .script( 'http://direct-credit.ru/widget/api_script_utf.js' )
 				.wait()
@@ -150,7 +152,7 @@
         case 'order_error':
         	$LAB.queueWait( function() {
 				$LAB
-				.script( getWithVersion('jquery-plugins.js') )
+				.script('jquery-plugins.min.js')
 				.script( getWithVersion('library.js') )
 				.wait()
 				.script(getWithVersion('order.js'))
@@ -162,14 +164,14 @@
 		case 'product_catalog':
 			$LAB.queueWait( function() {
 				$LAB
-				.script( getWithVersion('jquery-plugins.js') )
+				.script('jquery-plugins.min.js')
 				.script( getWithVersion('library.js') )
 				.wait()
 				.script( getWithVersion('common.js') )
 				.wait()
 				.script( getWithVersion('ports.js') )
                 .wait()
-                .script( getWithVersion('jewel.category.leaf.js') )
+                .script( getWithVersion('pandora.js') )
                 .script('//cdn.optimizely.com/js/204544654.js')
 			}).runQueue()
 			break
@@ -178,7 +180,7 @@
 			.queueScript( (mapVendor==='yandex') ? 'http://api-maps.yandex.ru/2.0/?load=package.full&lang=ru-RU' : 'http://maps.google.com/maps/api/js?sensor=false' )
 			.queueWait( function() {
 				$LAB
-				.script( getWithVersion('jquery-plugins.js') )
+				.script('jquery-plugins.min.js')
 				.script( getWithVersion('library.js') )
 				.wait()
                 .script( 'JsHttpRequest.min.js' )
@@ -186,7 +188,7 @@
                 .script( 'http://direct-credit.ru/widget/api_script_utf.js' )
 				.script( getWithVersion('common.js') )
 				.wait()
-				.script( getWithVersion('watch3d.min.js') )
+				.script( getWithVersion('watch3d.js') )
 				.script( 'swfobject.min.js' ) // maybe 3d
                 .script( getWithVersion('DAnimFramePlayer.js') ) // 3d furniture
                 .script( getWithVersion('KupeConstructorScript.js') ) // furniture constuctor
@@ -202,7 +204,7 @@
 		case 'service':
 			$LAB.queueWait( function() {
 				$LAB
-				.script( getWithVersion('jquery-plugins.js') )
+				.script('jquery-plugins.min.js')
 				.script( getWithVersion('library.js') )
 				.wait()
 				.script( getWithVersion('common.js') )
@@ -218,7 +220,7 @@
 			.queueScript( (mapVendor==='yandex') ? 'http://api-maps.yandex.ru/2.0/?load=package.full&lang=ru-RU' : 'http://maps.google.com/maps/api/js?sensor=false' )
 			.queueWait( function() {
 				$LAB
-				.script( getWithVersion('jquery-plugins.js') ).script( getWithVersion('library.js') )
+				.script('jquery-plugins.min.js').script( getWithVersion('library.js') )
 				.wait()
 				.script( getWithVersion('shop.js') )
 				.script( getWithVersion('common.js') )
@@ -237,7 +239,7 @@
 			.queueScript('http://ajax.aspnetcdn.com/ajax/knockout/knockout-2.2.1.js')
 			.queueWait( function() {
 				$LAB
-				.script( getWithVersion('jquery-plugins.js') )
+				.script('jquery-plugins.min.js')
 				.script( getWithVersion('library.js') )
 				.wait()
 				.script( getWithVersion('common.js') )
