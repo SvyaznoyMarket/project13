@@ -5340,7 +5340,7 @@
     line-height: 1.2 !important;
   }
   .tag-section {
-    margin: 0 0 0 10px;
+    margin: 0;
   }
   /** **/
   .categoriesmenu {
@@ -5993,9 +5993,7 @@
     cursor: pointer;
   }
   .reviewsTabs .user {
-    width: 190px;
     text-align: center;
-    padding: 8px 0 6px;
   }
   .reviewsTabs .last {
     padding-right: 0;
@@ -9072,7 +9070,7 @@
   .breadcrumbs-footer {
     color: #a6a6a6;
     font-size: 11px;
-    padding: 0px 0px 14px 10px;
+    padding: 0px 0px 15px 0;
     width: 750px;
   }
   .breadcrumbs-footer a {
@@ -10420,16 +10418,12 @@
     border-right: 1px solid #EDEDED;
     text-align: center;
   }
+  .brand-nav .brand-nav__list tr td:last-child {
+    border: none;
+  }
   .brand-nav .brand-nav__list tr td a {
     display: block;
     line-height: 50px;
-  }
-  .brand-nav .brand-nav__list .new {
-    font-size: 24px;
-    border: none;
-  }
-  .brand-nav .brand-nav__list .new a {
-    padding: 0 50px;
   }
   .brand-nav .brand-nav__list .row_2line a {
     padding-top: 8px;
@@ -10446,14 +10440,9 @@
     border-top: 1px solid #f9f9f9;
   }
   .items-section .items-section__list li {
-    width: 218px;
-    border: 1px solid #f9f9f9;
+    width: 240px;
     float: left;
-    height: 221px;
-    padding: 7px 10px 10px;
-    position: relative;
-    border-top: 1px solid #ffffff;
-    border-left: 1px solid #ffffff;
+    height: 240px;
   }
   .items-section .items-section__list li .item-buy {
     width: auto;
@@ -10462,9 +10451,9 @@
     right: 0;
     background: #000;
     color: #ffffff;
-    -webkit-border-radius: 7px;
-    -moz-border-radius: 7px;
-    border-radius: 7px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
     -moz-opacity: 0;
     -khtml-opacity: 0;
     -webkit-opacity: 0;
@@ -10494,6 +10483,8 @@
     -webkit-transition: left 0 ease-in-out;
     -moz-transition: left 0 ease-in-out;
     transition: left 0 ease-in-out;
+    -webkit-backface-visibility: hidden;
+    -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
   }
   .items-section .items-section__list li .item-name {
     -moz-opacity: 0;
@@ -10509,9 +10500,9 @@
   .items-section .items-section__list li .item-img {
     text-align: center;
   }
-  .items-section .items-section__list li:hover {
+  .items-section .items-section__list li:hover .goodsbox {
     border: 1px solid #AAAAAA;
-    background-color: #fff;
+    z-index: 10;
   }
   .items-section .items-section__list li:hover .item-name {
     -moz-opacity: 1;
@@ -10534,6 +10525,8 @@
     -webkit-transition: left 0.1s ease-in-out;
     -moz-transition: left 0.1s ease-in-out;
     transition: left 0.1s ease-in-out;
+    -webkit-backface-visibility: hidden;
+    -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
   }
   .banner-categories {
     position: relative;
@@ -10691,14 +10684,22 @@
     padding: 0;
     margin: 0;
     width: 218px;
-    height: 221px;
-    min-height: 221px;
+    border: 1px solid #f9f9f9;
+    height: 220px;
+    min-height: 220px;
+    padding: 7px 10px 10px;
+    position: relative;
+    border-top: 1px solid #ffffff;
+    border-left: 1px solid #ffffff;
   }
   .brandSectionPandora__catalog .goodsbox .notBuying {
     visibility: hidden;
   }
   .brandSectionPandora__catalog .goodsbox:hover .notBuying {
     visibility: visible;
+  }
+  .brandSectionPandora__catalog .goodsbox .photo {
+    display: none;
   }
   .brandSectionPandora__catalog .goodsbox__inner {
     margin: 0;
@@ -10736,17 +10737,21 @@
     padding: 0;
     margin: 0;
   }
+  .brandSectionPandora__product .breadcrumbs-footer {
+    padding: 10px 0px 10px 0;
+  }
   .brandSectionPandora__product .bigcarousel-brand {
     margin: 0 0 30px;
+    width: 940px;
   }
   .brandSectionPandora__product .bigcarousel-brand .goodsbox {
     margin-right: 0;
     padding: 0;
-    width: 187px;
+    width: 188px;
     min-height: 210px;
   }
   .brandSectionPandora__product .bigcarousel-brand .goodsbox .goodsbox__inner {
-    width: 160px;
+    width: 166px;
     padding: 0;
     padding: 10px;
     border: 1px solid #fff;
@@ -10781,9 +10786,9 @@
     right: 10px;
     background: #000;
     color: #ffffff;
-    -webkit-border-radius: 7px;
-    -moz-border-radius: 7px;
-    border-radius: 7px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
     -moz-opacity: 0;
     -khtml-opacity: 0;
     -webkit-opacity: 0;
@@ -10795,9 +10800,9 @@
     display: block;
     height: 23px;
     padding: 0 10px;
-    -webkit-transition: opacity 0.2s ease-in-out;
-    -moz-transition: opacity 0.2s ease-in-out;
-    transition: opacity 0.2s ease-in-out;
+    -webkit-transition: opacity 0.1s ease-in-out;
+    -moz-transition: opacity 0.1s ease-in-out;
+    transition: opacity 0.1s ease-in-out;
   }
   .brandSectionPandora__product .bigcarousel-brand .goodsbox .goodsbox__inner a.link1.link1active {
     background: #fff;
@@ -10813,6 +10818,8 @@
     -webkit-transition: left 0 ease-in-out;
     -moz-transition: left 0 ease-in-out;
     transition: left 0 ease-in-out;
+    -webkit-backface-visibility: hidden;
+    -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
   }
   .brandSectionPandora__product .bigcarousel-brand .goodsbox .goodsbox__inner .font18.mSmallBtns span {
     font-size: 12px;
@@ -10853,6 +10860,8 @@
     -webkit-transition: left 0.1s ease-in-out;
     -moz-transition: left 0.1s ease-in-out;
     transition: left 0.1s ease-in-out;
+    -webkit-backface-visibility: hidden;
+    -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
   }
   .brandSectionPandora__product .bigcarousel-brand .goodsbox:hover .goodsbox__inner .link1.disabled {
     -moz-opacity: 0.1;
@@ -10882,7 +10891,7 @@
   }
   .brandSectionPandora__product .goodsinfo {
     padding: 0 0px 0 10px;
-    width: 329px;
+    width: 339px;
     border-left: 1px solid #ededed;
     margin: -18px 0 0;
   }
@@ -10915,7 +10924,7 @@
     padding-bottom: 5px;
   }
   .brandSectionPandora__product .buy1click {
-    margin-right: 43px;
+    margin-right: 0px;
   }
   .brandSectionPandora__product .rubrictitle h3 {
     font-weight: normal;
@@ -10957,7 +10966,7 @@
     font-weight: bold;
   }
   .brandSectionPandora__product .product-desc__buy.goodsbarbig.mSmallBtns .cart-add {
-    float: left;
+    float: right;
     display: block;
     background: #000;
     width: 125px;
@@ -10968,9 +10977,9 @@
     text-indent: 0;
     font-size: 16px;
     text-align: center;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
     border: 1px solid #000;
   }
   .brandSectionPandora__product .product-desc__buy.goodsbarbig.mSmallBtns .cart-add.link1active {
@@ -11035,6 +11044,10 @@
   }
   .brandSectionPandora__product .mBuyButtonBottom {
     padding: 16px 0 0px 0px;
+    width: 175px;
+  }
+  .brandSectionPandora__product .mBuyButtonBottom.onleft {
+    width: 455px;
   }
   .brandSectionPandora__product .mBuyButtonBottom h2 {
     font-weight: normal;
@@ -11047,8 +11060,11 @@
     padding: 0 0 0 10px;
     font-size: 12px;
   }
+  .brandSectionPandora__product .product-desc.goodBarBottom {
+    width: 280px;
+  }
   .brandSectionPandora__product .product-desc .bDeliver2 {
-    padding: 1px 15px 5px 6px;
+    padding: 1px 10px 5px 10px;
   }
   .brandSectionPandora__product .product-desc .bDeliver2 li {
     margin-top: 10px;
@@ -11093,7 +11109,7 @@
     font-size: 34px;
     float: left;
     font-weight: bold;
-    width: 170px;
+    width: 179px;
     padding-left: 5px;
   }
   .brandSectionPandora__product .product-desc__variation {
@@ -11148,6 +11164,25 @@
   }
   .brandSectionPandora__product .product-desc .vitrin .listAvalShop li a {
     color: #6E6E6E;
+  }
+  body.jewel #reviewsWrapper {
+    border-bottom: 0;
+  }
+  body.jewel .reviewsBar {
+    background-color: #999;
+  }
+  body.jewel .reviewsBarBg {
+    background-color: #edecee;
+  }
+  body.jewel .popup {
+    border: 2px solid #000;
+  }
+  body.jewel .popup .close {
+    background: url("/css/pandoraPopups/img/closeBtnBlack.png") no-repeat 0 0;
+  }
+  div.submit input {
+    background: #444;
+    border: 1px solid #000;
   }
 }
 /*---END---СТИЛИ БРЕНД РАЗДЕЛА PANDORA---*/

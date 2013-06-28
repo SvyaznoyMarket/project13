@@ -3,7 +3,7 @@
 <? } ?>
 <div class="clearfix productReview<?= $last ? '' : ' bottomLine'?>">
   <div class="commentAuthtor">
-    <div class="commentAuthtor__star"><?= $page->render('product/_starsFive', ['score' => $review['star_score'], 'emptyText' => 'нет оценки']) ?></div>  
+    <div class="commentAuthtor__star"><?= $page->render('product/_starsFive', ['score' => $review['star_score'], 'emptyText' => 'нет оценки', 'layout' => empty($layout) ? false : $layout]) ?></div>  
     <h3 class="commentAuthtor__name"><?= empty($review['author']) ? $review['source_name'] : $review['author'] ?></h3>
     <div class="commentAuthtor__date">
       <?= $page->helper->dateToRu($review['date']) ?>

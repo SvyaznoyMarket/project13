@@ -24,7 +24,7 @@ if (!isset($isAddInfo)) $isAddInfo = false;
 <? if ('expanded' == $view) : ?>
 <input type="hidden" id="dlvrlinks"
     data-shoplink="<?= $page->url('shop') ?>"
-    data-calclink="<?= $page->url('product.delivery') ?>" />
+    data-calclink="<?= $page->url('old.product.delivery') ?>" />
 <?php endif ?>
 
 <? if ($pager->hasPages()): ?>

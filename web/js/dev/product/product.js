@@ -706,9 +706,16 @@ $(document).ready(function() {
  	// получение отзывов
  	function getReviews(productId, type, containerClass) {
 		var page = reviewCurrentPage[type] + 1
+		
+		var layout = false
+		if($('body').hasClass('jewel')) {
+			layout = 'jewel'
+		}
+
  		$.get('/product-reviews/'+productId, {
  			page: page,
- 			type: type
+ 			type: type,
+ 			layout: layout
  		}, function(data){
 			$('.'+containerClass).html($('.'+containerClass).html() + data.content)
 			reviewCurrentPage[type]++

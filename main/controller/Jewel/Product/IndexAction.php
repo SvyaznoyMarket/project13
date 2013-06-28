@@ -115,6 +115,11 @@ class IndexAction extends \Controller\Product\IndexAction {
             $showRelatedUpper = true;
         }
 
+        // получаем отзывы для товара
+        $reviewsData = \RepositoryManager::review()->getReviews($product->getId(), 'user');
+        $reviewsDataPro = \RepositoryManager::review()->getReviews($product->getId(), 'pro');
+        $reviewsDataSummary = \RepositoryManager::review()->prepareReviewsDataSummary($reviewsData, $reviewsDataPro);
+
         // фильтруем аксессуары согласно разрешенным в json категориям
         // и получаем уникальные категории-родители аксессуаров
         // для построения меню категорий в блоке аксессуаров
@@ -249,6 +254,9 @@ class IndexAction extends \Controller\Product\IndexAction {
             'Action' => '1010',
             'ProductId' => $product->getId(),
         ));
+        $page->setParam('reviewsData', $reviewsData);
+        $page->setParam('reviewsDataPro', $reviewsDataPro);
+        $page->setParam('reviewsDataSummary', $reviewsDataSummary);
 
         return new \Http\Response($page->show());
     }
