@@ -1,26 +1,5 @@
 module.exports = function(grunt) {
 
-  var jsFiles = [
-    "app.order.v4.js",
-    "ports.js",
-    "app.oneclick.js",
-    "infopages.js",
-    "library.js",
-    "app.cart.js",
-    "bigjquery.js",
-    "welcome.js",
-    "main.js",
-    "dash.js",
-    "app.order.js",
-    "app.product.comment.list.js",
-    "app.product.js",
-    "app.shop.js",
-    "DAnimFramePlayer.js",
-    "KupeConstructorScript.js",
-    // "three.js",
-    "jewel.category.leaf.js"
-  ];
-
 	var bigjqueryFiles = [
 		"custom-form-elements.js",
 		"jquery.ui.core.js",
@@ -132,9 +111,9 @@ module.exports = function(grunt) {
 					var compilerPath = 'closure-compiler/build/compiler.jar';
 					var execCommand = 'java -jar '+compilerPath;
 					for (var i=0, len=bigjqueryFiles.length; i<len; i++){
-						execCommand += ' --js ../web/js/bigjquery/'+bigjqueryFiles[i];
+						execCommand += ' --js ../web/js/dev/jquery-plugins/'+bigjqueryFiles[i];
 					}
-					execCommand += ' --js_output_file ../web/js/bigjquery.js';
+					execCommand += ' --js_output_file ../web/js/prod/jquery-plugins.min.js';
 					return execCommand;
 				},
 			},
@@ -190,67 +169,67 @@ module.exports = function(grunt) {
 			},
 			partnerScripts: {
 				files: ['../web/js/partner/*.js'],
-				tasks: ['uglify:partnerScripts', 'connect', 'qunit', 'exec:getVersion'],
+				tasks: ['concat:partnerScripts','uglify:partnerScripts', 'connect', 'qunit', 'exec:getVersion'],
 			},
 			vendorScripts: {
 				files: ['../web/js/vendor/*.js'],
-				tasks: ['uglify:vendorScripts', 'connect', 'qunit', 'exec:getVersion'],
+				tasks: ['concat:vendorScripts','uglify:vendorScripts', 'connect', 'qunit', 'exec:getVersion'],
 			},
 			cartJS:{
 				files: ['../web/js/dev/cart/*.js'],
-				tasks: ['uglify:cartJS', 'connect', 'qunit', 'exec:getVersion'],
+				tasks: ['concat:cartJS','uglify:cartJS', 'connect', 'qunit', 'exec:getVersion'],
 			},
 			commonJS:{
 				files: ['../web/js/dev/common/*.js'],
-				tasks: ['uglify:commonJS', 'connect', 'qunit', 'exec:getVersion'],
+				tasks: ['concat:commonJS','uglify:commonJS', 'connect', 'qunit', 'exec:getVersion'],
 			},
 			infopageJS:{
 				files: ['../web/js/dev/infopage/*.js'],
-				tasks: ['uglify:infopageJS', 'connect', 'qunit', 'exec:getVersion'],
+				tasks: ['concat:infopageJS','uglify:infopageJS', 'connect', 'qunit', 'exec:getVersion'],
 			},
 			jqueryPluginsJS:{
 				files: ['../web/js/dev/jquery-plugins/*.js'],
-				tasks: ['uglify:jqueryPluginsJS', 'connect', 'qunit', 'exec:getVersion'],
+				tasks: ['exec:compileBJ', 'exec:getVersion'],
 			},
 			libraryJS:{
 				files: ['../web/js/dev/library/*.js'],
-				tasks: ['uglify:libraryJS', 'connect', 'qunit', 'exec:getVersion'],
+				tasks: ['concat:libraryJS','uglify:libraryJS', 'connect', 'qunit', 'exec:getVersion'],
 			},
 			mainJS:{
 				files: ['../web/js/dev/main/*.js'],
-				tasks: ['uglify:mainJS', 'connect', 'qunit', 'exec:getVersion'],
+				tasks: ['concat:mainJS','uglify:mainJS', 'connect', 'qunit', 'exec:getVersion'],
 			},
 			oneclickJS:{
 				files: ['../web/js/dev/oneclick/*.js'],
-				tasks: ['uglify:oneclickJS', 'connect', 'qunit', 'exec:getVersion'],
+				tasks: ['concat:oneclickJS','uglify:oneclickJS', 'connect', 'qunit', 'exec:getVersion'],
 			},
 			orderJS:{
 				files: ['../web/js/dev/order/*.js'],
-				tasks: ['uglify:orderJS', 'connect', 'qunit', 'exec:getVersion'],
+				tasks: ['concat:orderJS','uglify:orderJS', 'connect', 'qunit', 'exec:getVersion'],
 			},
 			orderNewJS:{
 				files: ['../web/js/dev/order-new/*.js'],
-				tasks: ['uglify:orderNewJS', 'connect', 'qunit', 'exec:getVersion'],
+				tasks: ['concat:orderNewJS','uglify:orderNewJS', 'connect', 'qunit', 'exec:getVersion'],
 			},
 			pandoraJS:{
 				files: ['../web/js/dev/pandora/*.js'],
-				tasks: ['uglify:pandoraJS', 'connect', 'qunit', 'exec:getVersion'],
+				tasks: ['concat:pandoraJS','uglify:pandoraJS', 'connect', 'qunit', 'exec:getVersion'],
 			},
 			portsJS:{
 				files: ['../web/js/dev/ports/*.js'],
-				tasks: ['uglify:portsJS', 'connect', 'qunit', 'exec:getVersion'],
+				tasks: ['concat:portsJS','uglify:portsJS', 'connect', 'qunit', 'exec:getVersion'],
 			},
 			productJS:{
 				files: ['../web/js/dev/product/*.js'],
-				tasks: ['uglify:productJS', 'connect', 'qunit', 'exec:getVersion'],
+				tasks: ['concat:productJS','uglify:productJS', 'connect', 'qunit', 'exec:getVersion'],
 			},
 			shopJS:{
 				files: ['../web/js/dev/shop/*.js'],
-				tasks: ['uglify:shopJS', 'connect', 'qunit', 'exec:getVersion'],
+				tasks: ['concat:shopJS','uglify:shopJS', 'connect', 'qunit', 'exec:getVersion'],
 			},
 			watch3dJS:{
 				files: ['../web/js/dev/watch3d/*.js'],
-				tasks: ['uglify:watch3dJS', 'connect', 'qunit', 'exec:getVersion'],
+				tasks: ['concat:watch3dJS','uglify:watch3dJS', 'connect', 'qunit', 'exec:getVersion'],
 			},
 		},
 
@@ -274,10 +253,10 @@ module.exports = function(grunt) {
 				src: ['../web/js/dev/infopage/*.js'],
 				dest: '../web/js/prod/infopage.js'
 			},
-			jqueryPluginsJS : {
-				src: ['../web/js/dev/jquery-plugins/*.js'],
-				dest: '../web/js/prod/jquery-plugins.js'
-			},
+			// jqueryPluginsJS : {
+			// 	src: ['../web/js/dev/jquery-plugins/*.js'],
+			// 	dest: '../web/js/prod/jquery-plugins.js'
+			// },
 			libraryJS : {
 				src: ['../web/js/dev/library/*.js'],
 				dest: '../web/js/prod/library.js'
@@ -374,11 +353,11 @@ module.exports = function(grunt) {
 				}
 			},
 
-			jqueryPluginsJS: {
-				files: {
-					'../web/js/prod/jquery-plugins.min.js': ['../web/js/dev/jquery-plugins/*.js']
-				}
-			},
+			// jqueryPluginsJS: {
+			// 	files: {
+			// 		'../web/js/prod/jquery-plugins.min.js': ['../web/js/dev/jquery-plugins/*.js']
+			// 	}
+			// },
 
 			libraryJS: {
 				files: {
@@ -492,9 +471,9 @@ module.exports = function(grunt) {
 	// Компиляция LESS
 	grunt.registerTask('css', ['less']);
 	// Тестирование JS, валидация JS, компиляция bigjquery, минификация JS, версионность
-	grunt.registerTask('js', [ 'connect', 'qunit', 'jshint',  'exec:compileBJ', 'uglify', 'exec:getVersion']);
+	grunt.registerTask('js', ['concat', 'connect', 'qunit', 'jshint', 'uglify', 'exec:compileBJ', 'exec:getVersion']);
 	// Компиляция LESS, тестирование JS, валидация, минификация JS, версионность
-	grunt.registerTask('default', ['less', 'connect', 'qunit', 'jshint', 'uglify', 'exec:getVersion']);
+	grunt.registerTask('default', ['less', 'concat', 'connect', 'qunit', 'jshint', 'uglify', 'exec:compileBJ', 'exec:getVersion']);
 	// Генерация рандомных полигонов яндекс карт
 	grunt.registerTask('ymaps', ['ymaps_generate']);
 	// Тестирование JS, валидация JS

@@ -2031,7 +2031,6 @@ BlackBox.prototype.basket = function() {
 	 *
 	 * @author	Zaytsev Alexandr
 	 * @param	{Object} item
-	 * @param	{Number} item.id			Идентификатор товара
 	 * @param	{String} item.title			Название товара
 	 * @param	{Number} item.price			Стоимость товара
 	 * @param	{String} item.imgSrc		Ссылка на изображение товара
