@@ -1,6 +1,11 @@
 /* Top Menu */
-var dropMenuWIdth = 230
-var parentDimensions = null
+var menuDelay = 350
+var lastHover = null
+
+var dropMenuWidth = 230
+var currentMenuItemDimensions = null
+var menuLevel2Dimensions = null
+var menuLevel3Dimensions = null
 
 var hoverMainMenu = false
 var checkedItem = null
@@ -20,6 +25,14 @@ var cursorNow = {
 	x: 0,
 	y: 0
 }
+
+$('body').append("<div id='tl' style='z-index:10000;position:fixed;top:0;left:0;background-color:red;width:10px;height:10px;'>&nbsp;</div>")
+$('body').append("<div id='tt' style='z-index:10000;position:fixed;top:0;left:0;background-color:green;width:10px;height:10px;'>&nbsp;</div>")
+$('body').append("<div id='tb' style='z-index:10000;position:fixed;top:0;left:0;background-color:blue;width:10px;height:10px;'>&nbsp;</div>")
+
+var tl = $('#tl')
+var tt = $('#tt')
+var tb = $('#tb')
 
 /**
  * Получение площади треугольника по координатам вершин
@@ -75,17 +88,16 @@ getTriangleS = function(A, B, C){
  * @return {boolean}       true - входит, false - не входит
  */
 menuCheckTriangle = function(){
-	var res1 = (pointA.x-cursorNow.x)*(pointB.y-A.y)-(pointB.x-pointA.x)*(pointA.y-cursorNow.y)
+	var res1 = (pointA.x-cursorNow.x)*(pointB.y-pointA.y)-(pointB.x-pointA.x)*(pointA.y-cursorNow.y)
 	var res2 = (pointB.x-cursorNow.x)*(pointC.y-pointB.y)-(pointC.x-pointB.x)*(pointB.y-cursorNow.y)
 	var res3 = (pointC.x-cursorNow.x)*(pointA.y-pointC.y)-(pointA.x-pointC.x)*(pointC.y-cursorNow.y)
 
-	if ((res1 >= 0 && res2 >= 0 && res3 >= 0)||
-		(res1 <= 0 && res2 <= 0 && res3 <= 0)){
-		console.info('принадлежит')
+	if ((res1 >= 0 && res2 >= 0 && res3 >= 0) || (res1 <= 0 && res2 <= 0 && res3 <= 0)){
+		// console.info('принадлежит')
 		return true
 	}
 	else{
-		console.info('не принадлежит')
+		// console.info('не принадлежит')
 		return false
 	}
 }
@@ -99,89 +111,119 @@ menuMove = function(e){
 	// console.log('движение...')
 	cursorNow = {
 		x: e.pageX,
-		y: e.pageY
+		y: e.pageY - $(window).scrollTop()
 	}
+	var el = $(this)
+	if(el.attr('class') == checkedItem.attr('class')) {
+		buildTriangle(el)
+		lastHover = new Date()
+	}
+	checkHover(el)
+
+	tl.css('left',(cursorNow.x - 30)+'px')
+	tl.css('top',cursorNow.y+'px')
 }
 
-menuHoverOut = function(e){
-	var now = {
-		x: e.pageX,
-		y: e.pageY
-	}
-	console.log('убираем')
-	if (!menuCheckTriangle(now, pointA, pointB, pointC)){
-		$('.bMainMenuLevel-1__eItem').removeClass('hover')
-		hoverMainMenu = false
-		$(this).trigger('mouseenter')
-	}
-}
+// menuHoverOut = function(e){
+// 	var now = {
+// 		x: e.pageX,
+// 		y: e.pageY
+// 	}
+// 	console.log('убираем')
+// 	if (!menuCheckTriangle(now, pointA, pointB, pointC)){
+// 		$('.bMainMenuLevel-1__eItem').removeClass('hover')
+// 		hoverMainMenu = false
+// 		$(this).trigger('mouseenter')
+// 	}
+// }
 
-activateItem = function(el){
-	console.log('activate')
-	checkedItem = el
-	el.addClass('hover')
-}
+createTriangle = function(){
+	// // левый угол - левая середина пункта меню 2го уровня на котором сейчас ховер
+	// pointA = {
+	// 	x: currentMenuItemDimensions.left,
+	// 	y: currentMenuItemDimensions.top + currentMenuItemDimensions.height/2
+	// }
 
-createMenuTriangle = function(el){
-	console.log('aaa')
-	// левый угол
+	// левый угол - текущее положение курсора
 	pointA = {
 		x: cursorNow.x,
-		y: cursorNow.y
+		y: cursorNow.y - $(window).scrollTop()
 	}
-	console.log(pointA.x+':'+pointA.y)
-	// верхний угол
-	pointB = {
-		x: dropMenu.offset().left,
-		y: dropMenu.offset().top
-	}
-	console.log(pointB.x+':'+pointB.y)
 
-	console.log('ccc')
-	// нижний угол
-	pointC = {
-		x: dropMenu.offset().left + dropMenu.width(),
-		y: dropMenu.offset().top
+	// верхний угол - левый верх меню 3го уровня
+	pointB = {
+		x: menuLevel3Dimensions.left,
+		y: menuLevel3Dimensions.top - $(window).scrollTop()
 	}
-	console.log(pointC.x+':'+pointC.y)
+
+	// нижний угол - левый низ меню 3го уровня
+	pointC = {
+		x: menuLevel3Dimensions.left,
+		y: menuLevel3Dimensions.top + menuLevel3Dimensions.height - $(window).scrollTop()
+	}
+
+	tt.css('left',(pointB.x - 30)+'px')
+	tt.css('top',pointB.y+'px')
+
+	tb.css('left',(pointC.x - 30)+'px')
+	tb.css('top',pointC.y+'px')
 }
 
 checkItem = function(el){
 	console.log('checkedItem')
-	// console.log(111)
-	// if (pointA.x == 0 && pointA.y == 0) {
-	// console.log(222)
-	createMenuTriangle(el)
-	// console.log(333)
-	// }
-	// console.log(444)
 	if (menuCheckTriangle()){
-	// console.log(555)
 		console.log('входит')
 		activateItem(el)
-	}
-	else{
+	} else {
 		console.log('не входит')
-		createMenuTriangle(el)
 		checkedItem.removeClass('hover')
-		checkedItem = el
 	}
 }
 
+activateItem = function(el){
+	// console.log('activate')
+	checkedItem = el
+	el.addClass('hover')
+	lastHover = new Date()
+	buildTriangle(el)
+}
+
 /**
- * Обработчик наведения на элемент меню первого уровня
+ * Обработчик наведения на элемент меню второго уровня
+ * При наведении на элемент меню строим новый треугольник
  */
 menuHoverIn = function(){
 	// console.log('handler')
 	// if (this != checkedItem){
 		// console.log('new hover')
-	parentDimensions = getDimensions($(this).parent())
-	console.log(parentDimensions)
+	var el = $(this)
+	checkHover(el)
 
+	// console.log('el != checkedItem : ' + (el != checkedItem))
+	// console.log('menuCheckTriangle : ' + menuCheckTriangle())
 		// console.log(checkedItem)
-		// checkItem(this)
 	// }
-	
+}
+
+checkHover = function(el) {
+	if (pointA.x == 0 && pointA.y == 0) {
+		activateItem(el)
+	} else if(!menuCheckTriangle() || (lastHover && (new Date() - lastHover > menuDelay) && menuCheckTriangle())) {
+		checkedItem.removeClass('hover')
+		activateItem(el)
+	}
+}
+
+buildTriangle = function(el) {
+	currentMenuItemDimensions = getDimensions(el)
+	menuLevel2Dimensions = getDimensions(el.parent())
+	menuLevel3Dimensions = {
+		top: menuLevel2Dimensions.top,
+		left: menuLevel2Dimensions.left + dropMenuWidth,
+		width: menuLevel2Dimensions.width - dropMenuWidth,
+		height: menuLevel2Dimensions.height
+	}
+	createTriangle()
 }
 
 /**
@@ -202,7 +244,9 @@ getDimensions = function(el) {
 }
 
 $('.bMainMenuLevel-2__eItem').mouseenter(menuHoverIn)
-$('.bMainMenuLevel-2').mousemove(menuMove)
+$('.bMainMenuLevel-2__eItem').mousemove(menuMove)
+
+
 
 // header_v2
 // $('.bMainMenuLevel-1__eItem').bind('mouseenter', function(){
