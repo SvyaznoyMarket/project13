@@ -357,35 +357,36 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
     <? endforeach ?>
     </div><!--/product specifications section -->
 
-    <? if (\App::config()->product['reviewEnabled'] && $reviewsPresent): ?>
-        <h2 id="reviewsSectionHeader" class="bold">Обзоры и отзывы</h2>
-        <div class="line pb5"></div>
-        <div id="reviewsSummary">
-            <?= $page->render('product/_reviewsSummary', ['reviewsData' => $reviewsData, 'reviewsDataPro' => $reviewsDataPro, 'reviewsDataSummary' => $reviewsDataSummary]) ?>
-        </div>
+    <h3 class="bHeadSection">Обзоры и отзывы</h3>
 
-        <? if (!empty($reviewsData['review_list'])) { ?>
-            <div id="reviewsWrapper" class="reviewsWrapper" data-product-id="<?= $product->getId() ?>" data-page-count="<?= $reviewsData['page_count'] ?>" data-container="reviewsUser" data-reviews-type="user">
-        <? } elseif(!empty($reviewsDataPro['review_list'])) { ?>
-        <div id="reviewsWrapper" data-product-id="<?= $product->getId() ?>" data-page-count="<?= $reviewsDataPro['page_count'] ?>" data-container="reviewsPro" data-reviews-type="pro">
-            <? } ?>
-        <?= $page->render('product/_reviews', ['reviewsData' => $reviewsData, 'reviewsDataPro' => $reviewsDataPro]) ?>
-        </div>
-     <? endif ?>
+    <div class="bReviews">
+        <? if (\App::config()->product['reviewEnabled'] && $reviewsPresent): ?>
+            <div id="bReviewsSummary">
+                <?= $page->render('product/_reviewsSummary', ['reviewsData' => $reviewsData, 'reviewsDataPro' => $reviewsDataPro, 'reviewsDataSummary' => $reviewsDataSummary]) ?>
+            </div>
+
+            <? if (!empty($reviewsData['review_list'])) { ?>
+                <div id="reviewsWrapper" class="bReviewsWrapper" data-product-id="<?= $product->getId() ?>" data-page-count="<?= $reviewsData['page_count'] ?>" data-container="reviewsUser" data-reviews-type="user">
+            <? } elseif(!empty($reviewsDataPro['review_list'])) { ?>
+            <div id="reviewsWrapper" data-product-id="<?= $product->getId() ?>" data-page-count="<?= $reviewsDataPro['page_count'] ?>" data-container="reviewsPro" data-reviews-type="pro">
+                <? } ?>
+            <?= $page->render('product/_reviews', ['reviewsData' => $reviewsData, 'reviewsDataPro' => $reviewsDataPro]) ?>
+            </div>
+         <? endif ?>
 
 
-    <? if (!$product->getIsBuyable() && $product->getState()->getIsShop()  && \App::config()->smartengine['pull']): ?>
-        <h3 class="bHeadSection">Похожие товары</h3>
-        <?= $renderer->render('product/__slider', [
-            'products'       => [],
-            'count'          => null,
-            'limit'          => \App::config()->product['itemsInSlider'],
-            'page'           => 1,
-            'url'            => $page->url('smartengine.pull.product_similar', ['productId' => $product->getId()]),
-            //'additionalData' => $additionalData,
-        ]) ?>
-    <? endif ?>
-
+        <? if (!$product->getIsBuyable() && $product->getState()->getIsShop()  && \App::config()->smartengine['pull']): ?>
+            <h3 class="bHeadSection">Похожие товары</h3>
+            <?= $renderer->render('product/__slider', [
+                'products'       => [],
+                'count'          => null,
+                'limit'          => \App::config()->product['itemsInSlider'],
+                'page'           => 1,
+                'url'            => $page->url('smartengine.pull.product_similar', ['productId' => $product->getId()]),
+                //'additionalData' => $additionalData,
+            ]) ?>
+        <? endif ?>
+    </div>
 
 </section><!--/left section -->
 

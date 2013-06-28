@@ -137,24 +137,24 @@
   }
 }
 
-.comments {
-  .commentAuthtor {
+.bReview {
+  .bReview__eAuthtor {
     float: left;
     width: 120px;
     margin: 5px 15px 0 0;
-    &__name {
+    &-name {
       margin: 6px 0;
       font-weight: normal;
     }
-    &__date {
+    &-date {
       color: @typGray;
     }
   }
-  .commentWrap {
+  .bReview__eText {
     float: left;
     width: 650px;
     font-size: 14px;
-    &__text {
+    &__line {
       .mark {
         display: block;
         float: left;
@@ -170,18 +170,18 @@
         margin: 2px 0 5px;
       }
     }
-    &__plus, &__minus {
+    &-plus, &-minus {
       .mark {
         margin-top: -2px;
       }
     }
-    &__quote {
+    &-quote {
       .mark {
         margin-top: -2px;
       }
     }
   }
-  .commentLogo {
+  &__eLogo {
     float: right;
     width: 120px;
     text-align: right;
