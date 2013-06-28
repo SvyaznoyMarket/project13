@@ -8,6 +8,14 @@
 var Planner3dKupeConstructor = null;
 
 $(document).ready(function() {
+
+	$('.bCountSection').goodsCounter({
+		onChange:function(count){
+			console.log(count);
+		}
+	});
+
+
 	/**
 	 * Планировщик шкафов купе
 	 */

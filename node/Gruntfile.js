@@ -30,7 +30,8 @@ module.exports = function(grunt) {
 		"typewriter.js",
 		"jquery.ui.touch-punch.js",
 		"jquery.maskedinput.js",
-		"jquery.put_cursor_at_end.js"
+		"jquery.put_cursor_at_end.js",
+		"goodsCounter.js"
 	];
 
 	/**
