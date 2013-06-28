@@ -79,7 +79,7 @@ module.exports = function(grunt) {
 			urls: {
 				options: {
 					urls: [
-						'http://localhost:8000/js/tests/tests.htm',
+						'http://127.0.0.1:8000/js/tests/tests.htm',
 					]
 				},
 			}
