@@ -1,7 +1,7 @@
 /**
  * WARNING!
  *
- * @requires jQuery, simple_templating
+ * @requires jQuery, simple_templating, pageConfig
  */
 
 
@@ -142,7 +142,7 @@ BlackBox.prototype.user = function() {
 		var topAuth = $('#auth-link');
 		var bottomAuth = self.mainNode.find('.bBlackBox__eUserLink');
 
-		if (userName !== '') {
+		if (userName !== null) {
 			var dtmpl={
 				user: userName
 			};
@@ -198,21 +198,22 @@ BlackBox.prototype.init = function() {
 			return false;
 		}
 
-		var userInfo = data.data;
+		var userInfo = data.user;
+		var cartInfo = data.cart;
+		var actionInfo = data.action;
 
 		self.user().update(userInfo.name);
 
-		if (userInfo.vitems !== 0) {
+		if (cartInfo.quantity !== 0) {
 			var nowBasket = {
-				cartQ: userInfo.vitems,
-				cartSum: userInfo.sum
+				cartQ: cartInfo.quantity,
+				cartSum: cartInfo.sum
 			};
-
 			self.basket().update(nowBasket);
 		}
 
-		if (userInfo.action !== undefined) {
-			startAction(userInfo.action);
+		if (actionInfo !== undefined) {
+			startAction(actionInfo);
 		}
 	};
 
@@ -224,5 +225,5 @@ BlackBox.prototype.init = function() {
  * Создание и иницилизация объекта для работы с корзиной и данными пользователя
  * @type	{BlackBox}
  */
-var blackBox = new BlackBox('/user/shortinfo', $('.bBlackBox__eInner'));
+window.blackBox = new BlackBox(pageConfig.userUrl, $('.bBlackBox__eInner'));
 blackBox.init();

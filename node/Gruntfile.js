@@ -38,6 +38,7 @@ module.exports = function(grunt) {
 	 * @type {Array}
 	 */
 	var libraryFiles = [
+		jsDevPath+'library/pageConfig.js',
 		jsDevPath+'library/JSON.js',
 		jsDevPath+'library/pubSub.js',
 		jsDevPath+'library/isTrueEmail.js',
