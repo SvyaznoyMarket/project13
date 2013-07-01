@@ -5,52 +5,55 @@
  * @requires	printPrice
  * @param		{event} e
  */
-var BuyButton = function(e){
-	e.stopPropagation();
+;(function(){
+	var BuyButton = function(e){
+		e.stopPropagation();
 
-	var button = $(this);
+		var button = $(this);
 
-	if (button.hasClass('disabled')) {
-		return false;
-	}
-	if (button.hasClass('active')) {
-		return false;
-	}
-
-	var url = button.attr('href');
-
-	var addToCart = function(data) {
-		if (data.success) {
-			button.addClass('mBought');
-			button.html('В корзине');
-			// kissAnalytics(data);
-			// sendAnalytics(button);
-			
-			if (blackBox) {
-				var basket = data.data;
-				var product = data.result.product;
-				var tmpitem = {
-					'title': product.name,
-					'price' : printPrice(product.price),
-					'imgSrc': 'need image link',
-					'totalQuan': basket.full_quantity,
-					'totalSum': printPrice(basket.full_price),
-					'linkToOrder': basket.link,
-				};
-				blackBox.basket().add(tmpitem);
-			}
+		if (button.hasClass('disabled')) {
+			return false;
 		}
-	};
-	$.get(url, addToCart);
-	return false;
-}
+		if (button.hasClass('active')) {
+			return false;
+		}
 
-$('.jsBuyButton').live('click', BuyButton);
+		var url = button.attr('href');
 
+		var addToCart = function(data) {
+			if (data.success) {
+				button.addClass('mBought');
+				button.html('В корзине');
+				// kissAnalytics(data);
+				// sendAnalytics(button);
+				
+				if (blackBox) {
+					var basket = data.data;
+					var product = data.result.product;
+					var tmpitem = {
+						'title': product.name,
+						'price' : printPrice(product.price),
+						'imgSrc': 'need image link',
+						'totalQuan': basket.full_quantity,
+						'totalSum': printPrice(basket.full_price),
+						'linkToOrder': basket.link,
+					};
+					blackBox.basket().add(tmpitem);
+				}
+			}
+		};
+		$.get(url, addToCart);
+		return false;
+	}
+	
+	$(document).ready(function() {
+		$('.jsBuyButton').live('click', BuyButton);
+	});
 
-/**
- * ADD Analytics for buyButton!!!
- */
+	/**
+	 * ADD Analytics for buyButton!!!
+	 */
+}());
  
  
 /** 
@@ -173,85 +176,6 @@ $(document).ready(function(){
 
 		$('.bSimilarGoods.mCatalog .bSimilarGoodsSlider_eGoods a').live('click', sliderTracking)
 	}
-
-
-	var lboxCheckSubscribe = function(subscribe){
-		var notNowShield = $('.bSubscribeLightboxPopupNotNow'),
-			subPopup = $('.bSubscribeLightboxPopup'),
-			input = $('.bSubscribeLightboxPopup__eInput'),
-			submitBtn = $('.bSubscribeLightboxPopup__eBtn')
-		
-		input.placeholder()
-
-		input.emailValidate({
-			onValid: function(){
-				input.removeClass('mError');
-				submitBtn.removeClass('mDisabled');
-			},
-			onInvalid: function(){
-				submitBtn.addClass('mDisabled');
-				input.addClass('mError');
-			}
-		});
-		
-		var subscribing = function(){
-			if (submitBtn.hasClass('mDisabled'))
-				return false
-
-			var email = input.val(),
-				url = $(this).data('url');
-
-			$.post(url, {email: email}, function(res){
-				if( !res.success )
-					return false
-				
-				subPopup.html('<span class="bSubscribeLightboxPopup__eTitle mType">Спасибо! подтверждение подписки отправлено на указанный e-mail</span>')
-				docCookies.setItem(false, 'subscribed', 1, 157680000, '/')
-				if( typeof(_gaq) !== 'undefined' ){
-					_gaq.push(['_trackEvent', 'Account', 'Emailing sign up', 'Page top'])
-				}
-				setTimeout(function(){
-					subPopup.slideUp(300)
-				}, 3000)
-			})
-
-			return false
-		}
-
-		var subscribeNow = function(){
-			subPopup.slideDown(300)
-
-			submitBtn.bind('click', subscribing)
-
-			$('.bSubscribeLightboxPopup__eNotNow').bind('click', function(){
-				var url = $(this).data('url')
-
-				subPopup.slideUp(300, subscribeLater)
-				docCookies.setItem(false, 'subscribed', 0, 157680000, '/')
-				$.post(url)
-
-				return false;
-			})
-		}
-
-		var subscribeLater = function(){
-			notNowShield.slideDown(300)
-			notNowShield.bind('click', function(){
-				$(this).slideUp(300)
-				subscribeNow()
-			})
-		}
-
-		if (!subscribe.show){
-			if (!subscribe.agreed){
-				subscribeLater()
-			}
-			return false
-		}
-		else{
-			subscribeNow()
-		}
-	};
 	
 
 	var isInCart = false
@@ -2381,7 +2305,6 @@ $(document).ready(function(){
 		dajax.post( dlvr_node.data('calclink'), coreid )
     }
 
-
 	if ( $('.hotlinksToggle').length ){
 		$('.hotlinksToggle').toggle(
 			function(){
@@ -2394,7 +2317,6 @@ $(document).ready(function(){
 			}
 		);
 	}
-
 
 	if ( $('.cron_report_start').length ){
 		$('.cron_report_start').toggle(
@@ -2415,7 +2337,6 @@ $(document).ready(function(){
 		);
 	}
 
-
 	if ( $('.cron_report_links').length ){
 		$('.cron_report_links').toggle(
 			function(){
@@ -2433,7 +2354,6 @@ $(document).ready(function(){
 			}
 		);
 	}
-
 	if($('.newReviewPopupLink').length) {
 		$('.newReviewPopupLink').click(function(){
 			popupWriteReviewForm($(this).attr('data-pid'), $('#reviewsProductName').html())
@@ -2457,11 +2377,9 @@ $(document).ready(function(){
           }
       });
   }
-
     handle_custom_items()
-
 });
-
+  
 
 function popupWriteReviewForm(pid, name) {
   var src = "http://reviews.testfreaks.com/reviews/new?client_id=enter.ru&" + $.param({key: pid, name: name});
@@ -2477,21 +2395,125 @@ function scrollToId(scrollToId) {
 };
 
 
-// function handle_custom_items() {
-//   $(".items-section__list .item").hover(
-//     function() {
-//     $(this).addClass('hover')
-//   },
-//     function() {
-//     $(this).removeClass('hover')
-//   });
+function handle_custom_items() {
+  $(".items-section__list .item").hover(
+    function() {
+    $(this).addClass('hover')
+  },
+    function() {
+    $(this).removeClass('hover')
+  });
 
-//   $(".bigcarousel-brand .goodsbox").hover(
-//     function() {
-//     $(this).addClass('hover');
-//   },
-//     function() {
-//     $(this).removeClass('hover');
-//   });
-// }
+  $(".bigcarousel-brand .goodsbox").hover(
+    function() {
+    $(this).addClass('hover');
+  },
+    function() {
+    $(this).removeClass('hover');
+  });
+}
 
+
+ 
+ 
+/** 
+ * NEW FILE!!! 
+ */
+ 
+ 
+/**
+ * Всплывающая синяя плашка с предложением о подписке
+ * Срабатывает при возникновении события showsubscribe.
+ *
+ * @author		Zaytsev Alexandr
+ * @requires	jQuery, jQuery.emailValidate, docCookies
+ * 
+ * @param		{event}		event
+ * @param		{Object}	subscribe			Информация о подписке
+ * @param		{Boolean}	subscribe.agreed	Было ли дано согласие на подписку в прошлый раз
+ * @param		{Boolean}	subscribe.show		Показывали ли пользователю плашку с предложением о подписке
+ */
+;(function(){
+	var lboxCheckSubscribe = function(event, subscribe){
+
+		var notNowShield = $('.bSubscribeLightboxPopupNotNow'),
+			subPopup = $('.bSubscribeLightboxPopup'),
+			input = $('.bSubscribeLightboxPopup__eInput'),
+			submitBtn = $('.bSubscribeLightboxPopup__eBtn');
+		
+		input.placeholder();
+
+		input.emailValidate({
+			onValid: function(){
+				input.removeClass('mError');
+				submitBtn.removeClass('mDisabled');
+			},
+			onInvalid: function(){
+				submitBtn.addClass('mDisabled');
+				input.addClass('mError');
+			}
+		});
+		
+		var subscribing = function(){
+			if (submitBtn.hasClass('mDisabled')){
+				return false;
+			}
+
+			var email = input.val(),
+				url = $(this).data('url');
+
+			$.post(url, {email: email}, function(res){
+				if( !res.success ){
+					return false;
+				}
+				
+				subPopup.html('<span class="bSubscribeLightboxPopup__eTitle mType">Спасибо! подтверждение подписки отправлено на указанный e-mail</span>');
+				docCookies.setItem(false, 'subscribed', 1, 157680000, '/');
+				if( typeof(_gaq) !== 'undefined' ){
+					_gaq.push(['_trackEvent', 'Account', 'Emailing sign up', 'Page top']);
+				}
+				setTimeout(function(){
+					subPopup.slideUp(300);
+				}, 3000);
+			})
+
+			return false;
+		}
+
+		var subscribeNow = function(){
+			subPopup.slideDown(300);
+
+			submitBtn.bind('click', subscribing);
+
+			$('.bSubscribeLightboxPopup__eNotNow').bind('click', function(){
+				var url = $(this).data('url');
+
+				subPopup.slideUp(300, subscribeLater);
+				docCookies.setItem(false, 'subscribed', 0, 157680000, '/');
+				$.post(url);
+
+				return false;
+			})
+		};
+
+		var subscribeLater = function(){
+			notNowShield.slideDown(300);
+			notNowShield.bind('click', function(){
+				$(this).slideUp(300);
+				subscribeNow();
+			});
+		};
+
+		if (!subscribe.show){
+			if (!subscribe.agreed){
+				subscribeLater();
+			}
+			return false;
+		}
+		else{
+			subscribeNow();
+		}
+	};
+
+	$("body").bind('showsubscribe', lboxCheckSubscribe);
+}());

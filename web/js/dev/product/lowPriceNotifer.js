@@ -4,7 +4,7 @@
  * @author	Zaytsev Alexandr
  * @requires jQuery, jQuery.placeholder plugin, jQuery.emailValidate plugin
  */
-(function(){
+;(function(){
 	var lowPriceNotifer = function(){
 		var notiferButton = $('.jsLowPriceNotifer');
 		var submitBtn = $('.bLowPriceNotiferPopup__eSubmitEmail');
