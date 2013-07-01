@@ -149,7 +149,7 @@ class Action {
             if (!self::isGlobal() && \App::request()->get('shop') && \App::config()->shop['enabled']) {
                 $shop = \RepositoryManager::shop()->getEntityById( \App::request()->get('shop') );
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             \App::logger()->error(sprintf('Не удалось отфильтровать товары по магазину #%s', \App::request()->get('shop')));
         }
 
@@ -257,6 +257,34 @@ class Action {
         // выполнение 3-го пакета запросов
         $client->execute(\App::config()->coreV2['retryTimeout']['tiny']);
 
+        // получаем catalog json для категории (например, тип раскладки)
+        $catalogJson = \RepositoryManager::productCategory()->getCatalogJson($category);
+
+        $promoContent = '';
+        // если в catalogJson'e указан category_layout_type == 'promo', то подгружаем промо-контент
+        if (!empty($catalogJson['category_layout_type']) &&
+            $catalogJson['category_layout_type'] == 'promo' &&
+            !empty($catalogJson['promo_token'])) {
+            $client = \App::contentClient();
+            $content = $client->query($catalogJson['promo_token'], [], false);
+            $promoContent = empty($content['content']) ? '' : $content['content'];
+        }
+
+        // если в catalogJson'e указан category_class, то обрабатываем запрос соответствующим контроллером
+        $categoryClass = !empty($catalogJson['category_class']) ? strtolower(trim((string)$catalogJson['category_class'])) : null;
+
+        //$categoryClass = 'jewel';
+        if ($categoryClass) {
+            $controller = null;
+            if (('jewel' == $categoryClass) && \App::config()->productCategory['jewelController']) {
+                $controller = new \Controller\Jewel\ProductCategory\Action();
+
+                return $controller->categoryDirect($filters, $category, $brand, $request, $regionsToSelect, $catalogJson, $promoContent);
+            }
+
+            \App::logger()->error(sprintf('Контроллер для категории @%s класса %s не найден или не активирован', $category->getToken(), $categoryClass));
+        }
+
         $shop = null;
         try {
             if (!self::isGlobal() && \App::request()->get('shop') && \App::config()->shop['enabled']) {
@@ -291,18 +319,6 @@ class Action {
         } catch (\Exception $e) {
             $hotlinks = [];
             $seoContent = '';
-        }
-
-        // получаем catalog json для категории (например, тип раскладки)
-        $catalogJson = \RepositoryManager::productCategory()->getCatalogJson($category);
-
-        // если в catalogJson'e указан category_layout_type == 'promo', то подгружаем промо-контент
-        if(!empty($catalogJson['category_layout_type']) &&
-            $catalogJson['category_layout_type'] == 'promo' &&
-            !empty($catalogJson['promo_token'])) {
-            $client = \App::contentClient();
-            $content = $client->query($catalogJson['promo_token'], [], false);
-            $promoContent = empty($content['content']) ? '' : $content['content'];
         }
 
         $pageNum = (int)$request->get('page', 1);
