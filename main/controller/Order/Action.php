@@ -1221,8 +1221,6 @@ class Action {
                 foreach ($deliveryMapView->deliveryTypes as $key => $delivery) {
                     if (strpos($key, 'now_') !== false) {
                         if (isset($deliveryMapView->deliveryTypes[$key])) unset($deliveryMapView->deliveryTypes[$key]);
-                        $delivery->token = str_replace('now_', 'self_', $delivery->token);
-                        $deliveryMapView->deliveryTypes[str_replace('now_', 'self_', $key)] = $delivery;
                     }
                 }
             }
@@ -1231,9 +1229,12 @@ class Action {
                     if ((bool)$deliveries->deliveries) {
                         foreach ($deliveries->deliveries as $token => $delivery) {
                             if (strpos($token, 'now_') !== false) {
+                                if (isset($deliveryMapView->items[$product]->deliveries[str_replace('now_', 'self_', $token)])) {
+                                    $nowDates = $delivery->dates[0];
+                                    $nowDates->isNow = true;
+                                    array_push($deliveryMapView->items[$product]->deliveries[str_replace('now_', 'self_', $token)]->dates, $nowDates);
+                                }
                                 if (isset($deliveryMapView->items[$product]->deliveries[$token])) unset($deliveryMapView->items[$product]->deliveries[$token]);
-                                $delivery->token = str_replace('now_', 'self_', $delivery->token);
-                                $deliveryMapView->items[$product]->deliveries[str_replace('now_', 'self_', $token)] = $delivery;
                             }
                         }
                     }
