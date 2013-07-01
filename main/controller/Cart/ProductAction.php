@@ -53,10 +53,20 @@ class ProductAction {
                 (new \Controller\Crossss\CartAction())->product($product);
             }
 
+            /*$productInfo = [
+                'name'  =>  $product->getName(),
+                'img'   =>  $product->getImageUrl(2),
+                'link'  =>  $product->getLink(),
+                'price' =>  $product->getPrice(),
+            ];
+            if (\App::config()->kissmentrics['enabled']) {
+                $productInfo = array_merge($productInfo, \Kissmetrics\Manager::getCartEvent($product));
+            }*/
+
             return $request->isXmlHttpRequest()
                 ? new \Http\JsonResponse([
                     'success' => true,
-                    'data'    => [
+                    'cart'    => [
                         'sum'           => $cartProduct ? $cartProduct->getSum() : 0,
                         'quantity'      => $quantity,
                         'full_quantity' => $cart->getProductsQuantity() + $cart->getServicesQuantity() + $cart->getWarrantiesQuantity(),
@@ -71,7 +81,7 @@ class ProductAction {
             return $request->isXmlHttpRequest()
                 ? new \Http\JsonResponse([
                     'success' => false,
-                    'data'    => ['error' => 'Не удалось товар услугу в корзину', 'debug' => $e->getMessage()],
+                    'cart'    => ['error' => 'Не удалось товар услугу в корзину', 'debug' => $e->getMessage()],
                 ])
                 : new \Http\RedirectResponse($request->headers->get('referer') ?: \App::router()->generate('homepage'));
         }

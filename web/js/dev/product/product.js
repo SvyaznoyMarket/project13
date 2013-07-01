@@ -8,6 +8,14 @@
 var Planner3dKupeConstructor = null;
 
 $(document).ready(function() {
+
+	$('.bCountSection').goodsCounter({
+		onChange:function(count){
+			console.log(count);
+		}
+	});
+
+
 	/**
 	 * Планировщик шкафов купе
 	 */
@@ -133,61 +141,6 @@ $(document).ready(function() {
 		$('.goodsbarbig .link1').unbind();
 		$('.goodsbarbig .link1').bind('click', kupe2basket)
 	}
-	
-    /**
-	 * Уведомления о снижении цены
-	 */
-	if ($('.jsLowPriceNotifer').length){
-		var notiferButton = $('.jsLowPriceNotifer')
-		var submitBtn = $('.bLowPriceNotiferPopup__eSubmitEmail')
-		var input = $('.bLowPriceNotiferPopup__eInputEmail')
-		var notiferPopup = $('.bLowPriceNotiferPopup')
-		var error = $('.bLowPriceNotiferPopup__eError')
-
-
-		var lowPriceNitiferHide = function(){
-			notiferPopup.fadeOut(300)
-			return false
-		}
-
-		var lowPriceNitiferShow = function(){
-			notiferPopup.fadeIn(300)
-			notiferPopup.find('.close').bind('click', lowPriceNitiferHide)
-			return false
-		}
-
-		var lowPriceNitiferSubmit = function(){
-			if ((input.val().search('@')) != -1){
-				var submitUrl = submitBtn.data('url')
-				submitUrl += encodeURI('?email='+input.val())
-
-				var resFromServer = function(res){
-					if (!res.success){
-						input.addClass('red')
-						if (res.error.message){
-							error.html(res.error.message)
-						}
-						return false
-					}
-
-					lowPriceNitiferHide()
-					notiferPopup.remove();
-					notiferButton.remove();
-				}
-				
-				$.get( submitUrl, resFromServer)
-			}
-			else{
-				error.html('Неправильный email')
-				input.addClass('red')
-			}
-			return false
-		}
-
-		input.placeholder()
-		submitBtn.bind('click', lowPriceNitiferSubmit)
-		notiferButton.bind('click', lowPriceNitiferShow)
-	}
 
 
 	/*Вывод магазинов, когда товар доступен только в них
@@ -294,22 +247,6 @@ $(document).ready(function() {
 				}
 			})
 			return false
-		})
-	}
-
-	// подсказки
-	if ($('.bHint').length){
-		$('.bHint_eLink').bind('click', function(){
-			$('.bHint_ePopup').hide()
-			$(this).parent().find('.bHint_ePopup').show()
-			var hintTitle = $(this).html()
-			var url = window.location.href
-			if (typeof(_gaq) !== 'undefined') {
-				_gaq.push(['_trackEvent', 'Hints', hintTitle, url])
-			}
-		})
-		$('.bHint_ePopup .close').bind('click', function(){
-			$('.bHint_ePopup').hide()
 		})
 	}
 	
@@ -706,9 +643,16 @@ $(document).ready(function() {
  	// получение отзывов
  	function getReviews(productId, type, containerClass) {
 		var page = reviewCurrentPage[type] + 1
+		
+		var layout = false
+		if($('body').hasClass('jewel')) {
+			layout = 'jewel'
+		}
+
  		$.get('/product-reviews/'+productId, {
  			page: page,
- 			type: type
+ 			type: type,
+ 			layout: layout
  		}, function(data){
 			$('.'+containerClass).html($('.'+containerClass).html() + data.content)
 			reviewCurrentPage[type]++

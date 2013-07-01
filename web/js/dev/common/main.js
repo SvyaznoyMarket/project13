@@ -26,7 +26,7 @@ $(document).ready(function(){
 			suggestLen = $('.bSearchSuggest__eRes').length
 		}
         if ((e.which < 37 || e.which>40) && (nowSelectSuggest = -1)){
-            if (!text.length){
+            if (!text.length){ 
                 return false
             }
 

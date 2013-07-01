@@ -96,6 +96,7 @@ $c->company['icq'] = '648198963';
 
 $c->analytics['enabled'] = true;
 $c->analytics['optimizelyEnabled'] = true;
+$c->kissmentrics['enabled'] = true;
 $c->googleAnalytics['enabled'] = true;
 $c->yandexMetrika['enabled'] = true;
 $c->adFox['enabled'] = true;

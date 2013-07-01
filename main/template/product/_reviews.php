@@ -20,7 +20,7 @@
 
   <div class="bReviewsContent bReviewsContent__mUser">
     <? foreach ($reviewsData['review_list'] as $key => $review) { ?>
-      <?= $page->render('product/_review', ['review' => $review, 'last' => empty($reviewsData['review_list'][$key + 1])]) ?>
+      <?= $page->render('product/_review', ['review' => $review, 'last' => empty($reviewsData['review_list'][$key + 1]), 'layout' => empty($layout) ? false : $layout]) ?>
     <? } ?>
   </div>
 
@@ -35,7 +35,7 @@
 
   <div class="bReviewsContent bReviewsContent__mPro">
     <? foreach ($reviewsDataPro['review_list'] as $key => $review) { ?>
-      <?= $page->render('product/_review', ['review' => $review, 'last' => empty($reviewsDataPro['review_list'][$key + 1])]) ?>
+      <?= $page->render('product/_review', ['review' => $review, 'last' => empty($reviewsDataPro['review_list'][$key + 1]), 'layout' => empty($layout) ? false : $layout]) ?>
     <? } ?>
   </div>
   <? $showMore = !(empty($reviewsDataPro['review_list']) || (!empty($reviewsDataPro['review_list']) && $reviewsDataPro['page_count'] == 1)); ?>

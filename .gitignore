@@ -21,3 +21,4 @@ erase_barcode.cmd
 .DS_Store
 /dark/config/config-local.php
 /light/config/local.php
+/web/js/jsHintReport

@@ -1,5 +1,13 @@
 module.exports = function(grunt) {
 
+	var jsRootPath = '../web/js/';
+	var jsDevPath = jsRootPath+'dev/';
+	var jsProdPath = jsRootPath+'prod/';
+
+	/**
+	 * Файлы и их порядок для jquery-plugins.js
+	 * @type {Array}
+	 */
 	var bigjqueryFiles = [
 		"custom-form-elements.js",
 		"jquery.ui.core.js",
@@ -9,6 +17,7 @@ module.exports = function(grunt) {
 		"jquery.ui.autocomplete.js",
 		"jquery.ui.slider.js",
 		"jquery.effects.core.js",
+		"jquery.email_validate.js",
 		// "jquery.effects.transfer.js",
 		// "jquery.effects.blind.js",
 		"jquery.lightbox_me.js",
@@ -21,7 +30,27 @@ module.exports = function(grunt) {
 		"typewriter.js",
 		"jquery.ui.touch-punch.js",
 		"jquery.maskedinput.js",
-		"jquery.put_cursor_at_end.js"
+		"jquery.put_cursor_at_end.js",
+		"goodsCounter.js"
+	];
+
+	/**
+	 * Файлы и их порядок для library.js
+	 * @type {Array}
+	 */
+	var libraryFiles = [
+		jsDevPath+'library/pageConfig.js',
+		jsDevPath+'library/JSON.js',
+		jsDevPath+'library/pubSub.js',
+		jsDevPath+'library/isTrueEmail.js',
+		jsDevPath+'library/printPrice.js',
+		jsDevPath+'library/doc_cookies.js',
+		jsDevPath+'library/simple_templating.js',
+		jsDevPath+'library/library.js',
+		jsDevPath+'library/mapDriver.js',
+		jsDevPath+'library/black_box.js',
+		jsDevPath+'library/*.js',
+		// jsDevPath+'library/isTrueEmail.js',
 	];
 
 	grunt.initConfig({
@@ -38,7 +67,7 @@ module.exports = function(grunt) {
 					reporterOutput: '../web/js/jsHintReport/report.xml',
 					force: true,
 				},
-				src: ['../web/js/dev/**/*.js', 'Gruntfile.js'],
+				src: [jsDevPath+'**/*.js', 'Gruntfile.js'],
 			},
 			options: {
 				"-W034": true,
@@ -62,7 +91,8 @@ module.exports = function(grunt) {
 					"_gaq": true,
 					"escape": true,
 					"unescape": true,
-					"tmpl": true
+					"tmpl": true,
+					"_kmq": true
 				},
 			},
 		},
@@ -77,7 +107,7 @@ module.exports = function(grunt) {
 			urls: {
 				options: {
 					urls: [
-						'http://localhost:8000/js/tests/tests.htm',
+						'http://127.0.0.1:8000/js/tests/tests.htm',
 					]
 				},
 			}
@@ -111,9 +141,9 @@ module.exports = function(grunt) {
 					var compilerPath = 'closure-compiler/build/compiler.jar';
 					var execCommand = 'java -jar '+compilerPath;
 					for (var i=0, len=bigjqueryFiles.length; i<len; i++){
-						execCommand += ' --js ../web/js/dev/jquery-plugins/'+bigjqueryFiles[i];
+						execCommand += ' --js '+jsDevPath+'jquery-plugins/'+bigjqueryFiles[i];
 					}
-					execCommand += ' --js_output_file ../web/js/prod/jquery-plugins.min.js';
+					execCommand += ' --js_output_file '+jsProdPath+'jquery-plugins.min.js';
 					return execCommand;
 				},
 			},
@@ -169,67 +199,67 @@ module.exports = function(grunt) {
 			},
 			partnerScripts: {
 				files: ['../web/js/partner/*.js'],
-				tasks: ['concat:partnerScripts','uglify:partnerScripts', 'connect', 'qunit', 'exec:getVersion'],
+				tasks: ['concat:partnerScripts','uglify:partnerScripts', 'jshint', 'connect', 'qunit', 'exec:getVersion'],
 			},
 			vendorScripts: {
 				files: ['../web/js/vendor/*.js'],
-				tasks: ['concat:vendorScripts','uglify:vendorScripts', 'connect', 'qunit', 'exec:getVersion'],
+				tasks: ['concat:vendorScripts','uglify:vendorScripts', 'jshint', 'connect', 'qunit', 'exec:getVersion'],
 			},
 			cartJS:{
-				files: ['../web/js/dev/cart/*.js'],
-				tasks: ['concat:cartJS','uglify:cartJS', 'connect', 'qunit', 'exec:getVersion'],
+				files: [jsDevPath+'cart/*.js'],
+				tasks: ['concat:cartJS','uglify:cartJS', 'jshint', 'connect', 'qunit', 'exec:getVersion'],
 			},
 			commonJS:{
-				files: ['../web/js/dev/common/*.js'],
-				tasks: ['concat:commonJS','uglify:commonJS', 'connect', 'qunit', 'exec:getVersion'],
+				files: [jsDevPath+'common/*.js'],
+				tasks: ['concat:commonJS','uglify:commonJS', 'jshint', 'connect', 'qunit', 'exec:getVersion'],
 			},
 			infopageJS:{
-				files: ['../web/js/dev/infopage/*.js'],
-				tasks: ['concat:infopageJS','uglify:infopageJS', 'connect', 'qunit', 'exec:getVersion'],
+				files: [jsDevPath+'infopage/*.js'],
+				tasks: ['concat:infopageJS','uglify:infopageJS', 'jshint', 'connect', 'qunit', 'exec:getVersion'],
 			},
 			jqueryPluginsJS:{
-				files: ['../web/js/dev/jquery-plugins/*.js'],
+				files: [jsDevPath+'jquery-plugins/*.js'],
 				tasks: ['exec:compileBJ', 'exec:getVersion'],
 			},
 			libraryJS:{
-				files: ['../web/js/dev/library/*.js'],
-				tasks: ['concat:libraryJS','uglify:libraryJS', 'connect', 'qunit', 'exec:getVersion'],
+				files: [jsDevPath+'library/*.js'],
+				tasks: ['concat:libraryJS','uglify:libraryJS', 'jshint', 'connect', 'qunit', 'exec:getVersion'],
 			},
 			mainJS:{
-				files: ['../web/js/dev/main/*.js'],
-				tasks: ['concat:mainJS','uglify:mainJS', 'connect', 'qunit', 'exec:getVersion'],
+				files: [jsDevPath+'main/*.js'],
+				tasks: ['concat:mainJS','uglify:mainJS', 'jshint', 'connect', 'qunit', 'exec:getVersion'],
 			},
 			oneclickJS:{
-				files: ['../web/js/dev/oneclick/*.js'],
-				tasks: ['concat:oneclickJS','uglify:oneclickJS', 'connect', 'qunit', 'exec:getVersion'],
+				files: [jsDevPath+'oneclick/*.js'],
+				tasks: ['concat:oneclickJS','uglify:oneclickJS', 'jshint', 'connect', 'qunit', 'exec:getVersion'],
 			},
 			orderJS:{
-				files: ['../web/js/dev/order/*.js'],
-				tasks: ['concat:orderJS','uglify:orderJS', 'connect', 'qunit', 'exec:getVersion'],
+				files: [jsDevPath+'order/*.js'],
+				tasks: ['concat:orderJS','uglify:orderJS', 'jshint', 'connect', 'qunit', 'exec:getVersion'],
 			},
 			orderNewJS:{
-				files: ['../web/js/dev/order-new/*.js'],
-				tasks: ['concat:orderNewJS','uglify:orderNewJS', 'connect', 'qunit', 'exec:getVersion'],
+				files: [jsDevPath+'order-new/*.js'],
+				tasks: ['concat:orderNewJS','uglify:orderNewJS', 'jshint', 'connect', 'qunit', 'exec:getVersion'],
 			},
 			pandoraJS:{
-				files: ['../web/js/dev/pandora/*.js'],
-				tasks: ['concat:pandoraJS','uglify:pandoraJS', 'connect', 'qunit', 'exec:getVersion'],
+				files: [jsDevPath+'pandora/*.js'],
+				tasks: ['concat:pandoraJS','uglify:pandoraJS', 'jshint', 'connect', 'qunit', 'exec:getVersion'],
 			},
 			portsJS:{
-				files: ['../web/js/dev/ports/*.js'],
-				tasks: ['concat:portsJS','uglify:portsJS', 'connect', 'qunit', 'exec:getVersion'],
+				files: [jsDevPath+'ports/*.js'],
+				tasks: ['concat:portsJS','uglify:portsJS', 'jshint', 'connect', 'qunit', 'exec:getVersion'],
 			},
 			productJS:{
-				files: ['../web/js/dev/product/*.js'],
-				tasks: ['concat:productJS','uglify:productJS', 'connect', 'qunit', 'exec:getVersion'],
+				files: [jsDevPath+'product/*.js'],
+				tasks: ['concat:productJS','uglify:productJS', 'jshint', 'connect', 'qunit', 'exec:getVersion'],
 			},
 			shopJS:{
-				files: ['../web/js/dev/shop/*.js'],
-				tasks: ['concat:shopJS','uglify:shopJS', 'connect', 'qunit', 'exec:getVersion'],
+				files: [jsDevPath+'shop/*.js'],
+				tasks: ['concat:shopJS','uglify:shopJS', 'jshint', 'connect', 'qunit', 'exec:getVersion'],
 			},
 			watch3dJS:{
-				files: ['../web/js/dev/watch3d/*.js'],
-				tasks: ['concat:watch3dJS','uglify:watch3dJS', 'connect', 'qunit', 'exec:getVersion'],
+				files: [jsDevPath+'watch3d/*.js'],
+				tasks: ['concat:watch3dJS','uglify:watch3dJS', 'jshint', 'connect', 'qunit', 'exec:getVersion'],
 			},
 		},
 
@@ -242,60 +272,60 @@ module.exports = function(grunt) {
 				separator: '\n \n \n/** \n * NEW FILE!!! \n' + ' */\n \n \n',
 			},
 			cartJS : {
-				src: ['../web/js/dev/cart/*.js'],
-				dest: '../web/js/prod/cart.js'
+				src: [jsDevPath+'cart/*.js'],
+				dest: jsProdPath+'cart.js'
 			},
 			commonJS : {
-				src: ['../web/js/dev/common/*.js'],
-				dest: '../web/js/prod/common.js'
+				src: [jsDevPath+'common/*.js'],
+				dest: jsProdPath+'common.js'
 			},
 			infopageJS : {
-				src: ['../web/js/dev/infopage/*.js'],
-				dest: '../web/js/prod/infopage.js'
+				src: [jsDevPath+'infopage/*.js'],
+				dest: jsProdPath+'infopage.js'
 			},
 			// jqueryPluginsJS : {
-			// 	src: ['../web/js/dev/jquery-plugins/*.js'],
-			// 	dest: '../web/js/prod/jquery-plugins.js'
+			// 	src: [jsDevPath+'jquery-plugins/*.js'],
+			// 	dest: jsProdPath+'jquery-plugins.js'
 			// },
 			libraryJS : {
-				src: ['../web/js/dev/library/*.js'],
-				dest: '../web/js/prod/library.js'
+				src: libraryFiles,
+				dest: jsProdPath+'library.js'
 			},
 			mainJS : {
-				src: ['../web/js/dev/main/*.js'],
-				dest: '../web/js/prod/main.js'
+				src: [jsDevPath+'main/*.js'],
+				dest: jsProdPath+'main.js'
 			},
 			oneclickJS : {
-				src: ['../web/js/dev/oneclick/*.js'],
-				dest: '../web/js/prod/oneclick.js'
+				src: [jsDevPath+'oneclick/*.js'],
+				dest: jsProdPath+'oneclick.js'
 			},
 			orderJS : {
-				src: ['../web/js/dev/order/*.js'],
-				dest: '../web/js/prod/order.js'
+				src: [jsDevPath+'order/*.js'],
+				dest: jsProdPath+'order.js'
 			},
 			orderNewJS : {
-				src: ['../web/js/dev/order-new/*.js'],
-				dest: '../web/js/prod/order-new.js'
+				src: [jsDevPath+'order-new/*.js'],
+				dest: jsProdPath+'order-new.js'
 			},
 			pandoraJS : {
-				src: ['../web/js/dev/pandora/*.js'],
-				dest: '../web/js/prod/pandora.js'
+				src: [jsDevPath+'pandora/*.js'],
+				dest: jsProdPath+'pandora.js'
 			},
 			portsJS : {
-				src: ['../web/js/dev/ports/*.js'],
-				dest: '../web/js/prod/ports.js'
+				src: [jsDevPath+'ports/*.js'],
+				dest: jsProdPath+'ports.js'
 			},
 			productJS : {
-				src: ['../web/js/dev/product/*.js'],
-				dest: '../web/js/prod/product.js'
+				src: [jsDevPath+'product/*.js'],
+				dest: jsProdPath+'product.js'
 			},
 			shopJS : {
-				src: ['../web/js/dev/shop/*.js'],
-				dest: '../web/js/prod/shop.js'
+				src: [jsDevPath+'shop/*.js'],
+				dest: jsProdPath+'shop.js'
 			},
 			watch3dJS : {
-				src: ['../web/js/dev/watch3d/*.js'],
-				dest: '../web/js/prod/watch3d.js'
+				src: [jsDevPath+'watch3d/*.js'],
+				dest: jsProdPath+'watch3d.js'
 			},
 
 		},
@@ -337,85 +367,85 @@ module.exports = function(grunt) {
 
 			cartJS: {
 				files: {
-					'../web/js/prod/cart.min.js': ['../web/js/dev/cart/*.js']
+					'../web/js/prod/cart.min.js': [jsDevPath+'cart/*.js']
 				}
 			},
 
 			commonJS: {
 				files: {
-					'../web/js/prod/common.min.js': ['../web/js/dev/common/*.js']
+					'../web/js/prod/common.min.js': [jsDevPath+'common/*.js']
 				}
 			},
 
 			infopageJS: {
 				files: {
-					'../web/js/prod/infopage.min.js': ['../web/js/dev/infopage/*.js']
+					'../web/js/prod/infopage.min.js': [jsDevPath+'infopage/*.js']
 				}
 			},
 
 			// jqueryPluginsJS: {
 			// 	files: {
-			// 		'../web/js/prod/jquery-plugins.min.js': ['../web/js/dev/jquery-plugins/*.js']
+			// 		'../web/js/prod/jquery-plugins.min.js': [jsDevPath+'jquery-plugins/*.js']
 			// 	}
 			// },
 
 			libraryJS: {
 				files: {
-					'../web/js/prod/library.min.js': ['../web/js/dev/library/*.js']
+					'../web/js/prod/library.min.js': libraryFiles
 				}
 			},
 
 			mainJS: {
 				files: {
-					'../web/js/prod/main.min.js': ['../web/js/dev/main/*.js']
+					'../web/js/prod/main.min.js': [jsDevPath+'main/*.js']
 				}
 			},
 
 			oneclickJS: {
 				files: {
-					'../web/js/prod/oneclick.min.js': ['../web/js/dev/oneclick/*.js']
+					'../web/js/prod/oneclick.min.js': [jsDevPath+'oneclick/*.js']
 				}
 			},
 
 			orderJS: {
 				files: {
-					'../web/js/prod/order.min.js': ['../web/js/dev/order/*.js']
+					'../web/js/prod/order.min.js': [jsDevPath+'order/*.js']
 				}
 			},
 
 			orderNewJS: {
 				files: {
-					'../web/js/prod/order-new.min.js': ['../web/js/dev/order-new/*.js']
+					'../web/js/prod/order-new.min.js': [jsDevPath+'order-new/*.js']
 				}
 			},
 
 			pandoraJS: {
 				files: {
-					'../web/js/prod/pandora.min.js': ['../web/js/dev/pandora/*.js']
+					'../web/js/prod/pandora.min.js': [jsDevPath+'pandora/*.js']
 				}
 			},
 
 			portsJS: {
 				files: {
-					'../web/js/prod/ports.min.js': ['../web/js/dev/ports/*.js']
+					'../web/js/prod/ports.min.js': [jsDevPath+'ports/*.js']
 				}
 			},
 
 			productJS: {
 				files: {
-					'../web/js/prod/product.min.js': ['../web/js/dev/product/*.js']
+					'../web/js/prod/product.min.js': [jsDevPath+'product/*.js']
 				}
 			},
 
 			shopJS: {
 				files: {
-					'../web/js/prod/shop.min.js': ['../web/js/dev/shop/*.js']
+					'../web/js/prod/shop.min.js': [jsDevPath+'shop/*.js']
 				}
 			},
 
 			watch3dJS: {
 				files: {
-					'../web/js/prod/watch3d.min.js': ['../web/js/dev/watch3d/*.js']
+					'../web/js/prod/watch3d.min.js': [jsDevPath+'watch3d/*.js']
 				}
 			},
 		}

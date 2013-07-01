@@ -1,55 +1,65 @@
-$(document).ready(function(){
-	// var carturl = $('.lightboxinner .point2').attr('href')
+/**
+ * Обработчик для кнопок купить
+ *
+ * @author		Zaytsev Alexandr
+ * @requires	printPrice
+ * @param		{event} e
+ */
+var BuyButton = function(e){
+	e.stopPropagation();
 
+	var button = $(this);
 
-	/**
-	 * Обработчик для кнопок купить
-	 * 
-	 * @param  {event} e
-	 */
-	var BuyButton = function(e){
-		e.stopPropagation();
-
-		var button = $(this);
-
-		if (button.hasClass('disabled')) {
-			return false;
-		}
-		if (button.hasClass('active')) {
-			return false;
-		}
-
-		var url = button.attr('href');
-		var productInfo = button.data('product');
-
-		var addToCart = function(data) {
-			if (data.success) {
-				button.addClass('mBought');
-				button.html('В корзине');
-				kissAnalytics(data);
-				sendAnalytics(button);
-				
-				if (blackBox) {
-					var basket = data.data;
-					var product = data.result.product;
-					var tmpitem = {
-						'title': product.name,
-						'price' : product.price,
-						'imgSrc': 'need image link',
-						'totalQuan': basket.full_quantity,
-						'totalSum': basket.full_price,
-						'linkToOrder': basket.link,
-					}
-					blackBox.basket().add(tmpitem);
-				}
-			}
-		}
-		$.get(url, addToCart);
+	if (button.hasClass('disabled')) {
+		return false;
+	}
+	if (button.hasClass('active')) {
 		return false;
 	}
 
-	$('.jsBuyButton').live('click', BuyButton);
+	var url = button.attr('href');
 
+	var addToCart = function(data) {
+		if (data.success) {
+			button.addClass('mBought');
+			button.html('В корзине');
+			// kissAnalytics(data);
+			// sendAnalytics(button);
+			
+			if (blackBox) {
+				var basket = data.data;
+				var product = data.result.product;
+				var tmpitem = {
+					'title': product.name,
+					'price' : printPrice(product.price),
+					'imgSrc': 'need image link',
+					'totalQuan': basket.full_quantity,
+					'totalSum': printPrice(basket.full_price),
+					'linkToOrder': basket.link,
+				};
+				blackBox.basket().add(tmpitem);
+			}
+		}
+	};
+	$.get(url, addToCart);
+	return false;
+}
+
+$('.jsBuyButton').live('click', BuyButton);
+
+
+/**
+ * ADD Analytics for buyButton!!!
+ */
+ 
+ 
+/** 
+ * NEW FILE!!! 
+ */
+ 
+ 
+$(document).ready(function(){
+	// var carturl = $('.lightboxinner .point2').attr('href')
 
 
 	/* вывод слайдера со схожими товарами, если товар доступен только на витрине*/
@@ -868,7 +878,7 @@ $(document).ready(function(){
 			suggestLen = $('.bSearchSuggest__eRes').length
 		}
         if ((e.which < 37 || e.which>40) && (nowSelectSuggest = -1)){
-            if (!text.length){
+            if (!text.length){ 
                 return false
             }
 

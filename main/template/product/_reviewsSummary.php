@@ -2,6 +2,12 @@
   $full = 100; // longest bar, px
   $maxUser = max($reviewsDataSummary['user']);
   $maxPro = max($reviewsDataSummary['pro']);
+
+  if(!empty($layout) && $layout == 'jewel') {
+    $reviewsStarSrc = "/images/jewel/reviews_star.png";
+  } else {
+    $reviewsStarSrc = "/images/reviews_star.png";
+  }
 ?>
 <? if(!empty($reviewsData['review_list']) || !empty($reviewsDataPro['review_list'])) { ?>
 
@@ -33,7 +39,7 @@
       <? foreach ($reviewsDataSummary['user'] as $numStars => $count) { ?>
         <div class="bcolStarRow">
           <? for ($i=0; $i < $numStars; $i++) { ?>
-            <img src="/images/reviews_star.png">
+            <img src="<?= $reviewsStarSrc ?>">
           <? } ?>
         </div>
       <? } ?>

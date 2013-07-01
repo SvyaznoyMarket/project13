@@ -35,7 +35,9 @@ return function (
                     </div>
                     <div class="productName"><a href="<?= $helper->url('product', ['productPath' => $product->getPath()]) ?>"><?= $product->getName() ?></a></div>
                     <div class="productPrice"><span class="price"><?= $helper->formatPrice($product->getPrice()) ?>p</span></div>
-                    <div class="btnBuy"><a class="btnBuy__eLink" href="">В корзину</a></div>
+                    <div class="btnBuy">
+                        <a class="btnBuy__eLink" href="">В корзину</a>
+                    </div>
                 </div>
             </li>
         <? endforeach ?>
