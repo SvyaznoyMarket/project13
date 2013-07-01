@@ -184,6 +184,9 @@ BlackBox.prototype.init = function() {
 		if (action.subscribe !== undefined) {
 			$("body").trigger("showsubscribe", [action.subscribe]);
 		}
+		if (action.cartButton !== undefined) {
+			$("body").trigger("markcartbutton", [action.cartButton]);
+		}
 	};
 
 	/**
