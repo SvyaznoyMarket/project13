@@ -3,6 +3,7 @@
  * @var $page     \View\ProductCategory\RootPage
  * @var $category \Model\Product\Category\Entity
  */
+$catalogJsonBulk = isset($catalogJsonBulk)?$catalogJsonBulk:[];
 ?>
 
 <? if (\App::config()->adFox['enabled']): ?>

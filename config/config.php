@@ -144,7 +144,7 @@ $c->loadMediaHost = true;
 $c->shop['cookieName'] = 'shopid';
 $c->shop['cookieLifetime'] = 31536000; // 365 дней
 $c->shop['autoresolve']    = true;
-$c->shop['enabled'] = false;
+$c->shop['enabled'] = true;
 
 $c->mediaHost = [
     0 => 'http://fs01.enter.ru',
@@ -172,7 +172,7 @@ $c->product['totalCount']             = 30000;
 // глобальный (без учета региона) список товаров
 $c->product['globalListEnabled']      = true;
 $c->product['showAveragePrice']       = false;
-$c->product['allowBuyOnlyInshop']     = false;
+$c->product['allowBuyOnlyInshop']     = true;
 $c->product['reviewEnabled']          = true;
 $c->product['lowerPriceNotification'] = false;
 $c->product['furnitureConstructor']   = true;
