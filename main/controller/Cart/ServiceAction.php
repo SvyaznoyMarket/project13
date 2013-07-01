@@ -59,7 +59,7 @@ class ServiceAction {
             }
 
             $productInfo = [];
-            $serviceinfo = [];
+            $serviceInfo = [];
             if ($product) {
                 $productInfo = [
                     'name'  =>  $product->getName(),
@@ -71,22 +71,25 @@ class ServiceAction {
             if (\App::config()->kissmentrics['enabled']) {
                 $kissInfo = \Kissmetrics\Manager::getCartEvent($product, $service);
                 if (isset($kissInfo['product'])) $productInfo = array_merge($productInfo, $kissInfo['product']);
-                if (isset($kissInfo['service'])) $serviceinfo = $kissInfo['service'];
+                if (isset($kissInfo['service'])) $serviceInfo = $kissInfo['service'];
             }
 
+            $completeInfo = [
+                'success'   => true,
+                'cart'      => [
+                    'sum'           => $cartService ? $cartService->getSum() : 0,
+                    'quantity'      => $quantity,
+                    'full_quantity' => $cart->getProductsQuantity() + $cart->getServicesQuantity() + $cart->getWarrantiesQuantity(),
+                    'full_price'    => $cart->getSum(),
+                    'old_price'     => $cart->getOriginalSum(),
+                    'link'          => \App::router()->generate('order.create'),
+                ],
+            ];
+            if ($productInfo) $completeInfo['product'] = $productInfo;
+            if ($serviceInfo) $completeInfo['service'] = $serviceInfo;
+
             return $request->isXmlHttpRequest()
-                ? new \Http\JsonResponse([
-                    'success' => true,
-                    'cart'    => [
-                        'sum'           => $cartService ? $cartService->getSum() : 0,
-                        'quantity'      => $quantity,
-                        'full_quantity' => $cart->getProductsQuantity() + $cart->getServicesQuantity() + $cart->getWarrantiesQuantity(),
-                        'full_price'    => $cart->getSum(),
-                        'old_price'     => $cart->getOriginalSum(),
-                        'link'          => \App::router()->generate('order.create'),
-                    ],
-                    'result'  => \Kissmetrics\Manager::getCartEvent($product, $service),
-                ])
+                ? new \Http\JsonResponse($completeInfo)
                 : new \Http\RedirectResponse($request->headers->get('referer') ?: \App::router()->generate('homepage'));
         } catch (\Exception $e) {
             return $request->isXmlHttpRequest()

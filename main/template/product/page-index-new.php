@@ -217,6 +217,12 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
             <div class="price"><strong><?= $page->helper->formatPrice($product->getPrice()) ?></strong>р</div>
 
             <? if ($hasLowerPriceNotification): ?>
+            <?
+                $lowerPrice =
+                    ($product->getMainCategory() && $product->getMainCategory()->getPriceChangePercentTrigger())
+                        ? round($product->getPrice() * $product->getMainCategory()->getPriceChangePercentTrigger())
+                        : 0;
+            ?>
             <div class="priceSale">
                 <span class="dotted jsLowPriceNotifer">Узнать о снижении цены</span>
                 <div class="bLowPriceNotiferPopup popup">
@@ -404,7 +410,7 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
 
 <aside class="bProductSection__eRight">
     <div class="bWidgetBuy mWidget">
-        <div class="bCountSection clearfix">
+        <div class="bCountSection clearfix" data-spinner="<?= $page->json(['button' => sprintf('cartButton-product-%s', $product->getId())]) ?>">
             <button class="bCountSection__eM">-</button>
             <input class="bCountSection__eNum" type="text" value="1" />
             <button class="bCountSection__eP">+</button>

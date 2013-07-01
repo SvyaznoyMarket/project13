@@ -128,28 +128,33 @@
   border-bottom: 2px solid #5E5E5E;
   text-transform: uppercase; 
   padding: 0 5px;
-  margin: 10px; 
+  margin: 7px 10px 10px; 
   .brand-subnav__title {
     color: #5E5E5E;
     font-family: 'Enter Type'; 
     font-size: 16px;
     float: left;
-    margin-right: 60px;
+    margin-top: 3px;
   }
   .brand-subnav__list {
+    float: right;
+    width: 670px;
     li {
       float: left;
       font-family: Tahoma;
       font-size: 11px;
+      margin: 3px 5px 2px 0;
       a {
         display: block;
         padding: 0 7px;
         line-height: 18px;
+        border: 1px solid #fff;
       }
-      .active {
+      a:hover, .active {
         background: #D7D7D7;
         border: 1px solid #5E5E5E;
-        border-bottom: none;
+        text-decoration: none;
+        color: #000;
       }
     }
   }
