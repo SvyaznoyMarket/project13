@@ -182,8 +182,7 @@ BlackBox.prototype.init = function() {
 	 */
 	var startAction = function(action) {
 		if (action.subscribe !== undefined) {
-			//  TODO: перевести action на события
-			// lboxCheckSubscribe(action.subscribe);
+			$("body").trigger("showsubscribe", [action.subscribe]);
 		}
 	};
 
