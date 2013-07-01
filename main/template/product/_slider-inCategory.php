@@ -24,6 +24,9 @@ if ($filterData = $request->get(\View\Product\FilterForm::$name)) {
 if (\App::request()->get('instore')) {
     $categoryLink .= (false === strpos($categoryLink, '?') ? '?' : '&') . 'instore=1';
 }
+if (\App::request()->get('shop')) {
+    $categoryLink .= (false === strpos($categoryLink, '?') ? '?' : '&') . 'shop='.\App::request()->get('shop');
+}
 ?>
 
 <!-- Carousel -->

@@ -1,4 +1,4 @@
-.bReviewsOld {  
+.bReviews {
   margin-bottom: 25px;
   .bReview {
     margin-bottom: 25px;
@@ -12,7 +12,6 @@
     margin: -10px 0 0 160px;
     font-size: 14px;
   }
-
   .bReviewsSummary {
     margin: 0 0 10px;
     &__eColStar {
@@ -24,7 +23,7 @@
       .reviewsBar {
         background-color: #fb9c00;
         .rounded(3px);
-        height:15px;
+        height:15px ;
         margin: 0 0 4px;
         float: left;
       }
@@ -100,7 +99,7 @@
     }
     .bReview__eText {
       float: left;
-      width: 650px;
+      width: 445px;
       font-size: 14px;
       .mark {
         display: block;
@@ -115,7 +114,7 @@
       }
       div, p {
         float: left;
-        width: 620px;
+        width: 420px;
         margin: 2px 0 5px;
       }
     }
@@ -123,60 +122,29 @@
       float: right;
       width: 120px;
       text-align: right;
+      margin: 8px 0 0;
     }
   }
-}
+} 
 
-.reviewSection {
+.bReviewSection {
   margin: 0 0 25px;
   padding: 0;
   font-size: 12px;
-  span {
-    margin: 2px 0 0;
-  }
-  &__star, &__link {
+  color: @typGray;
+  &__eStar {
     float: left;
-    color: @typGray;
-  }
-  &__link {
-    width: 100%;
-    &__write {
-      border-bottom: 1px dotted;
-      cursor: pointer;
-      margin: 0 0 0 3px;
-      color: #000;
-      float: right;
-    }
-  }  
-    span.border {
-      cursor: pointer;
-      border-bottom: 1px solid;
-      float: left;
-    }
-  &__star {
-    margin: 2px 0 0 0px;
-  }
-}
-
-.reviewSection100 {
-  &__star {
     margin-right: 5px;
   }
-}
-
-.reviewSection12 {
-  font-size: 12px;
-  border: none;
-  margin: 0;
-  &__star {
-    margin: 0;
-    img {
-      &:last-child {
-        margin-right: 5px;
-      }
-    }
-  }
-  &__link {
-    width: auto;
+  &__eWrite {
+    border-bottom: 1px dotted;
+    cursor: pointer;
+    margin: 0 0 0 3px;
+    float: right;
+  } 
+  span.border {
+    cursor: pointer;
+    border-bottom: 1px solid;
+    float: left;
   }
 } 

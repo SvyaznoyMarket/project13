@@ -558,21 +558,22 @@ $productVideo = reset($productVideos);
   <div id="productDescriptionToggle" class="contourButton mb15 button width250">Показать все характеристики</div>
 <? } ?>
 
-<? if (\App::config()->product['reviewEnabled'] && $reviewsPresent): ?>
-  <h2 id="reviewsSectionHeader" class="bold">Обзоры и отзывы</h2>
-  <div class="line pb5"></div>
-  <div id="reviewsSummary">
-      <?= $page->render('product/_reviewsSummary', ['reviewsData' => $reviewsData, 'reviewsDataPro' => $reviewsDataPro, 'reviewsDataSummary' => $reviewsDataSummary]) ?>
-  </div>
+<div class="bReviewsOld">
+    <? if (\App::config()->product['reviewEnabled'] && $reviewsPresent): ?>
+      <h2 id="reviewsSectionHeader" class="bold">Обзоры и отзывы</h2>
+      <div id="ReviewsSummary" class="bReviewsSummary clearfix">
+          <?= $page->render('product/_reviewsSummary', ['reviewsData' => $reviewsData, 'reviewsDataPro' => $reviewsDataPro, 'reviewsDataSummary' => $reviewsDataSummary]) ?>
+      </div>
 
-  <? if (!empty($reviewsData['review_list'])) { ?>
-    <div id="reviewsWrapper" class="reviewsWrapper" data-product-id="<?= $product->getId() ?>" data-page-count="<?= $reviewsData['page_count'] ?>" data-container="reviewsUser" data-reviews-type="user">
-  <? } elseif(!empty($reviewsDataPro['review_list'])) { ?>
-    <div id="reviewsWrapper" data-product-id="<?= $product->getId() ?>" data-page-count="<?= $reviewsDataPro['page_count'] ?>" data-container="reviewsPro" data-reviews-type="pro">
-  <? } ?>
+      <? if (!empty($reviewsData['review_list'])) { ?>
+          <div id="reviewsWrapper" class="bReviewsWrapper" data-product-id="<?= $product->getId() ?>" data-page-count="<?= $reviewsData['page_count'] ?>" data-container="reviewsUser" data-reviews-type="user">
+      <? } elseif(!empty($reviewsDataPro['review_list'])) { ?>
+      <div id="reviewsWrapper" class="bReviewsWrapper" data-product-id="<?= $product->getId() ?>" data-page-count="<?= $reviewsDataPro['page_count'] ?>" data-container="reviewsPro" data-reviews-type="pro">
+          <? } ?>
       <?= $page->render('product/_reviews', ['reviewsData' => $reviewsData, 'reviewsDataPro' => $reviewsDataPro]) ?>
-    </div>
-<? endif ?>
+      </div>
+    <? endif ?>
+</div> 
 
 <? if (!$showAccessoryUpper && count($product->getAccessoryId()) && \App::config()->product['showAccessories']): ?>
     <?= $page->render('product/_slider', ['product' => $product, 'productList' => array_values($accessories), 'totalProducts' => count($product->getAccessoryId()), 'itemsInSlider' => $accessoryCategory ? \App::config()->product['itemsInAccessorySlider'] : \App::config()->product['itemsInSlider'], 'page' => 1, 'title' => 'Аксессуары', 'url' => $page->url('product.accessory', array('productToken' => $product->getToken())), 'gaEvent' => 'Accessorize', 'showCategories' => (bool)$accessoryCategory, 'accessoryCategory' => $accessoryCategory, 'additionalData' => $additionalData]) ?>

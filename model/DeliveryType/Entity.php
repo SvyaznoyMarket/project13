@@ -5,6 +5,7 @@ namespace Model\DeliveryType;
 class Entity {
     const TYPE_STANDART = 'standart';
     const TYPE_SELF = 'self';
+    const TYPE_NOW = 'now';
 
     /** @var int */
     private $id;

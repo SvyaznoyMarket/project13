@@ -10,45 +10,38 @@
   }
 ?>
 <? if(!empty($reviewsData['review_list']) || !empty($reviewsDataPro['review_list'])) { ?>
-  <div id="reviewsRatingWrapper" class="reviewsRatingWrapper clearfix">
-  <?php /*div id="reviewsRatingWrapper" class="<?= empty($alignRight) ? 'fl' : 'fr' ?> clearfix" */?>
-
-    <? if(!empty($alignRight) && (empty($reviewsData['review_list']) || empty($reviewsDataPro['review_list']))) { ?>
-      <div class="width181 fl">&nbsp;</div>
-    <? } ?>
 
     <? if(!empty($reviewsData['review_list'])) { ?>
-      <div class="reviewsRatingCol fl">
-          <div class="reviewsRatingCol__title bold">Пользователи</div>
+      <div class="bReviewsSummary__eCol">
+          <strong>Пользователи</strong>
         <? foreach ($reviewsDataSummary['user'] as $numStars => $count) { ?>
-          <div class="reviewsBarCount fl"><?= $count ?></div>
-          <div class="reviewsBar reviewsBarBg fl" style="width:<?= $full ?>px;">
-            <div class="reviewsBar fl" style="width:<?= $maxUser ? $count/$maxUser*$full : 0 ?>px;"></div>
+          <div class="reviewsBarCount"><?= $count ?></div>
+          <div class="reviewsBar reviewsBarBg" style="width:<?= $full ?>px;">
+            <div class="reviewsBar" style="width:<?= $maxUser ? $count/$maxUser*$full : 0 ?>px;"></div>
           </div>
         <? } ?>
       </div>
     <? } ?>
 
     <? if(!empty($reviewsDataPro['review_list'])) { ?>
-      <div class="reviewsRatingCol fl">
-          <div class="reviewsRatingCol__title bold">Эксперты</div>
+      <div class="bReviewsSummary__eCol">
+          <strong>Эксперты</strong>
         <? foreach ($reviewsDataSummary['pro'] as $numStars => $count) { ?>
-          <div class="reviewsBarCount fl"><?= $count ?></div>
-          <div class="reviewsBar reviewsBarBg fl" style="width:<?= $full ?>px;">
-            <div class="reviewsBar fl" style="width:<?= $maxPro ? $count/$maxPro*$full : 0 ?>px;"></div>
+          <div class="reviewsBarCount"><?= $count ?></div>
+          <div class="reviewsBar reviewsBarBg" style="width:<?= $full ?>px;">
+            <div class="reviewsBar" style="width:<?= $maxPro ? $count/$maxPro*$full : 0 ?>px;"></div>
           </div>
         <? } ?>
       </div>
     <? } ?>
 
-    <div class="reviewsRatingWrapper__colstar fl">
+    <div class="bReviewsSummary__eCol bReviewsSummary__eColStar">
       <? foreach ($reviewsDataSummary['user'] as $numStars => $count) { ?>
-        <div class="reviewsRatingWrapper__colstar__row">
+        <div class="bcolStarRow">
           <? for ($i=0; $i < $numStars; $i++) { ?>
             <img src="<?= $reviewsStarSrc ?>">
           <? } ?>
         </div>
       <? } ?>
     </div>
-  </div>
 <? } ?>
