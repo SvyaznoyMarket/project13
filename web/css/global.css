@@ -2996,15 +2996,15 @@
   .bMainMenuLevel-1__eItem.bMainMenuLevel-1__eSeparator:hover .bMainMenuLevel-2 {
     display: none;
   }
-  .bMainMenuLevel-1__eItem:hover .bMainMenuLevel-2 {
+  .bMainMenuLevel-1__eItem.hover .bMainMenuLevel-2 {
     display: block;
   }
-  .bMainMenuLevel-1__eItem:hover .bMainMenuLevel-1__eIcon,
-  .bMainMenuLevel-1__eItem:hover .bMainMenuLevel-1__eTitle {
+  .bMainMenuLevel-1__eItem.hover .bMainMenuLevel-1__eIcon,
+  .bMainMenuLevel-1__eItem.hover .bMainMenuLevel-1__eTitle {
     color: #ffa901;
     text-decoration: none;
   }
-  .bMainMenuLevel-1__eItem:hover .bCorner {
+  .bMainMenuLevel-1__eItem.hover .bCorner {
     display: block;
   }
   .bMainMenuLevel-1__eItem.mMore {
@@ -3174,7 +3174,6 @@
     padding-right: 10px;
     position: absolute;
     top: -5px;
-    width: 160px;
     -moz-opacity: 0;
     -khtml-opacity: 0;
     -webkit-opacity: 0;

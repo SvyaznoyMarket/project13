@@ -486,4 +486,42 @@ class Repository {
         return isset($catalogHtml['html']) ? $catalogHtml['html'] : '';
     }
 
+    /**
+     * Получает catalog html для всех категорий
+     * Возвращает массив с токенами категорий в качестве ключей и их промо html'ем
+     * в качестве значений
+     *
+     * @param $catalogJsonBulk
+     * @return array
+     */
+    public function getPromoHtmlBulk($catalogJsonBulk) {
+        // формируем запрос к апи и получаем json
+        $catalogHtmlBulk = [];
+        $dataStore = \App::dataStoreClient();
+        $dataStore->addQuery('catalog/html/*.json', [], function ($data) use (&$catalogHtmlBulk) {
+            if($data) $catalogHtmlBulk = $data;
+        });
+        $dataStore->execute();
+
+
+        foreach ($catalogJsonBulk as $token => $settings) {
+            if(in_array($token, array_keys($catalogHtmlBulk)) ||
+                empty($catalogJsonBulk[$token]['use_promo_in_menu']) ||
+                empty($catalogJsonBulk[$token]['promo_token_menu'])) continue;
+
+file_put_contents('/tmp/logger.txt', json_encode($token)."\n", FILE_APPEND);
+
+            $contentClient = \App::contentClient();
+file_put_contents('/tmp/logger.txt', json_encode($settings['promo_token_menu'])."\n", FILE_APPEND);
+            $content = $contentClient->query($settings['promo_token_menu'], [], false);
+            $promoContent = empty($content['content']) ? '' : $content['content'];
+
+file_put_contents('/tmp/logger.txt', json_encode($promoContent)."\n", FILE_APPEND);
+
+            $catalogHtmlBulk[$token]['menu_promo'] = $promoContent;
+        }
+
+        return $catalogHtmlBulk;
+    }
+
 }

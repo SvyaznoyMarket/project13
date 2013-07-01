@@ -1,40 +1,63 @@
 /* Top Menu */
-var menuDelay = 350
-var lastHover = null
+var menuDelayLvl1 = 300 //ms
+var menuDelayLvl2 = 500 //ms
 
-var dropMenuWidth = 230
+var lastHoverLvl1 = null
+var checkedItemLvl1 = null
+var hoverNowLvl1 = false
+
+var lastHoverLvl2 = null
+var checkedItemLvl2 = null
+
 var currentMenuItemDimensions = null
 var menuLevel2Dimensions = null
 var menuLevel3Dimensions = null
+var pointA = {x: 0,	y: 0}
+var pointB = {x: 0,	y: 0}
+var pointC = {x: 0,	y: 0}
+var cursorNow = {x: 0, y: 0}
 
-var hoverMainMenu = false
-var checkedItem = null
-var pointA = {
-	x: 0,
-	y: 0
-}
-var pointB = {
-	x: 0,
-	y: 0
-}
-var pointC = {
-	x: 0,
-	y: 0
-}
-var cursorNow = {
-	x: 0,
-	y: 0
-}
-
-$('body').append("<div id='tl' style='z-index:10000;position:fixed;top:0;left:0;background-color:red;width:10px;height:10px;'>&nbsp;</div>")
-$('body').append("<div id='tt' style='z-index:10000;position:fixed;top:0;left:0;background-color:green;width:10px;height:10px;'>&nbsp;</div>")
-$('body').append("<div id='tb' style='z-index:10000;position:fixed;top:0;left:0;background-color:blue;width:10px;height:10px;'>&nbsp;</div>")
-
-var tl = $('#tl')
-var tt = $('#tt')
-var tb = $('#tb')
 
 /**
+ * Активируем элемент меню 1-го уровня
+ *
+ * @param  {element} el
+ */
+activateItemLvl1 = function(el){
+	lastHoverLvl1 = new Date()
+	checkedItemLvl1 = el
+	$('.bMainMenuLevel-2__eItem').removeClass('hover')
+	el.addClass('hover')
+}
+
+/**
+ * Обработчик наведения на элемент меню 1-го уровня
+ */
+menuHoverInLvl1 = function(){
+	var el = $(this)
+	lastHoverLvl1 = new Date()
+	hoverNowLvl1 = true
+
+	setTimeout(function(){
+		if(hoverNowLvl1 && (new Date() - lastHoverLvl1 > menuDelayLvl1)) {
+			activateItemLvl1(el)
+		}
+	}, menuDelayLvl1 + 20)
+}
+
+/**
+ * Обработчик ухода мыши из элемента меню 1-го уровня
+ */
+menuMouseLeaveLvl1 = function(){
+	var el = $(this)
+	el.removeClass('hover')
+	hoverNowLvl1 = false
+}
+
+
+/**
+ * не используется
+ * 
  * Получение площади треугольника по координатам вершин
  * 
  * @param {object} A      верхняя вершина треугольника
@@ -73,15 +96,15 @@ getTriangleS = function(A, B, C){
  * 
  * @param  {object} now    координаты точки, которую необходимо проверить
  * 
- * @param  {object} A      верхняя вершина большого треугольника
+ * @param  {object} A      левая вершина большого треугольника
  * @param  {object} A.x    координата по оси x верхней вершины
  * @param  {object} A.y    координата по оси y верхней вершины
  * 
- * @param  {object} B      левая вершина большого треугольника
+ * @param  {object} B      верхняя вершина большого треугольника
  * @param  {object} B.x    координата по оси x левой вершины
  * @param  {object} B.y    координата по оси y левой вершины
  * 
- * @param  {object} C      правая вершина большого треугольника
+ * @param  {object} C      нижняя вершина большого треугольника
  * @param  {object} C.x    координата по оси x правой вершины
  * @param  {object} A.y    координата по оси y правой вершины
  * 
@@ -103,10 +126,10 @@ menuCheckTriangle = function(){
 }
 
 /**
- * Отслеживание перемещения мыши по меню
+ * Отслеживание перемещения мыши по меню 2-го уровня
  * @param  {event} e
  */
-menuMove = function(e){
+menuMoveLvl2 = function(e){
 	// console.info(e.currentTarget.nodeName)
 	// console.log('движение...')
 	cursorNow = {
@@ -114,36 +137,17 @@ menuMove = function(e){
 		y: e.pageY - $(window).scrollTop()
 	}
 	var el = $(this)
-	if(el.attr('class') == checkedItem.attr('class')) {
+	if(el.attr('class') == checkedItemLvl2.attr('class')) {
 		buildTriangle(el)
-		lastHover = new Date()
+		lastHoverLvl2 = new Date()
 	}
-	checkHover(el)
-
-	tl.css('left',(cursorNow.x - 30)+'px')
-	tl.css('top',cursorNow.y+'px')
+	checkHoverLvl2(el)
 }
 
-// menuHoverOut = function(e){
-// 	var now = {
-// 		x: e.pageX,
-// 		y: e.pageY
-// 	}
-// 	console.log('убираем')
-// 	if (!menuCheckTriangle(now, pointA, pointB, pointC)){
-// 		$('.bMainMenuLevel-1__eItem').removeClass('hover')
-// 		hoverMainMenu = false
-// 		$(this).trigger('mouseenter')
-// 	}
-// }
-
+/**
+ * Непосредственно построение треугольника. Требуется предвариательно получить нужные координаты и размеры
+ */
 createTriangle = function(){
-	// // левый угол - левая середина пункта меню 2го уровня на котором сейчас ховер
-	// pointA = {
-	// 	x: currentMenuItemDimensions.left,
-	// 	y: currentMenuItemDimensions.top + currentMenuItemDimensions.height/2
-	// }
-
 	// левый угол - текущее положение курсора
 	pointA = {
 		x: cursorNow.x,
@@ -161,62 +165,62 @@ createTriangle = function(){
 		x: menuLevel3Dimensions.left,
 		y: menuLevel3Dimensions.top + menuLevel3Dimensions.height - $(window).scrollTop()
 	}
-
-	tt.css('left',(pointB.x - 30)+'px')
-	tt.css('top',pointB.y+'px')
-
-	tb.css('left',(pointC.x - 30)+'px')
-	tb.css('top',pointC.y+'px')
 }
 
-checkItem = function(el){
-	console.log('checkedItem')
-	if (menuCheckTriangle()){
-		console.log('входит')
-		activateItem(el)
-	} else {
-		console.log('не входит')
-		checkedItem.removeClass('hover')
-	}
-}
-
-activateItem = function(el){
-	// console.log('activate')
-	checkedItem = el
+/**
+ * Активируем элемент меню 2-го уровня, строим треугольник
+ *
+ * @param  {element} el
+ */
+activateItemLvl2 = function(el){
+	checkedItemLvl2 = el
 	el.addClass('hover')
-	lastHover = new Date()
+	lastHoverLvl2 = new Date()
 	buildTriangle(el)
 }
 
 /**
- * Обработчик наведения на элемент меню второго уровня
- * При наведении на элемент меню строим новый треугольник
+ * Обработчик наведения на элемент меню 2-го уровня
  */
-menuHoverIn = function(){
-	// console.log('handler')
-	// if (this != checkedItem){
-		// console.log('new hover')
+menuHoverInLvl2 = function(){
 	var el = $(this)
-	checkHover(el)
+	checkHoverLvl2(el)
 
-	// console.log('el != checkedItem : ' + (el != checkedItem))
-	// console.log('menuCheckTriangle : ' + menuCheckTriangle())
-		// console.log(checkedItem)
-	// }
-}
-
-checkHover = function(el) {
-	if (pointA.x == 0 && pointA.y == 0) {
-		activateItem(el)
-	} else if(!menuCheckTriangle() || (lastHover && (new Date() - lastHover > menuDelay) && menuCheckTriangle())) {
-		checkedItem.removeClass('hover')
-		activateItem(el)
+	if(lastHoverLvl2 && (new Date() - lastHoverLvl2 <= menuDelayLvl2) && menuCheckTriangle()) {
+		setTimeout(function(){
+			if(new Date() - lastHoverLvl2 > menuDelayLvl2) {
+				checkHoverLvl2(el)
+			}
+		}, menuDelayLvl2)
 	}
 }
 
+/**
+ * Меню 2-го уровня
+ * Если первое наведение - просто активируем
+ * Иначе - проверяем условия по которым активировать
+ *
+ * @param  {element} el
+ */
+checkHoverLvl2 = function(el) {
+	if (!lastHoverLvl2) {
+		activateItemLvl2(el)
+	} else if(!menuCheckTriangle() || (lastHoverLvl2 && (new Date() - lastHoverLvl2 > menuDelayLvl2) && menuCheckTriangle())) {
+		checkedItemLvl2.removeClass('hover')
+		activateItemLvl2(el)
+	}
+}
+
+/**
+ * Получаем все нужные координаты и размеры и строим треугольник, попадание курсора в который
+ * будет определять нужна ли задержка до переключения на другой пункт меню
+ *
+ * @param  {element} el
+ */
 buildTriangle = function(el) {
 	currentMenuItemDimensions = getDimensions(el)
-	menuLevel2Dimensions = getDimensions(el.parent())
+	menuLevel2Dimensions = getDimensions(el.find('.bMainMenuLevel-3'))
+	var dropMenuWidth = el.find('.bMainMenuLevel-2__eTitle')[0].offsetWidth
 	menuLevel3Dimensions = {
 		top: menuLevel2Dimensions.top,
 		left: menuLevel2Dimensions.left + dropMenuWidth,
@@ -228,6 +232,8 @@ buildTriangle = function(el) {
 
 /**
  * Получение абсолютных координат элемента и его размеров
+ *
+ * @param  {element} el
  */
 getDimensions = function(el) {
 		var width = $(el).width()
@@ -243,10 +249,18 @@ getDimensions = function(el) {
     return { top: y, left: x, width: width, height: height }
 }
 
-$('.bMainMenuLevel-2__eItem').mouseenter(menuHoverIn)
-$('.bMainMenuLevel-2__eItem').mousemove(menuMove)
+
+$('.bMainMenuLevel-1__eItem').mouseenter(menuHoverInLvl1)
+$('.bMainMenuLevel-1__eItem').mouseleave(menuMouseLeaveLvl1)
+
+$('.bMainMenuLevel-2__eItem').mouseenter(menuHoverInLvl2)
+$('.bMainMenuLevel-2__eItem').mousemove(menuMoveLvl2)
 
 
+
+
+
+/* код ниже был закомментирован в main.js, перенес его сюда чтобы код, касающийся меню, был в одном месте */
 
 // header_v2
 // $('.bMainMenuLevel-1__eItem').bind('mouseenter', function(){

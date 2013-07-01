@@ -1,6 +1,6 @@
 <?php
 
-return function(\Helper\TemplateHelper $helper, array $menu, \Model\Menu\Entity $parent = null, $catalogJsonBulk = [], $level = 1) {
+return function(\Helper\TemplateHelper $helper, array $menu, \Model\Menu\Entity $parent = null, $catalogJsonBulk = [], $promoHtmlBulk = [], $level = 1) {
 
 /**
  * @var $menu   \Model\Menu\Entity[]
@@ -46,66 +46,73 @@ $count = count($menu);
 <? endif ?>
 
 <ul class="bMainMenuLevel-<?= $level ?>">
+    <? if($level == 3 && $parent instanceof \Model\Menu\Entity) { ?>
+        <? $parentToken = preg_replace('/.*\//', '', $parent->getLink()) ?>
+    <? } ?>
 
-    <? if ((3 ==$level) && $parent instanceof \Model\Menu\Entity && $parent->getImage()): ?>
-        <li class="bMainMenuLevel-<?= $level ?>__eHead"><?= $parent->getName() ?></li>
-        <li class="bMainMenuLevel-<?= $level ?>__eImageItem"><img class="bMainMenuLevel-<?= $level ?>__eImage" width="150" src="<?= $parent->getImage() ?>" alt="<?= $helper->escape($parent->getName()) ?>" /></li>
-    <? endif ?>
+    <? if(!empty($parentToken) && !empty($promoHtmlBulk[$parentToken]['menu_promo']) && !empty($catalogJsonBulk[$parentToken]['use_promo_in_menu'])) { ?>
+        <?= $promoHtmlBulk[$parentToken]['menu_promo'] ?>
+    <? } else { ?>
+        <? if ((3 ==$level) && $parent instanceof \Model\Menu\Entity && $parent->getImage()): ?>
+            <li class="bMainMenuLevel-<?= $level ?>__eHead"><?= $parent->getName() ?></li>
+            <li class="bMainMenuLevel-<?= $level ?>__eImageItem"><img class="bMainMenuLevel-<?= $level ?>__eImage" width="150" src="<?= $parent->getImage() ?>" alt="<?= $helper->escape($parent->getName()) ?>" /></li>
+        <? endif ?>
 
-    <? $i = 1; foreach ($menu as $iMenu): ?>
-        <?
-        $class = '';
-        if (\Model\Menu\Entity::ACTION_SEPARATOR === $iMenu->getAction()) {
-            $class .= ' bMainMenuLevel-' . $level . '__eSeparator';
-        }
-        if ((1 == $level) && !$iMenu->getAction()) {
-            $class .= ' mMore';
-        }
-        if ((1 == $level) && (\Model\Menu\Entity::ACTION_PRODUCT_CATALOG !== $iMenu->getAction()) && (false === strpos($class, 'mMore'))) {
-            $class .= ' mAction';
-        }
-        if ((1 == $level) && (($count - $i) < 4) && (($count - $i) > 1)) {
-            $class .= ' mMenuLeft';
-        }
-        $class = trim($class);
-        ?>
-
-        <li class="bMainMenuLevel-<?= $level ?>__eItem clearfix mId<?= ($parent ? ($parent->getPriority() . '-') : '') . $i ?> <? if ($class) echo ' ' . $class ?>">
+        <? $i = 1; foreach ($menu as $iMenu): ?>
             <?
-            $token = preg_replace('/.*\//', '', $iMenu->getLink());
-            $showImage = !empty($catalogJsonBulk[$token]) && !empty($catalogJsonBulk[$token]['logo_path']) && !empty($catalogJsonBulk[$token]['use_logo']);
+            $class = '';
+            if (\Model\Menu\Entity::ACTION_SEPARATOR === $iMenu->getAction()) {
+                $class .= ' bMainMenuLevel-' . $level . '__eSeparator';
+            }
+            if ((1 == $level) && !$iMenu->getAction()) {
+                $class .= ' mMore';
+            }
+            if ((1 == $level) && (\Model\Menu\Entity::ACTION_PRODUCT_CATALOG !== $iMenu->getAction()) && (false === strpos($class, 'mMore'))) {
+                $class .= ' mAction';
+            }
+            if ((1 == $level) && (($count - $i) < 4) && (($count - $i) > 1)) {
+                $class .= ' mMenuLeft';
+            }
+            $class = trim($class);
             ?>
-            <? if ($iMenu->getLink()): ?>
-                <a class="bMainMenuLevel-<?= $level ?>__eLink" href="<?= $iMenu->getLink() ?>">
-                    <span class="bMainMenuLevel-<?= $level ?>__eIcon">&nbsp;<?//= 0  === strpos($iMenu->getImage(), '&') ? $iMenu->getImage() : '' ?></span>
-                    <span class="bMainMenuLevel-<?= $level ?>__eTitle">
-                    <? if ($showImage): ?>
-                        <img src="<?= $catalogJsonBulk[$token]['logo_path'] ?>">
-                    <? else: ?>
-                        <?= $iMenu->getName() ?>
-                    <? endif ?>
-                    </span>
-                    <div class="bCorner"></div>
-                </a>
-            <? elseif ($iMenu->getName()): ?>
-                <div class="bMainMenuLevel-<?= $level ?>__eLink">
-                    <span class="bMainMenuLevel-<?= $level ?>__eIcon"></span>
-                    <span class="bMainMenuLevel-<?= $level ?>__eTitle">
-                    <? if ($showImage): ?>
+
+            <li class="bMainMenuLevel-<?= $level ?>__eItem clearfix mId<?= ($parent ? ($parent->getPriority() . '-') : '') . $i ?> <? if ($class) echo ' ' . $class ?>">
+                <?
+                $token = preg_replace('/.*\//', '', $iMenu->getLink());
+                $showImage = !empty($catalogJsonBulk[$token]) && !empty($catalogJsonBulk[$token]['logo_path']) && !empty($catalogJsonBulk[$token]['use_logo']);
+                ?>
+                <? if ($iMenu->getLink()): ?>
+                    <a class="bMainMenuLevel-<?= $level ?>__eLink" href="<?= $iMenu->getLink() ?>">
+                        <span class="bMainMenuLevel-<?= $level ?>__eIcon">&nbsp;<?//= 0  === strpos($iMenu->getImage(), '&') ? $iMenu->getImage() : '' ?></span>
+                        <span class="bMainMenuLevel-<?= $level ?>__eTitle">
+                        <? if ($showImage): ?>
                             <img src="<?= $catalogJsonBulk[$token]['logo_path'] ?>">
                         <? else: ?>
                             <?= $iMenu->getName() ?>
                         <? endif ?>
-                    </span>
-                    <div class="bCorner"></div>
-                </div>
-            <? endif ?>
+                        </span>
+                        <div class="bCorner"></div>
+                    </a>
+                <? elseif ($iMenu->getName()): ?>
+                    <div class="bMainMenuLevel-<?= $level ?>__eLink">
+                        <span class="bMainMenuLevel-<?= $level ?>__eIcon"></span>
+                        <span class="bMainMenuLevel-<?= $level ?>__eTitle">
+                        <? if ($showImage): ?>
+                                <img src="<?= $catalogJsonBulk[$token]['logo_path'] ?>">
+                            <? else: ?>
+                                <?= $iMenu->getName() ?>
+                            <? endif ?>
+                        </span>
+                        <div class="bCorner"></div>
+                    </div>
+                <? endif ?>
 
-            <? if ($level <= 2): ?>
-                <?= $helper->render('__mainMenu', ['menu' => $iMenu->getChild(), 'level' => $level + 1, 'parent' => $iMenu, 'catalogJsonBulk' => $catalogJsonBulk]) ?>
-            <? endif ?>
-        </li>
-    <? $i++; endforeach ?>
+                <? if ($level <= 2): ?>
+                    <?= $helper->render('__mainMenu', ['menu' => $iMenu->getChild(), 'level' => $level + 1, 'parent' => $iMenu, 'catalogJsonBulk' => $catalogJsonBulk, 'promoHtmlBulk' => $promoHtmlBulk]) ?>
+                <? endif ?>
+            </li>
+        <? $i++; endforeach ?>
+    <? } ?>
 </ul>
 
 <? };

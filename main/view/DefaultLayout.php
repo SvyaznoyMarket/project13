@@ -174,6 +174,7 @@ class DefaultLayout extends Layout {
         $renderer = \App::closureTemplating();
 
         $catalogJsonBulk = \RepositoryManager::productCategory()->getCatalogJsonBulk();
+        $promoHtmlBulk = \RepositoryManager::productCategory()->getPromoHtmlBulk($catalogJsonBulk);
 
         if (\App::config()->requestMainMenu) {
             $client = \App::curl();
@@ -192,12 +193,14 @@ class DefaultLayout extends Layout {
                 $content = $renderer->render('__mainMenu', [
                     'menu'            => (new Menu())->generate(),
                     'catalogJsonBulk' => $catalogJsonBulk,
+                    'promoHtmlBulk' => $promoHtmlBulk,
                 ]);
             }
         } else {
             $content = $renderer->render('__mainMenu', [
                 'menu'            => (new Menu())->generate(),
                 'catalogJsonBulk' => $catalogJsonBulk,
+                'promoHtmlBulk' => $promoHtmlBulk,
             ]);
         }
 
