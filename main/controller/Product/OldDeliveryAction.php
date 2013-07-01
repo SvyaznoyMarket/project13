@@ -229,6 +229,25 @@ class OldDeliveryAction {
                     'dates'  => $dates,
                 ];
                 $responseData[$token] = $item;
+
+                if (\App::config()->product['allowBuyOnlyInshop']) {
+                    $nowDates = [];
+                    foreach ($responseData as $token => $deliveries) {
+                        if ($token == 'now') {
+                            $nowDates = $deliveries['dates'][0];
+                            $nowDates['isNow'] = true;
+                            if (isset($responseData['self']['dates'])) {
+                                $responseData['self']['dates'][] = $nowDates;
+                                unset($responseData['now']);
+                                $nowDates = [];
+                            }
+                        }
+                        if ($token == 'self' && count($nowDates)) {
+                            $responseData['self']['dates'][] = $nowDates;
+                        }
+                    }
+                }
+
             }
         } catch (\Exception $e) {
             \App::exception()->remove($e);
