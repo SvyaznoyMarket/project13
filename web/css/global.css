@@ -5882,33 +5882,133 @@
 }
 /*новые стили отзывов к продукту*/
 @media all {
-  .productReview {
+  .bReviewsOld {
     margin-bottom: 25px;
   }
-  .reviewsBar {
+  .bReviewsOld .bReview {
+    margin-bottom: 25px;
+  }
+  .bReviewsOld .bReviewsWrapper {
+    border-bottom: 1px solid #e6e6e6;
+    margin: 0;
+    padding: 0 0 10px;
+  }
+  .bReviewsOld .bReviewsToggle {
+    margin: -10px 0 0 160px;
+    font-size: 14px;
+  }
+  .bReviewsOld .bReviewsSummary {
+    margin: 0 0 10px;
+  }
+  .bReviewsOld .bReviewsSummary__eColStar {
+    margin: 20px 0 0 15px;
+  }
+  .bReviewsOld .bReviewsSummary__eCol {
+    float: left;
+    width: 145px;
+  }
+  .bReviewsOld .bReviewsSummary__eCol .reviewsBar {
     background-color: #fb9c00;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     border-radius: 3px;
     height: 15px;
     margin: 0 0 4px;
+    float: left;
   }
-  .reviewsBarBg {
+  .bReviewsOld .bReviewsSummary__eCol .reviewsBarBg {
     background-color: #edecee;
   }
-  .reviewsBarCount {
+  .bReviewsOld .bReviewsSummary__eCol .reviewsBarCount {
     text-align: right;
     padding-right: 5px;
     font-weight: bold;
     font-size: 10px;
     width: 40px;
     clear: both;
+    float: left;
   }
-  .contourButton {
-    padding: 10px;
-    border: 1px solid #ffa901;
+  .bReviewsOld .bReviewsSummary__eCol strong {
+    margin: 0 0 6px 45px;
+    display: block;
+    clear: both;
+  }
+  .bReviewsOld .bReviewsSummary .bcolStarRow {
+    margin: 0 0 3px;
+  }
+  .bReviewsOld .bReviewsTabs {
+    border-bottom: 1px solid #c7c7c7;
+    margin: 0 0 10px;
+  }
+  .bReviewsOld .bReviewsTabs__eTab {
+    float: left;
+    font-size: 14px;
+    padding: 8px 10px 6px;
+  }
+  .bReviewsOld .bReviewsTabs__eTab span {
+    border-bottom: 1px dotted;
+    cursor: pointer;
+  }
+  .bReviewsOld .bReviewsTabs__eUser {
+    width: 190px;
     text-align: center;
-    text-decoration: underline;
+    padding: 8px 0 6px;
+  }
+  .bReviewsOld .bReviewsTabs__eLast {
+    padding-right: 0;
+    float: right;
+  }
+  .bReviewsOld .bReviewsTabs .active {
+    font-weight: bold;
+    border: 1px solid #c7c7c7;
+    -webkit-border-radius: 5px 5px 0 0;
+    -moz-border-radius: 5px 5px 0 0;
+    border-radius: 5px 5px 0 0;
+    border-bottom: none;
+    background: #fff;
+    margin: 0 0 -1px;
+  }
+  .bReviewsOld .bReviewsTabs .active span {
+    border-bottom: none;
+  }
+  .bReviewsOld .bReview .bReview__eAuthtor {
+    float: left;
+    width: 120px;
+    margin: 5px 15px 0 0;
+  }
+  .bReviewsOld .bReview .bReview__eAuthtor-name {
+    margin: 6px 0;
+    font-weight: normal;
+  }
+  .bReviewsOld .bReview .bReview__eAuthtor-date {
+    color: #a6a6a6;
+  }
+  .bReviewsOld .bReview .bReview__eText {
+    float: left;
+    width: 650px;
+    font-size: 14px;
+  }
+  .bReviewsOld .bReview .bReview__eText .mark {
+    display: block;
+    float: left;
+    font: bold 24px/24px Tahoma;
+    color: #616161;
+    width: 20px;
+    margin-right: 5px;
+    text-align: right;
+    margin-top: -2px;
+    clear: both;
+  }
+  .bReviewsOld .bReview .bReview__eText div,
+  .bReviewsOld .bReview .bReview__eText p {
+    float: left;
+    width: 620px;
+    margin: 2px 0 5px;
+  }
+  .bReviewsOld .bReview__eLogo {
+    float: right;
+    width: 120px;
+    text-align: right;
   }
   .reviewSection {
     margin: 0 0 25px;
@@ -5957,104 +6057,6 @@
   }
   .reviewSection12__link {
     width: auto;
-  }
-  .reviewsWrapper {
-    border-bottom: 1px solid #c7c7c7;
-    margin: 0;
-    padding: 0 0 10px;
-  }
-  .reviewsWrapper .product-btn-toggle {
-    margin: -10px 0 0 165px;
-    font-size: 14px;
-  }
-  .reviewsRatingWrapper {
-    margin: 0 0 10px;
-  }
-  .reviewsRatingWrapper .reviewsRatingCol__title {
-    margin: 0 0 6px 45px;
-  }
-  .reviewsRatingWrapper__colstar {
-    margin: 20px 0 0 20px;
-  }
-  .reviewsRatingWrapper__colstar__row {
-    margin: 0 0 3px;
-  }
-  .reviewsTabs {
-    border-bottom: 1px solid #c7c7c7;
-    margin: 0 0 10px;
-  }
-  .reviewsTabs li {
-    float: left;
-    font-size: 14px;
-    padding: 8px 10px 6px;
-  }
-  .reviewsTabs li span {
-    border-bottom: 1px dotted;
-    cursor: pointer;
-  }
-  .reviewsTabs .user {
-    text-align: center;
-  }
-  .reviewsTabs .last {
-    padding-right: 0;
-    float: right;
-  }
-  .reviewsTabs .active {
-    font-weight: bold;
-    border: 1px solid #c7c7c7;
-    -webkit-border-radius: 5px 5px 0 0;
-    -moz-border-radius: 5px 5px 0 0;
-    border-radius: 5px 5px 0 0;
-    border-bottom: none;
-    background: #fff;
-    margin: 0 0 -1px;
-  }
-  .reviewsTabs .active span {
-    border-bottom: none;
-  }
-  .comments .commentAuthtor {
-    float: left;
-    width: 120px;
-    margin: 5px 15px 0 0;
-  }
-  .comments .commentAuthtor__name {
-    margin: 6px 0;
-    font-weight: normal;
-  }
-  .comments .commentAuthtor__date {
-    color: #a6a6a6;
-  }
-  .comments .commentWrap {
-    float: left;
-    width: 650px;
-    font-size: 14px;
-  }
-  .comments .commentWrap__text .mark {
-    display: block;
-    float: left;
-    font: bold 24px/24px Tahoma;
-    color: #616161;
-    width: 20px;
-    margin-right: 5px;
-    text-align: right;
-  }
-  .comments .commentWrap__text p,
-  .comments .commentWrap__text .p {
-    float: left;
-    width: 620px;
-    margin: 2px 0 5px;
-  }
-  .comments .commentWrap__plus .mark,
-  .comments .commentWrap__minus .mark {
-    margin-top: -2px;
-  }
-  .comments .commentWrap__quote .mark {
-    margin-top: -2px;
-  }
-  .comments .commentLogo {
-    float: right;
-    width: 120px;
-    text-align: right;
   }
 }
 /*планировщик мебели*/
@@ -9877,6 +9879,9 @@
     float: left;
     width: 110px;
   }
+  .bProductSection .bPhotoAction__eOtherAction li {
+    float: left;
+  }
   .bProductSection .bPhotoAction__eOtherAction li a {
     display: block;
     width: 48px;
@@ -9894,16 +9899,13 @@
     height: 46px;
   }
   .bProductSection .bPhotoAction__eOtherAction-video {
-    float: left;
+    margin-right: 10px;
   }
   .bProductSection .bPhotoAction__eOtherAction-video a {
     background-position: 7px 0;
   }
   .bProductSection .bPhotoAction__eOtherAction-video a:hover {
     background-position: 6px -1px;
-  }
-  .bProductSection .bPhotoAction__eOtherAction-grad360 {
-    float: right;
   }
   .bProductSection .bPhotoAction__eOtherAction-grad360 a {
     background-position: 6px -49px;
@@ -9986,7 +9988,7 @@
   }
   .bProductSection .bSpecifications__eList dd {
     float: left;
-    width: 190px;
+    width: 270px;
     border-bottom: 1px solid #ececec;
     padding: 0 0 2px 0;
     clear: both;
@@ -10000,7 +10002,7 @@
   }
   .bProductSection .bSpecifications__eList dt {
     float: right;
-    width: 500px;
+    width: 425px;
     padding: 3px 0 0;
     margin: 5px 0;
   }
@@ -10395,6 +10397,159 @@
   }
 }
 /*---END---СТИЛИ КНОПКИ "КУПИТЬ"---*/
+/*------СТИЛИ ОТЗЫВОВ------*/
+@media all {
+  .bReviews {
+    margin-bottom: 25px;
+  }
+  .bReviews .bReview {
+    margin-bottom: 25px;
+  }
+  .bReviews .bReviewsWrapper {
+    border-bottom: 1px solid #e6e6e6;
+    margin: 0;
+    padding: 0 0 10px;
+  }
+  .bReviews .bReviewsToggle {
+    margin: -10px 0 0 160px;
+    font-size: 14px;
+  }
+  .bReviews .bReviewsSummary {
+    margin: 0 0 10px;
+  }
+  .bReviews .bReviewsSummary__eColStar {
+    margin: 20px 0 0 15px;
+  }
+  .bReviews .bReviewsSummary__eCol {
+    float: left;
+    width: 145px;
+  }
+  .bReviews .bReviewsSummary__eCol .reviewsBar {
+    background-color: #fb9c00;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    height: 15px ;
+    margin: 0 0 4px;
+    float: left;
+  }
+  .bReviews .bReviewsSummary__eCol .reviewsBarBg {
+    background-color: #edecee;
+  }
+  .bReviews .bReviewsSummary__eCol .reviewsBarCount {
+    text-align: right;
+    padding-right: 5px;
+    font-weight: bold;
+    font-size: 10px;
+    width: 40px;
+    clear: both;
+    float: left;
+  }
+  .bReviews .bReviewsSummary__eCol strong {
+    margin: 0 0 6px 45px;
+    display: block;
+    clear: both;
+  }
+  .bReviews .bReviewsSummary .bcolStarRow {
+    margin: 0 0 3px;
+  }
+  .bReviews .bReviewsTabs {
+    border-bottom: 1px solid #c7c7c7;
+    margin: 0 0 10px;
+  }
+  .bReviews .bReviewsTabs__eTab {
+    float: left;
+    font-size: 14px;
+    padding: 8px 10px 6px;
+  }
+  .bReviews .bReviewsTabs__eTab span {
+    border-bottom: 1px dotted;
+    cursor: pointer;
+  }
+  .bReviews .bReviewsTabs__eUser {
+    width: 190px;
+    text-align: center;
+    padding: 8px 0 6px;
+  }
+  .bReviews .bReviewsTabs__eLast {
+    padding-right: 0;
+    float: right;
+  }
+  .bReviews .bReviewsTabs .active {
+    font-weight: bold;
+    border: 1px solid #c7c7c7;
+    -webkit-border-radius: 5px 5px 0 0;
+    -moz-border-radius: 5px 5px 0 0;
+    border-radius: 5px 5px 0 0;
+    border-bottom: none;
+    background: #fff;
+    margin: 0 0 -1px;
+  }
+  .bReviews .bReviewsTabs .active span {
+    border-bottom: none;
+  }
+  .bReviews .bReview .bReview__eAuthtor {
+    float: left;
+    width: 120px;
+    margin: 5px 15px 0 0;
+  }
+  .bReviews .bReview .bReview__eAuthtor-name {
+    margin: 6px 0;
+    font-weight: normal;
+  }
+  .bReviews .bReview .bReview__eAuthtor-date {
+    color: #a6a6a6;
+  }
+  .bReviews .bReview .bReview__eText {
+    float: left;
+    width: 445px;
+    font-size: 14px;
+  }
+  .bReviews .bReview .bReview__eText .mark {
+    display: block;
+    float: left;
+    font: bold 24px/24px Tahoma;
+    color: #616161;
+    width: 20px;
+    margin-right: 5px;
+    text-align: right;
+    margin-top: -2px;
+    clear: both;
+  }
+  .bReviews .bReview .bReview__eText div,
+  .bReviews .bReview .bReview__eText p {
+    float: left;
+    width: 420px;
+    margin: 2px 0 5px;
+  }
+  .bReviews .bReview__eLogo {
+    float: right;
+    width: 120px;
+    text-align: right;
+  }
+  .bReviewSection {
+    margin: 0 0 25px;
+    padding: 0;
+    font-size: 12px;
+    color: #a6a6a6;
+  }
+  .bReviewSection__eStar {
+    float: left;
+    margin-right: 5px;
+  }
+  .bReviewSection__eWrite {
+    border-bottom: 1px dotted;
+    cursor: pointer;
+    margin: 0 0 0 3px;
+    float: right;
+  }
+  .bReviewSection span.border {
+    cursor: pointer;
+    border-bottom: 1px solid;
+    float: left;
+  }
+}
+/*---END---СТИЛИ ОТЗЫВОВ---*/
 /*------СТИЛИ БРЕНД РАЗДЕЛА PANDORA------*/
 @media all {
   .logo-section {
