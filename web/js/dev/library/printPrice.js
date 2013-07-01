@@ -2,7 +2,7 @@
  * Разбиение числа по разрядам
  *
  * @author	Zaytsev Alexandr
- * @param	{number|string}	число которое нужно отформатировать
+ * @param	{number|string}		число которое нужно отформатировать
  * @return	{string}			отформатированное число
  */
 var printPrice = function(num){

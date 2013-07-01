@@ -173,7 +173,7 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
 
         <div class="bProductDesc__ePhoto">
             <figure class="bProductDesc__ePhoto-bigImg">
-                <a class="bigImgLink" href="<?= $product->getImageUrl(4) ?>"><img src="<?= $product->getImageUrl(3) ?>" alt="<?= $page->escape($product->getName()) ?>" /></a>
+                <img class="bZoomedImg" src="<?= $product->getImageUrl(3) ?>" data-zoom-image="<?= $product->getImageUrl(4) ?>" alt="<?= $page->escape($product->getName()) ?>" />
             </figure><!--/product big image section -->
 
             <div class="bPhotoAction">
@@ -243,7 +243,7 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
             <? endif ?>
 
             <? if ($creditData['creditIsAllowed'] && !$user->getRegion()->getHasTransportCompany()) : ?>
-            <div class="creditbox" style="display: block;">
+            <div class="creditbox">
                 <label class="bigcheck" for="creditinput"><b></b>
                     <span class="dotted">Беру в кредит</span>
                     <input id="creditinput" type="checkbox" name="creditinput" autocomplete="off">

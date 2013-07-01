@@ -31,7 +31,8 @@ module.exports = function(grunt) {
 		"jquery.ui.touch-punch.js",
 		"jquery.maskedinput.js",
 		"jquery.put_cursor_at_end.js",
-		"goodsCounter.js"
+		"goodsCounter.js",
+		"jquery.elevatezoom.js"
 	];
 
 	/**
