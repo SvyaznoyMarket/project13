@@ -171,7 +171,7 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
 
         <div class="bProductDesc__ePhoto">
             <figure class="bProductDesc__ePhoto-bigImg">
-                <a class="bigImgLink" href="<?= $product->getImageUrl(4) ?>"><img src="<?= $product->getImageUrl(3) ?>" alt="<?= $page->escape($product->getName()) ?>" /></a>
+                <img class="bZoomedImg" src="<?= $product->getImageUrl(3) ?>" data-zoom-image="<?= $product->getImageUrl(4) ?>" alt="<?= $page->escape($product->getName()) ?>" />
             </figure><!--/product big image section -->
 
             <div class="bPhotoAction">

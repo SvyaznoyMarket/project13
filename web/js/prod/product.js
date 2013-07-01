@@ -237,6 +237,8 @@ var Planner3dKupeConstructor = null;
 
 $(document).ready(function() {
 
+	$('.bZoomedImg').elevateZoom();
+
 	$('.bCountSection').goodsCounter({
 		onChange:function(count){
 			console.log(count);
