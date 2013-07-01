@@ -29,14 +29,10 @@ class InfoAction {
                 'cart'    => [
                     'sum'      => 0,
                     'quantity' => 0,
-                    //'product'  => [],
-                    //'service'  => [],
                 ],
-                /*
                 'order'   => [
                     'hasCredit' => 1 == $request->cookies->get('credit_on'),
                 ],
-                */
                 'action'  => [],
             ];
 
