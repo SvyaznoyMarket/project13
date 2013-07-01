@@ -590,7 +590,6 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
                 </label>
             </li>
         </ul>
-
         <div class="bWidgetService__eAll"><span class="dotted">Ещё 87 услуг</span><br/>доступны в магазине</div>
     </div><!--/widget services -->
 </aside><!--/right section -->
