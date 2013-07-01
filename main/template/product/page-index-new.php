@@ -601,3 +601,12 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
         <div class="bWidgetService__eAll"><span class="dotted">Ещё 87 услуг</span><br/>доступны в магазине</div>
     </div><!--/widget services -->
 </aside><!--/right section -->
+
+<? if ($product->getIsBuyable()): ?>
+    <?= $page->render('order/form-oneClick') ?>
+<? endif ?>
+
+<? if (\App::config()->analytics['enabled']): ?>
+    <?= $page->tryRender('product/partner-counter/_cityads', ['product' => $product]) ?>
+    <?= $page->tryRender('product/partner-counter/_recreative', ['product' => $product]) ?>
+<? endif ?>
