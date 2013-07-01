@@ -26,7 +26,10 @@ class Action {
             }
 
             foreach ($channels as $channel) {
+                if (2 == $channel->getId()) continue;
+
                 $params = [
+                    'geo_id'     => \App::user()->getRegion()->getId(),
                     'email'      => $email,
                     'channel_id' => $channel->getId(),
                 ];
