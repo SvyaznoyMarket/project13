@@ -17,6 +17,8 @@
 
 <?
 
+$helper = new \Helper\TemplateHelper();
+
 $hasLowerPriceNotification =
     \App::config()->product['lowerPriceNotification']
     && $product->getMainCategory() && $product->getMainCategory()->getPriceChangeTriggerEnabled();
@@ -418,7 +420,7 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
         </div><!--/counter -->
 
         <div class="bWidgetBuy__eBuy btnBuy">
-            <?= $page->render('cart/_button', ['product' => $product, 'class' => 'btnBuy__eLink', 'value' => 'В корзину']) ?>
+            <?= $helper->render('cart/__button-product', ['product' => $product, 'class' => 'btnBuy__eLink', 'value' => 'В корзину']) ?>
         </div><!--/button buy -->
 
         <? if ($product->getIsBuyable()): ?>
@@ -599,3 +601,12 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
         <div class="bWidgetService__eAll"><span class="dotted">Ещё 87 услуг</span><br/>доступны в магазине</div>
     </div><!--/widget services -->
 </aside><!--/right section -->
+
+<? if ($product->getIsBuyable()): ?>
+    <?= $page->render('order/form-oneClick') ?>
+<? endif ?>
+
+<? if (\App::config()->analytics['enabled']): ?>
+    <?= $page->tryRender('product/partner-counter/_cityads', ['product' => $product]) ?>
+    <?= $page->tryRender('product/partner-counter/_recreative', ['product' => $product]) ?>
+<? endif ?>

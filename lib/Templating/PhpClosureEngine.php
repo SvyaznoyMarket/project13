@@ -77,14 +77,19 @@ class PhpClosureEngine implements EngineInterface {
             $previous = $level;
             ob_end_clean();
         }
+
+        return $this;
     }
 
     /**
      * @param $name
      * @param $value
+     * @return $this
      */
     public function setParam($name, $value) {
         $this->params[$name] = $value;
+
+        return $this;
     }
 
     /**
@@ -92,5 +97,21 @@ class PhpClosureEngine implements EngineInterface {
      */
     public function getParams() {
         return $this->params;
+    }
+
+    /**
+     * @param $name
+     * @return null
+     */
+    public function getParam($name) {
+        return array_key_exists($name, $this->params) ? $this->params[$name] : null;
+    }
+
+    /**
+     * @param $name
+     * @return bool
+     */
+    public function hasParam($name) {
+        return array_key_exists($name, $this->params);
     }
 }

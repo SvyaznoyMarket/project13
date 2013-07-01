@@ -23,6 +23,22 @@ class TemplateHelper {
     }
 
     /**
+     * @param $name
+     * @return null
+     */
+    public function getParam($name) {
+        return \App::closureTemplating()->getParam($name);
+    }
+
+    /**
+     * @param $name
+     * @return bool
+     */
+    public function hasParam($name) {
+        return \App::closureTemplating()->hasParam($name);
+    }
+
+    /**
      *
      */
     public function startEscape() {
