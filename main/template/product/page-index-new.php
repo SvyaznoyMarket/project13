@@ -251,20 +251,17 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
                 <div class="text__eAll"><a href="">Характеристики</a></div>
             </div>
 
-            <div class="reviewSection reviewSection100 clearfix">
-                <div class="reviewSection__link">
-                    <div class="reviewSection__star reviewSection100__star">
-                        <? $avgStarScore = empty($reviewsData['avg_star_score']) ? 0 : $reviewsData['avg_star_score'] ?>
-                        <?= empty($avgStarScore) ? '' : $page->render('product/_starsFive', ['score' => $avgStarScore]) ?>
-                    </div>
-                    <? if (!empty($avgStarScore)) { ?>
-                        <span class="border" onclick="scrollToId('reviewsSectionHeader')"><?= $reviewsData['num_reviews'] ?> <?= $page->helper->numberChoice($reviewsData['num_reviews'], array('отзыв', 'отзыва', 'отзывов')) ?></span>
-                    <? } else { ?>
-                        <span>Отзывов нет</span>
-                    <? } ?>
-                    <span class="reviewSection__link__write newReviewPopupLink" data-pid="productid">Оставить отзыв</span>
-                    <div class="hf" id="reviewsProductName">Смартфон HTC One S черный</div>
+            <div class="bReviewSection clearfix">
+                <div class="bReviewSection__eStar">
+                    <? $avgStarScore = empty($reviewsData['avg_star_score']) ? 0 : $reviewsData['avg_star_score'] ?>
+                    <?= empty($avgStarScore) ? '' : $page->render('product/_starsFive', ['score' => $avgStarScore]) ?>
                 </div>
+                <? if (!empty($avgStarScore)) { ?>
+                    <span class="border" onclick="scrollToId('bHeadSectionReviews')"><?= $reviewsData['num_reviews'] ?> <?= $page->helper->numberChoice($reviewsData['num_reviews'], array('отзыв', 'отзыва', 'отзывов')) ?></span>
+                <? } else { ?>
+                    <span>Отзывов нет</span>
+                <? } ?>
+                <span class="bReviewSection__eWrite" data-pid="productid">Оставить отзыв</span>
             </div><!--/review section -->
 
             <? if ((bool)$product->getModel() && (bool)$product->getModel()->getProperty()): //модели ?>
@@ -371,21 +368,23 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
     <? endforeach ?>
     </div><!--/product specifications section -->
 
-    <? if (\App::config()->product['reviewEnabled'] && $reviewsPresent): ?>
-        <h2 id="reviewsSectionHeader" class="bold">Обзоры и отзывы</h2>
-        <div class="line pb5"></div>
-        <div id="reviewsSummary">
-            <?= $page->render('product/_reviewsSummary', ['reviewsData' => $reviewsData, 'reviewsDataPro' => $reviewsDataPro, 'reviewsDataSummary' => $reviewsDataSummary]) ?>
-        </div>
+    <h3 class="bHeadSection" id="bHeadSectionReviews">Обзоры и отзывы</h3>
 
-        <? if (!empty($reviewsData['review_list'])) { ?>
-            <div id="reviewsWrapper" class="reviewsWrapper" data-product-id="<?= $product->getId() ?>" data-page-count="<?= $reviewsData['page_count'] ?>" data-container="reviewsUser" data-reviews-type="user">
-        <? } elseif(!empty($reviewsDataPro['review_list'])) { ?>
-        <div id="reviewsWrapper" data-product-id="<?= $product->getId() ?>" data-page-count="<?= $reviewsDataPro['page_count'] ?>" data-container="reviewsPro" data-reviews-type="pro">
-            <? } ?>
-        <?= $page->render('product/_reviews', ['reviewsData' => $reviewsData, 'reviewsDataPro' => $reviewsDataPro]) ?>
-        </div>
-     <? endif ?>
+    <div class="bReviews">
+        <? if (\App::config()->product['reviewEnabled'] && $reviewsPresent): ?>
+            <div class="bReviewsSummary clearfix">
+                <?= $page->render('product/_reviewsSummary', ['reviewsData' => $reviewsData, 'reviewsDataPro' => $reviewsDataPro, 'reviewsDataSummary' => $reviewsDataSummary]) ?>
+            </div>
+
+            <? if (!empty($reviewsData['review_list'])) { ?>
+                <div class="bReviewsWrapper" data-product-id="<?= $product->getId() ?>" data-page-count="<?= $reviewsData['page_count'] ?>" data-container="reviewsUser" data-reviews-type="user">
+            <? } elseif(!empty($reviewsDataPro['review_list'])) { ?>
+            <div class="bReviewsWrapper" data-product-id="<?= $product->getId() ?>" data-page-count="<?= $reviewsDataPro['page_count'] ?>" data-container="reviewsPro" data-reviews-type="pro">
+                <? } ?>
+            <?= $page->render('product/_reviews', ['reviewsData' => $reviewsData, 'reviewsDataPro' => $reviewsDataPro]) ?>
+            </div>
+        <? endif ?>
+    </div>
 
 
     <? if (!$product->getIsBuyable() && $product->getState()->getIsShop()  && \App::config()->smartengine['pull']): ?>
@@ -591,7 +590,6 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
                 </label>
             </li>
         </ul>
-
         <div class="bWidgetService__eAll"><span class="dotted">Ещё 87 услуг</span><br/>доступны в магазине</div>
     </div><!--/widget services -->
 </aside><!--/right section -->

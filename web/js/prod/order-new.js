@@ -881,10 +881,25 @@ $(document).ready(function() {
             for( var tkn in self.dlvrBoxes() ) {
 
                 var dlvr = self.dlvrBoxes()[tkn]
+
+                var dates = dlvr.itemList()[0].deliveries[dlvr.token].dates;
+                
+                var newToken = dlvr.token;
+                var newType = dlvr.type;
+                var newId = Model.deliveryTypes[ dlvr.token ].id
+
+                for (var i = 0, len = dates.length; i < len; i++){
+                    if ( (dates[i].timestamp == dlvr.chosenDate()) && dates[i].isNow){
+                        newToken = 'now'+dlvr.token.replace('self','');
+                        newType = 'now';
+                        newId = 4;
+                    }
+                }
+
                 var data = {
-                    id: Model.deliveryTypes[ dlvr.token ].id,
-                    token: dlvr.token,
-                    type: dlvr.type,
+                    id: newId,
+                    token: newToken,
+                    type: newType,
                     date: formateDate( dlvr.chosenDate() ),
                     interval: dlvr.chosenInterval().match(/\d{2}:\d{2}/g).join(','),
                     shop: {
@@ -895,7 +910,7 @@ $(document).ready(function() {
                 for( var i in dlvr.itemList() )
                     boxitems.push( dlvr.itemList()[i].token )
                 data.items = boxitems
-                ServerModel.deliveryTypes[ dlvr.token + '_' + formateDate( dlvr.chosenDate() ) + '_' + dlvr.itemList()[0].id ] = data
+                ServerModel.deliveryTypes[ newToken + '_' + formateDate( dlvr.chosenDate() ) + '_' + dlvr.itemList()[0].id ] = data
             }
             return ServerModel
         }
@@ -1084,13 +1099,15 @@ $(document).ready(function() {
             type_id = $('input[name="order[delivery_type_id]"]').val()
         toSend.push( { name: 'order[delivery_type_id]', value: type_id })
         toSend.push( { name: 'delivery_map', value: JSON.stringify( MVM.getServerModel() )  } )//encodeURIComponent
+
         if( typeof(SertificateCard) !== 'undefined' )
             if( SertificateCard.isActive() ) {
                 toSend.push( { name: 'order[card]', value: SertificateCard.getCode() })
                 toSend.push( { name: 'order[pin]', value: SertificateCard.getPIN() })
             }
         var startAjaxOrderTime = new Date().getTime()
-        // console.info(toSend)
+
+
         $.ajax({
             url: form.attr('action'),
             timeout: 120000,
