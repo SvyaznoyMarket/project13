@@ -1,160 +1,107 @@
-.productReview {
+.bReviewsOld {  
   margin-bottom: 25px;
-}
-.reviewsBar {
-  background-color: #fb9c00;
-  .rounded(3px);
-  height:15px;
-  margin: 0 0 4px;
-}
-.reviewsBarBg {
-  background-color: #edecee;
-}
-.reviewsBarCount {
-  text-align: right;
-  padding-right: 5px;
-  font-weight: bold;
-  font-size: 10px;
-  width: 40px;
-  clear: both;
-}
-.contourButton {
-  padding:10px;
-  border: 1px solid #ffa901;
-  text-align: center;
-  text-decoration: underline;
-}
-
-.reviewSection {
-  margin: 0 0 25px;
-  padding: 0;
-  font-size: 12px;
-  span {
-    margin: 2px 0 0;
+  .bReview {
+    margin-bottom: 25px;
   }
-  &__star, &__link {
-    float: left;
-    color: @typGray;
-  }
-  &__link {
-    width: 100%;
-    &__write {
-      border-bottom: 1px dotted;
-      cursor: pointer;
-      margin: 0 0 0 3px;
-      color: #000;
-      float: right;
-    }
-  }  
-    span.border {
-      cursor: pointer;
-      border-bottom: 1px solid;
-      float: left;
-    }
-  &__star {
-    margin: 2px 0 0 0px;
-  }
-}
-
-.reviewSection100 {
-  &__star {
-    margin-right: 5px;
-  }
-}
-
-.reviewSection12 {
-  font-size: 12px;
-  border: none;
-  margin: 0;
-  &__star {
+  .bReviewsWrapper {
+    border-bottom: 1px solid @typLightGray;
     margin: 0;
-    img {
-      &:last-child {
-        margin-right: 5px;
-      }
-    }
+    padding: 0 0 10px;
   }
-  &__link {
-    width: auto;
-  }
-} 
-
-.reviewsWrapper {
-  border-bottom: 1px solid #c7c7c7;
-  margin: 0;
-  padding: 0 0 10px;
-  .product-btn-toggle {
-    margin: -10px 0 0 165px;
+  .bReviewsToggle {
+    margin: -10px 0 0 160px;
     font-size: 14px;
   }
-}
-.reviewsRatingWrapper {
-  margin: 0 0 10px;
-  .reviewsRatingCol{
-    &__title {
-      margin: 0 0 6px 45px
+
+  .bReviewsSummary {
+    margin: 0 0 10px;
+    &__eColStar {
+      margin: 20px 0 0 15px;
     }
-  }
-  &__colstar {
-    margin: 20px 0 0 20px;
-    &__row {
+    &__eCol {
+      float: left;
+      width: 145px;
+      .reviewsBar {
+        background-color: #fb9c00;
+        .rounded(3px);
+        height:15px;
+        margin: 0 0 4px;
+        float: left;
+      }
+      .reviewsBarBg {
+        background-color: #edecee;
+      }
+      .reviewsBarCount {
+        text-align: right;
+        padding-right: 5px;
+        font-weight: bold;
+        font-size: 10px;
+        width: 40px;
+        clear: both;
+        float: left;
+      }
+      strong {
+        margin: 0 0 6px 45px;
+        display: block;
+        clear: both;
+      }
+    }
+    .bcolStarRow {
       margin: 0 0 3px;
     }
   }
-}
 
-.reviewsTabs {
-  border-bottom: 1px solid #c7c7c7;
-  margin: 0 0 10px;
-  li {
-    float: left;
-    font-size: 14px;
-    padding: 8px 10px 6px;
-    span {
-      border-bottom: 1px dotted;
-      cursor: pointer;
+  .bReviewsTabs {
+    border-bottom: 1px solid #c7c7c7;
+    margin: 0 0 10px;
+    &__eTab {
+      float: left;
+      font-size: 14px;
+      padding: 8px 10px 6px;
+      span {
+        border-bottom: 1px dotted;
+        cursor: pointer;
+      }
     }
-  }
-  .user {
-    width: 190px; 
-    text-align: center; 
-    padding: 8px 0 6px;
-  }
-  .last {
-    padding-right: 0;
-    float: right;
-  }
-  .active {
-    font-weight: bold;
-    border: 1px solid #c7c7c7;
-    .rounded(5px 5px 0 0);
-    border-bottom: none;
-    background: #fff;
-    margin: 0 0 -1px;
-    span {
+    &__eUser {
+      width: 190px; 
+      text-align: center; 
+      padding: 8px 0 6px;
+    }
+    &__eLast {
+      padding-right: 0;
+      float: right;
+    }
+    .active {
+      font-weight: bold;
+      border: 1px solid #c7c7c7;
+      .rounded(5px 5px 0 0);
       border-bottom: none;
+      background: #fff;
+      margin: 0 0 -1px;
+      span {
+        border-bottom: none;
+      }
     }
   }
-}
 
-.bReview {
-  .bReview__eAuthtor {
-    float: left;
-    width: 120px;
-    margin: 5px 15px 0 0;
-    &-name {
-      margin: 6px 0;
-      font-weight: normal;
+  .bReview {
+    .bReview__eAuthtor {
+      float: left;
+      width: 120px;
+      margin: 5px 15px 0 0;
+      &-name {
+        margin: 6px 0;
+        font-weight: normal;
+      }
+      &-date {
+        color: @typGray;
+      }
     }
-    &-date {
-      color: @typGray;
-    }
-  }
-  .bReview__eText {
-    float: left;
-    width: 650px;
-    font-size: 14px;
-    &__line {
+    .bReview__eText {
+      float: left;
+      width: 650px;
+      font-size: 14px;
       .mark {
         display: block;
         float: left;
@@ -163,27 +110,73 @@
         width: 20px;
         margin-right: 5px;
         text-align: right;
+        margin-top: -2px;
+        clear: both;
       }
-      p, .p {
+      div, p {
         float: left;
         width: 620px;
         margin: 2px 0 5px;
       }
     }
-    &-plus, &-minus {
-      .mark {
-        margin-top: -2px;
-      }
+    &__eLogo {
+      float: right;
+      width: 120px;
+      text-align: right;
     }
-    &-quote {
-      .mark {
-        margin-top: -2px;
-      }
-    }
-  }
-  &__eLogo {
-    float: right;
-    width: 120px;
-    text-align: right;
   }
 }
+
+  .reviewSection {
+    margin: 0 0 25px;
+    padding: 0;
+    font-size: 12px;
+    span {
+      margin: 2px 0 0;
+    }
+    &__star, &__link {
+      float: left;
+      color: @typGray;
+    }
+    &__link {
+      width: 100%;
+      &__write {
+        border-bottom: 1px dotted;
+        cursor: pointer;
+        margin: 0 0 0 3px;
+        color: #000;
+        float: right;
+      }
+    }  
+      span.border {
+        cursor: pointer;
+        border-bottom: 1px solid;
+        float: left;
+      }
+    &__star {
+      margin: 2px 0 0 0px;
+    }
+  }
+
+  .reviewSection100 {
+    &__star {
+      margin-right: 5px;
+    }
+  }
+
+  .reviewSection12 {
+    font-size: 12px;
+    border: none;
+    margin: 0;
+    &__star {
+      margin: 0;
+      img {
+        &:last-child {
+          margin-right: 5px;
+        }
+      }
+    }
+    &__link {
+      width: auto;
+    }
+  } 

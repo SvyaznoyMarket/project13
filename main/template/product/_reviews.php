@@ -1,5 +1,5 @@
-<ul class="reviewsTabs clearfix">
-  <li class="reviewsTab user<?= !empty($reviewsData['review_list']) ? ' active' : ' hfImportant' ?>" data-container="reviewsUser" data-reviews-type="user"><span>Отзывы пользователей</span></li>
+<ul class="bReviewsTabs clearfix">
+  <li class="bReviewsTabs__eTab bReviewsTabs__eUser<?= !empty($reviewsData['review_list']) ? ' active' : ' hfImportant' ?>" data-container="reviewsUser" data-reviews-type="user"><span>Отзывы пользователей</span></li>
   <?
     if(!empty($reviewsData['review_list']) && !empty($reviewsDataPro['review_list'])) {
       $tabProClass = '';
@@ -9,31 +9,31 @@
       $tabProClass = ' hfImportant';
     }
   ?>
-  <li class="reviewsTab pro<?= $tabProClass ?>" data-container="reviewsPro" data-reviews-type="pro"><span>Обзоры экспертов</span></li>
+  <li class="bReviewsTabs__eTab bReviewsTabs__ePro<?= $tabProClass ?>" data-container="reviewsPro" data-reviews-type="pro"><span>Обзоры экспертов</span></li>
 
-  <li class="last">
+  <li class="bReviewsTabs__eTab bReviewsTabs__eLast">
     <span onclick="$('.newReviewPopupLink').click()">Оставить отзыв</span>
   </li> 
 </ul>
 
 <? if(!empty($reviewsData['review_list'])) { ?>
 
-  <div class="reviewsTabContent reviewsUser">
+  <div class="bReviewsContent bReviewsContent__mUser">
     <? foreach ($reviewsData['review_list'] as $key => $review) { ?>
       <?= $page->render('product/_review', ['review' => $review, 'last' => empty($reviewsData['review_list'][$key + 1])]) ?>
     <? } ?>
   </div>
 
-  <div class="reviewsTabContent reviewsPro hf"></div>
+  <div class="bReviewsContent bReviewsContent__mPro hf"></div>
 
   <? $showMore = !(empty($reviewsData['review_list']) || (!empty($reviewsData['review_list']) && $reviewsData['page_count'] == 1)); ?>
   <? $showMoreText = 'Показать другие отзывы...' ?>
 
 <? } elseif (!empty($reviewsDataPro['review_list'])) { ?>
 
-  <div class="reviewsTabContent reviewsUser hf"></div>
+  <div class="bReviewsContent bReviewsContent__mUser hf"></div>
 
-  <div class="reviewsTabContent reviewsPro">
+  <div class="bReviewsContent bReviewsContent__mPro">
     <? foreach ($reviewsDataPro['review_list'] as $key => $review) { ?>
       <?= $page->render('product/_review', ['review' => $review, 'last' => empty($reviewsDataPro['review_list'][$key + 1])]) ?>
     <? } ?>
@@ -42,4 +42,4 @@
   <? $showMoreText = 'Показать другие обзоры...' ?>
 <? } ?>
 
-<div id="getMoreReviewsButton" class="product-btn-toggle getMoreReviews<?= $showMore ? '' : ' hfImportant' ?>"><?= $showMoreText ?></div>
+<div id="getMoreReviewsButton" class="bReviewsToggle product-btn-toggle getMoreReviews<?= $showMore ? '' : ' hfImportant' ?>"><?= $showMoreText ?></div>
