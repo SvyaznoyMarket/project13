@@ -30,9 +30,11 @@ class Action {
                     'email'      => $email,
                     'channel_id' => $channel->getId(),
                 ];
+                /* SITE-1298
                 if ($userEntity = \App::user()->getEntity()) {
                     $params['token'] = $userEntity->getToken();
                 }
+                */
 
                 $client->addQuery('subscribe/create', $params, [], function($data) {}, function(\Exception $e) {
                     \App::logger()->error($e);

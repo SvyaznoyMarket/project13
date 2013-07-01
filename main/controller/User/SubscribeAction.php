@@ -18,10 +18,10 @@ class SubscribeAction {
         if ($request->isMethod('post')) {
 
             try {
-                $result = \App::coreClientV2()->query('user/update', array('token' => \App::user()->getToken()), array(
+                $result = \App::coreClientV2()->query('user/update', ['token' => \App::user()->getToken()], [
                     'is_subscribe'      => $isSubscribe,
                     'is_sms_subscribe'  => $isSubscribeViaSms,
-                ));
+                ]);
 
                 if (!isset($result['confirmed']) || !$result['confirmed']) {
                     throw new \Exception('Не удалось сохранить данные');
