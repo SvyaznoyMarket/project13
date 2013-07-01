@@ -429,7 +429,7 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
             <div class="bWidgetBuy__eClick">
                 <a
                     href="#"
-                    class="red underline order1click-link-new"
+                    class="jsOrder1click"
                     data-model="<?= $page->json([
                         'jsref'        => $product->getToken(),
                         'jstitle'      => $product->getName(),

@@ -53,24 +53,20 @@
 
 	var mapVendor = 'yandex';
 
+
 	$LAB.setGlobalDefaults({ AllowDuplicates: true, AlwaysPreserveOrder:true, UseLocalXHR:false, BasePath:"/js/prod/"})
 	.queueScript('/js/combine.js')
-	.script('adfox.asyn.code.ver3.min.js');
-// 	.queueWait( function(){
-// 		document.write = function(){
-// /*			if( arguments[0].match('javascript') )
-// 				$LAB.script( arguments[0].match(/src="(.*?)"/)[1])
-// 			else
-// 				$('head').append( arguments[0] )
-// */
-// 			console.log(arguments[0])
-// 			if( arguments[0].match( /<script(.?)* type=(\'|")text\/javascript(\'|")(.?)*><\/script>/ ) ) {
-// 				$LAB.script( arguments[0].match( /src=(\'|")([^"\']?)+/ )[0].replace(/src=(\'|")/,'') )
-// 			} else {
-// 				document.writeln( arguments[0] )
-// 			}
-// 		}
-// 	});
+	.queueScript('adfox.asyn.code.ver3.min.js')	
+	.queueWait( function(){
+		document.write = function(){
+			if( arguments[0].match( /<script(.?)* type=(\'|")text\/javascript(\'|")(.?)*><\/script>/ ) ) {
+				$LAB.script( arguments[0].match( /src=(\'|")([^"\']?)+/ )[0].replace(/src=(\'|")/,'') );
+			}
+			else {
+				document.writeln( arguments[0] );
+			}
+		}
+	});
 
 	switch( document.body.getAttribute('data-template') ) {
 		case 'main':
