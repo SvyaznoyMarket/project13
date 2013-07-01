@@ -17,6 +17,8 @@
 
 <?
 
+$helper = new \Helper\TemplateHelper();
+
 $hasLowerPriceNotification =
     \App::config()->product['lowerPriceNotification']
     && $product->getMainCategory() && $product->getMainCategory()->getPriceChangeTriggerEnabled();
@@ -418,7 +420,7 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
         </div><!--/counter -->
 
         <div class="bWidgetBuy__eBuy btnBuy">
-            <?= $page->render('cart/_button', ['product' => $product, 'class' => 'btnBuy__eLink', 'value' => 'В корзину']) ?>
+            <?= $helper->render('cart/__button-product', ['product' => $product, 'class' => 'btnBuy__eLink', 'value' => 'В корзину']) ?>
         </div><!--/button buy -->
 
         <? if ($product->getIsBuyable()): ?>
