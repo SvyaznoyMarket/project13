@@ -2,7 +2,7 @@
  * jQuery плагин каунтера
  *
  * @author	Zaytsev Alexandr
- * @requires jQuery
+ * @requires jQuery, jQuery.putCursorAtEnd
  * @return	{jQuery object}
  */
 ;(function($) {
@@ -24,6 +24,7 @@
 
 			var plusHandler = function(e){
 				e.stopPropagation();
+				input.putCursorAtEnd();
 				if ((nowCount*1)+1 > options.maxVal){
 					return false;
 				}
@@ -31,10 +32,12 @@
 				input.val(nowCount);
 				options.onPlus(nowCount);
 				options.onChange(nowCount);
+				return false;
 			};
 
 			var minusHandler = function(e){
 				e.stopPropagation();
+				input.putCursorAtEnd();
 				if ((nowCount*1)-1 < 1){
 					return false;
 				}
@@ -42,10 +45,12 @@
 				input.val(nowCount);
 				options.onMinus(nowCount);
 				options.onChange(nowCount);
+				return false;
 			};
 
 			var keyupHandler = function(e){
 				e.stopPropagation();
+
 				if (trigger){
 					nowCount = input.val();
 					if ((nowCount*1) < 1){
@@ -61,6 +66,7 @@
 					nowCount = input.val().replace(/\D/g,'') * 1;
 					input.val(nowCount);
 				}
+				return false;
 			};
 
 			var keydownHandler = function(e){
@@ -80,6 +86,7 @@
 				else{
 					trigger = false;
 				}
+				return false;
 			};
 
 			plusBtn.bind('click', plusHandler);
