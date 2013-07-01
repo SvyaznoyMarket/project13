@@ -659,14 +659,18 @@ $(document).ready(function(){
 	 * @param  {Object} data данные отсылаемы на сервер
 	 */
 	window.logError = function(data) {
-        if (data.ajaxUrl !== '/log-json') {
-            $.ajax({
-                type: 'POST',
-                global: false,
-                url: '/log-json',
-                data: data
-            })
+        if (data.ajaxUrl === '/log-json') {
+        	return;
         }
+        if (!pageConfig.jsonLog){
+        	return false;
+        }
+        $.ajax({
+            type: 'POST',
+            global: false,
+            url: '/log-json',
+            data: data
+        });
 	}
 
 	/**
