@@ -15,6 +15,9 @@ $list = $formFilter->getSelected();
         <h3>Ваш выбор:</h3>
         <ul>
             <? foreach ($list as $item): ?>
+            <? if (\App::request()->get('shop')) {
+                    $item['url'] .= (false === strpos($item['url'], '?') ? '?' : '&') . 'shop='. \App::request()->get('shop');
+            } ?>
             <li>
                 <a href="<?= $item['url'] ?>" title="<?= $item['title'] ?>"><b>x</b> <?= $item['name'] ?><?= ('price' == $item['type'] ? '&nbsp;<span class="rubl">p</span>' : '') ?></a>
             </li>

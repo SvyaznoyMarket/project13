@@ -21,7 +21,6 @@ class User {
     /** @var array */
     private $recommendedProduct;
 
-
     public function __construct() {
         $this->tokenName = \App::config()->authToken['name'];
         $this->token = \App::session()->get($this->tokenName);
@@ -315,4 +314,21 @@ class User {
     {
         return $this->recommendedProduct;
     }
+
+    /**
+     * @param array $params
+     */
+    public function setParams($params)
+    {
+        $this->params = $params;
+    }
+
+    /**
+     * @return array
+     */
+    public function getParams()
+    {
+        return $this->params;
+    }
+
 }

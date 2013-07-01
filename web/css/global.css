@@ -4460,6 +4460,28 @@
     border-bottom: 1px dotted #a6a6a6;
     cursor: pointer;
   }
+  .bShopInStock {
+    background: #f7f7f7;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    padding: 12px 10px;
+    border: 1px solid #e6e7e6;
+    margin: 0 0 25px;
+  }
+  .bShopInStock__eAddress {
+    background: url("/css/newProductCard/img/ico.png") no-repeat 0 0;
+    padding: 2px 0 2px 28px;
+    float: left;
+  }
+  .bShopInStock__eAll {
+    float: right;
+    padding-top: 2px;
+    text-decoration: underline;
+  }
+  .bShopInStockNoItem {
+    font-size: 16px;
+  }
 }
 /*страница с промо каталогом */
 @media all {
