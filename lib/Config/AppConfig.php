@@ -96,6 +96,10 @@ class AppConfig {
         'optimizelyEnabled' => null,
     ];
     /** @var array */
+    public $kissmentrics = [
+        'enabled'   =>  null,
+    ];
+    /** @var array */
     public $googleAnalytics = [
         'enabled' => null,
     ];

@@ -25,14 +25,10 @@ class Manager {
                 }
 
                 $return = [
-                    'product' => [
-                        'name'            => $product->getName(),
-                        'article'         => $product->getArticle(),
-                        'category'        => $categoryData,
-                        'price'           => $product->getPrice(),
-                        'quantity'        => $cartProduct->getQuantity(),
-                        'serviceQuantity' => $cart->getServicesQuantityByProduct($product->getId()),
-                    ],
+                    'article'         => $product->getArticle(),
+                    'category'        => $categoryData,
+                    'quantity'        => $cartProduct->getQuantity(),
+                    'serviceQuantity' => $cart->getServicesQuantityByProduct($product->getId()),
                 ];
             }
             if ($service) {
