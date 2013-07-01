@@ -39,7 +39,7 @@ $globalTotalText = $category->getGlobalProductCount() . ' ' .$page->helper->numb
 ?>
 
 <div class="catProductNum">
-    <? if ($category->getProductCount()): ?>
+    <? if ($productCount): ?>
         <b>В <?= $regionInflectedName ?> <?= $totalText ?></b>
     <? endif ?>
     <? if ($category->getGlobalProductCount() && \App::config()->product['globalListEnabled'] && $user->getRegion()->getHasTransportCompany()): ?>
