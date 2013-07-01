@@ -1529,7 +1529,6 @@ $(document).ready(function(){
 		dajax.post( dlvr_node.data('calclink'), coreid )
     }
 
-
 	if ( $('.hotlinksToggle').length ){
 		$('.hotlinksToggle').toggle(
 			function(){
@@ -1542,7 +1541,6 @@ $(document).ready(function(){
 			}
 		);
 	}
-
 
 	if ( $('.cron_report_start').length ){
 		$('.cron_report_start').toggle(
@@ -1563,7 +1561,6 @@ $(document).ready(function(){
 		);
 	}
 
-
 	if ( $('.cron_report_links').length ){
 		$('.cron_report_links').toggle(
 			function(){
@@ -1581,7 +1578,6 @@ $(document).ready(function(){
 			}
 		);
 	}
-
 	if($('.newReviewPopupLink').length) {
 		$('.newReviewPopupLink').click(function(){
 			popupWriteReviewForm($(this).attr('data-pid'), $('#reviewsProductName').html())
@@ -1605,11 +1601,9 @@ $(document).ready(function(){
           }
       });
   }
-
     handle_custom_items()
-
 });
-
+  
 
 function popupWriteReviewForm(pid, name) {
   var src = "http://reviews.testfreaks.com/reviews/new?client_id=enter.ru&" + $.param({key: pid, name: name});
@@ -1625,21 +1619,21 @@ function scrollToId(scrollToId) {
 };
 
 
-// function handle_custom_items() {
-//   $(".items-section__list .item").hover(
-//     function() {
-//     $(this).addClass('hover')
-//   },
-//     function() {
-//     $(this).removeClass('hover')
-//   });
+function handle_custom_items() {
+  $(".items-section__list .item").hover(
+    function() {
+    $(this).addClass('hover')
+  },
+    function() {
+    $(this).removeClass('hover')
+  });
 
-//   $(".bigcarousel-brand .goodsbox").hover(
-//     function() {
-//     $(this).addClass('hover');
-//   },
-//     function() {
-//     $(this).removeClass('hover');
-//   });
-// }
+  $(".bigcarousel-brand .goodsbox").hover(
+    function() {
+    $(this).addClass('hover');
+  },
+    function() {
+    $(this).removeClass('hover');
+  });
+}
 

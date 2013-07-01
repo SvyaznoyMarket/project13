@@ -53,15 +53,20 @@ class ProductAction {
                 (new \Controller\Crossss\CartAction())->product($product);
             }
 
-            /*$productInfo = [
+            $productInfo = [
                 'name'  =>  $product->getName(),
                 'img'   =>  $product->getImageUrl(2),
                 'link'  =>  $product->getLink(),
                 'price' =>  $product->getPrice(),
             ];
             if (\App::config()->kissmentrics['enabled']) {
-                $productInfo = array_merge($productInfo, \Kissmetrics\Manager::getCartEvent($product));
-            }*/
+                try {
+                    $kissInfo = \Kissmetrics\Manager::getCartEvent($product);
+                    $productInfo = array_merge($productInfo, $kissInfo['product']);
+                } catch (\Exception $e) {
+                    \App::logger()->error($e, ['kissmetrics']);
+                }
+            }
 
             return $request->isXmlHttpRequest()
                 ? new \Http\JsonResponse([
@@ -74,7 +79,7 @@ class ProductAction {
                         'old_price'     => $cart->getOriginalSum(),
                         'link'          => \App::router()->generate('order.create'),
                     ],
-                    'result'  => \Kissmetrics\Manager::getCartEvent($product),
+                    'product'  => $productInfo,
                 ])
                 : new \Http\RedirectResponse($returnRedirect);
         } catch (\Exception $e) {

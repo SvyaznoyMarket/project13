@@ -14,7 +14,16 @@ $formName = \View\Product\FilterForm::$name;
 ?>
 
 <!-- Filter -->
-<form class="product_filter-block" action="<?= 'product.category.brand' == \App::request()->attributes->get('route') ? $page->url('product.category', ['categoryPath' => $category->getPath()]) : '' ?>" method="get" data-action-count="<?= $page->url('product.category.count', array('categoryPath' => $category->getPath())) ?>">
+<?
+    if ('product.category.brand' == \App::request()->attributes->get('route') || \App::request()->get('shop')) {
+        $link = $page->url('product.category', ['categoryPath' => $category->getPath()]);
+    } else $link = '';
+
+    $linkCount = $page->url('product.category.count', array('categoryPath' => $category->getPath()));
+    //if (\App::request()->get('shop')) $linkCount .= (false === strpos($linkCount, '?') ? '?' : '&') . 'shop='. \App::request()->get('shop');
+
+?>
+<form class="product_filter-block" action="<?=$link?>" method="get" data-action-count="<?= $linkCount ?>">
 	<div class="filterresult product_count-block">
 		<div class="corner"><div></div></div>
 		Выбрано <span class="result">result.data</span> модел<span class="ending">ending</span><br/>

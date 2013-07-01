@@ -403,16 +403,22 @@ $(document).ready(function() {
 			self.sendData = function() {
 				self.formStatus('sending')
 				$('.bFastInner tbody tr:last').empty()
+
 				var postData = {
 					'order[product_quantity]' : self.quantity(),
 					'order[delivered_at]' : self.chosenDate().value,
-					'order[delivery_type_id]': self.chosenDlvr().modeID
+					'order[delivery_type_id]': (self.chosenDate().isNow) ? 4 : self.chosenDlvr().modeID
 				}
-				if( self.chosenDlvr().type == 'self' )
-					postData[ 'order[shop_id]' ] = self.chosenShop().id
-				for(var i=0,l=self.textfields.length; i<l; i++)
-					postData[ self.textfields[i]().name + '' ] = self.textfields[i]().value
-				var xhr1 =$.ajax( {
+
+				if( self.chosenDlvr().type == 'self' ){
+					postData[ 'order[shop_id]' ] = self.chosenShop().id;
+				}
+
+				for(var i=0,l=self.textfields.length; i<l; i++){
+					postData[ self.textfields[i]().name + '' ] = self.textfields[i]().value;
+				}
+
+				$.ajax( {
 					type: 'POST',
                     timeout: 60000,
 					url: outputUrl,
@@ -712,7 +718,8 @@ levup:			for(var i=0, l=numbers.length; i<l; i++)
 		function updateIWCL( marker ) {
 			if( typeof(OC_MVM) !== 'undefined' )
 				OC_MVM.pickShopOnMap( marker.id )
-		}		
+		}
+
 		$.post( inputUrl, postData, function(data) {
 			if( !data.success || data.data.length === 0 ) {
 				OC_MVM = new OneCViewModel() 
@@ -721,6 +728,7 @@ levup:			for(var i=0, l=numbers.length; i<l; i++)
 				$('.order1click-link-new').remove()
 				return false
 			}
+
 			Deliveries = data.data
 			selfAvailable = 'self' in Deliveries
 			if( selfAvailable ) {

@@ -11,7 +11,7 @@ if (!isset($redirect)) $redirect = '';
 ?>
 
 <div class="bPageLogin clearfix">
-	<div class="bPageLogin_eLogo fl"></div>
+	<div class="bPageLogin_eLogo fl"><a href="/"></a></div>
 	<div class="bPageLogin_eContent bLoginPageForms fl">
 		<h1 class="bLoginPageForms_eTitle">хотите быть в курсе новостей от enter?</h1>
 		<div class="clear"></div>

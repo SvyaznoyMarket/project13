@@ -61,7 +61,7 @@ class OneClickAction {
 
             $deliveryType = \RepositoryManager::deliveryType()->getEntityByToken(
                 $formData['shop_id']
-                ? \Model\DeliveryType\Entity::TYPE_SELF
+                ? $formData['delivery_type_id'] == 4 ? \Model\DeliveryType\Entity::TYPE_NOW : \Model\DeliveryType\Entity::TYPE_SELF
                 : \Model\DeliveryType\Entity::TYPE_STANDART
             );
             if (!$deliveryType) {

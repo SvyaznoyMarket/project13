@@ -58,10 +58,26 @@ class ServiceAction {
                 $cartService = $cart->getServiceById($service->getId());
             }
 
+            $productInfo = [];
+            $serviceinfo = [];
+            if ($product) {
+                $productInfo = [
+                    'name'  =>  $product->getName(),
+                    'img'   =>  $product->getImageUrl(2),
+                    'link'  =>  $product->getLink(),
+                    'price' =>  $product->getPrice(),
+                ];
+            }
+            if (\App::config()->kissmentrics['enabled']) {
+                $kissInfo = \Kissmetrics\Manager::getCartEvent($product, $service);
+                if (isset($kissInfo['product'])) $productInfo = array_merge($productInfo, $kissInfo['product']);
+                if (isset($kissInfo['service'])) $serviceinfo = $kissInfo['service'];
+            }
+
             return $request->isXmlHttpRequest()
                 ? new \Http\JsonResponse([
                     'success' => true,
-                    'data'    => [
+                    'cart'    => [
                         'sum'           => $cartService ? $cartService->getSum() : 0,
                         'quantity'      => $quantity,
                         'full_quantity' => $cart->getProductsQuantity() + $cart->getServicesQuantity() + $cart->getWarrantiesQuantity(),
@@ -76,7 +92,7 @@ class ServiceAction {
             return $request->isXmlHttpRequest()
                 ? new \Http\JsonResponse([
                     'success' => false,
-                    'data'    => ['error' => 'Не удалось добавить услугу в корзину', 'debug' => $e->getMessage()],
+                    'cart'    => ['error' => 'Не удалось добавить услугу в корзину', 'debug' => $e->getMessage()],
                 ])
                 : new \Http\RedirectResponse($request->headers->get('referer') ?: \App::router()->generate('homepage'));
         }
