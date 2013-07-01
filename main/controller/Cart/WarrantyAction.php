@@ -103,7 +103,7 @@ class WarrantyAction {
             return $request->isXmlHttpRequest()
                 ? new \Http\JsonResponse([
                     'success' => false,
-                    'data'    => ['error' => 'Не удалось добавить гарантию в корзину', 'debug' => $e->getMessage()],
+                    'cart'    => ['error' => 'Не удалось добавить гарантию в корзину', 'debug' => $e->getMessage()],
                 ])
                 : new \Http\RedirectResponse($request->headers->get('referer') ?: \App::router()->generate('homepage'));
         }
