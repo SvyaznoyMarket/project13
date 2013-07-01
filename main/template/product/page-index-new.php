@@ -235,7 +235,7 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
             <? endif ?>
 
             <? if ($creditData['creditIsAllowed'] && !$user->getRegion()->getHasTransportCompany()) : ?>
-            <div class="creditbox" style="display: block;">
+            <div class="creditbox">
                 <label class="bigcheck" for="creditinput"><b></b>
                     <span class="dotted">Беру в кредит</span>
                     <input id="creditinput" type="checkbox" name="creditinput" autocomplete="off">
