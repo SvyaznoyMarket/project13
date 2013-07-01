@@ -44,7 +44,28 @@ class Action {
         return $response;
     }
 
-     /**
+    /**
+     * @param string        $categoryPath
+     * @param \Http\Request $request
+     * @return \Http\RedirectResponse
+     */
+    public function setShopId($categoryPath, \Http\Request $request) {
+        \App::logger()->debug('Exec ' . __METHOD__);
+
+        $response = new \Http\RedirectResponse($request->headers->get('referer') ?: \App::router()->generate('product.category', ['categoryPath' => $categoryPath]));
+        if ($request->query->has('shopid')) {
+            if ($request->query->get('shopid')) {
+                $cookie = new \Http\Cookie( \App::config()->shop['cookieName'] ,(int)$request->query->get('shopid'), strtotime('+7 days' ));
+                $response->headers->setCookie($cookie);
+            } else {
+                $response->headers->clearCookie(\App::config()->shop['cookieName']);
+            }
+        }
+
+        return $response;
+    }
+
+    /**
      * @param string        $categoryPath
      * @param \Http\Request $request
      * @return \Http\Response
@@ -143,17 +164,7 @@ class Action {
 
             $filters = [];
         }
-       
-        $shop = null;
-        try {
-            if (!self::isGlobal() && \App::request()->get('shop') && \App::config()->shop['enabled']) {
-                $shop = \RepositoryManager::shop()->getEntityById( \App::request()->get('shop') );
-            }
-        } catch (Exception $e) {
-            \App::logger()->error(sprintf('Не удалось отфильтровать товары по магазину #%s', \App::request()->get('shop')));
-        }
-
-        $productFilter = $this->getFilter($filters, $category, null, $request, $shop);
+        $productFilter = $this->getFilter($filters, $category, null, $request);
 
         $count = \RepositoryManager::product()->countByFilter($productFilter->dump());
 
@@ -257,26 +268,36 @@ class Action {
         // выполнение 3-го пакета запросов
         $client->execute(\App::config()->coreV2['retryTimeout']['tiny']);
 
-        //пытаемся получить магазин
-        $shop = null;
-        try {
-            if (!self::isGlobal() && \App::request()->get('shop') && \App::config()->shop['enabled']) {
-                $shop = \RepositoryManager::shop()->getEntityById( \App::request()->get('shop') );
-                if (\App::user()->getRegion() && $shop && $shop->getRegion()) {
-                    if ((int)\App::user()->getRegion()->getId() != (int)$shop->getRegion()->getId()) {
-                        $controller = new \Controller\Region\Action();
-                        \App::logger()->info(sprintf('Смена региона #%s на #%s', \App::user()->getRegion()->getId(), $shop->getRegion()->getId()));
-                        $response = $controller->change($shop->getRegion()->getId(), \App::request(), \App::request()->getUri());
-                        return $response;
-                    }
-                }
+        // получаем catalog json для категории (например, тип раскладки)
+        $catalogJson = \RepositoryManager::productCategory()->getCatalogJson($category);
+
+        $promoContent = '';
+        // если в catalogJson'e указан category_layout_type == 'promo', то подгружаем промо-контент
+        if (!empty($catalogJson['category_layout_type']) &&
+            $catalogJson['category_layout_type'] == 'promo' &&
+            !empty($catalogJson['promo_token'])) {
+            $client = \App::contentClient();
+            $content = $client->query($catalogJson['promo_token'], [], false);
+            $promoContent = empty($content['content']) ? '' : $content['content'];
+        }
+
+        // если в catalogJson'e указан category_class, то обрабатываем запрос соответствующим контроллером
+        $categoryClass = !empty($catalogJson['category_class']) ? strtolower(trim((string)$catalogJson['category_class'])) : null;
+
+        //$categoryClass = 'jewel';
+        if ($categoryClass) {
+            $controller = null;
+            if (('jewel' == $categoryClass) && \App::config()->productCategory['jewelController']) {
+                $controller = new \Controller\Jewel\ProductCategory\Action();
+
+                return $controller->categoryDirect($filters, $category, $brand, $request, $regionsToSelect, $catalogJson, $promoContent);
             }
-        } catch (\Exception $e) {
-            \App::logger()->error(sprintf('Не удалось отфильтровать товары по магазину #%s', \App::request()->get('shop')));
+
+            \App::logger()->error(sprintf('Контроллер для категории @%s класса %s не найден или не активирован', $category->getToken(), $categoryClass));
         }
 
         // фильтры
-        $productFilter = $this->getFilter($filters, $category, $brand, $request, $shop);
+        $productFilter = $this->getFilter($filters, $category, $brand, $request);
 
         // получаем из json данные о горячих ссылках и content
         try {
@@ -292,18 +313,6 @@ class Action {
         } catch (\Exception $e) {
             $hotlinks = [];
             $seoContent = '';
-        }
-
-        // получаем catalog json для категории (например, тип раскладки)
-        $catalogJson = \RepositoryManager::productCategory()->getCatalogJson($category);
-
-        // если в catalogJson'e указан category_layout_type == 'promo', то подгружаем промо-контент
-        if(!empty($catalogJson['category_layout_type']) &&
-            $catalogJson['category_layout_type'] == 'promo' &&
-            !empty($catalogJson['promo_token'])) {
-            $client = \App::contentClient();
-            $content = $client->query($catalogJson['promo_token'], [], false);
-            $promoContent = empty($content['content']) ? '' : $content['content'];
         }
 
         $pageNum = (int)$request->get('page', 1);
@@ -373,7 +382,7 @@ class Action {
      * @return \Http\Response
      * @throws \Exception
      */
-    private function rootCategory(\Model\Product\Category\Entity $category, \Model\Product\Filter $productFilter, \View\Layout $page, \Http\Request $request) {
+    protected function rootCategory(\Model\Product\Category\Entity $category, \Model\Product\Filter $productFilter, \View\Layout $page, \Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
         if (\App::config()->debug) \App::debug()->add('sub.act', 'ProductCategory\\Action.rootCategory', 138);
@@ -383,6 +392,13 @@ class Action {
         }
 
         $page->setParam('sidebarHotlinks', true);
+
+        $catalogJson = $page->getParam('catalogJson');
+        $catalogJsonBulk = [];
+        if(empty($catalogJson['category_layout_type']) || (!empty($catalogJson['category_layout_type']) && $catalogJson['category_layout_type'] == 'icons')) {
+            $catalogJsonBulk = \RepositoryManager::productCategory()->getCatalogJsonBulk();
+        }
+        $page->setParam('catalogJsonBulk', $catalogJsonBulk);
 
         $page->setParam('myThingsData', [
             'EventType' => 'MyThings.Event.Visit',
@@ -400,7 +416,7 @@ class Action {
      * @param \Http\Request                  $request
      * @return \Http\Response
      */
-    private function branchCategory(\Model\Product\Category\Entity $category, \Model\Product\Filter $productFilter, \View\Layout $page, \Http\Request $request) {
+    protected function branchCategory(\Model\Product\Category\Entity $category, \Model\Product\Filter $productFilter, \View\Layout $page, \Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
         if (\App::config()->debug) \App::debug()->add('sub.act', 'ProductCategory\\Action.branchCategory', 138);
@@ -467,6 +483,13 @@ class Action {
         $page->setParam('productVideosByProduct', $productVideosByProduct);
         $page->setParam('sidebarHotlinks', true);
 
+        $catalogJson = $page->getParam('catalogJson');
+        $catalogJsonBulk = [];
+        if(!empty($catalogJson['category_layout_type']) && $catalogJson['category_layout_type'] == 'icons') {
+            $catalogJsonBulk = \RepositoryManager::productCategory()->getCatalogJsonBulk();
+        }
+        $page->setParam('catalogJsonBulk', $catalogJsonBulk);
+
         $myThingsData = [
             'EventType' => 'MyThings.Event.Visit',
             'Action'    => '1011',
@@ -490,7 +513,7 @@ class Action {
      * @return \Http\Response
      * @throws \Exception\NotFoundException
      */
-    private function leafCategory(\Model\Product\Category\Entity $category, \Model\Product\Filter $productFilter, \View\Layout $page, \Http\Request $request) {
+    protected function leafCategory(\Model\Product\Category\Entity $category, \Model\Product\Filter $productFilter, \View\Layout $page, \Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
         if (\App::config()->debug) \App::debug()->add('sub.act', 'ProductCategory\\Action.leafCategory', 138);
@@ -604,7 +627,7 @@ class Action {
      * @param \Http\Request $request
      * @return \Model\Product\Filter
      */
-    private function getFilter(array $filters, \Model\Product\Category\Entity $category, \Model\Brand\Entity $brand = null, \Http\Request $request, $shop = null) {
+    protected function getFilter(array $filters, \Model\Product\Category\Entity $category, \Model\Brand\Entity $brand = null, \Http\Request $request) {
         // флаг глобального списка в параметрах запроса
         $isGlobal = self::isGlobal();
         //
@@ -627,9 +650,10 @@ class Action {
             ];
         }
 
-        //если есть фильтр по магазину
-        if ($shop) {
-            /** @var \Model\Shop\Entity $shop */
+        //если есть в куках магазин
+        $shop = null;
+        if (!$isGlobal && self::isShop())  {
+            $shop = \RepositoryManager::shop()->getEntityById( \App::request()->cookies->get(\App::config()->shop['cookieName'], false) );
             $values['shop'] = $shop->getId();
         }
 
@@ -681,6 +705,13 @@ class Action {
     public static function isGlobal() {
         return \App::user()->getRegion()->getHasTransportCompany()
             && (bool)(\App::request()->cookies->get(self::$globalCookieName, false));
+    }
+
+    /**
+     * @return bool
+     */
+    public static function isShop() {
+        return  \App::config()->shop['enabled'] && (bool)(\App::request()->cookies->get(\App::config()->shop['cookieName'], false));
     }
 
     /**
