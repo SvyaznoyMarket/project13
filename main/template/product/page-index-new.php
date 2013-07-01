@@ -168,6 +168,8 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
     <? endif ?>
 </script>
 
+<div id="jsProductCard" data-value="<?= $page->json($productData) ?>"></div>
+
 <section class="bProductSection__eLeft">
     <div class="bProductDesc clearfix">
 
@@ -447,7 +449,7 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
             <form id="order1click-form" action="<?= $page->url('order.1click', ['product' => $product->getBarcode()]) ?>" method="post"></form>
         <? endif ?>
 
-        <ul class="bWidgetBuy__eDelivery">
+        <ul class="bWidgetBuy__eDelivery" data-value="<?= $page->json(['url' => $page->url('product.delivery')]) ?>">
             <li class="bWidgetBuy__eDelivery-item bWidgetBuy__eDelivery-price">
                 <span>Доставка <strong>290</strong>p</span>
                 <div>Завтра, 16.05.2013</div>
@@ -620,6 +622,8 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
         <div class="bWidgetService__eAll"><span class="dotted">Ещё 87 услуг</span><br/>доступны в магазине</div>
     </div><!--/widget services -->
 </aside><!--/right section -->
+
+<?= $helper->render('product/__delivery') ?>
 
 <? if ($product->getIsBuyable()): ?>
     <?= $page->render('order/form-oneClick') ?>
