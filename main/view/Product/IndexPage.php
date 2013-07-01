@@ -121,7 +121,7 @@ class IndexPage extends \View\DefaultLayout {
 
         return "<meta property=\"og:title\" content=\"" . $this->escape($product->getName()) . "\"/>\r\n" .
                 "<meta property=\"og:description\" content=\"" . $this->escape($description) . "\"/>\r\n" .
-                "<meta property=\"og:image\" content=\"" . $this->escape($product->getImageUrl(3)) . "\"/>\r\n".
+            "<meta property=\"og:image\" content=\"" . $this->escape($product->getImageUrl(3).'?'.time()) . "\"/>\r\n".
                 "<meta property=\"og:site_name\" content=\"ENTER\"/>\r\n".
                 "<meta property=\"og:type\" content=\"website\"/>\r\n";
     }
