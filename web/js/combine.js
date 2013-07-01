@@ -1,1 +1,20 @@
-window.release = { "version":"t41-05-228-ge4009d9"}
+window.filesWithVersion = {
+"app.order.v4.js":1372317271,
+"ports.js":1372317271,
+"app.oneclick.js":1372317271,
+"infopages.js":1372317271,
+"library.js":1372317271,
+"app.cart.js":1372317271,
+"bigjquery.js":1372317271,
+"welcome.js":1372317271,
+"main.js":1372317271,
+"dash.js":1372317271,
+"app.order.js":1372317271,
+"app.product.comment.list.js":1372317271,
+"app.product.js":1372317271,
+"app.shop.js":1372317271,
+"DAnimFramePlayer.js":1372317271,
+"KupeConstructorScript.js":1372317271,
+"three.js":1372317271,
+
+}
