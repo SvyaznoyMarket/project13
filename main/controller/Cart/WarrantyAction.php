@@ -66,19 +66,38 @@ class WarrantyAction {
                 $cartWarranty = $cart->getWarrantyById($warranty->getId());
             }
 
+            $productInfo = [];
+            $warrantyInfo = [];
+            if ($product) {
+                $productInfo = [
+                    'name'  =>  $product->getName(),
+                    'img'   =>  $product->getImageUrl(2),
+                    'link'  =>  $product->getLink(),
+                    'price' =>  $product->getPrice(),
+                ];
+            }
+            if (\App::config()->kissmentrics['enabled']) {
+                $kissInfo = \Kissmetrics\Manager::getCartEvent($product, $cartWarranty);
+                if (isset($kissInfo['product'])) $productInfo = array_merge($productInfo, $kissInfo['product']);
+                if (isset($kissInfo['warranty'])) $warrantyInfo = $kissInfo['warranty'];
+            }
+
+            $completeInfo = [
+                'success'   =>  true,
+                'cart'      => [
+                    'sum'           => $cartWarranty ? $cartWarranty->getSum() : 0,
+                    'quantity'      => $quantity,
+                    'full_quantity' => $cart->getProductsQuantity() + $cart->getServicesQuantity() +$cart->getWarrantiesQuantity(),
+                    'full_price'    => $cart->getSum(),
+                    'old_price'     => $cart->getOriginalSum(),
+                    'link'          => \App::router()->generate('order.create'),
+                ],
+            ];
+            if ($productInfo) $completeInfo['product'] = $productInfo;
+            if ($warrantyInfo) $completeInfo['service'] = $warrantyInfo;
+
             return $request->isXmlHttpRequest()
-                ? new \Http\JsonResponse([
-                    'success' => true,
-                    'data'    => [
-                        'sum'           => $cartWarranty ? $cartWarranty->getSum() : 0,
-                        'quantity'      => $quantity,
-                        'full_quantity' => $cart->getProductsQuantity() + $cart->getServicesQuantity() +$cart->getWarrantiesQuantity(),
-                        'full_price'    => $cart->getSum(),
-                        'old_price'     => $cart->getOriginalSum(),
-                        'link'          => \App::router()->generate('order.create'),
-                    ],
-                    'result'  => \Kissmetrics\Manager::getCartEvent($product, null, $warranty),
-                ])
+                ? new \Http\JsonResponse($completeInfo)
                 : new \Http\RedirectResponse($request->headers->get('referer') ?: \App::router()->generate('homepage'));
         } catch (\Exception $e) {
             return $request->isXmlHttpRequest()
