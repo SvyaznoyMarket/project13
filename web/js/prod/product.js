@@ -237,7 +237,11 @@ var Planner3dKupeConstructor = null;
 
 $(document).ready(function() {
 
-	$('.bZoomedImg').elevateZoom();
+	$('.bZoomedImg').elevateZoom({
+		zoomWindowOffety: 5,
+		zoomWindowOffetx: 18,
+		zoomWindowWidth: 290,
+	});
 
 	$('.bCountSection').goodsCounter({
 		onChange:function(count){

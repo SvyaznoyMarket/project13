@@ -1109,9 +1109,9 @@ if ( typeof Object.create !== 'function' ) {
 			zoomWindowAlwaysShow: false,
 			zoomTintFadeIn: false,
 			zoomTintFadeOut: false,
-			borderSize: 4,
+			borderSize: 2,
 			showLens: true,
-			borderColour: "#888",
+			borderColour: "#C7C7C7",
 			lensBorder: 1,
 			lensShape: "square", //can be "round"
 			zoomType: "window", //window is default,  also "lens" available -
