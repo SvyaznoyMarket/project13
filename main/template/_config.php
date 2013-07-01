@@ -9,6 +9,7 @@
 $appConfig = \App::config();
 
 $config = array_merge([
+    'jsonLog'       => $appConfig->jsonLog['enabled'],
     'userUrl'       => \App::router()->generate('user.info'),
     'f1Certificate' => $appConfig->f1Certificate['enabled'],
     'coupon'        => $appConfig->coupon['enabled'],

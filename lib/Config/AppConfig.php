@@ -99,6 +99,10 @@ class AppConfig {
     public $kissmentrics = [
         'enabled'   =>  null,
     ];
+    /** @var array  */
+    public $jsonLog = [
+        'enabled' => null,
+    ];
     /** @var array */
     public $googleAnalytics = [
         'enabled' => null,

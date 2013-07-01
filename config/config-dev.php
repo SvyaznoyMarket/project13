@@ -60,6 +60,7 @@ $c->mobileHost = 'm.ent3.ru';
 
 $c->loadMediaHost = false;
 
+$c->jsonLog['enabled'] = false;
 $c->analytics['enabled'] = false;
 $c->analytics['optimizelyEnabled'] = false;
 $c->googleAnalytics['enabled'] = false;
