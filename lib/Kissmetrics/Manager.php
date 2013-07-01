@@ -11,6 +11,9 @@ class Manager {
      */
     public static function getCartEvent(\Model\Product\Entity $product = null, \Model\Product\Service\Entity $service = null, \Model\Product\Warranty\Entity $warranty = null) {
         $return = [];
+        $returnProduct = [];
+        $returnService = [];
+        $returnWarranty = [];
 
         $cart = \App::user()->getCart();
 
@@ -24,7 +27,7 @@ class Manager {
                     ];
                 }
 
-                $return = [
+                $returnProduct = [
                     'article'         => $product->getArticle(),
                     'category'        => $categoryData,
                     'quantity'        => $cartProduct->getQuantity(),
@@ -39,14 +42,12 @@ class Manager {
                     $cartService = $cart->getServiceById($service->getId());
                 }
 
-                $return['service'] = [
+                $returnService = [
                     'name'     => $service->getName(),
                     'price'    => $service->getPrice(),
                     'quantity' => $cartService ? $cartService->getQuantity() : 0,
                 ];
-                if (isset($return['product'])) {
-                    $return['product']['serviceQuantity'] = $product ? $cart->getServicesQuantityByProduct($product->getId()) : 0;
-                }
+
             }
             if ($warranty) {
                 $cartWarranty = null;
@@ -56,19 +57,22 @@ class Manager {
                     $cartWarranty = $cart->getWarrantyById($warranty->getId());
                 }
 
-                $return['warranty'] = [
+                $returnWarranty = [
                     'name'     => $warranty->getName(),
                     'price'    => $warranty->getPrice(),
                     'quantity' => $cartWarranty ? $cartWarranty->getQuantity() : null,
                 ];
-                if (isset($return['product'])) {
-                    $return['product']['warrantyQuantity'] = $cartWarranty ? $cartWarranty->getQuantity() : null;
+                if ($product) {
+                    $returnProduct['warrantyQuantity'] = $cartWarranty ? $cartWarranty->getQuantity() : null;
                 }
             }
         } catch (\Exception $e) {
-            \App::logger()->error($e, ['kissmetriks']);
+            \App::logger()->error($e, ['kissmetrics']);
         }
 
+        if ($product) $return['product'] = $returnProduct;
+        if ($service) $return['service'] = $returnService;
+        if ($warranty) $return['warranty'] = $returnWarranty;
         return $return;
     }
 
