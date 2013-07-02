@@ -290,14 +290,18 @@ class Action {
         try {
             if (!self::isGlobal() && \App::request()->get('shop') && \App::config()->shop['enabled']) {
                 $shop = \RepositoryManager::shop()->getEntityById( \App::request()->get('shop') );
-                if (\App::user()->getRegion() && $shop && $shop->getRegion()) {
+                /*if (\App::user()->getRegion() && $shop && $shop->getRegion()) {
                     if ((int)\App::user()->getRegion()->getId() != (int)$shop->getRegion()->getId()) {
+                        $route = \App::router()->generate('region.change', ['regionId' => $shop->getRegion()->getId()]);
+                        $response = new \Http\RedirectResponse($route);
+                        $response->headers->set('referer', \App::request()->getUri());
+                        //var_dump("<pre>", $response); exit;
                         $controller = new \Controller\Region\Action();
                         \App::logger()->info(sprintf('Смена региона #%s на #%s', \App::user()->getRegion()->getId(), $shop->getRegion()->getId()));
                         $response = $controller->change($shop->getRegion()->getId(), \App::request(), \App::request()->getUri());
                         return $response;
                     }
-                }
+                }*/
             }
         } catch (\Exception $e) {
             \App::logger()->error(sprintf('Не удалось отфильтровать товары по магазину #%s', \App::request()->get('shop')));
@@ -547,12 +551,30 @@ class Action {
                 ? '\\Model\\Product\\ExpandedEntity'
                 : '\\Model\\Product\\CompactEntity'
         );
+
+        if (\App::request()->get('shop') && \App::config()->shop['enabled']) {
+            $filtersWithoutShop = [];
+            foreach ($productFilter->dump() as $filter) {
+                if ($filter[0] != 'shop') {
+                    $filtersWithoutShop[] = $filter;
+                }
+            }
+            $pagerAll = $repository->getIteratorByFilter(
+                $filtersWithoutShop,
+                $productSorting->dump(),
+                ($pageNum - 1) * $limit,
+                $limit
+            );
+            $page->setGlobalParam('allCount', $pagerAll->count());
+        }
+
         $productPager = $repository->getIteratorByFilter(
             $productFilter->dump(),
             $productSorting->dump(),
             ($pageNum - 1) * $limit,
             $limit
         );
+
         $productPager->setPage($pageNum);
         $productPager->setMaxPerPage($limit);
         if (self::isGlobal()) {
