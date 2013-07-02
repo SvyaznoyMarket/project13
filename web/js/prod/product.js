@@ -237,12 +237,25 @@ var Planner3dKupeConstructor = null;
 
 $(document).ready(function() {
 
+
+	/**
+	 * Подключение нового зумера
+	 *
+	 * @requires jQuery, jQuery.elevateZoom
+	 */
 	$('.bZoomedImg').elevateZoom({
 		zoomWindowOffety: 5,
 		zoomWindowOffetx: 18,
 		zoomWindowWidth: 290,
 	});
 
+
+	/**
+	 * Каутер товара
+	 *
+	 * @requires jQuery, jQuery.goodsCounter
+	 * @param  {Number} count Возвращает текущее значение каунтера
+	 */
 	$('.bCountSection').goodsCounter({
 		onChange:function(count){
 			var spinnerData = $('.bCountSection').data('spinner');
@@ -251,10 +264,28 @@ $(document).ready(function() {
 
 			bindButton.attr('href',newHref.addParameterToUrl('quantity',count));
 			if (bindButton.hasClass('mBought')){
-				bindButton.trigger('click',[true]);
+				bindButton.eq('0').trigger('buy');
 			}
 		}
 	});
+
+
+	/**
+	 * Аналитика для карточки товара
+	 *
+	 * @requires jQuery
+	 */
+	(function(){
+		var productInfo = $('#jsProductCard').data('value');
+		var toKISS = {
+			'Viewed Product SKU':productInfo.article,
+			'Viewed Product Product Name':productInfo.name,
+			'Viewed Product Product Status':productInfo.stockState,
+		}
+		if (typeof(_kmq) !== 'undefined'){
+			_kmq.push(['record', 'Viewed Product',toKISS]);
+		}
+	}());
 
 	
 
@@ -494,51 +525,6 @@ $(document).ready(function() {
 	}
 	
 
-	/* Delivery Bubble */
-	if( $('.otherRegion').length ) {
-		$('.expander').click( function() {
-			$('.otherRegion').find('ul').toggle()
-			return false
-		})
-	}
-
-	
-	/* Rating */
-	if( $('#rating').length ) {
-		var iscore = $('#rating').next().html().replace(/[^\d\.]/g,'') * 1
-		$('#rating img').remove()
-        $('#rating span').remove()
-        $('#rating').raty({
-		  start: iscore,
-		  showHalf: true,
-		  path: '/css/skin/img/',
-		  readOnly: $('#rating').data('readonly'),
-		  starHalf: 'star_h.png',
-		  starOn: 'star_a.png',
-		  starOff: 'star_p.png',
-		  hintList: ['плохо', 'удовлетворительно', 'нормально', 'хорошо', 'отлично'],
-		  click: function( score ) {
-		  		$.getJSON( $('#rating').attr('data-url').replace('score', score ) , function(data){
-		  			if( data.success === true && data.data.rating ) {
-		  				$.fn.raty.start( data.data.rating ,'#rating' )
-		  				$('#rating').next().html( data.data.rating )
-		  			}
-		  		})
-		  		$.fn.raty.readOnly(true, '#rating')
-		  	}
-		})
-	}
-	
-	/* Icons */
-	$('.viewstock').bind( 'mouseover', function(){
-		var trgtimg = $('#stock img[ref="'+$(this).attr('ref')+'"]')
-		var isrc    = trgtimg.attr('src')
-		var idu    = trgtimg.attr('data-url')
-		if( trgtimg[0].complete ) {
-			$('#goodsphoto img').attr('src', isrc)
-			$('#goodsphoto img').attr('href', idu)
-		}
-	})
 
 	/* Media library */
 	//var lkmv = null
@@ -664,18 +650,6 @@ $(document).ready(function() {
         }
     })
 
-    // KISS
-    if ($('#productInfo').length){
-    	var data = $('#productInfo').data('value')
-    	var toKISS = {
-			'Viewed Product SKU':data.article,
-			'Viewed Product Product Name':data.name,
-			'Viewed Product Product Status':data.stockState,
-		}
-		if (typeof(_kmq) !== 'undefined'){
-			_kmq.push(['record', 'Viewed Product',toKISS]);
-		}
-    }
     
   	// карточка товара - характеристики товара краткие/полные
     if($('#productDescriptionToggle').length) {

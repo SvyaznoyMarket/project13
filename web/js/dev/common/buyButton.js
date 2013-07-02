@@ -7,18 +7,14 @@
  * @param		{Boolean}	anyway Если true событие будет все равно выполнено
  */
 ;(function(){
-	var BuyButton = function(e, anyway){
-		e.stopPropagation();
 
+	/**
+	 * Покупка товара. Маркировка кнопок.
+	 * 
+	 * @param  {Event} e
+	 */
+	var buyProcessing = function(e){
 		var button = $(this);
-
-		if (button.hasClass('mDisabled') && !anyway) {
-			return false;
-		}
-		if (button.hasClass('mBought') && !anyway) {
-			return false;
-		}
-
 		var url = button.attr('href');
 
 		var addToCart = function(data) {
@@ -46,6 +42,26 @@
 		};
 
 		$.get(url, addToCart);
+	}
+
+	/**
+	 * Хандлер кнопки купить
+	 * 
+	 * @param  {Event} e
+	 */
+	var BuyButton = function(e){
+		e.stopPropagation();
+
+		var button = $(this);
+
+		if (button.hasClass('mDisabled')) {
+			return false;
+		}
+		if (button.hasClass('mBought')) {
+			return false;
+		}
+
+		button.trigger('buy', buyProcessing);
 		return false;
 	};
 
@@ -65,6 +81,7 @@
 	
 	$(document).ready(function() {
 		$('.jsBuyButton').live('click', BuyButton);
+		$('.jsBuyButton').live('buy', buyProcessing);
 	});
 
 	/**
