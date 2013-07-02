@@ -139,7 +139,6 @@ class Action {
      * @return \Http\RedirectResponse
      */
     public function redirect(\Http\Request $request, $regionId, $redirectTo) {
-        \App::logger()->warn(sprintf('REDIRECT TO %s', $redirectTo));
         \App::logger()->debug('Exec ' . __METHOD__);
 
         $regionId = (int)$regionId;
@@ -160,7 +159,7 @@ class Action {
         } else {
             \App::logger()->warn(sprintf('Region #%s not found for link %s', $regionId, $redirectTo));
         }
-
+        \App::logger()->warn(sprintf('REDIRECT TO %s', $redirectTo));
         return $response;
     }
 }
