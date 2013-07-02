@@ -205,6 +205,19 @@ class ProductAction {
         return new \Http\JsonResponse($responseData);
     }
 
+    /**
+     * @param $productId
+     * @param \Http\Request $request
+     * @return \Http\JsonResponse|\Http\RedirectResponse
+     */
+    public function delete(\Http\Request $request, $productId) {
+        \App::logger()->debug('Exec ' . __METHOD__);
+
+        $request->query->set('quantity', 0);
+
+        return $this->set($productId, $request);
+    }
+
     protected function updateCartWarranty(\Model\Product\Entity $product, \Model\Cart\Product\Entity $cartProduct = null) {
         // обновить количество гарантий для товара
         if ($cartProduct && (bool)$cartProduct->getWarranty()) {
