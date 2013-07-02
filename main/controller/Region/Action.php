@@ -139,6 +139,7 @@ class Action {
      * @return \Http\RedirectResponse
      */
     public function redirect(\Http\Request $request, $regionId, $redirectTo) {
+        \App::logger()->warn(sprintf('REDIRECT TO %s', $redirectTo));
         \App::logger()->debug('Exec ' . __METHOD__);
 
         $regionId = (int)$regionId;
@@ -147,7 +148,7 @@ class Action {
             $redirectTo = '/' . $redirectTo;
         }
 
-        if ((bool)$request->getQueryString() && strpos($redirectTo, '?') == false) {
+        if ((bool)$request->getQueryString()) {
             $redirectTo .= '?' . $request->getQueryString();
         }
 
