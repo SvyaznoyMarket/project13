@@ -2996,13 +2996,13 @@
   .bMainMenuLevel-1__eItem.bMainMenuLevel-1__eSeparator:hover .bMainMenuLevel-2 {
     display: none;
   }
-  .bMainMenuLevel-1__eItem.hover .bMainMenuLevel-2 {
-    display: block;
-  }
-  .bMainMenuLevel-1__eItem.hover .bMainMenuLevel-1__eIcon,
-  .bMainMenuLevel-1__eItem.hover .bMainMenuLevel-1__eTitle {
+  .bMainMenuLevel-1__eItem:hover .bMainMenuLevel-1__eIcon,
+  .bMainMenuLevel-1__eItem:hover .bMainMenuLevel-1__eTitle {
     color: #ffa901;
     text-decoration: none;
+  }
+  .bMainMenuLevel-1__eItem.hover .bMainMenuLevel-2 {
+    display: block;
   }
   .bMainMenuLevel-1__eItem.hover .bCorner {
     display: block;
@@ -3180,6 +3180,10 @@
     opacity: 0;
     -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
     filter: alpha(opacity=0);
+  }
+  .bMainMenuLevel-3.noPadding {
+    padding-left: 231px;
+    padding-right: 0;
   }
   .bMainMenuLevel-3__eHead {
     color: #ffa901;

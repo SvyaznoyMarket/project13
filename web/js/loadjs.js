@@ -77,6 +77,8 @@
 				.script(getWithVersion('main.js'))
 				.script(getWithVersion('welcome.js'))
 				.wait()
+				.script( getWithVersion('topMenu.js') )
+				.wait()
 				.script( getWithVersion('ports.js') )
 				.script('//cdn.optimizely.com/js/204544654.js')
 			}).runQueue()

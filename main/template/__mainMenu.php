@@ -45,12 +45,13 @@ $count = count($menu);
     </style>
 <? endif ?>
 
-<ul class="bMainMenuLevel-<?= $level ?>">
-    <? if($level == 3 && $parent instanceof \Model\Menu\Entity) { ?>
-        <? $parentToken = preg_replace('/.*\//', '', $parent->getLink()) ?>
-    <? } ?>
+<? if($level == 3 && $parent instanceof \Model\Menu\Entity) { ?>
+    <? $parentToken = preg_replace('/.*\//', '', $parent->getLink()) ?>
+    <? $showPromo = (!empty($parentToken) && !empty($promoHtmlBulk[$parentToken]['menu_promo']) && !empty($catalogJsonBulk[$parentToken]['use_promo_in_menu'])) ?>
+<? } ?>
 
-    <? if(!empty($parentToken) && !empty($promoHtmlBulk[$parentToken]['menu_promo']) && !empty($catalogJsonBulk[$parentToken]['use_promo_in_menu'])) { ?>
+<ul class="bMainMenuLevel-<?= $level ?><?= empty($showPromo) ? '' : ' noPadding' ?>">
+    <? if(!empty($showPromo)) { ?>
         <?= $promoHtmlBulk[$parentToken]['menu_promo'] ?>
     <? } else { ?>
         <? if ((3 ==$level) && $parent instanceof \Model\Menu\Entity && $parent->getImage()): ?>

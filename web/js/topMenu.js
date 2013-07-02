@@ -1,6 +1,7 @@
 /* Top Menu */
 var menuDelayLvl1 = 300 //ms
 var menuDelayLvl2 = 500 //ms
+var triangleOffset = 15 //px
 
 var lastHoverLvl1 = null
 var checkedItemLvl1 = null
@@ -16,7 +17,6 @@ var pointA = {x: 0,	y: 0}
 var pointB = {x: 0,	y: 0}
 var pointC = {x: 0,	y: 0}
 var cursorNow = {x: 0, y: 0}
-
 
 /**
  * Активируем элемент меню 1-го уровня
@@ -54,59 +54,48 @@ menuMouseLeaveLvl1 = function(){
 	hoverNowLvl1 = false
 }
 
-
 /**
- * не используется
- * 
- * Получение площади треугольника по координатам вершин
- * 
- * @param {object} A      верхняя вершина треугольника
- * @param {object} A.x    координата по оси x верхней вершины
- * @param {object} A.y    координата по оси y верхней вершины
- * 
- * @param {object} B      левая вершина треугольника
- * @param {object} B.x    координата по оси x левой вершины
- * @param {object} B.y    координата по оси y левой вершины
- * 
- * @param {object} C      правая вершина треугольника
- * @param {object} C.x    координата по оси x правой вершины
- * @param {object} A.y    координата по оси y правой вершины
- *
- * @return {number} S площадь треульника
- *
- * @see <a href="http://ru.wikipedia.org/wiki/%D0%A4%D0%BE%D1%80%D0%BC%D1%83%D0%BB%D0%B0_%D0%93%D0%B5%D1%80%D0%BE%D0%BD%D0%B0">Формула Герона</a>
+ * Непосредственно построение треугольника. Требуется предвариательно получить нужные координаты и размеры
  */
-getTriangleS = function(A, B, C){
-	// получение длинн сторон треугольника
-	var AB = Math.sqrt(Math.pow((A.x - B.x),2)+Math.pow((A.y - B.y),2))
-	var BC = Math.sqrt(Math.pow((B.x - C.x),2)+Math.pow((B.y - C.y),2))
-	var CA = Math.sqrt(Math.pow((C.x - A.x),2)+Math.pow((C.y - A.y),2))
+createTriangle = function(){
+	// левый угол - текущее положение курсора
+	pointA = {
+		x: cursorNow.x,
+		y: cursorNow.y - $(window).scrollTop()
+	}
 
-	// получение площади треугольника по формуле Герона
-	var p = (AB + BC + CA)/2
-	var S = Math.sqrt(p*(p-AB)*(p-BC)*(p-CA))
+	// верхний угол - левый верх меню 3го уровня минус triangleOffset
+	pointB = {
+		x: menuLevel3Dimensions.left - triangleOffset,
+		y: menuLevel3Dimensions.top - $(window).scrollTop()
+	}
 
-	return S
+	// нижний угол - левый низ меню 3го уровня минус triangleOffset
+	pointC = {
+		x: menuLevel3Dimensions.left - triangleOffset,
+		y: menuLevel3Dimensions.top + menuLevel3Dimensions.height - $(window).scrollTop()
+	}
 }
 
 /**
  * Проверка входит ли точка в треугольник.
  * Соединяем точку со всеми вершинами и считаем площадь маленьких треугольников.
  * Если она равна площади большого треугольника, то точка входит в треугольник. Иначе не входит.
+ * Также точка входит в область задержки, если она попадает в прямоугольник, формируемый сдвигом треугольника
  * 
  * @param  {object} now    координаты точки, которую необходимо проверить
  * 
  * @param  {object} A      левая вершина большого треугольника
- * @param  {object} A.x    координата по оси x верхней вершины
- * @param  {object} A.y    координата по оси y верхней вершины
+ * @param  {object} A.x    координата по оси x левой вершины
+ * @param  {object} A.y    координата по оси y левой вершины
  * 
  * @param  {object} B      верхняя вершина большого треугольника
- * @param  {object} B.x    координата по оси x левой вершины
- * @param  {object} B.y    координата по оси y левой вершины
+ * @param  {object} B.x    координата по оси x верхней вершины
+ * @param  {object} B.y    координата по оси y верхней вершины
  * 
  * @param  {object} C      нижняя вершина большого треугольника
- * @param  {object} C.x    координата по оси x правой вершины
- * @param  {object} A.y    координата по оси y правой вершины
+ * @param  {object} C.x    координата по оси x нижней вершины
+ * @param  {object} C.y    координата по оси y нижней вершины
  * 
  * @return {boolean}       true - входит, false - не входит
  */
@@ -115,7 +104,7 @@ menuCheckTriangle = function(){
 	var res2 = (pointB.x-cursorNow.x)*(pointC.y-pointB.y)-(pointC.x-pointB.x)*(pointB.y-cursorNow.y)
 	var res3 = (pointC.x-cursorNow.x)*(pointA.y-pointC.y)-(pointA.x-pointC.x)*(pointC.y-cursorNow.y)
 
-	if ((res1 >= 0 && res2 >= 0 && res3 >= 0) || (res1 <= 0 && res2 <= 0 && res3 <= 0)){
+	if ((res1 >= 0 && res2 >= 0 && res3 >= 0) || (res1 <= 0 && res2 <= 0 && res3 <= 0) || (cursorNow.x >= pointB.x && cursorNow.x <= (pointB.x + triangleOffset) && cursorNow.y >= pointB.y && cursorNow.y <= pointC.y)){
 		// console.info('принадлежит')
 		return true
 	}
@@ -127,11 +116,10 @@ menuCheckTriangle = function(){
 
 /**
  * Отслеживание перемещения мыши по меню 2-го уровня
+ *
  * @param  {event} e
  */
 menuMoveLvl2 = function(e){
-	// console.info(e.currentTarget.nodeName)
-	// console.log('движение...')
 	cursorNow = {
 		x: e.pageX,
 		y: e.pageY - $(window).scrollTop()
@@ -142,29 +130,6 @@ menuMoveLvl2 = function(e){
 		lastHoverLvl2 = new Date()
 	}
 	checkHoverLvl2(el)
-}
-
-/**
- * Непосредственно построение треугольника. Требуется предвариательно получить нужные координаты и размеры
- */
-createTriangle = function(){
-	// левый угол - текущее положение курсора
-	pointA = {
-		x: cursorNow.x,
-		y: cursorNow.y - $(window).scrollTop()
-	}
-
-	// верхний угол - левый верх меню 3го уровня
-	pointB = {
-		x: menuLevel3Dimensions.left,
-		y: menuLevel3Dimensions.top - $(window).scrollTop()
-	}
-
-	// нижний угол - левый низ меню 3го уровня
-	pointC = {
-		x: menuLevel3Dimensions.left,
-		y: menuLevel3Dimensions.top + menuLevel3Dimensions.height - $(window).scrollTop()
-	}
 }
 
 /**
@@ -185,14 +150,23 @@ activateItemLvl2 = function(el){
 menuHoverInLvl2 = function(){
 	var el = $(this)
 	checkHoverLvl2(el)
+	el.addClass('hoverNowLvl2')
 
 	if(lastHoverLvl2 && (new Date() - lastHoverLvl2 <= menuDelayLvl2) && menuCheckTriangle()) {
 		setTimeout(function(){
-			if(new Date() - lastHoverLvl2 > menuDelayLvl2) {
+			if(el.hasClass('hoverNowLvl2') && (new Date() - lastHoverLvl2 > menuDelayLvl2)) {
 				checkHoverLvl2(el)
 			}
-		}, menuDelayLvl2)
+		}, menuDelayLvl2 + 20)
 	}
+}
+
+/**
+ * Обработчик ухода мыши из элемента меню 1-го уровня
+ */
+menuMouseLeaveLvl2 = function(){
+	var el = $(this)
+	el.removeClass('hoverNowLvl2')
 }
 
 /**
@@ -255,6 +229,7 @@ $('.bMainMenuLevel-1__eItem').mouseleave(menuMouseLeaveLvl1)
 
 $('.bMainMenuLevel-2__eItem').mouseenter(menuHoverInLvl2)
 $('.bMainMenuLevel-2__eItem').mousemove(menuMoveLvl2)
+$('.bMainMenuLevel-2__eItem').mouseleave(menuMouseLeaveLvl2)
 
 
 

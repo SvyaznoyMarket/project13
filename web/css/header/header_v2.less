@@ -91,19 +91,20 @@
 			}
 		}
 
-		&.hover{
+		&:hover{
+			.bMainMenuLevel-1__eIcon,
+			.bMainMenuLevel-1__eTitle{
+				color: @firmOrange;
+				text-decoration: none;
+			}
+		}
 
+		&.hover{
 			.bMainMenuLevel-2{
 				display: block;
 				// opacity: 1;
 				// transform: translate(0px, 0px);
 				// transition: all 0.5s ease-in-out;
-			}
-
-			.bMainMenuLevel-1__eIcon,
-			.bMainMenuLevel-1__eTitle{
-				color: @firmOrange;
-				text-decoration: none;
 			}
 
 			.bCorner{
@@ -335,6 +336,11 @@
 	padding-right: 10px;
 	position: absolute;
 	top: -5px;
+
+	&.noPadding {
+		padding-left: 231px;
+		padding-right: 0;
+	}
 
 	.opacity(0);
 	// .transition(all 0s ease);
