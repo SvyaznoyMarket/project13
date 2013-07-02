@@ -13,9 +13,12 @@ return function (
 
     <ul class="bWidgetService__eInputList">
     <? foreach ($product->getWarranty() as $warranty): ?>
+    <?
+        $id = \View\Id::cartButtonForProductWarranty($product->getId(), $warranty->getId());
+    ?>
         <li>
-            <input id="<?= \View\Id::cartButtonForProductWarranty($product->getId(), $warranty->getId()) ?>" name="<?= $product->getId()?>" type="radio" hidden />
-            <label class="bCustomInput" for="<?= \View\Id::cartButtonForProductWarranty($product->getId(), $warranty->getId()) ?>">
+            <input id="<?= $id ?>" class="<?= $id ?>" name="<?= $product->getId()?>" type="radio" hidden />
+            <label class="bCustomInput" for="<?= $id ?>">
                 <div class="bCustomInput__eText">
                     <span class="dotted"><?= $warranty->getName() ?></span> <?= $warranty->getPeriod() . '&nbsp;' . $helper->numberChoice($warranty->getPeriod(), ['месяц', 'месяца', 'месяцев']) ?>
 
