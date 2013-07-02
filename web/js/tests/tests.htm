@@ -47,6 +47,12 @@ test("JSON", function(){
 	equal( 'EMAIL@domen.ru'.isEmail() , true, 'EMAIL@domen.ru is email');
 });
 
+module('addParameterToUrl')
+test("get-set", function() {
+	equal( 'http://domen.ru/'.addParameterToUrl('user','true') , 'http://domen.ru/?user=true', 'http://domen.ru/?user=true');
+	equal( 'http://domen.ru/?user=true'.addParameterToUrl('someparametr','value') , 'http://domen.ru/?user=true&someparametr=value', 'http://domen.ru/?user=true&someparametr=value');
+})
+
 module('Cookie manager')
 test("get-set", function() {
 	var objectFlag = false
@@ -70,6 +76,7 @@ test("get-set", function() {
 	equal( docCookies.getItem("test8"), null, 'hidden domain')
 	equal( docCookies.getItem("test9"), null, 'https protocol only')
 })
+
 test("Object get-set", function() {
 	var objectFlag = true
 	var tmpObj = {a: 'a', b: '99'}

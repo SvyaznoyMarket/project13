@@ -28,12 +28,13 @@
 				// sendAnalytics(button);
 				
 				if (blackBox) {
-					var basket = data.data;
-					var product = data.result.product;
+					var basket = data.cart;
+					var product = data.product;
 					var tmpitem = {
 						'title': product.name,
 						'price' : printPrice(product.price),
-						'imgSrc': 'need image link',
+						'imgSrc': product.img,
+						'productLink': product.link,
 						'totalQuan': basket.full_quantity,
 						'totalSum': printPrice(basket.full_price),
 						'linkToOrder': basket.link,

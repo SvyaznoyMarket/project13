@@ -31,7 +31,7 @@
     <div class="bBlackBox__eFlyboxInner">
         <div class="font16 pb20">Только что был добавлен в корзину:</div>
         <div class="fl width70">
-            <a href="">
+            <a href="<%=productLink%>">
                 <img width="60" height="60" alt="" src="<%=imgSrc%>">
             </a>
         </div>
