@@ -1,6 +1,5 @@
 <?php
 /**
- * @var $renderer           \Templating\PhpClosureEngine
  * @var $page               \View\Product\IndexPage
  * @var $product            \Model\Product\Entity
  * @var $productVideos      \Model\Product\Video\Entity[]
@@ -329,7 +328,7 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
             </div>
             <? endif ?>
 
-            <?= $renderer->render('product/__slider', [
+            <?= $helper->render('product/__slider', [
                 'products'       => array_values($accessories),
                 'count'          => count($product->getAccessoryId()),
                 'limit'          => $accessoryCategory ? \App::config()->product['itemsInAccessorySlider'] : \App::config()->product['itemsInSlider'],
@@ -343,7 +342,7 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
 
         <? if ((bool)$related && \App::config()->product['showRelated']): ?>
             <h3 class="bHeadSection">С этим товаром также покупают</h3>
-            <?= $renderer->render('product/__slider', [
+            <?= $helper->render('product/__slider', [
                 'products'       => array_values($related),
                 'count'          => count($product->getRelatedId()),
                 'limit'          => \App::config()->product['itemsInSlider'],
@@ -366,14 +365,14 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
                 <dd>
                     <span><?= $property->getName() ?>
                     <? if ($property->getHint()): ?>
-                        <?= $renderer->render('product/__propertyHint', ['name' => $property->getName(), 'value' => $property->getHint()]) ?>
+                        <?= $helper->render('__hint', ['name' => $property->getName(), 'value' => $property->getHint()]) ?>
                     <? endif ?>
                     </span>
                 </dd>
                 <dt>
                     <?= $property->getStringValue() ?>
                     <? if ($property->getValueHint()): ?>
-                        <?= $renderer->render('product/__propertyHint', ['name' => $property->getStringValue(), 'value' => $property->getValueHint()]) ?>
+                        <?= $helper->render('__hint', ['name' => $property->getStringValue(), 'value' => $property->getValueHint()]) ?>
                     <? endif ?>
                 </dt>
             <? endforeach ?>
@@ -402,7 +401,7 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
 
         <? if (!$product->getIsBuyable() && $product->getState()->getIsShop()  && \App::config()->smartengine['pull']): ?>
             <h3 class="bHeadSection">Похожие товары</h3>
-            <?= $renderer->render('product/__slider', [
+            <?= $helper->render('product/__slider', [
                 'products'       => [],
                 'count'          => null,
                 'limit'          => \App::config()->product['itemsInSlider'],
@@ -454,165 +453,19 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
                 <form id="order1click-form" action="<?= $page->url('order.1click', ['product' => $product->getBarcode()]) ?>" method="post"></form>
             <? endif ?>
 
-            <ul class="bWidgetBuy__eDelivery" data-value="<?= $page->json(['url' => $page->url('product.delivery')]) ?>">
-                <li class="bWidgetBuy__eDelivery-item bWidgetBuy__eDelivery-price">
-                    <span>Доставка <strong>290</strong> <span class="rubl">p</span></span>
-                    <div>Завтра, 16.05.2013</div>
-                </li>
-                <li class="bWidgetBuy__eDelivery-item bWidgetBuy__eDelivery-free">
-                    <span>Самовывоз <strong>бесплатно</strong></span>
-                    <div>Завтра, 16.05.2013</div>
-                </li>
-
-                <li class="bWidgetBuy__eDelivery-item bWidgetBuy__eDelivery-now click">
-                    <span class="dotted">Есть в магазинах</span>
-                    <div>Купить сегодня без предзаказа</div>
-                </li>
-            </ul>
-
-            <ul style="display: block;" class="bDeliveryFreeAddress">
-                <li>
-                    м. Белорусская,<br/>
-                    ул. Грузинский вал, д. 31
-                </li>
-                <li>
-                    м. Ленинский проспект, <br/>
-                    ул. Орджоникидзе, д. 11, стр. 10
-                </li>
-                <li>
-                    м. Белорусская, <br/>
-                    ул. Грузинский вал, д. 31
-                </li>
-                <li>
-                    м. Ленинский проспект, <br/>
-                    ул. Орджоникидзе, д. 11, стр. 10
-                </li>
-                <li>
-                    м. Белорусская, <br/>
-                    ул. Грузинский вал, д. 31
-                </li>
-                <li>
-                    м. Ленинский проспект, <br/>
-                    ул. Орджоникидзе, д. 11, стр. 10
-                </li>
-                <li>
-                    м. Белорусская, <br/>
-                    ул. Грузинский вал, д. 31
-                </li>
-                <li>
-                    м. Ленинский проспект, <br/>
-                    ул. Орджоникидзе, д. 11, стр. 10
-                </li>
-            </ul><!--/выпадающий список при клике по - Есть в магазинах -->
+            <?= $helper->render('product/__delivery', ['product' => $product]) ?>
 
             <div class="bAwardSection"><img src="/css/newProductCard/img/award.jpg" alt="" /></div>
         </div><!--/widget delivery -->
 
-        <div class="bWidgetService mWidget">
-            <div class="bWidgetService__eHead">
-                <strong>Под защитой F1</strong>
-                Расширенная гарантия
-            </div>
+        <? if ((bool)$product->getWarranty()): ?>
+            <?= $helper->render('product/__warranty', ['product' => $product]) ?>
+        <? endif ?>
 
-            <ul class="bWidgetService__eInputList">
-                <li>
-                    <input id="id4" name="name1" type="radio" hidden />
-                    <label class="bCustomInput" for="id4">
-                        <div class="bCustomInput__eText">
-                            <span class="dotted">Black: 2 годa</span>
+        <? if ((bool)$product->getService()): ?>
+            <?= $helper->render('product/__service', ['product' => $product]) ?>
+        <? endif ?>
 
-                            <div class="bHint">
-                              <a class="bHint_eLink">Разрешение дисплея</a>
-                              <div class="bHint_ePopup popup">
-                                <div class="close"></div>
-                                <div class="bHint-text">
-                                    <p>конвертировать видео, запустится ли игра. И это тот случай, когда чем больше – тем лучше.</p>
-                                </div>
-                              </div>
-                            </div>
-
-                            <div class="bCustomInput__ePrice"><strong>1 490</strong> <span class="rubl">p</span></div>
-                        </div>
-                    </label>
-                    <div style="display: block;" class="bDeSelect"><a href="">Отменить</a></div>
-                </li>
-
-                <li>
-                    <input id="id3" name="name1" type="radio" hidden />
-                    <label class="bCustomInput" for="id3">
-                        <div class="bCustomInput__eText">
-                            <span class="dotted">Gold: 2,5 годa</span>
-
-                            <div class="bHint">
-                              <a class="bHint_eLink">Разрешение дисплея</a>
-                              <div class="bHint_ePopup popup">
-                                <div class="close"></div>
-                                <div class="bHint-text">
-                                    <p>конвертировать видео, запустится ли игра. И это тот случай, когда чем больше – тем лучше.</p>
-                                </div>
-                              </div>
-                            </div>
-
-                            <div class="bCustomInput__ePrice"><strong>1 490</strong> <span class="rubl">p</span></div>
-                        </div>
-                    </label>
-                    <div style="display: none;" class="bDeSelect"><a href="">Отменить</a></div>
-                </li>
-
-                <li>
-                    <input id="id2" name="name1" type="radio" hidden />
-                    <label class="bCustomInput" for="id2">
-                        <div class="bCustomInput__eText">
-                            <span class="dotted">Platinum: 3 годa</span>
-
-                            <div class="bHint">
-                                <a class="bHint_eLink">Разрешение дисплея</a>
-                                <div class="bHint_ePopup popup">
-                                    <div class="close"></div>
-                                    <div class="bHint-text">
-                                        <p>конвертировать видео, запустится ли игра. И это тот случай, когда чем больше – тем лучше.</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="bCustomInput__ePrice"><strong>1 490</strong> <span class="rubl">p</span></div>
-                        </div>
-                    </label>
-                    <div style="display: none;" class="bDeSelect"><a href="">Отменить</a></div>
-                </li>
-            </ul>
-        </div><!--/widget services -->
-
-        <div class="bWidgetService mWidget">
-            <div class="bWidgetService__eHead">
-                <strong>F1 сервис</strong>
-                Установка и настройка
-            </div>
-
-            <ul class="bWidgetService__eInputList">
-                <li>
-                    <input id="id1" name="name4" type="checkbox" hidden />
-                    <label class="bCustomInput" for="id1">
-                        <div class="bCustomInput__eText">
-                            <span class="dotted">Подключение электричества</span>
-
-                            <div class="bHint">
-                                <a class="bHint_eLink">Разрешение дисплея</a>
-                                <div class="bHint_ePopup popup">
-                                    <div class="close"></div>
-                                    <div class="bHint-text">
-                                        <p>конвертировать видео, запустится ли игра. И это тот случай, когда чем больше – тем лучше.</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="bCustomInput__ePrice"><strong>1 490</strong> <span class="rubl">p</span></div>
-                        </div>
-                    </label>
-                </li>
-            </ul>
-            <div class="bWidgetService__eAll"><span class="dotted">Ещё 87 услуг</span><br/>доступны в магазине</div>
-        </div><!--/widget services -->
     </aside>
 </div><!--/right section -->
 
@@ -637,8 +490,6 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
 </div>
 
 <div class="bBreadCrumbsBottom"><?= $page->render('_breadcrumbs', array('breadcrumbs' => $breadcrumbs, 'class' => 'breadcrumbs-footer')) ?></div>
-
-<?= $helper->render('product/__delivery') ?>
 
 <? if ($product->getIsBuyable()): ?>
     <?= $page->render('order/form-oneClick') ?>
