@@ -12,7 +12,7 @@
   <li class="bReviewsTabs__eTab bReviewsTabs__ePro pro<?= $tabProClass ?>" data-container="reviewsPro" data-reviews-type="pro"><span>Обзоры экспертов</span></li>
 
   <li class="bReviewsTabs__eTab bReviewsTabs__eLast">
-    <span class="jsLeaveReview" data-pid="<?//= $product->getId() ?>">Оставить отзыв</span>
+    <span class="jsLeaveReview" data-pid="<?= $product->getId() ?>">Оставить отзыв</span>
   </li> 
 </ul>
 
