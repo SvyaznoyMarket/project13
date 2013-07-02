@@ -503,20 +503,14 @@ class Repository {
         });
         $dataStore->execute();
 
-
         foreach ($catalogJsonBulk as $token => $settings) {
             if(in_array($token, array_keys($catalogHtmlBulk)) ||
                 empty($catalogJsonBulk[$token]['use_promo_in_menu']) ||
                 empty($catalogJsonBulk[$token]['promo_token_menu'])) continue;
 
-file_put_contents('/tmp/logger.txt', json_encode($token)."\n", FILE_APPEND);
-
             $contentClient = \App::contentClient();
-file_put_contents('/tmp/logger.txt', json_encode($settings['promo_token_menu'])."\n", FILE_APPEND);
             $content = $contentClient->query($settings['promo_token_menu'], [], false);
             $promoContent = empty($content['content']) ? '' : $content['content'];
-
-file_put_contents('/tmp/logger.txt', json_encode($promoContent)."\n", FILE_APPEND);
 
             $catalogHtmlBulk[$token]['menu_promo'] = $promoContent;
         }
