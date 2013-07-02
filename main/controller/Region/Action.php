@@ -147,19 +147,20 @@ class Action {
             $redirectTo = '/' . $redirectTo;
         }
 
+        \App::logger()->warn(sprintf('REDIRECT TO 1 %s', $redirectTo));
         if ((bool)$request->getQueryString()) {
             $redirectTo .= '?' . $request->getQueryString();
         }
-
+        \App::logger()->warn(sprintf('REDIRECT TO 2 %s', $redirectTo));
         $response = new \Http\RedirectResponse($redirectTo);
-
+        \App::logger()->warn(sprintf('REDIRECT TO 3 %s', $redirectTo));
         $region = $regionId ? \RepositoryManager::region()->getEntityById($regionId) : null;
         if ($region) {
             \App::user()->changeRegion($region, $response);
         } else {
             \App::logger()->warn(sprintf('Region #%s not found for link %s', $regionId, $redirectTo));
         }
-        \App::logger()->warn(sprintf('REDIRECT TO %s', $redirectTo));
+        \App::logger()->warn(sprintf('REDIRECT TO 4 %s', $redirectTo));
         return $response;
     }
 }
