@@ -147,11 +147,11 @@ class Action {
             $redirectTo = '/' . $redirectTo;
         }
 
-        \App::logger()->warn(sprintf('REDIRECT TO 1 %s', $redirectTo));
+        \App::logger()->warn(sprintf('REDIRECT TO 1 %s', $request->getQueryString()));
         if ((bool)$request->getQueryString()) {
             $redirectTo .= '?' . $request->getQueryString();
         }
-        \App::logger()->warn(sprintf('REDIRECT TO 2 %s', $redirectTo));
+        \App::logger()->warn(sprintf('REDIRECT TO 2 %s', $request->getQueryString()));
         $response = new \Http\RedirectResponse($redirectTo);
         \App::logger()->warn(sprintf('REDIRECT TO 3 %s', $redirectTo));
         $region = $regionId ? \RepositoryManager::region()->getEntityById($regionId) : null;
