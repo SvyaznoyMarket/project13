@@ -395,7 +395,6 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
                 <?= $page->render('product/_reviews', ['reviewsData' => $reviewsData, 'reviewsDataPro' => $reviewsDataPro]) ?>
                 </div>
             <? endif ?>
-            </div>
         </div>
 
 
@@ -614,6 +613,28 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
         </div><!--/widget services -->
     </aside>
 </div><!--/right section -->
+
+<div class="bBottomBuy clearfix">
+    <div class="bBottomBuy__eHead">
+        <div class="bBottomBuy__eSubtitle"><?= $product->getType()->getName() ?></div>
+        <h1 class="bBottomBuy__eTitle"><?= $title ?></h1>
+    </div>
+
+    <div class="bWidgetBuy__eBuy btnBuy">
+        <?= $page->render('cart/_button', ['product' => $product, 'class' => 'btnBuy__eLink', 'value' => 'В корзину']) ?>
+    </div><!--/button buy -->
+
+    <div class="bCountSection clearfix">
+        <button class="bCountSection__eM">-</button>
+        <input class="bCountSection__eNum" type="text" value="1" />
+        <button class="bCountSection__eP">+</button>
+        <span>шт.</span>
+    </div><!--/counter -->
+
+    <div class="price"><strong><?= $page->helper->formatPrice($product->getPrice()) ?></strong>р</div>
+</div>
+
+<div class="bBreadCrumbsBottom"><?= $page->render('_breadcrumbs', array('breadcrumbs' => $breadcrumbs, 'class' => 'breadcrumbs-footer')) ?></div>
 
 <?= $helper->render('product/__delivery') ?>
 
