@@ -23,8 +23,8 @@
 
 		var addToCart = function(data) {
 			if (data.success) {
-				button.addClass('mBought');
-				button.html('В корзине');
+				var groupBtn = button.data('group');
+				$('.jsBuyButton[data-group="'+groupBtn+'"]').html('В корзине').addClass('mBought');
 				// kissAnalytics(data);
 				// sendAnalytics(button);
 				
@@ -45,7 +45,6 @@
 			}
 		};
 
-
 		$.get(url, addToCart);
 		return false;
 	};
@@ -58,8 +57,8 @@
 	 * @param	{Object}	markActionInfo Данные полученые из Action
 	 */
 	var markCartButton = function(event, markActionInfo){
-		for (var i = 0, len = markActionInfo.button.length; i < len; i++){
-			$('.'+markActionInfo.button[i].id).html('В корзине').addClass('mBought');
+		for (var i = 0, len = markActionInfo.product.length; i < len; i++){
+			$('.'+markActionInfo.product[i].id).html('В корзине').addClass('mBought');
 		}
 	};
 	$("body").bind('markcartbutton', markCartButton);

@@ -42,4 +42,4 @@
   <? $showMoreText = 'Показать другие обзоры...' ?>
 <? } ?>
 
-<div class="bReviewsToggle jsGetReviews product-btn-toggle getMoreReviews<?= $showMore ? '' : ' hfImportant' ?>"><?= $showMoreText ?></div>
+<div class="jsGetReviews bReviewsToggle product-btn-toggle <?= $showMore ? '' : ' hfImportant' ?>"><?= $showMoreText ?></div>
