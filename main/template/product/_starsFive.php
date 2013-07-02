@@ -6,7 +6,7 @@ if(!empty($layout) && $layout == 'jewel') {
 } else {
     $reviewsStarSrc = "/images/reviews_star.png";
     $reviewsStarHalfSrc = "/images/reviews_star_half.png";
-    $reviewsStarEmptySrc = "/images/reviews_star.png";
+    $reviewsStarEmptySrc = "/images/reviews_star_empty.png";
 }
 ?>
 
