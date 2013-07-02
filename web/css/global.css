@@ -8859,7 +8859,13 @@
   .bPageLogin_eLogo {
     background: url("/css/order/img/orderSprite.png") no-repeat scroll -55px 0 transparent;
     height: 87px;
-    width: 200px;
+    width: 103px;
+    margin-right: 97px;
+  }
+  .bPageLogin_eLogo a {
+    display: block;
+    height: 87px;
+    width: 103px;
   }
   .bLoginPageForms_eTitle {
     float: none;
@@ -9880,6 +9886,7 @@
     background: #e6e6e6;
   }
   .bProductSection .bProductDesc__eStore .creditbox {
+    display: none;
     margin: 0 0 23px;
     border: none;
     font-size: 14px;
@@ -10035,6 +10042,36 @@
   }
   .bProductSection__eRight .btnBuy {
     margin: 0 auto;
+  }
+  .bBottomBuy {
+    clear: both;
+    margin: 0 0 20px;
+  }
+  .bBottomBuy__eHead {
+    float: left;
+    font-size: 14px;
+    font-weight: bold;
+    width: 420px;
+  }
+  .bBottomBuy__eTitle {
+    font-size: 16px;
+    font-family: tahoma;
+    font-weight: 800;
+  }
+  .bBottomBuy .btnBuy,
+  .bBottomBuy .bCountSection,
+  .bBottomBuy .price {
+    float: right;
+  }
+  .bBottomBuy .price {
+    font-size: 30px;
+    text-align: right;
+  }
+  .bBottomBuy .bCountSection {
+    margin: 7px 12px 0 20px;
+  }
+  .bBreadCrumbsBottom {
+    margin: 0 10px 20px;
   }
 }
 /*---END---СТИЛИ НОВОЙ КАРТОЧКИ ТОВАРА---*/
@@ -10232,7 +10269,7 @@
     margin: 30px 0 0;
   }
   .bWidgetBuy__eDelivery-item {
-    background: url("/css/newProductCard/img/ico.png") no-repeat 0 1px;
+    background: url("/css/rightBarCard/img/ico.png") no-repeat 0 1px;
     padding-left: 25px;
     margin: 0 0 12px;
   }
@@ -10244,9 +10281,10 @@
   }
   .bWidgetBuy__eDelivery-now {
     background-position: 10px -127px;
+    cursor: pointer;
   }
   .bWidgetBuy__eDelivery-now.click {
-    background-position: 10px -210px;
+    background-position: 10px -239px;
   }
   .bWidgetBuy__eDelivery .bDeliveryFreeAddress {
     margin: 0 0 10px 26px;
@@ -10262,9 +10300,10 @@
     font-size: 14px;
     margin: 0 0 10px 59px;
     line-height: 24px;
+    width: 115px;
   }
   .bCountSection button {
-    background: url("/css/newProductCard/img/bg_count_btn.png") no-repeat 0 0;
+    background: url("/css/rightBarCard/img/bg_count_btn.png") no-repeat 0 0;
     display: block;
     width: 20px;
     height: 24px;
@@ -10294,7 +10333,7 @@
     padding: 0 0 10px;
   }
   .bWidgetService__eHead {
-    background: url("/css/newProductCard/img/ico.png") #41c7ef no-repeat 8px -81px;
+    background: url("/css/rightBarCard/img/ico.png") #41c7ef no-repeat 8px -81px;
     padding: 7px 10px 8px 33px;
     color: #fff;
     font-size: 14px;
@@ -10313,7 +10352,7 @@
     font-size: 14px;
   }
   .bWidgetService__eInputList .bHint {
-    margin: 3px 0 0;
+    margin: 2px 0 0;
   }
   .bWidgetService__eInputList .bHint .bHint_ePopup {
     left: -200px;
@@ -10324,55 +10363,53 @@
     margin: 11px 0 0;
     padding: 0 0 0 11px;
   }
-  .bWidgetService__eInputList li .customInput {
-    cursor: pointer;
-    line-height: 1.4;
+  .bWidgetService__eInputList li .bDeSelect {
+    padding: 5px 0 0 21px;
   }
-  .bWidgetService__eInputList li .customInput input {
-    filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
-    -moz-opacity: 0;
-    -khtml-opacity: 0;
-    -webkit-opacity: 0;
-    opacity: 0;
-    -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
-    filter: alpha(opacity=0);
-    position: absolute;
-    z-index: -1;
-  }
-  .bWidgetService__eInputList li .customInput b {
-    margin: 2px 0 0px;
-    width: 16px;
-    height: 16px;
-    background: url("/css/newProductCard/img/ico.png") no-repeat 0 -158px;
-    display: block;
-    float: left;
-  }
-  .bWidgetService__eInputList li .customInput .labelText {
-    padding: 0 0 0 21px;
-  }
-  .bWidgetService__eInputList li .checkbox b {
-    background-position: 0 -188px;
-  }
-  .bWidgetService__eInputList li .checked {
-    color: #000;
-  }
-  .bWidgetService__eInputList li .checked b {
-    background-position: 0 -176px;
-    top: 0!important;
-    height: 12px;
-  }
-  .bWidgetService__eInputList li .checked .deSelect {
-    padding: 3px 0 0;
-    font-size: 13px;
-  }
-  .bWidgetService__eInputList li .checked .deSelect a {
-    border-bottom: 1px dotted;
-  }
-  .bWidgetService__eInputList li .checked .deSelect a:hover {
+  .bWidgetService__eInputList li .bDeSelect a {
     text-decoration: none;
+    border-bottom: 1px dotted;
+    font-size: 12px;
   }
-  .bWidgetService__eInputList li .checked .dotted {
-    border: none;
+  .bWidgetService__eInputList li input[type="checkbox"],
+  .bWidgetService__eInputList li input[type="radio"] {
+    display: none;
+  }
+  .bWidgetService__eInputList li input[type="checkbox"] + label,
+  .bWidgetService__eInputList li input[type="radio"] + label {
+    cursor: pointer;
+  }
+  .bWidgetService__eInputList li input[type="checkbox"] + label::before,
+  .bWidgetService__eInputList li input[type="radio"] + label::before {
+    content: "";
+    display: inline-block;
+    height: 16px;
+    width: 16px;
+    margin: 0;
+    background: url("/css/rightBarCard/img/ico.png") no-repeat 0 -163px;
+    vertical-align: top;
+  }
+  .bWidgetService__eInputList li input[type="checkbox"] + label::before {
+    background-position: 0 -212px;
+  }
+  .bWidgetService__eInputList li input[type="radio"] + label::before {
+    background-position: 0 -163px;
+  }
+  .bWidgetService__eInputList li input[type="checkbox"]:checked + label::before,
+  .bWidgetService__eInputList li input[type="radio"]:checked + label::before {
+    background-position: 0 -187px;
+  }
+  .bWidgetService__eInputList li input[type="checkbox"]:checked + label .dotted,
+  .bWidgetService__eInputList li input[type="radio"]:checked + label .dotted {
+    border-bottom: none;
+  }
+  .bWidgetService__eInputList li .bCustomInput__eText {
+    display: block;
+    padding: 0 0 0 21px;
+    margin-top: -17px;
+  }
+  .bWidgetService__eInputList li .bCustomInput__ePrice {
+    margin: 5px 0 0;
   }
   .mWidget {
     -webkit-border-radius: 5px;
@@ -10548,6 +10585,7 @@
     float: right;
     width: 120px;
     text-align: right;
+    margin: 8px 0 0;
   }
   .bReviewSection {
     margin: 0 0 25px;
@@ -10728,29 +10766,37 @@
     border-bottom: 2px solid #5E5E5E;
     text-transform: uppercase;
     padding: 0 5px;
-    margin: 10px;
+    margin: 7px 10px 10px;
   }
   .brand-subnav .brand-subnav__title {
     color: #5E5E5E;
     font-family: 'Enter Type';
     font-size: 16px;
     float: left;
-    margin-right: 60px;
+    margin-top: 3px;
+  }
+  .brand-subnav .brand-subnav__list {
+    float: right;
+    width: 670px;
   }
   .brand-subnav .brand-subnav__list li {
     float: left;
     font-family: Tahoma;
     font-size: 11px;
+    margin: 3px 5px 2px 0;
   }
   .brand-subnav .brand-subnav__list li a {
     display: block;
     padding: 0 7px;
     line-height: 18px;
+    border: 1px solid #fff;
   }
+  .brand-subnav .brand-subnav__list li a:hover,
   .brand-subnav .brand-subnav__list li .active {
     background: #D7D7D7;
     border: 1px solid #5E5E5E;
-    border-bottom: none;
+    text-decoration: none;
+    color: #000;
   }
   .filter-section {
     margin: 0;
@@ -11356,6 +11402,18 @@
   }
   body.jewel .popup .close {
     background: url("/css/pandoraPopups/img/closeBtnBlack.png") no-repeat 0 0;
+  }
+  body.jewel .bHint_ePopup {
+    left: -290px;
+    border-color: #000;
+  }
+  body.jewel .bHint_ePopup .close {
+    background: url("/css/pandoraPopups/img/closeBtnBlack.png") no-repeat 0 0;
+  }
+  body.jewel div.submit input {
+    background: #000;
+    border: 1px solid #000;
+    font-weight: normal;
   }
   div.submit input {
     background: #444;
