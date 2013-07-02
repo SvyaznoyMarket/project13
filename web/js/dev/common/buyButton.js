@@ -3,18 +3,19 @@
  *
  * @author		Zaytsev Alexandr
  * @requires	printPrice
- * @param		{event} e
+ * @param		{event}		e
+ * @param		{Boolean}	anyway Если true событие будет все равно выполнено
  */
 ;(function(){
-	var BuyButton = function(e){
+	var BuyButton = function(e, anyway){
 		e.stopPropagation();
-
+		
 		var button = $(this);
 
-		if (button.hasClass('disabled')) {
+		if (button.hasClass('disabled') && !anyway) {
 			return false;
 		}
-		if (button.hasClass('active')) {
+		if (button.hasClass('active') && !anyway) {
 			return false;
 		}
 

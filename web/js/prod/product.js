@@ -251,7 +251,14 @@ $(document).ready(function() {
 
 	$('.bCountSection').goodsCounter({
 		onChange:function(count){
-			console.log(count);
+			var spinnerData = $('.bCountSection').data('spinner');
+			var bindButton = $('#'+spinnerData.button);
+			var newHref = bindButton.attr('href');
+
+			bindButton.attr('href',newHref.addParameterToUrl('quantity',count));
+			if (bindButton.hasClass('mBought')){
+				bindButton.trigger('click',[true]);
+			}
 		}
 	});
 
@@ -526,62 +533,6 @@ $(document).ready(function() {
 		  		$.fn.raty.readOnly(true, '#rating')
 		  	}
 		})
-	}
-	
-	/* Product Counter */
-	if( $('#page .bCountSet').length ) {
-        var category_class = $('.bCountSet').attr('data-category-class')
-        var np = $('.bCountSet')
-		var l1 = np.parent().find('.link1')
-		var l1href = l1.attr('href')
-		var l1cl = $('a.order1click-link')
-		var l1clhref = l1cl.attr('href')
-		np.data('hm', np.first().find('span').text().replace(/\D/g,'') )
-		
-		var tmp = $('.goodsbarbig:first').data('value')
-		if (typeof(tmp) !== 'undefined')
-			var max = ( 'jsstock' in tmp ) ? tmp.jsstock : 1
-		
-		np.bind('update', function() {
-			var hm = $(this).data('hm')
-			if( max < hm ) {
-				$(this).data('hm', max)
-				return
-			}
-			if( hm === max ) {
-				$('.bCountSet__eP', np).addClass('disabled')
-			} else {
-				if( $('.bCountSet__eP', np).hasClass('disabled') )
-					$('.bCountSet__eP', np).removeClass('disabled')
-			}
-
-            if(category_class == undefined) {
-                np.find('span').text( hm + '  шт.')
-            } else {
-                np.find('span').text( hm )
-            }
-
-            l1.attr('href', l1href + '/' + hm )
-			l1cl.attr('href', l1clhref + '&quantity' + hm )
-		})
-		
-		$('.bCountSet__eP', np).click( function() {
-			if( $(this).hasClass('disabled') )
-				return false
-			np.data('hm', np.data('hm')*1 + 1 )	
-			np.trigger('update')
-			return false
-		})
-		$('.bCountSet__eM', np).click( function() {	
-			if( $(this).hasClass('disabled') )
-				return false		
-			var hm = np.data('hm')//how many
-			if( hm == 1 )
-				return false
-			np.data('hm', np.data('hm')*1 - 1 )
-			np.trigger('update')
-			return false
-		})		
 	}
 	
 	/* Icons */
