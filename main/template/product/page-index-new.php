@@ -175,33 +175,35 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
         <div class="bProductDesc clearfix">
 
             <div class="bProductDesc__ePhoto">
-                <figure class="bProductDesc__ePhoto-bigImg">
+                <div class="bProductDesc__ePhoto-bigImg">
                     <img class="bZoomedImg" src="<?= $product->getImageUrl(3) ?>" data-zoom-image="<?= $product->getImageUrl(4) ?>" alt="<?= $page->escape($product->getName()) ?>" />
-                </figure><!--/product big image section -->
+                </div><!--/product big image section -->
 
                 <div class="bPhotoAction">
-                    <ul class="bPhotoAction__eOtherAction">
+                    <ul class="bPhotoActionOtherAction">
                         <? if ($productVideo && $productVideo->getContent()): ?>
-                            <li class="bPhotoAction__eOtherAction-video"><a href=""></a></li>
+                            <li class="bPhotoActionOtherAction__eVideo"><a href=""></a></li>
                         <? endif ?>
                         <? if (count($photoList) || $model3dExternalUrl || $model3dImg):  ?>
-                            <li class="bPhotoAction__eOtherAction-grad360 <?=$model3dExternalUrl?'maybe3d':''?><?=$model3dImg?'3dimg':''?>"><a href=""></a></li>
+                            <li class="bPhotoActionOtherAction__eGrad360 <?=$model3dExternalUrl?'maybe3d':''?><?=$model3dImg?'3dimg':''?>"><a href=""></a></li>
                         <? endif ?>
                     </ul><!--/view product section -->
 
-                    <div class="bPhotoAction__eOtherPhoto mSliderActionMiniPhoto">
-                        <ul>
-                            <? foreach ($photoList as $photo): ?>
-                            <li>
-                                <a href="">
-                                    <figure><img src="<?= $photo->getUrl(3) ?>" alt="" /></figure>
-                                </a>
-                            </li>
-                            <? endforeach ?>
-                        </ul>
+                    <div class="bPhotoActionOtherPhoto">
+                        <div class="bPhotoActionOtherPhoto__eWrappSlider">
+                            <ul class="bPhotoActionOtherPhotoList">
+                                <? foreach ($photoList as $photo): ?>
+                                <li class="bPhotoActionOtherPhotoItem">
+                                    <a class="bPhotoActionOtherPhotoItem__eLink" href="">
+                                        <img src="<?= $photo->getUrl(3) ?>" alt="" />
+                                    </a>
+                                </li>
+                                <? endforeach ?>
+                            </ul>
+                        </div>
 
-                        <div class="mSliderActionMiniPhoto__eBtn mSliderActionMiniPhoto__eDisable mSliderActionMiniPhoto__mPrev"><span>&#9668;</span></div>
-                        <div class="mSliderActionMiniPhoto__eBtn mSliderActionMiniPhoto__mNext"><span>&#9658;</span></div>
+                        <div class="bPhotoActionOtherPhoto__eBtn bPhotoActionOtherPhoto__eDisable bPhotoActionOtherPhoto__mPrev"><span>&#9668;</span></div>
+                        <div class="bPhotoActionOtherPhoto__eBtn bPhotoActionOtherPhoto__mNext"><span>&#9658;</span></div>
                     </div><!--/slider mini product images -->
                 </div>
             </div><!--/product images section -->
@@ -217,9 +219,9 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
                 <? endif ?>
 
                 <? if($product->getPriceOld() && !$user->getRegion()->getHasTransportCompany()): ?>
-                    <div class="priceOld"><span><?= $page->helper->formatPrice($product->getPriceOld()) ?></span>p</div>
+                    <div class="priceOld"><span><?= $page->helper->formatPrice($product->getPriceOld()) ?></span> <span class="rubl">p</span></div>
                 <? endif ?>
-                <div class="price"><strong><?= $page->helper->formatPrice($product->getPrice()) ?></strong>р</div>
+                <div class="price"><strong><?= $page->helper->formatPrice($product->getPrice()) ?></strong> <span class="rubl">p</span></div>
 
                 <? if ($hasLowerPriceNotification): ?>
                 <?
@@ -252,7 +254,7 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
                         <input id="creditinput" type="checkbox" name="creditinput" autocomplete="off">
                     </label>
 
-                    <div class="creditbox__sum">от <strong></strong>p в месяц</div>
+                    <div class="creditbox__sum">от <strong></strong> <span class="rubl">p</span> в месяц</div>
                     <input data-model="<?= $page->escape($creditData['creditData']) ?>" id="dc_buy_on_credit_<?= $product->getArticle(); ?>" name="dc_buy_on_credit" type="hidden" />
                 </div><!--/credit box -->
                 <? endif ?>
@@ -379,10 +381,10 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
         <? endforeach ?>
         </div><!--/product specifications section -->
 
-        <h3 class="bHeadSection" id="bHeadSectionReviews">Обзоры и отзывы</h3>
-
         <div class="bReviews">
             <? if (\App::config()->product['reviewEnabled'] && $reviewsPresent): ?>
+                <h3 class="bHeadSection" id="bHeadSectionReviews">Обзоры и отзывы</h3>
+                
                 <div class="bReviewsSummary clearfix">
                     <?= $page->render('product/_reviewsSummary', ['reviewsData' => $reviewsData, 'reviewsDataPro' => $reviewsDataPro, 'reviewsDataSummary' => $reviewsDataSummary]) ?>
                 </div>
@@ -454,7 +456,7 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
 
             <ul class="bWidgetBuy__eDelivery" data-value="<?= $page->json(['url' => $page->url('product.delivery')]) ?>">
                 <li class="bWidgetBuy__eDelivery-item bWidgetBuy__eDelivery-price">
-                    <span>Доставка <strong>290</strong>p</span>
+                    <span>Доставка <strong>290</strong> <span class="rubl">p</span></span>
                     <div>Завтра, 16.05.2013</div>
                 </li>
                 <li class="bWidgetBuy__eDelivery-item bWidgetBuy__eDelivery-free">
@@ -466,44 +468,44 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
                     <span class="dotted">Есть в магазинах</span>
                     <div>Купить сегодня без предзаказа</div>
                 </li>
-
-                <ul style="display: block;" class="bDeliveryFreeAddress">
-                    <li>
-                        м. Белорусская,<br/>
-                        ул. Грузинский вал, д. 31
-                    </li>
-                    <li>
-                        м. Ленинский проспект, <br/>
-                        ул. Орджоникидзе, д. 11, стр. 10
-                    </li>
-                    <li>
-                        м. Белорусская, <br/>
-                        ул. Грузинский вал, д. 31
-                    </li>
-                    <li>
-                        м. Ленинский проспект, <br/>
-                        ул. Орджоникидзе, д. 11, стр. 10
-                    </li>
-                    <li>
-                        м. Белорусская, <br/>
-                        ул. Грузинский вал, д. 31
-                    </li>
-                    <li>
-                        м. Ленинский проспект, <br/>
-                        ул. Орджоникидзе, д. 11, стр. 10
-                    </li>
-                    <li>
-                        м. Белорусская, <br/>
-                        ул. Грузинский вал, д. 31
-                    </li>
-                    <li>
-                        м. Ленинский проспект, <br/>
-                        ул. Орджоникидзе, д. 11, стр. 10
-                    </li>
-                </ul><!--/выпадающий список при клике по - Есть в магазинах -->
             </ul>
 
-            <div class="bAwardSection"><figure><img src="/css/newProductCard/img/award.jpg" alt="" /></figure></div>
+            <ul style="display: block;" class="bDeliveryFreeAddress">
+                <li>
+                    м. Белорусская,<br/>
+                    ул. Грузинский вал, д. 31
+                </li>
+                <li>
+                    м. Ленинский проспект, <br/>
+                    ул. Орджоникидзе, д. 11, стр. 10
+                </li>
+                <li>
+                    м. Белорусская, <br/>
+                    ул. Грузинский вал, д. 31
+                </li>
+                <li>
+                    м. Ленинский проспект, <br/>
+                    ул. Орджоникидзе, д. 11, стр. 10
+                </li>
+                <li>
+                    м. Белорусская, <br/>
+                    ул. Грузинский вал, д. 31
+                </li>
+                <li>
+                    м. Ленинский проспект, <br/>
+                    ул. Орджоникидзе, д. 11, стр. 10
+                </li>
+                <li>
+                    м. Белорусская, <br/>
+                    ул. Грузинский вал, д. 31
+                </li>
+                <li>
+                    м. Ленинский проспект, <br/>
+                    ул. Орджоникидзе, д. 11, стр. 10
+                </li>
+            </ul><!--/выпадающий список при клике по - Есть в магазинах -->
+
+            <div class="bAwardSection"><img src="/css/newProductCard/img/award.jpg" alt="" /></div>
         </div><!--/widget delivery -->
 
         <div class="bWidgetService mWidget">
@@ -529,7 +531,7 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
                               </div>
                             </div>
 
-                            <div class="bCustomInput__ePrice"><strong>1 490</strong>p</div>
+                            <div class="bCustomInput__ePrice"><strong>1 490</strong> <span class="rubl">p</span></div>
                         </div>
                     </label>
                     <div style="display: block;" class="bDeSelect"><a href="">Отменить</a></div>
@@ -551,7 +553,7 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
                               </div>
                             </div>
 
-                            <div class="bCustomInput__ePrice"><strong>1 490</strong>p</div>
+                            <div class="bCustomInput__ePrice"><strong>1 490</strong> <span class="rubl">p</span></div>
                         </div>
                     </label>
                     <div style="display: none;" class="bDeSelect"><a href="">Отменить</a></div>
@@ -573,7 +575,7 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
                                 </div>
                             </div>
 
-                            <div class="bCustomInput__ePrice"><strong>1 490</strong>p</div>
+                            <div class="bCustomInput__ePrice"><strong>1 490</strong> <span class="rubl">p</span></div>
                         </div>
                     </label>
                     <div style="display: none;" class="bDeSelect"><a href="">Отменить</a></div>
@@ -604,7 +606,7 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
                                 </div>
                             </div>
 
-                            <div class="bCustomInput__ePrice"><strong>1 490</strong>p</div>
+                            <div class="bCustomInput__ePrice"><strong>1 490</strong> <span class="rubl">p</span></div>
                         </div>
                     </label>
                 </li>
@@ -631,7 +633,7 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
         <span>шт.</span>
     </div><!--/counter -->
 
-    <div class="price"><strong><?= $page->helper->formatPrice($product->getPrice()) ?></strong>р</div>
+    <div class="price"><strong><?= $page->helper->formatPrice($product->getPrice()) ?></strong> <span class="rubl">p</span></div>
 </div>
 
 <div class="bBreadCrumbsBottom"><?= $page->render('_breadcrumbs', array('breadcrumbs' => $breadcrumbs, 'class' => 'breadcrumbs-footer')) ?></div>
