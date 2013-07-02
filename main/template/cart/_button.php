@@ -14,6 +14,7 @@
 if (!isset($class)) {
     $class = '';
 }
+$class .= ' ' . \View\Id::cartButtonForProduct($product->getId()) . ' jsBuyButton';
 
 if (empty($quantity)) {
     $quantity = 1;
@@ -24,6 +25,7 @@ if (empty($value)) $value = 'Купить';
 $disabled = !$product->getIsBuyable();
 if ($disabled) {
     $url = '#';
+    $class .= ' mDisabled';
 } else {
     $urlParams = [
         'productId' => $product->getId(),
@@ -35,4 +37,4 @@ if ($disabled) {
 }
 ?>
 
-<a href="<?= $url ?>" class="<?= sprintf('cartButton-product-%s', $product->getId()) ?> jsBuyButton<?php if ($disabled): ?> mDisabled<? endif ?><?php if ($class): ?> <?= $class ?><? endif ?>"><?= $value ?></a>
+<a href="<?= $url ?>" class="<?= $class ?>" data-group="<?= $product->getId() ?>"><?= $value ?></a>

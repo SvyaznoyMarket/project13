@@ -14,7 +14,7 @@ return function (
     <ul class="bWidgetService__eInputList">
     <? foreach ($product->getService() as $service): ?>
         <li>
-            <input id="<?= sprintf('cartButton-product-%s-service-%s', $product->getId(), $service->getId()) ?>" type="checkbox" hidden />
+            <input class="<?= \View\Id::cartButtonForProductService($product->getId(), $service->getId()) ?>" type="checkbox" hidden />
             <label class="bCustomInput" for="id1">
                 <div class="bCustomInput__eText">
                     <span class="dotted"><?= $service->getName() ?></span>
