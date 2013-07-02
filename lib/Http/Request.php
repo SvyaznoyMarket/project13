@@ -464,6 +464,7 @@ class Request {
         }
 
         array_multisort($order, SORT_ASC, $parts);
+        $parts = array_keys(array_unique(array_combine(array_values($parts), array_keys($parts))));
 
         return implode('&', $parts);
     }
