@@ -94,6 +94,7 @@ $c->company['phone'] = '8 (800) 700-00-09';
 $c->company['moscowPhone'] = '8 (495) 775-00-06';
 $c->company['icq'] = '648198963';
 
+$c->jsonLog['enabled'] = true;
 $c->analytics['enabled'] = true;
 $c->analytics['optimizelyEnabled'] = true;
 $c->kissmentrics['enabled'] = true;

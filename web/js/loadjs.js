@@ -17,17 +17,20 @@
 	}
 
 	// page load log
-	var pageID = document.body.getAttribute('data-id')
-	var dataToLog = {
-		event: 'page_load',
-    	pageID: pageID,
+	if ($('#page-config').data('value').jsonLog){
+		var pageID = document.body.getAttribute('data-id')
+		var dataToLog = {
+			event: 'page_load',
+			pageID: pageID
+		};
+		$.ajax({
+			type: 'POST',
+			global: false,
+			url: '/log-json',
+			data: dataToLog
+		});
 	}
-	$.ajax({
-        type: 'POST',
-        global: false,
-        url: '/log-json',
-        data: dataToLog
-    })
+	
 
 	if( typeof($LAB) === 'undefined' )
 		throw new Error( "Невозможно загрузить файлы JavaScript" )
@@ -50,24 +53,20 @@
 
 	var mapVendor = 'yandex';
 
+
 	$LAB.setGlobalDefaults({ AllowDuplicates: true, AlwaysPreserveOrder:true, UseLocalXHR:false, BasePath:"/js/prod/"})
 	.queueScript('/js/combine.js')
-	.script('adfox.asyn.code.ver3.min.js');
-// 	.queueWait( function(){
-// 		document.write = function(){
-// /*			if( arguments[0].match('javascript') )
-// 				$LAB.script( arguments[0].match(/src="(.*?)"/)[1])
-// 			else
-// 				$('head').append( arguments[0] )
-// */
-// 			console.log(arguments[0])
-// 			if( arguments[0].match( /<script(.?)* type=(\'|")text\/javascript(\'|")(.?)*><\/script>/ ) ) {
-// 				$LAB.script( arguments[0].match( /src=(\'|")([^"\']?)+/ )[0].replace(/src=(\'|")/,'') )
-// 			} else {
-// 				document.writeln( arguments[0] )
-// 			}
-// 		}
-// 	});
+	.queueScript('adfox.asyn.code.ver3.min.js')	
+	.queueWait( function(){
+		document.write = function(){
+			if( arguments[0].match( /<script(.?)* type=(\'|")text\/javascript(\'|")(.?)*><\/script>/ ) ) {
+				$LAB.script( arguments[0].match( /src=(\'|")([^"\']?)+/ )[0].replace(/src=(\'|")/,'') );
+			}
+			else {
+				document.writeln( arguments[0] );
+			}
+		}
+	});
 
 	switch( document.body.getAttribute('data-template') ) {
 		case 'main':
@@ -103,8 +102,8 @@
 			$LAB.queueWait( function() {
 				$LAB
 				.script('jquery-plugins.min.js')
-                .script( getWithVersion('library.js') )
-                .script( 'http://direct-credit.ru/widget/api_script_utf.js' )
+				.script( getWithVersion('library.js') )
+				.script( 'http://direct-credit.ru/widget/api_script_utf.js' )
 				.wait()
 				.script(getWithVersion('common.js'))
 				.wait()
@@ -115,14 +114,14 @@
 			}).runQueue()
 			break
 		case 'order':
-            $LAB
-            .queueScript( (mapVendor==='yandex') ? 'http://api-maps.yandex.ru/2.0/?load=package.full&lang=ru-RU' : 'http://maps.google.com/maps/api/js?sensor=false')
-            .queueScript('http://ajax.aspnetcdn.com/ajax/knockout/knockout-2.2.1.js')
+			$LAB
+			.queueScript( (mapVendor==='yandex') ? 'http://api-maps.yandex.ru/2.0/?load=package.full&lang=ru-RU' : 'http://maps.google.com/maps/api/js?sensor=false')
+			.queueScript('http://ajax.aspnetcdn.com/ajax/knockout/knockout-2.2.1.js')
 			.queueWait( function() {
 				$LAB
 				.script('jquery-plugins.min.js').script( getWithVersion('library.js') )
 				// .script('shelf/jquery.mockjax.js')	               
-                .script( 'http://direct-credit.ru/widget/api_script_utf.js' )
+				.script( 'http://direct-credit.ru/widget/api_script_utf.js' )
 				.wait()
 				.script(getWithVersion('order-new.js'))
 				.script(getWithVersion('common.js'))
@@ -138,9 +137,9 @@
 				.script( getWithVersion('library.js') )
 				// .script('shelf/jquery.mockjax.js')	
 				// .script( 'JsHttpRequest.js' )
-    //             .script( 'http://direct-credit.ru/widget/api_script_utf.js' )
-    //             .script( 'http://direct-credit.ru/widget/script_utf.js' )
-    //             .script( 'https://kupivkredit-test-fe.tcsbank.ru:8100/widget/vkredit.js' )
+	//             .script( 'http://direct-credit.ru/widget/api_script_utf.js' )
+	//             .script( 'http://direct-credit.ru/widget/script_utf.js' )
+	//             .script( 'https://kupivkredit-test-fe.tcsbank.ru:8100/widget/vkredit.js' )
 				.wait()
 				.script(getWithVersion('order.js'))
 				.script(getWithVersion('common.js'))
@@ -149,8 +148,8 @@
 				.script('//cdn.optimizely.com/js/204544654.js')
 			}).runQueue()
 			break
-        case 'order_error':
-        	$LAB.queueWait( function() {
+		case 'order_error':
+			$LAB.queueWait( function() {
 				$LAB
 				.script('jquery-plugins.min.js')
 				.script( getWithVersion('library.js') )
@@ -160,7 +159,7 @@
 				.wait()
 				.script('//cdn.optimizely.com/js/204544654.js')
 			}).runQueue()
-            break
+			break
 		case 'product_catalog':
 			$LAB.queueWait( function() {
 				$LAB
@@ -170,9 +169,9 @@
 				.script( getWithVersion('common.js') )
 				.wait()
 				.script( getWithVersion('ports.js') )
-                .wait()
-                .script( getWithVersion('pandora.js') )
-                .script('//cdn.optimizely.com/js/204544654.js')
+				.wait()
+				.script( getWithVersion('pandora.js') )
+				.script('//cdn.optimizely.com/js/204544654.js')
 			}).runQueue()
 			break
 		case 'product_card':
@@ -183,16 +182,16 @@
 				.script('jquery-plugins.min.js')
 				.script( getWithVersion('library.js') )
 				.wait()
-                .script( 'JsHttpRequest.min.js' )
-                //.script( 'http://direct-credit.ru/widget/dc_script_utf.js' )				
-                .script( 'http://direct-credit.ru/widget/api_script_utf.js' )
+				.script( 'JsHttpRequest.min.js' )
+				//.script( 'http://direct-credit.ru/widget/dc_script_utf.js' )				
+				.script( 'http://direct-credit.ru/widget/api_script_utf.js' )
 				.script( getWithVersion('common.js') )
 				.wait()
 				.script( getWithVersion('watch3d.js') )
 				.script( 'swfobject.min.js' ) // maybe 3d
-                .script( 'DAnimFramePlayer.min.js' ) // 3d furniture
-                .script( 'KupeConstructorScript.min.js' ) // furniture constuctor
-                .script( 'three.min.js' ) // for furniture constuctor
+				.script( 'DAnimFramePlayer.min.js' ) // 3d furniture
+				.script( 'KupeConstructorScript.min.js' ) // furniture constuctor
+				.script( 'three.min.js' ) // for furniture constuctor
 				.wait()
 				.script( getWithVersion('product.js') )
 				.script( getWithVersion('oneclick.js') )

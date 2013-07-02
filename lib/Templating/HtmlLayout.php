@@ -70,6 +70,8 @@ class HtmlLayout {
      */
     public function setGlobalParam($name, $value) {
         $this->globalParams[$name] = $value;
+        // временный костыль
+        \App::closureTemplating()->setParam($name, $value);
     }
 
     /**

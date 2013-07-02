@@ -44,7 +44,21 @@
 		};
 		$.get(url, addToCart);
 		return false;
-	}
+	};
+
+	/**
+	 * Маркировка кнопок «Купить»
+	 * см.BlackBox startAction
+	 * 
+	 * @param	{event}		event          
+	 * @param	{Object}	markActionInfo Данные полученые из Action
+	 */
+	var markCartButton = function(event, markActionInfo){
+		for (var i = 0, len = markActionInfo.button.length; i < len; i++){
+			$('#'+markActionInfo.button[i].id).html('В корзине').addClass('mBought');
+		}
+	};
+	$("body").bind('markcartbutton', markCartButton);
 	
 	$(document).ready(function() {
 		$('.jsBuyButton').live('click', BuyButton);

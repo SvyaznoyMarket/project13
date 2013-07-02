@@ -468,7 +468,7 @@ $(document).ready(function() {
 						$('.bFast').remove()
 						$('.p0').removeClass('p0')
 						//$('.top0').removeClass('top0')
-						// $('.order1click-link-new').remove()
+						// $('.jsOrder1click').remove()
 					},
 					error: function( jqXHR, textStatus ) {
 						self.formStatus('typing')
@@ -687,15 +687,15 @@ levup:			for(var i=0, l=numbers.length; i<l; i++)
 		}
 	}
 	/* One Click Order */
-	if( $('.order1click-link-new').length ) {
+	if( $('.jsOrder1click').length ) {
 		MapInterface.ready( 'yandex', { 
 			yandex: $('#map-info_window-container-ya'), 
 			google: $('#map-info_window-container')
 		} )
 
-		var Model = $('.order1click-link-new').data('model')	
-		var inputUrl = $('.order1click-link-new').attr('link-input')		
-		var outputUrl = $('.order1click-link-new').attr('link-output')		
+		var Model = $('.jsOrder1click').data('model')	
+		var inputUrl = $('.jsOrder1click').attr('link-input')		
+		var outputUrl = $('.jsOrder1click').attr('link-output')		
 		Deliveries = { // zaglushka
 			'self': {
 				modeId: 4,
@@ -722,11 +722,11 @@ levup:			for(var i=0, l=numbers.length; i<l; i++)
 
 		$.post( inputUrl, postData, function(data) {
 			if( !data.success || data.data.length === 0 ) {
-				OC_MVM = new OneCViewModel() 
-				ko.applyBindings( OC_MVM, $('#order1click-container-new')[0] ) // this way, Lukas!
-				OC_MVM.noDelivery( true )
-				$('.order1click-link-new').remove()
-				return false
+				OC_MVM = new OneCViewModel();
+				ko.applyBindings( OC_MVM, $('#order1click-container-new')[0] ); // this way, Lukas!
+				OC_MVM.noDelivery( true );
+				$('.jsOrder1click').remove();
+				return false;
 			}
 
 			Deliveries = data.data
@@ -759,17 +759,20 @@ levup:			for(var i=0, l=numbers.length; i<l; i++)
 		}
 
 				
-		$('.order1click-link-new').bind('click', function(e) { // button 'Купить в один клик'
-			e.preventDefault()	
-			if( !oneClickIsReady )
-				return false
-			if (typeof(yaCounter10503055) !== 'undefined')
-				yaCounter10503055.reachGoal('\orders\complete')
+		$('.jsOrder1click').bind('click', function(e) { // button 'Купить в один клик'
+			// e.preventDefault();
+			if( !oneClickIsReady ){
+				return false;
+			}
+			if (typeof(yaCounter10503055) !== 'undefined'){
+				yaCounter10503055.reachGoal('\orders\complete');
+			}
 			// TODO please go this stuff separate!
-			if( typeof(_gaq) !== 'undefined' )
-				_gaq.push(['_trackEvent', 'QuickOrder', 'Open'])
+			if( typeof(_gaq) !== 'undefined' ){
+				_gaq.push(['_trackEvent', 'QuickOrder', 'Open']);
+			}
 			if( 'ANALYTICS' in window ) {
-				ANALYTICS.runMethod( 'marketgidOrder' )
+				ANALYTICS.runMethod( 'marketgidOrder' );
 				// if( 'marketgidOrder' in ANALYTICS ) {
 				// 	ANALYTICS.marketgidOrder()
 				// }
@@ -781,20 +784,22 @@ levup:			for(var i=0, l=numbers.length; i<l; i++)
 				'Checkout Step 1 SKU Total':OC_MVM.price * OC_MVM.quantity(),
 				'Checkout Step 1 Order Total':OC_MVM.price * OC_MVM.quantity() + OC_MVM.chosenDlvr().price * 1,
 				'Checkout Step 1 Order Type':'one click order'
-			}
+			};
 
 			if (typeof(_kmq) !== 'undefined'){
-				_kmq.push(['record', 'Checkout Step 1', toKISS_oc])
+				_kmq.push(['record', 'Checkout Step 1', toKISS_oc]);
 			}
 
 			$('#order1click-container-new').lightbox_me({
 				centered: true,
 				onClose: function() {
-					if( 'regionMap' in window )
-						window.regionMap.closeMap( OC_MVM.turnOffMap )
+					if( 'regionMap' in window ){
+						window.regionMap.closeMap( OC_MVM.turnOffMap );
+					}
 				}
-			})
-		})
+			});
+			return false;
+		});
 		
 	} // One Click Order
 

@@ -659,14 +659,18 @@ $(document).ready(function(){
 	 * @param  {Object} data данные отсылаемы на сервер
 	 */
 	window.logError = function(data) {
-        if (data.ajaxUrl !== '/log-json') {
-            $.ajax({
-                type: 'POST',
-                global: false,
-                url: '/log-json',
-                data: data
-            })
+        if (data.ajaxUrl === '/log-json') {
+        	return;
         }
+        if (!pageConfig.jsonLog){
+        	return false;
+        }
+        $.ajax({
+            type: 'POST',
+            global: false,
+            url: '/log-json',
+            data: data
+        });
 	}
 
 	/**
@@ -1578,12 +1582,6 @@ $(document).ready(function(){
 			}
 		);
 	}
-	if($('.newReviewPopupLink').length) {
-		$('.newReviewPopupLink').click(function(){
-			popupWriteReviewForm($(this).attr('data-pid'), $('#reviewsProductName').html())
-			return false
-		})
-	}
 
   if ( $('.searchtextClear').length ){
       $('.searchtextClear').each(function(){
@@ -1603,12 +1601,6 @@ $(document).ready(function(){
   }
     handle_custom_items()
 });
-  
-
-function popupWriteReviewForm(pid, name) {
-  var src = "http://reviews.testfreaks.com/reviews/new?client_id=enter.ru&" + $.param({key: pid, name: name});
-  $(".reviewPopup").lightbox_me({onLoad: function() { $("#rframe").attr("src", src) }});
-};
 
 
 
