@@ -1,7 +1,7 @@
 <?php
 
 return function (
-    \Model\Product\BasicEntity $product,
+    \Model\Product\Entity $product,
     \Helper\TemplateHelper $helper
 ) { ?>
 
@@ -12,28 +12,24 @@ return function (
     </div>
 
     <ul class="bWidgetService__eInputList">
+    <? foreach ($product->getService() as $service): ?>
         <li>
-            <input id="id1" name="name4" type="checkbox" hidden />
+            <input id="<?= sprintf('cartButton-product-%s-service-%s', $product->getId(), $service->getId()) ?>" type="checkbox" hidden />
             <label class="bCustomInput" for="id1">
                 <div class="bCustomInput__eText">
-                    <span class="dotted">Подключение электричества</span>
+                    <span class="dotted"><?= $service->getName() ?></span>
 
-                    <div class="bHint">
-                        <a class="bHint_eLink">Разрешение дисплея</a>
-                        <div class="bHint_ePopup popup">
-                            <div class="close"></div>
-                            <div class="bHint-text">
-                                <p>конвертировать видео, запустится ли игра. И это тот случай, когда чем больше – тем лучше.</p>
-                            </div>
-                        </div>
-                    </div>
+                    <? if ($service->getDescription()): ?>
+                        <?= $helper->render('__hint', ['name' => $service->getName(), 'value' => $service->getDescription()]) ?>
+                    <? endif ?>
 
-                    <div class="bCustomInput__ePrice"><strong>1 490</strong> <span class="rubl">p</span></div>
+                    <div class="bCustomInput__ePrice"><strong><?= $helper->formatPrice($service->getPrice()) ?></strong> <span class="rubl">p</span></div>
                 </div>
             </label>
         </li>
+    <? endforeach ?>
     </ul>
-    <div class="bWidgetService__eAll"><span class="dotted">Ещё 87 услуг</span><br/>доступны в магазине</div>
+    <!--<div class="bWidgetService__eAll"><span class="dotted">Ещё 87 услуг</span><br/>доступны в магазине</div>-->
 </div><!--/widget services -->
 
 <? };

@@ -14,7 +14,7 @@ return function (
     <ul class="bWidgetService__eInputList">
     <? foreach ($product->getWarranty() as $warranty): ?>
         <li>
-            <input id="<?= sprintf('cartButton-product-%s-warranty-%s', $product->getId(), $warranty->getId())?>" type="radio" hidden />
+            <input id="<?= sprintf('cartButton-product-%s-warranty-%s', $product->getId(), $warranty->getId()) ?>" type="radio" hidden />
             <label class="bCustomInput" for="id2">
                 <div class="bCustomInput__eText">
                     <span class="dotted"><?= $warranty->getName() ?></span> <?= $warranty->getPeriod() . '&nbsp;' . $helper->numberChoice($warranty->getPeriod(), ['месяц', 'месяца', 'месяцев']) ?>

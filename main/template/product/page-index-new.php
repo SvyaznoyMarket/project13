@@ -458,9 +458,13 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
             <div class="bAwardSection"><img src="/css/newProductCard/img/award.jpg" alt="" /></div>
         </div><!--/widget delivery -->
 
-        <?= $helper->render('product/__warranty', ['product' => $product]) ?>
+        <? if ((bool)$product->getWarranty()): ?>
+            <?= $helper->render('product/__warranty', ['product' => $product]) ?>
+        <? endif ?>
 
-        <?= $helper->render('product/__service', ['product' => $product]) ?>
+        <? if ((bool)$product->getService()): ?>
+            <?= $helper->render('product/__service', ['product' => $product]) ?>
+        <? endif ?>
 
     </aside>
 </div><!--/right section -->
