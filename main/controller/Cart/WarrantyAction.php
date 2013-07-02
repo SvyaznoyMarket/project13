@@ -6,19 +6,18 @@ class WarrantyAction {
     /**
      * @param int           $warrantyId
      * @param int           $productId
-     * @param int           $quantity
      * @param \Http\Request $request
      * @return \Http\JsonResponse|\Http\RedirectResponse
      * @throws \Exception
      */
-    public function set($warrantyId, $productId, $quantity = 1, \Http\Request $request) {
+    public function set($warrantyId, $productId, \Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
         $cart = \App::user()->getCart();
 
         $warrantyId = (int)$warrantyId;
         $productId = (int)$productId;
-        $quantity = (int)$quantity;
+        $quantity = (int)$request->get('quantity', 1);
 
         try {
             if ($quantity < 0) {
@@ -107,17 +106,5 @@ class WarrantyAction {
                 ])
                 : new \Http\RedirectResponse($request->headers->get('referer') ?: \App::router()->generate('homepage'));
         }
-    }
-
-    /**
-     * @param $warrantyId
-     * @param $productId
-     * @param \Http\Request $request
-     * @return \Http\JsonResponse|\Http\RedirectResponse
-     */
-    public function delete(\Http\Request $request, $warrantyId, $productId = null) {
-        \App::logger()->debug('Exec ' . __METHOD__);
-
-        return $this->set($warrantyId, $productId, 0, $request);
     }
 }
