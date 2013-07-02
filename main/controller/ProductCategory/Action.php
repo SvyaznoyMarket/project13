@@ -290,18 +290,17 @@ class Action {
         try {
             if (!self::isGlobal() && \App::request()->get('shop') && \App::config()->shop['enabled']) {
                 $shop = \RepositoryManager::shop()->getEntityById( \App::request()->get('shop') );
-                /*if (\App::user()->getRegion() && $shop && $shop->getRegion()) {
+                if (\App::user()->getRegion() && $shop && $shop->getRegion()) {
                     if ((int)\App::user()->getRegion()->getId() != (int)$shop->getRegion()->getId()) {
-                        $route = \App::router()->generate('region.change', ['regionId' => $shop->getRegion()->getId()]);
+                        /*$route = \App::router()->generate('region.change', ['regionId' => $shop->getRegion()->getId()]);
                         $response = new \Http\RedirectResponse($route);
-                        $response->headers->set('referer', \App::request()->getUri());
-                        //var_dump("<pre>", $response); exit;
+                        $response->headers->set('referer', \App::request()->getUri());*/
                         $controller = new \Controller\Region\Action();
                         \App::logger()->info(sprintf('Смена региона #%s на #%s', \App::user()->getRegion()->getId(), $shop->getRegion()->getId()));
                         $response = $controller->change($shop->getRegion()->getId(), \App::request(), \App::request()->getUri());
                         return $response;
                     }
-                }*/
+                }
             }
         } catch (\Exception $e) {
             \App::logger()->error(sprintf('Не удалось отфильтровать товары по магазину #%s', \App::request()->get('shop')));
