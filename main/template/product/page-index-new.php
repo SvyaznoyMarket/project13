@@ -1,6 +1,5 @@
 <?php
 /**
- * @var $renderer           \Templating\PhpClosureEngine
  * @var $page               \View\Product\IndexPage
  * @var $product            \Model\Product\Entity
  * @var $productVideos      \Model\Product\Video\Entity[]
@@ -329,7 +328,7 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
             </div>
             <? endif ?>
 
-            <?= $renderer->render('product/__slider', [
+            <?= $helper->render('product/__slider', [
                 'products'       => array_values($accessories),
                 'count'          => count($product->getAccessoryId()),
                 'limit'          => $accessoryCategory ? \App::config()->product['itemsInAccessorySlider'] : \App::config()->product['itemsInSlider'],
@@ -343,7 +342,7 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
 
         <? if ((bool)$related && \App::config()->product['showRelated']): ?>
             <h3 class="bHeadSection">С этим товаром также покупают</h3>
-            <?= $renderer->render('product/__slider', [
+            <?= $helper->render('product/__slider', [
                 'products'       => array_values($related),
                 'count'          => count($product->getRelatedId()),
                 'limit'          => \App::config()->product['itemsInSlider'],
@@ -366,14 +365,14 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
                 <dd>
                     <span><?= $property->getName() ?>
                     <? if ($property->getHint()): ?>
-                        <?= $renderer->render('product/__propertyHint', ['name' => $property->getName(), 'value' => $property->getHint()]) ?>
+                        <?= $helper->render('__hint', ['name' => $property->getName(), 'value' => $property->getHint()]) ?>
                     <? endif ?>
                     </span>
                 </dd>
                 <dt>
                     <?= $property->getStringValue() ?>
                     <? if ($property->getValueHint()): ?>
-                        <?= $renderer->render('product/__propertyHint', ['name' => $property->getStringValue(), 'value' => $property->getValueHint()]) ?>
+                        <?= $helper->render('__hint', ['name' => $property->getStringValue(), 'value' => $property->getValueHint()]) ?>
                     <? endif ?>
                 </dt>
             <? endforeach ?>
@@ -402,7 +401,7 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
 
         <? if (!$product->getIsBuyable() && $product->getState()->getIsShop()  && \App::config()->smartengine['pull']): ?>
             <h3 class="bHeadSection">Похожие товары</h3>
-            <?= $renderer->render('product/__slider', [
+            <?= $helper->render('product/__slider', [
                 'products'       => [],
                 'count'          => null,
                 'limit'          => \App::config()->product['itemsInSlider'],

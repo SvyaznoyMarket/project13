@@ -78,4 +78,15 @@ class TemplateHelper {
     public function formatPrice($price, $numDecimals = 0, $decimalsDelimiter = ',', $thousandsDelimiter = ' ') {
         return number_format($price, $numDecimals, $decimalsDelimiter, $thousandsDelimiter);
     }
+
+    /**
+     * @param int   $number  Например: 1, 43, 112
+     * @param array $choices Например: ['отзыв', 'отзыва', 'отзывов']
+     * @return mixed
+     */
+    public function numberChoice($number, array $choices) {
+        $cases = [2, 0, 1, 1, 1, 2];
+
+        return $choices[ ($number % 100 > 4 && $number % 100 < 20) ? 2 : $cases[min($number % 10, 5)]];
+    }
 }
