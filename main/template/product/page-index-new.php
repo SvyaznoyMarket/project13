@@ -1,6 +1,5 @@
 <?php
 /**
- * @var $renderer           \Templating\PhpClosureEngine
  * @var $page               \View\Product\IndexPage
  * @var $product            \Model\Product\Entity
  * @var $productVideos      \Model\Product\Video\Entity[]
@@ -270,11 +269,17 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
                         <?= empty($avgStarScore) ? '' : $page->render('product/_starsFive', ['score' => $avgStarScore]) ?>
                     </div>
                     <? if (!empty($avgStarScore)) { ?>
-                        <span class="border" onclick="scrollToId('bHeadSectionReviews')"><?= $reviewsData['num_reviews'] ?> <?= $page->helper->numberChoice($reviewsData['num_reviews'], array('отзыв', 'отзыва', 'отзывов')) ?></span>
+                        <span class="border" onclick="scrollToId('bHeadSectionReviews')"><?= $reviewsData['num_reviews'] ?> <?= $page->helper->numberChoice($reviewsData['num_reviews'], ['отзыв', 'отзыва', 'отзывов']) ?></span>
                     <? } else { ?>
                         <span>Отзывов нет</span>
                     <? } ?>
-                    <span class="bReviewSection__eWrite jsLeaveReview" data-pid="productid">Оставить отзыв</span>
+
+                    <span class="bReviewSection__eWrite jsLeaveReview" data-pid="<?= $product->getId() ?>">Оставить отзыв</span>
+
+                    <div style="position:fixed; top:40px; left:50%; margin-left:-442px; z-index:1002; display:none; width:700px; height:480px" class="reviewPopup popup clearfix">
+                        <a class="close" href="#">Закрыть</a>
+                        <iframe id="rframe" frameborder="0" scrolling="auto" height="480" width="700"></iframe>
+                    </div>
                 </div><!--/review section -->
 
                 <? if ((bool)$product->getModel() && (bool)$product->getModel()->getProperty()): //модели ?>
@@ -329,7 +334,7 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
             </div>
             <? endif ?>
 
-            <?= $renderer->render('product/__slider', [
+            <?= $helper->render('product/__slider', [
                 'products'       => array_values($accessories),
                 'count'          => count($product->getAccessoryId()),
                 'limit'          => $accessoryCategory ? \App::config()->product['itemsInAccessorySlider'] : \App::config()->product['itemsInSlider'],
@@ -343,7 +348,7 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
 
         <? if ((bool)$related && \App::config()->product['showRelated']): ?>
             <h3 class="bHeadSection">С этим товаром также покупают</h3>
-            <?= $renderer->render('product/__slider', [
+            <?= $helper->render('product/__slider', [
                 'products'       => array_values($related),
                 'count'          => count($product->getRelatedId()),
                 'limit'          => \App::config()->product['itemsInSlider'],
@@ -366,14 +371,14 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
                 <dd>
                     <span><?= $property->getName() ?>
                     <? if ($property->getHint()): ?>
-                        <?= $renderer->render('product/__propertyHint', ['name' => $property->getName(), 'value' => $property->getHint()]) ?>
+                        <?= $helper->render('__hint', ['name' => $property->getName(), 'value' => $property->getHint()]) ?>
                     <? endif ?>
                     </span>
                 </dd>
                 <dt>
                     <?= $property->getStringValue() ?>
                     <? if ($property->getValueHint()): ?>
-                        <?= $renderer->render('product/__propertyHint', ['name' => $property->getStringValue(), 'value' => $property->getValueHint()]) ?>
+                        <?= $helper->render('__hint', ['name' => $property->getStringValue(), 'value' => $property->getValueHint()]) ?>
                     <? endif ?>
                 </dt>
             <? endforeach ?>
@@ -400,9 +405,9 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
         </div>
 
 
-        <? if (!$product->getIsBuyable() && $product->getState()->getIsShop()  && \App::config()->smartengine['pull']): ?>
+        <? if (!$product->getIsBuyable() && $product->getState()->getIsShop() && \App::config()->smartengine['pull']): ?>
             <h3 class="bHeadSection">Похожие товары</h3>
-            <?= $renderer->render('product/__slider', [
+            <?= $helper->render('product/__slider', [
                 'products'       => [],
                 'count'          => null,
                 'limit'          => \App::config()->product['itemsInSlider'],
@@ -419,7 +424,7 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
 <div class="bProductSection__eRight">
     <aside>
         <div class="bWidgetBuy mWidget">
-            <div class="bCountSection clearfix" data-spinner="<?= $page->json(['button' => sprintf('cartButton-product-%s', $product->getId())]) ?>">
+            <div class="bCountSection clearfix" data-spinner="<?= $page->json(['button' => \View\Id::cartButtonForProduct($product->getId())]) ?>">
                 <button class="bCountSection__eM">-</button>
                 <input class="bCountSection__eNum" type="text" value="1" />
                 <button class="bCountSection__eP">+</button>
@@ -459,10 +464,13 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
             <div class="bAwardSection"><img src="/css/newProductCard/img/award.jpg" alt="" /></div>
         </div><!--/widget delivery -->
 
-        <?= $helper->render('product/__warranty', ['product' => $product]) ?>
+        <? if ((bool)$product->getWarranty()): ?>
+            <?= $helper->render('product/__warranty', ['product' => $product]) ?>
+        <? endif ?>
 
-        <?= $helper->render('product/__service', ['product' => $product]) ?>
-
+        <? if ((bool)$product->getService()): ?>
+            <?= $helper->render('product/__service', ['product' => $product]) ?>
+        <? endif ?>
     </aside>
 </div><!--/right section -->
 
@@ -486,9 +494,7 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
     <div class="price"><strong><?= $page->helper->formatPrice($product->getPrice()) ?></strong> <span class="rubl">p</span></div>
 </div>
 
-<div class="bBreadCrumbsBottom"><?= $page->render('_breadcrumbs', array('breadcrumbs' => $breadcrumbs, 'class' => 'breadcrumbs-footer')) ?></div>
-
-<?= $helper->render('product/__delivery') ?>
+<div class="bBreadCrumbsBottom"><?= $page->render('_breadcrumbs', ['breadcrumbs' => $breadcrumbs, 'class' => 'breadcrumbs-footer']) ?></div>
 
 <? if ($product->getIsBuyable()): ?>
     <?= $page->render('order/form-oneClick') ?>

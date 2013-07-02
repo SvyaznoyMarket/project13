@@ -51,19 +51,19 @@ class InfoAction {
                 $buttons = [];
                 foreach ($cart->getProducts() as $cartProduct) {
                     $buttons['product'][] = [
-                        'id'       => sprintf('cartButton-product-%s', $cartProduct->getId()),
+                        'id'       => \View\Id::cartButtonForProduct($cartProduct->getId()),
                         'quantity' => $cartProduct->getQuantity(),
                     ];
 
                     foreach ($cartProduct->getWarranty() as $cartWarranty) {
                         $buttons['warranty'][] = [
-                            'id'       => sprintf('cartButton-product-%s-warranty-%s', $cartProduct->getId(), $cartWarranty->getId()),
+                            'id'       => \View\Id::cartButtonForProductWarranty($cartProduct->getId(), $cartWarranty->getId()),
                             'quantity' => $cartWarranty->getQuantity(),
                         ];
                     }
                     foreach ($cartProduct->getService() as $cartService) {
                         $buttons['service'][] = [
-                            'id'       => sprintf('cartButton-product-%s-service-%s', $cartProduct->getId(), $cartService->getId()),
+                            'id'       => \View\Id::cartButtonForProductService($cartProduct->getId(), $cartService->getId()),
                             'quantity' => $cartService->getQuantity(),
                         ];
                     }
@@ -71,7 +71,7 @@ class InfoAction {
 
                 foreach ($cart->getServices() as $cartService) {
                     $buttons['service'][] = [
-                        'id'       => sprintf('cartButton-service-%s', $cartService->getId()),
+                        'id'       => \View\Id::cartButtonForService($cartService->getId()),
                         'quantity' => $cartService->getQuantity(),
                     ];
                 }

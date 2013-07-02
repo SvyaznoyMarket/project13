@@ -237,12 +237,6 @@ var Planner3dKupeConstructor = null;
 
 $(document).ready(function() {
 
-	/**
-	 * Настройки карточки товара
-	 * @type {Object}
-	 */
-	var productInfo = $('#jsProductCard').data('value');
-
 	$('.bZoomedImg').elevateZoom({
 		zoomWindowOffety: 5,
 		zoomWindowOffetx: 18,
@@ -252,7 +246,7 @@ $(document).ready(function() {
 	$('.bCountSection').goodsCounter({
 		onChange:function(count){
 			var spinnerData = $('.bCountSection').data('spinner');
-			var bindButton = $('#'+spinnerData.button);
+			var bindButton = $('.'+spinnerData.button);
 			var newHref = bindButton.attr('href');
 
 			bindButton.attr('href',newHref.addParameterToUrl('quantity',count));
@@ -746,7 +740,7 @@ $(document).ready(function() {
 	var reviewsContainerClass = null;
 
 	//nodes
-	var moreReviewsButton = $('#getMoreReviewsButton');
+	var moreReviewsButton = $('.jsGetReviews');
 	var reviewTab = $('.bReviewsTabs__eTab');
 	var reviewWrap = $('.bReviewsWrapper');
 	var reviewContent = $('.bReviewsContent');
@@ -829,11 +823,16 @@ $(document).ready(function() {
 	}
 
 	var leaveReview = function(){
-		var pid = $(this).attr('data-pid');
+		var productInfo = $('#jsProductCard').data('value');
+		var pid = $(this).data('pid');
 		var name = productInfo.name;
 		var src = "http://reviews.testfreaks.com/reviews/new?client_id=enter.ru&" + $.param({key: pid, name: name});
 
-		$(".reviewPopup").lightbox_me({onLoad: function() { $("#rframe").attr("src", src) }});
+		$(".reviewPopup").lightbox_me({
+			onLoad: function() {
+				$("#rframe").attr("src", src);
+			}
+		});
 		return false;
 	};
 
