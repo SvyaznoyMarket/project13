@@ -789,7 +789,7 @@ $(document).ready(function() {
 		reviewTab.click(function(){
 			reviewsContainerClass = $(this).attr('data-container');
 			if (reviewsContainerClass === undefined){
-				return false;
+				return;
 			}
 
 			reviewsType = $(this).attr('data-reviews-type');
