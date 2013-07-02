@@ -147,7 +147,7 @@ class Action {
             $redirectTo = '/' . $redirectTo;
         }
 
-        if ((bool)$request->getQueryString()) {
+        if ((bool)$request->getQueryString() && strpos($redirectTo, '?') == false) {
             $redirectTo .= '?' . $request->getQueryString();
         }
 
