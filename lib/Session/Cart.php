@@ -618,6 +618,7 @@ class Cart {
                             : [],
                     ];
 
+                    $isFailed = false;
                     \App::coreClientV2()->addQuery(
                         'cart/get-price-new',
                         [
@@ -627,12 +628,28 @@ class Cart {
                         function ($data) use (&$response) {
                             $response = $data;
                         },
-                        function(\Exception $e) {
-                            \App::logger()->error($e, ['cart']);
-                            // TODO: попробовать запросить обычный cart/get-price
+                        function(\Exception $e) use (&$isFailed) {
+                            $isFailed = true;
                         }
                     );
-                    \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['default'], \App::config()->coreV2['retryCount']);
+                    \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['long']);
+
+                    // если запрос со скидками провалился, используем обычный запрос
+                    if ($isFailed) {
+                        \App::coreClientV2()->addQuery(
+                            'cart/get-price',
+                            ['geo_id' => \App::user()->getRegion()->getId()],
+                            [
+                                'product_list'  => $this->getProductData(),
+                                'service_list'  => $this->getServiceData(),
+                                'warranty_list' => $this->getWarrantyData(),
+                            ],
+                            function ($data) use (&$response) {
+                                $response = $data;
+                            }
+                        );
+                        \App::coreClientV2()->execute();
+                    }
                 } else {
                     \App::coreClientV2()->addQuery(
                         'cart/get-price',
@@ -646,7 +663,7 @@ class Cart {
                             $response = $data;
                         }
                     );
-                    \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['default'], \App::config()->coreV2['retryCount']);
+                    \App::coreClientV2()->execute();
                 }
             } else {
                 $response = $default;
