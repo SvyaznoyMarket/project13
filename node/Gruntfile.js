@@ -22,7 +22,7 @@ module.exports = function(grunt) {
 		// "jquery.effects.blind.js",
 		"jquery.lightbox_me.js",
 		"jquery.mousewheel.min.js",
-		"jquery.raty.js",
+		// "jquery.raty.js",
 		"jquery.scrollto.js",
 		"jquery.placeholder.js",
 		"prettyCheckboxes.js",
