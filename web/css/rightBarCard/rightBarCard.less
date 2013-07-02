@@ -13,7 +13,7 @@
     &__eDelivery {
         margin: 30px 0 0;
         &-item {
-            background: url("@{base-url}/newProductCard/img/ico.png") no-repeat 0 1px;
+            background: url("@{base-url}/rightBarCard/img/ico.png") no-repeat 0 1px;
             padding-left: 25px;
             margin: 0 0 12px;
             span {
@@ -25,8 +25,9 @@
         }
         &-now {
             background-position: 10px -127px;
+            cursor: pointer;
             &.click {
-                background-position: 10px -210px;
+                background-position: 10px -239px;
             }
         }
         .bDeliveryFreeAddress {
@@ -46,8 +47,9 @@
     font-size: 14px;
     margin: 0 0 10px 59px;
     line-height: 24px;
+    width: 115px;
     button {
-        background: url("@{base-url}/newProductCard/img/bg_count_btn.png") no-repeat 0 0;
+        background: url("@{base-url}/rightBarCard/img/bg_count_btn.png") no-repeat 0 0;
         display: block;
         width: 20px;
         height: 24px;
@@ -76,7 +78,7 @@
     border: 1px solid #41c7ef;
     padding: 0 0 10px;
     &__eHead {
-        background: url("@{base-url}/newProductCard/img/ico.png") #41c7ef no-repeat 8px -81px;
+        background: url("@{base-url}/rightBarCard/img/ico.png") #41c7ef no-repeat 8px -81px;
         padding: 7px 10px 8px 33px;
         color: #fff;
         font-size: 14px;
@@ -94,7 +96,7 @@
     &__eInputList {
         font-size: 14px;
         .bHint {
-            margin: 3px 0 0;
+            margin: 2px 0 0;
             .bHint_ePopup {
                 left: -200px;
                 width: 238px;
@@ -104,51 +106,56 @@
         li {
             margin: 11px 0 0;
             padding: 0 0 0 11px;
-            .customInput {
-                cursor: pointer;
-                line-height: 1.4;
-                input {
-                    filter: e("progid:DXImageTransform.Microsoft.Alpha(opacity=0)");
-                    .opacity(0);
-                    position: absolute;
-                    z-index: -1;
-                }
-                b {
-                    margin: 2px 0 0px;
-                    width: 16px; 
-                    height: 16px;
-                    background: url("@{base-url}/newProductCard/img/ico.png") no-repeat 0 -158px;
-                    display: block;
-                    float: left;
-                }
-                .labelText {
-                    padding: 0 0 0 21px;
+            .bDeSelect {
+                padding: 5px 0 0 21px;
+                a {
+                    text-decoration: none;
+                    border-bottom: 1px dotted;
+                    font-size: 12px;
                 }
             }
-            .checkbox {
-                b {
-                background-position: 0 -188px;
-                }
+            input[type="checkbox"],
+            input[type="radio"] {
+                display:none;            
             }
-            .checked { 
-                color: #000;
-                b {
-                    background-position: 0 -176px;
-                    top: 0!important;
-                    height: 12px;
-                }
-                .deSelect {
-                    padding: 3px 0 0;
-                    font-size: 13px;
-                    a {
-                        border-bottom: 1px dotted;
-                        &:hover {
-                            text-decoration: none;
-                        }
-                    }
-                }
+            input[type="checkbox"]+label, 
+            input[type="radio"]+label {
+              cursor: pointer;
+            }
+            input[type="checkbox"]+label::before,
+            input[type="radio"]+label::before {
+                content: "";
+                display: inline-block;
+                height: 16px;
+                width: 16px;
+                margin: 0;
+                background: url("@{base-url}/rightBarCard/img/ico.png") no-repeat 0 -163px;
+                vertical-align: top;
+            }
+            input[type="checkbox"]+label::before {
+                background-position: 0 -212px;
+            }
+            input[type="radio"]+label::before {
+                background-position: 0 -163px;
+            }
+            input[type="checkbox"]:checked+label::before,
+            input[type="radio"]:checked+label::before {
+                background-position: 0 -187px;
+            }
+            input[type="checkbox"]:checked+label,
+            input[type="radio"]:checked+label {
                 .dotted {
-                    border: none;
+                    border-bottom: none;
+                }
+            }
+            .bCustomInput {
+                &__eText {
+                    display: block;
+                    padding: 0 0 0 21px;
+                    margin-top: -17px;
+                }
+                &__ePrice {
+                    margin: 5px 0 0;
                 }
             }
         }
