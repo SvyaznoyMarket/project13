@@ -107,4 +107,18 @@ class WarrantyAction {
                 : new \Http\RedirectResponse($request->headers->get('referer') ?: \App::router()->generate('homepage'));
         }
     }
+
+    /**
+     * @param \Http\Request $request
+     * @param $warrantyId
+     * @param null $productId
+     * @return \Http\JsonResponse|\Http\RedirectResponse
+     */
+    public function delete(\Http\Request $request, $warrantyId, $productId = null) {
+        \App::logger()->debug('Exec ' . __METHOD__);
+
+        $request->query->set('quantity', 0);
+
+        return $this->set($warrantyId, $productId, $request);
+    }
 }

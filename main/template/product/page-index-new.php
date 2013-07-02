@@ -471,7 +471,6 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
         <? if ((bool)$product->getService()): ?>
             <?= $helper->render('product/__service', ['product' => $product]) ?>
         <? endif ?>
-
     </aside>
 </div><!--/right section -->
 

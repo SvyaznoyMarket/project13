@@ -339,7 +339,7 @@ return [
     // удаление товара из корзины
     'cart.product.delete' => [
         'pattern' => '/cart/delete-product/{productId}',
-        'action'  => ['Cart\ProductAction', 'set'],
+        'action'  => ['Cart\ProductAction', 'delete'],
     ],
     // добавление списка товаров в корзину
     'cart.product.setList' => [
@@ -356,7 +356,7 @@ return [
     'cart.service.delete' => [
         'pattern' => '/cart/delete-service/{serviceId}/for-product/{productId}',
         'require' => ['productId' => '\d+', 'serviceId' => '\d+'],
-        'action'  => ['Cart\ServiceAction', 'set'],
+        'action'  => ['Cart\ServiceAction', 'delete'],
     ],
     // добавление гарантии в корзину
     'cart.warranty.set' => [
@@ -368,7 +368,7 @@ return [
     'cart.warranty.delete' => [
         'pattern' => '/cart/delete-warranty/{warrantyId}/for-product/{productId}',
         'require' => ['productId' => '\d+', 'warrantyId' => '\d+'],
-        'action'  => ['Cart\WarrantyAction', 'set'],
+        'action'  => ['Cart\WarrantyAction', 'delete'],
     ],
     'cart.certificate.apply' => [
         'pattern' => '/cart/f1-certificate',
