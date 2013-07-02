@@ -29,9 +29,10 @@ if ($parent) {
     }
 }
 // total text
-$totalText = $category->getProductCount() . ' ' . ($category->getHasLine()
-    ? $page->helper->numberChoice($category->getProductCount(), array('серия', 'серии', 'серий'))
-    : $page->helper->numberChoice($category->getProductCount(), array('товар', 'товара', 'товаров'))
+$productCount = $page->hasGlobalParam('allCount') ? $page->getGlobalParam('allCount') : $category->getProductCount();
+$totalText = $productCount . ' ' . ($category->getHasLine()
+    ? $page->helper->numberChoice($productCount, array('серия', 'серии', 'серий'))
+    : $page->helper->numberChoice($productCount, array('товар', 'товара', 'товаров'))
 );
 //     for global
 $globalTotalText = $category->getGlobalProductCount() . ' ' .$page->helper->numberChoice($category->getGlobalProductCount(), array('товар', 'товара', 'товаров'));

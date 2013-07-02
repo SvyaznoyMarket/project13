@@ -206,6 +206,13 @@ class User {
     public function getRegionId() {
         $cookieName = \App::config()->region['cookieName'];
 
+        if (\App::request()->get('shop')) {
+            $shop = \RepositoryManager::shop()->getEntityById( \App::request()->get('shop') );
+            if (!(int)$shop->getRegion()->getId()) return null;
+            \App::request()->cookies->set($cookieName, (int)$shop->getRegion()->getId());
+            return (int)$shop->getRegion()->getId();
+        }
+
         if (\App::request()->cookies->has($cookieName)) {
             return (int)\App::request()->cookies->get($cookieName);
         } else {
