@@ -9,13 +9,13 @@
 ;(function(){
 	var BuyButton = function(e, anyway){
 		e.stopPropagation();
-		
+
 		var button = $(this);
 
-		if (button.hasClass('disabled') && !anyway) {
+		if (button.hasClass('mDisabled') && !anyway) {
 			return false;
 		}
-		if (button.hasClass('active') && !anyway) {
+		if (button.hasClass('mBought') && !anyway) {
 			return false;
 		}
 
@@ -44,6 +44,8 @@
 				}
 			}
 		};
+
+
 		$.get(url, addToCart);
 		return false;
 	};
