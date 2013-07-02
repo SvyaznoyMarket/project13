@@ -274,7 +274,7 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
                     <? } else { ?>
                         <span>Отзывов нет</span>
                     <? } ?>
-                    <span class="bReviewSection__eWrite jsLeaveReview" data-pid="productid">Оставить отзыв</span>
+                    <span class="bReviewSection__eWrite jsLeaveReview" data-pid="<?= $product->getId() ?>">Оставить отзыв</span>
                 </div><!--/review section -->
 
                 <? if ((bool)$product->getModel() && (bool)$product->getModel()->getProperty()): //модели ?>

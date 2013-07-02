@@ -12,7 +12,7 @@
   <li class="bReviewsTabs__eTab bReviewsTabs__ePro pro<?= $tabProClass ?>" data-container="reviewsPro" data-reviews-type="pro"><span>Обзоры экспертов</span></li>
 
   <li class="bReviewsTabs__eTab bReviewsTabs__eLast">
-    <span class="jsLeaveReview">Оставить отзыв</span>
+    <span class="jsLeaveReview" data-pid="<?//= $product->getId() ?>">Оставить отзыв</span>
   </li> 
 </ul>
 
@@ -42,4 +42,4 @@
   <? $showMoreText = 'Показать другие обзоры...' ?>
 <? } ?>
 
-<div id="getMoreReviewsButton" class="bReviewsToggle product-btn-toggle getMoreReviews<?= $showMore ? '' : ' hfImportant' ?>"><?= $showMoreText ?></div>
+<div class="bReviewsToggle jsGetReviews product-btn-toggle getMoreReviews<?= $showMore ? '' : ' hfImportant' ?>"><?= $showMoreText ?></div>

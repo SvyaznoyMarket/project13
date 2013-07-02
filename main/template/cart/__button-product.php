@@ -22,6 +22,6 @@ if ($disabled) {
 
 ?>
 
-<a id="<?= sprintf('cartButton-product-%s', $product->getId()) ?>" href="<?= $url ?>" class="jsBuyButton<? if ($disabled): ?> mDisabled<? endif ?><?php if ($class): ?> <?= $class ?><? endif ?>"><?= $value ?></a>
+<a href="<?= $url ?>" class="<?= sprintf('cartButton-product-%s', $product->getId()) ?> jsBuyButton<? if ($disabled): ?> mDisabled<? endif ?><?php if ($class): ?> <?= $class ?><? endif ?>"><?= $value ?></a>
 
 <? };
