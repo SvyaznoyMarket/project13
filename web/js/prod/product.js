@@ -241,7 +241,7 @@ $(document).ready(function() {
 	 * Настройки карточки товара
 	 * @type {Object}
 	 */
-	var productInfo = $('#page-config').data('value');
+	var productInfo = $('#jsProductCard').data('value');
 
 	$('.bZoomedImg').elevateZoom({
 		zoomWindowOffety: 5,
@@ -830,7 +830,7 @@ $(document).ready(function() {
 
 	var leaveReview = function(){
 		var pid = $(this).attr('data-pid');
-		var name = $('#reviewsProductName').html();
+		var name = productInfo.name;
 		var src = "http://reviews.testfreaks.com/reviews/new?client_id=enter.ru&" + $.param({key: pid, name: name});
 
 		$(".reviewPopup").lightbox_me({onLoad: function() { $("#rframe").attr("src", src) }});

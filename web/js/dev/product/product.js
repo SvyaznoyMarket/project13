@@ -13,7 +13,7 @@ $(document).ready(function() {
 	 * Настройки карточки товара
 	 * @type {Object}
 	 */
-	var productInfo = $('#page-config').data('value');
+	var productInfo = $('#jsProductCard').data('value');
 
 	$('.bZoomedImg').elevateZoom({
 		zoomWindowOffety: 5,
