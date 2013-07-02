@@ -1,6 +1,7 @@
 /**
  * Всплывающая синяя плашка с предложением о подписке
  * Срабатывает при возникновении события showsubscribe.
+ * см.BlackBox startAction
  *
  * @author		Zaytsev Alexandr
  * @requires	jQuery, jQuery.emailValidate, docCookies

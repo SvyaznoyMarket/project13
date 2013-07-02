@@ -19,14 +19,6 @@ class InfoAction {
             $user = \App::user();
             $cart = $user->getCart();
 
-            $actions = [];
-            if (\App::config()->subscribe['enabled']) {
-                $actions['subscribe'] = [
-                    'show'   => !$request->cookies->has(\App::config()->subscribe['cookieName']),
-                    'agreed' => 1 == (int)$request->cookies->get(\App::config()->subscribe['cookieName']),
-                ];
-            }
-
             $responseData = [
                 'success' => true,
                 'user'    => [
@@ -37,13 +29,11 @@ class InfoAction {
                 'cart'    => [
                     'sum'      => 0,
                     'quantity' => 0,
-                    'product'  => [],
-                    'service'  => [],
                 ],
                 'order'   => [
                     'hasCredit' => 1 == $request->cookies->get('credit_on'),
                 ],
-                'action'  => $actions,
+                'action'  => [],
             ];
 
             // если пользователь авторизован
@@ -57,45 +47,39 @@ class InfoAction {
                 $responseData['cart']['sum'] = $cart->getSum();
                 $responseData['cart']['quantity'] = $cart->getProductsQuantity() + $cart->getServicesQuantity();
 
-                // товары в корзине
+
+                $buttons = [];
                 foreach ($cart->getProducts() as $cartProduct) {
-                    $productData = [
-                        'id'       => $cartProduct->getId(),
-                        'price'    => $cartProduct->getPrice(),
-                        'sum'      => $cartProduct->getSum(),
-                        'quantity' => $cartProduct->getQuantity(),
-                        'warranty' => [],
-                        'service'  => [],
+                    $buttons[] = [
+                        'id' => sprintf('cartButton-product-%s', $cartProduct->getId()),
                     ];
+
                     foreach ($cartProduct->getWarranty() as $cartWarranty) {
-                        $productData['warranty'][] = [
-                            'id'       => $cartWarranty->getId(),
-                            'price'    => $cartWarranty->getPrice(),
-                            'sum'      => $cartWarranty->getSum(),
-                            'quantity' => $cartWarranty->getQuantity(),
+                        $buttons[] = [
+                            'id' => sprintf('cartButton-product-%s-warranty-%s', $cartProduct->getId(), $cartWarranty->getId()),
                         ];
                     }
                     foreach ($cartProduct->getService() as $cartService) {
-                        $productData['warranty'][] = [
-                            'id'       => $cartService->getId(),
-                            'price'    => $cartService->getPrice(),
-                            'sum'      => $cartService->getSum(),
-                            'quantity' => $cartService->getQuantity(),
+                        $buttons[] = [
+                            'id' => sprintf('cartButton-product-%s-service-%s', $cartProduct->getId(), $cartService->getId()),
                         ];
                     }
-
-                    $responseData['cart']['product'][] = $productData;
                 }
 
-                // услуги в корзине
                 foreach ($cart->getServices() as $cartService) {
-                    $responseData['cart']['service'][] = [
-                        'id'       => $cartService->getId(),
-                        'price'    => $cartService->getPrice(),
-                        'sum'      => $cartService->getSum(),
-                        'quantity' => $cartService->getQuantity(),
+                    $buttons[] = [
+                        'id' => sprintf('cartButton-service-%s', $cartService->getId()),
                     ];
                 }
+
+                $responseData['action']['cartButton']['button'] = $buttons;
+            }
+
+            if (\App::config()->subscribe['enabled']) {
+                $responseData['action']['subscribe'] = [
+                    'show'   => !$request->cookies->has(\App::config()->subscribe['cookieName']),
+                    'agreed' => 1 == (int)$request->cookies->get(\App::config()->subscribe['cookieName']),
+                ];
             }
         } catch (\Exception $e) {
             $responseData['success'] = false;

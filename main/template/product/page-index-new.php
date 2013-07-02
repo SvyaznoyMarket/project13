@@ -17,6 +17,8 @@
 
 <?
 
+$helper = new \Helper\TemplateHelper();
+
 $hasLowerPriceNotification =
     \App::config()->product['lowerPriceNotification']
     && $product->getMainCategory() && $product->getMainCategory()->getPriceChangeTriggerEnabled();
@@ -166,12 +168,14 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
     <? endif ?>
 </script>
 
+<div id="jsProductCard" data-value="<?= $page->json($productData) ?>"></div>
+
 <section class="bProductSection__eLeft">
     <div class="bProductDesc clearfix">
 
         <div class="bProductDesc__ePhoto">
             <figure class="bProductDesc__ePhoto-bigImg">
-                <a class="bigImgLink" href="<?= $product->getImageUrl(4) ?>"><img src="<?= $product->getImageUrl(3) ?>" alt="<?= $page->escape($product->getName()) ?>" /></a>
+                <img class="bZoomedImg" src="<?= $product->getImageUrl(3) ?>" data-zoom-image="<?= $product->getImageUrl(4) ?>" alt="<?= $page->escape($product->getName()) ?>" />
             </figure><!--/product big image section -->
 
             <div class="bPhotoAction">
@@ -217,6 +221,12 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
             <div class="price"><strong><?= $page->helper->formatPrice($product->getPrice()) ?></strong>р</div>
 
             <? if ($hasLowerPriceNotification): ?>
+            <?
+                $lowerPrice =
+                    ($product->getMainCategory() && $product->getMainCategory()->getPriceChangePercentTrigger())
+                        ? round($product->getPrice() * $product->getMainCategory()->getPriceChangePercentTrigger())
+                        : 0;
+            ?>
             <div class="priceSale">
                 <span class="dotted jsLowPriceNotifer">Узнать о снижении цены</span>
                 <div class="bLowPriceNotiferPopup popup">
@@ -235,7 +245,7 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
             <? endif ?>
 
             <? if ($creditData['creditIsAllowed'] && !$user->getRegion()->getHasTransportCompany()) : ?>
-            <div class="creditbox" style="display: block;">
+            <div class="creditbox">
                 <label class="bigcheck" for="creditinput"><b></b>
                     <span class="dotted">Беру в кредит</span>
                     <input id="creditinput" type="checkbox" name="creditinput" autocomplete="off">
@@ -261,7 +271,7 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
                 <? } else { ?>
                     <span>Отзывов нет</span>
                 <? } ?>
-                <span class="bReviewSection__eWrite" data-pid="productid">Оставить отзыв</span>
+                <span class="bReviewSection__eWrite jsLeaveReview" data-pid="productid">Оставить отзыв</span>
             </div><!--/review section -->
 
             <? if ((bool)$product->getModel() && (bool)$product->getModel()->getProperty()): //модели ?>
@@ -404,7 +414,7 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
 
 <aside class="bProductSection__eRight">
     <div class="bWidgetBuy mWidget">
-        <div class="bCountSection clearfix">
+        <div class="bCountSection clearfix" data-spinner="<?= $page->json(['button' => sprintf('cartButton-product-%s', $product->getId())]) ?>">
             <button class="bCountSection__eM">-</button>
             <input class="bCountSection__eNum" type="text" value="1" />
             <button class="bCountSection__eP">+</button>
@@ -412,15 +422,34 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
         </div><!--/counter -->
 
         <div class="bWidgetBuy__eBuy btnBuy">
-            <?= $page->render('cart/_button', ['product' => $product, 'class' => 'btnBuy__eLink', 'value' => 'В корзину']) ?>
+            <?= $helper->render('cart/__button-product', ['product' => $product, 'class' => 'btnBuy__eLink', 'value' => 'В корзину']) ?>
         </div><!--/button buy -->
 
         <? if ($product->getIsBuyable()): ?>
-            <div class="bWidgetBuy__eClick"><a href="">Купить быстро в 1 клик</a></div>
+            <div class="bWidgetBuy__eClick">
+                <a
+                    href="#"
+                    class="jsOrder1click"
+                    data-model="<?= $page->json([
+                        'jsref'        => $product->getToken(),
+                        'jstitle'      => $product->getName(),
+                        'jsprice'      => $product->getPrice(),
+                        'jsimg'        => $product->getImageUrl(3),
+                        'jsbimg'       => $product->getImageUrl(2),
+                        'jsshortcut'   => $product->getArticle(),
+                        'jsitemid'     => $product->getId(),
+                        'jsregionid'   => $user->getRegion()->getId(),
+                        'jsregionName' => $user->getRegion()->getName(),
+                        'jsstock'      => 10,
+                    ]) ?>"
+                    link-output="<?= $page->url('order.1click', ['product' => $product->getToken()]) ?>"
+                    link-input="<?= $page->url('product.delivery_1click') ?>"
+                    >Купить быстро в 1 клик</a>
+            </div>
             <form id="order1click-form" action="<?= $page->url('order.1click', ['product' => $product->getBarcode()]) ?>" method="post"></form>
         <? endif ?>
 
-        <ul class="bWidgetBuy__eDelivery">
+        <ul class="bWidgetBuy__eDelivery" data-value="<?= $page->json(['url' => $page->url('product.delivery')]) ?>">
             <li class="bWidgetBuy__eDelivery-item bWidgetBuy__eDelivery-price">
                 <span>Доставка <strong>290</strong>p</span>
                 <div>Завтра, 16.05.2013</div>
@@ -593,3 +622,14 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
         <div class="bWidgetService__eAll"><span class="dotted">Ещё 87 услуг</span><br/>доступны в магазине</div>
     </div><!--/widget services -->
 </aside><!--/right section -->
+
+<?= $helper->render('product/__delivery') ?>
+
+<? if ($product->getIsBuyable()): ?>
+    <?= $page->render('order/form-oneClick') ?>
+<? endif ?>
+
+<? if (\App::config()->analytics['enabled']): ?>
+    <?= $page->tryRender('product/partner-counter/_cityads', ['product' => $product]) ?>
+    <?= $page->tryRender('product/partner-counter/_recreative', ['product' => $product]) ?>
+<? endif ?>

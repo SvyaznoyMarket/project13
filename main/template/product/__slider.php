@@ -36,7 +36,7 @@ return function (
                     <div class="productName"><a href="<?= $helper->url('product', ['productPath' => $product->getPath()]) ?>"><?= $product->getName() ?></a></div>
                     <div class="productPrice"><span class="price"><?= $helper->formatPrice($product->getPrice()) ?>p</span></div>
                     <div class="btnBuy">
-                        <a class="btnBuy__eLink" href="">В корзину</a>
+                        <?= $helper->render('cart/__button-product', ['product' => $product, 'class' => 'btnBuy__eLink', 'value' => 'В корзину']) ?>
                     </div>
                 </div>
             </li>
