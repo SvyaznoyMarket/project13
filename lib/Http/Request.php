@@ -144,6 +144,7 @@ class Request {
      * @api
      */
     public function __construct(array $query = [], array $request = [], array $attributes = [], array $cookies = [], array $files = [], array $server = [], $content = null) {
+        \App::logger()->warn(sprintf('SERVER QUERY INFO %s', $server['QUERY STRING']));
         $this->initialize($query, $request, $attributes, $cookies, $files, $server, $content);
     }
 
