@@ -33,7 +33,7 @@ if ($disabled) {
     if ($page->hasGlobalParam('sender')) {
         $urlParams['sender'] = $page->getGlobalParam('sender') . '|' . $product->getId();
     }
-    $url = $page->url('cart.product.add', $urlParams);
+    $url = $page->url('cart.product.set', $urlParams);
 }
 ?>
 

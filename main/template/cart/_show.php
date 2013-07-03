@@ -132,8 +132,8 @@ foreach ($products as $product) {
                 <div class="right">
                     <?= $page->render('_spinner', array(
                         'quantity' => $cartProduct->getQuantity(),
-                        'incUrl'   => $page->url('cart.product.add', array('productId' => $product->getId(), 'quantity' => 1)),
-                        'decUrl'   => $page->url('cart.product.add', array('productId' => $product->getId(), 'quantity' => -1)),
+                        'incUrl'   => $page->url('cart.product.set', array('productId' => $product->getId(), 'quantity' => 1)),
+                        'decUrl'   => $page->url('cart.product.set', array('productId' => $product->getId(), 'quantity' => -1)),
                     ))?>
                 </div>
             </div>

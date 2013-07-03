@@ -12,7 +12,7 @@ $gaTitle = !empty($gaTitle) ? $gaTitle : null;
 if ($disabled) {
     $url = '#';
 } else {
-    $url = $page->url('cart.product.add', array('productId' => $product->getId()));
+    $url = $page->url('cart.product.set', array('productId' => $product->getId()));
 }
 ?>
 

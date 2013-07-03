@@ -164,7 +164,7 @@ class Action {
                         ];
 
                         if (!empty($errorItem['quantity_available'])) {
-                            $errorItem['product']['addUrl'] = \App::router()->generate('cart.product.add', array('productId' => $product->getId(), 'quantity' => $errorItem['quantity_available']));
+                            $errorItem['product']['addUrl'] = \App::router()->generate('cart.product.set', array('productId' => $product->getId(), 'quantity' => $errorItem['quantity_available']));
                         }
                         $errorItem['product']['deleteUrl'] = \App::router()->generate('cart.product.delete', array('productId' => $product->getId()));
 
@@ -1082,7 +1082,7 @@ class Action {
                     $itemView->deleteUrl = $router->generate('cart.service.delete', ['serviceId' => $itemData['id'], 'productId' => 0]);
                 }
                 if ($cartItem instanceof \Model\Cart\Product\Entity) {
-                    $itemView->addUrl = $router->generate('cart.product.add', ['productId' => $itemData['id'], 'quantity' => $itemData['stock']]);
+                    $itemView->addUrl = $router->generate('cart.product.set', ['productId' => $itemData['id'], 'quantity' => $itemData['stock']]);
                 } else if ($cartItem instanceof \Model\Cart\Service\Entity) {
                     $itemView->addUrl = $router->generate('cart.service.set', ['serviceId' => $itemData['id'], 'quantity' => 1, 'productId' => 0]);
                 }
