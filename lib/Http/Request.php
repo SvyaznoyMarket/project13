@@ -144,7 +144,6 @@ class Request {
      * @api
      */
     public function __construct(array $query = [], array $request = [], array $attributes = [], array $cookies = [], array $files = [], array $server = [], $content = null) {
-        \App::logger()->warn(sprintf('SERVER QUERY INFO %s', $server['QUERY_STRING']));
         $this->initialize($query, $request, $attributes, $cookies, $files, $server, $content);
     }
 
@@ -747,7 +746,6 @@ class Request {
      */
     public function getQueryString() {
         $qs = static::normalizeQueryString($this->server->get('QUERY_STRING'));
-        \App::logger()->warn(sprintf('QUERY_STRING %s', $this->server->get('QUERY_STRING')));
         return '' === $qs ? null : $qs;
     }
 
