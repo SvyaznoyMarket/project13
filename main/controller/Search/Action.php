@@ -12,6 +12,7 @@ class Action {
         \App::logger()->debug('Exec ' . __METHOD__);
 
         $searchQuery = trim((string)$request->get('q'));
+        $searchQuery = mb_convert_encoding($searchQuery, 'UTF-8', 'UTF-8');
         if (empty($searchQuery)) {
             throw new \Exception\NotFoundException(sprintf('Пустая фраза поиска.', $searchQuery));
         }
