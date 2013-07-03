@@ -114,16 +114,16 @@
                     font-size: 12px;
                 }
             }
-            input[type="checkbox"],
-            input[type="radio"] {
+            .bCustomInput[type="checkbox"],
+            .bCustomInput[type="radio"] {
                 display:none;            
             }
-            input[type="checkbox"]+label, 
-            input[type="radio"]+label {
+            .bCustomInput[type="checkbox"]+.bCustomLabel, 
+            .bCustomInput[type="radio"]+.bCustomLabel {
               cursor: pointer;
             }
-            input[type="checkbox"]+label::before,
-            input[type="radio"]+label::before {
+            .bCustomInput[type="checkbox"]+.bCustomLabel::before,
+            .bCustomInput[type="radio"]+.bCustomLabel::before {
                 content: "";
                 display: inline-block;
                 height: 16px;
@@ -132,23 +132,23 @@
                 background: url("@{base-url}/rightBarCard/img/ico.png") no-repeat 0 -163px;
                 vertical-align: top;
             }
-            input[type="checkbox"]+label::before {
+            .bCustomInput[type="checkbox"]+.bCustomLabel::before {
                 background-position: 0 -212px;
             }
-            input[type="radio"]+label::before {
+            .bCustomInput[type="radio"]+.bCustomLabel::before {
                 background-position: 0 -163px;
             }
-            input[type="checkbox"]:checked+label::before,
-            input[type="radio"]:checked+label::before {
+            .bCustomInput[type="checkbox"]:checked+.bCustomLabel::before,
+            .bCustomInput[type="radio"]:checked+.bCustomLabel::before {
                 background-position: 0 -187px;
             }
-            input[type="checkbox"]:checked+label,
-            input[type="radio"]:checked+label {
+            .bCustomInput[type="checkbox"]:checked+.bCustomLabel,
+            .bCustomInput[type="radio"]:checked+.bCustomLabel {
                 .dotted {
                     border-bottom: none;
                 }
             }
-            .bCustomInput {
+            .bCustomLabel {
                 display: block;
                 &__eText {
                     display: inline-block;

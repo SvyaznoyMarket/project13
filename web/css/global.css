@@ -10045,6 +10045,10 @@
   .bProductSection__eRight .btnBuy {
     margin: 0 auto;
   }
+  .bHint {
+    *display: inline;
+    zoom: 1;
+  }
   .bBottomBuy {
     clear: both;
     margin: 0 0 20px;
@@ -10071,6 +10075,7 @@
   }
   .bBottomBuy .bCountSection {
     margin: 7px 12px 0 20px;
+    padding-left: 0;
   }
   .bBreadCrumbsBottom {
     margin: 0 10px 20px;
@@ -10373,16 +10378,16 @@
     border-bottom: 1px dotted;
     font-size: 12px;
   }
-  .bWidgetService__eInputList li input[type="checkbox"],
-  .bWidgetService__eInputList li input[type="radio"] {
+  .bWidgetService__eInputList li .bCustomInput[type="checkbox"],
+  .bWidgetService__eInputList li .bCustomInput[type="radio"] {
     display: none;
   }
-  .bWidgetService__eInputList li input[type="checkbox"] + label,
-  .bWidgetService__eInputList li input[type="radio"] + label {
+  .bWidgetService__eInputList li .bCustomInput[type="checkbox"] + .bCustomLabel,
+  .bWidgetService__eInputList li .bCustomInput[type="radio"] + .bCustomLabel {
     cursor: pointer;
   }
-  .bWidgetService__eInputList li input[type="checkbox"] + label::before,
-  .bWidgetService__eInputList li input[type="radio"] + label::before {
+  .bWidgetService__eInputList li .bCustomInput[type="checkbox"] + .bCustomLabel::before,
+  .bWidgetService__eInputList li .bCustomInput[type="radio"] + .bCustomLabel::before {
     content: "";
     display: inline-block;
     height: 16px;
@@ -10391,28 +10396,28 @@
     background: url("/css/rightBarCard/img/ico.png") no-repeat 0 -163px;
     vertical-align: top;
   }
-  .bWidgetService__eInputList li input[type="checkbox"] + label::before {
+  .bWidgetService__eInputList li .bCustomInput[type="checkbox"] + .bCustomLabel::before {
     background-position: 0 -212px;
   }
-  .bWidgetService__eInputList li input[type="radio"] + label::before {
+  .bWidgetService__eInputList li .bCustomInput[type="radio"] + .bCustomLabel::before {
     background-position: 0 -163px;
   }
-  .bWidgetService__eInputList li input[type="checkbox"]:checked + label::before,
-  .bWidgetService__eInputList li input[type="radio"]:checked + label::before {
+  .bWidgetService__eInputList li .bCustomInput[type="checkbox"]:checked + .bCustomLabel::before,
+  .bWidgetService__eInputList li .bCustomInput[type="radio"]:checked + .bCustomLabel::before {
     background-position: 0 -187px;
   }
-  .bWidgetService__eInputList li input[type="checkbox"]:checked + label .dotted,
-  .bWidgetService__eInputList li input[type="radio"]:checked + label .dotted {
+  .bWidgetService__eInputList li .bCustomInput[type="checkbox"]:checked + .bCustomLabel .dotted,
+  .bWidgetService__eInputList li .bCustomInput[type="radio"]:checked + .bCustomLabel .dotted {
     border-bottom: none;
   }
-  .bWidgetService__eInputList li .bCustomInput {
+  .bWidgetService__eInputList li .bCustomLabel {
     display: block;
   }
-  .bWidgetService__eInputList li .bCustomInput__eText {
+  .bWidgetService__eInputList li .bCustomLabel__eText {
     display: inline-block;
     width: 182px;
   }
-  .bWidgetService__eInputList li .bCustomInput__ePrice {
+  .bWidgetService__eInputList li .bCustomLabel__ePrice {
     margin: 5px 0 0;
   }
   .mWidget {
@@ -10476,6 +10481,11 @@
   .bReviews .bReviewsToggle {
     margin: -10px 0 0 160px;
     font-size: 14px;
+    border-bottom: 1px dotted;
+    cursor: pointer;
+    display: inline-block;
+    *display: inline;
+    zoom: 1;
   }
   .bReviews .bReviewsSummary {
     margin: 0 0 10px;
@@ -10559,6 +10569,7 @@
   .bReviews .bReview .bReview__eAuthtor-name {
     margin: 6px 0;
     font-weight: normal;
+    font-size: 14px;
   }
   .bReviews .bReview .bReview__eAuthtor-date {
     color: #a6a6a6;

@@ -17,9 +17,9 @@ return function (
         $id = \View\Id::cartButtonForProductService($product->getId(), $service->getId());
     ?>
         <li>
-            <input id="<?= $id ?>" class="<?= $id ?>" name="<?= $product->getId()?>" type="checkbox" hidden />
-            <label class="bCustomInput" for="<?= $id ?>">
-                <div class="bCustomInput__eText">
+            <input id="<?= $id ?>" class="<?= $id ?> bCustomInput" name="<?= $product->getId()?>" type="checkbox" hidden />
+            <label class="bCustomLabel" for="<?= $id ?>">
+                <div class="bCustomLabel__eText">
                     <span class="dotted"><?= $service->getName() ?></span>
 
                     <? if ($service->getDescription()): ?>
