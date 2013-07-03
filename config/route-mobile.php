@@ -230,7 +230,7 @@ return [
         'action'  => ['Cart\ClearAction', 'execute'],
     ],
     // добавление товара в корзину
-    'cart.product.add' => [
+    'cart.product.set' => [
         'pattern' => '/cart/add/{productId}/_quantity/{quantity}', // TODO: сделать поприличнее - '/cart/add-product/{productId}/{quantity}'
         'action'  => ['Cart\ProductAction', 'set'],
     ],

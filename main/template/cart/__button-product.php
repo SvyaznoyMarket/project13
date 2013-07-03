@@ -20,7 +20,7 @@ if ($disabled) {
     if ($helper->hasParam('sender')) {
         $urlParams['sender'] = $helper->getParam('sender') . '|' . $product->getId();
     }
-    $url = $helper->url('cart.product.add', $urlParams);
+    $url = $helper->url('cart.product.set', $urlParams);
 }
 
 ?>
