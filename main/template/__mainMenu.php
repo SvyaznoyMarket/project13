@@ -14,30 +14,30 @@ $count = count($menu);
     <style type="text/css">
         <? $count = count($menu); $i = 1; foreach ($menu as $iMenu): ?>
         .mId<?= $i ?> .bMainMenuLevel-1__eIcon {
-        <?= $iMenu->getCss() ?>
+        <?= $iMenu->css ?>
         }
         .mId<?= $i ?>:hover .bMainMenuLevel-1__eIcon{
-        <?= $iMenu->getCssHover() ?>
+        <?= $iMenu->cssHover ?>
         }
-        <? if ($iMenu->getColor()): ?>
+        <? if ($iMenu->color): ?>
         .mId<?= $i ?> .bMainMenuLevel-1__eTitle{
-            color: <?=$iMenu->getColor() ?>;
+            color: <?=$iMenu->color ?>;
         }
         <? endif ?>
-        <? if ($iMenu->getColorHover()): ?>
+        <? if ($iMenu->colorHover): ?>
         .mId<?= $i ?>:hover .bMainMenuLevel-1__eTitle{
-            color: <?=$iMenu->getColorHover() ?>;
+            color: <?=$iMenu->colorHover ?>;
         }
         <? endif ?>
 
         <? if ($i == $count): ?>
 
-        <? $j = 1; foreach ($iMenu->getChild() as $child): ?>
-        .mId<?= $iMenu->getPriority() . '-' . $j ?> .bMainMenuLevel-2__eIcon {
-        <?= $child->getCss() ?>
+        <? $j = 1; foreach ($iMenu->child as $child): ?>
+        .mId<?= $iMenu->priority . '-' . $j ?> .bMainMenuLevel-2__eIcon {
+        <?= $child->css ?>
         }
-        .mId<?= $iMenu->getPriority() . '-' . $j ?>:hover .bMainMenuLevel-2__eIcon {
-        <?= $child->getCssHover() ?>
+        .mId<?= $iMenu->priority . '-' . $j ?>:hover .bMainMenuLevel-2__eIcon {
+        <?= $child->cssHover ?>
         }
         <? $j++; endforeach ?>
         <? endif ?>
@@ -47,21 +47,21 @@ $count = count($menu);
 
 <ul class="bMainMenuLevel-<?= $level ?>">
 
-    <? if ((3 ==$level) && $parent instanceof \Model\Menu\Entity && $parent->getImage()): ?>
-        <li class="bMainMenuLevel-<?= $level ?>__eHead"><?= $parent->getName() ?></li>
-        <li class="bMainMenuLevel-<?= $level ?>__eImageItem"><img class="bMainMenuLevel-<?= $level ?>__eImage" width="150" src="<?= $parent->getImage() ?>" alt="<?= $helper->escape($parent->getName()) ?>" /></li>
+    <? if ((3 ==$level) && $parent instanceof \Model\Menu\Entity && $parent->image): ?>
+        <li class="bMainMenuLevel-<?= $level ?>__eHead"><?= $parent->name ?></li>
+        <li class="bMainMenuLevel-<?= $level ?>__eImageItem"><img class="bMainMenuLevel-<?= $level ?>__eImage" width="150" src="<?= $parent->image ?>" alt="<?= $helper->escape($parent->name) ?>" /></li>
     <? endif ?>
 
     <? $i = 1; foreach ($menu as $iMenu): ?>
         <?
         $class = '';
-        if (\Model\Menu\Entity::ACTION_SEPARATOR === $iMenu->getAction()) {
+        if (\Model\Menu\Entity::ACTION_SEPARATOR === $iMenu->action) {
             $class .= ' bMainMenuLevel-' . $level . '__eSeparator';
         }
-        if ((1 == $level) && !$iMenu->getAction()) {
+        if ((1 == $level) && !$iMenu->action) {
             $class .= ' mMore';
         }
-        if ((1 == $level) && (\Model\Menu\Entity::ACTION_PRODUCT_CATALOG !== $iMenu->getAction()) && (false === strpos($class, 'mMore'))) {
+        if ((1 == $level) && (\Model\Menu\Entity::ACTION_PRODUCT_CATALOG !== $iMenu->action) && (false === strpos($class, 'mMore'))) {
             $class .= ' mAction';
         }
         if ((1 == $level) && (($count - $i) < 4) && (($count - $i) > 1)) {
@@ -70,32 +70,32 @@ $count = count($menu);
         $class = trim($class);
         ?>
 
-        <li class="bMainMenuLevel-<?= $level ?>__eItem clearfix mId<?= ($parent ? ($parent->getPriority() . '-') : '') . $i ?> <? if ($class) echo ' ' . $class ?>">
+        <li class="bMainMenuLevel-<?= $level ?>__eItem clearfix mId<?= ($parent ? ($parent->priority . '-') : '') . $i ?> <? if ($class) echo ' ' . $class ?>">
         <?
-            $token = preg_replace('/.*\//', '', $iMenu->getLink());
+            $token = preg_replace('/.*\//', '', $iMenu->link);
             $showImage = !empty($catalogJsonBulk[$token]) && !empty($catalogJsonBulk[$token]['logo_path']) && !empty($catalogJsonBulk[$token]['use_logo']);
         ?>
 
-            <? if ($iMenu->getLink()): ?>
-                <a class="bMainMenuLevel-<?= $level ?>__eLink" href="<?= $iMenu->getLink() ?>">
-                    <span class="bMainMenuLevel-<?= $level ?>__eIcon">&nbsp;<?//= 0  === strpos($iMenu->getImage(), '&') ? $iMenu->getImage() : '' ?></span>
+            <? if ($iMenu->link): ?>
+                <a class="bMainMenuLevel-<?= $level ?>__eLink" href="<?= $iMenu->link ?>">
+                    <span class="bMainMenuLevel-<?= $level ?>__eIcon">&nbsp;<?//= 0  === strpos($iMenu->image, '&') ? $iMenu->image : '' ?></span>
                     <span class="bMainMenuLevel-<?= $level ?>__eTitle">
                     <? if ($showImage): ?>
                         <img src="<?= $catalogJsonBulk[$token]['logo_path'] ?>">
                     <? else: ?>
-                        <?= $iMenu->getName() ?>
+                        <?= $iMenu->name ?>
                     <? endif ?>
                     </span>
                     <div class="bCorner"></div>
                 </a>
-            <? elseif ($iMenu->getName()): ?>
+            <? elseif ($iMenu->name): ?>
                 <div class="bMainMenuLevel-<?= $level ?>__eLink">
                     <span class="bMainMenuLevel-<?= $level ?>__eIcon"></span>
                     <span class="bMainMenuLevel-<?= $level ?>__eTitle">
                     <? if ($showImage): ?>
                             <img src="<?= $catalogJsonBulk[$token]['logo_path'] ?>">
                         <? else: ?>
-                            <?= $iMenu->getName() ?>
+                            <?= $iMenu->name ?>
                         <? endif ?>
                     </span>
                     <div class="bCorner"></div>
@@ -103,7 +103,7 @@ $count = count($menu);
             <? endif ?>
 
             <? if ($level <= 2): ?>
-                <?= $helper->render('__mainMenu', ['menu' => $iMenu->getChild(), 'level' => $level + 1, 'parent' => $iMenu, 'catalogJsonBulk' => $catalogJsonBulk]) ?>
+                <?= $helper->render('__mainMenu', ['menu' => $iMenu->child, 'level' => $level + 1, 'parent' => $iMenu, 'catalogJsonBulk' => $catalogJsonBulk]) ?>
             <? endif ?>
         </li>
         <? $i++; endforeach ?>
