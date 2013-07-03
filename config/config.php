@@ -292,7 +292,7 @@ $c->abtest['test']       = [
 $c->subscribe['enabled'] = true;
 $c->subscribe['cookieName'] = 'subscribed';
 
-$c->requestMainMenu = false;
+$c->requestMainMenu = true;
 
 $c->mobileModify['enabled'] = true;
 
