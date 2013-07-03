@@ -237,23 +237,55 @@ var Planner3dKupeConstructor = null;
 
 $(document).ready(function() {
 
-	/**
-	 * Настройки карточки товара
-	 * @type {Object}
-	 */
-	var productInfo = $('#page-config').data('value');
 
+	/**
+	 * Подключение нового зумера
+	 *
+	 * @requires jQuery, jQuery.elevateZoom
+	 */
 	$('.bZoomedImg').elevateZoom({
 		zoomWindowOffety: 5,
 		zoomWindowOffetx: 18,
 		zoomWindowWidth: 290,
 	});
 
+
+	/**
+	 * Каутер товара
+	 *
+	 * @requires jQuery, jQuery.goodsCounter
+	 * @param  {Number} count Возвращает текущее значение каунтера
+	 */
 	$('.bCountSection').goodsCounter({
 		onChange:function(count){
-			console.log(count);
+			var spinnerData = $('.bCountSection').data('spinner');
+			var bindButton = $('.'+spinnerData.button);
+			var newHref = bindButton.attr('href');
+
+			bindButton.attr('href',newHref.addParameterToUrl('quantity',count));
+			if (bindButton.hasClass('mBought')){
+				bindButton.eq('0').trigger('buy');
+			}
 		}
 	});
+
+
+	/**
+	 * Аналитика для карточки товара
+	 *
+	 * @requires jQuery
+	 */
+	(function(){
+		var productInfo = $('#jsProductCard').data('value');
+		var toKISS = {
+			'Viewed Product SKU':productInfo.article,
+			'Viewed Product Product Name':productInfo.name,
+			'Viewed Product Product Status':productInfo.stockState,
+		}
+		if (typeof(_kmq) !== 'undefined'){
+			_kmq.push(['record', 'Viewed Product',toKISS]);
+		}
+	}());
 
 	
 
@@ -493,107 +525,6 @@ $(document).ready(function() {
 	}
 	
 
-	/* Delivery Bubble */
-	if( $('.otherRegion').length ) {
-		$('.expander').click( function() {
-			$('.otherRegion').find('ul').toggle()
-			return false
-		})
-	}
-
-	
-	/* Rating */
-	if( $('#rating').length ) {
-		var iscore = $('#rating').next().html().replace(/[^\d\.]/g,'') * 1
-		$('#rating img').remove()
-        $('#rating span').remove()
-        $('#rating').raty({
-		  start: iscore,
-		  showHalf: true,
-		  path: '/css/skin/img/',
-		  readOnly: $('#rating').data('readonly'),
-		  starHalf: 'star_h.png',
-		  starOn: 'star_a.png',
-		  starOff: 'star_p.png',
-		  hintList: ['плохо', 'удовлетворительно', 'нормально', 'хорошо', 'отлично'],
-		  click: function( score ) {
-		  		$.getJSON( $('#rating').attr('data-url').replace('score', score ) , function(data){
-		  			if( data.success === true && data.data.rating ) {
-		  				$.fn.raty.start( data.data.rating ,'#rating' )
-		  				$('#rating').next().html( data.data.rating )
-		  			}
-		  		})
-		  		$.fn.raty.readOnly(true, '#rating')
-		  	}
-		})
-	}
-	
-	/* Product Counter */
-	if( $('#page .bCountSet').length ) {
-        var category_class = $('.bCountSet').attr('data-category-class')
-        var np = $('.bCountSet')
-		var l1 = np.parent().find('.link1')
-		var l1href = l1.attr('href')
-		var l1cl = $('a.order1click-link')
-		var l1clhref = l1cl.attr('href')
-		np.data('hm', np.first().find('span').text().replace(/\D/g,'') )
-		
-		var tmp = $('.goodsbarbig:first').data('value')
-		if (typeof(tmp) !== 'undefined')
-			var max = ( 'jsstock' in tmp ) ? tmp.jsstock : 1
-		
-		np.bind('update', function() {
-			var hm = $(this).data('hm')
-			if( max < hm ) {
-				$(this).data('hm', max)
-				return
-			}
-			if( hm === max ) {
-				$('.bCountSet__eP', np).addClass('disabled')
-			} else {
-				if( $('.bCountSet__eP', np).hasClass('disabled') )
-					$('.bCountSet__eP', np).removeClass('disabled')
-			}
-
-            if(category_class == undefined) {
-                np.find('span').text( hm + '  шт.')
-            } else {
-                np.find('span').text( hm )
-            }
-
-            l1.attr('href', l1href + '/' + hm )
-			l1cl.attr('href', l1clhref + '&quantity' + hm )
-		})
-		
-		$('.bCountSet__eP', np).click( function() {
-			if( $(this).hasClass('disabled') )
-				return false
-			np.data('hm', np.data('hm')*1 + 1 )	
-			np.trigger('update')
-			return false
-		})
-		$('.bCountSet__eM', np).click( function() {	
-			if( $(this).hasClass('disabled') )
-				return false		
-			var hm = np.data('hm')//how many
-			if( hm == 1 )
-				return false
-			np.data('hm', np.data('hm')*1 - 1 )
-			np.trigger('update')
-			return false
-		})		
-	}
-	
-	/* Icons */
-	$('.viewstock').bind( 'mouseover', function(){
-		var trgtimg = $('#stock img[ref="'+$(this).attr('ref')+'"]')
-		var isrc    = trgtimg.attr('src')
-		var idu    = trgtimg.attr('data-url')
-		if( trgtimg[0].complete ) {
-			$('#goodsphoto img').attr('src', isrc)
-			$('#goodsphoto img').attr('href', idu)
-		}
-	})
 
 	/* Media library */
 	//var lkmv = null
@@ -719,18 +650,6 @@ $(document).ready(function() {
         }
     })
 
-    // KISS
-    if ($('#productInfo').length){
-    	var data = $('#productInfo').data('value')
-    	var toKISS = {
-			'Viewed Product SKU':data.article,
-			'Viewed Product Product Name':data.name,
-			'Viewed Product Product Status':data.stockState,
-		}
-		if (typeof(_kmq) !== 'undefined'){
-			_kmq.push(['record', 'Viewed Product',toKISS]);
-		}
-    }
     
   	// карточка товара - характеристики товара краткие/полные
     if($('#productDescriptionToggle').length) {
@@ -795,7 +714,7 @@ $(document).ready(function() {
 	var reviewsContainerClass = null;
 
 	//nodes
-	var moreReviewsButton = $('#getMoreReviewsButton');
+	var moreReviewsButton = $('.jsGetReviews');
 	var reviewTab = $('.bReviewsTabs__eTab');
 	var reviewWrap = $('.bReviewsWrapper');
 	var reviewContent = $('.bReviewsContent');
@@ -844,7 +763,7 @@ $(document).ready(function() {
 		reviewTab.click(function(){
 			reviewsContainerClass = $(this).attr('data-container');
 			if (reviewsContainerClass === undefined){
-				return false;
+				return;
 			}
 
 			reviewsType = $(this).attr('data-reviews-type');
@@ -878,11 +797,16 @@ $(document).ready(function() {
 	}
 
 	var leaveReview = function(){
-		var pid = $(this).attr('data-pid');
-		var name = $('#reviewsProductName').html();
+		var productInfo = $('#jsProductCard').data('value');
+		var pid = $(this).data('pid');
+		var name = productInfo.name;
 		var src = "http://reviews.testfreaks.com/reviews/new?client_id=enter.ru&" + $.param({key: pid, name: name});
 
-		$(".reviewPopup").lightbox_me({onLoad: function() { $("#rframe").attr("src", src) }});
+		$(".reviewPopup").lightbox_me({
+			onLoad: function() {
+				$("#rframe").attr("src", src);
+			}
+		});
 		return false;
 	};
 

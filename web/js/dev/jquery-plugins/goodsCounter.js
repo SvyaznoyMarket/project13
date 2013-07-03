@@ -21,6 +21,14 @@
 			var nowCount = input.val();
 
 			var trigger = true;
+			var timeout_id = '';
+
+			var changeHandler = function(count){
+				clearTimeout(timeout_id);
+				timeout_id = setTimeout(function(){
+					options.onChange(count);
+				}, 400);
+			};
 
 			var plusHandler = function(e){
 				e.stopPropagation();
@@ -30,8 +38,7 @@
 				}
 				nowCount++;
 				input.val(nowCount);
-				options.onPlus(nowCount);
-				options.onChange(nowCount);
+				changeHandler(nowCount);
 				return false;
 			};
 
@@ -43,8 +50,7 @@
 				}
 				nowCount--;
 				input.val(nowCount);
-				options.onMinus(nowCount);
-				options.onChange(nowCount);
+				changeHandler(nowCount);
 				return false;
 			};
 
@@ -60,7 +66,7 @@
 						nowCount = options.maxVal;
 					}
 					input.val(nowCount);
-					options.onChange(nowCount);
+					changeHandler(nowCount);
 				}
 				else{
 					nowCount = input.val().replace(/\D/g,'') * 1;
@@ -107,8 +113,6 @@
 
 		maxVal: 99,
 
-		onPlus: function(){},
-		onMinus: function(){},
 		onChange: function(){}
 	};
 

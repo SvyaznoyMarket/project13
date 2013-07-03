@@ -14,7 +14,7 @@
 	var reviewsContainerClass = null;
 
 	//nodes
-	var moreReviewsButton = $('#getMoreReviewsButton');
+	var moreReviewsButton = $('.jsGetReviews');
 	var reviewTab = $('.bReviewsTabs__eTab');
 	var reviewWrap = $('.bReviewsWrapper');
 	var reviewContent = $('.bReviewsContent');
@@ -63,7 +63,7 @@
 		reviewTab.click(function(){
 			reviewsContainerClass = $(this).attr('data-container');
 			if (reviewsContainerClass === undefined){
-				return false;
+				return;
 			}
 
 			reviewsType = $(this).attr('data-reviews-type');
@@ -97,11 +97,16 @@
 	}
 
 	var leaveReview = function(){
-		var pid = $(this).attr('data-pid');
-		var name = $('#reviewsProductName').html();
+		var productInfo = $('#jsProductCard').data('value');
+		var pid = $(this).data('pid');
+		var name = productInfo.name;
 		var src = "http://reviews.testfreaks.com/reviews/new?client_id=enter.ru&" + $.param({key: pid, name: name});
 
-		$(".reviewPopup").lightbox_me({onLoad: function() { $("#rframe").attr("src", src) }});
+		$(".reviewPopup").lightbox_me({
+			onLoad: function() {
+				$("#rframe").attr("src", src);
+			}
+		});
 		return false;
 	};
 

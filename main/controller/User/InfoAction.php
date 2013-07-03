@@ -50,29 +50,33 @@ class InfoAction {
 
                 $buttons = [];
                 foreach ($cart->getProducts() as $cartProduct) {
-                    $buttons[] = [
-                        'id' => sprintf('cartButton-product-%s', $cartProduct->getId()),
+                    $buttons['product'][] = [
+                        'id'       => \View\Id::cartButtonForProduct($cartProduct->getId()),
+                        'quantity' => $cartProduct->getQuantity(),
                     ];
 
                     foreach ($cartProduct->getWarranty() as $cartWarranty) {
-                        $buttons[] = [
-                            'id' => sprintf('cartButton-product-%s-warranty-%s', $cartProduct->getId(), $cartWarranty->getId()),
+                        $buttons['warranty'][] = [
+                            'id'       => \View\Id::cartButtonForProductWarranty($cartProduct->getId(), $cartWarranty->getId()),
+                            'quantity' => $cartWarranty->getQuantity(),
                         ];
                     }
                     foreach ($cartProduct->getService() as $cartService) {
-                        $buttons[] = [
-                            'id' => sprintf('cartButton-product-%s-service-%s', $cartProduct->getId(), $cartService->getId()),
+                        $buttons['service'][] = [
+                            'id'       => \View\Id::cartButtonForProductService($cartProduct->getId(), $cartService->getId()),
+                            'quantity' => $cartService->getQuantity(),
                         ];
                     }
                 }
 
                 foreach ($cart->getServices() as $cartService) {
-                    $buttons[] = [
-                        'id' => sprintf('cartButton-service-%s', $cartService->getId()),
+                    $buttons['service'][] = [
+                        'id'       => \View\Id::cartButtonForService($cartService->getId()),
+                        'quantity' => $cartService->getQuantity(),
                     ];
                 }
 
-                $responseData['action']['cartButton']['button'] = $buttons;
+                $responseData['action']['cartButton'] = $buttons;
             }
 
             if (\App::config()->subscribe['enabled']) {

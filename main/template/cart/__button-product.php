@@ -7,9 +7,12 @@ return function (
     \Helper\TemplateHelper $helper
 ) {
 
+$class = \View\Id::cartButtonForProduct($product->getId()) . ' jsBuyButton ' . $class;
+
 $disabled = !$product->getIsBuyable();
 if ($disabled) {
     $url = '#';
+    $class .= ' mDisabled';
 } else {
     $urlParams = [
         'productId' => $product->getId(),
@@ -17,11 +20,11 @@ if ($disabled) {
     if ($helper->hasParam('sender')) {
         $urlParams['sender'] = $helper->getParam('sender') . '|' . $product->getId();
     }
-    $url = $helper->url('cart.product.add', $urlParams);
+    $url = $helper->url('cart.product.set', $urlParams);
 }
 
 ?>
 
-<a id="<?= sprintf('cartButton-product-%s', $product->getId()) ?>" href="<?= $url ?>" class="jsBuyButton<?php if ($disabled): ?> mDisabled<? endif ?><?php if ($class): ?> <?= $class ?><? endif ?>"><?= $value ?></a>
+<a href="<?= $url ?>" class="<?= $class ?>" data-group="<?= $product->getId() ?>"><?= $value ?></a>
 
 <? };

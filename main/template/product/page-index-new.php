@@ -1,6 +1,5 @@
 <?php
 /**
- * @var $renderer           \Templating\PhpClosureEngine
  * @var $page               \View\Product\IndexPage
  * @var $product            \Model\Product\Entity
  * @var $productVideos      \Model\Product\Video\Entity[]
@@ -170,460 +169,332 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
 
 <div id="jsProductCard" data-value="<?= $page->json($productData) ?>"></div>
 
-<section class="bProductSection__eLeft">
-    <div class="bProductDesc clearfix">
+<div class="bProductSection__eLeft">
+    <section>
+        <div class="bProductDesc clearfix">
 
-        <div class="bProductDesc__ePhoto">
-            <figure class="bProductDesc__ePhoto-bigImg">
-                <img class="bZoomedImg" src="<?= $product->getImageUrl(3) ?>" data-zoom-image="<?= $product->getImageUrl(4) ?>" alt="<?= $page->escape($product->getName()) ?>" />
-            </figure><!--/product big image section -->
+            <div class="bProductDesc__ePhoto">
+                <div class="bProductDesc__ePhoto-bigImg">
+                    <img class="bZoomedImg" src="<?= $product->getImageUrl(3) ?>" data-zoom-image="<?= $product->getImageUrl(4) ?>" alt="<?= $page->escape($product->getName()) ?>" />
+                </div><!--/product big image section -->
 
-            <div class="bPhotoAction">
-                <ul class="bPhotoAction__eOtherAction">
-                    <? if ($productVideo && $productVideo->getContent()): ?>
-                        <li class="bPhotoAction__eOtherAction-video"><a href=""></a></li>
-                    <? endif ?>
-                    <? if (count($photoList) || $model3dExternalUrl || $model3dImg):  ?>
-                        <li class="bPhotoAction__eOtherAction-grad360 <?=$model3dExternalUrl?'maybe3d':''?><?=$model3dImg?'3dimg':''?>"><a href=""></a></li>
-                    <? endif ?>
-                </ul><!--/view product section -->
-
-                <div class="bPhotoAction__eOtherPhoto mSliderActionMiniPhoto">
-                    <ul>
-                        <? foreach ($photoList as $photo): ?>
-                        <li>
-                            <a href="">
-                                <figure><img src="<?= $photo->getUrl(3) ?>" alt="" /></figure>
-                            </a>
-                        </li>
-                        <? endforeach ?>
-                    </ul>
-
-                    <div class="mSliderActionMiniPhoto__eBtn mSliderActionMiniPhoto__eDisable mSliderActionMiniPhoto__mPrev"><span>&#9668;</span></div>
-                    <div class="mSliderActionMiniPhoto__eBtn mSliderActionMiniPhoto__mNext"><span>&#9658;</span></div>
-                </div><!--/slider mini product images -->
-            </div>
-        </div><!--/product images section -->
-
-        <div class="bProductDesc__eStore">
-            <? if ($product->getIsBuyable()): ?>
-                <link itemprop="availability" href="http://schema.org/InStock" />
-                <div class="inStock">Есть в наличии</div>
-            <? elseif (!$product->getIsBuyable() && $product->getState()->getIsShop()): ?>
-                <link itemprop="availability" href="http://schema.org/InStoreOnly" />
-            <? else: ?>
-                <link itemprop="availability" href="http://schema.org/OutOfStock" />
-            <? endif ?>
-
-            <? if($product->getPriceOld() && !$user->getRegion()->getHasTransportCompany()): ?>
-                <div class="priceOld"><span><?= $page->helper->formatPrice($product->getPriceOld()) ?></span>p</div>
-            <? endif ?>
-            <div class="price"><strong><?= $page->helper->formatPrice($product->getPrice()) ?></strong>р</div>
-
-            <? if ($hasLowerPriceNotification): ?>
-            <?
-                $lowerPrice =
-                    ($product->getMainCategory() && $product->getMainCategory()->getPriceChangePercentTrigger())
-                        ? round($product->getPrice() * $product->getMainCategory()->getPriceChangePercentTrigger())
-                        : 0;
-            ?>
-            <div class="priceSale">
-                <span class="dotted jsLowPriceNotifer">Узнать о снижении цены</span>
-                <div class="bLowPriceNotiferPopup popup">
-                    <i class="close"></i>
-                    <h2 class="bLowPriceNotiferPopup__eTitle">
-                        Вы получите письмо,<br/>когда цена станет ниже
-                        <? if ($lowerPrice && ($lowerPrice < $product->getPrice())): ?>
-                            <strong class="price"><?= $page->helper->formatPrice($lowerPrice) ?></strong> <span class="rubl">p</span>
+                <div class="bPhotoAction">
+                    <ul class="bPhotoActionOtherAction">
+                        <? if ($productVideo && $productVideo->getContent()): ?>
+                            <li class="bPhotoActionOtherAction__eVideo"><a href=""></a></li>
                         <? endif ?>
-                    </h2>
-                    <input class="bLowPriceNotiferPopup__eInputEmail" placeholder="Ваш email" value="<?= $user->getEntity() ? $user->getEntity()->getEmail() : '' ?>" />
-                    <p class="bLowPriceNotiferPopup__eError red"></p>
-                    <a href="#" class="bLowPriceNotiferPopup__eSubmitEmail button bigbuttonlink mDisabled" data-url="<?= $page->url('product.notification.lowerPrice', ['productId' => $product->getId()]) ?>">Сохранить</a>
+                        <? if (count($photoList) || $model3dExternalUrl || $model3dImg):  ?>
+                            <li class="bPhotoActionOtherAction__eGrad360 <?=$model3dExternalUrl?'maybe3d':''?><?=$model3dImg?'3dimg':''?>"><a href=""></a></li>
+                        <? endif ?>
+                    </ul><!--/view product section -->
+
+                    <div class="bPhotoActionOtherPhoto">
+                        <div class="bPhotoActionOtherPhoto__eWrappSlider">
+                            <ul class="bPhotoActionOtherPhotoList">
+                                <? foreach ($photoList as $photo): ?>
+                                <li class="bPhotoActionOtherPhotoItem">
+                                    <a class="bPhotoActionOtherPhotoItem__eLink" href="">
+                                        <img src="<?= $photo->getUrl(3) ?>" alt="" />
+                                    </a>
+                                </li>
+                                <? endforeach ?>
+                            </ul>
+                        </div>
+
+                        <div class="bPhotoActionOtherPhoto__eBtn bPhotoActionOtherPhoto__eDisable bPhotoActionOtherPhoto__mPrev"><span>&#9668;</span></div>
+                        <div class="bPhotoActionOtherPhoto__eBtn bPhotoActionOtherPhoto__mNext"><span>&#9658;</span></div>
+                    </div><!--/slider mini product images -->
                 </div>
-            </div>
-            <? endif ?>
+            </div><!--/product images section -->
 
-            <? if ($creditData['creditIsAllowed'] && !$user->getRegion()->getHasTransportCompany()) : ?>
-            <div class="creditbox">
-                <label class="bigcheck" for="creditinput"><b></b>
-                    <span class="dotted">Беру в кредит</span>
-                    <input id="creditinput" type="checkbox" name="creditinput" autocomplete="off">
-                </label>
-
-                <div class="creditbox__sum">от <strong></strong>p в месяц</div>
-                <input data-model="<?= $page->escape($creditData['creditData']) ?>" id="dc_buy_on_credit_<?= $product->getArticle(); ?>" name="dc_buy_on_credit" type="hidden" />
-            </div><!--/credit box -->
-            <? endif ?>
-
-            <div class="bProductDesc__eStore-text">
-                <?= $product->getTagline() ?>
-                <div class="text__eAll"><a href="">Характеристики</a></div>
-            </div>
-
-            <div class="bReviewSection clearfix">
-                <div class="bReviewSection__eStar">
-                    <? $avgStarScore = empty($reviewsData['avg_star_score']) ? 0 : $reviewsData['avg_star_score'] ?>
-                    <?= empty($avgStarScore) ? '' : $page->render('product/_starsFive', ['score' => $avgStarScore]) ?>
-                </div>
-                <? if (!empty($avgStarScore)) { ?>
-                    <span class="border" onclick="scrollToId('bHeadSectionReviews')"><?= $reviewsData['num_reviews'] ?> <?= $page->helper->numberChoice($reviewsData['num_reviews'], array('отзыв', 'отзыва', 'отзывов')) ?></span>
-                <? } else { ?>
-                    <span>Отзывов нет</span>
-                <? } ?>
-                <span class="bReviewSection__eWrite jsLeaveReview" data-pid="productid">Оставить отзыв</span>
-            </div><!--/review section -->
-
-            <? if ((bool)$product->getModel() && (bool)$product->getModel()->getProperty()): //модели ?>
-            <div class="bProductDesc__eStore-select">
-            <? foreach ($product->getModel()->getProperty() as $property): ?>
-                <? if ($property->getIsImage()): ?>
+            <div class="bProductDesc__eStore">
+                <? if ($product->getIsBuyable()): ?>
+                    <link itemprop="availability" href="http://schema.org/InStock" />
+                    <div class="inStock">Есть в наличии</div>
+                <? elseif (!$product->getIsBuyable() && $product->getState()->getIsShop()): ?>
+                    <link itemprop="availability" href="http://schema.org/InStoreOnly" />
                 <? else: ?>
-                <?
-                    $productAttribute = $product->getPropertyById($property->getId());
-                    if (!$productAttribute) break;
-                ?>
-
+                    <link itemprop="availability" href="http://schema.org/OutOfStock" />
                 <? endif ?>
-                <div class="descSelectItem clearfix">
-                    <strong class="descSelectItem__eName"><?= $property->getName() ?></strong>
-                    <span class="descSelectItem__eValue"><?= $productAttribute->getStringValue() ?></span>
 
-                    <div class="descSelectItem__eDdm" style="display: none;">
-                        <ul>
-                        <? foreach ($property->getOption() as $option): ?>
-                        <? if ($option->getValue() == $productAttribute->getValue()) continue ?>
-                            <li>
-                                <a href="<?= $option->getProduct()->getLink() ?>"><?= $option->getHumanizedName() ?></a>
-                            </li>
-                        <? endforeach ?>
-                        </ul>
+                <? if($product->getPriceOld() && !$user->getRegion()->getHasTransportCompany()): ?>
+                    <div class="priceOld"><span><?= $page->helper->formatPrice($product->getPriceOld()) ?></span> <span class="rubl">p</span></div>
+                <? endif ?>
+                <div class="price"><strong><?= $page->helper->formatPrice($product->getPrice()) ?></strong> <span class="rubl">p</span></div>
+
+                <? if ($hasLowerPriceNotification): ?>
+                <?
+                    $lowerPrice =
+                        ($product->getMainCategory() && $product->getMainCategory()->getPriceChangePercentTrigger())
+                            ? round($product->getPrice() * $product->getMainCategory()->getPriceChangePercentTrigger())
+                            : 0;
+                ?>
+                <div class="priceSale">
+                    <span class="dotted jsLowPriceNotifer">Узнать о снижении цены</span>
+                    <div class="bLowPriceNotiferPopup popup">
+                        <i class="close"></i>
+                        <h2 class="bLowPriceNotiferPopup__eTitle">
+                            Вы получите письмо,<br/>когда цена станет ниже
+                            <? if ($lowerPrice && ($lowerPrice < $product->getPrice())): ?>
+                                <strong class="price"><?= $page->helper->formatPrice($lowerPrice) ?></strong> <span class="rubl">p</span>
+                            <? endif ?>
+                        </h2>
+                        <input class="bLowPriceNotiferPopup__eInputEmail" placeholder="Ваш email" value="<?= $user->getEntity() ? $user->getEntity()->getEmail() : '' ?>" />
+                        <p class="bLowPriceNotiferPopup__eError red"></p>
+                        <a href="#" class="bLowPriceNotiferPopup__eSubmitEmail button bigbuttonlink mDisabled" data-url="<?= $page->url('product.notification.lowerPrice', ['productId' => $product->getId()]) ?>">Сохранить</a>
                     </div>
                 </div>
-            <? endforeach ?>
+                <? endif ?>
 
-            </div><!--/additional product options -->
+                <? if ($creditData['creditIsAllowed'] && !$user->getRegion()->getHasTransportCompany()) : ?>
+                <div class="creditbox">
+                    <label class="bigcheck" for="creditinput"><b></b>
+                        <span class="dotted">Беру в кредит</span>
+                        <input id="creditinput" type="checkbox" name="creditinput" autocomplete="off">
+                    </label>
+
+                    <div class="creditbox__sum">от <strong></strong> <span class="rubl">p</span> в месяц</div>
+                    <input data-model="<?= $page->escape($creditData['creditData']) ?>" id="dc_buy_on_credit_<?= $product->getArticle(); ?>" name="dc_buy_on_credit" type="hidden" />
+                </div><!--/credit box -->
+                <? endif ?>
+
+                <div class="bProductDesc__eStore-text">
+                    <?= $product->getTagline() ?>
+                    <div class="text__eAll"><a href="">Характеристики</a></div>
+                </div>
+
+                <div class="bReviewSection clearfix">
+                    <div class="bReviewSection__eStar">
+                        <? $avgStarScore = empty($reviewsData['avg_star_score']) ? 0 : $reviewsData['avg_star_score'] ?>
+                        <?= empty($avgStarScore) ? '' : $page->render('product/_starsFive', ['score' => $avgStarScore]) ?>
+                    </div>
+                    <? if (!empty($avgStarScore)) { ?>
+                        <span class="border" onclick="scrollToId('bHeadSectionReviews')"><?= $reviewsData['num_reviews'] ?> <?= $page->helper->numberChoice($reviewsData['num_reviews'], ['отзыв', 'отзыва', 'отзывов']) ?></span>
+                    <? } else { ?>
+                        <span>Отзывов нет</span>
+                    <? } ?>
+
+                    <span class="bReviewSection__eWrite jsLeaveReview" data-pid="<?= $product->getId() ?>">Оставить отзыв</span>
+
+                    <div style="position:fixed; top:40px; left:50%; margin-left:-442px; z-index:1002; display:none; width:700px; height:480px" class="reviewPopup popup clearfix">
+                        <a class="close" href="#">Закрыть</a>
+                        <iframe id="rframe" frameborder="0" scrolling="auto" height="480" width="700"></iframe>
+                    </div>
+                </div><!--/review section -->
+
+                <? if ((bool)$product->getModel() && (bool)$product->getModel()->getProperty()): //модели ?>
+                <div class="bProductDesc__eStore-select">
+                <? foreach ($product->getModel()->getProperty() as $property): ?>
+                    <? if ($property->getIsImage()): ?>
+                    <? else: ?>
+                    <?
+                        $productAttribute = $product->getPropertyById($property->getId());
+                        if (!$productAttribute) break;
+                    ?>
+
+                    <? endif ?>
+                    <div class="descSelectItem clearfix">
+                        <strong class="descSelectItem__eName"><?= $property->getName() ?></strong>
+                        <span class="descSelectItem__eValue"><?= $productAttribute->getStringValue() ?></span>
+
+                        <div class="descSelectItem__eDdm" style="display: none;">
+                            <ul>
+                            <? foreach ($property->getOption() as $option): ?>
+                            <? if ($option->getValue() == $productAttribute->getValue()) continue ?>
+                                <li>
+                                    <a href="<?= $option->getProduct()->getLink() ?>"><?= $option->getHumanizedName() ?></a>
+                                </li>
+                            <? endforeach ?>
+                            </ul>
+                        </div>
+                    </div>
+                <? endforeach ?>
+
+                </div><!--/additional product options -->
+                <? endif ?>
+
+            </div><!--/product shop description box -->
+        </div><!--/product shop description section -->
+
+        <div class="bDescriptionProduct">
+            <?= $product->getDescription() ?>
+        </div>
+
+        <? if ((bool)$accessories && \App::config()->product['showAccessories']): ?>
+        <h3 class="bHeadSection">Аксессуары</h3>
+        <div class="bAccessory clearfix">
+
+            <? if ((bool)$accessoryCategory): ?>
+            <div class="bAccessory__eCat">
+                <ul>
+                <? $i = 0; foreach ($accessoryCategory as $iCategory): ?>
+                    <li<? if (0 == $i): ?> class="active"<? endif ?>><span><?= $iCategory->getName() ?></span></li>
+                <? $i++; endforeach ?>
+                </ul>
+            </div>
             <? endif ?>
 
-        </div><!--/product shop description box -->
-    </div><!--/product shop description section -->
-
-    <div class="bDescriptionProduct">
-        <?= $product->getDescription() ?>
-    </div>
-
-    <? if ((bool)$accessories && \App::config()->product['showAccessories']): ?>
-    <h3 class="bHeadSection">Аксессуары</h3>
-    <div class="bAccessory clearfix">
-
-        <? if ((bool)$accessoryCategory): ?>
-        <div class="bAccessory__eCat">
-            <ul>
-            <? $i = 0; foreach ($accessoryCategory as $iCategory): ?>
-                <li<? if (0 == $i): ?> class="active"<? endif ?>><span><?= $iCategory->getName() ?></span></li>
-            <? $i++; endforeach ?>
-            </ul>
-        </div>
+            <?= $helper->render('product/__slider', [
+                'products'       => array_values($accessories),
+                'count'          => count($product->getAccessoryId()),
+                'limit'          => $accessoryCategory ? \App::config()->product['itemsInAccessorySlider'] : \App::config()->product['itemsInSlider'],
+                'page'           => 1,
+                'url'            => $page->url('product.accessory', ['productToken' => $product->getToken()]),
+                'gaEvent'        => 'Accessorize',
+                'additionalData' => $additionalData,
+            ]) ?>
+        </div><!--/product accessory section -->
         <? endif ?>
 
-        <?= $renderer->render('product/__slider', [
-            'products'       => array_values($accessories),
-            'count'          => count($product->getAccessoryId()),
-            'limit'          => $accessoryCategory ? \App::config()->product['itemsInAccessorySlider'] : \App::config()->product['itemsInSlider'],
-            'page'           => 1,
-            'url'            => $page->url('product.accessory', ['productToken' => $product->getToken()]),
-            'gaEvent'        => 'Accessorize',
-            'additionalData' => $additionalData,
-        ]) ?>
-    </div><!--/product accessory section -->
-    <? endif ?>
+        <? if ((bool)$related && \App::config()->product['showRelated']): ?>
+            <h3 class="bHeadSection">С этим товаром также покупают</h3>
+            <?= $helper->render('product/__slider', [
+                'products'       => array_values($related),
+                'count'          => count($product->getRelatedId()),
+                'limit'          => \App::config()->product['itemsInSlider'],
+                'page'           => 1,
+                'url'            => $page->url('product.related', ['productToken' => $product->getToken()]),
+                'additionalData' => $additionalData,
+            ]) ?>
+        <? endif ?>
 
-    <? if ((bool)$related && \App::config()->product['showRelated']): ?>
-        <h3 class="bHeadSection">С этим товаром также покупают</h3>
-        <?= $renderer->render('product/__slider', [
-            'products'       => array_values($related),
-            'count'          => count($product->getRelatedId()),
-            'limit'          => \App::config()->product['itemsInSlider'],
-            'page'           => 1,
-            'url'            => $page->url('product.related', ['productToken' => $product->getToken()]),
-            'additionalData' => $additionalData,
-        ]) ?>
-    <? endif ?>
+        <h3 class="bHeadSection">Характеристики</h3>
+        <? $groupedProperties = $product->getGroupedProperties() ?>
+        <div class="bSpecifications">
+        <? foreach ($groupedProperties as $key => $group): ?>
+            <? if (!(bool)$group['properties']) continue ?>
 
-    <h3 class="bHeadSection">Характеристики</h3>
-    <? $groupedProperties = $product->getGroupedProperties() ?>
-    <div class="bSpecifications">
-    <? foreach ($groupedProperties as $key => $group): ?>
-        <? if (!(bool)$group['properties']) continue ?>
-
-        <div class="bSpecifications__eHead"><?= $group['group']->getName() ?></div>
-        <dl class="bSpecifications__eList clearfix">
-        <? foreach ($group['properties'] as $property): ?>
-        <? /** @var $property \Model\Product\Property\Entity  */?>
-            <dd>
-                <span><?= $property->getName() ?>
-                <? if ($property->getHint()): ?>
-                    <?= $renderer->render('product/__propertyHint', ['name' => $property->getName(), 'value' => $property->getHint()]) ?>
-                <? endif ?>
-                </span>
-            </dd>
-            <dt>
-                <?= $property->getStringValue() ?>
-                <? if ($property->getValueHint()): ?>
-                    <?= $renderer->render('product/__propertyHint', ['name' => $property->getStringValue(), 'value' => $property->getValueHint()]) ?>
-                <? endif ?>
-            </dt>
+            <div class="bSpecifications__eHead"><?= $group['group']->getName() ?></div>
+            <dl class="bSpecifications__eList clearfix">
+            <? foreach ($group['properties'] as $property): ?>
+            <? /** @var $property \Model\Product\Property\Entity  */?>
+                <dd>
+                    <span><?= $property->getName() ?>
+                    <? if ($property->getHint()): ?>
+                        <?= $helper->render('__hint', ['name' => $property->getName(), 'value' => $property->getHint()]) ?>
+                    <? endif ?>
+                    </span>
+                </dd>
+                <dt>
+                    <?= $property->getStringValue() ?>
+                    <? if ($property->getValueHint()): ?>
+                        <?= $helper->render('__hint', ['name' => $property->getStringValue(), 'value' => $property->getValueHint()]) ?>
+                    <? endif ?>
+                </dt>
+            <? endforeach ?>
+            </dl>
         <? endforeach ?>
-        </dl>
-    <? endforeach ?>
-    </div><!--/product specifications section -->
+        </div><!--/product specifications section -->
 
-    <h3 class="bHeadSection" id="bHeadSectionReviews">Обзоры и отзывы</h3>
+        <div class="bReviews">
+            <? if (\App::config()->product['reviewEnabled'] && $reviewsPresent): ?>
+                <h3 class="bHeadSection" id="bHeadSectionReviews">Обзоры и отзывы</h3>
+                
+                <div class="bReviewsSummary clearfix">
+                    <?= $page->render('product/_reviewsSummary', ['reviewsData' => $reviewsData, 'reviewsDataPro' => $reviewsDataPro, 'reviewsDataSummary' => $reviewsDataSummary]) ?>
+                </div>
 
-    <div class="bReviews">
-        <? if (\App::config()->product['reviewEnabled'] && $reviewsPresent): ?>
-            <div class="bReviewsSummary clearfix">
-                <?= $page->render('product/_reviewsSummary', ['reviewsData' => $reviewsData, 'reviewsDataPro' => $reviewsDataPro, 'reviewsDataSummary' => $reviewsDataSummary]) ?>
-            </div>
+                <? if (!empty($reviewsData['review_list'])) { ?>
+                    <div class="bReviewsWrapper" data-product-id="<?= $product->getId() ?>" data-page-count="<?= $reviewsData['page_count'] ?>" data-container="reviewsUser" data-reviews-type="user">
+                <? } elseif(!empty($reviewsDataPro['review_list'])) { ?>
+                <div class="bReviewsWrapper" data-product-id="<?= $product->getId() ?>" data-page-count="<?= $reviewsDataPro['page_count'] ?>" data-container="reviewsPro" data-reviews-type="pro">
+                    <? } ?>
+                <?= $page->render('product/_reviews', ['product' => $product, 'reviewsData' => $reviewsData, 'reviewsDataPro' => $reviewsDataPro]) ?>
+                </div>
+            <? endif ?>
+        </div>
 
-            <? if (!empty($reviewsData['review_list'])) { ?>
-                <div class="bReviewsWrapper" data-product-id="<?= $product->getId() ?>" data-page-count="<?= $reviewsData['page_count'] ?>" data-container="reviewsUser" data-reviews-type="user">
-            <? } elseif(!empty($reviewsDataPro['review_list'])) { ?>
-            <div class="bReviewsWrapper" data-product-id="<?= $product->getId() ?>" data-page-count="<?= $reviewsDataPro['page_count'] ?>" data-container="reviewsPro" data-reviews-type="pro">
-                <? } ?>
-            <?= $page->render('product/_reviews', ['reviewsData' => $reviewsData, 'reviewsDataPro' => $reviewsDataPro]) ?>
-            </div>
+
+        <? if (!$product->getIsBuyable() && $product->getState()->getIsShop() && \App::config()->smartengine['pull']): ?>
+            <h3 class="bHeadSection">Похожие товары</h3>
+            <?= $helper->render('product/__slider', [
+                'products'       => [],
+                'count'          => null,
+                'limit'          => \App::config()->product['itemsInSlider'],
+                'page'           => 1,
+                'url'            => $page->url('smartengine.pull.product_similar', ['productId' => $product->getId()]),
+                //'additionalData' => $additionalData,
+            ]) ?>
         <? endif ?>
+
+
+    </section>
+</div><!--/left section -->
+
+<div class="bProductSection__eRight">
+    <aside>
+        <div class="bWidgetBuy mWidget">
+            <div class="bCountSection clearfix" data-spinner="<?= $page->json(['button' => \View\Id::cartButtonForProduct($product->getId())]) ?>">
+                <button class="bCountSection__eM">-</button>
+                <input class="bCountSection__eNum" type="text" value="1" />
+                <button class="bCountSection__eP">+</button>
+                <span>шт.</span>
+            </div><!--/counter -->
+
+            <div class="bWidgetBuy__eBuy btnBuy">
+                <?= $helper->render('cart/__button-product', ['product' => $product, 'class' => 'btnBuy__eLink', 'value' => 'В корзину']) ?>
+            </div><!--/button buy -->
+
+            <? if ($product->getIsBuyable()): ?>
+                <div class="bWidgetBuy__eClick">
+                    <a
+                        href="#"
+                        class="jsOrder1click"
+                        data-model="<?= $page->json([
+                            'jsref'        => $product->getToken(),
+                            'jstitle'      => $product->getName(),
+                            'jsprice'      => $product->getPrice(),
+                            'jsimg'        => $product->getImageUrl(3),
+                            'jsbimg'       => $product->getImageUrl(2),
+                            'jsshortcut'   => $product->getArticle(),
+                            'jsitemid'     => $product->getId(),
+                            'jsregionid'   => $user->getRegion()->getId(),
+                            'jsregionName' => $user->getRegion()->getName(),
+                            'jsstock'      => 10,
+                        ]) ?>"
+                        link-output="<?= $page->url('order.1click', ['product' => $product->getToken()]) ?>"
+                        link-input="<?= $page->url('product.delivery_1click') ?>"
+                        >Купить быстро в 1 клик</a>
+                </div>
+                <form id="order1click-form" action="<?= $page->url('order.1click', ['product' => $product->getBarcode()]) ?>" method="post"></form>
+            <? endif ?>
+
+            <?= $helper->render('product/__delivery', ['product' => $product]) ?>
+
+            <div class="bAwardSection"><img src="/css/newProductCard/img/award.jpg" alt="" /></div>
+        </div><!--/widget delivery -->
+
+        <? if ((bool)$product->getWarranty()): ?>
+            <?= $helper->render('product/__warranty', ['product' => $product]) ?>
+        <? endif ?>
+
+        <? if ((bool)$product->getService()): ?>
+            <?= $helper->render('product/__service', ['product' => $product]) ?>
+        <? endif ?>
+    </aside>
+</div><!--/right section -->
+
+<div class="bBottomBuy clearfix">
+    <div class="bBottomBuy__eHead">
+        <div class="bBottomBuy__eSubtitle"><?= $product->getType()->getName() ?></div>
+        <h1 class="bBottomBuy__eTitle"><?= $title ?></h1>
     </div>
 
+    <div class="bWidgetBuy__eBuy btnBuy">
+        <?= $page->render('cart/_button', ['product' => $product, 'class' => 'btnBuy__eLink', 'value' => 'В корзину']) ?>
+    </div><!--/button buy -->
 
-    <? if (!$product->getIsBuyable() && $product->getState()->getIsShop()  && \App::config()->smartengine['pull']): ?>
-        <h3 class="bHeadSection">Похожие товары</h3>
-        <?= $renderer->render('product/__slider', [
-            'products'       => [],
-            'count'          => null,
-            'limit'          => \App::config()->product['itemsInSlider'],
-            'page'           => 1,
-            'url'            => $page->url('smartengine.pull.product_similar', ['productId' => $product->getId()]),
-            //'additionalData' => $additionalData,
-        ]) ?>
-    <? endif ?>
+    <div class="bCountSection clearfix">
+        <button class="bCountSection__eM">-</button>
+        <input class="bCountSection__eNum" type="text" value="1" />
+        <button class="bCountSection__eP">+</button>
+        <span>шт.</span>
+    </div><!--/counter -->
 
+    <div class="price"><strong><?= $page->helper->formatPrice($product->getPrice()) ?></strong> <span class="rubl">p</span></div>
+</div>
 
-</section><!--/left section -->
-
-<aside class="bProductSection__eRight">
-    <div class="bWidgetBuy mWidget">
-        <div class="bCountSection clearfix" data-spinner="<?= $page->json(['button' => sprintf('cartButton-product-%s', $product->getId())]) ?>">
-            <button class="bCountSection__eM">-</button>
-            <input class="bCountSection__eNum" type="text" value="1" />
-            <button class="bCountSection__eP">+</button>
-            <span>шт.</span>
-        </div><!--/counter -->
-
-        <div class="bWidgetBuy__eBuy btnBuy">
-            <?= $helper->render('cart/__button-product', ['product' => $product, 'class' => 'btnBuy__eLink', 'value' => 'В корзину']) ?>
-        </div><!--/button buy -->
-
-        <? if ($product->getIsBuyable()): ?>
-            <div class="bWidgetBuy__eClick">
-                <a
-                    href="#"
-                    class="jsOrder1click"
-                    data-model="<?= $page->json([
-                        'jsref'        => $product->getToken(),
-                        'jstitle'      => $product->getName(),
-                        'jsprice'      => $product->getPrice(),
-                        'jsimg'        => $product->getImageUrl(3),
-                        'jsbimg'       => $product->getImageUrl(2),
-                        'jsshortcut'   => $product->getArticle(),
-                        'jsitemid'     => $product->getId(),
-                        'jsregionid'   => $user->getRegion()->getId(),
-                        'jsregionName' => $user->getRegion()->getName(),
-                        'jsstock'      => 10,
-                    ]) ?>"
-                    link-output="<?= $page->url('order.1click', ['product' => $product->getToken()]) ?>"
-                    link-input="<?= $page->url('product.delivery_1click') ?>"
-                    >Купить быстро в 1 клик</a>
-            </div>
-            <form id="order1click-form" action="<?= $page->url('order.1click', ['product' => $product->getBarcode()]) ?>" method="post"></form>
-        <? endif ?>
-
-        <ul class="bWidgetBuy__eDelivery" data-value="<?= $page->json(['url' => $page->url('product.delivery')]) ?>">
-            <li class="bWidgetBuy__eDelivery-item bWidgetBuy__eDelivery-price">
-                <span>Доставка <strong>290</strong>p</span>
-                <div>Завтра, 16.05.2013</div>
-            </li>
-            <li class="bWidgetBuy__eDelivery-item bWidgetBuy__eDelivery-free">
-                <span>Самовывоз <strong>бесплатно</strong></span>
-                <div>Завтра, 16.05.2013</div>
-            </li>
-
-            <li class="bWidgetBuy__eDelivery-item bWidgetBuy__eDelivery-now click">
-                <span class="dotted">Есть в магазинах</span>
-                <div>Купить сегодня без предзаказа</div>
-            </li>
-
-            <ul style="display: block;" class="bDeliveryFreeAddress">
-                <li>
-                    м. Белорусская,<br/>
-                    ул. Грузинский вал, д. 31
-                </li>
-                <li>
-                    м. Ленинский проспект, <br/>
-                    ул. Орджоникидзе, д. 11, стр. 10
-                </li>
-                <li>
-                    м. Белорусская, <br/>
-                    ул. Грузинский вал, д. 31
-                </li>
-                <li>
-                    м. Ленинский проспект, <br/>
-                    ул. Орджоникидзе, д. 11, стр. 10
-                </li>
-                <li>
-                    м. Белорусская, <br/>
-                    ул. Грузинский вал, д. 31
-                </li>
-                <li>
-                    м. Ленинский проспект, <br/>
-                    ул. Орджоникидзе, д. 11, стр. 10
-                </li>
-                <li>
-                    м. Белорусская, <br/>
-                    ул. Грузинский вал, д. 31
-                </li>
-                <li>
-                    м. Ленинский проспект, <br/>
-                    ул. Орджоникидзе, д. 11, стр. 10
-                </li>
-            </ul><!--/выпадающий список при клике по - Есть в магазинах -->
-        </ul>
-
-        <div class="bAwardSection"><figure><img src="/css/newProductCard/img/award.jpg" alt="" /></figure></div>
-    </div><!--/widget delivery -->
-
-    <div class="bWidgetService mWidget">
-        <div class="bWidgetService__eHead">
-            <strong>Под защитой F1</strong>
-            Расширенная гарантия
-        </div>
-
-        <ul class="bWidgetService__eInputList">
-            <li>
-                <label for="name1" class="customInput radio">
-                    <input name="name1" type="radio" />
-
-                    <b></b>
-
-                    <div class="labelText">
-                        <div>
-                            <span class="dotted">Black: 2 годa</span>
-                            <div class="bHint">
-                              <a class="bHint_eLink">Разрешение дисплея</a>
-                              <div class="bHint_ePopup popup">
-                                <div class="close"></div>
-                                <div class="bHint-text">
-                                    <p>конвертировать видео, запустится ли игра. И это тот случай, когда чем больше – тем лучше.</p>
-                                </div>
-                              </div>
-                            </div>
-                        </div>
-                        <strong>1 490</strong>p
-                        <div style="display: none;" class="deSelect"><a class="">Отменить</a></div>
-                    </div>
-                </label>
-            </li>
-
-            <li>
-                <label for="name2" class="customInput radio checked">
-                    <input name="name1" type="radio" />
-
-                    <b></b>
-
-                    <div class="labelText">
-                        <div>
-                            <span class="dotted">Gold: 2,5 годa</span>
-                            <div class="bHint">
-                                  <a class="bHint_eLink">Разрешение дисплея</a>
-                                  <div class="bHint_ePopup popup">
-                                    <div class="close"></div>
-                                    <div class="bHint-text">
-                                        <p>конвертировать видео, запустится ли игра. И это тот случай, когда чем больше – тем лучше.</p>
-                                    </div>
-                                  </div>
-                                </div>
-                            </div>
-                        <strong>1 490</strong>p
-                        <div style="display: block;" class="deSelect"><a class="">Отменить</a></div>
-                    </div>
-                </label>
-            </li>
-
-            <li>
-                <label for="name3" class="customInput radio">
-                    <input name="name1" type="radio" />
-
-                    <b></b>
-
-                    <div class="labelText">
-                        <div>
-                            <span class="dotted">Platinum: 3 годa</span>
-                            <div class="bHint">
-                                <a class="bHint_eLink">Разрешение дисплея</a>
-                                <div class="bHint_ePopup popup">
-                                    <div class="close"></div>
-                                    <div class="bHint-text">
-                                        <p>конвертировать видео, запустится ли игра. И это тот случай, когда чем больше – тем лучше.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <strong>1 490</strong>p
-                        <div style="display: none;" class="deSelect"><a class="">Отменить</a></div>
-                    </div>
-                </label>
-            </li>
-        </ul>
-    </div><!--/widget services -->
-
-    <div class="bWidgetService mWidget">
-        <div class="bWidgetService__eHead">
-            <strong>F1 сервис</strong>
-            Установка и настройка
-        </div>
-
-        <ul class="bWidgetService__eInputList">
-            <li>
-                <label for="name4" class="customInput checkbox">
-                    <input name="name4" type="checkbox" />
-
-                    <b></b>
-
-                    <div class="labelText">
-                        <div>
-                            <span class="dotted">Подключение<br/>электричества</span>
-                            <div class="bHint">
-                                <a class="bHint_eLink">Разрешение дисплея</a>
-                                <div class="bHint_ePopup popup">
-                                    <div class="close"></div>
-                                    <div class="bHint-text">
-                                        <p>конвертировать видео, запустится ли игра. И это тот случай, когда чем больше – тем лучше.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <strong>1 490</strong>p
-                        <div style="display: none;" class="deSelect"><a class="">Отменить</a></div>
-                    </div>
-                </label>
-            </li>
-        </ul>
-        <div class="bWidgetService__eAll"><span class="dotted">Ещё 87 услуг</span><br/>доступны в магазине</div>
-    </div><!--/widget services -->
-</aside><!--/right section -->
-
-<?= $helper->render('product/__delivery') ?>
+<div class="bBreadCrumbsBottom"><?= $page->render('_breadcrumbs', ['breadcrumbs' => $breadcrumbs, 'class' => 'breadcrumbs-footer']) ?></div>
 
 <? if ($product->getIsBuyable()): ?>
     <?= $page->render('order/form-oneClick') ?>

@@ -230,7 +230,7 @@ return [
         'action'  => ['Cart\ClearAction', 'execute'],
     ],
     // добавление товара в корзину
-    'cart.product.add' => [
+    'cart.product.set' => [
         'pattern' => '/cart/add/{productId}/_quantity/{quantity}', // TODO: сделать поприличнее - '/cart/add-product/{productId}/{quantity}'
         'action'  => ['Cart\ProductAction', 'set'],
     ],
@@ -250,7 +250,7 @@ return [
         'action'  => ['Cart\ServiceAction', 'delete'],
     ],
     // добавление услуги в корзину
-    'cart.service.add' => [
+    'cart.service.set' => [
         'pattern' => '/cart/add_service/{productId}/_service/{serviceId}/_quantity/{quantity}',
         'require' => ['productId' => '\d+', 'serviceId' => '\d+'],
         'action'  => ['Cart\ServiceAction', 'set'],

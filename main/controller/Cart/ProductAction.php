@@ -5,18 +5,17 @@ namespace Controller\Cart;
 class ProductAction {
     /**
      * @param int           $productId
-     * @param int           $quantity
      * @param \Http\Request $request
      * @return \Http\JsonResponse|\Http\RedirectResponse
      * @throws \Exception
      */
-    public function set($productId, $quantity = 1, \Http\Request $request) {
+    public function set($productId, \Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
         $cart = \App::user()->getCart();
 
         $productId = (int)$productId;
-        $quantity = (int)$quantity;
+        $quantity = (int)$request->get('quantity', 1);
 
         try {
             if ($quantity < 0) {
@@ -214,10 +213,12 @@ class ProductAction {
     public function delete(\Http\Request $request, $productId) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
-        return $this->set($productId, 0, $request);
+        $request->query->set('quantity', 0);
+
+        return $this->set($productId, $request);
     }
 
-    protected function updateCartWarranty(\Model\Product\Entity $product, \Model\Cart\Product\Entity $cartProduct = null, $quantity) {
+    protected function updateCartWarranty(\Model\Product\Entity $product, \Model\Cart\Product\Entity $cartProduct = null) {
         // обновить количество гарантий для товара
         if ($cartProduct && (bool)$cartProduct->getWarranty()) {
             try {
@@ -239,7 +240,7 @@ class ProductAction {
                     throw new \Exception(sprintf('Не найдена расширенная гарантия #%s на товар #%s', $cartWarranty->getId(), $product->getId()));
                 }
 
-                \App::user()->getCart()->setWarranty($warranty, $quantity, $product->getId());
+                \App::user()->getCart()->setWarranty($warranty, $product->getId());
             } catch (\Exception $e) {
                 \App::logger()->error($e);
             }

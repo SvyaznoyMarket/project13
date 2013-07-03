@@ -332,7 +332,7 @@ return [
         'action'  => ['Cart\ClearAction', 'execute'],
     ],
     // добавление товара в корзину
-    'cart.product.add' => [
+    'cart.product.set' => [
         'pattern' => '/cart/add-product/{productId}',
         'action'  => ['Cart\ProductAction', 'set'],
     ],
@@ -347,7 +347,7 @@ return [
         'action'  => ['Cart\ProductAction', 'setList'],
     ],
     // добавление услуги в корзину
-    'cart.service.add' => [
+    'cart.service.set' => [
         'pattern' => '/cart/add-service/{serviceId}/for-product/{productId}',
         'require' => ['productId' => '\d+', 'serviceId' => '\d+'],
         'action'  => ['Cart\ServiceAction', 'set'],
@@ -542,6 +542,12 @@ return [
         'pattern' => '/debug/log/{id}',
         'action'  => ['LogAction', 'execute'],
         'method'  => ['POST'],
+    ],
+
+    'git.pull' => [
+        'pattern' => '/git/pull',
+        'action'  => ['GitAction', 'pull'],
+        'method'  => ['GET'],
     ],
 
     //cron

@@ -22,7 +22,7 @@ module.exports = function(grunt) {
 		// "jquery.effects.blind.js",
 		"jquery.lightbox_me.js",
 		"jquery.mousewheel.min.js",
-		"jquery.raty.js",
+		// "jquery.raty.js",
 		"jquery.scrollto.js",
 		"jquery.placeholder.js",
 		"prettyCheckboxes.js",
@@ -50,6 +50,7 @@ module.exports = function(grunt) {
 		jsDevPath+'library/library.js',
 		jsDevPath+'library/mapDriver.js',
 		jsDevPath+'library/black_box.js',
+		jsDevPath+'library/addParameterToUrl.js',
 		jsDevPath+'library/*.js',
 		// jsDevPath+'library/isTrueEmail.js',
 	];

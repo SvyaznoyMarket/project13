@@ -3,37 +3,35 @@
  *
  * @author		Zaytsev Alexandr
  * @requires	printPrice
- * @param		{event} e
+ * @param		{event}		e
+ * @param		{Boolean}	anyway Если true событие будет все равно выполнено
  */
 ;(function(){
-	var BuyButton = function(e){
-		e.stopPropagation();
 
+	/**
+	 * Покупка товара. Маркировка кнопок.
+	 * 
+	 * @param  {Event} e
+	 */
+	var buyProcessing = function(e){
 		var button = $(this);
-
-		if (button.hasClass('disabled')) {
-			return false;
-		}
-		if (button.hasClass('active')) {
-			return false;
-		}
-
 		var url = button.attr('href');
 
 		var addToCart = function(data) {
 			if (data.success) {
-				button.addClass('mBought');
-				button.html('В корзине');
+				var groupBtn = button.data('group');
+				$('.jsBuyButton[data-group="'+groupBtn+'"]').html('В корзине').addClass('mBought');
 				// kissAnalytics(data);
 				// sendAnalytics(button);
 				
 				if (blackBox) {
-					var basket = data.data;
-					var product = data.result.product;
+					var basket = data.cart;
+					var product = data.product;
 					var tmpitem = {
 						'title': product.name,
 						'price' : printPrice(product.price),
-						'imgSrc': 'need image link',
+						'imgSrc': product.img,
+						'productLink': product.link,
 						'totalQuan': basket.full_quantity,
 						'totalSum': printPrice(basket.full_price),
 						'linkToOrder': basket.link,
@@ -42,7 +40,28 @@
 				}
 			}
 		};
+
 		$.get(url, addToCart);
+	}
+
+	/**
+	 * Хандлер кнопки купить
+	 * 
+	 * @param  {Event} e
+	 */
+	var BuyButton = function(e){
+		e.stopPropagation();
+
+		var button = $(this);
+
+		if (button.hasClass('mDisabled')) {
+			return false;
+		}
+		if (button.hasClass('mBought')) {
+			return false;
+		}
+
+		button.trigger('buy', buyProcessing);
 		return false;
 	};
 
@@ -54,14 +73,15 @@
 	 * @param	{Object}	markActionInfo Данные полученые из Action
 	 */
 	var markCartButton = function(event, markActionInfo){
-		for (var i = 0, len = markActionInfo.button.length; i < len; i++){
-			$('#'+markActionInfo.button[i].id).html('В корзине').addClass('mBought');
+		for (var i = 0, len = markActionInfo.product.length; i < len; i++){
+			$('.'+markActionInfo.product[i].id).html('В корзине').addClass('mBought');
 		}
 	};
 	$("body").bind('markcartbutton', markCartButton);
 	
 	$(document).ready(function() {
 		$('.jsBuyButton').live('click', BuyButton);
+		$('.jsBuyButton').live('buy', buyProcessing);
 	});
 
 	/**

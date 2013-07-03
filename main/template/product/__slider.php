@@ -34,7 +34,7 @@ return function (
                         <img src="/images/reviews_star_empty.png">
                     </div>
                     <div class="productName"><a href="<?= $helper->url('product', ['productPath' => $product->getPath()]) ?>"><?= $product->getName() ?></a></div>
-                    <div class="productPrice"><span class="price"><?= $helper->formatPrice($product->getPrice()) ?>p</span></div>
+                    <div class="productPrice"><span class="price"><?= $helper->formatPrice($product->getPrice()) ?> <span class="rubl">p</span></span></div>
                     <div class="btnBuy">
                         <?= $helper->render('cart/__button-product', ['product' => $product, 'class' => 'btnBuy__eLink', 'value' => 'В корзину']) ?>
                     </div>

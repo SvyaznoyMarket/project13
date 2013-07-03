@@ -13,7 +13,7 @@
 if ($disabled) {
     $url = '#';
 } else if (!isset($url)) {
-    $url = $page->url('old.cart.product.add', array('productId' => $product->getId())).($page->hasGlobalParam('sender')?(false === strpos($product->getLink(), '?') ? '?' : '&') . 'sender='.$page->getGlobalParam('sender').'|'.$product->getId():'');
+    $url = $page->url('old.cart.product.set', array('productId' => $product->getId())).($page->hasGlobalParam('sender')?(false === strpos($product->getLink(), '?') ? '?' : '&') . 'sender='.$page->getGlobalParam('sender').'|'.$product->getId():'');
 }
 
 if (empty($value)) $value = '&nbsp;'

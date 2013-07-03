@@ -85,6 +85,10 @@ class Entity extends BasicEntity {
     protected $nearestCity = [];
 
     public function __construct(array $data = []) {
+        $data['service'] = [
+            ['id' => 1, 'name' => 'Тест', 'price' => 1200],
+        ];
+
         if (array_key_exists('id', $data)) $this->setId($data['id']);
         if (array_key_exists('view_id', $data)) $this->setViewId($data['view_id']);
         if (array_key_exists('type_id', $data)) $this->setTypeId($data['type_id']);
