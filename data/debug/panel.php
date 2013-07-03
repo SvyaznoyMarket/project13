@@ -11,14 +11,17 @@ if ((bool)\App::exception()->all()) {
 }
 
 $debug->add('id', \App::$id, 145);
-$debug->add('env', \App::$env, 144);
-$debug->add('name', \App::$name, 143);
-$debug->add('git.branch', shell_exec(sprintf('cd %s && git rev-parse --abbrev-ref HEAD', realpath(\App::config()->appDir))), 142);
-$debug->add('git.tag', shell_exec(sprintf('cd %s && git describe --always --tag', realpath(\App::config()->appDir))), 141);
+$debug->add('env', \App::$name . '.' . \App::$env, 144);
+$debug->add(
+    'git',
+    shell_exec(sprintf('cd %s && git rev-parse --abbrev-ref HEAD', realpath(\App::config()->appDir)))
+    . ' '
+    . shell_exec(sprintf('cd %s && git describe --always --tag', realpath(\App::config()->appDir)))
+    , 143);
 
+$debug->add('route', \App::request()->attributes->get('route'), 138);
 $action =implode('.', (array)\App::request()->attributes->get('action', []));
-$debug->add('act', $action ?: 'undefined', 138, $action ? \Debug\Collector::TYPE_INFO : \Debug\Collector::TYPE_ERROR);
-$debug->add('route', \App::request()->attributes->get('route'), 137);
+$debug->add('act', $action ?: 'undefined', 137, $action ? \Debug\Collector::TYPE_INFO : \Debug\Collector::TYPE_ERROR);
 
 if (\App::user()->getToken()) {
     $debug->add('user', \App::user()->getToken(), 135);
