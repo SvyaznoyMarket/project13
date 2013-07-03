@@ -62,6 +62,9 @@ $(document).ready(function() {
 
 	/**
 	 * Расчет доставки
+	 *
+	 * @author		Zaytsev Alexandr
+	 * @requires	jQuery, simple_templating
 	 */
 	(function(){
 		var widgetBox = $('.bWidgetBuy__eDelivery');
@@ -129,7 +132,17 @@ $(document).ready(function() {
 	}());
 
 
-	
+	/**
+	 * Перемотка к Id
+	 *
+	 * @requires jQuery
+	 */
+	var goToId = function(){
+		var to = $(this).data('goto');
+		jQuery.scrollTo( $('#'+to), 800 );
+		return false;
+	}
+	$('.jsGoToId').bind('click',goToId);
 
 
 	/**

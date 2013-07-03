@@ -260,7 +260,7 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
 
                 <div class="bProductDesc__eStore-text">
                     <?= $product->getTagline() ?>
-                    <div class="text__eAll"><a href="">Характеристики</a></div>
+                    <div class="text__eAll"><a class="jsGoToId" data-goto="productspecification" href="">Характеристики</a></div>
                 </div>
 
                 <div class="bReviewSection clearfix">
@@ -269,7 +269,7 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
                         <?= empty($avgStarScore) ? '' : $page->render('product/_starsFive', ['score' => $avgStarScore]) ?>
                     </div>
                     <? if (!empty($avgStarScore)) { ?>
-                        <span class="border" onclick="scrollToId('bHeadSectionReviews')"><?= $reviewsData['num_reviews'] ?> <?= $page->helper->numberChoice($reviewsData['num_reviews'], ['отзыв', 'отзыва', 'отзывов']) ?></span>
+                        <span class="jsGoToId border" data-goto="bHeadSectionReviews"><?= $reviewsData['num_reviews'] ?> <?= $page->helper->numberChoice($reviewsData['num_reviews'], ['отзыв', 'отзыва', 'отзывов']) ?></span>
                     <? } else { ?>
                         <span>Отзывов нет</span>
                     <? } ?>
@@ -316,7 +316,7 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
             </div><!--/product shop description box -->
         </div><!--/product shop description section -->
 
-        <div class="bDescriptionProduct">
+        <div id="productspecification" class="bDescriptionProduct">
             <?= $product->getDescription() ?>
         </div>
 
