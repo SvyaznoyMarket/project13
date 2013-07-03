@@ -544,6 +544,12 @@ return [
         'method'  => ['POST'],
     ],
 
+    'git.pull' => [
+        'pattern' => '/git/pull',
+        'action'  => ['GitAction', 'pull'],
+        'method'  => ['GET'],
+    ],
+
     //cron
     'cron-index' => [
         'pattern' => '/cron',
