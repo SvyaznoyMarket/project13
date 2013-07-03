@@ -347,7 +347,7 @@ return [
         'action'  => ['Cart\ProductAction', 'setList'],
     ],
     // добавление услуги в корзину
-    'cart.service.add' => [
+    'cart.service.set' => [
         'pattern' => '/cart/add-service/{serviceId}/for-product/{productId}',
         'require' => ['productId' => '\d+', 'serviceId' => '\d+'],
         'action'  => ['Cart\ServiceAction', 'set'],

@@ -88,8 +88,8 @@ foreach ($product->getService() as $service) {
                         <td class="mEdit">
                             <?= $page->render('_spinner', array(
                                 'quantity' => $cartService->getQuantity(),
-                                'incUrl'   => $page->url('cart.service.add', array('serviceId' => $service->getId(), 'quantity' => 1, 'productId' => $product->getId())),
-                                'decUrl'   => $page->url('cart.service.add', array('serviceId' => $service->getId(), 'quantity' => -1, 'productId' => $product->getId())),
+                                'incUrl'   => $page->url('cart.service.set', array('serviceId' => $service->getId(), 'quantity' => 1, 'productId' => $product->getId())),
+                                'decUrl'   => $page->url('cart.service.set', array('serviceId' => $service->getId(), 'quantity' => -1, 'productId' => $product->getId())),
                             )) ?>
                             <a class="button whitelink ml5 mInlineBlock mVAMiddle" href="<?= $page->url('cart.service.delete', array('serviceId' => $service->getId(), 'productId' => $product->getId())) ?>">Отменить</a>
                         </td>

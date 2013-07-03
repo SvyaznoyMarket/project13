@@ -1084,7 +1084,7 @@ class Action {
                 if ($cartItem instanceof \Model\Cart\Product\Entity) {
                     $itemView->addUrl = $router->generate('cart.product.add', ['productId' => $itemData['id'], 'quantity' => $itemData['stock']]);
                 } else if ($cartItem instanceof \Model\Cart\Service\Entity) {
-                    $itemView->addUrl = $router->generate('cart.service.add', ['serviceId' => $itemData['id'], 'quantity' => 1, 'productId' => 0]);
+                    $itemView->addUrl = $router->generate('cart.service.set', ['serviceId' => $itemData['id'], 'quantity' => 1, 'productId' => 0]);
                 }
 
                 $itemView->id = $itemData['id'];

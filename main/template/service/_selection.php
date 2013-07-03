@@ -38,7 +38,7 @@ $cartServicesById = $cartProduct ? $cartProduct->getService() : [];
                     <? } elseif ($user->getRegion()->getHasService() && $service->isInSale() && $cartProduct && $cartProduct->hasService($service->getId())) { ?>
                     <input data-f1title="<?= $page->escape($service->getName()) ?>" data-f1price="<?= $service->getPrice() ?>"
                            data-fid="<?= $service->getId() ?>"
-                           data-url="<?= $page->url('cart.service.add', array('serviceId' => $service->getId(), 'productId' => $product->getId(), 'quantity' => 1)) ?>"
+                           data-url="<?= $page->url('cart.service.set', array('serviceId' => $service->getId(), 'productId' => $product->getId(), 'quantity' => 1)) ?>"
                            data-f1token="<?= $service->getToken() ?>"
                            ref="<?= addslashes($service->getToken()) ?>"
                            type="button" class="active button yellowbutton" value="В корзине" />
@@ -46,7 +46,7 @@ $cartServicesById = $cartProduct ? $cartProduct->getService() : [];
                     <input data-f1title="<?= $page->escape($service->getName()) ?>"
                            data-f1price="<?= $page->helper->formatPrice($service->getPrice()) ?>"
                            data-fid="<?= $service->getId() ?>"
-                           data-url="<?= $page->url('cart.service.add', array('serviceId' => $service->getId(), 'productId' => $product->getId(), 'quantity' => 1)) ?>"
+                           data-url="<?= $page->url('cart.service.set', array('serviceId' => $service->getId(), 'productId' => $product->getId(), 'quantity' => 1)) ?>"
                            data-f1token="<?= $service->getToken() ?>"
                            data-event="BuyF1"
                            data-title="Заказ услуги F1"

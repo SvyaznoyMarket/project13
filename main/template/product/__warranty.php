@@ -17,7 +17,7 @@ return function (
         $id = \View\Id::cartButtonForProductWarranty($product->getId(), $warranty->getId());
     ?>
         <li>
-            <input id="<?= $id ?>" class="<?= $id ?> bCustomInput" name="<?= $product->getId()?>" type="radio" hidden />
+            <input id="<?= $id ?>" class="<?= $id ?> bCustomInput" name="<?= $product->getId()?>" type="radio" hidden data-url="<?= $helper->url('cart.warranty.set', ['warrantyId' => $warranty->getId(), 'productId' => $product->getId()]) ?>" />
             <label class="bCustomLabel" for="<?= $id ?>">
                 <div class="bCustomLabel__eText">
                     <span class="dotted"><?= $warranty->getName() ?></span> <?= $warranty->getPeriod() . '&nbsp;' . $helper->numberChoice($warranty->getPeriod(), ['месяц', 'месяца', 'месяцев']) ?>

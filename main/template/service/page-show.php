@@ -57,7 +57,7 @@ $json = array(
         <? if ($user->getRegion()->getHasService()): ?>
             <? if ($service->isInSale()): ?>
                 <a class="link1 gaEvent"
-                   href="<?= $page->url('cart.service.add', array('serviceId' => $service->getId(), 'quantity' => 1, 'productId' => 0)); ?>"
+                   href="<?= $page->url('cart.service.set', array('serviceId' => $service->getId(), 'quantity' => 1, 'productId' => 0)); ?>"
                    data-event="BuyF1" data-title="Заказ услуги F1">Купить услугу</a>
             <? elseif ($service->getIsInShop()): ?>
                 <b>Доступна в магазине</b>
@@ -115,10 +115,10 @@ $json = array(
                 <? endif ?>
             </div>
 
-            <? $json = array('jsref' => $alike->getToken(), 'jsimg' => $alike->getImageUrl(), 'jstitle' => $alike->getName(), 'jsprice' => $page->helper->formatPrice($alike->getPrice()), 'url' => $page->url('cart.service.add', array('serviceId' => $alike->getId(), 'quantity' => 1, 'productId' => 0))) ?>
+            <? $json = array('jsref' => $alike->getToken(), 'jsimg' => $alike->getImageUrl(), 'jstitle' => $alike->getName(), 'jsprice' => $page->helper->formatPrice($alike->getPrice()), 'url' => $page->url('cart.service.set', array('serviceId' => $alike->getId(), 'quantity' => 1, 'productId' => 0))) ?>
 
             <? if ($alike->isInSale() && $user->getRegion()->getHasService()) : ?>
-                <form action="<?= $page->url('cart.service.add', array('serviceId' => $alike->getId(), 'quantity' => 1, 'productId' => 0)) ?>">
+                <form action="<?= $page->url('cart.service.set', array('serviceId' => $alike->getId(), 'quantity' => 1, 'productId' => 0)) ?>">
                     <input data-value="<?= $page->json($json) ?>" data-event="BuyF1" data-title="Заказ услуги F1" type="submit" class="button yellowbutton gaEvent" value="Купить услугу"/>
                 </form>
             <? endif ?>

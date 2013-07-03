@@ -250,7 +250,7 @@ return [
         'action'  => ['Cart\ServiceAction', 'delete'],
     ],
     // добавление услуги в корзину
-    'cart.service.add' => [
+    'cart.service.set' => [
         'pattern' => '/cart/add_service/{productId}/_service/{serviceId}/_quantity/{quantity}',
         'require' => ['productId' => '\d+', 'serviceId' => '\d+'],
         'action'  => ['Cart\ServiceAction', 'set'],
