@@ -1222,10 +1222,17 @@ $(document).ready(function(){
 	})
 	
     $(".goodsbar .link1").bind( 'click.css', function()   {
+    	if ( $(this).hasClass('disabled') ){
+    		return false;
+    	}
+
         $(this).addClass("link1active")
     })
 
     $(".goodsbarbig .link1").bind( 'click.css', function()   {
+    	if ( $(this).hasClass('disabled') ){
+    		return false;
+    	}
         $(".goodsbarbig .link1").addClass("link1active")
         $('.bCountSet').css('visibility','hidden')
         $('.countTitle').css('visibility','hidden')
