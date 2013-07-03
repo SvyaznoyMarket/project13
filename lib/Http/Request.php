@@ -746,7 +746,7 @@ class Request {
      */
     public function getQueryString() {
         $qs = static::normalizeQueryString($this->server->get('QUERY_STRING'));
-
+        \App::logger()->warn(sprintf('QUERY_STRING %s', $this->server->get('QUERY_STRING')));
         return '' === $qs ? null : $qs;
     }
 
