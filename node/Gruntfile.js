@@ -32,7 +32,8 @@ module.exports = function(grunt) {
 		"jquery.maskedinput.js",
 		"jquery.put_cursor_at_end.js",
 		"goodsCounter.js",
-		"jquery.elevatezoom.js"
+		"jquery.elevatezoom.js",
+		"customRadio.js"
 	];
 
 	/**
