@@ -187,8 +187,6 @@
 				.script( 'http://direct-credit.ru/widget/api_script_utf.js' )
 				.script( getWithVersion('common.js') )
 				.wait()
-				.script( getWithVersion('watch3d.js') )
-				.script( 'swfobject.min.js' ) // maybe 3d
 				.script( 'DAnimFramePlayer.min.js' ) // 3d furniture
 				.script( 'KupeConstructorScript.min.js' ) // furniture constuctor
 				.script( 'three.min.js' ) // for furniture constuctor
