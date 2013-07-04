@@ -75,7 +75,7 @@ class WarrantyAction {
                 ];
             }
             if (\App::config()->kissmentrics['enabled']) {
-                $kissInfo = \Kissmetrics\Manager::getCartEvent($product, $cartWarranty);
+                $kissInfo = \Kissmetrics\Manager::getCartEvent($product, null, $cartWarranty);
                 if (isset($kissInfo['product'])) $productInfo = array_merge($productInfo, $kissInfo['product']);
                 if (isset($kissInfo['warranty'])) $warrantyInfo = $kissInfo['warranty'];
             }
