@@ -18,7 +18,6 @@
 			var plusBtn = $self.find(options.plusSelector);
 			var minusBtn = $self.find(options.minusSelector);
 			var input = $self.find(options.inputSelector);
-			var nowCount = input.val();
 
 			var counterGroupName = $self.attr('data-spinner-for');
 			var counterGroup = $('[data-spinner-for="'+counterGroupName+'"]');
@@ -37,6 +36,7 @@
 			var plusHandler = function(e){
 				e.stopPropagation();
 
+				var nowCount = input.val();
 				if ((nowCount*1)+1 > options.maxVal){
 					return false;
 				}
@@ -49,6 +49,7 @@
 			var minusHandler = function(e){
 				e.stopPropagation();
 
+				var nowCount = input.val();
 				if ((nowCount*1)-1 < 1){
 					return false;
 				}
@@ -61,6 +62,7 @@
 			var keyupHandler = function(e){
 				e.stopPropagation();
 
+				var nowCount = input.val();
 				if (trigger){
 					nowCount = input.val();
 					if ((nowCount*1) < 1){
@@ -102,10 +104,18 @@
 				return false;
 			};
 
+			var updatespinner = function(e, products){
+				for (var i = products.product.length - 1; i >= 0; i--) {
+					var input = $('[data-spinner-for="'+products.product[i].id+'"]').find('input');
+					input.val(products.product[i].quantity);
+				};
+			};
+
 			plusBtn.bind('click', plusHandler);
 			minusBtn.bind('click',minusHandler);
 			input.bind('keydown', keydownHandler);
 			input.bind('keyup', keyupHandler);
+			$('body').bind('updatespinner', updatespinner)
 		});
 	};
 

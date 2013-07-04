@@ -186,6 +186,7 @@ BlackBox.prototype.init = function() {
 		}
 		if (action.cartButton !== undefined) {
 			$("body").trigger("markcartbutton", [action.cartButton]);
+			$("body").trigger("updatespinner", [action.cartButton]);
 		}
 	};
 

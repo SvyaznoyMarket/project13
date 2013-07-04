@@ -342,8 +342,8 @@ $(document).ready(function() {
 	 */
 	$('.bCountSection').goodsCounter({
 		onChange:function(count){
-			var spinnerData = $('.bCountSection').data('spinner');
-			var bindButton = $('.'+spinnerData.button);
+			var spinnerFor = $('.bCountSection').attr('data-spinner-for');
+			var bindButton = $('.'+spinnerFor);
 			var newHref = bindButton.attr('href');
 
 			bindButton.attr('href',newHref.addParameterToUrl('quantity',count));
