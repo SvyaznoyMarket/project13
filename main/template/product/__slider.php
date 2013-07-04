@@ -26,13 +26,6 @@ return function (
             <li>
                 <div class="product__inner">
                     <a class="productImg" href=""><img src="<?= $product->getImageUrl() ?>" alt="<?= $helper->escape($product->getName()) ?>" /></a>
-                    <div class="reviewSection__star clearfix reviewSection100__star">
-                        <img src="/images/reviews_star.png">
-                        <img src="/images/reviews_star.png">
-                        <img src="/images/reviews_star.png">
-                        <img src="/images/reviews_star.png">
-                        <img src="/images/reviews_star_empty.png">
-                    </div>
                     <div class="productName"><a href="<?= $helper->url('product', ['productPath' => $product->getPath()]) ?>"><?= $product->getName() ?></a></div>
                     <div class="productPrice"><span class="price"><?= $helper->formatPrice($product->getPrice()) ?> <span class="rubl">p</span></span></div>
                     <div class="btnBuy">
