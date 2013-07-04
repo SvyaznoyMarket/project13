@@ -16,7 +16,7 @@ class DefaultLayout extends Layout {
 
         $this->addStylesheet('/css/global.min.css');
 
-        $this->addJavascript('/js/loadjs.js');
+        $this->addJavascript(\App::config()->debug ? '/js/loadjs.js' : '/js/loadjs.min.js');
     }
 
     public function slotRelLink() {
