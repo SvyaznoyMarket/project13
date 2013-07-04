@@ -1140,7 +1140,6 @@ $(document).ready(function(){
     })
 
 
-	
 	/* ---- */
 	if( $('.error_list').length && $('.basketheader').length ) {
 		$.scrollTo( $('.error_list:first'), 300 )

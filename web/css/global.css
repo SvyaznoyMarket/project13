@@ -2996,15 +2996,15 @@
   .bMainMenuLevel-1__eItem.bMainMenuLevel-1__eSeparator:hover .bMainMenuLevel-2 {
     display: none;
   }
-  .bMainMenuLevel-1__eItem:hover .bMainMenuLevel-2 {
-    display: block;
-  }
   .bMainMenuLevel-1__eItem:hover .bMainMenuLevel-1__eIcon,
   .bMainMenuLevel-1__eItem:hover .bMainMenuLevel-1__eTitle {
     color: #ffa901;
     text-decoration: none;
   }
-  .bMainMenuLevel-1__eItem:hover .bCorner {
+  .bMainMenuLevel-1__eItem.hover .bMainMenuLevel-2 {
+    display: block;
+  }
+  .bMainMenuLevel-1__eItem.hover .bCorner {
     display: block;
   }
   .bMainMenuLevel-1__eItem.mMore {
@@ -3115,16 +3115,16 @@
   .bMainMenuLevel-2__eItem {
     display: block;
   }
-  .bMainMenuLevel-2__eItem:hover .bMainMenuLevel-2__eTitle {
+  .bMainMenuLevel-2__eItem.hover .bMainMenuLevel-2__eTitle {
     background: #e6e6e6;
     color: #000000;
     text-decoration: underline;
   }
-  .mMore .bMainMenuLevel-2__eItem:hover .bMainMenuLevel-2__eTitle {
+  .mMore .bMainMenuLevel-2__eItem.hover .bMainMenuLevel-2__eTitle {
     background: #000000;
     color: #ffa901;
   }
-  .bMainMenuLevel-2__eItem:hover .bMainMenuLevel-3 {
+  .bMainMenuLevel-2__eItem.hover .bMainMenuLevel-3 {
     left: -2px;
     -moz-opacity: 1;
     -khtml-opacity: 1;
@@ -3133,7 +3133,7 @@
     -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=100);
     filter: alpha(opacity=100);
   }
-  .bMainMenuLevel-2__eItem:hover .bMainMenuLevel-3__eImageItem {
+  .bMainMenuLevel-2__eItem.hover .bMainMenuLevel-3__eImageItem {
     -moz-opacity: 1;
     -khtml-opacity: 1;
     -webkit-opacity: 1;
@@ -3174,13 +3174,16 @@
     padding-right: 10px;
     position: absolute;
     top: -5px;
-    width: 160px;
     -moz-opacity: 0;
     -khtml-opacity: 0;
     -webkit-opacity: 0;
     opacity: 0;
     -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
     filter: alpha(opacity=0);
+  }
+  .bMainMenuLevel-3.noPadding {
+    padding-left: 231px;
+    padding-right: 0;
   }
   .bMainMenuLevel-3__eHead {
     color: #ffa901;
