@@ -10287,6 +10287,7 @@
     background-position: 0 -34px;
   }
   .bWidgetBuy__eDelivery-now {
+    display: none;
     cursor: pointer;
   }
   .bWidgetBuy__eDelivery-now.mOpen {

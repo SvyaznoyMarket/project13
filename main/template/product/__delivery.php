@@ -14,8 +14,7 @@ return function (
 </script>
 <script id="widget_delivery_shop" type="text/html">
     <li class="bDeliveryFreeAddress__eShop">
-        <%=metro%>,<br/>
-        <%=adress%>
+        <%=name%>
     </li>
 </script>
 
@@ -30,39 +29,7 @@ return function (
         <span class="dotted">Есть в магазинах</span>
         <div>Купить сегодня без предзаказа</div>
         <ul class="bDeliveryFreeAddress">
-            <li class="bDeliveryFreeAddress__eShop">
-                м. Белорусская,<br/>
-                ул. Грузинский вал, д. 31
-            </li>
-            <li class="bDeliveryFreeAddress__eShop">
-                м. Ленинский проспект, <br/>
-                ул. Орджоникидзе, д. 11, стр. 10
-            </li>
-            <li class="bDeliveryFreeAddress__eShop">
-                м. Белорусская, <br/>
-                ул. Грузинский вал, д. 31
-            </li>
-            <li class="bDeliveryFreeAddress__eShop">
-                м. Ленинский проспект, <br/>
-                ул. Орджоникидзе, д. 11, стр. 10
-            </li>
-            <li class="bDeliveryFreeAddress__eShop">
-                м. Белорусская, <br/>
-                ул. Грузинский вал, д. 31
-            </li>
-            <li class="bDeliveryFreeAddress__eShop">
-                м. Ленинский проспект, <br/>
-                ул. Орджоникидзе, д. 11, стр. 10
-            </li>
-            <li class="bDeliveryFreeAddress__eShop">
-                м. Белорусская, <br/>
-                ул. Грузинский вал, д. 31
-            </li>
-            <li class="bDeliveryFreeAddress__eShop">
-                м. Ленинский проспект, <br/>
-                ул. Орджоникидзе, д. 11, стр. 10
-            </li>
-        </ul><!--/выпадающий список при клике по - Есть в магазинах -->
+        </ul>
     </li>
 </ul>
 
