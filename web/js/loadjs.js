@@ -182,13 +182,13 @@
 				.script('jquery-plugins.min.js')
 				.script( getWithVersion('library.js') )
 				.wait()
-				.script( 'JsHttpRequest.min.js' )
+				// .script( 'JsHttpRequest.min.js' )
 				//.script( 'http://direct-credit.ru/widget/dc_script_utf.js' )				
 				.script( 'http://direct-credit.ru/widget/api_script_utf.js' )
 				.script( getWithVersion('common.js') )
 				.wait()
-				.script( 'KupeConstructorScript.min.js' ) // furniture constuctor
-				.script( 'three.min.js' ) // for furniture constuctor
+				// .script( 'KupeConstructorScript.min.js' ) // furniture constuctor
+				// .script( 'three.min.js' ) // for furniture constuctor
 				.wait()
 				.script( getWithVersion('product.js') )
 				.script( getWithVersion('oneclick.js') )
