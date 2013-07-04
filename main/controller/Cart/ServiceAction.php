@@ -39,7 +39,7 @@ class ServiceAction {
 
             // если в корзине нет товара
             if ($product && !$cart->hasProduct($product->getId())) {
-                (new ProductAction())->set($product->getId(), $quantity, $request);
+                (new ProductAction())->set($product->getId(), $request);
             }
 
             $service = \RepositoryManager::service()->getEntityById($serviceId, \App::user()->getRegion());

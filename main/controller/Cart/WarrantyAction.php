@@ -39,8 +39,7 @@ class WarrantyAction {
 
             // если в корзине нет товара
             if ($product && !$cart->hasProduct($product->getId())) {
-                $action = new ProductAction();
-                $action->set($product->getId(), $quantity, $request);
+                (new ProductAction())->set($product->getId(), $request);
             }
 
             // TODO: на ядре пока нет метода для получения гарантии по ид
