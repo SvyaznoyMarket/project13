@@ -17,7 +17,15 @@ return function (
         $id = \View\Id::cartButtonForProductService($product->getId(), $service->getId());
     ?>
         <li>
-            <input id="<?= $id ?>" class="<?= $id ?> bCustomInput" name="<?= $product->getId()?>" type="checkbox" hidden data-url="<?= $helper->url('cart.service.set', ['serviceId' => $service->getId(), 'productId' => $product->getId()]) ?>" />
+            <input
+                id="<?= $id ?>"
+                class="<?= $id ?> bCustomInput"
+                name="<?= $product->getId()?>"
+                type="checkbox"
+                hidden
+                data-set-url="<?= $helper->url('cart.service.set', ['serviceId' => $service->getId(), 'productId' => $product->getId()]) ?>"
+                data-delete-url="<?= $helper->url('cart.service.delete', ['serviceId' => $service->getId(), 'productId' => $product->getId()]) ?>"
+            />
             <label class="bCustomLabel" for="<?= $id ?>">
                 <div class="bCustomLabel__eText">
                     <span class="dotted"><?= $service->getName() ?></span>
