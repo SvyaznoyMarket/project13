@@ -22,7 +22,7 @@
 		}
 
 		var deliveryInfo = res.product[0].delivery;
-		
+
 		for (var i = deliveryInfo.length - 1; i >= 0; i--) {
 			switch (deliveryInfo[i].token){
 				case 'standart':
@@ -49,7 +49,7 @@
 					var nowBox = widgetBox.find('.bWidgetBuy__eDelivery-now');
 					var shopList = nowBox.find('.bDeliveryFreeAddress');
 					if (!deliveryInfo[i].shop.length){
-						return false;
+						break;
 					}
 
 					for (var j = deliveryInfo[i].shop.length - 1; j >= 0; j--) {
