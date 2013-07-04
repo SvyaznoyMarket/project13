@@ -195,10 +195,15 @@ class DefaultLayout extends Layout {
                 ]);
             }
         } else {
+
+            \Debug\Timer::start('main-menu');
             $content = $renderer->render('__mainMenu', [
                 'menu'            => (new Menu())->generate(),
                 'catalogJsonBulk' => $catalogJsonBulk,
             ]);
+            \Debug\Timer::stop('main-menu');
+
+            \App::debug()->add('time.main-menu', sprintf('%s ms', round(\Debug\Timer::get('main-menu')['total'], 3) * 1000), 95);
         }
 
         return $content;

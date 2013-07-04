@@ -105,6 +105,4 @@ $c->abtest['test']       = [
 
 $c->product['lowerPriceNotification'] = true;
 
-$c->requestMainMenu = false;
-
 return $c;

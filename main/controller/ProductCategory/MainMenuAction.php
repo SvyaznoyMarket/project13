@@ -5,6 +5,7 @@ namespace Controller\ProductCategory;
 class MainMenuAction {
     /**
      * @param \Http\Request $request
+     * @throws \Exception
      * @return \Http\Response
      */
     public function execute(\Http\Request $request) {
@@ -17,6 +18,10 @@ class MainMenuAction {
             'menu'            => (new \View\Menu())->generate(),
             'catalogJsonBulk' => $catalogJsonBulk,
         ]);
+
+        if (mb_strlen($content) < 100) {
+            throw new \Exception('Главное меню не получено');
+        }
 
         return new \Http\JsonResponse(['content' => $content]);
     }
