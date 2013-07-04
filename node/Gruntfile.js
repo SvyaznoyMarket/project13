@@ -263,6 +263,10 @@ module.exports = function(grunt) {
 				files: [jsDevPath+'watch3d/*.js'],
 				tasks: ['concat:watch3dJS','uglify:watch3dJS', 'jshint', 'connect', 'qunit', 'exec:getVersion'],
 			},
+			loadJS:{
+				files: [jsRootPath+'loadjs.js'],
+				tasks: ['uglify:loadJS']
+			}
 		},
 
 
@@ -365,6 +369,12 @@ module.exports = function(grunt) {
 						},
 					},
 				]
+			},
+
+			loadJS: {
+				files: {
+					'../web/js/loadjs.min.js': [jsRootPath+'loadjs.js']
+				}
 			},
 
 			cartJS: {
