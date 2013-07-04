@@ -177,6 +177,59 @@
  
  
 /**
+ * 3D для мебели
+ */
+;(function(){
+	var loadFurniture3D = function(){
+		var furnitureAfterLoad = function(){
+
+			var object = $('#3dModelImg');
+			var data = object.data('value');
+			var host = object.data('host');
+
+			var furniture3dPopupShow = function(){
+				$('#3dModelImg').lightbox_me({
+					centered: true,
+					closeSelector: ".close"
+				});
+				return false;
+			};
+
+			try {
+				if (!$('#3dImgContainer').length) {
+					var AnimFramePlayer = new DAnimFramePlayer(document.getElementById('3dModelImg'), host);
+					AnimFramePlayer.DoLoadModel(data);
+					$('.bPhotoActionOtherAction__eGrad360.3dimg').bind('click', furniture3dPopupShow);
+				}
+			}
+			catch (err){
+				var pageID = $(body).data(id);
+				var dataToLog = {
+					event: '3dimg',
+					type:'ошибка загрузки 3dimg для мебели',
+					pageID: pageID,
+					err: err
+				};
+				logError(dataToLog);
+			}
+		};
+		$LAB.script( 'DAnimFramePlayer.min.js' ).wait(furnitureAfterLoad);
+	}
+
+	$(document).ready(function() {
+		if (pageConfig['product.img3d']){
+			loadFurniture3D();
+		}
+	});
+}());
+ 
+ 
+/** 
+ * NEW FILE!!! 
+ */
+ 
+ 
+/**
  * Подсказки к характеристикам
  *
  * @author	Zaytsev Alexandr
@@ -424,7 +477,6 @@ $(document).ready(function() {
 	}());
 
 
-
 	/**
 	 * Перемотка к Id
 	 *
@@ -611,17 +663,17 @@ $(document).ready(function() {
 				vitrin.loadMap()
 				$('#mapPopup_shopInfo').delegate('li', 'hover', function() {
 					//console.log('1')
-			        var id = $(this).attr('ref')//$(this).data('id')
-			        if( hoverTimer.timer ) {
-			            clearTimeout( hoverTimer.timer )
-			        }
-			        if( id && id != hoverTimer.id) {
-			            hoverTimer.id = id
-			            hoverTimer.timer = setTimeout( function() {            
-			                window.regionMap.showInfobox( id )
-			            }, 350)
-			        }
-			    })
+					var id = $(this).attr('ref')//$(this).data('id')
+					if( hoverTimer.timer ) {
+						clearTimeout( hoverTimer.timer )
+					}
+					if( id && id != hoverTimer.id) {
+						hoverTimer.id = id
+						hoverTimer.timer = setTimeout( function() {            
+							window.regionMap.showInfobox( id )
+						}, 350)
+					}
+				})
 			},
 			updateI: function ( marker ) {
 				$('#map-info_window-container').html( tmpl( 'mapInfoBlock', marker ))
@@ -640,7 +692,7 @@ $(document).ready(function() {
 				MapInterface.init( mapCenter, 'mapPopup', mapCallback, vitrin.updateI)
 			}
 		}
-	 	vitrin.init()
+		vitrin.init()
 	}
 
 	// видео в карточке товара
@@ -696,40 +748,17 @@ $(document).ready(function() {
 			
 			return false
 		}
-        if ($(this).hasClass('3dimg')){
-            var object = $('#3dModelImg')
-            var data = object.data('value')
-            var host = object.data('host')
-            try {
-                if (!$('#3dImgContainer').length) {
-                    var AnimFramePlayer = new DAnimFramePlayer(document.getElementById('3dModelImg'), host)
-                    AnimFramePlayer.DoLoadModel(data)
-                }
-                $('#3dModelImg').lightbox_me({
-                    centered: true,
-                    closeSelector: ".close",
-                })
-            }
-            catch (err){
-            	var pageID = $(body).data(id)
-				var dataToLog = {
-					event: '3dimg',
-					type:'ошибка загрузки 3dimg для мебели',
-					pageID: pageID,
-					err: err,
-				}
-				logError(dataToLog)
-            }
-            return false
-        }
+		if ($(this).hasClass('3dimg')){
+
+		}
 		
 		if( mLib )
 			mLib.show( $(this).attr('ref') , $(this).attr('href'))
 		return false
 	})
-	    
+		
 	/* Some handlers */
-    /*$('.bDropMenu').each( function() {
+	/*$('.bDropMenu').each( function() {
 		var jspan  = $(this).find('span:first')
 		var jdiv   = $(this).find('div')
 		jspan.css('display','block')
@@ -739,82 +768,82 @@ $(document).ready(function() {
 			jdiv.width( jspan.width() + 70)
 	})*/
 	
-    $('.product_rating-form').live({
-        'form.ajax-submit.prepare': function(e, result) {
-            $(this).find('input:submit').attr('disabled', true)
-        },
-        'form.ajax-submit.success': function(e, result) {
-            if (true == result.success) {
-                $('.product_rating-form').effect('highlight', {}, 2000)
-            }
-        }
-    })
+	$('.product_rating-form').live({
+		'form.ajax-submit.prepare': function(e, result) {
+			$(this).find('input:submit').attr('disabled', true)
+		},
+		'form.ajax-submit.success': function(e, result) {
+			if (true == result.success) {
+				$('.product_rating-form').effect('highlight', {}, 2000)
+			}
+		}
+	})
 
-    $('.product_comment-form').live({
-        'form.ajax-submit.prepare': function(e, result) {
-            $(this).find('input:submit').attr('disabled', true)
-        },
-        'form.ajax-submit.success': function(e, result) {
-            $(this).find('input:submit').attr('disabled', false)
-            if (true == result.success) {
-                $($(this).data('listTarget')).replaceWith(result.data.list)
-                $.scrollTo('.' + result.data.element_id, 500, {
-                    onAfter: function() {
-                        $('.' + result.data.element_id).effect('highlight', {}, 2000);
-                    }
-                })
-            }
-        }
-    })
+	$('.product_comment-form').live({
+		'form.ajax-submit.prepare': function(e, result) {
+			$(this).find('input:submit').attr('disabled', true)
+		},
+		'form.ajax-submit.success': function(e, result) {
+			$(this).find('input:submit').attr('disabled', false)
+			if (true == result.success) {
+				$($(this).data('listTarget')).replaceWith(result.data.list)
+				$.scrollTo('.' + result.data.element_id, 500, {
+					onAfter: function() {
+						$('.' + result.data.element_id).effect('highlight', {}, 2000);
+					}
+				})
+			}
+		}
+	})
 
-    $('.product_comment_response-link').live({
-        'content.update.prepare': function(e) {
-            $('.product_comment_response-block').html('')
-        },
-        'content.update.success': function(e) {
-            $('.product_comment_response-block').find('textarea:first').focus()
-        }
-    })
+	$('.product_comment_response-link').live({
+		'content.update.prepare': function(e) {
+			$('.product_comment_response-block').html('')
+		},
+		'content.update.success': function(e) {
+			$('.product_comment_response-block').find('textarea:first').focus()
+		}
+	})
 
-    
-  	// карточка товара - характеристики товара краткие/полные
-    if($('#productDescriptionToggle').length) {
-        $('#productDescriptionToggle').toggle(
-            function(e){
-                e.preventDefault()
-                $(this).parent().parent().find('.descriptionlist:not(.short)').show()
-                $(this).html('Скрыть все характеристики')
-            },
-            function(e){
-                e.preventDefault()
-                $(this).parent().parent().find('.descriptionlist:not(.short)').hide()
-                $(this).html('Показать все характеристики')
-            }
-        );
-    }
-
-
-    //Класс для аксессуаров по категориям
-    if ($('.categoriesmenu').length) {
-        $('.acess-box-section').addClass('acess-box');
-    }
+	
+	// карточка товара - характеристики товара краткие/полные
+	if($('#productDescriptionToggle').length) {
+		$('#productDescriptionToggle').toggle(
+			function(e){
+				e.preventDefault()
+				$(this).parent().parent().find('.descriptionlist:not(.short)').show()
+				$(this).html('Скрыть все характеристики')
+			},
+			function(e){
+				e.preventDefault()
+				$(this).parent().parent().find('.descriptionlist:not(.short)').hide()
+				$(this).html('Показать все характеристики')
+			}
+		);
+	}
 
 
-    function handle_jewel_items() {
-        if($('body.jewel').length) {
-            $(".link1.link1active").attr('href', '/cart')
-            $(".link1").bind( 'click', function()   {
-                if($(this).parent().hasClass('goodsbarbig')) {
-                    $('.goodsbarbig .link1').html("В корзине")
-                    $('.goodsbarbig .link1').addClass("link1active")
-                } else {
-                    $(this).html("В корзине")
-                    $(this).addClass("link1active")
-                }
-            })
-        }
-    }
-    handle_jewel_items()
+	//Класс для аксессуаров по категориям
+	if ($('.categoriesmenu').length) {
+		$('.acess-box-section').addClass('acess-box');
+	}
+
+
+	function handle_jewel_items() {
+		if($('body.jewel').length) {
+			$(".link1.link1active").attr('href', '/cart')
+			$(".link1").bind( 'click', function()   {
+				if($(this).parent().hasClass('goodsbarbig')) {
+					$('.goodsbarbig .link1').html("В корзине")
+					$('.goodsbarbig .link1').addClass("link1active")
+				} else {
+					$(this).html("В корзине")
+					$(this).addClass("link1active")
+				}
+			})
+		}
+	}
+	handle_jewel_items()
 
 });
  
