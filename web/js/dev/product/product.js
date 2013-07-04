@@ -59,7 +59,90 @@ $(document).ready(function() {
 		}
 	}());
 
-	
+
+	/**
+	 * Расчет доставки
+	 *
+	 * @author		Zaytsev Alexandr
+	 * @requires	jQuery, simple_templating
+	 */
+	(function(){
+		var widgetBox = $('.bWidgetBuy__eDelivery');
+		var productInfo = $('#jsProductCard').data('value');
+
+		var url = '/ajax/product/delivery'; // HARDCODE!
+
+		var dataToSend = {
+			product:[
+				{'id': productInfo.id}
+			]
+		};
+
+		var resFromSerever = function(res){
+			if (!res.success){
+				return false;
+			}
+			var deliveryInfo = res.product[0].delivery;
+			var standartBox = widgetBox.find('.bWidgetBuy__eDelivery-price');
+			var selfBox = widgetBox.find('.bWidgetBuy__eDelivery-free');
+			var nowBox = widgetBox.find('.bWidgetBuy__eDelivery-now');
+			for (var i = 0, len = deliveryInfo.length; i< len; i++){
+				switch (deliveryInfo[i].token){
+					case 'standart':
+						var standartData = {
+							price: deliveryInfo[i].price,
+							dateString: deliveryInfo[i].date.name
+						};
+						var template = tmpl('widget_delivery_standart', standartData);
+						standartBox.html(template);
+						break;
+					case 'self':
+						var selfData = {
+							dateString: deliveryInfo[i].date.name
+						};
+						var template = tmpl('widget_delivery_self', selfData);
+						selfBox.html(template);
+
+						// var shops = deliveryInfo[i].shop;
+						// for (var j = 0, len = shops.length; j < len; j++){
+						// 	var shopInfo = {
+						// 		metro: (shops[j].metro) ? shops[j].metro : 'Нет информации',
+						// 		address: shops[j].address
+						// 	};
+
+						// }
+						
+
+						nowBox.bind('click', function(){
+							nowBox.toggleClass('mOpen');
+							nowBox.toggleClass('mClose');
+						})
+
+						break;
+				};
+			}
+		};
+
+		$.ajax({
+			type: 'POST',
+			url: url,
+			data: dataToSend,
+			success: resFromSerever
+		});
+	}());
+
+
+	/**
+	 * Перемотка к Id
+	 *
+	 * @requires jQuery
+	 */
+	var goToId = function(){
+		var to = $(this).data('goto');
+		jQuery.scrollTo( $('#'+to), 800 );
+		return false;
+	}
+	$('.jsGoToId').bind('click',goToId);
 
 
 	/**

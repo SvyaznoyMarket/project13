@@ -11,8 +11,15 @@ class Action {
     public function execute(\Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
-        $searchQuery = trim((string)$request->get('q'));
-        $searchQuery = mb_convert_encoding($searchQuery, 'UTF-8', 'UTF-8');
+        $searchQuery = (string)$request->get('q');
+        $encode = mb_detect_encoding($searchQuery, array('UTF-8', 'Windows-1251'), TRUE);
+        switch ($encode) {
+            case 'Windows-1251': {
+                $searchQuery = iconv('Windows-1251', 'UTF-8', $searchQuery);
+            }
+        }
+        $searchQuery = trim(preg_replace('/[^\wА-Яа-я]+/u', ' ', $searchQuery));
+
         if (empty($searchQuery)) {
             throw new \Exception\NotFoundException(sprintf('Пустая фраза поиска.', $searchQuery));
         }

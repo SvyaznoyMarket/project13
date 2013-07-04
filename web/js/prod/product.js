@@ -287,7 +287,90 @@ $(document).ready(function() {
 		}
 	}());
 
-	
+
+	/**
+	 * Расчет доставки
+	 *
+	 * @author		Zaytsev Alexandr
+	 * @requires	jQuery, simple_templating
+	 */
+	(function(){
+		var widgetBox = $('.bWidgetBuy__eDelivery');
+		var productInfo = $('#jsProductCard').data('value');
+
+		var url = '/ajax/product/delivery'; // HARDCODE!
+
+		var dataToSend = {
+			product:[
+				{'id': productInfo.id}
+			]
+		};
+
+		var resFromSerever = function(res){
+			if (!res.success){
+				return false;
+			}
+			var deliveryInfo = res.product[0].delivery;
+			var standartBox = widgetBox.find('.bWidgetBuy__eDelivery-price');
+			var selfBox = widgetBox.find('.bWidgetBuy__eDelivery-free');
+			var nowBox = widgetBox.find('.bWidgetBuy__eDelivery-now');
+			for (var i = 0, len = deliveryInfo.length; i< len; i++){
+				switch (deliveryInfo[i].token){
+					case 'standart':
+						var standartData = {
+							price: deliveryInfo[i].price,
+							dateString: deliveryInfo[i].date.name
+						};
+						var template = tmpl('widget_delivery_standart', standartData);
+						standartBox.html(template);
+						break;
+					case 'self':
+						var selfData = {
+							dateString: deliveryInfo[i].date.name
+						};
+						var template = tmpl('widget_delivery_self', selfData);
+						selfBox.html(template);
+
+						// var shops = deliveryInfo[i].shop;
+						// for (var j = 0, len = shops.length; j < len; j++){
+						// 	var shopInfo = {
+						// 		metro: (shops[j].metro) ? shops[j].metro : 'Нет информации',
+						// 		address: shops[j].address
+						// 	};
+
+						// }
+						
+
+						nowBox.bind('click', function(){
+							nowBox.toggleClass('mOpen');
+							nowBox.toggleClass('mClose');
+						})
+
+						break;
+				};
+			}
+		};
+
+		$.ajax({
+			type: 'POST',
+			url: url,
+			data: dataToSend,
+			success: resFromSerever
+		});
+	}());
+
+
+	/**
+	 * Перемотка к Id
+	 *
+	 * @requires jQuery
+	 */
+	var goToId = function(){
+		var to = $(this).data('goto');
+		jQuery.scrollTo( $('#'+to), 800 );
+		return false;
+	}
+	$('.jsGoToId').bind('click',goToId);
 
 
 	/**
@@ -812,4 +895,108 @@ $(document).ready(function() {
 
 	$('.jsLeaveReview').live('click', leaveReview);
 
+}());
+ 
+ 
+/** 
+ * NEW FILE!!! 
+ */
+ 
+ 
+/**
+ * Плагин кастомных радио кнопок
+ *
+ * @author		Zaytsev Alexandr
+ * @requires	jQuery
+ * @return		{jQuery object}
+ */
+
+;(function($){
+	$.fn.customRadio = function(params) {
+
+		return this.each(function() {
+			var options = $.extend(
+							{},
+							$.fn.customRadio.defaults,
+							params);
+			var $self = $(this);
+			var id = $self.attr('id');
+			var label = $('label[for="'+id+'"]');
+			var groupName = $self.attr('name');
+			var inputGroup = $('input[name="'+groupName+'"]');
+			var deselectNode = $('.'+options.deselectClass+'[name="'+groupName+'"]');
+
+			/**
+			 * Удаление классов с лэйблов.
+			 * 
+			 * @param	{Boolean}	all		Все ли пометки нужно удалить
+			 */
+			var removeChecked = function(all){
+				inputGroup.each(function(){
+					var _this = $(this);
+
+					var unmarkLabel = function(){
+						var thisId = _this.attr('id');
+						var thisLabel = $('label[for="'+thisId+'"]');
+						thisLabel.removeClass(options.checkedClass);
+					}
+
+					if (_this.attr('checked') === undefined){
+						unmarkLabel();
+					}
+					else if(all){
+						unmarkLabel();
+						_this.removeAttr('checked');
+						options.onUncheckedGroup(_this);
+					}
+				});
+			};
+
+			/**
+			 * Обработчик кнопки снимающей выделение со всех радио кнопок
+			 */
+			var deselectHandler = function(){
+				deselectNode.hide();
+				removeChecked(true);
+				return false;
+			};
+
+			/**
+			 * Обработчик изменений состояний радио кнопок
+			 */
+			var changeHandler = function(){
+				if ($self.attr('checked') === undefined){
+					return false;
+				}
+				label.addClass(options.checkedClass);
+				removeChecked(false);
+				deselectNode.show();
+				options.onChecked($self);
+			};
+
+			$self.bind('change', changeHandler);
+			deselectNode.bind('click', deselectHandler);
+		});
+	};
+
+	$.fn.customRadio.defaults = {
+		checkedClass: 'mChecked',
+		deselectClass: 'bDeSelect',
+		// callbacks
+		onChecked: function(){},
+		onUncheckedGroup: function(){}
+	};
+})(jQuery);
+
+
+;(function(){
+	$('.jsCustomRadio').customRadio({
+		onChecked: function(el){
+			var url = el.data('url');
+			console.log('checked '+url);
+		},
+		onUncheckedGroup: function(el){
+			console.log('dechecked');
+		}
+	});
 }());

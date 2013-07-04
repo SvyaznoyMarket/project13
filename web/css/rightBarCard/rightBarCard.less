@@ -24,24 +24,34 @@
             background-position: 0 -34px;
         }
         &-now {
-            background-position: 10px -127px;
             cursor: pointer;
-            &.click {
-                background-position: 10px -239px;
+            &.mOpen {
+                background-position: 5px -235px;
             }
-        }
-    }
-    .bDeliveryFreeAddress {
-        margin: 0 0 10px 26px;
-        li {
-            font-size: 11px;
-            padding: 0 0 10px;
+            &.mClose {
+                background-position: 5px -129px;
+            }
         }
     }
     .bAwardSection {
         text-align: center;
     }
 }
+.bDeliveryFreeAddress {
+    margin: 10px 0 10px;
+    display: none;
+
+    &__eShop {
+        font-size: 11px;
+        padding: 0 0 10px;
+    }
+    
+    .mOpen &{
+        display: block;
+    }
+
+}
+
 // counter
 .bCountSection {
     font-size: 14px;

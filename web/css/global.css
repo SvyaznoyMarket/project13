@@ -10287,21 +10287,27 @@
     background-position: 0 -34px;
   }
   .bWidgetBuy__eDelivery-now {
-    background-position: 10px -127px;
     cursor: pointer;
   }
-  .bWidgetBuy__eDelivery-now.click {
-    background-position: 10px -239px;
+  .bWidgetBuy__eDelivery-now.mOpen {
+    background-position: 5px -235px;
   }
-  .bWidgetBuy .bDeliveryFreeAddress {
-    margin: 0 0 10px 26px;
-  }
-  .bWidgetBuy .bDeliveryFreeAddress li {
-    font-size: 11px;
-    padding: 0 0 10px;
+  .bWidgetBuy__eDelivery-now.mClose {
+    background-position: 5px -129px;
   }
   .bWidgetBuy .bAwardSection {
     text-align: center;
+  }
+  .bDeliveryFreeAddress {
+    margin: 10px 0 10px;
+    display: none;
+  }
+  .bDeliveryFreeAddress__eShop {
+    font-size: 11px;
+    padding: 0 0 10px;
+  }
+  .mOpen .bDeliveryFreeAddress {
+    display: block;
   }
   .bCountSection {
     font-size: 14px;

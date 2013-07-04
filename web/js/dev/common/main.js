@@ -1603,14 +1603,6 @@ $(document).ready(function(){
 });
 
 
-
-function scrollToId(scrollToId) {
-   $('html, body').animate({
-       scrollTop: $("#"+scrollToId).offset().top
-   }, 500);
-};
-
-
 function handle_custom_items() {
   $(".items-section__list .item").hover(
     function() {
