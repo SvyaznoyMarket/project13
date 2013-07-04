@@ -749,7 +749,7 @@ $(document).ready(function() {
                     $(this).html("В корзине")
                     $(this).addClass("link1active")
                 }
-                return false;
+                // return false;
             });
         }
     }
