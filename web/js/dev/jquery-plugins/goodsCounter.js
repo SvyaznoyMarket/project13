@@ -20,12 +20,16 @@
 			var input = $self.find(options.inputSelector);
 			var nowCount = input.val();
 
+			var counterGroupName = $self.attr('data-spinner-for');
+			var counterGroup = $('[data-spinner-for="'+counterGroupName+'"]');
+
 			var trigger = true;
 			var timeout_id = '';
 
 			var changeHandler = function(count){
 				clearTimeout(timeout_id);
 				timeout_id = setTimeout(function(){
+					counterGroup.find('input').val(count);
 					options.onChange(count);
 				}, 400);
 			};
