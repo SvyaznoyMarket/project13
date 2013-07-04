@@ -18,7 +18,7 @@ class Action {
                 $searchQuery = iconv('Windows-1251', 'UTF-8', $searchQuery);
             }
         }
-        $searchQuery = trim(preg_replace('/[^\wА-Яа-я]+/u', ' ', $searchQuery));
+        $searchQuery = trim(preg_replace('/[^\wА-Яа-я-]+/u', ' ', $searchQuery));
 
         if (empty($searchQuery)) {
             throw new \Exception\NotFoundException(sprintf('Пустая фраза поиска.', $searchQuery));
