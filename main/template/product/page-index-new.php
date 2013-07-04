@@ -424,12 +424,7 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
 <div class="bProductSection__eRight">
     <aside>
         <div class="bWidgetBuy mWidget">
-            <div class="bCountSection clearfix" data-for="<?= \View\Id::cartButtonForProduct($product->getId()) ?>">
-                <button class="bCountSection__eM">-</button>
-                <input class="bCountSection__eNum" type="text" value="1" />
-                <button class="bCountSection__eP">+</button>
-                <span>шт.</span>
-            </div><!--/counter -->
+            <?= $helper->render('__spinner', ['id' => \View\Id::cartButtonForProduct($product->getId())]) ?>
 
             <div class="bWidgetBuy__eBuy btnBuy">
                 <?= $helper->render('cart/__button-product', ['product' => $product, 'class' => 'btnBuy__eLink', 'value' => 'В корзину']) ?>
@@ -484,12 +479,7 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
         <?= $page->render('cart/_button', ['product' => $product, 'class' => 'btnBuy__eLink', 'value' => 'В корзину']) ?>
     </div><!--/button buy -->
 
-    <div class="bCountSection clearfix">
-        <button class="bCountSection__eM">-</button>
-        <input class="bCountSection__eNum" type="text" value="1" />
-        <button class="bCountSection__eP">+</button>
-        <span>шт.</span>
-    </div><!--/counter -->
+    <?= $helper->render('__spinner', ['id' => \View\Id::cartButtonForProduct($product->getId())]) ?>
 
     <div class="price"><strong><?= $page->helper->formatPrice($product->getPrice()) ?></strong> <span class="rubl">p</span></div>
 </div>
