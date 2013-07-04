@@ -316,7 +316,7 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
             </div><!--/product shop description box -->
         </div><!--/product shop description section -->
 
-        <div id="productspecification" class="bDescriptionProduct">
+        <div class="bDescriptionProduct">
             <?= $product->getDescription() ?>
         </div>
 
@@ -358,7 +358,7 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
             ]) ?>
         <? endif ?>
 
-        <h3 class="bHeadSection">Характеристики</h3>
+        <h3 id="productspecification"  class="bHeadSection">Характеристики</h3>
         <? $groupedProperties = $product->getGroupedProperties() ?>
         <div class="bSpecifications">
         <? foreach ($groupedProperties as $key => $group): ?>
