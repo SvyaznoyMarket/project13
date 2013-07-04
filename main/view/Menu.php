@@ -39,11 +39,9 @@ class Menu {
 
         // сбор категорий для ACTION_PRODUCT_CATALOG
         \RepositoryManager::productCategory()->prepareTreeCollection(\App::user()->getRegion(), 3, function($data) {
-            \Debug\Timer::start('main-menu.1');
             foreach ($data as $item) {
                 $this->rootCategoriesById[$item['id']] = new \Model\Product\Category\MenuEntity($item);
             }
-            \Debug\Timer::stop('main-menu.1');
         });
 
         // сбор категорий для ACTION_PRODUCT_CATEGORY
@@ -56,8 +54,6 @@ class Menu {
         \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium'], \App::config()->coreV2['retryCount']);
 
         $this->fillMenu($this->menu);
-
-        \App::debug()->add('time.main-menu.1', sprintf('%s ms', round(\Debug\Timer::get('main-menu.1')['total'], 3) * 1000), 95);
 
         return $this->menu;
     }
