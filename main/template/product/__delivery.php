@@ -7,20 +7,18 @@ return function (
 <script id="widget_delivery_standart" type="text/html">
     <% if (price === 0) { %>
         <span>Доставка <strong>бесплатно</strong></span>
-        <div><%=dateString%></div>
     <% } else { %>
         <span>Доставка <strong><%=price%></strong> <span class="rubl">p</span></span>
-        <div><%=dateString%></div>
     <% } %>
+        <div><%=dateString%></div>
 </script>
 <script id="widget_delivery_self" type="text/html">
     <% if (price === 0) { %>
         <span>Самовывоз <strong>бесплатно</strong></span>
-        <div><%=dateString%></div>
     <% } else { %>
         <span>Самовывоз <strong><%=price%></strong> <span class="rubl">p</span></span>
-        <div><%=dateString%></div>
     <% } %>
+        <div><%=dateString%></div>
 </script>
 <script id="widget_delivery_shop" type="text/html">
     <li class="bDeliveryFreeAddress__eShop">
