@@ -38,6 +38,7 @@
 				case 'self':
 					var selfBox = widgetBox.find('.bWidgetBuy__eDelivery-free');
 					var selfData = {
+						price: deliveryInfo[i].price,
 						dateString: deliveryInfo[i].date.name
 					};
 					var template = tmpl('widget_delivery_self', selfData);
