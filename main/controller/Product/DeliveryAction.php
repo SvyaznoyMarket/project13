@@ -117,8 +117,8 @@ class DeliveryAction {
 
                                 $shop = [
                                     'id'        => (int)$shopItem['id'],
+                                    'name'      => $shopData[$shopItem['id']]['name'],
                                     'regtime'   => $shopData[$shopItem['id']]['working_time'], // что за описка "regtime"?
-                                    'address'   => $address,
                                     'latitude'  => $shopData[$shopItem['id']]['coord_lat'],
                                     'longitude' => $shopData[$shopItem['id']]['coord_long'],
                                 ];
@@ -132,6 +132,13 @@ class DeliveryAction {
 
                     $product['delivery'][] = $delivery;
                 }
+
+                // для теста {
+                $tmp = $product['delivery'][0];
+                $tmp['id'] = 4;
+                $tmp['token'] = 'now';
+                $product['delivery'][] = $tmp;
+                // }
 
                 $responseData['product'][] = $product;
             }

@@ -424,7 +424,7 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
 <div class="bProductSection__eRight">
     <aside>
         <div class="bWidgetBuy mWidget">
-            <div class="bCountSection clearfix" data-spinner="<?= $page->json(['button' => \View\Id::cartButtonForProduct($product->getId())]) ?>">
+            <div class="bCountSection clearfix" data-for="<?= \View\Id::cartButtonForProduct($product->getId()) ?>">
                 <button class="bCountSection__eM">-</button>
                 <input class="bCountSection__eNum" type="text" value="1" />
                 <button class="bCountSection__eP">+</button>
