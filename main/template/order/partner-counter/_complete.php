@@ -26,6 +26,9 @@
         case \Partner\Counter\CityAds::NAME:
             echo $page->tryRender('order/partner-counter/_cityads-complete', array('orders' => $orders));
             break;
+        case \Partner\Counter\Reactive::NAME:
+            echo $page->tryRender('order/partner-counter/_reactive-complete', array('orders' => $orders));
+            break;
         case \Partner\Counter\Recreative::NAME:
             echo $page->tryRender('order/partner-counter/_recreative-complete', array('orders' => $orders));
             break;
