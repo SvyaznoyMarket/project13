@@ -10,15 +10,13 @@ return function (
 /**
  * @var $products \Model\Product\Entity[]
  */
-
-    $sliderData = [
-        'count' => $count,
-        'limit' => $limit,
-        'url'   => $url,
-    ];
 ?>
 
-<div class="bSliderAction<? if (!$limit): ?> mNoSliderAction<? endif ?>" data-slider="<?= $helper->json($sliderData) ?>">
+<div class="bSliderAction<? if (!$limit): ?> mNoSliderAction<? endif ?>" data-slider="<?= $helper->json([
+    'count' => $count,
+    'limit' => $limit,
+    'url'   => $url,
+]) ?>">
 
     <div class="bSliderAction__eInner">
         <ul class="bSliderAction__elist clearfix">
