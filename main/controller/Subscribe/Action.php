@@ -42,17 +42,7 @@ class Action {
 
             $client->execute(\App::config()->coreV2['retryTimeout']['huge'], \App::config()->coreV2['retryCount']);
 
-            $cookie = new \Http\Cookie(
-                \App::config()->subscribe['cookieName'],
-                1,
-                time() + 3 * 365 * 24 * 60 * 60,
-                '/',
-                null,
-                false,
-                false // важно httpOnly=false, чтобы js мог получить куку
-            );
             $response = new \Http\JsonResponse(['success' => true]);
-            //$response->headers->setCookie($cookie);
         } catch (\Exception $e) {
             \App::logger()->error($e);
         }
@@ -67,17 +57,7 @@ class Action {
         $response = new \Http\JsonResponse(['success' => false]);
 
         try {
-            $cookie = new \Http\Cookie(
-                \App::config()->subscribe['cookieName'],
-                0,
-                time() + 3 * 365 * 24 * 60 * 60,
-                '/',
-                null,
-                false,
-                false // важно httpOnly=false, чтобы js мог получить куку
-            );
             $response = new \Http\JsonResponse(['success' => true]);
-            //$response->headers->setCookie($cookie);
         } catch (\Exception $e) {
             \App::logger()->error($e);
         }
