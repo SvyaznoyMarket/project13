@@ -37,10 +37,10 @@ class SitemapAction {
         \App::logger()->info('Sitemap: каталог товаров готов', ['sitemap']);
         $this->fillProduct();
         \App::logger()->info('Sitemap: товары готовы', ['sitemap']);
-        $this->fillServiceCategory();
-        \App::logger()->info('Sitemap: категории услуг готовы', ['sitemap']);
-        $this->fillService();
-        \App::logger()->info('Sitemap: услуги готовы', ['sitemap']);
+        //$this->fillServiceCategory();
+        //\App::logger()->info('Sitemap: категории услуг готовы', ['sitemap']);
+        //$this->fillService();
+        //\App::logger()->info('Sitemap: услуги готовы', ['sitemap']);
         $this->fillShop();
         \App::logger()->info('Sitemap: магазины готовы', ['sitemap']);
         $this->fillPage();
