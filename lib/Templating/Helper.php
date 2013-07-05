@@ -17,7 +17,7 @@ class Helper {
 
         if (null == $route) {
             if (!$request->attributes->has('route')) {
-                throw new \RuntimeException('В атрибутах запроса не задан параметр "route".');
+                throw new \RuntimeException('В атрибутах запроса не задан параметр route');
             }
 
             $route = $request->attributes->get('route');
