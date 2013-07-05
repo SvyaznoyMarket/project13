@@ -247,4 +247,43 @@ class DefaultLayout extends Layout {
     public function slotConfig() {
         return $this->tryRender('_config');
     }
+
+
+    public function slotSociomantic() {
+        $smantic_path = 'partner-counter/sociomantic/';
+        $routeName = \App::request()->attributes->get('route');
+        //$routeName = $request->attributes->get('route');
+
+        $return = "<!-- $routeName - routename -->";
+
+
+        $return .= $this->render($smantic_path.'01-homepage'); // default, для всех страниц
+
+
+        if ($routeName == 'product.category') {
+            $category = $this->getParam('category') instanceof \Model\Product\Category\Entity ? $this->getParam('category') : null;
+            $return .= print_r($category,true);
+
+
+            $return .= $this->render($smantic_path.'02-category_page', ['category' => $category]);
+        }else if ($routeName == 'product') {
+            $product = $this->getParam('product') instanceof \Model\Product\Entity ? $this->getParam('product') : null;
+            //$return .= print_r($product, true);
+
+            $return .= $this->render($smantic_path.'03a-product_page_stream',
+                array(
+                    'product' => $product
+                )
+            );
+        }
+        else if ($routeName == 'cart') {
+            $return .= $this->render($smantic_path.'04-basket');
+        }
+        else if ($routeName == 'order.complete') {
+            $return .= $this->render($smantic_path.'05a-confirmation_page');
+        }
+
+        return $return;
+    }
+
 }
