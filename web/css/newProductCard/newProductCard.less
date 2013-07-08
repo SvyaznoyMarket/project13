@@ -86,37 +86,68 @@
                 }
             }
             //additional product options
-            &-select {
-                .descSelectItem {
-                    border: 1px solid #c7c7c7;
-                    .rounded(5px);
-                    background: url("@{base-url}/newProductCard/img/ico_corner.gif") no-repeat 265px 17px;
-                    padding: 10px 17px 10px 10px;
-                    font-size: 14px;
-                    margin: 0 0 10px;
-                    position: relative;
+            .bDescSelectItem {
+                border: 1px solid #c7c7c7;
+                .rounded(5px);
+                background: url("@{base-url}/newProductCard/img/ico_corner.gif") no-repeat 265px 17px;
+                padding: 0 17px 0 10px;
+                height: 40px;
+                line-height: 40px;
+                font-size: 14px;
+                margin: 0 0 10px;
+                position: relative;
+                cursor: pointer;
+                &__eSelect {
+                    top: 0;
+                    right: 0;
+                    width: 280px;
+                    .opacity(0);
+                    filter:progid:DXImageTransform.Microsoft.Alpha(opacity=0);
+                    background-color: transparent;
+                    border: none;
+                    box-shadow: none;
+                    color: transparent;
+                    font-size: 16px;
+                    height: 37px;
+                    padding: 5px;
+                    position: absolute;
+                    -webkit-appearance: none;
                     cursor: pointer;
-                    &__eValue {
-                        float: right;
-                    }
-                    &__eDdm {
-                        position: absolute;
-                        background: #fff;
-                        border: 1px solid #c7c7c7;
-                        .rounded(0 0 5px 5px);
-                        left: -1px;
-                        top: 35px;
-                        z-index: 10;
-                        width: 278px;
-                        li {
-                            padding: 5px 10px;
-                            &:hover {
-                                background: #e6e6e6;
-                            }
-                        }
-                    }
+                    z-index: 2;
                 }
+                &__eOption {
+                    filter:progid:DXImageTransform.Microsoft.Alpha(opacity=100);
+                    background-color: #FFFFFF;
+                    color: black;
+                    display: block;
+                    height: 37px;
+                    -webkit-appearance: none;
+                    zoom:1;
+                    text-align: right;
+                }
+                &__eValue {
+                    float: right;
+                }
+
+                // 
+                // &__eDdm {
+                //     position: absolute;
+                //     background: #fff;
+                //     border: 1px solid #c7c7c7;
+                //     .rounded(0 0 5px 5px);
+                //     left: -1px;
+                //     top: 35px;
+                //     z-index: 10;
+                //     width: 278px;
+                //     li {
+                //         padding: 5px 10px;
+                //         &:hover {
+                //             background: #e6e6e6;
+                //         }
+                //     }
+                // }
             }
+            
             .creditbox {
                 display: none;
 
