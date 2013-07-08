@@ -196,4 +196,17 @@ class Layout extends \View\DefaultLayout {
             $page->setKeywords($value);
         }
     }
+
+    public function slotMetaOg() {
+        /** @var \Model\Product\Category\Entity $category  */
+        $category = $this->getParam('category') instanceof \Model\Product\Category\Entity ? $this->getParam('category') : null;
+        if (!$category) return '';
+
+        return "<meta property=\"og:title\" content=\"" . $this->escape($category->getName()) . "\"/>\r\n" .
+            "<meta property=\"og:image\" content=\"" . $this->escape($category->getImageUrl().'?'.time()) . "\"/>\r\n".
+            "<meta property=\"og:site_name\" content=\"ENTER\"/>\r\n".
+            "<meta property=\"og:type\" content=\"website\"/>\r\n";
+
+    }
+
 }
