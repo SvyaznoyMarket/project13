@@ -9772,10 +9772,10 @@
 /*------СТИЛИ НОВОЙ КАРТОЧКИ ТОВАРА------*/
 @media all {
   .dotted {
-    border-bottom: 1px dotted #000;
+    border-bottom: 1px dotted #000000;
   }
   .bMainContainer {
-    background: #fff;
+    background: #ffffff;
   }
   .bMainContainer__eHeader {
     font-family: tahoma;
@@ -9798,21 +9798,17 @@
     margin: 0 0 25px;
   }
   .bProductSection .bProductDesc__ePhoto {
+    position: relative;
     float: left;
     width: 400px;
-    position: relative;
   }
   .bProductSection .bProductDesc__ePhoto-bigImg {
-    display: block;
-    text-align: center;
-    margin: 0 0 30px;
-  }
-  .bProductSection .bProductDesc__ePhoto-bigImg .bigImgLink {
     display: table-cell;
-    vertical-align: bottom;
-    height: 400px;
-    text-align: center;
     width: 400px;
+    height: 400px;
+    margin: 0 0 30px;
+    text-align: center;
+    vertical-align: bottom;
   }
   .bProductSection .bProductDesc__ePhoto-bigImg img {
     max-width: 400px;
@@ -9869,7 +9865,7 @@
   }
   .bProductSection .bProductDesc__eStore-select .descSelectItem__eDdm {
     position: absolute;
-    background: #fff;
+    background: #ffffff;
     border: 1px solid #c7c7c7;
     -webkit-border-radius: 0 0 5px 5px;
     -moz-border-radius: 0 0 5px 5px;
@@ -9904,107 +9900,6 @@
   .bProductSection .bProductDesc__eStore .creditbox .creditbox__sum {
     padding-left: 36px;
   }
-  .bProductSection .bPhotoActionOtherAction {
-    float: left;
-    width: 110px;
-  }
-  .bProductSection .bPhotoActionOtherAction li {
-    float: left;
-  }
-  .bProductSection .bPhotoActionOtherAction li a {
-    display: block;
-    width: 48px;
-    height: 48px;
-    border: 1px solid #e6e6e6;
-    -webkit-border-radius: 9px;
-    -moz-border-radius: 9px;
-    border-radius: 9px;
-    background-image: url("/css/newProductCard/img/btn_slider.png");
-    background-repeat: no-repeat;
-  }
-  .bProductSection .bPhotoActionOtherAction li a:hover {
-    border: 2px solid #fb9c00;
-    width: 46px;
-    height: 46px;
-  }
-  .bProductSection .bPhotoActionOtherAction__eVideo {
-    margin-right: 10px;
-  }
-  .bProductSection .bPhotoActionOtherAction__eVideo a {
-    background-position: 7px 0;
-  }
-  .bProductSection .bPhotoActionOtherAction__eVideo a:hover {
-    background-position: 6px -1px;
-  }
-  .bProductSection .bPhotoActionOtherAction__eGrad360 a {
-    background-position: 6px -49px;
-  }
-  .bProductSection .bPhotoActionOtherAction__eGrad360 a:hover {
-    background-position: 5px -50px;
-  }
-  .bProductSection .bPhotoActionOtherPhoto {
-    float: right;
-    width: 220px;
-    margin-right: 5px;
-    position: relative;
-  }
-  .bProductSection .bPhotoActionOtherPhoto__eWrappSlider {
-    overflow: hidden;
-    width: 220px;
-  }
-  .bProductSection .bPhotoActionOtherPhotoList {
-    width: 10000px;
-  }
-  .bProductSection .bPhotoActionOtherPhotoItem {
-    margin: 0 3px 0 2px;
-    float: left;
-  }
-  .bProductSection .bPhotoActionOtherPhotoItem__eLink {
-    display: table-cell;
-    width: 48px;
-    height: 48px;
-    border: 1px solid #e6e6e6;
-    -webkit-border-radius: 9px;
-    -moz-border-radius: 9px;
-    border-radius: 9px;
-    text-align: center;
-    vertical-align: middle;
-    overflow: hidden;
-  }
-  .bProductSection .bPhotoActionOtherPhotoItem__eLink img {
-    max-width: 45px;
-    max-height: 45px;
-  }
-  .bProductSection .bPhotoActionOtherPhoto .active a,
-  .bProductSection .bPhotoActionOtherPhotoItem:hover a {
-    border: 2px solid #fb9c00;
-    width: 46px;
-    height: 46px;
-  }
-  .bProductSection .bPhotoActionOtherPhoto__eBtn {
-    position: absolute;
-    background-color: rgba(255, 255, 255, 0.9);
-    -webkit-box-shadow: -4px 0 3px -2px rgba(146, 146, 146, 0.3);
-    -moz-box-shadow: -4px 0 3px -2px rgba(146, 146, 146, 0.3);
-    box-shadow: -4px 0 3px -2px rgba(146, 146, 146, 0.3);
-    height: 50px;
-    width: 15px;
-    cursor: pointer;
-    top: 0;
-  }
-  .bProductSection .bPhotoActionOtherPhoto__eBtn span {
-    text-align: center;
-    line-height: 48px;
-  }
-  .bProductSection .bPhotoActionOtherPhoto__mPrev {
-    left: -6px;
-    -webkit-box-shadow: 4px 0 3px -2px rgba(146, 146, 146, 0.3);
-    -moz-box-shadow: 4px 0 3px -2px rgba(146, 146, 146, 0.3);
-    box-shadow: 4px 0 3px -2px rgba(146, 146, 146, 0.3);
-  }
-  .bProductSection .bPhotoActionOtherPhoto__mNext {
-    right: -5px;
-  }
   .bProductSection .bDescriptionProduct {
     font-size: 14px;
   }
@@ -10029,7 +9924,7 @@
     margin: 5px 0;
   }
   .bProductSection .bSpecifications__eList dd span {
-    background: #fff;
+    background: #ffffff;
     position: relative;
     bottom: -3px;
     padding-right: 5px;
@@ -10047,6 +9942,109 @@
   }
   .bProductSection__eRight .btnBuy {
     margin: 0 auto;
+  }
+  .bPhotoActionOtherAction {
+    float: left;
+    width: 110px;
+  }
+  .bPhotoActionOtherAction li {
+    float: left;
+  }
+  .bPhotoActionOtherAction li a {
+    -webkit-border-radius: 9px;
+    -moz-border-radius: 9px;
+    border-radius: 9px;
+    display: block;
+    width: 48px;
+    height: 48px;
+    border: 1px solid #e6e6e6;
+    background-image: url("/css/newProductCard/img/btn_slider.png");
+    background-repeat: no-repeat;
+  }
+  .bPhotoActionOtherAction li a:hover {
+    width: 46px;
+    height: 46px;
+    border: 2px solid #fb9c00;
+  }
+  .bPhotoActionOtherAction__eVideo {
+    margin-right: 10px;
+  }
+  .bPhotoActionOtherAction__eVideo a {
+    background-position: 7px 0;
+  }
+  .bPhotoActionOtherAction__eVideo a:hover {
+    background-position: 6px -1px;
+  }
+  .bPhotoActionOtherAction__eGrad360 a {
+    background-position: 6px -49px;
+  }
+  .bPhotoActionOtherAction__eGrad360 a:hover {
+    background-position: 5px -50px;
+  }
+  .bPhotoActionOtherPhoto {
+    position: relative;
+    float: right;
+    width: 220px;
+    margin-right: 5px;
+  }
+  .bPhotoActionOtherPhoto__eWrappSlider {
+    overflow: hidden;
+    width: 220px;
+  }
+  .bPhotoActionOtherPhotoList {
+    position: relative;
+    width: 100000px;
+  }
+  .bPhotoActionOtherPhotoItem {
+    float: left;
+    margin: 0 3px 0 2px;
+  }
+  .bPhotoActionOtherPhotoItem__eLink {
+    -webkit-border-radius: 9px;
+    -moz-border-radius: 9px;
+    border-radius: 9px;
+    display: table-cell;
+    overflow: hidden;
+    width: 48px;
+    height: 48px;
+    text-align: center;
+    vertical-align: middle;
+    border: 1px solid #e6e6e6;
+  }
+  .bPhotoActionOtherPhotoItem__eLink img {
+    max-width: 45px;
+    max-height: 45px;
+  }
+  .bPhotoActionOtherPhoto .active a,
+  .bPhotoActionOtherPhotoItem:hover a {
+    width: 46px;
+    height: 46px;
+    border: 2px solid #ffa901;
+  }
+  .bPhotoActionOtherPhoto__eBtn {
+    position: absolute;
+    top: 0;
+    display: none;
+    width: 15px;
+    height: 50px;
+    cursor: pointer;
+    background-color: #ffffff;
+  }
+  .bPhotoActionOtherPhoto__eBtn span {
+    text-align: center;
+    line-height: 48px;
+  }
+  .bPhotoActionOtherPhoto__eBtn.mPrev {
+    -webkit-box-shadow: 4px 0 3px -2px #e6e6e6;
+    -moz-box-shadow: 4px 0 3px -2px #e6e6e6;
+    box-shadow: 4px 0 3px -2px #e6e6e6;
+    left: -6px;
+  }
+  .bPhotoActionOtherPhoto__eBtn.mNext {
+    -webkit-box-shadow: -4px 0 3px -2px #e6e6e6;
+    -moz-box-shadow: -4px 0 3px -2px #e6e6e6;
+    box-shadow: -4px 0 3px -2px #e6e6e6;
+    right: -5px;
   }
   .bHint {
     *display: inline;

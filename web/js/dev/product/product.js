@@ -73,6 +73,63 @@ $(document).ready(function() {
 	$('.jsGoToId').bind('click',goToId);
 
 
+	/**
+	 * Слайдер изображений товара
+	 *
+	 * @requires jQuery
+	 */
+	(function(){
+
+		var initFotoSlider = function(){
+			var slider = $('.bPhotoActionOtherPhoto');
+			var fotoBox = slider.find('.bPhotoActionOtherPhotoList');
+			var leftArr = slider.find('.bPhotoActionOtherPhoto__eBtn.mPrev');
+			var rightArr = slider.find('.bPhotoActionOtherPhoto__eBtn.mNext');
+			var photos = fotoBox.find('.bPhotoActionOtherPhotoItem');
+			var itemW = photos.width() + parseInt(photos.css('marginLeft')) + parseInt(photos.css('marginRight'));
+			var nowLeft = 0;
+
+			fotoBox.css({'width': photos.length*itemW, 'left':nowLeft});
+
+			var checkArrow = function(){
+				if (nowLeft > 0){
+					leftArr.show();
+				}
+				else {
+					leftArr.hide();	
+				}
+
+				if (nowLeft < fotoBox.width()-slider.width()){
+					rightArr.show();
+				}
+				else {
+					rightArr.hide();
+				}
+			};
+
+			var prevFoto = function(){
+				nowLeft = nowLeft - itemW;
+				fotoBox.animate({'left':-nowLeft});
+				checkArrow();
+			};
+
+			var nextFoto = function(){
+				nowLeft = nowLeft + itemW;
+				fotoBox.animate({'left':-nowLeft});
+				checkArrow();
+			};
+
+			checkArrow();
+
+			leftArr.bind('click', prevFoto);
+			rightArr.bind('click', nextFoto);
+		};
+
+		if ( $('.bPhotoActionOtherPhoto').length){
+			initFotoSlider();
+		}
+
+	}());
 
 	/**
 	 * Планировщик шкафов купе

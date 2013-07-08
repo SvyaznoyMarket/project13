@@ -198,7 +198,7 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
 
                     <div class="bPhotoActionOtherPhoto">
                         <div class="bPhotoActionOtherPhoto__eWrappSlider">
-                            <ul class="bPhotoActionOtherPhotoList">
+                            <ul class="bPhotoActionOtherPhotoList clearfix">
                                 <? foreach ($photoList as $photo): ?>
                                 <li class="bPhotoActionOtherPhotoItem">
                                     <a class="bPhotoActionOtherPhotoItem__eLink" href="">
@@ -209,8 +209,8 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
                             </ul>
                         </div>
 
-                        <div class="bPhotoActionOtherPhoto__eBtn bPhotoActionOtherPhoto__eDisable bPhotoActionOtherPhoto__mPrev"><span>&#9668;</span></div>
-                        <div class="bPhotoActionOtherPhoto__eBtn bPhotoActionOtherPhoto__mNext"><span>&#9658;</span></div>
+                        <div class="bPhotoActionOtherPhoto__eBtn mPrev"><span>&#9668;</span></div>
+                        <div class="bPhotoActionOtherPhoto__eBtn mNext"><span>&#9658;</span></div>
                     </div><!--/slider mini product images -->
                 </div>
             </div><!--/product images section -->
