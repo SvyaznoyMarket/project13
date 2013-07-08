@@ -183,16 +183,16 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
                         <? if ($productVideo && $productVideo->getContent()): ?>
                             <li class="bPhotoActionOtherAction__eVideo"><a href=""></a></li>
                         <? endif ?>
-                        <? if (count($photoList) || $model3dExternalUrl || $model3dImg):  ?>
+                        <? if ((bool)$product->getPhoto3d() || $model3dExternalUrl || $model3dImg):  ?>
                             <? $class3D = '';
                             if ($model3dExternalUrl){
                                 $class3D = 'maybe3d';
                             } else if ($model3dImg){
                                 $class3D = '3dimg';
-                            } else if ($photoList){
+                            } else if ((bool)$product->getPhoto3d()){
                                 $class3D = 'our3d';
                             } ?>
-                            <li class="bPhotoActionOtherAction__eGrad360 <?=$class3D?>"><a href=""></a></li>
+                            <li class="bPhotoActionOtherAction__eGrad360 <?= $class3D ?>"><a href=""></a></li>
                         <? endif ?>
                     </ul><!--/view product section -->
 
