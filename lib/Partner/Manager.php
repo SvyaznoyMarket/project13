@@ -70,17 +70,6 @@ class Manager {
                     false,
                     true
                 );
-            // eTargeting
-            } if (0 === strpos($utmSource, 'etargeting')) {
-                $cookie = new \Http\Cookie(
-                    $this->cookieName,
-                    \Partner\Counter\Etargeting::NAME,
-                    time() + $this->cookieLifetime,
-                    '/',
-                    null,
-                    false,
-                    true
-                );
             // Actionpay
             } else if (0 === strpos($utmSource, 'actionpay')) {
                 $response->headers->setCookie(new \Http\Cookie(
@@ -163,11 +152,6 @@ class Manager {
                 $return = [
                     $prefix => [\Partner\Counter\CityAds::NAME],
                     $prefix . '.' . \Partner\Counter\CityAds::NAME . '.prx' => $request->cookies->get('prx'),
-                ];
-                break;
-            case \Partner\Counter\Etargeting::NAME:
-                $return = [
-                    $prefix => [\Partner\Counter\Etargeting::NAME],
                 ];
                 break;
             case \Partner\Counter\Actionpay::NAME:

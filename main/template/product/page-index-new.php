@@ -183,16 +183,16 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
                         <? if ($productVideo && $productVideo->getContent()): ?>
                             <li class="bPhotoActionOtherAction__eVideo"><a href=""></a></li>
                         <? endif ?>
-                        <? if ((bool)$product->getPhoto3d() || $model3dExternalUrl || $model3dImg):  ?>
+                        <? if (count($photoList) || $model3dExternalUrl || $model3dImg):  ?>
                             <? $class3D = '';
                             if ($model3dExternalUrl){
                                 $class3D = 'maybe3d';
                             } else if ($model3dImg){
                                 $class3D = '3dimg';
-                            } else if ((bool)$product->getPhoto3d()){
+                            } else if ($photoList){
                                 $class3D = 'our3d';
                             } ?>
-                            <li class="bPhotoActionOtherAction__eGrad360 <?= $class3D ?>"><a href=""></a></li>
+                            <li class="bPhotoActionOtherAction__eGrad360 <?=$class3D?>"><a href=""></a></li>
                         <? endif ?>
                     </ul><!--/view product section -->
 
@@ -290,7 +290,7 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
                     </div>
                 </div><!--/review section -->
 
-                <? if ((bool)$product->getModel() && (bool)$product->getModel()->getProperty()): //модели ?>
+                <? /*<? if ((bool)$product->getModel() && (bool)$product->getModel()->getProperty()): //модели ?>
                 <div class="bProductDesc__eStore-select">
                 <? foreach ($product->getModel()->getProperty() as $property): ?>
                     <? if ($property->getIsImage()): ?>
@@ -319,6 +319,35 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
                 <? endforeach ?>
 
                 </div><!--/additional product options -->
+                <? endif ?>
+                */ ?>
+                
+                <? if ((bool)$product->getModel() && (bool)$product->getModel()->getProperty()): //модели ?>
+                    <div class="bProductDesc__eStore-select">
+                        <? foreach ($product->getModel()->getProperty() as $property): ?>
+                        <? if ($property->getIsImage()): ?>
+                        <? else: ?>
+                        <?
+                            $productAttribute = $product->getPropertyById($property->getId());
+                            if (!$productAttribute) break;
+                        ?>
+
+                        <? endif ?>
+                        <div class="bDescSelectItem clearfix">
+                            <strong class="bDescSelectItem__eName"><?= $property->getName() ?></strong>
+
+                            <span class="bDescSelectItem__eValue"><?= $productAttribute->getStringValue() ?></span>
+
+                            <select class="bDescSelectItem__eSelect">
+                                <? foreach ($property->getOption() as $option): ?>
+                                <? if ($option->getValue() == $productAttribute->getValue()) continue ?>
+                                <option class="bDescSelectItem__eOption"><?= $option->getHumanizedName() ?></option>
+                                <? endforeach ?>
+                            </select>
+                        </div>
+                    <? endforeach ?>
+
+                    </div><!--/additional product options -->
                 <? endif ?>
 
             </div><!--/product shop description box -->
