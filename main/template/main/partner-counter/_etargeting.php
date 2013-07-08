@@ -4,7 +4,10 @@
  */
 ?>
 
-<? if (\App::config()->analytics['enabled'] && ($cusId = \Partner\Counter\Etargeting::getCusId($user->getRegion()))): ?>
+<?
+// закрыл из-за SITE-1400
+?>
+<? if (false && \App::config()->analytics['enabled'] && ($cusId = \Partner\Counter\Etargeting::getCusId($user->getRegion()))): ?>
 <script language="javascript">
     var odinkod = {
         "type": "homepage"
