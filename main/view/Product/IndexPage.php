@@ -255,6 +255,13 @@ class IndexPage extends \View\DefaultLayout {
             }
         }
 
+        $product = $this->getParam('product') instanceof \Model\Product\Entity ? $this->getParam('product') : null;
+        if ($product instanceof \Model\Product\Entity) {
+            if ((bool)$product->getPhoto3d()) {
+                $config['product.native3d'] = true;
+            }
+        }
+
         return $this->tryRender('_config', ['config' => $config]);
     }
 }
