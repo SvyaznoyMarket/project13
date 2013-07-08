@@ -232,9 +232,9 @@ class Entity extends BasicEntity {
     /**
      * @return string
      */
-    /*public function getLink($withSuffix = true, $region = NULL) {
+    public function getLink($withSuffix = true, $region = NULL) {
         return $this->link;
-    }*/
+    }
 
     /**
      * @param string $token
