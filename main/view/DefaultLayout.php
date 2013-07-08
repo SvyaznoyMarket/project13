@@ -254,36 +254,90 @@ class DefaultLayout extends Layout {
         $routeName = \App::request()->attributes->get('route');
         //$routeName = $request->attributes->get('route');
 
-        $return = "<!-- $routeName - routename -->";
-
-
+        $return = "<!-- $routeName - routename -->"; //tmp
         $return .= $this->render($smantic_path.'01-homepage'); // default, для всех страниц
 
 
         if ($routeName == 'product.category') {
+
             $category = $this->getParam('category') instanceof \Model\Product\Category\Entity ? $this->getParam('category') : null;
-            $return .= print_r($category,true);
+            $prod_cats = $this->prod_cats_in_string( $category->getChild() ); // формируем категории продукта в виде строки для js
+            $return .= $this->render($smantic_path.'02-category_page', ['category' => $category, 'prod_cats' => $prod_cats] );
 
-
-            $return .= $this->render($smantic_path.'02-category_page', ['category' => $category]);
         }else if ($routeName == 'product') {
-            $product = $this->getParam('product') instanceof \Model\Product\Entity ? $this->getParam('product') : null;
-            //$return .= print_r($product, true);
 
-            $return .= $this->render($smantic_path.'03a-product_page_stream',
-                array(
-                    'product' => $product
-                )
-            );
+            $product = $this->getParam('product') instanceof \Model\Product\Entity ? $this->getParam('product') : null;
+            $prod_cats = $this->prod_cats_in_string( $product->getCategory() );  // категории продукта в виде строки для js
+            $return .= $this->render($smantic_path.'03a-product_page_stream', ['product' => $product, 'prod_cats' => $prod_cats] );
+
         }
         else if ($routeName == 'cart') {
-            $return .= $this->render($smantic_path.'04-basket');
+            $products = $this->getParam('products');
+            $cartProductsById = $this->getParam('cartProductsById');
+
+            $cart_prods = [];
+
+            foreach ($products as $product):
+                $cartProduct = isset($cartProductsById[$product->getId()]) ? $cartProductsById[$product->getId()] : null;
+
+                $one_prod = [];
+                $one_prod['identifier'] = $product->getId();
+                $one_prod['quantity'] = $cartProduct->getQuantity();
+                //$one_prod['amount'] = $this->helper->formatPrice( $cartProduct->getPrice() * $one_prod['quantity'] );
+                $one_prod['amount'] = $cartProduct->getPrice() * $one_prod['quantity'];
+                $one_prod['currency'] = 'RUB';
+
+                $cart_prods[] = $one_prod;
+                if (!$cartProduct) continue;
+            endforeach;
+
+            $return .= $this->render($smantic_path.'04-basket', ['cart_prods' => $cart_prods] );
+
         }
         else if ($routeName == 'order.complete') {
-            $return .= $this->render($smantic_path.'05a-confirmation_page');
+
+            //$products = $this->getParam('products');
+            //$cartProductsById = $this->getParam('cartProductsById');
+
+            $orders = $this->getParam('orders');
+
+            //$cart = \App::user()->getCart();
+
+            $return .= $this->render($smantic_path.'05a-confirmation_page',
+                [
+                    'orders' => $orders
+                ]
+            );
+
         }
 
         return $return;
+    }
+
+
+    /**
+     * Возвращает категории продукта в виде строки (для js-скрипта например) исходя из масива
+     * @param $prod_cats_arr
+     * @return string
+     */
+    public function prod_cats_in_string($prod_cats_arr){
+
+        $count = count($prod_cats_arr);
+        $prod_cats = '';
+
+        if ($count > 0) {
+            $i = 0;
+            $prod_cats = "[";
+            foreach ($prod_cats_arr as $cat) {
+                $i++;
+                $prod_cats .= " '" . $cat->getName() . "'";
+                if ($i < $count) $prod_cats .= ", ";
+            }
+            $prod_cats .= " ]";
+        }
+
+        return $prod_cats;
+
     }
 
 }
