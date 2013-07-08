@@ -30,20 +30,20 @@ class Action {
                 'email'      => $email,
                 'channel_id' => $channelId,
             ];
+            /* SITE-1374
             if ($userEntity = \App::user()->getEntity()) {
                 $params['token'] = $userEntity->getToken();
             }
-
+            */
 
             $client->addQuery('subscribe/create', $params, [], function($data) {}, function(\Exception $e) {
                 \App::logger()->error($e);
                 \App::exception()->remove($e);
             });
             $client->execute(\App::config()->coreV2['retryTimeout']['huge']);
-
-            $responseData = ['success' => true];
         } catch (\Exception $e) {
             \App::logger()->error($e);
+            $responseData = ['success' => false];
         }
 
         return new \Http\JsonResponse($responseData);
