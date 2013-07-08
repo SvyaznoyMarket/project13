@@ -31,7 +31,6 @@ class IndexPage extends \View\DefaultLayout {
 
     public function slotInnerJavascript() {
         return ''
-            . $this->tryRender('main/partner-counter/_etargeting')
             . "\n\n"
             . $this->render('_remarketingGoogle', ['tag_params' => ['pagetype' => 'homepage']])
             . "\n\n"
