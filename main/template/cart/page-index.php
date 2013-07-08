@@ -106,6 +106,5 @@ $creditEnabled = ($cart->getTotalProductPrice() >= \App::config()->product['minC
     <script>document.write('<img src="http://mixmarket.biz/tr.plx?e=3779415&r='+escape(document.referrer)+'&t='+(new Date()).getTime()+'" width="1" height="1"/>');</script>
     <!--Трэкер "Корзина"-->
 
-    <?= $page->tryRender('cart/partner-counter/_etargeting') ?>
     <?= $page->tryRender('cart/partner-counter/_cityads') ?>
 <? endif ?>
