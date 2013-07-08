@@ -144,15 +144,26 @@ class BasicEntity {
      */
     public function getLink($withSuffix = true, $region = NULL) {
         if ($withSuffix) {
-            $region_id = $region ? $region->getId() : \App::user()->getRegion()->getId();
-            //$region_name = \App::user()->getRegion()->getToken();
 
-            //$region =  \App::user()->getRegion();
-            //$region_id = $region->getId();
+            $linkSuff = $this->getLinkSuffix();
 
-            $this->setLinkSuffix('?OFFER_ID='.$region_id/*.'_msk'*/);
+            if (empty(  $linkSuff  )) {
+                $region_id = $region ? $region->getId() : \App::user()->getRegion()->getId();
+                //$region_name = \App::user()->getRegion()->getToken();
+                //$region =  \App::user()->getRegion();
+                //$region_id = $region->getId();
+
+                $this->setLinkSuffix('?OFFER_ID='.$region_id/*.'_msk'*/);
+                $linkSuff = $this->getLinkSuffix();;
+            }else{
+                $linkSuff = $this->getLinkSuffix();;
+            }
+
+            $return =  $this->link . $linkSuff;
+        }else{
+            $return =  $this->link;
         }
-        return $withSuffix ? $this->link . $this->getLinkSuffix() :  $this->link;
+        return $return;
     }
 
     /**
