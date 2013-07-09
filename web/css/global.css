@@ -10231,44 +10231,49 @@
   .bSliderAction__mPrev span {
     background-position: -37px 0px;
   }
-  .bAccessory {
+  .bAccessory__eCat {
+    display: none;
+  }
+  /*** скрывает блок категорий в слайдере аксессуаров, если категория одна или отсутствует ***/
+  .mAccessoryCat {
     border-top: 1px solid #c7c7c7;
     border-bottom: 1px solid #c7c7c7;
     height: 220px;
   }
-  .bAccessory__eCat {
+  .mAccessoryCat .bAccessory__eCat {
     float: left;
     width: 219px;
     height: 215px;
     overflow: scroll;
     border-right: 1px solid #c7c7c7;
     padding: 5px 0 0;
+    display: block;
   }
-  .bAccessory__eCat li {
+  .mAccessoryCat .bAccessory__eCat li {
     cursor: pointer;
   }
-  .bAccessory__eCat li span {
+  .mAccessoryCat .bAccessory__eCat li span {
     display: inline-block;
     padding: 5px;
   }
-  .bAccessory__eCat li span:hover {
+  .mAccessoryCat .bAccessory__eCat li span:hover {
     text-decoration: underline;
   }
-  .bAccessory__eCat li.active {
+  .mAccessoryCat .bAccessory__eCat li.active {
     cursor: default;
   }
-  .bAccessory__eCat li.active span {
+  .mAccessoryCat .bAccessory__eCat li.active span {
     background: #e4e4e4;
   }
-  .bAccessory__eCat li.active span:hover {
+  .mAccessoryCat .bAccessory__eCat li.active span:hover {
     text-decoration: none;
   }
-  .bAccessory .bSliderAction {
+  .mAccessoryCat .bSliderAction {
     width: 460px;
     float: right;
     margin: 5px 0 0;
   }
-  .bAccessory .bSliderAction__eInner {
+  .mAccessoryCat .bSliderAction__eInner {
     width: 360px;
   }
   .mNoSliderAction .bSliderAction__elist {
