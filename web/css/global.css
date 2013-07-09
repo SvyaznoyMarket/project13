@@ -10120,69 +10120,37 @@
     padding: 3px 3px 0;
     height: 246px;
   }
-  .bSliderAction ul {
+  .bSliderAction__eList {
+    margin: 0 auto;
     width: 5000px;
   }
-  .bSliderAction ul li {
-    float: left;
-  }
-  .bSliderAction__elist {
-    margin: 0 auto;
-  }
-  .bSliderAction__elist li {
-    width: 120px;
-    height: 210px;
-  }
-  .bSliderAction__elist li .product__inner {
-    padding: 10px;
-    -webkit-transition: all 0.05s linear;
-    -moz-transition: all 0.05s linear;
-    transition: all 0.05s linear;
-  }
-  .bSliderAction__elist li .product__inner:hover {
-    -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
-    -moz-box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
-    background: #fff;
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
-    border-radius: 3px;
-  }
-  .bSliderAction__elist li .product__inner:hover .btnBuy {
-    -moz-opacity: 1;
-    -khtml-opacity: 1;
-    -webkit-opacity: 1;
-    opacity: 1;
-    -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=100);
-    filter: alpha(opacity=100);
-  }
-  .bSliderAction__elist .reviewSection__star {
+  .bSliderAction__eList .reviewSection__star {
     float: none;
     margin: 0;
     text-align: center;
   }
-  .bSliderAction__elist .productImg {
+  .bSliderAction__eList .productImg {
     display: table-cell;
     width: 100px;
     height: 100px;
     vertical-align: middle;
   }
-  .bSliderAction__elist .productImg img {
+  .bSliderAction__eList .productImg img {
     max-width: 100px;
     max-height: 100px;
   }
-  .bSliderAction__elist .productName {
+  .bSliderAction__eList .productName {
     margin: 5px 0 8px;
     height: 37px;
     overflow: hidden;
     font-size: 11px;
     line-height: 1.1;
   }
-  .bSliderAction__elist .productPrice {
+  .bSliderAction__eList .productPrice {
     font-size: 14px;
     margin: 0 0 10px;
   }
-  .bSliderAction__elist .btnBuy {
+  .bSliderAction__eList .btnBuy {
     width: 100px;
     height: 25px;
     line-height: 25px;
@@ -10197,45 +10165,73 @@
     -moz-transition: all 0.05s linear;
     transition: all 0.05s linear;
   }
+  .bSliderAction__eItem {
+    width: 120px;
+    height: 210px;
+    float: left;
+  }
+  .bSliderAction__eItem .product__inner {
+    padding: 10px;
+    -webkit-transition: all 0.05s linear;
+    -moz-transition: all 0.05s linear;
+    transition: all 0.05s linear;
+  }
+  .bSliderAction__eItem .product__inner:hover {
+    -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    -moz-box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    background: #ffffff;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+  }
+  .bSliderAction__eItem .product__inner:hover .btnBuy {
+    -moz-opacity: 1;
+    -khtml-opacity: 1;
+    -webkit-opacity: 1;
+    opacity: 1;
+    -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=100);
+    filter: alpha(opacity=100);
+  }
   .bSliderAction__eBtn {
-    position: absolute;
-    background-color: #fff7e6;
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     border-radius: 4px;
-    height: 58px;
-    width: 40px;
+    position: absolute;
     top: 76px;
+    width: 40px;
+    height: 58px;
     cursor: pointer;
+    background-color: #fff7e6;
   }
   .bSliderAction__eBtn span {
+    display: block;
+    width: 24px;
+    height: 46px;
+    margin: 6px auto 0;
     background-image: url("/css/newProductCard/img/btn_slider.png");
     background-repeat: no-repeat;
-    margin: 6px auto 0;
-    height: 46px;
-    width: 24px;
-    display: block;
   }
-  .bSliderAction__eDisable {
-    background: #f2f2f2;
+  .bSliderAction__eBtn.mNext {
+    right: 0;
+  }
+  .bSliderAction__eBtn.mNext span {
+    background-position: -54px 0px;
+  }
+  .bSliderAction__eBtn.mPrev span {
+    background-position: -37px 0px;
+  }
+  .bSliderAction__eBtn.mDisable {
     -moz-opacity: 0.3;
     -khtml-opacity: 0.3;
     -webkit-opacity: 0.3;
     opacity: 0.3;
     -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=30);
     filter: alpha(opacity=30);
+    background: #f2f2f2;
   }
-  .bSliderAction__eDisable span {
+  .bSliderAction__eBtn.mDisable span {
     cursor: default;
-  }
-  .bSliderAction__mNext {
-    right: 0;
-  }
-  .bSliderAction__mNext span {
-    background-position: -54px 0px;
-  }
-  .bSliderAction__mPrev span {
-    background-position: -37px 0px;
   }
   .bAccessory__eCat {
     display: none;

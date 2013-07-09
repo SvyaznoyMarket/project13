@@ -19,9 +19,9 @@ return function (
 ]) ?>">
 
     <div class="bSliderAction__eInner">
-        <ul class="bSliderAction__elist clearfix">
+        <ul class="bSliderAction__eList clearfix">
         <? foreach ($products as $product): ?>
-            <li>
+            <li class="bSliderAction__eItem">
                 <div class="product__inner">
                     <a class="productImg" href=""><img src="<?= $product->getImageUrl() ?>" alt="<?= $helper->escape($product->getName()) ?>" /></a>
                     <div class="productName"><a href="<?= $helper->url('product', ['productPath' => $product->getPath()]) ?>"><?= $product->getName() ?></a></div>
@@ -35,8 +35,8 @@ return function (
         </ul>
     </div>
 
-    <div class="bSliderAction__eBtn bSliderAction__eDisable bSliderAction__mPrev"><span></span></div>
-    <div class="bSliderAction__eBtn bSliderAction__mNext"><span></span></div>
+    <div class="bSliderAction__eBtn mPrev mDisable"><span></span></div>
+    <div class="bSliderAction__eBtn mNext mDisable"><span></span></div>
 </div>
 
 <? };
