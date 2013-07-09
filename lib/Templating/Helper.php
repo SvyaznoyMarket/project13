@@ -209,7 +209,7 @@ class Helper {
      */
     public function stringRowParam4js($key,$value){
         $ret =false;
-        if ( isset($key) and !empty($key) and ($value) ) { // Важно! пустое значение ( $value == "") будет игнориться
+        if ( isset($key) and !empty($key) /*and ($value)*/ ) { // Важно! пустое значение ( $value == "") НЕ будет игнориться
             $ret =  "'".$key."':";
             $value_str = (string) $value;
             if (!is_numeric($value)) $value_str = "'".$value_str."'"; // оборачиваем в кавычки, если не число
@@ -246,7 +246,7 @@ class Helper {
                     $count--;
                 }
             }
-            $ret .= PHP_EOL."};".PHP_EOL;
+            $ret .= PHP_EOL."}";
         }
         return $ret;
 

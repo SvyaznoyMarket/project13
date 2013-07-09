@@ -24,8 +24,17 @@ $params['_orderCurrency'] = 'RUB';
 //$params['_usedPromoCode'] = 'CVB456098'; // Код использованной скидки
 
 
+if (
+    !isset($params['_customerLastName']) or
+    empty($params['_customerLastName'] ) or
+    is_null($params['_customerLastName'])
+    )
+{
+    $params['_customerLastName'] = '';
+}
+
 // Если юзер почему-то безымянный, то обратимся как "Уважаемый Покупатель"
-if ( empty($params['_customerFirstName']) and empty($params['_customerLastName']) ) {
+if ( empty($params['_customerFirstName']) ) {
     $params['_customerFirstName'] = 'Покупатель';
     $params['_customerLastName'] = '';
     $params['_customerGender'] = 'male';
@@ -38,7 +47,7 @@ if ( empty($params['_customerFirstName']) and empty($params['_customerLastName']
 <script type="text/javascript">
     var _iPromoBannerObj = function() {
         this.htmlElementId = 'promocode-element-container';
-        this.params = <? echo $page->helper->stringRowsParams4js($params); ?>
+        this.params = <? echo $page->helper->stringRowsParams4js($params) .';'.PHP_EOL; ?>
             <? /* //example:
             {
             '_shopId': 76,
@@ -52,7 +61,7 @@ if ( empty($params['_customerFirstName']) and empty($params['_customerLastName']
             '_orderValue': 'ORDER_VALUE',
             '_orderCurrency': 'RUB',
             '_usedPromoCode': 'ORDER_PROMO_CODE'
-            }
+            };
             */ ?>
         this.lS=function(s){document.write('<sc'+'ript type="text/javascript" src="'+s+'" async="true"></scr'+'ipt>');},
             this.gc=function(){return document.getElementById(this.htmlElementId);};
