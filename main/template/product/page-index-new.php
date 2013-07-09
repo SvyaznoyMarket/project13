@@ -171,63 +171,12 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
 
 <div class="bProductSection__eLeft">
     <section>
-	<? if ($hasFurnitureConstructor): ?>
+	   <? if ($hasFurnitureConstructor): ?>
             <? require __DIR__ . '/show/_furniture-new.php' ?>
         <? else: ?>
             <? require __DIR__ . '/show/_default-new.php' ?>
         <? endif ?>
 
-            <div class="bProductDesc__ePhoto">
-                <div class="bProductDesc__ePhoto-bigImg">
-                    <img class="bZoomedImg" src="<?= $product->getImageUrl(3) ?>" data-zoom-image="<?= $product->getImageUrl(4) ?>" alt="<?= $page->escape($product->getName()) ?>" />
-                </div><!--/product big image section -->
-
-                <div class="bPhotoAction">
-                    <ul class="bPhotoActionOtherAction">
-                        <? if ($productVideo && $productVideo->getContent()): ?>
-                            <li class="bPhotoActionOtherAction__eVideo"><a href=""></a></li>
-                        <? endif ?>
-                        <? if (count($photoList) || $model3dExternalUrl || $model3dImg):  ?>
-                            <? $class3D = '';
-                            if ($model3dExternalUrl){
-                                $class3D = 'maybe3d';
-                            } else if ($model3dImg){
-                                $class3D = '3dimg';
-                            } else if ($photoList){
-                                $class3D = 'our3d';
-                            } ?>
-                            <li class="bPhotoActionOtherAction__eGrad360 <?=$class3D?>"><a href=""></a></li>
-                        <? endif ?>
-                    </ul><!--/view product section -->
-
-                    <div class="bPhotoActionOtherPhoto">
-                        <div class="bPhotoActionOtherPhoto__eWrappSlider">
-                            <ul id="productImgGallery" class="bPhotoActionOtherPhotoList clearfix">
-                                <? foreach ($photoList as $photo): ?>
-                                <li class="bPhotoActionOtherPhotoItem">
-                                    <a class="bPhotoActionOtherPhotoItem__eLink" data-zoom-image="<?= $photo->getUrl(4) ?>" data-image="<?= $photo->getUrl(3) ?>" href="#">
-                                        <img src="<?= $photo->getUrl(0) ?>" alt="<?= $page->escape($product->getName()) ?>" />
-                                    </a>
-                                </li>
-                                <? endforeach ?>
-                            </ul>
-                        </div>
-
-                        <div class="bPhotoActionOtherPhoto__eBtn mPrev"><span>&#9668;</span></div>
-                        <div class="bPhotoActionOtherPhoto__eBtn mNext"><span>&#9658;</span></div>
-                    </div><!--/slider mini product images -->
-                </div>
-            </div><!--/product images section -->
-
-            <div class="bProductDesc__eStore">
-                <? if ($product->getIsBuyable()): ?>
-                    <link itemprop="availability" href="http://schema.org/InStock" />
-                    <div class="inStock">Есть в наличии</div>
-                <? elseif (!$product->getIsBuyable() && $product->getState()->getIsShop()): ?>
-                    <link itemprop="availability" href="http://schema.org/InStoreOnly" />
-                <? else: ?>
-                    <link itemprop="availability" href="http://schema.org/OutOfStock" />
-                <? endif ?>
 
         <div class="bDescriptionProduct">
             <?= $product->getDescription() ?>

@@ -36,11 +36,11 @@
 
             <div class="bPhotoActionOtherPhoto">
                 <div class="bPhotoActionOtherPhoto__eWrappSlider">
-                    <ul class="bPhotoActionOtherPhotoList clearfix">
+                    <ul id="productImgGallery" class="bPhotoActionOtherPhotoList clearfix">
                         <? foreach ($photoList as $photo): ?>
                             <li class="bPhotoActionOtherPhotoItem">
-                                <a class="bPhotoActionOtherPhotoItem__eLink" href="">
-                                    <img src="<?= $photo->getUrl(0) ?>" alt="<?= $page->escape($product->getName()) ?>" data-zoom-image="<?= $photo->getUrl(4) ?>" data-image="<?= $photo->getUrl(3) ?>" />
+                                <a class="bPhotoActionOtherPhotoItem__eLink" data-zoom-image="<?= $photo->getUrl(4) ?>" data-image="<?= $photo->getUrl(3) ?>" href="#">
+                                    <img src="<?= $photo->getUrl(0) ?>" alt="<?= $page->escape($product->getName()) ?>" />
                                 </a>
                             </li>
                         <? endforeach ?>
