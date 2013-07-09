@@ -23,6 +23,11 @@
 
 		var deliveryInfo = res.product[0].delivery;
 
+		var shopToggle = function(){
+			nowBox.toggleClass('mOpen');
+			nowBox.toggleClass('mClose');
+		};
+
 		for (var i = deliveryInfo.length - 1; i >= 0; i--) {
 			switch (deliveryInfo[i].token){
 				case 'standart':
@@ -31,8 +36,8 @@
 						price: deliveryInfo[i].price,
 						dateString: deliveryInfo[i].date.name
 					};
-					var template = tmpl('widget_delivery_standart', standartData);
-					standartBox.html(template);
+					var templateStandart = tmpl('widget_delivery_standart', standartData);
+					standartBox.html(templateStandart);
 					break;
 
 				case 'self':
@@ -41,8 +46,8 @@
 						price: deliveryInfo[i].price,
 						dateString: deliveryInfo[i].date.name
 					};
-					var template = tmpl('widget_delivery_self', selfData);
-					selfBox.html(template);
+					var templateSelf = tmpl('widget_delivery_self', selfData);
+					selfBox.html(templateSelf);
 					break;
 
 				case 'now':
@@ -56,16 +61,13 @@
 						var shopInfo = {
 							name: deliveryInfo[i].shop[j].name
 						};
-						var shopTmpl = tmpl('widget_delivery_shop',shopInfo);
-						shopList.append(shopTmpl);
-					};
+						var templateNow = tmpl('widget_delivery_shop',shopInfo);
+						shopList.append(templateNow);
+					}
 					nowBox.show();
-					nowBox.bind('click', function(){
-						nowBox.toggleClass('mOpen');
-						nowBox.toggleClass('mClose');
-					})
+					nowBox.bind('click', shopToggle);
 					break;
-			};
+			}
 		}
 	};
 
