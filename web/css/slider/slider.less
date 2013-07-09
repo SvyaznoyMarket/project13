@@ -106,15 +106,18 @@
 	}
 }
 
-.bAccessory__eCat {
-	display: none;
-} /*** скрывает блок категорий в слайдере аксессуаров, если категория одна или отсутствует ***/
+/**
+ * Если есть категории
+ */
 
-.mAccessoryCat {
-	border-top: 1px solid #c7c7c7;
-	border-bottom: 1px solid #c7c7c7;
-	height: 220px;
-	.bAccessory__eCat {
+.bGoodsSlider {
+	&.mWithCategory{
+		border-top: 1px solid #c7c7c7;
+		border-bottom: 1px solid #c7c7c7;
+		height: 220px;
+	}
+
+	.mWithCategory &__eCat {
 		float: left;
 		width: 219px;
 		height: 215px;
@@ -122,6 +125,7 @@
 		border-right: 1px solid #c7c7c7;
 		padding: 5px 0 0;
 		display: block;
+
 		li {
 			cursor: pointer;
 			span {
@@ -131,7 +135,7 @@
 					text-decoration: underline;
 				}
 			}
-			&.active {
+			&.mActive {
 				cursor: default;
 				span {
 					background: #e4e4e4;
@@ -142,18 +146,12 @@
 			}
 		}
 	}
-	.bSliderAction {
+	&.mWithCategory .bSliderAction {
 		width: 460px;
 		float: right;
 		margin: 5px 0 0;
 		&__eInner {
 			width: 360px;
 		}
-	}
-}
-
-.mNoSliderAction {
-	.bSliderAction__elist {
-		width: 100%;
 	}
 }

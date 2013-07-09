@@ -589,6 +589,9 @@ class Entity extends BasicEntity {
         return $this->state;
     }
 
+    /**
+     * @param Stock\Entity[] $stocks
+     */
     public function setStock(array $stocks) {
         $this->stock = [];
         foreach ($stocks as $stock) {
@@ -596,10 +599,16 @@ class Entity extends BasicEntity {
         }
     }
 
+    /**
+     * @param Stock\Entity $stock
+     */
     public function addStock(Stock\Entity $stock) {
         $this->stock[] = $stock;
     }
 
+    /**
+     * @return array|Stock\Entity[]
+     */
     public function getStock() {
         return $this->stock;
     }

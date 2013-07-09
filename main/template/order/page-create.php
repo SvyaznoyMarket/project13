@@ -288,5 +288,6 @@ if ($form->hasSubway()) $jsValidator['order[address_metro]'] = 'Укажите �
     <?= $page->tryRender('order/_kissmetrics-create') ?>
 
     <?= $page->tryRender('order/partner-counter/_cityads-create') ?>
+    <?= $page->tryRender('order/partner-counter/_reactive-create') ?>
     <?= $page->tryRender('order/partner-counter/_ad4u-create') ?>
 <?php endif ?>
