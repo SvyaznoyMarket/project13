@@ -14,7 +14,7 @@ $products = \RepositoryManager::product()->getCollectionById(array_map(function(
     var _flocktory = window._flocktory = _flocktory || [];
     _flocktory.push({
       "order_id":     "<?= $order->getId() ?>",
-      "email":        "<?= $emailOrPhone = $user->getEmail() ? $user->getEmail() : $user->getMobilePhone().'@mail.ru' ?>",
+      "email":        "hello@flocktory.com",
       "name":         "<?= implode(' ', [$user->getFirstName(), $user->getLastName()]) ?>",
       "sex":          "<?= $user->getFirstName() && preg_match('/[аяa]$/', $user->getFirstName()) ? 'f' : 'm' ?>",
       "price":        <?= $order->getProductSum() ?>,
