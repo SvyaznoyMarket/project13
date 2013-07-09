@@ -359,7 +359,7 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
 
         <? if ((bool)$accessories && \App::config()->product['showAccessories']): ?>
         <h3 class="bHeadSection">Аксессуары</h3>
-        <div class="bAccessory clearfix">
+        <div class="bAccessory mAccessoryCat clearfix">
 
             <? if ((bool)$accessoryCategory): ?>
             <div class="bAccessory__eCat">
