@@ -42,12 +42,16 @@
 			margin: 0 0 10px;
 		}
 		.btnBuy {
-			width: 100px;
-			height: 25px;
-			line-height: 25px;
-			font-size: 14px;
 			.opacity(0);
 			.transition(all 0.05s linear);
+			width: 100px;
+			height: 25px;
+			.btnBuy__eLink {
+				width: 100px;
+				height: 25px;
+				line-height: 25px;
+				font-size: 14px;
+			}
 		}
 	}
 	&__eItem {
@@ -73,20 +77,15 @@
 		.rounded(4px);
 		position: absolute;
 		top: 76px;
-
 		width: 40px;
 		height: 58px;
-
 		cursor: pointer;
-
 		background-color: #fff7e6;
 		span {
 			display: block;
-
 			width: 24px;
 			height: 46px;
 			margin: 6px auto 0;
-
 			background-image: url("@{base-url}/newProductCard/img/btn_slider.png");
 			background-repeat: no-repeat;
 		}
@@ -105,9 +104,7 @@
 		&.mDisabled {
 			.opacity(0.3);
 			background: #f2f2f2;
-			span {
-				cursor: default;
-			}
+			cursor: default;
 		}
 	}
 }
