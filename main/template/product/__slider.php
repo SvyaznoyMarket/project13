@@ -16,13 +16,13 @@ return function (
     /** @var $firstCategory \Model\Product\Category\Entity|null */
     $firstCategory = (bool)$categories ? reset($categories) : null;
 ?>
-<div class="bAccessory mAccessoryCat clearfix">
+<div class="bGoodsSlider clearfix <? if ((bool)$categories): ?>mWithCategory<? endif ?>">
 
     <? if ((bool)$categories): ?>
-        <div class="bAccessory__eCat">
+        <div class="bGoodsSlider__eCat">
             <ul>
                 <? $i = 0; foreach ($categories as $category): ?>
-                    <li<? if (0 == $i): ?> class="active"<? endif ?>><span><?= $category->getName() ?></span></li>
+                    <li<? if (0 == $i): ?> class="mActive"<? endif ?>><span><?= $category->getName() ?></span></li>
                 <? $i++; endforeach ?>
             </ul>
         </div>
