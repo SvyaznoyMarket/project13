@@ -5,7 +5,7 @@
  * @var $productVideos      \Model\Product\Video\Entity[]
  * @var $user               \Session\User
  * @var $accessories        \Model\Product\Entity[]
- * @var $accessoryCategory  array
+ * @var $accessoryCategory  \Model\Product\Category\Entity[]
  * @var $related            \Model\Product\Entity[]
  * @var $kit                \Model\Product\Entity[]
  * @var $additionalData     array
@@ -183,29 +183,17 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
         </div>
 
         <? if ((bool)$accessories && \App::config()->product['showAccessories']): ?>
-        <h3 class="bHeadSection">Аксессуары</h3>
-        <div class="bAccessory mAccessoryCat clearfix">
-
-            <? if ((bool)$accessoryCategory): ?>
-            <div class="bAccessory__eCat">
-                <ul>
-                <? $i = 0; foreach ($accessoryCategory as $iCategory): ?>
-                    <li<? if (0 == $i): ?> class="active"<? endif ?>><span><?= $iCategory->getName() ?></span></li>
-                <? $i++; endforeach ?>
-                </ul>
-            </div>
-            <? endif ?>
-
+            <h3 class="bHeadSection">Аксессуары</h3>
             <?= $helper->render('product/__slider', [
                 'products'       => array_values($accessories),
+                'categories'     => $accessoryCategory,
                 'count'          => count($product->getAccessoryId()),
-                'limit'          => $accessoryCategory ? \App::config()->product['itemsInAccessorySlider'] : \App::config()->product['itemsInSlider'],
+                'limit'          => (bool)$accessoryCategory ? \App::config()->product['itemsInAccessorySlider'] : \App::config()->product['itemsInSlider'],
                 'page'           => 1,
                 'url'            => $page->url('product.accessory', ['productToken' => $product->getToken()]),
                 'gaEvent'        => 'Accessorize',
                 'additionalData' => $additionalData,
             ]) ?>
-        </div><!--/product accessory section -->
         <? endif ?>
 
         <? if ((bool)$related && \App::config()->product['showRelated']): ?>
