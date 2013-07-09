@@ -110,6 +110,6 @@
 		return false;
 	};
 
-	$('.jsLeaveReview').live('click', leaveReview);
+	$('.jsLeaveReview').on('click', leaveReview);
 
 }());

@@ -32,7 +32,7 @@ $(document).ready(function() {
 		})
 
 
-		delBtn.live('click',function(){
+		delBtn.on('click',function(){
 			var delUrl = $(this).data('url')
 			var authFromServer = function(response) {
 				if ( response.success ) {

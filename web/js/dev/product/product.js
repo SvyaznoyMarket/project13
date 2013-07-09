@@ -340,7 +340,7 @@ $(document).ready(function() {
 			jdiv.width( jspan.width() + 70)
 	})*/
 	
-	$('.product_rating-form').live({
+	$('.product_rating-form').on({
 		'form.ajax-submit.prepare': function(e, result) {
 			$(this).find('input:submit').attr('disabled', true)
 		},
@@ -351,7 +351,7 @@ $(document).ready(function() {
 		}
 	})
 
-	$('.product_comment-form').live({
+	$('.product_comment-form').on({
 		'form.ajax-submit.prepare': function(e, result) {
 			$(this).find('input:submit').attr('disabled', true)
 		},
@@ -368,7 +368,7 @@ $(document).ready(function() {
 		}
 	})
 
-	$('.product_comment_response-link').live({
+	$('.product_comment_response-link').on({
 		'content.update.prepare': function(e) {
 			$('.product_comment_response-block').html('')
 		},

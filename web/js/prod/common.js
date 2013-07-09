@@ -669,7 +669,7 @@ $(document).ready(function(){
 		// $('.goodsbarbig .link1').attr('href', carturl )//.addClass('active')
 		// $('#bigpopup a.link1').attr('href', carturl )//.addClass('active')//.html('в корзине')
 		// $('.bSet__ePrice .link1').unbind('click')
-		// $('.goodsbar .link1').die('click')
+		// $('.goodsbar .link1').off('click')
 		//$('.bCountSet__eP').addClass('disabled')
 		//$('.bCountSet__eM').addClass('disabled')
 	}

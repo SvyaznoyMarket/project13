@@ -67,8 +67,8 @@
 	$("body").bind('markcartbutton', markCartButton);
 	
 	$(document).ready(function() {
-		$('.jsBuyButton').live('click', BuyButtonHandler);
-		$('.jsBuyButton').live('buy', buy);
+		$('.jsBuyButton').on('click', BuyButtonHandler);
+		$('.jsBuyButton').on('buy', buy);
 	});
 }());
 

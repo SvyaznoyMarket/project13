@@ -524,7 +524,7 @@ function likemovie( nodename , apinodes, s, b) {
 	this.createFrontier = function() {
 	//cnvCompatible=false
 		if( ! cnvCompatible || liteversion ) {	
-			this.mvblock.die('.cnve')
+			this.mvblock.off('.cnve')
 			frontier.bind ({
 				'mousedown': function (e) {
 					initx = e.pageX // prohibited for rollanddrop()

@@ -13,6 +13,7 @@
 	&__eList {
 		margin: 0 auto;
 		width: 5000px;
+		position: relative;
 
 		.reviewSection__star {
 			float: none;
@@ -53,6 +54,8 @@
 		width: 120px;
 		height: 210px;
 		float: left;
+		display: none;
+
 		.product__inner {
 			padding: 10px;
 			.transition(all 0.05s linear);      
@@ -99,7 +102,7 @@
 				background-position: -37px 0px;
 			}
 		}
-		&.mDisable {
+		&.mDisabled {
 			.opacity(0.3);
 			background: #f2f2f2;
 			span {
@@ -120,6 +123,10 @@
 		height: 220px;
 	}
 
+	&__eCat{
+		display: none;
+	}
+
 	.mWithCategory &__eCat {
 		float: left;
 		width: 219px;
@@ -128,23 +135,23 @@
 		border-right: 1px solid #c7c7c7;
 		padding: 5px 0 0;
 		display: block;
+	}
 
-		li {
-			cursor: pointer;
-			span {
-				display: inline-block;
-				padding: 5px;
-				&:hover {
-					text-decoration: underline;
-				}
+	&__eCatItem {
+		cursor: pointer;
+		span {
+			display: inline-block;
+			padding: 5px;
+			&:hover {
+				text-decoration: underline;
 			}
-			&.mActive {
-				cursor: default;
-				span {
-					background: #e4e4e4;
-					&:hover {
-						text-decoration: none;
-					}
+		}
+		&.mActive {
+			cursor: default;
+			span {
+				background: #e4e4e4;
+				&:hover {
+					text-decoration: none;
 				}
 			}
 		}
