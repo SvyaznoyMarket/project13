@@ -12,6 +12,9 @@ return function (
  * @var $products   \Model\Product\Entity[]
  * @var $categories \Model\Product\Category\Entity[]
  */
+
+    /** @var $firstCategory \Model\Product\Category\Entity|null */
+    $firstCategory = (bool)$categories ? reset($categories) : null;
 ?>
 <div class="bAccessory mAccessoryCat clearfix">
 
@@ -34,7 +37,10 @@ return function (
         <div class="bSliderAction__eInner">
             <ul class="bSliderAction__eList clearfix">
             <? foreach ($products as $product): ?>
-                <li class="bSliderAction__eItem">
+            <?
+                $category = $product->getParentCategory() ? $product->getParentCategory() : null;
+            ?>
+                <li class="bSliderAction__eItem<? if ($firstCategory && $category && ($firstCategory->getId() == $category->getId())): ?> hidden<? endif ?>" data-category="<?= $category ? $category->getId() : null ?>">
                     <div class="product__inner">
                         <a class="productImg" href=""><img src="<?= $product->getImageUrl() ?>" alt="<?= $helper->escape($product->getName()) ?>" /></a>
                         <div class="productName"><a href="<?= $helper->url('product', ['productPath' => $product->getPath()]) ?>"><?= $product->getName() ?></a></div>
