@@ -10212,10 +10212,6 @@
     margin: 0 0 10px;
   }
   .bSliderAction__eList .btnBuy {
-    width: 100px;
-    height: 25px;
-    line-height: 25px;
-    font-size: 14px;
     -moz-opacity: 0;
     -khtml-opacity: 0;
     -webkit-opacity: 0;
@@ -10225,6 +10221,14 @@
     -webkit-transition: all 0.05s linear;
     -moz-transition: all 0.05s linear;
     transition: all 0.05s linear;
+    width: 100px;
+    height: 25px;
+  }
+  .bSliderAction__eList .btnBuy .btnBuy__eLink {
+    width: 100px;
+    height: 25px;
+    line-height: 25px;
+    font-size: 14px;
   }
   .bSliderAction__eItem {
     width: 120px;
@@ -10291,8 +10295,6 @@
     -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=30);
     filter: alpha(opacity=30);
     background: #f2f2f2;
-  }
-  .bSliderAction__eBtn.mDisabled span {
     cursor: default;
   }
   /**
@@ -10466,6 +10468,12 @@
 /*------СТИЛИ КНОПКИ "КУПИТЬ"------*/
 @media all {
   .btnBuy {
+    height: 35px;
+    width: 170px;
+  }
+  .btnBuy .btnBuy__eLink {
+    display: block;
+    color: #ffffff;
     background: #ffc000;
     background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #ffaa01), color-stop(1, #ffc000));
     background: -ms-linear-gradient(bottom, #ffaa01, #ffc000);
@@ -10485,18 +10493,41 @@
     font-size: 18px;
     border: 1px solid #fb9c00;
   }
-  .btnBuy:hover {
+  .btnBuy .btnBuy__eLink.mBought {
+    background: #ffffff;
+    color: #000000;
+    border: 1px solid #000000;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+  }
+  .btnBuy .btnBuy__eLink.mBought:hover {
+    background: #ffffff;
+  }
+  .btnBuy .btnBuy__eLink.mDisabled {
+    background: graygraddark();
+    background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #eeeeee), color-stop(1, #ffffff));
+    background: -ms-linear-gradient(bottom, #eeeeee, #ffffff);
+    background: -moz-linear-gradient(center bottom, #eeeeee 0%, #ffffff 100%);
+    color: #a6a6a6;
+    border: 1px solid #e6e6e6;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    cursor: default;
+  }
+  .btnBuy .btnBuy__eLink.mDisabled:hover {
+    background: graygraddark();
+    background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #eeeeee), color-stop(1, #ffffff));
+    background: -ms-linear-gradient(bottom, #eeeeee, #ffffff);
+    background: -moz-linear-gradient(center bottom, #eeeeee 0%, #ffffff 100%);
+  }
+  .btnBuy .btnBuy__eLink:hover {
+    text-decoration: none;
     background: #ffa200;
     background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #f79200), color-stop(1, #ffa200));
     background: -ms-linear-gradient(bottom, #f79200, #ffa200);
     background: -moz-linear-gradient(center bottom, #f79200 0%, #ffa200 100%);
-  }
-  .btnBuy .btnBuy__eLink {
-    display: block;
-    color: #ffffff;
-  }
-  .btnBuy .btnBuy__eLink:hover {
-    text-decoration: none;
   }
 }
 /*---END---СТИЛИ КНОПКИ "КУПИТЬ"---*/

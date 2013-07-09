@@ -67,8 +67,8 @@
 	$("body").bind('markcartbutton', markCartButton);
 	
 	$(document).ready(function() {
-		$('.jsBuyButton').live('click', BuyButtonHandler);
-		$('.jsBuyButton').live('buy', buy);
+		$('.jsBuyButton').on('click', BuyButtonHandler);
+		$('.jsBuyButton').on('buy', buy);
 	});
 }());
 
@@ -226,10 +226,10 @@ $(document).ready(function(){
 
 
 		// KISS
-		$('.bSimilarGoods.mProduct .bSimilarGoodsSlider_eGoods').live('click', kissSimilar)
+		$('.bSimilarGoods.mProduct .bSimilarGoodsSlider_eGoods').on('click', kissSimilar)
 
 
-		$('.bSimilarGoods.mCatalog .bSimilarGoodsSlider_eGoods a').live('click', sliderTracking)
+		$('.bSimilarGoods.mCatalog .bSimilarGoodsSlider_eGoods a').on('click', sliderTracking)
 	}
 	
 
@@ -293,7 +293,7 @@ $(document).ready(function(){
 	}
 
 	/* ---- */
-	$('.goodsbox__inner').live('click', function(e) {
+	$('.goodsbox__inner').on('click', function(e) {
 		if( $(this).attr('data-url') )
 			window.location.href = $(this).attr('data-url')
 	})
@@ -421,7 +421,7 @@ $(document).ready(function(){
 			return false
 		})
 		// remove f1
-		$('a.bBacketServ__eMore', look).live('click', function(){
+		$('a.bBacketServ__eMore', look).on('click', function(){
 			var thislink = this
 			$.getJSON( $(this).attr('href'), function(data) {
 				if( !data.success )
@@ -442,13 +442,13 @@ $(document).ready(function(){
 
 	/* draganddrop */
 	// var draganddrop = new DDforLB( $('.allpageinner'), ltbx )	
-	// $('.goodsbox__inner[ref] .mainImg').live('mousedown', function(e){
+	// $('.goodsbox__inner[ref] .mainImg').on('mousedown', function(e){
 	// 		e.stopPropagation()
 	// 		e.preventDefault()
 	// 		if(e.which == 1)
 	// 			draganddrop.prepare( e.pageX, e.pageY, parseItemNode(currentItem) ) // if delta then d&d
 	// });
-	// $('.goodsbox__inner[ref] .mainImg').live('mouseup', function(e){
+	// $('.goodsbox__inner[ref] .mainImg').on('mouseup', function(e){
 	// 	draganddrop.cancel()
 	// });
 
@@ -641,7 +641,7 @@ $(document).ready(function(){
 			})
 			return false;
 		});
-		$('.bBacketServ__eMore', ew_look).live('click', function(e){
+		$('.bBacketServ__eMore', ew_look).on('click', function(e){
 			e.preventDefault();
 			var thislink = this;
 			$.getJSON( $(this).attr('href'), function(ext_data) {
@@ -816,8 +816,8 @@ $(document).ready(function(){
 			}
 		}
 
-		$('.goodsbox__inner').live('click', KISSsearchClick);
-		$('.goodsboxlink').live('click', KISSsearchClick);
+		$('.goodsbox__inner').on('click', KISSsearchClick);
+		$('.goodsboxlink').on('click', KISSsearchClick);
 	}
 });
 
@@ -972,7 +972,7 @@ $(document).ready(function(){
 			return false
 		}
 	})
-	$('.bSearchSuggest__eRes').live('mouseover', function(){
+	$('.bSearchSuggest__eRes').on('mouseover', function(){
 		$('.bSearchSuggest__eRes').removeClass('hover')
 		var index = $(this).addClass('hover').index()
 		nowSelectSuggest = index-1
@@ -984,7 +984,7 @@ $(document).ready(function(){
 		}
 	})
 	// suggest analitycs
-	$('.bSearchSuggest__eRes').live('click', function(){
+	$('.bSearchSuggest__eRes').on('click', function(){
 		if ( typeof(_gaq) !== 'undefined' ){
 			var type = ($(this).hasClass('bSearchSuggest__eCategoryRes')) ? 'suggest_category' : 'suggest_product'
 			var url = $(this).attr('href')
@@ -1083,7 +1083,7 @@ $(document).ready(function(){
 	regEmailValid()
 
 	/*subscribe*/
-	$('.bSubscibe').live('click', function(){
+	$('.bSubscibe').on('click', function(){
 		if ($(this).hasClass('checked')){
 			$(this).removeClass('checked')
 			$(this).find('.subscibe').removeAttr('checked')
@@ -1151,7 +1151,7 @@ $(document).ready(function(){
 	$('.bMainMenuLevel-3__eLink').bind('click', 'Верхнее меню', categoriesSpy )
 	$('.breadcrumbs').first().find('a').bind( 'click', 'Хлебные крошки сверху', categoriesSpy )
 	$('.breadcrumbs-footer').find('a').bind( 'click', 'Хлебные крошки снизу', categoriesSpy )
-	$('.extramenu').find('a').live('click', 'Верхнее меню', categoriesSpy )
+	$('.extramenu').find('a').on('click', 'Верхнее меню', categoriesSpy )
 	$('.bCtg').find('a').bind('click', 'Левое меню', categoriesSpy )
 	$('.rubrictitle').find('a').bind('click', 'Заголовок карусели', categoriesSpy )
 	$('a.srcoll_link').bind('click', 'Ссылка Посмотреть все', categoriesSpy )
@@ -1292,7 +1292,7 @@ $(document).ready(function(){
 
   $('#signin_password').warnings()
 
-	$('#bUserlogoutLink').live('click', function(){
+	$('#bUserlogoutLink').on('click', function(){
 		if (typeof(_kmq) !== 'undefined') {
 			_kmq.push(['clearIdentity']);
 		}
@@ -1359,7 +1359,7 @@ $(document).ready(function(){
 		})
     })
 
-	$('#forgot-pwd-trigger').live('click', function(){
+	$('#forgot-pwd-trigger').on('click', function(){
 		$('#reset-pwd-form').show();
 		$('#reset-pwd-key-form').hide();
 		$('#login-form').hide();
@@ -1404,7 +1404,7 @@ $(document).ready(function(){
 	var ableToLoad = true
 	var compact = $("div.goodslist").length
 	var custom_jewel = $('.items-section__list').length
-	function liveScroll( lsURL, filters, pageid ) {
+	function onScroll( lsURL, filters, pageid ) {
 		var params = []
 		/* RETIRED cause data-filter
 		if( $('.bigfilter.form').length ) //&& ( location.href.match(/_filter/) || location.href.match(/_tag/) ) )
