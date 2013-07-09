@@ -434,9 +434,11 @@ $(document).ready(function() {
 	 * @requires jQuery, jQuery.elevateZoom
 	 */
 	$('.bZoomedImg').elevateZoom({
+		gallery: 'productImgGallery',
+		galleryActiveClass: 'mActive',
 		zoomWindowOffety: 5,
 		zoomWindowOffetx: 18,
-		zoomWindowWidth: 290,
+		zoomWindowWidth: 290
 	});
 
 
@@ -499,11 +501,13 @@ $(document).ready(function() {
 	(function(){
 
 		var initFotoSlider = function(){
+			var mainPhoto = $('.bZoomedImg');
 			var slider = $('.bPhotoActionOtherPhoto');
 			var fotoBox = slider.find('.bPhotoActionOtherPhotoList');
 			var leftArr = slider.find('.bPhotoActionOtherPhoto__eBtn.mPrev');
 			var rightArr = slider.find('.bPhotoActionOtherPhoto__eBtn.mNext');
 			var photos = fotoBox.find('.bPhotoActionOtherPhotoItem');
+			var link = fotoBox.find('.bPhotoActionOtherPhotoItem__eLink');
 			var itemW = photos.width() + parseInt(photos.css('marginLeft')) + parseInt(photos.css('marginRight'));
 			var nowLeft = 0;
 
@@ -529,12 +533,14 @@ $(document).ready(function() {
 				nowLeft = nowLeft - itemW;
 				fotoBox.animate({'left':-nowLeft});
 				checkArrow();
+				return false;
 			};
 
 			var nextFoto = function(){
 				nowLeft = nowLeft + itemW;
 				fotoBox.animate({'left':-nowLeft});
 				checkArrow();
+				return false;
 			};
 
 			checkArrow();
