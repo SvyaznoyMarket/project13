@@ -117,6 +117,11 @@
 
 		var deliveryInfo = res.product[0].delivery;
 
+		var shopToggle = function(){
+			nowBox.toggleClass('mOpen');
+			nowBox.toggleClass('mClose');
+		};
+
 		for (var i = deliveryInfo.length - 1; i >= 0; i--) {
 			switch (deliveryInfo[i].token){
 				case 'standart':
@@ -125,8 +130,8 @@
 						price: deliveryInfo[i].price,
 						dateString: deliveryInfo[i].date.name
 					};
-					var template = tmpl('widget_delivery_standart', standartData);
-					standartBox.html(template);
+					var templateStandart = tmpl('widget_delivery_standart', standartData);
+					standartBox.html(templateStandart);
 					break;
 
 				case 'self':
@@ -135,8 +140,8 @@
 						price: deliveryInfo[i].price,
 						dateString: deliveryInfo[i].date.name
 					};
-					var template = tmpl('widget_delivery_self', selfData);
-					selfBox.html(template);
+					var templateSelf = tmpl('widget_delivery_self', selfData);
+					selfBox.html(templateSelf);
 					break;
 
 				case 'now':
@@ -150,16 +155,13 @@
 						var shopInfo = {
 							name: deliveryInfo[i].shop[j].name
 						};
-						var shopTmpl = tmpl('widget_delivery_shop',shopInfo);
-						shopList.append(shopTmpl);
-					};
+						var templateNow = tmpl('widget_delivery_shop',shopInfo);
+						shopList.append(templateNow);
+					}
 					nowBox.show();
-					nowBox.bind('click', function(){
-						nowBox.toggleClass('mOpen');
-						nowBox.toggleClass('mClose');
-					})
+					nowBox.bind('click', shopToggle);
 					break;
-			};
+			}
 		}
 	};
 
@@ -168,6 +170,94 @@
 		url: url,
 		data: dataToSend,
 		success: resFromSerever
+	});
+}());
+ 
+ 
+/** 
+ * NEW FILE!!! 
+ */
+ 
+ 
+/**
+ * Слайдер изображений товара
+ *
+ * @author	Zaytsev Alexandr
+ * @requires jQuery
+ */
+(function(){
+
+	/**
+	 * Инициализация слайдера
+	 *
+	 * @param	{Object}	slider		Элемент слайдера
+	 * @param	{Object}	fotoBox		Элемент контейнера с фотографиями
+	 * @param	{Object}	leftArr		Стрелка влево
+	 * @param	{Object}	rightArr	Стрелка вправо
+	 * @param	{Object}	photos		Карточки фотографий
+	 * @param	{Number}	itemW		Ширина одной карточки с фотографией
+	 * @param	{Number}	nowLeft		Текущий отступ слева
+	 */
+	var initFotoSlider = function(){
+		var slider = $('.bPhotoActionOtherPhoto');
+		var fotoBox = slider.find('.bPhotoActionOtherPhotoList');
+		var leftArr = slider.find('.bPhotoActionOtherPhoto__eBtn.mPrev');
+		var rightArr = slider.find('.bPhotoActionOtherPhoto__eBtn.mNext');
+		var photos = fotoBox.find('.bPhotoActionOtherPhotoItem');
+		var itemW = photos.width() + parseInt(photos.css('marginLeft'),10) + parseInt(photos.css('marginRight'),10);
+		var nowLeft = 0;
+
+		fotoBox.css({'width': photos.length*itemW, 'left':nowLeft});
+
+		/**
+		 * Проверка стрелок
+		 */
+		var checkArrow = function(){
+			if (nowLeft > 0){
+				leftArr.show();
+			}
+			else {
+				leftArr.hide();	
+			}
+
+			if (nowLeft < fotoBox.width()-slider.width()){
+				rightArr.show();
+			}
+			else {
+				rightArr.hide();
+			}
+		};
+
+		/**
+		 * Предыдущее фото
+		 */
+		var prevFoto = function(){
+			nowLeft = nowLeft - itemW;
+			fotoBox.animate({'left':-nowLeft});
+			checkArrow();
+			return false;
+		};
+
+		/**
+		 * Следущее фото
+		 */
+		var nextFoto = function(){
+			nowLeft = nowLeft + itemW;
+			fotoBox.animate({'left':-nowLeft});
+			checkArrow();
+			return false;
+		};
+
+		checkArrow();
+
+		leftArr.bind('click', prevFoto);
+		rightArr.bind('click', nextFoto);
+	};
+
+	$(document).ready(function() {
+		if ( $('.bPhotoActionOtherPhoto').length){
+			initFotoSlider();
+		}
 	});
 }());
  
@@ -204,7 +294,7 @@
 				}
 			}
 			catch (err){
-				var pageID = $(body).data(id);
+				var pageID = $('body').data('id');
 				var dataToLog = {
 					event: '3dimg',
 					type:'ошибка загрузки 3dimg для мебели',
@@ -215,7 +305,7 @@
 			}
 		};
 		$LAB.script( 'DAnimFramePlayer.min.js' ).wait(furnitureAfterLoad);
-	}
+	};
 
 	$(document).ready(function() {
 		if (pageConfig['product.img3d']){
@@ -387,7 +477,7 @@
 					});
 				}
 				catch (err){
-					var pageID = $(body).data(id);
+					var pageID = $('body').data('id');
 					var dataToLog = {
 						event: 'swfobject_error',
 						type:'ошибка загрузки swf maybe3d',
@@ -445,8 +535,8 @@ $(document).ready(function() {
 	/**
 	 * Каутер товара
 	 *
-	 * @requires jQuery, jQuery.goodsCounter
-	 * @param  {Number} count Возвращает текущее значение каунтера
+	 * @requires	jQuery, jQuery.goodsCounter
+	 * @param		{Number} count Возвращает текущее значение каунтера
 	 */
 	$('.bCountSection').goodsCounter({
 		onChange:function(count){
@@ -473,87 +563,13 @@ $(document).ready(function() {
 			'Viewed Product SKU':productInfo.article,
 			'Viewed Product Product Name':productInfo.name,
 			'Viewed Product Product Status':productInfo.stockState,
-		}
+		};
 		if (typeof(_kmq) !== 'undefined'){
 			_kmq.push(['record', 'Viewed Product',toKISS]);
 		}
 	}());
 
 
-	/**
-	 * Перемотка к Id
-	 *
-	 * @requires jQuery
-	 */
-	var goToId = function(){
-		var to = $(this).data('goto');
-		jQuery.scrollTo( $('#'+to), 800 );
-		return false;
-	}
-	$('.jsGoToId').bind('click',goToId);
-
-
-	/**
-	 * Слайдер изображений товара
-	 *
-	 * @requires jQuery
-	 */
-	(function(){
-
-		var initFotoSlider = function(){
-			var mainPhoto = $('.bZoomedImg');
-			var slider = $('.bPhotoActionOtherPhoto');
-			var fotoBox = slider.find('.bPhotoActionOtherPhotoList');
-			var leftArr = slider.find('.bPhotoActionOtherPhoto__eBtn.mPrev');
-			var rightArr = slider.find('.bPhotoActionOtherPhoto__eBtn.mNext');
-			var photos = fotoBox.find('.bPhotoActionOtherPhotoItem');
-			var link = fotoBox.find('.bPhotoActionOtherPhotoItem__eLink');
-			var itemW = photos.width() + parseInt(photos.css('marginLeft')) + parseInt(photos.css('marginRight'));
-			var nowLeft = 0;
-
-			fotoBox.css({'width': photos.length*itemW, 'left':nowLeft});
-
-			var checkArrow = function(){
-				if (nowLeft > 0){
-					leftArr.show();
-				}
-				else {
-					leftArr.hide();	
-				}
-
-				if (nowLeft < fotoBox.width()-slider.width()){
-					rightArr.show();
-				}
-				else {
-					rightArr.hide();
-				}
-			};
-
-			var prevFoto = function(){
-				nowLeft = nowLeft - itemW;
-				fotoBox.animate({'left':-nowLeft});
-				checkArrow();
-				return false;
-			};
-
-			var nextFoto = function(){
-				nowLeft = nowLeft + itemW;
-				fotoBox.animate({'left':-nowLeft});
-				checkArrow();
-				return false;
-			};
-
-			checkArrow();
-
-			leftArr.bind('click', prevFoto);
-			rightArr.bind('click', nextFoto);
-		};
-
-		if ( $('.bPhotoActionOtherPhoto').length){
-			initFotoSlider();
-		}
-
-	}());
 
 	/**
 	 * Планировщик шкафов купе
@@ -939,11 +955,11 @@ $(document).ready(function() {
 	var reviewContent = $('.bReviewsContent');
 	// получение отзывов
 	var getReviews = function(productId, type, containerClass) {
-		var page = reviewCurrentPage[type] + 1
+		var page = reviewCurrentPage[type] + 1;
 		
-		var layout = false
+		var layout = false;
 		if($('body').hasClass('jewel')) {
-			layout = 'jewel'
+			layout = 'jewel';
 		}
 
 		$.get('/product-reviews/'+productId, {
@@ -991,22 +1007,22 @@ $(document).ready(function() {
 			reviewContent.hide();
 			$('.'+reviewsContainerClass).show();
 
-	 		moreReviewsButton.hide();
-			if(reviewsType == 'user') {
+			moreReviewsButton.hide();
+			if (reviewsType === 'user') {
 				moreReviewsButton.html('Показать ещё отзывы');
-			} else if(reviewsType == 'pro') {
+			} else if(reviewsType === 'pro') {
 				moreReviewsButton.html('Показать ещё обзоры');
 			}
 
 			if(!$('.'+reviewsContainerClass).html()) {
 				getReviews(reviewsProductId, reviewsType, reviewsContainerClass);
 			} else {
-		 		// проверяем что делать с кнопкой "показать еще" - скрыть/показать
-			 	if(reviewCurrentPage[reviewsType] + 1 >= reviewPageCount[reviewsType]) {
-			 		moreReviewsButton.hide();
-			 	} else {
-			 		moreReviewsButton.show();
-			 	}
+				// проверяем что делать с кнопкой "показать еще" - скрыть/показать
+				if(reviewCurrentPage[reviewsType] + 1 >= reviewPageCount[reviewsType]) {
+					moreReviewsButton.hide();
+				} else {
+					moreReviewsButton.show();
+				}
 			}
 		});
 

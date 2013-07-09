@@ -1,159 +1,162 @@
 // product slider
 .bSliderAction {
-    position: relative;
-    z-index: 10;
-    height: 210px;
-    &__eInner {
-        overflow: hidden;
-        margin: 0 auto;
-        width: 600px;
-        padding: 3px 3px 0;
-        height: 246px;
-    }
-    ul {
-        width: 5000px;
-        li {
-            float: left;
-        }
-    }
-    &__elist {
-        margin: 0 auto;
-        li {
-            width: 120px;
-            height: 210px;
-            .product__inner {
-                padding: 10px;
-                .transition(all 0.05s linear);      
-                &:hover {
-                    .box-shadow(0 0 5px rgba(0,0,0,0.3));
-                    background: #fff;
-                    .rounded(3px);
-                    .btnBuy {
-                        .opacity(1);
-                    }
-                }    
-            }
-        }
-        .reviewSection__star {
-            float: none;
-            margin: 0;
-            text-align: center;
-        }
-        .productImg {
-            display: table-cell;
-            width: 100px;
-            height: 100px;
-            vertical-align: middle;
-            img {
-                max-width: 100px;
-                max-height: 100px;
-            }
-        }
-        .productName {
-            margin: 5px 0 8px;
-            height: 37px;
-            overflow: hidden;
-            font-size: 11px;
-            line-height: 1.1;
-        }
-        .productPrice {
-            font-size: 14px;
-            margin: 0 0 10px;
-        }
-        .btnBuy {
-            width: 100px;
-            height: 25px;
-            line-height: 25px;
-            font-size: 14px;
-            .opacity(0);
-            .transition(all 0.05s linear);
-        }
-    }
-    &__eBtn {
-        position: absolute;
-        background-color: #fff7e6;
-        .rounded(4px);
-        height: 58px;
-        width: 40px;
-        top: 76px;
-        cursor: pointer;
-        span {
-            background-image: url("@{base-url}/newProductCard/img/btn_slider.png");
-            background-repeat: no-repeat;
-            margin: 6px auto 0;
-            height: 46px;
-            width: 24px;
-            display: block;
-        }
-    }
-    &__eDisable {
-        background: #f2f2f2;
-        .opacity(0.3);
-        span {
-            cursor: default;
-        }
-    }
-    &__mNext {
-        right: 0;
-        span {
-            background-position: -54px 0px;
-        }
-    }
-    &__mPrev {
-        span {
-            background-position: -37px 0px;
-        }
-    }
+	position: relative;
+	z-index: 10;
+	height: 210px;
+	&__eInner {
+		overflow: hidden;
+		margin: 0 auto;
+		width: 600px;
+		padding: 3px 3px 0;
+		height: 246px;
+	}
+	&__eList {
+		margin: 0 auto;
+		width: 5000px;
+
+		.reviewSection__star {
+			float: none;
+			margin: 0;
+			text-align: center;
+		}
+		.productImg {
+			display: table-cell;
+			width: 100px;
+			height: 100px;
+			vertical-align: middle;
+			img {
+				max-width: 100px;
+				max-height: 100px;
+			}
+		}
+		.productName {
+			margin: 5px 0 8px;
+			height: 37px;
+			overflow: hidden;
+			font-size: 11px;
+			line-height: 1.1;
+		}
+		.productPrice {
+			font-size: 14px;
+			margin: 0 0 10px;
+		}
+		.btnBuy {
+			width: 100px;
+			height: 25px;
+			line-height: 25px;
+			font-size: 14px;
+			.opacity(0);
+			.transition(all 0.05s linear);
+		}
+	}
+	&__eItem {
+		width: 120px;
+		height: 210px;
+		float: left;
+		.product__inner {
+			padding: 10px;
+			.transition(all 0.05s linear);      
+			&:hover {
+				.box-shadow(0 0 5px rgba(0,0,0,0.3));
+				background: @white;
+				.rounded(3px);
+				.btnBuy {
+					.opacity(1);
+				}
+			}    
+		}
+	}
+	&__eBtn {
+		.rounded(4px);
+		position: absolute;
+		top: 76px;
+
+		width: 40px;
+		height: 58px;
+
+		cursor: pointer;
+
+		background-color: #fff7e6;
+		span {
+			display: block;
+
+			width: 24px;
+			height: 46px;
+			margin: 6px auto 0;
+
+			background-image: url("@{base-url}/newProductCard/img/btn_slider.png");
+			background-repeat: no-repeat;
+		}
+
+		&.mNext {
+			right: 0;
+			span {
+				background-position: -54px 0px;
+			}
+		}
+		&.mPrev {
+			span {
+				background-position: -37px 0px;
+			}
+		}
+		&.mDisable {
+			.opacity(0.3);
+			background: #f2f2f2;
+			span {
+				cursor: default;
+			}
+		}
+	}
 }
 
 .bAccessory__eCat {
-    display: none;
+	display: none;
 } /*** скрывает блок категорий в слайдере аксессуаров, если категория одна или отсутствует ***/
 
 .mAccessoryCat {
-    border-top: 1px solid #c7c7c7;
-    border-bottom: 1px solid #c7c7c7;
-    height: 220px;
-    .bAccessory__eCat {
-        float: left;
-        width: 219px;
-        height: 215px;
-        overflow: scroll;
-        border-right: 1px solid #c7c7c7;
-        padding: 5px 0 0;
-        display: block;
-        li {
-            cursor: pointer;
-            span {
-                display: inline-block;
-                padding: 5px;
-                &:hover {
-                    text-decoration: underline;
-                }
-            }
-            &.active {
-                cursor: default;
-                span {
-                    background: #e4e4e4;
-                    &:hover {
-                        text-decoration: none;
-                    }
-                }
-            }
-        }
-    }
-    .bSliderAction {
-        width: 460px;
-        float: right;
-        margin: 5px 0 0;
-        &__eInner {
-            width: 360px;
-        }
-    }
+	border-top: 1px solid #c7c7c7;
+	border-bottom: 1px solid #c7c7c7;
+	height: 220px;
+	.bAccessory__eCat {
+		float: left;
+		width: 219px;
+		height: 215px;
+		overflow: scroll;
+		border-right: 1px solid #c7c7c7;
+		padding: 5px 0 0;
+		display: block;
+		li {
+			cursor: pointer;
+			span {
+				display: inline-block;
+				padding: 5px;
+				&:hover {
+					text-decoration: underline;
+				}
+			}
+			&.active {
+				cursor: default;
+				span {
+					background: #e4e4e4;
+					&:hover {
+						text-decoration: none;
+					}
+				}
+			}
+		}
+	}
+	.bSliderAction {
+		width: 460px;
+		float: right;
+		margin: 5px 0 0;
+		&__eInner {
+			width: 360px;
+		}
+	}
 }
 
 .mNoSliderAction {
-    .bSliderAction__elist {
-        width: 100%;
-    }
+	.bSliderAction__elist {
+		width: 100%;
+	}
 }

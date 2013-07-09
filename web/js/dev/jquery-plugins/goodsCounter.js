@@ -1,9 +1,9 @@
 /**
  * jQuery плагин каунтера
  *
- * @author	Zaytsev Alexandr
- * @requires jQuery
- * @return	{jQuery object}
+ * @author		Zaytsev Alexandr
+ * @requires	jQuery
+ * @return		{jQuery object}
  */
 ;(function($) {
 	$.fn.goodsCounter = function(params) {
@@ -108,14 +108,14 @@
 				for (var i = products.product.length - 1; i >= 0; i--) {
 					var input = $('[data-spinner-for="'+products.product[i].id+'"]').find('input');
 					input.val(products.product[i].quantity);
-				};
+				}
 			};
 
 			plusBtn.bind('click', plusHandler);
 			minusBtn.bind('click',minusHandler);
 			input.bind('keydown', keydownHandler);
 			input.bind('keyup', keyupHandler);
-			$('body').bind('updatespinner', updatespinner)
+			$('body').bind('updatespinner', updatespinner);
 		});
 	};
 
