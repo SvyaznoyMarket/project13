@@ -47,8 +47,8 @@ $(document).ready(function(){
 		    var _flocktory = window._flocktory = _flocktory || [];
 		      _flocktory.push({
 		      "order_id": flocktory_subscription_date_string,
-		      "email":    'hello@flocktory.com',
-		//       "email":    email_friend,
+		//       "email":    'hello@flocktory.com',
+		      "email":    email_friend,
 		      "name":     email_friend,
 		      "price":    0,
 		      "domain":   "registration.enter.ru",
