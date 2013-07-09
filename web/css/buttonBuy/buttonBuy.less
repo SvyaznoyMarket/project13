@@ -1,27 +1,46 @@
 // button buy
 .btnBuy {
-    .gradient(#ffc000, #ffaa01, #ffc000);
-    border: 1px solid #fb9c00;
-    .rounded(5px);
-    .box-shadow(0 1px 3px rgba(0, 0, 0, 0.4));
     height: 35px;
-    line-height: 35px;
-    text-align: center;
     width: 170px;
-    font-family: "Tahoma";
-    font-size: 18px;
-    border: 1px solid #fb9c00;
-    &:hover {
-        .gradient(#ffa200, #f79200, #ffa200);
-    }
     .btnBuy__eLink {
         display: block;
         color: #ffffff;
+        .gradient(#ffc000, #ffaa01, #ffc000);
+        border: 1px solid #fb9c00;
+        .rounded(5px);
+        .box-shadow(0 1px 3px rgba(0, 0, 0, 0.4));
+        height: 35px;
+        line-height: 35px;
+        text-align: center;
+        width: 170px;
+        font-family: "Tahoma";
+        font-size: 18px;
+        border: 1px solid #fb9c00;
         // Паша Гертман сказал пока закомментировать иконку кнопки "Купить" 
         // padding-left: 10px;
         // background: url("@{base-url}/newProductCard/img/ico.png") no-repeat 19px -54px;
+        &.mBought {
+            background: @white;
+            color: @black;
+            border: 1px solid @black;
+            .box-shadow(none);
+            &:hover {
+                background: @white;
+            }
+        }
+        &.mDisabled {
+            .gradient(grayGradDark());
+            color: @typGray;
+            border: 1px solid @typLightGray;
+            .box-shadow(none);
+            cursor: default;
+            &:hover {
+                .gradient(grayGradDark());
+            }
+        }
         &:hover {
             text-decoration: none;
+            .gradient(#ffa200, #f79200, #ffa200);
         }
     }
 }
