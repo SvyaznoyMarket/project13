@@ -65,7 +65,7 @@ $(document).ready(function(){
 		
 		    (function() {
 		      var s = document.createElement('script'); s.type = 'text/javascript'; s.async = true;
-		      s.src = "//api.flocktory.com/1/hello.js";
+		      s.src = "//api.flocktory.com/1/hello.2.js";
 		      var l = document.getElementsByTagName('script')[0]; l.parentNode.insertBefore(s, l);
 		    })();
 			}

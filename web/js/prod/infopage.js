@@ -43,7 +43,7 @@ $(document).ready(function(){
 				}
 
 		    var flocktory_subscription_date = new Date();
-		    var flocktory_subscription_date_string = flocktory_subscription_date.getFullYear() + '' + flocktory_subscription_date.getMonth() + '' + flocktory_subscription_date.getDay() + '' + flocktory_subscription_date.getHours() + '' + flocktory_subscription_date.getMinutes() + '' + flocktory_subscription_date.getSeconds() + '' + flocktory_subscription_date.getMilliseconds()
+		    var flocktory_subscription_date_string = flocktory_subscription_date.getFullYear() + '' + flocktory_subscription_date.getMonth() + '' + flocktory_subscription_date.getDay() + '' + flocktory_subscription_date.getHours() + '' + flocktory_subscription_date.getMinutes() + '' + flocktory_subscription_date.getSeconds() + '' + flocktory_subscription_date.getMilliseconds() + '' + Math.floor(Math.random() * 1000000)
 		    var _flocktory = window._flocktory = _flocktory || [];
 		      _flocktory.push({
 		      "order_id": flocktory_subscription_date_string,
@@ -65,7 +65,7 @@ $(document).ready(function(){
 		
 		    (function() {
 		      var s = document.createElement('script'); s.type = 'text/javascript'; s.async = true;
-		      s.src = "//api.flocktory.com/1/hello.js";
+		      s.src = "//api.flocktory.com/1/hello.2.js";
 		      var l = document.getElementsByTagName('script')[0]; l.parentNode.insertBefore(s, l);
 		    })();
 			}
