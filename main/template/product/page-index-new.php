@@ -254,16 +254,14 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
             <? endif ?>
         </div>
 
-
         <? if (!$product->getIsBuyable() && $product->getState()->getIsShop() && \App::config()->smartengine['pull']): ?>
             <h3 class="bHeadSection">Похожие товары</h3>
             <?= $helper->render('product/__slider', [
-                'products'       => [],
-                'count'          => null,
-                'limit'          => \App::config()->product['itemsInSlider'],
-                'page'           => 1,
-                'url'            => $page->url('smartengine.pull.product_similar', ['productId' => $product->getId()]),
-                //'additionalData' => $additionalData,
+                'products' => [],
+                'count'   => null,
+                'limit'   => \App::config()->product['itemsInSlider'],
+                'page'    => 1,
+                'url'     => $page->url('smartengine.pull.product_similar', ['productId' => $product->getId()]),
             ]) ?>
         <? endif ?>
 

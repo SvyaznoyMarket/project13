@@ -37,13 +37,13 @@
             <div class="bPhotoActionOtherPhoto">
                 <div class="bPhotoActionOtherPhoto__eWrappSlider">
                     <ul id="productImgGallery" class="bPhotoActionOtherPhotoList clearfix">
-                        <? foreach ($photoList as $photo): ?>
+                        <? $i = 0; foreach ($photoList as $photo): ?>
                             <li class="bPhotoActionOtherPhotoItem">
-                                <a class="bPhotoActionOtherPhotoItem__eLink" data-zoom-image="<?= $photo->getUrl(4) ?>" data-image="<?= $photo->getUrl(3) ?>" href="#">
+                                <a class="bPhotoActionOtherPhotoItem__eLink<? if (0 == $i): ?> mActive<? endif ?>" data-zoom-image="<?= $photo->getUrl(4) ?>" data-image="<?= $photo->getUrl(3) ?>" href="#">
                                     <img src="<?= $photo->getUrl(0) ?>" alt="<?= $page->escape($product->getName()) ?>" />
                                 </a>
                             </li>
-                        <? endforeach ?>
+                        <? $i++; endforeach ?>
                     </ul>
                 </div>
 
