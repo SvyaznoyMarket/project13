@@ -10046,21 +10046,22 @@
     height: 50px;
     cursor: pointer;
     background-color: #ffffff;
+    color: #404040;
   }
   .bPhotoActionOtherPhoto__eBtn span {
     text-align: center;
     line-height: 48px;
   }
   .bPhotoActionOtherPhoto__eBtn.mPrev {
-    -webkit-box-shadow: 4px 0 3px -2px #e6e6e6;
-    -moz-box-shadow: 4px 0 3px -2px #e6e6e6;
-    box-shadow: 4px 0 3px -2px #e6e6e6;
+    -webkit-box-shadow: 4px 0 3px -2px #cecece;
+    -moz-box-shadow: 4px 0 3px -2px #cecece;
+    box-shadow: 4px 0 3px -2px #cecece;
     left: -6px;
   }
   .bPhotoActionOtherPhoto__eBtn.mNext {
-    -webkit-box-shadow: -4px 0 3px -2px #e6e6e6;
-    -moz-box-shadow: -4px 0 3px -2px #e6e6e6;
-    box-shadow: -4px 0 3px -2px #e6e6e6;
+    -webkit-box-shadow: -4px 0 3px -2px #cecece;
+    -moz-box-shadow: -4px 0 3px -2px #cecece;
+    box-shadow: -4px 0 3px -2px #cecece;
     right: -5px;
   }
   .bHint {
@@ -10100,6 +10101,11 @@
   }
 }
 /*---END---СТИЛИ НОВОЙ КАРТОЧКИ ТОВАРА---*/
+/*------СТИЛИ НОВОЙ КАРТОЧКИ ТОВАРА - НАБОРЫ И ЛИНИЕЙКИ------*/
+@media all {
+  
+}
+/*---END---СТИЛИ НОВОЙ КАРТОЧКИ ТОВАРА - НАБОРЫ И ЛИНИЕЙКИ---*/
 /*------СТИЛИ СЛАЙДЕРА------*/
 @media all {
   .bSliderAction {

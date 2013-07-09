@@ -202,7 +202,7 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
                                 <? foreach ($photoList as $photo): ?>
                                 <li class="bPhotoActionOtherPhotoItem">
                                     <a class="bPhotoActionOtherPhotoItem__eLink" href="">
-                                        <img src="<?= $photo->getUrl(0) ?>" alt="<?= $page->escape($product->getName()) ?>" data-zoom-image="<?= $photo->getUrl(4) ?>" data-image="<?= $photo->getUrl(3) ?>" />
+                                        <img src="<?= $photo->getUrl(3) ?>" alt="" />
                                     </a>
                                 </li>
                                 <? endforeach ?>
