@@ -59,7 +59,7 @@ $(document).ready(function() {
 		if (typeof(_kmq) !== 'undefined'){
 			_kmq.push(['record', 'Viewed Product',toKISS]);
 		}
-	}());
+	})();
 
 
 

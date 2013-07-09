@@ -4,7 +4,7 @@
  * @author	Zaytsev Alexandr
  * @requires jQuery
  */
-(function(){
+;(function(){
 
 	/**
 	 * Инициализация слайдера
@@ -78,4 +78,4 @@
 			initFotoSlider();
 		}
 	});
-}());
+})();
