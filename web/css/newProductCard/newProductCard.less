@@ -302,20 +302,18 @@
 				vertical-align: middle;
 
 				border: 1px solid @typLightGray;
+
+				&:hover, 
+				&.mActive {
+					width: 46px;
+					height: 46px;
+
+					border: 2px solid @firmOrange;
+				}
+				
 				img {
 					max-width: 45px;
 					max-height: 45px;
-				}
-			}
-		}
-		.active, &Item:hover {
-			a {
-				width: 46px;
-				height: 46px;
-
-				border: 2px solid @firmOrange;
-				img {
-					
 				}
 			}
 		}

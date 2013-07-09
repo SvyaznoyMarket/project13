@@ -171,12 +171,12 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
 
 <div class="bProductSection__eLeft">
     <section>
-
-        <? if ($hasFurnitureConstructor): ?>
+	   <? if ($hasFurnitureConstructor): ?>
             <? require __DIR__ . '/show/_furniture-new.php' ?>
         <? else: ?>
             <? require __DIR__ . '/show/_default-new.php' ?>
         <? endif ?>
+
 
         <div class="bDescriptionProduct">
             <?= $product->getDescription() ?>

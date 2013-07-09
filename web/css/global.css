@@ -10028,15 +10028,15 @@
     vertical-align: middle;
     border: 1px solid #e6e6e6;
   }
-  .bPhotoActionOtherPhotoItem__eLink img {
-    max-width: 45px;
-    max-height: 45px;
-  }
-  .bPhotoActionOtherPhoto .active a,
-  .bPhotoActionOtherPhotoItem:hover a {
+  .bPhotoActionOtherPhotoItem__eLink:hover,
+  .bPhotoActionOtherPhotoItem__eLink.mActive {
     width: 46px;
     height: 46px;
     border: 2px solid #ffa901;
+  }
+  .bPhotoActionOtherPhotoItem__eLink img {
+    max-width: 45px;
+    max-height: 45px;
   }
   .bPhotoActionOtherPhoto__eBtn {
     position: absolute;
