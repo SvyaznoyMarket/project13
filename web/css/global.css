@@ -4318,6 +4318,9 @@
     display: block;
     float: left;
   }
+  .goodsbar a.mBought {
+    background: url("/css/catalog/img/catalogSprite.png") -102px 0 no-repeat;
+  }
   .goodsbar a:hover {
     text-decoration: none;
   }
@@ -4327,7 +4330,8 @@
     width: 37px;
   }
   .goodsbar a.link1:hover,
-  .goodsbar a.link1.link1active {
+  .goodsbar a.link1.link1active,
+  .goodsbar a.link1.mBought {
     background: url("/css/catalog/img/catalogSprite.png") -102px 0 no-repeat;
   }
   .goodsbar a.link1.disabled {
