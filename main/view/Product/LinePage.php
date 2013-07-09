@@ -29,7 +29,7 @@ class LinePage extends \View\DefaultLayout {
         $this->setTitle('Серия ' . $line->getName());
     }
     public function slotContent() {
-        return $this->render('product/page-line', $this->params);
+        return $this->render('product/page-line-new', $this->params);
     }
 
     public function slotBodyDataAttribute() {
