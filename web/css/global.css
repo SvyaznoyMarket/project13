@@ -3850,7 +3850,7 @@
     line-height: 15px;
   }
   label.radio span.holder {
-    background: url("/css/leftNav/img/leftNavSprite.png") -14px -164px no-repeat;
+    background: url("/css/leftNav/img/radioBtn.png") no-repeat 0 -13px;
     top: 0 !important;
     height: 32px;
   }
@@ -3862,7 +3862,7 @@
     top: -16px !important;
   }
   label.radio.checked span.holder {
-    background-position: 0 -164px;
+    background-position: 0 0;
     top: 0 !important;
   }
   label.checked:hover span.holder {
