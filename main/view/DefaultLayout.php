@@ -128,7 +128,33 @@ class DefaultLayout extends Layout {
             $return .= '<script src="' . $javascript . '" type="text/javascript"></script>' . "\n";
         }
 
-        $return .= $this->render('_headJavascript');
+        $userId = \App::user()->getEntity() ? \App::user()->getEntity()->getId() : 0;
+        $routeName = \App::request()->attributes->get('route');
+        $siteType = 'd';  //m for mobile or t for tablet or d for desktop
+
+        $criteo_q = [];
+
+        $criteo_q[] = [
+            'event' => 'setAccount',
+            'account' => '10442',
+        ];
+
+        $criteo_q[] = [
+            'event' => 'setCustomerId',
+            'account' => $userId,
+        ];
+
+
+        $criteo_q[] = [
+            'event' => 'setSiteType',
+            'account' => $siteType,
+        ];
+
+        $criteo_q[] = [
+            'event' => $routeName,
+        ];
+
+        $return .= $this->render('_headJavascript', [ 'criteo_q' => $criteo_q] );
 
         return $return;
     }
