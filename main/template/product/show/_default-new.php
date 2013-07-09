@@ -66,7 +66,7 @@
         <? if($product->getPriceOld() && !$user->getRegion()->getHasTransportCompany()): ?>
             <div class="priceOld"><span><?= $page->helper->formatPrice($product->getPriceOld()) ?></span> <span class="rubl">p</span></div>
         <? endif ?>
-        <div class="price"><strong><?= $page->helper->formatPrice($product->getPrice()) ?></strong> <span class="rubl">p</span></div>
+        <div class="bPrice"><strong><?= $page->helper->formatPrice($product->getPrice()) ?></strong> <span class="rubl">p</span></div>
 
         <? if ($hasLowerPriceNotification): ?>
             <?

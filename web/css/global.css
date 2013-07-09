@@ -9791,8 +9791,99 @@
     color: #9d9d9d;
   }
   .bProductSection__eLeft {
-    float: left;
+    display: inline-block;
     width: 700px;
+    vertical-align: top;
+    *display: inline;
+    zoom: 1;
+  }
+  .bProductSection .inStock {
+    color: #fb9c00;
+    font-weight: 800;
+    margin-bottom: 6px;
+  }
+  .bProductSection .priceOld {
+    font-size: 21px;
+    margin-bottom: 3px;
+  }
+  .bProductSection .priceOld span {
+    text-decoration: line-through;
+  }
+  .bProductSection .bPrice {
+    font-size: 30px;
+  }
+  .bProductSection .priceSale {
+    margin: 0 0 10px;
+    cursor: pointer;
+  }
+  .bProductSection .bDescSelectItem {
+    border: 1px solid #c7c7c7;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    background: url("/css/newProductCard/img/ico_corner.gif") no-repeat 265px 17px;
+    padding: 0 17px 0 10px;
+    height: 40px;
+    line-height: 40px;
+    font-size: 14px;
+    margin: 0 0 10px;
+    position: relative;
+    cursor: pointer;
+  }
+  .bProductSection .bDescSelectItem__eSelect {
+    top: 0;
+    right: 0;
+    width: 280px;
+    -moz-opacity: 0;
+    -khtml-opacity: 0;
+    -webkit-opacity: 0;
+    opacity: 0;
+    -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
+    filter: alpha(opacity=0);
+    filter: progid:dximagetransform.microsoft.alpha(opacity=0);
+    background-color: transparent;
+    border: none;
+    box-shadow: none;
+    color: transparent;
+    font-size: 16px;
+    height: 37px;
+    padding: 5px;
+    position: absolute;
+    -webkit-appearance: none;
+    cursor: pointer;
+    z-index: 2;
+  }
+  .bProductSection .bDescSelectItem__eOption {
+    filter: progid:dximagetransform.microsoft.alpha(opacity=100);
+    background-color: #FFFFFF;
+    color: black;
+    display: block;
+    height: 37px;
+    -webkit-appearance: none;
+    zoom: 1;
+    text-align: right;
+  }
+  .bProductSection .bDescSelectItem__eValue {
+    float: right;
+  }
+  .bProductSection .creditbox {
+    display: none;
+    margin: 0 0 23px;
+    border: none;
+    font-size: 14px;
+  }
+  .bProductSection .creditbox .bigcheck {
+    font-weight: normal;
+    line-height: 22px;
+  }
+  .bProductSection .creditbox .bigcheck.checked {
+    border: none;
+  }
+  .bProductSection .creditbox .bigcheck b {
+    margin: 0px 8px 0 0px;
+  }
+  .bProductSection .creditbox .creditbox__sum {
+    padding-left: 36px;
   }
   .bProductSection .bProductDesc {
     margin: 0 0 25px;
@@ -9819,25 +9910,6 @@
     width: 280px;
     margin: 10px 0 0;
   }
-  .bProductSection .bProductDesc__eStore .inStock {
-    color: #fb9c00;
-    font-weight: 800;
-    margin-bottom: 6px;
-  }
-  .bProductSection .bProductDesc__eStore .priceOld {
-    font-size: 21px;
-    margin-bottom: 3px;
-  }
-  .bProductSection .bProductDesc__eStore .priceOld span {
-    text-decoration: line-through;
-  }
-  .bProductSection .bProductDesc__eStore .price {
-    font-size: 30px;
-  }
-  .bProductSection .bProductDesc__eStore .priceSale {
-    margin: 0 0 10px;
-    cursor: pointer;
-  }
   .bProductSection .bProductDesc__eStore-text {
     font-size: 14px;
     margin: 0 0 25px;
@@ -9847,75 +9919,6 @@
   }
   .bProductSection .bProductDesc__eStore-text .text__eAll a {
     text-decoration: underline;
-  }
-  .bProductSection .bProductDesc__eStore .bDescSelectItem {
-    border: 1px solid #c7c7c7;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
-    background: url("/css/newProductCard/img/ico_corner.gif") no-repeat 265px 17px;
-    padding: 0 17px 0 10px;
-    height: 40px;
-    line-height: 40px;
-    font-size: 14px;
-    margin: 0 0 10px;
-    position: relative;
-    cursor: pointer;
-  }
-  .bProductSection .bProductDesc__eStore .bDescSelectItem__eSelect {
-    top: 0;
-    right: 0;
-    width: 280px;
-    -moz-opacity: 0;
-    -khtml-opacity: 0;
-    -webkit-opacity: 0;
-    opacity: 0;
-    -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
-    filter: alpha(opacity=0);
-    filter: progid:dximagetransform.microsoft.alpha(opacity=0);
-    background-color: transparent;
-    border: none;
-    box-shadow: none;
-    color: transparent;
-    font-size: 16px;
-    height: 37px;
-    padding: 5px;
-    position: absolute;
-    -webkit-appearance: none;
-    cursor: pointer;
-    z-index: 2;
-  }
-  .bProductSection .bProductDesc__eStore .bDescSelectItem__eOption {
-    filter: progid:dximagetransform.microsoft.alpha(opacity=100);
-    background-color: #FFFFFF;
-    color: black;
-    display: block;
-    height: 37px;
-    -webkit-appearance: none;
-    zoom: 1;
-    text-align: right;
-  }
-  .bProductSection .bProductDesc__eStore .bDescSelectItem__eValue {
-    float: right;
-  }
-  .bProductSection .bProductDesc__eStore .creditbox {
-    display: none;
-    margin: 0 0 23px;
-    border: none;
-    font-size: 14px;
-  }
-  .bProductSection .bProductDesc__eStore .creditbox .bigcheck {
-    font-weight: normal;
-    line-height: 22px;
-  }
-  .bProductSection .bProductDesc__eStore .creditbox .bigcheck.checked {
-    border: none;
-  }
-  .bProductSection .bProductDesc__eStore .creditbox .bigcheck b {
-    margin: 0px 8px 0 0px;
-  }
-  .bProductSection .bProductDesc__eStore .creditbox .creditbox__sum {
-    padding-left: 36px;
   }
   .bProductSection .bDescriptionProduct {
     font-size: 14px;
@@ -9953,9 +9956,12 @@
     margin: 5px 0;
   }
   .bProductSection__eRight {
-    float: right;
     width: 220px;
-    margin: 10px 0 0;
+    margin: 10px 0 0 16px;
+    vertical-align: top;
+    display: inline-block;
+    *display: inline;
+    zoom: 1;
   }
   .bProductSection__eRight .btnBuy {
     margin: 0 auto;
@@ -10101,11 +10107,65 @@
   }
 }
 /*---END---СТИЛИ НОВОЙ КАРТОЧКИ ТОВАРА---*/
-/*------СТИЛИ НОВОЙ КАРТОЧКИ ТОВАРА - НАБОРЫ И ЛИНИЕЙКИ------*/
+/*------СТИЛИ НОВОЙ КАРТОЧКИ ТОВАРА - НАБОРЫ И ЛИНЕЙКИ------*/
 @media all {
-  
+  .mProductSectionSet .bProductDescText {
+    font-size: 14px;
+    margin: 0 0 10px;
+  }
+  .mProductSectionSet .bProductDescMore {
+    font-size: 14px;
+    margin: 0 0 15px;
+  }
+  .mProductSectionSet .bProductDescMore__eMoreInfo {
+    font-weight: bold;
+    text-decoration: underline;
+  }
+  .mProductSectionSet .bProductDesc__ePhoto {
+    width: 700px;
+    height: 700px;
+    box-shadow: 1px 1px 5px #bababa;
+    margin: 15px 0 0;
+  }
+  .mProductSectionSet .bProductDesc__ePhoto-bigImg {
+    width: 700px;
+    height: 700px;
+  }
+  .mProductSectionSet .bProductDesc__ePhoto-bigImg img {
+    max-width: 700px;
+    max-height: 700px;
+  }
+  .mProductSectionSet .mWidget {
+    padding-top: 3px;
+  }
+  .mProductSectionSet .bStoreDesc {
+    margin-left: 5px;
+  }
+  .mProductSectionSet .creditbox {
+    margin: 0 0 16px;
+  }
+  .mProductSectionSet .bWidgetBuy__eClick,
+  .mProductSectionSet .bWidgetBuy__eDelivery {
+    margin: 15px 0 0;
+  }
+  .mProductSectionSet .bProductList {
+    margin: 20px 0 0;
+  }
+  .mSmallBtns a {
+    text-indent: -9999px;
+    display: block;
+    width: 38px;
+    height: 25px;
+    background: url("/css/catalog/img/catalogSprite.png") -64px 0 no-repeat;
+  }
+  .mSmallBtns a:hover {
+    background-position: -102px 0;
+  }
+  .mSliderAction840 .bSliderAction__eInner {
+    width: 840px;
+  }
 }
-/*---END---СТИЛИ НОВОЙ КАРТОЧКИ ТОВАРА - НАБОРЫ И ЛИНИЕЙКИ---*/
+/*---END---СТИЛИ НОВОЙ КАРТОЧКИ ТОВАРА - НАБОРЫ И ЛИНЕЙКИ---*/
 /*------СТИЛИ СЛАЙДЕРА------*/
 @media all {
   .bSliderAction {
@@ -10292,7 +10352,7 @@
   .bWidgetBuy__eClick {
     font-size: 14px;
     text-align: center;
-    margin: 24px 0 0;
+    margin: 15px 0 0;
   }
   .bWidgetBuy__eClick a {
     text-decoration: underline;
@@ -10304,12 +10364,16 @@
     padding-left: 25px;
     margin: 0 0 12px;
     background-repeat: no-repeat;
+    background-image: url("/css/rightBarCard/img/ico.png");
   }
   .bWidgetBuy__eDelivery-item span {
     font-size: 14px;
   }
   .bWidgetBuy__eDelivery-price {
     background-position: 0 -34px;
+  }
+  .bWidgetBuy__eDelivery-text {
+    background: none;
   }
   .bWidgetBuy__eDelivery-now {
     display: none;
