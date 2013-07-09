@@ -6,6 +6,13 @@
  * Time: 16.42
  * To change this template use File | Settings | File Templates.
  */
+
+//ORDER_COOKIE_NAME
+//$cookieValue = $request->cookies->get(self::ORDER_COOKIE_NAME);
+//$cookieValue = $request->cookies->get('last_order');
+//print_r($cookieValue);
+//$form = \Controller\Order\Action::getFormPublic();
+
 ?>
 ### // tmp
 <div id="promocode-element-container"></div>
