@@ -34,7 +34,7 @@
 						var thisId = _this.attr('id');
 						var thisLabel = $('label[for="'+thisId+'"]');
 						thisLabel.removeClass(options.checkedClass);
-					}
+					};
 
 					if (_this.attr('checked') === undefined){
 						unmarkLabel();

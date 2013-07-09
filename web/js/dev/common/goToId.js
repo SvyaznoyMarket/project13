@@ -9,7 +9,7 @@
 		var to = $(this).data('goto');
 		jQuery.scrollTo( $('#'+to), 800 );
 		return false;
-	}
+	};
 	
 	$(document).ready(function() {
 		$('.jsGoToId').bind('click',goToId);

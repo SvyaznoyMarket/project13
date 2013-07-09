@@ -29,7 +29,7 @@
 		};
 
 		$.get(url, addToCart);
-	}
+	};
 
 	/**
 	 * Хандлер кнопки купить
@@ -840,7 +840,7 @@ $(document).ready(function(){
 		var to = $(this).data('goto');
 		jQuery.scrollTo( $('#'+to), 800 );
 		return false;
-	}
+	};
 	
 	$(document).ready(function() {
 		$('.jsGoToId').bind('click',goToId);
@@ -2538,10 +2538,10 @@ function handle_custom_items() {
 				setTimeout(function(){
 					subPopup.slideUp(300);
 				}, 3000);
-			})
+			});
 
 			return false;
-		}
+		};
 
 		var subscribeNow = function(){
 			subPopup.slideDown(300);
@@ -2556,7 +2556,7 @@ function handle_custom_items() {
 				$.post(url);
 
 				return false;
-			})
+			});
 		};
 
 		var subscribeLater = function(){

@@ -21,7 +21,7 @@
 					});
 				}
 				catch (err){
-					var pageID = $(body).data(id);
+					var pageID = $('body').data('id');
 					var dataToLog = {
 						event: 'swfobject_error',
 						type:'ошибка загрузки swf maybe3d',

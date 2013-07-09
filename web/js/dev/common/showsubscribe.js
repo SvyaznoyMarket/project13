@@ -53,10 +53,10 @@
 				setTimeout(function(){
 					subPopup.slideUp(300);
 				}, 3000);
-			})
+			});
 
 			return false;
-		}
+		};
 
 		var subscribeNow = function(){
 			subPopup.slideDown(300);
@@ -71,7 +71,7 @@
 				$.post(url);
 
 				return false;
-			})
+			});
 		};
 
 		var subscribeLater = function(){

@@ -117,6 +117,11 @@
 
 		var deliveryInfo = res.product[0].delivery;
 
+		var shopToggle = function(){
+			nowBox.toggleClass('mOpen');
+			nowBox.toggleClass('mClose');
+		};
+
 		for (var i = deliveryInfo.length - 1; i >= 0; i--) {
 			switch (deliveryInfo[i].token){
 				case 'standart':
@@ -125,8 +130,8 @@
 						price: deliveryInfo[i].price,
 						dateString: deliveryInfo[i].date.name
 					};
-					var template = tmpl('widget_delivery_standart', standartData);
-					standartBox.html(template);
+					var templateStandart = tmpl('widget_delivery_standart', standartData);
+					standartBox.html(templateStandart);
 					break;
 
 				case 'self':
@@ -135,8 +140,8 @@
 						price: deliveryInfo[i].price,
 						dateString: deliveryInfo[i].date.name
 					};
-					var template = tmpl('widget_delivery_self', selfData);
-					selfBox.html(template);
+					var templateSelf = tmpl('widget_delivery_self', selfData);
+					selfBox.html(templateSelf);
 					break;
 
 				case 'now':
@@ -150,16 +155,13 @@
 						var shopInfo = {
 							name: deliveryInfo[i].shop[j].name
 						};
-						var shopTmpl = tmpl('widget_delivery_shop',shopInfo);
-						shopList.append(shopTmpl);
-					};
+						var templateNow = tmpl('widget_delivery_shop',shopInfo);
+						shopList.append(templateNow);
+					}
 					nowBox.show();
-					nowBox.bind('click', function(){
-						nowBox.toggleClass('mOpen');
-						nowBox.toggleClass('mClose');
-					})
+					nowBox.bind('click', shopToggle);
 					break;
-			};
+			}
 		}
 	};
 
@@ -202,7 +204,7 @@
 		var leftArr = slider.find('.bPhotoActionOtherPhoto__eBtn.mPrev');
 		var rightArr = slider.find('.bPhotoActionOtherPhoto__eBtn.mNext');
 		var photos = fotoBox.find('.bPhotoActionOtherPhotoItem');
-		var itemW = photos.width() + parseInt(photos.css('marginLeft')) + parseInt(photos.css('marginRight'));
+		var itemW = photos.width() + parseInt(photos.css('marginLeft'),10) + parseInt(photos.css('marginRight'),10);
 		var nowLeft = 0;
 
 		fotoBox.css({'width': photos.length*itemW, 'left':nowLeft});
@@ -292,7 +294,7 @@
 				}
 			}
 			catch (err){
-				var pageID = $(body).data(id);
+				var pageID = $('body').data('id');
 				var dataToLog = {
 					event: '3dimg',
 					type:'ошибка загрузки 3dimg для мебели',
@@ -303,7 +305,7 @@
 			}
 		};
 		$LAB.script( 'DAnimFramePlayer.min.js' ).wait(furnitureAfterLoad);
-	}
+	};
 
 	$(document).ready(function() {
 		if (pageConfig['product.img3d']){
@@ -475,7 +477,7 @@
 					});
 				}
 				catch (err){
-					var pageID = $(body).data(id);
+					var pageID = $('body').data('id');
 					var dataToLog = {
 						event: 'swfobject_error',
 						type:'ошибка загрузки swf maybe3d',
@@ -561,7 +563,7 @@ $(document).ready(function() {
 			'Viewed Product SKU':productInfo.article,
 			'Viewed Product Product Name':productInfo.name,
 			'Viewed Product Product Status':productInfo.stockState,
-		}
+		};
 		if (typeof(_kmq) !== 'undefined'){
 			_kmq.push(['record', 'Viewed Product',toKISS]);
 		}
@@ -953,11 +955,11 @@ $(document).ready(function() {
 	var reviewContent = $('.bReviewsContent');
 	// получение отзывов
 	var getReviews = function(productId, type, containerClass) {
-		var page = reviewCurrentPage[type] + 1
+		var page = reviewCurrentPage[type] + 1;
 		
-		var layout = false
+		var layout = false;
 		if($('body').hasClass('jewel')) {
-			layout = 'jewel'
+			layout = 'jewel';
 		}
 
 		$.get('/product-reviews/'+productId, {
@@ -1005,22 +1007,22 @@ $(document).ready(function() {
 			reviewContent.hide();
 			$('.'+reviewsContainerClass).show();
 
-	 		moreReviewsButton.hide();
-			if(reviewsType == 'user') {
+			moreReviewsButton.hide();
+			if (reviewsType === 'user') {
 				moreReviewsButton.html('Показать ещё отзывы');
-			} else if(reviewsType == 'pro') {
+			} else if(reviewsType === 'pro') {
 				moreReviewsButton.html('Показать ещё обзоры');
 			}
 
 			if(!$('.'+reviewsContainerClass).html()) {
 				getReviews(reviewsProductId, reviewsType, reviewsContainerClass);
 			} else {
-		 		// проверяем что делать с кнопкой "показать еще" - скрыть/показать
-			 	if(reviewCurrentPage[reviewsType] + 1 >= reviewPageCount[reviewsType]) {
-			 		moreReviewsButton.hide();
-			 	} else {
-			 		moreReviewsButton.show();
-			 	}
+				// проверяем что делать с кнопкой "показать еще" - скрыть/показать
+				if(reviewCurrentPage[reviewsType] + 1 >= reviewPageCount[reviewsType]) {
+					moreReviewsButton.hide();
+				} else {
+					moreReviewsButton.show();
+				}
 			}
 		});
 

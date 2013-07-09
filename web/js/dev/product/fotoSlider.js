@@ -23,7 +23,7 @@
 		var leftArr = slider.find('.bPhotoActionOtherPhoto__eBtn.mPrev');
 		var rightArr = slider.find('.bPhotoActionOtherPhoto__eBtn.mNext');
 		var photos = fotoBox.find('.bPhotoActionOtherPhotoItem');
-		var itemW = photos.width() + parseInt(photos.css('marginLeft')) + parseInt(photos.css('marginRight'));
+		var itemW = photos.width() + parseInt(photos.css('marginLeft'),10) + parseInt(photos.css('marginRight'),10);
 		var nowLeft = 0;
 
 		fotoBox.css({'width': photos.length*itemW, 'left':nowLeft});

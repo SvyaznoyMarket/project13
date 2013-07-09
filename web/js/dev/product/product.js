@@ -55,7 +55,7 @@ $(document).ready(function() {
 			'Viewed Product SKU':productInfo.article,
 			'Viewed Product Product Name':productInfo.name,
 			'Viewed Product Product Status':productInfo.stockState,
-		}
+		};
 		if (typeof(_kmq) !== 'undefined'){
 			_kmq.push(['record', 'Viewed Product',toKISS]);
 		}
