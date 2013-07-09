@@ -22,3 +22,22 @@
     <!-- <script src="//cdn.optimizely.com/js/204544654.js"></script>-->
 <? endif ?>
 
+
+<? if ( \App::config()->partners['criteo']['enabled'] ): ?>
+
+    <? /* // https: and http: — works */ ?>
+    <script type="text/javascript" src="//static.criteo.net/js/ld/ld.js" async="true"></script>
+
+    <? if ( isset(\App::config()->partners['criteo']['criteo_q_arr']) and ( \App::config()->partners['criteo']['criteo_q_arr']) ) { ?>
+    <script type="text/javascript">
+        window.criteo_q = window.criteo_q || [];
+        window.criteo_q.push(
+            { event: "setAccount", account: 10442 },
+            { event: "setCustomerId", id: "Customer ID" },
+            { event: "setSiteType", type: "m for mobile or t for tablet or d for desktop" },
+            { event: "viewItem", item: "Your item id" }
+        );
+    </script>
+    <? } ?>
+
+<? endif ?>

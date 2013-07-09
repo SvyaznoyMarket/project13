@@ -111,6 +111,15 @@ class AppConfig {
     public $yandexMetrika = [
         'enabled' => null,
     ];
+
+    /** @var array */
+    public $partners = [
+        'criteo' => [
+            'enabled' => null,
+        ]
+    ];
+
+
     /** @var array */
     public $myThings = [
         'feeByCategory' => [],
