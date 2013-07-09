@@ -42,12 +42,7 @@ $isOrderAnalytics = isset($isOrderAnalytics) ? $isOrderAnalytics : true;
     <div class="line pb15"></div>
 <?php endforeach ?>
 
-<?
-//$form = \View\Order\Form::get....
-//print_r($form);
-//print_r($user->getFirstName());
-?>
-<?= $page->render('partner-counter/_get4click', ['order' => $order] ) ?>
+<?= $page->render('partner-counter/_get4click', ['order' => $order, 'form' => $form] ) ?>
 
 <? if ($isCorporative): ?>
     <div class="mt32">

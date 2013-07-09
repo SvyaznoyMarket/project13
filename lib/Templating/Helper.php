@@ -198,4 +198,58 @@ class Helper {
         return $dateRu;
     }
 
+
+    /**
+     * Возвращает валидную cтрочку для джаваскрипта либо false
+     * Пример, подаём на вход (_shopId,76), получаем:
+     * '_shopId':76
+     * @param $key
+     * @param $value
+     * @return bool|string
+     */
+    public function stringRowParam4js($key,$value){
+        $ret =false;
+        if ( isset($key) and !empty($key) and ($value) ) { // Важно! пустое значение ( $value == "") будет игнориться
+            $ret =  "'".$key."':";
+            $value_str = (string) $value;
+            if (!is_numeric($value)) $value_str = "'".$value_str."'"; // оборачиваем в кавычки, если не число
+            $ret .= $value_str;
+        }
+        return $ret;
+    }
+
+
+    /**
+     * Возвращает строчки ключей-параметров для JavaScript либо false
+     * (предварительно делая провери и расставляя запятые и скобки).
+     * в виде:
+     * {
+     * 'key1': 5,
+     * 'key2': 'opop'
+     * }
+     * @param $params
+     * @return bool|string
+     */
+    public function stringRowsParams4js($params){
+        $ret =false;
+        $count = count($params);
+        if ($count>0){
+            $i = 0;
+            $ret = (string) "{".PHP_EOL;
+            foreach($params as $key => $value) {
+                $row = $this->stringRowParam4js($key,$value);
+                if ($row) {
+                    $i++;
+                    $ret .= $row;
+                    if ($i<$count) $ret .= ','.PHP_EOL;
+                }else{
+                    $count--;
+                }
+            }
+            $ret .= PHP_EOL."};".PHP_EOL;
+        }
+        return $ret;
+
+    }
+
 }
