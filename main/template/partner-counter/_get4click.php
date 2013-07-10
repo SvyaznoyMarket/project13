@@ -24,15 +24,6 @@ $params['_orderCurrency'] = 'RUB';
 $params['_usedPromoCode'] = 'CVB456098'; // Код использованной скидки
 
 
-if (
-    !isset($params['_customerLastName']) or
-    empty($params['_customerLastName'] ) or
-    is_null($params['_customerLastName'])
-    )
-{
-    $params['_customerLastName'] = ' ';
-}
-
 // Если юзер почему-то безымянный, то обратимся как "Уважаемый Покупатель"
 if ( empty($params['_customerFirstName']) ) {
     $params['_customerFirstName'] = 'Покупатель';
