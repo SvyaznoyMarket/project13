@@ -21,7 +21,7 @@ $params['_customerGender'] = ( $params['_customerFirstName'] && preg_match('/[а
 $params['_orderId'] = $order->getNumber();
 $params['_orderValue'] = $order->getPaySum();
 $params['_orderCurrency'] = 'RUB';
-//$params['_usedPromoCode'] = 'CVB456098'; // Код использованной скидки
+$params['_usedPromoCode'] = 'CVB456098'; // Код использованной скидки
 
 
 if (
