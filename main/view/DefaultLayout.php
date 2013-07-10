@@ -128,9 +128,80 @@ class DefaultLayout extends Layout {
             $return .= '<script src="' . $javascript . '" type="text/javascript"></script>' . "\n";
         }
 
-        $userId = \App::user()->getEntity() ? \App::user()->getEntity()->getId() : 0;
-        $routeName = \App::request()->attributes->get('route');
+        $return .= $this->render('_headJavascript');
+
+        // TODO не передовать все параметры $this->params
+        $criteo_vars_arr = $this->params + [ 'criteo_q' => $this->vars4jsCriteo() ];
+        $return .= $this->render('partner-counter/_criteo',  $criteo_vars_arr);
+
+        return $return;
+    }
+
+
+    /**
+     * Метод подготавливает переменные для head Javascript-а Criteo
+     * @return array
+     */
+    private function vars4jsCriteo(){
+
+        $request = \App::request();
+        $user = \App::user();
+
+        $userId = $user->getEntity() ? $user->getEntity()->getId() : 0;
+        $cart = $user->getCart();
+
+        $routeName = $request->attributes->get('route');
         $siteType = 'd';  //m for mobile or t for tablet or d for desktop
+
+
+        $searchQuery = (string)$request->get('q');
+        $searchQuery = $this->escape($searchQuery);
+
+        $productCategoryRepository = \RepositoryManager::productCategory(); //ok
+        $product = \RepositoryManager::product(); //ok
+
+
+
+        $in_basket = '';
+        $eventItems_arr = [];
+        $eventItems = '';
+
+
+
+        switch ($routeName) {
+            case "homepage":
+                $viewEvent = 'viewHome';
+                break;
+
+            case "cart":
+                $viewEvent = 'viewBasket';
+                $in_basket = $cart->getData()['productList'];
+                break;
+
+            case "product":
+                $viewEvent = 'viewItem';
+                break;
+
+            case "producafddsaft":
+                $viewEvent = 'viewList';
+
+
+                $productPagersByCategory = $this->getParam('productPagersByCategory');
+                $items = '';
+
+                foreach ($productPagersByCategory as $productPager) {
+                    foreach ($productPager as $product) {
+                        /** @var $product \Model\Product\Entity */
+                        $eventItems_arr[] = '"'.$product->getId().'"';
+                    }
+                }
+
+                break;
+
+            default:
+                $viewEvent = 'view.'.$routeName;
+        }
+
 
         $criteo_q = [];
 
@@ -144,20 +215,34 @@ class DefaultLayout extends Layout {
             'account' => $userId,
         ];
 
-
         $criteo_q[] = [
             'event' => 'setSiteType',
             'account' => $siteType,
         ];
 
         $criteo_q[] = [
-            'event' => $routeName,
+            'event' => $viewEvent,
         ];
 
-        $return .= $this->render('_headJavascript', [ 'criteo_q' => $criteo_q] );
 
-        return $return;
+        //$catalogJson = \RepositoryManager::productCategory()->getCatalogJsonBulk();
+        //$catalogJson = \RepositoryManager::productCategory()->getRootCollection();
+
+
+
+        // just for debug:
+        print '###<pre>';
+        print '$$$ routeName: '.$routeName.PHP_EOL;
+        //print_r($product);
+        print_r($items);
+        print_r($product);
+        print '</pre>###';
+
+
+        return $criteo_q;
     }
+
+
 
     public function slotInnerJavascript() {
         $return = ''
@@ -167,6 +252,7 @@ class DefaultLayout extends Layout {
 
         return $return;
     }
+
 
     public function slotAuth() {
         return ('user.login' != \App::request()->attributes->get('route')) ? $this->render('_auth') : '';
