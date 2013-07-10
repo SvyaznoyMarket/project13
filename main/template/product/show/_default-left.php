@@ -35,6 +35,7 @@
                 <? endif ?>
             </ul><!--/view product section -->
 
+            <? if (count($photoList) > 1): ?>
             <div class="bPhotoActionOtherPhoto">
                 <div class="bPhotoActionOtherPhoto__eWrappSlider">
                     <ul id="productImgGallery" class="bPhotoActionOtherPhotoList clearfix">
@@ -51,6 +52,8 @@
                 <div class="bPhotoActionOtherPhoto__eBtn mPrev"><span>&#9668;</span></div>
                 <div class="bPhotoActionOtherPhoto__eBtn mNext"><span>&#9658;</span></div>
             </div><!--/slider mini product images -->
+            <? endif ?>
+
         </div>
     </div><!--/product images section -->
 
@@ -90,12 +93,12 @@
         <? if ((bool)$product->getModel() && (bool)$product->getModel()->getProperty()): //модели ?>
             <div class="bProductDesc__eStore-select">
                 <? foreach ($product->getModel()->getProperty() as $property): ?>
-                    <? if ($property->getIsImage()): ?>
+                    <? if (false && $property->getIsImage()): ?>
                     <? else: ?>
-                        <?
+                    <?
                         $productAttribute = $product->getPropertyById($property->getId());
                         if (!$productAttribute) break;
-                        ?>
+                    ?>
 
                     <? endif ?>
                     <div class="bDescSelectItem clearfix">
@@ -106,7 +109,7 @@
                         <select class="bDescSelectItem__eSelect">
                             <? foreach ($property->getOption() as $option): ?>
                                 <? if ($option->getValue() == $productAttribute->getValue()) continue ?>
-                                <option class="bDescSelectItem__eOption"><?= $option->getHumanizedName() ?></option>
+                                <option class="bDescSelectItem__eOption" data-url="<?= $option->getProduct()->getLink() ?>"><?= $option->getHumanizedName() ?></option>
                             <? endforeach ?>
                         </select>
                     </div>

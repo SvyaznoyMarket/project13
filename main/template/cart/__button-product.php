@@ -1,6 +1,7 @@
 <?php
 
 return function (
+    $url = null,
     $class = null,
     $value = 'Купить',
     \Model\Product\BasicEntity $product,
@@ -13,7 +14,7 @@ $disabled = !$product->getIsBuyable();
 if ($disabled) {
     $url = '#';
     $class .= ' mDisabled';
-} else {
+} else if (!isset($url)) {
     $urlParams = [
         'productId' => $product->getId(),
     ];

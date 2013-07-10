@@ -208,15 +208,20 @@
 		var leftArr = slider.find('.bPhotoActionOtherPhoto__eBtn.mPrev');
 		var rightArr = slider.find('.bPhotoActionOtherPhoto__eBtn.mNext');
 		var photos = fotoBox.find('.bPhotoActionOtherPhotoItem');
+
+		if (!photos.length){
+			return false;
+		}
+
 		var itemW = photos.width() + parseInt(photos.css('marginLeft'),10) + parseInt(photos.css('marginRight'),10);
 		var nowLeft = 0;
 
 		fotoBox.css({'width': photos.length*itemW, 'left':nowLeft});
-
 		/**
 		 * Проверка стрелок
 		 */
 		var checkArrow = function(){
+			console.log('checkArrow')
 			if (nowLeft > 0){
 				leftArr.show();
 			}
@@ -560,7 +565,7 @@ $(document).ready(function() {
 					return false;
 				}
 
-				$('.jsPrice').html(res.sum);
+				$('.jsPrice').html(printPrice(res.sum));
 			};
 
 			for (var i = 0, len = IdsWithInfo.length; i < len; i++){
@@ -602,6 +607,8 @@ $(document).ready(function() {
 				return false;
 			}
 
+			$('.jsBuyButton').html('В корзине').addClass('mBought').attr('href','/cart');
+
 			var structure = Planner3dKupeConstructor.GetBasketContent();
 			var url = $(this).attr('href');
 
@@ -632,7 +639,7 @@ $(document).ready(function() {
 				Planner3dKupeConstructor.Initialize('/js/KupeConstructorData.json', coupeInfo.id);
 			}
 			catch (err){
-				var pageID = $(body).data(id);
+				var pageID = $('body').data('id');
 				var dataToLog = {
 					event: 'Kupe3dConstructor error',
 					type:'ошибка загрузки Kupe3dConstructor',

@@ -341,40 +341,6 @@ $(document).ready(function(){
 		}
 	}
 	
-	
-	/* mobile fix for Lbox position='fixed' */
-	var clientBrowser = new brwsr()
-	if( clientBrowser.isAndroid || clientBrowser.isOSX4 ) {
-		if( clientBrowser.isOpera ) {
-			$('.lightbox').hide()
-		}
-		$('.lightbox').css('position','absolute')
-		var innerHeightM = ( clientBrowser.isOSX4 ) ? window.innerHeight : document.documentElement.clientHeight
-		var innerWidthM  = ( clientBrowser.isOSX4 ) ? window.innerWidth  : document.documentElement.clientWidth
-		if(  clientBrowser.isOSX4  )
-			$('.lightbox').css('top', window.pageYOffset + innerHeightM -41)
-		if ( Math.abs(window.orientation) === 90 ) {
-			var inittopv = innerHeightM - 41
-			var inittoph = innerWidthM  - 41
-		} else {
-			var inittoph = innerHeightM - 41
-			var inittopv = innerWidthM  - 41
-		}
-
-		window.addEventListener("orientationchange", setPosLbox, false)
-		window.addEventListener("scroll", setPosLbox, false)
-		window.onscroll = setPosLbox
-
-		function setPosLbox() {
-			if( !window.pageYOffset ){
-				$('.lightbox').css('top', ( Math.abs(window.orientation) === 90 ) ? inittopv : inittoph )
-			} else {
-				innerHeightM = ( clientBrowser.isOSX4 ) ? window.innerHeight : document.documentElement.clientHeight
-				$('.lightbox').css('top', window.pageYOffset + innerHeightM -41)
-			}
-		}
-
-	} // isAndroid || isOSX4
 
 
 	/* Authorization process */
