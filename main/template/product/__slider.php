@@ -3,6 +3,7 @@
 return function (
     array $products,
     array $categories = [],
+    $class = null,
     $count = null,
     $limit = null,
     $url = null,
@@ -32,7 +33,7 @@ return function (
         </div>
     <? endif ?>
 
-    <div class="bSliderAction<? if (!$limit): ?> mNoSliderAction<? endif ?>" data-slider="<?= $helper->json([
+    <div class="bSliderAction<? if ($class): ?> <?= $class ?><? endif ?>" data-slider="<?= $helper->json([
         'count' => $count,
         'limit' => $limit,
         'url'   => $url,
@@ -49,9 +50,8 @@ return function (
                         <a class="productImg" href=""><img src="<?= $product->getImageUrl() ?>" alt="<?= $helper->escape($product->getName()) ?>" /></a>
                         <div class="productName"><a href="<?= $helper->url('product', ['productPath' => $product->getPath()]) ?>"><?= $product->getName() ?></a></div>
                         <div class="productPrice"><span class="price"><?= $helper->formatPrice($product->getPrice()) ?> <span class="rubl">p</span></span></div>
-                        <div class="btnBuy">
-                            <?= $helper->render('cart/__button-product', ['product' => $product, 'class' => 'btnBuy__eLink', 'value' => 'В корзину']) ?>
-                        </div>
+
+                        <?= $helper->render('cart/__button-product', ['product' => $product, 'class' => 'btnBuy__eLink', 'value' => 'В корзину']) // Кнопка купить ?>
                     </div>
                 </li>
             <? endforeach ?>

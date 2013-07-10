@@ -18,10 +18,6 @@
 
 $helper = new \Helper\TemplateHelper();
 
-$hasLowerPriceNotification =
-    \App::config()->product['lowerPriceNotification']
-    && $product->getMainCategory() && $product->getMainCategory()->getPriceChangeTriggerEnabled();
-
 $hasFurnitureConstructor = \App::config()->product['furnitureConstructor'] && $product->getLine() && (256 == $product->getLine()->getId()); // Серия Байкал
 
 /** @var  $productVideo \Model\Product\Video\Entity|null */
@@ -274,33 +270,9 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
         <div class="bWidgetBuy mWidget">
             <?= $helper->render('__spinner', ['id' => \View\Id::cartButtonForProduct($product->getId())]) ?>
 
-            <div class="bWidgetBuy__eBuy btnBuy">
-                <?= $helper->render('cart/__button-product', ['product' => $product, 'class' => 'btnBuy__eLink', 'value' => 'В корзину']) ?>
-            </div><!--/button buy -->
+            <?= $helper->render('cart/__button-product', ['product' => $product, 'class' => 'btnBuy__eLink', 'value' => 'В корзину']) // Кнопка купить ?>
 
-            <? if ($product->getIsBuyable()): ?>
-                <div class="bWidgetBuy__eClick">
-                    <a
-                        href="#"
-                        class="jsOrder1click"
-                        data-model="<?= $page->json([
-                            'jsref'        => $product->getToken(),
-                            'jstitle'      => $product->getName(),
-                            'jsprice'      => $product->getPrice(),
-                            'jsimg'        => $product->getImageUrl(3),
-                            'jsbimg'       => $product->getImageUrl(2),
-                            'jsshortcut'   => $product->getArticle(),
-                            'jsitemid'     => $product->getId(),
-                            'jsregionid'   => $user->getRegion()->getId(),
-                            'jsregionName' => $user->getRegion()->getName(),
-                            'jsstock'      => 10,
-                        ]) ?>"
-                        link-output="<?= $page->url('order.1click', ['product' => $product->getToken()]) ?>"
-                        link-input="<?= $page->url('product.delivery_1click') ?>"
-                        >Купить быстро в 1 клик</a>
-                </div>
-                <form id="order1click-form" action="<?= $page->url('order.1click', ['product' => $product->getBarcode()]) ?>" method="post"></form>
-            <? endif ?>
+            <?= $helper->render('product/__oneClick', ['product' => $product]) // Покупка в один клик ?>
 
             <?= $helper->render('product/__delivery', ['product' => $product]) ?>
 

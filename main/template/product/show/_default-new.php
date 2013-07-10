@@ -1,5 +1,6 @@
 <?php
 /**
+ * @var $helper             \Helper\TemplateHelper
  * @var $page               \View\Product\IndexPage
  * @var $product            \Model\Product\Entity
  * @var $productVideos      \Model\Product\Video\Entity[]
@@ -54,55 +55,13 @@
     </div><!--/product images section -->
 
     <div class="bProductDesc__eStore">
-        <? if ($product->getIsBuyable()): ?>
-            <link itemprop="availability" href="http://schema.org/InStock" />
-            <div class="inStock">Есть в наличии</div>
-        <? elseif (!$product->getIsBuyable() && $product->getState()->getIsShop()): ?>
-            <link itemprop="availability" href="http://schema.org/InStoreOnly" />
-        <? else: ?>
-            <link itemprop="availability" href="http://schema.org/OutOfStock" />
-        <? endif ?>
+        <?= $helper->render('product/__state', ['product' => $product]) // Есть в наличии ?>
 
-        <? if($product->getPriceOld() && !$user->getRegion()->getHasTransportCompany()): ?>
-            <div class="priceOld"><span><?= $page->helper->formatPrice($product->getPriceOld()) ?></span> <span class="rubl">p</span></div>
-        <? endif ?>
-        <div class="bPrice"><strong><?= $page->helper->formatPrice($product->getPrice()) ?></strong> <span class="rubl">p</span></div>
+        <?= $helper->render('product/__price', ['product' => $product]) // Цена ?>
 
-        <? if ($hasLowerPriceNotification): ?>
-            <?
-            $lowerPrice =
-                ($product->getMainCategory() && $product->getMainCategory()->getPriceChangePercentTrigger())
-                    ? round($product->getPrice() * $product->getMainCategory()->getPriceChangePercentTrigger())
-                    : 0;
-            ?>
-            <div class="priceSale">
-                <span class="dotted jsLowPriceNotifer">Узнать о снижении цены</span>
-                <div class="bLowPriceNotiferPopup popup">
-                    <i class="close"></i>
-                    <h2 class="bLowPriceNotiferPopup__eTitle">
-                        Вы получите письмо,<br/>когда цена станет ниже
-                        <? if ($lowerPrice && ($lowerPrice < $product->getPrice())): ?>
-                            <strong class="price"><?= $page->helper->formatPrice($lowerPrice) ?></strong> <span class="rubl">p</span>
-                        <? endif ?>
-                    </h2>
-                    <input class="bLowPriceNotiferPopup__eInputEmail" placeholder="Ваш email" value="<?= $user->getEntity() ? $user->getEntity()->getEmail() : '' ?>" />
-                    <p class="bLowPriceNotiferPopup__eError red"></p>
-                    <a href="#" class="bLowPriceNotiferPopup__eSubmitEmail button bigbuttonlink mDisabled" data-url="<?= $page->url('product.notification.lowerPrice', ['productId' => $product->getId()]) ?>">Сохранить</a>
-                </div>
-            </div>
-        <? endif ?>
+        <?= $helper->render('product/__notification-lowerPrice', ['product' => $product]) // Узнать о снижении цены ?>
 
-        <? if ($creditData['creditIsAllowed'] && !$user->getRegion()->getHasTransportCompany()) : ?>
-            <div class="creditbox">
-                <label class="bigcheck" for="creditinput"><b></b>
-                    <span class="dotted">Беру в кредит</span>
-                    <input id="creditinput" type="checkbox" name="creditinput" autocomplete="off">
-                </label>
-
-                <div class="creditbox__sum">от <strong></strong> <span class="rubl">p</span> в месяц</div>
-                <input data-model="<?= $page->escape($creditData['creditData']) ?>" id="dc_buy_on_credit_<?= $product->getArticle(); ?>" name="dc_buy_on_credit" type="hidden" />
-            </div><!--/credit box -->
-        <? endif ?>
+        <?= $helper->render('product/__credit', ['product' => $product, 'creditData' => $creditData]) // Беру в кредит ?>
 
         <div class="bProductDesc__eStore-text">
             <?= $product->getTagline() ?>
