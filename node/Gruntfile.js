@@ -53,8 +53,7 @@ module.exports = function(grunt) {
 		jsDevPath+'library/mapDriver.js',
 		jsDevPath+'library/black_box.js',
 		jsDevPath+'library/addParameterToUrl.js',
-		jsDevPath+'library/*.js',
-		// jsDevPath+'library/isTrueEmail.js',
+		jsDevPath+'library/*.js'
 	];
 
 	grunt.initConfig({
@@ -396,12 +395,6 @@ module.exports = function(grunt) {
 					'../web/js/prod/infopage.min.js': [jsDevPath+'infopage/*.js']
 				}
 			},
-
-			// jqueryPluginsJS: {
-			// 	files: {
-			// 		'../web/js/prod/jquery-plugins.min.js': [jsDevPath+'jquery-plugins/*.js']
-			// 	}
-			// },
 
 			libraryJS: {
 				files: {
