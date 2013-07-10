@@ -7,12 +7,14 @@
 ?>
 
 <?php
+$helper = new \Helper\TemplateHelper();
 if ($disabled) {
     $url = '#';
 } else {
     $url = $page->url('cart.product.set', array('productId' => $product->getId()));
 }
-$btnText = \App::user()->getCart()->hasProduct($product->getId()) ? 'В корзине' : 'Купить';
+$inCart = \App::user()->getCart()->hasProduct($product->getId());
+$btnText = $inCart ? 'В корзине' : 'В корзину';
 ?>
 
-<a href="<?= $url ?>" data-product="<?= $product->getId() ?>" data-category="<?= $product->getMainCategory() ? $product->getMainCategory()->getId() : 0 ?>" class="jsBuyButton <?php if ($disable): ?> disabled<? endif ?><?php if (!empty($bought)): ?> mBought<? endif ?>"><i></i><span><?= $btnText?></span></a>
+<?= $helper->render('cart/__button-product', ['product' => $product, 'class' => 'btnBuy__eLink', 'value' => $btnText]) // Кнопка купить ?>

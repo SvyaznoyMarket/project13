@@ -6,6 +6,7 @@
 ?>
 
 <?
+$helper = new \Helper\TemplateHelper();
 $disabled = !$product->getIsBuyable();
 $gaEvent = !empty($gaEvent) ? $gaEvent : null;
 $gaTitle = !empty($gaTitle) ? $gaTitle : null;
@@ -14,6 +15,8 @@ if ($disabled) {
 } else {
     $url = $page->url('cart.product.set', array('productId' => $product->getId()));
 }
+$inCart = \App::user()->getCart()->hasProduct($product->getId());
+$btnText = $inCart ? 'В корзине' : 'В корзину';
 ?>
 
 <li class="item">
@@ -29,10 +32,7 @@ if ($disabled) {
       <span class="hf price"><?= $page->helper->formatPrice($product->getPrice()) ?></span>
 
       <? if ($product->getIsBuyable()): ?>
-        <div class="goodsbar"><? //для корректной работы js ?>
-          <? $btnText = \App::user()->getCart()->hasProduct($product->getId()) ? 'В корзине' : 'В корзину' ?>
-          <a href="<?= $url ?>"<?php echo (!empty($gaEvent) ? (' data-event="'.$gaEvent.'"') : '').(!empty($gaTitle) ? (' data-title="'.$gaTitle.'"') : '') ?> data-product="<?= $product->getId() ?>" data-category="<?= $product->getMainCategory() ? $product->getMainCategory()->getId() : 0 ?>" class="jsBuyButton link1 event-click item-buy cart cart-add<?php if ($disabled): ?> disabled<? endif ?><?php if ($gaEvent): ?> gaEvent<? endif ?><?php if (\App::user()->getCart()->hasProduct($product->getId())): ?> mBought<? endif ?>"><?= $btnText ?></a>
-        </div>
+        <?= $helper->render('cart/__button-product', ['product' => $product, 'class' => 'btnBuy__eLink', 'value' => $btnText]) // Кнопка купить ?>
       <? endif ?>
     </div>
 

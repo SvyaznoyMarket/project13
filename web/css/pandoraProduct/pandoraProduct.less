@@ -33,7 +33,7 @@
         .photo a {
           height: 130px;
         }
-        a.jsBuyButton {
+        a.btnBuy__eLink {
           width: auto;
           position: absolute;
           bottom: 10px;
@@ -48,6 +48,10 @@
           height: 23px;
           padding: 0 10px;
           .transition(opacity 0.1s ease-in-out);
+          border: 1px solid #000;
+          font: normal 12px tahoma,verdana,arial,helvetica,sans-serif;
+          line-height:21px;
+          text-indent: 0;
           &.mBought {
             background: #fff;
             border: 1px solid #000;
@@ -76,7 +80,7 @@
         .item-name {
           .opacity(1);
         }
-        a.jsBuyButton {
+        a.btnBuy__eLink {
           .opacity(1);
         }
         h3 {
@@ -87,7 +91,7 @@
           .transition(left 0.1s ease-in-out);
           -webkit-backface-visibility: hidden; -webkit-tap-highlight-color: rgba(255,255,255,0);
         }
-        .jsBuyButton.disabled {
+        .btnBuy__eLink.mDisabled {
           .opacity(0.1);
           cursor: default;
         }
@@ -177,7 +181,7 @@
         font-weight: bold;
       }
     }
-    &.goodsbarbig.mSmallBtns .cart-add {
+    &.goodsbarbig.mSmallBtns .btnBuy__eLink, &.goodsbarbig.mSmallBtns .btnBuy__eLink:hover {
       float: right;
       display: block;
       background: #000;
@@ -191,12 +195,14 @@
       text-align: center;
       .rounded(4px);
       border: 1px solid #000;
+      font: normal 16px tahoma,verdana,arial,helvetica,sans-serif;
+      line-height:28px;
       &.mBought {
         background: #fff;
         color: #000;
       }
     }
-    &.goodsbarbig.mSmallBtns a.jsBuyButton.disabled {
+    &.goodsbarbig.mSmallBtns a.btnBuy__eLink.mDisabled {
       opacity: 0.1;
       float: right;
     }
@@ -408,6 +414,15 @@ body.jewel {
   .mSmallBtns a {
     text-indent: 0;
     background: none;
+  }
+  .bWidgetBuy__eBuy {
+    float: right;
+  }
+  .bCountSection {
+    padding-left:10px;
+  }
+  .btnBuy {
+    width: 140px;
   }
 }
 div.submit input {

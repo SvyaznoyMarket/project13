@@ -4,7 +4,7 @@ $(document).ready(function(){
     // handle_url_hash()
 
     // var prevent_request_on_hashchange = false
-    handle_jewel_items()
+    // handle_jewel_items()
     handle_jewel_infinity_scroll()
   }
 })

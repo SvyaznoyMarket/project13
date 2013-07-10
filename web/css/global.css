@@ -10831,38 +10831,6 @@
     float: left;
     height: 240px;
   }
-  .items-section .items-section__list li .item-buy {
-    width: auto;
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    background: #000;
-    color: #ffffff;
-    -webkit-border-radius: 4px;
-    -moz-border-radius: 4px;
-    border-radius: 4px;
-    -moz-opacity: 0;
-    -khtml-opacity: 0;
-    -webkit-opacity: 0;
-    opacity: 0;
-    -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
-    filter: alpha(opacity=0);
-    text-align: center;
-    line-height: 21px;
-    display: block;
-    height: 23px;
-    padding: 0 10px;
-    -webkit-transition: opacity 0.1s ease-in-out;
-    -moz-transition: opacity 0.1s ease-in-out;
-    transition: opacity 0.1s ease-in-out;
-  }
-  .items-section .items-section__list li .item-buy.link1active {
-    background: #fff;
-    border: 1px solid #000;
-    color: #000;
-    height: 21px;
-    width: auto;
-  }
   .items-section .items-section__list li .item-price {
     position: absolute;
     bottom: 0;
@@ -10899,7 +10867,7 @@
     -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=100);
     filter: alpha(opacity=100);
   }
-  .items-section .items-section__list li:hover .item-buy {
+  .items-section .items-section__list li:hover .btnBuy__eLink {
     -moz-opacity: 1;
     -khtml-opacity: 1;
     -webkit-opacity: 1;
@@ -11108,6 +11076,42 @@
     -moz-border-radius: 0;
     border-radius: 0;
   }
+  .brandSectionPandora__catalog .goodsbox__inner .btnBuy__eLink {
+    width: auto;
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background: #000;
+    color: #ffffff;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    -moz-opacity: 0;
+    -khtml-opacity: 0;
+    -webkit-opacity: 0;
+    opacity: 0;
+    -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
+    filter: alpha(opacity=0);
+    text-align: center;
+    line-height: 21px;
+    display: block;
+    height: 23px;
+    padding: 0 10px;
+    -webkit-transition: opacity 0.1s ease-in-out;
+    -moz-transition: opacity 0.1s ease-in-out;
+    transition: opacity 0.1s ease-in-out;
+    border: 1px solid #000;
+    font: normal 12px tahoma, verdana, arial, helvetica, sans-serif;
+    line-height: 21px;
+    text-indent: 0;
+  }
+  .brandSectionPandora__catalog .goodsbox__inner .btnBuy__eLink.mBought {
+    background: #fff;
+    border: 1px solid #000;
+    color: #000;
+    height: 21px;
+    width: auto;
+  }
   .brandSectionPandora__catalog .bNavLoader__eIco {
     background: url("/css/ajaxPopup/img/arrow_bg_b.png") no-repeat;
   }
@@ -11174,7 +11178,7 @@
   .brandSectionPandora__product .bigcarousel-brand .goodsbox .goodsbox__inner .photo a {
     height: 130px;
   }
-  .brandSectionPandora__product .bigcarousel-brand .goodsbox .goodsbox__inner a.jsBuyButton {
+  .brandSectionPandora__product .bigcarousel-brand .goodsbox .goodsbox__inner a.btnBuy__eLink {
     width: auto;
     position: absolute;
     bottom: 10px;
@@ -11198,8 +11202,12 @@
     -webkit-transition: opacity 0.1s ease-in-out;
     -moz-transition: opacity 0.1s ease-in-out;
     transition: opacity 0.1s ease-in-out;
+    border: 1px solid #000;
+    font: normal 12px tahoma, verdana, arial, helvetica, sans-serif;
+    line-height: 21px;
+    text-indent: 0;
   }
-  .brandSectionPandora__product .bigcarousel-brand .goodsbox .goodsbox__inner a.jsBuyButton.mBought {
+  .brandSectionPandora__product .bigcarousel-brand .goodsbox .goodsbox__inner a.btnBuy__eLink.mBought {
     background: #fff;
     border: 1px solid #000;
     color: #000;
@@ -11234,7 +11242,7 @@
     -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=100);
     filter: alpha(opacity=100);
   }
-  .brandSectionPandora__product .bigcarousel-brand .goodsbox:hover .goodsbox__inner a.jsBuyButton {
+  .brandSectionPandora__product .bigcarousel-brand .goodsbox:hover .goodsbox__inner a.btnBuy__eLink {
     -moz-opacity: 1;
     -khtml-opacity: 1;
     -webkit-opacity: 1;
@@ -11258,7 +11266,7 @@
     -webkit-backface-visibility: hidden;
     -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
   }
-  .brandSectionPandora__product .bigcarousel-brand .goodsbox:hover .goodsbox__inner .jsBuyButton.disabled {
+  .brandSectionPandora__product .bigcarousel-brand .goodsbox:hover .goodsbox__inner .btnBuy__eLink.mDisabled {
     -moz-opacity: 0.1;
     -khtml-opacity: 0.1;
     -webkit-opacity: 0.1;
@@ -11360,7 +11368,8 @@
     color: #000;
     font-weight: bold;
   }
-  .brandSectionPandora__product .product-desc__buy.goodsbarbig.mSmallBtns .cart-add {
+  .brandSectionPandora__product .product-desc__buy.goodsbarbig.mSmallBtns .btnBuy__eLink,
+  .brandSectionPandora__product .product-desc__buy.goodsbarbig.mSmallBtns .btnBuy__eLink:hover {
     float: right;
     display: block;
     background: #000;
@@ -11376,12 +11385,15 @@
     -moz-border-radius: 4px;
     border-radius: 4px;
     border: 1px solid #000;
+    font: normal 16px tahoma, verdana, arial, helvetica, sans-serif;
+    line-height: 28px;
   }
-  .brandSectionPandora__product .product-desc__buy.goodsbarbig.mSmallBtns .cart-add.mBought {
+  .brandSectionPandora__product .product-desc__buy.goodsbarbig.mSmallBtns .btnBuy__eLink.mBought,
+  .brandSectionPandora__product .product-desc__buy.goodsbarbig.mSmallBtns .btnBuy__eLink:hover.mBought {
     background: #fff;
     color: #000;
   }
-  .brandSectionPandora__product .product-desc__buy.goodsbarbig.mSmallBtns a.jsBuyButton.disabled {
+  .brandSectionPandora__product .product-desc__buy.goodsbarbig.mSmallBtns a.btnBuy__eLink.mDisabled {
     opacity: 0.1;
     float: right;
   }
@@ -11590,6 +11602,15 @@
   body.jewel .mSmallBtns a {
     text-indent: 0;
     background: none;
+  }
+  body.jewel .bWidgetBuy__eBuy {
+    float: right;
+  }
+  body.jewel .bCountSection {
+    padding-left: 10px;
+  }
+  body.jewel .btnBuy {
+    width: 140px;
   }
   div.submit input {
     background: #444;
