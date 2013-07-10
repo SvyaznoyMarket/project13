@@ -1,6 +1,6 @@
 <?= $page->getParam('content') ?>
 
-<? if(in_array($page->getParam('token'), ['subscribe_friends'])) { ?>
+<? if(in_array($page->getParam('token'), [])) { ?>
   <div class="content-section__form content-section__form__friend__center pb30">
     <div class="subscribe-form__friend clearfix">
       <div class="subscribe-form__title subscribe-form__title__friend">Подари другу скидку</div>
