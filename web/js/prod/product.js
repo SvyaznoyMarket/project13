@@ -809,8 +809,10 @@ $(document).ready(function() {
 		gallery: 'productImgGallery',
 		galleryActiveClass: 'mActive',
 		zoomWindowOffety: -15,
-		zoomWindowOffetx: 17,
-		zoomWindowWidth: 515
+		zoomWindowOffetx: 19,
+		zoomWindowWidth: 518,
+		borderSize: 1,
+		borderColour: '#C7C7C7'
 	});
 
 
