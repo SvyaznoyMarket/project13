@@ -838,7 +838,7 @@ $(document).ready(function(){
 (function(){
 	var goToId = function(){
 		var to = $(this).data('goto');
-		jQuery.scrollTo( $('#'+to), 800 );
+		$(document).stop().scrollTo( $('#'+to), 800 );
 		return false;
 	};
 	
