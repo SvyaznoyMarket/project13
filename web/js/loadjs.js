@@ -187,9 +187,6 @@
 				.script( 'http://direct-credit.ru/widget/api_script_utf.js' )
 				.script( getWithVersion('common.js') )
 				.wait()
-				// .script( 'KupeConstructorScript.min.js' ) // furniture constuctor
-				// .script( 'three.min.js' ) // for furniture constuctor
-				.wait()
 				.script( getWithVersion('product.js') )
 				.script( getWithVersion('oneclick.js') )
 				.wait()

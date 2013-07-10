@@ -5,6 +5,10 @@
  * @requires	jQuery, simple_templating
  */
 (function(){
+	if (!$('#jsProductCard').length){
+		return false;
+	}
+
 	var widgetBox = $('.bWidgetBuy__eDelivery');
 	var productInfo = $('#jsProductCard').data('value');
 
