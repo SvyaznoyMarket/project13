@@ -9882,7 +9882,13 @@
     line-height: 22px;
   }
   .bProductSection .creditbox .bigcheck.checked {
+    color: #ffa901 !important;
+  }
+  .bProductSection .creditbox .bigcheck.checked .dotted {
     border: none;
+  }
+  .bProductSection .creditbox .bigcheck.checked b {
+    background-position: 0px -54px;
   }
   .bProductSection .creditbox .bigcheck b {
     margin: 0px 8px 0 0px;
