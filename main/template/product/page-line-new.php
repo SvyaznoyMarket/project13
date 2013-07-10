@@ -24,10 +24,10 @@ $helper = new \Helper\TemplateHelper();
 
 
 	<div class="bProductSection__eLeft" data-value="<?= $page->json([
-        'jsref' =>      $mainProduct->getToken(),
-        'jsimg' =>      $mainProduct->getImageUrl(3),
-        'jstitle' =>    $page->escape($mainProduct->getName()),
-        'jsprice' =>    $mainProduct->getPrice(),
+        'jsref' =>   $mainProduct->getToken(),
+        'jsimg' =>   $mainProduct->getImageUrl(3),
+        'jstitle' => $page->escape($mainProduct->getName()),
+        'jsprice' => $mainProduct->getPrice(),
     ]) ?>">
 		<div class="bProductDesc__ePhoto">
 	        <div class="bProductDesc__ePhoto-bigImg">
@@ -35,7 +35,7 @@ $helper = new \Helper\TemplateHelper();
 		            <? if ((bool)$mainProduct->getLabel()): ?>
 		                <img class="bLabels" src="<?= $mainProduct->getLabel()->getImageUrl(1) ?>" alt="<?= $mainProduct->getLabel()->getName() ?>" />
 		            <? endif ?>
-		            <img src="<?= $mainProduct->getImageUrl(3) ?>" alt="<?= $mainProduct->getName() ?>" width="700" height="700" title=""/>
+		            <img src="<?= $mainProduct->getImageUrl(3) ?>" alt="<?= $page->escape($mainProduct->getName()) ?>" width="700" height="700" title="<?= $page->escape($mainProduct->getName()) ?>"/>
 		        </a>
 	        </div>
         </div>
@@ -43,8 +43,7 @@ $helper = new \Helper\TemplateHelper();
 
 	<div class="bProductSection__eRight">
 		<aside>
-			<? /*<p class=''><?= $mainProduct->getDescription() ?></p> */?>
-			<p class="bProductDescText">Классический спальный гарнитур в цвете «венге светлый».</p>
+			<p class="bProductDescText"><?= $mainProduct->getTagline() ?></p>
 
 	        <div class="bProductDescMore">
 	            <div class='bProductDescMore__eTWrap'>
