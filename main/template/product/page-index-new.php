@@ -204,7 +204,7 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
             ]) ?>
         <? endif ?>
 
-        <h3 id="productspecification"  class="bHeadSection">Характеристики</h3>
+        <h3 id="productspecification" class="bHeadSection">Характеристики</h3>
         <? $groupedProperties = $product->getGroupedProperties() ?>
         <div class="bSpecifications">
         <? foreach ($groupedProperties as $key => $group): ?>
@@ -274,18 +274,14 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
 
             <?= $helper->render('product/__oneClick', ['product' => $product]) // Покупка в один клик ?>
 
-            <?= $helper->render('product/__delivery', ['product' => $product]) ?>
+            <?= $helper->render('product/__delivery', ['product' => $product]) // Доставка ?>
 
             <div class="bAwardSection"><img src="/css/newProductCard/img/award.jpg" alt="" /></div>
         </div><!--/widget delivery -->
 
-        <? if ((bool)$product->getWarranty()): ?>
-            <?= $helper->render('product/__warranty', ['product' => $product]) ?>
-        <? endif ?>
+        <?= $helper->render('product/__warranty', ['product' => $product]) ?>
 
-        <? if ((bool)$product->getService()): ?>
-            <?= $helper->render('product/__service', ['product' => $product]) ?>
-        <? endif ?>
+        <?= $helper->render('product/__service', ['product' => $product]) ?>
     </aside>
 </div><!--/right section -->
 
@@ -295,9 +291,7 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
         <h1 class="bBottomBuy__eTitle"><?= $title ?></h1>
     </div>
 
-    <div class="bWidgetBuy__eBuy btnBuy">
-        <?= $page->render('cart/_button', ['product' => $product, 'class' => 'btnBuy__eLink', 'value' => 'В корзину']) ?>
-    </div><!--/button buy -->
+    <?= $page->render('cart/_button', ['product' => $product, 'class' => 'btnBuy__eLink', 'value' => 'В корзину']) ?>
 
     <?= $helper->render('__spinner', ['id' => \View\Id::cartButtonForProduct($product->getId())]) ?>
 

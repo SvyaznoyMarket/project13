@@ -69,14 +69,7 @@ $helper = new \Helper\TemplateHelper();
 
                 <?= $helper->render('product/__oneClick', ['product' => $mainProduct]) // Покупка в один клик ?>
 
-	            <ul class="bWidgetBuy__eDelivery" data-value="{&quot;url&quot;:&quot;\/ajax\/product\/delivery&quot;}">
-				    <li class="bWidgetBuy__eDelivery-item bWidgetBuy__eDelivery-price">
-				    	<span>Доставка <strong>290</strong> <span class="rubl">p</span></span>
-				    	<div>завтра (10.07.2013)</div>
-				    </li>
-
-				    <li class="bWidgetBuy__eDelivery-item bWidgetBuy__eDelivery-text">Оператор контакт-cENTER согласует точную дату за 2-3 дня</li>
-				</ul>
+                <?= $helper->render('product/__delivery', ['product' => $mainProduct]) // Доставка ?>
 
 	            <div class="bAwardSection"><img src="/css/newProductCard/img/award.jpg" alt="" /></div>
 	        </div><!--/widget delivery -->
