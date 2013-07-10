@@ -167,12 +167,7 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
 
 <div class="bProductSection__eLeft">
     <section>
-       <? if ($hasFurnitureConstructor): ?>
-            <? require __DIR__ . '/show/_furniture-new.php' ?>
-        <? else: ?>
-            <? require __DIR__ . '/show/_default-new.php' ?>
-        <? endif ?>
-
+        <? require $hasFurnitureConstructor ? __DIR__ . '/show/_furniture-left.php' : __DIR__ . '/show/_default-left.php' ?>
 
         <div class="bDescriptionProduct">
             <?= $product->getDescription() ?>
@@ -267,21 +262,7 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
 
 <div class="bProductSection__eRight">
     <aside>
-        <div class="bWidgetBuy mWidget">
-            <?= $helper->render('__spinner', ['id' => \View\Id::cartButtonForProduct($product->getId())]) ?>
-
-            <?= $helper->render('cart/__button-product', ['product' => $product, 'class' => 'btnBuy__eLink', 'value' => 'В корзину']) // Кнопка купить ?>
-
-            <?= $helper->render('product/__oneClick', ['product' => $product]) // Покупка в один клик ?>
-
-            <?= $helper->render('product/__delivery', ['product' => $product]) // Доставка ?>
-
-            <div class="bAwardSection"><img src="/css/newProductCard/img/award.jpg" alt="" /></div>
-        </div><!--/widget delivery -->
-
-        <?= $helper->render('product/__warranty', ['product' => $product]) ?>
-
-        <?= $helper->render('product/__service', ['product' => $product]) ?>
+        <? require $hasFurnitureConstructor ? __DIR__ . '/show/_furniture-right.php' : __DIR__ . '/show/_default-right.php' ?>
     </aside>
 </div><!--/right section -->
 
