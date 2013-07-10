@@ -43,7 +43,7 @@
 					return false;
 				}
 
-				$('.jsPrice').html(res.sum);
+				$('.jsPrice').html(printPrice(res.sum));
 			};
 
 			for (var i = 0, len = IdsWithInfo.length; i < len; i++){
@@ -84,6 +84,8 @@
 			if ($(this).hasClass('mDisabled')){
 				return false;
 			}
+
+			$('.jsBuyButton').html('В корзине').addClass('mBought').attr('href','/cart');
 
 			var structure = Planner3dKupeConstructor.GetBasketContent();
 			var url = $(this).attr('href');

@@ -6104,8 +6104,8 @@
   }
   #coupeError {
     display: block;
-    width: 110px;
-    margin: 0 auto;
+    width: 88%;
+    margin: 20px 0 0;
     padding-left: 25px;
     text-align: left;
     background: url("/css/user/img/attention.gif") no-repeat scroll left top;
@@ -10105,8 +10105,7 @@
   .bBottomBuy .price {
     float: right;
   }
-  .bBottomBuy .price {
-    font-size: 30px;
+  .bBottomBuy .bPrice {
     text-align: right;
   }
   .bBottomBuy .bCountSection {
