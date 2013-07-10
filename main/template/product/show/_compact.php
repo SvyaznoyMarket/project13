@@ -51,9 +51,7 @@ $productVideo = reset($productVideos);
         <? endif ?>
 
 	    <h3><a href="<?= $product->getLink() ?>"><?= $product->getName() ?></a></h3>
-        <div class="goodsbar mSmallBtns mR">
-            <?= $page->render('cart/_button', array('product' => $product, 'disabled' => !$product->getIsBuyable())) ?>
-        </div>
+        <?= $page->render('cart/_button', array('product' => $product, 'disabled' => !$product->getIsBuyable())) ?>
 	    <div class="font18 pb10 mSmallBtns">
             <? if ($product->getPriceOld() && !$user->getRegion()->getHasTransportCompany()): ?>
             <p class="font16 crossText"><span class="old_price"><?= $page->helper->formatPrice($product->getPriceOld()) ?></span> <span class="rubl">p</span></p>

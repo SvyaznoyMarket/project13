@@ -31,9 +31,7 @@ $productLink = $product->getLink().($page->hasGlobalParam('sender')?(false === s
     <? endif ?>
 
     <h3><a href="<?= $productLink ?>"<?php if (!empty($gaEvent)) echo ' data-event="'.$gaEvent.'" data-title="Переход по ссылке" class="gaEvent"'; ?>><?php echo $product->getName() ?></a></h3>
-		<div class="goodsbar mSmallBtns mR">
-          <?= $page->render('cart/_button', array('product' => $product, 'disabled' => !$product->getIsBuyable())) ?>
-        </div>
+        <?= $page->render('cart/_button', array('product' => $product, 'disabled' => !$product->getIsBuyable())) ?>
 	    <div class="font18 pb10 mSmallBtns"><span class="price"><?php echo $page->helper->formatPrice($product->getPrice()) ?></span> <span class="rubl">p</span></div>
 	    <? if (!$product->getIsBuyable() && $product->getState()->getIsShop()): ?>
         	<div class="notBuying font12">
