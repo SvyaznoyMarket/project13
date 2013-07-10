@@ -10430,6 +10430,17 @@
     float: left;
     margin-right: 3px;
   }
+  .bCountSection.mDisabled {
+    -moz-opacity: 0.3;
+    -khtml-opacity: 0.3;
+    -webkit-opacity: 0.3;
+    opacity: 0.3;
+    -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=30);
+    filter: alpha(opacity=30);
+  }
+  .bCountSection.mDisabled button {
+    cursor: default;
+  }
   .bWidgetService {
     border: 1px solid #41c7ef;
     padding: 0 0 10px;
@@ -10489,7 +10500,7 @@
   .btnBuy .btnBuy__eLink.mBought {
     background: #ffffff;
     color: #000000;
-    border: 1px solid #000000;
+    border: 1px solid #b3b3b3;
     -webkit-box-shadow: none;
     -moz-box-shadow: none;
     box-shadow: none;
