@@ -16,13 +16,6 @@ $helper = new \Helper\TemplateHelper();
 ?>
 
 <div class="bMainContainer bProductSection mProductSectionSet clearfix">
-	<div class="bMainContainer__eHeader">
-	    <!-- <div class="bMainContainer__eHeader-subtitle"><?//= $product->getType()->getName() ?></div>-->
-	    <h1 class="bMainContainer__eHeader-title"><?= $mainProduct->getName() ?></h1>
-	    <span class="bMainContainer__eHeader-article">Артикул: <?= $mainProduct->getArticle() ?></span>
-	</div><!--/head section -->
-
-
 	<div class="bProductSection__eLeft" data-value="<?= $page->json([
         'jsref' =>   $mainProduct->getToken(),
         'jsimg' =>   $mainProduct->getImageUrl(3),

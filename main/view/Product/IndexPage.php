@@ -68,6 +68,9 @@ class IndexPage extends \View\DefaultLayout {
     }
 
     public function slotContentHead() {
+        /** @var $product \Model\Product\Entity */
+        $product = $this->getParam('product');
+
         // заголовок контента страницы
         if (!$this->hasParam('title')) {
             $this->setParam('title', null);
@@ -77,7 +80,10 @@ class IndexPage extends \View\DefaultLayout {
             $this->setParam('breadcrumbs', []);
         }
 
-        return $this->render('product/_contentHead', $this->params);
+        return $this->render('product/_contentHead', array_merge($this->params, [
+            'titlePrefix' => $product->getPrefix(),
+            'title'       => $product->getWebName(),
+        ]));
     }
 
     public function slotContent() {

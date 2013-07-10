@@ -10,6 +10,7 @@
 
 <?
 $hasSearch = isset($hasSearch) ? (bool)$hasSearch : true;
+if (!isset($titlePrefix)) $titlePrefix = null;
 ?>
 
 <div class="bMainContainer bProductSection clearfix">
@@ -25,7 +26,9 @@ $hasSearch = isset($hasSearch) ? (bool)$hasSearch : true;
     <? endif ?>
 
     <div class="bMainContainer__eHeader">
-        <!-- <div class="bMainContainer__eHeader-subtitle"><?//= $product->getType()->getName() ?></div>-->
+        <? if ($titlePrefix): ?>
+        <div class="bMainContainer__eHeader-subtitle"><?= $titlePrefix ?></div>
+        <? endif ?>
         <h1 class="bMainContainer__eHeader-title"><?= $title ?></h1>
         <span class="bMainContainer__eHeader-article">Артикул: <?= $product->getArticle() ?></span>
     </div><!--/head section -->
