@@ -18,10 +18,6 @@
 
 $helper = new \Helper\TemplateHelper();
 
-$hasLowerPriceNotification =
-    \App::config()->product['lowerPriceNotification']
-    && $product->getMainCategory() && $product->getMainCategory()->getPriceChangeTriggerEnabled();
-
 $hasFurnitureConstructor = \App::config()->product['furnitureConstructor'] && $product->getLine() && (256 == $product->getLine()->getId()); // Серия Байкал
 
 /** @var  $productVideo \Model\Product\Video\Entity|null */
@@ -171,12 +167,7 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
 
 <div class="bProductSection__eLeft">
     <section>
-       <? if ($hasFurnitureConstructor): ?>
-            <? require __DIR__ . '/show/_furniture-new.php' ?>
-        <? else: ?>
-            <? require __DIR__ . '/show/_default-new.php' ?>
-        <? endif ?>
-
+        <? require $hasFurnitureConstructor ? __DIR__ . '/show/_furniture-left.php' : __DIR__ . '/show/_default-left.php' ?>
 
         <div class="bDescriptionProduct">
             <?= $product->getDescription() ?>
@@ -208,7 +199,7 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
             ]) ?>
         <? endif ?>
 
-        <h3 id="productspecification"  class="bHeadSection">Характеристики</h3>
+        <h3 id="productspecification" class="bHeadSection">Характеристики</h3>
         <? $groupedProperties = $product->getGroupedProperties() ?>
         <div class="bSpecifications">
         <? foreach ($groupedProperties as $key => $group): ?>
@@ -271,49 +262,7 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
 
 <div class="bProductSection__eRight">
     <aside>
-        <div class="bWidgetBuy mWidget">
-            <?= $helper->render('__spinner', ['id' => \View\Id::cartButtonForProduct($product->getId())]) ?>
-
-            <div class="bWidgetBuy__eBuy btnBuy">
-                <?= $helper->render('cart/__button-product', ['product' => $product, 'class' => 'btnBuy__eLink', 'value' => 'В корзину']) ?>
-            </div><!--/button buy -->
-
-            <? if ($product->getIsBuyable()): ?>
-                <div class="bWidgetBuy__eClick">
-                    <a
-                        href="#"
-                        class="jsOrder1click"
-                        data-model="<?= $page->json([
-                            'jsref'        => $product->getToken(),
-                            'jstitle'      => $product->getName(),
-                            'jsprice'      => $product->getPrice(),
-                            'jsimg'        => $product->getImageUrl(3),
-                            'jsbimg'       => $product->getImageUrl(2),
-                            'jsshortcut'   => $product->getArticle(),
-                            'jsitemid'     => $product->getId(),
-                            'jsregionid'   => $user->getRegion()->getId(),
-                            'jsregionName' => $user->getRegion()->getName(),
-                            'jsstock'      => 10,
-                        ]) ?>"
-                        link-output="<?= $page->url('order.1click', ['product' => $product->getToken()]) ?>"
-                        link-input="<?= $page->url('product.delivery_1click') ?>"
-                        >Купить быстро в 1 клик</a>
-                </div>
-                <form id="order1click-form" action="<?= $page->url('order.1click', ['product' => $product->getBarcode()]) ?>" method="post"></form>
-            <? endif ?>
-
-            <?= $helper->render('product/__delivery', ['product' => $product]) ?>
-
-            <div class="bAwardSection"><img src="/css/newProductCard/img/award.jpg" alt="" /></div>
-        </div><!--/widget delivery -->
-
-        <? if ((bool)$product->getWarranty()): ?>
-            <?= $helper->render('product/__warranty', ['product' => $product]) ?>
-        <? endif ?>
-
-        <? if ((bool)$product->getService()): ?>
-            <?= $helper->render('product/__service', ['product' => $product]) ?>
-        <? endif ?>
+        <? require $hasFurnitureConstructor ? __DIR__ . '/show/_furniture-right.php' : __DIR__ . '/show/_default-right.php' ?>
     </aside>
 </div><!--/right section -->
 
@@ -323,9 +272,7 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
         <h1 class="bBottomBuy__eTitle"><?= $title ?></h1>
     </div>
 
-    <div class="bWidgetBuy__eBuy btnBuy">
-        <?= $page->render('cart/_button', ['product' => $product, 'class' => 'btnBuy__eLink', 'value' => 'В корзину']) ?>
-    </div><!--/button buy -->
+    <?= $page->render('cart/_button', ['product' => $product, 'class' => 'btnBuy__eLink', 'value' => 'В корзину']) ?>
 
     <?= $helper->render('__spinner', ['id' => \View\Id::cartButtonForProduct($product->getId())]) ?>
 

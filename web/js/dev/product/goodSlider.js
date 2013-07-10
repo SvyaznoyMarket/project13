@@ -70,6 +70,9 @@
 			};
 
 			var reWidthSlider = function(nowItems){
+				leftBtn.addClass('mDisabled');
+				rightBtn.addClass('mDisabled');
+
 				if (nowItems.length > elementOnSlide) {
 					rightBtn.removeClass('mDisabled');
 				}

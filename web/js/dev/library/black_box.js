@@ -46,7 +46,7 @@ BlackBox.prototype.basket = function() {
 	 * @private
 	 */
 	var flyboxDestroy = function(){
-		flyboxBasket.fadeOut(300, function(){
+		flyboxBasket.hide(0, function(){
 			flyboxInner.remove();
 		});
 	};

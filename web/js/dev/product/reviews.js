@@ -97,6 +97,10 @@
 	}
 
 	var leaveReview = function(){
+		if (!$('#jsProductCard').length){
+			return false;
+		}
+		
 		var productInfo = $('#jsProductCard').data('value');
 		var pid = $(this).data('pid');
 		var name = productInfo.name;

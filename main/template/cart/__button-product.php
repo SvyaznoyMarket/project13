@@ -24,7 +24,8 @@ if ($disabled) {
 }
 
 ?>
-
-<a href="<?= $url ?>" class="<?= $class ?>" data-group="<?= $product->getId() ?>"><?= $value ?></a>
+<div class="bWidgetBuy__eBuy btnBuy">
+    <a href="<?= $url ?>" class="<?= $class ?>" data-group="<?= $product->getId() ?>"><?= $value ?></a>
+</div>
 
 <? };

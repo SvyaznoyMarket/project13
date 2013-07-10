@@ -24,7 +24,7 @@
 
 			var groupBtn = button.data('group');
 
-			$('.jsBuyButton[data-group="'+groupBtn+'"]').html('В корзине').addClass('mBought');
+			$('.jsBuyButton[data-group="'+groupBtn+'"]').html('В корзине').addClass('mBought').attr('href','/cart');
 			$("body").trigger("addtocart", [data]);
 		};
 
@@ -45,6 +45,8 @@
 			return false;
 		}
 		if (button.hasClass('mBought')) {
+			var url = button.attr('href');
+			document.location.href(url);
 			return false;
 		}
 
@@ -61,7 +63,7 @@
 	 */
 	var markCartButton = function(event, markActionInfo){
 		for (var i = 0, len = markActionInfo.product.length; i < len; i++){
-			$('.'+markActionInfo.product[i].id).html('В корзине').addClass('mBought');
+			$('.'+markActionInfo.product[i].id).html('В корзине').addClass('mBought').attr('href','/cart');
 		}
 	};
 	$("body").bind('markcartbutton', markCartButton);

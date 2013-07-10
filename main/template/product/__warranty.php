@@ -3,7 +3,11 @@
 return function (
     \Model\Product\Entity $product,
     \Helper\TemplateHelper $helper
-) { ?>
+) {
+    if (!(bool)$product->getWarranty()) {
+        return '';
+    }
+?>
 
 <div class="bWidgetService mWidget">
     <div class="bWidgetService__eHead">
