@@ -35,6 +35,7 @@
                 <? endif ?>
             </ul><!--/view product section -->
 
+            <? if (count($photoList) > 1): ?>
             <div class="bPhotoActionOtherPhoto">
                 <div class="bPhotoActionOtherPhoto__eWrappSlider">
                     <ul id="productImgGallery" class="bPhotoActionOtherPhotoList clearfix">
@@ -51,6 +52,8 @@
                 <div class="bPhotoActionOtherPhoto__eBtn mPrev"><span>&#9668;</span></div>
                 <div class="bPhotoActionOtherPhoto__eBtn mNext"><span>&#9658;</span></div>
             </div><!--/slider mini product images -->
+            <? endif ?>
+
         </div>
     </div><!--/product images section -->
 
