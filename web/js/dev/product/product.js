@@ -28,9 +28,11 @@ $(document).ready(function() {
 			var newHref = bindButton.attr('href');
 
 			bindButton.attr('href',newHref.addParameterToUrl('quantity',count));
-			if (bindButton.hasClass('mBought')){
-				bindButton.eq('0').trigger('buy');
-			}
+
+			// добавление в корзину после обновления спиннера
+			// if (bindButton.hasClass('mBought')){
+			// 	bindButton.eq('0').trigger('buy');
+			// }
 		}
 	});
 
@@ -57,84 +59,16 @@ $(document).ready(function() {
 	})();
 	
 
-
 	/**
-	 * Вывод магазинов, когда товар доступен только в них
+	 * Затемнение всех контролов после добавления в корзину
 	 */
-	if ($('#availableShops').length){
-		vitrin = {
-			shopStack: 0,
-			initText:'',
-			init: function(){
-				vitrin.initText = $('#slideAvalShop').html()
-				$('#slideAvalShop').bind('click', function(){
-					$('#listAvalShop .hidden').toggle(150)
-					$(this).toggleClass('showedShop')
-					if ($(this).hasClass('showedShop')){
-						$(this).html('Свернуть')
-					}
-					else{
-						$(this).html(vitrin.initText)
-					}
-					return false
-				})
-				shopFromModel = $('#availableShops').data('shops')
-				vitrin.shopStack = {}
-				//render shops
-				for (i in shopFromModel){
-					// var shopTpl = tmpl('itemAvalShop_tmpl', shopFromModel[i])
-					var shopMapTpl = tmpl('itemAvalShop_tmplPopup',shopFromModel[i])
-					// $('#listAvalShop').append(shopTpl)
-					$('#mapPopup_shopInfo').append(shopMapTpl)
-					vitrin.shopStack[shopFromModel[i].id] = shopFromModel[i]
-				}
-				//delegate click on shop
-				$('#listAvalShop').delegate('.shopLookAtMap', 'click', function(){
-					$('#orderMapPopup').lightbox_me({ 
-						centered: true,
-						onLoad: function() {
-							$('#mapPopup').empty()
-							vitrin.showPopup()
-						}
-					})
-					return false
-				})
-			},
-			showPopup: function(){
-				vitrin.loadMap()
-				$('#mapPopup_shopInfo').delegate('li', 'hover', function() {
-					//console.log('1')
-					var id = $(this).attr('ref')//$(this).data('id')
-					if( hoverTimer.timer ) {
-						clearTimeout( hoverTimer.timer )
-					}
-					if( id && id != hoverTimer.id) {
-						hoverTimer.id = id
-						hoverTimer.timer = setTimeout( function() {            
-							window.regionMap.showInfobox( id )
-						}, 350)
-					}
-				})
-			},
-			updateI: function ( marker ) {
-				$('#map-info_window-container').html( tmpl( 'mapInfoBlock', marker ))
-				hoverTimer.id = marker.id
-			},
-			loadMap: function (){
-				MapInterface.ready( 'yandex', {
-					yandex: $('#mapInfoBlock'), 
-					google: $('#map-info_window-container')
-				} )
-				var mapCenter = calcMCenter( vitrin.shopStack )
-				var mapCallback = function() {			
-					window.regionMap.showMarkers( vitrin.shopStack )		
-					//window.regionMap.addHandler( '.shopchoose', vitrin.ShopChoosed )
-				}
-				MapInterface.init( mapCenter, 'mapPopup', mapCallback, vitrin.updateI)
-			}
-		}
-		vitrin.init()
-	}
+	(function(){
+		var afterBuy = function(){
+			$('.bCountSection').addClass('mDisabled').find('input').attr('disabled','disabled');
+			$('.jsOrder1click').addClass('mDisabled');
+		};
+		$("body").bind('addtocart', afterBuy);
+	})();
 
 
 	/**
