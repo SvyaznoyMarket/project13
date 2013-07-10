@@ -80,10 +80,13 @@ class IndexPage extends \View\DefaultLayout {
             $this->setParam('breadcrumbs', []);
         }
 
+        return $this->render('product/_contentHead', $this->params);
+        /*
         return $this->render('product/_contentHead', array_merge($this->params, [
             'titlePrefix' => $product->getPrefix(),
             'title'       => $product->getWebName(),
         ]));
+        */
     }
 
     public function slotContent() {
