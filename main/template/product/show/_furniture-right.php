@@ -18,6 +18,8 @@
 
     <?= $helper->render('cart/__button-product', ['product' => $product, 'class' => 'btnBuy__eLink', 'value' => 'В корзину']) // Кнопка купить ?>
 
+    <div id="coupeError" class="red" style="display:none"></div>
+
     <?= $helper->render('product/__oneClick', ['product' => $product]) // Покупка в один клик ?>
 
     <?= $helper->render('product/__delivery', ['product' => $product]) // Доставка ?>

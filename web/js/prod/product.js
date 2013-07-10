@@ -540,7 +540,7 @@ $(document).ready(function() {
 		 */
 		Planner3d_Init = function (ApiIds){
 			// console.info(ApiIds)
-		}
+		};
 
 
 		/**
@@ -560,18 +560,18 @@ $(document).ready(function() {
 					return false;
 				}
 
-				$('.bProductCardRightCol__ePrice').html(res.sum);
+				$('.jsPrice').html(res.sum);
 			};
 
 			for (var i = 0, len = IdsWithInfo.length; i < len; i++){
 				var prodID = IdsWithInfo[i].id;
 
 				if (IdsWithInfo[i].error !== ''){
-					$('.cart-add').addClass('mDisabled');
+					$('.jsBuyButton').addClass('mDisabled');
 					$('#coupeError').html('Вставки продаются только парами!').show();
 					return false;
 				}
-				$('.cart-add').removeClass('disabled');
+				$('.jsBuyButton').removeClass('mDisabled');
 				$('#coupeError').hide();
 
 				if (product.product[prodID+''] !== undefined){
@@ -581,7 +581,7 @@ $(document).ready(function() {
 					product.product[prodID+''] = {
 						id : prodID,
 						quantity : 1
-					}
+					};
 				}
 			}
 
@@ -591,7 +591,7 @@ $(document).ready(function() {
 				data: product,
 				success: authFromServer
 			});
-		}
+		};
 
 
 		/**
@@ -606,21 +606,10 @@ $(document).ready(function() {
 			var url = $(this).attr('href');
 
 			var resFromServer = function(res){
-				if ( res.success && ltbx ) {
-					var tmpitem = {
-						'id'    : data.id,
-						'title' : data.name,
-						'price' : res.data.sum,
-						'img'   : '/images/logo.png',
-						'vitems': res.data.full_quantity,
-						'sum'   : res.data.full_price,
-						'link'  : res.data.link
-					};
-					ltbx.getBasket( tmpitem );
-					// kissAnalytics(data)
-					// PubSub.publish( 'productBought', tmpitem )
-					// sendAnalytics($(button))
+				if ( !res.success ) {
+					return false;
 				}
+				$("body").trigger("addtocart", [res]);
 			};
 
 			var product = {};
@@ -653,8 +642,8 @@ $(document).ready(function() {
 				logError(dataToLog);
 			}
 
-			// $('.goodsbarbig .link1').unbind();
-			// $('.goodsbarbig .link1').bind('click', kupe2basket)
+			$('.jsBuyButton').off();
+			$('.jsBuyButton').bind('click', kupe2basket);
 		};
 
 

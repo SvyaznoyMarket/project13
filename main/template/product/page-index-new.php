@@ -276,7 +276,7 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
 
     <?= $helper->render('__spinner', ['id' => \View\Id::cartButtonForProduct($product->getId())]) ?>
 
-    <div class="price"><strong><?= $page->helper->formatPrice($product->getPrice()) ?></strong> <span class="rubl">p</span></div>
+    <div class="bPrice"><strong class="jsPrice"><?= $page->helper->formatPrice($product->getPrice()) ?></strong> <span class="rubl">p</span></div>
 </div>
 
 <div class="bBreadCrumbsBottom"><?= $page->render('_breadcrumbs', ['breadcrumbs' => $breadcrumbs, 'class' => 'breadcrumbs-footer']) ?></div>
