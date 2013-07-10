@@ -93,12 +93,12 @@
         <? if ((bool)$product->getModel() && (bool)$product->getModel()->getProperty()): //модели ?>
             <div class="bProductDesc__eStore-select">
                 <? foreach ($product->getModel()->getProperty() as $property): ?>
-                    <? if ($property->getIsImage()): ?>
+                    <? if (false && $property->getIsImage()): ?>
                     <? else: ?>
-                        <?
+                    <?
                         $productAttribute = $product->getPropertyById($property->getId());
                         if (!$productAttribute) break;
-                        ?>
+                    ?>
 
                     <? endif ?>
                     <div class="bDescSelectItem clearfix">
@@ -109,7 +109,7 @@
                         <select class="bDescSelectItem__eSelect">
                             <? foreach ($property->getOption() as $option): ?>
                                 <? if ($option->getValue() == $productAttribute->getValue()) continue ?>
-                                <option class="bDescSelectItem__eOption"><?= $option->getHumanizedName() ?></option>
+                                <option class="bDescSelectItem__eOption" data-url="<?= $option->getProduct()->getLink() ?>"><?= $option->getHumanizedName() ?></option>
                             <? endforeach ?>
                         </select>
                     </div>
