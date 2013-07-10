@@ -30,7 +30,7 @@ if (
     is_null($params['_customerLastName'])
     )
 {
-    $params['_customerLastName'] = '';
+    $params['_customerLastName'] = ' ';
 }
 
 // Если юзер почему-то безымянный, то обратимся как "Уважаемый Покупатель"
