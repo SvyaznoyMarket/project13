@@ -43,7 +43,7 @@
 					return false;
 				}
 
-				$('.jsPrice').html(res.sum);
+				$('.jsPrice').html(printPrice(res.sum));
 			};
 
 			for (var i = 0, len = IdsWithInfo.length; i < len; i++){
