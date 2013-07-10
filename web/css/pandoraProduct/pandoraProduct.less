@@ -33,7 +33,7 @@
         .photo a {
           height: 130px;
         }
-        a.link1 {
+        a.jsBuyButton {
           width: auto;
           position: absolute;
           bottom: 10px;
@@ -48,7 +48,7 @@
           height: 23px;
           padding: 0 10px;
           .transition(opacity 0.1s ease-in-out);
-          &.link1active {
+          &.mBought {
             background: #fff;
             border: 1px solid #000;
             color: #000;
@@ -76,7 +76,7 @@
         .item-name {
           .opacity(1);
         }
-        a.link1 {
+        a.jsBuyButton {
           .opacity(1);
         }
         h3 {
@@ -87,7 +87,7 @@
           .transition(left 0.1s ease-in-out);
           -webkit-backface-visibility: hidden; -webkit-tap-highlight-color: rgba(255,255,255,0);
         }
-        .link1.disabled {
+        .jsBuyButton.disabled {
           .opacity(0.1);
           cursor: default;
         }
@@ -191,12 +191,12 @@
       text-align: center;
       .rounded(4px);
       border: 1px solid #000;
-      &.link1active {
+      &.mBought {
         background: #fff;
         color: #000;
       }
     }
-    &.goodsbarbig.mSmallBtns a.link1.disabled {
+    &.goodsbarbig.mSmallBtns a.jsBuyButton.disabled {
       opacity: 0.1;
       float: right;
     }
@@ -404,6 +404,10 @@ body.jewel {
     background: #000;
     border: 1px solid #000;
     font-weight: normal;
+  }
+  .mSmallBtns a {
+    text-indent: 0;
+    background: none;
   }
 }
 div.submit input {

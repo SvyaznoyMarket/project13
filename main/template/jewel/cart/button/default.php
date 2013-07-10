@@ -19,4 +19,4 @@ if ($disabled) {
 $btnText = \App::user()->getCart()->hasProduct($product->getId()) ? 'В корзине' : 'Купить';
 ?>
 
-<a href="<?= $url ?>"<?php echo (!empty($gaEvent) ? (' data-event="'.$gaEvent.'"') : '').(!empty($gaTitle) ? (' data-title="'.$gaTitle.'"') : '') ?> data-product="<?= $product->getId() ?>" data-category="<?= $product->getMainCategory() ? $product->getMainCategory()->getId() : 0 ?>" class="link1 event-click item-buy cart cart-add<?php if ($disabled): ?> disabled<? endif ?><?php if ($gaEvent): ?> gaEvent<? endif ?><?php if (\App::user()->getCart()->hasProduct($product->getId())): ?> link1active<? endif ?>"><?= $btnText ?></a>
+<a href="<?= $url ?>"<?php echo (!empty($gaEvent) ? (' data-event="'.$gaEvent.'"') : '').(!empty($gaTitle) ? (' data-title="'.$gaTitle.'"') : '') ?> data-product="<?= $product->getId() ?>" data-category="<?= $product->getMainCategory() ? $product->getMainCategory()->getId() : 0 ?>" class="jsBuyButton event-click<?php if ($disabled): ?> disabled<? endif ?><?php if ($gaEvent): ?> gaEvent<? endif ?><?php if (\App::user()->getCart()->hasProduct($product->getId())): ?> mBought<? endif ?>"><?= $btnText ?></a>
