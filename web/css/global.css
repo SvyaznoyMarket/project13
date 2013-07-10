@@ -9796,6 +9796,7 @@
   }
   .bProductSection__eLeft {
     display: inline-block;
+    margin: 15px 0 0;
     width: 700px;
     vertical-align: top;
     *display: inline;
@@ -9961,7 +9962,7 @@
   }
   .bProductSection__eRight {
     width: 220px;
-    margin: 10px 0 0 16px;
+    margin: 15px 0 0 16px;
     vertical-align: top;
     display: inline-block;
     *display: inline;
@@ -10129,7 +10130,6 @@
     width: 700px;
     height: 700px;
     box-shadow: 1px 1px 5px #bababa;
-    margin: 15px 0 0;
   }
   .mProductSectionSet .bProductDesc__ePhoto-bigImg {
     width: 700px;
@@ -10155,16 +10155,6 @@
   .mProductSectionSet .bProductList {
     margin: 20px 0 0;
   }
-  .mSmallBtns a {
-    text-indent: -9999px;
-    display: block;
-    width: 38px;
-    height: 25px;
-    background: url("/css/catalog/img/catalogSprite.png") -64px 0 no-repeat;
-  }
-  .mSmallBtns a:hover {
-    background-position: -102px 0;
-  }
   .mSliderAction840 .bSliderAction__eInner {
     width: 840px;
   }
@@ -10185,7 +10175,6 @@
     height: 246px;
   }
   .bSliderAction__eList {
-    margin: 0 auto;
     width: 5000px;
     position: relative;
   }
@@ -10532,6 +10521,19 @@
     background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #f79200), color-stop(1, #ffa200));
     background: -ms-linear-gradient(bottom, #f79200, #ffa200);
     background: -moz-linear-gradient(center bottom, #f79200 0%, #ffa200 100%);
+  }
+  .mSmallBtns a {
+    text-indent: -9999px;
+    display: block;
+    width: 38px;
+    height: 25px;
+    background: url("/css/catalog/img/catalogSprite.png") -64px 0 no-repeat;
+  }
+  .mSmallBtns a:hover {
+    background-position: -102px 0;
+  }
+  .mSmallBtns a.mDisabled {
+    background-position: 0 0;
   }
 }
 /*---END---СТИЛИ КНОПКИ "КУПИТЬ"---*/

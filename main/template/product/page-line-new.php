@@ -99,11 +99,11 @@ $json = array(
 	<?php if (count($mainProduct->getKit())): ?>
 		<h3 class="bHeadSection">Состав набора</h3>
 
-		<div class="bSliderAction mSliderAction840" data-slider="">
+		<div class="bSliderAction mSliderAction840">
 		    <div class="bSliderAction__eInner">
-		        <ul class="bSliderAction__elist clearfix">
+		        <ul class="bSliderAction__eList clearfix">
 		        	<?php foreach ($parts as $part): ?>
-		            <li>
+		            <li class="bSliderAction__eItem">
 		                <div class="product__inner">
 		                    <a class="productImg" href="" href="<?php echo $part->getLink() ?>" title="<?php echo $part->getName() ?>">
 		                    	<img src="<?php echo $part->getImageUrl(1) ?>" alt="<?php echo $part->getName() ?>" />
@@ -119,8 +119,8 @@ $json = array(
 		        </ul>
 		    </div>
 
-		    <div class="bSliderAction__eBtn bSliderAction__eDisable bSliderAction__mPrev"><span></span></div>
-		    <div class="bSliderAction__eBtn bSliderAction__mNext bSliderAction__eDisable"><span></span></div>
+		    <div class="bSliderAction__eBtn mPrev mDisabled"><span></span></div>
+            <div class="bSliderAction__eBtn mNext mDisabled"><span></span></div>
 		</div>
     <?php endif ?>
 
