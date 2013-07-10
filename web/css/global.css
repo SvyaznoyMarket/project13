@@ -10533,7 +10533,7 @@
     background-position: -102px 0;
   }
   .mSmallBtns a.mDisabled {
-    background-position: 0 0;
+    background-position: -64px -26px;
   }
 }
 /*---END---СТИЛИ КНОПКИ "КУПИТЬ"---*/
