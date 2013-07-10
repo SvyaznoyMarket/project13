@@ -162,45 +162,101 @@ class DefaultLayout extends Layout {
 
 
 
-        $in_basket = '';
+        $in_basket = (string)'';
+        $arr_item = [];
         $eventItems_arr = [];
-        $eventItems = '';
+        $eventItems = (string)'';
 
 
+        $productItems = (array)[];
 
-        switch ($routeName) {
+
+        switch ($routeName) { // begin of case
             case "homepage":
                 $viewEvent = 'viewHome';
                 break;
 
+            case "product":
+                $viewEvent = 'viewItem';
+                $eventItems = $this->getParam('product')->getId();
+                break;
+
+
             case "cart":
                 $viewEvent = 'viewBasket';
                 $in_basket = $cart->getData()['productList'];
+                $products = $this->getParam('productEntities');
+
+                foreach($products as $product) {
+                    /* @var $product \Model\Product\Entity */
+
+                    /* // работает, но многобукаф и проверок
+                    $arr_item['id'] = $product->getId();
+                    $arr_item['price'] = $product->getPrice();
+                    $arr_item['quantity'] = $in_basket[ $arr_item['id'] ];
+
+                    $properts = [];
+                    foreach($arr_item as $key => $val) {
+                        $properts[] = $this->helper->stringRowParam4js($key, $val);
+                    }
+
+                    if ( !empty($properts) )
+                        $eventItems_arr[] = '{'.implode('; ',$properts).'}';
+                    */
+
+                    $eventItems_arr[] = '{ id: "'.$product->getId().
+                                        '", price: '.$product->getPrice().
+                                        ', quantity: '.$in_basket[ $product->getId() ].' }';
+
+                }
+
                 break;
 
-            case "product":
-                $viewEvent = 'viewItem';
+
+            case "search":
+                $viewEvent = 'viewList';
+                $productPager = $this->getParam('productPager');
+
+                foreach ($productPager as $product) {
+                    // @var $product \Model\Product\Entity
+                    $eventItems_arr[] = '"'.$product->getId().'"';
+                }
                 break;
 
-            case "producafddsaft":
+
+            case "product.category":
                 $viewEvent = 'viewList';
 
-
                 $productPagersByCategory = $this->getParam('productPagersByCategory');
-                $items = '';
 
+                if ($productPagersByCategory)
                 foreach ($productPagersByCategory as $productPager) {
                     foreach ($productPager as $product) {
-                        /** @var $product \Model\Product\Entity */
+                        // @var $product \Model\Product\Entity
                         $eventItems_arr[] = '"'.$product->getId().'"';
                     }
                 }
 
                 break;
 
+            case "order.complete":
+                break;
+
             default:
                 $viewEvent = 'view.'.$routeName;
+
+        }// end of case
+
+
+
+        if ( empty($eventItems) )
+        if ( !empty($eventItems_arr) ) {
+
+            if (is_array($eventItems_arr))
+                $eventItems = (string) '['. implode(', ',$eventItems_arr) .']';
         }
+
+
 
 
         $criteo_q = [];
@@ -220,26 +276,27 @@ class DefaultLayout extends Layout {
             'account' => $siteType,
         ];
 
-        $criteo_q[] = [
-            'event' => $viewEvent,
-        ];
 
 
-        //$catalogJson = \RepositoryManager::productCategory()->getCatalogJsonBulk();
-        //$catalogJson = \RepositoryManager::productCategory()->getRootCollection();
+        $arr_item['event'] = $viewEvent;
+        if (!empty($eventItems)) $arr_item['item'] = (string)$eventItems;
+        if (!empty($searchQuery)) $q_arr_item['keywords'] = $searchQuery;
+
+        $criteo_q[] = $arr_item;
+
 
 
 
         // just for debug:
         print '###<pre>';
         print '$$$ routeName: '.$routeName.PHP_EOL;
-        //print_r($product);
-        print_r($items);
-        print_r($product);
+        //print_r($criteo_q);
+        //print_r($eventItems);
+        //print_r($searchQuery);
         print '</pre>###';
 
 
-        return $criteo_q;
+        return $criteo_q ? $criteo_q : false;
     }
 
 

@@ -20,10 +20,15 @@
         <script type="text/javascript">
             window.criteo_q = window.criteo_q || [];
             window.criteo_q.push(
-                <?  foreach($criteo_q as $row):
-                        echo $page->helper->stringRowsParams4js($row).','.PHP_EOL;
-                    endforeach;
-                    ?>
+                <?
+                $echrows = [];
+
+                foreach($criteo_q as $row)
+                    $echrows[] = $page->helper->stringRowsParams4js($row);
+
+                echo implode(','.PHP_EOL, $echrows);
+                ?>
+
                 <?
                 /* //example:
                 { event: "setAccount", account: 10442 },
