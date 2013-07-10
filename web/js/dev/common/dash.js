@@ -113,58 +113,7 @@ $(document).ready(function(){
 
 		$('.bSimilarGoods.mCatalog .bSimilarGoodsSlider_eGoods a').on('click', sliderTracking)
 	}
-	
 
-	var isInCart = false
-	var changeButtons = function( lbox ){
-		if(!lbox || !lbox.productsInCart ) return false
-		for( var tokenP in lbox.productsInCart) { // Product Card
-			var bx = $('div.boxhover[ref='+ tokenP +']')
-			if( bx.length ) {
-				var button = $('a.link1', bx)
-				button.attr('href', $('.lightboxinner .point2').attr('href') )
-				button.addClass('active')	//die('click') doesnt work
-			}
-			bx = $('div.goodsbarbig[ref='+ tokenP +']')
-			if( bx.length ) {
-				var button = $('a.link1', bx)
-				button.attr('href', $('.lightboxinner .point2').attr('href') )
-				$('body').addClass('bought')
-				button.unbind('click')//.addClass('active')
-				isInCart = true
-				if( lbox.servicesInCart )
-				for( var tokenS in lbox.servicesInCart ) {
-					if( tokenP in lbox.servicesInCart[ tokenS ] ) {
-						var button = $('div.mServ[ref='+ tokenS +'] a.link1')
-						if( button.length ) {
-							button.attr('href', $('.lightboxinner .point2').attr('href') ).text('В корзине')
-						}
-						button = $('td.bF1Block_eBuy[ref='+ tokenS +'] input.button')
-						if( button.length ) {
-							button.addClass('active').val('В корзине').attr( 'href', carturl )
-						}
-					}
-				}
-			}
-		}
-		if( lbox.servicesInCart )
-		for( var tokenS in lbox.servicesInCart ) { // Service Card
-			if( lbox.servicesInCart[ tokenS ][0] ) {
-				var button = $('div.mServ[ref='+ tokenS +'] a.link1')
-				if( button.length ) {
-					button.attr('href', $('.lightboxinner .point2').attr('href') ).text('В корзине').addClass('active')
-				}
-				button = $('div.bServiceCard[ref='+ tokenS +'] input')
-				if( button.length ) {
-					button.val('В корзине').addClass('active').attr( 'href', carturl )
-				}
-			}
-		}
-		// if( lbox.is_credit )
-		// 	if( $('#creditinput').length )
-		// 		$('#creditinput').trigger('click')
-	};
-	/* ---- */
 
 
 	// hover imitation for IE
@@ -237,167 +186,6 @@ $(document).ready(function(){
 	});
 
 
-// 	/* F1 */
-// 	if( $('div.bF1Info').length ) {
-// 		var look    = $('div.bF1Info');
-// 		var f1lines = $('div.bF1Block');
-// 		// open popup
-// 		$('.link1, .bF1Info_Logo', look).click( function(){
-// 			if( $('div.hideblock.extWarranty').is(':visible') )
-// 				$('div.hideblock.extWarranty').hide()
-// 			f1lines.show();
-// 			return false;
-// 		});
-// 		// close popup
-// 		$('.close', f1lines).click( function(){
-// 			f1lines.hide();
-// 		});
-// 		// add f1
-// 		f1lines.find('input.button').bind ('click', function() {
-// 			if( $(this).hasClass('active') ){
-// 				window.location.href = $(this).attr('href')
-// 				return false
-// 			}
-				
-// 			$(this).val('В корзине').addClass('active').attr( 'href', carturl )
-// 			var f1item = $(this).data()
-// 			//credit case
-// // 			if( 'creditBox' in window ) {
-// // //				if( !f1item.url.match(/_quantity\/[0-9]+/) )
-// // //					f1item.url += '/1' //quantity
-// // 				if( creditBox.getState() )
-// // 					f1item.url += '1/1' //credit
-// // 				else 	
-// // 					f1item.url += '1/0' //no credit
-// // 			}			
-// 			f1lines.fadeOut()
-// 			$.getJSON( f1item.url, function(data) {
-// 				if( !data.success )
-// 					return true
-// 				look.find('h3').text('Вы добавили услуги:')
-// 				var f1line = tmpl('f1look', f1item)
-// 				f1line = f1line.replace('F1ID', f1item.fid )
-// 				look.find('.link1').before( f1line )
-
-
-// 				// flybox
-// 				var tmpitem = {
-// 					'id'    : $('.goodsbarbig .link1').attr('href'),
-// 					'title' : $('h1').html(),
-// 					'vitems': data.data.full_quantity,
-// 					'sum'   : data.data.full_price,
-// 					'link'  : data.data.link,
-// 					'price' : $('.goodsinfo .price').html(),
-// 					'img'   : $('.goodsphoto img.mainImg').attr('src')
-// 				}
-// 				tmpitem.f1 = f1item
-// 				if( isInCart )
-// 					tmpitem.f1.only = 'yes'
-// 				// ltbx.getBasket( tmpitem )
-// 				kissAnalytics(data)
-// 				if( !isInCart ) {
-// 					isInCart = true
-// 					markPageButtons()
-// 				}
-// 			})
-// 			return false
-// 		})
-// 		// remove f1
-// 		$('a.bBacketServ__eMore', look).on('click', function(){
-// 			var thislink = this
-// 			$.getJSON( $(this).attr('href'), function(data) {
-// 				if( !data.success )
-// 					return true
-// 				var line = $(thislink).parent()
-// 				f1lines.find('td[ref='+ line.attr('ref') +']').find('input').val('Купить услугу').removeClass('active')
-// 				line.remove()
-// 				// ltbx.update({ sum: data.data.full_price })
-
-// 				if( !$('a.bBacketServ__eMore', look).length )
-// 					look.find('h3').html('Выбирай услуги F1<br/>вместе с этим товаром')
-// 			})
-// 			return false
-// 		});
-// 	}
-	
-
-	/* EXT WARRANTY */
-	if ( ($('div.bBlueButton.extWarranty').length)&&($('div.bBlueButton.extWarranty').is(':visible')) ){
-		var look_extWarr = $('div.bBlueButton.extWarranty');
-		var f1lines_extWarr = $('div.hideblock.extWarranty');
-		var ew_look = $("#ew_look");
-		//open popup
-		$('.link1',look_extWarr).click( function(){
-			if( $('div.bF1Block').is(':visible') )
-				$('div.bF1Block').hide()
-			f1lines_extWarr.show()
-			return false
-		});
-		//close popup
-		$('.close', f1lines_extWarr).click( function(){
-			f1lines_extWarr.hide();
-		});
-		//add warranty
-		f1lines_extWarr.find('input.button').bind ('click', function() {
-			if( $('input.button',f1lines_extWarr).hasClass('active') ){
-				$('input.button',f1lines_extWarr).val('Выбрать').removeClass('active');
-			}
-			$(this).val('Выбрана').addClass('active')
-			var extWarr_item = $(this).data();
-			f1lines_extWarr.fadeOut();
-			$.getJSON( extWarr_item.url, function(ext_data) {
-				if( !ext_data.success ){
-					return true;
-				}
-				$('.link1',look_extWarr).text('Изменить гарантию');
-				look_extWarr.find('h3').text('Вы выбрали гарантию:');
-
-				$('.ew_title', ew_look).text(extWarr_item.f1title);
-				$('.ew_price', ew_look).text(extWarr_item.f1price);
-				$('.bBacketServ__eMore', ew_look).attr('href', extWarr_item.deleteurl);
-				ew_look.show();
-				var tmpitem = {
-					'id'    : $('.goodsbarbig .link1').attr('href'),
-					'title' : $('h1').html(),
-					'vitems': ext_data.data.full_quantity,
-					'sum'   : ext_data.data.full_price,
-					'link'  : ext_data.data.link,
-					'price' : $('.goodsinfo .price').html(),
-					'img'   : $('.goodsphoto img.mainImg').attr('src')
-				};
-				tmpitem.f1 = extWarr_item;
-				if( isInCart ){
-					tmpitem.f1.only = 'yes';
-				}
-				// ltbx.getBasket( tmpitem );
-				kissAnalytics(ext_data);
-				if( !isInCart ) {
-					isInCart = true;
-					markPageButtons();
-				}
-			})
-			return false;
-		});
-		$('.bBacketServ__eMore', ew_look).on('click', function(e){
-			e.preventDefault();
-			var thislink = this;
-			$.getJSON( $(this).attr('href'), function(ext_data) {
-				if( !ext_data.success ){
-					return true;
-				}
-				var line = $(thislink).parent();
-				$('input.button',f1lines_extWarr).val('Выбрать').removeClass('active');
-				$('.link1',look_extWarr).text('Выбрать гарантию');
-				line.hide();
-				// ltbx.update({ sum: ext_data.data.full_price });
-				ew_look.hide();
-				if( !$('a.bBacketServ__eMore', look_extWarr).length )
-					look_extWarr.find('h3').html('Выбирай услуги F1<br/>вместе с этим товаром')
-			})
-			return false
-		});
-	}
-	
 
 	var sendAnalytics = function(item) {
 		if (typeof(MyThings) != "undefined") {
@@ -426,6 +214,9 @@ $(document).ready(function(){
 		}
 	};
 
+	/**
+	 * KISS Аналитика для добавления в корзину
+	 */
 	var kissAnalytics = function(data){
 		if (data.result.product){
 			var productData = data.result.product
@@ -488,7 +279,9 @@ $(document).ready(function(){
 		})
 	}
 
-	// KISS view category
+	/**
+	 * KISS view category
+	 */
 	if ($('#_categoryData').length){
 		var data = $('#_categoryData').data('category')
 		var toKISS = {
@@ -503,9 +296,8 @@ $(document).ready(function(){
 		}
 	}
 
-
 	/**
-	 * KISS для страницы с поиском
+	 * KISS Search
 	 */
 	if ( $('#_searchKiss').length){
 		var data = $('#_searchKiss').data('search')
@@ -536,4 +328,3 @@ $(document).ready(function(){
 		$('.goodsboxlink').on('click', KISSsearchClick);
 	}
 });
-

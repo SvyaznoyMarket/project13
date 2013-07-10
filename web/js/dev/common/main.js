@@ -340,7 +340,7 @@ $(document).ready(function(){
 			})
 		}
 	}
-	
+
 
 
 	/* Authorization process */
@@ -960,23 +960,25 @@ $(document).ready(function(){
 	}
 	
 	/* Side Filters */
-    var filterlink = $('.filter .filterlink:first')
-	var filterlist = $('.filter .filterlist')
+    var filterlink = $('.filter .filterlink:first');
+	var filterlist = $('.filter .filterlist');
+	var clientBrowser = new brwsr();
 	if( clientBrowser.isTouch ) {
 		filterlink.click(function(){
-			filterlink.hide()
-			filterlist.show()
-			return false
+			filterlink.hide();
+			filterlist.show();
+			return false;
 		})
-	} else {
+	}
+	else {
 		filterlink.mouseenter(function(){
-			filterlink.hide()
-			filterlist.show()
-		})
+			filterlink.hide();
+			filterlist.show();
+		});
 		filterlist.mouseleave(function(){
-			filterlist.hide()
-			filterlink.show()
-		})
+			filterlist.hide();
+			filterlink.show();
+		});
 	}	
 	
 	var ajaxFilterCounter = 0
@@ -1585,4 +1587,3 @@ function handle_custom_items() {
     $(this).removeClass('hover');
   });
 }
-
