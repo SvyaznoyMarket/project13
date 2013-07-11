@@ -615,6 +615,13 @@ $(document).ready(function() {
 					return false;
 				}
 				$('.jsBuyButton').html('В корзине').addClass('mBought').attr('href','/cart');
+
+				/* костыль */
+				res.product.name = $('.bMainContainer__eHeader-title').html();
+				res.product.price = $('.jsPrice').eq('1').html();
+				res.product.article = $('.bMainContainer__eHeader-article').html();
+				/* */
+				
 				$("body").trigger("addtocart", [res]);
 			};
 
