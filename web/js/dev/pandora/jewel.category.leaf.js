@@ -4,7 +4,7 @@ $(document).ready(function(){
     // handle_url_hash()
 
     // var prevent_request_on_hashchange = false
-    handle_jewel_items()
+    // handle_jewel_items()
     handle_jewel_infinity_scroll()
   }
 })
@@ -165,13 +165,13 @@ function switch_to_scroll(checkScrollJewel) {
 //   get_jewel_content(url, true, browser_buttons)
 // }
 
-function handle_jewel_items() {
-  $(".goodsbar .link1.link1active").attr('href', '/cart')
-  $(".goodsbar .link1").bind( 'click', function()   {
-      $(this).html("В корзине")
-      $(this).addClass("link1active")
-  })
-}
+// function handle_jewel_items() {
+//   $(".goodsbar .link1.link1active").attr('href', '/cart')
+//   $(".goodsbar .link1").bind( 'click', function()   {
+//       $(this).html("В корзине")
+//       $(this).addClass("link1active")
+//   })
+// }
 
 // window.onhashchange = function () {
 //   if(!prevent_request_on_hashchange) {

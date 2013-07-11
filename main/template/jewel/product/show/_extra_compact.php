@@ -10,10 +10,13 @@
 ?>
 
 <?php
+$helper = new \Helper\TemplateHelper();
 $isHidden = isset($isHidden) && $isHidden;
 $maxHeight = isset($maxHeight) && $maxHeight;
 $gaEvent = isset($gaEvent) ? $gaEvent : null;
 $additionalData = isset($additionalData) ? $additionalData : null;
+$inCart = \App::user()->getCart()->hasProduct($product->getId());
+$btnText = $inCart ? 'В корзине' : 'В корзину';
 ?>
 
 <div class="goodsbox<? if ($maxHeight): ?> height220<? endif ?>"<? if ($isHidden): ?> style="display:none;"<? endif ?> ref="<?php echo $product->getToken(); ?>" data-quantity="<?php echo empty($totalProducts) ? '' : $totalProducts; ?>" data-category="<?php echo empty($categoryToken) ? '' : $categoryToken; ?>" data-total-pages="<?php echo empty($totalPages) ? '' : $totalPages; ?>" data-category="<?php echo empty($categoryToken) ? '' : $categoryToken; ?>">
@@ -28,9 +31,7 @@ $additionalData = isset($additionalData) ? $additionalData : null;
 		</div>
 	    
         <? if ($product->getIsBuyable()): ?>
-    		<div class="goodsbar mSmallBtns mR">
-              <?= $page->render('jewel/cart/_button', ['product' => $product, 'disabled' => !$product->getIsBuyable(), 'bought' => (\App::user()->getCart()->hasProduct($product->getId()) ? 'style="visibility:hidden;"': '')]) ?>
-            </div>
+            <?= $helper->render('cart/__button-product', ['product' => $product, 'class' => 'btnBuy__eLink', 'value' => $btnText]) // Кнопка купить ?>
         <? endif ?>
 
 	    <div class="font18 pb10 mSmallBtns"><span class="price"><?php echo $page->helper->formatPrice($product->getPrice()) ?></span> <span class="rubl">p</span></div>
