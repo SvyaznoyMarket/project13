@@ -959,14 +959,14 @@ $(document).ready(function() {
 	if($('#productDescriptionToggle').length) {
 		$('#productDescriptionToggle').toggle(
 			function(e){
-				e.preventDefault()
-				$(this).parent().parent().find('.descriptionlist:not(.short)').show()
-				$(this).html('Скрыть все характеристики')
+				e.preventDefault();
+				$(this).parent().parent().find('.descriptionlist:not(.short)').show();
+				$(this).html('Скрыть все характеристики');
 			},
 			function(e){
-				e.preventDefault()
-				$(this).parent().parent().find('.descriptionlist:not(.short)').hide()
-				$(this).html('Показать все характеристики')
+				e.preventDefault();
+				$(this).parent().parent().find('.descriptionlist:not(.short)').hide();
+				$(this).html('Показать все характеристики');
 			}
 		);
 	}
@@ -974,20 +974,20 @@ $(document).ready(function() {
 
 	function handle_jewel_items() {
 		if($('body.jewel').length) {
-			$(".link1.link1active").attr('href', '/cart')
+			$(".link1.link1active").attr('href', '/cart');
 			$(".link1").bind( 'click', function()   {
 				if($(this).parent().hasClass('goodsbarbig')) {
-					$('.goodsbarbig .link1').html("В корзине")
-					$('.goodsbarbig .link1').addClass("link1active")
+					$('.goodsbarbig .link1').html("В корзине");
+					$('.goodsbarbig .link1').addClass("link1active");
 				} else {
-					$(this).html("В корзине")
-					$(this).addClass("link1active")
+					$(this).html("В корзине");
+					$(this).addClass("link1active");
 				}
-			})
+			});
 		}
 	}
-	handle_jewel_items()
-
+	
+	handle_jewel_items();
 });
  
  
