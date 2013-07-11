@@ -1136,8 +1136,8 @@ $(document).ready(function() {
  * @requires	jQuery, jQuery.lightbox_me
  */
 ;(function(){
-	var openVideo = function(){
-		if ($('#productVideo').length){
+	var initVideo = function(){
+		if (!$('#productVideo').length){
 			return false;
 		}
 
@@ -1147,14 +1147,14 @@ $(document).ready(function() {
 		var shield = $('.bPhotoActionOtherAction__eVideo');
 		var iframe = $('#productVideo .productVideo_iframe').html();
 
-		$('#productVideo .productVideo_iframe').empty();
-		shield.bind('click', function(){
+		var openVideo = function(){
 			$('#productVideo .productVideo_iframe').append(iframe);
 			$(".productVideo_iframe iframe").attr("src", $(".productVideo_iframe iframe").attr("src")+"?autoplay=1");
 			$('#productVideo').lightbox_me({ 
 				centered: true,
 				onLoad: function(){
 					videoStartTime = new Date().getTime();
+
 					if (typeof(_gaq) !== 'undefined') {
 						_gaq.push(['_trackEvent', 'Video', 'Play', productUrl]);
 					}
@@ -1163,19 +1163,23 @@ $(document).ready(function() {
 					$('#productVideo .productVideo_iframe').empty();
 					videoEndTime = new Date().getTime();
 					var videoSpent = videoEndTime - videoStartTime;
+
 					if (typeof(_gaq) !== 'undefined') {
 						_gaq.push(['_trackEvent', 'Video', 'Stop', productUrl, videoSpent]);
 					}
 				}
 			});
 			return false;
-		});
-		return false;
+		};
+
+		$('#productVideo .productVideo_iframe').empty();
+
+		shield.bind('click', openVideo);
 	};
 
 	$(document).ready(function() {
 		if ($('.bPhotoActionOtherAction__eVideo').length){
-			$('.bPhotoActionOtherAction__eVideo').bind('click', openVideo);
+			initVideo();
 		}
 	});
 }());
