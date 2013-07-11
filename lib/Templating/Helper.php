@@ -209,20 +209,34 @@ class Helper {
      */
     public function stringRowParam4js($key,$value){
         $ret =false;
+        $need_quotes = false;
         if ( isset($key) and !empty($key) /*and ($value)*/ ) { // Важно! пустое значение ( $value == "") НЕ будет игнориться
             $key = trim($key);
             $ret =  "'".$key."':";
-            $value_str = (string) $value;
+            $value_str = $value;
             if ( is_string($value) ) {
                 $value = (string) trim($value);
                 $array_s = [ '{', '[', '"' , "'" ];
+                if ( isset($value[0]) )
                 if ( !in_array( $value[0], $array_s) ) {
-                    // оборачиваем в кавычки, если string и не джаваскрипт-объект
-                    $value_str = "'".$value_str."'";
-                }else{
+                    $need_quotes = true;
+                }
+
+                if ( strlen($value)<3 ) {
+                    $need_quotes = true;
                 }
             }
-            $ret .= $value_str;
+
+            if ($need_quotes) {
+                str_replace( "'" , '"' , $value_str); // заменяем одинарные кавычки на двойные
+                $value_str = "'".$value_str."'"; // оборачиваем в одинарные кавычки, если string и не джаваскрипт-объект
+            }
+
+            if ( is_string($value_str) ){
+                $ret .= $value_str;
+            }else{
+                $ret .= 'null';
+            }
         }
         return $ret;
     }
