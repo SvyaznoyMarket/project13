@@ -15,20 +15,15 @@
     <? /* // https: and http: — works */ ?>
     <script type="text/javascript" src="//static.criteo.net/js/ld/ld.js" async="true"></script>
 
-
     <? if ( !empty($criteo_q) ) { ?>
         <script type="text/javascript">
             window.criteo_q = window.criteo_q || [];
             window.criteo_q.push(
                 <?
                 $echrows = [];
-
-                foreach($criteo_q as $row)
-                    $echrows[] = $page->helper->stringRowsParams4js($row);
-
+                foreach($criteo_q as $row) $echrows[] = $page->helper->stringRowsParams4js($row);
                 echo implode(','.PHP_EOL, $echrows);
                 ?>
-
                 <?
                 /* //example:
                 { event: "setAccount", account: 10442 },
@@ -41,6 +36,5 @@
             );
         </script>
     <? } ?>
-
 
 <? endif;

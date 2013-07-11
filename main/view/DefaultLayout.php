@@ -157,18 +157,14 @@ class DefaultLayout extends Layout {
         $searchQuery = (string)$request->get('q');
         $searchQuery = $this->escape($searchQuery);
 
-        $productCategoryRepository = \RepositoryManager::productCategory(); //ok
-        $product = \RepositoryManager::product(); //ok
+        //$productCategoryRepository = \RepositoryManager::productCategory();
+        //$product = \RepositoryManager::product();
 
 
-
-        $in_basket = (string)'';
         $arr_item = [];
         $eventItems_arr = [];
         $eventItems = (string)'';
-
-
-        $productItems = (array)[];
+        $beforeItems = [];
 
 
         switch ($routeName) { // begin of case
@@ -206,7 +202,7 @@ class DefaultLayout extends Layout {
 
                     $eventItems_arr[] = '{ id: "'.$product->getId().
                                         '", price: '.$product->getPrice().
-                                        ', quantity: '.$in_basket[ $product->getId() ].' }';
+                                        ', quantity: '.$in_basket[ $product->getId() ].' }'; // так проще
 
                 }
 
@@ -240,6 +236,8 @@ class DefaultLayout extends Layout {
                 break;
 
             case "order.complete":
+                $viewEvent = 'trackTransaction';
+                $orders = $this->getParam('orders');
                 break;
 
             default:
@@ -249,21 +247,40 @@ class DefaultLayout extends Layout {
 
 
 
-        if ( empty($eventItems) )
-        if ( !empty($eventItems_arr) ) {
-
-            if (is_array($eventItems_arr))
-                $eventItems = (string) '['. implode(', ',$eventItems_arr) .']';
+        if (isset($orders) and !empty($orders)){
+            $order = $orders[0];
+            $beforeItems['id'] = $order->getNumber();
+            // TODO: new_customer: 1 if first purchase or 0 if not,  deduplication: 1 if attributed to Criteo or 0 if not,
+            // $beforeItems['new_customer'] = '1';
+            // $beforeItems['deduplication'] = '1';
+            /*
+            // example:
+            { event: "trackTransaction" , id: "Transaction Id", new_customer: 1 if first purchase or 0 if not,
+                deduplication: 1 if attributed to Criteo or 0 if not, item: [
+                    { id: "First item id", price: First item unit price, quantity: First item quantity }, etc
+                ]
+            }
+            */
         }
 
 
+        if (empty($eventItems))
+            if (!empty($eventItems_arr)) {
+                /*
+                 * из $eventItems (или $eventItems_arr) сформируется строка вида:
+                 * item: ["First item id", "Second item id", "Third item id"]
+                 */
+                if (is_array($eventItems_arr))
+                    $eventItems = (string)'[' . implode(', ', $eventItems_arr) . ']';
+
+            }
 
 
         $criteo_q = [];
 
         $criteo_q[] = [
             'event' => 'setAccount',
-            'account' => '10442',
+            'account' => \App::config()->partners['criteo']['account'],
         ];
 
         $criteo_q[] = [
@@ -277,27 +294,37 @@ class DefaultLayout extends Layout {
         ];
 
 
-
+        /**
+         * Из $arr_item формируется строка вида:
+         * { event: "viewList", item: ["First item id", "Second item id", "Third item id"], keywords: "User Searched Keywords" }
+         * Для всех страниц: каталога, корзины, поиска...
+         */
         $arr_item['event'] = $viewEvent;
+        foreach ($beforeItems as $key => $value) $arr_item[$key] = $value;
         if (!empty($eventItems)) $arr_item['item'] = (string)$eventItems;
-        if (!empty($searchQuery)) $q_arr_item['keywords'] = $searchQuery;
+        if (!empty($searchQuery)) $arr_item['keywords'] = $searchQuery;
 
         $criteo_q[] = $arr_item;
 
 
 
-
         // just for debug:
+        /*
         print '###<pre>';
         print '$$$ routeName: '.$routeName.PHP_EOL;
+        //print (isset($orders) and !empty($orders)) ? print_r($orders) : "no isset orderS! \n\n";
         //print_r($criteo_q);
         //print_r($eventItems);
         //print_r($searchQuery);
+        //print_r( $arr_item['keywords'] );
         print '</pre>###';
+        */
 
 
         return $criteo_q ? $criteo_q : false;
     }
+
+
 
 
 
