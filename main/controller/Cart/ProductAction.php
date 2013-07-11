@@ -193,7 +193,7 @@ class ProductAction {
                 if (\App::config()->kissmentrics['enabled']) {
                     try {
                         $kissInfo = \Kissmetrics\Manager::getCartEvent($product);
-                        $productInfo = array_merge($productsInfo, $kissInfo['product']);
+                        $productInfo = array_merge($productInfo, $kissInfo['product']);
                     } catch (\Exception $e) {
                         \App::logger()->error($e, ['kissmetrics']);
                     }
@@ -212,7 +212,7 @@ class ProductAction {
                     'old_price'     => $cart->getOriginalSum(),
                     'link'          => \App::router()->generate('order.create'),
                 ],
-                'product'  => $productsInfo,
+                'product'  => reset($productsInfo),
             ];
 
 
