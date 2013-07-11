@@ -133,10 +133,6 @@ class Layout extends \View\DefaultLayout {
         return $this->render('_contentHead', $this->params);
     }
 
-    public function slotUserbar() {
-        return $this->render('jewel/_userbar');
-    }
-
     /**
      * @param \Model\Page\Entity $page
      */
