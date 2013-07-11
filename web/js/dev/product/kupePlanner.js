@@ -85,8 +85,6 @@
 				return false;
 			}
 
-			$('.jsBuyButton').html('В корзине').addClass('mBought').attr('href','/cart');
-
 			var structure = Planner3dKupeConstructor.GetBasketContent();
 			var url = $(this).attr('href');
 
@@ -94,6 +92,7 @@
 				if ( !res.success ) {
 					return false;
 				}
+				$('.jsBuyButton').html('В корзине').addClass('mBought').attr('href','/cart');
 				$("body").trigger("addtocart", [res]);
 			};
 
