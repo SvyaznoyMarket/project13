@@ -20,7 +20,13 @@
         <div class="bPhotoAction">
             <ul class="bPhotoActionOtherAction">
                 <? if ($productVideo && $productVideo->getContent()): ?>
-                    <li class="bPhotoActionOtherAction__eVideo"><a href=""></a></li>
+                    <li class="bPhotoActionOtherAction__eVideo">
+                        <a href="#"></a>
+                        <div id="productVideo" class="blackPopup blackPopupVideo">
+                            <div class="close"></div>
+                            <div class="productVideo_iframe"><?= $productVideo->getContent() ?></div>
+                        </div>
+                    </li>
                 <? endif ?>
                 <? if ((bool)$product->getPhoto3d() || $model3dExternalUrl || $model3dImg):  ?>
                 <?
