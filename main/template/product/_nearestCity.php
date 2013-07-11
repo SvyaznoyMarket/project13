@@ -59,5 +59,8 @@ foreach ($nearestCities as $i => $city) {
 
 </div>
 
-<a class="likeGoodsRegion" href="<?= $product->getMainCategory()->getLink() ?>">Похожие товары, доступные в вашем городе</a>
+<? if ($product->getMainCategory()): ?>
+    <a class="likeGoodsRegion" href="<?= $product->getMainCategory()->getLink() ?>">Похожие товары, доступные в вашем городе</a>
+<? endif ?>
+
 <div class="line pb15"></div>
