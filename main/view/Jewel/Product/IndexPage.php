@@ -92,10 +92,6 @@ class IndexPage extends \View\DefaultLayout {
         return 'product_card';
     }
 
-    public function slotUserbar() {
-        return $this->render('jewel/_userbar');
-    }
-
     public function slotInnerJavascript() {
         /** @var $product \Model\Product\Entity */
         $product = $this->getParam('product') instanceof \Model\Product\Entity ? $this->getParam('product') : null;
