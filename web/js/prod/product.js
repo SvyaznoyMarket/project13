@@ -977,24 +977,6 @@ $(document).ready(function() {
 			}
 		);
 	}
-
-
-	function handle_jewel_items() {
-		if($('body.jewel').length) {
-			$(".link1.link1active").attr('href', '/cart');
-			$(".link1").bind( 'click', function()   {
-				if($(this).parent().hasClass('goodsbarbig')) {
-					$('.goodsbarbig .link1').html("В корзине");
-					$('.goodsbarbig .link1').addClass("link1active");
-				} else {
-					$(this).html("В корзине");
-					$(this).addClass("link1active");
-				}
-			});
-		}
-	}
-	
-	handle_jewel_items();
 });
  
  

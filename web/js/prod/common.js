@@ -88,9 +88,9 @@
 	 * KISS Аналитика для добавления в корзину
 	 */
 	var kissAnalytics = function(data){
-		if (data.result.product){
-			var productData = data.result.product
-			var nowUrl = window.location.href
+		if (data.product){
+			var productData = data.product;
+			var nowUrl = window.location.href;
 			var toKISS_pr = {
 				'Add to Cart SKU':productData.article,
 				'Add to Cart SKU Quantity':productData.quantity,
@@ -102,14 +102,15 @@
 				'Add to Cart SKU Price':productData.price,
 				'Add to Cart Page URL':nowUrl,
 				'Add to Cart F1 Quantity':productData.serviceQuantity,
-			}
+			};
+
 			if (typeof(_kmq) !== 'undefined') {
-				_kmq.push(['record', 'Add to Cart', toKISS_pr ])
+				_kmq.push(['record', 'Add to Cart', toKISS_pr ]);
 			}
 		}
-		if (data.result.service){
-			var serviceData = data.result.service
-			var productData = data.result.product
+		if (data.service){
+			var serviceData = data.service;
+			var productData = data.product;
 			var toKISS_serv = {
 				'Add F1 F1 Name':serviceData.name,
 				'Add F1 F1 Price':serviceData.price,
@@ -119,14 +120,15 @@
 				'Add F1 Root ID':productData.category[0].id,
 				'Add F1 Category name':productData.category[productData.category.length-1].name,
 				'Add F1 Category ID':productData.category[productData.category.length-1].id,
-			}
+			};
+
 			if (typeof(_kmq) !== 'undefined') {
-				_kmq.push(['record', 'Add F1', toKISS_serv ])
+				_kmq.push(['record', 'Add F1', toKISS_serv ]);
 			}
 		}
-		if (data.result.warranty){
-			var warrantyData = data.result.warranty
-			var productData = data.result.product
+		if (data.warranty){
+			var warrantyData = data.warranty;
+			var productData = data.product;
 			var toKISS_wrnt = {
 				'Add Warranty Warranty Name':warrantyData.name,
 				'Add Warranty Warranty Price':warrantyData.price,
@@ -136,9 +138,10 @@
 				'Add Warranty Root ID':productData.category[0].id,
 				'Add Warranty Category name':productData.category[productData.category.length-1].name,
 				'Add Warranty Category ID':productData.category[productData.category.length-1].id,
-			}
+			};
+
 			if (typeof(_kmq) !== 'undefined') {
-				_kmq.push(['record', 'Add Warranty', toKISS_wrnt ])
+				_kmq.push(['record', 'Add Warranty', toKISS_wrnt ]);
 			}
 		}
 	};
