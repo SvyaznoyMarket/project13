@@ -1566,24 +1566,24 @@ $(document).ready(function(){
           }
       });
   }
-    handle_custom_items()
+
+	var handle_custom_items = function() {
+		$(".items-section__list .item").hover(
+		function() {
+			$(this).addClass('hover')
+		},
+		function() {
+			$(this).removeClass('hover')
+		});
+
+		$(".bigcarousel-brand .goodsbox").hover(
+		function() {
+			$(this).addClass('hover');
+		},
+		function() {
+			$(this).removeClass('hover');
+		});
+	};
+
+	handle_custom_items();
 });
-
-
-function handle_custom_items() {
-  $(".items-section__list .item").hover(
-    function() {
-    $(this).addClass('hover')
-  },
-    function() {
-    $(this).removeClass('hover')
-  });
-
-  $(".bigcarousel-brand .goodsbox").hover(
-    function() {
-    $(this).addClass('hover');
-  },
-    function() {
-    $(this).removeClass('hover');
-  });
-}
