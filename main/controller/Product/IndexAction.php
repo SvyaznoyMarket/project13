@@ -78,7 +78,7 @@ class IndexAction {
         $catalogJson = \RepositoryManager::productCategory()->getCatalogJson(array_pop($productCategories));
 
         // если в catalogJson'e указан category_class, то обрабатываем запрос соответствующим контроллером
-        if(!empty($catalogJson['category_class'])) {
+        if(false && !empty($catalogJson['category_class'])) {
             $controller = '\\Controller\\'.ucfirst($catalogJson['category_class']).'\\Product\\IndexAction';
             return (new $controller())->executeDirect($product, $regionsToSelect, $catalogJson);
         }
