@@ -110,7 +110,7 @@
                         <select class="bDescSelectItem__eSelect">
                             <? foreach ($property->getOption() as $option): ?>
                                 <? if ($option->getValue() == $productAttribute->getValue()) continue ?>
-                                <option class="bDescSelectItem__eOption" data-url="<?= $option->getProduct()->getLink() ?>"><?= $option->getHumanizedName() ?></option>
+                                <option class="bDescSelectItem__eOption" value="<?= $option->getHumanizedName() ?>" data-url="<?= $option->getProduct()->getLink() ?>"><?= $option->getHumanizedName() ?></option>
                             <? endforeach ?>
                         </select>
                     </div>

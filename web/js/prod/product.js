@@ -853,6 +853,7 @@ $(document).ready(function() {
 			'Viewed Product Product Name':productInfo.name,
 			'Viewed Product Product Status':productInfo.stockState,
 		};
+
 		if (typeof(_kmq) !== 'undefined'){
 			_kmq.push(['record', 'Viewed Product',toKISS]);
 		}
@@ -867,7 +868,53 @@ $(document).ready(function() {
 			$('.bCountSection').addClass('mDisabled').find('input').attr('disabled','disabled');
 			$('.jsOrder1click').addClass('mDisabled');
 		};
+
 		$("body").bind('addtocart', afterBuy);
+	})();
+
+
+	/**
+	 * Custom select
+	 */
+	(function($){
+		$.fn.customDropDown = function(params) {
+			return this.each(function() {
+				var options = $.extend(
+								{},
+								$.fn.customDropDown.defaults,
+								params);
+				var $self = $(this);
+
+				var select = $self.find(options.selectSelector);
+				var value = $self.find(options.valueSelector);
+
+				var selectChangeHandler = function(){
+					var selectedOption = select.find('option:selected');
+
+					value.html(selectedOption.val());
+					options.changeHandler(selectedOption);
+				};
+
+				select.on('change', selectChangeHandler)
+			});
+		};
+				
+		$.fn.customDropDown.defaults = {
+			valueSelector: '.bDescSelectItem__eValue',
+			selectSelector: '.bDescSelectItem__eSelect',
+			changeHandler: function(){}
+		};
+
+	})(jQuery);
+
+	(function(){
+		$('.bDescSelectItem').customDropDown({
+			changeHandler: function(option){
+				var url = option.data('url');
+
+				document.location.href = url;
+			}
+		});
 	})();
 	
 
