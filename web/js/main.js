@@ -1947,6 +1947,25 @@ $(document).ready(function(){
           }
       });
   }
+	var handle_custom_items = function() {
+		$(".items-section__list .item").hover(
+			function() {
+				$(this).addClass('hover')
+			},
+			function() {
+				$(this).removeClass('hover')
+			}
+		);
+
+		$(".bigcarousel-brand .goodsbox").hover(
+			function() {
+				$(this).addClass('hover');
+			},
+			function() {
+				$(this).removeClass('hover');
+			}
+		);
+	}
 
     handle_custom_items()
 
@@ -1965,23 +1984,4 @@ function scrollToId(scrollToId) {
        scrollTop: $("#"+scrollToId).offset().top
    }, 500);
 }
-
-
-// function handle_custom_items() {
-//   $(".items-section__list .item").hover(
-//     function() {
-//     $(this).addClass('hover')
-//   },
-//     function() {
-//     $(this).removeClass('hover')
-//   });
-
-//   $(".bigcarousel-brand .goodsbox").hover(
-//     function() {
-//     $(this).addClass('hover');
-//   },
-//     function() {
-//     $(this).removeClass('hover');
-//   });
-// }
 
