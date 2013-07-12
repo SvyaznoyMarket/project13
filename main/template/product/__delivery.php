@@ -12,6 +12,7 @@ return function (
     <% } %>
         <div><%=dateString%></div>
 </script>
+
 <script id="widget_delivery_self" type="text/html">
     <% if (price === 0) { %>
         <span>Самовывоз <strong>бесплатно</strong></span>
@@ -20,11 +21,17 @@ return function (
     <% } %>
         <div><%=dateString%></div>
 </script>
+
 <script id="widget_delivery_shop" type="text/html">
     <li class="bDeliveryFreeAddress__eShop">
-        <%=name%>
+        <a class="bDeliveryFreeAddress__eLink" data-lat="<%=lat%>" data-lng="<%=lng%>" href="#"><%=name%></a>
     </li>
 </script>
+
+<div id="avalibleShop" class="popup">
+    <i class="close" title="Закрыть">Закрыть</i>
+    <div id="ymaps-avalshops"></div>
+</div>
 
 
 <ul class="bWidgetBuy__eDelivery" data-value="<?= $helper->json(['url' => $helper->url('product.delivery')]) ?>">
@@ -34,7 +41,7 @@ return function (
     </li>
 
     <li class="bWidgetBuy__eDelivery-item bWidgetBuy__eDelivery-now mOpen">
-        <span class="dotted">Есть в магазинах</span>
+        <span class="bWidgetBuy__eDelivery-nowClick dotted">Есть в магазинах</span>
         <div>Купить сегодня без предзаказа</div>
         <ul class="bDeliveryFreeAddress">
         </ul>

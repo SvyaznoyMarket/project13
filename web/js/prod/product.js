@@ -114,17 +114,55 @@
 		]
 	};
 
+	var showAvalShop = function(){
+		var popup = $('#avalibleShop');
+
+		var position = {
+			latitude: $(this).data('lat'),
+			longitude: $(this).data('lng')
+		};
+		// var myMap;
+
+		// var init = function() {
+		// 	// Создание экземпляра карты и его привязка к контейнеру с
+		// 	// заданным id ("map").
+		// 	myMap = new ymaps.Map('ymaps-avalshops', {
+		// 		// При инициализации карты обязательно нужно указать
+		// 		// её центр и коэффициент масштабирования.
+		// 		center:position, // Москва
+		// 		zoom:15
+		// 	});
+		// };
+
+		$('#ymaps-avalshops').css({'width':600, 'height':400});
+		$.when(MapInterface.ready( 'yandex', {
+			yandex: $('#infowindowtmpl'), 
+			google: $('#infowindowtmpl')
+		})).done(function(){
+			MapInterface.onePoint( position, 'ymaps-avalshops' );
+		});
+
+		popup.css({'width':600, 'height':400});
+		popup.lightbox_me({
+			centered: true,
+			onLoad: function() {
+				// ymaps.ready(init);
+			},
+			onClose: function(){
+				$('#ymaps-avalshops').empty();
+				// myMap.destroy();
+			}
+		});
+
+		return false;
+	};
+
 	var resFromSerever = function(res){
 		if (!res.success){
 			return false;
 		}
 
 		var deliveryInfo = res.product[0].delivery;
-
-		var shopToggle = function(){
-			nowBox.toggleClass('mOpen');
-			nowBox.toggleClass('mClose');
-		};
 
 		for (var i = deliveryInfo.length - 1; i >= 0; i--) {
 			switch (deliveryInfo[i].token){
@@ -150,6 +188,7 @@
 
 				case 'now':
 					var nowBox = widgetBox.find('.bWidgetBuy__eDelivery-now');
+					var toggleBtn = nowBox.find('.bWidgetBuy__eDelivery-nowClick');
 					var shopList = nowBox.find('.bDeliveryFreeAddress');
 					if (!deliveryInfo[i].shop.length){
 						break;
@@ -157,13 +196,22 @@
 
 					for (var j = deliveryInfo[i].shop.length - 1; j >= 0; j--) {
 						var shopInfo = {
-							name: deliveryInfo[i].shop[j].name
+							name: deliveryInfo[i].shop[j].name,
+							lat: deliveryInfo[i].shop[j].latitude,
+							lng: deliveryInfo[i].shop[j].longitude
 						};
 						var templateNow = tmpl('widget_delivery_shop',shopInfo);
 						shopList.append(templateNow);
 					}
+
+					var shopToggle = function(){
+						nowBox.toggleClass('mOpen');
+						nowBox.toggleClass('mClose');
+					};
+
 					nowBox.show();
-					nowBox.bind('click', shopToggle);
+					$('.bDeliveryFreeAddress__eLink').bind('click', showAvalShop);
+					toggleBtn.bind('click', shopToggle);
 					break;
 			}
 		}
