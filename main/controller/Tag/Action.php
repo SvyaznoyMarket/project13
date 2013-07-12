@@ -115,7 +115,8 @@ class Action {
             &$categoriesByToken,
             &$hotlinks,
             &$seoContent,
-            &$sidebarCategoriesTree
+            &$sidebarCategoriesTree,
+            &$categoriesByToken
         ) {
             $page->setParam('tag', $tag);
             $page->setParam('productPager', $productPager);
@@ -128,6 +129,7 @@ class Action {
             $page->setParam('seoContent', $seoContent);
             $page->setParam('sidebarHotlinks', true);
             $page->setParam('sidebarCategoriesTree', $sidebarCategoriesTree);
+            $page->setParam('categoriesByToken', $categoriesByToken);
         };
 
         if(empty($seoTagJson['acts_as_category'])) {
@@ -137,9 +139,16 @@ class Action {
             return new \Http\Response($page->show());
         } else {
             // получаем ветки для всех найденных категорий, чтобы построить сайдбар
+            // сбрасываем количество товаров, чтобы затем установить количество протэгированных товаров
             foreach ($categories as $category) {
                 \RepositoryManager::productCategory()->prepareEntityBranch($category, $region);
                 $client->execute(\App::config()->coreV2['retryTimeout']['tiny']);
+                $parentCategory = $category->getParent();
+                $rootCategory = $category->getRoot();
+                $parentCategory->setProductCount(0);
+                $rootCategory->setProductCount(0);
+                $category->setParent($parentCategory);
+                $category->setRoot($rootCategory);
             }
 
             // строим дерево категорий для сайдбара
@@ -158,8 +167,18 @@ class Action {
                         $parentToken = $ancestorList[$key - 1]->getToken();
                         $this->addToken($sidebarCategoriesTree, $parentToken, $ancestorToken);
                     }
+
+                    if($ancestor->isLeaf()) {
+                        $tagCategory = $tagCategoriesById[$ancestor->getId()];
+                        $ancestor->setProductCount($tagCategory->getProductCount());
+                        $parentCategory = $ancestorList[1];
+                        $rootCategory = $ancestorList[0];
+                        // $parentCategory->setProductCount($parentCategory->getProductCount() + $tagCategory->getProductCount());
+                        $rootCategory->setProductCount($rootCategory->getProductCount() + $tagCategory->getProductCount());
+                    }
                 }
             }
+
 
             if(empty($categoryToken) && !empty($sidebarCategoriesTree)) {
                 $rootTokens = array_keys($sidebarCategoriesTree);
