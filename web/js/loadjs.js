@@ -84,6 +84,21 @@
 			break
 		case 'default':
 			break
+		case 'tag-category':
+			$LAB.queueWait( function() {
+				$LAB
+				.script( getWithVersion('bigjquery.js') )
+				.script( getWithVersion('library.js') )
+				.wait()
+				.script( getWithVersion('main.js') )
+				.wait()
+				.script( getWithVersion('dash.js') )
+				.wait()
+				.script( getWithVersion('ports.js') )
+				.wait()
+				.script( getWithVersion('app.tag.js') )
+			}).runQueue()
+			break
 		case 'infopage':
 			$LAB.queueWait( function() {
 				$LAB

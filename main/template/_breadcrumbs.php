@@ -10,10 +10,14 @@
     <!-- <a href="/">Enter.ru</a> &rsaquo; -->
     <? $i = 1; $count = count($breadcrumbs); foreach ($breadcrumbs as $breadcrumb): ?>
     <? if ($i < $count): ?>
-        <a href="<?= $breadcrumb['url'] ?>"><?= $breadcrumb['name'] ?></a> &rsaquo;
-        <? else: ?>
-        <!-- <strong><?= $breadcrumb['name'] ?></strong> -->
-        <? endif ?>
+        <? if(empty($breadcrumb['span'])) { ?>
+          <a href="<?= $breadcrumb['url'] ?>"><?= $breadcrumb['name'] ?></a> &rsaquo;
+        <? } else { ?>
+          <span><?= $breadcrumb['name'] ?></span> &rsaquo;
+        <? } ?>
+      <? else: ?>
+      <!-- <strong><?= $breadcrumb['name'] ?></strong> -->
+      <? endif ?>
     <? $i++; endforeach ?>
 </div>
 <? endif ?>
