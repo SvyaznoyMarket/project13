@@ -10,12 +10,12 @@
   <dl class="bCtg" style="border-bottom:0;">
     <dd>
       <ul>
+        <li class="bCtg__eL1 mBold">
+          <a href="<?= $page->url('tag', ['tagToken' => $tag->getToken()]); ?>">
+            <span><?= $tag->getName() ?></span>
+          </a>
+        </li>
         <? foreach (array_keys($sidebarCategoriesTree) as $rootToken) { ?>
-          <li class="bCtg__eL1 mBold">
-            <a href="<?= $page->url('tag', ['tagToken' => $tag->getToken()]); ?>">
-              <span><?= $tag->getName() ?></span>
-            </a>
-          </li>
           <li class="bCtg__eL2 mBold">
             <a href="<?= $page->url('tag.category', ['tagToken' => $tag->getToken(), 'categoryToken' => $rootToken]); ?>">
               <span><?= $categoriesByToken[$rootToken]->getName() ?></span>
