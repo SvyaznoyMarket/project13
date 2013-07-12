@@ -2,91 +2,91 @@ $(document).ready(function() {
 
 	/* F1 sale card*/
 	if ( $('.bF1SaleCard').length ){
-		var input = $('#F1SaleCard_number')
-		var btn = $('#F1SaleCard_btn')
-		var delBtn = $('.bF1SaleCard_eDel')
+		var input = $('#F1SaleCard_number');
+		var btn = $('#F1SaleCard_btn');
+		var delBtn = $('.bF1SaleCard_eDel');
 		btn.bind('click', function(){
 			// var url = btn.data('url')
 			var url = $('.bF1SaleCard_eRadio:checked').data('url')
 
 			var authFromServer = function(response) {
 				if ( response.success ) {
-					window.location.reload()
+					window.location.reload();
 				}
 				else{
-					$('#bF1SaleCard_eErr').html('Извините, карта с таким номером не найдена.')
+					$('#bF1SaleCard_eErr').html('Извините, карта с таким номером не найдена.');
 				}
-			}
+			};
 
 			var data = {
 				number: input.val()
-			}
+			};
 
 			$.ajax({
 				type: 'POST',
 				url: url,
 				data: data,
 				success: authFromServer
-			})
+			});
 
-		})
+		});
 
 
 		delBtn.on('click',function(){
-			var delUrl = $(this).data('url')
+			var delUrl = $(this).data('url');
 			var authFromServer = function(response) {
 				if ( response.success ) {
 					window.location.reload()
 				}
-			}
+			};
 			$.ajax({
 				type: 'POST',
 				url: delUrl,
 				success: authFromServer
-			})
-		})
+			});
+		});
 
 		$(".bF1SaleCard_eRadio").bind('change', function(){
 			if ( $('#cartCertificateAll').is(':checked')){
-				input.attr('placeholder','Код скидки')
+				input.attr('placeholder','Код скидки');
 			}
 			else if ($('#cartCertificateF1').is(':checked')){
-				input.attr('placeholder', 'Номер карты «Под защитой F1»')
+				input.attr('placeholder', 'Номер карты «Под защитой F1»');
 			}
-		})
+		});
 	}
 
 
 	//KISS
 	if ($('#_cartKiss').length){
-		var data = $('#_cartKiss').data('cart')
+		var data = $('#_cartKiss').data('cart');
 		var toKISS = {
 			'View Cart SKU Quantity':data.count,
 			'View Cart SKU Total':data.price,
-		}
+		};
 		if (typeof(_kmq) !== 'undefined') {
-			_kmq.push(['record', 'View Cart', toKISS])
+			_kmq.push(['record', 'View Cart', toKISS]);
 		}
 	}
 
 	/* basket */
-	var total = $('#total .price')
-	var totalCash = 0
+	var total = $('#total .price');
+	var totalCash = 0;
 	var focusTrigger = false;
 
 	if ($('.product_kit-data').length){
 		$('.product_kit-data').bind('click', function(){
-			var elems = $(this).data('value')
-			$('.bKitPopup').empty()
+			var elems = $(this).data('value');
+			$('.bKitPopup').empty();
 			for (obj in elems){
-				var kitLine = tmpl('bKitPopupLine_Tmpl', elems[obj])
-				$('.bKitPopup').append(kitLine)
+				var kitLine = tmpl('bKitPopupLine_Tmpl', elems[obj]);
+				$('.bKitPopup').append(kitLine);
 			}
 			$('#kitPopup').lightbox_me({
 				centered: true
-			})
-			return false
-		})
+			});
+			return false;
+		});
 	}
 
 	function checkServWarranty() {
@@ -105,30 +105,30 @@ $(document).ready(function() {
 				good.find('.bBacketServ.extWarr.mBig').hide()
 				return false
 			}
-		})
+		});
 	}
 
 	var checkServF1 = function() {
 
 		// console.info('проверка наличия услуг')
-		var serv = $('.bBacketServ.F1.mBig')
-		var res = false
+		var serv = $('.bBacketServ.F1.mBig');
+		var res = false;
 
 		$.each(serv, function(){
-			service = $(this)
+			service = $(this);
 			if ( service.find('tr[ref]').length ){
 				// есть добавленные услуги
-				res = true
+				res = true;
 			}
 			else if ( service.is(':visible') ){
 				// услуг добавленных нет, но блок большой
-				var good = service.parents('.basketline') //текущий товар
-				good.find('.bBacketServ.F1.mSmall').show()
-				good.find('.bBacketServ.F1.mBig').hide()
-				res = false
+				var good = service.parents('.basketline'); //текущий товар
+				good.find('.bBacketServ.F1.mSmall').show();
+				good.find('.bBacketServ.F1.mBig').hide();
+				res = false;
 			}
-		})
-		return res
+		});
+		return res;
 	}
 
 	var checkForSaleCard = function() {
@@ -323,8 +323,9 @@ $(document).ready(function() {
 			main.remove()
 			self.noview = true
 			PubSub.publish( 'quantityChange', { q : 0, id : self.id } )
-			if( clearfunction ) 
+			if( clearfunction ){ 
 				clearfunction()
+			}
 			
 			$.when($.getJSON( drop , function( data ) {
 			})).then( function(data){
@@ -333,8 +334,9 @@ $(document).ready(function() {
 					location.href = location.href
 				}
 				else{
-					showOldPrice(data.data.old_price)
-					showPrice(data.data.full_price)
+					// console.log(data)
+					showOldPrice(data.cart.old_price)
+					showPrice(data.cart.full_price)
 					// getTotal()
 				}
 			})
@@ -390,8 +392,8 @@ $(document).ready(function() {
 				if( !data.success ) {
 					location.href = location.href
 				}
-				showOldPrice(data.data.old_price)
-				showPrice(data.data.full_price)
+				showOldPrice(data.cart.old_price)
+				showPrice(data.cart.full_price)
 			})
 		}
 
@@ -415,7 +417,7 @@ $(document).ready(function() {
 				dropflag = self.clear()
 			}
 			// console.log('удаление')
-			return false
+			return false;
 		})
 
 		$(nodes.less).click( function() {
@@ -445,40 +447,40 @@ $(document).ready(function() {
 		$(nodes.quan).focusin(function(){
 			$(nodes.quan).bind('keyup',function(e){
 				if (((e.which>=48)&&(e.which<=57))||(e.which==8)){//если это цифра или бэкспэйс
-					var quan = self.quantum = $(nodes.quan).val().replace(/\D/g,'') * 1
+					var quan = self.quantum = $(nodes.quan).val().replace(/\D/g,'') * 1;
 					if (quan > 0){//если больше нуля, апдейтим
-						focusTrigger = false
+						focusTrigger = false;
 						if(self.checkNode(nodes, quan)){
-							self.update( false, quan)
+							self.update( false, quan);
 						}
 					}
 					else{ //если меньше, очищаем
-						focusTrigger = true
+						focusTrigger = true;
 					}
 				}
 				else{
 					//если это не цифра
-					var quan = self.quantum = $(nodes.quan).val().replace(/\D/g,'') * 1
-					$(nodes.quan).val(self.quantum)
-					focusTrigger = (quan > 0)? false : true
+					var quan = self.quantum = $(nodes.quan).val().replace(/\D/g,'') * 1;
+					$(nodes.quan).val(self.quantum);
+					focusTrigger = (quan > 0)? false : true;
 				}
 			})
 		})
 		$(nodes.quan).focusout(function(){
 			if (focusTrigger){
-				focusTrigger = false
-				self.clear()
+				focusTrigger = false;
+				self.clear();
 			}
-			$(nodes.quan).unbind('keyup')
-		})
+			$(nodes.quan).unbind('keyup');
+		});
 
 	} // object basketline
 	
 	var basket = [],
-		popupIsOpened = false	
+		popupIsOpened = false;
 
 	$('.basketline').each( function(){
-		var bline = $(this)
+		var bline = $(this);
 		var tmpline = new basketline({
 						'line': bline,
 						'less': bline.find('.ajaless:first'),
@@ -488,13 +490,13 @@ $(document).ready(function() {
 						'sum': bline.find('.basketinfo .sum:first'),
 						'drop': bline.find('.basketinfo .whitelink:first'),
 						'limit': bline.find('.numerbox').data('limit')
-						})
-		basket.push( tmpline )
+						});
+		basket.push( tmpline );
 				
 		if( $('div.bBacketServ.mBig.F1', bline).length ) {
 			$('div.bBacketServ.mBig.F1 tr', bline).each( function(){
 				if( $('.ajaquant', $(this)).length ) {
-					addLine( $(this), bline )
+					addLine( $(this), bline );
 				}
 			})
 		}
