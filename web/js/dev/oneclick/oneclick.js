@@ -313,14 +313,14 @@ $(document).ready(function() {
 			
 			self.toggleMap = function() {
 				if( self.showMap() ) { // like toggle but more precise
-					$('#mapPopup').hide('blind', null, 800, function() {
-						self.showMap(false)
-					})
+					$('#mapPopup').slideUp(500, function() {
+						self.showMap(false);
+					});
 				} else {
-					$('#mapPopup').show( 'blind', null, 1000, function(){
-						self.showMap(true)
-						self.showMarkers()	
-					})
+					$('#mapPopup').slideDown(500, function(){
+						self.showMap(true);
+						self.showMarkers();
+					});
 				}
 				// if( !self.showMap() )
 				// 	return false
