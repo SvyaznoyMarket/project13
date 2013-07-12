@@ -10221,6 +10221,7 @@
     transition: all 0.05s linear;
     width: 100px;
     height: 25px;
+    margin: 0 0 0 -1px;
   }
   .bSliderAction__eList .btnBuy .btnBuy__eLink {
     width: 100px;
@@ -11078,8 +11079,8 @@
   .brandSectionPandora__catalog .goodsbox__inner .btnBuy__eLink {
     width: auto;
     position: absolute;
-    bottom: 10px;
-    right: 10px;
+    bottom: 0;
+    right: 0;
     background: #000;
     color: #ffffff;
     -webkit-border-radius: 4px;
@@ -11096,6 +11097,7 @@
     display: block;
     height: 23px;
     padding: 0 10px;
+    text-shadow: none;
     -webkit-transition: opacity 0.1s ease-in-out;
     -moz-transition: opacity 0.1s ease-in-out;
     transition: opacity 0.1s ease-in-out;
@@ -11131,446 +11133,6 @@
 /*---END---СТИЛИ БРЕНД РАЗДЕЛА PANDORA---*/
 /*------СТИЛИ БРЕНД РАЗДЕЛА PANDORA - КАРТОЧКА ТОВАРА------*/
 @media all {
-  .brandSectionPandora__product {
-    padding: 0;
-    margin: 0;
-  }
-  .brandSectionPandora__product .breadcrumbs-footer {
-    padding: 10px 0px 10px 0;
-  }
-  .brandSectionPandora__product .bigcarousel-brand {
-    margin: 0 0 30px;
-    width: 940px;
-  }
-  .brandSectionPandora__product .bigcarousel-brand .goodsbox {
-    margin-right: 0;
-    padding: 0;
-    width: 188px;
-    min-height: 210px;
-  }
-  .brandSectionPandora__product .bigcarousel-brand .goodsbox .goodsbox__inner {
-    width: 166px;
-    padding: 0;
-    padding: 10px;
-    border: 1px solid #fff;
-    position: relative;
-    height: 190px;
-  }
-  .brandSectionPandora__product .bigcarousel-brand .goodsbox .goodsbox__inner .notBuying {
-    margin-top: 31px;
-  }
-  .brandSectionPandora__product .bigcarousel-brand .goodsbox .goodsbox__inner h3 {
-    padding-bottom: 0;
-    height: 42px;
-    -moz-opacity: 0;
-    -khtml-opacity: 0;
-    -webkit-opacity: 0;
-    opacity: 0;
-    -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
-    filter: alpha(opacity=0);
-    -webkit-transition: opacity 0.1s ease-in-out;
-    -moz-transition: opacity 0.1s ease-in-out;
-    transition: opacity 0.1s ease-in-out;
-    position: relative;
-    z-index: 1;
-  }
-  .brandSectionPandora__product .bigcarousel-brand .goodsbox .goodsbox__inner .photo a {
-    height: 130px;
-  }
-  .brandSectionPandora__product .bigcarousel-brand .goodsbox .goodsbox__inner a.btnBuy__eLink {
-    width: auto;
-    position: absolute;
-    bottom: 10px;
-    right: 10px;
-    background: #000;
-    color: #ffffff;
-    -webkit-border-radius: 4px;
-    -moz-border-radius: 4px;
-    border-radius: 4px;
-    -moz-opacity: 0;
-    -khtml-opacity: 0;
-    -webkit-opacity: 0;
-    opacity: 0;
-    -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
-    filter: alpha(opacity=0);
-    text-align: center;
-    line-height: 21px;
-    display: block;
-    height: 23px;
-    padding: 0 10px;
-    -webkit-transition: opacity 0.1s ease-in-out;
-    -moz-transition: opacity 0.1s ease-in-out;
-    transition: opacity 0.1s ease-in-out;
-    border: 1px solid #000;
-    font: normal 12px tahoma, verdana, arial, helvetica, sans-serif;
-    line-height: 21px;
-    text-indent: 0;
-  }
-  .brandSectionPandora__product .bigcarousel-brand .goodsbox .goodsbox__inner a.btnBuy__eLink.mBought {
-    background: #fff;
-    border: 1px solid #000;
-    color: #000;
-    height: 21px;
-    width: auto;
-  }
-  .brandSectionPandora__product .bigcarousel-brand .goodsbox .goodsbox__inner .font18.mSmallBtns {
-    position: absolute;
-    bottom: -8px;
-    left: 71px;
-    -webkit-transition: left 0 ease-in-out;
-    -moz-transition: left 0 ease-in-out;
-    transition: left 0 ease-in-out;
-    -webkit-backface-visibility: hidden;
-    -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
-  }
-  .brandSectionPandora__product .bigcarousel-brand .goodsbox .goodsbox__inner .font18.mSmallBtns span {
-    font-size: 12px;
-  }
-  .brandSectionPandora__product .bigcarousel-brand .goodsbox:hover .goodsbox__inner {
-    box-shadow: none;
-    border: 1px solid #AAAAAA;
-    -webkit-border-radius: 0;
-    -moz-border-radius: 0;
-    border-radius: 0;
-  }
-  .brandSectionPandora__product .bigcarousel-brand .goodsbox:hover .goodsbox__inner .item-name {
-    -moz-opacity: 1;
-    -khtml-opacity: 1;
-    -webkit-opacity: 1;
-    opacity: 1;
-    -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=100);
-    filter: alpha(opacity=100);
-  }
-  .brandSectionPandora__product .bigcarousel-brand .goodsbox:hover .goodsbox__inner a.btnBuy__eLink {
-    -moz-opacity: 1;
-    -khtml-opacity: 1;
-    -webkit-opacity: 1;
-    opacity: 1;
-    -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=100);
-    filter: alpha(opacity=100);
-  }
-  .brandSectionPandora__product .bigcarousel-brand .goodsbox:hover .goodsbox__inner h3 {
-    -moz-opacity: 1;
-    -khtml-opacity: 1;
-    -webkit-opacity: 1;
-    opacity: 1;
-    -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=100);
-    filter: alpha(opacity=100);
-  }
-  .brandSectionPandora__product .bigcarousel-brand .goodsbox:hover .goodsbox__inner .font18.mSmallBtns {
-    left: 10px;
-    -webkit-transition: left 0.1s ease-in-out;
-    -moz-transition: left 0.1s ease-in-out;
-    transition: left 0.1s ease-in-out;
-    -webkit-backface-visibility: hidden;
-    -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
-  }
-  .brandSectionPandora__product .bigcarousel-brand .goodsbox:hover .goodsbox__inner .btnBuy__eLink.mDisabled {
-    -moz-opacity: 0.1;
-    -khtml-opacity: 0.1;
-    -webkit-opacity: 0.1;
-    opacity: 0.1;
-    -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=10);
-    filter: alpha(opacity=10);
-    cursor: default;
-  }
-  .brandSectionPandora__product .pagehead {
-    padding-bottom: 5px;
-  }
-  .brandSectionPandora__product .pagehead h1 {
-    font-weight: normal;
-    font-family: 'Enter Type';
-    text-transform: uppercase;
-  }
-  .brandSectionPandora__product .pagehead .category-name {
-    font-weight: normal;
-    font-family: 'Enter Type';
-    text-transform: uppercase;
-    font-size: 24px;
-  }
-  .brandSectionPandora__product .goodsphoto {
-    width: 590px;
-  }
-  .brandSectionPandora__product .goodsinfo {
-    padding: 0 0px 0 10px;
-    width: 339px;
-    border-left: 1px solid #ededed;
-    margin: -18px 0 0;
-  }
-  .brandSectionPandora__product .bGood__eArticle {
-    border-bottom: none;
-    font-size: 10px;
-    margin: 0;
-    padding: 0;
-    color: #6D6D6D;
-  }
-  .brandSectionPandora__product .bGood__eArticle span {
-    font-size: 10px;
-  }
-  .brandSectionPandora__product .descriptionlist {
-    color: #6E6E6E;
-  }
-  .brandSectionPandora__product .descriptionlist h3 {
-    background: url("/css/pandoraProduct/img/h3_corner.gif") no-repeat 0 4px;
-    padding-left: 7px;
-  }
-  .brandSectionPandora__product .descriptionlist .point .title {
-    border-bottom: none;
-    width: 150px;
-  }
-  .brandSectionPandora__product .descriptionlist .point .description {
-    padding-left: 0;
-    width: 175px;
-  }
-  .brandSectionPandora__product .descriptionlist .point {
-    padding-bottom: 5px;
-  }
-  .brandSectionPandora__product .buy1click {
-    margin-right: 0px;
-  }
-  .brandSectionPandora__product .rubrictitle h3 {
-    font-weight: normal;
-    font-family: 'Enter Type';
-    text-transform: uppercase;
-  }
-  .brandSectionPandora__product .product-desc__buy {
-    width: 330px !important;
-    margin-bottom: 5px;
-  }
-  .brandSectionPandora__product .product-desc__buy .countTitle {
-    margin: 5px 52px 0 0px;
-  }
-  .brandSectionPandora__product .product-desc__buy .ptoduct-count {
-    position: relative;
-    left: 0;
-    float: left;
-    border-radius: 0;
-    border: none;
-    width: 86px;
-  }
-  .brandSectionPandora__product .product-desc__buy .ptoduct-count .bCountSet__eM,
-  .brandSectionPandora__product .product-desc__buy .ptoduct-count .bCountSet__eP {
-    background: #e5e5e5;
-    background: -moz-linear-gradient(top, #ffffff 0%, #e3e3e3 100%);
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffffff), color-stop(100%, #e3e3e3));
-    background: -webkit-linear-gradient(top, #ffffff 0%, #e3e3e3 100%);
-    background: -o-linear-gradient(top, #ffffff 0%, #e3e3e3 100%);
-    background: -ms-linear-gradient(top, #ffffff 0%, #e3e3e3 100%);
-    background: linear-gradient(to bottom, #ffffff 0%, #e3e3e3 100%);
-    filter: progid:dximagetransform.microsoft.gradient(startColorstr='#ffffff', endColorstr='#e3e3e3', GradientType=0);
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
-    border-radius: 3px;
-    width: 18px;
-    border: 1px solid #c7c7c7;
-    line-height: 22px;
-    color: #000;
-    font-weight: bold;
-  }
-  .brandSectionPandora__product .product-desc__buy.goodsbarbig.mSmallBtns .btnBuy__eLink,
-  .brandSectionPandora__product .product-desc__buy.goodsbarbig.mSmallBtns .btnBuy__eLink:hover {
-    float: right;
-    display: block;
-    background: #000;
-    width: 125px;
-    height: 29px;
-    line-height: 29px;
-    color: #fff;
-    margin: -3px 0 0 0;
-    text-indent: 0;
-    font-size: 16px;
-    text-align: center;
-    -webkit-border-radius: 4px;
-    -moz-border-radius: 4px;
-    border-radius: 4px;
-    border: 1px solid #000;
-    font: normal 16px tahoma, verdana, arial, helvetica, sans-serif;
-    line-height: 28px;
-  }
-  .brandSectionPandora__product .product-desc__buy.goodsbarbig.mSmallBtns .btnBuy__eLink.mBought,
-  .brandSectionPandora__product .product-desc__buy.goodsbarbig.mSmallBtns .btnBuy__eLink:hover.mBought {
-    background: #fff;
-    color: #000;
-  }
-  .brandSectionPandora__product .product-desc__buy.goodsbarbig.mSmallBtns a.btnBuy__eLink.mDisabled {
-    opacity: 0.1;
-    float: right;
-  }
-  .brandSectionPandora__product .product-desc .notBuying {
-    padding: 9px;
-    margin-top: -5px;
-    float: right;
-    margin-right: 15px;
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
-    border-radius: 3px;
-    width: 110px;
-  }
-  .brandSectionPandora__product .product-desc .notBuying .corner {
-    border-left: 9px solid #e6e6e6;
-    border-top: 10px solid transparent;
-    border-bottom: 10px solid transparent;
-    top: 6px;
-    right: -19px;
-  }
-  .brandSectionPandora__product .product-desc .notBuying .corner div {
-    border-left: 7px solid #ffffff;
-    border-top: 8px solid transparent;
-    border-bottom: 8px solid transparent;
-    bottom: -8px;
-    left: -9px;
-  }
-  .brandSectionPandora__product .product-desc.goodBarBottom .product-desc__buy {
-    margin-bottom: 5px;
-    width: auto !important;
-    margin-left: 15px;
-  }
-  .brandSectionPandora__product .product-desc.goodBarBottom .product-desc__buy .countTitle {
-    margin: 5px 15px 0 0px;
-  }
-  .brandSectionPandora__product .product-desc.goodBarBottom .product-desc__buy.goodsbarbig.mSmallBtns .cart-add {
-    float: right;
-    margin-left: 0;
-  }
-  .brandSectionPandora__product .product-desc.goodBarBottom .product-desc__buy .ptoduct-count {
-    margin: 0 5px 0 0;
-  }
-  .brandSectionPandora__product .bCountSet span {
-    line-height: 22px;
-    border: 1px solid #c7c7c7;
-    text-align: center;
-    display: block;
-    float: left;
-    color: #000;
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
-    border-radius: 3px;
-    width: 32px;
-    margin-left: 4px;
-  }
-  .brandSectionPandora__product .mBuyButtonBottom {
-    padding: 16px 0 0px 0px;
-    width: 175px;
-  }
-  .brandSectionPandora__product .mBuyButtonBottom.onleft {
-    width: 455px;
-  }
-  .brandSectionPandora__product .mBuyButtonBottom h2 {
-    font-weight: normal;
-    font-family: 'Enter Type';
-    text-transform: uppercase;
-    font-size: 16px;
-    padding: 10px 0 0;
-  }
-  .brandSectionPandora__product .product-desc {
-    padding: 0 0 0 10px;
-    font-size: 12px;
-  }
-  .brandSectionPandora__product .product-desc.goodBarBottom {
-    width: 280px;
-  }
-  .brandSectionPandora__product .product-desc .bDeliver2 {
-    padding: 1px 10px 5px 10px;
-  }
-  .brandSectionPandora__product .product-desc .bDeliver2 li {
-    margin-top: 10px;
-    margin-bottom: 0;
-  }
-  .brandSectionPandora__product .product-desc .creditbox {
-    border: none;
-    background: #E6E8E7;
-    -webkit-border-radius: 0px;
-    -moz-border-radius: 0px;
-    border-radius: 0px;
-  }
-  .brandSectionPandora__product .product-desc .creditbox .creditboxinner {
-    border-bottom: none;
-    padding: 6px;
-  }
-  .brandSectionPandora__product .product-desc .creditbox .creditboxinner .creditLeft {
-    margin-left: 50px;
-  }
-  .brandSectionPandora__product .product-desc .creditbox .bigcheck {
-    font-size: 12px;
-    line-height: 14px;
-    color: #6E6E72;
-  }
-  .brandSectionPandora__product .product-desc .creditbox .bigcheck b {
-    background: #fff;
-    height: 13px;
-    margin: 0px 7px 0px 0px;
-    width: 13px;
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
-    border-radius: 3px;
-    border: 1px solid #ccc;
-  }
-  .brandSectionPandora__product .product-desc .creditbox .bigcheck.checked {
-    color: #000 !important;
-  }
-  .brandSectionPandora__product .product-desc .creditbox .bigcheck.checked b {
-    background: #000;
-  }
-  .brandSectionPandora__product .product-desc .product-price {
-    font-size: 34px;
-    float: left;
-    font-weight: bold;
-    width: 179px;
-    padding-left: 5px;
-  }
-  .brandSectionPandora__product .product-desc__variation {
-    margin: 15px 0 0;
-  }
-  .brandSectionPandora__product .product-desc__variation h2 {
-    font-weight: normal;
-    font-family: 'Enter Type';
-    text-transform: uppercase;
-    font-size: 15px;
-  }
-  .brandSectionPandora__product .product-desc__variation .bDropWrap h5 {
-    color: #6E6E6E;
-    margin: 0px 10px 3px 0;
-    font-weight: normal;
-    float: left;
-    line-height: 29px;
-  }
-  .brandSectionPandora__product .product-desc .available {
-    float: left;
-    padding: 13px 0 0;
-    font-size: 14px;
-  }
-  .brandSectionPandora__product .product-desc__text {
-    font-size: 13px;
-    color: #6E6E6E;
-    line-height: 1.4;
-  }
-  .brandSectionPandora__product .product-desc .vitrin {
-    width: auto;
-  }
-  .brandSectionPandora__product .product-desc .vitrin p {
-    font-weight: normal;
-    font-family: 'Enter Type';
-    text-transform: uppercase;
-    font-size: 15px;
-    color: #000;
-  }
-  .brandSectionPandora__product .product-desc .vitrin .listAvalShop li {
-    color: #6E6E6E;
-    padding: 0 0 0 30px;
-    margin: 10px 0 15px;
-    background: url("/css/pandoraProduct/img/shop.png") no-repeat 0 3px;
-    font-size: 12px;
-  }
-  .brandSectionPandora__product .product-desc .vitrin .listAvalShop li .shopLookAtMap {
-    font-size: 11px;
-  }
-  .brandSectionPandora__product .product-desc .vitrin .listAvalShop li .avalShopAddr {
-    display: inline-block;
-    width: 165px;
-  }
-  .brandSectionPandora__product .product-desc .vitrin .listAvalShop li a {
-    color: #6E6E6E;
-  }
   body.jewel #reviewsWrapper {
     border-bottom: 0;
   }
@@ -11602,18 +11164,30 @@
     text-indent: 0;
     background: none;
   }
-  body.jewel .bWidgetBuy__eBuy {
+  body.jewel .bProductSection .inStock {
+    color: #000;
+  }
+  body.jewel .bProductSection .btnBuy__eLink,
+  body.jewel .bProductSection .btnBuy__eLink:hover {
     float: right;
-  }
-  body.jewel .bCountSection {
-    padding-left: 10px;
-  }
-  body.jewel .btnBuy {
-    width: 140px;
-  }
-  div.submit input {
-    background: #444;
+    display: block;
+    background: #000;
+    color: #fff;
+    box-shadow: none;
+    text-indent: 0;
+    text-align: center;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
     border: 1px solid #000;
+  }
+  body.jewel .bProductSection .mBought,
+  body.jewel .bProductSection .mBought:hover {
+    background: #fff;
+    color: #000;
+  }
+  body.jewel .bProductSection .bSliderAction__eList .btnBuy {
+    margin: 0 0 0 1px;
   }
 }
 /*---END---СТИЛИ БРЕНД РАЗДЕЛА PANDORA---*/
