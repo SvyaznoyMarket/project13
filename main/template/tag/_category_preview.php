@@ -7,15 +7,14 @@
 ?>
 
 <?php
-$productCount = $category->getProductCount() ?: $category->getGlobalProductCount();
-
 // total text
+$productCount = $categoryProductCountsByToken[$category->getToken()];
 $totalText = $productCount . ' ' . ($category->getHasLine()
     ? $page->helper->numberChoice($productCount, array('серия', 'серии', 'серий'))
     : $page->helper->numberChoice($productCount, array('товар', 'товара', 'товаров'))
 );
 
-$link = $category->getLink() . (\App::request()->get('instore') ? '?instore=1' : '');
+$link = $page->url('tag.category', ['tagToken' => $tag->getToken(), 'categoryToken' => $category->getToken()]);
 $token = $category->getToken();
 $showImage = !empty($catalogJsonBulk[$token]) && !empty($catalogJsonBulk[$token]['logo_path']) && !empty($catalogJsonBulk[$token]['use_logo']);
 ?>
