@@ -18,7 +18,8 @@ module.exports = function(grunt) {
     "DAnimFramePlayer.js",
     "KupeConstructorScript.js",
     "three.js",
-    "jewel.category.leaf.js"
+    "jewel.category.leaf.js",
+    "app.tag.js"
   ];
 
   var bigjqueryFiles = [

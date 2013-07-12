@@ -25,6 +25,14 @@ class Action {
             throw new \Exception\NotFoundException(sprintf('Тег "%s" не связан ни с одной категорией', $tag->getToken()));
         }
 
+        // получаем из json данные о горячих ссылках и content
+        $seoTagJson = \Model\Tag\Repository::getSeoJson($tag);
+        $hotlinks = empty($seoTagJson['hotlinks']) ? [] : $seoTagJson['hotlinks'];
+        // в json-файле в свойстве content содержится массив
+        $seoContent = empty($seoTagJson['content']) ? '' : implode('<br>', $seoTagJson['content']);
+        // на страницах пагинации сео-контент не показываем
+        if ($pageNum > 1) $seoContent = '';
+
         // категории
         /** @var $tagCategoriesById \Model\Tag\Category\Entity[] */
         $tagCategoriesById = [];
@@ -42,95 +50,125 @@ class Action {
             $categoriesByToken[$category->getToken()] = $category;
         }
 
-        if ($categoryToken) {
+        if ($categoryToken && empty($seoTagJson['acts_as_category'])) {
             if (!isset($categoriesByToken[$categoryToken])) {
                 throw new \Exception\NotFoundException(sprintf('Категория @%s не найдена', $categoryToken));
             }
             $category = $categoriesByToken[$categoryToken];
+        } elseif ($categoryToken && !empty($seoTagJson['acts_as_category'])) {
+            // запрашиваем категорию по токену
+            /** @var $category \Model\Product\Category\Entity */
+            $category = null;
+            \RepositoryManager::productCategory()->prepareEntityByToken($categoryToken, $region, function($data) use (&$category) {
+                $data = reset($data);
+                if ((bool)$data) {
+                    $category = new \Model\Product\Category\Entity($data);
+                }
+            });
+            $client->execute(\App::config()->coreV2['retryTimeout']['short']);
+            if (!$category) {
+                throw new \Exception\NotFoundException(sprintf('Категория @%s не найдена', $categoryToken));
+            }
         } else {
-            $category = reset($categoriesByToken);
+            $category = empty($seoTagJson['acts_as_category']) ? reset($categoriesByToken) : null;
         }
 
-        // сортировка
-        $productSorting = new \Model\Product\Sorting();
-        list($sortingName, $sortingDirection) = array_pad(explode('-', $request->get('sort')), 2, null);
-        $productSorting->setActive($sortingName, $sortingDirection);
+        if($category) {
+            // сортировка
+            $productSorting = new \Model\Product\Sorting();
+            list($sortingName, $sortingDirection) = array_pad(explode('-', $request->get('sort')), 2, null);
+            $productSorting->setActive($sortingName, $sortingDirection);
 
-        // вид товаров
-        $productView = $request->get('view', $category->getHasLine() ? 'line' : $category->getProductView());
-        // фильтры
-        $filter = new \Model\Product\Filter\Entity();
-        $filter->setId('tag');
-        $productFilter = new \Model\Product\Filter(array($filter));
-        $productFilter->setCategory($category);
-        $productFilter->setValues(array('tag' => array($tag->getId())));
+            // вид товаров
+            $productView = $request->get('view', $category->getHasLine() ? 'line' : $category->getProductView());
+            // фильтры
+            $filter = new \Model\Product\Filter\Entity();
+            $filter->setId('tag');
+            $productFilter = new \Model\Product\Filter(array($filter));
+            $productFilter->setCategory($category);
+            $productFilter->setValues(array('tag' => array($tag->getId())));
 
-        // листалка
-        $limit = \App::config()->product['itemsPerPage'];
-        $repository = \RepositoryManager::product();
-        $repository->setEntityClass(
-            \Model\Product\Category\Entity::PRODUCT_VIEW_EXPANDED == $productView
-                ? '\\Model\\Product\\ExpandedEntity'
-                : '\\Model\\Product\\CompactEntity'
-        );
-        $productPager = $repository->getIteratorByFilter(
-            $productFilter->dump(),
-            $productSorting->dump(),
-            ($pageNum - 1) * $limit,
-            $limit
-        );
-        $productPager->setPage($pageNum);
-        $productPager->setMaxPerPage($limit);
-        // проверка на максимально допустимый номер страницы
-        if (($productPager->getPage() - $productPager->getLastPage()) > 0) {
-            throw new \Exception\NotFoundException(sprintf('Неверный номер страницы "%s".', $productPager->getPage()));
+            // листалка
+            $limit = \App::config()->product['itemsPerPage'];
+            $repository = \RepositoryManager::product();
+            $repository->setEntityClass(
+                \Model\Product\Category\Entity::PRODUCT_VIEW_EXPANDED == $productView
+                    ? '\\Model\\Product\\ExpandedEntity'
+                    : '\\Model\\Product\\CompactEntity'
+            );
+            $productPager = $repository->getIteratorByFilter(
+                $productFilter->dump(),
+                $productSorting->dump(),
+                ($pageNum - 1) * $limit,
+                $limit
+            );
+            $productPager->setPage($pageNum);
+            $productPager->setMaxPerPage($limit);
+            // проверка на максимально допустимый номер страницы
+            if (($productPager->getPage() - $productPager->getLastPage()) > 0) {
+                throw new \Exception\NotFoundException(sprintf('Неверный номер страницы "%s".', $productPager->getPage()));
+            }
+
+            // ajax
+            if ($request->isXmlHttpRequest()) {
+                return new \Http\Response(\App::templating()->render('product/_list', array(
+                    'page'   => new \View\Layout(),
+                    'pager'  => $productPager,
+                    'view'   => $productView,
+                    'isAjax' => true,
+                )));
+            }
+
+            $setPageParameters = function(\View\Layout $page) use (
+                &$tag,
+                &$productPager,
+                &$productFilter,
+                &$productSorting,
+                &$productView,
+                &$category,
+                &$categoryToken,
+                &$categoriesByToken,
+                &$hotlinks,
+                &$seoContent,
+                &$sidebarCategoriesTree,
+                &$categoriesByToken
+            ) {
+                $page->setParam('tag', $tag);
+                $page->setParam('productPager', $productPager);
+                $page->setParam('productFilter', $productFilter);
+                $page->setParam('productSorting', $productSorting);
+                $page->setParam('productView', $productView);
+                $page->setParam('category', $category);
+                $page->setParam('categoryToken', $categoryToken);
+                $page->setParam('categories', array_values($categoriesByToken));
+                $page->setParam('hotlinks', $hotlinks);
+                $page->setParam('seoContent', $seoContent);
+                $page->setParam('sidebarHotlinks', true);
+                $page->setParam('sidebarCategoriesTree', $sidebarCategoriesTree);
+                $page->setParam('categoriesByToken', $categoriesByToken);
+            };
+        } else {
+            $setPageParameters = function(\View\Layout $page) use (
+                &$tag,
+                &$category,
+                &$categoryToken,
+                &$categoriesByToken,
+                &$hotlinks,
+                &$seoContent,
+                &$sidebarCategoriesTree,
+                &$categoriesByToken
+            ) {
+                $page->setParam('tag', $tag);
+                $page->setParam('category', $category);
+                $page->setParam('categoryToken', $categoryToken);
+                $page->setParam('categories', array_values($categoriesByToken));
+                $page->setParam('hotlinks', $hotlinks);
+                $page->setParam('seoContent', $seoContent);
+                $page->setParam('sidebarHotlinks', true);
+                $page->setParam('sidebarCategoriesTree', $sidebarCategoriesTree);
+                $page->setParam('categoriesByToken', $categoriesByToken);
+            };
         }
-
-        // ajax
-        if ($request->isXmlHttpRequest()) {
-            return new \Http\Response(\App::templating()->render('product/_list', array(
-                'page'   => new \View\Layout(),
-                'pager'  => $productPager,
-                'view'   => $productView,
-                'isAjax' => true,
-            )));
-        }
-
-        // получаем из json данные о горячих ссылках и content
-        $seoTagJson = \Model\Tag\Repository::getSeoJson($tag);
-        $hotlinks = empty($seoTagJson['hotlinks']) ? [] : $seoTagJson['hotlinks'];
-        // в json-файле в свойстве content содержится массив
-        $seoContent = empty($seoTagJson['content']) ? '' : implode('<br>', $seoTagJson['content']);
-
-        // на страницах пагинации сео-контент не показываем
-        if ($pageNum > 1) $seoContent = '';
-
-        $setPageParameters = function(\View\Layout $page) use (
-            &$tag,
-            &$productPager,
-            &$productFilter,
-            &$productSorting,
-            &$productView,
-            &$category,
-            &$categoriesByToken,
-            &$hotlinks,
-            &$seoContent,
-            &$sidebarCategoriesTree,
-            &$categoriesByToken
-        ) {
-            $page->setParam('tag', $tag);
-            $page->setParam('productPager', $productPager);
-            $page->setParam('productFilter', $productFilter);
-            $page->setParam('productSorting', $productSorting);
-            $page->setParam('productView', $productView);
-            $page->setParam('category', $category);
-            $page->setParam('categories', array_values($categoriesByToken));
-            $page->setParam('hotlinks', $hotlinks);
-            $page->setParam('seoContent', $seoContent);
-            $page->setParam('sidebarHotlinks', true);
-            $page->setParam('sidebarCategoriesTree', $sidebarCategoriesTree);
-            $page->setParam('categoriesByToken', $categoriesByToken);
-        };
 
         if(empty($seoTagJson['acts_as_category'])) {
             $sidebarCategoriesTree = null;
@@ -139,7 +177,6 @@ class Action {
             return new \Http\Response($page->show());
         } else {
             // получаем ветки для всех найденных категорий, чтобы построить сайдбар
-            // сбрасываем количество товаров, чтобы затем установить количество протэгированных товаров
             foreach ($categories as $category) {
                 \RepositoryManager::productCategory()->prepareEntityBranch($category, $region);
                 $client->execute(\App::config()->coreV2['retryTimeout']['tiny']);
@@ -149,7 +186,7 @@ class Action {
             $sidebarCategoriesTree = [];
             $categoryProductCountsByToken = [];
             foreach ($categories as $category) {
-                $ancestorList = [$category->getRoot(), $category->getParent(), $category];
+                $ancestorList = [$category->getRoot(), $category];
                 foreach ($ancestorList as $key => $ancestor) {
                     $ancestorToken = $ancestor->getToken();
                     if(!in_array($ancestorToken, $categoriesByToken)) {
@@ -175,23 +212,21 @@ class Action {
                         $categoryProductCountsByToken[$category->getRoot()->getToken()] + $tagCategory->getProductCount() : $tagCategory->getProductCount();
             }
 
-            if(empty($categoryToken) && !empty($sidebarCategoriesTree)) {
-                $rootTokens = array_keys($sidebarCategoriesTree);
-                $firstRootToken = $rootTokens[0];
-                $category = $categoriesByToken[$firstRootToken];
+            if(empty($categoryToken)) {
+                $category = null;
+            } else {
+                $category = $categoriesByToken[$categoryToken];
             }
 
-
-            // если категория содержится во внешнем узле дерева
-            if ($category->isLeaf()) {
-                $page = new \View\Tag\LeafPage();
+            // если категория не указана
+            if (!$category) {
+                $page = new \View\Tag\TagRootPage();
                 $page->setParam('categoryProductCountsByToken', $categoryProductCountsByToken);
                 $setPageParameters($page);
 
-                return $this->leafCategory($category, $productFilter, $page, $request);
-            }
-            // иначе, если категория самого верхнего уровня
-            else if ($category->isRoot()) {
+                return $this->tagRoot($page, $request);
+            // если категория содержится во внешнем узле дерева
+            } elseif ($category->isRoot()) {
                 $page = new \View\Tag\RootPage();
                 $page->setParam('categoryProductCountsByToken', $categoryProductCountsByToken);
                 $setPageParameters($page);
@@ -199,11 +234,12 @@ class Action {
                 return $this->rootCategory($category, $productFilter, $page, $request);
             }
 
-            $page = new \View\Tag\BranchPage();
+            $page = new \View\Tag\LeafPage();
             $page->setParam('categoryProductCountsByToken', $categoryProductCountsByToken);
             $setPageParameters($page);
 
-            return $this->branchCategory($category, $productFilter, $page, $request);
+            return $this->leafCategory($category, $productFilter, $page, $request);
+
         }
     }
 
@@ -374,29 +410,15 @@ class Action {
      * @return \Http\Response
      * @throws \Exception
      */
-    protected function rootCategory(\Model\Product\Category\Entity $category, \Model\Product\Filter $productFilter, \View\Layout $page, \Http\Request $request) {
+    protected function tagRoot(\View\Layout $page, \Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
-        if (\App::config()->debug) \App::debug()->add('sub.act', 'ProductCategory\\Action.rootCategory', 138);
-
-        if (!$category->getHasChild()) {
-            throw new \Exception(sprintf('У категории "%s" отстутсвуют дочерние узлы', $category->getId()));
-        }
+        if (\App::config()->debug) \App::debug()->add('sub.act', 'Tag\\Action.tagRoot', 138);
 
         $page->setParam('sidebarHotlinks', true);
 
-        $catalogJson = $page->getParam('catalogJson');
-        $catalogJsonBulk = [];
-        if(empty($catalogJson['category_layout_type']) || (!empty($catalogJson['category_layout_type']) && $catalogJson['category_layout_type'] == 'icons')) {
-            $catalogJsonBulk = \RepositoryManager::productCategory()->getCatalogJsonBulk();
-        }
+        $catalogJsonBulk = \RepositoryManager::productCategory()->getCatalogJsonBulk();
         $page->setParam('catalogJsonBulk', $catalogJsonBulk);
-
-        $page->setParam('myThingsData', [
-            'EventType' => 'MyThings.Event.Visit',
-            'Action'    => '1011',
-            'Category'  => $category->getName(),
-        ]);
 
         return new \Http\Response($page->show());
     }
@@ -407,19 +429,27 @@ class Action {
      * @param \View\Layout                   $page
      * @param \Http\Request                  $request
      * @return \Http\Response
+     * @throws \Exception
      */
-    protected function branchCategory(\Model\Product\Category\Entity $category, \Model\Product\Filter $productFilter, \View\Layout $page, \Http\Request $request) {
+    protected function rootCategory(\Model\Product\Category\Entity $category, \Model\Product\Filter $productFilter, \View\Layout $page, \Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
-        if (\App::config()->debug) \App::debug()->add('sub.act', 'ProductCategory\\Action.branchCategory', 138);
+        if (\App::config()->debug) \App::debug()->add('sub.act', 'Tag\\Action.rootCategory', 138);
 
         // сортировка
         $productSorting = new \Model\Product\Sorting();
+
+        $sidebarCategoriesTree = $page->getParam('sidebarCategoriesTree');
+        $categoriesByToken = $page->getParam('categoriesByToken');
+        $childTokens = array_keys($sidebarCategoriesTree[$category->getToken()]);
+
         // дочерние категории сгруппированные по идентификаторам
         $childrenById = [];
-        foreach ($category->getChild() as $child) {
+        foreach ($childTokens as $childToken) {
+            $child = $categoriesByToken[$childToken];
             $childrenById[$child->getId()] = $child;
         }
+
         // листалки сгруппированные по идентификаторам категорий
         $limit = \App::config()->product['itemsInCategorySlider'] * 2;
         $repository = \RepositoryManager::product();
@@ -474,6 +504,7 @@ class Action {
         $page->setParam('productPagersByCategory', $productPagersByCategory);
         $page->setParam('productVideosByProduct', $productVideosByProduct);
         $page->setParam('sidebarHotlinks', true);
+        $page->setParam('childrenById', $childrenById);
 
         $catalogJson = $page->getParam('catalogJson');
         $catalogJsonBulk = [];
@@ -496,6 +527,7 @@ class Action {
 
         return new \Http\Response($page->show());
     }
+
 
     /**
      * @param \Model\Product\Category\Entity $category
@@ -596,6 +628,7 @@ class Action {
             )));
         }
 
+        $page->setParam('rootCategory', $category->getRoot());
         $page->setParam('productPager', $productPager);
         $page->setParam('productSorting', $productSorting);
         $page->setParam('productView', $productView);

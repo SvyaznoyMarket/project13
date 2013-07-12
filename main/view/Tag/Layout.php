@@ -6,13 +6,11 @@ class Layout extends \View\DefaultLayout {
     public function prepare() {
         /** @var $category \Model\Product\Category\Entity */
         $category = $this->getParam('category') instanceof \Model\Product\Category\Entity ? $this->getParam('category') : null;
-        if (!$category) {
-            return;
-        }
         $tag = $this->getParam('tag') instanceof \Model\Tag\Entity ? $this->getParam('tag') : null;
         if (!$tag) {
             return;
         }
+        $categoryToken = $this->getParam('categoryToken');
 
         /** @var $productPager \Iterator\EntityPager */
         $productPager = $this->getParam('productPager') instanceof \Iterator\EntityPager ? $this->getParam('productPager') : null;
@@ -21,26 +19,34 @@ class Layout extends \View\DefaultLayout {
 
         // content title
         if (!$this->getParam('title')) {
-            $this->setParam('title', $tag->getName());
+            $this->setParam('title', $tag->getName() . (empty($categoryToken) ? '' : ': ' . $category->getName()));
         }
 
         // breadcrumbs
         if (!$this->hasParam('breadcrumbs')) {
             $breadcrumbs = [];
-            foreach ($category->getAncestor() as $ancestor) {
-                $link = $ancestor->getLink();
-                if (\App::request()->get('shop')) $link .= (false === strpos($link, '?') ? '?' : '&') . 'shop='. \App::request()->get('shop');
+            $breadcrumbs[] = array(
+                'name' => 'Тэги',
+                'url'  => '',
+                'span' => true,
+            );
+            $breadcrumbs[] = array(
+                'name' => $tag->getName(),
+                'url'  => $this->url('tag', ['tagToken' => $tag->getToken()]),
+            );
+
+            if(!empty($category)) {
+                if(!$category->isRoot()) {
+                    $breadcrumbs[] = array(
+                        'name' => $category->getRoot()->getName(),
+                        'url'  => $this->url('tag.category', ['tagToken' => $tag->getToken(), 'categoryToken' => $category->getRoot()->getToken()]),
+                    );
+                }
                 $breadcrumbs[] = array(
-                    'name' => $ancestor->getName(),
-                    'url'  => $link,
+                    'name' => $category->getName(),
+                    'url'  => $this->url('tag.category', ['tagToken' => $tag->getToken(), 'categoryToken' => $category->getToken()]),
                 );
             }
-            $link = $category->getLink();
-            if (\App::request()->get('shop')) $link .= (false === strpos($link, '?') ? '?' : '&') . 'shop='. \App::request()->get('shop');
-            $breadcrumbs[] = array(
-                'name' => $category->getName(),
-                'url'  => $link,
-            );
 
             $this->setParam('breadcrumbs', $breadcrumbs);
         }
@@ -48,52 +54,26 @@ class Layout extends \View\DefaultLayout {
         // seo
         $page = new \Model\Page\Entity();
 
-        if ($productPager && ($productPager->getPage() > 1)) {
-            $categoryNames = [];
-            foreach ($category->getAncestor() as $ancestor) {
-                $categoryNames[] = $ancestor->getName();
-            }
-            $categoryNames[] = $category->getName();
-
-            $page->setTitle(sprintf('%s - страница %d из %d - интернет-магазин Enter.ru - %s',
-                implode(' - ', $categoryNames),
-                $productPager->getPage(),
-                $productPager->getLastPage(),
-                $regionName
-            ));
-        } else {
-            $page->setTitle($category->getSeoTitle());
-            $page->setDescription($category->getSeoDescription());
-            $page->setKeywords($category->getSeoKeywords());
-
-            // title
-            if (!$page->getTitle()) {
-                $page->setTitle(''
-                    . $category->getName()
-                    . ($category->getRoot() ? (' - ' . $category->getRoot()->getName()) : '')
-                    . ' - ' . $regionName
-                    . ' - ENTER.ru'
-                );
-            }
-            // description
-            if (!$page->getDescription()) {
-                $page->setDescription(''
-                    . $category->getName()
-                    . ' в ' . $regionName
-                    . ' с ценами и описанием.'
-                    . ' Купить в магазине Enter'
-                );
-            }
-            // keywords
-            if (!$page->getKeywords()) {
-                $page->setKeywords($category->getName() . ' магазин продажа доставка ' . $regionName . ' enter.ru');
-            }
-
-            try {
-                $this->applySeoPattern($page);
-            } catch (\Exception $e) {
-                \App::logger()->error($e);
-            }
+        // title
+        if (!$page->getTitle()) {
+            $page->setTitle(''
+                . $tag->getName()
+                . ' - ' . $regionName
+                . ' - ENTER.ru'
+            );
+        }
+        // description
+        if (!$page->getDescription()) {
+            $page->setDescription(''
+                . $tag->getName()
+                . ' в ' . $regionName
+                . ' с ценами и описанием.'
+                . ' Купить в магазине Enter'
+            );
+        }
+        // keywords
+        if (!$page->getKeywords()) {
+            $page->setKeywords($tag->getName() . ' магазин продажа доставка ' . $regionName . ' enter.ru');
         }
 
         $this->setTitle($page->getTitle());
@@ -101,12 +81,25 @@ class Layout extends \View\DefaultLayout {
         $this->addMeta('keywords', $page->getKeywords());
     }
 
-    // public function slotBodyDataAttribute() {
-        // return 'product_catalog';
-    // }
+    public function slotBodyDataAttribute() {
+        return 'tag-category';
+    }
 
     public function slotSidebar() {
         return $this->render('tag/_sidebar_category', $this->params);
+    }
+
+    public function slotContentHead() {
+        // заголовок контента страницы
+        if (!$this->hasParam('title')) {
+            $this->setParam('title', null);
+        }
+        // навигация
+        if (!$this->hasParam('breadcrumbs')) {
+            $this->setParam('breadcrumbs', []);
+        }
+
+        return $this->render('_contentHead', $this->params);
     }
 
     /**
