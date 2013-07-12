@@ -331,7 +331,7 @@ $(document).ready(function(){
 	var ableToLoad = true
 	var compact = $("div.goodslist").length
 	var custom_jewel = $('.items-section__list').length
-	function onScroll( lsURL, filters, pageid ) {
+	function liveScroll( lsURL, filters, pageid ) {
 		var params = []
 		/* RETIRED cause data-filter
 		if( $('.bigfilter.form').length ) //&& ( location.href.match(/_filter/) || location.href.match(/_tag/) ) )
@@ -402,25 +402,25 @@ $(document).ready(function(){
 			}
 			if( location.href.match(/sort=/) &&  location.href.match(/page=/) ) { // Redirect on first in sort case
 				$(this).bind('click', function(){
-					docCookies.setItem( false, 'infScroll', 1, 4*7*24*60*60, '/' )
+					docCookies.setItem( false, 'infScroll', 1, 4*7*24*60*60, '/' );
 					location.href = location.href.replace(/page=\d+/,'')
 				})
 			} else {
 				$(this).bind('click', function(){
-					docCookies.setItem( false, 'infScroll', 1, 4*7*24*60*60, '/' )
+					docCookies.setItem( false, 'infScroll', 1, 4*7*24*60*60, '/' );
 					var next = $('div.pageslist:first li:first')
 					if( next.hasClass('current') )
 						next = next.next()
 					var next_a = next.find('a')
 									.html('<span>123</span>')
 									.addClass('borderedR')
-					next_a.attr('href', next_a.attr('href').replace(/page=\d+/,'') )
+					next_a.attr('href', next_a.attr('href').replace(/page=\d+/,'') );
 	
 					$('div.pageslist li').remove()
 					$('div.pageslist ul').append( next )
 										 .find('a')
 										 .bind('click', function(){
-											docCookies.removeItem( 'infScroll' )
+											docCookies.removeItem( 'infScroll' );
 										  })
 					$('div.allpager').addClass('mChecked')
 					checkScroll()
