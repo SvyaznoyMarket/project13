@@ -22,7 +22,6 @@
 			var counterGroupName = $self.attr('data-spinner-for');
 			var counterGroup = $('[data-spinner-for="'+counterGroupName+'"]');
 
-			var trigger = true;
 			var timeout_id = '';
 
 			var changeHandler = function(count){
@@ -75,21 +74,19 @@
 				}
 
 				var nowCount = input.val();
-				if (trigger){
-					nowCount = input.val();
-					if ((nowCount*1) < 1){
-						nowCount = 1;
-					}
-					if ((nowCount*1) > options.maxVal){
-						nowCount = options.maxVal;
-					}
-					input.val(nowCount);
-					changeHandler(nowCount);
+
+				nowCount = input.val();
+				if ((nowCount*1) < 1){
+					nowCount = 1;
 				}
-				else{
-					nowCount = input.val().replace(/\D/g,'') * 1;
-					input.val(nowCount);
+
+				if ((nowCount*1) > options.maxVal){
+					nowCount = options.maxVal;
 				}
+
+				input.val(nowCount);
+				changeHandler(nowCount);
+
 				return false;
 			};
 
@@ -98,22 +95,18 @@
 
 				if (e.which === 38){ // up arrow
 					plusBtn.trigger('click');
+					return false;
 				}
 				else if (e.which === 40){ // down arrow
 					minusBtn.trigger('click');
+					return false;
 				}
-				else if (	( (e.which >= 48) && (e.which <= 57) ) ||  // num or backspace or delete
+				else if ( !(( (e.which >= 48) && (e.which <= 57) ) ||  
 							( (e.which >= 96) && (e.which <= 105) ) || 
 							(e.which === 8) ||
-							(e.which === 46) ){
-					trigger = true;
-					keyupHandler();
+							(e.which === 46) )){
+					return false;
 				}
-				else{
-					trigger = false;
-					keyupHandler();
-				}
-				return false;
 			};
 
 			var updatespinner = function(e, products){

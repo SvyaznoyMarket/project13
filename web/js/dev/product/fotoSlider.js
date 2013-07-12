@@ -36,7 +36,6 @@
 		 * Проверка стрелок
 		 */
 		var checkArrow = function(){
-			console.log('checkArrow')
 			if (nowLeft > 0){
 				leftArr.show();
 			}
