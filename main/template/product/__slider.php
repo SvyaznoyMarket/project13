@@ -47,7 +47,7 @@ return function (
             ?>
                 <li class="bSliderAction__eItem" data-category="<?= $category ? ($sliderId . '-category-' . $category->getId()) : null ?>">
                     <div class="product__inner">
-                        <a class="productImg" href=""><img src="<?= $product->getImageUrl() ?>" alt="<?= $helper->escape($product->getName()) ?>" /></a>
+                        <a class="productImg" href="<?= $helper->url('product', ['productPath' => $product->getPath()]) ?>"><img src="<?= $product->getImageUrl() ?>" alt="<?= $helper->escape($product->getName()) ?>" /></a>
                         <div class="productName"><a href="<?= $helper->url('product', ['productPath' => $product->getPath()]) ?>"><?= $product->getName() ?></a></div>
                         <div class="productPrice"><span class="price"><?= $helper->formatPrice($product->getPrice()) ?> <span class="rubl">p</span></span></div>
 
