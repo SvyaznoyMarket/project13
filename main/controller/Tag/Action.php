@@ -143,16 +143,11 @@ class Action {
             foreach ($categories as $category) {
                 \RepositoryManager::productCategory()->prepareEntityBranch($category, $region);
                 $client->execute(\App::config()->coreV2['retryTimeout']['tiny']);
-                $parentCategory = $category->getParent();
-                $rootCategory = $category->getRoot();
-                $parentCategory->setProductCount(0);
-                $rootCategory->setProductCount(0);
-                $category->setParent($parentCategory);
-                $category->setRoot($rootCategory);
             }
 
             // строим дерево категорий для сайдбара
             $sidebarCategoriesTree = [];
+            $categoryProductCountsByToken = [];
             foreach ($categories as $category) {
                 $ancestorList = [$category->getRoot(), $category->getParent(), $category];
                 foreach ($ancestorList as $key => $ancestor) {
@@ -167,18 +162,18 @@ class Action {
                         $parentToken = $ancestorList[$key - 1]->getToken();
                         $this->addToken($sidebarCategoriesTree, $parentToken, $ancestorToken);
                     }
-
-                    if($ancestor->isLeaf()) {
-                        $tagCategory = $tagCategoriesById[$ancestor->getId()];
-                        $ancestor->setProductCount($tagCategory->getProductCount());
-                        $parentCategory = $ancestorList[1];
-                        $rootCategory = $ancestorList[0];
-                        // $parentCategory->setProductCount($parentCategory->getProductCount() + $tagCategory->getProductCount());
-                        $rootCategory->setProductCount($rootCategory->getProductCount() + $tagCategory->getProductCount());
-                    }
                 }
-            }
 
+                $tagCategory = $tagCategoriesById[$category->getId()];
+                $category->setProductCount($tagCategory->getProductCount());
+                $categoryProductCountsByToken[$category->getToken()] = $tagCategory->getProductCount();
+                $categoryProductCountsByToken[$category->getParent()->getToken()] = 
+                    isset($categoryProductCountsByToken[$category->getParent()->getToken()]) ? 
+                        $categoryProductCountsByToken[$category->getParent()->getToken()] + $tagCategory->getProductCount() : $tagCategory->getProductCount();
+                $categoryProductCountsByToken[$category->getRoot()->getToken()] = 
+                    isset($categoryProductCountsByToken[$category->getRoot()->getToken()]) ? 
+                        $categoryProductCountsByToken[$category->getRoot()->getToken()] + $tagCategory->getProductCount() : $tagCategory->getProductCount();
+            }
 
             if(empty($categoryToken) && !empty($sidebarCategoriesTree)) {
                 $rootTokens = array_keys($sidebarCategoriesTree);
@@ -186,9 +181,11 @@ class Action {
                 $category = $categoriesByToken[$firstRootToken];
             }
 
+
             // если категория содержится во внешнем узле дерева
             if ($category->isLeaf()) {
                 $page = new \View\Tag\LeafPage();
+                $page->setParam('categoryProductCountsByToken', $categoryProductCountsByToken);
                 $setPageParameters($page);
 
                 return $this->leafCategory($category, $productFilter, $page, $request);
@@ -196,12 +193,14 @@ class Action {
             // иначе, если категория самого верхнего уровня
             else if ($category->isRoot()) {
                 $page = new \View\Tag\RootPage();
+                $page->setParam('categoryProductCountsByToken', $categoryProductCountsByToken);
                 $setPageParameters($page);
 
                 return $this->rootCategory($category, $productFilter, $page, $request);
             }
 
             $page = new \View\Tag\BranchPage();
+            $page->setParam('categoryProductCountsByToken', $categoryProductCountsByToken);
             $setPageParameters($page);
 
             return $this->branchCategory($category, $productFilter, $page, $request);

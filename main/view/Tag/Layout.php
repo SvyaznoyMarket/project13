@@ -9,6 +9,11 @@ class Layout extends \View\DefaultLayout {
         if (!$category) {
             return;
         }
+        $tag = $this->getParam('tag') instanceof \Model\Tag\Entity ? $this->getParam('tag') : null;
+        if (!$tag) {
+            return;
+        }
+
         /** @var $productPager \Iterator\EntityPager */
         $productPager = $this->getParam('productPager') instanceof \Iterator\EntityPager ? $this->getParam('productPager') : null;
         /** @var $regionName string */
@@ -16,7 +21,7 @@ class Layout extends \View\DefaultLayout {
 
         // content title
         if (!$this->getParam('title')) {
-            $this->setParam('title', $category->getName());
+            $this->setParam('title', $tag->getName());
         }
 
         // breadcrumbs
