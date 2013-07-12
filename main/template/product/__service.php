@@ -3,7 +3,12 @@
 return function (
     \Model\Product\Entity $product,
     \Helper\TemplateHelper $helper
-) { ?>
+) {
+
+    if (!(bool)$product->getService()) {
+        return '';
+    }
+?>
 
 <div class="bWidgetService mWidget">
     <div class="bWidgetService__eHead">
@@ -11,31 +16,30 @@ return function (
         Установка и настройка
     </div>
 
-    <ul class="bWidgetService__eInputList">
+    <ul class="bInputList">
     <? foreach ($product->getService() as $service): ?>
     <?
         $id = \View\Id::cartButtonForProductService($product->getId(), $service->getId());
     ?>
-        <li>
+        <li class="bInputList__eListItem">
             <input
                 id="<?= $id ?>"
-                class="<?= $id ?> bCustomInput"
+                class="<?= $id ?> bCustomInput mCustomCheckbox"
                 name="<?= $product->getId()?>"
                 type="checkbox"
                 hidden
                 data-set-url="<?= $helper->url('cart.service.set', ['serviceId' => $service->getId(), 'productId' => $product->getId()]) ?>"
                 data-delete-url="<?= $helper->url('cart.service.delete', ['serviceId' => $service->getId(), 'productId' => $product->getId()]) ?>"
             />
+
             <label class="bCustomLabel" for="<?= $id ?>">
-                <div class="bCustomLabel__eText">
-                    <span class="dotted"><?= $service->getName() ?></span>
+                <span class="dotted"><?= $service->getName() ?></span>
 
-                    <? if ($service->getDescription()): ?>
-                        <?= $helper->render('__hint', ['name' => $service->getName(), 'value' => $service->getDescription()]) ?>
-                    <? endif ?>
+                <? if ($service->getDescription()): ?>
+                    <?= $helper->render('__hint', ['name' => $service->getName(), 'value' => $service->getDescription()]) ?>
+                <? endif ?>
 
-                    <div class="bCustomInput__ePrice"><strong><?= $helper->formatPrice($service->getPrice()) ?></strong> <span class="rubl">p</span></div>
-                </div>
+                <div class="bCustomInput__ePrice"><strong><?= $helper->formatPrice($service->getPrice()) ?></strong> <span class="rubl">p</span></div>
             </label>
         </li>
     <? endforeach ?>

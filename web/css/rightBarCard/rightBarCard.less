@@ -5,7 +5,7 @@
     &__eClick {
         font-size: 14px;
         text-align: center;
-        margin: 24px 0 0;
+        margin: 15px 0 0;
         a {
             text-decoration: underline;
         }
@@ -13,9 +13,10 @@
     &__eDelivery {
         margin: 30px 0 0;
         &-item {
-            background: url("@{base-url}/rightBarCard/img/ico.png") no-repeat 0 1px;
             padding-left: 25px;
             margin: 0 0 12px;
+            background-repeat: no-repeat;
+            background-image: url("@{base-url}/rightBarCard/img/ico.png");
             span {
                 font-size: 14px;
             }
@@ -23,14 +24,19 @@
         &-price {
             background-position: 0 -34px;
         }
+        &-text {
+            background: none;
+        }
         &-now {
             display: none;
             cursor: pointer;
             &.mOpen {
-                background-position: 5px -235px;
+                background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAANCAYAAACdKY9CAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyRpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoTWFjaW50b3NoKSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDo3NzQ2NkQ2RURGRDMxMUUyQTAyN0EyQzU4QzUwOTg0RiIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDo3NzQ2NkQ2RkRGRDMxMUUyQTAyN0EyQzU4QzUwOTg0RiI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOjc3NDY2RDZDREZEMzExRTJBMDI3QTJDNThDNTA5ODRGIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjc3NDY2RDZEREZEMzExRTJBMDI3QTJDNThDNTA5ODRGIi8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+i3PwrgAAAINJREFUeNpiZGBgmAPEAQzEgTwQYQrE/4nAz4CYHaZzDxEaSpGtciGg+D0Q86K77zQeDS3YPBSMQ/E3IBbDpoEJiG9g0TAFX7AloSn+DcQK+DSwAfETJA2LiYmcQqjif0CsQ4wGbiB+C8SbsUkyYxEDuZsLiBcB8WMikwwDJy4JgAADAGgmPsQcygiIAAAAAElFTkSuQmCC");
+                background-position: 8px 3px;
             }
             &.mClose {
-                background-position: 5px -129px;
+                background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAOCAYAAAD5YeaVAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyRpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoTWFjaW50b3NoKSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDo3NzQ2NkQ3MkRGRDMxMUUyQTAyN0EyQzU4QzUwOTg0RiIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDo3NzQ2NkQ3M0RGRDMxMUUyQTAyN0EyQzU4QzUwOTg0RiI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOjc3NDY2RDcwREZEMzExRTJBMDI3QTJDNThDNTA5ODRGIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjc3NDY2RDcxREZEMzExRTJBMDI3QTJDNThDNTA5ODRGIi8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+Qg8UnwAAAHtJREFUeNpiYGBgYGUgEjABsSEQ7wRiFWI0mAHxfyD+DsR1QMxOjGIYvgnELsQqhuGlQCxBrGIQ/gDEWVC/EVQMw6eA2IiJyFBTAmJ9Qib/A+JZQCxMyBlngdickAdBnspB9hQuxYuAWJxQpFwBYjtifMoNxCzEKAQIMABY6zXzpJXmMAAAAABJRU5ErkJggg==");
+                background-position: 8px 1px;
             }
         }
     }
@@ -56,7 +62,8 @@
 // counter
 .bCountSection {
     font-size: 14px;
-    margin: 0 0 10px 59px;
+    margin: 0 0 10px 0;
+    padding-left: 59px;
     line-height: 24px;
     width: 115px;
     button {
@@ -75,13 +82,20 @@
         border: 1px solid #c7c7c7;
         .rounded(3px);
         height: 22px;
-        line-height: 14px;
+        line-height: 22px;
         padding: 0;
         text-align: center;
         width: 33px;
         padding: 0;
         float: left;
         margin-right: 3px;
+    }
+
+    &.mDisabled{
+        .opacity(0.3);
+        button {
+            cursor: default;
+        }
     }
 }
 // widget services
@@ -102,73 +116,6 @@
         padding: 15px 0 0 32px;
         span {
             font-size: 14px;
-        }
-    }
-    &__eInputList {
-        font-size: 14px;
-        .bHint {
-            margin: 2px 0 0;
-            .bHint_ePopup {
-                left: -200px;
-                width: 238px;
-                z-index: 11;
-            }
-        }
-        li {
-            margin: 11px 0 0;
-            padding: 0 0 0 11px;
-            .bDeSelect {
-                padding: 5px 0 0 21px;
-                a {
-                    text-decoration: none;
-                    border-bottom: 1px dotted;
-                    font-size: 12px;
-                }
-            }
-            .bCustomInput[type="checkbox"],
-            .bCustomInput[type="radio"] {
-                display:none;            
-            }
-            .bCustomInput[type="checkbox"]+.bCustomLabel, 
-            .bCustomInput[type="radio"]+.bCustomLabel {
-              cursor: pointer;
-            }
-            .bCustomInput[type="checkbox"]+.bCustomLabel::before,
-            .bCustomInput[type="radio"]+.bCustomLabel::before {
-                content: "";
-                display: inline-block;
-                height: 16px;
-                width: 16px;
-                margin: 0;
-                background: url("@{base-url}/rightBarCard/img/ico.png") no-repeat 0 -163px;
-                vertical-align: top;
-            }
-            .bCustomInput[type="checkbox"]+.bCustomLabel::before {
-                background-position: 0 -212px;
-            }
-            .bCustomInput[type="radio"]+.bCustomLabel::before {
-                background-position: 0 -163px;
-            }
-            .bCustomInput[type="checkbox"]:checked+.bCustomLabel::before,
-            .bCustomInput[type="radio"]:checked+.bCustomLabel::before {
-                background-position: 0 -187px;
-            }
-            .bCustomInput[type="checkbox"]:checked+.bCustomLabel,
-            .bCustomInput[type="radio"]:checked+.bCustomLabel {
-                .dotted {
-                    border-bottom: none;
-                }
-            }
-            .bCustomLabel {
-                display: block;
-                &__eText {
-                    display: inline-block;
-                    width: 182px;
-                }
-                &__ePrice {
-                    margin: 5px 0 0;
-                }
-            }
         }
     }
 }

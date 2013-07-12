@@ -26,7 +26,7 @@ $disabled = !$product->getIsBuyable();
 if ($disabled) {
     $url = '#';
     $class .= ' mDisabled';
-} else {
+} else if (!isset($url)) {
     $urlParams = [
         'productId' => $product->getId(),
     ];
@@ -37,4 +37,6 @@ if ($disabled) {
 }
 ?>
 
-<a href="<?= $url ?>" class="<?= $class ?>" data-group="<?= $product->getId() ?>"><?= $value ?></a>
+<div class="bWidgetBuy__eBuy btnBuy">
+    <a href="<?= $url ?>" class="<?= $class ?>" data-group="<?= $product->getId() ?>"><?= $value ?></a>
+</div>

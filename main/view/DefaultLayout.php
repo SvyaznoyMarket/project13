@@ -122,7 +122,7 @@ class DefaultLayout extends Layout {
     public function slotHeadJavascript() {
         $return = "\n";
         foreach ([
-            'http://yandex.st/jquery/1.6.4/jquery.min.js',
+            'http://yandex.st/jquery/1.8.3/jquery.min.js',
             '/js/prod/LAB.min.js',
         ] as $javascript) {
             $return .= '<script src="' . $javascript . '" type="text/javascript"></script>' . "\n";
@@ -230,6 +230,14 @@ class DefaultLayout extends Layout {
                 'cart',
             ])) {
                 $return .= "\n\n" . $this->tryRender('partner-counter/_cityads');
+            }
+
+            // на всех страницах сайта, кроме shop.*
+            if ((0 !== strpos($routeName, 'shop')) && !in_array($routeName, [
+                'order.create',
+                'order.complete',
+            ])) {
+                $return .= "\n\n" . $this->tryRender('partner-counter/_reactive');
             }
 
             // на всех страницах сайта, кроме...

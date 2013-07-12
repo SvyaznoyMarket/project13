@@ -34,6 +34,6 @@
 		// callbacks
 		onValid: function() {},
 		onInvalid: function() {}
-	}
+	};
 
 })(jQuery);

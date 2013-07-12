@@ -1,9 +1,9 @@
 /**
  * jQuery плагин каунтера
  *
- * @author	Zaytsev Alexandr
- * @requires jQuery
- * @return	{jQuery object}
+ * @author		Zaytsev Alexandr
+ * @requires	jQuery
+ * @return		{jQuery object}
  */
 ;(function($) {
 	$.fn.goodsCounter = function(params) {
@@ -36,6 +36,10 @@
 			var plusHandler = function(e){
 				e.stopPropagation();
 
+				if ($self.hasClass('mDisabled')){
+					return false;
+				}
+
 				var nowCount = input.val();
 				if ((nowCount*1)+1 > options.maxVal){
 					return false;
@@ -49,6 +53,10 @@
 			var minusHandler = function(e){
 				e.stopPropagation();
 
+				if ($self.hasClass('mDisabled')){
+					return false;
+				}
+
 				var nowCount = input.val();
 				if ((nowCount*1)-1 < 1){
 					return false;
@@ -61,6 +69,10 @@
 
 			var keyupHandler = function(e){
 				e.stopPropagation();
+
+				if ($self.hasClass('mDisabled')){
+					return false;
+				}
 
 				var nowCount = input.val();
 				if (trigger){
@@ -106,16 +118,18 @@
 
 			var updatespinner = function(e, products){
 				for (var i = products.product.length - 1; i >= 0; i--) {
-					var input = $('[data-spinner-for="'+products.product[i].id+'"]').find('input');
-					input.val(products.product[i].quantity);
-				};
+					var spinner = $('[data-spinner-for="'+products.product[i].id+'"]');
+					spinner.addClass('mDisabled');
+					var input = spinner.find('input');
+					input.val(products.product[i].quantity).attr('disabled','disabled');
+				}
 			};
 
 			plusBtn.bind('click', plusHandler);
 			minusBtn.bind('click',minusHandler);
 			input.bind('keydown', keydownHandler);
 			input.bind('keyup', keyupHandler);
-			$('body').bind('updatespinner', updatespinner)
+			$('body').bind('updatespinner', updatespinner);
 		});
 	};
 

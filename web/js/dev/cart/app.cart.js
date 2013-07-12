@@ -32,7 +32,7 @@ $(document).ready(function() {
 		})
 
 
-		delBtn.live('click',function(){
+		delBtn.on('click',function(){
 			var delUrl = $(this).data('url')
 			var authFromServer = function(response) {
 				if ( response.success ) {
@@ -132,15 +132,15 @@ $(document).ready(function() {
 	}
 
 	var checkForSaleCard = function() {
-		var hasF1 = checkServF1()
-		var allBlock = $('.bF1SaleCard')
-		var hasCoupon = $('.bF1SaleCard_eComplete.mCoupon').length
-		var hasSertificate = $('.bF1SaleCard_eComplete.mSertificate').length
-		var config = $('#site-config').data('value');
+		var hasF1 = checkServF1();
+		var allBlock = $('.bF1SaleCard');
+		var hasCoupon = $('.bF1SaleCard_eComplete.mCoupon').length;
+		var hasSertificate = $('.bF1SaleCard_eComplete.mSertificate').length;
+		var config = $('#page-config').data('value');
 		var f1Certificate = config.f1Certificate;
 		var coupon = config.coupon;
-		var form = $('.bF1SaleCard_eForm')
-		var input = $('#F1SaleCard_number')
+		var form = $('.bF1SaleCard_eForm');
+		var input = $('#F1SaleCard_number');
 
 		
 		// console.log('c '+coupon)
@@ -208,6 +208,8 @@ $(document).ready(function() {
 		}
 
 	}
+	// init f1 sale card
+	checkForSaleCard();
 
 	function showOldPrice(oldPrice) {
 
@@ -228,12 +230,14 @@ $(document).ready(function() {
 
 	function showPrice(price){
 		if( !price ) {
-			location.reload(true)
+			location.reload(true);
 		}
-		checkForSaleCard()
-		total.html( printPrice( price ) )
-		total.typewriter(800)
-		totalCash = price
+
+		checkForSaleCard();
+
+		total.html( printPrice( price ) );
+		total.typewriter(800);
+		totalCash = price;
 	}
 
 	function getTotal() {
@@ -516,8 +520,8 @@ $(document).ready(function() {
 						makeWide( bline, f1item)
 						popupIsOpened = false
 						f1popup.hide()
-						showOldPrice(data.data.old_price)
-						showPrice(data.data.full_price)
+						showOldPrice(data.cart.old_price)
+						showPrice(data.cart.full_price)
 					}
 				})
 				
@@ -549,8 +553,8 @@ $(document).ready(function() {
 				$(this).val('В корзине').addClass('active')
 				var tmpitem = $(this).data()			
 				$.getJSON( tmpitem.url, function(data) {
-					showOldPrice(data.data.old_price)
-					showPrice(data.data.full_price)
+					showOldPrice(data.cart.old_price);
+					showPrice(data.cart.full_price);
 				})
 				popupIsOpened = false
 				wrntpopup.hide()
@@ -633,21 +637,19 @@ $(document).ready(function() {
 	}	
 
 	function makeWideWrnt( bline, f1item ) {
-		$('div.bBacketServ.mSmall:eq(1)', bline).hide()
+		$('div.bBacketServ.extWarr.mSmall', bline).hide()
 		f1item.productQ = bline.find('.ajaquant:first').text().replace(/[^0-9]/g,'')
-		var bBig = $('div.bBacketServ.mBig:eq(1)', bline)
+		var bBig = $('div.bBacketServ.extWarr.mBig', bline)
 		bBig.show()	
 		var f1lineshead = $('tr:first', bBig)
 		var f1linecart = tmpl('wrntline', f1item)
 		f1linecart = f1linecart.replace(/WID/g, f1item.ewid ).replace(/PRID/g, bline.attr('ref') )
-		if ($('.ew_title', bBig).length)
-			$($('tr:eq(1)', bBig)).remove()
+		if ($('.ew_title', bBig).length){
+			$($('tr:eq(1)', bBig)).remove();
+		}
 		f1lineshead.after( f1linecart )
 		addLineWrnt( $('tr:eq(1)', bBig), bline )
 		// getTotal()
-
-		showOldPrice(data.data.old_price)
-		showPrice(data.data.full_price)
 	}
 	
 	/* credit */
@@ -707,13 +709,9 @@ $(document).ready(function() {
 			anotherSum()
 			toggleCookie( 'credit_on' )
 		})	
-
 		
 		DirectCredit.init( $('#tsCreditCart').data('value'), $('#creditPrice') )
 		PubSub.subscribe( 'quantityChange', DirectCredit.change )
 	} // credit 
-
-	// init f1 sale card
-	checkForSaleCard();
     
-})
+});

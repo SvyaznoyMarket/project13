@@ -52,6 +52,7 @@
 
     <? if (\App::config()->analytics['enabled']): ?>
         <div id="luxupTracker" class="jsanalytics"></div>
+        <div id="adblenderCommon" class="jsanalytics"></div>
     <? endif ?>
 	
 	<a id="upper" href="#">Наверх</a>

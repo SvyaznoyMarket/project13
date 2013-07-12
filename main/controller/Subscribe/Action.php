@@ -12,7 +12,8 @@ class Action {
         \App::logger()->debug('Exec ' . __METHOD__);
 
         $client = \App::coreClientV2();
-        $response = new \Http\JsonResponse(['success' => false]);
+        $responseData = ['success' => false];
+        $channelId = 1;
 
         try {
             $email = trim((string)$request->get('email'));
@@ -25,64 +26,40 @@ class Action {
                 throw new \Exception('Не получен ни один канал для подписки');
             }
 
-            foreach ($channels as $channel) {
-                $params = [
-                    'email'      => $email,
-                    'channel_id' => $channel->getId(),
-                ];
-                if ($userEntity = \App::user()->getEntity()) {
-                    $params['token'] = $userEntity->getToken();
-                }
-
-                $client->addQuery('subscribe/create', $params, [], function($data) {}, function(\Exception $e) {
-                    \App::logger()->error($e);
-                    \App::exception()->remove($e);
-                });
+            $params = [
+                'email'      => $email,
+                'channel_id' => $channelId,
+            ];
+            /* SITE-1374
+            if ($userEntity = \App::user()->getEntity()) {
+                $params['token'] = $userEntity->getToken();
             }
+            */
 
-            $client->execute(\App::config()->coreV2['retryTimeout']['huge'], \App::config()->coreV2['retryCount']);
-
-            $cookie = new \Http\Cookie(
-                \App::config()->subscribe['cookieName'],
-                1,
-                time() + 3 * 365 * 24 * 60 * 60,
-                '/',
-                null,
-                false,
-                false // важно httpOnly=false, чтобы js мог получить куку
-            );
-            $response = new \Http\JsonResponse(['success' => true]);
-            //$response->headers->setCookie($cookie);
+            $client->addQuery('subscribe/create', $params, [], function($data) {}, function(\Exception $e) {
+                \App::logger()->error($e);
+                \App::exception()->remove($e);
+            });
+            $client->execute(\App::config()->coreV2['retryTimeout']['huge']);
         } catch (\Exception $e) {
             \App::logger()->error($e);
+            $responseData = ['success' => false];
         }
 
-        return $response;
+        return new \Http\JsonResponse($responseData);
     }
 
     /**
      * @return \Http\JsonResponse
      */
     public function cancel() {
-        $response = new \Http\JsonResponse(['success' => false]);
-
         try {
-            $cookie = new \Http\Cookie(
-                \App::config()->subscribe['cookieName'],
-                0,
-                time() + 3 * 365 * 24 * 60 * 60,
-                '/',
-                null,
-                false,
-                false // важно httpOnly=false, чтобы js мог получить куку
-            );
-            $response = new \Http\JsonResponse(['success' => true]);
-            //$response->headers->setCookie($cookie);
+            $responseData = ['success' => true];
         } catch (\Exception $e) {
-            \App::logger()->error($e);
+            $responseData = ['success' => false];
         }
 
-        return $response;
+        return new \Http\JsonResponse($responseData);
     }
 
     /**
@@ -107,7 +84,6 @@ class Action {
                     }
                 },
                 function (\Exception $e) {
-                    \App::logger()->error($e);
                     \App::exception()->remove($e);
                 }
             );

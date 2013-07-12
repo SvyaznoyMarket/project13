@@ -10,30 +10,31 @@ module.exports = function(grunt) {
 	 */
 	var bigjqueryFiles = [
 		"custom-form-elements.js",
-		"jquery.ui.core.js",
-		"jquery.ui.widget.js",
-		"jquery.ui.position.js",
-		"jquery.ui.mouse.js",
-		"jquery.ui.autocomplete.js",
-		"jquery.ui.slider.js",
-		"jquery.effects.core.js",
+		// "jquery.ui.core.js",
+		// "jquery.ui.widget.js",
+		// "jquery.ui.position.js",
+		// "jquery.ui.mouse.js",
+		// "jquery.ui.autocomplete.js",
+		// "jquery.ui.slider.js",
+		// "jquery.effects.core.js",
 		"jquery.email_validate.js",
 		// "jquery.effects.transfer.js",
 		// "jquery.effects.blind.js",
 		"jquery.lightbox_me.js",
-		"jquery.mousewheel.min.js",
+		// "jquery.mousewheel.min.js",
 		// "jquery.raty.js",
 		"jquery.scrollto.js",
 		"jquery.placeholder.js",
 		"prettyCheckboxes.js",
 		"jquery.infinityCarousel.js",
 		"typewriter.js",
-		"jquery.ui.touch-punch.js",
+		// "jquery.ui.touch-punch.js",
 		"jquery.maskedinput.js",
 		"jquery.put_cursor_at_end.js",
 		"goodsCounter.js",
 		"jquery.elevatezoom.js",
-		"customRadio.js"
+		"customRadio.js",
+		'jquery-ui-1.10.3.custom.js'
 	];
 
 	/**
@@ -52,8 +53,7 @@ module.exports = function(grunt) {
 		jsDevPath+'library/mapDriver.js',
 		jsDevPath+'library/black_box.js',
 		jsDevPath+'library/addParameterToUrl.js',
-		jsDevPath+'library/*.js',
-		// jsDevPath+'library/isTrueEmail.js',
+		jsDevPath+'library/*.js'
 	];
 
 	grunt.initConfig({
@@ -395,12 +395,6 @@ module.exports = function(grunt) {
 					'../web/js/prod/infopage.min.js': [jsDevPath+'infopage/*.js']
 				}
 			},
-
-			// jqueryPluginsJS: {
-			// 	files: {
-			// 		'../web/js/prod/jquery-plugins.min.js': [jsDevPath+'jquery-plugins/*.js']
-			// 	}
-			// },
 
 			libraryJS: {
 				files: {

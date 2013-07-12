@@ -16,6 +16,7 @@
 ?>
 
 <?
+$helper = new \Helper\TemplateHelper();
 
 /** @var  $productVideo \Model\Product\Video\Entity|null */
 $productVideo = reset($productVideos);
@@ -278,15 +279,7 @@ $productVideo = reset($productVideos);
 
     <div class="goodsbarbig product-desc__buy mSmallBtns" ref="<?= $product->getToken() ?>" data-value='<?= $json ?>'>
       <? if ($product->getIsBuyable()): ?>
-        <div class='bCountSet ptoduct-count' data-category-class="jewel" <?= $user->getCart()->hasProduct($product->getId()) ? 'style="visibility:hidden;"': '' ?>>
-          <? if (!$user->getCart()->hasProduct($product->getId())): ?>
-          <a class='bCountSet__eP' href="#">+</a><a class='bCountSet__eM' href="#">-</a>
-          <? else: ?>
-          <a class='bCountSet__eP disabled' href="#">&nbsp;</a><a class='bCountSet__eM disabled' href="#">&nbsp;</a>
-          <? endif ?>
-          <span><?= $user->getCart()->hasProduct($product->getId()) ? $user->getCart()->getQuantityByProduct($product->getId()) : 1 ?></span> 
-        </div>
-        <div class="countTitle fl" <?= $user->getCart()->hasProduct($product->getId()) ? 'style="visibility:hidden;"': '' ?>>шт.</div>
+        <?= $helper->render('jewel/__spinner', ['id' => \View\Id::cartButtonForProduct($product->getId())]) ?>
       <?php endif ?>
       <?= $page->render('jewel/cart/_button', ['product' => $product, 'disabled' => !$product->getIsBuyable(), 'bought' => ($user->getCart()->hasProduct($product->getId()) ? 'style="visibility:hidden;"': '')]) ?>
       <? if (!$product->getIsBuyable() && $product->getState()->getIsShop()): ?>
@@ -705,15 +698,7 @@ $productVideo = reset($productVideos);
     <? //if ($product->getIsBuyable() || !$product->getState()->getIsShop()): ?>
     <div class="goodsbarbig product-desc__buy mSmallBtns" ref="<?= $product->getToken() ?>" data-value='<?= $json ?>'>
       <? if ($product->getIsBuyable()): ?>
-        <div class='bCountSet ptoduct-count' data-category-class="jewel" <?= $user->getCart()->hasProduct($product->getId()) ? 'style="visibility:hidden;"': '' ?>>
-          <? if (!$user->getCart()->hasProduct($product->getId())): ?>
-          <a class='bCountSet__eP' href="#">+</a><a class='bCountSet__eM' href="#">-</a>
-          <? else: ?>
-          <a class='bCountSet__eP disabled' href="#">&nbsp;</a><a class='bCountSet__eM disabled' href="#">&nbsp;</a>
-          <? endif ?>
-          <span><?= $user->getCart()->hasProduct($product->getId()) ? $user->getCart()->getQuantityByProduct($product->getId()) : 1 ?></span> 
-        </div>
-        <div class="countTitle fl" <?= $user->getCart()->hasProduct($product->getId()) ? 'style="visibility:hidden;"': '' ?>>шт.</div>
+        <?= $helper->render('jewel/__spinner', ['id' => \View\Id::cartButtonForProduct($product->getId())]) ?>
       <?php endif ?>
       <?= $page->render('jewel/cart/_button', ['product' => $product, 'disabled' => !$product->getIsBuyable(), 'bought' => ($user->getCart()->hasProduct($product->getId()) ? 'style="visibility:hidden;"': '')]) ?>
       <? if (!$product->getIsBuyable() && $product->getState()->getIsShop()): ?>

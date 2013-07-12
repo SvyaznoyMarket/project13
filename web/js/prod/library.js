@@ -2007,7 +2007,7 @@ BlackBox.prototype.basket = function() {
 	 * @private
 	 */
 	var flyboxDestroy = function(){
-		flyboxBasket.fadeOut(300, function(){
+		flyboxBasket.hide(0, function(){
 			flyboxInner.remove();
 		});
 	};
@@ -2210,8 +2210,9 @@ var UpdateUrlString = function(key, value) {
 	var re = new RegExp("([?|&])" + key + "=.*?(&|#|$)(.*)", "gi");
 
 	if (re.test(url)) {
-		if (typeof value !== 'undefined' && value !== null)
+		if (typeof value !== 'undefined' && value !== null){
 			return url.replace(re, '$1' + key + "=" + value + '$2$3');
+		}
 		else {
 			return url.replace(re, '$1$3').replace(/(&|\?)$/, '');
 		}

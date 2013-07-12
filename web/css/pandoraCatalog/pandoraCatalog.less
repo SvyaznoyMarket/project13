@@ -45,29 +45,6 @@
       width: 240px;
       float: left;
       height: 240px;
-      .item-buy {
-        width: auto;
-        position: absolute;
-        bottom: 0;
-        right: 0;
-        background: #000;
-        color: #ffffff;
-        .rounded(4px);
-        .opacity(0);
-        text-align: center;
-        line-height: 21px;
-        display: block;
-        height: 23px;
-        padding: 0 10px;
-        .transition(opacity 0.1s ease-in-out);
-        &.link1active {
-          background: #fff;
-          border: 1px solid #000;
-          color: #000;
-          height: 21px;
-          width: auto;
-        }
-      }
       .item-price {
         position: absolute;
         bottom: 0;
@@ -91,7 +68,7 @@
       .item-name {
         .opacity(1);
       }
-      .item-buy {
+      .btnBuy__eLink {
         .opacity(1);
       }
       .item-price {
@@ -297,6 +274,33 @@
     width: 218px;
     height: 221px;
     .rounded(0);
+    .btnBuy__eLink {
+      width: auto;
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      background: #000;
+      color: #ffffff;
+      .rounded(4px);
+      .opacity(0);
+      text-align: center;
+      line-height: 21px;
+      display: block;
+      height: 23px;
+      padding: 0 10px;
+      .transition(opacity 0.1s ease-in-out);
+      border: 1px solid #000;
+      font: normal 12px tahoma,verdana,arial,helvetica,sans-serif;
+      line-height:21px;
+      text-indent: 0;
+      &.mBought {
+        background: #fff;
+        border: 1px solid #000;
+        color: #000;
+        height: 21px;
+        width: auto;
+      }
+    }
   }
   .bNavLoader__eIco {
     background: url("/css/ajaxPopup/img/arrow_bg_b.png") no-repeat;

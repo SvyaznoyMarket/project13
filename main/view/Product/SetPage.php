@@ -39,7 +39,6 @@ class SetPage extends \View\DefaultLayout {
         $product = end($products);
 
         return ''
-            . ($product ? $this->tryRender('product/partner-counter/_etargeting', array('product' => $product)) : '')
             . "\n\n"
             . (bool)$product ? $this->render('_remarketingGoogle', ['tag_params' => $tagData]) : ''
             . "\n\n"

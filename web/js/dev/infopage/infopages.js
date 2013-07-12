@@ -1,6 +1,6 @@
 $(document).ready(function(){
 
-	if ( $('.subscribe-form__btn').length && !$('.subscribe-form__btn__friend').length){
+	if ( $('.subscribe-form__btn').length){
 		var input = $('.subscribe-form__email')
 		var form = $('.subscribe-form')
 		var subscribing = function(){
@@ -30,18 +30,12 @@ $(document).ready(function(){
 	}
 	
 
-	if ( $('.subscribe-form__btn__friend').length){
-		var input_friend = $('.subscribe-form__email__friend');
-		var form_friend = $('.subscribe-form__friend');
+	if ($('.subscribe-form__email').length && $('.show_flocktory_popup').length){
+		var input_friend = $('.subscribe-form__email');
 		var subscribing_friend = function(){
 			var email_friend = input_friend.val();
 
 			if ( email_friend.search('@') !== -1 ){
-				form_friend.html('<div class="subscribe-form__title subscribe-form__title__friend">Спасибо! подтверждение подписки отправлено на указанный e-mail</div>');
-				if( typeof(_gaq) !== 'undefined' ){
-					_gaq.push(['_trackEvent', 'Account', 'Emailing friend sign up', 'Page subscribe_friends']);
-				}
-
 		    var flocktory_subscription_date = new Date();
 		    var flocktory_subscription_date_string = flocktory_subscription_date.getFullYear() + '' + flocktory_subscription_date.getMonth() + '' + flocktory_subscription_date.getDay() + '' + flocktory_subscription_date.getHours() + '' + flocktory_subscription_date.getMinutes() + '' + flocktory_subscription_date.getSeconds() + '' + flocktory_subscription_date.getMilliseconds() + '' + Math.floor(Math.random() * 1000000)
 		    var _flocktory = window._flocktory = _flocktory || [];
@@ -69,15 +63,8 @@ $(document).ready(function(){
 		      var l = document.getElementsByTagName('script')[0]; l.parentNode.insertBefore(s, l);
 		    })();
 			}
-			else{
-				// email invalid
-				input_friend.addClass('mError')
-			}
-
-			return false
 		}
-
-		$('.subscribe-form__btn__friend').bind('click', subscribing_friend)
+		$('.subscribe-form__btn').bind('click', subscribing_friend)
 	}
 
 

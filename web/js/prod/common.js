@@ -2,54 +2,41 @@
  * Обработчик для кнопок купить
  *
  * @author		Zaytsev Alexandr
- * @requires	printPrice
+ * @requires	jQuery, BlackBox
  * @param		{event}		e
  * @param		{Boolean}	anyway Если true событие будет все равно выполнено
  */
 ;(function(){
 
 	/**
-	 * Покупка товара. Маркировка кнопок.
+	 * Добавление в корзину на сервере. Получение данных о покупке и состоянии корзины. Маркировка кнопок.
 	 * 
-	 * @param  {Event} e
+	 * @param  {Event}	e
 	 */
-	var buyProcessing = function(e){
+	var buy = function(e){
 		var button = $(this);
 		var url = button.attr('href');
 
 		var addToCart = function(data) {
-			if (data.success) {
-				var groupBtn = button.data('group');
-				$('.jsBuyButton[data-group="'+groupBtn+'"]').html('В корзине').addClass('mBought');
-				// kissAnalytics(data);
-				// sendAnalytics(button);
-				
-				if (blackBox) {
-					var basket = data.cart;
-					var product = data.product;
-					var tmpitem = {
-						'title': product.name,
-						'price' : printPrice(product.price),
-						'imgSrc': product.img,
-						'productLink': product.link,
-						'totalQuan': basket.full_quantity,
-						'totalSum': printPrice(basket.full_price),
-						'linkToOrder': basket.link,
-					};
-					blackBox.basket().add(tmpitem);
-				}
+			if (!data.success) {
+				return false;
 			}
+
+			var groupBtn = button.data('group');
+
+			$('.jsBuyButton[data-group="'+groupBtn+'"]').html('В корзине').addClass('mBought').attr('href','/cart');
+			$("body").trigger("addtocart", [data]);
 		};
 
 		$.get(url, addToCart);
-	}
+	};
 
 	/**
 	 * Хандлер кнопки купить
 	 * 
-	 * @param  {Event} e
+	 * @param  {Event}	e
 	 */
-	var BuyButton = function(e){
+	var BuyButtonHandler = function(e){
 		e.stopPropagation();
 
 		var button = $(this);
@@ -58,10 +45,12 @@
 			return false;
 		}
 		if (button.hasClass('mBought')) {
+			var url = button.attr('href');
+			document.location.href(url);
 			return false;
 		}
 
-		button.trigger('buy', buyProcessing);
+		button.trigger('buy', buy);
 		return false;
 	};
 
@@ -74,19 +63,53 @@
 	 */
 	var markCartButton = function(event, markActionInfo){
 		for (var i = 0, len = markActionInfo.product.length; i < len; i++){
-			$('.'+markActionInfo.product[i].id).html('В корзине').addClass('mBought');
+			$('.'+markActionInfo.product[i].id).html('В корзине').addClass('mBought').attr('href','/cart');
 		}
 	};
 	$("body").bind('markcartbutton', markCartButton);
 	
 	$(document).ready(function() {
-		$('.jsBuyButton').live('click', BuyButton);
-		$('.jsBuyButton').live('buy', buyProcessing);
+		$('.jsBuyButton').on('click', BuyButtonHandler);
+		$('.jsBuyButton').on('buy', buy);
 	});
+}());
 
-	/**
-	 * ADD Analytics for buyButton!!!
-	 */
+
+/**
+ * Показ окна о совершенной покупке, парсинг данных от сервера, аналитика
+ *
+ * @author		Zaytsev Alexandr
+ * @requires	jQuery, printPrice, BlackBox
+ * @param		{event}		event 
+ * @param		{Object}	data	данные о том что кладется в корзину
+ */
+;(function(){
+	var buyProcessing = function(event, data){
+		// kissAnalytics();
+		// sendAnalytics();
+
+		if (!blackBox) {
+			return false;
+		}
+
+		var basket = data.cart;
+		var product = data.product;
+		var tmpitem = {
+			'title': product.name,
+			'price' : printPrice(product.price),
+			'imgSrc': product.img,
+			'productLink': product.link,
+			'totalQuan': basket.full_quantity,
+			'totalSum': printPrice(basket.full_price),
+			'linkToOrder': basket.link,
+		};
+
+		blackBox.basket().add(tmpitem);
+	};
+
+	$(document).ready(function() {
+		$("body").bind('addtocart', buyProcessing);
+	});
 }());
  
  
@@ -205,63 +228,12 @@ $(document).ready(function(){
 
 
 		// KISS
-		$('.bSimilarGoods.mProduct .bSimilarGoodsSlider_eGoods').live('click', kissSimilar)
+		$('.bSimilarGoods.mProduct .bSimilarGoodsSlider_eGoods').on('click', kissSimilar)
 
 
-		$('.bSimilarGoods.mCatalog .bSimilarGoodsSlider_eGoods a').live('click', sliderTracking)
+		$('.bSimilarGoods.mCatalog .bSimilarGoodsSlider_eGoods a').on('click', sliderTracking)
 	}
-	
 
-	var isInCart = false
-	var changeButtons = function( lbox ){
-		if(!lbox || !lbox.productsInCart ) return false
-		for( var tokenP in lbox.productsInCart) { // Product Card
-			var bx = $('div.boxhover[ref='+ tokenP +']')
-			if( bx.length ) {
-				var button = $('a.link1', bx)
-				button.attr('href', $('.lightboxinner .point2').attr('href') )
-				button.addClass('active')	//die('click') doesnt work
-			}
-			bx = $('div.goodsbarbig[ref='+ tokenP +']')
-			if( bx.length ) {
-				var button = $('a.link1', bx)
-				button.attr('href', $('.lightboxinner .point2').attr('href') )
-				$('body').addClass('bought')
-				button.unbind('click')//.addClass('active')
-				isInCart = true
-				if( lbox.servicesInCart )
-				for( var tokenS in lbox.servicesInCart ) {
-					if( tokenP in lbox.servicesInCart[ tokenS ] ) {
-						var button = $('div.mServ[ref='+ tokenS +'] a.link1')
-						if( button.length ) {
-							button.attr('href', $('.lightboxinner .point2').attr('href') ).text('В корзине')
-						}
-						button = $('td.bF1Block_eBuy[ref='+ tokenS +'] input.button')
-						if( button.length ) {
-							button.addClass('active').val('В корзине').attr( 'href', carturl )
-						}
-					}
-				}
-			}
-		}
-		if( lbox.servicesInCart )
-		for( var tokenS in lbox.servicesInCart ) { // Service Card
-			if( lbox.servicesInCart[ tokenS ][0] ) {
-				var button = $('div.mServ[ref='+ tokenS +'] a.link1')
-				if( button.length ) {
-					button.attr('href', $('.lightboxinner .point2').attr('href') ).text('В корзине').addClass('active')
-				}
-				button = $('div.bServiceCard[ref='+ tokenS +'] input')
-				if( button.length ) {
-					button.val('В корзине').addClass('active').attr( 'href', carturl )
-				}
-			}
-		}
-		// if( lbox.is_credit )
-		// 	if( $('#creditinput').length )
-		// 		$('#creditinput').trigger('click')
-	};
-	/* ---- */
 
 
 	// hover imitation for IE
@@ -272,7 +244,7 @@ $(document).ready(function(){
 	}
 
 	/* ---- */
-	$('.goodsbox__inner').live('click', function(e) {
+	$('.goodsbox__inner').on('click', function(e) {
 		if( $(this).attr('data-url') )
 			window.location.href = $(this).attr('data-url')
 	})
@@ -334,336 +306,6 @@ $(document).ready(function(){
 	});
 
 
-	/* F1 */
-	if( $('div.bF1Info').length ) {
-		var look    = $('div.bF1Info');
-		var f1lines = $('div.bF1Block');
-		// open popup
-		$('.link1, .bF1Info_Logo', look).click( function(){
-			if( $('div.hideblock.extWarranty').is(':visible') )
-				$('div.hideblock.extWarranty').hide()
-			f1lines.show();
-			return false;
-		});
-		// close popup
-		$('.close', f1lines).click( function(){
-			f1lines.hide();
-		});
-		// add f1
-		f1lines.find('input.button').bind ('click', function() {
-			if( $(this).hasClass('active') ){
-				window.location.href = $(this).attr('href')
-				return false
-			}
-				
-			$(this).val('В корзине').addClass('active').attr( 'href', carturl )
-			var f1item = $(this).data()
-			//credit case
-// 			if( 'creditBox' in window ) {
-// //				if( !f1item.url.match(/_quantity\/[0-9]+/) )
-// //					f1item.url += '/1' //quantity
-// 				if( creditBox.getState() )
-// 					f1item.url += '1/1' //credit
-// 				else 	
-// 					f1item.url += '1/0' //no credit
-// 			}			
-			f1lines.fadeOut()
-			$.getJSON( f1item.url, function(data) {
-				if( !data.success )
-					return true
-				look.find('h3').text('Вы добавили услуги:')
-				var f1line = tmpl('f1look', f1item)
-				f1line = f1line.replace('F1ID', f1item.fid )
-				look.find('.link1').before( f1line )
-
-
-				// flybox
-				var tmpitem = {
-					'id'    : $('.goodsbarbig .link1').attr('href'),
-					'title' : $('h1').html(),
-					'vitems': data.data.full_quantity,
-					'sum'   : data.data.full_price,
-					'link'  : data.data.link,
-					'price' : $('.goodsinfo .price').html(),
-					'img'   : $('.goodsphoto img.mainImg').attr('src')
-				}
-				tmpitem.f1 = f1item
-				if( isInCart )
-					tmpitem.f1.only = 'yes'
-				// ltbx.getBasket( tmpitem )
-				kissAnalytics(data)
-				if( !isInCart ) {
-					isInCart = true
-					markPageButtons()
-				}
-			})
-			return false
-		})
-		// remove f1
-		$('a.bBacketServ__eMore', look).live('click', function(){
-			var thislink = this
-			$.getJSON( $(this).attr('href'), function(data) {
-				if( !data.success )
-					return true
-				var line = $(thislink).parent()
-				f1lines.find('td[ref='+ line.attr('ref') +']').find('input').val('Купить услугу').removeClass('active')
-				line.remove()
-				// ltbx.update({ sum: data.data.full_price })
-
-				if( !$('a.bBacketServ__eMore', look).length )
-					look.find('h3').html('Выбирай услуги F1<br/>вместе с этим товаром')
-			})
-			return false
-		});
-	}
-
-
-
-	/* draganddrop */
-	// var draganddrop = new DDforLB( $('.allpageinner'), ltbx )	
-	// $('.goodsbox__inner[ref] .mainImg').live('mousedown', function(e){
-	// 		e.stopPropagation()
-	// 		e.preventDefault()
-	// 		if(e.which == 1)
-	// 			draganddrop.prepare( e.pageX, e.pageY, parseItemNode(currentItem) ) // if delta then d&d
-	// });
-	// $('.goodsbox__inner[ref] .mainImg').live('mouseup', function(e){
-	// 	draganddrop.cancel()
-	// });
-
-	// function DDforLB( outer , ltbx ) {	
-	// 	if (! outer.length ) 
-	// 		return null
-
-	// 	var self     = this
-	// 	var lightbox = ltbx
-	// 	var isactive = false
-	// 	var icon     = null
-	// 	var margin   = 25 // gravitation parameter
-	// 	var wdiv2    = 30 // draged box halfwidth
-	// 	var containers = $('.dropbox')
-	// 	if (! containers.length ) 
-	// 		return null
-	// 	var abziss 	 = []		
-	// 	var ordinat  = 0
-	// 	var itemdata = null
-
-	// 	/* initia */
-	// 	var divicon = $('<div>').addClass('dragbox').css('display','none')
-	// 	var icon = $('<div>')
-	// 	divicon.append( icon )
-	// 	$(outer).append( divicon )
-	// 	var shtorka = $('<div>').addClass('graying')
-	// 			.css( {'display':'none', 'opacity': '0.5'} ) //ie special							
-	// 	$(outer).append( shtorka )
-	// 	var shtorkaoffset = 0
-
-	// 	this.cancel = function() {
-	// 		$(document).unbind('mousemove.dragitem')
-	// 	}
-
-	// 	$(document).bind('mouseup', function(e) {
-	// 	if(e.target.id == 'dragimg')
-	// 		self.cancel()
-	// 	})
-
-	// 	this.prepare = function( pageX, pageY, item ) {
-	// 		itemdata = item
-	// 		if(  $( '.goodsbox__inner[ref='+ itemdata.id +'] a.link1').hasClass('active') ) 
-	// 			return
-	// 		$(document).bind('mousemove.dragitem', function(e) {
-	// 			e.preventDefault()
-	// 			if(! isactive) {
-	// 				if( Math.abs(pageX - e.pageX) > margin || Math.abs(pageY - e.pageY) > margin ) {
-	// 					self.turnon(e.pageX, e.pageY)
-	// 					isactive = true
-	// 				}
-	// 			} else {		
-	// 				icon.css({'left':e.pageX - wdiv2, 'top':e.pageY - shtorkaoffset - wdiv2 })
-	// 				ordinat = $(containers[0]).offset().top
-
-	// 				if( e.pageY + wdiv2 > ordinat - margin &&
-	// 					e.pageX + wdiv2 > abziss[0] - margin && e.pageX - 30 < abziss[0] + 70 + margin ) { // mouse in HOT area
-	// //					e.pageX + wdiv2 > abziss[0] - margin && e.pageX - 30 < abziss[2] + 70 + margin ) { // mouse in HOT area
-	// 					/*var cindex = 3
-	// 					if( e.pageX  < abziss[0] + 70 + margin )
-	// 						cindex = 1
-	// 					else if( e.pageX < abziss[1]  + 70 + margin )
-	// 						cindex = 2*/
-
-	// 					lightbox.toFire( 3 ) // to burn the box !
-	// 				} else
-	// 					lightbox.putOutBoxes() // run checking is inside
-	// 			}
-	// 		})		
-	// 	}
-
-	// 	this.turnon = function( pageX, pageY ) {
-	// 		lightbox.clear()
-	// 		shtorka.show()
-	// 		shtorkaoffset = shtorka.offset().top
-	// 		icon.html( $('<img>').css({'width':60, 'height':60}).attr({'id':'dragimg','width':60, 'height':60, 'alt':'', 'src': itemdata.img }) )
-	// 		icon.css({'left':pageX - wdiv2, 'top':pageY - shtorkaoffset - wdiv2 })
-
-	// 		divicon.show()
-	// 		lightbox.getContainers()		
-	// 		for(var i=0; i < containers.length; i++) {
-	// 			abziss[i] = $(containers[i]).offset().left
-	// 		}	
-	// 		$(document).bind('mouseup.dragitem', function() {
-	// 			if( fbox = lightbox.gravitation( ) ) {
-	// 				//$(document).unbind('mousemove')
-	// 				$(document).unbind('.dragitem')
-	// 				icon.animate( {
-	// //						left: abziss[ fbox - 1 ] + 5,
-	// 						left: abziss[ 0 ] + 5,
-	// 						top: ordinat - shtorkaoffset + 5
-	// 					} , 400, 
-	// 					function() { self.finalize( fbox ) } )
-	// 			} else 
-	// 				self.turnoff()
-	// 		})		
-	// 	}
-
-	// 	this.turnoff = function() {
-	// 		isactive = false
-	// 		shtorka.fadeOut()
-	// 		divicon.hide()
-	// 		lightbox.hideContainers()
-	// 		//$(document).unbind('mousemove')
-	// 		$(document).unbind('.dragitem')
-	// 	}
-
-	// 	this.finalize = function( actioncode ) {
-	// 		setTimeout(function(){
-	// 			self.turnoff()
-	// 			switch( actioncode ) {
-	// 				case 1: //comparing
-	// 					lightbox.getComparing( itemdata )
-	// 					break
-	// 				case 2: //wishes 
-	// 					lightbox.getWishes( itemdata )
-	// 					break
-	// 				case 3: //basket
-	// 					$.getJSON( $( '.goodsbox__inner[ref='+ itemdata.id +'] a.link1').attr('href'), function(data) {
-	// 						if ( data.success && ltbx ) {
-	// 							var tmpitem = itemdata
-	// 							tmpitem.vitems = data.data.full_quantity
-	// 							tmpitem.sum = data.data.full_price
-	// 							ltbx.getBasket( tmpitem )
-	// 							kissAnalytics(data)
-	// 						}	
-	// 					})
-	// 					//lightbox.getBasket( itemdata )
-	// 					break
-	// 			}
-	// 		}, 400)
-	// 	}
-
-	// } // DDforLB object
-	
-
-	/* EXT WARRANTY */
-	if ( ($('div.bBlueButton.extWarranty').length)&&($('div.bBlueButton.extWarranty').is(':visible')) ){
-		var look_extWarr = $('div.bBlueButton.extWarranty');
-		var f1lines_extWarr = $('div.hideblock.extWarranty');
-		var ew_look = $("#ew_look");
-		//open popup
-		$('.link1',look_extWarr).click( function(){
-			if( $('div.bF1Block').is(':visible') )
-				$('div.bF1Block').hide()
-			f1lines_extWarr.show()
-			return false
-		});
-		//close popup
-		$('.close', f1lines_extWarr).click( function(){
-			f1lines_extWarr.hide();
-		});
-		//add warranty
-		f1lines_extWarr.find('input.button').bind ('click', function() {
-			if( $('input.button',f1lines_extWarr).hasClass('active') ){
-				$('input.button',f1lines_extWarr).val('Выбрать').removeClass('active');
-			}
-			$(this).val('Выбрана').addClass('active')
-			var extWarr_item = $(this).data();
-			f1lines_extWarr.fadeOut();
-			$.getJSON( extWarr_item.url, function(ext_data) {
-				if( !ext_data.success ){
-					return true;
-				}
-				$('.link1',look_extWarr).text('Изменить гарантию');
-				look_extWarr.find('h3').text('Вы выбрали гарантию:');
-
-				$('.ew_title', ew_look).text(extWarr_item.f1title);
-				$('.ew_price', ew_look).text(extWarr_item.f1price);
-				$('.bBacketServ__eMore', ew_look).attr('href', extWarr_item.deleteurl);
-				ew_look.show();
-				var tmpitem = {
-					'id'    : $('.goodsbarbig .link1').attr('href'),
-					'title' : $('h1').html(),
-					'vitems': ext_data.data.full_quantity,
-					'sum'   : ext_data.data.full_price,
-					'link'  : ext_data.data.link,
-					'price' : $('.goodsinfo .price').html(),
-					'img'   : $('.goodsphoto img.mainImg').attr('src')
-				};
-				tmpitem.f1 = extWarr_item;
-				if( isInCart ){
-					tmpitem.f1.only = 'yes';
-				}
-				// ltbx.getBasket( tmpitem );
-				kissAnalytics(ext_data);
-				if( !isInCart ) {
-					isInCart = true;
-					markPageButtons();
-				}
-			})
-			return false;
-		});
-		$('.bBacketServ__eMore', ew_look).live('click', function(e){
-			e.preventDefault();
-			var thislink = this;
-			$.getJSON( $(this).attr('href'), function(ext_data) {
-				if( !ext_data.success ){
-					return true;
-				}
-				var line = $(thislink).parent();
-				$('input.button',f1lines_extWarr).val('Выбрать').removeClass('active');
-				$('.link1',look_extWarr).text('Выбрать гарантию');
-				line.hide();
-				// ltbx.update({ sum: ext_data.data.full_price });
-				ew_look.hide();
-				if( !$('a.bBacketServ__eMore', look_extWarr).length )
-					look_extWarr.find('h3').html('Выбирай услуги F1<br/>вместе с этим товаром')
-			})
-			return false
-		});
-	}
-	
-
-	/* buy bottons */
-	var markPageButtons = function(){
-		// var carturl = $('.lightboxinner .point2').attr('href')
-		// $('body').addClass('bought')
-		// $('.goodsbarbig .link1').attr('href', carturl )//.addClass('active')
-		// $('#bigpopup a.link1').attr('href', carturl )//.addClass('active')//.html('в корзине')
-		// $('.bSet__ePrice .link1').unbind('click')
-		// $('.goodsbar .link1').die('click')
-		//$('.bCountSet__eP').addClass('disabled')
-		//$('.bCountSet__eM').addClass('disabled')
-	}
-	
-	// /* stuff go to litebox */
-	// var parseItemNode = function( ref ){
-	// 	var jn = $( 'div[ref='+ ref +']')
-	// 	var item = {
-	// 		'id'   : $(jn).attr('ref'),
-	// 		'title': $('h3 a', jn).html(),
-	// 		'price': $('.price', jn).html(),
-	// 		'img'  : $('.photo img.mainImg', jn).attr('src')
-	// 	}
-	// 	return item
-	// }
 
 	var sendAnalytics = function(item) {
 		if (typeof(MyThings) != "undefined") {
@@ -692,6 +334,9 @@ $(document).ready(function(){
 		}
 	};
 
+	/**
+	 * KISS Аналитика для добавления в корзину
+	 */
 	var kissAnalytics = function(data){
 		if (data.result.product){
 			var productData = data.result.product
@@ -754,7 +399,9 @@ $(document).ready(function(){
 		})
 	}
 
-	// KISS view category
+	/**
+	 * KISS view category
+	 */
 	if ($('#_categoryData').length){
 		var data = $('#_categoryData').data('category')
 		var toKISS = {
@@ -769,7 +416,9 @@ $(document).ready(function(){
 		}
 	}
 
-	// KISS Search
+	/**
+	 * KISS Search
+	 */
 	if ( $('#_searchKiss').length){
 		var data = $('#_searchKiss').data('search')
 		var toKISS = {
@@ -795,12 +444,34 @@ $(document).ready(function(){
 			}
 		}
 
-		$('.goodsbox__inner').live('click', KISSsearchClick);
-		$('.goodsboxlink').live('click', KISSsearchClick);
+		$('.goodsbox__inner').on('click', KISSsearchClick);
+		$('.goodsboxlink').on('click', KISSsearchClick);
 	}
 });
-
-
+ 
+ 
+/** 
+ * NEW FILE!!! 
+ */
+ 
+ 
+/**
+ * Перемотка к Id
+ *
+ * @author		Zaytsev Alexandr
+ * @requires	jQuery
+ */
+(function(){
+	var goToId = function(){
+		var to = $(this).data('goto');
+		$(document).stop().scrollTo( $('#'+to), 800 );
+		return false;
+	};
+	
+	$(document).ready(function() {
+		$('.jsGoToId').bind('click',goToId);
+	});
+}());
  
  
 /** 
@@ -927,7 +598,7 @@ $(document).ready(function(){
 			return false
 		}
 	})
-	$('.bSearchSuggest__eRes').live('mouseover', function(){
+	$('.bSearchSuggest__eRes').on('mouseover', function(){
 		$('.bSearchSuggest__eRes').removeClass('hover')
 		var index = $(this).addClass('hover').index()
 		nowSelectSuggest = index-1
@@ -939,7 +610,7 @@ $(document).ready(function(){
 		}
 	})
 	// suggest analitycs
-	$('.bSearchSuggest__eRes').live('click', function(){
+	$('.bSearchSuggest__eRes').on('click', function(){
 		if ( typeof(_gaq) !== 'undefined' ){
 			var type = ($(this).hasClass('bSearchSuggest__eCategoryRes')) ? 'suggest_category' : 'suggest_product'
 			var url = $(this).attr('href')
@@ -1038,7 +709,7 @@ $(document).ready(function(){
 	regEmailValid()
 
 	/*subscribe*/
-	$('.bSubscibe').live('click', function(){
+	$('.bSubscibe').on('click', function(){
 		if ($(this).hasClass('checked')){
 			$(this).removeClass('checked')
 			$(this).find('.subscibe').removeAttr('checked')
@@ -1106,7 +777,7 @@ $(document).ready(function(){
 	$('.bMainMenuLevel-3__eLink').bind('click', 'Верхнее меню', categoriesSpy )
 	$('.breadcrumbs').first().find('a').bind( 'click', 'Хлебные крошки сверху', categoriesSpy )
 	$('.breadcrumbs-footer').find('a').bind( 'click', 'Хлебные крошки снизу', categoriesSpy )
-	$('.extramenu').find('a').live('click', 'Верхнее меню', categoriesSpy )
+	$('.extramenu').find('a').on('click', 'Верхнее меню', categoriesSpy )
 	$('.bCtg').find('a').bind('click', 'Левое меню', categoriesSpy )
 	$('.rubrictitle').find('a').bind('click', 'Заголовок карусели', categoriesSpy )
 	$('a.srcoll_link').bind('click', 'Ссылка Посмотреть все', categoriesSpy )
@@ -1150,41 +821,7 @@ $(document).ready(function(){
 			})
 		}
 	}
-	
-	
-	/* mobile fix for Lbox position='fixed' */
-	var clientBrowser = new brwsr()
-	if( clientBrowser.isAndroid || clientBrowser.isOSX4 ) {
-		if( clientBrowser.isOpera ) {
-			$('.lightbox').hide()
-		}
-		$('.lightbox').css('position','absolute')
-		var innerHeightM = ( clientBrowser.isOSX4 ) ? window.innerHeight : document.documentElement.clientHeight
-		var innerWidthM  = ( clientBrowser.isOSX4 ) ? window.innerWidth  : document.documentElement.clientWidth
-		if(  clientBrowser.isOSX4  )
-			$('.lightbox').css('top', window.pageYOffset + innerHeightM -41)
-		if ( Math.abs(window.orientation) === 90 ) {
-			var inittopv = innerHeightM - 41
-			var inittoph = innerWidthM  - 41
-		} else {
-			var inittoph = innerHeightM - 41
-			var inittopv = innerWidthM  - 41
-		}
 
-		window.addEventListener("orientationchange", setPosLbox, false)
-		window.addEventListener("scroll", setPosLbox, false)
-		window.onscroll = setPosLbox
-
-		function setPosLbox() {
-			if( !window.pageYOffset ){
-				$('.lightbox').css('top', ( Math.abs(window.orientation) === 90 ) ? inittopv : inittoph )
-			} else {
-				innerHeightM = ( clientBrowser.isOSX4 ) ? window.innerHeight : document.documentElement.clientHeight
-				$('.lightbox').css('top', window.pageYOffset + innerHeightM -41)
-			}
-		}
-
-	} // isAndroid || isOSX4
 
 
 	/* Authorization process */
@@ -1247,7 +884,7 @@ $(document).ready(function(){
 
   $('#signin_password').warnings()
 
-	$('#bUserlogoutLink').live('click', function(){
+	$('#bUserlogoutLink').on('click', function(){
 		if (typeof(_kmq) !== 'undefined') {
 			_kmq.push(['clearIdentity']);
 		}
@@ -1314,7 +951,7 @@ $(document).ready(function(){
 		})
     })
 
-	$('#forgot-pwd-trigger').live('click', function(){
+	$('#forgot-pwd-trigger').on('click', function(){
 		$('#reset-pwd-form').show();
 		$('#reset-pwd-key-form').hide();
 		$('#login-form').hide();
@@ -1359,7 +996,7 @@ $(document).ready(function(){
 	var ableToLoad = true
 	var compact = $("div.goodslist").length
 	var custom_jewel = $('.items-section__list').length
-	function liveScroll( lsURL, filters, pageid ) {
+	function onScroll( lsURL, filters, pageid ) {
 		var params = []
 		/* RETIRED cause data-filter
 		if( $('.bigfilter.form').length ) //&& ( location.href.match(/_filter/) || location.href.match(/_tag/) ) )
@@ -1804,23 +1441,25 @@ $(document).ready(function(){
 	}
 	
 	/* Side Filters */
-    var filterlink = $('.filter .filterlink:first')
-	var filterlist = $('.filter .filterlist')
+    var filterlink = $('.filter .filterlink:first');
+	var filterlist = $('.filter .filterlist');
+	var clientBrowser = new brwsr();
 	if( clientBrowser.isTouch ) {
 		filterlink.click(function(){
-			filterlink.hide()
-			filterlist.show()
-			return false
+			filterlink.hide();
+			filterlist.show();
+			return false;
 		})
-	} else {
+	}
+	else {
 		filterlink.mouseenter(function(){
-			filterlink.hide()
-			filterlist.show()
-		})
+			filterlink.hide();
+			filterlist.show();
+		});
 		filterlist.mouseleave(function(){
-			filterlist.hide()
-			filterlink.show()
-		})
+			filterlist.hide();
+			filterlink.show();
+		});
 	}	
 	
 	var ajaxFilterCounter = 0
@@ -2429,8 +2068,6 @@ function handle_custom_items() {
     $(this).removeClass('hover');
   });
 }
-
-
  
  
 /** 
@@ -2493,10 +2130,10 @@ function handle_custom_items() {
 				setTimeout(function(){
 					subPopup.slideUp(300);
 				}, 3000);
-			})
+			});
 
 			return false;
-		}
+		};
 
 		var subscribeNow = function(){
 			subPopup.slideDown(300);
@@ -2511,7 +2148,7 @@ function handle_custom_items() {
 				$.post(url);
 
 				return false;
-			})
+			});
 		};
 
 		var subscribeLater = function(){

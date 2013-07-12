@@ -92,10 +92,6 @@ class IndexPage extends \View\DefaultLayout {
         return 'product_card';
     }
 
-    public function slotUserbar() {
-        return $this->render('jewel/_userbar');
-    }
-
     public function slotInnerJavascript() {
         /** @var $product \Model\Product\Entity */
         $product = $this->getParam('product') instanceof \Model\Product\Entity ? $this->getParam('product') : null;
@@ -103,7 +99,6 @@ class IndexPage extends \View\DefaultLayout {
         $category = array_pop($categories);
 
         return ''
-            . ($product ? $this->tryrender('jewel/product/partner-counter/_etargeting', array('product' => $product)) : '')
             . "\n\n"
             . ($product ? $this->render('_remarketingGoogle', ['tag_params' => ['prodid' => $product->getId(), 'pagetype' => 'product', 'pname' => $product->getName(), 'pcat' => ($category) ? $category->getToken() : '', 'pvalue' => $product->getPrice()]]) : '')
             . "\n\n"

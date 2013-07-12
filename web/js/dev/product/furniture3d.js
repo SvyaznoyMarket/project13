@@ -25,7 +25,7 @@
 				}
 			}
 			catch (err){
-				var pageID = $(body).data(id);
+				var pageID = $('body').data('id');
 				var dataToLog = {
 					event: '3dimg',
 					type:'ошибка загрузки 3dimg для мебели',
@@ -36,11 +36,11 @@
 			}
 		};
 		$LAB.script( 'DAnimFramePlayer.min.js' ).wait(furnitureAfterLoad);
-	}
+	};
 
 	$(document).ready(function() {
 		if (pageConfig['product.img3d']){
 			loadFurniture3D();
 		}
 	});
-}());
+})();

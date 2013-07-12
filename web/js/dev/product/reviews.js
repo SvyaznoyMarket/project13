@@ -20,11 +20,11 @@
 	var reviewContent = $('.bReviewsContent');
 	// получение отзывов
 	var getReviews = function(productId, type, containerClass) {
-		var page = reviewCurrentPage[type] + 1
+		var page = reviewCurrentPage[type] + 1;
 		
-		var layout = false
+		var layout = false;
 		if($('body').hasClass('jewel')) {
-			layout = 'jewel'
+			layout = 'jewel';
 		}
 
 		$.get('/product-reviews/'+productId, {
@@ -72,22 +72,22 @@
 			reviewContent.hide();
 			$('.'+reviewsContainerClass).show();
 
-	 		moreReviewsButton.hide();
-			if(reviewsType == 'user') {
+			moreReviewsButton.hide();
+			if (reviewsType === 'user') {
 				moreReviewsButton.html('Показать ещё отзывы');
-			} else if(reviewsType == 'pro') {
+			} else if(reviewsType === 'pro') {
 				moreReviewsButton.html('Показать ещё обзоры');
 			}
 
 			if(!$('.'+reviewsContainerClass).html()) {
 				getReviews(reviewsProductId, reviewsType, reviewsContainerClass);
 			} else {
-		 		// проверяем что делать с кнопкой "показать еще" - скрыть/показать
-			 	if(reviewCurrentPage[reviewsType] + 1 >= reviewPageCount[reviewsType]) {
-			 		moreReviewsButton.hide();
-			 	} else {
-			 		moreReviewsButton.show();
-			 	}
+				// проверяем что делать с кнопкой "показать еще" - скрыть/показать
+				if(reviewCurrentPage[reviewsType] + 1 >= reviewPageCount[reviewsType]) {
+					moreReviewsButton.hide();
+				} else {
+					moreReviewsButton.show();
+				}
 			}
 		});
 
@@ -97,6 +97,10 @@
 	}
 
 	var leaveReview = function(){
+		if (!$('#jsProductCard').length){
+			return false;
+		}
+		
 		var productInfo = $('#jsProductCard').data('value');
 		var pid = $(this).data('pid');
 		var name = productInfo.name;
@@ -110,6 +114,6 @@
 		return false;
 	};
 
-	$('.jsLeaveReview').live('click', leaveReview);
+	$('.jsLeaveReview').on('click', leaveReview);
 
 }());
