@@ -4358,6 +4358,7 @@
   }
   .rubrictitle {
     float: left;
+    width: 445px;
   }
   .rubrictitle h2 {
     float: left;
