@@ -18,6 +18,8 @@
 
 $helper = new \Helper\TemplateHelper();
 
+if (!isset($categoryClass)) $categoryClass = null;
+
 $hasFurnitureConstructor = \App::config()->product['furnitureConstructor'] && $product->getLine() && (256 == $product->getLine()->getId()); // Серия Байкал
 
 /** @var  $productVideo \Model\Product\Video\Entity|null */

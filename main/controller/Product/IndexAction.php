@@ -78,10 +78,14 @@ class IndexAction {
         $catalogJson = \RepositoryManager::productCategory()->getCatalogJson(array_pop($productCategories));
 
         // если в catalogJson'e указан category_class, то обрабатываем запрос соответствующим контроллером
-        if(false && !empty($catalogJson['category_class'])) {
-            $controller = '\\Controller\\'.ucfirst($catalogJson['category_class']).'\\Product\\IndexAction';
+        $categoryClass = !empty($catalogJson['category_class']) ? $catalogJson['category_class'] : null;
+
+        /*
+        if ($categoryClass) {
+            $controller = '\\Controller\\'.ucfirst($categoryClass).'\\Product\\IndexAction';
             return (new $controller())->executeDirect($product, $regionsToSelect, $catalogJson);
         }
+        */
 
         // получаем отзывы для товара
         $reviewsData = \RepositoryManager::review()->getReviews($product->getId(), 'user');
@@ -225,6 +229,7 @@ class IndexAction {
         $page->setParam('reviewsData', $reviewsData);
         $page->setParam('reviewsDataPro', $reviewsDataPro);
         $page->setParam('reviewsDataSummary', $reviewsDataSummary);
+        $page->setParam('categoryClass', $categoryClass);
 
         return new \Http\Response($page->show());
     }
