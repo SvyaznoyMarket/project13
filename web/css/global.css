@@ -10103,6 +10103,9 @@
     font-family: tahoma;
     font-weight: 800;
   }
+  .bBottomBuy .btnBuy {
+    margin-left: 12px;
+  }
   .bBottomBuy .btnBuy,
   .bBottomBuy .bCountSection,
   .bBottomBuy .price {
@@ -10112,7 +10115,7 @@
     text-align: right;
   }
   .bBottomBuy .bCountSection {
-    margin: 7px 12px 0 20px;
+    margin: 7px 0 0 20px;
     padding-left: 0;
   }
   .bBreadCrumbsBottom {
@@ -11191,6 +11194,25 @@
   }
   body.jewel .bProductSection .bSliderAction__eList .btnBuy {
     margin: 0 0 0 1px;
+  }
+  body.jewel .bSpecifications {
+    color: #6E6E6E;
+    font-size: 12px;
+  }
+  body.jewel .bSpecifications dd {
+    background: url("/css/pandoraProduct/img/h3_corner.gif") no-repeat 0 4px;
+    padding-left: 7px;
+    margin: 0 0 5px;
+    border: none;
+    width: 145px;
+  }
+  body.jewel .bSpecifications dt {
+    padding: 0;
+    width: 125px;
+    margin: 0 0 5px;
+  }
+  body.jewel .bProductSection .bSpecifications__eList dd span {
+    bottom: 0;
   }
 }
 /*---END---СТИЛИ БРЕНД РАЗДЕЛА PANDORA---*/
