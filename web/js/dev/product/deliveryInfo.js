@@ -4,10 +4,10 @@
  * @author		Zaytsev Alexandr
  * @requires	jQuery, simple_templating
  * @param		{Object}	widgetBox		Контейнер с доступными вариантами доставки
- * @param		{Object}	productInfo		Данные о текущем продукте
  * @param		{Object}	deliveryData	Данные необходимые для отображения доставки
  * @param		{String}	url				Адрес по которому необходимо запросить данные с расчитанной доставкой для текущего продукта
  * @param		{String}	deliveryShops	Список магазинов из которых можно забрать сегодня (только если товар не доступен для продажи)
+ * @param		{Object}	productInfo		Данные о текущем продукте
  * @param		{Object}	dataToSend		Данные для отправки на сервер и получение расчитанной доставки
  */
 (function(){
@@ -16,16 +16,15 @@
 	}
 
 	var widgetBox = $('.bWidgetBuy__eDelivery'),
-		productInfo = $('#jsProductCard').data('value'),
-		deliveryData = $('.bWidgetBuy__eDelivery').data('value'),
+		deliveryData = widgetBox.data('value'),
 		url = deliveryData.url,
-		deliveryShops = deliveryData.delivery[0].shop,
+		deliveryShops = (deliveryData.delivery.length) ? deliveryData.delivery[0].shop : [],
+		productInfo = $('#jsProductCard').data('value'),
 		dataToSend = {
-			product:[
+			'product':[
 				{'id': productInfo.id}
 			]
 		},
-
 
 		/**
 		 * Показ попапа с магазином
@@ -36,7 +35,7 @@
 		 * @param	{String}	url			Ссылка на магазин
 		 * @return	{Boolean}
 		 */
-		showAvalShop = function(){
+		showAvalShop = function (){
 			var popup = $('#avalibleShop'),
 				button = popup.find('.bOrangeButton'),
 				position = {
@@ -80,7 +79,7 @@
 		 * @param	{Object}	shopInfo		Данные для подстановки в шаблон магазина
 		 * @param	{Number}	shopLen			Количество магазинов
 		 */
-		fillAvalShopTmpl = function(shops){
+		fillAvalShopTmpl = function (shops){
 			var nowBox = widgetBox.find('.bWidgetBuy__eDelivery-now'),
 				toggleBtn = nowBox.find('.bWidgetBuy__eDelivery-nowClick'),
 				shopList = nowBox.find('.bDeliveryFreeAddress'),
@@ -91,7 +90,7 @@
 				/**
 				 * Обработчик переключения состояния листа магазинов открыто или закрыто
 				 */
-				shopToggle = function(){
+				shopToggle = function (){
 					nowBox.toggleClass('mOpen');
 					nowBox.toggleClass('mClose');
 				};
@@ -107,7 +106,7 @@
 					lat: shops[j].latitude,
 					lng: shops[j].longitude,
 					url: shops[j].url
-				}
+				};
 
 				templateNow = tmpl('widget_delivery_shop',shopInfo);
 				shopList.append(templateNow);
@@ -123,7 +122,7 @@
 		 * 
 		 * @param	{Object}	res	Ответ от сервера
 		 */
-		resFromSerever = function(res){
+		resFromSerever = function (res){
 			if (!res.success){
 				return false;
 			}
@@ -161,13 +160,12 @@
 						break;
 
 					case 'now':
-						fillAvalShopTmpl(deliveryInfo[i].shop)
+						fillAvalShopTmpl(deliveryInfo[i].shop);
 						break;
 				}
 			}
 		};
 	// end of var
-
 
 	if (url === '') {
 		fillAvalShopTmpl(deliveryShops);
