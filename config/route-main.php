@@ -360,7 +360,7 @@ return [
     ],
     // добавление гарантии в корзину
     'cart.warranty.set' => [
-        'pattern' => '/cart/add-warranty/{warrantyId}/for-product/{productId}/',
+        'pattern' => '/cart/add-warranty/{warrantyId}/for-product/{productId}',
         'require' => ['productId' => '\d+', 'warrantyId' => '\d+'],
         'action'  => ['Cart\WarrantyAction', 'set'],
     ],
