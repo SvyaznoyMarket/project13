@@ -312,7 +312,9 @@ class Action {
         // получаем из json данные о горячих ссылках и content
         try {
             $seoCatalogJson = \Model\Product\Category\Repository::getSeoJson($category);
-            $hotlinks = empty($seoCatalogJson['hotlinks']) ? [] : $seoCatalogJson['hotlinks'];
+            // получаем горячие ссылки
+            $hotlinks = \RepositoryManager::productCategory()->getHotlinksBySeoCatalogJson($seoCatalogJson);
+
             // в json-файле в свойстве content содержится массив
             if (empty($brand)) {
                 $seoContent = empty($seoCatalogJson['content']) ? '' : implode('<br />', $seoCatalogJson['content']);
@@ -413,7 +415,7 @@ class Action {
         $page->setParam('myThingsData', [
             'EventType' => 'MyThings.Event.Visit',
             'Action'    => '1011',
-	        'Category'  => $category->getName(),
+            'Category'  => $category->getName(),
         ]);
 
         return new \Http\Response($page->show());
