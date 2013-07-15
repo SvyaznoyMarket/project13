@@ -125,9 +125,11 @@
 			y: e.pageY - $(window).scrollTop()
 		};
 		var el = $(this);
-		if(el.attr('class') === checkedItemLvl2.attr('class')) {
-			buildTriangle(el);
-			lastHoverLvl2 = new Date();
+		if(checkedItemLvl2) {
+			if(el.attr('class') === checkedItemLvl2.attr('class')) {
+				buildTriangle(el);
+				lastHoverLvl2 = new Date();
+			}
 		}
 		checkHoverLvl2(el);
 	};

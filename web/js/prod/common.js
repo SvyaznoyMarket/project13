@@ -2162,7 +2162,7 @@ $(document).ready(function(){
 /* Top Menu */
 (function(){
 	var menuDelayLvl1 = 300; //ms
-	var menuDelayLvl2 = 500; //ms
+	var menuDelayLvl2 = 600; //ms
 	var triangleOffset = 15; //px
 
 	var lastHoverLvl1 = null;
@@ -2286,9 +2286,11 @@ $(document).ready(function(){
 			y: e.pageY - $(window).scrollTop()
 		};
 		var el = $(this);
-		if(el.attr('class') === checkedItemLvl2.attr('class')) {
-			buildTriangle(el);
-			lastHoverLvl2 = new Date();
+		if(checkedItemLvl2) {
+			if(el.attr('class') === checkedItemLvl2.attr('class')) {
+				buildTriangle(el);
+				lastHoverLvl2 = new Date();
+			}
 		}
 		checkHoverLvl2(el);
 	};
