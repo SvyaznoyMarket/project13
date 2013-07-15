@@ -360,10 +360,9 @@ $(document).ready(function() {
             tmpurl += self.quantum
 
 			//$(nodes.quan).html( self.quantum)
-			// console.log($(nodes.quan))
-			$(nodes.quan).val(self.quantum)
-			self.calculate( self.quantum )
-			totalCash += self.price * delta
+			$(nodes.quan).val(self.quantum);
+			self.calculate( self.quantum );
+			totalCash += self.price * delta;
 
 			// if (self.quantum < nodes.line.find('.extWarr.mBig .ajaquant').val()){
 				
@@ -407,43 +406,44 @@ $(document).ready(function() {
 				}
 			}
 			else{
-				return true
+				return true;
 			}
 		}
 
 		$(nodes.drop).click( function() {
 			if(! $(nodes.drop).data('run') ) {
-				$(nodes.drop).data('run', true)
-				dropflag = self.clear()
+				$(nodes.drop).data('run', true);
+				dropflag = self.clear();
 			}
 			// console.log('удаление')
 			return false;
-		})
+		});
 
 		$(nodes.less).click( function() {
-			var minus = this
+			var minus = this;
 
 			if( ! $(minus).data('run') ) {
-				$(minus).data('run',true)
+				$(minus).data('run',true);
 				if( self.quantum > 1 )
-					self.update( minus, -1 )
+					self.update( minus, -1 );
 				else
-					self.clear()
+					self.clear();
 			}
-			return false
-		})
+			return false;
+		});
 
 		$(nodes.more).click( function() {
-			var plus = this
-			var nQuan = nodes.quan.val()+1
+			var plus = this;
+			var nQuan = parseInt(nodes.quan.val(),10)+1;
 			if(self.checkNode(nodes, nQuan)){	
 				if( ! $(plus).data('run') ) {
-					$(plus).data('run',true)
-					self.update( plus, 1 )
+					$(plus).data('run',true);
+					self.update( plus, 1 );
 				}
 			}
-			return false
-		})
+			return false;
+		});
+
 		$(nodes.quan).focusin(function(){
 			$(nodes.quan).bind('keyup',function(e){
 				if (((e.which>=48)&&(e.which<=57))||(e.which==8)){//если это цифра или бэкспэйс
