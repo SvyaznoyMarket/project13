@@ -43,24 +43,6 @@ $productData = [
     ),
 ];
 
-$shopData = [];
-foreach ($shopStates as $shopState) {
-    $shop = $shopState->getShop();
-    if (!$shop instanceof \Model\Shop\Entity) continue;
-
-    $shopData[] = [
-        'id'        => $shop->getId(),
-        'name'      => $shop->getName(),
-        'address'   => $shop->getAddress(),
-        'regtime'   => $shop->getRegime(),
-        'longitude' => $shop->getLongitude(),
-        'latitude'  => $shop->getLatitude(),
-        'url'       => $page->url('shop.show', ['shopToken' => $shop->getToken(), 'regionToken' => $user->getRegion()->getToken()]),
-    ];
-}
-
-$showAveragePrice = \App::config()->product['showAveragePrice'] && !$product->getPriceOld() && $product->getPriceAverage();
-
 $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro['review_list']));
 ?>
 

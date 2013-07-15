@@ -175,10 +175,10 @@ class IndexAction {
                 $quantity = (int)$stock->getQuantity();
                 $shopId = $stock->getShopId();
                 if ((0 < $quantity + $quantityShowroom) && !empty($shopId)) {
-                    $quantityByShop[$shopId] = array(
+                    $quantityByShop[$shopId] = [
                         'quantity' => $quantity,
                         'quantityShowroom' => $quantityShowroom,
-                    );
+                    ];
                 }
             }
             if ((bool)$quantityByShop) {

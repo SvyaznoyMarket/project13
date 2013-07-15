@@ -68,7 +68,7 @@ class DeliveryAction {
             }
 
             if (!(bool)$result['product_list']) {
-                throw new \Exception(sprintf('Неверный ответ при расчете доставки для товаров %s %s', json_encode($productData), json_encode($result, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)));
+                throw new \Exception('При расчете доставки получен пустой список товаров');
             }
 
             $responseData = [
@@ -119,7 +119,7 @@ class DeliveryAction {
                                 $shop = [
                                     'id'        => (int)$shopItem['id'],
                                     'name'      => $shopData[$shopItem['id']]['name'],
-                                    'regtime'   => $shopData[$shopItem['id']]['working_time'], // что за описка "regtime"?
+                                    'regime'    => $shopData[$shopItem['id']]['working_time'], // что за описка "regtime"?
                                     'latitude'  => $shopData[$shopItem['id']]['coord_lat'],
                                     'longitude' => $shopData[$shopItem['id']]['coord_long'],
                                 ];
@@ -133,13 +133,6 @@ class DeliveryAction {
 
                     $product['delivery'][] = $delivery;
                 }
-
-                // для теста {
-                $tmp = $product['delivery'][0];
-                $tmp['id'] = 4;
-                $tmp['token'] = 'now';
-                $product['delivery'][] = $tmp;
-                // }
 
                 $responseData['product'][] = $product;
             }
