@@ -59,6 +59,7 @@ class DeliveryAction {
                 },
                 function(\Exception $e) use (&$exception) {
                     $exception = $e;
+                    \App::exception()->remove($e);
                 }
             );
             \App::coreClientV2()->execute();
