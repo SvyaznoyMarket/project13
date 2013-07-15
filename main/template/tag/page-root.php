@@ -19,19 +19,22 @@ $categoryTokens = array_keys($sidebarCategoriesTree[$rootCategory->getToken()]);
     if (!$pager || !$pager->count()) continue;
     $count += $pager->count();
 } ?>
-<?= $page->render('product/_inshop', ['count' => $count, 'category' => $category]); ?>
-<? foreach ($childrenById as $id => $child) { ?>
-    <?
-    $pager = $productPagersByCategory[$child->getId()];
-    if (!$pager || !$pager->count()) continue;
+
+<div class="pt20">
+    <?= $page->render('product/_inshop', ['count' => $count, 'category' => $category]); ?>
+    <? foreach ($childrenById as $id => $child) { ?>
+        <?
+        $pager = $productPagersByCategory[$child->getId()];
+        if (!$pager || !$pager->count()) continue;
+        ?>
+        <?= $page->render('tag/_product-slider-inCategory', array(
+            'tag'                    => $tag,
+            'category'               => $child,
+            'pager'                  => $pager,
+            'itemsInSlider'          => ceil($pager->getMaxPerPage() / 2),
+            'productVideosByProduct' => $productVideosByProduct,
+        )) ?>
+    <? }
+    $page->setGlobalParam('productCount', $count);
     ?>
-    <?= $page->render('tag/_product-slider-inCategory', array(
-        'tag'                    => $tag,
-        'category'               => $child,
-        'pager'                  => $pager,
-        'itemsInSlider'          => ceil($pager->getMaxPerPage() / 2),
-        'productVideosByProduct' => $productVideosByProduct,
-    )) ?>
-<? }
-$page->setGlobalParam('productCount', $count);
-?>
+</div>

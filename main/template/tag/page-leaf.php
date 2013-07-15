@@ -11,25 +11,28 @@
 if ($productFilter->getShop()) $page->setGlobalParam('shop', $productFilter->getShop());
 ?>
 
-<? if (\App::config()->adFox['enabled']): ?>
-<div class="adfoxWrapper" id="adfox683sub"></div>
-<? endif ?>
-<div class="clear"></div>
+<div class="pt20">
+  <? if (\App::config()->adFox['enabled']): ?>
+  <div class="adfoxWrapper" id="adfox683sub"></div>
+  <? endif ?>
+  <div class="clear"></div>
 
-<? if(!empty($promoContent)): ?>
-    <?= $promoContent ?>
-<? endif ?>
+  <? if(!empty($promoContent)): ?>
+      <?= $promoContent ?>
+  <? endif ?>
 
-<div class="clear"></div>
-<?= $page->tryRender('product-category/_categoryData', array('page' => $page, 'category' => $category)) ?>
-<?= $page->render('product/_inshop', ['count' => $productPager->count(), 'renderInfo' => false, 'category' => $category]); ?>
-<?= $page->render('product/_pager', array(
-    'request'                => $request,
-    'pager'                  => $productPager,
-    'productFilter'          => $productFilter,
-    'productSorting'         => $productSorting,
-    'hasListView'            => true,
-    'category'               => $category,
-    'view'                   => $productView,
-    'productVideosByProduct' => $productVideosByProduct,
-)) ?>
+  <div class="clear"></div>
+
+  <?= $page->tryRender('product-category/_categoryData', array('page' => $page, 'category' => $category)) ?>
+  <?= $page->render('product/_inshop', ['count' => $productPager->count(), 'renderInfo' => false, 'category' => $category]); ?>
+  <?= $page->render('product/_pager', array(
+      'request'                => $request,
+      'pager'                  => $productPager,
+      'productFilter'          => $productFilter,
+      'productSorting'         => $productSorting,
+      'hasListView'            => true,
+      'category'               => $category,
+      'view'                   => $productView,
+      'productVideosByProduct' => $productVideosByProduct,
+  )) ?>
+</div>
