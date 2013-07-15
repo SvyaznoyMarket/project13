@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: library/doc_cookies.js</title>
+    
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+    
+    <h1 class="page-title">Source: library/doc_cookies.js</h1>
+    
+    
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source"><code>/** 
+  * docCookies.setItem(obj, sKey, sValue, vEnd, sPath, sDomain, bSecure) 
+  *
+  * https://developer.mozilla.org/en/DOM/document.cookie
+  *
+  * IVN: object into cookie is available
+  * 
+  * @argument obj (Boolean): flag if object is saved
+  * @argument sKey (String): the name of the cookie; 
+  * @argument sValue (String): the value of the cookie; 
+  * @optional argument vEnd (Number, String, Date Object or null): the max-age in seconds (e.g., 31536e3 for a year) or the 
+  *  expires date in GMTString format or in Date Object format; if not specified it will expire at the end of session;  
+  * @optional argument sPath (String or null): e.g., "/", "/mydir"; if not specified, defaults to the current path of the current document location; 
+  * @optional argument sDomain (String or null): e.g., "example.com", ".example.com" (includes all subdomains) or "subdomain.example.com"; if not 
+  * specified, defaults to the host portion of the current document location; 
+  * @optional argument bSecure (Boolean or null): cookie will be transmitted only over secure protocol as https; 
+  * @return undefined; 
+  **/  
+var docCookies = {
+	getItem: function (sKey, obj) {
+		if (!sKey || !this.hasItem(sKey)) {
+			return null;
+		}
+		var out = unescape(
+			document.cookie.replace(
+				new RegExp(
+					"(?:^|.*;\\s*)" + escape(sKey).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=\\s*((?:[^;](?!;))*[^;]?).*"
+				),
+			"$1")
+		);
+		if( obj ){
+			out = JSON.parse( out );
+		}
+		return out;
+	},
+  
+	setItem: function (obj, sKey, sValue, vEnd, sPath, sDomain, bSecure) {
+		if (!sKey || /^(?:expires|max\-age|path|domain|secure)$/.test(sKey)) {
+			return;
+		}
+		var sExpires = "";
+
+		if (vEnd) {
+			switch (typeof vEnd) {  
+				case "number":
+					sExpires = "; max-age=" + vEnd;
+					break;
+				case "string":
+					sExpires = "; expires=" + vEnd;
+					break;
+				case "object":
+					if (vEnd.hasOwnProperty("toGMTString")) {
+						sExpires = "; expires=" + vEnd.toGMTString();
+					}
+					break;
+			}
+		}
+		if( obj ){
+			sValue = JSON.stringify( sValue );
+		}
+		document.cookie = escape(sKey) + "=" + escape(sValue) + sExpires + (sDomain ? "; domain=" + sDomain : "") + (sPath ? "; path=" + sPath : "") + (bSecure ? "; secure" : "");  
+	},
+
+	removeItem: function (sKey) {  
+	if (!sKey || !this.hasItem(sKey)) {
+		return;
+	}
+	var oExpDate = new Date();  
+	oExpDate.setDate(oExpDate.getDate() - 1);
+	document.cookie = escape(sKey) + "=; expires=" + oExpDate.toGMTString() + "; path=/";  
+	//console.info(escape(sKey) + "=; expires=" + oExpDate.toGMTString() + "; path=/")
+	},
+
+	hasItem: function (sKey) {
+		return (new RegExp("(?:^|;\\s*)" + escape(sKey).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=")).test(document.cookie);
+	}
+};</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="BlackBox.html">BlackBox</a></li></ul><h3>Global</h3><ul><li><a href="global.html#activateItemLvl1">activateItemLvl1</a></li><li><a href="global.html#activateItemLvl2">activateItemLvl2</a></li><li><a href="global.html#add">add</a></li><li><a href="global.html#buildTriangle">buildTriangle</a></li><li><a href="global.html#checkHoverLvl2">checkHoverLvl2</a></li><li><a href="global.html#createTriangle">createTriangle</a></li><li><a href="global.html#docCookies">docCookies</a></li><li><a href="global.html#flyboxcloser">flyboxcloser</a></li><li><a href="global.html#flyboxDestroy">flyboxDestroy</a></li><li><a href="global.html#getDimensions">getDimensions</a></li><li><a href="global.html#isTrueEmail">isTrueEmail</a></li><li><a href="global.html#menuCheckTriangle">menuCheckTriangle</a></li><li><a href="global.html#menuHoverInLvl1">menuHoverInLvl1</a></li><li><a href="global.html#menuHoverInLvl2">menuHoverInLvl2</a></li><li><a href="global.html#menuMouseLeaveLvl1">menuMouseLeaveLvl1</a></li><li><a href="global.html#menuMouseLeaveLvl2">menuMouseLeaveLvl2</a></li><li><a href="global.html#menuMoveLvl2">menuMoveLvl2</a></li><li><a href="global.html#pageConfig">pageConfig</a></li><li><a href="global.html#Planner3d_Init">Planner3d_Init</a></li><li><a href="global.html#Planner3d_UpdatePrice">Planner3d_UpdatePrice</a></li><li><a href="global.html#Planner3dKupeConstructor">Planner3dKupeConstructor</a></li><li><a href="global.html#printPrice">printPrice</a></li><li><a href="global.html#update">update</a></li><li><a href="global.html#UpdateUrlString">UpdateUrlString</a></li></ul>
+</nav>
+
+<br clear="both">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0</a> on Mon Jul 15 2013 19:20:00 GMT+0400 (MSK)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

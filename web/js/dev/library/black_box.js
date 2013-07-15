@@ -11,7 +11,7 @@
  * @author	Zaytsev Alexandr
  * @this	{BlackBox}
  * @param	{String}		updateUrl URL по которому будут запрашиватся данные о пользователе и корзине.
- * @param	{jQuery node}	mainNode  DOM элемент бокса
+ * @param	{jQuery}		mainNode  DOM элемент бокса
  * @constructor
  */
 var BlackBox = function(updateUrl, mainContatiner){
@@ -28,92 +28,93 @@ var BlackBox = function(updateUrl, mainContatiner){
  * @return	{function} add		добавление в корзину
  */
 BlackBox.prototype.basket = function() {
-	var self = this;
+	var self = this,
 
-	var headQ = $('#topBasket');
-	var bottomQ = self.mainNode.find('.bBlackBox__eCartQuan');
-	var bottomSum = self.mainNode.find('.bBlackBox__eCartSum');
-	var total = self.mainNode.find('.bBlackBox__eCartTotal');
-	var bottomCart = self.mainNode.find('.bBlackBox__eCart');
-	var flyboxBasket = self.mainNode.find('.bBlackBox__eFlybox.mBasket');
-	var flyboxInner = self.mainNode.find('.bBlackBox__eFlyboxInner');
+		headQ = $('#topBasket');
+		bottomQ = self.mainNode.find('.bBlackBox__eCartQuan'),
+		bottomSum = self.mainNode.find('.bBlackBox__eCartSum'),
+		total = self.mainNode.find('.bBlackBox__eCartTotal'),
+		bottomCart = self.mainNode.find('.bBlackBox__eCart'),
+		flyboxBasket = self.mainNode.find('.bBlackBox__eFlybox.mBasket'),
+		flyboxInner = self.mainNode.find('.bBlackBox__eFlyboxInner'),
 
 
-	/**
-	 * Уничтожение содержимого flybox и его скрытие
-	 *
-	 * @author	Zaytsev Alexandr
-	 * @private
-	 */
-	var flyboxDestroy = function(){
-		flyboxBasket.hide(0, function(){
-			flyboxInner.remove();
-		});
-	};
+		/**
+		 * Уничтожение содержимого flybox и его скрытие
+		 *
+		 * @author	Zaytsev Alexandr
+		 * @private
+		 */
+		flyboxDestroy = function(){
+			flyboxBasket.hide(0, function(){
+				flyboxInner.remove();
+			});
+		},
 
-	/**
-	 * Закрытие flybox по клику
-	 * 
-	 * @author	Zaytsev Alexandr
-	 * @param	{Event} e
-	 * @private
-	 */
-	var flyboxcloser = function(e){
-		var targ = e.target.className;
+		/**
+		 * Закрытие flybox по клику
+		 * 
+		 * @author	Zaytsev Alexandr
+		 * @param	{Event} e
+		 * @private
+		 */
+		flyboxcloser = function(e){
+			var targ = e.target.className;
 
-		if (!(targ.indexOf('bBlackBox__eFlybox')+1) || !(targ.indexOf('fillup')+1)) {
+			if (!(targ.indexOf('bBlackBox__eFlybox')+1) || !(targ.indexOf('fillup')+1)) {
+				flyboxDestroy();
+				$('body').unbind('click', flyboxcloser);
+			}
+		},
+
+		/**
+		 * Обновление данных о корзине
+		 *
+		 * @author	Zaytsev Alexandr
+		 * @param	{Object} basketInfo			Информация о корзине
+		 * @param	{Number} basketInfo.cartQ	Количество товаров в корзине
+		 * @param	{Number} basketInfo.cartSum	Стоимость товаров в корзине
+		 * @public
+		 */
+		update = function(basketInfo) {
+			headQ.html('('+basketInfo.cartQ+')');
+			bottomQ.html(basketInfo.cartQ);
+			bottomSum.html(basketInfo.cartSum);
+			bottomCart.addClass('mBought');
+			total.show();
+		},
+
+		/**
+		 * Добавление товара в корзину
+		 *
+		 * @author	Zaytsev Alexandr
+		 * @param	{Object} item
+		 * @param	{String} item.title			Название товара
+		 * @param	{Number} item.price			Стоимость товара
+		 * @param	{String} item.imgSrc		Ссылка на изображение товара
+		 * @param	{Number} item.TotalQuan		Общее количество товаров в корзине
+		 * @param	{Number} item.totalSum		Общая стоимость корзины
+		 * @param	{String} item.linkToOrder	Ссылка на оформление заказа
+		 * @public
+		 */
+		add = function(item) {
+			var flyboxTmpl = tmpl('blackbox_basketshow_tmpl', item);
+
 			flyboxDestroy();
-			$('body').unbind('click', flyboxcloser);
-		}
-	};
+			flyboxBasket.append(flyboxTmpl);
+			flyboxBasket.show(300);
 
-	/**
-	 * Обновление данных о корзине
-	 *
-	 * @author	Zaytsev Alexandr
-	 * @param	{Object} basketInfo			Информация о корзине
-	 * @param	{Number} basketInfo.cartQ	Количество товаров в корзине
-	 * @param	{Number} basketInfo.cartSum	Стоимость товаров в корзине
-	 * @public
-	 */
-	var update = function(basketInfo) {
-		headQ.html('('+basketInfo.cartQ+')');
-		bottomQ.html(basketInfo.cartQ);
-		bottomSum.html(basketInfo.cartSum);
-		bottomCart.addClass('mBought');
-		total.show();
-	};
+			var nowBasket = {
+				cartQ: item.totalQuan,
+				cartSum: item.totalSum
+			};
 
-	/**
-	 * Добавление товара в корзину
-	 *
-	 * @author	Zaytsev Alexandr
-	 * @param	{Object} item
-	 * @param	{String} item.title			Название товара
-	 * @param	{Number} item.price			Стоимость товара
-	 * @param	{String} item.imgSrc		Ссылка на изображение товара
-	 * @param	{Number} item.TotalQuan		Общее количество товаров в корзине
-	 * @param	{Number} item.totalSum		Общая стоимость корзины
-	 * @param	{String} item.linkToOrder	Ссылка на оформление заказа
-	 * @public
-	 */
-	var add = function(item) {
-		var flyboxTmpl = tmpl('blackbox_basketshow_tmpl', item);
+			self.basket().update(nowBasket);
 
-		flyboxDestroy();
-		flyboxBasket.append(flyboxTmpl);
-		flyboxBasket.show(300);
+			$('body').bind('click', flyboxcloser);
 
-		var nowBasket = {
-			cartQ: item.totalQuan,
-			cartSum: item.totalSum
 		};
-
-		self.basket().update(nowBasket);
-
-		$('body').bind('click', flyboxcloser);
-
-	};
+	//end of vars
 
 	return {
 		'update': update,
@@ -129,35 +130,37 @@ BlackBox.prototype.basket = function() {
  * @return	{function} update
  */
 BlackBox.prototype.user = function() {
-	var self = this;
+	var self = this,
 
-	/**
-	 * Обновление пользователя
-	 *
-	 * @author	Zaytsev Alexandr
-	 * @param	{String} userName Имя пользователя
-	 * @public
-	 */
-	var update = function(userName) {
-		var topAuth = $('#auth-link');
-		var bottomAuth = self.mainNode.find('.bBlackBox__eUserLink');
+		/**
+		 * Обновление пользователя
+		 *
+		 * @author	Zaytsev Alexandr
+		 * @param	{String} userName Имя пользователя
+		 * @public
+		 */
+		update = function(userName) {
+			var topAuth = $('#auth-link'),
+				bottomAuth = self.mainNode.find('.bBlackBox__eUserLink');
+			//end of vars
 
-		if (userName !== null) {
-			var dtmpl={
-				user: userName
-			};
-			var show_user = tmpl('auth_tmpl', dtmpl);
-
-			topAuth.hide();
-			topAuth.after(show_user);
-			bottomAuth.html(userName).addClass('mAuth');
-		}
-		else {
-			topAuth.show();
-			
-		}
-	};
-
+			if (userName !== null) {
+				var dtmpl={
+						user: userName
+					},
+					show_user = tmpl('auth_tmpl', dtmpl);
+				//end of vars
+				
+				topAuth.hide();
+				topAuth.after(show_user);
+				bottomAuth.html(userName).addClass('mAuth');
+			}
+			else {
+				topAuth.show();
+			}
+		};
+	//end of vars
+	
 	return {
 		'update': update
 	};
@@ -172,53 +175,55 @@ BlackBox.prototype.user = function() {
  * @this	{BlackBox}
  */
 BlackBox.prototype.init = function() {
-	var self = this;
+	var self = this,
 
-	/**
-	 * Обработчик Action присланных с сервера
-	 * 
-	 * @param	{Object} action Список действий которые необходимо выполнить
-	 * @private
-	 */
-	var startAction = function(action) {
-		if (action.subscribe !== undefined) {
-			$("body").trigger("showsubscribe", [action.subscribe]);
-		}
-		if (action.cartButton !== undefined) {
-			$("body").trigger("markcartbutton", [action.cartButton]);
-			$("body").trigger("updatespinner", [action.cartButton]);
-		}
-	};
+		/**
+		 * Обработчик Action присланных с сервера
+		 * 
+		 * @param	{Object} action Список действий которые необходимо выполнить
+		 * @private
+		 */
+		startAction = function(action) {
+			if (action.subscribe !== undefined) {
+				$("body").trigger("showsubscribe", [action.subscribe]);
+			}
+			if (action.cartButton !== undefined) {
+				$("body").trigger("markcartbutton", [action.cartButton]);
+				$("body").trigger("updatespinner", [action.cartButton]);
+			}
+		},
 
-	/**
-	 * Обработчик данных о корзине и пользователе
-	 * 
-	 * @param	{Object} data
-	 * @private
-	 */
-	var parseUserInfo = function(data) {
-		if (data.success !== true) {
-			return false;
-		}
+		/**
+		 * Обработчик данных о корзине и пользователе
+		 * 
+		 * @param	{Object} data
+		 * @private
+		 */ 
+		parseUserInfo = function(data) {
+			if (data.success !== true) {
+				return false;
+			}
 
-		var userInfo = data.user;
-		var cartInfo = data.cart;
-		var actionInfo = data.action;
+			var userInfo = data.user,
+				cartInfo = data.cart,
+				actionInfo = data.action;
+			//end of vars
 
-		self.user().update(userInfo.name);
+			self.user().update(userInfo.name);
 
-		if (cartInfo.quantity !== 0) {
-			var nowBasket = {
-				cartQ: cartInfo.quantity,
-				cartSum: cartInfo.sum
-			};
-			self.basket().update(nowBasket);
-		}
+			if (cartInfo.quantity !== 0) {
+				var nowBasket = {
+					cartQ: cartInfo.quantity,
+					cartSum: cartInfo.sum
+				};
+				self.basket().update(nowBasket);
+			}
 
-		if (actionInfo !== undefined) {
-			startAction(actionInfo);
-		}
-	};
+			if (actionInfo !== undefined) {
+				startAction(actionInfo);
+			}
+		};
+	//end of vars
 
 	$.get(self.updUrl, parseUserInfo);
 };

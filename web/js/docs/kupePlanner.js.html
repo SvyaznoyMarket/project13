@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: product/kupePlanner.js</title>
+    
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+    
+    <h1 class="page-title">Source: product/kupePlanner.js</h1>
+    
+    
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source"><code>/**
+ * Планировщик шкафов купе
+ *
+ * @requires jQuery
+ */
+;(function(){
+		/**
+		 * Имя объекта для конструктора шкафов купе
+		 *
+		 * ВНИМАНИЕ
+		 * Имя переменной менять нельзя. Захардкожено в файле KupeConstructorScript.js
+		 * Переменная должна находится в глобальной области видимости
+		 */
+		Planner3dKupeConstructor = null;
+
+
+		/**
+		 * Callback Инициализации конструктора шкафов
+		 *
+		 * ВНИМАНИЕ
+		 * Название функции менять нельзя. Захардкожено в файле KupeConstructorScript.js
+		 * Функция должна находится в глобальной области видимости
+		 */
+		Planner3d_Init = function (ApiIds){
+			// console.info(ApiIds)
+		};
+
+
+		/**
+		 * Callback изменений в конструкторе шкафов
+		 * 
+		 * ВНИМАНИЕ
+		 * Название функции менять нельзя. Захардкожено в файле KupeConstructorScript.js
+		 * Функция должна находится в глобальной области видимости
+		 */
+		Planner3d_UpdatePrice = function (IdsWithInfo) {
+			var url = $('#planner3D').data('cart-sum-url');
+			var product = {};
+			product.product = {};
+
+			var authFromServer = function(res){
+				if (!res.success){
+					return false;
+				}
+
+				$('.jsPrice').html(printPrice(res.sum));
+			};
+
+			for (var i = 0, len = IdsWithInfo.length; i &lt; len; i++){
+				var prodID = IdsWithInfo[i].id;
+
+				if (IdsWithInfo[i].error !== ''){
+					$('.jsBuyButton').addClass('mDisabled');
+					$('#coupeError').html('Вставки продаются только парами!').show();
+					return false;
+				}
+				$('.jsBuyButton').removeClass('mDisabled');
+				$('#coupeError').hide();
+
+				if (product.product[prodID+''] !== undefined){
+					product.product[prodID+''].quantity++;
+				}
+				else{
+					product.product[prodID+''] = {
+						id : prodID,
+						quantity : 1
+					};
+				}
+			}
+
+			$.ajax({
+				type: 'POST',
+				url: url,
+				data: product,
+				success: authFromServer
+			});
+		};
+
+
+		/**
+		 * Добавление шкафа купе в корзину
+		 */
+		var kupe2basket = function(){
+			if ($(this).hasClass('mDisabled')){
+				return false;
+			}
+
+			var structure = Planner3dKupeConstructor.GetBasketContent();
+			var url = $(this).attr('href');
+
+			var resFromServer = function(res){
+				if ( !res.success ) {
+					return false;
+				}
+				$('.jsBuyButton').html('В корзине').addClass('mBought').attr('href','/cart');
+
+				/* костыль */
+				res.product.name = $('.bMainContainer__eHeader-title').html();
+				res.product.price = $('.jsPrice').eq('1').html();
+				res.product.article = $('.bMainContainer__eHeader-article').html();
+				/* */
+				
+				$("body").trigger("addtocart", [res]);
+			};
+
+			var product = {};
+
+			product.product = structure;
+			$.ajax({
+				type: 'POST',
+				url: url,
+				data: product,
+				success: resFromServer
+			});
+			return false;
+		};
+
+		var initPlanner = function(){
+			try {
+				var coupeInfo = $('#planner3D').data('product');
+				
+				Planner3dKupeConstructor = new DKupe3dConstructor(document.getElementById('planner3D'),'/css/item/coupe_img/','/css/item/coupe_tex/', '/css/item/test_coupe_icons/');
+				Planner3dKupeConstructor.Initialize('/js/KupeConstructorData.json', coupeInfo.id);
+			}
+			catch (err){
+				var pageID = $('body').data('id');
+				var dataToLog = {
+					event: 'Kupe3dConstructor error',
+					type:'ошибка загрузки Kupe3dConstructor',
+					pageID: pageID,
+					err: err
+				};
+				logError(dataToLog);
+			}
+
+			$('.jsBuyButton').off();
+			$('.jsBuyButton').bind('click', kupe2basket);
+		};
+
+
+	$(document).ready(function() {
+		if ($('#planner3D').length){
+			$LAB.script( 'KupeConstructorScript.min.js' ).script( 'three.min.js' ).wait(initPlanner);
+		}
+	});
+})();</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="BlackBox.html">BlackBox</a></li></ul><h3>Global</h3><ul><li><a href="global.html#activateItemLvl1">activateItemLvl1</a></li><li><a href="global.html#activateItemLvl2">activateItemLvl2</a></li><li><a href="global.html#add">add</a></li><li><a href="global.html#buildTriangle">buildTriangle</a></li><li><a href="global.html#checkHoverLvl2">checkHoverLvl2</a></li><li><a href="global.html#createTriangle">createTriangle</a></li><li><a href="global.html#docCookies">docCookies</a></li><li><a href="global.html#flyboxcloser">flyboxcloser</a></li><li><a href="global.html#flyboxDestroy">flyboxDestroy</a></li><li><a href="global.html#getDimensions">getDimensions</a></li><li><a href="global.html#isTrueEmail">isTrueEmail</a></li><li><a href="global.html#menuCheckTriangle">menuCheckTriangle</a></li><li><a href="global.html#menuHoverInLvl1">menuHoverInLvl1</a></li><li><a href="global.html#menuHoverInLvl2">menuHoverInLvl2</a></li><li><a href="global.html#menuMouseLeaveLvl1">menuMouseLeaveLvl1</a></li><li><a href="global.html#menuMouseLeaveLvl2">menuMouseLeaveLvl2</a></li><li><a href="global.html#menuMoveLvl2">menuMoveLvl2</a></li><li><a href="global.html#pageConfig">pageConfig</a></li><li><a href="global.html#Planner3d_Init">Planner3d_Init</a></li><li><a href="global.html#Planner3d_UpdatePrice">Planner3d_UpdatePrice</a></li><li><a href="global.html#Planner3dKupeConstructor">Planner3dKupeConstructor</a></li><li><a href="global.html#printPrice">printPrice</a></li><li><a href="global.html#update">update</a></li><li><a href="global.html#UpdateUrlString">UpdateUrlString</a></li></ul>
+</nav>
+
+<br clear="both">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0</a> on Mon Jul 15 2013 19:20:00 GMT+0400 (MSK)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
