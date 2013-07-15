@@ -91,7 +91,7 @@ return function(
 
 <div class="bProductDesc__ePhoto">
     <div class="bProductDesc__ePhoto-bigImg">
-        <img class="bZoomedImg" src="<?= $product->getImageUrl(3) ?>" data-zoom-image="<?= $product->getImageUrl(4) ?>" alt="<?= $helper->escape($product->getName()) ?>" />
+        <img class="bZoomedImg" src="<?= $product->getImageUrl(3) ?>" data-zoom-image="<?= $product->getImageUrl(5) ?>" alt="<?= $helper->escape($product->getName()) ?>" />
     </div><!--/product big image section -->
 
     <div class="bPhotoAction">
@@ -125,7 +125,7 @@ return function(
                     <ul id="productImgGallery" class="bPhotoActionOtherPhotoList clearfix">
                         <? $i = 0; foreach ($product->getPhoto() as $photo): ?>
                             <li class="bPhotoActionOtherPhotoItem">
-                                <a class="bPhotoActionOtherPhotoItem__eLink<? if (0 == $i): ?> mActive<? endif ?>" data-zoom-image="<?= $photo->getUrl(4) ?>" data-image="<?= $photo->getUrl(3) ?>" href="#">
+                                <a class="bPhotoActionOtherPhotoItem__eLink<? if (0 == $i): ?> mActive<? endif ?>" data-zoom-image="<?= $photo->getUrl(5) ?>" data-image="<?= $photo->getUrl(3) ?>" href="#">
                                     <img src="<?= $photo->getUrl(0) ?>" alt="<?= $helper->escape($product->getName()) ?>" />
                                 </a>
                             </li>

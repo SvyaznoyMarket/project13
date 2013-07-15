@@ -118,7 +118,8 @@ class DeliveryAction {
 
                                 $shop = [
                                     'id'        => (int)$shopItem['id'],
-                                    'name'      => $shopData[$shopItem['id']]['name'],
+                                    //'name'      => $shopData[$shopItem['id']]['name'],
+                                    'name'      => $address,
                                     'regime'    => $shopData[$shopItem['id']]['working_time'], // что за описка "regtime"?
                                     'latitude'  => $shopData[$shopItem['id']]['coord_lat'],
                                     'longitude' => $shopData[$shopItem['id']]['coord_long'],
