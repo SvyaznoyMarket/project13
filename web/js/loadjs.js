@@ -87,16 +87,13 @@
 		case 'tag-category':
 			$LAB.queueWait( function() {
 				$LAB
-				.script( getWithVersion('bigjquery.js') )
+				.script('jquery-plugins.min.js')
 				.script( getWithVersion('library.js') )
 				.wait()
-				.script( getWithVersion('main.js') )
-				.wait()
-				.script( getWithVersion('dash.js') )
+				.script(getWithVersion('common.js'))
 				.wait()
 				.script( getWithVersion('ports.js') )
-				.wait()
-				.script( getWithVersion('app.tag.js') )
+				.script('//cdn.optimizely.com/js/204544654.js')
 			}).runQueue()
 			break
 		case 'infopage':

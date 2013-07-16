@@ -1,5 +1,5 @@
-$(function(){
-  (function(){
+(function(){
+  $(function(){
     if($('.bCtg__eMore').length) {
       var expanded = false;
       $('.bCtg__eMore').click(function(){
@@ -14,9 +14,7 @@ $(function(){
         return false;
       });
     }
-  })();
 
-  (function(){
     /* Cards Carousel  */
     function cardsCarouselTag ( nodes, noajax ) {
       var current = 1;
@@ -132,5 +130,5 @@ $(function(){
         'viswidth' : 3
       });
     })
-  })();
-});
+  });
+})();

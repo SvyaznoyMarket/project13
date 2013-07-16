@@ -24,14 +24,14 @@
           <ul class="pb20">
             <? $count = 1 ?>
             <? foreach (array_keys($sidebarCategoriesTree[$rootToken]) as $parentToken) { ?>
-              <li class="bCtg__eL3<?= $count > 3 ? ' hf more_item' : '' ?>">
+              <li class="bCtg__eL3<?= $count > \App::config()->tag['numSidebarCategoriesShown'] ? ' hf more_item' : '' ?>">
                 <a href="<?= $page->url('tag.category', ['tagToken' => $tag->getToken(), 'categoryToken' => $parentToken]); ?>">
                   <span><?= $categoriesByToken[$parentToken]->getName() ?> <span class="gray"><? //= $categoryProductCountsByToken[$parentToken] ?></span></span>
                 </a>
               </li>
               <? $count++ ?>
             <? } ?>
-            <? if($count > 3) { ?>
+            <? if($count > \App::config()->tag['numSidebarCategoriesShown']) { ?>
               <li class="bCtg__eL3 bCtg__eMore">
                 <a href="#">еще...</a>
               </li>
