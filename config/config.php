@@ -307,4 +307,6 @@ $c->maybe3d['swfUrl']     = 'http://fs01.enter.ru/3d/flash/';
 $c->maybe3d['cmsFolder']  = '/opt/wwwroot/cms.enter.ru/wwwroot/v1/video/product/';
 $c->maybe3d['timeout']    = 30;
 
+$c->tag['numSidebarCategoriesShown'] = 3;
+
 return $c;

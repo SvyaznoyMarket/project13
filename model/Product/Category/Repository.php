@@ -412,6 +412,37 @@ class Repository {
         return empty($seoJson) ? [] : $seoJson;
     }
 
+    /**
+     * Получает горячие ссылки из seoCatalogJson
+     *
+     * @param $seoCatalogJson
+     * @return array
+     */
+    public function getHotlinksBySeoCatalogJson($seoCatalogJson) {
+        $hotlinks = empty($seoCatalogJson['hotlinks']) ? [] : $seoCatalogJson['hotlinks'];
+        $autohotlinks = empty($seoCatalogJson['autohotlinks']) ? [] : $seoCatalogJson['autohotlinks'];
+
+        // удаляем дубликаты из autohotlinks, встречающиеся в hotlinks
+        // такой подход кроме прочего позволяет в hotlinks отключать показ горячей ссылки
+        // даже если в autohotlinks она активна
+        foreach ($hotlinks as $key => $hotlink) {
+            foreach ($autohotlinks as $autokey => $autohotlink) {
+                if($autohotlink['title'] == $hotlink['title']) {
+                    unset($autohotlinks[$autokey]);
+                }
+            }
+        }
+
+        $hotlinks = array_merge($hotlinks, $autohotlinks);
+
+        // оставляем только активные (ссылки у которых не задан active считаем активными для
+        // поддержки старого json)
+        $hotlinks = array_values(array_filter($hotlinks, function($hotlink) {
+            return !isset($hotlink['active']) || isset($hotlink['active']) && (bool)$hotlink['active'];
+        }));
+
+        return $hotlinks;
+    }
 
     /**
      * Получает catalog json для данной категории
@@ -485,39 +516,6 @@ class Repository {
 
         return isset($catalogHtml['html']) ? $catalogHtml['html'] : '';
     }
-
-    /**
-     * Получает горячие ссылки из seoCatalogJson
-     *
-     * @param $seoCatalogJson
-     * @return array
-     */
-    public function getHotlinksBySeoCatalogJson($seoCatalogJson) {
-        $hotlinks = empty($seoCatalogJson['hotlinks']) ? [] : $seoCatalogJson['hotlinks'];
-        $autohotlinks = empty($seoCatalogJson['autohotlinks']) ? [] : $seoCatalogJson['autohotlinks'];
-
-        // удаляем дубликаты из autohotlinks, встречающиеся в hotlinks
-        // такой подход кроме прочего позволяет в hotlinks отключать показ горячей ссылки
-        // даже если в autohotlinks она активна
-        foreach ($hotlinks as $key => $hotlink) {
-            foreach ($autohotlinks as $autokey => $autohotlink) {
-                if($autohotlink['title'] == $hotlink['title']) {
-                    unset($autohotlinks[$autokey]);
-                }
-            }
-        }
-
-        $hotlinks = array_merge($hotlinks, $autohotlinks);
-
-        // оставляем только активные (ссылки у которых не задан active считаем активными для
-        // поддержки старого json)
-        $hotlinks = array_values(array_filter($hotlinks, function($hotlink) {
-            return !isset($hotlink['active']) || isset($hotlink['active']) && (bool)$hotlink['active'];
-        }));
-
-        return $hotlinks;
-    }
-
 
     /**
      * Получает seo catalog json для всех категорий
