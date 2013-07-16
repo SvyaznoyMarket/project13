@@ -40,14 +40,17 @@ class Action {
         foreach ($tagCategories as $tagCategory) {
             $tagCategoriesById[$tagCategory->getId()] = $tagCategory;
         }
-        /** @var $categoriesByToken \Model\Product\Category\Entity[] */
-        $categoriesByToken = [];
-        $categories = \RepositoryManager::productCategory()->getCollectionById(array_keys($tagCategoriesById));
-        foreach ($categories as $category) {
-            /** @var $category \Model\Product\Category\Entity */
-            $tagCategory = $tagCategoriesById[$category->getId()];
-            $category->setProductCount($tagCategory->getProductCount());
-            $categoriesByToken[$category->getToken()] = $category;
+
+        if (empty($seoTagJson['acts_as_category'])) {
+            /** @var $categoriesByToken \Model\Product\Category\Entity[] */
+            $categoriesByToken = [];
+            $categories = \RepositoryManager::productCategory()->getCollectionById(array_keys($tagCategoriesById));
+            foreach ($categories as $category) {
+                /** @var $category \Model\Product\Category\Entity */
+                $tagCategory = $tagCategoriesById[$category->getId()];
+                $category->setProductCount($tagCategory->getProductCount());
+                $categoriesByToken[$category->getToken()] = $category;
+            }
         }
 
         if ($categoryToken && empty($seoTagJson['acts_as_category'])) {
@@ -109,6 +112,8 @@ class Action {
                 throw new \Exception\NotFoundException(sprintf('Неверный номер страницы "%s".', $productPager->getPage()));
             }
 
+            $catalogJson = \RepositoryManager::productCategory()->getCatalogJson($category);
+
             // ajax
             if ($request->isXmlHttpRequest()) {
                 return new \Http\Response(\App::templating()->render('product/_list', array(
@@ -131,7 +136,8 @@ class Action {
                 &$hotlinks,
                 &$seoContent,
                 &$sidebarCategoriesTree,
-                &$categoriesByToken
+                &$categoriesByToken,
+                &$catalogJson
             ) {
                 $page->setParam('tag', $tag);
                 $page->setParam('productPager', $productPager);
@@ -146,6 +152,7 @@ class Action {
                 $page->setParam('sidebarHotlinks', true);
                 $page->setParam('sidebarCategoriesTree', $sidebarCategoriesTree);
                 $page->setParam('categoriesByToken', $categoriesByToken);
+                $page->setParam('catalogJson', $catalogJson);
             };
         } else {
             $setPageParameters = function(\View\Layout $page) use (
@@ -179,10 +186,13 @@ class Action {
             $productCategoryRepository = \RepositoryManager::productCategory();
             $productCategoryRepository->setEntityClass('\Model\Product\Category\TreeEntity');
 
+            $category = null;
+            $rootCategory = null;
             $currentRoot = null;
+            $categoriesByToken = [];
             $sidebarCategoriesTree = [];
             $categoryProductCountsByToken = [];
-            $walk = function($treeCategories) use (&$walk, &$currentRoot, &$sidebarCategoriesTree, &$categoriesByToken, &$categoryProductCountsByToken, $tagCategoriesById) {
+            $walk = function($treeCategories) use (&$walk, &$category, &$rootCategory, &$categoryToken, &$currentRoot, &$sidebarCategoriesTree, &$categoriesByToken, &$categoryProductCountsByToken, $tagCategoriesById) {
                 foreach ($treeCategories as $treeCategory) {
                     if($treeCategory->isRoot()) {
                         $currentRoot = $treeCategory;
@@ -205,18 +215,18 @@ class Action {
                             isset($categoryProductCountsByToken[$currentRoot->getToken()]) ? 
                                 $categoryProductCountsByToken[$currentRoot->getToken()] + $tagCategory->getProductCount() : $tagCategory->getProductCount();
                     }
+
+                    if(!empty($categoryToken) && $categoryToken == $treeCategory->getToken()) {
+                        $category = $treeCategory;
+                        $rootCategory = $currentRoot;
+                    }
+
                     if ((bool)$treeCategory->getChild()) {
                         $walk($treeCategory->getChild());
                     }
                 }
             };
             $walk($productCategoryRepository->getTreeCollection($region));
-
-            if(empty($categoryToken)) {
-                $category = null;
-            } else {
-                $category = $categoriesByToken[$categoryToken];
-            }
 
             // если категория не указана
             if (!$category) {
@@ -229,6 +239,8 @@ class Action {
             } elseif ($category->isRoot()) {
                 $page = new \View\Tag\RootPage();
                 $page->setParam('categoryProductCountsByToken', $categoryProductCountsByToken);
+                $page->setParam('category', $category);
+                $page->setParam('rootCategory', $rootCategory);
                 $setPageParameters($page);
 
                 return $this->rootCategory($category, $productFilter, $page, $request);
@@ -236,6 +248,8 @@ class Action {
 
             $page = new \View\Tag\LeafPage();
             $page->setParam('categoryProductCountsByToken', $categoryProductCountsByToken);
+            $page->setParam('category', $category);
+            $page->setParam('rootCategory', $rootCategory);
             $setPageParameters($page);
 
             return $this->leafCategory($category, $productFilter, $page, $request);
@@ -402,12 +416,9 @@ class Action {
 
 
     /**
-     * @param \Model\Product\Category\Entity $category
-     * @param \Model\Product\Filter          $productFilter
      * @param \View\Layout                   $page
      * @param \Http\Request                  $request
      * @return \Http\Response
-     * @throws \Exception
      */
     protected function tagRoot(\View\Layout $page, \Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
@@ -423,14 +434,14 @@ class Action {
     }
 
     /**
-     * @param \Model\Product\Category\Entity $category
-     * @param \Model\Product\Filter          $productFilter
-     * @param \View\Layout                   $page
-     * @param \Http\Request                  $request
+     * @param \Model\Product\Category\TreeEntity $category
+     * @param \Model\Product\Filter              $productFilter
+     * @param \View\Layout                       $page
+     * @param \Http\Request                      $request
      * @return \Http\Response
      * @throws \Exception
      */
-    protected function rootCategory(\Model\Product\Category\Entity $category, \Model\Product\Filter $productFilter, \View\Layout $page, \Http\Request $request) {
+    protected function rootCategory(\Model\Product\Category\TreeEntity $category, \Model\Product\Filter $productFilter, \View\Layout $page, \Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
         if (\App::config()->debug) \App::debug()->add('sub.act', 'Tag\\Action.rootCategory', 138);
@@ -455,14 +466,14 @@ class Action {
         $repository->setEntityClass('\\Model\\Product\\CompactEntity');
         // массив фильтров для каждой дочерней категории
 
-        $filterData = array_map(function(\Model\Product\Category\Entity $category) use ($productFilter) {
+        $filterData = array_map(function(\Model\Product\Category\TreeEntity $category) use ($productFilter) {
             $productFilter = clone $productFilter;
             $productFilter->setCategory($category);
 
             return $productFilter->dump();
         }, $childrenById);
 
-        /** @var $child \Model\Product\Category\Entity */
+        /** @var $child \Model\Product\Category\TreeEntity */
         $child = reset($childrenById);
         $productPagersByCategory = [];
         $productCount = 0;
@@ -529,14 +540,14 @@ class Action {
 
 
     /**
-     * @param \Model\Product\Category\Entity $category
+     * @param \Model\Product\Category\TreeEntity $category
      * @param \Model\Product\Filter          $productFilter
      * @param \View\Layout                   $page
      * @param \Http\Request                  $request
      * @return \Http\Response
      * @throws \Exception\NotFoundException
      */
-    protected function leafCategory(\Model\Product\Category\Entity $category, \Model\Product\Filter $productFilter, \View\Layout $page, \Http\Request $request) {
+    protected function leafCategory(\Model\Product\Category\TreeEntity $category, \Model\Product\Filter $productFilter, \View\Layout $page, \Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
         if (\App::config()->debug) \App::debug()->add('sub.act', 'Tag\\Action.leafCategory', 138);
@@ -627,7 +638,6 @@ class Action {
             )));
         }
 
-        $page->setParam('rootCategory', $category->getRoot());
         $page->setParam('productPager', $productPager);
         $page->setParam('productSorting', $productSorting);
         $page->setParam('productView', $productView);
@@ -646,12 +656,12 @@ class Action {
 
     /**
      * @param \Model\Product\Filter\Entity[] $filters
-     * @param \Model\Product\Category\Entity $category
+     * @param \Model\Product\Category\TreeEntity $category
      * @param \Model\Brand\Entity|null       $brand
      * @param \Http\Request $request
      * @return \Model\Product\Filter
      */
-    protected function getFilter(array $filters, \Model\Product\Category\Entity $category, \Model\Brand\Entity $brand = null, \Http\Request $request, $shop = null) {
+    protected function getFilter(array $filters, \Model\Product\Category\TreeEntity $category, \Model\Brand\Entity $brand = null, \Http\Request $request, $shop = null) {
         // флаг глобального списка в параметрах запроса
         $isGlobal = self::isGlobal();
         //

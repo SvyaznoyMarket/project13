@@ -11,6 +11,8 @@ class Layout extends \View\DefaultLayout {
             return;
         }
         $categoryToken = $this->getParam('categoryToken');
+        $category = $this->getParam('category');
+        $rootCategory = $this->getParam('rootCategory');
 
         /** @var $productPager \Iterator\EntityPager */
         $productPager = $this->getParam('productPager') instanceof \Iterator\EntityPager ? $this->getParam('productPager') : null;
@@ -36,10 +38,10 @@ class Layout extends \View\DefaultLayout {
             );
 
             if(!empty($category)) {
-                if(!$category->isRoot()) {
+                if(!$category->isRoot() && !empty($rootCategory)) {
                     $breadcrumbs[] = array(
-                        'name' => $category->getRoot()->getName(),
-                        'url'  => $this->url('tag.category', ['tagToken' => $tag->getToken(), 'categoryToken' => $category->getRoot()->getToken()]),
+                        'name' => $rootCategory->getName(),
+                        'url'  => $this->url('tag.category', ['tagToken' => $tag->getToken(), 'categoryToken' => $rootCategory->getToken()]),
                     );
                 }
                 $breadcrumbs[] = array(
