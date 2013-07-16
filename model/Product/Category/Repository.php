@@ -107,19 +107,20 @@ class Repository {
         $entityClass = $this->entityClass;
 
         $collection = [];
-        $client->addQuery('category/get',
-            [
-                'id'    => $ids,
-                'geo_id' => \App::user()->getRegion()->getId(),
-            ],
-            [],
-            function ($data) use (&$collection, $entityClass) {
-                foreach ($data as $item) {
-                    $collection[] = new $entityClass($item);
+        foreach (array_chunk($ids, 60) as $idsInChunk) {
+            $client->addQuery('category/get',
+                [
+                    'id'     => $idsInChunk,
+                    'geo_id' => \App::user()->getRegion()->getId(),
+                ],
+                [],
+                function ($data) use (&$collection, $entityClass) {
+                    foreach ($data as $item) {
+                        $collection[] = new $entityClass($item);
+                    }
                 }
-            }
-        );
-
+            );
+        }
         $client->execute(\App::config()->coreV2['retryTimeout']['default']);
 
         return $collection;
