@@ -73,8 +73,24 @@ class User {
      * @param \Http\Response $response
      */
     public function signIn(\Model\User\Entity $user, \Http\Response $response) {
+        $token = $user->getToken();
+
         $user->setIpAddress(\App::request()->getClientIp());
-        $this->setToken($user->getToken());
+        $this->setToken($token);
+
+        // SITE-1260 {
+        $cookie = new \Http\Cookie(
+            $this->tokenName,
+            $token,
+            time() + \App::config()->session['cookie_lifetime'],
+            '/',
+            null,
+            false,
+            true // важно httpOnly=true, чтобы js не мог получить куку
+        );
+        $response->headers->setCookie($cookie);
+        // }
+
         //\RepositoryManager::getUser()->saveEntity($user);
 
         $this->setCacheCookie($response);
