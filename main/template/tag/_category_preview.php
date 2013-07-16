@@ -23,7 +23,7 @@ $showImage = !empty($catalogJsonBulk[$token]) && !empty($catalogJsonBulk[$token]
     <div class="goodsbox__inner">
       <div class="photo">
           <a href="<?= $link ?>">
-              <img src="<?= $category->getImageUrl() ?>" alt="<?= $category->getName() . (empty($rootCategory) ? '' : ' - ' . $rootCategory->getName()) ?>" title="<?= $category->getName() ?> . (empty($rootCategory) ? '' : ' - ' . $rootCategory->getName()) ?>" width="160" height="160"/>
+              <img src="<?= $category->getImageUrl() ?>" alt="<?= $category->getName() . (empty($rootCategory) ? '' : ' - ' . $rootCategory->getName()) ?>" title="<?= $category->getName() . (empty($rootCategory) ? '' : ' - ' . $rootCategory->getName()) ?>" width="160" height="160"/>
           </a>
       </div>
       <h2><a href="<?= $link ?>" class="underline">
