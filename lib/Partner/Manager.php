@@ -24,13 +24,22 @@ class Manager {
             $utmSource = $request->get('utm_source');
             $sender = $request->get('sender');
 
+            print "ining test _ 0 :  | \n";
+            print ' vot1 ';
+            print \Smartengine\Client::querytest(); //tmp
+
             //SmartEngine & SmartAssistant
             if ((bool)$sender) {
+                print 'ining test0 : '.print_r($sender,1)." | \n";
                 $sender = explode('|', $sender); // ?sender=SmartEngine|product_id
                 if ((bool)$sender[0] && (bool)$sender[1]) {
-                    switch ($sender[0]) {
+                    print 'ining test1 '. print_r( \Smartengine\Client::NAME ,1);
+                    switch ($sender[0]) { // не забывать про строчные (маленькие) буквы
                         case \Smartengine\Client::NAME: {
-                            \App::user()->setRecommendedProductByParams($sender[1], \Smartengine\Client::NAME, 'viewed_at', time());
+                            print 'ining test2 '.\Smartengine\Client::NAME." | \n";
+                            \App::user()->setRecommendedProductByParams(
+                                $sender[1], \Smartengine\Client::NAME, 'viewed_at', time()
+                            );
                             break;
                         }
                     }
@@ -188,6 +197,7 @@ class Manager {
                 ];
                 break;
             case \Smartengine\Client::NAME:
+                print ' ining test5 ';
                 $return = [
                     $prefix => [\Smartengine\Client::NAME],
                 ];
@@ -210,6 +220,8 @@ class Manager {
             }
             if ($product->getMainCategory()) $return[$keyName . '.category'] = $product->getMainCategory()->getId();
         }
+
+        $file = 'meta_partners.txt'; file_put_contents($file, print_r($return,1), LOCK_EX);
 
         return $return;
     }

@@ -78,6 +78,7 @@ class Action {
             }
 
             $client = \App::smartengineClient();
+            print 'pullProductAlsoViewed';
             $user = \App::user()->getEntity();
 
             $params = [
@@ -161,6 +162,7 @@ class Action {
             }
 
             $client = \App::smartengineClient();
+            print 'pullProductSimilar';
             $user = \App::user()->getEntity();
 
             $params = [
