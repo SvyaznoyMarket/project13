@@ -10556,6 +10556,8 @@
     background: -ms-linear-gradient(top, #ffffff 0%, #e3e3e3 100%);
     background: linear-gradient(to bottom, #ffffff 0%, #e3e3e3 100%);
     filter: progid:dximagetransform.microsoft.gradient(startColorstr='#ffffff', endColorstr='#e3e3e3', GradientType=0);
+    color: #a6a6a6;
+    border: 1px solid #e6e6e6;
   }
   .btnBuy .btnBuy__eLink:hover {
     text-decoration: none;
