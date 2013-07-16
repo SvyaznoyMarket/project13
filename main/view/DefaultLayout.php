@@ -169,8 +169,9 @@ class DefaultLayout extends Layout {
 
         switch ($routeName) { // begin of case
             case "homepage":
-                $viewEvent = 'viewHome';
-                break;
+                //$viewEvent = 'viewHome';
+                //break;
+                return false; // нечего передовать на homepage, выходим
 
             case "product":
                 $viewEvent = 'viewItem';
@@ -221,8 +222,6 @@ class DefaultLayout extends Layout {
 
 
             case "product.category":
-                $viewEvent = 'viewList';
-
                 $productPagersByCategory = $this->getParam('productPagersByCategory');
 
                 if ($productPagersByCategory)
@@ -233,6 +232,13 @@ class DefaultLayout extends Layout {
                     }
                 }
 
+                if (!empty($eventItems_arr)) {
+                    $viewEvent = 'viewList';
+                }else{
+                    //$viewEvent = '';
+                    return false; // eсли нет продуктов, нечего передовать на этой стр, выходим
+                }
+
                 break;
 
             case "order.complete":
@@ -241,7 +247,9 @@ class DefaultLayout extends Layout {
                 break;
 
             default:
-                $viewEvent = 'view.'.$routeName;
+                //$viewEvent = 'view.'.$routeName;
+                //$viewEvent = '';
+                return false; // нечего передовать на этой стр, выходим
 
         }// end of case
 
