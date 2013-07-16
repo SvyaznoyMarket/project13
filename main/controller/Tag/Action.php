@@ -176,45 +176,41 @@ class Action {
             $setPageParameters($page);
             return new \Http\Response($page->show());
         } else {
-            // получаем ветки для всех найденных категорий, чтобы построить сайдбар
-            foreach ($categories as $category) {
-                \RepositoryManager::productCategory()->prepareEntityBranch($category, $region);
-                $client->execute(\App::config()->coreV2['retryTimeout']['tiny']);
-            }
+            $productCategoryRepository = \RepositoryManager::productCategory();
+            $productCategoryRepository->setEntityClass('\Model\Product\Category\TreeEntity');
 
-            // строим дерево категорий для сайдбара
+            $currentRoot = null;
             $sidebarCategoriesTree = [];
             $categoryProductCountsByToken = [];
-            foreach ($categories as $category) {
-                $ancestorList = [$category->getRoot(), $category];
-                foreach ($ancestorList as $key => $ancestor) {
-                    $ancestorToken = $ancestor->getToken();
-                    if(!in_array($ancestorToken, $categoriesByToken)) {
-                        $categoriesByToken[$ancestorToken] = $ancestor;
-                    }
+            $walk = function($treeCategories) use (&$walk, &$currentRoot, &$sidebarCategoriesTree, &$categoriesByToken, &$categoryProductCountsByToken, $tagCategoriesById) {
+                foreach ($treeCategories as $treeCategory) {
+                    if($treeCategory->isRoot()) {
+                        $currentRoot = $treeCategory;
+                    } elseif($treeCategory->isLeaf() && in_array($treeCategory->getId(), array_keys($tagCategoriesById))) {
+                        if(!in_array($currentRoot->getToken(), $categoriesByToken)) {
+                            $categoriesByToken[$currentRoot->getToken()] = $currentRoot;
+                        }
+                        if(!in_array($currentRoot->getToken(), array_keys($sidebarCategoriesTree))) {
+                            $sidebarCategoriesTree[$currentRoot->getToken()] = [];
+                        }
+                        if(!in_array($treeCategory->getToken(), $categoriesByToken)) {
+                            $categoriesByToken[$treeCategory->getToken()] = $treeCategory;
+                        }
+                        $this->addToken($sidebarCategoriesTree, $currentRoot->getToken(), $treeCategory->getToken());
 
-                    if($ancestor->isRoot() && !in_array($ancestorToken, array_keys($sidebarCategoriesTree))) {
-                        $sidebarCategoriesTree[$ancestorToken] = [];
-                    } elseif(!$ancestor->isRoot() && !empty($ancestorList[$key - 1])) {
-                        $parentToken = $ancestorList[$key - 1]->getToken();
-                        $this->addToken($sidebarCategoriesTree, $parentToken, $ancestorToken);
+                        $tagCategory = $tagCategoriesById[$treeCategory->getId()];
+                        $treeCategory->setProductCount($tagCategory->getProductCount());
+                        $categoryProductCountsByToken[$treeCategory->getToken()] = $tagCategory->getProductCount();
+                        $categoryProductCountsByToken[$currentRoot->getToken()] = 
+                            isset($categoryProductCountsByToken[$currentRoot->getToken()]) ? 
+                                $categoryProductCountsByToken[$currentRoot->getToken()] + $tagCategory->getProductCount() : $tagCategory->getProductCount();
+                    }
+                    if ((bool)$treeCategory->getChild()) {
+                        $walk($treeCategory->getChild());
                     }
                 }
-
-                $tagCategory = $tagCategoriesById[$category->getId()];
-                $category->setProductCount($tagCategory->getProductCount());
-                $categoryProductCountsByToken[$category->getToken()] = $tagCategory->getProductCount();
-                if($category->getParent()) {
-                    $categoryProductCountsByToken[$category->getParent()->getToken()] = 
-                        isset($categoryProductCountsByToken[$category->getParent()->getToken()]) ? 
-                            $categoryProductCountsByToken[$category->getParent()->getToken()] + $tagCategory->getProductCount() : $tagCategory->getProductCount();
-                }
-                if($category->getRoot()) {
-                    $categoryProductCountsByToken[$category->getRoot()->getToken()] = 
-                        isset($categoryProductCountsByToken[$category->getRoot()->getToken()]) ? 
-                            $categoryProductCountsByToken[$category->getRoot()->getToken()] + $tagCategory->getProductCount() : $tagCategory->getProductCount();
-                }
-            }
+            };
+            $walk($productCategoryRepository->getTreeCollection($region));
 
             if(empty($categoryToken)) {
                 $category = null;
@@ -243,7 +239,6 @@ class Action {
             $setPageParameters($page);
 
             return $this->leafCategory($category, $productFilter, $page, $request);
-
         }
     }
 
