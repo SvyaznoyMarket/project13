@@ -186,7 +186,11 @@ class Action {
             $sidebarCategoriesTree = [];
             $categoryProductCountsByToken = [];
             foreach ($categories as $category) {
-                $ancestorList = [$category->getRoot(), $category];
+                if ($category->getRoot()) {
+                    $ancestorList = [$category->getRoot(), $category];
+                } else {
+                    $ancestorList = [$category];
+                }
                 foreach ($ancestorList as $key => $ancestor) {
                     $ancestorToken = $ancestor->getToken();
                     if(!in_array($ancestorToken, $categoriesByToken)) {
