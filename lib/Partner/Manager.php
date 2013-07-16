@@ -20,8 +20,46 @@ class Manager {
         try {
             $request = \App::request();
             $cookie = null;
+            //$session = \App::session(); // Можно сделать и через сессию
 
             $utmSource = $request->get('utm_source');
+            $utmContent = $request->get('utm_content') ?: '';
+            $utmTerm = $request->get('utm_term') ?: '';
+
+
+            if (!empty($utmContent)) {
+                $response->headers->setCookie(new \Http\Cookie(
+                    'utm_content',
+                    ($utmContent), time() + $this->cookieLifetime, '/', null, false, true
+                ));
+
+                /* // Можно сделать и через сессию
+                $session->remove('utm_content');
+                $session->set('utm_content', ($utmContent));
+                */
+            }
+
+            if (!empty($utmTerm)) {
+                $response->headers->setCookie(new \Http\Cookie(
+                    'utm_term',
+                    ($utmTerm), time() + $this->cookieLifetime, '/', null, false, true
+                ));
+
+                /* // Можно сделать и через сессию
+                $session->remove('utm_term');
+                $session->set('utm_term', ($utmTerm));
+                */
+            }
+
+            // for debug:
+            /*print " |## Testng Cookie and session: \n";
+            //print_r( $response->headers->get('utm_content') );
+            print_r( $request->cookies->get('utm_content') );
+            print " | ";
+            print_r( $session->get('utm_content') );
+            print " ##| \n";*/
+
+
             $sender = $request->get('sender');
 
             //SmartEngine & SmartAssistant
@@ -210,6 +248,24 @@ class Manager {
             }
             if ($product->getMainCategory()) $return[$keyName . '.category'] = $product->getMainCategory()->getId();
         }
+
+
+
+        //$return['utm_source'] = $request->get('utm_source');
+        $return['utm_content'] = $request->get('utm_content');
+        $return['utm_term'] = $request->get('utm_term');
+
+        if (empty($return['utm_content'])) $return['utm_content'] = $request->cookies->get('utm_content');
+        if (empty($return['utm_term'])) $return['utm_term'] = $request->cookies->get('utm_term');
+
+        /* // Можно сделать и через сессию
+        $session = \App::session();
+        if (empty($return['utm_content'])) $return['utm_content'] = $session->get('utm_content');
+        if (empty($return['utm_term'])) $return['utm_term'] = $session->get('utm_term');
+        */
+
+        // tmp debug
+        //$file = 'utm_attribs2.txt'; file_put_contents($file, print_r($return['utm_term'],1) .' | ' .print_r($return['utm_content'],1), LOCK_EX);
 
         return $return;
     }
