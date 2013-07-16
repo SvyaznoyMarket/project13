@@ -192,7 +192,6 @@ class Request {
      */
     public static function createFromGlobals() {
         $request = new static($_GET, $_POST, [], $_COOKIE, $_FILES, $_SERVER);
-        $request->redirect301Check();
 
         if (0 === strpos($request->server->get('CONTENT_TYPE'), 'application/x-www-form-urlencoded')
             && in_array(strtoupper($request->server->get('REQUEST_METHOD', 'GET')), ['PUT', 'DELETE', 'PATCH'])
@@ -205,7 +204,8 @@ class Request {
     }
 
 
-    private function redirect301Check() {
+    public function redirect301Check() {
+        // проверка списка редиректов и переход
         $current_domain = $_SERVER['HTTP_HOST'] ?: $_SERVER['SERVER_NAME'];
         $current_link_full = $_SERVER['REQUEST_URI'];
 
