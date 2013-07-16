@@ -1,76 +1,95 @@
-body.jewel {
-  #reviewsWrapper {
-    border-bottom: 0;
-  }
-  .reviewsBar {
-    background-color: #999;
-  }
-  .reviewsBarBg {
-    background-color: #edecee;
-  }
-  .popup {
-    border: 2px solid #000;
-    .close {
-      background: url("/css/pandoraPopups/img/closeBtnBlack.png") no-repeat 0 0;
-    }
-  }
-  .bHint_ePopup {
-    left: -290px;
-    border-color: #000;
-    .close {
-      background: url("/css/pandoraPopups/img/closeBtnBlack.png") no-repeat 0 0;
-    }
-  }
-  div.submit input {
-    background: #000;
-    border: 1px solid #000;
-    font-weight: normal;
-  }
-  .mSmallBtns a {
-    text-indent: 0;
-    background: none;
-  }
-  .bProductSection .inStock {
-    color: #000;
-  }
-  .bProductSection {
-    .btnBuy__eLink, .btnBuy__eLink:hover {
-      float: right;
-      display: block;
-      background: #000;
-      color: #fff;
-      box-shadow: none;
-      text-indent: 0;
-      text-align: center;
-      .rounded(4px);
-      border: 1px solid #000;
-    }
-    .mBought, .mBought:hover {
-      background: #fff;
-      color: #000;
-    }
-    .bSliderAction__eList .btnBuy {
-      margin: 0 0 0 1px;
-    }
-  }
-  .bSpecifications {
-    color: #6E6E6E;
-    font-size: 12px;
-    dd {
-      background: url("@{base-url}/pandoraProduct/img/h3_corner.gif") no-repeat 0 4px;
-      padding-left: 7px;
-      margin: 0 0 5px;
-      border: none;
-      width: 145px;
-    }
-    dt {
-      padding: 0;
-      width: 125px;
-      margin: 0 0 5px;
-    }
-  }
-  .bProductSection .bSpecifications__eList dd span {
-    bottom: 0;
-  }
-}
+.jewel {
+	#reviewsWrapper {
+		border-bottom: 0;
+	}
 
+	.reviewsBar {
+		background-color: #999;
+	}
+
+	.reviewsBarBg {
+		background-color: #edecee;
+	}
+
+	.popup {
+		border: 2px solid #000;
+		.close {
+			background: url("/css/pandoraPopups/img/closeBtnBlack.png") no-repeat 0 0;
+		}
+	}
+
+	.bHint_ePopup {
+		left: -290px;
+
+		border-color: #000;
+		.close {
+			background: url("/css/pandoraPopups/img/closeBtnBlack.png") no-repeat 0 0;
+		}
+	}
+
+	div.submit input {
+		border: 1px solid #000;
+		background: #000;
+
+		font-weight: normal;
+	}
+
+	.mSmallBtns a {
+		text-indent: 0;
+
+		background: none;
+	}
+
+	.bProductSection .inStock {
+		color: #000;
+	}
+
+	.btnBuy__eLink, .btnBuy__eLink:hover {
+		.rounded(4px);
+		display: block;
+		float: right;
+
+		text-align: center;
+		text-indent: 0;
+
+		color: #fff;
+		border: 1px solid #000;
+		background: #000;
+		box-shadow: none;
+
+		.mBought, .mBought:hover {
+			color: #000;
+			background: #fff;
+		}
+	}
+
+	.bProductSection {
+		.bSliderAction__eList .btnBuy {
+			margin: 0 0 0 1px;
+		}
+	}
+
+	.bSpecifications {
+		color: #6E6E6E;
+
+		font-size: 12px;
+		
+		dd {
+			width: 145px;
+			margin: 0 0 5px;
+			padding-left: 7px;
+
+			border: none;
+			background: url("@{base-url}/pandoraProduct/img/h3_corner.gif") no-repeat 0 4px;
+		}
+		dt {
+			width: 125px;
+			margin: 0 0 5px;
+			padding: 0;
+		}
+	}
+
+	.bProductSection .bSpecifications__eList dd span {
+		bottom: 0;
+	}
+}

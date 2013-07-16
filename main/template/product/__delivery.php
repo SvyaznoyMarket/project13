@@ -63,13 +63,14 @@ return function (
 
 <script id="widget_delivery_shop" type="text/html">
     <li class="bDeliveryFreeAddress__eShop">
-        <a class="bDeliveryFreeAddress__eLink" data-lat="<%=lat%>" data-lng="<%=lng%>" href="#"><%=name%></a>
+        <a class="bDeliveryFreeAddress__eLink" data-lat="<%=lat%>" data-lng="<%=lng%>" href="<%=url%>"><%=name%></a>
     </li>
 </script>
 
 <div id="avalibleShop" class="popup">
     <i class="close" title="Закрыть">Закрыть</i>
     <div id="ymaps-avalshops"></div>
+    <a href="#" class="bOrangeButton fr mt5">Перейти к магазину</a>
 </div>
 
 
@@ -82,7 +83,7 @@ return function (
     <li class="bWidgetBuy__eDelivery-item bWidgetBuy__eDelivery-free">
     </li>
 
-    <li class="bWidgetBuy__eDelivery-item bWidgetBuy__eDelivery-now mOpen">
+    <li class="bWidgetBuy__eDelivery-item bWidgetBuy__eDelivery-now <?= $product->getIsBuyable() ? 'mClose' : 'mOpen'?>">
         <span class="bWidgetBuy__eDelivery-nowClick dotted">Есть в магазинах</span>
         <div>Купить сегодня без предзаказа</div>
         <ul class="bDeliveryFreeAddress">
