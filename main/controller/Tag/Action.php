@@ -208,12 +208,16 @@ class Action {
                 $tagCategory = $tagCategoriesById[$category->getId()];
                 $category->setProductCount($tagCategory->getProductCount());
                 $categoryProductCountsByToken[$category->getToken()] = $tagCategory->getProductCount();
-                $categoryProductCountsByToken[$category->getParent()->getToken()] = 
-                    isset($categoryProductCountsByToken[$category->getParent()->getToken()]) ? 
-                        $categoryProductCountsByToken[$category->getParent()->getToken()] + $tagCategory->getProductCount() : $tagCategory->getProductCount();
-                $categoryProductCountsByToken[$category->getRoot()->getToken()] = 
-                    isset($categoryProductCountsByToken[$category->getRoot()->getToken()]) ? 
-                        $categoryProductCountsByToken[$category->getRoot()->getToken()] + $tagCategory->getProductCount() : $tagCategory->getProductCount();
+                if($category->getParent()) {
+                    $categoryProductCountsByToken[$category->getParent()->getToken()] = 
+                        isset($categoryProductCountsByToken[$category->getParent()->getToken()]) ? 
+                            $categoryProductCountsByToken[$category->getParent()->getToken()] + $tagCategory->getProductCount() : $tagCategory->getProductCount();
+                }
+                if($category->getRoot()) {
+                    $categoryProductCountsByToken[$category->getRoot()->getToken()] = 
+                        isset($categoryProductCountsByToken[$category->getRoot()->getToken()]) ? 
+                            $categoryProductCountsByToken[$category->getRoot()->getToken()] + $tagCategory->getProductCount() : $tagCategory->getProductCount();
+                }
             }
 
             if(empty($categoryToken)) {
