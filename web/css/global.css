@@ -10378,7 +10378,7 @@
   }
   .bWidgetBuy__eDelivery-item {
     padding-left: 25px;
-    margin: 0 0 12px;
+    margin: 0 0 12px 4px;
     background-repeat: no-repeat;
     background-image: url("/css/rightBarCard/img/ico.png");
   }
