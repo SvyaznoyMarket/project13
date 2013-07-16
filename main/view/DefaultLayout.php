@@ -285,12 +285,12 @@ class DefaultLayout extends Layout {
 
         $criteo_q[] = [
             'event' => 'setCustomerId',
-            'account' => $userId,
+            'id' => $userId,
         ];
 
         $criteo_q[] = [
             'event' => 'setSiteType',
-            'account' => $siteType,
+            'type' => $siteType,
         ];
 
 
