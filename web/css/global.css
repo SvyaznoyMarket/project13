@@ -9938,7 +9938,9 @@
     margin: 4px 0 0;
   }
   .bProductSection .bProductDesc__eStore-text .text__eAll a {
-    text-decoration: underline;
+    color: #a6a6a6;
+    font-size: 12px;
+    border-bottom: 1px dotted #a6a6a6;
   }
   .bProductSection .bDescriptionProduct {
     font-size: 14px;
