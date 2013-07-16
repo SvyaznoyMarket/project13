@@ -195,7 +195,7 @@ class Action {
 
                     if($ancestor->isRoot() && !in_array($ancestorToken, array_keys($sidebarCategoriesTree))) {
                         $sidebarCategoriesTree[$ancestorToken] = [];
-                    } elseif(!$ancestor->isRoot()) {
+                    } elseif(!$ancestor->isRoot() && !empty($ancestorList[$key - 1])) {
                         $parentToken = $ancestorList[$key - 1]->getToken();
                         $this->addToken($sidebarCategoriesTree, $parentToken, $ancestorToken);
                     }
