@@ -75,8 +75,8 @@ return [
         'action'  => ['User\IndexAction', 'execute'],
     ],
     // данные по авторизованному пользователю
-    'user.getAuth' => [
-        'pattern' => '/user/get-auth',
+    'user.get' => [
+        'pattern' => '/user/get',
         'action'  => ['User\GetAction', 'execute'],
     ],
     // вход через социальные сети
