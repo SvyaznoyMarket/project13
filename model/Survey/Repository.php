@@ -9,9 +9,10 @@ class Repository {
     /**
      * @param \Core\ClientInterface $client
      */
-    public function __construct(\Core\ClientInterface $client) {
+    public function __construct(\DataStore\Client $client) {
         $this->client = $client;
     }
+
 
     /**
      * @return Entity|null
@@ -21,28 +22,10 @@ class Repository {
 
         $client = clone $this->client;
 
-        $entity = null;
-        $client->addQuery('survey/survey.json', [], [],
-            function ($data) use (&$entity) {
-                $entity = (bool)$data ? new Entity($data) : null;
-            },
-            function (\Exception $e) {
-                \App::exception()->remove($e);
-            }
-        );
-
-        $client->execute(\App::config()->dataStore['retryTimeout']['default']);
+        $data = $this->client->query('survey/survey.json');
+        $entity = (bool)$data ? new Entity($data) : null;
 
         return $entity;
     }
 
-    /**
-     * @param        $done
-     * @param        $fail
-     */
-    public function prepareEntity($done, $fail = null) {
-        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
-
-        $this->client->addQuery('survey/survey.json', [], [], $done, $fail);
-    }
 }
