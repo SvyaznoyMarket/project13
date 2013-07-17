@@ -5,13 +5,16 @@
 	background: @white;
 	//head section
 	&__eHeader {
-		font-family: tahoma;
+		font-family: 'Enter Type';
 		&-subtitle {
 			font-size: 24px;
+			text-transform: uppercase;
 		}
 		&-title {
-			font-family: tahoma;
+			font-family: 'Enter Type';
+			font-size: 30px;
 			padding: 0 0 7px;
+			text-transform: uppercase;
 		}
 		&-article {
 			color: #9d9d9d;
@@ -172,7 +175,9 @@
 		        .text__eAll {
 		            margin: 4px 0 0;
 		            a {
-		                text-decoration: underline;
+		            	color: @typGray;
+    					font-size: 12px;
+    					border-bottom: 1px dotted @typGray;
 		            }
 		        }
 		    }

@@ -9788,14 +9788,17 @@
     background: #ffffff;
   }
   .bMainContainer__eHeader {
-    font-family: tahoma;
+    font-family: 'Enter Type';
   }
   .bMainContainer__eHeader-subtitle {
     font-size: 24px;
+    text-transform: uppercase;
   }
   .bMainContainer__eHeader-title {
-    font-family: tahoma;
+    font-family: 'Enter Type';
+    font-size: 30px;
     padding: 0 0 7px;
+    text-transform: uppercase;
   }
   .bMainContainer__eHeader-article {
     color: #9d9d9d;
@@ -9935,7 +9938,9 @@
     margin: 4px 0 0;
   }
   .bProductSection .bProductDesc__eStore-text .text__eAll a {
-    text-decoration: underline;
+    color: #a6a6a6;
+    font-size: 12px;
+    border-bottom: 1px dotted #a6a6a6;
   }
   .bProductSection .bDescriptionProduct {
     font-size: 14px;
@@ -10373,7 +10378,7 @@
   }
   .bWidgetBuy__eDelivery-item {
     padding-left: 25px;
-    margin: 0 0 12px;
+    margin: 0 0 12px 4px;
     background-repeat: no-repeat;
     background-image: url("/css/rightBarCard/img/ico.png");
   }

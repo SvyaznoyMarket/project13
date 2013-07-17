@@ -320,6 +320,10 @@ class AppConfig {
         'cmsFolder' => null,
         'timeout' => null,
     ];
+    /** @var array */
+    public $tag = [
+        'numSidebarCategoriesShown' => null,
+    ];
 
     public function __construct() {
         $this->vkontakteOauth = new OAuth\VkontakteConfig();

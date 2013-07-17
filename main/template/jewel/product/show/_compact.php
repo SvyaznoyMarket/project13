@@ -16,7 +16,7 @@ if ($disabled) {
     $url = $page->url('cart.product.set', array('productId' => $product->getId()));
 }
 $inCart = \App::user()->getCart()->hasProduct($product->getId());
-$btnText = $inCart ? 'В корзине' : 'В корзину';
+$btnText = $inCart ? 'В корзине' : 'Купить';
 ?>
 
 <li class="item">

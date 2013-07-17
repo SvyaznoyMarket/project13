@@ -84,6 +84,18 @@
 			break
 		case 'default':
 			break
+		case 'tag-category':
+			$LAB.queueWait( function() {
+				$LAB
+				.script('jquery-plugins.min.js')
+				.script( getWithVersion('library.js') )
+				.wait()
+				.script(getWithVersion('common.js'))
+				.wait()
+				.script( getWithVersion('ports.js') )
+				.script('//cdn.optimizely.com/js/204544654.js')
+			}).runQueue()
+			break
 		case 'infopage':
 			$LAB.queueWait( function() {
 				$LAB
