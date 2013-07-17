@@ -130,8 +130,9 @@ class DefaultLayout extends Layout {
 
         $return .= $this->render('_headJavascript');
 
-        // TODO не передовать все параметры $this->params
-        $criteo_vars_arr = $this->params + [ 'criteo_q' => $this->vars4jsCriteo() ];
+        $criteo_vars_arr = [
+            'criteoData' =>  $this->vars4jsCriteo()
+        ];
         $return .= $this->render('partner-counter/_criteo',  $criteo_vars_arr);
 
         return $return;
@@ -284,19 +285,19 @@ class DefaultLayout extends Layout {
             }
 
 
-        $criteo_q = [];
+        $criteoData = [];
 
-        $criteo_q[] = [
+        $criteoData[] = [
             'event' => 'setAccount',
             'account' => \App::config()->partners['criteo']['account'],
         ];
 
-        $criteo_q[] = [
+        $criteoData[] = [
             'event' => 'setCustomerId',
             'id' => $userId,
         ];
 
-        $criteo_q[] = [
+        $criteoData[] = [
             'event' => 'setSiteType',
             'type' => $siteType,
         ];
@@ -312,7 +313,7 @@ class DefaultLayout extends Layout {
         if (!empty($eventItems)) $arr_item['item'] = (string)$eventItems;
         if (!empty($searchQuery)) $arr_item['keywords'] = $searchQuery;
 
-        $criteo_q[] = $arr_item;
+        $criteoData[] = $arr_item;
 
 
 
@@ -329,7 +330,7 @@ class DefaultLayout extends Layout {
         */
 
 
-        return $criteo_q ? $criteo_q : false;
+        return $criteoData ? $criteoData : false;
     }
 
 
