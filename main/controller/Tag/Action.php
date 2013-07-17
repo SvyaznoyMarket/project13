@@ -480,15 +480,19 @@ class Action {
         $productPagersByCategory = [];
         $productCount = 0;
 
-        foreach ($repository->getIteratorsByFilter($filterData, $productSorting->dump(), null, $limit) as $productPager) {
-            $productPager->setPage(1);
-            $productPager->setMaxPerPage($limit);
-            $productPagersByCategory[$child->getId()] = $productPager;
-            $productCount += $productPager->count();
+        // TODO: сделать настройку для переключения иконки/линейки
+        // следующее условие должно выполняться если линейки
+        if(false) {
+            foreach ($repository->getIteratorsByFilter($filterData, $productSorting->dump(), null, $limit) as $productPager) {
+                $productPager->setPage(1);
+                $productPager->setMaxPerPage($limit);
+                $productPagersByCategory[$child->getId()] = $productPager;
+                $productCount += $productPager->count();
 
-            $child = next($childrenById);
-            if (!$child) {
-                break;
+                $child = next($childrenById);
+                if (!$child) {
+                    break;
+                }
             }
         }
 
