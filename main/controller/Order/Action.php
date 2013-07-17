@@ -781,7 +781,10 @@ class Action {
                                     \App::user()->deleteRecommendedProductByParams($product->getId(), \Smartengine\Client::NAME, 'viewed_at');
                                 }
                             }
-                            $orderData['meta_data'] =  \App::partner()->fabricateCompleteMeta(isset($orderData['meta_data']) ? $orderData['meta_data'] : [], \App::partner()->fabricateMetaByPartners($partners, $product));
+                            $orderData['meta_data'] =  \App::partner()->fabricateCompleteMeta(
+                                isset($orderData['meta_data']) ? $orderData['meta_data'] : [],
+                                \App::partner()->fabricateMetaByPartners($partners, $product)
+                            );
                         }
                         \App::logger()->info(sprintf('Создается заказ от партнеров %s', json_encode($orderData['meta_data']['partner'])), ['order', 'partner']);
                     } catch (\Exception $e) {
