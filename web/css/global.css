@@ -11203,20 +11203,21 @@
   .jewel .bProductSection .inStock {
     color: #000;
   }
-  .jewel .btnBuy__eLink,
-  .jewel .btnBuy__eLink:hover {
+  .jewel .bProductSection .btnBuy__eLink,
+  .jewel .bProductSection .btnBuy__eLink:hover {
+    float: right;
+    display: block;
+    background: #000;
+    color: #fff;
+    box-shadow: none;
+    text-indent: 0;
+    text-align: center;
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     border-radius: 4px;
-    display: block;
-    float: right;
-    text-align: center;
-    text-indent: 0;
-    color: #fff;
     border: 1px solid #000;
-    background: #000;
-    box-shadow: none;
   }
+
   .jewel .btnBuy__eLink .mBought,
   .jewel .btnBuy__eLink:hover .mBought,
   .jewel .btnBuy__eLink .mBought:hover,
@@ -11230,13 +11231,14 @@
   .jewel .bSpecifications {
     color: #6E6E6E;
     font-size: 12px;
+    margin: 10px 0 0;
   }
   .jewel .bSpecifications dd {
+    background: url("/css/pandoraProduct/img/h3_corner.gif") no-repeat 0 4px;
     width: 145px;
     margin: 0 0 5px;
     padding-left: 7px;
     border: none;
-    background: url("/css/pandoraProduct/img/h3_corner.gif") no-repeat 0 4px;
   }
   .jewel .bSpecifications dt {
     width: 125px;
