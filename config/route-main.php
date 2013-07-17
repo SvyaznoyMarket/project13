@@ -75,8 +75,8 @@ return [
         'action'  => ['User\IndexAction', 'execute'],
     ],
     // данные по авторизованному пользователю
-    'user.getAuth' => [
-        'pattern' => '/user/get-auth',
+    'user.get' => [
+        'pattern' => '/user/get',
         'action'  => ['User\GetAction', 'execute'],
     ],
     // вход через социальные сети
@@ -360,7 +360,7 @@ return [
     ],
     // добавление гарантии в корзину
     'cart.warranty.set' => [
-        'pattern' => '/cart/add-warranty/{warrantyId}/for-product/{productId}/',
+        'pattern' => '/cart/add-warranty/{warrantyId}/for-product/{productId}',
         'require' => ['productId' => '\d+', 'warrantyId' => '\d+'],
         'action'  => ['Cart\WarrantyAction', 'set'],
     ],

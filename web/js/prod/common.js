@@ -132,6 +132,149 @@ $.ajaxSetup({
  */
  
  
+(function(){
+  $(function(){
+    if($('.bCtg__eMore').length) {
+      var expanded = false;
+      $('.bCtg__eMore').click(function(){
+        if(expanded) {
+          $(this).siblings('.more_item').hide();
+          $(this).find('a').html('еще...');
+        } else {
+          $(this).siblings('.more_item').show();
+          $(this).find('a').html('скрыть');
+        }
+        expanded = !expanded;
+        return false;
+      });
+    }
+
+    /* Cards Carousel  */
+    function cardsCarouselTag ( nodes, noajax ) {
+      var current = 1;
+
+      var wi  = nodes.width*1;
+      var viswi = nodes.viswidth*1;
+
+      if( !isNaN($(nodes.times).html()) )
+        var max = $(nodes.times).html() * 1;
+      else
+        var max = Math.ceil(wi / viswi);
+
+      if((noajax !== undefined) && (noajax === true)) {
+        var buffer = 100;
+      } else {
+        var buffer = 2;
+      }
+
+      var ajaxflag = false;
+
+
+      var notify = function() {
+        $(nodes.crnt).html( current );
+        if(refresh_max_page) {
+          $(nodes.times).html( max );
+        }
+        if ( current == 1 )
+          $(nodes.prev).addClass('disabled');
+        else
+          $(nodes.prev).removeClass('disabled');
+        if ( current == max )
+          $(nodes.next).addClass('disabled');
+        else
+          $(nodes.next).removeClass('disabled');
+      }
+
+      var shiftme = function() {  
+        var boxes = $(nodes.wrap).find('.goodsbox')
+        $(boxes).hide()
+        var le = boxes.length
+        for(var j = (current - 1) * viswi ; j < current  * viswi ; j++) {
+          boxes.eq( j ).show()
+        }
+      }
+
+      $(nodes.next).bind('click', function() {
+        if( current < max && !ajaxflag ) {
+          if( current + 1 == max ) { //the last pull is loaded , so special shift
+
+            var boxes = $(nodes.wrap).find('.goodsbox')
+            $(boxes).hide()
+            var le = boxes.length
+            var rest = ( wi % viswi ) ?  wi % viswi  : viswi
+            for(var j = 1; j <= rest; j++)
+              boxes.eq( le - j ).show()
+            current++
+          } else {
+            if( current + 1 >= buffer ) { // we have to get new pull from server
+
+              $(nodes.next).css('opacity','0.4') // addClass dont work ((
+              ajaxflag = true
+              var getData = []
+              if( $('form.product_filter-block').length )
+                getData = $('form.product_filter-block').serializeArray()
+              getData.push( {name: 'page', value: buffer+1 } )  
+              $.get( $(nodes.prev).attr('data-url') , getData, function(data) {
+                buffer++
+                $(nodes.next).css('opacity','1')
+                ajaxflag = false
+                var tr = $('<div>')
+                $(tr).html( data )
+                $(tr).find('.goodsbox').css('display','none')
+                $(nodes.wrap).html( $(nodes.wrap).html() + tr.html() )
+                tr = null
+              })
+              current++
+              shiftme()
+            } else { // we have new portion as already loaded one     
+              current++
+              shiftme() // TODO repair
+            }
+          }
+          notify()
+        }
+        return false
+      })
+
+      $(nodes.prev).click( function() {
+        if( current > 1 ) {
+          current--
+          shiftme()
+          notify()
+        }
+        return false
+      })
+
+      var refresh_max_page = false
+    } // cardsCarousel object
+
+    $('.carouseltitle').each( function(){
+      if($(this).find('.jshm').html()) {
+        var width = $(this).find('.jshm').html().replace(/\D/g,'');
+      } else {
+        var width = 3;
+      }
+      cardsCarouselTag({
+        'prev'  : $(this).find('.back'),
+        'next'  : $(this).find('.forvard'),
+        'crnt'  : $(this).find('.none'),
+        'times' : $(this).find('span:eq(1)'),
+        'width' : width,
+        'wrap'  : $(this).find('~ .carousel').first(),
+        'viswidth' : 3
+      });
+    })
+  });
+})();
+
+ 
+ 
+/** 
+ * NEW FILE!!! 
+ */
+ 
+ 
+;
 /**
  * Обработчик для кнопок купить
  *
@@ -140,7 +283,7 @@ $.ajaxSetup({
  * @param		{event}		e
  * @param		{Boolean}	anyway Если true событие будет все равно выполнено
  */
-;(function(){
+(function(){
 
 	/**
 	 * Добавление в корзину на сервере. Получение данных о покупке и состоянии корзины. Маркировка кнопок.
@@ -217,7 +360,7 @@ $.ajaxSetup({
  * @param		{event}		event 
  * @param		{Object}	data	данные о том что кладется в корзину
  */
-;(function(){
+(function(){
 	/**
 	 * KISS Аналитика для добавления в корзину
 	 */
@@ -618,12 +761,13 @@ $(document).ready(function(){
  */
  
  
+;
 /**
  * JIRA
  */
-;(function(){
+(function(){
 	$.ajax({
-		url: "https://jira.enter.ru/s/en_US-istibo/773/3/1.2.4/_/download/batch/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector.js?collectorId=2e17c5d6",
+		url: "https://jira.enter.ru/s/ru_RU-istibo/773/3/1.2.4/_/download/batch/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector.js?collectorId=2e17c5d6",
 		type: "get",
 		cache: true,
 		dataType: "script"
@@ -1879,6 +2023,7 @@ $(document).ready(function(){
  */
  
  
+;
 /**
  * Всплывающая синяя плашка с предложением о подписке
  * Срабатывает при возникновении события showsubscribe.
@@ -1892,14 +2037,66 @@ $(document).ready(function(){
  * @param		{Boolean}	subscribe.agreed	Было ли дано согласие на подписку в прошлый раз
  * @param		{Boolean}	subscribe.show		Показывали ли пользователю плашку с предложением о подписке
  */
-;(function(){
+(function(){
 	var lboxCheckSubscribe = function(event, subscribe){
 
 		var notNowShield = $('.bSubscribeLightboxPopupNotNow'),
 			subPopup = $('.bSubscribeLightboxPopup'),
 			input = $('.bSubscribeLightboxPopup__eInput'),
-			submitBtn = $('.bSubscribeLightboxPopup__eBtn');
+			submitBtn = $('.bSubscribeLightboxPopup__eBtn'),
 		
+			subscribing = function(){
+				if (submitBtn.hasClass('mDisabled')){
+					return false;
+				}
+
+				var email = input.val(),
+					url = $(this).data('url');
+				//end of vars
+
+				$.post(url, {email: email}, function(res){
+					if( !res.success ){
+						return false;
+					}
+					
+					subPopup.html('<span class="bSubscribeLightboxPopup__eTitle mType">Спасибо! подтверждение подписки отправлено на указанный e-mail</span>');
+					docCookies.setItem(false, 'subscribed', 1, 157680000, '/');
+					if( typeof(_gaq) !== 'undefined' ){
+						_gaq.push(['_trackEvent', 'Account', 'Emailing sign up', 'Page top']);
+					}
+					setTimeout(function(){
+						subPopup.slideUp(300);
+					}, 3000);
+				});
+
+				return false;
+			},
+
+			subscribeNow = function(){
+				subPopup.slideDown(300);
+
+				submitBtn.bind('click', subscribing);
+
+				$('.bSubscribeLightboxPopup__eNotNow').bind('click', function(){
+					var url = $(this).data('url');
+
+					subPopup.slideUp(300, subscribeLater);
+					docCookies.setItem(false, 'subscribed', 0, 157680000, '/');
+					$.post(url);
+
+					return false;
+				});
+			},
+
+			subscribeLater = function(){
+				notNowShield.slideDown(300);
+				notNowShield.bind('click', function(){
+					$(this).slideUp(300);
+					subscribeNow();
+				});
+			};
+		//end of vars
+
 		input.placeholder();
 
 		input.emailValidate({
@@ -1912,56 +2109,6 @@ $(document).ready(function(){
 				input.addClass('mError');
 			}
 		});
-		
-		var subscribing = function(){
-			if (submitBtn.hasClass('mDisabled')){
-				return false;
-			}
-
-			var email = input.val(),
-				url = $(this).data('url');
-
-			$.post(url, {email: email}, function(res){
-				if( !res.success ){
-					return false;
-				}
-				
-				subPopup.html('<span class="bSubscribeLightboxPopup__eTitle mType">Спасибо! подтверждение подписки отправлено на указанный e-mail</span>');
-				docCookies.setItem(false, 'subscribed', 1, 157680000, '/');
-				if( typeof(_gaq) !== 'undefined' ){
-					_gaq.push(['_trackEvent', 'Account', 'Emailing sign up', 'Page top']);
-				}
-				setTimeout(function(){
-					subPopup.slideUp(300);
-				}, 3000);
-			});
-
-			return false;
-		};
-
-		var subscribeNow = function(){
-			subPopup.slideDown(300);
-
-			submitBtn.bind('click', subscribing);
-
-			$('.bSubscribeLightboxPopup__eNotNow').bind('click', function(){
-				var url = $(this).data('url');
-
-				subPopup.slideUp(300, subscribeLater);
-				docCookies.setItem(false, 'subscribed', 0, 157680000, '/');
-				$.post(url);
-
-				return false;
-			});
-		};
-
-		var subscribeLater = function(){
-			notNowShield.slideDown(300);
-			notNowShield.bind('click', function(){
-				$(this).slideUp(300);
-				subscribeNow();
-			});
-		};
 
 		if (!subscribe.show){
 			if (!subscribe.agreed){
@@ -2482,25 +2629,26 @@ $('.bMainMenuLevel-2__eItem').mouseleave(menuMouseLeaveLvl2)
  */
 ;(function(){
 	var upper = $('#upper');
-	var trigger = false;//сработало ли появление языка
+		trigger = false,	//сработало ли появление языка
 
-	var pageScrolling = function(){
-		if (($(window).scrollTop() > 600)&&(!trigger)){
-			//появление языка
-			trigger = true;
-			upper.animate({'marginTop':'0'},400);
-		}
-		else if (($(window).scrollTop() < 600)&&(trigger)){
-			//исчезновение
-			trigger = false;
-			upper.animate({'marginTop':'-30px'},400);
-		}
-	};
+		pageScrolling = function(){
+			if (($(window).scrollTop() > 600)&&(!trigger)){
+				//появление языка
+				trigger = true;
+				upper.animate({'marginTop':'0'},400);
+			}
+			else if (($(window).scrollTop() < 600)&&(trigger)){
+				//исчезновение
+				trigger = false;
+				upper.animate({'marginTop':'-30px'},400);
+			}
+		},
 
-	var goUp = function(){
-		$(window).scrollTo('0px',400);
-		return false;
-	};
+		goUp = function(){
+			$(window).scrollTo('0px',400);
+			return false;
+		};
+	//end of vars
 
 	$(window).scroll(pageScrolling);
 	upper.bind('click',goUp);

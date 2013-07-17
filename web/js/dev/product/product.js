@@ -11,7 +11,7 @@ $(document).ready(function() {
 		galleryActiveClass: 'mActive',
 		zoomWindowOffety: -15,
 		zoomWindowOffetx: 19,
-		zoomWindowWidth: 518,
+		zoomWindowWidth: 519,
 		borderSize: 1,
 		borderColour: '#C7C7C7'
 	});

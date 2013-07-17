@@ -59,6 +59,20 @@ module.exports = function(grunt) {
 	grunt.initConfig({
 
 		/**
+		 * Документация к файлам
+		 * 
+		 * @link https://github.com/krampstudio/grunt-jsdoc-plugin
+		 */
+		jsdoc : {
+			dist : {
+				src: [jsDevPath+'**/*.js'], 
+				options: {
+					destination: '../web/js/docs/'
+				}
+			}
+		},
+
+		/**
 		 * Валидация JS файлов
 		 *
 		 * @link https://github.com/gruntjs/grunt-contrib-jshint
@@ -467,6 +481,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-connect');
 	grunt.loadNpmTasks('grunt-contrib-concat');
 	grunt.loadNpmTasks('grunt-exec');
+	grunt.loadNpmTasks('grunt-jsdoc');
 
 
 	/**

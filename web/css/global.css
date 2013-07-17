@@ -7181,6 +7181,9 @@
     width: 119px;
     margin-left: 14px;
   }
+  #metrostations {
+    z-index: 10;
+  }
   /*.bSelect:hover .bSelect__eDropmenu {
     display: block;;
   }
@@ -9785,14 +9788,17 @@
     background: #ffffff;
   }
   .bMainContainer__eHeader {
-    font-family: tahoma;
+    font-family: 'Enter Type';
   }
   .bMainContainer__eHeader-subtitle {
     font-size: 24px;
+    text-transform: uppercase;
   }
   .bMainContainer__eHeader-title {
-    font-family: tahoma;
+    font-family: 'Enter Type';
+    font-size: 30px;
     padding: 0 0 7px;
+    text-transform: uppercase;
   }
   .bMainContainer__eHeader-article {
     color: #9d9d9d;
@@ -9932,7 +9938,9 @@
     margin: 4px 0 0;
   }
   .bProductSection .bProductDesc__eStore-text .text__eAll a {
-    text-decoration: underline;
+    color: #a6a6a6;
+    font-size: 12px;
+    border-bottom: 1px dotted #a6a6a6;
   }
   .bProductSection .bDescriptionProduct {
     font-size: 14px;
@@ -10370,7 +10378,7 @@
   }
   .bWidgetBuy__eDelivery-item {
     padding-left: 25px;
-    margin: 0 0 12px;
+    margin: 0 0 12px 4px;
     background-repeat: no-repeat;
     background-image: url("/css/rightBarCard/img/ico.png");
   }
@@ -10385,7 +10393,6 @@
   }
   .bWidgetBuy__eDelivery-now {
     display: none;
-    cursor: pointer;
   }
   .bWidgetBuy__eDelivery-now.mOpen {
     background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAANCAYAAACdKY9CAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyRpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoTWFjaW50b3NoKSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDo3NzQ2NkQ2RURGRDMxMUUyQTAyN0EyQzU4QzUwOTg0RiIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDo3NzQ2NkQ2RkRGRDMxMUUyQTAyN0EyQzU4QzUwOTg0RiI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOjc3NDY2RDZDREZEMzExRTJBMDI3QTJDNThDNTA5ODRGIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjc3NDY2RDZEREZEMzExRTJBMDI3QTJDNThDNTA5ODRGIi8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+i3PwrgAAAINJREFUeNpiZGBgmAPEAQzEgTwQYQrE/4nAz4CYHaZzDxEaSpGtciGg+D0Q86K77zQeDS3YPBSMQ/E3IBbDpoEJiG9g0TAFX7AloSn+DcQK+DSwAfETJA2LiYmcQqjif0CsQ4wGbiB+C8SbsUkyYxEDuZsLiBcB8WMikwwDJy4JgAADAGgmPsQcygiIAAAAAElFTkSuQmCC");
@@ -10394,6 +10401,9 @@
   .bWidgetBuy__eDelivery-now.mClose {
     background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAOCAYAAAD5YeaVAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyRpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoTWFjaW50b3NoKSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDo3NzQ2NkQ3MkRGRDMxMUUyQTAyN0EyQzU4QzUwOTg0RiIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDo3NzQ2NkQ3M0RGRDMxMUUyQTAyN0EyQzU4QzUwOTg0RiI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOjc3NDY2RDcwREZEMzExRTJBMDI3QTJDNThDNTA5ODRGIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjc3NDY2RDcxREZEMzExRTJBMDI3QTJDNThDNTA5ODRGIi8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+Qg8UnwAAAHtJREFUeNpiYGBgYGUgEjABsSEQ7wRiFWI0mAHxfyD+DsR1QMxOjGIYvgnELsQqhuGlQCxBrGIQ/gDEWVC/EVQMw6eA2IiJyFBTAmJ9Qib/A+JZQCxMyBlngdickAdBnspB9hQuxYuAWJxQpFwBYjtifMoNxCzEKAQIMABY6zXzpJXmMAAAAABJRU5ErkJggg==");
     background-position: 8px 1px;
+  }
+  .bWidgetBuy__eDelivery-nowClick {
+    cursor: pointer;
   }
   .bWidgetBuy .bAwardSection {
     text-align: center;
@@ -10405,6 +10415,12 @@
   .bDeliveryFreeAddress__eShop {
     font-size: 11px;
     padding: 0 0 10px;
+  }
+  .bDeliveryFreeAddress__eLink {
+    text-decoration: none;
+  }
+  .bDeliveryFreeAddress__eLink:hover {
+    text-decoration: underline;
   }
   .mOpen .bDeliveryFreeAddress {
     display: block;
@@ -10521,10 +10537,14 @@
     background: #ffffff;
   }
   .btnBuy .btnBuy__eLink.mDisabled {
-    background: graygraddark();
-    background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #eeeeee), color-stop(1, #ffffff));
-    background: -ms-linear-gradient(bottom, #eeeeee, #ffffff);
-    background: -moz-linear-gradient(center bottom, #eeeeee 0%, #ffffff 100%);
+    background: #e5e5e5;
+    background: -moz-linear-gradient(top, #ffffff 0%, #e3e3e3 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffffff), color-stop(100%, #e3e3e3));
+    background: -webkit-linear-gradient(top, #ffffff 0%, #e3e3e3 100%);
+    background: -o-linear-gradient(top, #ffffff 0%, #e3e3e3 100%);
+    background: -ms-linear-gradient(top, #ffffff 0%, #e3e3e3 100%);
+    background: linear-gradient(to bottom, #ffffff 0%, #e3e3e3 100%);
+    filter: progid:dximagetransform.microsoft.gradient(startColorstr='#ffffff', endColorstr='#e3e3e3', GradientType=0);
     color: #a6a6a6;
     border: 1px solid #e6e6e6;
     -webkit-box-shadow: none;
@@ -10533,10 +10553,16 @@
     cursor: default;
   }
   .btnBuy .btnBuy__eLink.mDisabled:hover {
-    background: graygraddark();
-    background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #eeeeee), color-stop(1, #ffffff));
-    background: -ms-linear-gradient(bottom, #eeeeee, #ffffff);
-    background: -moz-linear-gradient(center bottom, #eeeeee 0%, #ffffff 100%);
+    background: #e5e5e5;
+    background: -moz-linear-gradient(top, #ffffff 0%, #e3e3e3 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffffff), color-stop(100%, #e3e3e3));
+    background: -webkit-linear-gradient(top, #ffffff 0%, #e3e3e3 100%);
+    background: -o-linear-gradient(top, #ffffff 0%, #e3e3e3 100%);
+    background: -ms-linear-gradient(top, #ffffff 0%, #e3e3e3 100%);
+    background: linear-gradient(to bottom, #ffffff 0%, #e3e3e3 100%);
+    filter: progid:dximagetransform.microsoft.gradient(startColorstr='#ffffff', endColorstr='#e3e3e3', GradientType=0);
+    color: #a6a6a6;
+    border: 1px solid #e6e6e6;
   }
   .btnBuy .btnBuy__eLink:hover {
     text-decoration: none;
@@ -11161,6 +11187,11 @@
   .jewel .bHint_ePopup .close {
     background: url("/css/pandoraPopups/img/closeBtnBlack.png") no-repeat 0 0;
   }
+  .jewel div.submit input {
+    border: 1px solid #000;
+    background: #000;
+    font-weight: normal;
+  }
   .jewel .mSmallBtns a {
     text-indent: 0;
     background: none;
@@ -11182,10 +11213,13 @@
     border-radius: 4px;
     border: 1px solid #000;
   }
-  .jewel .bProductSection .mBought,
-  .jewel .bProductSection .mBought:hover {
-    background: #fff;
+
+  .jewel .btnBuy__eLink .mBought,
+  .jewel .btnBuy__eLink:hover .mBought,
+  .jewel .btnBuy__eLink .mBought:hover,
+  .jewel .btnBuy__eLink:hover .mBought:hover {
     color: #000;
+    background: #fff;
   }
   .jewel .bProductSection .bSliderAction__eList .btnBuy {
     margin: 0 0 0 1px;
@@ -11197,15 +11231,15 @@
   }
   .jewel .bSpecifications dd {
     background: url("/css/pandoraProduct/img/h3_corner.gif") no-repeat 0 4px;
-    padding-left: 7px;
-    margin: 0 0 5px;
-    border: none;
     width: 145px;
+    margin: 0 0 5px;
+    padding-left: 7px;
+    border: none;
   }
   .jewel .bSpecifications dt {
-    padding: 0;
     width: 125px;
     margin: 0 0 5px;
+    padding: 0;
   }
   .jewel .bProductSection .bSpecifications__eList dd span {
     bottom: 0;

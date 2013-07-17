@@ -188,6 +188,7 @@ $c->productPhoto['url'] = [
     2 => '/1/1/163/',
     3 => '/1/1/500/',
     4 => '/1/1/2500/',
+    5 => '/1/1/1500/',
 ];
 
 $c->productPhoto3d['url'] = [
@@ -305,5 +306,7 @@ $c->maybe3d['customerId'] = 'BE2016EF-32D8-41E6-976F-A8D32EB20ACF';
 $c->maybe3d['swfUrl']     = 'http://fs01.enter.ru/3d/flash/';
 $c->maybe3d['cmsFolder']  = '/opt/wwwroot/cms.enter.ru/wwwroot/v1/video/product/';
 $c->maybe3d['timeout']    = 30;
+
+$c->tag['numSidebarCategoriesShown'] = 3;
 
 return $c;

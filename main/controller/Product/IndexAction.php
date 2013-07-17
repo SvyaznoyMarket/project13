@@ -99,9 +99,9 @@ class IndexAction {
         $accessoryItems = [];
         $accessoryCategory = array_map(function($accessoryGrouped){
             return $accessoryGrouped['category'];
-        }, \Model\Product\Repository::filterAccessoryId($product, $accessoryItems, null, \App::config()->product['itemsInAccessorySlider'] * 6));
+        }, \Model\Product\Repository::filterAccessoryId($product, $accessoryItems, null, \App::config()->product['itemsInAccessorySlider'] * 36));
 
-        $accessoriesId =  array_slice($product->getAccessoryId(), 0, $accessoryCategory ? \App::config()->product['itemsInAccessorySlider'] * 6 : \App::config()->product['itemsInSlider'] * 6);
+        $accessoriesId =  array_slice($product->getAccessoryId(), 0, $accessoryCategory ? \App::config()->product['itemsInAccessorySlider'] * 36 : \App::config()->product['itemsInSlider'] * 6);
         $relatedId = array_slice($product->getRelatedId(), 0, \App::config()->product['itemsInSlider'] * 2);
         $partsId = [];
 
@@ -175,10 +175,10 @@ class IndexAction {
                 $quantity = (int)$stock->getQuantity();
                 $shopId = $stock->getShopId();
                 if ((0 < $quantity + $quantityShowroom) && !empty($shopId)) {
-                    $quantityByShop[$shopId] = array(
+                    $quantityByShop[$shopId] = [
                         'quantity' => $quantity,
                         'quantityShowroom' => $quantityShowroom,
-                    );
+                    ];
                 }
             }
             if ((bool)$quantityByShop) {

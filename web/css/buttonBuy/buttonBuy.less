@@ -29,13 +29,15 @@
             }
         }
         &.mDisabled {
-            .gradient(grayGradDark());
+            .grayGradDark();
             color: @typGray;
             border: 1px solid @typLightGray;
             .box-shadow(none);
             cursor: default;
             &:hover {
-                .gradient(grayGradDark());
+                .grayGradDark();
+                color: @typGray;
+                border: 1px solid @typLightGray;
             }
         }
         &:hover {

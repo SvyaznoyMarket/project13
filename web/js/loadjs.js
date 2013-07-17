@@ -84,6 +84,18 @@
 			break
 		case 'default':
 			break
+		case 'tag-category':
+			$LAB.queueWait( function() {
+				$LAB
+				.script('jquery-plugins.min.js')
+				.script( getWithVersion('library.js') )
+				.wait()
+				.script(getWithVersion('common.js'))
+				.wait()
+				.script( getWithVersion('ports.js') )
+				.script('//cdn.optimizely.com/js/204544654.js')
+			}).runQueue()
+			break
 		case 'infopage':
 			$LAB.queueWait( function() {
 				$LAB
@@ -102,6 +114,7 @@
 			$LAB.queueWait( function() {
 				$LAB
 				.script('jquery-plugins.min.js')
+				.script( 'JsHttpRequest.min.js' )
 				.script( getWithVersion('library.js') )
 				.script( 'http://direct-credit.ru/widget/api_script_utf.js' )
 				.wait()
@@ -119,12 +132,14 @@
 			.queueScript('http://ajax.aspnetcdn.com/ajax/knockout/knockout-2.2.1.js')
 			.queueWait( function() {
 				$LAB
-				.script('jquery-plugins.min.js').script( getWithVersion('library.js') )
+				.script('jquery-plugins.min.js')
+				.script( 'JsHttpRequest.min.js' )
+				.script( getWithVersion('library.js') )
 				// .script('shelf/jquery.mockjax.js')	               
 				.script( 'http://direct-credit.ru/widget/api_script_utf.js' )
 				.wait()
-				.script(getWithVersion('order-new.js'))
 				.script(getWithVersion('common.js'))
+				.script(getWithVersion('order-new.js'))
 				.wait()
 				.script( getWithVersion('ports.js') )			
 				.script('//cdn.optimizely.com/js/204544654.js')

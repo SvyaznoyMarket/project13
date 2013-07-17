@@ -1,16 +1,16 @@
 <?php
 /**
- * @var $page               \View\Product\IndexPage
- * @var $product            \Model\Product\Entity
- * @var $productVideos      \Model\Product\Video\Entity[]
- * @var $user               \Session\User
- * @var $accessories        \Model\Product\Entity[]
- * @var $accessoryCategory  \Model\Product\Category\Entity[]
- * @var $related            \Model\Product\Entity[]
- * @var $kit                \Model\Product\Entity[]
- * @var $additionalData     array
- * @var $shopStates         \Model\Product\ShopState\Entity[]
- * @var $creditData         array
+ * @var $page              \View\Product\IndexPage
+ * @var $product           \Model\Product\Entity
+ * @var $productVideos     \Model\Product\Video\Entity[]
+ * @var $user              \Session\User
+ * @var $accessories       \Model\Product\Entity[]
+ * @var $accessoryCategory \Model\Product\Category\Entity[]
+ * @var $related           \Model\Product\Entity[]
+ * @var $kit               \Model\Product\Entity[]
+ * @var $additionalData    array
+ * @var $shopStates        \Model\Product\ShopState\Entity[]
+ * @var $creditData        array
  */
 ?>
 
@@ -113,11 +113,11 @@
         <div class="bWidgetBuy mWidget">
             <?= $helper->render('__spinner', ['id' => \View\Id::cartButtonForProduct($product->getId())]) ?>
 
-            <?= $page->render('cart/_button', ['product' => $product, 'class' => 'btnBuy__eLink', 'value' => 'В корзину', 'url' => $hasFurnitureConstructor ? $page->url('cart.product.setList') : null]) // Кнопка купить ?>
+            <?= $page->render('cart/_button', ['product' => $product, 'class' => 'btnBuy__eLink', 'value' => 'Купить', 'url' => $hasFurnitureConstructor ? $page->url('cart.product.setList') : null]) // Кнопка купить ?>
 
             <?= $helper->render('product/__oneClick', ['product' => $product]) // Покупка в один клик ?>
 
-            <?= $helper->render('product/__delivery', ['product' => $product]) // Доставка ?>
+            <?= $helper->render('product/__delivery', ['product' => $product, 'shopStates' => $shopStates]) // Доставка ?>
 
             <?= $helper->render('product/__adfox', ['product' => $product]) ?>
         </div><!--/widget delivery -->
@@ -134,7 +134,7 @@
         <h1 class="bBottomBuy__eTitle"><?= $title ?></h1>
     </div>
 
-    <?= $page->render('cart/_button', ['product' => $product, 'class' => 'btnBuy__eLink', 'value' => 'В корзину', 'url' => $hasFurnitureConstructor ? $page->url('cart.product.setList') : null]) // Кнопка купить ?>
+    <?= $page->render('cart/_button', ['product' => $product, 'class' => 'btnBuy__eLink', 'value' => 'Купить', 'url' => $hasFurnitureConstructor ? $page->url('cart.product.setList') : null]) // Кнопка купить ?>
 
     <?= $helper->render('__spinner', ['id' => \View\Id::cartButtonForProduct($product->getId())]) ?>
 
