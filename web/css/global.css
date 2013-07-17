@@ -11139,42 +11139,37 @@
 /*---END---СТИЛИ БРЕНД РАЗДЕЛА PANDORA---*/
 /*------СТИЛИ БРЕНД РАЗДЕЛА PANDORA - КАРТОЧКА ТОВАРА------*/
 @media all {
-  body.jewel #reviewsWrapper {
+  .jewel #reviewsWrapper {
     border-bottom: 0;
   }
-  body.jewel .reviewsBar {
+  .jewel .reviewsBar {
     background-color: #999;
   }
-  body.jewel .reviewsBarBg {
+  .jewel .reviewsBarBg {
     background-color: #edecee;
   }
-  body.jewel .popup {
+  .jewel .popup {
     border: 2px solid #000;
   }
-  body.jewel .popup .close {
+  .jewel .popup .close {
     background: url("/css/pandoraPopups/img/closeBtnBlack.png") no-repeat 0 0;
   }
-  body.jewel .bHint_ePopup {
+  .jewel .bHint_ePopup {
     left: -290px;
     border-color: #000;
   }
-  body.jewel .bHint_ePopup .close {
+  .jewel .bHint_ePopup .close {
     background: url("/css/pandoraPopups/img/closeBtnBlack.png") no-repeat 0 0;
   }
-  body.jewel div.submit input {
-    background: #000;
-    border: 1px solid #000;
-    font-weight: normal;
-  }
-  body.jewel .mSmallBtns a {
+  .jewel .mSmallBtns a {
     text-indent: 0;
     background: none;
   }
-  body.jewel .bProductSection .inStock {
+  .jewel .bProductSection .inStock {
     color: #000;
   }
-  body.jewel .bProductSection .btnBuy__eLink,
-  body.jewel .bProductSection .btnBuy__eLink:hover {
+  .jewel .bProductSection .btnBuy__eLink,
+  .jewel .bProductSection .btnBuy__eLink:hover {
     float: right;
     display: block;
     background: #000;
@@ -11187,31 +11182,32 @@
     border-radius: 4px;
     border: 1px solid #000;
   }
-  body.jewel .bProductSection .mBought,
-  body.jewel .bProductSection .mBought:hover {
+  .jewel .bProductSection .mBought,
+  .jewel .bProductSection .mBought:hover {
     background: #fff;
     color: #000;
   }
-  body.jewel .bProductSection .bSliderAction__eList .btnBuy {
+  .jewel .bProductSection .bSliderAction__eList .btnBuy {
     margin: 0 0 0 1px;
   }
-  body.jewel .bSpecifications {
+  .jewel .bSpecifications {
     color: #6E6E6E;
     font-size: 12px;
+    margin: 10px 0 0;
   }
-  body.jewel .bSpecifications dd {
+  .jewel .bSpecifications dd {
     background: url("/css/pandoraProduct/img/h3_corner.gif") no-repeat 0 4px;
     padding-left: 7px;
     margin: 0 0 5px;
     border: none;
     width: 145px;
   }
-  body.jewel .bSpecifications dt {
+  .jewel .bSpecifications dt {
     padding: 0;
     width: 125px;
     margin: 0 0 5px;
   }
-  body.jewel .bProductSection .bSpecifications__eList dd span {
+  .jewel .bProductSection .bSpecifications__eList dd span {
     bottom: 0;
   }
 }
