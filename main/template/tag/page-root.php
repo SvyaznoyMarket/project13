@@ -20,21 +20,30 @@ $categoryTokens = array_keys($sidebarCategoriesTree[$rootCategory->getToken()]);
     $count += $pager->count();
 } ?>
 
-<div class="pt20">
-    <?= $page->render('product/_inshop', ['count' => $count, 'category' => $category]); ?>
-    <? foreach ($childrenById as $id => $child) { ?>
-        <?
-        $pager = $productPagersByCategory[$child->getId()];
-        if (!$pager || !$pager->count()) continue;
+<? //TODO: сделать настройку для переключения иконки/линейки ?>
+<? if(true) { ?>
+    <div class="goodslist clearfix">
+        <? foreach ($childrenById as $id => $child) { ?>
+            <?= $page->render('tag/_category_preview', array('tag' => $tag, 'category' => $child, 'catalogJsonBulk' => $catalogJsonBulk, 'categoryProductCountsByToken' => $categoryProductCountsByToken)) ?>
+        <? } ?>
+    </div>
+<? } else { ?>
+    <div class="pt20">
+        <?= $page->render('product/_inshop', ['count' => $count, 'category' => $category]); ?>
+        <? foreach ($childrenById as $id => $child) { ?>
+            <?
+            $pager = $productPagersByCategory[$child->getId()];
+            if (!$pager || !$pager->count()) continue;
+            ?>
+            <?= $page->render('tag/_product-slider-inCategory', array(
+                'tag'                    => $tag,
+                'category'               => $child,
+                'pager'                  => $pager,
+                'itemsInSlider'          => ceil($pager->getMaxPerPage() / 2),
+                'productVideosByProduct' => $productVideosByProduct,
+            )) ?>
+        <? }
+        $page->setGlobalParam('productCount', $count);
         ?>
-        <?= $page->render('tag/_product-slider-inCategory', array(
-            'tag'                    => $tag,
-            'category'               => $child,
-            'pager'                  => $pager,
-            'itemsInSlider'          => ceil($pager->getMaxPerPage() / 2),
-            'productVideosByProduct' => $productVideosByProduct,
-        )) ?>
-    <? }
-    $page->setGlobalParam('productCount', $count);
-    ?>
-</div>
+    </div>
+<? } ?>
