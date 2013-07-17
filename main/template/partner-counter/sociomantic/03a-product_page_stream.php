@@ -5,22 +5,44 @@
  * from /main/view/DefaultLayout.php
  **/
 
-$photo = $product->getPhoto()[0]->getUrl(2);
-$brand = $product->getBrand()->getName();
+$scr_product = []; $i = 0;
 
-$scr_product['identifier'] = $product->getTypeId();
-$scr_product['fn'] = $product->getWebName(); // TODO: может getPrefix ?
-$scr_product['category'] = $prod_cats;
-$scr_product['description'] = $product->getTagline();
-$scr_product['brand'] = $product->getBrand()->getName();
-$scr_product['price'] = $product->getPrice(); //стоимость со скидкой
-$scr_product['amount'] = $product->getPriceOld(); // стоимость без скидки // TODO: точно ли getPriceOld() есть ценой без скидки?
-$scr_product['currency'] = 'RUB';
-$scr_product['url'] = $product->getLink();
-$scr_product['photo'] = $product->getPhoto()[0]->getUrl(2);
-$i = 0;
+if ($product instanceof \Model\Product\Entity) {
+
+    $domain = $_SERVER['HTTP_HOST'] ?: $_SERVER['SERVER_NAME'];
+
+    $photo = null;
+    $tmp = $product->getPhoto();
+
+    if (is_array($tmp)) {
+        reset($tmp);
+        $tmp = current($tmp);
+    }
+
+    if ($tmp) {
+        $tmp = $tmp->getUrl(2);
+        if ($tmp) $photo = $tmp;
+    }
+
+    //$photo = $product->getPhoto()[0]->getUrl(2);
+
+    $brand = $product->getBrand() ? $product->getBrand()->getName() : null;
+
+    $scr_product['identifier'] = $product->getTypeId() ?: 0;
+    $scr_product['fn'] = $product->getWebName();
+    $scr_product['category'] = $prod_cats;
+    $scr_product['description'] = $product->getTagline();
+    $scr_product['brand'] = $brand;
+    $scr_product['price'] = $product->getPrice(); //стоимость со скидкой
+    $scr_product['amount'] = $product->getPriceOld(); // стоимость без скидки
+    $scr_product['currency'] = 'RUB';
+    /*$scr_product['url'] = 'http://' . $domain . $product->getLink(); */
+    $scr_product['url'] = 'http://' . $domain . $_SERVER['REQUEST_URI'];
+    $scr_product['photo'] = $photo;
+}
+
+if (!empty($scr_product)):
 ?>
-
 <script type="text/javascript">
 var product = { <?
     foreach($scr_product as $key => $value):
@@ -36,7 +58,7 @@ var product = { <?
 };
 </script>
 <?
-
+endif;
 /* <!--
 <script type="text/javascript">
     var product = {
