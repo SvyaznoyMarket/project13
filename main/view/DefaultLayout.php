@@ -255,4 +255,11 @@ class DefaultLayout extends Layout {
     public function slotConfig() {
         return $this->tryRender('_config');
     }
+
+
+    public function slotLiveTex() {
+        $return = '';
+        $return .= $this->tryRender('partner-counter/_liveTex');
+        return $return;
+    }
 }

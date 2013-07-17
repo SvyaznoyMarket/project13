@@ -11,7 +11,7 @@
 
 	/**
 	 * Добавление в корзину на сервере. Получение данных о покупке и состоянии корзины. Маркировка кнопок.
-	 * 
+	 *
 	 * @param  {Event}	e
 	 */
 	var buy = function(e){
@@ -34,7 +34,7 @@
 
 	/**
 	 * Хандлер кнопки купить
-	 * 
+	 *
 	 * @param  {Event}	e
 	 */
 	var BuyButtonHandler = function(e){
@@ -58,8 +58,8 @@
 	/**
 	 * Маркировка кнопок «Купить»
 	 * см.BlackBox startAction
-	 * 
-	 * @param	{event}		event          
+	 *
+	 * @param	{event}		event
 	 * @param	{Object}	markActionInfo Данные полученые из Action
 	 */
 	var markCartButton = function(event, markActionInfo){
@@ -68,7 +68,7 @@
 		}
 	};
 	$("body").bind('markcartbutton', markCartButton);
-	
+
 	$(document).ready(function() {
 		$('.jsBuyButton').on('click', BuyButtonHandler);
 		$('.jsBuyButton').on('buy', buy);
@@ -81,7 +81,7 @@
  *
  * @author		Zaytsev Alexandr
  * @requires	jQuery, printPrice, BlackBox
- * @param		{event}		event 
+ * @param		{event}		event
  * @param		{Object}	data	данные о том что кладется в корзину
  */
 (function(){
@@ -108,6 +108,13 @@
 			if (typeof(_kmq) !== 'undefined') {
 				_kmq.push(['record', 'Add to Cart', toKISS_pr ]);
 			}
+
+            if (typeof(LiveTex) == 'object') {
+                try{
+                    LiveTex.addToCart(productData.article, productData.name, nowUrl);
+                }catch(err){
+                }
+            }
 		}
 		if (data.service){
 			var serviceData = data.service;
@@ -167,7 +174,7 @@
 			'totalSum': printPrice(basket.full_price),
 			'linkToOrder': basket.link,
 		};
-		
+
 		blackBox.basket().add(tmpitem);
 	};
 
