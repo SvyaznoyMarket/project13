@@ -150,6 +150,10 @@ class DefaultLayout extends Layout {
         return $this->render('_userbar');
     }
 
+    public function slotSurveybar() {
+        return $this->render('_surveybar', ['survey' => \RepositoryManager::survey()->getEntity()]);
+    }
+
     public function slotYandexMetrika() {
         return (\App::config()->yandexMetrika['enabled']) ? $this->render('_yandexMetrika') : '';
     }

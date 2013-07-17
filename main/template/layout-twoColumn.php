@@ -49,6 +49,7 @@
 
     <?= $page->slotFooter() ?>
     <?= $page->slotUserbar() ?>
+    <?= $page->slotSurveybar() ?>
 
     <?= $page->slotRegionSelection() ?>
     <?= $page->slotBodyJavascript() ?>

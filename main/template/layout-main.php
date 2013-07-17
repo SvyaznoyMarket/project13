@@ -49,6 +49,7 @@
     </div>
 
     <?= $page->slotFooter() ?>
+    <?= $page->slotSurveybar() ?>
 
     <div class="clear"></div>
 </div>

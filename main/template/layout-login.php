@@ -35,6 +35,7 @@
 
     <?= $page->render('order/_footer') ?>
     <?= $page->slotFooter() ?>
+    <?= $page->slotSurveybar() ?>
 
     <?= $page->slotRegionSelection() ?>
     <?= $page->slotBodyJavascript() ?>
