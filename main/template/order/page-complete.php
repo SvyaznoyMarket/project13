@@ -44,6 +44,8 @@ $isOrderAnalytics = isset($isOrderAnalytics) ? $isOrderAnalytics : true;
     <?= $page->tryRender('order/partner-counter/_flocktory-complete', ['order' => $order, 'userForm' => $userForm]) ?>
 <?php endforeach ?>
 
+<?= $page->render('partner-counter/_get4click', ['order' => $order, 'form' => $form] ) ?>
+
 <? if ($isCorporative): ?>
     <div class="mt32">
         В ближайшее время мы оповестим вас о выставлении счета в <strong><a href="<?= $page->url('user.order') ?>">личном кабинете</a></strong>.
