@@ -10174,65 +10174,6 @@
   }
 }
 /*---END---СТИЛИ НОВОЙ КАРТОЧКИ ТОВАРА - НАБОРЫ И ЛИНЕЙКИ---*/
-/*------СТИЛИ НОВОЙ КАРТОЧКИ ТОВАРА - ВЕРСИЯ ДЛЯ ПЕЧАТИ------*/
-@media print {
-  .topbar,
-  #header,
-  .breadcrumbs,
-  .bWidgetBuy__eDelivery-now,
-  .searchbox,
-  #upper,
-  .priceOld,
-  .bGoodsSlider,
-  .bBreadCrumbsBottom,
-  .bReviews,
-  .footer,
-  .bBlackBox,
-  .bBottomBuy,
-  .priceSale,
-  .creditbox,
-  .bProductDesc__eStore-text,
-  .bReviewSection,
-  .bCountSection,
-  .bWidgetBuy__eBuy,
-  .bWidgetBuy__eClick,
-  .bPhotoAction {
-    display: none !important;
-  }
-  .bWidgetBuy {
-    border: 1px solid #ffffff !important;
-  }
-  .bWidgetBuy__eDelivery {
-    margin: 15px 0 0 !important;
-  }
-  .bProductSection .bProductDesc {
-    margin: 0 !important;
-  }
-  .bProductSection .bDescriptionProduct {
-    width: 900px;
-  }
-  .bProductSection .bSpecifications__eList {
-    width: 900px;
-  }
-  .bProductSection .bSpecifications__eList dt {
-    width: 625px;
-  }
-  .jewel .bProductDesc__eStore-text {
-    display: block !important;
-  }
-  .jewel .bProductSection .bSpecifications__eList {
-    width: 300px;
-    color: #000000;
-  }
-  .jewel .bProductSection .bSpecifications__eList dd {
-    background: none;
-    padding-left: 0;
-  }
-  .jewel .bProductSection .bSpecifications__eList dt {
-    width: 125px;
-  }
-}
-/*---END---СТИЛИ НОВОЙ КАРТОЧКИ ТОВАРА - ВЕРСИЯ ДЛЯ ПЕЧАТИ---*/
 /*------СТИЛИ СЛАЙДЕРА------*/
 @media all {
   .bSliderAction {
@@ -11367,5 +11308,65 @@
   }
 }
 /*---END---СТИЛИ БРЕНД РАЗДЕЛА PANDORA---*/
+/*------СТИЛИ НОВОЙ КАРТОЧКИ ТОВАРА - ВЕРСИЯ ДЛЯ ПЕЧАТИ------*/
+@media print {
+  .topbar,
+  #header,
+  .breadcrumbs,
+  .bWidgetBuy__eDelivery-now,
+  .searchbox,
+  #upper,
+  .priceOld,
+  .bGoodsSlider,
+  .bBreadCrumbsBottom,
+  .bReviews,
+  .footer,
+  .bBlackBox,
+  .bBottomBuy,
+  .priceSale,
+  .creditbox,
+  .bProductDesc__eStore-text,
+  .bReviewSection,
+  .bCountSection,
+  .bWidgetBuy__eBuy,
+  .bWidgetBuy__eClick,
+  .bPhotoAction {
+    display: none !important;
+  }
+  .bWidgetBuy {
+    border: none;
+  }
+  .bWidgetBuy__eDelivery {
+    margin: 0;
+    padding: 0;
+  }
+  .bProductSection .bProductDesc {
+    margin: 0;
+  }
+  .bProductSection .bDescriptionProduct {
+    width: 900px;
+  }
+  .bProductSection .bSpecifications__eList {
+    width: 900px;
+  }
+  .bProductSection .bSpecifications__eList dt {
+    width: 625px;
+  }
+  .jewel .bProductDesc__eStore-text {
+    display: block !important;
+  }
+  .jewel .bProductSection .bSpecifications__eList {
+    width: 300px;
+    color: #000000;
+  }
+  .jewel .bProductSection .bSpecifications__eList dd {
+    background: none;
+    padding-left: 0;
+  }
+  .jewel .bProductSection .bSpecifications__eList dt {
+    width: 125px;
+  }
+}
+/*---END---СТИЛИ НОВОЙ КАРТОЧКИ ТОВАРА - ВЕРСИЯ ДЛЯ ПЕЧАТИ---*/
 /*------НОВОГОДНЕЕ ОФОРМЛЕНИЕ------*/
 /*---END---НОВОГОДНЕЕ ОФОРМЛЕНИЕ---*/
