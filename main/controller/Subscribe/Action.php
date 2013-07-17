@@ -41,6 +41,8 @@ class Action {
                 \App::exception()->remove($e);
             });
             $client->execute(\App::config()->coreV2['retryTimeout']['huge']);
+    
+            $responseData = ['success' => true];
         } catch (\Exception $e) {
             \App::logger()->error($e);
             $responseData = ['success' => false];

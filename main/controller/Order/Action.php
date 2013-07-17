@@ -565,6 +565,7 @@ class Action {
         $page->setParam('servicesById', $servicesById);
         $page->setParam('paymentProvider', $paymentProvider);
         $page->setParam('creditData', $creditData);
+        $page->setParam('userForm', $this->getForm());
 
         return new \Http\Response($page->show());
     }
@@ -893,7 +894,7 @@ class Action {
                 foreach ([
                      'recipient_first_name',
                      'recipient_last_name',
-//                     'recipient_phonenumbers',
+                     'recipient_phonenumbers',
                      'recipient_email',
                      'address_street',
                      'address_number',
