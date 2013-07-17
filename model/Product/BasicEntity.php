@@ -16,6 +16,8 @@ class BasicEntity {
     /** @var string */
     protected $link;
     /** @var string */
+    protected $linkSuffix;
+    /** @var string */
     protected $token;
     /** @var string */
     protected $image;
@@ -133,8 +135,49 @@ class BasicEntity {
     /**
      * @return string
      */
-    public function getLink() {
+    public function getLinkPure() {
         return $this->link;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLink($withSuffix = true, $region = NULL) {
+        if ($withSuffix) {
+
+            $linkSuff = $this->getLinkSuffix();
+
+            if (empty(  $linkSuff  )) {
+                $region_id = $region ? $region->getId() : \App::user()->getRegion()->getId();
+                //$region_name = \App::user()->getRegion()->getToken();
+                //$region =  \App::user()->getRegion();
+                //$region_id = $region->getId();
+
+                $this->setLinkSuffix('?OFFER_ID='.$region_id/*.'_msk'*/);
+                $linkSuff = $this->getLinkSuffix();;
+            }else{
+                $linkSuff = $this->getLinkSuffix();;
+            }
+
+            $return =  $this->link . $linkSuff;
+        }else{
+            $return =  $this->link;
+        }
+        return $return;
+    }
+
+    /**
+     * @param $linkSuf
+     */
+    public function setLinkSuffix($linkSuf){
+        $this->linkSuffix = (string)$linkSuf;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLinkSuffix(){
+        return $this->linkSuffix;
     }
 
     /**
