@@ -438,91 +438,95 @@
 			var options = $.extend(
 							{},
 							$.fn.goodsSlider.defaults,
-							params);
-			var $self = $(this);
+							params),
+				$self = $(this);
 
-			var hasCategory = $self.hasClass('mWithCategory');
-			var leftBtn = $self.find(options.leftArrowSelector);
-			var rightBtn = $self.find(options.rightArrowSelector);
-			var wrap = $self.find(options.sliderWrapperSelector);
-			var slider = $self.find(options.sliderSelector);
-			var item = $self.find(options.itemSelector);
-			var catItem = $self.find(options.categoryItemselector);
-			
-			var itemW = item.width() + parseInt(item.css('marginLeft'),10) + parseInt(item.css('marginRight'),10);
-			var elementOnSlide = wrap.width()/itemW;
+				hasCategory = $self.hasClass('mWithCategory'),
+				leftBtn = $self.find(options.leftArrowSelector),
+				rightBtn = $self.find(options.rightArrowSelector),
+				wrap = $self.find(options.sliderWrapperSelector),
+				slider = $self.find(options.sliderSelector),
+				item = $self.find(options.itemSelector),
+				catItem = $self.find(options.categoryItemselector),
+				
+				itemW = item.width() + parseInt(item.css('marginLeft'),10) + parseInt(item.css('marginRight'),10),
+				elementOnSlide = wrap.width()/itemW,
 
-			var nowLeft = 0;
+				nowLeft = 0,
 
-			var nextSlide = function(){
-				if ($(this).hasClass('mDisabled')){
+				nextSlide = function(){
+					if ($(this).hasClass('mDisabled')){
+						return false;
+					}
+
+					leftBtn.removeClass('mDisabled');
+
+					if (nowLeft + elementOnSlide * itemW >= slider.width()-elementOnSlide * itemW){
+						nowLeft = slider.width()-elementOnSlide * itemW
+						rightBtn.addClass('mDisabled');
+					}
+					else{
+						nowLeft = nowLeft + elementOnSlide * itemW;
+						rightBtn.removeClass('mDisabled');
+					}
+
+					slider.animate({'left': -nowLeft });
+
 					return false;
-				}
+				},
 
-				leftBtn.removeClass('mDisabled');
+				prevSlide = function(){
+					if ($(this).hasClass('mDisabled')){
+						return false;
+					}
 
-				if (nowLeft + elementOnSlide * itemW >= slider.width()-elementOnSlide * itemW){
-					nowLeft = slider.width()-elementOnSlide * itemW
-					rightBtn.addClass('mDisabled');
-				}
-				else{
-					nowLeft = nowLeft + elementOnSlide * itemW;
 					rightBtn.removeClass('mDisabled');
-				}
 
-				slider.animate({'left': -nowLeft });
+					if (nowLeft - elementOnSlide * itemW <= 0){
+						nowLeft = 0;
+						leftBtn.addClass('mDisabled');
+					}
+					else{
+						nowLeft = nowLeft - elementOnSlide * itemW;
+						leftBtn.removeClass('mDisabled');
+					}
 
-				return false;
-			};
+					slider.animate({'left': -nowLeft });
 
-			var prevSlide = function(){
-				if ($(this).hasClass('mDisabled')){
 					return false;
-				}
+				},
 
-				rightBtn.removeClass('mDisabled');
+				reWidthSlider = function(nowItems){
+					leftBtn.addClass('mDisabled');
+					rightBtn.addClass('mDisabled');
 
-				if (nowLeft - elementOnSlide * itemW <= 0){
+					if (nowItems.length > elementOnSlide) {
+						rightBtn.removeClass('mDisabled');
+					}
+
+					slider.width(nowItems.length * itemW);
 					nowLeft = 0;
 					leftBtn.addClass('mDisabled');
-				}
-				else{
-					nowLeft = nowLeft - elementOnSlide * itemW;
-					leftBtn.removeClass('mDisabled');
-				}
+					slider.css({'left':nowLeft});
+					nowItems.show();
+				},
 
-				slider.animate({'left': -nowLeft });
+				showCategoryGoods = function(){
+					var nowCategoryId = catItem.filter('.mActive').attr('id'),
+						showAll = (catItem.filter('.mActive').data('product') === 'all'),
+						nowShowItem = (showAll) ? item : item.filter('[data-category="'+nowCategoryId+'"]');
+					//end of vars
+					
+					item.hide();
+					reWidthSlider(nowShowItem);
+				},
 
-				return false;
-			};
-
-			var reWidthSlider = function(nowItems){
-				leftBtn.addClass('mDisabled');
-				rightBtn.addClass('mDisabled');
-
-				if (nowItems.length > elementOnSlide) {
-					rightBtn.removeClass('mDisabled');
-				}
-
-				slider.width(nowItems.length * itemW);
-				nowLeft = 0;
-				leftBtn.addClass('mDisabled');
-				slider.css({'left':nowLeft});
-				nowItems.show();
-			};
-
-			var showCategoryGoods = function(){
-				item.hide();
-				var nowCategoryId = catItem.filter('.mActive').attr('id');
-				var nowShowItem = item.filter('[data-category="'+nowCategoryId+'"]');
-				reWidthSlider(nowShowItem);
-			};
-
-			var selectCategory = function(){
-				catItem.removeClass('mActive');
-				$(this).addClass('mActive');
-				showCategoryGoods();
-			};
+				selectCategory = function(){
+					catItem.removeClass('mActive');
+					$(this).addClass('mActive');
+					showCategoryGoods();
+				};
+		//end of vars
 
 			if (hasCategory) {
 				showCategoryGoods();
