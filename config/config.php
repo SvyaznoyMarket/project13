@@ -14,6 +14,7 @@ $c->logDir = $c->appDir . '/log';
 $c->webDir = $c->appDir . '/web';
 $c->templateDir = $c->appDir . '/main/template';
 $c->cmsDir = $c->appDir . '/../../cms.enter.ru/wwwroot';
+$c->surveyDir = $c->webDir . '/survey';
 
 $c->controllerPrefix = 'Controller';
 $c->routePrefix = '';

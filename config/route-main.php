@@ -564,6 +564,12 @@ return [
         'action'  => ['Cron\LinksAction', 'execute'],
     ],
 
+    //survey
+    'content' => [
+        'pattern' => '/survey/submit-answer',
+        'action'  => ['Survey\Action', 'execute'],
+    ],
+
     //content
     'content' => [
         'pattern' => '/{token}',
