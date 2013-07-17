@@ -9,16 +9,7 @@
 
 $count = 0;
 if ($productFilter->getShop()) $page->setGlobalParam('shop', $productFilter->getShop());
-
-$rootCategory = $category;
-$categoryTokens = array_keys($sidebarCategoriesTree[$rootCategory->getToken()]);
 ?>
-
-<? foreach ($childrenById as $id => $child) {
-    $pager = $productPagersByCategory[$child->getId()];
-    if (!$pager || !$pager->count()) continue;
-    $count += $pager->count();
-} ?>
 
 <? //TODO: сделать настройку для переключения иконки/линейки ?>
 <? if(true) { ?>
@@ -28,6 +19,11 @@ $categoryTokens = array_keys($sidebarCategoriesTree[$rootCategory->getToken()]);
         <? } ?>
     </div>
 <? } else { ?>
+    <? foreach ($childrenById as $id => $child) {
+        $pager = $productPagersByCategory[$child->getId()];
+        if (!$pager || !$pager->count()) continue;
+        $count += $pager->count();
+    } ?>
     <div class="pt20">
         <?= $page->render('product/_inshop', ['count' => $count, 'category' => $category]); ?>
         <? foreach ($childrenById as $id => $child) { ?>
