@@ -10202,11 +10202,11 @@
   .bWidgetBuy {
     border: 1px solid #ffffff !important;
   }
-  .bProductSection .bProductDesc {
-    margin: 0 !important;
-  }
   .bWidgetBuy__eDelivery {
     margin: 15px 0 0 !important;
+  }
+  .bProductSection .bProductDesc {
+    margin: 0 !important;
   }
   .bProductSection .bDescriptionProduct {
     width: 900px;
