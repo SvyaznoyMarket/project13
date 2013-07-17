@@ -14,9 +14,6 @@ return function (
  * @var $categories \Model\Product\Category\Entity[]
  */
 
-    /** @var $firstCategory \Model\Product\Category\Entity|null */
-    $firstCategory = (bool)$categories ? reset($categories) : null;
-
     $sliderId = 'slider-' . uniqid();
 ?>
 <div class="bGoodsSlider clearfix <? if ((bool)$categories): ?>mWithCategory<? endif ?>">
@@ -25,7 +22,7 @@ return function (
         <div class="bGoodsSlider__eCat">
             <ul>
                 <? $i = 0; foreach ($categories as $category): ?>
-                    <li id="<?= $sliderId . '-category-' .$category->getId() ?>" class="bGoodsSlider__eCatItem <? if (0 == $i): ?> mActive<? endif ?>">
+                    <li id="<?= $sliderId . '-category-' . $category->getId() ?>" class="bGoodsSlider__eCatItem <? if (0 == $i): ?> mActive<? endif ?>" data-product="<?= $category->getId() ? 'self' : 'all' ?>">
                         <span><?= $category->getName() ?></span>
                     </li>
                 <? $i++; endforeach ?>
