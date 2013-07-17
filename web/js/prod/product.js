@@ -914,7 +914,7 @@ $(document).ready(function() {
 	$('.bZoomedImg').elevateZoom({
 		gallery: 'productImgGallery',
 		galleryActiveClass: 'mActive',
-		zoomWindowOffety: -15,
+		zoomWindowOffety: 0,
 		zoomWindowOffetx: 19,
 		zoomWindowWidth: 519,
 		borderSize: 1,
