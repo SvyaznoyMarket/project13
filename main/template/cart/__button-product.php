@@ -13,7 +13,8 @@ $class = \View\Id::cartButtonForProduct($product->getId()) . ' jsBuyButton ' . $
 $disabled = !$product->getIsBuyable();
 if ($disabled) {
     $url = '#';
-    $class .= ' mDisabled';
+    $class .= ' mDisabled mShopsOnly';
+    $value = 'Только в магазинах';
 } else if (!isset($url)) {
     $urlParams = [
         'productId' => $product->getId(),
