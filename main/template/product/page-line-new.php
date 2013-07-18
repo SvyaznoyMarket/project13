@@ -69,8 +69,8 @@ $helper = new \Helper\TemplateHelper();
 	</div>
 
 	<? if (count($mainProduct->getKit())): ?>
-		<h3 class="bHeadSection">Состав набора</h3>
         <?= $helper->render('product/__slider', [
+            'title'    => 'Состав набора',
             'products' => $parts,
             'class'    => 'mSliderAction840',
         ]) ?>

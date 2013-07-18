@@ -48,8 +48,8 @@
     </div>
 
     <? if ((bool)$accessories && \App::config()->product['showAccessories']): ?>
-        <h3 class="bHeadSection">Аксессуары</h3>
         <?= $helper->render('product/__slider', [
+            'title'          => 'Аксессуары',
             'products'       => array_values($accessories),
             'categories'     => $accessoryCategory,
             'count'          => count($product->getAccessoryId()),
@@ -62,8 +62,8 @@
     <? endif ?>
 
     <? if ((bool)$related && \App::config()->product['showRelated']): ?>
-        <h3 class="bHeadSection">С этим товаром также покупают</h3>
         <?= $helper->render('product/__slider', [
+            'title'          => 'С этим товаром также покупают',
             'products'       => array_values($related),
             'count'          => count($product->getRelatedId()),
             'limit'          => \App::config()->product['itemsInSlider'],
@@ -94,13 +94,13 @@
         </div>
 
         <? if (!$product->getIsBuyable() && $product->getState()->getIsShop() && \App::config()->smartengine['pull']): ?>
-            <h3 class="bHeadSection">Похожие товары</h3>
             <?= $helper->render('product/__slider', [
+                'title'    => 'Похожие товары',
                 'products' => [],
-                'count'   => null,
-                'limit'   => \App::config()->product['itemsInSlider'],
-                'page'    => 1,
-                'url'     => $page->url('smartengine.pull.product_similar', ['productId' => $product->getId()]),
+                'count'    => null,
+                'limit'    => \App::config()->product['itemsInSlider'],
+                'page'     => 1,
+                'url'      => $page->url('smartengine.pull.product_similar', ['productId' => $product->getId()]),
             ]) ?>
     <? endif ?>
 </div><!--/left section -->

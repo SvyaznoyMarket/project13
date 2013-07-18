@@ -1,6 +1,7 @@
 <?php
 
 return function (
+    $title = null,
     array $products,
     array $categories = [],
     $class = null,
@@ -16,7 +17,10 @@ return function (
 
     $sliderId = 'slider-' . uniqid();
 ?>
-<div class="bGoodsSlider clearfix <? if ((bool)$categories): ?>mWithCategory<? endif ?>">
+<div class="bGoodsSlider clearfix<? if ((bool)$categories): ?> mWithCategory<? endif ?><? if ($url && !(bool)$products): ?> hidden<? endif ?>">
+    <? if ($title): ?>
+        <h3 class="bHeadSection"><?= $title ?></h3>
+    <? endif ?>
 
     <? if ((bool)$categories): ?>
         <div class="bGoodsSlider__eCat">
