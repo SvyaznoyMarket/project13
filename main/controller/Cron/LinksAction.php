@@ -24,10 +24,9 @@ class LinksAction {
                 break;
 
             case 'survey':
-                $surveyDir = \App::config()->surveyDir;
                 $content = '<ul class="mb25">';
-                foreach (scandir($surveyDir) as $file) {
-                    if(is_file($file)) {
+                foreach (scandir(\App::config()->surveyDir) as $file) {
+                    if(is_file(\App::config()->surveyDir . '/' . $file)) {
                         $content .= "<li><a href='http://".$host."/survey/" . $file . "'>" . $file . "</a></li>";
                     }
                 }

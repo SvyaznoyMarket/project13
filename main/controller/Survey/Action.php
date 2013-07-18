@@ -36,7 +36,6 @@ class Action {
 
         $result = [
             'success' => true,
-            'getIsAnswered' => $survey->getIsAnswered(),
         ];
 
         return new \Http\JsonResponse($result);
