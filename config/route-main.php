@@ -452,11 +452,18 @@ return [
         'action' => ['Jewel\Product\RecommendedAction', 'execute'],
         'require' => ['productId' => '\d+'],
     ],
+    'product.similar' => [
+        'pattern' => '/ajax/product-similar/{productId}',
+        'action' => ['Product\SimilarAction', 'execute'],
+        'require' => ['productId' => '\d+'],
+    ],
+    /*
     'smartengine.pull.product_similar' => [
         'pattern' => '/product-similar/{productId}',
         'action' => ['Smartengine\Action', 'pullProductSimilar'],
         'require' => ['productId' => '\d+'],
     ],
+    */
     'smartengine.push.product_view' => [
         'pattern' => '/product-view/{productId}',
         'action' => ['Smartengine\Action', 'pushView'],
