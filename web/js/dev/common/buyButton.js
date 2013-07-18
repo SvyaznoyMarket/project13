@@ -85,91 +85,110 @@
  * @param		{Object}	data	данные о том что кладется в корзину
  */
 (function(){
-	/**
-	 * KISS Аналитика для добавления в корзину
-	 */
-	var kissAnalytics = function(data){
-		if (data.product){
-			var productData = data.product;
-			var nowUrl = window.location.href;
-			var toKISS_pr = {
-				'Add to Cart SKU':productData.article,
-				'Add to Cart SKU Quantity':productData.quantity,
-				'Add to Cart Product Name':productData.name,
-				'Add to Cart Root category':productData.category[0].name,
-				'Add to Cart Root ID':productData.category[0].id,
-				'Add to Cart Category name':productData.category[productData.category.length-1].name,
-				'Add to Cart Category ID':productData.category[productData.category.length-1].id,
-				'Add to Cart SKU Price':productData.price,
-				'Add to Cart Page URL':nowUrl,
-				'Add to Cart F1 Quantity':productData.serviceQuantity,
-			};
+		/**
+		 * KISS Аналитика для добавления в корзину
+		 */
+	var kissAnalytics = function kissAnalytics(data) {
+			var productData = data.product,
+				serviceData = data.service,
+				warrantyData = data.warranty,
+				nowUrl = window.location.href,
+				toKISS = {};
+			//end of vars
 
-			if (typeof(_kmq) !== 'undefined') {
-				_kmq.push(['record', 'Add to Cart', toKISS_pr ]);
+			if ( productData ) {
+				toKISS = {
+					'Add to Cart SKU':productData.article,
+					'Add to Cart SKU Quantity':productData.quantity,
+					'Add to Cart Product Name':productData.name,
+					'Add to Cart Root category':productData.category[0].name,
+					'Add to Cart Root ID':productData.category[0].id,
+					'Add to Cart Category name':productData.category[productData.category.length-1].name,
+					'Add to Cart Category ID':productData.category[productData.category.length-1].id,
+					'Add to Cart SKU Price':productData.price,
+					'Add to Cart Page URL':nowUrl,
+					'Add to Cart F1 Quantity':productData.serviceQuantity,
+				};
+
+				if (typeof(_kmq) !== 'undefined') {
+					_kmq.push(['record', 'Add to Cart', toKISS]);
+				}
 			}
-		}
-		if (data.service){
-			var serviceData = data.service;
-			var productData = data.product;
-			var toKISS_serv = {
-				'Add F1 F1 Name':serviceData.name,
-				'Add F1 F1 Price':serviceData.price,
-				'Add F1 SKU':productData.article,
-				'Add F1 Product Name':productData.name,
-				'Add F1 Root category':productData.category[0].name,
-				'Add F1 Root ID':productData.category[0].id,
-				'Add F1 Category name':productData.category[productData.category.length-1].name,
-				'Add F1 Category ID':productData.category[productData.category.length-1].id,
-			};
+			if ( serviceData ) {
+				toKISS = {
+					'Add F1 F1 Name':serviceData.name,
+					'Add F1 F1 Price':serviceData.price,
+					'Add F1 SKU':productData.article,
+					'Add F1 Product Name':productData.name,
+					'Add F1 Root category':productData.category[0].name,
+					'Add F1 Root ID':productData.category[0].id,
+					'Add F1 Category name':productData.category[productData.category.length-1].name,
+					'Add F1 Category ID':productData.category[productData.category.length-1].id,
+				};
 
-			if (typeof(_kmq) !== 'undefined') {
-				_kmq.push(['record', 'Add F1', toKISS_serv ]);
+				if (typeof(_kmq) !== 'undefined') {
+					_kmq.push(['record', 'Add F1', toKISS]);
+				}
 			}
-		}
-		if (data.warranty){
-			var warrantyData = data.warranty;
-			var productData = data.product;
-			var toKISS_wrnt = {
-				'Add Warranty Warranty Name':warrantyData.name,
-				'Add Warranty Warranty Price':warrantyData.price,
-				'Add Warranty SKU':productData.article,
-				'Add Warranty Product Name':productData.name,
-				'Add Warranty Root category':productData.category[0].name,
-				'Add Warranty Root ID':productData.category[0].id,
-				'Add Warranty Category name':productData.category[productData.category.length-1].name,
-				'Add Warranty Category ID':productData.category[productData.category.length-1].id,
-			};
+			if ( warrantyData ) {
+				toKISS = {
+					'Add Warranty Warranty Name':warrantyData.name,
+					'Add Warranty Warranty Price':warrantyData.price,
+					'Add Warranty SKU':productData.article,
+					'Add Warranty Product Name':productData.name,
+					'Add Warranty Root category':productData.category[0].name,
+					'Add Warranty Root ID':productData.category[0].id,
+					'Add Warranty Category name':productData.category[productData.category.length-1].name,
+					'Add Warranty Category ID':productData.category[productData.category.length-1].id,
+				};
 
-			if (typeof(_kmq) !== 'undefined') {
-				_kmq.push(['record', 'Add Warranty', toKISS_wrnt ]);
+				if (typeof(_kmq) !== 'undefined') {
+					_kmq.push(['record', 'Add Warranty', toKISS]);
+				}
 			}
-		}
-	};
+		},
+
+		/**
+		 * Google Analytics аналитика добавления в корзину
+		 */
+		googleAnalytics = function googleAnalytics(data) {
+			var productData = data.product;
+
+			if (productData){
+				if( typeof(_gaq) !== 'undefined' ){
+					_gaq.push(['_trackEvent', 'Add2Basket', 'product', productData.article]);
+				}
+			}
+		},
 
 
-	var buyProcessing = function(event, data){
-		kissAnalytics(data);
-		// sendAnalytics();
 
-		if (!blackBox) {
-			return false;
-		}
+		/**
+		 * Обработка покупки, парсинг данных от сервера, запуск аналитики
+		 */
+		buyProcessing = function buyProcessing(event, data) {
+			kissAnalytics(data);
+			googleAnalytics(data);
 
-		var basket = data.cart;
-		var product = data.product;
-		var tmpitem = {
-			'title': product.name,
-			'price' : printPrice(product.price),
-			'imgSrc': product.img,
-			'productLink': product.link,
-			'totalQuan': basket.full_quantity,
-			'totalSum': printPrice(basket.full_price),
-			'linkToOrder': basket.link,
+			if (!blackBox) {
+				return false;
+			}
+
+			var basket = data.cart;
+			var product = data.product;
+			var tmpitem = {
+				'title': product.name,
+				'price' : printPrice(product.price),
+				'imgSrc': product.img,
+				'productLink': product.link,
+				'totalQuan': basket.full_quantity,
+				'totalSum': printPrice(basket.full_price),
+				'linkToOrder': basket.link,
+			};
+			
+			blackBox.basket().add(tmpitem);
 		};
-		
-		blackBox.basket().add(tmpitem);
-	};
+	//end of vars
 
 	$(document).ready(function() {
 		$("body").bind('addtocart', buyProcessing);
