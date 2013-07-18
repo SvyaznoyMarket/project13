@@ -10,11 +10,16 @@ return function (
 
 $class = \View\Id::cartButtonForProduct($product->getId()) . ' jsBuyButton ' . $class;
 
-$disabled = !$product->getIsBuyable();
-if ($disabled) {
+if (!$product->getIsBuyable()) {
     $url = '#';
-    $class .= ' mDisabled mShopsOnly';
-    $value = 'Только в магазинах';
+    $class .= ' mDisabled';
+
+    if (!$product->getIsBuyable() && $product->getState()->getIsShop()) {
+        $class .= ' mShopsOnly';
+        $value = 'Только в магазинах';
+    } else {
+        $value = 'Нет в наличии';
+    }
 } else if (!isset($url)) {
     $urlParams = [
         'productId' => $product->getId(),
