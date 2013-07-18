@@ -40,14 +40,6 @@ class Manager {
                 }
             }
 
-            // for debug:
-            //print " |## Testng Cookie and session: \n";
-            //print_r( $response->headers->get('utm_content') );
-            //print_r( $request->cookies->get('utm_content') );
-            //print " | ";
-            //print_r( $session->get('utm_content') );
-            //print " ##| \n";
-
             $sender = $request->get('sender');
 
             //SmartEngine & SmartAssistant
@@ -274,10 +266,6 @@ class Manager {
         $partnerNames = array_unique(array_merge( isset($mainMeta[$prefix]) ? $mainMeta[$prefix] : [], isset($mergedMeta[$prefix]) ? $mergedMeta[$prefix] : []));
         if (isset($mainMeta[$prefix])) unset($mainMeta[$prefix]);
         if (isset($mergedMeta[$prefix])) unset($mergedMeta[$prefix]);
-
-        // tmp debug
-        //$file = 'utm_attribs.txt'; file_put_contents($file, print_r($mainMeta,1), LOCK_EX);
-        //$file = 'utm_attribs2.txt'; file_put_contents($file, print_r($mergedMeta,1), LOCK_EX);
 
         return array_merge_recursive($mainMeta, $mergedMeta, [$prefix => $partnerNames]);
 
