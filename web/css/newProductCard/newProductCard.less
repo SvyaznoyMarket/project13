@@ -33,6 +33,7 @@
         color: #fb9c00;
         font-weight: 800;
         margin-bottom: 6px;
+        line-height: 1;
     }
     .priceOld {
         font-size: 21px;
@@ -150,7 +151,7 @@
         &__eStore {
             float: right;
             width: 280px;
-            margin: -3px 0 0;
+            margin: 0;
             &-text {
 		        font-size: 14px;
 		        margin: 23px 0 25px;
@@ -290,19 +291,14 @@
 				.rounded(9px);
 				display: table-cell;
 				overflow: hidden;
-
 				width: 48px;
 				height: 48px;
-
 				text-align: center;
 				vertical-align: middle;
-
 				border: 1px solid @typLightGray;
-
 				&.mActive {
 					width: 46px;
 					height: 46px;
-
 					border: 2px solid @firmOrange;
 					&:hover{
 						border-color: @firmOrange;
@@ -312,7 +308,6 @@
 				&:hover {
 					width: 46px;
 					height: 46px;
-
 					border: 2px solid;
 					border-color: lighten(@firmOrange, 20%);
 				}
@@ -320,6 +315,7 @@
 				img {
 					max-width: 45px;
 					max-height: 45px;
+					.rounded(9px);
 				}
 			}
 		}
