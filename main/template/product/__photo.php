@@ -94,7 +94,7 @@ return function(
         <img class="bZoomedImg" src="<?= $product->getImageUrl(3) ?>" data-zoom-image="<?= $product->getImageUrl(5) ?>" alt="<?= $helper->escape($product->getName()) ?>" />
     </div><!--/product big image section -->
 
-    <div class="bPhotoAction">
+    <div class="bPhotoAction clearfix">
         <ul class="bPhotoActionOtherAction">
             <? if ($productVideo && $productVideo->getContent()): ?>
                 <li class="bPhotoActionOtherAction__eVideo">
