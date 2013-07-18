@@ -386,7 +386,7 @@ $.ajaxSetup({
 					'Add to Cart F1 Quantity':productData.serviceQuantity,
 				};
 
-				if (typeof(_kmq) !== 'undefined') {
+				if ( typeof(_kmq) !== 'undefined' ) {
 					_kmq.push(['record', 'Add to Cart', toKISS]);
 				}
 			}
@@ -402,7 +402,7 @@ $.ajaxSetup({
 					'Add F1 Category ID':productData.category[productData.category.length-1].id,
 				};
 
-				if (typeof(_kmq) !== 'undefined') {
+				if ( typeof(_kmq) !== 'undefined' ) {
 					_kmq.push(['record', 'Add F1', toKISS]);
 				}
 			}
@@ -418,7 +418,7 @@ $.ajaxSetup({
 					'Add Warranty Category ID':productData.category[productData.category.length-1].id,
 				};
 
-				if (typeof(_kmq) !== 'undefined') {
+				if ( typeof(_kmq) !== 'undefined' ) {
 					_kmq.push(['record', 'Add Warranty', toKISS]);
 				}
 			}
@@ -437,6 +437,20 @@ $.ajaxSetup({
 			}
 		},
 
+		/**
+		 * myThings аналитика добавления в корзину
+		 */
+		myThingsAnalytics = function myThingsAnalytics(data) {
+			var productData = data.product;
+
+			if ( typeof(MyThings) !== 'undefined' ) {
+				MyThings.Track({
+					EventType: MyThings.Event.Visit,
+					Action: "1013",
+					ProductId: productData.id
+				});
+			}
+		},
 
 
 		/**
@@ -445,6 +459,7 @@ $.ajaxSetup({
 		buyProcessing = function buyProcessing(event, data) {
 			kissAnalytics(data);
 			googleAnalytics(data);
+			myThingsAnalytics(data);
 
 			if (!blackBox) {
 				return false;
