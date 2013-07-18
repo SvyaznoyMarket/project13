@@ -10566,8 +10566,7 @@
     border: 1px solid #e6e6e6;
   }
   .btnBuy .btnBuy__eLink.mShopsOnly {
-    width: 190px;
-    margin-left: -11px;
+    font-size: 17px;
   }
   .btnBuy .btnBuy__eLink:hover {
     text-decoration: none;
