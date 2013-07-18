@@ -1,14 +1,14 @@
 <?php
 
 return function (
-    $title = null,
+    \Helper\TemplateHelper $helper,
     array $products,
+    $title = null,
     array $categories = [],
     $class = null,
     $count = null,
     $limit = null,
-    $url = null,
-    \Helper\TemplateHelper $helper
+    $url = null
 ) {
 /**
  * @var $products   \Model\Product\Entity[]

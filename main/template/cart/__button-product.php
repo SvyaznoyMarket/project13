@@ -1,11 +1,11 @@
 <?php
 
 return function (
+    \Helper\TemplateHelper $helper,
+    \Model\Product\BasicEntity $product,
     $url = null,
     $class = null,
-    $value = 'Купить',
-    \Model\Product\BasicEntity $product,
-    \Helper\TemplateHelper $helper
+    $value = 'Купить'
 ) {
 
 $class = \View\Id::cartButtonForProduct($product->getId()) . ' jsBuyButton ' . $class;

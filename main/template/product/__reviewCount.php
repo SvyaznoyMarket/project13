@@ -1,9 +1,9 @@
 <?php
 
 return function(
+    \Helper\TemplateHelper $helper,
     \Model\Product\Entity $product,
-    array $reviewsData,
-    \Helper\TemplateHelper $helper
+    array $reviewsData
 ) {
 ?>
 

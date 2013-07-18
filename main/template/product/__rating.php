@@ -1,6 +1,10 @@
 <?php
 
-return function($score, $emptyText = null, $layout = null) {
+return function(
+    $score,
+    $emptyText = null,
+    $layout = null
+) {
     if (!empty($layout) && $layout == 'jewel') {
         $reviewsStarSrc = "/images/jewel/reviews_star.png";
         $reviewsStarHalfSrc = "/images/jewel/reviews_star_half.png";

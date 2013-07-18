@@ -1,6 +1,13 @@
 <?php
 
-return function(\Helper\TemplateHelper $helper, array $menu, \Model\Menu\Entity $parent = null, $catalogJsonBulk = [], $promoHtmlBulk = [], $level = 1) {
+return function(
+    \Helper\TemplateHelper $helper,
+    array $menu,
+    \Model\Menu\Entity $parent = null,
+    $catalogJsonBulk = [],
+    $promoHtmlBulk = [],
+    $level = 1
+) {
 
 /**
  * @var $menu   \Model\Menu\Entity[]
