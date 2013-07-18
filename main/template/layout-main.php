@@ -7,9 +7,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="robots" content="noyaca"/>
     <?= $page->slotMeta() ?>
     <title><?= $page->getTitle() ?></title>
     <link rel="shortcut icon" href="/favicon.ico"/>
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon.png">
     <?= $page->slotMobileModify() ?>
     <?= $page->slotStylesheet() ?>
     <?= $page->slotHeadJavascript() ?>
