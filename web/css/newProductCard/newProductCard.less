@@ -147,7 +147,7 @@
         &__eStore {
             float: right;
             width: 280px;
-            margin: -4px 0 0;
+            margin: -3px 0 0;
             &-text {
 		        font-size: 14px;
 		        margin: 0 0 25px;
@@ -293,12 +293,22 @@
 
 				border: 1px solid @typLightGray;
 
-				&:hover, 
 				&.mActive {
 					width: 46px;
 					height: 46px;
 
 					border: 2px solid @firmOrange;
+					&:hover{
+						border-color: @firmOrange;
+					}
+				}
+
+				&:hover {
+					width: 46px;
+					height: 46px;
+
+					border: 2px solid;
+					border-color: lighten(@firmOrange, 20%);
 				}
 				
 				img {

@@ -29,16 +29,20 @@
             }
         }
         &.mDisabled {
-            .grayGradDark();
+            background: @typLightGray;
             color: @typGray;
             border: 1px solid @typLightGray;
             .box-shadow(none);
             cursor: default;
             &:hover {
-                .grayGradDark();
+                background: @typLightGray;
                 color: @typGray;
                 border: 1px solid @typLightGray;
             }
+        }
+        &.mShopsOnly {
+            width: 190px;
+            margin-left: -11px;
         }
         &:hover {
             text-decoration: none;

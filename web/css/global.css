@@ -9925,7 +9925,7 @@
   .bProductSection .bProductDesc__eStore {
     float: right;
     width: 280px;
-    margin: -4px 0 0;
+    margin: -3px 0 0;
   }
   .bProductSection .bProductDesc__eStore-text {
     font-size: 14px;
@@ -10051,11 +10051,19 @@
     vertical-align: middle;
     border: 1px solid #e6e6e6;
   }
-  .bPhotoActionOtherPhotoItem__eLink:hover,
   .bPhotoActionOtherPhotoItem__eLink.mActive {
     width: 46px;
     height: 46px;
     border: 2px solid #ffa901;
+  }
+  .bPhotoActionOtherPhotoItem__eLink.mActive:hover {
+    border-color: #ffa901;
+  }
+  .bPhotoActionOtherPhotoItem__eLink:hover {
+    width: 46px;
+    height: 46px;
+    border: 2px solid;
+    border-color: #ffcc67;
   }
   .bPhotoActionOtherPhotoItem__eLink img {
     max-width: 45px;
@@ -10366,7 +10374,10 @@
     margin: 15px 0 0;
   }
   .bWidgetBuy__eClick a {
-    text-decoration: underline;
+    border-bottom: 1px dotted;
+  }
+  .bWidgetBuy__eClick a:hover {
+    text-decoration: none;
   }
   .bWidgetBuy__eDelivery {
     margin: 30px 0 0;
@@ -10532,14 +10543,7 @@
     background: #ffffff;
   }
   .btnBuy .btnBuy__eLink.mDisabled {
-    background: #e5e5e5;
-    background: -moz-linear-gradient(top, #ffffff 0%, #e3e3e3 100%);
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffffff), color-stop(100%, #e3e3e3));
-    background: -webkit-linear-gradient(top, #ffffff 0%, #e3e3e3 100%);
-    background: -o-linear-gradient(top, #ffffff 0%, #e3e3e3 100%);
-    background: -ms-linear-gradient(top, #ffffff 0%, #e3e3e3 100%);
-    background: linear-gradient(to bottom, #ffffff 0%, #e3e3e3 100%);
-    filter: progid:dximagetransform.microsoft.gradient(startColorstr='#ffffff', endColorstr='#e3e3e3', GradientType=0);
+    background: #e6e6e6;
     color: #a6a6a6;
     border: 1px solid #e6e6e6;
     -webkit-box-shadow: none;
@@ -10548,16 +10552,13 @@
     cursor: default;
   }
   .btnBuy .btnBuy__eLink.mDisabled:hover {
-    background: #e5e5e5;
-    background: -moz-linear-gradient(top, #ffffff 0%, #e3e3e3 100%);
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffffff), color-stop(100%, #e3e3e3));
-    background: -webkit-linear-gradient(top, #ffffff 0%, #e3e3e3 100%);
-    background: -o-linear-gradient(top, #ffffff 0%, #e3e3e3 100%);
-    background: -ms-linear-gradient(top, #ffffff 0%, #e3e3e3 100%);
-    background: linear-gradient(to bottom, #ffffff 0%, #e3e3e3 100%);
-    filter: progid:dximagetransform.microsoft.gradient(startColorstr='#ffffff', endColorstr='#e3e3e3', GradientType=0);
+    background: #e6e6e6;
     color: #a6a6a6;
     border: 1px solid #e6e6e6;
+  }
+  .btnBuy .btnBuy__eLink.mShopsOnly {
+    width: 190px;
+    margin-left: -11px;
   }
   .btnBuy .btnBuy__eLink:hover {
     text-decoration: none;
@@ -11308,5 +11309,65 @@
   }
 }
 /*---END---СТИЛИ БРЕНД РАЗДЕЛА PANDORA---*/
+/*------СТИЛИ НОВОЙ КАРТОЧКИ ТОВАРА - ВЕРСИЯ ДЛЯ ПЕЧАТИ------*/
+@media print {
+  .topbar,
+  #header,
+  .breadcrumbs,
+  .bWidgetBuy__eDelivery-now,
+  .searchbox,
+  #upper,
+  .priceOld,
+  .bGoodsSlider,
+  .bBreadCrumbsBottom,
+  .bReviews,
+  .footer,
+  .bBlackBox,
+  .bBottomBuy,
+  .priceSale,
+  .creditbox,
+  .bProductDesc__eStore-text,
+  .bReviewSection,
+  .bCountSection,
+  .bWidgetBuy__eBuy,
+  .bWidgetBuy__eClick,
+  .bPhotoAction {
+    display: none !important;
+  }
+  .bWidgetBuy {
+    border: none;
+  }
+  .bWidgetBuy__eDelivery {
+    margin: 0;
+    padding: 0;
+  }
+  .bProductSection .bProductDesc {
+    margin: 0;
+  }
+  .bProductSection .bDescriptionProduct {
+    width: 900px;
+  }
+  .bProductSection .bSpecifications__eList {
+    width: 900px;
+  }
+  .bProductSection .bSpecifications__eList dt {
+    width: 625px;
+  }
+  .jewel .bProductDesc__eStore-text {
+    display: block !important;
+  }
+  .jewel .bProductSection .bSpecifications__eList {
+    width: 300px;
+    color: #000000;
+  }
+  .jewel .bProductSection .bSpecifications__eList dd {
+    background: none;
+    padding-left: 0;
+  }
+  .jewel .bProductSection .bSpecifications__eList dt {
+    width: 125px;
+  }
+}
+/*---END---СТИЛИ НОВОЙ КАРТОЧКИ ТОВАРА - ВЕРСИЯ ДЛЯ ПЕЧАТИ---*/
 /*------НОВОГОДНЕЕ ОФОРМЛЕНИЕ------*/
 /*---END---НОВОГОДНЕЕ ОФОРМЛЕНИЕ---*/
