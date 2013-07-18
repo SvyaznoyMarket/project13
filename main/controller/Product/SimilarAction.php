@@ -21,7 +21,6 @@ class SimilarAction {
             $client = \App::smartengineClient();
             $user = \App::user()->getEntity();
 
-            /*
             $params = [
                 'sessionid'       => session_id(),
                 'itemid'          => $product->getId(),
@@ -47,10 +46,9 @@ class SimilarAction {
             if (!(bool)$ids) {
                 throw new \Exception('Товары от smartengine не получены');
             }
-            */
 
             // для теста
-            $ids = [34764, 36287, 34765, 30836, 6923, 1599];
+            //$ids = [34764, 36287, 34765, 30836, 6923, 1599];
             $products = \RepositoryManager::product()->getCollectionById($ids);
 
             foreach ($products as $i => $product) {
