@@ -526,8 +526,16 @@
 				},
 
 				authFromServer = function authFromServer(res) {
-					// res = [{"id":85172,"name":"Золотые серьги с топазом и фианитами ","image":"http://fs03.enter.ru/1/1/120/a2/172827.jpg","rating":0,"link":"/product/jewel/zolotie-sergi-s-topazom-i-fianitami-2030000144600?sender=smartengine|85172","price":11000,"data":{"place":"product","article":"462-9856","name":"Золотые серьги с топазом и фианитами ","position":3,"type":"Similar"}}];
-					console.log(res);
+					var newSlider;
+
+					if (!res.success){
+						return false;
+					}
+
+					newSlider = $(res.content);
+
+					$self.before(newSlider).remove();
+					newSlider.goodsSlider();
 				};
 			//end of vars
 		
