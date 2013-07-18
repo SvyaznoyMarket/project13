@@ -25,11 +25,6 @@ class Client {
         ], $config);
 
         $this->logger = $logger;
-        print ' #constructor# ';
-    }
-
-    public function querytest(){ //tmp
-        return ' vot2 ';
     }
 
     /**
@@ -46,7 +41,6 @@ class Client {
         \Debug\Timer::start('smartengine');
 
         $connection = $this->createResource($action, $params);
-        print 'sdgjkldsjlksdf';
         $response = curl_exec($connection);
         try {
             if (curl_errno($connection) > 0) {
@@ -101,7 +95,9 @@ class Client {
             . '?' . http_build_query(array_merge([
             'apikey'   => $this->config['apiKey'],
             'tenantid' => $this->config['tenantid'],
-        ], $params))
+            'method' => $action,
+            ], $params)
+        )
         ;
         \App::logger()->info('Start smartengine ' . $action . ' query: ' . $query, ['smartengine']);
 
