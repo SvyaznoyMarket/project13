@@ -78,7 +78,6 @@ class Action {
         echo "Process smartengine.view with: ".count($data)." items ...\n";
 
         $client = \App::smartengineClient();
-        print 'processSmartengineView';
 
         $productIds = [];
         foreach ($data as $item) {
@@ -133,7 +132,6 @@ class Action {
         echo "Process smartengine.buy with: ".count($data)." items ...\n";
 
         $client = \App::smartengineClient();
-        print 'processSmartengineBuy';
 
         $productIds = [];
         foreach ($data as $item) {
