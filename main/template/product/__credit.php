@@ -1,9 +1,9 @@
 <?php
 
 return function(
+    \Helper\TemplateHelper $helper,
     array $creditData,
-    \Model\Product\BasicEntity $product,
-    \Helper\TemplateHelper $helper
+    \Model\Product\BasicEntity $product
 ) {
     $user = \App::user();
 
