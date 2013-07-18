@@ -9824,7 +9824,7 @@
     font-size: 30px;
   }
   .bProductSection .priceSale {
-    margin: 0 0 10px;
+    margin: 5px 0 10px;
     cursor: pointer;
   }
   .bProductSection .bDescSelectItem {
@@ -9879,7 +9879,7 @@
   }
   .bProductSection .creditbox {
     display: none;
-    margin: 0 0 23px;
+    margin: 5px 0 0;
     border: none;
     font-size: 14px;
   }
@@ -9903,7 +9903,12 @@
     padding-left: 36px;
   }
   .bProductSection .bProductDesc {
-    margin: 0 0 25px;
+    margin: 0 0 15px;
+  }
+  .bProductSection .bProductDesc .bStickerImg {
+    position: absolute;
+    top: 0;
+    left: 0;
   }
   .bProductSection .bProductDesc__ePhoto {
     position: relative;
@@ -9928,7 +9933,7 @@
   }
   .bProductSection .bProductDesc__eStore-text {
     font-size: 14px;
-    margin: 0 0 25px;
+    margin: 23px 0 25px;
   }
   .bProductSection .bProductDesc__eStore-text .text__eAll {
     margin: 4px 0 0;
@@ -9985,7 +9990,7 @@
     margin: 0 auto;
   }
   .bPhotoAction {
-    margin: 30px 0 0;
+    margin: 15px 0 0;
   }
   .bPhotoActionOtherAction {
     float: left;
@@ -10583,6 +10588,7 @@
     height: 25px;
     background: url("/css/catalog/img/catalogSprite.png") -64px 0 no-repeat;
   }
+  .goodsbox .btnBuy a.mBought,
   .goodsbox .btnBuy a:hover {
     background-position: -102px 0;
   }

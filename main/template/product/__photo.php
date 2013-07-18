@@ -90,6 +90,10 @@ return function(
 
 
 <div class="bProductDesc__ePhoto">
+    <div class="bStickerImg">
+        
+    </div>
+
     <div class="bProductDesc__ePhoto-bigImg">
         <img class="bZoomedImg" src="<?= $product->getImageUrl(3) ?>" data-zoom-image="<?= $product->getImageUrl(5) ?>" alt="<?= $helper->escape($product->getName()) ?>" />
     </div><!--/product big image section -->
