@@ -151,7 +151,16 @@ class DefaultLayout extends Layout {
     }
 
     public function slotSurveybar() {
-        return $this->render('_surveybar', ['survey' => \RepositoryManager::survey()->getEntity()]);
+        $survey = \RepositoryManager::survey()->getEntity();
+        $region = \App::user()->getRegion();
+
+        if(is_object($survey) && $survey->getIsActive() &&
+            in_array($region->getName(), $survey->getRegionNames()) &&
+            !$survey->getIsAnswered()) {
+            return $this->render('_surveybar', ['survey' => $survey]);
+        } else {
+            return '';
+        }
     }
 
     public function slotYandexMetrika() {

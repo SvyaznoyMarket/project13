@@ -121,20 +121,9 @@
 			latitude: $(this).data('lat'),
 			longitude: $(this).data('lng')
 		};
-		// var myMap;
-
-		// var init = function() {
-		// 	// Создание экземпляра карты и его привязка к контейнеру с
-		// 	// заданным id ("map").
-		// 	myMap = new ymaps.Map('ymaps-avalshops', {
-		// 		// При инициализации карты обязательно нужно указать
-		// 		// её центр и коэффициент масштабирования.
-		// 		center:position, // Москва
-		// 		zoom:15
-		// 	});
-		// };
 
 		$('#ymaps-avalshops').css({'width':600, 'height':400});
+		
 		$.when(MapInterface.ready( 'yandex', {
 			yandex: $('#infowindowtmpl'), 
 			google: $('#infowindowtmpl')
@@ -146,11 +135,9 @@
 		popup.lightbox_me({
 			centered: true,
 			onLoad: function() {
-				// ymaps.ready(init);
 			},
 			onClose: function(){
 				$('#ymaps-avalshops').empty();
-				// myMap.destroy();
 			}
 		});
 

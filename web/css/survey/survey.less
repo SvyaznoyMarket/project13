@@ -1,0 +1,29 @@
+.surveyBox {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  width: 104px;
+  height: 30px;
+  border: 3px solid #ccc;
+  z-index: 300;
+  border-radius: 5px;
+  background-color: #000000;
+  color: #fff;
+  .opacity(0.9);
+  filter: progid:DXImageTransform.Microsoft.Alpha(opacity=90);
+  padding: 4px 6px;
+
+  &__toggle {
+    position: absolute;
+    right: 10px;
+    line-height: 28px;
+    color: #fff;
+  }
+  &__toggle:hover, &__answer, &__answer:hover {
+    color: #fff;
+  }
+
+  &__content {
+    display:none;
+  }
+}

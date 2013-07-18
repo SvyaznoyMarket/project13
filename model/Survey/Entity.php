@@ -15,6 +15,10 @@ class Entity {
     private $showDelay;
     /** @var string */
     private $outputFile;
+    /** @var bool */
+    private $isAnswered;
+    /** @var datetime */
+    private $initTime;
 
     public function __construct(array $data = []) {
         if (array_key_exists('active', $data)) $this->setIsActive($data['active']);
@@ -73,4 +77,27 @@ class Entity {
         return \App::config()->surveyDir . '/' . $this->outputFile;
     }
 
+    public function setIsAnswered($isAnswered) {
+        $this->isAnswered = (bool)$isAnswered;
+    }
+
+    public function getIsAnswered() {
+        return $this->isAnswered;
+    }
+
+    public function setInitTime($timestamp) {
+        $this->initTime = $timestamp;
+    }
+
+    public function getInitTime() {
+        return $this->initTime;
+    }
+
+    public function getIsTimePassed() {
+        if(empty($this->initTime) || empty($this->showDelay)) {
+            return false;
+        } else {
+            return (new \DateTime())->getTimestamp() - $this->initTime->getTimestamp() > $this->showDelay;
+        }
+    }
 }

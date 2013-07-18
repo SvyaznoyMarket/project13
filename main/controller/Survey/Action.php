@@ -3,7 +3,7 @@
 namespace Controller\Survey;
 
 class Action {
-    public function index(\Http\Request $request, $categoryToken = null) {
+    public function submitAnswer(\Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
         if (!$request->isXmlHttpRequest()) {
@@ -14,38 +14,30 @@ class Action {
             throw new \Exception\NotFoundException('Request is not post http request');
         }
 
-        try {
-            if (!$number) {
-                throw new \Exception\ActionException('Не передан номер карты');
-            }
+        $outCsvDelimiter = "\t";
 
-            $cart->clearCertificates();
+        $question = $request->get('question');
+        $answer = $request->get('answer');
+        $kmId = $request->get('kmId');
+        $userId = \App::user()->getEntity() ? \App::user()->getEntity()->getUserId() : '';
 
-            $data = $client->query('cart/check-card-f1', ['number' => $number]);
-            if (true !== $data) {
-                throw new \Exception\ActionException('Неправильный номер карты');
-            }
+        // передав true в качестве параметра, получаем версию опроса,
+        // кэшированную с момента открытия страницы - чтобы выходной файл соответствовал опросу
+        $survey = \RepositoryManager::survey()->getEntity(true);
+        \RepositoryManager::survey()->getEntity(true)->setIsAnswered(true);
 
-            $certificate = new \Model\Cart\Certificate\Entity();
-            $certificate->setNumber($number);
-
-            $cart->setCertificate($certificate);
-
-            $result = [
-                'success' => true,
-            ];
-
-        } catch (\Exception $e) {
-            \App::exception()->remove($e);
-
-            $result = [
-                'success' => false,
-                'error'   => $e instanceof \Exception\ActionException ? $e->getMessage() : 'Неудалось активировать карту',
-            ];
-            if (\App::config()->debug) {
-                $result['error'] = $e;
-            }
+        $outCsvFilePath = is_object($survey) ? $survey->getOutputFile() : \App::config()->surveyDir . '/survey.csv';
+        if(!is_dir(\App::config()->surveyDir)) mkdir(\App::config()->surveyDir);
+        if(!is_file($outCsvFilePath)) {
+            touch($outCsvFilePath);
+            file_put_contents($outCsvFilePath, 'Вопрос'.$outCsvDelimiter.'Ответ'.$outCsvDelimiter.'KM ID'.$outCsvDelimiter.'User ID'.$outCsvDelimiter."\n");
         }
+        file_put_contents($outCsvFilePath, $question.$outCsvDelimiter.$answer.$outCsvDelimiter.$kmId.$outCsvDelimiter.$userId.$outCsvDelimiter."\n", FILE_APPEND);
+
+        $result = [
+            'success' => true,
+            'getIsAnswered' => $survey->getIsAnswered(),
+        ];
 
         return new \Http\JsonResponse($result);
     }

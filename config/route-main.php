@@ -565,9 +565,9 @@ return [
     ],
 
     //survey
-    'content' => [
+    'survey.submit-answer' => [
         'pattern' => '/survey/submit-answer',
-        'action'  => ['Survey\Action', 'execute'],
+        'action'  => ['Survey\Action', 'submitAnswer'],
     ],
 
     //content
