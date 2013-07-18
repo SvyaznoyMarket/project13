@@ -10374,7 +10374,10 @@
     margin: 15px 0 0;
   }
   .bWidgetBuy__eClick a {
-    text-decoration: underline;
+    border-bottom: 1px dotted;
+  }
+  .bWidgetBuy__eClick a:hover {
+    text-decoration: none;
   }
   .bWidgetBuy__eDelivery {
     margin: 30px 0 0;
