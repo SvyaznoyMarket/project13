@@ -9816,6 +9816,7 @@
   .bProductSection .priceOld {
     font-size: 21px;
     margin-bottom: 3px;
+    color: #a6a6a6;
   }
   .bProductSection .priceOld span {
     text-decoration: line-through;
@@ -10254,6 +10255,9 @@
     height: 25px;
     line-height: 25px;
     font-size: 14px;
+  }
+  .bSliderAction__eList .btnBuy .btnBuy__eLink.mShopsOnly {
+    font-size: 10px;
   }
   .bSliderAction__eItem {
     width: 120px;

@@ -83,7 +83,7 @@ return function (
     <li class="bWidgetBuy__eDelivery-item bWidgetBuy__eDelivery-free">
     </li>
 
-    <li class="bWidgetBuy__eDelivery-item bWidgetBuy__eDelivery-now <?= $product->getIsBuyable() ? 'mClose' : 'mOpen'?>">
+    <li class="bWidgetBuy__eDelivery-item bWidgetBuy__eDelivery-now <?= $product->getIsBuyable() ? 'mOpen' : 'mClose'?>">
         <span class="bWidgetBuy__eDelivery-nowClick dotted">Есть в магазинах</span>
         <div>Cегодня, без предзаказа</div>
         <ul class="bDeliveryFreeAddress">
