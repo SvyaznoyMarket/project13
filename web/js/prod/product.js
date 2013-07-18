@@ -439,8 +439,7 @@
 							{},
 							$.fn.goodsSlider.defaults,
 							params),
-				$self = $(this);
-
+				$self = $(this),
 				hasCategory = $self.hasClass('mWithCategory'),
 				leftBtn = $self.find(options.leftArrowSelector),
 				rightBtn = $self.find(options.rightArrowSelector),
@@ -448,10 +447,8 @@
 				slider = $self.find(options.sliderSelector),
 				item = $self.find(options.itemSelector),
 				catItem = $self.find(options.categoryItemselector),
-				
 				itemW = item.width() + parseInt(item.css('marginLeft'),10) + parseInt(item.css('marginRight'),10),
 				elementOnSlide = wrap.width()/itemW,
-
 				nowLeft = 0,
 
 				nextSlide = function(){

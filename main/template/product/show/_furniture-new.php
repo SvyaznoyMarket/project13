@@ -33,7 +33,7 @@
                 'count'          => count($product->getAccessoryId()),
                 'limit'          => (bool)$accessoryCategory ? \App::config()->product['itemsInAccessorySlider'] : \App::config()->product['itemsInSlider'],
                 'page'           => 1,
-                'url'            => $page->url('product.accessory', ['productToken' => $product->getToken()]),
+                //'url'            => $page->url('product.accessory', ['productToken' => $product->getToken()]),
                 'gaEvent'        => 'Accessorize',
                 'additionalData' => $additionalData,
             ]) ?>
@@ -46,7 +46,7 @@
                 'count'          => count($product->getRelatedId()),
                 'limit'          => \App::config()->product['itemsInSlider'],
                 'page'           => 1,
-                'url'            => $page->url('product.related', ['productToken' => $product->getToken()]),
+                //'url'            => $page->url('product.related', ['productToken' => $product->getToken()]),
                 'additionalData' => $additionalData,
             ]) ?>
         <? endif ?>
