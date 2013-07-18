@@ -21,7 +21,7 @@
 			var selectChangeHandler = function selectChangeHandler() {
 				var selectedOption = select.find('option:selected');
 
-				value.html(selectedOption.val());
+				value.html( selectedOption.val() );
 				options.changeHandler( selectedOption );
 			};
 

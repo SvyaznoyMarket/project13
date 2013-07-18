@@ -43,9 +43,19 @@ $(document).ready(function() {
 	/**
 	 * Подключение слайдера товаров
 	 */
-	if ( $('.bGoodsSlider').length ) {
-		$('.bGoodsSlider').goodsSlider();
-	}
+	$('.bGoodsSlider').goodsSlider();
+
+
+	/**
+	 * Подключение кастомных дропдаунов
+	 */
+	$('.bDescSelectItem').customDropDown({
+		changeHandler: function( option ) {
+			var url = option.data('url');
+
+			document.location.href = url;
+		}
+	});
 
 
 	/**
@@ -78,28 +88,16 @@ $(document).ready(function() {
 
 	/**
 	 * Затемнение всех контролов после добавления в корзину
+	 *
+	 * @requires jQuery
 	 */
-	(function(){
+	(function() {
 		var afterBuy = function afterBuy() {
 			$('.bCountSection').addClass('mDisabled').find('input').attr('disabled','disabled');
 			$('.jsOrder1click').addClass('mDisabled');
 		};
 
 		$("body").bind('addtocart', afterBuy);
-	})();
-
-
-	/**
-	 * Подключение кастомных дропдаунов
-	 */
-	(function(){
-		$('.bDescSelectItem').customDropDown({
-			changeHandler: function( option ){
-				var url = option.data('url');
-
-				document.location.href = url;
-			}
-		});
 	})();
 	
 

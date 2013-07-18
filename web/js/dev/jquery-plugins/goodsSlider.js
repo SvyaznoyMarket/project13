@@ -4,7 +4,7 @@
  * @author		Zaytsev Alexandr
  * @requires	jQuery
  */
-;(function($){
+;(function($) {
 	$.fn.goodsSlider = function(params) {
 
 		/**
@@ -14,10 +14,18 @@
 		 * @param	{Object}	$self			Ссылка на текущий элемент из набора
 		 * @param	{Object}	sliderParams	Параметры текущего слайдера
 		 * @param	{Boolean}	hasCategory		Имеет ли слайдер категории
+		 * 
 		 * @param	{Object}	leftBtn			Ссылка на левую стрелку
 		 * @param	{Object}	rightBtn		Ссылка на правую стрелку
 		 * @param	{Object}	wrap			Ссылка на обертку слайдера
 		 * @param	{Object}	slider			Ссылка на контейнер с товарами
+		 * @param	{Object}	item			Ссылка на карточки товаров в слайдере
+		 * @param	{Object}	catItem			Ссылка на категории в слайдере
+		 * 
+		 * @param	{Number}	itemW			Ширина одной карточки товара в слайдере
+		 * @param	{Number}	elementOnSlide	Количество помещающихся карточек на один слайд
+		 * 
+		 * @param	{Number}	nowLeft			Текущий отступ слева
 		 */
 		return this.each(function() {
 			var options = $.extend(
@@ -27,14 +35,17 @@
 				$self = $(this),
 				sliderParams = $self.data('slider'),
 				hasCategory = $self.hasClass('mWithCategory'),
+
 				leftBtn = $self.find(options.leftArrowSelector),
 				rightBtn = $self.find(options.rightArrowSelector),
 				wrap = $self.find(options.sliderWrapperSelector),
 				slider = $self.find(options.sliderSelector),
 				item = $self.find(options.itemSelector),
 				catItem = $self.find(options.categoryItemselector),
+
 				itemW = item.width() + parseInt(item.css('marginLeft'),10) + parseInt(item.css('marginRight'),10),
 				elementOnSlide = wrap.width()/itemW,
+
 				nowLeft = 0;
 			// end of vars
 
@@ -141,7 +152,6 @@
 					}
 
 					newSlider = $(res.content);
-
 					$self.before(newSlider).remove();
 					newSlider.goodsSlider();
 				};

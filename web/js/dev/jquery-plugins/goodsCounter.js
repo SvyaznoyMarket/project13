@@ -28,18 +28,20 @@
 				counterGroupName = $self.attr('data-spinner-for'),
 				counterGroup = $('[data-spinner-for="'+counterGroupName+'"]'),
 
-				timeout_id = 0,
+				timeout_id = 0;
+			// end of vars
+
 
 				/**
 				 * Срабатывание функции обратного вызова onChange
 				 * 
 				 * @param	{Number}	count	Текущее значение в поле ввода
 				 */
-				changeHandler = function(count){
+			var changeHandler = function changeHandler( count ) {
 					clearTimeout(timeout_id);
-					timeout_id = setTimeout(function(){
-						counterGroup.find('input').val(count);
-						options.onChange(count);
+					timeout_id = setTimeout(function() {
+						counterGroup.find('input').val( count );
+						options.onChange( count );
 					}, 400);
 				},
 
@@ -49,20 +51,23 @@
 				 * @param	{Event}	e	Данные события
 				 * @return	{Boolean}
 				 */
-				plusHandler = function(e){
+				plusHandler = function plusHandler( e ) {
+					var nowCount = input.val();
+
 					e.stopPropagation();
 
-					if ($self.hasClass('mDisabled')){
+					if ( $self.hasClass('mDisabled') ) {
 						return false;
 					}
 
-					var nowCount = input.val();
-					if ((nowCount*1)+1 > options.maxVal){
+					if ( (nowCount * 1) + 1 > options.maxVal ) {
 						return false;
 					}
+
 					nowCount++;
-					input.val(nowCount);
-					changeHandler(nowCount);
+					input.val( nowCount );
+					changeHandler( nowCount );
+
 					return false;
 				},
 
@@ -72,20 +77,23 @@
 				 * @param	{Event}	e	Данные события
 				 * @return	{Boolean}
 				 */
-				minusHandler = function(e){
+				minusHandler = function minusHandler( e ) {
+					var nowCount = input.val();
+
 					e.stopPropagation();
 
-					if ($self.hasClass('mDisabled')){
+					if ( $self.hasClass('mDisabled') ){
 						return false;
 					}
 
-					var nowCount = input.val();
-					if ((nowCount*1)-1 < 1){
+					if ( (nowCount * 1) - 1 < 1 ){
 						return false;
 					}
+
 					nowCount--;
-					input.val(nowCount);
-					changeHandler(nowCount);
+					input.val( nowCount );
+					changeHandler( nowCount );
+
 					return false;
 				},
 
@@ -95,26 +103,27 @@
 				 * @param	{Event}	e	Данные события
 				 * @return	{Boolean}
 				 */
-				keyupHandler = function(e){
+				keyupHandler = function keyupHandler( e ) {
+					var nowCount = input.val();
+
 					e.stopPropagation();
 
-					if ($self.hasClass('mDisabled')){
+					if ( $self.hasClass('mDisabled') ){
 						return false;
 					}
 
-					var nowCount = input.val();
-
 					nowCount = input.val();
-					if ((nowCount*1) < 1){
+
+					if ( (nowCount * 1) < 1 ) {
 						nowCount = 1;
 					}
 
-					if ((nowCount*1) > options.maxVal){
+					if ( (nowCount * 1) > options.maxVal ) {
 						nowCount = options.maxVal;
 					}
 
-					input.val(nowCount);
-					changeHandler(nowCount);
+					input.val( nowCount );
+					changeHandler( nowCount );
 
 					return false;
 				},
@@ -125,21 +134,22 @@
 				 * @param	{Event}	e	Данные события
 				 * @return	{Boolean}
 				 */
-				keydownHandler = function(e){
+				keydownHandler = function keydownHandler( e ) {
 					e.stopPropagation();
 
-					if (e.which === 38){ // up arrow
+					if ( e.which === 38 ) { // up arrow
 						plusBtn.trigger('click');
 						return false;
 					}
-					else if (e.which === 40){ // down arrow
+					else if ( e.which === 40 ) { // down arrow
 						minusBtn.trigger('click');
 						return false;
 					}
 					else if ( !(( (e.which >= 48) && (e.which <= 57) ) ||  //num keys
 								( (e.which >= 96) && (e.which <= 105) ) || //numpad keys
 								(e.which === 8) ||
-								(e.which === 46) )){
+								(e.which === 46)) 
+							) {
 						return false;
 					}
 				},
@@ -147,18 +157,25 @@
 				/**
 				 * Обновление количества в поле ввода, если товар уже лежит в корзине. Вызывается событием «updatespinner» у body
 				 * 
-				 * @param	{Event}	e			Данные события
-				 * @param	{Array}	products	Массив продуктов
+				 * @param	{Event}		e			Данные события
+				 * @param	{Array}		products	Массив продуктов
+				 * @param	{Object}	spinner		Ссылка на спиннеры принадлежащие купленному товару
+				 * @param	{Object}	input		Поля которые необходимо обновить
 				 */
-				updatespinner = function(e, products){
-					for (var i = products.product.length - 1; i >= 0; i--) {
-						var spinner = $('[data-spinner-for="'+products.product[i].id+'"]');
+				updatespinner = function updatespinner( e, products ){
+					var i = 0,
+						spinner,
+						input;
+					// end of vars
+
+					for ( i = products.product.length - 1; i >= 0; i-- ) {
+						spinner = $('[data-spinner-for="'+products.product[i].id+'"]');
 						spinner.addClass('mDisabled');
-						var input = spinner.find('input');
+						input = spinner.find('input');
 						input.val(products.product[i].quantity).attr('disabled','disabled');
 					}
 				};
-			//end of vars
+			//end of functions
 
 			plusBtn.bind('click', plusHandler);
 			minusBtn.bind('click',minusHandler);
