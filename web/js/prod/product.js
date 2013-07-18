@@ -440,6 +440,7 @@
 							$.fn.goodsSlider.defaults,
 							params),
 				$self = $(this),
+				sliderParams = $self.data('slider'),
 				hasCategory = $self.hasClass('mWithCategory'),
 				leftBtn = $self.find(options.leftArrowSelector),
 				rightBtn = $self.find(options.rightArrowSelector),
@@ -451,18 +452,18 @@
 				elementOnSlide = wrap.width()/itemW,
 				nowLeft = 0,
 
-				nextSlide = function(){
-					if ($(this).hasClass('mDisabled')){
+				nextSlide = function nextSlide() {
+					if ($(this).hasClass('mDisabled')) {
 						return false;
 					}
 
 					leftBtn.removeClass('mDisabled');
 
-					if (nowLeft + elementOnSlide * itemW >= slider.width()-elementOnSlide * itemW){
+					if (nowLeft + elementOnSlide * itemW >= slider.width()-elementOnSlide * itemW) {
 						nowLeft = slider.width()-elementOnSlide * itemW
 						rightBtn.addClass('mDisabled');
 					}
-					else{
+					else {
 						nowLeft = nowLeft + elementOnSlide * itemW;
 						rightBtn.removeClass('mDisabled');
 					}
@@ -472,18 +473,18 @@
 					return false;
 				},
 
-				prevSlide = function(){
-					if ($(this).hasClass('mDisabled')){
+				prevSlide = function prevSlide() {
+					if ($(this).hasClass('mDisabled')) {
 						return false;
 					}
 
 					rightBtn.removeClass('mDisabled');
 
-					if (nowLeft - elementOnSlide * itemW <= 0){
+					if (nowLeft - elementOnSlide * itemW <= 0) {
 						nowLeft = 0;
 						leftBtn.addClass('mDisabled');
 					}
-					else{
+					else {
 						nowLeft = nowLeft - elementOnSlide * itemW;
 						leftBtn.removeClass('mDisabled');
 					}
@@ -493,7 +494,7 @@
 					return false;
 				},
 
-				reWidthSlider = function(nowItems){
+				reWidthSlider = function reWidthSlider(nowItems) {
 					leftBtn.addClass('mDisabled');
 					rightBtn.addClass('mDisabled');
 
@@ -508,7 +509,7 @@
 					nowItems.show();
 				},
 
-				showCategoryGoods = function(){
+				showCategoryGoods = function showCategoryGoods() {
 					var nowCategoryId = catItem.filter('.mActive').attr('id'),
 						showAll = (catItem.filter('.mActive').data('product') === 'all'),
 						nowShowItem = (showAll) ? item : item.filter('[data-category="'+nowCategoryId+'"]');
@@ -518,18 +519,32 @@
 					reWidthSlider(nowShowItem);
 				},
 
-				selectCategory = function(){
+				selectCategory = function selectCategory() {
 					catItem.removeClass('mActive');
 					$(this).addClass('mActive');
 					showCategoryGoods();
+				},
+
+				authFromServer = function authFromServer(res) {
+					// res = [{"id":85172,"name":"Золотые серьги с топазом и фианитами ","image":"http://fs03.enter.ru/1/1/120/a2/172827.jpg","rating":0,"link":"/product/jewel/zolotie-sergi-s-topazom-i-fianitami-2030000144600?sender=smartengine|85172","price":11000,"data":{"place":"product","article":"462-9856","name":"Золотые серьги с топазом и фианитами ","position":3,"type":"Similar"}}];
+					console.log(res);
 				};
-		//end of vars
+			//end of vars
+		
 
 			if (hasCategory) {
 				showCategoryGoods();
 			}
 			else {
 				reWidthSlider(item);
+			}
+
+			if (sliderParams.url) {
+				$.ajax({
+					type: 'GET',
+					url: sliderParams.url,
+					success: authFromServer
+				});
 			}
 
 			rightBtn.bind('click', nextSlide);
