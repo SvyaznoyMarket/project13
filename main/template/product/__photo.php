@@ -90,9 +90,11 @@ return function(
 
 
 <div class="bProductDesc__ePhoto">
-    <div class="bStickerImg">
-        
-    </div>
+    <? if ($product->getLabel()): ?>
+        <div class="bStickerImg">
+            <img src="<?= $product->getLabel()->getImageUrl(1) ?>" alt="<?= $helper->escape($product->getLabel()->getName()) ?>" />
+        </div>
+    <? endif ?>
 
     <div class="bProductDesc__ePhoto-bigImg">
         <img class="bZoomedImg" src="<?= $product->getImageUrl(3) ?>" data-zoom-image="<?= $product->getImageUrl(5) ?>" alt="<?= $helper->escape($product->getName()) ?>" />
