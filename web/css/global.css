@@ -10175,14 +10175,14 @@
     padding-top: 3px;
   }
   .mProductSectionSet .bStoreDesc {
-    margin-left: 5px;
+    margin-left: 19px;
   }
   .mProductSectionSet .creditbox {
     margin: 0 0 16px;
   }
-  .mProductSectionSet .bWidgetBuy__eClick,
-  .mProductSectionSet .bWidgetBuy__eDelivery {
-    margin: 15px 0 0;
+  .mProductSectionSet .bWidgetBuy__eClick {
+    margin: 15px 0 0 19px;
+    text-align: left;
   }
   .mProductSectionSet .bProductList {
     margin: 20px 0 0;
