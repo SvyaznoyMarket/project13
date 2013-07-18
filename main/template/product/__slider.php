@@ -1,14 +1,14 @@
 <?php
 
 return function (
-    $title = null,
+    \Helper\TemplateHelper $helper,
     array $products,
+    $title = null,
     array $categories = [],
     $class = null,
     $count = null,
     $limit = null,
-    $url = null,
-    \Helper\TemplateHelper $helper
+    $url = null
 ) {
 /**
  * @var $products   \Model\Product\Entity[]
@@ -17,7 +17,11 @@ return function (
 
     $sliderId = 'slider-' . uniqid();
 ?>
-<div class="bGoodsSlider clearfix<? if ((bool)$categories): ?> mWithCategory<? endif ?><? if ($url && !(bool)$products): ?> hidden<? endif ?>">
+<div class="bGoodsSlider clearfix<? if ((bool)$categories): ?> mWithCategory<? endif ?><? if ($url && !(bool)$products): ?> hidden<? endif ?>"  data-slider="<?= $helper->json([
+        'count' => $count,
+        'limit' => $limit,
+        'url'   => $url,
+    ]) ?>">
     <? if ($title): ?>
         <h3 class="bHeadSection"><?= $title ?></h3>
     <? endif ?>
@@ -34,11 +38,7 @@ return function (
         </div>
     <? endif ?>
 
-    <div class="bSliderAction<? if ($class): ?> <?= $class ?><? endif ?>" data-slider="<?= $helper->json([
-        'count' => $count,
-        'limit' => $limit,
-        'url'   => $url,
-    ]) ?>">
+    <div class="bSliderAction<? if ($class): ?> <?= $class ?><? endif ?>">
 
         <div class="bSliderAction__eInner">
             <ul class="bSliderAction__eList clearfix">

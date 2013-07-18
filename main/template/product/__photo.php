@@ -1,9 +1,9 @@
 <?php
 
 return function(
+    \Helper\TemplateHelper $helper,
     \Model\Product\Entity $product,
-    array $productVideos,
-    \Helper\TemplateHelper $helper
+    array $productVideos
 ) {
     /** @var  $productVideo \Model\Product\Video\Entity|null */
     $productVideo = reset($productVideos);

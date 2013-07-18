@@ -1,9 +1,9 @@
 <?php
 
 return function (
+    \Helper\TemplateHelper $helper,
     \Model\Product\BasicEntity $product,
-    array $shopStates = [],
-    \Helper\TemplateHelper $helper
+    array $shopStates = []
 ) {
     /**
      * @var $shopStates \Model\Product\ShopState\Entity[]

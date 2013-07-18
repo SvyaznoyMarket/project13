@@ -1,6 +1,10 @@
 <?php
 
-return function($id, $value = 1, $disabled = false) { ?>
+return function(
+    $id,
+    $value = 1,
+    $disabled = false
+) { ?>
 
 <div class="bCountSection clearfix<? if ($disabled): ?> mDisabled<? endif ?>" data-spinner-for="<?= $id ?>">
     <button class="bCountSection__eM">-</button>
