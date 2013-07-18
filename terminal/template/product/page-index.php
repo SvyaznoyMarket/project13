@@ -64,7 +64,7 @@ $warranties = $product->getWarranty();
                 <div class="clearfix mMB80">
                     <!--  print_r($product->getState());   -->
                     <?php if ($product->getIsBuyable(\App::config()->region['shop_id'])):?>
-                    <a class="bGoodDescBlock_eBayBtn bButton mOrangeBtn mFl" href="#" onclick="terminal.cart.addProduct(<?= $product->getId() ?>)">В корзину</a>
+                    <a class="bGoodDescBlock_eBayBtn bButton mOrangeBtn mFl" href="#" onclick="terminal.cart.addProduct(<?= $product->getId() ?>)">Купить</a>
                     <?php elseif ($product->getState()->getIsShop() ):?>
                     <a class="bGoodDescBlock_eBayBtn bButton mGrayBtn mFl" href="#" onclick="terminal.screen.push('other_shops', { productId: <?= $product->getId() ?> })">Где купить?</a>
                     <? endif; ?>
@@ -104,7 +104,7 @@ $warranties = $product->getWarranty();
                                 <h2 class="bGoodSubItem_eTitle"><a class="bGoodSubItem_eLink" href="#" onclick='terminal.screen.push("product", {productId: <?= $iProduct->getId() ?>})'><?= $iProduct->getName() ?></a></h2>
                                 <p class="bGoodSubItem_ePrice"><?= $page->helper->formatPrice($iProduct->getPrice()) ?> <span class="bRuble">p</span></p>
                                 <?php if ($iProduct->getIsBuyable(\App::config()->region['shop_id'])):?>
-                                <a class="bGoodSubItem_eMore bButton mSmallOrangeBtn" href="#" onclick="terminal.cart.addProduct(<?= $iProduct->getId() ?>)">В корзину</a>
+                                <a class="bGoodSubItem_eMore bButton mSmallOrangeBtn" href="#" onclick="terminal.cart.addProduct(<?= $iProduct->getId() ?>)">Купить</a>
                                 <?php elseif ($iProduct->getState()->getIsShop() ):?>
                                 <a class="bGoodSubItem_eMore bButton mSmallGrayBtn" href="#" onclick="terminal.screen.push('other_shops', { productId: <?= $iProduct->getId() ?> })">Где купить?</a>
                                 <? endif; ?>
@@ -130,7 +130,7 @@ $warranties = $product->getWarranty();
                                 <h2 class="bGoodSubItem_eTitle"><a class="bGoodSubItem_eLink" href="#"><?= $iProduct->getName() ?></a></h2>
                                 <p class="bGoodSubItem_ePrice"><?= $page->helper->formatPrice($iProduct->getPrice()) ?> <span class="bRuble">p</span></p>
                                 <?php if ($iProduct->getIsBuyable(\App::config()->region['shop_id'])):?>
-                                <a class="bGoodSubItem_eMore bButton mSmallOrangeBtn" href="#" onclick="terminal.cart.addProduct(<?= $iProduct->getId() ?>)">В корзину</a>
+                                <a class="bGoodSubItem_eMore bButton mSmallOrangeBtn" href="#" onclick="terminal.cart.addProduct(<?= $iProduct->getId() ?>)">Купить</a>
                                 <?php elseif ($iProduct->getState()->getIsShop() ):?>
                                 <a class="bGoodSubItem_eMore bButton mSmallGrayBtn" href="#" onclick="terminal.screen.push('other_shops', { productId: <?= $iProduct->getId() ?> })">Где купить?</a>
                                 <? endif; ?>

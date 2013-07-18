@@ -1,4 +1,111 @@
 $(document).ready(function(){
+	if ( $('.hotlinksToggle').length ){
+		$('.hotlinksToggle').toggle(
+			function(){
+				$(this).parent().parent().find('.toHide').show();
+				$(this).html('Основные метки');
+			},
+			function(){
+				$(this).parent().parent().find('.toHide').hide();
+				$(this).html('Все метки');
+			}
+		);
+	}
+
+	if ( $('.cron_report_start').length ){
+		$('.cron_report_start').toggle(
+			function(){
+				var span = $(this);
+				$.get('/cron/report', {}, function(data){
+					if ( data.success === true ) {
+						console.log(data);
+						span.html('Скрыть информацию');
+						$('#report_start_response').html(data.data);
+					}
+				});
+			},
+			function(){
+				$('#report_start_response').html('');
+				$(this).html('Сгенерировать');
+			}
+		);
+	}
+
+	if ( $('.cron_report_links').length ){
+		$('.cron_report_links').toggle(
+			function(){
+				var span = $(this);
+				$.get('/cron/report/links', {}, function(data){
+					if ( data.success === true ) {
+						span.html('Скрыть ссылки');
+						$('#report_links_response').html(data.data);
+					}
+				});
+			},
+			function(){
+				$('#report_links_response').html('');
+				$(this).html('Ссылки');
+			}
+		);
+	}
+});
+ 
+ 
+/** 
+ * NEW FILE!!! 
+ */
+ 
+ 
+/**
+ * Форма подписки на уцененные товары
+ * Cтраница /refurbished-sale
+ *
+ * @requires	jQuery
+ * @author		Zaytsev Alexandr
+ */
+;(function(){
+	var discountSubscribing = function(e){
+		e.preventDefault();
+
+		var form = $('#subscribe-form');
+		var wholemessage = form.serializeArray();
+
+		var authFromServer = function(response) {
+			if ( !response.success ) {
+				return false;
+			}
+			form.find('label').hide();
+			form.find('#subscribeSaleSubmit').empty().addClass('font18').html('Спасибо, уже скоро в вашей почте информация об уцененных товарах.');
+		};
+
+		wholemessage["redirect_to"] = form.find('[name="redirect_to"]:first').val();
+
+		$.ajax({
+			type: 'POST',
+			url: form.attr('action'),
+			data: wholemessage,
+			success: authFromServer
+		});
+
+		return false;
+	};
+
+	$(document).ready(function(){
+		if (!$('#subscribe-form').length){
+			return false;
+		}
+		
+		$('#subscribe-form').bind('submit', discountSubscribing);
+	});
+}());
+ 
+ 
+/** 
+ * NEW FILE!!! 
+ */
+ 
+ 
+$(document).ready(function(){
 
 	if ( $('.subscribe-form__btn').length){
 		var input = $('.subscribe-form__email')
@@ -407,4 +514,4 @@ $(document).ready(function(){
 
 
 	}
-})
+});

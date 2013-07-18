@@ -22,6 +22,9 @@ class LineAction {
         $productRepository = \RepositoryManager::product();
 
         $mainProduct = $productRepository->getEntityById($line->getMainProductId());
+        if (!$mainProduct) {
+            throw new \Exception\NotFoundException(sprintf('Товар #%s не найден', $line->getMainProductId()));
+        }
 
         //Собираем все id для товров: наборов серии, простых товаров серии
         $productInLineIds = array_merge($line->getKitId(), $line->getProductId());

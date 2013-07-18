@@ -78,10 +78,14 @@ class IndexAction {
         $catalogJson = \RepositoryManager::productCategory()->getCatalogJson(array_pop($productCategories));
 
         // если в catalogJson'e указан category_class, то обрабатываем запрос соответствующим контроллером
-        if(!empty($catalogJson['category_class'])) {
-            $controller = '\\Controller\\'.ucfirst($catalogJson['category_class']).'\\Product\\IndexAction';
+        $categoryClass = !empty($catalogJson['category_class']) ? $catalogJson['category_class'] : null;
+
+        /*
+        if ($categoryClass) {
+            $controller = '\\Controller\\'.ucfirst($categoryClass).'\\Product\\IndexAction';
             return (new $controller())->executeDirect($product, $regionsToSelect, $catalogJson);
         }
+        */
 
         // получаем отзывы для товара
         $reviewsData = \RepositoryManager::review()->getReviews($product->getId(), 'user');
@@ -95,9 +99,15 @@ class IndexAction {
         $accessoryItems = [];
         $accessoryCategory = array_map(function($accessoryGrouped){
             return $accessoryGrouped['category'];
-        }, \Model\Product\Repository::filterAccessoryId($product, $accessoryItems, null, \App::config()->product['itemsInAccessorySlider'] * 6));
+        }, \Model\Product\Repository::filterAccessoryId($product, $accessoryItems, null, \App::config()->product['itemsInAccessorySlider'] * 36));
+        if ((bool)$accessoryCategory) {
+            $firstAccessoryCategory = new \Model\Product\Category\Entity();
+            $firstAccessoryCategory->setId(0);
+            $firstAccessoryCategory->setName('Популярные аксессуары');
+            array_unshift($accessoryCategory, $firstAccessoryCategory);
+        }
 
-        $accessoriesId =  array_slice($product->getAccessoryId(), 0, $accessoryCategory ? \App::config()->product['itemsInAccessorySlider'] * 6 : \App::config()->product['itemsInSlider'] * 6);
+        $accessoriesId =  array_slice($product->getAccessoryId(), 0, $accessoryCategory ? \App::config()->product['itemsInAccessorySlider'] * 36 : \App::config()->product['itemsInSlider'] * 6);
         $relatedId = array_slice($product->getRelatedId(), 0, \App::config()->product['itemsInSlider'] * 2);
         $partsId = [];
 
@@ -171,10 +181,10 @@ class IndexAction {
                 $quantity = (int)$stock->getQuantity();
                 $shopId = $stock->getShopId();
                 if ((0 < $quantity + $quantityShowroom) && !empty($shopId)) {
-                    $quantityByShop[$shopId] = array(
+                    $quantityByShop[$shopId] = [
                         'quantity' => $quantity,
                         'quantityShowroom' => $quantityShowroom,
-                    );
+                    ];
                 }
             }
             if ((bool)$quantityByShop) {
@@ -225,6 +235,7 @@ class IndexAction {
         $page->setParam('reviewsData', $reviewsData);
         $page->setParam('reviewsDataPro', $reviewsDataPro);
         $page->setParam('reviewsDataSummary', $reviewsDataSummary);
+        $page->setParam('categoryClass', $categoryClass);
 
         return new \Http\Response($page->show());
     }

@@ -98,6 +98,10 @@ class IndexPage extends \View\DefaultLayout {
         return 'product_card';
     }
 
+    public function slotBodyClassAttribute() {
+        return $this->hasParam('categoryClass') ? $this->getParam('categoryClass') : '';
+    }
+
     public function slotInnerJavascript() {
         /** @var $product \Model\Product\Entity */
         $product = $this->getParam('product') instanceof \Model\Product\Entity ? $this->getParam('product') : null;

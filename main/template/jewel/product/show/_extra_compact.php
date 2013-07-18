@@ -16,7 +16,7 @@ $maxHeight = isset($maxHeight) && $maxHeight;
 $gaEvent = isset($gaEvent) ? $gaEvent : null;
 $additionalData = isset($additionalData) ? $additionalData : null;
 $inCart = \App::user()->getCart()->hasProduct($product->getId());
-$btnText = $inCart ? 'В корзине' : 'В корзину';
+$btnText = $inCart ? 'В корзине' : 'Купить';
 ?>
 
 <div class="goodsbox<? if ($maxHeight): ?> height220<? endif ?>"<? if ($isHidden): ?> style="display:none;"<? endif ?> ref="<?php echo $product->getToken(); ?>" data-quantity="<?php echo empty($totalProducts) ? '' : $totalProducts; ?>" data-category="<?php echo empty($categoryToken) ? '' : $categoryToken; ?>" data-total-pages="<?php echo empty($totalPages) ? '' : $totalPages; ?>" data-category="<?php echo empty($categoryToken) ? '' : $categoryToken; ?>">

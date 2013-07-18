@@ -97,84 +97,181 @@
  *
  * @author		Zaytsev Alexandr
  * @requires	jQuery, simple_templating
+ * @param		{Object}	widgetBox		Контейнер с доступными вариантами доставки
+ * @param		{Object}	deliveryData	Данные необходимые для отображения доставки
+ * @param		{String}	url				Адрес по которому необходимо запросить данные с расчитанной доставкой для текущего продукта
+ * @param		{String}	deliveryShops	Список магазинов из которых можно забрать сегодня (только если товар не доступен для продажи)
+ * @param		{Object}	productInfo		Данные о текущем продукте
+ * @param		{Object}	dataToSend		Данные для отправки на сервер и получение расчитанной доставки
  */
 (function(){
 	if (!$('#jsProductCard').length){
 		return false;
 	}
 
-	var widgetBox = $('.bWidgetBuy__eDelivery');
-	var productInfo = $('#jsProductCard').data('value');
+	var widgetBox = $('.bWidgetBuy__eDelivery'),
+		deliveryData = widgetBox.data('value'),
+		url = deliveryData.url,
+		deliveryShops = (deliveryData.delivery.length) ? deliveryData.delivery[0].shop : [],
+		productInfo = $('#jsProductCard').data('value'),
+		dataToSend = {
+			'product':[
+				{'id': productInfo.id}
+			]
+		},
 
-	var url = '/ajax/product/delivery'; // HARDCODE!
+		/**
+		 * Показ попапа с магазином
+		 *
+		 * @param	{Object}	popup		Контейнер с попапом
+		 * @param	{Object}	button		Кнопка «перейти к магазину» в попапе
+		 * @param	{Object}	position	Координаты магазина, зашитые в ссылку
+		 * @param	{String}	url			Ссылка на магазин
+		 * @return	{Boolean}
+		 */
+		showAvalShop = function (){
+			var popup = $('#avalibleShop'),
+				button = popup.find('.bOrangeButton'),
+				position = {
+					latitude: $(this).data('lat'),
+					longitude: $(this).data('lng')
+				},
+				url = $(this).attr('href');
+			// end of var
 
-	var dataToSend = {
-		product:[
-			{'id': productInfo.id}
-		]
-	};
+			button.attr('href', url);
+			$('#ymaps-avalshops').css({'width':600, 'height':400});
 
-	var resFromSerever = function(res){
-		if (!res.success){
+			$.when(MapInterface.ready( 'yandex', {
+				yandex: $('#infowindowtmpl'), 
+				google: $('#infowindowtmpl')
+			})).done(function(){
+				MapInterface.onePoint( position, 'ymaps-avalshops' );
+			});
+
+			popup.css({'width':600, 'height':425});
+			popup.lightbox_me({
+				centered: true,
+				onLoad: function() {
+				},
+				onClose: function(){
+					$('#ymaps-avalshops').empty();
+				}
+			});
+
 			return false;
-		}
+		},
 
-		var deliveryInfo = res.product[0].delivery;
+		/**
+		 * Заполнение шаблона с доступными для самовывоза магазинами
+		 * 
+		 * @param	{Array}		shops			Массив магазинов
+		 * @param	{Object}	nowBox			Контейнер для элементов текущего типа доставки
+		 * @param	{Object}	toggleBtn		Кнопка переключения состояния листа магазинов открыто или закрыто
+		 * @param	{Object}	shopList		Контейнер для вывода списка магазинов
+		 * @param	{String}	templateNow		Готовый шаблон магазина
+		 * @param	{Object}	shopInfo		Данные для подстановки в шаблон магазина
+		 * @param	{Number}	shopLen			Количество магазинов
+		 */
+		fillAvalShopTmpl = function (shops){
+			var nowBox = widgetBox.find('.bWidgetBuy__eDelivery-now'),
+				toggleBtn = nowBox.find('.bWidgetBuy__eDelivery-nowClick'),
+				shopList = nowBox.find('.bDeliveryFreeAddress'),
+				templateNow = '',
+				shopInfo = {},
+				shopLen = shops.length,
 
-		var shopToggle = function(){
-			nowBox.toggleClass('mOpen');
-			nowBox.toggleClass('mClose');
-		};
-
-		for (var i = deliveryInfo.length - 1; i >= 0; i--) {
-			switch (deliveryInfo[i].token){
-				case 'standart':
-					var standartBox = widgetBox.find('.bWidgetBuy__eDelivery-price');
-					var standartData = {
-						price: deliveryInfo[i].price,
-						dateString: deliveryInfo[i].date.name
-					};
-					var templateStandart = tmpl('widget_delivery_standart', standartData);
-					standartBox.html(templateStandart);
-					break;
-
-				case 'self':
-					var selfBox = widgetBox.find('.bWidgetBuy__eDelivery-free');
-					var selfData = {
-						price: deliveryInfo[i].price,
-						dateString: deliveryInfo[i].date.name
-					};
-					var templateSelf = tmpl('widget_delivery_self', selfData);
-					selfBox.html(templateSelf);
-					break;
-
-				case 'now':
-					var nowBox = widgetBox.find('.bWidgetBuy__eDelivery-now');
-					var shopList = nowBox.find('.bDeliveryFreeAddress');
-					if (!deliveryInfo[i].shop.length){
-						break;
-					}
-
-					for (var j = deliveryInfo[i].shop.length - 1; j >= 0; j--) {
-						var shopInfo = {
-							name: deliveryInfo[i].shop[j].name
-						};
-						var templateNow = tmpl('widget_delivery_shop',shopInfo);
-						shopList.append(templateNow);
-					}
-					nowBox.show();
-					nowBox.bind('click', shopToggle);
-					break;
+				/**
+				 * Обработчик переключения состояния листа магазинов открыто или закрыто
+				 */
+				shopToggle = function (){
+					nowBox.toggleClass('mOpen');
+					nowBox.toggleClass('mClose');
+				};
+			// end of var
+			
+			if (!shopLen){
+				return;
 			}
-		}
-	};
 
-	$.ajax({
-		type: 'POST',
-		url: url,
-		data: dataToSend,
-		success: resFromSerever
-	});
+			for (var j = shopLen - 1; j >= 0; j--) {
+				shopInfo = {
+					name: shops[j].name,
+					lat: shops[j].latitude,
+					lng: shops[j].longitude,
+					url: shops[j].url
+				};
+
+				templateNow = tmpl('widget_delivery_shop',shopInfo);
+				shopList.append(templateNow);
+			}
+
+			nowBox.show();
+			$('.bDeliveryFreeAddress__eLink').bind('click', showAvalShop);
+			toggleBtn.bind('click', shopToggle);
+		},
+
+		/**
+		 * Обработка данных с сервера
+		 * 
+		 * @param	{Object}	res	Ответ от сервера
+		 */
+		resFromSerever = function (res){
+			if (!res.success){
+				return false;
+			}
+
+			/**
+			 * Полученнный с сервера массив вариантов доставок для текущего товара
+			 * @type	{Array}
+			 */
+			var deliveryInfo = res.product[0].delivery;
+
+			for (var i = deliveryInfo.length - 1; i >= 0; i--) {
+				switch (deliveryInfo[i].token){
+					case 'standart':
+						var standartBox = widgetBox.find('.bWidgetBuy__eDelivery-price'),
+							standartData = {
+								price: deliveryInfo[i].price,
+								dateString: deliveryInfo[i].date.name
+							},
+							templateStandart = tmpl('widget_delivery_standart', standartData);
+						// end of var
+
+						standartBox.html(templateStandart);
+						break;
+
+					case 'self':
+						var selfBox = widgetBox.find('.bWidgetBuy__eDelivery-free'),
+							selfData = {
+								price: deliveryInfo[i].price,
+								dateString: deliveryInfo[i].date.name
+							},
+							templateSelf = tmpl('widget_delivery_self', selfData);
+						// end of var
+
+						selfBox.html(templateSelf);
+						break;
+
+					case 'now':
+						fillAvalShopTmpl(deliveryInfo[i].shop);
+						break;
+				}
+			}
+		};
+	// end of var
+
+	if (url === '') {
+		fillAvalShopTmpl(deliveryShops);
+	}
+	else {
+		$.ajax({
+			type: 'POST',
+			url: url,
+			data: dataToSend,
+			success: resFromSerever
+		});
+	}
 }());
  
  
@@ -221,7 +318,6 @@
 		 * Проверка стрелок
 		 */
 		var checkArrow = function(){
-			console.log('checkArrow')
 			if (nowLeft > 0){
 				leftArr.show();
 			}
@@ -342,91 +438,95 @@
 			var options = $.extend(
 							{},
 							$.fn.goodsSlider.defaults,
-							params);
-			var $self = $(this);
+							params),
+				$self = $(this);
 
-			var hasCategory = $self.hasClass('mWithCategory');
-			var leftBtn = $self.find(options.leftArrowSelector);
-			var rightBtn = $self.find(options.rightArrowSelector);
-			var wrap = $self.find(options.sliderWrapperSelector);
-			var slider = $self.find(options.sliderSelector);
-			var item = $self.find(options.itemSelector);
-			var catItem = $self.find(options.categoryItemselector);
-			
-			var itemW = item.width() + parseInt(item.css('marginLeft'),10) + parseInt(item.css('marginRight'),10);
-			var elementOnSlide = wrap.width()/itemW;
+				hasCategory = $self.hasClass('mWithCategory'),
+				leftBtn = $self.find(options.leftArrowSelector),
+				rightBtn = $self.find(options.rightArrowSelector),
+				wrap = $self.find(options.sliderWrapperSelector),
+				slider = $self.find(options.sliderSelector),
+				item = $self.find(options.itemSelector),
+				catItem = $self.find(options.categoryItemselector),
+				
+				itemW = item.width() + parseInt(item.css('marginLeft'),10) + parseInt(item.css('marginRight'),10),
+				elementOnSlide = wrap.width()/itemW,
 
-			var nowLeft = 0;
+				nowLeft = 0,
 
-			var nextSlide = function(){
-				if ($(this).hasClass('mDisabled')){
+				nextSlide = function(){
+					if ($(this).hasClass('mDisabled')){
+						return false;
+					}
+
+					leftBtn.removeClass('mDisabled');
+
+					if (nowLeft + elementOnSlide * itemW >= slider.width()-elementOnSlide * itemW){
+						nowLeft = slider.width()-elementOnSlide * itemW
+						rightBtn.addClass('mDisabled');
+					}
+					else{
+						nowLeft = nowLeft + elementOnSlide * itemW;
+						rightBtn.removeClass('mDisabled');
+					}
+
+					slider.animate({'left': -nowLeft });
+
 					return false;
-				}
+				},
 
-				leftBtn.removeClass('mDisabled');
+				prevSlide = function(){
+					if ($(this).hasClass('mDisabled')){
+						return false;
+					}
 
-				if (nowLeft + elementOnSlide * itemW >= slider.width()-elementOnSlide * itemW){
-					nowLeft = slider.width()-elementOnSlide * itemW
-					rightBtn.addClass('mDisabled');
-				}
-				else{
-					nowLeft = nowLeft + elementOnSlide * itemW;
 					rightBtn.removeClass('mDisabled');
-				}
 
-				slider.animate({'left': -nowLeft });
+					if (nowLeft - elementOnSlide * itemW <= 0){
+						nowLeft = 0;
+						leftBtn.addClass('mDisabled');
+					}
+					else{
+						nowLeft = nowLeft - elementOnSlide * itemW;
+						leftBtn.removeClass('mDisabled');
+					}
 
-				return false;
-			};
+					slider.animate({'left': -nowLeft });
 
-			var prevSlide = function(){
-				if ($(this).hasClass('mDisabled')){
 					return false;
-				}
+				},
 
-				rightBtn.removeClass('mDisabled');
+				reWidthSlider = function(nowItems){
+					leftBtn.addClass('mDisabled');
+					rightBtn.addClass('mDisabled');
 
-				if (nowLeft - elementOnSlide * itemW <= 0){
+					if (nowItems.length > elementOnSlide) {
+						rightBtn.removeClass('mDisabled');
+					}
+
+					slider.width(nowItems.length * itemW);
 					nowLeft = 0;
 					leftBtn.addClass('mDisabled');
-				}
-				else{
-					nowLeft = nowLeft - elementOnSlide * itemW;
-					leftBtn.removeClass('mDisabled');
-				}
+					slider.css({'left':nowLeft});
+					nowItems.show();
+				},
 
-				slider.animate({'left': -nowLeft });
+				showCategoryGoods = function(){
+					var nowCategoryId = catItem.filter('.mActive').attr('id'),
+						showAll = (catItem.filter('.mActive').data('product') === 'all'),
+						nowShowItem = (showAll) ? item : item.filter('[data-category="'+nowCategoryId+'"]');
+					//end of vars
+					
+					item.hide();
+					reWidthSlider(nowShowItem);
+				},
 
-				return false;
-			};
-
-			var reWidthSlider = function(nowItems){
-				leftBtn.addClass('mDisabled');
-				rightBtn.addClass('mDisabled');
-
-				if (nowItems.length > elementOnSlide) {
-					rightBtn.removeClass('mDisabled');
-				}
-
-				slider.width(nowItems.length * itemW);
-				nowLeft = 0;
-				leftBtn.addClass('mDisabled');
-				slider.css({'left':nowLeft});
-				nowItems.show();
-			};
-
-			var showCategoryGoods = function(){
-				item.hide();
-				var nowCategoryId = catItem.filter('.mActive').attr('id');
-				var nowShowItem = item.filter('[data-category="'+nowCategoryId+'"]');
-				reWidthSlider(nowShowItem);
-			};
-
-			var selectCategory = function(){
-				catItem.removeClass('mActive');
-				$(this).addClass('mActive');
-				showCategoryGoods();
-			};
+				selectCategory = function(){
+					catItem.removeClass('mActive');
+					$(this).addClass('mActive');
+					showCategoryGoods();
+				};
+		//end of vars
 
 			if (hasCategory) {
 				showCategoryGoods();
@@ -607,8 +707,6 @@ $(document).ready(function() {
 				return false;
 			}
 
-			$('.jsBuyButton').html('В корзине').addClass('mBought').attr('href','/cart');
-
 			var structure = Planner3dKupeConstructor.GetBasketContent();
 			var url = $(this).attr('href');
 
@@ -616,6 +714,14 @@ $(document).ready(function() {
 				if ( !res.success ) {
 					return false;
 				}
+				$('.jsBuyButton').html('В корзине').addClass('mBought').attr('href','/cart');
+
+				/* костыль */
+				res.product.name = $('.bMainContainer__eHeader-title').html();
+				res.product.price = $('.jsPrice').eq('1').html();
+				res.product.article = $('.bMainContainer__eHeader-article').html();
+				/* */
+				
 				$("body").trigger("addtocart", [res]);
 			};
 
@@ -808,9 +914,9 @@ $(document).ready(function() {
 	$('.bZoomedImg').elevateZoom({
 		gallery: 'productImgGallery',
 		galleryActiveClass: 'mActive',
-		zoomWindowOffety: -15,
+		zoomWindowOffety: 0,
 		zoomWindowOffetx: 19,
-		zoomWindowWidth: 518,
+		zoomWindowWidth: 519,
 		borderSize: 1,
 		borderColour: '#C7C7C7'
 	});
@@ -854,6 +960,7 @@ $(document).ready(function() {
 			'Viewed Product Product Name':productInfo.name,
 			'Viewed Product Product Status':productInfo.stockState,
 		};
+
 		if (typeof(_kmq) !== 'undefined'){
 			_kmq.push(['record', 'Viewed Product',toKISS]);
 		}
@@ -868,7 +975,53 @@ $(document).ready(function() {
 			$('.bCountSection').addClass('mDisabled').find('input').attr('disabled','disabled');
 			$('.jsOrder1click').addClass('mDisabled');
 		};
+
 		$("body").bind('addtocart', afterBuy);
+	})();
+
+
+	/**
+	 * Custom select
+	 */
+	(function($){
+		$.fn.customDropDown = function(params) {
+			return this.each(function() {
+				var options = $.extend(
+								{},
+								$.fn.customDropDown.defaults,
+								params);
+				var $self = $(this);
+
+				var select = $self.find(options.selectSelector);
+				var value = $self.find(options.valueSelector);
+
+				var selectChangeHandler = function(){
+					var selectedOption = select.find('option:selected');
+
+					value.html(selectedOption.val());
+					options.changeHandler(selectedOption);
+				};
+
+				select.on('change', selectChangeHandler)
+			});
+		};
+				
+		$.fn.customDropDown.defaults = {
+			valueSelector: '.bDescSelectItem__eValue',
+			selectSelector: '.bDescSelectItem__eSelect',
+			changeHandler: function(){}
+		};
+
+	})(jQuery);
+
+	(function(){
+		$('.bDescSelectItem').customDropDown({
+			changeHandler: function(option){
+				var url = option.data('url');
+
+				document.location.href = url;
+			}
+		});
 	})();
 	
 
@@ -913,35 +1066,17 @@ $(document).ready(function() {
 	if($('#productDescriptionToggle').length) {
 		$('#productDescriptionToggle').toggle(
 			function(e){
-				e.preventDefault()
-				$(this).parent().parent().find('.descriptionlist:not(.short)').show()
-				$(this).html('Скрыть все характеристики')
+				e.preventDefault();
+				$(this).parent().parent().find('.descriptionlist:not(.short)').show();
+				$(this).html('Скрыть все характеристики');
 			},
 			function(e){
-				e.preventDefault()
-				$(this).parent().parent().find('.descriptionlist:not(.short)').hide()
-				$(this).html('Показать все характеристики')
+				e.preventDefault();
+				$(this).parent().parent().find('.descriptionlist:not(.short)').hide();
+				$(this).html('Показать все характеристики');
 			}
 		);
 	}
-
-
-	function handle_jewel_items() {
-		if($('body.jewel').length) {
-			$(".link1.link1active").attr('href', '/cart')
-			$(".link1").bind( 'click', function()   {
-				if($(this).parent().hasClass('goodsbarbig')) {
-					$('.goodsbarbig .link1').html("В корзине")
-					$('.goodsbarbig .link1').addClass("link1active")
-				} else {
-					$(this).html("В корзине")
-					$(this).addClass("link1active")
-				}
-			})
-		}
-	}
-	handle_jewel_items()
-
 });
  
  
@@ -1083,8 +1218,8 @@ $(document).ready(function() {
  * @requires	jQuery, jQuery.lightbox_me
  */
 ;(function(){
-	var openVideo = function(){
-		if ($('#productVideo').length){
+	var initVideo = function(){
+		if (!$('#productVideo').length){
 			return false;
 		}
 
@@ -1094,14 +1229,14 @@ $(document).ready(function() {
 		var shield = $('.bPhotoActionOtherAction__eVideo');
 		var iframe = $('#productVideo .productVideo_iframe').html();
 
-		$('#productVideo .productVideo_iframe').empty();
-		shield.bind('click', function(){
+		var openVideo = function(){
 			$('#productVideo .productVideo_iframe').append(iframe);
 			$(".productVideo_iframe iframe").attr("src", $(".productVideo_iframe iframe").attr("src")+"?autoplay=1");
 			$('#productVideo').lightbox_me({ 
 				centered: true,
 				onLoad: function(){
 					videoStartTime = new Date().getTime();
+
 					if (typeof(_gaq) !== 'undefined') {
 						_gaq.push(['_trackEvent', 'Video', 'Play', productUrl]);
 					}
@@ -1110,19 +1245,23 @@ $(document).ready(function() {
 					$('#productVideo .productVideo_iframe').empty();
 					videoEndTime = new Date().getTime();
 					var videoSpent = videoEndTime - videoStartTime;
+
 					if (typeof(_gaq) !== 'undefined') {
 						_gaq.push(['_trackEvent', 'Video', 'Stop', productUrl, videoSpent]);
 					}
 				}
 			});
 			return false;
-		});
-		return false;
+		};
+
+		$('#productVideo .productVideo_iframe').empty();
+
+		shield.bind('click', openVideo);
 	};
 
 	$(document).ready(function() {
 		if ($('.bPhotoActionOtherAction__eVideo').length){
-			$('.bPhotoActionOtherAction__eVideo').bind('click', openVideo);
+			initVideo();
 		}
 	});
 }());

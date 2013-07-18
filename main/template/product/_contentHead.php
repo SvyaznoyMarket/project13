@@ -26,10 +26,10 @@ if (!isset($titlePrefix)) $titlePrefix = null;
     <? endif ?>
 
     <div class="bMainContainer__eHeader">
-        <? if ($titlePrefix): ?>
-        <div class="bMainContainer__eHeader-subtitle"><?= $titlePrefix ?></div>
+        <? if ($product->getPrefix()): ?>
+        <div class="bMainContainer__eHeader-subtitle"><?= $product->getPrefix() ?></div>
         <? endif ?>
-        <h1 class="bMainContainer__eHeader-title"><?= $title ?></h1>
+        <h1 class="bMainContainer__eHeader-title"><?= $product->getWebName() ?></h1>
         <span class="bMainContainer__eHeader-article">Артикул: <?= $product->getArticle() ?></span>
     </div><!--/head section -->
 

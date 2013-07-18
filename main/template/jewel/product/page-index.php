@@ -181,7 +181,7 @@ $productVideo = reset($productVideos);
     <span>Артикул: <span  itemprop="productID"><?= $product->getArticle() ?></span></span>
   </div>
 
-<div id="productInfo" data-value="<?= $page->json($productData) ?>"></div>
+<div id="jsProductCard" data-value="<?= $page->json($productData) ?>"></div>
 
 <!-- похожие товары -->
 <? if (!$product->getIsBuyable() && $product->getState()->getIsShop()  && \App::config()->smartengine['pull']): ?>
@@ -279,7 +279,7 @@ $productVideo = reset($productVideos);
 
     <div class="goodsbarbig product-desc__buy mSmallBtns" ref="<?= $product->getToken() ?>" data-value='<?= $json ?>'>
       <? if ($product->getIsBuyable()): ?>
-        <?= $helper->render('jewel/__spinner', ['id' => \View\Id::cartButtonForProduct($product->getId())]) ?>
+        <?= $helper->render('jewel/__spinner', ['id' => \View\Id::cartButtonForProduct($product->getId()), 'disabled' => !$product->getIsBuyable()]) ?>
       <?php endif ?>
       <?= $page->render('jewel/cart/_button', ['product' => $product, 'disabled' => !$product->getIsBuyable(), 'bought' => ($user->getCart()->hasProduct($product->getId()) ? 'style="visibility:hidden;"': '')]) ?>
       <? if (!$product->getIsBuyable() && $product->getState()->getIsShop()): ?>
@@ -298,7 +298,7 @@ $productVideo = reset($productVideos);
          data-model='<?= $json ?>'
          link-output='<?= $page->url('order.1click', ['product' => $product->getToken()]) ?>'
          link-input='<?= $page->url('product.delivery_1click') ?>'
-         class="underline order1click-link-new">Купить быстро в 1 клик</a>
+         class="underline jsOrder1click">Купить быстро в 1 клик</a>
     </strong></div>
     <? endif ?>
   </div>
@@ -437,11 +437,11 @@ $productVideo = reset($productVideos);
               </div>
 
               <? if (!empty($avgStarScore)) { ?>
-                  <span class="border" onclick="scrollToId('reviewsSectionHeader')"><?= $reviewsData['num_reviews'] ?> <?= $page->helper->numberChoice($reviewsData['num_reviews'], array('отзыв', 'отзыва', 'отзывов')) ?></span>
+                  <span class="border jsGoToId" data-goto="bHeadSectionReviews"><?= $reviewsData['num_reviews'] ?> <?= $page->helper->numberChoice($reviewsData['num_reviews'], array('отзыв', 'отзыва', 'отзывов')) ?></span>
               <? } else { ?>
                   <span>Отзывов нет</span>
               <? } ?>
-              <span class="reviewSection__link__write newReviewPopupLink" data-pid="<?= $product->getId() ?>">Оставить отзыв</span>
+              <span class="reviewSection__link__write jsLeaveReview" data-pid="<?= $product->getId() ?>">Оставить отзыв</span>
               <div class="hf" id="reviewsProductName"><?= $product->getName() ?></div>
           </div>
           <div style="position:fixed; top:40px; left:50%; margin-left:-442px; z-index:1002; display:none; width:700px; height:480px" class="reviewPopup popup clearfix">
@@ -698,7 +698,7 @@ $productVideo = reset($productVideos);
     <? //if ($product->getIsBuyable() || !$product->getState()->getIsShop()): ?>
     <div class="goodsbarbig product-desc__buy mSmallBtns" ref="<?= $product->getToken() ?>" data-value='<?= $json ?>'>
       <? if ($product->getIsBuyable()): ?>
-        <?= $helper->render('jewel/__spinner', ['id' => \View\Id::cartButtonForProduct($product->getId())]) ?>
+        <?= $helper->render('jewel/__spinner', ['id' => \View\Id::cartButtonForProduct($product->getId()), 'disabled' => !$product->getIsBuyable()]) ?>
       <?php endif ?>
       <?= $page->render('jewel/cart/_button', ['product' => $product, 'disabled' => !$product->getIsBuyable(), 'bought' => ($user->getCart()->hasProduct($product->getId()) ? 'style="visibility:hidden;"': '')]) ?>
       <? if (!$product->getIsBuyable() && $product->getState()->getIsShop()): ?>

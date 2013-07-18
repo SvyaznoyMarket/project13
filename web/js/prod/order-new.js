@@ -1114,86 +1114,89 @@ $(document).ready(function() {
             type: "POST",
             data: toSend,
             success: function( data ) {
-                sended = false
+                sended = false;
                 if( !data.success ) {
-                    Blocker.unblock()
-                    button.text('Завершить оформление')
-                    if( 'errors' in data )
-                        printErrors( data.errors )
+                    Blocker.unblock();
+                    button.text('Завершить оформление');
+                    if( 'errors' in data ){
+                        printErrors( data.errors );
+                    }
                     // TODO display data.error info
-                    return
+                    return;
                 }
 
-                Blocker.bye()
+                Blocker.bye();
 
                 // analitycs
                 if (typeof(_gaq) !== 'undefined') {
                     for (var i in MVM.getServerModel().deliveryTypes){
-                        var tmpLog = 'выбрана '+nowDelivery+' доставят '+MVM.getServerModel().deliveryTypes[i].type
+                        var tmpLog = 'выбрана '+nowDelivery+' доставят '+MVM.getServerModel().deliveryTypes[i].type;
                         _gaq.push(['_trackEvent', 'Order card', 'Completed', tmpLog]);
-                        suborders_num++
+                        suborders_num++;
                     }
-                    _gaq.push(['_trackEvent', 'Order complete', suborders_num, items_num])
-                    var endAjaxOrderTime = new Date().getTime()
-                    var AjaxOrderSpent = endAjaxOrderTime - startAjaxOrderTime
-                    _gaq.push(['_trackTiming', 'Order complete', 'DB response', AjaxOrderSpent])
+                    _gaq.push(['_trackEvent', 'Order complete', suborders_num, items_num]);
+                    var endAjaxOrderTime = new Date().getTime();
+                    var AjaxOrderSpent = endAjaxOrderTime - startAjaxOrderTime;
+                    _gaq.push(['_trackTiming', 'Order complete', 'DB response', AjaxOrderSpent]);
                 }
 
-                var phoneNumber = '8' + $('#order_recipient_phonenumbers').val().replace(/\D/g, "")
-                var emailVal = $('#order_recipient_email').val()
+                var phoneNumber = '8' + $('#order_recipient_phonenumbers').val().replace(/\D/g, "");
+                var emailVal = $('#order_recipient_email').val();
 
                 /**
                  * Стоимость доставки
                  * @type {Number}
                  */
-                var dlvr_total = 0
+                var dlvr_total = 0;
 
                 $.each(MVM.dlvrBoxes(), function(i, product){
                     dlvr_total += product.dlvrPrice()
-                })
+                });
 
                 /**
                  * количество товаров
                  * @type {Number}
                  */
-                var itemQ = 0
+                var itemQ = 0,
                 /**
                  * Стоимость всех товаров
                  * @type {Number}
                  */
-                var itemT = 0
+                    itemT = 0,
                 /**
                  * Количество услуг
                  * @type {Number}
                  */
-                var servQ = 0
+                    servQ = 0,
                 /**
                  * Стоимость всех услуг
                  * @type {Number}
                  */
-                var servT = 0
+                    servT = 0,
                 /**
                  * Количество расширенных гарантий
                  * @type {Number}
                  */
-                var warrQ = 0
+                    warrQ = 0,
                 /**
                  * Стоимость всех расширенных гарантий
                  * @type {Number}
                  */
-                var warrT = 0
+                    warrT = 0;
+                //end of vars
 
                 for( var tkn in MVM.dlvrBoxes() ) {
-                    var dlvr = MVM.dlvrBoxes()[tkn]
+                    var dlvr = MVM.dlvrBoxes()[tkn];
                     for( var i in dlvr.itemList() ){
-                        itemQ += dlvr.itemList()[i].quantity
-                        itemT += dlvr.itemList()[i].price
-                        servQ += dlvr.itemList()[i].serviceQ
-                        servT += dlvr.itemList()[i].serviceTotal
-                        warrQ += dlvr.itemList()[i].warrantyQ
-                        warrT += dlvr.itemList()[i].warrantyTotal
+                        itemQ += dlvr.itemList()[i].quantity;
+                        itemT += dlvr.itemList()[i].price;
+                        servQ += dlvr.itemList()[i].serviceQ;
+                        servT += dlvr.itemList()[i].serviceTotal;
+                        warrQ += dlvr.itemList()[i].warrantyQ;
+                        warrT += dlvr.itemList()[i].warrantyTotal;
                     }
                 }
+
                 var toKISS_complete = {
                     'Checkout Complete Order ID':data.orderNumber,
                     'Checkout Complete SKU Quantity':itemQ,
@@ -1208,17 +1211,21 @@ $(document).ready(function() {
                     'Checkout Complete Order Type':'cart order',
                     'Checkout Complete Delivery':nowDelivery,
                     'Checkout Complete Payment':data.paymentMethodId,
-                }
-                // console.log(toKISS_complete)
+                };
 
                 if ((typeof(_kmq) !== 'undefined') && (KM !== 'undefined')) {
                     _kmq.push(['alias', phoneNumber, KM.i()]);
                     _kmq.push(['alias', emailVal, KM.i()]);
                     _kmq.push(['identify', phoneNumber]);
-                    _kmq.push(['record', 'Checkout Complete', toKISS_complete])
-                    for( var tkn in MVM.dlvrBoxes() ) {
-                        var dlvr = MVM.dlvrBoxes()[tkn]
+                    _kmq.push(['record', 'Checkout Complete', toKISS_complete]);
+
+                    var newTkn = 0;
+                    for( newTkn in MVM.dlvrBoxes() ) {
+                        var dlvr = MVM.dlvrBoxes()[newTkn];
+
                         for( var i in dlvr.itemList() ){
+                            console.info('second loop');
+                            console.log(dlvr.itemList()[i]);
                             var toKISS_pr =  {
                                 'Checkout Complete SKU':dlvr.itemList()[i].article,
                                 'Checkout Complete SKU Quantity':dlvr.itemList()[i].quantity,
@@ -1228,17 +1235,18 @@ $(document).ready(function() {
                                 'Checkout Complete Warranty Quantity':dlvr.itemList()[i].warrantyQ,
                                 'Checkout Complete Warranty Total':dlvr.itemList()[i].warrantyTotal,
                                 'Checkout Complete Parent category':dlvr.itemList()[i].parent_category,
-                                'Checkout Complete Category name':dlvr.itemList()[i].categoty,
-                                '_t':KM.ts() + tkn + i  ,
+                                'Checkout Complete Category name':dlvr.itemList()[i].category,
+                                '_t':KM.ts() + newTkn + i  ,
                                 '_d':1,
-                            }
+                            };
                             _kmq.push(['set', toKISS_pr])
                         }
                     }
                 }
 
-                if (typeof(yaCounter10503055) !== 'undefined')
-                    yaCounter10503055.reachGoal('\orders\complete')
+                if (typeof(yaCounter10503055) !== 'undefined'){
+                    yaCounter10503055.reachGoal('\orders\complete');
+                }
 
 
                 if (data.action.alert !==undefined){

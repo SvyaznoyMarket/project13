@@ -7,7 +7,12 @@
 ?>
 
 <?php
-if (empty($searchQuery)) $searchQuery = 'Поиск среди ' . number_format(\App::config()->product['totalCount'], 0, ',', ' ') . ' товаров';
+// if (empty($searchQuery)) $searchQuery = 'Поиск среди ' . number_format(\App::config()->product['totalCount'], 0, ',', ' ') . ' товаров';
+// $isWide = (isset($isWide) && $isWide) ? true : false;
+
+// По запросу Гертмана. Согласовано с Мостицким.
+// https://jira.enter.ru/browse/SITE-963
+$searchQuery = 'Поиск среди десятков тысяч товаров';
 $isWide = (isset($isWide) && $isWide) ? true : false;
 ?>
 

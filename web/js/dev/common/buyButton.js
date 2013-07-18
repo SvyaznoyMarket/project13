@@ -1,3 +1,4 @@
+;
 /**
  * Обработчик для кнопок купить
  *
@@ -6,7 +7,7 @@
  * @param		{event}		e
  * @param		{Boolean}	anyway Если true событие будет все равно выполнено
  */
-;(function(){
+(function(){
 
 	/**
 	 * Добавление в корзину на сервере. Получение данных о покупке и состоянии корзины. Маркировка кнопок.
@@ -83,9 +84,72 @@
  * @param		{event}		event 
  * @param		{Object}	data	данные о том что кладется в корзину
  */
-;(function(){
+(function(){
+	/**
+	 * KISS Аналитика для добавления в корзину
+	 */
+	var kissAnalytics = function(data){
+		if (data.product){
+			var productData = data.product;
+			var nowUrl = window.location.href;
+			var toKISS_pr = {
+				'Add to Cart SKU':productData.article,
+				'Add to Cart SKU Quantity':productData.quantity,
+				'Add to Cart Product Name':productData.name,
+				'Add to Cart Root category':productData.category[0].name,
+				'Add to Cart Root ID':productData.category[0].id,
+				'Add to Cart Category name':productData.category[productData.category.length-1].name,
+				'Add to Cart Category ID':productData.category[productData.category.length-1].id,
+				'Add to Cart SKU Price':productData.price,
+				'Add to Cart Page URL':nowUrl,
+				'Add to Cart F1 Quantity':productData.serviceQuantity,
+			};
+
+			if (typeof(_kmq) !== 'undefined') {
+				_kmq.push(['record', 'Add to Cart', toKISS_pr ]);
+			}
+		}
+		if (data.service){
+			var serviceData = data.service;
+			var productData = data.product;
+			var toKISS_serv = {
+				'Add F1 F1 Name':serviceData.name,
+				'Add F1 F1 Price':serviceData.price,
+				'Add F1 SKU':productData.article,
+				'Add F1 Product Name':productData.name,
+				'Add F1 Root category':productData.category[0].name,
+				'Add F1 Root ID':productData.category[0].id,
+				'Add F1 Category name':productData.category[productData.category.length-1].name,
+				'Add F1 Category ID':productData.category[productData.category.length-1].id,
+			};
+
+			if (typeof(_kmq) !== 'undefined') {
+				_kmq.push(['record', 'Add F1', toKISS_serv ]);
+			}
+		}
+		if (data.warranty){
+			var warrantyData = data.warranty;
+			var productData = data.product;
+			var toKISS_wrnt = {
+				'Add Warranty Warranty Name':warrantyData.name,
+				'Add Warranty Warranty Price':warrantyData.price,
+				'Add Warranty SKU':productData.article,
+				'Add Warranty Product Name':productData.name,
+				'Add Warranty Root category':productData.category[0].name,
+				'Add Warranty Root ID':productData.category[0].id,
+				'Add Warranty Category name':productData.category[productData.category.length-1].name,
+				'Add Warranty Category ID':productData.category[productData.category.length-1].id,
+			};
+
+			if (typeof(_kmq) !== 'undefined') {
+				_kmq.push(['record', 'Add Warranty', toKISS_wrnt ]);
+			}
+		}
+	};
+
+
 	var buyProcessing = function(event, data){
-		// kissAnalytics();
+		kissAnalytics(data);
 		// sendAnalytics();
 
 		if (!blackBox) {
@@ -103,7 +167,7 @@
 			'totalSum': printPrice(basket.full_price),
 			'linkToOrder': basket.link,
 		};
-
+		
 		blackBox.basket().add(tmpitem);
 	};
 

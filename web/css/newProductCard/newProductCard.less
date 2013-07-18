@@ -92,24 +92,6 @@
         &__eValue {
             float: right;
         }
-
-        // 
-        // &__eDdm {
-        //     position: absolute;
-        //     background: #fff;
-        //     border: 1px solid #c7c7c7;
-        //     .rounded(0 0 5px 5px);
-        //     left: -1px;
-        //     top: 35px;
-        //     z-index: 10;
-        //     width: 278px;
-        //     li {
-        //         padding: 5px 10px;
-        //         &:hover {
-        //             background: #e6e6e6;
-        //         }
-        //     }
-        // }
     }
     
     .creditbox {
@@ -165,7 +147,7 @@
         &__eStore {
             float: right;
             width: 280px;
-            margin: 10px 0 0;
+            margin: -3px 0 0;
             &-text {
 		        font-size: 14px;
 		        margin: 0 0 25px;
@@ -311,12 +293,22 @@
 
 				border: 1px solid @typLightGray;
 
-				&:hover, 
 				&.mActive {
 					width: 46px;
 					height: 46px;
 
 					border: 2px solid @firmOrange;
+					&:hover{
+						border-color: @firmOrange;
+					}
+				}
+
+				&:hover {
+					width: 46px;
+					height: 46px;
+
+					border: 2px solid;
+					border-color: lighten(@firmOrange, 20%);
 				}
 				
 				img {
@@ -369,6 +361,9 @@
 		font-family: tahoma;
 		font-weight: 800;
 	}
+	.btnBuy {
+		margin-left: 12px;
+	}
 	.btnBuy, .bCountSection, .price {
 		float: right;
 	}
@@ -376,7 +371,7 @@
 		text-align: right;
 	}
 	.bCountSection {
-		margin: 7px 12px 0 20px;
+		margin: 7px 0 0 20px;
 		padding-left: 0;
 	}
 }

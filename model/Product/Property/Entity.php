@@ -232,7 +232,7 @@ class Entity {
     }
 
     public function setValue($value) {
-        $this->value = (string)$value;
+        $this->value = $value;
     }
 
     /**
@@ -245,10 +245,10 @@ class Entity {
     public function getStringValue() {
 
         if (!empty($this->value)) {
-            if (in_array($this->value, array('false', false), true)) {
+            if (in_array($this->value, ['false', false], true)) {
                 return 'нет';
             }
-            if (in_array($this->value, array('true', true), true)) {
+            if (in_array($this->value, ['true', true], true)) {
                 return 'да';
             }
             if (!empty($this->unit)) {

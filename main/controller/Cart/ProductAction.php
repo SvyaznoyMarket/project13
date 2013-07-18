@@ -182,9 +182,29 @@ class ProductAction {
                 'sum' => 0,
             ], (array)$result);
 
+            $productsInfo = [];
+            foreach ($productsById as $product) {
+                $productInfo = [
+                    'name'  =>  $product->getName(),
+                    'img'   =>  $product->getImageUrl(2),
+                    'link'  =>  $product->getLink(),
+                    'price' =>  $product->getPrice(),
+                ];
+                if (\App::config()->kissmentrics['enabled']) {
+                    try {
+                        $kissInfo = \Kissmetrics\Manager::getCartEvent($product);
+                        $productInfo = array_merge($productInfo, $kissInfo['product']);
+                    } catch (\Exception $e) {
+                        \App::logger()->error($e, ['kissmetrics']);
+                    }
+                }
+
+                $productsInfo[] = $productInfo;
+            }
+
             $responseData = [
                 'success' => true,
-                'data'    => [
+                'cart'    => [
                     'sum'           => $result['sum'],
                     'quantity'      => $quantity,
                     'full_quantity' => $cart->getProductsQuantity() + $cart->getServicesQuantity() + $cart->getWarrantiesQuantity(),
@@ -192,6 +212,7 @@ class ProductAction {
                     'old_price'     => $cart->getOriginalSum(),
                     'link'          => \App::router()->generate('order.create'),
                 ],
+                'product'  => reset($productsInfo),
             ];
 
 

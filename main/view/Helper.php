@@ -29,13 +29,13 @@ class Helper extends \Templating\Helper {
 
         $interval = $today->diff($date);
         if ($interval->days == 0) {
-            return 'сегодня (' . $date->format('d.m.Y') . ')';
+            return 'Сегодня, ' . $date->format('d.m.Y');
         }
         if ($interval->days == 1 && $interval->invert == 0) { //если invert = 1 - значит дата уже прошла
-            return 'завтра (' . $date->format('d.m.Y') . ')';
+            return 'Завтра, ' . $date->format('d.m.Y');
         }
         if ($interval->days == 2 && $interval->invert == 0) { //если invert = 1 - значит дата уже прошла
-            return 'послезавтра (' . $date->format('d.m.Y') . ')';
+            return 'Послезавтра, ' . $date->format('d.m.Y');
         }
 
         return 'через ' . ($interval->days - 1) . ' ' . $this->numberChoice(($interval->days - 1), array('день', 'дня', 'дней')) . ' (' . $date->format('d.m.Y') . ')';

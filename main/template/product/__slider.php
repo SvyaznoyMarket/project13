@@ -14,9 +14,6 @@ return function (
  * @var $categories \Model\Product\Category\Entity[]
  */
 
-    /** @var $firstCategory \Model\Product\Category\Entity|null */
-    $firstCategory = (bool)$categories ? reset($categories) : null;
-
     $sliderId = 'slider-' . uniqid();
 ?>
 <div class="bGoodsSlider clearfix <? if ((bool)$categories): ?>mWithCategory<? endif ?>">
@@ -25,7 +22,7 @@ return function (
         <div class="bGoodsSlider__eCat">
             <ul>
                 <? $i = 0; foreach ($categories as $category): ?>
-                    <li id="<?= $sliderId . '-category-' .$category->getId() ?>" class="bGoodsSlider__eCatItem <? if (0 == $i): ?> mActive<? endif ?>">
+                    <li id="<?= $sliderId . '-category-' . $category->getId() ?>" class="bGoodsSlider__eCatItem <? if (0 == $i): ?> mActive<? endif ?>" data-product="<?= $category->getId() ? 'self' : 'all' ?>">
                         <span><?= $category->getName() ?></span>
                     </li>
                 <? $i++; endforeach ?>
@@ -47,11 +44,11 @@ return function (
             ?>
                 <li class="bSliderAction__eItem" data-category="<?= $category ? ($sliderId . '-category-' . $category->getId()) : null ?>">
                     <div class="product__inner">
-                        <a class="productImg" href=""><img src="<?= $product->getImageUrl() ?>" alt="<?= $helper->escape($product->getName()) ?>" /></a>
+                        <a class="productImg" href="<?= $helper->url('product', ['productPath' => $product->getPath()]) ?>"><img src="<?= $product->getImageUrl() ?>" alt="<?= $helper->escape($product->getName()) ?>" /></a>
                         <div class="productName"><a href="<?= $helper->url('product', ['productPath' => $product->getPath()]) ?>"><?= $product->getName() ?></a></div>
                         <div class="productPrice"><span class="price"><?= $helper->formatPrice($product->getPrice()) ?> <span class="rubl">p</span></span></div>
 
-                        <?= $helper->render('cart/__button-product', ['product' => $product, 'class' => 'btnBuy__eLink', 'value' => 'В корзину']) // Кнопка купить ?>
+                        <?= $helper->render('cart/__button-product', ['product' => $product, 'class' => 'btnBuy__eLink', 'value' => 'Купить']) // Кнопка купить ?>
                     </div>
                 </li>
             <? endforeach ?>
