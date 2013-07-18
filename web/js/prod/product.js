@@ -431,14 +431,26 @@
  * @author		Zaytsev Alexandr
  * @requires	jQuery
  */
-
 ;(function($){
 	$.fn.goodsSlider = function(params) {
+
+		/**
+		 * Обработка для каждого элемента попавшего в набор
+		 *
+		 * @param	{Object}	options			Расширение стандартных значений слайдера пользовательскими настройками
+		 * @param	{Object}	$self			Ссылка на текущий элемент из набора
+		 * @param	{Object}	sliderParams	Параметры текущего слайдера
+		 * @param	{Boolean}	hasCategory		Имеет ли слайдер категории
+		 * @param	{Object}	leftBtn			Ссылка на левую стрелку
+		 * @param	{Object}	rightBtn		Ссылка на правую стрелку
+		 * @param	{Object}	wrap			Ссылка на обертку слайдера
+		 * @param	{Object}	slider			Ссылка на контейнер с товарами
+		 */
 		return this.each(function() {
 			var options = $.extend(
 							{},
 							$.fn.goodsSlider.defaults,
-							params),
+							params ),
 				$self = $(this),
 				sliderParams = $self.data('slider'),
 				hasCategory = $self.hasClass('mWithCategory'),
@@ -450,17 +462,21 @@
 				catItem = $self.find(options.categoryItemselector),
 				itemW = item.width() + parseInt(item.css('marginLeft'),10) + parseInt(item.css('marginRight'),10),
 				elementOnSlide = wrap.width()/itemW,
-				nowLeft = 0,
+				nowLeft = 0;
+			// end of vars
 
-				nextSlide = function nextSlide() {
-					if ($(this).hasClass('mDisabled')) {
+				/**
+				 * Переключение на следующий слайд. Проверка состояния кнопок.
+				 */
+			var nextSlide = function nextSlide() {
+					if ( $(this).hasClass('mDisabled') ) {
 						return false;
 					}
 
 					leftBtn.removeClass('mDisabled');
 
-					if (nowLeft + elementOnSlide * itemW >= slider.width()-elementOnSlide * itemW) {
-						nowLeft = slider.width()-elementOnSlide * itemW
+					if ( nowLeft + elementOnSlide * itemW >= slider.width()-elementOnSlide * itemW ) {
+						nowLeft = slider.width() - elementOnSlide * itemW;
 						rightBtn.addClass('mDisabled');
 					}
 					else {
@@ -473,14 +489,17 @@
 					return false;
 				},
 
+				/**
+				 * Переключение на предыдущий слайд. Проверка состояния кнопок.
+				 */
 				prevSlide = function prevSlide() {
-					if ($(this).hasClass('mDisabled')) {
+					if ( $(this).hasClass('mDisabled') ) {
 						return false;
 					}
 
 					rightBtn.removeClass('mDisabled');
 
-					if (nowLeft - elementOnSlide * itemW <= 0) {
+					if ( nowLeft - elementOnSlide * itemW <= 0 ) {
 						nowLeft = 0;
 						leftBtn.addClass('mDisabled');
 					}
@@ -494,11 +513,16 @@
 					return false;
 				},
 
-				reWidthSlider = function reWidthSlider(nowItems) {
+				/**
+				 * Вычисление ширины слайдера
+				 * 
+				 * @param	{Object}	nowItems	Текущие элементы слайдера
+				 */
+				reWidthSlider = function reWidthSlider( nowItems ) {
 					leftBtn.addClass('mDisabled');
 					rightBtn.addClass('mDisabled');
 
-					if (nowItems.length > elementOnSlide) {
+					if ( nowItems.length > elementOnSlide ) {
 						rightBtn.removeClass('mDisabled');
 					}
 
@@ -509,26 +533,37 @@
 					nowItems.show();
 				},
 
+				/**
+				 * Показ товаров определенной категории
+				 */
 				showCategoryGoods = function showCategoryGoods() {
 					var nowCategoryId = catItem.filter('.mActive').attr('id'),
-						showAll = (catItem.filter('.mActive').data('product') === 'all'),
-						nowShowItem = (showAll) ? item : item.filter('[data-category="'+nowCategoryId+'"]');
+						showAll = ( catItem.filter('.mActive').data('product') === 'all' ),
+						nowShowItem = ( showAll ) ? item : item.filter('[data-category="'+nowCategoryId+'"]');
 					//end of vars
 					
 					item.hide();
-					reWidthSlider(nowShowItem);
+					reWidthSlider( nowShowItem );
 				},
 
+				/**
+				 * Хандлер выбора категории
+				 */
 				selectCategory = function selectCategory() {
 					catItem.removeClass('mActive');
 					$(this).addClass('mActive');
 					showCategoryGoods();
 				},
 
-				authFromServer = function authFromServer(res) {
+				/**
+				 * Обработка ответа от сервера
+				 * 
+				 * @param	{Object}	res	Ответ от сервера
+				 */
+				authFromServer = function authFromServer( res ) {
 					var newSlider;
 
-					if (!res.success){
+					if ( !res.success ){
 						return false;
 					}
 
@@ -537,17 +572,17 @@
 					$self.before(newSlider).remove();
 					newSlider.goodsSlider();
 				};
-			//end of vars
+			// end of function
 		
 
-			if (hasCategory) {
+			if ( hasCategory ) {
 				showCategoryGoods();
 			}
 			else {
-				reWidthSlider(item);
+				reWidthSlider( item );
 			}
 
-			if (sliderParams.url) {
+			if (sliderParams. url) {
 				$.ajax({
 					type: 'GET',
 					url: sliderParams.url,
@@ -557,7 +592,7 @@
 
 			rightBtn.bind('click', nextSlide);
 			leftBtn.bind('click', prevSlide);
-			catItem.bind('click', selectCategory)
+			catItem.bind('click', selectCategory);
 		});
 	};
 
@@ -573,7 +608,7 @@
 })(jQuery);
 
 $(document).ready(function() {
-	if ($('.bGoodsSlider').length) {
+	if ( $('.bGoodsSlider').length ) {
 		$('.bGoodsSlider').goodsSlider();
 	}
 });

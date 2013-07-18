@@ -24,10 +24,11 @@ $(document).ready(function() {
 	 * @param		{Number} count Возвращает текущее значение каунтера
 	 */
 	$('.bCountSection').goodsCounter({
-		onChange:function(count){
-			var spinnerFor = $('.bCountSection').attr('data-spinner-for');
-			var bindButton = $('.'+spinnerFor);
-			var newHref = bindButton.attr('href');
+		onChange:function( count ){
+			var spinnerFor = $('.bCountSection').attr('data-spinner-for'),
+				bindButton = $('.'+spinnerFor),
+				newHref = bindButton.attr('href');
+			// end of vars
 
 			bindButton.attr('href',newHref.addParameterToUrl('quantity',count));
 
@@ -40,23 +41,36 @@ $(document).ready(function() {
 
 
 	/**
+	 * Подключение слайдера товаров
+	 */
+	if ( $('.bGoodsSlider').length ) {
+		$('.bGoodsSlider').goodsSlider();
+	}
+
+
+	/**
 	 * Аналитика для карточки товара
 	 *
 	 * @requires jQuery
 	 */
-	(function(){
-		if (!$('#jsProductCard').length){
+	(function() {
+		var productInfo = {},
+			toKISS = {};
+		// end of vars
+		
+		if ( !$('#jsProductCard').length ) {
 			return false;
 		}
-		
-		var productInfo = $('#jsProductCard').data('value');
-		var toKISS = {
+
+		productInfo = $('#jsProductCard').data('value');
+				
+		toKISS = {
 			'Viewed Product SKU':productInfo.article,
 			'Viewed Product Product Name':productInfo.name,
 			'Viewed Product Product Status':productInfo.stockState,
 		};
 
-		if (typeof(_kmq) !== 'undefined'){
+		if ( typeof(_kmq) !== 'undefined' ) {
 			_kmq.push(['record', 'Viewed Product',toKISS]);
 		}
 	})();
@@ -66,7 +80,7 @@ $(document).ready(function() {
 	 * Затемнение всех контролов после добавления в корзину
 	 */
 	(function(){
-		var afterBuy = function(){
+		var afterBuy = function afterBuy() {
 			$('.bCountSection').addClass('mDisabled').find('input').attr('disabled','disabled');
 			$('.jsOrder1click').addClass('mDisabled');
 		};
@@ -76,42 +90,11 @@ $(document).ready(function() {
 
 
 	/**
-	 * Custom select
+	 * Подключение кастомных дропдаунов
 	 */
-	(function($){
-		$.fn.customDropDown = function(params) {
-			return this.each(function() {
-				var options = $.extend(
-								{},
-								$.fn.customDropDown.defaults,
-								params);
-				var $self = $(this);
-
-				var select = $self.find(options.selectSelector);
-				var value = $self.find(options.valueSelector);
-
-				var selectChangeHandler = function(){
-					var selectedOption = select.find('option:selected');
-
-					value.html(selectedOption.val());
-					options.changeHandler(selectedOption);
-				};
-
-				select.on('change', selectChangeHandler)
-			});
-		};
-				
-		$.fn.customDropDown.defaults = {
-			valueSelector: '.bDescSelectItem__eValue',
-			selectSelector: '.bDescSelectItem__eSelect',
-			changeHandler: function(){}
-		};
-
-	})(jQuery);
-
 	(function(){
 		$('.bDescSelectItem').customDropDown({
-			changeHandler: function(option){
+			changeHandler: function( option ){
 				var url = option.data('url');
 
 				document.location.href = url;
@@ -158,7 +141,7 @@ $(document).ready(function() {
 
 	
 	// карточка товара - характеристики товара краткие/полные
-	if($('#productDescriptionToggle').length) {
+	if ($('#productDescriptionToggle').length) {
 		$('#productDescriptionToggle').toggle(
 			function(e){
 				e.preventDefault();

@@ -9,31 +9,21 @@ module.exports = function(grunt) {
 	 * @type {Array}
 	 */
 	var bigjqueryFiles = [
-		"custom-form-elements.js",
-		// "jquery.ui.core.js",
-		// "jquery.ui.widget.js",
-		// "jquery.ui.position.js",
-		// "jquery.ui.mouse.js",
-		// "jquery.ui.autocomplete.js",
-		// "jquery.ui.slider.js",
-		// "jquery.effects.core.js",
-		"jquery.email_validate.js",
-		// "jquery.effects.transfer.js",
-		// "jquery.effects.blind.js",
-		"jquery.lightbox_me.js",
-		// "jquery.mousewheel.min.js",
-		// "jquery.raty.js",
-		"jquery.scrollto.js",
-		"jquery.placeholder.js",
-		"prettyCheckboxes.js",
-		"jquery.infinityCarousel.js",
-		"typewriter.js",
-		// "jquery.ui.touch-punch.js",
-		"jquery.maskedinput.js",
-		"jquery.put_cursor_at_end.js",
-		"goodsCounter.js",
-		"jquery.elevatezoom.js",
-		"customRadio.js",
+		'custom-form-elements.js',
+		'jquery.email_validate.js',
+		'jquery.lightbox_me.js',
+		'jquery.scrollto.js',
+		'jquery.placeholder.js',
+		'prettyCheckboxes.js',
+		'jquery.infinityCarousel.js',
+		'typewriter.js',
+		'jquery.maskedinput.js',
+		'jquery.put_cursor_at_end.js',
+		'goodsCounter.js',
+		'jquery.elevatezoom.js',
+		// 'customRadio.js',
+		'customDropDown.js',
+		'goodsSlider.js',
 		'jquery-ui-1.10.3.custom.js'
 	];
 
@@ -304,10 +294,6 @@ module.exports = function(grunt) {
 				src: [jsDevPath+'infopage/*.js'],
 				dest: jsProdPath+'infopage.js'
 			},
-			// jqueryPluginsJS : {
-			// 	src: [jsDevPath+'jquery-plugins/*.js'],
-			// 	dest: jsProdPath+'jquery-plugins.js'
-			// },
 			libraryJS : {
 				src: libraryFiles,
 				dest: jsProdPath+'library.js'
