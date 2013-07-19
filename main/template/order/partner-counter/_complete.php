@@ -19,9 +19,11 @@
         case \Partner\Counter\CityAds::NAME:
             echo $page->tryRender('order/partner-counter/_cityads-complete', array('orders' => $orders));
             break;
+        /*
         case \Partner\Counter\Reactive::NAME:
             echo $page->tryRender('order/partner-counter/_reactive-complete', array('orders' => $orders));
             break;
+        */
         case \Partner\Counter\Recreative::NAME:
             echo $page->tryRender('order/partner-counter/_recreative-complete', array('orders' => $orders));
             break;
@@ -36,4 +38,8 @@
     }
     ?>
     <?= $page->tryRender('order/partner-counter/_ad4u-complete', array('orders' => $orders)) ?>
+    <?= $page->tryRender('order/partner-counter/_reactive-complete', array('orders' => $orders)) ?>
+    <? foreach ($orders as $order) { ?>
+        <?= $page->tryRender('order/partner-counter/_reactive-oneClick', ['orderSum' => str_replace(',', '.', $order->getSum()), 'orderNum' => $order->getNumber()]) ?>
+    <? } ?>
 <? endif ?>

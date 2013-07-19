@@ -422,6 +422,8 @@ class Action {
 
         $user = \App::user();
 
+        $form = $this->getForm(); // подключаем данные формы, чтобы знать данные покупателя
+
         // последние заказы в сессии
         $orders = $this->getLastOrders();
 
@@ -559,12 +561,14 @@ class Action {
         }
 
         $page = new \View\Order\CompletePage();
+        $page->setParam('form', $form);
         $page->setParam('orders', $orders);
         $page->setParam('shopsById', $shopsById);
         $page->setParam('productsById', $productsById);
         $page->setParam('servicesById', $servicesById);
         $page->setParam('paymentProvider', $paymentProvider);
         $page->setParam('creditData', $creditData);
+        $page->setParam('userForm', $this->getForm());
 
         return new \Http\Response($page->show());
     }
@@ -777,7 +781,10 @@ class Action {
                                     \App::user()->deleteRecommendedProductByParams($product->getId(), \Smartengine\Client::NAME, 'viewed_at');
                                 }
                             }
-                            $orderData['meta_data'] =  \App::partner()->fabricateCompleteMeta(isset($orderData['meta_data']) ? $orderData['meta_data'] : [], \App::partner()->fabricateMetaByPartners($partners, $product));
+                            $orderData['meta_data'] =  \App::partner()->fabricateCompleteMeta(
+                                isset($orderData['meta_data']) ? $orderData['meta_data'] : [],
+                                \App::partner()->fabricateMetaByPartners($partners, $product)
+                            );
                         }
                         \App::logger()->info(sprintf('Создается заказ от партнеров %s', json_encode($orderData['meta_data']['partner'])), ['order', 'partner']);
                     } catch (\Exception $e) {
@@ -893,7 +900,7 @@ class Action {
                 foreach ([
                      'recipient_first_name',
                      'recipient_last_name',
-//                     'recipient_phonenumbers',
+                     'recipient_phonenumbers',
                      'recipient_email',
                      'address_street',
                      'address_number',

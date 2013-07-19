@@ -9687,6 +9687,10 @@
     float: right;
     width: 320px;
   }
+  .content-section__form__friend__center {
+    float: none;
+    margin: 0 auto;
+  }
   .content-section__form .subscribe-form__title {
     font-size: 24px;
     text-transform: uppercase;
@@ -10279,9 +10283,6 @@
     border-radius: 3px;
     border: 1px solid #d6d6d6;
     padding: 9px;
-    behavior: url("/css/common/PIE.htc");
-    position: relative;
-    zoom: 1;
   }
   .bSliderAction__eItem .product__inner:hover .btnBuy {
     -moz-opacity: 1;
@@ -11389,5 +11390,19 @@
   }
 }
 /*---END---СТИЛИ НОВОЙ КАРТОЧКИ ТОВАРА - ВЕРСИЯ ДЛЯ ПЕЧАТИ---*/
+/*------СТИЛИ КОРЗИНЫ - ВЕРСИЯ ДЛЯ ПЕЧАТИ------*/
+@media print {
+  .basketinfo .right,
+  .bBacketServ.extWarr a.link_extWarr,
+  .bF1SaleCard,
+  .bBuyingFooter,
+  .mNoPrint,
+  .bBigOrangeButton,
+  .bBuyingHead i,
+  .socnet-ico-box {
+    display: none;
+  }
+}
+/*---END---СТИЛИ КОРЗИНЫ - ВЕРСИЯ ДЛЯ ПЕЧАТИ---*/
 /*------НОВОГОДНЕЕ ОФОРМЛЕНИЕ------*/
 /*---END---НОВОГОДНЕЕ ОФОРМЛЕНИЕ---*/

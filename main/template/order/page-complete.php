@@ -40,7 +40,11 @@ $isOrderAnalytics = isset($isOrderAnalytics) ? $isOrderAnalytics : true;
     <p class="font16">Сумма заказа: <?= $page->helper->formatPrice($order->getSum()) ?> <span class="rubl">p</span></p>
     <p class="font16">Сумма для оплаты: <span id="paymentWithCard"><?= $page->helper->formatPrice($order->getPaySum()) ?></span> <span class="rubl">p</span></p>
     <div class="line pb15"></div>
+
+    <?= $page->tryRender('order/partner-counter/_flocktory-complete', ['order' => $order, 'userForm' => $userForm]) ?>
 <?php endforeach ?>
+
+<?= $page->render('partner-counter/_get4click', ['order' => $order, 'form' => $form] ) ?>
 
 <? if ($isCorporative): ?>
     <div class="mt32">
@@ -97,6 +101,7 @@ $isOrderAnalytics = isset($isOrderAnalytics) ? $isOrderAnalytics : true;
         <div class="product_buy-container" data-url="<?= $page->url('smartengine.push.buy') ?>" data-order="<?= $page->json($jsonOrdersData) ?>"></div>
     <? endforeach ?>
 <? endif ?>
+
 
 <?= $page->tryRender('order/partner-counter/_complete', [
     'orders'       => $orders,

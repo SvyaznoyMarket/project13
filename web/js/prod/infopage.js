@@ -107,35 +107,77 @@ $(document).ready(function(){
  
 $(document).ready(function(){
 
-	if ( $('.subscribe-form__btn').length){
-		var input = $('.subscribe-form__email')
-		var form = $('.subscribe-form')
-		var subscribing = function(){
-			var url = $(this).data('url')
-			var email = input.val()
+	if ( $('.subscribe-form__btn').length ) {
+		var input = $('.subscribe-form__email'),
+			form = $('.subscribe-form');
+		// end of vars
+		
+		var subscribing = function subscribing() {
+			var url = $(this).data('url'),
+				email = input.val(),
+				utm_source = document.location.search;
+			// end of vars
 
-			if ( email.search('@') !== -1 ){
+			if ( email.search('@') !== -1 ) {
 				$.post(url, {email: email}, function(res){
-					if( !res.success )
-						return false
-					
-					form.html('<div class="subscribe-form__title">Спасибо! подтверждение подписки отправлено на указанный e-mail</div>')
-					docCookies.setItem(false, 'subscribed', 1, 157680000, '/')
-					if( typeof(_gaq) !== 'undefined' ){
-						_gaq.push(['_trackEvent', 'Account', 'Emailing sign up', 'Page be-friends'])
+					if( !res.success ) {
+						return false;
 					}
-				})
+					
+					form.html('<div class="subscribe-form__title">Спасибо! подтверждение подписки отправлено на указанный e-mail</div>');
+					docCookies.setItem(false, 'subscribed', 1, 157680000, '/');
+
+					if( typeof(_gaq) !== 'undefined' ){
+						_gaq.push(['_trackEvent', 'subscribe', email, utm_source]);
+					}
+				});
 			}
-			else{
-				// email invalid
-				input.addClass('mError')
+			else {
+				input.addClass('mError');
 			}
-			return false
+			return false;
 		}
 
 		$('.subscribe-form__btn').bind('click', subscribing)
 	}
 	
+
+	if ($('.subscribe-form__email').length && $('.show_flocktory_popup').length){
+		var input_friend = $('.subscribe-form__email');
+		var subscribing_friend = function(){
+			var email_friend = input_friend.val();
+
+			if ( email_friend.search('@') !== -1 ){
+		    var flocktory_subscription_date = new Date();
+		    var flocktory_subscription_date_string = flocktory_subscription_date.getFullYear() + '' + flocktory_subscription_date.getMonth() + '' + flocktory_subscription_date.getDay() + '' + flocktory_subscription_date.getHours() + '' + flocktory_subscription_date.getMinutes() + '' + flocktory_subscription_date.getSeconds() + '' + flocktory_subscription_date.getMilliseconds() + '' + Math.floor(Math.random() * 1000000)
+		    var _flocktory = window._flocktory = _flocktory || [];
+		      _flocktory.push({
+		      "order_id": flocktory_subscription_date_string,
+		//       "email":    'hello@flocktory.com',
+		      "email":    email_friend,
+		      "name":     email_friend,
+		      "price":    0,
+		      "domain":   "registration.enter.ru",
+		      "items": [
+		        {
+		          "id":    "подписка на рассылку",
+		          "title": "подписка на рассылку",
+		          "price": 0,
+		          "image": "",
+		          "count": 1
+		        }
+		      ]
+		    });
+		
+		    (function() {
+		      var s = document.createElement('script'); s.type = 'text/javascript'; s.async = true;
+		      s.src = "//api.flocktory.com/1/hello.2.js";
+		      var l = document.getElementsByTagName('script')[0]; l.parentNode.insertBefore(s, l);
+		    })();
+			}
+		}
+		$('.subscribe-form__btn').bind('click', subscribing_friend)
+	}
 
 
 	/**
