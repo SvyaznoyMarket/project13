@@ -19,7 +19,7 @@ $isCorporative = $user->getEntity() ? $user->getEntity()->getIsCorporative() : f
 $isCredit = (bool)$creditData;
 $isOrderAnalytics = isset($isOrderAnalytics) ? $isOrderAnalytics : true;
 ?>
-
+<img src="http://n.actionpay.ru/ok/4207.png?actionpay=[click].[source]&apid=[action_id]&price=[price]" height="1" width="1" /><!--/ ActionPay -->
 <!-- Header -->
 <div class='bBuyingHead'>
     <a href="<?= $page->url('homepage') ?>"></a>
