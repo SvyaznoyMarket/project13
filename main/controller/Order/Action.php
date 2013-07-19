@@ -422,6 +422,8 @@ class Action {
 
         $user = \App::user();
 
+        $form = $this->getForm(); // подключаем данные формы, чтобы знать данные покупателя
+
         // последние заказы в сессии
         $orders = $this->getLastOrders();
 
@@ -559,6 +561,7 @@ class Action {
         }
 
         $page = new \View\Order\CompletePage();
+        $page->setParam('form', $form);
         $page->setParam('orders', $orders);
         $page->setParam('shopsById', $shopsById);
         $page->setParam('productsById', $productsById);
