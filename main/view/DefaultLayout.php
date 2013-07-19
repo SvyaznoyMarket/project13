@@ -151,12 +151,13 @@ class DefaultLayout extends Layout {
     }
 
     public function slotSurveybar() {
+        $cookieInitTimeStamp = (int)(\App::request()->cookies->get('survey'));
         $survey = \RepositoryManager::survey()->getEntity();
         $region = \App::user()->getRegion();
 
         if(is_object($survey) && $survey->getIsActive() &&
             in_array($region->getName(), $survey->getRegionNames()) &&
-            !$survey->getIsAnswered()) {
+            !$survey->isAnswered($cookieInitTimeStamp)) {
             return $this->render('_surveybar', ['survey' => $survey]);
         } else {
             return '';

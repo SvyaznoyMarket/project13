@@ -24,7 +24,6 @@ class Action {
         // передав true в качестве параметра, получаем версию опроса,
         // кэшированную с момента открытия страницы - чтобы выходной файл соответствовал опросу
         $survey = \RepositoryManager::survey()->getEntity(true);
-        \RepositoryManager::survey()->getEntity(true)->setIsAnswered(true);
 
         $outCsvFilePath = is_object($survey) ? $survey->getOutputFile() : \App::config()->surveyDir . '/survey.csv';
         if(!is_dir(\App::config()->surveyDir)) mkdir(\App::config()->surveyDir);

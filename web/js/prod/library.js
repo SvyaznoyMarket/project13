@@ -2249,7 +2249,11 @@ String.prototype.addParameterToUrl = UpdateUrlString;
 (function(){
     var sbWidthDiff = 120,
         sbWidthDiffAfterSubmit = 106,
-        sbHeightDiff = 300;
+        sbHeightDiff = 300,
+        initTime = null,
+        serverTime = null,
+        showDelay = null,
+        isTimePassed = null;
 
 
     var toggleSurveyBox = function(){
@@ -2284,33 +2288,31 @@ String.prototype.addParameterToUrl = UpdateUrlString;
         if ( typeof(window.KM) !== 'undefined' ) {
             kmId = window.KM._i;
         }
-        $.post( '/survey/submit-answer',
-            {
+        $.ajax({
+            type: 'POST',
+            url: '/survey/submit-answer',
+            data: {
                 question: question,
                 answer: answer,
                 kmId: kmId
             },
-            function() {
+            success: function() {
+                window.docCookies.setItem(false, 'survey', initTime, 7*24*60*60, '/');
                 $('.surveyBox__toggleWrapper').html('Спасибо за ответ!');
                 $('.surveyBox__content').remove();
                 $('.surveyBox').animate( {
                     width: '-=' + sbWidthDiffAfterSubmit,
                     height: '-=' + sbHeightDiff
                 }, 250, function() {
-                    setTimeout( function() {
+                    setTimeout(function() {
                         $('.surveyBox').removeClass('expanded');
                         $('.surveyBox').fadeOut();
-                    }, 2000 );
+                    }, 2000);
                 } );
             }
-        );
+        });
         return false;
     };
-
-    var initTime = null,
-        serverTime = null,
-        showDelay = null,
-        isTimePassed = null;
 
     var initSurveyBoxData = function() {
         var surveyBox = $('.surveyBox');
@@ -2330,13 +2332,13 @@ String.prototype.addParameterToUrl = UpdateUrlString;
         if ( shouldShow ) {
             $('.surveyBox').fadeIn();
         } else {
-            setTimeout( function() {
+            setTimeout(function() {
                 trackIfShouldShow();
-            }, 1000 );
+            }, 1000);
         }
     }; 
 
-    $(document).ready( function() {
+    $(document).ready(function() {
         $('.surveyBox__toggle').bind('click', toggleSurveyBox);
         $('.surveyBox__answer').bind('click', submitAnswer);
         initSurveyBoxData();
@@ -2344,5 +2346,5 @@ String.prototype.addParameterToUrl = UpdateUrlString;
         if ( !isTimePassed ) {
             trackIfShouldShow();
         }
-    } );
+    });
 }());

@@ -77,12 +77,8 @@ class Entity {
         return \App::config()->surveyDir . '/' . $this->outputFile;
     }
 
-    public function setIsAnswered($isAnswered) {
-        $this->isAnswered = (bool)$isAnswered;
-    }
-
-    public function getIsAnswered() {
-        return $this->isAnswered;
+    public function isAnswered($cookieInitTimeStamp) {
+        return $cookieInitTimeStamp == $this->initTime->getTimestamp();
     }
 
     public function setInitTime($timestamp) {
