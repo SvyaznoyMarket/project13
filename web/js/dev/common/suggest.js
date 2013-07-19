@@ -5,128 +5,132 @@
  * @author		Zaytsev Alexandr
  * @requires	jQuery
  */
-;(function(){
-	var nowSelectSuggest = -1;
-	var suggestLen = 0;
+;(function() {
+	var nowSelectSuggest = -1,
+		suggestLen = 0;
+	// end of vars
+	
 
 	/**
 	 * Хандлер на поднятие клавиши в поле поиска
 	 * @param  {event} e
 	 */
-	var suggestUp = function(e){
-        var text = $(this).attr('value');
+	var suggestUp = function suggestUp( e ) {
+			var text = $(this).attr('value'),
+				url = '/search/autocomplete?q='+encodeURI(text);
+			// end of vars
 
-        if (!text.length){
-            if($(this).siblings('.searchtextClear').length) {
-                $(this).siblings('.searchtextClear').addClass('vh');
-            }
-        }
-        else {
-            if($(this).siblings('.searchtextClear').length) {
-                $(this).siblings('.searchtextClear').removeClass('vh');
-            }
-        }
-
-		var authFromServer = function(response){
-			$('#searchAutocomplete').html(response);
-			suggestLen = $('.bSearchSuggest__eRes').length;
-		};
-
-        if ((e.which < 37 || e.which>40) && (nowSelectSuggest = -1)){
-            if (!text.length){ 
-                return false;
-            }
-
-            if($(this).siblings('.searchtextClear').length) {
-                $(this).siblings('.searchtextClear').removeClass('vh');
-            }
-			
-			$('.bSearchSuggest__eRes').removeClass('hover');
-			nowSelectSuggest = -1;
-
-			var url = '/search/autocomplete?q='+encodeURI(text);
-
-			$.ajax({
-				type: 'GET',
-				url: url,
-				success: authFromServer
-			});
-		}
-	};
-
-	/**
-	 * Хандлер на нажатие клавиши в поле поиска
-	 * @param  {event} e
-	 */
-	var suggestDown = function(e){
-		/**
-		 * маркировка пункта
-		 */
-		var markSuggest = function(){
-			$('.bSearchSuggest__eRes').removeClass('hover').eq(nowSelectSuggest).addClass('hover');
-		};
-
-		/**
-		 * стрелка вверх
-		 */
-		var upSuggestItem = function(){
-			if (nowSelectSuggest-1 >= 0){
-				nowSelectSuggest--;
-				markSuggest();
+			if (!text.length){
+				if ( $(this).siblings('.searchtextClear').length ) {
+					$(this).siblings('.searchtextClear').addClass('vh');
+				}
 			}
-			else{
-				nowSelectSuggest = -1;
+			else {
+				if ( $(this).siblings('.searchtextClear').length ) {
+					$(this).siblings('.searchtextClear').removeClass('vh');
+				}
+			}
+
+			var authFromServer = function authFromServer( response ) {
+				$('#searchAutocomplete').html(response);
+				suggestLen = $('.bSearchSuggest__eRes').length;
+			};
+
+			if ( (e.which < 37 || e.which>40) && (nowSelectSuggest = -1) ) {
+				if ( !text.length ) { 
+					return false;
+				}
+
+				if ( $(this).siblings('.searchtextClear').length ) {
+					$(this).siblings('.searchtextClear').removeClass('vh');
+				}
+				
 				$('.bSearchSuggest__eRes').removeClass('hover');
-				$(this).focus();
+				nowSelectSuggest = -1;
+
+				$.ajax({
+					type: 'GET',
+					url: url,
+					success: authFromServer
+				});
 			}
-			
-		};
+		},
 
 		/**
-		 * стрелка вниз
+		 * Хандлер на нажатие клавиши в поле поиска
+		 * @param  {event} e
 		 */
-		var downSuggestItem = function(){
-			if (nowSelectSuggest+1 <= suggestLen-1){
-				nowSelectSuggest++;
-				markSuggest();
-			}			
-		};
+		suggestDown = function suggestDown( e ) {
+			/**
+			 * маркировка пункта
+			 */
+			var markSuggest = function markSuggest() {
+					$('.bSearchSuggest__eRes').removeClass('hover').eq(nowSelectSuggest).addClass('hover');
+				},
 
-		/**
-		 * нажатие клавиши 'enter'
-		 */
-		var enterSuggest = function(){
-			// suggest analitycs
-			var link = $('.bSearchSuggest__eRes').eq(nowSelectSuggest).attr('href');
-			var type = ($('.bSearchSuggest__eRes').eq(nowSelectSuggest).hasClass('bSearchSuggest__eCategoryRes')) ? 'suggest_category' : 'suggest_product';
-			
-			if ( typeof(_gaq) !== 'undefined' ){	
-				_gaq.push(['_trackEvent', 'Search', type, link]);
+				/**
+				 * стрелка вверх
+				 */
+				upSuggestItem = function upSuggestItem() {
+					if ( nowSelectSuggest - 1 >= 0 ) {
+						nowSelectSuggest--;
+						markSuggest();
+					}
+					else{
+						nowSelectSuggest = -1;
+						$('.bSearchSuggest__eRes').removeClass('hover');
+						$(this).focus();
+					}
+					
+				},
+
+				/**
+				 * стрелка вниз
+				 */
+				downSuggestItem = function downSuggestItem() {
+					if ( nowSelectSuggest + 1 <= suggestLen - 1 ) {
+						nowSelectSuggest++;
+						markSuggest();
+					}			
+				},
+
+				/**
+				 * нажатие клавиши 'enter'
+				 */
+				enterSuggest = function enterSuggest() {
+					var link = $('.bSearchSuggest__eRes').eq(nowSelectSuggest).attr('href'),
+						type = ($('.bSearchSuggest__eRes').eq(nowSelectSuggest).hasClass('bSearchSuggest__eCategoryRes')) ? 'suggest_category' : 'suggest_product';
+					// end of vars
+					
+					if ( typeof(_gaq) !== 'undefined' ) {	
+						_gaq.push(['_trackEvent', 'Search', type, link]);
+					}
+
+					document.location.href = link;
+				};
+			// end of functions
+
+			if ( e.which === 38 ) {
+				upSuggestItem();
 			}
-			document.location.href = link;
+			else if ( e.which === 40 ) {
+				downSuggestItem();
+			}
+			else if ( e.which === 13 && nowSelectSuggest !== -1 ) {
+				e.preventDefault();
+				enterSuggest();
+			}
+		},
+
+		suggestInputFocus = function suggestInputFocus() {
+			nowSelectSuggest = -1;
+			$('.bSearchSuggest__eRes').removeClass('hover');
+		},
+
+		suggestInputClick = function suggestInputClick() {
+			$('#searchAutocomplete').show();
 		};
-
-		if (e.which === 38){
-			upSuggestItem();
-		}
-		else if (e.which === 40){
-			downSuggestItem();
-		}
-		else if (e.which === 13 && nowSelectSuggest !== -1){
-			e.preventDefault();
-			enterSuggest();
-		}
-		// console.log(nowSelectSuggest)
-	};
-
-	var suggestInputFocus = function(){
-		nowSelectSuggest = -1;
-		$('.bSearchSuggest__eRes').removeClass('hover');
-	};
-
-	var suggestInputClick = function(){
-		$('#searchAutocomplete').show();
-	};
+	// end of functions
 
 	$(document).ready(function() {
 		/**
@@ -136,20 +140,23 @@
 
 		$('.searchbox .search-form').submit(function(){
 			var text = $('.searchbox .searchtext').attr('value');
-			if (!text.length){
+
+			if ( !text.length ) {
 				return false;
 			}
 		});
 
 		$('.bSearchSuggest__eRes').on('mouseover', function(){
-			$('.bSearchSuggest__eRes').removeClass('hover');
 			var index = $(this).addClass('hover').index();
+
+			$('.bSearchSuggest__eRes').removeClass('hover');
 			nowSelectSuggest = index - 1;
 		});
 
 		$('body').click(function(e){		
 			var targ = e.target.className;
-			if (!(targ.indexOf('bSearchSuggest')+1 || targ.indexOf('searchtext')+1)) {
+
+			if ( !(targ.indexOf('bSearchSuggest') + 1 || targ.indexOf('searchtext') + 1) ) {
 				$('#searchAutocomplete').hide();
 			}
 		});
@@ -158,9 +165,10 @@
 		 * suggest analitycs
 		 */
 		$('.bSearchSuggest__eRes').on('click', function(){
-			if ( typeof(_gaq) !== 'undefined' ){
-				var type = ($(this).hasClass('bSearchSuggest__eCategoryRes')) ? 'suggest_category' : 'suggest_product';
-				var url = $(this).attr('href');
+			if ( typeof(_gaq) !== 'undefined' ) {
+				var type = ($(this).hasClass('bSearchSuggest__eCategoryRes')) ? 'suggest_category' : 'suggest_product',
+					url = $(this).attr('href');
+				// end of vars
 
 				_gaq.push(['_trackEvent', 'Search', type, url]);
 			}

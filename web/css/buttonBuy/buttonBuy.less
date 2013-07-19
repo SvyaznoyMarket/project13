@@ -13,7 +13,6 @@
         line-height: 35px;
         text-align: center;
         width: 170px;
-        font-family: "Tahoma";
         font-size: 18px;
         border: 1px solid #fb9c00;
         // Паша Гертман сказал пока закомментировать иконку кнопки "Купить" 
@@ -41,8 +40,7 @@
             }
         }
         &.mShopsOnly {
-            width: 190px;
-            margin-left: -11px;
+            font-size: 17px;
         }
         &:hover {
             text-decoration: none;
@@ -61,7 +59,7 @@
             width: 38px;
             height: 25px;
             background: url("/css/catalog/img/catalogSprite.png") -64px 0 no-repeat;
-        &:hover {
+        &.mBought, &:hover {
           background-position: -102px 0;
         }
         &.mDisabled {

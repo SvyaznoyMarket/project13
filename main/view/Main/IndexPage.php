@@ -8,6 +8,17 @@ class IndexPage extends \View\DefaultLayout {
     protected function prepare() {
         $this->addMeta('viewport', 'width=960');
         $this->addMeta('mailru', 'b0645ac6fd99f8f2');
+
+        // Seo-теги загружаем из json (для главной страницы, например)
+        if ( $this->hasParam('seoPage') ) {
+            $seoPage = $this->getParam('seoPage');
+            if ( isset($seoPage['title']) and !empty($seoPage['title']) ) $this->setTitle( $seoPage['title'] );
+
+            if ( isset($seoPage['metas']) and is_array($seoPage['metas']) )
+            foreach( $seoPage['metas'] as $key => $val){
+                $this->addMeta($key, $val);
+            }
+        }
     }
 
     public function slotBanner() {

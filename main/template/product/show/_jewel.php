@@ -50,27 +50,38 @@
         </div>
 
         <? if ((bool)$accessories && \App::config()->product['showAccessories']): ?>
-            <h3 class="bHeadSection">Аксессуары</h3>
             <?= $helper->render('product/__slider', [
+                'title'          => 'Аксессуары',
                 'products'       => array_values($accessories),
                 'categories'     => $accessoryCategory,
                 'count'          => count($product->getAccessoryId()),
                 'limit'          => (bool)$accessoryCategory ? \App::config()->product['itemsInAccessorySlider'] : \App::config()->product['itemsInSlider'],
                 'page'           => 1,
-                'url'            => $page->url('product.accessory', ['productToken' => $product->getToken()]),
+                //'url'            => $page->url('product.accessory', ['productToken' => $product->getToken()]),
                 'gaEvent'        => 'Accessorize',
                 'additionalData' => $additionalData,
             ]) ?>
         <? endif ?>
 
-        <? if ((bool)$related && \App::config()->product['showRelated']): ?>
-            <h3 class="bHeadSection">С этим товаром также покупают</h3>
+        <? if (\App::config()->smartengine['pull']): ?>
             <?= $helper->render('product/__slider', [
+                'title'    => 'С этим товаром также смотрят',
+                'products' => [],
+                'count'    => null,
+                'limit'    => \App::config()->product['itemsInSlider'],
+                'page'     => 1,
+                'url'      => $page->url('product.alsoViewed', ['productId' => $product->getId()]),
+            ]) ?>
+        <? endif ?>
+
+        <? if ((bool)$related && \App::config()->product['showRelated']): ?>
+            <?= $helper->render('product/__slider', [
+                'title'          => 'С этим товаром также покупают',
                 'products'       => array_values($related),
                 'count'          => count($product->getRelatedId()),
                 'limit'          => \App::config()->product['itemsInSlider'],
                 'page'           => 1,
-                'url'            => $page->url('product.related', ['productToken' => $product->getToken()]),
+                //'url'            => $page->url('product.related', ['productToken' => $product->getToken()]),
                 'additionalData' => $additionalData,
             ]) ?>
         <? endif ?>
@@ -93,14 +104,14 @@
                 <? endif ?>
             </div>
 
-            <? if (!$product->getIsBuyable() && $product->getState()->getIsShop() && \App::config()->smartengine['pull']): ?>
-                <h3 class="bHeadSection">Похожие товары</h3>
+            <? if (\App::config()->smartengine['pull']): ?>
                 <?= $helper->render('product/__slider', [
+                    'title'    => 'Похожие товары',
                     'products' => [],
-                    'count'   => null,
-                    'limit'   => \App::config()->product['itemsInSlider'],
-                    'page'    => 1,
-                    'url'     => $page->url('smartengine.pull.product_similar', ['productId' => $product->getId()]),
+                    'count'    => null,
+                    'limit'    => \App::config()->product['itemsInSlider'],
+                    'page'     => 1,
+                    'url'      => $page->url('product.similar', ['productId' => $product->getId()]),
                 ]) ?>
             <? endif ?>
 
@@ -113,7 +124,7 @@
         <div class="bWidgetBuy mWidget">
             <?= $helper->render('__spinner', ['id' => \View\Id::cartButtonForProduct($product->getId()), 'disabled' => !$product->getIsBuyable()]) ?>
 
-            <?= $page->render('cart/_button', ['product' => $product, 'class' => 'btnBuy__eLink', 'value' => 'Купить', 'url' => $hasFurnitureConstructor ? $page->url('cart.product.setList') : null]) // Кнопка купить ?>
+            <?= $helper->render('cart/__button-product', ['product' => $product, 'class' => 'btnBuy__eLink', 'value' => 'Купить', 'url' => $hasFurnitureConstructor ? $page->url('cart.product.setList') : null]) // Кнопка купить ?>
 
             <?= $helper->render('product/__oneClick', ['product' => $product]) // Покупка в один клик ?>
 
@@ -134,7 +145,7 @@
         <h1 class="bBottomBuy__eTitle"><?= $title ?></h1>
     </div>
 
-    <?= $page->render('cart/_button', ['product' => $product, 'class' => 'btnBuy__eLink', 'value' => 'Купить', 'url' => $hasFurnitureConstructor ? $page->url('cart.product.setList') : null]) // Кнопка купить ?>
+    <?= $helper->render('cart/__button-product', ['product' => $product, 'class' => 'btnBuy__eLink', 'value' => 'Купить', 'url' => $hasFurnitureConstructor ? $page->url('cart.product.setList') : null]) // Кнопка купить ?>
 
     <?= $helper->render('__spinner', ['id' => \View\Id::cartButtonForProduct($product->getId()), 'disabled' => !$product->getIsBuyable()]) ?>
 

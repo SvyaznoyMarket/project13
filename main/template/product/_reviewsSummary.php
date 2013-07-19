@@ -37,7 +37,7 @@
 
     <div class="bReviewsSummary__eCol bReviewsSummary__eColStar">
       <? foreach ($reviewsDataSummary['user'] as $numStars => $count) { ?>
-        <div class="bcolStarRow">
+        <div class="bcolStarRow clearfix">
           <? for ($i=0; $i < $numStars; $i++) { ?>
             <img src="<?= $reviewsStarSrc ?>">
           <? } ?>

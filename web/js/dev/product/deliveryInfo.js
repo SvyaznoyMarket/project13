@@ -10,8 +10,8 @@
  * @param		{Object}	productInfo		Данные о текущем продукте
  * @param		{Object}	dataToSend		Данные для отправки на сервер и получение расчитанной доставки
  */
-(function(){
-	if (!$('#jsProductCard').length){
+(function() {
+	if ( !$('#jsProductCard').length ) {
 		return false;
 	}
 
@@ -24,7 +24,8 @@
 			'product':[
 				{'id': productInfo.id}
 			]
-		},
+		};
+	// end of vars
 
 		/**
 		 * Показ попапа с магазином
@@ -35,7 +36,7 @@
 		 * @param	{String}	url			Ссылка на магазин
 		 * @return	{Boolean}
 		 */
-		showAvalShop = function (){
+	var showAvalShop = function showAvalShop() {
 			var popup = $('#avalibleShop'),
 				button = popup.find('.bOrangeButton'),
 				position = {
@@ -43,7 +44,7 @@
 					longitude: $(this).data('lng')
 				},
 				url = $(this).attr('href');
-			// end of var
+			// end of vars
 
 			button.attr('href', url);
 			$('#ymaps-avalshops').css({'width':600, 'height':400});
@@ -79,28 +80,30 @@
 		 * @param	{Object}	shopInfo		Данные для подстановки в шаблон магазина
 		 * @param	{Number}	shopLen			Количество магазинов
 		 */
-		fillAvalShopTmpl = function (shops){
+		fillAvalShopTmpl = function fillAvalShopTmpl( shops ) {
 			var nowBox = widgetBox.find('.bWidgetBuy__eDelivery-now'),
 				toggleBtn = nowBox.find('.bWidgetBuy__eDelivery-nowClick'),
 				shopList = nowBox.find('.bDeliveryFreeAddress'),
 				templateNow = '',
 				shopInfo = {},
-				shopLen = shops.length,
-
-				/**
-				 * Обработчик переключения состояния листа магазинов открыто или закрыто
-				 */
-				shopToggle = function (){
-					nowBox.toggleClass('mOpen');
-					nowBox.toggleClass('mClose');
-				};
+				shopLen = shops.length;
 			// end of var
 			
-			if (!shopLen){
+
+			/**
+			 * Обработчик переключения состояния листа магазинов открыто или закрыто
+			 */
+			var shopToggle = function shopToggle() {
+				nowBox.toggleClass('mOpen');
+				nowBox.toggleClass('mClose');
+			};
+			
+			
+			if ( !shopLen ) {
 				return;
 			}
 
-			for (var j = shopLen - 1; j >= 0; j--) {
+			for ( var j = shopLen - 1; j >= 0; j-- ) {
 				shopInfo = {
 					name: shops[j].name,
 					lat: shops[j].latitude,
@@ -122,18 +125,18 @@
 		 * 
 		 * @param	{Object}	res	Ответ от сервера
 		 */
-		resFromSerever = function (res){
-			if (!res.success){
-				return false;
-			}
-
+		resFromSerever = function resFromSerever( res ) {
 			/**
 			 * Полученнный с сервера массив вариантов доставок для текущего товара
 			 * @type	{Array}
 			 */
 			var deliveryInfo = res.product[0].delivery;
 
-			for (var i = deliveryInfo.length - 1; i >= 0; i--) {
+			if ( !res.success ) {
+				return false;
+			}
+
+			for ( var i = deliveryInfo.length - 1; i >= 0; i-- ) {
 				switch (deliveryInfo[i].token){
 					case 'standart':
 						var standartBox = widgetBox.find('.bWidgetBuy__eDelivery-price'),
@@ -160,15 +163,15 @@
 						break;
 
 					case 'now':
-						fillAvalShopTmpl(deliveryInfo[i].shop);
+						fillAvalShopTmpl( deliveryInfo[i].shop );
 						break;
 				}
 			}
 		};
-	// end of var
+	// end of functions
 
-	if (url === '') {
-		fillAvalShopTmpl(deliveryShops);
+	if ( url === '' ) {
+		fillAvalShopTmpl( deliveryShops );
 	}
 	else {
 		$.ajax({

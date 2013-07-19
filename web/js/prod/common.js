@@ -1,23 +1,30 @@
-/**
- * Логирование данных с клиента на сервер
- * https://wiki.enter.ru/pages/viewpage.action?pageId=11239960
- * 
- * @param  {Object} data данные отсылаемы на сервер
- */
-window.logError = function(data) {
-	if (data.ajaxUrl === '/log-json') {
-		return;
-	}
-	if (!pageConfig.jsonLog){
-		return false;
-	}
-	$.ajax({
-		type: 'POST',
-		global: false,
-		url: '/log-json',
-		data: data
-	});
-};
+;(function(global) {
+	var pageConfig = $('#page-config').data('value');
+
+	/**
+	 * Логирование данных с клиента на сервер
+	 * https://wiki.enter.ru/pages/viewpage.action?pageId=11239960
+	 * 
+	 * @param  {Object} data данные отсылаемы на сервер
+	 */
+	global.logError = function logError( data ) {
+		if ( data.ajaxUrl === '/log-json' ) {
+			return;
+		}
+
+		if ( !pageConfig.jsonLog ) {
+			return false;
+		}
+
+		$.ajax({
+			type: 'POST',
+			global: false,
+			url: '/log-json',
+			data: data
+		});
+	};
+}(this));
+
 
 /**
  * Общие настройки AJAX
@@ -25,18 +32,20 @@ window.logError = function(data) {
 $.ajaxSetup({
 	timeout: 10000,
 	statusCode: {
-		404: function() {
-			var ajaxUrl = this.url;
-			var pageID = $('body').data('id');
-			var data = {
-				event: 'ajax_error',
-				type:'404 ошибка',
-				pageID: pageID,
-				ajaxUrl:ajaxUrl
-			};
+		404: function() { 
+			var ajaxUrl = this.url,
+				pageID = $('body').data('id'),
+				data = {
+					event: 'ajax_error',
+					type:'404 ошибка',
+					pageID: pageID,
+					ajaxUrl:ajaxUrl
+				};
+			// end of vars
 
-			logError(data);
-			if( typeof(_gaq) !== 'undefined' ){
+			window.logError(data);
+
+			if( typeof(_gaq) !== 'undefined' ) {
 				_gaq.push(['_trackEvent', 'Errors', 'Ajax Errors', '404 ошибка, страница не найдена']);
 			}
 		},
@@ -50,77 +59,83 @@ $.ajaxSetup({
 				});
 			}
 			else{
-				if( typeof(_gaq) !== 'undefined' ){
+				if( typeof(_gaq) !== 'undefined' ) {
 					_gaq.push(['_trackEvent', 'Errors', 'Ajax Errors', '401 ошибка, авторизуйтесь заново']);
 				}
 			}
 				
 		},
 		500: function() {
-			var ajaxUrl = this.url;
-			var pageID = $('body').data('id');
-			var data = {
-				event: 'ajax_error',
-				type:'500 ошибка',
-				pageID: pageID,
-				ajaxUrl:ajaxUrl
-			};
+			var ajaxUrl = this.url,
+				pageID = $('body').data('id'),
+				data = {
+					event: 'ajax_error',
+					type:'500 ошибка',
+					pageID: pageID,
+					ajaxUrl:ajaxUrl
+				};
+			// end of vars
 
-			logError(data);
-			if( typeof(_gaq) !== 'undefined' ){
+			window.logError(data);
+
+			if( typeof(_gaq) !== 'undefined' ) {
 				_gaq.push(['_trackEvent', 'Errors', 'Ajax Errors', '500 сервер перегружен']);
 			}
 		},
 		503: function() {
-			var ajaxUrl = this.url;
-			var pageID = $('body').data('id');
-			var data = {
-				event: 'ajax_error',
-				type:'503 ошибка',
-				pageID: pageID,
-				ajaxUrl:ajaxUrl
-			};
+			var ajaxUrl = this.url,
+				pageID = $('body').data('id'),
+				data = {
+					event: 'ajax_error',
+					type:'503 ошибка',
+					pageID: pageID,
+					ajaxUrl:ajaxUrl
+				};
+			// end of vars
 
-			logError(data);
-			if( typeof(_gaq) !== 'undefined' ){
+			window.logError(data);
+
+			if( typeof(_gaq) !== 'undefined' ) {
 				_gaq.push(['_trackEvent', 'Errors', 'Ajax Errors', '503 ошибка, сервер перегружен']);
 			}
 		},
 		504: function() {
-			var ajaxUrl = this.url;
-			var pageID = $('body').data('id');
-			var data = {
-				event: 'ajax_error',
-				type:'504 ошибка',
-				pageID: pageID,
-				ajaxUrl:ajaxUrl
-			};
+			var ajaxUrl = this.url,
+				pageID = $('body').data('id'),
+				data = {
+					event: 'ajax_error',
+					type:'504 ошибка',
+					pageID: pageID,
+					ajaxUrl:ajaxUrl
+				};
+			// end of vars
 
-			logError(data);
-			if( typeof(_gaq) !== 'undefined' ){
+			window.logError(data);
+
+			if( typeof(_gaq) !== 'undefined' ) {
 				_gaq.push(['_trackEvent', 'Errors', 'Ajax Errors', '504 ошибка, проверьте соединение с интернетом']);
 			}
 		}
 	},
-	error: function (jqXHR, textStatus, errorThrown) {
-		var ajaxUrl = this.url;
-		if( jqXHR.statusText === 'error' ){
-			// console.error(' неизвестная ajax ошибка')
-			if( typeof(_gaq) !== 'undefined' ){
-				_gaq.push(['_trackEvent', 'Errors', 'Ajax Errors', 'неизвестная ajax ошибка']);
-			}
-
-			var pageID = $('body').data('id');
-			var data = {
+	error: function ( jqXHR, textStatus, errorThrown ) {
+		var ajaxUrl = this.url,
+			pageID = $('body').data('id'),
+			data = {
 				event: 'ajax_error',
 				type:'неизвестная ajax ошибка',
 				pageID: pageID,
 				ajaxUrl:ajaxUrl
 			};
+		// end of vars
+		
+		if( jqXHR.statusText === 'error' ) {
+			window.logError(data);
 
-			logError(data);
+			if( typeof(_gaq) !== 'undefined' ) {
+				_gaq.push(['_trackEvent', 'Errors', 'Ajax Errors', 'неизвестная ajax ошибка']);
+			}
 		}
-		else if (textStatus === 'timeout'){
+		else if (textStatus === 'timeout') {
 			return;
 		}
 	}
@@ -274,7 +289,6 @@ $.ajaxSetup({
  */
  
  
-;
 /**
  * Обработчик для кнопок купить
  *
@@ -283,23 +297,24 @@ $.ajaxSetup({
  * @param		{event}		e
  * @param		{Boolean}	anyway Если true событие будет все равно выполнено
  */
-(function(){
+;(function() {
 
 	/**
 	 * Добавление в корзину на сервере. Получение данных о покупке и состоянии корзины. Маркировка кнопок.
 	 * 
 	 * @param  {Event}	e
 	 */
-	var buy = function(e){
-		var button = $(this);
-		var url = button.attr('href');
+	var buy = function buy() {
+		var button = $(this),
+			url = button.attr('href');
+		// end of vars
 
-		var addToCart = function(data) {
-			if (!data.success) {
+		var addToCart = function addToCart( data ) {
+			var groupBtn = button.data('group');
+
+			if ( !data.success ) {
 				return false;
 			}
-
-			var groupBtn = button.data('group');
 
 			$('.jsBuyButton[data-group="'+groupBtn+'"]').html('В корзине').addClass('mBought').attr('href','/cart');
 			$("body").trigger("addtocart", [data]);
@@ -313,21 +328,24 @@ $.ajaxSetup({
 	 * 
 	 * @param  {Event}	e
 	 */
-	var BuyButtonHandler = function(e){
+	var BuyButtonHandler = function BuyButtonHandler( e ) {
+		var button = $(this),
+			url = button.attr('href');
+		// end of vars
+		
 		e.stopPropagation();
 
-		var button = $(this);
-
-		if (button.hasClass('mDisabled')) {
+		if ( button.hasClass('mDisabled') ) {
 			return false;
 		}
-		if (button.hasClass('mBought')) {
-			var url = button.attr('href');
+		if ( button.hasClass('mBought') ) {
 			document.location.href(url);
+
 			return false;
 		}
 
 		button.trigger('buy', buy);
+
 		return false;
 	};
 
@@ -338,11 +356,12 @@ $.ajaxSetup({
 	 * @param	{event}		event          
 	 * @param	{Object}	markActionInfo Данные полученые из Action
 	 */
-	var markCartButton = function(event, markActionInfo){
-		for (var i = 0, len = markActionInfo.product.length; i < len; i++){
+	var markCartButton = function markCartButton( event, markActionInfo ) {
+		for ( var i = 0, len = markActionInfo.product.length; i < len; i++ ) {
 			$('.'+markActionInfo.product[i].id).html('В корзине').addClass('mBought').attr('href','/cart');
 		}
 	};
+
 	$("body").bind('markcartbutton', markCartButton);
 	
 	$(document).ready(function() {
@@ -360,92 +379,128 @@ $.ajaxSetup({
  * @param		{event}		event 
  * @param		{Object}	data	данные о том что кладется в корзину
  */
-(function(){
-	/**
-	 * KISS Аналитика для добавления в корзину
-	 */
-	var kissAnalytics = function(data){
-		if (data.product){
-			var productData = data.product;
-			var nowUrl = window.location.href;
-			var toKISS_pr = {
-				'Add to Cart SKU':productData.article,
-				'Add to Cart SKU Quantity':productData.quantity,
-				'Add to Cart Product Name':productData.name,
-				'Add to Cart Root category':productData.category[0].name,
-				'Add to Cart Root ID':productData.category[0].id,
-				'Add to Cart Category name':productData.category[productData.category.length-1].name,
-				'Add to Cart Category ID':productData.category[productData.category.length-1].id,
-				'Add to Cart SKU Price':productData.price,
-				'Add to Cart Page URL':nowUrl,
-				'Add to Cart F1 Quantity':productData.serviceQuantity,
-			};
+(function() {
+		/**
+		 * KISS Аналитика для добавления в корзину
+		 */
+	var kissAnalytics = function kissAnalytics( data ) {
+			var productData = data.product,
+				serviceData = data.service,
+				warrantyData = data.warranty,
+				nowUrl = window.location.href,
+				toKISS = {};
+			//end of vars
 
-			if (typeof(_kmq) !== 'undefined') {
-				_kmq.push(['record', 'Add to Cart', toKISS_pr ]);
+			if ( productData ) {
+				toKISS = {
+					'Add to Cart SKU':productData.article,
+					'Add to Cart SKU Quantity':productData.quantity,
+					'Add to Cart Product Name':productData.name,
+					'Add to Cart Root category':productData.category[0].name,
+					'Add to Cart Root ID':productData.category[0].id,
+					'Add to Cart Category name':productData.category[productData.category.length-1].name,
+					'Add to Cart Category ID':productData.category[productData.category.length-1].id,
+					'Add to Cart SKU Price':productData.price,
+					'Add to Cart Page URL':nowUrl,
+					'Add to Cart F1 Quantity':productData.serviceQuantity
+				};
+
+				if ( typeof(_kmq) !== 'undefined' ) {
+					_kmq.push(['record', 'Add to Cart', toKISS]);
+				}
 			}
-		}
-		if (data.service){
-			var serviceData = data.service;
-			var productData = data.product;
-			var toKISS_serv = {
-				'Add F1 F1 Name':serviceData.name,
-				'Add F1 F1 Price':serviceData.price,
-				'Add F1 SKU':productData.article,
-				'Add F1 Product Name':productData.name,
-				'Add F1 Root category':productData.category[0].name,
-				'Add F1 Root ID':productData.category[0].id,
-				'Add F1 Category name':productData.category[productData.category.length-1].name,
-				'Add F1 Category ID':productData.category[productData.category.length-1].id,
-			};
+			if ( serviceData ) {
+				toKISS = {
+					'Add F1 F1 Name':serviceData.name,
+					'Add F1 F1 Price':serviceData.price,
+					'Add F1 SKU':productData.article,
+					'Add F1 Product Name':productData.name,
+					'Add F1 Root category':productData.category[0].name,
+					'Add F1 Root ID':productData.category[0].id,
+					'Add F1 Category name':productData.category[productData.category.length-1].name,
+					'Add F1 Category ID':productData.category[productData.category.length-1].id
+				};
 
-			if (typeof(_kmq) !== 'undefined') {
-				_kmq.push(['record', 'Add F1', toKISS_serv ]);
+				if ( typeof(_kmq) !== 'undefined' ) {
+					_kmq.push(['record', 'Add F1', toKISS]);
+				}
 			}
-		}
-		if (data.warranty){
-			var warrantyData = data.warranty;
-			var productData = data.product;
-			var toKISS_wrnt = {
-				'Add Warranty Warranty Name':warrantyData.name,
-				'Add Warranty Warranty Price':warrantyData.price,
-				'Add Warranty SKU':productData.article,
-				'Add Warranty Product Name':productData.name,
-				'Add Warranty Root category':productData.category[0].name,
-				'Add Warranty Root ID':productData.category[0].id,
-				'Add Warranty Category name':productData.category[productData.category.length-1].name,
-				'Add Warranty Category ID':productData.category[productData.category.length-1].id,
-			};
+			if ( warrantyData ) {
+				toKISS = {
+					'Add Warranty Warranty Name':warrantyData.name,
+					'Add Warranty Warranty Price':warrantyData.price,
+					'Add Warranty SKU':productData.article,
+					'Add Warranty Product Name':productData.name,
+					'Add Warranty Root category':productData.category[0].name,
+					'Add Warranty Root ID':productData.category[0].id,
+					'Add Warranty Category name':productData.category[productData.category.length-1].name,
+					'Add Warranty Category ID':productData.category[productData.category.length-1].id
+				};
 
-			if (typeof(_kmq) !== 'undefined') {
-				_kmq.push(['record', 'Add Warranty', toKISS_wrnt ]);
+				if ( typeof(_kmq) !== 'undefined' ) {
+					_kmq.push(['record', 'Add Warranty', toKISS]);
+				}
 			}
-		}
-	};
+		},
+
+		/**
+		 * Google Analytics аналитика добавления в корзину
+		 */
+		googleAnalytics = function googleAnalytics( data ) {
+			var productData = data.product;
+
+			if (productData){
+				if( typeof(_gaq) !== 'undefined' ){
+					_gaq.push(['_trackEvent', 'Add2Basket', 'product', productData.article]);
+				}
+			}
+		},
+
+		/**
+		 * myThings аналитика добавления в корзину
+		 */
+		myThingsAnalytics = function myThingsAnalytics( data ) {
+			var productData = data.product;
+
+			if ( typeof(MyThings) !== 'undefined' ) {
+				MyThings.Track({
+					EventType: MyThings.Event.Visit,
+					Action: "1013",
+					ProductId: productData.id
+				});
+			}
+		},
 
 
-	var buyProcessing = function(event, data){
-		kissAnalytics(data);
-		// sendAnalytics();
+		/**
+		 * Обработка покупки, парсинг данных от сервера, запуск аналитики
+		 */
+		buyProcessing = function buyProcessing( event, data ) {
+			var basket = data.cart,
+				product = data.product,
+				tmpitem = {
+					'title': product.name,
+					'price' : printPrice(product.price),
+					'imgSrc': product.img,
+					'productLink': product.link,
+					'totalQuan': basket.full_quantity,
+					'totalSum': printPrice(basket.full_price),
+					'linkToOrder': basket.link
+				};
+			// end of vars
 
-		if (!blackBox) {
-			return false;
-		}
 
-		var basket = data.cart;
-		var product = data.product;
-		var tmpitem = {
-			'title': product.name,
-			'price' : printPrice(product.price),
-			'imgSrc': product.img,
-			'productLink': product.link,
-			'totalQuan': basket.full_quantity,
-			'totalSum': printPrice(basket.full_price),
-			'linkToOrder': basket.link,
+			kissAnalytics(data);
+			googleAnalytics(data);
+			myThingsAnalytics(data);
+
+			if ( !blackBox ) {
+				return false;
+			}
+			
+			blackBox.basket().add( tmpitem );
 		};
-		
-		blackBox.basket().add(tmpitem);
-	};
+	//end of vars
 
 	$(document).ready(function() {
 		$("body").bind('addtocart', buyProcessing);
@@ -743,10 +798,12 @@ $(document).ready(function(){
  * @author		Zaytsev Alexandr
  * @requires	jQuery
  */
-(function(){
-	var goToId = function(){
+(function() {
+	var goToId = function goToId() {
 		var to = $(this).data('goto');
+
 		$(document).stop().scrollTo( $('#'+to), 800 );
+		
 		return false;
 	};
 	
@@ -761,11 +818,10 @@ $(document).ready(function(){
  */
  
  
-;
 /**
  * JIRA
  */
-(function(){
+;(function() {
 	$.ajax({
 		url: "https://jira.enter.ru/s/ru_RU-istibo/773/3/1.2.4/_/download/batch/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector.js?collectorId=2e17c5d6",
 		type: "get",
@@ -773,9 +829,9 @@ $(document).ready(function(){
 		dataType: "script"
 	});
 	
-	window.ATL_JQ_PAGE_PROPS =  {
-		"triggerFunction": function(showCollectorDialog) {
-			$("#jira").click(function(e) {
+	window.ATL_JQ_PAGE_PROPS = {
+		"triggerFunction": function( showCollectorDialog ) {
+			$("#jira").click(function( e ) {
 				e.preventDefault();
 				showCollectorDialog();
 			});
@@ -2023,7 +2079,6 @@ $(document).ready(function(){
  */
  
  
-;
 /**
  * Всплывающая синяя плашка с предложением о подписке
  * Срабатывает при возникновении события showsubscribe.
@@ -2037,34 +2092,38 @@ $(document).ready(function(){
  * @param		{Boolean}	subscribe.agreed	Было ли дано согласие на подписку в прошлый раз
  * @param		{Boolean}	subscribe.show		Показывали ли пользователю плашку с предложением о подписке
  */
-(function(){
-	var lboxCheckSubscribe = function(event, subscribe){
+;(function() {
+	var lboxCheckSubscribe = function lboxCheckSubscribe( event, subscribe ) {
 
 		var notNowShield = $('.bSubscribeLightboxPopupNotNow'),
 			subPopup = $('.bSubscribeLightboxPopup'),
 			input = $('.bSubscribeLightboxPopup__eInput'),
-			submitBtn = $('.bSubscribeLightboxPopup__eBtn'),
+			submitBtn = $('.bSubscribeLightboxPopup__eBtn');
+		// end of vars
 		
-			subscribing = function(){
-				if (submitBtn.hasClass('mDisabled')){
-					return false;
-				}
 
+		var subscribing = function subscribing() {
 				var email = input.val(),
 					url = $(this).data('url');
 				//end of vars
+				
+				if ( submitBtn.hasClass('mDisabled') ) {
+					return false;
+				}
 
-				$.post(url, {email: email}, function(res){
-					if( !res.success ){
+				$.post(url, {email: email}, function( res ) {
+					if( !res.success ) {
 						return false;
 					}
 					
 					subPopup.html('<span class="bSubscribeLightboxPopup__eTitle mType">Спасибо! подтверждение подписки отправлено на указанный e-mail</span>');
 					docCookies.setItem(false, 'subscribed', 1, 157680000, '/');
-					if( typeof(_gaq) !== 'undefined' ){
+
+					if( typeof(_gaq) !== 'undefined' ) {
 						_gaq.push(['_trackEvent', 'Account', 'Emailing sign up', 'Page top']);
 					}
-					setTimeout(function(){
+
+					setTimeout(function() {
 						subPopup.slideUp(300);
 					}, 3000);
 				});
@@ -2072,12 +2131,12 @@ $(document).ready(function(){
 				return false;
 			},
 
-			subscribeNow = function(){
+			subscribeNow = function subscribeNow() {
 				subPopup.slideDown(300);
 
 				submitBtn.bind('click', subscribing);
 
-				$('.bSubscribeLightboxPopup__eNotNow').bind('click', function(){
+				$('.bSubscribeLightboxPopup__eNotNow').bind('click', function() {
 					var url = $(this).data('url');
 
 					subPopup.slideUp(300, subscribeLater);
@@ -2088,35 +2147,36 @@ $(document).ready(function(){
 				});
 			},
 
-			subscribeLater = function(){
+			subscribeLater = function subscribeLater() {
 				notNowShield.slideDown(300);
-				notNowShield.bind('click', function(){
+				notNowShield.bind('click', function() {
 					$(this).slideUp(300);
 					subscribeNow();
 				});
 			};
-		//end of vars
+		//end of functions
 
 		input.placeholder();
 
 		input.emailValidate({
-			onValid: function(){
+			onValid: function() {
 				input.removeClass('mError');
 				submitBtn.removeClass('mDisabled');
 			},
-			onInvalid: function(){
+			onInvalid: function() {
 				submitBtn.addClass('mDisabled');
 				input.addClass('mError');
 			}
 		});
 
-		if (!subscribe.show){
-			if (!subscribe.agreed){
+		if ( !subscribe.show ) {
+			if ( !subscribe.agreed ) {
 				subscribeLater();
 			}
+
 			return false;
 		}
-		else{
+		else {
 			subscribeNow();
 		}
 	};
@@ -2137,128 +2197,132 @@ $(document).ready(function(){
  * @author		Zaytsev Alexandr
  * @requires	jQuery
  */
-;(function(){
-	var nowSelectSuggest = -1;
-	var suggestLen = 0;
+;(function() {
+	var nowSelectSuggest = -1,
+		suggestLen = 0;
+	// end of vars
+	
 
 	/**
 	 * Хандлер на поднятие клавиши в поле поиска
 	 * @param  {event} e
 	 */
-	var suggestUp = function(e){
-        var text = $(this).attr('value');
+	var suggestUp = function suggestUp( e ) {
+			var text = $(this).attr('value'),
+				url = '/search/autocomplete?q='+encodeURI(text);
+			// end of vars
 
-        if (!text.length){
-            if($(this).siblings('.searchtextClear').length) {
-                $(this).siblings('.searchtextClear').addClass('vh');
-            }
-        }
-        else {
-            if($(this).siblings('.searchtextClear').length) {
-                $(this).siblings('.searchtextClear').removeClass('vh');
-            }
-        }
-
-		var authFromServer = function(response){
-			$('#searchAutocomplete').html(response);
-			suggestLen = $('.bSearchSuggest__eRes').length;
-		};
-
-        if ((e.which < 37 || e.which>40) && (nowSelectSuggest = -1)){
-            if (!text.length){ 
-                return false;
-            }
-
-            if($(this).siblings('.searchtextClear').length) {
-                $(this).siblings('.searchtextClear').removeClass('vh');
-            }
-			
-			$('.bSearchSuggest__eRes').removeClass('hover');
-			nowSelectSuggest = -1;
-
-			var url = '/search/autocomplete?q='+encodeURI(text);
-
-			$.ajax({
-				type: 'GET',
-				url: url,
-				success: authFromServer
-			});
-		}
-	};
-
-	/**
-	 * Хандлер на нажатие клавиши в поле поиска
-	 * @param  {event} e
-	 */
-	var suggestDown = function(e){
-		/**
-		 * маркировка пункта
-		 */
-		var markSuggest = function(){
-			$('.bSearchSuggest__eRes').removeClass('hover').eq(nowSelectSuggest).addClass('hover');
-		};
-
-		/**
-		 * стрелка вверх
-		 */
-		var upSuggestItem = function(){
-			if (nowSelectSuggest-1 >= 0){
-				nowSelectSuggest--;
-				markSuggest();
+			if (!text.length){
+				if ( $(this).siblings('.searchtextClear').length ) {
+					$(this).siblings('.searchtextClear').addClass('vh');
+				}
 			}
-			else{
-				nowSelectSuggest = -1;
+			else {
+				if ( $(this).siblings('.searchtextClear').length ) {
+					$(this).siblings('.searchtextClear').removeClass('vh');
+				}
+			}
+
+			var authFromServer = function authFromServer( response ) {
+				$('#searchAutocomplete').html(response);
+				suggestLen = $('.bSearchSuggest__eRes').length;
+			};
+
+			if ( (e.which < 37 || e.which>40) && (nowSelectSuggest = -1) ) {
+				if ( !text.length ) { 
+					return false;
+				}
+
+				if ( $(this).siblings('.searchtextClear').length ) {
+					$(this).siblings('.searchtextClear').removeClass('vh');
+				}
+				
 				$('.bSearchSuggest__eRes').removeClass('hover');
-				$(this).focus();
+				nowSelectSuggest = -1;
+
+				$.ajax({
+					type: 'GET',
+					url: url,
+					success: authFromServer
+				});
 			}
-			
-		};
+		},
 
 		/**
-		 * стрелка вниз
+		 * Хандлер на нажатие клавиши в поле поиска
+		 * @param  {event} e
 		 */
-		var downSuggestItem = function(){
-			if (nowSelectSuggest+1 <= suggestLen-1){
-				nowSelectSuggest++;
-				markSuggest();
-			}			
-		};
+		suggestDown = function suggestDown( e ) {
+			/**
+			 * маркировка пункта
+			 */
+			var markSuggest = function markSuggest() {
+					$('.bSearchSuggest__eRes').removeClass('hover').eq(nowSelectSuggest).addClass('hover');
+				},
 
-		/**
-		 * нажатие клавиши 'enter'
-		 */
-		var enterSuggest = function(){
-			// suggest analitycs
-			var link = $('.bSearchSuggest__eRes').eq(nowSelectSuggest).attr('href');
-			var type = ($('.bSearchSuggest__eRes').eq(nowSelectSuggest).hasClass('bSearchSuggest__eCategoryRes')) ? 'suggest_category' : 'suggest_product';
-			
-			if ( typeof(_gaq) !== 'undefined' ){	
-				_gaq.push(['_trackEvent', 'Search', type, link]);
+				/**
+				 * стрелка вверх
+				 */
+				upSuggestItem = function upSuggestItem() {
+					if ( nowSelectSuggest - 1 >= 0 ) {
+						nowSelectSuggest--;
+						markSuggest();
+					}
+					else{
+						nowSelectSuggest = -1;
+						$('.bSearchSuggest__eRes').removeClass('hover');
+						$(this).focus();
+					}
+					
+				},
+
+				/**
+				 * стрелка вниз
+				 */
+				downSuggestItem = function downSuggestItem() {
+					if ( nowSelectSuggest + 1 <= suggestLen - 1 ) {
+						nowSelectSuggest++;
+						markSuggest();
+					}			
+				},
+
+				/**
+				 * нажатие клавиши 'enter'
+				 */
+				enterSuggest = function enterSuggest() {
+					var link = $('.bSearchSuggest__eRes').eq(nowSelectSuggest).attr('href'),
+						type = ($('.bSearchSuggest__eRes').eq(nowSelectSuggest).hasClass('bSearchSuggest__eCategoryRes')) ? 'suggest_category' : 'suggest_product';
+					// end of vars
+					
+					if ( typeof(_gaq) !== 'undefined' ) {	
+						_gaq.push(['_trackEvent', 'Search', type, link]);
+					}
+
+					document.location.href = link;
+				};
+			// end of functions
+
+			if ( e.which === 38 ) {
+				upSuggestItem();
 			}
-			document.location.href = link;
+			else if ( e.which === 40 ) {
+				downSuggestItem();
+			}
+			else if ( e.which === 13 && nowSelectSuggest !== -1 ) {
+				e.preventDefault();
+				enterSuggest();
+			}
+		},
+
+		suggestInputFocus = function suggestInputFocus() {
+			nowSelectSuggest = -1;
+			$('.bSearchSuggest__eRes').removeClass('hover');
+		},
+
+		suggestInputClick = function suggestInputClick() {
+			$('#searchAutocomplete').show();
 		};
-
-		if (e.which === 38){
-			upSuggestItem();
-		}
-		else if (e.which === 40){
-			downSuggestItem();
-		}
-		else if (e.which === 13 && nowSelectSuggest !== -1){
-			e.preventDefault();
-			enterSuggest();
-		}
-		// console.log(nowSelectSuggest)
-	};
-
-	var suggestInputFocus = function(){
-		nowSelectSuggest = -1;
-		$('.bSearchSuggest__eRes').removeClass('hover');
-	};
-
-	var suggestInputClick = function(){
-		$('#searchAutocomplete').show();
-	};
+	// end of functions
 
 	$(document).ready(function() {
 		/**
@@ -2268,20 +2332,23 @@ $(document).ready(function(){
 
 		$('.searchbox .search-form').submit(function(){
 			var text = $('.searchbox .searchtext').attr('value');
-			if (!text.length){
+
+			if ( !text.length ) {
 				return false;
 			}
 		});
 
 		$('.bSearchSuggest__eRes').on('mouseover', function(){
-			$('.bSearchSuggest__eRes').removeClass('hover');
 			var index = $(this).addClass('hover').index();
+
+			$('.bSearchSuggest__eRes').removeClass('hover');
 			nowSelectSuggest = index - 1;
 		});
 
 		$('body').click(function(e){		
 			var targ = e.target.className;
-			if (!(targ.indexOf('bSearchSuggest')+1 || targ.indexOf('searchtext')+1)) {
+
+			if ( !(targ.indexOf('bSearchSuggest') + 1 || targ.indexOf('searchtext') + 1) ) {
 				$('#searchAutocomplete').hide();
 			}
 		});
@@ -2290,9 +2357,10 @@ $(document).ready(function(){
 		 * suggest analitycs
 		 */
 		$('.bSearchSuggest__eRes').on('click', function(){
-			if ( typeof(_gaq) !== 'undefined' ){
-				var type = ($(this).hasClass('bSearchSuggest__eCategoryRes')) ? 'suggest_category' : 'suggest_product';
-				var url = $(this).attr('href');
+			if ( typeof(_gaq) !== 'undefined' ) {
+				var type = ($(this).hasClass('bSearchSuggest__eCategoryRes')) ? 'suggest_category' : 'suggest_product',
+					url = $(this).attr('href');
+				// end of vars
 
 				_gaq.push(['_trackEvent', 'Search', type, url]);
 			}
@@ -2628,27 +2696,29 @@ $('.bMainMenuLevel-2__eItem').mouseleave(menuMouseLeaveLvl2)
  * @author		Zaytsev Alexandr
  */
 ;(function(){
-	var upper = $('#upper');
-		trigger = false,	//сработало ли появление языка
-
-		pageScrolling = function(){
-			if (($(window).scrollTop() > 600)&&(!trigger)){
+	var upper = $('#upper'),
+		trigger = false;	//сработало ли появление языка
+	// end of vars
+	
+	
+	var pageScrolling = function pageScrolling()  {
+			if ( ($(window).scrollTop() > 600)&&(!trigger) ) {
 				//появление языка
 				trigger = true;
 				upper.animate({'marginTop':'0'},400);
 			}
-			else if (($(window).scrollTop() < 600)&&(trigger)){
+			else if ( ($(window).scrollTop() < 600)&&(trigger) ) {
 				//исчезновение
 				trigger = false;
 				upper.animate({'marginTop':'-30px'},400);
 			}
 		},
 
-		goUp = function(){
+		goUp = function goUp() {
 			$(window).scrollTo('0px',400);
 			return false;
 		};
-	//end of vars
+	//end of functions
 
 	$(window).scroll(pageScrolling);
 	upper.bind('click',goUp);

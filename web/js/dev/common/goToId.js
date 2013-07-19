@@ -4,10 +4,12 @@
  * @author		Zaytsev Alexandr
  * @requires	jQuery
  */
-(function(){
-	var goToId = function(){
+(function() {
+	var goToId = function goToId() {
 		var to = $(this).data('goto');
+
 		$(document).stop().scrollTo( $('#'+to), 800 );
+		
 		return false;
 	};
 	

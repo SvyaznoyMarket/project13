@@ -9788,13 +9788,13 @@
     background: #ffffff;
   }
   .bMainContainer__eHeader {
-    font-family: tahoma;
+    font-family: tahoma, verdana, arial, helvetica, sans-serif;
   }
   .bMainContainer__eHeader-subtitle {
     font-size: 24px;
   }
   .bMainContainer__eHeader-title {
-    font-family: tahoma;
+    font-family: tahoma, verdana, arial, helvetica, sans-serif;
     padding: 0 0 7px;
   }
   .bMainContainer__eHeader-article {
@@ -9804,18 +9804,18 @@
     display: inline-block;
     margin: 15px 0 0;
     width: 700px;
-    vertical-align: top;
-    *display: inline;
-    zoom: 1;
+    float: left;
   }
   .bProductSection .inStock {
     color: #fb9c00;
     font-weight: 800;
     margin-bottom: 6px;
+    line-height: 1;
   }
   .bProductSection .priceOld {
     font-size: 21px;
     margin-bottom: 3px;
+    color: #a6a6a6;
   }
   .bProductSection .priceOld span {
     text-decoration: line-through;
@@ -9824,7 +9824,7 @@
     font-size: 30px;
   }
   .bProductSection .priceSale {
-    margin: 0 0 10px;
+    margin: 5px 0 10px;
     cursor: pointer;
   }
   .bProductSection .bDescSelectItem {
@@ -9879,7 +9879,7 @@
   }
   .bProductSection .creditbox {
     display: none;
-    margin: 0 0 23px;
+    margin: 5px 0 0;
     border: none;
     font-size: 14px;
   }
@@ -9903,7 +9903,12 @@
     padding-left: 36px;
   }
   .bProductSection .bProductDesc {
-    margin: 0 0 25px;
+    margin: 0 0 15px;
+  }
+  .bProductSection .bProductDesc .bStickerImg {
+    position: absolute;
+    top: 0;
+    left: 0;
   }
   .bProductSection .bProductDesc__ePhoto {
     position: relative;
@@ -9914,7 +9919,6 @@
     display: block;
     width: 400px;
     height: 400px;
-    margin: 0 0 30px;
     text-align: center;
     vertical-align: bottom;
   }
@@ -9925,17 +9929,19 @@
   .bProductSection .bProductDesc__eStore {
     float: right;
     width: 280px;
-    margin: -3px 0 0;
+    margin: 0;
   }
   .bProductSection .bProductDesc__eStore-text {
     font-size: 14px;
-    margin: 0 0 25px;
+    margin: 23px 0 25px;
   }
   .bProductSection .bProductDesc__eStore-text .text__eAll {
     margin: 4px 0 0;
   }
   .bProductSection .bProductDesc__eStore-text .text__eAll a {
     text-decoration: underline;
+    color: #a6a6a6;
+    font-size: 12px;
   }
   .bProductSection .bDescriptionProduct {
     font-size: 14px;
@@ -9975,13 +9981,14 @@
   .bProductSection__eRight {
     width: 220px;
     margin: 15px 0 0 16px;
-    vertical-align: top;
-    display: inline-block;
-    *display: inline;
+    float: right;
     zoom: 1;
   }
   .bProductSection__eRight .btnBuy {
     margin: 0 auto;
+  }
+  .bPhotoAction {
+    margin: 15px 0 0;
   }
   .bPhotoActionOtherAction {
     float: left;
@@ -10033,7 +10040,6 @@
   }
   .bPhotoActionOtherPhotoList {
     position: relative;
-    width: 100000px;
   }
   .bPhotoActionOtherPhotoItem {
     float: left;
@@ -10044,6 +10050,7 @@
     -moz-border-radius: 9px;
     border-radius: 9px;
     display: table-cell;
+    *display: block;
     overflow: hidden;
     width: 48px;
     height: 48px;
@@ -10068,6 +10075,9 @@
   .bPhotoActionOtherPhotoItem__eLink img {
     max-width: 45px;
     max-height: 45px;
+    -webkit-border-radius: 9px;
+    -moz-border-radius: 9px;
+    border-radius: 9px;
   }
   .bPhotoActionOtherPhoto__eBtn {
     position: absolute;
@@ -10110,9 +10120,7 @@
     width: 420px;
   }
   .bBottomBuy__eTitle {
-    font-size: 16px;
-    font-family: tahoma;
-    font-weight: 800;
+    font: 800 16px/1.2 tahoma, verdana, arial, helvetica, sans-serif;
   }
   .bBottomBuy .btnBuy {
     margin-left: 12px;
@@ -10165,14 +10173,14 @@
     padding-top: 3px;
   }
   .mProductSectionSet .bStoreDesc {
-    margin-left: 5px;
+    margin-left: 19px;
   }
   .mProductSectionSet .creditbox {
     margin: 0 0 16px;
   }
-  .mProductSectionSet .bWidgetBuy__eClick,
-  .mProductSectionSet .bWidgetBuy__eDelivery {
-    margin: 15px 0 0;
+  .mProductSectionSet .bWidgetBuy__eClick {
+    margin: 15px 0 0 19px;
+    text-align: left;
   }
   .mProductSectionSet .bProductList {
     margin: 20px 0 0;
@@ -10246,6 +10254,9 @@
     line-height: 25px;
     font-size: 14px;
   }
+  .bSliderAction__eList .btnBuy .btnBuy__eLink.mShopsOnly {
+    font-size: 10px;
+  }
   .bSliderAction__eItem {
     width: 120px;
     height: 210px;
@@ -10254,18 +10265,23 @@
   }
   .bSliderAction__eItem .product__inner {
     padding: 10px;
-    -webkit-transition: all 0.05s linear;
-    -moz-transition: all 0.05s linear;
-    transition: all 0.05s linear;
+    -webkit-transition: box-shadow 0.05s linear;
+    -moz-transition: box-shadow 0.05s linear;
+    transition: box-shadow 0.05s linear;
   }
   .bSliderAction__eItem .product__inner:hover {
-    -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
-    -moz-box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    -webkit-box-shadow: 0 0 5px #c6c6c6;
+    -moz-box-shadow: 0 0 5px #c6c6c6;
+    box-shadow: 0 0 5px #c6c6c6;
     background: #ffffff;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     border-radius: 3px;
+    border: 1px solid #d6d6d6;
+    padding: 9px;
+    behavior: url("/css/common/PIE.htc");
+    position: relative;
+    zoom: 1;
   }
   .bSliderAction__eItem .product__inner:hover .btnBuy {
     -moz-opacity: 1;
@@ -10280,7 +10296,7 @@
     -moz-border-radius: 4px;
     border-radius: 4px;
     position: absolute;
-    top: 76px;
+    top: 80px;
     width: 40px;
     height: 58px;
     cursor: pointer;
@@ -10317,9 +10333,7 @@
    * Если есть категории
    */
   .bGoodsSlider.mWithCategory {
-    border-top: 1px solid #c7c7c7;
     border-bottom: 1px solid #c7c7c7;
-    height: 220px;
   }
   .bGoodsSlider__eCat {
     display: none;
@@ -10330,6 +10344,7 @@
     height: 215px;
     overflow: auto;
     border-right: 1px solid #c7c7c7;
+    border-top: 1px solid #c7c7c7;
     padding: 5px 0 0;
     display: block;
   }
@@ -10355,7 +10370,8 @@
   .bGoodsSlider.mWithCategory .bSliderAction {
     width: 460px;
     float: right;
-    margin: 5px 0 0;
+    padding: 5px 0 0 20px;
+    border-top: 1px solid #c7c7c7;
   }
   .bGoodsSlider.mWithCategory .bSliderAction__eInner {
     width: 360px;
@@ -10527,7 +10543,6 @@
     line-height: 35px;
     text-align: center;
     width: 170px;
-    font-family: "Tahoma";
     font-size: 18px;
     border: 1px solid #fb9c00;
   }
@@ -10557,8 +10572,7 @@
     border: 1px solid #e6e6e6;
   }
   .btnBuy .btnBuy__eLink.mShopsOnly {
-    width: 190px;
-    margin-left: -11px;
+    font-size: 17px;
   }
   .btnBuy .btnBuy__eLink:hover {
     text-decoration: none;
@@ -10579,6 +10593,7 @@
     height: 25px;
     background: url("/css/catalog/img/catalogSprite.png") -64px 0 no-repeat;
   }
+  .goodsbox .btnBuy a.mBought,
   .goodsbox .btnBuy a:hover {
     background-position: -102px 0;
   }
@@ -10706,7 +10721,13 @@
     clear: both;
   }
   .bReviews .bReviewsSummary .bcolStarRow {
-    margin: 0 0 3px;
+    margin: 0 0 5px;
+    width: 100px;
+  }
+  .bReviews .bReviewsSummary .bcolStarRow img {
+    display: block;
+    float: left;
+    margin: 0 5px 0 0;
   }
   .bReviews .bReviewsTabs {
     border-bottom: 1px solid #c7c7c7;
@@ -10789,15 +10810,14 @@
     padding: 0;
     font-size: 12px;
     color: #a6a6a6;
+    line-height: 1.1;
   }
   .bReviewSection__eStar {
     float: left;
     margin-right: 5px;
   }
   .bReviewSection__eWrite {
-    border-bottom: 1px dotted;
     cursor: pointer;
-    margin: 0 0 0 3px;
     float: right;
   }
   .bReviewSection span.border {
