@@ -45,7 +45,6 @@ class API {
 
 
     public function login() {
-
         $post_arr = [
             'login' => $this->login,
             'password' => $this->password,
@@ -53,19 +52,19 @@ class API {
 
         $response = $this->curl( $this->api_login_url, $post_arr );
 
-
         if ($response->response) {
             if ( isset($response->response->authkey) ) $this->authKey = $response->response->authkey;
+                else $this->authKey = false;
+
             if ( isset($response->response->chief_id) ) $this->chief_id = $response->response->chief_id;
+                else $this->chief_id = false;
         }
 
         return $response;
-
     }
 
 
     public function method( $method, $data = [] ) {
-
         if ($this->authKey == null) {
             $this->login();
         }
@@ -74,12 +73,8 @@ class API {
             'chiefId' => $this->chief_id,
             'authKey' => $this->authKey,
             'protocol' => 'json',
-            'method ' => $method,
+            'method' => $method,
         ];
-
-        //print '<pre>##';
-        //print_r( $arr + $data );
-        //print '</pre>';
 
         $response = $this->curl( $this->api_url, $arr + $data );
 

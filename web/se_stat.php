@@ -1,7 +1,9 @@
 <?php
 
+// just for debug:
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
+
 
 /*
 $API_ulr = 'http://api.livetex.ru/';
@@ -56,14 +58,18 @@ if( $curl = curl_init() ) {
 include_once '../lib/LiveTex/Statistics.php';
 $API = \LiveTex\Api::getInstance();
 $resp = $API->login();
-/*
-$resp = $API->method('Operator.ChatStat', [
-    'date_from' => '2013-03-01',
-    'date_end' => '2013-07-18',
-    'id' => '66252'
-]);*/
 
-//$resp = $API->method('Operator.GetList');
+
+
+$resp = $API->method('Site.ChatStat', [
+    'date_begin' => '2013-07-01',
+    'date_end' => '2013-07-18',
+    'site_id' => '41836'
+]);
+
+print_r($resp);
+
+$resp = $API->method('Operator.GetList');
 
 print_r($resp);
 
