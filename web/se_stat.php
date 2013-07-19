@@ -6,21 +6,14 @@ ini_set('display_errors', 1);
 
 
 include_once '../lib/LiveTex/Statistics.php';
-$API = \LiveTex\Api::getInstance();
+include_once '../lib/LiveTex/Views.php';
 
+$API = \LiveTex\Api::getInstance();
+$Views = new \LiveTex\Views;
 
 $operators = $API->method('Operator.GetList');
-
-if ($operators and $operators->response) {
-    $operators = $operators->response;
-    foreach ($operators as $op) {
-        print '<pre>';
-        print_r($op);
-        print '</pre>';
-    }
-}
-
-
+$operators_html = $Views->getOperators($operators);
+$operators_count_html = count($operators->response);
 
 
 ?>
@@ -33,8 +26,8 @@ if ($operators and $operators->response) {
             haveOnline: false,
             load: function () {
                 console.log("LiveTexStat успешно инициализировано");
-                LiveTexStat.haveOnline();
-                LiveTexStat.getOperators();
+                //LiveTexStat.haveOnline();
+                //LiveTexStat.getOperators();
             },
             haveOnline: function() {
                 LiveTex.haveOnlineOperators(function(data) {
@@ -117,19 +110,23 @@ if ($operators and $operators->response) {
 
 
 <body>
+
 <noscript><p>Javascript must be enabled for the correct page display</p></noscript>
+
 <div id="liveText_wr" class="liveTex_stat">
     <div id="haveOnline">
         <p class="online hidden">Найдены операторы онлайн: <span id="count_opers">0</span>.</p>
         <p class="offline hidden">Нет операторов онлайн</p>
     </div>
+    <div class="operators_count_wr">
+        <p class="operators_count"><span>Всего операторов: </span><?= $operators_count_html ?></p>
+    </div>
     <div id="operators_wr" class="operators_stat">
         <ul id="operators">
-
+            <?= $operators_html; ?>
         </ul>
     </div>
 </div>
-
 
 <? /* LiveText initialization: */ ?>
 <script>
