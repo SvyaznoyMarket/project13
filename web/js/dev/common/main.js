@@ -135,26 +135,26 @@ $(document).ready(function(){
 	$('.bCtg').find('a').bind('click', 'Левое меню', categoriesSpy )
 	$('.rubrictitle').find('a').bind('click', 'Заголовок карусели', categoriesSpy )
 	$('a.srcoll_link').bind('click', 'Ссылка Посмотреть все', categoriesSpy )
-    /* GA click counter */
-    function gaClickCounter() {
-        if( typeof(_gaq) !== 'undefined' ) {
-            var title =  ($(this).data('title') !== 'undefined') ?  $(this).data('title') : 'без названия';
-            var nowUrl = window.location.href
-            nowUrl.replace('http://www.enter.ru','')
-            var linkUrl = $(this).attr('href')
-            if ( $(this).data('event') == 'accessorize'){
-            	_gaq.push(['_trackEvent', 'AdvisedAccessorises', nowUrl, linkUrl]);
-            }
-            else if( $(this).data('event') == 'related'){
+	/* GA click counter */
+	function gaClickCounter() {
+		if( typeof(_gaq) !== 'undefined' ) {
+			var title =  ($(this).data('title') !== 'undefined') ?  $(this).data('title') : 'без названия';
+			var nowUrl = window.location.href
+			nowUrl.replace('http://www.enter.ru','')
+			var linkUrl = $(this).attr('href')
+			if ( $(this).data('event') == 'accessorize'){
+				_gaq.push(['_trackEvent', 'AdvisedAccessorises', nowUrl, linkUrl]);
+			}
+			else if( $(this).data('event') == 'related'){
 				_gaq.push(['_trackEvent', 'AdvisedAlsoBuy', nowUrl, linkUrl]);
 			}
 			else{
 				_gaq.push(['_trackEvent', $(this).data('event'), title,,,false])	
 			}
-        }
-        return true
-    }
-    $('.gaEvent').bind('click', gaClickCounter );
+		}
+		return true
+	}
+	$('.gaEvent').bind('click', gaClickCounter );
 
 
 
@@ -548,28 +548,28 @@ $(document).ready(function(){
 	$('.inputClear').bind('click', function(e) {
 		e.preventDefault();
 		$('#jscity').val('');
-  	});
+	});
 
-  	$('.popupRegion .rightArr').bind('click', function(){
-  		var regionSlideW = $('.popupRegion .regionSlides_slide').width() *1;
-  		var sliderW = $('.popupRegion .regionSlides').width() *1;
-  		var sliderLeft = parseInt($('.popupRegion .regionSlides').css('left'));
-  		$('.popupRegion .leftArr').show();
-  		$('.popupRegion .regionSlides').animate({'left':sliderLeft-regionSlideW});
+	$('.popupRegion .rightArr').bind('click', function(){
+		var regionSlideW = $('.popupRegion .regionSlides_slide').width() *1;
+		var sliderW = $('.popupRegion .regionSlides').width() *1;
+		var sliderLeft = parseInt($('.popupRegion .regionSlides').css('left'));
+		$('.popupRegion .leftArr').show();
+		$('.popupRegion .regionSlides').animate({'left':sliderLeft-regionSlideW});
 		if ((sliderLeft-(regionSlideW*2)) <= -sliderW){
-  			$('.popupRegion .rightArr').hide();
-  		}
-  	});
-  	$('.popupRegion .leftArr').bind('click', function(){
-  		var regionSlideW = $('.popupRegion .regionSlides_slide').width() *1;
-  		var sliderW = $('.popupRegion .regionSlides').width() *1;
-  		var sliderLeft = parseInt($('.popupRegion .regionSlides').css('left'));
-  		$('.popupRegion .rightArr').show();
-  		$('.popupRegion .regionSlides').animate({'left':sliderLeft+regionSlideW});
-  		if (sliderLeft+(regionSlideW*2) >= 0){
-  			$('.popupRegion .leftArr').hide();
-  		}
-  	});
+			$('.popupRegion .rightArr').hide();
+		}
+	});
+	$('.popupRegion .leftArr').bind('click', function(){
+		var regionSlideW = $('.popupRegion .regionSlides_slide').width() *1;
+		var sliderW = $('.popupRegion .regionSlides').width() *1;
+		var sliderLeft = parseInt($('.popupRegion .regionSlides').css('left'));
+		$('.popupRegion .rightArr').show();
+		$('.popupRegion .regionSlides').animate({'left':sliderLeft+regionSlideW});
+		if (sliderLeft+(regionSlideW*2) >= 0){
+			$('.popupRegion .leftArr').hide();
+		}
+	});
    
 	/* GEOIP fix */
 	if( !docCookies.hasItem('geoshop') ) {
@@ -587,7 +587,7 @@ $(document).ready(function(){
 	}
 	
 	/* prettyCheckboxes */
-    $('.form input[type=checkbox],.form input[type=radio]').prettyCheckboxes();
+	$('.form input[type=checkbox],.form input[type=radio]').prettyCheckboxes();
 
 	/* Rotator */
 	// if ($('#rotator').length) {
@@ -657,7 +657,7 @@ $(document).ready(function(){
 	})
 	
 	/* Side Filters */
-    var filterlink = $('.filter .filterlink:first');
+	var filterlink = $('.filter .filterlink:first');
 	var filterlist = $('.filter .filterlist');
 	var clientBrowser = new brwsr();
 	if( clientBrowser.isTouch ) {
@@ -681,52 +681,52 @@ $(document).ready(function(){
 	var ajaxFilterCounter = 0;
 	
 	$('.product_filter-block')
-    .bind('change', function(e) {
-        var el = $(e.target);
+	.bind('change', function(e) {
+		var el = $(e.target);
 
-        if (el.is('input') && (-1 != $.inArray(el.attr('type'), ['radio', 'checkbox']))) {
-            el.trigger('preview');
-        }
-    })
-    .bind('preview', function(e) {
-        var el = $(e.target)
-        var form = $(this)
-        var flRes = $('.filterresult');
-        ajaxFilterCounter++
+		if (el.is('input') && (-1 != $.inArray(el.attr('type'), ['radio', 'checkbox']))) {
+			el.trigger('preview');
+		}
+	})
+	.bind('preview', function(e) {
+		var el = $(e.target)
+		var form = $(this)
+		var flRes = $('.filterresult');
+		ajaxFilterCounter++
 		var getFiltersResult = function(result) {
 			ajaxFilterCounter--;
 			if( ajaxFilterCounter > 0 ){
 				return;
 			}
 			if( result.success ) {
-                flRes.hide();
-                switch (result.data % 10) {
-                  case 1:
-                    ending = 'ь';
-                    break
-                  case 2: case 3: case 4:
-                    ending = 'и';
-                    break
-                  default:
-                    ending = 'ей';
-                    break
-                }
-                switch (result.data % 100) {
-                  case 11: case 12: case 13: case 14:
-                    ending = 'ей';
-                    break
-                }
-                var firstli = null
-                if ( el.is("div") ) //triggered from filter slider !
-                	firstli = el
-                else
-	                firstli = el.parent().find('> label').first()
-                	$('.result', flRes).text(result.data);
-                	$('.ending', flRes).text(ending);
-                	flRes.css('top',firstli.offset().top-$('.product_filter-block').offset().top).show();
-                	
-                var localTimeout = null
-                $('.product_count-block')
+				flRes.hide();
+				switch (result.data % 10) {
+				  case 1:
+					ending = 'ь';
+					break
+				  case 2: case 3: case 4:
+					ending = 'и';
+					break
+				  default:
+					ending = 'ей';
+					break
+				}
+				switch (result.data % 100) {
+				  case 11: case 12: case 13: case 14:
+					ending = 'ей';
+					break
+				}
+				var firstli = null
+				if ( el.is("div") ) //triggered from filter slider !
+					firstli = el
+				else
+					firstli = el.parent().find('> label').first()
+					$('.result', flRes).text(result.data);
+					$('.ending', flRes).text(ending);
+					flRes.css('top',firstli.offset().top-$('.product_filter-block').offset().top).show();
+					
+				var localTimeout = null
+				$('.product_count-block')
 					.hover(
 						function() {
 							if( localTimeout )
@@ -742,8 +742,8 @@ $(document).ready(function(){
 						form.submit()
 					})
 					.trigger('mouseout')
-            }
-        }
+			}
+		}
 
 		var wholemessage = form.serializeArray();
 		wholemessage["redirect_to"] = form.find('[name="redirect_to"]:first').val();
@@ -753,8 +753,8 @@ $(document).ready(function(){
 			data: wholemessage,
 			success: getFiltersResult
 		});
-    });
-    
+	});
+	
 	/* Sliders */
 	$('.sliderbox').each( function(){
 		var sliderRange = $('.filter-range', this);
@@ -886,7 +886,7 @@ $(document).ready(function(){
 								grouped_accessories[current_accessory_category]['buffer']++
 							}
 							tr = null
-				  		handle_custom_items()
+						handle_custom_items()
 						})
 						current++
 						shiftme()
@@ -1013,46 +1013,53 @@ $(document).ready(function(){
 		}			
 	})
 
-	loadProductRelatedContainer($('#product_view-container'))
-	loadProductRelatedContainer($('#product_also_bought-container'))
-    loadProductRelatedContainer($('#product_user-also_viewed-container'))
-    //loadProductRelatedContainer($('#product_buy-container')); // no such element
-    //loadProductRelatedContainer($('#product_user-recommendation-container'));
 
-    function loadProductRelatedContainer(container) {
-        if (container.length) {
-            $.ajax({
-                url: container.data('url'),
-                timeout: 20000
-            }).success(function(result) {
-                    container.html(result)
-                    // console.log(111)
-								    handle_custom_items()
-                    container.fadeIn()      
-                    var tmpline = new cardsCarousel ({
-                            'prev'  : container.find('.back'),
-                            'next'  : container.find('.forvard'),
-                            'crnt'  : container.find('span:first'),
-                            'times' : container.find('span:eq(1)'),
-                            'width' : container.find('.scroll').data('quantity'),
-                            'wrap'  : container.find('.bigcarousel'),
-                            'viswidth' : 5
-                        }, true )  // true === noajax for carousel                                       
-            })
-        }
-    }
+	var loadProductRelatedContainer = function loadProductRelatedContainer( container ) {
+		var tID = 0;
 
-    $('.product_buy-container').each(function() {
-        order = $(this).data('order')
-        if (typeof(order) == 'object' && !$.isEmptyObject(order)) {
-            $.ajax({
-                url: ($(this).data('url')),
-                data: order,
-                type: 'POST',
-                timeout: 20000
-            })
-        }
-    })
+		var authFromServer = function( result ) {
+				container.html( result );
+				handle_custom_items();
+				container.fadeIn();
+
+				var tmpline = new cardsCarousel ({
+					'prev': container.find('.back'),
+					'next': container.find('.forvard'),
+					'crnt': container.find('span:first'),
+					'times': container.find('span:eq(1)'),
+					'width': container.find('.scroll').data('quantity'),
+					'wrap': container.find('.bigcarousel'),
+					'viswidth' : 5
+				}, true );
+		}
+
+		if ( container.length ) {
+			tID = setTimeout(function(){
+				$.ajax({
+					type: 'GET',
+					url: container.data('url'),
+					timeout: 20000,
+					success: authFromServer
+				});
+			},100);
+		}
+	};
+
+	loadProductRelatedContainer($('#jsAlsoViewedProduct'));
+	loadProductRelatedContainer($('#product_also_bought-container'));
+	loadProductRelatedContainer($('#product_user-also_viewed-container'));
+
+	$('.product_buy-container').each(function() {
+		order = $(this).data('order')
+		if (typeof(order) == 'object' && !$.isEmptyObject(order)) {
+			$.ajax({
+				url: ($(this).data('url')),
+				data: order,
+				type: 'POST',
+				timeout: 20000
+			})
+		}
+	})
 
 	/* Delivery Ajax */
 	function dlvrajax() {
@@ -1136,16 +1143,16 @@ $(document).ready(function(){
 		dajax.post( dlvr_node.data('calclink'), coreid )
 	}
 	
-    if ( $('.delivery-info').length ) { // Product Card
-    	var dlvr_node = $('.delivery-info')
-    	var dajax = new dlvrajax()
-    	var isSupplied = false
-    	if ($('#productInfo').length){
-    		var prData = $('#productInfo').data('value')
-    		isSupplied = prData.isSupplied
-    	}
-    	dajax.node = dlvr_node
-    	dlvrajax.prototype.processHTML = function( id ) {
+	if ( $('.delivery-info').length ) { // Product Card
+		var dlvr_node = $('.delivery-info')
+		var dajax = new dlvrajax()
+		var isSupplied = false
+		if ($('#productInfo').length){
+			var prData = $('#productInfo').data('value')
+			isSupplied = prData.isSupplied
+		}
+		dajax.node = dlvr_node
+		dlvrajax.prototype.processHTML = function( id ) {
 			var self = this.self,
 				other = this.other    	
 			var html = '<h4>Как получить заказ?</h4><ul>'
@@ -1182,11 +1189,11 @@ $(document).ready(function(){
 			
 			dlvr_node.html(html)
 		}
-    
+	
 		var coreid = [ dlvr_node.attr('id').replace('product-id-', '') ]
 		
 		dajax.post( dlvr_node.data('calclink'), coreid )
-    }
+	}
 
 
 	// if ( $('.searchtextClear').length ){

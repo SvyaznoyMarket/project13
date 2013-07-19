@@ -199,7 +199,6 @@
 		<error line="143" column="53" severity="error" message="Missing semicolon." source="jshint.W033" />
 		<error line="144" column="47" severity="error" message="Missing semicolon." source="jshint.W033" />
 		<error line="145" column="40" severity="error" message="Expected &apos;===&apos; and instead saw &apos;==&apos;." source="jshint.W116" />
-		<error line="146" column="12" severity="error" message="Mixed spaces and tabs." source="jshint.W099" />
 		<error line="148" column="44" severity="error" message="Expected &apos;===&apos; and instead saw &apos;==&apos;." source="jshint.W116" />
 		<error line="152" column="81" severity="error" message="Missing semicolon." source="jshint.W033" />
 		<error line="155" column="20" severity="error" message="Missing semicolon." source="jshint.W033" />
@@ -231,7 +230,8 @@
 		<error line="311" column="83" severity="error" message="Missing semicolon." source="jshint.W033" />
 		<error line="316" column="59" severity="error" message="Missing semicolon." source="jshint.W033" />
 		<error line="317" column="49" severity="error" message="Missing semicolon." source="jshint.W033" />
-		<error line="317" column="49" severity="error" message="Too many errors. (25% scanned)." source="jshint.undefined" />
+		<error line="318" column="48" severity="error" message="Missing semicolon." source="jshint.W033" />
+		<error line="318" column="48" severity="error" message="Too many errors. (25% scanned)." source="jshint.undefined" />
 		<error line="239" column="0" severity="warning" message="Implied global &apos;regEmailValid&apos;" source="jshint.implied-globals" />
 		<error line="269" column="0" severity="warning" message="Implied global &apos;PubSub&apos;" source="jshint.implied-globals" />
 	</file>
@@ -304,58 +304,59 @@
 		<error line="140" column="0" severity="warning" message="Implied global &apos;activateItemLvl2&apos;" source="jshint.implied-globals" />
 	</file>
 	<file name="../web/js/dev/infopage/infopages.js">
-		<error line="4" column="48" severity="error" message="Missing semicolon." source="jshint.W033" />
-		<error line="5" column="40" severity="error" message="Missing semicolon." source="jshint.W033" />
-		<error line="7" column="42" severity="error" message="Missing semicolon." source="jshint.W033" />
-		<error line="8" column="36" severity="error" message="Missing semicolon." source="jshint.W033" />
-		<error line="13" column="25" severity="error" message="Expected &apos;{&apos; and instead saw &apos;return&apos;." source="jshint.W116" />
-		<error line="13" column="37" severity="error" message="Missing semicolon." source="jshint.W033" />
-		<error line="15" column="137" severity="error" message="Missing semicolon." source="jshint.W033" />
-		<error line="16" column="79" severity="error" message="Missing semicolon." source="jshint.W033" />
-		<error line="18" column="101" severity="error" message="Missing semicolon." source="jshint.W033" />
-		<error line="20" column="19" severity="error" message="Missing semicolon." source="jshint.W033" />
-		<error line="24" column="41" severity="error" message="Missing semicolon." source="jshint.W033" />
-		<error line="26" column="25" severity="error" message="Missing semicolon." source="jshint.W033" />
-		<error line="27" column="10" severity="error" message="Missing semicolon." source="jshint.W033" />
-		<error line="29" column="61" severity="error" message="Missing semicolon." source="jshint.W033" />
-		<error line="39" column="2" severity="error" message="Mixed spaces and tabs." source="jshint.W099" />
-		<error line="40" column="2" severity="error" message="Mixed spaces and tabs." source="jshint.W099" />
-		<error line="40" column="423" severity="error" message="Missing semicolon." source="jshint.W033" />
-		<error line="66" column="10" severity="error" message="Missing semicolon." source="jshint.W033" />
-		<error line="67" column="68" severity="error" message="Missing semicolon." source="jshint.W033" />
-		<error line="80" column="28" severity="error" message="Missing semicolon." source="jshint.W033" />
-		<error line="82" column="34" severity="error" message="Missing semicolon." source="jshint.W033" />
-		<error line="83" column="54" severity="error" message="Missing semicolon." source="jshint.W033" />
-		<error line="84" column="54" severity="error" message="Missing semicolon." source="jshint.W033" />
-		<error line="88" column="21" severity="error" message="Expected &apos;{&apos; and instead saw &apos;return&apos;." source="jshint.W116" />
-		<error line="88" column="33" severity="error" message="Missing semicolon." source="jshint.W033" />
-		<error line="90" column="42" severity="error" message="Missing semicolon." source="jshint.W033" />
-		<error line="91" column="15" severity="error" message="Missing semicolon." source="jshint.W033" />
-		<error line="92" column="11" severity="error" message="Missing semicolon." source="jshint.W033" />
-		<error line="104" column="11" severity="error" message="Missing semicolon." source="jshint.W033" />
-		<error line="111" column="19" severity="error" message="Missing semicolon." source="jshint.W033" />
-		<error line="113" column="11" severity="error" message="Missing semicolon." source="jshint.W033" />
-		<error line="119" column="53" severity="error" message="Missing semicolon." source="jshint.W033" />
-		<error line="120" column="26" severity="error" message="Missing semicolon." source="jshint.W033" />
-		<error line="121" column="54" severity="error" message="Missing semicolon." source="jshint.W033" />
-		<error line="122" column="56" severity="error" message="Missing semicolon." source="jshint.W033" />
-		<error line="123" column="58" severity="error" message="Missing semicolon." source="jshint.W033" />
-		<error line="124" column="57" severity="error" message="Missing semicolon." source="jshint.W033" />
-		<error line="125" column="60" severity="error" message="Missing semicolon." source="jshint.W033" />
-		<error line="126" column="11" severity="error" message="Missing semicolon." source="jshint.W033" />
-		<error line="129" column="31" severity="error" message="Missing semicolon." source="jshint.W033" />
-		<error line="130" column="25" severity="error" message="Missing semicolon." source="jshint.W033" />
+		<error line="32" column="10" severity="error" message="Missing semicolon." source="jshint.W033" />
+		<error line="34" column="61" severity="error" message="Missing semicolon." source="jshint.W033" />
+		<error line="44" column="2" severity="error" message="Mixed spaces and tabs." source="jshint.W099" />
+		<error line="45" column="2" severity="error" message="Mixed spaces and tabs." source="jshint.W099" />
+		<error line="45" column="423" severity="error" message="Missing semicolon." source="jshint.W033" />
+		<error line="71" column="10" severity="error" message="Missing semicolon." source="jshint.W033" />
+		<error line="72" column="68" severity="error" message="Missing semicolon." source="jshint.W033" />
+		<error line="85" column="28" severity="error" message="Missing semicolon." source="jshint.W033" />
+		<error line="87" column="34" severity="error" message="Missing semicolon." source="jshint.W033" />
+		<error line="88" column="54" severity="error" message="Missing semicolon." source="jshint.W033" />
+		<error line="89" column="54" severity="error" message="Missing semicolon." source="jshint.W033" />
+		<error line="93" column="21" severity="error" message="Expected &apos;{&apos; and instead saw &apos;return&apos;." source="jshint.W116" />
+		<error line="93" column="33" severity="error" message="Missing semicolon." source="jshint.W033" />
+		<error line="95" column="42" severity="error" message="Missing semicolon." source="jshint.W033" />
+		<error line="96" column="15" severity="error" message="Missing semicolon." source="jshint.W033" />
+		<error line="97" column="11" severity="error" message="Missing semicolon." source="jshint.W033" />
+		<error line="109" column="11" severity="error" message="Missing semicolon." source="jshint.W033" />
+		<error line="116" column="19" severity="error" message="Missing semicolon." source="jshint.W033" />
+		<error line="118" column="11" severity="error" message="Missing semicolon." source="jshint.W033" />
+		<error line="124" column="53" severity="error" message="Missing semicolon." source="jshint.W033" />
+		<error line="125" column="26" severity="error" message="Missing semicolon." source="jshint.W033" />
+		<error line="126" column="54" severity="error" message="Missing semicolon." source="jshint.W033" />
+		<error line="127" column="56" severity="error" message="Missing semicolon." source="jshint.W033" />
+		<error line="128" column="58" severity="error" message="Missing semicolon." source="jshint.W033" />
+		<error line="129" column="57" severity="error" message="Missing semicolon." source="jshint.W033" />
+		<error line="130" column="60" severity="error" message="Missing semicolon." source="jshint.W033" />
 		<error line="131" column="11" severity="error" message="Missing semicolon." source="jshint.W033" />
-		<error line="134" column="47" severity="error" message="Bad or unnecessary escaping." source="jshint.W044" />
-		<error line="134" column="49" severity="error" message="Bad or unnecessary escaping." source="jshint.W044" />
-		<error line="134" column="52" severity="error" message="Missing semicolon." source="jshint.W033" />
-		<error line="135" column="93" severity="error" message="Missing semicolon." source="jshint.W033" />
-		<error line="138" column="9" severity="error" message="Function declarations should not be placed in blocks. Use a function expression or move the statement to the top of the outer function." source="jshint.W082" />
-		<error line="140" column="40" severity="error" message="Missing semicolon." source="jshint.W033" />
-		<error line="141" column="100" severity="error" message="Missing semicolon." source="jshint.W033" />
-		<error line="142" column="29" severity="error" message="Missing semicolon." source="jshint.W033" />
-		<error line="142" column="29" severity="error" message="Too many errors. (31% scanned)." source="jshint.undefined" />
-		<error line="16" column="0" severity="warning" message="Implied global &apos;docCookies&apos;" source="jshint.implied-globals" />
+		<error line="134" column="31" severity="error" message="Missing semicolon." source="jshint.W033" />
+		<error line="135" column="25" severity="error" message="Missing semicolon." source="jshint.W033" />
+		<error line="136" column="11" severity="error" message="Missing semicolon." source="jshint.W033" />
+		<error line="139" column="47" severity="error" message="Bad or unnecessary escaping." source="jshint.W044" />
+		<error line="139" column="49" severity="error" message="Bad or unnecessary escaping." source="jshint.W044" />
+		<error line="139" column="52" severity="error" message="Missing semicolon." source="jshint.W033" />
+		<error line="140" column="93" severity="error" message="Missing semicolon." source="jshint.W033" />
+		<error line="143" column="9" severity="error" message="Function declarations should not be placed in blocks. Use a function expression or move the statement to the top of the outer function." source="jshint.W082" />
+		<error line="145" column="40" severity="error" message="Missing semicolon." source="jshint.W033" />
+		<error line="146" column="100" severity="error" message="Missing semicolon." source="jshint.W033" />
+		<error line="147" column="29" severity="error" message="Missing semicolon." source="jshint.W033" />
+		<error line="150" column="47" severity="error" message="Missing semicolon." source="jshint.W033" />
+		<error line="151" column="59" severity="error" message="Missing semicolon." source="jshint.W033" />
+		<error line="154" column="24" severity="error" message="Missing semicolon." source="jshint.W033" />
+		<error line="158" column="39" severity="error" message="Missing semicolon." source="jshint.W033" />
+		<error line="159" column="11" severity="error" message="Missing semicolon." source="jshint.W033" />
+		<error line="161" column="9" severity="error" message="Function declarations should not be placed in blocks. Use a function expression or move the statement to the top of the outer function." source="jshint.W082" />
+		<error line="162" column="35" severity="error" message="Missing semicolon." source="jshint.W033" />
+		<error line="163" column="32" severity="error" message="Missing semicolon." source="jshint.W033" />
+		<error line="166" column="9" severity="error" message="Function declarations should not be placed in blocks. Use a function expression or move the statement to the top of the outer function." source="jshint.W082" />
+		<error line="167" column="72" severity="error" message="Missing semicolon." source="jshint.W033" />
+		<error line="168" column="71" severity="error" message="Missing semicolon." source="jshint.W033" />
+		<error line="169" column="47" severity="error" message="Missing semicolon." source="jshint.W033" />
+		<error line="169" column="47" severity="error" message="Too many errors. (37% scanned)." source="jshint.undefined" />
+		<error line="21" column="0" severity="warning" message="Implied global &apos;docCookies&apos;" source="jshint.implied-globals" />
+		<error line="169" column="0" severity="warning" message="Implied global &apos;button&apos;" source="jshint.implied-globals" />
 	</file>
 	<file name="../web/js/dev/jquery-plugins/custom-form-elements.js">
 		<error line="33" column="1" severity="error" message="document.write can be a form of eval." source="jshint.W060" />
