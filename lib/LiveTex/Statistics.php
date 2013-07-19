@@ -6,10 +6,10 @@ namespace LiveTex;
 class API {
 
     private static $instance = null;
-    private static $authKey = null;
-    private static $chief_id = null;
-    private static $login = 'anastasiya.vs@enter.ru';
-    private static $password = 'enter1chat2';
+    private $authKey = null;
+    private $chief_id = null;
+    private $login = 'anastasiya.vs@enter.ru';
+    private $password = 'enter1chat2';
 
     private $api_url = 'http://api.livetex.ru/';
     private $api_login_url = 'http://api.livetex.ru/login.php';
@@ -53,14 +53,10 @@ class API {
 
         $response = $this->curl( $this->api_login_url, $post_arr );
 
-        //print '<pre>##$$$%';
-        //print_r( $response->response );
-        //print '</pre>';
-
 
         if ($response->response) {
-            $this->authKey = $response->response->authkey;
-            $this->chief_id = $response->response->chief_id;
+            if ( isset($response->response->authkey) ) $this->authKey = $response->response->authkey;
+            if ( isset($response->response->chief_id) ) $this->chief_id = $response->response->chief_id;
         }
 
         return $response;

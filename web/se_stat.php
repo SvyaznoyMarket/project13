@@ -55,7 +55,7 @@ if( $curl = curl_init() ) {
 
 include_once '../lib/LiveTex/Statistics.php';
 $API = \LiveTex\Api::getInstance();
-$API->login();
+$resp = $API->login();
 /*
 $resp = $API->method('Operator.ChatStat', [
     'date_from' => '2013-03-01',
@@ -63,7 +63,7 @@ $resp = $API->method('Operator.ChatStat', [
     'id' => '66252'
 ]);*/
 
-$resp = $API->method('Operator.GetList');
+//$resp = $API->method('Operator.GetList');
 
 print_r($resp);
 
