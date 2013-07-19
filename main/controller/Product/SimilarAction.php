@@ -37,7 +37,7 @@ class SimilarAction {
                 throw new \Exception($r['error']['@message'] . ': '. json_encode($r, JSON_UNESCAPED_UNICODE), (int)$r['error']['@code']);
             }
 
-            $ids = array_key_exists('id', $r['recommendeditems']['item'])
+            $ids = (is_array($r['recommendeditems']) && array_key_exists('id', $r['recommendeditems']['item']))
                 ? [$r['recommendeditems']['item']['id']]
                 : array_map(function($item) { return $item['id']; }, isset($r['recommendeditems']['item']) ? $r['recommendeditems']['item'] : []);
             if (!(bool)$ids) {
