@@ -2,7 +2,7 @@
 
 namespace Controller\Product;
 
-class AlsoViewedActionAction {
+class AlsoViewedAction {
     /**
      * @param string        $productId
      * @param \Http\Request $request

@@ -61,7 +61,7 @@
         ]) ?>
     <? endif ?>
 
-    <? if (!$product->getIsBuyable() && \App::config()->smartengine['pull']): ?>
+    <? if (\App::config()->smartengine['pull']): ?>
         <?= $helper->render('product/__slider', [
             'title'    => 'С этим товаром также смотрят',
             'products' => [],
