@@ -11386,5 +11386,19 @@
   }
 }
 /*---END---СТИЛИ НОВОЙ КАРТОЧКИ ТОВАРА - ВЕРСИЯ ДЛЯ ПЕЧАТИ---*/
+/*------СТИЛИ КОРЗИНЫ - ВЕРСИЯ ДЛЯ ПЕЧАТИ------*/
+@media print {
+  .basketinfo .right,
+  .bBacketServ.extWarr a.link_extWarr,
+  .bF1SaleCard,
+  .bBuyingFooter,
+  .mNoPrint,
+  .bBigOrangeButton,
+  .bBuyingHead i,
+  .socnet-ico-box {
+    display: none;
+  }
+}
+/*---END---СТИЛИ КОРЗИНЫ - ВЕРСИЯ ДЛЯ ПЕЧАТИ---*/
 /*------НОВОГОДНЕЕ ОФОРМЛЕНИЕ------*/
 /*---END---НОВОГОДНЕЕ ОФОРМЛЕНИЕ---*/
