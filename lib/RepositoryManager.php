@@ -105,6 +105,21 @@ class RepositoryManager {
         return $instance;
     }
 
+
+    /**
+     * @return Model\Page\Repository
+     */
+    static public function page() {
+        static $instance;
+
+        if (!$instance) {
+            $instance = new \Model\Page\Repository(\App::coreClientV2());
+        }
+
+        return $instance;
+    }
+
+
     /**
      * @return Model\Tag\Repository
      */
