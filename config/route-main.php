@@ -457,6 +457,11 @@ return [
         'action' => ['Product\SimilarAction', 'execute'],
         'require' => ['productId' => '\d+'],
     ],
+    'product.alsoViewed' => [
+        'pattern' => '/ajax/product-also-viewed/{productId}',
+        'action' => ['Product\AlsoViewedAction', 'execute'],
+        'require' => ['productId' => '\d+'],
+    ],
     /*
     'smartengine.pull.product_similar' => [
         'pattern' => '/product-similar/{productId}',
