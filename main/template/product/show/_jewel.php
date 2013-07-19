@@ -63,6 +63,17 @@
             ]) ?>
         <? endif ?>
 
+        <? if (\App::config()->smartengine['pull']): ?>
+            <?= $helper->render('product/__slider', [
+                'title'    => 'С этим товаром также смотрят',
+                'products' => [],
+                'count'    => null,
+                'limit'    => \App::config()->product['itemsInSlider'],
+                'page'     => 1,
+                'url'      => $page->url('product.alsoViewed', ['productId' => $product->getId()]),
+            ]) ?>
+        <? endif ?>
+
         <? if ((bool)$related && \App::config()->product['showRelated']): ?>
             <?= $helper->render('product/__slider', [
                 'title'          => 'С этим товаром также покупают',
@@ -93,7 +104,7 @@
                 <? endif ?>
             </div>
 
-            <? if (!$product->getIsBuyable() && \App::config()->smartengine['pull']): ?>
+            <? if (\App::config()->smartengine['pull']): ?>
                 <?= $helper->render('product/__slider', [
                     'title'    => 'Похожие товары',
                     'products' => [],

@@ -18,7 +18,7 @@ return function(
         <span>Отзывов нет</span>
     <? } ?>
 
-    <span class="bReviewSection__eWrite jsLeaveReview" data-pid="<?= $product->getId() ?>">Оставить отзыв</span>
+    <span class="bReviewSection__eWrite jsLeaveReview" data-pid="<?= $product->getId() ?>"><span class="dotted">Оставить отзыв</span></span>
 
     <div style="position:fixed; top:40px; left:50%; margin-left:-442px; z-index:1002; display:none; width:700px; height:480px" class="reviewPopup popup clearfix">
         <a class="close" href="#">Закрыть</a>

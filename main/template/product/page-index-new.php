@@ -62,3 +62,7 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
     <?= $page->tryRender('product/partner-counter/_cityads', ['product' => $product]) ?>
     <?= $page->tryRender('product/partner-counter/_recreative', ['product' => $product]) ?>
 <? endif ?>
+
+<? if (\App::config()->smartengine['push']): ?>
+    <div id="jsAlsoViewedProduct" data-url="<?= $page->url('smartengine.push.product_view', array('productId' => $product->getId())) ?>"></div>
+<? endif ?>

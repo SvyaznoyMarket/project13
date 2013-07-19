@@ -65,11 +65,13 @@
 
 		.product__inner {
 			padding: 10px;
-			.transition(all 0.05s linear);      
+			.transition(box-shadow 0.05s linear);      
 			&:hover {
-				.box-shadow(0 0 5px rgba(0,0,0,0.3));
+				.box-shadow(0 0 5px #c6c6c6);
 				background: @white;
 				.rounded(3px);
+				border: 1px solid #d6d6d6;
+				padding: 9px;
 				.btnBuy {
 					.opacity(1);
 				}
