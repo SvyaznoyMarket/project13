@@ -44,25 +44,21 @@ class AlsoViewedAction {
                     throw new \Exception($r['error']['@message'] . ': '. json_encode($r, JSON_UNESCAPED_UNICODE), (int)$r['error']['@code']);
                 }
             }
-            if (!(bool)$r['recommendeditems']) {
-                throw new \Exception();
-            }
 
             $ids = array_key_exists('id', $r['recommendeditems']['item'])
                 ? [$r['recommendeditems']['item']['id']]
                 : array_map(function($item) { return $item['id']; }, isset($r['recommendeditems']['item']) ? $r['recommendeditems']['item'] : []);
             if (!count($ids)) {
-                throw new \Exception();
+                throw new \Exception('Рекомендации не получены');
             }
 
             $products = \RepositoryManager::product()->getCollectionById($ids);
-
             foreach ($products as $i => $product) {
                 if (!$product->getIsBuyable()) unset($products[$i]);
             }
 
-            if (!count($products)) {
-                throw new \Exception();
+            if (!(bool)$products) {
+                throw new \Exception('Нет товаров');
             }
             $additionalData = [];
             foreach ($products as $i => $product) {
@@ -73,10 +69,6 @@ class AlsoViewedAction {
 
             $layout = new \Templating\HtmlLayout();
             $layout->setGlobalParam('sender', \Smartengine\Client::NAME);
-
-            if (!(bool)$products) {
-                throw new \Exception('Нет товаров');
-            }
 
             return new \Http\JsonResponse([
                 'success' => true,

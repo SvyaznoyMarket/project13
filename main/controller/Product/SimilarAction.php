@@ -36,15 +36,12 @@ class SimilarAction {
             if (isset($r['error'])) {
                 throw new \Exception($r['error']['@message'] . ': '. json_encode($r, JSON_UNESCAPED_UNICODE), (int)$r['error']['@code']);
             }
-            if (!(bool)$r['recommendeditems']) {
-                throw new \Exception();
-            }
 
             $ids = array_key_exists('id', $r['recommendeditems']['item'])
                 ? [$r['recommendeditems']['item']['id']]
                 : array_map(function($item) { return $item['id']; }, isset($r['recommendeditems']['item']) ? $r['recommendeditems']['item'] : []);
             if (!(bool)$ids) {
-                throw new \Exception('Товары от smartengine не получены');
+                throw new \Exception('Рекомендации не получены');
             }
 
             $products = \RepositoryManager::product()->getCollectionById($ids);
