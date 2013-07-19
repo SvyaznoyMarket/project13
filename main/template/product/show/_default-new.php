@@ -104,7 +104,7 @@
         <? endif ?>
         </div>
 
-        <? if (!$product->getIsBuyable() && \App::config()->smartengine['pull']): ?>
+        <? if (\App::config()->smartengine['pull']): ?>
             <?= $helper->render('product/__slider', [
                 'title'    => 'Похожие товары',
                 'products' => [],
