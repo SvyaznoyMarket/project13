@@ -1,4 +1,3 @@
-;
 /**
  * Обработчик для кнопок купить
  *
@@ -7,23 +6,24 @@
  * @param		{event}		e
  * @param		{Boolean}	anyway Если true событие будет все равно выполнено
  */
-(function(){
+;(function() {
 
 	/**
 	 * Добавление в корзину на сервере. Получение данных о покупке и состоянии корзины. Маркировка кнопок.
 	 * 
 	 * @param  {Event}	e
 	 */
-	var buy = function(e){
-		var button = $(this);
-		var url = button.attr('href');
+	var buy = function buy() {
+		var button = $(this),
+			url = button.attr('href');
+		// end of vars
 
-		var addToCart = function(data) {
-			if (!data.success) {
+		var addToCart = function addToCart( data ) {
+			var groupBtn = button.data('group');
+
+			if ( !data.success ) {
 				return false;
 			}
-
-			var groupBtn = button.data('group');
 
 			$('.jsBuyButton[data-group="'+groupBtn+'"]').html('В корзине').addClass('mBought').attr('href','/cart');
 			$("body").trigger("addtocart", [data]);
@@ -37,21 +37,24 @@
 	 * 
 	 * @param  {Event}	e
 	 */
-	var BuyButtonHandler = function(e){
+	var BuyButtonHandler = function BuyButtonHandler( e ) {
+		var button = $(this),
+			url = button.attr('href');
+		// end of vars
+		
 		e.stopPropagation();
 
-		var button = $(this);
-
-		if (button.hasClass('mDisabled')) {
+		if ( button.hasClass('mDisabled') ) {
 			return false;
 		}
-		if (button.hasClass('mBought')) {
-			var url = button.attr('href');
+		if ( button.hasClass('mBought') ) {
 			document.location.href(url);
+
 			return false;
 		}
 
 		button.trigger('buy', buy);
+
 		return false;
 	};
 
@@ -62,11 +65,12 @@
 	 * @param	{event}		event          
 	 * @param	{Object}	markActionInfo Данные полученые из Action
 	 */
-	var markCartButton = function(event, markActionInfo){
-		for (var i = 0, len = markActionInfo.product.length; i < len; i++){
+	var markCartButton = function markCartButton( event, markActionInfo ) {
+		for ( var i = 0, len = markActionInfo.product.length; i < len; i++ ) {
 			$('.'+markActionInfo.product[i].id).html('В корзине').addClass('mBought').attr('href','/cart');
 		}
 	};
+
 	$("body").bind('markcartbutton', markCartButton);
 	
 	$(document).ready(function() {
@@ -84,11 +88,11 @@
  * @param		{event}		event 
  * @param		{Object}	data	данные о том что кладется в корзину
  */
-(function(){
+(function() {
 		/**
 		 * KISS Аналитика для добавления в корзину
 		 */
-	var kissAnalytics = function kissAnalytics(data) {
+	var kissAnalytics = function kissAnalytics( data ) {
 			var productData = data.product,
 				serviceData = data.service,
 				warrantyData = data.warranty,
@@ -107,7 +111,7 @@
 					'Add to Cart Category ID':productData.category[productData.category.length-1].id,
 					'Add to Cart SKU Price':productData.price,
 					'Add to Cart Page URL':nowUrl,
-					'Add to Cart F1 Quantity':productData.serviceQuantity,
+					'Add to Cart F1 Quantity':productData.serviceQuantity
 				};
 
 				if ( typeof(_kmq) !== 'undefined' ) {
@@ -123,7 +127,7 @@
 					'Add F1 Root category':productData.category[0].name,
 					'Add F1 Root ID':productData.category[0].id,
 					'Add F1 Category name':productData.category[productData.category.length-1].name,
-					'Add F1 Category ID':productData.category[productData.category.length-1].id,
+					'Add F1 Category ID':productData.category[productData.category.length-1].id
 				};
 
 				if ( typeof(_kmq) !== 'undefined' ) {
@@ -139,7 +143,7 @@
 					'Add Warranty Root category':productData.category[0].name,
 					'Add Warranty Root ID':productData.category[0].id,
 					'Add Warranty Category name':productData.category[productData.category.length-1].name,
-					'Add Warranty Category ID':productData.category[productData.category.length-1].id,
+					'Add Warranty Category ID':productData.category[productData.category.length-1].id
 				};
 
 				if ( typeof(_kmq) !== 'undefined' ) {
@@ -151,7 +155,7 @@
 		/**
 		 * Google Analytics аналитика добавления в корзину
 		 */
-		googleAnalytics = function googleAnalytics(data) {
+		googleAnalytics = function googleAnalytics( data ) {
 			var productData = data.product;
 
 			if (productData){
@@ -164,7 +168,7 @@
 		/**
 		 * myThings аналитика добавления в корзину
 		 */
-		myThingsAnalytics = function myThingsAnalytics(data) {
+		myThingsAnalytics = function myThingsAnalytics( data ) {
 			var productData = data.product;
 
 			if ( typeof(MyThings) !== 'undefined' ) {
@@ -180,28 +184,30 @@
 		/**
 		 * Обработка покупки, парсинг данных от сервера, запуск аналитики
 		 */
-		buyProcessing = function buyProcessing(event, data) {
+		buyProcessing = function buyProcessing( event, data ) {
+			var basket = data.cart,
+				product = data.product,
+				tmpitem = {
+					'title': product.name,
+					'price' : printPrice(product.price),
+					'imgSrc': product.img,
+					'productLink': product.link,
+					'totalQuan': basket.full_quantity,
+					'totalSum': printPrice(basket.full_price),
+					'linkToOrder': basket.link
+				};
+			// end of vars
+
+
 			kissAnalytics(data);
 			googleAnalytics(data);
 			myThingsAnalytics(data);
 
-			if (!blackBox) {
+			if ( !blackBox ) {
 				return false;
 			}
-
-			var basket = data.cart;
-			var product = data.product;
-			var tmpitem = {
-				'title': product.name,
-				'price' : printPrice(product.price),
-				'imgSrc': product.img,
-				'productLink': product.link,
-				'totalQuan': basket.full_quantity,
-				'totalSum': printPrice(basket.full_price),
-				'linkToOrder': basket.link,
-			};
 			
-			blackBox.basket().add(tmpitem);
+			blackBox.basket().add( tmpitem );
 		};
 	//end of vars
 

@@ -2,46 +2,51 @@
  * Кредит для карточки товара
  *
  * @author		Kotov Ivan, Zaytsev Alexandr
- * @requires	jQuery, printPrice, docCookies
+ * @requires	jQuery, printPrice, docCookies, JsHttpRequest.js
  */
-
-;(function(){
+;(function() {
 	if( $('.creditbox').length ) {
-		var creditBoxNode = $('.creditbox');
-		var priceNode = creditBoxNode.find('.creditbox__sum strong');
+		var creditBoxNode = $('.creditbox'),
+			priceNode = creditBoxNode.find('.creditbox__sum strong');
+		// end of vars
 
 		window.creditBox = {
-			cookieTimeout : null,
+			cookieTimeout: null,
 			
-			toggleCookie : function( state ){
+			toggleCookie: function( state ) {
 				clearTimeout( this.cookieTimeout );
 				this.cookieTimeout = setTimeout( function(){
 					docCookies.setItem(false, 'credit_on', state ? 1 : 0 , 60*60, '/');
 				}, 200 );
 			},
 
-			init : function() {
-				var self = this;
-				$('.creditbox label').click( function(e) {
+			init: function() {
+				var self = this,
+					creditd = $('input[name=dc_buy_on_credit]').data('model');
+				// end of vars
+
+				$('.creditbox label').click(function( e ) {
 					var target = $(e.target);
+
 					e.stopPropagation();
-					if (target.is('input')) {
+
+					if ( target.is('input') ) {
 						return false;
 					}
 					
 					$(this).toggleClass('checked');
 					self.toggleCookie( $(this).hasClass('checked') );
 				});
-				if( this.getState() === 1) {
+
+				if ( this.getState() === 1 ) {
 					$('.creditbox label').addClass('checked');
 				}
-				
-				var creditd = $('input[name=dc_buy_on_credit]').data('model');
 
 				creditd.count = 1;
 				creditd.cart = '/cart';
+
 				dc_getCreditForTheProduct(
-					4427, 
+					4427,
 					docCookies.getItem('enter_auth'),
 					'getPayment',
 					{ price : creditd.price, count : creditd.count, type : creditd.product_type },
@@ -55,30 +60,14 @@
 						}
 					}
 				);
-
-	/*			
-				JsHttpRequest.query(
-					'http://direct-credit.ru/widget/payment.php',
-					{
-						'price'			:	creditd.price,
-						'partner_id'	:	4427,
-						'product_type'	:	creditd.product_type
-					},
-					function(result, errors) {
-						$('.creditboxinner .price').html( printPrice( result.htmlcode.replace(/[^0-9]/g,'')) )
-						$('.creditbox').show()
-					},
-					false
-				)
-	*/				
 			},
 			
-			getState : function() {
-				if( ! docCookies.hasItem('credit_on') ){
+			getState: function() {
+				if( ! docCookies.hasItem('credit_on') ) {
 					return 0;
 				}
+
 				return docCookies.getItem('credit_on');
-				//return $('.creditbox input:checked').length
 			}
 		};
 		
@@ -104,8 +93,8 @@
  * @param		{Object}	productInfo		Данные о текущем продукте
  * @param		{Object}	dataToSend		Данные для отправки на сервер и получение расчитанной доставки
  */
-(function(){
-	if (!$('#jsProductCard').length){
+(function() {
+	if ( !$('#jsProductCard').length ) {
 		return false;
 	}
 
@@ -118,7 +107,8 @@
 			'product':[
 				{'id': productInfo.id}
 			]
-		},
+		};
+	// end of vars
 
 		/**
 		 * Показ попапа с магазином
@@ -129,7 +119,7 @@
 		 * @param	{String}	url			Ссылка на магазин
 		 * @return	{Boolean}
 		 */
-		showAvalShop = function (){
+	var showAvalShop = function showAvalShop() {
 			var popup = $('#avalibleShop'),
 				button = popup.find('.bOrangeButton'),
 				position = {
@@ -137,7 +127,7 @@
 					longitude: $(this).data('lng')
 				},
 				url = $(this).attr('href');
-			// end of var
+			// end of vars
 
 			button.attr('href', url);
 			$('#ymaps-avalshops').css({'width':600, 'height':400});
@@ -173,28 +163,30 @@
 		 * @param	{Object}	shopInfo		Данные для подстановки в шаблон магазина
 		 * @param	{Number}	shopLen			Количество магазинов
 		 */
-		fillAvalShopTmpl = function (shops){
+		fillAvalShopTmpl = function fillAvalShopTmpl( shops ) {
 			var nowBox = widgetBox.find('.bWidgetBuy__eDelivery-now'),
 				toggleBtn = nowBox.find('.bWidgetBuy__eDelivery-nowClick'),
 				shopList = nowBox.find('.bDeliveryFreeAddress'),
 				templateNow = '',
 				shopInfo = {},
-				shopLen = shops.length,
-
-				/**
-				 * Обработчик переключения состояния листа магазинов открыто или закрыто
-				 */
-				shopToggle = function (){
-					nowBox.toggleClass('mOpen');
-					nowBox.toggleClass('mClose');
-				};
+				shopLen = shops.length;
 			// end of var
 			
-			if (!shopLen){
+
+			/**
+			 * Обработчик переключения состояния листа магазинов открыто или закрыто
+			 */
+			var shopToggle = function shopToggle() {
+				nowBox.toggleClass('mOpen');
+				nowBox.toggleClass('mClose');
+			};
+			
+			
+			if ( !shopLen ) {
 				return;
 			}
 
-			for (var j = shopLen - 1; j >= 0; j--) {
+			for ( var j = shopLen - 1; j >= 0; j-- ) {
 				shopInfo = {
 					name: shops[j].name,
 					lat: shops[j].latitude,
@@ -216,18 +208,18 @@
 		 * 
 		 * @param	{Object}	res	Ответ от сервера
 		 */
-		resFromSerever = function (res){
-			if (!res.success){
-				return false;
-			}
-
+		resFromSerever = function resFromSerever( res ) {
 			/**
 			 * Полученнный с сервера массив вариантов доставок для текущего товара
 			 * @type	{Array}
 			 */
 			var deliveryInfo = res.product[0].delivery;
 
-			for (var i = deliveryInfo.length - 1; i >= 0; i--) {
+			if ( !res.success ) {
+				return false;
+			}
+
+			for ( var i = deliveryInfo.length - 1; i >= 0; i-- ) {
 				switch (deliveryInfo[i].token){
 					case 'standart':
 						var standartBox = widgetBox.find('.bWidgetBuy__eDelivery-price'),
@@ -254,15 +246,15 @@
 						break;
 
 					case 'now':
-						fillAvalShopTmpl(deliveryInfo[i].shop);
+						fillAvalShopTmpl( deliveryInfo[i].shop );
 						break;
 				}
 			}
 		};
-	// end of var
+	// end of functions
 
-	if (url === '') {
-		fillAvalShopTmpl(deliveryShops);
+	if ( url === '' ) {
+		fillAvalShopTmpl( deliveryShops );
 	}
 	else {
 		$.ajax({
@@ -418,157 +410,6 @@
 		}
 	});
 })();
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
-/**
- * Слайдер товаров
- *
- * @author		Zaytsev Alexandr
- * @requires	jQuery
- */
-
-;(function($){
-	$.fn.goodsSlider = function(params) {
-		return this.each(function() {
-			var options = $.extend(
-							{},
-							$.fn.goodsSlider.defaults,
-							params),
-				$self = $(this),
-				sliderParams = $self.data('slider'),
-				hasCategory = $self.hasClass('mWithCategory'),
-				leftBtn = $self.find(options.leftArrowSelector),
-				rightBtn = $self.find(options.rightArrowSelector),
-				wrap = $self.find(options.sliderWrapperSelector),
-				slider = $self.find(options.sliderSelector),
-				item = $self.find(options.itemSelector),
-				catItem = $self.find(options.categoryItemselector),
-				itemW = item.width() + parseInt(item.css('marginLeft'),10) + parseInt(item.css('marginRight'),10),
-				elementOnSlide = wrap.width()/itemW,
-				nowLeft = 0,
-
-				nextSlide = function nextSlide() {
-					if ($(this).hasClass('mDisabled')) {
-						return false;
-					}
-
-					leftBtn.removeClass('mDisabled');
-
-					if (nowLeft + elementOnSlide * itemW >= slider.width()-elementOnSlide * itemW) {
-						nowLeft = slider.width()-elementOnSlide * itemW
-						rightBtn.addClass('mDisabled');
-					}
-					else {
-						nowLeft = nowLeft + elementOnSlide * itemW;
-						rightBtn.removeClass('mDisabled');
-					}
-
-					slider.animate({'left': -nowLeft });
-
-					return false;
-				},
-
-				prevSlide = function prevSlide() {
-					if ($(this).hasClass('mDisabled')) {
-						return false;
-					}
-
-					rightBtn.removeClass('mDisabled');
-
-					if (nowLeft - elementOnSlide * itemW <= 0) {
-						nowLeft = 0;
-						leftBtn.addClass('mDisabled');
-					}
-					else {
-						nowLeft = nowLeft - elementOnSlide * itemW;
-						leftBtn.removeClass('mDisabled');
-					}
-
-					slider.animate({'left': -nowLeft });
-
-					return false;
-				},
-
-				reWidthSlider = function reWidthSlider(nowItems) {
-					leftBtn.addClass('mDisabled');
-					rightBtn.addClass('mDisabled');
-
-					if (nowItems.length > elementOnSlide) {
-						rightBtn.removeClass('mDisabled');
-					}
-
-					slider.width(nowItems.length * itemW);
-					nowLeft = 0;
-					leftBtn.addClass('mDisabled');
-					slider.css({'left':nowLeft});
-					nowItems.show();
-				},
-
-				showCategoryGoods = function showCategoryGoods() {
-					var nowCategoryId = catItem.filter('.mActive').attr('id'),
-						showAll = (catItem.filter('.mActive').data('product') === 'all'),
-						nowShowItem = (showAll) ? item : item.filter('[data-category="'+nowCategoryId+'"]');
-					//end of vars
-					
-					item.hide();
-					reWidthSlider(nowShowItem);
-				},
-
-				selectCategory = function selectCategory() {
-					catItem.removeClass('mActive');
-					$(this).addClass('mActive');
-					showCategoryGoods();
-				},
-
-				authFromServer = function authFromServer(res) {
-					// res = [{"id":85172,"name":"Золотые серьги с топазом и фианитами ","image":"http://fs03.enter.ru/1/1/120/a2/172827.jpg","rating":0,"link":"/product/jewel/zolotie-sergi-s-topazom-i-fianitami-2030000144600?sender=smartengine|85172","price":11000,"data":{"place":"product","article":"462-9856","name":"Золотые серьги с топазом и фианитами ","position":3,"type":"Similar"}}];
-					console.log(res);
-				};
-			//end of vars
-		
-
-			if (hasCategory) {
-				showCategoryGoods();
-			}
-			else {
-				reWidthSlider(item);
-			}
-
-			if (sliderParams.url) {
-				$.ajax({
-					type: 'GET',
-					url: sliderParams.url,
-					success: authFromServer
-				});
-			}
-
-			rightBtn.bind('click', nextSlide);
-			leftBtn.bind('click', prevSlide);
-			catItem.bind('click', selectCategory)
-		});
-	};
-
-	$.fn.goodsSlider.defaults = {
-		leftArrowSelector: '.bSliderAction__eBtn.mPrev',
-		rightArrowSelector: '.bSliderAction__eBtn.mNext',
-		sliderWrapperSelector: '.bSliderAction__eInner',
-		sliderSelector: '.bSliderAction__eList',
-		itemSelector: '.bSliderAction__eItem',
-		categoryItemselector: '.bGoodsSlider__eCatItem'
-	};
-
-})(jQuery);
-
-$(document).ready(function() {
-	if ($('.bGoodsSlider').length) {
-		$('.bGoodsSlider').goodsSlider();
-	}
-});
  
  
 /** 
@@ -941,10 +782,11 @@ $(document).ready(function() {
 	 * @param		{Number} count Возвращает текущее значение каунтера
 	 */
 	$('.bCountSection').goodsCounter({
-		onChange:function(count){
-			var spinnerFor = $('.bCountSection').attr('data-spinner-for');
-			var bindButton = $('.'+spinnerFor);
-			var newHref = bindButton.attr('href');
+		onChange:function( count ){
+			var spinnerFor = $('.bCountSection').attr('data-spinner-for'),
+				bindButton = $('.'+spinnerFor),
+				newHref = bindButton.attr('href');
+			// end of vars
 
 			bindButton.attr('href',newHref.addParameterToUrl('quantity',count));
 
@@ -957,23 +799,46 @@ $(document).ready(function() {
 
 
 	/**
+	 * Подключение слайдера товаров
+	 */
+	$('.bGoodsSlider').goodsSlider();
+
+
+	/**
+	 * Подключение кастомных дропдаунов
+	 */
+	$('.bDescSelectItem').customDropDown({
+		changeHandler: function( option ) {
+			var url = option.data('url');
+
+			document.location.href = url;
+		}
+	});
+
+
+	/**
 	 * Аналитика для карточки товара
 	 *
 	 * @requires jQuery
 	 */
-	(function(){
-		if (!$('#jsProductCard').length){
+	(function() {
+		var productInfo = {},
+			toKISS = {};
+		// end of vars
+		
+		if ( !$('#jsProductCard').length ) {
 			return false;
 		}
-		
-		var productInfo = $('#jsProductCard').data('value');
-		var toKISS = {
+
+		productInfo = $('#jsProductCard').data('value');
+				
+		toKISS = {
 			'Viewed Product SKU':productInfo.article,
 			'Viewed Product Product Name':productInfo.name,
 			'Viewed Product Product Status':productInfo.stockState,
 		};
 
-		if (typeof(_kmq) !== 'undefined'){
+		if ( typeof(_kmq) !== 'undefined' ) {
 			_kmq.push(['record', 'Viewed Product',toKISS]);
 		}
 	})();
@@ -981,59 +846,16 @@ $(document).ready(function() {
 
 	/**
 	 * Затемнение всех контролов после добавления в корзину
+	 *
+	 * @requires jQuery
 	 */
-	(function(){
-		var afterBuy = function(){
+	(function() {
+		var afterBuy = function afterBuy() {
 			$('.bCountSection').addClass('mDisabled').find('input').attr('disabled','disabled');
 			$('.jsOrder1click').addClass('mDisabled');
 		};
 
 		$("body").bind('addtocart', afterBuy);
-	})();
-
-
-	/**
-	 * Custom select
-	 */
-	(function($){
-		$.fn.customDropDown = function(params) {
-			return this.each(function() {
-				var options = $.extend(
-								{},
-								$.fn.customDropDown.defaults,
-								params);
-				var $self = $(this);
-
-				var select = $self.find(options.selectSelector);
-				var value = $self.find(options.valueSelector);
-
-				var selectChangeHandler = function(){
-					var selectedOption = select.find('option:selected');
-
-					value.html(selectedOption.val());
-					options.changeHandler(selectedOption);
-				};
-
-				select.on('change', selectChangeHandler)
-			});
-		};
-				
-		$.fn.customDropDown.defaults = {
-			valueSelector: '.bDescSelectItem__eValue',
-			selectSelector: '.bDescSelectItem__eSelect',
-			changeHandler: function(){}
-		};
-
-	})(jQuery);
-
-	(function(){
-		$('.bDescSelectItem').customDropDown({
-			changeHandler: function(option){
-				var url = option.data('url');
-
-				document.location.href = url;
-			}
-		});
 	})();
 	
 
@@ -1075,7 +897,7 @@ $(document).ready(function() {
 
 	
 	// карточка товара - характеристики товара краткие/полные
-	if($('#productDescriptionToggle').length) {
+	if ($('#productDescriptionToggle').length) {
 		$('#productDescriptionToggle').toggle(
 			function(e){
 				e.preventDefault();
@@ -1275,72 +1097,5 @@ $(document).ready(function() {
 		if ($('.bPhotoActionOtherAction__eVideo').length){
 			initVideo();
 		}
-	});
-}());
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
-;(function(){
-	var addWarranty = function(el){
-		var url = el.data('set-url');
-		var resFromServer = function(res){
-			if (!res.success){
-				return false;
-			}
-			console.log(res);
-			// if (blackBox) {
-			// 	var basket = data.cart;
-			// 	var product = data.product;
-			// 	var tmpitem = {
-			// 		'title': product.name,
-			// 		'price' : printPrice(product.price),
-			// 		'imgSrc': product.img,
-			// 		'productLink': product.link,
-			// 		'totalQuan': basket.full_quantity,
-			// 		'totalSum': printPrice(basket.full_price),
-			// 		'linkToOrder': basket.link,
-			// 	};
-			// 	blackBox.basket().add(tmpitem);
-			// }
-		};
-		$.ajax({
-			type: 'GET',
-			url: url,
-			success: resFromServer
-		});
-	};
-
-	var delWarranty = function(el){
-		var url = el.data('delete-url');
-		var resFromServer = function(res){
-			if (!res.success){
-				return false;
-			}
-			console.log(res);
-			
-			if (blackBox) {
-				var basket = res.cart;
-				var tmpitem = {
-					'cartQ': basket.full_quantity,
-					'cartSum' : printPrice(basket.full_price)
-				};
-				blackBox.basket().update(tmpitem);
-			}
-		};
-		$.ajax({
-			type: 'GET',
-			url: url,
-			success: resFromServer
-		});
-	};
-
-
-	$('.jsCustomRadio').customRadio({
-		onChecked: addWarranty,
-		onUncheckedGroup: delWarranty
 	});
 }());
