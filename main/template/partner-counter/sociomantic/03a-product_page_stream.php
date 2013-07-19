@@ -44,7 +44,7 @@ if ($product instanceof \Model\Product\Entity) {
 if (!empty($scr_product)):
 ?>
 <script type="text/javascript">
-var product = { <?
+var sonar_product = { <?
     foreach($scr_product as $key => $value):
         if (!empty($value)):
             $i++;
