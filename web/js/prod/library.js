@@ -2247,14 +2247,27 @@ String.prototype.addParameterToUrl = UpdateUrlString;
  * @requires  jQuery
  */
 (function(){
-    var sbWidthDiff = 120,
-        sbWidthDiffAfterSubmit = 106,
-        sbHeightDiff = 300,
+    var sbWidthDiff = null,
+        sbHeightDiff = null,
+        sbWidthDiffAfterSubmit = null,
         initTime = null,
         serverTime = null,
         showDelay = null,
         isTimePassed = null;
 
+    /**
+     * Функция инициализации параметров опроса
+     */
+    var initSurveyBoxData = function() {
+        var surveyBox = $('.surveyBox');
+        sbWidthDiff = parseInt( surveyBox.data('expanded-width-diff'), 10 );
+        sbHeightDiff = parseInt( surveyBox.data('expanded-height-diff'), 10 );
+        sbWidthDiffAfterSubmit = sbWidthDiff - 14;
+        initTime = parseInt( surveyBox.data('init-time'), 10 );
+        serverTime = parseInt( surveyBox.data('server-time'), 10 );
+        showDelay = parseInt( surveyBox.data('show-delay'), 10 );
+        isTimePassed = parseInt( surveyBox.data('is-time-passed'), 10 );
+    };
 
     /**
      * Функция разворачивания/сворачивания опроса
@@ -2319,18 +2332,6 @@ String.prototype.addParameterToUrl = UpdateUrlString;
         });
         return false;
     };
-
-    /**
-     * Функция инициализации параметров опроса
-     */
-    var initSurveyBoxData = function() {
-        var surveyBox = $('.surveyBox');
-        initTime = parseInt( surveyBox.data('init-time'), 10 );
-        serverTime = parseInt( surveyBox.data('server-time'), 10 );
-        showDelay = parseInt( surveyBox.data('show-delay'), 10 );
-        isTimePassed = parseInt( surveyBox.data('is-time-passed'), 10 );
-    };
-
 
     /**
      * Функция слежения за необходимостью показа опроса

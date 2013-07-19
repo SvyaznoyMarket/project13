@@ -19,6 +19,10 @@ class Entity {
     private $isAnswered;
     /** @var datetime */
     private $initTime;
+    /** @var int */
+    private $expandedWidthDiff;
+    /** @var int */
+    private $expandedHeightDiff;
 
     public function __construct(array $data = []) {
         if (array_key_exists('active', $data)) $this->setIsActive($data['active']);
@@ -27,6 +31,9 @@ class Entity {
         if (array_key_exists('answers', $data)) $this->setAnswers($data['answers']);
         if (array_key_exists('show_delay', $data)) $this->setShowDelay($data['show_delay']);
         if (array_key_exists('output_file', $data)) $this->setOutputFile($data['output_file']);
+        if (array_key_exists('expanded_width_diff', $data)) $this->setExpandedWidthDiff($data['expanded_width_diff']);
+        if (array_key_exists('expanded_height_diff', $data)) $this->setExpandedHeightDiff($data['expanded_height_diff']);
+
     }
 
     public function setIsActive($isActive) {
@@ -77,16 +84,28 @@ class Entity {
         return \App::config()->surveyDir . '/' . $this->outputFile;
     }
 
-    public function isAnswered($cookieInitTimeStamp) {
-        return $cookieInitTimeStamp == $this->initTime->getTimestamp();
-    }
-
     public function setInitTime($timestamp) {
         $this->initTime = $timestamp;
     }
 
     public function getInitTime() {
         return $this->initTime;
+    }
+
+    public function setExpandedWidthDiff($expandedWidthDiff) {
+        $this->expandedWidthDiff = (int)$expandedWidthDiff;
+    }
+
+    public function getExpandedWidthDiff() {
+        return $this->expandedWidthDiff;
+    }
+
+    public function setExpandedHeightDiff($expandedHeightDiff) {
+        $this->expandedHeightDiff = (int)$expandedHeightDiff;
+    }
+
+    public function getExpandedHeightDiff() {
+        return $this->expandedHeightDiff;
     }
 
     public function getIsTimePassed() {
@@ -96,4 +115,9 @@ class Entity {
             return (new \DateTime())->getTimestamp() - $this->initTime->getTimestamp() > $this->showDelay;
         }
     }
+
+    public function isAnswered($cookieInitTimeStamp) {
+        return $cookieInitTimeStamp == $this->initTime->getTimestamp();
+    }
+
 }
