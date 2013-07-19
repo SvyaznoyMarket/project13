@@ -8,7 +8,7 @@
 ?>
 <? if ( is_array($cart_prods) and !empty($cart_prods) ): ?>
 <script type="text/javascript">
-var basket = {
+var sonar_basket = {
     products: [
     <?
         $arr_count = count($cart_prods); $j = 0;
