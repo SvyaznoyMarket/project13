@@ -4,8 +4,7 @@
  **/
 ?>
 <script type="text/javascript">
-
-    var basket = {
+    var sonar_basket = {
         products: [
             <?
             $i=0;
