@@ -5,73 +5,21 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 
-/*
-$API_ulr = 'http://api.livetex.ru/';
-$API_login_ulr = 'http://api.livetex.ru/login.php';
-
-$login = 'anastasiya.vs@enter.ru';
-$password = 'enter1chat2';
-
-$authKey = '';
-$chief_id = 0;
-
-
-
-if( $curl = curl_init() ) {
-    curl_setopt($curl, CURLOPT_URL, $API_login_ulr);
-    curl_setopt($curl, CURLOPT_RETURNTRANSFER,true);
-    curl_setopt($curl, CURLOPT_POST, true);
-    curl_setopt($curl, CURLOPT_POSTFIELDS,
-        [
-            'login' => $login,
-            'password' => $password,
-        ]
-    );
-    $out = curl_exec($curl);
-    //echo $out;
-    curl_close($curl);
-}
-
-$json = json_decode($out);
-$authKey = $json->response->authkey;
-$chief_id = $json->response->chief_id;
-
-
-
-
-if( $curl = curl_init() ) {
-    curl_setopt($curl, CURLOPT_URL, $API_login_ulr);
-    curl_setopt($curl, CURLOPT_RETURNTRANSFER,true);
-    curl_setopt($curl, CURLOPT_POST, true);
-    curl_setopt($curl, CURLOPT_POSTFIELDS,
-        [
-            'chief_id' => $login,
-            'password' => $password,
-        ]
-    );
-    $out = curl_exec($curl);
-    //echo $out;
-    curl_close($curl);
-}
-*/
-
 include_once '../lib/LiveTex/Statistics.php';
 $API = \LiveTex\Api::getInstance();
-$resp = $API->login();
 
 
+$operators = $API->method('Operator.GetList');
 
-$resp = $API->method('Site.ChatStat', [
-    'date_begin' => '2013-07-01',
-    'date_end' => '2013-07-18',
-    'site_id' => '41836'
-]);
+if ($operators and $operators->response) {
+    $operators = $operators->response;
+    foreach ($operators as $op) {
+        print '<pre>';
+        print_r($op);
+        print '</pre>';
+    }
+}
 
-print_r($resp);
-
-$resp = $API->method('Operator.GetList');
-
-print_r($resp);
 
 
 
