@@ -166,11 +166,12 @@
 			}
 
 			if (sliderParams. url) {
-				$.ajax({
-					type: 'GET',
-					url: sliderParams.url,
-					success: authFromServer
-				});
+				$self.remove();
+				// $.ajax({
+				// 	type: 'GET',
+				// 	url: sliderParams.url,
+				// 	success: authFromServer
+				// });
 			}
 
 			rightBtn.bind('click', nextSlide);
