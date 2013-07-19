@@ -100,6 +100,12 @@ class IndexAction {
         $accessoryCategory = array_map(function($accessoryGrouped){
             return $accessoryGrouped['category'];
         }, \Model\Product\Repository::filterAccessoryId($product, $accessoryItems, null, \App::config()->product['itemsInAccessorySlider'] * 36));
+        if ((bool)$accessoryCategory) {
+            $firstAccessoryCategory = new \Model\Product\Category\Entity();
+            $firstAccessoryCategory->setId(0);
+            $firstAccessoryCategory->setName('Популярные аксессуары');
+            array_unshift($accessoryCategory, $firstAccessoryCategory);
+        }
 
         $accessoriesId =  array_slice($product->getAccessoryId(), 0, $accessoryCategory ? \App::config()->product['itemsInAccessorySlider'] * 36 : \App::config()->product['itemsInSlider'] * 6);
         $relatedId = array_slice($product->getRelatedId(), 0, \App::config()->product['itemsInSlider'] * 2);

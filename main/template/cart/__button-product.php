@@ -1,19 +1,25 @@
 <?php
 
 return function (
+    \Helper\TemplateHelper $helper,
+    \Model\Product\BasicEntity $product,
     $url = null,
     $class = null,
-    $value = 'Купить',
-    \Model\Product\BasicEntity $product,
-    \Helper\TemplateHelper $helper
+    $value = 'Купить'
 ) {
 
 $class = \View\Id::cartButtonForProduct($product->getId()) . ' jsBuyButton ' . $class;
 
-$disabled = !$product->getIsBuyable();
-if ($disabled) {
+if (!$product->getIsBuyable()) {
     $url = '#';
     $class .= ' mDisabled';
+
+    if (!$product->getIsBuyable() && $product->getState()->getIsShop()) {
+        $class .= ' mShopsOnly';
+        $value = 'Только в магазинах';
+    } else {
+        $value = 'Нет в наличии';
+    }
 } else if (!isset($url)) {
     $urlParams = [
         'productId' => $product->getId(),

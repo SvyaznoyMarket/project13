@@ -1,9 +1,9 @@
 <?php
 
 return function(
+    \Helper\TemplateHelper $helper,
     \Model\Product\Entity $product,
-    array $productVideos,
-    \Helper\TemplateHelper $helper
+    array $productVideos
 ) {
     /** @var  $productVideo \Model\Product\Video\Entity|null */
     $productVideo = reset($productVideos);
@@ -90,11 +90,17 @@ return function(
 
 
 <div class="bProductDesc__ePhoto">
+    <? if ($product->getLabel()): ?>
+        <div class="bStickerImg">
+            <img src="<?= $product->getLabel()->getImageUrl(1) ?>" alt="<?= $helper->escape($product->getLabel()->getName()) ?>" />
+        </div>
+    <? endif ?>
+
     <div class="bProductDesc__ePhoto-bigImg">
         <img class="bZoomedImg" src="<?= $product->getImageUrl(3) ?>" data-zoom-image="<?= $product->getImageUrl(5) ?>" alt="<?= $helper->escape($product->getName()) ?>" />
     </div><!--/product big image section -->
 
-    <div class="bPhotoAction">
+    <div class="bPhotoAction clearfix">
         <ul class="bPhotoActionOtherAction">
             <? if ($productVideo && $productVideo->getContent()): ?>
                 <li class="bPhotoActionOtherAction__eVideo">

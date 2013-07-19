@@ -58,17 +58,6 @@
 		<error line="228,238,252" column="0" severity="warning" message="Implied global &apos;printPrice&apos;" source="jshint.implied-globals" />
 		<error line="245,246,247" column="0" severity="warning" message="Implied global &apos;basket&apos;" source="jshint.implied-globals" />
 	</file>
-	<file name="../web/js/dev/common/ajaxSetup.js">
-		<error line="11" column="10" severity="error" message="&apos;pageConfig&apos; is not defined." source="jshint.W117" />
-		<error line="38" column="13" severity="error" message="&apos;logError&apos; is not defined." source="jshint.W117" />
-		<error line="69" column="13" severity="error" message="&apos;logError&apos; is not defined." source="jshint.W117" />
-		<error line="84" column="13" severity="error" message="&apos;logError&apos; is not defined." source="jshint.W117" />
-		<error line="99" column="13" severity="error" message="&apos;logError&apos; is not defined." source="jshint.W117" />
-		<error line="121" column="13" severity="error" message="&apos;logError&apos; is not defined." source="jshint.W117" />
-		<error line="11" column="0" severity="warning" message="Implied global &apos;pageConfig&apos;" source="jshint.implied-globals" />
-		<error line="38,69,84,99,121" column="0" severity="warning" message="Implied global &apos;logError&apos;" source="jshint.implied-globals" />
-		<error line="105" column="0" severity="warning" message="Unused variable: &apos;errorThrown&apos;" source="jshint.implied-unuseds" />
-	</file>
 	<file name="../web/js/dev/common/app.tag.js">
 		<error line="26" column="9" severity="error" message="Expected &apos;{&apos; and instead saw &apos;var&apos;." source="jshint.W116" />
 		<error line="28" column="9" severity="error" message="Expected &apos;{&apos; and instead saw &apos;var&apos;." source="jshint.W116" />
@@ -126,18 +115,17 @@
 		<error line="75,82,84" column="0" severity="warning" message="Implied global &apos;buffer&apos;" source="jshint.implied-globals" />
 	</file>
 	<file name="../web/js/dev/common/buyButton.js">
-		<error line="1" column="1" severity="error" message="Unnecessary semicolon." source="jshint.W032" />
-		<error line="114" column="29" severity="error" message="&apos;productData&apos; is already defined." source="jshint.W004" />
-		<error line="132" column="29" severity="error" message="&apos;productData&apos; is already defined." source="jshint.W004" />
-		<error line="155" column="14" severity="error" message="&apos;blackBox&apos; is not defined." source="jshint.W117" />
-		<error line="163" column="23" severity="error" message="&apos;printPrice&apos; is not defined." source="jshint.W117" />
-		<error line="167" column="25" severity="error" message="&apos;printPrice&apos; is not defined." source="jshint.W117" />
-		<error line="171" column="9" severity="error" message="&apos;blackBox&apos; is not defined." source="jshint.W117" />
-		<error line="155,171" column="0" severity="warning" message="Implied global &apos;blackBox&apos;" source="jshint.implied-globals" />
-		<error line="163,167" column="0" severity="warning" message="Implied global &apos;printPrice&apos;" source="jshint.implied-globals" />
-		<error line="17" column="0" severity="warning" message="Unused variable: &apos;e&apos;" source="jshint.implied-unuseds" />
-		<error line="65" column="0" severity="warning" message="Unused variable: &apos;event&apos;" source="jshint.implied-unuseds" />
-		<error line="151" column="0" severity="warning" message="Unused variable: &apos;event&apos;" source="jshint.implied-unuseds" />
+		<error line="175" column="17" severity="error" message="&apos;MyThings&apos; is not defined." source="jshint.W117" />
+		<error line="176" column="32" severity="error" message="&apos;MyThings&apos; is not defined." source="jshint.W117" />
+		<error line="192" column="31" severity="error" message="&apos;printPrice&apos; is not defined." source="jshint.W117" />
+		<error line="196" column="33" severity="error" message="&apos;printPrice&apos; is not defined." source="jshint.W117" />
+		<error line="206" column="19" severity="error" message="&apos;blackBox&apos; is not defined." source="jshint.W117" />
+		<error line="210" column="13" severity="error" message="&apos;blackBox&apos; is not defined." source="jshint.W117" />
+		<error line="174,175,176" column="0" severity="warning" message="Implied global &apos;MyThings&apos;" source="jshint.implied-globals" />
+		<error line="192,196" column="0" severity="warning" message="Implied global &apos;printPrice&apos;" source="jshint.implied-globals" />
+		<error line="206,210" column="0" severity="warning" message="Implied global &apos;blackBox&apos;" source="jshint.implied-globals" />
+		<error line="68" column="0" severity="warning" message="Unused variable: &apos;event&apos;" source="jshint.implied-unuseds" />
+		<error line="187" column="0" severity="warning" message="Unused variable: &apos;event&apos;" source="jshint.implied-unuseds" />
 	</file>
 	<file name="../web/js/dev/common/dash.js">
 		<error line="9" column="53" severity="error" message="Missing semicolon." source="jshint.W033" />
@@ -191,9 +179,6 @@
 		<error line="107" column="11" severity="error" message="Missing semicolon." source="jshint.W033" />
 		<error line="111" column="90" severity="error" message="Missing semicolon." source="jshint.W033" />
 		<error line="111" column="90" severity="error" message="Too many errors. (40% scanned)." source="jshint.undefined" />
-	</file>
-	<file name="../web/js/dev/common/jira.js">
-		<error line="1" column="1" severity="error" message="Unnecessary semicolon." source="jshint.W032" />
 	</file>
 	<file name="../web/js/dev/common/main.js">
 		<error line="63" column="58" severity="error" message="Expected &apos;!==&apos; and instead saw &apos;!=&apos;." source="jshint.W116" />
@@ -251,11 +236,10 @@
 		<error line="269" column="0" severity="warning" message="Implied global &apos;PubSub&apos;" source="jshint.implied-globals" />
 	</file>
 	<file name="../web/js/dev/common/showsubscribe.js">
-		<error line="1" column="1" severity="error" message="Unnecessary semicolon." source="jshint.W032" />
-		<error line="38" column="21" severity="error" message="&apos;docCookies&apos; is not defined." source="jshint.W117" />
-		<error line="59" column="21" severity="error" message="&apos;docCookies&apos; is not defined." source="jshint.W117" />
-		<error line="38,59" column="0" severity="warning" message="Implied global &apos;docCookies&apos;" source="jshint.implied-globals" />
-		<error line="16" column="0" severity="warning" message="Unused variable: &apos;event&apos;" source="jshint.implied-unuseds" />
+		<error line="39" column="21" severity="error" message="&apos;docCookies&apos; is not defined." source="jshint.W117" />
+		<error line="62" column="21" severity="error" message="&apos;docCookies&apos; is not defined." source="jshint.W117" />
+		<error line="39,62" column="0" severity="warning" message="Implied global &apos;docCookies&apos;" source="jshint.implied-globals" />
+		<error line="15" column="0" severity="warning" message="Unused variable: &apos;event&apos;" source="jshint.implied-unuseds" />
 	</file>
 	<file name="../web/js/dev/common/topMenu.js">
 		<error line="2" column="24" severity="error" message="Missing semicolon." source="jshint.W033" />
@@ -318,21 +302,6 @@
 		<error line="129" column="0" severity="warning" message="Implied global &apos;buildTriangle&apos;" source="jshint.implied-globals" />
 		<error line="132" column="0" severity="warning" message="Implied global &apos;checkHoverLvl2&apos;" source="jshint.implied-globals" />
 		<error line="140" column="0" severity="warning" message="Implied global &apos;activateItemLvl2&apos;" source="jshint.implied-globals" />
-	</file>
-	<file name="../web/js/dev/common/upper.js">
-		<error line="27" column="9" severity="error" message="Expected an assignment or function call and instead saw an expression." source="jshint.W030" />
-		<error line="9" column="9" severity="error" message="&apos;trigger&apos; is not defined." source="jshint.W117" />
-		<error line="11" column="9" severity="error" message="&apos;pageScrolling&apos; is not defined." source="jshint.W117" />
-		<error line="12" column="50" severity="error" message="&apos;trigger&apos; is not defined." source="jshint.W117" />
-		<error line="14" column="17" severity="error" message="&apos;trigger&apos; is not defined." source="jshint.W117" />
-		<error line="17" column="54" severity="error" message="&apos;trigger&apos; is not defined." source="jshint.W117" />
-		<error line="19" column="17" severity="error" message="&apos;trigger&apos; is not defined." source="jshint.W117" />
-		<error line="24" column="9" severity="error" message="&apos;goUp&apos; is not defined." source="jshint.W117" />
-		<error line="30" column="22" severity="error" message="&apos;pageScrolling&apos; is not defined." source="jshint.W117" />
-		<error line="31" column="24" severity="error" message="&apos;goUp&apos; is not defined." source="jshint.W117" />
-		<error line="9,12,14,17,19" column="0" severity="warning" message="Implied global &apos;trigger&apos;" source="jshint.implied-globals" />
-		<error line="11,30" column="0" severity="warning" message="Implied global &apos;pageScrolling&apos;" source="jshint.implied-globals" />
-		<error line="24,31" column="0" severity="warning" message="Implied global &apos;goUp&apos;" source="jshint.implied-globals" />
 	</file>
 	<file name="../web/js/dev/infopage/infopages.js">
 		<error line="4" column="48" severity="error" message="Missing semicolon." source="jshint.W033" />
@@ -459,75 +428,6 @@
 		<error line="176" column="0" severity="warning" message="Unused variable: &apos;i&apos;" source="jshint.implied-unuseds" />
 		<error line="427" column="0" severity="warning" message="Unused variable: &apos;i&apos;" source="jshint.implied-unuseds" />
 		<error line="1974" column="0" severity="warning" message="Unused variable: &apos;index&apos;" source="jshint.implied-unuseds" />
-	</file>
-	<file name="../web/js/dev/jquery-plugins/jquery.effects.blind.js">
-		<error line="29" column="30" severity="error" message="Expected &apos;===&apos; and instead saw &apos;==&apos;." source="jshint.W116" />
-		<error line="30" column="35" severity="error" message="Expected &apos;===&apos; and instead saw &apos;==&apos;." source="jshint.W116" />
-		<error line="31" column="17" severity="error" message="Expected &apos;===&apos; and instead saw &apos;==&apos;." source="jshint.W116" />
-		<error line="31" column="28" severity="error" message="Expected &apos;{&apos; and instead saw &apos;wrapper&apos;." source="jshint.W116" />
-		<error line="35" column="31" severity="error" message="Expected &apos;===&apos; and instead saw &apos;==&apos;." source="jshint.W116" />
-		<error line="39" column="21" severity="error" message="Expected &apos;===&apos; and instead saw &apos;==&apos;." source="jshint.W116" />
-		<error line="39" column="32" severity="error" message="Expected &apos;{&apos; and instead saw &apos;el&apos;." source="jshint.W116" />
-		<error line="41" column="28" severity="error" message="Expected &apos;{&apos; and instead saw &apos;o&apos;." source="jshint.W116" />
-	</file>
-	<file name="../web/js/dev/jquery-plugins/jquery.effects.core.js">
-		<error line="10" column="1" severity="error" message="Unnecessary semicolon." source="jshint.W032" />
-		<error line="47" column="41" severity="error" message="Expected &apos;===&apos; and instead saw &apos;==&apos;." source="jshint.W116" />
-		<error line="47" column="66" severity="error" message="Expected &apos;===&apos; and instead saw &apos;==&apos;." source="jshint.W116" />
-		<error line="48" column="17" severity="error" message="Expected &apos;{&apos; and instead saw &apos;return&apos;." source="jshint.W116" />
-		<error line="52" column="17" severity="error" message="Expected &apos;{&apos; and instead saw &apos;return&apos;." source="jshint.W116" />
-		<error line="56" column="17" severity="error" message="Expected &apos;{&apos; and instead saw &apos;return&apos;." source="jshint.W116" />
-		<error line="60" column="17" severity="error" message="Expected &apos;{&apos; and instead saw &apos;return&apos;." source="jshint.W116" />
-		<error line="64" column="17" severity="error" message="Expected &apos;{&apos; and instead saw &apos;return&apos;." source="jshint.W116" />
-		<error line="68" column="17" severity="error" message="Expected &apos;{&apos; and instead saw &apos;return&apos;." source="jshint.W116" />
-		<error line="81" column="28" severity="error" message="Expected &apos;!==&apos; and instead saw &apos;!=&apos;." source="jshint.W116" />
-		<error line="81" column="43" severity="error" message="Expected &apos;!==&apos; and instead saw &apos;!=&apos;." source="jshint.W116" />
-		<error line="82" column="25" severity="error" message="Expected &apos;{&apos; and instead saw &apos;break&apos;." source="jshint.W116" />
-		<error line="88" column="2" severity="error" message="Unnecessary semicolon." source="jshint.W032" />
-		<error line="162" column="13" severity="error" message="Bad line breaking before &apos;?&apos;." source="jshint.W014" />
-		<error line="173" column="35" severity="error" message="Expected &apos;===&apos; and instead saw &apos;==&apos;." source="jshint.W116" />
-		<error line="176" column="18" severity="error" message="Don&apos;t make functions within a loop." source="jshint.W083" />
-		<error line="220" column="28" severity="error" message="Expected &apos;!==&apos; and instead saw &apos;!=&apos;." source="jshint.W116" />
-		<error line="258" column="47" severity="error" message="Expected &apos;===&apos; and instead saw &apos;==&apos;." source="jshint.W116" />
-		<error line="284" column="27" severity="error" message="Expected &apos;===&apos; and instead saw &apos;==&apos;." source="jshint.W116" />
-		<error line="314" column="33" severity="error" message="Expected &apos;{&apos; and instead saw &apos;element&apos;." source="jshint.W116" />
-		<error line="321" column="33" severity="error" message="Expected &apos;{&apos; and instead saw &apos;element&apos;." source="jshint.W116" />
-		<error line="326" column="18" severity="error" message="Expected &apos;===&apos; and instead saw &apos;==&apos;." source="jshint.W116" />
-		<error line="326" column="31" severity="error" message="Expected &apos;{&apos; and instead saw &apos;mode&apos;." source="jshint.W116" />
-		<error line="338" column="10" severity="error" message="Unnecessary semicolon." source="jshint.W032" />
-		<error line="344" column="10" severity="error" message="Unnecessary semicolon." source="jshint.W032" />
-		<error line="383" column="37" severity="error" message="Expected &apos;===&apos; and instead saw &apos;==&apos;." source="jshint.W116" />
-		<error line="423" column="30" severity="error" message="Expected &apos;{&apos; and instead saw &apos;value&apos;." source="jshint.W116" />
-		<error line="432" column="23" severity="error" message="Expected &apos;===&apos; and instead saw &apos;==&apos;." source="jshint.W116" />
-		<error line="443" column="28" severity="error" message="Expected &apos;===&apos; and instead saw &apos;==&apos;." source="jshint.W116" />
-		<error line="456" column="41" severity="error" message="Expected &apos;===&apos; and instead saw &apos;==&apos;." source="jshint.W116" />
-		<error line="457" column="9" severity="error" message="Bad line breaking before &apos;?&apos;." source="jshint.W014" />
-		<error line="545" column="17" severity="error" message="Expected &apos;{&apos; and instead saw &apos;val&apos;." source="jshint.W116" />
-		<error line="611" column="16" severity="error" message="Expected an identifier and instead saw &apos;=&apos;." source="jshint.E030" />
-		<error line="611" column="17" severity="error" message="Expected &apos;)&apos; to match &apos;(&apos; from line 611 and instead saw &apos;d&apos;." source="jshint.E020" />
-		<error line="611" column="22" severity="error" message="Expected &apos;{&apos; and instead saw &apos;&lt;&apos;." source="jshint.W116" />
-		<error line="611" column="22" severity="error" message="Expected an identifier and instead saw &apos;&lt;&apos;." source="jshint.E030" />
-		<error line="611" column="22" severity="error" message="Expected an assignment or function call and instead saw an expression." source="jshint.W030" />
-		<error line="611" column="23" severity="error" message="Missing semicolon." source="jshint.W033" />
-		<error line="611" column="24" severity="error" message="Expected an assignment or function call and instead saw an expression." source="jshint.W030" />
-		<error line="611" column="25" severity="error" message="Missing semicolon." source="jshint.W033" />
-		<error line="611" column="25" severity="error" message="Expected an identifier and instead saw &apos;)&apos;." source="jshint.E030" />
-		<error line="611" column="25" severity="error" message="Expected an assignment or function call and instead saw an expression." source="jshint.W030" />
-		<error line="611" column="26" severity="error" message="Missing semicolon." source="jshint.W033" />
-		<error line="612" column="9" severity="error" message="Unreachable &apos;return&apos; after &apos;return&apos;." source="jshint.W027" />
-		<error line="621" column="16" severity="error" message="Expected an identifier and instead saw &apos;=&apos;." source="jshint.E030" />
-		<error line="621" column="17" severity="error" message="Expected &apos;)&apos; to match &apos;(&apos; from line 621 and instead saw &apos;d&apos;." source="jshint.E020" />
-		<error line="621" column="22" severity="error" message="Expected &apos;{&apos; and instead saw &apos;&lt;&apos;." source="jshint.W116" />
-		<error line="621" column="22" severity="error" message="Expected an identifier and instead saw &apos;&lt;&apos;." source="jshint.E030" />
-		<error line="621" column="22" severity="error" message="Expected an assignment or function call and instead saw an expression." source="jshint.W030" />
-		<error line="621" column="23" severity="error" message="Missing semicolon." source="jshint.W033" />
-		<error line="621" column="23" severity="error" message="Too many errors. (81% scanned)." source="jshint.undefined" />
-		<error line="26" column="0" severity="warning" message="Implied global &apos;getColor&apos;" source="jshint.implied-globals" />
-		<error line="27" column="0" severity="warning" message="Implied global &apos;getRGB&apos;" source="jshint.implied-globals" />
-		<error line="68,71" column="0" severity="warning" message="Implied global &apos;colors&apos;" source="jshint.implied-globals" />
-	</file>
-	<file name="../web/js/dev/jquery-plugins/jquery.effects.transfer.js">
-		<error line="40" column="72" severity="error" message="Expected an assignment or function call and instead saw an expression." source="jshint.W030" />
 	</file>
 	<file name="../web/js/dev/jquery-plugins/jquery.elevatezoom.js">
 		<error line="17" column="24" severity="error" message="Unnecessary semicolon." source="jshint.W032" />
@@ -704,21 +604,6 @@
 		<error line="142,160" column="0" severity="warning" message="Implied global &apos;clearBuffer&apos;" source="jshint.implied-globals" />
 		<error line="148" column="0" severity="warning" message="Implied global &apos;checkVal&apos;" source="jshint.implied-globals" />
 	</file>
-	<file name="../web/js/dev/jquery-plugins/jquery.mousewheel.min.js">
-		<error line="12" column="183" severity="error" message="Missing semicolon." source="jshint.W033" />
-		<error line="12" column="209" severity="error" message="Missing semicolon." source="jshint.W033" />
-		<error line="12" column="324" severity="error" message="Missing semicolon." source="jshint.W033" />
-		<error line="12" column="353" severity="error" message="Missing semicolon." source="jshint.W033" />
-		<error line="12" column="454" severity="error" message="Missing semicolon." source="jshint.W033" />
-		<error line="12" column="515" severity="error" message="Missing semicolon." source="jshint.W033" />
-		<error line="12" column="675" severity="error" message="Missing semicolon." source="jshint.W033" />
-		<error line="12" column="702" severity="error" message="Missing semicolon." source="jshint.W033" />
-		<error line="12" column="768" severity="error" message="Missing semicolon." source="jshint.W033" />
-		<error line="12" column="818" severity="error" message="Missing semicolon." source="jshint.W033" />
-		<error line="12" column="871" severity="error" message="Missing semicolon." source="jshint.W033" />
-		<error line="12" column="926" severity="error" message="Missing semicolon." source="jshint.W033" />
-		<error line="12" column="0" severity="warning" message="Unused variable: &apos;h&apos;" source="jshint.implied-unuseds" />
-	</file>
 	<file name="../web/js/dev/jquery-plugins/jquery.placeholder.js">
 		<error line="10" column="32" severity="error" message="Expected &apos;===&apos; and instead saw &apos;==&apos;." source="jshint.W116" />
 		<error line="15" column="65" severity="error" message="Expected &apos;===&apos; and instead saw &apos;==&apos;." source="jshint.W116" />
@@ -726,41 +611,6 @@
 		<error line="66" column="33" severity="error" message="Missing semicolon." source="jshint.W033" />
 		<error line="96" column="35" severity="error" message="Expected &apos;===&apos; and instead saw &apos;==&apos;." source="jshint.W116" />
 		<error line="105" column="6" severity="error" message="Missing semicolon." source="jshint.W033" />
-	</file>
-	<file name="../web/js/dev/jquery-plugins/jquery.raty.js">
-		<error line="36" column="25" severity="error" message="Expected &apos;===&apos; and instead saw &apos;==&apos;." source="jshint.W116" />
-		<error line="64" column="70" severity="error" message="Expected &apos;!==&apos; and instead saw &apos;!=&apos;." source="jshint.W116" />
-		<error line="70" column="38" severity="error" message="Missing radix parameter." source="jshint.W065" />
-		<error line="106" column="35" severity="error" message="Expected &apos;===&apos; and instead saw &apos;==&apos;." source="jshint.W116" />
-		<error line="115" column="37" severity="error" message="Expected &apos;===&apos; and instead saw &apos;==&apos;." source="jshint.W116" />
-		<error line="132" column="3" severity="error" message="Mixed spaces and tabs." source="jshint.W099" />
-		<error line="133" column="3" severity="error" message="Mixed spaces and tabs." source="jshint.W099" />
-		<error line="162" column="1" severity="error" message="Mixed spaces and tabs." source="jshint.W099" />
-		<error line="183" column="6" severity="error" message="Unnecessary semicolon." source="jshint.W032" />
-		<error line="192" column="36" severity="error" message="Expected &apos;===&apos; and instead saw &apos;==&apos;." source="jshint.W116" />
-		<error line="193" column="37" severity="error" message="Expected &apos;===&apos; and instead saw &apos;==&apos;." source="jshint.W116" />
-		<error line="207" column="6" severity="error" message="Unnecessary semicolon." source="jshint.W032" />
-		<error line="229" column="27" severity="error" message="Expected &apos;===&apos; and instead saw &apos;==&apos;." source="jshint.W116" />
-		<error line="239" column="6" severity="error" message="Unnecessary semicolon." source="jshint.W032" />
-		<error line="244" column="19" severity="error" message="Expected &apos;!==&apos; and instead saw &apos;!=&apos;." source="jshint.W116" />
-		<error line="245" column="35" severity="error" message="Missing radix parameter." source="jshint.W065" />
-		<error line="252" column="6" severity="error" message="Unnecessary semicolon." source="jshint.W032" />
-		<error line="256" column="6" severity="error" message="Unnecessary semicolon." source="jshint.W032" />
-		<error line="261" column="33" severity="error" message="Missing radix parameter." source="jshint.W065" />
-		<error line="283" column="51" severity="error" message="Expected &apos;===&apos; and instead saw &apos;==&apos;." source="jshint.W116" />
-		<error line="286" column="6" severity="error" message="Unnecessary semicolon." source="jshint.W032" />
-		<error line="292" column="32" severity="error" message="Expected &apos;===&apos; and instead saw &apos;==&apos;." source="jshint.W116" />
-		<error line="293" column="25" severity="error" message="Expected &apos;===&apos; and instead saw &apos;==&apos;." source="jshint.W116" />
-		<error line="306" column="6" severity="error" message="Unnecessary semicolon." source="jshint.W032" />
-		<error line="321" column="6" severity="error" message="Unnecessary semicolon." source="jshint.W032" />
-		<error line="362" column="49" severity="error" message="Expected an assignment or function call and instead saw an expression." source="jshint.W030" />
-		<error line="390" column="13" severity="error" message="It&apos;s not necessary to initialize &apos;context&apos; to &apos;undefined&apos;." source="jshint.W080" />
-		<error line="392" column="23" severity="error" message="Expected &apos;===&apos; and instead saw &apos;==&apos;." source="jshint.W116" />
-		<error line="404" column="30" severity="error" message="Expected &apos;===&apos; and instead saw &apos;==&apos;." source="jshint.W116" />
-		<error line="406" column="37" severity="error" message="Expected &apos;===&apos; and instead saw &apos;==&apos;." source="jshint.W116" />
-		<error line="408" column="37" severity="error" message="Expected &apos;===&apos; and instead saw &apos;==&apos;." source="jshint.W116" />
-		<error line="423" column="6" severity="error" message="Unnecessary semicolon." source="jshint.W032" />
-		<error line="429" column="6" severity="error" message="Unnecessary semicolon." source="jshint.W032" />
 	</file>
 	<file name="../web/js/dev/jquery-plugins/jquery.scrollto.js">
 		<error line="7" column="73" severity="error" message="Missing semicolon." source="jshint.W033" />
@@ -825,54 +675,6 @@
 		<error line="7" column="0" severity="warning" message="Implied global &apos;animate&apos;" source="jshint.implied-globals" />
 		<error line="7" column="0" severity="warning" message="Implied global &apos;f&apos;" source="jshint.implied-globals" />
 	</file>
-	<file name="../web/js/dev/jquery-plugins/jquery.ui.autocomplete.js">
-		<error line="79" column="21" severity="error" message="Expected a &apos;break&apos; statement before &apos;case&apos;." source="jshint.W086" />
-		<error line="96" column="40" severity="error" message="Expected &apos;!==&apos; and instead saw &apos;!=&apos;." source="jshint.W116" />
-		<error line="210" column="3" severity="error" message="Mixed spaces and tabs." source="jshint.W099" />
-		<error line="239" column="97" severity="error" message="Missing semicolon." source="jshint.W033" />
-		<error line="195" column="0" severity="warning" message="Unused variable: &apos;ui&apos;" source="jshint.implied-unuseds" />
-		<error line="195" column="0" severity="warning" message="Unused variable: &apos;event&apos;" source="jshint.implied-unuseds" />
-		<error line="265" column="0" severity="warning" message="Unused variable: &apos;status&apos;" source="jshint.implied-unuseds" />
-		<error line="396" column="0" severity="warning" message="Unused variable: &apos;index&apos;" source="jshint.implied-unuseds" />
-	</file>
-	<file name="../web/js/dev/jquery-plugins/jquery.ui.core.js">
-		<error line="192" column="9" severity="error" message="Bad line breaking before &apos;?&apos;." source="jshint.W014" />
-		<error line="193" column="15" severity="error" message="Expected &apos;===&apos; and instead saw &apos;==&apos;." source="jshint.W116" />
-		<error line="194" column="13" severity="error" message="Bad line breaking before &apos;?&apos;." source="jshint.W014" />
-		<error line="197" column="9" severity="error" message="Bad line breaking before &apos;&amp;&amp;&apos;." source="jshint.W014" />
-		<error line="231" column="9" severity="error" message="Expected an assignment or function call and instead saw an expression." source="jshint.W030" />
-		<error line="134" column="0" severity="warning" message="Unused variable: &apos;i&apos;" source="jshint.implied-unuseds" />
-		<error line="208" column="0" severity="warning" message="Unused variable: &apos;i&apos;" source="jshint.implied-unuseds" />
-	</file>
-	<file name="../web/js/dev/jquery-plugins/jquery.ui.mouse.js">
-		<error line="35" column="4" severity="error" message="Mixed spaces and tabs." source="jshint.W099" />
-		<error line="55" column="36" severity="error" message="Missing semicolon." source="jshint.W033" />
-		<error line="55" column="38" severity="error" message="Unnecessary semicolon." source="jshint.W032" />
-		<error line="58" column="52" severity="error" message="Expected an assignment or function call and instead saw an expression." source="jshint.W030" />
-		<error line="63" column="38" severity="error" message="Expected &apos;===&apos; and instead saw &apos;==&apos;." source="jshint.W116" />
-		<error line="66" column="54" severity="error" message="Expected &apos;===&apos; and instead saw &apos;==&apos;." source="jshint.W116" />
-		<error line="110" column="31" severity="error" message="Confusing use of &apos;!&apos;." source="jshint.W018" />
-		<error line="122" column="80" severity="error" message="Expected an assignment or function call and instead saw an expression." source="jshint.W030" />
-		<error line="136" column="30" severity="error" message="Expected &apos;===&apos; and instead saw &apos;==&apos;." source="jshint.W116" />
-		<error line="137" column="3" severity="error" message="Mixed spaces and tabs." source="jshint.W099" />
-		<error line="16" column="0" severity="warning" message="Unused variable: &apos;e&apos;" source="jshint.implied-unuseds" />
-		<error line="154" column="0" severity="warning" message="Unused variable: &apos;event&apos;" source="jshint.implied-unuseds" />
-		<error line="159" column="0" severity="warning" message="Unused variable: &apos;event&apos;" source="jshint.implied-unuseds" />
-		<error line="160" column="0" severity="warning" message="Unused variable: &apos;event&apos;" source="jshint.implied-unuseds" />
-		<error line="161" column="0" severity="warning" message="Unused variable: &apos;event&apos;" source="jshint.implied-unuseds" />
-		<error line="162" column="0" severity="warning" message="Unused variable: &apos;event&apos;" source="jshint.implied-unuseds" />
-	</file>
-	<file name="../web/js/dev/jquery-plugins/jquery.ui.position.js">
-		<error line="104" column="73" severity="error" message="Missing radix parameter." source="jshint.W065" />
-		<error line="105" column="71" severity="error" message="Missing radix parameter." source="jshint.W065" />
-		<error line="107" column="67" severity="error" message="Missing radix parameter." source="jshint.W065" />
-		<error line="109" column="68" severity="error" message="Missing radix parameter." source="jshint.W065" />
-		<error line="287" column="0" severity="warning" message="Unused variable: &apos;_&apos;" source="jshint.implied-unuseds" />
-	</file>
-	<file name="../web/js/dev/jquery-plugins/jquery.ui.widget.js">
-		<error line="67" column="29" severity="error" message="A constructor name should start with an uppercase letter." source="jshint.W055" />
-		<error line="129" column="45" severity="error" message="A constructor name should start with an uppercase letter." source="jshint.W055" />
-	</file>
 	<file name="../web/js/dev/jquery-plugins/prettyCheckboxes.js">
 		<error line="9" column="3" severity="error" message="Mixed spaces and tabs." source="jshint.W099" />
 		<error line="17" column="35" severity="error" message="Missing semicolon." source="jshint.W033" />
@@ -915,48 +717,9 @@
 	<file name="../web/js/dev/library/black_box.js">
 		<error line="64" column="17" severity="error" message="Confusing use of &apos;!&apos;." source="jshint.W018" />
 		<error line="64" column="60" severity="error" message="Confusing use of &apos;!&apos;." source="jshint.W018" />
-		<error line="116" column="9" severity="error" message="Expected an assignment or function call and instead saw an expression." source="jshint.W030" />
 		<error line="18" column="21" severity="error" message="&apos;docCookies&apos; is not defined." source="jshint.W117" />
 		<error line="18" column="54" severity="error" message="&apos;docCookies&apos; is not defined." source="jshint.W117" />
-		<error line="34" column="9" severity="error" message="&apos;bottomQ&apos; is not defined." source="jshint.W117" />
-		<error line="35" column="9" severity="error" message="&apos;bottomSum&apos; is not defined." source="jshint.W117" />
-		<error line="36" column="9" severity="error" message="&apos;total&apos; is not defined." source="jshint.W117" />
-		<error line="37" column="9" severity="error" message="&apos;bottomCart&apos; is not defined." source="jshint.W117" />
-		<error line="38" column="9" severity="error" message="&apos;flyboxBasket&apos; is not defined." source="jshint.W117" />
-		<error line="39" column="9" severity="error" message="&apos;flyboxInner&apos; is not defined." source="jshint.W117" />
-		<error line="48" column="9" severity="error" message="&apos;flyboxDestroy&apos; is not defined." source="jshint.W117" />
-		<error line="49" column="13" severity="error" message="&apos;flyboxBasket&apos; is not defined." source="jshint.W117" />
-		<error line="50" column="17" severity="error" message="&apos;flyboxInner&apos; is not defined." source="jshint.W117" />
-		<error line="61" column="9" severity="error" message="&apos;flyboxcloser&apos; is not defined." source="jshint.W117" />
-		<error line="65" column="17" severity="error" message="&apos;flyboxDestroy&apos; is not defined." source="jshint.W117" />
-		<error line="66" column="43" severity="error" message="&apos;flyboxcloser&apos; is not defined." source="jshint.W117" />
-		<error line="79" column="9" severity="error" message="&apos;update&apos; is not defined." source="jshint.W117" />
-		<error line="81" column="13" severity="error" message="&apos;bottomQ&apos; is not defined." source="jshint.W117" />
-		<error line="82" column="13" severity="error" message="&apos;bottomSum&apos; is not defined." source="jshint.W117" />
-		<error line="83" column="13" severity="error" message="&apos;bottomCart&apos; is not defined." source="jshint.W117" />
-		<error line="84" column="13" severity="error" message="&apos;total&apos; is not defined." source="jshint.W117" />
-		<error line="100" column="9" severity="error" message="&apos;add&apos; is not defined." source="jshint.W117" />
-		<error line="103" column="13" severity="error" message="&apos;flyboxDestroy&apos; is not defined." source="jshint.W117" />
-		<error line="104" column="13" severity="error" message="&apos;flyboxBasket&apos; is not defined." source="jshint.W117" />
-		<error line="105" column="13" severity="error" message="&apos;flyboxBasket&apos; is not defined." source="jshint.W117" />
-		<error line="114" column="37" severity="error" message="&apos;flyboxcloser&apos; is not defined." source="jshint.W117" />
-		<error line="120" column="19" severity="error" message="&apos;update&apos; is not defined." source="jshint.W117" />
-		<error line="121" column="16" severity="error" message="&apos;add&apos; is not defined." source="jshint.W117" />
-		<error line="236" column="32" severity="error" message="&apos;pageConfig&apos; is not defined." source="jshint.W117" />
-		<error line="237" column="1" severity="error" message="&apos;blackBox&apos; is not defined." source="jshint.W117" />
 		<error line="18" column="0" severity="warning" message="Implied global &apos;docCookies&apos;" source="jshint.implied-globals" />
-		<error line="34,81" column="0" severity="warning" message="Implied global &apos;bottomQ&apos;" source="jshint.implied-globals" />
-		<error line="35,82" column="0" severity="warning" message="Implied global &apos;bottomSum&apos;" source="jshint.implied-globals" />
-		<error line="36,84" column="0" severity="warning" message="Implied global &apos;total&apos;" source="jshint.implied-globals" />
-		<error line="37,83" column="0" severity="warning" message="Implied global &apos;bottomCart&apos;" source="jshint.implied-globals" />
-		<error line="38,49,104,105" column="0" severity="warning" message="Implied global &apos;flyboxBasket&apos;" source="jshint.implied-globals" />
-		<error line="39,50" column="0" severity="warning" message="Implied global &apos;flyboxInner&apos;" source="jshint.implied-globals" />
-		<error line="48,65,103" column="0" severity="warning" message="Implied global &apos;flyboxDestroy&apos;" source="jshint.implied-globals" />
-		<error line="61,66,114" column="0" severity="warning" message="Implied global &apos;flyboxcloser&apos;" source="jshint.implied-globals" />
-		<error line="79,120" column="0" severity="warning" message="Implied global &apos;update&apos;" source="jshint.implied-globals" />
-		<error line="100,121" column="0" severity="warning" message="Implied global &apos;add&apos;" source="jshint.implied-globals" />
-		<error line="236" column="0" severity="warning" message="Implied global &apos;pageConfig&apos;" source="jshint.implied-globals" />
-		<error line="237" column="0" severity="warning" message="Implied global &apos;blackBox&apos;" source="jshint.implied-globals" />
 	</file>
 	<file name="../web/js/dev/library/library.js">
 		<error line="118" column="13" severity="error" message="Confusing use of &apos;!&apos;." source="jshint.W018" />
@@ -1082,61 +845,80 @@
 		<error line="75" column="0" severity="warning" message="Implied global &apos;brwsr&apos;" source="jshint.implied-globals" />
 	</file>
 	<file name="../web/js/dev/oneclick/oneclick.js">
-		<error line="4" column="4" severity="error" message="Mixed spaces and tabs." source="jshint.W099" />
-		<error line="5" column="4" severity="error" message="Mixed spaces and tabs." source="jshint.W099" />
-		<error line="6" column="4" severity="error" message="Mixed spaces and tabs." source="jshint.W099" />
-		<error line="9" column="4" severity="error" message="Mixed spaces and tabs." source="jshint.W099" />
-		<error line="10" column="4" severity="error" message="Mixed spaces and tabs." source="jshint.W099" />
-		<error line="11" column="4" severity="error" message="Mixed spaces and tabs." source="jshint.W099" />
-		<error line="12" column="4" severity="error" message="Mixed spaces and tabs." source="jshint.W099" />
-		<error line="13" column="4" severity="error" message="Mixed spaces and tabs." source="jshint.W099" />
-		<error line="21" column="28" severity="error" message="Missing semicolon." source="jshint.W033" />
-		<error line="22" column="51" severity="error" message="Missing semicolon." source="jshint.W033" />
-		<error line="24" column="43" severity="error" message="Missing semicolon." source="jshint.W033" />
-		<error line="25" column="43" severity="error" message="Missing semicolon." source="jshint.W033" />
-		<error line="26" column="42" severity="error" message="Missing semicolon." source="jshint.W033" />
-		<error line="27" column="46" severity="error" message="Missing semicolon." source="jshint.W033" />
-		<error line="28" column="43" severity="error" message="Missing semicolon." source="jshint.W033" />
-		<error line="30" column="48" severity="error" message="Missing semicolon." source="jshint.W033" />
-		<error line="32" column="48" severity="error" message="Missing semicolon." source="jshint.W033" />
-		<error line="33" column="21" severity="error" message="Missing semicolon." source="jshint.W033" />
-		<error line="35" column="48" severity="error" message="Missing semicolon." source="jshint.W033" />
-		<error line="36" column="21" severity="error" message="Missing semicolon." source="jshint.W033" />
-		<error line="38" column="52" severity="error" message="Missing semicolon." source="jshint.W033" />
-		<error line="40" column="56" severity="error" message="Missing semicolon." source="jshint.W033" />
-		<error line="42" column="32" severity="error" message="Missing semicolon." source="jshint.W033" />
-		<error line="45" column="51" severity="error" message="Missing semicolon." source="jshint.W033" />
-		<error line="46" column="21" severity="error" message="Line breaking error &apos;break&apos;." source="jshint.E022" />
-		<error line="46" column="26" severity="error" message="Missing semicolon." source="jshint.W033" />
-		<error line="48" column="51" severity="error" message="Missing semicolon." source="jshint.W033" />
-		<error line="49" column="21" severity="error" message="Line breaking error &apos;break&apos;." source="jshint.E022" />
-		<error line="49" column="26" severity="error" message="Missing semicolon." source="jshint.W033" />
-		<error line="51" column="47" severity="error" message="Missing semicolon." source="jshint.W033" />
-		<error line="52" column="21" severity="error" message="Line breaking error &apos;break&apos;." source="jshint.E022" />
-		<error line="52" column="26" severity="error" message="Missing semicolon." source="jshint.W033" />
-		<error line="54" column="58" severity="error" message="Missing semicolon." source="jshint.W033" />
-		<error line="55" column="21" severity="error" message="Line breaking error &apos;break&apos;." source="jshint.E022" />
-		<error line="55" column="26" severity="error" message="Missing semicolon." source="jshint.W033" />
-		<error line="57" column="47" severity="error" message="Missing semicolon." source="jshint.W033" />
-		<error line="58" column="21" severity="error" message="Line breaking error &apos;break&apos;." source="jshint.E022" />
-		<error line="58" column="26" severity="error" message="Missing semicolon." source="jshint.W033" />
-		<error line="60" column="30" severity="error" message="Missing semicolon." source="jshint.W033" />
-		<error line="61" column="21" severity="error" message="Missing semicolon." source="jshint.W033" />
-		<error line="63" column="51" severity="error" message="Missing semicolon." source="jshint.W033" />
-		<error line="65" column="50" severity="error" message="Missing semicolon." source="jshint.W033" />
-		<error line="66" column="33" severity="error" message="Missing semicolon." source="jshint.W033" />
-		<error line="68" column="115" severity="error" message="Missing semicolon." source="jshint.W033" />
-		<error line="69" column="119" severity="error" message="Missing semicolon." source="jshint.W033" />
-		<error line="78" column="21" severity="error" message="Missing semicolon." source="jshint.W033" />
-		<error line="86" column="21" severity="error" message="Missing semicolon." source="jshint.W033" />
-		<error line="94" column="21" severity="error" message="Missing semicolon." source="jshint.W033" />
-		<error line="96" column="60" severity="error" message="Missing semicolon." source="jshint.W033" />
-		<error line="97" column="60" severity="error" message="Missing semicolon." source="jshint.W033" />
-		<error line="97" column="60" severity="error" message="Too many errors. (10% scanned)." source="jshint.undefined" />
-		<error line="22,30,31,34,40,41,65,71,79,87,96,97" column="0" severity="warning" message="Implied global &apos;ko&apos;" source="jshint.implied-globals" />
-		<error line="24,25,26,27,28,38" column="0" severity="warning" message="Implied global &apos;Model&apos;" source="jshint.implied-globals" />
-		<error line="35" column="0" severity="warning" message="Implied global &apos;printPrice&apos;" source="jshint.implied-globals" />
-		<error line="63" column="0" severity="warning" message="Implied global &apos;docCookies&apos;" source="jshint.implied-globals" />
+		<error line="114" column="29" severity="error" message="Expected &apos;===&apos; and instead saw &apos;==&apos;." source="jshint.W116" />
+		<error line="158" column="45" severity="error" message="Expected &apos;===&apos; and instead saw &apos;==&apos;." source="jshint.W116" />
+		<error line="182" column="37" severity="error" message="Expected &apos;===&apos; and instead saw &apos;==&apos;." source="jshint.W116" />
+		<error line="223" column="50" severity="error" message="Expected &apos;===&apos; and instead saw &apos;==&apos;." source="jshint.W116" />
+		<error line="242" column="50" severity="error" message="Expected &apos;!==&apos; and instead saw &apos;!=&apos;." source="jshint.W116" />
+		<error line="288" column="60" severity="error" message="Expected &apos;===&apos; and instead saw &apos;==&apos;." source="jshint.W116" />
+		<error line="323" column="42" severity="error" message="Expected &apos;===&apos; and instead saw &apos;==&apos;." source="jshint.W116" />
+		<error line="332" column="44" severity="error" message="Expected &apos;===&apos; and instead saw &apos;==&apos;." source="jshint.W116" />
+		<error line="379" column="44" severity="error" message="Expected &apos;===&apos; and instead saw &apos;==&apos;." source="jshint.W116" />
+		<error line="389" column="43" severity="error" message="Expected &apos;===&apos; and instead saw &apos;==&apos;." source="jshint.W116" />
+		<error line="389" column="97" severity="error" message="Expected &apos;===&apos; and instead saw &apos;==&apos;." source="jshint.W116" />
+		<error line="393" column="62" severity="error" message="Expected &apos;===&apos; and instead saw &apos;==&apos;." source="jshint.W116" />
+		<error line="451" column="44" severity="error" message="Expected &apos;===&apos; and instead saw &apos;==&apos;." source="jshint.W116" />
+		<error line="553" column="46" severity="error" message="Expected &apos;===&apos; and instead saw &apos;==&apos;." source="jshint.W116" />
+		<error line="630" column="38" severity="error" message="Expected &apos;===&apos; and instead saw &apos;==&apos;." source="jshint.W116" />
+		<error line="640" column="38" severity="error" message="Expected &apos;===&apos; and instead saw &apos;==&apos;." source="jshint.W116" />
+		<error line="809" column="47" severity="error" message="Bad or unnecessary escaping." source="jshint.W044" />
+		<error line="809" column="54" severity="error" message="Bad or unnecessary escaping." source="jshint.W044" />
+		<error line="853" column="23" severity="error" message="&apos;Model&apos; is already defined." source="jshint.W004" />
+		<error line="854" column="23" severity="error" message="&apos;inputUrl&apos; is already defined." source="jshint.W004" />
+		<error line="855" column="23" severity="error" message="&apos;outputUrl&apos; is already defined." source="jshint.W004" />
+		<error line="856" column="27" severity="error" message="&apos;selfAvailable&apos; is already defined." source="jshint.W004" />
+		<error line="859" column="22" severity="error" message="&apos;postData&apos; is already defined." source="jshint.W004" />
+		<error line="884" column="38" severity="error" message="Expected &apos;!==&apos; and instead saw &apos;!=&apos;." source="jshint.W116" />
+		<error line="905" column="17" severity="error" message="Confusing use of &apos;!&apos;." source="jshint.W018" />
+		<error line="8" column="31" severity="error" message="&apos;ko&apos; is not defined." source="jshint.W117" />
+		<error line="16" column="32" severity="error" message="&apos;ko&apos; is not defined." source="jshint.W117" />
+		<error line="17" column="32" severity="error" message="&apos;ko&apos; is not defined." source="jshint.W117" />
+		<error line="20" column="29" severity="error" message="&apos;ko&apos; is not defined." source="jshint.W117" />
+		<error line="21" column="24" severity="error" message="&apos;printPrice&apos; is not defined." source="jshint.W117" />
+		<error line="26" column="31" severity="error" message="&apos;ko&apos; is not defined." source="jshint.W117" />
+		<error line="27" column="34" severity="error" message="&apos;ko&apos; is not defined." source="jshint.W117" />
+		<error line="49" column="25" severity="error" message="&apos;docCookies&apos; is not defined." source="jshint.W117" />
+		<error line="51" column="28" severity="error" message="&apos;ko&apos; is not defined." source="jshint.W117" />
+		<error line="58" column="35" severity="error" message="&apos;ko&apos; is not defined." source="jshint.W117" />
+		<error line="66" column="35" severity="error" message="&apos;ko&apos; is not defined." source="jshint.W117" />
+		<error line="74" column="35" severity="error" message="&apos;ko&apos; is not defined." source="jshint.W117" />
+		<error line="83" column="38" severity="error" message="&apos;ko&apos; is not defined." source="jshint.W117" />
+		<error line="84" column="38" severity="error" message="&apos;ko&apos; is not defined." source="jshint.W117" />
+		<error line="85" column="38" severity="error" message="&apos;ko&apos; is not defined." source="jshint.W117" />
+		<error line="88" column="31" severity="error" message="&apos;ko&apos; is not defined." source="jshint.W117" />
+		<error line="89" column="31" severity="error" message="&apos;ko&apos; is not defined." source="jshint.W117" />
+		<error line="90" column="26" severity="error" message="&apos;ko&apos; is not defined." source="jshint.W117" />
+		<error line="91" column="26" severity="error" message="&apos;ko&apos; is not defined." source="jshint.W117" />
+		<error line="92" column="26" severity="error" message="&apos;ko&apos; is not defined." source="jshint.W117" />
+		<error line="93" column="31" severity="error" message="&apos;ko&apos; is not defined." source="jshint.W117" />
+		<error line="94" column="31" severity="error" message="&apos;ko&apos; is not defined." source="jshint.W117" />
+		<error line="137" column="28" severity="error" message="&apos;Deliveries&apos; is not defined." source="jshint.W117" />
+		<error line="139" column="26" severity="error" message="&apos;ko&apos; is not defined." source="jshint.W117" />
+		<error line="140" column="24" severity="error" message="&apos;printPrice&apos; is not defined." source="jshint.W117" />
+		<error line="140" column="24" severity="error" message="Too many errors. (14% scanned)." source="jshint.undefined" />
+		<error line="8,16,17,20,26,27,51,58,66,74,83,84,85,88,89,90,91,92,93,94,139,526,533,534,535,537,578,579,764,776,916,919" column="0" severity="warning" message="Implied global &apos;ko&apos;" source="jshint.implied-globals" />
+		<error line="260,262,528,529,530,531,532" column="0" severity="warning" message="Implied global &apos;Model&apos;" source="jshint.implied-globals" />
+		<error line="21,140,538" column="0" severity="warning" message="Implied global &apos;printPrice&apos;" source="jshint.implied-globals" />
+		<error line="49" column="0" severity="warning" message="Implied global &apos;docCookies&apos;" source="jshint.implied-globals" />
+		<error line="286,288,291,304" column="0" severity="warning" message="Implied global &apos;selfAvailable&apos;" source="jshint.implied-globals" />
+		<error line="137,150,151,274,276,286,287,289,308,309,310,543,547,572,573,574,575,576,587,598,599,671,735,770,771,773,874,877,881,897,905,912" column="0" severity="warning" message="Implied global &apos;Deliveries&apos;" source="jshint.implied-globals" />
+		<error line="176,201" column="0" severity="warning" message="Implied global &apos;kissAnalitycs&apos;" source="jshint.implied-globals" />
+		<error line="265" column="0" severity="warning" message="Implied global &apos;inputUrl&apos;" source="jshint.implied-globals" />
+		<error line="288,289,296,773,784,912,938" column="0" severity="warning" message="Implied global &apos;mapCenter&apos;" source="jshint.implied-globals" />
+		<error line="289,773,912" column="0" severity="warning" message="Implied global &apos;calcMCenter&apos;" source="jshint.implied-globals" />
+		<error line="293,780" column="0" severity="warning" message="Implied global &apos;pickStoreMVMCL&apos;" source="jshint.implied-globals" />
+		<error line="296,725,784,848,938" column="0" severity="warning" message="Implied global &apos;MapInterface&apos;" source="jshint.implied-globals" />
+		<error line="305,306,309" column="0" severity="warning" message="Implied global &apos;item&apos;" source="jshint.implied-globals" />
+		<error line="414" column="0" severity="warning" message="Implied global &apos;enableHandlers&apos;" source="jshint.implied-globals" />
+		<error line="462" column="0" severity="warning" message="Implied global &apos;outputUrl&apos;" source="jshint.implied-globals" />
+		<error line="483,484,493" column="0" severity="warning" message="Implied global &apos;KM&apos;" source="jshint.implied-globals" />
+		<error line="500,501" column="0" severity="warning" message="Implied global &apos;runAnalitics&apos;" source="jshint.implied-globals" />
+		<error line="503,817" column="0" severity="warning" message="Implied global &apos;ANALYTICS&apos;" source="jshint.implied-globals" />
+		<error line="549,572,575" column="0" severity="warning" message="Implied global &apos;parseDateShop&apos;" source="jshint.implied-globals" />
+		<error line="675,685,756,757,763,764,765,775,776,798,799,822,823,824,836,918,919" column="0" severity="warning" message="Implied global &apos;OC_MVM&apos;" source="jshint.implied-globals" />
+		<error line="748,791,804" column="0" severity="warning" message="Implied global &apos;oneClickIsReady&apos;" source="jshint.implied-globals" />
+		<error line="808,809" column="0" severity="warning" message="Implied global &apos;yaCounter10503055&apos;" source="jshint.implied-globals" />
+		<error line="915,916,925,929,930" column="0" severity="warning" message="Implied global &apos;MVM&apos;" source="jshint.implied-globals" />
 	</file>
 	<file name="../web/js/dev/order-new/order-new.js">
 		<error line="3" column="22" severity="error" message="Missing semicolon." source="jshint.W033" />
@@ -1361,23 +1143,23 @@
 		<error line="162" column="0" severity="warning" message="Implied global &apos;__lx__target&apos;" source="jshint.implied-globals" />
 	</file>
 	<file name="../web/js/dev/product/credit.js">
-		<error line="49" column="29" severity="error" message="Confusing use of &apos;!&apos;." source="jshint.W018" />
+		<error line="54" column="29" severity="error" message="Confusing use of &apos;!&apos;." source="jshint.W018" />
 		<error line="19" column="21" severity="error" message="&apos;docCookies&apos; is not defined." source="jshint.W117" />
-		<error line="43" column="17" severity="error" message="&apos;dc_getCreditForTheProduct&apos; is not defined." source="jshint.W117" />
-		<error line="45" column="21" severity="error" message="&apos;docCookies&apos; is not defined." source="jshint.W117" />
-		<error line="53" column="45" severity="error" message="&apos;printPrice&apos; is not defined." source="jshint.W117" />
-		<error line="77" column="23" severity="error" message="&apos;docCookies&apos; is not defined." source="jshint.W117" />
-		<error line="80" column="24" severity="error" message="&apos;docCookies&apos; is not defined." source="jshint.W117" />
-		<error line="85" column="9" severity="error" message="&apos;creditBox&apos; is not defined." source="jshint.W117" />
-		<error line="19,45,77,80" column="0" severity="warning" message="Implied global &apos;docCookies&apos;" source="jshint.implied-globals" />
-		<error line="43" column="0" severity="warning" message="Implied global &apos;dc_getCreditForTheProduct&apos;" source="jshint.implied-globals" />
-		<error line="53" column="0" severity="warning" message="Implied global &apos;printPrice&apos;" source="jshint.implied-globals" />
-		<error line="85" column="0" severity="warning" message="Implied global &apos;creditBox&apos;" source="jshint.implied-globals" />
+		<error line="48" column="17" severity="error" message="&apos;dc_getCreditForTheProduct&apos; is not defined." source="jshint.W117" />
+		<error line="50" column="21" severity="error" message="&apos;docCookies&apos; is not defined." source="jshint.W117" />
+		<error line="58" column="45" severity="error" message="&apos;printPrice&apos; is not defined." source="jshint.W117" />
+		<error line="66" column="23" severity="error" message="&apos;docCookies&apos; is not defined." source="jshint.W117" />
+		<error line="70" column="24" severity="error" message="&apos;docCookies&apos; is not defined." source="jshint.W117" />
+		<error line="74" column="9" severity="error" message="&apos;creditBox&apos; is not defined." source="jshint.W117" />
+		<error line="19,50,66,70" column="0" severity="warning" message="Implied global &apos;docCookies&apos;" source="jshint.implied-globals" />
+		<error line="48" column="0" severity="warning" message="Implied global &apos;dc_getCreditForTheProduct&apos;" source="jshint.implied-globals" />
+		<error line="58" column="0" severity="warning" message="Implied global &apos;printPrice&apos;" source="jshint.implied-globals" />
+		<error line="74" column="0" severity="warning" message="Implied global &apos;creditBox&apos;" source="jshint.implied-globals" />
 	</file>
 	<file name="../web/js/dev/product/deliveryInfo.js">
-		<error line="51" column="20" severity="error" message="&apos;MapInterface&apos; is not defined." source="jshint.W117" />
-		<error line="55" column="17" severity="error" message="&apos;MapInterface&apos; is not defined." source="jshint.W117" />
-		<error line="51,55" column="0" severity="warning" message="Implied global &apos;MapInterface&apos;" source="jshint.implied-globals" />
+		<error line="52" column="20" severity="error" message="&apos;MapInterface&apos; is not defined." source="jshint.W117" />
+		<error line="56" column="17" severity="error" message="&apos;MapInterface&apos; is not defined." source="jshint.W117" />
+		<error line="52,56" column="0" severity="warning" message="Implied global &apos;MapInterface&apos;" source="jshint.implied-globals" />
 	</file>
 	<file name="../web/js/dev/product/furniture3d.js">
 		<error line="22" column="47" severity="error" message="&apos;DAnimFramePlayer&apos; is not defined." source="jshint.W117" />
@@ -1388,10 +1170,6 @@
 		<error line="35" column="0" severity="warning" message="Implied global &apos;logError&apos;" source="jshint.implied-globals" />
 		<error line="38" column="0" severity="warning" message="Implied global &apos;$LAB&apos;" source="jshint.implied-globals" />
 		<error line="42" column="0" severity="warning" message="Implied global &apos;pageConfig&apos;" source="jshint.implied-globals" />
-	</file>
-	<file name="../web/js/dev/product/goodSlider.js">
-		<error line="38" column="68" severity="error" message="Missing semicolon." source="jshint.W033" />
-		<error line="109" column="50" severity="error" message="Missing semicolon." source="jshint.W033" />
 	</file>
 	<file name="../web/js/dev/product/kupePlanner.js">
 		<error line="14" column="9" severity="error" message="&apos;Planner3dKupeConstructor&apos; is not defined." source="jshint.W117" />
@@ -1425,43 +1203,23 @@
 		<error line="41" column="0" severity="warning" message="Implied global &apos;pageConfig&apos;" source="jshint.implied-globals" />
 	</file>
 	<file name="../web/js/dev/product/product.js">
-		<error line="36" column="6" severity="error" message="Mixed spaces and tabs." source="jshint.W099" />
-		<error line="100" column="57" severity="error" message="Missing semicolon." source="jshint.W033" />
-		<error line="131" column="4" severity="error" message="Mixed spaces and tabs." source="jshint.W099" />
+		<error line="37" column="6" severity="error" message="Mixed spaces and tabs." source="jshint.W099" />
+		<error line="112" column="4" severity="error" message="Mixed spaces and tabs." source="jshint.W099" />
+		<error line="113" column="4" severity="error" message="Mixed spaces and tabs." source="jshint.W099" />
+		<error line="114" column="4" severity="error" message="Mixed spaces and tabs." source="jshint.W099" />
+		<error line="115" column="4" severity="error" message="Mixed spaces and tabs." source="jshint.W099" />
+		<error line="116" column="4" severity="error" message="Mixed spaces and tabs." source="jshint.W099" />
+		<error line="117" column="4" severity="error" message="Mixed spaces and tabs." source="jshint.W099" />
+		<error line="121" column="4" severity="error" message="Mixed spaces and tabs." source="jshint.W099" />
+		<error line="123" column="4" severity="error" message="Mixed spaces and tabs." source="jshint.W099" />
+		<error line="126" column="4" severity="error" message="Mixed spaces and tabs." source="jshint.W099" />
+		<error line="128" column="4" severity="error" message="Mixed spaces and tabs." source="jshint.W099" />
+		<error line="129" column="4" severity="error" message="Mixed spaces and tabs." source="jshint.W099" />
+		<error line="130" column="4" severity="error" message="Mixed spaces and tabs." source="jshint.W099" />
 		<error line="132" column="4" severity="error" message="Mixed spaces and tabs." source="jshint.W099" />
-		<error line="133" column="4" severity="error" message="Mixed spaces and tabs." source="jshint.W099" />
 		<error line="134" column="4" severity="error" message="Mixed spaces and tabs." source="jshint.W099" />
 		<error line="135" column="4" severity="error" message="Mixed spaces and tabs." source="jshint.W099" />
 		<error line="136" column="4" severity="error" message="Mixed spaces and tabs." source="jshint.W099" />
-		<error line="140" column="4" severity="error" message="Mixed spaces and tabs." source="jshint.W099" />
-		<error line="142" column="4" severity="error" message="Mixed spaces and tabs." source="jshint.W099" />
-		<error line="145" column="4" severity="error" message="Mixed spaces and tabs." source="jshint.W099" />
-		<error line="147" column="4" severity="error" message="Mixed spaces and tabs." source="jshint.W099" />
-		<error line="148" column="4" severity="error" message="Mixed spaces and tabs." source="jshint.W099" />
-		<error line="149" column="4" severity="error" message="Mixed spaces and tabs." source="jshint.W099" />
-		<error line="151" column="4" severity="error" message="Mixed spaces and tabs." source="jshint.W099" />
-		<error line="153" column="4" severity="error" message="Mixed spaces and tabs." source="jshint.W099" />
-		<error line="154" column="4" severity="error" message="Mixed spaces and tabs." source="jshint.W099" />
-		<error line="155" column="4" severity="error" message="Mixed spaces and tabs." source="jshint.W099" />
-	</file>
-	<file name="../web/js/dev/product/warrantyHandler.js">
-		<error line="10" column="6" severity="error" message="Mixed spaces and tabs." source="jshint.W099" />
-		<error line="11" column="6" severity="error" message="Mixed spaces and tabs." source="jshint.W099" />
-		<error line="12" column="6" severity="error" message="Mixed spaces and tabs." source="jshint.W099" />
-		<error line="13" column="6" severity="error" message="Mixed spaces and tabs." source="jshint.W099" />
-		<error line="14" column="6" severity="error" message="Mixed spaces and tabs." source="jshint.W099" />
-		<error line="15" column="6" severity="error" message="Mixed spaces and tabs." source="jshint.W099" />
-		<error line="16" column="6" severity="error" message="Mixed spaces and tabs." source="jshint.W099" />
-		<error line="17" column="6" severity="error" message="Mixed spaces and tabs." source="jshint.W099" />
-		<error line="18" column="6" severity="error" message="Mixed spaces and tabs." source="jshint.W099" />
-		<error line="19" column="6" severity="error" message="Mixed spaces and tabs." source="jshint.W099" />
-		<error line="20" column="6" severity="error" message="Mixed spaces and tabs." source="jshint.W099" />
-		<error line="21" column="6" severity="error" message="Mixed spaces and tabs." source="jshint.W099" />
-		<error line="39" column="17" severity="error" message="&apos;blackBox&apos; is not defined." source="jshint.W117" />
-		<error line="43" column="33" severity="error" message="&apos;printPrice&apos; is not defined." source="jshint.W117" />
-		<error line="45" column="17" severity="error" message="&apos;blackBox&apos; is not defined." source="jshint.W117" />
-		<error line="39,45" column="0" severity="warning" message="Implied global &apos;blackBox&apos;" source="jshint.implied-globals" />
-		<error line="43" column="0" severity="warning" message="Implied global &apos;printPrice&apos;" source="jshint.implied-globals" />
 	</file>
 	<file name="../web/js/dev/shop/shop.js">
 		<error line="3" column="46" severity="error" message="Missing semicolon." source="jshint.W033" />
@@ -1571,33 +1329,33 @@
 		<error line="99" column="24" severity="error" message="Missing semicolon." source="jshint.W033" />
 		<error line="99" column="24" severity="error" message="Too many errors. (9% scanned)." source="jshint.undefined" />
 	</file>
-	<file name="Gruntfile.js">
-		<error line="308" column="6" severity="error" message="Mixed spaces and tabs." source="jshint.W099" />
-		<error line="309" column="6" severity="error" message="Mixed spaces and tabs." source="jshint.W099" />
+	<file name="../web/js/dev/common/ajaxSetup.js">
+		<error line="120" column="0" severity="warning" message="Unused variable: &apos;errorThrown&apos;" source="jshint.implied-unuseds" />
 	</file>
 	<file name="../web/js/dev/common/goToId.js">
 	</file>
+	<file name="../web/js/dev/common/jira.js">
+	</file>
 	<file name="../web/js/dev/common/suggest.js">
+	</file>
+	<file name="../web/js/dev/common/upper.js">
 	</file>
 	<file name="../web/js/dev/infopage/cron.js">
 	</file>
 	<file name="../web/js/dev/infopage/discountSubscribe.js">
 	</file>
+	<file name="../web/js/dev/jquery-plugins/customDropDown.js">
+	</file>
 	<file name="../web/js/dev/jquery-plugins/customRadio.js">
 	</file>
 	<file name="../web/js/dev/jquery-plugins/goodsCounter.js">
-		<error line="153" column="0" severity="warning" message="Unused variable: &apos;e&apos;" source="jshint.implied-unuseds" />
+		<error line="165" column="0" severity="warning" message="Unused variable: &apos;e&apos;" source="jshint.implied-unuseds" />
+	</file>
+	<file name="../web/js/dev/jquery-plugins/goodsSlider.js">
 	</file>
 	<file name="../web/js/dev/jquery-plugins/jquery.email_validate.js">
-		<error line="23" column="0" severity="warning" message="Unused variable: &apos;e&apos;" source="jshint.implied-unuseds" />
 	</file>
 	<file name="../web/js/dev/jquery-plugins/jquery.put_cursor_at_end.js">
-	</file>
-	<file name="../web/js/dev/jquery-plugins/jquery.ui.slider.js">
-		<error line="297" column="0" severity="warning" message="Unused variable: &apos;event&apos;" source="jshint.implied-unuseds" />
-		<error line="608" column="0" severity="warning" message="Unused variable: &apos;j&apos;" source="jshint.implied-unuseds" />
-	</file>
-	<file name="../web/js/dev/jquery-plugins/jquery.ui.touch-punch.js">
 	</file>
 	<file name="../web/js/dev/library/JSON.js">
 		<error line="163" column="0" severity="warning" message="Unused variable: &apos;cx&apos;" source="jshint.implied-unuseds" />
@@ -1629,5 +1387,7 @@
 	<file name="../web/js/dev/product/reviews.js">
 	</file>
 	<file name="../web/js/dev/product/video.js">
+	</file>
+	<file name="Gruntfile.js">
 	</file>
 </checkstyle>
