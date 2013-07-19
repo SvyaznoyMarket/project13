@@ -531,9 +531,10 @@ class DefaultLayout extends Layout {
     /**
      * Возвращает категории продукта в виде строки (для js-скрипта например) исходя из масива
      * @param $prod_cats_arr
-     * @return string
+     * @return string|bool
      */
     public function prod_cats_in_string($prod_cats_arr){
+        if (empty($prod_cats_arr)) return false;
 
         $count = count($prod_cats_arr);
         $prod_cats = '';
@@ -541,11 +542,13 @@ class DefaultLayout extends Layout {
         if ($count > 0) {
             $i = 0;
             $prod_cats = "[";
+
             foreach ($prod_cats_arr as $cat) {
                 $i++;
                 $prod_cats .= " '" . $cat->getName() . "'";
                 if ($i < $count) $prod_cats .= ", ";
             }
+
             $prod_cats .= " ]";
         }
 

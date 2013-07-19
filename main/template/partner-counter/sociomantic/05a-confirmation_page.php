@@ -1,4 +1,4 @@
-﻿###<?
+﻿<?
 /**
  * from /main/view/DefaultLayout.php
  **/
@@ -13,7 +13,7 @@
             $orderNumber = '';
             foreach($orders as $order) :
                 $orderSum += $order->getPaySum();
-                $i++; if ($i>1) $orderNumber .= ', '; // TODO: Может ли $orders быть полноценным массивом и иметь несколько номеров заказов?
+                $i++; if ($i>1) $orderNumber .= ', '; // $orders не может быть полноценным массивом и иметь несколько номеров заказов, но всё же
                 $orderNumber .= $order->getNumber();
                 foreach ($order->getProduct() as $orderProduct) {
                     echo "{ identifier: '".$orderProduct->getId()."', amount: ".$orderProduct->getPrice().", currency: 'RUB', quantity: ".$orderProduct->getQuantity()." }";

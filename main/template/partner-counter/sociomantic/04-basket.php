@@ -6,7 +6,7 @@
  **/
 
 ?>
-<? if ( !empty($cart_prods) ): ?>
+<? if ( is_array($cart_prods) and !empty($cart_prods) ): ?>
 <script type="text/javascript">
 var basket = {
     products: [
