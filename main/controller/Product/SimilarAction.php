@@ -70,6 +70,7 @@ class SimilarAction {
 
             return new \Http\JsonResponse([
                 'success' => false,
+                'error'   => ['code' => $e->getCode(), 'message' => $e->getMessage()],
             ]);
         }
     }
