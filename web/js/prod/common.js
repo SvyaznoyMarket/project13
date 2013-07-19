@@ -329,6 +329,7 @@ $.ajaxSetup({
 	 * @param  {Event}	e
 	 */
 	var BuyButtonHandler = function BuyButtonHandler( e ) {
+		console.log('BuyButtonHandler')
 		var button = $(this),
 			url = button.attr('href');
 		// end of vars
@@ -362,12 +363,9 @@ $.ajaxSetup({
 		}
 	};
 
-	$("body").bind('markcartbutton', markCartButton);
-	
-	$(document).ready(function() {
-		$('.jsBuyButton').on('click', BuyButtonHandler);
-		$('.jsBuyButton').on('buy', buy);
-	});
+	$('body').on('markcartbutton', markCartButton);
+	$('body').on('click', '.jsBuyButton', BuyButtonHandler);
+	$('body').on('buy', '.jsBuyButton', buy);
 }());
 
 
