@@ -199,6 +199,7 @@ class Helper {
     }
 
 
+
     /**
      * Возвращает валидную cтрочку для джаваскрипта либо false
      * Пример, подаём на вход (_shopId,76), получаем:
@@ -213,14 +214,14 @@ class Helper {
         if ( isset($key) and !empty($key) /*and ($value)*/ ) { // Важно! пустое значение ( $value == "") НЕ будет игнориться
             $key = trim($key);
             $ret =  "'".$key."':";
-            $value_str = $value;
+            $value_str = (string) $value; // даже числа конвертнём в string для последующей конкатенации
             if ( is_string($value) ) {
                 $value = (string) trim($value);
                 $array_s = [ '{', '[', '"' , "'" ];
                 if ( isset($value[0]) )
-                if ( !in_array( $value[0], $array_s) ) {
-                    $need_quotes = true;
-                }
+                    if ( !in_array( $value[0], $array_s) ) {
+                        $need_quotes = true;
+                    }
 
                 if ( strlen($value)<3 ) {
                     $need_quotes = true;
@@ -277,5 +278,4 @@ class Helper {
         return $ret;
 
     }
-
 }
