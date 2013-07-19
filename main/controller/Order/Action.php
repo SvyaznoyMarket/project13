@@ -422,6 +422,8 @@ class Action {
 
         $user = \App::user();
 
+        $form = $this->getForm(); // подключаем данные формы, чтобы знать данные покупателя
+
         // последние заказы в сессии
         $orders = $this->getLastOrders();
 
@@ -559,12 +561,14 @@ class Action {
         }
 
         $page = new \View\Order\CompletePage();
+        $page->setParam('form', $form);
         $page->setParam('orders', $orders);
         $page->setParam('shopsById', $shopsById);
         $page->setParam('productsById', $productsById);
         $page->setParam('servicesById', $servicesById);
         $page->setParam('paymentProvider', $paymentProvider);
         $page->setParam('creditData', $creditData);
+        $page->setParam('userForm', $this->getForm());
 
         return new \Http\Response($page->show());
     }
@@ -777,7 +781,10 @@ class Action {
                                     \App::user()->deleteRecommendedProductByParams($product->getId(), \Smartengine\Client::NAME, 'viewed_at');
                                 }
                             }
-                            $orderData['meta_data'] =  \App::partner()->fabricateCompleteMeta(isset($orderData['meta_data']) ? $orderData['meta_data'] : [], \App::partner()->fabricateMetaByPartners($partners, $product));
+                            $orderData['meta_data'] =  \App::partner()->fabricateCompleteMeta(
+                                isset($orderData['meta_data']) ? $orderData['meta_data'] : [],
+                                \App::partner()->fabricateMetaByPartners($partners, $product)
+                            );
                         }
                         \App::logger()->info(sprintf('Создается заказ от партнеров %s', json_encode($orderData['meta_data']['partner'])), ['order', 'partner']);
                     } catch (\Exception $e) {
@@ -893,7 +900,7 @@ class Action {
                 foreach ([
                      'recipient_first_name',
                      'recipient_last_name',
-//                     'recipient_phonenumbers',
+                     'recipient_phonenumbers',
                      'recipient_email',
                      'address_street',
                      'address_number',
@@ -1219,8 +1226,10 @@ class Action {
         if (\App::config()->product['allowBuyOnlyInshop']) {
             if ((bool)$deliveryMapView->deliveryTypes) {
                 foreach ($deliveryMapView->deliveryTypes as $key => $delivery) {
-                    if (strpos($key, 'now_') !== false) {
-                        if (isset($deliveryMapView->deliveryTypes[$key])) unset($deliveryMapView->deliveryTypes[$key]);
+                    if (false !== strpos($key, 'now_')) {
+                        $delivery->token = str_replace('now_', 'self_', $delivery->token);
+                        unset($deliveryMapView->deliveryTypes[$key]);
+                        $deliveryMapView->deliveryTypes[$delivery->token] = $delivery;
                     }
                 }
             }
@@ -1229,12 +1238,12 @@ class Action {
                     if ((bool)$deliveries->deliveries) {
                         foreach ($deliveries->deliveries as $token => $delivery) {
                             if (strpos($token, 'now_') !== false) {
-                                if (isset($deliveryMapView->items[$product]->deliveries[str_replace('now_', 'self_', $token)])) {
-                                    $nowDates = $delivery->dates[0];
-                                    $nowDates->isNow = true;
-                                    array_push($deliveryMapView->items[$product]->deliveries[str_replace('now_', 'self_', $token)]->dates, $nowDates);
+                                if (isset($delivery->dates[0])) {
+                                    $delivery->dates[0]->isNow = true;
                                 }
-                                if (isset($deliveryMapView->items[$product]->deliveries[$token])) unset($deliveryMapView->items[$product]->deliveries[$token]);
+                                unset($deliveryMapView->items[$product]->deliveries[$token]);
+
+                                $deliveryMapView->items[$product]->deliveries[str_replace('now_', 'self_', $token)] = $delivery;
                             }
                         }
                     }

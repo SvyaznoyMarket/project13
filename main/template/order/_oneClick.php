@@ -102,4 +102,5 @@
         </div>
     </div>
 
+    <?= $page->tryRender('order/partner-counter/_reactive-oneClick', ['orderSum' => str_replace(',', '.', $order->getSum()), 'orderNum' => $order->getNumber()]) ?>
 </div>

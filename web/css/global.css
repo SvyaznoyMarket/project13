@@ -9687,6 +9687,10 @@
     float: right;
     width: 320px;
   }
+  .content-section__form__friend__center {
+    float: none;
+    margin: 0 auto;
+  }
   .content-section__form .subscribe-form__title {
     font-size: 24px;
     text-transform: uppercase;
