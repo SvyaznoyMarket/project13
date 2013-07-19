@@ -102,6 +102,7 @@
 
         if ( shouldShow ) {
             $('.surveyBox').fadeIn();
+            $('.surveyBox__toggle').click();
         } else {
             setTimeout(function() {
                 trackIfShouldShow();
@@ -116,6 +117,11 @@
 
         if ( !isTimePassed ) {
             trackIfShouldShow();
+        } else {
+            setTimeout(function() {
+                $('.surveyBox').fadeIn();
+                $('.surveyBox__toggle').click();
+            }, 1000);
         }
     });
 }());

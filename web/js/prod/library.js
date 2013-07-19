@@ -2256,6 +2256,9 @@ String.prototype.addParameterToUrl = UpdateUrlString;
         isTimePassed = null;
 
 
+    /**
+     * Функция разворачивания/сворачивания опроса
+     */
     var toggleSurveyBox = function(){
         var toggle = this;
 
@@ -2281,6 +2284,9 @@ String.prototype.addParameterToUrl = UpdateUrlString;
         return false;
     };
 
+    /**
+     * Функция ответа на опрос
+     */
     var submitAnswer = function() {
         var question = $('.surveyBox__question').html(),
             answer = $(this).html(),
@@ -2314,6 +2320,9 @@ String.prototype.addParameterToUrl = UpdateUrlString;
         return false;
     };
 
+    /**
+     * Функция инициализации параметров опроса
+     */
     var initSurveyBoxData = function() {
         var surveyBox = $('.surveyBox');
         initTime = parseInt( surveyBox.data('init-time'), 10 );
@@ -2322,6 +2331,10 @@ String.prototype.addParameterToUrl = UpdateUrlString;
         isTimePassed = parseInt( surveyBox.data('is-time-passed'), 10 );
     };
 
+
+    /**
+     * Функция слежения за необходимостью показа опроса
+     */
     var trackIfShouldShow = function() {
         var shouldShow = false;
         serverTime += 1;
@@ -2331,6 +2344,7 @@ String.prototype.addParameterToUrl = UpdateUrlString;
 
         if ( shouldShow ) {
             $('.surveyBox').fadeIn();
+            $('.surveyBox__toggle').click();
         } else {
             setTimeout(function() {
                 trackIfShouldShow();
@@ -2345,6 +2359,11 @@ String.prototype.addParameterToUrl = UpdateUrlString;
 
         if ( !isTimePassed ) {
             trackIfShouldShow();
+        } else {
+            setTimeout(function() {
+                $('.surveyBox').fadeIn();
+                $('.surveyBox__toggle').click();
+            }, 1000);
         }
     });
 }());

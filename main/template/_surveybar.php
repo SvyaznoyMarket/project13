@@ -5,7 +5,7 @@
  */
 ?>
 
-<div data-init-time="<?= $survey->getInitTime()->getTimeStamp() ?>" data-server-time="<?= (new \DateTime())->getTimeStamp() ?>" data-show-delay="<?= $survey->getShowDelay() ?>" data-is-time-passed="<?= (int)($survey->getIsTimePassed())?>" class="surveyBox<?= $survey->getIsTimePassed() ? '' : ' hf'?>">
+<div data-init-time="<?= $survey->getInitTime()->getTimeStamp() ?>" data-server-time="<?= (new \DateTime())->getTimeStamp() ?>" data-show-delay="<?= $survey->getShowDelay() ?>" data-is-time-passed="<?= (int)($survey->getIsTimePassed())?>" class="surveyBox hf">
   <span class="surveyBox__toggleWrapper">
     <a class="surveyBox__toggle" href="#">Показать опрос</a>
   </span>
