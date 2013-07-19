@@ -5,12 +5,12 @@
 	background: @white;
 	//head section
 	&__eHeader {
-		font-family: tahoma;
+		font-family: tahoma, verdana, arial, helvetica, sans-serif;
 		&-subtitle {
 			font-size: 24px;
 		}
 		&-title {
-			font-family: tahoma;
+			font-family: tahoma, verdana, arial, helvetica, sans-serif;
 			padding: 0 0 7px;
 		}
 		&-article {
@@ -25,9 +25,7 @@
         display: inline-block;
         margin: 15px 0 0;
         width: 700px;
-        vertical-align: top;
-        *display: inline;
-        zoom: 1;
+        float: left;
     }
     .inStock {
         color: #fb9c00;
@@ -211,9 +209,7 @@
 	&__eRight {
 		width: 220px;
 		margin: 15px 0 0 16px;
-		vertical-align: top;
-		display: inline-block;
-        *display: inline;
+		float: right;
         zoom: 1;
 		.btnBuy {
 			margin: 0 auto;
@@ -232,10 +228,8 @@
 			a {
 				.rounded(9px);
 				display: block;
-
 				width: 48px;
 				height: 48px;
-
 				border: 1px solid @typLightGray;
 				background-image: url("@{base-url}/newProductCard/img/btn_slider.png");
 				background-repeat: no-repeat;
@@ -268,28 +262,23 @@
 	//slider mini product images
 	&OtherPhoto {
 		position: relative;
-
 		float: right;
-
 		width: 220px;
 		margin-right: 5px;
 		&__eWrappSlider {
 			overflow: hidden;
-
 			width: 220px;
 		}
 		&List {
 			position: relative;
-
-			width: 100000px;
 		}
 		&Item {
 			float: left;
-
 			margin: 0 3px 0 2px;
 			&__eLink {
 				.rounded(9px);
 				display: table-cell;
+				*display: block;
 				overflow: hidden;
 				width: 48px;
 				height: 48px;
@@ -359,9 +348,7 @@
 		width: 420px;
 	} 
 	&__eTitle {
-		font-size: 16px;
-		font-family: tahoma;
-		font-weight: 800;
+		font: 800 16px/1.2 tahoma, verdana, arial, helvetica, sans-serif;
 	}
 	.btnBuy {
 		margin-left: 12px;
