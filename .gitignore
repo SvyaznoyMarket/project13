@@ -22,3 +22,5 @@ erase_barcode.cmd
 /dark/config/config-local.php
 /light/config/local.php
 /web/js/jsHintReport
+/web/js/jsHintReport/report.xml
+/web/js/docs

@@ -5,15 +5,56 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 
-include_once '../lib/LiveTex/Statistics.php';
+include_once '../lib/LiveTex/API.php';
 include_once '../lib/LiveTex/Views.php';
 
-$API = \LiveTex\Api::getInstance();
-$Views = new \LiveTex\Views;
+$API = \LiveTex\Api::getInstance(); //LiveTex/API
+$Views = new \LiveTex\Views; //LiveTex/Views
 
 $operators = $API->method('Operator.GetList');
 $operators_html = $Views->getOperators($operators);
 $operators_count_html = count($operators->response);
+
+$date_format = 'Y-m-d';
+
+$date_begin = (string) date($date_format, strtotime('-1 day'));
+$date_end = (string) date($date_format,strtotime('today UTC'));
+
+
+foreach ( $operators->response as $op) {
+    //$sites = $API->testmethod('Operator.ChatStat', ['date_begin' => $date_end, 'date_end' => $date_begin, "operator_id" => $op->id ]);
+    //print_r($sites);
+}
+
+
+
+/*
+$chats = $API->testmethod('Site.GetList',
+    [   'date_begin' => "2013-05-15",
+        'date_end' => '2013-05-16',
+        'site_id' => '50391'
+    ] );
+*/
+
+
+//$sites = $API->testmethod('Site.GetList');
+
+
+$chatsActive = $API->testmethod('Chat.GetActive');
+print_r($chatsActive);
+
+
+$siteChatHistory = $API->testmethod('Site.ChatHistory', ['date_begin' => $date_begin, 'date_end' => $date_end, "site_id" => "50391"]);
+print_r($chatsActive);
+
+//$sites = $API->testmethod('Chat.GetActive');
+//$sites = $API->testmethod('Operator.ChatStat', ['date_begin' => "2012-07-19 00:00:00", 'date_end' => "2012-07-19 23:23:23", "operator_id" => "51718"]);
+
+
+
+print '<pre>#';
+//print_r($sites);
+print '#</pre>'
 
 
 ?>
@@ -131,7 +172,7 @@ $operators_count_html = count($operators->response);
 <? /* LiveText initialization: */ ?>
 <script>
     var LiveTex = {
-        liveTexID: 41836,
+        liveTexID: 50391,
         onLiveTexReady: function() {
             console.log("API LiveTex успешно инициализировано");
             LiveTexStat.load();
