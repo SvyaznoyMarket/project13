@@ -10279,9 +10279,6 @@
     border-radius: 3px;
     border: 1px solid #d6d6d6;
     padding: 9px;
-    behavior: url("/css/common/PIE.htc");
-    position: relative;
-    zoom: 1;
   }
   .bSliderAction__eItem .product__inner:hover .btnBuy {
     -moz-opacity: 1;
