@@ -174,28 +174,108 @@ class Helper {
      */
     public function dateToRu($date) {
         $monthsEnRu = [
-          'January' => 'января',
-          'February' => 'февраля',
-          'March' => 'марта',
-          'April' => 'апреля',
-          'May' => 'мая',
-          'June' => 'июня',
-          'July' => 'июля',
-          'August' => 'августа',
-          'September' => 'сентября',
-          'October' => 'октября',
-          'November' => 'ноября',
-          'December' => 'декабря',
+            'January' => 'января',
+            'February' => 'февраля',
+            'March' => 'марта',
+            'April' => 'апреля',
+            'May' => 'мая',
+            'June' => 'июня',
+            'July' => 'июля',
+            'August' => 'августа',
+            'September' => 'сентября',
+            'October' => 'октября',
+            'November' => 'ноября',
+            'December' => 'декабря',
         ];
         $dateEn = (new \DateTime($date))->format('j F Y');
         $dateRu = $dateEn;
         foreach ($monthsEnRu as $monthsEn => $monthsRu) {
-          if(preg_match("/$monthsEn/", $dateEn)) {
-            $dateRu = preg_replace("/$monthsEn/", $monthsRu, $dateEn);
-          }
+            if(preg_match("/$monthsEn/", $dateEn)) {
+                $dateRu = preg_replace("/$monthsEn/", $monthsRu, $dateEn);
+            }
         }
 
         return $dateRu;
+    }
+
+
+    /**
+     * Возвращает валидную cтрочку для джаваскрипта либо false
+     * Пример, подаём на вход (_shopId,76), получаем:
+     * '_shopId':76
+     * @param $key
+     * @param $value
+     * @return bool|string
+     */
+    public function stringRowParam4js($key,$value){
+        $ret =false;
+        $need_quotes = false;
+        if ( isset($key) and !empty($key) /*and ($value)*/ ) { // Важно! пустое значение ( $value == "") НЕ будет игнориться
+            $key = trim($key);
+            $ret =  "'".$key."':";
+            $value_str = (string) $value; // даже числа конвертнём в string для последующей конкатенации
+            if ( is_string($value) ) {
+                $value = (string) trim($value);
+                $array_s = [ '{', '[', '"' , "'" ];
+                if ( isset($value[0]) )
+                if ( !in_array( $value[0], $array_s) ) {
+                    $need_quotes = true;
+                }
+
+                if ( strlen($value)<3 ) {
+                    $need_quotes = true;
+                }
+            }
+
+            if ($need_quotes) {
+                str_replace( "'" , '"' , $value_str); // заменяем одинарные кавычки на двойные
+                $value_str = "'".$value_str."'"; // оборачиваем в одинарные кавычки, если string и не джаваскрипт-объект
+            }
+
+            if ( is_string($value_str) ){
+                $ret .= $value_str;
+            }else{
+                $ret .= 'null';
+            }
+        }
+        return $ret;
+    }
+
+
+    /**
+     * Возвращает строчки ключей-параметров для JavaScript либо false
+     * (предварительно делая провери и расставляя запятые и скобки).
+     * в виде:
+     * {
+     * 'key1': 5,
+     * 'key2': 'opop'
+     * }
+     * @param $params
+     * @return bool|string
+     */
+    public function stringRowsParams4js($params){
+        $ret =false;
+        $count = count($params);
+        if ($count>0){
+            //$i = 0;
+            $ret = (string) "{".PHP_EOL;
+            $rows = [];
+            foreach($params as $key => $value) {
+                $rows[] = $this->stringRowParam4js($key,$value);
+                /*$row = $this->stringRowParam4js($key,$value);
+                if ($row) {
+                    $i++;
+                    $ret .= $row;
+                    if ($i<$count) $ret .= ','.PHP_EOL;
+                }else{
+                    $count--;
+                }*/
+            }
+            $ret .= implode(','.PHP_EOL , $rows);
+            $ret .= PHP_EOL."}";
+        }
+        return $ret;
+
     }
 
 }
