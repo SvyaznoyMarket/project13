@@ -6,7 +6,7 @@ class Manager {
     private $cookieName;
     private $cookieLifetime;
     private $cookieNames = [];
-    private $params4get = [ 'utm_source','utm_content','utm_term', 'prx', 'aip', 'webmaster_id', 'admitad_uid' ];
+    private $params4get = [ 'utm_source','utm_content','utm_term', 'prx', 'aip', 'webmaster_id', 'admitad_uid', 'affiliate_id' ];
 
     public function __construct() {
         $this->cookieName = \App::config()->partner['cookieName'];
@@ -232,7 +232,7 @@ class Manager {
 
         foreach ($this->params4get as $param) {
             $tmp = $request->get($param) ? : $request->cookies->get($param);
-            if (!empty( $tmp )) {
+            if ( !empty( $tmp ) ) {
                 $return[$param] = $tmp;
                 //$return[$tmp] = $session->get($tmp); // Можно сделать и через сессию
             }
