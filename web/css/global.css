@@ -11323,12 +11323,12 @@
     filter: progid:dximagetransform.microsoft.alpha(opacity=90);
     padding: 4px 6px;
   }
-  .surveyBox__toggle {
+  .surveyBox__toggleWrapper {
     position: absolute;
     right: 10px;
     line-height: 28px;
-    color: #fff;
   }
+  .surveyBox__toggle,
   .surveyBox__toggle:hover,
   .surveyBox__answer,
   .surveyBox__answer:hover {

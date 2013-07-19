@@ -6,7 +6,9 @@
 ?>
 
 <div data-init-time="<?= $survey->getInitTime()->getTimeStamp() ?>" data-server-time="<?= (new \DateTime())->getTimeStamp() ?>" data-show-delay="<?= $survey->getShowDelay() ?>" data-is-time-passed="<?= (int)($survey->getIsTimePassed())?>" class="surveyBox<?= $survey->getIsTimePassed() ? '' : ' hf'?>">
-  <a class="surveyBox__toggle" href="#">Показать опрос</a>
+  <span class="surveyBox__toggleWrapper">
+    <a class="surveyBox__toggle" href="#">Показать опрос</a>
+  </span>
   <div class="surveyBox__content">
     <img class="pt20 pb20" src="/css/header/img/headerLogo.gif">
     <ul class="pb20">
