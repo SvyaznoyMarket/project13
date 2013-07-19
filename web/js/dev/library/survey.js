@@ -5,19 +5,24 @@
  * @requires  jQuery
  */
 (function(){
-    var sbWidthDiff = null,
+    var question = null,
+        sbWidthDiff = null,
         sbHeightDiff = null,
         sbWidthDiffAfterSubmit = null,
         initTime = null,
         serverTime = null,
         showDelay = null,
-        isTimePassed = null;
+        isTimePassed = null,
+        questionHash = null,
+        cookieName = 'survey',
+        cookieNameCollapsed = 'surveyCollapsed';
 
     /**
      * Функция инициализации параметров опроса
      */
     var initSurveyBoxData = function() {
         var surveyBox = $('.surveyBox');
+        question = $('.surveyBox__question').html();
         sbWidthDiff = parseInt( surveyBox.data('expanded-width-diff'), 10 );
         sbHeightDiff = parseInt( surveyBox.data('expanded-height-diff'), 10 );
         sbWidthDiffAfterSubmit = sbWidthDiff - 14;
@@ -25,6 +30,7 @@
         serverTime = parseInt( surveyBox.data('server-time'), 10 );
         showDelay = parseInt( surveyBox.data('show-delay'), 10 );
         isTimePassed = parseInt( surveyBox.data('is-time-passed'), 10 );
+        questionHash = surveyBox.data('questionHash');
     };
 
     /**
@@ -38,6 +44,7 @@
                 width: '-=' + sbWidthDiff,
                 height: '-=' + sbHeightDiff
             }, 250, function() {
+                window.docCookies.setItem( false, cookieNameCollapsed, questionHash, 7*24*60*60, '/' );
                 $(toggle).html('Показать опрос');
                 $('.surveyBox__content').hide();
                 $('.surveyBox').removeClass('expanded');
@@ -47,6 +54,7 @@
                 width: '+=' + sbWidthDiff,
                 height: '+=' + sbHeightDiff
             }, 250, function() {
+                window.docCookies.removeItem( cookieNameCollapsed );
                 $(toggle).html('Скрыть опрос');
                 $('.surveyBox__content').show();
                 $('.surveyBox').addClass('expanded');
@@ -59,8 +67,7 @@
      * Функция ответа на опрос
      */
     var submitAnswer = function() {
-        var question = $('.surveyBox__question').html(),
-            answer = $(this).html(),
+        var answer = $(this).html(),
             kmId = null;
         if ( typeof(window.KM) !== 'undefined' ) {
             kmId = window.KM._i;
@@ -74,7 +81,7 @@
                 kmId: kmId
             },
             success: function() {
-                window.docCookies.setItem(false, 'survey', initTime, 7*24*60*60, '/');
+                window.docCookies.setItem( false, cookieName, initTime, 7*24*60*60, '/' );
                 $('.surveyBox__toggleWrapper').html('Спасибо за ответ!');
                 $('.surveyBox__content').remove();
                 $('.surveyBox').animate( {
@@ -96,14 +103,14 @@
      */
     var trackIfShouldShow = function() {
         var shouldShow = false;
+
         serverTime += 1;
         if ( serverTime > initTime + showDelay ) {
             shouldShow = true;
         }
 
         if ( shouldShow ) {
-            $('.surveyBox').fadeIn();
-            $('.surveyBox__toggle').click();
+            showSurvey();
         } else {
             setTimeout(function() {
                 trackIfShouldShow();
@@ -111,17 +118,34 @@
         }
     }; 
 
+    /**
+     * Функция определения поддерживать ли опрос свернутым
+     */
+    var keepCollapsed = function() {
+        var cookieCollapsed = window.docCookies.getItem( cookieNameCollapsed );
+        return cookieCollapsed === questionHash;
+    }; 
+
+    /**
+     * Функция отображения панели опроса
+     */
+    var showSurvey = function() {
+        $('.surveyBox').fadeIn();
+        if( !keepCollapsed() ) {
+            $('.surveyBox__toggle').click();
+        }
+    }; 
+
     $(document).ready(function() {
+        initSurveyBoxData();
         $('.surveyBox__toggle').bind('click', toggleSurveyBox);
         $('.surveyBox__answer').bind('click', submitAnswer);
-        initSurveyBoxData();
 
         if ( !isTimePassed ) {
             trackIfShouldShow();
         } else {
             setTimeout(function() {
-                $('.surveyBox').fadeIn();
-                $('.surveyBox__toggle').click();
+                showSurvey();
             }, 1000);
         }
     });
