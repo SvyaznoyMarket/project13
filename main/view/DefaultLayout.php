@@ -215,12 +215,13 @@ class DefaultLayout extends Layout {
                 $viewEvent = 'viewList';
                 $productPager = $this->getParam('productPager');
 
-                foreach ($productPager as $product) {
-                    // @var $product \Model\Product\Entity
-                    $eventItems_arr[] = '"'.$product->getId().'"';
+                if ($productPager instanceof \Iterator\EntityPager) {
+                    foreach ($productPager as $product) {
+                        // @var $product \Model\Product\Entity
+                        $eventItems_arr[] = '"'.$product->getId().'"';
+                    }
+                    break;
                 }
-                break;
-
 
             case "product.category":
                 $productPagersByCategory = $this->getParam('productPagersByCategory');
