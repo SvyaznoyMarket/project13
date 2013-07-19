@@ -5,12 +5,12 @@
 	background: @white;
 	//head section
 	&__eHeader {
-		font-family: tahoma;
+		font-family: tahoma, verdana, arial, helvetica, sans-serif;
 		&-subtitle {
 			font-size: 24px;
 		}
 		&-title {
-			font-family: tahoma;
+			font-family: tahoma, verdana, arial, helvetica, sans-serif;
 			padding: 0 0 7px;
 		}
 		&-article {
@@ -25,18 +25,18 @@
         display: inline-block;
         margin: 15px 0 0;
         width: 700px;
-        vertical-align: top;
-        *display: inline;
-        zoom: 1;
+        float: left;
     }
     .inStock {
         color: #fb9c00;
         font-weight: 800;
         margin-bottom: 6px;
+        line-height: 1;
     }
     .priceOld {
         font-size: 21px;
         margin-bottom: 3px;
+        color: #a6a6a6;
         span {
             text-decoration: line-through;
         }
@@ -45,7 +45,7 @@
         font-size: 30px;
     }
     .priceSale {
-        margin: 0 0 10px;
+        margin: 5px 0 10px;
         cursor: pointer;
     }
     
@@ -96,7 +96,7 @@
     
     .creditbox {
         display: none;
-		margin: 0 0 23px;
+		margin: 5px 0 0;
 		border: none;
 		font-size: 14px;
 		.bigcheck {
@@ -121,8 +121,13 @@
 	}
     //product shop description section
     .bProductDesc {
-        margin: 0 0 25px;
+        margin: 0 0 15px;
         //product images section
+        .bStickerImg {
+        	position: absolute;
+        	top: 0;
+        	left: 0;
+        }
         &__ePhoto {
             position: relative;
             float: left;
@@ -130,11 +135,8 @@
             //product big image section
             &-bigImg {
                 display: block;
-
                 width: 400px;
                 height: 400px;
-                margin: 0 0 30px;
-
                 text-align: center;
                 vertical-align: bottom;
                 img {
@@ -147,14 +149,16 @@
         &__eStore {
             float: right;
             width: 280px;
-            margin: -3px 0 0;
+            margin: 0;
             &-text {
 		        font-size: 14px;
-		        margin: 0 0 25px;
+		        margin: 23px 0 25px;
 		        .text__eAll {
 		            margin: 4px 0 0;
 		            a {
 		                text-decoration: underline;
+		                color: #a6a6a6;
+						font-size: 12px;
 		            }
 		        }
 		    }
@@ -205,9 +209,7 @@
 	&__eRight {
 		width: 220px;
 		margin: 15px 0 0 16px;
-		vertical-align: top;
-		display: inline-block;
-        *display: inline;
+		float: right;
         zoom: 1;
 		.btnBuy {
 			margin: 0 auto;
@@ -216,7 +218,8 @@
 }
 
 .bPhotoAction {
-	//view product section
+	//view product
+	margin: 15px 0 0;
 	&OtherAction {
 		float: left;
 		width: 110px;
@@ -225,10 +228,8 @@
 			a {
 				.rounded(9px);
 				display: block;
-
 				width: 48px;
 				height: 48px;
-
 				border: 1px solid @typLightGray;
 				background-image: url("@{base-url}/newProductCard/img/btn_slider.png");
 				background-repeat: no-repeat;
@@ -261,42 +262,32 @@
 	//slider mini product images
 	&OtherPhoto {
 		position: relative;
-
 		float: right;
-
 		width: 220px;
 		margin-right: 5px;
 		&__eWrappSlider {
 			overflow: hidden;
-
 			width: 220px;
 		}
 		&List {
 			position: relative;
-
-			width: 100000px;
 		}
 		&Item {
 			float: left;
-
 			margin: 0 3px 0 2px;
 			&__eLink {
 				.rounded(9px);
 				display: table-cell;
+				*display: block;
 				overflow: hidden;
-
 				width: 48px;
 				height: 48px;
-
 				text-align: center;
 				vertical-align: middle;
-
 				border: 1px solid @typLightGray;
-
 				&.mActive {
 					width: 46px;
 					height: 46px;
-
 					border: 2px solid @firmOrange;
 					&:hover{
 						border-color: @firmOrange;
@@ -306,7 +297,6 @@
 				&:hover {
 					width: 46px;
 					height: 46px;
-
 					border: 2px solid;
 					border-color: lighten(@firmOrange, 20%);
 				}
@@ -314,6 +304,7 @@
 				img {
 					max-width: 45px;
 					max-height: 45px;
+					.rounded(9px);
 				}
 			}
 		}
@@ -357,9 +348,7 @@
 		width: 420px;
 	} 
 	&__eTitle {
-		font-size: 16px;
-		font-family: tahoma;
-		font-weight: 800;
+		font: 800 16px/1.2 tahoma, verdana, arial, helvetica, sans-serif;
 	}
 	.btnBuy {
 		margin-left: 12px;
