@@ -564,11 +564,19 @@ return [
         'action'  => ['Cron\LinksAction', 'execute'],
     ],
 
+
+    // LiveTex Statistics:
+    'livetex.statistics' => [
+        'pattern' => '/livetex-statistics',
+        'action' => ['Livetex\StatisticsAction', 'execute'],
+    ],
+
+
+
     //content
     'content' => [
         'pattern' => '/{token}',
         'action'  => ['Content\Action', 'execute'],
     ],
-
 
 ];
