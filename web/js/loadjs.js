@@ -74,13 +74,14 @@
 				.script(getWithVersion('common.js'))
 				.script(getWithVersion('main.js'))
 				.wait()
-				.script( getWithVersion('ports.js') )
 				.script('//cdn.optimizely.com/js/204544654.js')
 				.script('adfox.asyn.code.ver3.min.js')
-			}).runQueue()
-			break
+				.wait()
+				.script( getWithVersion('ports.js') )
+			}).runQueue();
+			break;
 		case 'default':
-			break
+			break;
 		case 'tag-category':
 			$LAB.queueWait( function() {
 				$LAB
@@ -89,11 +90,12 @@
 				.wait()
 				.script(getWithVersion('common.js'))
 				.wait()
-				.script( getWithVersion('ports.js') )
 				.script('//cdn.optimizely.com/js/204544654.js')
 				.script('adfox.asyn.code.ver3.min.js')
-			}).runQueue()
-			break
+				.wait()
+				.script( getWithVersion('ports.js') )
+			}).runQueue();
+			break;
 		case 'infopage':
 			$LAB.queueWait( function() {
 				$LAB
@@ -104,11 +106,12 @@
 				.wait()
 				.script( getWithVersion('infopage.js') )
 				.wait()
-				.script( getWithVersion('ports.js') )
 				.script('//cdn.optimizely.com/js/204544654.js')
 				.script('adfox.asyn.code.ver3.min.js')
-			}).runQueue()
-			break
+				.wait()
+				.script( getWithVersion('ports.js') )
+			}).runQueue();
+			break;
 		case 'cart':
 			$LAB.queueWait( function() {
 				$LAB
@@ -121,11 +124,12 @@
 				.wait()
 				.script(getWithVersion('cart.js'))
 				.wait()
-				.script( getWithVersion('ports.js') )
 				.script('//cdn.optimizely.com/js/204544654.js')
 				.script('adfox.asyn.code.ver3.min.js')
-			}).runQueue()
-			break
+				.wait()
+				.script( getWithVersion('ports.js') )
+			}).runQueue();
+			break;
 		case 'order':
 			$LAB
 			.queueScript( (mapVendor==='yandex') ? 'http://api-maps.yandex.ru/2.0/?load=package.full&lang=ru-RU' : 'http://maps.google.com/maps/api/js?sensor=false')
@@ -141,11 +145,12 @@
 				.script(getWithVersion('common.js'))
 				.script(getWithVersion('order-new.js'))
 				.wait()
-				.script( getWithVersion('ports.js') )			
 				.script('//cdn.optimizely.com/js/204544654.js')
 				.script('adfox.asyn.code.ver3.min.js')
-			}).runQueue()
-			break
+				.wait()
+				.script( getWithVersion('ports.js') )
+			}).runQueue();
+			break;
 		case 'order_complete':
 			$LAB.queueScript('jquery-plugins.min.js')
 				.queueWait( function() {
@@ -160,11 +165,12 @@
 				.script(getWithVersion('order.js'))
 				.script(getWithVersion('common.js'))
 				.wait()
-				.script( getWithVersion('ports.js') )
 				.script('//cdn.optimizely.com/js/204544654.js')
 				.script('adfox.asyn.code.ver3.min.js')
-			}).runQueue()
-			break
+				.wait()
+				.script( getWithVersion('ports.js') )
+			}).runQueue();
+			break;
 		case 'order_error':
 			$LAB.queueWait( function() {
 				$LAB
@@ -175,9 +181,8 @@
 				.script( getWithVersion('common.js') )
 				.wait()
 				.script('//cdn.optimizely.com/js/204544654.js')
-				.script('adfox.asyn.code.ver3.min.js')
-			}).runQueue()
-			break
+			}).runQueue();
+			break;
 		case 'product_catalog':
 			$LAB.queueWait( function() {
 				$LAB
@@ -185,14 +190,14 @@
 				.script( getWithVersion('library.js') )
 				.wait()
 				.script( getWithVersion('common.js') )
-				.wait()
-				.script( getWithVersion('ports.js') )
-				.wait()
 				.script( getWithVersion('pandora.js') )
+				.wait()
 				.script('//cdn.optimizely.com/js/204544654.js')
 				.script('adfox.asyn.code.ver3.min.js')
-			}).runQueue()
-			break
+				.wait()
+				.script( getWithVersion('ports.js') )
+			}).runQueue();
+			break;
 		case 'product_card':
 			$LAB.queueScript('http://ajax.aspnetcdn.com/ajax/knockout/knockout-2.2.1.js')
 			.queueScript( (mapVendor==='yandex') ? 'http://api-maps.yandex.ru/2.0/?load=package.full&lang=ru-RU' : 'http://maps.google.com/maps/api/js?sensor=false' )
@@ -201,19 +206,19 @@
 				.script('jquery-plugins.min.js')
 				.script( getWithVersion('library.js') )
 				.wait()
-				.script( 'JsHttpRequest.min.js' )
-				//.script( 'http://direct-credit.ru/widget/dc_script_utf.js' )				
+				.script( 'JsHttpRequest.min.js' )			
 				.script( 'http://direct-credit.ru/widget/api_script_utf.js' )
 				.script( getWithVersion('common.js') )
 				.wait()
 				.script( getWithVersion('product.js') )
 				.script( getWithVersion('oneclick.js') )
 				.wait()
-				.script( getWithVersion('ports.js') )
 				.script('//cdn.optimizely.com/js/204544654.js')
 				.script('adfox.asyn.code.ver3.min.js')
-			}).runQueue()
-			break
+				.wait()
+				.script( getWithVersion('ports.js') )
+			}).runQueue();
+			break;
 		case 'service':
 			$LAB.queueWait( function() {
 				$LAB
@@ -224,11 +229,12 @@
 				.wait()
 				.script( getWithVersion('dash.js') )
 				.wait()
-				.script( getWithVersion('ports.js') )
 				.script('//cdn.optimizely.com/js/204544654.js')
 				.script('adfox.asyn.code.ver3.min.js')
-			}).runQueue()
-			break
+				.wait()
+				.script( getWithVersion('ports.js') )
+			}).runQueue();
+			break;
 		case 'shop':
 			$LAB
 			.queueScript( (mapVendor==='yandex') ? 'http://api-maps.yandex.ru/2.0/?load=package.full&lang=ru-RU' : 'http://maps.google.com/maps/api/js?sensor=false' )
@@ -241,13 +247,10 @@
 				.wait()
 				.script( getWithVersion('dash.js') )
 				.script('tour.js')
-				// .wait()
-				// .script( getWithVersion('ports.js') )
 				.wait()
 				.script('//cdn.optimizely.com/js/204544654.js')
-				.script('adfox.asyn.code.ver3.min.js')
-			}).runQueue()
-			break
+			}).runQueue();
+			break;
 		case 'product_stock':
 			$LAB
 			.queueScript( (mapVendor==='yandex') ? 'http://api-maps.yandex.ru/2.0/?load=package.full&lang=ru-RU' : 'http://maps.google.com/maps/api/js?sensor=false' )
@@ -264,10 +267,11 @@
 				.script( getWithVersion('product.js') )
 				.script( getWithVersion('oneclick.js') )
 				.wait()
-				.script( getWithVersion('ports.js') )
 				.script('//cdn.optimizely.com/js/204544654.js')
 				.script('adfox.asyn.code.ver3.min.js')
-			}).runQueue()
-			break
+				.wait()
+				.script( getWithVersion('ports.js') )
+			}).runQueue();
+			break;
 	}
 }());
