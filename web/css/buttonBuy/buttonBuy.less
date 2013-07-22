@@ -1,63 +1,97 @@
 // button buy
 .btnBuy {
-    height: 35px;
     width: 170px;
+    height: 35px;
     .btnBuy__eLink {
-        display: block;
-        color: #ffffff;
         .gradient(#ffc000, #ffaa01, #ffc000);
-        border: 1px solid #fb9c00;
         .rounded(5px);
         .box-shadow(0 1px 3px rgba(0, 0, 0, 0.4));
-        height: 35px;
-        line-height: 35px;
-        text-align: center;
+        display: block;
+
         width: 170px;
-        font-size: 18px;
+        height: 35px;
+
+        text-align: center;
+
+        color: #ffffff;
         border: 1px solid #fb9c00;
+        border: 1px solid #fb9c00;
+
+        font-size: 18px;
+        line-height: 35px;
         // Паша Гертман сказал пока закомментировать иконку кнопки "Купить" 
         // padding-left: 10px;
-        // background: url("@{base-url}/newProductCard/img/ico.png") no-repeat 19px -54px;
+        // background: url("interpolation0__/newProductCard/img/ico.png") no-repeat 19px -54px;
+
         &.mBought {
-            background: @white;
+            .box-shadow(none);
             color: @black;
             border: 1px solid lighten(@black, 70);
-            .box-shadow(none);
+            background: @white;
             &:hover {
                 background: @white;
             }
         }
+
         &.mDisabled {
-            background: @typLightGray;
-            color: @typGray;
-            border: 1px solid @typLightGray;
             .box-shadow(none);
             cursor: default;
+
+            color: @typGray;
+            border: 1px solid @typLightGray;
+            background: @typLightGray;
             &:hover {
-                background: @typLightGray;
                 color: @typGray;
                 border: 1px solid @typLightGray;
+                background: @typLightGray;
             }
         }
+
         &.mShopsOnly {
             font-size: 17px;
         }
+
         &:hover {
-            text-decoration: none;
             .gradient(#ffa200, #f79200, #ffa200);
+            text-decoration: none;
         }
     }
 }
+
+.jewel {
+    .btnBuy {
+        .btnBuy__eLink {
+            &.mDisabled {
+                .box-shadow(none);
+                cursor: default;
+
+                color: @typGray;
+                border: 1px solid @typLightGray;
+                background: @typLightGray;
+                &:hover {
+                    color: @typGray;
+                    border: 1px solid @typLightGray;
+                    background: @typLightGray;
+                }
+            }
+        }
+    }
+}
+
 .goodsbox {
     .btnBuy {
+        float: right;
+
         width: 38px;
         height: 25px;
-        float: right;
         a {
-            text-indent: -9999px;
             display: block;
+
             width: 38px;
             height: 25px;
+
+            text-indent: -9999px;
+
             background: url("/css/catalog/img/catalogSprite.png") -64px 0 no-repeat;
         &.mBought, &:hover {
           background-position: -102px 0;

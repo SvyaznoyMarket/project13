@@ -10523,75 +10523,89 @@
 /*------СТИЛИ КНОПКИ "КУПИТЬ"------*/
 @media all {
   .btnBuy {
-    height: 35px;
     width: 170px;
+    height: 35px;
   }
   .btnBuy .btnBuy__eLink {
-    display: block;
-    color: #ffffff;
     background: #ffc000;
     background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #ffaa01), color-stop(1, #ffc000));
     background: -ms-linear-gradient(bottom, #ffaa01, #ffc000);
     background: -moz-linear-gradient(center bottom, #ffaa01 0%, #ffc000 100%);
-    border: 1px solid #fb9c00;
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     border-radius: 5px;
     -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
     -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
-    height: 35px;
-    line-height: 35px;
-    text-align: center;
+    display: block;
     width: 170px;
-    font-size: 18px;
+    height: 35px;
+    text-align: center;
+    color: #ffffff;
     border: 1px solid #fb9c00;
+    border: 1px solid #fb9c00;
+    font-size: 18px;
+    line-height: 35px;
   }
   .btnBuy .btnBuy__eLink.mBought {
-    background: #ffffff;
-    color: #000000;
-    border: 1px solid #b3b3b3;
     -webkit-box-shadow: none;
     -moz-box-shadow: none;
     box-shadow: none;
+    color: #000000;
+    border: 1px solid #b3b3b3;
+    background: #ffffff;
   }
   .btnBuy .btnBuy__eLink.mBought:hover {
     background: #ffffff;
   }
   .btnBuy .btnBuy__eLink.mDisabled {
-    background: #e6e6e6;
-    color: #a6a6a6;
-    border: 1px solid #e6e6e6;
     -webkit-box-shadow: none;
     -moz-box-shadow: none;
     box-shadow: none;
     cursor: default;
-  }
-  .btnBuy .btnBuy__eLink.mDisabled:hover {
-    background: #e6e6e6;
     color: #a6a6a6;
     border: 1px solid #e6e6e6;
+    background: #e6e6e6;
+  }
+  .btnBuy .btnBuy__eLink.mDisabled:hover {
+    color: #a6a6a6;
+    border: 1px solid #e6e6e6;
+    background: #e6e6e6;
   }
   .btnBuy .btnBuy__eLink.mShopsOnly {
     font-size: 17px;
   }
   .btnBuy .btnBuy__eLink:hover {
-    text-decoration: none;
     background: #ffa200;
     background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #f79200), color-stop(1, #ffa200));
     background: -ms-linear-gradient(bottom, #f79200, #ffa200);
     background: -moz-linear-gradient(center bottom, #f79200 0%, #ffa200 100%);
+    text-decoration: none;
+  }
+  .jewel .btnBuy .btnBuy__eLink.mDisabled {
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    cursor: default;
+    color: #a6a6a6;
+    border: 1px solid #e6e6e6;
+    background: #e6e6e6;
+  }
+  .jewel .btnBuy .btnBuy__eLink.mDisabled:hover {
+    color: #a6a6a6;
+    border: 1px solid #e6e6e6;
+    background: #e6e6e6;
   }
   .goodsbox .btnBuy {
+    float: right;
     width: 38px;
     height: 25px;
-    float: right;
   }
   .goodsbox .btnBuy a {
-    text-indent: -9999px;
     display: block;
     width: 38px;
     height: 25px;
+    text-indent: -9999px;
     background: url("/css/catalog/img/catalogSprite.png") -64px 0 no-repeat;
   }
   .goodsbox .btnBuy a.mBought,
