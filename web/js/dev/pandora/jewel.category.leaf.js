@@ -58,7 +58,7 @@ function liveScrollJewel( lsURL, filters, pageid ) {
       })
       dajax.post( dlvr_node.data('calclink'), coreid )
     }
-    handle_custom_items()
+    // handle_custom_items()
   })
 }
 
