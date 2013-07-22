@@ -18,10 +18,16 @@
         
         <div class="headerContactPhone fl" >
             <p class="fl headerContactPhone__eTitle">Контакт-cENTER</p>
-            <p class="fl headerContactPhone__ePhones"><?= \App::config()->company['phone'] ?>
+            <? /*<p class="fl headerContactPhone__ePhones"><?= \App::config()->company['phone'] ?>
                 <? if (14974 == $user->getRegion()->getId() || 83 == $user->getRegion()->getParentId()): ?>
                 <br/><?= \App::config()->company['moscowPhone'] ?>
                 <? endif ?>
+            </p>
+            */ ?>
+            <p class="fl headerContactPhone__ePhones">
+                8 (800) 700-00-09
+                <br />8 (495) 775-00-06
+                <br />8 (812) 703-77-30
             </p>
         </div>
 
