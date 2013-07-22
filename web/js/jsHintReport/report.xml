@@ -864,13 +864,13 @@
 		<error line="650" column="38" severity="error" message="Expected &apos;===&apos; and instead saw &apos;==&apos;." source="jshint.W116" />
 		<error line="820" column="47" severity="error" message="Bad or unnecessary escaping." source="jshint.W044" />
 		<error line="820" column="54" severity="error" message="Bad or unnecessary escaping." source="jshint.W044" />
-		<error line="872" column="23" severity="error" message="&apos;Model&apos; is already defined." source="jshint.W004" />
-		<error line="873" column="23" severity="error" message="&apos;inputUrl&apos; is already defined." source="jshint.W004" />
-		<error line="874" column="23" severity="error" message="&apos;outputUrl&apos; is already defined." source="jshint.W004" />
-		<error line="875" column="27" severity="error" message="&apos;selfAvailable&apos; is already defined." source="jshint.W004" />
-		<error line="878" column="22" severity="error" message="&apos;postData&apos; is already defined." source="jshint.W004" />
-		<error line="903" column="38" severity="error" message="Expected &apos;!==&apos; and instead saw &apos;!=&apos;." source="jshint.W116" />
-		<error line="924" column="17" severity="error" message="Confusing use of &apos;!&apos;." source="jshint.W018" />
+		<error line="877" column="23" severity="error" message="&apos;Model&apos; is already defined." source="jshint.W004" />
+		<error line="878" column="23" severity="error" message="&apos;inputUrl&apos; is already defined." source="jshint.W004" />
+		<error line="879" column="23" severity="error" message="&apos;outputUrl&apos; is already defined." source="jshint.W004" />
+		<error line="880" column="27" severity="error" message="&apos;selfAvailable&apos; is already defined." source="jshint.W004" />
+		<error line="883" column="22" severity="error" message="&apos;postData&apos; is already defined." source="jshint.W004" />
+		<error line="908" column="38" severity="error" message="Expected &apos;!==&apos; and instead saw &apos;!=&apos;." source="jshint.W116" />
+		<error line="929" column="17" severity="error" message="Confusing use of &apos;!&apos;." source="jshint.W018" />
 		<error line="8" column="31" severity="error" message="&apos;ko&apos; is not defined." source="jshint.W117" />
 		<error line="16" column="32" severity="error" message="&apos;ko&apos; is not defined." source="jshint.W117" />
 		<error line="17" column="32" severity="error" message="&apos;ko&apos; is not defined." source="jshint.W117" />
@@ -897,18 +897,18 @@
 		<error line="146" column="28" severity="error" message="&apos;Deliveries&apos; is not defined." source="jshint.W117" />
 		<error line="148" column="26" severity="error" message="&apos;ko&apos; is not defined." source="jshint.W117" />
 		<error line="148" column="26" severity="error" message="Too many errors. (15% scanned)." source="jshint.undefined" />
-		<error line="8,16,17,20,26,27,51,59,67,75,83,92,93,94,97,98,99,100,101,102,103,148,536,543,544,545,547,588,589,775,787,935,938" column="0" severity="warning" message="Implied global &apos;ko&apos;" source="jshint.implied-globals" />
+		<error line="8,16,17,20,26,27,51,59,67,75,83,92,93,94,97,98,99,100,101,102,103,148,536,543,544,545,547,588,589,775,787,940,943" column="0" severity="warning" message="Implied global &apos;ko&apos;" source="jshint.implied-globals" />
 		<error line="269,271,538,539,540,541,542" column="0" severity="warning" message="Implied global &apos;Model&apos;" source="jshint.implied-globals" />
 		<error line="21,149,548" column="0" severity="warning" message="Implied global &apos;printPrice&apos;" source="jshint.implied-globals" />
 		<error line="49" column="0" severity="warning" message="Implied global &apos;docCookies&apos;" source="jshint.implied-globals" />
 		<error line="295,297,300,313" column="0" severity="warning" message="Implied global &apos;selfAvailable&apos;" source="jshint.implied-globals" />
-		<error line="146,159,160,283,285,295,296,298,317,318,319,553,557,582,583,584,585,586,597,608,609,681,746,781,782,784,893,896,900,916,924,931" column="0" severity="warning" message="Implied global &apos;Deliveries&apos;" source="jshint.implied-globals" />
+		<error line="146,159,160,283,285,295,296,298,317,318,319,553,557,582,583,584,585,586,597,608,609,681,746,781,782,784,898,901,905,921,929,936" column="0" severity="warning" message="Implied global &apos;Deliveries&apos;" source="jshint.implied-globals" />
 		<error line="185,210" column="0" severity="warning" message="Implied global &apos;kissAnalitycs&apos;" source="jshint.implied-globals" />
 		<error line="274" column="0" severity="warning" message="Implied global &apos;inputUrl&apos;" source="jshint.implied-globals" />
-		<error line="297,298,305,784,795,931,957" column="0" severity="warning" message="Implied global &apos;mapCenter&apos;" source="jshint.implied-globals" />
-		<error line="298,784,931" column="0" severity="warning" message="Implied global &apos;calcMCenter&apos;" source="jshint.implied-globals" />
+		<error line="297,298,305,784,795,936,962" column="0" severity="warning" message="Implied global &apos;mapCenter&apos;" source="jshint.implied-globals" />
+		<error line="298,784,936" column="0" severity="warning" message="Implied global &apos;calcMCenter&apos;" source="jshint.implied-globals" />
 		<error line="302,791" column="0" severity="warning" message="Implied global &apos;pickStoreMVMCL&apos;" source="jshint.implied-globals" />
-		<error line="305,736,795,867,957" column="0" severity="warning" message="Implied global &apos;MapInterface&apos;" source="jshint.implied-globals" />
+		<error line="305,736,795,872,962" column="0" severity="warning" message="Implied global &apos;MapInterface&apos;" source="jshint.implied-globals" />
 		<error line="314,315,318" column="0" severity="warning" message="Implied global &apos;item&apos;" source="jshint.implied-globals" />
 		<error line="423" column="0" severity="warning" message="Implied global &apos;enableHandlers&apos;" source="jshint.implied-globals" />
 		<error line="472" column="0" severity="warning" message="Implied global &apos;outputUrl&apos;" source="jshint.implied-globals" />
@@ -916,10 +916,10 @@
 		<error line="510,511" column="0" severity="warning" message="Implied global &apos;runAnalitics&apos;" source="jshint.implied-globals" />
 		<error line="513,828" column="0" severity="warning" message="Implied global &apos;ANALYTICS&apos;" source="jshint.implied-globals" />
 		<error line="559,582,585" column="0" severity="warning" message="Implied global &apos;parseDateShop&apos;" source="jshint.implied-globals" />
-		<error line="685,695,767,768,774,775,776,786,787,809,810,833,834,835,855,937,938" column="0" severity="warning" message="Implied global &apos;OC_MVM&apos;" source="jshint.implied-globals" />
+		<error line="685,695,767,768,774,775,776,786,787,809,810,833,834,835,860,942,943" column="0" severity="warning" message="Implied global &apos;OC_MVM&apos;" source="jshint.implied-globals" />
 		<error line="759,802,815" column="0" severity="warning" message="Implied global &apos;oneClickIsReady&apos;" source="jshint.implied-globals" />
 		<error line="819,820" column="0" severity="warning" message="Implied global &apos;yaCounter10503055&apos;" source="jshint.implied-globals" />
-		<error line="934,935,944,948,949" column="0" severity="warning" message="Implied global &apos;MVM&apos;" source="jshint.implied-globals" />
+		<error line="939,940,949,953,954" column="0" severity="warning" message="Implied global &apos;MVM&apos;" source="jshint.implied-globals" />
 	</file>
 	<file name="../web/js/dev/order-new/order-new.js">
 		<error line="3" column="22" severity="error" message="Missing semicolon." source="jshint.W033" />

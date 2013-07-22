@@ -843,10 +843,15 @@ levup:			for(var i = 0, l = numbers.length; i < l; i++){
 			/**
 			 * Подписка
 			 */
-			if(!$('#recipientEmail').parent().find('.bSubscibe').length) {
-				$('#recipientEmail').css('margin-bottom', '10px');
-				$('#recipientEmail').parent().parent().after('<tr><td></td><td><label class="bSubscibe checked"><b></b> Хочу знать об интересных<br />предложениях<input type="checkbox" name="subscribe" value="1" autocomplete="off" class="subscibe" checked="checked" /></label></td></tr>');
-			}
+			$('#recipientEmail').on('keyup', function() {
+					if ( $(this).val() && $(this).val().isEmail() && !$('#recipientEmail').siblings('.bSubscibe').length ) {
+							$('#recipientEmail').css('margin-bottom', '10px');
+							$('#recipientEmail').after('<label class="bSubscibe checked"><b></b> Хочу знать об интересных<br />предложениях<input type="checkbox" name="subscribe" value="1" autocomplete="off" class="subscibe" checked="checked" /></label>');
+					} else if ( ( !$(this).val() || $(this).val() && !$(this).val().isEmail() ) && $('#recipientEmail').siblings('.bSubscibe').length ) {
+							$('#recipientEmail').css('margin-bottom', '0');
+							$('#recipientEmail').siblings('.bSubscibe').remove();
+					}
+			});
 
 			$('#order1click-container-new').lightbox_me({
 				centered: true,
