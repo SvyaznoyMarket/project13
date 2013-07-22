@@ -111,7 +111,7 @@ return function(
                     </div>
                 </li>
             <? endif ?>
-            <? if ((bool)$product->getPhoto3d() || $model3dExternalUrl || $model3dImg):  ?>
+            <? if ($model3dExternalUrl || $model3dImg):  ?>
                 <?
                 if ($model3dExternalUrl) {
                     $class3D = 'maybe3d';
