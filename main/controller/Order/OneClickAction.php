@@ -12,6 +12,10 @@ class OneClickAction {
     public function execute(\Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__, ['order']);
 
+        $client = \App::coreClientV2();
+        $user = \App::user();
+        $region = $user->getRegion();
+
         if (!$request->isXmlHttpRequest()) {
             throw new \Exception\NotFoundException('Request is not xml http request');
         }
@@ -37,6 +41,7 @@ class OneClickAction {
                 'product_quantity'       => 0,
                 'delivered_at'           => null,
                 'recipient_first_name'   => null,
+                'recipient_email'        => null,
                 'recipient_phonenumbers' => null,
                 'recipient_scCard'       => null,
                 'shop_id'                => null,
@@ -154,6 +159,30 @@ class OneClickAction {
                     'id'   => $category->getId(),
                     'name' => $category->getName(),
                 ];
+            }
+
+            // подписка
+            $isSubscribe = $request->request->get('subscribe');
+            $email = $formData['recipient_email'];
+            if(!empty($isSubscribe) && !empty($email) && preg_match('/@/', $email)) {
+                $subscriptionParams = [
+                    'email'      => $email,
+                    'geo_id'     => $region->getId(),
+                    'channel_id' => 1,
+                ];
+                if ($userEntity = \App::user()->getEntity()) {
+                    $subscriptionParams['token'] = $userEntity->getToken();
+                }
+
+                $exception = null;
+                $subscriptionResponse = null;
+                $client->addQuery('subscribe/create', $subscriptionParams, [], function($data) use (&$subscriptionResponse) {
+                    $subscriptionResponse = $data;
+                }, function(\Exception $e) use (&$exception) {
+                    $exception = $e;
+                    \App::exception()->remove($e);
+                });
+                $client->execute(\App::config()->coreV2['retryTimeout']['default'], \App::config()->coreV2['retryCount']);
             }
 
             return new \Http\JsonResponse(array(

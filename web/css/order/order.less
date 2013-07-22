@@ -180,6 +180,28 @@
       width: 400px;
     }
   }
+  p.subscribe {
+    width: 130px;
+    margin: 0;
+    b {
+      margin-top: 5px;
+    }
+    label {
+      font-weight:normal;
+      text-align: left;
+      font-size:12px;
+      line-height:12px;
+      text-align: left;
+      width: 130px;
+      b {
+        background: url("@{orderSprite-url}") 0px -48px no-repeat;
+      }
+      &.checked b {
+        background: url("@{orderSprite-url}") 0px 0px no-repeat;
+      }
+    }
+  }
+
   h5 {
     color: #434343;
     display: inline-block;

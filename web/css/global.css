@@ -305,6 +305,36 @@
   .pl235 {
     padding-left: 235px;
   }
+  .pr5 {
+    padding-right: 5px;
+  }
+  .pr10 {
+    padding-right: 10px;
+  }
+  .pr20 {
+    padding-right: 20px;
+  }
+  .pr30 {
+    padding-right: 30px;
+  }
+  .pr40 {
+    padding-right: 40px;
+  }
+  .pl5 {
+    padding-left: 5px;
+  }
+  .pl10 {
+    padding-left: 10px;
+  }
+  .pl20 {
+    padding-left: 20px;
+  }
+  .pl30 {
+    padding-left: 30px;
+  }
+  .pl40 {
+    padding-left: 40px;
+  }
   .mb5 {
     margin-bottom: 5px;
   }
@@ -6722,6 +6752,27 @@
     display: inline-block;
     font-weight: bold;
     width: 400px;
+  }
+  .bBuyingLine p.subscribe {
+    width: 130px;
+    margin: 0;
+  }
+  .bBuyingLine p.subscribe b {
+    margin-top: 5px;
+  }
+  .bBuyingLine p.subscribe label {
+    font-weight: normal;
+    text-align: left;
+    font-size: 12px;
+    line-height: 12px;
+    text-align: left;
+    width: 130px;
+  }
+  .bBuyingLine p.subscribe label b {
+    background: url("/css/order/img/orderSprite.png") 0px -48px no-repeat;
+  }
+  .bBuyingLine p.subscribe label.checked b {
+    background: url("/css/order/img/orderSprite.png") 0px 0px no-repeat;
   }
   .bBuyingLine h5 {
     color: #434343;

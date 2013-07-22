@@ -10,6 +10,7 @@
 $userEntity = $user->getEntity() ?: null;
 $formData = array(
     'recipient_first_name'   => $userEntity ? $userEntity->getFirstName() : '',
+    'recipient_email'   => $userEntity ? $userEntity->getEmail() : '',
     'recipient_phonenumbers' => $userEntity ? (11 == strlen($userEntity->getMobilePhone()) ? substr($userEntity->getMobilePhone(), 1) : $userEntity->getMobilePhone()) : '',
 );
 ?>

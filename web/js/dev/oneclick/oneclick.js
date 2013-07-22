@@ -52,7 +52,8 @@ $(document).ready(function() {
 			self.textfields = [];
 
 			var firstNameVal = ( $('#oneClick').length ) ? $('#oneClick').data('values').recipient_first_name : '',
-				phoneNumberVal = ( $('#oneClick').length ) ? $('#oneClick').data('values').recipient_phonenumbers : '';
+				phoneNumberVal = ( $('#oneClick').length ) ? $('#oneClick').data('values').recipient_phonenumbers : '',
+				emailVal = ( $('#oneClick').length ) ? $('#oneClick').data('values').recipient_email : '';
 			//end of vars
 
 			self.textfields.push( ko.observable({
@@ -70,6 +71,14 @@ $(document).ready(function() {
 				value: phoneNumberVal,
 				valerror: false,
 				regexp: /^[()0-9\-\+\s]+$/
+			}) );
+			self.textfields.push( ko.observable({
+				title: 'Email (не обязательно)',
+				name: 'order[recipient_email]', //UNIQUE!
+				selectorid: 'recipientEmail',
+				value: emailVal,
+				valerror: false,
+				regexp: /@/
 			}) );
 			self.textfields.push( ko.observable({
 				title: 'номер вашей карты «Связной-Клуб»',
@@ -401,7 +410,7 @@ $(document).ready(function() {
 				}
 
 				for(var i=0, l=self.textfields.length; i<l; i++){ // like indexOf
-					if( self.textfields[i]().name === textfield.name ) {
+					if( self.textfields[i]().name === textfield.name && textfield.name !== 'order[recipient_email]' ) {
 						var tmp = self.textfields[i]();
 						tmp.valerror = valerror;
 						tmp.value = e.currentTarget.value;
@@ -455,6 +464,7 @@ $(document).ready(function() {
 				for(var i=0,l=self.textfields.length; i<l; i++){
 					postData[ self.textfields[i]().name + '' ] = self.textfields[i]().value;
 				}
+				postData['subscribe'] = $('#order1click-container-new .bSubscibe input[name="subscribe"]').val();
 
 				$.ajax( {
 					type: 'POST',
@@ -691,6 +701,7 @@ levup:			for(var i = 0, l = numbers.length; i < l; i++){
 			
 	/////////////////////////////////////////
 	
+
 	/* Inputs */
 	function enableHandlers() {
 		$("#phonemask").parent().prepend('<span id="phonePH">+7</span>');
@@ -827,6 +838,14 @@ levup:			for(var i = 0, l = numbers.length; i < l; i++){
 
 			if (typeof(_kmq) !== 'undefined'){
 				_kmq.push(['record', 'Checkout Step 1', toKISS_oc]);
+			}
+
+			/**
+			 * Подписка
+			 */
+			if(!$('#recipientEmail').parent().find('.bSubscibe').length) {
+				$('#recipientEmail').css('margin-bottom', '10px');
+				$('#recipientEmail').parent().parent().after('<tr><td></td><td><label class="bSubscibe checked"><b></b> Хочу знать об интересных<br />предложениях<input type="checkbox" name="subscribe" value="1" autocomplete="off" class="subscibe" checked="checked" /></label></td></tr>');
 			}
 
 			$('#order1click-container-new').lightbox_me({

@@ -93,8 +93,13 @@ if ($form->hasSubway()) $jsValidator['order[address_metro]'] = 'Укажите �
         <dl class='bBuyingLine'>
             <dt>E-mail</dt>
             <dd>
-                <div>
-                    <p></p>
+                <div class="pr40">
+                    <p class="subscribe">
+                        <label class="bSubscibe checked">
+                            <b></b> Хочу знать об интересных<br />предложениях
+                            <input type="checkbox" name="subscribe" value="1" autocomplete="off" class="subscibe" checked="checked" />
+                        </label>
+                    </p>
                     <input type="text" id="order_recipient_email" class="bBuyingLine__eText mInputLong" name="order[recipient_email]" value="<?= $form->getEmail() ?>"/>
                 </div>
             </dd>

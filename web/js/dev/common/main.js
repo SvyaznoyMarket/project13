@@ -106,14 +106,15 @@ $(document).ready(function(){
 	/**
 	 * Подписка
 	 */
-	$('.bSubscibe').on('click', function(){
-		if ($(this).hasClass('checked')){
+	$('body').on('click', '.bSubscibe', function() {
+		if ( $(this).hasClass('checked') ) {
 			$(this).removeClass('checked');
 			$(this).find('.subscibe').removeAttr('checked');
-		}
-		else{
+			$(this).find('input[name="subscribe"]').val(0);
+		} else {
 			$(this).addClass('checked');
 			$(this).find('.subscibe').attr('checked','checked');
+			$(this).find('input[name="subscribe"]').val(1);
 		}
 		return false;
 	});

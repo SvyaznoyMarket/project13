@@ -238,6 +238,30 @@ class Action {
                     ];
                 }
 
+                // подписка
+                $isSubscribe = $request->request->get('subscribe');
+                $email = $form->getEmail();
+                if(!empty($isSubscribe) && !empty($email)) {
+                    $subscriptionParams = [
+                        'email'      => $email,
+                        'geo_id'     => $region->getId(),
+                        'channel_id' => 1,
+                    ];
+                    if ($userEntity = \App::user()->getEntity()) {
+                        $subscriptionParams['token'] = $userEntity->getToken();
+                    }
+
+                    $exception = null;
+                    $subscriptionResponse = null;
+                    $client->addQuery('subscribe/create', $subscriptionParams, [], function($data) use (&$subscriptionResponse) {
+                        $subscriptionResponse = $data;
+                    }, function(\Exception $e) use (&$exception) {
+                        $exception = $e;
+                        \App::exception()->remove($e);
+                    });
+                    $client->execute(\App::config()->coreV2['retryTimeout']['default'], \App::config()->coreV2['retryCount']);
+                }
+
                 // сохранение заказов в ядре
                 $orderNumbers = $this->saveOrder($form, $deliveryMap, $productsForRetargeting);
 
