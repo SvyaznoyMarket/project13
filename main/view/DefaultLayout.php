@@ -499,7 +499,7 @@ class DefaultLayout extends Layout {
                 $one_prod = [];
 
                 $one_prod['identifier'] = (string) $product->getId();
-                if ( $product->getTypeId() ) $one_prod['identifier'] .= '-'.$product->getTypeId();
+                //if ( $product->getTypeId() ) $one_prod['identifier'] .= '-'.$product->getTypeId();
                 if ( $region_id ) $one_prod['identifier'] .= '_'.$region_id;
 
                 $one_prod['quantity'] = $cartProduct->getQuantity();
