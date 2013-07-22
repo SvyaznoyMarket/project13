@@ -50,6 +50,7 @@ var sonar_product = { <?
             $i++;
             if ($i>1) echo ","; // считаем, что identifier полуюбому существует у продукта, иначе запятая будет не в тему
             echo PHP_EOL;
+            $value = str_replace("'",'"',$value);
             echo $key.": '".$value."'" ;
         endif;
     endforeach;
