@@ -8,6 +8,8 @@ class API {
     private static $instance = null;
     private $authKey = null;
     private $chief_id = null;
+
+    // TODO: move in config
     private $login = 'anastasiya.vs@enter.ru';
     private $password = 'enter1chat2';
 
@@ -65,11 +67,11 @@ class API {
 
 
     public function method( $method, $data = [] ) {
-        if ($this->authKey == null) {
+        if ( $this->authKey == null || $this->chief_id == null ) {
             $this->login();
         }
 
-        $arr = [
+        $post_arr = [
             'chiefId' => $this->chief_id,
             'authKey' => $this->authKey,
             'protocol' => 'json',
@@ -77,14 +79,15 @@ class API {
             'data' => json_encode($data),
         ];
 
-        $response = $this->curl( $this->api_url, $arr);
+        $response = $this->curl( $this->api_url, $post_arr );
 
         return $response;
 
     }
 
+
     public function testmethod( $method, $data = [] ) {
-        if ($this->authKey == null) {
+        if ( $this->authKey == null || $this->chief_id == null ) {
             $this->login();
         }
 

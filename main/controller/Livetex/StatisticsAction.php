@@ -3,33 +3,41 @@
 namespace Controller\Livetex;
 
 class StatisticsAction {
-    public $default_ava = '9c46526d320a87cdab6dfdbc14f23cdc.png';
     public $date_format = 'Y-m-d';
     public $date_begin;
     public $date_end;
     private $operId;
+    private $chatId;
+    private $siteId;
 
 
     public function __construct() {
+        /*
         $this->date_begin = (string) date($this->date_format, strtotime('-1 day'));
         $this->date_end = (string) date($this->date_format,strtotime('today UTC'));
 
         $this->date_begin = '2013-07-15';
-        $this->date_end = '2013-07-25';
+        $this->date_end = '2013-07-25';*/
     }
 
 
     private function init(&$request){
-        $operId = $request->get('operatorId');
+        $operId = $request->get('operator');
         if ($operId) $this->operId = $operId;
 
+
+        $siteId = $request->get('site');
+        if ($siteId) $this->siteId = $siteId;
+
+        $chatId = $request->get('chat');
+        if ($chatId) $this->chatId = $chatId;
 
 
 
         $date_begin = $request->get('date_begin');
         if ($date_begin) {
             $date_begin = (string) date($this->date_format, strtotime($date_begin));
-            if ($date_end) $this->date_begin = $date_begin;
+            if ($date_begin) $this->date_begin = $date_begin;
         }
 
         $date_end = $request->get('date_end');
@@ -38,83 +46,131 @@ class StatisticsAction {
             if ($date_end) $this->date_end = $date_end;
         }
 
+
+        if (empty($this->date_begin)) $this->date_begin = (string) date($this->date_format, strtotime('-1 day'));
+        if (empty($this->date_end)) $this->date_end = (string) date($this->date_format,strtotime('today UTC'));
+
+        // tmp for debug
+        $this->date_begin = '2013-07-15';
+        $this->date_end = '2013-07-25';
+
     }
 
 
     public function execute(\Http\Request $request) {
-        $this->init($request);
         \App::logger()->debug('Exec ' . __METHOD__);
+        $this->init($request);
+        $page = new \View\Livetex\StatisticsPage();
 
         //$router = \App::router();
         //$client = \App::coreClientV2();
         //$user = \App::user();
         //$region = $user->getRegion();
-        $page = new \View\Livetex\StatisticsPage();
 
-        $action = 'all_operators';
+        $actions = [];
+        $content = [];
 
         include_once '../lib/LiveTex/API.php';
         $API = \LiveTex\Api::getInstance(); //LiveTex/API
 
 
-        $operators = $API->method('Operator.GetList');
-        $operators_html = $this->operatorsHtml($operators);
-        $operators_count_html = count($operators->response);
-        $page->setParam('operators_html', $operators_html);
-        $page->setParam('operators_count_html', $operators_count_html);
-
-
-
 
 
         if (!empty( $this->operId )) {
-            $one_operator = $API->method('Operator.ChatStat', [
+            $actions[] = 'one_operator';
+        }
+
+        if ( $request->get('chat') ) {
+            $actions[] = 'chat';
+        }
+
+        if ( $request->get('site') ) {
+            $actions[] = 'site';
+        }
+
+        if (empty($actions)) {
+            $actions[] = 'allOperators';
+        }
+
+
+
+        // for debug, temporal
+        $actions[] = 'site';
+
+
+
+        if (in_array('chat',$actions)) {
+
+            if ( !empty($this->operId) ) {
+                $operator_chat = $API->testmethod('Operator.ChatStat', [
+                    'date_begin' => $this->date_begin,
+                    'date_end' => $this->date_end,
+                    'operator_id' => $this->operId,
+                ]);
+            }
+
+
+            $chat_active = $API->testmethod('Chat.GetActive', []);
+
+            $this->l($chat_active,'chat_active');
+
+
+        }
+
+
+        if (in_array('site',$actions)) {
+            $content['site'] = $API->testmethod('Site.GetList');
+        }
+
+
+        if (in_array('one_operator',$actions)) {
+            $one_operator = $API->testmethod('Operator.ChatStat', [
                 'date_begin' => $this->date_begin,
                 'date_end' => $this->date_end,
-                'operator_id' => $operId
+                'operator_id' => $this->operId,
+                'site_id' => 41836,
             ]);
-            print '###';
-            print_r($one_operator);
-            $action = 'one_operator';
+            $this->l($one_operator, 'one operator');
         }
 
 
-        $page->setParam('action', $action);
 
-        return new \Http\Response($page->show());
+        if (in_array('allOperators',$actions)) {
+            $content['allOperators'] = $API->method('Operator.GetList');
+
+            $operators = $API->method('Operator.GetList');
+            $operators_count_html = count($operators->response);
+
+            $page->setParam('operators', $operators);
+            $page->setParam('operators_count_html', $operators_count_html);
+        }
+
+
+        $page->setParam('content', $content);
+        $page->setParam('actions', $actions);
+
+        return new \Http\Response( $page->show() );
     }
 
 
 
-
-    public function operatorsHtml($operators) {
-        $out = false;
-
-        if ($operators and $operators->response) {
-            $out = '';
-            $operators = $operators->response;
-
-            foreach ($operators as $op) {
-                $isonline = $op->isonline ? 'Да' : 'Нет';
-
-                $ava = $op->photo;
-                if (!$ava) $ava = $this->default_ava;
-
-                $out .= '<li class="li_oper">';
-
-                $out .= '<div class="ava_oper"><img src="//cs15.livetex.ru/'.$ava.'" class="img_ava"></div>';
-                $out .= '<div class="name_oper"><span class="param_name">Имя: </span>'.$op->firstname.' '.$op->lastname.'</div>';
-                $out .= '<div class="id_oper"><span class="param_name">ID: </span>'.$op->id.'</div>';
-                //$out .= '<div class="depart_oper"><span class="param_name">Departments: </span>44230</div>';
-                $out .= '<div class="state_oper"><span class="param_name">State_id: </span>'.$op->state.'</div>';
-                $out .= '<div class="state_oper"><span class="param_name">Онлайн: </span>'.$isonline.'</div>';
-                //$out .= '<div class="iscall_oper"><span class="param_name">Call: </span>есть</div>';
-                $out .= '</li>';
-
-            }
+    // temporal log, debug function
+    private function l(&$var, $name = null){
+        if ($name) {
+            print PHP_EOL."\n### [".$name."] ###\n".PHP_EOL;
         }
+        print '<pre>';
+        $ret = print_r($var);
+        print '</pre>';
+        print "\n".PHP_EOL;
 
-        return $out;
+        return $ret;
     }
+
+
+
+    public function slotMainMenu() { return ''; }
+    public function slotUserbar() { return ''; }
+    public function slotMyThings() { return ''; }
 
 }

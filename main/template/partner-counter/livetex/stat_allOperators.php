@@ -22,12 +22,9 @@
             <p class="operators_count"><span>Всего операторов: </span><?= $operators_count_html ?></p>
         </div>
         <div id="operators_wr" class="operators_stat">
-            <ul id="operators">
-                <?= $operators_html; ?>
-            </ul>
+            <?= $htmlcontent ?>
         </div>
     </div>
-
 
 
 </div>

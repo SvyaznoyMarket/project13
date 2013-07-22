@@ -84,4 +84,8 @@
         font-size: 1.125em;
         font-weight: bold;
     }
+
+    .isonline{
+        color:red;
+    }
 </style>
