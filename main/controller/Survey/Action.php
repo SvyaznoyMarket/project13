@@ -20,6 +20,8 @@ class Action {
         $answer = $request->get('answer');
         $kmId = $request->get('kmId');
         $userId = \App::user()->getEntity() ? \App::user()->getEntity()->getUserId() : '';
+        $sessionId = $request->cookies->get('enter');
+        $date = date('Y-m-d H:i:s');
 
         // передав true в качестве параметра, получаем версию опроса,
         // кэшированную с момента открытия страницы - чтобы выходной файл соответствовал опросу
@@ -29,9 +31,9 @@ class Action {
         if(!is_dir(\App::config()->surveyDir)) mkdir(\App::config()->surveyDir);
         if(!is_file($outCsvFilePath)) {
             touch($outCsvFilePath);
-            file_put_contents($outCsvFilePath, 'Вопрос'.$outCsvDelimiter.'Ответ'.$outCsvDelimiter.'KM ID'.$outCsvDelimiter.'User ID'.$outCsvDelimiter."\n");
+            file_put_contents($outCsvFilePath, 'Вопрос'.$outCsvDelimiter.'Ответ'.$outCsvDelimiter.'KM ID'.$outCsvDelimiter.'User ID'.$outCsvDelimiter.'Session ID'.$outCsvDelimiter.'Date'."\n");
         }
-        file_put_contents($outCsvFilePath, $question.$outCsvDelimiter.$answer.$outCsvDelimiter.$kmId.$outCsvDelimiter.$userId.$outCsvDelimiter."\n", FILE_APPEND);
+        file_put_contents($outCsvFilePath, $question.$outCsvDelimiter.$answer.$outCsvDelimiter.$kmId.$outCsvDelimiter.$userId.$outCsvDelimiter.$sessionId.$outCsvDelimiter.$date."\n", FILE_APPEND);
 
         $result = [
             'success' => true,
