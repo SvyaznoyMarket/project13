@@ -1,28 +1,29 @@
 (function() {
-	startTime = new Date().getTime()
-	// console.log('start'+startTime)
-	var _gaq = window._gaq || []
+	startTime = new Date().getTime();
+	console.log('start'+startTime);
+
+	var _gaq = window._gaq || [];
+
 	window.onerror = function(msg, url, line) {
-		var preventErrorAlert = true
-		// _gaq.push(['_trackEvent', 'Javascript Error', msg, url + " : " + line])
-		return preventErrorAlert
+		var preventErrorAlert = true;
+		return preventErrorAlert;
 	}
-	//jQuery.error = function (message) {
-	//	_gaq.push(['_trackEvent', 'jQuery Error', message, navigator.userAgent])
-	//}
 
 	var debug = false;
+
 	if ( document.body.getAttribute('data-debug') == 'true'){
-		debug = true
+		debug = true;
 	}
 
 	// page load log
-	if ($('#page-config').data('value').jsonLog){
-		var pageID = document.body.getAttribute('data-id')
-		var dataToLog = {
-			event: 'page_load',
-			pageID: pageID
-		};
+	if ( $('#page-config').data('value').jsonLog ) {
+		var pageID = document.body.getAttribute('data-id'),
+			dataToLog = {
+				event: 'page_load',
+				pageID: pageID
+			};
+		// end of vars
+
 		$.ajax({
 			type: 'POST',
 			global: false,
@@ -32,22 +33,18 @@
 	}
 	
 
-	if( typeof($LAB) === 'undefined' )
-		throw new Error( "Невозможно загрузить файлы JavaScript" )
+	if( typeof($LAB) === 'undefined' ){
+		throw new Error( "Невозможно загрузить файлы JavaScript" );
+	}
 
 	function getWithVersion( flnm ) {
-		if( typeof( window.release['version']) !== 'undefined' ){
-			if( (!document.location.search.match(/jsdbg/))&&(!debug) ) {
-				flnm += '?' + window.release['version'];
+		if( typeof( window.release['version']) !== 'undefined' ) {
+			if( ( !document.location.search.match(/jsdbg/) )&&( !debug ) ) {
 				flnm = flnm.replace('js', 'min.js');
+				flnm += '?' + window.release['version'];
 			}	
 		} 
-		else {
-			flnm = flnm.replace('js', 'min.js')
-			if( typeof( window.release['version'] ) !== 'undefined' ) {
-				flnm += '?' + window.release['version'];
-			}
-		}
+
 		return flnm;
 	};
 
