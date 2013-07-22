@@ -21,6 +21,7 @@ var sonar_basket = {
                 if (!empty($value)):
                     $i++;
                     if ($i>1) echo ", "; // считаем, что identifier полуюбому существует у продукта, иначе запятая будет не в тему
+                    $value = str_replace("'",'"',$value);
                     echo $key.": '".$value."'" ;
                 endif;
             }
