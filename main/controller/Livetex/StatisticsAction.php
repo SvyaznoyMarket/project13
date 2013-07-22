@@ -8,7 +8,7 @@ class StatisticsAction {
     public $date_end;
     private $operId;
     private $chatId;
-    private $siteId;
+    private $siteId = 41836;
 
 
     public function __construct() {
@@ -51,7 +51,7 @@ class StatisticsAction {
         if (empty($this->date_end)) $this->date_end = (string) date($this->date_format,strtotime('today UTC'));
 
         // tmp for debug
-        $this->date_begin = '2013-07-15';
+        $this->date_begin = '2013-05-15';
         $this->date_end = '2013-07-25';
 
     }
@@ -95,7 +95,7 @@ class StatisticsAction {
 
 
         // for debug, temporal
-        $actions[] = 'site';
+        // $actions[] = 'site';
 
 
 
@@ -107,15 +107,28 @@ class StatisticsAction {
                     'date_end' => $this->date_end,
                     'operator_id' => $this->operId,
                 ]);
+                $this->l($operator_chat, '$operator_chat');
+                $content['operator_chat'] = $operator_chat;
             }
 
 
+            if ( !empty($this->siteId) ) {
+                $site_chat = $API->testmethod('Site.ChatStat', [
+                    'date_begin' => $this->date_begin,
+                    'date_end' => $this->date_end,
+                    'site_id' => $this->siteId,
+                ]);
+
+                //$this->l($site_chat,'site_chat');
+                $content['site_chat'] = $site_chat;
+            }
+
             $chat_active = $API->testmethod('Chat.GetActive', []);
-
-            $this->l($chat_active,'chat_active');
-
+            $content['chat_active'] = $chat_active;
+            //$this->l($chat_active,'chat_active');
 
         }
+
 
 
         if (in_array('site',$actions)) {
@@ -157,10 +170,19 @@ class StatisticsAction {
     // temporal log, debug function
     private function l(&$var, $name = null){
         if ($name) {
-            print PHP_EOL."\n### [".$name."] ###\n".PHP_EOL;
+            try{
+                print PHP_EOL."\n### [".$name."] ###\n".PHP_EOL;
+            }catch(Exception $er){
+                print PHP_EOL."\n### [ *error in _name_* ] ###\n".PHP_EOL;
+            }
+
         }
         print '<pre>';
-        $ret = print_r($var);
+        try{
+            $ret = print_r($var);
+        }catch(Exception $er){
+            print PHP_EOL."\n *Exception: variable not exist* \n".PHP_EOL;
+        }
         print '</pre>';
         print "\n".PHP_EOL;
 

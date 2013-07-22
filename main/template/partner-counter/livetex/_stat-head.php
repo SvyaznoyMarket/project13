@@ -72,7 +72,7 @@
         margin: 0 10px 10px 0;
     }
 
-    .li_oper{
+    .lts_li{
         background: #e3e3e3;
         padding: .5em;
         border: 1px solid #ccc;
@@ -80,9 +80,13 @@
         font-size: .85em;
     }
 
-    .name_oper{
+    .lts_name{
         font-size: 1.125em;
         font-weight: bold;
+    }
+
+    .lts_head{
+        padding: .5em 0 0;
     }
 
     .isonline{

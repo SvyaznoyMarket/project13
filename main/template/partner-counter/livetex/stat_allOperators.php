@@ -4,28 +4,27 @@
  *
  */
 ?>
-<div class="clear"></div>
-<noscript><p>Javascript must be enabled for the correct page display</p></noscript>
 
-<!-- livetext statistics -->
-<div id="promoCatalog" class="bPromoCatalog">
 
-    <h2 class="bPromoCatalog_eName">LiveTex: Статистика операторов</h2>
-
+<div class="bPromoCatalog lts_wrap">
+    <h2 class="lts_head bPromoCatalog_eName">LiveTex: Статистика операторов</h2>
 
     <div class="liveTex_stat">
         <div id="haveOnline">
             <p class="online hidden">Найдены операторы онлайн: <span id="count_opers">0</span>.</p>
             <p class="offline hidden">Нет операторов онлайн</p>
         </div>
+        <? if ( isset($operators_count_html) ): ?>
         <div class="operators_count_wr">
-            <p class="operators_count"><span>Всего операторов: </span><?= $operators_count_html ?></p>
+            <p class="operators_count"><span>Всего операторов: </span> <?= $operators_count_html ?></p>
         </div>
+        <? endif; ?>
         <div id="operators_wr" class="operators_stat">
             <?= $htmlcontent ?>
         </div>
     </div>
 
-
 </div>
-<!-- end livetext statistics -->
+
+
+<div class="clear"></div>

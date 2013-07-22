@@ -7,7 +7,7 @@
 
 <div class="bPromoCatalog lts_wrap">
 
-    <h2 class="lts_head bPromoCatalog_eName">LiveTex: Статистика сайтов</h2>
+    <h2 class="lts_head bPromoCatalog_eName">LiveTex: Статистика чатов сайта</h2>
     <?= $htmlcontent ?>
 
 </div>

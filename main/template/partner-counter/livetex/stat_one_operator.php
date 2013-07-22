@@ -4,13 +4,11 @@
  *
  */
 ?>
-<div class="clear"></div>
-<noscript><p>Javascript must be enabled for the correct page display</p></noscript>
 
-<!-- livetext statistics -->
-<div id="promoCatalog" class="bPromoCatalog">
 
-    <h2 class="bPromoCatalog_eName">LiveTex: Статистика оператора</h2>
+<div class="bPromoCatalog lts_wrap">
+
+    <h2 class="lts_head bPromoCatalog_eName">LiveTex: Статистика оператора</h2>
 
 
     <div class="liveTex_stat">
@@ -21,6 +19,7 @@
     </div>
 
 
-
 </div>
-<!-- end livetext statistics -->
+
+
+<div class="clear"></div>
