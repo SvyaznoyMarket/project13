@@ -56,7 +56,6 @@
 
 	$LAB.setGlobalDefaults({ AllowDuplicates: true, AlwaysPreserveOrder:true, UseLocalXHR:false, BasePath:"/js/prod/"})
 	.queueScript('/js/combine.js')
-	.queueScript('adfox.asyn.code.ver3.min.js')	
 	.queueWait( function(){
 		document.write = function(){
 			if( arguments[0].match( /<script(.?)* type=(\'|")text\/javascript(\'|")(.?)*><\/script>/ ) ) {
@@ -80,6 +79,7 @@
 				.wait()
 				.script( getWithVersion('ports.js') )
 				.script('//cdn.optimizely.com/js/204544654.js')
+				.script('adfox.asyn.code.ver3.min.js')
 			}).runQueue()
 			break
 		case 'default':
@@ -94,6 +94,7 @@
 				.wait()
 				.script( getWithVersion('ports.js') )
 				.script('//cdn.optimizely.com/js/204544654.js')
+				.script('adfox.asyn.code.ver3.min.js')
 			}).runQueue()
 			break
 		case 'infopage':
@@ -108,6 +109,7 @@
 				.wait()
 				.script( getWithVersion('ports.js') )
 				.script('//cdn.optimizely.com/js/204544654.js')
+				.script('adfox.asyn.code.ver3.min.js')
 			}).runQueue()
 			break
 		case 'cart':
@@ -124,6 +126,7 @@
 				.wait()
 				.script( getWithVersion('ports.js') )
 				.script('//cdn.optimizely.com/js/204544654.js')
+				.script('adfox.asyn.code.ver3.min.js')
 			}).runQueue()
 			break
 		case 'order':
@@ -143,6 +146,7 @@
 				.wait()
 				.script( getWithVersion('ports.js') )			
 				.script('//cdn.optimizely.com/js/204544654.js')
+				.script('adfox.asyn.code.ver3.min.js')
 			}).runQueue()
 			break
 		case 'order_complete':
@@ -161,6 +165,7 @@
 				.wait()
 				.script( getWithVersion('ports.js') )
 				.script('//cdn.optimizely.com/js/204544654.js')
+				.script('adfox.asyn.code.ver3.min.js')
 			}).runQueue()
 			break
 		case 'order_error':
@@ -173,6 +178,7 @@
 				.script( getWithVersion('common.js') )
 				.wait()
 				.script('//cdn.optimizely.com/js/204544654.js')
+				.script('adfox.asyn.code.ver3.min.js')
 			}).runQueue()
 			break
 		case 'product_catalog':
@@ -187,6 +193,7 @@
 				.wait()
 				.script( getWithVersion('pandora.js') )
 				.script('//cdn.optimizely.com/js/204544654.js')
+				.script('adfox.asyn.code.ver3.min.js')
 			}).runQueue()
 			break
 		case 'product_card':
@@ -207,6 +214,7 @@
 				.wait()
 				.script( getWithVersion('ports.js') )
 				.script('//cdn.optimizely.com/js/204544654.js')
+				.script('adfox.asyn.code.ver3.min.js')
 			}).runQueue()
 			break
 		case 'service':
@@ -221,6 +229,7 @@
 				.wait()
 				.script( getWithVersion('ports.js') )
 				.script('//cdn.optimizely.com/js/204544654.js')
+				.script('adfox.asyn.code.ver3.min.js')
 			}).runQueue()
 			break
 		case 'shop':
@@ -239,6 +248,7 @@
 				// .script( getWithVersion('ports.js') )
 				.wait()
 				.script('//cdn.optimizely.com/js/204544654.js')
+				.script('adfox.asyn.code.ver3.min.js')
 			}).runQueue()
 			break
 		case 'product_stock':
@@ -259,6 +269,7 @@
 				.wait()
 				.script( getWithVersion('ports.js') )
 				.script('//cdn.optimizely.com/js/204544654.js')
+				.script('adfox.asyn.code.ver3.min.js')
 			}).runQueue()
 			break
 	}
