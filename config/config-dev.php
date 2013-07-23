@@ -5,7 +5,7 @@ $c = require __DIR__ . '/config.php';
 
 $c->debug = true;
 
-$c->coreV2['url']          = 'http://api.enter.ru/v2/';
+$c->coreV2['url']          = 'http://tester.core.ent3.ru/v2/';
 $c->coreV2['retryTimeout'] = [
     'default' => 1,
     'tiny'    => 0.6,
@@ -105,6 +105,8 @@ $c->abtest['test']       = [
 ];
 
 $c->product['lowerPriceNotification'] = true;
+
+$c->product['allowBuyOnlyInshop'] = true;
 
 $c->requestMainMenu = false;
 
