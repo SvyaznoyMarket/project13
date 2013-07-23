@@ -3,9 +3,9 @@
 namespace Controller\Livetex;
 
 class StatisticsAction {
-    public $date_format = 'Y-m-d';
-    public $date_begin;
-    public $date_end;
+    private $date_format = 'Y-m-d';
+    private $date_begin;
+    private $date_end;
     private $operId;
     private $chatId;
     private $siteId = 41836;
@@ -56,10 +56,10 @@ class StatisticsAction {
         $this->date_end = '2013-07-25';
 
 
-        $this->addMenu('Главная страница статистики', '/livetex-statistics');
-        $this->addMenu('Статистика сайтов', '/livetex-statistics?chat=true');
-        $this->addMenu('Статистика чатов', '/livetex-statistics?site=true');
+        $this->addMenu('Общая статистика', '/livetex-statistics');
+        $this->addMenu('Статистика чатов', '/livetex-statistics?chat=true');
         $this->addMenu('Статистика операторов', '/livetex-statistics?operators=true');
+        $this->addMenu('Статистика сайтов', '/livetex-statistics?site=true');
 
     }
 
@@ -169,8 +169,18 @@ class StatisticsAction {
         $page->setParam('content', $content);
         $page->setParam('actions', $actions);
         $page->setParam('aside_menu', $this->aside_menu);
-        $page->setParam('date_begin', $this->date_begin);
-        $page->setParam('date_end', $this->date_end);
+
+        $stat_params['date_begin'] = [ 'name' => 'date_begin', 'value' => ($this->date_begin) ?: '', 'descr' => 'Дата начала'];
+        $stat_params['date_end'] = [ 'name' => 'date_end', 'value' => ($this->date_end) ?: '', 'descr' => 'Дата окончания'];
+        $stat_params['operId'] = [ 'name' => 'operId', 'value' => ($this->operId) ?: $this->operId, 'descr' => 'Идентификатор оператора'];
+        $stat_params['chatId'] = [ 'name' => 'chatId', 'value' => ($this->chatId) ?: '', 'descr' => 'Идентификатор чата'];
+        $stat_params['siteId'] = [ 'name' => 'siteId', 'value' => ($this->siteId) ?: '', 'descr' => 'Идентификатор сайта'];
+        $stat_params['actions'] = [ 'name' => 'actions', 'value' => implode('|',$actions), 'descr' => 'Сущности статистики'];
+
+
+        $page->setParam('stat_params', $stat_params);
+        //$page->setParam('date_begin', $this->date_begin);
+        //$page->setParam('date_end', $this->date_end);
 
         return new \Http\Response( $page->show() );
     }

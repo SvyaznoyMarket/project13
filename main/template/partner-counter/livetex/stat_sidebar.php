@@ -22,19 +22,20 @@
 
 
             <h3>Используемые данные</h3>
-            <form action="/livetex-statistics">
+            <form action="/livetex-statistics" method="get">
+                <? if ($stat_params): ?>
                 <ul>
-                    <li>
-                        <label for="date_begin">Дата начала</label>
-                        <input type="text" name="date_begin" value="<?= ($date_begin); ?>" />
-                    </li>
-
-                    <li>
-                        <label for="date_begin">Дата окончания</label>
-                        <input type="text" name="date_end" value="<?= ($date_end); ?>" />
-                    </li>
-                    <input type="submit" value="Отправить">
+                    <? foreach($stat_params as $item): ?>
+                        <li>
+                            <p>
+                                <label for="<?= $item['name']; ?>"><?= $item['descr']; ?></label>
+                                <input type="text" name="<?= $item['name']; ?>" value="<?= $item['value']; ?>" />
+                            </p>
+                        </li>
+                    <? endforeach; ?>
+                    <input type="submit" value="Обновить">
                 </ul>
+                <? endif; ?>
             </form>
 
         </div>

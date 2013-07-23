@@ -54,7 +54,7 @@ class API {
 
         $response = $this->curl( $this->api_login_url, $post_arr );
 
-        if ($response->response) {
+        if (isset($response->response) and $response->response) {
             if ( isset($response->response->authkey) ) $this->authKey = $response->response->authkey;
                 else $this->authKey = false;
 
