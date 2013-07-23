@@ -10,7 +10,7 @@
 
             var criteo_arr = $('#criteo-data').data('value');
 
-            if ( criteo_arr $.isArray(criteo_arr) ) {
+            if ( criteo_arr && $.isArray(criteo_arr) ) {
                 try{
                     window.criteo_q.push(criteo_arr);
                     console.log(criteo_arr);
