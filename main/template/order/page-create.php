@@ -94,13 +94,14 @@ if ($form->hasSubway()) $jsValidator['order[address_metro]'] = 'Укажите �
             <dt>E-mail</dt>
             <dd>
                 <div class="pr40">
+                    <? $email = $form->getEmail() ?>
                     <p class="subscribe">
-                        <label class="bSubscibe checked">
+                        <label class="bSubscibe checked" style="visibility:<?= empty($email) ? 'hidden' : 'visible' ?>;">
                             <b></b> Хочу знать об интересных<br />предложениях
                             <input type="checkbox" name="subscribe" value="1" autocomplete="off" class="subscibe" checked="checked" />
                         </label>
                     </p>
-                    <input type="text" id="order_recipient_email" class="bBuyingLine__eText mInputLong" name="order[recipient_email]" value="<?= $form->getEmail() ?>"/>
+                    <input type="text" id="order_recipient_email" class="bBuyingLine__eText mInputLong" name="order[recipient_email]" value="<?= $email ?>" />
                 </div>
             </dd>
         </dl>
