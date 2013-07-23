@@ -38,6 +38,12 @@
                 <? endif; ?>
             </form>
 
+
+            <hr/>
+            <p>
+                <a href="https://billing.livetex.ru/auth/" title="">Перейти в биллинговую систему LiveTex</a>
+            </p>
+
         </div>
     </aside>
 </div>

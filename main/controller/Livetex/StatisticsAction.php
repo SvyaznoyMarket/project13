@@ -64,6 +64,7 @@ class StatisticsAction {
     }
 
 
+
     public function execute(\Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
         $this->init($request);
@@ -114,7 +115,7 @@ class StatisticsAction {
                     'date_end' => $this->date_end,
                     'operator_id' => $this->operId,
                 ]);
-                $this->l($operator_chat, '$operator_chat');
+                //$this->l($operator_chat, '$operator_chat');
                 $content['operator_chat'] = $operator_chat;
             }
 
@@ -157,29 +158,51 @@ class StatisticsAction {
             if ($oneOperator)
                 $content['oneOperator'] = $oneOperator;
 
-            $this->l($oneOperator, 'oneOperator'); // Временный метод, используется для вывода отладочной инфы
+            //$this->l($oneOperator, 'oneOperator'); // Временный метод, используется для вывода отладочной инфы
         }
 
 
 
+
+
+        /* загружаем список операторов в любом случае (чтобы обращаться к нему в случае надобности) ... */
+        $operators = $API->method('Operator.GetList');
+
+        $operators_list = [];
+        if ( isset( $operators->response) ) {
+            foreach( $operators->response as $item) {
+                if ( isset($item->id) ) $operators_list[$item->id] = $item;
+            }
+        }
+
+
+        $operators_count_html =
+            (isset($operators->response) and $operators->response)
+                ? count($operators->response)
+                : '*NOT_SET*';
+
+        $page->setParam('operators', $operators);
+        $page->setParam('operators_list', $operators_list);
+        $page->setParam('operators_count_html', $operators_count_html);
+
+        /* ... но отображаем список операторов в контенте только, если нужно есть соответствующий action в $actions */
         if (in_array('allOperators',$actions)) {
-            $content['allOperators'] = $API->method('Operator.GetList');
-
-            $operators = $API->method('Operator.GetList');
-            $operators_count_html =
-                (isset($operators->response) and $operators->response)
-                    ? count($operators->response)
-                    : '*NOT_SET*';
-
-            $page->setParam('operators', $operators);
-            $page->setParam('operators_count_html', $operators_count_html);
+            $content['allOperators'] = $operators;
         }
+
+
+
+
+
 
 
         $page->setParam('content', $content);
         $page->setParam('actions', $actions);
         $page->setParam('aside_menu', $this->aside_menu);
 
+        /*
+         * $stat_params — Для наполнения сайдбара // TODO: убрать дублирование названия в "name"
+         */
         $stat_params['date_begin'] = [ 'name' => 'date_begin', 'value' => ($this->date_begin) ?: '', 'descr' => 'Дата начала'];
         $stat_params['date_end'] = [ 'name' => 'date_end', 'value' => ($this->date_end) ?: '', 'descr' => 'Дата окончания'];
         $stat_params['operId'] = [ 'name' => 'operId', 'value' => ($this->operId) ?: $this->operId, 'descr' => 'Идентификатор оператора'];
@@ -187,10 +210,7 @@ class StatisticsAction {
         $stat_params['siteId'] = [ 'name' => 'siteId', 'value' => ($this->siteId) ?: '', 'descr' => 'Идентификатор сайта'];
         $stat_params['actions'] = [ 'name' => 'actions', 'value' => implode('|',$actions), 'descr' => 'Сущности статистики'];
 
-
         $page->setParam('stat_params', $stat_params);
-        //$page->setParam('date_begin', $this->date_begin);
-        //$page->setParam('date_end', $this->date_end);
 
         return new \Http\Response( $page->show() );
     }
@@ -231,7 +251,10 @@ class StatisticsAction {
 
 
 
-    // Временный метод, используется для вывода отладочной инфы
+
+    /*
+     * Временный метод, используется для вывода отладочной инфы
+     */
     private function l(&$var, $name = null){
         if ($name) {
             try{
