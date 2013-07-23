@@ -23,14 +23,14 @@ class StatisticsAction {
 
 
     private function init(&$request){
-        $operId = $request->get('operator');
+        $operId = $request->get('operId');
         if ($operId) $this->operId = $operId;
 
 
-        $siteId = $request->get('site');
+        $siteId = $request->get('siteId');
         if ($siteId) $this->siteId = $siteId;
 
-        $chatId = $request->get('chat');
+        $chatId = $request->get('chatId');
         if ($chatId) $this->chatId = $chatId;
 
 
@@ -84,7 +84,7 @@ class StatisticsAction {
 
 
         if (!empty( $this->operId )) {
-            $actions[] = 'one_operator';
+            $actions[] = 'oneOperator';
         }
 
         if ( $request->get('chat') ) {
@@ -96,6 +96,7 @@ class StatisticsAction {
         }
 
         if (empty($actions)) {
+            $actions[] = 'site';
             $actions[] = 'allOperators';
         }
 
@@ -148,7 +149,7 @@ class StatisticsAction {
                 'date_begin' => $this->date_begin,
                 'date_end' => $this->date_end,
                 'operator_id' => $this->operId,
-                'site_id' => 41836,
+                'site_id' => $this->siteId,
             ]);
             $this->l($one_operator, 'one operator');
         }
@@ -159,7 +160,10 @@ class StatisticsAction {
             $content['allOperators'] = $API->method('Operator.GetList');
 
             $operators = $API->method('Operator.GetList');
-            $operators_count_html = count($operators->response);
+            $operators_count_html =
+                (isset($operators->response) and $operators->response)
+                    ? count($operators->response)
+                    : '*NOT_SET*';
 
             $page->setParam('operators', $operators);
             $page->setParam('operators_count_html', $operators_count_html);

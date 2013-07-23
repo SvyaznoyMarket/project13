@@ -5,8 +5,8 @@
  */
 ?>
 
+<div class="lts_slot">
 
-<div class="bPromoCatalog lts_wrap">
     <h2 class="lts_head bPromoCatalog_eName">LiveTex: Статистика операторов</h2>
 
     <div class="liveTex_stat">
@@ -27,4 +27,3 @@
 </div>
 
 
-<div class="clear"></div>

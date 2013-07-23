@@ -5,7 +5,7 @@
  */
 ?>
 
-<div class="bProductSection__eRight right">
+<div class="bProductSection__eRight right lts_sidebar">
     <aside>
         <div class="bWidgetBuy mWidget">
             <? if ( !empty($aside_menu) ): ?>
