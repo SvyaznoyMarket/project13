@@ -1,13 +1,26 @@
 <? if ( \App::config()->partners['criteo']['enabled'] ): ?>
-    <? if ( !empty($criteoData) ) { ?>
-        <? /* // https: and http: — works */ ?>
-        <!-- <div id="criteo-data" data-value="<?= $page->json($criteoData) ?>"></div> -->
-        <!-- // <script type="text/javascript" src="//static.criteo.net/js/ld/ld.js" async="true"></script> -->
+    <? if ( !empty($criteoData) ):  ?>
+
+        <script type="text/javascript" src="//static.criteo.net/js/ld/ld.js" async="true"></script> <? /* // https: and http: — works */ ?>
+
+        <div id="criteo-data" data-value="<?= $page->json($criteoData) ?>"></div>
 
         <script type="text/javascript">
-            // window.criteo_q = window.criteo_q || [];
-            // var criteo_arr = $('#criteo-data').data('value');
-            // window.criteo_q.push(criteo_arr);
+            window.criteo_q = window.criteo_q || [];
+
+            var criteo_arr = $('#criteo-data').data('value');
+
+            if (criteo_arr) {
+                try{
+                    window.criteo_q.push(criteo_arr);
+                    console.log(criteo_arr);
+                } catch(e) {
+
+                }
+            }
+
+
+
             <? /* //for (var i in criteo_arr){ ] */
             /*
             window.criteo_q.push(
@@ -29,6 +42,5 @@
             */
             ?>
         </script>
-    <? }
-    ?>
+    <? endif; ?>
 <? endif;
