@@ -138,8 +138,7 @@
 				$LAB
 				.script('jquery-plugins.min.js')
 				.script( 'JsHttpRequest.min.js' )
-				.script( getWithVersion('library.js') )
-				// .script('shelf/jquery.mockjax.js')	               
+				.script( getWithVersion('library.js') )             
 				.script( 'http://direct-credit.ru/widget/api_script_utf.js' )
 				.wait()
 				.script(getWithVersion('common.js'))
@@ -156,11 +155,6 @@
 				.queueWait( function() {
 				$LAB
 				.script( getWithVersion('library.js') )
-				// .script('shelf/jquery.mockjax.js')	
-				// .script( 'JsHttpRequest.js' )
-	//             .script( 'http://direct-credit.ru/widget/api_script_utf.js' )
-	//             .script( 'http://direct-credit.ru/widget/script_utf.js' )
-	//             .script( 'https://kupivkredit-test-fe.tcsbank.ru:8100/widget/vkredit.js' )
 				.wait()
 				.script(getWithVersion('order.js'))
 				.script(getWithVersion('common.js'))
@@ -240,13 +234,13 @@
 			.queueScript( (mapVendor==='yandex') ? 'http://api-maps.yandex.ru/2.0/?load=package.full&lang=ru-RU' : 'http://maps.google.com/maps/api/js?sensor=false' )
 			.queueWait( function() {
 				$LAB
-				.script('jquery-plugins.min.js').script( getWithVersion('library.js') )
+				.script('jquery-plugins.min.js')
+				.script( getWithVersion('library.js') )
 				.wait()
 				.script( getWithVersion('shop.js') )
 				.script( getWithVersion('common.js') )
 				.wait()
-				.script( getWithVersion('dash.js') )
-				.script('tour.js')
+				.script('tour.min.js')
 				.wait()
 				.script('//cdn.optimizely.com/js/204544654.js')
 			}).runQueue();
@@ -261,8 +255,6 @@
 				.script( getWithVersion('library.js') )
 				.wait()
 				.script( getWithVersion('common.js') )
-				.wait()
-				.script( getWithVersion('dash.js') )
 				.wait()
 				.script( getWithVersion('product.js') )
 				.script( getWithVersion('oneclick.js') )
