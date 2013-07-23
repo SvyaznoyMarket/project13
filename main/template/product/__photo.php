@@ -139,8 +139,8 @@ return function(
                     </ul>
                 </div>
 
-                <div class="bPhotoActionOtherPhoto__eBtn mPrev"><span>&#9668;</span></div>
-                <div class="bPhotoActionOtherPhoto__eBtn mNext"><span>&#9658;</span></div>
+                <div class="bPhotoActionOtherPhoto__eBtn mPrev"><span></span></div>
+                <div class="bPhotoActionOtherPhoto__eBtn mNext"><span></span></div>
             </div><!--/slider mini product images -->
         <? endif ?>
 
