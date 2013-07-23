@@ -66,3 +66,5 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
 <? if (\App::config()->smartengine['push']): ?>
     <div id="jsAlsoViewedProduct" data-url="<?= $page->url('smartengine.push.product_view', array('productId' => $product->getId())) ?>"></div>
 <? endif ?>
+
+<?= $page->tryRender('product/_tag', ['product' => $product]) ?>
