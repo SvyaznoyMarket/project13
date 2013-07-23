@@ -111,7 +111,7 @@ return function(
                     </div>
                 </li>
             <? endif ?>
-            <? if ((bool)$product->getPhoto3d() || $model3dExternalUrl || $model3dImg):  ?>
+            <? if ($model3dExternalUrl || $model3dImg):  ?>
                 <?
                 if ($model3dExternalUrl) {
                     $class3D = 'maybe3d';
@@ -139,8 +139,8 @@ return function(
                     </ul>
                 </div>
 
-                <div class="bPhotoActionOtherPhoto__eBtn mPrev"><span>&#9668;</span></div>
-                <div class="bPhotoActionOtherPhoto__eBtn mNext"><span>&#9658;</span></div>
+                <div class="bPhotoActionOtherPhoto__eBtn mPrev"><span></span></div>
+                <div class="bPhotoActionOtherPhoto__eBtn mNext"><span></span></div>
             </div><!--/slider mini product images -->
         <? endif ?>
 

@@ -10,6 +10,7 @@ $scr_product = []; $i = 0;
 if ($product instanceof \Model\Product\Entity) {
 
     $domain = $_SERVER['HTTP_HOST'] ?: $_SERVER['SERVER_NAME'];
+    $region_id = \App::user()->getRegion()->getId();
 
     $photo = null;
     $tmp = $product->getPhoto();
@@ -28,7 +29,10 @@ if ($product instanceof \Model\Product\Entity) {
 
     $brand = $product->getBrand() ? $product->getBrand()->getName() : null;
 
-    $scr_product['identifier'] = $product->getTypeId() ?: 0;
+    $scr_product['identifier'] = (string) $product->getId();
+    if ( $product->getTypeId() ) $scr_product['identifier'] .= '-'.$product->getTypeId();
+    if ( $region_id ) $scr_product['identifier'] .= '_'.$region_id;
+
     $scr_product['fn'] = $product->getWebName();
     $scr_product['category'] = $prod_cats;
     $scr_product['description'] = $product->getTagline();
@@ -44,12 +48,13 @@ if ($product instanceof \Model\Product\Entity) {
 if (!empty($scr_product)):
 ?>
 <script type="text/javascript">
-var product = { <?
+var sonar_product = { <?
     foreach($scr_product as $key => $value):
         if (!empty($value)):
             $i++;
             if ($i>1) echo ","; // считаем, что identifier полуюбому существует у продукта, иначе запятая будет не в тему
             echo PHP_EOL;
+            $value = str_replace("'",'"',$value);
             echo $key.": '".$value."'" ;
         endif;
     endforeach;

@@ -117,16 +117,17 @@ $(document).ready(function(){
 
 
 	// hover imitation for IE
-	if (window.navigator.userAgent.indexOf ("MSIE") >= 0){
-		$('.allpageinner').delegate( '.goodsbox__inner', 'hover', function() {
+	if ( window.navigator.userAgent.indexOf("MSIE") >= 0 ) {
+		$('.allpageinner').on( 'hover', '.goodsbox__inner', function() {
 			$(this).toggleClass('hover');
-		})
+		});
 	}
 
 	/* ---- */
-	$('.goodsbox__inner').on('click', function(e) {
-		if( $(this).attr('data-url') )
-			window.location.href = $(this).attr('data-url')
+	$('body').on('click', '.goodsbox__inner', function(e) {
+		if ( $(this).attr('data-url') ) {
+			window.location.href = $(this).attr('data-url');
+		}
 	})
 
 
@@ -135,6 +136,7 @@ $(document).ready(function(){
 		uri: window.location.pathname,
 		atcl: $('.bGood__eArticle span:last').text().replace(/[^0-9\-]/g, '')
 	};
+	
 	$('.bigcarousel').eq(0).bind('click', function(e) {
 		if( typeof(_gaq) !== 'undefined' )
 			_gaq.push(['_trackEvent', 'accessories_up', accessoriesMsg['atcl'], accessoriesMsg['uri'] ])

@@ -158,10 +158,6 @@ window.ANALYTICS = {
         +'-1000px" ></iframe>');
     },
 
-    luxupTracker : function() {
-        document.write('<scr'+'ipt type="text/javascript" src="http://luxup.ru/tr_js/20634/59951/'+'?t='+(new Date()).getTime()+(document.referrer?"&r="+encodeURIComponent(document.referrer):'')+(typeof __lx__target !== 'undefined'?'&trg='+encodeURIComponent(__lx__target):'')+'"></scr'+'ipt>');        
-    },
-
     runMethod : function( fnname ) {
         if( !this. enable )
             return

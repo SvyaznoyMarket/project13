@@ -2914,7 +2914,7 @@
   .topbar {
     font-size: 14px;
     font-family: Tahoma, sans-serif;
-    padding-top: 7px;
+    padding: 10px 0 0;
   }
   .topbar .bRegion,
   .topbar .usermenu {
@@ -2929,7 +2929,7 @@
     padding: 0px 10px;
   }
   .topbar .bRegion {
-    width: 600px;
+    width: 630px;
   }
   .topbar .usermenu {
     float: right;
@@ -2940,12 +2940,17 @@
   }
   .headerContactPhone {
     font-weight: bold;
+    padding: 0 20px;
   }
   .headerContactPhone__eTitle {
     margin: 0 5px 0 15px;
   }
   .headerContactPhone__ePhones {
-    margin: 0 15px 0 5px;
+    margin: 0 10px 0 0;
+  }
+  .headerContactPhone .bPhonesRegion {
+    font-size: 14px;
+    font-weight: normal;
   }
   #header {
     background: #000000;
@@ -3491,7 +3496,7 @@
     width: 922px;
   }
   .bBuyingFooter li {
-    width: 160px;
+    width: 205px;
     padding: 0 12px;
     vertical-align: top;
     display: inline-block;
@@ -3950,28 +3955,28 @@
     margin-bottom: 30px;
   }
   .filter {
-    color: #a6a6a6;
     float: left;
-    font-size: 11px;
-    padding: 3px 0px 9px;
     min-width: 200px;
+    padding: 3px 0px 9px;
+    color: #a6a6a6;
+    font-size: 11px;
   }
   .filter.fr {
     float: right;
   }
   .filterchoice {
-    float: left;
     position: relative;
     z-index: 4;
+    float: left;
   }
   .filterlink {
-    background: url("/css/catalog/img/catalogSprite.png") no-repeat 100% -115px;
     display: inline-block;
-    font-weight: bold;
     margin-left: 9px;
     padding-right: 17px;
-    text-decoration: underline;
     white-space: nowrap;
+    text-decoration: underline;
+    background: url("/css/catalog/img/catalogSprite.png") no-repeat 100% -115px;
+    font-weight: bold;
   }
   .filterlist {
     -webkit-border-radius: 5px;
@@ -3980,14 +3985,14 @@
     -webkit-box-shadow: 0px 0px 7px #616161;
     -moz-box-shadow: 0px 0px 7px #616161;
     box-shadow: 0px 0px 7px #616161;
-    background-color: #ffffff;
-    border: 2px solid #eaeaea;
-    display: none;
-    left: -12px;
-    padding: 8px 10px 10px;
     position: absolute;
-    top: -10px;
     z-index: 2;
+    top: -10px;
+    left: -12px;
+    display: none;
+    padding: 8px 10px 10px;
+    border: 2px solid #eaeaea;
+    background-color: #ffffff;
   }
   .filterlist ul {
     padding-top: 6px;
@@ -3998,9 +4003,9 @@
     white-space: nowrap;
   }
   .filterlist li a:hover {
-    background-color: #e6e6e6;
-    color: #000000;
     text-decoration: none;
+    color: #000000;
+    background-color: #e6e6e6;
   }
   .view {
     float: right;
@@ -4008,19 +4013,19 @@
     padding-bottom: 9px;
   }
   .view span {
-    color: #a6a6a6;
     display: block;
     float: left;
     padding: 3px 3px 0px 0px;
+    color: #a6a6a6;
   }
   .view a {
-    background: url("/css/catalog/img/catalogSprite.png") no-repeat;
     display: block;
     float: left;
+    width: 21px;
     height: 21px;
     margin-left: 4px;
     text-indent: -10000px;
-    width: 21px;
+    background: url("/css/catalog/img/catalogSprite.png") no-repeat;
   }
   .view .tableview {
     background-position: -78px -92px;
@@ -4036,86 +4041,86 @@
   }
   .pageslist {
     float: right;
-    font-size: 11px;
+    min-width: 190px;
     padding-bottom: 9px;
     text-align: center;
-    min-width: 190px;
+    font-size: 11px;
   }
   .pageslist ul {
     float: left;
   }
   .pageslist li {
-    border-right: 1px solid #e9e9e9;
     float: left;
     padding: 0px 2px;
+    border-right: 1px solid #e9e9e9;
   }
   .pageslist li.next {
     border: 0px;
   }
   .pageslist .current {
-    background-color: #ffffff;
-    border-right: none;
     margin: 0px 0px 0px -1px;
     padding: 0px 3px;
+    border-right: none;
+    background-color: #ffffff;
   }
   .pageslist .current a,
   .pageslist .current a:hover {
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     border-radius: 5px;
-    background-color: #000000;
-    border: none;
-    color: #ffffff;
     position: relative;
+    color: #ffffff;
+    border: none;
+    background-color: #000000;
   }
   .pageslist span {
-    color: #a6a6a6;
     display: block;
     float: left;
     padding: 3px 5px 0px 0px;
+    color: #a6a6a6;
   }
   .pageslist a {
-    color: #a6a6a6;
     display: block;
     float: left;
-    font-size: 12px;
     height: 18px;
     padding: 3px 7px 0px;
-    text-decoration: none;
     vertical-align: middle;
+    text-decoration: none;
+    color: #a6a6a6;
+    font-size: 12px;
   }
   .pageslist a.borderedR {
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     border-radius: 5px;
-    border: 1px solid #a6a6a6;
-    height: 16px;
     width: 6px;
+    height: 16px;
+    border: 1px solid #a6a6a6;
   }
   .pageslist a.borderedR span {
-    font-size: 10px;
     margin: -3px 0px 0px -5px;
+    font-size: 10px;
   }
   /*.ratingview {
-    background: url("@{catalogSprite-url}") no-repeat 0px 0px;
+    background: url("interpolation1__") no-repeat 0px 0px;
     display: block;
     height: 11px;
     margin-bottom: 10px;
   }*/
   .goodsbox__rating {
-    background: url("data:image/gif;base64,R0lGODlhDQALANUAAPKKA/7z5Pi7bPvctPaqSPnMkPSYIf3pz/////auUfvarvnGhPzgvfSeLfe1YP3u2/rQmfi+cvKNCf748Pzmyfe0Xf3t2PWiNvezWvzlxvrUovnKjfe6afSaJPjCe/OQD/atTvrOlv////3q0v3w3vSfMPvet/asS/i8b/SbJ/vbsQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAAHAP8ALAAAAAANAAsAAAZQQIRQSAgMj8PBCYNEpgaAAzIwWJwECEgqohkJLyfPYGjZVD4UxKSxQJokjGGg8zgCVEhUYUgyNEEqIxwKCABNJScNIQkpBiRIJ2NCFg4ZQ0EAOw==") repeat-x 0 0;
-    height: 11px;
-    margin-bottom: 10px;
     position: relative;
     width: 65px;
+    height: 11px;
+    margin-bottom: 10px;
+    background: url("data:image/gif;base64,R0lGODlhDQALANUAAPKKA/7z5Pi7bPvctPaqSPnMkPSYIf3pz/////auUfvarvnGhPzgvfSeLfe1YP3u2/rQmfi+cvKNCf748Pzmyfe0Xf3t2PWiNvezWvzlxvrUovnKjfe6afSaJPjCe/OQD/atTvrOlv////3q0v3w3vSfMPvet/asS/i8b/SbJ/vbsQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAAHAP8ALAAAAAANAAsAAAZQQIRQSAgMj8PBCYNEpgaAAzIwWJwECEgqohkJLyfPYGjZVD4UxKSxQJokjGGg8zgCVEhUYUgyNEEqIxwKCABNJScNIQkpBiRIJ2NCFg4ZQ0EAOw==") repeat-x 0 0;
   }
   .goodsbox__rating .fill {
-    background: url("data:image/gif;base64,R0lGODlhDQALANUAAPKKA/znzPe4ZvSfMPrQmfyyAP716vefAPnFgfrVpfasS/OTFf////vfuvaaAPezWv67AP/79vihAP3u2/WmP/mnAPi+cvKMBvvbsfnJivrTn/STAP25AP748PziwPe1YPvYq/qsAPnHh/OVG/+/APedAPrRnPe6afatTvikAP/////8+fqpAPOMAP3pz/mjAPebAP+9APKNCQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAAHAP8ALAAAAAANAAsAAAZVQIZQ6DkNj8fBZYI8JkoVRTNAOC0KpMMj0zAwQIADC0IqhySOh5Bw4JTfEtRqKJK8SQVK5Nhp3UsaSC4bMSwSHCkISBgOMgIZIwcfSBoWXgwrJgJDQQA7") repeat-x 0 0;
-    height: 11px;
     position: absolute;
     top: 0;
     left: 0;
     width: 0;
+    height: 11px;
+    background: url("data:image/gif;base64,R0lGODlhDQALANUAAPKKA/znzPe4ZvSfMPrQmfyyAP716vefAPnFgfrVpfasS/OTFf////vfuvaaAPezWv67AP/79vihAP3u2/WmP/mnAPi+cvKMBvvbsfnJivrTn/STAP25AP748PziwPe1YPvYq/qsAPnHh/OVG/+/APedAPrRnPe6afatTvikAP/////8+fqpAPOMAP3pz/mjAPebAP+9APKNCQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAAHAP8ALAAAAAANAAsAAAZVQIZQ6DkNj8fBZYI8JkoVRTNAOC0KpMMj0zAwQIADC0IqhySOh5Bw4JTfEtRqKJK8SQVK5Nhp3UsaSC4bMSwSHCkISBgOMgIZIwcfSBoWXgwrJgJDQQA7") repeat-x 0 0;
   }
   .goodsbox__rating.rate1 .fill {
     width: 13px;
@@ -4133,11 +4138,11 @@
     width: 65px;
   }
   .goodslist {
+    position: relative;
+    z-index: 1;
+    width: 705px;
     margin-left: -10px;
     padding-bottom: 5px;
-    position: relative;
-    width: 705px;
-    z-index: 1;
   }
   .goodslist .goodsbox,
   .carousel .goodsbox {
@@ -4145,47 +4150,47 @@
   }
   .goodsbox {
     float: left;
-    margin-bottom: 14px;
-    margin-right: 20px;
-    padding: 10px;
     width: 195px;
     min-height: 300px;
+    margin-right: 20px;
+    margin-bottom: 14px;
+    padding: 10px;
   }
   .goodsbox.mCatalog {
     height: 250px;
     min-height: 250px;
   }
   .goodsbox .photo {
-    margin-bottom: 9px;
     position: relative;
+    margin-bottom: 9px;
     text-align: center;
   }
   .goodsbox .photo a {
+    display: block;
     /* width: 191px;*/
   
     height: 163px;
-    display: block;
     text-align: center;
   }
   .goodsbox h2 {
-    font-weight: bold;
     margin: 0px;
     padding-bottom: 10px;
+    font-weight: bold;
   }
   .goodsbox h3 {
-    font-size: 12px;
-    font-weight: normal;
     margin: 0px;
     padding-bottom: 5px;
+    font-size: 12px;
+    font-weight: normal;
   }
   .goodsbox li {
     padding-bottom: 7px;
   }
   .goodsbox__inner {
-    background: #ffffff;
-    cursor: pointer;
-    padding: 10px;
     width: 195px;
+    padding: 10px;
+    cursor: pointer;
+    background: #ffffff;
   }
   .goodsbox__inner:hover,
   .goodsbox__inner.hover {
@@ -4215,14 +4220,14 @@
   }
   .bNewGoodsBox .ratingview {
     display: inline-block;
+    width: 63px;
     height: 11px;
     margin: 1px 5px 0px 0px;
     vertical-align: top;
-    width: 63px;
   }
   .bNewGoodsBox h3 a {
-    font: 18px Tahoma, sans-serif;
     text-decoration: underline;
+    font: 18px Tahoma, sans-serif;
   }
   .bNewGoodsBox .goodsbar {
     margin-bottom: 10px;
@@ -4231,90 +4236,96 @@
     border-left: medium none;
   }
   .bNewGoodsBox .bNGB__eUl li {
+    margin-left: 0px;
+    list-style-type: none;
     color: #434343;
     font-family: Tahoma, sans-serif;
     font-size: 12px;
     line-height: 20px;
-    list-style-type: none;
-    margin-left: 0px;
   }
   .bNGB__eArt {
+    margin: 8px 0px;
     color: #000000;
     font: 12px Tahoma, sans-serif;
-    margin: 8px 0px;
   }
   .bNGB__eArt .ratingview {
     margin: -2px 1px 0px 0px;
   }
   .bNGB__eDesc {
+    margin: 8px 0px;
     color: #434343;
     font-family: Tahoma, sans-serif;
     font-size: 12px;
     line-height: 15px;
-    margin: 8px 0px;
   }
   .goodsline {
-    background-color: #ffffff;
-    border-bottom: 1px solid #e6e6e6;
     float: left;
+    width: 675px;
+    min-height: 175px;
     margin-bottom: 0px;
     padding: 10px 0px 10px 10px;
-    min-height: 175px;
-    width: 675px;
+    border-bottom: 1px solid #e6e6e6;
+    background-color: #ffffff;
   }
   .goodsline:hover .goodsbar {
     display: block;
+  }
+  .goodsline .notBuying {
+    top: 10px;
+    float: none;
+    clear: both;
+    margin-top: 0px;
+  }
+  .goodsline .notBuying .corner {
+    left: 175px;
   }
   .goodsline .boxhover {
     width: 681px;
   }
   .goodsline .goodsboxlink {
-    cursor: pointer;
     float: left;
-    font-size: 11px;
-    padding-bottom: 10px;
     width: 675px;
+    padding-bottom: 10px;
+    cursor: pointer;
+    font-size: 11px;
   }
   .goodsline .photo {
     float: left;
-    margin: 0px;
     width: 160px;
+    margin: 0px;
   }
   .goodsline .info {
     float: left;
+    width: 278px;
     margin-right: 10px;
     padding: 0px 0px 0px 12px;
-    width: 278px;
   }
   .goodsline h3 {
-    font-size: 14px;
-    font-weight: normal;
     margin: 0px;
     padding-bottom: 5px;
+    font-size: 14px;
+    font-weight: normal;
   }
   .goodsline .extrainfo {
-    border-left: 1px solid #e6e6e6;
     float: left;
+    width: 204px;
     min-height: 160px;
     padding-left: 10px;
-    width: 204px;
+    border-left: 1px solid #e6e6e6;
   }
   .goodsline li {
-    list-style-type: disc;
     margin-left: 14px;
     padding: 0px 0px 1px;
-  }
-  .goodsline .notBuying .corner {
-    left: 8px;
+    list-style-type: disc;
   }
   .goodsbar {
-    height: 25px;
     width: 111px;
+    height: 25px;
   }
   .goodsbar.mSmallBtns.mR {
     float: right;
-    height: auto;
     width: auto;
+    height: auto;
   }
   .goodsbar a {
     display: block;
@@ -4327,9 +4338,9 @@
     text-decoration: none;
   }
   .goodsbar a.link1 {
-    background: url("/css/catalog/img/catalogSprite.png") -64px 0 no-repeat;
-    height: 24px;
     width: 37px;
+    height: 24px;
+    background: url("/css/catalog/img/catalogSprite.png") -64px 0 no-repeat;
   }
   .goodsbar a.link1:hover,
   .goodsbar a.link1.link1active,
@@ -4337,23 +4348,23 @@
     background: url("/css/catalog/img/catalogSprite.png") -102px 0 no-repeat;
   }
   .goodsbar a.link1.disabled {
-    background: url("/css/catalog/img/catalogSprite.png") -64px -26px no-repeat;
-    height: 24px;
     width: 37px;
+    height: 24px;
+    background: url("/css/catalog/img/catalogSprite.png") -64px -26px no-repeat;
   }
   .font18.mSmallBtns {
-    line-height: 24px;
     vertical-align: middle;
+    line-height: 24px;
   }
   .carousel {
     float: left;
+    width: 705px;
     margin-bottom: -10px;
     margin-left: -10px;
-    width: 705px;
   }
   .carouseltitle {
-    float: left;
     position: relative;
+    float: left;
     width: 100%;
   }
   .rubrictitle {
@@ -4362,41 +4373,41 @@
   }
   .rubrictitle h2 {
     float: left;
-    font-weight: bold;
     margin-right: 5px;
+    font-weight: bold;
   }
   .rubrictitle h3 {
     float: left;
-    font-size: 16px;
     margin: 0px 5px 0px 0px;
     padding: 0px 0px 11px;
+    font-size: 16px;
   }
   .rubrictitle strong {
     float: left;
     padding-top: 5px;
   }
   .srcoll_link {
-    color: #000000;
-    font: 14px Tahoma, sans-serif;
     margin-right: 3px;
     text-decoration: underline;
+    color: #000000;
+    font: 14px Tahoma, sans-serif;
   }
   .scroll {
-    color: #a6a6a6;
     float: right;
+    color: #a6a6a6;
     font: 14px, Tahoma, sans-serif;
   }
   .scroll span {
-    font: 14px Tahoma, sans-serif;
     padding-right: 10px;
     vertical-align: middle;
+    font: 14px Tahoma, sans-serif;
   }
   .scroll .srcoll_link_button {
-    background: url("/css/catalog/img/catalogSprite.png") no-repeat;
     display: inline-block;
+    width: 28px;
     height: 23px;
     vertical-align: middle;
-    width: 28px;
+    background: url("/css/catalog/img/catalogSprite.png") no-repeat;
   }
   .scroll .srcoll_link_button.back {
     background-position: 0px -38px;
@@ -4405,8 +4416,8 @@
     background-position: 0px -64px;
   }
   .scroll .srcoll_link_button.back.disabled {
-    background-position: 0px -12px;
     cursor: default;
+    background-position: 0px -12px;
   }
   .scroll .srcoll_link_button.forvard {
     background-position: -32px -38px;
@@ -4415,74 +4426,74 @@
     background-position: -32px -64px;
   }
   .scroll .srcoll_link_button.forvard.disabled {
-    background-position: -32px -12px;
     cursor: default;
+    background-position: -32px -12px;
   }
   .allpager,
   .allpagerJewel {
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     border-radius: 5px;
-    background: url("/css/catalog/img/catalogSprite.png") no-repeat 1px -86px;
-    border: 1px solid #a6a6a6;
-    color: #a6a6a6;
-    cursor: pointer;
     display: inline-block;
-    height: 10px;
-    outline: none;
-    padding-bottom: 9px;
     width: 20px;
+    height: 10px;
+    padding-bottom: 9px;
+    cursor: pointer;
+    color: #a6a6a6;
+    border: 1px solid #a6a6a6;
+    outline: none;
+    background: url("/css/catalog/img/catalogSprite.png") no-repeat 1px -86px;
   }
   .allpager.mChecked,
   .allpagerJewel.mChecked {
-    background: #000000 url("/css/catalog/img/catalogSprite.png") no-repeat 1px -101px;
     border-color: #000000;
+    background: #000000 url("/css/catalog/img/catalogSprite.png") no-repeat 1px -101px;
   }
   .bListVariants {
-    background: url('/css/catalog/img/variant.gif') 8px 12px no-repeat;
-    border: 1px solid #e6e6e6;
-    color: #434343;
-    cursor: pointer;
-    font: 11px Tahoma, sans-serif;
     margin-top: 5px;
     padding: 10px 24px 10px 38px;
+    cursor: pointer;
+    color: #434343;
+    border: 1px solid #e6e6e6;
+    background: url('/css/catalog/img/variant.gif') 8px 12px no-repeat;
+    font: 11px Tahoma, sans-serif;
   }
   .bLabels {
-    display: block;
-    left: 0px;
     position: absolute;
-    top: 10px !important;
     z-index: 2;
+    top: 10px !important;
+    left: 0px;
+    display: block;
   }
   /*нижеописанный класс скорее всего не используется*/
   .bLabelsQuantity {
-    background: url("/images/quantity_shild.png") no-repeat;
-    bottom: 10px !important;
-    display: block;
-    height: 27px;
-    left: 0px;
-    padding-top: 6px;
     position: absolute;
+    bottom: 10px !important;
+    left: 0px;
+    display: block;
     width: 50px;
+    height: 27px;
+    padding-top: 6px;
+    background: url("/images/quantity_shild.png") no-repeat;
   }
   .hotlinksToggle {
+    cursor: pointer;
     color: #a6a6a6;
     border-bottom: 1px dotted #a6a6a6;
-    cursor: pointer;
   }
   .bShopInStock {
-    background: #f7f7f7;
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     border-radius: 5px;
+    margin: 0 0 25px;
     padding: 12px 10px;
     border: 1px solid #e6e7e6;
-    margin: 0 0 25px;
+    background: #f7f7f7;
   }
   .bShopInStock__eAddress {
-    background: url("/css/newProductCard/img/ico.png") no-repeat 0 0;
-    padding: 2px 0 2px 28px;
     float: left;
+    padding: 2px 0 2px 28px;
+    background: url("/css/newProductCard/img/ico.png") no-repeat 0 0;
   }
   .bShopInStock__eAll {
     float: right;
@@ -9996,15 +10007,15 @@
   }
   .bPhotoActionOtherAction {
     float: left;
-    width: 110px;
+    width: 175px;
   }
   .bPhotoActionOtherAction li {
     float: left;
   }
   .bPhotoActionOtherAction li a {
-    -webkit-border-radius: 9px;
-    -moz-border-radius: 9px;
-    border-radius: 9px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
     display: block;
     width: 48px;
     height: 48px;
@@ -10034,7 +10045,7 @@
   }
   .bPhotoActionOtherPhoto {
     position: relative;
-    float: right;
+    float: left;
     width: 220px;
     margin-right: 5px;
   }
@@ -10050,9 +10061,9 @@
     margin: 0 3px 0 2px;
   }
   .bPhotoActionOtherPhotoItem__eLink {
-    -webkit-border-radius: 9px;
-    -moz-border-radius: 9px;
-    border-radius: 9px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
     display: table-cell;
     *display: block;
     overflow: hidden;
@@ -10079,9 +10090,9 @@
   .bPhotoActionOtherPhotoItem__eLink img {
     max-width: 45px;
     max-height: 45px;
-    -webkit-border-radius: 9px;
-    -moz-border-radius: 9px;
-    border-radius: 9px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
   }
   .bPhotoActionOtherPhoto__eBtn {
     position: absolute;
@@ -10090,12 +10101,16 @@
     width: 15px;
     height: 50px;
     cursor: pointer;
-    background-color: #ffffff;
+    background: #ffffff;
+    background: rgba(255, 255, 255, 0.9);
     color: #404040;
   }
   .bPhotoActionOtherPhoto__eBtn span {
-    text-align: center;
-    line-height: 48px;
+    display: block;
+    width: 6px;
+    height: 10px;
+    margin: 20px auto 0;
+    background-repeat: no-repeat;
   }
   .bPhotoActionOtherPhoto__eBtn.mPrev {
     -webkit-box-shadow: 4px 0 3px -2px #cecece;
@@ -10103,11 +10118,17 @@
     box-shadow: 4px 0 3px -2px #cecece;
     left: -6px;
   }
+  .bPhotoActionOtherPhoto__eBtn.mPrev span {
+    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAKCAYAAAB8OZQwAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAUklEQVQIHWWOAQrAIAwDGz9qn7a9xKd1SVhFMBBCrxGLqopTADIE21wmvUa33IiYmg1PIAg6aTeY1n7eQDn4ycN8NbTcvBZ9jpJKeuEfBCxd8gH17yW5xQaKpwAAAABJRU5ErkJggg==);
+  }
   .bPhotoActionOtherPhoto__eBtn.mNext {
     -webkit-box-shadow: -4px 0 3px -2px #cecece;
     -moz-box-shadow: -4px 0 3px -2px #cecece;
     box-shadow: -4px 0 3px -2px #cecece;
     right: -5px;
+  }
+  .bPhotoActionOtherPhoto__eBtn.mNext span {
+    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAKCAYAAAB8OZQwAAAACXBIWXMAAAsTAAALEwEAmpwYAAAATklEQVQIHWWOAQ7AIAgDi/Of+rTtJT6NtWYYnCYK3pUEAOjujnzJMP6iiPI0M+uz4xNQ/yVq2K9KbMnl87jgwy3uDCeI+LHSRWMaiYTqC8rzLpK0xDYMAAAAAElFTkSuQmCC);
   }
   .bHint {
     *display: inline;
@@ -10523,75 +10544,89 @@
 /*------СТИЛИ КНОПКИ "КУПИТЬ"------*/
 @media all {
   .btnBuy {
-    height: 35px;
     width: 170px;
+    height: 35px;
   }
   .btnBuy .btnBuy__eLink {
-    display: block;
-    color: #ffffff;
     background: #ffc000;
     background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #ffaa01), color-stop(1, #ffc000));
     background: -ms-linear-gradient(bottom, #ffaa01, #ffc000);
     background: -moz-linear-gradient(center bottom, #ffaa01 0%, #ffc000 100%);
-    border: 1px solid #fb9c00;
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     border-radius: 5px;
     -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
     -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
-    height: 35px;
-    line-height: 35px;
-    text-align: center;
+    display: block;
     width: 170px;
-    font-size: 18px;
+    height: 35px;
+    text-align: center;
+    color: #ffffff;
     border: 1px solid #fb9c00;
+    border: 1px solid #fb9c00;
+    font-size: 18px;
+    line-height: 35px;
   }
   .btnBuy .btnBuy__eLink.mBought {
-    background: #ffffff;
-    color: #000000;
-    border: 1px solid #b3b3b3;
     -webkit-box-shadow: none;
     -moz-box-shadow: none;
     box-shadow: none;
+    color: #000000;
+    border: 1px solid #b3b3b3;
+    background: #ffffff;
   }
   .btnBuy .btnBuy__eLink.mBought:hover {
     background: #ffffff;
   }
   .btnBuy .btnBuy__eLink.mDisabled {
-    background: #e6e6e6;
-    color: #a6a6a6;
-    border: 1px solid #e6e6e6;
     -webkit-box-shadow: none;
     -moz-box-shadow: none;
     box-shadow: none;
     cursor: default;
-  }
-  .btnBuy .btnBuy__eLink.mDisabled:hover {
-    background: #e6e6e6;
     color: #a6a6a6;
     border: 1px solid #e6e6e6;
+    background: #e6e6e6;
+  }
+  .btnBuy .btnBuy__eLink.mDisabled:hover {
+    color: #a6a6a6;
+    border: 1px solid #e6e6e6;
+    background: #e6e6e6;
   }
   .btnBuy .btnBuy__eLink.mShopsOnly {
     font-size: 17px;
   }
   .btnBuy .btnBuy__eLink:hover {
-    text-decoration: none;
     background: #ffa200;
     background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #f79200), color-stop(1, #ffa200));
     background: -ms-linear-gradient(bottom, #f79200, #ffa200);
     background: -moz-linear-gradient(center bottom, #f79200 0%, #ffa200 100%);
+    text-decoration: none;
+  }
+  .jewel .btnBuy .btnBuy__eLink.mDisabled {
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    cursor: default;
+    color: #a6a6a6;
+    border: 1px solid #e6e6e6;
+    background: #e6e6e6;
+  }
+  .jewel .btnBuy .btnBuy__eLink.mDisabled:hover {
+    color: #a6a6a6;
+    border: 1px solid #e6e6e6;
+    background: #e6e6e6;
   }
   .goodsbox .btnBuy {
+    float: right;
     width: 38px;
     height: 25px;
-    float: right;
   }
   .goodsbox .btnBuy a {
-    text-indent: -9999px;
     display: block;
     width: 38px;
     height: 25px;
+    text-indent: -9999px;
     background: url("/css/catalog/img/catalogSprite.png") -64px 0 no-repeat;
   }
   .goodsbox .btnBuy a.mBought,

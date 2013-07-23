@@ -886,7 +886,7 @@ $(document).ready(function(){
 								grouped_accessories[current_accessory_category]['buffer']++
 							}
 							tr = null
-						handle_custom_items()
+						// handle_custom_items()
 						})
 						current++
 						shiftme()
@@ -1019,7 +1019,7 @@ $(document).ready(function(){
 
 		var authFromServer = function( result ) {
 				container.html( result );
-				handle_custom_items();
+				// handle_custom_items();
 				container.fadeIn();
 
 				var tmpline = new cardsCarousel ({
