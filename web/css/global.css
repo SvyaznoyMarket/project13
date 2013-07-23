@@ -2914,7 +2914,7 @@
   .topbar {
     font-size: 14px;
     font-family: Tahoma, sans-serif;
-    padding: 10px 0 5px;
+    padding: 10px 0 0;
   }
   .topbar .bRegion,
   .topbar .usermenu {
@@ -2940,13 +2940,17 @@
   }
   .headerContactPhone {
     font-weight: bold;
-    padding: 0 0 0 10px;
+    padding: 0 20px;
   }
   .headerContactPhone__eTitle {
     margin: 0 5px 0 15px;
   }
   .headerContactPhone__ePhones {
-    margin: 0 15px 0 5px;
+    margin: 0 10px 0 0;
+  }
+  .headerContactPhone .bPhonesRegion {
+    font-size: 14px;
+    font-weight: normal;
   }
   #header {
     background: #000000;
