@@ -295,19 +295,24 @@ $(document).ready(function () {
 
     /* Credit Widget */
     //window.onbeforeunload = function (){ return false }    // DEBUG    
-    if( ! $('#credit-widget').length )
-        return
-    var creditWidget = $('#credit-widget').data('value')
-    if( ! 'widget' in creditWidget )
-        return
+    if( ! $('#credit-widget').length ){
+        return;
+    }
+
+    var creditWidget = $('#credit-widget').data('value');
+
+    if( ! 'widget' in creditWidget ){
+        return;
+    }
+
     if( creditWidget.widget === 'direct-credit' ) {
-//console.info('direct-credit')
-        $LAB.script( 'JsHttpRequest.js' )
+        $LAB.script( 'JsHttpRequest.min.js' )
         .script( 'http://direct-credit.ru/widget/script_utf.js' )
         .wait( function() { 
             // fill cart
-            for(var i = creditWidget.vars.items.length - 1; i >= 0; i--) {
-                var item = creditWidget.vars.items[i]
+            for ( var i = creditWidget.vars.items.length - 1; i >= 0; i-- ) {
+                var item = creditWidget.vars.items[i];
+
                 dc_getCreditForTheProduct(
                     '4427',
                     creditWidget.vars.number,
@@ -319,8 +324,8 @@ $(document).ready(function () {
                         price: item.price,
                         type: item.type
                     },
-                    function(result){
-                        openWidget()
+                    function( result ){
+                        openWidget();
                     }
                 )
             }
@@ -332,12 +337,12 @@ $(document).ready(function () {
                     'orderProductToBuyOnCredit',
                     { order_id: creditWidget.vars.number,
                     region: creditWidget.vars.region }
-                )
+                );
             }
-        })
+        });
     }
 
-    var backURL = 'http://' + window.location.hostname
+    var backURL = 'http://' + window.location.hostname;
 
     if( creditWidget.widget === 'kupivkredit' ) {
 //console.info('kupivkredit')
