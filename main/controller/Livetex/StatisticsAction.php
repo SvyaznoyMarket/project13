@@ -8,6 +8,7 @@ class StatisticsAction {
     private $date_end = '2013-07-23';
     private $operId = null;
     private $chatId = null;
+    private $actions = [];
     private $siteId = 41836; // TODO: move in config
     private $aside_menu = [];
 
@@ -34,6 +35,10 @@ class StatisticsAction {
         if ($chatId) $this->chatId = $chatId;
 
 
+        $actions_get = $request->get('actions');
+        $actions = explode('|',$actions_get);
+        if ($actions and is_array($actions) ) $this->actions = $actions;
+
 
         $date_begin = $request->get('date_begin');
         if ($date_begin) {
@@ -55,11 +60,11 @@ class StatisticsAction {
         //$this->date_begin = '2013-05-15';
         //$this->date_end = '2013-07-25';
 
-
         $this->addMenu('Общая статистика', '/livetex-statistics');
-        $this->addMenu('Статистика чатов', '/livetex-statistics?chat=true');
-        $this->addMenu('Статистика операторов', '/livetex-statistics?operators=true');
-        $this->addMenu('Статистика сайтов', '/livetex-statistics?site=true');
+        $this->addMenu('Статистика чатов', '/livetex-statistics?actions=chat');
+        $this->addMenu('Статистика операторов', '/livetex-statistics?actions=allOperators');
+        $this->addMenu('Статистика сайтов', '/livetex-statistics?actions=site');
+        $this->addMenu('[ Главная страница сайта ]', '/');
 
     }
 
@@ -72,10 +77,10 @@ class StatisticsAction {
 
         //$router = \App::router();
         //$client = \App::coreClientV2();
-        //$user = \App::user();
+        //$user = \App::user(); // TODO: проверка на авторизацию и наличие прав на просмотр данного раздела
         //$region = $user->getRegion();
 
-        $actions = [];
+        $actions = &$this->actions;
         $content = [];
 
         include_once '../lib/LiveTex/API.php';
@@ -193,9 +198,6 @@ class StatisticsAction {
 
 
 
-
-
-
         $page->setParam('content', $content);
         $page->setParam('actions', $actions);
         $page->setParam('aside_menu', $this->aside_menu);
@@ -203,12 +205,12 @@ class StatisticsAction {
         /*
          * $stat_params — Для наполнения сайдбара // TODO: убрать дублирование названия в "name"
          */
-        $stat_params['date_begin'] = [ 'name' => 'date_begin', 'value' => ($this->date_begin) ?: '', 'descr' => 'Дата начала'];
-        $stat_params['date_end'] = [ 'name' => 'date_end', 'value' => ($this->date_end) ?: '', 'descr' => 'Дата окончания'];
-        $stat_params['operId'] = [ 'name' => 'operId', 'value' => ($this->operId) ?: $this->operId, 'descr' => 'Идентификатор оператора'];
-        $stat_params['chatId'] = [ 'name' => 'chatId', 'value' => ($this->chatId) ?: '', 'descr' => 'Идентификатор чата'];
-        $stat_params['siteId'] = [ 'name' => 'siteId', 'value' => ($this->siteId) ?: '', 'descr' => 'Идентификатор сайта'];
-        $stat_params['actions'] = [ 'name' => 'actions', 'value' => implode('|',$actions), 'descr' => 'Сущности статистики'];
+        $stat_params['date_begin'] = [ 'value' => ($this->date_begin) ?: '', 'descr' => 'Дата начала'];
+        $stat_params['date_end'] = [ 'value' => ($this->date_end) ?: '', 'descr' => 'Дата окончания'];
+        $stat_params['operId'] = [ 'value' => ($this->operId) ?: $this->operId, 'descr' => 'Идентификатор оператора'];
+        $stat_params['chatId'] = [ 'value' => ($this->chatId) ?: '', 'descr' => 'Идентификатор чата'];
+        $stat_params['siteId'] = [ 'value' => ($this->siteId) ?: '', 'descr' => 'Идентификатор сайта'];
+        $stat_params['actions'] = [ 'value' => implode('|',$actions), 'descr' => 'Сущности статистики'];
 
         $page->setParam('stat_params', $stat_params);
 

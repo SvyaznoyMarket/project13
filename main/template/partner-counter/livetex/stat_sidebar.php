@@ -5,7 +5,7 @@
  */
 ?>
 
-<div class="bProductSection__eRight right lts_sidebar">
+<div class="lts_sidebar bProductSection__eRight right">
     <aside>
         <div class="bWidgetBuy mWidget">
             <? if ( !empty($aside_menu) ): ?>
@@ -25,11 +25,11 @@
             <form action="/livetex-statistics" method="get">
                 <? if ($stat_params): ?>
                 <ul>
-                    <? foreach($stat_params as $item): ?>
+                    <? foreach($stat_params as $key => $item): ?>
                         <li>
                             <p>
-                                <label for="<?= $item['name']; ?>"><?= $item['descr']; ?></label>
-                                <input type="text" name="<?= $item['name']; ?>" value="<?= $item['value']; ?>" />
+                                <label for="<?= $key; ?>"><?= $item['descr']; ?></label>
+                                <input type="text" name="<?= $key; ?>" value="<?= $item['value']; ?>" />
                             </p>
                         </li>
                     <? endforeach; ?>

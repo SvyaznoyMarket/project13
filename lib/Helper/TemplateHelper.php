@@ -89,4 +89,37 @@ class TemplateHelper {
 
         return $choices[ ($number % 100 > 4 && $number % 100 < 20) ? 2 : $cases[min($number % 10, 5)]];
     }
+
+
+    /**
+     * @param $content
+     * @param string $tag
+     * @param null $class
+     * @return string
+     */
+    public function wrap( &$content, $attr, $tag = 'div') {
+        if ( !empty($tag) ) {
+            $res = '<'.$tag;
+
+            if ($attr) {
+                if (is_string($attr)){
+                    if ( !empty($attr) ) $res .= ' class='.$attr;
+                }else
+                if ( is_array($attr) ) {
+                    foreach($attr as $key => $val):
+                        if ( !empty($key) and !empty($val) ):
+                            $res .= ' '.$key = $val;
+                        endif;
+                    endforeach;
+                }
+            }
+
+            $res .= '>';
+            $res .= (string) $content;
+            $res .= '</'.$tag.'>';
+            return $res;
+        }
+        return $content;
+    }
+
 }

@@ -98,4 +98,8 @@
     .isonline{
         color:red;
     }
+
+    .allpageinner {
+        padding-bottom: 0 !important;
+    }
 </style>
