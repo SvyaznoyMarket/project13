@@ -3,14 +3,14 @@
 
         <div id="criteo-data" data-value="<?= $page->json($criteoData) ?>"></div>
 
-        <script type="text/javascript" src="//static.criteo.net/js/ld/ld.js" async="true"></script> <? /* // https: and http: — works */ ?>
+        <script src="//static.criteo.net/js/ld/ld.js" async="true"></script> <? /* // https: and http: — works */ ?>
 
-        <script type="text/javascript">
+        <script>
             window.criteo_q = window.criteo_q || [];
 
             var criteo_arr = $('#criteo-data').data('value');
 
-            if (criteo_arr) {
+            if ( criteo_arr $.isArray(criteo_arr) ) {
                 try{
                     window.criteo_q.push(criteo_arr);
                     console.log(criteo_arr);
