@@ -1,9 +1,9 @@
 <? if ( \App::config()->partners['criteo']['enabled'] ): ?>
     <? if ( !empty($criteoData) ):  ?>
 
-        <script type="text/javascript" src="//static.criteo.net/js/ld/ld.js" async="true"></script> <? /* // https: and http: — works */ ?>
-
         <div id="criteo-data" data-value="<?= $page->json($criteoData) ?>"></div>
+
+        <script type="text/javascript" src="//static.criteo.net/js/ld/ld.js" async="true"></script> <? /* // https: and http: — works */ ?>
 
         <script type="text/javascript">
             window.criteo_q = window.criteo_q || [];
@@ -21,8 +21,8 @@
 
 
 
-            <? /* //for (var i in criteo_arr){ ] */
-            /*
+            <? /* //old: //for (var i in criteo_arr){ ] */
+            /* //old:
             window.criteo_q.push(
                 <?
                 //$echrows = [];
@@ -32,7 +32,7 @@
             );
             */
 
-            /*
+            /* //old:
             //example:
             { event: "setAccount", account: 10442 },
             { event: "setCustomerId", id: "<?= $userId ?>" },
