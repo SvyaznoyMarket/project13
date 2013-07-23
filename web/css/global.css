@@ -2976,19 +2976,19 @@
   .bMainMenuLevel-1 {
     position: relative;
     display: table;
+    dt-display: table;
     float: left;
     width: 810px;
     z-index: 998;
+    behavior: url("/css/common/display-table.min.htc");
   }
   .bMainMenuLevel-1__eItem {
     display: table-cell;
     position: relative;
-    *display: block;
-    *float: left;
     vertical-align: middle;
-    *width: 60px;
     z-index: 999;
-    *zoom: 1;
+    -dt-display: table-cell;
+    *display: inline;
   }
   .bMainMenuLevel-1__eItem.bMainMenuLevel-1__eSeparator {
     background: url('/css/header/img/headerSeparator.gif') no-repeat center center;
@@ -9032,9 +9032,10 @@
     color: #ffffff;
     display: inline-block;
     *display: inline;
+    zoom: 1;
     font-size: 14px;
-    height: 41px;
     line-height: 41px;
+    height: 41px;
     padding-left: 40px;
     padding-right: 20px;
     text-decoration: none;
@@ -9196,6 +9197,7 @@
     padding: 0 19px;
     position: relative;
     z-index: 2;
+    width: 75px;
   }
 }
 /*--END---СТИЛИ ХЛЕБНЫХ КРОШЕК И ХЭДА--*/
