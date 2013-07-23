@@ -5,6 +5,7 @@ namespace View\Livetex;
 class StatisticsPage extends \View\DefaultLayout {
     protected $layout  = 'layout-oneColumn';
     public $default_ava = '9c46526d320a87cdab6dfdbc14f23cdc.png';
+    private $noitems_msg = '<em class="error">Данные не получены. Ответ сервера LiveTex: </em>';
 
 
     public function __construct() {
@@ -20,8 +21,9 @@ class StatisticsPage extends \View\DefaultLayout {
     public function slotContent() {
 
         $html_out = '';
-        $content = $this->params['content'];
+        $html_out = $this->slotSidebar();
 
+        $content = $this->params['content'];
 
 
         foreach ($content as $key => $value) {
@@ -54,6 +56,10 @@ class StatisticsPage extends \View\DefaultLayout {
         */
 
         return $html_out;
+    }
+
+    public function slotSidebar( $params_arr = [] ) {
+        return $this->render('partner-counter/livetex/stat_sidebar', $this->params + $params_arr);
     }
 
 
@@ -145,12 +151,19 @@ class StatisticsPage extends \View\DefaultLayout {
             $out = '';
             $out .= '<ul>';
             foreach($site->response as $item) {
-                    $out .= '<li class="lts_li li_site">';
-                    $out .= '<div class=""><span class="param_name">Количество чатов: </span>'.$item->count.'</div>';
-                    $out .= '<div class=""><span class="param_name">Количество упрощенных чатов: </span>'.$item->lost.'</div>';
-                    $out .= '<div class=""><span class="param_name">Среднее количество чатов за период: </span>'.$item->average.'</div>';
-                    $out .= '<div class=""><span class="param_name">Количество положительных оценок чатов: </span>'.$item->positive.'</div>';
-                    $out .= '<div class=""><span class="param_name">Количество отрицательных оценок чатов: </span>'.$item->negative.'</div>';
+                $out .= '<li class="lts_li li_site">';
+
+                    if ( is_string($item) ) {
+                        // if error
+                        $out .= '<div class="noitems">'.$this->noitems_msg.$item.'</div>';
+                    }else{
+                        $out .= '<div class=""><span class="param_name">Количество чатов: </span>'.$item->count.'</div>';
+                        $out .= '<div class=""><span class="param_name">Количество упрощенных чатов: </span>'.$item->lost.'</div>';
+                        $out .= '<div class=""><span class="param_name">Среднее количество чатов за период: </span>'.$item->average.'</div>';
+                        $out .= '<div class=""><span class="param_name">Количество положительных оценок чатов: </span>'.$item->positive.'</div>';
+                        $out .= '<div class=""><span class="param_name">Количество отрицательных оценок чатов: </span>'.$item->negative.'</div>';
+                    }
+
                     $out .= '</li>';
             }
             $out .= '</ul>';

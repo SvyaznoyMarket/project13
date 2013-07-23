@@ -58,12 +58,16 @@
         display: none;
     }
 
+    .right{
+        float:right;
+    }
+
     .param_name {
         font-style: italic;
     }
 
     .img_ava {
-        width: 50px;
+        width: 45px;
         height: auto;
     }
 
@@ -89,6 +93,7 @@
         padding: .5em 0 0;
     }
 
+    .error,
     .isonline{
         color:red;
     }

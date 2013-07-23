@@ -9,6 +9,7 @@ class StatisticsAction {
     private $operId;
     private $chatId;
     private $siteId = 41836;
+    private $aside_menu = [];
 
 
     public function __construct() {
@@ -53,6 +54,12 @@ class StatisticsAction {
         // tmp for debug
         $this->date_begin = '2013-05-15';
         $this->date_end = '2013-07-25';
+
+
+        $this->addMenu('Главная страница статистики', '/livetex-statistics');
+        $this->addMenu('Статистика сайтов', '/livetex-statistics?chat=true');
+        $this->addMenu('Статистика чатов', '/livetex-statistics?site=true');
+        $this->addMenu('Статистика операторов', '/livetex-statistics?operators=true');
 
     }
 
@@ -161,9 +168,38 @@ class StatisticsAction {
 
         $page->setParam('content', $content);
         $page->setParam('actions', $actions);
+        $page->setParam('aside_menu', $this->aside_menu);
+        $page->setParam('date_begin', $this->date_begin);
+        $page->setParam('date_end', $this->date_end);
 
         return new \Http\Response( $page->show() );
     }
+
+
+
+
+    // for sidebar menu BEGIN
+
+    public function addMenu($name, $link){
+        if (!empty($name))
+            if (!empty($link))
+                $this->aside_menu[] = ['name' => $name, 'link' => $link ];
+    }
+
+    public function setMenu($name, $link){
+        if (!empty($name))
+            if (!empty($link))
+                $this->aside_menu[$name] = $link;
+    }
+
+    public function getMenu($name){
+        if (!empty($name))
+            if ( isset( $this->aside_menu[$name] ) )
+                return $this->aside_menu[$name];
+    }
+
+    // for sidebar menu END
+
 
 
 
