@@ -27,35 +27,35 @@
 
     width: 700px;
     margin: 15px 0 0;
+}
 
-    //product images section
-    .bProductDescSticker {
-    	position: absolute;
-    	top: 0;
-    	left: 0;
-    }
+//product images section
+.bProductDescSticker {
+	position: absolute;
+	top: 0;
+	left: 0;
+}
 
-    .bProductDescImg {
-        position: relative;
+.bProductDescImg {
+    position: relative;
 
-        float: left;
+    float: left;
+
+    width: 400px;
+
+    //product big image section
+	.bProductDescImgBig {
+        display: block;
 
         width: 400px;
+        height: 400px;
 
-        //product big image section
-    	.bProductDescImgBig {
-            display: block;
+        text-align: center;
+        vertical-align: bottom;
 
-            width: 400px;
-            height: 400px;
-
-            text-align: center;
-            vertical-align: bottom;
-
-            &__eImg{
-                max-width: 400px;
-                max-height: 400px;
-            }
+        &__eImg{
+            max-width: 400px;
+            max-height: 400px;
         }
     }
 }
@@ -228,36 +228,6 @@
 			font-size: 12px;
         }
     }
-
-    .inStock {
-        margin-bottom: 6px;
-
-        color: #fb9c00;
-
-        font-weight: 800;
-        line-height: 1;
-    }
-
-    .priceOld {
-        margin-bottom: 3px;
-
-        color: #a6a6a6;
-
-        font-size: 21px;
-        span {
-            text-decoration: line-through;
-        }
-    }
-
-    .bPrice {
-        font-size: 30px;
-    }
-
-    .priceSale {
-        margin: 5px 0 10px;
-
-        cursor: pointer;
-    }
     
     //additional product options
     .bDescSelectItem {
@@ -346,6 +316,36 @@
 		}
 	}
 }
+
+    .inStock {
+        margin-bottom: 6px;
+
+        color: #fb9c00;
+
+        font-weight: 800;
+        line-height: 1;
+    }
+
+    .priceOld {
+        margin-bottom: 3px;
+
+        color: #a6a6a6;
+
+        font-size: 21px;
+        span {
+            text-decoration: line-through;
+        }
+    }
+
+    .bPrice {
+        font-size: 30px;
+    }
+
+    .priceSale {
+        margin: 5px 0 10px;
+
+        cursor: pointer;
+    }
 
 .bProductSection {
 

@@ -16,7 +16,7 @@
 
 <div id="jsProductCard" data-value="<?= $page->json($productData) ?>"></div>
 
-<div class="bProductSectionLeftCol clearfix">
+<div class="bProductSectionLeftCol">
     <?= $helper->render('product/__photo', ['product' => $product, 'productVideos' => $productVideos]) ?>
 
     <div class="bProductDescShop">

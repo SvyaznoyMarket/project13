@@ -9818,24 +9818,24 @@
     width: 700px;
     margin: 15px 0 0;
   }
-  .bProductSectionLeftCol .bProductDescSticker {
+  .bProductDescSticker {
     position: absolute;
     top: 0;
     left: 0;
   }
-  .bProductSectionLeftCol .bProductDescImg {
+  .bProductDescImg {
     position: relative;
     float: left;
     width: 400px;
   }
-  .bProductSectionLeftCol .bProductDescImg .bProductDescImgBig {
+  .bProductDescImg .bProductDescImgBig {
     display: block;
     width: 400px;
     height: 400px;
     text-align: center;
     vertical-align: bottom;
   }
-  .bProductSectionLeftCol .bProductDescImg .bProductDescImgBig__eImg {
+  .bProductDescImg .bProductDescImgBig__eImg {
     max-width: 400px;
     max-height: 400px;
   }
@@ -9984,27 +9984,6 @@
     color: #a6a6a6;
     font-size: 12px;
   }
-  .bProductDescShop .inStock {
-    margin-bottom: 6px;
-    color: #fb9c00;
-    font-weight: 800;
-    line-height: 1;
-  }
-  .bProductDescShop .priceOld {
-    margin-bottom: 3px;
-    color: #a6a6a6;
-    font-size: 21px;
-  }
-  .bProductDescShop .priceOld span {
-    text-decoration: line-through;
-  }
-  .bProductDescShop .bPrice {
-    font-size: 30px;
-  }
-  .bProductDescShop .priceSale {
-    margin: 5px 0 10px;
-    cursor: pointer;
-  }
   .bProductDescShop .bDescSelectItem {
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
@@ -10079,6 +10058,27 @@
   }
   .bProductDescShop .creditbox .creditbox__sum {
     padding-left: 36px;
+  }
+  .inStock {
+    margin-bottom: 6px;
+    color: #fb9c00;
+    font-weight: 800;
+    line-height: 1;
+  }
+  .priceOld {
+    margin-bottom: 3px;
+    color: #a6a6a6;
+    font-size: 21px;
+  }
+  .priceOld span {
+    text-decoration: line-through;
+  }
+  .bPrice {
+    font-size: 30px;
+  }
+  .priceSale {
+    margin: 5px 0 10px;
+    cursor: pointer;
   }
   .bProductSection .bDescriptionProduct {
     font-size: 14px;
@@ -10176,16 +10176,16 @@
     font-weight: bold;
     text-decoration: underline;
   }
-  .mProductSectionSet .bProductDesc__ePhoto {
+  .mProductSectionSet .bProductDescImg {
     width: 700px;
     height: 700px;
     box-shadow: 1px 1px 5px #bababa;
   }
-  .mProductSectionSet .bProductDesc__ePhoto-bigImg {
+  .mProductSectionSet .bProductDescImgBig {
     width: 700px;
     height: 700px;
   }
-  .mProductSectionSet .bProductDesc__ePhoto-bigImg img {
+  .mProductSectionSet .bProductDescImgBig__eImg {
     max-width: 700px;
     max-height: 700px;
   }
