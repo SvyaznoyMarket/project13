@@ -30,6 +30,8 @@
 		};
 
 		$.get(url, addToCart);
+
+		return false;
 	};
 
 	/**
@@ -37,12 +39,11 @@
 	 * 
 	 * @param  {Event}	e
 	 */
-	var BuyButtonHandler = function BuyButtonHandler( e ) {
+	var BuyButtonHandler = function BuyButtonHandler() {
 		var button = $(this),
 			url = button.attr('href');
 		// end of vars
 		
-		e.stopPropagation();
 
 		if ( button.hasClass('mDisabled') ) {
 			return false;
@@ -53,7 +54,7 @@
 			return false;
 		}
 
-		button.trigger('buy', buy);
+		button.trigger('buy');
 
 		return false;
 	};
@@ -70,12 +71,11 @@
 			$('.'+markActionInfo.product[i].id).html('В корзине').addClass('mBought').attr('href','/cart');
 		}
 	};
-
-	$("body").bind('markcartbutton', markCartButton);
 	
 	$(document).ready(function() {
-		$('.jsBuyButton').on('click', BuyButtonHandler);
-		$('.jsBuyButton').on('buy', buy);
+		$('body').bind('markcartbutton', markCartButton);
+		$('body').on('click', '.jsBuyButton', BuyButtonHandler);
+		$('body').on('buy', '.jsBuyButton', buy);
 	});
 }());
 

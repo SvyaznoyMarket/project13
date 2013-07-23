@@ -7,7 +7,7 @@
 ?>
 <? if (!empty($prod_cats)): ?>
 <script type="text/javascript">
-    var product = {
+    var sonar_product = {
         category : <?= $prod_cats ?>
     };
 </script>

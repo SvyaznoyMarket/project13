@@ -218,12 +218,13 @@ class DefaultLayout extends Layout {
                 $viewEvent = 'viewList';
                 $productPager = $this->getParam('productPager');
 
-                foreach ($productPager as $product) {
-                    // @var $product \Model\Product\Entity
-                    $eventItems_arr[] = '"'.$product->getId().'"';
+                if ($productPager instanceof \Iterator\EntityPager) {
+                    foreach ($productPager as $product) {
+                        // @var $product \Model\Product\Entity
+                        $eventItems_arr[] = '"'.$product->getId().'"';
+                    }
+                    break;
                 }
-                break;
-
 
             case "product.category":
                 $productPagersByCategory = $this->getParam('productPagersByCategory');
@@ -491,13 +492,19 @@ class DefaultLayout extends Layout {
             $products = $this->getParam('products');
             $cartProductsById = $this->getParam('cartProductsById');
 
+            $region_id = \App::user()->getRegion()->getId();
+
             $cart_prods = [];
 
             foreach ($products as $product):
                 $cartProduct = isset($cartProductsById[$product->getId()]) ? $cartProductsById[$product->getId()] : null;
 
                 $one_prod = [];
-                $one_prod['identifier'] = $product->getId();
+
+                $one_prod['identifier'] = (string) $product->getId();
+                //if ( $product->getTypeId() ) $one_prod['identifier'] .= '-'.$product->getTypeId();
+                if ( $region_id ) $one_prod['identifier'] .= '_'.$region_id;
+
                 $one_prod['quantity'] = $cartProduct->getQuantity();
                 //$one_prod['amount'] = $this->helper->formatPrice( $cartProduct->getPrice() * $one_prod['quantity'] );
                 $one_prod['amount'] = $cartProduct->getPrice() * $one_prod['quantity'];

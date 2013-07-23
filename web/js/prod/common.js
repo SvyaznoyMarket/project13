@@ -321,6 +321,8 @@ $.ajaxSetup({
 		};
 
 		$.get(url, addToCart);
+
+		return false;
 	};
 
 	/**
@@ -328,12 +330,11 @@ $.ajaxSetup({
 	 * 
 	 * @param  {Event}	e
 	 */
-	var BuyButtonHandler = function BuyButtonHandler( e ) {
+	var BuyButtonHandler = function BuyButtonHandler() {
 		var button = $(this),
 			url = button.attr('href');
 		// end of vars
 		
-		e.stopPropagation();
 
 		if ( button.hasClass('mDisabled') ) {
 			return false;
@@ -344,7 +345,7 @@ $.ajaxSetup({
 			return false;
 		}
 
-		button.trigger('buy', buy);
+		button.trigger('buy');
 
 		return false;
 	};
@@ -361,12 +362,11 @@ $.ajaxSetup({
 			$('.'+markActionInfo.product[i].id).html('В корзине').addClass('mBought').attr('href','/cart');
 		}
 	};
-
-	$("body").bind('markcartbutton', markCartButton);
 	
 	$(document).ready(function() {
-		$('.jsBuyButton').on('click', BuyButtonHandler);
-		$('.jsBuyButton').on('buy', buy);
+		$('body').bind('markcartbutton', markCartButton);
+		$('body').on('click', '.jsBuyButton', BuyButtonHandler);
+		$('body').on('buy', '.jsBuyButton', buy);
 	});
 }());
 
@@ -632,16 +632,17 @@ $(document).ready(function(){
 
 
 	// hover imitation for IE
-	if (window.navigator.userAgent.indexOf ("MSIE") >= 0){
-		$('.allpageinner').delegate( '.goodsbox__inner', 'hover', function() {
+	if ( window.navigator.userAgent.indexOf("MSIE") >= 0 ) {
+		$('.allpageinner').on( 'hover', '.goodsbox__inner', function() {
 			$(this).toggleClass('hover');
-		})
+		});
 	}
 
 	/* ---- */
-	$('.goodsbox__inner').on('click', function(e) {
-		if( $(this).attr('data-url') )
-			window.location.href = $(this).attr('data-url')
+	$('body').on('click', '.goodsbox__inner', function(e) {
+		if ( $(this).attr('data-url') ) {
+			window.location.href = $(this).attr('data-url');
+		}
 	})
 
 
@@ -650,6 +651,7 @@ $(document).ready(function(){
 		uri: window.location.pathname,
 		atcl: $('.bGood__eArticle span:last').text().replace(/[^0-9\-]/g, '')
 	};
+	
 	$('.bigcarousel').eq(0).bind('click', function(e) {
 		if( typeof(_gaq) !== 'undefined' )
 			_gaq.push(['_trackEvent', 'accessories_up', accessoriesMsg['atcl'], accessoriesMsg['uri'] ])
@@ -1733,7 +1735,7 @@ $(document).ready(function(){
 								grouped_accessories[current_accessory_category]['buffer']++
 							}
 							tr = null
-						handle_custom_items()
+						// handle_custom_items()
 						})
 						current++
 						shiftme()
@@ -1866,7 +1868,7 @@ $(document).ready(function(){
 
 		var authFromServer = function( result ) {
 				container.html( result );
-				handle_custom_items();
+				// handle_custom_items();
 				container.fadeIn();
 
 				var tmpline = new cardsCarousel ({

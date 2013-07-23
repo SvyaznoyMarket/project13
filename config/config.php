@@ -151,7 +151,7 @@ $c->loadMediaHost = true;
 $c->shop['cookieName'] = 'shopid';
 $c->shop['cookieLifetime'] = 31536000; // 365 дней
 $c->shop['autoresolve']    = true;
-$c->shop['enabled'] = false;
+$c->shop['enabled'] = true;
 
 $c->mediaHost = [
     0 => 'http://fs01.enter.ru',

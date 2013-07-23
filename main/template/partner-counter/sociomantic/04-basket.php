@@ -8,7 +8,7 @@
 ?>
 <? if ( is_array($cart_prods) and !empty($cart_prods) ): ?>
 <script type="text/javascript">
-var basket = {
+var sonar_basket = {
     products: [
     <?
         $arr_count = count($cart_prods); $j = 0;
@@ -21,6 +21,7 @@ var basket = {
                 if (!empty($value)):
                     $i++;
                     if ($i>1) echo ", "; // считаем, что identifier полуюбому существует у продукта, иначе запятая будет не в тему
+                    $value = str_replace("'",'"',$value);
                     echo $key.": '".$value."'" ;
                 endif;
             }
