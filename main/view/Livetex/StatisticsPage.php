@@ -91,6 +91,9 @@ class StatisticsPage extends \View\DefaultLayout {
 
 
 
+    /*
+     * Форміруем слот с html с инфой об выбранном операторе
+     */
     public function slot_oneOperator_Html($response = null)
     {
         $out = false;
@@ -98,14 +101,32 @@ class StatisticsPage extends \View\DefaultLayout {
         if ($response and $response->response) {
             $out = '';
             $response = $response->response;
-            print_r($response);
-            $out .= print_r($response,1);
+
+            if ( isset($response->message) ) {
+                return '<div class="noitems">' . $this->noitems_msg . $response->message . '</div>';
+            }
+
+            foreach ($response as $item) {
+                if (isset($item->count)) {
+                    $out .= '<div class="lts_item">';
+                    $out .= '<div class="id_oper"><span class="param_name">Количество чатов: </span>' . $item->count . '</div>';
+                    $out .= '<div class="id_oper"><span class="param_name">Количество упущенных чатов: </span>' . $item->lost . '</div>';
+                    $out .= '<div class="id_oper"><span class="param_name">Среднее количество чатов за период: </span>' . $item->average . '</div>';
+                    $out .= '<div class="id_oper"><span class="param_name">Количество положительных оценок чатов: </span>' . $item->positive . '</div>';
+                    $out .= '<div class="id_oper"><span class="param_name">Количество отрицательных оценок чатов: </span>' . $item->negative . '</div>';
+                    $out .= '</div>';
+                }else{
+                    return '<div class="noitems">' . $this->noitems_msg . print_r($item,1) . '</div>';
+                }
+            }
+
         }
 
         $html_out = $this->render('partner-counter/livetex/stat_oneOperator', $this->params + ['htmlcontent' => $out]);
 
         return $html_out;
     }
+
 
 
     public function slot_site_Html($site = null)

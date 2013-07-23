@@ -4,11 +4,11 @@ namespace Controller\Livetex;
 
 class StatisticsAction {
     private $date_format = 'Y-m-d';
-    private $date_begin;
-    private $date_end;
-    private $operId;
-    private $chatId;
-    private $siteId = 41836;
+    private $date_begin = '2013-07-15';
+    private $date_end = '2013-07-23';
+    private $operId = null;
+    private $chatId = null;
+    private $siteId = 41836; // TODO: move in config
     private $aside_menu = [];
 
 
@@ -52,8 +52,8 @@ class StatisticsAction {
         if (empty($this->date_end)) $this->date_end = (string) date($this->date_format,strtotime('today UTC'));
 
         // tmp for debug
-        $this->date_begin = '2013-05-15';
-        $this->date_end = '2013-07-25';
+        //$this->date_begin = '2013-05-15';
+        //$this->date_end = '2013-07-25';
 
 
         $this->addMenu('Общая статистика', '/livetex-statistics');
@@ -83,6 +83,10 @@ class StatisticsAction {
 
 
 
+        /* выбираем нужные действия
+            Действия влияют на сущность загружаемой статистики.
+            Может быть статистика оператора (или -ов), чата (-ов), сайтов
+        */
         if (!empty( $this->operId )) {
             $actions[] = 'oneOperator';
         }
@@ -99,11 +103,6 @@ class StatisticsAction {
             $actions[] = 'site';
             $actions[] = 'allOperators';
         }
-
-
-
-        // for debug, temporal
-        // $actions[] = 'site';
 
 
 
@@ -139,19 +138,26 @@ class StatisticsAction {
 
 
 
+        // получим статистику сайтов:
         if (in_array('site',$actions)) {
             $content['site'] = $API->testmethod('Site.GetList');
         }
 
 
-        if (in_array('one_operator',$actions)) {
-            $one_operator = $API->testmethod('Operator.ChatStat', [
+
+        // Получим статистику выбранного оператора
+        if (in_array('oneOperator',$actions)) {
+            $oneOperator = $API->testmethod('Operator.ChatStat', [
                 'date_begin' => $this->date_begin,
                 'date_end' => $this->date_end,
                 'operator_id' => $this->operId,
                 'site_id' => $this->siteId,
             ]);
-            $this->l($one_operator, 'one operator');
+
+            if ($oneOperator)
+                $content['oneOperator'] = $oneOperator;
+
+            $this->l($oneOperator, 'oneOperator'); // Временный метод, используется для вывода отладочной инфы
         }
 
 
@@ -193,23 +199,31 @@ class StatisticsAction {
 
 
     // for sidebar menu BEGIN
-
+    /*
+     * Методы для работы с меню статистики (отображается в правом сайдбаре)
+     */
     public function addMenu($name, $link){
         if (!empty($name))
             if (!empty($link))
-                $this->aside_menu[] = ['name' => $name, 'link' => $link ];
+                return $this->aside_menu[] = ['name' => $name, 'link' => $link ];
+
+        return false;
     }
 
     public function setMenu($name, $link){
         if (!empty($name))
             if (!empty($link))
-                $this->aside_menu[$name] = $link;
+                return  $this->aside_menu[$name] = $link;
+
+        return false;
     }
 
     public function getMenu($name){
         if (!empty($name))
             if ( isset( $this->aside_menu[$name] ) )
                 return $this->aside_menu[$name];
+
+        return false;
     }
 
     // for sidebar menu END
@@ -217,7 +231,7 @@ class StatisticsAction {
 
 
 
-    // temporal log, debug function
+    // Временный метод, используется для вывода отладочной инфы
     private function l(&$var, $name = null){
         if ($name) {
             try{
@@ -241,6 +255,10 @@ class StatisticsAction {
 
 
 
+    /*
+     * Обнулим/переопределим некоторые ненужные на странице статистики функции из родительского класса,
+     * чтобы немного быстрее страница грузилась
+     */
     public function slotMainMenu() { return ''; }
     public function slotUserbar() { return ''; }
     public function slotMyThings() { return ''; }
