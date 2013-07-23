@@ -127,7 +127,6 @@
     </div><!--/widget delivery -->
 
     <?//= $helper->render('product/__warranty', ['product' => $product]) ?>
-
     <?//= $helper->render('product/__service', ['product' => $product]) ?>
 </div><!--/right section -->
 
