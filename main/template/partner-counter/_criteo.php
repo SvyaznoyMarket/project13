@@ -31,7 +31,7 @@
             );
 
 
-            /* // example:
+            <? /* // example:
             { event: "setAccount", account: 10442 },
             { event: "setCustomerId", id: " $userId" },
             { event: "setSiteType", type: "m for mobile or t for tablet or d for desktop" },
