@@ -5,7 +5,7 @@ return function(
 ) {
     if (!\App::config()->adFox['enabled']) return '';
 
-    $id = 'adfox400';
+    $adfox220 = 'adfox400';
     if ($product->getLabel()) {
         switch ($product->getLabel()->getId()) {
             case \Model\Product\Label\Entity::LABEL_PROMO:
@@ -21,6 +21,8 @@ return function(
     }
 ?>
 
-<div id="<?= $id ?>" class="bAwardSection"></div>
+<? if (\App::config()->adFox['enabled']): ?>
+    <div class="adfoxWrapper" id="<?= $adfox220 ?>"></div>
+<? endif ?>
 
 <? };
