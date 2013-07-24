@@ -417,6 +417,10 @@ return [
         'pattern' => '/private/orders/{orderNumber}/bill',
         'action'  => ['Order\BillAction', 'execute'],
     ],
+    'order.clearPaymentUrl' => [
+        'pattern' => '/orders/clearPaymentUrl',
+        'action'  => ['Order\Action', 'clearPaymentUrl'],
+    ],
 
     // услуги
     'service' => [

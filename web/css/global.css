@@ -6991,7 +6991,8 @@
     line-height: 33px;
     z-index: 3;
   }
-  .phonePH #order_recipient_phonenumbers {
+  .phonePH #order_recipient_phonenumbers,
+  .phonePH #qiwi_phone {
     -moz-opacity: 0.8;
     -khtml-opacity: 0.8;
     -webkit-opacity: 0.8;
@@ -7003,6 +7004,13 @@
     left: 0;
     padding-left: 30px;
     width: 440px;
+  }
+  .phonePH.qiwi span.placeholder {
+    font-size: 14px;
+  }
+  .phonePH.qiwi #qiwi_phone {
+    width: 230px;
+    font-size: 14px;
   }
   #addressField dd div {
     float: left;

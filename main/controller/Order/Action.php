@@ -239,12 +239,17 @@ class Action {
                 }
 
                 // сохранение заказов в ядре
-                $orderNumbers = $this->saveOrder($form, $deliveryMap, $productsForRetargeting);
+                $saveOrderResult = $this->saveOrder($form, $deliveryMap, $productsForRetargeting);
+                $orderNumbers = $saveOrderResult['orderNumbers'];
+                $paymentUrl = $saveOrderResult['paymentUrl'];
 
                 // сохранение заказов в сессии
                 \App::session()->set(self::ORDER_SESSION_NAME, array_map(function($orderNumber) use ($form) {
                     return ['number' => $orderNumber, 'phone' => $form->getMobilePhone()];
                 }, $orderNumbers));
+                // сохранение урла для редиректа в сессии
+                // \App::session()->set('paymentUrl', $paymentUrl);
+                // \App::session()->set('paymentUrl', 'http://ya.ru');
 
                 $response = new \Http\JsonResponse([
                     'success'         => true,
@@ -549,6 +554,8 @@ class Action {
 
         // TODO: удалять из сессии успешный заказ, время создания которого больше 1 часа
 
+        $paymentUrl = \App::session()->get('paymentUrl');
+
         // crossss
         if (\App::config()->crossss['enabled']) {
             try {
@@ -560,6 +567,7 @@ class Action {
             }
         }
 
+
         $page = new \View\Order\CompletePage();
         $page->setParam('form', $form);
         $page->setParam('orders', $orders);
@@ -569,6 +577,7 @@ class Action {
         $page->setParam('paymentProvider', $paymentProvider);
         $page->setParam('creditData', $creditData);
         $page->setParam('userForm', $this->getForm());
+        $page->setParam('paymentUrl', $paymentUrl);
 
         return new \Http\Response($page->show());
     }
@@ -607,6 +616,25 @@ class Action {
         return new \Http\Response($page->show());
     }
 
+
+    /**
+     * @param \Http\Request $request
+     * @return \Http\Response
+     */
+    public function clearPaymentUrl(\Http\Request $request) {
+        \App::logger()->debug('Exec ' . __METHOD__, ['order']);
+file_put_contents('/tmp/logger.txt', ">>>\n", FILE_APPEND);
+        if ($request->isMethod('post') && $request->isXmlHttpRequest()) {
+file_put_contents('/tmp/logger.txt', json_encode(\App::session()->remove('paymentUrl'))."\n", FILE_APPEND);
+            \App::session()->remove('paymentUrl');
+file_put_contents('/tmp/logger.txt', json_encode(\App::session()->remove('paymentUrl'))."\n", FILE_APPEND);
+            return new \Http\JsonResponse([
+                'success' => true,
+            ]);
+        } else {
+            throw new \Exception\NotFoundException('Request is not xml http request');
+        }
+    }
 
     /**
      * @param \View\Order\Form             $form        Валидная форма заказа
@@ -678,6 +706,9 @@ class Action {
                 'ip'                        => $request->getClientIp(),
                 'product'                   => [],
                 'service'                   => [],
+                'payment_params'            => [
+                    'qiwi_phone' => $form->getQiwiPhone(),
+                ],
             ];
 
             // станция метро
@@ -801,12 +832,15 @@ class Action {
         if ($userEntity && $userEntity->getToken()) {
             $params['token'] = $userEntity->getToken();
         }
+
         $result = \App::coreClientV2()->query('order/create-packet', $params, $data);
         if (!is_array($result)) {
             throw new \Exception(sprintf('Заказ не подтвержден. Ответ ядра: %s', json_encode($result, JSON_UNESCAPED_UNICODE)));
         }
 
+
         $orderNumbers = [];
+        $paymentUrls = [];
         foreach ($result as $orderData) {
             if (empty($orderData['number'])) {
                 \App::logger()->error(sprintf('Ошибка при создании заказа %s', json_encode($orderData, JSON_UNESCAPED_UNICODE)), ['order']);
@@ -815,9 +849,15 @@ class Action {
             \App::logger()->debug(sprintf('Заказ %s успешно создан %s', $orderData['number'], json_encode($orderData, JSON_UNESCAPED_UNICODE)));
 
             $orderNumbers[] = $orderData['number'];
+
+            if (!empty($orderData['payment_url'])) {
+                $paymentUrls[] = $orderData['payment_url'];
+            }
         }
 
-        return $orderNumbers;
+        $paymentUrl = empty($paymentUrls[0]) ? null : base64_decode($paymentUrls[0]);
+
+        return ['orderNumbers' => $orderNumbers, 'paymentUrl' => $paymentUrl];
     }
 
     /**
@@ -865,6 +905,21 @@ class Action {
             }
             if (!$form->getCertificatePin()) {
                 $form->setError('cardpin', 'Укажите пин карты');
+            }
+        } else if ($form->getPaymentMethodId() && (\Model\PaymentMethod\Entity::QIWI_ID == $form->getPaymentMethodId())) {
+            // номер телефона qiwi
+            $qiwiValue = $form->getQiwiPhone();
+            $qiwiValue = trim((string)$qiwiValue);
+            $qiwiValue = preg_replace('/^\+7/', '8', $qiwiValue);
+            $qiwiValue = preg_replace('/[^\d]/', '', $qiwiValue);
+            if (10 == strlen($qiwiValue)) {
+                $qiwiValue = '8' . $qiwiValue;
+            }
+            $form->setQiwiPhone($qiwiValue);
+            if (!$form->getQiwiPhone()) {
+                $form->setError('qiwi_phone', 'Не указан мобильный телефон');
+            } else if (11 != strlen($form->getQiwiPhone())) {
+                $form->setError('qiwi_phone', 'Номер мобильного телефона должен содержать 11 цифр');
             }
         }
     }

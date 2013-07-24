@@ -435,13 +435,22 @@ li.bBuyingDates__eRight{
     line-height: 33px;
     z-index: 3;
   }
-  #order_recipient_phonenumbers{
+  #order_recipient_phonenumbers, #qiwi_phone {
     .opacity(0.8);
     filter: alpha(opacity=80);
     position: absolute;
     left:0;
     padding-left: 30px;
     width: 440px;
+  }
+  &.qiwi{
+    span.placeholder{
+      font-size: 14px;
+    }
+    #qiwi_phone {
+      width: 230px;
+      font-size: 14px;
+    }
   }
 }
 #addressField{

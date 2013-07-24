@@ -39,18 +39,30 @@ $isOrderAnalytics = isset($isOrderAnalytics) ? $isOrderAnalytics : true;
 
     <p class="font16">Сумма заказа: <?= $page->helper->formatPrice($order->getSum()) ?> <span class="rubl">p</span></p>
     <p class="font16">Сумма для оплаты: <span id="paymentWithCard"><?= $page->helper->formatPrice($order->getPaySum()) ?></span> <span class="rubl">p</span></p>
-    <div class="line pb15"></div>
 
-    <?= $page->tryRender('order/partner-counter/_flocktory-complete', ['order' => $order, 'userForm' => $userForm]) ?>
+    <div class="line pb15"></div>
 <?php endforeach ?>
 
-<?= $page->render('partner-counter/_get4click', ['order' => $order, 'form' => $form] ) ?>
 
 <? if ($isCorporative): ?>
     <div class="mt32">
         В ближайшее время мы оповестим вас о выставлении счета в <strong><a href="<?= $page->url('user.order') ?>">личном кабинете</a></strong>.
     </div>
 <? endif ?>
+
+<? if ($paymentProvider || $paymentUrl): ?>
+    <p>Через <span class="timer">5</span> сек. мы автоматически перенаправим Вас на страницу оплаты, если этого не произойдет, пожалуйста, нажмите на кнопку "Оплатить заказ".</p>
+    <div class="pt10">
+        <?= $page->render('order/form-payment', ['provider' => $paymentProvider, 'order' => reset($orders), 'paymentUrl' => $paymentUrl]) ?>
+    </div>
+<? else: ?>
+    <?= $page->render('partner-counter/_get4click', ['order' => $order, 'form' => $form] ) ?>
+    <?= $page->tryRender('order/partner-counter/_flocktory-complete', ['order' => $order, 'userForm' => $userForm]) ?>
+    <div class="mt32" style="text-align: center">
+        <a class='bBigOrangeButton' href="<?= $page->url('homepage') ?>">Продолжить покупки</a>
+    </div>
+<? endif ?>
+
 
 <? // if (!$isCredit && !$isCorporative): ?>
 <div class="mt32 clearfix socnet-ico-box">
@@ -66,16 +78,6 @@ $isOrderAnalytics = isset($isOrderAnalytics) ? $isOrderAnalytics : true;
 </div>
 <? // endif ?>
 
-<? if ($paymentProvider): ?>
-    <p>Через <span class="timer">5</span> сек. мы автоматически перенаправим Вас на страницу оплаты, если этого не произойдет, пожалуйста, нажмите на кнопку "Оплатить заказ".</p>
-    <div class="pt10">
-        <?= $page->render('order/form-payment', array('provider' => $paymentProvider, 'order' => reset($orders))) ?>
-    </div>
-<? else: ?>
-    <div class="mt32" style="text-align: center">
-        <a class='bBigOrangeButton' href="<?= $page->url('homepage') ?>">Продолжить покупки</a>
-    </div>
-<? endif ?>
 
 <? if ($isCredit): ?>
     <div id="credit-widget" data-value="<?= $page->json($creditData) ?>"></div>
@@ -102,8 +104,8 @@ $isOrderAnalytics = isset($isOrderAnalytics) ? $isOrderAnalytics : true;
     <? endforeach ?>
 <? endif ?>
 
-
 <?= $page->tryRender('order/partner-counter/_complete', [
     'orders'       => $orders,
     'productsById' => $productsById,
 ]) ?>
+

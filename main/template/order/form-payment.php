@@ -11,4 +11,6 @@
     <?= $page->render('order/payment/form-psb', array('provider' => $provider, 'order' => $order)) ?>
 <? elseif ($provider instanceof \Payment\PsbInvoice\Provider): ?>
     <?= $page->render('order/payment/form-psbInvoice', array('provider' => $provider, 'order' => $order)) ?>
+<? elseif ($paymentUrl): ?>
+    <?= $page->render('order/payment/form-paymentUrl', array('paymentUrl' => $paymentUrl)) ?>
 <? endif ?>

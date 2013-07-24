@@ -275,6 +275,7 @@ $(document).ready(function(){
 				$('#order_recipient_first_name').val( response.data.user.first_name );
 				$('#order_recipient_last_name').val( response.data.user.last_name );
 				$('#order_recipient_phonenumbers').val( response.data.user.mobile_phone.slice(1) );
+				$('#qiwi_phone').val( response.data.user.mobile_phone.slice(1) );
 			}
 		};
 

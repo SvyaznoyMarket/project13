@@ -4,6 +4,7 @@ namespace Model\PaymentMethod;
 
 class Entity {
     const CERTIFICATE_ID = 10;
+    const QIWI_ID = 11;
 
     /** @var int */
     private $id;
@@ -120,4 +121,12 @@ class Entity {
     public function isCertificate() {
         return self::CERTIFICATE_ID == $this->id;
     }
+
+    /**
+     * @return bool
+     */
+    public function isQiwi() {
+        return self::QIWI_ID == $this->id;
+    }
+
 }

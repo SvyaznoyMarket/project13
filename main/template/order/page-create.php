@@ -23,6 +23,8 @@ $jsValidator = array('order[recipient_first_name]' => 'Заполните пол
 if ($form->hasSubway()) $jsValidator['order[address_metro]'] = 'Укажите ближайшее метро';
 ?>
 
+<h1><?= \App::router()->generate('order.complete') ?></h1>
+
 <!-- Header -->
 <div class='bBuyingHead'>
     <a href="<?= $page->url('homepage') ?>"></a>
@@ -224,6 +226,21 @@ if ($form->hasSubway()) $jsValidator['order[address_metro]'] = 'Укажите �
                             <div id="sertificateFields">
                                 <input name="order[cardnumber]" type="text" class="bBuyingLine__eText cardNumber" placeholder="Номер" />
                                 <input name="order[cardpin]" type="text" class="bBuyingLine__eText cardPin" placeholder="ПИН" />
+                            </div>
+                            <div id="processing"></div>
+                        </div>
+                        <?php } else if ($paymentMethod->isQiwi()) { ?>
+                        <div class="orderFinal__qiwi hidden innerType">
+                            <script type="text/html" id="processBlock">
+                                <div class="process">
+                                    <div class="img <%=typeNum%>"></div>
+                                    <p><%=text%></p>
+                                    <div class="clear"></div>
+                                </div>
+                            </script>
+                            <div class="phonePH qiwi">
+                                <span class="placeholder">+7</span> 
+                                <input id="qiwi_phone" class="bBuyingLine__eText mInputLong" name="order[qiwi_phone]" value="<?= $form->getMobilePhone() ?>">
                             </div>
                             <div id="processing"></div>
                         </div>
