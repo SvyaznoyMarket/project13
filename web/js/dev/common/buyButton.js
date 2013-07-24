@@ -197,10 +197,12 @@
 			s = s.replace(/!\[rnd\]/, Math.round(Math.random()*9999999)) + '&tail256=' + escape(d.referrer || 'unknown');
 			i.style.position = 'absolute';
 			i.style.width = i.style.height = '0px';
+			
 			i.onload = i.onerror = function(){
 				b.removeChild(i);
 				i = b = null;
-			}
+			};
+
 			i.src = s;
 			b.insertBefore(i, b.firstChild);
 		},

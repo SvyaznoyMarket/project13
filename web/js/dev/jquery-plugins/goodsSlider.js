@@ -165,7 +165,7 @@
 				reWidthSlider( item );
 			}
 
-			if (sliderParams. url) {
+			if ( sliderParams.url !== null ) {
 				$.ajax({
 					type: 'GET',
 					url: sliderParams.url,

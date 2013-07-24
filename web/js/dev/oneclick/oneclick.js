@@ -203,14 +203,14 @@ $(document).ready(function() {
 				return false;
 			};
 
-			var kissAnalitycs = function(){
+			var kissAnalitycs = function kissAnalitycs() {
 				var toKISS_set = {
 					'Checkout Step 1 SKU Quantity':self.quantity() * 1,
 					'Checkout Step 1 SKU Total':self.price * self.quantity() * 1,
-					'Checkout Step 1 Order Total':self.price * self.quantity() * 1 + self.chosenDlvr().price * 1,
+					'Checkout Step 1 Order Total':self.price * self.quantity() * 1 + self.chosenDlvr().price * 1
 				};
 
-				if (typeof(_kmq) !== 'undefined'){
+				if ( typeof(_kmq) !== 'undefined' ) {
 					_kmq.push(['set',toKISS_set]);
 				}
 			};
