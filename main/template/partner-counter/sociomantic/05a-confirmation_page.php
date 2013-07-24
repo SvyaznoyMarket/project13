@@ -1,7 +1,11 @@
 ﻿<?
 /**
  * from /main/view/DefaultLayout.php
+ * var $smantic Views\Sociomantic
  **/
+
+$region_id = \App::user()->getRegion()->getId();
+
 ?>
 <script type="text/javascript">
     var sonar_basket = {
@@ -14,8 +18,8 @@
                 $orderSum += $order->getPaySum();
                 $i++; if ($i>1) $orderNumber .= ', '; // $orders не может быть полноценным массивом и иметь несколько номеров заказов, но всё же
                 $orderNumber .= $order->getNumber();
-                foreach ($order->getProduct() as $orderProduct) {
-                    echo "{ identifier: '".$orderProduct->getId()."', amount: ".$orderProduct->getPrice().", currency: 'RUB', quantity: ".$orderProduct->getQuantity()." }";
+                foreach ($order->getProduct() as $prod) {
+                    echo "{ identifier: '" . $smantic->resetProductId( $prod ) . "', amount: ".$prod->getPrice().", currency: 'RUB', quantity: ".$prod->getQuantity()." }";
                     /* example:
                     { identifier: '461-1177', amount: 4990.00, currency: 'RUB', quantity: 1 },
                     { identifier: '452-9682', amount: 23990.00, currency: 'RUB', quantity: 1 }
@@ -30,16 +34,4 @@
         currency: 'RUB'
     };
 
-</script>
-
-<script type="text/javascript">
-    (function () {
-        var s = document.createElement('script');
-        var x = document.getElementsByTagName('script')[0];
-        s.type = 'text/javascript';
-        s.async = true;
-        s.src = ('https:' == document.location.protocol ? 'https://' : 'http://')
-            + 'eu-sonar.sociomantic.com/js/2010-07-01/adpan/enter-ru';
-        x.parentNode.insertBefore(s, x);
-    })();
 </script>
