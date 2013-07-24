@@ -2976,11 +2976,11 @@
   .bMainMenuLevel-1 {
     position: relative;
     display: table;
-    dt-display: table;
     float: left;
     width: 810px;
     z-index: 998;
     behavior: url("/css/common/display-table.min.htc");
+    dt-display: table;
   }
   .bMainMenuLevel-1__eItem {
     display: table-cell;
@@ -2988,7 +2988,6 @@
     vertical-align: middle;
     z-index: 999;
     -dt-display: table-cell;
-    *display: inline;
   }
   .bMainMenuLevel-1__eItem.bMainMenuLevel-1__eSeparator {
     background: url('/css/header/img/headerSeparator.gif') no-repeat center center;
@@ -9844,6 +9843,10 @@
     margin: 5px 0 10px;
     cursor: pointer;
   }
+  .bProductSection .bTags {
+    margin: 0 0 0 10px;
+    font-size: 11px;
+  }
   .bProductSection .bDescSelectItem {
     border: 1px solid #c7c7c7;
     -webkit-border-radius: 5px;
@@ -10165,7 +10168,7 @@
     padding-left: 0;
   }
   .bBreadCrumbsBottom {
-    margin: 0 10px 20px;
+    margin: 0 10px 0;
   }
 }
 /*---END---СТИЛИ НОВОЙ КАРТОЧКИ ТОВАРА---*/
