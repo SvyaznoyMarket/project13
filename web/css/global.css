@@ -10233,10 +10233,13 @@
     width: 600px;
     padding: 3px 3px 0;
     height: 246px;
+    position: relative;
   }
   .bSliderAction__eList {
     width: 5000px;
     position: relative;
+    overflow: hidden;
+    height: 225px;
   }
   .bSliderAction__eList .reviewSection__star {
     float: none;
