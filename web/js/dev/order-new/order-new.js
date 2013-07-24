@@ -343,7 +343,6 @@ $(document).ready(function() {
 
     /* ---------------------------------------------------------------------------------------- */
     /* KNOCKOUT STUFF, MVVM PATTERN */
-
     var Model = $('#order-delivery_map-data').data('value')
     // Check Consistency TODO
 
@@ -750,12 +749,11 @@ $(document).ready(function() {
         }
 
         self.selectShop = function( d ) {
-
             if( self.step2() ) {
                 /* Select Shop in Box */
                 var newboxes = [{ shop: self.chosenBox().token.replace('self_','') , items: [] }, { shop: d.id , items: [] } ]
                 // remove items, which has picked shop
-                upi:			for( var item=0, boxitems=self.chosenBox().itemList(); item < boxitems.length;  ) { //TODO refact
+upi:			for( var item = 0, boxitems = self.chosenBox().itemList(); item < boxitems.length;  ) { //TODO refact
                     for( var dl in boxitems[item].deliveries ){
                         if( dl === 'self_'+d.id ) {
                             newboxes[1].items.push( boxitems[item].token )
@@ -767,8 +765,7 @@ $(document).ready(function() {
                     self.chosenBox().itemList.remove( boxitems[item] )
                     item++
                 }
-
-// console.info( newboxes )							
+						
                 // create new box for such items and for old box
                 for( var nbox in newboxes ) {
                     if( newboxes[nbox].items.length > 0 ) {
@@ -780,22 +777,28 @@ $(document).ready(function() {
                 if( ! self.chosenBox().itemList().length ) // always
                     self.dlvrBoxes.remove( self.chosenBox() )
 
-            } else {
+            }
+            else {
                 /* Select Shop at Zero Step */
                 // pushing into box items which have selected shop
-                var selectedShopBoxShops = [ { shop: d.id, items: [] } ]
+                var selectedShopBoxShops = [ { shop: d.id, items: [] } ];
 
                 for( var box in self.dlvrBoxes() ) {
-                    var procBox = self.dlvrBoxes()[box]
-                    for( var item =0; item < procBox.itemList().length;  ) {
-                        if( 'self_'+d.id in procBox.itemList()[item].deliveries ) {
-                            if( procBox.itemList()[item].deliveries['self_'+d.id].dates.length > 1 )
-                                selectedShopBoxShops[0].items.push( procBox.itemList()[item].token )
-                            else // items which are 'one day' reserve-only
-                                selectedShopBoxShops.push( { shop: d.id, items: [ procBox.itemList()[item].token ] } )
+                    var procBox = self.dlvrBoxes()[box];
+
+                    for ( var item = 0; item < procBox.itemList().length; ) {
+                        if ( 'self_'+d.id in procBox.itemList()[item].deliveries ) {
+                            // if ( procBox.itemList()[item].deliveries['self_'+d.id].dates.length > 1 ) {
+                                selectedShopBoxShops[0].items.push( procBox.itemList()[item].token );
+                            // }
+                            // else { // items which are 'one day' reserve-only
+                                    // selectedShopBoxShops.push( { shop: d.id, items: [ procBox.itemList()[item].token ] } );
+                            // }
                             procBox.itemList.remove( procBox.itemList()[item] )
-                        } else
-                            item++
+                        }
+                        else {
+                            item++;
+                        }
                     }
                 }
 // console.info(selectedShopBoxShops)

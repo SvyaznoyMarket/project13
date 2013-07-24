@@ -106,6 +106,8 @@ $c->abtest['test']       = [
 
 $c->product['lowerPriceNotification'] = true;
 
+$c->product['allowBuyOnlyInshop'] = true;
+
 $c->requestMainMenu = false;
 
 return $c;

@@ -471,6 +471,31 @@ $.ajaxSetup({
 			}
 		},
 
+		/**
+		 * Soloway аналитика добавления в корзину
+		 */
+		adAdriver = function adAdriver( data ) {
+			var productData = data.product,
+				offer_id = productData.id,
+				category_id = productData.category[productData.category.length-1].id;
+
+
+			var s = 'http://ad.adriver.ru/cgi-bin/rle.cgi?sid=182615&sz=add_basket&custom=10='+offer_id+';11='+category_id+'&bt=55&pz=0&rnd=![rnd]',
+				d = document,
+				i = d.createElement('IMG'),
+				b = d.body;
+
+			s = s.replace(/!\[rnd\]/, Math.round(Math.random()*9999999)) + '&tail256=' + escape(d.referrer || 'unknown');
+			i.style.position = 'absolute';
+			i.style.width = i.style.height = '0px';
+			i.onload = i.onerror = function(){
+				b.removeChild(i);
+				i = b = null;
+			}
+			i.src = s;
+			b.insertBefore(i, b.firstChild);
+		},
+
 
 		/**
 		 * Обработка покупки, парсинг данных от сервера, запуск аналитики
@@ -493,6 +518,7 @@ $.ajaxSetup({
 			kissAnalytics(data);
 			googleAnalytics(data);
 			myThingsAnalytics(data);
+			adAdriver(data);
 
 			if ( !blackBox ) {
 				return false;
@@ -703,40 +729,6 @@ $(document).ready(function(){
 	});
 
 
-
-	var sendAnalytics = function(item) {
-		if (typeof(MyThings) != "undefined") {
-			//matches = item.match("\/cart\/add\/(\\d+)/_quantity")
-			if (item.data('product') != "undefined") {
-			//    productId = matches[1]
-
-				MyThings.Track({
-					EventType: MyThings.Event.Visit,
-					Action: "1013",
-					ProductId: item.data('product')
-				})
-			}
-		}
-
-		if (($('#adriverProduct').length || $('#adriverCommon').length) && (item.data('product') != "undefined")){
-			 (function(s){
-				var d = document, i = d.createElement('IMG'), b = d.body;
-				s = s.replace(/![rnd]/, Math.round(Math.random()*9999999)) + '&tail256=' + escape(d.referrer || 'unknown');
-				i.style.position = 'absolute'; i.style.width = i.style.height = '0px';
-				i.onload = i.onerror = function()
-				{b.removeChild(i); i = b = null}
-				i.src = s;
-				b.insertBefore(i, b.firstChild);
-			})('http://ad.adriver.ru/cgi-bin/rle.cgi?sid=182615&sz=add_basket&custom=10='+item.data('product')+';11='+item.data('category')+'&bt=55&pz=0&rnd=![rnd]');
-		}
-	};
-
-
-	// analytics HAS YOU
-	if( 'ANALYTICS' in window ) {
-		PubSub.subscribe( 'productBought', function() {
-		})
-	}
 
 	/**
 	 * KISS view category
