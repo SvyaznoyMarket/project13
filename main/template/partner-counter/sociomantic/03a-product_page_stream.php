@@ -1,6 +1,7 @@
 ﻿<?
 /**
  * var $product Model\Product\Entity
+ * var $smantic Views\Sociomantic
  * var $prod_cats string // [ 'Малая бытовая техника для кухни',  'Холодильники и морозильники' ]
  * from /main/view/DefaultLayout.php
  **/
@@ -13,26 +14,11 @@ if ($product instanceof \Model\Product\Entity) {
     $region_id = \App::user()->getRegion()->getId();
 
     $photo = null;
-    $tmp = $product->getPhoto();
-
-    if (is_array($tmp)) {
-        reset($tmp);
-        $tmp = current($tmp);
-    }
-
-    if ($tmp) {
-        $tmp = $tmp->getUrl(2);
-        if ($tmp) $photo = $tmp;
-    }
-
-    //$photo = $product->getPhoto()[0]->getUrl(2);
+    $tmp = $product->getImageUrl(4);
+    if ($tmp) $photo = $tmp;
 
     $brand = $product->getBrand() ? $product->getBrand()->getName() : null;
-
-    $scr_product['identifier'] = (string) $product->getId();
-    if ( $product->getTypeId() ) $scr_product['identifier'] .= '-'.$product->getTypeId();
-    if ( $region_id ) $scr_product['identifier'] .= '_'.$region_id;
-
+    $scr_product['identifier'] = $smantic->resetProductId($product);
     $scr_product['fn'] = $product->getWebName();
     $scr_product['category'] = $prod_cats;
     $scr_product['description'] = $product->getTagline();
@@ -54,8 +40,7 @@ var sonar_product = { <?
             $i++;
             if ($i>1) echo ","; // считаем, что identifier полуюбому существует у продукта, иначе запятая будет не в тему
             echo PHP_EOL;
-            $value = str_replace("'",'"',$value);
-            echo $key.": '".$value."'" ;
+            echo $key.": " . $smantic->wrapEscapeQuotes($value);
         endif;
     endforeach;
     echo PHP_EOL;
@@ -64,9 +49,9 @@ var sonar_product = { <?
 </script>
 <?
 endif;
-/* <!--
+/* example: <!--
 <script type="text/javascript">
-    var product = {
+    var sonar_product = {
         identifier: '<?= $product->getTypeId(); ?>',
         fn: '<?= $product->getWebName() //getPrefix ? ?>',
         category: <?= $prod_cats ?>,
@@ -80,16 +65,4 @@ endif;
     };
 </script>
 --> */
-
 ?>
-<script type="text/javascript">
-    (function () {
-        var s = document.createElement('script');
-        var x = document.getElementsByTagName('script')[0];
-        s.type = 'text/javascript';
-        s.async = true;
-        s.src = ('https:' == document.location.protocol ? 'https://' : 'http://')
-            + 'eu-sonar.sociomantic.com/js/2010-07-01/adpan/enter-ru';
-        x.parentNode.insertBefore(s, x);
-    })();
-</script>
