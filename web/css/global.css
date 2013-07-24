@@ -9001,7 +9001,7 @@
     margin: 0 auto 0 -470px;
     position: fixed;
     width: 940px;
-    z-index: 200;
+    z-index: 1001;
     -webkit-box-shadow: 0 0 3px 1px #a6a6a6;
     -moz-box-shadow: 0 0 3px 1px #a6a6a6;
     box-shadow: 0 0 3px 1px #a6a6a6;
