@@ -313,46 +313,50 @@ $(document).ready(function() {
     PubSub.subscribe( 'DeliveryChanged', function( m, data ) {
         // $('#dlvrTypes .selectShop').show()
 
-        if( data.type === 'courier') {
-            $('#order-submit').removeClass('disable')
-            $('#order-form').show()
-            $('#addressField').show()
-        } else {
-            $('#addressField').hide()
-            $('#order-form').hide()
-            $('#order-submit').addClass('disable')
+        if ( data.type === 'courier') {
+            $('#order-submit').removeClass('disable');
+            $('#order-form').show();
+            $('#addressField').show();
         }
+        else {
+            $('#addressField').hide();
+            $('#order-form').hide();
+            $('#order-submit').addClass('disable');
+        }
+
         if( data.boxQuantity > 1 ) {
             // block payment options
-            $('#payTypes > div').hide()
-            $('#payment_method_1-field').show()
-            $('#payment_method_2-field').show()
-        } else {
-            $('#payTypes > div').show()
+            $('#payTypes > div').hide();
+            $('#payment_method_1-field').show();
+            $('#payment_method_2-field').show();
+        }
+        else {
+            $('#payTypes > div').show();
             // $('#payment_method_5-field').show()
             // $('#payment_method_6-field').show()
         }
 
-    })
+    });
 
     PubSub.subscribe( 'ShopSelected', function( m, data ) {
         $('#orderMapPopup').trigger('close')
         $('#order-form').show()
         $('#order-submit').removeClass('disable')
-    })
+    });
 
     /* ---------------------------------------------------------------------------------------- */
     /* KNOCKOUT STUFF, MVVM PATTERN */
-    var Model = $('#order-delivery_map-data').data('value')
+    var Model = $('#order-delivery_map-data').data('value');
     // Check Consistency TODO
 
     // analitycs
-    var items_num = 0
-    var price = 0
-    var totalPrice = 0
-    var totalQuan = 0
-    var f1total = 0
-    var warrTotal = 0
+    var items_num = 0;
+    var price = 0;
+    var totalPrice = 0;
+    var totalQuan = 0;
+    var f1total = 0;
+    var warrTotal = 0;
+
     $.each(Model.items, function(i, product){
         items_num += product.quantity
         price += product.price
@@ -360,7 +364,8 @@ $(document).ready(function() {
         totalQuan += product.quantity
         f1total += product.serviceQ
         warrTotal += product.warrantyQ
-    })
+    });
+
     var toKISS = {
         'Checkout Step 1 SKU Quantity':totalQuan,
         'Checkout Step 1 SKU Total':price,
@@ -368,17 +373,18 @@ $(document).ready(function() {
         'Checkout Step 1 Warranty Quantity':warrTotal,
         'Checkout Step 1 F1 Total':totalPrice - price,
         'Checkout Step 1 Order Total':totalPrice,
-        'Checkout Step 1 Order Type':'cart order',
-    }
-    if (typeof(_gaq) !== 'undefined') {
+        'Checkout Step 1 Order Type':'cart order'
+    };
+
+    if ( typeof(_gaq) !== 'undefined' ) {
         _gaq.push(['_trackEvent', 'New order', 'Items', items_num]);
     }
-    if (typeof(_kmq) !== 'undefined') {
+    if ( typeof(_kmq) !== 'undefined' ) {
         _kmq.push(['record', 'Checkout Step 1', toKISS])
     }
 
     function OrderModel() {
-        var self = this
+        var self = this;
 
         function thereIsExactPropertie( list, propertie, value ) {
             for(var ind=0, le = list.length; ind<le; ind++) {
@@ -647,31 +653,36 @@ $(document).ready(function() {
             $.get( d.deleteUrl, function(){
                 // Analitycs
 
-                toKISS_del = {
+                var toKISS_del = {
                     'Checkout Step 1 SKU Quantity':d.quantity,
                     'Checkout Step 1 SKU Total':d.price,
                     'Checkout Step 1 F1 Quantity':d.serviceQ,
                     'Checkout Step 1 Warranty Quantity':d.warrantyQ,
                     'Checkout Step 1 F1 Total':d.total - d.price,
-                    'Checkout Step 1 Order Total':box.totalPrice() - d.total,
+                    'Checkout Step 1 Order Total':box.totalPrice() - d.total
+                };
+
+                if ( typeof(_kmq) !== 'undefined' ) {
+                    _kmq.push(['set', toKISS_del]);
                 }
 
-                if (typeof(_kmq) !== 'undefined'){
-                    _kmq.push(['set', toKISS_del])
-                }
-                if (typeof(_gaq) !== 'undefined'){
-                    _gaq.push(['_trackEvent', 'Order card', 'Item deleted'])
+                if ( typeof(_gaq) !== 'undefined' ) {
+                    _gaq.push(['_trackEvent', 'Order card', 'Item deleted']);
                 }
                 // drop from box
-                box.itemList.remove( d )
-                if( !box.itemList().length )
-                    self.dlvrBoxes.remove( box )
-                l2:			for(var i in Model.deliveryTypes) {
-                    var tmpDlvr = Model.deliveryTypes[i]
-                    for(var j=0, l=tmpDlvr.items.length; j<l; j++) {
-                        if( tmpDlvr.items[j] === d.token ) {
-                            tmpDlvr.items.splice( j, 1 )
-                            break l2
+                box.itemList.remove( d );
+
+                if ( !box.itemList().length ) {
+                    self.dlvrBoxes.remove( box );
+                }
+
+    l2:			for ( var i in Model.deliveryTypes ) {
+                    var tmpDlvr = Model.deliveryTypes[i];
+
+                    for ( var j=0, l=tmpDlvr.items.length; j<l; j++) {
+                        if ( tmpDlvr.items[j] === d.token ) {
+                            tmpDlvr.items.splice( j, 1 );
+                            break l2;
                         }
                     }
                 }
@@ -679,7 +690,7 @@ $(document).ready(function() {
                 // check if no items in boxes
                 if( !self.dlvrBoxes().length ) {
                     // refresh page -> server redirect to empty cart
-                    document.location.reload()
+                    document.location.reload();
                 }
 
             } )
@@ -1188,9 +1199,10 @@ upi:			for( var item = 0, boxitems = self.chosenBox().itemList(); item < boxitem
                     warrT = 0;
                 //end of vars
 
-                for( var tkn in MVM.dlvrBoxes() ) {
+                for ( var tkn in MVM.dlvrBoxes() ) {
                     var dlvr = MVM.dlvrBoxes()[tkn];
-                    for( var i in dlvr.itemList() ){
+
+                    for ( var i in dlvr.itemList() ) {
                         itemQ += dlvr.itemList()[i].quantity;
                         itemT += dlvr.itemList()[i].price;
                         servQ += dlvr.itemList()[i].serviceQ;
@@ -1213,22 +1225,21 @@ upi:			for( var item = 0, boxitems = self.chosenBox().itemList(); item < boxitem
                     'Checkout Complete Order Total':MVM.totalSum(),
                     'Checkout Complete Order Type':'cart order',
                     'Checkout Complete Delivery':nowDelivery,
-                    'Checkout Complete Payment':data.paymentMethodId,
+                    'Checkout Complete Payment':data.paymentMethodId
                 };
 
-                if ((typeof(_kmq) !== 'undefined') && (KM !== 'undefined')) {
+                if ( (typeof(_kmq) !== 'undefined') && (KM !== 'undefined') ) {
                     _kmq.push(['alias', phoneNumber, KM.i()]);
                     _kmq.push(['alias', emailVal, KM.i()]);
                     _kmq.push(['identify', phoneNumber]);
                     _kmq.push(['record', 'Checkout Complete', toKISS_complete]);
 
                     var newTkn = 0;
-                    for( newTkn in MVM.dlvrBoxes() ) {
+                    for ( newTkn in MVM.dlvrBoxes() ) {
                         var dlvr = MVM.dlvrBoxes()[newTkn];
 
-                        for( var i in dlvr.itemList() ){
-                            console.info('second loop');
-                            console.log(dlvr.itemList()[i]);
+                        for ( var i in dlvr.itemList() ) {
+                            // console.log(dlvr.itemList()[i]);
                             var toKISS_pr =  {
                                 'Checkout Complete SKU':dlvr.itemList()[i].article,
                                 'Checkout Complete SKU Quantity':dlvr.itemList()[i].quantity,
@@ -1240,9 +1251,10 @@ upi:			for( var item = 0, boxitems = self.chosenBox().itemList(); item < boxitem
                                 'Checkout Complete Parent category':dlvr.itemList()[i].parent_category,
                                 'Checkout Complete Category name':dlvr.itemList()[i].category,
                                 '_t':KM.ts() + newTkn + i  ,
-                                '_d':1,
+                                '_d':1
                             };
-                            _kmq.push(['set', toKISS_pr])
+
+                            _kmq.push(['set', toKISS_pr]);
                         }
                     }
                 }
