@@ -1,5 +1,5 @@
 <?php
-namespace View;
+namespace View\Partners;
 
 class Sociomantic
 {
@@ -78,7 +78,7 @@ class Sociomantic
 
         if ($this->region_id) $id .= '_' . $this->region_id;
         //}
-        return $id;
+        return $id ?: 0;
     }
 
 

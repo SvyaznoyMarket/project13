@@ -468,7 +468,7 @@ class DefaultLayout extends Layout {
         $routeName = \App::request()->attributes->get('route');
         $breadcrumbs = $this->getParam('breadcrumbs');
         $region_id = \App::user()->getRegion()->getId();
-        $smantic = new \View\Sociomantic( $region_id );
+        $smantic = new \View\Partners\Sociomantic( $region_id );
 
         $return = $this->render($smantic_path.'01-homepage'); // default, для всех страниц
 
