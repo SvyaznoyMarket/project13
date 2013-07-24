@@ -12,7 +12,7 @@ $category = $product->getParentCategory();
 ?>
 
 <? if ((bool)$tags || ($brand && $brand->getToken() && $category)): ?>
-    <div class="tag-section pb25">
+    <div class="bTags pb25">
         <strong>Теги:</strong>
         <? if ($brand && $brand->getToken() && $category): ?>
             <a href="<?= $page->url('product.category.brand', ['categoryPath' => $category->getPath(), 'brandToken' => $brand->getToken()]) ?>" class="underline"><?= $category->getName() . ' ' . $brand->getName() ?></a><? if ((bool)$tags): ?>, <? endif ?>
