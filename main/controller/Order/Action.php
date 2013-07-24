@@ -1139,7 +1139,6 @@ class Action {
                     $deliveryView->price = $deliveryData['price'];
                     $deliveryView->token = $deliveryToken;
                     $deliveryView->name = preg_match("/self\_|now\_/i",$deliveryToken) ? 'В самовывоз' : 'В доставку';
-//\App::logger()->info($deliveryToken." ---- ------- end ---------".$deliveryView->name);
                     if ('products' == $itemType && $productsEntityById[$itemData['id']] instanceof \Model\Product\BasicEntity) {
                         $deliveryView->isSupplied = $productsEntityById[$itemData['id']]->getState() ? $productsEntityById[$itemData['id']]->getState()->getIsSupplier() : false;
                     } else $deliveryView->isSupplied = false;
@@ -1164,7 +1163,6 @@ class Action {
 
                     $itemView->deliveries[$deliveryView->token] = $deliveryView;
 
-//		\App::logger()->info(print_r($itemView->deliveries,true)." ---- ------- end ---------");
                 }
                 $deliveryMapView->items[$itemView->token] = $itemView;
             }
@@ -1176,7 +1174,6 @@ class Action {
         foreach (\RepositoryManager::deliveryType()->getCollection() as $deliveryType) {
             $deliveryTypesById[$deliveryType->getId()] = $deliveryType;
         }
-//\App::logger()->info(print_r($deliveryCalcResult,true)." ---- ------- end ---------");
         foreach ($deliveryCalcResult['possible_deliveries'] as $deliveryTypeToken => $itemData) {
             $itemData['mode_id'] = (int)$itemData['mode_id'];
 
@@ -1230,7 +1227,6 @@ class Action {
             $deliveryMapView->deliveryTypes[$deliveryTypeView->token] = $deliveryTypeView;
         }
 
-//	\App::logger()->info(print_r($deliveryMapView->deliveryTypes,true)."------ end -----");
         if (\App::config()->product['allowBuyOnlyInshop']) {
             if ((bool)$deliveryMapView->deliveryTypes) {
                 foreach ($deliveryMapView->deliveryTypes as $key => $delivery) {
@@ -1244,7 +1240,6 @@ class Action {
                 }
             }
 
-\App::logger()->info(print_r($deliveryMapView->deliveryTypes,true)."------ end -----");
             if ((bool)$deliveryMapView->items) {
                 foreach ($deliveryMapView->items as $product => $deliveries) {
                     if ((bool)$deliveries->deliveries) {
@@ -1260,7 +1255,6 @@ class Action {
 				$deliveryMapView->items[$product]->deliveries[str_replace('now_', 'self_', $token)] = $delivery;
 
 				
-				//\App::logger()->info(print_r($delivery,true)."------ end -----");
                             }
                         }
                     }
@@ -1269,9 +1263,7 @@ class Action {
         }
 
 
-\App::logger()->info(print_r($yydeliveryMapView->deliveryTypes,true)."------ end -----");
 
-\App::logger()->info(print_r($deliveryMapView->items,true)."------ end -----");
 
         foreach ($deliveryMapView->items as $itemView) {
             foreach ($itemView->deliveries as $deliveryView) {
