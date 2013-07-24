@@ -2,6 +2,7 @@
 /**
  * from /main/view/DefaultLayout.php
  * var $smantic Views\Sociomantic
+ * var $cart_prods
  **/
 
 $region_id = \App::user()->getRegion()->getId();
@@ -33,5 +34,4 @@ $region_id = \App::user()->getRegion()->getId();
         amount: <?= $orderSum; ?>,
         currency: 'RUB'
     };
-
 </script>

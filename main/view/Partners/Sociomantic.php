@@ -5,11 +5,13 @@ class Sociomantic
 {
 
     private $region_id = null;
+    public $sess;
 
 
     public function __construct($reg_id = null)
     {
         $this->region_id = $reg_id ? : \App::user()->getRegion()->getId();
+        $this->sess = \App::session();
     }
 
 
@@ -29,6 +31,7 @@ class Sociomantic
     {
         $cart_prods = [];
 
+        if ( !empty($products) and is_array($products) )
         foreach ($products as $product):
             $cartProduct = isset($cartProductsById[$product->getId()]) ? $cartProductsById[$product->getId()] : null;
             $one_prod = [];
@@ -45,8 +48,41 @@ class Sociomantic
             if (!$cartProduct) continue;
         endforeach;
 
+        $this->makeSession( $products );
+
         return $cart_prods;
     }
+
+
+    public function makeSession( $products ) {
+        $ids_arr = null;
+
+        if ( is_array($products) and !empty($products) )
+        foreach ($products as $product):
+            // $product <--> Model\Product\CartEntity
+            $id = $this->resetProductId($product);
+            $ids_arr[ $product->getId() ] = $id;
+        endforeach;
+
+        if ( is_array($ids_arr) and !empty($ids_arr)  ) return $this->setInSession( $ids_arr );
+        return false;
+    }
+
+
+
+    public function getFromSession() {
+        $ids_arr = $this->sess->get('ids_arr');
+        return $ids_arr;
+    }
+
+    public function setInSession( &$ids_arr ) {
+        if ( isset($ids_arr) ) $this->sess->set( 'ids_arr', ($ids_arr) );
+    }
+
+    public function restoreSession() {
+        return $this->sess->remove('ids_arr');
+    }
+
 
 
     public function wrapEscapeQuotes($value) {
@@ -63,21 +99,23 @@ class Sociomantic
      */
     public function resetProductId($product)
     {
-        $id = false;
-        //if ($product instanceof \Model\Product\Entity) {
-        //$id = (string)$product->getId();
-        /*
-        if ( method_exists($product, 'getTypeId') and $product->getTypeId() ) {
-            $id .= '-' . $product->getTypeId();
+        $article = null;
+        $ids_arr = $this->getFromSession();
+
+        if (   is_array($ids_arr)   and   !empty($ids_arr)   and   isset( $ids_arr[$product->getId()] )   ) {
+            return $ids_arr[$product->getId()];
         }
-        */
 
         if (method_exists($product, 'getArticle') and $product->getArticle()) {
-            $id = $product->getArticle();
+            $article = $product->getArticle();
+        }else{
+            $article = 0;
         }
 
+        $id = (string) $article;
+
         if ($this->region_id) $id .= '_' . $this->region_id;
-        //}
+
         return $id ?: 0;
     }
 
@@ -159,6 +197,5 @@ class Sociomantic
 
         return false;
     }
-
 
 }
