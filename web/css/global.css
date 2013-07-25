@@ -2230,6 +2230,7 @@
   }
   .popupRegion__eForm {
     position: relative;
+    z-index: 2;
   }
   .popupRegion .popuptitle {
     font-family: "Enter";
@@ -2284,6 +2285,9 @@
     border-bottom: 1px dotted black;
     display: inline;
     margin-left: 20px;
+  }
+  .popupRegion .cityInline .cityItem a.moreCity {
+    zoom: 1;
   }
   .popupRegion .cityInline .cityItem a.moreCity:before {
     display: inline-block;
@@ -2341,6 +2345,7 @@
     width: 820px;
     position: relative;
     display: none;
+    z-index: 1;
   }
   .popupRegion .regionSlides__inner {
     position: relative;
@@ -2354,6 +2359,10 @@
   .popupRegion .regionSlides_slide {
     float: left;
     width: 820px;
+  }
+  .popupRegion .bSelectRegionDd {
+    background: #ffffff;
+    z-index: 2;
   }
 }
 /*окно авторизации*/
