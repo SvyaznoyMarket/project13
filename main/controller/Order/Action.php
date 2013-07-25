@@ -573,6 +573,7 @@ class Action {
         $page->setParam('shopsById', $shopsById);
         $page->setParam('productsById', $productsById);
         $page->setParam('servicesById', $servicesById);
+        $page->setParam('paymentMethod', $paymentMethod);
         $page->setParam('paymentProvider', $paymentProvider);
         $page->setParam('creditData', $creditData);
         $page->setParam('userForm', $this->getForm());
@@ -615,6 +616,29 @@ class Action {
         return new \Http\Response($page->show());
     }
 
+    /**
+     * @param \Http\Request $request
+     * @return \Http\Response
+     */
+    public function paymentSuccess(\Http\Request $request) {
+        \App::logger()->debug('Exec ' . __METHOD__, ['order']);
+
+        $page = new \View\Order\PaymentSuccessPage();
+
+        return new \Http\Response($page->show());
+    }
+
+    /**
+     * @param \Http\Request $request
+     * @return \Http\Response
+     */
+    public function paymentFail(\Http\Request $request) {
+        \App::logger()->debug('Exec ' . __METHOD__, ['order']);
+
+        $page = new \View\Order\PaymentFailPage();
+
+        return new \Http\Response($page->show());
+    }
 
     /**
      * @param \Http\Request $request

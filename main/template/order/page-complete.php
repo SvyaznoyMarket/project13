@@ -50,10 +50,15 @@ $isOrderAnalytics = isset($isOrderAnalytics) ? $isOrderAnalytics : true;
     </div>
 <? endif ?>
 
-<? if ($paymentProvider || $paymentUrl): ?>
+<? if ($paymentProvider || $paymentUrl || $paymentMethod->isWebmoney()): ?>
     <p>Через <span class="timer">5</span> сек. мы автоматически перенаправим Вас на страницу оплаты, если этого не произойдет, пожалуйста, нажмите на кнопку "Оплатить заказ".</p>
     <div class="pt10">
-        <?= $page->render('order/form-payment', ['provider' => $paymentProvider, 'order' => reset($orders), 'paymentUrl' => $paymentUrl]) ?>
+        <?= $page->render('order/form-payment', [
+            'provider' => $paymentProvider,
+            'order' => reset($orders),
+            'paymentUrl' => $paymentUrl,
+            'paymentMethod' => $paymentMethod
+        ]) ?>
     </div>
 <? else: ?>
     <?= $page->render('partner-counter/_get4click', ['order' => $order, 'form' => $form] ) ?>

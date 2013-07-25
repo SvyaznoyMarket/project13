@@ -413,6 +413,14 @@ return [
         'pattern' => '/orders/payment/{orderNumber}',
         'action'  => ['Order\Action', 'paymentComplete'],
     ],
+    'order.paymentSuccess' => [
+        'pattern' => '/orders/complete_payment',
+        'action'  => ['Order\Action', 'paymentSuccess'],
+    ],
+    'order.paymentFail' => [
+        'pattern' => '/orders/fail_payment',
+        'action'  => ['Order\Action', 'paymentFail'],
+    ],
     'order.bill' => [
         'pattern' => '/private/orders/{orderNumber}/bill',
         'action'  => ['Order\BillAction', 'execute'],
