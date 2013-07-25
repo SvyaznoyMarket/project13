@@ -125,6 +125,18 @@ window.ANALYTICS = {
     //     })(document, window, "yandex_metrika_callbacks");
     // },
 
+    sociomantic : function() {
+        (function(){
+            var s   = document.createElement('script');
+            var x   = document.getElementsByTagName('script')[0];
+            s.type  = 'text/javascript';
+            s.async = true;
+            s.src   = ('https:'==document.location.protocol?'https://':'http://')
+                + 'eu-sonar.sociomantic.com/js/2010-07-01/adpan/enter-ru';
+            x.parentNode.insertBefore( s, x );
+        })();
+    },
+
     marketgidProd : function() {
         var MGDate = new Date();
         document.write('<iframe src ="http://'
