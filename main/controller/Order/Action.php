@@ -248,8 +248,7 @@ class Action {
                     return ['number' => $orderNumber, 'phone' => $form->getMobilePhone()];
                 }, $orderNumbers));
                 // сохранение урла для редиректа в сессии
-                // \App::session()->set('paymentUrl', $paymentUrl);
-                // \App::session()->set('paymentUrl', 'http://ya.ru');
+                \App::session()->set('paymentUrl', $paymentUrl);
 
                 $response = new \Http\JsonResponse([
                     'success'         => true,
@@ -623,11 +622,8 @@ class Action {
      */
     public function clearPaymentUrl(\Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__, ['order']);
-file_put_contents('/tmp/logger.txt', ">>>\n", FILE_APPEND);
         if ($request->isMethod('post') && $request->isXmlHttpRequest()) {
-file_put_contents('/tmp/logger.txt', json_encode(\App::session()->remove('paymentUrl'))."\n", FILE_APPEND);
             \App::session()->remove('paymentUrl');
-file_put_contents('/tmp/logger.txt', json_encode(\App::session()->remove('paymentUrl'))."\n", FILE_APPEND);
             return new \Http\JsonResponse([
                 'success' => true,
             ]);
@@ -837,7 +833,6 @@ file_put_contents('/tmp/logger.txt', json_encode(\App::session()->remove('paymen
         if (!is_array($result)) {
             throw new \Exception(sprintf('Заказ не подтвержден. Ответ ядра: %s', json_encode($result, JSON_UNESCAPED_UNICODE)));
         }
-
 
         $orderNumbers = [];
         $paymentUrls = [];

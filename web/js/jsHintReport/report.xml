@@ -1039,7 +1039,7 @@
 		<error line="101" column="43" severity="error" message="Missing semicolon." source="jshint.W033" />
 		<error line="102" column="29" severity="error" message="Line breaking error &apos;break&apos;." source="jshint.E022" />
 		<error line="102" column="34" severity="error" message="Missing semicolon." source="jshint.W033" />
-		<error line="102" column="34" severity="error" message="Too many errors. (25% scanned)." source="jshint.undefined" />
+		<error line="102" column="34" severity="error" message="Too many errors. (24% scanned)." source="jshint.undefined" />
 		<error line="6,7" column="0" severity="warning" message="Implied global &apos;orderAnalyticsRun&apos;" source="jshint.implied-globals" />
 		<error line="68,74,77" column="0" severity="warning" message="Implied global &apos;setProcessingStatus&apos;" source="jshint.implied-globals" />
 	</file>

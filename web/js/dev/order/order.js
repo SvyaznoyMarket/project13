@@ -284,8 +284,6 @@
             if (!j_count.length) {
                 return false
             }
-            var interval = window.setInterval(sec5run, 1000);
-            var secs = j_count.html().replace(/\D/g, '') * 1;
 
             var clearPaymentUrl = function(form) {
                 $.ajax({
@@ -299,15 +297,20 @@
 
             var sec5run = function() {
                 if (secs === 1) {
+                    clearInterval(interval);
                     if( $('form.paymentUrl').length ) {
                         clearPaymentUrl($('form.paymentUrl'));
+                        window.location = $('form.paymentUrl').attr('action');
+                    } else {
+                        $('.form').submit();
                     }
-                    clearInterval(interval);
-                    // $('.form').submit();
                 }
                 secs -= 1;
                 j_count.html(secs);
             };
+
+            var interval = window.setInterval(sec5run, 1000);
+            var secs = j_count.html().replace(/\D/g, '') * 1;
         })();
 
         /* Credit Widget */
