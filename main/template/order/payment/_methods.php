@@ -1,12 +1,11 @@
 <? foreach ($paymentMethods as $paymentMethod): ?>
-<div id="payment_method_<?= $paymentMethod->getId() ?>-field">
-    <p></p>
+<div class="bPayMethodTitle" id="payment_method_<?= $paymentMethod->getId() ?>-field">
     <label class="<? if ($paymentMethod->getId() == $selectedPaymentMethodId) echo 'mChecked' ?>" for="order_payment_method_id_<?= $paymentMethod->getId() ?>">
-        <b></b> <?= $paymentMethod->getName() ?>
+        <b></b> 
+        <div class="bLabel"><?= $paymentMethod->getName() ?></div>
         <input id="order_payment_method_id_<?= $paymentMethod->getId() ?>" class='bBuyingLine__eRadio' name="order[payment_method_id]" type='radio' value="<?= $paymentMethod->getId() ?>" <? if ($paymentMethod->getId() == $selectedPaymentMethodId) echo 'checked="checked"' ?> />
     </label>
-    <i>
-        <div><?= $paymentMethod->getDescription() // ?></div>
+        <div class="bPayMethodDesc"><?= $paymentMethod->getDescription() // ?></div>
         <? if ($paymentMethod->getIsCredit() && ($bank = reset($banks))) {  ?>
         <div class="innerType" id="creditInfo" <? if ($paymentMethod->getId() != $selectedPaymentMethodId) echo 'style="display:none"' ?> >
             <div>Выберите банк:</div>
@@ -31,7 +30,7 @@
             <div><sup>**</sup> Кредит не распространяется на услуги F1 и доставку. Сумма платежей предварительная и уточняется банком в процессе принятия кредитного решения.</div>
         </div>
         <?php } else if ($paymentMethod->isCertificate()) { ?>
-        <div class="orderFinal__certificate hidden innerType">
+        <div class="orderFinal__certificate bPayMethodAction hidden innerType">
             <script type="text/html" id="processBlock">
                 <div class="process">
                     <div class="img <%=typeNum%>"></div>
@@ -46,7 +45,7 @@
             <div id="processing"></div>
         </div>
         <?php } else if ($paymentMethod->isQiwi()) { ?>
-        <div class="orderFinal__qiwi hidden innerType">
+        <div class="orderFinal__qiwi bPayMethodAction hidden innerType">
             <script type="text/html" id="processBlock">
                 <div class="process">
                     <div class="img <%=typeNum%>"></div>
@@ -61,6 +60,5 @@
             <div id="processing"></div>
         </div>
         <?php } ?>
-    </i>
 </div>
 <?php endforeach ?>
