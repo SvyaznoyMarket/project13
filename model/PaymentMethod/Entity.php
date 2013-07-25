@@ -18,6 +18,8 @@ class Entity {
     private $isOnline;
     /** @var bool */
     private $isCorporative;
+    /** @var bool */
+    private $payOnReceipt;
 
     /**
      * @param array $data
@@ -29,6 +31,8 @@ class Entity {
         if (array_key_exists('is_credit', $data)) $this->setIsCredit($data['is_credit']);
         if (array_key_exists('is_online', $data)) $this->setIsOnline($data['is_online']);
         if (array_key_exists('is_corporative', $data)) $this->setIsCorporative($data['is_corporative']);
+        if (array_key_exists('pay_on_receipt', $data)) $this->setPayOnReceipt($data['pay_on_receipt']);
+
     }
 
     /**
@@ -127,6 +131,20 @@ class Entity {
      */
     public function isQiwi() {
         return self::QIWI_ID == $this->id;
+    }
+
+    /**
+     * @param boolean $payOnReceipt
+     */
+    public function setPayOnReceipt($payOnReceipt) {
+        $this->payOnReceipt = (bool)$payOnReceipt;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getPayOnReceipt() {
+        return $this->payOnReceipt;
     }
 
 }
