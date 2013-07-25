@@ -123,9 +123,9 @@
         <?= $helper->render('product/__oneClick', ['product' => $product]) // Покупка в один клик ?>
 
         <?= $helper->render('product/__delivery', ['product' => $product, 'shopStates' => $shopStates]) // Доставка ?>
-
-        <?= $helper->render('product/__adfox', ['product' => $product]) ?>
     </div><!--/widget delivery -->
+
+    <?= $helper->render('product/__adfox', ['product' => $product]) // Баннер Adfox ?>
 
     <?//= $helper->render('product/__warranty', ['product' => $product]) ?>
 
