@@ -1139,8 +1139,6 @@ upi:			for( var item = 0, boxitems = self.chosenBox().itemList(); item < boxitem
                     return;
                 }
 
-                Blocker.bye();
-
                 // analitycs
                 if (typeof(_gaq) !== 'undefined') {
                     for (var i in MVM.getServerModel().deliveryTypes){
@@ -1233,24 +1231,47 @@ upi:			for( var item = 0, boxitems = self.chosenBox().itemList(); item < boxitem
                     _kmq.push(['alias', emailVal, KM.i()]);
                     _kmq.push(['identify', phoneNumber]);
                     _kmq.push(['record', 'Checkout Complete', toKISS_complete]);
+                }
+                
 
-                    var newTkn = 0;
-                    for ( newTkn in MVM.dlvrBoxes() ) {
-                        var dlvr = MVM.dlvrBoxes()[newTkn];
+                var newTkn = 0;
 
-                        for ( var i in dlvr.itemList() ) {
-                            // console.log(dlvr.itemList()[i]);
+                // for sociomantic
+                // https://jira.enter.ru/browse/SITE-1475
+                window.sonar_basket = {
+                    products: [],
+                    transaction: data.orderNumber,
+                    amount: MVM.totalSum(),
+                    currency:'RUB'
+                };
+
+                for ( newTkn in MVM.dlvrBoxes() ) {
+                    var dlvr = MVM.dlvrBoxes()[newTkn];
+
+                    for ( var i in dlvr.itemList() ) {
+                        var item = dlvr.itemList()[i];
+
+                        var toSociomantic = {
+                            identifier: item.article+'_'+docCookies.getItem('geoshop'),
+                            amount: item.price,
+                            currency: 'RUB',
+                            quantity: item.quantity
+                        }
+
+                        window.sonar_basket.products.push(toSociomantic);
+
+                        if ( (typeof(_kmq) !== 'undefined') && (KM !== 'undefined') ) {
                             var toKISS_pr =  {
-                                'Checkout Complete SKU':dlvr.itemList()[i].article,
-                                'Checkout Complete SKU Quantity':dlvr.itemList()[i].quantity,
-                                'Checkout Complete SKU Price':dlvr.itemList()[i].price,
-                                'Checkout Complete F1 Quantity':dlvr.itemList()[i].serviceQ,
-                                'Checkout Complete F1 Total':dlvr.itemList()[i].serviceTotal,
-                                'Checkout Complete Warranty Quantity':dlvr.itemList()[i].warrantyQ,
-                                'Checkout Complete Warranty Total':dlvr.itemList()[i].warrantyTotal,
-                                'Checkout Complete Parent category':dlvr.itemList()[i].parent_category,
-                                'Checkout Complete Category name':dlvr.itemList()[i].category,
-                                '_t':KM.ts() + newTkn + i  ,
+                                'Checkout Complete SKU':item.article,
+                                'Checkout Complete SKU Quantity':item.quantity,
+                                'Checkout Complete SKU Price':item.price,
+                                'Checkout Complete F1 Quantity':item.serviceQ,
+                                'Checkout Complete F1 Total':item.serviceTotal,
+                                'Checkout Complete Warranty Quantity':item.warrantyQ,
+                                'Checkout Complete Warranty Total':item.warrantyTotal,
+                                'Checkout Complete Parent category':item.parent_category,
+                                'Checkout Complete Category name':item.category,
+                                '_t':KM.ts() + newTkn + i,
                                 '_d':1
                             };
 
@@ -1259,18 +1280,24 @@ upi:			for( var item = 0, boxitems = self.chosenBox().itemList(); item < boxitem
                     }
                 }
 
-                if (typeof(yaCounter10503055) !== 'undefined'){
+                if ( typeof(yaCounter10503055) !== 'undefined' ) {
                     yaCounter10503055.reachGoal('\orders\complete');
                 }
 
+                // Sociomantic
+                // https://jira.enter.ru/browse/SITE-1475
+                var sociomanticUrl = ( 'https:' === document.location.protocol ? 'https://' : 'http://' )+'eu-sonar.sociomantic.com/js/2010-07-01/adpan/enter-ru';
 
-                if (data.action.alert !==undefined){
-                    showOrderAlert(data.action.alert.message, data.data.redirect)
-                }
-                else if( 'redirect' in data.data ){
-                    window.location = data.data.redirect
-                }
-
+                // перезагрузка страницы только после загрузки скрипта sociomantic
+                $LAB.script( sociomanticUrl ).wait(function() {
+                    Blocker.bye();
+                    if ( data.action.alert !== undefined ) {
+                        showOrderAlert(data.action.alert.message, data.data.redirect);
+                    }
+                    else if ( 'redirect' in data.data ) {
+                        window.location = data.data.redirect;
+                    }
+                });
 
             },
             error: function() {
