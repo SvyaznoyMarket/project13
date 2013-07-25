@@ -125,16 +125,28 @@ window.ANALYTICS = {
 	//     })(document, window, "yandex_metrika_callbacks");
 	// },
 
-	marketgidProd : function() {
-		var MGDate = new Date();
-		document.write('<iframe src ="http://'
-		+'marketgid.com/resiver.html#label1'
-		+MGDate.getYear()+MGDate.getMonth()
-		+MGDate.getDate()+MGDate.getHours()
-		+'" width="0%" height="0" sty'
-		+'le = "position:absolute;left:'
-		+'-1000px" ></iframe>');
-	},
+    sociomantic : function() {
+        (function(){
+            var s   = document.createElement('script');
+            var x   = document.getElementsByTagName('script')[0];
+            s.type  = 'text/javascript';
+            s.async = true;
+            s.src   = ('https:'==document.location.protocol?'https://':'http://')
+                + 'eu-sonar.sociomantic.com/js/2010-07-01/adpan/enter-ru';
+            x.parentNode.insertBefore( s, x );
+        })();
+    },
+
+    marketgidProd : function() {
+        var MGDate = new Date();
+        document.write('<iframe src ="http://'
+        +'marketgid.com/resiver.html#label1'
+        +MGDate.getYear()+MGDate.getMonth()
+        +MGDate.getDate()+MGDate.getHours()
+        +'" width="0%" height="0" sty'
+        +'le = "position:absolute;left:'
+        +'-1000px" ></iframe>');
+    },
 
 	marketgidOrder : function() {
 		var MGDate = new Date();
