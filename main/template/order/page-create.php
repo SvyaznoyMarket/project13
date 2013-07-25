@@ -191,6 +191,7 @@ if ($form->hasSubway()) $jsValidator['order[address_metro]'] = 'Укажите �
                     foreach ($byPayOnReceipt as $payOnReceipt => $paymentMethods) { ?>
                         <span><?= $payOnReceipt ? 'При получении заказа' : 'Прямо сейчас' ?></span>
                         <?= $page->render('order/payment/_methods', [
+                            'banks' => $banks,
                             'form' => $form,
                             'selectedPaymentMethodId' => $selectedPaymentMethodId,
                             'payOnReceipt' => $payOnReceipt,
