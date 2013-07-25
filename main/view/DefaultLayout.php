@@ -466,101 +466,65 @@ class DefaultLayout extends Layout {
     public function slotSociomantic() {
         $smantic_path = 'partner-counter/sociomantic/';
         $routeName = \App::request()->attributes->get('route');
-        //$routeName = $request->attributes->get('route');
+        $breadcrumbs = $this->getParam('breadcrumbs');
+        $region_id = \App::user()->getRegion()->getId();
+        $smantic = new \View\Partners\Sociomantic( $region_id );
 
-        $return = "<!-- $routeName - routename -->"; //tmp
-        $return .= $this->render($smantic_path.'01-homepage'); // default, для всех страниц
 
+        // на всех страницах сайта, кроме... "спасибо за заказ" и /orders/new
+        if (!in_array($routeName, [
+            'order.create',
+            'order.complete',
+        ])) {
+            // для всех страниц, кроме тех на которых код отправиться ajax'ом
+            $return = $this->render($smantic_path.'01-homepage');
+        }
+
+        ///$return .= '[!!!### '.$routeName.' ###!!!] '; // for debug
 
         if ($routeName == 'product.category') {
 
             $category = $this->getParam('category') instanceof \Model\Product\Category\Entity ? $this->getParam('category') : null;
-            $prod_cats = $this->prod_cats_in_string( $category->getChild() ); // формируем категории продукта в виде строки для js
-            $return .= $this->render($smantic_path.'02-category_page', ['category' => $category, 'prod_cats' => $prod_cats] );
+            $prod_cats = $smantic->makeCategories($breadcrumbs, $category);
+            $return .= $this->render($smantic_path.'02-category_page', ['category' => $category,  'smantic' => &$smantic, 'prod_cats' => $prod_cats] );
 
         }else if ($routeName == 'product') {
 
             $product = $this->getParam('product') instanceof \Model\Product\Entity ? $this->getParam('product') : null;
-            $prod_cats = $this->prod_cats_in_string( $product->getCategory() );  // категории продукта в виде строки для js
-            $return .= $this->render($smantic_path.'03a-product_page_stream', ['product' => $product, 'prod_cats' => $prod_cats] );
+            $prod_cats = $smantic->makeCategories($breadcrumbs, $product->getCategory()  );
+            $return .= $this->render($smantic_path.'03a-product_page_stream', ['product' => $product, 'smantic' => &$smantic, 'prod_cats' => $prod_cats] );
 
         }
         else if ($routeName == 'cart') {
+
             $products = $this->getParam('products');
             $cartProductsById = $this->getParam('cartProductsById');
-
-            $region_id = \App::user()->getRegion()->getId();
-
-            $cart_prods = [];
-
-            foreach ($products as $product):
-                $cartProduct = isset($cartProductsById[$product->getId()]) ? $cartProductsById[$product->getId()] : null;
-
-                $one_prod = [];
-
-                $one_prod['identifier'] = (string) $product->getId();
-                //if ( $product->getTypeId() ) $one_prod['identifier'] .= '-'.$product->getTypeId();
-                if ( $region_id ) $one_prod['identifier'] .= '_'.$region_id;
-
-                $one_prod['quantity'] = $cartProduct->getQuantity();
-                //$one_prod['amount'] = $this->helper->formatPrice( $cartProduct->getPrice() * $one_prod['quantity'] );
-                $one_prod['amount'] = $cartProduct->getPrice() * $one_prod['quantity'];
-                $one_prod['currency'] = 'RUB';
-
-                $cart_prods[] = $one_prod;
-                if (!$cartProduct) continue;
-            endforeach;
-
-            $return .= $this->render($smantic_path.'04-basket', ['cart_prods' => $cart_prods] );
+            $cart_prods = $smantic->makeCartProducts( $products, $cartProductsById );
+            $return .= $this->render($smantic_path.'04-basket', ['cart_prods' => $cart_prods, 'smantic' => &$smantic] );
 
         }
-        else if ($routeName == 'order.complete') {
+        else if ( $routeName == 'order.complete' ) {
 
             //$products = $this->getParam('products');
             //$cartProductsById = $this->getParam('cartProductsById');
-
-            $orders = $this->getParam('orders');
-
             //$cart = \App::user()->getCart();
-
+            $orders = $this->getParam('orders'); // \Model\Order\Entity Object
             $return .= $this->render($smantic_path.'05a-confirmation_page',
-                [
-                    'orders' => $orders
-                ]
+                [ 'orders' => $orders,  'smantic' => &$smantic ]
             );
 
-        }
+            $smantic->restoreSession();
+
+        }/*else if ( $routeName == 'order.create' ) {
+
+            //$products = $this->getParam('products');
+            //$smantic->makeSession( $products );
+
+        }*/
 
         return $return;
     }
 
 
-    /**
-     * Возвращает категории продукта в виде строки (для js-скрипта например) исходя из масива
-     * @param $prod_cats_arr
-     * @return string|bool
-     */
-    public function prod_cats_in_string($prod_cats_arr){
-        if (empty($prod_cats_arr)) return false;
-
-        $count = count($prod_cats_arr);
-        $prod_cats = '';
-
-        if ($count > 0) {
-            $i = 0;
-            $prod_cats = "[";
-
-            foreach ($prod_cats_arr as $cat) {
-                $i++;
-                $prod_cats .= " '" . $cat->getName() . "'";
-                if ($i < $count) $prod_cats .= ", ";
-            }
-
-            $prod_cats .= " ]";
-        }
-
-        return $prod_cats;
-
-    }
 
 }
