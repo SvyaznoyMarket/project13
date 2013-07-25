@@ -9,8 +9,10 @@ class StatisticsAction {
     private $operId = null;
     private $chatId = null;
     private $actions = [];
+    private $content = [];
     private $siteId = 41836; // TODO: move in config
     private $aside_menu = [];
+
 
 
     public function __construct() {
@@ -72,44 +74,19 @@ class StatisticsAction {
 
     public function execute(\Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
-        $this->init($request);
         $page = new \View\Livetex\StatisticsPage();
+        $actions = &$this->actions;
+        $content = &$this->content;
+        include_once '../lib/LiveTex/API.php';
+        $API = \LiveTex\Api::getInstance(); //LiveTex/API
 
         //$router = \App::router();
         //$client = \App::coreClientV2();
         //$user = \App::user(); // TODO: проверка на авторизацию и наличие прав на просмотр данного раздела
         //$region = $user->getRegion();
 
-        $actions = &$this->actions;
-        $content = [];
-
-        include_once '../lib/LiveTex/API.php';
-        $API = \LiveTex\Api::getInstance(); //LiveTex/API
-
-
-
-
-        /* выбираем нужные действия
-            Действия влияют на сущность загружаемой статистики.
-            Может быть статистика оператора (или -ов), чата (-ов), сайтов
-        */
-        if (!empty( $this->operId )) {
-            $actions[] = 'oneOperator';
-        }
-
-        if ( $request->get('chat') ) {
-            $actions[] = 'chat';
-        }
-
-        if ( $request->get('site') ) {
-            $actions[] = 'site';
-        }
-
-        if (empty($actions)) {
-            $actions[] = 'site';
-            $actions[] = 'allOperators';
-        }
-
+        $this->init($request);
+        $this->selectActions($request);
 
 
         if (in_array('chat',$actions)) {
@@ -203,7 +180,7 @@ class StatisticsAction {
         $page->setParam('aside_menu', $this->aside_menu);
 
         /*
-         * $stat_params — Для наполнения сайдбара // TODO: убрать дублирование названия в "name"
+         * $stat_params — Для наполнения сайдбара
          */
         $stat_params['date_begin'] = [ 'value' => ($this->date_begin) ?: '', 'descr' => 'Дата начала'];
         $stat_params['date_end'] = [ 'value' => ($this->date_end) ?: '', 'descr' => 'Дата окончания'];
@@ -217,6 +194,36 @@ class StatisticsAction {
         return new \Http\Response( $page->show() );
     }
 
+
+
+    /**
+     * выбираем нужные действия
+     * Действия влияют на сущность загружаемой статистики.
+     * Может быть статистика оператора (или -ов), чата (-ов), сайтов
+     *
+     * @param $request
+     */
+    private function selectActions($request) {
+        $actions = &$this->actions;
+
+        if (!empty( $this->operId )) {
+            $actions[] = 'oneOperator';
+        }
+
+        if ( $request->get('chat') ) {
+            $actions[] = 'chat';
+        }
+
+        if ( $request->get('site') ) {
+            $actions[] = 'site';
+        }
+
+        if (empty($actions)) {
+            $actions[] = 'site';
+            $actions[] = 'allOperators';
+        }
+
+    }
 
 
 
