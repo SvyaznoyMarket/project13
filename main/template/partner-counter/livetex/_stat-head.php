@@ -76,8 +76,7 @@
         margin: 0 10px 10px 0;
     }
 
-    .lts_item,
-    .lts_li{
+    .lts_item{
         background: #e3e3e3;
         padding: .5em;
         border: 1px solid #ccc;

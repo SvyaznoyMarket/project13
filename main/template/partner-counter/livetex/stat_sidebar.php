@@ -7,6 +7,14 @@
 
 <div class="lts_sidebar bProductSection__eRight right">
     <aside>
+        <? /* For Javascript */ ?>
+        <div class="liveTex_stat">
+            <div id="haveOnline">
+                <p class="online hidden">Найдены операторы онлайн: <span id="count_opers">0</span>.</p>
+                <p class="offline hidden">Нет операторов онлайн</p>
+            </div>
+        </div>
+
         <div class="bWidgetBuy mWidget">
             <? if ( !empty($aside_menu) ): ?>
                 <h3>Навигация</h3>

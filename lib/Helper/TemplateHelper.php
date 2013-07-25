@@ -103,7 +103,7 @@ class TemplateHelper {
 
             if ($attr) {
                 if (is_string($attr)){
-                    if ( !empty($attr) ) $res .= ' class='.$attr;
+                    if ( !empty($attr) ) $res .= ' class="'.$attr.'"';
                 }else
                 if ( is_array($attr) ) {
                     foreach($attr as $key => $val):
