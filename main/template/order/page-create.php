@@ -23,8 +23,6 @@ $jsValidator = array('order[recipient_first_name]' => 'Заполните пол
 if ($form->hasSubway()) $jsValidator['order[address_metro]'] = 'Укажите ближайшее метро';
 ?>
 
-<h1><?= \App::router()->generate('order.complete') ?></h1>
-
 <!-- Header -->
 <div class='bBuyingHead'>
     <a href="<?= $page->url('homepage') ?>"></a>
