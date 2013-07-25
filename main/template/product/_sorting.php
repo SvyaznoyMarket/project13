@@ -14,7 +14,7 @@ foreach ($productSorting->getAll() as $item)
 {
     if ($active['name'] == $item['name'] && $active['direction'] == $item['direction']) continue;
 
-    $item['url'] = $page->helper->replacedUrl(array('sort' => implode('-', array($item['name'], $item['direction']))));
+    $item['url'] = $page->helper->replacedUrl(array('page' => '1', 'sort' => implode('-', array($item['name'], $item['direction']))));
     $list[] = $item;
 }
 ?>
