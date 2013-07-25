@@ -470,7 +470,16 @@ class DefaultLayout extends Layout {
         $region_id = \App::user()->getRegion()->getId();
         $smantic = new \View\Partners\Sociomantic( $region_id );
 
-        $return = $this->render($smantic_path.'01-homepage'); // default, для всех страниц
+
+        // на всех страницах сайта, кроме... "спасибо за заказ" и /orders/new
+        if (!in_array($routeName, [
+            'order.create',
+            'order.complete',
+        ])) {
+            // для всех страниц, кроме тех на которых код отправиться ajax'ом
+            $return = $this->render($smantic_path.'01-homepage');
+        }
+
         ///$return .= '[!!!### '.$routeName.' ###!!!] '; // for debug
 
         if ($routeName == 'product.category') {
@@ -506,12 +515,12 @@ class DefaultLayout extends Layout {
 
             $smantic->restoreSession();
 
-        }else if ( $routeName == 'order.create' ) {
+        }/*else if ( $routeName == 'order.create' ) {
 
             //$products = $this->getParam('products');
             //$smantic->makeSession( $products );
 
-        }
+        }*/
 
         return $return;
     }
