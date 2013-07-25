@@ -7196,6 +7196,55 @@
     display: block;;
   }
   */
+  .mPayMethods {
+    margin: 10px 0 20px;
+  }
+  .mPayMethods h2 {
+    padding: 10px 0 15px;
+  }
+  .mPayMethods dd {
+    font-weight: normal;
+  }
+  .mPayMethods dd div {
+    margin: 0;
+  }
+  .mPayMethods label {
+    line-height: 1;
+  }
+  .mPayMethods label b {
+    background: url("/css/leftNav/img/radioBtn.png") no-repeat 0 -13px;
+    height: 13px;
+    width: 13px;
+    margin-right: 2px;
+    margin-top: 2px;
+  }
+  .mPayMethods .bLabel {
+    display: inline-block;
+    width: 400px;
+    margin: 0 0 0 0px;
+    zoom: 1;
+    line-height: 1.3;
+    vertical-align: top;
+    *display: inline;
+    zoom: 1;
+    cursor: pointer;
+  }
+  .mPayMethods .mChecked b {
+    background: url("/css/leftNav/img/radioBtn.png") no-repeat 0 0;
+  }
+  .mPayMethods .bPayMethodTitle {
+    margin: 0 0px 15px 40px;
+  }
+  .mPayMethods .bPayMethodDesc {
+    font-size: 12px;
+    margin: 5px 0 0 20px;
+  }
+  .mPayMethods .bPayMethodAction {
+    margin: 10px 0 0 20px;
+  }
+  .mPayMethods .bPayMethodAction input {
+    margin: 0 0 5px;
+  }
 }
 /*---END---СТИЛИ ОФОРМЛЕНИЯ ЗАКАЗА---*/
 /*-------СТИЛИ СТРАНИЦЫ ГДЕ КУПИТЬ-----*/
