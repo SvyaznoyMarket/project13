@@ -243,8 +243,8 @@ class Entity {
     }
 
     public function getStringValue() {
-
-        if (!empty($this->value)) {
+        if ($this->value!==null) {
+		
             if (in_array($this->value, ['false', false], true)) {
                 return 'нет';
             }
