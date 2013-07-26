@@ -644,7 +644,16 @@ class Action {
     public function paymentFail(\Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__, ['order']);
 
+        $user = \App::user();
+
+        $form = $this->getForm(); // подключаем данные формы, чтобы знать данные покупателя
+
+        // последние заказы в сессии
+        $orders = $this->getLastOrders();
+
         $page = new \View\Order\PaymentFailPage();
+        $page->setParam('orders', $orders);
+        $page->setParam('form', $form);
 
         return new \Http\Response($page->show());
     }
