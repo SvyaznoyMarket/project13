@@ -453,7 +453,7 @@ class Action {
 
         $sidebarCategoriesTree = $page->getParam('sidebarCategoriesTree');
         $categoriesByToken = $page->getParam('categoriesByToken');
-        $childTokens = array_keys($sidebarCategoriesTree[$category->getToken()]);
+        $childTokens = empty($sidebarCategoriesTree[$category->getToken()]) ? [] : array_keys($sidebarCategoriesTree[$category->getToken()]);
 
         // дочерние категории сгруппированные по идентификаторам
         $childrenById = [];
