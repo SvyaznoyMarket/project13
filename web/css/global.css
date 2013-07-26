@@ -11575,5 +11575,83 @@
   }
 }
 /*---END---СТИЛИ КОРЗИНЫ - ВЕРСИЯ ДЛЯ ПЕЧАТИ---*/
+/*------СТИЛИ КОРЗИНЫ - ВЕРСИЯ ДЛЯ ПЕЧАТИ------*/
+@media all {
+  .bViewPageLine {
+    -webkit-border-radius: 3px 3px 0 0;
+    -moz-border-radius: 3px 3px 0 0;
+    border-radius: 3px 3px 0 0;
+    padding: 5px 0 5px 10px;
+    color: #515151;
+    border-bottom: 1px solid #c7c7c7;
+    background-color: #f6f6f6;
+  }
+  .bViewPageLine .bTitle {
+    display: block;
+    padding: 0 0 5px;
+    color: #515151;
+    font-size: 11px;
+  }
+  .bViewPageLine .bSorting {
+    float: left;
+  }
+  .bViewPageLine .bSortingList__eItem {
+    float: left;
+    margin: 0 3px 0 0;
+  }
+  .bViewPageLine .bSortingList__eItemLink {
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    display: block;
+    padding: 3px 5px 3px 5px;
+    text-decoration: none;
+    color: #000000;
+    border: 1px solid #c7c7c7;
+    background-color: #ffffff;
+    font-size: 11px;
+  }
+  .bViewPageLine .bSortingList__eItemLinkmActiveLink,
+  .bViewPageLine .bSortingList__eItemLink:hover {
+    color: #ffffff;
+    border-color: #000000;
+    background-color: #000000;
+  }
+  .bViewPageLine .bViewPageMode {
+    float: right;
+  }
+  .bViewPageLine .bViewPageModeList__eItem {
+    float: left;
+    margin: 0 3px 0 0;
+  }
+  .bViewPageLine .bViewPageModeList__eItemLink {
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    display: block;
+    width: 38px;
+    padding: 3px 0;
+    color: #000000;
+    border: 1px solid #c7c7c7;
+    background-color: #ffffff;
+  }
+  .bViewPageLine .bViewPageModeList__eItemLinkmActiveLink,
+  .bViewPageLine .bViewPageModeList__eItemLink:hover {
+    color: #ffffff;
+    border-color: #000000;
+    background-color: #000000;
+  }
+  .bViewPageLine .bViewPageModeList .bViewPageModeIcon {
+    display: block;
+    width: 11px;
+    height: 11px;
+    margin: 0 auto;
+    background: url('/css/bViewPageLine/img/bViewPageModeIcons.png') no-repeat 0 0;
+  }
+  .bViewPageLine .bViewPageModeList .mListView .bViewPageModeIcon {
+    background-position: -14px 0;
+  }
+}
+/*---END---СТИЛИ КОРЗИНЫ - ВЕРСИЯ ДЛЯ ПЕЧАТИ---*/
 /*------НОВОГОДНЕЕ ОФОРМЛЕНИЕ------*/
 /*---END---НОВОГОДНЕЕ ОФОРМЛЕНИЕ---*/
