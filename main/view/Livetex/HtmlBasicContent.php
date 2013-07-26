@@ -7,14 +7,14 @@ class HtmlBasicContent{
     protected $default_ava = '9c46526d320a87cdab6dfdbc14f23cdc.png';
     protected $page_url = '/livetex-statistics';
     protected $more_word = '[ Подробнее » ]';
-    protected $head_text = '';
+    protected $small_head = '';
     protected $big_head = 'LiveTex: Статистика.';
     protected $helper = '';
 
 
-    public function __construct( $big_head = null, $head_text = null) {
+    public function __construct( $big_head = null, $small_head = null) {
         if ( $big_head ) $this->big_head = $big_head;
-        if ( $head_text ) $this->head_text = $head_text;
+        if ( $small_head ) $this->small_head = $small_head;
         $this->helper = new \Helper\TemplateHelper();
     }
 
@@ -81,7 +81,7 @@ class HtmlBasicContent{
 
 
     protected function head() {
-        return '<h3>' . $this->head_text . '</h3>';
+        return '<h3>' . $this->small_head . '</h3>';
     }
 
 
