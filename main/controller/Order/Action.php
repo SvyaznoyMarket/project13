@@ -623,7 +623,16 @@ class Action {
     public function paymentSuccess(\Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__, ['order']);
 
+        $user = \App::user();
+
+        $form = $this->getForm(); // подключаем данные формы, чтобы знать данные покупателя
+
+        // последние заказы в сессии
+        $orders = $this->getLastOrders();
+
         $page = new \View\Order\PaymentSuccessPage();
+        $page->setParam('orders', $orders);
+        $page->setParam('form', $form);
 
         return new \Http\Response($page->show());
     }
