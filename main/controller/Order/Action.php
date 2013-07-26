@@ -839,6 +839,12 @@ class Action {
             $form->setError('recipient_phonenumbers', 'Номер мобильного телефона должен содержать 11 цифр');
         }
 
+        // абтест для обязательно поля email
+        if (\App::abTest()->getCase()->getKey() == 'emails') {
+            $email = $form->getEmail();
+            $form->setError('recipient_email', 'Укажите ваш e-mail');
+        }
+
         // способ доставки
         if (!$form->getDeliveryTypeId()) {
             $form->setError('delivery_type_id', 'Не указан способ получения заказа');
