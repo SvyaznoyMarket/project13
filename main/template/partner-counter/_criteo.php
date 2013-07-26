@@ -1,12 +1,16 @@
-<? if ( \App::config()->partners['criteo']['enabled'] ): ?>
-    <? if ( !empty($criteoData) && is_array($criteoData) ):  ?>
+000<? if ( \App::config()->partners['criteo']['enabled'] ): ?>111
+    <? if ( !empty($criteoData) && is_array($criteoData) ):  ?>222
 
         <? /* <div id="criteo-data" data-value="<?= $page->json($criteoData) ?>"></div> */ ?>
 
         <script src="//static.criteo.net/js/ld/ld.js" async="true"></script> <? /* // https: and http: — works */ ?>
 
+        <div id="criteoJS" class="jsanalytics" data-value="<?= $page->json($criteoData) ?>"></div>
+
         <script>
             window.criteo_q = window.criteo_q || [];
+            console.log('in file php');
+            console.log(window.criteo_q);
             <? /* // ### This variant not works in IE9 :-(
 
             var criteo_arr = $('#criteo-data').data('value');

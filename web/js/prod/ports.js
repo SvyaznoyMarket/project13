@@ -125,6 +125,11 @@ window.ANALYTICS = {
     //     })(document, window, "yandex_metrika_callbacks");
     // },
 
+    criteoJS : function() {
+        $('#criteoJS').data('value');
+        console.log('criteoJS');
+    },
+
     marketgidProd : function() {
         var MGDate = new Date();
         document.write('<iframe src ="http://'
