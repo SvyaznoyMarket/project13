@@ -100,6 +100,10 @@ $c->analytics['optimizelyEnabled'] = true;
 $c->kissmentrics['enabled'] = true;
 $c->googleAnalytics['enabled'] = true;
 $c->yandexMetrika['enabled'] = true;
+
+$c->partners['livetex']['enabled'] = true;
+$c->partners['livetex']['liveTexID'] = 41836;
+
 $c->adFox['enabled'] = true;
 $c->myThings['feeByCategory'] = [
     80      => 0.105,   //Мебель

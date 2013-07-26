@@ -111,6 +111,13 @@ class AppConfig {
     public $yandexMetrika = [
         'enabled' => null,
     ];
+
+    /** @var array */
+    public $partners = [
+        'enabled' => null,
+        'liveTexID' => null
+    ];
+
     /** @var array */
     public $myThings = [
         'feeByCategory' => [],

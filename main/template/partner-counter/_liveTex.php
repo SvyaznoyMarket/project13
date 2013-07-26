@@ -7,6 +7,16 @@
  * To change this template use File | Settings | File Templates.
  */
 
+$livetexID = null;
+
+if ( isset( \App::config()->partners['livetex']['liveTexID'] ) ) {
+    $livetexID = \App::config()->partners['livetex']['liveTexID'];
+}
+
+
+if ( $livetexID && \App::config()->partners['livetex']['enabled'] ) :
+
+
 $user = \App::user();
 $user_entity = $user->getEntity();
 $userid = null;
@@ -18,7 +28,6 @@ if ( isset( $user_entity ) and !empty($user_entity) ) {
     if ($tmp) $username .= ' '.$tmp;
     $username = str_replace("'", "", $username);
 }
-
 
 /*
 $cart = $user->getCart();
@@ -49,10 +58,10 @@ $productsInCart_str = '[' .substr( $productsInCart_str, 0, -1) . ']'. "\n";
 'CountProductsInBasket' : '<? // count($cartProductsById) ?>',
 'ProductsInBasket' : <? // $productsInCart_str ?>
 */
-
 ?>
 <script type='text/javascript'> /* build:::7 */
-    var liveTexID = 50391,
+    <? /* var liveTexID = 50391, */ ?>
+     var liveTexID = <?= $livetexID ?>,
         liveTex_object = true;
     var LiveTex = {
         onLiveTexReady: function() {
@@ -86,3 +95,5 @@ $productsInCart_str = '[' .substr( $productsInCart_str, 0, -1) . ']'. "\n";
         else  document.documentElement.firstChild.appendChild(lt);
     })();
 </script>
+
+<? endif;
