@@ -187,6 +187,7 @@
 			var productData = data.product,
 				offer_id = productData.id,
 				category_id = productData.category[productData.category.length-1].id;
+			// end of vars
 
 
 			var s = 'http://ad.adriver.ru/cgi-bin/rle.cgi?sid=182615&sz=add_basket&custom=10='+offer_id+';11='+category_id+'&bt=55&pz=0&rnd=![rnd]',

@@ -20,7 +20,7 @@
 				url = '/search/autocomplete?q='+encodeURI(text);
 			// end of vars
 
-			if (!text.length){
+			if ( !text.length ){
 				if ( $(this).siblings('.searchtextClear').length ) {
 					$(this).siblings('.searchtextClear').addClass('vh');
 				}
@@ -36,7 +36,7 @@
 				suggestLen = $('.bSearchSuggest__eRes').length;
 			};
 
-			if ( (e.which < 37 || e.which>40) && (nowSelectSuggest = -1) ) {
+			if ( (e.which < 37 || e.which > 40) && (nowSelectSuggest = -1) ) {
 				if ( !text.length ) { 
 					return false;
 				}
@@ -146,14 +146,14 @@
 			}
 		});
 
-		$('.bSearchSuggest__eRes').on('mouseover', function(){
+		$('.bSearchSuggest__eRes').on('mouseover', function() {
 			var index = $(this).addClass('hover').index();
 
 			$('.bSearchSuggest__eRes').removeClass('hover');
 			nowSelectSuggest = index - 1;
 		});
 
-		$('body').click(function(e){		
+		$('body').click(function( e ) {		
 			var targ = e.target.className;
 
 			if ( !(targ.indexOf('bSearchSuggest') + 1 || targ.indexOf('searchtext') + 1) ) {
@@ -164,7 +164,7 @@
 		/**
 		 * suggest analitycs
 		 */
-		$('.bSearchSuggest__eRes').on('click', function(){
+		$('.bSearchSuggest__eRes').on('click', function() {
 			if ( typeof(_gaq) !== 'undefined' ) {
 				var type = ($(this).hasClass('bSearchSuggest__eCategoryRes')) ? 'suggest_category' : 'suggest_product',
 					url = $(this).attr('href');

@@ -478,6 +478,7 @@ $.ajaxSetup({
 			var productData = data.product,
 				offer_id = productData.id,
 				category_id = productData.category[productData.category.length-1].id;
+			// end of vars
 
 
 			var s = 'http://ad.adriver.ru/cgi-bin/rle.cgi?sid=182615&sz=add_basket&custom=10='+offer_id+';11='+category_id+'&bt=55&pz=0&rnd=![rnd]',
@@ -2373,7 +2374,7 @@ $(document).ready(function(){
 				url = '/search/autocomplete?q='+encodeURI(text);
 			// end of vars
 
-			if (!text.length){
+			if ( !text.length ){
 				if ( $(this).siblings('.searchtextClear').length ) {
 					$(this).siblings('.searchtextClear').addClass('vh');
 				}
@@ -2389,7 +2390,7 @@ $(document).ready(function(){
 				suggestLen = $('.bSearchSuggest__eRes').length;
 			};
 
-			if ( (e.which < 37 || e.which>40) && (nowSelectSuggest = -1) ) {
+			if ( (e.which < 37 || e.which > 40) && (nowSelectSuggest = -1) ) {
 				if ( !text.length ) { 
 					return false;
 				}
@@ -2499,14 +2500,14 @@ $(document).ready(function(){
 			}
 		});
 
-		$('.bSearchSuggest__eRes').on('mouseover', function(){
+		$('.bSearchSuggest__eRes').on('mouseover', function() {
 			var index = $(this).addClass('hover').index();
 
 			$('.bSearchSuggest__eRes').removeClass('hover');
 			nowSelectSuggest = index - 1;
 		});
 
-		$('body').click(function(e){		
+		$('body').click(function( e ) {		
 			var targ = e.target.className;
 
 			if ( !(targ.indexOf('bSearchSuggest') + 1 || targ.indexOf('searchtext') + 1) ) {
@@ -2517,7 +2518,7 @@ $(document).ready(function(){
 		/**
 		 * suggest analitycs
 		 */
-		$('.bSearchSuggest__eRes').on('click', function(){
+		$('.bSearchSuggest__eRes').on('click', function() {
 			if ( typeof(_gaq) !== 'undefined' ) {
 				var type = ($(this).hasClass('bSearchSuggest__eCategoryRes')) ? 'suggest_category' : 'suggest_product',
 					url = $(this).attr('href');

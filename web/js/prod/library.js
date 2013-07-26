@@ -1151,7 +1151,7 @@ var DirectCredit = {
 				//  }
 					
 				// }               
-				self.output.text( printPrice( Math.ceil( result.payment ) ) );
+				self.output.text( window.printPrice( Math.ceil( result.payment ) ) );
 				PubSub.publish( 'bankAnswered', null );
 			}
 		);
@@ -1812,7 +1812,7 @@ BlackBox.prototype.basket = function() {
 		flyboxcloser = function flyboxcloser( e ) {
 			var targ = e.target.className;
 
-			if (!(targ.indexOf('bBlackBox__eFlybox')+1) || !(targ.indexOf('fillup')+1)) {
+			if ( !(targ.indexOf('bBlackBox__eFlybox') + 1) || !(targ.indexOf('fillup') + 1) ) {
 				flyboxDestroy();
 				$('body').unbind('click', flyboxcloser);
 			}
@@ -1828,7 +1828,7 @@ BlackBox.prototype.basket = function() {
 		 * @public
 		 */
 		update = function update( basketInfo ) {
-			headQ.html('('+basketInfo.cartQ+')');
+			headQ.html('(' + basketInfo.cartQ + ')');
 			bottomQ.html(basketInfo.cartQ);
 			bottomSum.html(basketInfo.cartSum);
 			bottomCart.addClass('mBought');
@@ -1898,7 +1898,7 @@ BlackBox.prototype.user = function() {
 		//end of vars
 
 		if ( userName !== null ) {
-			dtmpl={
+			dtmpl = {
 				user: userName
 			};
 			show_user = tmpl('auth_tmpl', dtmpl);
@@ -1935,10 +1935,10 @@ BlackBox.prototype.init = function() {
 		 * @private
 		 */
 	var startAction = function startAction( action ) {
-			if (action.subscribe !== undefined) {
+			if ( action.subscribe !== undefined ) {
 				$("body").trigger("showsubscribe", [action.subscribe]);
 			}
-			if (action.cartButton !== undefined) {
+			if ( action.cartButton !== undefined ) {
 				$("body").trigger("markcartbutton", [action.cartButton]);
 				$("body").trigger("updatespinner", [action.cartButton]);
 			}
@@ -1963,7 +1963,7 @@ BlackBox.prototype.init = function() {
 
 			self.user().update(userInfo.name);
 
-			if (cartInfo.quantity !== 0) {
+			if ( cartInfo.quantity !== 0 ) {
 				nowBasket = {
 					cartQ: cartInfo.quantity,
 					cartSum: cartInfo.sum
@@ -1971,7 +1971,7 @@ BlackBox.prototype.init = function() {
 				self.basket().update(nowBasket);
 			}
 
-			if (actionInfo !== undefined) {
+			if ( actionInfo !== undefined ) {
 				startAction(actionInfo);
 			}
 		};
@@ -1981,7 +1981,7 @@ BlackBox.prototype.init = function() {
 };
 
 
-(function(global) {
+(function( global ) {
 	var pageConfig = $('#page-config').data('value');
 	
 	/**
