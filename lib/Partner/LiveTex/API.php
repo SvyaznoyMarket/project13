@@ -1,6 +1,12 @@
 <?php
+/*
+ *
+ * Можно также добавить "кешировние" — записть в сессию полученных от апи результатов,
+ * чтобы уменьшить кол-во обращений к АПИ.
+ *
+ */
 
-namespace LiveTex;
+namespace Partner\LiveTex;
 
 
 class API {
@@ -8,24 +14,24 @@ class API {
     private static $instance = null;
     private $authKey = null;
     private $chief_id = null;
-
-    // TODO: move in config
-    private $login = 'anastasiya.vs@enter.ru';
-    private $password = 'enter1chat2';
-
+    private $login = null;
+    private $password = null;
     private $api_url = 'http://api.livetex.ru/';
     private $api_login_url = 'http://api.livetex.ru/login.php';
 
 
     private function __clone() {}
-    private function __construct() {}
+    private function __construct($log, $pass) {
+        $this->login = $log;
+        $this->password = $pass;
+    }
 
 
-    public static function getInstance()
+    public static function getInstance($log, $pass)
     {
         if (null === self::$instance)
         {
-            self::$instance = new self();
+            self::$instance = new self($log, $pass);
         }
         return self::$instance;
     }
@@ -46,7 +52,7 @@ class API {
 
 
 
-    public function login() {
+    public function tologin() {
         $post_arr = [
             'login' => $this->login,
             'password' => $this->password,
@@ -68,7 +74,7 @@ class API {
 
     public function method( $method, $data = [] ) {
         if ( $this->authKey == null || $this->chief_id == null ) {
-            $this->login();
+            $this->tologin();
         }
 
         $post_arr = [
@@ -88,7 +94,7 @@ class API {
 
     public function testmethod( $method, $data = [] ) {
         if ( $this->authKey == null || $this->chief_id == null ) {
-            $this->login();
+            $this->tologin();
         }
 
         $post_arr =

@@ -5,23 +5,26 @@ namespace Controller\Livetex;
 class StatisticsAction {
     private $API;
     private $date_format = 'Y-m-d';
-    private $date_begin = '2013-07-15';
-    private $date_end = '2013-07-23';
+    private $date_begin = null;
+    private $date_end = null;
     private $operId = null;
     private $chatId = null;
     private $actions = [];
     private $content = [];
     private $heads = [];
-    private $siteId = 41836; // TODO: move in config
+    private $siteId = null;
     private $aside_menu = [];
     private $operators_list = [];
 
 
 
     public function __construct() {
-        include_once '../lib/LiveTex/API.php';
+        include_once '../lib/Partner/LiveTex/API.php';
         $API = &$this->API;
-        $API = \LiveTex\Api::getInstance(); //LiveTex/API
+        $login = \App::config()->partners['livetex']['login'];
+        $password = \App::config()->partners['livetex']['password'];
+        $API = \Partner\LiveTex\Api::getInstance($login, $password); //LiveTex/API Class
+        $this->siteId = \App::config()->partners['livetex']['liveTexID'];
     }
 
 

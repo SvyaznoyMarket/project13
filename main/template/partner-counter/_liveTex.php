@@ -13,7 +13,6 @@ if ( isset( \App::config()->partners['livetex']['liveTexID'] ) ) {
     $livetexID = \App::config()->partners['livetex']['liveTexID'];
 }
 
-
 if ( $livetexID && \App::config()->partners['livetex']['enabled'] ) :
 
 
@@ -26,6 +25,7 @@ if ( isset( $user_entity ) and !empty($user_entity) ) {
     $username = $user_entity->getFirstName();
     $tmp = $user_entity->getLastName();
     if ($tmp) $username .= ' '.$tmp;
+    if ( empty($username) ) $username = 'Покупатель';
     $username = str_replace("'", "", $username);
 }
 
@@ -59,8 +59,7 @@ $productsInCart_str = '[' .substr( $productsInCart_str, 0, -1) . ']'. "\n";
 'ProductsInBasket' : <? // $productsInCart_str ?>
 */
 ?>
-<script type='text/javascript'> /* build:::7 */
-    <? /* var liveTexID = 50391, */ ?>
+<script type='text/javascript'>
      var liveTexID = <?= $livetexID ?>,
         liveTex_object = true;
     var LiveTex = {

@@ -103,6 +103,8 @@ $c->yandexMetrika['enabled'] = true;
 
 $c->partners['livetex']['enabled'] = true;
 $c->partners['livetex']['liveTexID'] = 41836;
+$c->partners['livetex']['login'] = 'anastasiya.vs@enter.ru';
+$c->partners['livetex']['password'] = 'enter1chat2';// login и пароль используются только для страницы статистики
 
 $c->adFox['enabled'] = true;
 $c->myThings['feeByCategory'] = [
