@@ -316,9 +316,10 @@ class DefaultLayout extends Layout {
 
         $criteoData[] = $arr_item;
 
-        print '<pre>!!!';
-        print_r($criteoData);
-        print '</pre>';
+        // just for debug:
+        //print '<pre>!!!';
+        //print_r($criteoData);
+        //print '</pre>';
 
         // just for debug:
         /*
