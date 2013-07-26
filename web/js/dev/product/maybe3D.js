@@ -1,10 +1,11 @@
 /**
  * Maybe3D
  */
-;(function(){
-	var loadMaybe3D = function(){
+;(function() {
+	var loadMaybe3D = function() {
 		var data = $('#maybe3dModelPopup').data('value');
-		var afterLoad = function(){
+
+		var afterLoad = function() {
 			var maybe3dPopupShow = function(e){
 				e.stopPropagation();
 				try {
@@ -32,13 +33,16 @@
 				}
 				return false;
 			};
+
 			$('.bPhotoActionOtherAction__eGrad360.maybe3d').bind('click', maybe3dPopupShow);
 		};
 		$LAB.script('swfobject.min.js').wait(afterLoad);
 	};
 
 	$(document).ready(function() {
-		if (pageConfig['product.maybe3d']){
+		var pageConfig = $('#page-config').data('value');
+
+		if ( pageConfig['product.maybe3d'] ){
 			loadMaybe3D();
 		}
 	});

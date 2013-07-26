@@ -1,16 +1,3 @@
-/**
- * Основные конфигурационные настройки сайта
- *
- * @requires	jQuery
- */
-var pageConfig = $('#page-config').data('value');
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 /*
 	http://www.JSON.org/json2.js
 	2011-10-19
