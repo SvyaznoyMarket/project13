@@ -1250,7 +1250,7 @@ upi:			for( var item = 0, boxitems = self.chosenBox().itemList(); item < boxitem
                         var item = dlvr.itemList()[i];
 
                         var toSociomantic = {
-                            identifier: item.article+'_'+docCookies.getItem('geoshop'),
+                            identifier: item.article+'_'+window.docCookies.getItem('geoshop'),
                             amount: item.price,
                             currency: 'RUB',
                             quantity: item.quantity

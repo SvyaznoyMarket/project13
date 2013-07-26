@@ -16,7 +16,7 @@
 			toggleCookie: function( state ) {
 				clearTimeout( this.cookieTimeout );
 				this.cookieTimeout = setTimeout( function(){
-					docCookies.setItem(false, 'credit_on', state ? 1 : 0 , 60*60, '/');
+					window.docCookies.setItem('credit_on', state ? 1 : 0 , 60*60, '/');
 				}, 200 );
 			},
 
@@ -47,7 +47,7 @@
 
 				dc_getCreditForTheProduct(
 					4427,
-					docCookies.getItem('enter_auth'),
+					window.docCookies.getItem('enter_auth'),
 					'getPayment',
 					{ price : creditd.price, count : creditd.count, type : creditd.product_type },
 					function( result ) {
@@ -63,11 +63,11 @@
 			},
 			
 			getState: function() {
-				if( ! docCookies.hasItem('credit_on') ) {
+				if( ! window.docCookies.hasItem('credit_on') ) {
 					return 0;
 				}
 
-				return docCookies.getItem('credit_on');
+				return window.docCookies.getItem('credit_on');
 			}
 		};
 		

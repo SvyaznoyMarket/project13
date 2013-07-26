@@ -39,7 +39,7 @@
 	 * 
 	 * @param  {Event}	e
 	 */
-	var BuyButtonHandler = function BuyButtonHandler() {
+	var buyButtonHandler = function buyButtonHandler() {
 		var button = $(this),
 			url = button.attr('href');
 		// end of vars
@@ -74,7 +74,7 @@
 	
 	$(document).ready(function() {
 		$('body').bind('markcartbutton', markCartButton);
-		$('body').on('click', '.jsBuyButton', BuyButtonHandler);
+		$('body').on('click', '.jsBuyButton', buyButtonHandler);
 		$('body').on('buy', '.jsBuyButton', buy);
 	});
 }());
@@ -216,11 +216,11 @@
 				product = data.product,
 				tmpitem = {
 					'title': product.name,
-					'price' : printPrice(product.price),
+					'price' : window.printPrice(product.price),
 					'imgSrc': product.img,
 					'productLink': product.link,
 					'totalQuan': basket.full_quantity,
-					'totalSum': printPrice(basket.full_price),
+					'totalSum': window.printPrice(basket.full_price),
 					'linkToOrder': basket.link
 				};
 			// end of vars
@@ -231,11 +231,11 @@
 			myThingsAnalytics(data);
 			adAdriver(data);
 
-			if ( !blackBox ) {
+			if ( !window.blackBox ) {
 				return false;
 			}
 			
-			blackBox.basket().add( tmpitem );
+			window.blackBox.basket().add( tmpitem );
 		};
 	//end of vars
 

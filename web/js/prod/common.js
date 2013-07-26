@@ -330,7 +330,7 @@ $.ajaxSetup({
 	 * 
 	 * @param  {Event}	e
 	 */
-	var BuyButtonHandler = function BuyButtonHandler() {
+	var buyButtonHandler = function buyButtonHandler() {
 		var button = $(this),
 			url = button.attr('href');
 		// end of vars
@@ -365,7 +365,7 @@ $.ajaxSetup({
 	
 	$(document).ready(function() {
 		$('body').bind('markcartbutton', markCartButton);
-		$('body').on('click', '.jsBuyButton', BuyButtonHandler);
+		$('body').on('click', '.jsBuyButton', buyButtonHandler);
 		$('body').on('buy', '.jsBuyButton', buy);
 	});
 }());
@@ -507,11 +507,11 @@ $.ajaxSetup({
 				product = data.product,
 				tmpitem = {
 					'title': product.name,
-					'price' : printPrice(product.price),
+					'price' : window.printPrice(product.price),
 					'imgSrc': product.img,
 					'productLink': product.link,
 					'totalQuan': basket.full_quantity,
-					'totalSum': printPrice(basket.full_price),
+					'totalSum': window.printPrice(basket.full_price),
 					'linkToOrder': basket.link
 				};
 			// end of vars
@@ -522,11 +522,11 @@ $.ajaxSetup({
 			myThingsAnalytics(data);
 			adAdriver(data);
 
-			if ( !blackBox ) {
+			if ( !window.blackBox ) {
 				return false;
 			}
 			
-			blackBox.basket().add( tmpitem );
+			window.blackBox.basket().add( tmpitem );
 		};
 	//end of vars
 
@@ -1326,13 +1326,13 @@ $(document).ready(function(){
 
 			if ( location.href.match(/sort=/) && location.href.match(/page=/) ) { // Redirect on first in sort case
 				$(this).bind('click', function(){
-					docCookies.setItem( false, 'infScroll', 1, 4*7*24*60*60, '/' );
+					window.docCookies.setItem('infScroll', 1, 4*7*24*60*60, '/' );
 					location.href = location.href.replace(/page=\d+/,'');
 				});
 			}
 			else {
 				$(this).bind('click', function() {
-					docCookies.setItem( false, 'infScroll', 1, 4*7*24*60*60, '/' );
+					window.docCookies.setItem('infScroll', 1, 4*7*24*60*60, '/' );
 					var next = $('div.pageslist:first li:first');
 
 					if ( next.hasClass('current') ) {
@@ -1349,7 +1349,7 @@ $(document).ready(function(){
 					$('div.pageslist ul').append( next )
 										.find('a')
 										.bind('click', function(){
-											docCookies.removeItem( 'infScroll' );
+											window.docCookies.removeItem( 'infScroll' );
 										});
 					$('div.allpager').addClass('mChecked');
 					checkScroll();
@@ -1358,7 +1358,7 @@ $(document).ready(function(){
 			}
 		});
 
-		if( docCookies.hasItem( 'infScroll' ) ){
+		if( window.docCookies.hasItem( 'infScroll' ) ){
 			$('div.allpager:first').trigger('click');
 		}
 	}
@@ -1409,9 +1409,9 @@ $(document).ready(function(){
 				}
 			},
 			onClose: function() {			
-				if( !docCookies.hasItem('geoshop') ) {
+				if( !window.docCookies.hasItem('geoshop') ) {
 					var id = $('#jsregion').data('region-id');
-					docCookies.setItem( false, "geoshop", id, 31536e3, "/");
+					window.docCookies.setItem("geoshop", id, 31536e3, "/");
 					// document.location.reload()
 				}
 			}
@@ -1502,7 +1502,7 @@ $(document).ready(function(){
 	});
    
 	/* GEOIP fix */
-	if ( !docCookies.hasItem('geoshop') ) {
+	if ( !window.docCookies.hasItem('geoshop') ) {
 		getRegions();
 	}
 	
@@ -2278,7 +2278,7 @@ $(document).ready(function(){
 					}
 					
 					subPopup.html('<span class="bSubscribeLightboxPopup__eTitle mType">Спасибо! подтверждение подписки отправлено на указанный e-mail</span>');
-					docCookies.setItem(false, 'subscribed', 1, 157680000, '/');
+					window.docCookies.setItem('subscribed', 1, 157680000, '/');
 
 					if( typeof(_gaq) !== 'undefined' ) {
 						_gaq.push(['_trackEvent', 'Account', 'Emailing sign up', 'Page top']);
@@ -2301,7 +2301,7 @@ $(document).ready(function(){
 					var url = $(this).data('url');
 
 					subPopup.slideUp(300, subscribeLater);
-					docCookies.setItem(false, 'subscribed', 0, 157680000, '/');
+					window.docCookies.setItem('subscribed', 0, 157680000, '/');
 					$.post(url);
 
 					return false;

@@ -1,7 +1,7 @@
 /**
  * WARNING!
  *
- * @requires jQuery, simple_templating, pageConfig
+ * @requires jQuery, simple_templating, docCookies
  */
 
 
@@ -15,7 +15,7 @@
  * @constructor
  */
 function BlackBox( updateUrl, mainContatiner ) {
-	this.updUrl = (!docCookies.hasItem('enter') ||  !docCookies.hasItem('enter_auth')) ? updateUrl += '?ts=' + new Date().getTime() + Math.floor(Math.random() * 1000) : updateUrl;
+	this.updUrl = ( !window.docCookies.hasItem('enter') || !window.docCookies.hasItem('enter_auth') ) ? updateUrl += '?ts=' + new Date().getTime() + Math.floor(Math.random() * 1000) : updateUrl;
 	this.mainNode = mainContatiner;
 }
 
