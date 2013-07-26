@@ -27,13 +27,15 @@ class StatisticsPage extends \View\DefaultLayout {
         $content = $this->params['content'];
         $heads = $this->params['heads'];
 
-        // Делегируем всё построение контента функциям, названия которых и параметры запуска которых храняться в $content
+
         foreach ($content as $key => $value) {
+            // Делегируем всё построение контента функциям, названия которых и параметры запуска которых храняться в $content
             /*$funcname = 'slot_'.$key."_Html";
             if ( method_exists($this, $funcname) ) {
                 $html_out .= $this->$funcname($value);
             }*/
 
+            // Делегируем всё построение контента классам (типа фабрика),
             $htmlClass = '\View\Livetex\Html' . $key . 'Content';
             if (!class_exists($htmlClass)) {
                 $htmlClass = '\View\Livetex\HtmlBasicContent';
@@ -48,8 +50,8 @@ class StatisticsPage extends \View\DefaultLayout {
 
         }
 
-        $html_out = $this->slotSidebar() . $this->wr($html_out,'bPromoCatalog');
-        $html_out = $this->wr($html_out, 'lts_wrap');
+        $html_out = $this->slotSidebar() . $this->wr($html_out,'bPromoCatalog'); // добавим сайдбар
+        $html_out = $this->wr($html_out, 'lts_wrap'); // обернём во враппер
         $html_out .= '<center> <p></p> <p>< -- end of Statistics page --></p> <p><img /></p> </center>';
 
         return $html_out;
@@ -78,6 +80,7 @@ class StatisticsPage extends \View\DefaultLayout {
 
 
 
+    /*
     private function operator_info($that) {
         if ( !isset( $this->params['stat_params']['operId']['value'] ) ) return $this->error;
         $operId = $this->params['stat_params']['operId']['value'];
@@ -97,6 +100,7 @@ class StatisticsPage extends \View\DefaultLayout {
 
         return false;
     }
+    */
 
 
     /*
