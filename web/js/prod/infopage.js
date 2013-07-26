@@ -138,13 +138,13 @@ $(document).ready(function(){
 				input.addClass('mError');
 			}
 			return false;
-		}
+		};
 
 		$('.subscribe-form__btn').bind('click', subscribing);
 	}
 	
 
-	if ($('.subscribe-form__email').length && $('.show_flocktory_popup').length) {
+	if ( $('.subscribe-form__email').length && $('.show_flocktory_popup').length ) {
 		var input_friend = $('.subscribe-form__email');
 
 		var subscribing_friend = function subscribing_friend() {
@@ -180,7 +180,7 @@ $(document).ready(function(){
 					l.parentNode.insertBefore(s, l);   
 				})();
 			}
-		}
+		};
 
 		$('.subscribe-form__btn').bind('click', subscribing_friend);
 	}
@@ -196,13 +196,13 @@ $(document).ready(function(){
 	 */
 	if ( $('.getProductList').length ) {
 		// console.log('yes!')
-		$('.getProductList').each(function( i ) {
+		$('.getProductList').each(function() {
 			var wrapper = $(this),
 				productList = wrapper.data('product'),
 				url = '/products/widget/'+productList;
 			// end of vars
 
-			$.get(url, function(res){
+			$.get(url, function( res ) {
 				if ( !res.success ) {
 					return false;
 				}
@@ -258,36 +258,37 @@ $(document).ready(function(){
 			$("#phonemask").mask("8nnnnnnnnnnnnnnnnn", { placeholder: " ", maxlength: 10 } );
 		}
 		
-		function emptyValidation( node ) {
-			if( node.val().replace(/\s/g,'') === '' ) {
+		var emptyValidation = function emptyValidation( node ) {
+			if ( node.val().replace(/\s/g,'') === '' ) {
 				node.addClass('mEmpty');
 				node.after( $('<span class="mEmpty">(!) Пожалуйста, верно заполните поле</span>') );
 
 				return false;
 			}
 			else {
-				if( node.hasClass('mEmpty') ) {
+				if ( node.hasClass('mEmpty') ) {
 					node.removeClass('mEmpty');
 					node.parent().find('.mEmpty').remove();
 				}
 			}
+
 			return true;
-		}
+		};
 
 		$('#oneClickPromo input[type=text]').change( function() {
 			emptyValidation( $(this) );
 		});
 		
-		function _f_success() { 
+		var _f_success = function _f_success() { 
 			$('#f_success').show();
 			$('#f_init').hide();
-		}
+		};
 		
-		function _f_error() { 
+		var _f_error = function _f_error( button ) { 
 			$('#oneClickPromo input[type=text]').removeAttr('disabled');
 			$('#f_init h2').text('Произошла ошибка :( Попробуйте ещё');
 			button.text('Отправить предзаказ');
-		}
+		};
 		
 		$('.bBigOrangeButton').click( function(e) {
 			var button = $(this),
@@ -312,13 +313,13 @@ $(document).ready(function(){
 				data: data,
 				success: function( resp ) {
 					if ( !( 'success' in resp ) ) {
-						_f_error();
+						_f_error(button);
 
 						return false;
 					}
 
 					if ( resp.success !== 'ok' ) {
-						_f_error();
+						_f_error(button);
 
 						return false;
 					}
@@ -338,7 +339,7 @@ $(document).ready(function(){
 		document.getElementById("requirementsFullInfoHref").style.cursor="pointer";
 
 		$('#requirementsFullInfoHref').bind('click', function() {
-		  $('.bCreditLine2').toggle();
+			$('.bCreditLine2').toggle();
 		});
 
 		var creditOptions = $('#creditOptions').data('value');
@@ -346,8 +347,8 @@ $(document).ready(function(){
 		var relations = $('#relations').data('value');
 
 		for ( var i = 0; i < creditOptions.length; i++){
-		  creditOption = creditOptions[i];
-		  $('<option>').val(creditOption.id).text(creditOption.name).appendTo("#productSelector");
+			var creditOption = creditOptions[i];
+			$('<option>').val(creditOption.id).text(creditOption.name).appendTo("#productSelector");
 		}
 
 		$('#productSelector').change(function() {
@@ -356,17 +357,19 @@ $(document).ready(function(){
 
 			$('#bankProductInfoContainer').empty();
 
-			for ( i in bankRelations ) {
-				var dtmpl = {};
+			for ( var i in bankRelations ) {
+				var dtmpl = {},
+					programNames = '';
+				// end of vars
 
 				dtmpl.bankName = bankInfo[i].name;
 				dtmpl.bankImage = bankInfo[i].image;
-				programNames = '';
+				
 
-				for ( j in bankRelations[i] ) {
+				for ( var j in bankRelations[i] ) {
 					programNames += "<h4>" + bankInfo[i].programs[bankRelations[i][j]].name + "</h4>\r\n<ul>";
 
-					for ( k in bankInfo[i].programs[bankRelations[i][j]].params ) {
+					for ( var k in bankInfo[i].programs[bankRelations[i][j]].params ) {
 						programNames += "\t<li>" + bankInfo[i].programs[bankRelations[i][j]].params[k] + "</li>\r\n";
 					}
 
@@ -385,30 +388,30 @@ $(document).ready(function(){
 	}
 
 	/* Mobile apps inline */
-	if( $('.bMobileApps').length ) {
+	if ( $('.bMobileApps').length ) {
 		var openSelector = '';
 
-		function hideQRpopup() {
+		var hideQRpopup = function hideQRpopup() {
 			$(openSelector).hide();
-		}
+		};
 
-		function showQRpopup( selector ) {
+		var showQRpopup = function showQRpopup( selector ) {
 			openSelector = selector;
 			$(selector).show();
 
 			return false;
-		}
+		};
 
-		$('body').bind('click.mob', hideQRpopup)
-		$("div.bMobDown").click(function(e){
+		$('body').bind('click.mob', hideQRpopup);
+		$("div.bMobDown").click(function( e ) {
 			e.stopPropagation();
-		})
+		});
 
 		$('.bMobDown__eClose').click( function() {
 			hideQRpopup();
 
 			return false;
-		})
+		});
 
 		$(".android-load").click(function () {
 			showQRpopup(".android-block");
@@ -430,7 +433,7 @@ $(document).ready(function(){
 	}
 
 	// login form toggle
-	if ($('#hideLoginform').length) {
+	if ( $('#hideLoginform').length ) {
 		$('#hideLoginform').bind('click', function () {
 			var loginform = $('#login-form');
 
@@ -445,14 +448,14 @@ $(document).ready(function(){
 	/*paginator*/
 	var EnterPaginator = function( domID,totalPages, visPages, activePage ) {
 		
-		self = this;
+		var self = this;
 
 		self.inputVars = {
 			domID: domID, // id элемента для пагинатора
 			totalPages:totalPages, //общее количество страниц
 			visPages:visPages?visPages:10, // количество видимых сраниц
 			activePage:activePage?activePage:1 // текущая активная страница
-		}
+		};
 
 		var pag = $('#'+self.inputVars.domID), // пагинатор
 			pagW = pag.width(), // ширина пагинатора
@@ -461,24 +464,14 @@ $(document).ready(function(){
 			onePage = pagW / self.inputVars.visPages, // ширина одной цифры на пагинаторе
 			center = Math.round(self.inputVars.visPages/2);
 		// end of vars
-		
-		function init() {
-			pag.append('<div class="bPaginator_eWrap"></div>');
-			pag.append('<div class="bPaginatorSlider"><div class="bPaginatorSlider_eWrap"><div class="bPaginatorSlider_eFill" style="width:'+eSliderFillW+'px"></div></div></div>');
-			for ( var i = 0; i < self.inputVars.totalPages; i++ ) {
-				$('.bPaginator_eWrap', pag).append('<a class="bPaginator_eLink" href="#' + i + '">' + (i + 1) + '</a>');
 
-				if ( (i + 1) === self.inputVars.activePage ) {
-					$('.bPaginator_eLink', pag).eq(i).addClass('active');
-				}
-			}
-			var realLinkW = $('.bPaginator_eLink', pag).width(); // реальная ширина цифр
+		var scrollingByBar = function scrollingByBar ( left ) {
+			var pagLeft = Math.round(left/onePageOnSlider);
 
-			$('.bPaginator_eLink', pag).css({'marginLeft':(onePage - realLinkW - 2)/2, 'marginRight':(onePage - realLinkW - 2)/2}); // размазываем цифры по ширине слайдера
-			$('.bPaginator_eWrap', pag).addClass('clearfix').width(onePage * self.inputVars.totalPages); // устанавливаем ширину wrap'а, добавляем ему очистку
-		}
+			$('.bPaginator_eWrap', pag).css('left', -(onePage * pagLeft));
+		};
 
-		function enableHandlers() {
+		var enableHandlers = function enableHandlers() {
 			// биндим хандлеры
 			var clicked = false,
 				startX = 0,
@@ -487,7 +480,7 @@ $(document).ready(function(){
 			
 			$('.bPaginatorSlider', pag).bind('mousedown', function(e){
 				startX = e.pageX;
-				nowLeft = parseInt($('.bPaginatorSlider_eFill', pag).css('left'));
+				nowLeft = parseInt($('.bPaginatorSlider_eFill', pag).css('left'), 10);
 				clicked = true;
 			});
 
@@ -508,18 +501,28 @@ $(document).ready(function(){
 						scrollingByBar(newLeft);
 					}
 				}
-			})
-		}
+			});
+		};
 
-		function scrollingByBar ( left ) {
-			var pagLeft = Math.round(left/onePageOnSlider);
+		var init = function init() {
+			pag.append('<div class="bPaginator_eWrap"></div>');
+			pag.append('<div class="bPaginatorSlider"><div class="bPaginatorSlider_eWrap"><div class="bPaginatorSlider_eFill" style="width:'+eSliderFillW+'px"></div></div></div>');
+			for ( var i = 0; i < self.inputVars.totalPages; i++ ) {
+				$('.bPaginator_eWrap', pag).append('<a class="bPaginator_eLink" href="#' + i + '">' + (i + 1) + '</a>');
 
-			$('.bPaginator_eWrap', pag).css('left', -(onePage * pagLeft));
-		}
+				if ( (i + 1) === self.inputVars.activePage ) {
+					$('.bPaginator_eLink', pag).eq(i).addClass('active');
+				}
+			}
+			var realLinkW = $('.bPaginator_eLink', pag).width(); // реальная ширина цифр
+
+			$('.bPaginator_eLink', pag).css({'marginLeft':(onePage - realLinkW - 2)/2, 'marginRight':(onePage - realLinkW - 2)/2}); // размазываем цифры по ширине слайдера
+			$('.bPaginator_eWrap', pag).addClass('clearfix').width(onePage * self.inputVars.totalPages); // устанавливаем ширину wrap'а, добавляем ему очистку
+		};
 
 		self.setActive = function ( page ) {
-			var left = parseInt($('.bPaginator_eWrap', pag).css('left')), // текущее положение пагинатора
-				barLeft = parseInt($('.bPaginatorSlider_eFill', pag).css('left')), // текущее положение бара
+			var left = parseInt($('.bPaginator_eWrap', pag).css('left'), 10), // текущее положение пагинатора
+				barLeft = parseInt($('.bPaginatorSlider_eFill', pag).css('left'), 10), // текущее положение бара
 				nowLeftElH = Math.round(left/onePage) * (-1), // количество скрытых элементов
 				diff = -(center - (page - nowLeftElH)); // на сколько элементов необходимо подвинуть пагинатор для центрирования
 			// end of vars
@@ -531,9 +534,9 @@ $(document).ready(function(){
 				left = 0;
 				barLeft = 0;
 			}
-			else if ( page > self.inputVars.totalPages-center ) {
-				left = Math.round(self.inputVars.totalPages-self.inputVars.visPages)*onePage*(-1);
-				barLeft = Math.round(self.inputVars.totalPages-self.inputVars.visPages)*onePageOnSlider;
+			else if ( page > self.inputVars.totalPages - center ) {
+				left = Math.round(self.inputVars.totalPages - self.inputVars.visPages) * onePage*(-1);
+				barLeft = Math.round(self.inputVars.totalPages - self.inputVars.visPages) * onePageOnSlider;
 			}
 			else {
 				left = left - (diff * onePage);
@@ -542,11 +545,11 @@ $(document).ready(function(){
 
 			$('.bPaginator_eWrap').animate({'left': left});
 			$('.bPaginatorSlider_eFill', pag).animate({'left': barLeft});
-		}
+		};
 
 		init();
 		enableHandlers();
-	}
+	};
 
 	/* promo catalog */
 	if ( $('#promoCatalog').length ) {
@@ -563,7 +566,7 @@ $(document).ready(function(){
 
 				$('.bPromoCatalogSliderWrap').append(slideTmpl);
 
-				if ( $('.bPromoCatalogSliderWrap_eSlideLink').eq(slide).attr('href') == '' ) {
+				if ( $('.bPromoCatalogSliderWrap_eSlideLink').eq(slide).attr('href') === '' ) {
 					$('.bPromoCatalogSliderWrap_eSlideLink').eq(slide).removeAttr('href');
 				}
 
@@ -576,7 +579,7 @@ $(document).ready(function(){
 		//переменные
 		var slider_SlideW = $('.bPromoCatalogSliderWrap_eSlide').width(),	// ширина одного слайда
 			slider_WrapW = $('.bPromoCatalogSliderWrap').width( slider_SlideW * slider_SlideCount + (920/2 - slider_SlideW/2)),	// установка ширины обертки
-			nowSlide = 0; 	//текущий слайд
+			nowSlide = 0;	//текущий слайд
 		// end of vars
 
 		//листание стрелками
@@ -602,7 +605,7 @@ $(document).ready(function(){
 		});
 
 		//перемещение слайдов на указанный слайд
-		var moveSlide = function(slide) {
+		var moveSlide = function moveSlide( slide ) {
 			if ( slide === 0 ) {
 				$('.bPromoCatalogSlider_eArrow.mArLeft').hide();
 			}
@@ -628,7 +631,7 @@ $(document).ready(function(){
 		var hash = window.location.hash;
 
 		if ( hash.indexOf('slide') + 1 ) {
-			var toSlide = parseInt(hash.slice(6)) - 1;
+			var toSlide = parseInt(hash.slice(6), 10) - 1;
 
 			moveSlide(toSlide);
 		}
