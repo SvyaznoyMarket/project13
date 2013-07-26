@@ -1086,7 +1086,6 @@ upi:			for( var item = 0, boxitems = self.chosenBox().itemList(); item < boxitem
         button.text('Оформляется...')
         Blocker.block()
 
-
         var showOrderAlert = function(msg, redirect){
             var id = 'orderAlert'
             var block = '<div id="'+id+'" class="popup">' +
@@ -1120,7 +1119,6 @@ upi:			for( var item = 0, boxitems = self.chosenBox().itemList(); item < boxitem
                 toSend.push( { name: 'order[pin]', value: SertificateCard.getPIN() })
             }
         var startAjaxOrderTime = new Date().getTime()
-
 
         $.ajax({
             url: form.attr('action'),
@@ -1298,7 +1296,6 @@ upi:			for( var item = 0, boxitems = self.chosenBox().itemList(); item < boxitem
                         window.location = data.data.redirect;
                     }
                 });
-
             },
             error: function() {
                 button.text('Попробовать еще раз')
