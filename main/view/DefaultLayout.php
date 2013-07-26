@@ -469,13 +469,15 @@ class DefaultLayout extends Layout {
         $breadcrumbs = $this->getParam('breadcrumbs');
         $region_id = \App::user()->getRegion()->getId();
         $smantic = new \View\Partners\Sociomantic( $region_id );
-
+        $return = '';
 
         // на всех страницах сайта, кроме... "спасибо за заказ" и /orders/new
-        if (!in_array($routeName, [
+        if (in_array($routeName, [
             'order.create',
             'order.complete',
         ])) {
+            return ''; // на этих страницах Sociomantic подключается через JS
+        }else{
             // для всех страниц, кроме тех на которых код отправиться ajax'ом
             $return = $this->render($smantic_path.'01-homepage');
         }
@@ -522,7 +524,7 @@ class DefaultLayout extends Layout {
 
         }*/
 
-        return $return;
+        return isset($return) ? $return : false;
     }
 
 
