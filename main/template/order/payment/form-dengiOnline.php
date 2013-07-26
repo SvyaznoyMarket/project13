@@ -6,6 +6,14 @@
   <input type="hidden" name="amount" value="<?= $order->getPaySum() ?>">
   <input type="hidden" name="mode_type" value="<?= $modeType ?>">
   <a class="bOrangeButton" href="#" onclick="$('form.dengiOnline').submit();return false;">Оплатить заказ</a>
-  <a href="<?= $page->url('content', ['token' => 'how_pay']) ?>">Инструкция для оплаты через QIWI или WebMoney</a>
+
+  <?
+  if($paymentMethod->isWebmoney()) {
+    $linkText = 'Инструкция для оплаты через WebMoney';
+  } else {
+    $linkText = 'Инструкция для оплаты';
+  }
+  ?>
+  <a href="<?= $page->url('content', ['token' => 'how_pay']) ?>"><?= $linkText ?></a>
 </form>
 

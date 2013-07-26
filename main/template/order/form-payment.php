@@ -12,7 +12,7 @@
 <? elseif ($provider instanceof \Payment\PsbInvoice\Provider): ?>
     <?= $page->render('order/payment/form-psbInvoice', array('provider' => $provider, 'order' => $order)) ?>
 <? elseif ($paymentUrl): ?>
-    <?= $page->render('order/payment/form-paymentUrl', array('paymentUrl' => $paymentUrl)) ?>
+    <?= $page->render('order/payment/form-paymentUrl', array('paymentUrl' => $paymentUrl, 'paymentMethod' => $paymentMethod)) ?>
 <? elseif ($paymentMethod->isWebmoney()): ?>
-    <?= $page->render('order/payment/form-dengiOnline', array('order' => $order, 'modeType' => 2)) ?>
+    <?= $page->render('order/payment/form-dengiOnline', array('order' => $order, 'modeType' => 2, 'paymentMethod' => $paymentMethod)) ?>
 <? endif ?>
