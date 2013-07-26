@@ -11,8 +11,10 @@ class StatisticsAction {
     private $chatId = null;
     private $actions = [];
     private $content = [];
+    private $heads = [];
     private $siteId = 41836; // TODO: move in config
     private $aside_menu = [];
+    private $operators_list = [];
 
 
 
@@ -27,7 +29,6 @@ class StatisticsAction {
         $operId = $request->get('operId');
         if ($operId) $this->operId = $operId;
 
-
         $siteId = $request->get('siteId');
         if ($siteId) $this->siteId = $siteId;
 
@@ -36,11 +37,16 @@ class StatisticsAction {
 
 
         $actions_get = $request->get('actions');
-        $this->actions = [];
+        //$this->actions = [];
         if ( !empty($actions_get) ) {
             $actions = explode('|',$actions_get);
-            if ($actions and is_array($actions) ) $this->actions = $actions;
+            if ($actions and is_array($actions) ) {
+                $actions = array_unique($actions);
+                $this->actions = $actions;
+            }
         }
+
+        //$this->l($this->actions, 'actions_get');
 
 
         $date_begin = $request->get('date_begin');
@@ -63,9 +69,9 @@ class StatisticsAction {
         //$this->date_end = '2013-07-25';
 
         $this->addMenu('Общая статистика', '/livetex-statistics');
-        $this->addMenu('Статистика чатов', '/livetex-statistics?actions=chat');
-        $this->addMenu('Статистика операторов', '/livetex-statistics?actions=allOperators');
-        $this->addMenu('Статистика сайтов', '/livetex-statistics?actions=site');
+        $this->addMenu('Статистика чатов', '/livetex-statistics?actions=Chat');
+        $this->addMenu('Статистика операторов', '/livetex-statistics?actions=AllOperators');
+        $this->addMenu('Статистика сайтов', '/livetex-statistics?actions=Site');
         $this->addMenu('[ Главная страница сайта ]', '/');
 
     }
@@ -85,11 +91,12 @@ class StatisticsAction {
         //$region = $user->getRegion();
 
         $this->init($request);
-        $this->selectActions($request);
+        $this->actionsSelect($request);
 
         /* загружаем список операторов в любом случае (чтобы обращаться к нему в случае надобности) ... */
         $operators = $API->method('Operator.GetList');
 
+        $operators_list = & $this->operators_list;
         $operators_list = []; // отформатируем список операторов, чтобы обращаться к ним как $operators_list[$ID]
         if ( isset( $operators->response) ) {
             foreach( $operators->response as $item) {
@@ -99,32 +106,31 @@ class StatisticsAction {
 
         $operators_count_html = // Количество операторов
             (isset($operators->response) and $operators->response)
-                ? count($operators->response)
-                : '*NOT_SET*';
+                ? count($operators->response) : '*NOT_SET*';
 
         
         /* ... но отображаем список операторов в контенте только, если нужно есть соответствующий action в $actions */
-        if (in_array('allOperators',$actions)) {
+        if (in_array('AllOperators',$actions)) {
             $this->actionsAllOperators($operators);
         }        
 
         // получим статистику чата, если нужно:
-        if (in_array('chat',$actions)) {
+        if (in_array('Chat',$actions)) {
             $this->actionsChat();
         }
 
         // получим статистику сайтов:
-        if (in_array('site',$actions)) {
+        if (in_array('Site',$actions)) {
             $this->actionsSite();
         }
 
         // Получим статистику выбранного оператора
-        if (in_array('oneOperator',$actions)) {
+        if (in_array('OneOperator',$actions)) {
             $this->actionsOneOperator();
         }
 
         // Получим общую статистику
-        if (in_array('general',$actions)) {
+        if (in_array('General',$actions)) {
             $this->actionsGeneral();
         }
 
@@ -143,7 +149,9 @@ class StatisticsAction {
         $page->setParam('operators', $operators);
         $page->setParam('operators_list', $operators_list);
         $page->setParam('operators_count_html', $operators_count_html);
+        //$this->l($content,'content20');
         $page->setParam('content', $content);
+        $page->setParam('heads', $this->heads);
         $page->setParam('actions', $actions);
         $page->setParam('aside_menu', $this->aside_menu);
 
@@ -164,22 +172,34 @@ class StatisticsAction {
                 'operator_id' => $this->operId,
             ]);
             //$this->l($operator_chat, '$operator_chat');
-            $content['operator_chat'] = $operator_chat;
+            $content['OperatorChat'] = $operator_chat;
+            $this->heads['OperatorChat']['big_head'] = 'LiveTex: Статистика чатов оператора';
         }
 
 
         if ( !empty($this->siteId) ) {
-            $site_chat = $API->testmethod('Site.ChatStat', [
+            $site_chat = $API->method('Site.ChatStat', [
                 'date_begin' => $this->date_begin,
                 'date_end' => $this->date_end,
                 'site_id' => $this->siteId,
             ]);
             //$this->l($site_chat,'site_chat');
-            $content['site_chat'] = $site_chat;
+            $content['SiteChat'] = $site_chat;
+            $this->heads['SiteChat']['big_head'] = 'LiveTex: Статистика чатов сайта';
         }
 
-        $chat_active = $API->testmethod('Chat.GetActive', []);
-        $content['chat_active'] = $chat_active;
+        $chat_active = $API->method('Chat.GetActive', []);
+
+        $this->heads['ChatHistory']['big_head'] = 'LiveTex: Статистика истории чатов';
+        $content['ChatHistory'] = $API->testmethod('Site.ChatHistory', [
+            'date_begin' => $this->date_begin,
+            'date_end' => $this->date_end,
+            'site_id' => $this->siteId,
+        ]);
+        //$this->l($chat_active,'chat_active');
+
+        $content['ChatActive'] = $chat_active;
+        $this->heads['ChatActive']['big_head'] = 'LiveTex: Статистика активных чатов';
         //$this->l($chat_active,'chat_active');
     }
     
@@ -188,7 +208,7 @@ class StatisticsAction {
     private function actionsSite() {
         $API = &$this->API;
         $content = &$this->content;
-        $content['site'] = $API->testmethod('Site.GetList');
+        $content['Site'] = $API->testmethod('Site.GetList');
     }
 
 
@@ -196,37 +216,45 @@ class StatisticsAction {
         $API = &$this->API;
         $content = &$this->content;
 
-        $content['general'] = $API->testmethod('Site.ChatHistory', [
+        $this->heads['General']['big_head'] = 'LiveTex: Общая статистика';
+        $content['General'] = $API->testmethod('Site.ChatHistory', [
             'date_begin' => $this->date_begin,
             'date_end' => $this->date_end,
             'site_id' => $this->siteId,
         ]);
 
-        $this->l( $content['general'] );
+        //$this->l( $content['general'] );
     }
-    
-    
-    
+
+
+    /*
+    * Формируем слот с html с инфой об выбранном операторе
+    */
     private function actionsOneOperator() {
-        $API = &$this->API; $content = &$this->content;
-        $oneOperator = $API->testmethod('Operator.ChatStat', [
+        $API = &$this->API;
+        $content = &$this->content;
+        $OneOperator = $API->testmethod('Operator.ChatStat', [
             'date_begin' => $this->date_begin,
             'date_end' => $this->date_end,
             'operator_id' => $this->operId,
             'site_id' => $this->siteId,
         ]);
 
-        if ($oneOperator)
-            $content['oneOperator'] = $oneOperator;
+        //$content['OperatorInfo'] = $operators_list[];
 
-        //$this->l($oneOperator, 'oneOperator'); // Временный метод, используется для вывода отладочной инфы
+        if ($OneOperator) {
+            $content['OneOperator'] = $OneOperator;
+            $this->heads['OneOperator']['big_head'] = 'LiveTex: Cтатистика оператора';
+        }
+        //$this->l($oneOperator, 'oneOperator');
     }
     
     
     
     private function actionsAllOperators($operators) {
         $content = &$this->content;
-        $content['allOperators'] = $operators;
+        $content['AllOperators'] = $operators;
+        $this->heads['AllOperators']['big_head'] = 'LiveTex: Cтатистика операторов';
     }
 
     
@@ -239,23 +267,24 @@ class StatisticsAction {
      *
      * @param $request
      */
-    private function selectActions($request) {
+    private function actionsSelect($request) {
         $actions = &$this->actions;
+        //$actions = array_unique($actions);
 
         if (!empty( $this->operId )) {
-            $actions[] = 'oneOperator';
+            $actions[] = 'OneOperator';
         }
 
         if ( $request->get('chat') ) {
-            $actions[] = 'chat';
+            $actions[] = 'Chat';
         }
 
         if ( $request->get('site') ) {
-            $actions[] = 'site';
+            $actions[] = 'Site';
         }
 
         if ( empty($actions) ) {
-            $actions[] = 'general';
+            $actions[] = 'General';
             //$actions[] = 'site';
             //$actions[] = 'allOperators';
         }

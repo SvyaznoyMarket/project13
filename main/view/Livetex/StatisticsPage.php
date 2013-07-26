@@ -25,13 +25,27 @@ class StatisticsPage extends \View\DefaultLayout {
     public function slotContent() {
         $html_out = '';
         $content = $this->params['content'];
+        $heads = $this->params['heads'];
 
         // Делегируем всё построение контента функциям, названия которых и параметры запуска которых храняться в $content
         foreach ($content as $key => $value) {
-            $funcname = 'slot_'.$key."_Html";
+            /*$funcname = 'slot_'.$key."_Html";
             if ( method_exists($this, $funcname) ) {
                 $html_out .= $this->$funcname($value);
+            }*/
+
+            $htmlClass = '\View\Livetex\Html' . $key . 'Content';
+            if (!class_exists($htmlClass)) {
+                $htmlClass = '\View\Livetex\HtmlBasicContent';
             }
+
+            $big_head = isset($heads[$key]['big_head']) ? $heads[$key]['big_head'] : '';
+            $head_text = isset($heads[$key]['head_text']) ? $heads[$key]['head_text'] : '';
+            $htmlView = new $htmlClass($big_head, $head_text);
+            $out = $htmlView->content($value);
+
+            $html_out .= $this->render('partner-counter/livetex/stat_content', $this->params + ['htmlcontent' => $out]);
+
         }
 
         $html_out = $this->slotSidebar() . $this->wr($html_out,'bPromoCatalog');
@@ -83,58 +97,6 @@ class StatisticsPage extends \View\DefaultLayout {
 
         return false;
     }
-
-
-    /*
-     * Формируем слот с html с инфой об выбранном операторе
-     */
-    public function slot_oneOperator_Html($response = null)
-    {
-        $htmlView = new \View\Livetex\HtmlOneOperatorContent('LiveTex: Статистика оператора');
-        $out = $htmlView->content($response);
-        $html_out = $this->render('partner-counter/livetex/stat_content', $this->params + ['htmlcontent' => $out]);
-        return $html_out;
-    }
-
-
-    public function slot_allOperators_Html($response = null)
-    {
-        $ClassName = '\View\Livetex\HtmlAllOperatorsContent';
-        $htmlView = new $ClassName('LiveTex: Статистика операторов');
-        $out = $htmlView->content($response);
-        $html_out = $this->render('partner-counter/livetex/stat_content', $this->params + ['htmlcontent' => $out]);
-        return $html_out;
-    }
-
-
-
-    public function slot_General_Html($response = null) {
-        $htmlView = new \View\Livetex\HtmlBasicContent('LiveTex: Статистика оператора');
-        $out = $htmlView->content($response);
-        $html_out = $this->render('partner-counter/livetex/stat_content', $this->params + ['htmlcontent' => $out]);
-        return $html_out;
-    }
-
-
-
-    public function slot_site_Html($response = null)
-    {
-        $htmlView = new \View\Livetex\HtmlSiteContent();
-        $out = $htmlView->content($response);
-        $html_out = $this->render('partner-counter/livetex/stat_content', $this->params + ['htmlcontent' => $out]);
-        return $html_out;
-    }
-
-
-
-    public function slot_site_chat_Html($response = null)
-    {
-        $htmlView = new \View\Livetex\HtmlSiteChatContent('LiveTex: Статистика чатов сайта');
-        $out = $htmlView->content($response);
-        $html_out = $this->render('partner-counter/livetex/stat_content', $this->params + ['htmlcontent' => $out]);
-        return $html_out;
-    }
-
 
 
     /*
