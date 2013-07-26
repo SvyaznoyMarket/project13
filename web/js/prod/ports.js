@@ -125,6 +125,49 @@ window.ANALYTICS = {
     //     })(document, window, "yandex_metrika_callbacks");
     // },
 
+    LiveTexJS: function () {
+        var LTData = $('#LiveTexJS').data('value');
+        var liveTexID = LTData.livetexID,
+            liveTex_object = true;
+
+        window.LiveTex = {
+            onLiveTexReady: function () {
+                LiveTex.setName(LTData.username);
+            },
+
+            invitationShowing: false,
+
+            addToCart: function (prodId, prodName, link) {
+                LiveTex.setManyPrechatFields({
+                    'Department': 'Marketing',
+                    'Product': prodId,
+                    'Ref': link,
+                    'userid': LTData.userid
+                });
+
+                if (!LiveTex.invitationShowing) {
+                    LiveTex.showInvitation('Здравствуйте! Вы добавили корзину ' + prodName + '. Может, у вас возникли вопросы и я могу чем-то помочь?');
+                    LiveTex.invitationShowing = true;
+                }
+
+            } // end of addToCart function
+
+        }; // end of LiveTex Object
+
+        $(document).load(function() {
+            (function() {
+                var lt = document.createElement('script');
+                lt.type ='text/javascript';
+                lt.async = true;
+                lt.src = 'http://cs15.livetex.ru/js/client.js';
+                var sc = document.getElementsByTagName('script')[0];
+                if ( sc ) sc.parentNode.insertBefore(lt, sc);
+                else  document.documentElement.firstChild.appendChild(lt);
+            })();
+        });
+
+    },
+
     marketgidProd : function() {
         var MGDate = new Date();
         document.write('<iframe src ="http://'

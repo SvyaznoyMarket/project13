@@ -109,7 +109,7 @@
 				_kmq.push(['record', 'Add to Cart', toKISS_pr ]);
 			}
 
-            if (typeof(LiveTex) == 'object') {
+            if (typeof(LiveTex) !== 'undefined') {
                 try{
                     LiveTex.addToCart(productData.article, productData.name, nowUrl);
                 }catch(err){
