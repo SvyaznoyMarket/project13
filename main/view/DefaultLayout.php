@@ -258,8 +258,7 @@ class DefaultLayout extends Layout {
 
 
     public function slotLiveTex() {
-        $return = '';
-        $return .= $this->tryRender('partner-counter/_liveTex');
+        $return = $this->tryRender('partner-counter/livetex/_slot_liveTex');
         return $return;
     }
 }
