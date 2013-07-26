@@ -41,10 +41,14 @@ $isOrderAnalytics = isset($isOrderAnalytics) ? $isOrderAnalytics : true;
     <p class="font16">Сумма для оплаты: <span id="paymentWithCard"><?= $page->helper->formatPrice($order->getPaySum()) ?></span> <span class="rubl">p</span></p>
     <div class="line pb15"></div>
 
-    <?= $page->tryRender('order/partner-counter/_flocktory-complete', ['order' => $order, 'userForm' => $userForm]) ?>
+    <? if(!empty($userForm)) { ?>
+        <?= $page->tryRender('order/partner-counter/_flocktory-complete', ['order' => $order, 'userForm' => $userForm]) ?>
+    <? } ?>
 <?php endforeach ?>
 
-<?= $page->render('partner-counter/_get4click', ['order' => $order, 'form' => $form] ) ?>
+<? if(!empty($form)) { ?>
+    <?= $page->render('partner-counter/_get4click', ['order' => $order, 'form' => $form] ) ?>
+<? } ?>
 
 <? if ($isCorporative): ?>
     <div class="mt32">

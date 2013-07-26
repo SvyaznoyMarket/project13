@@ -17,8 +17,6 @@
 <div id="jsProductCard" data-value="<?= $page->json($productData) ?>"></div>
 
 <div class="bProductSection__eLeft">
-    <section>
-
         <div id="planner3D" class="bPlanner3D fl" data-cart-sum-url="<?= $page->url('cart.sum') ?>" data-product="<?= $page->json(['id' => $product->getId()]) ?>"></div>
 
         <div class="bDescriptionProduct">
@@ -92,37 +90,30 @@
                     'url'      => $page->url('product.similar', ['productId' => $product->getId()]),
                 ]) ?>
             <? endif ?>
-
-
-    </section>
 </div><!--/left section -->
 
 <div class="bProductSection__eRight">
-    <aside>
+    <div class="bWidgetBuy mWidget">
+        <div class="bStoreDesc">
+            <?= $helper->render('product/__state', ['product' => $product]) // Есть в наличии ?>
 
-        <div class="bWidgetBuy mWidget">
-            <div class="bStoreDesc">
-                <?= $helper->render('product/__state', ['product' => $product]) // Есть в наличии ?>
+            <?= $helper->render('product/__price', ['product' => $product]) // Цена ?>
 
-                <?= $helper->render('product/__price', ['product' => $product]) // Цена ?>
+            <?= $helper->render('product/__notification-lowerPrice', ['product' => $product]) // Узнать о снижении цены ?>
 
-                <?= $helper->render('product/__notification-lowerPrice', ['product' => $product]) // Узнать о снижении цены ?>
+            <?//= $helper->render('product/__credit', ['product' => $product, 'creditData' => $creditData]) // Беру в кредит ?>
+        </div>
 
-                <?//= $helper->render('product/__credit', ['product' => $product, 'creditData' => $creditData]) // Беру в кредит ?>
-            </div>
+        <?= $helper->render('cart/__button-product', ['product' => $product, 'class' => 'btnBuy__eLink', 'value' => 'Купить', 'url' => $hasFurnitureConstructor ? $page->url('cart.product.setList') : null]) // Кнопка купить ?>
 
-            <?= $helper->render('cart/__button-product', ['product' => $product, 'class' => 'btnBuy__eLink', 'value' => 'Купить', 'url' => $hasFurnitureConstructor ? $page->url('cart.product.setList') : null]) // Кнопка купить ?>
+        <div id="coupeError" class="red" style="display:none"></div>
 
-            <div id="coupeError" class="red" style="display:none"></div>
+        <?= $helper->render('product/__oneClick', ['product' => $product]) // Покупка в один клик ?>
 
-            <?= $helper->render('product/__oneClick', ['product' => $product]) // Покупка в один клик ?>
+        <?= $helper->render('product/__delivery', ['product' => $product, 'shopStates' => $shopStates]) // Доставка ?>
+    </div><!--/widget delivery -->
 
-            <?= $helper->render('product/__delivery', ['product' => $product, 'shopStates' => $shopStates]) // Доставка ?>
-
-            <?= $helper->render('product/__adfox', ['product' => $product]) ?>
-        </div><!--/widget delivery -->
-
-    </aside>
+    <?= $helper->render('product/__adfox', ['product' => $product]) // Баннер Adfox ?>
 </div><!--/right section -->
 
 <div class="bBottomBuy clearfix">

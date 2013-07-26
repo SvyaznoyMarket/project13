@@ -835,7 +835,7 @@ $(document).ready(function() {
 		toKISS = {
 			'Viewed Product SKU':productInfo.article,
 			'Viewed Product Product Name':productInfo.name,
-			'Viewed Product Product Status':productInfo.stockState,
+			'Viewed Product Product Status':productInfo.stockState
 		};
 
 		if ( typeof(_kmq) !== 'undefined' ) {

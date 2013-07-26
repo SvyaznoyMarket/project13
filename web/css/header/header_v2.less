@@ -66,20 +66,20 @@
 .bMainMenuLevel-1{
 	position: relative;
 	display: table;
+	
 	float: left;
 	width: 810px;
 	z-index: 998;
+	behavior: url(@displayTable);
+	dt-display: table;
 
 	&__eItem{
 		display: table-cell;
 		position: relative;
-		*display: block;
-		*float: left;
-		// *margin: 12px 5px;
 		vertical-align: middle;
-		*width: 60px;
 		z-index: 999;
-		*zoom: 1;
+		
+		-dt-display: table-cell;
 
 		&.bMainMenuLevel-1__eSeparator{
 			background: url('@{base-url}/header/img/headerSeparator.gif') no-repeat center center;
