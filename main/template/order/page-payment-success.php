@@ -14,20 +14,17 @@ $isOrderAnalytics = isset($isOrderAnalytics) ? $isOrderAnalytics : true;
 <!-- Header -->
 <div class='bBuyingHead'>
     <a href="<?= $page->url('homepage') ?>"></a>
-    <i>Оформление заказа</i><br>
+    <i></i><br>
     <span>Ваш заказ оплачен</span>
 </div>
 <!-- /Header -->
 
-<p class="title-font16 font16">Ожидайте смс или звонок от оператора контакт-сEnter по статусу доставки!</p>
+<p class="title-font16 font16">
+  Сейчас он отправлен на склад для сборки!<br>
+  Ожидайте смс или звонок от оператора контакт-сEnter по статусу доставки!
+</p>
 
 <div class="line pb15"></div>
-
-<? $order = empty($orders) ? null : reset($orders) ?>
-<? if(!empty($order) && !empty($form)) { ?>
-  <?= $page->render('partner-counter/_get4click', ['order' => $order, 'form' => $form] ) ?>
-  <?= $page->tryRender('order/partner-counter/_flocktory-complete', ['order' => $order, 'userForm' => $form]) ?>
-<? } ?>
 
 <div class="mt32 clearfix socnet-ico-box">
     <ul class="socnet-ico-list">
