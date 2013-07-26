@@ -656,27 +656,27 @@ $(document).ready(function(){
 		activateForm();
 	})
 	
-	/* Side Filters */
-	var filterlink = $('.filter .filterlink:first');
-	var filterlist = $('.filter .filterlist');
-	var clientBrowser = new brwsr();
-	if( clientBrowser.isTouch ) {
-		filterlink.click(function(){
-			filterlink.hide();
-			filterlist.show();
-			return false;
-		})
-	}
-	else {
-		filterlink.mouseenter(function(){
-			filterlink.hide();
-			filterlist.show();
-		});
-		filterlist.mouseleave(function(){
-			filterlist.hide();
-			filterlink.show();
-		});
-	}	
+	// /* Side Filters */
+	// var filterlink = $('.filter .filterlink:first');
+	// var filterlist = $('.filter .filterlist');
+	// var clientBrowser = new brwsr();
+	// if( clientBrowser.isTouch ) {
+	// 	filterlink.click(function(){
+	// 		filterlink.hide();
+	// 		filterlist.show();
+	// 		return false;
+	// 	})
+	// }
+	// else {
+	// 	filterlink.mouseenter(function(){
+	// 		filterlink.hide();
+	// 		filterlist.show();
+	// 	});
+	// 	filterlist.mouseleave(function(){
+	// 		filterlist.hide();
+	// 		filterlink.show();
+	// 	});
+	// }	
 	
 	var ajaxFilterCounter = 0;
 	
