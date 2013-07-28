@@ -80,6 +80,13 @@ class Action {
             $client = \App::smartengineClient();
             $user = \App::user()->getEntity();
 
+            $category = $product->getMainCategory() ? $product->getMainCategory()->getId() : $product->getCategory();
+            if ( is_array($category) ) {
+                reset($category);
+                $category = current($category);
+            }
+            if ($category instanceof \Model\Product\Category\BasicEntity) $category = $category->getId();
+
             $params = [
                 'sessionid' => session_id(),
                 'itemid'    => $product->getId(),
@@ -89,6 +96,11 @@ class Action {
             }
             $params['itemtype'] = $product->getMainCategory() ? $product->getMainCategory()->getId() : null;
             $params['requesteditemtype'] = $product->getMainCategory() ? $product->getMainCategory()->getId() : null;
+            $params['itemdescription'] = $product->getDescription();
+            $params['itemurl'] = $product->getLink();
+            $params['actiontime'] = time();
+            $params['itemtype'] = $category;
+            $params['placement'] = \App::request()->attributes->get('route'); // it is routeName
 
             $r = $client->query('otherusersalsoviewed', $params);
 
