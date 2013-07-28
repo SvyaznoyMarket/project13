@@ -359,6 +359,20 @@ class DefaultLayout extends Layout {
         return $this->render('_userbar');
     }
 
+    public function slotSurveybar() {
+        $cookieInitTimeStamp = (int)(\App::request()->cookies->get('survey'));
+        $survey = \RepositoryManager::survey()->getEntity();
+        $region = \App::user()->getRegion();
+        $regionsToShow = array_intersect([$region->getName(), 'все', 'Все', 'all'], $survey->getRegionNames());
+
+        if(is_object($survey) && $survey->getIsActive() && !empty($regionsToShow) &&
+            !$survey->isAnswered($cookieInitTimeStamp)) {
+            return $this->render('_surveybar', ['survey' => $survey]);
+        } else {
+            return '';
+        }
+    }
+
     public function slotYandexMetrika() {
         return (\App::config()->yandexMetrika['enabled']) ? $this->render('_yandexMetrika') : '';
     }
