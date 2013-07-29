@@ -129,6 +129,8 @@ $request = \App::request();
 $router = \App::router();
 
 try {
+    $request->redirect301Check(); // если стр не существует, но есть redirect, то перейдём по нему
+
     $request->attributes->add($router->match($request->getPathInfo(), $request->getMethod()));
     \App::logger()->info('Match route ' . $request->attributes->get('route') . ' by ' . $request->getMethod()  . ' ' . $request->getRequestUri());
 
@@ -142,7 +144,6 @@ try {
     //сохраняю данные для abtest
     \App::abTest()->setCookie($response);
 } catch (\Exception\NotFoundException $e) {
-    $request->redirect301Check(); // если стр не существует, но есть redirect, то перейдём по нему
     $action = new \Controller\Error\NotFoundAction();
     $response = $action->execute($e, $request);
 } catch (\Exception\AccessDeniedException $e) {
