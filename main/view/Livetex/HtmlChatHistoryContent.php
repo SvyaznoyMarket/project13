@@ -48,6 +48,13 @@ class HtmlChatHistoryContent extends HtmlBasicContent {
         $out .= '<div class="id_oper"><span class="param_name">Дата: </span>' . date($this->date_format, $item->timestamp) . '</div>';
 
         if ( !empty($item->firstanswer) ) {
+
+            $answ = explode(':',$item->firstanswer);
+            //print_r($answ);
+            $h = $answ[0];
+            $m = $answ[1];
+            $s = $answ[2];
+
             //$this->first_answers_time = $this->first_answers_time + $item->firstanswer;
             //$this->count_first_answers++;
             $item->firstanswer = (string) $item->firstanswer . ' c ';
