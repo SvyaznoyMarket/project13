@@ -362,6 +362,9 @@ class DefaultLayout extends Layout {
     public function slotSurveybar() {
         $cookieInitTimeStamp = (int)(\App::request()->cookies->get('survey'));
         $survey = \RepositoryManager::survey()->getEntity();
+        if (!$survey) {
+            return '';
+        }
         $region = \App::user()->getRegion();
         $regionsToShow = array_intersect([$region->getName(), 'все', 'Все', 'all'], $survey->getRegionNames());
 
