@@ -90,7 +90,6 @@ class StatisticsAction {
         $API = &$this->API;
 
 
-
         //$router = \App::router();
         //$client = \App::coreClientV2();
         //$user = \App::user(); // TODO: проверка на авторизацию и наличие прав на просмотр данного раздела

@@ -112,5 +112,7 @@
 
     .lts_analytics{
         margin-top: 16px;
+        border: #CCC 1px solid;
+        background: #FAEBD7;
     }
 </style>

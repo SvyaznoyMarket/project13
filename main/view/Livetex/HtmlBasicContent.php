@@ -66,7 +66,9 @@ class HtmlBasicContent{
 
                 $analytics  = $this->analytics();
                 if ( !empty($analytics) ) {
-                    $analytics = $this->wr ( $analytics, 'lts_item lts_analytics' );
+                    $hd = 'LiveTex: Рассчитанная статистика';
+                    $analytics = $this->wr( $analytics, 'lts_item lts_analytics' );
+                    $analytics = $this->wr( $hd, 'lts_head lts_analytics_head bPromoCatalog_eName', 'h2' ) . $analytics;
                     $out = $analytics . $out;
                 }
 
@@ -96,7 +98,11 @@ class HtmlBasicContent{
 
 
     protected function head() {
-        return '<h3>' . $this->small_head . '</h3>';
+        $out = false;
+        if ( !empty($this->small_head) ) {
+            $out = '<h3>' . $this->small_head . '</h3>';
+        }
+        return $out;
     }
 
 
