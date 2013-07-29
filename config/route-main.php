@@ -580,6 +580,7 @@ return [
     'survey.submit-answer' => [
         'pattern' => '/survey/submit-answer',
         'action'  => ['Survey\Action', 'submitAnswer'],
+        'method'  => ['POST'],
     ],
 
     //content

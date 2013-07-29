@@ -10,10 +10,6 @@ class Action {
             throw new \Exception\NotFoundException('Request is not xml http request');
         }
 
-        if (!$request->isMethod('post')) {
-            throw new \Exception\NotFoundException('Request is not post http request');
-        }
-
         $outCsvDelimiter = "\t";
 
         $question = $request->get('question');

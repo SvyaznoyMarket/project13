@@ -45,7 +45,7 @@ class Entity {
     }
 
     public function setRegionNames($regionNames) {
-        $this->regionNames = $regionNames;
+        $this->regionNames = (array)$regionNames;
     }
 
     public function getRegionNames() {
@@ -53,7 +53,7 @@ class Entity {
     }
 
     public function setQuestion($question) {
-        $this->question = $question;
+        $this->question = (string)$question;
     }
 
     public function getQuestion() {
@@ -61,7 +61,7 @@ class Entity {
     }
 
     public function setAnswers($answers) {
-        $this->answers = $answers;
+        $this->answers = (array)$answers;
     }
 
     public function getAnswers() {
@@ -77,7 +77,7 @@ class Entity {
     }
 
     public function setOutputFile($outputFile) {
-        $this->outputFile = $outputFile;
+        $this->outputFile = (string)$outputFile;
     }
 
     public function getOutputFile() {
