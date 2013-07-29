@@ -19,7 +19,7 @@ foreach ($productSorting->getAll() as $item)
 {
     if ($active['name'] == $item['name'] && $active['direction'] == $item['direction']) continue;
 
-    $url = $page->helper->replacedUrl(array('sort' => implode('-', array($item['name'], $item['direction']))));
+    $url = $page->helper->replacedUrl(array('page' => '1', 'sort' => implode('-', array($item['name'], $item['direction']))));
     if(!preg_match('/.*scrollTo=.*/', $url)) {
         $url .= preg_match('/.*\?.*/', $url) ? '&' : '?';
         $url .= 'scrollTo='.$scrollTo;

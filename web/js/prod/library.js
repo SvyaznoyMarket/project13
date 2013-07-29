@@ -1,16 +1,3 @@
-/**
- * Основные конфигурационные настройки сайта
- *
- * @requires	jQuery
- */
-var pageConfig = $('#page-config').data('value');
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 /*
 	http://www.JSON.org/json2.js
 	2011-10-19
@@ -823,10 +810,13 @@ String.prototype.isEmail = isTrueEmail; // добавляем методом д�
  * @param	{number|string}		число которое нужно отформатировать
  * @return	{string}			отформатированное число
  */
-var printPrice = function(num){
-	var str = num+'';
-	return str.replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1 ');
-};
+(function(global) {
+	global.printPrice = function(num){
+		var str = num+'';
+		
+		return str.replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1 ');
+	};
+}(this));
  
  
 /** 
@@ -834,83 +824,89 @@ var printPrice = function(num){
  */
  
  
-/** 
-  * docCookies.setItem(obj, sKey, sValue, vEnd, sPath, sDomain, bSecure) 
-  *
-  * https://developer.mozilla.org/en/DOM/document.cookie
-  *
-  * IVN: object into cookie is available
-  * 
-  * @argument obj (Boolean): flag if object is saved
-  * @argument sKey (String): the name of the cookie; 
-  * @argument sValue (String): the value of the cookie; 
-  * @optional argument vEnd (Number, String, Date Object or null): the max-age in seconds (e.g., 31536e3 for a year) or the 
-  *  expires date in GMTString format or in Date Object format; if not specified it will expire at the end of session;  
-  * @optional argument sPath (String or null): e.g., "/", "/mydir"; if not specified, defaults to the current path of the current document location; 
-  * @optional argument sDomain (String or null): e.g., "example.com", ".example.com" (includes all subdomains) or "subdomain.example.com"; if not 
-  * specified, defaults to the host portion of the current document location; 
-  * @optional argument bSecure (Boolean or null): cookie will be transmitted only over secure protocol as https; 
-  * @return undefined; 
-  **/  
-var docCookies = {
-	getItem: function (sKey, obj) {
-		if (!sKey || !this.hasItem(sKey)) {
-			return null;
-		}
-		var out = unescape(
-			document.cookie.replace(
-				new RegExp(
-					"(?:^|.*;\\s*)" + escape(sKey).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=\\s*((?:[^;](?!;))*[^;]?).*"
-				),
-			"$1")
-		);
-		if( obj ){
-			out = JSON.parse( out );
-		}
-		return out;
-	},
-  
-	setItem: function (obj, sKey, sValue, vEnd, sPath, sDomain, bSecure) {
-		if (!sKey || /^(?:expires|max\-age|path|domain|secure)$/.test(sKey)) {
-			return;
-		}
-		var sExpires = "";
+/*\
+|*|
+|*|  :: cookies.js ::
+|*|
+|*|  A complete cookies reader/writer framework with full unicode support.
+|*|
+|*|  https://developer.mozilla.org/en-US/docs/DOM/document.cookie
+|*|
+|*|  This framework is released under the GNU Public License, version 3 or later.
+|*|  http://www.gnu.org/licenses/gpl-3.0-standalone.html
+|*|
+|*|  Syntaxes:
+|*|
+|*|  * docCookies.setItem(name, value[, end[, path[, domain[, secure]]]])
+|*|  * docCookies.getItem(name)
+|*|  * docCookies.removeItem(name[, path])
+|*|  * docCookies.hasItem(name)
+|*|  * docCookies.keys()
+|*|
+\*/
 
-		if (vEnd) {
-			switch (typeof vEnd) {  
-				case "number":
-					sExpires = "; max-age=" + vEnd;
-					break;
-				case "string":
-					sExpires = "; expires=" + vEnd;
-					break;
-				case "object":
-					if (vEnd.hasOwnProperty("toGMTString")) {
-						sExpires = "; expires=" + vEnd.toGMTString();
-					}
-					break;
+;(function(global){	
+	global.docCookies = {
+		getItem:function ( sKey ) {
+			return unescape(document.cookie.replace(new RegExp("(?:(?:^|.*;)\\s*" + escape(sKey).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=\\s*([^;]*).*$)|^.*$"), "$1")) || null;
+		},
+
+		setItem: function ( sKey, sValue, vEnd, sPath, sDomain, bSecure ) {
+			if (!sKey || /^(?:expires|max\-age|path|domain|secure)$/i.test(sKey)) {
+
+				return false;
 			}
-		}
-		if( obj ){
-			sValue = JSON.stringify( sValue );
-		}
-		document.cookie = escape(sKey) + "=" + escape(sValue) + sExpires + (sDomain ? "; domain=" + sDomain : "") + (sPath ? "; path=" + sPath : "") + (bSecure ? "; secure" : "");  
-	},
 
-	removeItem: function (sKey) {  
-	if (!sKey || !this.hasItem(sKey)) {
-		return;
-	}
-	var oExpDate = new Date();  
-	oExpDate.setDate(oExpDate.getDate() - 1);
-	document.cookie = escape(sKey) + "=; expires=" + oExpDate.toGMTString() + "; path=/";  
-	//console.info(escape(sKey) + "=; expires=" + oExpDate.toGMTString() + "; path=/")
-	},
+			var sExpires = "";
 
-	hasItem: function (sKey) {
-		return (new RegExp("(?:^|;\\s*)" + escape(sKey).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=")).test(document.cookie);
-	}
-};
+			if ( vEnd ) {
+				switch ( vEnd.constructor ) {
+					case Number:
+						sExpires = vEnd === Infinity ? "; expires=Fri, 31 Dec 9999 23:59:59 GMT" : "; max-age=" + vEnd;
+						break;
+					case String:
+						sExpires = "; expires=" + vEnd;
+						break;
+					case Date:
+						sExpires = "; expires=" + vEnd.toGMTString();
+						break;
+				}
+			}
+
+			document.cookie = escape(sKey) + "=" + escape(sValue) + sExpires + (sDomain ? "; domain=" + sDomain:
+						"") + (sPath ? "; path=" + sPath:
+						"") + (bSecure ? "; secure":
+						"");
+						
+			return true;
+		},
+
+		removeItem: function ( sKey, sPath ) {
+			if ( !sKey || !this.hasItem(sKey) ) {
+				return false;
+			}
+
+			document.cookie = escape(sKey) + "=; expires=Thu, 01 Jan 1970 00:00:00 GMT" + (sPath ? "; path=" + sPath: "");
+
+			return true;
+		},
+
+		hasItem: function ( sKey ) {
+			return (new RegExp("(?:^|;\\s*)" + escape(sKey).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=")).test(document.cookie);
+		},
+
+		/* optional method: you can safely remove it! */ 
+		keys: function () {
+			var aKeys = document.cookie.replace(/((?:^|\s*;)[^\=]+)(?=;|$)|^\s*|\s*(?:\=[^;]*)?(?:\1|$)/g, "").split(/\s*(?:\=[^;]*)?;\s*/);
+
+			for (var nIdx = 0; nIdx < aKeys.length; nIdx++) {
+				aKeys[nIdx] = unescape(aKeys[nIdx]);
+			}
+
+			return aKeys;
+		}
+	};
+}(this));
  
  
 /** 
@@ -1142,7 +1138,7 @@ var DirectCredit = {
 				//  }
 					
 				// }               
-				self.output.text( printPrice( Math.ceil( result.payment ) ) );
+				self.output.text( window.printPrice( Math.ceil( result.payment ) ) );
 				PubSub.publish( 'bankAnswered', null );
 			}
 		);
@@ -1743,7 +1739,7 @@ window.MapInterface = (function() {
 /**
  * WARNING!
  *
- * @requires jQuery, simple_templating, pageConfig
+ * @requires jQuery, simple_templating, docCookies
  */
 
 
@@ -1757,7 +1753,7 @@ window.MapInterface = (function() {
  * @constructor
  */
 function BlackBox( updateUrl, mainContatiner ) {
-	this.updUrl = (!docCookies.hasItem('enter') ||  !docCookies.hasItem('enter_auth')) ? updateUrl += '?ts=' + new Date().getTime() + Math.floor(Math.random() * 1000) : updateUrl;
+	this.updUrl = ( !window.docCookies.hasItem('enter') || !window.docCookies.hasItem('enter_auth') ) ? updateUrl += '?ts=' + new Date().getTime() + Math.floor(Math.random() * 1000) : updateUrl;
 	this.mainNode = mainContatiner;
 }
 
@@ -1803,7 +1799,7 @@ BlackBox.prototype.basket = function() {
 		flyboxcloser = function flyboxcloser( e ) {
 			var targ = e.target.className;
 
-			if (!(targ.indexOf('bBlackBox__eFlybox')+1) || !(targ.indexOf('fillup')+1)) {
+			if ( !(targ.indexOf('bBlackBox__eFlybox') + 1) || !(targ.indexOf('fillup') + 1) ) {
 				flyboxDestroy();
 				$('body').unbind('click', flyboxcloser);
 			}
@@ -1819,7 +1815,7 @@ BlackBox.prototype.basket = function() {
 		 * @public
 		 */
 		update = function update( basketInfo ) {
-			headQ.html('('+basketInfo.cartQ+')');
+			headQ.html('(' + basketInfo.cartQ + ')');
 			bottomQ.html(basketInfo.cartQ);
 			bottomSum.html(basketInfo.cartSum);
 			bottomCart.addClass('mBought');
@@ -1889,7 +1885,7 @@ BlackBox.prototype.user = function() {
 		//end of vars
 
 		if ( userName !== null ) {
-			dtmpl={
+			dtmpl = {
 				user: userName
 			};
 			show_user = tmpl('auth_tmpl', dtmpl);
@@ -1926,10 +1922,10 @@ BlackBox.prototype.init = function() {
 		 * @private
 		 */
 	var startAction = function startAction( action ) {
-			if (action.subscribe !== undefined) {
+			if ( action.subscribe !== undefined ) {
 				$("body").trigger("showsubscribe", [action.subscribe]);
 			}
-			if (action.cartButton !== undefined) {
+			if ( action.cartButton !== undefined ) {
 				$("body").trigger("markcartbutton", [action.cartButton]);
 				$("body").trigger("updatespinner", [action.cartButton]);
 			}
@@ -1954,7 +1950,7 @@ BlackBox.prototype.init = function() {
 
 			self.user().update(userInfo.name);
 
-			if (cartInfo.quantity !== 0) {
+			if ( cartInfo.quantity !== 0 ) {
 				nowBasket = {
 					cartQ: cartInfo.quantity,
 					cartSum: cartInfo.sum
@@ -1962,7 +1958,7 @@ BlackBox.prototype.init = function() {
 				self.basket().update(nowBasket);
 			}
 
-			if (actionInfo !== undefined) {
+			if ( actionInfo !== undefined ) {
 				startAction(actionInfo);
 			}
 		};
@@ -1972,7 +1968,7 @@ BlackBox.prototype.init = function() {
 };
 
 
-(function(global) {
+(function( global ) {
 	var pageConfig = $('#page-config').data('value');
 	
 	/**

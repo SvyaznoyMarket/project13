@@ -16,7 +16,7 @@
 			toggleCookie: function( state ) {
 				clearTimeout( this.cookieTimeout );
 				this.cookieTimeout = setTimeout( function(){
-					docCookies.setItem(false, 'credit_on', state ? 1 : 0 , 60*60, '/');
+					window.docCookies.setItem('credit_on', state ? 1 : 0 , 60*60, '/');
 				}, 200 );
 			},
 
@@ -47,7 +47,7 @@
 
 				dc_getCreditForTheProduct(
 					4427,
-					docCookies.getItem('enter_auth'),
+					window.docCookies.getItem('enter_auth'),
 					'getPayment',
 					{ price : creditd.price, count : creditd.count, type : creditd.product_type },
 					function( result ) {
@@ -63,11 +63,11 @@
 			},
 			
 			getState: function() {
-				if( ! docCookies.hasItem('credit_on') ) {
+				if( ! window.docCookies.hasItem('credit_on') ) {
 					return 0;
 				}
 
-				return docCookies.getItem('credit_on');
+				return window.docCookies.getItem('credit_on');
 			}
 		};
 		
@@ -367,30 +367,32 @@
 /**
  * 3D для мебели
  */
-;(function(){
-	var loadFurniture3D = function(){
-		var furnitureAfterLoad = function(){
+;(function() {
+	var loadFurniture3D = function() {
+		var furnitureAfterLoad = function() {
 
-			var object = $('#3dModelImg');
-			var data = object.data('value');
-			var host = object.data('host');
+			var object = $('#3dModelImg'),
+				data = object.data('value'),
+				host = object.data('host');
+			// end of vars
 
-			var furniture3dPopupShow = function(){
+			var furniture3dPopupShow = function furniture3dPopupShow() {
 				$('#3dModelImg').lightbox_me({
 					centered: true,
 					closeSelector: ".close"
 				});
+
 				return false;
 			};
 
 			try {
-				if (!$('#3dImgContainer').length) {
+				if ( !$('#3dImgContainer').length ) {
 					var AnimFramePlayer = new DAnimFramePlayer(document.getElementById('3dModelImg'), host);
 					AnimFramePlayer.DoLoadModel(data);
 					$('.bPhotoActionOtherAction__eGrad360.3dimg').bind('click', furniture3dPopupShow);
 				}
 			}
-			catch (err){
+			catch ( err ) {
 				var pageID = $('body').data('id');
 				var dataToLog = {
 					event: '3dimg',
@@ -398,14 +400,18 @@
 					pageID: pageID,
 					err: err
 				};
+
 				logError(dataToLog);
 			}
 		};
+
 		$LAB.script( 'DAnimFramePlayer.min.js' ).wait(furnitureAfterLoad);
 	};
 
 	$(document).ready(function() {
-		if (pageConfig['product.img3d']){
+		var pageConfig = $('#page-config').data('value');
+
+		if ( pageConfig['product.img3d'] ) {
 			loadFurniture3D();
 		}
 	});
@@ -707,10 +713,11 @@
 /**
  * Maybe3D
  */
-;(function(){
-	var loadMaybe3D = function(){
+;(function() {
+	var loadMaybe3D = function() {
 		var data = $('#maybe3dModelPopup').data('value');
-		var afterLoad = function(){
+
+		var afterLoad = function() {
 			var maybe3dPopupShow = function(e){
 				e.stopPropagation();
 				try {
@@ -738,13 +745,16 @@
 				}
 				return false;
 			};
+
 			$('.bPhotoActionOtherAction__eGrad360.maybe3d').bind('click', maybe3dPopupShow);
 		};
 		$LAB.script('swfobject.min.js').wait(afterLoad);
 	};
 
 	$(document).ready(function() {
-		if (pageConfig['product.maybe3d']){
+		var pageConfig = $('#page-config').data('value');
+
+		if ( pageConfig['product.maybe3d'] ){
 			loadMaybe3D();
 		}
 	});
