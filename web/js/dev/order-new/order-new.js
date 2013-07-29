@@ -7,16 +7,16 @@ $(document).ready(function() {
     /* COMMON DESIGN, BEHAVIOUR ONLY */
     /* Custom Selectors */
     // $('body').delegate( '.bSelect', 'click', function() {
-    // 	if( $(this).hasClass('mDisabled') )
-    // 		return false
-    // 	$(this).find('.bSelect__eDropmenu').toggle()
+    //  if( $(this).hasClass('mDisabled') )
+    //      return false
+    //  $(this).find('.bSelect__eDropmenu').toggle()
     // })
     // $('body').delegate( '.bSelect', 'mouseleave', function() {
-    // 	if( $(this).hasClass('mDisabled') )
-    // 		return false
-    // 	var options = $(this).find('.bSelect__eDropmenu')
-    // 	if( options.is(':visible') )
-    // 		options.hide()
+    //  if( $(this).hasClass('mDisabled') )
+    //      return false
+    //  var options = $(this).find('.bSelect__eDropmenu')
+    //  if( options.is(':visible') )
+    //      options.hide()
     // })
 
     /*  Custom Checkboxes */
@@ -506,7 +506,7 @@ $(document).ready(function() {
             }
             box.nweeks = nweeks-1
             // 4) Loop
-            up:				for( var linedate in box.caclDates ) { // Loop for T Interval
+            up:             for( var linedate in box.caclDates ) { // Loop for T Interval
                 var dates = []
                 for(var i=0, l=box.itemList().length; i<l; i++) { // Loop for all intervals
                     var bid = box.token
@@ -676,7 +676,7 @@ $(document).ready(function() {
                     self.dlvrBoxes.remove( box );
                 }
 
-    l2:			for ( var i in Model.deliveryTypes ) {
+    l2:         for ( var i in Model.deliveryTypes ) {
                     var tmpDlvr = Model.deliveryTypes[i];
 
                     for ( var j=0, l=tmpDlvr.items.length; j<l; j++) {
@@ -764,7 +764,7 @@ $(document).ready(function() {
                 /* Select Shop in Box */
                 var newboxes = [{ shop: self.chosenBox().token.replace('self_','') , items: [] }, { shop: d.id , items: [] } ]
                 // remove items, which has picked shop
-upi:			for( var item = 0, boxitems = self.chosenBox().itemList(); item < boxitems.length;  ) { //TODO refact
+upi:            for( var item = 0, boxitems = self.chosenBox().itemList(); item < boxitems.length;  ) { //TODO refact
                     for( var dl in boxitems[item].deliveries ){
                         if( dl === 'self_'+d.id ) {
                             newboxes[1].items.push( boxitems[item].token )
@@ -776,7 +776,7 @@ upi:			for( var item = 0, boxitems = self.chosenBox().itemList(); item < boxitem
                     self.chosenBox().itemList.remove( boxitems[item] )
                     item++
                 }
-						
+                        
                 // create new box for such items and for old box
                 for( var nbox in newboxes ) {
                     if( newboxes[nbox].items.length > 0 ) {
@@ -819,14 +819,14 @@ upi:			for( var item = 0, boxitems = self.chosenBox().itemList(); item < boxitem
                     tmpv = []
                 for( var box in self.dlvrBoxes() ) {
                     var procBox = self.dlvrBoxes()[box]
-// console.info(procBox.itemList())					
+// console.info(procBox.itemList())                 
                     for( var item =0, list = procBox.itemList(); item < list.length;  ) {
                         tmpv = []
                         for( tkn in list[item].deliveries ) {
                             if( list[item].deliveries[ tkn ].token.match( 'self_' ) )
                                 tmpv.push( list[item].deliveries[ tkn ].token.replace( 'self_', '' ) )
                         }
-// console.info( list[item].token , tmpv )						
+// console.info( list[item].token , tmpv )                      
                         data[ list[item].token +'' ] = tmpv
                         if( !tmpv.length )
                             item++
@@ -961,12 +961,12 @@ upi:			for( var item = 0, boxitems = self.chosenBox().itemList(); item < boxitem
     }
 
     function DA( data ) {
-// console.info('DA b')		
+// console.info('DA b')     
         // e.g. data = {
-        // 	'pr1' : [ '13', '2' ],
-        // 	'pr2' : [ '13', '2' ],
-        // 	'pr3' : [ '3', '2' ],
-        // 	'pr4' : [ '14' ]
+        //  'pr1' : [ '13', '2' ],
+        //  'pr2' : [ '13', '2' ],
+        //  'pr3' : [ '3', '2' ],
+        //  'pr4' : [ '14' ]
         // }
         var out = []
         while( true ) {
@@ -993,8 +993,8 @@ upi:			for( var item = 0, boxitems = self.chosenBox().itemList(); item < boxitem
 
 
         }
-// console.info(out, data)		
-// console.info('DA e')		
+// console.info(out, data)      
+// console.info('DA e')     
         return out
     }
     /* ---------------------------------------------------------------------------------------- */
@@ -1051,7 +1051,7 @@ upi:			for( var item = 0, boxitems = self.chosenBox().itemList(); item < boxitem
         var serArray = form.serializeArray()
 
         var fieldsToValidate = $('#order-validator').data('value')
-        flds:	for( field in fieldsToValidate ) {
+        flds:   for( field in fieldsToValidate ) {
             if( !form.find('[name="'+field+'"]:visible').length )
                 continue
             if (field=='order[recipient_phonenumbers]'){

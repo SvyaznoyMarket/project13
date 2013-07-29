@@ -6,12 +6,13 @@
 		var data = $('#maybe3dModelPopup').data('value');
 
 		var afterLoad = function() {
-			var maybe3dPopupShow = function(e){
+			var maybe3dPopupShow = function( e ) {
 				e.stopPropagation();
 				try {
-					if (!$('#maybe3dModel').length){
+					if ( !$('#maybe3dModel').length ) {
 						$('#maybe3dModelPopup_inner').append('<div id="maybe3dModel"></div>');
 					}
+
 					swfobject.embedSWF(data.init.swf, data.init.container, data.init.width, data.init.height, data.init.version, data.init.install, data.flashvars, data.params, data.attributes);
 					$('#maybe3dModelPopup').lightbox_me({
 						centered: true,
@@ -21,14 +22,16 @@
 						}
 					});
 				}
-				catch (err){
-					var pageID = $('body').data('id');
-					var dataToLog = {
-						event: 'swfobject_error',
-						type:'ошибка загрузки swf maybe3d',
-						pageID: pageID,
-						err: err
-					};
+				catch ( err ) {
+					var pageID = $('body').data('id'),
+						dataToLog = {
+							event: 'swfobject_error',
+							type:'ошибка загрузки swf maybe3d',
+							pageID: pageID,
+							err: err
+						};
+					// end of vars
+
 					logError(dataToLog);
 				}
 				return false;
@@ -36,13 +39,14 @@
 
 			$('.bPhotoActionOtherAction__eGrad360.maybe3d').bind('click', maybe3dPopupShow);
 		};
+
 		$LAB.script('swfobject.min.js').wait(afterLoad);
 	};
 
 	$(document).ready(function() {
 		var pageConfig = $('#page-config').data('value');
 
-		if ( pageConfig['product.maybe3d'] ){
+		if ( pageConfig['product.maybe3d'] ) {
 			loadMaybe3D();
 		}
 	});

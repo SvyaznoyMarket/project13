@@ -1,4 +1,4 @@
-;(function(global) {
+;(function( global ) {
 	var pageConfig = $('#page-config').data('value');
 
 	/**
@@ -45,12 +45,12 @@ $.ajaxSetup({
 
 			window.logError(data);
 
-			if( typeof(_gaq) !== 'undefined' ) {
+			if ( typeof(_gaq) !== 'undefined' ) {
 				_gaq.push(['_trackEvent', 'Errors', 'Ajax Errors', '404 ошибка, страница не найдена']);
 			}
 		},
 		401: function() {
-			if( $('#auth-block').length ) {
+			if ( $('#auth-block').length ) {
 				$('#auth-block').lightbox_me({
 					centered: true,
 					onLoad: function() {
@@ -59,7 +59,7 @@ $.ajaxSetup({
 				});
 			}
 			else{
-				if( typeof(_gaq) !== 'undefined' ) {
+				if ( typeof(_gaq) !== 'undefined' ) {
 					_gaq.push(['_trackEvent', 'Errors', 'Ajax Errors', '401 ошибка, авторизуйтесь заново']);
 				}
 			}
@@ -78,7 +78,7 @@ $.ajaxSetup({
 
 			window.logError(data);
 
-			if( typeof(_gaq) !== 'undefined' ) {
+			if ( typeof(_gaq) !== 'undefined' ) {
 				_gaq.push(['_trackEvent', 'Errors', 'Ajax Errors', '500 сервер перегружен']);
 			}
 		},
@@ -95,7 +95,7 @@ $.ajaxSetup({
 
 			window.logError(data);
 
-			if( typeof(_gaq) !== 'undefined' ) {
+			if ( typeof(_gaq) !== 'undefined' ) {
 				_gaq.push(['_trackEvent', 'Errors', 'Ajax Errors', '503 ошибка, сервер перегружен']);
 			}
 		},
@@ -112,7 +112,7 @@ $.ajaxSetup({
 
 			window.logError(data);
 
-			if( typeof(_gaq) !== 'undefined' ) {
+			if ( typeof(_gaq) !== 'undefined' ) {
 				_gaq.push(['_trackEvent', 'Errors', 'Ajax Errors', '504 ошибка, проверьте соединение с интернетом']);
 			}
 		}
@@ -128,10 +128,10 @@ $.ajaxSetup({
 			};
 		// end of vars
 		
-		if( jqXHR.statusText === 'error' ) {
+		if ( jqXHR.statusText === 'error' ) {
 			window.logError(data);
 
-			if( typeof(_gaq) !== 'undefined' ) {
+			if ( typeof(_gaq) !== 'undefined' ) {
 				_gaq.push(['_trackEvent', 'Errors', 'Ajax Errors', 'неизвестная ajax ошибка']);
 			}
 		}
@@ -339,6 +339,7 @@ $.ajaxSetup({
 		if ( button.hasClass('mDisabled') ) {
 			return false;
 		}
+
 		if ( button.hasClass('mBought') ) {
 			document.location.href(url);
 
@@ -409,6 +410,7 @@ $.ajaxSetup({
 					_kmq.push(['record', 'Add to Cart', toKISS]);
 				}
 			}
+
 			if ( serviceData ) {
 				toKISS = {
 					'Add F1 F1 Name':serviceData.name,
@@ -425,6 +427,7 @@ $.ajaxSetup({
 					_kmq.push(['record', 'Add F1', toKISS]);
 				}
 			}
+
 			if ( warrantyData ) {
 				toKISS = {
 					'Add Warranty Warranty Name':warrantyData.name,
@@ -449,7 +452,7 @@ $.ajaxSetup({
 		googleAnalytics = function googleAnalytics( data ) {
 			var productData = data.product;
 
-			if (productData){
+			if ( productData ) {
 				if( typeof(_gaq) !== 'undefined' ){
 					_gaq.push(['_trackEvent', 'Add2Basket', 'product', productData.article]);
 				}
@@ -2904,20 +2907,21 @@ $(document).ready(function(){
 	
 	
 	var pageScrolling = function pageScrolling()  {
-			if ( ($(window).scrollTop() > 600)&&(!trigger) ) {
+			if ( $(window).scrollTop() > 600 && !trigger ) {
 				//появление языка
 				trigger = true;
-				upper.animate({'marginTop':'0'},400);
+				upper.animate({'marginTop':'0'}, 400);
 			}
-			else if ( ($(window).scrollTop() < 600)&&(trigger) ) {
+			else if ( $(window).scrollTop() < 600 && trigger ) {
 				//исчезновение
 				trigger = false;
-				upper.animate({'marginTop':'-30px'},400);
+				upper.animate({'marginTop':'-30px'}, 400);
 			}
 		},
 
 		goUp = function goUp() {
 			$(window).scrollTo('0px',400);
+
 			return false;
 		};
 	//end of functions

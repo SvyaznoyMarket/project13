@@ -27,13 +27,14 @@
 				}
 			}
 			catch ( err ) {
-				var pageID = $('body').data('id');
-				var dataToLog = {
-					event: '3dimg',
-					type:'ошибка загрузки 3dimg для мебели',
-					pageID: pageID,
-					err: err
-				};
+				var pageID = $('body').data('id'),
+					dataToLog = {
+						event: '3dimg',
+						type:'ошибка загрузки 3dimg для мебели',
+						pageID: pageID,
+						err: err
+					};
+				// end of vars
 
 				logError(dataToLog);
 			}

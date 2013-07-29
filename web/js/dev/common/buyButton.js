@@ -48,6 +48,7 @@
 		if ( button.hasClass('mDisabled') ) {
 			return false;
 		}
+
 		if ( button.hasClass('mBought') ) {
 			document.location.href(url);
 
@@ -118,6 +119,7 @@
 					_kmq.push(['record', 'Add to Cart', toKISS]);
 				}
 			}
+
 			if ( serviceData ) {
 				toKISS = {
 					'Add F1 F1 Name':serviceData.name,
@@ -134,6 +136,7 @@
 					_kmq.push(['record', 'Add F1', toKISS]);
 				}
 			}
+
 			if ( warrantyData ) {
 				toKISS = {
 					'Add Warranty Warranty Name':warrantyData.name,
@@ -158,7 +161,7 @@
 		googleAnalytics = function googleAnalytics( data ) {
 			var productData = data.product;
 
-			if (productData){
+			if ( productData ) {
 				if( typeof(_gaq) !== 'undefined' ){
 					_gaq.push(['_trackEvent', 'Add2Basket', 'product', productData.article]);
 				}
