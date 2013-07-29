@@ -8,6 +8,9 @@ class CreatePage extends Layout {
     }
 
     public function slotContent() {
+        if (\App::abTest()->getCase()->getKey() == 'emails') {
+            return $this->render('order/page-create-abtest-email', $this->params);
+        }
         return $this->render('order/page-create', $this->params);
     }
 
