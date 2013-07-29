@@ -153,18 +153,15 @@ class DefaultLayout extends Layout {
     public function slotSurveybar() {
         $cookieInitTimeStamp = (int)(\App::request()->cookies->get('survey'));
         $survey = \RepositoryManager::survey()->getEntity();
-
         $region = \App::user()->getRegion();
-        if(is_object($survey)) {
-            $regionsToShow = array_intersect([$region->getName(), 'все', 'Все', 'all'], $survey->getRegionNames());
-        }
 
-        if(is_object($survey) && $survey->getIsActive() && !empty($regionsToShow) &&
-            !$survey->isAnswered($cookieInitTimeStamp)) {
-            return $this->render('_surveybar', ['survey' => $survey]);
-        } else {
+        if(!$survey) {
             return '';
         }
+
+        $regionsToShow = array_intersect([$region->getName(), 'все', 'Все', 'all'], $survey->getRegionNames());
+        $showSurvey = $survey->getIsActive() && !empty($regionsToShow) && !$survey->isAnswered($cookieInitTimeStamp);
+        return $showSurvey ? $this->render('_surveybar', ['survey' => $survey]) : '';
     }
 
     public function slotYandexMetrika() {
