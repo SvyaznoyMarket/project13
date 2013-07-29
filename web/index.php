@@ -142,6 +142,7 @@ try {
     //сохраняю данные для abtest
     \App::abTest()->setCookie($response);
 } catch (\Exception\NotFoundException $e) {
+    $request->redirect301Check(); // если стр не существует, но есть redirect, то перейдём по нему
     $action = new \Controller\Error\NotFoundAction();
     $response = $action->execute($e, $request);
 } catch (\Exception\AccessDeniedException $e) {
