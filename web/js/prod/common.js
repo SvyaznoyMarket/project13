@@ -1,4 +1,4 @@
-;(function(global) {
+;(function( global ) {
 	var pageConfig = $('#page-config').data('value');
 
 	/**
@@ -45,12 +45,12 @@ $.ajaxSetup({
 
 			window.logError(data);
 
-			if( typeof(_gaq) !== 'undefined' ) {
+			if ( typeof(_gaq) !== 'undefined' ) {
 				_gaq.push(['_trackEvent', 'Errors', 'Ajax Errors', '404 ошибка, страница не найдена']);
 			}
 		},
 		401: function() {
-			if( $('#auth-block').length ) {
+			if ( $('#auth-block').length ) {
 				$('#auth-block').lightbox_me({
 					centered: true,
 					onLoad: function() {
@@ -59,7 +59,7 @@ $.ajaxSetup({
 				});
 			}
 			else{
-				if( typeof(_gaq) !== 'undefined' ) {
+				if ( typeof(_gaq) !== 'undefined' ) {
 					_gaq.push(['_trackEvent', 'Errors', 'Ajax Errors', '401 ошибка, авторизуйтесь заново']);
 				}
 			}
@@ -78,7 +78,7 @@ $.ajaxSetup({
 
 			window.logError(data);
 
-			if( typeof(_gaq) !== 'undefined' ) {
+			if ( typeof(_gaq) !== 'undefined' ) {
 				_gaq.push(['_trackEvent', 'Errors', 'Ajax Errors', '500 сервер перегружен']);
 			}
 		},
@@ -95,7 +95,7 @@ $.ajaxSetup({
 
 			window.logError(data);
 
-			if( typeof(_gaq) !== 'undefined' ) {
+			if ( typeof(_gaq) !== 'undefined' ) {
 				_gaq.push(['_trackEvent', 'Errors', 'Ajax Errors', '503 ошибка, сервер перегружен']);
 			}
 		},
@@ -112,7 +112,7 @@ $.ajaxSetup({
 
 			window.logError(data);
 
-			if( typeof(_gaq) !== 'undefined' ) {
+			if ( typeof(_gaq) !== 'undefined' ) {
 				_gaq.push(['_trackEvent', 'Errors', 'Ajax Errors', '504 ошибка, проверьте соединение с интернетом']);
 			}
 		}
@@ -128,10 +128,10 @@ $.ajaxSetup({
 			};
 		// end of vars
 		
-		if( jqXHR.statusText === 'error' ) {
+		if ( jqXHR.statusText === 'error' ) {
 			window.logError(data);
 
-			if( typeof(_gaq) !== 'undefined' ) {
+			if ( typeof(_gaq) !== 'undefined' ) {
 				_gaq.push(['_trackEvent', 'Errors', 'Ajax Errors', 'неизвестная ajax ошибка']);
 			}
 		}
@@ -330,7 +330,7 @@ $.ajaxSetup({
 	 * 
 	 * @param  {Event}	e
 	 */
-	var BuyButtonHandler = function BuyButtonHandler() {
+	var buyButtonHandler = function buyButtonHandler() {
 		var button = $(this),
 			url = button.attr('href');
 		// end of vars
@@ -339,6 +339,7 @@ $.ajaxSetup({
 		if ( button.hasClass('mDisabled') ) {
 			return false;
 		}
+
 		if ( button.hasClass('mBought') ) {
 			document.location.href(url);
 
@@ -365,7 +366,7 @@ $.ajaxSetup({
 	
 	$(document).ready(function() {
 		$('body').bind('markcartbutton', markCartButton);
-		$('body').on('click', '.jsBuyButton', BuyButtonHandler);
+		$('body').on('click', '.jsBuyButton', buyButtonHandler);
 		$('body').on('buy', '.jsBuyButton', buy);
 	});
 }());
@@ -409,6 +410,7 @@ $.ajaxSetup({
 					_kmq.push(['record', 'Add to Cart', toKISS]);
 				}
 			}
+
 			if ( serviceData ) {
 				toKISS = {
 					'Add F1 F1 Name':serviceData.name,
@@ -425,6 +427,7 @@ $.ajaxSetup({
 					_kmq.push(['record', 'Add F1', toKISS]);
 				}
 			}
+
 			if ( warrantyData ) {
 				toKISS = {
 					'Add Warranty Warranty Name':warrantyData.name,
@@ -449,7 +452,7 @@ $.ajaxSetup({
 		googleAnalytics = function googleAnalytics( data ) {
 			var productData = data.product;
 
-			if (productData){
+			if ( productData ) {
 				if( typeof(_gaq) !== 'undefined' ){
 					_gaq.push(['_trackEvent', 'Add2Basket', 'product', productData.article]);
 				}
@@ -478,6 +481,7 @@ $.ajaxSetup({
 			var productData = data.product,
 				offer_id = productData.id,
 				category_id = productData.category[productData.category.length-1].id;
+			// end of vars
 
 
 			var s = 'http://ad.adriver.ru/cgi-bin/rle.cgi?sid=182615&sz=add_basket&custom=10='+offer_id+';11='+category_id+'&bt=55&pz=0&rnd=![rnd]',
@@ -507,11 +511,11 @@ $.ajaxSetup({
 				product = data.product,
 				tmpitem = {
 					'title': product.name,
-					'price' : printPrice(product.price),
+					'price' : window.printPrice(product.price),
 					'imgSrc': product.img,
 					'productLink': product.link,
 					'totalQuan': basket.full_quantity,
-					'totalSum': printPrice(basket.full_price),
+					'totalSum': window.printPrice(basket.full_price),
 					'linkToOrder': basket.link
 				};
 			// end of vars
@@ -522,11 +526,11 @@ $.ajaxSetup({
 			myThingsAnalytics(data);
 			adAdriver(data);
 
-			if ( !blackBox ) {
+			if ( !window.blackBox ) {
 				return false;
 			}
 			
-			blackBox.basket().add( tmpitem );
+			window.blackBox.basket().add( tmpitem );
 		};
 	//end of vars
 
@@ -1326,13 +1330,13 @@ $(document).ready(function(){
 
 			if ( location.href.match(/sort=/) && location.href.match(/page=/) ) { // Redirect on first in sort case
 				$(this).bind('click', function(){
-					docCookies.setItem( false, 'infScroll', 1, 4*7*24*60*60, '/' );
+					window.docCookies.setItem('infScroll', 1, 4*7*24*60*60, '/' );
 					location.href = location.href.replace(/page=\d+/,'');
 				});
 			}
 			else {
 				$(this).bind('click', function() {
-					docCookies.setItem( false, 'infScroll', 1, 4*7*24*60*60, '/' );
+					window.docCookies.setItem('infScroll', 1, 4*7*24*60*60, '/' );
 					var next = $('div.pageslist:first li:first');
 
 					if ( next.hasClass('current') ) {
@@ -1349,7 +1353,7 @@ $(document).ready(function(){
 					$('div.pageslist ul').append( next )
 										.find('a')
 										.bind('click', function(){
-											docCookies.removeItem( 'infScroll' );
+											window.docCookies.removeItem( 'infScroll' );
 										});
 					$('div.allpager').addClass('mChecked');
 					checkScroll();
@@ -1358,7 +1362,7 @@ $(document).ready(function(){
 			}
 		});
 
-		if( docCookies.hasItem( 'infScroll' ) ){
+		if( window.docCookies.hasItem( 'infScroll' ) ){
 			$('div.allpager:first').trigger('click');
 		}
 	}
@@ -1409,9 +1413,9 @@ $(document).ready(function(){
 				}
 			},
 			onClose: function() {			
-				if( !docCookies.hasItem('geoshop') ) {
+				if( !window.docCookies.hasItem('geoshop') ) {
 					var id = $('#jsregion').data('region-id');
-					docCookies.setItem( false, "geoshop", id, 31536e3, "/");
+					window.docCookies.setItem("geoshop", id, 31536e3, "/");
 					// document.location.reload()
 				}
 			}
@@ -1502,7 +1506,7 @@ $(document).ready(function(){
 	});
    
 	/* GEOIP fix */
-	if ( !docCookies.hasItem('geoshop') ) {
+	if ( !window.docCookies.hasItem('geoshop') ) {
 		getRegions();
 	}
 	
@@ -2278,7 +2282,7 @@ $(document).ready(function(){
 					}
 					
 					subPopup.html('<span class="bSubscribeLightboxPopup__eTitle mType">Спасибо! подтверждение подписки отправлено на указанный e-mail</span>');
-					docCookies.setItem(false, 'subscribed', 1, 157680000, '/');
+					window.docCookies.setItem('subscribed', 1, 157680000, '/');
 
 					if( typeof(_gaq) !== 'undefined' ) {
 						_gaq.push(['_trackEvent', 'Account', 'Emailing sign up', 'Page top']);
@@ -2301,7 +2305,7 @@ $(document).ready(function(){
 					var url = $(this).data('url');
 
 					subPopup.slideUp(300, subscribeLater);
-					docCookies.setItem(false, 'subscribed', 0, 157680000, '/');
+					window.docCookies.setItem('subscribed', 0, 157680000, '/');
 					$.post(url);
 
 					return false;
@@ -2360,7 +2364,6 @@ $(document).ready(function(){
  *
  * @param	{Object}	searchInput			Поле поиска
  * @param	{Object}	suggestWrapper		Обертка для подсказок
- * @param	{Object}	suggest				Окно с подсказками
  * @param	{Object}	suggestItem			Результаты поиска
  * 
  * @param	{Number}	nowSelectSuggest	Текущий выделенный элемент, если -1 - значит выделенных элементов нет
@@ -2369,7 +2372,6 @@ $(document).ready(function(){
 ;(function() {
 	var searchInput = $('.searchbox .searchtext'),
 		suggestWrapper = $('#searchAutocomplete'),
-		suggest = $('.bSearchSuggest'),
 		suggestItem = $('.bSearchSuggest__eRes'),
 
 		nowSelectSuggest = -1,
@@ -2394,7 +2396,7 @@ $(document).ready(function(){
 		/**
 		 * Обработчик поднятия клавиши
 		 * 
-		 * @param	{Event} 	event
+		 * @param	{Event}		event
 		 * @param	{Number}	keyCode	Код нажатой клавиши
 		 * @param	{String}	text	Текст в поле ввода
 		 */
@@ -2455,7 +2457,7 @@ $(document).ready(function(){
 		/**
 		 * Обработчик нажатия клавиши
 		 * 
-		 * @param	{Event} 	event
+		 * @param	{Event}		event
 		 * @param	{Number}	keyCode	Код нажатой клавиши
 		 */
 		suggestKeyDown = function suggestKeyDown( event ) {
@@ -2543,7 +2545,6 @@ $(document).ready(function(){
 	// end of functions
 
 
-
 	/**
 	 * Attach handlers
 	 */
@@ -2562,6 +2563,7 @@ $(document).ready(function(){
 		$('body').on('click', '.bSearchSuggest__eRes', suggestAnalytics);
 	});
 }());
+
  
  
 /** 
@@ -2570,313 +2572,317 @@ $(document).ready(function(){
  
  
 /* Top Menu */
-var menuDelayLvl1 = 300 //ms
-var menuDelayLvl2 = 500 //ms
-var triangleOffset = 15 //px
+(function(){
+	var menuDelayLvl1 = 300; //ms
+	var menuDelayLvl2 = 600; //ms
+	var triangleOffset = 15; //px
 
-var lastHoverLvl1 = null
-var checkedItemLvl1 = null
-var hoverNowLvl1 = false
+	var lastHoverLvl1 = null;
+	var checkedItemLvl1 = null;
+	var hoverNowLvl1 = false;
 
-var lastHoverLvl2 = null
-var checkedItemLvl2 = null
+	var lastHoverLvl2 = null;
+	var checkedItemLvl2 = null;
 
-var currentMenuItemDimensions = null
-var menuLevel2Dimensions = null
-var menuLevel3Dimensions = null
-var pointA = {x: 0,	y: 0}
-var pointB = {x: 0,	y: 0}
-var pointC = {x: 0,	y: 0}
-var cursorNow = {x: 0, y: 0}
+	var currentMenuItemDimensions = null;
+	var menuLevel2Dimensions = null;
+	var menuLevel3Dimensions = null;
+	var pointA = {x: 0,	y: 0};
+	var pointB = {x: 0,	y: 0};
+	var pointC = {x: 0,	y: 0};
+	var cursorNow = {x: 0, y: 0};
 
-/**
- * Активируем элемент меню 1-го уровня
- *
- * @param  {element} el
- */
-activateItemLvl1 = function(el){
-	lastHoverLvl1 = new Date()
-	checkedItemLvl1 = el
-	$('.bMainMenuLevel-2__eItem').removeClass('hover')
-	el.addClass('hover')
-}
+	/**
+	 * Активируем элемент меню 1-го уровня
+	 *
+	 * @param  {element} el
+	 */
+	var activateItemLvl1 = function(el){
+		lastHoverLvl1 = new Date();
+		checkedItemLvl1 = el;
+		$('.bMainMenuLevel-2__eItem').removeClass('hover');
+		el.addClass('hover');
+	};
 
-/**
- * Обработчик наведения на элемент меню 1-го уровня
- */
-menuHoverInLvl1 = function(){
-	var el = $(this)
-	lastHoverLvl1 = new Date()
-	hoverNowLvl1 = true
+	/**
+	 * Обработчик наведения на элемент меню 1-го уровня
+	 */
+	var menuHoverInLvl1 = function(){
+		var el = $(this);
+		lastHoverLvl1 = new Date();
+		hoverNowLvl1 = true;
 
-	setTimeout(function(){
-		if(hoverNowLvl1 && (new Date() - lastHoverLvl1 > menuDelayLvl1)) {
-			activateItemLvl1(el)
-		}
-	}, menuDelayLvl1 + 20)
-}
-
-/**
- * Обработчик ухода мыши из элемента меню 1-го уровня
- */
-menuMouseLeaveLvl1 = function(){
-	var el = $(this)
-	el.removeClass('hover')
-	hoverNowLvl1 = false
-}
-
-/**
- * Непосредственно построение треугольника. Требуется предвариательно получить нужные координаты и размеры
- */
-createTriangle = function(){
-	// левый угол - текущее положение курсора
-	pointA = {
-		x: cursorNow.x,
-		y: cursorNow.y - $(window).scrollTop()
-	}
-
-	// верхний угол - левый верх меню 3го уровня минус triangleOffset
-	pointB = {
-		x: menuLevel3Dimensions.left - triangleOffset,
-		y: menuLevel3Dimensions.top - $(window).scrollTop()
-	}
-
-	// нижний угол - левый низ меню 3го уровня минус triangleOffset
-	pointC = {
-		x: menuLevel3Dimensions.left - triangleOffset,
-		y: menuLevel3Dimensions.top + menuLevel3Dimensions.height - $(window).scrollTop()
-	}
-}
-
-/**
- * Проверка входит ли точка в треугольник.
- * Соединяем точку со всеми вершинами и считаем площадь маленьких треугольников.
- * Если она равна площади большого треугольника, то точка входит в треугольник. Иначе не входит.
- * Также точка входит в область задержки, если она попадает в прямоугольник, формируемый сдвигом треугольника
- * 
- * @param  {object} now    координаты точки, которую необходимо проверить
- * 
- * @param  {object} A      левая вершина большого треугольника
- * @param  {object} A.x    координата по оси x левой вершины
- * @param  {object} A.y    координата по оси y левой вершины
- * 
- * @param  {object} B      верхняя вершина большого треугольника
- * @param  {object} B.x    координата по оси x верхней вершины
- * @param  {object} B.y    координата по оси y верхней вершины
- * 
- * @param  {object} C      нижняя вершина большого треугольника
- * @param  {object} C.x    координата по оси x нижней вершины
- * @param  {object} C.y    координата по оси y нижней вершины
- * 
- * @return {boolean}       true - входит, false - не входит
- */
-menuCheckTriangle = function(){
-	var res1 = (pointA.x-cursorNow.x)*(pointB.y-pointA.y)-(pointB.x-pointA.x)*(pointA.y-cursorNow.y)
-	var res2 = (pointB.x-cursorNow.x)*(pointC.y-pointB.y)-(pointC.x-pointB.x)*(pointB.y-cursorNow.y)
-	var res3 = (pointC.x-cursorNow.x)*(pointA.y-pointC.y)-(pointA.x-pointC.x)*(pointC.y-cursorNow.y)
-
-	if ((res1 >= 0 && res2 >= 0 && res3 >= 0) || (res1 <= 0 && res2 <= 0 && res3 <= 0) || (cursorNow.x >= pointB.x && cursorNow.x <= (pointB.x + triangleOffset) && cursorNow.y >= pointB.y && cursorNow.y <= pointC.y)){
-		// console.info('принадлежит')
-		return true
-	}
-	else{
-		// console.info('не принадлежит')
-		return false
-	}
-}
-
-/**
- * Отслеживание перемещения мыши по меню 2-го уровня
- *
- * @param  {event} e
- */
-menuMoveLvl2 = function(e){
-	cursorNow = {
-		x: e.pageX,
-		y: e.pageY - $(window).scrollTop()
-	}
-	var el = $(this)
-	if(el.attr('class') == checkedItemLvl2.attr('class')) {
-		buildTriangle(el)
-		lastHoverLvl2 = new Date()
-	}
-	checkHoverLvl2(el)
-}
-
-/**
- * Активируем элемент меню 2-го уровня, строим треугольник
- *
- * @param  {element} el
- */
-activateItemLvl2 = function(el){
-	checkedItemLvl2 = el
-	el.addClass('hover')
-	lastHoverLvl2 = new Date()
-	buildTriangle(el)
-}
-
-/**
- * Обработчик наведения на элемент меню 2-го уровня
- */
-menuHoverInLvl2 = function(){
-	var el = $(this)
-	checkHoverLvl2(el)
-	el.addClass('hoverNowLvl2')
-
-	if(lastHoverLvl2 && (new Date() - lastHoverLvl2 <= menuDelayLvl2) && menuCheckTriangle()) {
 		setTimeout(function(){
-			if(el.hasClass('hoverNowLvl2') && (new Date() - lastHoverLvl2 > menuDelayLvl2)) {
-				checkHoverLvl2(el)
+			if(hoverNowLvl1 && (new Date() - lastHoverLvl1 > menuDelayLvl1)) {
+				activateItemLvl1(el);
 			}
-		}, menuDelayLvl2 + 20)
-	}
-}
+		}, menuDelayLvl1 + 20);
+	};
 
-/**
- * Обработчик ухода мыши из элемента меню 1-го уровня
- */
-menuMouseLeaveLvl2 = function(){
-	var el = $(this)
-	el.removeClass('hoverNowLvl2')
-}
+	/**
+	 * Обработчик ухода мыши из элемента меню 1-го уровня
+	 */
+	var menuMouseLeaveLvl1 = function(){
+		var el = $(this);
+		el.removeClass('hover');
+		hoverNowLvl1 = false;
+	};
 
-/**
- * Меню 2-го уровня
- * Если первое наведение - просто активируем
- * Иначе - проверяем условия по которым активировать
- *
- * @param  {element} el
- */
-checkHoverLvl2 = function(el) {
-	if (!lastHoverLvl2) {
-		activateItemLvl2(el)
-	} else if(!menuCheckTriangle() || (lastHoverLvl2 && (new Date() - lastHoverLvl2 > menuDelayLvl2) && menuCheckTriangle())) {
-		checkedItemLvl2.removeClass('hover')
-		activateItemLvl2(el)
-	}
-}
+	/**
+	 * Непосредственно построение треугольника. Требуется предвариательно получить нужные координаты и размеры
+	 */
+	var createTriangle = function(){
+		// левый угол - текущее положение курсора
+		pointA = {
+			x: cursorNow.x,
+			y: cursorNow.y - $(window).scrollTop()
+		};
 
-/**
- * Получаем все нужные координаты и размеры и строим треугольник, попадание курсора в который
- * будет определять нужна ли задержка до переключения на другой пункт меню
- *
- * @param  {element} el
- */
-buildTriangle = function(el) {
-	currentMenuItemDimensions = getDimensions(el)
-	menuLevel2Dimensions = getDimensions(el.find('.bMainMenuLevel-3'))
-	var dropMenuWidth = el.find('.bMainMenuLevel-2__eTitle')[0].offsetWidth
-	menuLevel3Dimensions = {
-		top: menuLevel2Dimensions.top,
-		left: menuLevel2Dimensions.left + dropMenuWidth,
-		width: menuLevel2Dimensions.width - dropMenuWidth,
-		height: menuLevel2Dimensions.height
-	}
-	createTriangle()
-}
+		// верхний угол - левый верх меню 3го уровня минус triangleOffset
+		pointB = {
+			x: menuLevel3Dimensions.left - triangleOffset,
+			y: menuLevel3Dimensions.top - $(window).scrollTop()
+		};
 
-/**
- * Получение абсолютных координат элемента и его размеров
- *
- * @param  {element} el
- */
-getDimensions = function(el) {
-		var width = $(el).width()
-		var height = $(el).height()
-		el = el[0]
-    var x = 0
-    var y = 0
-    while(el && !isNaN(el.offsetLeft) && !isNaN(el.offsetTop)) {
-        x += el.offsetLeft - el.scrollLeft
-        y += el.offsetTop - el.scrollTop
-        el = el.offsetParent
-    }
-    return { top: y, left: x, width: width, height: height }
-}
+		// нижний угол - левый низ меню 3го уровня минус triangleOffset
+		pointC = {
+			x: menuLevel3Dimensions.left - triangleOffset,
+			y: menuLevel3Dimensions.top + menuLevel3Dimensions.height - $(window).scrollTop()
+		};
+	};
+
+	/**
+	 * Проверка входит ли точка в треугольник.
+	 * Соединяем точку со всеми вершинами и считаем площадь маленьких треугольников.
+	 * Если она равна площади большого треугольника, то точка входит в треугольник. Иначе не входит.
+	 * Также точка входит в область задержки, если она попадает в прямоугольник, формируемый сдвигом треугольника
+	 * 
+	 * @param  {object} now    координаты точки, которую необходимо проверить
+	 * 
+	 * @param  {object} A      левая вершина большого треугольника
+	 * @param  {object} A.x    координата по оси x левой вершины
+	 * @param  {object} A.y    координата по оси y левой вершины
+	 * 
+	 * @param  {object} B      верхняя вершина большого треугольника
+	 * @param  {object} B.x    координата по оси x верхней вершины
+	 * @param  {object} B.y    координата по оси y верхней вершины
+	 * 
+	 * @param  {object} C      нижняя вершина большого треугольника
+	 * @param  {object} C.x    координата по оси x нижней вершины
+	 * @param  {object} C.y    координата по оси y нижней вершины
+	 * 
+	 * @return {boolean}       true - входит, false - не входит
+	 */
+	var menuCheckTriangle = function(){
+		var res1 = (pointA.x-cursorNow.x)*(pointB.y-pointA.y)-(pointB.x-pointA.x)*(pointA.y-cursorNow.y);
+		var res2 = (pointB.x-cursorNow.x)*(pointC.y-pointB.y)-(pointC.x-pointB.x)*(pointB.y-cursorNow.y);
+		var res3 = (pointC.x-cursorNow.x)*(pointA.y-pointC.y)-(pointA.x-pointC.x)*(pointC.y-cursorNow.y);
+
+		if ((res1 >= 0 && res2 >= 0 && res3 >= 0) || (res1 <= 0 && res2 <= 0 && res3 <= 0) || (cursorNow.x >= pointB.x && cursorNow.x <= (pointB.x + triangleOffset) && cursorNow.y >= pointB.y && cursorNow.y <= pointC.y)){
+			// console.info('принадлежит')
+			return true;
+		} else {
+			// console.info('не принадлежит')
+			return false;
+		}
+	};
+
+	/**
+	 * Отслеживание перемещения мыши по меню 2-го уровня
+	 *
+	 * @param  {event} e
+	 */
+	var menuMoveLvl2 = function(e){
+		cursorNow = {
+			x: e.pageX,
+			y: e.pageY - $(window).scrollTop()
+		};
+		var el = $(this);
+		if(checkedItemLvl2) {
+			if(el.attr('class') === checkedItemLvl2.attr('class')) {
+				buildTriangle(el);
+				lastHoverLvl2 = new Date();
+			}
+		}
+		checkHoverLvl2(el);
+	};
+
+	/**
+	 * Активируем элемент меню 2-го уровня, строим треугольник
+	 *
+	 * @param  {element} el
+	 */
+	var activateItemLvl2 = function(el){
+		checkedItemLvl2 = el;
+		el.addClass('hover');
+		lastHoverLvl2 = new Date();
+		buildTriangle(el);
+	};
+
+	/**
+	 * Обработчик наведения на элемент меню 2-го уровня
+	 */
+	var menuHoverInLvl2 = function(){
+		var el = $(this);
+		checkHoverLvl2(el);
+		el.addClass('hoverNowLvl2');
+
+		if(lastHoverLvl2 && (new Date() - lastHoverLvl2 <= menuDelayLvl2) && menuCheckTriangle()) {
+			setTimeout(function(){
+				if(el.hasClass('hoverNowLvl2') && (new Date() - lastHoverLvl2 > menuDelayLvl2)) {
+					checkHoverLvl2(el);
+				}
+			}, menuDelayLvl2 + 20);
+		}
+	};
+
+	/**
+	 * Обработчик ухода мыши из элемента меню 1-го уровня
+	 */
+	var menuMouseLeaveLvl2 = function(){
+		var el = $(this);
+		el.removeClass('hoverNowLvl2');
+	};
+
+	/**
+	 * Меню 2-го уровня
+	 * Если первое наведение - просто активируем
+	 * Иначе - проверяем условия по которым активировать
+	 *
+	 * @param  {element} el
+	 */
+	var checkHoverLvl2 = function(el) {
+		if (!lastHoverLvl2) {
+			activateItemLvl2(el);
+		} else if(!menuCheckTriangle() || (lastHoverLvl2 && (new Date() - lastHoverLvl2 > menuDelayLvl2) && menuCheckTriangle())) {
+			checkedItemLvl2.removeClass('hover');
+			activateItemLvl2(el);
+		}
+	};
+
+	/**
+	 * Получаем все нужные координаты и размеры и строим треугольник, попадание курсора в который
+	 * будет определять нужна ли задержка до переключения на другой пункт меню
+	 *
+	 * @param  {element} el
+	 */
+	var buildTriangle = function(el) {
+		currentMenuItemDimensions = getDimensions(el);
+		menuLevel2Dimensions = getDimensions(el.find('.bMainMenuLevel-3'));
+		var dropMenuWidth = el.find('.bMainMenuLevel-2__eTitle')[0].offsetWidth;
+		menuLevel3Dimensions = {
+			top: menuLevel2Dimensions.top,
+			left: menuLevel2Dimensions.left + dropMenuWidth,
+			width: menuLevel2Dimensions.width - dropMenuWidth,
+			height: menuLevel2Dimensions.height
+		};
+		createTriangle();
+	};
+
+	/**
+	 * Получение абсолютных координат элемента и его размеров
+	 *
+	 * @param  {element} el
+	 */
+	var getDimensions = function(el) {
+      var width = $(el).width();
+      var height = $(el).height();
+      el = el[0];
+      var x = 0;
+      var y = 0;
+      while(el && !isNaN(el.offsetLeft) && !isNaN(el.offsetTop)) {
+          x += el.offsetLeft - el.scrollLeft;
+          y += el.offsetTop - el.scrollTop;
+          el = el.offsetParent;
+      }
+      return { top: y, left: x, width: width, height: height };
+  };
 
 
-$('.bMainMenuLevel-1__eItem').mouseenter(menuHoverInLvl1)
-$('.bMainMenuLevel-1__eItem').mouseleave(menuMouseLeaveLvl1)
+	$('.bMainMenuLevel-1__eItem').mouseenter(menuHoverInLvl1);
+	$('.bMainMenuLevel-1__eItem').mouseleave(menuMouseLeaveLvl1);
 
-$('.bMainMenuLevel-2__eItem').mouseenter(menuHoverInLvl2)
-$('.bMainMenuLevel-2__eItem').mousemove(menuMoveLvl2)
-$('.bMainMenuLevel-2__eItem').mouseleave(menuMouseLeaveLvl2)
-
-
+	$('.bMainMenuLevel-2__eItem').mouseenter(menuHoverInLvl2);
+	$('.bMainMenuLevel-2__eItem').mousemove(menuMoveLvl2);
+	$('.bMainMenuLevel-2__eItem').mouseleave(menuMouseLeaveLvl2);
 
 
 
-/* код ниже был закомментирован в main.js, перенес его сюда чтобы код, касающийся меню, был в одном месте */
 
-// header_v2
-// $('.bMainMenuLevel-1__eItem').bind('mouseenter', function(){
-//  var menuLeft = $(this).offset().left
-//  var cornerLeft = menuLeft - $('#header').offset().left + ($(this).find('.bMainMenuLevel-1__eTitle').width()/2) - 11
-//  $(this).find('.bCorner').css({'left':cornerLeft})
-// })
 
-// header_v1
-// if( $('.topmenu').length && !$('body#mainPage').length) {
-//  $.get('/category/main_menu', function(data){
-//    $('#header').append( data )
-//  })
-// }
+	/* код ниже был закомментирован в main.js, перенес его сюда чтобы код, касающийся меню, был в одном месте */
 
-// var idcm          = null // setTimeout
-// var currentMenu = 0 // ref= product ID
-// function showList( self ) {  
-//  if( $(self).data('run') ) {
-//    var dmenu = $(self).position().left*1 + $(self).width()*1 / 2 + 5
-//    var punkt = $( '#extramenu-root-'+ $(self).attr('id').replace(/\D+/,'') )
-//    if( punkt.length && punkt.find('dl').html().replace(/\s/g,'') != '' )
-//      punkt.show()//.find('.corner').css('left', dmenu)
-//  }
-// }
-// if( clientBrowser.isTouch ) {
-//  $('#header .bToplink').bind ('click', function(){
-//    if( $(this).data('run') )
-//      return true
-//    $('.extramenu').hide()  
-//    $('.topmenu a.bToplink').each( function() { $(this).data('run', false) } )
-//    $(this).data('run', true)
-//    showList( this )
-//    return false
-//  })
-// } else { 
-//  $('#header .bToplink').bind( {
-//    'mouseenter': function() {
-//      $('.extramenu').hide()
-//      var self = this       
-//      $(self).data('run', true)
-//      currentMenu = $(self).attr('id').replace(/\D+/,'')
-//      var menuLeft = $(self).offset().left
-//      var cornerLeft = menuLeft-$('#header').offset().left+($('#topmenu-root-'+currentMenu+'').width()/2)-13
-//      $('#extramenu-root-'+currentMenu+' .corner').css({'left':cornerLeft})
-//      idcm = setTimeout( function() { showList( self ) }, 300)
-//    },
-//    'mouseleave': function() {
-//      var self = this
+	// header_v2
+	// $('.bMainMenuLevel-1__eItem').bind('mouseenter', function(){
+	//  var menuLeft = $(this).offset().left
+	//  var cornerLeft = menuLeft - $('#header').offset().left + ($(this).find('.bMainMenuLevel-1__eTitle').width()/2) - 11
+	//  $(this).find('.bCorner').css({'left':cornerLeft})
+	// })
 
-//      if( $(self).data('run') ) {
-//        clearTimeout( idcm )
-//        $(self).data('run',false)
-//      }
-//      //currentMenu = 0
-//    }
-//  })
-// }
+	// header_v1
+	// if( $('.topmenu').length && !$('body#mainPage').length) {
+	//  $.get('/category/main_menu', function(data){
+	//    $('#header').append( data )
+	//  })
+	// }
 
-// $(document).click( function(e){
-//  if (currentMenu) {
-//    if( e.which == 1 )
-//      $( '#extramenu-root-'+currentMenu+'').data('run', false).hide()
-//  }
-// })
+	// var idcm          = null // setTimeout
+	// var currentMenu = 0 // ref= product ID
+	// function showList( self ) {  
+	//  if( $(self).data('run') ) {
+	//    var dmenu = $(self).position().left*1 + $(self).width()*1 / 2 + 5
+	//    var punkt = $( '#extramenu-root-'+ $(self).attr('id').replace(/\D+/,'') )
+	//    if( punkt.length && punkt.find('dl').html().replace(/\s/g,'') != '' )
+	//      punkt.show()//.find('.corner').css('left', dmenu)
+	//  }
+	// }
+	// if( clientBrowser.isTouch ) {
+	//  $('#header .bToplink').bind ('click', function(){
+	//    if( $(this).data('run') )
+	//      return true
+	//    $('.extramenu').hide()  
+	//    $('.topmenu a.bToplink').each( function() { $(this).data('run', false) } )
+	//    $(this).data('run', true)
+	//    showList( this )
+	//    return false
+	//  })
+	// } else { 
+	//  $('#header .bToplink').bind( {
+	//    'mouseenter': function() {
+	//      $('.extramenu').hide()
+	//      var self = this       
+	//      $(self).data('run', true)
+	//      currentMenu = $(self).attr('id').replace(/\D+/,'')
+	//      var menuLeft = $(self).offset().left
+	//      var cornerLeft = menuLeft-$('#header').offset().left+($('#topmenu-root-'+currentMenu+'').width()/2)-13
+	//      $('#extramenu-root-'+currentMenu+' .corner').css({'left':cornerLeft})
+	//      idcm = setTimeout( function() { showList( self ) }, 300)
+	//    },
+	//    'mouseleave': function() {
+	//      var self = this
 
-// $('.extramenu').click( function(e){
-//  e.stopPropagation()
-// })
+	//      if( $(self).data('run') ) {
+	//        clearTimeout( idcm )
+	//        $(self).data('run',false)
+	//      }
+	//      //currentMenu = 0
+	//    }
+	//  })
+	// }
 
+	// $(document).click( function(e){
+	//  if (currentMenu) {
+	//    if( e.which == 1 )
+	//      $( '#extramenu-root-'+currentMenu+'').data('run', false).hide()
+	//  }
+	// })
+
+	// $('.extramenu').click( function(e){
+	//  e.stopPropagation()
+	// })
+})();
+
+	
  
  
 /** 
@@ -2897,20 +2903,21 @@ $('.bMainMenuLevel-2__eItem').mouseleave(menuMouseLeaveLvl2)
 	
 	
 	var pageScrolling = function pageScrolling()  {
-			if ( ($(window).scrollTop() > 600)&&(!trigger) ) {
+			if ( $(window).scrollTop() > 600 && !trigger ) {
 				//появление языка
 				trigger = true;
-				upper.animate({'marginTop':'0'},400);
+				upper.animate({'marginTop':'0'}, 400);
 			}
-			else if ( ($(window).scrollTop() < 600)&&(trigger) ) {
+			else if ( $(window).scrollTop() < 600 && trigger ) {
 				//исчезновение
 				trigger = false;
-				upper.animate({'marginTop':'-30px'},400);
+				upper.animate({'marginTop':'-30px'}, 400);
 			}
 		},
 
 		goUp = function goUp() {
 			$(window).scrollTo('0px',400);
+
 			return false;
 		};
 	//end of functions

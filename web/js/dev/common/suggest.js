@@ -7,7 +7,6 @@
  *
  * @param	{Object}	searchInput			Поле поиска
  * @param	{Object}	suggestWrapper		Обертка для подсказок
- * @param	{Object}	suggest				Окно с подсказками
  * @param	{Object}	suggestItem			Результаты поиска
  * 
  * @param	{Number}	nowSelectSuggest	Текущий выделенный элемент, если -1 - значит выделенных элементов нет
@@ -16,7 +15,6 @@
 ;(function() {
 	var searchInput = $('.searchbox .searchtext'),
 		suggestWrapper = $('#searchAutocomplete'),
-		suggest = $('.bSearchSuggest'),
 		suggestItem = $('.bSearchSuggest__eRes'),
 
 		nowSelectSuggest = -1,
@@ -41,7 +39,7 @@
 		/**
 		 * Обработчик поднятия клавиши
 		 * 
-		 * @param	{Event} 	event
+		 * @param	{Event}		event
 		 * @param	{Number}	keyCode	Код нажатой клавиши
 		 * @param	{String}	text	Текст в поле ввода
 		 */
@@ -102,7 +100,7 @@
 		/**
 		 * Обработчик нажатия клавиши
 		 * 
-		 * @param	{Event} 	event
+		 * @param	{Event}		event
 		 * @param	{Number}	keyCode	Код нажатой клавиши
 		 */
 		suggestKeyDown = function suggestKeyDown( event ) {
@@ -188,9 +186,6 @@
 			nowSelectSuggest = index - 1;
 		};
 	// end of functions
-
-		$('body').click(function(e){		
-			var targ = e.target.className;
 
 
 	/**
