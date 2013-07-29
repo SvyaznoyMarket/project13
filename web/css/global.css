@@ -9966,6 +9966,7 @@
   }
   .bProductSection .bProductDesc__eStore-text .text__eAll {
     margin: 4px 0 0;
+<<<<<<< .merge_file_NvUXzW
   }
   .bProductSection .bProductDesc__eStore-text .text__eAll a {
     text-decoration: underline;
@@ -9975,6 +9976,17 @@
   .bProductSection .bDescriptionProduct {
     font-size: 14px;
   }
+=======
+  }
+  .bProductSection .bProductDesc__eStore-text .text__eAll a {
+    text-decoration: underline;
+    color: #a6a6a6;
+    font-size: 12px;
+  }
+  .bProductSection .bDescriptionProduct {
+    font-size: 14px;
+  }
+>>>>>>> .merge_file_fBSXCX
   .bProductSection .bHeadSection {
     font-size: 16px;
     margin: 21px 0 10px;

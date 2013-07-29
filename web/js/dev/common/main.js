@@ -455,13 +455,13 @@ $(document).ready(function(){
 
 			if ( location.href.match(/sort=/) && location.href.match(/page=/) ) { // Redirect on first in sort case
 				$(this).bind('click', function(){
-					docCookies.setItem( false, 'infScroll', 1, 4*7*24*60*60, '/' );
+					window.docCookies.setItem('infScroll', 1, 4*7*24*60*60, '/' );
 					location.href = location.href.replace(/page=\d+/,'');
 				});
 			}
 			else {
 				$(this).bind('click', function() {
-					docCookies.setItem( false, 'infScroll', 1, 4*7*24*60*60, '/' );
+					window.docCookies.setItem('infScroll', 1, 4*7*24*60*60, '/' );
 					var next = $('div.pageslist:first li:first');
 
 					if ( next.hasClass('current') ) {
@@ -478,7 +478,7 @@ $(document).ready(function(){
 					$('div.pageslist ul').append( next )
 										.find('a')
 										.bind('click', function(){
-											docCookies.removeItem( 'infScroll' );
+											window.docCookies.removeItem( 'infScroll' );
 										});
 					$('div.allpager').addClass('mChecked');
 					checkScroll();
@@ -487,7 +487,7 @@ $(document).ready(function(){
 			}
 		});
 
-		if( docCookies.hasItem( 'infScroll' ) ){
+		if( window.docCookies.hasItem( 'infScroll' ) ){
 			$('div.allpager:first').trigger('click');
 		}
 	}
@@ -538,9 +538,9 @@ $(document).ready(function(){
 				}
 			},
 			onClose: function() {			
-				if( !docCookies.hasItem('geoshop') ) {
+				if( !window.docCookies.hasItem('geoshop') ) {
 					var id = $('#jsregion').data('region-id');
-					docCookies.setItem( false, "geoshop", id, 31536e3, "/");
+					window.docCookies.setItem("geoshop", id, 31536e3, "/");
 					// document.location.reload()
 				}
 			}
@@ -631,7 +631,7 @@ $(document).ready(function(){
 	});
    
 	/* GEOIP fix */
-	if ( !docCookies.hasItem('geoshop') ) {
+	if ( !window.docCookies.hasItem('geoshop') ) {
 		getRegions();
 	}
 	
@@ -714,27 +714,28 @@ $(document).ready(function(){
 		activateForm();
 	});
 	
-	// /* Side Filters */
-	// var filterlink = $('.filter .filterlink:first');
-	// var filterlist = $('.filter .filterlist');
-	// var clientBrowser = new brwsr();
-	// if( clientBrowser.isTouch ) {
-	// 	filterlink.click(function(){
-	// 		filterlink.hide();
-	// 		filterlist.show();
-	// 		return false;
-	// 	})
-	// }
-	// else {
-	// 	filterlink.mouseenter(function(){
-	// 		filterlink.hide();
-	// 		filterlist.show();
-	// 	});
-	// 	filterlist.mouseleave(function(){
-	// 		filterlist.hide();
-	// 		filterlink.show();
-	// 	});
-	// }	
+	/* Side Filters */
+	var filterlink = $('.filter .filterlink:first');
+	var filterlist = $('.filter .filterlist');
+	var clientBrowser = new brwsr();
+
+	if( clientBrowser.isTouch ) {
+		filterlink.click(function(){
+			filterlink.hide();
+			filterlist.show();
+			return false;
+		});
+	}
+	else {
+		filterlink.mouseenter(function() {
+			filterlink.hide();
+			filterlist.show();
+		});
+		filterlist.mouseleave(function() {
+			filterlist.hide();
+			filterlink.show();
+		});
+	}	
 	
 	var ajaxFilterCounter = 0;
 	
