@@ -98,6 +98,14 @@ class API {
 
         $response = $this->curl( $this->api_url, $post_arr );
 
+
+        $error = $response->error;
+        if ( $error ) {
+            $this->unsetSession();
+            //return $this->method($method, $data);
+        }
+
+
         return $response;
 
     }
