@@ -5,8 +5,8 @@
  * @param	{number|string}		число которое нужно отформатировать
  * @return	{string}			отформатированное число
  */
-(function(global) {
-	global.printPrice = function(num){
+(function( global ) {
+	global.printPrice = function( num ) {
 		var str = num+'';
 		
 		return str.replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1 ');
