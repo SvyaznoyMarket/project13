@@ -2312,7 +2312,7 @@ String.prototype.addParameterToUrl = UpdateUrlString;
         var answer = $(this).html(),
             kmId = null;
         if ( typeof(window.KM) !== 'undefined' ) {
-            kmId = window.KM._i;
+            kmId = window.KM.i;
         }
         $.ajax({
             type: 'POST',
