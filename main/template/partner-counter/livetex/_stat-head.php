@@ -54,6 +54,10 @@
     } // end of LiveTexStat Object
 </script>
 <style>
+    a {
+        color: #00b !important;
+    }
+
     .hidden {
         display: none;
     }

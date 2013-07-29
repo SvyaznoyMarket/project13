@@ -11,11 +11,13 @@ class HtmlBasicContent{
     protected $small_head = '';
     protected $big_head = 'LiveTex: Статистика.';
     protected $helper = '';
+    protected $params;
 
 
-    public function __construct( $big_head = null, $small_head = null) {
+    public function __construct( $big_head = null, $small_head = null, $params = null) {
         if ( $big_head ) $this->big_head = $big_head;
         if ( $small_head ) $this->small_head = $small_head;
+        if ( $params ) $this->params = $params;
         $this->helper = new \Helper\TemplateHelper();
     }
 
@@ -134,6 +136,13 @@ class HtmlBasicContent{
 
 
 
+    protected function error($error = null ) {
+        $out = '<em class="error">Данные не получены. Ответ сервера LiveTex: </em>';
+        if ( $error ) $out .= '<em class="error">'.$error.'</em>';
+        return $out;
+    }
+
+
 
     protected function makeUrl($params = [])
     {
@@ -161,5 +170,37 @@ class HtmlBasicContent{
     }
 
 
+
+    protected function operator_info( $operId, $attr = 'name' ) {
+        if (!$operId) return $operId;
+        $operators_list = $this->params['operators_list'];
+
+        if ( !isset( $operators_list[$operId] ) ) return  $this->error('В массиве операторов не найден '.$operId.' оператора.');
+
+        if ($attr == 'name') {
+            $firstname = $this->params['operators_list'][$operId]->firstname;
+            $lastname = $this->params['operators_list'][$operId]->lastname;
+            return $firstname.' '.$lastname;
+        }else{
+            if ( isset( $this->params['operators_list'][$operId]->$attr ) ) {
+                return $this->params['operators_list'][$operId]->$attr;
+            }else{
+                //$this->error('Не найдено свойство оператора: '.$attr);
+                return $operId;
+            }
+        }
+
+        return false;
+    }
+
+
+
+    protected function operator_link( $operId, $inlink ) {
+        if ( $operId and $inlink) {
+            $a_link = '<a href="'.$this->makeUrl(['operId' => $operId, 'actions' => 'oneOperator' ]).'">' . $inlink . '</a>';
+            return $a_link;
+        }
+        return false;
+    }
 
 }

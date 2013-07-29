@@ -10,6 +10,8 @@ class HtmlChatHistoryContent extends HtmlBasicContent {
     protected $count_messages = 0;
     protected $count_noanswer = 0;
 
+    protected $duration_cross_operators = [];
+
     protected $chat_times = 0;
 
     protected $count_first_answers = 0;
@@ -34,16 +36,31 @@ class HtmlChatHistoryContent extends HtmlBasicContent {
             $this->count_negative_votes++;
         }
 
+
+        $mvote = 'Оценка не поставлена';
+        if ($item->mvote == 1) {
+            $mvote = 'Положительная оценка';
+        } else if ($item->vvote == 2) {
+            $mvote = 'Отрицательная оценка';
+        }
+
         $this->count_iterations++;
+
+
+        $operId = $item->member;
+        if ( $operId ) {
+            $item->member = $this->operator_info($operId, 'name') . " (ID: $operId)";
+            $item->member = $this->operator_link($operId, $item->member);
+        }
 
 
         $out .= '<div class="id_oper"><span class="param_name">Идентификатор чата: </span>' . $item->id . '</div>';
         $out .= '<div class="id_oper"><span class="param_name">Идентификатор посетителя: </span>' . $item->visitor . '</div>';
-        $out .= '<div class="id_oper"><span class="param_name">Идентификатор оператора: </span>' . $item->member . '</div>';
+        $out .= '<div class="id_oper"><span class="param_name">Оператор: </span>' . $item->member . '</div>';
 
         $out .= '<div class="id_oper"><span class="param_name">Оценка чата посетителем: </span>' . $vvote . '</div>';
+        $out .= '<div class="id_oper"><span class="param_name">Идентификатор оценки чата оператором: </span>' . $mvote . '</div>';
 
-        $out .= '<div class="id_oper"><span class="param_name">Идентификатор оценки чата оператором: </span>' . $item->mvote . '</div>';
         $out .= '<div class="id_oper"><span class="param_name">Дата: </span>' . date($this->date_format, $item->timestamp) . '</div>';
 
         if ( !empty($item->firstanswer) ) {
@@ -52,10 +69,27 @@ class HtmlChatHistoryContent extends HtmlBasicContent {
             $this->count_first_answers++;
             $item->firstanswer = (string) $s . ' c ';
         }
-
         $out .= '<div class="id_oper"><span class="param_name">Время ответа на первое сообщение посетителя: </span>' . $item->firstanswer . '</div>';
 
         //$item->chattime = $this->timeInSeconds( $item->chattime );
+
+        if ( $operId ) {
+            $item->chattime = $this->timeInSeconds($item->chattime);
+
+            if (!isset( $this->duration_cross_operators[$operId] )) {
+                $arr = [
+                    'count_chats' => 1,
+                    'all_chattime' => $item->chattime,
+                ];
+            }else{
+                $arr = [
+                    'count_chats' => 1 + $this->duration_cross_operators[$operId]['count_chats'],
+                    'all_chattime' => $item->chattime + $this->duration_cross_operators[$operId]['all_chattime'],
+                ];
+            }
+
+            $this->duration_cross_operators[$operId] = $arr;
+        }
 
         $out .= '<div class="id_oper"><span class="param_name">Длительность чата в секундах: </span>' . $item->chattime . '</div>';
         $out .= '<div class="id_oper"><span class="param_name">Идентификатор сайта, на котором происходил чат: </span>' . $item->site . '</div>';
@@ -85,16 +119,20 @@ class HtmlChatHistoryContent extends HtmlBasicContent {
 
     protected function timeInSeconds($time) {
         if ( !is_numeric($time) ) {
+            $time = (string) $time;
             $answ = explode( ':', $time );
 
-            $h = (int) $answ[0];
-            $m = (int) $answ[1];
-            $s = (int) $answ[2];
+            if ( is_array($answ) and isset($answ[1]) and isset($answ[2]) ) {
+                $h = (int) $answ[0];
+                $m = (int) $answ[1];
+                $s = (int) $answ[2];
 
-            if ($h) $m = $m + $h / 60;
-            if ($m) $s = $s + $m / 60;
+                if ($h) $m = $m + $h / 60;
+                if ($m) $s = $s + $m / 60;
 
-            return $s;
+                return $s;
+            }
+            return $time;
 
         }else{
             return $time;
@@ -119,6 +157,29 @@ class HtmlChatHistoryContent extends HtmlBasicContent {
         $out .= '<p>Количество отрицательных оценок: ' . $this->count_negative_votes.'.</p>';
 
         $out .= '<p>Количество чатов с одним сообщением (без ответа оператора): ' . $this->count_noanswer.'.</p>';
+
+
+
+        $opers = '<div class="durations">';
+        $opers .= '<h3>Продолжительность разговора оператора</h3>';
+        $opers .= '<ul>';
+        foreach($this->duration_cross_operators as $id => $val) {
+            $count = $val['count_chats'];
+            $all = $val['all_chattime'];
+            $average = ( $count ) ? $all/$count : null;
+
+            $opers .= '<li>';
+            $opers .= $this->operator_link($id, $this->operator_info($id) ) . ': ' ;
+            if ($count) $opers .= 'Диалогов: ' . $count.'; ';
+            if ($all) $opers .= 'Длительность: ' . round( $all, 2 ).' секунд; ';
+            if ($average) $opers .= 'В среднем: ' . round( $average, 2 ).' секунд. ';
+            $opers .= '</li>';
+        }
+        $opers .= '</ul>';
+        $opers .= '</div>';
+
+
+        $out .= $opers;
 
         return $out;
     }

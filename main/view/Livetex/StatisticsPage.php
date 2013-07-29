@@ -44,7 +44,7 @@ class StatisticsPage extends \View\DefaultLayout {
 
             $big_head = isset($heads[$key]['big_head']) ? $heads[$key]['big_head'] : '';
             $small_head = isset($heads[$key]['small_head']) ? $heads[$key]['small_head'] : '';
-            $htmlView = new $htmlClass($big_head, $small_head);
+            $htmlView = new $htmlClass($big_head, $small_head, $this->params);
             $out = $htmlView->content($value);
 
             $html_out .= $this->render('partner-counter/livetex/stat_content', $this->params + ['htmlcontent' => $out]);
