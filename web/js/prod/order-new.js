@@ -1062,13 +1062,17 @@ upi:            for( var item = 0, boxitems = self.chosenBox().itemList(); item 
             }
             if (field=='order[recipient_email]'){
                 var emailVal = $('#order_recipient_email').val()
-                if ( (emailVal.length > 0) && (emailVal.search('@') == -1)){
+                if( !emailVal ) {
+                    if( $('#order_recipient_email').hasClass('abtestRequired') ) {
+                        markError(field, 'Укажите ваш e-mail');
+                    }
+                } else if ( (emailVal.length > 0) && (emailVal.search('@') == -1)){
                     markError(field, 'Некорректный e-mail');
                 }
             }
             for(var i=0, l=serArray.length; i<l; i++) {
                 if( serArray[i].name == field ) {
-                    if( (serArray[i].value == '') && (field != 'order[recipient_email]') )
+                    if( serArray[i].value == '' && (field != 'order[recipient_email]') )
                         markError( field, fieldsToValidate[field] ) // cause is empty
                     continue flds
                 }
