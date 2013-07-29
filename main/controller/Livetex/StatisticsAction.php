@@ -77,6 +77,7 @@ class StatisticsAction {
         $this->addMenu('Статистика операторов', '/livetex-statistics?actions=AllOperators');
         $this->addMenu('Статистика сайтов', '/livetex-statistics?actions=Site');
         $this->addMenu('[ Главная страница сайта ]', '/');
+        $this->addMenu('Выйти (очистить сессию)', '/livetex-statistics?actions=Logout');
 
     }
 
@@ -114,31 +115,40 @@ class StatisticsAction {
             (isset($operators->response) and $operators->response)
                 ? count($operators->response) : '*NOT_SET*';
 
-        
-        /* ... но отображаем список операторов в контенте только, если нужно есть соответствующий action в $actions */
-        if (in_array('AllOperators',$actions)) {
-            $this->actionsAllOperators($operators);
-        }        
 
-        // получим статистику чата, если нужно:
-        if (in_array('Chat',$actions)) {
-            $this->actionsChat();
+
+
+        if (in_array('Logout',$actions)) {
+            $this->actionsLogout();
+        }else{
+
+            /* ... но отображаем список операторов в контенте только, если нужно есть соответствующий action в $actions */
+            if (in_array('AllOperators',$actions)) {
+                $this->actionsAllOperators($operators);
+            }
+
+            // получим статистику чата, если нужно:
+            if (in_array('Chat',$actions)) {
+                $this->actionsChat();
+            }
+
+            // получим статистику сайтов:
+            if (in_array('Site',$actions)) {
+                $this->actionsSite();
+            }
+
+            // Получим статистику выбранного оператора
+            if (in_array('OneOperator',$actions)) {
+                $this->actionsOneOperator();
+            }
+
+            // Получим общую статистику
+            if (in_array('General',$actions)) {
+                $this->actionsGeneral();
+            }
+
         }
 
-        // получим статистику сайтов:
-        if (in_array('Site',$actions)) {
-            $this->actionsSite();
-        }
-
-        // Получим статистику выбранного оператора
-        if (in_array('OneOperator',$actions)) {
-            $this->actionsOneOperator();
-        }
-
-        // Получим общую статистику
-        if (in_array('General',$actions)) {
-            $this->actionsGeneral();
-        }
 
 
         /*
@@ -219,6 +229,13 @@ class StatisticsAction {
     }
 
 
+    private function actionsLogout() {
+        $API = &$this->API;
+        $API->tologout();
+        $this->infomess = 'Сессия авторизации очищена';
+    }
+
+
     private function actionsGeneral() {
         $this->reset_dates();
 
@@ -278,6 +295,7 @@ class StatisticsAction {
      */
     private function actionsSelect($request) {
         $actions = &$this->actions;
+
         //$actions = array_unique($actions);
 
         if (!empty( $this->operId )) {

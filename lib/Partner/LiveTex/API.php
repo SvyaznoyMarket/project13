@@ -19,6 +19,7 @@ class API {
     private $password = null;
     private $api_url = 'http://api.livetex.ru/';
     private $api_login_url = 'http://api.livetex.ru/login.php';
+    private $count_login_errors = 0;
 
 
     private function __clone() {}
@@ -99,10 +100,17 @@ class API {
         $response = $this->curl( $this->api_url, $post_arr );
 
 
+        // Обработка ошибок ( перелогинивание в случае ошибки 204, Bad auth key если истёк срок ключа )
         $error = $response->error;
         if ( $error ) {
+            // при ошибке чистим сессию и пробуем снова залогиниться
             $this->unsetSession();
-            //return $this->method($method, $data);
+            $this->tologin();
+
+            $this->count_login_errors++; // счётчик ошибок авторизации, дабы не зацикливаться, если вечная ошибка
+            if ( $this->count_login_errors < 3 ) {
+                return $this->method($method, $data);
+            }
         }
 
 
