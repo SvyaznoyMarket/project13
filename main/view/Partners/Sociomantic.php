@@ -34,6 +34,7 @@ class Sociomantic
         if ( !empty($products) and is_array($products) )
         foreach ($products as $product):
             $cartProduct = isset($cartProductsById[$product->getId()]) ? $cartProductsById[$product->getId()] : null;
+            if (!$cartProduct) continue;
             $one_prod = [];
 
             // $product <--> Model\Product\CartEntity

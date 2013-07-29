@@ -334,6 +334,11 @@ class AppConfig {
         'numSidebarCategoriesShown' => null,
     ];
 
+    /** @var array */
+    public $sphinx = [
+        'showFacets' => null,
+    ];
+
     public function __construct() {
         $this->vkontakteOauth = new OAuth\VkontakteConfig();
         $this->odnoklassnikiOauth = new OAuth\OdnoklassnikiConfig();

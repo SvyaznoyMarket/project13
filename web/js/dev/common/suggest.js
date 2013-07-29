@@ -189,6 +189,8 @@
 		};
 	// end of functions
 
+		$('body').click(function(e){		
+			var targ = e.target.className;
 
 
 	/**

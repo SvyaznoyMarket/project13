@@ -20,164 +20,47 @@
 	}
 }
 
-.bProductSection {
-    //left section
-    &__eLeft {
-        display: inline-block;
-        margin: 15px 0 0;
-        width: 700px;
-        float: left;
-    }
-    .inStock {
-        color: #fb9c00;
-        font-weight: 800;
-        margin-bottom: 6px;
-        line-height: 1;
-    }
-    .priceOld {
-        font-size: 21px;
-        margin-bottom: 3px;
-        color: #a6a6a6;
-        span {
-            text-decoration: line-through;
-        }
-    }
-    .bPrice {
-        font-size: 30px;
-    }
-    .priceSale {
-        margin: 5px 0 10px;
-        cursor: pointer;
-    }
-    .bTags {
-    	margin: 0 0 0 10px;
-    	font-size: 11px;
-    }
-    
-    //additional product options
-    .bDescSelectItem {
-        border: 1px solid #c7c7c7;
-        .rounded(5px);
-        background: url("@{base-url}/newProductCard/img/ico_corner.gif") no-repeat 265px 17px;
-        padding: 0 17px 0 10px;
-        height: 40px;
-        line-height: 40px;
-        font-size: 12px;
-        margin: 0 0 10px;
-        position: relative;
-        cursor: pointer;
-        &__eSelect {
-            top: 0;
-            right: 0;
-            width: 280px;
-            .opacity(0);
-            filter:progid:DXImageTransform.Microsoft.Alpha(opacity=0);
-            background-color: transparent;
-            border: none;
-            box-shadow: none;
-            color: transparent;
-            font-size: 16px;
-            height: 37px;
-            padding: 5px;
-            position: absolute;
-            -webkit-appearance: none;
-            cursor: pointer;
-            z-index: 2;
-        }
-        &__eOption {
-            filter:progid:DXImageTransform.Microsoft.Alpha(opacity=100);
-            background-color: #FFFFFF;
-            color: black;
-            display: block;
-            height: 37px;
-            -webkit-appearance: none;
-            zoom:1;
-            text-align: right;
-        }
-        &__eValue {
-            float: right;
-        }
-    }
-    
-    .creditbox {
-        display: none;
-		margin: 5px 0 0;
-		border: none;
-		font-size: 14px;
-		.bigcheck {
-			font-weight: normal;
-			line-height: 22px;
-			&.checked {
-				color: #ffa901 !important;
-				.dotted {
-					border: none;
-				}
-				b{
-					background-position: 0px -54px;
-				}
-			}
-			b{
-				margin: 0px 8px 0 0px;
-			}
-		}
-		.creditbox__sum {
-			padding-left: 36px;
-		}
-	}
-    //product shop description section
-    .bProductDesc {
-        margin: 0 0 15px;
-        //product images section
-        .bStickerImg {
-        	position: absolute;
-        	top: 0;
-        	left: 0;
-        }
-        &__ePhoto {
-            position: relative;
-            float: left;
-            width: 400px;
-            //product big image section
-            &-bigImg {
-                display: block;
-                width: 400px;
-                height: 400px;
-                text-align: center;
-                vertical-align: bottom;
-                img {
-                    max-width: 400px;
-                    max-height: 400px;
-                }
-            }
-        }
-        //product shop description box
-        &__eStore {
-            float: right;
-            width: 280px;
-            margin: 0;
-            &-text {
-		        font-size: 14px;
-		        margin: 23px 0 25px;
-		        .text__eAll {
-		            margin: 4px 0 0;
-		            a {
-		                text-decoration: underline;
-		                color: #a6a6a6;
-						font-size: 12px;
-		            }
-		        }
-		    }
-		}
-	}
+//left section
+.bProductSectionLeftCol {
+	display: inline-block;
+    float: left;
 
-	.bDescriptionProduct {
-		font-size: 14px;
-	}
-	.bHeadSection {
-		font-size: 16px;
-		margin: 21px 0 10px;
-		padding: 0;
-	}
+    width: 700px;
+    margin: 15px 0 0;
+}
+
+//product images section
+.bProductDescSticker {
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+.bProductDescImg {
+    position: relative;
+
+    float: left;
+
+    width: 400px;
+
+    //product big image section
+	.bProductDescImgBig {
+        display: block;
+
+        width: 400px;
+        height: 400px;
+
+        text-align: center;
+        vertical-align: bottom;
+
+        &__eImg{
+            max-width: 400px;
+            max-height: 400px;
+        }
+    }
+}
+
+.bPhotoAction {
 
 	//view product
 	margin: 15px 0 0;
@@ -271,7 +154,7 @@
 					border: 2px solid;
 					border-color: lighten(@firmOrange, 20%);
 				}
-				
+
 				img {
 					max-width: 45px;
 					max-height: 45px;
@@ -306,7 +189,7 @@
 
 				span {
 					background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAKCAYAAAB8OZQwAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAUklEQVQIHWWOAQrAIAwDGz9qn7a9xKd1SVhFMBBCrxGLqopTADIE21wmvUa33IiYmg1PIAg6aTeY1n7eQDn4ycN8NbTcvBZ9jpJKeuEfBCxd8gH17yW5xQaKpwAAAABJRU5ErkJggg==);
-					
+
 				}
 			}
 
@@ -316,7 +199,7 @@
 
 				span {
 					background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAKCAYAAAB8OZQwAAAACXBIWXMAAAsTAAALEwEAmpwYAAAATklEQVQIHWWOAQ7AIAgDi/Of+rTtJT6NtWYYnCYK3pUEAOjujnzJMP6iiPI0M+uz4xNQ/yVq2K9KbMnl87jgwy3uDCeI+LHSRWMaiYTqC8rzLpK0xDYMAAAAAElFTkSuQmCC);
-					
+
 				}
 			}
 		}
@@ -344,36 +227,6 @@
 
 			font-size: 12px;
         }
-    }
-
-    .inStock {
-        margin-bottom: 6px;
-
-        color: #fb9c00;
-
-        font-weight: 800;
-        line-height: 1;
-    }
-
-    .priceOld {
-        margin-bottom: 3px;
-
-        color: #a6a6a6;
-
-        font-size: 21px;
-        span {
-            text-decoration: line-through;
-        }
-    }
-
-    .bPrice {
-        font-size: 30px;
-    }
-
-    .priceSale {
-        margin: 5px 0 10px;
-
-        cursor: pointer;
     }
     
     //additional product options
@@ -464,6 +317,36 @@
 	}
 }
 
+    .inStock {
+        margin-bottom: 6px;
+
+        color: #fb9c00;
+
+        font-weight: 800;
+        line-height: 1;
+    }
+
+    .priceOld {
+        margin-bottom: 3px;
+
+        color: #a6a6a6;
+
+        font-size: 21px;
+        span {
+            text-decoration: line-through;
+        }
+    }
+
+    .bPrice {
+        font-size: 30px;
+    }
+
+    .priceSale {
+        margin: 5px 0 10px;
+
+        cursor: pointer;
+    }
+
 .bProductSection {
 
 	.bDescriptionProduct {
@@ -525,6 +408,10 @@
 			margin: 0 auto;
 		}
 	}
+	.bTags {
+		margin: 0 0 0 10px;
+		font-size: 11px;
+	}
 }
 
 .bHint {
@@ -539,9 +426,11 @@
 	margin: 0 0 20px;
 	&__eHead {
 		float: left;
+
+		width: 435px;
+
 		font-size: 14px;
 		font-weight: bold;
-		width: 435px;
 	} 
 	&__eTitle {
 		font: 800 16px/1.2 tahoma, verdana, arial, helvetica, sans-serif;

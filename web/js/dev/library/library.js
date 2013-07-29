@@ -185,7 +185,7 @@ var DirectCredit = {
 				//  }
 					
 				// }               
-				self.output.text( printPrice( Math.ceil( result.payment ) ) );
+				self.output.text( window.printPrice( Math.ceil( result.payment ) ) );
 				PubSub.publish( 'bankAnswered', null );
 			}
 		);

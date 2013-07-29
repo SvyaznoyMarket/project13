@@ -1,4 +1,4 @@
-;(function(global) {
+;(function( global ) {
 	var pageConfig = $('#page-config').data('value');
 
 	/**
@@ -45,12 +45,12 @@ $.ajaxSetup({
 
 			window.logError(data);
 
-			if( typeof(_gaq) !== 'undefined' ) {
+			if ( typeof(_gaq) !== 'undefined' ) {
 				_gaq.push(['_trackEvent', 'Errors', 'Ajax Errors', '404 ошибка, страница не найдена']);
 			}
 		},
 		401: function() {
-			if( $('#auth-block').length ) {
+			if ( $('#auth-block').length ) {
 				$('#auth-block').lightbox_me({
 					centered: true,
 					onLoad: function() {
@@ -59,7 +59,7 @@ $.ajaxSetup({
 				});
 			}
 			else{
-				if( typeof(_gaq) !== 'undefined' ) {
+				if ( typeof(_gaq) !== 'undefined' ) {
 					_gaq.push(['_trackEvent', 'Errors', 'Ajax Errors', '401 ошибка, авторизуйтесь заново']);
 				}
 			}
@@ -78,7 +78,7 @@ $.ajaxSetup({
 
 			window.logError(data);
 
-			if( typeof(_gaq) !== 'undefined' ) {
+			if ( typeof(_gaq) !== 'undefined' ) {
 				_gaq.push(['_trackEvent', 'Errors', 'Ajax Errors', '500 сервер перегружен']);
 			}
 		},
@@ -95,7 +95,7 @@ $.ajaxSetup({
 
 			window.logError(data);
 
-			if( typeof(_gaq) !== 'undefined' ) {
+			if ( typeof(_gaq) !== 'undefined' ) {
 				_gaq.push(['_trackEvent', 'Errors', 'Ajax Errors', '503 ошибка, сервер перегружен']);
 			}
 		},
@@ -112,7 +112,7 @@ $.ajaxSetup({
 
 			window.logError(data);
 
-			if( typeof(_gaq) !== 'undefined' ) {
+			if ( typeof(_gaq) !== 'undefined' ) {
 				_gaq.push(['_trackEvent', 'Errors', 'Ajax Errors', '504 ошибка, проверьте соединение с интернетом']);
 			}
 		}
@@ -128,10 +128,10 @@ $.ajaxSetup({
 			};
 		// end of vars
 		
-		if( jqXHR.statusText === 'error' ) {
+		if ( jqXHR.statusText === 'error' ) {
 			window.logError(data);
 
-			if( typeof(_gaq) !== 'undefined' ) {
+			if ( typeof(_gaq) !== 'undefined' ) {
 				_gaq.push(['_trackEvent', 'Errors', 'Ajax Errors', 'неизвестная ajax ошибка']);
 			}
 		}
