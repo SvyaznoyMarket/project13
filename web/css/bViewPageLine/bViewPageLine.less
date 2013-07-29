@@ -5,21 +5,23 @@
   width: 38px;
   height: auto;
 
+  text-align: center;
+
   color: @black;
   border: 1px solid #c7c7c7;
   background-color: @white;
   background-image: none;
-  text-align: center;
 
   &:hover, &.mActiveLink {
-    background-color: @black;
     color: @white;
     border-color: @black;
+    background-color: @black;
   }
 }
 
 .bViewPageLine {
   .rounded(3px 3px 0 0);
+  margin: 13px 0 0;
   padding: 5px 0 5px 10px;
 
   color: #515151;
@@ -72,6 +74,7 @@
   
   .bViewPageMode {
     float: left;
+
     margin: 0 0 0 10px;
   }
 
@@ -85,7 +88,6 @@
 
     &__eItemLink {
       .styleHrefSorting;
-
       padding: 4px 0;
     }
 
@@ -135,24 +137,26 @@
 
     &__eItemLink.borderedR {
       .styleHrefSorting;
-
-      padding: 4px 0;
       float: none;
 
+      padding: 4px 0;
+
       span {
+        float: none;
+
         height: auto;
         margin: 0;
         padding: 0;
-        float: none;
       }
     }
   }
 
   .bAllPager {
     .styleHrefSorting;
-    padding: 3px 0;
-    margin: 18px 10px 0 -5px;
     float: right;
+
+    margin: 18px 10px 0 -5px;
+    padding: 3px 0;
   }
 }
 

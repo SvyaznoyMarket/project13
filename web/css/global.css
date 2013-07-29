@@ -11455,6 +11455,7 @@
     -webkit-border-radius: 3px 3px 0 0;
     -moz-border-radius: 3px 3px 0 0;
     border-radius: 3px 3px 0 0;
+    margin: 13px 0 0;
     padding: 5px 0 5px 10px;
     color: #515151;
     border-bottom: 1px solid #c7c7c7;
@@ -11506,18 +11507,18 @@
     display: block;
     width: 38px;
     height: auto;
+    text-align: center;
     color: #000000;
     border: 1px solid #c7c7c7;
     background-color: #ffffff;
     background-image: none;
-    text-align: center;
     padding: 4px 0;
   }
   .bViewPageLine .bViewPageModeList__eItemLink:hover,
   .bViewPageLine .bViewPageModeList__eItemLink.mActiveLink {
-    background-color: #000000;
     color: #ffffff;
     border-color: #000000;
+    background-color: #000000;
   }
   .bViewPageLine .bViewPageModeList .bViewPageModeIcon {
     display: block;
@@ -11552,25 +11553,25 @@
     display: block;
     width: 38px;
     height: auto;
+    text-align: center;
     color: #000000;
     border: 1px solid #c7c7c7;
     background-color: #ffffff;
     background-image: none;
-    text-align: center;
-    padding: 4px 0;
     float: none;
+    padding: 4px 0;
   }
   .bViewPageLine .bPagesList__eItemLink.borderedR:hover,
   .bViewPageLine .bPagesList__eItemLink.borderedR.mActiveLink {
-    background-color: #000000;
     color: #ffffff;
     border-color: #000000;
+    background-color: #000000;
   }
   .bViewPageLine .bPagesList__eItemLink.borderedR span {
+    float: none;
     height: auto;
     margin: 0;
     padding: 0;
-    float: none;
   }
   .bViewPageLine .bAllPager {
     -webkit-border-radius: 4px;
@@ -11579,20 +11580,20 @@
     display: block;
     width: 38px;
     height: auto;
+    text-align: center;
     color: #000000;
     border: 1px solid #c7c7c7;
     background-color: #ffffff;
     background-image: none;
-    text-align: center;
-    padding: 3px 0;
-    margin: 18px 10px 0 -5px;
     float: right;
+    margin: 18px 10px 0 -5px;
+    padding: 3px 0;
   }
   .bViewPageLine .bAllPager:hover,
   .bViewPageLine .bAllPager.mActiveLink {
-    background-color: #000000;
     color: #ffffff;
     border-color: #000000;
+    background-color: #000000;
   }
   .bPagesListBottom {
     min-width: 190px;
