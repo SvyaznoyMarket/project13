@@ -2,9 +2,7 @@
 namespace View\Livetex;
 
 
-class HtmlGeneralContent extends HtmlBasicContent {
-
-
+class HtmlGeneralContent extends HtmlChatHistoryContent {
 
 
 }

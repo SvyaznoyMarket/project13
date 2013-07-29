@@ -15,10 +15,10 @@ class HtmlSiteContent extends HtmlBasicContent {
         $out .= '<div class="id_oper"><span class="param_name">ID: </span>' . $item->id . '</div>';
 
         $isembed = $item->isembed ? 'встроенный чат' : 'большой чат';
-        $melody = $item->melody ? 'is melody' : 'No is melody';
+        $melody = $item->melody ? 'есть мелодия' : 'нет мелодии';
 
         $out .= '<div class="state_oper"><span class="param_name">Тип: </span>' . $isembed . '</div>';
-        $out .= '<div class="state_oper"><span class="param_name">Melody: </span>' . $melody . '</div>';
+        $out .= '<div class="state_oper"><span class="param_name">Мелодия приветствия (звонка): </span>' . $melody . '</div>';
 
         return $out;
     }

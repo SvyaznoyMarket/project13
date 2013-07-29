@@ -26,6 +26,7 @@ class StatisticsPage extends \View\DefaultLayout {
         $html_out = '';
         $content = $this->params['content'];
         $heads = $this->params['heads'];
+        $infomess = $this->params['infomess'];
 
 
         foreach ($content as $key => $value) {
@@ -50,6 +51,11 @@ class StatisticsPage extends \View\DefaultLayout {
 
         }
 
+        $html_infomess = '';
+        if ( !empty($infomess) ) {
+            $html_infomess = $this->wr( $infomess,'info_block infomess' ); // информационное сообщение, если задано
+        }
+        $html_out = $html_infomess.$html_out;
         $html_out = $this->slotSidebar() . $this->wr($html_out,'bPromoCatalog'); // добавим сайдбар
         $html_out = $this->wr($html_out, 'lts_wrap'); // обернём во враппер
         $html_out .= '<center> <p></p> <p>< -- end of Statistics page --></p> <p><img /></p> </center>';

@@ -3,6 +3,7 @@
  *
  * Можно также добавить "кешировние" — записть в сессию полученных от апи результатов,
  * чтобы уменьшить кол-во обращений к АПИ.
+ * Пока добавлено кешированине в сессию chief_id и authKey дабы не запрашивать при перезагрузке страницы авторизацию
  *
  */
 
@@ -66,15 +67,25 @@ class API {
 
             if ( isset($response->response->chief_id) ) $this->chief_id = $response->response->chief_id;
                 else $this->chief_id = false;
+
+            $this->setSession();
         }
 
         return $response;
     }
 
 
+    public function tologout() {
+        $this->unsetSession();
+    }
+
+
     public function method( $method, $data = [] ) {
         if ( $this->authKey == null || $this->chief_id == null ) {
-            $this->tologin();
+            $this->getSession();
+            if ( $this->authKey == null || $this->chief_id == null ) {
+                $this->tologin();
+            }
         }
 
         $post_arr = [
@@ -92,9 +103,13 @@ class API {
     }
 
 
+    /*
     public function testmethod( $method, $data = [] ) {
-        if ( $this->authKey == null || $this->chief_id == null ) {
-            $this->tologin();
+        if ( $this->authKey == null || $this->chief_id == null ) {           
+            $this->getSession();
+            if ( $this->authKey == null || $this->chief_id == null ) {
+                $this->tologin();   
+            }
         }
 
         $post_arr =
@@ -110,6 +125,26 @@ class API {
 
         return $response;
 
+    }
+    */
+
+
+
+    private function setSession() {
+        \App::session()->set( 'ltstat_authKey', $this->authKey );
+        \App::session()->set( 'ltstat_chief_id', $this->chief_id );
+    }
+
+
+    private function getSession() {
+        $this->authKey = \App::session()->get( 'ltstat_authKey');
+        $this->chief_id = \App::session()->get( 'ltstat_chief_id');
+    }
+
+
+    private function unsetSession() {
+        \App::session()->remove('ltstat_authKey');
+        \App::session()->remove('ltstat_chief_id');
     }
 
 

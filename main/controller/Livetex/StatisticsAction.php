@@ -15,6 +15,7 @@ class StatisticsAction {
     private $siteId = null;
     private $aside_menu = [];
     private $operators_list = [];
+    private $infomess = '';
 
 
 
@@ -86,7 +87,9 @@ class StatisticsAction {
         $page = new \View\Livetex\StatisticsPage();
         $actions = &$this->actions;
         $content = &$this->content;
-        $API = &$this->API;                
+        $API = &$this->API;
+
+
 
         //$router = \App::router();
         //$client = \App::coreClientV2();
@@ -95,6 +98,7 @@ class StatisticsAction {
 
         $this->init($request);
         $this->actionsSelect($request);
+
 
         /* загружаем список операторов в любом случае (чтобы обращаться к нему в случае надобности) ... */
         $operators = $API->method('Operator.GetList');
@@ -157,6 +161,7 @@ class StatisticsAction {
         $page->setParam('heads', $this->heads);
         $page->setParam('actions', $actions);
         $page->setParam('aside_menu', $this->aside_menu);
+        $page->setParam('infomess', $this->infomess);
 
         return new \Http\Response( $page->show() );
     }
@@ -169,7 +174,7 @@ class StatisticsAction {
         $API = &$this->API;
         
         if ( !empty($this->operId) ) {
-            $operator_chat = $API->testmethod('Operator.ChatStat', [
+            $operator_chat = $API->method('Operator.ChatStat', [
                 'date_begin' => $this->date_begin,
                 'date_end' => $this->date_end,
                 'operator_id' => $this->operId,
@@ -194,7 +199,7 @@ class StatisticsAction {
         $chat_active = $API->method('Chat.GetActive', []);
 
         $this->heads['ChatHistory']['big_head'] = 'LiveTex: Статистика истории чатов';
-        $content['ChatHistory'] = $API->testmethod('Site.ChatHistory', [
+        $content['ChatHistory'] = $API->method('Site.ChatHistory', [
             'date_begin' => $this->date_begin,
             'date_end' => $this->date_end,
             'site_id' => $this->siteId,
@@ -211,16 +216,18 @@ class StatisticsAction {
     private function actionsSite() {
         $API = &$this->API;
         $content = &$this->content;
-        $content['Site'] = $API->testmethod('Site.GetList');
+        $content['Site'] = $API->method('Site.GetList');
     }
 
 
     private function actionsGeneral() {
-        $API = &$this->API;
-        $content = &$this->content;
+        $this->reset_dates();
+
+        $API = & $this->API;
+        $content = & $this->content;
 
         $this->heads['General']['big_head'] = 'LiveTex: Общая статистика';
-        $content['General'] = $API->testmethod('Site.ChatHistory', [
+        $content['General'] = $API->method('Site.ChatHistory', [
             'date_begin' => $this->date_begin,
             'date_end' => $this->date_end,
             'site_id' => $this->siteId,
@@ -236,7 +243,7 @@ class StatisticsAction {
     private function actionsOneOperator() {
         $API = &$this->API;
         $content = &$this->content;
-        $OneOperator = $API->testmethod('Operator.ChatStat', [
+        $OneOperator = $API->method('Operator.ChatStat', [
             'date_begin' => $this->date_begin,
             'date_end' => $this->date_end,
             'operator_id' => $this->operId,
@@ -352,6 +359,74 @@ class StatisticsAction {
         print "\n".PHP_EOL;
 
         return $ret;
+    }
+
+
+
+    /*
+    private function set_dates( $date_begin = null, $date_end = null ){
+        if ( !empty($date_begin) ) $this->date_begin = $date_begin;
+        if ( !empty($date_end) ) $this->date_end = $date_end;
+    }*/
+
+
+
+    private function reset_dates( ) {
+        $done = false;
+
+
+        $date_end_old = $this->date_end;
+        $date_begin_old = $this->date_begin;
+
+        $this->date_end_today();
+        $this->date_begin_yesterday();
+
+        //$this->l($date_end_old);
+        //$this->l($this->date_end);
+
+        if ( $date_end_old != $this->date_end ) {
+            $this->infomess .= 'Дата окончания была изменена автоматически. ';
+            $done = true;
+        }
+
+        if ( $date_begin_old != $this->date_begin ) {
+            $this->infomess .= 'Дата начала была изменена автоматически. ';
+            $done = true;
+        }
+
+        return $done;
+
+    }
+
+
+
+
+    private function date_begin_yesterday( $datestr = null) {
+        $yesterday = null;
+
+        if ( empty($datestr) ) $datestr = $this->date_end;
+
+        if (!empty($datestr)) {
+            $datearr = explode('-',$datestr); // $date_format = 'Y-m-d';
+
+            // $yesterday  = mktime(0, 0, 0, date("m")  , date("d") - 1, date("Y"));
+            $yesterday  = mktime(0, 0, 0, $datearr[1]  , $datearr[2] - 1, $datearr[0] );
+
+        }else{
+            $yesterday = strtotime('-1 day');
+        }
+
+        if (!empty($yesterday)) {
+            $this->date_begin = (string) date($this->date_format, $yesterday );
+            return true;
+        }
+
+        return false;
+    }
+
+
+    private function date_end_today() {
+        return $this->date_end = (string) date($this->date_format,strtotime('today UTC'));
     }
 
 

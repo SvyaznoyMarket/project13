@@ -5,6 +5,7 @@ namespace View\Livetex;
 
 class HtmlBasicContent{
     protected $default_ava = '9c46526d320a87cdab6dfdbc14f23cdc.png';
+    protected $date_format = 'Y-m-d';
     protected $page_url = '/livetex-statistics';
     protected $more_word = '[ Подробнее » ]';
     protected $small_head = '';
@@ -58,7 +59,17 @@ class HtmlBasicContent{
                 } // end of foreach
                 ///////////////////////////
 
+
+
                 if ( $tobe_ul ) $out .= '</ul>';
+
+
+                $analytics  = $this->analytics();
+                if ( !empty($analytics) ) {
+                    $analytics = $this->wr ( $analytics, 'lts_item lts_analytics' );
+                    $out = $analytics . $out;
+                }
+
                 return $out;
             }
             return $this->noresponse();
@@ -68,6 +79,10 @@ class HtmlBasicContent{
     }
     //////////////////////////////////////////////////////
 
+
+    protected function analytics() { // прототип функции
+        return false;
+    }
 
     protected function inCycleCondition( &$item ) {
         return isset( $item );

@@ -3,6 +3,7 @@ namespace View\Livetex;
 
 
 class HtmlAllOperatorsContent extends HtmlBasicContent {
+    protected $count_operators = 0;
 
     protected function inCycleCondition( &$item ) {
         return isset( $item->isonline );
@@ -10,6 +11,8 @@ class HtmlAllOperatorsContent extends HtmlBasicContent {
 
 
     protected function inCycle( $op ) {
+        $this->count_operators++;
+
         $out = '';
         $isonline = $op->isonline ? '<span class="isonline">Да</span>' : 'Нет';
 
@@ -34,5 +37,10 @@ class HtmlAllOperatorsContent extends HtmlBasicContent {
         return $out;
     }
 
+
+    protected function analytics() {
+        $out = 'Количество операторов: ' . $this->count_operators . '. ';
+        return $out;
+    }
 
 }

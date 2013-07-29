@@ -101,4 +101,16 @@
     .allpageinner {
         padding-bottom: 0 !important;
     }
+
+    .infomess{
+        margin: 16px 0 0;
+        border: 1px solid #050;
+        padding: 1em;
+        background: #085;
+        color: #fff;
+    }
+
+    .lts_analytics{
+        margin-top: 16px;
+    }
 </style>
