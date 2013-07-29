@@ -1617,7 +1617,7 @@ $(document).ready(function(){
 	$('.product_filter-block').bind('change', function(e) {
 		var el = $(e.target);
 
-		if ( el.is('input') && (-1 != $.inArray(el.attr('type'), ['radio', 'checkbox'])) ) {
+		if ( el.is('input') && (-1 != $.inArray(el.attr('type'), ['radio', 'checkbox', 'text'])) ) {
 			el.trigger('preview');
 		}
 	}).bind('preview', function(e) {

@@ -426,6 +426,9 @@
   .width181 {
     width: 181px;
   }
+  .width205 {
+    width: 205px;
+  }
   .width215 {
     width: 215px;
   }
@@ -637,6 +640,12 @@
   .text.textdisabled {
     border-color: #e4e4e4;
     color: #a6a6a6;
+  }
+  .text.orangeIcon {
+    height: 26px;
+    width: 170px;
+    background: url("/css/search/img/searchBtn.png") no-repeat right -1px;
+    padding-right: 40px;
   }
   .crossText {
     color: #818181;
@@ -3717,6 +3726,9 @@
     border: 1px solid #f99b1c;
     margin: 15px 0px;
     behavior: url('/css/common/PIE.htc');
+  }
+  .bSpec.noBorder {
+    border: none;
   }
   .bSpec .filterHeader {
     -webkit-border-top-right-radius: 2px 2px 0px 0px;
@@ -9966,14 +9978,6 @@
   }
   .bProductSection .bProductDesc__eStore-text .text__eAll {
     margin: 4px 0 0;
-  }
-  .bProductSection .bProductDesc__eStore-text .text__eAll a {
-    text-decoration: underline;
-    color: #a6a6a6;
-    font-size: 12px;
-  }
-  .bProductSection .bDescriptionProduct {
-    font-size: 14px;
   }
   .bProductSection .bProductDesc__eStore-text .text__eAll a {
     text-decoration: underline;
