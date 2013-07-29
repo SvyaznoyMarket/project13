@@ -315,5 +315,6 @@ $c->maybe3d['timeout']    = 30;
 $c->tag['numSidebarCategoriesShown'] = 3;
 
 $c->sphinx['showFacets'] = true;
+$c->sphinx['showListingSearchBar'] = true;
 
 return $c;
