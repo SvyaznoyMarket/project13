@@ -29,26 +29,27 @@ if (!isset($isAddInfo)) $isAddInfo = false;
 
 <div class="bViewPageLine clearfix">
     <? if ($pager->hasPages()): ?>
-        <div class="fr allpager mBtn" alt="все товары в категории" title="все товары в категории"
-            data-url="<?= $page->helper->replacedUrl(array('page' => null), null, $request->attributes->get('route') . (strpos($request->attributes->get('route'), 'infinity') !== false ? '' : '.infinity')) ?>"
-            data-page="<?= $pager->getPage() ?>"
-            data-lastpage="<?= $pager->getLastPage() ?>"
-            data-filter="<?= $filterData ?>"
-        ></div>
+    <div class="fr allpager bAllPager mBtn" alt="все товары в категории" title="все товары в категории"
+        data-url="<?= $page->helper->replacedUrl(array('page' => null), null, $request->attributes->get('route') . (strpos($request->attributes->get('route'), 'infinity') !== false ? '' : '.infinity')) ?>"
+        data-page="<?= $pager->getPage() ?>"
+        data-lastpage="<?= $pager->getLastPage() ?>"
+        data-filter="<?= $filterData ?>"
+    >&#8734;</div>
+
     <? if(!empty($showPagerHeader)): ?>
         <span class="mBoldh3"><?= $pager->count() . ' ' . $page->helper->numberChoice($pager->count(), array('товар', 'товара', 'товаров')) ?></span>
     <? endif ?>
-        <?= $page->render('_pagination', array('pager' => $pager)) ?>
+        <?= $page->render('_paginationTop', array('pager' => $pager)) ?>
     <? endif ?>
 
     <? if ($pager->count()) $page->setGlobalParam('productCount', $pager->count()); ?>
 
-    <? if ($pager->count() && $hasListView): ?>
-        <?= $page->render('product/_listView', array('view' => $view, 'request' => $request, 'category' => $category)) ?>
-    <? endif ?>
-
     <? if ($productSorting && $pager->count()): ?>
         <?= $page->render('product/_sorting', array('productSorting' => $productSorting)) ?>
+    <? endif ?>
+
+    <? if ($pager->count() && $hasListView): ?>
+        <?= $page->render('product/_listView', array('view' => $view, 'request' => $request, 'category' => $category)) ?>
     <? endif ?>
 </div>
 
@@ -61,5 +62,5 @@ if (!isset($isAddInfo)) $isAddInfo = false;
      data-lastpage="<?= $pager->getLastPage() ?>"
      data-filter="<?= $filterData ?>"
 ></div>
-<?= $page->render('_pagination', array('pager' => $pager)) ?>
+<?= $page->render('_paginationBottom', array('pager' => $pager)) ?>
 <? endif ?>

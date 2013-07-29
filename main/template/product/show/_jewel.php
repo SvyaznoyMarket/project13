@@ -16,12 +16,11 @@
 
 <div id="jsProductCard" data-value="<?= $page->json($productData) ?>"></div>
 
-<div class="bProductSection__eLeft">
-    <div class="bProductDesc clearfix">
+<div class="bProductSectionLeftCol">
 
         <?= $helper->render('product/__photo', ['product' => $product, 'productVideos' => $productVideos]) ?>
 
-        <div class="bProductDesc__eStore">
+        <div class="bProductDescShop">
             <?= $helper->render('product/__state', ['product' => $product]) // Есть в наличии ?>
 
             <?= $helper->render('product/__price', ['product' => $product]) // Цена ?>
@@ -30,7 +29,7 @@
 
             <?= $helper->render('product/__credit', ['product' => $product, 'creditData' => $creditData]) // Беру в кредит ?>
 
-            <div class="bProductDesc__eStore-text">
+            <div class="bProductDescShop__eText">
                 <?= $product->getTagline() ?>
 
                 <?= $helper->render('product/__property', ['product' => $product]) // Характеристики ?>
@@ -39,9 +38,9 @@
             <?= $helper->render('product/__reviewCount', ['product' => $product, 'reviewsData' => $reviewsData]) ?>
 
             <?= $helper->render('product/__model', ['product' => $product]) // Модели ?>
-
-        </div><!--/product shop description box -->
     </div><!--/product shop description section -->
+
+    <div class="clear"></div>
 
     <div class="bDescriptionProduct">
         <?= $product->getDescription() ?>
