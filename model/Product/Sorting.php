@@ -7,12 +7,12 @@ class Sorting {
     private $list = array(
         'price_asc'   => array(
             'name'      => 'price',
-            'title'     => 'Сначала недорогие',
+            'title'     => 'По цене &#8595;',
             'direction' => 'asc',
         ),
         'price_desc'   => array(
             'name'      => 'price',
-            'title'     => 'Сначала дорогие',
+            'title'     => 'По цене &#8593;',
             'direction' => 'desc',
         ),
         'creator_asc' => array(

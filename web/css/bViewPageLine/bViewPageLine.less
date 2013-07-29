@@ -1,5 +1,27 @@
+.styleHrefSorting () {
+  .rounded(4px);
+  display: block;
+
+  width: 38px;
+  height: auto;
+
+  text-align: center;
+
+  color: @black;
+  border: 1px solid #c7c7c7;
+  background-color: @white;
+  background-image: none;
+
+  &:hover, &.mActiveLink {
+    color: @white;
+    border-color: @black;
+    background-color: @black;
+  }
+}
+
 .bViewPageLine {
   .rounded(3px 3px 0 0);
+  margin: 13px 0 0;
   padding: 5px 0 5px 10px;
 
   color: #515151;
@@ -42,7 +64,7 @@
 
       font-size: 11px;
 
-      &mActiveLink, &:hover {
+      &:hover, &.mActiveLink {
         color: @white;
         border-color: @black;
         background-color: @black;
@@ -51,7 +73,9 @@
   }
   
   .bViewPageMode {
-    float: right;
+    float: left;
+
+    margin: 0 0 0 10px;
   }
 
   .bViewPageModeList {
@@ -63,21 +87,8 @@
     }
 
     &__eItemLink {
-      .rounded(4px);
-      display: block;
-
-      width: 38px;
-      padding: 3px 0;
-
-      color: @black;
-      border: 1px solid #c7c7c7;
-      background-color: @white;
-
-      &mActiveLink, &:hover {
-        color: @white;
-        border-color: @black;
-        background-color: @black;
-      }
+      .styleHrefSorting;
+      padding: 4px 0;
     }
 
     .bViewPageModeIcon {
@@ -89,8 +100,66 @@
 
       background: url('@{base-url}/bViewPageLine/img/bViewPageModeIcons.png') no-repeat 0 0;
     }
-    .mListView .bViewPageModeIcon {
-      background-position: -14px 0;
+
+    .mTableView {
+      &:hover, &.mActiveLink {
+        .bViewPageModeIcon {
+          background-position: 0 -14px;
+        }
+      }
+    }
+
+    .mListView {
+      .bViewPageModeIcon {
+        background-position: -14px 0;
+      }
+
+      &:hover, &.mActiveLink {
+        .bViewPageModeIcon {
+          background-position: -14px -14px;
+        }
+      }
     }
   }
+
+  .bPagesListTop {
+    padding: 0;
+  }
+
+  .bPagesList {
+    &__eItem {
+      float: left;
+
+      margin: 0 3px 0 0;
+
+      border: none;
+    }
+
+    &__eItemLink.borderedR {
+      .styleHrefSorting;
+      float: none;
+
+      padding: 4px 0;
+
+      span {
+        float: none;
+
+        height: auto;
+        margin: 0;
+        padding: 0;
+      }
+    }
+  }
+
+  .bAllPager {
+    .styleHrefSorting;
+    float: right;
+
+    margin: 18px 10px 0 -5px;
+    padding: 3px 0;
+  }
+}
+
+.bPagesListBottom {
+  min-width: 190px;
 }
