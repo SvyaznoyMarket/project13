@@ -7,16 +7,16 @@ $(document).ready(function() {
     /* COMMON DESIGN, BEHAVIOUR ONLY */
     /* Custom Selectors */
     // $('body').delegate( '.bSelect', 'click', function() {
-    // 	if( $(this).hasClass('mDisabled') )
-    // 		return false
-    // 	$(this).find('.bSelect__eDropmenu').toggle()
+    //  if( $(this).hasClass('mDisabled') )
+    //      return false
+    //  $(this).find('.bSelect__eDropmenu').toggle()
     // })
     // $('body').delegate( '.bSelect', 'mouseleave', function() {
-    // 	if( $(this).hasClass('mDisabled') )
-    // 		return false
-    // 	var options = $(this).find('.bSelect__eDropmenu')
-    // 	if( options.is(':visible') )
-    // 		options.hide()
+    //  if( $(this).hasClass('mDisabled') )
+    //      return false
+    //  var options = $(this).find('.bSelect__eDropmenu')
+    //  if( options.is(':visible') )
+    //      options.hide()
     // })
 
     /*  Custom Checkboxes */
@@ -313,47 +313,50 @@ $(document).ready(function() {
     PubSub.subscribe( 'DeliveryChanged', function( m, data ) {
         // $('#dlvrTypes .selectShop').show()
 
-        if( data.type === 'courier') {
-            $('#order-submit').removeClass('disable')
-            $('#order-form').show()
-            $('#addressField').show()
-        } else {
-            $('#addressField').hide()
-            $('#order-form').hide()
-            $('#order-submit').addClass('disable')
+        if ( data.type === 'courier') {
+            $('#order-submit').removeClass('disable');
+            $('#order-form').show();
+            $('#addressField').show();
         }
+        else {
+            $('#addressField').hide();
+            $('#order-form').hide();
+            $('#order-submit').addClass('disable');
+        }
+
         if( data.boxQuantity > 1 ) {
             // block payment options
-            $('#payTypes > div').hide()
-            $('#payment_method_1-field').show()
-            $('#payment_method_2-field').show()
-        } else {
-            $('#payTypes > div').show()
+            $('#payTypes > div').hide();
+            $('#payment_method_1-field').show();
+            $('#payment_method_2-field').show();
+        }
+        else {
+            $('#payTypes > div').show();
             // $('#payment_method_5-field').show()
             // $('#payment_method_6-field').show()
         }
 
-    })
+    });
 
     PubSub.subscribe( 'ShopSelected', function( m, data ) {
         $('#orderMapPopup').trigger('close')
         $('#order-form').show()
         $('#order-submit').removeClass('disable')
-    })
+    });
 
     /* ---------------------------------------------------------------------------------------- */
     /* KNOCKOUT STUFF, MVVM PATTERN */
-
-    var Model = $('#order-delivery_map-data').data('value')
+    var Model = $('#order-delivery_map-data').data('value');
     // Check Consistency TODO
 
     // analitycs
-    var items_num = 0
-    var price = 0
-    var totalPrice = 0
-    var totalQuan = 0
-    var f1total = 0
-    var warrTotal = 0
+    var items_num = 0;
+    var price = 0;
+    var totalPrice = 0;
+    var totalQuan = 0;
+    var f1total = 0;
+    var warrTotal = 0;
+
     $.each(Model.items, function(i, product){
         items_num += product.quantity
         price += product.price
@@ -361,7 +364,8 @@ $(document).ready(function() {
         totalQuan += product.quantity
         f1total += product.serviceQ
         warrTotal += product.warrantyQ
-    })
+    });
+
     var toKISS = {
         'Checkout Step 1 SKU Quantity':totalQuan,
         'Checkout Step 1 SKU Total':price,
@@ -369,17 +373,18 @@ $(document).ready(function() {
         'Checkout Step 1 Warranty Quantity':warrTotal,
         'Checkout Step 1 F1 Total':totalPrice - price,
         'Checkout Step 1 Order Total':totalPrice,
-        'Checkout Step 1 Order Type':'cart order',
-    }
-    if (typeof(_gaq) !== 'undefined') {
+        'Checkout Step 1 Order Type':'cart order'
+    };
+
+    if ( typeof(_gaq) !== 'undefined' ) {
         _gaq.push(['_trackEvent', 'New order', 'Items', items_num]);
     }
-    if (typeof(_kmq) !== 'undefined') {
+    if ( typeof(_kmq) !== 'undefined' ) {
         _kmq.push(['record', 'Checkout Step 1', toKISS])
     }
 
     function OrderModel() {
-        var self = this
+        var self = this;
 
         function thereIsExactPropertie( list, propertie, value ) {
             for(var ind=0, le = list.length; ind<le; ind++) {
@@ -501,7 +506,7 @@ $(document).ready(function() {
             }
             box.nweeks = nweeks-1
             // 4) Loop
-            up:				for( var linedate in box.caclDates ) { // Loop for T Interval
+            up:             for( var linedate in box.caclDates ) { // Loop for T Interval
                 var dates = []
                 for(var i=0, l=box.itemList().length; i<l; i++) { // Loop for all intervals
                     var bid = box.token
@@ -648,31 +653,36 @@ $(document).ready(function() {
             $.get( d.deleteUrl, function(){
                 // Analitycs
 
-                toKISS_del = {
+                var toKISS_del = {
                     'Checkout Step 1 SKU Quantity':d.quantity,
                     'Checkout Step 1 SKU Total':d.price,
                     'Checkout Step 1 F1 Quantity':d.serviceQ,
                     'Checkout Step 1 Warranty Quantity':d.warrantyQ,
                     'Checkout Step 1 F1 Total':d.total - d.price,
-                    'Checkout Step 1 Order Total':box.totalPrice() - d.total,
+                    'Checkout Step 1 Order Total':box.totalPrice() - d.total
+                };
+
+                if ( typeof(_kmq) !== 'undefined' ) {
+                    _kmq.push(['set', toKISS_del]);
                 }
 
-                if (typeof(_kmq) !== 'undefined'){
-                    _kmq.push(['set', toKISS_del])
-                }
-                if (typeof(_gaq) !== 'undefined'){
-                    _gaq.push(['_trackEvent', 'Order card', 'Item deleted'])
+                if ( typeof(_gaq) !== 'undefined' ) {
+                    _gaq.push(['_trackEvent', 'Order card', 'Item deleted']);
                 }
                 // drop from box
-                box.itemList.remove( d )
-                if( !box.itemList().length )
-                    self.dlvrBoxes.remove( box )
-                l2:			for(var i in Model.deliveryTypes) {
-                    var tmpDlvr = Model.deliveryTypes[i]
-                    for(var j=0, l=tmpDlvr.items.length; j<l; j++) {
-                        if( tmpDlvr.items[j] === d.token ) {
-                            tmpDlvr.items.splice( j, 1 )
-                            break l2
+                box.itemList.remove( d );
+
+                if ( !box.itemList().length ) {
+                    self.dlvrBoxes.remove( box );
+                }
+
+    l2:         for ( var i in Model.deliveryTypes ) {
+                    var tmpDlvr = Model.deliveryTypes[i];
+
+                    for ( var j=0, l=tmpDlvr.items.length; j<l; j++) {
+                        if ( tmpDlvr.items[j] === d.token ) {
+                            tmpDlvr.items.splice( j, 1 );
+                            break l2;
                         }
                     }
                 }
@@ -680,7 +690,7 @@ $(document).ready(function() {
                 // check if no items in boxes
                 if( !self.dlvrBoxes().length ) {
                     // refresh page -> server redirect to empty cart
-                    document.location.reload()
+                    document.location.reload();
                 }
 
             } )
@@ -750,12 +760,11 @@ $(document).ready(function() {
         }
 
         self.selectShop = function( d ) {
-
             if( self.step2() ) {
                 /* Select Shop in Box */
                 var newboxes = [{ shop: self.chosenBox().token.replace('self_','') , items: [] }, { shop: d.id , items: [] } ]
                 // remove items, which has picked shop
-                upi:			for( var item=0, boxitems=self.chosenBox().itemList(); item < boxitems.length;  ) { //TODO refact
+upi:            for( var item = 0, boxitems = self.chosenBox().itemList(); item < boxitems.length;  ) { //TODO refact
                     for( var dl in boxitems[item].deliveries ){
                         if( dl === 'self_'+d.id ) {
                             newboxes[1].items.push( boxitems[item].token )
@@ -767,8 +776,7 @@ $(document).ready(function() {
                     self.chosenBox().itemList.remove( boxitems[item] )
                     item++
                 }
-
-// console.info( newboxes )							
+                        
                 // create new box for such items and for old box
                 for( var nbox in newboxes ) {
                     if( newboxes[nbox].items.length > 0 ) {
@@ -780,22 +788,28 @@ $(document).ready(function() {
                 if( ! self.chosenBox().itemList().length ) // always
                     self.dlvrBoxes.remove( self.chosenBox() )
 
-            } else {
+            }
+            else {
                 /* Select Shop at Zero Step */
                 // pushing into box items which have selected shop
-                var selectedShopBoxShops = [ { shop: d.id, items: [] } ]
+                var selectedShopBoxShops = [ { shop: d.id, items: [] } ];
 
                 for( var box in self.dlvrBoxes() ) {
-                    var procBox = self.dlvrBoxes()[box]
-                    for( var item =0; item < procBox.itemList().length;  ) {
-                        if( 'self_'+d.id in procBox.itemList()[item].deliveries ) {
-                            if( procBox.itemList()[item].deliveries['self_'+d.id].dates.length > 1 )
-                                selectedShopBoxShops[0].items.push( procBox.itemList()[item].token )
-                            else // items which are 'one day' reserve-only
-                                selectedShopBoxShops.push( { shop: d.id, items: [ procBox.itemList()[item].token ] } )
+                    var procBox = self.dlvrBoxes()[box];
+
+                    for ( var item = 0; item < procBox.itemList().length; ) {
+                        if ( 'self_'+d.id in procBox.itemList()[item].deliveries ) {
+                            // if ( procBox.itemList()[item].deliveries['self_'+d.id].dates.length > 1 ) {
+                                selectedShopBoxShops[0].items.push( procBox.itemList()[item].token );
+                            // }
+                            // else { // items which are 'one day' reserve-only
+                                    // selectedShopBoxShops.push( { shop: d.id, items: [ procBox.itemList()[item].token ] } );
+                            // }
                             procBox.itemList.remove( procBox.itemList()[item] )
-                        } else
-                            item++
+                        }
+                        else {
+                            item++;
+                        }
                     }
                 }
 // console.info(selectedShopBoxShops)
@@ -805,14 +819,14 @@ $(document).ready(function() {
                     tmpv = []
                 for( var box in self.dlvrBoxes() ) {
                     var procBox = self.dlvrBoxes()[box]
-// console.info(procBox.itemList())					
+// console.info(procBox.itemList())                 
                     for( var item =0, list = procBox.itemList(); item < list.length;  ) {
                         tmpv = []
                         for( tkn in list[item].deliveries ) {
                             if( list[item].deliveries[ tkn ].token.match( 'self_' ) )
                                 tmpv.push( list[item].deliveries[ tkn ].token.replace( 'self_', '' ) )
                         }
-// console.info( list[item].token , tmpv )						
+// console.info( list[item].token , tmpv )                      
                         data[ list[item].token +'' ] = tmpv
                         if( !tmpv.length )
                             item++
@@ -947,12 +961,12 @@ $(document).ready(function() {
     }
 
     function DA( data ) {
-// console.info('DA b')		
+// console.info('DA b')     
         // e.g. data = {
-        // 	'pr1' : [ '13', '2' ],
-        // 	'pr2' : [ '13', '2' ],
-        // 	'pr3' : [ '3', '2' ],
-        // 	'pr4' : [ '14' ]
+        //  'pr1' : [ '13', '2' ],
+        //  'pr2' : [ '13', '2' ],
+        //  'pr3' : [ '3', '2' ],
+        //  'pr4' : [ '14' ]
         // }
         var out = []
         while( true ) {
@@ -979,8 +993,8 @@ $(document).ready(function() {
 
 
         }
-// console.info(out, data)		
-// console.info('DA e')		
+// console.info(out, data)      
+// console.info('DA e')     
         return out
     }
     /* ---------------------------------------------------------------------------------------- */
@@ -1037,7 +1051,7 @@ $(document).ready(function() {
         var serArray = form.serializeArray()
 
         var fieldsToValidate = $('#order-validator').data('value')
-        flds:	for( field in fieldsToValidate ) {
+        flds:   for( field in fieldsToValidate ) {
             if( !form.find('[name="'+field+'"]:visible').length )
                 continue
             if (field=='order[recipient_phonenumbers]'){
@@ -1071,7 +1085,6 @@ $(document).ready(function() {
         var button = $(this)
         button.text('Оформляется...')
         Blocker.block()
-
 
         var showOrderAlert = function(msg, redirect){
             var id = 'orderAlert'
@@ -1107,7 +1120,6 @@ $(document).ready(function() {
             }
         var startAjaxOrderTime = new Date().getTime()
 
-
         $.ajax({
             url: form.attr('action'),
             timeout: 120000,
@@ -1124,8 +1136,6 @@ $(document).ready(function() {
                     // TODO display data.error info
                     return;
                 }
-
-                Blocker.bye();
 
                 // analitycs
                 if (typeof(_gaq) !== 'undefined') {
@@ -1185,9 +1195,10 @@ $(document).ready(function() {
                     warrT = 0;
                 //end of vars
 
-                for( var tkn in MVM.dlvrBoxes() ) {
+                for ( var tkn in MVM.dlvrBoxes() ) {
                     var dlvr = MVM.dlvrBoxes()[tkn];
-                    for( var i in dlvr.itemList() ){
+
+                    for ( var i in dlvr.itemList() ) {
                         itemQ += dlvr.itemList()[i].quantity;
                         itemT += dlvr.itemList()[i].price;
                         servQ += dlvr.itemList()[i].serviceQ;
@@ -1210,53 +1221,81 @@ $(document).ready(function() {
                     'Checkout Complete Order Total':MVM.totalSum(),
                     'Checkout Complete Order Type':'cart order',
                     'Checkout Complete Delivery':nowDelivery,
-                    'Checkout Complete Payment':data.paymentMethodId,
+                    'Checkout Complete Payment':data.paymentMethodId
                 };
 
-                if ((typeof(_kmq) !== 'undefined') && (KM !== 'undefined')) {
+                if ( (typeof(_kmq) !== 'undefined') && (KM !== 'undefined') ) {
                     _kmq.push(['alias', phoneNumber, KM.i()]);
                     _kmq.push(['alias', emailVal, KM.i()]);
                     _kmq.push(['identify', phoneNumber]);
                     _kmq.push(['record', 'Checkout Complete', toKISS_complete]);
+                }
+                
 
-                    var newTkn = 0;
-                    for( newTkn in MVM.dlvrBoxes() ) {
-                        var dlvr = MVM.dlvrBoxes()[newTkn];
+                var newTkn = 0;
 
-                        for( var i in dlvr.itemList() ){
-                            console.info('second loop');
-                            console.log(dlvr.itemList()[i]);
+                // for sociomantic
+                // https://jira.enter.ru/browse/SITE-1475
+                window.sonar_basket = {
+                    products: [],
+                    transaction: data.orderNumber,
+                    amount: MVM.totalSum(),
+                    currency:'RUB'
+                };
+
+                for ( newTkn in MVM.dlvrBoxes() ) {
+                    var dlvr = MVM.dlvrBoxes()[newTkn];
+
+                    for ( var i in dlvr.itemList() ) {
+                        var item = dlvr.itemList()[i];
+
+                        var toSociomantic = {
+                            identifier: item.article+'_'+window.docCookies.getItem('geoshop'),
+                            amount: item.price,
+                            currency: 'RUB',
+                            quantity: item.quantity
+                        }
+
+                        window.sonar_basket.products.push(toSociomantic);
+
+                        if ( (typeof(_kmq) !== 'undefined') && (KM !== 'undefined') ) {
                             var toKISS_pr =  {
-                                'Checkout Complete SKU':dlvr.itemList()[i].article,
-                                'Checkout Complete SKU Quantity':dlvr.itemList()[i].quantity,
-                                'Checkout Complete SKU Price':dlvr.itemList()[i].price,
-                                'Checkout Complete F1 Quantity':dlvr.itemList()[i].serviceQ,
-                                'Checkout Complete F1 Total':dlvr.itemList()[i].serviceTotal,
-                                'Checkout Complete Warranty Quantity':dlvr.itemList()[i].warrantyQ,
-                                'Checkout Complete Warranty Total':dlvr.itemList()[i].warrantyTotal,
-                                'Checkout Complete Parent category':dlvr.itemList()[i].parent_category,
-                                'Checkout Complete Category name':dlvr.itemList()[i].category,
-                                '_t':KM.ts() + newTkn + i  ,
-                                '_d':1,
+                                'Checkout Complete SKU':item.article,
+                                'Checkout Complete SKU Quantity':item.quantity,
+                                'Checkout Complete SKU Price':item.price,
+                                'Checkout Complete F1 Quantity':item.serviceQ,
+                                'Checkout Complete F1 Total':item.serviceTotal,
+                                'Checkout Complete Warranty Quantity':item.warrantyQ,
+                                'Checkout Complete Warranty Total':item.warrantyTotal,
+                                'Checkout Complete Parent category':item.parent_category,
+                                'Checkout Complete Category name':item.category,
+                                '_t':KM.ts() + newTkn + i,
+                                '_d':1
                             };
-                            _kmq.push(['set', toKISS_pr])
+
+                            _kmq.push(['set', toKISS_pr]);
                         }
                     }
                 }
 
-                if (typeof(yaCounter10503055) !== 'undefined'){
+                if ( typeof(yaCounter10503055) !== 'undefined' ) {
                     yaCounter10503055.reachGoal('\orders\complete');
                 }
 
+                // Sociomantic
+                // https://jira.enter.ru/browse/SITE-1475
+                var sociomanticUrl = ( 'https:' === document.location.protocol ? 'https://' : 'http://' )+'eu-sonar.sociomantic.com/js/2010-07-01/adpan/enter-ru';
 
-                if (data.action.alert !==undefined){
-                    showOrderAlert(data.action.alert.message, data.data.redirect)
-                }
-                else if( 'redirect' in data.data ){
-                    window.location = data.data.redirect
-                }
-
-
+                // перезагрузка страницы только после загрузки скрипта sociomantic
+                $LAB.script( sociomanticUrl ).wait(function() {
+                    Blocker.bye();
+                    if ( data.action.alert !== undefined ) {
+                        showOrderAlert(data.action.alert.message, data.data.redirect);
+                    }
+                    else if ( 'redirect' in data.data ) {
+                        window.location = data.data.redirect;
+                    }
+                });
             },
             error: function() {
                 button.text('Попробовать еще раз')

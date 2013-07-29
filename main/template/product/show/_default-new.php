@@ -16,7 +16,7 @@
 
 <div id="jsProductCard" data-value="<?= $page->json($productData) ?>"></div>
 
-<div class="bProductSectionLeftCol clearfix">
+<div class="bProductSectionLeftCol">
     <?= $helper->render('product/__photo', ['product' => $product, 'productVideos' => $productVideos]) ?>
 
     <div class="bProductDescShop">
@@ -122,13 +122,13 @@
         <?= $helper->render('product/__oneClick', ['product' => $product]) // Покупка в один клик ?>
 
         <?= $helper->render('product/__delivery', ['product' => $product, 'shopStates' => $shopStates]) // Доставка ?>
-
-        <?= $helper->render('product/__adfox', ['product' => $product]) ?>
     </div><!--/widget delivery -->
 
-    <?//= $helper->render('product/__warranty', ['product' => $product]) ?>
+    <?= $helper->render('product/__adfox', ['product' => $product]) // Баннер Adfox ?>
 
+    <?//= $helper->render('product/__warranty', ['product' => $product]) ?>
     <?//= $helper->render('product/__service', ['product' => $product]) ?>
+
 </div><!--/right section -->
 
 <div class="bBottomBuy clearfix">

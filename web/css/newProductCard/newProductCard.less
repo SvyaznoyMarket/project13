@@ -27,35 +27,35 @@
 
     width: 700px;
     margin: 15px 0 0;
+}
 
-    //product images section
-    .bProductDescSticker {
-    	position: absolute;
-    	top: 0;
-    	left: 0;
-    }
+//product images section
+.bProductDescSticker {
+	position: absolute;
+	top: 0;
+	left: 0;
+}
 
-    .bProductDescImg {
-        position: relative;
+.bProductDescImg {
+    position: relative;
 
-        float: left;
+    float: left;
+
+    width: 400px;
+
+    //product big image section
+	.bProductDescImgBig {
+        display: block;
 
         width: 400px;
+        height: 400px;
 
-        //product big image section
-    	.bProductDescImgBig {
-            display: block;
+        text-align: center;
+        vertical-align: bottom;
 
-            width: 400px;
-            height: 400px;
-
-            text-align: center;
-            vertical-align: bottom;
-
-            &__eImg{
-                max-width: 400px;
-                max-height: 400px;
-            }
+        &__eImg{
+            max-width: 400px;
+            max-height: 400px;
         }
     }
 }
@@ -154,7 +154,7 @@
 					border: 2px solid;
 					border-color: lighten(@firmOrange, 20%);
 				}
-				
+
 				img {
 					max-width: 45px;
 					max-height: 45px;
@@ -189,7 +189,7 @@
 
 				span {
 					background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAKCAYAAAB8OZQwAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAUklEQVQIHWWOAQrAIAwDGz9qn7a9xKd1SVhFMBBCrxGLqopTADIE21wmvUa33IiYmg1PIAg6aTeY1n7eQDn4ycN8NbTcvBZ9jpJKeuEfBCxd8gH17yW5xQaKpwAAAABJRU5ErkJggg==);
-					
+
 				}
 			}
 
@@ -199,7 +199,7 @@
 
 				span {
 					background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAKCAYAAAB8OZQwAAAACXBIWXMAAAsTAAALEwEAmpwYAAAATklEQVQIHWWOAQ7AIAgDi/Of+rTtJT6NtWYYnCYK3pUEAOjujnzJMP6iiPI0M+uz4xNQ/yVq2K9KbMnl87jgwy3uDCeI+LHSRWMaiYTqC8rzLpK0xDYMAAAAAElFTkSuQmCC);
-					
+
 				}
 			}
 		}
@@ -227,36 +227,6 @@
 
 			font-size: 12px;
         }
-    }
-
-    .inStock {
-        margin-bottom: 6px;
-
-        color: #fb9c00;
-
-        font-weight: 800;
-        line-height: 1;
-    }
-
-    .priceOld {
-        margin-bottom: 3px;
-
-        color: #a6a6a6;
-
-        font-size: 21px;
-        span {
-            text-decoration: line-through;
-        }
-    }
-
-    .bPrice {
-        font-size: 30px;
-    }
-
-    .priceSale {
-        margin: 5px 0 10px;
-
-        cursor: pointer;
     }
     
     //additional product options
@@ -347,6 +317,36 @@
 	}
 }
 
+    .inStock {
+        margin-bottom: 6px;
+
+        color: #fb9c00;
+
+        font-weight: 800;
+        line-height: 1;
+    }
+
+    .priceOld {
+        margin-bottom: 3px;
+
+        color: #a6a6a6;
+
+        font-size: 21px;
+        span {
+            text-decoration: line-through;
+        }
+    }
+
+    .bPrice {
+        font-size: 30px;
+    }
+
+    .priceSale {
+        margin: 5px 0 10px;
+
+        cursor: pointer;
+    }
+
 .bProductSection {
 
 	.bDescriptionProduct {
@@ -408,6 +408,10 @@
 			margin: 0 auto;
 		}
 	}
+	.bTags {
+		margin: 0 0 0 10px;
+		font-size: 11px;
+	}
 }
 
 .bHint {
@@ -423,7 +427,7 @@
 	&__eHead {
 		float: left;
 
-		width: 420px;
+		width: 435px;
 
 		font-size: 14px;
 		font-weight: bold;
@@ -432,7 +436,7 @@
 		font: 800 16px/1.2 tahoma, verdana, arial, helvetica, sans-serif;
 	}
 	.btnBuy {
-		margin-left: 12px;
+		margin: 0 25px 0 12px;
 	}
 	.btnBuy, .bCountSection, .price {
 		float: right;
@@ -448,5 +452,5 @@
 
 //bottom Bread Crumbs
 .bBreadCrumbsBottom {
-	margin: 0 10px 20px;
+	margin: 0 10px 0;
 }

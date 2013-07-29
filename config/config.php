@@ -181,7 +181,7 @@ $c->product['globalListEnabled']      = true;
 $c->product['showAveragePrice']       = false;
 $c->product['allowBuyOnlyInshop']     = false;
 $c->product['reviewEnabled']          = true;
-$c->product['lowerPriceNotification'] = false;
+$c->product['lowerPriceNotification'] = true;
 $c->product['furnitureConstructor']   = true;
 // jewel
 $c->product['itemsPerPageJewel']     = 24;
@@ -313,5 +313,7 @@ $c->maybe3d['cmsFolder']  = '/opt/wwwroot/cms.enter.ru/wwwroot/v1/video/product/
 $c->maybe3d['timeout']    = 30;
 
 $c->tag['numSidebarCategoriesShown'] = 3;
+
+$c->sphinx['showFacets'] = true;
 
 return $c;

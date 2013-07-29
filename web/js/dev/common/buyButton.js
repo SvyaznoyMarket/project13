@@ -39,7 +39,7 @@
 	 * 
 	 * @param  {Event}	e
 	 */
-	var BuyButtonHandler = function BuyButtonHandler() {
+	var buyButtonHandler = function buyButtonHandler() {
 		var button = $(this),
 			url = button.attr('href');
 		// end of vars
@@ -48,6 +48,7 @@
 		if ( button.hasClass('mDisabled') ) {
 			return false;
 		}
+
 		if ( button.hasClass('mBought') ) {
 			document.location.href(url);
 
@@ -74,7 +75,7 @@
 	
 	$(document).ready(function() {
 		$('body').bind('markcartbutton', markCartButton);
-		$('body').on('click', '.jsBuyButton', BuyButtonHandler);
+		$('body').on('click', '.jsBuyButton', buyButtonHandler);
 		$('body').on('buy', '.jsBuyButton', buy);
 	});
 }());
@@ -118,6 +119,7 @@
 					_kmq.push(['record', 'Add to Cart', toKISS]);
 				}
 			}
+
 			if ( serviceData ) {
 				toKISS = {
 					'Add F1 F1 Name':serviceData.name,
@@ -134,6 +136,7 @@
 					_kmq.push(['record', 'Add F1', toKISS]);
 				}
 			}
+
 			if ( warrantyData ) {
 				toKISS = {
 					'Add Warranty Warranty Name':warrantyData.name,
@@ -158,7 +161,7 @@
 		googleAnalytics = function googleAnalytics( data ) {
 			var productData = data.product;
 
-			if (productData){
+			if ( productData ) {
 				if( typeof(_gaq) !== 'undefined' ){
 					_gaq.push(['_trackEvent', 'Add2Basket', 'product', productData.article]);
 				}
@@ -180,6 +183,34 @@
 			}
 		},
 
+		/**
+		 * Soloway аналитика добавления в корзину
+		 */
+		adAdriver = function adAdriver( data ) {
+			var productData = data.product,
+				offer_id = productData.id,
+				category_id = productData.category[productData.category.length-1].id;
+			// end of vars
+
+
+			var s = 'http://ad.adriver.ru/cgi-bin/rle.cgi?sid=182615&sz=add_basket&custom=10='+offer_id+';11='+category_id+'&bt=55&pz=0&rnd=![rnd]',
+				d = document,
+				i = d.createElement('IMG'),
+				b = d.body;
+
+			s = s.replace(/!\[rnd\]/, Math.round(Math.random()*9999999)) + '&tail256=' + escape(d.referrer || 'unknown');
+			i.style.position = 'absolute';
+			i.style.width = i.style.height = '0px';
+			
+			i.onload = i.onerror = function(){
+				b.removeChild(i);
+				i = b = null;
+			};
+
+			i.src = s;
+			b.insertBefore(i, b.firstChild);
+		},
+
 
 		/**
 		 * Обработка покупки, парсинг данных от сервера, запуск аналитики
@@ -189,11 +220,11 @@
 				product = data.product,
 				tmpitem = {
 					'title': product.name,
-					'price' : printPrice(product.price),
+					'price' : window.printPrice(product.price),
 					'imgSrc': product.img,
 					'productLink': product.link,
 					'totalQuan': basket.full_quantity,
-					'totalSum': printPrice(basket.full_price),
+					'totalSum': window.printPrice(basket.full_price),
 					'linkToOrder': basket.link
 				};
 			// end of vars
@@ -202,12 +233,13 @@
 			kissAnalytics(data);
 			googleAnalytics(data);
 			myThingsAnalytics(data);
+			adAdriver(data);
 
-			if ( !blackBox ) {
+			if ( !window.blackBox ) {
 				return false;
 			}
 			
-			blackBox.basket().add( tmpitem );
+			window.blackBox.basket().add( tmpitem );
 		};
 	//end of vars
 

@@ -14,21 +14,20 @@
 <?
 $helper = new \Helper\TemplateHelper();
 ?>
-
-<div class="bMainContainer bProductSection mProductSectionSet clearfix">
-	<div class="bProductSection__eLeft" data-value="<?= $page->json([
+<div class="mProductSectionSet">
+	<div class="bProductSectionLeftCol" data-value="<?= $page->json([
         'jsref' =>   $mainProduct->getToken(),
         'jsimg' =>   $mainProduct->getImageUrl(3),
         'jstitle' => $page->escape($mainProduct->getName()),
         'jsprice' => $mainProduct->getPrice(),
     ]) ?>">
-		<div class="bProductDesc__ePhoto">
-	        <div class="bProductDesc__ePhoto-bigImg">
+		<div class="bProductDescImg">
+	        <div class="bProductDescImgBig">
 		        <a href="<?= $mainProduct->getLink() ?>" title="<?= $mainProduct->getName() ?>">
 		            <? if ((bool)$mainProduct->getLabel()): ?>
-		                <img class="bLabels" src="<?= $mainProduct->getLabel()->getImageUrl(1) ?>" alt="<?= $mainProduct->getLabel()->getName() ?>" />
+		                <img class="bProductDescSticker" src="<?= $mainProduct->getLabel()->getImageUrl(1) ?>" alt="<?= $mainProduct->getLabel()->getName() ?>" />
 		            <? endif ?>
-		            <img src="<?= $mainProduct->getImageUrl(3) ?>" alt="<?= $page->escape($mainProduct->getName()) ?>" width="700" height="700" title="<?= $page->escape($mainProduct->getName()) ?>"/>
+		            <img class="bProductDescImgBig__eImg" src="<?= $mainProduct->getImageUrl(3) ?>" alt="<?= $page->escape($mainProduct->getName()) ?>" width="700" height="700" title="<?= $page->escape($mainProduct->getName()) ?>"/>
 		        </a>
 	        </div>
         </div>
@@ -86,5 +85,5 @@ $helper = new \Helper\TemplateHelper();
     <? if ($mainProduct->getIsBuyable()): ?>
         <?= $page->render('order/form-oneClick') ?>
     <? endif ?>
-
 </div>
+
