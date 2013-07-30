@@ -15,7 +15,7 @@ class Action {
         $question = $request->get('question');
         $answer = $request->get('answer');
         $kmId = $request->get('kmId');
-        $userId = \App::user()->getEntity() ? \App::user()->getEntity()->getUserId() : '';
+        $userId = \App::user()->getEntity() ? \App::user()->getEntity()->getId() : '';
         $sessionId = $request->cookies->get('enter');
         $date = date('Y-m-d H:i:s');
 
