@@ -80,6 +80,9 @@ class IndexAction {
         // если в catalogJson'e указан category_class, то обрабатываем запрос соответствующим контроллером
         $categoryClass = !empty($catalogJson['category_class']) ? $catalogJson['category_class'] : null;
 
+        $useLens = true;
+        if ( isset($catalogJson['use_lens']) ) $useLens = (bool) $catalogJson['use_lens'];
+
         /*
         if ($categoryClass) {
             $controller = '\\Controller\\'.ucfirst($categoryClass).'\\Product\\IndexAction';
@@ -236,6 +239,7 @@ class IndexAction {
         $page->setParam('reviewsDataPro', $reviewsDataPro);
         $page->setParam('reviewsDataSummary', $reviewsDataSummary);
         $page->setParam('categoryClass', $categoryClass);
+        $page->setParam('useLens', $useLens);
 
         return new \Http\Response($page->show());
     }

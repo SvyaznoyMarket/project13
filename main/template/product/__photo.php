@@ -3,7 +3,8 @@
 return function(
     \Helper\TemplateHelper $helper,
     \Model\Product\Entity $product,
-    array $productVideos
+    array $productVideos,
+    $useLens = true
 ) {
     /** @var  $productVideo \Model\Product\Video\Entity|null */
     $productVideo = reset($productVideos);
@@ -97,7 +98,13 @@ return function(
     <? endif ?>
 
     <div class="bProductDescImgBig">
-        <img class="bProductDescImgBig__eImg bZoomedImg" src="<?= $product->getImageUrl(3) ?>" data-zoom-image="<?= $product->getImageUrl(5) ?>" alt="<?= $helper->escape($product->getName()) ?>" />
+        <img class="bProductDescImgBig__eImg <?= $useLens ? 'bZoomedImg' : '' ?>"
+             src="<?= $product->getImageUrl(3) ?>"
+             <? if ($useLens): ?>
+                data-zoom-image="<?= $product->getImageUrl(5) ?>"
+             <? endif ?>
+             alt="<?= $helper->escape($product->getName()) ?>"
+        />
     </div><!--/product big image section -->
 
     <div class="bPhotoAction clearfix">
