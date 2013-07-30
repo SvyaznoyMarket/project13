@@ -30,6 +30,8 @@ class AppConfig {
     /** @var string */
     public $cmsDir;
     /** @var string */
+    public $surveyDir;
+    /** @var string */
     public $controllerPrefix;
     /** @var string */
     public $routePrefix;

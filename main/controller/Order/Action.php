@@ -238,6 +238,30 @@ class Action {
                     ];
                 }
 
+                // подписка
+                $isSubscribe = $request->request->get('subscribe');
+                $email = $form->getEmail();
+                if(!empty($isSubscribe) && !empty($email)) {
+                    $subscriptionParams = [
+                        'email'      => $email,
+                        'geo_id'     => $region->getId(),
+                        'channel_id' => 1,
+                    ];
+                    if ($userEntity = \App::user()->getEntity()) {
+                        $subscriptionParams['token'] = $userEntity->getToken();
+                    }
+
+                    $exception = null;
+                    $subscriptionResponse = null;
+                    $client->addQuery('subscribe/create', $subscriptionParams, [], function($data) use (&$subscriptionResponse) {
+                        $subscriptionResponse = $data;
+                    }, function(\Exception $e) use (&$exception) {
+                        $exception = $e;
+                        \App::exception()->remove($e);
+                    });
+                    $client->execute(\App::config()->coreV2['retryTimeout']['default'], \App::config()->coreV2['retryCount']);
+                }
+
                 // сохранение заказов в ядре
                 $orderNumbers = $this->saveOrder($form, $deliveryMap, $productsForRetargeting);
 
@@ -839,6 +863,12 @@ class Action {
             $form->setError('recipient_phonenumbers', 'Номер мобильного телефона должен содержать 11 цифр');
         }
 
+        // абтест для обязательно поля email
+        if (\App::abTest()->getCase()->getKey() == 'emails') {
+            $email = $form->getEmail();
+            $form->setError('recipient_email', 'Укажите ваш e-mail');
+        }
+
         // способ доставки
         if (!$form->getDeliveryTypeId()) {
             $form->setError('delivery_type_id', 'Не указан способ получения заказа');
@@ -944,7 +974,6 @@ class Action {
         $cartProductsById = $cart->getProducts();
         $cartServicesById = $cart->getServices();
 
-
         // карта доставки
         $deliveryMapView = new \View\Order\DeliveryCalc\Map();
 
@@ -970,7 +999,6 @@ class Action {
 
             $deliveryMapView->shops[$shopView->id] = $shopView;
         }
-
 
         /** @var $productsById \Model\Product\BasicEntity[] */
         $productsEntityById = [];
@@ -1010,7 +1038,6 @@ class Action {
         if ((bool)$productsEntityById || (bool)$servicesEntityById) {
             $client->execute();
         }
-
 
         // сборка товаров и услуг
         foreach (['products', 'services'] as $itemType) {
@@ -1131,14 +1158,13 @@ class Action {
                 }
                 $itemView->token = $itemView->type . '-' . $itemView->id;
                 $itemView->stock = isset($itemData['stock']) ? $itemData['stock'] : 0;
-		
-
 
                 foreach ($itemData['deliveries'] as $deliveryToken => $deliveryData) {
                     $deliveryView = new \View\Order\DeliveryCalc\Delivery();
                     $deliveryView->price = $deliveryData['price'];
                     $deliveryView->token = $deliveryToken;
                     $deliveryView->name = preg_match("/self\_|now\_/i",$deliveryToken) ? 'В самовывоз' : 'В доставку';
+
                     if ('products' == $itemType && $productsEntityById[$itemData['id']] instanceof \Model\Product\BasicEntity) {
                         $deliveryView->isSupplied = $productsEntityById[$itemData['id']]->getState() ? $productsEntityById[$itemData['id']]->getState()->getIsSupplier() : false;
                     } else $deliveryView->isSupplied = false;
@@ -1174,6 +1200,7 @@ class Action {
         foreach (\RepositoryManager::deliveryType()->getCollection() as $deliveryType) {
             $deliveryTypesById[$deliveryType->getId()] = $deliveryType;
         }
+
         foreach ($deliveryCalcResult['possible_deliveries'] as $deliveryTypeToken => $itemData) {
             $itemData['mode_id'] = (int)$itemData['mode_id'];
 
@@ -1233,7 +1260,7 @@ class Action {
                     if (false !== strpos($key, 'now_')) {
                         $delivery->token = str_replace('now_', 'self_', $delivery->token);
                         $delivery->name = 'самовывоз';
-			$delivery->id = 3;
+                        $delivery->id = 3;
                         unset($deliveryMapView->deliveryTypes[$key]);
                         $deliveryMapView->deliveryTypes[$delivery->token] = $delivery;
                     }
@@ -1249,21 +1276,14 @@ class Action {
                                     $delivery->dates[0]->isNow = true;
                                 }
                                 unset($deliveryMapView->items[$product]->deliveries[$token]);
-				
-				$delivery->token = str_replace('now_', 'self_', $delivery->token);	                                
-
-				$deliveryMapView->items[$product]->deliveries[str_replace('now_', 'self_', $token)] = $delivery;
-
-				
+                                $delivery->token = str_replace('now_', 'self_', $delivery->token);
+                                $deliveryMapView->items[$product]->deliveries[str_replace('now_', 'self_', $token)] = $delivery;
                             }
                         }
                     }
                 }
             }
         }
-
-
-
 
         foreach ($deliveryMapView->items as $itemView) {
             foreach ($itemView->deliveries as $deliveryView) {

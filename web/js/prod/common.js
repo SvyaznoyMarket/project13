@@ -782,6 +782,42 @@ $(document).ready(function(){
  
  
 /**
+ * Обработчик горячих ссылок
+ *
+ * @author    Trushkevich Anton
+ * @requires  jQuery
+ */
+(function(){
+  var handleHotLinksToggle = function() {
+    var toggle = $(this);
+    if(toggle.hasClass('expanded')) {
+      toggle.parent().parent().find('.toHide').hide();
+      toggle.html('Все метки');
+      toggle.removeClass('expanded');
+    } else {
+      toggle.parent().parent().find('.toHide').show();
+      toggle.html('Основные метки');
+      toggle.addClass('expanded');
+    }
+    return false;
+  };
+
+
+  $(document).ready(function(){
+    $('.hotlinksToggle').bind('click', handleHotLinksToggle);
+  });
+}());
+
+
+
+ 
+ 
+/** 
+ * NEW FILE!!! 
+ */
+ 
+ 
+/**
  * JIRA
  */
 ;(function() {
@@ -922,14 +958,15 @@ $(document).ready(function(){
 	/**
 	 * Подписка
 	 */
-	$('.bSubscibe').on('click', function() {
+	$('body').on('click', '.bSubscibe', function() {
 		if ( $(this).hasClass('checked') ) {
 			$(this).removeClass('checked');
 			$(this).find('.subscibe').removeAttr('checked');
-		}
-		else {
+			$(this).find('input[name="subscribe"]').val(0);
+		} else {
 			$(this).addClass('checked');
 			$(this).find('.subscibe').attr('checked','checked');
+			$(this).find('input[name="subscribe"]').val(1);
 		}
 
 		return false;

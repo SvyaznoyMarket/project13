@@ -14,6 +14,7 @@ $c->logDir = $c->appDir . '/log';
 $c->webDir = $c->appDir . '/web';
 $c->templateDir = $c->appDir . '/main/template';
 $c->cmsDir = $c->appDir . '/../../cms.enter.ru/wwwroot';
+$c->surveyDir = $c->webDir . '/survey';
 
 $c->controllerPrefix = 'Controller';
 $c->routePrefix = '';
@@ -315,5 +316,19 @@ $c->maybe3d['timeout']    = 30;
 $c->tag['numSidebarCategoriesShown'] = 3;
 
 $c->sphinx['showFacets'] = true;
+
+$c->abtest = [
+    'cookieName' => 'switch',
+    'bestBefore' => '2013-08-20', //кука умрет в 00:00
+    'enabled'    => true,
+    'test'       => [
+        [
+            'traffic'  => '50',
+            'key'      => 'emails',
+            'name'     => "Обязательные e-mail'ы",
+            'ga_event' => 'MandatoryEmail',
+        ],
+    ],
+];
 
 return $c;

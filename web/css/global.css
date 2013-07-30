@@ -305,6 +305,36 @@
   .pl235 {
     padding-left: 235px;
   }
+  .pr5 {
+    padding-right: 5px;
+  }
+  .pr10 {
+    padding-right: 10px;
+  }
+  .pr20 {
+    padding-right: 20px;
+  }
+  .pr30 {
+    padding-right: 30px;
+  }
+  .pr40 {
+    padding-right: 40px;
+  }
+  .pl5 {
+    padding-left: 5px;
+  }
+  .pl10 {
+    padding-left: 10px;
+  }
+  .pl20 {
+    padding-left: 20px;
+  }
+  .pl30 {
+    padding-left: 30px;
+  }
+  .pl40 {
+    padding-left: 40px;
+  }
   .mb5 {
     margin-bottom: 5px;
   }
@@ -6740,6 +6770,27 @@
     font-weight: bold;
     width: 400px;
   }
+  .bBuyingLine p.subscribe {
+    width: 130px;
+    margin: 0;
+  }
+  .bBuyingLine p.subscribe b {
+    margin-top: 5px;
+  }
+  .bBuyingLine p.subscribe label {
+    font-weight: normal;
+    text-align: left;
+    font-size: 12px;
+    line-height: 12px;
+    text-align: left;
+    width: 130px;
+  }
+  .bBuyingLine p.subscribe label b {
+    background: url("/css/order/img/orderSprite.png") 0px -48px no-repeat;
+  }
+  .bBuyingLine p.subscribe label.checked b {
+    background: url("/css/order/img/orderSprite.png") 0px 0px no-repeat;
+  }
   .bBuyingLine h5 {
     color: #434343;
     display: inline-block;
@@ -10461,6 +10512,7 @@
   }
   .bWidgetBuy .bAwardSection {
     text-align: center;
+    margin: 20px 0 0;
   }
   .bDeliveryFreeAddress {
     margin: 10px 0 10px;
@@ -11455,6 +11507,7 @@
     -webkit-border-radius: 3px 3px 0 0;
     -moz-border-radius: 3px 3px 0 0;
     border-radius: 3px 3px 0 0;
+    margin: 13px 0 0;
     padding: 5px 0 5px 10px;
     color: #515151;
     border-bottom: 1px solid #c7c7c7;
@@ -11506,18 +11559,18 @@
     display: block;
     width: 38px;
     height: auto;
+    text-align: center;
     color: #000000;
     border: 1px solid #c7c7c7;
     background-color: #ffffff;
     background-image: none;
-    text-align: center;
     padding: 4px 0;
   }
   .bViewPageLine .bViewPageModeList__eItemLink:hover,
   .bViewPageLine .bViewPageModeList__eItemLink.mActiveLink {
-    background-color: #000000;
     color: #ffffff;
     border-color: #000000;
+    background-color: #000000;
   }
   .bViewPageLine .bViewPageModeList .bViewPageModeIcon {
     display: block;
@@ -11552,25 +11605,25 @@
     display: block;
     width: 38px;
     height: auto;
+    text-align: center;
     color: #000000;
     border: 1px solid #c7c7c7;
     background-color: #ffffff;
     background-image: none;
-    text-align: center;
-    padding: 4px 0;
     float: none;
+    padding: 4px 0;
   }
   .bViewPageLine .bPagesList__eItemLink.borderedR:hover,
   .bViewPageLine .bPagesList__eItemLink.borderedR.mActiveLink {
-    background-color: #000000;
     color: #ffffff;
     border-color: #000000;
+    background-color: #000000;
   }
   .bViewPageLine .bPagesList__eItemLink.borderedR span {
+    float: none;
     height: auto;
     margin: 0;
     padding: 0;
-    float: none;
   }
   .bViewPageLine .bAllPager {
     -webkit-border-radius: 4px;
@@ -11579,20 +11632,20 @@
     display: block;
     width: 38px;
     height: auto;
+    text-align: center;
     color: #000000;
     border: 1px solid #c7c7c7;
     background-color: #ffffff;
     background-image: none;
-    text-align: center;
-    padding: 3px 0;
-    margin: 18px 10px 0 -5px;
     float: right;
+    margin: 18px 10px 0 -5px;
+    padding: 3px 0;
   }
   .bViewPageLine .bAllPager:hover,
   .bViewPageLine .bAllPager.mActiveLink {
-    background-color: #000000;
     color: #ffffff;
     border-color: #000000;
+    background-color: #000000;
   }
   .bPagesListBottom {
     min-width: 190px;
@@ -11601,3 +11654,41 @@
 /*---END---СТИЛИ ВЕРХНЕГО БЛОКА СОРТИРОВКИ В КАТАЛОГЕ---*/
 /*------НОВОГОДНЕЕ ОФОРМЛЕНИЕ------*/
 /*---END---НОВОГОДНЕЕ ОФОРМЛЕНИЕ---*/
+/*------СТИЛИ ОПРОСА------*/
+@media all {
+  .surveyBox {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    width: 104px;
+    height: 30px;
+    border: 3px solid #ccc;
+    z-index: 300;
+    border-radius: 5px;
+    background-color: #000000;
+    color: #fff;
+    -moz-opacity: 0.9;
+    -khtml-opacity: 0.9;
+    -webkit-opacity: 0.9;
+    opacity: 0.9;
+    -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=90);
+    filter: alpha(opacity=90);
+    filter: progid:dximagetransform.microsoft.alpha(opacity=90);
+    padding: 4px 6px;
+  }
+  .surveyBox__toggleWrapper {
+    position: absolute;
+    right: 10px;
+    line-height: 28px;
+  }
+  .surveyBox__toggle,
+  .surveyBox__toggle:hover,
+  .surveyBox__answer,
+  .surveyBox__answer:hover {
+    color: #fff;
+  }
+  .surveyBox__content {
+    display: none;
+  }
+}
+/*---END---СТИЛИ ОПРОСА---*/
