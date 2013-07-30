@@ -89,6 +89,7 @@ $c->paymentPsbInvoice['payUrl']       = 'https://retail-tst.payment.ru/dn/Invoic
 
 $c->abtest['bestBefore'] = '2013-04-23';
 $c->abtest['enabled']    = true;
+/*
 $c->abtest['test']       = [
     [
         'traffic'  => '40',
@@ -103,6 +104,7 @@ $c->abtest['test']       = [
         'ga_event' => 'cart',
     ],
 ];
+*/
 
 $c->product['lowerPriceNotification'] = true;
 
