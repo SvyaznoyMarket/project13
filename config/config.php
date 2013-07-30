@@ -315,8 +315,8 @@ $c->maybe3d['timeout']    = 30;
 
 $c->tag['numSidebarCategoriesShown'] = 3;
 
-$c->sphinx['showFacets'] = true;
-$c->sphinx['showListingSearchBar'] = true;
+$c->sphinx['showFacets'] = false;
+$c->sphinx['showListingSearchBar'] = false;
 
 $c->abtest = [
     'cookieName' => 'switch',

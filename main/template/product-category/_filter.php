@@ -29,13 +29,13 @@ $formName = \View\Product\FilterForm::$name;
 		Выбрано <span class="result">result.data</span> модел<span class="ending">ending</span><br/>
 		<a>Показать</a>
 	</div>
-    <dl class="bigfilter form bSpec<?= empty(\App::config()->sphinx['showListingSearchBar']) ? '' : ' noBorder' ?>">
-        <? if(empty(\App::config()->sphinx['showListingSearchBar'])) { ?>
-            <dt class="filterHeader">Выбираем:<i></i></dt>
-        <? } else { ?>
+    <dl class="bigfilter form bSpec<?= \App::config()->sphinx['showListingSearchBar'] ? ' noBorder' : '' ?>">
+        <? if(\App::config()->sphinx['showListingSearchBar']) { ?>
             <div class="pb5">
-                <input type="text" value="" name="f[search]" class="text mb10 orangeIcon">
+                <input type="text" value="" name="f[text]" class="text mb10 orangeIcon">
             </div>
+        <? } else { ?>
+            <dt class="filterHeader">Выбираем:<i></i></dt>
         <? } ?>
         <? require __DIR__ . '/_selectedFilter.php' ?>
 
