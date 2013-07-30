@@ -66,9 +66,11 @@ class Manager {
             if ((bool)$sender) {
                 $sender = explode('|', $sender); // ?sender=SmartEngine|product_id
                 if ((bool)$sender[0] && (bool)$sender[1]) {
-                    switch ($sender[0]) {
+                    switch ($sender[0]) { // не забывать про строчные (маленькие) буквы
                         case \Smartengine\Client::NAME: {
-                            \App::user()->setRecommendedProductByParams($sender[1], \Smartengine\Client::NAME, 'viewed_at', time());
+                            \App::user()->setRecommendedProductByParams(
+                                $sender[1], \Smartengine\Client::NAME, 'viewed_at', time()
+                            );
                             break;
                         }
                     }
