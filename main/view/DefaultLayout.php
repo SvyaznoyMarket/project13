@@ -413,13 +413,13 @@ class DefaultLayout extends Layout {
                 \App::exception()->remove($e);
                 $isFailed = true;
             });
-            $client->execute(\App::config()->coreV2['retryTimeout']['short']);
+            $client->execute();
 
             if ($isFailed) {
                 $content = $renderer->render('__mainMenu', [
                     'menu'            => (new Menu())->generate(),
                     'catalogJsonBulk' => $catalogJsonBulk,
-                    'promoHtmlBulk' => $promoHtmlBulk,
+                    'promoHtmlBulk'   => $promoHtmlBulk,
                 ]);
             }
         } else {
@@ -428,7 +428,7 @@ class DefaultLayout extends Layout {
             $content = $renderer->render('__mainMenu', [
                 'menu'            => (new Menu())->generate(),
                 'catalogJsonBulk' => $catalogJsonBulk,
-                'promoHtmlBulk' => $promoHtmlBulk,
+                'promoHtmlBulk'   => $promoHtmlBulk,
             ]);
             \Debug\Timer::stop('main-menu');
 
