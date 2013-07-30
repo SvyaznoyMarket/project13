@@ -152,7 +152,7 @@
 					}
 
 					newSlider = $(res.content);
-					$self.before(newSlider).remove();
+					$self.before(newSlider);
 					newSlider.goodsSlider();
 				};
 			// end of function
@@ -165,7 +165,7 @@
 				reWidthSlider( item );
 			}
 
-			if (sliderParams. url) {
+			if ( sliderParams.url !== null ) {
 				$.ajax({
 					type: 'GET',
 					url: sliderParams.url,
@@ -173,9 +173,9 @@
 				});
 			}
 
-			rightBtn.bind('click', nextSlide);
-			leftBtn.bind('click', prevSlide);
-			catItem.bind('click', selectCategory);
+			rightBtn.on('click', nextSlide);
+			leftBtn.on('click', prevSlide);
+			catItem.on('click', selectCategory);
 		});
 	};
 

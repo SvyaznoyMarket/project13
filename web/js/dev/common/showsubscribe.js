@@ -36,7 +36,7 @@
 					}
 					
 					subPopup.html('<span class="bSubscribeLightboxPopup__eTitle mType">Спасибо! подтверждение подписки отправлено на указанный e-mail</span>');
-					docCookies.setItem(false, 'subscribed', 1, 157680000, '/');
+					window.docCookies.setItem('subscribed', 1, 157680000, '/');
 
 					if( typeof(_gaq) !== 'undefined' ) {
 						_gaq.push(['_trackEvent', 'Account', 'Emailing sign up', 'Page top']);
@@ -59,7 +59,7 @@
 					var url = $(this).data('url');
 
 					subPopup.slideUp(300, subscribeLater);
-					docCookies.setItem(false, 'subscribed', 0, 157680000, '/');
+					window.docCookies.setItem('subscribed', 0, 157680000, '/');
 					$.post(url);
 
 					return false;

@@ -54,6 +54,7 @@
     </div>
 
     <?= $page->slotFooter() ?>
+    <?= $page->slotSurveybar() ?>
 
     <div class="clear"></div>
 </div>
@@ -69,7 +70,6 @@
 
 <? if (\App::config()->analytics['enabled']): ?>
     <div id="yandexMetrika" class="jsanalytics"></div>
-    <div id="luxupTracker" class="jsanalytics"></div>
     <div id="adblenderCommon" class="jsanalytics"></div>
 <? endif ?>
 

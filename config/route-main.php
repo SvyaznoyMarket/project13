@@ -588,6 +588,13 @@ return [
         'action'  => ['Cron\LinksAction', 'execute'],
     ],
 
+    //survey
+    'survey.submit-answer' => [
+        'pattern' => '/survey/submit-answer',
+        'action'  => ['Survey\Action', 'submitAnswer'],
+        'method'  => ['POST'],
+    ],
+
     //content
     'content' => [
         'pattern' => '/{token}',

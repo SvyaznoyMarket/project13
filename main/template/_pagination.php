@@ -12,7 +12,7 @@ $current = $pager->getPage();
 ?>
 
 <div class="pageslist">
-    <span>Страницы:</span>
+    <span class="bTitle">Страницы</span>
     <ul>
         <? if ($current > ($first + 2)): ?>
             <li class="next"><a href="<?= $page->helper->replacedUrl(array('page' => $first)) ?>"><?= $first ?>...</a></li>

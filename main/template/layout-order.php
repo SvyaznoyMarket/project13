@@ -55,6 +55,7 @@
 <?= $page->slotRegionSelection() ?>
 <? if (!(bool)\App::exception()->all()) echo $page->render('order/_footer') ?>
 <?= $page->slotFooter() ?>
+<?= $page->slotSurveybar() ?>
 
 <?= $page->slotBodyJavascript() ?>
 <?= $page->slotInnerJavascript() ?>
@@ -63,10 +64,6 @@
 <?= $page->slotAdvanceSeoCounter() ?>
 <?= $page->slotAdriver() ?>
 <?= $page->slotPartnerCounter() ?>
-
-<? if (\App::config()->analytics['enabled']): ?>
-    <div id="luxupTracker" class="jsanalytics"></div>
-<? endif ?>
 
 </body>
 </html>

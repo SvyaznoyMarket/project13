@@ -42,8 +42,15 @@ $isOrderAnalytics = isset($isOrderAnalytics) ? $isOrderAnalytics : true;
     <p class="font16">Способ оплаты: <span class="mBold"><?= $paymentMethod->getName() ?></span></p>
 
     <div class="line pb15"></div>
+
+    <? if(!empty($userForm)) { ?>
+        <?= $page->tryRender('order/partner-counter/_flocktory-complete', ['order' => $order, 'userForm' => $userForm]) ?>
+    <? } ?>
 <?php endforeach ?>
 
+<? if(!empty($form)) { ?>
+    <?= $page->render('partner-counter/_get4click', ['order' => $order, 'form' => $form] ) ?>
+<? } ?>
 
 <? if ($isCorporative): ?>
     <div class="mt32">

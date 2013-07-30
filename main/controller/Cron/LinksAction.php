@@ -22,6 +22,16 @@ class LinksAction {
                 }
                 $content .= '</ul>';
                 break;
+
+            case 'survey':
+                $content = '<ul class="mb25">';
+                foreach (scandir(\App::config()->surveyDir) as $file) {
+                    if(is_file(\App::config()->surveyDir . '/' . $file)) {
+                        $content .= "<li><a href='http://".$host."/survey/" . $file . "'>" . $file . "</a></li>";
+                    }
+                }
+                $content .= '</ul>';
+                break;
             
             default:
                 throw new \Exception\NotFoundException();

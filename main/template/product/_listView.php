@@ -15,13 +15,13 @@ if (!isset($view)) $view = $request->get('view', 'compact');
 $list = array(
     array(
         'name'  => 'compact',
-        'title' => 'компактный',
-        'class' => 'tableview',
+        'title' => '',
+        'class' => 'mTableView',
     ),
     array(
         'name'  => 'expanded',
-        'title' => 'расширенный',
-        'class' => 'listview',
+        'title' => '',
+        'class' => 'mListView',
     ),
 );
 
@@ -38,10 +38,14 @@ foreach ($list as &$item) {
 ?>
 
 <!-- View -->
-<div class="view">
-    <span>Вид страницы:</span>
-    <?php foreach ($list as $item): ?>
-        <a href="<?php echo $item['url'] ?>" class="<?php echo $item['class'] . ($item['current'] ? ' active' : '') ?>" title="<?php echo $item['title'] ?>"><?php echo $item['title'] ?></a>
-    <?php endforeach ?>
+<div class="bViewPageMode">
+    <span class="bTitle">Вид</span>
+    <ul class="bViewPageModeList">
+        <?php foreach ($list as $item): ?>
+            <li class="bViewPageModeList__eItem">
+                <a href="<?php echo $item['url'] ?>" class="bViewPageModeList__eItemLink <?php echo $item['class'] . ($item['current'] ? ' mActiveLink' : '') ?>" title="<?php echo $item['title'] ?>"><span class="bViewPageModeIcon"><?php echo $item['title'] ?></span></a>
+            </li>
+        <?php endforeach ?>
+    </ul>
 </div>
 <!-- View -->

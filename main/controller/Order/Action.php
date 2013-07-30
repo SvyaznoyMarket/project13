@@ -238,6 +238,30 @@ class Action {
                     ];
                 }
 
+                // подписка
+                $isSubscribe = $request->request->get('subscribe');
+                $email = $form->getEmail();
+                if(!empty($isSubscribe) && !empty($email)) {
+                    $subscriptionParams = [
+                        'email'      => $email,
+                        'geo_id'     => $region->getId(),
+                        'channel_id' => 1,
+                    ];
+                    if ($userEntity = \App::user()->getEntity()) {
+                        $subscriptionParams['token'] = $userEntity->getToken();
+                    }
+
+                    $exception = null;
+                    $subscriptionResponse = null;
+                    $client->addQuery('subscribe/create', $subscriptionParams, [], function($data) use (&$subscriptionResponse) {
+                        $subscriptionResponse = $data;
+                    }, function(\Exception $e) use (&$exception) {
+                        $exception = $e;
+                        \App::exception()->remove($e);
+                    });
+                    $client->execute(\App::config()->coreV2['retryTimeout']['default'], \App::config()->coreV2['retryCount']);
+                }
+
                 // сохранение заказов в ядре
                 $saveOrderResult = $this->saveOrder($form, $deliveryMap, $productsForRetargeting);
                 $orderNumbers = $saveOrderResult['orderNumbers'];
@@ -916,6 +940,12 @@ class Action {
             $form->setError('recipient_phonenumbers', 'Номер мобильного телефона должен содержать 11 цифр');
         }
 
+        // абтест для обязательно поля email
+        if (\App::abTest()->getCase()->getKey() == 'emails') {
+            $email = $form->getEmail();
+            $form->setError('recipient_email', 'Укажите ваш e-mail');
+        }
+
         // способ доставки
         if (!$form->getDeliveryTypeId()) {
             $form->setError('delivery_type_id', 'Не указан способ получения заказа');
@@ -1220,11 +1250,12 @@ class Action {
                 }
                 $itemView->token = $itemView->type . '-' . $itemView->id;
                 $itemView->stock = isset($itemData['stock']) ? $itemData['stock'] : 0;
+
                 foreach ($itemData['deliveries'] as $deliveryToken => $deliveryData) {
                     $deliveryView = new \View\Order\DeliveryCalc\Delivery();
                     $deliveryView->price = $deliveryData['price'];
                     $deliveryView->token = $deliveryToken;
-                    $deliveryView->name = in_array($deliveryToken, ['self', 'now']) ? 'В самовывоз' : 'В доставку';
+                    $deliveryView->name = preg_match("/self\_|now\_/i",$deliveryToken) ? 'В самовывоз' : 'В доставку';
 
                     if ('products' == $itemType && $productsEntityById[$itemData['id']] instanceof \Model\Product\BasicEntity) {
                         $deliveryView->isSupplied = $productsEntityById[$itemData['id']]->getState() ? $productsEntityById[$itemData['id']]->getState()->getIsSupplier() : false;
@@ -1249,8 +1280,8 @@ class Action {
                     }
 
                     $itemView->deliveries[$deliveryView->token] = $deliveryView;
-                }
 
+                }
                 $deliveryMapView->items[$itemView->token] = $itemView;
             }
         }
@@ -1320,11 +1351,14 @@ class Action {
                 foreach ($deliveryMapView->deliveryTypes as $key => $delivery) {
                     if (false !== strpos($key, 'now_')) {
                         $delivery->token = str_replace('now_', 'self_', $delivery->token);
+                        $delivery->name = 'самовывоз';
+                        $delivery->id = 3;
                         unset($deliveryMapView->deliveryTypes[$key]);
                         $deliveryMapView->deliveryTypes[$delivery->token] = $delivery;
                     }
                 }
             }
+
             if ((bool)$deliveryMapView->items) {
                 foreach ($deliveryMapView->items as $product => $deliveries) {
                     if ((bool)$deliveries->deliveries) {
@@ -1334,7 +1368,7 @@ class Action {
                                     $delivery->dates[0]->isNow = true;
                                 }
                                 unset($deliveryMapView->items[$product]->deliveries[$token]);
-
+                                $delivery->token = str_replace('now_', 'self_', $delivery->token);
                                 $deliveryMapView->items[$product]->deliveries[str_replace('now_', 'self_', $token)] = $delivery;
                             }
                         }

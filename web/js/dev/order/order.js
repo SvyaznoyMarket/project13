@@ -313,6 +313,57 @@
             var secs = j_count.html().replace(/\D/g, '') * 1;
         })();
 
+    /* Credit Widget */
+    //window.onbeforeunload = function (){ return false }    // DEBUG    
+    if( ! $('#credit-widget').length ){
+        return;
+    }
+
+    var creditWidget = $('#credit-widget').data('value');
+
+    if( ! 'widget' in creditWidget ){
+        return;
+    }
+
+    if( creditWidget.widget === 'direct-credit' ) {
+        $LAB.script( 'JsHttpRequest.min.js' )
+        .script( 'http://direct-credit.ru/widget/script_utf.js' )
+        .wait( function() { 
+            // fill cart
+            for ( var i = creditWidget.vars.items.length - 1; i >= 0; i-- ) {
+                var item = creditWidget.vars.items[i];
+
+                dc_getCreditForTheProduct(
+                    '4427',
+                    creditWidget.vars.number,
+                    'addProductToBuyOnCredit',
+                    {
+                        name : item.articul,
+                        count: item.quantity,
+                        articul: item.articul,
+                        price: item.price,
+                        type: item.type
+                    },
+                    function( result ){
+                        openWidget();
+                    }
+                )
+            }
+            
+            function openWidget() {
+                dc_getCreditForTheProduct(
+                    '4427', 
+                    creditWidget.vars.number ,// session
+                    'orderProductToBuyOnCredit',
+                    { order_id: creditWidget.vars.number,
+                    region: creditWidget.vars.region }
+                );
+            }
+        });
+    }
+
+    var backURL = 'http://' + window.location.hostname;
+
         /* Credit Widget */
         //window.onbeforeunload = function (){ return false }    // DEBUG    
         if( ! $('#credit-widget').length )

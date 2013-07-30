@@ -40,6 +40,7 @@
 
     <?= $page->render('order/_footer') ?>
     <?= $page->slotFooter() ?>
+    <?= $page->slotSurveybar() ?>
 
     <?= $page->slotRegionSelection() ?>
     <?= $page->slotBodyJavascript() ?>
@@ -51,7 +52,6 @@
     <?= $page->slotPartnerCounter() ?>
 
     <? if (\App::config()->analytics['enabled']): ?>
-        <div id="luxupTracker" class="jsanalytics"></div>
         <div id="adblenderCommon" class="jsanalytics"></div>
     <? endif ?>
   

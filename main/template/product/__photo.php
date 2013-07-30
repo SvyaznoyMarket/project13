@@ -89,15 +89,15 @@ return function(
 </script>
 
 
-<div class="bProductDesc__ePhoto">
+<div class="bProductDescImg">
     <? if ($product->getLabel()): ?>
-        <div class="bStickerImg">
+        <div class="bProductDescSticker">
             <img src="<?= $product->getLabel()->getImageUrl(1) ?>" alt="<?= $helper->escape($product->getLabel()->getName()) ?>" />
         </div>
     <? endif ?>
 
-    <div class="bProductDesc__ePhoto-bigImg">
-        <img class="bZoomedImg" src="<?= $product->getImageUrl(3) ?>" data-zoom-image="<?= $product->getImageUrl(5) ?>" alt="<?= $helper->escape($product->getName()) ?>" />
+    <div class="bProductDescImgBig">
+        <img class="bProductDescImgBig__eImg bZoomedImg" src="<?= $product->getImageUrl(3) ?>" data-zoom-image="<?= $product->getImageUrl(5) ?>" alt="<?= $helper->escape($product->getName()) ?>" />
     </div><!--/product big image section -->
 
     <div class="bPhotoAction clearfix">
@@ -111,7 +111,7 @@ return function(
                     </div>
                 </li>
             <? endif ?>
-            <? if ((bool)$product->getPhoto3d() || $model3dExternalUrl || $model3dImg):  ?>
+            <? if ($model3dExternalUrl || $model3dImg):  ?>
                 <?
                 if ($model3dExternalUrl) {
                     $class3D = 'maybe3d';
@@ -139,11 +139,10 @@ return function(
                     </ul>
                 </div>
 
-                <div class="bPhotoActionOtherPhoto__eBtn mPrev"><span>&#9668;</span></div>
-                <div class="bPhotoActionOtherPhoto__eBtn mNext"><span>&#9658;</span></div>
+                <div class="bPhotoActionOtherPhoto__eBtn mPrev"><span></span></div>
+                <div class="bPhotoActionOtherPhoto__eBtn mNext"><span></span></div>
             </div><!--/slider mini product images -->
         <? endif ?>
-
     </div>
 </div><!--/product images section -->
 

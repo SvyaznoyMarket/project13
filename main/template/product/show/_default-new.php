@@ -16,32 +16,29 @@
 
 <div id="jsProductCard" data-value="<?= $page->json($productData) ?>"></div>
 
-<div class="bProductSection__eLeft">
+<div class="bProductSectionLeftCol">
+    <?= $helper->render('product/__photo', ['product' => $product, 'productVideos' => $productVideos]) ?>
 
-    <div class="bProductDesc clearfix">
+    <div class="bProductDescShop">
+        <?= $helper->render('product/__state', ['product' => $product]) // Есть в наличии ?>
 
-        <?= $helper->render('product/__photo', ['product' => $product, 'productVideos' => $productVideos]) ?>
+        <?= $helper->render('product/__price', ['product' => $product]) // Цена ?>
 
-        <div class="bProductDesc__eStore">
-            <?= $helper->render('product/__state', ['product' => $product]) // Есть в наличии ?>
+        <?= $helper->render('product/__notification-lowerPrice', ['product' => $product]) // Узнать о снижении цены ?>
 
-            <?= $helper->render('product/__price', ['product' => $product]) // Цена ?>
+        <?= $helper->render('product/__credit', ['product' => $product, 'creditData' => $creditData]) // Беру в кредит ?>
 
-            <?= $helper->render('product/__notification-lowerPrice', ['product' => $product]) // Узнать о снижении цены ?>
+        <div class="bProductDescShop__eText">
+            <?= $product->getTagline() ?>
+            <div class="bTextMore"><a class="jsGoToId" data-goto="productspecification" href="">Характеристики</a></div>
+        </div>
 
-            <?= $helper->render('product/__credit', ['product' => $product, 'creditData' => $creditData]) // Беру в кредит ?>
+        <?= $helper->render('product/__reviewCount', ['product' => $product, 'reviewsData' => $reviewsData]) ?>
 
-            <div class="bProductDesc__eStore-text">
-                <?= $product->getTagline() ?>
-                <div class="text__eAll"><a class="jsGoToId" data-goto="productspecification" href="">Характеристики</a></div>
-            </div>
-
-            <?= $helper->render('product/__reviewCount', ['product' => $product, 'reviewsData' => $reviewsData]) ?>
-
-            <?= $helper->render('product/__model', ['product' => $product]) // Модели ?>
-
-        </div><!--/product shop description box -->
+        <?= $helper->render('product/__model', ['product' => $product]) // Модели ?>
     </div><!--/product shop description section -->
+
+    <div class="clear"></div>
 
     <div class="bDescriptionProduct">
         <?= $product->getDescription() ?>
@@ -126,12 +123,14 @@
 
         <?= $helper->render('product/__delivery', ['product' => $product, 'shopStates' => $shopStates]) // Доставка ?>
 
-        <?= $helper->render('product/__adfox', ['product' => $product]) ?>
+        <div class="bAwardSection"><img src="/css/newProductCard/img/award.jpg" alt="" /></div>
     </div><!--/widget delivery -->
 
-    <?//= $helper->render('product/__warranty', ['product' => $product]) ?>
+    <?= $helper->render('product/__adfox', ['product' => $product]) // Баннер Adfox ?>
 
+    <?//= $helper->render('product/__warranty', ['product' => $product]) ?>
     <?//= $helper->render('product/__service', ['product' => $product]) ?>
+
 </div><!--/right section -->
 
 <div class="bBottomBuy clearfix">

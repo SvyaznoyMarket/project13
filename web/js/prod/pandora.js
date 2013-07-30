@@ -58,7 +58,7 @@ function liveScrollJewel( lsURL, filters, pageid ) {
       })
       dajax.post( dlvr_node.data('calclink'), coreid )
     }
-    handle_custom_items()
+    // handle_custom_items()
   })
 }
 
@@ -89,7 +89,7 @@ function handle_jewel_infinity_scroll() {
     })
   })
   setTimeout(function(){
-    if( docCookies.hasItem( 'infScroll' ) ) {
+    if( window.docCookies.hasItem( 'infScroll' ) ) {
       switch_to_scroll(checkScrollJewel)
     }
   },600)
@@ -129,7 +129,7 @@ function handle_jewel_infinity_scroll() {
 // }
 
 function switch_to_scroll(checkScrollJewel) {
-  docCookies.setItem( false, 'infScroll', 1, 4*7*24*60*60, '/' )
+  window.docCookies.setItem('infScroll', 1, 4*7*24*60*60, '/' )
   var next = $('div.pageslist:first li:first')
   if( next.hasClass('current') )
     next = next.next()
@@ -141,7 +141,7 @@ function switch_to_scroll(checkScrollJewel) {
   $('div.pageslist ul').append( next )
              .find('a')
              .bind('click', function(event){
-                docCookies.removeItem( 'infScroll' )
+                window.docCookies.removeItem( 'infScroll' )
                 // ableToLoadJewel = true
                 // $(window).unbind('scroll')
                 // return false

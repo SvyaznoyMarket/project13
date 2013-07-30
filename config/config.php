@@ -14,6 +14,7 @@ $c->logDir = $c->appDir . '/log';
 $c->webDir = $c->appDir . '/web';
 $c->templateDir = $c->appDir . '/main/template';
 $c->cmsDir = $c->appDir . '/../../cms.enter.ru/wwwroot';
+$c->surveyDir = $c->webDir . '/survey';
 
 $c->controllerPrefix = 'Controller';
 $c->routePrefix = '';
@@ -151,7 +152,7 @@ $c->loadMediaHost = true;
 $c->shop['cookieName'] = 'shopid';
 $c->shop['cookieLifetime'] = 31536000; // 365 дней
 $c->shop['autoresolve']    = true;
-$c->shop['enabled'] = false;
+$c->shop['enabled'] = true;
 
 $c->mediaHost = [
     0 => 'http://fs01.enter.ru',
@@ -181,7 +182,7 @@ $c->product['globalListEnabled']      = true;
 $c->product['showAveragePrice']       = false;
 $c->product['allowBuyOnlyInshop']     = false;
 $c->product['reviewEnabled']          = true;
-$c->product['lowerPriceNotification'] = false;
+$c->product['lowerPriceNotification'] = true;
 $c->product['furnitureConstructor']   = true;
 // jewel
 $c->product['itemsPerPageJewel']     = 24;
@@ -313,5 +314,19 @@ $c->maybe3d['cmsFolder']  = '/opt/wwwroot/cms.enter.ru/wwwroot/v1/video/product/
 $c->maybe3d['timeout']    = 30;
 
 $c->tag['numSidebarCategoriesShown'] = 3;
+
+$c->abtest = [
+    'cookieName' => 'switch',
+    'bestBefore' => '2013-08-20', //кука умрет в 00:00
+    'enabled'    => true,
+    'test'       => [
+        [
+            'traffic'  => '50',
+            'key'      => 'emails',
+            'name'     => "Обязательные e-mail'ы",
+            'ga_event' => 'MandatoryEmail',
+        ],
+    ],
+];
 
 return $c;
