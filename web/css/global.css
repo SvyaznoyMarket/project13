@@ -4544,6 +4544,13 @@
   .bShopInStockNoItem {
     font-size: 16px;
   }
+  .seoContent ul {
+    margin: 0 0 0 20px;
+  }
+  .seoContent ul li {
+    list-style-type: disc;
+    margin: 0 0 10px 17px;
+  }
 }
 /*страница с промо каталогом */
 @media all {
