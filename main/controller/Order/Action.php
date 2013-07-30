@@ -866,7 +866,10 @@ class Action {
         // абтест для обязательно поля email
         if (\App::abTest()->getCase()->getKey() == 'emails') {
             $email = $form->getEmail();
-            $form->setError('recipient_email', 'Укажите ваш e-mail');
+            $emailValidator = new \Validator\Email();
+            if (!$emailValidator->isValid($email)) {
+                $form->setError('recipient_email', 'Укажите ваш e-mail');
+            }
         }
 
         // способ доставки
