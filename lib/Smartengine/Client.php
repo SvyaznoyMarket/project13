@@ -95,7 +95,9 @@ class Client {
             . '?' . http_build_query(array_merge([
             'apikey'   => $this->config['apiKey'],
             'tenantid' => $this->config['tenantid'],
-        ], $params))
+            'method' => $action,
+            ], $params)
+        )
         ;
         \App::logger()->info('Start smartengine ' . $action . ' query: ' . $query, ['smartengine']);
 

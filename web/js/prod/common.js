@@ -847,6 +847,42 @@ $(document).ready(function(){
  
  
 /**
+ * Обработчик горячих ссылок
+ *
+ * @author    Trushkevich Anton
+ * @requires  jQuery
+ */
+(function(){
+  var handleHotLinksToggle = function() {
+    var toggle = $(this);
+    if(toggle.hasClass('expanded')) {
+      toggle.parent().parent().find('.toHide').hide();
+      toggle.html('Все метки');
+      toggle.removeClass('expanded');
+    } else {
+      toggle.parent().parent().find('.toHide').show();
+      toggle.html('Основные метки');
+      toggle.addClass('expanded');
+    }
+    return false;
+  };
+
+
+  $(document).ready(function(){
+    $('.hotlinksToggle').bind('click', handleHotLinksToggle);
+  });
+}());
+
+
+
+ 
+ 
+/** 
+ * NEW FILE!!! 
+ */
+ 
+ 
+/**
  * JIRA
  */
 ;(function() {
@@ -1617,7 +1653,7 @@ $(document).ready(function(){
 	$('.product_filter-block').bind('change', function(e) {
 		var el = $(e.target);
 
-		if ( el.is('input') && (-1 != $.inArray(el.attr('type'), ['radio', 'checkbox', 'text'])) ) {
+		if ( el.is('input') && (-1 != $.inArray(el.attr('type'), ['radio', 'checkbox'])) ) {
 			el.trigger('preview');
 		}
 	}).bind('preview', function(e) {

@@ -302,4 +302,17 @@ class RepositoryManager {
         return $instance;
     }
 
+    /**
+     * @return Model\Survey\Repository
+     */
+    static function survey() {
+        static $instance;
+
+        if (!$instance) {
+            $instance = new \Model\Survey\Repository(\App::dataStoreClient());
+        }
+
+        return $instance;
+    }
+
 }

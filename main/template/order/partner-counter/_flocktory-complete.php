@@ -1,5 +1,4 @@
-<? $user = $userForm; ?>
-<? if (!empty($user) && !empty($order)) { ?>
+<? if (!empty($userForm) && !empty($order)) { ?>
   <?
     $productsCounts = [];
     foreach ($order->getProduct() as $key => $product) {
@@ -15,9 +14,9 @@
       var _flocktory = window._flocktory = _flocktory || [];
       _flocktory.push({
         "order_id":     "<?= $order->getId() ?>",
-        "email":        "<?= $emailOrPhone = $user->getEmail() ? $user->getEmail() : $user->getMobilePhone().'@mail.ru' ?>",
-        "name":         "<?= implode(' ', [$user->getFirstName(), $user->getLastName()]) ?>",
-        "sex":          "<?= $user->getFirstName() && preg_match('/[аяa]$/', $user->getFirstName()) ? 'f' : 'm' ?>",
+        "email":        "<?= $emailOrPhone = $userForm->getEmail() ? $userForm->getEmail() : $userForm->getMobilePhone().'@mail.ru' ?>",
+        "name":         "<?= implode(' ', [$userForm->getFirstName(), $userForm->getLastName()]) ?>",
+        "sex":          "<?= $userForm->getFirstName() && preg_match('/[аяa]$/', $userForm->getFirstName()) ? 'f' : 'm' ?>",
         "price":        <?= $order->getProductSum() ?>,
         "custom_field": "<?= $order->getNumber() ?>",
         "items": [
