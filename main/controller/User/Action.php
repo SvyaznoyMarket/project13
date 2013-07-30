@@ -122,16 +122,23 @@ class Action {
     }
 
     /**
+     * @param \Http\Request $request
      * @return \Http\RedirectResponse
      */
-    public function logout() {
+    public function logout(\Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
         $user = \App::user();
 
         $user->removeToken();
 
-        $response = new \Http\RedirectResponse(\App::router()->generate('user.login'));
+        $referer = $request->headers->get('referer');
+        if(!$referer || $referer && preg_match('/(\/private\/)|(\/private$)/', $referer)) {
+            $redirect_to = \App::router()->generate('homepage');
+        } else {
+            $redirect_to = $referer;
+        }
+        $response = new \Http\RedirectResponse($redirect_to); 
         $user->setCacheCookie($response);
 
         return $response;
