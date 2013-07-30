@@ -139,6 +139,11 @@ class HtmlChatHistoryContent extends HtmlBasicContent {
         }
     }
 
+    protected function timeFromSeconds($time) {
+        $s = $time % 60;
+        $m = $time / 60;
+        return "$m мин $s сек";
+    }
 
 
     protected function analytics() {
@@ -171,8 +176,8 @@ class HtmlChatHistoryContent extends HtmlBasicContent {
             $opers .= '<li>';
             $opers .= $this->operator_link($id, $this->operator_info($id) ) . ': ' ;
             if ($count) $opers .= 'Диалогов: ' . $count.'; ';
-            if ($all) $opers .= 'Длительность: ' . round( $all, 2 ).' секунд; ';
-            if ($average) $opers .= 'В среднем: ' . round( $average, 2 ).' секунд. ';
+            if ($all) $opers .= 'Длительность: ' . $this->timeFromSeconds( $all ) .'; ';
+            if ($average) $opers .= 'В среднем: ' . $this->timeFromSeconds( $all ) . '.';
             $opers .= '</li>';
         }
         $opers .= '</ul>';
