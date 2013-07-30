@@ -878,6 +878,11 @@
   .mb35 {
     margin-bottom: 35px;
   }
+  .mLoader {
+    background: url('/css/common/img/preloader.gif') no-repeat center center;
+    min-height: 50px;
+    display: block;
+  }
 }
 @media all {
   .bGrayButton {
@@ -9895,8 +9900,8 @@
     vertical-align: bottom;
   }
   .bProductDescImg .bProductDescImgBig__eImg {
-    max-width: 400px;
-    max-height: 400px;
+    width: 400px;
+    height: 400px;
   }
   .bPhotoAction {
     margin: 15px 0 0;
