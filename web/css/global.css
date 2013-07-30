@@ -11507,7 +11507,7 @@
     -webkit-border-radius: 3px 3px 0 0;
     -moz-border-radius: 3px 3px 0 0;
     border-radius: 3px 3px 0 0;
-    margin: 13px 0 0;
+    margin: 13px 0 10px;
     padding: 5px 0 5px 10px;
     color: #515151;
     border-bottom: 1px solid #c7c7c7;
@@ -11531,12 +11531,24 @@
     -moz-border-radius: 4px;
     border-radius: 4px;
     display: block;
-    padding: 3px 5px 3px 5px;
+    width: 38px;
+    height: 20px;
+    text-align: center;
     text-decoration: none;
     color: #000000;
     border: 1px solid #c7c7c7;
     background-color: #ffffff;
+    background-image: none;
     font-size: 11px;
+    line-height: 20px;
+    width: auto;
+    padding: 0 5px;
+  }
+  .bViewPageLine .bSortingList__eItemLink:hover,
+  .bViewPageLine .bSortingList__eItemLink.mActiveLink,
+  .bViewPageLine .bSortingList__eItemLink.mChecked {
+    color: #ffffff;
+    background-color: #000000;
   }
   .bViewPageLine .bSortingList__eItemLink:hover,
   .bViewPageLine .bSortingList__eItemLink.mActiveLink {
@@ -11545,8 +11557,8 @@
     background-color: #000000;
   }
   .bViewPageLine .bViewPageMode {
-    float: left;
-    margin: 0 0 0 10px;
+    float: right;
+    margin: 0 10px 0 10px;
   }
   .bViewPageLine .bViewPageModeList__eItem {
     float: left;
@@ -11558,25 +11570,28 @@
     border-radius: 4px;
     display: block;
     width: 38px;
-    height: auto;
+    height: 20px;
     text-align: center;
+    text-decoration: none;
     color: #000000;
     border: 1px solid #c7c7c7;
     background-color: #ffffff;
     background-image: none;
-    padding: 4px 0;
+    font-size: 11px;
+    line-height: 20px;
+    padding: 0;
   }
   .bViewPageLine .bViewPageModeList__eItemLink:hover,
-  .bViewPageLine .bViewPageModeList__eItemLink.mActiveLink {
+  .bViewPageLine .bViewPageModeList__eItemLink.mActiveLink,
+  .bViewPageLine .bViewPageModeList__eItemLink.mChecked {
     color: #ffffff;
-    border-color: #000000;
     background-color: #000000;
   }
   .bViewPageLine .bViewPageModeList .bViewPageModeIcon {
     display: block;
     width: 11px;
     height: 11px;
-    margin: 0 auto;
+    margin: 4px auto 0;
     background: url('/css/bViewPageLine/img/bViewPageModeIcons.png') no-repeat 0 0;
   }
   .bViewPageLine .bViewPageModeList .mTableView:hover .bViewPageModeIcon,
@@ -11598,25 +11613,56 @@
     margin: 0 3px 0 0;
     border: none;
   }
+  .bViewPageLine .bPagesList__eItemLink {
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    display: block;
+    width: 38px;
+    height: 20px;
+    text-align: center;
+    text-decoration: none;
+    color: #000000;
+    border: 1px solid #c7c7c7;
+    background-color: #ffffff;
+    background-image: none;
+    font-size: 11px;
+    line-height: 20px;
+    color: #ffffff;
+    background: #000000;
+    float: none;
+    padding: 0;
+    font-size: 11px;
+  }
+  .bViewPageLine .bPagesList__eItemLink:hover,
+  .bViewPageLine .bPagesList__eItemLink.mActiveLink,
+  .bViewPageLine .bPagesList__eItemLink.mChecked {
+    color: #ffffff;
+    background-color: #000000;
+  }
   .bViewPageLine .bPagesList__eItemLink.borderedR {
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     border-radius: 4px;
     display: block;
     width: 38px;
-    height: auto;
+    height: 20px;
     text-align: center;
+    text-decoration: none;
     color: #000000;
     border: 1px solid #c7c7c7;
     background-color: #ffffff;
     background-image: none;
+    font-size: 11px;
+    line-height: 20px;
     float: none;
-    padding: 4px 0;
+    padding: 0;
+    font-size: 11px;
   }
   .bViewPageLine .bPagesList__eItemLink.borderedR:hover,
-  .bViewPageLine .bPagesList__eItemLink.borderedR.mActiveLink {
+  .bViewPageLine .bPagesList__eItemLink.borderedR.mActiveLink,
+  .bViewPageLine .bPagesList__eItemLink.borderedR.mChecked {
     color: #ffffff;
-    border-color: #000000;
     background-color: #000000;
   }
   .bViewPageLine .bPagesList__eItemLink.borderedR span {
@@ -11624,6 +11670,7 @@
     height: auto;
     margin: 0;
     padding: 0;
+    font-size: 11px;
   }
   .bViewPageLine .bAllPager {
     -webkit-border-radius: 4px;
@@ -11631,24 +11678,24 @@
     border-radius: 4px;
     display: block;
     width: 38px;
-    height: auto;
+    height: 20px;
     text-align: center;
+    text-decoration: none;
     color: #000000;
     border: 1px solid #c7c7c7;
     background-color: #ffffff;
     background-image: none;
+    font-size: 11px;
+    line-height: 20px;
     float: right;
-    margin: 18px 10px 0 -5px;
-    padding: 3px 0;
+    margin: 18px 5px 0 -5px;
+    padding: 0;
   }
   .bViewPageLine .bAllPager:hover,
-  .bViewPageLine .bAllPager.mActiveLink {
+  .bViewPageLine .bAllPager.mActiveLink,
+  .bViewPageLine .bAllPager.mChecked {
     color: #ffffff;
-    border-color: #000000;
     background-color: #000000;
-  }
-  .bPagesListBottom {
-    min-width: 190px;
   }
 }
 /*---END---СТИЛИ ВЕРХНЕГО БЛОКА СОРТИРОВКИ В КАТАЛОГЕ---*/
