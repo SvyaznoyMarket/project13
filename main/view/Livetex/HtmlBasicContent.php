@@ -203,4 +203,54 @@ class HtmlBasicContent{
         return false;
     }
 
+
+
+
+    protected function timeInSeconds($time) {
+        if ( !is_numeric($time) ) {
+            $time = (string) $time;
+            $answ = explode( ':', $time );
+
+            if ( is_array($answ) and isset($answ[1]) and isset($answ[2]) ) {
+                $h = (int) $answ[0];
+                $m = (int) $answ[1];
+                $s = (int) $answ[2];
+
+                if ($h) $m = $m + $h / 60;
+                if ($m) $s = $s + $m / 60;
+
+                return $s;
+            }
+            return $time;
+
+        }else{
+            return $time;
+        }
+    }
+
+
+    protected function timeFromSeconds($time) {
+        $m = $h = null;
+        $s = (int) $time;
+        if ( $s > 60 ) {
+            $m = (int) ( $s / 60 );
+            $s = $s % 60;
+            if ( $m > 60 )  {
+                $h = (int) ( $m / 60 );
+                $m = $m % 60;
+            }
+        }
+
+        $ret = "$s сек";
+        if ( $m ) {
+            $ret = "$m мин " . $ret;
+            if ( $h ) {
+                $ret = "$h ч " . $ret;
+            }
+        }
+        $ret = '<time>' . $ret. '</time>';
+        return $ret;
+    }
+
+
 }

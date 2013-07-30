@@ -91,7 +91,7 @@ class HtmlChatHistoryContent extends HtmlBasicContent {
             $this->duration_cross_operators[$operId] = $arr;
         }
 
-        $out .= '<div class="id_oper"><span class="param_name">Длительность чата в секундах: </span>' . $item->chattime . '</div>';
+        $out .= '<div class="id_oper"><span class="param_name">Длительность чата: </span>' . $this->timeFromSeconds($item->chattime) . '</div>';
         $out .= '<div class="id_oper"><span class="param_name">Идентификатор сайта, на котором происходил чат: </span>' . $item->site . '</div>';
         $out .= '<div class="id_oper"><span class="param_name">Имя посетителя: </span>' . $item->name . '</div>';
         $out .= '<div class="id_oper"><span class="param_name">Страна посетителя (определяется автоматически): </span>' . $item->country . '</div>';
@@ -116,47 +116,17 @@ class HtmlChatHistoryContent extends HtmlBasicContent {
     }
 
 
-
-    protected function timeInSeconds($time) {
-        if ( !is_numeric($time) ) {
-            $time = (string) $time;
-            $answ = explode( ':', $time );
-
-            if ( is_array($answ) and isset($answ[1]) and isset($answ[2]) ) {
-                $h = (int) $answ[0];
-                $m = (int) $answ[1];
-                $s = (int) $answ[2];
-
-                if ($h) $m = $m + $h / 60;
-                if ($m) $s = $s + $m / 60;
-
-                return $s;
-            }
-            return $time;
-
-        }else{
-            return $time;
-        }
-    }
-
-    protected function timeFromSeconds($time) {
-        $s = $time % 60;
-        $m = $time / 60;
-        return "$m мин $s сек";
-    }
-
-
     protected function analytics() {
         $out = '';
 
         $average = round( $this->chat_times / $this->count_iterations , 2);
-        $out .= '<p> Cреднее время чата: '.$average.' секунд. Всего чатов: '.$this->count_iterations.'</p>';
+        $out .= '<p> Cреднее время чата: ' . $this->timeFromSeconds($average) . '. Всего чатов: '.$this->count_iterations.'</p>';
 
         $average = round( $this->count_messages / $this->count_iterations , 2);
         $out .= '<p> Cреднее количество сообщений в диалоге: '.$average.'.</p>';
 
         $average = round( $this->first_answers_time / $this->count_first_answers , 2);
-        $out .= '<p> Cреднее время первого ответа: '.$average.' секунд. Всего ответов было: ' . $this->count_first_answers . '</p>';
+        $out .= '<p> Cреднее время первого ответа: ' . $this->timeFromSeconds($average) . '. Всего ответов было: ' . $this->count_first_answers . '</p>';
 
         $out .= '<p>Количество положительных оценок: ' . $this->count_positive_votes.'.</p>';
         $out .= '<p>Количество отрицательных оценок: ' . $this->count_negative_votes.'.</p>';
@@ -177,7 +147,7 @@ class HtmlChatHistoryContent extends HtmlBasicContent {
             $opers .= $this->operator_link($id, $this->operator_info($id) ) . ': ' ;
             if ($count) $opers .= 'Диалогов: ' . $count.'; ';
             if ($all) $opers .= 'Длительность: ' . $this->timeFromSeconds( $all ) .'; ';
-            if ($average) $opers .= 'В среднем: ' . $this->timeFromSeconds( $all ) . '.';
+            if ($average) $opers .= 'В среднем: ' . $this->timeFromSeconds( $average ) . '.';
             $opers .= '</li>';
         }
         $opers .= '</ul>';
