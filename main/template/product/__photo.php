@@ -97,7 +97,7 @@ return function(
     <? endif ?>
 
     <div class="bProductDescImgBig">
-        <img class="bProductDescImgBig__eImg bZoomedImg" src="<?= $product->getImageUrl(3) ?>" data-zoom-image="<?= $product->getImageUrl(5) ?>" alt="<?= $helper->escape($product->getName()) ?>" />
+        <img class="bProductDescImgBig__eImg bZoomedImg" src="<?= $product->getImageUrl(3) ?>" data-zoom-image="<?= $product->getImageUrl(5) ?>" />
     </div><!--/product big image section -->
 
     <div class="bPhotoAction clearfix">

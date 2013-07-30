@@ -167,6 +167,8 @@
 						break;
 				}
 			}
+
+			widgetBox.removeClass('mLoader');
 		};
 	// end of functions
 
