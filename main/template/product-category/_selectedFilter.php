@@ -11,17 +11,19 @@ $list = $formFilter->getSelected();
 
 if(\App::config()->sphinx['showListingSearchBar']) {
     $filterValues = $productFilter->getValues();
-    $sphinxFilter = isset($filterValues['text']) ? $filterValues['text'] : '';
-    $sphinxWords = explode(' ', $sphinxFilter);
-    $sphinxList = array_map(function($sphinxWord) use ($sphinxWords) {
-        return [
-            'url' => (new \View\DefaultLayout())->helper->replacedUrl(['f[text]' => implode(' ', array_diff($sphinxWords, [$sphinxWord]))]),
-            'title' => 'Поиск',
-            'type' => 'string',
-            'name' => $sphinxWord,
-        ];
-    }, $sphinxWords);
-    $list = array_merge($sphinxList, $list);
+    $sphinxFilter = isset($filterValues['text']) ? $filterValues['text'] : null;
+    if($sphinxFilter) {
+        $sphinxWords = explode(' ', $sphinxFilter);
+        $sphinxList = array_map(function($sphinxWord) use ($sphinxWords) {
+            return [
+                'url' => (new \View\DefaultLayout())->helper->replacedUrl(['f[text]' => implode(' ', array_diff($sphinxWords, [$sphinxWord]))]),
+                'title' => 'Поиск',
+                'type' => 'string',
+                'name' => $sphinxWord,
+            ];
+        }, $sphinxWords);
+        $list = array_merge($sphinxList, $list);
+    }
 }
 ?>
 
