@@ -54,7 +54,30 @@
                 }<?= ($i < (count($orders) - 1)) ? ',' : "\n" ?>
 
                 <? endforeach ?>
-            ]
+            ];
+
+
+    <? foreach ($orders as $i => $order): ?>
+        // ;(function(){
+        //     var toKISS_complete = {
+        //         'Checkout Complete Order ID': <?= $order->getNumber() ?>,
+        //         'Checkout Complete SKU Quantity': count($order->getProduct()),
+        //         'Checkout Complete SKU Total':itemT,
+        //         'Checkout Complete Delivery Total':parseInt(dlvr_total),
+        //         'Checkout Complete Order Total': $order->getSum(),
+        //         'Checkout Complete Order Type':'cart order',
+        //         'Checkout Complete Delivery':nowDelivery,
+        //         'Checkout Complete Payment':data.paymentMethodId
+        //     };
+
+        //     if ( (typeof(_kmq) !== 'undefined') && (KM !== 'undefined') ) {
+        //         _kmq.push(['alias', phoneNumber, KM.i()]);
+        //         _kmq.push(['alias', emailVal, KM.i()]);
+        //         _kmq.push(['identify', phoneNumber]);
+        //         _kmq.push(['record', 'Checkout Complete', toKISS_complete]);
+        //     }
+        // }());
+    <? endforeach ?>
 </script>
 
 
