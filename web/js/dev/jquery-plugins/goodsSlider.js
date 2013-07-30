@@ -149,6 +149,8 @@
 					var newSlider;
 
 					if ( !res.success ){
+						$self.remove();
+						
 						return false;
 					}
 
