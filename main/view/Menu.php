@@ -30,11 +30,11 @@ class Menu {
             \App::exception()->remove($e);
             $isFailed = true;
         });
-
-        \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium'], \App::config()->coreV2['retryCount']);
+        \App::coreClientV2()->execute();
 
         if ($isFailed) {
             $this->menu = $this->repository->getCollection();
+            \App::exception()->add(new \Exception('Не удалось получить главное меню'));
         }
 
         // сбор категорий для ACTION_PRODUCT_CATALOG
