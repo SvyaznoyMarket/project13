@@ -395,11 +395,11 @@ $(document).ready(function() {
 			self.validateField = function( textfield, e ) {
 				var valerror = false;
 
-				if ((e.currentTarget.name == 'order[recipient_scCard]')&&(e.currentTarget.value == '')){
+				if ((e.currentTarget.name == 'order[recipient_scCard]' || e.currentTarget.name === 'order[recipient_email]')&&(e.currentTarget.value == '')){
 					return true;
 				}
 
-				if( e.currentTarget.value.replace(/\s/g, '') == '' ||  !textfield.regexp.test( e.currentTarget.value ) ) {
+				if( e.currentTarget.value.replace(/\s/g, '') == '' || !textfield.regexp.test( e.currentTarget.value ) ) {
 					valerror = true;
 					self.formStatus('typing');
 				}
@@ -410,7 +410,7 @@ $(document).ready(function() {
 				}
 
 				for(var i=0, l=self.textfields.length; i<l; i++){ // like indexOf
-					if( self.textfields[i]().name === textfield.name && textfield.name !== 'order[recipient_email]' ) {
+					if( self.textfields[i]().name === textfield.name ) {
 						var tmp = self.textfields[i]();
 						tmp.valerror = valerror;
 						tmp.value = e.currentTarget.value;
