@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xml_catalog>
+    <shop>
+        <offers>
+            <offer id="1" available="true">
+                <price>???</price>
+                <ulr>http://www.enter.ru/product/appliances/kombinirovannaya-plita-hansa-fcmw51000010-2020102001994
+                </ulr>
+                <picture>http://fs01.enter.ru/1/1/500/29/35014.jpg</picture>
+                <vendor>???</vendor>
+                <categoryId>1094</categoryId>
+                <currencyId>1</currencyId>
+            </offer>
+            <offer/>
+        </offers>
+    </shop>
+</xml_catalog>

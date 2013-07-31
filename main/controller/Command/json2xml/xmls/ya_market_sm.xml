@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE yml_catalog SYSTEM>
+<yml_catalog date='2013-07-31 12:19'>
+    <shop>
+        <name>Enter.ru</name>
+        <company>Enter.ru</company>
+        <url>http://www.enter.ru</url>
+        <email>enter@enter.ru</email>
+        <currencies>
+            <currency id="RUR" rate="1"/>
+        </currencies>
+
+        <categories>
+            <category id="2102" url="http://www.enter.ru/reg/14974/catalog/snova-v-shkolu/">Снова в школу</category>
+            <category id="2105" parentId="2102"
+                      url="http://www.enter.ru/reg/14974/catalog/snova-v-shkolu/tovari-dlya-detey-2105/">Товары для
+                детей
+            </category>
+            <category id="1974" parentId="1889" url="http://www.enter.ru/reg/14974/catalog/dacha/zootovari-1974/">
+                Зоотовары
+            </category>
+            <category id="3284" parentId="3290"
+                      url="http://www.enter.ru/reg/14974/catalog/eshche-tovari/tovari-dlya-doma-antimoskitnie-svechi-3284/">
+                Антимоскитные свечи
+            </category>
+            <category id="3338" parentId="3172"
+                      url="http://www.enter.ru/reg/14974/catalog/eshche-tovari/tovari-dlya-ofisa-3338/">Товары для офиса
+            </category>
+        </categories>
+
+        <offers>
+            <offer id="1" available="true" type="vendor.model">
+                <url>
+                    http://www.enter.ru/reg/14974/product/appliances/kombinirovannaya-plita-hansa-fcmw51000010-2020102001994
+                </url>
+                <price>9400,00</price>
+                <amount>more</amount>
+                <categoryId>1094</categoryId>
+                <picture>http://fs01.enter.ru/1/1/500/29/35014.jpg</picture>
+                <typePrefix>Комбинированная плита</typePrefix>
+                <vendor>Hansa</vendor>
+                <model>FCMW51000010</model>
+                <name></name>
+                <pickup>false</pickup>
+                <description>Комбинированная плита с варочной панелью на 4 конфорки и духовым шкафом объемом 52 литра с
+                    грилем.
+                </description>
+                <delivery>true</delivery>
+                <local_delivery_cost>290</local_delivery_cost>
+                <in_sale>false</in_sale>
+                <jewel>false</jewel>
+                <margin>2</margin>
+                <buying_price>9100</buying_price>
+            </offer>
+            <offer id="3" available="true">
+                <url>
+                    http://www.enter.ru/reg/14974/product/household/shchetka-s-rezervuarom-dlya-mitya-posudi-rozenbal-2040201003330
+                </url>
+                <price>163,00</price>
+                <amount>more</amount>
+                <categoryId>639</categoryId>
+                <picture>http://fs01.enter.ru/1/1/500/a6/54.jpg</picture>
+                <typePrefix>Щетка с резервуаром для мытья посуды</typePrefix>
+                <vendor>Rozenbal</vendor>
+                <model></model>
+                <name></name>
+                <pickup>true</pickup>
+                <description>Щетка для мытья посуды с резервуаром.</description>
+                <delivery>true</delivery>
+                <local_delivery_cost>290</local_delivery_cost>
+                <in_sale>false</in_sale>
+                <jewel>false</jewel>
+                <margin>3</margin>
+                <buying_price>108</buying_price>
+            </offer>
+            <offer id="11" available="true" type="vendor.model">
+                <url>
+                    http://www.enter.ru/reg/14974/product/doityourself/diskovaya-pila-kalibr-epd-2000-stanina-2080501001056
+                </url>
+                <price>2390,00</price>
+                <amount>more</amount>
+                <categoryId>1120</categoryId>
+                <picture>http://fs01.enter.ru/1/1/500/9d/30257.jpg</picture>
+                <typePrefix>Дисковая пила</typePrefix>
+                <vendor>Калибр</vendor>
+                <model>ЭПД-2100/200 + Ст</model>
+                <name></name>
+                <pickup>true</pickup>
+                <description>Мощная электрическая пила (2000 Вт) со скоростью холостого хода 4800 об/мин и регулировкой
+                    глубины пропила до 65 мм. Посадочное отверстие диска имеет диаметр 32 мм, пильный диск - 200 мм в
+                    диаметре.
+                </description>
+                <delivery>true</delivery>
+                <local_delivery_cost>290</local_delivery_cost>
+                <in_sale>false</in_sale>
+                <jewel>false</jewel>
+                <margin>3</margin>
+                <buying_price>1925</buying_price>
+            </offer>
+            <offer id="95" available="true" type="vendor.model">
+                <url>
+                    http://www.enter.ru/reg/14974/product/appliances/gazovaya-varochnaya-panel-samsung-gn641ffbd-2020101002275
+                </url>
+                <price>5290,00</price>
+                <amount>more</amount>
+                <categoryId>3</categoryId>
+                <picture>http://fs01.enter.ru/1/1/500/16/6.jpg</picture>
+                <typePrefix>Газовая варочная панель</typePrefix>
+                <vendor>Samsung</vendor>
+                <model>GN641FFBD</model>
+                <name></name>
+                <pickup>false</pickup>
+                <description>Газовая варочная панель из эмалированной стали с 4 конфорками, системой электроподжига и
+                    газ-контролем.
+                </description>
+                <delivery>true</delivery>
+                <local_delivery_cost>290</local_delivery_cost>
+                <in_sale>false</in_sale>
+                <jewel>false</jewel>
+                <margin>3</margin>
+                <buying_price>5009</buying_price>
+            </offer>
+        </offers>
+    </shop>
+</yml_catalog>
