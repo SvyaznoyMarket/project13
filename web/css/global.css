@@ -6642,6 +6642,9 @@
     margin: 15px 0px;
     padding: 0px 15px;
   }
+  .bBuyingLineWrap .bBuyingLine {
+    margin-bottom: 0;
+  }
   .bBuyingLineWrap .bBuyingLine dt {
     margin-right: 30px;
     width: 230px;
@@ -6658,6 +6661,19 @@
   }
   .bBuyingLineWrap .bBuyingLine p {
     width: 132px;
+  }
+  .bBuyingLineWrap .bCelendar {
+    margin: 0 0 30px;
+  }
+  .bBuyingLineWrap .mProductsLine {
+    margin: 0;
+  }
+  .bBuyingLineWrap .mProductsLine dt {
+    margin-top: 20px;
+  }
+  .bBuyingLineWrap .mProductsLine dd {
+    margin: 0;
+    width: 636px;
   }
   .bBuyingInfo {
     padding: 0px 0px 10px;
