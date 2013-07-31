@@ -62,6 +62,7 @@ $(document).ready(function() {
 				selectorid: '',
 				value: firstNameVal,
 				valerror: false,
+				showsubscribe: false,
 				regexp: /^[ёa-zа-я\s]+$/i
 			}) );
 			self.textfields.push( ko.observable({
@@ -70,6 +71,7 @@ $(document).ready(function() {
 				selectorid: 'phonemask',
 				value: phoneNumberVal,
 				valerror: false,
+				showsubscribe: false,
 				regexp: /^[()0-9\-\+\s]+$/
 			}) );
 			self.textfields.push( ko.observable({
@@ -78,7 +80,8 @@ $(document).ready(function() {
 				selectorid: 'recipientEmail',
 				value: emailVal,
 				valerror: false,
-				regexp: /@/
+				showsubscribe: true,
+				regexp: /./
 			}) );
 			self.textfields.push( ko.observable({
 				title: 'номер вашей карты «Связной-Клуб»',
@@ -86,6 +89,7 @@ $(document).ready(function() {
 				selectorid: 'scCard',
 				value: scNum,
 				valerror: false,
+				showsubscribe: false,
 				regexp: /^[()0-9\-\s]+$/
 			}) );
 
@@ -395,17 +399,16 @@ $(document).ready(function() {
 			self.validateField = function( textfield, e ) {
 				var valerror = false;
 
-				// валидацию email отключил, чтобы не исчезал чекбокс подписки после валидации
-				// TODO: разобраться как сделать чтобы чекбокс не исчезал при валидации
-				if ( e.currentTarget.name === 'order[recipient_email]' ) {
-					return true;
-				}
-
 				if ((e.currentTarget.name == 'order[recipient_scCard]' || e.currentTarget.name === 'order[recipient_email]')&&(e.currentTarget.value == '')){
 					return true;
 				}
 
-				if( e.currentTarget.value.replace(/\s/g, '') == '' || !textfield.regexp.test( e.currentTarget.value ) ) {
+				if ( e.currentTarget.name === 'order[recipient_email]' && !e.currentTarget.value.isEmail() ) {
+					valerror = true;
+					self.formStatus('typing');
+				}
+
+				if( e.currentTarget.name !== 'order[recipient_email]' && ( e.currentTarget.value.replace(/\s/g, '') == '' || !textfield.regexp.test( e.currentTarget.value ) ) ) {
 					valerror = true;
 					self.formStatus('typing');
 				}
@@ -849,22 +852,29 @@ levup:			for(var i = 0, l = numbers.length; i < l; i++){
 			/**
 			 * Подписка
 			 */
-			$('body').on('keyup', '#recipientEmail', function() {
-					if ( !$(this).val() && $('#recipientEmail').siblings('.mEmpty').length ) {
+			$('body').on('keyup ready', '#recipientEmail', function() {
+				handleSubscibeWrapper();
+			});
+
+			var handleSubscibeWrapper = function() {
+					var value = $('#recipientEmail').val();
+					var checkbox = $('input[type="checkbox"][name="subscribe"]');
+					var bSubscibeWrapper = $('#recipientEmail').siblings('.bSubscibeWrapper');
+					if ( !value && $('#recipientEmail').siblings('.mEmpty').length ) {
 						$('#recipientEmail').siblings('.mEmpty').hide();
 					}
-					if ( $(this).val() && $(this).val().isEmail() && !$('#recipientEmail').siblings('.bSubscibeWrapper').length ) {
-							$('#recipientEmail').css('margin-bottom', '10px');
-							$('#recipientEmail').after('<div class="bSubscibeWrapper"><label class="bSubscibe checked"><b></b> Хочу знать об интересных<br />предложениях<input type="checkbox" name="subscribe" value="1" autocomplete="off" class="subscibe" checked="checked" /></label></div>');
+					if ( value && value.isEmail() && bSubscibeWrapper.hasClass('hf') ) {
+							bSubscibeWrapper.removeClass('hf');
+							checkbox.attr('disabled','');
 							$('#recipientEmail').siblings('.mEmpty').hide();
-					} else if ( ( !$(this).val() || $(this).val() && !$(this).val().isEmail() ) && $('#recipientEmail').siblings('.bSubscibeWrapper').length ) {
-							$('#recipientEmail').css('margin-bottom', '0');
-							$('#recipientEmail').siblings('.bSubscibeWrapper').remove();
-							if ( $(this).val() ) {
+					} else if ( ( !value || value && !value.isEmail() ) && !bSubscibeWrapper.hasClass('hf') ) {
+							bSubscibeWrapper.addClass('hf');
+							checkbox.attr('disabled','disabled');
+							if ( $('#recipientEmail').val() ) {
 								$('#recipientEmail').siblings('.mEmpty').show();
 							}
 					}
-			});
+			}
 
 			$('#order1click-container-new').lightbox_me({
 				centered: true,
