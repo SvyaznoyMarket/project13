@@ -413,9 +413,21 @@ return [
         'pattern' => '/orders/payment/{orderNumber}',
         'action'  => ['Order\Action', 'paymentComplete'],
     ],
+    'order.paymentSuccess' => [
+        'pattern' => '/orders/complete_payment',
+        'action'  => ['Order\Action', 'paymentSuccess'],
+    ],
+    'order.paymentFail' => [
+        'pattern' => '/orders/fail_payment',
+        'action'  => ['Order\Action', 'paymentFail'],
+    ],
     'order.bill' => [
         'pattern' => '/private/orders/{orderNumber}/bill',
         'action'  => ['Order\BillAction', 'execute'],
+    ],
+    'order.clearPaymentUrl' => [
+        'pattern' => '/orders/clearPaymentUrl',
+        'action'  => ['Order\Action', 'clearPaymentUrl'],
     ],
 
     // услуги
@@ -574,6 +586,13 @@ return [
     'cron-task-links' => [
         'pattern' => '/cron/{task}/links',
         'action'  => ['Cron\LinksAction', 'execute'],
+    ],
+
+    //survey
+    'survey.submit-answer' => [
+        'pattern' => '/survey/submit-answer',
+        'action'  => ['Survey\Action', 'submitAnswer'],
+        'method'  => ['POST'],
     ],
 
     //content

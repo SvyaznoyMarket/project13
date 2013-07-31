@@ -122,6 +122,8 @@
         <?= $helper->render('product/__oneClick', ['product' => $product]) // Покупка в один клик ?>
 
         <?= $helper->render('product/__delivery', ['product' => $product, 'shopStates' => $shopStates]) // Доставка ?>
+
+        <div class="bAwardSection"><img src="/css/newProductCard/img/award.jpg" alt="" /></div>
     </div><!--/widget delivery -->
 
     <?= $helper->render('product/__adfox', ['product' => $product]) // Баннер Adfox ?>

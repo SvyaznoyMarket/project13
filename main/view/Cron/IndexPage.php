@@ -18,11 +18,12 @@ class IndexPage extends \View\DefaultLayout {
 
             $this->setParam('breadcrumbs', $breadcrumbs);
         }
+
+        $this->setTitle('Задания планировщика');
     }
 
     public function slotContent() {
-        return $this->getParam('content');
-
+        return $this->render('cron/page-index', $this->params);
     }
 
     public function slotBodyDataAttribute() {

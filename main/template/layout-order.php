@@ -55,6 +55,7 @@
 <?= $page->slotRegionSelection() ?>
 <? if (!(bool)\App::exception()->all()) echo $page->render('order/_footer') ?>
 <?= $page->slotFooter() ?>
+<?= $page->slotSurveybar() ?>
 
 <?= $page->slotBodyJavascript() ?>
 <?= $page->slotInnerJavascript() ?>
