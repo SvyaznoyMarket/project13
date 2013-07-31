@@ -1375,6 +1375,9 @@ $(document).ready(function(){
 			else {
 				$(this).bind('click', function() {
 					window.docCookies.setItem('infScroll', 1, 4*7*24*60*60, '/' );
+
+					$('.pageslist.bPagesListBottom').hide();
+
 					var next = $('.bPagesListTop .bPagesList__eItem:first');
 
 					if ( next.hasClass('current') ) {
