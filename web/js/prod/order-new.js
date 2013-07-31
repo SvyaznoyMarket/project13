@@ -1132,12 +1132,10 @@
                 if (field=='order[recipient_email]'){
                     var emailVal = $('#order_recipient_email').val();
                     if( !emailVal && !$('input[name="order[one_click]"]').length ) {
-console.log(111)
                         if( $('#order_recipient_email').hasClass('abtestRequired') ) {
                             markError(field, 'Укажите ваш e-mail');
                         }
                     } else if ( (emailVal.length > 0) && (emailVal.search('@') == -1)){
-console.log(222)
                         markError(field, 'Некорректный e-mail');
                     }
                 }

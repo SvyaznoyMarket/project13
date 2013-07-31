@@ -391,9 +391,15 @@ $(document).ready(function() {
 					}
 				}
 			};
-			
+
 			self.validateField = function( textfield, e ) {
 				var valerror = false;
+
+				// валидацию email отключил, чтобы не исчезал чекбокс подписки после валидации
+				// TODO: разобраться как сделать чтобы чекбокс не исчезал при валидации
+				if ( e.currentTarget.name === 'order[recipient_email]' ) {
+					return true;
+				}
 
 				if ((e.currentTarget.name == 'order[recipient_scCard]' || e.currentTarget.name === 'order[recipient_email]')&&(e.currentTarget.value == '')){
 					return true;
@@ -843,13 +849,20 @@ levup:			for(var i = 0, l = numbers.length; i < l; i++){
 			/**
 			 * Подписка
 			 */
-			$('#recipientEmail').on('keyup', function() {
-					if ( $(this).val() && $(this).val().isEmail() && !$('#recipientEmail').siblings('.bSubscibe').length ) {
+			$('body').on('keyup', '#recipientEmail', function() {
+					if ( !$(this).val() && $('#recipientEmail').siblings('.mEmpty').length ) {
+						$('#recipientEmail').siblings('.mEmpty').hide();
+					}
+					if ( $(this).val() && $(this).val().isEmail() && !$('#recipientEmail').siblings('.bSubscibeWrapper').length ) {
 							$('#recipientEmail').css('margin-bottom', '10px');
-							$('#recipientEmail').after('<label class="bSubscibe checked"><b></b> Хочу знать об интересных<br />предложениях<input type="checkbox" name="subscribe" value="1" autocomplete="off" class="subscibe" checked="checked" /></label>');
-					} else if ( ( !$(this).val() || $(this).val() && !$(this).val().isEmail() ) && $('#recipientEmail').siblings('.bSubscibe').length ) {
+							$('#recipientEmail').after('<div class="bSubscibeWrapper"><label class="bSubscibe checked"><b></b> Хочу знать об интересных<br />предложениях<input type="checkbox" name="subscribe" value="1" autocomplete="off" class="subscibe" checked="checked" /></label></div>');
+							$('#recipientEmail').siblings('.mEmpty').hide();
+					} else if ( ( !$(this).val() || $(this).val() && !$(this).val().isEmail() ) && $('#recipientEmail').siblings('.bSubscibeWrapper').length ) {
 							$('#recipientEmail').css('margin-bottom', '0');
-							$('#recipientEmail').siblings('.bSubscibe').remove();
+							$('#recipientEmail').siblings('.bSubscibeWrapper').remove();
+							if ( $(this).val() ) {
+								$('#recipientEmail').siblings('.mEmpty').show();
+							}
 					}
 			});
 
