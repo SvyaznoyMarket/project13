@@ -1,112 +1,112 @@
 $(document).ready(function(){
 
-	(function(){
-		/*register e-mail check*/
-		if ( !$('#register_username').length ){
-			return false;
-		}
+	// (function(){
+	// 	/*register e-mail check*/
+	// 	if ( !$('#register_username').length ){
+	// 		return false;
+	// 	}
 
-		var chEmail = true; // проверяем ли как e-mail
-		var register = false;
-		var firstNameInput = $('#register_first_name');
-		var mailPhoneInput = $('#register_username');
-		var subscibe = mailPhoneInput.parents('#register-form').find('.bSubscibe');
-		var regBtn = mailPhoneInput.parents('#register-form').find('.bigbutton');
+	// 	var chEmail = true; // проверяем ли как e-mail
+	// 	var register = false;
+	// 	var firstNameInput = $('#register_first_name');
+	// 	var mailPhoneInput = $('#register_username');
+	// 	var subscibe = mailPhoneInput.parents('#register-form').find('.bSubscibe');
+	// 	var regBtn = mailPhoneInput.parents('#register-form').find('.bigbutton');
 
-		subscibe.show();
+	// 	subscibe.show();
 
-		/**
-		 * переключение типов проверки
-		 */
-		$('.registerAnotherWayBtn').bind('click', function() {
-			if ( chEmail ) {
-				chEmail = false;
-				$('.registerAnotherWay').html('Ваш мобильный телефон');
-				$('.registerAnotherWayBtn').html('Ввести e-mail');
-				mailPhoneInput.attr('maxlength', 10);
-				mailPhoneInput.addClass('registerPhone');
-				$('.registerPhonePH').show();
-				// subscibe.hide();
-			}
-			else {
-				chEmail = true;
-				$('.registerAnotherWay').html('Ваш e-mail');
-				$('.registerAnotherWayBtn').html('У меня нет e-mail');
-				mailPhoneInput.removeAttr('maxlength');
-				mailPhoneInput.removeClass('registerPhone');
-				$('.registerPhonePH').hide();
-				// subscibe.show();
-			}
+	// 	/**
+	// 	 * переключение типов проверки
+	// 	 */
+	// 	$('.registerAnotherWayBtn').bind('click', function() {
+	// 		if ( chEmail ) {
+	// 			chEmail = false;
+	// 			$('.registerAnotherWay').html('Ваш мобильный телефон');
+	// 			$('.registerAnotherWayBtn').html('Ввести e-mail');
+	// 			mailPhoneInput.attr('maxlength', 10);
+	// 			mailPhoneInput.addClass('registerPhone');
+	// 			$('.registerPhonePH').show();
+	// 			// subscibe.hide();
+	// 		}
+	// 		else {
+	// 			chEmail = true;
+	// 			$('.registerAnotherWay').html('Ваш e-mail');
+	// 			$('.registerAnotherWayBtn').html('У меня нет e-mail');
+	// 			mailPhoneInput.removeAttr('maxlength');
+	// 			mailPhoneInput.removeClass('registerPhone');
+	// 			$('.registerPhonePH').hide();
+	// 			// subscibe.show();
+	// 		}
 
-			mailPhoneInput.val('');
-			register = false;
-			regBtn.addClass('mDisabled');
-		});
+	// 		mailPhoneInput.val('');
+	// 		register = false;
+	// 		regBtn.addClass('mDisabled');
+	// 	});
 
-		regBtn.bind('click', function() {
-			if ( !register ) {
-				return false;
-			}
+	// 	regBtn.bind('click', function() {
+	// 		if ( !register ) {
+	// 			return false;
+	// 		}
 
-			if ( typeof(_gaq) !== 'undefined' ) {
-				var type = ( chEmail ) ? 'email' : 'mobile';
+	// 		if ( typeof(_gaq) !== 'undefined' ) {
+	// 			var type = ( chEmail ) ? 'email' : 'mobile';
 
-				_gaq.push(['_trackEvent', 'Account', 'Create account', type]);
-			}
-		});
+	// 			_gaq.push(['_trackEvent', 'Account', 'Create account', type]);
+	// 		}
+	// 	});
 
-		/**
-		 * проверка заполненности инпутов
-		 * @param  {Event} e
-		 */
-		var checkInputs = function(e){
-			if (chEmail){ 
-				// проверяем как e-mail
-				if (	( mailPhoneInput.val().search('@') !== -1 ) && 
-						( firstNameInput.val().length > 0 ) ) {
-					register = true;
-					regBtn.removeClass('mDisabled');
-				}
-				else {
-					register = false;
-					regBtn.addClass('mDisabled');
-				}
-			}
-			else { 
-				// проверяем как телефон
-				subscibe.hide();
-				if (	( (e.which >= 96) && (e.which <= 105) ) ||
-						( (e.which >= 48) && (e.which <= 57) ) ||
-						(e.which === 8) ) {
-					//если это цифра или бэкспэйс
+	// 	/**
+	// 	 * проверка заполненности инпутов
+	// 	 * @param  {Event} e
+	// 	 */
+	// 	var checkInputs = function(e){
+	// 		if (chEmail){ 
+	// 			// проверяем как e-mail
+	// 			if (	( mailPhoneInput.val().search('@') !== -1 ) && 
+	// 					( firstNameInput.val().length > 0 ) ) {
+	// 				register = true;
+	// 				regBtn.removeClass('mDisabled');
+	// 			}
+	// 			else {
+	// 				register = false;
+	// 				regBtn.addClass('mDisabled');
+	// 			}
+	// 		}
+	// 		else { 
+	// 			// проверяем как телефон
+	// 			subscibe.hide();
+	// 			if (	( (e.which >= 96) && (e.which <= 105) ) ||
+	// 					( (e.which >= 48) && (e.which <= 57) ) ||
+	// 					(e.which === 8) ) {
+	// 				//если это цифра или бэкспэйс
 					
-				}
-				else {
-					//если это не цифра
-					var clearVal = mailPhoneInput.val().replace(/\D/g,'');
+	// 			}
+	// 			else {
+	// 				//если это не цифра
+	// 				var clearVal = mailPhoneInput.val().replace(/\D/g,'');
 
-					mailPhoneInput.val(clearVal);
-				}
+	// 				mailPhoneInput.val(clearVal);
+	// 			}
 
-				if ( (mailPhoneInput.val().length === 10) && (firstNameInput.val().length > 0) ) {
-					regBtn.removeClass('mDisabled');
-					register = true;
-				}
-				else {
-					register = false;
-					regBtn.addClass('mDisabled');
-				}
-			}
-		};
+	// 			if ( (mailPhoneInput.val().length === 10) && (firstNameInput.val().length > 0) ) {
+	// 				regBtn.removeClass('mDisabled');
+	// 				register = true;
+	// 			}
+	// 			else {
+	// 				register = false;
+	// 				regBtn.addClass('mDisabled');
+	// 			}
+	// 		}
+	// 	};
 
-		mailPhoneInput.bind('keyup',function(e){
-			checkInputs(e);
-		});
+	// 	mailPhoneInput.bind('keyup',function(e){
+	// 		checkInputs(e);
+	// 	});
 
-		firstNameInput.bind('keyup',function(){
-			checkInputs();
-		});
-	}());
+	// 	firstNameInput.bind('keyup',function(){
+	// 		checkInputs();
+	// 	});
+	// }());
 	
 
 	/**
@@ -175,12 +175,12 @@ $(document).ready(function(){
 
 
 	/* Authorization process */
-	$('.open_auth-link').bind('click', function(e) {
-		e.preventDefault();
+	// $('.open_auth-link').bind('click', function(e) {
+	// 	e.preventDefault();
 		
-		var el = $(this);
-		window.open(el.attr('href'), 'oauthWindow', 'status = 1, width = 540, height = 420').focus();
-	});
+	// 	var el = $(this);
+	// 	window.open(el.attr('href'), 'oauthWindow', 'status = 1, width = 540, height = 420').focus();
+	// });
 		
 	$('#auth-link').click(function() {
 		$('#auth-block').lightbox_me({
@@ -193,178 +193,216 @@ $(document).ready(function(){
 		return false;
 	});
 
-	;(function($) {
-		$.fn.warnings = function() {
-			var rwn = $('<strong id="ruschars" class="pswwarning">RUS</strong>');
-
-			rwn.css({
-				'border': '1px solid red',
-				'color': 'red',
-				'border-radius': '3px',
-				'background-color':'#fff',
-				'position': 'absolute',
-				'height': '16px',
-				'padding': '1px 3px',
-				'margin-top': '2px'
-			});
-
-			var cln = rwn.clone().attr('id','capslock').html('CAPS LOCK').css('marginLeft', '-78px');
-
-			$(this).keypress(function(e) {
-				var s = String.fromCharCode( e.which );
-
-				if ( s.toUpperCase() === s && s.toLowerCase() !== s && !e.shiftKey ) {
-					if ( !$('#capslock').length ) {
-						$(this).after(cln);
-					}
+	(function(){
+		var config = {
+			fields: [
+				{
+					filedNode: $('#register_first_name'),
+					require: true,
+					customErr: 'Не введено имя ползователя'
+				},
+				{
+					filedNode: $('#register_username'),
+					require: true,
+					validBy: 'isEmail'
 				}
-				else {
-					if ( $('#capslock').length ) {
-						$('#capslock').remove();
-					}
-				}
-			});
-
-			$(this).keyup(function(e) {
-				if( /[а-яА-ЯёЁ]/.test( $(this).val() ) ) {
-					if ( !$('#ruschars').length ) {
-						if ( $('#capslock').length ) {
-							rwn.css('marginLeft','-116px');
-						}
-						else {
-							rwn.css('marginLeft','-36px');
-						}
-						$(this).after(rwn);
-					}
-				}
-				else {
-					if ( $('#ruschars').length ) {
-						$('#ruschars').remove();
-					}
-				}
-			});
-		};
-	})(jQuery);
-
-	$('#signin_password').warnings();
-
-	$('#bUserlogoutLink').on('click', function() {
-		if ( typeof(_kmq) !== 'undefined' ) {
-			_kmq.push(['clearIdentity']);
-		}
-	});
-
-	$('#login-form, #register-form').data('redirect', true).bind('submit', function(e, param) {
-		e.preventDefault();
-
-		var form = $(this); //$(e.target)
-		var wholemessage = form.serializeArray();
-
-		form.find('[type="submit"]:first').attr('disabled', true).val('login-form' == form.attr('id') ? 'Вхожу...' : 'Регистрируюсь...');
-		wholemessage["redirect_to"] = form.find('[name="redirect_to"]:first').val();
-
-		var authFromServer = function( response ) {
-			if ( !response.success ) {
-				form.html( $(response.data.content).html() );
-				regEmailValid();
-
-				return false;
-			}
-
-			if ( 'login-form' == form.attr('id') ) {
-				if ( typeof(_gaq) !== 'undefined' ) {
-					var type = ( (form.find('#signin_username').val().search('@')) !== -1 ) ? 'email' : 'mobile';
-
-					_gaq.push(['_trackEvent', 'Account', 'Log in', type, window.location.href]);
-				}
-
-				if ( typeof(_kmq) !== 'undefined' ) {
-					_kmq.push(['identify', form.find('#signin_username').val() ]);
-				}
-			}
-			else {
-				if ( typeof(_kmq) !== 'undefined' ) {
-					_kmq.push(['identify', form.find('#register_username').val() ]);
-				}
-			}
-
-			if ( form.data('redirect') ) {
-				if (response.data.link) {
-					window.location = response.data.link;
-				}
-				else {
-					form.unbind('submit');
-					form.submit();
-				}
-			}
-			else {
-				$('#auth-block').trigger('close');
-				PubSub.publish( 'authorize', response.user );
-			}
-
-			//for order page
-			if ( $('#order-form').length ) {
-				$('#user-block').html('Привет, <strong><a href="'+response.data.link+'">'+response.data.user.first_name+'</a></strong>');
-				$('#order_recipient_first_name').val( response.data.user.first_name );
-				$('#order_recipient_last_name').val( response.data.user.last_name );
-				$('#order_recipient_phonenumbers').val( response.data.user.mobile_phone.slice(1) );
-			}
+			],
 		};
 
-		$.ajax({
-			type: 'POST',
-			url: form.attr('action'),
-			data: wholemessage,
-			success: authFromServer
+		var registerValidate = new FormValidator( config );
+
+		$('#register-form').bind('submit', function( e ) {
+			e.preventDefault();
+
+			console.log('click submit');
+
+			registerValidate.validate({
+				onInvalid: function( err ) {
+					console.log('invalid');
+					console.log(err)
+				},
+				onValid: function() {
+					console.log('valid');
+				}
+			});
+
+			return false;
 		});
-	});
+	}());
+	
 
-	$('#forgot-pwd-trigger').on('click', function() {
-		$('#reset-pwd-form').show();
-		$('#reset-pwd-key-form').hide();
-		$('#login-form').hide();
-		return false;
-	});
+	// ;(function($) {
+	// 	$.fn.warnings = function() {
+	// 		var rwn = $('<strong id="ruschars" class="pswwarning">RUS</strong>');
 
-	$('#remember-pwd-trigger,#remember-pwd-trigger2').click(function() {
-		$('#reset-pwd-form').hide();
-		$('#reset-pwd-key-form').hide();
-		$('#login-form').show();
-		return false;
-	});
+	// 		rwn.css({
+	// 			'border': '1px solid red',
+	// 			'color': 'red',
+	// 			'border-radius': '3px',
+	// 			'background-color':'#fff',
+	// 			'position': 'absolute',
+	// 			'height': '16px',
+	// 			'padding': '1px 3px',
+	// 			'margin-top': '2px'
+	// 		});
 
-	$('#reset-pwd-form, #auth_forgot-form').submit(function() {
-		var form = $(this);
+	// 		var cln = rwn.clone().attr('id','capslock').html('CAPS LOCK').css('marginLeft', '-78px');
 
-		form.find('.error_list').html('Запрос отправлен. Идет обработка...');
-		form.find('.whitebutton').attr('disabled', 'disabled');
+	// 		$(this).keypress(function(e) {
+	// 			var s = String.fromCharCode( e.which );
 
-		$.post(form.prop('action'), form.serializeArray(), function(resp) {
-			if (resp.success === true) {
-				if ( typeof(_gaq) !== 'undefined' ) {
-					var type = ( (form.find('input.text').val().search('@')) !== -1 ) ? 'email' : 'mobile';
+	// 			if ( s.toUpperCase() === s && s.toLowerCase() !== s && !e.shiftKey ) {
+	// 				if ( !$('#capslock').length ) {
+	// 					$(this).after(cln);
+	// 				}
+	// 			}
+	// 			else {
+	// 				if ( $('#capslock').length ) {
+	// 					$('#capslock').remove();
+	// 				}
+	// 			}
+	// 		});
 
-					_gaq.push(['_trackEvent', 'Account', 'Forgot password', type]);
-				}
-				//$('#reset-pwd-form').hide();
-				//$('#login-form').show();
-				//alert('Новый пароль был вам выслан по почте или смс');
-				var resetForm = $('#reset-pwd-form > div');
+	// 		$(this).keyup(function(e) {
+	// 			if( /[а-яА-ЯёЁ]/.test( $(this).val() ) ) {
+	// 				if ( !$('#ruschars').length ) {
+	// 					if ( $('#capslock').length ) {
+	// 						rwn.css('marginLeft','-116px');
+	// 					}
+	// 					else {
+	// 						rwn.css('marginLeft','-36px');
+	// 					}
+	// 					$(this).after(rwn);
+	// 				}
+	// 			}
+	// 			else {
+	// 				if ( $('#ruschars').length ) {
+	// 					$('#ruschars').remove();
+	// 				}
+	// 			}
+	// 		});
+	// 	};
+	// })(jQuery);
 
-				resetForm.find('input').remove();
-				resetForm.find('.pb5').remove();
-				resetForm.find('.error_list').html('Новый пароль был вам выслан по почте или смс!');
-			}
-			else {
-				var txterr = ( resp.error !== '' ) ? resp.error : 'Вы ввели неправильные данные';
+	// $('#signin_password').warnings();
 
-				form.find('.error_list').text( txterr );
-			}
+	// $('#bUserlogoutLink').on('click', function() {
+	// 	if ( typeof(_kmq) !== 'undefined' ) {
+	// 		_kmq.push(['clearIdentity']);
+	// 	}
+	// });
 
-		}, 'json');
+	// $('#login-form, #register-form').data('redirect', true).bind('submit', function(e, param) {
+	// 	e.preventDefault();
 
-		return false;
-	});
+	// 	var form = $(this); //$(e.target)
+	// 	var wholemessage = form.serializeArray();
+
+	// 	form.find('[type="submit"]:first').attr('disabled', true).val('login-form' == form.attr('id') ? 'Вхожу...' : 'Регистрируюсь...');
+	// 	wholemessage["redirect_to"] = form.find('[name="redirect_to"]:first').val();
+
+	// 	var authFromServer = function( response ) {
+	// 		if ( !response.success ) {
+	// 			form.html( $(response.data.content).html() );
+	// 			regEmailValid();
+
+	// 			return false;
+	// 		}
+
+	// 		if ( 'login-form' == form.attr('id') ) {
+	// 			if ( typeof(_gaq) !== 'undefined' ) {
+	// 				var type = ( (form.find('#signin_username').val().search('@')) !== -1 ) ? 'email' : 'mobile';
+
+	// 				_gaq.push(['_trackEvent', 'Account', 'Log in', type, window.location.href]);
+	// 			}
+
+	// 			if ( typeof(_kmq) !== 'undefined' ) {
+	// 				_kmq.push(['identify', form.find('#signin_username').val() ]);
+	// 			}
+	// 		}
+	// 		else {
+	// 			if ( typeof(_kmq) !== 'undefined' ) {
+	// 				_kmq.push(['identify', form.find('#register_username').val() ]);
+	// 			}
+	// 		}
+
+	// 		if ( form.data('redirect') ) {
+	// 			if (response.data.link) {
+	// 				window.location = response.data.link;
+	// 			}
+	// 			else {
+	// 				form.unbind('submit');
+	// 				form.submit();
+	// 			}
+	// 		}
+	// 		else {
+	// 			$('#auth-block').trigger('close');
+	// 			PubSub.publish( 'authorize', response.user );
+	// 		}
+
+	// 		//for order page
+	// 		if ( $('#order-form').length ) {
+	// 			$('#user-block').html('Привет, <strong><a href="'+response.data.link+'">'+response.data.user.first_name+'</a></strong>');
+	// 			$('#order_recipient_first_name').val( response.data.user.first_name );
+	// 			$('#order_recipient_last_name').val( response.data.user.last_name );
+	// 			$('#order_recipient_phonenumbers').val( response.data.user.mobile_phone.slice(1) );
+	// 		}
+	// 	};
+
+	// 	$.ajax({
+	// 		type: 'POST',
+	// 		url: form.attr('action'),
+	// 		data: wholemessage,
+	// 		success: authFromServer
+	// 	});
+	// });
+
+	// $('#forgot-pwd-trigger').on('click', function() {
+	// 	$('#reset-pwd-form').show();
+	// 	$('#reset-pwd-key-form').hide();
+	// 	$('#login-form').hide();
+	// 	return false;
+	// });
+
+	// $('#remember-pwd-trigger,#remember-pwd-trigger2').click(function() {
+	// 	$('#reset-pwd-form').hide();
+	// 	$('#reset-pwd-key-form').hide();
+	// 	$('#login-form').show();
+	// 	return false;
+	// });
+
+	// $('#reset-pwd-form, #auth_forgot-form').submit(function() {
+	// 	var form = $(this);
+
+	// 	form.find('.error_list').html('Запрос отправлен. Идет обработка...');
+	// 	form.find('.whitebutton').attr('disabled', 'disabled');
+
+	// 	$.post(form.prop('action'), form.serializeArray(), function(resp) {
+	// 		if (resp.success === true) {
+	// 			if ( typeof(_gaq) !== 'undefined' ) {
+	// 				var type = ( (form.find('input.text').val().search('@')) !== -1 ) ? 'email' : 'mobile';
+
+	// 				_gaq.push(['_trackEvent', 'Account', 'Forgot password', type]);
+	// 			}
+	// 			//$('#reset-pwd-form').hide();
+	// 			//$('#login-form').show();
+	// 			//alert('Новый пароль был вам выслан по почте или смс');
+	// 			var resetForm = $('#reset-pwd-form > div');
+
+	// 			resetForm.find('input').remove();
+	// 			resetForm.find('.pb5').remove();
+	// 			resetForm.find('.error_list').html('Новый пароль был вам выслан по почте или смс!');
+	// 		}
+	// 		else {
+	// 			var txterr = ( resp.error !== '' ) ? resp.error : 'Вы ввели неправильные данные';
+
+	// 			form.find('.error_list').text( txterr );
+	// 		}
+
+	// 	}, 'json');
+
+	// 	return false;
+	// });
 
 	
 	/* Infinity scroll */

@@ -4,7 +4,7 @@
 	config = {
 		fields: [
 			{
-				filed: 'jQuery Node',
+				fieldNode: 'jQuery Node',
 				validBy: 'String',
 				require: 'Boolean',
 				customErr: 'String'
@@ -29,7 +29,7 @@ function FormValidator( config ) {
 
 	this.config = $.extend(
 						{},
-						this.defaultsConfig,
+						this._defaultsConfig,
 						config );
 
 }
@@ -37,14 +37,14 @@ function FormValidator( config ) {
 /**
  * Стандартные настройки валидатора
  */
-FormValidator.prototype.defaultsConfig = {
+FormValidator.prototype._defaultsConfig = {
 	errorClass: 'mError'
 };
 
 /**
  * Проверка обязательных к заполнению полей
  */
-FormValidator.prototype.requireAs = {
+FormValidator.prototype._requireAs = {
 	checkbox : function( filedNode ) {
 
 	},
@@ -97,7 +97,10 @@ FormValidator.prototype.requireAs = {
 	}
 };
 
-FormValidator.prototype.validBy = {
+/**
+ * Валидирование поля
+ */
+FormValidator.prototype._validBy = {
 	isEmail: function( filedNode ) {
 		var re = /^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))$/i,
 			value = filedNode.val();
@@ -116,7 +119,20 @@ FormValidator.prototype.validBy = {
 	},
 
 	isPhone: function( filedNode ) {
+		var re = /(\+7|8)(-|\s)?(\(\d(-|\s)?\d(-|\s)?\d\s?\)|\d(-|\s)?\d(-|\s)?\d\s?)(-|\s)?\d(-|\s)?\d(-|\s)?\d(-|\s)?\d(-|\s)?\d(-|\s)?\d(-|\s)?\d$/i;
+			value = filedNode.val();
 
+		if ( re.test(value) ) {
+			return {
+				hasError: false
+			};
+		}
+		else {
+			return {
+				hasError: true,
+				errorMsg : 'Некорректно введен телефон'
+			};
+		}
 	},
 
 	isNumber: function( filedNode ) {
@@ -137,7 +153,20 @@ FormValidator.prototype.validBy = {
 	}
 };
 
-FormValidator.prototype.validateField = function( field ) {
+/**
+ * Валидация поля
+ * 
+ * @param	{Object}	field			Объект поля для валидации
+ * @param	{Object}	field.fieldNode	Ссылка на jQuery объект поля
+ * @param	{String}	field.validBy	Тип валидации поля
+ * @param	{Boolean}	field.require	Является ли поле обязательным к заполению
+ * @param	{String}	field.customErr	Сообщение об ошибке, если поле не прошло валидацию
+ *
+ * @return	{Object}	error			Объект с ошибкой
+ * @return	{Boolean}	error.hasError	Есть ли ошибка
+ * @return	{Boolean}	error.errorMsg	Сообщение об ошибке
+ */
+FormValidator.prototype._validateField = function( field ) {
 	var self = this,
 
 		elementType = null,
@@ -147,24 +176,39 @@ FormValidator.prototype.validateField = function( field ) {
 		require = null,
 		customErr = '',
 
-		error = {},
+		error = {
+			hasError: false
+		},
 		result = {};
 	// end of vars
+	console.info('validateField');
 
-	fieldNode = field.field;
-	require = ( fieldNode[0].attr('required') ) ? true : field.require; // если у элемента формы есть required то поле обязательное, иначе брать из конфига
+	fieldNode = field.filedNode;
+	require = ( fieldNode.attr('required') === 'required' ) ? true : field.require; // если у элемента формы есть required то поле обязательное, иначе брать из конфига
 	validBy = field.validBy;
 	customErr = field.customErr;
 
-	elementType = ( fieldNode[0].tagName === 'TEXTAREA') : 'textarea' ? ( fieldNode[0].tagName === 'SELECT') : 'select' ? fieldNode.attr('type'); // если тэг элемента TEXTAREA то тип проверки TEXTAREA, если SELECT - то SELECT, иначе берем из атрибута type
+	console.log(field);
+	console.log('filed require '+field.require);
+	console.log('field attr require '+fieldNode.attr('required'))
 
-	// проверка обязательных для заполнения полей
+	elementType = ( fieldNode.tagName === 'TEXTAREA') ? 'textarea' : ( fieldNode.tagName === 'SELECT') ? 'select' : fieldNode.attr('type') ; // если тэг элемента TEXTAREA то тип проверки TEXTAREA, если SELECT - то SELECT, иначе берем из атрибута type
+
+	console.log(elementType)
+	console.log(require)
+
 	if ( require ) {
-		if ( self.requireAs.hasOwnProperty(elementType) ) {
-			result = self.requireAs[elementType](fieldNode);
+		// поле обязательно для заполнения
+		if ( self._requireAs.hasOwnProperty(elementType) ) {
+			result = self._requireAs[elementType](fieldNode);
 
 			if ( result.hasError ) {
-				return result;
+				error = {
+					hasError: true,
+					errorMsg : ( customErr !== undefined ) ? customErr : result.errorMsg
+				};
+
+				return error;
 			}
 		}
 		else {
@@ -177,37 +221,34 @@ FormValidator.prototype.validateField = function( field ) {
 		}
 	}
 
-	// если нет указанного способа валидации
-	if ( !validBy ) {
-		return {
-			hasError: false;
-		}
-	}
-
 	// валидация выбранным методом
-	if ( self.validBy.hasOwnProperty(validBy) ) {
-		result = self.validBy[elementType](fieldNode);
+	if ( self._validBy.hasOwnProperty(validBy) ) {
+		result = self._validBy[validBy](fieldNode);
 
 		if ( result.hasError ) {
 			error = {
 				hasError: true,
-				errorMsg: ( customErr !== '' ) ? customErr : result.errorMsg
+				errorMsg: ( customErr !== undefined ) ? customErr : result.errorMsg
 			}
-
-			return error;
 		}
 	}
-	else {
+	else if ( validBy !== undefined ) {
 		error = {
 			hasError: true,
-			errorMsg : 'Неизвестный метод валидации '+elementType
+			errorMsg : 'Неизвестный метод валидации '+validBy
 		};
-
-		return error;
 	}
 
+	return error;
 };
 
+/**
+ * Запуск валидации полей
+ * 
+ * @param	{Object}	callbacks			Объект со ссылками на функции обратных вызовов
+ * @param	{function}	callbacks.onInvalid	Функция обратного вызова, если поля не прошли валидацию. В функцию передается массив объектов ошибок.
+ * @param	{function}	callbacks.onValid	Функция обратного вызова, если поля прошли валидацию
+ */
 FormValidator.prototype.validate = function( callbacks ) {
 	var self = this,
 		fileds = this.config.fields,
@@ -215,16 +256,36 @@ FormValidator.prototype.validate = function( callbacks ) {
 		errors = [],
 		result = {};
 	// end of vars	
-
+	
 	for ( i = fileds.length - 1; i >= 0; i-- ) { // перебираем поля из конфига
-		result = self.validateField(fileds[i]);
+		result = self._validateField(fileds[i]);
 
 		if ( result.hasError ) {
-			fileds[i].field.addClass(self.config.errorClass);
+			fileds[i].filedNode.addClass(self.config.errorClass);
 			errors.push({
-				field: fileds[i].field,
+				filedNode: fileds[i].filedNode,
 				errorMsg: result.errorMsg
 			});
 		}
 	}
+
+	if ( errors.length ) {
+		callbacks.onInvalid(errors);
+	}
+	else {
+		callbacks.onValid();
+	}
+};
+
+/**
+ * Добавить поле для валидации
+ * 
+ * @param	{Object}	field			Объект поля для валидации
+ * @param	{Object}	field.fieldNode	Ссылка на jQuery объект поля
+ * @param	{String}	field.validBy	Тип валидации поля
+ * @param	{Boolean}	field.require	Является ли поле обязательным к заполению
+ * @param	{String}	field.customErr	Сообщение об ошибке, если поле не прошло валидацию
+ */
+FormValidator.prototype.addFieldToValidate = function( field ) {
+	this.config.fileds.push(field);
 };

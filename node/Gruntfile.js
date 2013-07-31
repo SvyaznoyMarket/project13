@@ -41,6 +41,7 @@ module.exports = function(grunt) {
 		jsDevPath+'library/library.js',
 		jsDevPath+'library/mapDriver.js',
 		jsDevPath+'library/black_box.js',
+		jsDevPath+'library/formValidator.js',
 		jsDevPath+'library/addParameterToUrl.js',
 		jsDevPath+'library/*.js'
 	];
