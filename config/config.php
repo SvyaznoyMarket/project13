@@ -79,7 +79,7 @@ $c->wordpress['timeout'] = 2;
 $c->wordpress['throwException'] = true;
 
 $c->dataStore['url'] = 'http://cms.enter.ru/v1/';
-$c->dataStore['timeout'] = 0.25;
+$c->dataStore['timeout'] = 0.4;
 $c->dataStore['retryCount'] = 3;
 $c->dataStore['retryTimeout'] = [
     'default' => 0.1,
@@ -244,6 +244,7 @@ $c->banner['url'] = [
 $c->cart['productLimit'] = 50;
 
 $c->payment['creditEnabled'] = true;
+$c->payment['blockedIds'] = [];
 
 $c->smartengine['pull']           = true;
 $c->smartengine['push']           = true;

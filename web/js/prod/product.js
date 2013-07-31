@@ -197,7 +197,8 @@
 				templateNow = tmpl('widget_delivery_shop',shopInfo);
 				shopList.append(templateNow);
 			}
-
+			
+			widgetBox.removeClass('mLoader');
 			nowBox.show();
 			$('.bDeliveryFreeAddress__eLink').bind('click', showAvalShop);
 			toggleBtn.bind('click', shopToggle);
@@ -216,6 +217,8 @@
 			var deliveryInfo = res.product[0].delivery;
 
 			if ( !res.success ) {
+				widgetBox.remove();
+
 				return false;
 			}
 
@@ -250,6 +253,8 @@
 						break;
 				}
 			}
+
+			widgetBox.removeClass('mLoader');
 		};
 	// end of functions
 

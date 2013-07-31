@@ -26,7 +26,7 @@ $(document).ready(function(){
 				mailPhoneInput.attr('maxlength', 10);
 				mailPhoneInput.addClass('registerPhone');
 				$('.registerPhonePH').show();
-				subscibe.hide();
+				// subscibe.hide();
 			}
 			else {
 				chEmail = true;
@@ -35,7 +35,7 @@ $(document).ready(function(){
 				mailPhoneInput.removeAttr('maxlength');
 				mailPhoneInput.removeClass('registerPhone');
 				$('.registerPhonePH').hide();
-				subscibe.show();
+				// subscibe.show();
 			}
 
 			mailPhoneInput.val('');
@@ -308,6 +308,7 @@ $(document).ready(function(){
 				$('#order_recipient_first_name').val( response.data.user.first_name );
 				$('#order_recipient_last_name').val( response.data.user.last_name );
 				$('#order_recipient_phonenumbers').val( response.data.user.mobile_phone.slice(1) );
+				$('#qiwi_phone').val( response.data.user.mobile_phone.slice(1) );
 			}
 		};
 
@@ -463,23 +464,26 @@ $(document).ready(function(){
 			else {
 				$(this).bind('click', function() {
 					window.docCookies.setItem('infScroll', 1, 4*7*24*60*60, '/' );
-					var next = $('div.pageslist:first li:first');
+
+					$('.pageslist.bPagesListBottom').hide();
+
+					var next = $('.bPagesListTop .bPagesList__eItem:first');
 
 					if ( next.hasClass('current') ) {
 						next = next.next();
 					}
 
-					var next_a = next.find('a')
+					var nextLnk = next.find('.bPagesList__eItemLink')
 									.html('<span>123</span>')
 									.addClass('borderedR');
 
-					next_a.attr('href', next_a.attr('href').replace(/page=\d+/,'') );
+					nextLnk.attr('href', nextLnk.attr('href').replace(/page=\d+/,'') );
 	
-					$('div.pageslist li').remove();
-					$('div.pageslist ul').append( next )
-										.find('a')
+					$('.bPagesList__eItem').remove();
+					$('.bPagesList').append( next )
+										.find('.bPagesList__eItemLink')
 										.bind('click', function(){
-											window.docCookies.removeItem( 'infScroll' );
+											window.docCookies.setItem('infScroll', 0, 0, '/' );
 										});
 					$('div.allpager').addClass('mChecked');
 					checkScroll();
@@ -488,8 +492,8 @@ $(document).ready(function(){
 			}
 		});
 
-		if( window.docCookies.hasItem( 'infScroll' ) ){
-			$('div.allpager:first').trigger('click');
+		if ( window.docCookies.getItem( 'infScroll' ) === 1 ) {	
+			$('.bAllPager:first').trigger('click');
 		}
 	}
 

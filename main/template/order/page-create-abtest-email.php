@@ -93,9 +93,15 @@ if ($form->hasSubway()) $jsValidator['order[address_metro]'] = 'Укажите �
         <dl class='bBuyingLine'>
             <dt>E-mail*</dt>
             <dd>
-                <div>
-                    <p></p>
-                    <input type="text" id="order_recipient_email" class="bBuyingLine__eText mInputLong abtestRequired" name="order[recipient_email]" value="<?= $form->getEmail() ?>"/>
+                <div class="pr40">
+                    <? $email = $form->getEmail() ?>
+                    <p class="subscribe">
+                        <label class="bSubscibe checked" style="visibility:<?= empty($email) ? 'hidden' : 'visible' ?>;">
+                            <b></b> Хочу знать об интересных<br />предложениях
+                            <input type="checkbox" name="subscribe" value="1" autocomplete="off" class="subscibe" checked="checked" />
+                        </label>
+                    </p>
+                    <input type="text" id="order_recipient_email" class="bBuyingLine__eText mInputLong" name="order[recipient_email]" value="<?= $email ?>" />
                 </div>
             </dd>
         </dl>
@@ -175,62 +181,43 @@ if ($form->hasSubway()) $jsValidator['order[address_metro]'] = 'Укажите �
             </dd>
         </dl>
 
-        <h2>Об оплате</h2>
+        <h2>Оплата</h2>
 
-        <dl class='bBuyingLine'>
-            <dt>Выберите удобный для вас способ*</dt>
+        <dl class='bBuyingLine mPayMethods'>
+            <dt></dt>
             <dd id="payTypes">
-                <? foreach ($paymentMethods as $paymentMethod): ?>
-                <div id="payment_method_<?= $paymentMethod->getId() ?>-field">
-                    <p></p>
-                    <label class="<? if ($paymentMethod->getId() == $selectedPaymentMethodId) echo 'mChecked' ?>" for="order_payment_method_id_<?= $paymentMethod->getId() ?>">
-                        <b></b> <?= $paymentMethod->getName() ?>
-                        <input id="order_payment_method_id_<?= $paymentMethod->getId() ?>" class='bBuyingLine__eRadio' name="order[payment_method_id]" type='radio' value="<?= $paymentMethod->getId() ?>" <? if ($paymentMethod->getId() == $selectedPaymentMethodId) echo 'checked="checked"' ?> />
-                    </label>
-                    <i>
-                        <div><?= $paymentMethod->getDescription() // ?></div>
-                        <? if ($paymentMethod->getIsCredit() && ($bank = reset($banks))) {  ?>
-                        <div class="innerType" id="creditInfo" <? if ($paymentMethod->getId() != $selectedPaymentMethodId) echo 'style="display:none"' ?> >
-                            <div>Выберите банк:</div>
-                            <div class="bankWrap">
-                                <div class="bSelectWrap mFastInpSmall fl">
-                                    <span class="bSelectWrap_eText"><?= $bank->getName() ?></span>
-                                    <select class='bSelect mFastInpSmall' data-value="<?= $page->json($bankData) ?>">
-                                    </select>
-                                </div>
+                <?
+                    $byPayOnReceipt = [
+                        \Model\PaymentMethod\Entity::TYPE_ON_RECEIPT => [],
+                        \Model\PaymentMethod\Entity::TYPE_NOW => [],
+                    ];
+                    $byPayOnReceipt = [];
+                    foreach($paymentMethods as $paymentMethod) { 
+                        $payOnReceipt = $paymentMethod->getPayOnReceipt();
+                        $byPayOnReceipt[$payOnReceipt][] = $paymentMethod;
+                    }
+                    foreach ($byPayOnReceipt as $payOnReceipt => $paymentMethods) { ?>
 
-                                <div class="fl creditHref"><a target="_blank" href="<?= $bank->getLink() ?>">Условия кредита <span>(<?= $bank->getName() ?>)</span></a></div>
-                                <div class="clear"></div>
-                            </div>
-                            <input type='hidden' name='order[credit_bank_id]' value='<?= $bank->getId(); ?>' />
-                            <div id="tsCreditCart" data-value="<?= $page->json($creditData) ?>" ></div>
-                            <!--div>Сумма заказа: <span class="rubl">p</span></div-->
-                            <div>
-                                <strong style="font-size:160%; color: #000;">Ежемесячный платеж<sup>**</sup>:
-                                    <span id="creditPrice"></span> <span class="rubl"> p</span>
-                                </strong>
-                            </div>
-                            <div><sup>**</sup> Кредит не распространяется на услуги F1 и доставку. Сумма платежей предварительная и уточняется банком в процессе принятия кредитного решения.</div>
-                        </div>
-                        <?php } else if ($paymentMethod->isCertificate()) { ?>
-                        <div class="orderFinal__certificate hidden innerType">
-                            <script type="text/html" id="processBlock">
-                                <div class="process">
-                                    <div class="img <%=typeNum%>"></div>
-                                    <p><%=text%></p>
-                                    <div class="clear"></div>
-                                </div>
-                            </script>
-                            <div id="sertificateFields">
-                                <input name="order[cardnumber]" type="text" class="bBuyingLine__eText cardNumber" placeholder="Номер" />
-                                <input name="order[cardpin]" type="text" class="bBuyingLine__eText cardPin" placeholder="ПИН" />
-                            </div>
-                            <div id="processing"></div>
-                        </div>
-                        <?php } ?>
-                    </i>
-                </div>
-                <?php endforeach ?>
+                        <? if($payOnReceipt == \Model\PaymentMethod\Entity::TYPE_ON_RECEIPT) {
+                            $payOnReceiptHeader = 'При получении заказа';
+                        } elseif($payOnReceipt == \Model\PaymentMethod\Entity::TYPE_NOW) {
+                            $payOnReceiptHeader = 'Прямо сейчас';
+                        } else {
+                            $payOnReceiptHeader = null;
+                        } ?>
+
+                        <h2><?= $payOnReceiptHeader ?></h2>
+                        <?= $page->render('order/payment/_methods', [
+                            'bankData' => $bankData,
+                            'creditData' => $creditData,
+                            'banks' => $banks,
+                            'form' => $form,
+                            'selectedPaymentMethodId' => $selectedPaymentMethodId,
+                            'payOnReceipt' => $payOnReceipt,
+                            'paymentMethods' => $paymentMethods,
+                        ]) ?>
+                    <? }
+                ?>
             </dd>
         </dl>
 

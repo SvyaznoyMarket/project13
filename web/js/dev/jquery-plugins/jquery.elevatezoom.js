@@ -53,9 +53,11 @@ if ( typeof Object.create !== 'function' ) {
 
 				//Create the image swap from the gallery 
 				$('#'+self.options.gallery + ' a').click( function(e) { 
-		
+
+					self.$elem.addClass('mLoader');
+					self.$elem.attr("src","");
 					//Set a class on the currently active gallery image
-					if(self.options.galleryActiveClass){
+					if ( self.options.galleryActiveClass ) {
 						$('#'+self.options.gallery + ' a').removeClass(self.options.galleryActiveClass);
 						$(this).addClass(self.options.galleryActiveClass);
 					}
@@ -63,8 +65,13 @@ if ( typeof Object.create !== 'function' ) {
 					e.preventDefault();
 
 					//call the swap image function            
-					if($(this).data("zoom-image")){self.zoomImagePre = $(this).data("zoom-image")}
-					else{self.zoomImagePre = $(this).data("image");}
+					if ( $(this).data("zoom-image") ) {
+						self.zoomImagePre = $(this).data("zoom-image");
+					}
+					else {
+						self.zoomImagePre = $(this).data("image");
+					}
+
 					self.swaptheimage($(this).data("image"), self.zoomImagePre);
 					return false;
 				});
@@ -906,7 +913,7 @@ if ( typeof Object.create !== 'function' ) {
 					self.largeWidth = newImg.width;
 					self.largeHeight = newImg.height;
 					self.zoomImage = largeimage;
-          self.zoomWindow.css({ "background-size": self.largeWidth + 'px ' + self.largeHeight + 'px' });
+          			self.zoomWindow.css({ "background-size": self.largeWidth + 'px ' + self.largeHeight + 'px' });
 					self.swapAction(smallimage, largeimage);
 					return;              
 				}          
@@ -933,26 +940,28 @@ if ( typeof Object.create !== 'function' ) {
 				//swaps the main image
 				//self.$elem.attr("src",smallimage);
 				//swaps the zoom image
-         if(self.options.zoomType == "lens") {
+         		if(self.options.zoomType == "lens") {
 					self.zoomLens.css({ backgroundImage: "url('" + largeimage + "')" }); 
 			  	}
+
 				if(self.options.zoomType == "window") {
 					self.zoomWindow.css({ backgroundImage: "url('" + largeimage + "')" }); 
 				}
+
 				if(self.options.zoomType == "inner") {
 					self.zoomWindow.css({ backgroundImage: "url('" + largeimage + "')" }); 
 				} 
 
 				self.currentImage = largeimage;
-
-				self.$elem.attr("src",smallimage);       
+				
+				self.$elem.remove('mLoader');
+				self.$elem.attr("src",smallimage);
 			},
 			doneCallback: function(){
 
 				var self = this;
 
-
-				if(self.options.tint) {
+				if ( self.options.tint ) {
 					self.zoomTintImage.attr("src",largeimage);
 					//self.zoomTintImage.attr("width",elem.data("image"));
 					self.zoomTintImage.attr("height",self.$elem.height());

@@ -79,6 +79,11 @@ class IndexAction {
 
         // если в catalogJson'e указан category_class, то обрабатываем запрос соответствующим контроллером
         $categoryClass = !empty($catalogJson['category_class']) ? $catalogJson['category_class'] : null;
+        // карточку показываем в обычном лэйауте, если включена соответствующая настройка
+        if(!empty($catalogJson['regular_product_page'])) $categoryClass = null;
+
+        $useLens = true;
+        if ( isset($catalogJson['use_lens']) ) $useLens = (bool) $catalogJson['use_lens'];
 
         /*
         if ($categoryClass) {
@@ -236,6 +241,7 @@ class IndexAction {
         $page->setParam('reviewsDataPro', $reviewsDataPro);
         $page->setParam('reviewsDataSummary', $reviewsDataSummary);
         $page->setParam('categoryClass', $categoryClass);
+        $page->setParam('useLens', $useLens);
 
         return new \Http\Response($page->show());
     }

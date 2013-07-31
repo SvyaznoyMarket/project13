@@ -29,7 +29,10 @@ class Repository {
             ],
             [],
             function ($data) use (&$collection) {
+                $blockedIds = (array)\App::config()->payment['blockedIds'];
+
                 foreach ($data as $item) {
+                    if (in_array($item['id'], $blockedIds)) continue;
                     $collection[] = new Entity($item);
                 }
             }

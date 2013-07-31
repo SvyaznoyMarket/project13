@@ -5,6 +5,11 @@ namespace Model\Product;
 class Sorting {
     /** @var array */
     private $list = array(
+        'default'  => array(
+            'name'      => 'default',
+            'title'     => 'Автоматически',
+            'direction' => 'desc',
+        ),
         'price_asc'   => array(
             'name'      => 'price',
             'title'     => 'По цене &#8595;',
@@ -25,16 +30,13 @@ class Sorting {
             'title'     => 'Бренды Я&#8592;А',
             'direction' => 'desc',
         ),
-        // 'rating'  => array(
-        //     'name'      => 'rating',
-        //     'title'     => 'по рейтингу',
-        //     'direction' => 'desc',
-        // ),
-        'default'  => array(
-            'name'      => 'default',
-            'title'     => 'Автоматически',
-            'direction' => 'desc',
+        /*
+        'rating'  => array(
+             'name'      => 'rating',
+             'title'     => 'по рейтингу',
+             'direction' => 'desc',
         ),
+        */
     );
     /** @var string */
     private $active = 'default';
