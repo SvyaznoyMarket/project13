@@ -61,7 +61,7 @@ $(document).ready(function() {
 				name: 'order[recipient_first_name]', //UNIQUE!
 				selectorid: '',
 				value: firstNameVal,
-				valerror: false,
+				valerror: ko.observable(false),
 				showsubscribe: false,
 				regexp: /^[ёa-zа-я\s]+$/i
 			}) );
@@ -70,7 +70,7 @@ $(document).ready(function() {
 				name: 'order[recipient_phonenumbers]', //UNIQUE!
 				selectorid: 'phonemask',
 				value: phoneNumberVal,
-				valerror: false,
+				valerror: ko.observable(false),
 				showsubscribe: false,
 				regexp: /^[()0-9\-\+\s]+$/
 			}) );
@@ -79,7 +79,7 @@ $(document).ready(function() {
 				name: 'order[recipient_email]', //UNIQUE!
 				selectorid: 'recipientEmail',
 				value: emailVal,
-				valerror: false,
+				valerror: ko.observable(false),
 				showsubscribe: true,
 				regexp: /./
 			}) );
@@ -88,7 +88,7 @@ $(document).ready(function() {
 				name: 'order[recipient_scCard]', //UNIQUE!
 				selectorid: 'scCard',
 				value: scNum,
-				valerror: false,
+				valerror: ko.observable(false),
 				showsubscribe: false,
 				regexp: /^[()0-9\-\s]+$/
 			}) );
@@ -418,13 +418,9 @@ $(document).ready(function() {
 					self.formStatus('typing');
 				}
 
-				for(var i=0, l=self.textfields.length; i<l; i++){ // like indexOf
+				for ( var i = 0, l = self.textfields.length; i < l; i++ ) { // like indexOf
 					if( self.textfields[i]().name === textfield.name ) {
-						var tmp = self.textfields[i]();
-						tmp.valerror = valerror;
-						tmp.value = e.currentTarget.value;
-						self.textfields[i]( tmp );
-						
+						self.textfields[i]().valerror(valerror);
 						break;
 					}
 				}
