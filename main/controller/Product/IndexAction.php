@@ -79,6 +79,8 @@ class IndexAction {
 
         // если в catalogJson'e указан category_class, то обрабатываем запрос соответствующим контроллером
         $categoryClass = !empty($catalogJson['category_class']) ? $catalogJson['category_class'] : null;
+        // карточку показываем в обычном лэйауте, если включена соответствующая настройка
+        if(!empty($catalogJson['regular_product_page'])) $categoryClass = null;
 
         /*
         if ($categoryClass) {
