@@ -878,6 +878,11 @@
   .mb35 {
     margin-bottom: 35px;
   }
+  .mLoader {
+    background: url('/css/common/img/preloader.gif') no-repeat center center;
+    min-height: 50px;
+    display: block;
+  }
 }
 @media all {
   .bGrayButton {
@@ -4539,6 +4544,13 @@
   .bShopInStockNoItem {
     font-size: 16px;
   }
+  .seoContent ul {
+    margin: 0 0 0 20px;
+  }
+  .seoContent ul li {
+    list-style-type: disc;
+    margin: 0 0 10px 17px;
+  }
 }
 /*страница с промо каталогом */
 @media all {
@@ -6642,6 +6654,9 @@
     margin: 15px 0px;
     padding: 0px 15px;
   }
+  .bBuyingLineWrap .bBuyingLine {
+    margin-bottom: 0;
+  }
   .bBuyingLineWrap .bBuyingLine dt {
     margin-right: 30px;
     width: 230px;
@@ -6658,6 +6673,19 @@
   }
   .bBuyingLineWrap .bBuyingLine p {
     width: 132px;
+  }
+  .bBuyingLineWrap .bCelendar {
+    margin: 0 0 30px;
+  }
+  .bBuyingLineWrap .mProductsLine {
+    margin: 0;
+  }
+  .bBuyingLineWrap .mProductsLine dt {
+    margin-top: 20px;
+  }
+  .bBuyingLineWrap .mProductsLine dd {
+    margin: 0;
+    width: 636px;
   }
   .bBuyingInfo {
     padding: 0px 0px 10px;
@@ -9952,8 +9980,8 @@
     vertical-align: bottom;
   }
   .bProductDescImg .bProductDescImgBig__eImg {
-    max-width: 400px;
-    max-height: 400px;
+    width: 400px;
+    height: 400px;
   }
   .bPhotoAction {
     margin: 15px 0 0;
@@ -11406,6 +11434,11 @@
   }
   .jewel .bProductSection .bSpecifications__eList dd span {
     bottom: 0;
+  }
+  .jewel .bigbuttonlink {
+    background: #000000;
+    border-color: #000000;
+    font-weight: normal;
   }
 }
 /*---END---СТИЛИ БРЕНД РАЗДЕЛА PANDORA---*/

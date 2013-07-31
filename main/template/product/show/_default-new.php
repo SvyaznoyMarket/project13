@@ -17,7 +17,7 @@
 <div id="jsProductCard" data-value="<?= $page->json($productData) ?>"></div>
 
 <div class="bProductSectionLeftCol">
-    <?= $helper->render('product/__photo', ['product' => $product, 'productVideos' => $productVideos]) ?>
+    <?= $helper->render('product/__photo', ['product' => $product, 'productVideos' => $productVideos, 'useLens' => $useLens]) ?>
 
     <div class="bProductDescShop">
         <?= $helper->render('product/__state', ['product' => $product]) // Есть в наличии ?>

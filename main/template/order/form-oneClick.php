@@ -19,7 +19,7 @@ $formData = array(
     <div class='bMobDown__eWrap'>
         <div class='bMobDown__eClose top0 close'></div>
         <form id="oneClick" action="" data-values="<?//= $page->json($formData) ?>">
-
+            <input type="hidden" name="order[one_click]" value="1">
             <table class='bFast' cellpadding=0 cellspacing=0>
                 <tr>
                     <td class='bFast__eItem'>

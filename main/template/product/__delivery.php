@@ -74,7 +74,7 @@ return function (
 </div>
 
 
-<ul class="bWidgetBuy__eDelivery" data-value="<?= $helper->json([
+<ul class="bWidgetBuy__eDelivery mLoader" data-value="<?= $helper->json([
     'url'      => $product->getIsBuyable() ? $helper->url('product.delivery') : '',
     'delivery' => $deliveryData,
 ]) ?>">

@@ -6,6 +6,7 @@ class Layout extends \View\DefaultLayout {
     public function prepare() {
         /** @var $category \Model\Product\Category\Entity */
         $category = $this->getParam('category') instanceof \Model\Product\Category\Entity ? $this->getParam('category') : null;
+        /** @var $tag \Model\Tag\Entity */
         $tag = $this->getParam('tag') instanceof \Model\Tag\Entity ? $this->getParam('tag') : null;
         if (!$tag) {
             return;

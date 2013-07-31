@@ -7,6 +7,9 @@ class Entity {
     const WEBMONEY_ID = 11;
     const QIWI_ID = 12;
 
+    const TYPE_NOW = 0;
+    const TYPE_ON_RECEIPT = 1;
+
     /** @var int */
     private $id;
     /** @var string */
@@ -19,7 +22,7 @@ class Entity {
     private $isOnline;
     /** @var bool */
     private $isCorporative;
-    /** @var bool */
+    /** @var int */
     private $payOnReceipt;
 
     /**
@@ -142,14 +145,14 @@ class Entity {
     }
 
     /**
-     * @param boolean $payOnReceipt
+     * @param int $payOnReceipt
      */
     public function setPayOnReceipt($payOnReceipt) {
-        $this->payOnReceipt = (bool)$payOnReceipt;
+        $this->payOnReceipt = (int)$payOnReceipt;
     }
 
     /**
-     * @return boolean
+     * @return int
      */
     public function getPayOnReceipt() {
         return $this->payOnReceipt;

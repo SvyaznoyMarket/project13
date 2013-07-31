@@ -26,7 +26,7 @@ $(document).ready(function(){
 				mailPhoneInput.attr('maxlength', 10);
 				mailPhoneInput.addClass('registerPhone');
 				$('.registerPhonePH').show();
-				subscibe.hide();
+				// subscibe.hide();
 			}
 			else {
 				chEmail = true;
@@ -35,7 +35,7 @@ $(document).ready(function(){
 				mailPhoneInput.removeAttr('maxlength');
 				mailPhoneInput.removeClass('registerPhone');
 				$('.registerPhonePH').hide();
-				subscibe.show();
+				// subscibe.show();
 			}
 
 			mailPhoneInput.val('');
@@ -464,6 +464,9 @@ $(document).ready(function(){
 			else {
 				$(this).bind('click', function() {
 					window.docCookies.setItem('infScroll', 1, 4*7*24*60*60, '/' );
+
+					$('.pageslist.bPagesListBottom').hide();
+
 					var next = $('.bPagesListTop .bPagesList__eItem:first');
 
 					if ( next.hasClass('current') ) {
