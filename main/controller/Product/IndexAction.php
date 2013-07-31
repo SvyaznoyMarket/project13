@@ -82,6 +82,9 @@ class IndexAction {
         // карточку показываем в обычном лэйауте, если включена соответствующая настройка
         if(!empty($catalogJson['regular_product_page'])) $categoryClass = null;
 
+        $useLens = true;
+        if ( isset($catalogJson['use_lens']) ) $useLens = (bool) $catalogJson['use_lens'];
+
         /*
         if ($categoryClass) {
             $controller = '\\Controller\\'.ucfirst($categoryClass).'\\Product\\IndexAction';
@@ -238,6 +241,7 @@ class IndexAction {
         $page->setParam('reviewsDataPro', $reviewsDataPro);
         $page->setParam('reviewsDataSummary', $reviewsDataSummary);
         $page->setParam('categoryClass', $categoryClass);
+        $page->setParam('useLens', $useLens);
 
         return new \Http\Response($page->show());
     }
