@@ -633,9 +633,20 @@ ul.lh15 li {
   }
   &.orangeIcon {
     height: 26px;
-    width: 170px;
-    background: url("@{base-url}/search/img/searchBtn.png") no-repeat right -1px; 
-    padding-right: 40px;
+    width: 165px;
+    .rounded(5px 0 0 5px);
+    margin-right: -6px;
+    padding-right: 0;
+  }
+}
+img {
+  &.orangeIcon {
+    vertical-align: middle;
+    cursor: pointer;
+    &:hover {
+      filter: e("progid:DXImageTransform.Microsoft.Alpha(opacity=90)");
+      .opacity(0.9);
+    }
   }
 }
 .crossText{

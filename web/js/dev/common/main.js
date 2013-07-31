@@ -714,6 +714,11 @@ $(document).ready(function(){
 	$('.product_filter-block').change(function() {
 		activateForm();
 	});
+
+	var sphinxSearchValue = null;
+	if($('input.orangeIcon').length) {
+
+	}
 	
 	/* Side Filters */
 	var filterlink = $('.filter .filterlink:first');

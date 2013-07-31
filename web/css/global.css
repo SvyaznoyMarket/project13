@@ -673,9 +673,25 @@
   }
   .text.orangeIcon {
     height: 26px;
-    width: 170px;
-    background: url("/css/search/img/searchBtn.png") no-repeat right -1px;
-    padding-right: 40px;
+    width: 165px;
+    -webkit-border-radius: 5px 0 0 5px;
+    -moz-border-radius: 5px 0 0 5px;
+    border-radius: 5px 0 0 5px;
+    margin-right: -6px;
+    padding-right: 0;
+  }
+  img.orangeIcon {
+    vertical-align: middle;
+    cursor: pointer;
+  }
+  img.orangeIcon:hover {
+    filter: progid:DXImageTransform.Microsoft.Alpha(opacity=90);
+    -moz-opacity: 0.9;
+    -khtml-opacity: 0.9;
+    -webkit-opacity: 0.9;
+    opacity: 0.9;
+    -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=90);
+    filter: alpha(opacity=90);
   }
   .crossText {
     color: #818181;

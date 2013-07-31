@@ -33,6 +33,7 @@ $formName = \View\Product\FilterForm::$name;
         <? if(\App::config()->sphinx['showListingSearchBar']) { ?>
             <div class="pb5">
                 <input type="text" value="" name="f[text]" class="text mb10 orangeIcon">
+                <img class="mb10 orangeIcon" src="/css/search/img/searchBtn.png">
             </div>
         <? } else { ?>
             <dt class="filterHeader">Выбираем:<i></i></dt>
