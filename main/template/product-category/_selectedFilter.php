@@ -23,9 +23,9 @@ if(\App::config()->sphinx['showListingSearchBar']) {
             ];
         }, $sphinxWords);
         $list = array_merge($sphinxList, $list);
-    }
-}
-?>
+    } ?>
+    <div class="currentSearch" data-search-terms="<?= $sphinxFilter ?>"></div>
+<? } ?>
 
 <? if ((bool)$list): ?>
     <dd class="bSpecSel">
