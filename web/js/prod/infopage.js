@@ -126,7 +126,7 @@ $(document).ready(function(){
 					if( !res.success ) {
 						return false;
 					}
-					
+
 					form.html('<div class="subscribe-form__title">Спасибо! подтверждение подписки отправлено на указанный e-mail</div>');
 					window.docCookies.setItem('subscribed', 1, 157680000, '/');
 
