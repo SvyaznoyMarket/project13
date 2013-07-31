@@ -219,7 +219,7 @@ class Client {
                         if (is_callable($callback)) {
                             $callback($decodedResponse, (int)$handler);
                         } else {
-                            throw new \Exception(sprintf('Неверная функция %s для %s', gettype($callback), $info['url']));
+                            $this->logger->error(sprintf('Неверная функция %s для %s', gettype($callback), $info['url']), ['curl']);
                         }
                     } catch (\Exception $e) {
                         \App::exception()->add($e);

@@ -91,7 +91,7 @@ if ($form->hasSubway()) $jsValidator['order[address_metro]'] = 'Укажите �
         </dl>
 
         <dl class='bBuyingLine'>
-            <dt>E-mail</dt>
+            <dt>E-mail*</dt>
             <dd>
                 <div class="pr40">
                     <? $email = $form->getEmail() ?>
@@ -187,13 +187,26 @@ if ($form->hasSubway()) $jsValidator['order[address_metro]'] = 'Укажите �
             <dt></dt>
             <dd id="payTypes">
                 <?
+                    $byPayOnReceipt = [
+                        \Model\PaymentMethod\Entity::TYPE_ON_RECEIPT => [],
+                        \Model\PaymentMethod\Entity::TYPE_NOW => [],
+                    ];
                     $byPayOnReceipt = [];
                     foreach($paymentMethods as $paymentMethod) { 
                         $payOnReceipt = $paymentMethod->getPayOnReceipt();
                         $byPayOnReceipt[$payOnReceipt][] = $paymentMethod;
                     }
                     foreach ($byPayOnReceipt as $payOnReceipt => $paymentMethods) { ?>
-                        <h2><?= $payOnReceipt ? 'При получении заказа' : 'Прямо сейчас' ?></h2>
+
+                        <? if($payOnReceipt == \Model\PaymentMethod\Entity::TYPE_ON_RECEIPT) {
+                            $payOnReceiptHeader = 'При получении заказа';
+                        } elseif($payOnReceipt == \Model\PaymentMethod\Entity::TYPE_NOW) {
+                            $payOnReceiptHeader = 'Прямо сейчас';
+                        } else {
+                            $payOnReceiptHeader = null;
+                        } ?>
+
+                        <h2><?= $payOnReceiptHeader ?></h2>
                         <?= $page->render('order/payment/_methods', [
                             'bankData' => $bankData,
                             'creditData' => $creditData,
