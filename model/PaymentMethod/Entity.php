@@ -4,8 +4,8 @@ namespace Model\PaymentMethod;
 
 class Entity {
     const CERTIFICATE_ID = 10;
-    const QIWI_ID = 11;
-    const WEBMONEY_ID = 12;
+    const WEBMONEY_ID = 11;
+    const QIWI_ID = 12;
 
     /** @var int */
     private $id;
