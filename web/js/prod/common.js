@@ -1052,6 +1052,11 @@ $(document).ready(function(){
 
 		var registerValidate = new FormValidator( config );
 
+		$('.registerAnotherWayBtn').bind('click', function() {
+			console.info('change validate type');
+			registerValidate.removeFieldToValidate($('#register_username'));
+		});
+
 		$('#register-form').bind('submit', function( e ) {
 			e.preventDefault();
 
