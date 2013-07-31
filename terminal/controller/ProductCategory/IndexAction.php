@@ -29,16 +29,16 @@ class IndexAction {
         $productFilter = new \Model\Product\Filter($filter, false);
         $productFilter->setCategory($category);
 
-        $response = array();
-        $client->addQuery('listing/list', array(
-            'filter' => array(
+        $response = [];
+        $client->addQuery('listing/list', [
+            'filter' => [
                 'filters' => $productFilter->dump(),
                 'sort'    => $sorting,
                 'offset'  => 0,
                 'limit'   => 32,
-            ),
+            ],
             'region_id' => $user->getRegion()->getId(),
-        ), array(), function($data) use(&$response) {
+        ], [], function($data) use(&$response) {
             $response = $data;
         });
         $client->execute(\App::config()->coreV2['retryTimeout']['medium']);
