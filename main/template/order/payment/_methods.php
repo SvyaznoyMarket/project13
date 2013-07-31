@@ -1,5 +1,6 @@
 <? foreach ($paymentMethods as $paymentMethod): ?>
-<div class="bPayMethodTitle" id="payment_method_<?= $paymentMethod->getId() ?>-field">
+<? $indent = in_array($payOnReceipt, [\Model\PaymentMethod\Entity::TYPE_ON_RECEIPT, \Model\PaymentMethod\Entity::TYPE_NOW]) ?>
+<div class="<?= $indent ? 'bPayMethodTitle' : '' ?>" id="payment_method_<?= $paymentMethod->getId() ?>-field">
     <label class="<? if ($paymentMethod->getId() == $selectedPaymentMethodId) echo 'mChecked' ?>" for="order_payment_method_id_<?= $paymentMethod->getId() ?>">
         <b></b> 
         <div class="bLabel"><?= $paymentMethod->getName() ?></div>
