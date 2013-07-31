@@ -148,12 +148,20 @@
 	};
 
 
+    var addToLiveTech = function ( data ) {
+        if ( typeof(LiveTex.addToCart) == 'function' ) {
+            try{
+                LiveTex.addToCart( data.product );
+            }catch(err){
+            }
+        }
+    };
+
+
 	var buyProcessing = function( event, data ) {
 		kissAnalytics(data);
 		// sendAnalytics();
-        if ( typeof(LiveTex.addToCart) == 'function' ) {
-            LiveTex.addToCart( data.product );
-        }
+        addToLiveTech(data);
 
 		if (!blackBox) {
 			return false;
