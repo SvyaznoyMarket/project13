@@ -603,7 +603,6 @@ class Action {
         $page->setParam('paymentMethod', $paymentMethod);
         $page->setParam('paymentProvider', $paymentProvider);
         $page->setParam('creditData', $creditData);
-        $page->setParam('userForm', $this->getForm());
         $page->setParam('paymentUrl', $paymentUrl);
 
         return new \Http\Response($page->show());
@@ -944,7 +943,7 @@ class Action {
         }
 
         // абтест для обязательно поля email
-        if (\App::abTest()->getCase()->getKey() == 'emails') {
+        if (\App::abTest()->getCase()->getKey() == 'emails' && empty($form->getOneClick())) {
             $email = $form->getEmail();
             $emailValidator = new \Validator\Email();
             if (!$emailValidator->isValid($email)) {
