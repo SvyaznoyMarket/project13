@@ -355,8 +355,11 @@ class Action {
                 $user,
                 $request
             ) {
-                foreach ($data as $i => $item) {
+                $blockedIds = (array)\App::config()->payment['blockedIds'];
+
+                foreach ($data as $item) {
                     $paymentMethod = new \Model\PaymentMethod\Entity($item);
+                    if (in_array($paymentMethod->getId(), $blockedIds)) continue;
 
                     // кредит
                     if ($paymentMethod->getIsCredit() && !$creditAllowed) {
