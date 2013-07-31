@@ -603,7 +603,6 @@ class Action {
         $page->setParam('paymentMethod', $paymentMethod);
         $page->setParam('paymentProvider', $paymentProvider);
         $page->setParam('creditData', $creditData);
-        $page->setParam('userForm', $this->getForm());
         $page->setParam('paymentUrl', $paymentUrl);
 
         return new \Http\Response($page->show());
