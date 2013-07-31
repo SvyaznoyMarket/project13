@@ -244,7 +244,7 @@ $c->banner['url'] = [
 $c->cart['productLimit'] = 50;
 
 $c->payment['creditEnabled'] = true;
-$c->payment['blockedIds'] = [11, 12];
+$c->payment['blockedIds'] = [];
 
 $c->smartengine['pull']           = true;
 $c->smartengine['push']           = true;
