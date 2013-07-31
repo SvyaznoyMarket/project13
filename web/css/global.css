@@ -11362,6 +11362,11 @@
   .jewel .bProductSection .bSpecifications__eList dd span {
     bottom: 0;
   }
+  .jewel .bigbuttonlink {
+    background: #000000;
+    border-color: #000000;
+    font-weight: normal;
+  }
 }
 /*---END---СТИЛИ БРЕНД РАЗДЕЛА PANDORA---*/
 /*------СТИЛИ БРЕНД РАЗДЕЛА PANDORA - КАРТОЧКА ТОВАРА------*/
