@@ -305,6 +305,36 @@
   .pl235 {
     padding-left: 235px;
   }
+  .pr5 {
+    padding-right: 5px;
+  }
+  .pr10 {
+    padding-right: 10px;
+  }
+  .pr20 {
+    padding-right: 20px;
+  }
+  .pr30 {
+    padding-right: 30px;
+  }
+  .pr40 {
+    padding-right: 40px;
+  }
+  .pl5 {
+    padding-left: 5px;
+  }
+  .pl10 {
+    padding-left: 10px;
+  }
+  .pl20 {
+    padding-left: 20px;
+  }
+  .pl30 {
+    padding-left: 30px;
+  }
+  .pl40 {
+    padding-left: 40px;
+  }
   .mb5 {
     margin-bottom: 5px;
   }
@@ -6740,6 +6770,27 @@
     font-weight: bold;
     width: 400px;
   }
+  .bBuyingLine p.subscribe {
+    width: 130px;
+    margin: 0;
+  }
+  .bBuyingLine p.subscribe b {
+    margin-top: 5px;
+  }
+  .bBuyingLine p.subscribe label {
+    font-weight: normal;
+    text-align: left;
+    font-size: 12px;
+    line-height: 12px;
+    text-align: left;
+    width: 130px;
+  }
+  .bBuyingLine p.subscribe label b {
+    background: url("/css/order/img/orderSprite.png") 0px -48px no-repeat;
+  }
+  .bBuyingLine p.subscribe label.checked b {
+    background: url("/css/order/img/orderSprite.png") 0px 0px no-repeat;
+  }
   .bBuyingLine h5 {
     color: #434343;
     display: inline-block;
@@ -7008,7 +7059,8 @@
     line-height: 33px;
     z-index: 3;
   }
-  .phonePH #order_recipient_phonenumbers {
+  .phonePH #order_recipient_phonenumbers,
+  .phonePH #qiwi_phone {
     -moz-opacity: 0.8;
     -khtml-opacity: 0.8;
     -webkit-opacity: 0.8;
@@ -7020,6 +7072,13 @@
     left: 0;
     padding-left: 30px;
     width: 440px;
+  }
+  .phonePH.qiwi span.placeholder {
+    font-size: 14px;
+  }
+  .phonePH.qiwi #qiwi_phone {
+    width: 230px;
+    font-size: 14px;
   }
   #addressField dd div {
     float: left;
@@ -7205,6 +7264,55 @@
     display: block;;
   }
   */
+  .mPayMethods {
+    margin: 10px 0 20px;
+  }
+  .mPayMethods h2 {
+    padding: 10px 0 15px;
+  }
+  .mPayMethods dd {
+    font-weight: normal;
+  }
+  .mPayMethods dd div {
+    margin: 0;
+  }
+  .mPayMethods label {
+    line-height: 1;
+  }
+  .mPayMethods label b {
+    background: url("/css/leftNav/img/radioBtn.png") no-repeat 0 -13px;
+    height: 13px;
+    width: 13px;
+    margin-right: 2px;
+    margin-top: 2px;
+  }
+  .mPayMethods .bLabel {
+    display: inline-block;
+    width: 400px;
+    margin: 0 0 0 0px;
+    zoom: 1;
+    line-height: 1.3;
+    vertical-align: top;
+    *display: inline;
+    zoom: 1;
+    cursor: pointer;
+  }
+  .mPayMethods .mChecked b {
+    background: url("/css/leftNav/img/radioBtn.png") no-repeat 0 0;
+  }
+  .mPayMethods .bPayMethodTitle {
+    margin: 0 0px 15px 40px;
+  }
+  .mPayMethods .bPayMethodDesc {
+    font-size: 12px;
+    margin: 5px 0 0 20px;
+  }
+  .mPayMethods .bPayMethodAction {
+    margin: 10px 0 0 20px;
+  }
+  .mPayMethods .bPayMethodAction input {
+    margin: 0 0 5px;
+  }
 }
 /*---END---СТИЛИ ОФОРМЛЕНИЯ ЗАКАЗА---*/
 /*-------СТИЛИ СТРАНИЦЫ ГДЕ КУПИТЬ-----*/
@@ -10461,6 +10569,7 @@
   }
   .bWidgetBuy .bAwardSection {
     text-align: center;
+    margin: 20px 0 0;
   }
   .bDeliveryFreeAddress {
     margin: 10px 0 10px;
@@ -11455,6 +11564,7 @@
     -webkit-border-radius: 3px 3px 0 0;
     -moz-border-radius: 3px 3px 0 0;
     border-radius: 3px 3px 0 0;
+    margin: 13px 0 10px;
     padding: 5px 0 5px 10px;
     color: #515151;
     border-bottom: 1px solid #c7c7c7;
@@ -11478,12 +11588,24 @@
     -moz-border-radius: 4px;
     border-radius: 4px;
     display: block;
-    padding: 3px 5px 3px 5px;
+    width: 38px;
+    height: 20px;
+    text-align: center;
     text-decoration: none;
     color: #000000;
     border: 1px solid #c7c7c7;
     background-color: #ffffff;
+    background-image: none;
     font-size: 11px;
+    line-height: 20px;
+    width: auto;
+    padding: 0 5px;
+  }
+  .bViewPageLine .bSortingList__eItemLink:hover,
+  .bViewPageLine .bSortingList__eItemLink.mActiveLink,
+  .bViewPageLine .bSortingList__eItemLink.mChecked {
+    color: #ffffff;
+    background-color: #000000;
   }
   .bViewPageLine .bSortingList__eItemLink:hover,
   .bViewPageLine .bSortingList__eItemLink.mActiveLink {
@@ -11492,8 +11614,8 @@
     background-color: #000000;
   }
   .bViewPageLine .bViewPageMode {
-    float: left;
-    margin: 0 0 0 10px;
+    float: right;
+    margin: 0 10px 0 10px;
   }
   .bViewPageLine .bViewPageModeList__eItem {
     float: left;
@@ -11505,25 +11627,28 @@
     border-radius: 4px;
     display: block;
     width: 38px;
-    height: auto;
+    height: 20px;
+    text-align: center;
+    text-decoration: none;
     color: #000000;
     border: 1px solid #c7c7c7;
     background-color: #ffffff;
     background-image: none;
-    text-align: center;
-    padding: 4px 0;
+    font-size: 11px;
+    line-height: 20px;
+    padding: 0;
   }
   .bViewPageLine .bViewPageModeList__eItemLink:hover,
-  .bViewPageLine .bViewPageModeList__eItemLink.mActiveLink {
-    background-color: #000000;
+  .bViewPageLine .bViewPageModeList__eItemLink.mActiveLink,
+  .bViewPageLine .bViewPageModeList__eItemLink.mChecked {
     color: #ffffff;
-    border-color: #000000;
+    background-color: #000000;
   }
   .bViewPageLine .bViewPageModeList .bViewPageModeIcon {
     display: block;
     width: 11px;
     height: 11px;
-    margin: 0 auto;
+    margin: 4px auto 0;
     background: url('/css/bViewPageLine/img/bViewPageModeIcons.png') no-repeat 0 0;
   }
   .bViewPageLine .bViewPageModeList .mTableView:hover .bViewPageModeIcon,
@@ -11545,32 +11670,64 @@
     margin: 0 3px 0 0;
     border: none;
   }
+  .bViewPageLine .bPagesList__eItemLink {
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    display: block;
+    width: 38px;
+    height: 20px;
+    text-align: center;
+    text-decoration: none;
+    color: #000000;
+    border: 1px solid #c7c7c7;
+    background-color: #ffffff;
+    background-image: none;
+    font-size: 11px;
+    line-height: 20px;
+    color: #ffffff;
+    background: #000000;
+    float: none;
+    padding: 0;
+    font-size: 11px;
+  }
+  .bViewPageLine .bPagesList__eItemLink:hover,
+  .bViewPageLine .bPagesList__eItemLink.mActiveLink,
+  .bViewPageLine .bPagesList__eItemLink.mChecked {
+    color: #ffffff;
+    background-color: #000000;
+  }
   .bViewPageLine .bPagesList__eItemLink.borderedR {
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     border-radius: 4px;
     display: block;
     width: 38px;
-    height: auto;
+    height: 20px;
+    text-align: center;
+    text-decoration: none;
     color: #000000;
     border: 1px solid #c7c7c7;
     background-color: #ffffff;
     background-image: none;
-    text-align: center;
-    padding: 4px 0;
+    font-size: 11px;
+    line-height: 20px;
     float: none;
+    padding: 0;
+    font-size: 11px;
   }
   .bViewPageLine .bPagesList__eItemLink.borderedR:hover,
-  .bViewPageLine .bPagesList__eItemLink.borderedR.mActiveLink {
-    background-color: #000000;
+  .bViewPageLine .bPagesList__eItemLink.borderedR.mActiveLink,
+  .bViewPageLine .bPagesList__eItemLink.borderedR.mChecked {
     color: #ffffff;
-    border-color: #000000;
+    background-color: #000000;
   }
   .bViewPageLine .bPagesList__eItemLink.borderedR span {
+    float: none;
     height: auto;
     margin: 0;
     padding: 0;
-    float: none;
+    font-size: 11px;
   }
   .bViewPageLine .bAllPager {
     -webkit-border-radius: 4px;
@@ -11578,26 +11735,64 @@
     border-radius: 4px;
     display: block;
     width: 38px;
-    height: auto;
+    height: 20px;
+    text-align: center;
+    text-decoration: none;
     color: #000000;
     border: 1px solid #c7c7c7;
     background-color: #ffffff;
     background-image: none;
-    text-align: center;
-    padding: 3px 0;
-    margin: 18px 10px 0 -5px;
+    font-size: 11px;
+    line-height: 20px;
     float: right;
+    margin: 18px 5px 0 -5px;
+    padding: 0;
   }
   .bViewPageLine .bAllPager:hover,
-  .bViewPageLine .bAllPager.mActiveLink {
-    background-color: #000000;
+  .bViewPageLine .bAllPager.mActiveLink,
+  .bViewPageLine .bAllPager.mChecked {
     color: #ffffff;
-    border-color: #000000;
-  }
-  .bPagesListBottom {
-    min-width: 190px;
+    background-color: #000000;
   }
 }
 /*---END---СТИЛИ ВЕРХНЕГО БЛОКА СОРТИРОВКИ В КАТАЛОГЕ---*/
 /*------НОВОГОДНЕЕ ОФОРМЛЕНИЕ------*/
 /*---END---НОВОГОДНЕЕ ОФОРМЛЕНИЕ---*/
+/*------СТИЛИ ОПРОСА------*/
+@media all {
+  .surveyBox {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    width: 104px;
+    height: 30px;
+    border: 3px solid #ccc;
+    z-index: 300;
+    border-radius: 5px;
+    background-color: #000000;
+    color: #fff;
+    -moz-opacity: 0.9;
+    -khtml-opacity: 0.9;
+    -webkit-opacity: 0.9;
+    opacity: 0.9;
+    -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=90);
+    filter: alpha(opacity=90);
+    filter: progid:dximagetransform.microsoft.alpha(opacity=90);
+    padding: 4px 6px;
+  }
+  .surveyBox__toggleWrapper {
+    position: absolute;
+    right: 10px;
+    line-height: 28px;
+  }
+  .surveyBox__toggle,
+  .surveyBox__toggle:hover,
+  .surveyBox__answer,
+  .surveyBox__answer:hover {
+    color: #fff;
+  }
+  .surveyBox__content {
+    display: none;
+  }
+}
+/*---END---СТИЛИ ОПРОСА---*/

@@ -1,51 +1,53 @@
-$(document).ready(function(){
-	if ( $('.hotlinksToggle').length ){
-		$('.hotlinksToggle').toggle(
-			function(){
-				$(this).parent().parent().find('.toHide').show();
-				$(this).html('Основные метки');
-			},
-			function(){
-				$(this).parent().parent().find('.toHide').hide();
-				$(this).html('Все метки');
-			}
-		);
-	}
+/**
+ * Обработчик страницы оффлайновых заданий
+ *
+ * @author    Trushkevich Anton
+ * @requires  jQuery
+ */
+(function(){
+	var handleLinksToggle = function() {
+		var toggle = $(this);
+		var linksContainer = toggle.siblings('.links_response');
+		var task = $(this).data('task');
+    if(toggle.hasClass('expanded')) {
+			linksContainer.html('');
+			toggle.html('Ссылки');
+      toggle.removeClass('expanded');
+    } else {
+			$.get('/cron/'+task+'/links', {}, function(data){
+				if (data.success === true) {
+					toggle.html('Скрыть ссылки');
+					linksContainer.html(data.data);
+				}
+			});
+      toggle.addClass('expanded');
+    }
+    return false;
+	};
 
-	if ( $('.cron_report_start').length ){
-		$('.cron_report_start').toggle(
-			function(){
-				var span = $(this);
-				$.get('/cron/report', {}, function(data){
-					if ( data.success === true ) {
-						console.log(data);
-						span.html('Скрыть информацию');
-						$('#report_start_response').html(data.data);
-					}
-				});
-			},
-			function(){
-				$('#report_start_response').html('');
-				$(this).html('Сгенерировать');
-			}
-		);
-	}
+	var handleCronReportStart = function() {
+		var toggle = $(this);
+    if(toggle.hasClass('expanded')) {
+			$('#report_start_response').html('');
+			toggle.html('Сгенерировать');
+      toggle.removeClass('expanded');
+    } else {
+			$.get('/cron/report', {}, function(data){
+				if (data.success === true) {
+					toggle.html('Скрыть информацию');
+					$('#report_start_response').html(data.data);
+				}
+			});
+      toggle.addClass('expanded');
+    }
+    return false;
+	};
 
-	if ( $('.cron_report_links').length ){
-		$('.cron_report_links').toggle(
-			function(){
-				var span = $(this);
-				$.get('/cron/report/links', {}, function(data){
-					if ( data.success === true ) {
-						span.html('Скрыть ссылки');
-						$('#report_links_response').html(data.data);
-					}
-				});
-			},
-			function(){
-				$('#report_links_response').html('');
-				$(this).html('Ссылки');
-			}
-		);
-	}
-});
+
+	$(document).ready(function(){
+	  $('.cron_report_start').bind('click', handleCronReportStart);
+	  $('.cronLinks').bind('click', handleLinksToggle);
+	});
+}());
+
+

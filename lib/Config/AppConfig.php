@@ -30,6 +30,8 @@ class AppConfig {
     /** @var string */
     public $cmsDir;
     /** @var string */
+    public $surveyDir;
+    /** @var string */
     public $controllerPrefix;
     /** @var string */
     public $routePrefix;
@@ -226,6 +228,7 @@ class AppConfig {
     /** @var array */
     public $payment = [
         'creditEnabled' => null,
+        'blockedIds'    => [],
     ];
     /** @var array */
     public $creditProvider = [
