@@ -6394,8 +6394,7 @@
     width: 138px;
   }
   #creditInfo strong span {
-    color: #000;
-    font-size: 160%;
+    font-size: 16px;
   }
   .bigcheck {
     cursor: pointer;
@@ -6458,11 +6457,11 @@
     margin-top: 8px;
   }
   .bankWrap .creditHref a {
-    color: #434343;
+    color: #747474;
     text-decoration: underline;
   }
   .bankWrap .creditHref a:hover {
-    color: #434343;
+    color: #747474;
     text-decoration: none;
   }
 }
@@ -6682,7 +6681,7 @@
     font: 18px Tahoma, sans-serif;
   }
   .bBuyingInfo span {
-    font: 14px Tahoma, sans-serif;
+    font-size: 14px;
   }
   .bBuyingInfo span.placeholder {
     color: #000000;
@@ -7090,11 +7089,13 @@
     width: 440px;
   }
   .phonePH.qiwi span.placeholder {
-    font-size: 14px;
+    font-size: 12px;
+    color: #616161;
   }
   .phonePH.qiwi #qiwi_phone {
     width: 230px;
-    font-size: 14px;
+    color: #616161;
+    font-size: 12px;
   }
   #addressField dd div {
     float: left;
@@ -7324,10 +7325,18 @@
     margin: 5px 0 0 20px;
   }
   .mPayMethods .bPayMethodAction {
-    margin: 10px 0 0 20px;
+    margin: 10px 0 20px 20px;
+    font-size: 12px;
+    color: #616161;
   }
   .mPayMethods .bPayMethodAction input {
     margin: 0 0 5px;
+  }
+  .mPayMethods .bPayMethodAction span {
+    font-size: 12px;
+  }
+  .mPayMethods .bPayMethodAction .bSelectWrap_eText {
+    color: #616161;
   }
 }
 /*---END---СТИЛИ ОФОРМЛЕНИЯ ЗАКАЗА---*/

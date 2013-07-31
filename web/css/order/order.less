@@ -92,7 +92,7 @@
     font: 18px Tahoma, sans-serif;
   }
   span {
-    font: 14px Tahoma, sans-serif;
+    font-size: 14px;
     &.placeholder {
       color: @black;
       line-height: 30px;
@@ -486,11 +486,13 @@ li.bBuyingDates__eRight{
   }
   &.qiwi{
     span.placeholder{
-      font-size: 14px;
+      font-size: 12px;
+      color: @typBoxShadowColor;
     }
     #qiwi_phone {
       width: 230px;
-      font-size: 14px;
+      color: @typBoxShadowColor;
+      font-size: 12px;
     }
   }
 }
@@ -723,9 +725,20 @@ li.bBuyingDates__eRight{
   }
 
   .bPayMethodAction {
-    margin: 10px 0 0 20px;
+    margin: 10px 0 20px 20px;
+    font-size: 12px;
+    color: @typBoxShadowColor;
+
       input {
         margin: 0 0 5px;
+      }
+
+      span {
+        font-size: 12px;
+      }
+
+      .bSelectWrap_eText {
+        color: @typBoxShadowColor;
       }
   }
 }
