@@ -108,15 +108,8 @@
 			if (typeof(_kmq) !== 'undefined') {
 				_kmq.push(['record', 'Add to Cart', toKISS_pr ]);
 			}
-
-            if (typeof(LiveTex) !== 'undefined') {
-                try{
-                    LiveTex.addToCart(productData.article, productData.name, nowUrl);
-                }catch(err){
-                }
-            }
 		}
-		if (data.service){
+		if ( data.service ) {
 			var serviceData = data.service;
 			var productData = data.product;
 			var toKISS_serv = {
@@ -155,9 +148,12 @@
 	};
 
 
-	var buyProcessing = function(event, data){
+	var buyProcessing = function( event, data ) {
 		kissAnalytics(data);
 		// sendAnalytics();
+        if ( typeof(LiveTex.addToCart) == 'function' ) {
+            LiveTex.addToCart( data.product );
+        }
 
 		if (!blackBox) {
 			return false;
