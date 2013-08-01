@@ -192,7 +192,7 @@ class Client {
                     try {
                         $content = curl_multi_getcontent($handler);
                         if (null === $content) {
-                            throw new \RuntimeException(sprintf('Пустой ответ %s %s', $info['url'], json_encode($this->queries[$this->queryIndex[(string)$handler]]['query']['data'], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)));
+                            throw new \RuntimeException(sprintf('Пустой ответ %s %s %s', $info['url'], json_encode($this->queries[$this->queryIndex[(string)$handler]]['query']['data'], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), json_encode($info, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)));
                         }
                         $header = $this->header($content, true);
 

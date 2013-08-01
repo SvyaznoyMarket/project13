@@ -71,6 +71,8 @@ class AppConfig {
         'url'            => null,
         'timeout'        => null,
         'throwException' => null,
+        'retryTimeout' => [],
+        'retryCount'   => null,
     ];
     /** @var array */
     public $dataStore = [
