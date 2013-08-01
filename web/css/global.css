@@ -878,6 +878,11 @@
   .mb35 {
     margin-bottom: 35px;
   }
+  .mLoader {
+    background: url('/css/common/img/preloader.gif') no-repeat center center;
+    min-height: 50px;
+    display: block;
+  }
 }
 @media all {
   .bGrayButton {
@@ -2843,6 +2848,19 @@
     height: 18px;
     width: 100%;
   }
+  #order1click-container-new table td .subscibe {
+    filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
+    -moz-opacity: 0;
+    -khtml-opacity: 0;
+    -webkit-opacity: 0;
+    opacity: 0;
+    -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
+    filter: alpha(opacity=0);
+    position: absolute;
+    z-index: -1;
+    width: 13px;
+    height: 13px;
+  }
   #order1click-container-new table td a,
   #order1click-container-new table td img {
     outline: none;
@@ -3737,8 +3755,11 @@
   }
   .bigfilter li label {
     cursor: pointer;
-    display: block;
     font-size: 12px;
+    display: inline-block;
+    *display: inline;
+    zoom: 1;
+    width: 200px;
   }
   .bSpec {
     -webkit-border-radius: 5px;
@@ -3792,7 +3813,7 @@
     padding-left: 10px;
   }
   .bSpec li {
-    padding: 5px 5px 5px 35px;
+    padding: 5px 5px 5px 10px;
   }
   /*.bigfilter DT.first {
     border: 0px;
@@ -3889,7 +3910,7 @@
   }
   label.checkbox span.holder {
     background: url("/css/leftNav/img/leftNavSprite.png") 0px 0px no-repeat;
-    height: 32px;
+    height: 13px;
   }
   label.radio {
     line-height: 15px;
@@ -3897,34 +3918,37 @@
   label.radio span.holder {
     background: url("/css/leftNav/img/radioBtn.png") no-repeat 0 -13px;
     top: 0 !important;
-    height: 32px;
+    height: 13px;
   }
   label.checkbox:hover span.holder,
   label.radio:hover span.holder {
-    top: 0px !important;
+    top: 0px;
   }
   label.checked span.holder {
-    top: -16px !important;
+    background-position: 0 -16px;
   }
   label.radio.checked span.holder {
     background-position: 0 0;
-    top: 0 !important;
   }
   label.checked:hover span.holder {
-    top: -16px !important;
-  }
-  label.radio.checked:hover span.holder {
-    top: 0 !important;
+    background-position: 0 -16px;
   }
   input.hiddenCheckbox {
-    left: -10000px;
     position: absolute;
+    filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
+    -moz-opacity: 0;
+    -khtml-opacity: 0;
+    -webkit-opacity: 0;
+    opacity: 0;
+    -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
+    filter: alpha(opacity=0);
+    position: absolute;
+    z-index: -1;
   }
   label.prettyCheckbox span.holderWrap {
     display: block;
     float: left;
-    margin: 1px 5px 0px -18px;
-    *margin-left: -20px;
+    margin: 1px 5px 0px 0;
     overflow: hidden;
     position: relative;
   }
@@ -4538,6 +4562,13 @@
   }
   .bShopInStockNoItem {
     font-size: 16px;
+  }
+  .seoContent ul {
+    margin: 0 0 0 20px;
+  }
+  .seoContent ul li {
+    list-style-type: disc;
+    margin: 0 0 10px 17px;
   }
 }
 /*страница с промо каталогом */
@@ -9977,8 +10008,8 @@
     vertical-align: bottom;
   }
   .bProductDescImg .bProductDescImgBig__eImg {
-    max-width: 400px;
-    max-height: 400px;
+    width: 400px;
+    height: 400px;
   }
   .bPhotoAction {
     margin: 15px 0 0;
@@ -11431,6 +11462,11 @@
   }
   .jewel .bProductSection .bSpecifications__eList dd span {
     bottom: 0;
+  }
+  .jewel .bigbuttonlink {
+    background: #000000;
+    border-color: #000000;
+    font-weight: normal;
   }
 }
 /*---END---СТИЛИ БРЕНД РАЗДЕЛА PANDORA---*/

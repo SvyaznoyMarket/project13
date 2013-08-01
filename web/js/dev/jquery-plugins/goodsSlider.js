@@ -41,7 +41,7 @@
 				wrap = $self.find(options.sliderWrapperSelector),
 				slider = $self.find(options.sliderSelector),
 				item = $self.find(options.itemSelector),
-				catItem = $self.find(options.categoryItemselector),
+				catItem = $self.find(options.categoryItemSelector),
 
 				itemW = item.width() + parseInt(item.css('marginLeft'),10) + parseInt(item.css('marginRight'),10),
 				elementOnSlide = wrap.width()/itemW,
@@ -114,6 +114,7 @@
 					nowLeft = 0;
 					leftBtn.addClass('mDisabled');
 					slider.css({'left':nowLeft});
+					wrap.removeClass('mLoader');
 					nowItems.show();
 				},
 
@@ -148,22 +149,19 @@
 					var newSlider;
 
 					if ( !res.success ){
+						$self.remove();
+						
 						return false;
 					}
 
 					newSlider = $(res.content);
 					$self.before(newSlider);
+					$self.remove();
 					newSlider.goodsSlider();
+
 				};
 			// end of function
 		
-
-			if ( hasCategory ) {
-				showCategoryGoods();
-			}
-			else {
-				reWidthSlider( item );
-			}
 
 			if ( sliderParams.url !== null ) {
 				$.ajax({
@@ -171,6 +169,14 @@
 					url: sliderParams.url,
 					success: authFromServer
 				});
+			}
+			else {
+				if ( hasCategory ) {
+					showCategoryGoods();
+				}
+				else {
+					reWidthSlider( item );
+				}
 			}
 
 			rightBtn.on('click', nextSlide);
@@ -185,7 +191,7 @@
 		sliderWrapperSelector: '.bSliderAction__eInner',
 		sliderSelector: '.bSliderAction__eList',
 		itemSelector: '.bSliderAction__eItem',
-		categoryItemselector: '.bGoodsSlider__eCatItem'
+		categoryItemSelector: '.bGoodsSlider__eCatItem'
 	};
 
 })(jQuery);

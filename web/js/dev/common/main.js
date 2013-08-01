@@ -26,7 +26,7 @@ $(document).ready(function(){
 				mailPhoneInput.attr('maxlength', 10);
 				mailPhoneInput.addClass('registerPhone');
 				$('.registerPhonePH').show();
-				subscibe.hide();
+				// subscibe.hide();
 			}
 			else {
 				chEmail = true;
@@ -35,7 +35,7 @@ $(document).ready(function(){
 				mailPhoneInput.removeAttr('maxlength');
 				mailPhoneInput.removeClass('registerPhone');
 				$('.registerPhonePH').hide();
-				subscibe.show();
+				// subscibe.show();
 			}
 
 			mailPhoneInput.val('');
