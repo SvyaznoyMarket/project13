@@ -412,24 +412,26 @@
             var self = this;
 
             function thereIsExactPropertie( list, propertie, value ) {
-                for(var ind=0, le = list.length; ind<le; ind++) {
-                    if( list[ind][ propertie ] === value ) {
+                for ( var ind = 0, le = list.length; ind < le; ind++ ) {
+                    if ( list[ind][ propertie ] === value ) {
                         return true;
                     }
                 }
+
                 return false;
             }
 
             function getIntervalsFromData( list, propertie, value ) { // here 'interval' mean Model , date linked
                 var out = [];
-                for(var ind=0, le = list.length; ind<le; ind++) {
-                    if( list[ind][ propertie ] === value ) {
-                        for( var key in list[ind].intervals ) {
+
+                for ( var ind = 0, le = list.length; ind < le; ind++ ) {
+                    if ( list[ind][ propertie ] === value ) {
+                        for ( var key in list[ind].intervals ) {
                             out.push( 'c ' + list[ind].intervals[key].start_at + ' по '+ list[ind].intervals[key].end_at );
                         }
                         return out;
                     }
-                    return false
+                    // return false
                 }
                 return false;
             }
@@ -496,6 +498,7 @@
             }
 
             function calculateDates( box ) {
+
                 // Algorithm for Dates Compilation
                 // divided into 4 steps:
                 box.caclDates = [];
@@ -521,37 +524,55 @@
                 // 3) Make Dates By T Interval
                 var doweeks = ['Вс','Пн','Вт','Ср','Чт','Пт','Сб'];
                 var nweeks = 1;
-                while( first.getTime()*1 <= last.getTime()*1 ) {
+
+                while ( first.getTime()*1 <= last.getTime() * 1 ) {
                     var linerDate = {
-                        dayOfWeek: doweeks[ first.getDay()*1 ],
+                        dayOfWeek: doweeks[ first.getDay() * 1 ],
                         day: first.getDate()*1,
                         tstamp: first.getTime()*1,
                         week: nweeks,
                         enable: ko.observable( false )
                     };
+
                     if( !first.getDay() ) {
                         nweeks++;
                     }
+
                     box.caclDates.push( linerDate );
                     linerDate = null;
                     first.setTime( first.getTime()*1 + 24*60*60*1000 );
                 }
+
                 box.nweeks = nweeks-1;
                 // 4) Loop
-                up:             for( var linedate in box.caclDates ) { // Loop for T Interval
-                    var dates = []
-                    for(var i=0, l=box.itemList().length; i<l; i++) { // Loop for all intervals
-                        var bid = box.token
-                        dates = box.itemList()[i].deliveries[bid].dates
-                        if( ! thereIsExactPropertie( dates, 'timestamp', box.caclDates[linedate].tstamp ) ) {
-                            box.caclDates[linedate].enable( false )
-                            continue up
+                
+
+up:             for( var linedate in box.caclDates ) { // Loop for T Interval
+                    var dates = [];
+
+                    for ( var i = 0, l = box.itemList().length; i < l; i++ ) { // Loop for all intervals
+                        var bid = box.token;
+
+                        dates = box.itemList()[i].deliveries[bid].dates;
+
+                        if ( ! thereIsExactPropertie( dates, 'timestamp', box.caclDates[linedate].tstamp ) ) {
+
+
+                            box.caclDates[linedate].enable( false );
+
+                            continue up;
                         }
-                        box.caclDates[linedate].enable( true )
+
+                        box.caclDates[linedate].enable( true );
                     }
                     //add intervals ATTENTION : NO COMPILATION FOR INTERVALS
-                    box.caclDates[linedate].intervals = getIntervalsFromData( dates, 'timestamp', box.caclDates[linedate].tstamp )
+
+                    var intervals = getIntervalsFromData( dates, 'timestamp', box.caclDates[linedate].tstamp );
+
+                    box.caclDates[linedate].intervals = intervals;
+
                 }
+
             } // fn calculateDates
 
             function addBox ( type, token, items, shop ) {
@@ -573,9 +594,11 @@
                 box.currentIntervals = ko.observableArray([]);
                 // console.log(box.caclDates)
                 var i = 0;
+
                 for( var linedate in box.caclDates ) { // Chosen Date is the first enabled
                     i++;
-                    if( box.caclDates[linedate].enable() ) {
+                   
+                    if ( box.caclDates[linedate].enable() ) {
                         box.chosenDate( box.caclDates[linedate].tstamp );
                         box.chosenInterval( box.caclDates[linedate].intervals[0] );
                         for( var key in box.caclDates[linedate].intervals ) {
@@ -583,8 +606,8 @@
                         }
                         break;
                     }
-                    if (i===7) {
-                        i=0;
+                    if (i === 7) {
+                        i = 0;
                         box.curWeek( box.curWeek() + 1 );
                     }
 
@@ -1102,9 +1125,11 @@
         $('#order-submit').click( function(e) {
             broken = 0;
             e.preventDefault();
+
             if( sended ) {
                 return; // form is currently processing
             }
+
             if( $(this).hasClass('disable')) { // form isnot active - delivery should be chosen
                 return false;
             }
@@ -1117,20 +1142,24 @@
                 if( !form.find('[name="'+field+'"]:visible').length ) {
                     continue;
                 }
+
                 if (field=='order[recipient_phonenumbers]'){
                     var phoneVal = $('#order_recipient_phonenumbers').val();
                     if ( phoneVal.length < 10){
                         markError(field, 'Маловато цифр');
                     }
                 }
+
                 if (field=='order[qiwi_phone]'){
                     var phoneVal = $('#qiwi_phone').val();
                     if ( phoneVal.length < 10){
                         markError(field, 'Маловато цифр');
                     }
                 }
-                if (field=='order[recipient_email]'){
+
+                if (field=='order[recipient_email]') {
                     var emailVal = $('#order_recipient_email').val();
+
                     if( !emailVal && !$('input[name="order[one_click]"]').length ) {
                         if( $('#order_recipient_email').hasClass('abtestRequired') ) {
                             markError(field, 'Укажите ваш e-mail');
@@ -1139,11 +1168,13 @@
                         markError(field, 'Некорректный e-mail');
                     }
                 }
-                for(var i=0, l=serArray.length; i<l; i++) {
+
+                for( var i = 0, l = serArray.length; i < l; i++ ) {
                     if( serArray[i].name === field ) {
                         if( (serArray[i].value == '') && (field != 'order[recipient_email]') ) {
                             markError( field, fieldsToValidate[field] ); // cause is empty
                         }
+
                         continue flds;
                     }
                 }
