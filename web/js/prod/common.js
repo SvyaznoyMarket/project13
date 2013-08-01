@@ -147,140 +147,140 @@ $.ajaxSetup({
  */
  
  
-(function(){
-  $(function(){
-    if($('.bCtg__eMore').length) {
-      var expanded = false;
-      $('.bCtg__eMore').click(function(){
-        if(expanded) {
-          $(this).siblings('.more_item').hide();
-          $(this).find('a').html('еще...');
-        } else {
-          $(this).siblings('.more_item').show();
-          $(this).find('a').html('скрыть');
-        }
-        expanded = !expanded;
-        return false;
-      });
-    }
+// (function(){
+//   $(function(){
+//     if($('.bCtg__eMore').length) {
+//       var expanded = false;
+//       $('.bCtg__eMore').click(function(){
+//         if(expanded) {
+//           $(this).siblings('.more_item').hide();
+//           $(this).find('a').html('еще...');
+//         } else {
+//           $(this).siblings('.more_item').show();
+//           $(this).find('a').html('скрыть');
+//         }
+//         expanded = !expanded;
+//         return false;
+//       });
+//     }
 
-    /* Cards Carousel  */
-    function cardsCarouselTag ( nodes, noajax ) {
-      var current = 1;
+//     /* Cards Carousel  */
+//     function cardsCarouselTag ( nodes, noajax ) {
+//       var current = 1;
 
-      var wi  = nodes.width*1;
-      var viswi = nodes.viswidth*1;
+//       var wi  = nodes.width*1;
+//       var viswi = nodes.viswidth*1;
 
-      if( !isNaN($(nodes.times).html()) )
-        var max = $(nodes.times).html() * 1;
-      else
-        var max = Math.ceil(wi / viswi);
+//       if( !isNaN($(nodes.times).html()) )
+//         var max = $(nodes.times).html() * 1;
+//       else
+//         var max = Math.ceil(wi / viswi);
 
-      if((noajax !== undefined) && (noajax === true)) {
-        var buffer = 100;
-      } else {
-        var buffer = 2;
-      }
+//       if((noajax !== undefined) && (noajax === true)) {
+//         var buffer = 100;
+//       } else {
+//         var buffer = 2;
+//       }
 
-      var ajaxflag = false;
+//       var ajaxflag = false;
 
 
-      var notify = function() {
-        $(nodes.crnt).html( current );
-        if(refresh_max_page) {
-          $(nodes.times).html( max );
-        }
-        if ( current == 1 )
-          $(nodes.prev).addClass('disabled');
-        else
-          $(nodes.prev).removeClass('disabled');
-        if ( current == max )
-          $(nodes.next).addClass('disabled');
-        else
-          $(nodes.next).removeClass('disabled');
-      }
+//       var notify = function() {
+//         $(nodes.crnt).html( current );
+//         if(refresh_max_page) {
+//           $(nodes.times).html( max );
+//         }
+//         if ( current == 1 )
+//           $(nodes.prev).addClass('disabled');
+//         else
+//           $(nodes.prev).removeClass('disabled');
+//         if ( current == max )
+//           $(nodes.next).addClass('disabled');
+//         else
+//           $(nodes.next).removeClass('disabled');
+//       }
 
-      var shiftme = function() {  
-        var boxes = $(nodes.wrap).find('.goodsbox')
-        $(boxes).hide()
-        var le = boxes.length
-        for(var j = (current - 1) * viswi ; j < current  * viswi ; j++) {
-          boxes.eq( j ).show()
-        }
-      }
+//       var shiftme = function() {  
+//         var boxes = $(nodes.wrap).find('.goodsbox')
+//         $(boxes).hide()
+//         var le = boxes.length
+//         for(var j = (current - 1) * viswi ; j < current  * viswi ; j++) {
+//           boxes.eq( j ).show()
+//         }
+//       }
 
-      $(nodes.next).bind('click', function() {
-        if( current < max && !ajaxflag ) {
-          if( current + 1 == max ) { //the last pull is loaded , so special shift
+//       $(nodes.next).bind('click', function() {
+//         if( current < max && !ajaxflag ) {
+//           if( current + 1 == max ) { //the last pull is loaded , so special shift
 
-            var boxes = $(nodes.wrap).find('.goodsbox')
-            $(boxes).hide()
-            var le = boxes.length
-            var rest = ( wi % viswi ) ?  wi % viswi  : viswi
-            for(var j = 1; j <= rest; j++)
-              boxes.eq( le - j ).show()
-            current++
-          } else {
-            if( current + 1 >= buffer ) { // we have to get new pull from server
+//             var boxes = $(nodes.wrap).find('.goodsbox')
+//             $(boxes).hide()
+//             var le = boxes.length
+//             var rest = ( wi % viswi ) ?  wi % viswi  : viswi
+//             for(var j = 1; j <= rest; j++)
+//               boxes.eq( le - j ).show()
+//             current++
+//           } else {
+//             if( current + 1 >= buffer ) { // we have to get new pull from server
 
-              $(nodes.next).css('opacity','0.4') // addClass dont work ((
-              ajaxflag = true
-              var getData = []
-              if( $('form.product_filter-block').length )
-                getData = $('form.product_filter-block').serializeArray()
-              getData.push( {name: 'page', value: buffer+1 } )  
-              $.get( $(nodes.prev).attr('data-url') , getData, function(data) {
-                buffer++
-                $(nodes.next).css('opacity','1')
-                ajaxflag = false
-                var tr = $('<div>')
-                $(tr).html( data )
-                $(tr).find('.goodsbox').css('display','none')
-                $(nodes.wrap).html( $(nodes.wrap).html() + tr.html() )
-                tr = null
-              })
-              current++
-              shiftme()
-            } else { // we have new portion as already loaded one     
-              current++
-              shiftme() // TODO repair
-            }
-          }
-          notify()
-        }
-        return false
-      })
+//               $(nodes.next).css('opacity','0.4') // addClass dont work ((
+//               ajaxflag = true
+//               var getData = []
+//               if( $('form.product_filter-block').length )
+//                 getData = $('form.product_filter-block').serializeArray()
+//               getData.push( {name: 'page', value: buffer+1 } )  
+//               $.get( $(nodes.prev).attr('data-url') , getData, function(data) {
+//                 buffer++
+//                 $(nodes.next).css('opacity','1')
+//                 ajaxflag = false
+//                 var tr = $('<div>')
+//                 $(tr).html( data )
+//                 $(tr).find('.goodsbox').css('display','none')
+//                 $(nodes.wrap).html( $(nodes.wrap).html() + tr.html() )
+//                 tr = null
+//               })
+//               current++
+//               shiftme()
+//             } else { // we have new portion as already loaded one     
+//               current++
+//               shiftme() // TODO repair
+//             }
+//           }
+//           notify()
+//         }
+//         return false
+//       })
 
-      $(nodes.prev).click( function() {
-        if( current > 1 ) {
-          current--
-          shiftme()
-          notify()
-        }
-        return false
-      })
+//       $(nodes.prev).click( function() {
+//         if( current > 1 ) {
+//           current--
+//           shiftme()
+//           notify()
+//         }
+//         return false
+//       })
 
-      var refresh_max_page = false
-    } // cardsCarousel object
+//       var refresh_max_page = false
+//     } // cardsCarousel object
 
-    $('.carouseltitle').each( function(){
-      if($(this).find('.jshm').html()) {
-        var width = $(this).find('.jshm').html().replace(/\D/g,'');
-      } else {
-        var width = 3;
-      }
-      cardsCarouselTag({
-        'prev'  : $(this).find('.back'),
-        'next'  : $(this).find('.forvard'),
-        'crnt'  : $(this).find('.none'),
-        'times' : $(this).find('span:eq(1)'),
-        'width' : width,
-        'wrap'  : $(this).find('~ .carousel').first(),
-        'viswidth' : 3
-      });
-    })
-  });
-})();
+//     $('.carouseltitle').each( function(){
+//       if($(this).find('.jshm').html()) {
+//         var width = $(this).find('.jshm').html().replace(/\D/g,'');
+//       } else {
+//         var width = 3;
+//       }
+//       cardsCarouselTag({
+//         'prev'  : $(this).find('.back'),
+//         'next'  : $(this).find('.forvard'),
+//         'crnt'  : $(this).find('.none'),
+//         'times' : $(this).find('span:eq(1)'),
+//         'width' : width,
+//         'wrap'  : $(this).find('~ .carousel').first(),
+//         'viswidth' : 3
+//       });
+//     })
+//   });
+// })();
 
  
  
@@ -679,71 +679,6 @@ $(document).ready(function(){
 	$('body').on('click', '.goodsbox__inner', function(e) {
 		if ( $(this).attr('data-url') ) {
 			window.location.href = $(this).attr('data-url');
-		}
-	});
-
-
-	/* GA tracks */
-	var accessoriesMsg = {
-		uri: window.location.pathname,
-		atcl: $('.bGood__eArticle span:last').text().replace(/[^0-9\-]/g, '')
-	};
-	
-	$('.bigcarousel').eq(0).bind('click', function(e) {
-		if ( typeof(_gaq) !== 'undefined' ) {
-			_gaq.push(['_trackEvent', 'accessories_up', accessoriesMsg['atcl'], accessoriesMsg['uri'] ]);
-		}
-	});
-	$('.bigcarousel').eq(1).bind('click', function(e) {
-		if ( typeof(_gaq) !== 'undefined' ) {
-			_gaq.push(['_trackEvent', 'accessories_down', accessoriesMsg['atcl'], accessoriesMsg['uri'] ]);
-		}
-	});
-
-
-	//KISS
-	$('.bigcarousel .goodsbox__inner').bind('click', function(){
-		var data = $(this).data('product'),
-			toKISS = {};
-		// end of vars
-		
-		switch ( data.type ) {
-			case 'Accessorize':
-				toKISS = {
-					'Recommended Item Clicked Accessorize Recommendation Place':'product',
-					'Recommended Item Clicked Accessorize Clicked SKU':data.article,
-					'Recommended Item Clicked Accessorize Clicked Product Name':data.name,
-					'Recommended Item Clicked Accessorize Product Position':data.position
-				};
-
-				if ( typeof(_kmq) !== 'undefined' ) {
-					_kmq.push(['record', 'Recommended Item Clicked Accessorize', toKISS]);
-				}
-				break;
-			case 'Also Bought':
-				toKISS = {
-					'Recommended Item Clicked Also Bought Recommendation Place':'product',
-					'Recommended Item Clicked Also Bought Clicked SKU':data.article,
-					'Recommended Item Clicked Also Bought Clicked Product Name':data.name,
-					'Recommended Item Clicked Also Bought Product Position':data.position
-				};
-
-				if ( typeof(_kmq) !== 'undefined' ) {
-					_kmq.push(['record', 'Recommended Item Clicked Also Bought', toKISS]);
-				}
-				break;
-			case 'Also Viewed':
-				toKISS = {
-					'Recommended Item Clicked Also Viewed Recommendation Place':'product',
-					'Recommended Item Clicked Also Viewed Clicked SKU':data.article,
-					'Recommended Item Clicked Also Viewed Clicked Product Name':data.name,
-					'Recommended Item Clicked Also Viewed Product Position':data.position
-				};
-
-				if ( typeof(_kmq) !== 'undefined' ) {
-					_kmq.push(['record', 'Recommended Item Clicked Also Viewed', toKISS]);
-				}
-				break;
 		}
 	});
 
@@ -1795,16 +1730,11 @@ $(document).ready(function(){
 		var self = this;
 		var current = 1;
 
+		var triggerClick = false;
+
 		var refresh_max_page = false;
 		var current_accessory_category = '';
-		var grouped_accessories = {
-			'':{
-				'quantity':parseInt($($(nodes.wrap).find('.goodsbox')[0]).attr('data-quantity'), 10),
-				'totalpages':parseInt($($(nodes.wrap).find('.goodsbox')[0]).attr('data-total-pages'), 10),
-				'accessories':$(nodes.wrap).html(),
-				'buffer':buffer
-			}
-		};
+		
 
 		var wi  = nodes.width * 1;
 		var viswi = nodes.viswidth * 1;
@@ -1855,70 +1785,74 @@ $(document).ready(function(){
 			for(var j = (current - 1) * viswi ; j < current  * viswi ; j++) {
 				boxes.eq( j ).show();
 			}
+			
+			triggerClick = false;
 		};
 
 		$(nodes.next).bind('click', function() {
-			if ( grouped_accessories[current_accessory_category] ) {
-				buffer = grouped_accessories[current_accessory_category]['buffer'];
-
-				if ( !isNaN(grouped_accessories[current_accessory_category]['quantity']) ) {
-					wi = grouped_accessories[current_accessory_category]['quantity'];
-				}
+			if ( triggerClick ) {
+				return false;
 			}
-			if ( current < max && !ajaxflag ) {
-				if ( current + 1 == max ) { //the last pull is loaded , so special shift
 
-					var boxes = $(nodes.wrap).find('.goodsbox');
-					$(boxes).hide();
-					var le = boxes.length;
-					var rest = ( wi % viswi ) ?  wi % viswi  : viswi;
+			triggerClick = true;
 
-					for ( var j = 1; j <= rest; j++ ) {
-						boxes.eq( le - j ).show();
-					}
-					current++;
+			if ( current >= max && ajaxflag ) {
+				return false;
+			}
+
+			if ( current + 1 === max ) { 
+
+				var boxes = $(nodes.wrap).find('.goodsbox');
+				$(boxes).hide();
+				var le = boxes.length;
+				var rest = ( wi % viswi ) ?  wi % viswi  : viswi;
+
+				for ( var j = 1; j <= rest; j++ ) {
+					boxes.eq( le - j ).show();
 				}
-				else {
-					if ( current + 1 >= buffer ) { // we have to get new pull from server
+				current++;
+			}
+			else {
 
-						$(nodes.next).css('opacity','0.4'); // addClass dont work ((
-						ajaxflag = true;
-						var getData = [];
+				if ( current + 1 >= buffer ) { // we have to get new pull from server
+					$(nodes.next).css('opacity','0.4'); // addClass dont work ((
+					ajaxflag = true;
+					var getData = [];
 
-						if( $('form.product_filter-block').length ) {
-							getData = $('form.product_filter-block').serializeArray();
-						}
+					if( $('form.product_filter-block').length ) {
+						getData = $('form.product_filter-block').serializeArray();
+					}
 
-						getData.push( {name: 'page', value: buffer+1 } );
-						getData.push( {name: 'categoryToken', value: current_accessory_category } );
+					getData.push( {name: 'page', value: buffer+1 } );
+					getData.push( {name: 'categoryToken', value: current_accessory_category } );
 
-						$.get( $(nodes.prev).attr('data-url') , getData, function(data) {
-							buffer++;
-							$(nodes.next).css('opacity','1');
-							ajaxflag = false;
-							var tr = $('<div>');
-							$(tr).html( data );
-							$(tr).find('.goodsbox').css('display','none');
-							$(nodes.wrap).html( $(nodes.wrap).html() + tr.html() );
+					$.get( $(nodes.prev).attr('data-url') , getData, function(data) {
+						buffer++;
+						$(nodes.next).css('opacity','1');
+						ajaxflag = false;
+						var tr = $('<div>');
+						$(tr).html( data );
+						$(tr).find('.goodsbox').css('display','none');
+						$(nodes.wrap).html( $(nodes.wrap).html() + tr.html() );
 
-							if ( grouped_accessories[current_accessory_category] ) {
-								grouped_accessories[current_accessory_category]['accessories'] = $(nodes.wrap).html();
-								grouped_accessories[current_accessory_category]['buffer']++;
-							}
+						// if ( grouped_accessories[current_accessory_category] ) {
+						// 	grouped_accessories[current_accessory_category]['accessories'] = $(nodes.wrap).html();
+						// 	grouped_accessories[current_accessory_category]['buffer']++;
+						// }
 
-							tr = null;
-						// handle_custom_items()
-						});
+						tr = null;
 						current++;
 						shiftme();
-					}
-					else { // we have new portion as already loaded one			
-						current++;
-						shiftme(); // TODO repair
-					}
+					// handle_custom_items()
+					});
 				}
-				self.notify();
+				else { // we have new portion as already loaded one
+					current++;
+					shiftme(); // TODO repair
+				}
 			}
+			self.notify();
+
 			return false;
 		});
 
@@ -2402,178 +2336,210 @@ $(document).ready(function(){
  * Нужен рефакторинг
  *
  * @author		Zaytsev Alexandr
- * @requires	jQuery
+ * @requires	jQuery, jQuery.placeholder
+ *
+ * @param	{Object}	searchInput			Поле поиска
+ * @param	{Object}	suggestWrapper		Обертка для подсказок
+ * @param	{Object}	suggestItem			Результаты поиска
+ * 
+ * @param	{Number}	nowSelectSuggest	Текущий выделенный элемент, если -1 - значит выделенных элементов нет
+ * @param	{Number}	suggestLen			Количество результатов поиска
  */
 ;(function() {
-	var nowSelectSuggest = -1,
-		suggestLen = 0;
-	// end of vars
-	
+	var searchInput = $('.searchbox .searchtext'),
+		suggestWrapper = $('#searchAutocomplete'),
+		suggestItem = $('.bSearchSuggest__eRes'),
 
-	/**
-	 * Хандлер на поднятие клавиши в поле поиска
-	 * @param  {event} e
-	 */
-	var suggestUp = function suggestUp( e ) {
-			var text = $(this).attr('value'),
-				url = '/search/autocomplete?q='+encodeURI(text);
+		nowSelectSuggest = -1,
+		suggestLen = 0,
+
+		suggestCache = {},
+
+		tID = null;
+	// end of vars	
+
+
+	var suggestAnalytics = function suggestAnalytics() {
+			var link = suggestItem.eq(nowSelectSuggest).attr('href'),
+				type = ( suggestItem.eq(nowSelectSuggest).hasClass('bSearchSuggest__eCategoryRes') ) ? 'suggest_category' : 'suggest_product';
 			// end of vars
-
-			if ( !text.length ){
-				if ( $(this).siblings('.searchtextClear').length ) {
-					$(this).siblings('.searchtextClear').addClass('vh');
-				}
-			}
-			else {
-				if ( $(this).siblings('.searchtextClear').length ) {
-					$(this).siblings('.searchtextClear').removeClass('vh');
-				}
-			}
-
-			var authFromServer = function authFromServer( response ) {
-				$('#searchAutocomplete').html(response);
-				suggestLen = $('.bSearchSuggest__eRes').length;
-			};
-
-			if ( (e.which < 37 || e.which > 40) && (nowSelectSuggest = -1) ) {
-				if ( !text.length ) { 
-					return false;
-				}
-
-				if ( $(this).siblings('.searchtextClear').length ) {
-					$(this).siblings('.searchtextClear').removeClass('vh');
-				}
-				
-				$('.bSearchSuggest__eRes').removeClass('hover');
-				nowSelectSuggest = -1;
-
-				$.ajax({
-					type: 'GET',
-					url: url,
-					success: authFromServer
-				});
+			
+			if ( typeof(_gaq) !== 'undefined' ) {	
+				_gaq.push(['_trackEvent', 'Search', type, link]);
 			}
 		},
 
 		/**
-		 * Хандлер на нажатие клавиши в поле поиска
-		 * @param  {event} e
+		 * Обработчик поднятия клавиши
+		 * 
+		 * @param	{Event}		event
+		 * @param	{Number}	keyCode	Код нажатой клавиши
+		 * @param	{String}	text	Текст в поле ввода
 		 */
-		suggestDown = function suggestDown( e ) {
-			/**
-			 * маркировка пункта
-			 */
-			var markSuggest = function markSuggest() {
-					$('.bSearchSuggest__eRes').removeClass('hover').eq(nowSelectSuggest).addClass('hover');
+		suggestKeyUp = function suggestKeyUp( event ) {
+			var keyCode = event.which,
+				text = searchInput.attr('value');
+
+				/**
+				 * Отрисовка данных с сервера
+				 * 
+				 * @param	{String}	response	Ответ от сервера
+				 */
+			var renderResponse = function renderResponse( response ) {
+					suggestCache[text] = response; // memoization
+
+					suggestWrapper.html(response);
+					suggestItem = $('.bSearchSuggest__eRes');
+					suggestLen = suggestItem.length;
 				},
 
 				/**
-				 * стрелка вверх
+				 * Запрос на получение данных с сервера
 				 */
-				upSuggestItem = function upSuggestItem() {
+				getResFromServer = function getResFromServer() {
+					var url = '/search/autocomplete?q='+encodeURI(text);
+
+					$.ajax({
+						type: 'GET',
+						url: url,
+						success: renderResponse
+					});
+				};
+			// end of function
+
+			
+			if ( (keyCode >= 37 && keyCode <= 40) ||  keyCode === 27 || keyCode === 13) { // Arrow Keys or ESC Key or ENTER Key
+				return false;
+			}
+
+			if ( text.length === 0 ) {
+				suggestWrapper.empty();
+
+				return false;
+			}
+
+			clearTimeout(tID);
+
+			// memoization
+			if ( suggestCache[text] ) {
+				renderResponse(suggestCache[text]);
+
+				return false;
+			}
+			
+			tID = setTimeout(getResFromServer, 300);
+		},
+
+		/**
+		 * Обработчик нажатия клавиши
+		 * 
+		 * @param	{Event}		event
+		 * @param	{Number}	keyCode	Код нажатой клавиши
+		 */
+		suggestKeyDown = function suggestKeyDown( event ) {
+			var keyCode = event.which;
+
+			var markSuggestItem = function markSuggestItem() {
+					suggestItem.removeClass('hover').eq(nowSelectSuggest).addClass('hover');
+				},
+
+				selectUpItem = function selectUpItem() {
 					if ( nowSelectSuggest - 1 >= 0 ) {
 						nowSelectSuggest--;
-						markSuggest();
+						markSuggestItem();
 					}
-					else{
+					else {
 						nowSelectSuggest = -1;
-						$('.bSearchSuggest__eRes').removeClass('hover');
+						suggestItem.removeClass('hover');
 						$(this).focus();
 					}
-					
 				},
 
-				/**
-				 * стрелка вниз
-				 */
-				downSuggestItem = function downSuggestItem() {
+				selectDownItem = function selectDownItem() {
 					if ( nowSelectSuggest + 1 <= suggestLen - 1 ) {
 						nowSelectSuggest++;
-						markSuggest();
-					}			
+						markSuggestItem();
+					}
 				},
 
-				/**
-				 * нажатие клавиши 'enter'
-				 */
-				enterSuggest = function enterSuggest() {
-					var link = $('.bSearchSuggest__eRes').eq(nowSelectSuggest).attr('href'),
-						type = ($('.bSearchSuggest__eRes').eq(nowSelectSuggest).hasClass('bSearchSuggest__eCategoryRes')) ? 'suggest_category' : 'suggest_product';
-					// end of vars
+				enterSelectedItem = function enterSelectedItem() {
+					var link = suggestItem.eq(nowSelectSuggest).attr('href');
 					
-					if ( typeof(_gaq) !== 'undefined' ) {	
-						_gaq.push(['_trackEvent', 'Search', type, link]);
-					}
-
+					suggestAnalytics();
 					document.location.href = link;
 				};
 			// end of functions
 
-			if ( e.which === 38 ) {
-				upSuggestItem();
+			if ( keyCode === 38 ) { // Arrow Up
+				selectUpItem();
+
+				return false;
 			}
-			else if ( e.which === 40 ) {
-				downSuggestItem();
+			else if ( keyCode === 40 ) { // Arrow Down
+				selectDownItem();
+
+				return false;
 			}
-			else if ( e.which === 13 && nowSelectSuggest !== -1 ) {
-				e.preventDefault();
-				enterSuggest();
+			else if ( keyCode === 27 ) { // ESC Key
+				suggestWrapper.empty();
+				
+				return false;
+			}
+			else if ( keyCode === 13 && nowSelectSuggest !== -1 ) { // Press Enter and suggest has selected item
+				enterSelectedItem();
+
+				return false;
 			}
 		},
 
-		suggestInputFocus = function suggestInputFocus() {
-			nowSelectSuggest = -1;
-			$('.bSearchSuggest__eRes').removeClass('hover');
+		searchSubmit = function searchSubmit() {
+			var text = $('.searchbox .searchtext').attr('value');
+
+			if ( text.length === 0 ) {
+				return false;
+			}
 		},
 
-		suggestInputClick = function suggestInputClick() {
-			$('#searchAutocomplete').show();
+		searchInputFocusin = function searchInputFocusin() {
+			suggestWrapper.show();
+		},
+		
+		searchInputFocusout = function searchInputFocusout() {
+			suggestWrapper.hide();
+		},
+
+		/**
+		 * Срабатывание выделения и запоминание индекса выделенного элемента по наведению мыши
+		 */
+		hoverForItem = function hoverForItem() {
+			var index = 0;
+
+			suggestItem.removeClass('hover');
+			index = $(this).addClass('hover').index();
+			nowSelectSuggest = index - 1;
 		};
 	// end of functions
 
+
+	/**
+	 * Attach handlers
+	 */
 	$(document).ready(function() {
-		/**
-		 * навешивание хандлеров на поле поиска
-		 */
-		$('.searchbox .searchtext').keydown(suggestDown).keyup(suggestUp).mouseenter(suggestInputFocus).focus(suggestInputFocus).click(suggestInputClick).placeholder();
+		searchInput.bind('keydown', suggestKeyDown);
+		searchInput.bind('keyup', suggestKeyUp);
 
-		$('.searchbox .search-form').submit(function(){
-			var text = $('.searchbox .searchtext').attr('value');
+		searchInput.bind('focus', searchInputFocusin);
+		searchInput.bind('focusout', searchInputFocusout);
 
-			if ( !text.length ) {
-				return false;
-			}
-		});
+		searchInput.bind('submit', searchSubmit);
+		
+		searchInput.placeholder();
 
-		$('.bSearchSuggest__eRes').on('mouseover', function() {
-			var index = $(this).addClass('hover').index();
-
-			$('.bSearchSuggest__eRes').removeClass('hover');
-			nowSelectSuggest = index - 1;
-		});
-
-		$('body').click(function( e ) {		
-			var targ = e.target.className;
-
-			if ( !(targ.indexOf('bSearchSuggest') + 1 || targ.indexOf('searchtext') + 1) ) {
-				$('#searchAutocomplete').hide();
-			}
-		});
-
-		/**
-		 * suggest analitycs
-		 */
-		$('.bSearchSuggest__eRes').on('click', function() {
-			if ( typeof(_gaq) !== 'undefined' ) {
-				var type = ($(this).hasClass('bSearchSuggest__eCategoryRes')) ? 'suggest_category' : 'suggest_product',
-					url = $(this).attr('href');
-				// end of vars
-
-				_gaq.push(['_trackEvent', 'Search', type, url]);
-			}
-		});
+		$('body').on('mouseenter', '.bSearchSuggest__eRes', hoverForItem);
+		$('body').on('click', '.bSearchSuggest__eRes', suggestAnalytics);
 	});
 }());
+
  
  
 /** 
