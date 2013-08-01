@@ -19,7 +19,7 @@ class json2xml
 
 
     function __construct() {
-        define("MAX_IERATIONS", 100);
+        define("MAX_IERATIONS", 500);
         if ( file_exists( $this->log_file_name ) ) unlink( $this->log_file_name );
         $this->log_file = fopen($this->log_file_name, "w");
     }
@@ -57,6 +57,7 @@ class json2xml
     {
 
         $time_start = time();
+        self::echlog( 'Время начала: ' . $time_start );
 
         // config
         $json_path = '../../../cms.enter.ru/';
@@ -131,7 +132,7 @@ class json2xml
                 //self::echlog($json_line); // log // all product-info FROM JSON file
 
 
-                self::echlog ( 'ProductID ' . $params['id'] . '; ' . $progressbar  );
+                //self::echlog ( 'ProductID ' . $params['id'] . '; ' . $progressbar  );
                 //self::file_log ( 'ProductID ' . $params['id'] . '; ' . $progressbar  );
 
                 //self::echlog( $params ); // log // all product-info FOR XML file
@@ -171,8 +172,9 @@ class json2xml
 
 
         $time_end = time();
+        self::echlog( 'Время выполнения: ' . self::timeFromSeconds($time_end - $time_start) );
+        self::echlog( 'Время окончания: ' . $time_end );
 
-        $time_exe = ($time_end - $time_start);
 
         return $return;
     }
@@ -198,6 +200,32 @@ class json2xml
         }
 
         return false;
+    }
+
+
+    protected function timeFromSeconds($time) {
+        $m = $h = null;
+        $s = (int) $time;
+        if ( $s > 60 ) {
+            $m = (int) ( $s / 60 );
+            $s = $s % 60;
+            if ( $m > 60 )  {
+                $h = (int) ( $m / 60 );
+                $m = $m % 60;
+            }
+        }
+
+        $ret = "$s сек";
+        if ( $m ) {
+            $ret = "$m мин " . $ret;
+            if ( $h ) {
+                $ret = "$h ч " . $ret;
+            }
+        }
+
+        if ( $this->log_format != 'console' ) $ret = '<time>' . $ret. '</time>';
+
+        return $ret;
     }
 
 
