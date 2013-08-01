@@ -326,6 +326,8 @@ $c->maybe3d['timeout']    = 30;
 
 $c->tag['numSidebarCategoriesShown'] = 3;
 
+$c->sphinx['showFacets'] = true;
+
 $c->abtest = [
     'cookieName' => 'switch',
     'bestBefore' => '2013-08-20', //кука умрет в 00:00

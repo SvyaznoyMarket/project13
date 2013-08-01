@@ -110,6 +110,36 @@ $formData = array(
                                 <td><span data-bind="text: title"></span>:</td>
                                 <td>
                                     <input data-bind="event: { change: $root.validateField }, value: value, attr: { name: name, id: selectorid }, css: { mEmpty: valerror }" class='bFastInner__eInput'>
+
+                                    <!-- ko if: showsubscribe -->
+                                        <!-- ko if: valerror -->
+                                            <div class="bSubscibeWrapper hf pt10">
+                                                <label class="bSubscibe checked">
+                                                    <b></b> Хочу знать об интересных<br />предложениях
+                                                    <input type="checkbox" name="subscribe" value="1" autocomplete="off" class="subscibe" checked="checked" disabled="disabled" />
+                                                </label>
+                                            </div>
+                                        <!-- /ko -->
+                                        <!-- ko ifnot: valerror -->
+                                            <!-- ko if: value -->
+                                                <div class="bSubscibeWrapper pt10">
+                                                    <label class="bSubscibe checked">
+                                                        <b></b> Хочу знать об интересных<br />предложениях
+                                                        <input type="checkbox" name="subscribe" value="1" autocomplete="off" class="subscibe" checked="checked" />
+                                                    </label>
+                                                </div>
+                                            <!-- /ko -->
+                                            <!-- ko ifnot: value -->
+                                                <div class="bSubscibeWrapper hf pt10">
+                                                    <label class="bSubscibe checked">
+                                                        <b></b> Хочу знать об интересных<br />предложениях
+                                                        <input type="checkbox" name="subscribe" value="1" autocomplete="off" class="subscibe" checked="checked" disabled="disabled" />
+                                                    </label>
+                                                </div>
+                                            <!-- /ko -->
+                                        <!-- /ko -->
+                                    <!-- /ko -->
+
                                     <!-- ko if: valerror -->
                                     <span class='mEmpty'>(!) Пожалуйста, верно заполните поле</span>
                                     <!-- /ko -->
