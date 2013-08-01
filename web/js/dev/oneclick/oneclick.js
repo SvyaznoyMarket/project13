@@ -61,7 +61,7 @@ $(document).ready(function() {
 				name: 'order[recipient_first_name]', //UNIQUE!
 				selectorid: '',
 				value: firstNameVal,
-				valerror: ko.observable(false),
+				valerror: false,
 				showsubscribe: false,
 				regexp: /^[ёa-zа-я\s]+$/i
 			}) );
@@ -70,7 +70,7 @@ $(document).ready(function() {
 				name: 'order[recipient_phonenumbers]', //UNIQUE!
 				selectorid: 'phonemask',
 				value: phoneNumberVal,
-				valerror: ko.observable(false),
+				valerror: false,
 				showsubscribe: false,
 				regexp: /^[()0-9\-\+\s]+$/
 			}) );
@@ -79,7 +79,7 @@ $(document).ready(function() {
 				name: 'order[recipient_email]', //UNIQUE!
 				selectorid: 'recipientEmail',
 				value: emailVal,
-				valerror: ko.observable(false),
+				valerror: false,
 				showsubscribe: true,
 				regexp: /./
 			}) );
@@ -88,7 +88,7 @@ $(document).ready(function() {
 				name: 'order[recipient_scCard]', //UNIQUE!
 				selectorid: 'scCard',
 				value: scNum,
-				valerror: ko.observable(false),
+				valerror: false,
 				showsubscribe: false,
 				regexp: /^[()0-9\-\s]+$/
 			}) );
@@ -419,8 +419,12 @@ $(document).ready(function() {
 				}
 
 				for ( var i = 0, l = self.textfields.length; i < l; i++ ) { // like indexOf
-					if( self.textfields[i]().name === textfield.name ) {
-						self.textfields[i]().valerror(valerror);
+					if ( self.textfields[i]().name === textfield.name ) {
+						var tmp = self.textfields[i]();
+						tmp.valerror = valerror;
+						tmp.value = e.currentTarget.value;
+						self.textfields[i]( tmp );
+
 						break;
 					}
 				}
