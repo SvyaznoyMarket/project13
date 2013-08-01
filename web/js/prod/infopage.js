@@ -269,7 +269,7 @@ $(document).ready(function(){
 				return;
 			}
 
-			button.text('Идёт отправка...'); console.log('asd@@@@@@@@@');
+			button.text('Идёт отправка...');
 
 			$('#oneClickPromo input[type=text]').attr('disabled','disabled');
 
