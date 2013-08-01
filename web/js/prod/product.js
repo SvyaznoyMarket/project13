@@ -197,7 +197,8 @@
 				templateNow = tmpl('widget_delivery_shop',shopInfo);
 				shopList.append(templateNow);
 			}
-
+			
+			widgetBox.removeClass('mLoader');
 			nowBox.show();
 			$('.bDeliveryFreeAddress__eLink').bind('click', showAvalShop);
 			toggleBtn.bind('click', shopToggle);
@@ -216,6 +217,8 @@
 			var deliveryInfo = res.product[0].delivery;
 
 			if ( !res.success ) {
+				widgetBox.remove();
+
 				return false;
 			}
 
@@ -250,6 +253,8 @@
 						break;
 				}
 			}
+
+			widgetBox.removeClass('mLoader');
 		};
 	// end of functions
 
@@ -854,8 +859,56 @@ $(document).ready(function() {
 		};
 
 		if ( typeof(_kmq) !== 'undefined' ) {
-			_kmq.push(['record', 'Viewed Product',toKISS]);
+			_kmq.push(['record', 'Viewed Product', toKISS]);
 		}
+
+
+		// KISS for goods sliders
+		var kissForGoodsSliders = function kissForGoodsSliders(){
+			var data = $(this).data('product'),
+				toKISS = {};
+			// end of vars
+			
+			switch ( data.type ) {
+				case 'Accessorize':
+					toKISS = {
+						'Recommended Item Clicked Accessorize Recommendation Place':'product',
+						'Recommended Item Clicked Accessorize Clicked SKU':data.article,
+						'Recommended Item Clicked Accessorize Clicked Product Name':data.name,
+						'Recommended Item Clicked Accessorize Product Position':data.position
+					};
+
+					if ( typeof(_kmq) !== 'undefined' ) {
+						_kmq.push(['record', 'Recommended Item Clicked Accessorize', toKISS]);
+					}
+					break;
+				case 'Also Bought':
+					toKISS = {
+						'Recommended Item Clicked Also Bought Recommendation Place':'product',
+						'Recommended Item Clicked Also Bought Clicked SKU':data.article,
+						'Recommended Item Clicked Also Bought Clicked Product Name':data.name,
+						'Recommended Item Clicked Also Bought Product Position':data.position
+					};
+
+					if ( typeof(_kmq) !== 'undefined' ) {
+						_kmq.push(['record', 'Recommended Item Clicked Also Bought', toKISS]);
+					}
+					break;
+				case 'Also Viewed':
+					toKISS = {
+						'Recommended Item Clicked Also Viewed Recommendation Place':'product',
+						'Recommended Item Clicked Also Viewed Clicked SKU':data.article,
+						'Recommended Item Clicked Also Viewed Clicked Product Name':data.name,
+						'Recommended Item Clicked Also Viewed Product Position':data.position
+					};
+
+					if ( typeof(_kmq) !== 'undefined' ) {
+						_kmq.push(['record', 'Recommended Item Clicked Also Viewed', toKISS]);
+					}
+					break;
+			}
+		};
+		// $('body').on('click', '.bSliderAction__eItem', kissForGoodsSliders);
 	})();
 	
 

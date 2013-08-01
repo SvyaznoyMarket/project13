@@ -28,7 +28,8 @@ use Model\Product\Filter\Entity as FilterEntity;
                 <span class="holderWrap" style="width: 13px; height: 13px; ">
                     <span class="holder" style="width: 13px; "></span>
                 </span>
-                <?= $option->getName() ?>
+                <? $quantity = empty(\App::config()->sphinx['showFacets']) ? 0 : $option->getQuantity() ?>
+                <?= $option->getName() ?> <? if(!empty($quantity)): ?><span class="gray">(<?= $quantity ?>)</span><? endif ?>
             </label>
         </li>
         <? $i++; } ?>

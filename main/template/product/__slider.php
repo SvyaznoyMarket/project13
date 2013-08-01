@@ -17,7 +17,7 @@ return function (
 
     $sliderId = 'slider-' . uniqid();
 ?>
-<div class="bGoodsSlider clearfix<? if ((bool)$categories): ?> mWithCategory<? endif ?><? if ($url && !(bool)$products): ?> hidden<? endif ?>"  data-slider="<?= $helper->json([
+<div class="bGoodsSlider clearfix<? if ((bool)$categories): ?> mWithCategory<? endif ?><? if ($url && !(bool)$products): ?> <? endif ?>"  data-slider="<?= $helper->json([
         'count' => $count,
         'limit' => $limit,
         'url'   => $url,
@@ -40,13 +40,16 @@ return function (
 
     <div class="bSliderAction<? if ($class): ?> <?= $class ?><? endif ?>">
 
-        <div class="bSliderAction__eInner">
+        <div class="bSliderAction__eInner mLoader">
             <ul class="bSliderAction__eList clearfix">
             <? foreach ($products as $product): ?>
             <?
                 $category = $product->getParentCategory() ? $product->getParentCategory() : null;
             ?>
-                <li class="bSliderAction__eItem" data-category="<?= $category ? ($sliderId . '-category-' . $category->getId()) : null ?>">
+                <li class="bSliderAction__eItem" data-category="<?= $category ? ($sliderId . '-category-' . $category->getId()) : null ?>" data-product="<?= $helper->json([
+                        'article' => $product->getArticle(),
+                        'name' => $product->getName(),
+                    ]) ?>">
                     <div class="product__inner">
                         <a class="productImg" href="<?= $helper->url('product', ['productPath' => $product->getPath()]) ?>"><img src="<?= $product->getImageUrl() ?>" alt="<?= $helper->escape($product->getName()) ?>" /></a>
                         <div class="productName"><a href="<?= $helper->url('product', ['productPath' => $product->getPath()]) ?>"><?= $product->getName() ?></a></div>
