@@ -1229,86 +1229,86 @@ console.log(222)
                         _gaq.push(['_trackTiming', 'Order complete', 'DB response', AjaxOrderSpent]);
                     }
 
-                    var phoneNumber = '8' + $('#order_recipient_phonenumbers').val().replace(/\D/g, "");
-                    var emailVal = $('#order_recipient_email').val();
+                    // var phoneNumber = '8' + $('#order_recipient_phonenumbers').val().replace(/\D/g, "");
+                    // var emailVal = $('#order_recipient_email').val();
 
-                    /**
-                     * Стоимость доставки
-                     * @type {Number}
-                     */
-                    var dlvr_total = 0;
+                    // /**
+                    //  * Стоимость доставки
+                    //  * @type {Number}
+                    //  */
+                    // var dlvr_total = 0;
 
-                    $.each(MVM.dlvrBoxes(), function(i, product){
-                        dlvr_total += product.dlvrPrice();
-                    });
+                    // $.each(MVM.dlvrBoxes(), function(i, product){
+                    //     dlvr_total += product.dlvrPrice()
+                    // });
 
-                    /**
-                     * количество товаров
-                     * @type {Number}
-                     */
-                    var itemQ = 0,
-                    /**
-                     * Стоимость всех товаров
-                     * @type {Number}
-                     */
-                        itemT = 0,
-                    /**
-                     * Количество услуг
-                     * @type {Number}
-                     */
-                        servQ = 0,
-                    /**
-                     * Стоимость всех услуг
-                     * @type {Number}
-                     */
-                        servT = 0,
-                    /**
-                     * Количество расширенных гарантий
-                     * @type {Number}
-                     */
-                        warrQ = 0,
-                    /**
-                     * Стоимость всех расширенных гарантий
-                     * @type {Number}
-                     */
-                        warrT = 0;
-                    //end of vars
+                    // /**
+                    //  * количество товаров
+                    //  * @type {Number}
+                    //  */
+                    // var itemQ = 0,
+                    // /**
+                    //  * Стоимость всех товаров
+                    //  * @type {Number}
+                    //  */
+                    //     itemT = 0,
+                    // /**
+                    //  * Количество услуг
+                    //  * @type {Number}
+                    //  */
+                    //     servQ = 0,
+                    // /**
+                    //  * Стоимость всех услуг
+                    //  * @type {Number}
+                    //  */
+                    //     servT = 0,
+                    // /**
+                    //  * Количество расширенных гарантий
+                    //  * @type {Number}
+                    //  */
+                    //     warrQ = 0,
+                    // /**
+                    //  * Стоимость всех расширенных гарантий
+                    //  * @type {Number}
+                    //  */
+                    //     warrT = 0;
+                    // //end of vars
 
-                    for ( var tkn in MVM.dlvrBoxes() ) {
-                        var dlvr = MVM.dlvrBoxes()[tkn];
+                    // for ( var tkn in MVM.dlvrBoxes() ) {
+                    //     var dlvr = MVM.dlvrBoxes()[tkn];
 
-                        for ( var i in dlvr.itemList() ) {
-                            itemQ += dlvr.itemList()[i].quantity;
-                            itemT += dlvr.itemList()[i].price;
-                            servQ += dlvr.itemList()[i].serviceQ;
-                            servT += dlvr.itemList()[i].serviceTotal;
-                            warrQ += dlvr.itemList()[i].warrantyQ;
-                            warrT += dlvr.itemList()[i].warrantyTotal;
-                        }
-                    }
+                    //     for ( var i in dlvr.itemList() ) {
+                    //         itemQ += dlvr.itemList()[i].quantity;
+                    //         itemT += dlvr.itemList()[i].price;
+                    //         servQ += dlvr.itemList()[i].serviceQ;
+                    //         servT += dlvr.itemList()[i].serviceTotal;
+                    //         warrQ += dlvr.itemList()[i].warrantyQ;
+                    //         warrT += dlvr.itemList()[i].warrantyTotal;
+                    //     }
+                    // }
 
-                    var toKISS_complete = {
-                        'Checkout Complete Order ID':data.orderNumber,
-                        'Checkout Complete SKU Quantity':itemQ,
-                        'Checkout Complete SKU Total':itemT,
-                        'Checkout Complete F1 Quantity':servQ,
-                        'Checkout Complete F1 Total':servT,
-                        'Checkout Complete Warranty Quantity':warrQ,
-                        'Checkout Complete Warranty Total':warrT,
-                        'Checkout Complete Order Subtotal':itemT + servT + warrT,
-                        'Checkout Complete Delivery Total':parseInt(dlvr_total),
-                        'Checkout Complete Order Total':MVM.totalSum(),
-                        'Checkout Complete Order Type':'cart order',
-                        'Checkout Complete Delivery':nowDelivery,
-                        'Checkout Complete Payment':data.paymentMethodId
-                    };
+                    // var toKISS_complete = {
+                    //     'Checkout Complete Order ID':data.orderNumber,
+                    //     'Checkout Complete SKU Quantity':itemQ,
+                    //     'Checkout Complete SKU Total':itemT,
+                    //     'Checkout Complete F1 Quantity':servQ,
+                    //     'Checkout Complete F1 Total':servT,
+                    //     'Checkout Complete Warranty Quantity':warrQ,
+                    //     'Checkout Complete Warranty Total':warrT,
+                    //     'Checkout Complete Order Subtotal':itemT + servT + warrT,
+                    //     'Checkout Complete Delivery Total':parseInt(dlvr_total),
+                    //     'Checkout Complete Order Total':MVM.totalSum(),
+                    //     'Checkout Complete Order Type':'cart order',
+                    //     'Checkout Complete Delivery':nowDelivery,
+                    //     'Checkout Complete Payment':data.paymentMethodId
+                    // };
 
-                    if ( (typeof(_kmq) !== 'undefined') && (KM !== 'undefined') ) {
-                        _kmq.push(['alias', phoneNumber, KM.i()]);
-                        _kmq.push(['alias', emailVal, KM.i()]);
-                        _kmq.push(['identify', phoneNumber]);
-                        _kmq.push(['record', 'Checkout Complete', toKISS_complete]);
-                    }
+                    // if ( (typeof(_kmq) !== 'undefined') && (KM !== 'undefined') ) {
+                    //     _kmq.push(['alias', phoneNumber, KM.i()]);
+                    //     _kmq.push(['alias', emailVal, KM.i()]);
+                    //     _kmq.push(['identify', phoneNumber]);
+                    //     _kmq.push(['record', 'Checkout Complete', toKISS_complete]);
+                    // }
                     
 
                     var newTkn = 0;

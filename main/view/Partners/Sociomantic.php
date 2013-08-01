@@ -126,7 +126,7 @@ class Sociomantic
      * Возвращает категории продукта в виде строки (для js-скрипта например) исходя из масива
      * @param $prod_cats_arr
      * @return string|bool
-     */
+     *//*
     public function prod_cats_in_string($prod_cats_arr = null, $prod_cats_names = null)
     {
         if (empty($prod_cats_arr) and empty($prod_cats_names)) return false;
@@ -172,28 +172,39 @@ class Sociomantic
         $prod_cats_string .= " ]";
         return $prod_cats_string;
     }
-
+    */
 
     /**
      * Конвертирует хлебные крошки в строку
      * @param $breadcrumbs
      * @return bool|string
      */
-    private function breadcrumbsToString($breadcrumbs)
+    private function breadcrumbsToString( $breadcrumbs, $useLastItem = false )
     {
-        foreach ($breadcrumbs as $item) {
-            $str = $item['name'];
-            if ($str) {
-                $str = str_replace("'", '"', $str);
-                $str = "'" . $str . "'";
-            }
-            $arr[] = $str;
-        }
+        if ( !empty($breadcrumbs) && is_array($breadcrumbs) ) {
 
-        $str = implode(', ', $arr);
-        if ($str) {
-            $str = '[' . $str . ']';
-            return $str;
+            $count = count($breadcrumbs);
+            $arr = [];
+            $i = 0;
+
+            foreach ($breadcrumbs as $item) {
+                $i++;
+                if ( ( !$useLastItem && $i < $count) || $useLastItem ) {
+                    $str = $item['name'];
+                    if ($str) {
+                        $str = str_replace("'", '"', $str);
+                        $str = "'" . $str . "'";
+                    }
+                    $arr[] = $str;
+                }
+            }
+
+            $str = implode(', ', $arr);
+            if ($str) {
+                $str = '[' . $str . ']';
+                return $str;
+            }
+
         }
 
         return false;

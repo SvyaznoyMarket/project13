@@ -357,7 +357,7 @@ class Action {
             ) {
                 $blockedIds = (array)\App::config()->payment['blockedIds'];
 
-                foreach ($data as $item) {
+                foreach ($data as $i => $item) {
                     $paymentMethod = new \Model\PaymentMethod\Entity($item);
                     if (in_array($paymentMethod->getId(), $blockedIds)) continue;
 
