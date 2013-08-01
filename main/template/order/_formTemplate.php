@@ -11,10 +11,11 @@
     </div>
 
     <div class="bOrderView" data-bind="visible: $root.showForm()" style="display:none">
-        <h2>Информация о заказе</h2>
-        <dl class="bBuyingLine mOrderMethod">
-            <dt class="bBuyingLine__eTitle">Выберите предпочтительный способ</dt>
-            <dd class="bBuyingLine__eContent">
+        <h2 class="bOrderView__eTitle">Информация о заказе</h2>
+
+        <div class="bBuyingLine mOrderMethod">
+            <div class="bBuyingLine__eLeft">Выберите предпочтительный способ</div>
+            <div class="bBuyingLine__eRight">
                 <!-- ko if: dlvrCourierEnable() -->
                 <label class="bBuyingLine__eLabel" for="order_delivery_type_id_1"
                        data-bind="click: pickCourier, css: {mChecked: !dlvrShopEnable()}">
@@ -37,8 +38,8 @@
                 <!-- /ko -->
 
                 <a href="#" style="display: none;" class="bBigOrangeButton mSelectShop selectShop" data-bind="visible: shopButtonEnable, click: showAllShops">Выберите магазин</a>
-            </dd>
-        </dl>
+            </div>
+        </div>
 
         <div id="orderMapPopup" class='popup'>
             <i class='close'></i>
@@ -89,48 +90,49 @@
             <!-- ko foreach: dlvrBoxes -->
             <div class="bBuyingLineWrap order-delivery-holder">
                 <div class="delivery-message red"></div>
-                <dl class="bBuyingLine">
-                    <dt class="bBuyingLine__eTitle">
+                <div class="bBuyingLine">
+                    <div class="bBuyingLine__eLeft">
                         
-                    <h2>
-                        <span data-bind="visible: type === 'self' ">Самовывоз</span>
-                        <span data-bind="visible: type === 'standart' ">Доставим</span>
-                        <span data-bind="text: $root.printDate( $data.chosenDate() )"></span>*
-                    </h2>
+                        <h2 class="bOrderView__eTitle">
+                            <span data-bind="visible: type === 'self' ">Самовывоз</span>
+                            <span data-bind="visible: type === 'standart' ">Доставим</span>
+                            <span data-bind="text: $root.printDate( $data.chosenDate() )"></span>*
+                        </h2>
 
-                    <div style="margin: 8px 0 12px 0;" class="bSelectWrap mFastInpSmall">
-                        <span class="bSelectWrap_eText" data-bind="text: $data.chosenInterval()"></span>
-                        <select id="order-interval_standart_rapid-holder" class='bSelect order-interval-holder' data-bind="options:currentIntervals, optionsText:$data, optionsValue:$data, value:chosenInterval">
-                        </select>
+                        <div class="bSelectWrap mFastInpSmall">
+                            <span class="bSelectWrap_eText" data-bind="text: $data.chosenInterval()"></span>
+                            <select id="order-interval_standart_rapid-holder" class='bSelect order-interval-holder' data-bind="options:currentIntervals, optionsText:$data, optionsValue:$data, value:chosenInterval">
+                            </select>
+                        </div>
+
+                        <div class="bOrderDeliveryPrice">
+                            <!-- ko if: dlvrPrice() > 0 -->
+                            <span class="bOrderDeliveryPrice__eItem mTextColor">Стоимость доставки
+                                <span data-bind="text: printPrice( dlvrPrice() )"></span>
+                                <span class="rubl">p</span>
+                            </span>
+                            <!-- /ko -->
+
+                            <!-- ko if: dlvrPrice() <= 0 -->
+                            Бесплатно
+                            <span class="bOrderDeliveryPrice__eItem">Ожидайте смс-сообщение<br/>о приходе заказа в магазин</span>
+                            <!-- /ko -->
+
+                            <!-- ko if: supplied() -->
+                            <span class="bOrderDeliveryPrice__eItem mTextColor">Оператор контакт-cEnter<br/>подтвердит точную дату<br/>доставки за 2-3 дня.</span>
+                            <!-- /ko -->
+
+                            <!-- ko if: $parent.type === 'self' -->
+                            <span class="bOrderDeliveryPrice__eItem" data-bind="text: $parent.shop().name"></span>
+
+                            <a class="bBigOrangeButton bSelectShop" href="#"
+                               data-bind="click: function(data, event) { $root.showShopPopup($parent, data, event) }">Другой магазин</a>
+                            <!-- /ko -->
+                        </div>
                     </div>
 
-                    <i class="order-delivery_price">
-                        <!-- ko if: dlvrPrice() > 0 -->
-        				<span class="red">Стоимость доставки
-        					<span data-bind="text: printPrice( dlvrPrice() )"></span>
-        					<span class="rubl">p</span>
-        				</span>
-                        <!-- /ko -->
-                        <!-- ko if: dlvrPrice() <= 0 -->
-                        Бесплатно
-                        <span class="db pt20">Ожидайте смс-сообщение<br/>о приходе заказа в магазин</span>
-                        <!-- /ko -->
-                        <!-- ko if: supplied() -->
-                        <span class="red db pt20">Оператор контакт-cEnter<br/>подтвердит точную дату<br/>доставки за 2-3 дня.</span>
-                        <!-- /ko -->
-
-                        <!-- ko if: $parent.type === 'self' -->
-                        <span data-bind="text: $parent.shop().name"></span>
-                        <p></p>
-                        <a class="bBigOrangeButton selectShop" href="#"
-                           style="font-size: 16px; padding: 6px 30px; border: 1px solid #E26500;"
-                           data-bind="click: function(data, event) { $root.showShopPopup($parent, data, event) }">Другой магазин</a>
-                        <!-- /ko -->
-                    </i>
-                    </dt>
-                    <dd class="bBuyingLine__eContent">
+                    <div class="bBuyingLine__eRight">
                         <div class="bCelendar clearfix">
-                            <p></p>
                             <ul class="bBuyingDates">
                                 <li data-direction="prev" class="bBuyingDates__eLeft order-delivery_date-control"
                                     data-bind="click: function(data, event) { $root.changeWeek('-1', data, event) }">
@@ -139,10 +141,10 @@
                                 <!-- ko foreach: caclDates -->
                                 <li class="order-delivery_date"
                                     data-bind="style: { display: ( $data.week === $parent.curWeek() ) ? $root.cssForDate : 'none' },
-        								click: function(data, event) { $root.clickDate($parent, data, event) },
-        								css: { bBuyingDates__eEnable: $data.enable(),
-        										bBuyingDates__eDisable: (!$data.enable()),
-        										bBuyingDates__eCurrent: ($data.tstamp == $parent.chosenDate()) }">
+                                        click: function(data, event) { $root.clickDate($parent, data, event) },
+                                        css: { bBuyingDates__eEnable: $data.enable(),
+                                                bBuyingDates__eDisable: (!$data.enable()),
+                                                bBuyingDates__eCurrent: ($data.tstamp == $parent.chosenDate()) }">
                                     <span data-bind="text: day"></span> <span class="dow" data-bind="text: dayOfWeek"></span>
                                 </li>
                                 <!-- /ko -->
@@ -154,32 +156,28 @@
                         </div>
 
                         <!-- ko foreach: $data.itemList -->
-                        <dl class="bBuyingLine mProductsLine">
-                            <dt data-bind="ifnot: $index()*1">
+                        <div class="bBuyingLine mProductsLine">
+                            <div class="bBuyingLine__eLeft" data-bind="ifnot: $index()*1"></div>
 
-                            </dt>
-                            <dd class="order-item-holder">
-                                <div class="order-item-container">
-                                    <p><span data-bind="text: printPrice( $data.total )"></span> <span class="rubl">p</span></p>
+                            <div class="bBuyingLine__eRight">
+                                <div class="bOrderItems">
+                                    <div class="bItemsRow mItemImg"><img data-bind="attr: {src: $data.image, alt: $data.name }"/></div>
 
-                                    <p>
-                                        <a class="mBacket"
-                                           data-bind=" click: function(data, event) { $root.deleteItem($parent, data, event) }">удалить</a>
-                                    </p>
-                                    <img data-bind="attr: {src: $data.image, alt: $data.name }"/>
+                                    <div class="bItemsRow mItemInfo">
+                                        <a href="" target="_blank"
+                                           data-bind="html: name, attr: { href: $data.url }"></a>
+                                        <span class="bCountItem">(<span data-bind="text: $data.quantity "></span> шт.)</span>
+                                    </div>
 
-                                <span class="bBuyingLine__eInfo">
-                                    <a href="" target="_blank"
-                                       data-bind="html: name, attr: { href: $data.url }"></a>
-                                    <br/>
-                                    <span>(<span data-bind="text: $data.quantity "></span> шт.)</span>
-                                </span>
+                                    <div class="bItemsRow mItemRight"><a data-bind=" click: function(data, event) { $root.deleteItem($parent, data, event) }">удалить</a></div>
+
+                                    <div class="bItemsRow mItemRight"> <span data-bind="text: printPrice( $data.total )"></span> <span class="rubl">p</span></div>
                                 </div>
-                            </dd>
-                        </dl>
+                            </div>
+                        </div>
                         <!-- /ko -->
-                    </dd>
-                </dl>
+                    </div>
+                </div>
 
                 <div data-template="#order-delivery_total-template" class="order-delivery_total-holder">
                     <div class="bBuyingLineWrap__eSum">Итого с доставкой:

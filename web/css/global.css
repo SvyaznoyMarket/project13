@@ -11097,6 +11097,10 @@
     padding-left: 15px;
     font: 18px Tahoma, sans-serif;
   }
+  .bOrderView__eTitle {
+    font-size: 18px;
+    padding: 0;
+  }
   .bBuyingLineWrap {
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
@@ -11121,9 +11125,6 @@
   .bBuyingInfo {
     padding: 0px 0px 10px;
   }
-  .bBuyingInfo h2 {
-    font: 18px Tahoma, sans-serif;
-  }
   .bBuyingInfo span {
     font: 14px Tahoma, sans-serif;
   }
@@ -11139,7 +11140,10 @@
   .bBuyingLine {
     margin: 20px 0px;
   }
-  .bBuyingLine__eTitle {
+  .bBuyingLine.mOrderMethod {
+    padding: 0 15px;
+  }
+  .bBuyingLine__eLeft {
     display: inline-block;
     zoom: 1;
     width: 255px;
@@ -11148,33 +11152,15 @@
     font-size: 14px;
     *display: inline;
   }
-  .bBuyingLine__eTitle a {
-    text-decoration: none;
-    border-bottom: 1px solid #000000;
-    font: 14px Tahoma, sans-serif;
-  }
-  .bBuyingLine__eTitle h2 {
-    margin: 0px;
-    padding: 0px;
-    font: 18px Tahoma, sans-serif;
-  }
-  .bBuyingLine__eContent {
+  .bBuyingLine__eRight {
     display: inline-block;
     zoom: 1;
     width: 639px;
     vertical-align: top;
-    font-size: 14px;
     *display: inline;
   }
-  .bBuyingLine__eContent div {
-    position: relative;
-    margin: 15px 0px 0px;
-  }
-  .bBuyingLine__eContent div:first-child {
-    margin-top: 0px;
-  }
-  .bBuyingLine__eContent .mILong {
-    padding-left: 0px;
+  .bBuyingLine .mFastInpSmall {
+    margin: 8px 0 12px 0;
   }
   .bBuyingLine__eDesc {
     width: 450px;
@@ -11187,6 +11173,13 @@
     padding: 6px 30px;
     margin: 0 0 0 33px;
     font-size: 16px;
+  }
+  .bBuyingLine .bOrderDeliveryPrice__eItem {
+    display: block;
+    margin: 20px 0 0;
+  }
+  .bBuyingLine .bOrderDeliveryPrice .mTextColor {
+    color: #cb3735;
   }
   .bBuyingLine__eLabel {
     display: inline-block;
@@ -11215,6 +11208,33 @@
     display: inline-block;
     width: 400px;
     font-weight: bold;
+  }
+  .bBuyingLine .bOrderItems {
+    margin: 15px 0 5px;
+  }
+  .bBuyingLine .bOrderItems .bItemsRow {
+    display: inline-block;
+    width: 97px;
+    margin-right: 10px;
+    padding-top: 5px;
+    vertical-align: top;
+    *display: inline;
+    zoom: 1;
+  }
+  .bBuyingLine .bOrderItems .mItemImg {
+    width: 60px;
+    padding-top: 0;
+  }
+  .bBuyingLine .bOrderItems .mItemRight {
+    text-align: right;
+  }
+  .bBuyingLine .bOrderItems .mItemInfo {
+    width: 333px;
+    font-size: 12px;
+  }
+  .bBuyingLine .bOrderItems .mItemInfo .bCountItem {
+    color: #6e6e6e;
+    display: block;
   }
   .bBuyingLine p.subscribe {
     width: 130px;
@@ -11375,6 +11395,7 @@
     -moz-border-radius: 7px;
     border-radius: 7px;
     float: left;
+    margin: 26px 0 0;
     border: 1px solid #ddd;
     background: #f4f4f4;
     font-size: 0px;
