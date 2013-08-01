@@ -595,7 +595,7 @@ class Repository {
         });
         $dataStore->execute();
 
-        return empty($productJson) ? $productJson : $productJson['accessory_category_token'];
+        return empty($productJson) ? $productJson : (isset($productJson['accessory_category_token']) ? $productJson['accessory_category_token'] : null);
     }
 
 
