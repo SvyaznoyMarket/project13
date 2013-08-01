@@ -130,7 +130,7 @@ $(document).ready(function(){
 					form.html('<div class="subscribe-form__title">Спасибо! подтверждение подписки отправлено на указанный e-mail</div>');
 					window.docCookies.setItem('subscribed', 1, 157680000, '/');
 
-					form.after('<iframe src="https://track.cpaex.ru/affiliate/pixel/173/" height="1" width="1" frameborder="0" scrolling="no" ></iframe>');
+					//form.after('<iframe src="https://track.cpaex.ru/affiliate/pixel/173/" height="1" width="1" frameborder="0" scrolling="no" ></iframe>');
 
 					if( typeof(_gaq) !== 'undefined' ){
 						_gaq.push(['_trackEvent', 'subscribe', email, utm_source]);
@@ -144,49 +144,10 @@ $(document).ready(function(){
 		};
 
 		$('.subscribe-form__btn').bind('click', subscribing);
+
 	}
-	
 
-	if ( $('.subscribe-form__email').length && $('.show_flocktory_popup').length ) {
-		var input_friend = $('.subscribe-form__email');
 
-		var subscribing_friend = function subscribing_friend() {
-			var email_friend = input_friend.val();
-
-			if ( email_friend.search('@') !== -1 ) {
-				var flocktory_subscription_date = new Date();
-				var flocktory_subscription_date_string = flocktory_subscription_date.getFullYear() + '' + flocktory_subscription_date.getMonth() + '' + flocktory_subscription_date.getDay() + '' + flocktory_subscription_date.getHours() + '' + flocktory_subscription_date.getMinutes() + '' + flocktory_subscription_date.getSeconds() + '' + flocktory_subscription_date.getMilliseconds() + '' + Math.floor(Math.random() * 1000000);
-				var _flocktory = window._flocktory = _flocktory || [];
-
-				_flocktory.push({
-						"order_id": flocktory_subscription_date_string,
-						//"email": 'hello@flocktory.com',
-						"email": email_friend,
-						"name": email_friend,
-						"price": 0,
-						"domain": "registration.enter.ru",
-						"items": [{
-							"id": "подписка на рассылку",
-							"title": "подписка на рассылку",
-							"price":  0,
-							"image": "",
-							"count":  1
-						}]
-				});
-
-				(function () {     
-					var s = document.createElement('script');
-					s.type = 'text/javascript';
-					s.async = true;     
-					s.src = "//api.flocktory.com/1/hello.2.js";     
-					var l = document.getElementsByTagName('script')[0];
-					l.parentNode.insertBefore(s, l);   
-				})();
-			}
-		};
-
-		$('.subscribe-form__btn').bind('click', subscribing_friend);
-	}
 
 
 	/**
@@ -294,6 +255,7 @@ $(document).ready(function(){
 		};
 		
 		$('.bBigOrangeButton').click( function(e) {
+
 			var button = $(this),
 				data = $('#oneClickPromo').serializeArray(),
 				url = $('#oneClickPromo').attr('action');
@@ -307,7 +269,7 @@ $(document).ready(function(){
 				return;
 			}
 
-			button.text('Идёт отправка...');
+			button.text('Идёт отправка...'); console.log('asd@@@@@@@@@');
 
 			$('#oneClickPromo input[type=text]').attr('disabled','disabled');
 
