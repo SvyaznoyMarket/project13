@@ -1175,14 +1175,14 @@ $(document).ready(function(){
 		return false;
 	});
 
-	$('#reset-pwd-form, #auth_forgot-form').submit(function() {
+	$('#reset-pwd-form').submit(function() {
 		var form = $(this);
 
 		form.find('.error_list').html('Запрос отправлен. Идет обработка...');
 		form.find('.whitebutton').attr('disabled', 'disabled');
 
-		$.post(form.prop('action'), form.serializeArray(), function(resp) {
-			if (resp.success === true) {
+		$.post(form.prop('action'), form.serializeArray(), function( resp ) {
+			if (resp.success ) {
 				if ( typeof(_gaq) !== 'undefined' ) {
 					var type = ( (form.find('input.text').val().search('@')) !== -1 ) ? 'email' : 'mobile';
 
@@ -1201,6 +1201,7 @@ $(document).ready(function(){
 				var txterr = ( resp.error !== '' ) ? resp.error : 'Вы ввели неправильные данные';
 
 				form.find('.error_list').text( txterr );
+				form.find('.whitebutton').removeAttr('disabled');
 			}
 
 		}, 'json');
