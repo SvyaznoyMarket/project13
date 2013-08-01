@@ -171,8 +171,12 @@
 			suggestWrapper.show();
 		},
 		
-		searchInputFocusout = function searchInputFocusout() {
-			suggestWrapper.hide();
+		suggestCloser = function suggestCloser( e ) {
+			var targ = e.target.className;
+
+			if ( !(targ.indexOf('bSearchSuggest')+1 || targ.indexOf('searchtext')+1) ) {
+				suggestWrapper.hide();
+			}
 		},
 
 		/**
@@ -196,12 +200,11 @@
 		searchInput.bind('keyup', suggestKeyUp);
 
 		searchInput.bind('focus', searchInputFocusin);
-		searchInput.bind('focusout', searchInputFocusout);
-
 		searchInput.bind('submit', searchSubmit);
 		
 		searchInput.placeholder();
 
+		$('body').bind('click', suggestCloser);
 		$('body').on('mouseenter', '.bSearchSuggest__eRes', hoverForItem);
 		$('body').on('click', '.bSearchSuggest__eRes', suggestAnalytics);
 	});
