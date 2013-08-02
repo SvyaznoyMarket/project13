@@ -84,10 +84,9 @@ return function (
     </li>
 
     <li class="bWidgetBuy__eDelivery-item bWidgetBuy__eDelivery-now <?= $product->getIsBuyable() ? 'mOpen' : 'mClose'?>">
-        <? if ($product->getIsBuyable() || !$product->getState()->getIsShop()): ?>
-            <span class="bWidgetBuy__eDelivery-nowClick dotted">Есть в магазинах</span>
-            <div>Cегодня, без предзаказа</div>
-        <? endif ?>
+        <? $hideShopHeader = (!$product->getIsBuyable() && $product->getState()->getIsShop()) ? true : false; ?>
+        <span class="bWidgetBuy__eDelivery-nowClick dotted<?= $hideShopHeader ? ' hf' : '' ?>">Есть в магазинах</span>
+        <div class="<?= $hideShopHeader ? ' hf' : '' ?>">Cегодня, без предзаказа</div>
         <ul class="bDeliveryFreeAddress">
         </ul>
     </li>
