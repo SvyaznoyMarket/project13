@@ -2026,16 +2026,16 @@ FormValidator.prototype._defaultsConfig = {
  * @private
  */
 FormValidator.prototype._requireAs = {
-	checkbox : function( filedNode ) {
+	checkbox : function( fieldNode ) {
 
 	},
 
-	radio: function( filedNode ) {
+	radio: function( fieldNode ) {
 
 	},
 
-	text: function( filedNode ) {
-		var value = filedNode.val();
+	text: function( fieldNode ) {
+		var value = fieldNode.val();
 
 		if ( value.length === 0 ) {
 			return {
@@ -2049,8 +2049,8 @@ FormValidator.prototype._requireAs = {
 		};
 	},
 
-	textarea: function( filedNode ) {
-		var value = filedNode.text();
+	textarea: function( fieldNode ) {
+		var value = fieldNode.text();
 
 		if ( value.length === 0 ) {
 			return {
@@ -2064,8 +2064,8 @@ FormValidator.prototype._requireAs = {
 		};
 	},
 
-	select: function( filedNode ) {
-		if ( filedNode.val() ) {
+	select: function( fieldNode ) {
+		if ( fieldNode.val() ) {
 			return {
 				hasError: false
 			};
@@ -2085,9 +2085,9 @@ FormValidator.prototype._requireAs = {
  * @private
  */
 FormValidator.prototype._validBy = {
-	isEmail: function( filedNode ) {
+	isEmail: function( fieldNode ) {
 		var re = /^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))$/i,
-			value = filedNode.val();
+			value = fieldNode.val();
 
 		if ( re.test(value) ) {
 			return {
@@ -2102,9 +2102,9 @@ FormValidator.prototype._validBy = {
 		}
 	},
 
-	isPhone: function( filedNode ) {
+	isPhone: function( fieldNode ) {
 		var re = /(\+7|8)(-|\s)?(\(\d(-|\s)?\d(-|\s)?\d\s?\)|\d(-|\s)?\d(-|\s)?\d\s?)(-|\s)?\d(-|\s)?\d(-|\s)?\d(-|\s)?\d(-|\s)?\d(-|\s)?\d(-|\s)?\d$/i,
-			value = filedNode.val();
+			value = fieldNode.val();
 
 		if ( re.test(value) ) {
 			return {
@@ -2119,9 +2119,9 @@ FormValidator.prototype._validBy = {
 		}
 	},
 
-	isNumber: function( filedNode ) {
+	isNumber: function( fieldNode ) {
 		var re = /^[0-9]+$/,
-			value = filedNode.val();
+			value = fieldNode.val();
 
 		if ( re.test(value) ) {
 			return {
@@ -2169,7 +2169,7 @@ FormValidator.prototype._validateField = function( field ) {
 		result = {};
 	// end of vars
 
-	fieldNode = field.filedNode;
+	fieldNode = field.fieldNode;
 	require = ( fieldNode.attr('required') === 'required' ) ? true : field.require; // если у элемента формы есть required то поле обязательное, иначе брать из конфига
 	validBy = field.validBy;
 	customErr = field.customErr;
@@ -2237,7 +2237,7 @@ FormValidator.prototype._findFieldByNode = function( nodeToFind ) {
 	var fields = this.config.fields;
 
 	for ( var i = fields.length - 1; i >= 0; i-- ) {
-		if ( fields[i].filedNode.selector === nodeToFind.selector ) {
+		if ( fields[i].fieldNode.selector === nodeToFind.selector ) {
 			return {
 				finded: true,
 				field: fields[i],
@@ -2280,14 +2280,14 @@ FormValidator.prototype.validate = function( callbacks ) {
 		result = self._validateField(fields[i]);
 
 		if ( result.hasError ) {
-			fields[i].filedNode.addClass(self.config.errorClass);
+			fields[i].fieldNode.addClass(self.config.errorClass);
 			errors.push({
-				filedNode: fields[i].filedNode,
+				fieldNode: fields[i].fieldNode,
 				errorMsg: result.errorMsg
 			});
 		}
 		else {
-			fields[i].filedNode.removeClass(self.config.errorClass);
+			fields[i].fieldNode.removeClass(self.config.errorClass);
 		}
 	}
 

@@ -194,19 +194,19 @@ $(document).ready(function(){
 	});
 
 	(function(){
-		var regFirstName = $('#register_first_name'),
+		var regFirstname = $('#register_first_name'),
 			regUsername = $('#register_username'),
 			changeValidateBtn = $('.registerAnotherWayBtn');
 
 		var config = {
 			fields: [
 				{
-					filedNode: regFirstName,
+					fieldNode: regFirstname,
 					require: true,
-					customErr: 'Не введено имя ползователя'
+					customErr: 'Не введено имя пользователя'
 				},
 				{
-					filedNode: regUsername,
+					fieldNode: regUsername,
 					require: true,
 					validBy: 'isEmail'
 				}
