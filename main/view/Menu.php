@@ -27,14 +27,14 @@ class Menu {
         $this->repository->prepareCollection(function($data) {
             $this->prepareMenu($data['item']);
         }, function(\Exception $e) use (&$isFailed) {
-            \App::exception()->remove($e);
+            \App::exception()->add($e);
+            \App::logger()->error(new \Exception('Не удалось получить главное меню'), ['menu']);
             $isFailed = true;
         });
         \App::coreClientV2()->execute();
 
         if ($isFailed) {
             $this->menu = $this->repository->getCollection();
-            \App::exception()->add(new \Exception('Не удалось получить главное меню'));
         }
 
         // сбор категорий для ACTION_PRODUCT_CATALOG

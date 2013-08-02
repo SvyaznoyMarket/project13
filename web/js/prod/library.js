@@ -885,7 +885,7 @@ String.prototype.isEmail = isTrueEmail; // добавляем методом д�
 			if ( !sKey || !this.hasItem(sKey) ) {
 				return false;
 			}
-
+			
 			document.cookie = escape(sKey) + "=; expires=Thu, 01 Jan 1970 00:00:00 GMT" + (sPath ? "; path=" + sPath: "");
 
 			return true;
@@ -2073,7 +2073,7 @@ String.prototype.addParameterToUrl = UpdateUrlString;
                 width: '-=' + sbWidthDiff,
                 height: '-=' + sbHeightDiff
             }, 250, function() {
-                window.docCookies.setItem( false, cookieNameCollapsed, questionHash, 7*24*60*60, '/' );
+                window.docCookies.setItem( cookieNameCollapsed, questionHash, 7*24*60*60, '/' );
                 $(toggle).html('Показать опрос');
                 $('.surveyBox__content').hide();
                 $('.surveyBox').removeClass('expanded');
@@ -2110,7 +2110,7 @@ String.prototype.addParameterToUrl = UpdateUrlString;
                 kmId: kmId
             },
             success: function() {
-                window.docCookies.setItem( false, cookieName, initTime, 7*24*60*60, '/' );
+                window.docCookies.setItem( cookieName, initTime, 7*24*60*60, '/' );
                 $('.surveyBox__toggleWrapper').html('Спасибо за ответ!');
                 $('.surveyBox__content').remove();
                 $('.surveyBox').animate( {

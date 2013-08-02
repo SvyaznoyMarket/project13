@@ -18,7 +18,7 @@ $hasLowerPriceNotification =
 
     <a href="<?= $product->getImageUrl(4) ?>" class="viewme" ref="image" onclick="return false">
         <? if ($product->getLabel()): ?>
-            <img class="bLabels" src="<?= $product->getLabel()->getImageUrl(1) ?>" alt="<?= $page->escape($product->getLabel()->getName()) ?>" />
+            <img class="bLabels" src="<?= $product->getLabel()->getImageUrl(1) ?>" />
         <? endif ?>
         <img class="mainImg" src="<?= $product->getImageUrl(3) ?>" alt="<?= $page->escape($product->getName()) ?>" title="<?= $page->escape($product->getName()) ?>" width="500" height="500" />
     </a>

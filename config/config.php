@@ -75,19 +75,29 @@ $c->reviewsStore['retryTimeout'] = [
 ];
 
 $c->wordpress['url'] = 'http://content.enter.ru/';
-$c->wordpress['timeout'] = 2;
+$c->wordpress['timeout'] = 3;
 $c->wordpress['throwException'] = true;
+$c->wordpress['retryCount'] = 4;
+$c->wordpress['retryTimeout'] = [
+    'default' => 0.3,
+    'tiny'    => 0.1,
+    'short'   => 0.2,
+    'medium'  => 0.3,
+    'long'    => 0.5,
+    'huge'    => 1,
+    'forever' => 0,
+];
 
 $c->dataStore['url'] = 'http://cms.enter.ru/v1/';
-$c->dataStore['timeout'] = 0.25;
+$c->dataStore['timeout'] = 0.8;
 $c->dataStore['retryCount'] = 3;
 $c->dataStore['retryTimeout'] = [
-    'default' => 0.1,
-    'tiny'    => 0.01,
-    'short'   => 0.05,
+    'default' => 0.04,
+    'tiny'    => 0.04,
+    'short'   => 0.08,
     'medium'  => 0.1,
-    'long'    => 0.2,
-    'huge'    => 0.5,
+    'long'    => 0.5,
+    'huge'    => 1,
     'forever' => 0,
 ];
 
@@ -244,6 +254,7 @@ $c->banner['url'] = [
 $c->cart['productLimit'] = 50;
 
 $c->payment['creditEnabled'] = true;
+$c->payment['blockedIds'] = [];
 
 $c->smartengine['pull']           = true;
 $c->smartengine['push']           = true;
