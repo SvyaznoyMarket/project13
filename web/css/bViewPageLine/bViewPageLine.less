@@ -3,25 +3,28 @@
   display: block;
 
   width: 38px;
-  height: auto;
+  height: 20px;
 
   text-align: center;
+  text-decoration: none;
 
   color: @black;
   border: 1px solid #c7c7c7;
   background-color: @white;
   background-image: none;
 
-  &:hover, &.mActiveLink {
+  font-size: 11px;
+  line-height: 20px;
+
+  &:hover, &.mActiveLink, &.mChecked {
     color: @white;
-    border-color: @black;
     background-color: @black;
   }
 }
 
 .bViewPageLine {
   .rounded(3px 3px 0 0);
-  margin: 13px 0 0;
+  margin: 13px 0 10px;
   padding: 5px 0 5px 10px;
 
   color: #515151;
@@ -51,18 +54,9 @@
     }
 
     &__eItemLink {
-      .rounded(4px);
-      display: block;
-
-      padding: 3px 5px 3px 5px;
-
-      text-decoration: none;
-
-      color: @black;
-      border: 1px solid #c7c7c7;
-      background-color: @white;
-
-      font-size: 11px;
+      .styleHrefSorting;
+      width: auto;
+      padding: 0 5px;
 
       &:hover, &.mActiveLink {
         color: @white;
@@ -73,9 +67,9 @@
   }
   
   .bViewPageMode {
-    float: left;
+    float: right;
 
-    margin: 0 0 0 10px;
+    margin: 0 10px 0 10px;
   }
 
   .bViewPageModeList {
@@ -88,7 +82,7 @@
 
     &__eItemLink {
       .styleHrefSorting;
-      padding: 4px 0;
+      padding: 0;
     }
 
     .bViewPageModeIcon {
@@ -96,7 +90,7 @@
 
       width: 11px;
       height: 11px;
-      margin: 0 auto;
+      margin: 4px auto 0;
 
       background: url('@{base-url}/bViewPageLine/img/bViewPageModeIcons.png') no-repeat 0 0;
     }
@@ -135,11 +129,26 @@
       border: none;
     }
 
+    &__eItemLink {
+
+      .styleHrefSorting;
+      color: @white;
+      background: @black;
+
+      float: none;
+
+      padding: 0;
+
+      font-size: 11px;
+    }
+
     &__eItemLink.borderedR {
       .styleHrefSorting;
       float: none;
 
-      padding: 4px 0;
+      padding: 0;
+
+      font-size: 11px;
 
       span {
         float: none;
@@ -147,6 +156,8 @@
         height: auto;
         margin: 0;
         padding: 0;
+
+        font-size: 11px;
       }
     }
   }
@@ -155,11 +166,11 @@
     .styleHrefSorting;
     float: right;
 
-    margin: 18px 10px 0 -5px;
-    padding: 3px 0;
+    margin: 18px 5px 0 -5px;
+    padding: 0;
   }
 }
 
 .bPagesListBottom {
-  min-width: 190px;
+  // min-width: 190px;
 }

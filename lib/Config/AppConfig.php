@@ -71,6 +71,8 @@ class AppConfig {
         'url'            => null,
         'timeout'        => null,
         'throwException' => null,
+        'retryTimeout' => [],
+        'retryCount'   => null,
     ];
     /** @var array */
     public $dataStore = [
@@ -228,6 +230,7 @@ class AppConfig {
     /** @var array */
     public $payment = [
         'creditEnabled' => null,
+        'blockedIds'    => [],
     ];
     /** @var array */
     public $creditProvider = [

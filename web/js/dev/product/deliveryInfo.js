@@ -114,7 +114,8 @@
 				templateNow = tmpl('widget_delivery_shop',shopInfo);
 				shopList.append(templateNow);
 			}
-
+			
+			widgetBox.removeClass('mLoader');
 			nowBox.show();
 			$('.bDeliveryFreeAddress__eLink').bind('click', showAvalShop);
 			toggleBtn.bind('click', shopToggle);
@@ -133,6 +134,8 @@
 			var deliveryInfo = res.product[0].delivery;
 
 			if ( !res.success ) {
+				widgetBox.remove();
+
 				return false;
 			}
 
@@ -167,18 +170,29 @@
 						break;
 				}
 			}
+
+			widgetBox.removeClass('mLoader');
 		};
 	// end of functions
 
-	if ( url === '' ) {
-		fillAvalShopTmpl( deliveryShops );
-	}
-	else {
+	fillAvalShopTmpl( deliveryShops );
+	
+	if ( url !== '' ) {
 		$.ajax({
 			type: 'POST',
 			url: url,
 			data: dataToSend,
-			success: resFromSerever
+			success: function(data) {
+				console.log(data)
+				resFromSerever(data)
+			}
 		});
 	}
+
+	$(document).ready(function() {
+		if ( $('.bWidgetBuy__eDelivery-nowClick').length && $('.bWidgetBuy__eDelivery-nowClick').hasClass('hf') ) {
+			$('.bWidgetBuy__eDelivery-nowClick').click();
+			$('.bWidgetBuy__eDelivery-now.mOpen').css('background-image','none');
+		}
+	});
 }());

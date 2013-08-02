@@ -137,6 +137,17 @@ window.ANALYTICS = {
         })();
     },
 
+    criteoJS : function() {
+        window.criteo_q = window.criteo_q || [];
+        var criteo_arr =  $('#criteoJS').data('value');
+        if ( typeof(criteo_q) != "undefined" && !jQuery.isEmptyObject(criteo_arr) ) {
+            try{
+                window.criteo_q.push(criteo_arr);
+            } catch(e) {
+            }
+        }
+    },
+
     marketgidProd : function() {
         var MGDate = new Date();
         document.write('<iframe src ="http://'

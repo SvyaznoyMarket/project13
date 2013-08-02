@@ -55,14 +55,18 @@ if (!isset($inSearch)) $inSearch = false;
     <? endif ?>
 </div>
 
+<?= $page->render('_paginationBottom', array('pager' => $pager)) ?>
+
+<div class="clear"></div>
+
 <?= $page->render('product/_list', array('pager' => $pager, 'view' => $view, 'productVideosByProduct' => $productVideosByProduct, 'isAddInfo' => $isAddInfo)) ?>
 
 <? if ($pager->hasPages()): ?>
-<div class="fr allpager mBtn" alt="все товары в категории" title="все товары в категории"
+<? /*<div class="fr allpager mBtn" alt="все товары в категории" title="все товары в категории"
      data-url="<?= $page->helper->replacedUrl(array('page' => null), null, $request->attributes->get('route') . (strpos($request->attributes->get('route'), 'infinity') !== false ? '' : '.infinity')) ?>"
      data-page="<?= $pager->getPage() ?>"
      data-lastpage="<?= $pager->getLastPage() ?>"
      data-filter="<?= $filterData ?>"
-></div>
+></div> */ ?>
 <?= $page->render('_paginationBottom', array('pager' => $pager)) ?>
 <? endif ?>

@@ -468,9 +468,18 @@ class Repository {
         $catalogJson = [];
         $dataStore = \App::dataStoreClient();
         $query = sprintf('catalog/%s.json', implode('/', $branch));
-        $dataStore->addQuery($query, [], function ($data) use (&$catalogJson) {
-            if($data) $catalogJson = $data;
-        });
+        $dataStore->addQuery(
+            $query,
+            [],
+            function ($data) use (&$catalogJson) {
+                if ($data) {
+                    $catalogJson = $data;
+                }
+            },
+            function(\Exception $e) {
+                \App::exception()->add($e);
+            }
+        );
         $dataStore->execute();
 
         return $catalogJson;

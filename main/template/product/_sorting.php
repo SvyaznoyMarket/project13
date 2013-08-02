@@ -18,7 +18,8 @@ if ($active['name'] == 'default' && !empty($inSearch)) {
 
 foreach ($productSorting->getAll() as $item)
 {
-    if ($active['name'] == $item['name'] && $active['direction'] == $item['direction']) continue;
+    //if ($active['name'] == $item['name'] && $active['direction'] == $item['direction']) continue;
+
     $item['url'] = $page->helper->replacedUrl(array('page' => '1', 'sort' => implode('-', array($item['name'], $item['direction']))));
 
     if ($item['name'] == 'default' && !empty($inSearch)) {
@@ -34,9 +35,8 @@ foreach ($productSorting->getAll() as $item)
 <div id="sorting" class="bSorting" data-sort="<?= implode('-', array($active['name'], $active['direction'])) ?>">
     <span class="bTitle">Сортировать</span>
     <ul class="bSortingList clearfix">
-        <li class="bSortingList__eItem"><a class="bSortingList__eItemLink mActiveLink" href="<?= $active['url'] ?>"><?= $active['title'] ?></a></li>
         <? foreach ($list as $item): ?>
-            <li class="bSortingList__eItem"><a class="bSortingList__eItemLink" href="<?= $item['url'] ?>"><?= $item['title'] ?></a></li>
+            <li class="bSortingList__eItem"><a class="bSortingList__eItemLink<? if ($active['name'] == $item['name'] && $active['direction'] == $item['direction']): ?> mActiveLink<? endif ?>" href="<?= $item['url'] ?>"><?= $item['title'] ?></a></li>
         <? endforeach ?>
     </ul>
 </div>

@@ -59,7 +59,7 @@
 			if ( !sKey || !this.hasItem(sKey) ) {
 				return false;
 			}
-
+			
 			document.cookie = escape(sKey) + "=; expires=Thu, 01 Jan 1970 00:00:00 GMT" + (sPath ? "; path=" + sPath: "");
 
 			return true;
