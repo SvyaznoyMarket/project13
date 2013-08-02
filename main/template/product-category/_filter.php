@@ -32,7 +32,7 @@ $formName = \View\Product\FilterForm::$name;
     <dl class="bigfilter form bSpec<?= \App::config()->sphinx['showListingSearchBar'] ? ' noBorder' : '' ?>">
         <? if(\App::config()->sphinx['showListingSearchBar']) { ?>
             <div class="pb5">
-                <input type="text" value="" class="text mb10 orangeIcon">
+                <input type="text" value="" class="text mb10 orangeIcon" placeholder="Поиск в категории">
                 <input type="hidden" value="" name="f[text]">
                 <img class="mb10 orangeIcon" src="/css/search/img/searchBtn.png">
             </div>
