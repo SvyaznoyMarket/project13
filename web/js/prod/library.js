@@ -2227,8 +2227,8 @@ FormValidator.prototype._validateField = function( field ) {
  * @param	{Object}	nodeToFind		Ссылка на jQuery объект поля которое нужно найти
  * @return	{Object}    Object			Объект с параметрами найденой ноды
  * @return	{Boolean}	Object.finded	Было ли поле найдено
- * @return	{Boolean}	Object.field	Объект поля из конфига
- * @return	{Boolean}	Object.index	Порядковый номер поля
+ * @return	{Object}	Object.field	Объект поля из конфига
+ * @return	{Number}	Object.index	Порядковый номер поля
  *
  * @this	{FormValidator}
  * @private
@@ -2262,8 +2262,8 @@ FormValidator.prototype._findFieldByNode = function( nodeToFind ) {
  * Запуск валидации полей
  *
  * @param	{Object}	callbacks			Объект со ссылками на функции обратных вызовов
- * @param	{function}	callbacks.onInvalid	Функция обратного вызова, если поля не прошли валидацию. В функцию передается массив объектов ошибок.
- * @param	{function}	callbacks.onValid	Функция обратного вызова, если поля прошли валидацию
+ * @param	{Function}	callbacks.onInvalid	Функция обратного вызова, если поля не прошли валидацию. В функцию передается массив объектов ошибок.
+ * @param	{Function}	callbacks.onValid	Функция обратного вызова, если поля прошли валидацию
  *
  * @this	{FormValidator}
  * @public
@@ -2302,9 +2302,9 @@ FormValidator.prototype.validate = function( callbacks ) {
 /**
  * Получить тип валидации для поля
  *
- * @param	{Object} fieldToFind	Ссылка на jQuery объект поля для которого нужно получить параметры валидации
+ * @param	{Object} 			fieldToFind	Ссылка на jQuery объект поля для которого нужно получить параметры валидации
  * 
- * @return	{Object|Boolean}	Возвращает или конфигурацию валидации для поля, или false
+ * @return	{Object|Boolean}				Возвращает или конфигурацию валидации для поля, или false
  * 
  * @this	{FormValidator}
  * @public
@@ -2320,9 +2320,13 @@ FormValidator.prototype.getValidate = function( fieldToFind ) {
 };
 
 /**
- * Установить новый тип валидации для поля
+ * Установить новый тип валидации для поля. Если поле не найдено, создает новое с указанными параметрами.
  *
- * @param	{Object}	fieldNodeToRemove	Ссылка на jQuery объект поля для которого нужно изменить параметры валидации
+ * @param	{Object}	fieldNodeToCange			Ссылка на jQuery объект поля для которого нужно изменить параметры валидации
+ * @param	{Object}	paramsToChange				Новые свойства валидации поля
+ * @param	{String}	paramsToChange.validBy		Тип валидации поля
+ * @param	{Boolean}	paramsToChange.require		Является ли поле обязательным к заполению
+ * @param	{String}	paramsToChange.customErr	Сообщение об ошибке, если поле не прошло валидацию
  *
  * @this	{FormValidator}
  * @public
