@@ -54,7 +54,7 @@ FormValidator.prototype._requireAs = {
 			return {
 				hasError: true,
 				errorMsg : 'Поле обязательно для заполнения'
-			}
+			};
 		}
 
 		return {
@@ -69,7 +69,7 @@ FormValidator.prototype._requireAs = {
 			return {
 				hasError: true,
 				errorMsg : 'Поле обязательно для заполнения'
-			}
+			};
 		}
 
 		return {
@@ -116,7 +116,7 @@ FormValidator.prototype._validBy = {
 	},
 
 	isPhone: function( filedNode ) {
-		var re = /(\+7|8)(-|\s)?(\(\d(-|\s)?\d(-|\s)?\d\s?\)|\d(-|\s)?\d(-|\s)?\d\s?)(-|\s)?\d(-|\s)?\d(-|\s)?\d(-|\s)?\d(-|\s)?\d(-|\s)?\d(-|\s)?\d$/i;
+		var re = /(\+7|8)(-|\s)?(\(\d(-|\s)?\d(-|\s)?\d\s?\)|\d(-|\s)?\d(-|\s)?\d\s?)(-|\s)?\d(-|\s)?\d(-|\s)?\d(-|\s)?\d(-|\s)?\d(-|\s)?\d(-|\s)?\d$/i,
 			value = filedNode.val();
 
 		if ( re.test(value) ) {
@@ -221,7 +221,7 @@ FormValidator.prototype._validateField = function( field ) {
 			error = {
 				hasError: true,
 				errorMsg: ( customErr !== undefined ) ? customErr : result.errorMsg
-			}
+			};
 		}
 	}
 	else if ( validBy !== undefined ) {
@@ -257,7 +257,7 @@ FormValidator.prototype._findFieldByNode = function( nodeToFind ) {
 				index: i
 			};
 		}
-	};
+	}
 
 	return {
 		finded: false
@@ -371,8 +371,7 @@ FormValidator.prototype.setValidate = function( fieldNodeToCange, paramsToChange
  * @public
  */
 FormValidator.prototype.removeFieldToValidate = function( fieldNodeToRemove ) {
-	var fields = this.config.fields,
-		findedField = this._findFieldByNode(fieldNodeToRemove);
+	var findedField = this._findFieldByNode(fieldNodeToRemove);
 
 	if ( findedField.finded ) {
 		this.config.fields.splice(findedField.index, 1);
