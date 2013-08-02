@@ -29,4 +29,5 @@
     'productSorting'  => $productSorting,
     'isAddInfo'       => true,
     'showPagerHeader' => true,
+    'inSearch'        => true,
 ]) ?>
