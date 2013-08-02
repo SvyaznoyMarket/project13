@@ -90,6 +90,7 @@
             <!-- ko foreach: dlvrBoxes -->
             <div class="bBuyingLineWrap order-delivery-holder">
                 <div class="delivery-message red"></div>
+
                 <div class="bBuyingLine">
                     <div class="bBuyingLine__eLeft">
                         
@@ -101,8 +102,7 @@
 
                         <div class="bSelectWrap mFastInpSmall">
                             <span class="bSelectWrap_eText" data-bind="text: $data.chosenInterval()"></span>
-                            <select id="order-interval_standart_rapid-holder" class='bSelect order-interval-holder' data-bind="options:currentIntervals, optionsText:$data, optionsValue:$data, value:chosenInterval">
-                            </select>
+                            <select id="order-interval_standart_rapid-holder" class='bSelect order-interval-holder' data-bind="options:currentIntervals, optionsText:$data, optionsValue:$data, value:chosenInterval"></select>
                         </div>
 
                         <div class="bOrderDeliveryPrice">
@@ -128,6 +128,8 @@
                             <a class="bBigOrangeButton bSelectShop" href="#"
                                data-bind="click: function(data, event) { $root.showShopPopup($parent, data, event) }">Другой магазин</a>
                             <!-- /ko -->
+
+                            <span class="bOrderDeliveryPrice__eItem mFootnote"><em class="bStar">*</em> Дату доставки уточнит специалист<br/>Контакт-сENTER</span>
                         </div>
                     </div>
 
@@ -164,8 +166,7 @@
                                     <div class="bItemsRow mItemImg"><img data-bind="attr: {src: $data.image, alt: $data.name }"/></div>
 
                                     <div class="bItemsRow mItemInfo">
-                                        <a href="" target="_blank"
-                                           data-bind="html: name, attr: { href: $data.url }"></a>
+                                        <a href="" target="_blank" data-bind="html: name, attr: { href: $data.url }"></a>
                                         <span class="bCountItem">(<span data-bind="text: $data.quantity "></span> шт.)</span>
                                     </div>
 
@@ -179,13 +180,12 @@
                     </div>
                 </div>
 
-                <div data-template="#order-delivery_total-template" class="order-delivery_total-holder">
-                    <div class="bBuyingLineWrap__eSum">Итого с доставкой:
-                        <b><span data-bind="text: printPrice( $data.totalPrice() )"></span> <span class="rubl">p</span></b>
-                    </div>
+                <div class="bBuyingLineWrap__eSum" data-template="#order-delivery_total-template">Итого с доставкой:
+                    <b><span data-bind="text: printPrice( $data.totalPrice() )"></span> <span class="rubl">p</span></b>
                 </div>
             </div>
             <!-- /ko -->
+
             <div class="bF1SaleCard mOrder">
                 <h3 class="bF1SaleCard_eTitle">Скидки</h3>
                 <? if (\App::config()->coupon['enabled']): ?>
@@ -197,26 +197,20 @@
                 <? endif ?>
             </div>
 
-            <div style="margin-top: -10px;">*Дату доставки уточнит специалист Контакт-сENTER</div>
+            <div class="bBuyingLine mSumm clearfix">
+                <a class="bBackCart mOrdeRead" href="<?= $page->url('cart') ?>">&lt; Редактировать товары</a>
 
-            <dl class='bBuyingLine mSumm order-total-container' style="margin-top: 0;">
-                <dt>
-                    <a class="motton font14" style="border-color: #4FCBF4; font-weight: bold;"
-                       href="<?= $page->url('cart') ?>"
-                       alt="Вернуться в корзину для выбора услуг и увеличения количества товаров"
-                       title="Вернуться в корзину для выбора услуг и увеличения количества товаров">&lt; Редактировать товары</a>
-                </dt>
-                <dd>
-                    <div>
-                        <span>Сумма всех заказов</span>
+                <div class="bTotalSumm">
+                    Сумма всех заказов:
 
-                        <h3>
-                            <span data-bind="text: printPrice( totalSum() )"></span>
-                            <span class="rubl">p</span>
-                        </h3>
-                    </div>
-                </dd>
-            </dl>
+                    <span class="bTotalSumm__ePrice">
+                        <span data-bind="text: printPrice( totalSum() )"></span>
+                        <span class="rubl">p</span>
+                    </span>
+                </div>
+            </div>
         </div>
+
     </div>
+
 </div>
