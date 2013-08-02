@@ -147,135 +147,140 @@ $.ajaxSetup({
  */
  
  
-;(function(){
-		
-	/* Cards Carousel  */
-	function cardsCarouselTag ( nodes, noajax ) {
-		var current = 1;
+// (function(){
+//   $(function(){
+//     if($('.bCtg__eMore').length) {
+//       var expanded = false;
+//       $('.bCtg__eMore').click(function(){
+//         if(expanded) {
+//           $(this).siblings('.more_item').hide();
+//           $(this).find('a').html('еще...');
+//         } else {
+//           $(this).siblings('.more_item').show();
+//           $(this).find('a').html('скрыть');
+//         }
+//         expanded = !expanded;
+//         return false;
+//       });
+//     }
 
-		var wi  = nodes.width*1;
-		var viswi = nodes.viswidth*1;
+//     /* Cards Carousel  */
+//     function cardsCarouselTag ( nodes, noajax ) {
+//       var current = 1;
 
-		if( !isNaN($(nodes.times).html()) )
-			var max = $(nodes.times).html() * 1;
-		else
-			var max = Math.ceil(wi / viswi);
+//       var wi  = nodes.width*1;
+//       var viswi = nodes.viswidth*1;
 
-		if((noajax !== undefined) && (noajax === true)) {
-			var buffer = 100;
-		} else {
-			var buffer = 2;
-		}
+//       if( !isNaN($(nodes.times).html()) )
+//         var max = $(nodes.times).html() * 1;
+//       else
+//         var max = Math.ceil(wi / viswi);
 
-		var ajaxflag = false;
+//       if((noajax !== undefined) && (noajax === true)) {
+//         var buffer = 100;
+//       } else {
+//         var buffer = 2;
+//       }
+
+//       var ajaxflag = false;
 
 
-		var notify = function() {
-			$(nodes.crnt).html( current );
-			if(refresh_max_page) {
-				$(nodes.times).html( max );
-			}
-			if ( current == 1 )
-				$(nodes.prev).addClass('disabled');
-			else
-				$(nodes.prev).removeClass('disabled');
-			if ( current == max )
-				$(nodes.next).addClass('disabled');
-			else
-				$(nodes.next).removeClass('disabled');
-		}
+//       var notify = function() {
+//         $(nodes.crnt).html( current );
+//         if(refresh_max_page) {
+//           $(nodes.times).html( max );
+//         }
+//         if ( current == 1 )
+//           $(nodes.prev).addClass('disabled');
+//         else
+//           $(nodes.prev).removeClass('disabled');
+//         if ( current == max )
+//           $(nodes.next).addClass('disabled');
+//         else
+//           $(nodes.next).removeClass('disabled');
+//       }
 
-		var shiftme = function() {  
-			var boxes = $(nodes.wrap).find('.goodsbox');
-			$(boxes).hide();
-			var le = boxes.length;
+//       var shiftme = function() {  
+//         var boxes = $(nodes.wrap).find('.goodsbox')
+//         $(boxes).hide()
+//         var le = boxes.length
+//         for(var j = (current - 1) * viswi ; j < current  * viswi ; j++) {
+//           boxes.eq( j ).show()
+//         }
+//       }
 
-			for (var j = (current - 1) * viswi ; j < current  * viswi ; j++) {
-				boxes.eq( j ).show();
-			}
-		}
+//       $(nodes.next).bind('click', function() {
+//         if( current < max && !ajaxflag ) {
+//           if( current + 1 == max ) { //the last pull is loaded , so special shift
 
-		$(nodes.next).bind('click', function() {
-			if( current < max && !ajaxflag ) {
-				if( current + 1 == max ) { //the last pull is loaded , so special shift
+//             var boxes = $(nodes.wrap).find('.goodsbox')
+//             $(boxes).hide()
+//             var le = boxes.length
+//             var rest = ( wi % viswi ) ?  wi % viswi  : viswi
+//             for(var j = 1; j <= rest; j++)
+//               boxes.eq( le - j ).show()
+//             current++
+//           } else {
+//             if( current + 1 >= buffer ) { // we have to get new pull from server
 
-					var boxes = $(nodes.wrap).find('.goodsbox');
-					$(boxes).hide();
-					var le = boxes.length;
-					var rest = ( wi % viswi ) ?  wi % viswi  : viswi;
-					for (var j = 1; j <= rest; j++){
-						boxes.eq( le - j ).show();
-					}
+//               $(nodes.next).css('opacity','0.4') // addClass dont work ((
+//               ajaxflag = true
+//               var getData = []
+//               if( $('form.product_filter-block').length )
+//                 getData = $('form.product_filter-block').serializeArray()
+//               getData.push( {name: 'page', value: buffer+1 } )  
+//               $.get( $(nodes.prev).attr('data-url') , getData, function(data) {
+//                 buffer++
+//                 $(nodes.next).css('opacity','1')
+//                 ajaxflag = false
+//                 var tr = $('<div>')
+//                 $(tr).html( data )
+//                 $(tr).find('.goodsbox').css('display','none')
+//                 $(nodes.wrap).html( $(nodes.wrap).html() + tr.html() )
+//                 tr = null
+//               })
+//               current++
+//               shiftme()
+//             } else { // we have new portion as already loaded one     
+//               current++
+//               shiftme() // TODO repair
+//             }
+//           }
+//           notify()
+//         }
+//         return false
+//       })
 
-					current++;
-				}
-				else {
-					if( current + 1 >= buffer ) { // we have to get new pull from server
+//       $(nodes.prev).click( function() {
+//         if( current > 1 ) {
+//           current--
+//           shiftme()
+//           notify()
+//         }
+//         return false
+//       })
 
-						$(nodes.next).css('opacity','0.4') // addClass dont work ((
-						ajaxflag = true;
-						var getData = [];
-						
-						if ( $('form.product_filter-block').length ) {
-							getData = $('form.product_filter-block').serializeArray();
-						}
+//       var refresh_max_page = false
+//     } // cardsCarousel object
 
-						getData.push( {name: 'page', value: buffer+1 } );
-						$.get( $(nodes.prev).attr('data-url') , getData, function(data) {
-							buffer++;
-							$(nodes.next).css('opacity','1');
-							ajaxflag = false;
-							var tr = $('<div>');
-							$(tr).html( data );
-							$(tr).find('.goodsbox').css('display','none');
-							$(nodes.wrap).html( $(nodes.wrap).html() + tr.html() );
-							tr = null;
-						});
-						current++;
-						shiftme();
-					}
-					else { // we have new portion as already loaded one     
-						current++;
-						shiftme(); // TODO repair
-					}
-				}
-				notify();
-			}
-			return false;
-		});
-
-		$(nodes.prev).click( function() {
-			if ( current > 1 ) {
-				current--;
-				shiftme();
-				notify();
-			}
-
-			return false;
-		});
-
-		var refresh_max_page = false;
-	} // cardsCarousel object
-
-	$('.carouseltitle').each( function(){
-		if ( $(this).find('.jshm').html() ) {
-			var width = $(this).find('.jshm').html().replace(/\D/g,'');
-		}
-		else {
-			var width = 3;
-		}
-
-		cardsCarouselTag({
-			'prev'  : $(this).find('.back'),
-			'next'  : $(this).find('.forvard'),
-			'crnt'  : $(this).find('.none'),
-			'times' : $(this).find('span:eq(1)'),
-			'width' : width,
-			'wrap'  : $(this).find('~ .carousel').first(),
-			'viswidth' : 3
-		});
-	});
-})();
+//     $('.carouseltitle').each( function(){
+//       if($(this).find('.jshm').html()) {
+//         var width = $(this).find('.jshm').html().replace(/\D/g,'');
+//       } else {
+//         var width = 3;
+//       }
+//       cardsCarouselTag({
+//         'prev'  : $(this).find('.back'),
+//         'next'  : $(this).find('.forvard'),
+//         'crnt'  : $(this).find('.none'),
+//         'times' : $(this).find('span:eq(1)'),
+//         'width' : width,
+//         'wrap'  : $(this).find('~ .carousel').first(),
+//         'viswidth' : 3
+//       });
+//     })
+//   });
+// })();
 
  
  
@@ -1175,14 +1180,14 @@ $(document).ready(function(){
 		return false;
 	});
 
-	$('#reset-pwd-form, #auth_forgot-form').submit(function() {
+	$('#reset-pwd-form').submit(function() {
 		var form = $(this);
 
 		form.find('.error_list').html('Запрос отправлен. Идет обработка...');
 		form.find('.whitebutton').attr('disabled', 'disabled');
 
-		$.post(form.prop('action'), form.serializeArray(), function(resp) {
-			if (resp.success === true) {
+		$.post(form.prop('action'), form.serializeArray(), function( resp ) {
+			if (resp.success ) {
 				if ( typeof(_gaq) !== 'undefined' ) {
 					var type = ( (form.find('input.text').val().search('@')) !== -1 ) ? 'email' : 'mobile';
 
@@ -1201,6 +1206,7 @@ $(document).ready(function(){
 				var txterr = ( resp.error !== '' ) ? resp.error : 'Вы ввели неправильные данные';
 
 				form.find('.error_list').text( txterr );
+				form.find('.whitebutton').removeAttr('disabled');
 			}
 
 		}, 'json');
@@ -1305,6 +1311,9 @@ $(document).ready(function(){
 			else {
 				$(this).bind('click', function() {
 					window.docCookies.setItem('infScroll', 1, 4*7*24*60*60, '/' );
+
+					$('.pageslist.bPagesListBottom').hide();
+
 					var next = $('.bPagesListTop .bPagesList__eItem:first');
 
 					if ( next.hasClass('current') ) {
@@ -1721,16 +1730,11 @@ $(document).ready(function(){
 		var self = this;
 		var current = 1;
 
+		var triggerClick = false;
+
 		var refresh_max_page = false;
 		var current_accessory_category = '';
-		var grouped_accessories = {
-			'':{
-				'quantity':parseInt($($(nodes.wrap).find('.goodsbox')[0]).attr('data-quantity'), 10),
-				'totalpages':parseInt($($(nodes.wrap).find('.goodsbox')[0]).attr('data-total-pages'), 10),
-				'accessories':$(nodes.wrap).html(),
-				'buffer':buffer
-			}
-		};
+		
 
 		var wi  = nodes.width * 1;
 		var viswi = nodes.viswidth * 1;
@@ -1781,70 +1785,74 @@ $(document).ready(function(){
 			for(var j = (current - 1) * viswi ; j < current  * viswi ; j++) {
 				boxes.eq( j ).show();
 			}
+			
+			triggerClick = false;
 		};
 
 		$(nodes.next).bind('click', function() {
-			if ( grouped_accessories[current_accessory_category] ) {
-				buffer = grouped_accessories[current_accessory_category]['buffer'];
-
-				if ( !isNaN(grouped_accessories[current_accessory_category]['quantity']) ) {
-					wi = grouped_accessories[current_accessory_category]['quantity'];
-				}
+			if ( triggerClick ) {
+				return false;
 			}
-			if ( current < max && !ajaxflag ) {
-				if ( current + 1 == max ) { //the last pull is loaded , so special shift
 
-					var boxes = $(nodes.wrap).find('.goodsbox');
-					$(boxes).hide();
-					var le = boxes.length;
-					var rest = ( wi % viswi ) ?  wi % viswi  : viswi;
+			triggerClick = true;
 
-					for ( var j = 1; j <= rest; j++ ) {
-						boxes.eq( le - j ).show();
-					}
-					current++;
+			if ( current >= max && ajaxflag ) {
+				return false;
+			}
+
+			if ( current + 1 === max ) { 
+
+				var boxes = $(nodes.wrap).find('.goodsbox');
+				$(boxes).hide();
+				var le = boxes.length;
+				var rest = ( wi % viswi ) ?  wi % viswi  : viswi;
+
+				for ( var j = 1; j <= rest; j++ ) {
+					boxes.eq( le - j ).show();
 				}
-				else {
-					if ( current + 1 >= buffer ) { // we have to get new pull from server
+				current++;
+			}
+			else {
 
-						$(nodes.next).css('opacity','0.4'); // addClass dont work ((
-						ajaxflag = true;
-						var getData = [];
+				if ( current + 1 >= buffer ) { // we have to get new pull from server
+					$(nodes.next).css('opacity','0.4'); // addClass dont work ((
+					ajaxflag = true;
+					var getData = [];
 
-						if( $('form.product_filter-block').length ) {
-							getData = $('form.product_filter-block').serializeArray();
-						}
+					if( $('form.product_filter-block').length ) {
+						getData = $('form.product_filter-block').serializeArray();
+					}
 
-						getData.push( {name: 'page', value: buffer+1 } );
-						getData.push( {name: 'categoryToken', value: current_accessory_category } );
+					getData.push( {name: 'page', value: buffer+1 } );
+					getData.push( {name: 'categoryToken', value: current_accessory_category } );
 
-						$.get( $(nodes.prev).attr('data-url') , getData, function(data) {
-							buffer++;
-							$(nodes.next).css('opacity','1');
-							ajaxflag = false;
-							var tr = $('<div>');
-							$(tr).html( data );
-							$(tr).find('.goodsbox').css('display','none');
-							$(nodes.wrap).html( $(nodes.wrap).html() + tr.html() );
+					$.get( $(nodes.prev).attr('data-url') , getData, function(data) {
+						buffer++;
+						$(nodes.next).css('opacity','1');
+						ajaxflag = false;
+						var tr = $('<div>');
+						$(tr).html( data );
+						$(tr).find('.goodsbox').css('display','none');
+						$(nodes.wrap).html( $(nodes.wrap).html() + tr.html() );
 
-							if ( grouped_accessories[current_accessory_category] ) {
-								grouped_accessories[current_accessory_category]['accessories'] = $(nodes.wrap).html();
-								grouped_accessories[current_accessory_category]['buffer']++;
-							}
+						// if ( grouped_accessories[current_accessory_category] ) {
+						// 	grouped_accessories[current_accessory_category]['accessories'] = $(nodes.wrap).html();
+						// 	grouped_accessories[current_accessory_category]['buffer']++;
+						// }
 
-							tr = null;
-						// handle_custom_items()
-						});
+						tr = null;
 						current++;
 						shiftme();
-					}
-					else { // we have new portion as already loaded one			
-						current++;
-						shiftme(); // TODO repair
-					}
+					// handle_custom_items()
+					});
 				}
-				self.notify();
+				else { // we have new portion as already loaded one
+					current++;
+					shiftme(); // TODO repair
+				}
 			}
+			self.notify();
+
 			return false;
 		});
 
@@ -2496,8 +2504,12 @@ $(document).ready(function(){
 			suggestWrapper.show();
 		},
 		
-		searchInputFocusout = function searchInputFocusout() {
-			suggestWrapper.hide();
+		suggestCloser = function suggestCloser( e ) {
+			var targ = e.target.className;
+
+			if ( !(targ.indexOf('bSearchSuggest')+1 || targ.indexOf('searchtext')+1) ) {
+				suggestWrapper.hide();
+			}
 		},
 
 		/**
@@ -2521,12 +2533,11 @@ $(document).ready(function(){
 		searchInput.bind('keyup', suggestKeyUp);
 
 		searchInput.bind('focus', searchInputFocusin);
-		searchInput.bind('focusout', searchInputFocusout);
-
 		searchInput.bind('submit', searchSubmit);
 		
 		searchInput.placeholder();
 
+		$('body').bind('click', suggestCloser);
 		$('body').on('mouseenter', '.bSearchSuggest__eRes', hoverForItem);
 		$('body').on('click', '.bSearchSuggest__eRes', suggestAnalytics);
 	});
