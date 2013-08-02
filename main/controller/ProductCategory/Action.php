@@ -358,8 +358,17 @@ class Action {
             if ( \App::config()->shop['enabled'] && !self::isGlobal() && !$category->isRoot()) $page->setGlobalParam('shops', \RepositoryManager::shop()->getCollectionByRegion(\App::user()->getRegion()));
         };
 
+        // полнотекстовый поиск через сфинкс
+        $textSearched = false;
+        if (\App::config()->sphinx['showListingSearchBar']) {
+            $filterValues = $productFilter->getValues();
+            if(!empty($filterValues['text'])) {
+                $textSearched = true;
+            }
+        }
+
         // если категория содержится во внешнем узле дерева
-        if ($category->isLeaf()) {
+        if ($category->isLeaf() || $textSearched) {
             $page = new \View\ProductCategory\LeafPage();
             $setPageParameters($page);
 
