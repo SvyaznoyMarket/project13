@@ -19,7 +19,8 @@ class json2xml
 
 
     function __construct() {
-        define("MAX_IERATIONS", 500);
+        //define("MAX_IERATIONS", -1); // for all
+        define("MAX_IERATIONS", 3); // for test
         if ( file_exists( $this->log_file_name ) ) unlink( $this->log_file_name );
         $this->log_file = fopen($this->log_file_name, "w");
     }
@@ -114,6 +115,8 @@ class json2xml
                 $params['vendor'] = self::addOneOfElems( $arr );
 
                 $params['description'] = self::addIfIsset( $json_line->description );
+                $params['typePrefix'] = self::addIfIsset( $json_line->type_id );
+                $params['model'] = self::addIfIsset( $json_line->model_id );
                 //$params['price'] = $json_line->geo->{1}->price; // old variant, price in Moscow
 
 
@@ -147,7 +150,7 @@ class json2xml
 
                 foreach ($params as $name => $value) {
                     //$offer->addChild($name, $value); // achtung! witch warnings!
-                    $offer->{$name} = $value; // ok! without warnings
+                    if ( !empty($value) ) $offer->{$name} = $value; // ok! without warnings
                 } // end foreach
 
 
