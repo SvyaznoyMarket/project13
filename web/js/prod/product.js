@@ -258,17 +258,26 @@
 		};
 	// end of functions
 
-	if ( url === '' ) {
-		fillAvalShopTmpl( deliveryShops );
-	}
-	else {
+	fillAvalShopTmpl( deliveryShops );
+	
+	if ( url !== '' ) {
 		$.ajax({
 			type: 'POST',
 			url: url,
 			data: dataToSend,
-			success: resFromSerever
+			success: function(data) {
+				console.log(data)
+				resFromSerever(data)
+			}
 		});
 	}
+
+	$(document).ready(function() {
+		if ( $('.bWidgetBuy__eDelivery-nowClick').length && $('.bWidgetBuy__eDelivery-nowClick').hasClass('hf') ) {
+			$('.bWidgetBuy__eDelivery-nowClick').click();
+			$('.bWidgetBuy__eDelivery-now.mOpen').css('background-image','none');
+		}
+	});
 }());
  
  
