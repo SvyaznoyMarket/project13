@@ -58,7 +58,7 @@ class json2xml
     {
 
         $time_start = time();
-        self::echlog( 'Время начала: ' . $time_start );
+        $this->echlog( 'Время начала: ' . $time_start );
 
         // config
         $json_path = '../../../cms.enter.ru/';
@@ -69,9 +69,9 @@ class json2xml
 
 
         if (file_exists($json_filename)) {
-            self::echlog('Файл ' . $json_filename .' открыт');
+            $this->echlog('Файл ' . $json_filename .' открыт');
         } else {
-            self::echlog('Файл ' . $json_filename . ' не найден');
+            $this->echlog('Файл ' . $json_filename . ' не найден');
         }
         $json_file = fopen($json_filename, "r");
         $file_size = filesize($json_filename);
@@ -125,10 +125,10 @@ class json2xml
 
                 $vendor_arr = [];
                 if ( isset( $json_line->brand->name ) )
-                    $vendor_arr[] = self::addIfIsset( $json_line->brand->name );
+                    $vendor_arr[] = $this->addIfIsset( $json_line->brand->name );
 
                 if ( isset( $json_line->name_web ) )
-                    $vendor_arr[] = self::addIfIsset( $json_line->name_web );
+                    $vendor_arr[] = $this->addIfIsset( $json_line->name_web );
 
                 /////////////////////////////////
 
@@ -137,20 +137,20 @@ class json2xml
 
                 /** обязательные параметры **/
                 //$params['price'] = $json_line->geo->{1}->price; // old variant, price in Moscow
-                $params['price'] = self::addOneOfElems( $this->addIfIsset( $json_line->geo), 'price' );
-                $params['url'] = self::addIfIsset( $json_line->link );
-                $params['picture'] = self::addIfIsset( $json_line->media_image );
-                $params['vendor'] = self::addOneOfElems( $vendor_arr );
+                $params['price'] = $this->addOneOfElems( $this->addIfIsset( $json_line->geo), 'price' );
+                $params['url'] = $this->addIfIsset( $json_line->link );
+                $params['picture'] = $this->addIfIsset( $json_line->media_image );
+                $params['vendor'] = $this->addOneOfElems( $vendor_arr );
                 $params['category_id'] = $categoryId;
                 $params['currency_id'] = $id;
                 /** /обязательные параметры **/
 
 
                 /** желательные параметры **/
-                $params['oldprice'] = self::addIfIsset( $json_line->old_price ); // !isset for all?
-                $params['description'] = self::addIfIsset( $json_line->description );
-                $params['typePrefix'] = self::addIfIsset( $json_line->type_id );
-                $params['model'] = self::addIfIsset( $json_line->model_id );
+                $params['oldprice'] = $this->addIfIsset( $json_line->old_price ); // !isset for all?
+                $params['description'] = $this->addIfIsset( $json_line->description );
+                $params['typePrefix'] = $this->addIfIsset( $json_line->type_id );
+                $params['model'] = $this->addIfIsset( $json_line->model_id );
                 $params['vendorCode'] = $this->addOneOfElems( [$json_line->bar_code, $json_line->name_web] );
                 /** /желательные параметры **/
 
@@ -161,10 +161,10 @@ class json2xml
 
                 $progressbar = ' Readed ' . $readed . ' from '. $file_size. '; '. round( ($readed/$file_size)*100 , 2 ) . '%' ;
 
-                //self::echlog($json_line); // log // all product-info FROM JSON file
-                //self::echlog ( 'ProductID ' . $params['id'] . '; ' . $progressbar  );
+                //$this->echlog($json_line); // log // all product-info FROM JSON file
+                //$this->echlog ( 'ProductID ' . $params['id'] . '; ' . $progressbar  );
                 //self::file_log ( 'ProductID ' . $params['id'] . '; ' . $progressbar  );
-                //self::echlog( $params ); // log // all product-info FOR XML file
+                //$this->echlog( $params ); // log // all product-info FOR XML file
 
 
 
@@ -189,19 +189,19 @@ class json2xml
 
 
         fclose($json_file);
-        self::echlog('Файл ' . $json_filename .' закрыт');
+        $this->echlog('Файл ' . $json_filename .' закрыт');
 
 
         // Save
         if (file_exists($xml_filename)) unlink($xml_filename);
         $return = $xml->asXML($xml_filename);
         $xml = null;
-        self::echlog('Файл ' . $xml_filename .' сохранён');
+        $this->echlog('Файл ' . $xml_filename .' сохранён');
 
 
         $time_end = time();
-        self::echlog( 'Время выполнения: ' . self::timeFromSeconds($time_end - $time_start) );
-        self::echlog( 'Время окончания: ' . $time_end );
+        $this->echlog( 'Время выполнения: ' . self::timeFromSeconds($time_end - $time_start) );
+        $this->echlog( 'Время окончания: ' . $time_end );
 
 
         return $return;
@@ -220,8 +220,8 @@ class json2xml
 
         foreach ( $arr as $elem ) {
 
-            if ( !$attrib ) $ret = self::addIfIsset( $elem );
-                else $ret = self::addIfIsset( $elem->{$attrib} );
+            if ( !$attrib ) $ret = $this->addIfIsset( $elem );
+                else $ret = $this->addIfIsset( $elem->{$attrib} );
 
             if ( $ret ) return $ret;
 
