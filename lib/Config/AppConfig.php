@@ -342,6 +342,7 @@ class AppConfig {
     /** @var array */
     public $sphinx = [
         'showFacets' => null,
+        'showListingSearchBar' => null,
     ];
 
     public function __construct() {
