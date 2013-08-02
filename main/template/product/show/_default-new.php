@@ -12,8 +12,14 @@
  * @var $shopStates        \Model\Product\ShopState\Entity[]
  * @var $creditData        array
  */
-?>
 
+$showLinkToProperties = true;
+$countModels = count( $product->getModel() );
+$countProperties = count( $product->getProperty() );
+$is_showed = [];
+
+
+?>
 <div id="jsProductCard" data-value="<?= $page->json($productData) ?>"></div>
 
 <div class="bProductSectionLeftCol">
@@ -28,12 +34,41 @@
 
         <?= $helper->render('product/__credit', ['product' => $product, 'creditData' => $creditData]) // Беру в кредит ?>
 
-        <div class="bProductDescShop__eText">
-            <?= $product->getTagline() ?>
-            <div class="bTextMore"><a class="jsGoToId" data-goto="productspecification" href="">Характеристики</a></div>
-        </div>
+        <? if (
+            !($countModels > 0) &&
+            !$product->getTagline() &&
+            !$product->getDescription &&
+            ($countProperties < 16)
+        ) {
+            // Выводим все характеристики товара в центральном блоке первого экрана карточки
+            $helper->render('product/__groupedProperty', ['product' => $product]);
+            $is_showed[] = 'groupedProperty';
+            $showLinkToProperties = false;
+        }else{
+            ?>
+            <div class="bProductDescShop__eText">
+                <?= $product->getTagline() ?>
+                <? /* <div class="bTextMore"><a class="jsGoToId" data-goto="productspecification" href="">Характеристики</a></div> */ ?>
+            </div>
+            <?
+        } ?>
+
 
         <?= $helper->render('product/__reviewCount', ['product' => $product, 'reviewsData' => $reviewsData]) ?>
+
+        <?
+
+        if ( $countProperties<8 and !in_array('groupedProperty', $is_showed) ) {
+            // выводим все характеристики в первом экране, сразу под отзывами.
+            $helper->render('product/__groupedProperty', ['product' => $product]);
+            $is_showed[] = 'groupedProperty';
+            $showLinkToProperties = false;
+        }
+
+
+        ?>
+        <?= $helper->render('product/__propertiesExpanded', ['productExpanded' => $productExpanded, 'showLinkToProperties' => $showLinkToProperties]) ?>
+        <? $is_showed[] = 'propertiesExpanded'; ?>
 
         <?= $helper->render('product/__model', ['product' => $product]) // Модели ?>
     </div><!--/product shop description section -->
@@ -81,7 +116,9 @@
         ]) ?>
     <? endif ?>
 
-    <?= $helper->render('product/__groupedProperty', ['product' => $product]) // Характеристики ?>
+    <? if ( !in_array('groupedProperty', $is_showed) )  echo $helper->render('product/__groupedProperty', ['product' => $product]) // Характеристики ?>
+    <? // $helper->render('product/__groupedProperty', ['product' => $product, 'productExpanded' => $productExpanded]) // Характеристики ?>
+    <? // $helper->render('product/__propertiesExpanded', ['productExpanded' => $productExpanded]) // Характеристики ?>
 
     <div class="bReviews">
         <? if (\App::config()->product['reviewEnabled'] && $reviewsPresent): ?>
