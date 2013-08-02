@@ -181,21 +181,13 @@ FormValidator.prototype._validateField = function( field ) {
 		},
 		result = {};
 	// end of vars
-	console.info('validateField');
 
 	fieldNode = field.filedNode;
 	require = ( fieldNode.attr('required') === 'required' ) ? true : field.require; // если у элемента формы есть required то поле обязательное, иначе брать из конфига
 	validBy = field.validBy;
 	customErr = field.customErr;
 
-	console.log(field);
-	console.log('filed require '+field.require);
-	console.log('field attr require '+fieldNode.attr('required'))
-
 	elementType = ( fieldNode.tagName === 'TEXTAREA') ? 'textarea' : ( fieldNode.tagName === 'SELECT') ? 'select' : fieldNode.attr('type') ; // если тэг элемента TEXTAREA то тип проверки TEXTAREA, если SELECT - то SELECT, иначе берем из атрибута type
-
-	console.log(elementType)
-	console.log(require)
 
 	if ( require ) {
 		// поле обязательно для заполнения
@@ -255,13 +247,13 @@ FormValidator.prototype._validateField = function( field ) {
  * @private
  */
 FormValidator.prototype._findFieldByNode = function( nodeToFind ) {
-	var fileds = this.config.fields;
+	var fields = this.config.fields;
 
-	for ( var i = fileds.length - 1; i >= 0; i-- ) {
-		if ( fileds[i].filedNode.selector === nodeToFind.selector ) {
+	for ( var i = fields.length - 1; i >= 0; i-- ) {
+		if ( fields[i].filedNode.selector === nodeToFind.selector ) {
 			return {
 				finded: true,
-				field: fileds[i],
+				field: fields[i],
 				index: i
 			};
 		}
@@ -291,21 +283,24 @@ FormValidator.prototype._findFieldByNode = function( nodeToFind ) {
  */
 FormValidator.prototype.validate = function( callbacks ) {
 	var self = this,
-		fileds = this.config.fields,
+		fields = this.config.fields,
 		i = 0,
 		errors = [],
 		result = {};
 	// end of vars	
 	
-	for ( i = fileds.length - 1; i >= 0; i-- ) { // перебираем поля из конфига
-		result = self._validateField(fileds[i]);
+	for ( i = fields.length - 1; i >= 0; i-- ) { // перебираем поля из конфига
+		result = self._validateField(fields[i]);
 
 		if ( result.hasError ) {
-			fileds[i].filedNode.addClass(self.config.errorClass);
+			fields[i].filedNode.addClass(self.config.errorClass);
 			errors.push({
-				filedNode: fileds[i].filedNode,
+				filedNode: fields[i].filedNode,
 				errorMsg: result.errorMsg
 			});
+		}
+		else {
+			fields[i].filedNode.removeClass(self.config.errorClass);
 		}
 	}
 
@@ -318,6 +313,26 @@ FormValidator.prototype.validate = function( callbacks ) {
 };
 
 /**
+ * Получить тип валидации для поля
+ *
+ * @param	{Object} fieldToFind	Ссылка на jQuery объект поля для которого нужно получить параметры валидации
+ * 
+ * @return	{Object|Boolean}	Возвращает или конфигурацию валидации для поля, или false
+ * 
+ * @this	{FormValidator}
+ * @public
+ */
+FormValidator.prototype.getValidate = function( fieldToFind ) {
+	var findedField = this._findFieldByNode(fieldToFind);
+
+	if ( findedField.finded ) {
+		return findedField.field;
+	}
+
+	return false;
+};
+
+/**
  * Установить новый тип валидации для поля
  *
  * @param	{Object}	fieldNodeToRemove	Ссылка на jQuery объект поля для которого нужно изменить параметры валидации
@@ -326,19 +341,23 @@ FormValidator.prototype.validate = function( callbacks ) {
  * @public
  */
 FormValidator.prototype.setValidate = function( fieldNodeToCange, paramsToChange ) {
-	var fileds = this.config.fields,
-		findedField = this._findFieldByNode(fieldNodeToCange);
+	var findedField = this._findFieldByNode(fieldNodeToCange),
+		addindField = null;
 
 	if ( findedField.finded ) {
-		findedField.field = $.extend(
+		addindField = $.extend(
 						{},
 						findedField.field,
 						paramsToChange );
+		this.config.fields.splice(findedField.index, 1);
+
 	}
 	else {
 		paramsToChange.fieldNode = fieldNodeToCange;
-		this.addFieldToValidate(paramsToChange);
+		addindField = paramsToChange;
 	}
+
+	this.addFieldToValidate(addindField);
 };
 
 /**
@@ -352,7 +371,7 @@ FormValidator.prototype.setValidate = function( fieldNodeToCange, paramsToChange
  * @public
  */
 FormValidator.prototype.removeFieldToValidate = function( fieldNodeToRemove ) {
-	var fileds = this.config.fields,
+	var fields = this.config.fields,
 		findedField = this._findFieldByNode(fieldNodeToRemove);
 
 	if ( findedField.finded ) {
@@ -377,5 +396,5 @@ FormValidator.prototype.removeFieldToValidate = function( fieldNodeToRemove ) {
  * @public
  */
 FormValidator.prototype.addFieldToValidate = function( field ) {
-	this.config.fileds.push(field);
+	this.config.fields.push(field);
 };

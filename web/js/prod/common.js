@@ -1035,15 +1035,19 @@ $(document).ready(function(){
 	});
 
 	(function(){
+		var regFirstName = $('#register_first_name'),
+			regUsername = $('#register_username'),
+			changeValidateBtn = $('.registerAnotherWayBtn');
+
 		var config = {
 			fields: [
 				{
-					filedNode: $('#register_first_name'),
+					filedNode: regFirstName,
 					require: true,
 					customErr: 'Не введено имя ползователя'
 				},
 				{
-					filedNode: $('#register_username'),
+					filedNode: regUsername,
 					require: true,
 					validBy: 'isEmail'
 				}
@@ -1052,23 +1056,47 @@ $(document).ready(function(){
 
 		var registerValidate = new FormValidator( config );
 
-		$('.registerAnotherWayBtn').bind('click', function() {
-			console.info('change validate type');
-			registerValidate.removeFieldToValidate($('#register_username'));
+		changeValidateBtn.bind('click', function() {
+			var nowValidType = registerValidate.getValidate(regUsername),
+				newConfig = {};
+
+			if ( nowValidType === false ) {
+				console.log('для поля не задана валидация');
+				// для поля не задана валидация
+				return false;
+			}
+
+			if ( nowValidType.validBy === 'isPhone' ) {
+				// меняем валидацию на e-mail
+				changeValidateBtn.html('У меня нет e-mail');
+				newConfig = {
+					validBy: 'isEmail'
+				};
+				
+			}
+			else if ( nowValidType.validBy === 'isEmail' ) {
+				// меняем валидацию на телефон
+				changeValidateBtn.html('Ввести e-mail');
+				newConfig = {
+					validBy: 'isPhone'
+				};
+			}
+
+			registerValidate.setValidate(regUsername, newConfig);
+
+			return false;
 		});
 
 		$('#register-form').bind('submit', function( e ) {
 			e.preventDefault();
 
-			console.log('click submit');
-
 			registerValidate.validate({
 				onInvalid: function( err ) {
-					console.log('invalid');
+					console.info('invalid');
 					console.log(err)
 				},
 				onValid: function() {
-					console.log('valid');
+					console.info('valid');
 				}
 			});
 
