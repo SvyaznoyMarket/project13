@@ -134,23 +134,69 @@ class HtmlChatHistoryContent extends HtmlBasicContent {
         $out .= '<p>Количество чатов с одним сообщением (без ответа оператора): ' . $this->count_noanswer.'.</p>';
 
 
+        $ii = 0;
+
 
         $opers = '<div class="durations">';
         $opers .= '<h3>Продолжительность разговора оператора</h3>';
-        $opers .= '<ul>';
+
+
+        $opers .= '<table>';
+        $opers .= '<th>Агент</th>';
+        $opers .= '<th>Статус</th>';
+        $opers .= '<th>Диалогов</th>';
+        $opers .= '<th>Длительность</th>';
+        $opers .= '<th>В среднем</th>';
+
         foreach($this->duration_cross_operators as $id => $val) {
+            $opers .= '<tr>';
+
             $count = $val['count_chats'];
             $all = $val['all_chattime'];
             $average = ( $count ) ? $all/$count : null;
 
-            $opers .= '<li>';
+
+            $opers .= '<td>';
             $opers .= $this->operator_link($id, $this->operator_info($id) ) . ': ' ;
-            if ($count) $opers .= 'Диалогов: ' . $count.'; ';
-            if ($all) $opers .= 'Длительность: ' . $this->timeFromSeconds( $all ) .'; ';
-            if ($average) $opers .= 'В среднем: ' . $this->timeFromSeconds( $average ) . '.';
-            $opers .= '</li>';
+            $opers .= '</td>';
+
+
+            $opers .= '<td>';
+            $opers .= $this->operator_link($id, $this->operator_info($id, 'isonline') ) ? 'Онлайн' : 'Офлайн' ;
+            $opers .= '</td>';
+
+
+
+            $opers .= '<td>';
+            if ($count) {
+                $opers .=  $count;
+            }
+            $opers .= '</td>';
+
+
+
+            $opers .= '<td>';
+            if ($all) {
+                $opers .= $this->timeFromSeconds( $all );
+            }
+            $opers .= '</td>';
+
+
+
+            $opers .= '<td>';
+            if ($average) {
+                $opers .= $this->timeFromSeconds( $average );
+            }
+            $opers .= '</td>';
+
+
+            $opers .= '</tr>';
         }
-        $opers .= '</ul>';
+
+        $opers .= '</table>';
+
+
+
         $opers .= '</div>';
 
 

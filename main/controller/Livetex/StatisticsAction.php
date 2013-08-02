@@ -108,8 +108,17 @@ class StatisticsAction {
         if ( isset( $operators->response) ) {
             foreach( $operators->response as $item) {
                 if ( isset($item->id) ) $operators_list[$item->id] = $item;
+                /* // для проверки статуса isonline
+                if ( isset( $item->isonline ) ) {
+                    $item->isonline ? print 'online' : print 'offline';
+                }else {
+                    print ' not isset ';
+                }
+                print '<br/>';
+                */
             }
         }
+
 
         $operators_count_html = // Количество операторов
             (isset($operators->response) and $operators->response)
