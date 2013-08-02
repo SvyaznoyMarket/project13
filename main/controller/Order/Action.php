@@ -626,14 +626,17 @@ class Action {
             /** @var $order \Model\Order\Entity */
             if ($order->getNumber() === $orderNumber) return true;
         });
+        /** @var $order \Model\Order\Entity */
         $order = reset($orders);
         if (!$order) {
             throw new \Exception\NotFoundException(sprintf('Заказ с номером %s не найден в сессии', $orderNumber));
         }
 
+        $paymentMethod = \RepositoryManager::paymentMethod()->getEntityById($order->getPaymentId());
 
         $page = new \View\Order\CompletePage();
         $page->setParam('orders', $orders);
+        $page->setParam('paymentMethod', $paymentMethod);
         $page->setParam('paymentProvider', null);
         $page->setParam('creditData', []);
         $page->setParam('isOrderAnalytics', false);

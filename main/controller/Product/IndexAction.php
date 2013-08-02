@@ -178,37 +178,34 @@ class IndexAction {
 
         /** @var $shopStates \Model\Product\ShopState\Entity[] */
         $shopStates = [];
-        //загружаем магазины, если товар доступен только на витрине
-        if (!$product->getIsBuyable() && $product->getState()->getIsShop()) {
-            $quantityByShop = [];
-            foreach ($product->getStock() as $stock) {
-                $quantityShowroom = (int)$stock->getQuantityShowroom();
-                $quantity = (int)$stock->getQuantity();
-                $shopId = $stock->getShopId();
-                if ((0 < $quantity + $quantityShowroom) && !empty($shopId)) {
-                    $quantityByShop[$shopId] = [
-                        'quantity' => $quantity,
-                        'quantityShowroom' => $quantityShowroom,
-                    ];
-                }
+        $quantityByShop = [];
+        foreach ($product->getStock() as $stock) {
+            $quantityShowroom = (int)$stock->getQuantityShowroom();
+            $quantity = (int)$stock->getQuantity();
+            $shopId = $stock->getShopId();
+            if ((0 < $quantity + $quantityShowroom) && !empty($shopId)) {
+                $quantityByShop[$shopId] = [
+                    'quantity' => $quantity,
+                    'quantityShowroom' => $quantityShowroom,
+                ];
             }
-            if ((bool)$quantityByShop) {
-                \RepositoryManager::shop()->prepareCollectionById(
-                    array_keys($quantityByShop),
-                    function($data) use (&$shopStates, &$quantityByShop) {
-                        foreach ($data as $item) {
-                            $shop = new \Model\Shop\Entity($item);
+        }
+        if ((bool)$quantityByShop) {
+            \RepositoryManager::shop()->prepareCollectionById(
+                array_keys($quantityByShop),
+                function($data) use (&$shopStates, &$quantityByShop) {
+                    foreach ($data as $item) {
+                        $shop = new \Model\Shop\Entity($item);
 
-                            $shopState = new \Model\Product\ShopState\Entity();
-                            $shopState->setShop($shop);
-                            $shopState->setQuantity(isset($quantityByShop[$shop->getId()]['quantity']) ? $quantityByShop[$shop->getId()]['quantity'] : 0);
-                            $shopState->setQuantityInShowroom(isset($quantityByShop[$shop->getId()]['quantityShowroom']) ? $quantityByShop[$shop->getId()]['quantityShowroom'] : 0);
+                        $shopState = new \Model\Product\ShopState\Entity();
+                        $shopState->setShop($shop);
+                        $shopState->setQuantity(isset($quantityByShop[$shop->getId()]['quantity']) ? $quantityByShop[$shop->getId()]['quantity'] : 0);
+                        $shopState->setQuantityInShowroom(isset($quantityByShop[$shop->getId()]['quantityShowroom']) ? $quantityByShop[$shop->getId()]['quantityShowroom'] : 0);
 
-                            $shopStates[] = $shopState;
-                        }
+                        $shopStates[] = $shopState;
                     }
-                );
-            }
+                }
+            );
         }
 
         try {
