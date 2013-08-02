@@ -26,6 +26,7 @@
     'hasListView'     => true,
     'category'        => $selectedCategory,
     'view'            => $productView,
+    'productSorting'  => $productSorting,
     'isAddInfo'       => true,
     'showPagerHeader' => true,
 ]) ?>
