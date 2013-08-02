@@ -22,7 +22,7 @@ class Layout extends \View\DefaultLayout {
 
         // content title
         if (!$this->getParam('title')) {
-            $this->setParam('title', $tag->getName() . (empty($categoryToken) ? '' : ': ' . $category->getName()));
+            $this->setParam('title', $tag->getName() . ($category ? (': ' . $category->getName()) : ''));
         }
 
         // breadcrumbs

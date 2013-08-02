@@ -264,10 +264,22 @@ class Action {
         // если в catalogJson'e указан category_layout_type == 'promo', то подгружаем промо-контент
         if (!empty($catalogJson['category_layout_type']) &&
             $catalogJson['category_layout_type'] == 'promo' &&
-            !empty($catalogJson['promo_token'])) {
-            $client = \App::contentClient();
-            $content = $client->query($catalogJson['promo_token'], [], false);
-            $promoContent = empty($content['content']) ? '' : $content['content'];
+            !empty($catalogJson['promo_token'])
+        ) {
+            \App::contentClient()->addQuery(
+                trim((string)$catalogJson['promo_token']),
+                [],
+                function($data) use (&$promoContent) {
+                    if (!empty($data['content'])) {
+                        $promoContent = $data['content'];
+                    }
+                },
+                function(\Exception $e) {
+                    \App::logger()->error(sprintf('Не получено содержимое для промо-страницы %s', \App::request()->getRequestUri()));
+                    \App::exception()->add($e);
+                }
+            );
+            \App::contentClient()->execute();
         }
 
         // если в catalogJson'e указан category_class, то обрабатываем запрос соответствующим контроллером

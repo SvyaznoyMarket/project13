@@ -3917,7 +3917,7 @@
   }
   label.radio span.holder {
     background: url("/css/leftNav/img/radioBtn.png") no-repeat 0 -13px;
-    top: 0 !important;
+    top: 0;
     height: 13px;
   }
   label.checkbox:hover span.holder,
@@ -3932,6 +3932,9 @@
   }
   label.checked:hover span.holder {
     background-position: 0 -16px;
+  }
+  label.radio.checked:hover span.holder {
+    background-position: 0 0;
   }
   input.hiddenCheckbox {
     position: absolute;
@@ -4552,7 +4555,7 @@
   }
   .bShopInStock__eAddress {
     float: left;
-    padding: 2px 0 2px 28px;
+    padding: 2px 0 2px 0;
     background: url("/css/newProductCard/img/ico.png") no-repeat 0 0;
   }
   .bShopInStock__eAll {
