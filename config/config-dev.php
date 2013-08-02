@@ -40,19 +40,8 @@ $c->reviewsStore['retryTimeout'] = [
 ];
 
 $c->wordpress['throwException'] = false;
-$c->wordpress['timeout'] = 4;
 
-$c->dataStore['timeout'] = 2;
-
-$c->dataStore['retryTimeout'] = [
-    'default' => 1,
-    'tiny'    => 0.2,
-    'short'   => 0.4,
-    'medium'  => 0.6,
-    'long'    => 1,
-    'huge'    => 1.5,
-    'forever' => 0,
-];
+$c->dataStore['timeout'] = 2.5;
 
 $c->database['host'] = 'localhost';
 
