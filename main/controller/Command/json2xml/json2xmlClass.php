@@ -14,7 +14,7 @@ class json2xml
 {
     private $log_file_name = 'json2xml_log.txt';
     private $log_file;
-    private $log_format = 'console'
+    private $log_format //= 'console'
     ;
 
 
@@ -74,13 +74,28 @@ class json2xml
             self::echlog('Файл ' . $json_filename . ' не найден');
         }
         $json_file = fopen($json_filename, "r");
+        $file_size = filesize($json_filename);
 
 
-        $xml = new \SimpleXMLElement('<?xml version="1.0" encoding="utf-8" ?><xml_catalog></xml_catalog>');
-        $xml->addChild('shop');
+        $xml = new \SimpleXMLElement('<?xml version="1.0" encoding="utf-8" ?><!DOCTYPE yml_catalog SYSTEM "shops.dtd"><yml_catalog></yml_catalog>');
+        $shop = $xml->addChild('shop');
+
+
+        /** head **/
+        $shop->addChild('name', 'Enter.ru');
+        $shop->addChild('company', 'Enter.ru');
+        $shop->addChild('url', 'http://www.enter.ru');
+        $shop->addChild('email', 'enter@enter.ru');
+
+        $currencies = $shop->addChild('currencies');
+        $currency = $currencies->addChild('currency');
+        $currency->addAttribute('id', 'RUR');
+        $currency->addAttribute('rate', '1');
+        /** /head **/
+
+
         $offers = $xml->shop->addChild('offers');
 
-        $file_size = filesize($json_filename);
 
         $i = 0;
         $readed = 0;
@@ -94,58 +109,68 @@ class json2xml
 
             IF ( ISSET( $json_line->id ) ) { // у каждого товара должен быть ID, если нету, видимо пустая строка в файле
 
-                $params = [];
+                $id = $json_line->id;
 
-                $params['id'] = $json_line->id;
-                $params['link'] = self::addIfIsset( $json_line->link );
-                $params['media_image'] = self::addIfIsset( $json_line->media_image );
+                $categoryId = 0;
+                if ( isset($json_line->categories) )
+                    foreach ( $json_line->categories as $cat ) {
+                        // Находим главную категорию товара и выходим
+                        if ($cat->is_main) {
+                            $categoryId = $this->addIfIsset( $cat->category_id );
+                            break;
+                        }
+                    }
 
-                $params['price'] = self::addOneOfElems(
-                    self::addIfIsset( $json_line->geo),
-                    'price'
-                );
+                /////////////////////////////////
 
-                $arr = [];
+                $vendor_arr = [];
                 if ( isset( $json_line->brand->name ) )
-                    $arr[] = self::addIfIsset( $json_line->brand->name );
+                    $vendor_arr[] = self::addIfIsset( $json_line->brand->name );
 
                 if ( isset( $json_line->name_web ) )
-                    $arr[] = self::addIfIsset( $json_line->name_web );
+                    $vendor_arr[] = self::addIfIsset( $json_line->name_web );
 
-                $params['vendor'] = self::addOneOfElems( $arr );
+                /////////////////////////////////
 
+
+                $params = [];
+
+                /** обязательные параметры **/
+                //$params['price'] = $json_line->geo->{1}->price; // old variant, price in Moscow
+                $params['price'] = self::addOneOfElems( $this->addIfIsset( $json_line->geo), 'price' );
+                $params['url'] = self::addIfIsset( $json_line->link );
+                $params['picture'] = self::addIfIsset( $json_line->media_image );
+                $params['vendor'] = self::addOneOfElems( $vendor_arr );
+                $params['category_id'] = $categoryId;
+                $params['currency_id'] = $id;
+                /** /обязательные параметры **/
+
+
+                /** желательные параметры **/
+                $params['oldprice'] = self::addIfIsset( $json_line->old_price ); // !isset for all?
                 $params['description'] = self::addIfIsset( $json_line->description );
                 $params['typePrefix'] = self::addIfIsset( $json_line->type_id );
                 $params['model'] = self::addIfIsset( $json_line->model_id );
-                //$params['price'] = $json_line->geo->{1}->price; // old variant, price in Moscow
+                $params['vendorCode'] = $this->addOneOfElems( [$json_line->bar_code, $json_line->name_web] );
+                /** /желательные параметры **/
 
 
-                foreach ($json_line->categories as $cat) {
-                    // Находим главную категорию товара и выходим
-                    if ($cat->is_main) {
-                        $categoryId = $cat->category_id;
-                        break;
-                    }
-                }
+
+
 
 
                 $progressbar = ' Readed ' . $readed . ' from '. $file_size. '; '. round( ($readed/$file_size)*100 , 2 ) . '%' ;
 
-
                 //self::echlog($json_line); // log // all product-info FROM JSON file
-
-
                 //self::echlog ( 'ProductID ' . $params['id'] . '; ' . $progressbar  );
                 //self::file_log ( 'ProductID ' . $params['id'] . '; ' . $progressbar  );
-
                 //self::echlog( $params ); // log // all product-info FOR XML file
 
 
 
 
-
                 $offer = $offers->addChild('offer');
-                $offer->addAttribute('id', $params['id']);
+                $offer->addAttribute('id', $id);
                 $offer->addAttribute('available', 'true');
 
                 foreach ($params as $name => $value) {
