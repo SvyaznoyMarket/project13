@@ -5,3 +5,5 @@
     })();
 </script>
 <? endif ?>
+
+<?= $page->slotSociomantic() ?>

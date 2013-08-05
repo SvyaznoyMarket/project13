@@ -63,7 +63,12 @@ class Client {
             }
             $header = $this->header($response, true);
 
-            \Util\RequestLogger::getInstance()->addLog($info['url'], $data, $info['total_time'], isset($header['X-Server-Name']) ? $header['X-Server-Name'] : 'unknown');
+            \Util\RequestLogger::getInstance()->addLog(
+                $info['url'],
+                $data,
+                $info['total_time'],
+                (isset($header['X-Server-Name']) ? $header['X-Server-Name'] : '?') . ' ' . (isset($header['X-API-Mode']) ? $header['X-API-Mode'] : '?')
+            );
 
             if ($info['http_code'] >= 300) {
                 throw new \RuntimeException(sprintf("Invalid http code: %d, \nResponse: %s", $info['http_code'], $response));
@@ -175,18 +180,27 @@ class Client {
                     //$this->logger->debug('Curl response info: ' . $this->encodeInfo($info), ['curl']);
                     if (curl_errno($handler) > 0) {
                         $spend = \Debug\Timer::stop('curl');
-                        \Util\RequestLogger::getInstance()->addLog($info['url'], $this->queries[$this->queryIndex[(string)$handler]]['query']['data'], $info['total_time'], '∞ ' . count($this->queries[$this->queryIndex[(string)$handler]]['resources']) . ' ' . '?');
+                        \Util\RequestLogger::getInstance()->addLog(
+                            $info['url'],
+                            $this->queries[$this->queryIndex[(string)$handler]]['query']['data'],
+                            $info['total_time'],
+                            '∞ ' . count($this->queries[$this->queryIndex[(string)$handler]]['resources']) . ' '
+                        );
                         throw new \RuntimeException(curl_error($handler), curl_errno($handler));
                     }
 
                     try {
                         $content = curl_multi_getcontent($handler);
                         if (null === $content) {
-                            throw new \RuntimeException(sprintf('Пустой ответ %s %s', $info['url'], json_encode($this->queries[$this->queryIndex[(string)$handler]]['query']['data'], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)));
+                            throw new \RuntimeException(sprintf('Пустой ответ %s %s %s', $info['url'], json_encode($this->queries[$this->queryIndex[(string)$handler]]['query']['data'], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), json_encode($info, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)));
                         }
                         $header = $this->header($content, true);
 
-                        \Util\RequestLogger::getInstance()->addLog($info['url'], $this->queries[$this->queryIndex[(string)$handler]]['query']['data'], $info['total_time'], '∞ ' . count($this->queries[$this->queryIndex[(string)$handler]]['resources']) . ' ' . (isset($header['X-Server-Name']) ? $header['X-Server-Name'] : '?'));
+                        \Util\RequestLogger::getInstance()->addLog(
+                            $info['url'],
+                            $this->queries[$this->queryIndex[(string)$handler]]['query']['data'], $info['total_time'],
+                            '∞ ' . count($this->queries[$this->queryIndex[(string)$handler]]['resources']) . ' ' . (isset($header['X-Server-Name']) ? $header['X-Server-Name'] : '?') . ' ' . (isset($header['X-API-Mode']) ? $header['X-API-Mode'] : '?')
+                        );
 
                         unset($this->queries[$this->queryIndex[(string)$handler]]);
 
@@ -205,7 +219,7 @@ class Client {
                         if (is_callable($callback)) {
                             $callback($decodedResponse, (int)$handler);
                         } else {
-                            throw new \Exception(sprintf('Неверная функция %s для %s', gettype($callback), $info['url']));
+                            $this->logger->error(sprintf('Неверная функция %s для %s', gettype($callback), $info['url']), ['curl']);
                         }
                     } catch (\Exception $e) {
                         \App::exception()->add($e);

@@ -48,8 +48,8 @@ class Repository {
     public function prepareCollectionByRegion(\Model\Region\Entity $region, $done, $fail = null) {
         \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
-        $this->client->addQuery('subway/get', array(
+        $this->client->addQuery('subway/get', [
             'geo_id' => $region->getId(),
-        ), [], $done, $fail);
+        ], [], $done, $fail);
     }
 }

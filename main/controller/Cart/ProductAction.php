@@ -53,6 +53,7 @@ class ProductAction {
             }
 
             $productInfo = [
+                'id'    =>  $product->getId(),
                 'name'  =>  $product->getName(),
                 'img'   =>  $product->getImageUrl(2),
                 'link'  =>  $product->getLink(),

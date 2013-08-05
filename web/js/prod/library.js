@@ -1,16 +1,3 @@
-/**
- * Основные конфигурационные настройки сайта
- *
- * @requires	jQuery
- */
-var pageConfig = $('#page-config').data('value');
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 /*
 	http://www.JSON.org/json2.js
 	2011-10-19
@@ -823,10 +810,13 @@ String.prototype.isEmail = isTrueEmail; // добавляем методом д�
  * @param	{number|string}		число которое нужно отформатировать
  * @return	{string}			отформатированное число
  */
-var printPrice = function(num){
-	var str = num+'';
-	return str.replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1 ');
-};
+(function( global ) {
+	global.printPrice = function( num ) {
+		var str = num+'';
+		
+		return str.replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1 ');
+	};
+}(this));
  
  
 /** 
@@ -834,83 +824,89 @@ var printPrice = function(num){
  */
  
  
-/** 
-  * docCookies.setItem(obj, sKey, sValue, vEnd, sPath, sDomain, bSecure) 
-  *
-  * https://developer.mozilla.org/en/DOM/document.cookie
-  *
-  * IVN: object into cookie is available
-  * 
-  * @argument obj (Boolean): flag if object is saved
-  * @argument sKey (String): the name of the cookie; 
-  * @argument sValue (String): the value of the cookie; 
-  * @optional argument vEnd (Number, String, Date Object or null): the max-age in seconds (e.g., 31536e3 for a year) or the 
-  *  expires date in GMTString format or in Date Object format; if not specified it will expire at the end of session;  
-  * @optional argument sPath (String or null): e.g., "/", "/mydir"; if not specified, defaults to the current path of the current document location; 
-  * @optional argument sDomain (String or null): e.g., "example.com", ".example.com" (includes all subdomains) or "subdomain.example.com"; if not 
-  * specified, defaults to the host portion of the current document location; 
-  * @optional argument bSecure (Boolean or null): cookie will be transmitted only over secure protocol as https; 
-  * @return undefined; 
-  **/  
-var docCookies = {
-	getItem: function (sKey, obj) {
-		if (!sKey || !this.hasItem(sKey)) {
-			return null;
-		}
-		var out = unescape(
-			document.cookie.replace(
-				new RegExp(
-					"(?:^|.*;\\s*)" + escape(sKey).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=\\s*((?:[^;](?!;))*[^;]?).*"
-				),
-			"$1")
-		);
-		if( obj ){
-			out = JSON.parse( out );
-		}
-		return out;
-	},
-  
-	setItem: function (obj, sKey, sValue, vEnd, sPath, sDomain, bSecure) {
-		if (!sKey || /^(?:expires|max\-age|path|domain|secure)$/.test(sKey)) {
-			return;
-		}
-		var sExpires = "";
+/*\
+|*|
+|*|  :: cookies.js ::
+|*|
+|*|  A complete cookies reader/writer framework with full unicode support.
+|*|
+|*|  https://developer.mozilla.org/en-US/docs/DOM/document.cookie
+|*|
+|*|  This framework is released under the GNU Public License, version 3 or later.
+|*|  http://www.gnu.org/licenses/gpl-3.0-standalone.html
+|*|
+|*|  Syntaxes:
+|*|
+|*|  * docCookies.setItem(name, value[, end[, path[, domain[, secure]]]])
+|*|  * docCookies.getItem(name)
+|*|  * docCookies.removeItem(name[, path])
+|*|  * docCookies.hasItem(name)
+|*|  * docCookies.keys()
+|*|
+\*/
 
-		if (vEnd) {
-			switch (typeof vEnd) {  
-				case "number":
-					sExpires = "; max-age=" + vEnd;
-					break;
-				case "string":
-					sExpires = "; expires=" + vEnd;
-					break;
-				case "object":
-					if (vEnd.hasOwnProperty("toGMTString")) {
-						sExpires = "; expires=" + vEnd.toGMTString();
-					}
-					break;
+;(function(global){	
+	global.docCookies = {
+		getItem:function ( sKey ) {
+			return unescape(document.cookie.replace(new RegExp("(?:(?:^|.*;)\\s*" + escape(sKey).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=\\s*([^;]*).*$)|^.*$"), "$1")) || null;
+		},
+
+		setItem: function ( sKey, sValue, vEnd, sPath, sDomain, bSecure ) {
+			if (!sKey || /^(?:expires|max\-age|path|domain|secure)$/i.test(sKey)) {
+
+				return false;
 			}
-		}
-		if( obj ){
-			sValue = JSON.stringify( sValue );
-		}
-		document.cookie = escape(sKey) + "=" + escape(sValue) + sExpires + (sDomain ? "; domain=" + sDomain : "") + (sPath ? "; path=" + sPath : "") + (bSecure ? "; secure" : "");  
-	},
 
-	removeItem: function (sKey) {  
-	if (!sKey || !this.hasItem(sKey)) {
-		return;
-	}
-	var oExpDate = new Date();  
-	oExpDate.setDate(oExpDate.getDate() - 1);
-	document.cookie = escape(sKey) + "=; expires=" + oExpDate.toGMTString() + "; path=/";  
-	//console.info(escape(sKey) + "=; expires=" + oExpDate.toGMTString() + "; path=/")
-	},
+			var sExpires = "";
 
-	hasItem: function (sKey) {
-		return (new RegExp("(?:^|;\\s*)" + escape(sKey).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=")).test(document.cookie);
-	}
-};
+			if ( vEnd ) {
+				switch ( vEnd.constructor ) {
+					case Number:
+						sExpires = vEnd === Infinity ? "; expires=Fri, 31 Dec 9999 23:59:59 GMT" : "; max-age=" + vEnd;
+						break;
+					case String:
+						sExpires = "; expires=" + vEnd;
+						break;
+					case Date:
+						sExpires = "; expires=" + vEnd.toGMTString();
+						break;
+				}
+			}
+
+			document.cookie = escape(sKey) + "=" + escape(sValue) + sExpires + (sDomain ? "; domain=" + sDomain:
+						"") + (sPath ? "; path=" + sPath:
+						"") + (bSecure ? "; secure":
+						"");
+						
+			return true;
+		},
+
+		removeItem: function ( sKey, sPath ) {
+			if ( !sKey || !this.hasItem(sKey) ) {
+				return false;
+			}
+			
+			document.cookie = escape(sKey) + "=; expires=Thu, 01 Jan 1970 00:00:00 GMT" + (sPath ? "; path=" + sPath: "");
+
+			return true;
+		},
+
+		hasItem: function ( sKey ) {
+			return (new RegExp("(?:^|;\\s*)" + escape(sKey).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=")).test(document.cookie);
+		},
+
+		/* optional method: you can safely remove it! */ 
+		keys: function () {
+			var aKeys = document.cookie.replace(/((?:^|\s*;)[^\=]+)(?=;|$)|^\s*|\s*(?:\=[^;]*)?(?:\1|$)/g, "").split(/\s*(?:\=[^;]*)?;\s*/);
+
+			for (var nIdx = 0; nIdx < aKeys.length; nIdx++) {
+				aKeys[nIdx] = unescape(aKeys[nIdx]);
+			}
+
+			return aKeys;
+		}
+	};
+}(this));
  
  
 /** 
@@ -964,225 +960,6 @@ function brwsr () {
 	
 	this.isTouch    = this.isOSX || this.isAndroid;
 }
-
-/*
-	Mechanics @ enter.ru 
-	(c) Ivan Kotov, Enter.ru
-	v 0.5
-
-	jQuery is prohibited
-							*/
-function Flybox( parent ){
-// TODO
-//для конкретных блоков всплытия нужны гиперссылки
-
-	if(! $(parent).length ) {
-		return null;
-	}
-		
-	var box = $('<div>').addClass('flybox').css('display','none');
-	var crnr = $('<i>').addClass('corner').appendTo( box );
-	var close = $('<i>').addClass('close').attr('title','Закрыть').html('Закрыть').appendTo( box );
-	box.appendTo( parent );
-	
-	var self = this;
-	var hidei = 0;
-	var thestuff = null;
-	
-	close.bind('click', function(){
-		clearTimeout( hidei );
-		self.jinny();
-	});
-	
-	this.updateItem = function( item ) {
-		thestuff = item;
-	};
-	
-	var basket  = '';
-	var wishes  = '';
-	var rcmndtn = '';
-
-	
-	this.showWishes = function() {
-		wishes = 
-			'<div class="font16 pb20">Только что был добавлен в список желаний</div>'+
-			'<div class="fl width70">'+
-				'<a href="">'+
-					'<img width="60" height="60" alt="" src="'+ thestuff.img +'">'+
-				'</a>'+
-			'</div>'+
-			'<div class="ml70">'+
-				'<div class="pb5">'+
-					'<a href="">'+ thestuff.title +'</a>'+
-				'</div>'+
-				'<strong>'+
-					thestuff.price +
-					'<span class="rubl">p</span>'+
-				'</strong>'+
-			'</div>'+
-			'<div class="clear pb10"></div>'+
-			'<div class="line pb5"></div>'+
-			'<div class="ar pb10">Всего товаров: '+ thestuff.vwish +'</div>'+
-			'<div class="ar">'+
-				'<a class="button bigbuttonlink" value="" href="">Перейти в список желаний</a>'+
-			'</div>	';
-	
-		box.css({'left':'400px','width':'290px'});
-		crnr.css('left','132px');
-		this.fillup ( wishes );
-		box.fadeIn(1000);
-		hidei = setTimeout( self.jinny, 5000 );
-	};
-
-	this.showBingo = function() {
-		rcmndtn = 
-			'<div class="font16 pb20">Этот товар может пригодиться!</div>'+
-			'<div class="fl width70">'+
-			'<a href="">'+
-			'<img width="60" height="60" alt="" src="'+ thestuff.img +'">'+
-			'</a>'+
-			'</div>'+
-			'<div class="ml70">'+
-			'<div class="pb5">'+
-			'<a href="">'+ thestuff.title +'</a>'+
-			'</div>'+
-			'<div class="pb10">'+
-			'<strong>'+
-			thestuff.price +
-			'<span class="rubl">p</span>'+
-			'</strong>'+
-			'</div>'+
-			'<input class="button yellowbutton" type="button" value="Купить"></div>';
-			
-		box.css({'left':'3px','width':'250px'});
-		crnr.css('left','27px');
-		this.fillup (rcmndtn);
-		box.fadeIn(1000);
-		hidei = setTimeout( self.jinny, 5000 );
-	};
-
-	this.showComparing = function() {
-		box.css({'left':'3px','width':'874px'});
-		crnr.css('left','374px');
-		this.fillup ( $('#zaglu').html() );
-		box.fadeIn(1000);
-		hidei = setTimeout( self.jinny, 7000 );
-	};
-
-	var flyboxcloser = function(e){
-		var targ = e.target.className;
-
-		if (!(targ.indexOf('flybox')+1) || !(targ.indexOf('fillup')+1)) {
-			box.hide();
-			$('body').unbind('click', flyboxcloser);
-		}
-	};
-
-
-	var hrefcart = $('.point2', parent).attr('href'); //OLD: /orders/new
-	this.showBasket = function( f1 ) {
-		if( typeof( thestuff.link ) !== 'undefined' ) {
-			hrefcart = thestuff.link;
-		}
-		var f1tmpl = '';
-		if ( typeof(f1) !== "undefined" ){
-			f1tmpl = 
-				'<br/><div class="bLiteboxF1">'+
-					'<div class="fl width70 bLiteboxF1__eWrap">'+
-						'<div class="bLiteboxF1__ePlus">+</div>'+
-						'<a href=""><img src="/images/f1info1.png" alt="" width="60" height="60" /></a></div>'+
-					'<div class="ml70">'+
-						'<div class="pb5 bLiteboxF1__eG"><a href>'+ f1.f1title +'</a></div>'+
-						'<strong>'+ f1.f1price +' <span class="rubl">p</span></strong>'+
-					'</div>'+
-				'</div>';
-		}
-		basket = 
-			'<div class="font16 pb20">Только что был добавлен в корзину:</div>'+
-			'<div class="fl width70">'+
-				'<a href="">'+
-					'<img width="60" height="60" alt="" src="'+ thestuff.img +'">'+
-				'</a>'+
-			'</div>'+
-			'<div class="ml70">'+
-				'<div class="pb5">'+
-					'<a href="">'+ thestuff.title +'</a>'+
-				'</div>'+
-				'<strong>'+
-					thestuff.price +
-					'<span> &nbsp;</span><span class="rubl">p</span>'+
-				'</strong>'+
-			'</div>'+ f1tmpl +
-			'<div class="clear pb10"></div>'+
-			'<div class="line pb5"></div>'+
-			'<div class="fr">Сумма: '+ thestuff.sum +' Р</div>'+
-			'Всего товаров: '+ thestuff.vitems +
-			'<div class="clear pb10"></div>'+
-			'<div class="ar">'+ 
-				'<a class="button bigbuttonlink" value="" href="'+ hrefcart +'">Оформить заказ</a>'+
-			'</div>';
-	
-		box.css({'left':'605px','width':'290px'});
-		crnr.css('left','142px');
-		this.fillup (basket);
-		box.fadeIn(500);
-		// hidei = setTimeout( self.jinny, 5000 );
-		$('body').bind('click', flyboxcloser);
-	};
-
-	this.showBasketF1 = function( f1 ) {
-		if ( typeof(f1) === "undefined" ){
-			return false;
-		}
-		var f1tmpl = 
-			'<div class="bLiteboxF1">'+
-				'<div class="fl width70 bLiteboxF1__eWrap">'+
-					'<div class="bLiteboxF1__ePlus"></div>'+
-					'<a href=""><img src="/images/f1info1.png" alt="" width="60" height="60" /></a></div>'+
-				'<div class="ml70">'+
-					'<div class="pb5 bLiteboxF1__eG"><a href>'+ f1.f1title +'</a></div>'+
-					'<strong>'+ f1.f1price +' <span class="rubl">p</span></strong>'+
-				'</div>'+
-			'</div>';
-		basket = 
-			'<div class="font16 pb20">Только что был добавлен в корзину:</div>'+
-			f1tmpl +
-			'<div class="clear pb10"></div>'+
-			'<div class="line pb5"></div>'+
-			'<div class="fr">Сумма: '+ thestuff.sum +' Р</div>'+
-			'Всего товаров: '+ thestuff.vitems +
-			'<div class="clear pb10"></div>'+
-			'<div class="ar">'+ 
-				'<a class="button bigbuttonlink" value="" href="'+ hrefcart +'">Оформить заказ</a>'+
-			'</div>';
-	
-		box.css({'left':'588px','width':'290px'});
-		crnr.css('left','132px');
-		this.fillup (basket);
-		box.fadeIn(500);
-		// hidei = setTimeout( self.jinny, 5000 );
-		$('body').bind('click', flyboxcloser);
-	};
-	
-	this.fillup = function( nodes ) {
-		var tmp = $('<div>').addClass('fillup').html( nodes );
-		box.append( tmp );
-	};
-	
-	this.jinny = function() {		
-		box.fadeOut(500);
-		setTimeout( function() {
-			$('.fillup', box).remove();
-		} , 550);
-	};
-
-	this.clear = function() {		
-		clearTimeout(hidei);
-		box.hide();
-		$('.fillup', box).remove();
-	};
-} // Flybox object
-
 
 function mediaLib( jn ) {
 	if ( ! jn.length ) {
@@ -1361,7 +1138,7 @@ var DirectCredit = {
 				//  }
 					
 				// }               
-				self.output.text( printPrice( Math.ceil( result.payment ) ) );
+				self.output.text( window.printPrice( Math.ceil( result.payment ) ) );
 				PubSub.publish( 'bankAnswered', null );
 			}
 		);
@@ -1962,7 +1739,7 @@ window.MapInterface = (function() {
 /**
  * WARNING!
  *
- * @requires jQuery, simple_templating, pageConfig
+ * @requires jQuery, simple_templating, docCookies
  */
 
 
@@ -1975,10 +1752,10 @@ window.MapInterface = (function() {
  * @param	{jQuery}		mainNode  DOM элемент бокса
  * @constructor
  */
-var BlackBox = function(updateUrl, mainContatiner){
-	this.updUrl = (!docCookies.hasItem('enter') ||  !docCookies.hasItem('enter_auth')) ? updateUrl += '?ts=' + new Date().getTime() + Math.floor(Math.random() * 1000) : updateUrl;
+function BlackBox( updateUrl, mainContatiner ) {
+	this.updUrl = ( !window.docCookies.hasItem('enter') || !window.docCookies.hasItem('enter_auth') ) ? updateUrl += '?ts=' + new Date().getTime() + Math.floor(Math.random() * 1000) : updateUrl;
 	this.mainNode = mainContatiner;
-};
+}
 
 /**
  * Объект по работе с корзиной
@@ -1991,14 +1768,14 @@ var BlackBox = function(updateUrl, mainContatiner){
 BlackBox.prototype.basket = function() {
 	var self = this,
 
-		headQ = $('#topBasket');
+		headQ = $('#topBasket'),
 		bottomQ = self.mainNode.find('.bBlackBox__eCartQuan'),
 		bottomSum = self.mainNode.find('.bBlackBox__eCartSum'),
 		total = self.mainNode.find('.bBlackBox__eCartTotal'),
 		bottomCart = self.mainNode.find('.bBlackBox__eCart'),
 		flyboxBasket = self.mainNode.find('.bBlackBox__eFlybox.mBasket'),
-		flyboxInner = self.mainNode.find('.bBlackBox__eFlyboxInner'),
-
+		flyboxInner = self.mainNode.find('.bBlackBox__eFlyboxInner');
+	// end of vars
 
 		/**
 		 * Уничтожение содержимого flybox и его скрытие
@@ -2006,8 +1783,8 @@ BlackBox.prototype.basket = function() {
 		 * @author	Zaytsev Alexandr
 		 * @private
 		 */
-		flyboxDestroy = function(){
-			flyboxBasket.hide(0, function(){
+	var flyboxDestroy = function flyboxDestroy() {
+			flyboxBasket.hide(0, function() {
 				flyboxInner.remove();
 			});
 		},
@@ -2019,10 +1796,10 @@ BlackBox.prototype.basket = function() {
 		 * @param	{Event} e
 		 * @private
 		 */
-		flyboxcloser = function(e){
+		flyboxcloser = function flyboxcloser( e ) {
 			var targ = e.target.className;
 
-			if (!(targ.indexOf('bBlackBox__eFlybox')+1) || !(targ.indexOf('fillup')+1)) {
+			if ( !(targ.indexOf('bBlackBox__eFlybox') + 1) || !(targ.indexOf('fillup') + 1) ) {
 				flyboxDestroy();
 				$('body').unbind('click', flyboxcloser);
 			}
@@ -2037,8 +1814,8 @@ BlackBox.prototype.basket = function() {
 		 * @param	{Number} basketInfo.cartSum	Стоимость товаров в корзине
 		 * @public
 		 */
-		update = function(basketInfo) {
-			headQ.html('('+basketInfo.cartQ+')');
+		update = function update( basketInfo ) {
+			headQ.html('(' + basketInfo.cartQ + ')');
 			bottomQ.html(basketInfo.cartQ);
 			bottomSum.html(basketInfo.cartSum);
 			bottomCart.addClass('mBought');
@@ -2058,24 +1835,24 @@ BlackBox.prototype.basket = function() {
 		 * @param	{String} item.linkToOrder	Ссылка на оформление заказа
 		 * @public
 		 */
-		add = function(item) {
-			var flyboxTmpl = tmpl('blackbox_basketshow_tmpl', item);
+		add = function add ( item ) {
+			var flyboxTmpl = tmpl('blackbox_basketshow_tmpl', item),
+					nowBasket = {
+					cartQ: item.totalQuan,
+					cartSum: item.totalSum
+				};
+			// end of vars
 
 			flyboxDestroy();
 			flyboxBasket.append(flyboxTmpl);
 			flyboxBasket.show(300);
-
-			var nowBasket = {
-				cartQ: item.totalQuan,
-				cartSum: item.totalSum
-			};
 
 			self.basket().update(nowBasket);
 
 			$('body').bind('click', flyboxcloser);
 
 		};
-	//end of vars
+	//end of functions
 
 	return {
 		'update': update,
@@ -2091,36 +1868,36 @@ BlackBox.prototype.basket = function() {
  * @return	{function} update
  */
 BlackBox.prototype.user = function() {
-	var self = this,
+	var self = this;
 
-		/**
-		 * Обновление пользователя
-		 *
-		 * @author	Zaytsev Alexandr
-		 * @param	{String} userName Имя пользователя
-		 * @public
-		 */
-		update = function(userName) {
-			var topAuth = $('#auth-link'),
-				bottomAuth = self.mainNode.find('.bBlackBox__eUserLink');
-			//end of vars
+	/**
+	 * Обновление пользователя
+	 *
+	 * @author	Zaytsev Alexandr
+	 * @param	{String} userName Имя пользователя
+	 * @public
+	 */
+	var update = function update ( userName ) {
+		var topAuth = $('#auth-link'),
+			bottomAuth = self.mainNode.find('.bBlackBox__eUserLink'),
+			dtmpl = {},
+			show_user = '';
+		//end of vars
 
-			if (userName !== null) {
-				var dtmpl={
-						user: userName
-					},
-					show_user = tmpl('auth_tmpl', dtmpl);
-				//end of vars
-				
-				topAuth.hide();
-				topAuth.after(show_user);
-				bottomAuth.html(userName).addClass('mAuth');
-			}
-			else {
-				topAuth.show();
-			}
-		};
-	//end of vars
+		if ( userName !== null ) {
+			dtmpl = {
+				user: userName
+			};
+			show_user = tmpl('auth_tmpl', dtmpl);
+			
+			topAuth.hide();
+			topAuth.after(show_user);
+			bottomAuth.html(userName).addClass('mAuth');
+		}
+		else {
+			topAuth.show();
+		}
+	}; 
 	
 	return {
 		'update': update
@@ -2136,7 +1913,7 @@ BlackBox.prototype.user = function() {
  * @this	{BlackBox}
  */
 BlackBox.prototype.init = function() {
-	var self = this,
+	var self = this;
 
 		/**
 		 * Обработчик Action присланных с сервера
@@ -2144,11 +1921,11 @@ BlackBox.prototype.init = function() {
 		 * @param	{Object} action Список действий которые необходимо выполнить
 		 * @private
 		 */
-		startAction = function(action) {
-			if (action.subscribe !== undefined) {
+	var startAction = function startAction( action ) {
+			if ( action.subscribe !== undefined ) {
 				$("body").trigger("showsubscribe", [action.subscribe]);
 			}
-			if (action.cartButton !== undefined) {
+			if ( action.cartButton !== undefined ) {
 				$("body").trigger("markcartbutton", [action.cartButton]);
 				$("body").trigger("updatespinner", [action.cartButton]);
 			}
@@ -2160,42 +1937,47 @@ BlackBox.prototype.init = function() {
 		 * @param	{Object} data
 		 * @private
 		 */ 
-		parseUserInfo = function(data) {
+		parseUserInfo = function parseUserInfo( data ) {
+			var userInfo = data.user,
+				cartInfo = data.cart,
+				actionInfo = data.action,
+				nowBasket = {};
+			//end of vars
+			
 			if (data.success !== true) {
 				return false;
 			}
 
-			var userInfo = data.user,
-				cartInfo = data.cart,
-				actionInfo = data.action;
-			//end of vars
-
 			self.user().update(userInfo.name);
 
-			if (cartInfo.quantity !== 0) {
-				var nowBasket = {
+			if ( cartInfo.quantity !== 0 ) {
+				nowBasket = {
 					cartQ: cartInfo.quantity,
 					cartSum: cartInfo.sum
 				};
 				self.basket().update(nowBasket);
 			}
 
-			if (actionInfo !== undefined) {
+			if ( actionInfo !== undefined ) {
 				startAction(actionInfo);
 			}
 		};
-	//end of vars
+	//end of functions
 
 	$.get(self.updUrl, parseUserInfo);
 };
 
 
-/**
- * Создание и иницилизация объекта для работы с корзиной и данными пользователя
- * @type	{BlackBox}
- */
-window.blackBox = new BlackBox(pageConfig.userUrl, $('.bBlackBox__eInner'));
-blackBox.init();
+(function( global ) {
+	var pageConfig = $('#page-config').data('value');
+	
+	/**
+	 * Создание и иницилизация объекта для работы с корзиной и данными пользователя
+	 * @type	{BlackBox}
+	 */
+	global.blackBox = new BlackBox(pageConfig.userUrl, $('.bBlackBox__eInner'));
+	global.blackBox.init();
+}(this));
  
  
 /** 
@@ -2238,3 +2020,162 @@ var UpdateUrlString = function(key, value) {
 	}
 };
 String.prototype.addParameterToUrl = UpdateUrlString;
+ 
+ 
+/** 
+ * NEW FILE!!! 
+ */
+ 
+ 
+/**
+ * Обработчик опроса
+ *
+ * @author    Trushkevich Anton
+ * @requires  jQuery
+ */
+(function(){
+    var question = null,
+        sbWidthDiff = null,
+        sbHeightDiff = null,
+        sbWidthDiffAfterSubmit = null,
+        initTime = null,
+        serverTime = null,
+        showDelay = null,
+        isTimePassed = null,
+        questionHash = null,
+        cookieName = 'survey',
+        cookieNameCollapsed = 'surveyCollapsed';
+
+    /**
+     * Функция инициализации параметров опроса
+     */
+    var initSurveyBoxData = function() {
+        var surveyBox = $('.surveyBox');
+        question = $('.surveyBox__question').html();
+        sbWidthDiff = parseInt( surveyBox.data('expanded-width-diff'), 10 );
+        sbHeightDiff = parseInt( surveyBox.data('expanded-height-diff'), 10 );
+        sbWidthDiffAfterSubmit = sbWidthDiff - 14;
+        initTime = parseInt( surveyBox.data('init-time'), 10 );
+        serverTime = parseInt( surveyBox.data('server-time'), 10 );
+        showDelay = parseInt( surveyBox.data('show-delay'), 10 );
+        isTimePassed = parseInt( surveyBox.data('is-time-passed'), 10 );
+        questionHash = surveyBox.data('questionHash');
+    };
+
+    /**
+     * Функция разворачивания/сворачивания опроса
+     */
+    var toggleSurveyBox = function(){
+        var toggle = this;
+
+        if ( $('.surveyBox').hasClass('expanded') ) {
+            $('.surveyBox').animate( {
+                width: '-=' + sbWidthDiff,
+                height: '-=' + sbHeightDiff
+            }, 250, function() {
+                window.docCookies.setItem( cookieNameCollapsed, questionHash, 7*24*60*60, '/' );
+                $(toggle).html('Показать опрос');
+                $('.surveyBox__content').hide();
+                $('.surveyBox').removeClass('expanded');
+            } );
+        } else {
+            $('.surveyBox').animate( {
+                width: '+=' + sbWidthDiff,
+                height: '+=' + sbHeightDiff
+            }, 250, function() {
+                window.docCookies.removeItem( cookieNameCollapsed );
+                $(toggle).html('Скрыть опрос');
+                $('.surveyBox__content').show();
+                $('.surveyBox').addClass('expanded');
+            } );
+        }
+        return false;
+    };
+
+    /**
+     * Функция ответа на опрос
+     */
+    var submitAnswer = function() {
+        var answer = $(this).html(),
+            kmId = null;
+        if ( typeof(window.KM) !== 'undefined' ) {
+            kmId = window.KM.i;
+        }
+        $.ajax({
+            type: 'POST',
+            url: '/survey/submit-answer',
+            data: {
+                question: question,
+                answer: answer,
+                kmId: kmId
+            },
+            success: function() {
+                window.docCookies.setItem( cookieName, initTime, 7*24*60*60, '/' );
+                $('.surveyBox__toggleWrapper').html('Спасибо за ответ!');
+                $('.surveyBox__content').remove();
+                $('.surveyBox').animate( {
+                    width: '-=' + sbWidthDiffAfterSubmit,
+                    height: '-=' + sbHeightDiff
+                }, 250, function() {
+                    setTimeout(function() {
+                        $('.surveyBox').removeClass('expanded');
+                        $('.surveyBox').fadeOut();
+                    }, 2000);
+                } );
+            }
+        });
+        return false;
+    };
+
+    /**
+     * Функция слежения за необходимостью показа опроса
+     */
+    var trackIfShouldShow = function() {
+        var shouldShow = false;
+
+        serverTime += 1;
+        if ( serverTime > initTime + showDelay ) {
+            shouldShow = true;
+        }
+
+        if ( shouldShow ) {
+            showSurvey();
+        } else {
+            setTimeout(function() {
+                trackIfShouldShow();
+            }, 1000);
+        }
+    }; 
+
+    /**
+     * Функция определения поддерживать ли опрос свернутым
+     */
+    var keepCollapsed = function() {
+        var cookieCollapsed = window.docCookies.getItem( cookieNameCollapsed );
+        return cookieCollapsed === questionHash;
+    }; 
+
+    /**
+     * Функция отображения панели опроса
+     */
+    var showSurvey = function() {
+        $('.surveyBox').fadeIn();
+        if( !keepCollapsed() ) {
+            $('.surveyBox__toggle').click();
+        }
+    }; 
+
+    $(document).ready(function() {
+        initSurveyBoxData();
+        $('.surveyBox__toggle').bind('click', toggleSurveyBox);
+        $('.surveyBox__answer').bind('click', submitAnswer);
+
+        if ( !isTimePassed ) {
+            trackIfShouldShow();
+        } else {
+            setTimeout(function() {
+                showSurvey();
+            }, 1000);
+        }
+    });
+}());

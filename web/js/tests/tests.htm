@@ -47,41 +47,33 @@ test("JSON", function(){
 	equal( 'EMAIL@domen.ru'.isEmail() , true, 'EMAIL@domen.ru is email');
 });
 
-module('addParameterToUrl')
+module('addParameterToUrl');
 test("get-set", function() {
 	equal( 'http://domen.ru/'.addParameterToUrl('user','true') , 'http://domen.ru/?user=true', 'http://domen.ru/?user=true');
 	equal( 'http://domen.ru/?user=true'.addParameterToUrl('someparametr','value') , 'http://domen.ru/?user=true&someparametr=value', 'http://domen.ru/?user=true&someparametr=value');
-})
+});
 
-module('Cookie manager')
+module('Cookie manager');
 test("get-set", function() {
-	var objectFlag = false
-	docCookies.setItem( objectFlag, "test1", "Hello world!")
-	docCookies.setItem( objectFlag, "test2", "Hello world!", new Date(2020, 5, 12))
-	docCookies.setItem( objectFlag, "test3", "Hello world!", new Date(2027, 2, 3), "/hidden")
-	docCookies.setItem( objectFlag, "test4", "Hello world!", "Sun, 06 Nov 2022 21:43:15 GMT")
-	docCookies.setItem( objectFlag, "test5", "Hello world!", "Tue, 06 Dec 2022 13:11:07 GMT", "/hidden")
-	docCookies.setItem( objectFlag, "test6", "Hello world!", 150)
-	docCookies.setItem( objectFlag, "test7", "Hello world!", 245, "/hidden")
-	docCookies.setItem( objectFlag, "test8", "Hello world!", null, null, "hidden.com")
-	docCookies.setItem( objectFlag, "test9", "Hello world!", null, null, null, true)
+	docCookies.setItem( "test1", "Hello world!");
+	docCookies.setItem( "test2", "Hello world!", new Date(2020, 5, 12));
+	docCookies.setItem( "test3", "Hello world!", new Date(2027, 2, 3), "/hidden");
+	docCookies.setItem( "test4", "Hello world!", "Sun, 06 Nov 2022 21:43:15 GMT");
+	docCookies.setItem( "test5", "Hello world!", "Tue, 06 Dec 2022 13:11:07 GMT", "/hidden");
+	docCookies.setItem( "test6", "Hello world!", 150);
+	docCookies.setItem( "test7", "Hello world!", 245, "/hidden");
+	docCookies.setItem( "test8", "Hello world!", null, null, "hidden.com");
+	docCookies.setItem( "test9", "Hello world!", null, null, null, true);
 	
-	equal( docCookies.getItem("test1"), "Hello world!", 'value only')
-	equal( docCookies.getItem("test2"), "Hello world!", 'expires date')
-	equal( docCookies.getItem("test3"), null, 'expires date plus directory')
-	equal( docCookies.getItem("test4"), "Hello world!", 'expires date in GMT')
-	equal( docCookies.getItem("test5"), null, 'expires date in GMT plus directory')
-	equal( docCookies.getItem("test6"), "Hello world!", 'expires date in secs')	
-	equal( docCookies.getItem("test7"), null, 'expires date in GMT plus directory')
-	equal( docCookies.getItem("test8"), null, 'hidden domain')
-	equal( docCookies.getItem("test9"), null, 'https protocol only')
-})
-
-test("Object get-set", function() {
-	var objectFlag = true
-	var tmpObj = {a: 'a', b: '99'}
-	docCookies.setItem( objectFlag, "testObj", tmpObj )
-	deepEqual( docCookies.getItem("testObj", objectFlag), tmpObj , 'simple object only')
-})
+	equal( docCookies.getItem("test1"), "Hello world!", 'value only');
+	equal( docCookies.getItem("test2"), "Hello world!", 'expires date');
+	equal( docCookies.getItem("test3"), null, 'expires date plus directory');
+	equal( docCookies.getItem("test4"), "Hello world!", 'expires date in GMT');
+	equal( docCookies.getItem("test5"), null, 'expires date in GMT plus directory');
+	equal( docCookies.getItem("test6"), "Hello world!", 'expires date in secs')	;
+	equal( docCookies.getItem("test7"), null, 'expires date in GMT plus directory');
+	equal( docCookies.getItem("test8"), null, 'hidden domain');
+	equal( docCookies.getItem("test9"), null, 'https protocol only');
+});
 
 </script>

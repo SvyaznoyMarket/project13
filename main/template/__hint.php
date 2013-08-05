@@ -1,6 +1,9 @@
 <?php
 
-return function($name, $value) { ?>
+return function(
+    $name,
+    $value
+) { ?>
 
 <div class="bHint">
     <a class="bHint_eLink"><?= $name ?></a>

@@ -686,20 +686,23 @@ $(document).ready(function() {
 		}
 
 		function toggleCookie( name ) {
-			if( !docCookies.hasItem( name ) ) {
-				docCookies.setItem(false, name, 1, 60*60, '/')
-				return
+			if( !window.docCookies.hasItem( name ) ) {
+				window.docCookies.setItem(name, 1, 60*60, '/');
+
+				return;
 			}
-			var curCook = docCookies.getItem( name )
-			docCookies.setItem(false, name, Math.abs( curCook - 1 ), 60*60, '/')
+
+			var curCook = window.docCookies.getItem( name );
+
+			window.docCookies.setItem(name, Math.abs( curCook - 1 ), 60*60, '/');
 		}
 
-		toggleFlag()
-		PubSub.subscribe( 'quantityChange', toggleFlag )
+		toggleFlag();
+		PubSub.subscribe( 'quantityChange', toggleFlag );
 		PubSub.subscribe( 'bankAnswered', function() {
-			$('#blockFromCreditAgent').fadeIn( 'slow' )
-		} )
-		//checkFlag()
+			$('#blockFromCreditAgent').fadeIn( 'slow' );
+		});
+		//checkFlag();
 
 
 		$('label.bigcheck').click( function(e) {

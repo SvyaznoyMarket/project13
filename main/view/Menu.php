@@ -27,11 +27,11 @@ class Menu {
         $this->repository->prepareCollection(function($data) {
             $this->prepareMenu($data['item']);
         }, function(\Exception $e) use (&$isFailed) {
-            \App::exception()->remove($e);
+            \App::exception()->add($e);
+            \App::logger()->error(new \Exception('Не удалось получить главное меню'), ['menu']);
             $isFailed = true;
         });
-
-        \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium'], \App::config()->coreV2['retryCount']);
+        \App::coreClientV2()->execute();
 
         if ($isFailed) {
             $this->menu = $this->repository->getCollection();

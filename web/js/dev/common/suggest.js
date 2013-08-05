@@ -3,167 +3,209 @@
  * Нужен рефакторинг
  *
  * @author		Zaytsev Alexandr
- * @requires	jQuery
+ * @requires	jQuery, jQuery.placeholder
+ *
+ * @param	{Object}	searchInput			Поле поиска
+ * @param	{Object}	suggestWrapper		Обертка для подсказок
+ * @param	{Object}	suggestItem			Результаты поиска
+ * 
+ * @param	{Number}	nowSelectSuggest	Текущий выделенный элемент, если -1 - значит выделенных элементов нет
+ * @param	{Number}	suggestLen			Количество результатов поиска
  */
-;(function(){
-	var nowSelectSuggest = -1;
-	var suggestLen = 0;
+;(function() {
+	var searchInput = $('.searchbox .searchtext'),
+		suggestWrapper = $('#searchAutocomplete'),
+		suggestItem = $('.bSearchSuggest__eRes'),
 
-	/**
-	 * Хандлер на поднятие клавиши в поле поиска
-	 * @param  {event} e
-	 */
-	var suggestUp = function(e){
-        var text = $(this).attr('value');
+		nowSelectSuggest = -1,
+		suggestLen = 0,
 
-        if (!text.length){
-            if($(this).siblings('.searchtextClear').length) {
-                $(this).siblings('.searchtextClear').addClass('vh');
-            }
-        }
-        else {
-            if($(this).siblings('.searchtextClear').length) {
-                $(this).siblings('.searchtextClear').removeClass('vh');
-            }
-        }
+		suggestCache = {},
 
-		var authFromServer = function(response){
-			$('#searchAutocomplete').html(response);
-			suggestLen = $('.bSearchSuggest__eRes').length;
-		};
+		tID = null;
+	// end of vars	
 
-        if ((e.which < 37 || e.which>40) && (nowSelectSuggest = -1)){
-            if (!text.length){ 
-                return false;
-            }
 
-            if($(this).siblings('.searchtextClear').length) {
-                $(this).siblings('.searchtextClear').removeClass('vh');
-            }
+	var suggestAnalytics = function suggestAnalytics() {
+			var link = suggestItem.eq(nowSelectSuggest).attr('href'),
+				type = ( suggestItem.eq(nowSelectSuggest).hasClass('bSearchSuggest__eCategoryRes') ) ? 'suggest_category' : 'suggest_product';
+			// end of vars
 			
-			$('.bSearchSuggest__eRes').removeClass('hover');
-			nowSelectSuggest = -1;
-
-			var url = '/search/autocomplete?q='+encodeURI(text);
-
-			$.ajax({
-				type: 'GET',
-				url: url,
-				success: authFromServer
-			});
-		}
-	};
-
-	/**
-	 * Хандлер на нажатие клавиши в поле поиска
-	 * @param  {event} e
-	 */
-	var suggestDown = function(e){
-		/**
-		 * маркировка пункта
-		 */
-		var markSuggest = function(){
-			$('.bSearchSuggest__eRes').removeClass('hover').eq(nowSelectSuggest).addClass('hover');
-		};
-
-		/**
-		 * стрелка вверх
-		 */
-		var upSuggestItem = function(){
-			if (nowSelectSuggest-1 >= 0){
-				nowSelectSuggest--;
-				markSuggest();
-			}
-			else{
-				nowSelectSuggest = -1;
-				$('.bSearchSuggest__eRes').removeClass('hover');
-				$(this).focus();
-			}
-			
-		};
-
-		/**
-		 * стрелка вниз
-		 */
-		var downSuggestItem = function(){
-			if (nowSelectSuggest+1 <= suggestLen-1){
-				nowSelectSuggest++;
-				markSuggest();
-			}			
-		};
-
-		/**
-		 * нажатие клавиши 'enter'
-		 */
-		var enterSuggest = function(){
-			// suggest analitycs
-			var link = $('.bSearchSuggest__eRes').eq(nowSelectSuggest).attr('href');
-			var type = ($('.bSearchSuggest__eRes').eq(nowSelectSuggest).hasClass('bSearchSuggest__eCategoryRes')) ? 'suggest_category' : 'suggest_product';
-			
-			if ( typeof(_gaq) !== 'undefined' ){	
+			if ( typeof(_gaq) !== 'undefined' ) {	
 				_gaq.push(['_trackEvent', 'Search', type, link]);
 			}
-			document.location.href = link;
-		};
+		},
 
-		if (e.which === 38){
-			upSuggestItem();
-		}
-		else if (e.which === 40){
-			downSuggestItem();
-		}
-		else if (e.which === 13 && nowSelectSuggest !== -1){
-			e.preventDefault();
-			enterSuggest();
-		}
-		// console.log(nowSelectSuggest)
-	};
-
-	var suggestInputFocus = function(){
-		nowSelectSuggest = -1;
-		$('.bSearchSuggest__eRes').removeClass('hover');
-	};
-
-	var suggestInputClick = function(){
-		$('#searchAutocomplete').show();
-	};
-
-	$(document).ready(function() {
 		/**
-		 * навешивание хандлеров на поле поиска
+		 * Обработчик поднятия клавиши
+		 * 
+		 * @param	{Event}		event
+		 * @param	{Number}	keyCode	Код нажатой клавиши
+		 * @param	{String}	text	Текст в поле ввода
 		 */
-		$('.searchbox .searchtext').keydown(suggestDown).keyup(suggestUp).mouseenter(suggestInputFocus).focus(suggestInputFocus).click(suggestInputClick).placeholder();
+		suggestKeyUp = function suggestKeyUp( event ) {
+			var keyCode = event.which,
+				text = searchInput.attr('value');
 
-		$('.searchbox .search-form').submit(function(){
-			var text = $('.searchbox .searchtext').attr('value');
-			if (!text.length){
+				/**
+				 * Отрисовка данных с сервера
+				 * 
+				 * @param	{String}	response	Ответ от сервера
+				 */
+			var renderResponse = function renderResponse( response ) {
+					suggestCache[text] = response; // memoization
+
+					suggestWrapper.html(response);
+					suggestItem = $('.bSearchSuggest__eRes');
+					suggestLen = suggestItem.length;
+				},
+
+				/**
+				 * Запрос на получение данных с сервера
+				 */
+				getResFromServer = function getResFromServer() {
+					var url = '/search/autocomplete?q='+encodeURI(text);
+
+					$.ajax({
+						type: 'GET',
+						url: url,
+						success: renderResponse
+					});
+				};
+			// end of function
+
+			
+			if ( (keyCode >= 37 && keyCode <= 40) ||  keyCode === 27 || keyCode === 13) { // Arrow Keys or ESC Key or ENTER Key
 				return false;
 			}
-		});
 
-		$('.bSearchSuggest__eRes').on('mouseover', function(){
-			$('.bSearchSuggest__eRes').removeClass('hover');
-			var index = $(this).addClass('hover').index();
-			nowSelectSuggest = index - 1;
-		});
+			if ( text.length === 0 ) {
+				suggestWrapper.empty();
 
-		$('body').click(function(e){		
-			var targ = e.target.className;
-			if (!(targ.indexOf('bSearchSuggest')+1 || targ.indexOf('searchtext')+1)) {
-				$('#searchAutocomplete').hide();
+				return false;
 			}
-		});
+
+			clearTimeout(tID);
+
+			// memoization
+			if ( suggestCache[text] ) {
+				renderResponse(suggestCache[text]);
+
+				return false;
+			}
+			
+			tID = setTimeout(getResFromServer, 300);
+		},
 
 		/**
-		 * suggest analitycs
+		 * Обработчик нажатия клавиши
+		 * 
+		 * @param	{Event}		event
+		 * @param	{Number}	keyCode	Код нажатой клавиши
 		 */
-		$('.bSearchSuggest__eRes').on('click', function(){
-			if ( typeof(_gaq) !== 'undefined' ){
-				var type = ($(this).hasClass('bSearchSuggest__eCategoryRes')) ? 'suggest_category' : 'suggest_product';
-				var url = $(this).attr('href');
+		suggestKeyDown = function suggestKeyDown( event ) {
+			var keyCode = event.which;
 
-				_gaq.push(['_trackEvent', 'Search', type, url]);
+			var markSuggestItem = function markSuggestItem() {
+					suggestItem.removeClass('hover').eq(nowSelectSuggest).addClass('hover');
+				},
+
+				selectUpItem = function selectUpItem() {
+					if ( nowSelectSuggest - 1 >= 0 ) {
+						nowSelectSuggest--;
+						markSuggestItem();
+					}
+					else {
+						nowSelectSuggest = -1;
+						suggestItem.removeClass('hover');
+						$(this).focus();
+					}
+				},
+
+				selectDownItem = function selectDownItem() {
+					if ( nowSelectSuggest + 1 <= suggestLen - 1 ) {
+						nowSelectSuggest++;
+						markSuggestItem();
+					}
+				},
+
+				enterSelectedItem = function enterSelectedItem() {
+					var link = suggestItem.eq(nowSelectSuggest).attr('href');
+					
+					suggestAnalytics();
+					document.location.href = link;
+				};
+			// end of functions
+
+			if ( keyCode === 38 ) { // Arrow Up
+				selectUpItem();
+
+				return false;
 			}
-		});
+			else if ( keyCode === 40 ) { // Arrow Down
+				selectDownItem();
+
+				return false;
+			}
+			else if ( keyCode === 27 ) { // ESC Key
+				suggestWrapper.empty();
+				
+				return false;
+			}
+			else if ( keyCode === 13 && nowSelectSuggest !== -1 ) { // Press Enter and suggest has selected item
+				enterSelectedItem();
+
+				return false;
+			}
+		},
+
+		searchSubmit = function searchSubmit() {
+			var text = $('.searchbox .searchtext').attr('value');
+
+			if ( text.length === 0 ) {
+				return false;
+			}
+		},
+
+		searchInputFocusin = function searchInputFocusin() {
+			suggestWrapper.show();
+		},
+		
+		suggestCloser = function suggestCloser( e ) {
+			var targ = e.target.className;
+
+			if ( !(targ.indexOf('bSearchSuggest')+1 || targ.indexOf('searchtext')+1) ) {
+				suggestWrapper.hide();
+			}
+		},
+
+		/**
+		 * Срабатывание выделения и запоминание индекса выделенного элемента по наведению мыши
+		 */
+		hoverForItem = function hoverForItem() {
+			var index = 0;
+
+			suggestItem.removeClass('hover');
+			index = $(this).addClass('hover').index();
+			nowSelectSuggest = index - 1;
+		};
+	// end of functions
+
+
+	/**
+	 * Attach handlers
+	 */
+	$(document).ready(function() {
+		searchInput.bind('keydown', suggestKeyDown);
+		searchInput.bind('keyup', suggestKeyUp);
+
+		searchInput.bind('focus', searchInputFocusin);
+		searchInput.bind('submit', searchSubmit);
+		
+		searchInput.placeholder();
+
+		$('body').bind('click', suggestCloser);
+		$('body').on('mouseenter', '.bSearchSuggest__eRes', hoverForItem);
+		$('body').on('click', '.bSearchSuggest__eRes', suggestAnalytics);
 	});
 }());

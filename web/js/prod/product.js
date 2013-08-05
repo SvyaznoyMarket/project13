@@ -2,47 +2,52 @@
  * Кредит для карточки товара
  *
  * @author		Kotov Ivan, Zaytsev Alexandr
- * @requires	jQuery, printPrice, docCookies
+ * @requires	jQuery, printPrice, docCookies, JsHttpRequest.js
  */
-
-;(function(){
+;(function() {
 	if( $('.creditbox').length ) {
-		var creditBoxNode = $('.creditbox');
-		var priceNode = creditBoxNode.find('.creditbox__sum strong');
+		var creditBoxNode = $('.creditbox'),
+			priceNode = creditBoxNode.find('.creditbox__sum strong');
+		// end of vars
 
 		window.creditBox = {
-			cookieTimeout : null,
+			cookieTimeout: null,
 			
-			toggleCookie : function( state ){
+			toggleCookie: function( state ) {
 				clearTimeout( this.cookieTimeout );
 				this.cookieTimeout = setTimeout( function(){
-					docCookies.setItem(false, 'credit_on', state ? 1 : 0 , 60*60, '/');
+					window.docCookies.setItem('credit_on', state ? 1 : 0 , 60*60, '/');
 				}, 200 );
 			},
 
-			init : function() {
-				var self = this;
-				$('.creditbox label').click( function(e) {
+			init: function() {
+				var self = this,
+					creditd = $('input[name=dc_buy_on_credit]').data('model');
+				// end of vars
+
+				$('.creditbox label').click(function( e ) {
 					var target = $(e.target);
+
 					e.stopPropagation();
-					if (target.is('input')) {
+
+					if ( target.is('input') ) {
 						return false;
 					}
 					
 					$(this).toggleClass('checked');
 					self.toggleCookie( $(this).hasClass('checked') );
 				});
-				if( this.getState() === 1) {
+
+				if ( this.getState() === 1 ) {
 					$('.creditbox label').addClass('checked');
 				}
-				
-				var creditd = $('input[name=dc_buy_on_credit]').data('model');
 
 				creditd.count = 1;
 				creditd.cart = '/cart';
+
 				dc_getCreditForTheProduct(
-					4427, 
-					docCookies.getItem('enter_auth'),
+					4427,
+					window.docCookies.getItem('enter_auth'),
 					'getPayment',
 					{ price : creditd.price, count : creditd.count, type : creditd.product_type },
 					function( result ) {
@@ -55,30 +60,14 @@
 						}
 					}
 				);
-
-	/*			
-				JsHttpRequest.query(
-					'http://direct-credit.ru/widget/payment.php',
-					{
-						'price'			:	creditd.price,
-						'partner_id'	:	4427,
-						'product_type'	:	creditd.product_type
-					},
-					function(result, errors) {
-						$('.creditboxinner .price').html( printPrice( result.htmlcode.replace(/[^0-9]/g,'')) )
-						$('.creditbox').show()
-					},
-					false
-				)
-	*/				
 			},
 			
-			getState : function() {
-				if( ! docCookies.hasItem('credit_on') ){
+			getState: function() {
+				if( ! window.docCookies.hasItem('credit_on') ) {
 					return 0;
 				}
-				return docCookies.getItem('credit_on');
-				//return $('.creditbox input:checked').length
+
+				return window.docCookies.getItem('credit_on');
 			}
 		};
 		
@@ -104,8 +93,8 @@
  * @param		{Object}	productInfo		Данные о текущем продукте
  * @param		{Object}	dataToSend		Данные для отправки на сервер и получение расчитанной доставки
  */
-(function(){
-	if (!$('#jsProductCard').length){
+(function() {
+	if ( !$('#jsProductCard').length ) {
 		return false;
 	}
 
@@ -118,7 +107,8 @@
 			'product':[
 				{'id': productInfo.id}
 			]
-		},
+		};
+	// end of vars
 
 		/**
 		 * Показ попапа с магазином
@@ -129,7 +119,7 @@
 		 * @param	{String}	url			Ссылка на магазин
 		 * @return	{Boolean}
 		 */
-		showAvalShop = function (){
+	var showAvalShop = function showAvalShop() {
 			var popup = $('#avalibleShop'),
 				button = popup.find('.bOrangeButton'),
 				position = {
@@ -137,7 +127,7 @@
 					longitude: $(this).data('lng')
 				},
 				url = $(this).attr('href');
-			// end of var
+			// end of vars
 
 			button.attr('href', url);
 			$('#ymaps-avalshops').css({'width':600, 'height':400});
@@ -173,28 +163,30 @@
 		 * @param	{Object}	shopInfo		Данные для подстановки в шаблон магазина
 		 * @param	{Number}	shopLen			Количество магазинов
 		 */
-		fillAvalShopTmpl = function (shops){
+		fillAvalShopTmpl = function fillAvalShopTmpl( shops ) {
 			var nowBox = widgetBox.find('.bWidgetBuy__eDelivery-now'),
 				toggleBtn = nowBox.find('.bWidgetBuy__eDelivery-nowClick'),
 				shopList = nowBox.find('.bDeliveryFreeAddress'),
 				templateNow = '',
 				shopInfo = {},
-				shopLen = shops.length,
-
-				/**
-				 * Обработчик переключения состояния листа магазинов открыто или закрыто
-				 */
-				shopToggle = function (){
-					nowBox.toggleClass('mOpen');
-					nowBox.toggleClass('mClose');
-				};
+				shopLen = shops.length;
 			// end of var
 			
-			if (!shopLen){
+
+			/**
+			 * Обработчик переключения состояния листа магазинов открыто или закрыто
+			 */
+			var shopToggle = function shopToggle() {
+				nowBox.toggleClass('mOpen');
+				nowBox.toggleClass('mClose');
+			};
+			
+			
+			if ( !shopLen ) {
 				return;
 			}
 
-			for (var j = shopLen - 1; j >= 0; j--) {
+			for ( var j = shopLen - 1; j >= 0; j-- ) {
 				shopInfo = {
 					name: shops[j].name,
 					lat: shops[j].latitude,
@@ -205,7 +197,8 @@
 				templateNow = tmpl('widget_delivery_shop',shopInfo);
 				shopList.append(templateNow);
 			}
-
+			
+			widgetBox.removeClass('mLoader');
 			nowBox.show();
 			$('.bDeliveryFreeAddress__eLink').bind('click', showAvalShop);
 			toggleBtn.bind('click', shopToggle);
@@ -216,18 +209,20 @@
 		 * 
 		 * @param	{Object}	res	Ответ от сервера
 		 */
-		resFromSerever = function (res){
-			if (!res.success){
-				return false;
-			}
-
+		resFromSerever = function resFromSerever( res ) {
 			/**
 			 * Полученнный с сервера массив вариантов доставок для текущего товара
 			 * @type	{Array}
 			 */
 			var deliveryInfo = res.product[0].delivery;
 
-			for (var i = deliveryInfo.length - 1; i >= 0; i--) {
+			if ( !res.success ) {
+				widgetBox.remove();
+
+				return false;
+			}
+
+			for ( var i = deliveryInfo.length - 1; i >= 0; i-- ) {
 				switch (deliveryInfo[i].token){
 					case 'standart':
 						var standartBox = widgetBox.find('.bWidgetBuy__eDelivery-price'),
@@ -254,24 +249,35 @@
 						break;
 
 					case 'now':
-						fillAvalShopTmpl(deliveryInfo[i].shop);
+						fillAvalShopTmpl( deliveryInfo[i].shop );
 						break;
 				}
 			}
-		};
-	// end of var
 
-	if (url === '') {
-		fillAvalShopTmpl(deliveryShops);
-	}
-	else {
+			widgetBox.removeClass('mLoader');
+		};
+	// end of functions
+
+	fillAvalShopTmpl( deliveryShops );
+	
+	if ( url !== '' ) {
 		$.ajax({
 			type: 'POST',
 			url: url,
 			data: dataToSend,
-			success: resFromSerever
+			success: function(data) {
+				console.log(data)
+				resFromSerever(data)
+			}
 		});
 	}
+
+	$(document).ready(function() {
+		if ( $('.bWidgetBuy__eDelivery-nowClick').length && $('.bWidgetBuy__eDelivery-nowClick').hasClass('hf') ) {
+			$('.bWidgetBuy__eDelivery-nowClick').click();
+			$('.bWidgetBuy__eDelivery-now.mOpen').css('background-image','none');
+		}
+	});
 }());
  
  
@@ -375,184 +381,56 @@
 /**
  * 3D для мебели
  */
-;(function(){
-	var loadFurniture3D = function(){
-		var furnitureAfterLoad = function(){
+;(function() {
+	var loadFurniture3D = function() {
+		var furnitureAfterLoad = function() {
 
-			var object = $('#3dModelImg');
-			var data = object.data('value');
-			var host = object.data('host');
+			var object = $('#3dModelImg'),
+				data = object.data('value'),
+				host = object.data('host');
+			// end of vars
 
-			var furniture3dPopupShow = function(){
+			var furniture3dPopupShow = function furniture3dPopupShow() {
 				$('#3dModelImg').lightbox_me({
 					centered: true,
 					closeSelector: ".close"
 				});
+
 				return false;
 			};
 
 			try {
-				if (!$('#3dImgContainer').length) {
+				if ( !$('#3dImgContainer').length ) {
 					var AnimFramePlayer = new DAnimFramePlayer(document.getElementById('3dModelImg'), host);
 					AnimFramePlayer.DoLoadModel(data);
 					$('.bPhotoActionOtherAction__eGrad360.3dimg').bind('click', furniture3dPopupShow);
 				}
 			}
-			catch (err){
-				var pageID = $('body').data('id');
-				var dataToLog = {
-					event: '3dimg',
-					type:'ошибка загрузки 3dimg для мебели',
-					pageID: pageID,
-					err: err
-				};
+			catch ( err ) {
+				var pageID = $('body').data('id'),
+					dataToLog = {
+						event: '3dimg',
+						type:'ошибка загрузки 3dimg для мебели',
+						pageID: pageID,
+						err: err
+					};
+				// end of vars
+
 				logError(dataToLog);
 			}
 		};
+
 		$LAB.script( 'DAnimFramePlayer.min.js' ).wait(furnitureAfterLoad);
 	};
 
 	$(document).ready(function() {
-		if (pageConfig['product.img3d']){
+		var pageConfig = $('#page-config').data('value');
+
+		if ( pageConfig['product.img3d'] ) {
 			loadFurniture3D();
 		}
 	});
 })();
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
-/**
- * Слайдер товаров
- *
- * @author		Zaytsev Alexandr
- * @requires	jQuery
- */
-
-;(function($){
-	$.fn.goodsSlider = function(params) {
-		return this.each(function() {
-			var options = $.extend(
-							{},
-							$.fn.goodsSlider.defaults,
-							params);
-			var $self = $(this);
-
-			var hasCategory = $self.hasClass('mWithCategory');
-			var leftBtn = $self.find(options.leftArrowSelector);
-			var rightBtn = $self.find(options.rightArrowSelector);
-			var wrap = $self.find(options.sliderWrapperSelector);
-			var slider = $self.find(options.sliderSelector);
-			var item = $self.find(options.itemSelector);
-			var catItem = $self.find(options.categoryItemselector);
-			
-			var itemW = item.width() + parseInt(item.css('marginLeft'),10) + parseInt(item.css('marginRight'),10);
-			var elementOnSlide = wrap.width()/itemW;
-
-			var nowLeft = 0;
-
-			var nextSlide = function(){
-				if ($(this).hasClass('mDisabled')){
-					return false;
-				}
-
-				leftBtn.removeClass('mDisabled');
-
-				if (nowLeft + elementOnSlide * itemW >= slider.width()-elementOnSlide * itemW){
-					nowLeft = slider.width()-elementOnSlide * itemW
-					rightBtn.addClass('mDisabled');
-				}
-				else{
-					nowLeft = nowLeft + elementOnSlide * itemW;
-					rightBtn.removeClass('mDisabled');
-				}
-
-				slider.animate({'left': -nowLeft });
-
-				return false;
-			};
-
-			var prevSlide = function(){
-				if ($(this).hasClass('mDisabled')){
-					return false;
-				}
-
-				rightBtn.removeClass('mDisabled');
-
-				if (nowLeft - elementOnSlide * itemW <= 0){
-					nowLeft = 0;
-					leftBtn.addClass('mDisabled');
-				}
-				else{
-					nowLeft = nowLeft - elementOnSlide * itemW;
-					leftBtn.removeClass('mDisabled');
-				}
-
-				slider.animate({'left': -nowLeft });
-
-				return false;
-			};
-
-			var reWidthSlider = function(nowItems){
-				leftBtn.addClass('mDisabled');
-				rightBtn.addClass('mDisabled');
-
-				if (nowItems.length > elementOnSlide) {
-					rightBtn.removeClass('mDisabled');
-				}
-
-				slider.width(nowItems.length * itemW);
-				nowLeft = 0;
-				leftBtn.addClass('mDisabled');
-				slider.css({'left':nowLeft});
-				nowItems.show();
-			};
-
-			var showCategoryGoods = function(){
-				item.hide();
-				var nowCategoryId = catItem.filter('.mActive').attr('id');
-				var nowShowItem = item.filter('[data-category="'+nowCategoryId+'"]');
-				reWidthSlider(nowShowItem);
-			};
-
-			var selectCategory = function(){
-				catItem.removeClass('mActive');
-				$(this).addClass('mActive');
-				showCategoryGoods();
-			};
-
-			if (hasCategory) {
-				showCategoryGoods();
-			}
-			else {
-				reWidthSlider(item);
-			}
-
-			rightBtn.bind('click', nextSlide);
-			leftBtn.bind('click', prevSlide);
-			catItem.bind('click', selectCategory)
-		});
-	};
-
-	$.fn.goodsSlider.defaults = {
-		leftArrowSelector: '.bSliderAction__eBtn.mPrev',
-		rightArrowSelector: '.bSliderAction__eBtn.mNext',
-		sliderWrapperSelector: '.bSliderAction__eInner',
-		sliderSelector: '.bSliderAction__eList',
-		itemSelector: '.bSliderAction__eItem',
-		categoryItemselector: '.bGoodsSlider__eCatItem'
-	};
-
-})(jQuery);
-
-$(document).ready(function() {
-	if ($('.bGoodsSlider').length) {
-		$('.bGoodsSlider').goodsSlider();
-	}
-});
  
  
 /** 
@@ -850,16 +728,18 @@ $(document).ready(function() {
 /**
  * Maybe3D
  */
-;(function(){
-	var loadMaybe3D = function(){
+;(function() {
+	var loadMaybe3D = function() {
 		var data = $('#maybe3dModelPopup').data('value');
-		var afterLoad = function(){
-			var maybe3dPopupShow = function(e){
+
+		var afterLoad = function() {
+			var maybe3dPopupShow = function( e ) {
 				e.stopPropagation();
 				try {
-					if (!$('#maybe3dModel').length){
+					if ( !$('#maybe3dModel').length ) {
 						$('#maybe3dModelPopup_inner').append('<div id="maybe3dModel"></div>');
 					}
+
 					swfobject.embedSWF(data.init.swf, data.init.container, data.init.width, data.init.height, data.init.version, data.init.install, data.flashvars, data.params, data.attributes);
 					$('#maybe3dModelPopup').lightbox_me({
 						centered: true,
@@ -869,25 +749,31 @@ $(document).ready(function() {
 						}
 					});
 				}
-				catch (err){
-					var pageID = $('body').data('id');
-					var dataToLog = {
-						event: 'swfobject_error',
-						type:'ошибка загрузки swf maybe3d',
-						pageID: pageID,
-						err: err
-					};
+				catch ( err ) {
+					var pageID = $('body').data('id'),
+						dataToLog = {
+							event: 'swfobject_error',
+							type:'ошибка загрузки swf maybe3d',
+							pageID: pageID,
+							err: err
+						};
+					// end of vars
+
 					logError(dataToLog);
 				}
 				return false;
 			};
+
 			$('.bPhotoActionOtherAction__eGrad360.maybe3d').bind('click', maybe3dPopupShow);
 		};
+
 		$LAB.script('swfobject.min.js').wait(afterLoad);
 	};
 
 	$(document).ready(function() {
-		if (pageConfig['product.maybe3d']){
+		var pageConfig = $('#page-config').data('value');
+
+		if ( pageConfig['product.maybe3d'] ) {
 			loadMaybe3D();
 		}
 	});
@@ -910,7 +796,7 @@ $(document).ready(function() {
 	$('.bZoomedImg').elevateZoom({
 		gallery: 'productImgGallery',
 		galleryActiveClass: 'mActive',
-		zoomWindowOffety: -15,
+		zoomWindowOffety: 0,
 		zoomWindowOffetx: 19,
 		zoomWindowWidth: 519,
 		borderSize: 1,
@@ -925,10 +811,11 @@ $(document).ready(function() {
 	 * @param		{Number} count Возвращает текущее значение каунтера
 	 */
 	$('.bCountSection').goodsCounter({
-		onChange:function(count){
-			var spinnerFor = $('.bCountSection').attr('data-spinner-for');
-			var bindButton = $('.'+spinnerFor);
-			var newHref = bindButton.attr('href');
+		onChange:function( count ){
+			var spinnerFor = $('.bCountSection').attr('data-spinner-for'),
+				bindButton = $('.'+spinnerFor),
+				newHref = bindButton.attr('href');
+			// end of vars
 
 			bindButton.attr('href',newHref.addParameterToUrl('quantity',count));
 
@@ -941,83 +828,111 @@ $(document).ready(function() {
 
 
 	/**
+	 * Подключение слайдера товаров
+	 */
+	$('.bGoodsSlider').goodsSlider();
+
+
+	/**
+	 * Подключение кастомных дропдаунов
+	 */
+	$('.bDescSelectItem').customDropDown({
+		changeHandler: function( option ) {
+			var url = option.data('url');
+
+			document.location.href = url;
+		}
+	});
+
+
+	/**
 	 * Аналитика для карточки товара
 	 *
 	 * @requires jQuery
 	 */
-	(function(){
-		if (!$('#jsProductCard').length){
+	(function() {
+		var productInfo = {},
+			toKISS = {};
+		// end of vars
+		
+		if ( !$('#jsProductCard').length ) {
 			return false;
 		}
-		
-		var productInfo = $('#jsProductCard').data('value');
-		var toKISS = {
+
+		productInfo = $('#jsProductCard').data('value');
+				
+		toKISS = {
 			'Viewed Product SKU':productInfo.article,
 			'Viewed Product Product Name':productInfo.name,
-			'Viewed Product Product Status':productInfo.stockState,
+			'Viewed Product Product Status':productInfo.stockState
 		};
 
-		if (typeof(_kmq) !== 'undefined'){
-			_kmq.push(['record', 'Viewed Product',toKISS]);
+		if ( typeof(_kmq) !== 'undefined' ) {
+			_kmq.push(['record', 'Viewed Product', toKISS]);
 		}
+
+
+		// KISS for goods sliders
+		var kissForGoodsSliders = function kissForGoodsSliders(){
+			var data = $(this).data('product'),
+				toKISS = {};
+			// end of vars
+			
+			switch ( data.type ) {
+				case 'Accessorize':
+					toKISS = {
+						'Recommended Item Clicked Accessorize Recommendation Place':'product',
+						'Recommended Item Clicked Accessorize Clicked SKU':data.article,
+						'Recommended Item Clicked Accessorize Clicked Product Name':data.name,
+						'Recommended Item Clicked Accessorize Product Position':data.position
+					};
+
+					if ( typeof(_kmq) !== 'undefined' ) {
+						_kmq.push(['record', 'Recommended Item Clicked Accessorize', toKISS]);
+					}
+					break;
+				case 'Also Bought':
+					toKISS = {
+						'Recommended Item Clicked Also Bought Recommendation Place':'product',
+						'Recommended Item Clicked Also Bought Clicked SKU':data.article,
+						'Recommended Item Clicked Also Bought Clicked Product Name':data.name,
+						'Recommended Item Clicked Also Bought Product Position':data.position
+					};
+
+					if ( typeof(_kmq) !== 'undefined' ) {
+						_kmq.push(['record', 'Recommended Item Clicked Also Bought', toKISS]);
+					}
+					break;
+				case 'Also Viewed':
+					toKISS = {
+						'Recommended Item Clicked Also Viewed Recommendation Place':'product',
+						'Recommended Item Clicked Also Viewed Clicked SKU':data.article,
+						'Recommended Item Clicked Also Viewed Clicked Product Name':data.name,
+						'Recommended Item Clicked Also Viewed Product Position':data.position
+					};
+
+					if ( typeof(_kmq) !== 'undefined' ) {
+						_kmq.push(['record', 'Recommended Item Clicked Also Viewed', toKISS]);
+					}
+					break;
+			}
+		};
+		// $('body').on('click', '.bSliderAction__eItem', kissForGoodsSliders);
 	})();
 	
 
 	/**
 	 * Затемнение всех контролов после добавления в корзину
+	 *
+	 * @requires jQuery
 	 */
-	(function(){
-		var afterBuy = function(){
+	(function() {
+		var afterBuy = function afterBuy() {
 			$('.bCountSection').addClass('mDisabled').find('input').attr('disabled','disabled');
 			$('.jsOrder1click').addClass('mDisabled');
 		};
 
 		$("body").bind('addtocart', afterBuy);
-	})();
-
-
-	/**
-	 * Custom select
-	 */
-	(function($){
-		$.fn.customDropDown = function(params) {
-			return this.each(function() {
-				var options = $.extend(
-								{},
-								$.fn.customDropDown.defaults,
-								params);
-				var $self = $(this);
-
-				var select = $self.find(options.selectSelector);
-				var value = $self.find(options.valueSelector);
-
-				var selectChangeHandler = function(){
-					var selectedOption = select.find('option:selected');
-
-					value.html(selectedOption.val());
-					options.changeHandler(selectedOption);
-				};
-
-				select.on('change', selectChangeHandler)
-			});
-		};
-				
-		$.fn.customDropDown.defaults = {
-			valueSelector: '.bDescSelectItem__eValue',
-			selectSelector: '.bDescSelectItem__eSelect',
-			changeHandler: function(){}
-		};
-
-	})(jQuery);
-
-	(function(){
-		$('.bDescSelectItem').customDropDown({
-			changeHandler: function(option){
-				var url = option.data('url');
-
-				document.location.href = url;
-			}
-		});
 	})();
 	
 
@@ -1059,7 +974,7 @@ $(document).ready(function() {
 
 	
 	// карточка товара - характеристики товара краткие/полные
-	if($('#productDescriptionToggle').length) {
+	if ($('#productDescriptionToggle').length) {
 		$('#productDescriptionToggle').toggle(
 			function(e){
 				e.preventDefault();
@@ -1259,72 +1174,5 @@ $(document).ready(function() {
 		if ($('.bPhotoActionOtherAction__eVideo').length){
 			initVideo();
 		}
-	});
-}());
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
-;(function(){
-	var addWarranty = function(el){
-		var url = el.data('set-url');
-		var resFromServer = function(res){
-			if (!res.success){
-				return false;
-			}
-			console.log(res);
-			// if (blackBox) {
-			// 	var basket = data.cart;
-			// 	var product = data.product;
-			// 	var tmpitem = {
-			// 		'title': product.name,
-			// 		'price' : printPrice(product.price),
-			// 		'imgSrc': product.img,
-			// 		'productLink': product.link,
-			// 		'totalQuan': basket.full_quantity,
-			// 		'totalSum': printPrice(basket.full_price),
-			// 		'linkToOrder': basket.link,
-			// 	};
-			// 	blackBox.basket().add(tmpitem);
-			// }
-		};
-		$.ajax({
-			type: 'GET',
-			url: url,
-			success: resFromServer
-		});
-	};
-
-	var delWarranty = function(el){
-		var url = el.data('delete-url');
-		var resFromServer = function(res){
-			if (!res.success){
-				return false;
-			}
-			console.log(res);
-			
-			if (blackBox) {
-				var basket = res.cart;
-				var tmpitem = {
-					'cartQ': basket.full_quantity,
-					'cartSum' : printPrice(basket.full_price)
-				};
-				blackBox.basket().update(tmpitem);
-			}
-		};
-		$.ajax({
-			type: 'GET',
-			url: url,
-			success: resFromServer
-		});
-	};
-
-
-	$('.jsCustomRadio').customRadio({
-		onChecked: addWarranty,
-		onUncheckedGroup: delWarranty
 	});
 }());

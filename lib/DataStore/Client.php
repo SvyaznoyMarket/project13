@@ -52,7 +52,7 @@ class Client {
                 \App::exception()->remove($e);
                 \App::logger()->info('Fail data-store request ' . $path . ' in ' . $spend . ' with ' . $e, ['data-store']);
             }, $this->config['timeout']);
-            $this->curl->execute(\App::config()->coreV2['retryTimeout']['tiny'], \App::config()->coreV2['retryCount']);
+            $this->curl->execute($this->config['retryTimeout']['default'], $this->config['retryCount']);
         }
 
         return $response;
@@ -90,7 +90,7 @@ class Client {
      * @param int $retryCount
      * @return void
      */
-    public function execute($retryTimeout = null, $retryCount = 0) {
+    public function execute($retryTimeout = null, $retryCount = null) {
         \Debug\Timer::start('data-store');
 
         if (null === $retryTimeout) {

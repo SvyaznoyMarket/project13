@@ -79,6 +79,11 @@ class IndexAction {
 
         // если в catalogJson'e указан category_class, то обрабатываем запрос соответствующим контроллером
         $categoryClass = !empty($catalogJson['category_class']) ? $catalogJson['category_class'] : null;
+        // карточку показываем в обычном лэйауте, если включена соответствующая настройка
+        if(!empty($catalogJson['regular_product_page'])) $categoryClass = null;
+
+        $useLens = true;
+        if ( isset($catalogJson['use_lens']) ) $useLens = (bool) $catalogJson['use_lens'];
 
         /*
         if ($categoryClass) {
@@ -100,6 +105,12 @@ class IndexAction {
         $accessoryCategory = array_map(function($accessoryGrouped){
             return $accessoryGrouped['category'];
         }, \Model\Product\Repository::filterAccessoryId($product, $accessoryItems, null, \App::config()->product['itemsInAccessorySlider'] * 36));
+        if ((bool)$accessoryCategory) {
+            $firstAccessoryCategory = new \Model\Product\Category\Entity();
+            $firstAccessoryCategory->setId(0);
+            $firstAccessoryCategory->setName('Популярные аксессуары');
+            array_unshift($accessoryCategory, $firstAccessoryCategory);
+        }
 
         $accessoriesId =  array_slice($product->getAccessoryId(), 0, $accessoryCategory ? \App::config()->product['itemsInAccessorySlider'] * 36 : \App::config()->product['itemsInSlider'] * 6);
         $relatedId = array_slice($product->getRelatedId(), 0, \App::config()->product['itemsInSlider'] * 2);
@@ -167,37 +178,34 @@ class IndexAction {
 
         /** @var $shopStates \Model\Product\ShopState\Entity[] */
         $shopStates = [];
-        //загружаем магазины, если товар доступен только на витрине
-        if (!$product->getIsBuyable() && $product->getState()->getIsShop()) {
-            $quantityByShop = [];
-            foreach ($product->getStock() as $stock) {
-                $quantityShowroom = (int)$stock->getQuantityShowroom();
-                $quantity = (int)$stock->getQuantity();
-                $shopId = $stock->getShopId();
-                if ((0 < $quantity + $quantityShowroom) && !empty($shopId)) {
-                    $quantityByShop[$shopId] = [
-                        'quantity' => $quantity,
-                        'quantityShowroom' => $quantityShowroom,
-                    ];
-                }
+        $quantityByShop = [];
+        foreach ($product->getStock() as $stock) {
+            $quantityShowroom = (int)$stock->getQuantityShowroom();
+            $quantity = (int)$stock->getQuantity();
+            $shopId = $stock->getShopId();
+            if ((0 < $quantity + $quantityShowroom) && !empty($shopId)) {
+                $quantityByShop[$shopId] = [
+                    'quantity' => $quantity,
+                    'quantityShowroom' => $quantityShowroom,
+                ];
             }
-            if ((bool)$quantityByShop) {
-                \RepositoryManager::shop()->prepareCollectionById(
-                    array_keys($quantityByShop),
-                    function($data) use (&$shopStates, &$quantityByShop) {
-                        foreach ($data as $item) {
-                            $shop = new \Model\Shop\Entity($item);
+        }
+        if ((bool)$quantityByShop) {
+            \RepositoryManager::shop()->prepareCollectionById(
+                array_keys($quantityByShop),
+                function($data) use (&$shopStates, &$quantityByShop) {
+                    foreach ($data as $item) {
+                        $shop = new \Model\Shop\Entity($item);
 
-                            $shopState = new \Model\Product\ShopState\Entity();
-                            $shopState->setShop($shop);
-                            $shopState->setQuantity(isset($quantityByShop[$shop->getId()]['quantity']) ? $quantityByShop[$shop->getId()]['quantity'] : 0);
-                            $shopState->setQuantityInShowroom(isset($quantityByShop[$shop->getId()]['quantityShowroom']) ? $quantityByShop[$shop->getId()]['quantityShowroom'] : 0);
+                        $shopState = new \Model\Product\ShopState\Entity();
+                        $shopState->setShop($shop);
+                        $shopState->setQuantity(isset($quantityByShop[$shop->getId()]['quantity']) ? $quantityByShop[$shop->getId()]['quantity'] : 0);
+                        $shopState->setQuantityInShowroom(isset($quantityByShop[$shop->getId()]['quantityShowroom']) ? $quantityByShop[$shop->getId()]['quantityShowroom'] : 0);
 
-                            $shopStates[] = $shopState;
-                        }
+                        $shopStates[] = $shopState;
                     }
-                );
-            }
+                }
+            );
         }
 
         try {
@@ -230,6 +238,7 @@ class IndexAction {
         $page->setParam('reviewsDataPro', $reviewsDataPro);
         $page->setParam('reviewsDataSummary', $reviewsDataSummary);
         $page->setParam('categoryClass', $categoryClass);
+        $page->setParam('useLens', $useLens);
 
         return new \Http\Response($page->show());
     }

@@ -1,252 +1,76 @@
 .dotted {
 	border-bottom: 1px dotted @black;
 }
-.bMainContainer {
+.bProductSection {
 	background: @white;
-	//head section
-	&__eHeader {
-		font-family: 'Enter Type';
-		&-subtitle {
-			font-size: 24px;
-			text-transform: uppercase;
-		}
-		&-title {
-			font-family: 'Enter Type';
-			font-size: 30px;
-			padding: 0 0 7px;
-			text-transform: uppercase;
-		}
-		&-article {
-			color: #9d9d9d;
-		}
+}
+
+//head section
+.bPageHead {
+	&__eSubtitle {
+		font-size: 24px;
+	}
+	&__eTitle {
+		padding: 0 0 7px;
+
+		font-family: tahoma, verdana, arial, helvetica, sans-serif;
+	}
+	&__eArticle {
+		color: #9d9d9d;
 	}
 }
 
-.bProductSection {
-    //left section
-    &__eLeft {
-        display: inline-block;
-        margin: 15px 0 0;
-        width: 700px;
-        vertical-align: top;
-        *display: inline;
-        zoom: 1;
-    }
-    .inStock {
-        color: #fb9c00;
-        font-weight: 800;
-        margin-bottom: 6px;
-    }
-    .priceOld {
-        font-size: 21px;
-        margin-bottom: 3px;
-        span {
-            text-decoration: line-through;
-        }
-    }
-    .bPrice {
-        font-size: 30px;
-    }
-    .priceSale {
-        margin: 0 0 10px;
-        cursor: pointer;
-    }
-    
-    //additional product options
-    .bDescSelectItem {
-        border: 1px solid #c7c7c7;
-        .rounded(5px);
-        background: url("@{base-url}/newProductCard/img/ico_corner.gif") no-repeat 265px 17px;
-        padding: 0 17px 0 10px;
-        height: 40px;
-        line-height: 40px;
-        font-size: 14px;
-        margin: 0 0 10px;
-        position: relative;
-        cursor: pointer;
-        &__eSelect {
-            top: 0;
-            right: 0;
-            width: 280px;
-            .opacity(0);
-            filter:progid:DXImageTransform.Microsoft.Alpha(opacity=0);
-            background-color: transparent;
-            border: none;
-            box-shadow: none;
-            color: transparent;
-            font-size: 16px;
-            height: 37px;
-            padding: 5px;
-            position: absolute;
-            -webkit-appearance: none;
-            cursor: pointer;
-            z-index: 2;
-        }
-        &__eOption {
-            filter:progid:DXImageTransform.Microsoft.Alpha(opacity=100);
-            background-color: #FFFFFF;
-            color: black;
-            display: block;
-            height: 37px;
-            -webkit-appearance: none;
-            zoom:1;
-            text-align: right;
-        }
-        &__eValue {
-            float: right;
-        }
+//left section
+.bProductSectionLeftCol {
+	display: inline-block;
+    float: left;
 
-        // 
-        // &__eDdm {
-        //     position: absolute;
-        //     background: #fff;
-        //     border: 1px solid #c7c7c7;
-        //     .rounded(0 0 5px 5px);
-        //     left: -1px;
-        //     top: 35px;
-        //     z-index: 10;
-        //     width: 278px;
-        //     li {
-        //         padding: 5px 10px;
-        //         &:hover {
-        //             background: #e6e6e6;
-        //         }
-        //     }
-        // }
-    }
-    
-    .creditbox {
-        display: none;
-		margin: 0 0 23px;
-		border: none;
-		font-size: 14px;
-		.bigcheck {
-			font-weight: normal;
-			line-height: 22px;
-			&.checked {
-				color: #ffa901 !important;
-				.dotted {
-					border: none;
-				}
-				b{
-					background-position: 0px -54px;
-				}
-			}
-			b{
-				margin: 0px 8px 0 0px;
-			}
-		}
-		.creditbox__sum {
-			padding-left: 36px;
-		}
-	}
-    //product shop description section
-    .bProductDesc {
-        margin: 0 0 25px;
-        //product images section
-        &__ePhoto {
-            position: relative;
-            float: left;
+    width: 700px;
+    margin: 15px 0 0;
+}
+
+//product images section
+.bProductDescSticker {
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+.bProductDescImg {
+    position: relative;
+
+    float: left;
+
+    width: 400px;
+
+    //product big image section
+	.bProductDescImgBig {
+        display: block;
+
+        width: 400px;
+        height: 400px;
+
+        text-align: center;
+        vertical-align: bottom;
+
+        &__eImg{
             width: 400px;
-            //product big image section
-            &-bigImg {
-                display: block;
-
-                width: 400px;
-                height: 400px;
-                margin: 0 0 30px;
-
-                text-align: center;
-                vertical-align: bottom;
-                img {
-                    max-width: 400px;
-                    max-height: 400px;
-                }
-            }
+            height: 400px;
         }
-        //product shop description box
-        &__eStore {
-            float: right;
-            width: 280px;
-            margin: 10px 0 0;
-            &-text {
-		        font-size: 14px;
-		        margin: 0 0 25px;
-		        .text__eAll {
-		            margin: 4px 0 0;
-		            a {
-		            	color: @typGray;
-    					font-size: 12px;
-    					border-bottom: 1px dotted @typGray;
-		            }
-		        }
-		    }
-		}
-	}
-
-	.bDescriptionProduct {
-		font-size: 14px;
-	}
-	.bHeadSection {
-		font-size: 16px;
-		margin: 21px 0 10px;
-		padding: 0;
-	}
-
-	//product specifications section
-	.bSpecifications {
-		&__eHead {
-			font-weight: bold;
-			margin: 0 0 5px;
-		}
-		&__eList {
-			margin: 0 0 10px;
-			dd {
-				float: left;
-				width: 270px;
-				border-bottom: 1px solid #ececec;
-				padding: 0 0 2px 0;
-				clear: both;
-				margin: 5px 0;
-				span {
-					background: @white;
-					position: relative;
-					bottom: -3px;
-					padding-right: 5px;
-				}
-			}
-			dt {
-				float: right;
-				width: 425px;
-				padding: 3px 0 0;
-				margin: 5px 0;
-			}
-		}
-	}
-
-	//right section
-	&__eRight {
-		width: 220px;
-		margin: 15px 0 0 16px;
-		vertical-align: top;
-		display: inline-block;
-        *display: inline;
-        zoom: 1;
-		.btnBuy {
-			margin: 0 auto;
-		}
-	}
+    }
 }
 
 .bPhotoAction {
-	//view product section
+
+	//view product
+	margin: 15px 0 0;
 	&OtherAction {
 		float: left;
-		width: 110px;
+		width: 175px;
 		li {
 			float: left;
 			a {
-				.rounded(9px);
+				.rounded(4px);
 				display: block;
 
 				width: 48px;
@@ -284,9 +108,7 @@
 	//slider mini product images
 	&OtherPhoto {
 		position: relative;
-
-		float: right;
-
+		float: left;
 		width: 220px;
 		margin-right: 5px;
 		&__eWrappSlider {
@@ -296,15 +118,13 @@
 		}
 		&List {
 			position: relative;
-
-			width: 100000px;
 		}
 		&Item {
 			float: left;
 
 			margin: 0 3px 0 2px;
 			&__eLink {
-				.rounded(9px);
+				.rounded(4px);
 				display: table-cell;
 				overflow: hidden;
 
@@ -316,66 +136,307 @@
 
 				border: 1px solid @typLightGray;
 
-				&:hover, 
+				*display: block;
 				&.mActive {
 					width: 46px;
 					height: 46px;
 
 					border: 2px solid @firmOrange;
+					&:hover{
+						border-color: @firmOrange;
+					}
 				}
-				
+
+				&:hover {
+					width: 46px;
+					height: 46px;
+
+					border: 2px solid;
+					border-color: lighten(@firmOrange, 20%);
+				}
+
 				img {
 					max-width: 45px;
 					max-height: 45px;
+					.rounded(4px);
 				}
 			}
 		}
 		&__eBtn {
 			position: absolute;
 			top: 0;
+
 			display: none;
+
 			width: 15px;
 			height: 50px;
+
 			cursor: pointer;
-			background-color: @white;
+			background: rgb(255,255,255);
+            background: rgba(255,255,255, 0.9);
 			color: #404040;
 			span {
-				text-align: center;
-				line-height: 48px;
-			}
+				display: block;
+				width: 6px;
+				height: 10px;
+				margin: 20px auto 0;
+				background-repeat: no-repeat;
+				}
+
 			&.mPrev {
 				.box-shadow(4px 0 3px -2px #cecece);
 				left: -6px;
+
+				span {
+					background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAKCAYAAAB8OZQwAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAUklEQVQIHWWOAQrAIAwDGz9qn7a9xKd1SVhFMBBCrxGLqopTADIE21wmvUa33IiYmg1PIAg6aTeY1n7eQDn4ycN8NbTcvBZ9jpJKeuEfBCxd8gH17yW5xQaKpwAAAABJRU5ErkJggg==);
+
+				}
 			}
+
 			&.mNext {
 				.box-shadow(-4px 0 3px -2px #cecece);
 				right: -5px;
+
+				span {
+					background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAKCAYAAAB8OZQwAAAACXBIWXMAAAsTAAALEwEAmpwYAAAATklEQVQIHWWOAQ7AIAgDi/Of+rTtJT6NtWYYnCYK3pUEAOjujnzJMP6iiPI0M+uz4xNQ/yVq2K9KbMnl87jgwy3uDCeI+LHSRWMaiYTqC8rzLpK0xDYMAAAAAElFTkSuQmCC);
+
+				}
 			}
 		}
 	}
 }
 
+//product shop description box
+.bProductDescShop {
+    float: right;
+
+    width: 280px;
+    margin: 0 0 0 15px;
+    &__eText {
+        margin: 23px 0 25px;
+
+        font-size: 14px;
+    }
+
+    .bTextMore {
+        margin: 4px 0 0;
+        a {
+            text-decoration: underline;
+
+            color: #a6a6a6;
+
+			font-size: 12px;
+        }
+    }
+    
+    //additional product options
+    .bDescSelectItem {
+        .rounded(5px);
+        position: relative;
+
+        height: 40px;
+        margin: 0 0 10px;
+        padding: 0 17px 0 10px;
+
+        cursor: pointer;
+
+        border: 1px solid #c7c7c7;
+        background: url("@{base-url}/newProductCard/img/ico_corner.gif") no-repeat 265px 17px;
+
+        font-size: 14px;
+        line-height: 40px;
+        &__eSelect {
+            .opacity(0);
+            position: absolute;
+            z-index: 2;
+            top: 0;
+            right: 0;
+
+            width: 280px;
+            height: 37px;
+            padding: 5px;
+
+            cursor: pointer;
+
+            color: transparent;
+            border: none;
+            background-color: transparent;
+            box-shadow: none;
+
+            font-size: 16px;
+
+            filter:progid:DXImageTransform.Microsoft.Alpha(opacity=0);
+            -webkit-appearance: none;
+        }
+        &__eOption {
+            display: block;
+            zoom:1;
+
+            height: 37px;
+
+            text-align: right;
+
+            color: black;
+            background-color: #FFFFFF;
+
+            filter:progid:DXImageTransform.Microsoft.Alpha(opacity=100);
+            -webkit-appearance: none;
+        }
+        &__eValue {
+            float: right;
+        }
+    }
+    
+    .creditbox {
+        display: none;
+
+		margin: 5px 0 0;
+
+		border: none;
+
+		font-size: 14px;
+		.bigcheck {
+			font-weight: normal;
+			line-height: 22px;
+			&.checked {
+				color: #ffa901 !important;
+				.dotted {
+					border: none;
+				}
+				b{
+					background-position: 0px -54px;
+				}
+			}
+			b{
+				margin: 0px 8px 0 0px;
+			}
+		}
+		.creditbox__sum {
+			padding-left: 36px;
+		}
+	}
+}
+
+    .inStock {
+        margin-bottom: 6px;
+
+        color: #fb9c00;
+
+        font-weight: 800;
+        line-height: 1;
+    }
+
+    .priceOld {
+        margin-bottom: 3px;
+
+        color: #a6a6a6;
+
+        font-size: 21px;
+        span {
+            text-decoration: line-through;
+        }
+    }
+
+    .bPrice {
+        font-size: 30px;
+    }
+
+    .priceSale {
+        margin: 5px 0 10px;
+
+        cursor: pointer;
+    }
+
+.bProductSection {
+
+	.bDescriptionProduct {
+		font-size: 14px;
+		margin: 15px 0 0;
+	}
+	.bHeadSection {
+		margin: 21px 0 10px;
+		padding: 0;
+
+		font-size: 16px;
+	}
+
+	//product specifications section
+	.bSpecifications {
+		&__eHead {
+			margin: 0 0 5px;
+
+			font-weight: bold;
+		}
+		&__eList {
+			margin: 0 0 10px;
+			dd {
+				float: left;
+				clear: both;
+
+				width: 270px;
+				margin: 5px 0;
+				padding: 0 0 2px 0;
+
+				border-bottom: 1px solid #ececec;
+				span {
+					position: relative;
+					bottom: -3px;
+
+					padding-right: 5px;
+
+					background: @white;
+				}
+			}
+			dt {
+				float: right;
+
+				width: 425px;
+				margin: 5px 0;
+				padding: 3px 0 0;
+			}
+		}
+	}
+
+	//right section
+	&__eRight {
+		float: right;
+        zoom: 1;
+
+		width: 220px;
+		margin: 15px 0 0 16px;
+		.btnBuy {
+			margin: 0 auto;
+		}
+	}
+	.bTags {
+		margin: 0 0 0 10px;
+		font-size: 11px;
+	}
+}
+
 .bHint {
-	*display: inline;
 	zoom: 1;
+
+	*display: inline;
 }
 //bottom buy line
 .bBottomBuy {
 	clear: both;
+
 	margin: 0 0 20px;
 	&__eHead {
 		float: left;
+
+		width: 435px;
+
 		font-size: 14px;
 		font-weight: bold;
-		width: 420px;
 	} 
 	&__eTitle {
-		font-size: 16px;
-		font-family: tahoma;
-		font-weight: 800;
+		font: 800 16px/1.2 tahoma, verdana, arial, helvetica, sans-serif;
 	}
 	.btnBuy {
-		margin-left: 12px;
+		margin: 0 25px 0 12px;
 	}
 	.btnBuy, .bCountSection, .price {
 		float: right;
@@ -391,5 +452,5 @@
 
 //bottom Bread Crumbs
 .bBreadCrumbsBottom {
-	margin: 0 10px 20px;
+	margin: 0 10px 0;
 }

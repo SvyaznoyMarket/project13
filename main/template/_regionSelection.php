@@ -24,7 +24,7 @@ $count = count($regions);
         <a class="inputClear" href="#">&times;</a>
         <input id="jschangecity" type="submit" value="Сохранить" class="button bigbutton mDisabled"/>
 
-        <div id="jscities" style="position:relative"></div>
+        <div id="jscities" class="bSelectRegionDd" style="position:relative"></div>
     </form>
     <div class="cityInline font12 clearfix">
         <? if (!in_array($currentRegion->getId(), [14974, 108136])): ?>

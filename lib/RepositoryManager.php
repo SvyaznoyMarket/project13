@@ -105,6 +105,21 @@ class RepositoryManager {
         return $instance;
     }
 
+
+    /**
+     * @return Model\Page\Repository
+     */
+    static public function page() {
+        static $instance;
+
+        if (!$instance) {
+            $instance = new \Model\Page\Repository(\App::coreClientV2());
+        }
+
+        return $instance;
+    }
+
+
     /**
      * @return Model\Tag\Repository
      */
@@ -282,6 +297,19 @@ class RepositoryManager {
 
         if (!$instance) {
             $instance = new \Model\Review\Repository(\App::reviewsClient());
+        }
+
+        return $instance;
+    }
+
+    /**
+     * @return Model\Survey\Repository
+     */
+    static function survey() {
+        static $instance;
+
+        if (!$instance) {
+            $instance = new \Model\Survey\Repository(\App::dataStoreClient());
         }
 
         return $instance;

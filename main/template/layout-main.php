@@ -7,6 +7,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="robots" content="noyaca"/>
     <?= $page->slotMeta() ?>
     <title><?= $page->getTitle() ?></title>
     <link rel="shortcut icon" href="/favicon.ico"/>
@@ -53,6 +54,7 @@
     </div>
 
     <?= $page->slotFooter() ?>
+    <?= $page->slotSurveybar() ?>
 
     <div class="clear"></div>
 </div>
@@ -68,7 +70,6 @@
 
 <? if (\App::config()->analytics['enabled']): ?>
     <div id="yandexMetrika" class="jsanalytics"></div>
-    <div id="luxupTracker" class="jsanalytics"></div>
     <div id="adblenderCommon" class="jsanalytics"></div>
 <? endif ?>
 

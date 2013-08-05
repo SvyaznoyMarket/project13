@@ -13,6 +13,9 @@ class DefaultLayout extends Layout {
         $this->addMeta('viewport', 'width=900');
         $this->addMeta('title', 'Enter - это выход!');
         $this->addMeta('description', 'Enter - новый способ покупать. Любой из ' . \App::config()->product['totalCount'] . ' товаров нашего ассортимента можно купить где угодно, как угодно и когда угодно. Наша миссия: дарить время для настоящего. Честно. С любовью. Как для себя.');
+        /* Meta and Title могут быть переопределены в методе prepare() в /main/controller/Main/IndexAction.php
+            — загружаются там из json для главной страницы, например.
+        */
 
         $this->addStylesheet('/css/global.min.css');
 
@@ -122,7 +125,7 @@ class DefaultLayout extends Layout {
     public function slotHeadJavascript() {
         $return = "\n";
         foreach ([
-            'http://yandex.st/jquery/1.8.3/jquery.min.js',
+            \App::config()->debug ? 'http://code.jquery.com/jquery-1.8.3.js' : 'http://yandex.st/jquery/1.8.3/jquery.min.js',
             '/js/prod/LAB.min.js',
         ] as $javascript) {
             $return .= '<script src="' . $javascript . '" type="text/javascript"></script>' . "\n";
@@ -130,8 +133,216 @@ class DefaultLayout extends Layout {
 
         $return .= $this->render('_headJavascript');
 
+        $criteo_vars_arr = [
+            'criteoData' =>  $this->vars4jsCriteo()
+        ];
+        $return .= $this->render('partner-counter/_criteo',  $criteo_vars_arr);
+
         return $return;
     }
+
+
+    /**
+     * Метод подготавливает переменные для head Javascript-а Criteo
+     * @return array
+     */
+    private function vars4jsCriteo(){
+
+        $request = \App::request();
+        $user = \App::user();
+
+        $userId = $user->getEntity() ? $user->getEntity()->getId() : 0;
+        $cart = $user->getCart();
+
+        $routeName = $request->attributes->get('route');
+        $siteType = 'd';  //m for mobile or t for tablet or d for desktop
+
+
+        $searchQuery = (string)$request->get('q');
+        $searchQuery = $this->escape($searchQuery);
+
+        //$productCategoryRepository = \RepositoryManager::productCategory();
+        //$product = \RepositoryManager::product();
+
+
+        $arr_item = [];
+        $eventItems_arr = [];
+        $eventItems = (string)'';
+        $beforeItems = [];
+
+
+        switch ($routeName) { // begin of case
+            case "homepage":
+                //$viewEvent = 'viewHome';
+                //break;
+                return false; // нечего передовать на homepage, выходим
+
+            case "product":
+                $viewEvent = 'viewItem';
+                $eventItems = $this->getParam('product')->getId();
+                break;
+
+
+            case "cart":
+                $viewEvent = 'viewBasket';
+                $in_basket = $cart->getData()['productList'];
+                $products = $this->getParam('productEntities');
+
+                foreach($products as $product) {
+                    /* @var $product \Model\Product\Entity */
+
+                    /* // работает, но многобукаф и проверок
+                    $arr_item['id'] = $product->getId();
+                    $arr_item['price'] = $product->getPrice();
+                    $arr_item['quantity'] = $in_basket[ $arr_item['id'] ];
+
+                    $properts = [];
+                    foreach($arr_item as $key => $val) {
+                        $properts[] = $this->helper->stringRowParam4js($key, $val);
+                    }
+
+                    if ( !empty($properts) )
+                        $eventItems_arr[] = '{'.implode('; ',$properts).'}';
+                    */
+
+                    $eventItems_arr[] = '{ id: "'.$product->getId().
+                                        '", price: '.$product->getPrice().
+                                        ', quantity: '.$in_basket[ $product->getId() ].' }'; // так проще
+
+                }
+
+                break;
+
+
+            case "search":
+                $viewEvent = 'viewList';
+                $productPager = $this->getParam('productPager');
+
+                if ($productPager instanceof \Iterator\EntityPager) {
+                    foreach ($productPager as $product) {
+                        // @var $product \Model\Product\Entity
+                        $eventItems_arr[] = '"'.$product->getId().'"';
+                    }
+                    break;
+                }
+
+            case "product.category":
+                $productPagersByCategory = $this->getParam('productPagersByCategory');
+
+                if ($productPagersByCategory)
+                foreach ($productPagersByCategory as $productPager) {
+                    foreach ($productPager as $product) {
+                        // @var $product \Model\Product\Entity
+                        $eventItems_arr[] = '"'.$product->getId().'"';
+                    }
+                }
+
+                if (!empty($eventItems_arr)) {
+                    $viewEvent = 'viewList';
+                }else{
+                    //$viewEvent = '';
+                    return false; // eсли нет продуктов, нечего передовать на этой стр, выходим
+                }
+
+                break;
+
+            case "order.complete":
+                $viewEvent = 'trackTransaction';
+                $orders = $this->getParam('orders');
+                break;
+
+            default:
+                //$viewEvent = 'view.'.$routeName;
+                //$viewEvent = '';
+                return false; // нечего передовать на этой стр, выходим
+
+        }// end of case
+
+
+
+        if (isset($orders) and !empty($orders)){
+            $order = $orders[0];
+            $beforeItems['id'] = $order->getNumber();
+            // TODO: new_customer: 1 if first purchase or 0 if not,  deduplication: 1 if attributed to Criteo or 0 if not,
+            // $beforeItems['new_customer'] = '1';
+            // $beforeItems['deduplication'] = '1';
+            /*
+            // example:
+            { event: "trackTransaction" , id: "Transaction Id", new_customer: 1 if first purchase or 0 if not,
+                deduplication: 1 if attributed to Criteo or 0 if not, item: [
+                    { id: "First item id", price: First item unit price, quantity: First item quantity }, etc
+                ]
+            }
+            */
+        }
+
+
+        if (empty($eventItems))
+            if (!empty($eventItems_arr)) {
+                /*
+                 * из $eventItems (или $eventItems_arr) сформируется строка вида:
+                 * item: ["First item id", "Second item id", "Third item id"]
+                 */
+                if (is_array($eventItems_arr))
+                    $eventItems = (string)'[' . implode(', ', $eventItems_arr) . ']';
+
+            }
+
+
+        $criteoData = [];
+
+        $criteoData[] = [
+            'event' => 'setAccount',
+            'account' => \App::config()->partners['criteo']['account'],
+        ];
+
+        $criteoData[] = [
+            'event' => 'setCustomerId',
+            'id' => $userId,
+        ];
+
+        $criteoData[] = [
+            'event' => 'setSiteType',
+            'type' => $siteType,
+        ];
+
+
+        /**
+         * Из $arr_item формируется строка вида:
+         * { event: "viewList", item: ["First item id", "Second item id", "Third item id"], keywords: "User Searched Keywords" }
+         * Для всех страниц: каталога, корзины, поиска...
+         */
+        $arr_item['event'] = $viewEvent;
+        foreach ($beforeItems as $key => $value) $arr_item[$key] = $value;
+        if (!empty($eventItems)) $arr_item['item'] = (string)$eventItems;
+        if (!empty($searchQuery)) $arr_item['keywords'] = $searchQuery;
+
+        $criteoData[] = $arr_item;
+
+        // just for debug:
+        //print '<pre>!!!';
+        //print_r($criteoData);
+        //print '</pre>';
+
+        // just for debug:
+        /*
+        print '###<pre>';
+        print '$$$ routeName: '.$routeName.PHP_EOL;
+        //print (isset($orders) and !empty($orders)) ? print_r($orders) : "no isset orderS! \n\n";
+        //print_r($criteo_q);
+        //print_r($eventItems);
+        //print_r($searchQuery);
+        //print_r( $arr_item['keywords'] );
+        print '</pre>###';
+        */
+
+
+        return $criteoData ? $criteoData : false;
+    }
+
+
+
+
 
     public function slotInnerJavascript() {
         $return = ''
@@ -142,12 +353,30 @@ class DefaultLayout extends Layout {
         return $return;
     }
 
+
     public function slotAuth() {
         return ('user.login' != \App::request()->attributes->get('route')) ? $this->render('_auth') : '';
     }
 
     public function slotUserbar() {
         return $this->render('_userbar');
+    }
+
+    public function slotSurveybar() {
+        $cookieInitTimeStamp = (int)(\App::request()->cookies->get('survey'));
+        $survey = \RepositoryManager::survey()->getEntity();
+        if (!$survey) {
+            return '';
+        }
+        $region = \App::user()->getRegion();
+
+        if(!$survey) {
+            return '';
+        }
+
+        $regionsToShow = array_intersect([$region->getName(), 'все', 'Все', 'all'], $survey->getRegionNames());
+        $showSurvey = $survey->getIsActive() && !empty($regionsToShow) && !$survey->isAnswered($cookieInitTimeStamp);
+        return $showSurvey ? $this->render('_surveybar', ['survey' => $survey]) : '';
     }
 
     public function slotYandexMetrika() {
@@ -187,13 +416,13 @@ class DefaultLayout extends Layout {
                 \App::exception()->remove($e);
                 $isFailed = true;
             });
-            $client->execute(\App::config()->coreV2['retryTimeout']['short']);
+            $client->execute();
 
             if ($isFailed) {
                 $content = $renderer->render('__mainMenu', [
                     'menu'            => (new Menu())->generate(),
                     'catalogJsonBulk' => $catalogJsonBulk,
-                    'promoHtmlBulk' => $promoHtmlBulk,
+                    'promoHtmlBulk'   => $promoHtmlBulk,
                 ]);
             }
         } else {
@@ -202,7 +431,7 @@ class DefaultLayout extends Layout {
             $content = $renderer->render('__mainMenu', [
                 'menu'            => (new Menu())->generate(),
                 'catalogJsonBulk' => $catalogJsonBulk,
-                'promoHtmlBulk' => $promoHtmlBulk,
+                'promoHtmlBulk'   => $promoHtmlBulk,
             ]);
             \Debug\Timer::stop('main-menu');
 
@@ -257,8 +486,68 @@ class DefaultLayout extends Layout {
     }
 
 
-    public function slotLiveTex() {
-        $return = $this->tryRender('partner-counter/livetex/_slot_liveTex');
-        return $return;
+    public function slotSociomantic()
+    {
+        $smantic_path = 'partner-counter/sociomantic/';
+        $routeName = \App::request()->attributes->get('route');
+        $breadcrumbs = $this->getParam('breadcrumbs');
+        $region_id = \App::user()->getRegion()->getId();
+        $smantic = new \View\Partners\Sociomantic($region_id);
+
+        // на всех страницах сайта // необходимо установить наш код главной страницы (inclusion tag)
+        $return = $this->render($smantic_path . '01-homepage');
+
+
+        /*
+        if (!in_array($routeName, [
+            // на этих страницах Sociomantic подключается через JS
+            'order.create',
+            'order.complete',
+        ])) // orders-if-begin{
+        */
+
+        if ($routeName == 'product.category') {
+
+            $category = $this->getParam('category') instanceof \Model\Product\Category\Entity ? $this->getParam('category') : null;
+            $prod_cats = $smantic->makeCategories($breadcrumbs, $category);
+            $return .= $this->render($smantic_path . '02-category_page', ['category' => $category, 'smantic' => &$smantic, 'prod_cats' => $prod_cats]);
+
+        } else if ($routeName == 'product') {
+
+            $product = $this->getParam('product') instanceof \Model\Product\Entity ? $this->getParam('product') : null;
+            $prod_cats = $smantic->makeCategories($breadcrumbs, $product->getCategory());
+            $return .= $this->render($smantic_path . '03a-product_page_stream', ['product' => $product, 'smantic' => &$smantic, 'prod_cats' => $prod_cats]);
+
+        } else if ($routeName == 'cart') {
+
+            $products = $this->getParam('products');
+            $cartProductsById = $this->getParam('cartProductsById');
+            $cart_prods = $smantic->makeCartProducts($products, $cartProductsById);
+            $return .= $this->render($smantic_path . '04-basket', ['cart_prods' => $cart_prods, 'smantic' => &$smantic]);
+
+        } else if ($routeName == 'order.complete') {
+
+            //$products = $this->getParam('products');
+            //$cartProductsById = $this->getParam('cartProductsById');
+            //$cart = \App::user()->getCart();
+            $orders = $this->getParam('orders'); // \Model\Order\Entity Object
+            $return .= $this->render($smantic_path . '05a-confirmation_page',
+                ['orders' => $orders, 'smantic' => &$smantic]
+            );
+
+            $smantic->restoreSession();
+
+        }
+        /*else if ( $routeName == 'order.create' ) {
+
+            //$products = $this->getParam('products');
+            //$smantic->makeSession( $products );
+
+        }*/
+
+        return isset($return) ? $return : false;
     }
+
+
+
 }

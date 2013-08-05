@@ -91,25 +91,27 @@ class Action {
             $productFilter->setCategory($category);
             $productFilter->setValues(array('tag' => array($tag->getId())));
 
-            // листалка
-            $limit = \App::config()->product['itemsPerPage'];
-            $repository = \RepositoryManager::product();
-            $repository->setEntityClass(
-                \Model\Product\Category\Entity::PRODUCT_VIEW_EXPANDED == $productView
-                    ? '\\Model\\Product\\ExpandedEntity'
-                    : '\\Model\\Product\\CompactEntity'
-            );
-            $productPager = $repository->getIteratorByFilter(
-                $productFilter->dump(),
-                $productSorting->dump(),
-                ($pageNum - 1) * $limit,
-                $limit
-            );
-            $productPager->setPage($pageNum);
-            $productPager->setMaxPerPage($limit);
-            // проверка на максимально допустимый номер страницы
-            if (($productPager->getPage() - $productPager->getLastPage()) > 0) {
-                throw new \Exception\NotFoundException(sprintf('Неверный номер страницы "%s".', $productPager->getPage()));
+            if(empty($seoTagJson['acts_as_category']) || $request->isXmlHttpRequest()) {
+                // листалка
+                $limit = \App::config()->product['itemsPerPage'];
+                $repository = \RepositoryManager::product();
+                $repository->setEntityClass(
+                    \Model\Product\Category\Entity::PRODUCT_VIEW_EXPANDED == $productView
+                        ? '\\Model\\Product\\ExpandedEntity'
+                        : '\\Model\\Product\\CompactEntity'
+                );
+                $productPager = $repository->getIteratorByFilter(
+                    $productFilter->dump(),
+                    $productSorting->dump(),
+                    ($pageNum - 1) * $limit,
+                    $limit
+                );
+                $productPager->setPage($pageNum);
+                $productPager->setMaxPerPage($limit);
+                // проверка на максимально допустимый номер страницы
+                if (($productPager->getPage() - $productPager->getLastPage()) > 0) {
+                    throw new \Exception\NotFoundException(sprintf('Неверный номер страницы "%s".', $productPager->getPage()));
+                }
             }
 
             $catalogJson = \RepositoryManager::productCategory()->getCatalogJson($category);
@@ -451,7 +453,9 @@ class Action {
 
         $sidebarCategoriesTree = $page->getParam('sidebarCategoriesTree');
         $categoriesByToken = $page->getParam('categoriesByToken');
-        $childTokens = array_keys($sidebarCategoriesTree[$category->getToken()]);
+        $childTokens = (!empty($sidebarCategoriesTree[$category->getToken()]) && is_array($sidebarCategoriesTree[$category->getToken()]))
+            ? array_keys($sidebarCategoriesTree[$category->getToken()])
+            : [];
 
         // дочерние категории сгруппированные по идентификаторам
         $childrenById = [];
@@ -478,15 +482,19 @@ class Action {
         $productPagersByCategory = [];
         $productCount = 0;
 
-        foreach ($repository->getIteratorsByFilter($filterData, $productSorting->dump(), null, $limit) as $productPager) {
-            $productPager->setPage(1);
-            $productPager->setMaxPerPage($limit);
-            $productPagersByCategory[$child->getId()] = $productPager;
-            $productCount += $productPager->count();
+        // TODO: сделать настройку для переключения иконки/линейки
+        // следующее условие должно выполняться если линейки
+        if(false) {
+            foreach ($repository->getIteratorsByFilter($filterData, $productSorting->dump(), null, $limit) as $productPager) {
+                $productPager->setPage(1);
+                $productPager->setMaxPerPage($limit);
+                $productPagersByCategory[$child->getId()] = $productPager;
+                $productCount += $productPager->count();
 
-            $child = next($childrenById);
-            if (!$child) {
-                break;
+                $child = next($childrenById);
+                if (!$child) {
+                    break;
+                }
             }
         }
 

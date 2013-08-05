@@ -18,6 +18,8 @@ class Action {
         $page = new \View\Content\IndexPage();
         $page->setTitle($content['title']);
         $page->setParam('content', $content['content']);
+        $page->setParam('token', $token);
+        
         //нужно для увеличения отступа от заголовкой и строки поика
         $page->setParam('extendedMargin', true);
         if (!(bool)$content['layout'])

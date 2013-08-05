@@ -4,6 +4,11 @@ namespace Model\PaymentMethod;
 
 class Entity {
     const CERTIFICATE_ID = 10;
+    const WEBMONEY_ID = 11;
+    const QIWI_ID = 12;
+
+    const TYPE_NOW = 0;
+    const TYPE_ON_RECEIPT = 1;
 
     /** @var int */
     private $id;
@@ -17,6 +22,8 @@ class Entity {
     private $isOnline;
     /** @var bool */
     private $isCorporative;
+    /** @var int */
+    private $payOnReceipt;
 
     /**
      * @param array $data
@@ -28,6 +35,8 @@ class Entity {
         if (array_key_exists('is_credit', $data)) $this->setIsCredit($data['is_credit']);
         if (array_key_exists('is_online', $data)) $this->setIsOnline($data['is_online']);
         if (array_key_exists('is_corporative', $data)) $this->setIsCorporative($data['is_corporative']);
+        if (array_key_exists('pay_on_receipt', $data)) $this->setPayOnReceipt($data['pay_on_receipt']);
+
     }
 
     /**
@@ -120,4 +129,33 @@ class Entity {
     public function isCertificate() {
         return self::CERTIFICATE_ID == $this->id;
     }
+
+    /**
+     * @return bool
+     */
+    public function isQiwi() {
+        return self::QIWI_ID == $this->id;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isWebmoney() {
+        return self::WEBMONEY_ID == $this->id;
+    }
+
+    /**
+     * @param int $payOnReceipt
+     */
+    public function setPayOnReceipt($payOnReceipt) {
+        $this->payOnReceipt = (int)$payOnReceipt;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPayOnReceipt() {
+        return $this->payOnReceipt;
+    }
+
 }

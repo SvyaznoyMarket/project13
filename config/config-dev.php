@@ -40,19 +40,8 @@ $c->reviewsStore['retryTimeout'] = [
 ];
 
 $c->wordpress['throwException'] = false;
-$c->wordpress['timeout'] = 4;
 
-$c->dataStore['timeout'] = 2;
-
-$c->dataStore['retryTimeout'] = [
-    'default' => 1,
-    'tiny'    => 0.2,
-    'short'   => 0.4,
-    'medium'  => 0.6,
-    'long'    => 1,
-    'huge'    => 1.5,
-    'forever' => 0,
-];
+$c->dataStore['timeout'] = 2.5;
 
 $c->database['host'] = 'localhost';
 
@@ -87,24 +76,9 @@ $c->paymentPsbInvoice['contractorId'] = 14;
 $c->paymentPsbInvoice['key']          = $c->dataDir . '/key/privkey.pem';
 $c->paymentPsbInvoice['payUrl']       = 'https://retail-tst.payment.ru/dn/Invoices/ReceiveUniversalInvoices.aspx';
 
-$c->abtest['bestBefore'] = '2013-04-23';
-$c->abtest['enabled']    = true;
-$c->abtest['test']       = [
-    [
-        'traffic'  => '40',
-        'key'      => 'upsell',
-        'name'     => 'Страница tocart',
-        'ga_event' => 'tocart',
-    ],
-    [
-        'traffic'  => '40',
-        'key'      => 'order2cart',
-        'name'     => 'Страница cart',
-        'ga_event' => 'cart',
-    ],
-];
-
 $c->product['lowerPriceNotification'] = true;
+
+$c->product['allowBuyOnlyInshop'] = true;
 
 $c->requestMainMenu = false;
 

@@ -1,8 +1,8 @@
 <?php
 
 return function(
-    \Model\Product\BasicEntity $product,
-    \Helper\TemplateHelper $helper
+    \Helper\TemplateHelper $helper,
+    \Model\Product\BasicEntity $product
 ) {
     if (!$product->getIsBuyable()) {
         return '';

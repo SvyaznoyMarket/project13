@@ -1,9 +1,9 @@
 <?php
 
 return function (
+    \Helper\TemplateHelper $helper,
     \Model\Product\BasicEntity $product,
-    array $shopStates = [],
-    \Helper\TemplateHelper $helper
+    array $shopStates = []
 ) {
     /**
      * @var $shopStates \Model\Product\ShopState\Entity[]
@@ -74,7 +74,7 @@ return function (
 </div>
 
 
-<ul class="bWidgetBuy__eDelivery" data-value="<?= $helper->json([
+<ul class="bWidgetBuy__eDelivery mLoader" data-value="<?= $helper->json([
     'url'      => $product->getIsBuyable() ? $helper->url('product.delivery') : '',
     'delivery' => $deliveryData,
 ]) ?>">
@@ -83,9 +83,10 @@ return function (
     <li class="bWidgetBuy__eDelivery-item bWidgetBuy__eDelivery-free">
     </li>
 
-    <li class="bWidgetBuy__eDelivery-item bWidgetBuy__eDelivery-now <?= $product->getIsBuyable() ? 'mClose' : 'mOpen'?>">
-        <span class="bWidgetBuy__eDelivery-nowClick dotted">Есть в магазинах</span>
-        <div>Cегодня, без предзаказа</div>
+    <li class="bWidgetBuy__eDelivery-item bWidgetBuy__eDelivery-now <?= $product->getIsBuyable() ? 'mOpen' : 'mClose'?>">
+        <? $hideShopHeader = (!$product->getIsBuyable() && $product->getState()->getIsShop()) ? true : false; ?>
+        <span class="bWidgetBuy__eDelivery-nowClick dotted<?= $hideShopHeader ? ' hf' : '' ?>">Есть в магазинах</span>
+        <div class="<?= $hideShopHeader ? ' hf' : '' ?>">Cегодня, без предзаказа</div>
         <ul class="bDeliveryFreeAddress">
         </ul>
     </li>

@@ -1,8 +1,8 @@
 <?php
 
 return function(
-    \Model\Product\Entity $product,
-    \Helper\TemplateHelper $helper
+    \Helper\TemplateHelper $helper,
+    \Model\Product\Entity $product
 ) {
     $user = \App::user();
 ?>

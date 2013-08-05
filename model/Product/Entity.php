@@ -232,7 +232,7 @@ class Entity extends BasicEntity {
     /**
      * @return string
      */
-    public function getLink() {
+    public function getLink($withSuffix = true, $region = NULL) {
         return $this->link;
     }
 

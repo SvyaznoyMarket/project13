@@ -13,26 +13,29 @@
 							{},
 							$.fn.emailValidate.defaults,
 							params),
-				$self = $(this),
-
-				/**
-				 * Выполенение валидации regExp'ом по нажатию клавиши в поле ввода
-				 * 
-				 * @param	{Event}	e Событие
-				 */
-				validate = function(e){
-					var email = $self.val(),
-						re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-					//end of vars
-					
-					if (re.test(email)){
-						options.onValid();
-					}
-					else{
-						options.onInvalid();
-					}
-				};
+				$self = $(this);
 			//end of vars
+
+
+			/**
+			 * Выполенение валидации regExp'ом по нажатию клавиши в поле ввода
+			 * 
+			 * @param	{Event}		e		Событие
+			 * @param	{Object}	email	Введенная в поле ввода сторока
+			 * @param	{String}	rEmail	Шаблон соответствия e-mail
+			 */
+			var validate = function validate() {
+				var email = $self.val(),
+					rEmail = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+				//end of vars
+				
+				if ( rEmail.test(email) ) {
+					options.onValid();
+				}
+				else {
+					options.onInvalid();
+				}
+			};
 
 			$self.bind('keyup', validate);
 		});

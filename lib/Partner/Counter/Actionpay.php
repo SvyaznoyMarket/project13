@@ -95,8 +95,8 @@ class Actionpay {
                     }*/
                 }
             }
-            
-            $link = strtr('http://n.actionpay.ru/ok/3781.png?actionpay={actionpayId}&apid={order.id}&price={sum}', [
+
+            $link = strtr('actionpay={actionpayId}&apid={order.id}&price={sum}', [
                 '{actionpayId}' => $actionpayId,
                 '{order.id}'    => $order->getNumber(),
                 '{sum}'         => $orderSum,

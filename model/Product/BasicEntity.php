@@ -130,11 +130,12 @@ class BasicEntity {
         $this->link = (string)$link;
     }
 
+
     /**
      * @return string
      */
     public function getLink() {
-        return $this->link;
+        return  $this->link;
     }
 
     /**

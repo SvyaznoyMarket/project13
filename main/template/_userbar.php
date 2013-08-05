@@ -23,6 +23,7 @@
         </ul>
         <div class="flybox bBlackBox__eFlybox mBasket">
             <i class="corner"></i>
+            <i class="close" title="Закрыть">Закрыть</i>
         </div>
     </div>
 </div>

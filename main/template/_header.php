@@ -16,12 +16,22 @@
     <div class="bRegion">
         <a class="fl" href="<?= $page->url('region.change', ['regionId' => $user->getRegion()->getId()]) ?>" id="jsregion" data-url="<?= $page->url('region.init') ?>" data-region-id="<?= $user->getRegion()->getId() ?>" data-autoresolve-url="<?= $page->url('region.autoresolve') ?>"><?= ((mb_strlen($user->getRegion()->getName()) > 20) ? (mb_substr($user->getRegion()->getName(), 0, 20) . '...') : $user->getRegion()->getName()) ?></a>
         
-        <div class="headerContactPhone fl" >
+        <? /*<div class="headerContactPhone fl" >
             <p class="fl headerContactPhone__eTitle">Контакт-cENTER</p>
             <p class="fl headerContactPhone__ePhones"><?= \App::config()->company['phone'] ?>
                 <? if (14974 == $user->getRegion()->getId() || 83 == $user->getRegion()->getParentId()): ?>
                 <br/><?= \App::config()->company['moscowPhone'] ?>
                 <? endif ?>
+            </p>
+        </div> */ ?>
+
+        <div class="headerContactPhone fl" >
+            <p class="fl headerContactPhone__ePhones">
+                8 (800) 700-00-09
+                <div class="bPhonesRegion fl">
+                    8 (495) 775-00-06<br/>
+                    8 (812) 703-77-30
+                </div>
             </p>
         </div>
 

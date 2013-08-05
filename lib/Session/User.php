@@ -84,7 +84,7 @@ class User {
             $token,
             time() + \App::config()->session['cookie_lifetime'],
             '/',
-            null,
+            preg_replace('/^www./', '.', \App::config()->mainHost),
             false,
             true // важно httpOnly=true, чтобы js не мог получить куку
         );

@@ -120,55 +120,50 @@
                 <!-- /ko -->
                 <!-- ko if: dlvrPrice() <= 0 -->
                 Бесплатно
+                <span class="db pt20">Ожидайте смс-сообщение<br/>о приходе заказа в магазин</span>
                 <!-- /ko -->
                 <!-- ko if: supplied() -->
                 <span class="red db pt20">Оператор контакт-cEnter<br/>подтвердит точную дату<br/>доставки за 2-3 дня.</span>
                 <!-- /ko -->
+
+                <!-- ko if: $parent.type === 'self' -->
+                <span data-bind="text: $parent.shop().name"></span>
+                <p></p>
+                <a class="bBigOrangeButton selectShop" href="#"
+                   style="font-size: 16px; padding: 6px 30px; border: 1px solid #E26500;"
+                   data-bind="click: function(data, event) { $root.showShopPopup($parent, data, event) }">Другой магазин</a>
+                <!-- /ko -->
             </i>
             </dt>
-            <i>
-                <i>
-                    <dd>
-                        <div>
-                            <p></p>
-                            <ul class="bBuyingDates">
-                                <li data-direction="prev" class="bBuyingDates__eLeft order-delivery_date-control"
-                                    data-bind="click: function(data, event) { $root.changeWeek('-1', data, event) }">
-                                    <b></b><span class="dow"></span>
-                                </li>
-                                <!-- ko foreach: caclDates -->
-                                <li class="order-delivery_date"
-                                    data-bind="style: { display: ( $data.week === $parent.curWeek() ) ? $root.cssForDate : 'none' },
-										click: function(data, event) { $root.clickDate($parent, data, event) },
-										css: { bBuyingDates__eEnable: $data.enable(),
-												bBuyingDates__eDisable: (!$data.enable()),
-												bBuyingDates__eCurrent: ($data.tstamp == $parent.chosenDate()) }">
-                                    <span data-bind="text: day"></span> <span class="dow" data-bind="text: dayOfWeek"></span>
-                                </li>
-                                <!-- /ko -->
-                                <li data-direction="next" class="bBuyingDates__eRight order-delivery_date-control"
-                                    data-bind="click: function(data, event) { $root.changeWeek('1', data, event) }">
-                                    <b></b><span class="dow"></span>
-                                </li>
-                            </ul>
-                        </div>
-                    </dd>
-                </i>
-            </i>
-        </dl>
-
-        <i>
-            <i>
-                <!-- ko foreach: $data.itemList -->
-                <dl class="bBuyingLine">
-                    <dt data-bind="ifnot: $index()*1">
-                        <!-- ko if: $parent.type === 'self' -->
-                        <span data-bind="text: $parent.shop().name"></span>
+            <dd>
+                <div class="bCelendar clearfix">
                     <p></p>
-                    <a class="bBigOrangeButton selectShop" href="#"
-                       style="font-size: 16px; padding: 6px 30px; border: 1px solid #E26500;"
-                       data-bind="click: function(data, event) { $root.showShopPopup($parent, data, event) }">Другой магазин</a>
-                    <!-- /ko -->
+                    <ul class="bBuyingDates">
+                        <li data-direction="prev" class="bBuyingDates__eLeft order-delivery_date-control"
+                            data-bind="click: function(data, event) { $root.changeWeek('-1', data, event) }">
+                            <b></b><span class="dow"></span>
+                        </li>
+                        <!-- ko foreach: caclDates -->
+                        <li class="order-delivery_date"
+                            data-bind="style: { display: ( $data.week === $parent.curWeek() ) ? $root.cssForDate : 'none' },
+								click: function(data, event) { $root.clickDate($parent, data, event) },
+								css: { bBuyingDates__eEnable: $data.enable(),
+										bBuyingDates__eDisable: (!$data.enable()),
+										bBuyingDates__eCurrent: ($data.tstamp == $parent.chosenDate()) }">
+                            <span data-bind="text: day"></span> <span class="dow" data-bind="text: dayOfWeek"></span>
+                        </li>
+                        <!-- /ko -->
+                        <li data-direction="next" class="bBuyingDates__eRight order-delivery_date-control"
+                            data-bind="click: function(data, event) { $root.changeWeek('1', data, event) }">
+                            <b></b><span class="dow"></span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- ko foreach: $data.itemList -->
+                <dl class="bBuyingLine mProductsLine">
+                    <dt data-bind="ifnot: $index()*1">
+
                     </dt>
                     <dd class="order-item-holder">
                         <div class="order-item-container">
@@ -180,23 +175,24 @@
                             </p>
                             <img data-bind="attr: {src: $data.image, alt: $data.name }"/>
 
-						<span class="bBuyingLine__eInfo">
-							<a href="" target="_blank"
+                        <span class="bBuyingLine__eInfo">
+                            <a href="" target="_blank"
                                data-bind="html: name, attr: { href: $data.url }"></a>
-							<br/>
-							<span>(<span data-bind="text: $data.quantity "></span> шт.)</span>
-						</span>
+                            <br/>
+                            <span>(<span data-bind="text: $data.quantity "></span> шт.)</span>
+                        </span>
                         </div>
                     </dd>
                 </dl>
                 <!-- /ko -->
-                <div data-template="#order-delivery_total-template" class="order-delivery_total-holder">
-                    <div class="bBuyingLineWrap__eSum">Итого с доставкой:
-                        <b><span data-bind="text: printPrice( $data.totalPrice() )"></span> <span class="rubl">p</span></b>
-                    </div>
-                </div>
-            </i>
-        </i>
+            </dd>
+        </dl>
+
+        <div data-template="#order-delivery_total-template" class="order-delivery_total-holder">
+            <div class="bBuyingLineWrap__eSum">Итого с доставкой:
+                <b><span data-bind="text: printPrice( $data.totalPrice() )"></span> <span class="rubl">p</span></b>
+            </div>
+        </div>
     </div>
     <!-- /ko -->
     <div class="bF1SaleCard mOrder">

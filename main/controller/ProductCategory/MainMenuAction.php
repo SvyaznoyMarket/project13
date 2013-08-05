@@ -15,9 +15,9 @@ class MainMenuAction {
 
         return new \Http\JsonResponse([
             'content' => \App::closureTemplating()->render('__mainMenu', [
-                'menu' => (new \View\Menu())->generate(),
+                'menu'            => (new \View\Menu())->generate(),
                 'catalogJsonBulk' => $catalogJsonBulk,
-                'promoHtmlBulk' => $promoHtmlBulk,
+                'promoHtmlBulk'   => $promoHtmlBulk,
             ]),
         ]);
     }

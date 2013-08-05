@@ -1,0 +1,39 @@
+﻿<?
+/**
+ * // var $products \Model\Product\CartEntity[] //disabled
+ * var $cart_prods
+ * from /main/view/DefaultLayout.php
+ **/
+
+?>
+<? if ( is_array($cart_prods) and !empty($cart_prods) ): ?>
+<script type="text/javascript">
+var sonar_basket = {
+    products: [
+    <?
+        $arr_count = count($cart_prods); $j = 0;
+        foreach($cart_prods as $one_prod) {
+            $j++;
+
+            echo '{';
+            $i = 0;
+            foreach ($one_prod as $key => $value){
+                if (!empty($value)):
+                    $i++;
+                    if ($i>1) echo ", "; // считаем, что identifier полуюбому существует у продукта, иначе запятая будет не в тему
+                    echo $key.": ".$smantic->wrapEscapeQuotes($value);
+                endif;
+            }
+            echo '}';
+
+            if ($j<$arr_count) echo ',';
+            echo PHP_EOL;
+        }
+    /* examples:
+    { identifier: '461-1177_msk', amount: 4990.00, currency: 'RUB', quantity: 1 },
+    { identifier: '452-9682_msk', amount: 23990.00, currency: 'RUB', quantity: 1 }
+    */
+?>    ]
+};
+</script>
+<? endif; ?>
