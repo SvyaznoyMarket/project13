@@ -39,7 +39,9 @@ $isOrderAnalytics = isset($isOrderAnalytics) ? $isOrderAnalytics : true;
 
     <p class="font16">Сумма заказа: <span class="mBold"><?= $page->helper->formatPrice($order->getSum()) ?></span> <span class="rubl">p</span></p>
     <p class="font16">Сумма для оплаты: <span class="mBold" id="paymentWithCard"><?= $page->helper->formatPrice($order->getPaySum()) ?></span> <span class="rubl">p</span></p>
-    <p class="font16">Способ оплаты: <span class="mBold"><?= $paymentMethod->getName() ?></span></p>
+    <? if ($paymentMethod): ?>
+        <p class="font16">Способ оплаты: <span class="mBold"><?= $paymentMethod->getName() ?></span></p>
+    <? endif ?>
 
     <div class="line pb15"></div>
 <?php endforeach ?>
@@ -51,7 +53,7 @@ $isOrderAnalytics = isset($isOrderAnalytics) ? $isOrderAnalytics : true;
     </div>
 <? endif ?>
 
-<? if ($paymentProvider || $paymentUrl || $paymentMethod->isWebmoney()): ?>
+<? if ($paymentProvider || $paymentUrl || ($paymentMethod && $paymentMethod->isWebmoney())): ?>
     <p>Через <span class="timer">5</span> сек. мы автоматически перенаправим Вас на страницу оплаты, если этого не произойдет, пожалуйста, нажмите на кнопку "Оплатить заказ".</p>
     <div class="pt10">
         <?= $page->render('order/form-payment', [

@@ -91,7 +91,7 @@ if ($form->hasSubway()) $jsValidator['order[address_metro]'] = 'Укажите �
         </dl>
 
         <dl class='bBuyingLine'>
-            <dt>E-mail*</dt>
+            <dt>E-mail</dt>
             <dd>
                 <div class="pr40">
                     <? $email = $form->getEmail() ?>
@@ -191,7 +191,6 @@ if ($form->hasSubway()) $jsValidator['order[address_metro]'] = 'Укажите �
                         \Model\PaymentMethod\Entity::TYPE_ON_RECEIPT => [],
                         \Model\PaymentMethod\Entity::TYPE_NOW => [],
                     ];
-                    $byPayOnReceipt = [];
                     foreach($paymentMethods as $paymentMethod) { 
                         $payOnReceipt = $paymentMethod->getPayOnReceipt();
                         $byPayOnReceipt[$payOnReceipt][] = $paymentMethod;

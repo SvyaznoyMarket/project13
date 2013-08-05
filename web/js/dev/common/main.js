@@ -334,14 +334,14 @@ $(document).ready(function(){
 		return false;
 	});
 
-	$('#reset-pwd-form, #auth_forgot-form').submit(function() {
+	$('#reset-pwd-form').submit(function() {
 		var form = $(this);
 
 		form.find('.error_list').html('Запрос отправлен. Идет обработка...');
 		form.find('.whitebutton').attr('disabled', 'disabled');
 
-		$.post(form.prop('action'), form.serializeArray(), function(resp) {
-			if (resp.success === true) {
+		$.post(form.prop('action'), form.serializeArray(), function( resp ) {
+			if (resp.success ) {
 				if ( typeof(_gaq) !== 'undefined' ) {
 					var type = ( (form.find('input.text').val().search('@')) !== -1 ) ? 'email' : 'mobile';
 
@@ -360,6 +360,7 @@ $(document).ready(function(){
 				var txterr = ( resp.error !== '' ) ? resp.error : 'Вы ввели неправильные данные';
 
 				form.find('.error_list').text( txterr );
+				form.find('.whitebutton').removeAttr('disabled');
 			}
 
 		}, 'json');
@@ -883,16 +884,11 @@ $(document).ready(function(){
 		var self = this;
 		var current = 1;
 
+		var triggerClick = false;
+
 		var refresh_max_page = false;
 		var current_accessory_category = '';
-		var grouped_accessories = {
-			'':{
-				'quantity':parseInt($($(nodes.wrap).find('.goodsbox')[0]).attr('data-quantity'), 10),
-				'totalpages':parseInt($($(nodes.wrap).find('.goodsbox')[0]).attr('data-total-pages'), 10),
-				'accessories':$(nodes.wrap).html(),
-				'buffer':buffer
-			}
-		};
+		
 
 		var wi  = nodes.width * 1;
 		var viswi = nodes.viswidth * 1;
@@ -943,70 +939,74 @@ $(document).ready(function(){
 			for(var j = (current - 1) * viswi ; j < current  * viswi ; j++) {
 				boxes.eq( j ).show();
 			}
+			
+			triggerClick = false;
 		};
 
 		$(nodes.next).bind('click', function() {
-			if ( grouped_accessories[current_accessory_category] ) {
-				buffer = grouped_accessories[current_accessory_category]['buffer'];
-
-				if ( !isNaN(grouped_accessories[current_accessory_category]['quantity']) ) {
-					wi = grouped_accessories[current_accessory_category]['quantity'];
-				}
+			if ( triggerClick ) {
+				return false;
 			}
-			if ( current < max && !ajaxflag ) {
-				if ( current + 1 == max ) { //the last pull is loaded , so special shift
 
-					var boxes = $(nodes.wrap).find('.goodsbox');
-					$(boxes).hide();
-					var le = boxes.length;
-					var rest = ( wi % viswi ) ?  wi % viswi  : viswi;
+			triggerClick = true;
 
-					for ( var j = 1; j <= rest; j++ ) {
-						boxes.eq( le - j ).show();
-					}
-					current++;
+			if ( current >= max && ajaxflag ) {
+				return false;
+			}
+
+			if ( current + 1 === max ) { 
+
+				var boxes = $(nodes.wrap).find('.goodsbox');
+				$(boxes).hide();
+				var le = boxes.length;
+				var rest = ( wi % viswi ) ?  wi % viswi  : viswi;
+
+				for ( var j = 1; j <= rest; j++ ) {
+					boxes.eq( le - j ).show();
 				}
-				else {
-					if ( current + 1 >= buffer ) { // we have to get new pull from server
+				current++;
+			}
+			else {
 
-						$(nodes.next).css('opacity','0.4'); // addClass dont work ((
-						ajaxflag = true;
-						var getData = [];
+				if ( current + 1 >= buffer ) { // we have to get new pull from server
+					$(nodes.next).css('opacity','0.4'); // addClass dont work ((
+					ajaxflag = true;
+					var getData = [];
 
-						if( $('form.product_filter-block').length ) {
-							getData = $('form.product_filter-block').serializeArray();
-						}
+					if( $('form.product_filter-block').length ) {
+						getData = $('form.product_filter-block').serializeArray();
+					}
 
-						getData.push( {name: 'page', value: buffer+1 } );
-						getData.push( {name: 'categoryToken', value: current_accessory_category } );
+					getData.push( {name: 'page', value: buffer+1 } );
+					getData.push( {name: 'categoryToken', value: current_accessory_category } );
 
-						$.get( $(nodes.prev).attr('data-url') , getData, function(data) {
-							buffer++;
-							$(nodes.next).css('opacity','1');
-							ajaxflag = false;
-							var tr = $('<div>');
-							$(tr).html( data );
-							$(tr).find('.goodsbox').css('display','none');
-							$(nodes.wrap).html( $(nodes.wrap).html() + tr.html() );
+					$.get( $(nodes.prev).attr('data-url') , getData, function(data) {
+						buffer++;
+						$(nodes.next).css('opacity','1');
+						ajaxflag = false;
+						var tr = $('<div>');
+						$(tr).html( data );
+						$(tr).find('.goodsbox').css('display','none');
+						$(nodes.wrap).html( $(nodes.wrap).html() + tr.html() );
 
-							if ( grouped_accessories[current_accessory_category] ) {
-								grouped_accessories[current_accessory_category]['accessories'] = $(nodes.wrap).html();
-								grouped_accessories[current_accessory_category]['buffer']++;
-							}
+						// if ( grouped_accessories[current_accessory_category] ) {
+						// 	grouped_accessories[current_accessory_category]['accessories'] = $(nodes.wrap).html();
+						// 	grouped_accessories[current_accessory_category]['buffer']++;
+						// }
 
-							tr = null;
-						// handle_custom_items()
-						});
+						tr = null;
 						current++;
 						shiftme();
-					}
-					else { // we have new portion as already loaded one			
-						current++;
-						shiftme(); // TODO repair
-					}
+					// handle_custom_items()
+					});
 				}
-				self.notify();
+				else { // we have new portion as already loaded one
+					current++;
+					shiftme(); // TODO repair
+				}
 			}
+			self.notify();
+
 			return false;
 		});
 

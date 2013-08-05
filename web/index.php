@@ -129,7 +129,8 @@ $request = \App::request();
 $router = \App::router();
 
 try {
-    $request->redirect301Check(); // если стр не существует, но есть redirect, то перейдём по нему
+    // проверка редиректа
+    //(new \Controller\RedirectAction())->execute($request);
 
     $request->attributes->add($router->match($request->getPathInfo(), $request->getMethod()));
     \App::logger()->info('Match route ' . $request->attributes->get('route') . ' by ' . $request->getMethod()  . ' ' . $request->getRequestUri());
