@@ -456,6 +456,9 @@
   .width181 {
     width: 181px;
   }
+  .width205 {
+    width: 205px;
+  }
   .width215 {
     width: 215px;
   }
@@ -667,6 +670,28 @@
   .text.textdisabled {
     border-color: #e4e4e4;
     color: #a6a6a6;
+  }
+  .text.orangeIcon {
+    height: 26px;
+    width: 165px;
+    -webkit-border-radius: 5px 0 0 5px;
+    -moz-border-radius: 5px 0 0 5px;
+    border-radius: 5px 0 0 5px;
+    margin-right: -6px;
+    padding-right: 0;
+  }
+  img.orangeIcon {
+    vertical-align: middle;
+    cursor: pointer;
+  }
+  img.orangeIcon:hover {
+    filter: progid:DXImageTransform.Microsoft.Alpha(opacity=90);
+    -moz-opacity: 0.9;
+    -khtml-opacity: 0.9;
+    -webkit-opacity: 0.9;
+    opacity: 0.9;
+    -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=90);
+    filter: alpha(opacity=90);
   }
   .crossText {
     color: #818181;
@@ -3768,6 +3793,9 @@
     border: 1px solid #f99b1c;
     margin: 15px 0px;
     behavior: url('/css/common/PIE.htc');
+  }
+  .bSpec.noBorder {
+    border: none;
   }
   .bSpec .filterHeader {
     -webkit-border-top-right-radius: 2px 2px 0px 0px;

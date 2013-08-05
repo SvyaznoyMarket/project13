@@ -32,13 +32,26 @@ class Helper {
         foreach ($request->query->all() as $k => $v) {
             $params[$k] = $v;
         }
-        foreach ($replaces as $k => $v) {
-            if (null === $v) {
-                if (isset($params[$k])) unset($params[$k]);
-                continue;
-            }
 
-            $params[$k] = $v;
+        foreach ($replaces as $k => $v) {
+            if(preg_match('/([^\[]+)\[([^\[]+)\]/', $k, $matches)) {
+                $mainKey = $matches[1];
+                $subKey = $matches[2];
+
+                if (null === $v) {
+                    if (isset($params[$mainKey][$subKey])) unset($params[$mainKey][$subKey]);
+                    continue;
+                }
+
+                $params[$mainKey][$subKey] = $v;
+            } else {
+                if (null === $v) {
+                    if (isset($params[$k])) unset($params[$k]);
+                    continue;
+                }
+
+                $params[$k] = $v;
+            }
         }
 
         $params = array_diff_assoc($params, $excluded);

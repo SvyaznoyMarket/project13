@@ -30,6 +30,8 @@ class AppConfig {
     /** @var string */
     public $cmsDir;
     /** @var string */
+    public $surveyDir;
+    /** @var string */
     public $controllerPrefix;
     /** @var string */
     public $routePrefix;
@@ -69,6 +71,8 @@ class AppConfig {
         'url'            => null,
         'timeout'        => null,
         'throwException' => null,
+        'retryTimeout' => [],
+        'retryCount'   => null,
     ];
     /** @var array */
     public $dataStore = [
@@ -114,13 +118,11 @@ class AppConfig {
 
     /** @var array */
     public $partners = [
-        'livetex' => [
+        'criteo' => [
             'enabled' => null,
-            'liveTexID' => null,
-            'login' => 'anastasiya.vs@enter.ru',
-            'password' => 'enter1chat2',
-        ],
+        ]
     ];
+
 
     /** @var array */
     public $myThings = [
@@ -228,6 +230,7 @@ class AppConfig {
     /** @var array */
     public $payment = [
         'creditEnabled' => null,
+        'blockedIds'    => [],
     ];
     /** @var array */
     public $creditProvider = [
@@ -321,7 +324,8 @@ class AppConfig {
     ];
     /** @var array  */
     public $order = [
-        'enableMetaTag'   => null,
+        'enableMetaTag' => null,
+        'newCreate'     => null,
     ];
     /** @var array */
     public $maybe3d = [
@@ -334,6 +338,12 @@ class AppConfig {
     /** @var array */
     public $tag = [
         'numSidebarCategoriesShown' => null,
+    ];
+
+    /** @var array */
+    public $sphinx = [
+        'showFacets' => null,
+        'showListingSearchBar' => null,
     ];
 
     public function __construct() {

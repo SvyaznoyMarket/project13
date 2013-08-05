@@ -14,6 +14,7 @@ $c->logDir = $c->appDir . '/log';
 $c->webDir = $c->appDir . '/web';
 $c->templateDir = $c->appDir . '/main/template';
 $c->cmsDir = $c->appDir . '/../../cms.enter.ru/wwwroot';
+$c->surveyDir = $c->webDir . '/survey';
 
 $c->controllerPrefix = 'Controller';
 $c->routePrefix = '';
@@ -74,19 +75,29 @@ $c->reviewsStore['retryTimeout'] = [
 ];
 
 $c->wordpress['url'] = 'http://content.enter.ru/';
-$c->wordpress['timeout'] = 2;
+$c->wordpress['timeout'] = 3;
 $c->wordpress['throwException'] = true;
+$c->wordpress['retryCount'] = 4;
+$c->wordpress['retryTimeout'] = [
+    'default' => 0.3,
+    'tiny'    => 0.1,
+    'short'   => 0.2,
+    'medium'  => 0.3,
+    'long'    => 0.5,
+    'huge'    => 1,
+    'forever' => 0,
+];
 
 $c->dataStore['url'] = 'http://cms.enter.ru/v1/';
-$c->dataStore['timeout'] = 0.25;
+$c->dataStore['timeout'] = 0.8;
 $c->dataStore['retryCount'] = 3;
 $c->dataStore['retryTimeout'] = [
-    'default' => 0.1,
-    'tiny'    => 0.01,
-    'short'   => 0.05,
+    'default' => 0.04,
+    'tiny'    => 0.04,
+    'short'   => 0.08,
     'medium'  => 0.1,
-    'long'    => 0.2,
-    'huge'    => 0.5,
+    'long'    => 0.5,
+    'huge'    => 1,
     'forever' => 0,
 ];
 
@@ -101,10 +112,9 @@ $c->kissmentrics['enabled'] = true;
 $c->googleAnalytics['enabled'] = true;
 $c->yandexMetrika['enabled'] = true;
 
-$c->partners['livetex']['enabled'] = true;
-$c->partners['livetex']['liveTexID'] = 41836;
-$c->partners['livetex']['login'] = 'anastasiya.vs@enter.ru';
-$c->partners['livetex']['password'] = 'enter1chat2';// login и пароль используются только для страницы статистики
+// TODO: Вынести сюда же настройки для sociomantic and get4click
+$c->partners['criteo']['enabled'] = true;
+$c->partners['criteo']['account'] = 10442;
 
 $c->adFox['enabled'] = true;
 $c->myThings['feeByCategory'] = [
@@ -152,7 +162,7 @@ $c->loadMediaHost = true;
 $c->shop['cookieName'] = 'shopid';
 $c->shop['cookieLifetime'] = 31536000; // 365 дней
 $c->shop['autoresolve']    = true;
-$c->shop['enabled'] = false;
+$c->shop['enabled'] = true;
 
 $c->mediaHost = [
     0 => 'http://fs01.enter.ru',
@@ -182,7 +192,7 @@ $c->product['globalListEnabled']      = true;
 $c->product['showAveragePrice']       = false;
 $c->product['allowBuyOnlyInshop']     = false;
 $c->product['reviewEnabled']          = true;
-$c->product['lowerPriceNotification'] = false;
+$c->product['lowerPriceNotification'] = true;
 $c->product['furnitureConstructor']   = true;
 // jewel
 $c->product['itemsPerPageJewel']     = 24;
@@ -244,6 +254,7 @@ $c->banner['url'] = [
 $c->cart['productLimit'] = 50;
 
 $c->payment['creditEnabled'] = true;
+$c->payment['blockedIds'] = [];
 
 $c->smartengine['pull']           = true;
 $c->smartengine['push']           = true;
@@ -306,6 +317,7 @@ $c->requestMainMenu = true;
 $c->mobileModify['enabled'] = true;
 
 $c->order['enableMetaTag'] = true;
+$c->order['newCreate'] = true;
 
 $c->maybe3d['xmlUrl']     = 'http://hq.maybe3d.com/MappingService.svc/GetMappings?customerId=';
 $c->maybe3d['customerId'] = 'BE2016EF-32D8-41E6-976F-A8D32EB20ACF';
@@ -314,5 +326,22 @@ $c->maybe3d['cmsFolder']  = '/opt/wwwroot/cms.enter.ru/wwwroot/v1/video/product/
 $c->maybe3d['timeout']    = 30;
 
 $c->tag['numSidebarCategoriesShown'] = 3;
+
+$c->sphinx['showFacets'] = false;
+$c->sphinx['showListingSearchBar'] = false;
+
+$c->abtest = [
+    'cookieName' => 'switch',
+    'bestBefore' => '2013-08-20', //кука умрет в 00:00
+    'enabled'    => true,
+    'test'       => [
+        [
+            'traffic'  => '50',
+            'key'      => 'emails',
+            'name'     => "Обязательные e-mail'ы",
+            'ga_event' => 'MandatoryEmail',
+        ],
+    ],
+];
 
 return $c;

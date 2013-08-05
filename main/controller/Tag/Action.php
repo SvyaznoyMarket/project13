@@ -44,7 +44,19 @@ class Action {
         if (empty($seoTagJson['acts_as_category'])) {
             /** @var $categoriesByToken \Model\Product\Category\Entity[] */
             $categoriesByToken = [];
-            $categories = \RepositoryManager::productCategory()->getCollectionById(array_keys($tagCategoriesById));
+            $categories = [];
+
+            // получаем категории по частям, так как в случае получения большого количества
+            // категорий за 1 раз происходит фейл (видимо 414 Request-URI Too Large)
+            $part = 1;
+            $step = 100;
+            while ($part <= (int)ceil(count(array_keys($tagCategoriesById)) / $step)) {
+                $tagCategoriesByIdPart = array_slice(array_keys($tagCategoriesById), ($part - 1) * $step, $step);
+                $categoriesPart = \RepositoryManager::productCategory()->getCollectionById($tagCategoriesByIdPart);
+                $categories = array_merge($categories, $categoriesPart);
+                $part++;
+            }
+
             foreach ($categories as $category) {
                 /** @var $category \Model\Product\Category\Entity */
                 $tagCategory = $tagCategoriesById[$category->getId()];

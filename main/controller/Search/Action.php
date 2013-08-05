@@ -34,18 +34,27 @@ class Action {
         if (!$categoryId) $categoryId = null;
 
         // параметры ядерного запроса
-        $params = array(
+        $params = [
             'request'  => $searchQuery,
             'geo_id'   => \App::user()->getRegion()->getId(),
             'start'    => $offset,
             'limit'    => $limit,
             'use_mean' => true,
-        );
+        ];
         if ($categoryId) {
             $params['product_category_id'] = $categoryId;
         } else {
             //$params['is_product_category_first_only'] = false;
         }
+
+        // сортировка
+        $productSorting = new \Model\Product\Sorting();
+        list($sortingName, $sortingDirection) = array_pad(explode('-', $request->get('sort')), 2, null);
+        $productSorting->setActive($sortingName, $sortingDirection);
+        if(!empty($sortingName) && !empty($sortingDirection)) {
+            $params['product'] = ['sort' =>[$sortingName => $sortingDirection]];
+        }
+
         // ядерный запрос
         $result = [];
         \App::coreClientV2()->addQuery('search/get', $params, [], function ($data) use (&$result) {
@@ -152,6 +161,7 @@ class Action {
         $page->setParam('meanQuery', $meanQuery);
         $page->setParam('forceMean', $forceMean);
         $page->setParam('productPager', $productPager);
+        $page->setParam('productSorting', $productSorting);
         $page->setParam('categories', $categoriesById);
         $page->setParam('categoriesFound', $categoriesFound);
         $page->setParam('selectedCategory', $selectedCategory);

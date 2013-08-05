@@ -6,7 +6,7 @@ class Manager {
     private $cookieName;
     private $cookieLifetime;
     private $cookieNames = [];
-    private $params4get = [ 'utm_source','utm_content','utm_term', 'prx', 'aip', 'webmaster_id', 'admitad_uid', 'affiliate_id' ];
+    private $params4get = [ 'utm_source','utm_content','utm_term', 'actionpay', 'prx', 'aip', 'webmaster_id', 'admitad_uid', 'affiliate_id' ];
 
     public function __construct() {
         $this->cookieName = \App::config()->partner['cookieName'];
