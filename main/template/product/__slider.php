@@ -8,7 +8,8 @@ return function (
     $class = null,
     $count = null,
     $limit = null,
-    $url = null
+    $url = null,
+    $type = null
 ) {
 /**
  * @var $products   \Model\Product\Entity[]
@@ -21,6 +22,7 @@ return function (
         'count' => $count,
         'limit' => $limit,
         'url'   => $url,
+        'type'  => $type,
     ]) ?>">
     <? if ($title): ?>
         <h3 class="bHeadSection"><?= $title ?></h3>

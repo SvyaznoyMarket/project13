@@ -27,6 +27,7 @@
 
         <? if ((bool)$accessories && \App::config()->product['showAccessories']): ?>
             <?= $helper->render('product/__slider', [
+                'type'           => 'accessorize',
                 'title'          => 'Аксессуары',
                 'products'       => array_values($accessories),
                 'categories'     => $accessoryCategory,
@@ -41,6 +42,7 @@
 
         <? if (\App::config()->smartengine['pull']): ?>
             <?= $helper->render('product/__slider', [
+                'type'     => 'also_viewed',
                 'title'    => 'С этим товаром также смотрят',
                 'products' => [],
                 'count'    => null,
@@ -52,6 +54,7 @@
 
         <? if ((bool)$related && \App::config()->product['showRelated']): ?>
             <?= $helper->render('product/__slider', [
+                'type'           => 'also_bought',
                 'title'          => 'С этим товаром также покупают',
                 'products'       => array_values($related),
                 'count'          => count($product->getRelatedId()),
@@ -84,6 +87,7 @@
 
             <? if (\App::config()->smartengine['pull']): ?>
                 <?= $helper->render('product/__slider', [
+                    'type'     => 'similar',
                     'title'    => 'Похожие товары',
                     'products' => [],
                     'count'    => null,
