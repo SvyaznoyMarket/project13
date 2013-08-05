@@ -509,13 +509,13 @@ class DefaultLayout extends Layout {
         if ($routeName == 'product.category') {
 
             $category = $this->getParam('category') instanceof \Model\Product\Category\Entity ? $this->getParam('category') : null;
-            $prod_cats = $smantic->makeCategories($breadcrumbs, $category);
+            $prod_cats = $smantic->makeCategories($breadcrumbs, $category, 'category');
             $return .= $this->render($smantic_path . '02-category_page', ['category' => $category, 'smantic' => &$smantic, 'prod_cats' => $prod_cats]);
 
         } else if ($routeName == 'product') {
 
             $product = $this->getParam('product') instanceof \Model\Product\Entity ? $this->getParam('product') : null;
-            $prod_cats = $smantic->makeCategories($breadcrumbs, $product->getCategory());
+            $prod_cats = $smantic->makeCategories($breadcrumbs, $product->getCategory(), 'product');
             $return .= $this->render($smantic_path . '03a-product_page_stream', ['product' => $product, 'smantic' => &$smantic, 'prod_cats' => $prod_cats]);
 
         } else if ($routeName == 'cart') {

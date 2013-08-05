@@ -19,7 +19,8 @@ if ($product instanceof \Model\Product\Entity) {
 
     $brand = $product->getBrand() ? $product->getBrand()->getName() : null;
     $scr_product['identifier'] = $smantic->resetProductId($product);
-    $scr_product['fn'] = $product->getWebName();
+    //$scr_product['fn'] = $product->getWebName();
+    $scr_product['fn'] = $product->getName();
     $scr_product['category'] = $prod_cats;
     $scr_product['description'] = $product->getTagline();
     $scr_product['brand'] = $brand;
