@@ -715,10 +715,16 @@ class Action {
                 $sphinxFilter = isset($values['text']) ? $values['text'] : null;
 
                 if ($sphinxFilter) {
-                    $result = \App::coreClientV2()->query('search/normalize', [], ['request' => $sphinxFilter]);
+                    $clientV2 = \App::coreClientV2();
+                    $result = null;
+                    $clientV2->addQuery('search/normalize', [], ['request' => $sphinxFilter], function ($data) use (&$result) {
+                        $result = $data;
+                    });
+                    $clientV2->execute();
+
                     if(is_array($result)) {
                         $values['text'] = implode(' ', $result);
-                    } else {
+                    } elseif(isset($values['text'])) {
                         unset($values['text']);
                     }
                 }
