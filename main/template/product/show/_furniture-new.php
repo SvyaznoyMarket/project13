@@ -19,6 +19,8 @@
 <div class="bProductSection__eLeft">
         <div id="planner3D" class="bPlanner3D fl" data-cart-sum-url="<?= $page->url('cart.sum') ?>" data-product="<?= $page->json(['id' => $product->getId()]) ?>"></div>
 
+        <?= $helper->render('product/__likeButtons', [] ); // Insert LikeButtons (www.addthis.com) ?>
+
         <div class="bDescriptionProduct">
             <?= $product->getDescription() ?>
         </div>
