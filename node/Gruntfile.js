@@ -247,6 +247,10 @@ module.exports = function(grunt) {
 				files: [jsDevPath+'order-new/*.js'],
 				tasks: ['concat:orderNewJS','uglify:orderNewJS', 'jshint', 'connect', 'qunit', 'exec:getVersion']
 			},
+			orderNewV5JS:{
+				files: [jsDevPath+'order-new-v5/*.js'],
+				tasks: ['concat:orderNewV5JS','uglify:orderNewV5JS', 'jshint', 'connect', 'qunit', 'exec:getVersion']
+			},
 			pandoraJS:{
 				files: [jsDevPath+'pandora/*.js'],
 				tasks: ['concat:pandoraJS','uglify:pandoraJS', 'jshint', 'connect', 'qunit', 'exec:getVersion']
@@ -312,6 +316,10 @@ module.exports = function(grunt) {
 			orderNewJS : {
 				src: [jsDevPath+'order-new/*.js'],
 				dest: jsProdPath+'order-new.js'
+			},
+			orderNewV5JS : {
+				src: [jsDevPath+'order-new-v5/*.js'],
+				dest: jsProdPath+'order-new-v5.js'
 			},
 			pandoraJS : {
 				src: [jsDevPath+'pandora/*.js'],
@@ -422,6 +430,12 @@ module.exports = function(grunt) {
 			orderNewJS: {
 				files: {
 					'../web/js/prod/order-new.min.js': [jsDevPath+'order-new/*.js']
+				}
+			},
+
+			orderNewV5JS : {
+				files: {
+					'../web/js/prod/order-new-v5.min.js': [jsDevPath+'order-new-v5/*.js']
 				}
 			},
 
