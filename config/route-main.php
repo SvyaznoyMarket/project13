@@ -401,6 +401,10 @@ return [
         'pattern' => '/orders/new',
         'action'  => ['Order\Action', 'create'],
     ],
+    'order.delivery' => [
+        'pattern' => '/ajax/order-delivery',
+        'action'  => ['Order\DeliveryAction', 'execute'],
+    ],
     'order.externalCreate' => [
         'pattern' => '/orders/create-external',
         'action'  => ['Order\ExternalCreateAction', 'execute'],
