@@ -92,9 +92,14 @@ class Sociomantic
 
     public function wrapEscapeQuotes($value) {
         if ( is_numeric($value) ) return $value;
-        $val = (string)$value;
+        $val = trim( (string)$value );
+
+        $first = substr($value, 0, 1);
+        if ( $first == '{' || $first == '[' ) return $val;
+
         $val = str_replace("'", '"', $val);
         $val = "'".$val."'";
+
         return $val;
     }
 
