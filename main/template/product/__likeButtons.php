@@ -3,7 +3,7 @@ return function () {
 
 /* // LikeButtons (www.addthis.com)
 <!-- AddThis Button BEGIN --> */ ?>
-<div class="addthis_toolbox addthis_default_style mt5 ">
+<div class="addthis_toolbox addthis_default_style mt15 ">
     <a class="addthis_button_preferred_1"></a>
     <a class="addthis_button_preferred_2"></a>
     <? /* <a class="addthis_button_preferred_3"></a> */ ?>
