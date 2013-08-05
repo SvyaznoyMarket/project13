@@ -249,6 +249,15 @@ class DefaultLayout extends Layout {
             case "order.complete":
                 $viewEvent = 'trackTransaction';
                 $orders = $this->getParam('orders');
+                foreach($orders as $ord) {
+                    /* @var $ord \Model\Order\Entity */
+                    $products = $ord->getProduct();
+                    foreach($products as $product) {
+                        $eventItems_arr[] = '{ id: "'.$product->getId().
+                            '", price: '.$product->getPrice().
+                            ', quantity: '.$product->getQuantity().' }';
+                    }
+                }
                 break;
 
             default:
