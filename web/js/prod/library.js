@@ -2003,6 +2003,7 @@ function FormValidator( config ) {
 						this._defaultsConfig,
 						config );
 
+	this._enableHandlers();
 }
 
 /**
@@ -2221,6 +2222,64 @@ FormValidator.prototype._validateField = function( field ) {
 	return error;
 };
 
+FormValidator.prototype._markFieldError = function( fieldNode, errorMsg ) {
+	console.info('маркируем');
+	console.log(errorMsg);
+	
+	fieldNode.addClass(this.config.errorClass);
+};
+
+/**
+ * Активация хандлеров для полей
+ *
+ * @this	{FormValidator}
+ * @private
+ */
+FormValidator.prototype._enableHandlers = function() {
+	console.info('_enableHandlers');
+	var self = this,
+		fields = this.config.fields,
+		currentField = null;
+	// end of vars
+
+	var validateOnBlur = function validateOnBlur() {
+			var that = $(this),
+				result = {},
+				findedField = self._findFieldByNode( that );
+			// end of vars
+
+			if ( findedField.finded ) {
+				console.log('валидируем');
+				result = self._validateField(findedField.field);
+
+				if ( result.hasError ) {
+					self._markFieldError(that, result.errorMsg);
+				}
+			}
+			else {
+				console.log('поле не найдено или тип валидации не существует, хандлер нужно убрать');
+				that.unbind('blur', validateOnBlur);
+			}
+
+			return false;
+		},
+
+		clearError = function clearError() {
+			$(this).removeClass(self.config.errorClass);
+		};
+	// end of functions
+
+	for (var i = fields.length - 1; i >= 0; i--) {
+		currentField = fields[i];
+
+		if ( currentField.validateOnChange ) {
+			console.log('навешиваем хандлер');
+			currentField.fieldNode.bind('blur', validateOnBlur);
+			currentField.fieldNode.bind('focus', clearError);
+		}
+	};
+};
+
 /**
  * Поиск поля
  * 
@@ -2237,7 +2296,7 @@ FormValidator.prototype._findFieldByNode = function( nodeToFind ) {
 	var fields = this.config.fields;
 
 	for ( var i = fields.length - 1; i >= 0; i-- ) {
-		if ( fields[i].fieldNode.selector === nodeToFind.selector ) {
+		if ( fields[i].fieldNode.get(0) === nodeToFind.get(0) ) {
 			return {
 				finded: true,
 				field: fields[i],
@@ -2261,9 +2320,9 @@ FormValidator.prototype._findFieldByNode = function( nodeToFind ) {
 /**
  * Запуск валидации полей
  *
- * @param	{Object}	callbacks			Объект со ссылками на функции обратных вызовов
- * @param	{Function}	callbacks.onInvalid	Функция обратного вызова, если поля не прошли валидацию. В функцию передается массив объектов ошибок.
- * @param	{Function}	callbacks.onValid	Функция обратного вызова, если поля прошли валидацию
+ * @param	{Object}	callbacks				Объект со ссылками на функции обратных вызовов
+ * @param	{Function}	callbacks.onInvalid		Функция обратного вызова, если поля не прошли валидацию. В функцию передается массив объектов ошибок.
+ * @param	{Function}	callbacks.onValid		Функция обратного вызова, если поля прошли валидацию
  *
  * @this	{FormValidator}
  * @public
@@ -2280,7 +2339,7 @@ FormValidator.prototype.validate = function( callbacks ) {
 		result = self._validateField(fields[i]);
 
 		if ( result.hasError ) {
-			fields[i].fieldNode.addClass(self.config.errorClass);
+			self._markFieldError(fields[i].fieldNode, result.errorMsg);
 			errors.push({
 				fieldNode: fields[i].fieldNode,
 				errorMsg: result.errorMsg
@@ -2302,9 +2361,9 @@ FormValidator.prototype.validate = function( callbacks ) {
 /**
  * Получить тип валидации для поля
  *
- * @param	{Object} 			fieldToFind	Ссылка на jQuery объект поля для которого нужно получить параметры валидации
+ * @param	{Object} 			fieldToFind		Ссылка на jQuery объект поля для которого нужно получить параметры валидации
  * 
- * @return	{Object|Boolean}				Возвращает или конфигурацию валидации для поля, или false
+ * @return	{Object|Boolean}					Возвращает или конфигурацию валидации для поля, или false
  * 
  * @this	{FormValidator}
  * @public
@@ -2322,11 +2381,12 @@ FormValidator.prototype.getValidate = function( fieldToFind ) {
 /**
  * Установить новый тип валидации для поля. Если поле не найдено, создает новое с указанными параметрами.
  *
- * @param	{Object}	fieldNodeToCange			Ссылка на jQuery объект поля для которого нужно изменить параметры валидации
- * @param	{Object}	paramsToChange				Новые свойства валидации поля
- * @param	{String}	paramsToChange.validBy		Тип валидации поля
- * @param	{Boolean}	paramsToChange.require		Является ли поле обязательным к заполению
- * @param	{String}	paramsToChange.customErr	Сообщение об ошибке, если поле не прошло валидацию
+ * @param	{Object}	fieldNodeToCange					Ссылка на jQuery объект поля для которого нужно изменить параметры валидации
+ * @param	{Object}	paramsToChange						Новые свойства валидации поля
+ * @param	{String}	paramsToChange.validBy				Тип валидации поля
+ * @param	{Boolean}	paramsToChange.require				Является ли поле обязательным к заполению
+ * @param	{String}	paramsToChange.customErr			Сообщение об ошибке, если поле не прошло валидацию
+ * @param	{Boolean}	paramsToChange.validateOnChange		Нужно ли валидировать поле при его изменении
  *
  * @this	{FormValidator}
  * @public
@@ -2376,11 +2436,12 @@ FormValidator.prototype.removeFieldToValidate = function( fieldNodeToRemove ) {
 /**
  * Добавить поле для валидации
  * 
- * @param	{Object}	field			Объект поля для валидации
- * @param	{Object}	field.fieldNode	Ссылка на jQuery объект поля
- * @param	{String}	field.validBy	Тип валидации поля
- * @param	{Boolean}	field.require	Является ли поле обязательным к заполению
- * @param	{String}	field.customErr	Сообщение об ошибке, если поле не прошло валидацию
+ * @param	{Object}	field					Объект поля для валидации
+ * @param	{Object}	field.fieldNode			Ссылка на jQuery объект поля
+ * @param	{String}	field.validBy			Тип валидации поля
+ * @param	{Boolean}	field.require			Является ли поле обязательным к заполению
+ * @param	{String}	field.customErr			Сообщение об ошибке, если поле не прошло валидацию
+ * @param	{Boolean}	field.validateOnChange	Нужно ли валидировать поле при его изменении
  *
  * @this	{FormValidator}
  * @public

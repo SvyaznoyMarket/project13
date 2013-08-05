@@ -208,7 +208,8 @@ $(document).ready(function(){
 				{
 					fieldNode: regUsername,
 					require: true,
-					validBy: 'isEmail'
+					validBy: 'isEmail',
+					validateOnChange: true
 				}
 			],
 		};
