@@ -121,7 +121,8 @@
     }
 
     .lts_item table{
-        border:2px solid #bbb;
+        border: 1px solid #111;
+        background: #fff;
     }
 
     .lts_item th,
@@ -131,7 +132,7 @@
     }
 
     .lts_item th{
-        background: #333;
+        background: #456;
         color:#fff;
         font-weight: bold;
     }
