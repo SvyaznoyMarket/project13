@@ -118,11 +118,16 @@ class AppConfig {
 
     /** @var array */
     public $partners = [
+        'livetex' => [
+            'enabled' => null,
+            'liveTexID' => null,
+            'login' => 'anastasiya.vs@enter.ru',
+            'password' => 'enter1chat2',
+        ],
         'criteo' => [
             'enabled' => null,
         ]
     ];
-
 
     /** @var array */
     public $myThings = [

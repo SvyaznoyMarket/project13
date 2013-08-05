@@ -117,6 +117,22 @@
     .lts_analytics{
         margin-top: 16px;
         border: #CCC 1px solid;
-        background: #FAEBD7;
+        background: #f1f1f1;
+    }
+
+    .lts_item table{
+        border:2px solid #bbb;
+    }
+
+    .lts_item th,
+    .lts_item td{
+        border:1px solid #ccc;
+        padding:6px 8px;
+    }
+
+    .lts_item th{
+        background: #333;
+        color:#fff;
+        font-weight: bold;
     }
 </style>
