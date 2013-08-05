@@ -138,7 +138,7 @@
 				$LAB
 				.script('jquery-plugins.min.js')
 				.script( 'JsHttpRequest.min.js' )
-				.script( getWithVersion('library.js') )             
+				.script( getWithVersion('library.js') )
 				.script( 'http://direct-credit.ru/widget/api_script_utf.js' )
 				.wait()
 				.script(getWithVersion('common.js'))
@@ -148,6 +148,19 @@
 				.script('adfox.asyn.code.ver3.min.js')
 				.wait()
 				.script( getWithVersion('ports.js') )
+			}).runQueue();
+			break;
+		case 'order.new': 
+			$LAB
+			.queueScript( (mapVendor==='yandex') ? 'http://api-maps.yandex.ru/2.0/?load=package.full&lang=ru-RU' : 'http://maps.google.com/maps/api/js?sensor=false')
+			.queueWait( function() {
+				$LAB
+				.script('jquery-plugins.min.js')
+				.script( 'JsHttpRequest.min.js' )
+				.script( getWithVersion('library.js') )             
+				.script( 'http://direct-credit.ru/widget/api_script_utf.js' )
+				.wait()
+				.script( getWithVersion('order-new-v5.js') )
 			}).runQueue();
 			break;
 		case 'order_complete':
