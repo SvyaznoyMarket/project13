@@ -29,8 +29,16 @@ $formName = \View\Product\FilterForm::$name;
 		Выбрано <span class="result">result.data</span> модел<span class="ending">ending</span><br/>
 		<a>Показать</a>
 	</div>
-    <dl class="bigfilter form bSpec">
-        <dt class="filterHeader">Выбираем:<i></i></dt>
+    <dl class="bigfilter form bSpec<?= \App::config()->sphinx['showListingSearchBar'] ? ' noBorder' : '' ?>">
+        <? if(\App::config()->sphinx['showListingSearchBar']) { ?>
+            <div class="pb5">
+                <input type="text" value="" class="text mb10 orangeIcon" placeholder="Поиск в категории">
+                <input type="hidden" value="" name="f[text]">
+                <img class="mb10 orangeIcon" src="/css/search/img/searchBtn.png">
+            </div>
+        <? } else { ?>
+            <dt class="filterHeader">Выбираем:<i></i></dt>
+        <? } ?>
         <? require __DIR__ . '/_selectedFilter.php' ?>
 
         <? if ($category->getIsFurniture()): ?>

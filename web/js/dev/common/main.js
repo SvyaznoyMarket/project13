@@ -679,9 +679,17 @@ $(document).ready(function(){
 	});
 
 	$('.product_filter-block input:submit').addClass('mDisabled');
-	$('.product_filter-block input:submit').click( function(e) {
-		if ( $(this).hasClass('mDisabled') ){
+	$('.product_filter-block').on('submit', function(e) {
+		if ( $('.product_filter-block input:submit').hasClass('mDisabled') ){
 			e.preventDefault();
+		} else {
+			var search = $('.product_filter-block').find('input.orangeIcon').val();
+			if ( search ) {
+				if ( $('.currentSearch').length ) {
+					var newSearch = search + ' ' + $('.currentSearch').data('search-terms');
+					$('.product_filter-block').find('input.orangeIcon').siblings('input[type="hidden"]').val(newSearch);
+				}
+			}
 		}
 	});
   
@@ -719,6 +727,16 @@ $(document).ready(function(){
 	$('.product_filter-block').change(function() {
 		activateForm();
 	});
+
+	var sphinxSearchValue = null;
+	if( $('img.orangeIcon').length && $('img.orangeIcon').siblings('input.orangeIcon').length ) {
+		$('img.orangeIcon').on('click', function(){
+			var search = $('.product_filter-block').find('input.orangeIcon').val();
+			if ( search ) {
+				$('.product_filter-block').find('input[type="submit"]').click();
+			}
+		});
+	}
 	
 	/* Side Filters */
 	var filterlink = $('.filter .filterlink:first');
