@@ -724,7 +724,7 @@ class Action {
 
                     if(is_array($result)) {
                         $values['text'] = implode(' ', $result);
-                    } elseif(isset($values['text'])) {
+                    } else {
                         unset($values['text']);
                     }
                 }
