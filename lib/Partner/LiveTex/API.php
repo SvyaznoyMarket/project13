@@ -101,18 +101,19 @@ class API {
 
 
         // Обработка ошибок ( перелогинивание в случае ошибки 204, Bad auth key если истёк срок ключа )
-        $error = $response->error;
-        if ( $error ) {
-            // при ошибке чистим сессию и пробуем снова залогиниться
-            $this->unsetSession();
-            $this->tologin();
+        if (isset( $response->error )) {
+            $error = $response->error;
+            if ( $error ) {
+                // при ошибке чистим сессию и пробуем снова залогиниться
+                $this->unsetSession();
+                $this->tologin();
 
-            $this->count_login_errors++; // счётчик ошибок авторизации, дабы не зацикливаться, если вечная ошибка
-            if ( $this->count_login_errors < 3 ) {
-                return $this->method($method, $data);
+                $this->count_login_errors++; // счётчик ошибок авторизации, дабы не зацикливаться, если вечная ошибка
+                if ( $this->count_login_errors < 3 ) {
+                    return $this->method($method, $data);
+                }
             }
         }
-
 
         return $response;
 

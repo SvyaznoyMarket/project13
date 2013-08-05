@@ -33,39 +33,36 @@ class HtmlChatHistoryContent extends HtmlBasicContent {
             $item->member = $this->operator_link($operId, $item->member);
         }
 
+        $vvote_positive = $vvote_negative = 0;
+
         $vvote = 'Оценка не поставлена';
         if ($item->vvote == 1) {
             $vvote = 'Положительная оценка';
             $this->count_positive_votes++;
+            $vvote_positive = 1;
         } else if ($item->vvote == 2) {
             $vvote = 'Отрицательная оценка';
             $this->count_negative_votes++;
+            $vvote_negative = 1;
         }
+
+        $mvote_positive = $mvote_negative = 0;
 
         $mvote = 'Оценка не поставлена';
         if ($item->mvote == 1) {
             $mvote = 'Положительная оценка';
+            $mvote_positive = 1;
         } else if ($item->vvote == 2) {
             $mvote = 'Отрицательная оценка';
+            $mvote_negative = 1;
         }
-
-        /*
-        print '<pre>!# --- { ';
-        print_r($item->firstanswer);
-        print ' | ';
-        print_r($item->chattime);
-        print ' | ';
-        print_r($item->count);
-        print '} --</pre>';*/
 
 
         $out .= '<div class="id_oper"><span class="param_name">Идентификатор чата: </span>' . $item->id . '</div>';
         $out .= '<div class="id_oper"><span class="param_name">Идентификатор посетителя: </span>' . $item->visitor . '</div>';
         $out .= '<div class="id_oper"><span class="param_name">Оператор: </span>' . $item->member . '</div>';
-
         $out .= '<div class="id_oper"><span class="param_name">Оценка чата посетителем: </span>' . $vvote . '</div>';
         $out .= '<div class="id_oper"><span class="param_name">Идентификатор оценки чата оператором: </span>' . $mvote . '</div>';
-
         $out .= '<div class="id_oper"><span class="param_name">Дата: </span>' . date($this->date_format, $item->timestamp) . '</div>';
 
         if ( !empty($item->firstanswer) ) {
@@ -75,7 +72,6 @@ class HtmlChatHistoryContent extends HtmlBasicContent {
             $item->firstanswer = (string) $s . ' c ';
         }
         $out .= '<div class="id_oper"><span class="param_name">Время ответа на первое сообщение посетителя: </span>' . $item->firstanswer . '</div>';
-
 
         $out .= '<div class="id_oper"><span class="param_name">Длительность чата: </span>' . $this->timeFromSeconds($item->chattime) . '</div>';
         $out .= '<div class="id_oper"><span class="param_name">Идентификатор сайта, на котором происходил чат: </span>' . $item->site . '</div>';
@@ -98,22 +94,9 @@ class HtmlChatHistoryContent extends HtmlBasicContent {
 
 
 
+
         if ( $operId ) {
             $item->chattime = $this->timeInSeconds($item->chattime);
-            /*if (!isset( $this->duration_cross_operators[$operId] )) {
-                $arr = [
-                    'count_chats' => 1,
-                    'all_chattime' => $item->chattime,
-                ];
-            }else{
-                $arr = [
-                    'count_chats' => 1 + $this->duration_cross_operators[$operId]['count_chats'],
-                    'all_chattime' => $item->chattime + $this->duration_cross_operators[$operId]['all_chattime'],
-                ];
-                //$arr['count_chats'] += $this->duration_cross_operators[$operId]['count_chats']
-            }
-            $this->duration_cross_operators[$operId] = $arr;
-            */
 
             if ( !isset( $this->duration_cross_operators[$operId] ) ) {
                 // ели в массиве ранее не было оператора с таким айди, то создадим его прототип:
@@ -121,13 +104,19 @@ class HtmlChatHistoryContent extends HtmlBasicContent {
                     'count_chats' => 0,
                     'all_chattime' => 0,
                     'unanswered' => 0,
+                    'all_firstanswer' => 0,
+                    'all_positive_votes' => 0,
+                    'all_negative_votes' => 0,
                 );
             }
 
             $this->duration_cross_operators[$operId]['count_chats'] += 1; // кол-во чатов
             $this->duration_cross_operators[$operId]['all_chattime'] += $item->chattime; // общее время чатов
+            $this->duration_cross_operators[$operId]['all_firstanswer'] += $item->firstanswer; // общее время firstanswer
+            $this->duration_cross_operators[$operId]['all_positive_votes'] += $vvote_positive; // кол-во положительных оценок чата посетителем
+            $this->duration_cross_operators[$operId]['all_negative_votes'] += $vvote_negative; // кол-во отрицательных оценок чата посетителем
 
-            if ( (!$item->count) || (!$item->chattime) ) {
+            if ( (!$item->count) || (!$item->chattime) ) { // условие, по которому можем считать чат неотвеченным
                 $this->duration_cross_operators[$operId]['unanswered'] += 1; // не отвеченные чаты
             }
 
@@ -152,16 +141,11 @@ class HtmlChatHistoryContent extends HtmlBasicContent {
 
         $out .= '<p>Количество положительных оценок: ' . $this->count_positive_votes.'.</p>';
         $out .= '<p>Количество отрицательных оценок: ' . $this->count_negative_votes.'.</p>';
-
         $out .= '<p>Количество чатов с одним сообщением (без ответа оператора): ' . $this->count_noanswer.'.</p>';
-
-
-        $ii = 0;
 
 
         $opers = '<div class="durations">';
         $opers .= '<h3>Продолжительность разговора оператора</h3>';
-
 
         $opers .= '<table>';
         $opers .= '<th>Агент</th>';
@@ -169,19 +153,32 @@ class HtmlChatHistoryContent extends HtmlBasicContent {
         $opers .= '<th>Отвеченных диалогов</th>';
         $opers .= '<th>Пропущенных диалогов</th>';
         $opers .= '<th>SLA</th>';
-        $opers .= '<th>Диалогов</th>';
-        $opers .= '<th>Длительность</th>';
-        $opers .= '<th>В среднем</th>';
+        $opers .= '<th>Среднее время ответа на первое сообщение</th>';
+        $opers .= '<th>Кол-во положительных оценок посетителей</th>';
+        $opers .= '<th>Кол-во отрицательных оценок посетителей</th>';
+        //$opers .= '<th>Диалогов</th>';
+        $opers .= '<th>Суммарная длительность диалогов</th>';
+        $opers .= '<th>Средняя длительность диалога</th>';
 
         foreach($this->duration_cross_operators as $id => $val) {
             $opers .= '<tr>';
 
-            $count = $val['count_chats'];
-            $all = $val['all_chattime'];
+            $count_chats = $val['count_chats'];
+            $all_chattime = $val['all_chattime'];
+            $all_firstanswer = $val['all_firstanswer'];
             $unanswered = $val['unanswered'];
-            $answered = $all - $unanswered;
-            if ($all) $SLA = (string) ( 100*round( $unanswered/ $all , 4) ) . '%'; else $SLA = 'none';
-            $average = ( $count ) ? $all/$count : null;
+            $all_positive_votes = $val['all_positive_votes'];
+            $all_negative_votes = $val['all_negative_votes'];
+            $answered = $count_chats - $unanswered;
+
+            if ($count_chats) {
+                $SLA = (string) ( 100*round( $unanswered/ $count_chats , 3) ) . '%';
+                $average = $this->timeFromSeconds( $all_chattime / $count_chats );
+                $average_firstanswer = $this->timeFromSeconds( $all_firstanswer / $count_chats );
+            } else {
+                $SLA = 'none';
+                $average = 'none';
+            }
 
 
             $opers .= '<td>';
@@ -206,24 +203,35 @@ class HtmlChatHistoryContent extends HtmlBasicContent {
             $opers .= '</td>';
 
             $opers .= '<td>';
-            if ($count) {
-                $opers .=  $count;
-            }
+            $opers .= $average_firstanswer;
             $opers .= '</td>';
 
+            $opers .= '<td>';
+            $opers .= $all_positive_votes;
+            $opers .= '</td>';
+
+            $opers .= '<td>';
+            $opers .= $all_negative_votes;
+            $opers .= '</td>';
+
+            /* // кол-во диалогов (чатов)
+            $opers .= '<td>';
+            if ($count_chats) {
+                $opers .=  $count_chats;
+            }
+            $opers .= '</td>'; */
 
 
             $opers .= '<td>';
-            if ($all) {
-                $opers .= $this->timeFromSeconds( $all );
+            if ($all_chattime) {
+                $opers .= $this->timeFromSeconds( $all_chattime );
             }
             $opers .= '</td>';
-
 
 
             $opers .= '<td>';
             if ($average) {
-                $opers .= $this->timeFromSeconds( $average );
+                $opers .= $average;
             }
             $opers .= '</td>';
 
@@ -233,10 +241,7 @@ class HtmlChatHistoryContent extends HtmlBasicContent {
 
         $opers .= '</table>';
 
-
-
         $opers .= '</div>';
-
 
         $out .= $opers;
 

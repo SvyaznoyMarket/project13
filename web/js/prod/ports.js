@@ -140,7 +140,6 @@ window.ANALYTICS = {
     criteoJS : function() {
         window.criteo_q = window.criteo_q || [];
         var criteo_arr =  $('#criteoJS').data('value');
-        console.log(criteo_arr);
         if ( typeof(criteo_q) != "undefined" && !jQuery.isEmptyObject(criteo_arr) ) {
             try{
                 window.criteo_q.push(criteo_arr);
