@@ -15,6 +15,10 @@ class Action {
     public function create(\Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
+        if (\App::config()->order['newCreate']) {
+            return (new \Controller\Order\NewAction())->execute($request);
+        }
+
         $client = \App::coreClientV2();
         $user = \App::user();
         $region = $user->getRegion();
