@@ -15,14 +15,18 @@ class Sociomantic
     }
 
 
-    public function makeCategories($breadcrumbs, $category = null)
+    public function makeCategories($breadcrumbs, $category = null, $ctype = 'product')
     {
         $prod_cats = '';
+        $useLastItem = false; // $ctype == 'product'
+        if ($ctype == 'category') $useLastItem = true;
+
         if ($breadcrumbs and is_array($breadcrumbs)) {
-            $prod_cats = $this->breadcrumbsToString($breadcrumbs);
+            $prod_cats = $this->breadcrumbsToString($breadcrumbs, $useLastItem);
         } else {
             if ($category) $prod_cats = $category->getName();
         }
+
         return $prod_cats;
     }
 
@@ -88,9 +92,14 @@ class Sociomantic
 
     public function wrapEscapeQuotes($value) {
         if ( is_numeric($value) ) return $value;
-        $val = (string)$value;
+        $val = trim( (string)$value );
+
+        $first = substr($value, 0, 1);
+        if ( $first == '{' || $first == '[' ) return $val;
+
         $val = str_replace("'", '"', $val);
         $val = "'".$val."'";
+
         return $val;
     }
 
@@ -189,7 +198,7 @@ class Sociomantic
 
             foreach ($breadcrumbs as $item) {
                 $i++;
-                if ( ( !$useLastItem && $i < $count) || $useLastItem ) {
+                if ( ( $i > 1 && !$useLastItem && $i < $count) || $useLastItem ) {
                     $str = $item['name'];
                     if ($str) {
                         $str = str_replace("'", '"', $str);
