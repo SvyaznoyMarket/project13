@@ -2,7 +2,7 @@
 
 namespace Controller\Cart;
 
-class CouponAction {
+class BlackcardAction {
     /**
      * @param \Http\Request $request
      * @throws \Exception\ActionException
@@ -26,19 +26,16 @@ class CouponAction {
                 throw new \Exception\ActionException('Не передан номер карты');
             }
 
-            $cart->clearCoupons();
+            $cart->clearBlackcards();
 
             /*
-            $data = $client->query('cart/check-coupon', ['number' => $number]);
-            if (true !== $data) {
-                throw new \Exception();
-            }
+            $client->query();
             */
 
-            $coupon = new \Model\Cart\Coupon\Entity();
-            $coupon->setNumber($number);
+            $blackcard = new \Model\Cart\Blackcard\Entity();
+            $blackcard->setNumber($number);
 
-            $cart->setCoupon($coupon);
+            $cart->setBlackcard($blackcard);
 
             $result = [
                 'success' => true,
@@ -47,7 +44,7 @@ class CouponAction {
         } catch (\Exception $e) {
             \App::exception()->remove($e);
 
-            $message = \Model\Cart\Coupon\Entity::getErrorMessage($e->getCode()) ?: 'Неудалось активировать купон';
+            $message = \Model\Cart\Blackcard\Entity::getErrorMessage($e->getCode()) ?: 'Неудалось активировать карту';
 
             $result = [
                 'success' => false,
@@ -74,7 +71,7 @@ class CouponAction {
         }
 
         try {
-            \App::user()->getCart()->clearCoupons();
+            \App::user()->getCart()->clearBlackcards();
 
             $result = [
                 'success' => true,
@@ -84,7 +81,7 @@ class CouponAction {
 
             $result = [
                 'success' => false,
-                'error'   => $e instanceof \Exception\ActionException ? $e->getMessage() : 'Неудалось удалить купон',
+                'error'   => $e instanceof \Exception\ActionException ? $e->getMessage() : 'Неудалось удалить карту',
             ];
             if (\App::config()->debug) {
                 $result['error'] = $e;
