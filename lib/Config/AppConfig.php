@@ -324,7 +324,8 @@ class AppConfig {
     ];
     /** @var array  */
     public $order = [
-        'enableMetaTag'   => null,
+        'enableMetaTag' => null,
+        'newCreate'     => null,
     ];
     /** @var array */
     public $maybe3d = [

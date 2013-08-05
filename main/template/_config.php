@@ -13,6 +13,7 @@ $config = array_merge([
     'userUrl'       => \App::router()->generate('user.info'),
     'f1Certificate' => $appConfig->f1Certificate['enabled'],
     'coupon'        => $appConfig->coupon['enabled'],
+    'newOrder'      => $appConfig->order['newCreate'],
 ], isset($config) ? (array)$config : []);
 ?>
 

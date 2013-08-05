@@ -317,6 +317,7 @@ $c->requestMainMenu = true;
 $c->mobileModify['enabled'] = true;
 
 $c->order['enableMetaTag'] = true;
+$c->order['newCreate'] = true;
 
 $c->maybe3d['xmlUrl']     = 'http://hq.maybe3d.com/MappingService.svc/GetMappings?customerId=';
 $c->maybe3d['customerId'] = 'BE2016EF-32D8-41E6-976F-A8D32EB20ACF';
