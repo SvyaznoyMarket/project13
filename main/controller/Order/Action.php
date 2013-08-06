@@ -321,6 +321,11 @@ class Action {
                     $errors['order[sclub_card_number]'] = 'Неверный код карты Связной-Клуб';
                 }
 
+                if (742 == $e->getCode()) {
+                    \App::exception()->remove($e);
+                    $errors['order[cardpin]'] = 'Неверный пин-код подарочного сертификата';
+                }
+
                 $response = new \Http\JsonResponse([
                     'success' => false,
                     'error'   => ['code' => 'invalid', 'message' => 'Не удалось создать заказ' . (\App::config()->debug ? (': ' . $e) : '')],
