@@ -165,6 +165,7 @@ class DeliveryAction {
                 ];
             }
 
+            $responseData['deliveryTypes'] = array_values($responseData['deliveryTypes']);
             $responseData['success'] = true;
         } catch(\Exception $e) {
             $responseData = [
