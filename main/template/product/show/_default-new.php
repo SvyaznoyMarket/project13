@@ -51,12 +51,7 @@ $is_showed = [];
                 <? /* <div class="bTextMore"><a class="jsGoToId" data-goto="productspecification" href="">Характеристики</a></div> */ ?>
             </div>
             <?
-        } ?>
-
-
-        <?= $helper->render('product/__reviewCount', ['product' => $product, 'reviewsData' => $reviewsData]) ?>
-
-        <?
+        }
 
         if ( $countProperties<8 and !in_array('groupedProperty', $is_showed) ) {
             // выводим все характеристики в первом экране, сразу под отзывами.
@@ -69,6 +64,8 @@ $is_showed = [];
         ?>
         <?= $helper->render('product/__propertiesExpanded', ['productExpanded' => $productExpanded, 'showLinkToProperties' => $showLinkToProperties]) ?>
         <? $is_showed[] = 'propertiesExpanded'; ?>
+
+        <?= $helper->render('product/__reviewCount', ['product' => $product, 'reviewsData' => $reviewsData]) // Отзыывы ?>
 
         <?= $helper->render('product/__model', ['product' => $product]) // Модели ?>
     </div><!--/product shop description section -->
