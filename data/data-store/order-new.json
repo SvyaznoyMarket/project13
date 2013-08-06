@@ -1,17 +1,18 @@
 {
     "today": 1375678800000,
 
-    "deliveryTypes": {
-        "self": {
+    "deliveryTypes": [
+        {
+            "token": "self",
             "name": "Самовывоз",
             "states": ["self"]
         },
-
-        "standart": {
+        {
+            "token": "standart",
             "name": "Доставка",
             "states": ["standart_other", "standart_furniture"]
         }
-    },
+    ],
 
     "deliveryStates": {
         "self": {
@@ -6201,7 +6202,7 @@
             }
         },
 
-        "77033": {
+        "77033":{
             "id": 77033,
             "type": "product",
             "name": "Планшетный компьютер Qumo Apollo 3G 8 ГБ черный",
