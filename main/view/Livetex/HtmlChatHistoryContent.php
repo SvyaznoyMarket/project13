@@ -5,10 +5,11 @@ namespace View\Livetex;
 class HtmlChatHistoryContent extends HtmlBasicContent {
 
     protected $count_iterations = 0;
+    protected $count_chats = 0;
     protected $count_positive_votes = 0;
     protected $count_negative_votes = 0;
     protected $count_messages = 0;
-    protected $count_noanswer = 0;
+    //protected $count_noanswer = 0;
 
     protected $duration_cross_operators = [];
 
@@ -27,15 +28,19 @@ class HtmlChatHistoryContent extends HtmlBasicContent {
         $out = '';
         $this->count_iterations++;
 
+        // Суммирование и сохранение общих данных по всем чатам
         $operId = $item->member;
         if ( $operId ) {
+            $this->count_chats++; // Чатов с операторами
+            $this->chat_times += $this->timeInSeconds($item->chattime); // Общее время чата с операторами
+            $this->count_messages += $item->count; // Общее количество сообщений
             $item->member = $this->operator_info($operId, 'name') . " (ID: $operId)";
             $item->member = $this->operator_link($operId, $item->member);
         }
 
         $vvote_positive = $vvote_negative = 0;
 
-        $vvote = 'Оценка не поставлена';
+        $vvote = 'Оценка не поставлена'; // mvote - оценка чата посетителем
         if ($item->vvote == 1) {
             $vvote = 'Положительная оценка';
             $this->count_positive_votes++;
@@ -46,15 +51,15 @@ class HtmlChatHistoryContent extends HtmlBasicContent {
             $vvote_negative = 1;
         }
 
-        $mvote_positive = $mvote_negative = 0;
+        //$mvote_positive = $mvote_negative = 0;
 
-        $mvote = 'Оценка не поставлена';
+        $mvote = 'Оценка не поставлена'; // mvote - оценка чата оператором
         if ($item->mvote == 1) {
             $mvote = 'Положительная оценка';
-            $mvote_positive = 1;
+            //$mvote_positive = 1;
         } else if ($item->vvote == 2) {
             $mvote = 'Отрицательная оценка';
-            $mvote_negative = 1;
+            //$mvote_negative = 1;
         }
 
 
@@ -67,8 +72,10 @@ class HtmlChatHistoryContent extends HtmlBasicContent {
 
         if ( !empty($item->firstanswer) ) {
             $s = $this->timeInSeconds( $item->firstanswer );
-            $this->first_answers_time = (int) $this->first_answers_time + (int) $s;
-            $this->count_first_answers++;
+            if ( $operId ) {
+                $this->first_answers_time = (int) $this->first_answers_time + (int) $s; // общее время ответов на первые сообщения
+                $this->count_first_answers++; // кол-во реакций на первое сообщение
+            }
             $item->firstanswer = (string) $s . ' c ';
         }
         $out .= '<div class="id_oper"><span class="param_name">Время ответа на первое сообщение посетителя: </span>' . $item->firstanswer . '</div>';
@@ -81,10 +88,10 @@ class HtmlChatHistoryContent extends HtmlBasicContent {
         $out .= '<div class="id_oper"><span class="param_name">Идентификатор группы оператора: </span>' . $item->group . '</div>';
         $out .= '<div class="id_oper"><span class="param_name">Идентификатор первого сообщения: </span>' . $item->message . '</div>';
 
-        $this->count_messages = $this->count_messages + $item->count;
-        if ( $this->count_messages == 1 ) {
+
+        /*if ( $this->count_messages == 1 ) {
             $this->count_noanswer++;
-        }
+        }*/
 
         $out .= '<div class="id_oper"><span class="param_name">Количество сообщений в чате: </span>' . $item->count . '</div>';
 
@@ -94,7 +101,7 @@ class HtmlChatHistoryContent extends HtmlBasicContent {
 
 
 
-
+        /// Суммирование полученны данных по операторам:
         if ( $operId ) {
             $item->chattime = $this->timeInSeconds($item->chattime);
 
@@ -122,7 +129,6 @@ class HtmlChatHistoryContent extends HtmlBasicContent {
 
         }
 
-
         return $out;
     }
 
@@ -130,19 +136,23 @@ class HtmlChatHistoryContent extends HtmlBasicContent {
     protected function analytics() {
         $out = '';
 
-        $average = round( $this->chat_times / $this->count_iterations , 2);
-        $out .= '<p> Cреднее время чата: ' . $this->timeFromSeconds($average) . '. Всего чатов: '.$this->count_iterations.'</p>';
+        $out .= '</p>Всего чатов*: '.$this->count_iterations.". Чатов с операторами: $this->count_chats </p>";
+
+        $average = round( $this->chat_times / $this->count_chats , 2);
+        $out .= '<p> Cреднее время чата с оператором: ' . $this->timeFromSeconds($average) . '</p>';
 
         $average = round( $this->count_messages / $this->count_iterations , 2);
-        $out .= '<p> Cреднее количество сообщений в диалоге: '.$average.'.</p>';
+        $out .= '<p> Cреднее количество сообщений в диалоге (все чаты*): '.$average.'.</p>';
 
         $average = round( $this->first_answers_time / $this->count_first_answers , 2);
-        $out .= '<p> Cреднее время первого ответа: ' . $this->timeFromSeconds($average) . '. Всего ответов было: ' . $this->count_first_answers . '</p>';
+        $out .= '<p> Cреднее время ответа на первое сообщение: ' . $this->timeFromSeconds($average) . '. Количество реакций на первоё сообщение: ' . $this->count_first_answers . '</p>';
 
-        $out .= '<p>Количество положительных оценок: ' . $this->count_positive_votes.'.</p>';
-        $out .= '<p>Количество отрицательных оценок: ' . $this->count_negative_votes.'.</p>';
-        $out .= '<p>Количество чатов с одним сообщением (без ответа оператора): ' . $this->count_noanswer.'.</p>';
+        $out .= '<p>Количество положительных оценок (все чаты*): ' . $this->count_positive_votes.'.</p>';
+        $out .= '<p>Количество отрицательных оценок (все чаты*): ' . $this->count_negative_votes.'.</p>';
+        //$out .= '<p>Количество чатов с одним сообщением (без ответа оператора): ' . $this->count_noanswer.'.</p>';
 
+        $out .= '<p></p><p><em>* Существуют чаты без операторов (см первую строчку). Большинство данных статистики рассчитывается для чатов с операторами. '.
+            'Отмеченные звёздочкой (*) параметры рассчитаны для всех чатов, в том числе для чатов, в которых не принял участие ни один оператор.</em></p><hr/>';
 
         $opers = '<div class="durations">';
         $opers .= '<h3>Продолжительность разговора оператора</h3>';

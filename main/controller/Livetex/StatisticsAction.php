@@ -404,8 +404,9 @@ class StatisticsAction {
         $date_end_old = $this->date_end;
         $date_begin_old = $this->date_begin;
 
-        $this->date_end_today();
-        $this->date_begin_yesterday();
+        // TODO: добавить правильную проверку дат: если введён неправильный интервал
+        //$this->set_date_end_today();
+        //$this->set_date_begin_yesterday();
 
         //$this->l($date_end_old);
         //$this->l($this->date_end);
@@ -427,7 +428,7 @@ class StatisticsAction {
 
 
 
-    private function date_begin_yesterday( $datestr = null) {
+    private function set_date_begin_yesterday( $datestr = null) {
         $yesterday = null;
 
         if ( empty($datestr) ) $datestr = $this->date_end;
@@ -443,7 +444,8 @@ class StatisticsAction {
         }
 
         if (!empty($yesterday)) {
-            $this->date_begin = (string) date($this->date_format, $yesterday );
+            //$this->date_begin = (string) date($this->date_format, $yesterday );
+            $this->date_begin = $this->getDate( $yesterday );
             return true;
         }
 
@@ -451,8 +453,14 @@ class StatisticsAction {
     }
 
 
-    private function date_end_today() {
-        return $this->date_end = (string) date($this->date_format,strtotime('today UTC'));
+    private function set_date_end_today() {
+        //return $this->date_end = (string) date($this->date_format,strtotime('today UTC'));
+        return $this->date_end = $this->getDate( strtotime('today UTC') );
+    }
+
+
+    private function getDate( $date ) {
+        return (string) date($this->date_format, $date );
     }
 
 

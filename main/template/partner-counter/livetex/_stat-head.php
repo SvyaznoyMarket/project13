@@ -128,11 +128,12 @@
     .lts_item th,
     .lts_item td{
         border:1px solid #ccc;
-        padding:3px 6px;
+        padding:2px 4px;
     }
 
     .lts_item th{
         background: #456;
         color:#fff;
+        font-size:.75em;
     }
 </style>
