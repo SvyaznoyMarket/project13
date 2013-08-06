@@ -85,7 +85,7 @@ class Client {
             curl_close($connection);
             $spend = \Debug\Timer::stop('curl');
             $this->logger->error('Fail curl ' . $url . ' in ' . $spend . ((bool)$data ? (' ' . $this->encode($data)) : '') . ' response: ' . $this->encode($response) . ' with ' . $e, ['curl']);
-            \App::exception()->add($e); //// !!!!
+            \App::exception()->add($e);
             throw $e;
         }
     }
