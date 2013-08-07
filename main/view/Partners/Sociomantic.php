@@ -198,7 +198,7 @@ class Sociomantic
 
             foreach ($breadcrumbs as $item) {
                 $i++;
-                if ( ( $i > 1 && !$useLastItem && $i < $count) || $useLastItem ) {
+                if ( ( !$useLastItem && $i < $count) || ($useLastItem || $i==1) ) {
                     $str = $item['name'];
                     if ($str) {
                         $str = str_replace("'", '"', $str);
