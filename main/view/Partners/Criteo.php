@@ -39,7 +39,6 @@ class Criteo {
             case "homepage":
                 //$viewEvent = 'viewHome';
                 //break;
-                print '###! Oops. On homepage we have not data for criteo. Criteo is not running'; //tmp
                 return false; // нечего передовать на homepage, выходим
 
             case "product":
@@ -89,7 +88,6 @@ class Criteo {
                 if ($countIDs) {
                     $viewEvent = 'viewList';
                 }else{
-                    print '###! Oops. Products array is empty on this category page. Criteo is not running'; //tmp
                     //$viewEvent = '';
                     return false; // eсли нет продуктов, нечего передовать на этой стр, выходим
                 }
@@ -119,7 +117,6 @@ class Criteo {
             default:
                 //$viewEvent = 'view.'.$routeName;
                 //$viewEvent = '';
-                print '###! Oops. On this page we have not data for criteo. Criteo is not running'; //tmp
                 return false; // нечего передовать на этой стр, выходим
 
         }// end of case
@@ -188,19 +185,19 @@ class Criteo {
 
 
         // just for debug:
-        print '<pre>';
-        print_r($criteoData);
-        print '</pre>';
+        //print '<pre>';
+        //print_r($criteoData);
+        //print '</pre>';
 
         // just for debug:
-        print '###<pre>';
-        print '### PageRouteName: '.$routeName.PHP_EOL;
+        //print '###<pre>';
+        //print '### PageRouteName: '.$routeName.PHP_EOL;
         //print (isset($orders) and !empty($orders)) ? print_r($orders) : "no isset orderS! \n\n";
         //print_r($criteo_q);
         //print_r($eventItems);
         //print_r($searchQuery);
         //print_r( $arr_item['keywords'] );
-        print '</pre>###';
+        //print '</pre>###';
 
 
         return $criteoData ? $criteoData : false;
