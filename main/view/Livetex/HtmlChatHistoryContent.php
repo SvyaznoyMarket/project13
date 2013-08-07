@@ -136,13 +136,13 @@ class HtmlChatHistoryContent extends HtmlBasicContent {
     protected function analytics() {
         $out = '';
 
-        $out .= '</p>Всего чатов*: '.$this->count_iterations.". Чатов с операторами: $this->count_chats </p>";
+        $out .= '</p>Всего чатов*: '.$this->count_iterations.". Чатов с операторами: $this->count_chats .</p>";
 
         $average = round( $this->chat_times / $this->count_chats , 2);
-        $out .= '<p> Cреднее время чата с оператором: ' . $this->timeFromSeconds($average) . '</p>';
+        $out .= '<p> Cреднее время чата с оператором: ' . $this->timeFromSeconds($average) . '; всё* время: ' . $this->timeFromSeconds($this->chat_times) . '.</p>';
 
         $average = round( $this->count_messages / $this->count_iterations , 2);
-        $out .= '<p> Cреднее количество сообщений в диалоге (все чаты*): '.$average.'.</p>';
+        $out .= '<p> Cреднее количество сообщений в диалоге (все чаты*): '.$average . '; всего* сообщений ' . $this->count_messages . '.</p>';
 
         $average = round( $this->first_answers_time / $this->count_first_answers , 2);
         $out .= '<p> Cреднее время ответа на первое сообщение: ' . $this->timeFromSeconds($average) . '. Количество реакций на первоё сообщение: ' . $this->count_first_answers . '</p>';
