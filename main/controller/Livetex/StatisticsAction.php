@@ -100,6 +100,7 @@ class StatisticsAction {
         $actions = &$this->actions;
         $content = &$this->content;
         $API = &$this->API;
+        $load_votes = false;
         //$router = \App::router();
         //$client = \App::coreClientV2();
         //$user = \App::user(); // TODO: проверка на авторизацию и наличие прав на просмотр данного раздела
@@ -158,6 +159,7 @@ class StatisticsAction {
             // Получим статистику выбранного оператора
             if (in_array('OneOperator',$actions)) {
                 $this->actionsOneOperator();
+                $load_votes = true;
             }
 
             // Получим общую статистику
@@ -168,6 +170,18 @@ class StatisticsAction {
         }
 
 
+
+        if ( $load_votes ) {
+            // Загружаем "легенду" оценок оператора
+            $api_resp = $API->method('Client.GetVote');
+            if ( isset( $api_resp->response) ) {
+                $votes_legend = [];
+                foreach( $api_resp->response as $item) {
+                    // запишем в виде: $votes_legend[60277] => "Консультация по способам оплаты"
+                    $votes_legend[ $item->id ] = $item->name;
+                }
+            }
+        }
 
 
         /*
@@ -186,6 +200,9 @@ class StatisticsAction {
         $page->setParam('operators_list', $operators_list);
         $page->setParam('operators_count_html', $operators_count_html);
         //$this->l($content,'content20');
+        if (isset($votes_legend)) {
+            $page->setParam('votes_legend', $votes_legend);
+        }
         $page->setParam('content', $content);
         $page->setParam('heads', $this->heads);
         $page->setParam('actions', $actions);

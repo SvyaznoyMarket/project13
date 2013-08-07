@@ -31,7 +31,7 @@ class HtmlChatHistoryContent extends HtmlBasicContent {
         // Суммирование и сохранение общих данных по всем чатам
         $operId = $item->member;
         if ( $operId ) {
-            print_r($item->mvote); print ' | '; // tod tmp
+            //print_r($item->mvote); print ' | '; // tod tmp
             $this->count_chats++; // Чатов с операторами
             $this->chat_times += $this->timeInSeconds($item->chattime); // Общее время чата с операторами
             $this->count_messages += $item->count; // Общее количество сообщений
