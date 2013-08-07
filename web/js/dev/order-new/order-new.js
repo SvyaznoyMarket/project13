@@ -158,6 +158,9 @@
                     $(this).val(clearVal);
                 }
             });
+            pin.bind('focusout',function(e){
+                SertificateCard.checkCard();
+            });
             pin.mask("9999", { completed: SertificateCard.checkCard, placeholder: "*" } );
 
             // $.mockjax({

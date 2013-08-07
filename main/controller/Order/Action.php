@@ -316,9 +316,16 @@ class Action {
             } catch (\Exception $e) {
                 $errors = [];
 
-                if (735 == $e->getCode()) {
+                $errcode = $e->getCode();
+                if (735 == $errcode) {
                     \App::exception()->remove($e);
                     $errors['order[sclub_card_number]'] = 'Неверный код карты Связной-Клуб';
+                }else if (742 == $errcode) {
+                    \App::exception()->remove($e);
+                    $errors['order[cardpin]'] = 'Неверный пин-код подарочного сертификата';
+                }else if (743 == $errcode) {
+                    \App::exception()->remove($e);
+                    $errors['order[cardnumber]'] = 'Подарочный сертификат не найден';
                 }
 
                 $response = new \Http\JsonResponse([
