@@ -1,18 +1,21 @@
-(function() {
-	startTime = new Date().getTime();
+;(function( global ) {
+	global.startTime = new Date().getTime();
 	// console.log('start'+startTime);
 
-	var _gaq = window._gaq || [];
+	var _gaq = global._gaq || [];
 
-	window.onerror = function(msg, url, line) {
+	global.onerror = function(msg, url, line) {
 		var preventErrorAlert = true;
 		return preventErrorAlert;
 	}
 
 	var debug = false;
 
-	if ( document.body.getAttribute('data-debug') == 'true'){
+	if ( document.body.getAttribute('data-debug') == 'true') {
 		debug = true;
+	}
+	else {
+		global.console = {};
 	}
 
 	// page load log
@@ -33,15 +36,15 @@
 	}
 	
 
-	if( typeof($LAB) === 'undefined' ){
+	if ( typeof $LAB === 'undefined' ) {
 		throw new Error( "Невозможно загрузить файлы JavaScript" );
 	}
 
 	function getWithVersion( flnm ) {
-		if( typeof( window.release['version']) !== 'undefined' ) {
-			if( ( !document.location.search.match(/jsdbg/) )&&( !debug ) ) {
+		if( typeof( global.release['version']) !== 'undefined' ) {
+			if ( !document.location.search.match(/jsdbg/)  &&  !debug ) {
 				flnm = flnm.replace('js', 'min.js');
-				flnm += '?t=' + window.release['version'];
+				flnm += '?t=' + global.release['version'];
 			}	
 		} 
 
@@ -280,4 +283,4 @@
 			}).runQueue();
 			break;
 	}
-}());
+}(this));

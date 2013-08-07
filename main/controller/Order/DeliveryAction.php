@@ -29,7 +29,7 @@ class DeliveryAction {
             }
 
             $result = null;
-            $calcException = null;
+            $exception = null;
             $client->addQuery(
                 'order/calc-tmp',
                 [
@@ -42,32 +42,51 @@ class DeliveryAction {
                 function($data) use (&$result, &$shops) {
                     $result = $data;
                 },
-                function (\Exception $e) use (&$calcException) {
-                    $calcException = $e;
+                function (\Exception $e) use (&$exception) {
+                    $exception = $e;
                 },
                 \App::config()->coreV2['timeout'] * 2
             );
             $client->execute();
-            if ($calcException instanceof \Curl\Exception) {
+            if ($exception instanceof \Curl\Exception) {
                 // TODO
-                throw $calcException;
+                throw $exception;
             }
 
             $responseData = [
                 'time'            => time(),
                 'deliveryTypes'   => [
                     'standart' => [
-                        'token'  => 'standart',
-                        'name'   => 'Доставка',
-                        'states' => ['self', 'now', 'standart_furniture', 'standart_other'],
+                        'token'       => 'standart',
+                        'name'        => 'Доставка заказа курьером',
+                        'description' => 'Мы привезем заказ по любому удобному вам адресу. Пожалуйста, укажите дату и время доставки.',
+                        'states'      => ['standart_furniture', 'standart_other', 'self', 'now'],
                     ],
                     'self'     => [
-                        'token'  => 'self',
-                        'name'   => 'Самовывоз',
-                        'states' => ['standart_furniture', 'standart_other', 'self', 'now'],
+                        'token'       => 'self',
+                        'name'        => 'Самостоятельно заберу в магазине',
+                        'description' => 'Вы можете самостоятельно забрать товар из ближайшего к вам магазина Enter. Услуга бесплатная! Резерв товара сохраняется 3 дня. Пожалуйста, выберите магазин.',
+                        'states'      => ['self', 'now', 'standart_furniture', 'standart_other'],
                     ],
                 ],
-                'deliveryStates'  => [],
+                'deliveryStates'  => [
+                    'self'               => [
+                        'name'     => 'Самовывоз',
+                        'products' => [],
+                    ],
+                    'now'                => [
+                        'name'     => 'Самовывоз',
+                        'products' => [],
+                    ],
+                    'standart_other'     => [
+                        'name'     => 'Доставим',
+                        'products' => [],
+                    ],
+                    'standart_furniture' => [
+                        'name'     => 'Доставим',
+                        'products' => [],
+                    ],
+                ],
                 'pointsByDelivery'=> [
                     'self' => 'shops',
                     'now'  => 'shops',
@@ -102,6 +121,10 @@ class DeliveryAction {
 
                 return $return;
             };
+
+            // ид товаров для каждого магазина
+            $productIdsByShop = [];
+
             foreach ($result['products'] as $productItem) {
                 /** @var $cartProduct \Model\Cart\Product\Entity|null */
                 $cartProduct = $cart->getProductById($productItem['id']);
@@ -115,12 +138,21 @@ class DeliveryAction {
                     $productId = (string)$productItem['id'];
                     list($deliveryItemTokenPrefix, $pointId) = array_pad(explode('_', $deliveryItemToken), 2, null);
 
-                    // если доставка, ...
+                    // если доставка, модифицируем префикс токена и точку получения товаров
                     if ('standart' == $deliveryItemTokenPrefix) {
                         $deliveryItemTokenPrefix = $deliveryItemToken;
                         $pointId = 0;
                     }
 
+                    // если самовывоз, то добавляем ид товара в соответствующий магазин
+                    if (in_array($deliveryItemTokenPrefix, ['self', 'now'])) {
+                        if (!isset($productIdsByShop[$pointId])) {
+                            $productIdsByShop[$pointId] = [];
+                        }
+                        $productIdsByShop[$pointId][] = $productId;
+                    }
+
+                    // добавляем ид товара в соответствующий способ доставки
                     if (!isset($responseData['deliveryStates'][$deliveryItemTokenPrefix])) {
                         $responseData['deliveryStates'][$deliveryItemTokenPrefix] = [
                             'products' => [],
@@ -155,23 +187,97 @@ class DeliveryAction {
             }
 
             foreach ($result['shops'] as $shopItem) {
+                $shopId = (string)$shopItem['id'];
                 $responseData['shops'][] = [
-                    'id'         => (string)$shopItem['id'],
+                    'id'         => $shopId,
                     'name'       => $shopItem['name'],
                     'address'    => $shopItem['address'],
                     'regime'     => $shopItem['working_time'],
                     'latitude'   => (float)$shopItem['coord_lat'],
                     'longitude'  => (float)$shopItem['coord_long'],
+                    'products'   => isset($productIdsByShop[$shopId]) ? $productIdsByShop[$shopId] : [],
                 ];
+            }
+
+            // удаляем способы доставок, в которых нет товаров
+            foreach ($responseData['deliveryStates'] as $i => $deliveryStateItem) {
+                if (!(bool)$deliveryStateItem['products']) {
+                    unset($responseData['deliveryStates'][$i]);
+                }
             }
 
             $responseData['deliveryTypes'] = array_values($responseData['deliveryTypes']);
             $responseData['success'] = true;
         } catch(\Exception $e) {
-            $responseData = [
-                'success' => false,
-                'error'   => ['code' => $e->getCode(), 'message' => $e->getMessage()],
-            ];
+            if ($e instanceof \Curl\Exception) {
+                $errorData = (array)$e->getContent();
+                $errorData = isset($errorData['product_error_list']) ? (array)$errorData['product_error_list'] : [];
+                if ((bool)$errorData) {
+                    \App::exception()->remove($e);
+
+                    // приукрашиваем сообщение об ошибке
+                    switch ($e->getCode()) {
+                        case 770:
+                            $message = 'Невозможно расчитать доставку';
+                            break;
+                        default:
+                            $message = 'Невозможно расчитать доставку';
+                            break;
+                    }
+                    $e = new \Exception($message, $e->getCode());
+                }
+
+                $productDataById = [];
+                foreach ($errorData as $errorItem) {
+                    switch ($errorItem['code']) {
+                        case 708:
+                            $errorItem['message'] = !empty($errorItem['quantity_available']) ? sprintf('Доступно только %s шт.', $errorItem['quantity_available']) : $errorItem['message'];
+                            break;
+                        case 800:
+                            $errorItem['message'] = 'Товар недоступен для продажи';
+                            break;
+                        default:
+                            $errorItem['message'] = 'Товар не может быть заказан';
+                            break;
+                    }
+
+                    $productDataById[$errorItem['id']] = [
+                        'id'    => $errorItem['id'],
+                        'error' => ['code' => $errorItem['code'], 'message' => $errorItem['message']],
+                    ];
+                }
+
+                foreach (array_chunk(array_keys($productDataById), 100) as $idsInChunk) {
+                    \RepositoryManager::product()->prepareCollectionById($idsInChunk, $region, function($data) use (&$productDataById, &$router, &$cart) {
+                        foreach ($data as $item) {
+                            $cartProduct = $cart->getProductById($item['id']);
+                            if (!$cartProduct) {
+                                \App::logger()->error(sprintf('Товар #%s не найден в корзине', $item['id']), ['order']);
+                                continue;
+                            }
+                            $productDataById[$item['id']] = array_merge([
+                                'id'         => (string)$item['id'],
+                                'name'       => $item['name'],
+                                'price'      => (int)$item['price'],
+                                'sum'        => $cartProduct->getSum(),
+                                'quantity'   => $cartProduct->getQuantity(),
+                                'stock'      => (int)$item['stock'],
+                                'image'      => $item['media_image'],
+                                'url'        => $item['link'],
+                                'addUrl'     => $router->generate('cart.product.set', ['productId' => $item['id'], 'quantity' => $cartProduct->getQuantity()]),
+                                'deleteUrl'  => $router->generate('cart.product.delete', ['productId' => $item['id']]),
+                                'deliveries' => [],
+                            ], $productDataById[$item['id']]);
+                        }
+                    });
+                }
+                \App::coreClientV2()->execute();
+
+                $responseData['products'] = $productDataById;
+            }
+
+            $responseData['success'] = false;
+            $responseData['error'] = ['code' => $e->getCode(), 'message' => $e->getMessage()];
         }
 
         return new \Http\JsonResponse($responseData);
