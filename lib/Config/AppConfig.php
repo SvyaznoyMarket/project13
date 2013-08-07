@@ -49,6 +49,10 @@ class AppConfig {
     /** @var string */
     public $cacheCookieName = null;
     /** @var array */
+    public $redirect301 = [
+        'enabled' => null,
+    ];
+    /** @var array */
     public $coreV2 = [
         'url'          => null,
         'client_id'    => null,
