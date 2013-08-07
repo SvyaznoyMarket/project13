@@ -91,11 +91,11 @@ DeliveryBox.prototype.addProduct = function( product ) {
 	self.deliveryPrice = ( self.deliveryPrice > productDeliveryPrice ) ? productDeliveryPrice : self.deliveryPrice;
 
 	// Добавляем стоимость продукта к общей стоимости блока доставки
-	self.fullPrice += product.total;
+	self.fullPrice += product.sum;
 
 	self.products.push({
 		name: product.name,
-		price: product.total,
+		price: product.sum,
 		quantity: product.quantity,
 		deleteUrl: product.deleteUrl,
 		productUrl: product.url,
@@ -179,6 +179,12 @@ DeliveryBox.prototype.addProductGroup = function( products ) {
 			console.info('перебирем метод '+statesPriority[i]);
 
 			productsToNewBox = [];
+
+			if ( !orderData.deliveryStates.hasOwnProperty(statesPriority[i]) ) {
+				console.warn('для метода '+statesPriority[i]+' нет товаров')
+				continue;
+			}
+
 			productInState = orderData.deliveryStates[statesPriority[i]].products;
 			
 			/**
@@ -292,6 +298,15 @@ DeliveryBox.prototype.addProductGroup = function( products ) {
 	 * @param	{Object}	res		Данные о заказе
 	 */
 	var renderOrderData = function renderOrderData( res ) {
+		if ( !res.success ) {
+			// TODO: написать обработчки ошибок
+			console.warn('произошла ошибка при получении данных с сервера');
+			console.log(res.error);
+
+			return false;
+		}
+
+
 		console.log('Данные с сервера получены');
 
 		orderData = res;
