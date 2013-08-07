@@ -42,6 +42,8 @@
 
     <div class="clear"></div>
 
+    <?= $helper->render('product/__likeButtons', [] ); // Insert LikeButtons (www.addthis.com) ?>
+
     <div class="bDescriptionProduct">
         <?= $product->getDescription() ?>
     </div>

@@ -130,20 +130,24 @@ $router = \App::router();
 
 try {
     // проверка редиректа
-    //(new \Controller\RedirectAction())->execute($request);
+    if (\App::config()->redirect301['enabled']) {
+        $response = (new \Controller\RedirectAction())->execute($request);
+    }
+    // если предыдущие контроллеры не вернули Response, ...
+    if (!$response instanceof \Http\Response) {
+        $request->attributes->add($router->match($request->getPathInfo(), $request->getMethod()));
+        \App::logger()->info('Match route ' . $request->attributes->get('route') . ' by ' . $request->getMethod()  . ' ' . $request->getRequestUri());
 
-    $request->attributes->add($router->match($request->getPathInfo(), $request->getMethod()));
-    \App::logger()->info('Match route ' . $request->attributes->get('route') . ' by ' . $request->getMethod()  . ' ' . $request->getRequestUri());
+        // action resolver
+        $resolver = \App::actionResolver();
+        list($actionCall, $actionParams) = $resolver->getCall($request);
 
-    // action resolver
-    $resolver = \App::actionResolver();
-    list($actionCall, $actionParams) = $resolver->getCall($request);
+        /* @var $response \Http\Response */
+        $response = call_user_func_array($actionCall, $actionParams);
 
-    /* @var $response \Http\Response */
-    $response = call_user_func_array($actionCall, $actionParams);
-
-    //сохраняю данные для abtest
-    \App::abTest()->setCookie($response);
+        //сохраняю данные для abtest
+        \App::abTest()->setCookie($response);
+    }
 } catch (\Exception\NotFoundException $e) {
     $action = new \Controller\Error\NotFoundAction();
     $response = $action->execute($e, $request);
