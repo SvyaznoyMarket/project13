@@ -73,9 +73,43 @@ class IndexAction {
             return new \Http\RedirectResponse($product->getLink() . ((bool)$request->getQueryString() ? ('?' . $request->getQueryString()) : ''), 302);
         }
 
-        // получаем catalog json для родительской категории
-        $productCategories = $product->getCategory();
-        $catalogJson = \RepositoryManager::productCategory()->getCatalogJson(array_pop($productCategories));
+        // категории продукта
+        $categories = $product->getCategory();
+        $productCategoryTokens = array_map(function($category){
+            return $category->getToken();
+        }, $product->getCategory());
+
+        // получаем catalog json
+        $catalogJson = [];
+        $dataStore = \App::dataStoreClient();
+        $query = sprintf('catalog/%s/%s.json', implode('/', $productCategoryTokens), $product->getToken());
+        $dataStore->addQuery($query, [], function ($data) use (&$catalogJson) {
+            if($data) $catalogJson = $data;
+        });
+        $dataStore->execute();
+
+        // трастфакторы
+        $trustfactorTop = null;
+        $trustfactorRight = null;
+        if(empty($catalogJson['trustfactor_exclude_token']) || empty(array_intersect($productCategoryTokens, $catalogJson['trustfactor_exclude_token']))) {
+            if(!empty($catalogJson['trustfactor_top'])) $trustfactorTop = $catalogJson['trustfactor_top'];
+            if(!empty($catalogJson['trustfactor_right'])) {
+                \App::contentClient()->addQuery(
+                    trim((string)$catalogJson['trustfactor_right']),
+                    [],
+                    function($data) use (&$trustfactorRight) {
+                        if (!empty($data['content'])) {
+                            $trustfactorRight = $data['content'];
+                        }
+                    },
+                    function(\Exception $e) {
+                        \App::logger()->error(sprintf('Не получено содержимое для промо-страницы %s', \App::request()->getRequestUri()));
+                        \App::exception()->add($e);
+                    }
+                );
+                \App::contentClient()->execute();
+            }
+        }
 
         // если в catalogJson'e указан category_class, то обрабатываем запрос соответствующим контроллером
         $categoryClass = !empty($catalogJson['category_class']) ? $catalogJson['category_class'] : null;
@@ -104,7 +138,7 @@ class IndexAction {
         $accessoryItems = [];
         $accessoryCategory = array_map(function($accessoryGrouped){
             return $accessoryGrouped['category'];
-        }, \Model\Product\Repository::filterAccessoryId($product, $accessoryItems, null, \App::config()->product['itemsInAccessorySlider'] * 36));
+        }, \Model\Product\Repository::filterAccessoryId($product, $accessoryItems, null, \App::config()->product['itemsInAccessorySlider'] * 36, $catalogJson));
         if ((bool)$accessoryCategory) {
             $firstAccessoryCategory = new \Model\Product\Category\Entity();
             $firstAccessoryCategory->setId(0);
@@ -239,6 +273,9 @@ class IndexAction {
         $page->setParam('reviewsDataSummary', $reviewsDataSummary);
         $page->setParam('categoryClass', $categoryClass);
         $page->setParam('useLens', $useLens);
+        $page->setParam('catalogJson', $catalogJson);
+        $page->setParam('trustfactorTop', $trustfactorTop);
+        $page->setParam('trustfactorRight', $trustfactorRight);
 
         return new \Http\Response($page->show());
     }
