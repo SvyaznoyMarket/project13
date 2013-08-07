@@ -274,6 +274,8 @@ class DeliveryAction {
                 \App::coreClientV2()->execute();
 
                 $responseData['products'] = $productDataById;
+            } else {
+                $responseData['redirect'] = $router->generate('cart');
             }
 
             $responseData['success'] = false;
