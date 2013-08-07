@@ -1,4 +1,17 @@
 <?php
+/**
+ *
+ * Кратко о структуре:
+ * actionsSelect() выбирает действия. Некоторые действия можно задать через гет-запросы. Действия начинаются с заглавной буквы.
+ * в $actions хранятся действия (сущности) статистики, их может быть несколько, для каждой есть (не обязательно уникальный) темплейт.
+ * По названию действий запускается соотв. функции, напр actionsChat, actionsAllOperators
+ * Функции наполняют $content содержимым, например:
+ *      $content['OneOperator']
+ *      $content['ChatHistory']
+ * В отображении для каждого ключа в $content as $key => $val будет вызван "Html$keyContent", которому передастся $val
+ * Важно, что для отображения сожержимого от ответов методов АПИ Site.ChatHistory Operator.ChatHistory
+ * может быть вызвано одно и тоже представление HtmlChatHistoryContent из файла HtmlChatHistoryContent.php
+ */
 
 namespace Controller\Livetex;
 
@@ -21,10 +34,9 @@ class StatisticsAction {
 
     public function __construct() {
         include_once '../lib/Partner/LiveTex/API.php';
-        $API = &$this->API;
         $login = \App::config()->partners['livetex']['login'];
         $password = \App::config()->partners['livetex']['password'];
-        $API = \Partner\LiveTex\Api::getInstance($login, $password); //LiveTex/API Class
+        $this->API = \Partner\LiveTex\Api::getInstance($login, $password); //LiveTex/API Class
         $this->siteId = \App::config()->partners['livetex']['liveTexID'];
     }
 
@@ -85,12 +97,9 @@ class StatisticsAction {
 
     public function execute(\Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
-        $page = new \View\Livetex\StatisticsPage();
         $actions = &$this->actions;
         $content = &$this->content;
         $API = &$this->API;
-
-
         //$router = \App::router();
         //$client = \App::coreClientV2();
         //$user = \App::user(); // TODO: проверка на авторизацию и наличие прав на просмотр данного раздела
@@ -160,6 +169,7 @@ class StatisticsAction {
 
 
 
+
         /*
          * $stat_params — Для наполнения формы сайдбара 
          */
@@ -170,6 +180,7 @@ class StatisticsAction {
         $stat_params['siteId'] = [ 'value' => ($this->siteId) ?: '', 'descr' => 'Идентификатор сайта'];
         $stat_params['actions'] = [ 'value' => implode('|',$actions), 'descr' => 'Сущности статистики'];
 
+        $page = new \View\Livetex\StatisticsPage();
         $page->setParam('stat_params', $stat_params);
         $page->setParam('operators', $operators);
         $page->setParam('operators_list', $operators_list);
@@ -268,7 +279,8 @@ class StatisticsAction {
     private function actionsOneOperator() {
         $API = &$this->API;
         $content = &$this->content;
-        $OneOperator = $API->method('Operator.ChatStat', [
+
+        $response = $API->method('Operator.ChatStat', [
             'date_begin' => $this->date_begin,
             'date_end' => $this->date_end,
             'operator_id' => $this->operId,
@@ -277,10 +289,24 @@ class StatisticsAction {
 
         //$content['OperatorInfo'] = $operators_list[];
 
-        if ($OneOperator) {
-            $content['OneOperator'] = $OneOperator;
-            $this->heads['OneOperator']['big_head'] = 'LiveTex: Cтатистика оператора';
+        if ($response) {
+            $content['OneOperator'] = $response;
+            $this->heads['OneOperator']['big_head'] = 'LiveTex: Cтатистика одного оператора';
         }
+
+
+        $response = $API->method('Operator.ChatHistory', [
+            'date_begin' => $this->date_begin,
+            'date_end' => $this->date_end,
+            'operator_id' => $this->operId,
+            'site_id' => $this->siteId,
+        ]);
+
+        if ($response) {
+            $content['ChatHistory'] = $response;
+            $this->heads['ChatHistory']['big_head'] = 'LiveTex: Подробная статистика чатов';
+        }
+
         //$this->l($oneOperator, 'oneOperator');
     }
     
@@ -305,26 +331,32 @@ class StatisticsAction {
     private function actionsSelect($request) {
         $actions = &$this->actions;
 
-        //$actions = array_unique($actions);
-
         if (!empty( $this->operId )) {
-            $actions[] = 'OneOperator';
+            $this->addAction('OneOperator');
         }
 
         if ( $request->get('chat') ) {
-            $actions[] = 'Chat';
+            $this->addAction('Chat');
         }
 
         if ( $request->get('site') ) {
-            $actions[] = 'Site';
+            $this->addAction('Site');
         }
 
         if ( empty($actions) ) {
-            $actions[] = 'General';
+            $this->addAction('General');
             //$actions[] = 'site';
             //$actions[] = 'allOperators';
         }
 
+        $actions = array_unique($actions);
+    }
+
+
+    private function addAction($name) {
+        $actions = &$this->actions;
+        if ( !isset($actions[$name]) ) return $actions[] = $name;
+        return false;
     }
 
 

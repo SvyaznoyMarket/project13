@@ -31,6 +31,7 @@ class HtmlChatHistoryContent extends HtmlBasicContent {
         // Суммирование и сохранение общих данных по всем чатам
         $operId = $item->member;
         if ( $operId ) {
+            print_r($item->mvote); print ' | '; // tod tmp
             $this->count_chats++; // Чатов с операторами
             $this->chat_times += $this->timeInSeconds($item->chattime); // Общее время чата с операторами
             $this->count_messages += $item->count; // Общее количество сообщений
@@ -133,6 +134,7 @@ class HtmlChatHistoryContent extends HtmlBasicContent {
     }
 
 
+
     protected function analytics() {
         $out = '';
 
@@ -155,7 +157,7 @@ class HtmlChatHistoryContent extends HtmlBasicContent {
             'Отмеченные звёздочкой (*) параметры рассчитаны для всех чатов, в том числе для чатов, в которых не принял участие ни один оператор.</em></p><hr/>';
 
         $opers = '<div class="durations">';
-        $opers .= '<h3>Продолжительность разговора оператора</h3>';
+        $opers .= '<h3>Данные чатов</h3>';
 
         $opers .= '<table>';
         $opers .= '<th>Агент</th>';
