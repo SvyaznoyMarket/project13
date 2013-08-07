@@ -59,12 +59,12 @@ class DeliveryAction {
                     'standart' => [
                         'token'  => 'standart',
                         'name'   => 'Доставка',
-                        'states' => ['self', 'now', 'standart_furniture', 'standart_other'],
+                        'states' => ['standart_furniture', 'standart_other', 'self', 'now'],
                     ],
                     'self'     => [
                         'token'  => 'self',
                         'name'   => 'Самовывоз',
-                        'states' => ['standart_furniture', 'standart_other', 'self', 'now'],
+                        'states' => ['self', 'now', 'standart_furniture', 'standart_other'],
                     ],
                 ],
                 'deliveryStates'  => [],
