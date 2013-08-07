@@ -397,7 +397,7 @@ return [
         'action'  => ['Order\OneClickAction', 'execute'],
         'method'  => ['POST'],
     ],
-    'order.create' => [
+    'order' => [
         'pattern' => '/orders/new',
         'action'  => ['Order\Action', 'create'],
     ],

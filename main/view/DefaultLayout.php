@@ -454,7 +454,7 @@ class DefaultLayout extends Layout {
             // на всех страницах сайта, кроме...
             if (!in_array($routeName, [
                 'product',
-                'order.create',
+                'order',
                 'order.complete',
                 'cart',
             ])) {
@@ -463,7 +463,7 @@ class DefaultLayout extends Layout {
 
             // на всех страницах сайта, кроме shop.*
             if ((0 !== strpos($routeName, 'shop')) && !in_array($routeName, [
-                'order.create',
+                'order',
                 'order.complete',
             ])) {
                 $return .= "\n\n" . $this->tryRender('partner-counter/_reactive');
@@ -471,7 +471,7 @@ class DefaultLayout extends Layout {
 
             // на всех страницах сайта, кроме...
             if (!in_array($routeName, [
-                'order.create',
+                'order',
                 'order.complete',
             ])) {
                 $return .= "\n\n" . $this->tryRender('partner-counter/_ad4u');
@@ -501,7 +501,7 @@ class DefaultLayout extends Layout {
         /*
         if (!in_array($routeName, [
             // на этих страницах Sociomantic подключается через JS
-            'order.create',
+            'order',
             'order.complete',
         ])) // orders-if-begin{
         */
@@ -538,7 +538,7 @@ class DefaultLayout extends Layout {
             $smantic->restoreSession();
 
         }
-        /*else if ( $routeName == 'order.create' ) {
+        /*else if ( $routeName == 'order' ) {
 
             //$products = $this->getParam('products');
             //$smantic->makeSession( $products );
