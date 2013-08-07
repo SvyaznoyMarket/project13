@@ -148,6 +148,88 @@ window.ANALYTICS = {
         }
     },
 
+    flocktoryJS : function() {
+        (function () {
+            var s = document.createElement('script');
+            s.type = 'text/javascript';
+            s.async = true;
+            s.src = "//api.flocktory.com/1/hello.2.js";
+            var l = document.getElementsByTagName('script')[0];
+            l.parentNode.insertBefore(s, l);
+        })();
+
+
+        window.Flocktory = {
+            /**
+             * Структура методов объекта:
+             * popup_bind(elem)  связывает событие  subscribing_friend()  с элементом (elem)
+             * subscribing_friend()  проверяет емейл/телефон и вызывает  popup_open()
+             *
+             * flk - сокращение от flacktory
+             */
+
+            subscribing_friend : function( ) {
+                var flk_mail = $('.flocktory_email'); // Проверим эти элементы
+                if ( !flk_mail.length ) flk_mail = $('.subscribe-form__email');
+                if ( !flk_mail.length ) flk_mail = $('#recipientEmail');
+                flk_mail = flk_mail.val();
+
+                if ( !flk_mail.length ) {
+                    // если нет емейла, глянем телефон и передадим его вместо мейла
+                    var flk_tlf = $('#phonemask').val().replace(' ','');
+                    //flk_mail = $('.flocktory_tlf').val() + '@email.tlf';
+                    flk_mail = flk_tlf + '@email.tlf'; // допишем суффикс к тлф, дабы получить фиктивный мейл и передать его
+                }
+
+                if ( flk_mail.search('@') !== -1 ) {
+                    Flocktory.popup_open( flk_mail, flk_mail );
+                }
+            },
+
+            popup_bind : function( jq_el ) { // передаётся элемент вида — $('.jquery_elem')
+                if ( jq_el && jq_el.length ) {
+                    // Если элемент существует, навесим событие вызовом flocktory по клику
+                    jq_el.bind('click', function () {
+                        Flocktory.subscribing_friend();
+                    });
+                }
+            },
+
+            popup_bind_default : function( ) {
+                // Свяжем действия со стандартными названиями кнопок
+                Flocktory.popup_bind( $('.run_flocktory_popup') );
+                Flocktory.popup_bind( $('.subscribe-form__btn') );
+            },
+
+            popup_open : function ( flk_mail, flk_name ) {
+                //flk_mail = 'hello@flocktory.com'; // tmp, for debug
+                flk_name = flk_name || flk_mail;
+                var date = new Date();
+                var date_str = date.getFullYear() + '' + date.getMonth() + '' + date.getDay() + '' + date.getHours() + '' + date.getMinutes() + '' + date.getSeconds() + '' + date.getMilliseconds() + '' + Math.floor(Math.random() * 1000000);
+                var _fl = window._flocktory = _flocktory || [];
+
+                return _fl.push({
+                    "order_id": date_str,
+                    "email": flk_mail,
+                    "name": flk_name,
+                    "price": 0,
+                    "domain": "registration.enter.ru",
+                    "items": [{
+                        "id": "подписка на рассылку",
+                        "title": "подписка на рассылку",
+                        "price":  0,
+                        "image": "",
+                        "count":  1
+                    }]
+                });
+            }
+
+        } // end of window.Flocktory object
+
+        Flocktory.popup_bind_default();
+
+    },
+
     marketgidProd : function() {
         var MGDate = new Date();
         document.write('<iframe src ="http://'
