@@ -197,7 +197,7 @@ class HtmlBasicContent{
 
     protected function operator_link( $operId, $inlink ) {
         if ( $operId and $inlink) {
-            $a_link = '<a href="'.$this->makeUrl(['operId' => $operId, 'actions' => 'oneOperator' ]).'">' . $inlink . '</a>';
+            $a_link = '<a href="'.$this->makeUrl(['operId' => $operId, 'actions' => 'OneOperator' ]).'">' . $inlink . '</a>';
             return $a_link;
         }
         return false;
