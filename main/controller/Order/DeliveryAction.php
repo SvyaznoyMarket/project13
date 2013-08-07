@@ -121,6 +121,10 @@ class DeliveryAction {
 
                 return $return;
             };
+
+            // ид товаров для каждого магазина
+            $productIdsByShop = [];
+
             foreach ($result['products'] as $productItem) {
                 /** @var $cartProduct \Model\Cart\Product\Entity|null */
                 $cartProduct = $cart->getProductById($productItem['id']);
@@ -134,12 +138,21 @@ class DeliveryAction {
                     $productId = (string)$productItem['id'];
                     list($deliveryItemTokenPrefix, $pointId) = array_pad(explode('_', $deliveryItemToken), 2, null);
 
-                    // если доставка, ...
+                    // если доставка, модифицируем префикс токена и точку получения товаров
                     if ('standart' == $deliveryItemTokenPrefix) {
                         $deliveryItemTokenPrefix = $deliveryItemToken;
                         $pointId = 0;
                     }
 
+                    // если самовывоз, то добавляем ид товара в соответствующий магазин
+                    if (in_array($deliveryItemTokenPrefix, ['self', 'now'])) {
+                        if (!isset($productIdsByShop[$pointId])) {
+                            $productIdsByShop[$pointId] = [];
+                        }
+                        $productIdsByShop[$pointId][] = $productId;
+                    }
+
+                    // добавляем ид товара в соответствующий способ доставки
                     if (!isset($responseData['deliveryStates'][$deliveryItemTokenPrefix])) {
                         $responseData['deliveryStates'][$deliveryItemTokenPrefix] = [
                             'products' => [],
@@ -174,17 +187,19 @@ class DeliveryAction {
             }
 
             foreach ($result['shops'] as $shopItem) {
+                $shopId = (string)$shopItem['id'];
                 $responseData['shops'][] = [
-                    'id'         => (string)$shopItem['id'],
+                    'id'         => $shopId,
                     'name'       => $shopItem['name'],
                     'address'    => $shopItem['address'],
                     'regime'     => $shopItem['working_time'],
                     'latitude'   => (float)$shopItem['coord_lat'],
                     'longitude'  => (float)$shopItem['coord_long'],
+                    'products'   => isset($productIdsByShop[$shopId]) ? $productIdsByShop[$shopId] : [],
                 ];
             }
 
-            // удаляем модификации доставок, в которых нет товаров
+            // удаляем способы доставок, в которых нет товаров
             foreach ($responseData['deliveryStates'] as $i => $deliveryStateItem) {
                 if (!(bool)$deliveryStateItem['products']) {
                     unset($responseData['deliveryStates'][$i]);
