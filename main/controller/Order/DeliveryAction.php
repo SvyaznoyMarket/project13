@@ -275,7 +275,18 @@ class DeliveryAction {
 
                 $responseData['products'] = $productDataById;
             } else {
-                $responseData['redirect'] = $router->generate('cart');
+                if ($cart->isEmpty()) { // если корзина пустая, то редирект на страницу корзины
+                    $responseData['redirect'] = $router->generate('cart');
+                } else if (1 == $cart->getProductsQuantity()) { // иначе, если в корзине всего один товар, то предлагаем попробовать заказ в один клик
+                    $cartProducts = $cart->getProducts();
+                    $cartProduct = reset($cartProducts);
+                    if ($cartProduct) {
+                        $product = \RepositoryManager::product()->getEntityById($cartProduct->getId());
+                        if ($product) {
+                            $responseData['redirect'] = $product->getLink() . '#one-click';
+                        }
+                    }
+                }
             }
 
             $responseData['success'] = false;
