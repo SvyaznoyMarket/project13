@@ -73,9 +73,13 @@ class Criteo {
             case "product.category":
                 $productPagersByCategory = $this->getParam('productPagersByCategory');
                 /* @var $productPagersByCategory \Iterator\EntityPager[] */
+                $productPager = $this->getParam('productPager');
+                /** @var $productPager \Iterator\EntityPager */
 
                 $countIDs = 0;
-                if ($productPagersByCategory) {
+                if ( $productPager ) {
+                    $countIDs = $this->addProductsIDs( $productPager,  $eventItemsID );
+                }else if ($productPagersByCategory) {
                     foreach ($productPagersByCategory as $productPager) {
                         /** @var $productPager \Iterator\EntityPager */
                         $countIDs = $this->addProductsIDs( $productPager,  $eventItemsID );
