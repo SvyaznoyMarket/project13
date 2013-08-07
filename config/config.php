@@ -32,6 +32,8 @@ $c->cacheCookieName = 'enter_auth';
 $c->mainHost = 'www.enter.ru';
 $c->mobileHost = 'm.enter.ru';
 
+$c->redirect301['enabled'] = false;
+
 $c->coreV2['url']          = 'http://api.enter.ru/v2/';
 $c->coreV2['client_id']    = 'site';
 $c->coreV2['timeout']      = null;

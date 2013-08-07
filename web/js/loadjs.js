@@ -44,7 +44,7 @@
 		if( typeof( global.release['version']) !== 'undefined' ) {
 			if ( !document.location.search.match(/jsdbg/)  &&  !debug ) {
 				flnm = flnm.replace('js', 'min.js');
-				flnm += '?' + global.release['version'];
+				flnm += '?t=' + global.release['version'];
 			}	
 		} 
 
