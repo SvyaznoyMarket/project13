@@ -1,4 +1,87 @@
 /**
+ * Вспомагательная обертка вокруг данных приходящих с сервера
+ *
+ * @author	Zaytsev Alexandr
+ * @this	{OrderDictionary}
+ *
+ * @param	{Object}	orderData	Данные о доставке
+ *
+ * @constructor
+ */
+function OrderDictionary( orderData ) {
+	this.orderData = orderData;
+}
+
+/**
+ * Получить имя метода доставки
+ *
+ * @this	{OrderDictionary}
+ * 
+ * @param	{String}	state	Метод доставки
+ * @return	{String}			Имя метода доставки
+ */
+OrderDictionary.prototype.getNameOfState = function( state ) {
+	if ( !this.hasDeliveryState(state) ) {
+		console.warn('Не найден метод доставки '+state);
+		return false;
+	}
+
+	return this.orderData.deliveryStates[state].name;
+};
+
+/**
+ * Есть ли метод доставки
+ *
+ * @this	{OrderDictionary}
+ * 
+ * @param	{String}	state	Метод доставки
+ * @return	{Boolean}
+ */
+OrderDictionary.prototype.hasDeliveryState = function( state ) {
+	return this.orderData.deliveryStates.hasOwnProperty(state);
+};
+
+/**
+ * Есть ли для метода доставки пункты доставки
+ *
+ * @this	{OrderDictionary}
+ * 
+ * @param	{String}	state	Метод доставки
+ * @return	{Boolean}
+ */
+OrderDictionary.prototype.hasPointDelivery = function( state ) {
+	return this.orderData.pointsByDelivery[state];
+};
+
+/**
+ * Получить спискок продуктов для которых доступен данный метод доставки
+ * 
+ * @this	{OrderDictionary}
+ * 
+ * @param	{String}	state	Метод доставки
+ * @return	{Array}				Массив идентификаторов продуктов
+ */
+OrderDictionary.prototype.getProductFromState = function( state ) {
+	if ( !this.hasDeliveryState(state) ) {
+		console.warn('Не найден метод доставки '+state);
+		return false;
+	}
+
+	return this.orderData.deliveryStates[state].products;
+};
+
+OrderDictionary.prototype.getProductById = function( productId ) {
+	if ( !this.orderData.products.hasOwnProperty(productId) ) {
+		console.warn('Такого продукта не найдено');
+		return false;
+	}
+
+	return this.orderData.products[productId];
+};
+
+
+
+/**
  * Создает блок доставки.
  * Если для товара недоступна выбранная точка доставки, создается новый блок
  * Стоимость блока расчитывается из суммы всех товаров.
@@ -28,6 +111,7 @@ function DeliveryBox( products, state, choosenPointForBox, createdBox, OrderMode
 	self.products = [];
 	self.fullPrice = 0;
 	self.state = state;
+	self.deliveryName = self.OrderModel.orderDictionary.getNameOfState(state);
 	self.deliveryPrice = Number.POSITIVE_INFINITY; // берем максимально возможное значение, чтобы сравнивая с ним находить минимальное
 	self.showMessage = null;
 	self.choosenDate = null;
@@ -124,7 +208,6 @@ DeliveryBox.prototype.addProductGroup = function( products ) {
 	console.info('Логика разбиения заказа для оформления заказа v.5');
 
 	var getDataUrl = '/ajax/order-delivery', // HARDCODE
-		orderData = {},
 		choosenDeliveryType = null,
 		choosenPoint = null,
 
@@ -137,38 +220,25 @@ DeliveryBox.prototype.addProductGroup = function( products ) {
 	 * Берутся states из выбранного способа доставки в порядке приоритета.
 	 * Каждый новый states - новый подзаказ.
 	 *
-	 * @param	{Array}		statesPriority	Приоритет методов доставки
+	 * @param	{Array}		statesPriority		Приоритет методов доставки
+	 * 
+	 * @param	{Object}	preparedProducts	Уже обработанные продукты, которые попали в какой-либо блок доставки
+	 * @param	{Array}		productInState		Массив продуктов, которые есть в данном способе доставки
+	 * @param	{Array}		productsToNewBox	Массив продуктов, которые должны попасть в новый блок доставки
+	 * @param	{Number}	choosenPointForBox	Точка доставки для блока самовывоза
+	 * @param	{String}	token				Временное имя для создаваемого блока
+	 * @param	{String}	nowState			Текущий тип доставки который находится в обработке
+	 * @param	{String}	nowProduct			Текущий id продукта который находится в обработке
 	 */
 	var separateOrder = function separateOrder( statesPriority ) {
-			/**
-			 * Уже обработанные продукты, которые попали в какой-либо блок доставки
-			 * @type {Object}
-			 */
+
 		var preparedProducts = {},
-
-			/**
-			 * Массив продуктов, которые есть в данном способе доставки
-			 * @type {Array}
-			 */
 			productInState = [],
-
-			/**
-			 * Массив продуктов которые должны попасть в новый блок доставки
-			 * @type {Array}
-			 */
 			productsToNewBox = [],
-
-			/**
-			 * Точка доставки для блока самовывоза
-			 * @type {Number}
-			 */
 			choosenPointForBox = null,
-
-			/**
-			 * Временное имя для создаваемого блока
-			 * @type {String}
-			 */
-			token = null;
+			token = null,
+			nowState = null,
+			nowProduct = null;
 		// end of vars
 
 
@@ -176,39 +246,42 @@ DeliveryBox.prototype.addProductGroup = function( products ) {
 		 * Перебор states в выбранном способе доставки в порядке приоритета
 		 */
 		for ( var i = 0, len = statesPriority.length; i < len; i++ ) {
-			console.info('перебирем метод '+statesPriority[i]);
+			nowState = statesPriority[i];
+
+			console.info('перебирем метод '+nowState);
 
 			productsToNewBox = [];
 
-			if ( !orderData.deliveryStates.hasOwnProperty(statesPriority[i]) ) {
-				console.warn('для метода '+statesPriority[i]+' нет товаров')
+			if ( !OrderModel.orderDictionary.hasDeliveryState(nowState) ) {
+				console.info('для метода '+nowState+' нет товаров');
 				continue;
 			}
 
-			productInState = orderData.deliveryStates[statesPriority[i]].products;
+			productInState = OrderModel.orderDictionary.getProductFromState(nowState);
 			
 			/**
 			 * Перебор продуктов в текущем deliveryStates
 			 */
 			for ( var j = productInState.length - 1; j >= 0; j-- ) {
+				nowProduct = productInState[j];
 
-				if ( preparedProducts[productInState[j]] ) {
+				if ( preparedProducts[nowProduct] ) {
 					// если этот товар уже находили
-					console.log('товар '+productInState[j]+' уже определялся к блоку');
+					console.log('товар '+nowProduct+' уже определялся к блоку');
 
 					continue;
 				}
 				
-				console.log('добавляем товар '+productInState[j]+' в блок для метода '+statesPriority[i]);
+				console.log('добавляем товар '+nowProduct+' в блок для метода '+nowState);
 
-				preparedProducts[productInState[j]] = true;
-				productsToNewBox.push( orderData.products[productInState[j]] );
+				preparedProducts[nowProduct] = true;
+				productsToNewBox.push( OrderModel.orderDictionary.getProductById(nowProduct) );
 			}
 
 			if ( productsToNewBox.length ) {
-				choosenPointForBox = ( orderData.pointsByDelivery[statesPriority[i]] ) ? choosenPoint : 0;
+				choosenPointForBox = ( OrderModel.orderDictionary.hasPointDelivery(nowState) ) ? choosenPoint : 0;
 
-				token = statesPriority[i]+'_'+choosenPointForBox;
+				token = nowState+'_'+choosenPointForBox;
 
 				if ( createdBox[token] !== undefined ) {
 					// Блок для этого типа доставки в этот пункт уже существует
@@ -216,7 +289,7 @@ DeliveryBox.prototype.addProductGroup = function( products ) {
 				}
 				else {
 					// Блока для этого типа доставки в этот пункт еще существует
-					createdBox[token] = new DeliveryBox( productsToNewBox, statesPriority[i], choosenPointForBox, createdBox, OrderModel );
+					createdBox[token] = new DeliveryBox( productsToNewBox, nowState, choosenPointForBox, createdBox, OrderModel );
 				}
 			}
 		}
@@ -224,7 +297,7 @@ DeliveryBox.prototype.addProductGroup = function( products ) {
 		console.info('Созданные блоки:');
 		console.log(createdBox);
 
-		if ( preparedProducts.length !== orderData.products.length ) {
+		if ( preparedProducts.length !== OrderModel.orderDictionary.orderData.products.length ) {
 			console.warn('не все товары были обработаны');
 		}
 	};
@@ -235,6 +308,11 @@ DeliveryBox.prototype.addProductGroup = function( products ) {
 	 */
 	var OrderModel = {
 		prepareData: ko.observable(false),
+
+		/**
+		 * Ссылка на словарь
+		 */
+		orderDictionary: null,
 
 		/**
 		 * Массив способов доставок доступных пользователю
@@ -271,7 +349,7 @@ DeliveryBox.prototype.addProductGroup = function( products ) {
 			choosenDeliveryType = data.token;
 
 			// если для приоритетного state существуют точки доставки, то пользователь необходимо выбрать точку доставки, если нет точек доставки, то приравниваем точку к 0
-			if ( orderData.pointsByDelivery[priorityState] ) {
+			if ( OrderModel.orderDictionary.hasPointDelivery(priorityState) ) {
 				console.log('есть точки доставки из которых нужно выбрать');
 				// здесь необходимо реализовать логику выбора магазина
 				choosenPoint = 13; // HARDCODE
@@ -309,7 +387,7 @@ DeliveryBox.prototype.addProductGroup = function( products ) {
 
 		console.log('Данные с сервера получены');
 
-		orderData = res;
+		OrderModel.orderDictionary = new OrderDictionary(res);
 
 		OrderModel.deliveryTypes(res.deliveryTypes);
 		OrderModel.prepareData(true);		
