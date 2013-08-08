@@ -212,6 +212,17 @@
 		},
 
 
+        /**
+         * Обработчик добавления товаров в корзину. Рекомендации от RetailRocket
+         */
+        addToRetailRocket = function addToRetailRocket( data ) {
+            var product = data.product;
+            if( typeof(rcApi) !== 'undefined' ){
+                rcApi.addToBasket(product.id);
+            }
+        },
+
+
 		/**
 		 * Обработка покупки, парсинг данных от сервера, запуск аналитики
 		 */
@@ -234,6 +245,8 @@
 			googleAnalytics(data);
 			myThingsAnalytics(data);
 			adAdriver(data);
+            addToRetailRocket(data);
+
 
 			if ( !window.blackBox ) {
 				return false;

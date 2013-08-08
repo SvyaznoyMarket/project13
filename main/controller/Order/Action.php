@@ -715,8 +715,9 @@ class Action {
     }
 
     /**
-     * @param \View\Order\Form             $form        Валидная форма заказа
+     * @param \View\Order\Form $form        Валидная форма заказа
      * @param \View\Order\DeliveryCalc\Map $deliveryMap Ката доставки заказов
+     * @param $products
      * @throws \Exception
      * @return array Номера созданных заказов
      */
