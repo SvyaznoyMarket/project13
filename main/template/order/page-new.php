@@ -28,7 +28,13 @@
 	<div data-bind="foreach: { data: deliveryBoxes, as: 'box' }">
 		<!-- боксы доставки -->
 		<div style="margin: 20px 10px; border: 1px solid #000; padding: 15px 10px">
-			<h2 data-bind="text: box.deliveryName+' '+box.choosenDate"></h2>
+			<h2 data-bind="text: box.deliveryName+' '+box.choosenDate.name"></h2>
+			<select data-bind="options: box.choosenDate.intervals,
+								value: box.choosenInterval,
+								optionsText: function(item) {
+									return 'c '+ item.start + ' до ' + item.end;
+								}">
+			</select>
 			<ul data-bind="foreach: { data: products, as: 'product' }">
 				<!-- перечисление продуктов в боксе -->
 				<li style="border-bottom: 1px solid #e6e6e6; margin-bottom: 15px;">

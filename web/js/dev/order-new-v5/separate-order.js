@@ -116,17 +116,24 @@ function DeliveryBox( products, state, choosenPointForBox, createdBox, OrderMode
 
 	var self = this;
 
-	self.OrderModel = OrderModel; // создаем ссылку на OrderModel
-	self.createdBox = createdBox; // создаем ссылку на createdBox
-
+	self.OrderModel = OrderModel;
+	self.createdBox = createdBox;
 	self.deliveryPoint = choosenPointForBox;
+
+	// Продукты в блоке
 	self.products = [];
+	// Общая стоимость блока
 	self.fullPrice = 0;
+	// Метод доставки
 	self.state = state;
+	// Название метода доставки
 	self.deliveryName = self.OrderModel.orderDictionary.getNameOfState(state);
-	self.deliveryPrice = Number.POSITIVE_INFINITY; // берем максимально возможное значение, чтобы сравнивая с ним находить минимальное
-	self.showMessage = null;
+	// Стоимость доставки. Берем максимально возможное значение, чтобы сравнивая с ним находить минимальное
+	self.deliveryPrice = Number.POSITIVE_INFINITY;
+	// Выбранная дата доставки
 	self.choosenDate = null;
+
+	self.choosenInterval = ko.observable();
 
 	self.addProductGroup(products);
 
@@ -237,9 +244,15 @@ DeliveryBox.prototype._hasDateInAllProducts = function( checkTS ) {
 
 		res = true;
 
+	/**
+	 * Перебор всех продуктов в блоке
+	 */
 	for (var i = self.products.length - 1; i >= 0; i--) {
 		nowProductDates = self.products[i].deliveries[self.deliveryPoint].dates;
 
+		/**
+		 * Перебор всех дат доставок в блоке
+		 */
 		for ( var j = 0, len = nowProductDates.length; j < len; j++ ) {
 			nowTS = nowProductDates[j].value;
 
@@ -291,8 +304,8 @@ DeliveryBox.prototype.calculateDate = function() {
 
 		if ( self._hasDateInAllProducts(nowTS) && nowTS >= todayTS ) {
 			console.log(nowTS+' это общая минимальная дата для товаров в блоке');
-			self.choosenDate = nowProductDates[i].name;
-
+			self.choosenDate = nowProductDates[i];
+			self.choosenInterval(nowProductDates[i].intervals[0]);
 			break;
 		}
 	}
@@ -301,7 +314,13 @@ DeliveryBox.prototype.calculateDate = function() {
 
 
 
-
+/**
+ * Получение данных с сервера
+ * Разбиение заказа
+ * Модель knockout
+ *
+ * @author	Zaytsev Alexandr
+ */
 ;(function(){
 	console.info('Логика разбиения заказа для оформления заказа v.5');
 
