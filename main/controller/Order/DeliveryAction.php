@@ -3,6 +3,8 @@
 namespace Controller\Order;
 
 class DeliveryAction {
+    use ResponseDataTrait;
+
     /**
      * @param \Http\Request $request
      * @return \Http\JsonResponse|\Http\RedirectResponse|\Http\Response
@@ -22,6 +24,7 @@ class DeliveryAction {
         $region = $user->getRegion();
         $cart = $user->getCart();
 
+        $deliveryTypeData = [];
         try {
             // проверка на пустую корзину
             if ($cart->isEmpty()) {
@@ -53,22 +56,22 @@ class DeliveryAction {
                 throw $exception;
             }
 
+            // типы доставок
+            foreach (\RepositoryManager::deliveryType()->getCollection() as $deliveryType) {
+                $deliveryTypeData[$deliveryType->getToken()] =  [
+                    'id'          => $deliveryType->getId(),
+                    'token'       => $deliveryType->getToken(),
+                    'name'        => $deliveryType->getName(),
+                    'shortName'   => $deliveryType->getShortName(),
+                    'description' => $deliveryType->getDescription(),
+                    'states'      => $deliveryType->getPossibleMethodTokens(),
+                    'ownStates'   => $deliveryType->getMethodTokens(),
+                ];
+            }
+
             $responseData = [
-                'time'            => time(),
-                'deliveryTypes'   => [
-                    'standart' => [
-                        'token'       => 'standart',
-                        'name'        => 'Доставка заказа курьером',
-                        'description' => 'Мы привезем заказ по любому удобному вам адресу. Пожалуйста, укажите дату и время доставки.',
-                        'states'      => ['standart_furniture', 'standart_other', 'self', 'now'],
-                    ],
-                    'self'     => [
-                        'token'       => 'self',
-                        'name'        => 'Самостоятельно заберу в магазине',
-                        'description' => 'Вы можете самостоятельно забрать товар из ближайшего к вам магазина Enter. Услуга бесплатная! Резерв товара сохраняется 3 дня. Пожалуйста, выберите магазин.',
-                        'states'      => ['self', 'now', 'standart_furniture', 'standart_other'],
-                    ],
-                ],
+                'time'            => strtotime(date('Y-m-d'), 0) * 1000,
+                'deliveryTypes'   => $deliveryTypeData,
                 'deliveryStates'  => [
                     'self'               => [
                         'name'     => 'Самовывоз',
@@ -152,7 +155,7 @@ class DeliveryAction {
                         $productIdsByShop[$pointId][] = $productId;
                     }
 
-                    // добавляем ид товара в соответствующий способ доставки
+                    // добавляем ид товара в соответствующий метод доставки
                     if (!isset($responseData['deliveryStates'][$deliveryItemTokenPrefix])) {
                         $responseData['deliveryStates'][$deliveryItemTokenPrefix] = [
                             'products' => [],
@@ -186,6 +189,7 @@ class DeliveryAction {
                 ];
             }
 
+            // магазины
             foreach ($result['shops'] as $shopItem) {
                 $shopId = (string)$shopItem['id'];
                 $responseData['shops'][] = [
@@ -199,98 +203,28 @@ class DeliveryAction {
                 ];
             }
 
-            // удаляем способы доставок, в которых нет товаров
+            // удаляем методы доставок, в которых нет товаров
             foreach ($responseData['deliveryStates'] as $i => $deliveryStateItem) {
                 if (!(bool)$deliveryStateItem['products']) {
                     unset($responseData['deliveryStates'][$i]);
                 }
             }
 
+            // удаляем типы доставок, у которых не осталось методов доставок
+            foreach ($responseData['deliveryTypes'] as $i => $deliveryTypeItem) {
+
+                if (!(bool)array_intersect($deliveryTypeItem['ownStates'], array_keys($responseData['deliveryStates']))) {
+                    unset($responseData['deliveryTypes'][$i]);
+                }
+            }
+            if (!(bool)$responseData['deliveryTypes']) {
+                throw new \Exception('Не вычеслено ни одного типа доставки');
+            }
+
             $responseData['deliveryTypes'] = array_values($responseData['deliveryTypes']);
             $responseData['success'] = true;
         } catch(\Exception $e) {
-            if ($e instanceof \Curl\Exception) {
-                $errorData = (array)$e->getContent();
-                $errorData = isset($errorData['product_error_list']) ? (array)$errorData['product_error_list'] : [];
-                if ((bool)$errorData) {
-                    \App::exception()->remove($e);
-
-                    // приукрашиваем сообщение об ошибке
-                    switch ($e->getCode()) {
-                        case 770:
-                            $message = 'Невозможно расчитать доставку';
-                            break;
-                        default:
-                            $message = 'Невозможно расчитать доставку';
-                            break;
-                    }
-                    $e = new \Exception($message, $e->getCode());
-                }
-
-                $productDataById = [];
-                foreach ($errorData as $errorItem) {
-                    switch ($errorItem['code']) {
-                        case 708:
-                            $errorItem['message'] = !empty($errorItem['quantity_available']) ? sprintf('Доступно только %s шт.', $errorItem['quantity_available']) : $errorItem['message'];
-                            break;
-                        case 800:
-                            $errorItem['message'] = 'Товар недоступен для продажи';
-                            break;
-                        default:
-                            $errorItem['message'] = 'Товар не может быть заказан';
-                            break;
-                    }
-
-                    $productDataById[$errorItem['id']] = [
-                        'id'    => $errorItem['id'],
-                        'error' => ['code' => $errorItem['code'], 'message' => $errorItem['message']],
-                    ];
-                }
-
-                foreach (array_chunk(array_keys($productDataById), 100) as $idsInChunk) {
-                    \RepositoryManager::product()->prepareCollectionById($idsInChunk, $region, function($data) use (&$productDataById, &$router, &$cart) {
-                        foreach ($data as $item) {
-                            $cartProduct = $cart->getProductById($item['id']);
-                            if (!$cartProduct) {
-                                \App::logger()->error(sprintf('Товар #%s не найден в корзине', $item['id']), ['order']);
-                                continue;
-                            }
-                            $productDataById[$item['id']] = array_merge([
-                                'id'         => (string)$item['id'],
-                                'name'       => $item['name'],
-                                'price'      => (int)$item['price'],
-                                'sum'        => $cartProduct->getSum(),
-                                'quantity'   => $cartProduct->getQuantity(),
-                                'stock'      => (int)$item['stock'],
-                                'image'      => $item['media_image'],
-                                'url'        => $item['link'],
-                                'addUrl'     => $router->generate('cart.product.set', ['productId' => $item['id'], 'quantity' => $cartProduct->getQuantity()]),
-                                'deleteUrl'  => $router->generate('cart.product.delete', ['productId' => $item['id']]),
-                                'deliveries' => [],
-                            ], $productDataById[$item['id']]);
-                        }
-                    });
-                }
-                \App::coreClientV2()->execute();
-
-                $responseData['products'] = $productDataById;
-            } else {
-                if ($cart->isEmpty()) { // если корзина пустая, то редирект на страницу корзины
-                    $responseData['redirect'] = $router->generate('cart');
-                } else if (1 == $cart->getProductsQuantity()) { // иначе, если в корзине всего один товар, то предлагаем попробовать заказ в один клик
-                    $cartProducts = $cart->getProducts();
-                    $cartProduct = reset($cartProducts);
-                    if ($cartProduct) {
-                        $product = \RepositoryManager::product()->getEntityById($cartProduct->getId());
-                        if ($product) {
-                            $responseData['redirect'] = $product->getLink() . '#one-click';
-                        }
-                    }
-                }
-            }
-
-            $responseData['success'] = false;
-            $responseData['error'] = ['code' => $e->getCode(), 'message' => $e->getMessage()];
+            $this->failResponseData($e, $responseData);
         }
 
         return new \Http\JsonResponse($responseData);
