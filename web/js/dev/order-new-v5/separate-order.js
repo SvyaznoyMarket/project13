@@ -10,6 +10,14 @@
  */
 function OrderDictionary( orderData ) {
 	this.orderData = orderData;
+
+	// alias
+	this.serverTime = this.orderData.time;
+	this.deliveryTypes = this.orderData.deliveryTypes;
+	this.deliveryStates = this.orderData.deliveryStates;
+	this.pointsByDelivery = this.orderData.pointsByDelivery;
+	this.products = this.orderData.products;
+
 }
 
 /**
@@ -26,7 +34,11 @@ OrderDictionary.prototype.getNameOfState = function( state ) {
 		return false;
 	}
 
-	return this.orderData.deliveryStates[state].name;
+	return this.deliveryStates[state].name;
+};
+
+OrderDictionary.prototype.getToday = function() {
+	return this.serverTime;
 };
 
 /**
@@ -38,7 +50,7 @@ OrderDictionary.prototype.getNameOfState = function( state ) {
  * @return	{Boolean}
  */
 OrderDictionary.prototype.hasDeliveryState = function( state ) {
-	return this.orderData.deliveryStates.hasOwnProperty(state);
+	return this.deliveryStates.hasOwnProperty(state);
 };
 
 /**
@@ -50,7 +62,7 @@ OrderDictionary.prototype.hasDeliveryState = function( state ) {
  * @return	{Boolean}
  */
 OrderDictionary.prototype.hasPointDelivery = function( state ) {
-	return this.orderData.pointsByDelivery[state];
+	return this.pointsByDelivery[state];
 };
 
 /**
@@ -67,16 +79,16 @@ OrderDictionary.prototype.getProductFromState = function( state ) {
 		return false;
 	}
 
-	return this.orderData.deliveryStates[state].products;
+	return this.deliveryStates[state].products;
 };
 
 OrderDictionary.prototype.getProductById = function( productId ) {
-	if ( !this.orderData.products.hasOwnProperty(productId) ) {
+	if ( !this.products.hasOwnProperty(productId) ) {
 		console.warn('Такого продукта не найдено');
 		return false;
 	}
 
-	return this.orderData.products[productId];
+	return this.products[productId];
 };
 
 
@@ -123,6 +135,8 @@ function DeliveryBox( products, state, choosenPointForBox, createdBox, OrderMode
 
 /**
  * Получить имя первого свойства объекта
+ *
+ * @this	{DeliveryBox}
  * 
  * @param 	{Object}	obj		Объект у которого необходимо получить первое свойство
  * @return	{Object}			Возвращает свойство объекта
@@ -137,9 +151,10 @@ DeliveryBox.prototype._getFirstPropertyName = function( obj ) {
  * Добавление продукта в блок доставки
  *
  * @this	{DeliveryBox}
+ * 
  * @param	{Object}		product		Продукт который нужно добавить
  */
-DeliveryBox.prototype.addProduct = function( product ) {
+DeliveryBox.prototype._addProduct = function( product ) {
 	var self = this,
 		productDeliveryPrice = null,
 		token = null,
@@ -157,13 +172,14 @@ DeliveryBox.prototype.addProduct = function( product ) {
 		firstAvaliblePoint = self._getFirstPropertyName(product.deliveries[self.state]);
 		token = self.state+'_'+firstAvaliblePoint;
 
+		tempProductArray.push(product);
+
 		if ( self.createdBox[token] !== undefined ) {
 			// Блок для этого типа доставки в этот пункт уже существует. Добавляем продукт в блок
-			self.createdBox[token].addProduct( product );
+			self.createdBox[token].addProductGroup( product );
 		}
 		else {
 			// Блока для этого типа доставки в этот пункт еще существует
-			tempProductArray.push(product);
 			self.createdBox[token] = new DeliveryBox( tempProductArray, self.state, firstAvaliblePoint, self.createdBox, self.OrderModel );
 		}
 
@@ -183,20 +199,102 @@ DeliveryBox.prototype.addProduct = function( product ) {
 		quantity: product.quantity,
 		deleteUrl: product.deleteUrl,
 		productUrl: product.url,
-		productImg: product.image
+		productImg: product.image,
+		deliveries: product.deliveries[self.state]
 	});
 };
 
 /**
  * Добавление нескольких товаров в блок доставки
+ * После добавления продуктов запускает получение общей даты доставки
  * 
  * @this	{DeliveryBox}
+ * 
  * @param	{Array}			products	Продукты которые нужно добавить
  */
 DeliveryBox.prototype.addProductGroup = function( products ) {
 	// добавляем товары в блок
 	for ( var i = products.length - 1; i >= 0; i-- ) {
-		this.addProduct(products[i]);
+		this._addProduct(products[i]);
+	}
+
+	this.calculateDate();
+};
+
+/**
+ * Проверка, доступна ли дата доставки для всех товаров в боксе
+ *
+ * @this	{DeliveryBox}
+ *
+ * @param	{Number}	checkTS	Таймштамп даты которую необходимо проверить
+ * 
+ * @return	{Boolean}
+ */
+DeliveryBox.prototype._hasDateInAllProducts = function( checkTS ) {
+	var self = this,
+		nowProductDates = null,
+		nowTS = null,
+
+		res = true;
+
+	for (var i = self.products.length - 1; i >= 0; i--) {
+		nowProductDates = self.products[i].deliveries[self.deliveryPoint].dates;
+
+		for ( var j = 0, len = nowProductDates.length; j < len; j++ ) {
+			nowTS = nowProductDates[j].value;
+
+			if ( nowTS === checkTS ) {
+				res = true;
+				break;
+			}
+			else {
+				res = false;
+			}
+		}
+
+		if ( !res ) {
+			break;
+		}
+	}
+
+	return res;
+};
+
+/**
+ * Получение общей ближайшей даты доставки.
+ * Перебирается дата первого товара, и если больше либо равна сегодняшней дате а так же присутствует во всех товарах - то эта дата берется за ближайшую дату доставки.
+ *
+ * @this	{DeliveryBox}
+ */
+DeliveryBox.prototype.calculateDate = function() {
+	console.info('Вычисление общей даты для продуктов в блоке');
+
+	var self = this,
+		todayTS = self.OrderModel.orderDictionary.getToday(),
+		nowProductDates = null,
+		nowTS = null;
+
+	console.log('Сегодняшняя дата с сервера '+todayTS);
+
+	if ( !self.products.length ) {
+		console.warn('в блоке нет товаров');
+		return;
+	}
+
+	/**
+	 * Перебираем даты в первом товаре
+	 */
+	nowProductDates = self.products[0].deliveries[self.deliveryPoint].dates;
+
+	for ( var i = 0, len = nowProductDates.length; i < len; i++ ) {
+		nowTS = nowProductDates[i].value;
+
+		if ( self._hasDateInAllProducts(nowTS) && nowTS >= todayTS ) {
+			console.log(nowTS+' это общая минимальная дата для товаров в блоке');
+			self.choosenDate = nowProductDates[i].name;
+
+			break;
+		}
 	}
 };
 
@@ -365,7 +463,7 @@ DeliveryBox.prototype.addProductGroup = function( products ) {
 
 			separateOrder( statesPriority );
 		}
-	}
+	};
 
 	
 	ko.applyBindings(OrderModel);
