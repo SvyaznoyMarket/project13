@@ -212,6 +212,17 @@
 		},
 
 
+        /**
+          * Добавление товара в пречат-поля LiveTex и вследствие — открывание авто-приглашения чата
+          */
+        addToLiveTex = function addToLiveTex( data ) {
+            if ( typeof(LiveTex.addToCart) == 'function' ) {
+                try{
+                LiveTex.addToCart( data.product );
+            }catch(err){ }
+            }
+        },
+
 		/**
 		 * Обработка покупки, парсинг данных от сервера, запуск аналитики
 		 */
@@ -231,6 +242,7 @@
 
 
 			kissAnalytics(data);
+            addToLiveTex(data);
 			googleAnalytics(data);
 			myThingsAnalytics(data);
 			adAdriver(data);
