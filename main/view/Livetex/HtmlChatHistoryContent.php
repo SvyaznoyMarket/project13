@@ -340,7 +340,7 @@ class HtmlChatHistoryContent extends HtmlBasicContent {
 
             //tableheader
             $opers .= '<th>';
-            $opers .= '***';
+            $opers .= 'Агент';
             $opers .= '</th>';
             foreach($votes_legend as $key => $value) {
                 $opers .= '<th>';
@@ -376,7 +376,7 @@ class HtmlChatHistoryContent extends HtmlBasicContent {
 
             //tableheader
             $opers .= '<th>';
-            $opers .= '***';
+            $opers .= 'Цель обращения';
             $opers .= '</th>';
             foreach($voarr as $opId => $voteValue) {
                 $opers .= '<th>';

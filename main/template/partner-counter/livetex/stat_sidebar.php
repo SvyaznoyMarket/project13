@@ -16,15 +16,17 @@
         </div>
 
         <div class="bWidgetBuy mWidget">
-            <? if ( !empty($aside_menu) ): ?>
+            <div class="lts_menu">
+                <? if (!empty($aside_menu)): ?>
                 <h3>Навигация</h3>
-            <ul>
-                <? foreach( $aside_menu as $item ) { ?>
-                    <li>
-                        <a href="<?= $item['link'] ?>"><?= $item['name'] ?></a>
-                    </li>
-                <? } ?>
-            </ul>
+                <ul>
+                    <? foreach ($aside_menu as $item) { ?>
+                        <li>
+                            <a href="<?= $item['link'] ?>"><?= $item['name'] ?></a>
+                        </li>
+                    <? } ?>
+                </ul>
+            </div>
             <hr/>
             <? endif; ?>
 

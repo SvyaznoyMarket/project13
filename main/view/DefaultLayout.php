@@ -549,5 +549,10 @@ class DefaultLayout extends Layout {
     }
 
 
+    public function slotLivetex() {
+        $return = $this->render('partner-counter/livetex/_slot_liveTex');
+        return $return;
+    }
+
 
 }

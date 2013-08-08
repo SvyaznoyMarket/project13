@@ -131,9 +131,28 @@
         padding:2px 4px;
     }
 
+    .lts_sidebar h3{
+        padding:3px 5px;
+        text-align: center;
+    }
+
+    .lts_item table,
+    .lts_menu{
+       margin: 0 0 1.5em;
+    }
+
+    .lts_menu li{
+        margin: 0 0 4px;
+    }
+
+    .lts_sidebar h3,
     .lts_item th{
         background: #456;
         color:#fff;
+        margin: 0 0 5px;
+    }
+
+    .lts_item th{
         font-size:.8em;
     }
 
