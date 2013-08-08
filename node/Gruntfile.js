@@ -98,7 +98,8 @@ module.exports = function(grunt) {
 					"escape": true,
 					"unescape": true,
 					"tmpl": true,
-					"_kmq": true
+					"_kmq": true,
+					"ko": true
 				},
 			},
 		},
