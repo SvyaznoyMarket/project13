@@ -199,7 +199,6 @@ class StatisticsAction {
         $page->setParam('operators', $operators);
         $page->setParam('operators_list', $operators_list);
         $page->setParam('operators_count_html', $operators_count_html);
-        //$this->l($content,'content20');
         if (isset($votes_legend)) {
             $page->setParam('votes_legend', $votes_legend);
         }
@@ -208,6 +207,7 @@ class StatisticsAction {
         $page->setParam('actions', $actions);
         $page->setParam('aside_menu', $this->aside_menu);
         $page->setParam('infomess', $this->infomess);
+        //$this->l($content,'content'); //tmp //debug
 
         return new \Http\Response( $page->show() );
     }

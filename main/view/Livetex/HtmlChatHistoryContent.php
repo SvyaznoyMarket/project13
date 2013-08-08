@@ -12,9 +12,24 @@ class HtmlChatHistoryContent extends HtmlBasicContent {
     //protected $count_noanswer = 0;
 
     protected $duration_cross_operators = [];
+    protected $mvotes_arr = [];
+    protected $mvotes_cross_operators_arr = [];
+    /*
+     * Array Structure:
+     * $mvotes_cross_operators_arr = array(
+            operId => array( voteId => count _votes,
+                             voteId => count _votes,
+                             ...etc
+                            )
+            operId => array( voteId => count _votes )
+            ...etc
+        )
+     *
+     */
+
+
 
     protected $chat_times = 0;
-
     protected $count_first_answers = 0;
     protected $first_answers_time = 0;
 
@@ -52,16 +67,23 @@ class HtmlChatHistoryContent extends HtmlBasicContent {
             $vvote_negative = 1;
         }
 
-        //$mvote_positive = $mvote_negative = 0;
 
-        $mvote = 'Оценка не поставлена'; // mvote - оценка чата оператором
-        if ($item->mvote == 1) {
-            $mvote = 'Положительная оценка';
-            //$mvote_positive = 1;
-        } else if ($item->vvote == 2) {
-            $mvote = 'Отрицательная оценка';
-            //$mvote_negative = 1;
+        $mvote = $item->mvote; // mvote - оценка чата оператором
+        if ( !isset( $this->mvotes_arr[$mvote] ) ) $this->mvotes_arr[$mvote] = 1;
+            else $this->mvotes_arr[$mvote]++;
+
+        if ( $operId ) {
+            $voarr = &$this->mvotes_cross_operators_arr;
+            if ( !isset( $voarr[$operId] ) ) {
+                $voarr[$operId] = [];
+            }
+            if ( !isset( $voarr[$operId][$mvote] ) ) {
+                $voarr[$operId][$mvote] = 1;
+            }else{
+                $voarr[$operId][$mvote]++;
+            }
         }
+
 
 
         $out .= '<div class="id_oper"><span class="param_name">Идентификатор чата: </span>' . $item->id . '</div>';
@@ -136,6 +158,10 @@ class HtmlChatHistoryContent extends HtmlBasicContent {
 
 
     protected function analytics() {
+        $voarr = &$this->mvotes_cross_operators_arr;
+        //$this->l($this->mvotes_arr); ///tmp
+        $this->l( $voarr ); ///tmp
+
         $out = '';
 
         $out .= '</p>Всего чатов*: '.$this->count_iterations.". Чатов с операторами: $this->count_chats .</p>";
@@ -159,6 +185,7 @@ class HtmlChatHistoryContent extends HtmlBasicContent {
         $opers = '<div class="durations">';
         $opers .= '<h3>Данные чатов</h3>';
 
+        /// Begin of table
         $opers .= '<table>';
         $opers .= '<th>Агент</th>';
         $opers .= '<th>Статус</th>';
@@ -252,8 +279,48 @@ class HtmlChatHistoryContent extends HtmlBasicContent {
         }
 
         $opers .= '</table>';
+        /// End of table
 
         $opers .= '</div>';
+
+
+
+        //////////////////////////////////////////
+
+        $opers .= '<h3>Данные чатов</h3>';
+
+        $opers .= '<table>';
+        foreach( $voarr as $item ) {
+            $opers .= '<td>';
+            $opers .= 'XXX';
+            $opers .= '</td>';
+            foreach($item as $key => $value) {
+                $opers .= '<th>';
+                $opers .= $key;
+                $opers .= '</th>';
+            }
+        }
+        foreach($voarr as $item) {
+            $opers .= '<tr>';
+            $opers .= '<td>';
+            //$opers .= $key;
+            //print_r($item);
+            $opers .= '</td>';
+            foreach($item as $key => $value) {
+                $opers .= '<td>';
+                $opers .= $value;
+                $opers .= '</td>';
+            }
+            $opers .= '</tr>';
+        }
+        $opers .= '</table>';
+
+        //////////////////////////////////////////
+
+
+
+
+
 
         $out .= $opers;
 

@@ -253,4 +253,28 @@ class HtmlBasicContent{
     }
 
 
+    /*
+    * Временный метод, используется для вывода отладочной инфы
+    */
+    protected function l(&$var, $name = null){
+        if ($name) {
+            try{
+                print PHP_EOL."\n### [".$name."] ###\n".PHP_EOL;
+            }catch(Exception $er){
+                print PHP_EOL."\n### [ *error in _name_* ] ###\n".PHP_EOL;
+            }
+
+        }
+        print '<pre>';
+        try{
+            $ret = print_r($var);
+        }catch(Exception $er){
+            print PHP_EOL."\n *Exception: variable not exist* \n".PHP_EOL;
+        }
+        print '</pre>';
+        print "\n".PHP_EOL;
+
+        return $ret;
+    }
+
 }
