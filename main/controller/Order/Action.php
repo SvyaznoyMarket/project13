@@ -262,6 +262,12 @@ class Action {
                     $client->execute(\App::config()->coreV2['retryTimeout']['default'], \App::config()->coreV2['retryCount']);
                 }
 
+                // TODO: прибавить к totalSum стоимость доставки
+                $totalSum = $user->getCart()->getSum();
+                if ($totalSum > \App::config()->order['maxSumOnline'] && in_array($form->getPaymentMethodId(), [\Model\PaymentMethod\Entity::QIWI_ID, \Model\PaymentMethod\Entity::WEBMONEY_ID])) {
+                    throw new \Exception(sprintf('Невозможно оформить заказ на %d рублей с выбранным способом оплаты (%d)', $totalSum, $form->getPaymentMethodId()));
+                }
+
                 // сохранение заказов в ядре
                 $saveOrderResult = $this->saveOrder($form, $deliveryMap, $productsForRetargeting);
                 $orderNumbers = $saveOrderResult['orderNumbers'];

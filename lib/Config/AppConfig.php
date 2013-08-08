@@ -329,6 +329,7 @@ class AppConfig {
     /** @var array  */
     public $order = [
         'enableMetaTag'   => null,
+        'maxSumOnline'   => null,
     ];
     /** @var array */
     public $maybe3d = [

@@ -334,6 +334,22 @@
         };
         Blocker = new BlockScreen('Ваш заказ оформляется');
 
+        // общая сумма заказа
+        var totalSum = 0;
+
+        var handlePaymentMethods = function( sum ) {
+            if ( sum > $('.mPayMethods').data('max-sum-online') ) {
+                // webmoney
+                $('#payment_method_11-field').hide();
+                 // qiwi
+                $('#payment_method_12-field').hide();
+            }
+            else {
+                $('#payment_method_11-field').show();
+                $('#payment_method_12-field').show();
+            }
+        }
+
         /* ---------------------------------------------------------------------------------------- */
         /* PUBSUB HANDLERS */
         /* Glue for architecure */
@@ -361,12 +377,14 @@
                 // $('#payment_method_6-field').show();
             }
 
+            handlePaymentMethods( totalSum );
         });
 
         PubSub.subscribe( 'ShopSelected', function( m, data ) {
             $('#orderMapPopup').trigger('close');
             $('#order-form').show();
             $('#order-submit').removeClass('disable');
+            handlePaymentMethods( totalSum );
         });
 
         /* ---------------------------------------------------------------------------------------- */
@@ -757,9 +775,11 @@ up:             for( var linedate in box.caclDates ) { // Loop for T Interval
                         // refresh page -> server redirect to empty cart
                         document.location.reload();
                     }
+                    else {
+                        handlePaymentMethods( self.totalSum() )
+                    }
 
                 } );
-
             };
 
             self.totalSum = ko.computed( function() {
@@ -779,6 +799,7 @@ up:             for( var linedate in box.caclDates ) { // Loop for T Interval
                     'type': 'courier',
                     'boxQuantity': self.dlvrBoxes().length
                 };
+                totalSum = self.totalSum();
                 PubSub.publish( 'DeliveryChanged', data );
             };
 
@@ -935,11 +956,13 @@ up:             for( var linedate in box.caclDates ) { // Loop for T Interval
                             break;
                         }
                     }
+                    totalSum = self.totalSum();
                     PubSub.publish( 'DeliveryChanged', data );
                 }
 
                 self.chosenShop( d );
                 self.step2(true);
+                totalSum = self.totalSum();
                 PubSub.publish( 'ShopSelected', d );
             }
 
