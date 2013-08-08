@@ -1540,6 +1540,9 @@ $(document).ready(function(){
 	});
   
 	/* Side Filter Block handlers */
+	
+	$(".bigfilter dd[style='display: block;']").prev(".bigfilter dt").addClass("current");
+
 	$(".bigfilter dt").click(function(){
 		if ( $(this).hasClass('submit') ){
 			return true;
