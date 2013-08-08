@@ -28,7 +28,6 @@ class HtmlChatHistoryContent extends HtmlBasicContent {
      */
 
 
-
     protected $chat_times = 0;
     protected $count_first_answers = 0;
     protected $first_answers_time = 0;
@@ -68,12 +67,13 @@ class HtmlChatHistoryContent extends HtmlBasicContent {
         }
 
 
-        $mvote = $item->mvote; // mvote - оценка чата оператором
+        $mvote = $item->mvote; // mvote - id оценки чата оператором
         if ( !isset( $this->mvotes_arr[$mvote] ) ) $this->mvotes_arr[$mvote] = 1;
             else $this->mvotes_arr[$mvote]++;
 
         if ( $operId ) {
             $voarr = &$this->mvotes_cross_operators_arr;
+
             if ( !isset( $voarr[$operId] ) ) {
                 $voarr[$operId] = [];
             }
@@ -82,6 +82,21 @@ class HtmlChatHistoryContent extends HtmlBasicContent {
             }else{
                 $voarr[$operId][$mvote]++;
             }
+
+
+
+            // Данные по всем операторам {
+            // на примере "виртуального" квази-оператора с ID = self::ID4ALL_OPS
+            if ( !isset( $voarr[self::ID4ALL_OPS] ) ) {
+                $voarr[self::ID4ALL_OPS] = [];
+            }
+
+            if ( !isset( $voarr[self::ID4ALL_OPS][$mvote] ) ) {
+                $voarr[self::ID4ALL_OPS][$mvote] = 1;
+            }else{
+                $voarr[self::ID4ALL_OPS][$mvote]++;
+            }
+            // } /Данные по всем операторам
         }
 
 
@@ -140,14 +155,35 @@ class HtmlChatHistoryContent extends HtmlBasicContent {
                 );
             }
 
-            $this->duration_cross_operators[$operId]['count_chats'] += 1; // кол-во чатов
+            //// для подсчёта данных по всем операторам используем ID квази-оператора:
+            if ( !isset( $this->duration_cross_operators[self::ID4ALL_OPS] ) ) {
+                $this->duration_cross_operators[self::ID4ALL_OPS] = array(
+                    'count_chats' => 0,
+                    'all_chattime' => 0,
+                    'unanswered' => 0,
+                    'all_firstanswer' => 0,
+                    'all_positive_votes' => 0,
+                    'all_negative_votes' => 0,
+                );
+            }
+            $allOps = &$this->duration_cross_operators[self::ID4ALL_OPS];
+
+
+            $this->duration_cross_operators[$operId]['count_chats']++; // кол-во чатов
             $this->duration_cross_operators[$operId]['all_chattime'] += $item->chattime; // общее время чатов
             $this->duration_cross_operators[$operId]['all_firstanswer'] += $item->firstanswer; // общее время firstanswer
             $this->duration_cross_operators[$operId]['all_positive_votes'] += $vvote_positive; // кол-во положительных оценок чата посетителем
             $this->duration_cross_operators[$operId]['all_negative_votes'] += $vvote_negative; // кол-во отрицательных оценок чата посетителем
 
+            $allOps['count_chats']++;
+            $allOps['all_chattime'] += $item->chattime;
+            $allOps['all_firstanswer'] += $item->firstanswer;
+            $allOps['all_positive_votes'] += $vvote_positive;
+            $allOps['all_negative_votes'] += $vvote_negative;
+
             if ( (!$item->count) || (!$item->chattime) ) { // условие, по которому можем считать чат неотвеченным
-                $this->duration_cross_operators[$operId]['unanswered'] += 1; // не отвеченные чаты
+                $this->duration_cross_operators[$operId]['unanswered']++; // не отвеченные чаты
+                $allOps['unanswered']++;
             }
 
         }
@@ -159,11 +195,19 @@ class HtmlChatHistoryContent extends HtmlBasicContent {
 
     protected function analytics() {
         $voarr = &$this->mvotes_cross_operators_arr;
-        //$this->l($this->mvotes_arr); ///tmp
-        $this->l( $voarr ); ///tmp
+        asort($voarr); // отсортируем массив, сохраняя пары ключ - значение
+        asort( $this->duration_cross_operators ); // сортировка нужна, шоб например в отчётах "все операторы" последними выводились
+
+        if ( count($this->duration_cross_operators) < 3 ) {
+            // Если у нас только 2 оператора — значит это 1 оператор и 1 квази-оператор "все операторы" — уберём его
+            unset($this->duration_cross_operators[self::ID4ALL_OPS]);
+            unset($this->mvotes_cross_operators_arr[self::ID4ALL_OPS]);
+        }
+
+        $votes_legend = $this->getParams('votes_legend');
+
 
         $out = '';
-
         $out .= '</p>Всего чатов*: '.$this->count_iterations.". Чатов с операторами: $this->count_chats .</p>";
 
         $average = round( $this->chat_times / $this->count_chats , 2);
@@ -285,41 +329,83 @@ class HtmlChatHistoryContent extends HtmlBasicContent {
 
 
 
+
+
         //////////////////////////////////////////
+        $cvotes = count($votes_legend);
+        if ( !empty($votes_legend) && $cvotes ) {
+            $opers .= '<hr>';
+            $opers .= '<h3>Данные по целям обращений</h3>';
+            $opers .= '<table>';
 
-        $opers .= '<h3>Данные чатов</h3>';
-
-        $opers .= '<table>';
-        foreach( $voarr as $item ) {
-            $opers .= '<td>';
-            $opers .= 'XXX';
-            $opers .= '</td>';
-            foreach($item as $key => $value) {
+            //tableheader
+            $opers .= '<th>';
+            $opers .= '***';
+            $opers .= '</th>';
+            foreach($votes_legend as $key => $value) {
                 $opers .= '<th>';
-                $opers .= $key;
+                $opers .= isset($votes_legend[$key]) ? $votes_legend[$key] : $key;
                 $opers .= '</th>';
             }
-        }
-        foreach($voarr as $item) {
-            $opers .= '<tr>';
-            $opers .= '<td>';
-            //$opers .= $key;
-            //print_r($item);
-            $opers .= '</td>';
-            foreach($item as $key => $value) {
-                $opers .= '<td>';
-                $opers .= $value;
-                $opers .= '</td>';
-            }
-            $opers .= '</tr>';
-        }
-        $opers .= '</table>';
+            //tableheader
 
+            foreach($voarr as $key => $value) {
+                $opers .= '<tr>';
+                    $opers .= '<td>';
+                    $opers .= $this->operator_info($key);
+                    $opers .= '</td>';
+                    foreach($votes_legend as $vkey => $vval) {
+                        $opers .= '<td>';
+                        $opers .= isset($value[$vkey]) ? $value[$vkey] : self::EMPTY_TD;
+                        $opers .= '</td>';
+                    }
+                $opers .= '</tr>';
+            }
+            $opers .= '</table>';
+        }
         //////////////////////////////////////////
 
 
 
+        //////////////////////////////////////////
+        $cvotes = count($votes_legend);
+        if ( !empty($votes_legend) && $cvotes ) {
+            $opers .= '<hr>';
+            $opers .= '<h3>Данные по целям обращений (в транспонированном виде)</h3>';
+            $opers .= '<table>';
 
+            //tableheader
+            $opers .= '<th>';
+            $opers .= '***';
+            $opers .= '</th>';
+            foreach($voarr as $opId => $voteValue) {
+                $opers .= '<th>';
+                $opers .= $this->operator_info($opId);
+                $opers .= '</th>';
+            }
+            //tableheader
+
+            reset($votes_legend);
+            for ($i = 1; $i < $cvotes; $i++) {
+                $opers .= '<tr>';
+                list($vote_id, $vote_val) = each($votes_legend);
+
+                    $opers .= '<td>';
+                    $opers .= $vote_val;
+                    $opers .= '</td>';
+
+                    foreach($voarr as $opId => $voteValue) {
+                        $opers .= '<td>';
+                        $opers .= isset($voarr[$opId][$vote_id]) ? $voarr[$opId][$vote_id] : self::EMPTY_TD;
+                        $opers .= '</td>';
+                    }
+
+                $opers .= '</tr>';
+            }
+
+            $opers .= '</table>';
+        }
+        //////////////////////////////////////////
 
 
         $out .= $opers;

@@ -12,6 +12,8 @@ class HtmlBasicContent{
     protected $big_head = 'LiveTex: Статистика.';
     protected $helper = '';
     protected $params;
+    const ID4ALL_OPS = -5; // id for all operators in arrays
+    const EMPTY_TD = ''; // содержимое пустой ячейки таблицы. Можно выводить пустую строку, можно 0, можно "null" ...
 
 
     public function __construct( $big_head = null, $small_head = null, $params = null) {
@@ -42,6 +44,8 @@ class HtmlBasicContent{
                     $out .= $this->wr ( $err, 'lts_item' );
                     return $out;
                 }
+
+                $this->beforeCycle();
 
                 $tobe_ul = false; if ( count( $res ) > 1 ) $make_ul = true;
 
@@ -84,19 +88,22 @@ class HtmlBasicContent{
     //////////////////////////////////////////////////////
 
 
-    protected function analytics() { // прототип функции
-        return false;
-    }
 
-    protected function inCycleCondition( &$item ) {
-        return isset( $item );
-    }
 
+
+    // прототипы функций, обычно, переопределяемые в потомках:
+    protected function analytics() {return false;}
+    protected function beforeCycle() {return false;}
+    protected function inCycleCondition( &$item ) {return isset( $item );}
 
     protected function inCycle( $item ) {
         $out = '<div class="basic_html"> [ <pre>' . print_r($item,1) . '</pre> ] </div>';
         return $out;
     }
+
+
+
+
 
 
     protected function head() {
@@ -175,7 +182,10 @@ class HtmlBasicContent{
         if (!$operId) return $operId;
         $operators_list = $this->params['operators_list'];
 
-        if ( !isset( $operators_list[$operId] ) ) return  $this->error('В массиве операторов не найден '.$operId.' оператора.');
+        if ( !isset( $operators_list[$operId] ) ) {
+            if ( self::ID4ALL_OPS == $operId ) return ' [ Все операторы ] ';
+            return  $this->error('В массиве операторов не найден '.$operId.' оператора.');
+        }
 
         if ($attr == 'name') {
             $firstname = $this->params['operators_list'][$operId]->firstname;
@@ -250,6 +260,12 @@ class HtmlBasicContent{
         }
         $ret = '<time>' . $ret. '</time>';
         return $ret;
+    }
+
+
+
+    protected function getParams($name) {
+        return isset($this->params[$name]) ? $this->params[$name] : false;
     }
 
 

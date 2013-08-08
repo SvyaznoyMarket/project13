@@ -134,6 +134,14 @@
     .lts_item th{
         background: #456;
         color:#fff;
-        font-size:.75em;
+        font-size:.8em;
+    }
+
+    .allpage {
+        width:1200px !important;
+    }
+
+    .bProductSection__eRight {
+        width:180px!important;
     }
 </style>

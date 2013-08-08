@@ -149,6 +149,7 @@ class StatisticsAction {
             // получим статистику чата, если нужно:
             if (in_array('Chat',$actions)) {
                 $this->actionsChat();
+                $load_votes = true;
             }
 
             // получим статистику сайтов:
