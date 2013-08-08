@@ -148,6 +148,7 @@ DeliveryBox.prototype._hasDateInAllProducts = function( checkTS ) {
 		nowTS = null,
 
 		res = true;
+	// end of vars
 
 	/**
 	 * Перебор всех продуктов в блоке
@@ -163,6 +164,7 @@ DeliveryBox.prototype._hasDateInAllProducts = function( checkTS ) {
 
 			if ( nowTS === checkTS ) {
 				res = true;
+				
 				break;
 			}
 			else {
@@ -211,6 +213,7 @@ DeliveryBox.prototype.calculateDate = function() {
 			console.log(nowTS+' это общая минимальная дата для товаров в блоке');
 			self.choosenDate = nowProductDates[i];
 			self.choosenInterval(nowProductDates[i].intervals[0]);
+
 			break;
 		}
 	}

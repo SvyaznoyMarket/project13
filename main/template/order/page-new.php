@@ -29,6 +29,7 @@
 		<!-- боксы доставки -->
 		<div style="margin: 20px 10px; border: 1px solid #000; padding: 15px 10px">
 			<h2 data-bind="text: box.deliveryName+' '+box.choosenDate.name"></h2>
+			<!-- интервалы доставки -->
 			<select data-bind="options: box.choosenDate.intervals,
 								value: box.choosenInterval,
 								optionsText: function(item) {
@@ -47,6 +48,7 @@
 			</ul>
 			<span data-bind="text: 'Общая стоимость '+box.fullPrice"></span>
 		</div>
+		
 	</div>
 
 </div>
