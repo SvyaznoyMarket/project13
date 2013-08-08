@@ -54,7 +54,8 @@
 								}">
 			</select>
 
-			<a href="#" data-bind="visible: box.hasPointDelivery, text: 'Сменить магазин'"></a>
+			<p data-bind="visible: box.hasPointDelivery, text: box.choosenPoint().name"></p>
+			<p><a href="#" data-bind="visible: box.hasPointDelivery, text: 'Сменить магазин'"></a></p>
 
 			<!-- календарик -->
 			<div class="clearfix" data-bind="foreach: { data: allDatesForBlock, as: 'calendarDay' }">

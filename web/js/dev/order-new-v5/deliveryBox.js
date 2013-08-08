@@ -23,7 +23,6 @@ function DeliveryBox( products, state, choosenPointForBox, createdBox, OrderMode
 
 	self.OrderModel = OrderModel;
 	self.createdBox = createdBox;
-	self.deliveryPoint = choosenPointForBox;
 
 	// Продукты в блоке
 	self.products = [];
@@ -35,20 +34,61 @@ function DeliveryBox( products, state, choosenPointForBox, createdBox, OrderMode
 	self.deliveryName = self.OrderModel.orderDictionary.getNameOfState(state);
 	// Стоимость доставки. Берем максимально возможное значение, чтобы сравнивая с ним находить минимальное
 	self.deliveryPrice = Number.POSITIVE_INFINITY;
+
 	// Выбранная дата доставки
 	self.choosenDate = ko.observable();
-
-	self.hasPointDelivery = self.OrderModel.orderDictionary.hasPointDelivery(state);
-	console.log(self.hasPointDelivery)
+	// Выбранная точка доставки
+	self.choosenPoint = ko.observable({id:choosenPointForBox});
+	// Выбранный интервал доставки
 	self.choosenInterval = ko.observable();
+
+	// Есть ли доступные точки доставки
+	self.hasPointDelivery = self.OrderModel.orderDictionary.hasPointDelivery(state);
 
 	// Массив всех доступных дат для блока
 	self.allDatesForBlock = ko.observableArray([]);
+	// Массив всех точек доставок
+	self.pointList = ko.observableArray([]);
+
+	if ( self.hasPointDelivery ) {
+		self.choosenPoint( self.OrderModel.orderDictionary.getPointByStateAndId(self.state, choosenPointForBox) );
+	}
 
 	self.addProductGroup(products);
 
 	self.OrderModel.deliveryBoxes.push(self);
 }
+
+/**
+ * Делаем список общих для всех товаров в блоке точек доставок для данного метода доставки
+ */
+DeliveryBox.prototype._makePointList = function() {
+	var self = this,
+		res = true;
+	// end of vars
+
+	/**
+	 * Перебираем точки доставки для первого товара
+	 */
+	for (var point in self.products[0].deliveries ) {
+
+		/**
+		 * Перебираем все товары в блоке, проверяя доступна ли данная точка доставки для них
+		 */
+		for ( var i = self.products.length - 1; i >= 0; i-- ) {
+			res = self.products[i].deliveries.hasOwnProperty(point);
+
+			if ( !res ) {
+				break;
+			}
+		}
+
+		if ( res ) {
+			// Точка достаки доступна для всех товаров в блоке
+			self.pointList.push( self.OrderModel.orderDictionary.getPointByStateAndId(self.state, point) );
+		}
+	}
+};
 
 /**
  * Получить имя первого свойства объекта
@@ -83,8 +123,8 @@ DeliveryBox.prototype._addProduct = function( product ) {
 	/**
 	 * Если для продукта нет доставки в выбранный пункт доставки, то нужно создать новый блок доставки
 	 */
-	if ( !product.deliveries[self.state].hasOwnProperty(self.deliveryPoint) ) {
-		console.warn('Для товара '+product.id+' нет пункта доставки '+self.deliveryPoint+'. Необходимо создать новый блок');
+	if ( !product.deliveries[self.state].hasOwnProperty(self.choosenPoint().id) ) {
+		console.warn('Для товара '+product.id+' нет пункта доставки '+self.choosenPoint().id+' Необходимо создать новый блок');
 
 		firstAvaliblePoint = self._getFirstPropertyName(product.deliveries[self.state]);
 		token = self.state+'_'+firstAvaliblePoint;
@@ -104,7 +144,7 @@ DeliveryBox.prototype._addProduct = function( product ) {
 	}
 
 	// Определение стоимости доставки. Если стоимость доставки данного товара ниже стоимости доставки блока, то стоимость доставки блока становится равной стоимости доставки данного товара
-	productDeliveryPrice = parseInt(product.deliveries[self.state][self.deliveryPoint].price, 10);
+	productDeliveryPrice = parseInt(product.deliveries[self.state][self.choosenPoint().id].price, 10);
 	self.deliveryPrice = ( self.deliveryPrice > productDeliveryPrice ) ? productDeliveryPrice : self.deliveryPrice;
 
 	// Добавляем стоимость продукта к общей стоимости блока доставки
@@ -123,19 +163,25 @@ DeliveryBox.prototype._addProduct = function( product ) {
 
 /**
  * Добавление нескольких товаров в блок доставки
- * После добавления продуктов запускает получение общей даты доставки
+ * После добавления продуктов запускает получение общей даты доставки и наполнение списка точек доставок, если они доступны
  * 
  * @this	{DeliveryBox}
  * 
  * @param	{Array}			products	Продукты которые нужно добавить
  */
 DeliveryBox.prototype.addProductGroup = function( products ) {
+	var self = this;
+
 	// добавляем товары в блок
 	for ( var i = products.length - 1; i >= 0; i-- ) {
-		this._addProduct(products[i]);
+		self._addProduct(products[i]);
 	}
 
 	this.calculateDate();
+
+	if ( self.hasPointDelivery ) {
+		self._makePointList();
+	}
 };
 
 /**
@@ -155,7 +201,7 @@ DeliveryBox.prototype._getNameDayOfWeek = function( dayOfWeek ) {
  *
  * @this	{DeliveryBox}
  *
- * @param	{Number}	checkTS	Таймштамп даты, которую необходимо проверить
+ * @param	{Number}	checkTS		Таймштамп даты, которую необходимо проверить
  * 
  * @return	{Boolean}
  */
@@ -171,7 +217,7 @@ DeliveryBox.prototype._hasDateInAllProducts = function( checkTS ) {
 	 * Перебор всех продуктов в блоке
 	 */
 	for (var i = self.products.length - 1; i >= 0; i--) {
-		nowProductDates = self.products[i].deliveries[self.deliveryPoint].dates;
+		nowProductDates = self.products[i].deliveries[self.choosenPoint().id].dates;
 
 		/**
 		 * Перебор всех дат доставок в блоке
@@ -195,11 +241,6 @@ DeliveryBox.prototype._hasDateInAllProducts = function( checkTS ) {
 	}
 
 	return res;
-};
-
-DeliveryBox.prototype.selectDay = function( data ) {
-	Console.info('выбор даты');
-	console.log(data);
 };
 
 /**
@@ -227,7 +268,7 @@ DeliveryBox.prototype.calculateDate = function() {
 	/**
 	 * Перебираем даты в первом товаре
 	 */
-	nowProductDates = self.products[0].deliveries[self.deliveryPoint].dates;
+	nowProductDates = self.products[0].deliveries[self.choosenPoint().id].dates;
 
 	for ( var i = 0, len = nowProductDates.length; i < len; i++ ) {
 		nowTS = nowProductDates[i].value;
@@ -256,7 +297,6 @@ DeliveryBox.prototype.calculateDate = function() {
  * @this	{DeliveryBox}
  */
 DeliveryBox.prototype.makeCalendar = function() {
-	console.info('Cобираем календарь');
 	var self = this,
 		addCountDays = 0,
 		dayOfWeek = null,
@@ -265,7 +305,6 @@ DeliveryBox.prototype.makeCalendar = function() {
 
 	if ( self.allDatesForBlock()[0].dayOfWeek !== 1 ) {
 		addCountDays = ( self.allDatesForBlock()[0].dayOfWeek === 0 ) ? 6 : self.allDatesForBlock()[0].dayOfWeek - 1;
-		console.log('первый день в календаре не понедельник. Нужно добавить '+addCountDays+' дней');
 
 		for ( var i = addCountDays; i > 0; i-- ) {
 			dayOfWeek = self.allDatesForBlock()[0].dayOfWeek - 1;
@@ -284,8 +323,6 @@ DeliveryBox.prototype.makeCalendar = function() {
 	if ( self.allDatesForBlock()[self.allDatesForBlock().length - 1].dayOfWeek !== 0 ) {
 		addCountDays = 7 - self.allDatesForBlock()[self.allDatesForBlock().length - 1].dayOfWeek;
 
-		console.log('последний день в календаре не воскресение, нужно добавить '+addCountDays);
-
 		for ( var j = addCountDays; j > 0; j-- ) {
 			dayOfWeek = ( self.allDatesForBlock()[self.allDatesForBlock().length - 1].dayOfWeek + 1 === 7 ) ? 0 : self.allDatesForBlock()[self.allDatesForBlock().length - 1].dayOfWeek + 1;
 			
@@ -299,4 +336,4 @@ DeliveryBox.prototype.makeCalendar = function() {
 			self.allDatesForBlock.push(tmpDay);
 		}
 	}
-}
+};
