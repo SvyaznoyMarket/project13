@@ -23,9 +23,6 @@ if (!$page->hasGlobalParam('shops')) {
         <li onclick="document.location='<?=$page->helper->replacedUrl(array('page' => null, 'shop' => null), null, $request->attributes->get('route'))?>';">
             <input name="shop" id="shop_0" type="radio" class="hiddenCheckbox"/>
             <label for="shop_0" class="prettyCheckbox radio list <?=$shop?'':'checked';?> ">
-                <!-- span class="holderWrap" style="width: 13px; height: 13px;">
-                    <span class="holder" style="width: 13px; "></span>
-                </span-->
                 Не важно
             </label>
         </li>
@@ -37,9 +34,6 @@ if (!$page->hasGlobalParam('shops')) {
             <li onclick="document.location='<?=$link?>';">
                 <input name="shop" id="shop_<?=$i+1?>" type="radio" class="hiddenCheckbox"/>
                 <label for="shop_<?=$i+1?>" class="prettyCheckbox radio list <?=($shop&&$shop->getId() == $singleShop->getId())?'checked':'';?>">
-                    <!--span class="holderWrap" style="width: 13px; height: 13px;">
-                        <span class="holder" style="width: 13px; "></span>
-                    </span-->
                     <?=$singleShop->getAddress();?>
                 </label>
             </li>
