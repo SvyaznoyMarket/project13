@@ -24,18 +24,47 @@
 		</ul>
 
 	</div>
+	
+	<!-- temp styles -->
+	<style type="text/css">
+		.bCalendarDay {
+			font-size: 12px;
+			width: 25px;
+			float: left;
+		}
+		.mDisabled {
+			background: gray;
+		}
+		.mCurrenDay {
+			color: red;
+			background: orange;
+		}
+	</style>
+
 
 	<div data-bind="foreach: { data: deliveryBoxes, as: 'box' }">
 		<!-- боксы доставки -->
 		<div style="margin: 20px 10px; border: 1px solid #000; padding: 15px 10px">
-			<h2 data-bind="text: box.deliveryName+' '+box.choosenDate.name"></h2>
+			<h2 data-bind="text: box.deliveryName+' '+box.choosenDate().name"></h2>
 			<!-- интервалы доставки -->
-			<select data-bind="options: box.choosenDate.intervals,
+			<select data-bind="options: box.choosenDate().intervals,
 								value: box.choosenInterval,
 								optionsText: function(item) {
 									return 'c '+ item.start + ' до ' + item.end;
 								}">
 			</select>
+
+			<a href="#" data-bind="visible: box.hasPointDelivery, text: 'Сменить магазин'"></a>
+
+			<!-- календарик -->
+			<div class="clearfix" data-bind="foreach: { data: allDatesForBlock, as: 'calendarDay' }">
+				<div class="bCalendarDay" data-bind="css: { mCurrenDay: calendarDay.value == box.choosenDate().value, mDisabled: !calendarDay.avalible }">
+					<p data-bind="text: calendarDay.humanDayOfWeek"></p>
+					<a href="#" data-bind="text: ( calendarDay.day === 0 ) ? '' : calendarDay.day,
+									click: box.choosenDate"></a>
+				</div>
+			</div>
+
 			<ul data-bind="foreach: { data: products, as: 'product' }">
 				<!-- перечисление продуктов в боксе -->
 				<li style="border-bottom: 1px solid #e6e6e6; margin-bottom: 15px;">
@@ -48,7 +77,7 @@
 			</ul>
 			<span data-bind="text: 'Общая стоимость '+box.fullPrice"></span>
 		</div>
-		
+
 	</div>
 
 </div>

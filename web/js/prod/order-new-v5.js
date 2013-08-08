@@ -36,9 +36,14 @@ function DeliveryBox( products, state, choosenPointForBox, createdBox, OrderMode
 	// Стоимость доставки. Берем максимально возможное значение, чтобы сравнивая с ним находить минимальное
 	self.deliveryPrice = Number.POSITIVE_INFINITY;
 	// Выбранная дата доставки
-	self.choosenDate = null;
+	self.choosenDate = ko.observable();
 
+	self.hasPointDelivery = self.OrderModel.orderDictionary.hasPointDelivery(state);
+	console.log(self.hasPointDelivery)
 	self.choosenInterval = ko.observable();
+
+	// Массив всех доступных дат для блока
+	self.allDatesForBlock = ko.observableArray([]);
 
 	self.addProductGroup(products);
 
@@ -134,11 +139,23 @@ DeliveryBox.prototype.addProductGroup = function( products ) {
 };
 
 /**
- * Проверка, доступна ли дата доставки для всех товаров в боксе
+ * Получение человекочитаемого названия дня недели
+ * 
+ * @param	{Number}	dateFromModel	Номер дня недели
+ * @return	{String}					Человекочитаемый день недели
+ */
+DeliveryBox.prototype._getNameDayOfWeek = function( dayOfWeek ) {
+	var days = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
+
+	return days[dayOfWeek];
+};
+
+/**
+ * Проверка даты, доступна ли дата доставки для всех товаров в боксе
  *
  * @this	{DeliveryBox}
  *
- * @param	{Number}	checkTS	Таймштамп даты которую необходимо проверить
+ * @param	{Number}	checkTS	Таймштамп даты, которую необходимо проверить
  * 
  * @return	{Boolean}
  */
@@ -148,6 +165,7 @@ DeliveryBox.prototype._hasDateInAllProducts = function( checkTS ) {
 		nowTS = null,
 
 		res = true;
+	// end of vars
 
 	/**
 	 * Перебор всех продуктов в блоке
@@ -163,6 +181,7 @@ DeliveryBox.prototype._hasDateInAllProducts = function( checkTS ) {
 
 			if ( nowTS === checkTS ) {
 				res = true;
+
 				break;
 			}
 			else {
@@ -178,9 +197,14 @@ DeliveryBox.prototype._hasDateInAllProducts = function( checkTS ) {
 	return res;
 };
 
+DeliveryBox.prototype.selectDay = function( data ) {
+	Console.info('выбор даты');
+	console.log(data);
+};
+
 /**
- * Получение общей ближайшей даты доставки.
- * Перебирается дата первого товара, и если больше либо равна сегодняшней дате а так же присутствует во всех товарах - то эта дата берется за ближайшую дату доставки.
+ * Получение общей ближайшей даты доставки
+ * Заполнение массива общих дат
  *
  * @this	{DeliveryBox}
  */
@@ -196,6 +220,7 @@ DeliveryBox.prototype.calculateDate = function() {
 
 	if ( !self.products.length ) {
 		console.warn('в блоке нет товаров');
+
 		return;
 	}
 
@@ -208,13 +233,73 @@ DeliveryBox.prototype.calculateDate = function() {
 		nowTS = nowProductDates[i].value;
 
 		if ( self._hasDateInAllProducts(nowTS) && nowTS >= todayTS ) {
-			console.log(nowTS+' это общая минимальная дата для товаров в блоке');
-			self.choosenDate = nowProductDates[i];
-			self.choosenInterval(nowProductDates[i].intervals[0]);
-			break;
+			nowProductDates[i].avalible = true;
+			nowProductDates[i].humanDayOfWeek = self._getNameDayOfWeek(nowProductDates[i].dayOfWeek);
+			nowProductDates[i].selectDay = self.selectDay;
+
+
+			self.allDatesForBlock.push(nowProductDates[i]);
 		}
 	}
+
+	// выбираем ближайшую доступную дату
+	self.choosenDate( self.allDatesForBlock()[0] );
+	// выбираем первый интервал
+	self.choosenInterval( self.choosenDate().intervals[0] );
+
+	self.makeCalendar();
 };
+
+/**
+ * Создание календаря, округление до целых недель
+ *
+ * @this	{DeliveryBox}
+ */
+DeliveryBox.prototype.makeCalendar = function() {
+	console.info('Cобираем календарь');
+	var self = this,
+		addCountDays = 0,
+		dayOfWeek = null,
+		tmpDay = {};
+	// end of vars
+
+	if ( self.allDatesForBlock()[0].dayOfWeek !== 1 ) {
+		addCountDays = ( self.allDatesForBlock()[0].dayOfWeek === 0 ) ? 6 : self.allDatesForBlock()[0].dayOfWeek - 1;
+		console.log('первый день в календаре не понедельник. Нужно добавить '+addCountDays+' дней');
+
+		for ( var i = addCountDays; i > 0; i-- ) {
+			dayOfWeek = self.allDatesForBlock()[0].dayOfWeek - 1;
+			
+			tmpDay = {
+				avalible: false,
+				humanDayOfWeek: self._getNameDayOfWeek(dayOfWeek),
+				dayOfWeek: dayOfWeek,
+				day: 0
+			};
+
+			self.allDatesForBlock.unshift(tmpDay);
+		}
+	}
+
+	if ( self.allDatesForBlock()[self.allDatesForBlock().length - 1].dayOfWeek !== 0 ) {
+		addCountDays = 7 - self.allDatesForBlock()[self.allDatesForBlock().length - 1].dayOfWeek;
+
+		console.log('последний день в календаре не воскресение, нужно добавить '+addCountDays);
+
+		for ( var j = addCountDays; j > 0; j-- ) {
+			dayOfWeek = ( self.allDatesForBlock()[self.allDatesForBlock().length - 1].dayOfWeek + 1 === 7 ) ? 0 : self.allDatesForBlock()[self.allDatesForBlock().length - 1].dayOfWeek + 1;
+			
+			tmpDay = {
+				avalible: false,
+				humanDayOfWeek: self._getNameDayOfWeek(dayOfWeek),
+				dayOfWeek: dayOfWeek,
+				day: 0
+			};
+
+			self.allDatesForBlock.push(tmpDay);
+		}
+	}
+}
  
  
 /** 
@@ -285,7 +370,7 @@ OrderDictionary.prototype.hasDeliveryState = function( state ) {
  * @return	{Boolean}
  */
 OrderDictionary.prototype.hasPointDelivery = function( state ) {
-	return this.pointsByDelivery[state];
+	return this.pointsByDelivery.hasOwnProperty(state);
 };
 
 /**

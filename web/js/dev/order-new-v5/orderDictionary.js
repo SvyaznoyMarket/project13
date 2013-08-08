@@ -61,7 +61,7 @@ OrderDictionary.prototype.hasDeliveryState = function( state ) {
  * @return	{Boolean}
  */
 OrderDictionary.prototype.hasPointDelivery = function( state ) {
-	return this.pointsByDelivery[state];
+	return this.pointsByDelivery.hasOwnProperty(state);
 };
 
 /**
