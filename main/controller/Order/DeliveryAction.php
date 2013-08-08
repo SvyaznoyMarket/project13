@@ -24,7 +24,7 @@ class DeliveryAction {
         $region = $user->getRegion();
         $cart = $user->getCart();
 
-        $deliveryTypeData = [];
+        $responseData = [];
         try {
             // проверка на пустую корзину
             if ($cart->isEmpty()) {
@@ -57,6 +57,7 @@ class DeliveryAction {
             }
 
             // типы доставок
+            $deliveryTypeData = [];
             foreach (\RepositoryManager::deliveryType()->getCollection() as $deliveryType) {
                 $deliveryTypeData[$deliveryType->getToken()] =  [
                     'id'          => $deliveryType->getId(),
