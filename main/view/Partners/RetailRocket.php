@@ -13,7 +13,10 @@ class RetailRocket
         $this->returnData['routeName'] = $routeName;
     }
 
-
+    /**
+     * @param \Model\Order\Entity[] $orders
+     * @return mixed
+     */
     public function transaction($orders)
     {
         $data = & $this->returnData['sendData'];
