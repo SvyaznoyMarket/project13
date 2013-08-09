@@ -230,6 +230,54 @@ window.ANALYTICS = {
 
     },
 
+    RetailRocketJS : function() {
+        window.rrPartnerId = "519c7f3c0d422d0fe0ee9775"; // var rrPartnerId — по ТЗ должна быть глобальной
+        /* и действительно, иначе не подгружается скрипт с api.retailrocket.ru */
+
+        window.RetailRocket = {
+
+            product: function (data) {
+                window.rcAsyncInit = function () {
+                    rcApi.view(data);
+                }
+            },
+
+            transaction: function (data) {
+                window.rcAsyncInit = function () {
+                    rrApi.order(data);
+                }
+            },
+
+            action: function (data) {
+                var rr_data = $('#RetailRocketJS').data('value');
+                if (rr_data && rr_data.routeName && rr_data.sendData) {
+                    if (rr_data.routeName == 'product') {
+                        RetailRocket.product(rr_data.sendData)
+                    } else if (rr_data.routeName == 'order.complete') {
+                        RetailRocket.transaction(rr_data.sendData)
+                    }
+                }
+            },
+
+            init: function () { // on load:
+                (function (d) {
+                    var ref = d.getElementsByTagName('script')[0];
+                    var apiJs, apiJsId = 'rrApi-jssdk';
+                    if (d.getElementById(apiJsId)) return;
+                    apiJs = d.createElement('script');
+                    apiJs.id = apiJsId;
+                    apiJs.async = true;
+                    apiJs.src = "http://api.retailrocket.ru/Content/JavaScript/api.js";
+                    ref.parentNode.insertBefore(apiJs, ref);
+                }(document));
+            }
+
+        }// end of window.RetailRocket object
+
+        RetailRocket.init();
+        RetailRocket.action();
+    },
+
     marketgidProd : function() {
         var MGDate = new Date();
         document.write('<iframe src ="http://'
