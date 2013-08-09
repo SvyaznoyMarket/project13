@@ -139,7 +139,6 @@
 		                												mDisable: !calendarDay.avalible,
 		                												mEnable: calendarDay.avalible },
 		                												click: function(data){
-		                													console.log(box)
 		                													box.clickCalendarDay(data);
 		                												}">
 		                    <span class="bBuyingDatesItem__eDayNumber" data-bind="text: ( calendarDay.day === 0 ) ? '' : calendarDay.day"></span> 
