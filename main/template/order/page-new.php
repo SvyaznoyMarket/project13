@@ -1,7 +1,8 @@
 <?php
 /**
- * @var $page \View\Order\CreatePage
- * @var $user \Session\User
+ * @var $page          \View\Order\CreatePage
+ * @var $user          \Session\User
+ * @var $deliveryData  array
  */
 ?>
 
@@ -214,3 +215,5 @@
 	</div>
 
 </div>
+
+<div id="jsOrderDelivery" data-value="<?= $page->json($deliveryData) ?>"></div>

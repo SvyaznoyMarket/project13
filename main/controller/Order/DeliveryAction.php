@@ -18,6 +18,13 @@ class DeliveryAction {
             throw new \Exception\NotFoundException('Request is not xml http request');
         }
 
+        return new \Http\JsonResponse($this->getResponseData());
+    }
+
+    /**
+     * @return array
+     */
+    public function getResponseData() {
         $router = \App::router();
         $client = \App::coreClientV2();
         $user = \App::user();
@@ -234,6 +241,6 @@ class DeliveryAction {
             $this->failResponseData($e, $responseData);
         }
 
-        return new \Http\JsonResponse($responseData);
+        return $responseData;
     }
 }

@@ -18,6 +18,7 @@ class NewAction {
         $cart = $user->getCart();
 
         $page = new \View\Order\NewPage();
+        $page->setParam('deliveryData', (new \Controller\Order\DeliveryAction())->getResponseData());
 
         return new \Http\Response($page->show());
     }
