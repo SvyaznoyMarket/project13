@@ -204,7 +204,6 @@
 
 		OrderModel.deliveryTypes(res.deliveryTypes);
 		OrderModel.prepareData(true);
-		$('#order').removeClass('hidden');
 	};
 
 	$.ajax({

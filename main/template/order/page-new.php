@@ -44,81 +44,163 @@
 			z-index: 10000;
 		}
 	</style>
+<!-- Header -->
+<div class="bBuyingHead clearfix">
+	<a class="bBuyingHead__eLogo" href="http://tb.ent3.ru/"></a>
+	
+	<div class="bBuyingHead__eTitle">
+		<span class="bSubTitle">Оформление заказа</span><br/>
+		<span class="bTitle">Финальный шаг :)</span>
+	</div>
+</div>
+<!-- /Header -->
 
+
+
+<!-- loader -->
+<div data-bind="css: { mLoader: !prepareData() }"></div>
+<!-- /loader -->
 
 <!-- общая обертка оформления заказа -->
-<div data-bind="css: { mLoader: !prepareData() }"></div>
+<div class="bBuyingSteps" style="display:none" data-bind="style: { display: prepareData() ? 'block' : 'none'}">
 
-<div id="order" class="hidden">
+	<div class="bBuyingLine"><a class="bBackCart" href="">&lt; Вернуться к покупкам</a></div>
 
-	<!-- выбор вариантов доставки -->
-	<div>
-		<!-- отображение типов доставки -->
-		<ul data-bind="foreach: { data: deliveryTypes }">
-			<li>
-				<h2><a href="#" data-bind="
-										text: $data.name,
-										states: $data.states,
-										click: $root.chooseDeliveryTypes">
-				</a></h2>
-				<p data-bind="text: $data.description"></p>
-			</li>
-		</ul>
+
+	 <!-- Order Method -->
+	<div class="bBuyingLine mOrderMethod">
+		<h2 class="bBuyingSteps__eTitle">Информация о заказе</h2>
+
+		<div class="bBuyingLine__eLeft">Выберите предпочтительный способ</div>
+
+		<div class="bBuyingLine__eRight bInputList" data-bind="foreach: { data: deliveryTypes }">
+			<input class="jsCustomRadio bCustomInput mCustomCheckBig" type="radio" name="radio" hidden data-bind="attr: { id: 'mehtod_'+$index }" />
+			<label class="bCustomLabel mCustomLabelBig" data-bind="
+									text: $data.name,
+									states: $data.states,
+									click: $root.chooseDeliveryTypes,
+									attr: { for: 'mehtod_'+$index }">
+			</label>
+			<p class="bBuyingLine__eDesc" data-bind="text: $data.description"></p>
+		</div>
 	</div>
+	<!-- Order Method -->
+
+
 
 	<div data-bind="foreach: { data: deliveryBoxes, as: 'box' }">
-		<!-- боксы доставки -->
-		<div style="margin: 20px 10px; border: 1px solid #000; padding: 15px 10px">
-			<h2 data-bind="text: box.deliveryName+' '+box.choosenDate().name"></h2>
-			<!-- интервалы доставки -->
-			<select data-bind="options: box.choosenDate().intervals,
-								value: box.choosenInterval,
-								optionsText: function(item) {
-									return 'c '+ item.start + ' до ' + item.end;
-								}">
-			</select>
+		<div class="bBuyingLineWrap">
+		    <div class="bBuyingLine">
+		        <div class="bBuyingLine__eLeft">
 
-			<p data-bind="visible: box.hasPointDelivery, text: box.choosenPoint().name"></p>
-			<p><a href="#" data-bind="visible: box.hasPointDelivery,
-										text: 'Сменить магазин',
-										click: box.changePoint"></a>
-			</p>
+		            <h2 class="bBuyingSteps__eTitle">
+		                <span data-bind="text: box.deliveryName+' '+box.choosenDate().name"></span><span data-bind="visible: !hasPointDelivery">*</span>
+		            </h2>
 
-			<!-- календарик -->
-			<div class="clearfix" data-bind="foreach: { data: allDatesForBlock, as: 'calendarDay' }">
-				<div class="bCalendarDay" data-bind="css: { mCurrenDay: calendarDay.value == box.choosenDate().value, mDisabled: !calendarDay.avalible }">
-					<p data-bind="text: calendarDay.humanDayOfWeek"></p>
-					<a href="#" data-bind="text: ( calendarDay.day === 0 ) ? '' : calendarDay.day,
-									click: box.choosenDate"></a>
-				</div>
+		            <div class="bSelectWrap mFastInpSmall">
+		                <span class="bSelectWrap_eText" data-bind="text: 'c '+ box.choosenInterval().start + ' до ' + box.choosenInterval().end"></span>
+		                <select class="bSelect" data-bind="options: box.choosenDate().intervals,
+															value: box.choosenInterval,
+															optionsText: function(item) {
+																return 'c '+ item.start + ' до ' + item.end;
+															}">
+		                </select>
+		            </div>
+
+		            <div class="bDeliveryPrice" data-bind="visible: !hasPointDelivery">
+		                <span class="bDeliveryPrice__eItem mTextColor">Стоимость доставки
+		                    <span data-bind="text: box.deliveryPrice === 0 ? 'Бесплатно' : box.deliveryPrice"></span>
+		                    <span class="rubl" data-bind="visible: box.deliveryPrice">p</span>
+		                </span>
+
+		                <span class="bDeliveryPrice__eItem mFootnote"><em class="bStar">*</em> Дату доставки уточнит специалист<br />Контакт-сENTER</span>
+		            </div>
+
+		            <!-- текущий выбранный магазин и кнопка сменить магазин -->
+		            <p data-bind="visible: box.hasPointDelivery, text: box.choosenPoint().name"></p>
+					<p><a href="#" data-bind="visible: box.hasPointDelivery,
+												text: 'Сменить магазин',
+												click: box.changePoint"></a>
+					</p>
+					<!-- / текущий выбранный магазин и кнопка сменить магазин -->
+
+		        </div>
+
+		        <div class="bBuyingLine__eRight">
+
+		            <!-- Celendar -->
+		            <ul class="bBuyingDates" data-bind="foreach: { data: allDatesForBlock, as: 'calendarDay' }">
+		               <!--  <li class="bBuyingDatesItem mLeft">
+		                    <span class="bArrow"></span>
+		                </li> -->
+
+		                <li class="bBuyingDatesItem mDisable" data-bind="css: { mCurrent: calendarDay.value == box.choosenDate().value,
+		                												mDisable: !calendarDay.avalible,
+		                												mEnable: calendarDay.avalible }">
+		                    <span class="bBuyingDatesItem__eDayNumber" data-bind="text: ( calendarDay.day === 0 ) ? '' : calendarDay.day,
+																					click: box.choosenDate"></span> 
+		                    <span class="bBuyingDatesItem__eDay" data-bind="text: calendarDay.humanDayOfWeek"></span>
+		                </li>
+
+
+		                <!-- <li class="bBuyingDatesItem mRight">
+		                   <span class="bArrow"></span>
+		                </li> -->
+		            </ul>
+		            <!-- /Celendar -->
+
+		            <!-- Products -->
+		            <!-- ko foreach: { data: products, as: 'product' } -->
+		            <div class="bBuyingLine mProductsLine">
+		                <div class="bBuyingLine__eLeft"></div>
+
+		                <div class="bBuyingLine__eRight">
+		                    <div class="bOrderItems">
+		                        <div class="bItemsRow mItemImg">
+		                        	<img data-bind="attr: { src: product.productImg }" />
+		                        </div>
+
+		                        <div class="bItemsRow mItemInfo">
+		                            <a target="_blank" data-bind="text: product.name, attr: { href: product.productUrl }"></a>
+		                            <span class="bCountItem">(<span data-bind="text: product.quantity"></span> шт.)</span>
+		                        </div>
+
+		                        <div class="bItemsRow mItemRight">
+		                        	<a data-bind="attr: { href: product.deleteUrl }, text: 'Удалить'"></a>
+		                        </div>
+
+		                        <div class="bItemsRow mItemRight"> <span data-bind="text: window.printPrice(product.price)"></span> <span class="rubl">p</span></div>
+		                    </div>
+		                </div>
+		            </div>
+		            <!-- /ko -->
+		            <!-- /Products -->
+
+		        </div>
+		    </div>
+
+		    <!-- Points popup -->
+		    <div class="bPointPopup" data-bind="visible: box.showPopupWithPoints">
+				<ul data-bind="foreach: { data: box.pointList, as: 'point'}">
+					<li>
+						<a data-bind="text: point.name,
+									click: function(data) {
+										box.selectPoint(data);
+									}"></a>
+						<span data-bind="text: point.regime"></span>
+					</li>
+				</ul>
 			</div>
+			<!-- /Points popup -->
 
-			<ul data-bind="foreach: { data: products, as: 'product' }">
-				<!-- перечисление продуктов в боксе -->
-				<li style="border-bottom: 1px solid #e6e6e6; margin-bottom: 15px;">
-					<img data-bind="attr: { src: product.productImg }" />
-					<p><a target="_blank" data-bind="text: product.name, attr: { href: product.productUrl }"></a></p>
-					<a data-bind="attr: { href: product.deleteUrl }, text: 'Удалить'"></a>
-					<p data-bind="text: 'Количество: '+product.quantity"></p>
-					<p data-bind="text: 'Стоимость: '+product.price"></p>
-				</li>
-			</ul>
-			<span data-bind="text: 'Общая стоимость '+box.fullPrice"></span>
+		    <!-- Sum -->
+		    <div class="bBuyingLineWrap__eSum">
+		        Итого с доставкой:
+		        <strong class="bSumPrice"><span data-bind="text: window.printPrice(box.fullPrice + box.deliveryPrice)"></span><span class="rubl">p</span></strong>
+		    </div>
 		</div>
-
-		<div class="bPointPopup" data-bind="visible: box.showPopupWithPoints">
-			<ul data-bind="foreach: { data: box.pointList, as: 'point'}">
-				<li>
-					<a data-bind="text: point.name,
-								click: function(data) {
-									box.selectPoint(data);
-								}"></a>
-					<span data-bind="text: point.regime"></span>
-				</li>
-			</ul>
-		</div>
-
 	</div>
+	
 
 
 	<div class="bPointPopup" data-bind="visible: showPopupWithPoints">
