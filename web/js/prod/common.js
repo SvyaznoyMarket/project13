@@ -509,7 +509,7 @@ $.ajaxSetup({
         addToRetailRocket = function addToRetailRocket( data ) {
             var product = data.product;
             if( typeof(rcApi) !== 'undefined' ){
-                rcApi.addToBasket(product.article);
+                rcApi.addToBasket(product.id);
             }
         },
 
