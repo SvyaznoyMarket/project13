@@ -74,12 +74,12 @@
 		<div class="bBuyingLine__eLeft">Выберите предпочтительный способ</div>
 
 		<div class="bBuyingLine__eRight bInputList" data-bind="foreach: { data: deliveryTypes }">
-			<input class="jsCustomRadio bCustomInput mCustomCheckBig" type="radio" name="radio" hidden data-bind="attr: { id: 'mehtod_'+$index }" />
+			<input class="jsCustomRadio bCustomInput mCustomCheckBig" type="radio" name="radio" hidden data-bind="attr: { id: 'method_'+$data.id }" />
 			<label class="bCustomLabel mCustomLabelBig" data-bind="
 									text: $data.name,
 									states: $data.states,
 									click: $root.chooseDeliveryTypes,
-									attr: { for: 'mehtod_'+$index }">
+									attr: { for: 'method_'+$data.id }">
 			</label>
 			<p class="bBuyingLine__eDesc" data-bind="text: $data.description"></p>
 		</div>

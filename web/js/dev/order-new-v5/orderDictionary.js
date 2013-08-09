@@ -31,6 +31,7 @@ function OrderDictionary( orderData ) {
 OrderDictionary.prototype.getNameOfState = function( state ) {
 	if ( !this.hasDeliveryState(state) ) {
 		console.warn('Не найден метод доставки '+state);
+		
 		return false;
 	}
 
@@ -117,6 +118,7 @@ OrderDictionary.prototype.getAllPointsByState = function( state ) {
 OrderDictionary.prototype.getProductFromState = function( state ) {
 	if ( !this.hasDeliveryState(state) ) {
 		console.warn('Не найден метод доставки '+state);
+
 		return false;
 	}
 
@@ -134,6 +136,7 @@ OrderDictionary.prototype.getProductFromState = function( state ) {
 OrderDictionary.prototype.getProductById = function( productId ) {
 	if ( !this.products.hasOwnProperty(productId) ) {
 		console.warn('Такого продукта не найдено');
+
 		return false;
 	}
 

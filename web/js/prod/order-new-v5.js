@@ -427,6 +427,7 @@ function OrderDictionary( orderData ) {
 OrderDictionary.prototype.getNameOfState = function( state ) {
 	if ( !this.hasDeliveryState(state) ) {
 		console.warn('Не найден метод доставки '+state);
+		
 		return false;
 	}
 
@@ -513,6 +514,7 @@ OrderDictionary.prototype.getAllPointsByState = function( state ) {
 OrderDictionary.prototype.getProductFromState = function( state ) {
 	if ( !this.hasDeliveryState(state) ) {
 		console.warn('Не найден метод доставки '+state);
+
 		return false;
 	}
 
@@ -530,6 +532,7 @@ OrderDictionary.prototype.getProductFromState = function( state ) {
 OrderDictionary.prototype.getProductById = function( productId ) {
 	if ( !this.products.hasOwnProperty(productId) ) {
 		console.warn('Такого продукта не найдено');
+
 		return false;
 	}
 
@@ -598,6 +601,7 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 
 			if ( !OrderModel.orderDictionary.hasDeliveryState(nowState) ) {
 				console.info('для метода '+nowState+' нет товаров');
+
 				continue;
 			}
 
@@ -653,6 +657,8 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 	var OrderModel = {
 		prepareData: ko.observable(false),
 
+		deliveryTypesButton: null,
+
 		statesPriority: null,
 
 		/**
@@ -679,6 +685,7 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 
 			choosenPoint = data.id;
 			OrderModel.showPopupWithPoints(false);
+			OrderModel.deliveryTypesButton.attr('checked','checked');
 			separateOrder( OrderModel.statesPriority );
 
 			return false;
@@ -696,9 +703,14 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 		 * @param	{String}	priorityState	Приоритетный метод доставки из массива
 		 * 
 		 */
-		chooseDeliveryTypes: function( data ) {
+		chooseDeliveryTypes: function( data, event ) {
 			var priorityState = data.states[0];
 
+			if ( $('#'+event.target.htmlFor).attr('checked') ) {
+				return false;
+			}
+
+			OrderModel.deliveryTypesButton = $('#'+event.target.htmlFor);
 			OrderModel.statesPriority = data.states;
 
 			// очищаем объект созданых блоков, удаляем блоки из модели
@@ -718,6 +730,7 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 			}
 
 			choosenPoint = 0;
+			OrderModel.deliveryTypesButton.attr('checked','checked');
 			separateOrder( OrderModel.statesPriority );
 
 			return false;

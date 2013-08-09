@@ -54,6 +54,7 @@
 
 			if ( !OrderModel.orderDictionary.hasDeliveryState(nowState) ) {
 				console.info('для метода '+nowState+' нет товаров');
+
 				continue;
 			}
 
@@ -109,6 +110,8 @@
 	var OrderModel = {
 		prepareData: ko.observable(false),
 
+		deliveryTypesButton: null,
+
 		statesPriority: null,
 
 		/**
@@ -135,6 +138,7 @@
 
 			choosenPoint = data.id;
 			OrderModel.showPopupWithPoints(false);
+			OrderModel.deliveryTypesButton.attr('checked','checked');
 			separateOrder( OrderModel.statesPriority );
 
 			return false;
@@ -152,9 +156,14 @@
 		 * @param	{String}	priorityState	Приоритетный метод доставки из массива
 		 * 
 		 */
-		chooseDeliveryTypes: function( data ) {
+		chooseDeliveryTypes: function( data, event ) {
 			var priorityState = data.states[0];
 
+			if ( $('#'+event.target.htmlFor).attr('checked') ) {
+				return false;
+			}
+
+			OrderModel.deliveryTypesButton = $('#'+event.target.htmlFor);
 			OrderModel.statesPriority = data.states;
 
 			// очищаем объект созданых блоков, удаляем блоки из модели
@@ -174,6 +183,7 @@
 			}
 
 			choosenPoint = 0;
+			OrderModel.deliveryTypesButton.attr('checked','checked');
 			separateOrder( OrderModel.statesPriority );
 
 			return false;
