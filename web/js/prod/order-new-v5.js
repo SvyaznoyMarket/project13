@@ -786,9 +786,11 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 		OrderModel.prepareData(true);
 	};
 
-	$.ajax({
-		type: 'GET',
-		url: getDataUrl,
-		success: renderOrderData
-	});
+	renderOrderData($('#jsOrderDelivery').data('value'));
+
+	// $.ajax({
+	// 	type: 'GET',
+	// 	url: getDataUrl,
+	// 	success: renderOrderData
+	// });
 }());
