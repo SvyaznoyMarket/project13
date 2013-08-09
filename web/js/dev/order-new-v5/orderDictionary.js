@@ -70,21 +70,33 @@ OrderDictionary.prototype.hasPointDelivery = function( state ) {
  *
  * @this	{OrderDictionary}
  * 
- * @param	{String}	state	Метод доставки
- * @param	{String}	pointId	Идентификатор точки достаки
- * @return	{Object}			Данные о точке доставки
+ * @param	{String}	state		Метод доставки
+ * @param	{String}	pointId		Идентификатор точки достаки
+ * @return	{Object}				Данные о точке доставки
  */
 OrderDictionary.prototype.getPointByStateAndId = function( state, pointId ) {
-	var pointName = this.pointsByDelivery[state],
+	var points = this.getAllPointsByState(state),
 		pointId = pointId+'';
 	// end of vars
 
-	for (var i = this.orderData[pointName].length - 1; i >= 0; i--) {
-		if ( this.orderData[pointName][i].id === pointId ) {
-			return this.orderData[pointName][i];
+	for (var i = points.length - 1; i >= 0; i--) {
+		if ( points[i].id === pointId ) {
+			return points[i];
 		}
 	}
 };
+
+/**
+ * @this	{OrderDictionary}
+ *
+ * @param	{String}	state	Метод доставки
+ */
+OrderDictionary.prototype.getAllPointsByState = function( state ) {
+	var pointName = this.pointsByDelivery[state];
+
+	return this.orderData[pointName];
+};
+
 
 /**
  * Получить спискок продуктов для которых доступен данный метод доставки

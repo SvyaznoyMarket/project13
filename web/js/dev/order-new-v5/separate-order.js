@@ -110,6 +110,8 @@
 	var OrderModel = {
 		prepareData: ko.observable(false),
 
+		statesPriority: null,
+
 		/**
 		 * Ссылка на словарь
 		 */
@@ -125,6 +127,20 @@
 		 */
 		deliveryBoxes: ko.observableArray([]),
 
+		showPopupWithPoints: ko.observable(false),
+
+		popupWithPoints: ko.observable({}),
+
+		selectPoint: function( data ) {
+			console.info('point selected...');
+
+			choosenPoint = data.id;
+			OrderModel.showPopupWithPoints(false);
+			separateOrder( OrderModel.statesPriority );
+
+			return false;
+		},
+
 		/**
 		 * Выбор типа доставки. Обработчик созданных кнопок из deliveryTypes
 		 * 
@@ -138,9 +154,9 @@
 		 * 
 		 */
 		chooseDeliveryTypes: function( data ) {
-			var statesPriority = data.states,
-				priorityState = statesPriority[0];
-			// end of vars
+			var priorityState = data.states[0];
+
+			OrderModel.statesPriority = data.states;
 
 			// очищаем объект созданых блоков, удаляем блоки из модели
 			createdBox = {};
@@ -151,20 +167,20 @@
 
 			// если для приоритетного state существуют точки доставки, то пользователь необходимо выбрать точку доставки, если нет точек доставки, то приравниваем точку к 0
 			if ( OrderModel.orderDictionary.hasPointDelivery(priorityState) ) {
-				console.log('есть точки доставки из которых нужно выбрать');
-				// здесь необходимо реализовать логику выбора магазина
-				choosenPoint = 13; // HARDCODE
+				OrderModel.popupWithPoints({
+					header: data.description,
+					points: OrderModel.orderDictionary.getAllPointsByState(priorityState)
+				});
+
+				OrderModel.showPopupWithPoints(true);
+
+				return false;
 			}
-			else {
-				console.log('для выбранного метода доставки нет точек доставки');
 
-				choosenPoint = 0;
-			}
+			choosenPoint = 0;
+			separateOrder( OrderModel.statesPriority );
 
-			console.log('выбранный метод доставки '+choosenDeliveryType);
-			console.log('выбранное место доставки '+choosenPoint);
-
-			separateOrder( statesPriority );
+			return false;
 		}
 	};
 
@@ -191,7 +207,8 @@
 		OrderModel.orderDictionary = new OrderDictionary(res);
 
 		OrderModel.deliveryTypes(res.deliveryTypes);
-		OrderModel.prepareData(true);		
+		OrderModel.prepareData(true);
+		$('#order').removeClass('hidden');
 	};
 
 	$.ajax({

@@ -42,6 +42,8 @@ function DeliveryBox( products, state, choosenPointForBox, createdBox, OrderMode
 	// Выбранный интервал доставки
 	self.choosenInterval = ko.observable();
 
+	self.showPopupWithPoints = ko.observable(false);
+
 	// Есть ли доступные точки доставки
 	self.hasPointDelivery = self.OrderModel.orderDictionary.hasPointDelivery(state);
 
@@ -61,6 +63,8 @@ function DeliveryBox( products, state, choosenPointForBox, createdBox, OrderMode
 
 /**
  * Делаем список общих для всех товаров в блоке точек доставок для данного метода доставки
+ *
+ * @this	{DeliveryBox}
  */
 DeliveryBox.prototype._makePointList = function() {
 	var self = this,
@@ -89,6 +93,36 @@ DeliveryBox.prototype._makePointList = function() {
 		}
 	}
 };
+
+/**
+ * Смена пункта доставки
+ *
+ * @this	{DeliveryBox}
+ * 
+ * @param	{Object}	data	Данные о пункте доставки
+ */
+DeliveryBox.prototype.selectPoint = function( data ) {
+	var self = this;
+
+	self.choosenPoint(data);
+	self.showPopupWithPoints(false);
+
+	return false;
+};
+
+/**
+ * Показ окна с пунктами доставки
+ *
+ * @this	{DeliveryBox}
+ */
+DeliveryBox.prototype.changePoint = function( ) {
+	var self = this;
+
+	self.showPopupWithPoints(true);
+
+	return false;
+};
+
 
 /**
  * Получить имя первого свойства объекта
@@ -416,21 +450,33 @@ OrderDictionary.prototype.hasPointDelivery = function( state ) {
  *
  * @this	{OrderDictionary}
  * 
- * @param	{String}	state	Метод доставки
- * @param	{String}	pointId	Идентификатор точки достаки
- * @return	{Object}			Данные о точке доставки
+ * @param	{String}	state		Метод доставки
+ * @param	{String}	pointId		Идентификатор точки достаки
+ * @return	{Object}				Данные о точке доставки
  */
 OrderDictionary.prototype.getPointByStateAndId = function( state, pointId ) {
-	var pointName = this.pointsByDelivery[state],
+	var points = this.getAllPointsByState(state),
 		pointId = pointId+'';
 	// end of vars
 
-	for (var i = this.orderData[pointName].length - 1; i >= 0; i--) {
-		if ( this.orderData[pointName][i].id === pointId ) {
-			return this.orderData[pointName][i];
+	for (var i = points.length - 1; i >= 0; i--) {
+		if ( points[i].id === pointId ) {
+			return points[i];
 		}
 	}
 };
+
+/**
+ * @this	{OrderDictionary}
+ *
+ * @param	{String}	state	Метод доставки
+ */
+OrderDictionary.prototype.getAllPointsByState = function( state ) {
+	var pointName = this.pointsByDelivery[state];
+
+	return this.orderData[pointName];
+};
+
 
 /**
  * Получить спискок продуктов для которых доступен данный метод доставки
@@ -584,6 +630,8 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 	var OrderModel = {
 		prepareData: ko.observable(false),
 
+		statesPriority: null,
+
 		/**
 		 * Ссылка на словарь
 		 */
@@ -599,6 +647,20 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 		 */
 		deliveryBoxes: ko.observableArray([]),
 
+		showPopupWithPoints: ko.observable(false),
+
+		popupWithPoints: ko.observable({}),
+
+		selectPoint: function( data ) {
+			console.info('point selected...');
+
+			choosenPoint = data.id;
+			OrderModel.showPopupWithPoints(false);
+			separateOrder( OrderModel.statesPriority );
+
+			return false;
+		},
+
 		/**
 		 * Выбор типа доставки. Обработчик созданных кнопок из deliveryTypes
 		 * 
@@ -612,9 +674,9 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 		 * 
 		 */
 		chooseDeliveryTypes: function( data ) {
-			var statesPriority = data.states,
-				priorityState = statesPriority[0];
-			// end of vars
+			var priorityState = data.states[0];
+
+			OrderModel.statesPriority = data.states;
 
 			// очищаем объект созданых блоков, удаляем блоки из модели
 			createdBox = {};
@@ -625,20 +687,20 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 
 			// если для приоритетного state существуют точки доставки, то пользователь необходимо выбрать точку доставки, если нет точек доставки, то приравниваем точку к 0
 			if ( OrderModel.orderDictionary.hasPointDelivery(priorityState) ) {
-				console.log('есть точки доставки из которых нужно выбрать');
-				// здесь необходимо реализовать логику выбора магазина
-				choosenPoint = 13; // HARDCODE
+				OrderModel.popupWithPoints({
+					header: data.description,
+					points: OrderModel.orderDictionary.getAllPointsByState(priorityState)
+				});
+
+				OrderModel.showPopupWithPoints(true);
+
+				return false;
 			}
-			else {
-				console.log('для выбранного метода доставки нет точек доставки');
 
-				choosenPoint = 0;
-			}
+			choosenPoint = 0;
+			separateOrder( OrderModel.statesPriority );
 
-			console.log('выбранный метод доставки '+choosenDeliveryType);
-			console.log('выбранное место доставки '+choosenPoint);
-
-			separateOrder( statesPriority );
+			return false;
 		}
 	};
 
@@ -665,7 +727,8 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 		OrderModel.orderDictionary = new OrderDictionary(res);
 
 		OrderModel.deliveryTypes(res.deliveryTypes);
-		OrderModel.prepareData(true);		
+		OrderModel.prepareData(true);
+		$('#order').removeClass('hidden');
 	};
 
 	$.ajax({

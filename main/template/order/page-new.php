@@ -5,26 +5,7 @@
  */
 ?>
 
-<!-- общая обертка оформления заказа -->
-<div>
 
-	<!-- выбор вариантов доставки -->
-	<div data-bind="css: { mLoader: !prepareData() }">
-
-		<!-- отображение типов доставки -->
-		<ul data-bind="foreach: { data: deliveryTypes }">
-			<li>
-				<h2><a href="#" data-bind="
-										text: $data.name,
-										states: $data.states,
-										click: $root.chooseDeliveryTypes">
-				</a></h2>
-				<p data-bind="text: $data.description"></p>
-			</li>
-		</ul>
-
-	</div>
-	
 	<!-- temp styles -->
 	<style type="text/css">
 		.bCalendarDay {
@@ -39,8 +20,51 @@
 			color: red;
 			background: orange;
 		}
+		.bPointPopup {
+			background-color: #FFFFFF;
+			border: 2px solid #FFA901;
+			border-radius: 6px 6px 6px 6px;
+			box-shadow: 0 0 7px #616161;
+			color: #000000;
+			cursor: default;
+			overflow: hidden;
+			padding: 20px 25px;
+			position: fixed;
+			top:50%;
+			left:50%;
+
+			width: 600px;
+			margin-left: -300px;
+
+			height: 400px;
+			margin-top: -200px;
+
+			text-align: left;
+
+			z-index: 10000;
+		}
 	</style>
 
+
+<!-- общая обертка оформления заказа -->
+<div data-bind="css: { mLoader: !prepareData() }"></div>
+
+<div id="order" class="hidden">
+
+	<!-- выбор вариантов доставки -->
+	<div>
+		<!-- отображение типов доставки -->
+		<ul data-bind="foreach: { data: deliveryTypes }">
+			<li>
+				<h2><a href="#" data-bind="
+										text: $data.name,
+										states: $data.states,
+										click: $root.chooseDeliveryTypes">
+				</a></h2>
+				<p data-bind="text: $data.description"></p>
+			</li>
+		</ul>
+	</div>
 
 	<div data-bind="foreach: { data: deliveryBoxes, as: 'box' }">
 		<!-- боксы доставки -->
@@ -55,7 +79,10 @@
 			</select>
 
 			<p data-bind="visible: box.hasPointDelivery, text: box.choosenPoint().name"></p>
-			<p><a href="#" data-bind="visible: box.hasPointDelivery, text: 'Сменить магазин'"></a></p>
+			<p><a href="#" data-bind="visible: box.hasPointDelivery,
+										text: 'Сменить магазин',
+										click: box.changePoint"></a>
+			</p>
 
 			<!-- календарик -->
 			<div class="clearfix" data-bind="foreach: { data: allDatesForBlock, as: 'calendarDay' }">
@@ -71,7 +98,7 @@
 				<li style="border-bottom: 1px solid #e6e6e6; margin-bottom: 15px;">
 					<img data-bind="attr: { src: product.productImg }" />
 					<p><a target="_blank" data-bind="text: product.name, attr: { href: product.productUrl }"></a></p>
-					<a data-bind="attr: { href: product.deleteUrl }">Удалить</a>
+					<a data-bind="attr: { href: product.deleteUrl }, text: 'Удалить'"></a>
 					<p data-bind="text: 'Количество: '+product.quantity"></p>
 					<p data-bind="text: 'Стоимость: '+product.price"></p>
 				</li>
@@ -79,6 +106,29 @@
 			<span data-bind="text: 'Общая стоимость '+box.fullPrice"></span>
 		</div>
 
+		<div class="bPointPopup" data-bind="visible: box.showPopupWithPoints">
+			<ul data-bind="foreach: { data: box.pointList, as: 'point'}">
+				<li>
+					<a data-bind="text: point.name,
+								click: function(data) {
+									box.selectPoint(data);
+								}"></a>
+					<span data-bind="text: point.regime"></span>
+				</li>
+			</ul>
+		</div>
+
+	</div>
+
+
+	<div class="bPointPopup" data-bind="visible: showPopupWithPoints">
+		<h2 data-bind="text: popupWithPoints().header"></h2>
+		<ul data-bind="foreach: { data: popupWithPoints().points }">
+			<li>
+				<a data-bind="text: $data.name, click: $root.selectPoint"></a>
+				<span data-bind="text: $data.regime"></span>
+			</li>
+		</ul>
 	</div>
 
 </div>

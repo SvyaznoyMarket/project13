@@ -42,6 +42,8 @@ function DeliveryBox( products, state, choosenPointForBox, createdBox, OrderMode
 	// Выбранный интервал доставки
 	self.choosenInterval = ko.observable();
 
+	self.showPopupWithPoints = ko.observable(false);
+
 	// Есть ли доступные точки доставки
 	self.hasPointDelivery = self.OrderModel.orderDictionary.hasPointDelivery(state);
 
@@ -61,6 +63,8 @@ function DeliveryBox( products, state, choosenPointForBox, createdBox, OrderMode
 
 /**
  * Делаем список общих для всех товаров в блоке точек доставок для данного метода доставки
+ *
+ * @this	{DeliveryBox}
  */
 DeliveryBox.prototype._makePointList = function() {
 	var self = this,
@@ -89,6 +93,36 @@ DeliveryBox.prototype._makePointList = function() {
 		}
 	}
 };
+
+/**
+ * Смена пункта доставки
+ *
+ * @this	{DeliveryBox}
+ * 
+ * @param	{Object}	data	Данные о пункте доставки
+ */
+DeliveryBox.prototype.selectPoint = function( data ) {
+	var self = this;
+
+	self.choosenPoint(data);
+	self.showPopupWithPoints(false);
+
+	return false;
+};
+
+/**
+ * Показ окна с пунктами доставки
+ *
+ * @this	{DeliveryBox}
+ */
+DeliveryBox.prototype.changePoint = function( ) {
+	var self = this;
+
+	self.showPopupWithPoints(true);
+
+	return false;
+};
+
 
 /**
  * Получить имя первого свойства объекта
