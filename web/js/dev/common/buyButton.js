@@ -218,7 +218,7 @@
         addToRetailRocket = function addToRetailRocket( data ) {
             var product = data.product;
             if( typeof(rcApi) !== 'undefined' ){
-                rcApi.addToBasket(product.id);
+                rcApi.addToBasket(product.article);
             }
         },
 
