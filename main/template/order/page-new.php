@@ -137,9 +137,12 @@
 
 		                <li class="bBuyingDatesItem mDisable" data-bind="css: { mCurrent: calendarDay.value == box.choosenDate().value,
 		                												mDisable: !calendarDay.avalible,
-		                												mEnable: calendarDay.avalible }">
-		                    <span class="bBuyingDatesItem__eDayNumber" data-bind="text: ( calendarDay.day === 0 ) ? '' : calendarDay.day,
-																					click: box.choosenDate"></span> 
+		                												mEnable: calendarDay.avalible },
+		                												click: function(data){
+		                													console.log(box)
+		                													box.clickCalendarDay(data);
+		                												}">
+		                    <span class="bBuyingDatesItem__eDayNumber" data-bind="text: ( calendarDay.day === 0 ) ? '' : calendarDay.day"></span> 
 		                    <span class="bBuyingDatesItem__eDay" data-bind="text: calendarDay.humanDayOfWeek"></span>
 		                </li>
 

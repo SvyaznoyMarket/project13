@@ -293,6 +293,24 @@ DeliveryBox.prototype._hasDateInAllProducts = function( checkTS ) {
 	return res;
 };
 
+
+/**
+ * Выбор новой даты в календаре
+ *
+ * @this	{DeliveryBox}
+ *
+ * @param	{Object}	data		Данные о новой дате
+ */
+DeliveryBox.prototype.clickCalendarDay = function( data ) {
+	var self = this;
+	
+	if ( !data.avalible ) {
+		return false;
+	}
+
+	self.choosenDate(data);
+};
+
 /**
  * Получение общей ближайшей даты доставки
  * Заполнение массива общих дат
@@ -326,8 +344,6 @@ DeliveryBox.prototype.calculateDate = function() {
 		if ( self._hasDateInAllProducts(nowTS) && nowTS >= todayTS ) {
 			nowProductDates[i].avalible = true;
 			nowProductDates[i].humanDayOfWeek = self._getNameDayOfWeek(nowProductDates[i].dayOfWeek);
-			nowProductDates[i].selectDay = self.selectDay;
-
 
 			self.allDatesForBlock.push(nowProductDates[i]);
 		}
