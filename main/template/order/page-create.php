@@ -155,7 +155,6 @@ if ($form->hasSubway()) $jsValidator['order[address_metro]'] = 'Укажите �
 
         </div>
 
-
         <div class='bBuyingLine<?= $isCorporative ? ' hidden' : '' ?> mOrderFields'>
             <div class="bBuyingLine__eLeft">Если у вас есть карта &laquo;Связной-Клуб&raquo;, вы можете указать ее номер</div>
             
@@ -167,9 +166,10 @@ if ($form->hasSubway()) $jsValidator['order[address_metro]'] = 'Укажите �
 
         <h2 class="bOrderView__eTitle">Оплата</h2>
 
-        <div class='bBuyingLine mPayMethods'>
+        <div class='bBuyingLine mPayMethods' data-max-sum-online="<?= \App::config()->order['maxSumOnline'] ?>">
             <div class="bBuyingLine__eLeft"></div>
             <div class="bBuyingLine__eRight" id="payTypes">
+
                 <?
                     $byPayOnReceipt = [
                         \Model\PaymentMethod\Entity::TYPE_ON_RECEIPT => [],

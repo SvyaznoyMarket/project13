@@ -328,10 +328,11 @@ class AppConfig {
     ];
     /** @var array  */
     public $order = [
-        'cookieName'    => null,
-        'sessionName'   => null,
-        'enableMetaTag' => null,
-        'newCreate'     => null,
+        'cookieName'     => null,
+        'sessionName'    => null,
+        'enableMetaTag'  => null,
+        'newCreate'      => null,
+        'maxSumOnline'   => null,
     ];
     /** @var array */
     public $maybe3d = [
