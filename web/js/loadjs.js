@@ -1,3 +1,29 @@
+(function ( global ) {
+	if ( document.body.getAttribute('data-debug') == 'true') {
+		return false;
+	}
+
+   var original = global.console;
+   var console  = global.console = {};
+   
+   // список методов
+   var methods = ['assert', 'count', 'debug', 'dir', 'dirxml', 'error', 'group', 'groupCollapsed', 'groupEnd', 'info', 'log', 'markTimeline', 'profile', 'profileEnd', 'table', 'time', 'timeEnd', 'trace', 'warn'];
+   
+   // обход все элементов массива в обратном порядке
+   for (var i = methods.length; i--;) {
+      // обратите внимание, что обязательно необходима анонимная функция,
+      // иначе любой метод нашей консоли всегда будет вызывать метод 'assert'
+      (function (methodName) {
+         // определяем новый метод
+         console[methodName] = function () {
+            return false;
+         };
+      })(methods[i]);
+   }
+})(this);
+
+
+
 ;(function( global ) {
 	global.startTime = new Date().getTime();
 	// console.log('start'+startTime);
@@ -13,9 +39,6 @@
 
 	if ( document.body.getAttribute('data-debug') == 'true') {
 		debug = true;
-	}
-	else {
-		global.console = {};
 	}
 
 	// page load log
