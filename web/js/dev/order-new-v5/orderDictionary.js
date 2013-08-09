@@ -37,6 +37,13 @@ OrderDictionary.prototype.getNameOfState = function( state ) {
 	return this.deliveryStates[state].name;
 };
 
+/**
+ * Получить таймштамп от которого нужно вести расчет
+ *
+ * @this	{OrderDictionary}
+ * 
+ * @return	{Number}	Таймштамп
+ */
 OrderDictionary.prototype.getToday = function() {
 	return this.serverTime;
 };
@@ -75,9 +82,10 @@ OrderDictionary.prototype.hasPointDelivery = function( state ) {
  * @return	{Object}				Данные о точке доставки
  */
 OrderDictionary.prototype.getPointByStateAndId = function( state, pointId ) {
-	var points = this.getAllPointsByState(state),
-		pointId = pointId+'';
+	var points = this.getAllPointsByState(state);
 	// end of vars
+	
+	pointId = pointId+'';
 
 	for (var i = points.length - 1; i >= 0; i--) {
 		if ( points[i].id === pointId ) {

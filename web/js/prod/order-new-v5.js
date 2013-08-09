@@ -23,6 +23,7 @@ function DeliveryBox( products, state, choosenPointForBox, createdBox, OrderMode
 
 	self.OrderModel = OrderModel;
 	self.createdBox = createdBox;
+	self.token = state+'_'+choosenPointForBox;
 
 	// Продукты в блоке
 	self.products = [];
@@ -95,16 +96,31 @@ DeliveryBox.prototype._makePointList = function() {
 };
 
 /**
- * Смена пункта доставки
+ * Смена пункта доставки. Переименовываем token блока
+ * Удаляем старый блок из массива блоков и добавлчем туда новый с новым токеном
+ * Если уже есть блок с таким токеном, необходиом добавить товары из текущего блока в него
  *
  * @this	{DeliveryBox}
  * 
  * @param	{Object}	data	Данные о пункте доставки
  */
 DeliveryBox.prototype.selectPoint = function( data ) {
-	var self = this;
+	var self = this,
+		newToken = self.state+'_'+data.id;
 
-	self.choosenPoint(data);
+	if ( self.createdBox[newToken] !== undefined ) {
+		self.createdBox[newToken].addProductGroup(self.products);
+
+		delete self.createdBox[self.token];
+	}
+	else {
+		self.createdBox[newToken] = self.createdBox[self.token];
+		delete self.createdBox[self.token];
+
+		self.token = newToken;
+		self.choosenPoint(data);
+	}
+
 	self.showPopupWithPoints(false);
 
 	return false;
@@ -417,6 +433,13 @@ OrderDictionary.prototype.getNameOfState = function( state ) {
 	return this.deliveryStates[state].name;
 };
 
+/**
+ * Получить таймштамп от которого нужно вести расчет
+ *
+ * @this	{OrderDictionary}
+ * 
+ * @return	{Number}	Таймштамп
+ */
 OrderDictionary.prototype.getToday = function() {
 	return this.serverTime;
 };
@@ -455,9 +478,10 @@ OrderDictionary.prototype.hasPointDelivery = function( state ) {
  * @return	{Object}				Данные о точке доставки
  */
 OrderDictionary.prototype.getPointByStateAndId = function( state, pointId ) {
-	var points = this.getAllPointsByState(state),
-		pointId = pointId+'';
+	var points = this.getAllPointsByState(state);
 	// end of vars
+	
+	pointId = pointId+'';
 
 	for (var i = points.length - 1; i >= 0; i--) {
 		if ( points[i].id === pointId ) {
@@ -529,7 +553,6 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 	console.info('Логика разбиения заказа для оформления заказа v.5');
 
 	var getDataUrl = '/ajax/order-delivery', // HARDCODE
-		choosenDeliveryType = null,
 		choosenPoint = null,
 
 		createdBox = {};
@@ -682,10 +705,7 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 			createdBox = {};
 			OrderModel.deliveryBoxes.removeAll();
 
-			// запоминаем выбранный способ доставки
-			choosenDeliveryType = data.token;
-
-			// если для приоритетного state существуют точки доставки, то пользователь необходимо выбрать точку доставки, если нет точек доставки, то приравниваем точку к 0
+			// если для приоритетного метода доставки существуют пункты доставки, то пользователю необходимо выбрать пункт доставки, если нет - то приравниваем идентификатор пункта доставки к 0
 			if ( OrderModel.orderDictionary.hasPointDelivery(priorityState) ) {
 				OrderModel.popupWithPoints({
 					header: data.description,

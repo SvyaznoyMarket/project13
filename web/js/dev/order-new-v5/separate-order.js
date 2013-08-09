@@ -9,7 +9,6 @@
 	console.info('Логика разбиения заказа для оформления заказа v.5');
 
 	var getDataUrl = '/ajax/order-delivery', // HARDCODE
-		choosenDeliveryType = null,
 		choosenPoint = null,
 
 		createdBox = {};
@@ -162,10 +161,7 @@
 			createdBox = {};
 			OrderModel.deliveryBoxes.removeAll();
 
-			// запоминаем выбранный способ доставки
-			choosenDeliveryType = data.token;
-
-			// если для приоритетного state существуют точки доставки, то пользователь необходимо выбрать точку доставки, если нет точек доставки, то приравниваем точку к 0
+			// если для приоритетного метода доставки существуют пункты доставки, то пользователю необходимо выбрать пункт доставки, если нет - то приравниваем идентификатор пункта доставки к 0
 			if ( OrderModel.orderDictionary.hasPointDelivery(priorityState) ) {
 				OrderModel.popupWithPoints({
 					header: data.description,

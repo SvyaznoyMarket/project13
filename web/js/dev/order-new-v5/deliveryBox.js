@@ -23,6 +23,7 @@ function DeliveryBox( products, state, choosenPointForBox, createdBox, OrderMode
 
 	self.OrderModel = OrderModel;
 	self.createdBox = createdBox;
+	self.token = state+'_'+choosenPointForBox;
 
 	// Продукты в блоке
 	self.products = [];
@@ -95,16 +96,31 @@ DeliveryBox.prototype._makePointList = function() {
 };
 
 /**
- * Смена пункта доставки
+ * Смена пункта доставки. Переименовываем token блока
+ * Удаляем старый блок из массива блоков и добавлчем туда новый с новым токеном
+ * Если уже есть блок с таким токеном, необходиом добавить товары из текущего блока в него
  *
  * @this	{DeliveryBox}
  * 
  * @param	{Object}	data	Данные о пункте доставки
  */
 DeliveryBox.prototype.selectPoint = function( data ) {
-	var self = this;
+	var self = this,
+		newToken = self.state+'_'+data.id;
 
-	self.choosenPoint(data);
+	if ( self.createdBox[newToken] !== undefined ) {
+		self.createdBox[newToken].addProductGroup(self.products);
+
+		delete self.createdBox[self.token];
+	}
+	else {
+		self.createdBox[newToken] = self.createdBox[self.token];
+		delete self.createdBox[self.token];
+
+		self.token = newToken;
+		self.choosenPoint(data);
+	}
+
 	self.showPopupWithPoints(false);
 
 	return false;
