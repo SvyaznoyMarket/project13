@@ -9019,10 +9019,10 @@
     margin: 0 -10px 7px;
     padding: 0 10px;
     text-align: center;
-    background: url('/css/subscribeLightboxPopup/img/bg.png') repeat-x 0 0;
+    background: url('/css/subscribeLightboxPopup/img/bgSubscribeTop.png') repeat-x 0 0;
   }
   .bSubscribeLightboxPopup__eTitle {
-    margin: 0 0 0 65px;
+    margin: 0 25px 0 20px;
     text-transform: uppercase;
     color: #ffffff;
     font-family: 'Enter';
@@ -9050,14 +9050,17 @@
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     border-radius: 4px;
-    height: 26px;
+    height: 27px;
     margin: 5px;
     cursor: pointer;
     color: white;
     border: none;
     background: #000000;
     font-size: 12px;
-    line-height: 24px;
+    line-height: 27px;
+    padding: 0 20px;
+    display: inline-block;
+    vertical-align: top;
   }
   .bSubscribeLightboxPopup__eNotNow {
     position: relative;
@@ -10600,7 +10603,7 @@
     text-decoration: none;
   }
   .bGoodsSlider.mWithCategory .bSliderAction {
-    width: 460px;
+    width: 459px;
     float: right;
     padding: 5px 0 0 20px;
     border-top: 1px solid #c7c7c7;

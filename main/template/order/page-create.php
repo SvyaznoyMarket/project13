@@ -183,7 +183,7 @@ if ($form->hasSubway()) $jsValidator['order[address_metro]'] = 'Укажите �
 
         <h2>Оплата</h2>
 
-        <dl class='bBuyingLine mPayMethods'>
+        <dl class='bBuyingLine mPayMethods' data-max-sum-online="<?= \App::config()->order['maxSumOnline'] ?>">
             <dt></dt>
             <dd id="payTypes">
                 <?

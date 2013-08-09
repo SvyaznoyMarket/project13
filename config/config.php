@@ -32,7 +32,7 @@ $c->cacheCookieName = 'enter_auth';
 $c->mainHost = 'www.enter.ru';
 $c->mobileHost = 'm.enter.ru';
 
-$c->redirect301['enabled'] = false;
+$c->redirect301['enabled'] = true;
 
 $c->coreV2['url']          = 'http://api.enter.ru/v2/';
 $c->coreV2['client_id']    = 'site';
@@ -322,6 +322,7 @@ $c->order['cookieName'] = 'last_order';
 $c->order['sessionName'] = 'lastOrder';
 $c->order['enableMetaTag'] = true;
 $c->order['newCreate'] = false;
+$c->order['maxSumOnline'] = 15000;
 
 $c->maybe3d['xmlUrl']     = 'http://hq.maybe3d.com/MappingService.svc/GetMappings?customerId=';
 $c->maybe3d['customerId'] = 'BE2016EF-32D8-41E6-976F-A8D32EB20ACF';
