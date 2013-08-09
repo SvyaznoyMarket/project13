@@ -6,9 +6,9 @@
 ?>
 
 <div class="bSubscribeLightboxPopup clearfix">
-    <h3 class="bSubscribeLightboxPopup__eTitle fl">Дружить с нами выгодно!</h3>
-    <input class="bSubscribeLightboxPopup__eInput fl" placeholder="Оставьте ваш email и узнайте почему"/>
-    <button class="bSubscribeLightboxPopup__eBtn fl" data-url="<?= $page->url('subscribe.create') ?>">Хочу все знать</button>
+    <h3 class="bSubscribeLightboxPopup__eTitle fl">Дарим подарки новым друзьям!</h3>
+    <input class="bSubscribeLightboxPopup__eInput fl" placeholder="Подпишитесь и получите подарок"/>
+    <button class="bSubscribeLightboxPopup__eBtn fl" data-url="<?= $page->url('subscribe.create') ?>">Хочу подарок</button>
     <a class="bSubscribeLightboxPopup__eNotNow fr" data-url="<?= $page->url('subscribe.cancel') ?>" href="#">Спасибо, не сейчас</a>
 </div>
 <!-- Topbar -->
