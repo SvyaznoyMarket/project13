@@ -51,8 +51,7 @@ class DeliveryAction {
                 \App::config()->coreV2['timeout'] * 2
             );
             $client->execute();
-            if ($exception instanceof \Curl\Exception) {
-                // TODO
+            if ($exception instanceof \Exception) {
                 throw $exception;
             }
 

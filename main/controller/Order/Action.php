@@ -917,6 +917,8 @@ class Action {
             throw new \Exception(sprintf('Заказ не подтвержден. Ответ ядра: %s', json_encode($result, JSON_UNESCAPED_UNICODE)));
         }
 
+        \App::logger()->info(['action' => __METHOD__, 'core.response' => $result], ['order']);
+
         $orderNumbers = [];
         $paymentUrls = [];
         foreach ($result as $orderData) {

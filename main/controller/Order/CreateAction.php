@@ -30,16 +30,9 @@ class CreateAction {
                 throw new \Exception('Корзина пустая');
             }
 
-            // типы доставок
-            /** @var $deliveryTypesById \Model\DeliveryType\Entity[] */
-            $deliveryTypesById = [];
-            foreach (\RepositoryManager::deliveryType()->getCollection() as $deliveryType) {
-                $deliveryTypesById[$deliveryType->getId()] = $deliveryType;
-            }
-
             $params = [];
             $data = [];
-            $result = \App::coreClientV2()->query('order/create-packet', $params, $data);
+            $createdOrders = \App::coreClientV2()->query('order/create-packet', $params, $data);
 
             $responseData = [];
 
@@ -52,13 +45,11 @@ class CreateAction {
     }
 
     /**
-     * @param \View\Order\Form $form        Валидная форма заказа
-     * @param \View\Order\DeliveryCalc\Map $deliveryMap Ката доставки заказов
-     * @param $products
+     * @param \View\Order\NewForm\Form $form
+     * @return \Model\Order\CreatedEntity[]
      * @throws \Exception
-     * @return array Номера созданных заказов
      */
-    private function saveOrder(\View\Order\Form $form, \View\Order\DeliveryCalc\Map $deliveryMap, $products) {
+    private function saveOrder(\View\Order\NewForm\Form $form) {
         $request = \App::request();
         $user = \App::user();
         $userEntity = $user->getEntity();
@@ -79,23 +70,19 @@ class CreateAction {
             $shopsById[$shop->getId()] = $shop;
         }
 
-        $deliveryData = json_decode($request->get('delivery_map'), true);
-        if (empty($deliveryData['deliveryTypes']) ) {
-            $e = new \Exception(sprintf('Пустая карта доставки %s', json_encode($request->request->all(), JSON_UNESCAPED_UNICODE)));
-            \App::logger()->error($e->getMessage(), ['order']);
-
-            throw $e;
+        if (!(bool)$form->getPart()) {
+            throw new \Exception(sprintf('Не получены подзаказы для запроса %s', json_encode($request->request->all(), JSON_UNESCAPED_UNICODE)));
         }
 
         $data = [];
         $bMeta = false;
-        foreach ($deliveryData['deliveryTypes'] as $deliveryItem) {
-            if (!isset($deliveryTypesById[$deliveryItem['id']])) {
-                \App::logger()->error(sprintf('Неизвестный тип доставки %s', json_encode($deliveryItem, JSON_UNESCAPED_UNICODE)), ['order']);
+        foreach ($form->getPart() as $orderPart) {
+            /** @var $deliveryType \Model\DeliveryType\Entity|null */
+            $deliveryType = isset($deliveryTypesById[$orderPart->getDeliveryTypeId()]) ? $deliveryTypesById[$orderPart->getDeliveryTypeId()] : null;
+            if (!$deliveryType) {
+                \App::logger()->error(sprintf('Неизвестный тип доставки {#%s @%s}', json_encode($orderPart->getDeliveryTypeId(), $orderPart->getDeliveryTypeToken(), JSON_UNESCAPED_UNICODE)), ['order']);
                 continue;
             }
-
-            $deliveryType = $deliveryTypesById[$deliveryItem['id']];
 
             // общие данные заказа
             $orderData = [
@@ -134,73 +121,51 @@ class CreateAction {
 
             // данные для самовывоза
             if (in_array($deliveryType->getToken(), ['self', 'now'])) {
-                $shopId = (int)$deliveryItem['shop']['id'];
-                if (!array_key_exists($shopId, $shopsById)) {
-                    \App::logger()->error(sprintf('Неизвестный магазин %s', json_encode($deliveryItem['shop'], JSON_UNESCAPED_UNICODE)), ['order']);
+                if ($orderPart->getShopId() && array_key_exists($orderPart->getShopId(), $shopsById)) {
+                    $orderData['shop_id'] = $orderPart->getShopId();
+                    $orderData['subway_id'] = null;
+                } else {
+                    \App::logger()->error(sprintf('Неизвестный магазин %s', $orderPart->getShopId()), ['order']);
                 }
-                $orderData['shop_id'] = $shopId;
-                $orderData['subway_id'] = null;
+
             }
 
             // подарочный сертификат
-            if (1 == count($deliveryData['deliveryTypes']) && $form->getPaymentMethodId() == \Model\PaymentMethod\Entity::CERTIFICATE_ID) {
+            if (1 == count($form->getPart()) && $form->getPaymentMethodId() == \Model\PaymentMethod\Entity::CERTIFICATE_ID) {
                 $orderData['certificate'] = $form->getCertificateCardnumber();
                 $orderData['certificate_pin'] = $form->getCertificatePin();
             }
 
-            // товары и услуги
-
-            foreach ($deliveryItem['items'] as $itemToken) {
-                if (false === strpos($itemToken, '-')) {
-                    \App::logger()->error(sprintf('Неправильный элемент заказа %s', json_encode($itemToken, JSON_UNESCAPED_UNICODE)), ['order']);
+            // товары
+            foreach ($orderPart->getProductIds() as $productId) {
+                $cartProduct = $user->getCart()->getProductById($productId);
+                if (!$cartProduct) {
+                    \App::logger()->error(sprintf('Товар #%s не найден в корзине', json_encode($productId, JSON_UNESCAPED_UNICODE)), ['order']);
                     continue;
                 }
 
-                list($itemType, $itemId) = explode('-', $itemToken);
+                $productData = [
+                    'id'       => $cartProduct->getId(),
+                    'quantity' => $cartProduct->getQuantity(),
 
-                // товары
-                if ('product' == $itemType) {
-                    $cartProduct = $user->getCart()->getProductById($itemId);
-                    if (!$cartProduct) {
-                        \App::logger()->error(sprintf('Элемент заказа %s не найден в корзине', json_encode($itemToken, JSON_UNESCAPED_UNICODE)), ['order']);
-                        continue;
-                    }
+                ];
 
-                    $productData = [
-                        'id'       => $cartProduct->getId(),
-                        'quantity' => $cartProduct->getQuantity(),
-
+                // расширенная гарантия
+                foreach ($cartProduct->getWarranty() as $cartWarranty) {
+                    $productData['additional_warranty'][] = [
+                        'id'         => $cartWarranty->getId(),
+                        'quantity'   => $cartProduct->getQuantity(),
                     ];
+                }
 
-                    // расширенная гарантия
-                    foreach ($cartProduct->getWarranty() as $cartWarranty) {
-                        $productData['additional_warranty'][] = [
-                            'id'         => $cartWarranty->getId(),
-                            'quantity'   => $cartProduct->getQuantity(),
-                        ];
-                    }
+                $orderData['product'][] = $productData;
 
-                    $orderData['product'][] = $productData;
-
-                    // связанные услуги
-                    foreach ($cartProduct->getService() as $cartService) {
-                        $orderData['service'][] = [
-                            'id'         => $cartService->getId(),
-                            'quantity'   => $cartService->getQuantity(),
-                            'product_id' => $cartProduct->getId(),
-                        ];
-                    }
-
-                    // несвязанные услуги
-                } else if ('service' == $itemType) {
-                    $cartService = $user->getCart()->getServiceById($itemId);
-                    if (!$cartService) {
-                        \App::logger()->error(sprintf('Элемент заказа %s не найден в корзине', json_encode($itemToken, JSON_UNESCAPED_UNICODE)), ['order']);
-                        continue;
-                    }
+                // связанные услуги
+                foreach ($cartProduct->getService() as $cartService) {
                     $orderData['service'][] = [
-                        'id'       => $cartService->getId(),
-                        'quantity' => $cartService->getQuantity(),
+                        'id'         => $cartService->getId(),
+                        'quantity'   => $cartService->getQuantity(),
+                        'product_id' => $cartProduct->getId(),
                     ];
                 }
 
@@ -213,6 +178,15 @@ class CreateAction {
                 // мета-теги
                 if (\App::config()->order['enableMetaTag'] && !$bMeta) {
                     try {
+                        /** @var $products \Model\Product\Entity[] */
+                        $products = [];
+                        \RepositoryManager::product()->prepareCollectionById($orderPart->getProductIds(), $user->getRegion(), function($data) use(&$products) {
+                            foreach ($data as $item) {
+                                $products[] = new \Model\Product\Entity($item);
+                            }
+                        }, function(\Exception $e) { \App::exception()->remove($e); });
+                        \App::coreClientV2()->execute();
+
                         foreach ($products as $product) {
                             $partners = [];
                             if ($partnerName = \App::partner()->getName()) {
@@ -222,13 +196,13 @@ class CreateAction {
                                 $partners[] = \Partner\Counter\MyThings::NAME;
                             }
                             if ($viewedAt = \App::user()->getRecommendedProductByParams($product->getId(), \Smartengine\Client::NAME, 'viewed_at')) {
-                                if ((time() - $viewedAt) <= 30 * 24 * 60 * 60) { //30days
+                                if ((time() - $viewedAt) <= 30 * 24 * 60 * 60) { // 30days
                                     $partners[] = \Smartengine\Client::NAME;
                                 } else {
                                     \App::user()->deleteRecommendedProductByParams($product->getId(), \Smartengine\Client::NAME, 'viewed_at');
                                 }
                             }
-                            $orderData['meta_data'] =  \App::partner()->fabricateCompleteMeta(
+                            $orderData['meta_data'] = \App::partner()->fabricateCompleteMeta(
                                 isset($orderData['meta_data']) ? $orderData['meta_data'] : [],
                                 \App::partner()->fabricateMetaByPartners($partners, $product)
                             );
@@ -254,24 +228,28 @@ class CreateAction {
             throw new \Exception(sprintf('Заказ не подтвержден. Ответ ядра: %s', json_encode($result, JSON_UNESCAPED_UNICODE)));
         }
 
-        $orderNumbers = [];
-        $paymentUrls = [];
+        \App::logger()->info(['action' => __METHOD__, 'core.response' => $result], ['order']);
+
+        $createdOrders = [];
         foreach ($result as $orderData) {
-            if (empty($orderData['number'])) {
-                \App::logger()->error(sprintf('Ошибка при создании заказа %s', json_encode($orderData, JSON_UNESCAPED_UNICODE)), ['order']);
+            if (!is_array($orderData)) {
+                \App::logger()->error(sprintf('Получены неверные данные для созданного заказа %s', json_encode($orderData, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)), ['order']);
                 continue;
             }
-            \App::logger()->debug(sprintf('Заказ %s успешно создан %s', $orderData['number'], json_encode($orderData, JSON_UNESCAPED_UNICODE)));
+            $createdOrder = new \Model\Order\CreatedEntity($orderData);
 
-            $orderNumbers[] = $orderData['number'];
-
-            if (!empty($orderData['payment_url'])) {
-                $paymentUrls[] = $orderData['payment_url'];
+            if (!$createdOrder->getNumber()) {
+                \App::logger()->error(sprintf('Не получен номер заказа %s', json_encode($orderData, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)), ['order']);
+                continue;
             }
+            if (!$createdOrder->getConfirmed()) {
+                \App::logger()->error(sprintf('Заказ не подтвержден %s', json_encode($orderData, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)), ['order']);
+            }
+
+            $createdOrders[] = $createdOrder;
+            \App::logger()->info(sprintf('Заказ успешно создан %s', json_encode($orderData, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)), ['order']);
         }
 
-        $paymentUrl = empty($paymentUrls[0]) ? null : base64_decode($paymentUrls[0]);
-
-        return ['orderNumbers' => $orderNumbers, 'paymentUrl' => $paymentUrl];
+        return $createdOrders;
     }
 }
