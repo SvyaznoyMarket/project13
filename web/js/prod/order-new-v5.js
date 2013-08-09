@@ -366,20 +366,25 @@ DeliveryBox.prototype.makeCalendar = function() {
 	var self = this,
 		addCountDays = 0,
 		dayOfWeek = null,
-		tmpDay = {};
+		tmpDay = {},
+		tmpVal = null,
+
+		ONE_DAY = 24*60*60*1000;
 	// end of vars
 
 	if ( self.allDatesForBlock()[0].dayOfWeek !== 1 ) {
 		addCountDays = ( self.allDatesForBlock()[0].dayOfWeek === 0 ) ? 6 : self.allDatesForBlock()[0].dayOfWeek - 1;
+		tmpVal = self.allDatesForBlock()[0].value;
 
 		for ( var i = addCountDays; i > 0; i-- ) {
 			dayOfWeek = self.allDatesForBlock()[0].dayOfWeek - 1;
-			
+			tmpVal -= ONE_DAY;
+
 			tmpDay = {
 				avalible: false,
 				humanDayOfWeek: self._getNameDayOfWeek(dayOfWeek),
 				dayOfWeek: dayOfWeek,
-				day: 0
+				day: new Date(tmpVal).getDate()
 			};
 
 			self.allDatesForBlock.unshift(tmpDay);
@@ -388,15 +393,17 @@ DeliveryBox.prototype.makeCalendar = function() {
 
 	if ( self.allDatesForBlock()[self.allDatesForBlock().length - 1].dayOfWeek !== 0 ) {
 		addCountDays = 7 - self.allDatesForBlock()[self.allDatesForBlock().length - 1].dayOfWeek;
+		tmpVal = self.allDatesForBlock()[self.allDatesForBlock().length - 1].value;
 
 		for ( var j = addCountDays; j > 0; j-- ) {
 			dayOfWeek = ( self.allDatesForBlock()[self.allDatesForBlock().length - 1].dayOfWeek + 1 === 7 ) ? 0 : self.allDatesForBlock()[self.allDatesForBlock().length - 1].dayOfWeek + 1;
-			
+			tmpVal += ONE_DAY;
+
 			tmpDay = {
 				avalible: false,
 				humanDayOfWeek: self._getNameDayOfWeek(dayOfWeek),
 				dayOfWeek: dayOfWeek,
-				day: 0
+				day: new Date(tmpVal).getDate()
 			};
 
 			self.allDatesForBlock.push(tmpDay);
