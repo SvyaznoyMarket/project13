@@ -119,7 +119,7 @@ class DeliveryAction {
                     }
 
                     $return[] = [
-                        'name'      => str_replace(date('Y', $time) . ' г.', '', $helper->dateToRu(date('Y-m-d', $time)) . ' г.'),
+                        'name'      => str_replace(date('Y') . ' г.', '', $helper->dateToRu(date('Y-m-d', $time)) . ' г.'),
                         'value'     => strtotime($dateItem['date'], 0) * 1000,
                         'day'       => (int)date('j', $time),
                         'dayOfWeek' => (int)date('w', $time),
