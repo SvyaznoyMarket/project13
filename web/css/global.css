@@ -2789,8 +2789,7 @@
     position: relative;
   }
   .bFastInner #phonemask {
-    padding-left: 27px;
-    width: 383px;
+    text-indent: 27px;
   }
   .bFastInner #phonePH {
     line-height: 33px;
