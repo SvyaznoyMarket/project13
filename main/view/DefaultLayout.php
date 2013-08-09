@@ -549,5 +549,35 @@ class DefaultLayout extends Layout {
     }
 
 
+    public function slotRetailRocket()
+    {
+        $routeName = \App::request()->attributes->get('route');
+        $rrObj = new \View\Partners\RetailRocket($routeName);
+        $return = '';
+
+        $rrData = null;
+        if ($routeName == 'product') {
+
+            $product = $this->getParam('product');
+            $rrData = $rrObj->product($product);
+
+        } elseif ($routeName == 'order.complete') {
+
+            $orders = $this->getParam('orders');
+            $rrData = $rrObj->transaction($orders);
+
+        }
+        $rrObj = null;
+
+
+        $return .= '<div id="RetailRocketJS" class="jsanalytics"';
+        if ($rrData) {
+            $return .= ' data-value="' . $this->json($rrData) . '"';
+        }
+        $return .= '></div>';
+
+        return $return;
+    }
+
 
 }
