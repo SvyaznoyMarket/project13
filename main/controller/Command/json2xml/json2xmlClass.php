@@ -17,6 +17,8 @@ class json2xml
     private $log_format //= 'console'
     ;
 
+    private $coreUrl= 'http://tester.core.ent3.ru/v2/';
+
 
     function __construct() {
         //define("MAX_IERATIONS", -1); // for all
@@ -35,11 +37,15 @@ class json2xml
     }
 
 
-    private function echlog($var)
+    private function echlog($var, $desc = null)
     {
         $res = '';
 
-        if (is_string($var)) $res .= '### ';
+        if (!empty($desc)) {
+            $desc =  $desc . ':   ';
+        }
+
+        if (is_string($var)) $res .= '### ' . $desc;
         $res .= print_r($var, 1);
 
         if ( $this->log_format != 'console' ) {
@@ -51,11 +57,24 @@ class json2xml
     }
 
 
+    private function loadCategory($id) {
+        $core_method = 'category/get';
+        $get_params = '?' . urlencode('id') . '=' . $id;
+
+        $core_url = $this->coreUrl . $core_method . $get_params;
+        $response = $this->curl($core_url);
+
+        return isset($response->result) ? $response->result : false;
+    }
+
+
 
 
 
     public function execute()
     {
+        $categoryInf = $this->loadCategory(1);
+
 
         $time_start = time();
         $this->echlog( 'Время начала: ' . $time_start );
@@ -231,6 +250,7 @@ class json2xml
     }
 
 
+
     protected function timeFromSeconds($time) {
         $m = $h = null;
         $s = (int) $time;
@@ -257,5 +277,18 @@ class json2xml
     }
 
 
+
+    private function curl($url, $post_arr = []) {
+        if( $curl = curl_init() ) {
+            curl_setopt($curl, CURLOPT_URL, $url);
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER,true);
+            curl_setopt($curl, CURLOPT_POST, true);
+            curl_setopt($curl, CURLOPT_POSTFIELDS, $post_arr );
+            $out = curl_exec($curl);
+            curl_close($curl);
+            return json_decode($out);
+        }
+        return false;
+    }
 
 }
