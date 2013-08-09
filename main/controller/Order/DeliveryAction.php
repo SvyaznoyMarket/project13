@@ -50,6 +50,7 @@ class DeliveryAction {
                 ],
                 function($data) use (&$result, &$shops) {
                     $result = $data;
+                    \App::logger()->info(['action' => __METHOD__, 'core.response' => $result], ['order']);
                 },
                 function (\Exception $e) use (&$exception) {
                     $exception = $e;

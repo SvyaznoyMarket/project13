@@ -133,6 +133,8 @@ class CreateAction {
             ];
 
             $this->failResponseData($e, $responseData);
+
+            \App::logger()->error(['action' => __METHOD__, 'request.data' => $request->request->all(), 'error' => $e, 'formError' => $formErrors], ['order']);
         }
 
         // JsonResponse
