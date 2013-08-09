@@ -23,6 +23,7 @@ class DeliveryAction {
         $user = \App::user();
         $region = $user->getRegion();
         $cart = $user->getCart();
+        $helper = new \View\Helper();
 
         // данные для JsonResponse
         $responseData = [
@@ -103,7 +104,7 @@ class DeliveryAction {
             ]);
 
             // костыль
-            $getDates = function(array $dateData) {
+            $getDates = function(array $dateData) use (&$helper) {
                 $return = [];
 
                 foreach ($dateData as $dateItem) {
@@ -118,7 +119,7 @@ class DeliveryAction {
                     }
 
                     $return[] = [
-                        'name'      => date('Y-m-d', $time),
+                        'name'      => str_replace(date('Y', $time) . ' г.', '', $helper->dateToRu(date('Y-m-d', $time)) . ' г.'),
                         'value'     => strtotime($dateItem['date'], 0) * 1000,
                         'day'       => (int)date('j', $time),
                         'dayOfWeek' => (int)date('w', $time),
