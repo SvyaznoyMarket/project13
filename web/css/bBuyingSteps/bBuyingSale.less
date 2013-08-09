@@ -1,0 +1,198 @@
+.bBuyingSale {
+	margin: 40px 0 0;
+
+	.bBuyingLine__eLeft {
+		width: 335px;
+		padding-top: 30px;
+	}
+
+	.bBuyingLine__eRight {
+		width: 590px;
+	}
+}
+
+.bSaleData {
+	display: inline-block;
+
+	width: 427px;
+
+	vertical-align: top;
+
+	*display: inline;
+	zoom: 1;
+
+	.bTitle {
+		margin: 0 0 15px;
+
+		font-size: 11px;
+	}
+
+	.mSaleInput {
+		display: inline-block;
+
+		width: 290px;
+
+		*display: inline;
+		zoom: 1;
+	}
+
+	.mSaleBtn {
+		display: inline-block;
+
+		width: 120px;
+		height: 33px;
+		padding: 0;
+
+		vertical-align: top;
+
+		font: bold 14px/33px "Enter type";
+
+		*display: inline;
+		zoom: 1;
+	}
+}
+
+.bSaleList {
+	margin: 0 0 12px 4px;
+
+	&__eItem {
+		float: left;
+
+		margin-right: 14px;
+
+		vertical-align: top;
+	}
+
+	.mCustomLabelRadioBig {
+		padding-left: 15px;
+
+		line-height: 1;
+	}
+
+	.mCustomRadioBig+.bCustomLabel {
+		background-position:  0 -17px;
+	}
+
+	.mCustomRadioBig:checked+.bCustomLabel {
+		background-position: 0 4px;
+	}
+}
+
+.bSaleMassege {
+	margin: 15px 0 30px -85px;
+
+	&__eImgSale {
+		display: inline-block;
+
+		width: 62px;
+		margin-right: 20px;
+
+		text-align: right;
+		vertical-align: middle;
+
+		*display: inline;
+		zoom: 1;
+	}
+
+	&__eText {
+		display: inline-block;
+
+		width: 375px;
+		margin: 0 0 15px;
+		padding: 3px 0 0 45px;
+
+		vertical-align: top;
+
+		background: url("@{base-url}/bBuyingSteps/img/bgStatusSale.gif") no-repeat 0 0;
+
+		font-size: 14px;
+		line-height: 20px;
+
+		*display: inline;
+		zoom: 1;
+
+		&.mApply {
+			background-position: 0 0;
+		}
+
+		&.mCancel {
+			background-position: 0 -35px;
+		}
+	}
+
+	&__eDel {
+		.grayGradDark();
+		.rounded(4px);
+		display: inline-block;
+		float: right;
+
+		padding: 7px 10px;
+
+		border: 1px solid #c9c9c9;
+
+		font-weight: bold;
+
+		*display: inline;
+		zoom: 1;
+
+		&:hover {
+			.grayGradDark2();
+			text-decoration: none;
+		}
+	}
+}
+
+.bSalePrice {
+	display: inline-block;
+
+	width: 128px;
+	margin: 20px 0 0 15px;
+
+	vertical-align: top;
+
+	font: normal 14px/16px "Enter type";
+
+	*display: inline;
+	zoom: 1;
+
+	.bTitle {
+		margin: 0 0 10px;
+	}
+
+	.bPromoCode {
+		.rounded(3px);
+		margin: 0 0 15px;
+		padding: 5px 0;
+
+		text-align: center;
+
+		border: 1px solid #dddddd;
+
+		line-height: 20px;
+	}
+
+	.bSale {
+		font-size: 21px;
+		font-weight: bold;
+	}
+
+	.bSaleSum {
+		margin: 20px 0 0;
+
+		&__eOld {
+			display: block;
+
+			margin: 12px 0 5px;
+
+			text-decoration: line-through;
+
+			color: #898989;
+
+			font-size: 18px;
+		}
+
+		&__eNew {
+			font-size: 24px;
+		}
+	}
+}

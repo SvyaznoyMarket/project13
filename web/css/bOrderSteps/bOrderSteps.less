@@ -1,0 +1,424 @@
+@orderSprite-url:"@{base-url}/order/img/orderSprite.png";
+.bBuyingHead {
+  margin-bottom: 20px;
+  padding: 25px 0px 10px;
+
+  border-bottom: 1px solid @typLightGray;
+
+  &__eLogo {
+    display: inline-block;
+    float: right;
+    zoom: 1;
+
+    width: 95px;
+    height: 87px;
+
+    vertical-align: top;
+
+    background: url("@{orderSprite-url}") no-repeat -55px 0;
+
+    *display: inline;
+  }
+
+  &__eTitle {
+    text-transform: uppercase;
+
+    font: 18px 'Enter';
+    font-weight: 100;
+  }
+
+  .bTitle {
+    font-size: 48px;
+
+  }
+}
+
+.bOrderPreloader {
+  .rounded(7px);
+  margin: 25px 0px;
+  padding: 20px 0px;
+
+  border: 1px solid #ddd;
+  background: #f6f6f6;
+  img, span{
+    display: inline-block;
+    zoom: 1;
+
+    vertical-align: middle;
+
+    *display: inline;
+  }
+  span {
+    width: 240px;
+    padding-left: 15px;
+
+    font: 18px Tahoma, sans-serif;
+  }
+}
+
+.bBackCart {
+  color: #4fcbf4;
+
+  font-size: 14px;
+  font-weight: bold;
+
+  &.mOrdeRead {
+    display: inline-block;
+
+    padding-top: 4px;
+  }
+}
+
+.bBuyingSteps {
+  &__eTitle {
+    padding: 0 0 15px;
+
+    font-size: 18px;
+  }
+}
+
+.bBuyingLineWrap {
+  .rounded(5px);
+  margin: 15px 0px;
+  padding: 0px 15px;
+
+  border: 1px solid #ddd;
+
+  .bCelendar {
+    margin: 0 0 30px;
+  }
+}
+
+.bBuyingLine {
+  margin: 20px 0px;
+
+
+   &__eLeft {
+    display: inline-block;
+    zoom: 1;
+
+    width: 255px;
+    margin-right: 10px;
+
+    vertical-align: top;
+
+    font-size: 14px;
+
+    *display: inline;
+  }
+
+  &__eRight {
+    display: inline-block;
+    zoom: 1;
+
+    width: 639px;
+
+    vertical-align: top;
+
+    *display: inline;
+  }
+
+  &.mOrderMethod {
+    padding: 0 15px;
+  }
+
+  &.mOrderFields {
+
+    .bBuyingLine__eLeft {
+      margin: 2px 0 20px;
+    }
+
+    .bBuyingLine__eRight {
+      width: 665px;
+      margin: 0 0 20px;
+      position: relative;
+    }
+
+    .bSubscibe {
+      display: inline-block;
+
+      margin: 2px 0 0 5px;
+
+      *display: inline;
+      zoom: 1;
+    }
+  }
+
+  &__eDesc {
+    width: 450px;
+    padding-left: 33px;
+    margin: 0 0 15px;
+
+    color: #434343;
+
+    font-size: 12px;
+  }
+
+  .mSelectShop {
+    padding: 6px 30px;
+    margin: 0 0 0 33px;
+ 
+    font-size: 16px;
+  }
+
+  .bDeliveryPrice {
+
+    &__eItem {
+      display: block;
+      margin: 20px 0 0;
+    }
+
+    .mTextColor {
+      color: #cb3735;
+    }
+
+    .mFootnote {
+      font-size: 12px;
+
+      .bStar {
+        display: inline-block;
+        margin-left: -11px;
+      }
+    }
+  }
+
+  &__eLabel {
+    display: inline-block;
+    zoom: 1;
+
+    width: 460px;
+
+    vertical-align: top;
+
+    font-family:Tahoma, sans-serif;
+    font-size:14px;
+    font-weight:bold;
+    line-height:25px;
+
+    *display: inline;
+  }
+
+  .bOrderItems {
+    margin: 15px 0 5px;
+
+    .bItemsRow {
+      display: inline-block;
+
+      width: 97px;
+      margin-right: 10px;
+      padding-top: 5px;
+
+      vertical-align: top;
+
+      *display: inline;
+      zoom: 1;
+    }
+
+    .mItemImg {
+      width: 60px;
+      padding-top: 0;
+    }
+
+    .mItemRight {
+      text-align: right;
+    }
+
+    .mItemInfo {
+      width: 333px;
+      font-size: 12px;
+
+      .bCountItem {
+        color: #6e6e6e;
+        display: block;
+      }
+    }
+  }
+
+  .bFootenote {
+    font-size: 12px;
+    margin: 15px 0 30px;
+  }
+
+  .bTotalSumm {
+    float: right;
+    text-align: right;
+    margin-right: 26px;
+
+    &__ePrice {
+      font-size: 18px;
+    }
+  }
+}
+
+.bBuyingLine__eText {
+  .rounded(5px);
+  width: 350px;
+  height: 30px;
+
+  vertical-align: top;
+
+  border: 1px solid #9e9e9e;
+  outline: none;
+
+  line-height: 30px;
+  &:focus {
+    border-color: @firmOrange;
+  }
+  &.mInputShort {
+    width: 132px;
+    padding-left: 25px;
+  }
+  &.mInputLong {
+    width: 460px;
+    padding-left: 10px;
+  }
+}
+
+.mInputLong.mRed,
+.mInputShort.mRed {
+  border: 1px solid red;
+}
+
+.bBuyingLine__eTextarea {
+  .rounded(5px);
+  width: 460px;
+  height: 70px;
+  margin: 0px 0px 10px;
+  padding: 5px;
+
+  border: 1px solid #9e9e9e;
+  outline: none;
+  &:focus {
+    border-color: @firmOrange;
+  }
+}
+
+.bBuyingLine__eInfo {
+  display: inline-block;
+  zoom: 1;
+
+  width: 270px;
+
+  vertical-align: middle;
+
+  *display: inline;
+}
+
+.bBuyingLineWrap__eSum {
+  margin: 0px 11px 10px 0px;
+
+  text-align: right;
+
+  color: #a8a8a8;
+  b {
+    margin-left: 10px;
+
+    color: @black;
+
+    font: 14px Tahoma, sans-serif;
+  }
+}
+
+.bFormError {
+  display:block;
+  clear: both;
+  zoom: 1;
+
+  color: #ec323b;
+
+  font-size: 14px;
+}
+
+.orderFinal__certificate{
+  margin:15px 0;
+  h2{
+    margin-bottom: 15px;
+
+    font-size: 19px;
+  }
+  input{
+    margin: 0 5px 15px 0;
+    padding: 2px 8px;
+    &.cardNumber{
+      width:230px;
+    }
+    &.cardPin{
+      width:90px;
+    }
+    &.mRed{
+      border: 1px solid red;
+    }
+  }
+  .process{
+    .img{
+      .rounded(7px);
+      float:left;
+
+      width: 35px;
+      height:35px;
+      margin:0 15px 15px 0;
+      &.red{
+        background:#D90000 url("@{base-url}/order/img/x.gif") no-repeat 50% 50%;
+      }
+      &.green{
+        background:#2DB200 url("@{base-url}/order/img/green.gif") no-repeat 50% 50%;
+      }
+      &.orange{
+        background: @firmOrange url("@{base-url}/order/img/ajar.gif") no-repeat 50% 50%;
+      }
+    }
+    p{
+      display: inline;
+      float: none;
+
+      font-size:18px;
+      line-height:1.5em;
+    }
+  }
+}
+
+.title-font16 {
+  margin-bottom: 32px;
+}
+.socnet-ico-box {
+  margin-top: 0;
+  .socnet-ico-list {
+    float: left;
+
+    margin: 4px 1px 0 0;
+  }
+  .socnet-ico-list li {
+    float: right;
+  }
+  .socnet-ico-list li a {
+    display: block;
+
+    width: 30px;
+    height: 30px;
+
+    background: url("@{base-url}/order/img/img_ico_socnet.gif") no-repeat 0 0;
+  }
+  .socnet-ico-list li.socnet-ico-list__tw a {
+    background-position: -30px 0;
+  }
+  .socnet-ico-list li.socnet-ico-list__vk a {
+    background-position: -60px 0;
+  }
+  .socnet-ico-list li.socnet-ico-list__yt a {
+    background-position: -90px 0;
+  }
+  .socnet-ico-list li.socnet-ico-list__inst a {
+    background-position: -120px 0;
+  }
+  .socnet-ico-list li.socnet-ico-list__fs a {
+    background-position: -150px 0;
+  }
+  .socnet-ico-list li.socnet-ico-list__yam a {
+    width: 119px;
+    height: 36px;
+    margin-left: 14px;
+
+    background-position: -180px 0;
+  }
+}
+

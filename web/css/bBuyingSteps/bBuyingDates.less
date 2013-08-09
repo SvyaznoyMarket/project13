@@ -1,0 +1,111 @@
+@orderSprite-url:"@{base-url}/order/img/orderSprite.png";
+
+.bBuyingDates {
+  .rounded(7px);
+  float: left;
+
+  margin: 26px 0 30px;
+
+  border: 1px solid #ddd;
+  background: #f4f4f4;
+
+  font-size: 0px;
+}
+
+.bBuyingDatesItem { 
+    position: relative;
+
+    display: block;
+    float: left;
+    zoom: 1;
+
+    width: 50px;
+	margin: 1px;
+	padding: 5px 0;
+
+	font-size: 17px;
+
+	cursor: pointer;
+
+    text-align: center;
+
+    &:hover {
+	    .rounded(5px);
+	    background: #d5d5d5;
+	}
+
+    .bArrow {
+    	height: 11px;
+		width: 9px;
+
+		display: block;
+		margin: 11px 0 0 14px;
+    }
+
+    &.mLeft,
+	&.mRight {
+	  width: 38px;
+	  height: 33px;
+
+	  padding: 0px;
+	  cursor: pointer;
+
+	  background: #ddd;
+	}
+
+	&.mLeft {
+		.rounded(7px 0 0 7px);
+
+		.bArrow {
+			background: url("@{orderSprite-url}") -25px 0px no-repeat;
+		}
+	}
+
+	&.mRight {
+		.rounded(0 7px 7px 0);
+	  	float:right;
+
+	  	*float:none;
+
+	  	.bArrow {
+			background: url("@{orderSprite-url}") -34px 0px no-repeat;
+		}
+
+		&.mDisabled, {
+		  cursor: default;
+
+		  background: #f4f4f4;
+		}
+	}
+
+    &__eDay {
+      position: absolute;
+      top: -18px;
+      left: 21px;
+
+      font: 11px Tahoma, sans-serif;
+    }
+
+    &__eDayNumber {
+	  display: inline-block;
+	  zoom: 1;
+
+	  *display: inline;
+    }
+
+    &.mDisable {
+	  color: #e0e0e0;
+
+	  font: 17px Tahoma, sans-serif;
+	}
+
+	&.mCurrent {
+	  .rounded(5px);
+	  color: @white;
+	  background: @firmOrange;
+
+	    .bBuyingDatesItem__eDay {
+	      color: @firmOrange;
+	    }
+	}
+}
