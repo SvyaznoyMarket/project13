@@ -18,6 +18,13 @@ class DeliveryAction {
             throw new \Exception\NotFoundException('Request is not xml http request');
         }
 
+        return new \Http\JsonResponse($this->getResponseData());
+    }
+
+    /**
+     * @return array
+     */
+    public function getResponseData() {
         $router = \App::router();
         $client = \App::coreClientV2();
         $user = \App::user();
@@ -135,16 +142,17 @@ class DeliveryAction {
             $productIdsByShop = [];
 
             foreach ($result['products'] as $productItem) {
+                $productId = (string)$productItem['id'];
+
                 /** @var $cartProduct \Model\Cart\Product\Entity|null */
-                $cartProduct = $cart->getProductById($productItem['id']);
+                $cartProduct = $cart->getProductById($productId);
                 if (!$cartProduct) {
-                    \App::logger()->error(sprintf('Товар %s не найден в корзине', $productItem['id']));
+                    \App::logger()->error(sprintf('Товар %s не найден в корзине', $productId));
                     continue;
                 }
 
                 $deliveryData = [];
                 foreach ($productItem['deliveries'] as $deliveryItemToken => $deliveryItem) {
-                    $productId = (string)$productItem['id'];
                     list($deliveryItemTokenPrefix, $pointId) = array_pad(explode('_', $deliveryItemToken), 2, null);
 
                     // если доставка, модифицируем префикс токена и точку получения товаров
@@ -180,7 +188,7 @@ class DeliveryAction {
                     ];
                 }
 
-                $responseData['products'][$productItem['id']] = [
+                $responseData['products'][$productId] = [
                     'id'         => $productId,
                     'name'       => $productItem['name'],
                     'price'      => (int)$productItem['price'],
@@ -189,8 +197,8 @@ class DeliveryAction {
                     'stock'      => (int)$productItem['stock'],
                     'image'      => $productItem['media_image'],
                     'url'        => $productItem['link'],
-                    'addUrl'     => $router->generate('cart.product.set', ['productId' => $productItem['id'], 'quantity' => $productItem['quantity']]),
-                    'deleteUrl'  => $router->generate('cart.product.delete', ['productId' => $productItem['id']]),
+                    'addUrl'     => $router->generate('cart.product.set', ['productId' => $productId, 'quantity' => $productItem['quantity']]),
+                    'deleteUrl'  => $router->generate('cart.product.delete', ['productId' => $productId]),
                     'deliveries' => $deliveryData,
                 ];
             }
@@ -233,6 +241,6 @@ class DeliveryAction {
             $this->failResponseData($e, $responseData);
         }
 
-        return new \Http\JsonResponse($responseData);
+        return $responseData;
     }
 }

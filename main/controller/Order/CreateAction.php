@@ -62,6 +62,13 @@ class CreateAction {
                 ];
             }
 
+            // TODO: прибавить к cartSum стоимость доставки
+            $cartSum = $user->getCart()->getSum();
+            if ($form->getPaymentMethodId() && ($cartSum > \App::config()->order['maxSumOnline']) && in_array($form->getPaymentMethodId(), [\Model\PaymentMethod\Entity::QIWI_ID, \Model\PaymentMethod\Entity::WEBMONEY_ID])) {
+                $paymentMethod = \RepositoryManager::paymentMethod()->getEntityById($form->getPaymentMethodId());
+                throw new \Exception(sprintf('Невозможно оформить заказ на %d рублей с выбранным способом оплаты %s', $cartSum, $paymentMethod ? $paymentMethod->getName() : ''));
+            }
+
             // создание заказов в ядре
             $createdOrders = $this->saveOrders($form);
 
