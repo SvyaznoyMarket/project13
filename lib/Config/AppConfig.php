@@ -328,6 +328,8 @@ class AppConfig {
     ];
     /** @var array  */
     public $order = [
+        'cookieName'    => null,
+        'sessionName'   => null,
         'enableMetaTag' => null,
         'newCreate'     => null,
     ];

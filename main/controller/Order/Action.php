@@ -242,6 +242,11 @@ class Action {
                     ];
                 }
 
+                // сохранение заказов в ядре
+                $saveOrderResult = $this->saveOrder($form, $deliveryMap, $productsForRetargeting);
+                $orderNumbers = $saveOrderResult['orderNumbers'];
+                $paymentUrl = $saveOrderResult['paymentUrl'];
+
                 // подписка
                 $isSubscribe = $request->request->get('subscribe');
                 $email = $form->getEmail();
@@ -265,11 +270,6 @@ class Action {
                     });
                     $client->execute(\App::config()->coreV2['retryTimeout']['default'], \App::config()->coreV2['retryCount']);
                 }
-
-                // сохранение заказов в ядре
-                $saveOrderResult = $this->saveOrder($form, $deliveryMap, $productsForRetargeting);
-                $orderNumbers = $saveOrderResult['orderNumbers'];
-                $paymentUrl = $saveOrderResult['paymentUrl'];
 
                 // сохранение заказов в сессии
                 \App::session()->set(self::ORDER_SESSION_NAME, array_map(function($orderNumber) use ($form) {

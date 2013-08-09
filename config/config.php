@@ -318,6 +318,8 @@ $c->requestMainMenu = true;
 
 $c->mobileModify['enabled'] = true;
 
+$c->order['cookieName'] = 'last_order';
+$c->order['sessionName'] = 'lastOrder';
 $c->order['enableMetaTag'] = true;
 $c->order['newCreate'] = true;
 

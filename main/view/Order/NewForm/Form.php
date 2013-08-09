@@ -460,7 +460,7 @@ class Form {
      * @return array
      */
     public function getErrors() {
-        return array_filter($this->errors, function($error) { if ($error) return true; }) ;
+        return array_filter($this->errors, function($errorMessage) { if (null !== $errorMessage) return true; }) ;
     }
 
     /**

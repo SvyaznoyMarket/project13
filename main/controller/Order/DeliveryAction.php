@@ -24,7 +24,12 @@ class DeliveryAction {
         $region = $user->getRegion();
         $cart = $user->getCart();
 
-        $responseData = [];
+        // данные для JsonResponse
+        $responseData = [
+            'time'   => strtotime(date('Y-m-d'), 0) * 1000,
+            'action' => [],
+        ];
+
         try {
             // проверка на пустую корзину
             if ($cart->isEmpty()) {
@@ -69,8 +74,7 @@ class DeliveryAction {
                 ];
             }
 
-            $responseData = [
-                'time'            => strtotime(date('Y-m-d'), 0) * 1000,
+            $responseData = array_merge($responseData, [
                 'deliveryTypes'   => $deliveryTypeData,
                 'deliveryStates'  => [
                     'self'               => [
@@ -96,7 +100,7 @@ class DeliveryAction {
                 ],
                 'products'        => [],
                 'shops'           => [],
-            ];
+            ]);
 
             // костыль
             $getDates = function(array $dateData) {
