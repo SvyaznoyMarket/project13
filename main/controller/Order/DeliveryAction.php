@@ -135,16 +135,17 @@ class DeliveryAction {
             $productIdsByShop = [];
 
             foreach ($result['products'] as $productItem) {
+                $productId = (string)$productItem['id'];
+
                 /** @var $cartProduct \Model\Cart\Product\Entity|null */
-                $cartProduct = $cart->getProductById($productItem['id']);
+                $cartProduct = $cart->getProductById($productId);
                 if (!$cartProduct) {
-                    \App::logger()->error(sprintf('Товар %s не найден в корзине', $productItem['id']));
+                    \App::logger()->error(sprintf('Товар %s не найден в корзине', $productId));
                     continue;
                 }
 
                 $deliveryData = [];
                 foreach ($productItem['deliveries'] as $deliveryItemToken => $deliveryItem) {
-                    $productId = (string)$productItem['id'];
                     list($deliveryItemTokenPrefix, $pointId) = array_pad(explode('_', $deliveryItemToken), 2, null);
 
                     // если доставка, модифицируем префикс токена и точку получения товаров
@@ -180,7 +181,7 @@ class DeliveryAction {
                     ];
                 }
 
-                $responseData['products'][$productItem['id']] = [
+                $responseData['products'][$productId] = [
                     'id'         => $productId,
                     'name'       => $productItem['name'],
                     'price'      => (int)$productItem['price'],
@@ -189,8 +190,8 @@ class DeliveryAction {
                     'stock'      => (int)$productItem['stock'],
                     'image'      => $productItem['media_image'],
                     'url'        => $productItem['link'],
-                    'addUrl'     => $router->generate('cart.product.set', ['productId' => $productItem['id'], 'quantity' => $productItem['quantity']]),
-                    'deleteUrl'  => $router->generate('cart.product.delete', ['productId' => $productItem['id']]),
+                    'addUrl'     => $router->generate('cart.product.set', ['productId' => $productId, 'quantity' => $productItem['quantity']]),
+                    'deleteUrl'  => $router->generate('cart.product.delete', ['productId' => $productId]),
                     'deliveries' => $deliveryData,
                 ];
             }
