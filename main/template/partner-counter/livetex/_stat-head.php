@@ -163,4 +163,15 @@
     .bProductSection__eRight {
         width:180px!important;
     }
+
+    .info{
+        font-size:.9em;
+    }
+
+    .li_date_begin,
+    .li_date_begin input,
+    .li_date_end input,
+    .li_date_end{
+        color:#888;
+    }
 </style>

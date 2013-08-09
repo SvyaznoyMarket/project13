@@ -20,6 +20,7 @@ class StatisticsAction {
     private $date_format = 'Y-m-d';
     private $date_begin = null;
     private $date_end = null;
+    private $one_day_date = null;
     private $operId = null;
     private $chatId = null;
     private $actions = [];
@@ -83,6 +84,14 @@ class StatisticsAction {
 
         //$this->date_begin = '2013-05-15'; // tmp for debug
         //$this->date_end = '2013-07-25';
+
+        $this->one_day_date = $request->get('one_day_date');
+
+        if ( $this->one_day_date ) {
+            $this->setDatesFromOneDayDate();
+        }
+
+
 
         $this->addMenu('Общая статистика', '/livetex-statistics');
         $this->addMenu('Статистика чатов', '/livetex-statistics?actions=Chat');
@@ -188,8 +197,9 @@ class StatisticsAction {
         /*
          * $stat_params — Для наполнения формы сайдбара 
          */
-        $stat_params['date_begin'] = [ 'value' => ($this->date_begin) ?: '', 'descr' => 'Дата начала'];
-        $stat_params['date_end'] = [ 'value' => ($this->date_end) ?: '', 'descr' => 'Дата окончания'];
+        $stat_params['one_day_date'] = [ 'value' => ( $this->one_day_date ) ?: '', 'descr' => 'Дата дня (интервала в 1 день)'];
+        $stat_params['date_begin'] = [ 'value' => ($this->one_day_date) ? '' : ($this->date_begin), 'descr' => 'Дата начала'];
+        $stat_params['date_end'] = [ 'value' => ($this->one_day_date) ? '' : ($this->date_end), 'descr' => 'Дата окончания'];
         $stat_params['operId'] = [ 'value' => ($this->operId) ?: $this->operId, 'descr' => 'Идентификатор оператора'];
         $stat_params['chatId'] = [ 'value' => ($this->chatId) ?: '', 'descr' => 'Идентификатор чата'];
         $stat_params['siteId'] = [ 'value' => ($this->siteId) ?: '', 'descr' => 'Идентификатор сайта'];
@@ -447,6 +457,28 @@ class StatisticsAction {
 
 
 
+
+
+    /**
+     * Для выгрузки истории за один день, например за 4 августа, период необходимо указать следующим образом
+     * с 2013-08-04 по 2013-08-05
+     * Интерпретируется это так: [2013-08-04 00:00:00 — 2013-08-05 00:00:00]
+     * Максимальный период 1 день для таких методов как ChatHistory (Site.ChatHistory Operator.ChatHistory)
+     */
+
+    private function setOneDayDateFromDates() {
+        return $this->one_day_date = $this->date_begin; // например за 4 августа — 2013-08-04 по 2013-08-05
+    }
+
+    private function setDatesFromOneDayDate() {
+        if ( $this->one_day_date ) {
+            $this->date_begin = $this->one_day_date; // например за 4 августа — 2013-08-04 по 2013-08-05
+            return $this->date_end = $this->getDateTomorrow( $this->one_day_date );
+        }
+        return false;
+    }
+
+
     private function reset_dates( ) {
         $done = false;
 
@@ -455,8 +487,8 @@ class StatisticsAction {
         $date_begin_old = $this->date_begin;
 
         // TODO: добавить правильную проверку дат: если введён неправильный интервал
-        //$this->set_date_end_today();
-        //$this->set_date_begin_yesterday();
+        //$this->date_end = $this->getDateToday();
+        //$this->date_begin = $this->getDateYesterday();
 
         //$this->l($date_end_old);
         //$this->l($this->date_end);
@@ -478,10 +510,12 @@ class StatisticsAction {
 
 
 
-    private function set_date_begin_yesterday( $datestr = null) {
+    private function getDateYesterday( $datestr = null) {
         $yesterday = null;
 
-        if ( empty($datestr) ) $datestr = $this->date_end;
+        if ( empty($datestr) ) {
+            $datestr = $this->date_end;
+        }
 
         if (!empty($datestr)) {
             $datearr = explode('-',$datestr); // $date_format = 'Y-m-d';
@@ -494,18 +528,41 @@ class StatisticsAction {
         }
 
         if (!empty($yesterday)) {
-            //$this->date_begin = (string) date($this->date_format, $yesterday );
-            $this->date_begin = $this->getDate( $yesterday );
-            return true;
+            return $this->getDate( $yesterday );
         }
 
         return false;
     }
 
 
-    private function set_date_end_today() {
-        //return $this->date_end = (string) date($this->date_format,strtotime('today UTC'));
-        return $this->date_end = $this->getDate( strtotime('today UTC') );
+
+    private function getDateTomorrow( $datestr = null) {
+        $tomorrow = null;
+
+        if ( empty($datestr) ) {
+            $datestr = $this->date_begin;
+        }
+
+        if (!empty($datestr)) {
+            $datearr = explode('-',$datestr); // $date_format = 'Y-m-d';
+
+            // $tomorrow  = mktime(0, 0, 0, date("m")  , date("d") + 1, date("Y"));
+            $tomorrow  = mktime(0, 0, 0, $datearr[1]  , $datearr[2] + 1, $datearr[0] );
+
+        }else{
+            $tomorrow = strtotime('+1 day');
+        }
+
+        if (!empty($tomorrow)) {
+            return $this->getDate( $tomorrow );
+        }
+
+        return false;
+    }
+
+
+    private function getDateToday() {
+        return $this->getDate( strtotime("Today") );
     }
 
 

@@ -255,7 +255,7 @@ class HtmlChatHistoryContent extends HtmlBasicContent {
             $answered = $count_chats - $unanswered;
 
             if ($count_chats) {
-                $SLA = (string) ( 100*round( $unanswered/ $count_chats , 3) ) . '%';
+                $SLA = (string) ( 100*round( $answered / $count_chats , 3) ) . '%'; /// SLA = отвеченых / все
                 $average = $this->timeFromSeconds( $all_chattime / $count_chats );
                 $average_firstanswer = $this->timeFromSeconds( $all_firstanswer / $count_chats );
             } else {
