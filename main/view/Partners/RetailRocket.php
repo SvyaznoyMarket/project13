@@ -25,14 +25,12 @@ class RetailRocket
                 $data['transaction'] = $order->getNumber(); // count($orders) по идеее не может быть > 1.
                 // transaction — свойство $order и по смыслу у всего $orders должно быть одно
                 foreach ($order->getProduct() as $prod) {
-                    if ($prod instanceof \Model\Order\Product\Entity) {
-                        $data['items'][] = [
-                            //'id' => $prod->getArticle(), // несущуствующий метод! // see comment to task SITE-1572
-                            'id' => $prod->getId(),
-                            'qnt' => $prod->getQuantity(),
-                            'price' => $prod->getPrice(),
-                        ];
-                    }
+                    $data['items'][] = [
+                        //'id' => $prod->getArticle(), // несущуствующий метод! // see comment to task SITE-1572
+                        'id' => $prod->getId(),
+                        'qnt' => $prod->getQuantity(),
+                        'price' => $prod->getPrice(),
+                    ];
                 }
             }
         }
