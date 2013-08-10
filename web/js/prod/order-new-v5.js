@@ -578,12 +578,11 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 ;(function(){
 	console.info('Логика разбиения заказа для оформления заказа v.5');
 
-	var getDataUrl = '/ajax/order-delivery', // HARDCODE
-		choosenPoint = null,
-
-		createdBox = {};
-	// end of vars
-	
+	/**
+	 * Хранилище блоков доставки
+	 * @type {Object}
+	 */
+	var createdBox = {};
 
 	/**
 	 * Логика разбиения заказа на подзаказы
@@ -650,7 +649,7 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 			}
 
 			if ( productsToNewBox.length ) {
-				choosenPointForBox = ( OrderModel.orderDictionary.hasPointDelivery(nowState) ) ? choosenPoint : 0;
+				choosenPointForBox = ( OrderModel.orderDictionary.hasPointDelivery(nowState) ) ? OrderModel.choosenPoint : 0;
 
 				token = nowState+'_'+choosenPointForBox;
 
@@ -678,16 +677,42 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 	 * ORDER MODEL
 	 */
 	var OrderModel = {
+		/**
+		 * Флаг завершения обработки данных
+		 */
 		prepareData: ko.observable(false),
 
+		/**
+		 * Флаг открытия окна с выбором точек доставки
+		 */
+		showPopupWithPoints: ko.observable(false),
+
+		/**
+		 * Ссылка на элемент input который соответствует выбранному методу доставки
+		 */
 		deliveryTypesButton: null,
 
+		/**
+		 * Приоритет методов доставок на время выбора точек доставки
+		 * Если пункт доставки не был выбран - не используется
+		 */
+		tmpStatesPriority: null,
+
+		/**
+		 * Реальный приоритет методов доставок
+		 * Сохраняется при выборе пункта доставки или методе доставки не имеющем пунктов доставки
+		 */
 		statesPriority: null,
 
 		/**
 		 * Ссылка на словарь
 		 */
 		orderDictionary: null,
+
+		/**
+		 * Идетификатор приоритетного пункта доставки выбранного пользователем
+		 */
+		choosenPoint: null,
 
 		/**
 		 * Массив способов доставок доступных пользователю
@@ -699,14 +724,33 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 		 */
 		deliveryBoxes: ko.observableArray([]),
 
-		showPopupWithPoints: ko.observable(false),
-
+		/**
+		 * Объект данных для отображения окна с пунктами доставок
+		 */
 		popupWithPoints: ko.observable({}),
 
+		/**
+		 * Обработка выбора пункта доставки
+		 * 
+		 * @param	{String}	id				Идентификатор
+		 * @param	{String}	address			Адрес
+		 * @param	{Number}	latitude		Широта
+		 * @param	{Number}	longitude		Долгота
+		 * @param	{String}	name			Полное имя
+		 * @param	{String}	regime			Время работы
+		 * @param	{Array}		products		Массив идентификаторов продуктов доступных в данном пункте
+		 */
 		selectPoint: function( data ) {
 			console.info('point selected...');
 
-			choosenPoint = data.id;
+			// очищаем объект созданых блоков, удаляем блоки из модели
+			createdBox = {};
+			OrderModel.deliveryBoxes.removeAll();
+
+			// Сохраняем приоритет методов доставок
+			OrderModel.statesPriority = OrderModel.tmpStatesPriority;
+
+			OrderModel.choosenPoint = data.id;
 			OrderModel.showPopupWithPoints(false);
 			OrderModel.deliveryTypesButton.attr('checked','checked');
 			separateOrder( OrderModel.statesPriority );
@@ -715,30 +759,27 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 		},
 
 		/**
-		 * Выбор типа доставки. Обработчик созданных кнопок из deliveryTypes
+		 * Выбор метода доставки
 		 * 
 		 * @param	{Object}	data			Данные о типе доставки
 		 * @param	{String}	data.token		Выбранный способ доставки
 		 * @param	{String}	data.name		Имя выбранного способа доставки
 		 * @param	{Array}		data.states		Варианты типов доставки подходящих к этому методу
 		 *
-		 * @param	{Array}		statesPriority	Массив методов доставок в порядке приоритета
 		 * @param	{String}	priorityState	Приоритетный метод доставки из массива
-		 * 
+		 * @param	{Object}	checkedInput	Ссылка на элемент input по которому кликнули
 		 */
 		chooseDeliveryTypes: function( data, event ) {
-			var priorityState = data.states[0];
+			var priorityState = data.states[0],
+				checkedInput = $('#'+event.target.htmlFor);
+			// end of vars
 
-			if ( $('#'+event.target.htmlFor).attr('checked') ) {
+			if ( checkedInput.attr('checked') ) {
 				return false;
 			}
 
-			OrderModel.deliveryTypesButton = $('#'+event.target.htmlFor);
-			OrderModel.statesPriority = data.states;
-
-			// очищаем объект созданых блоков, удаляем блоки из модели
-			createdBox = {};
-			OrderModel.deliveryBoxes.removeAll();
+			OrderModel.deliveryTypesButton = checkedInput;
+			OrderModel.tmpStatesPriority = data.states;
 
 			// если для приоритетного метода доставки существуют пункты доставки, то пользователю необходимо выбрать пункт доставки, если нет - то приравниваем идентификатор пункта доставки к 0
 			if ( OrderModel.orderDictionary.hasPointDelivery(priorityState) ) {
@@ -752,7 +793,14 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 				return false;
 			}
 
-			choosenPoint = 0;
+			// очищаем объект созданых блоков, удаляем блоки из модели
+			createdBox = {};
+			OrderModel.deliveryBoxes.removeAll();
+
+			// Сохраняем приоритет методов доставок
+			OrderModel.statesPriority = OrderModel.tmpStatesPriority;
+
+			OrderModel.choosenPoint = 0;
 			OrderModel.deliveryTypesButton.attr('checked','checked');
 			separateOrder( OrderModel.statesPriority );
 
@@ -764,7 +812,8 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 	ko.applyBindings(OrderModel);
 
 	/**
-	 * Обработка полученных с сервера данных
+	 * Обработка полученных данных
+	 * Создание словаря
 	 * 
 	 * @param	{Object}	res		Данные о заказе
 	 */
@@ -787,10 +836,4 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 	};
 
 	renderOrderData($('#jsOrderDelivery').data('value'));
-
-	// $.ajax({
-	// 	type: 'GET',
-	// 	url: getDataUrl,
-	// 	success: renderOrderData
-	// });
 }());
