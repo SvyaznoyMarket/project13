@@ -22,7 +22,7 @@ class json2xml
 
     function __construct() {
         //define("MAX_IERATIONS", -1); // for all
-        define("MAX_IERATIONS", 3); // for test
+        define("MAX_IERATIONS", 30); // for test
         if ( file_exists( $this->log_file_name ) ) unlink( $this->log_file_name );
         $this->log_file = fopen($this->log_file_name, "w");
     }
@@ -71,9 +71,11 @@ class json2xml
 
 
 
+
+
     public function execute()
     {
-        $categoryInf = $this->loadCategory(1);
+        //$categoryInf = $this->loadCategory(1);
 
 
         $time_start = time();
@@ -130,12 +132,22 @@ class json2xml
 
                 $id = $json_line->id;
 
+
+
+
                 $categoryId = 0;
                 if ( isset($json_line->categories) )
                     foreach ( $json_line->categories as $cat ) {
+                        $cid = $cat->category_id;
+
+                        // наполняем массив всех-всех-всех категорий
+                        if ( !isset($categories_arr[$cid]) ) {
+                            $categories_arr[$cid] = $cat;
+                        }
+
                         // Находим главную категорию товара и выходим
                         if ($cat->is_main) {
-                            $categoryId = $this->addIfIsset( $cat->category_id );
+                            $categoryId = $this->addIfIsset( $cid );
                             break;
                         }
                     }
@@ -198,14 +210,12 @@ class json2xml
                 } // end foreach
 
 
-            } // END IF
+            } // END IF ISSET( $json_line->id)
 
 
         } // end while
 
-
-        //TDo?есть ли дубликаты товаров в исходном файле?
-
+        //TDo?есть ли дубликаты товаров в исходном файле? // считаем, что нет
 
         fclose($json_file);
         $this->echlog('Файл ' . $json_filename .' закрыт');
