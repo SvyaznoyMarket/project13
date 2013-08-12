@@ -98,7 +98,7 @@
             <? endif ?>
 </div><!--/left section -->
 
-<div class="bProductSection__eRight">
+<div class="bProductSectionRightCol">
     <div class="bWidgetBuy mWidget">
         <div class="bStoreDesc">
             <?= $helper->render('product/__state', ['product' => $product]) // Есть в наличии ?>
