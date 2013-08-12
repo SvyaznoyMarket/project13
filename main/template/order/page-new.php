@@ -44,6 +44,10 @@
 
 			z-index: 10000;
 		}
+
+		.bBuyingDatesList{
+			position: relative;
+		}
 	</style>
 <!-- Header -->
 <div class="bBuyingHead clearfix">
@@ -130,12 +134,12 @@
 		        <div class="bBuyingLine__eRight">
 		            <!-- Celendar -->
 		            <div class="bBuyingDates clearfix">
-			            <div class="bBuyingDatesItem mLeft">
+			            <div class="bBuyingDatesItem mLeft" data-bind="click: box.calendarLeftBtn">
 			                <span class="bArrow"></span>
 			            </div>
 
 			            <div class="bBuyingDatesWrap">
-				            <ul class="bBuyingDatesList" data-bind="foreach: { data: allDatesForBlock, as: 'calendarDay' }">
+				            <ul class="bBuyingDatesList" data-bind="foreach: { data: allDatesForBlock, as: 'calendarDay' }, calendarSlider: box.calendarSliderLeft()">
 				                <li class="bBuyingDatesItem mDisable" data-bind="css: { mCurrent: calendarDay.value == box.choosenDate().value,
 				                												mDisable: !calendarDay.avalible,
 				                												mEnable: calendarDay.avalible },
@@ -148,7 +152,7 @@
 				            </ul>
 				        </div>
 
-			            <div class="bBuyingDatesItem mRight">
+			            <div class="bBuyingDatesItem mRight" data-bind="click: box.calendarRightBtn">
 			                <span class="bArrow"></span>
 			            </div>
 			        </div>

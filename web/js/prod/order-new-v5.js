@@ -57,6 +57,9 @@ function DeliveryBox( products, state, choosenPointForBox, createdBox, OrderMode
 		self.choosenPoint( self.OrderModel.orderDictionary.getPointByStateAndId(self.state, choosenPointForBox) );
 	}
 
+	// Отступ слайдера дат
+	self.calendarSliderLeft = ko.observable(0);
+
 	self.addProductGroup(products);
 
 	self.OrderModel.deliveryBoxes.push(self);
@@ -410,6 +413,65 @@ DeliveryBox.prototype.makeCalendar = function() {
 		}
 	}
 };
+
+
+/**
+ * =========== CALENDAR SLIDER ===================
+ */
+DeliveryBox.prototype.calendarLeftBtn = function() {
+	var self = this,
+		nowLeft = parseInt(self.calendarSliderLeft(), 10);
+	// end of vars
+	
+	nowLeft += 365;
+	self.calendarSliderLeft(nowLeft);
+};
+
+DeliveryBox.prototype.calendarRightBtn = function() {
+	var self = this;
+		nowLeft = parseInt(self.calendarSliderLeft(), 10);
+	// end of vars
+	
+	nowLeft -= 365;
+	self.calendarSliderLeft(nowLeft);
+};
+
+
+ko.bindingHandlers.calendarSlider = {
+	init: function(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+		var slider = $(element),
+			nowLeft = valueAccessor();
+		// end of vars
+
+		console.info('init slider');
+	},
+	update: function(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+		var slider = $(element),
+			nowLeft = valueAccessor(),
+
+			dateItem = slider.find('.bBuyingDatesItem'),
+			dateItemW = dateItem.width() + parseInt(dateItem.css('marginRight'), 10) + parseInt(dateItem.css('marginLeft'), 10);
+		// end of vars
+
+		slider.width(dateItem.length * dateItemW);
+
+		if ( nowLeft > 0 ) {
+			nowLeft -= 365;
+			bindingContext.box.calendarSliderLeft(nowLeft);
+
+			return;
+		}
+
+		if ( nowLeft < -slider.width() ) {
+			nowLeft += 365;
+			bindingContext.box.calendarSliderLeft(nowLeft);
+
+			return;
+		}
+
+		slider.animate({'left': nowLeft});
+	}
+}
  
  
 /** 

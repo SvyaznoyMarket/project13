@@ -10,5 +10,5 @@
 <?= $page->slotRetailRocket() ?>
 
 <? if (\App::config()->debug): ?>
-    <script src="http://<?= \App::config()->mainHost ?>:35729/js/livereload.js" type="text/javascript"></script>
+    <!-- // <script src="http://<?= \App::config()->mainHost ?>:35729/js/livereload.js" type="text/javascript"></script> -->
 <? endif ?>
