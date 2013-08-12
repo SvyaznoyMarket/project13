@@ -102,6 +102,35 @@
 		}
 	};
 
+	/**
+	 * Кастомный бинд для открытия окна магазинов
+	 */
+	ko.bindingHandlers.popupShower = {
+		init: function(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+			var val = valueAccessor(),
+				unwrapVal = ko.utils.unwrapObservable(val);
+			// end of vars
+		},
+
+		update: function(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+			var val = valueAccessor(),
+				unwrapVal = ko.utils.unwrapObservable(val);
+			// end of vars
+
+			if ( unwrapVal ) {
+				$(element).lightbox_me({
+					centered: true,
+					onClose: function() {
+						console.info('закрываем');
+						val(false);
+					}
+				});
+			}
+			else {
+				$(element).trigger('close');
+			}
+		}
+	}
 
 	/**
 	 * ORDER MODEL

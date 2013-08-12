@@ -22,36 +22,11 @@ foreach (array_reverse($productsById) as $product) {
 
 	<!-- temp styles -->
 	<style type="text/css">
-		.bCalendarDay {
-			font-size: 12px;
-			width: 25px;
-			float: left;
-		}
-		.mDisabled {
-			background: gray;
-		}
-		.mCurrenDay {
-			color: red;
-			background: orange;
-		}
 		.bPointPopup {
-			background-color: #FFFFFF;
-			border: 2px solid #FFA901;
-			border-radius: 6px 6px 6px 6px;
-			box-shadow: 0 0 7px #616161;
-			color: #000000;
-			cursor: default;
-			overflow: hidden;
-			padding: 20px 25px;
-			position: fixed;
-			top:50%;
-			left:50%;
 
 			width: 600px;
-			margin-left: -300px;
 
 			height: 400px;
-			margin-top: -200px;
 
 			text-align: left;
 
@@ -201,7 +176,8 @@ foreach (array_reverse($productsById) as $product) {
 		    </div>
 
 		    <!-- Points popup -->
-		    <div class="bPointPopup" data-bind="visible: box.showPopupWithPoints">
+		    <div class="bPointPopup popup" data-bind="popupShower: box.showPopupWithPoints">
+		    	<i class="close" title="Закрыть">Закрыть</i>
 				<ul data-bind="foreach: { data: box.pointList, as: 'point'}">
 					<li>
 						<a data-bind="text: point.name,
@@ -224,7 +200,8 @@ foreach (array_reverse($productsById) as $product) {
 	
 
 
-	<div class="bPointPopup" data-bind="visible: showPopupWithPoints">
+	<div class="bPointPopup popup" data-bind="popupShower: showPopupWithPoints">
+		<i class="close" title="Закрыть">Закрыть</i>
 		<h2 data-bind="text: popupWithPoints().header"></h2>
 		<ul data-bind="foreach: { data: popupWithPoints().points }">
 			<li>
