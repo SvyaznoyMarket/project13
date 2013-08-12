@@ -227,7 +227,11 @@ class HtmlLayout {
      * @throws \InvalidArgumentException
      */
     public function addMeta($name, $content) {
-        $this->metas[$name] = (string)$content;
+        if (is_scalar($content)) {
+            $this->metas[$name] = (string)$content;
+        } else {
+            \App::logger()->error(['action' => __METHOD__, 'cms.meta' => ['name' => $name, 'content' => $content]], ['view']);
+        }
     }
 
     /**
