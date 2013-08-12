@@ -18,11 +18,11 @@
 	 * @param	{Number}	nowLeft		Текущий отступ слева
 	 */
 	var initFotoSlider = function(){
-		var slider = $('.bPhotoActionOtherPhoto');
-		var fotoBox = slider.find('.bPhotoActionOtherPhotoList');
-		var leftArr = slider.find('.bPhotoActionOtherPhoto__eBtn.mPrev');
-		var rightArr = slider.find('.bPhotoActionOtherPhoto__eBtn.mNext');
-		var photos = fotoBox.find('.bPhotoActionOtherPhotoItem');
+		var slider = $('.bPhotoSlider');
+		var fotoBox = slider.find('.bPhotoSliderGallery');
+		var leftArr = slider.find('.bPhotoSlider__eBtn.mPrev');
+		var rightArr = slider.find('.bPhotoSlider__eBtn.mNext');
+		var photos = fotoBox.find('.bPhotoSliderGallery__eItem');
 
 		if (!photos.length){
 			return false;
@@ -78,7 +78,7 @@
 	};
 
 	$(document).ready(function() {
-		if ( $('.bPhotoActionOtherPhoto').length){
+		if ( $('.bPhotoSlider').length){
 			initFotoSlider();
 		}
 	});
