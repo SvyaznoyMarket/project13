@@ -477,6 +477,8 @@ $(document).ready(function() {
 							$('.bFastInner tbody tr:last').append('<td colspan="2" class="red">'+data.message+'</td>');
 							return;
 						}
+
+                        if ( typeof(Flocktory) !== 'undefined' )  Flocktory.subscribing_friend();
 						
 						// ANALITICS
 						var phoneNumber = '8' + $('#phonemask').val().replace(/\D/g, "");
