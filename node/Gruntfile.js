@@ -202,7 +202,10 @@ module.exports = function(grunt) {
 		watch: {
 			less: {
 				files: ['../web/css/*.less', '../web/css/**/*.less'],
-				tasks: ['less']
+				tasks: ['less'],
+				options: {
+					livereload: true,
+				},
 			},
 			partnerScripts: {
 				files: ['../web/js/partner/*.js'],
