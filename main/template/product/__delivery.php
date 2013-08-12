@@ -74,18 +74,18 @@ return function (
 </div>
 
 
-<ul class="bWidgetBuy__eDelivery mLoader" data-value="<?= $helper->json([
+<ul class="bDelivery mLoader" data-value="<?= $helper->json([
     'url'      => $product->getIsBuyable() ? $helper->url('product.delivery') : '',
     'delivery' => $deliveryData,
 ]) ?>">
-    <li class="bWidgetBuy__eDelivery-item bWidgetBuy__eDelivery-price">
+    <li class="bDelivery__eItem mDeliveryPrice">
     </li>
-    <li class="bWidgetBuy__eDelivery-item bWidgetBuy__eDelivery-free">
+    <li class="bDelivery__eItem mDeliveryFree">
     </li>
 
-    <li class="bWidgetBuy__eDelivery-item bWidgetBuy__eDelivery-now <?= $product->getIsBuyable() ? 'mOpen' : 'mClose'?>">
+    <li class="bDelivery__eItem mDeliveryNow <?= $product->getIsBuyable() ? 'mOpen' : 'mClose'?>">
         <? $hideShopHeader = (!$product->getIsBuyable() && $product->getState()->getIsShop()) ? true : false; ?>
-        <span class="bWidgetBuy__eDelivery-nowClick dotted<?= $hideShopHeader ? ' hf' : '' ?>">Есть в магазинах</span>
+        <span class="bDeliveryNowClick dotted<?= $hideShopHeader ? ' hf' : '' ?>">Есть в магазинах</span>
         <div class="<?= $hideShopHeader ? ' hf' : '' ?>">Cегодня, без предзаказа</div>
         <ul class="bDeliveryFreeAddress">
         </ul>

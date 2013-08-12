@@ -13,11 +13,11 @@ $region = $user->getRegion();
 
 $backLink = $page->url('cart');
 foreach (array_reverse($productsById) as $product) {
-	/** @var $product \Model\Product\Entity */
-	if ($product->getParentCategory()) {
-		$backLink = $product->getParentCategory()->getLink();
-		break;
-	}
+    /** @var $product \Model\Product\Entity */
+    if ($product->getParentCategory() instanceof \Model\Product\Category\Entity) {
+        $backLink = $product->getParentCategory()->getLink();
+        break;
+    }
 }
 
 ?>
@@ -207,7 +207,7 @@ foreach (array_reverse($productsById) as $product) {
 	<!-- /Delivery boxes -->
 
 	<div class="bBuyingLine mSumm clearfix" data-bind="visible: deliveryBoxes().length">
-		<a href="#" class="bBackCart mOrdeRead">&lt; Редактировать товары</a>
+		<a href="<?= $page->url('cart') ?>" class="bBackCart mOrdeRead">&lt; Редактировать товары</a>
 
 		<div class="bTotalSumm">
 			Сумма всех заказов:
@@ -344,8 +344,8 @@ foreach (array_reverse($productsById) as $product) {
 
 				<h2 class="bTitle">Прямо сейчас</h2>
 
-				<div class="bPayMethod">
-					<input class="jsCustomRadio bCustomInput mCustomRadioBig" id="online_pay" name="radio_pay" type="radio" hidden />
+                <div class="bPayMethod">
+                    <input class="jsCustomRadio bCustomInput mCustomRadioBig" id="online_pay" name="order[payment_method_id]" type="radio" hidden />
 
 					<label for="online_pay" class="bCustomLabel mCustomLabelRadioBig">
 						Онлайн оплата
@@ -354,22 +354,22 @@ foreach (array_reverse($productsById) as $product) {
 					<div class="bPayMethodDesc">Вы можете оплатить ваш заказ прямо сейчас. К оплате принимаются банковские карты платежных систем Visa, MasterCard, Diners Club, JCB. Услуга бесплатная, никаких дополнительных процентов вы не платите.</div>
 				</div>
 
-				<div class="bPayMethod">
-					<input class="jsCustomRadio bCustomInput mCustomRadioBig" id="qiwi_pay" name="radio_pay" type="radio" hidden />
+                <div class="bPayMethod">
+                    <input class="jsCustomRadio bCustomInput mCustomRadioBig" id="qiwi_pay" name="order[payment_method_id]" type="radio" hidden />
 
 					<label for="qiwi_pay" class="bCustomLabel mCustomLabelRadioBig">
 						Qiwi
 					</label>
 
-					<div class="bPayMethodDesc">Вы можете оплатить ваш заказ прямо сейчас.</div>
+                    <div class="bPayMethodDesc">Вы можете оплатить ваш заказ прямо сейчас.</div>
 
 					<div style="display: none;" class="bPayMethodAction">
 						<input name="order[cardnumber]" type="text" class="bBuyingLine__eText cardNumber" placeholder="Номер телефона">
 					</div>
 				</div>
 
-				<div class="bPayMethod">
-					<input class="jsCustomRadio bCustomInput mCustomRadioBig" id="electron_pay" name="radio_pay" type="radio" hidden />
+                <div class="bPayMethod">
+                    <input class="jsCustomRadio bCustomInput mCustomRadioBig" id="electron_pay" name="order[payment_method_id]" type="radio" hidden />
 
 					<label for="electron_pay" class="bCustomLabel mCustomLabelRadioBig">
 						Выставить электронный счёт в личный кабинет Промсвязьбанка
@@ -378,8 +378,8 @@ foreach (array_reverse($productsById) as $product) {
 					<div class="bPayMethodDesc">Вы можете оплатить Ваш заказ путём выставления счёта в Ваш личный кабинет. Данная услуга доступна только для клиентов Промсвязьбанка.</div>
 				</div>
 
-				<div class="bPayMethod mMethodOption">
-					<input class="jsCustomRadio bCustomInput mCustomRadioBig" id="on_credit" name="radio_pay" type="radio" hidden />
+                <div class="bPayMethod mMethodOption">
+                    <input class="jsCustomRadio bCustomInput mCustomRadioBig" id="on_credit" name="order[payment_method_id]" type="radio" hidden />
 
 					<label for="on_credit" class="bCustomLabel mCustomLabelRadioBig"> 
 						Покупка в кредит (онлайн)
@@ -406,14 +406,14 @@ foreach (array_reverse($productsById) as $product) {
 							<span>406</span> <span class="rubl"> p</span>
 						</strong>
 
-						<div class="bFootenote">
-							<sup>**</sup> Кредит не распространяется на услуги F1 и доставку. Сумма платежей предварительная и уточняется банком в процессе принятия кредитного решения.
-						</div>
-					</div>
-				</div>
-				
-				<div class="bPayMethod mMethodOption">
-					<input class="jsCustomRadio bCustomInput mCustomRadioBig" id="serteficat_pay" name="radio_pay" type="radio" hidden />
+                        <div class="bFootenote">
+                            <sup>**</sup> Кредит не распространяется на услуги F1 и доставку. Сумма платежей предварительная и уточняется банком в процессе принятия кредитного решения.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bPayMethod mMethodOption">
+                    <input class="jsCustomRadio bCustomInput mCustomRadioBig" id="serteficat_pay" name="order[payment_method_id]" type="radio" hidden />
 
 					<label for="serteficat_pay" class="bCustomLabel mCustomLabelRadioBig">
 						Подарочный сертификат
