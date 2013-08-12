@@ -128,9 +128,8 @@ return function(
                     $class3D = 'our3d';
                 }
                 ?>
-                <li class="bPhotoActionOtherAction__eGrad360 bPhotoViewer__eItem mGrad360 <?= $class3D ?>">
-                    <a class="bPhotoLink" href=""></a>
-                </li>
+
+                <li class="bPhotoViewer__eItem mGrad360 <?=$class3D?>"><a class="bPhotoLink" href=""></a></li>
             <? endif ?>
         </ul><!--/view product section -->
 
