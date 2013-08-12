@@ -33,7 +33,7 @@ $helper = new \Helper\TemplateHelper();
         </div>
 	</div>
 
-	<div class="bProductSection__eRight">
+	<div class="bProductSectionRightCol">
 		<p class="bProductDescText"><?= $mainProduct->getTagline() ?></p>
 
         <div class="bProductDescMore">
