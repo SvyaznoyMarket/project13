@@ -12,7 +12,7 @@
 $backLink = $page->url('cart');
 foreach (array_reverse($productsById) as $product) {
     /** @var $product \Model\Product\Entity */
-    if ($product->getParentCategory()) {
+    if ($product->getParentCategory() instanceof \Model\Product\Category\Entity) {
         $backLink = $product->getParentCategory()->getLink();
         break;
     }
@@ -201,7 +201,7 @@ foreach (array_reverse($productsById) as $product) {
 	<!-- /Delivery boxes -->
 
 	<div class="bBuyingLine mSumm clearfix" data-bind="visible: deliveryBoxes().length">
-		<a href="#" class="bBackCart mOrdeRead">&lt; Редактировать товары</a>
+		<a href="<?= $page->url('cart') ?>" class="bBackCart mOrdeRead">&lt; Редактировать товары</a>
 
 		<div class="bTotalSumm">
 			Сумма всех заказов:
@@ -226,19 +226,19 @@ foreach (array_reverse($productsById) as $product) {
             <label for="" class="bBuyingLine__eLeft">Имя получателя*</label>
 
             <div class="bBuyingLine__eRight">
-                <input type="text" id="" class="bBuyingLine__eText mInputLong" name="" value="" />
+                <input type="text" id="" class="bBuyingLine__eText mInputLong" name="order[recipient_first_name]" value="" />
             </div>
 
             <label for="" class="bBuyingLine__eLeft">Фамилия получателя</label>
 
             <div class="bBuyingLine__eRight">
-                <input type="text" id="" class="bBuyingLine__eText mInputLong" name="" value="" />
+                <input type="text" id="" class="bBuyingLine__eText mInputLong" name="order[recipient_last_name]" value="" />
             </div>
 
             <label for="" class="bBuyingLine__eLeft">E-mail</label>
 
             <div class="bBuyingLine__eRight">
-                <input type="text" id="" class="bBuyingLine__eText mInputLong mInput265" name="" value="" />
+                <input type="text" id="" class="bBuyingLine__eText mInputLong mInput265" name="order[recipient_email]" value="" />
 
                 <div class="bSubscibeCheck bInputList" style="visibility:visible;">
                     <input type="checkbox" name="subscribe" id="subscribe" class="jsCustomRadio bCustomInput mCustomCheckBig" checked hidden />
@@ -250,7 +250,7 @@ foreach (array_reverse($productsById) as $product) {
 
             <div class="bBuyingLine__eRight mPhone">
                 <span class="bPlaceholder">+7</span> 
-                <input id="" class="bBuyingLine__eText mInputLong" name="" value="" />
+                <input id="" class="bBuyingLine__eText mInputLong" name="order[recipient_phonenumbers]" value="" />
             </div>
 
             <!-- Address customer -->
@@ -264,44 +264,45 @@ foreach (array_reverse($productsById) as $product) {
                 <div class="bInputAddress">
                     <label class="bPlaceholder">Метро</label>
 
-                    <input class="bBuyingLine__eText mInputLong" id="" type="text" title="Метро" name="" />
+                    <input class="bBuyingLine__eText mInputLong" id="" type="text" title="Метро" name="order[address_metro]" />
+                    <input type="hidden" name="order[subway_id]" />
                 </div>
 
                 <div class="bInputAddress">
                     <label class="bPlaceholder">Улица</label>
 
-                    <input type="text" class="bBuyingLine__eText mInputLong mInputStreet" name="" value="" />
+                    <input type="text" class="bBuyingLine__eText mInputLong mInputStreet" name="order[address_street]" value="" />
                 </div>
 
                 <div class="bInputAddress">
                     <label class="bPlaceholder">Дом</label>
 
-                    <input type="text" class="bBuyingLine__eText mInputShort mInputBuild" name="" value="" />
+                    <input type="text" class="bBuyingLine__eText mInputShort mInputBuild" name="order[address_building]" value="" />
                 </div>
 
                 <div class="bInputAddress">
                     <label class="bPlaceholder">Корпус</label>
 
-                    <input type="text" class="bBuyingLine__eText mInputShort mInputNumber" name="" value="" />
+                    <input type="text" class="bBuyingLine__eText mInputShort mInputNumber" name="order[address_number]" value="" />
                 </div>
 
                 <div class="bInputAddress">
                     <label class="bPlaceholder">Квартира</label>
 
-                    <input type="text" class="bBuyingLine__eText mInputShort mInputApartament" name="" value="" />
+                    <input type="text" class="bBuyingLine__eText mInputShort mInputApartament" name="order[address_apartment]" value="" />
                 </div>
 
                 <div class="bInputAddress">
                     <label class="bPlaceholder">Этаж</label>
 
-                    <input type="text" class="bBuyingLine__eText mInputShort mInputFloor" name="" value="" />
+                    <input type="text" class="bBuyingLine__eText mInputShort mInputFloor" name="order[address_floor]" value="" />
                 </div>
             </div>
 
             <label class="bBuyingLine__eLeft">Пожелания и дополнения</label>
 
             <div class="bBuyingLine__eRight">
-                <textarea id="" class="bBuyingLine__eTextarea" name="" cols="30" rows="4"></textarea>
+                <textarea id="" class="bBuyingLine__eTextarea" name="[extra]" cols="30" rows="4"></textarea>
             </div>
         </div>
 
@@ -337,7 +338,7 @@ foreach (array_reverse($productsById) as $product) {
                 <h2 class="bTitle">Прямо сейчас</h2>
 
                 <div class="bPayMethod">
-                    <input class="jsCustomRadio bCustomInput mCustomRadioBig" id="online_pay" name="radio_pay" type="radio" hidden />
+                    <input class="jsCustomRadio bCustomInput mCustomRadioBig" id="online_pay" name="order[payment_method_id]" type="radio" hidden />
 
                     <label for="online_pay" class="bCustomLabel mCustomLabelRadioBig">
                         Онлайн оплата
@@ -347,7 +348,7 @@ foreach (array_reverse($productsById) as $product) {
                 </div>
 
                 <div class="bPayMethod">
-                    <input class="jsCustomRadio bCustomInput mCustomRadioBig" id="qiwi_pay" name="radio_pay" type="radio" hidden />
+                    <input class="jsCustomRadio bCustomInput mCustomRadioBig" id="qiwi_pay" name="order[payment_method_id]" type="radio" hidden />
 
                     <label for="qiwi_pay" class="bCustomLabel mCustomLabelRadioBig">
                         Qiwi
@@ -361,7 +362,7 @@ foreach (array_reverse($productsById) as $product) {
                 </div>
 
                 <div class="bPayMethod">
-                    <input class="jsCustomRadio bCustomInput mCustomRadioBig" id="electron_pay" name="radio_pay" type="radio" hidden />
+                    <input class="jsCustomRadio bCustomInput mCustomRadioBig" id="electron_pay" name="order[payment_method_id]" type="radio" hidden />
 
                     <label for="electron_pay" class="bCustomLabel mCustomLabelRadioBig">
                         Выставить электронный счёт в личный кабинет Промсвязьбанка
@@ -371,7 +372,7 @@ foreach (array_reverse($productsById) as $product) {
                 </div>
 
                 <div class="bPayMethod mMethodOption">
-                    <input class="jsCustomRadio bCustomInput mCustomRadioBig" id="on_credit" name="radio_pay" type="radio" hidden />
+                    <input class="jsCustomRadio bCustomInput mCustomRadioBig" id="on_credit" name="order[payment_method_id]" type="radio" hidden />
 
                     <label for="on_credit" class="bCustomLabel mCustomLabelRadioBig"> 
                         Покупка в кредит (онлайн)
@@ -405,7 +406,7 @@ foreach (array_reverse($productsById) as $product) {
                 </div>
                 
                 <div class="bPayMethod mMethodOption">
-                    <input class="jsCustomRadio bCustomInput mCustomRadioBig" id="serteficat_pay" name="radio_pay" type="radio" hidden />
+                    <input class="jsCustomRadio bCustomInput mCustomRadioBig" id="serteficat_pay" name="order[payment_method_id]" type="radio" hidden />
 
                     <label for="serteficat_pay" class="bCustomLabel mCustomLabelRadioBig">
                         Подарочный сертификат
