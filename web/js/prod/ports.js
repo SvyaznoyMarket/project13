@@ -174,15 +174,20 @@ window.ANALYTICS = {
                 if ( !flk_mail.length ) flk_mail = $('#recipientEmail');
                 flk_mail = flk_mail.val();
 
+                var flk_name = $('input.bFastInner__eInput').val(); // используем имя пользователя, если существует
+                if ( !flk_name.length && flk_mail.length ) flk_name = flk_mail;
+
                 if ( !flk_mail.length ) {
                     // если нет емейла, глянем телефон и передадим его вместо мейла
                     var flk_tlf = $('#phonemask').val().replace(' ','');
                     //flk_mail = $('.flocktory_tlf').val() + '@email.tlf';
+                    if ( !flk_name.length ) flk_name = flk_tlf;
                     flk_mail = flk_tlf + '@email.tlf'; // допишем суффикс к тлф, дабы получить фиктивный мейл и передать его
                 }
 
                 if ( flk_mail.search('@') !== -1 ) {
-                    Flocktory.popup_open( flk_mail, flk_mail );
+                    if (!flk_name.length) flk_name = 'Покупатель';
+                    Flocktory.popup_open( flk_mail, flk_name );
                 }
             },
 
