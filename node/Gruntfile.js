@@ -41,6 +41,7 @@ module.exports = function(grunt) {
 		jsDevPath+'library/library.js',
 		jsDevPath+'library/mapDriver.js',
 		jsDevPath+'library/black_box.js',
+		jsDevPath+'library/formValidator.js',
 		jsDevPath+'library/addParameterToUrl.js',
 		jsDevPath+'library/*.js'
 	];
@@ -202,7 +203,10 @@ module.exports = function(grunt) {
 		watch: {
 			less: {
 				files: ['../web/css/*.less', '../web/css/**/*.less'],
-				tasks: ['less']
+				tasks: ['less'],
+				options: {
+					livereload: true,
+				},
 			},
 			partnerScripts: {
 				files: ['../web/js/partner/*.js'],
