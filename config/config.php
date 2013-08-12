@@ -294,8 +294,18 @@ $c->queue['workerLimit'] = 10;
 $c->queue['maxLockTime'] = 600;
 
 $c->abtest['cookieName'] = 'switch';
-$c->abtest['bestBefore'] = '2013-04-23';
 $c->abtest['enabled']    = true;
+$c->abtest['bestBefore'] = '2013-08-20';
+$c->abtest['test']       = [
+    [
+        'traffic'  => '50',
+        'key'      => 'emails',
+        'name'     => "Обязательные e-mail'ы",
+        'ga_event' => 'MandatoryEmail',
+    ],
+];
+/*
+$c->abtest['bestBefore'] = '2013-04-23';
 $c->abtest['test']       = [
     [
         'traffic'  => '40',
@@ -310,6 +320,7 @@ $c->abtest['test']       = [
         'ga_event' => 'cart',
     ],
 ];
+*/
 
 $c->subscribe['enabled'] = true;
 $c->subscribe['cookieName'] = 'subscribed';
@@ -334,19 +345,5 @@ $c->tag['numSidebarCategoriesShown'] = 3;
 
 $c->sphinx['showFacets'] = false;
 $c->sphinx['showListingSearchBar'] = false;
-
-$c->abtest = [
-    'cookieName' => 'switch',
-    'bestBefore' => '2013-08-20', //кука умрет в 00:00
-    'enabled'    => true,
-    'test'       => [
-        [
-            'traffic'  => '50',
-            'key'      => 'emails',
-            'name'     => "Обязательные e-mail'ы",
-            'ga_event' => 'MandatoryEmail',
-        ],
-    ],
-];
 
 return $c;

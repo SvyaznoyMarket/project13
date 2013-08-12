@@ -18,6 +18,7 @@ trait ResponseDataTrait {
         $cart = \App::user()->getCart();
         $region = \App::user()->getRegion();
 
+        $productDataById = [];
         if ($e instanceof \Curl\Exception) {
             $errorData = (array)$e->getContent();
             $errorData = isset($errorData['product_error_list']) ? (array)$errorData['product_error_list'] : [];
@@ -36,7 +37,6 @@ trait ResponseDataTrait {
                 $e = new \Exception($message, $e->getCode());
             }
 
-            $productDataById = [];
             foreach ($errorData as $errorItem) {
                 switch ($errorItem['code']) {
                     case 708:
@@ -83,7 +83,10 @@ trait ResponseDataTrait {
             \App::coreClientV2()->execute();
 
             $responseData['products'] = $productDataById;
-        } else {
+        }
+
+        // если ошибочные товары не найдены
+        if (!(bool)$productDataById) {
             if ($cart->isEmpty()) { // если корзина пустая, то редирект на страницу корзины
                 $responseData['redirect'] = $router->generate('cart');
             } else if (1 == $cart->getProductsQuantity()) { // иначе, если в корзине всего один товар, то предлагаем попробовать заказ в один клик
