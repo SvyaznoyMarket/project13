@@ -14,7 +14,7 @@ class HtmlAllOperatorsContent extends HtmlBasicContent {
         $this->count_operators++;
 
         $out = '';
-        $isonline = $op->isonline ? '<span class="isonline">Да</span>' : 'Нет';
+        $isonline = $op->isonline ? '<span class="isonline">Да</span>' : '<span class="isoffline">Нет</span>';
 
         $ava = $op->photo;
         if (!$ava) $ava = $this->default_ava;
