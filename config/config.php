@@ -117,6 +117,7 @@ $c->yandexMetrika['enabled'] = true;
 // TODO: Вынести сюда же настройки для sociomantic and get4click
 $c->partners['criteo']['enabled'] = true;
 $c->partners['criteo']['account'] = 10442;
+$c->partners['RetailRocket']['account'] = '519c7f3c0d422d0fe0ee9775';
 
 $c->adFox['enabled'] = true;
 $c->myThings['feeByCategory'] = [

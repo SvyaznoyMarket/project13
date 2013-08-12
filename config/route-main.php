@@ -478,6 +478,11 @@ return [
         'action' => ['Product\SimilarAction', 'execute'],
         'require' => ['productId' => '\d+'],
     ],
+    'product.test' => [
+        'pattern' => '/product-test/{productId}',
+        'action' => ['RetailRocket\Action', 'execute'],
+        'require' => ['productId' => '\d+'],
+    ],
     'product.alsoViewed' => [
         'pattern' => '/ajax/product-also-viewed/{productId}',
         'action' => ['Product\AlsoViewedAction', 'execute'],
