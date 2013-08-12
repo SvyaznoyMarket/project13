@@ -184,8 +184,10 @@
 				$LAB
 				.script('jquery-plugins.min.js')
 				.script( 'JsHttpRequest.min.js' )
-				.script( getWithVersion('library.js') )             
+				.script( getWithVersion('library.js') )
 				.script( 'http://direct-credit.ru/widget/api_script_utf.js' )
+				.wait()
+				.script(getWithVersion('common.js'))
 				.wait()
 				.script( getWithVersion('order-new-v5.js') )
 			}).runQueue();

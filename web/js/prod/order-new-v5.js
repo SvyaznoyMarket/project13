@@ -215,6 +215,18 @@ DeliveryBox.prototype._addProduct = function( product ) {
 };
 
 /**
+ * Перерасчет общей стоимости заказа
+ */
+DeliveryBox.prototype.updateTotalPrice = function() {
+	var self = this,
+		nowTotalSum = self.OrderModel.totalSum();
+	// end of vars
+
+	nowTotalSum += self.fullPrice + self.deliveryPrice;
+	self.OrderModel.totalSum(nowTotalSum);
+};
+
+/**
  * Добавление нескольких товаров в блок доставки
  * После добавления продуктов запускает получение общей даты доставки и наполнение списка точек доставок, если они доступны
  * 
@@ -230,7 +242,8 @@ DeliveryBox.prototype.addProductGroup = function( products ) {
 		self._addProduct(products[i]);
 	}
 
-	this.calculateDate();
+	self.calculateDate();
+	self.updateTotalPrice();
 
 	if ( self.hasPointDelivery ) {
 		self._makePointList();
@@ -471,7 +484,7 @@ ko.bindingHandlers.calendarSlider = {
 
 		slider.animate({'left': nowLeft});
 	}
-}
+};
  
  
 /** 
@@ -762,7 +775,7 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 				$(element).trigger('close');
 			}
 		}
-	}
+	};
 
 	/**
 	 * ORDER MODEL
@@ -820,6 +833,8 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 		 */
 		popupWithPoints: ko.observable({}),
 
+		totalSum: ko.observable(0),
+
 		/**
 		 * Обработка выбора пункта доставки
 		 * 
@@ -844,6 +859,11 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 			OrderModel.choosenPoint = data.id;
 			OrderModel.showPopupWithPoints(false);
 			OrderModel.deliveryTypesButton.attr('checked','checked');
+			
+			// Обнуляем общую стоимость заказа
+			OrderModel.totalSum(0);
+
+			// Разбиваем на подзаказы
 			separateOrder( OrderModel.statesPriority );
 
 			return false;
@@ -893,6 +913,11 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 
 			OrderModel.choosenPoint = 0;
 			OrderModel.deliveryTypesButton.attr('checked','checked');
+			
+			// Обнуляем общую стоимость заказа
+			OrderModel.totalSum(0);
+
+			// Разбиваем на подзаказы
 			separateOrder( OrderModel.statesPriority );
 
 			return false;

@@ -215,6 +215,18 @@ DeliveryBox.prototype._addProduct = function( product ) {
 };
 
 /**
+ * Перерасчет общей стоимости заказа
+ */
+DeliveryBox.prototype.updateTotalPrice = function() {
+	var self = this,
+		nowTotalSum = self.OrderModel.totalSum();
+	// end of vars
+
+	nowTotalSum += self.fullPrice + self.deliveryPrice;
+	self.OrderModel.totalSum(nowTotalSum);
+};
+
+/**
  * Добавление нескольких товаров в блок доставки
  * После добавления продуктов запускает получение общей даты доставки и наполнение списка точек доставок, если они доступны
  * 
@@ -230,7 +242,8 @@ DeliveryBox.prototype.addProductGroup = function( products ) {
 		self._addProduct(products[i]);
 	}
 
-	this.calculateDate();
+	self.calculateDate();
+	self.updateTotalPrice();
 
 	if ( self.hasPointDelivery ) {
 		self._makePointList();
@@ -471,4 +484,4 @@ ko.bindingHandlers.calendarSlider = {
 
 		slider.animate({'left': nowLeft});
 	}
-}
+};

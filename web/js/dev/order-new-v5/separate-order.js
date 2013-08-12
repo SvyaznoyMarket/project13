@@ -130,7 +130,7 @@
 				$(element).trigger('close');
 			}
 		}
-	}
+	};
 
 	/**
 	 * ORDER MODEL
@@ -188,6 +188,8 @@
 		 */
 		popupWithPoints: ko.observable({}),
 
+		totalSum: ko.observable(0),
+
 		/**
 		 * Обработка выбора пункта доставки
 		 * 
@@ -212,6 +214,11 @@
 			OrderModel.choosenPoint = data.id;
 			OrderModel.showPopupWithPoints(false);
 			OrderModel.deliveryTypesButton.attr('checked','checked');
+			
+			// Обнуляем общую стоимость заказа
+			OrderModel.totalSum(0);
+
+			// Разбиваем на подзаказы
 			separateOrder( OrderModel.statesPriority );
 
 			return false;
@@ -261,6 +268,11 @@
 
 			OrderModel.choosenPoint = 0;
 			OrderModel.deliveryTypesButton.attr('checked','checked');
+			
+			// Обнуляем общую стоимость заказа
+			OrderModel.totalSum(0);
+
+			// Разбиваем на подзаказы
 			separateOrder( OrderModel.statesPriority );
 
 			return false;
