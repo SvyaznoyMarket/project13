@@ -23,8 +23,18 @@ class Action
 
 
         $resp = $this->pullProductSimilar($request, 1757);
-        //$resp = $this->getRecomendationUpSell(1757);
-        //print $resp;
+
+        print '<pre>se';
+        print $resp;
+        print '</pre>';
+
+
+        $resp = $this->getRecomendationUpSell($request, 1757);
+
+        print '<pre>rr';
+        //print_r($resp);
+        print ($resp);
+        print '</pre>';
 
     }
 
@@ -34,6 +44,7 @@ class Action
         $ids = $RR->query('Recomendation/UpSellItemToItems', $item_id);
         $products = \RepositoryManager::product()->getCollectionById($ids);
 
+        /*
         foreach ($products as $i => $product) {
             if (!$product->getIsBuyable()) unset($products[$i]);
         }
@@ -45,10 +56,30 @@ class Action
         $additionalData = [];
         foreach ($products as $i => $product) {
             $additionalData[$product->getId()] = \Kissmetrics\Manager::getProductEvent($product, $i+1, 'Also Viewed');
+        }*/
+
+        $return = [];
+        foreach ($products as $i => $product) {
+            if (!$product->getIsBuyable()) continue;
+
+            $return[] = [
+                'id'     => $product->getId(),
+                'name'   => $product->getName(),
+                'image'  => $product->getImageUrl(),
+                'rating' => $product->getRating(),
+                'link'   => $product->getLink().(false === strpos($product->getLink(), '?') ? '?' : '&') . 'sender='.\RetailRocket\Client::NAME.'|'.$product->getId(),
+                'price'  => $product->getPrice(),
+                'data'   => \Kissmetrics\Manager::getProductEvent($product, $i+1, 'Similar'),
+            ];
+        }
+        if (!count($return)) {
+            throw new \Exception();
         }
 
+        return new \Http\JsonResponse($return);
 
-        return $products;
+
+        //return $products;
     }
 
 
@@ -91,7 +122,8 @@ class Action
                 throw new \Exception();
             }
 
-            $ids = array_key_exists('id', $r['recommendeditems']['item'])
+            $ids =
+                array_key_exists('id', $r['recommendeditems']['item'])
                 ? [$r['recommendeditems']['item']['id']]
                 : array_map(function($item) { return $item['id']; }, isset($r['recommendeditems']['item']) ? $r['recommendeditems']['item'] : []);
             if (!count($ids)) {
@@ -103,8 +135,6 @@ class Action
             $return = [];
             foreach ($products as $i => $product) {
                 if (!$product->getIsBuyable()) continue;
-
-                print_r($product->getName());
 
                 $return[] = [
                     'id'     => $product->getId(),
