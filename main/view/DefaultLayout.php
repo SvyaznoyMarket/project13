@@ -123,16 +123,11 @@ class DefaultLayout extends Layout {
      * @return string
      */
     public function slotHeadJavascript() {
-        $javascripts = [
+        $return = "\n";
+        foreach ([
             \App::config()->debug ? 'http://code.jquery.com/jquery-1.8.3.js' : 'http://yandex.st/jquery/1.8.3/jquery.min.js',
             '/js/prod/LAB.min.js',
-        ];
-        if (\App::config()->debug) {
-            $javascripts[] = 'http://'. \App::config()->mainHost . ':35729/js/livereload.js';
-        }
-
-        $return = "\n";
-        foreach ($javascripts as $javascript) {
+        ] as $javascript) {
             $return .= '<script src="' . $javascript . '" type="text/javascript"></script>' . "\n";
         }
 
