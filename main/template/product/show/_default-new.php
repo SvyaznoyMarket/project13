@@ -37,7 +37,7 @@ $is_showed = [];
         <? if (
             !($countModels > 0) &&
             !$product->getTagline() &&
-            !$product->getDescription &&
+            (isset($product->getDescription) && !$product->getDescription) &&
             ($countProperties < 16)
         ) {
             // Выводим все характеристики товара в центральном блоке первого экрана карточки
