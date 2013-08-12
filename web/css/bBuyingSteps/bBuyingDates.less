@@ -1,14 +1,35 @@
 @orderSprite-url:"@{base-url}/order/img/orderSprite.png";
 
 .bBuyingDates {
-  .rounded(7px);
+  	.rounded(7px);
+	position: relative;
+
+  	width: 446px;
+  	padding: 1px 0;
+  	margin: 36px 0 0;
+
+	border: 1px solid #ddd;
+  	background: #f4f4f4;
+}
+
+.bBuyingDatesWrap {
+	position: absolute;
+	top: -17px;
+	left: 40px;
+
+	float: left;
+	overflow: hidden;
+
+	width: 365px;
+	padding: 18px 0 0;
+}
+
+.bBuyingDatesList {
   float: left;
 
-  margin: 26px 0 30px;
+  width: 10000px;
 
-  border: 1px solid #ddd;
-  background: #f4f4f4;
-
+  padding: 0 1px;
   font-size: 0px;
 }
 
@@ -20,14 +41,13 @@
     zoom: 1;
 
     width: 50px;
-	margin: 1px;
-	padding: 5px 0;
-
-	font-size: 17px;
+	margin: 0 1px; 
+	padding: 6px 0;
 
 	cursor: pointer;
-
     text-align: center;
+
+	font-size: 17px;
 
     &:hover {
 	    .rounded(5px);
@@ -35,10 +55,10 @@
 	}
 
     .bArrow {
-    	height: 11px;
-		width: 9px;
-
 		display: block;
+
+		width: 9px;
+    	height: 11px;
 		margin: 11px 0 0 14px;
     }
 
@@ -55,6 +75,7 @@
 
 	&.mLeft {
 		.rounded(7px 0 0 7px);
+		float: left;
 
 		.bArrow {
 			background: url("@{orderSprite-url}") -25px 0px no-repeat;
@@ -63,9 +84,7 @@
 
 	&.mRight {
 		.rounded(0 7px 7px 0);
-	  	float:right;
-
-	  	*float:none;
+	  	float: right;
 
 	  	.bArrow {
 			background: url("@{orderSprite-url}") -34px 0px no-repeat;
