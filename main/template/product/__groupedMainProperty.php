@@ -1,6 +1,5 @@
 <?php
 
-//print_r($productExpanded);
 
 return function(
     \Helper\TemplateHelper $helper,
