@@ -128,10 +128,6 @@ return function(
                     $class3D = 'our3d';
                 }
                 ?>
-<<<<<<< HEAD
-
-=======
->>>>>>> 50da287... SITE-1516. LESS карточки товара
                 <li class="bPhotoViewer__eItem mGrad360 <?=$class3D?>"><a class="bPhotoLink" href=""></a></li>
             <? endif ?>
         </ul><!--/view product section -->
