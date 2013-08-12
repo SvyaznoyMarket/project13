@@ -3,7 +3,20 @@
  * @var $page          \View\Order\CreatePage
  * @var $user          \Session\User
  * @var $deliveryData  array
+ * @var $productsById \Model\Product\Entity[]
  */
+?>
+
+<?
+
+$backLink = $page->url('cart');
+foreach (array_reverse($productsById) as $product) {
+    /** @var $product \Model\Product\Entity */
+    if ($product->getParentCategory()) {
+        $backLink = $product->getParentCategory()->getLink();
+        break;
+    }
+}
 ?>
 
 
@@ -51,7 +64,7 @@
 	</style>
 <!-- Header -->
 <div class="bBuyingHead clearfix">
-	<a class="bBuyingHead__eLogo" href="http://tb.ent3.ru/"></a>
+	<a class="bBuyingHead__eLogo" href="<?= $page->url('homepage') ?>"></a>
 	
 	<div class="bBuyingHead__eTitle">
 		<span class="bSubTitle">Оформление заказа</span><br/>
@@ -69,7 +82,7 @@
 <!-- общая обертка оформления заказа -->
 <div class="bBuyingSteps" style="display:none" data-bind="style: { display: prepareData() ? 'block' : 'none'}">
 
-	<div class="bBuyingLine"><a class="bBackCart" href="">&lt; Вернуться к покупкам</a></div>
+	<div class="bBuyingLine"><a class="bBackCart" href="<?= $backLink ?>">&lt; Вернуться к покупкам</a></div>
 
 
 	 <!-- Order Method -->
