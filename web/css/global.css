@@ -10166,6 +10166,9 @@
   .bInputList .bCustomLabel__ePrice {
     margin: 5px 0 0;
   }
+  .bInputList .mLabelStrong {
+    font-weight: bold;
+  }
 }
 /*---END---СТИЛИ ПОЛЬЗОВАТЕЛЬСКИЕ СТИЛИ ЭЛЕМЕНТОВ ФОРМ---*/
 /*------СТИЛИ ОТЗЫВОВ------*/
@@ -11226,7 +11229,6 @@
   }
   .bBuyingLine .mSelectShop {
     padding: 6px 30px;
-    margin: 0 0 0 33px;
     font-size: 16px;
   }
   .bBuyingLine .bDeliveryPrice__eItem {
@@ -11432,10 +11434,26 @@
     -webkit-border-radius: 7px;
     -moz-border-radius: 7px;
     border-radius: 7px;
-    float: left;
-    margin: 26px 0 30px;
+    position: relative;
+    width: 446px;
+    padding: 1px 0;
+    margin: 36px 0 0;
     border: 1px solid #ddd;
     background: #f4f4f4;
+  }
+  .bBuyingDatesWrap {
+    position: absolute;
+    top: -17px;
+    left: 40px;
+    float: left;
+    overflow: hidden;
+    width: 365px;
+    padding: 18px 0 0;
+  }
+  .bBuyingDatesList {
+    float: left;
+    width: 10000px;
+    padding: 0 1px;
     font-size: 0px;
   }
   .bBuyingDatesItem {
@@ -11444,11 +11462,11 @@
     float: left;
     zoom: 1;
     width: 50px;
-    margin: 1px;
-    padding: 5px 0;
-    font-size: 17px;
+    margin: 0 1px;
+    padding: 6px 0;
     cursor: pointer;
     text-align: center;
+    font-size: 17px;
   }
   .bBuyingDatesItem:hover {
     -webkit-border-radius: 5px;
@@ -11457,9 +11475,9 @@
     background: #d5d5d5;
   }
   .bBuyingDatesItem .bArrow {
-    height: 11px;
-    width: 9px;
     display: block;
+    width: 9px;
+    height: 11px;
     margin: 11px 0 0 14px;
   }
   .bBuyingDatesItem.mLeft,
@@ -11474,6 +11492,7 @@
     -webkit-border-radius: 7px 0 0 7px;
     -moz-border-radius: 7px 0 0 7px;
     border-radius: 7px 0 0 7px;
+    float: left;
   }
   .bBuyingDatesItem.mLeft .bArrow {
     background: url("/css/order/img/orderSprite.png") -25px 0px no-repeat;
@@ -11483,7 +11502,6 @@
     -moz-border-radius: 0 7px 7px 0;
     border-radius: 0 7px 7px 0;
     float: right;
-    *float: none;
   }
   .bBuyingDatesItem.mRight .bArrow {
     background: url("/css/order/img/orderSprite.png") -34px 0px no-repeat;

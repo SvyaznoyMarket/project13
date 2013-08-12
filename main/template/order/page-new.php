@@ -76,7 +76,7 @@
 
 		<div class="bBuyingLine__eRight bInputList" data-bind="foreach: { data: deliveryTypes }">
 			<input class="jsCustomRadio bCustomInput mCustomCheckBig" type="radio" name="radio" hidden data-bind="attr: { id: 'method_'+$data.id }" />
-			<label class="bCustomLabel mCustomLabelBig" data-bind="
+			<label class="bCustomLabel mCustomLabelBig mLabelStrong" data-bind="
 									text: $data.name,
 									states: $data.states,
 									click: $root.chooseDeliveryTypes,
@@ -119,37 +119,39 @@
 
 		            <!-- текущий выбранный магазин и кнопка сменить магазин -->
 		            <p data-bind="visible: box.hasPointDelivery, text: box.choosenPoint().name"></p>
-					<p><a href="#" data-bind="visible: box.hasPointDelivery,
+					<a class="bBigOrangeButton mSelectShop" href="#" data-bind="visible: box.hasPointDelivery,
 												text: 'Сменить магазин',
-												click: box.changePoint"></a>
-					</p>
+												click: box.changePoint">
+					</a>
 					<!-- / текущий выбранный магазин и кнопка сменить магазин -->
 
 		        </div>
 
 		        <div class="bBuyingLine__eRight">
-
 		            <!-- Celendar -->
-		            <ul class="bBuyingDates" data-bind="foreach: { data: allDatesForBlock, as: 'calendarDay' }">
-		               <!--  <li class="bBuyingDatesItem mLeft">
-		                    <span class="bArrow"></span>
-		                </li> -->
+		            <div class="bBuyingDates clearfix">
+			            <div class="bBuyingDatesItem mLeft">
+			                <span class="bArrow"></span>
+			            </div>
 
-		                <li class="bBuyingDatesItem mDisable" data-bind="css: { mCurrent: calendarDay.value == box.choosenDate().value,
-		                												mDisable: !calendarDay.avalible,
-		                												mEnable: calendarDay.avalible },
-		                												click: function(data){
-		                													box.clickCalendarDay(data);
-		                												}">
-		                    <span class="bBuyingDatesItem__eDayNumber" data-bind="text: ( calendarDay.day === 0 ) ? '' : calendarDay.day"></span> 
-		                    <span class="bBuyingDatesItem__eDay" data-bind="text: calendarDay.humanDayOfWeek"></span>
-		                </li>
+			            <div class="bBuyingDatesWrap">
+				            <ul class="bBuyingDatesList" data-bind="foreach: { data: allDatesForBlock, as: 'calendarDay' }">
+				                <li class="bBuyingDatesItem mDisable" data-bind="css: { mCurrent: calendarDay.value == box.choosenDate().value,
+				                												mDisable: !calendarDay.avalible,
+				                												mEnable: calendarDay.avalible },
+				                												click: function(data){
+				                													box.clickCalendarDay(data);
+				                												}">
+				                    <span class="bBuyingDatesItem__eDayNumber" data-bind="text: ( calendarDay.day === 0 ) ? '' : calendarDay.day"></span> 
+				                    <span class="bBuyingDatesItem__eDay" data-bind="text: calendarDay.humanDayOfWeek"></span>
+				                </li>
+				            </ul>
+				        </div>
 
-
-		                <!-- <li class="bBuyingDatesItem mRight">
-		                   <span class="bArrow"></span>
-		                </li> -->
-		            </ul>
+			            <div class="bBuyingDatesItem mRight">
+			                <span class="bArrow"></span>
+			            </div>
+			        </div>
 		            <!-- /Celendar -->
 
 		            <!-- Products -->
@@ -178,7 +180,6 @@
 		            </div>
 		            <!-- /ko -->
 		            <!-- /Products -->
-
 		        </div>
 		    </div>
 
@@ -199,7 +200,7 @@
 		    <!-- Sum -->
 		    <div class="bBuyingLineWrap__eSum">
 		        Итого с доставкой:
-		        <strong class="bSumPrice"><span data-bind="text: window.printPrice(box.fullPrice + box.deliveryPrice)"></span><span class="rubl">p</span></strong>
+		        <strong class="bSumPrice"><span data-bind="text: window.printPrice(box.fullPrice + box.deliveryPrice)"></span> <span class="rubl">p</span></strong>
 		    </div>
 		</div>
 	</div>
