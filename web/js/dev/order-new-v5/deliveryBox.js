@@ -428,7 +428,7 @@ DeliveryBox.prototype.calendarLeftBtn = function() {
 };
 
 DeliveryBox.prototype.calendarRightBtn = function() {
-	var self = this;
+	var self = this,
 		nowLeft = parseInt(self.calendarSliderLeft(), 10);
 	// end of vars
 	
