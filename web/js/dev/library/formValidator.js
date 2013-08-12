@@ -34,6 +34,12 @@ FormValidator.prototype._defaultsConfig = {
 };
 
 /**
+ * Поля, на которые уже навешен обработчик валидации на ходу
+ */
+FormValidator.prototype._validateOnChangeFields = {
+};
+
+/**
  * Проверка обязательных к заполнению полей
  *
  * @this	{FormValidator}
@@ -41,7 +47,18 @@ FormValidator.prototype._defaultsConfig = {
  */
 FormValidator.prototype._requireAs = {
 	checkbox : function( fieldNode ) {
+		var value = fieldNode.attr('checked');
 
+		if ( value === undefined ) {
+			return {
+				hasError: true,
+				errorMsg : 'Поле обязательно для заполнения'
+			};
+		}
+
+		return {
+			hasError: false
+		};
 	},
 
 	radio: function( fieldNode ) {
@@ -286,9 +303,15 @@ FormValidator.prototype._enableHandlers = function() {
 		currentField = fields[i];
 
 		if ( currentField.validateOnChange ) {
-			console.log('навешиваем хандлер');
+
+			if ( self._validateOnChangeFields[JSON.stringify(currentField)] !== undefined ) {
+				continue;
+			}
+
 			currentField.fieldNode.bind('blur', validateOnBlur);
 			currentField.fieldNode.bind('focus', clearError);
+
+			self._validateOnChangeFields[JSON.stringify(currentField)] = true;
 		}
 	};
 };
@@ -461,4 +484,5 @@ FormValidator.prototype.removeFieldToValidate = function( fieldNodeToRemove ) {
  */
 FormValidator.prototype.addFieldToValidate = function( field ) {
 	this.config.fields.push(field);
+	this._enableHandlers();
 };

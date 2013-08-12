@@ -267,7 +267,7 @@ foreach (array_reverse($productsById) as $product) {
 					<strong><?= $region->getName() ?></strong> ( <a id="jsregion" href="<?= $page->url('region.change', array('regionId' => $region->getId())) ?>">изменить</a> )
 				</div>
 				
-				<div class="bInputAddress">
+				<div class="bInputAddress ui-css" data-bind="visible: hasHomeDelivery()">
 					<label class="bPlaceholder">Метро</label>
 
 					<input type="text" class="bBuyingLine__eText mInputLong ui-autocomplete-input" id="order_address_metro" title="Метро" aria-haspopup="true" aria-autocomplete="list" role="textbox" autocomplete="off" name="order[address_metro]" />
@@ -436,9 +436,9 @@ foreach (array_reverse($productsById) as $product) {
 			<div class="bBuyingLine__eRight bInputList">
 
 				<!-- Privacy and policy -->
-				<input class="jsCustomRadio bCustomInput mCustomCheckBig" type="checkbox" name="radio" hidden id="pp"/>
-				<label class="bCustomLabel mCustomLabelBig" for="pp">
-					Я ознакомлен и согласен с «<a href="/terms" target="_blank">Условиями продажи</a>» и «<a href="/legal" target="_blank">Правовой информацией</a>
+				<input class="jsCustomRadio bCustomInput mCustomCheckBig" type="checkbox" name="order[agreed]" hidden id="order_agreed"/>
+				<label class="bCustomLabel mCustomLabelBig" for="order_agreed">
+					Я ознакомлен и согласен с «<a href="/terms" target="_blank">Условиями продажи</a>» и «<a href="/legal" target="_blank">Правовой информацией</a>»*
 				</label>
 
 				<p class="bFootenote">* Поля обязательные для заполнения</p>

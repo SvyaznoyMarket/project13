@@ -56,6 +56,9 @@ function DeliveryBox( products, state, choosenPointForBox, createdBox, OrderMode
 	if ( self.hasPointDelivery ) {
 		self.choosenPoint( self.OrderModel.orderDictionary.getPointByStateAndId(self.state, choosenPointForBox) );
 	}
+	else {
+		self.OrderModel.hasHomeDelivery(true);
+	}
 
 	// Отступ слайдера дат
 	self.calendarSliderLeft = ko.observable(0);
@@ -648,13 +651,17 @@ OrderDictionary.prototype.getProductById = function( productId ) {
  */
 ;(function( global ){
 	var orderValidator = {},
+		subwayArray = $('#metrostations').data('name'),
 
 		// form fields
 		firstNameField = $('#order_recipient_first_name'),
 		emailField = $('#order_recipient_email'),
 		phoneField = $('#order_recipient_phonenumbers'),
+		subwayField = $('#order_address_metro'),
+		metroIdFiled = $('#order_subway_id'),
 		streetField = $('#order_address_street'),
 		buildingField = $('#order_address_building'),
+		orderAgreed = $('#order_agreed'),
 
 		// complete button
 		orderCompleteBtn = $('#completeOrder'),
@@ -691,23 +698,39 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 					require: true,
 					customErr: 'Не введен номер дома',
 					validateOnChange: true
+				},
+				{
+					fieldNode: orderAgreed,
+					require: true,
+					customErr: 'Необходимо согласие',
 				}
 			]
+		},
+
+		subwayAutocompleteConfig = {
+			source: subwayArray,
+			appendTo: '#metrostations',
+			minLength: 2,
+			select : function(event, ui ) {
+				metroIdFiled.val(ui.item.val);
+			}
 		};
 	// end of vars
 	
 	orderValidator = new FormValidator(validationConfig);
 	
-	var orderComplete = function( e ) {
+	/**
+	 * Обработчик нажатия на кнопку завершения заказа
+	 */
+	var orderComplete = function orderComplete() {
 			console.info('завершить оформление заказа');
-			e.preventDefault();
 
 			orderValidator.validate({
 				onInvalid: function( err ) {
 					console.warn('invalid');
 					console.log(err);
 
-					$.scrollTo(err[err.length - 1].fieldNode, 500, {offset:-50});
+					$.scrollTo(err[err.length - 1].fieldNode, 500, {offset:-15});
 				},
 				onValid: function() {
 					console.info('valid');
@@ -716,9 +739,35 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 
 			return false;
 	};
+
+	/**
+	 * Обработчик изменения в поле выбора станции метро
+	 * Проверка корректности заполнения поля
+	 */
+	var subwayChange = function subwayChange() {
+		for (var i = subwayArray.length - 1; i >= 0; i--) {
+			if ( subwayField.val() === subwayArray[i].label ) {
+				return;
+			}
+		}
+
+		subwayField.val('');
+	};
 	
 	phoneField.mask("(999) 999-99-99");
-    phoneField.val(phoneField.val());
+	phoneField.val(phoneField.val());
+
+	if ( subwayArray !== undefined ) {
+		console.log('метро существует');
+		subwayField.autocomplete(subwayAutocompleteConfig);
+		subwayField.bind('change', subwayChange);
+
+		orderValidator.addFieldToValidate({
+			fieldNode: subwayField,
+			require: true,
+			validateOnChange: true
+		});
+	}
 
 	orderCompleteBtn.bind('click', orderComplete);
 }(this));
@@ -810,7 +859,7 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 			}
 
 			if ( productsToNewBox.length ) {
-				choosenPointForBox = ( OrderModel.orderDictionary.hasPointDelivery(nowState) ) ? OrderModel.choosenPoint : 0;
+				choosenPointForBox = ( OrderModel.orderDictionary.hasPointDelivery(nowState) ) ? OrderModel.choosenPoint() : 0;
 
 				token = nowState+'_'+choosenPointForBox;
 
@@ -902,7 +951,13 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 		/**
 		 * Идетификатор приоритетного пункта доставки выбранного пользователем
 		 */
-		choosenPoint: null,
+		choosenPoint: ko.observable(),
+
+
+		/**
+		 * Есть ли хотя бы один блок доставки на дом
+		 */
+		hasHomeDelivery: ko.observable(false),
 
 		/**
 		 * Массив способов доставок доступных пользователю
@@ -919,6 +974,9 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 		 */
 		popupWithPoints: ko.observable({}),
 
+		/**
+		 * Общая сумма заказа
+		 */
 		totalSum: ko.observable(0),
 
 		/**
@@ -942,7 +1000,7 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 			// Сохраняем приоритет методов доставок
 			OrderModel.statesPriority = OrderModel.tmpStatesPriority;
 
-			OrderModel.choosenPoint = data.id;
+			OrderModel.choosenPoint(data.id);
 			OrderModel.showPopupWithPoints(false);
 			OrderModel.deliveryTypesButton.attr('checked','checked');
 			
@@ -997,7 +1055,7 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 			// Сохраняем приоритет методов доставок
 			OrderModel.statesPriority = OrderModel.tmpStatesPriority;
 
-			OrderModel.choosenPoint = 0;
+			OrderModel.choosenPoint(0);
 			OrderModel.deliveryTypesButton.attr('checked','checked');
 			
 			// Обнуляем общую стоимость заказа

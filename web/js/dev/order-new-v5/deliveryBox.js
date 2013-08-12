@@ -56,6 +56,9 @@ function DeliveryBox( products, state, choosenPointForBox, createdBox, OrderMode
 	if ( self.hasPointDelivery ) {
 		self.choosenPoint( self.OrderModel.orderDictionary.getPointByStateAndId(self.state, choosenPointForBox) );
 	}
+	else {
+		self.OrderModel.hasHomeDelivery(true);
+	}
 
 	// Отступ слайдера дат
 	self.calendarSliderLeft = ko.observable(0);

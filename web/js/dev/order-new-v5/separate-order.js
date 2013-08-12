@@ -79,7 +79,7 @@
 			}
 
 			if ( productsToNewBox.length ) {
-				choosenPointForBox = ( OrderModel.orderDictionary.hasPointDelivery(nowState) ) ? OrderModel.choosenPoint : 0;
+				choosenPointForBox = ( OrderModel.orderDictionary.hasPointDelivery(nowState) ) ? OrderModel.choosenPoint() : 0;
 
 				token = nowState+'_'+choosenPointForBox;
 
@@ -171,7 +171,13 @@
 		/**
 		 * Идетификатор приоритетного пункта доставки выбранного пользователем
 		 */
-		choosenPoint: null,
+		choosenPoint: ko.observable(),
+
+
+		/**
+		 * Есть ли хотя бы один блок доставки на дом
+		 */
+		hasHomeDelivery: ko.observable(false),
 
 		/**
 		 * Массив способов доставок доступных пользователю
@@ -188,6 +194,9 @@
 		 */
 		popupWithPoints: ko.observable({}),
 
+		/**
+		 * Общая сумма заказа
+		 */
 		totalSum: ko.observable(0),
 
 		/**
@@ -211,7 +220,7 @@
 			// Сохраняем приоритет методов доставок
 			OrderModel.statesPriority = OrderModel.tmpStatesPriority;
 
-			OrderModel.choosenPoint = data.id;
+			OrderModel.choosenPoint(data.id);
 			OrderModel.showPopupWithPoints(false);
 			OrderModel.deliveryTypesButton.attr('checked','checked');
 			
@@ -266,7 +275,7 @@
 			// Сохраняем приоритет методов доставок
 			OrderModel.statesPriority = OrderModel.tmpStatesPriority;
 
-			OrderModel.choosenPoint = 0;
+			OrderModel.choosenPoint(0);
 			OrderModel.deliveryTypesButton.attr('checked','checked');
 			
 			// Обнуляем общую стоимость заказа
