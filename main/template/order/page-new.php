@@ -1,13 +1,17 @@
 <?php
 /**
- * @var $page          \View\Order\CreatePage
- * @var $user          \Session\User
- * @var $deliveryData  array
- * @var $productsById \Model\Product\Entity[]
+ * @var $page           \View\Order\CreatePage
+ * @var $user           \Session\User
+ * @var $deliveryData   array
+ * @var $productsById   \Model\Product\Entity[]
+ * @var $paymentMethods \Model\PaymentMethod\Entity[]
+ * @var $banks          \Model\CreditBank\Entity[]
+ * @var $creditData     array
  */
 ?>
 
 <?
+$helper = new \Helper\TemplateHelper();
 
 $region = $user->getRegion();
 
@@ -19,7 +23,6 @@ foreach (array_reverse($productsById) as $product) {
         break;
     }
 }
-
 ?>
 
 
@@ -319,114 +322,7 @@ foreach (array_reverse($productsById) as $product) {
 		<div class="bBuyingLine mPayMethods">
 			<div class="bBuyingLine__eLeft"></div>
 			<div class="bBuyingLine__eRight bInputList">
-
-				<h2 class="bTitle">При получении заказа</h2>
-
-				<div class="bPayMethod">
-					<input class="jsCustomRadio bCustomInput mCustomRadioBig" id="cash_pay" type="radio" name="radio_pay" checked hidden />
-
-					<label for="cash_pay" class="bCustomLabel mCustomLabelRadioBig">
-						Оплата наличными
-					</label>
-
-					<div class="bPayMethodDesc">Оплатить товар наличными вы можете и при курьерской доставке, и если решили забрать товар из ближайшего магазина Enter самостоятельно.</div>
-				</div>
-
-				<div class="bPayMethod">
-					<input class="jsCustomRadio bCustomInput mCustomRadioBig" id="card_pay" type="radio" name="radio_pay" hidden />
-
-					<label for="card_pay" class="bCustomLabel mCustomLabelRadioBig">
-						Оплата банковской картой
-					</label>
-
-					<div class="bPayMethodDesc">Наши курьеры принимают к оплате не только наличные, но и банковские карты. Также картой можно заплатить при получении заказа в магазине.</div>
-				</div>
-
-				<h2 class="bTitle">Прямо сейчас</h2>
-
-                <div class="bPayMethod">
-                    <input class="jsCustomRadio bCustomInput mCustomRadioBig" id="online_pay" name="order[payment_method_id]" type="radio" hidden />
-
-					<label for="online_pay" class="bCustomLabel mCustomLabelRadioBig">
-						Онлайн оплата
-					</label>
-
-					<div class="bPayMethodDesc">Вы можете оплатить ваш заказ прямо сейчас. К оплате принимаются банковские карты платежных систем Visa, MasterCard, Diners Club, JCB. Услуга бесплатная, никаких дополнительных процентов вы не платите.</div>
-				</div>
-
-                <div class="bPayMethod">
-                    <input class="jsCustomRadio bCustomInput mCustomRadioBig" id="qiwi_pay" name="order[payment_method_id]" type="radio" hidden />
-
-					<label for="qiwi_pay" class="bCustomLabel mCustomLabelRadioBig">
-						Qiwi
-					</label>
-
-                    <div class="bPayMethodDesc">Вы можете оплатить ваш заказ прямо сейчас.</div>
-
-					<div style="display: none;" class="bPayMethodAction">
-						<input name="order[cardnumber]" type="text" class="bBuyingLine__eText cardNumber" placeholder="Номер телефона">
-					</div>
-				</div>
-
-                <div class="bPayMethod">
-                    <input class="jsCustomRadio bCustomInput mCustomRadioBig" id="electron_pay" name="order[payment_method_id]" type="radio" hidden />
-
-					<label for="electron_pay" class="bCustomLabel mCustomLabelRadioBig">
-						Выставить электронный счёт в личный кабинет Промсвязьбанка
-					</label>
-
-					<div class="bPayMethodDesc">Вы можете оплатить Ваш заказ путём выставления счёта в Ваш личный кабинет. Данная услуга доступна только для клиентов Промсвязьбанка.</div>
-				</div>
-
-                <div class="bPayMethod mMethodOption">
-                    <input class="jsCustomRadio bCustomInput mCustomRadioBig" id="on_credit" name="order[payment_method_id]" type="radio" hidden />
-
-					<label for="on_credit" class="bCustomLabel mCustomLabelRadioBig"> 
-						Покупка в кредит (онлайн)
-					</label>
-
-					<div class="bPayMethodDesc">Оформление онлайн-кредита без залога и поручителей, в любое время дня и ночи. Решение банка будет выслано SMS  в течение 2 минут. Товар и документы мы доставим сами!</div>
-
-					<div style="display: none;" class="bPayMethodAction">
-						<div>Выберите банк:</div>
-
-						<div class="bBankWrap">
-							<div class="bSelectWrap mFastInpSmall">
-								<span class="bSelectWrap_eText">Тинькофф</span>
-								<select class="bSelect mFastInpSmall">
-									<option ref="1" class="bSelect_eItem" selected>Тинькофф</option>
-									<option ref="2" class="bSelect_eItem">Ренессанс</option>
-								</select>
-							</div>
-
-							<a class="bBankLink" target="_blank" href="#">Условия кредита <span>(Тинькофф)</span></a>
-						</div>
-
-						<strong>Ежемесячный платеж<sup>**</sup>:
-							<span>406</span> <span class="rubl"> p</span>
-						</strong>
-
-                        <div class="bFootenote">
-                            <sup>**</sup> Кредит не распространяется на услуги F1 и доставку. Сумма платежей предварительная и уточняется банком в процессе принятия кредитного решения.
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="bPayMethod mMethodOption">
-                    <input class="jsCustomRadio bCustomInput mCustomRadioBig" id="serteficat_pay" name="order[payment_method_id]" type="radio" hidden />
-
-					<label for="serteficat_pay" class="bCustomLabel mCustomLabelRadioBig">
-						Подарочный сертификат
-					</label>
-
-					<div class="bPayMethodDesc">Вы можете оплатить ваш заказ путем погашения подарочного сертификата.</div>
-					<div class="orderFinal__certificate bPayMethodAction hidden innerType">
-						<div id="sertificateFields">
-							<input type="text" class="bBuyingLine__eText cardNumber" placeholder="Номер" />
-							<input type="text" class="bBuyingLine__eText cardPin" placeholder="ПИН" />
-						</div>
-					</div>
-				</div>
+                <?= $helper->render('order/newForm/__paymentMethod', ['paymentMethods' => $paymentMethods, 'banks' => $banks, 'creditData' => $creditData]) ?>
 			</div>
 		</div>
 
