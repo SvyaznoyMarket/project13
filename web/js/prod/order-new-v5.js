@@ -54,10 +54,13 @@ function DeliveryBox( products, state, choosenPointForBox, createdBox, OrderMode
 	self.pointList = ko.observableArray([]);
 
 	if ( self.hasPointDelivery ) {
+		// Доставка в выбранный пункт
 		self.choosenPoint( self.OrderModel.orderDictionary.getPointByStateAndId(self.state, choosenPointForBox) );
 	}
 	else {
+		// Передаем в модель, что есть блок с доставкой домой и генерируем событие об этом
 		self.OrderModel.hasHomeDelivery(true);
+		$('body').trigger('orderdeliverychange',[true]);
 	}
 
 	// Отступ слайдера дат
@@ -753,6 +756,23 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 
 		subwayField.val('');
 	};
+
+	var orderDeliveryChangeHandler = function orderDeliveryChangeHandler( event, hasHomeDelivery ) {
+		if ( hasHomeDelivery ) {
+			// Добавлем валидацию поля метро
+			orderValidator.addFieldToValidate({
+				fieldNode: subwayField,
+				require: true,
+				validateOnChange: true
+			});
+		}
+		else {
+			// Удаляем поле метро из списка валидируемых полей
+			orderValidator.removeFieldToValidate( subwayField );
+		}
+		console.info('Изменен тип доставки');
+		console.log(orderValidator);
+	};
 	
 	phoneField.mask("(999) 999-99-99");
 	phoneField.val(phoneField.val());
@@ -769,6 +789,7 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 		});
 	}
 
+	$('body').bind('orderdeliverychange', orderDeliveryChangeHandler)
 	orderCompleteBtn.bind('click', orderComplete);
 }(this));
  
@@ -819,6 +840,21 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 			nowState = null,
 			nowProduct = null;
 		// end of vars
+
+
+		// очищаем объект созданых блоков, удаляем блоки из модели
+		createdBox = {};
+		OrderModel.deliveryBoxes.removeAll();
+
+		// Маркируем выбранный способ доставки
+		OrderModel.deliveryTypesButton.attr('checked','checked');
+			
+		// Обнуляем общую стоимость заказа
+		OrderModel.totalSum(0);
+
+		// Обнуляем блоки с доставкой на дом и генерируем событие об этом
+		OrderModel.hasHomeDelivery(false);
+		$('body').trigger('orderdeliverychange',[false]);
 
 
 		/**
@@ -882,17 +918,12 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 		}
 	};
 
+
 	/**
 	 * Кастомный бинд для открытия окна магазинов
 	 */
 	ko.bindingHandlers.popupShower = {
-		init: function(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
-			var val = valueAccessor(),
-				unwrapVal = ko.utils.unwrapObservable(val);
-			// end of vars
-		},
-
-		update: function(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+		update: function(element, valueAccessor) {
 			var val = valueAccessor(),
 				unwrapVal = ko.utils.unwrapObservable(val);
 			// end of vars
@@ -912,8 +943,9 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 		}
 	};
 
+
 	/**
-	 * ORDER MODEL
+	 * === ORDER MODEL ===
 	 */
 	var OrderModel = {
 		/**
@@ -952,7 +984,6 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 		 * Идетификатор приоритетного пункта доставки выбранного пользователем
 		 */
 		choosenPoint: ko.observable(),
-
 
 		/**
 		 * Есть ли хотя бы один блок доставки на дом
@@ -993,19 +1024,14 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 		selectPoint: function( data ) {
 			console.info('point selected...');
 
-			// очищаем объект созданых блоков, удаляем блоки из модели
-			createdBox = {};
-			OrderModel.deliveryBoxes.removeAll();
-
 			// Сохраняем приоритет методов доставок
 			OrderModel.statesPriority = OrderModel.tmpStatesPriority;
 
+			// Сохраняем выбранную приоритетную точку доставки
 			OrderModel.choosenPoint(data.id);
+
+			// Скрываем окно с выбором точек доставок
 			OrderModel.showPopupWithPoints(false);
-			OrderModel.deliveryTypesButton.attr('checked','checked');
-			
-			// Обнуляем общую стоимость заказа
-			OrderModel.totalSum(0);
 
 			// Разбиваем на подзаказы
 			separateOrder( OrderModel.statesPriority );
@@ -1048,18 +1074,11 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 				return false;
 			}
 
-			// очищаем объект созданых блоков, удаляем блоки из модели
-			createdBox = {};
-			OrderModel.deliveryBoxes.removeAll();
-
 			// Сохраняем приоритет методов доставок
 			OrderModel.statesPriority = OrderModel.tmpStatesPriority;
 
+			// Сохраняем выбранную приоритетную точку доставки (для доставки домой = 0)
 			OrderModel.choosenPoint(0);
-			OrderModel.deliveryTypesButton.attr('checked','checked');
-			
-			// Обнуляем общую стоимость заказа
-			OrderModel.totalSum(0);
 
 			// Разбиваем на подзаказы
 			separateOrder( OrderModel.statesPriority );
@@ -1068,8 +1087,12 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 		}
 	};
 
-	
 	ko.applyBindings(OrderModel);
+	/**
+	 * ===  END ORDER MODEL ===
+	 */
+
+
 
 	/**
 	 * Обработка полученных данных

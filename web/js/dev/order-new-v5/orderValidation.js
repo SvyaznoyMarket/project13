@@ -105,6 +105,23 @@
 
 		subwayField.val('');
 	};
+
+	var orderDeliveryChangeHandler = function orderDeliveryChangeHandler( event, hasHomeDelivery ) {
+		if ( hasHomeDelivery ) {
+			// Добавлем валидацию поля метро
+			orderValidator.addFieldToValidate({
+				fieldNode: subwayField,
+				require: true,
+				validateOnChange: true
+			});
+		}
+		else {
+			// Удаляем поле метро из списка валидируемых полей
+			orderValidator.removeFieldToValidate( subwayField );
+		}
+		console.info('Изменен тип доставки');
+		console.log(orderValidator);
+	};
 	
 	phoneField.mask("(999) 999-99-99");
 	phoneField.val(phoneField.val());
@@ -121,5 +138,6 @@
 		});
 	}
 
+	$('body').bind('orderdeliverychange', orderDeliveryChangeHandler)
 	orderCompleteBtn.bind('click', orderComplete);
 }(this));

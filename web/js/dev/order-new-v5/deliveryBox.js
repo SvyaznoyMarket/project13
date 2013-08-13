@@ -54,10 +54,13 @@ function DeliveryBox( products, state, choosenPointForBox, createdBox, OrderMode
 	self.pointList = ko.observableArray([]);
 
 	if ( self.hasPointDelivery ) {
+		// Доставка в выбранный пункт
 		self.choosenPoint( self.OrderModel.orderDictionary.getPointByStateAndId(self.state, choosenPointForBox) );
 	}
 	else {
+		// Передаем в модель, что есть блок с доставкой домой и генерируем событие об этом
 		self.OrderModel.hasHomeDelivery(true);
+		$('body').trigger('orderdeliverychange',[true]);
 	}
 
 	// Отступ слайдера дат
