@@ -55,6 +55,19 @@ class NewAction {
             }
         });
 
+        // запрашиваем список станций метро
+        /** @var $subways \Model\Subway\Entity[] */
+        $subways = [];
+        if ($user->getRegion()->getHasSubway()) {
+            \RepositoryManager::subway()->prepareCollectionByRegion($user->getRegion(), function($data) use (&$subways) {
+                foreach ($data as $item) {
+                    $subways[] = new \Model\Subway\Entity($item);
+                }
+            }, function(\Exception $e) {
+                \App::exception()->remove($e);
+            });
+        }
+
         // запрашиваем список кредитных банков
         /** @var $banks \Model\CreditBank\Entity[] */
         $banks = [];
@@ -88,6 +101,7 @@ class NewAction {
         $page->setParam('deliveryData', (new \Controller\Order\DeliveryAction())->getResponseData());
         $page->setParam('productsById', $productsById);
         $page->setParam('paymentMethods', $paymentMethods);
+        $page->setParam('subways', $subways);
         $page->setParam('banks', $banks);
         $page->setParam('creditData', $creditData);
 

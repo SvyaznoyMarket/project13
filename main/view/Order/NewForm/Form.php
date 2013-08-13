@@ -373,13 +373,6 @@ class Form {
     }
 
     /**
-     * @return bool
-     */
-    public function hasSubway() {
-        return \App::user()->getRegion()->getHasSubway();
-    }
-
-    /**
      * @param string $email
      */
     public function setEmail($email)
