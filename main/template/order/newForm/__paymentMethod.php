@@ -51,6 +51,7 @@ return function (
                     class="jsCustomRadio bCustomInput mCustomRadioBig" id="<?= $elementId ?>"
                     type="radio"
                     name="order[payment_type_id]"
+                    value="<?= $paymentMethod->getId() ?>"
                     hidden
                 />
                 <label for="<?= $elementId ?>" class="bCustomLabel mCustomLabelRadioBig"><?= $paymentMethod->getName() ?></label>
