@@ -8,7 +8,7 @@ return function (
 ?>
 
 <div class="bPayMethodAction">
-    <input name="order[cardnumber]" type="text" class="bBuyingLine__eText cardNumber" placeholder="Номер телефона" />
+    <input name="order[qiwi_phone]" type="text" class="bBuyingLine__eText cardNumber" placeholder="Номер телефона" />
 </div>
 
 <? };
