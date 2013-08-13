@@ -457,14 +457,7 @@ DeliveryBox.prototype.calendarRightBtn = function() {
 
 
 ko.bindingHandlers.calendarSlider = {
-	init: function(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
-		var slider = $(element),
-			nowLeft = valueAccessor();
-		// end of vars
-
-		console.info('init slider');
-	},
-	update: function(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+	update: function( element, valueAccessor, allBindingsAccessor, viewModel, bindingContext ) {
 		var slider = $(element),
 			nowLeft = valueAccessor(),
 
@@ -658,6 +651,7 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 
 		// form fields
 		firstNameField = $('#order_recipient_first_name'),
+		lastNameField = $('#order_recipient_last_name'),
 		emailField = $('#order_recipient_email'),
 		phoneField = $('#order_recipient_phonenumbers'),
 		subwayField = $('#order_address_metro'),
@@ -679,7 +673,13 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 				{
 					fieldNode: firstNameField,
 					require: true,
-					customErr: 'Не введено имя',
+					customErr: 'Введите имя получателя',
+					validateOnChange: true
+				},
+				{
+					fieldNode: lastNameField,
+					require: true,
+					customErr: 'Введите фамилию получателя',
 					validateOnChange: true
 				},
 				{
@@ -690,7 +690,6 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 				},
 				{
 					fieldNode: phoneField,
-					// validBy: 'isPhone',
 					require: true,
 					customErr: 'Некорректно введен телефон',
 					validateOnChange: true
@@ -806,7 +805,7 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 		subwayField.bind('change', subwayChange);
 	}
 
-	$('body').bind('orderdeliverychange', orderDeliveryChangeHandler)
+	$('body').bind('orderdeliverychange', orderDeliveryChangeHandler);
 	orderCompleteBtn.bind('click', orderComplete);
 }(this));
  
@@ -940,7 +939,7 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 	 * Кастомный бинд для открытия окна магазинов
 	 */
 	ko.bindingHandlers.popupShower = {
-		update: function(element, valueAccessor) {
+		update: function( element, valueAccessor ) {
 			var val = valueAccessor(),
 				unwrapVal = ko.utils.unwrapObservable(val);
 			// end of vars
@@ -959,6 +958,29 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 			}
 		}
 	};
+
+	/**
+	 * Кастомный бинд отображения методов оплаты
+	 */
+	ko.bindingHandlers.paymentMethodVisible = {
+		update: function( element, valueAccessor ) {
+			var val = valueAccessor(),
+				unwrapVal = ko.utils.unwrapObservable(val),
+				maxSum = parseInt($(element).data('max-sum'), 10);
+			// end of vars
+
+			if ( isNaN(maxSum) ) {
+				return;
+			}
+
+			if ( maxSum < unwrapVal ) {
+				$(element).hide();
+			}
+			else {
+				$(element).show();
+			}
+		}
+	}; 
 
 
 	/**

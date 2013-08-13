@@ -457,14 +457,7 @@ DeliveryBox.prototype.calendarRightBtn = function() {
 
 
 ko.bindingHandlers.calendarSlider = {
-	init: function(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
-		var slider = $(element),
-			nowLeft = valueAccessor();
-		// end of vars
-
-		console.info('init slider');
-	},
-	update: function(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+	update: function( element, valueAccessor, allBindingsAccessor, viewModel, bindingContext ) {
 		var slider = $(element),
 			nowLeft = valueAccessor(),
 

@@ -7,6 +7,7 @@
 
 		// form fields
 		firstNameField = $('#order_recipient_first_name'),
+		lastNameField = $('#order_recipient_last_name'),
 		emailField = $('#order_recipient_email'),
 		phoneField = $('#order_recipient_phonenumbers'),
 		subwayField = $('#order_address_metro'),
@@ -28,7 +29,13 @@
 				{
 					fieldNode: firstNameField,
 					require: true,
-					customErr: 'Не введено имя',
+					customErr: 'Введите имя получателя',
+					validateOnChange: true
+				},
+				{
+					fieldNode: lastNameField,
+					require: true,
+					customErr: 'Введите фамилию получателя',
 					validateOnChange: true
 				},
 				{
@@ -39,7 +46,6 @@
 				},
 				{
 					fieldNode: phoneField,
-					// validBy: 'isPhone',
 					require: true,
 					customErr: 'Некорректно введен телефон',
 					validateOnChange: true
@@ -155,6 +161,6 @@
 		subwayField.bind('change', subwayChange);
 	}
 
-	$('body').bind('orderdeliverychange', orderDeliveryChangeHandler)
+	$('body').bind('orderdeliverychange', orderDeliveryChangeHandler);
 	orderCompleteBtn.bind('click', orderComplete);
 }(this));
