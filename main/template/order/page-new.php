@@ -322,7 +322,7 @@ foreach (array_reverse($productsById) as $product) {
 		<div class="bBuyingLine mPayMethods">
 			<div class="bBuyingLine__eLeft"></div>
 			<div class="bBuyingLine__eRight bInputList">
-                <?= $helper->render('order/__form-paymentMethod', ['paymentMethods' => $paymentMethods, 'banks' => $banks, 'creditData' => $creditData]) ?>
+                <?= $helper->render('order/newForm/__paymentMethod', ['paymentMethods' => $paymentMethods, 'banks' => $banks, 'creditData' => $creditData]) ?>
 			</div>
 		</div>
 

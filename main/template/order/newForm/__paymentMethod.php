@@ -53,11 +53,11 @@ return function (
                 <? endif ?>
 
                 <? if ($paymentMethod->getIsCredit()): ?>
-                    <?= $helper->render('order/__form-paymentMethod-credit', ['paymentMethod' => $paymentMethod, 'banks' => $banks, 'creditData' => $creditData]) ?>
+                    <?= $helper->render('order/newForm/__paymentMethod-credit', ['paymentMethod' => $paymentMethod, 'banks' => $banks, 'creditData' => $creditData]) ?>
                 <? elseif ($paymentMethod->isCertificate()): ?>
-                    <?= $helper->render('order/__form-paymentMethod-certificate', ['paymentMethod' => $paymentMethod]) ?>
+                    <?= $helper->render('order/newForm/__paymentMethod-certificate', ['paymentMethod' => $paymentMethod]) ?>
                 <? elseif ($paymentMethod->isQiwi()): ?>
-                    <?= $helper->render('order/__form-paymentMethod-qiwi', ['paymentMethod' => $paymentMethod]) ?>
+                    <?= $helper->render('order/newForm/__paymentMethod-qiwi', ['paymentMethod' => $paymentMethod]) ?>
                 <? endif ?>
             </div>
         <? endforeach ?>
