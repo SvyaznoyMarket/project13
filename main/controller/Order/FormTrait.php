@@ -74,7 +74,7 @@ trait FormTrait {
         }
 
         // email
-        if (\App::abTest()->getCase()->getKey() == 'emails' && !$form->getOneClick()) {
+        if (('emails' === \App::abTest()->getCase()->getKey()) && !$form->getOneClick()) {
             $email = $form->getEmail();
             $emailValidator = new \Validator\Email();
             if (!$emailValidator->isValid($email)) {

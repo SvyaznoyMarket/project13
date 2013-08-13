@@ -244,7 +244,7 @@ foreach (array_reverse($productsById) as $product) {
 				<input type="text" id="order_recipient_last_name" class="bBuyingLine__eText mInputLong" name="order[recipient_last_name]" value="" />
 			</div>
 
-			<label for="" class="bBuyingLine__eLeft">E-mail*</label>
+			<label for="" class="bBuyingLine__eLeft">E-mail<? if ('emails' == \App::abTest()->getCase()->getKey()): ?>*<? endif ?></label>
 			<div class="bBuyingLine__eRight">
 				<input type="text" id="order_recipient_email" class="bBuyingLine__eText mInputLong mInput265" name="order[recipient_email]" value="" />
 
