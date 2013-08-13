@@ -41,6 +41,21 @@
 		// end of vars
 
 
+		// очищаем объект созданых блоков, удаляем блоки из модели
+		createdBox = {};
+		OrderModel.deliveryBoxes.removeAll();
+
+		// Маркируем выбранный способ доставки
+		OrderModel.deliveryTypesButton.attr('checked','checked');
+			
+		// Обнуляем общую стоимость заказа
+		OrderModel.totalSum(0);
+
+		// Обнуляем блоки с доставкой на дом и генерируем событие об этом
+		OrderModel.hasHomeDelivery(false);
+		$('body').trigger('orderdeliverychange',[false]);
+
+
 		/**
 		 * Перебор states в выбранном способе доставки в порядке приоритета
 		 */
@@ -102,17 +117,12 @@
 		}
 	};
 
+
 	/**
 	 * Кастомный бинд для открытия окна магазинов
 	 */
 	ko.bindingHandlers.popupShower = {
-		init: function(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
-			var val = valueAccessor(),
-				unwrapVal = ko.utils.unwrapObservable(val);
-			// end of vars
-		},
-
-		update: function(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+		update: function(element, valueAccessor) {
 			var val = valueAccessor(),
 				unwrapVal = ko.utils.unwrapObservable(val);
 			// end of vars
@@ -132,8 +142,9 @@
 		}
 	};
 
+
 	/**
-	 * ORDER MODEL
+	 * === ORDER MODEL ===
 	 */
 	var OrderModel = {
 		/**
@@ -172,7 +183,6 @@
 		 * Идетификатор приоритетного пункта доставки выбранного пользователем
 		 */
 		choosenPoint: ko.observable(),
-
 
 		/**
 		 * Есть ли хотя бы один блок доставки на дом
@@ -213,19 +223,14 @@
 		selectPoint: function( data ) {
 			console.info('point selected...');
 
-			// очищаем объект созданых блоков, удаляем блоки из модели
-			createdBox = {};
-			OrderModel.deliveryBoxes.removeAll();
-
 			// Сохраняем приоритет методов доставок
 			OrderModel.statesPriority = OrderModel.tmpStatesPriority;
 
+			// Сохраняем выбранную приоритетную точку доставки
 			OrderModel.choosenPoint(data.id);
+
+			// Скрываем окно с выбором точек доставок
 			OrderModel.showPopupWithPoints(false);
-			OrderModel.deliveryTypesButton.attr('checked','checked');
-			
-			// Обнуляем общую стоимость заказа
-			OrderModel.totalSum(0);
 
 			// Разбиваем на подзаказы
 			separateOrder( OrderModel.statesPriority );
@@ -268,18 +273,11 @@
 				return false;
 			}
 
-			// очищаем объект созданых блоков, удаляем блоки из модели
-			createdBox = {};
-			OrderModel.deliveryBoxes.removeAll();
-
 			// Сохраняем приоритет методов доставок
 			OrderModel.statesPriority = OrderModel.tmpStatesPriority;
 
+			// Сохраняем выбранную приоритетную точку доставки (для доставки домой = 0)
 			OrderModel.choosenPoint(0);
-			OrderModel.deliveryTypesButton.attr('checked','checked');
-			
-			// Обнуляем общую стоимость заказа
-			OrderModel.totalSum(0);
 
 			// Разбиваем на подзаказы
 			separateOrder( OrderModel.statesPriority );
@@ -288,8 +286,12 @@
 		}
 	};
 
-	
 	ko.applyBindings(OrderModel);
+	/**
+	 * ===  END ORDER MODEL ===
+	 */
+
+
 
 	/**
 	 * Обработка полученных данных
