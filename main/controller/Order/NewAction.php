@@ -3,6 +3,8 @@
 namespace Controller\Order;
 
 class NewAction {
+    use FormTrait;
+
     /**
      * @param \Http\Request $request
      * @return \Http\JsonResponse|\Http\RedirectResponse|\Http\Response
@@ -15,6 +17,8 @@ class NewAction {
         $user = \App::user();
         $region = $user->getRegion();
         $cart = $user->getCart();
+
+        $form = $this->getForm();
 
         /** @var $productsById \Model\Product\Entity[] */
         $productsById = [];
@@ -30,11 +34,11 @@ class NewAction {
         // запрашиваем список способов оплаты
         /** @var $paymentMethods \Model\PaymentMethod\Entity[] */
         $paymentMethods = [];
-        $creditAllowed = \App::config()->payment['creditEnabled'] && ($user->getCart()->getTotalProductPrice()) >= \App::config()->product['minCreditPrice'];
+        $isCreditAllowed = \App::config()->payment['creditEnabled'] && ($user->getCart()->getTotalProductPrice()) >= \App::config()->product['minCreditPrice'];
         \RepositoryManager::paymentMethod()->prepareCollection(null, $user->getEntity() ? $user->getEntity()->getIsCorporative() : false, function($data) use (
             &$paymentMethods,
-            $creditAllowed,
-            $user
+            &$isCreditAllowed,
+            &$user
         ) {
             $blockedIds = (array)\App::config()->payment['blockedIds'];
 
@@ -43,7 +47,7 @@ class NewAction {
                 if (in_array($paymentMethod->getId(), $blockedIds)) continue;
 
                 // кредит
-                if ($paymentMethod->getIsCredit() && !$creditAllowed) {
+                if ($paymentMethod->getIsCredit() && !$isCreditAllowed) {
                     continue;
                 }
                 // подарочный сертификат
@@ -79,6 +83,19 @@ class NewAction {
 
         \App::coreClientV2()->execute();
 
+        // метод оплаты по умолчанию
+        if ($request->cookies->get('credit_on') && $isCreditAllowed) { // если пользователь положил товар в корзину со включенной галкой "Беру в кредит", то ...
+            foreach ($paymentMethods as $paymentMethod) {
+                if ($paymentMethod->getIsCredit()) {
+                    $form->setPaymentMethodId($paymentMethod->getId());
+                    break;
+                }
+            }
+        } else { // иначе, выбираем первый метод оплаты
+            $paymentMethod = reset($paymentMethods);
+            $form->setPaymentMethodId($paymentMethod ? $paymentMethod->getId() : null);
+        }
+
         // данные для кредита
         $creditData = [];
         foreach ($cart->getProducts() as $cartProduct) {
@@ -104,6 +121,7 @@ class NewAction {
         $page->setParam('subways', $subways);
         $page->setParam('banks', $banks);
         $page->setParam('creditData', $creditData);
+        $page->setParam('form', $form);
 
         return new \Http\Response($page->show());
     }

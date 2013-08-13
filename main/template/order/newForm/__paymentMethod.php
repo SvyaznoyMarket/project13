@@ -2,6 +2,7 @@
 
 return function (
     \Helper\TemplateHelper $helper,
+    \View\Order\NewForm\Form $form,
     array $paymentMethods,
     array $banks,
     array $creditData
@@ -44,8 +45,14 @@ return function (
             $elementId = sprintf('paymentMethod-%s', $paymentMethod->getId());
         ?>
             <div class="bPayMethod<? if (\Model\PaymentMethod\Entity::TYPE_ALL == $typeId): ?> mMethodOption<? endif ?>">
-                <input class="jsCustomRadio bCustomInput mCustomRadioBig" id="<?= $elementId ?>" type="radio" name="order[payment_type_id]" hidden />
-
+                <input
+                    data-max-sum="<?= in_array($paymentMethod->getId(), [\Model\PaymentMethod\Entity::QIWI_ID, \Model\PaymentMethod\Entity::WEBMONEY_ID]) ? App::config()->order['maxSumOnline'] : '' ?>"
+                    <? if ($paymentMethod->getId() == $form->getPaymentMethodId()): ?> checked="checked"<?endif ?>
+                    class="jsCustomRadio bCustomInput mCustomRadioBig" id="<?= $elementId ?>"
+                    type="radio"
+                    name="order[payment_type_id]"
+                    hidden
+                />
                 <label for="<?= $elementId ?>" class="bCustomLabel mCustomLabelRadioBig"><?= $paymentMethod->getName() ?></label>
 
                 <? if ($paymentMethod->getDescription()): ?>
