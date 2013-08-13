@@ -2,6 +2,7 @@
 /**
  * @var $page           \View\Order\CreatePage
  * @var $user           \Session\User
+ * @var $form           \View\Order\NewForm\Form
  * @var $deliveryData   array
  * @var $productsById   \Model\Product\Entity[]
  * @var $paymentMethods \Model\PaymentMethod\Entity[]
@@ -240,12 +241,12 @@ foreach (array_reverse($productsById) as $product) {
 
 			<label for="" class="bBuyingLine__eLeft">Фамилия получателя*</label>
 			<div class="bBuyingLine__eRight">
-				<input type="text" id="order_recipient_last_name" class="bBuyingLine__eText mInputLong" name="order[recipient_first_name]" value="" />
+				<input type="text" id="order_recipient_last_name" class="bBuyingLine__eText mInputLong" name="order[recipient_last_name]" value="" />
 			</div>
 
-			<label for="" class="bBuyingLine__eLeft">E-mail*</label>
+			<label for="" class="bBuyingLine__eLeft">E-mail<? if ('emails' == \App::abTest()->getCase()->getKey()): ?>*<? endif ?></label>
 			<div class="bBuyingLine__eRight">
-				<input type="text" id="order_recipient_email" class="bBuyingLine__eText mInputLong mInput265" name="order[recipient_last_name]" value="" />
+				<input type="text" id="order_recipient_email" class="bBuyingLine__eText mInputLong mInput265" name="order[recipient_email]" value="" />
 
 				<div class="bSubscibeCheck bInputList" style="visibility:visible;">
 					<input type="checkbox" name="subscribe" id="subscribe" class="jsCustomRadio bCustomInput mCustomCheckBig" checked hidden />
@@ -282,7 +283,7 @@ foreach (array_reverse($productsById) as $product) {
 
 				<div class="bInputAddress">
 					<label class="bPlaceholder">Дом*</label>
-					<input type="text" id="order_address_building" class="bBuyingLine__eText mInputShort mInputBuild" name="order[address_street]" value="" />
+					<input type="text" id="order_address_building" class="bBuyingLine__eText mInputShort mInputBuild" name="order[address_building]" value="" />
 				</div>
 
 				<div class="bInputAddress">
@@ -313,7 +314,7 @@ foreach (array_reverse($productsById) as $product) {
 		<div class="bBuyingLine mPayMethods">
 			<div class="bBuyingLine__eLeft"></div>
 			<div class="bBuyingLine__eRight bInputList">
-                <?= $helper->render('order/newForm/__paymentMethod', ['paymentMethods' => $paymentMethods, 'banks' => $banks, 'creditData' => $creditData]) ?>
+                <?= $helper->render('order/newForm/__paymentMethod', ['form' => $form, 'paymentMethods' => $paymentMethods, 'banks' => $banks, 'creditData' => $creditData]) ?>
 			</div>
 		</div>
 
@@ -357,3 +358,16 @@ foreach (array_reverse($productsById) as $product) {
 <!-- /Общая обертка оформления заказа -->
 
 <div id="jsOrderDelivery" data-value="<?= $page->json($deliveryData) ?>"></div>
+<div id="jsForm" data-value="<?= $page->json([
+    'order[recipient_first_name]'   => $form->getFirstName(),
+    'order[recipient_last_name]'    => $form->getLastName(),
+    'order[recipient_email]'        => $form->getEmail(),
+    'order[recipient_phonenumbers]' => $form->getMobilePhone(),
+    'order[subway_id]'              => $form->getSubwayId(),
+    'order[address_street]'         => $form->getAddressStreet(),
+    'order[address_number]'         => $form->getAddressNumber(),
+    'order[address_building]'       => $form->getAddressBuilding(),
+    'order[address_floor]'          => $form->getAddressFloor(),
+    'order[address_apartment]'      => $form->getAddressApartment(),
+    'order[payment_method_id]'      => $form->getPaymentMethodId(),
+]) ?>"></div>
