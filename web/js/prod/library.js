@@ -2194,8 +2194,13 @@ FormValidator.prototype._validateField = function( field ) {
 
 	elementType = ( fieldNode.tagName === 'TEXTAREA') ? 'textarea' : ( fieldNode.tagName === 'SELECT') ? 'select' : fieldNode.attr('type') ; // если тэг элемента TEXTAREA то тип проверки TEXTAREA, если SELECT - то SELECT, иначе берем из атрибута type
 
+	/**
+	 * Проверка обязательно ли поле для заполенения
+	 */
 	if ( require ) {
-		// поле обязательно для заполнения
+		/**
+		 * Проверка существования метода проверки на обязательность для данного типа поля
+		 */
 		if ( self._requireAs.hasOwnProperty(elementType) ) {
 			result = self._requireAs[elementType](fieldNode);
 
@@ -2218,8 +2223,11 @@ FormValidator.prototype._validateField = function( field ) {
 		}
 	}
 
-	// валидация выбранным методом
-	if ( self._validBy.hasOwnProperty(validBy) ) {
+	/**
+	 * Проверка существоаания метода валидации
+	 * Валидация поля, если не пустое
+	 */
+	if ( self._validBy.hasOwnProperty(validBy) && field.fieldNode.val().length !==0 ) {
 		result = self._validBy[validBy](fieldNode);
 
 		if ( result.hasError ) {
@@ -2229,7 +2237,7 @@ FormValidator.prototype._validateField = function( field ) {
 			};
 		}
 	}
-	else if ( validBy !== undefined ) {
+	else if ( validBy !== undefined && field.fieldNode.val().length !==0 ) {
 		error = {
 			hasError: true,
 			errorMsg : 'Неизвестный метод валидации '+validBy
