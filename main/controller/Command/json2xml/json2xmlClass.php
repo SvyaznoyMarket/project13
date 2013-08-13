@@ -115,6 +115,7 @@ class json2xml
         /** /head **/
 
 
+        $categories = $xml->shop->addChild('categories');
         $offers = $xml->shop->addChild('offers');
 
 
@@ -189,15 +190,12 @@ class json2xml
 
 
 
-
                 $progressbar = ' Readed ' . $readed . ' from '. $file_size. '; '. round( ($readed/$file_size)*100 , 2 ) . '%' ;
 
                 //$this->echlog($json_line); // log // all product-info FROM JSON file
                 //$this->echlog ( 'ProductID ' . $params['id'] . '; ' . $progressbar  );
                 //self::file_log ( 'ProductID ' . $params['id'] . '; ' . $progressbar  );
                 //$this->echlog( $params ); // log // all product-info FOR XML file
-
-
 
 
                 $offer = $offers->addChild('offer');
@@ -215,7 +213,23 @@ class json2xml
 
         } // end while
 
-        //TDo?есть ли дубликаты товаров в исходном файле? // считаем, что нет
+
+        foreach ( $categories_arr as $cat) {
+            $paretn_id = 0;
+            $arr = explode(',', $cat->path);
+
+            if ( $cat->category_id == end($arr) ) {
+                $paretn_id = prev($arr);
+            }
+
+            $category = $categories->addChild('category', $cat->name);
+            $category->addAttribute('id', $cat->category_id);
+            if ($paretn_id) $category->addAttribute('parent_id', $paretn_id);
+            //$category->addAttribute('url', $cat->category_id); // <-- TODO
+        }
+
+
+        // считаем, что дубликатов товаров в исходном файле нет
 
         fclose($json_file);
         $this->echlog('Файл ' . $json_filename .' закрыт');
