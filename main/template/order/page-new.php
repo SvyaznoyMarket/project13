@@ -14,8 +14,8 @@
 
 <?
 $helper = new \Helper\TemplateHelper();
-
 $region = $user->getRegion();
+$isCorporative = $user->getEntity() && $user->getEntity()->getIsCorporative();
 
 $backLink = $page->url('cart');
 foreach (array_reverse($productsById) as $product) {
@@ -326,7 +326,7 @@ foreach (array_reverse($productsById) as $product) {
 				<!-- Privacy and policy -->
 				<input class="jsCustomRadio bCustomInput mCustomCheckBig" type="checkbox" name="order[agreed]" hidden id="order_agreed"/>
 				<label class="bCustomLabel mCustomLabelBig" for="order_agreed">
-					Я ознакомлен и согласен с «<a href="/terms" target="_blank">Условиями продажи</a>» и «<a href="/legal" target="_blank">Правовой информацией</a>»*
+					Я ознакомлен и согласен с «<a href="<?= $isCorporative ? '/corp-terms' : '/terms' ?>" target="_blank">Условиями продажи</a>» и «<a href="/legal" target="_blank">Правовой информацией</a>»*
 				</label>
 
 				<p class="bFootenote">* Поля обязательные для заполнения</p>
