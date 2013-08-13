@@ -62,7 +62,20 @@ FormValidator.prototype._requireAs = {
 	},
 
 	radio: function( fieldNode ) {
+		var checked = fieldNode.filter(':checked').val();
 
+		console.warn(checked);
+
+		if ( checked === undefined ) {
+			return {
+				hasError: true,
+				errorMsg : 'Необходимо выбрать пункт из списка'
+			};
+		}
+
+		return {
+			hasError: false
+		};
 	},
 
 	text: function( fieldNode ) {
