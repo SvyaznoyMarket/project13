@@ -122,7 +122,7 @@
 	 * Кастомный бинд для открытия окна магазинов
 	 */
 	ko.bindingHandlers.popupShower = {
-		update: function(element, valueAccessor) {
+		update: function( element, valueAccessor ) {
 			var val = valueAccessor(),
 				unwrapVal = ko.utils.unwrapObservable(val);
 			// end of vars
@@ -141,6 +141,29 @@
 			}
 		}
 	};
+
+	/**
+	 * Кастомный бинд отображения методов оплаты
+	 */
+	ko.bindingHandlers.paymentMethodVisible = {
+		update: function( element, valueAccessor ) {
+			var val = valueAccessor(),
+				unwrapVal = ko.utils.unwrapObservable(val),
+				maxSum = parseInt($(element).data('max-sum'), 10);
+			// end of vars
+
+			if ( isNaN(maxSum) ) {
+				return;
+			}
+
+			if ( maxSum < unwrapVal ) {
+				$(element).hide();
+			}
+			else {
+				$(element).show();
+			}
+		}
+	}; 
 
 
 	/**

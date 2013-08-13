@@ -16,8 +16,8 @@ return function (
 
     <div class="bBankWrap">
         <div class="bSelectWrap mFastInpSmall">
+            <span class="bSelectWrap_eText">Тинькофф</span>
             <select class="bSelect mFastInpSmall">
-                <span class="bSelectWrap_eText">Тинькофф</span>
             <? foreach ($banks as $bank): ?>
                 <option class="bSelect_eItem" value="<?= $bank->getId() ?>" data-link="<?= $helper->escape($bank->getLink()) ?>"><?= $bank->getName() ?></option>
             <? endforeach ?>
