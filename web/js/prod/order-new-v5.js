@@ -664,6 +664,7 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 		metroIdFiled = $('#order_subway_id'),
 		streetField = $('#order_address_street'),
 		buildingField = $('#order_address_building'),
+		paymentRadio = $('.jsCustomRadio[name="order[payment_type_id]"]'),
 		orderAgreed = $('#order_agreed'),
 
 		// complete button
@@ -695,6 +696,11 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 					validateOnChange: true
 				},
 				{
+					fieldNode: subwayField,
+					customErr: 'Не выбрана станция метро',
+					validateOnChange: true
+				},
+				{
 					fieldNode: streetField,
 					require: true,
 					customErr: 'Не введено название улицы',
@@ -710,7 +716,12 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 					fieldNode: orderAgreed,
 					require: true,
 					customErr: 'Необходимо согласие',
-				}
+				},
+				{
+					fieldNode: paymentRadio,
+					require: true,
+					customErr: 'Необходимо выбрать метод оплаты'
+				},
 			]
 		},
 
@@ -771,15 +782,15 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 		orderDeliveryChangeHandler = function orderDeliveryChangeHandler( event, hasHomeDelivery ) {
 			if ( hasHomeDelivery ) {
 				// Добавлем валидацию поля метро
-				orderValidator.addFieldToValidate({
-					fieldNode: subwayField,
-					require: true,
-					validateOnChange: true
+				orderValidator.setValidate( subwayField , {
+					require: true
 				});
 			}
 			else {
 				// Удаляем поле метро из списка валидируемых полей
-				orderValidator.removeFieldToValidate( subwayField );
+				orderValidator.setValidate( subwayField , {
+					require: false
+				});
 			}
 
 			console.info('Изменен тип доставки');
