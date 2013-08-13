@@ -2257,16 +2257,15 @@ FormValidator.prototype._enableHandlers = function() {
 	var self = this,
 		fields = this.config.fields,
 		currentField = null;
+		
 	// end of vars
 
-	var validateOnBlur = function validateOnBlur() {
-			var that = $(this),
-				result = {},
+	var validateOnBlur = function validateOnBlur( that ) {
+			var result = {},
 				findedField = self._findFieldByNode( that );
 			// end of vars
 
 			if ( findedField.finded ) {
-				console.log('валидируем');
 				result = self._validateField(findedField.field);
 
 				if ( result.hasError ) {
@@ -2281,6 +2280,17 @@ FormValidator.prototype._enableHandlers = function() {
 			return false;
 		},
 
+		blurHandler = function blurHandler( ) {
+			var that = $(this),
+				timeout_id = null;
+			// end of vars
+			
+			clearTimeout(timeout_id);
+			timeout_id = window.setTimeout(function(){
+				validateOnBlur(that);
+			}, 5);
+		},
+
 		clearError = function clearError() {
 			$(this).removeClass(self.config.errorClass);
 		};
@@ -2290,17 +2300,18 @@ FormValidator.prototype._enableHandlers = function() {
 		currentField = fields[i];
 
 		if ( currentField.validateOnChange ) {
-
-			if ( self._validateOnChangeFields[JSON.stringify(currentField)] !== undefined ) {
+			if ( self._validateOnChangeFields[ currentField.fieldNode.get(0).outerHTML ] ) {
+				console.log('уже вешали');
 				continue;
 			}
 
-			currentField.fieldNode.bind('blur', validateOnBlur);
+			currentField.fieldNode.bind('blur', blurHandler);
 			currentField.fieldNode.bind('focus', clearError);
-
-			self._validateOnChangeFields[JSON.stringify(currentField)] = true;
+			self._validateOnChangeFields[ currentField.fieldNode.get(0).outerHTML ] = true;
 		}
-	};
+	}
+
+	console.log(self);
 };
 
 /**

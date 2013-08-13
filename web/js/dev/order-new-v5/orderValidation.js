@@ -130,12 +130,6 @@
 		console.log('метро существует');
 		subwayField.autocomplete(subwayAutocompleteConfig);
 		subwayField.bind('change', subwayChange);
-
-		orderValidator.addFieldToValidate({
-			fieldNode: subwayField,
-			require: true,
-			validateOnChange: true
-		});
 	}
 
 	$('body').bind('orderdeliverychange', orderDeliveryChangeHandler)
