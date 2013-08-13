@@ -82,9 +82,6 @@ class StatisticsAction {
         if (empty($this->date_begin)) $this->date_begin = (string) date($this->date_format, strtotime('-1 day'));
         if (empty($this->date_end)) $this->date_end = (string) date($this->date_format,strtotime('today UTC'));
 
-        //$this->date_begin = '2013-05-15'; // tmp for debug
-        //$this->date_end = '2013-07-25';
-
         $this->one_day_date = $request->get('one_day_date');
 
         if ( $this->one_day_date ) {
@@ -297,7 +294,7 @@ class StatisticsAction {
             'site_id' => $this->siteId,
         ]);
 
-        //$this->l( $content['general'] );
+        //$this->l( $content['General'] );
     }
 
 
