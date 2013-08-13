@@ -669,6 +669,10 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 		// complete button
 		orderCompleteBtn = $('#completeOrder'),
 
+		/**
+		 * Конфигурация валидатора
+		 * @type {Object}
+		 */
 		validationConfig = {
 			fields: [
 				{
@@ -722,9 +726,10 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 	
 	orderValidator = new FormValidator(validationConfig);
 	
-	/**
-	 * Обработчик нажатия на кнопку завершения заказа
-	 */
+
+		/**
+		 * Обработчик нажатия на кнопку завершения заказа
+		 */
 	var orderComplete = function orderComplete() {
 			console.info('завершить оформление заказа');
 
@@ -741,44 +746,51 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 			});
 
 			return false;
-	};
+		},
 
-	/**
-	 * Обработчик изменения в поле выбора станции метро
-	 * Проверка корректности заполнения поля
-	 */
-	var subwayChange = function subwayChange() {
-		for (var i = subwayArray.length - 1; i >= 0; i--) {
-			if ( subwayField.val() === subwayArray[i].label ) {
-				return;
+		/**
+		 * Обработчик изменения в поле выбора станции метро
+		 * Проверка корректности заполнения поля
+		 */
+		subwayChange = function subwayChange() {
+			for (var i = subwayArray.length - 1; i >= 0; i--) {
+				if ( subwayField.val() === subwayArray[i].label ) {
+					return;
+				}
 			}
-		}
 
-		subwayField.val('');
-	};
+			subwayField.val('');
+		},
 
-	var orderDeliveryChangeHandler = function orderDeliveryChangeHandler( event, hasHomeDelivery ) {
-		if ( hasHomeDelivery ) {
-			// Добавлем валидацию поля метро
-			orderValidator.addFieldToValidate({
-				fieldNode: subwayField,
-				require: true,
-				validateOnChange: true
-			});
-		}
-		else {
-			// Удаляем поле метро из списка валидируемых полей
-			orderValidator.removeFieldToValidate( subwayField );
-		}
-		console.info('Изменен тип доставки');
-		console.log(orderValidator);
-	};
+		/**
+		 * Изменение типа доставки в одом из блоков
+		 * 
+		 * @param	{Event}		event				Данные о событии
+		 * @param	{Boolean}	hasHomeDelivery		Есть ли блок с доставкой домой
+		 */
+		orderDeliveryChangeHandler = function orderDeliveryChangeHandler( event, hasHomeDelivery ) {
+			if ( hasHomeDelivery ) {
+				// Добавлем валидацию поля метро
+				orderValidator.addFieldToValidate({
+					fieldNode: subwayField,
+					require: true,
+					validateOnChange: true
+				});
+			}
+			else {
+				// Удаляем поле метро из списка валидируемых полей
+				orderValidator.removeFieldToValidate( subwayField );
+			}
+
+			console.info('Изменен тип доставки');
+			console.log(orderValidator);
+		};
+	// end of functions
 	
+
 	phoneField.mask("(999) 999-99-99");
-	phoneField.val(phoneField.val());
 
 	if ( subwayArray !== undefined ) {
-		console.log('метро существует');
 		subwayField.autocomplete(subwayAutocompleteConfig);
 		subwayField.bind('change', subwayChange);
 	}
