@@ -197,7 +197,7 @@ class DeliveryAction {
                     'stock'      => (int)$productItem['stock'],
                     'image'      => $productItem['media_image'],
                     'url'        => $productItem['link'],
-                    'addUrl'     => $router->generate('cart.product.set', ['productId' => $productId, 'quantity' => $productItem['quantity']]),
+                    'setUrl'     => $router->generate('cart.product.set', ['productId' => $productId, 'quantity' => $productItem['quantity']]),
                     'deleteUrl'  => $router->generate('cart.product.delete', ['productId' => $productId]),
                     'deliveries' => $deliveryData,
                 ];
