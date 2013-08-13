@@ -340,14 +340,54 @@ $c->abtest = [
     'cookieName' => 'switch',
     'bestBefore' => '2013-08-20', //кука умрет в 00:00
     'enabled'    => true,
-    'test'       => [
+    /* // old
+    test'       => [
         [
             'traffic'  => '50',
             'key'      => 'emails',
             'name'     => "Обязательные e-mail'ы",
             'ga_event' => 'MandatoryEmail',
         ],
+    ],*/
+
+
+
+    /*
+    /// SimilarAction::smartengine, Похожие товары
+    'test'      => [
+        [
+            'traffic'  => '50',
+            'key'      => 'smartengine',
+            'name'     => "Похожие товары",
+            'ga_event' => 'SmartEngine',
+        ],
+    ],*/
+
+
+    /// SimilarAction::retailrocket/ItemToItems,
+    'test'      => [
+        [
+            'traffic'  => '50',
+            'key'      => 'retailrocket',
+            'subkey'   => 'ItemToItems',
+            'name'     => "С этим товаром также смотрят",
+            'ga_event' => 'RetailRocket/ItemToItems',
+        ],
     ],
+
+    /*
+    /// SimilarAction::retailrocket,
+    'test'      => [
+        [
+            'traffic'  => '50',
+            'key'      => 'retailrocket',
+            'name'     => "С этим товаром также смотрят",
+            'ga_event' => 'RetailRocket',
+        ],
+    ],*/
+
+
+
 ];
 
 return $c;

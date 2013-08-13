@@ -3,21 +3,90 @@
 namespace Controller\Product;
 
 class SimilarAction {
+
+
     /**
+     * Разводящий метод: запускает либо smartengineClient , либо retailrocketClient
+     *
      * @param string        $productId
      * @param \Http\Request $request
-     * @return \Http\RedirectResponse|\Http\Response
+     * @return \Http\JsonResponse
      * @throws \Exception\NotFoundException
      */
-    public function execute($productId, \Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+    public function execute($productId, \Http\Request $request)
+    {
 
         try {
+
             $product = \RepositoryManager::product()->getEntityById($productId);
             if (!$product) {
                 throw new \Exception(sprintf('Товар #%s не найден', $productId));
             }
 
+            $config = \App::config()->abtest['test'];
+            $abtest_arr = reset($config);
+            $method = 'smartengine';
+            $submethod = '';
+
+
+            if ( isset( $abtest_arr ) ) { /// if
+
+                $title = $abtest_arr['name'];
+                $ab_method = $abtest_arr['key'];
+                if ( isset( $abtest_arr['subkey'] ) ) $submethod = $abtest_arr['subkey'];
+
+                if (is_string( $ab_method )) {
+                    $method = $ab_method;
+                } /*elseif (is_array($ab_method)) {
+                    reset($method);
+                    $method = next( $ab_method );
+                    $submethod = next( $ab_method );
+                }*/
+
+                $method = $method . 'Client';
+
+                if (method_exists($this, $method)) {
+                    $products = $this->$method($product, $request, $submethod);
+
+                    return new \Http\JsonResponse([
+                        'success' => true,
+                        'content' => \App::closureTemplating()->render('product/__slider', [
+                            'title'    => $title,
+                            'products' => $products,
+                        ]),
+                    ]);
+                } /// if (method_exists)
+
+            }/// if
+
+            //return $this->smartengineClient($product, $request);
+            //return $this->retailrocketClient($product, $request);
+
+            return new \Http\JsonResponse([
+                'success' => false,
+                'error' => ['code' => '404', 'message' => 'Not found data in config'],
+            ]);
+
+        } catch (\Exception $e) {
+            \App::logger()->error($e, ['SimilarAction']);
+            return $this->error($e);
+        }
+
+    }
+
+
+
+    /**
+     * @param \Model\Product\Entity         $product
+     * @param \Http\Request                 $request
+     * @return \Http\RedirectResponse|\Http\Response
+     * @throws \Exception\NotFoundException
+     */
+    public function smartengineClient($product, \Http\Request $request)
+    {
+        \App::logger()->debug('Exec ' . __METHOD__);
+
+        try {
             $client = \App::smartengineClient();
             $user = \App::user()->getEntity();
 
@@ -40,35 +109,108 @@ class SimilarAction {
             $ids = (is_array($r['recommendeditems']) && array_key_exists('id', $r['recommendeditems']['item']))
                 ? [$r['recommendeditems']['item']['id']]
                 : array_map(function($item) { return $item['id']; }, isset($r['recommendeditems']['item']) ? $r['recommendeditems']['item'] : []);
-            if (!(bool)$ids) {
-                throw new \Exception('Рекомендации не получены');
-            }
 
-            $products = \RepositoryManager::product()->getCollectionById($ids);
+            $products = $this->getProducts($ids);
 
-            foreach ($products as $i => $product) {
-                if (!$product->getIsBuyable()) {
-                    unset($products[$i]);
-                }
-            }
-            if (!(bool)$products) {
-                throw new \Exception('Нет товаров');
-            }
+            return $products;
 
-            return new \Http\JsonResponse([
-                'success' => true,
-                'content' => \App::closureTemplating()->render('product/__slider', [
-                    'title'    => 'Похожие товары',
-                    'products' => $products,
-                ]),
-            ]);
         } catch (\Exception $e) {
             \App::logger()->error($e, ['smartengine']);
-
-            return new \Http\JsonResponse([
-                'success' => false,
-                'error'   => ['code' => $e->getCode(), 'message' => $e->getMessage()],
-            ]);
+            return $this->error($e);
         }
     }
+
+
+
+    /**
+     * @param \Model\Product\Entity     $product
+     * @param \Http\Request             $request
+     * @param string                    $method
+     * @return \Http\JsonResponse|\Model\Product\Entity[]
+     */
+    public function retailrocketClient( $product, \Http\Request $request, $method = 'UpSellItemToItems' ) {
+        \App::logger()->debug('Exec ' . __METHOD__);
+
+        try {
+            $client = \App::retailrocketClient();
+
+            $productId = $product->getId();
+
+            $ids = $client->query('Recomendation/' . $method, $productId);
+
+            //if (!count($ids)) throw new \Exception(sprintf('Не получено товаров методом %1$s для товара #%2$s', $method, $productId));
+
+            $products = $this->getProducts($ids);
+
+            return $products;
+
+            /*
+            $return = [];
+            foreach ($products as $i => $product) {
+                if (!$product->getIsBuyable()) continue;
+
+                $return[] = [
+                    'id' => $product->getId(),
+                    'name' => $product->getName(),
+                    'image' => $product->getImageUrl(),
+                    'rating' => $product->getRating(),
+                    'link' => $product->getLink() . (false === strpos($product->getLink(), '?') ? '?' : '&') . 'sender=' . \RetailRocket\Client::NAME . '|' . $product->getId(),
+                    'price' => $product->getPrice(),
+                    'data' => \Kissmetrics\Manager::getProductEvent($product, $i + 1, 'Similar'),
+                ];
+            }
+
+            if (!count($return)) throw new \Exception(sprintf('Нечего возвращать. Метод %1$s для товара #%2$s', $method, $productId));
+
+            return new \Http\JsonResponse($return);
+            */
+
+        } catch (\Exception $e) {
+            \App::logger()->error($e, ['RetailRocket']);
+            return $this->error($e);
+        }
+
+    }
+
+
+
+    /**
+     * @param \Exception $e
+     * @return \Http\JsonResponse
+     */
+    private function error(\Exception $e)
+    {
+        return new \Http\JsonResponse([
+            'success' => false,
+            'error'   => ['code' => $e->getCode(), 'message' => $e->getMessage()],
+        ]);
+    }
+
+
+
+    /**
+     * @param   array()                         $ids
+     * @return  \Model\Product\Entity[]         $products
+     * @throws  \Exception
+     */
+    private function getProducts($ids) {
+        if (!(bool)$ids) {
+            throw new \Exception('Рекомендации не получены');
+        }
+
+        $products = \RepositoryManager::product()->getCollectionById($ids);
+        foreach ($products as $i => $product) {
+            if (!$product->getIsBuyable()) {
+                unset($products[$i]);
+            }
+        }
+
+        if (!(bool)$products) {
+            throw new \Exception('Нет товаров');
+        }
+
+        return $products;
+    }
+
+
 }

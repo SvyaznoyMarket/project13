@@ -341,6 +341,20 @@ class App {
     }
 
     /**
+     * @static
+     * @return \RetailRocket\Client
+     */
+    public static function retailrocketClient() {
+        static $instance;
+
+        if (!$instance) {
+            $instance = new \RetailRocket\Client(self::$config->partners['RetailRocket'], \App::logger());
+        }
+
+        return $instance;
+    }
+
+    /**
      * @param $name
      * @return \Oauth\ProviderInterface
      * @throws InvalidArgumentException

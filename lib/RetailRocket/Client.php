@@ -1,11 +1,4 @@
 <?php
-/**
- * Created by JetBrains PhpStorm.
- * User: juljan
- * Date: 12.8.13
- * Time: 12.16
- * To change this template use File | Settings | File Templates.
- */
 
 namespace RetailRocket;
 
@@ -20,7 +13,7 @@ class Client
         $this->config = array_merge([
             'apiUrl' => 'http://retailrocket.ru/api/',
             'account' => \App::config()->partners['RetailRocket']['account'],
-            'timeout' => 0.5, //в секундах
+            'timeout' => 0.6, //в секундах
             'logEnabled' => false,
             'logDataEnabled' => false,
         ], $config);
@@ -87,7 +80,7 @@ class Client
         curl_setopt($connection, CURLOPT_URL, $query);
 
         if ($this->config['logEnabled']) {
-            $this->logger->info('Send RetailRocket requset ' . $connection, ['RetailRocket']);
+            $this->logger->info('Send RetailRocket request ' . $connection, ['RetailRocket']);
         }
 
         return $connection;
