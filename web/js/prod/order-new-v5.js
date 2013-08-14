@@ -978,7 +978,7 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 		update: function( element, valueAccessor ) {
 			var val = valueAccessor(),
 				unwrapVal = ko.utils.unwrapObservable(val),
-				maxSum = parseInt($(element).data('max-sum'), 10);
+				maxSum = parseInt($(element).data('value')['max-sum'], 10);
 			// end of vars
 
 			if ( isNaN(maxSum) ) {
