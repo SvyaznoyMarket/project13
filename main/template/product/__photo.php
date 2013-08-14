@@ -110,7 +110,7 @@ return function(
     <div class="bPhotoAction clearfix">
         <ul class="bPhotoViewer">
             <? if ($productVideo && $productVideo->getContent()): ?>
-                <li class="bPhotoViewer__eItem mVideo">
+                <li class="bPhotoActionOtherAction__eVideo bPhotoViewer__eItem mVideo">
                     <a class="bPhotoLink" href="#"></a>
                     <div id="productVideo" class="blackPopup blackPopupVideo">
                         <div class="close"></div>
