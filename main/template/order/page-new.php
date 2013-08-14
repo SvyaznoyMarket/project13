@@ -232,7 +232,7 @@ foreach (array_reverse($productsById) as $product) {
 			и вы сможете использовать ранее введенные данные
 		</div>
 		
-		<form id="order-form" action="/orders/new" method="post">
+		<form id="order-form" action="<?= $page->url('order.create') ?>" method="post">
 			<!-- Info about customer -->
 			<div class="bBuyingLine mBuyingFields">
 				<label for="" class="bBuyingLine__eLeft">Имя получателя*</label>
