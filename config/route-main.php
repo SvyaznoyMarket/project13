@@ -439,6 +439,16 @@ return [
         'action'  => ['Order\Action', 'clearPaymentUrl'],
     ],
 
+    // paypal
+    'order.paypal.complete' => [
+        'pattern' => '/orders/paypal-complete',
+        'action'  => ['Order\PaypalAction', 'complete'],
+    ],
+    'order.paypal.fail' => [
+        'pattern' => '/orders/paypal-fail',
+        'action'  => ['Order\PaypalAction', 'fail'],
+    ],
+
     // услуги
     'service' => [
         'pattern' => '/f1',

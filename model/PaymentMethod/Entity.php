@@ -6,6 +6,7 @@ class Entity {
     const CERTIFICATE_ID = 10;
     const WEBMONEY_ID = 11;
     const QIWI_ID = 12;
+    const PAYPAL_ID = 13;
 
     const TYPE_NOW = 0;
     const TYPE_ON_RECEIPT = 1;
@@ -142,6 +143,13 @@ class Entity {
      */
     public function isWebmoney() {
         return self::WEBMONEY_ID == $this->id;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isPaypal() {
+        return self::PAYPAL_ID == $this->id;
     }
 
     /**
