@@ -2,7 +2,7 @@
 
 namespace View\Order\NewForm;
 
-class Form {
+class Form implements \JsonSerializable {
     use \Util\JsonDecodeAssocTrait;
 
     /** @var PartField[] */
@@ -77,6 +77,21 @@ class Form {
         $this->fromArray($data);
     }
 
+    /**
+     * @return array
+     */
+    public function jsonSerialize() {
+        $return = [];
+        foreach (get_object_vars($this) as $name => $value) {
+            $return[$name] = $value;
+        }
+
+        return $return;
+    }
+
+    /**
+     * @param array $data
+     */
     public function fromArray(array $data) {
         if (array_key_exists('part', $data)) {
             try {

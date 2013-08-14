@@ -116,24 +116,24 @@ class CreateAction {
                 \App::logger()->error($e, ['order']);
             }
         } catch(\Exception $e) {
-            $formErrors = [];
-            foreach ($form->getErrors() as $fieldName => $errorMessage) {
-                $formErrors[] = ['code' => 'invalid', 'message' => $errorMessage, 'field' => $fieldName];
-            }
-
             switch ($e->getCode()) {
                 case 735:
                     \App::exception()->remove($e);
-                    $formErrors[] = ['code' => 'invalid', 'message' => 'Неверный код карты Связной-Клуб', 'field' => 'sclub_card_number'];
+                    $form->setError('sclub_card_number', 'Неверный код карты Связной-Клуб');
                     break;
                 case 742:
                     \App::exception()->remove($e);
-                    $formErrors[] = ['code' => 'invalid', 'message' => 'Неверный пин-код подарочного сертификата', 'field' => 'cardpin'];
+                    $form->setError('cardpin', 'Неверный пин-код подарочного сертификата');
                     break;
                 case 743:
                     \App::exception()->remove($e);
-                    $formErrors[] = ['code' => 'invalid', 'message' => 'Подарочный сертификат не найден', 'field' => 'cardnumber'];
+                    $form->setError('cardnumber', 'Подарочный сертификат не найден');
                     break;
+            }
+
+            $formErrors = [];
+            foreach ($form->getErrors() as $fieldName => $errorMessage) {
+                $formErrors[] = ['code' => 'invalid', 'message' => $errorMessage, 'field' => $fieldName];
             }
 
             $responseData['form'] = [
@@ -142,7 +142,25 @@ class CreateAction {
 
             $this->failResponseData($e, $responseData);
 
-            \App::logger()->error(['action' => __METHOD__, 'request.data' => $request->request->all(), 'error' => $e, 'formError' => $formErrors], ['order']);
+            \App::logger()->error([
+                'action'         => __METHOD__,
+                'error'          => $e,
+                'form'           => $form,
+                'request.server' => array_map(function($name) use (&$request) { return $request->server->get($name); }, [
+                    'HTTP_USER_AGENT',
+                    'HTTP_ACCEPT',
+                    'HTTP_ACCEPT_LANGUAGE',
+                    'HTTP_ACCEPT_ENCODING',
+                    'HTTP_X_REQUESTED_WITH',
+                    'HTTP_REFERER',
+                    'HTTP_COOKIE',
+                    'REQUEST_METHOD',
+                    'QUERY_STRING',
+                    'REQUEST_TIME_FLOAT',
+                ]),
+                'request.data'   => $request->request->all(),
+                'session'        => \App::session()->all()
+            ], ['order']);
         }
 
         // JsonResponse

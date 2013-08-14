@@ -371,3 +371,12 @@ foreach (array_reverse($productsById) as $product) {
     'order[address_apartment]'      => $form->getAddressApartment(),
     'order[payment_method_id]'      => $form->getPaymentMethodId(),
 ]) ?>"></div>
+
+<?php if (\App::config()->analytics['enabled']): ?>
+    <div id="marketgidOrder" class="jsanalytics"></div>
+    <?= $page->tryRender('order/_kissmetrics-create') ?>
+
+    <?= $page->tryRender('order/partner-counter/_cityads-create') ?>
+    <?= $page->tryRender('order/partner-counter/_reactive-create') ?>
+    <?= $page->tryRender('order/partner-counter/_ad4u-create') ?>
+<?php endif ?>

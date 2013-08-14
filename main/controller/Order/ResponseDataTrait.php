@@ -86,17 +86,18 @@ trait ResponseDataTrait {
             \App::coreClientV2()->execute();
 
             $responseData['products'] = $productDataById;
+            $responseData['redirect'] = $router->generate('order');
         }
 
         // если ошибочные товары не найдены
         if (!(bool)$productDataById) {
             if ($cart->isEmpty()) { // если корзина пустая, то редирект на страницу корзины
                 $responseData['redirect'] = $router->generate('cart');
-            } else if (1 == $cart->getProductsQuantity()) { // иначе, если в корзине всего один товар, то предлагаем попробовать заказ в один клик
-                $cartProducts = $cart->getProducts();
-                $cartProduct = reset($cartProducts);
-                if ($cartProduct) {
-                    $product = \RepositoryManager::product()->getEntityById($cartProduct->getId());
+            } else {
+                if (1 == $cart->getProductsQuantity()) { // если в корзине всего один товар, то предлагаем попробовать заказ в один клик
+                    $cartProducts = $cart->getProducts();
+                    $cartProduct = reset($cartProducts);
+                    $product = $cartProduct ? \RepositoryManager::product()->getEntityById($cartProduct->getId()) : null;
                     if ($product) {
                         $responseData['redirect'] = $product->getLink() . '#one-click';
                     }
