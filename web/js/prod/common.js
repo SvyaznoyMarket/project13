@@ -1352,9 +1352,11 @@ $(document).ready(function(){
 			}
 		});
 
-		if ( window.docCookies.getItem( 'infScroll' ) === 1 ) {	
+		if ( window.docCookies.getItem( 'infScroll' ) == 1 ) {
 			$('.bAllPager:first').trigger('click');
+            console.log('testing test 01000000000000000000');
 		}
+        console.log( window.docCookies.getItem( 'infScroll' ) );
 	}
 
 
