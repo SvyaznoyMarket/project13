@@ -37,7 +37,7 @@
 				return false;
 			};
 
-			$('.bPhotoActionOtherAction__eGrad360.maybe3d').bind('click', maybe3dPopupShow);
+			$('.mGrad360.maybe3d').bind('click', maybe3dPopupShow);
 		};
 
 		$LAB.script('swfobject.min.js').wait(afterLoad);
