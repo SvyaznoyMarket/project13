@@ -696,11 +696,6 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 					validateOnChange: true
 				},
 				{
-					fieldNode: subwayField,
-					customErr: 'Не выбрана станция метро',
-					validateOnChange: true
-				},
-				{
 					fieldNode: streetField,
 					require: true,
 					customErr: 'Не введено название улицы',
@@ -838,7 +833,7 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 		/**
 		 * Обработчик нажатия на кнопку завершения заказа
 		 */
-		orderComplete = function orderComplete() {
+		orderCompleteBtnHandler = function orderCompleteBtnHandler() {
 			console.info('завершить оформление заказа');
 
 			orderValidator.validate({
@@ -876,16 +871,24 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 		 */
 		orderDeliveryChangeHandler = function orderDeliveryChangeHandler( event, hasHomeDelivery ) {
 			if ( hasHomeDelivery ) {
-				// Добавлем валидацию поля метро
-				orderValidator.setValidate( subwayField , {
-					require: true
-				});
+
+				if ( subwayArray !== undefined ) {
+					// Добавлем валидацию поля метро
+					orderValidator.setValidate( subwayField , {
+						fieldNode: subwayField,
+						customErr: 'Не выбрана станция метро',
+						require: true
+					});
+				}
 			}
 			else {
-				// Удаляем поле метро из списка валидируемых полей
-				orderValidator.setValidate( subwayField , {
-					require: false
-				});
+
+				if ( subwayArray !== undefined ) {
+					// Удаляем поле метро из списка валидируемых полей
+					orderValidator.setValidate( subwayField , {
+						require: false
+					});
+				}
 			}
 
 			console.info('Изменен тип доставки');
@@ -914,7 +917,7 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 	}
 
 	$('body').bind('orderdeliverychange', orderDeliveryChangeHandler);
-	orderCompleteBtn.bind('click', orderComplete);
+	orderCompleteBtn.bind('click', orderCompleteBtnHandler);
 }(this));
  
  
@@ -1239,31 +1242,156 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 	 * ===  END ORDER MODEL ===
 	 */
 
+	 	/**
+	 	 * Показ сообщений об ошибках
+	 	 * 
+	 	 * @param	{String}	msg		Сообщение об ошибке
+	 	 * @return	{Object}     		Deferred объект
+	 	 */
+	var showError = function showError( msg ) {
+			var content = '<div class="popupbox width290">' +
+					'<div class="font18 pb18"> '+msg+'</div>'+
+					'</div>' +
+					'<p style="text-align:center"><a href="#" class="closePopup bBigOrangeButton">OK</a></p>',
+				block = $('<div>').addClass('popup').html(content),
 
+				popupIsClose = $.Deferred();
+			// end of vars
+			
+			block.appendTo('body');
 
-	/**
-	 * Обработка полученных данных
-	 * Создание словаря
-	 * 
-	 * @param	{Object}	res		Данные о заказе
-	 */
-	var renderOrderData = function renderOrderData( res ) {
-		if ( !res.success ) {
-			// TODO: написать обработчки ошибок
-			console.warn('произошла ошибка при получении данных с сервера');
-			console.log(res.error);
+			var errorPopupCloser = function() {
+				block.trigger('close');
+				block.remove();
 
-			return false;
-		}
+				popupIsClose.resolve();
+			};
 
+			block.lightbox_me({
+				centered:true,
+				closeClick:false,
+				closeEsc:false
+			});
 
-		console.log('Данные с сервера получены');
+			block.find('.closePopup').bind('click', errorPopupCloser);
 
-		global.OrderModel.orderDictionary = new OrderDictionary(res);
+			return popupIsClose.promise();
+		},
 
-		global.OrderModel.deliveryTypes(res.deliveryTypes);
-		global.OrderModel.prepareData(true);
-	};
+		/**
+		 * Обработка ошибок в продуктах
+		 */
+		productError = {
+			// Товар недоступен для продажи
+			800: function( product ) {
+				var msg = 'Товар '+product.name+' недоступен для продажи.',
+
+					productErrorIsResolve = $.Deferred();
+				// end of vars
+
+				$.when(showError(msg)).then(function() {
+					$.ajax({
+						type:'GET',
+						url: product.deleteUrl
+					}).then(productErrorIsResolve.resolve);
+				});
+
+				return productErrorIsResolve.promise();
+
+			},
+
+			// Нет необходимого количества товара
+			708: function( product ) {
+				var msg = 'Вы заказали товар '+product.name+' в количестве '+product.quantity+' шт. <br/ >'+product.error.message,
+					res = null,
+
+					productErrorIsResolve = $.Deferred();
+				// end of vars
+
+				$.when(showError(msg)).then(function() {
+					$.ajax({
+						type:'GET',
+						url: product.setUrl
+					}).then(productErrorIsResolve.resolve);
+				});
+
+				return productErrorIsResolve.promise();
+			}
+		},
+
+		/**
+		 * Обработка ошибок в данных
+		 *
+		 * @param	{Object}	res		Данные о заказе
+		 * 
+		 * @param	{Object}	product	Данные о продукте
+		 * @param	{Number}	code	Код ошибки
+		 */
+		allErrorHandler = function allErrorHandler( res ) {
+			console.log(res)
+			var product = null,
+
+				productsWithError = [];
+			// end of vars
+
+			// Cоздаем массив продуктов содержащих ошибки
+			for ( product in res.products ) {
+				if ( res.products[product].error.code ) {
+					productsWithError.push(res.products[product]);
+				}
+			}
+
+			// Обрабатываем ошибки продуктов по очереди
+			var errorCatcher = function errorCatcher( i, callback ) {
+				var code = null;
+
+				if ( i < 0 ) {
+					console.warn('return');
+
+					callback();
+					return;
+				}
+
+				code = productsWithError[i].error.code;
+
+				$.when( productError[code](productsWithError[i]) ).then(function() {
+					var newI = i - 1;
+
+					errorCatcher( newI, callback );
+				});
+			};
+
+			errorCatcher(productsWithError.length - 1, function() {
+				console.warn('1 этап закончен');
+				window.location.reload();
+			});
+		},
+
+		/**
+		 * Обработка полученных данных
+		 * Создание словаря
+		 * 
+		 * @param	{Object}	res		Данные о заказе
+		 */
+		renderOrderData = function renderOrderData( res ) {
+			if ( !res.success ) {
+				// TODO: написать обработчки ошибок
+				console.warn('Данные содержат ошибки');
+				console.log(res.error);
+				allErrorHandler(res);
+
+				return false;
+			}
+
+			console.info('Данные с сервера получены');
+
+			global.OrderModel.orderDictionary = new OrderDictionary(res);
+
+			global.OrderModel.deliveryTypes(res.deliveryTypes);
+			global.OrderModel.prepareData(true);
+		};
+	// end of functions
+	
 
 	renderOrderData($('#jsOrderDelivery').data('value'));
 }(this));

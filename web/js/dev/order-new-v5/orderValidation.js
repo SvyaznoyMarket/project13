@@ -51,11 +51,6 @@
 					validateOnChange: true
 				},
 				{
-					fieldNode: subwayField,
-					customErr: 'Не выбрана станция метро',
-					validateOnChange: true
-				},
-				{
 					fieldNode: streetField,
 					require: true,
 					customErr: 'Не введено название улицы',
@@ -193,7 +188,7 @@
 		/**
 		 * Обработчик нажатия на кнопку завершения заказа
 		 */
-		orderComplete = function orderComplete() {
+		orderCompleteBtnHandler = function orderCompleteBtnHandler() {
 			console.info('завершить оформление заказа');
 
 			orderValidator.validate({
@@ -231,16 +226,24 @@
 		 */
 		orderDeliveryChangeHandler = function orderDeliveryChangeHandler( event, hasHomeDelivery ) {
 			if ( hasHomeDelivery ) {
-				// Добавлем валидацию поля метро
-				orderValidator.setValidate( subwayField , {
-					require: true
-				});
+
+				if ( subwayArray !== undefined ) {
+					// Добавлем валидацию поля метро
+					orderValidator.setValidate( subwayField , {
+						fieldNode: subwayField,
+						customErr: 'Не выбрана станция метро',
+						require: true
+					});
+				}
 			}
 			else {
-				// Удаляем поле метро из списка валидируемых полей
-				orderValidator.setValidate( subwayField , {
-					require: false
-				});
+
+				if ( subwayArray !== undefined ) {
+					// Удаляем поле метро из списка валидируемых полей
+					orderValidator.setValidate( subwayField , {
+						require: false
+					});
+				}
 			}
 
 			console.info('Изменен тип доставки');
@@ -269,5 +272,5 @@
 	}
 
 	$('body').bind('orderdeliverychange', orderDeliveryChangeHandler);
-	orderCompleteBtn.bind('click', orderComplete);
+	orderCompleteBtn.bind('click', orderCompleteBtnHandler);
 }(this));
