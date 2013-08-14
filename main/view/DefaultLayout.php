@@ -272,6 +272,15 @@ class DefaultLayout extends Layout {
             ])) {
                 $return .= "\n\n" . $this->tryRender('partner-counter/_ad4u');
             }
+
+            // ActionPay — на странице с полным описанием продукта и на стр "спс за заказ"
+            if (in_array($routeName, [
+                'product',
+                'order.complete',
+            ])) {
+                $return .= $this->tryRender('partner-counter/_actionpay', ['routeName' => $routeName] );
+            }
+
         }
 
         return $return;
