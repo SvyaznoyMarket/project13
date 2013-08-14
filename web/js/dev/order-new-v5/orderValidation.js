@@ -14,7 +14,7 @@
 		metroIdFiled = $('#order_subway_id'),
 		streetField = $('#order_address_street'),
 		buildingField = $('#order_address_building'),
-		paymentRadio = $('.jsCustomRadio[name="order[payment_type_id]"]'),
+		paymentRadio = $('.jsCustomRadio[name="order[payment_method_id]"]'),
 		orderAgreed = $('#order_agreed'),
 
 		// complete button
@@ -51,27 +51,15 @@
 					validateOnChange: true
 				},
 				{
-					fieldNode: streetField,
-					require: true,
-					customErr: 'Не введено название улицы',
-					validateOnChange: true
-				},
-				{
-					fieldNode: buildingField,
-					require: true,
-					customErr: 'Не введен номер дома',
-					validateOnChange: true
-				},
-				{
 					fieldNode: orderAgreed,
 					require: true,
 					customErr: 'Необходимо согласие',
+				},
+				{
+					fieldNode: paymentRadio,
+					require: true,
+					customErr: 'Необходимо выбрать метод оплаты'
 				}
-				// {
-				// 	fieldNode: paymentRadio,
-				// 	require: true,
-				// 	customErr: 'Необходимо выбрать метод оплаты'
-				// },
 			]
 		},
 
@@ -227,6 +215,19 @@
 		 */
 		orderDeliveryChangeHandler = function orderDeliveryChangeHandler( event, hasHomeDelivery ) {
 			if ( hasHomeDelivery ) {
+				// Добавялем поле ввода улицы в список валидируемых полей
+				orderValidator.setValidate( streetField, {
+					require: true,
+					customErr: 'Не введено название улицы',
+					validateOnChange: true
+				});
+
+				// Добавялем поле ввода номера дома в список валидируемых полей
+				orderValidator.setValidate( buildingField, {
+					require: true,
+					customErr: 'Не введен номер дома',
+					validateOnChange: true
+				});
 
 				if ( subwayArray !== undefined ) {
 					// Добавлем валидацию поля метро
@@ -238,6 +239,15 @@
 				}
 			}
 			else {
+				// Удаляем поле ввода улицы из списка валидируемых полей
+				orderValidator.setValidate( streetField, {
+					require: false
+				});
+
+				// Удаляем поле ввода номера дома из списка валидируемых полей
+				orderValidator.setValidate( buildingField, {
+					require: false
+				});
 
 				if ( subwayArray !== undefined ) {
 					// Удаляем поле метро из списка валидируемых полей
