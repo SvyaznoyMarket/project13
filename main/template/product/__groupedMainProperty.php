@@ -1,6 +1,7 @@
 <?php
 
 /* Файл не используется пока нигде, но может понадобиться в будущем. Правда, возможно стоит прорефакторить либо удалить */
+/* Ecли будет использоваться, нужно переделать генерацию хтмл */
 
 return function (
     \Helper\TemplateHelper $helper,
@@ -29,17 +30,17 @@ return function (
                 if ($property->getHint()) {
                     $dd .= $helper->render('__hint', ['name' => $property->getName(), 'value' => $property->getHint()]);
                 }
-                $dd = $helper->wrap($dd, '', 'span');
-                $dd = $helper->wrap($dd, '', 'dd');
+                $dd = '<span>' . $dd. '</span>';
+                $dd = '<dd>' . $dd . '</span>';
 
                 $dt = $property->getStringValue();
                 if ($property->getValueHint()) {
                     $dt .= $helper->render('__hint', ['name' => $property->getStringValue(), 'value' => $property->getValueHint()]);
                 }
-                $dt = $helper->wrap($dt, '', 'dt');
+                $dt = '<dt>' . $dt . '</dt>';
 
                 $HtmlOut = $dd . $dt;
-                $HtmlOut = $helper->wrap($HtmlOut, 'bSpecifications__eList clearfix', 'dl');
+                $HtmlOut = '<dl class="bSpecifications__eList clearfix">' . $HtmlOut . '</dl>';
 
             endif; // ins_array()
 
