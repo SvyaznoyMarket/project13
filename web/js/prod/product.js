@@ -764,7 +764,7 @@
 				return false;
 			};
 
-			$('.bPhotoActionOtherAction__eGrad360.maybe3d').bind('click', maybe3dPopupShow);
+			$('.mGrad360.maybe3d').bind('click', maybe3dPopupShow);
 		};
 
 		$LAB.script('swfobject.min.js').wait(afterLoad);
@@ -1137,7 +1137,7 @@ $(document).ready(function() {
 		var videoStartTime = 0;
 		var videoEndTime = 0;
 		var productUrl = document.location.href;
-		var shield = $('.bPhotoActionOtherAction__eVideo');
+		var shield = $('.mVideo');
 		var iframe = $('#productVideo .productVideo_iframe').html();
 
 		var openVideo = function(){
@@ -1171,7 +1171,7 @@ $(document).ready(function() {
 	};
 
 	$(document).ready(function() {
-		if ($('.bPhotoActionOtherAction__eVideo').length){
+		if ($('.mVideo').length){
 			initVideo();
 		}
 	});
