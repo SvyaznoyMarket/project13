@@ -53,7 +53,7 @@ return function (
                     <? if ($paymentMethod->getId() == $form->getPaymentMethodId()): ?> checked="checked"<?endif ?>
                     class="jsCustomRadio bCustomInput mCustomRadioBig" id="<?= $elementId ?>"
                     type="radio"
-                    name="order[payment_type_id]"
+                    name="order[payment_method_id]"
                     value="<?= $paymentMethod->getId() ?>"
                     hidden
                 />
