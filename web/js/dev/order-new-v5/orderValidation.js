@@ -66,12 +66,12 @@
 					fieldNode: orderAgreed,
 					require: true,
 					customErr: 'Необходимо согласие',
-				},
-				{
-					fieldNode: paymentRadio,
-					require: true,
-					customErr: 'Необходимо выбрать метод оплаты'
-				},
+				}
+				// {
+				// 	fieldNode: paymentRadio,
+				// 	require: true,
+				// 	customErr: 'Необходимо выбрать метод оплаты'
+				// },
 			]
 		},
 
@@ -172,7 +172,8 @@
 			}
 
 			dataToSend = orderForm.serializeArray();
-			dataToSend.push({ name: 'order[part]', value: parts});
+			dataToSend.push({ name: 'order[delivery_type_id]', value: global.OrderModel.choosenDeliveryTypeId });
+			dataToSend.push({ name: 'order[part]', value: JSON.stringify(parts) });
 
 			console.log(dataToSend);
 

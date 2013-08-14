@@ -283,6 +283,7 @@
 
 			global.OrderModel.deliveryTypesButton = checkedInput;
 			global.OrderModel.tmpStatesPriority = data.states;
+			global.OrderModel.choosenDeliveryTypeId = data.id;
 
 			// если для приоритетного метода доставки существуют пункты доставки, то пользователю необходимо выбрать пункт доставки, если нет - то приравниваем идентификатор пункта доставки к 0
 			if ( global.OrderModel.orderDictionary.hasPointDelivery(priorityState) ) {

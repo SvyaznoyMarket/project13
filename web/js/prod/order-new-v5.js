@@ -711,12 +711,12 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 					fieldNode: orderAgreed,
 					require: true,
 					customErr: 'Необходимо согласие',
-				},
-				{
-					fieldNode: paymentRadio,
-					require: true,
-					customErr: 'Необходимо выбрать метод оплаты'
-				},
+				}
+				// {
+				// 	fieldNode: paymentRadio,
+				// 	require: true,
+				// 	customErr: 'Необходимо выбрать метод оплаты'
+				// },
 			]
 		},
 
@@ -817,7 +817,8 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 			}
 
 			dataToSend = orderForm.serializeArray();
-			dataToSend.push({ name: 'order[part]', value: parts});
+			dataToSend.push({ name: 'order[delivery_type_id]', value: global.OrderModel.choosenDeliveryTypeId });
+			dataToSend.push({ name: 'order[part]', value: JSON.stringify(parts) });
 
 			console.log(dataToSend);
 
@@ -1211,6 +1212,7 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 
 			global.OrderModel.deliveryTypesButton = checkedInput;
 			global.OrderModel.tmpStatesPriority = data.states;
+			global.OrderModel.choosenDeliveryTypeId = data.id;
 
 			// если для приоритетного метода доставки существуют пункты доставки, то пользователю необходимо выбрать пункт доставки, если нет - то приравниваем идентификатор пункта доставки к 0
 			if ( global.OrderModel.orderDictionary.hasPointDelivery(priorityState) ) {
