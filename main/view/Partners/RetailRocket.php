@@ -26,7 +26,7 @@ class RetailRocket
         foreach ($orders as $order) {
 
             //$orderSum += $order->getPaySum();
-            if ($order instanceof \Model\Order\Entity) {
+            if (!$order instanceof \Model\Order\Entity) {
                 continue;
             }
             $data['transaction'] = $order->getNumber(); // count($orders) по идеее не может быть > 1.
