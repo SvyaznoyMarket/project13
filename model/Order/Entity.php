@@ -108,6 +108,8 @@ class Entity {
     private $paySum;
     /** @var Credit\Entity|null */
     private $credit;
+    /** @var string */
+    private $paymentUrl;
 
     /**
      * @param array $data
@@ -189,6 +191,7 @@ class Entity {
         }
         if (array_key_exists('pay_sum', $data)) $this->setPaySum($data['pay_sum']);
         if (array_key_exists('credit', $data) && (bool)$data['credit']) $this->setCredit(new Credit\Entity($data['credit']));
+        if (array_key_exists('payment_url', $data)) $this->setPaymentUrl($data['payment_url']);
     }
 
     public function dump() {
@@ -837,5 +840,19 @@ class Entity {
         }
 
         return $sum;
+    }
+
+    /**
+     * @param string $paymentUrl
+     */
+    public function setPaymentUrl($paymentUrl) {
+        $this->paymentUrl = base64_decode(trim((string)$paymentUrl));
+    }
+
+    /**
+     * @return string
+     */
+    public function getPaymentUrl() {
+        return $this->paymentUrl;
     }
 }
