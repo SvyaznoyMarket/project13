@@ -210,6 +210,7 @@ DeliveryBox.prototype._addProduct = function( product ) {
 	self.fullPrice += product.sum;
 
 	self.products.push({
+		id: product.id,
 		name: product.name,
 		price: product.sum,
 		quantity: product.quantity,

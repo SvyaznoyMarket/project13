@@ -5,7 +5,7 @@
  *
  * @author	Zaytsev Alexandr
  */
-;(function(){
+;(function( global ) {
 	console.info('Логика разбиения заказа для оформления заказа v.5');
 
 	/**
@@ -43,16 +43,16 @@
 
 		// очищаем объект созданых блоков, удаляем блоки из модели
 		createdBox = {};
-		OrderModel.deliveryBoxes.removeAll();
+		global.OrderModel.deliveryBoxes.removeAll();
 
 		// Маркируем выбранный способ доставки
-		OrderModel.deliveryTypesButton.attr('checked','checked');
+		global.OrderModel.deliveryTypesButton.attr('checked','checked');
 			
 		// Обнуляем общую стоимость заказа
-		OrderModel.totalSum(0);
+		global.OrderModel.totalSum(0);
 
 		// Обнуляем блоки с доставкой на дом и генерируем событие об этом
-		OrderModel.hasHomeDelivery(false);
+		global.OrderModel.hasHomeDelivery(false);
 		$('body').trigger('orderdeliverychange',[false]);
 
 
@@ -66,13 +66,13 @@
 
 			productsToNewBox = [];
 
-			if ( !OrderModel.orderDictionary.hasDeliveryState(nowState) ) {
+			if ( !global.OrderModel.orderDictionary.hasDeliveryState(nowState) ) {
 				console.info('для метода '+nowState+' нет товаров');
 
 				continue;
 			}
 
-			productInState = OrderModel.orderDictionary.getProductFromState(nowState);
+			productInState = global.OrderModel.orderDictionary.getProductFromState(nowState);
 			
 			/**
 			 * Перебор продуктов в текущем deliveryStates
@@ -90,11 +90,11 @@
 				console.log('добавляем товар '+nowProduct+' в блок для метода '+nowState);
 
 				preparedProducts[nowProduct] = true;
-				productsToNewBox.push( OrderModel.orderDictionary.getProductById(nowProduct) );
+				productsToNewBox.push( global.OrderModel.orderDictionary.getProductById(nowProduct) );
 			}
 
 			if ( productsToNewBox.length ) {
-				choosenPointForBox = ( OrderModel.orderDictionary.hasPointDelivery(nowState) ) ? OrderModel.choosenPoint() : 0;
+				choosenPointForBox = ( global.OrderModel.orderDictionary.hasPointDelivery(nowState) ) ? global.OrderModel.choosenPoint() : 0;
 
 				token = nowState+'_'+choosenPointForBox;
 
@@ -104,7 +104,7 @@
 				}
 				else {
 					// Блока для этого типа доставки в этот пункт еще существует
-					createdBox[token] = new DeliveryBox( productsToNewBox, nowState, choosenPointForBox, createdBox, OrderModel );
+					createdBox[token] = new DeliveryBox( productsToNewBox, nowState, choosenPointForBox, createdBox, global.OrderModel );
 				}
 			}
 		}
@@ -112,7 +112,7 @@
 		console.info('Созданные блоки:');
 		console.log(createdBox);
 
-		if ( preparedProducts.length !== OrderModel.orderDictionary.orderData.products.length ) {
+		if ( preparedProducts.length !== global.OrderModel.orderDictionary.orderData.products.length ) {
 			console.warn('не все товары были обработаны');
 		}
 	};
@@ -169,7 +169,7 @@
 	/**
 	 * === ORDER MODEL ===
 	 */
-	var OrderModel = {
+	global.OrderModel = {
 		/**
 		 * Флаг завершения обработки данных
 		 */
@@ -247,16 +247,16 @@
 			console.info('point selected...');
 
 			// Сохраняем приоритет методов доставок
-			OrderModel.statesPriority = OrderModel.tmpStatesPriority;
+			global.OrderModel.statesPriority = global.OrderModel.tmpStatesPriority;
 
 			// Сохраняем выбранную приоритетную точку доставки
-			OrderModel.choosenPoint(data.id);
+			global.OrderModel.choosenPoint(data.id);
 
 			// Скрываем окно с выбором точек доставок
-			OrderModel.showPopupWithPoints(false);
+			global.OrderModel.showPopupWithPoints(false);
 
 			// Разбиваем на подзаказы
-			separateOrder( OrderModel.statesPriority );
+			separateOrder( global.OrderModel.statesPriority );
 
 			return false;
 		},
@@ -281,35 +281,35 @@
 				return false;
 			}
 
-			OrderModel.deliveryTypesButton = checkedInput;
-			OrderModel.tmpStatesPriority = data.states;
+			global.OrderModel.deliveryTypesButton = checkedInput;
+			global.OrderModel.tmpStatesPriority = data.states;
 
 			// если для приоритетного метода доставки существуют пункты доставки, то пользователю необходимо выбрать пункт доставки, если нет - то приравниваем идентификатор пункта доставки к 0
-			if ( OrderModel.orderDictionary.hasPointDelivery(priorityState) ) {
-				OrderModel.popupWithPoints({
+			if ( global.OrderModel.orderDictionary.hasPointDelivery(priorityState) ) {
+				global.OrderModel.popupWithPoints({
 					header: data.description,
-					points: OrderModel.orderDictionary.getAllPointsByState(priorityState)
+					points: global.OrderModel.orderDictionary.getAllPointsByState(priorityState)
 				});
 
-				OrderModel.showPopupWithPoints(true);
+				global.OrderModel.showPopupWithPoints(true);
 
 				return false;
 			}
 
 			// Сохраняем приоритет методов доставок
-			OrderModel.statesPriority = OrderModel.tmpStatesPriority;
+			global.OrderModel.statesPriority = global.OrderModel.tmpStatesPriority;
 
 			// Сохраняем выбранную приоритетную точку доставки (для доставки домой = 0)
-			OrderModel.choosenPoint(0);
+			global.OrderModel.choosenPoint(0);
 
 			// Разбиваем на подзаказы
-			separateOrder( OrderModel.statesPriority );
+			separateOrder( global.OrderModel.statesPriority );
 
 			return false;
 		}
 	};
 
-	ko.applyBindings(OrderModel);
+	ko.applyBindings(global.OrderModel);
 	/**
 	 * ===  END ORDER MODEL ===
 	 */
@@ -334,11 +334,11 @@
 
 		console.log('Данные с сервера получены');
 
-		OrderModel.orderDictionary = new OrderDictionary(res);
+		global.OrderModel.orderDictionary = new OrderDictionary(res);
 
-		OrderModel.deliveryTypes(res.deliveryTypes);
-		OrderModel.prepareData(true);
+		global.OrderModel.deliveryTypes(res.deliveryTypes);
+		global.OrderModel.prepareData(true);
 	};
 
 	renderOrderData($('#jsOrderDelivery').data('value'));
-}());
+}(this));
