@@ -800,6 +800,18 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 
 	phoneField.mask("(999) 999-99-99");
 
+	/**
+	 * AB-test
+	 * Обязательное поле e-mail
+	 */
+	if ( global.docCookies.getItem('emails') ) {
+		console.log('AB TEST: e-mail require');
+
+		orderValidator.setValidate( emailField , {
+			require: true
+		});
+	}
+
 	if ( subwayArray !== undefined ) {
 		subwayField.autocomplete(subwayAutocompleteConfig);
 		subwayField.bind('change', subwayChange);
