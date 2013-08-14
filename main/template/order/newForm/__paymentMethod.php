@@ -45,7 +45,9 @@ return function (
             $elementId = sprintf('paymentMethod-%s', $paymentMethod->getId());
         ?>
             <div class="bPayMethod<? if (\Model\PaymentMethod\Entity::TYPE_ALL == $typeId): ?> mMethodOption<? endif ?>"
-                 data-max-sum="<?= in_array($paymentMethod->getId(), [\Model\PaymentMethod\Entity::QIWI_ID, \Model\PaymentMethod\Entity::WEBMONEY_ID]) ? App::config()->order['maxSumOnline'] : '' ?>"
+                 data-value="<?= $helper->json([
+                     'max-sum' => in_array($paymentMethod->getId(), [\Model\PaymentMethod\Entity::QIWI_ID, \Model\PaymentMethod\Entity::WEBMONEY_ID]) ? App::config()->order['maxSumOnline'] : null,
+                 ]) ?>"
                  data-bind="paymentMethodVisible: totalSum">
                 <input
                     <? if ($paymentMethod->getId() == $form->getPaymentMethodId()): ?> checked="checked"<?endif ?>
