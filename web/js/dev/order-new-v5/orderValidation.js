@@ -92,11 +92,108 @@
 	
 	orderValidator = new FormValidator(validationConfig);
 	
+		/**
+		 * Блокер экрана
+		 *
+		 * @param	{Object}		noti		Объект jQuery блокера экрана
+		 * @param	{Function}		block		Функция блокировки экрана. На вход принимает текст который нужно отобразить в окошке блокера
+		 * @param	{Function}		unblock		Функция разблокировки экрана. Объект окна блокера удаляется.
+		 */
+	var blockScreen = {
+			noti: null,
+			block: function( text ) {
+				console.warn('block screen');
+
+				if ( this.noti ) {
+					this.unblock();
+				}
+
+				this.noti = $('<div>').addClass('noti').html('<div><img src="/images/ajaxnoti.gif" /></br></br> '+ text +'</div>');
+				this.noti.appendTo('body');
+
+				this.noti.lightbox_me({
+					centered:true,
+					closeClick:false,
+					closeEsc:false
+				});
+			},
+
+			unblock: function() {
+				console.warn('unblock screen');
+
+				this.noti.trigger('close');
+				this.noti.remove();
+			}
+		},
+
+		/**
+		 * Обработка ответа от сервера
+		 *
+		 * @param	{Object}	res		Ответ сервера
+		 */
+		processingResponse = function processingResponse( res ) {
+			console.info('данные отправлены. получен ответ от сервера');
+			console.log(res);
+
+			blockScreen.unblock();
+		},
+
+		/**
+		 * Подготовка данных для отправки на сервер
+		 * Отправка данных
+		 */
+		preparationData = function preparationData() {
+			var currentDeliveryBox = null,
+				parts = [],
+				dataToSend = [],
+				tmpPart = {},
+				orderForm = $('#order-form');
+			// end of vars
+			
+			blockScreen.block('Ваш заказ оформляется');
+
+			/**
+			 * Перебираем блоки доставки
+			 */
+			console.info('Перебираем блоки доставки');
+			for (var i = global.OrderModel.deliveryBoxes().length - 1; i >= 0; i--) {
+				tmpPart = {};
+				currentDeliveryBox = global.OrderModel.deliveryBoxes()[i];
+				console.log(currentDeliveryBox);
+
+				tmpPart = {
+					deliveryMethod_token: currentDeliveryBox.state,
+					date: currentDeliveryBox.choosenDate().value,
+					interval: 'с '+currentDeliveryBox.choosenInterval().start+' до '+currentDeliveryBox.choosenInterval().end,
+					point_id: currentDeliveryBox.choosenPoint().id,
+					products : []
+				};
+
+				for (var j = currentDeliveryBox.products.length - 1; j >= 0; j--) {
+					tmpPart.products.push(currentDeliveryBox.products[j].id);
+				}
+
+				parts.push(tmpPart);
+			}
+
+			dataToSend = orderForm.serializeArray();
+			dataToSend.push({ name: 'order[part]', value: parts});
+
+			console.log(dataToSend);
+
+			$.ajax({
+				url: orderForm.attr('action'),
+				timeout: 120000,
+				type: "POST",
+				data: dataToSend,
+				success: processingResponse
+			});
+		},
 
 		/**
 		 * Обработчик нажатия на кнопку завершения заказа
 		 */
-	var orderComplete = function orderComplete() {
+		orderComplete = function orderComplete() {
 			console.info('завершить оформление заказа');
 
 			orderValidator.validate({
@@ -106,9 +203,7 @@
 
 					$.scrollTo(err[err.length - 1].fieldNode, 500, {offset:-15});
 				},
-				onValid: function() {
-					console.info('valid');
-				}
+				onValid: preparationData
 			});
 
 			return false;
