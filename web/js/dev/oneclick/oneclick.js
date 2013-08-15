@@ -515,8 +515,8 @@ $(document).ready(function() {
 								'Checkout Complete SKU':data.data.productArticle,  
 								'Checkout Complete SKU Quantity':self.quantity() * 1,
 								'Checkout Complete SKU Price':self.price * 1,
-								'Checkout Complete Parent category':data.data.productCategory[0],
-								'Checkout Complete Category name':data.data.productCategory[data.data.productCategory.length-1],
+								'Checkout Complete Parent category':data.data.productCategory[0].name,
+								'Checkout Complete Category name':data.data.productCategory[data.data.productCategory.length-1].name,
 								'_t':KM.ts() +  1  ,
 								'_d':1
 							};
