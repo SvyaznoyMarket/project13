@@ -63,7 +63,7 @@ foreach (array_reverse($productsById) as $product) {
 
 
 <!-- loader -->
-<div data-bind="css: { mLoader: !prepareData() }"></div>
+<div class="mLoader" data-bind="visible: !prepareData()"></div>
 <!-- /loader -->
 
 <!-- Общая обертка оформления заказа -->
