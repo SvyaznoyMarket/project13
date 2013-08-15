@@ -14,7 +14,7 @@
 		metroIdFiled = $('#order_subway_id'),
 		streetField = $('#order_address_street'),
 		buildingField = $('#order_address_building'),
-		paymentRadio = $('.jsCustomRadio[name="order[payment_type_id]"]'),
+		paymentRadio = $('.jsCustomRadio[name="order[payment_method_id]"]'),
 		orderAgreed = $('#order_agreed'),
 
 		// complete button
@@ -51,23 +51,6 @@
 					validateOnChange: true
 				},
 				{
-					fieldNode: subwayField,
-					customErr: 'Не выбрана станция метро',
-					validateOnChange: true
-				},
-				{
-					fieldNode: streetField,
-					require: true,
-					customErr: 'Не введено название улицы',
-					validateOnChange: true
-				},
-				{
-					fieldNode: buildingField,
-					require: true,
-					customErr: 'Не введен номер дома',
-					validateOnChange: true
-				},
-				{
 					fieldNode: orderAgreed,
 					require: true,
 					customErr: 'Необходимо согласие',
@@ -76,7 +59,7 @@
 					fieldNode: paymentRadio,
 					require: true,
 					customErr: 'Необходимо выбрать метод оплаты'
-				},
+				}
 			]
 		},
 
@@ -164,7 +147,10 @@
 				tmpPart = {
 					deliveryMethod_token: currentDeliveryBox.state,
 					date: currentDeliveryBox.choosenDate().value,
-					interval: 'с '+currentDeliveryBox.choosenInterval().start+' до '+currentDeliveryBox.choosenInterval().end,
+					interval: [
+						currentDeliveryBox.choosenInterval().start,
+						currentDeliveryBox.choosenInterval().end
+					],
 					point_id: currentDeliveryBox.choosenPoint().id,
 					products : []
 				};
@@ -177,7 +163,8 @@
 			}
 
 			dataToSend = orderForm.serializeArray();
-			dataToSend.push({ name: 'order[part]', value: parts});
+			dataToSend.push({ name: 'order[delivery_type_id]', value: global.OrderModel.choosenDeliveryTypeId });
+			dataToSend.push({ name: 'order[part]', value: JSON.stringify(parts) });
 
 			console.log(dataToSend);
 
@@ -193,7 +180,7 @@
 		/**
 		 * Обработчик нажатия на кнопку завершения заказа
 		 */
-		orderComplete = function orderComplete() {
+		orderCompleteBtnHandler = function orderCompleteBtnHandler() {
 			console.info('завершить оформление заказа');
 
 			orderValidator.validate({
@@ -231,16 +218,46 @@
 		 */
 		orderDeliveryChangeHandler = function orderDeliveryChangeHandler( event, hasHomeDelivery ) {
 			if ( hasHomeDelivery ) {
-				// Добавлем валидацию поля метро
-				orderValidator.setValidate( subwayField , {
-					require: true
+				// Добавялем поле ввода улицы в список валидируемых полей
+				orderValidator.setValidate( streetField, {
+					require: true,
+					customErr: 'Не введено название улицы',
+					validateOnChange: true
 				});
+
+				// Добавялем поле ввода номера дома в список валидируемых полей
+				orderValidator.setValidate( buildingField, {
+					require: true,
+					customErr: 'Не введен номер дома',
+					validateOnChange: true
+				});
+
+				if ( subwayArray !== undefined ) {
+					// Добавлем валидацию поля метро
+					orderValidator.setValidate( subwayField , {
+						fieldNode: subwayField,
+						customErr: 'Не выбрана станция метро',
+						require: true
+					});
+				}
 			}
 			else {
-				// Удаляем поле метро из списка валидируемых полей
-				orderValidator.setValidate( subwayField , {
+				// Удаляем поле ввода улицы из списка валидируемых полей
+				orderValidator.setValidate( streetField, {
 					require: false
 				});
+
+				// Удаляем поле ввода номера дома из списка валидируемых полей
+				orderValidator.setValidate( buildingField, {
+					require: false
+				});
+
+				if ( subwayArray !== undefined ) {
+					// Удаляем поле метро из списка валидируемых полей
+					orderValidator.setValidate( subwayField , {
+						require: false
+					});
+				}
 			}
 
 			console.info('Изменен тип доставки');
@@ -268,6 +285,34 @@
 		subwayField.bind('change', subwayChange);
 	}
 
+
+	/**
+	 * Подстановка значений в поля
+	 */
+	var defaultValueToField = function defaultValueToField( fields ) {
+		var fieldNode = null;
+
+		console.info('defaultValueToField')
+		for ( var field in fields ) {
+			console.log('поле '+field);
+			if ( fields[field] ) {
+				console.log('для поля есть значение '+fields[field]);
+				fieldNode = $('input[name="'+field+'"]');
+
+				// поле текстовое	
+				if ( fieldNode.attr('type') === 'text' ) {
+					fieldNode.val( fields[field] );
+				}
+
+				// радио кнопка
+				if ( fieldNode.attr('type') === 'radio' ) {
+					fieldNode.filter('[value="'+fields[field]+'"]').attr('checked', 'checked');
+				}
+			}
+		}
+	};
+	defaultValueToField($('#jsOrderForm').data('value'));
+
 	$('body').bind('orderdeliverychange', orderDeliveryChangeHandler);
-	orderCompleteBtn.bind('click', orderComplete);
+	orderCompleteBtn.bind('click', orderCompleteBtnHandler);
 }(this));

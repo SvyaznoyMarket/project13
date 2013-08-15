@@ -115,7 +115,7 @@ $c->googleAnalytics['enabled'] = true;
 $c->yandexMetrika['enabled'] = true;
 
 // TODO: Вынести сюда же настройки для sociomantic and get4click
-$c->partners['criteo']['enabled'] = false;
+$c->partners['criteo']['enabled'] = true;
 $c->partners['criteo']['account'] = 10442;
 
 $c->adFox['enabled'] = true;

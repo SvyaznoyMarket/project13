@@ -332,7 +332,7 @@ foreach (array_reverse($productsById) as $product) {
 			и вы сможете использовать ранее введенные данные
 		</div>
 		
-		<form id="order-form" action="/orders/new" method="post">
+		<form id="order-form" action="<?= $page->url('order.create') ?>" method="post">
 			<!-- Info about customer -->
 			<div class="bBuyingLine mBuyingFields">
 				<label for="" class="bBuyingLine__eLeft">Имя получателя*</label>
@@ -362,14 +362,14 @@ foreach (array_reverse($productsById) as $product) {
 				</div>
 
 				<!-- Address customer -->
-				<label class="bBuyingLine__eLeft">Адрес доставки*</label>
-				<div class="bBuyingLine__eRight" style="width: 640px;">
+				<label class="bBuyingLine__eLeft" data-bind="visible: hasHomeDelivery()">Адрес доставки*</label>
+				<div class="bBuyingLine__eRight" style="width: 640px;" data-bind="visible: hasHomeDelivery()">
 					<div>
 						<strong><?= $region->getName() ?></strong> ( <a id="jsregion" href="<?= $page->url('region.change', ['regionId' => $region->getId()]) ?>">изменить</a> )
 					</div>
 
 	                <? if ((bool)$subways): ?>
-					<div class="bInputAddress ui-css" data-bind="visible: hasHomeDelivery()">
+					<div class="bInputAddress ui-css">
 						<label class="bPlaceholder">Метро*</label>
 						<input type="text" class="bBuyingLine__eText mInputLong ui-autocomplete-input" id="order_address_metro" title="Метро" aria-haspopup="true" aria-autocomplete="list" role="textbox" autocomplete="off" name="order[address_metro]" />
 						<div id="metrostations" data-name="<?= $page->json(array_map(function(\Model\Subway\Entity $subway) { return ['val' => $subway->getId(), 'label' => $subway->getName()]; }, $subways)) ?>"></div>

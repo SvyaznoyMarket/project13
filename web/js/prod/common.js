@@ -1352,7 +1352,7 @@ $(document).ready(function(){
 			}
 		});
 
-		if ( window.docCookies.getItem( 'infScroll' ) === 1 ) {	
+		if ( window.docCookies.getItem( 'infScroll' ) == 1 ) {
 			$('.bAllPager:first').trigger('click');
 		}
 	}

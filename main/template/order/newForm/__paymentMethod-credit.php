@@ -24,11 +24,11 @@ return function (
             </select>
         </div>
 
-        <a class="bBankLink" target="_blank" href="#">Условия кредита <span>(Тинькофф)</span></a>
+        <a class="bBankLink" target="_blank" href="#">Условия кредита (<span class="bBankLink__eName">Тинькофф</span>)</a>
     </div>
 
     <strong>Ежемесячный платеж<sup>**</sup>:
-        <span>406</span> <span class="rubl"> p</span>
+        <span id="creditPrice">406</span> <span class="rubl"> p</span>
     </strong>
 
     <div class="bFootenote">
@@ -36,6 +36,7 @@ return function (
     </div>
 
     <div id="jsCreditBank" data-value="<?= $helper->json($creditData) ?>"></div>
+    <input id="selectedBank" hidden name="order[credit_bank_id]">
 </div>
 
 

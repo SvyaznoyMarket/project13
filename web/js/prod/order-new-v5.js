@@ -493,6 +493,52 @@ ko.bindingHandlers.calendarSlider = {
  
  
 /**
+ * Работа с кредитными брокерами
+ */
+;(function( global ){
+	var bankWrap = $('.bBankWrap');
+
+
+	var creditInit = function creditInit() {
+		var bankLink  = bankWrap.find('.bBankLink'),
+			bankLinkName = bankWrap.find('.bBankLink__eName'),
+			select = bankWrap.find('.bSelect'),
+			bankField = $('#selectedBank'),
+			bankName = bankWrap.find('.bSelectWrap_eText');
+		// end of vars
+
+		var selectBank = function selectBank() {
+			var chosenBankLink = $("option:selected", select).attr('data-link'),
+				chosenBankId = $("option:selected", select).val(),
+				chosenBankName = $("option:selected", select).html();
+			// end of vars
+
+			bankName.html(chosenBankName);
+			bankLinkName.html(chosenBankName);
+			bankField.val(chosenBankId);
+			bankLink.attr('href', chosenBankLink);
+		};
+
+		$("option", select).eq(0).attr('selected','selected');
+
+		select.change(selectBank);
+		selectBank();
+
+		DirectCredit.init( $('#jsCreditBank').data('value'), $('#creditPrice') );
+	};
+	
+	if ( bankWrap.length ) {
+		creditInit();
+	}
+}(this));
+ 
+ 
+/** 
+ * NEW FILE!!! 
+ */
+ 
+ 
+/**
  * Вспомагательная обертка вокруг данных приходящих с сервера
  * Явлется неким драйвером для доступа к данным
  *
@@ -659,7 +705,7 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 		metroIdFiled = $('#order_subway_id'),
 		streetField = $('#order_address_street'),
 		buildingField = $('#order_address_building'),
-		paymentRadio = $('.jsCustomRadio[name="order[payment_type_id]"]'),
+		paymentRadio = $('.jsCustomRadio[name="order[payment_method_id]"]'),
 		orderAgreed = $('#order_agreed'),
 
 		// complete button
@@ -696,23 +742,6 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 					validateOnChange: true
 				},
 				{
-					fieldNode: subwayField,
-					customErr: 'Не выбрана станция метро',
-					validateOnChange: true
-				},
-				{
-					fieldNode: streetField,
-					require: true,
-					customErr: 'Не введено название улицы',
-					validateOnChange: true
-				},
-				{
-					fieldNode: buildingField,
-					require: true,
-					customErr: 'Не введен номер дома',
-					validateOnChange: true
-				},
-				{
 					fieldNode: orderAgreed,
 					require: true,
 					customErr: 'Необходимо согласие',
@@ -721,7 +750,7 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 					fieldNode: paymentRadio,
 					require: true,
 					customErr: 'Необходимо выбрать метод оплаты'
-				},
+				}
 			]
 		},
 
@@ -809,7 +838,10 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 				tmpPart = {
 					deliveryMethod_token: currentDeliveryBox.state,
 					date: currentDeliveryBox.choosenDate().value,
-					interval: 'с '+currentDeliveryBox.choosenInterval().start+' до '+currentDeliveryBox.choosenInterval().end,
+					interval: [
+						currentDeliveryBox.choosenInterval().start,
+						currentDeliveryBox.choosenInterval().end
+					],
 					point_id: currentDeliveryBox.choosenPoint().id,
 					products : []
 				};
@@ -822,7 +854,8 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 			}
 
 			dataToSend = orderForm.serializeArray();
-			dataToSend.push({ name: 'order[part]', value: parts});
+			dataToSend.push({ name: 'order[delivery_type_id]', value: global.OrderModel.choosenDeliveryTypeId });
+			dataToSend.push({ name: 'order[part]', value: JSON.stringify(parts) });
 
 			console.log(dataToSend);
 
@@ -838,7 +871,7 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 		/**
 		 * Обработчик нажатия на кнопку завершения заказа
 		 */
-		orderComplete = function orderComplete() {
+		orderCompleteBtnHandler = function orderCompleteBtnHandler() {
 			console.info('завершить оформление заказа');
 
 			orderValidator.validate({
@@ -876,16 +909,46 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 		 */
 		orderDeliveryChangeHandler = function orderDeliveryChangeHandler( event, hasHomeDelivery ) {
 			if ( hasHomeDelivery ) {
-				// Добавлем валидацию поля метро
-				orderValidator.setValidate( subwayField , {
-					require: true
+				// Добавялем поле ввода улицы в список валидируемых полей
+				orderValidator.setValidate( streetField, {
+					require: true,
+					customErr: 'Не введено название улицы',
+					validateOnChange: true
 				});
+
+				// Добавялем поле ввода номера дома в список валидируемых полей
+				orderValidator.setValidate( buildingField, {
+					require: true,
+					customErr: 'Не введен номер дома',
+					validateOnChange: true
+				});
+
+				if ( subwayArray !== undefined ) {
+					// Добавлем валидацию поля метро
+					orderValidator.setValidate( subwayField , {
+						fieldNode: subwayField,
+						customErr: 'Не выбрана станция метро',
+						require: true
+					});
+				}
 			}
 			else {
-				// Удаляем поле метро из списка валидируемых полей
-				orderValidator.setValidate( subwayField , {
+				// Удаляем поле ввода улицы из списка валидируемых полей
+				orderValidator.setValidate( streetField, {
 					require: false
 				});
+
+				// Удаляем поле ввода номера дома из списка валидируемых полей
+				orderValidator.setValidate( buildingField, {
+					require: false
+				});
+
+				if ( subwayArray !== undefined ) {
+					// Удаляем поле метро из списка валидируемых полей
+					orderValidator.setValidate( subwayField , {
+						require: false
+					});
+				}
 			}
 
 			console.info('Изменен тип доставки');
@@ -913,8 +976,36 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 		subwayField.bind('change', subwayChange);
 	}
 
+
+	/**
+	 * Подстановка значений в поля
+	 */
+	var defaultValueToField = function defaultValueToField( fields ) {
+		var fieldNode = null;
+
+		console.info('defaultValueToField')
+		for ( var field in fields ) {
+			console.log('поле '+field);
+			if ( fields[field] ) {
+				console.log('для поля есть значение '+fields[field]);
+				fieldNode = $('input[name="'+field+'"]');
+
+				// поле текстовое	
+				if ( fieldNode.attr('type') === 'text' ) {
+					fieldNode.val( fields[field] );
+				}
+
+				// радио кнопка
+				if ( fieldNode.attr('type') === 'radio' ) {
+					fieldNode.filter('[value="'+fields[field]+'"]').attr('checked', 'checked');
+				}
+			}
+		}
+	};
+	defaultValueToField($('#jsOrderForm').data('value'));
+
 	$('body').bind('orderdeliverychange', orderDeliveryChangeHandler);
-	orderCompleteBtn.bind('click', orderComplete);
+	orderCompleteBtn.bind('click', orderCompleteBtnHandler);
 }(this));
  
  
@@ -1208,6 +1299,7 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 
 			global.OrderModel.deliveryTypesButton = checkedInput;
 			global.OrderModel.tmpStatesPriority = data.states;
+			global.OrderModel.choosenDeliveryTypeId = data.id;
 
 			// если для приоритетного метода доставки существуют пункты доставки, то пользователю необходимо выбрать пункт доставки, если нет - то приравниваем идентификатор пункта доставки к 0
 			if ( global.OrderModel.orderDictionary.hasPointDelivery(priorityState) ) {
@@ -1239,31 +1331,156 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 	 * ===  END ORDER MODEL ===
 	 */
 
+	 	/**
+	 	 * Показ сообщений об ошибках
+	 	 * 
+	 	 * @param	{String}	msg		Сообщение об ошибке
+	 	 * @return	{Object}     		Deferred объект
+	 	 */
+	var showError = function showError( msg ) {
+			var content = '<div class="popupbox width290">' +
+					'<div class="font18 pb18"> '+msg+'</div>'+
+					'</div>' +
+					'<p style="text-align:center"><a href="#" class="closePopup bBigOrangeButton">OK</a></p>',
+				block = $('<div>').addClass('popup').html(content),
 
+				popupIsClose = $.Deferred();
+			// end of vars
+			
+			block.appendTo('body');
 
-	/**
-	 * Обработка полученных данных
-	 * Создание словаря
-	 * 
-	 * @param	{Object}	res		Данные о заказе
-	 */
-	var renderOrderData = function renderOrderData( res ) {
-		if ( !res.success ) {
-			// TODO: написать обработчки ошибок
-			console.warn('произошла ошибка при получении данных с сервера');
-			console.log(res.error);
+			var errorPopupCloser = function() {
+				block.trigger('close');
+				block.remove();
 
-			return false;
-		}
+				popupIsClose.resolve();
+			};
 
+			block.lightbox_me({
+				centered:true,
+				closeClick:false,
+				closeEsc:false
+			});
 
-		console.log('Данные с сервера получены');
+			block.find('.closePopup').bind('click', errorPopupCloser);
 
-		global.OrderModel.orderDictionary = new OrderDictionary(res);
+			return popupIsClose.promise();
+		},
 
-		global.OrderModel.deliveryTypes(res.deliveryTypes);
-		global.OrderModel.prepareData(true);
-	};
+		/**
+		 * Обработка ошибок в продуктах
+		 */
+		productError = {
+			// Товар недоступен для продажи
+			800: function( product ) {
+				var msg = 'Товар '+product.name+' недоступен для продажи.',
+
+					productErrorIsResolve = $.Deferred();
+				// end of vars
+
+				$.when(showError(msg)).then(function() {
+					$.ajax({
+						type:'GET',
+						url: product.deleteUrl
+					}).then(productErrorIsResolve.resolve);
+				});
+
+				return productErrorIsResolve.promise();
+
+			},
+
+			// Нет необходимого количества товара
+			708: function( product ) {
+				var msg = 'Вы заказали товар '+product.name+' в количестве '+product.quantity+' шт. <br/ >'+product.error.message,
+					res = null,
+
+					productErrorIsResolve = $.Deferred();
+				// end of vars
+
+				$.when(showError(msg)).then(function() {
+					$.ajax({
+						type:'GET',
+						url: product.setUrl
+					}).then(productErrorIsResolve.resolve);
+				});
+
+				return productErrorIsResolve.promise();
+			}
+		},
+
+		/**
+		 * Обработка ошибок в данных
+		 *
+		 * @param	{Object}	res		Данные о заказе
+		 * 
+		 * @param	{Object}	product	Данные о продукте
+		 * @param	{Number}	code	Код ошибки
+		 */
+		allErrorHandler = function allErrorHandler( res ) {
+			console.log(res)
+			var product = null,
+
+				productsWithError = [];
+			// end of vars
+
+			// Cоздаем массив продуктов содержащих ошибки
+			for ( product in res.products ) {
+				if ( res.products[product].error.code ) {
+					productsWithError.push(res.products[product]);
+				}
+			}
+
+			// Обрабатываем ошибки продуктов по очереди
+			var errorCatcher = function errorCatcher( i, callback ) {
+				var code = null;
+
+				if ( i < 0 ) {
+					console.warn('return');
+
+					callback();
+					return;
+				}
+
+				code = productsWithError[i].error.code;
+
+				$.when( productError[code](productsWithError[i]) ).then(function() {
+					var newI = i - 1;
+
+					errorCatcher( newI, callback );
+				});
+			};
+
+			errorCatcher(productsWithError.length - 1, function() {
+				console.warn('1 этап закончен');
+				window.location.href(res.error.redirect);
+			});
+		},
+
+		/**
+		 * Обработка полученных данных
+		 * Создание словаря
+		 * 
+		 * @param	{Object}	res		Данные о заказе
+		 */
+		renderOrderData = function renderOrderData( res ) {
+			if ( !res.success ) {
+				// TODO: написать обработчки ошибок
+				console.warn('Данные содержат ошибки');
+				console.log(res.error);
+				allErrorHandler(res);
+
+				return false;
+			}
+
+			console.info('Данные с сервера получены');
+
+			global.OrderModel.orderDictionary = new OrderDictionary(res);
+
+			global.OrderModel.deliveryTypes(res.deliveryTypes);
+			global.OrderModel.prepareData(true);
+		};
+	// end of functions
+	
 
 	renderOrderData($('#jsOrderDelivery').data('value'));
 }(this));
