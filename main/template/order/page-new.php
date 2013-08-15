@@ -262,7 +262,7 @@ foreach (array_reverse($productsById) as $product) {
 				</div>
 
 				<!-- Address customer -->
-				<label class="bBuyingLine__eLeft">Адрес доставки*</label>
+				<label class="bBuyingLine__eLeft" data-bind="visible: hasHomeDelivery()">Адрес доставки*</label>
 				<div class="bBuyingLine__eRight" style="width: 640px;" data-bind="visible: hasHomeDelivery()">
 					<div>
 						<strong><?= $region->getName() ?></strong> ( <a id="jsregion" href="<?= $page->url('region.change', ['regionId' => $region->getId()]) ?>">изменить</a> )
