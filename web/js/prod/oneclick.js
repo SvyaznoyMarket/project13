@@ -456,7 +456,7 @@ $(document).ready(function() {
 				if( self.formStatus() === 'typing' ){ // validation error
 					return;
 				}
-				
+
 				//send ajax
 				self.sendData();
 				
@@ -523,6 +523,10 @@ $(document).ready(function() {
 
 							_kmq.push(['set', toKISS_pr]);
 						}
+
+                        if( typeof(_gaq) !== 'undefined' ) { ///GoogleAnalytics OQuickOrder Success
+                            _gaq.push(['_trackEvent', 'QuickOrder', 'Success', '']);
+                        }
 
 						if( typeof(runAnalitics) !== 'undefined' ){
 							runAnalitics();
