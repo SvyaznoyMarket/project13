@@ -133,6 +133,7 @@ class AppConfig {
         ]
     ];
 
+
     /** @var array */
     public $myThings = [
         'feeByCategory' => [],

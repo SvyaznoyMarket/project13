@@ -422,9 +422,21 @@ return [
         'pattern' => '/orders/payment/{orderNumber}',
         'action'  => ['Order\Action', 'paymentComplete'],
     ],
+    'order.paymentSuccess' => [
+        'pattern' => '/orders/complete_payment',
+        'action'  => ['Order\Action', 'paymentSuccess'],
+    ],
+    'order.paymentFail' => [
+        'pattern' => '/orders/fail_payment',
+        'action'  => ['Order\Action', 'paymentFail'],
+    ],
     'order.bill' => [
         'pattern' => '/private/orders/{orderNumber}/bill',
         'action'  => ['Order\BillAction', 'execute'],
+    ],
+    'order.clearPaymentUrl' => [
+        'pattern' => '/orders/clearPaymentUrl',
+        'action'  => ['Order\Action', 'clearPaymentUrl'],
     ],
 
     // услуги
@@ -461,11 +473,23 @@ return [
         'action' => ['Jewel\Product\RecommendedAction', 'execute'],
         'require' => ['productId' => '\d+'],
     ],
+    'product.similar' => [
+        'pattern' => '/ajax/product-similar/{productId}',
+        'action' => ['Product\SimilarAction', 'execute'],
+        'require' => ['productId' => '\d+'],
+    ],
+    'product.alsoViewed' => [
+        'pattern' => '/ajax/product-also-viewed/{productId}',
+        'action' => ['Product\AlsoViewedAction', 'execute'],
+        'require' => ['productId' => '\d+'],
+    ],
+    /*
     'smartengine.pull.product_similar' => [
         'pattern' => '/product-similar/{productId}',
         'action' => ['Smartengine\Action', 'pullProductSimilar'],
         'require' => ['productId' => '\d+'],
     ],
+    */
     'smartengine.push.product_view' => [
         'pattern' => '/product-view/{productId}',
         'action' => ['Smartengine\Action', 'pushView'],
@@ -573,19 +597,24 @@ return [
         'action'  => ['Cron\LinksAction', 'execute'],
     ],
 
-
     // LiveTex Statistics:
     'livetex.statistics' => [
         'pattern' => '/livetex-statistics',
         'action' => ['Livetex\StatisticsAction', 'execute'],
     ],
 
-
+    //survey
+    'survey.submit-answer' => [
+        'pattern' => '/survey/submit-answer',
+        'action'  => ['Survey\Action', 'submitAnswer'],
+        'method'  => ['POST'],
+    ],
 
     //content
     'content' => [
         'pattern' => '/{token}',
         'action'  => ['Content\Action', 'execute'],
     ],
+
 
 ];
