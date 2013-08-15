@@ -277,11 +277,6 @@ class Action {
                     throw new \Exception(sprintf('Невозможно оформить заказ на %d рублей с выбранным способом оплаты (%d)', $totalSum, $form->getPaymentMethodId()));
                 }
 
-                // сохранение заказов в ядре
-                $saveOrderResult = $this->saveOrder($form, $deliveryMap, $productsForRetargeting);
-                $orderNumbers = $saveOrderResult['orderNumbers'];
-                $paymentUrl = $saveOrderResult['paymentUrl'];
-
                 // сохранение заказов в сессии
                 \App::session()->set(self::ORDER_SESSION_NAME, array_map(function($orderNumber) use ($form) {
                     return ['number' => $orderNumber, 'phone' => $form->getMobilePhone()];
