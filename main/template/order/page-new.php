@@ -364,7 +364,7 @@ foreach (array_reverse($productsById) as $product) {
 				<!-- Address customer -->
 				<label class="bBuyingLine__eLeft" data-bind="visible: hasHomeDelivery()">Адрес доставки*</label>
 				<div class="bBuyingLine__eRight" style="width: 640px;" data-bind="visible: hasHomeDelivery()">
-					<div>
+					<div class="bSelectedCity">
 						<strong><?= $region->getName() ?></strong> ( <a id="jsregion" href="<?= $page->url('region.change', ['regionId' => $region->getId()]) ?>">изменить</a> )
 					</div>
 
@@ -406,6 +406,14 @@ foreach (array_reverse($productsById) as $product) {
 				<label class="bBuyingLine__eLeft">Пожелания и дополнения</label>
 				<div class="bBuyingLine__eRight">
 					<textarea id="order_extra" class="bBuyingLine__eTextarea" name="order[extra]" cols="30" rows="4"></textarea>
+				</div>
+			</div>
+
+			<div class='bBuyingLine mOrderFields'>
+				<div class="bBuyingLine__eLeft">Если у вас есть карта &laquo;Связной-Клуб&raquo;, вы можете указать ее номер</div>
+					<div class="bBuyingLine__eRight bSClub">
+					<input type="text" id="order_sclub_card_number" class="bBuyingLine__eText mInputShort mb15" name="order[sclub_card_number]" />
+					<div class="mILong">Чтобы получить 1% от суммы заказа<br/>плюсами на карту, введите ее номер,<br/>расположенный на обороте под штрихкодом</div>
 				</div>
 			</div>
 
