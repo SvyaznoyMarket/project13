@@ -407,13 +407,11 @@ foreach (array_reverse($productsById) as $product) {
 				<div class="bBuyingLine__eRight">
 					<textarea id="order_extra" class="bBuyingLine__eTextarea" name="order[extra]" cols="30" rows="4"></textarea>
 				</div>
-			</div>
 
-			<div class='bBuyingLine mOrderFields'>
 				<div class="bBuyingLine__eLeft">Если у вас есть карта &laquo;Связной-Клуб&raquo;, вы можете указать ее номер</div>
-					<div class="bBuyingLine__eRight bSClub">
-					<input type="text" id="order_sclub_card_number" class="bBuyingLine__eText mInputShort mb15" name="order[sclub_card_number]" />
-					<div class="mILong">Чтобы получить 1% от суммы заказа<br/>плюсами на карту, введите ее номер,<br/>расположенный на обороте под штрихкодом</div>
+				<div class="bBuyingLine__eRight mSClub">
+					<input type="text" class="bBuyingLine__eText" name="" />
+					<div class="bText">Чтобы получить 1% от суммы заказа<br/>плюсами на карту, введите ее номер,<br/>расположенный на обороте под штрихкодом</div>
 				</div>
 			</div>
 
