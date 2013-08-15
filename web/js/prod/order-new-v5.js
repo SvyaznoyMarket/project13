@@ -1053,7 +1053,9 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 			choosenPointForBox = null,
 			token = null,
 			nowState = null,
-			nowProduct = null;
+			nowProduct = null,
+
+			discounts = global.OrderModel.orderDictionary.orderData.discounts;
 		// end of vars
 
 
@@ -1070,6 +1072,9 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 		// Обнуляем блоки с доставкой на дом и генерируем событие об этом
 		global.OrderModel.hasHomeDelivery(false);
 		$('body').trigger('orderdeliverychange',[false]);
+
+		// Добавляем купоны
+		global.OrderModel.couponsBox(discounts);
 
 
 		/**
@@ -1251,36 +1256,46 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 		/**
 		 * Номер введенного сертификата
 		 */
-		sertificateNumber: ko.observable(),
+		couponNumber: ko.observable(),
 
 		/**
 		 * URL по которому нужно проверять карту
 		 */
-		sertificateUrl: ko.observable(),
+		couponUrl: ko.observable(),
 
 		/**
 		 * Ошибки сертификата
 		 */
-		sertificateError: ko.observable(),
+		couponError: ko.observable(),
+
+		/**
+		 * Массив примененных купонов
+		 */
+		couponsBox: ko.observableArray([]),
 
 		/**
 		 * Проверка сертификата
 		 */
-		checkSertificate: function() {
+		checkCoupon: function() {
 			var dataToSend = {
-					number: global.OrderModel.sertificateNumber(),
+					number: global.OrderModel.couponNumber(),
 				},
-				url = global.OrderModel.sertificateUrl();
+				url = global.OrderModel.couponUrl();
 			// end of vars
 
-			var sertificateResponceHandler = function sertificateResponceHandler( res ) {
-				console.log( res );
+			var couponResponceHandler = function couponResponceHandler( res ) {
+				if ( !res.success ) {
+					global.OrderModel.couponError(res.error.message);
+
+					return;
+				}
 			};
 
-			global.OrderModel.sertificateError('');
+			global.OrderModel.couponError('');
 
 			if ( url === undefined ) {
-				global.OrderModel.sertificateError('Не выбран тип сертификата');
+				global.OrderModel.couponError('Не выбран тип сертификата');
+
 				return;
 			}
 
@@ -1288,7 +1303,7 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 				type: 'POST',
 				url: url,
 				data: dataToSend,
-				success: sertificateResponceHandler
+				success: couponResponceHandler
 			});
 		},
 
