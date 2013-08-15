@@ -504,15 +504,15 @@ $.ajaxSetup({
 
 
         /**
-          * Добавление товара в пречат-поля LiveTex и вследствие — открывание авто-приглашения чата
-          */
-        addToLiveTex = function addToLiveTex( data ) {
-            if ( typeof(LiveTex.addToCart) == 'function' ) {
-                try{
-                LiveTex.addToCart( data.product );
-            }catch(err){ }
+         * Обработчик добавления товаров в корзину. Рекомендации от RetailRocket
+         */
+        addToRetailRocket = function addToRetailRocket( data ) {
+            var product = data.product;
+            if( typeof(rcApi) !== 'undefined' ){
+                rcApi.addToBasket(product.id);
             }
         },
+
 
 		/**
 		 * Обработка покупки, парсинг данных от сервера, запуск аналитики
@@ -533,10 +533,11 @@ $.ajaxSetup({
 
 
 			kissAnalytics(data);
-            addToLiveTex(data);
 			googleAnalytics(data);
 			myThingsAnalytics(data);
 			adAdriver(data);
+            addToRetailRocket(data);
+
 
 			if ( !window.blackBox ) {
 				return false;
@@ -1351,7 +1352,7 @@ $(document).ready(function(){
 			}
 		});
 
-		if ( window.docCookies.getItem( 'infScroll' ) === 1 ) {	
+		if ( window.docCookies.getItem( 'infScroll' ) == 1 ) {
 			$('.bAllPager:first').trigger('click');
 		}
 	}
@@ -1552,6 +1553,9 @@ $(document).ready(function(){
 	});
   
 	/* Side Filter Block handlers */
+	
+	$(".bigfilter dd[style='display: block;']").prev(".bigfilter dt").addClass("current");
+
 	$(".bigfilter dt").click(function(){
 		if ( $(this).hasClass('submit') ){
 			return true;

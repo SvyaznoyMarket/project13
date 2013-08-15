@@ -54,7 +54,7 @@ class ExternalCreateAction {
             }
         }
 
-        $response = new \Http\RedirectResponse(\App::router()->generate('order.create', $params));
+        $response = new \Http\RedirectResponse(\App::router()->generate('order', $params));
         $user->changeRegion($region, $response);
 
         return $response;

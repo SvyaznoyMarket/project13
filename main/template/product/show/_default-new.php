@@ -19,7 +19,7 @@
 <div class="bProductSectionLeftCol">
     <?= $helper->render('product/__photo', ['product' => $product, 'productVideos' => $productVideos, 'useLens' => $useLens]) ?>
 
-    <div class="bProductDescShop">
+    <div class="bProductDesc">
         <?= $helper->render('product/__state', ['product' => $product]) // Есть в наличии ?>
 
         <?= $helper->render('product/__price', ['product' => $product]) // Цена ?>
@@ -28,7 +28,7 @@
 
         <?= $helper->render('product/__credit', ['product' => $product, 'creditData' => $creditData]) // Беру в кредит ?>
 
-        <div class="bProductDescShop__eText">
+        <div class="bProductDescText">
             <?= $product->getTagline() ?>
             <div class="bTextMore"><a class="jsGoToId" data-goto="productspecification" href="">Характеристики</a></div>
         </div>
@@ -119,7 +119,7 @@
         <? endif ?>
 </div><!--/left section -->
 
-<div class="bProductSection__eRight">
+<div class="bProductSectionRightCol">
     <div class="bWidgetBuy mWidget">
         <?= $helper->render('__spinner', ['id' => \View\Id::cartButtonForProduct($product->getId()), 'disabled' => !$product->getIsBuyable()]) ?>
 

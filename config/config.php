@@ -32,6 +32,8 @@ $c->cacheCookieName = 'enter_auth';
 $c->mainHost = 'www.enter.ru';
 $c->mobileHost = 'm.enter.ru';
 
+$c->redirect301['enabled'] = true;
+
 $c->coreV2['url']          = 'http://api.enter.ru/v2/';
 $c->coreV2['client_id']    = 'site';
 $c->coreV2['timeout']      = null;
@@ -300,8 +302,18 @@ $c->queue['workerLimit'] = 10;
 $c->queue['maxLockTime'] = 600;
 
 $c->abtest['cookieName'] = 'switch';
-$c->abtest['bestBefore'] = '2013-04-23';
 $c->abtest['enabled']    = true;
+$c->abtest['bestBefore'] = '2013-08-20';
+$c->abtest['test']       = [
+    [
+        'traffic'  => '50',
+        'key'      => 'emails',
+        'name'     => "Обязательные e-mail'ы",
+        'ga_event' => 'MandatoryEmail',
+    ],
+];
+/*
+$c->abtest['bestBefore'] = '2013-04-23';
 $c->abtest['test']       = [
     [
         'traffic'  => '40',
@@ -316,6 +328,7 @@ $c->abtest['test']       = [
         'ga_event' => 'cart',
     ],
 ];
+*/
 
 $c->subscribe['enabled'] = true;
 $c->subscribe['cookieName'] = 'subscribed';
@@ -324,8 +337,11 @@ $c->requestMainMenu = true;
 
 $c->mobileModify['enabled'] = true;
 
+$c->order['cookieName'] = 'last_order';
+$c->order['sessionName'] = 'lastOrder';
 $c->order['enableMetaTag'] = true;
-$c->order['newCreate'] = true;
+$c->order['newCreate'] = false;
+$c->order['maxSumOnline'] = 15000;
 
 $c->maybe3d['xmlUrl']     = 'http://hq.maybe3d.com/MappingService.svc/GetMappings?customerId=';
 $c->maybe3d['customerId'] = 'BE2016EF-32D8-41E6-976F-A8D32EB20ACF';
@@ -337,19 +353,5 @@ $c->tag['numSidebarCategoriesShown'] = 3;
 
 $c->sphinx['showFacets'] = false;
 $c->sphinx['showListingSearchBar'] = false;
-
-$c->abtest = [
-    'cookieName' => 'switch',
-    'bestBefore' => '2013-08-20', //кука умрет в 00:00
-    'enabled'    => true,
-    'test'       => [
-        [
-            'traffic'  => '50',
-            'key'      => 'emails',
-            'name'     => "Обязательные e-mail'ы",
-            'ga_event' => 'MandatoryEmail',
-        ],
-    ],
-];
 
 return $c;

@@ -49,6 +49,10 @@ class AppConfig {
     /** @var string */
     public $cacheCookieName = null;
     /** @var array */
+    public $redirect301 = [
+        'enabled' => null,
+    ];
+    /** @var array */
     public $coreV2 = [
         'url'          => null,
         'client_id'    => null,
@@ -329,8 +333,11 @@ class AppConfig {
     ];
     /** @var array  */
     public $order = [
-        'enableMetaTag' => null,
-        'newCreate'     => null,
+        'cookieName'     => null,
+        'sessionName'    => null,
+        'enableMetaTag'  => null,
+        'newCreate'      => null,
+        'maxSumOnline'   => null,
     ];
     /** @var array */
     public $maybe3d = [

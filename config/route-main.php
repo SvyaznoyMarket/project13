@@ -397,9 +397,18 @@ return [
         'action'  => ['Order\OneClickAction', 'execute'],
         'method'  => ['POST'],
     ],
-    'order.create' => [
+    'order' => [
         'pattern' => '/orders/new',
         'action'  => ['Order\Action', 'create'],
+    ],
+    'order.create' => [
+        'pattern' => '/orders/create',
+        'action'  => ['Order\CreateAction', 'execute'],
+        'method'  => ['POST'],
+    ],
+    'order.delivery' => [
+        'pattern' => '/ajax/order-delivery',
+        'action'  => ['Order\DeliveryAction', 'execute'],
     ],
     'order.externalCreate' => [
         'pattern' => '/orders/create-external',

@@ -15,6 +15,10 @@ class Action {
     public function create(\Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
+        if (\App::config()->order['newCreate']) {
+            return (new \Controller\Order\NewAction())->execute($request);
+        }
+
         $client = \App::coreClientV2();
         $user = \App::user();
         $region = $user->getRegion();
@@ -238,6 +242,11 @@ class Action {
                     ];
                 }
 
+                // сохранение заказов в ядре
+                $saveOrderResult = $this->saveOrder($form, $deliveryMap, $productsForRetargeting);
+                $orderNumbers = $saveOrderResult['orderNumbers'];
+                $paymentUrl = $saveOrderResult['paymentUrl'];
+
                 // подписка
                 $isSubscribe = $request->request->get('subscribe');
                 $email = $form->getEmail();
@@ -260,6 +269,12 @@ class Action {
                         \App::exception()->remove($e);
                     });
                     $client->execute(\App::config()->coreV2['retryTimeout']['default'], \App::config()->coreV2['retryCount']);
+                }
+
+                // TODO: прибавить к totalSum стоимость доставки
+                $totalSum = $user->getCart()->getSum();
+                if ($totalSum > \App::config()->order['maxSumOnline'] && in_array($form->getPaymentMethodId(), [\Model\PaymentMethod\Entity::QIWI_ID, \Model\PaymentMethod\Entity::WEBMONEY_ID])) {
+                    throw new \Exception(sprintf('Невозможно оформить заказ на %d рублей с выбранным способом оплаты (%d)', $totalSum, $form->getPaymentMethodId()));
                 }
 
                 // сохранение заказов в ядре
@@ -312,9 +327,16 @@ class Action {
             } catch (\Exception $e) {
                 $errors = [];
 
-                if (735 == $e->getCode()) {
+                $errcode = $e->getCode();
+                if (735 == $errcode) {
                     \App::exception()->remove($e);
                     $errors['order[sclub_card_number]'] = 'Неверный код карты Связной-Клуб';
+                }else if (742 == $errcode) {
+                    \App::exception()->remove($e);
+                    $errors['order[cardpin]'] = 'Неверный пин-код подарочного сертификата';
+                }else if (743 == $errcode) {
+                    \App::exception()->remove($e);
+                    $errors['order[cardnumber]'] = 'Подарочный сертификат не найден';
                 }
 
                 $response = new \Http\JsonResponse([
@@ -704,8 +726,9 @@ class Action {
     }
 
     /**
-     * @param \View\Order\Form             $form        Валидная форма заказа
+     * @param \View\Order\Form $form        Валидная форма заказа
      * @param \View\Order\DeliveryCalc\Map $deliveryMap Ката доставки заказов
+     * @param $products
      * @throws \Exception
      * @return array Номера созданных заказов
      */
@@ -904,6 +927,8 @@ class Action {
         if (!is_array($result)) {
             throw new \Exception(sprintf('Заказ не подтвержден. Ответ ядра: %s', json_encode($result, JSON_UNESCAPED_UNICODE)));
         }
+
+        \App::logger()->info(['action' => __METHOD__, 'core.response' => $result], ['order']);
 
         $orderNumbers = [];
         $paymentUrls = [];

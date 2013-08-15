@@ -493,7 +493,7 @@ $(document).ready(function(){
 			}
 		});
 
-		if ( window.docCookies.getItem( 'infScroll' ) === 1 ) {	
+		if ( window.docCookies.getItem( 'infScroll' ) == 1 ) {
 			$('.bAllPager:first').trigger('click');
 		}
 	}
@@ -694,6 +694,9 @@ $(document).ready(function(){
 	});
   
 	/* Side Filter Block handlers */
+	
+	$(".bigfilter dd[style='display: block;']").prev(".bigfilter dt").addClass("current");
+
 	$(".bigfilter dt").click(function(){
 		if ( $(this).hasClass('submit') ){
 			return true;

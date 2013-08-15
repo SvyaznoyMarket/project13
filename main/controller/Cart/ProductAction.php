@@ -37,7 +37,7 @@ class ProductAction {
             $cartProduct = $cart->getProductById($product->getId());
             $this->updateCartWarranty($product, $cartProduct, $quantity);
 
-            $returnRedirect = $request->headers->get('referer') ?: \App::router()->generate('homepage');
+            $returnRedirect = $request->headers->get('referer') ?: ($product->getLink() ?: \App::router()->generate('homepage'));
             switch (\App::abTest()->getCase()->getKey()) {
                 case 'upsell':
                     $returnRedirect = \App::router()->generate('product.upsell', ['productToken' => $product->getToken()]);
@@ -77,7 +77,7 @@ class ProductAction {
                         'full_quantity' => $cart->getProductsQuantity() + $cart->getServicesQuantity() + $cart->getWarrantiesQuantity(),
                         'full_price'    => $cart->getSum(),
                         'old_price'     => $cart->getOriginalSum(),
-                        'link'          => \App::router()->generate('order.create'),
+                        'link'          => \App::router()->generate('order'),
                     ],
                     'product'  => $productInfo,
                 ])
@@ -211,7 +211,7 @@ class ProductAction {
                     'full_quantity' => $cart->getProductsQuantity() + $cart->getServicesQuantity() + $cart->getWarrantiesQuantity(),
                     'full_price'    => $cart->getSum(),
                     'old_price'     => $cart->getOriginalSum(),
-                    'link'          => \App::router()->generate('order.create'),
+                    'link'          => \App::router()->generate('order'),
                 ],
                 'product'  => reset($productsInfo),
             ];
