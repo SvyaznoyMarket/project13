@@ -12,8 +12,8 @@ class HtmlBasicContent{
     protected $big_head = 'LiveTex: Статистика.';
     protected $helper = '';
     protected $params;
-    const ID4ALL_OPS = -5; // id for all operators in arrays
-    const EMPTY_TD = ''; // содержимое пустой ячейки таблицы. Можно выводить пустую строку, можно 0, можно "null" ...
+    const ID4ALL_OPS = -5; // id for all operators in arrays // ID "виртуального" оператора, отвечающего за сумму данных по всем операторам
+    const EMPTY_TD = ''; // содержимое пустой ячейки таблицы. Можно выводить пустую строку, можно 0, можно прочерк "—", можно "null" ...
 
 
     public function __construct( $big_head = null, $small_head = null, $params = null) {
@@ -25,7 +25,8 @@ class HtmlBasicContent{
 
     // HTML wrapper
     protected function wr(&$content, $class = null, $tag = 'div') {
-        return $this->helper->wrap($content, $class, $tag);
+        $page = new \View\Livetex\StatisticsPage;
+        return $page->wr($content, $class, $tag);
     }
 
     //////////////////////////////////////////////////////

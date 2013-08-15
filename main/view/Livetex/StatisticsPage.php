@@ -16,12 +16,6 @@ class StatisticsPage extends \View\DefaultLayout {
     }
 
 
-    // HTML wrapper
-    public function wr(&$content, $class = null, $tag = 'div') {
-        return $this->helper->wrap($content, $class, $tag);
-    }
-
-
     public function slotContent() {
         $html_out = '';
         $content = $this->params['content'];
@@ -30,6 +24,10 @@ class StatisticsPage extends \View\DefaultLayout {
 
 
         foreach ($content as $key => $value) {
+            /**
+             * Используем цикл, т.к. может быть несколько сущностей понадобиться выводить
+             */
+
             // Делегируем всё построение контента функциям, названия которых и параметры запуска которых храняться в $content
             /*$funcname = 'slot_'.$key."_Html";
             if ( method_exists($this, $funcname) ) {
@@ -39,13 +37,13 @@ class StatisticsPage extends \View\DefaultLayout {
             // Делегируем всё построение контента классам (типа фабрика),
             $htmlClass = '\View\Livetex\Html' . $key . 'Content';
             if (!class_exists($htmlClass)) {
-                $htmlClass = '\View\Livetex\HtmlBasicContent';
+                $htmlClass = '\View\Livetex\HtmlBasicContent'; // от HtmlBasicContent наследуются др. классы
             }
 
             $big_head = isset($heads[$key]['big_head']) ? $heads[$key]['big_head'] : '';
             $small_head = isset($heads[$key]['small_head']) ? $heads[$key]['small_head'] : '';
             $htmlView = new $htmlClass($big_head, $small_head, $this->params);
-            $out = $htmlView->content($value);
+            $out = $htmlView->content($value); // метод content() есть в любом классе
 
             $html_out .= $this->render('partner-counter/livetex/stat_content', $this->params + ['htmlcontent' => $out]);
 
@@ -107,6 +105,42 @@ class StatisticsPage extends \View\DefaultLayout {
         return false;
     }
     */
+
+
+
+    /**
+     * // HTML wrapper
+     * @param $content
+     * @param string $tag
+     * @param null $class
+     * @return string
+     */
+    public function wr( &$content, $attr, $tag = 'div') {
+        if ( !empty($tag) ) {
+            $res = '<'.$tag;
+
+            if ($attr) {
+                if (is_string($attr)){
+                    if ( !empty($attr) ) $res .= ' class="'.$attr.'"';
+                }else
+                    if ( is_array($attr) ) {
+                        foreach($attr as $key => $val):
+                            if ( !empty($key) and !empty($val) ):
+                                $res .= ' '.$key = $val;
+                            endif;
+                        endforeach;
+                    }
+            }
+
+            $res .= '>';
+            $res .= (string) $content;
+            $res .= '</'.$tag.'>';
+            return $res;
+        }
+        return $content;
+    }
+
+
 
 
     /*

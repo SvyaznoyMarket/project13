@@ -79,17 +79,30 @@ class StatisticsAction {
         }
 
 
-        if (empty($this->date_begin)) $this->date_begin = (string) date($this->date_format, strtotime('-1 day'));
-        if (empty($this->date_end)) $this->date_end = (string) date($this->date_format,strtotime('today UTC'));
+        // Если пустые дата начала и дата конца, то используем дату дня (она нагляднее для пользователя)
+        if ( empty($this->date_begin) && empty($this->date_end) ) {
+            $this->one_day_date = (string) date($this->date_format, strtotime('today UTC'));
+        }
 
-        $this->one_day_date = $request->get('one_day_date');
+        // Если в запросе есть дата дня. то используем её
+        $request_one_day_date = $request->get('one_day_date');
+        if (!empty($request_one_day_date)) {
+            $this->one_day_date = $request_one_day_date;
+        }
 
-        if ( $this->one_day_date ) {
+        // Если дата дня всё же задана, то установим дату начала и конца исходя из неё
+        if ( !empty(  $this->one_day_date  ) ) {
             $this->setDatesFromOneDayDate();
         }
 
 
+        // Не оставим даты пустыми!
+        if (empty($this->date_begin)) $this->date_begin = (string) date($this->date_format, strtotime('-1 day'));
+        if (empty($this->date_end)) $this->date_end = (string) date($this->date_format, strtotime('today UTC'));
 
+
+
+        // Назавания и ссылка для сайдбара
         $this->addMenu('Общая статистика', '/livetex-statistics');
         $this->addMenu('Статистика чатов', '/livetex-statistics?actions=Chat');
         $this->addMenu('Статистика операторов', '/livetex-statistics?actions=AllOperators');

@@ -270,7 +270,11 @@ class HtmlChatHistoryContent extends HtmlBasicContent {
 
 
             $opers .= '<td>';
-            $opers .= $this->operator_link($id, $this->operator_info($id, 'isonline') ) ? 'Онлайн' : 'Офлайн' ;
+            if ( $id != self::ID4ALL_OPS ) {
+                $opers .= $this->operator_link($id, $this->operator_info($id, 'isonline') ) ? 'Онлайн' : 'Офлайн' ;
+            }else{
+                $opers .= self::EMPTY_TD; // не может существовать "статус" для всех операторов.
+            }
             $opers .= '</td>';
 
             $opers .= '<td>';

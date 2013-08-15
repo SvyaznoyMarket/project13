@@ -24,7 +24,7 @@ class HtmlAllOperatorsContent extends HtmlBasicContent {
 
         $op_name = $op->firstname . ' ' . $op->lastname;
         //$a_link = '<a href="'.$this->makeUrl(['operId' => $op->id, 'actions' => 'oneOperator' ]).'">' . $op_name . '</a>';
-        $a_link = $op_name . '  <a href="'.$this->makeUrl(['operId' => $op->id, 'actions' => 'oneOperator' ]).'">' . $this->more_word . '</a>';
+        $a_link = $op_name . '  <a href="'.$this->makeUrl(['operId' => $op->id, 'actions' => 'OneOperator' ]).'">' . $this->more_word . '</a>';
         $out .= '<div class="lts_name name_oper"><span class="param_name">Имя: </span>'.$a_link.'</div>';
 
         $out .= '<div class="id_oper"><span class="param_name">ID: </span>' . $op->id . '</div>';
