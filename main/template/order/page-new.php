@@ -94,7 +94,7 @@ foreach (array_reverse($productsById) as $product) {
 
 	<!-- Delivery boxes -->
 	<div data-bind="foreach: { data: deliveryBoxes, as: 'box' }">
-		<div class="bBuyingLineWrap">
+		<div class="bBuyingLineWrap clearfix">
 			<div class="bBuyingLine">
 				<div class="bBuyingLine__eLeft">
 
@@ -102,27 +102,8 @@ foreach (array_reverse($productsById) as $product) {
 						<span data-bind="text: box.deliveryName+' '+box.choosenDate().name"></span><span data-bind="visible: !hasPointDelivery">*</span>
 					</h2>
 
-					<div class="bSelectWrap mFastInpSmall">
-						<span class="bSelectWrap_eText" data-bind="text: 'c '+ box.choosenInterval().start + ' до ' + box.choosenInterval().end"></span>
-						<select class="bSelect" data-bind="options: box.choosenDate().intervals,
-															value: box.choosenInterval,
-															optionsText: function(item) {
-																return 'c '+ item.start + ' до ' + item.end;
-															}">
-						</select>
-					</div>
-
-					<div class="bDeliveryPrice" data-bind="visible: !hasPointDelivery">
-						<span class="bDeliveryPrice__eItem mTextColor">Стоимость доставки
-							<span data-bind="text: box.deliveryPrice === 0 ? 'Бесплатно' : box.deliveryPrice"></span>
-							<span class="rubl" data-bind="visible: box.deliveryPrice">p</span>
-						</span>
-
-						<span class="bDeliveryPrice__eItem mFootnote"><em class="bStar">*</em> Дату доставки уточнит специалист<br />Контакт-сENTER</span>
-					</div>
-
 					<!-- текущий выбранный магазин и кнопка сменить магазин -->
-					<p data-bind="visible: box.hasPointDelivery, text: box.choosenPoint().name"></p>
+					
 					<a class="bBigOrangeButton mSelectShop" href="#" data-bind="visible: box.hasPointDelivery,
 												text: 'Сменить магазин',
 												click: box.changePoint">
@@ -158,6 +139,20 @@ foreach (array_reverse($productsById) as $product) {
 					</div>
 					<!-- /Celendar -->
 
+					<div class="bDeliveryDate">
+						1 августа, четверг<em class="bStar">*</em>
+					</div>
+
+					<div class="bSelectWrap mFastInpSmall">
+						<span class="bSelectWrap_eText" data-bind="text: 'c '+ box.choosenInterval().start + ' до ' + box.choosenInterval().end"></span>
+						<select class="bSelect" data-bind="options: box.choosenDate().intervals,
+															value: box.choosenInterval,
+															optionsText: function(item) {
+																return 'c '+ item.start + ' до ' + item.end;
+															}">
+						</select>
+					</div>
+
 					<!-- Products -->
 					<!-- ko foreach: { data: products, as: 'product' } -->
 					<div class="bBuyingLine mProductsLine">
@@ -171,11 +166,14 @@ foreach (array_reverse($productsById) as $product) {
 
 								<div class="bItemsRow mItemInfo">
 									<a target="_blank" data-bind="text: product.name, attr: { href: product.productUrl }"></a>
-									<span class="bCountItem">(<span data-bind="text: product.quantity"></span> шт.)</span>
 								</div>
 
-								<div class="bItemsRow mItemRight">
-									<a data-bind="attr: { href: product.deleteUrl }, text: 'Удалить'"></a>
+								<div class="bItemsRow mCountItem">
+									<span data-bind="text: product.quantity"></span> шт.
+								</div>
+
+								<div class="bItemsRow mDelItem">
+									<a class="bDelItem" data-bind="attr: { href: product.deleteUrl }, text: 'удалить'"></a>
 								</div>
 
 								<div class="bItemsRow mItemRight"> <span data-bind="text: window.printPrice(product.price)"></span> <span class="rubl">p</span></div>
@@ -202,25 +200,127 @@ foreach (array_reverse($productsById) as $product) {
 			</div>
 			<!-- /Points popup -->
 
+			<div class="bFootnote">* Дату доставки уточнит специалист Контакт-сENTER</div>
+
 			<!-- Sum -->
-			<div class="bBuyingLineWrap__eSum">
-				Итого с доставкой:
-				<strong class="bSumPrice"><span data-bind="text: window.printPrice( box.fullPrice + box.deliveryPrice )"></span> <span class="rubl">p</span></strong>
-			</div>
+			<ul class="bSumOrderInfo">
+				<li class="bSumOrderInfo__eLine">
+					Доставка:&nbsp;&nbsp;
+					
+					<span class="bDelivery" data-bind="visible: !hasPointDelivery">
+						<span data-bind="text: box.deliveryPrice === 0 ? 'Бесплатно' : box.deliveryPrice"></span>
+						<span class="rubl" data-bind="visible: box.deliveryPrice">p</span>
+					</span>
+
+					<span class="bDelivery" data-bind="visible: box.hasPointDelivery, text: box.choosenPoint().name"></span>
+				</li>
+
+				<li class="bSumOrderInfo__eLine">
+					Итого с доставкой:&nbsp;&nbsp;
+
+					<span class="bDelivery">
+						<span data-bind="text: window.printPrice( box.fullPrice + box.deliveryPrice )"></span> 
+						<span class="rubl">p</span>
+					</span>
+				</li>
+			</ul>
+			<!-- /Sum -->
 		</div>
 	</div>
 	<!-- /Delivery boxes -->
+
+    <!-- Sale section -->
+    <div class="bBuyingLineWrap  bBuyingSale clearfix">
+	    <div class="bBuyingLine">
+	        <div class="bBuyingLine__eLeft">
+	        	<h2 class="bBuyingSteps__eTitle">
+					Скидки
+				</h2>
+
+	            Если у вас есть карта<br/>
+				Enter SPA или купон,<br/>
+				укажите номер и получите<br/>
+				скидку.
+	        </div>
+
+	        <div class="bBuyingLine__eRight">
+	            <div class="bSaleData">
+
+	                <div class="bTitle">Вид скидки:</div>
+
+	                <ul class="bSaleList bInputList clearfix">
+	                    <li class="bSaleList__eItem">
+	                        <input class="jsCustomRadio bCustomInput mCustomRadioBig" type="radio" id="svz_club" name="add_sale" hidden />
+	                        <label class="bCustomLabel mCustomLabelRadioBig" for="svz_club">Купон</label>
+	                    </li>
+
+	                    <li class="bSaleList__eItem mEnterSpa">
+	                        <input class="jsCustomRadio bCustomInput mCustomRadioBig" type="radio" id="black_card" name="add_sale" hidden />
+	                        <label class="bCustomLabel mCustomLabelRadioBig" for="black_card">Enter Spa</label>
+	                    </li>
+	                </ul>
+
+	                <input class="bBuyingLine__eText mSaleInput" type="text" id="" />
+
+	                <button class="bBigOrangeButton mSaleBtn">Применить</button>
+
+	                <p class="bSaleError"> Невозможно применить скидку:<br/>Слишком низкая общая стоимость товаров в корзине </p>
+	            </div>
+
+	            <div class="bSaleCheck"></div>
+
+	             <!-- Products -->
+				<div class="bBuyingLine mProductsLine">
+					<div class="bOrderItems">
+						<div class="bItemsRow mItemImg"></div>
+
+						<div class="bItemsRow mItemInfo">
+							Для заказа действует скидка «КЦ 300»
+						</div>
+
+						<div class="bItemsRow mCountItem"></div>
+
+						<div class="bItemsRow mDelItem">
+							<a class="bDelItem" href="">удалить</a>
+						</div>
+
+						<div class="bItemsRow mItemRight"> -300 <span class="rubl">p</span></div>
+					</div>
+				</div>
+				<!-- /Products -->
+	        </div>
+
+	        <!-- Sum -->
+			<ul class="bSumOrderInfo">
+				<li class="bSumOrderInfo__eLine">
+					<span class="bDelivery  mOldPrice">
+						<span data-bind="">2 345</span> 
+						<span class="rubl">p</span>
+					</span>
+				</li>
+
+				<li class="bSumOrderInfo__eLine">
+					Сумма заказа с учетом скидок:&nbsp;&nbsp;
+
+					<span class="bDelivery">
+						<span data-bind="">2 345</span> 
+						<span class="rubl">p</span>
+					</span>
+				</li>
+			</ul>
+			<!-- /Sum -->
+	    </div>
+	</div>
+	<!-- /Sale section -->
 
 	<div class="bBuyingLine mSumm clearfix" data-bind="visible: deliveryBoxes().length">
 		<a href="<?= $page->url('cart') ?>" class="bBackCart mOrdeRead">&lt; Редактировать товары</a>
 
 		<div class="bTotalSumm">
 			Сумма всех заказов:
-			<span class="bTotalSumm__ePrice" data-bind="text: window.printPrice( totalSum() )"></span><span class="rubl">p</span>
+			<span class="bTotalSumm__ePrice" data-bind="text: window.printPrice( totalSum() )"></span> <span class="rubl">p</span>
 		</div>
 	</div>
-
-
 
 	<!-- Форма заказа -->
 	<div class="bBuyingInfo" data-bind="visible: deliveryBoxes().length">

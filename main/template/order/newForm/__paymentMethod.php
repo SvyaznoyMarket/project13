@@ -57,6 +57,7 @@ return function (
                     value="<?= $paymentMethod->getId() ?>"
                     hidden
                 />
+
                 <label for="<?= $elementId ?>" class="bCustomLabel mCustomLabelRadioBig"><?= $paymentMethod->getName() ?></label>
 
                 <? if ($paymentMethod->getDescription()): ?>

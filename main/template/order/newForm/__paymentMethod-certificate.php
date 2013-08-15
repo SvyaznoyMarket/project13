@@ -7,11 +7,9 @@ return function (
 
 ?>
 
-<div class="orderFinal__certificate bPayMethodAction innerType">
-    <div id="sertificateFields">
-        <input name="order[cardnumber]" type="text" class="bBuyingLine__eText cardNumber" placeholder="Номер" />
-        <input name="order[cardpin]" type="text" class="bBuyingLine__eText cardPin" placeholder="ПИН" />
-    </div>
+<div class="bPayMethodAction">
+    <input name="order[cardnumber]" type="text" class="bBuyingLine__eText mCardNumber" placeholder="Номер" />
+    <input name="order[cardpin]" type="text" class="bBuyingLine__eText mCardPin" placeholder="ПИН" />
 </div>
 
 <? };
