@@ -21,7 +21,10 @@ class Action {
         $searchQuery = trim(preg_replace('/[^\wА-Яа-я-]+/u', ' ', $searchQuery));
 
         if (empty($searchQuery)) {
-            throw new \Exception\NotFoundException(sprintf('Пустая фраза поиска.', $searchQuery));
+            $page = new \View\Search\EmptyPage();
+            $page->setParam('searchQuery', $searchQuery);
+            return new \Http\Response($page->show());
+            //throw new \Exception\NotFoundException(sprintf('Пустая фраза поиска.', $searchQuery));
         }
         $pageNum = (int)$request->get('page', 1);
         if ($pageNum < 1) {
