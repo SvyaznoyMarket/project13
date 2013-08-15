@@ -364,7 +364,7 @@ foreach (array_reverse($productsById) as $product) {
     'order[recipient_first_name]'   => $form->getFirstName(),
     'order[recipient_last_name]'    => $form->getLastName(),
     'order[recipient_email]'        => $form->getEmail(),
-    'order[recipient_phonenumbers]' => $form->getMobilePhone(),
+    'order[recipient_phonenumbers]' => substr($form->getMobilePhone(), -10),
     'order[subway_id]'              => $form->getSubwayId(),
     'order[address_street]'         => $form->getAddressStreet(),
     'order[address_number]'         => $form->getAddressNumber(),
