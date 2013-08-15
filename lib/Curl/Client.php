@@ -211,10 +211,10 @@ class Client {
                         try {
                             $decodedResponse = $this->decode($content);
                         } catch (\Exception $e) {
-                            $this->logger->error(sprintf('Json error for %s', (string)(isset($info['url']) ? $info['url'] : null)), ['curl']);
+                            $this->logger->error(['action' => __METHOD__, 'curl.info' => $info, 'response.header' => $header], ['curl']);
                             throw $e;
                         }
-                        $this->logger->debug('Curl response data: ' . $this->encode($decodedResponse), ['curl']);
+                        //$this->logger->debug('Curl response data: ' . $this->encode($decodedResponse), ['curl']);
                         $callback = $this->successCallbacks[(string)$handler];
                         if (is_callable($callback)) {
                             $callback($decodedResponse, (int)$handler);
@@ -393,7 +393,6 @@ class Client {
                     break;
             }
             $e = new \RuntimeException(sprintf('Json error: "%s", Response: "%s"', $error, $response), $code);
-            //\App::exception()->add($e); похоже, что здесь не нужно добавлять исключение
             throw $e;
         }
 
