@@ -53,7 +53,7 @@ $is_showed = [];
             <?
         }
 
-        if ( $countProperties<8 and !in_array('groupedProperty', $is_showed) ) {
+        if ( $countProperties < 8 and !in_array('groupedProperty', $is_showed) ) {
             // выводим все характеристики в первом экране, сразу под отзывами.
             $helper->render('product/__groupedProperty', ['product' => $product]);
             $is_showed[] = 'groupedProperty';
