@@ -292,7 +292,7 @@
 	var defaultValueToField = function defaultValueToField( fields ) {
 		var fieldNode = null;
 
-		console.info('defaultValueToField')
+		console.info('defaultValueToField');
 		for ( var field in fields ) {
 			console.log('поле '+field);
 			if ( fields[field] ) {

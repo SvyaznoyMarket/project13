@@ -11362,10 +11362,10 @@
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     border-radius: 5px;
-    width: 460px;
+    width: 467px;
     height: 70px;
-    margin: 0px 0px 10px;
-    padding: 5px;
+    margin: 0
+      padding: 5px;
     border: 1px solid #9e9e9e;
     outline: none;
   }
@@ -11611,17 +11611,19 @@
   }
   .bInputAddress .bBuyingLine__eText.mInputFloor {
     text-indent: 37px;
+    width: 134px;
   }
   .bInputAddress .bBuyingLine__eText.mInputApartament {
     text-indent: 62px;
   }
-  .bSClub {
-    background: url("/css/skin/img/svyaznoi_club.png") 280px 0px no-repeat;
+  .bSelectedCity {
+    padding: 5px 0 0;
   }
-  .bSClub__eText {
-    margin: 15px 0 0;
+  .mSClub {
+    background: url("/css/skin/img/svyaznoi_club.png") 264px 0px no-repeat;
   }
-  .bSClub .mInputShort {
+  .mSClub .bBuyingLine__eText {
+    margin: 0 0 15px;
     width: 200px;
     padding-left: 10px;
   }

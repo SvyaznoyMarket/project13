@@ -315,12 +315,12 @@
 	 * ===  END ORDER MODEL ===
 	 */
 
-	 	/**
-	 	 * Показ сообщений об ошибках
-	 	 * 
-	 	 * @param	{String}	msg		Сообщение об ошибке
-	 	 * @return	{Object}     		Deferred объект
-	 	 */
+		/**
+		 * Показ сообщений об ошибках
+		 * 
+		 * @param	{String}	msg		Сообщение об ошибке
+		 * @return	{Object}			Deferred объект
+		 */
 	var showError = function showError( msg ) {
 			var content = '<div class="popupbox width290">' +
 					'<div class="font18 pb18"> '+msg+'</div>'+
@@ -376,7 +376,6 @@
 			// Нет необходимого количества товара
 			708: function( product ) {
 				var msg = 'Вы заказали товар '+product.name+' в количестве '+product.quantity+' шт. <br/ >'+product.error.message,
-					res = null,
 
 					productErrorIsResolve = $.Deferred();
 				// end of vars
@@ -401,7 +400,6 @@
 		 * @param	{Number}	code	Код ошибки
 		 */
 		allErrorHandler = function allErrorHandler( res ) {
-			console.log(res)
 			var product = null,
 
 				productsWithError = [];

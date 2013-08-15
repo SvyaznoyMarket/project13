@@ -63,7 +63,7 @@ foreach (array_reverse($productsById) as $product) {
 
 
 <!-- loader -->
-<div data-bind="css: { mLoader: !prepareData() }"></div>
+<div class="mLoader" data-bind="visible: !prepareData()"></div>
 <!-- /loader -->
 
 <!-- Общая обертка оформления заказа -->
@@ -230,7 +230,7 @@ foreach (array_reverse($productsById) as $product) {
 	<!-- /Delivery boxes -->
 
     <!-- Sale section -->
-    <div class="bBuyingLineWrap  bBuyingSale clearfix">
+    <div class="bBuyingLineWrap  bBuyingSale clearfix" data-bind="visible: deliveryBoxes().length">
 	    <div class="bBuyingLine">
 	        <div class="bBuyingLine__eLeft">
 	        	<h2 class="bBuyingSteps__eTitle">
@@ -407,14 +407,14 @@ foreach (array_reverse($productsById) as $product) {
 				<div class="bBuyingLine__eRight">
 					<textarea id="order_extra" class="bBuyingLine__eTextarea" name="order[extra]" cols="30" rows="4"></textarea>
 				</div>
-			</div>
 
-			<div class='bBuyingLine mOrderFields<? if ($isCorporative): ?> hidden<? endif ?>'>
-				<div class="bBuyingLine__eLeft">Если у вас есть карта &laquo;Связной-Клуб&raquo;, вы можете указать ее номер</div>
-					<div class="bBuyingLine__eRight bSClub">
-					<input type="text" id="order_sclub_card_number" class="bBuyingLine__eText mInputShort mb15" name="order[sclub_card_number]" />
-					<div class="mILong">Чтобы получить 1% от суммы заказа<br/>плюсами на карту, введите ее номер,<br/>расположенный на обороте под штрихкодом</div>
-				</div>
+                <div class="<? if ($isCorporative): ?> hidden<? endif ?>">
+                    <div class="bBuyingLine__eLeft">Если у вас есть карта &laquo;Связной-Клуб&raquo;, вы можете указать ее номер</div>
+                    <div class="bBuyingLine__eRight mSClub">
+                        <input type="text" class="bBuyingLine__eText" name="" />
+                        <div class="bText">Чтобы получить 1% от суммы заказа<br/>плюсами на карту, введите ее номер,<br/>расположенный на обороте под штрихкодом</div>
+                    </div>
+                </div>
 			</div>
 
 			<!-- Methods of payment -->
