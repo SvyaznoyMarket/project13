@@ -105,7 +105,7 @@ class CreateAction {
                     'address_floor'          => $form->getAddressFloor(),
                     'subway_id'              => $form->getSubwayId(),
                 ];
-                $cookies[] = new \Http\Cookie(self::ORDER_COOKIE_NAME, strtr(base64_encode(serialize($cookieValue)), '+/', '-_'), strtotime('+1 year' ));
+                $cookies[] = new \Http\Cookie(\App::config()->order['cookieName'] ?: 'last_order', strtr(base64_encode(serialize($cookieValue)), '+/', '-_'), strtotime('+1 year' ));
 
                 // удаление флага "Беру в кредит"
                 $cookies[] = new \Http\Cookie('credit_on', '', time() - 3600);
@@ -191,12 +191,6 @@ class CreateAction {
             throw new \Exception('Невалидная форма заказа %s');
         }
 
-        /** @var $deliveryTypesById \Model\DeliveryType\Entity[] */
-        $deliveryTypesById = [];
-        foreach (\RepositoryManager::deliveryType()->getCollection() as $deliveryType) {
-            $deliveryTypesById[$deliveryType->getId()] = $deliveryType;
-        }
-
         /** @var $deliveryTypesById \Model\Shop\Entity[] */
         $shopsById = [];
         foreach (\RepositoryManager::shop()->getCollectionByRegion($user->getRegion()) as $shop) {
@@ -211,9 +205,9 @@ class CreateAction {
         $bMeta = false;
         foreach ($form->getPart() as $orderPart) {
             /** @var $deliveryType \Model\DeliveryType\Entity|null */
-            $deliveryType = isset($deliveryTypesById[$orderPart->getDeliveryTypeId()]) ? $deliveryTypesById[$orderPart->getDeliveryTypeId()] : null;
+            $deliveryType = \RepositoryManager::deliveryType()->getEntityByMethodToken($orderPart->getDeliveryMethodToken());
             if (!$deliveryType) {
-                \App::logger()->error(sprintf('Неизвестный тип доставки {#%s @%s}', json_encode($orderPart->getDeliveryTypeId(), $orderPart->getDeliveryTypeToken(), JSON_UNESCAPED_UNICODE)), ['order']);
+                \App::logger()->error(['action' => __METHOD__, 'message' => sprintf('Неизвестный метод доставки %s', $orderPart->getDeliveryMethodToken())], ['order']);
                 continue;
             }
 
@@ -237,8 +231,8 @@ class CreateAction {
                 'extra'                     => $form->getComment(),
                 'svyaznoy_club_card_number' => $form->getSclubCardnumber(),
                 'delivery_type_id'          => $deliveryType->getId(),
-                'delivery_period'           => !empty($deliveryItem['interval']) ? explode(',', $deliveryItem['interval']) : null,
-                'delivery_date'             => !empty($deliveryItem['date']) ? $deliveryItem['date'] : null,
+                'delivery_period'           => $orderPart->getInterval(),
+                'delivery_date'             => $orderPart->getDate() instanceof \DateTime ? $orderPart->getDate()->format('Y-m-d') : null,
                 'ip'                        => $request->getClientIp(),
                 'product'                   => [],
                 'service'                   => [],
@@ -254,14 +248,15 @@ class CreateAction {
 
             // данные для самовывоза [self, now]
             if (in_array($deliveryType->getToken(), [\Model\DeliveryType\Entity::TYPE_SELF, \Model\DeliveryType\Entity::TYPE_NOW])) {
-                if ($orderPart->getShopId() && array_key_exists($orderPart->getShopId(), $shopsById)) {
-                    $orderData['shop_id'] = $orderPart->getShopId();
+                if ($orderPart->getPointId() && array_key_exists($orderPart->getPointId(), $shopsById)) {
+                    $orderData['shop_id'] = $orderPart->getPointId();
                     $orderData['subway_id'] = null;
                 } else {
-                    \App::logger()->error(sprintf('Неизвестный магазин %s', $orderPart->getShopId()), ['order']);
+                    \App::logger()->error(sprintf('Неизвестный магазин %s', $orderPart->getPointId()), ['order']);
                 }
-
             }
+
+            // TODO: pickpoint
 
             // подарочный сертификат
             if (1 == count($form->getPart()) && $form->getPaymentMethodId() == \Model\PaymentMethod\Entity::CERTIFICATE_ID) {
