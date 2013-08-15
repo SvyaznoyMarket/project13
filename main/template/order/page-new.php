@@ -409,7 +409,7 @@ foreach (array_reverse($productsById) as $product) {
 				</div>
 			</div>
 
-			<div class='bBuyingLine mOrderFields'>
+			<div class='bBuyingLine mOrderFields<? if ($isCorporative): ?> hidden<? endif ?>'>
 				<div class="bBuyingLine__eLeft">Если у вас есть карта &laquo;Связной-Клуб&raquo;, вы можете указать ее номер</div>
 					<div class="bBuyingLine__eRight bSClub">
 					<input type="text" id="order_sclub_card_number" class="bBuyingLine__eText mInputShort mb15" name="order[sclub_card_number]" />
