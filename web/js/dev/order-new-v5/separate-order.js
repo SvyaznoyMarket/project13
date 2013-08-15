@@ -436,7 +436,7 @@
 
 			errorCatcher(productsWithError.length - 1, function() {
 				console.warn('1 этап закончен');
-				window.location.reload();
+				window.location.href(res.error.redirect);
 			});
 		},
 
