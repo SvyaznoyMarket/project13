@@ -230,7 +230,7 @@ foreach (array_reverse($productsById) as $product) {
 	<!-- /Delivery boxes -->
 
     <!-- Sale section -->
-    <div class="bBuyingLineWrap  bBuyingSale clearfix">
+    <div class="bBuyingLineWrap  bBuyingSale clearfix" data-bind="visible: deliveryBoxes().length">
 	    <div class="bBuyingLine">
 	        <div class="bBuyingLine__eLeft">
 	        	<h2 class="bBuyingSteps__eTitle">
