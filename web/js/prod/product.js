@@ -403,7 +403,7 @@
 				if ( !$('#3dImgContainer').length ) {
 					var AnimFramePlayer = new DAnimFramePlayer(document.getElementById('3dModelImg'), host);
 					AnimFramePlayer.DoLoadModel(data);
-					$('.bPhotoActionOtherAction__eGrad360.3dimg').bind('click', furniture3dPopupShow);
+					$('.mGrad360.3dimg').bind('click', furniture3dPopupShow);
 				}
 			}
 			catch ( err ) {
