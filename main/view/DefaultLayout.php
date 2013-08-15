@@ -133,8 +133,6 @@ class DefaultLayout extends Layout {
 
         $return .= $this->render('_headJavascript');
 
-        $return .= $this->render( 'partner-counter/_criteo',  ['criteoData' =>  (new \View\Partners\Criteo($this->params))->data()] );
-
         return $return;
     }
 
@@ -351,6 +349,10 @@ class DefaultLayout extends Layout {
         }*/
 
         return isset($return) ? $return : false;
+    }
+
+    public function slotCriteo() {
+        return $this->render( 'partner-counter/_criteo',  ['criteoData' =>  (new \View\Partners\Criteo($this->params))->data()] );
     }
 
 
