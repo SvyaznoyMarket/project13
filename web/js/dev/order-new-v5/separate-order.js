@@ -258,13 +258,18 @@
 			// end of vars
 
 			var sertificateResponceHandler = function sertificateResponceHandler( res ) {
-				console.log( res );
+				if ( !res.success ) {
+					global.OrderModel.sertificateError(res.error.message);
+
+					return;
+				}
 			};
 
 			global.OrderModel.sertificateError('');
 
 			if ( url === undefined ) {
 				global.OrderModel.sertificateError('Не выбран тип сертификата');
+
 				return;
 			}
 
