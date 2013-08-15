@@ -838,7 +838,10 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 				tmpPart = {
 					deliveryMethod_token: currentDeliveryBox.state,
 					date: currentDeliveryBox.choosenDate().value,
-					interval: 'с '+currentDeliveryBox.choosenInterval().start+' до '+currentDeliveryBox.choosenInterval().end,
+					interval: [
+						currentDeliveryBox.choosenInterval().start,
+						currentDeliveryBox.choosenInterval().end
+					],
 					point_id: currentDeliveryBox.choosenPoint().id,
 					products : []
 				};
@@ -972,6 +975,34 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 		subwayField.autocomplete(subwayAutocompleteConfig);
 		subwayField.bind('change', subwayChange);
 	}
+
+
+	/**
+	 * Подстановка значений в поля
+	 */
+	var defaultValueToField = function defaultValueToField( fields ) {
+		var fieldNode = null;
+
+		console.info('defaultValueToField')
+		for ( var field in fields ) {
+			console.log('поле '+field);
+			if ( fields[field] ) {
+				console.log('для поля есть значение '+fields[field]);
+				fieldNode = $('input[name="'+field+'"]');
+
+				// поле текстовое	
+				if ( fieldNode.attr('type') === 'text' ) {
+					fieldNode.val( fields[field] );
+				}
+
+				// радио кнопка
+				if ( fieldNode.attr('type') === 'radio' ) {
+					fieldNode.filter('[value="'+fields[field]+'"]').attr('checked', 'checked');
+				}
+			}
+		}
+	};
+	defaultValueToField($('#jsOrderForm').data('value'));
 
 	$('body').bind('orderdeliverychange', orderDeliveryChangeHandler);
 	orderCompleteBtn.bind('click', orderCompleteBtnHandler);

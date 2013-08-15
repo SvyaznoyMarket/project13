@@ -11123,6 +11123,13 @@
 /*---END---СТИЛИ ВЕРХНЕГО БЛОКА СОРТИРОВКИ В КАТАЛОГЕ---*/
 /*------СТИЛИ ОФОРМЛЕНИЕ ЗАКАЗА------*/
 @media all {
+  .bErrorText {
+    height: 0;
+    font-size: 11px;
+    color: #ec434f;
+    padding: 0px 0 0 10px;
+    line-height: 16px;
+  }
   .bBuyingHead {
     margin-bottom: 20px;
     padding: 25px 0px 10px;
@@ -11188,13 +11195,22 @@
     padding: 0px 15px;
     border: 1px solid #ddd;
   }
-  .bBuyingLineWrap__eSum {
-    margin: 0px 9px 10px 0px;
-    text-align: right;
+  .bFootnote {
+    float: left;
+    width: 325px;
+    margin: 29px 0 0 -8px;
   }
-  .bBuyingLineWrap__eSum .bSumPrice {
-    font-size: 18px;
-    font-weight: normal;
+  .bSumOrderInfo {
+    float: right;
+    width: 520px;
+    text-align: right;
+    margin: 0 10px 0 0;
+  }
+  .bSumOrderInfo__eLine {
+    margin: 0 0 10px;
+  }
+  .bSumOrderInfo .bDelivery {
+    font-size: 14px;
   }
   .bBuyingLine {
     margin: 20px 0px;
@@ -11237,6 +11253,14 @@
     padding: 6px 30px;
     font-size: 16px;
   }
+  .bBuyingLine .bDeliveryDate {
+    display: inline-block;
+    width: 160px;
+    font-size: 14px;
+    line-height: 30px;
+    *display: inline;
+    zoom: 1;
+  }
   .bBuyingLine .bDeliveryPrice__eItem {
     display: block;
     margin: 20px 0 0;
@@ -11261,6 +11285,7 @@
     font-weight: bold;
     line-height: 25px;
     *display: inline;
+    zoom: 1;
   }
   .bBuyingLine .bOrderItems {
     margin: 15px 0 5px;
@@ -11280,14 +11305,24 @@
   }
   .bBuyingLine .bOrderItems .mItemRight {
     text-align: right;
+    font-size: 14px;
+  }
+  .bBuyingLine .bOrderItems .mCountItem {
+    color: #6e6e6e;
+    width: 45px;
   }
   .bBuyingLine .bOrderItems .mItemInfo {
-    width: 333px;
+    width: 300px;
     font-size: 12px;
   }
-  .bBuyingLine .bOrderItems .mItemInfo .bCountItem {
-    color: #6e6e6e;
-    display: block;
+  .bBuyingLine .bOrderItems .mDelItem {
+    width: 70px;
+  }
+  .bBuyingLine .bOrderItems .mDelItem .bDelItem {
+    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAHCAYAAAA1WQxeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyRpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoTWFjaW50b3NoKSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDo0MzZDOEFDM0ZDRTgxMUUyOTI4QjkyMzRGMEUwRjlGQyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDo0MzZDOEFDNEZDRTgxMUUyOTI4QjkyMzRGMEUwRjlGQyI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOjQzNkM4QUMxRkNFODExRTI5MjhCOTIzNEYwRTBGOUZDIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjQzNkM4QUMyRkNFODExRTI5MjhCOTIzNEYwRTBGOUZDIi8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+vfPfQwAAADxJREFUeNpiYGBgKAfiu0Cs9P//fwYYBoLdQDwTmQNXhMxH1wESPIOiGM3Y/1DsAhcjygS8biDkC4AAAwBvn1RGa7r2HAAAAABJRU5ErkJggg==);
+    background-repeat: no-repeat;
+    background-position: 0 5px;
+    padding-left: 13px;
   }
   .bBuyingLine .bFootenote {
     font-size: 12px;
@@ -11298,8 +11333,9 @@
     text-align: right;
     margin-right: 26px;
   }
-  .bBuyingLine .bTotalSumm__ePrice {
-    font-size: 18px;
+  .bBuyingLine .bTotalSumm__ePrice,
+  .bBuyingLine .bTotalSumm .rubl {
+    font-size: 14px;
   }
   .bBuyingLine__eText {
     -webkit-border-radius: 5px;
@@ -11431,6 +11467,12 @@
     vertical-align: top;
     line-height: 30px;
   }
+  .mPayMethods .mCardNumber {
+    width: 200px;
+  }
+  .mPayMethods .mCardPin {
+    width: 100px;
+  }
   .mPayMethods .bSelectWrap_eText {
     color: #616161;
   }
@@ -11443,7 +11485,7 @@
     position: relative;
     width: 446px;
     padding: 1px 0;
-    margin: 36px 0 0;
+    margin: 18px 0 8px;
     border: 1px solid #ddd;
     background: #f4f4f4;
   }
@@ -11586,14 +11628,25 @@
 }
 @media all {
   .bBuyingSale {
-    margin: 40px 0 0;
+    padding-bottom: 8px;
   }
-  .bBuyingSale .bBuyingLine__eLeft {
-    width: 335px;
-    padding-top: 30px;
+  .bBuyingSale .bSumOrderInfo__eLine {
+    margin: 0 0 2px;
   }
-  .bBuyingSale .bBuyingLine__eRight {
-    width: 590px;
+  .bBuyingSale .bDelivery {
+    font-size: 18px;
+  }
+  .bBuyingSale .mOldPrice {
+    color: #898989;
+    text-decoration: line-through;
+    font-size: 14px;
+  }
+  .bBuyingSale .mItemImg {
+    background: url("/css/bBuyingSteps/img/bgStatusSale.gif") no-repeat 0 0;
+    height: 20px;
+  }
+  .bBuyingSale .bSumOrderInfo {
+    margin-top: 15px;
   }
   .bSaleData {
     display: inline-block;
@@ -11603,18 +11656,17 @@
     zoom: 1;
   }
   .bSaleData .bTitle {
-    margin: 0 0 15px;
-    font-size: 11px;
+    margin: 0 0 10px;
   }
   .bSaleData .mSaleInput {
     display: inline-block;
-    width: 290px;
+    width: 265px;
     *display: inline;
     zoom: 1;
   }
   .bSaleData .mSaleBtn {
     display: inline-block;
-    width: 120px;
+    width: 95px;
     height: 33px;
     padding: 0;
     vertical-align: top;
@@ -11623,122 +11675,40 @@
     zoom: 1;
   }
   .bSaleList {
-    margin: 0 0 12px 4px;
+    margin: 0 0 12px 0;
   }
   .bSaleList__eItem {
     float: left;
     margin-right: 14px;
     vertical-align: top;
-  }
-  .bSaleList .mCustomLabelRadioBig {
-    padding-left: 15px;
-    line-height: 1;
-  }
-  .bSaleList .mCustomRadioBig + .bCustomLabel {
-    background-position: 0 -17px;
-  }
-  .bSaleList .mCustomRadioBig:checked + .bCustomLabel {
-    background-position: 0 4px;
-  }
-  .bSaleMassege {
-    margin: 15px 0 30px -85px;
-  }
-  .bSaleMassege__eImgSale {
-    display: inline-block;
-    width: 62px;
-    margin-right: 20px;
-    text-align: right;
-    vertical-align: middle;
-    *display: inline;
-    zoom: 1;
-  }
-  .bSaleMassege__eText {
-    display: inline-block;
-    width: 375px;
-    margin: 0 0 15px;
-    padding: 3px 0 0 45px;
-    vertical-align: top;
-    background: url("/css/bBuyingSteps/img/bgStatusSale.gif") no-repeat 0 0;
-    font-size: 14px;
-    line-height: 20px;
-    *display: inline;
-    zoom: 1;
-  }
-  .bSaleMassege__eText.mApply {
-    background-position: 0 0;
-  }
-  .bSaleMassege__eText.mCancel {
-    background-position: 0 -35px;
-  }
-  .bSaleMassege__eDel {
-    background: #e5e5e5;
-    background: -moz-linear-gradient(top, #ffffff 0%, #e3e3e3 100%);
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffffff), color-stop(100%, #e3e3e3));
-    background: -webkit-linear-gradient(top, #ffffff 0%, #e3e3e3 100%);
-    background: -o-linear-gradient(top, #ffffff 0%, #e3e3e3 100%);
-    background: -ms-linear-gradient(top, #ffffff 0%, #e3e3e3 100%);
-    background: linear-gradient(to bottom, #ffffff 0%, #e3e3e3 100%);
-    filter: progid:dximagetransform.microsoft.gradient(startColorstr='#ffffff', endColorstr='#e3e3e3', GradientType=0);
+    border: 1px solid #dddddd;
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     border-radius: 4px;
-    display: inline-block;
+    padding: 4px 5px 4px 8px;
+    width: 82px;
+    text-transform: uppercase;
+  }
+  .bSaleList .bCustomLabel {
+    font-family: "Enter";
+  }
+  .bSaleList .mEnterSpa {
+    background: #000;
+    width: 92px;
+  }
+  .bSaleList .mEnterSpa .bCustomLabel {
+    color: #fff;
+  }
+  .bSaleCheck {
+    background: url("/css/bBuyingSteps/img/bCheck.jpg") no-repeat 0 0;
+    width: 178px;
+    height: 95px;
     float: right;
-    padding: 7px 10px;
-    border: 1px solid #c9c9c9;
-    font-weight: bold;
-    *display: inline;
-    zoom: 1;
-  }
-  .bSaleMassege__eDel:hover {
-    background: #c5c5c5;
-    background: -moz-linear-gradient(top, #ffffff 0%, #c5c5c5 100%);
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffffff), color-stop(100%, #c5c5c5));
-    background: -webkit-linear-gradient(top, #ffffff 0%, #c5c5c5 100%);
-    background: -o-linear-gradient(top, #ffffff 0%, #c5c5c5 100%);
-    background: -ms-linear-gradient(top, #ffffff 0%, #c5c5c5 100%);
-    background: linear-gradient(to bottom, #ffffff 0%, #c5c5c5 100%);
-    filter: progid:dximagetransform.microsoft.gradient(startColorstr='#ffffff', endColorstr='#c5c5c5', GradientType=0);
-    text-decoration: none;
-  }
-  .bSalePrice {
     display: inline-block;
-    width: 128px;
-    margin: 20px 0 0 15px;
-    vertical-align: top;
-    font: normal 14px/16px "Enter type";
-    *display: inline;
-    zoom: 1;
-  }
-  .bSalePrice .bTitle {
-    margin: 0 0 10px;
-  }
-  .bSalePrice .bPromoCode {
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
-    border-radius: 3px;
-    margin: 0 0 15px;
-    padding: 5px 0;
-    text-align: center;
-    border: 1px solid #dddddd;
-    line-height: 20px;
-  }
-  .bSalePrice .bSale {
-    font-size: 21px;
-    font-weight: bold;
-  }
-  .bSalePrice .bSaleSum {
     margin: 20px 0 0;
   }
-  .bSalePrice .bSaleSum__eOld {
-    display: block;
-    margin: 12px 0 5px;
-    text-decoration: line-through;
-    color: #898989;
-    font-size: 18px;
-  }
-  .bSalePrice .bSaleSum__eNew {
-    font-size: 24px;
+  .bSaleError {
+    color: #ec434f;
   }
 }
 /*---END---СТИЛИ ОФОРМЛЕНИЕ ЗАКАЗА---*/
