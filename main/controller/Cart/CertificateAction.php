@@ -28,10 +28,12 @@ class CertificateAction {
 
             $cart->clearCertificates();
 
+            /*
             $data = $client->query('cart/check-card-f1', ['number' => $number]);
             if (true !== $data) {
                 throw new \Exception\ActionException('Неправильный номер карты');
             }
+            */
 
             $certificate = new \Model\Cart\Certificate\Entity();
             $certificate->setNumber($number);
@@ -80,7 +82,7 @@ class CertificateAction {
 
             $result = [
                 'success' => false,
-                'error'   => $e instanceof \Exception\ActionException ? $e->getMessage() : 'Неудалось активировать карту',
+                'error'   => $e instanceof \Exception\ActionException ? $e->getMessage() : 'Неудалось удалить карту',
             ];
             if (\App::config()->debug) {
                 $result['error'] = $e;

@@ -251,7 +251,7 @@ foreach (array_reverse($productsById) as $product) {
 	                <ul class="bSaleList bInputList clearfix">
 	                    <li class="bSaleList__eItem">
 	                        <input data-url="<?= $page->url('cart.coupon.apply') ?>" class="jsCustomRadio bCustomInput mCustomRadioBig" type="radio" id="svz_club" name="add_sale" hidden />
-	                        <label data-url="<?//= $page->url('cart.blackcard.apply') ?>" class="bCustomLabel mCustomLabelRadioBig" for="svz_club">Купон</label>
+	                        <label data-url="<?= $page->url('cart.blackcard.apply') ?>" class="bCustomLabel mCustomLabelRadioBig" for="svz_club">Купон</label>
 	                    </li>
 
 	                    <li class="bSaleList__eItem mEnterSpa">
