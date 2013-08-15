@@ -109,6 +109,7 @@ class DeliveryAction {
                 ],
                 'products'        => [],
                 'shops'           => [],
+                'discounts'       => [],
             ]);
 
             // костыль
@@ -214,6 +215,26 @@ class DeliveryAction {
                     'latitude'   => (float)$shopItem['coord_lat'],
                     'longitude'  => (float)$shopItem['coord_long'],
                     'products'   => isset($productIdsByShop[$shopId]) ? $productIdsByShop[$shopId] : [],
+                ];
+            }
+
+            // купоны
+            foreach ($cart->getCoupons() as $coupon) {
+                $responseData['discounts'][] = [
+                    'name'      => $coupon->getName(),
+                    'sum'       => $coupon->getDiscountSum(),
+                    'error'     => $coupon->getError() ? ['code' => $coupon->getError()->getCode(), 'message' => $coupon->getError()->getMessage()] : null,
+                    'deleteUrl' => $router->generate('cart.coupon.delete'),
+                ];
+            }
+
+            // черные карты
+            foreach ($cart->getBlackcards() as $blackcard) {
+                $responseData['discounts'][] = [
+                    'name'      => $blackcard->getName(),
+                    'sum'       => $blackcard->getDiscountSum(),
+                    'error'     => $blackcard->getError() ? ['code' => $coupon->getError()->getCode(), 'message' => $coupon->getError()->getMessage()] : null,
+                    'deleteUrl' => $router->generate('cart.blackcard.delete'),
                 ];
             }
 
