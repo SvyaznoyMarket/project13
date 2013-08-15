@@ -508,7 +508,6 @@ ko.bindingHandlers.calendarSlider = {
 		// end of vars
 
 		var selectBank = function selectBank() {
-			console.warn('select')
 			var chosenBankLink = $("option:selected", select).attr('data-link'),
 				chosenBankId = $("option:selected", select).val(),
 				chosenBankName = $("option:selected", select).html();
