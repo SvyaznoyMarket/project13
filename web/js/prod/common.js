@@ -2209,6 +2209,15 @@ $(document).ready(function(){
 // 	// }
 
 
+    $("#try-1").click(function () {
+        // не переходим на стр поиска, если поисковая фраза пустая
+        var search = $(this).parent().find('input.searchtext');
+        if (typeof(search) && !search.val()) {
+            return false;
+        }
+    });
+
+
 	if ( $('.searchtextClear').length ){
 		$('.searchtextClear').each(function() {
 			if ( !$(this).val().length ) {
