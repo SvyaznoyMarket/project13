@@ -148,6 +148,141 @@ window.ANALYTICS = {
         }
     },
 
+    flocktoryJS : function() {
+        (function () {
+            var s = document.createElement('script');
+            s.type = 'text/javascript';
+            s.async = true;
+            s.src = "//api.flocktory.com/1/hello.2.js";
+            var l = document.getElementsByTagName('script')[0];
+            l.parentNode.insertBefore(s, l);
+        })();
+
+
+        window.Flocktory = {
+            /**
+             * Структура методов объекта:
+             * popup_bind(elem)  связывает событие  subscribing_friend()  с элементом (elem)
+             * subscribing_friend()  проверяет емейл/телефон и вызывает  popup_open()
+             *
+             * flk - сокращение от flacktory
+             */
+
+            subscribing_friend : function( ) {
+                var flk_mail = $('.flocktory_email'); // Проверим эти элементы
+                if ( !flk_mail.length ) flk_mail = $('.subscribe-form__email');
+                if ( !flk_mail.length ) flk_mail = $('#recipientEmail');
+                flk_mail = flk_mail.val();
+
+                var flk_name = $('input.bFastInner__eInput').val(); // используем имя пользователя, если существует
+                if ( !flk_name.length && flk_mail.length ) flk_name = flk_mail;
+
+                if ( !flk_mail.length ) {
+                    // если нет емейла, глянем телефон и передадим его вместо мейла
+                    var flk_tlf = $('#phonemask').val().replace(' ','');
+                    //flk_mail = $('.flocktory_tlf').val() + '@email.tlf';
+                    if ( !flk_name.length ) flk_name = flk_tlf;
+                    flk_mail = flk_tlf + '@email.tlf'; // допишем суффикс к тлф, дабы получить фиктивный мейл и передать его
+                }
+
+                if ( flk_mail.search('@') !== -1 ) {
+                    if (!flk_name.length) flk_name = 'Покупатель';
+                    Flocktory.popup_open( flk_mail, flk_name );
+                }
+            },
+
+            popup_bind : function( jq_el ) { // передаётся элемент вида — $('.jquery_elem')
+                if ( jq_el && jq_el.length ) {
+                    // Если элемент существует, навесим событие вызовом flocktory по клику
+                    jq_el.bind('click', function () {
+                        Flocktory.subscribing_friend();
+                    });
+                }
+            },
+
+            popup_bind_default : function( ) {
+                // Свяжем действия со стандартными названиями кнопок
+                Flocktory.popup_bind( $('.run_flocktory_popup') );
+                Flocktory.popup_bind( $('.subscribe-form__btn') );
+            },
+
+            popup_open : function ( flk_mail, flk_name ) {
+                //flk_mail = 'hello@flocktory.com'; // tmp, for debug
+                flk_name = flk_name || flk_mail;
+                var date = new Date();
+                var date_str = date.getFullYear() + '' + date.getMonth() + '' + date.getDay() + '' + date.getHours() + '' + date.getMinutes() + '' + date.getSeconds() + '' + date.getMilliseconds() + '' + Math.floor(Math.random() * 1000000);
+                var _fl = window._flocktory = _flocktory || [];
+
+                return _fl.push({
+                    "order_id": date_str,
+                    "email": flk_mail,
+                    "name": flk_name,
+                    "price": 0,
+                    "domain": "registration.enter.ru",
+                    "items": [{
+                        "id": "подписка на рассылку",
+                        "title": "подписка на рассылку",
+                        "price":  0,
+                        "image": "",
+                        "count":  1
+                    }]
+                });
+            }
+
+        } // end of window.Flocktory object
+
+        Flocktory.popup_bind_default();
+
+    },
+
+    RetailRocketJS : function() {
+        window.rrPartnerId = "519c7f3c0d422d0fe0ee9775"; // var rrPartnerId — по ТЗ должна быть глобальной
+        /* и действительно, иначе не подгружается скрипт с api.retailrocket.ru */
+
+        window.RetailRocket = {
+
+            product: function (data) {
+                window.rcAsyncInit = function () {
+                    rcApi.view(data);
+                }
+            },
+
+            transaction: function (data) {
+                window.rcAsyncInit = function () {
+                    rrApi.order(data);
+                }
+            },
+
+            action: function (data) {
+                var rr_data = $('#RetailRocketJS').data('value');
+                if (rr_data && rr_data.routeName && rr_data.sendData) {
+                    if (rr_data.routeName == 'product') {
+                        RetailRocket.product(rr_data.sendData)
+                    } else if (rr_data.routeName == 'order.complete') {
+                        RetailRocket.transaction(rr_data.sendData)
+                    }
+                }
+            },
+
+            init: function () { // on load:
+                (function (d) {
+                    var ref = d.getElementsByTagName('script')[0];
+                    var apiJs, apiJsId = 'rrApi-jssdk';
+                    if (d.getElementById(apiJsId)) return;
+                    apiJs = d.createElement('script');
+                    apiJs.id = apiJsId;
+                    apiJs.async = true;
+                    apiJs.src = "http://api.retailrocket.ru/Content/JavaScript/api.js";
+                    ref.parentNode.insertBefore(apiJs, ref);
+                }(document));
+            }
+
+        }// end of window.RetailRocket object
+
+        RetailRocket.init();
+        RetailRocket.action();
+    },
+
     marketgidProd : function() {
         var MGDate = new Date();
         document.write('<iframe src ="http://'

@@ -1,17 +1,43 @@
-(function() {
-	startTime = new Date().getTime();
+(function ( global ) {
+	if ( document.body.getAttribute('data-debug') == 'true') {
+		return false;
+	}
+
+   var original = global.console;
+   var console  = global.console = {};
+   
+   // список методов
+   var methods = ['assert', 'count', 'debug', 'dir', 'dirxml', 'error', 'group', 'groupCollapsed', 'groupEnd', 'info', 'log', 'markTimeline', 'profile', 'profileEnd', 'table', 'time', 'timeEnd', 'trace', 'warn'];
+   
+   // обход все элементов массива в обратном порядке
+   for (var i = methods.length; i--;) {
+      // обратите внимание, что обязательно необходима анонимная функция,
+      // иначе любой метод нашей консоли всегда будет вызывать метод 'assert'
+      (function (methodName) {
+         // определяем новый метод
+         console[methodName] = function () {
+            return false;
+         };
+      })(methods[i]);
+   }
+})(this);
+
+
+
+;(function( global ) {
+	global.startTime = new Date().getTime();
 	// console.log('start'+startTime);
 
-	var _gaq = window._gaq || [];
+	var _gaq = global._gaq || [];
 
-	window.onerror = function(msg, url, line) {
+	global.onerror = function(msg, url, line) {
 		var preventErrorAlert = true;
 		return preventErrorAlert;
 	}
 
 	var debug = false;
 
-	if ( document.body.getAttribute('data-debug') == 'true'){
+	if ( document.body.getAttribute('data-debug') == 'true') {
 		debug = true;
 	}
 
@@ -33,15 +59,15 @@
 	}
 	
 
-	if( typeof($LAB) === 'undefined' ){
+	if ( typeof $LAB === 'undefined' ) {
 		throw new Error( "Невозможно загрузить файлы JavaScript" );
 	}
 
 	function getWithVersion( flnm ) {
-		if( typeof( window.release['version']) !== 'undefined' ) {
-			if( ( !document.location.search.match(/jsdbg/) )&&( !debug ) ) {
+		if( typeof( global.release['version']) !== 'undefined' ) {
+			if ( !document.location.search.match(/jsdbg/)  &&  !debug ) {
 				flnm = flnm.replace('js', 'min.js');
-				flnm += '?' + window.release['version'];
+				flnm += '?t=' + global.release['version'];
 			}	
 		} 
 
@@ -138,7 +164,7 @@
 				$LAB
 				.script('jquery-plugins.min.js')
 				.script( 'JsHttpRequest.min.js' )
-				.script( getWithVersion('library.js') )             
+				.script( getWithVersion('library.js') )
 				.script( 'http://direct-credit.ru/widget/api_script_utf.js' )
 				.wait()
 				.script(getWithVersion('common.js'))
@@ -148,6 +174,20 @@
 				.script('adfox.asyn.code.ver3.min.js')
 				.wait()
 				.script( getWithVersion('ports.js') )
+			}).runQueue();
+			break;
+		case 'order.new': 
+			$LAB
+			.queueScript( (mapVendor==='yandex') ? 'http://api-maps.yandex.ru/2.0/?load=package.full&lang=ru-RU' : 'http://maps.google.com/maps/api/js?sensor=false')
+			.queueScript('http://ajax.aspnetcdn.com/ajax/knockout/knockout-2.2.1.js')
+			.queueWait( function() {
+				$LAB
+				.script('jquery-plugins.min.js')
+				.script( 'JsHttpRequest.min.js' )
+				.script( getWithVersion('library.js') )             
+				.script( 'http://direct-credit.ru/widget/api_script_utf.js' )
+				.wait()
+				.script( getWithVersion('order-new-v5.js') )
 			}).runQueue();
 			break;
 		case 'order_complete':
@@ -266,4 +306,4 @@
 			}).runQueue();
 			break;
 	}
-}());
+}(this));

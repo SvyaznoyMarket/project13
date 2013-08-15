@@ -32,6 +32,8 @@ $c->cacheCookieName = 'enter_auth';
 $c->mainHost = 'www.enter.ru';
 $c->mobileHost = 'm.enter.ru';
 
+$c->redirect301['enabled'] = true;
+
 $c->coreV2['url']          = 'http://api.enter.ru/v2/';
 $c->coreV2['client_id']    = 'site';
 $c->coreV2['timeout']      = null;
@@ -75,19 +77,29 @@ $c->reviewsStore['retryTimeout'] = [
 ];
 
 $c->wordpress['url'] = 'http://content.enter.ru/';
-$c->wordpress['timeout'] = 2;
+$c->wordpress['timeout'] = 3;
 $c->wordpress['throwException'] = true;
+$c->wordpress['retryCount'] = 4;
+$c->wordpress['retryTimeout'] = [
+    'default' => 0.3,
+    'tiny'    => 0.1,
+    'short'   => 0.2,
+    'medium'  => 0.3,
+    'long'    => 0.5,
+    'huge'    => 1,
+    'forever' => 0,
+];
 
 $c->dataStore['url'] = 'http://cms.enter.ru/v1/';
-$c->dataStore['timeout'] = 0.4;
+$c->dataStore['timeout'] = 0.8;
 $c->dataStore['retryCount'] = 3;
 $c->dataStore['retryTimeout'] = [
-    'default' => 0.1,
-    'tiny'    => 0.01,
-    'short'   => 0.05,
+    'default' => 0.04,
+    'tiny'    => 0.04,
+    'short'   => 0.08,
     'medium'  => 0.1,
-    'long'    => 0.2,
-    'huge'    => 0.5,
+    'long'    => 0.5,
+    'huge'    => 1,
     'forever' => 0,
 ];
 
@@ -282,8 +294,18 @@ $c->queue['workerLimit'] = 10;
 $c->queue['maxLockTime'] = 600;
 
 $c->abtest['cookieName'] = 'switch';
-$c->abtest['bestBefore'] = '2013-04-23';
 $c->abtest['enabled']    = true;
+$c->abtest['bestBefore'] = '2013-08-20';
+$c->abtest['test']       = [
+    [
+        'traffic'  => '50',
+        'key'      => 'emails',
+        'name'     => "Обязательные e-mail'ы",
+        'ga_event' => 'MandatoryEmail',
+    ],
+];
+/*
+$c->abtest['bestBefore'] = '2013-04-23';
 $c->abtest['test']       = [
     [
         'traffic'  => '40',
@@ -298,6 +320,7 @@ $c->abtest['test']       = [
         'ga_event' => 'cart',
     ],
 ];
+*/
 
 $c->subscribe['enabled'] = true;
 $c->subscribe['cookieName'] = 'subscribed';
@@ -306,7 +329,11 @@ $c->requestMainMenu = true;
 
 $c->mobileModify['enabled'] = true;
 
+$c->order['cookieName'] = 'last_order';
+$c->order['sessionName'] = 'lastOrder';
 $c->order['enableMetaTag'] = true;
+$c->order['newCreate'] = false;
+$c->order['maxSumOnline'] = 15000;
 
 $c->maybe3d['xmlUrl']     = 'http://hq.maybe3d.com/MappingService.svc/GetMappings?customerId=';
 $c->maybe3d['customerId'] = 'BE2016EF-32D8-41E6-976F-A8D32EB20ACF';
@@ -316,20 +343,7 @@ $c->maybe3d['timeout']    = 30;
 
 $c->tag['numSidebarCategoriesShown'] = 3;
 
-$c->sphinx['showFacets'] = true;
-
-$c->abtest = [
-    'cookieName' => 'switch',
-    'bestBefore' => '2013-08-20', //кука умрет в 00:00
-    'enabled'    => true,
-    'test'       => [
-        [
-            'traffic'  => '50',
-            'key'      => 'emails',
-            'name'     => "Обязательные e-mail'ы",
-            'ga_event' => 'MandatoryEmail',
-        ],
-    ],
-];
+$c->sphinx['showFacets'] = false;
+$c->sphinx['showListingSearchBar'] = false;
 
 return $c;

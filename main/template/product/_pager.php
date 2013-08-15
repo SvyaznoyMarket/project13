@@ -19,6 +19,7 @@ if (!isset($category)) $category = null;
 $filterData = isset($productFilter) ? http_build_query(array(\View\Product\FilterForm::$name => $productFilter->getValues())) : '';
 if (!isset($productVideosByProduct)) $productVideosByProduct = [];
 if (!isset($isAddInfo)) $isAddInfo = false;
+if (!isset($inSearch)) $inSearch = false;
 ?>
 
 <? if ('expanded' == $view) : ?>
@@ -27,25 +28,26 @@ if (!isset($isAddInfo)) $isAddInfo = false;
     data-calclink="<?= $page->url('old.product.delivery') ?>" />
 <?php endif ?>
 
+<? if(!empty($showPagerHeader)): ?>
+    <div class="mBoldh3"><?= $pager->count() . ' ' . $page->helper->numberChoice($pager->count(), array('товар', 'товара', 'товаров')) ?></div>
+<? endif ?>
+
 <div class="bViewPageLine clearfix">
     <? if ($pager->hasPages()): ?>
-    <div class="fr allpager bAllPager mBtn" alt="все товары в категории" title="все товары в категории"
-        data-url="<?= $page->helper->replacedUrl(array('page' => null), null, $request->attributes->get('route') . (strpos($request->attributes->get('route'), 'infinity') !== false ? '' : '.infinity')) ?>"
-        data-page="<?= $pager->getPage() ?>"
-        data-lastpage="<?= $pager->getLastPage() ?>"
-        data-filter="<?= $filterData ?>"
-    >&#8734;</div>
+        <div class="fr allpager bAllPager mBtn" alt="все товары в категории" title="все товары в категории"
+            data-url="<?= $page->helper->replacedUrl(array('page' => null), null, $request->attributes->get('route') . (strpos($request->attributes->get('route'), 'infinity') !== false ? '' : '.infinity')) ?>"
+            data-page="<?= $pager->getPage() ?>"
+            data-lastpage="<?= $pager->getLastPage() ?>"
+            data-filter="<?= $filterData ?>"
+        >&#8734;</div>
 
-    <? if(!empty($showPagerHeader)): ?>
-        <span class="mBoldh3"><?= $pager->count() . ' ' . $page->helper->numberChoice($pager->count(), array('товар', 'товара', 'товаров')) ?></span>
-    <? endif ?>
         <?= $page->render('_paginationTop', array('pager' => $pager)) ?>
     <? endif ?>
 
     <? if ($pager->count()) $page->setGlobalParam('productCount', $pager->count()); ?>
 
     <? if ($productSorting && $pager->count()): ?>
-        <?= $page->render('product/_sorting', array('productSorting' => $productSorting)) ?>
+        <?= $page->render('product/_sorting', ['productSorting' => $productSorting, 'inSearch' => $inSearch]) ?>
     <? endif ?>
 
     <? if ($pager->count() && $hasListView): ?>

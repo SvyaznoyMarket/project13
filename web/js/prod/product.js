@@ -258,17 +258,26 @@
 		};
 	// end of functions
 
-	if ( url === '' ) {
-		fillAvalShopTmpl( deliveryShops );
-	}
-	else {
+	fillAvalShopTmpl( deliveryShops );
+	
+	if ( url !== '' ) {
 		$.ajax({
 			type: 'POST',
 			url: url,
 			data: dataToSend,
-			success: resFromSerever
+			success: function(data) {
+				console.log(data)
+				resFromSerever(data)
+			}
 		});
 	}
+
+	$(document).ready(function() {
+		if ( $('.bWidgetBuy__eDelivery-nowClick').length && $('.bWidgetBuy__eDelivery-nowClick').hasClass('hf') ) {
+			$('.bWidgetBuy__eDelivery-nowClick').click();
+			$('.bWidgetBuy__eDelivery-now.mOpen').css('background-image','none');
+		}
+	});
 }());
  
  
@@ -297,11 +306,11 @@
 	 * @param	{Number}	nowLeft		Текущий отступ слева
 	 */
 	var initFotoSlider = function(){
-		var slider = $('.bPhotoActionOtherPhoto');
-		var fotoBox = slider.find('.bPhotoActionOtherPhotoList');
-		var leftArr = slider.find('.bPhotoActionOtherPhoto__eBtn.mPrev');
-		var rightArr = slider.find('.bPhotoActionOtherPhoto__eBtn.mNext');
-		var photos = fotoBox.find('.bPhotoActionOtherPhotoItem');
+		var slider = $('.bPhotoSlider');
+		var fotoBox = slider.find('.bPhotoSliderGallery');
+		var leftArr = slider.find('.bPhotoSlider__eBtn.mPrev');
+		var rightArr = slider.find('.bPhotoSlider__eBtn.mNext');
+		var photos = fotoBox.find('.bPhotoSliderGallery__eItem');
 
 		if (!photos.length){
 			return false;
@@ -357,7 +366,7 @@
 	};
 
 	$(document).ready(function() {
-		if ( $('.bPhotoActionOtherPhoto').length){
+		if ( $('.bPhotoSlider').length){
 			initFotoSlider();
 		}
 	});

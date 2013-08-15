@@ -320,6 +320,12 @@ table {
 .mt5 {
   margin-top: 5px;
 }
+.mt10 {
+  margin-top: 10px;
+}
+.mt15 {
+  margin-top: 15px;
+}
 .mt-30 {
   margin-top: -30px;
 }
@@ -422,6 +428,9 @@ ul.lh15 li {
 }
 .width181 {
   width: 181px;
+}
+.width205 {
+  width: 205px;
 }
 .width215 {
   width: 215px;
@@ -627,6 +636,23 @@ ul.lh15 li {
   &.textdisabled {
     border-color: #e4e4e4;
     color: @typGray;
+  }
+  &.orangeIcon {
+    height: 26px;
+    width: 165px;
+    .rounded(5px 0 0 5px);
+    margin-right: -6px;
+    padding-right: 0;
+  }
+}
+img {
+  &.orangeIcon {
+    vertical-align: middle;
+    cursor: pointer;
+    &:hover {
+      filter: e("progid:DXImageTransform.Microsoft.Alpha(opacity=90)");
+      .opacity(0.9);
+    }
   }
 }
 .crossText{

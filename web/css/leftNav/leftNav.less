@@ -174,6 +174,9 @@ dt.bCtg__eOrange {
 .bSpec {
   .rounded(5px);
   border: 1px solid #f99b1c;
+  &.noBorder {
+    border: none;
+  }
   margin: 15px 0px;
   behavior: url('@{pie}');
   .filterHeader {
@@ -308,7 +311,7 @@ label.radio {
 }
 label.radio span.holder {
   background: url("@{base-url}/leftNav/img/radioBtn.png") no-repeat 0 -13px;
-  top: 0 !important;
+  top: 0;
   height: 13px;
 }
 label.checkbox:hover span.holder,
@@ -323,6 +326,9 @@ label.radio.checked span.holder {
 }
 label.checked:hover span.holder {
  background-position: 0 -16px;
+}
+label.radio.checked:hover span.holder {
+ background-position: 0 0;
 }
 input.hiddenCheckbox {
   position: absolute;

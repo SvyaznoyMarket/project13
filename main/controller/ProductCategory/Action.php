@@ -264,10 +264,22 @@ class Action {
         // если в catalogJson'e указан category_layout_type == 'promo', то подгружаем промо-контент
         if (!empty($catalogJson['category_layout_type']) &&
             $catalogJson['category_layout_type'] == 'promo' &&
-            !empty($catalogJson['promo_token'])) {
-            $client = \App::contentClient();
-            $content = $client->query($catalogJson['promo_token'], [], false);
-            $promoContent = empty($content['content']) ? '' : $content['content'];
+            !empty($catalogJson['promo_token'])
+        ) {
+            \App::contentClient()->addQuery(
+                trim((string)$catalogJson['promo_token']),
+                [],
+                function($data) use (&$promoContent) {
+                    if (!empty($data['content'])) {
+                        $promoContent = $data['content'];
+                    }
+                },
+                function(\Exception $e) {
+                    \App::logger()->error(sprintf('Не получено содержимое для промо-страницы %s', \App::request()->getRequestUri()));
+                    \App::exception()->add($e);
+                }
+            );
+            \App::contentClient()->execute();
         }
 
         // если в catalogJson'e указан category_class, то обрабатываем запрос соответствующим контроллером
@@ -358,8 +370,17 @@ class Action {
             if ( \App::config()->shop['enabled'] && !self::isGlobal() && !$category->isRoot()) $page->setGlobalParam('shops', \RepositoryManager::shop()->getCollectionByRegion(\App::user()->getRegion()));
         };
 
+        // полнотекстовый поиск через сфинкс
+        $textSearched = false;
+        if (\App::config()->sphinx['showListingSearchBar']) {
+            $filterValues = $productFilter->getValues();
+            if(!empty($filterValues['text'])) {
+                $textSearched = true;
+            }
+        }
+
         // если категория содержится во внешнем узле дерева
-        if ($category->isLeaf()) {
+        if ($category->isLeaf() || $textSearched) {
             $page = new \View\ProductCategory\LeafPage();
             $setPageParameters($page);
 
@@ -688,6 +709,34 @@ class Action {
 
         // проверяем есть ли в запросе фильтры
         if ((bool)$values) {
+
+            // полнотекстовый поиск через сфинкс
+            if (\App::config()->sphinx['showListingSearchBar']) {
+                $sphinxFilter = isset($values['text']) ? $values['text'] : null;
+
+                if ($sphinxFilter) {
+                    $clientV2 = \App::coreClientV2();
+                    $result = null;
+                    $clientV2->addQuery('search/normalize', [], ['request' => $sphinxFilter], function ($data) use (&$result) {
+                        $result = $data;
+                    });
+                    $clientV2->execute();
+
+                    if(is_array($result)) {
+                        $values['text'] = implode(' ', $result);
+                    } else {
+                        unset($values['text']);
+                    }
+                }
+
+                $sphinxFilterData = [
+                    'filter_id'     => 'text',
+                    'type_id'       => \Model\Product\Filter\Entity::TYPE_STRING,
+                ];
+                $sphinxFilter = new \Model\Product\Filter\Entity($sphinxFilterData);
+                array_push($filters, $sphinxFilter);
+            }
+
             // проверяем есть ли в запросе фильтры, которых нет в текущей категории (фильтры родительских категорий)
             /** @var $exists Ид фильтров текущей категории */
             $exists = array_map(function($filter) { /** @var $filter \Model\Product\Filter\Entity */ return $filter->getId(); }, $filters);

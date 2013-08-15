@@ -74,6 +74,9 @@ class Filter {
                             $return[] = array($filter->getId(), 2, $value['from'], $value['to']);
                         }
                         break;
+                    case FilterEntity::TYPE_STRING:
+                        $return[] = array($filter->getId(), 3, $value);
+                        break;
                     default:
                         $return[] = array($filter->getId(), 1, $value);
                         break;
@@ -126,7 +129,12 @@ class Filter {
      */
     public function getValue(FilterEntity $filter) {
         if (isset($this->values[$filter->getId()])) {
-            return (array)$this->values[$filter->getId()];
+            switch ($filter->getTypeId()) {
+                case FilterEntity::TYPE_STRING:
+                    return $this->values[$filter->getId()];
+                default:
+                    return (array)$this->values[$filter->getId()];
+            }
         } else {
             return [];
         }

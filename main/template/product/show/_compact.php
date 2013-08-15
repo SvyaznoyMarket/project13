@@ -17,6 +17,10 @@ $addInfo = isset($addInfo)?$addInfo:[];
 
 /** @var $productVideo \Model\Product\Video\Entity|null */
 $productVideo = reset($productVideos);
+/** @var string $model3dExternalUrl */
+$model3dExternalUrl = ($productVideo instanceof \Model\Product\Video\Entity) ? $productVideo->getMaybe3d() : null;
+/** @var string $model3dImg */
+$model3dImg = ($productVideo instanceof \Model\Product\Video\Entity) ? $productVideo->getImg3d() : null;
 ?>
 
 <style type="text/css">
@@ -28,11 +32,21 @@ $productVideo = reset($productVideos);
         width: 42px;
         height: 35px;
     }
+    .goodsbox .photo .goodsphoto_eGrad360.goodsphoto_eGrad360_small,
+    .goodsbox .photo .goodsphoto_eGrad360.goodsphoto_eGrad360_small:hover {
+        background: url('/css/item/img/3dStiker_small.png') no-repeat 0 0;
+        position: absolute;
+        z-index: 3;
+        top: 130px;
+        width: 42px;
+        height: 35px;
+    }
 </style>
 <div class="goodsbox"<? if ($isHidden): ?> style="display:none;"<? endif ?> ref="<?= $product->getToken(); ?>">
     <div class="goodsbox__inner" data-url="<?= $product->getLink() ?>" <?php if (count($addInfo)) print 'data-add="'.$page->json($addInfo).'"'; ?>>
     	<div class="photo">
             <? if ($productVideo && $productVideo->getContent()): ?><a class="goodsphoto_eVideoShield goodsphoto_eVideoShield_small" href="<?= $product->getLink() ?>"></a><? endif ?>
+            <? if ($model3dExternalUrl || $model3dImg): ?><a style="right:<?= $productVideo && $productVideo->getContent() ? '42' : '0' ?>px;" class="goodsphoto_eGrad360 goodsphoto_eGrad360_small" href="<?= $product->getLink() ?>"></a><? endif ?>
 	        <a href="<?= $product->getLink() ?>">
 	            <? if (!empty($kit) && $kit->getCount()): ?>
 	                <div class="bLabelsQuantity" src="/images/quantity_shild.png"><?= $kit->getCount() ?> шт.</div>

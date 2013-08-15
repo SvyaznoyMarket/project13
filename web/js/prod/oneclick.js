@@ -81,6 +81,7 @@ $(document).ready(function() {
 				value: emailVal,
 				valerror: false,
 				showsubscribe: true,
+				active: true,
 				regexp: /./
 			}) );
 			self.textfields.push( ko.observable({
@@ -423,6 +424,11 @@ $(document).ready(function() {
 						var tmp = self.textfields[i]();
 						tmp.valerror = valerror;
 						tmp.value = e.currentTarget.value;
+
+						if ( e.currentTarget.name === 'order[recipient_email]' ) {
+							tmp.active = !!parseInt( $('#order1click-container-new .bSubscibe input[name="subscribe"]').val() );
+						}
+
 						self.textfields[i]( tmp );
 
 						break;
@@ -486,6 +492,8 @@ $(document).ready(function() {
 							$('.bFastInner tbody tr:last').append('<td colspan="2" class="red">'+data.message+'</td>');
 							return;
 						}
+
+                        if ( typeof(Flocktory) !== 'undefined' )  Flocktory.subscribing_friend();
 						
 						// ANALITICS
 						var phoneNumber = '8' + $('#phonemask').val().replace(/\D/g, "");
@@ -849,13 +857,6 @@ levup:			for(var i = 0, l = numbers.length; i < l; i++){
 				_kmq.push(['record', 'Checkout Step 1', toKISS_oc]);
 			}
 
-			/**
-			 * Подписка
-			 */
-			$('body').on('keyup ready', '#recipientEmail', function() {
-				handleSubscibeWrapper();
-			});
-
 			var handleSubscibeWrapper = function() {
 					var value = $('#recipientEmail').val();
 					var checkbox = $('input[type="checkbox"][name="subscribe"]');
@@ -866,15 +867,28 @@ levup:			for(var i = 0, l = numbers.length; i < l; i++){
 					if ( value && value.isEmail() && bSubscibeWrapper.hasClass('hf') ) {
 							bSubscibeWrapper.removeClass('hf');
 							checkbox.attr('disabled','');
+							checkbox.attr('checked','checked')
+							checkbox.val(1)
+							$('.bSubscibe').addClass('checked');
 							$('#recipientEmail').siblings('.mEmpty').hide();
 					} else if ( ( !value || value && !value.isEmail() ) && !bSubscibeWrapper.hasClass('hf') ) {
 							bSubscibeWrapper.addClass('hf');
 							checkbox.attr('disabled','disabled');
+							checkbox.attr('checked','')
+							checkbox.val(0)
+							$('.bSubscibe').removeClass('checked');
 							if ( $('#recipientEmail').val() ) {
 								$('#recipientEmail').siblings('.mEmpty').show();
 							}
 					}
 			}
+
+			/**
+			 * Подписка
+			 */
+			$('body').on('keyup ready', '#recipientEmail', function() {
+				handleSubscibeWrapper();
+			});
 
 			$('#order1click-container-new').lightbox_me({
 				centered: true,

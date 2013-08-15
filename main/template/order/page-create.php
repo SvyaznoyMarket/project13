@@ -56,7 +56,7 @@ if ($form->hasSubway()) $jsValidator['order[address_metro]'] = 'Укажите �
 <input id="order-delivery_map-data" type="hidden" data-value='<?= $page->json($deliveryMap) ?>'/>
 <?= $page->render('order/_formTemplate') ?>
 
-<form id="order-form" style="display:none" data-validator="#order-validator" method="post" action="<?= $page->url('order.create') ?>">
+<form id="order-form" style="display:none" data-validator="#order-validator" method="post" action="<?= $page->url('order') ?>">
     <div class='bBuyingInfo'>
         <h2>Информация о счастливом получателе</h2>
 
@@ -183,7 +183,7 @@ if ($form->hasSubway()) $jsValidator['order[address_metro]'] = 'Укажите �
 
         <h2>Оплата</h2>
 
-        <dl class='bBuyingLine mPayMethods'>
+        <dl class='bBuyingLine mPayMethods' data-max-sum-online="<?= \App::config()->order['maxSumOnline'] ?>">
             <dt></dt>
             <dd id="payTypes">
                 <?

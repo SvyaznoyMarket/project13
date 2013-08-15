@@ -49,6 +49,10 @@ class AppConfig {
     /** @var string */
     public $cacheCookieName = null;
     /** @var array */
+    public $redirect301 = [
+        'enabled' => null,
+    ];
+    /** @var array */
     public $coreV2 = [
         'url'          => null,
         'client_id'    => null,
@@ -71,6 +75,8 @@ class AppConfig {
         'url'            => null,
         'timeout'        => null,
         'throwException' => null,
+        'retryTimeout' => [],
+        'retryCount'   => null,
     ];
     /** @var array */
     public $dataStore = [
@@ -322,7 +328,11 @@ class AppConfig {
     ];
     /** @var array  */
     public $order = [
-        'enableMetaTag'   => null,
+        'cookieName'     => null,
+        'sessionName'    => null,
+        'enableMetaTag'  => null,
+        'newCreate'      => null,
+        'maxSumOnline'   => null,
     ];
     /** @var array */
     public $maybe3d = [
@@ -340,6 +350,7 @@ class AppConfig {
     /** @var array */
     public $sphinx = [
         'showFacets' => null,
+        'showListingSearchBar' => null,
     ];
 
     public function __construct() {
