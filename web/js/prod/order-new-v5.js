@@ -1249,6 +1249,50 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 		totalSum: ko.observable(0),
 
 		/**
+		 * Номер введенного сертификата
+		 */
+		sertificateNumber: ko.observable(),
+
+		/**
+		 * URL по которому нужно проверять карту
+		 */
+		sertificateUrl: ko.observable(),
+
+		/**
+		 * Ошибки сертификата
+		 */
+		sertificateError: ko.observable(),
+
+		/**
+		 * Проверка сертификата
+		 */
+		checkSertificate: function() {
+			var dataToSend = {
+					number: global.OrderModel.sertificateNumber(),
+				},
+				url = global.OrderModel.sertificateUrl();
+			// end of vars
+
+			var sertificateResponceHandler = function sertificateResponceHandler( res ) {
+				console.log( res );
+			};
+
+			global.OrderModel.sertificateError('');
+
+			if ( url === undefined ) {
+				global.OrderModel.sertificateError('Не выбран тип сертификата');
+				return;
+			}
+
+			$.ajax({
+				type: 'POST',
+				url: url,
+				data: dataToSend,
+				success: sertificateResponceHandler
+			});
+		},
+
+		/**
 		 * Обработка выбора пункта доставки
 		 * 
 		 * @param	{String}	id				Идентификатор

@@ -250,27 +250,27 @@ foreach (array_reverse($productsById) as $product) {
 
 	                <ul class="bSaleList bInputList clearfix">
 	                    <li class="bSaleList__eItem">
-	                        <input data-url="<?= $page->url('cart.coupon.apply') ?>" class="jsCustomRadio bCustomInput mCustomRadioBig" type="radio" id="svz_club" name="add_sale" hidden />
+	                        <input value="<?= $page->url('cart.coupon.apply') ?>" class="jsCustomRadio bCustomInput mCustomRadioBig" type="radio" id="svz_club" name="add_sale" hidden data-bind="checked: sertificateUrl" />
 	                        <label class="bCustomLabel mCustomLabelRadioBig" for="svz_club">Купон</label>
 	                    </li>
 
 	                    <li class="bSaleList__eItem mEnterSpa">
-	                        <input data-url="<?= $page->url('cart.blackcard.apply') ?>" class="jsCustomRadio bCustomInput mCustomRadioBig" type="radio" id="black_card" name="add_sale" hidden />
+	                        <input value="<?= $page->url('cart.blackcard.apply') ?>" class="jsCustomRadio bCustomInput mCustomRadioBig" type="radio" id="black_card" name="add_sale" hidden data-bind="checked: sertificateUrl" />
 	                        <label class="bCustomLabel mCustomLabelRadioBig" for="black_card">Enter Spa</label>
 	                    </li>
 	                </ul>
 
-	                <input class="bBuyingLine__eText mSaleInput" type="text" id="" />
+	                <input class="bBuyingLine__eText mSaleInput" type="text" id="" data-bind="value: sertificateNumber, valueUpdate: 'afterkeydown' " />
 
-	                <button class="bBigOrangeButton mSaleBtn">Применить</button>
+	                <button class="bBigOrangeButton mSaleBtn" data-bind="click: checkSertificate">Применить</button>
 
-	                <p class="bSaleError"> Невозможно применить скидку:<br/>Слишком низкая общая стоимость товаров в корзине </p>
+	                <p class="bSaleError" data-bind="text: sertificateError"></p>
 	            </div>
 
 	            <div class="bSaleCheck"></div>
 
 	             <!-- Products -->
-				<div class="bBuyingLine mProductsLine">
+				<!-- <div class="bBuyingLine mProductsLine">
 					<div class="bOrderItems">
 						<div class="bItemsRow mItemImg"></div>
 
@@ -286,12 +286,12 @@ foreach (array_reverse($productsById) as $product) {
 
 						<div class="bItemsRow mItemRight"> -300 <span class="rubl">p</span></div>
 					</div>
-				</div>
+				</div> -->
 				<!-- /Products -->
 	        </div>
 
 	        <!-- Sum -->
-			<ul class="bSumOrderInfo">
+			<!-- <ul class="bSumOrderInfo">
 				<li class="bSumOrderInfo__eLine">
 					<span class="bDelivery  mOldPrice">
 						<span data-bind="">2 345</span> 
@@ -307,7 +307,7 @@ foreach (array_reverse($productsById) as $product) {
 						<span class="rubl">p</span>
 					</span>
 				</li>
-			</ul>
+			</ul> -->
 			<!-- /Sum -->
 	    </div>
 	</div>
