@@ -20,7 +20,6 @@ class Entity {
     public function __construct(array $data = []) {
         if (array_key_exists('traffic', $data)) $this->setTraffic($data['traffic']);
         if (array_key_exists('key', $data)) $this->setKey($data['key']);
-        if (array_key_exists('subkey', $data)) $this->setSubkey($data['subkey']);
         if (array_key_exists('name', $data)) $this->setName($data['name']);
         if (array_key_exists('ga_event', $data)) $this->setGaEvent($data['ga_event']);
     }
@@ -50,27 +49,11 @@ class Entity {
     }
 
     /**
-     * @param string $key
-     */
-    public function setSubkey($key)
-    {
-        $this->key = $key;
-    }
-
-    /**
      * @return string
      */
     public function getKey()
     {
         return $this->key;
-    }
-
-    /**
-     * @return string
-     */
-    public function getSubkey()
-    {
-        return $this->subkey;
     }
 
     /**

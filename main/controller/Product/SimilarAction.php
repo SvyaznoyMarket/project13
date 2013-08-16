@@ -35,8 +35,9 @@ class SimilarAction {
                 if ( 'smartengine' == $key ) {
                     $products = $this->smartengineClient($product, $request);
                 } elseif ( 'retailrocket' == $key ) {
-                    $submethod = $ABtest->getSubkey;
-                    $products = $this->retailrocketClient($product, $request, $submethod);
+                    $products = $this->retailrocketClient($product, $request);
+                } elseif ( 'retailrocket/ItemToItems' == $key) {
+                    $products = $this->retailrocketClient($product, $request, 'ItemToItems');
                 }
 
                 if ( !isset($products) || !is_array($products) ) {

@@ -352,7 +352,7 @@ $c->abtest = [
 
 
 
-    /*
+
     /// SimilarAction::smartengine, Похожие товары
     'test'      => [
         [
@@ -361,19 +361,18 @@ $c->abtest = [
             'name'     => "Похожие товары",
             'ga_event' => 'SmartEngine',
         ],
-    ],*/
+    ],
 
-
+    /*
     /// SimilarAction::retailrocket/ItemToItems,
     'test'      => [
         [
             'traffic'  => '50',
-            'key'      => 'retailrocket',
-            'subkey'   => 'ItemToItems',
+            'key'      => 'retailrocket/ItemToItems',
             'name'     => "С этим товаром также смотрят",
             'ga_event' => 'RetailRocket/ItemToItems',
         ],
-    ],
+    ],*/
 
     /*
     /// SimilarAction::retailrocket,
