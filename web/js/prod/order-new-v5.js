@@ -748,7 +748,7 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 					return false;
 				}
 
-				setProcessingStatus( 'orange', 'Проверка по номеру карты' );
+				setProcessingStatus( 'mOrange', 'Проверка по номеру карты' );
 				$.post( urlCheck, getParams(), function( data ) {
 					if( !('success' in data) ) {
 						return false;
@@ -757,12 +757,12 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 					if( !data.success ) {
 						var err = ( typeof(data.error) !== 'undefined' ) ? data.error : 'ERROR';
 
-						setProcessingStatus( 'red', err );
+						setProcessingStatus( 'mRed', err );
 
 						return false;
 					}
 
-					setProcessingStatus( 'green', data.data );
+					setProcessingStatus( 'mGreen', data.data );
 				});
 				// pin.focus()
 			},
