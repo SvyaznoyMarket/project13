@@ -133,8 +133,6 @@ class DefaultLayout extends Layout {
 
         $return .= $this->render('_headJavascript');
 
-        $return .= $this->render( 'partner-counter/_criteo',  ['criteoData' =>  (new \View\Partners\Criteo($this->params))->data()] );
-
         return $return;
     }
 
@@ -272,6 +270,15 @@ class DefaultLayout extends Layout {
             ])) {
                 $return .= "\n\n" . $this->tryRender('partner-counter/_ad4u');
             }
+
+            // ActionPay — на странице с полным описанием продукта и на стр "спс за заказ"
+            if (in_array($routeName, [
+                'product',
+                'order.complete',
+            ])) {
+                $return .= $this->tryRender('partner-counter/_actionpay', ['routeName' => $routeName] );
+            }
+
         }
 
         return $return;
@@ -342,6 +349,10 @@ class DefaultLayout extends Layout {
         }*/
 
         return isset($return) ? $return : false;
+    }
+
+    public function slotCriteo() {
+        return $this->render( 'partner-counter/_criteo',  ['criteoData' =>  (new \View\Partners\Criteo($this->params))->data()] );
     }
 
 

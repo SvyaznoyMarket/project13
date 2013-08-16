@@ -71,9 +71,10 @@ class Client {
             );
 
             if ($info['http_code'] >= 300) {
-                throw new \RuntimeException(sprintf("Invalid http code: %d, \nResponse: %s", $info['http_code'], $response));
+                $this->logger->error(['action' => __METHOD__, 'curl.info' => $info, 'response.header' => $header, 'response' => $response], ['curl']);
+                throw new \RuntimeException(sprintf('Invalid http code: %d', $info['http_code']));
             }
-            $this->logger->debug('Curl response: ' . $response, ['curl']);
+            //$this->logger->debug('Curl response: ' . $response, ['curl']);
             $decodedResponse = $this->decode($response);
             curl_close($connection);
 
@@ -205,16 +206,17 @@ class Client {
                         unset($this->queries[$this->queryIndex[(string)$handler]]);
 
                         if ($info['http_code'] >= 300) {
-                            throw new \RuntimeException(sprintf('Invalid http code %d, info: %s, response: %s', $info['http_code'], $this->encode($info), $content));
+                            $this->logger->error(['action' => __METHOD__, 'curl.info' => $info, 'response.header' => $header, 'response' => $content], ['curl']);
+                            throw new \RuntimeException(sprintf('Invalid http code %d', $info['http_code']));
                         }
 
                         try {
                             $decodedResponse = $this->decode($content);
                         } catch (\Exception $e) {
-                            $this->logger->error(sprintf('Json error for %s', (string)(isset($info['url']) ? $info['url'] : null)), ['curl']);
+                            $this->logger->error(['action' => __METHOD__, 'curl.info' => $info, 'response.header' => $header], ['curl']);
                             throw $e;
                         }
-                        $this->logger->debug('Curl response data: ' . $this->encode($decodedResponse), ['curl']);
+                        //$this->logger->debug('Curl response data: ' . $this->encode($decodedResponse), ['curl']);
                         $callback = $this->successCallbacks[(string)$handler];
                         if (is_callable($callback)) {
                             $callback($decodedResponse, (int)$handler);
@@ -393,7 +395,6 @@ class Client {
                     break;
             }
             $e = new \RuntimeException(sprintf('Json error: "%s", Response: "%s"', $error, $response), $code);
-            //\App::exception()->add($e); похоже, что здесь не нужно добавлять исключение
             throw $e;
         }
 

@@ -36,6 +36,7 @@
 
 .bPhotoViewer {
 	float: left;
+
 	width: 175px;
 
 	&__eItem {
@@ -89,7 +90,9 @@
 //slider mini product images
 .bPhotoSlider {
 	position: relative;
+
 	float: left;
+
 	width: 220px;
 	margin-right: 5px;
 
@@ -144,9 +147,9 @@
 		}
 
 		.bPhotoGalleryImg {
+			.rounded(4px);
 			max-width: 45px;
 			max-height: 45px;
-			.rounded(4px);
 		}
 	}
 
@@ -160,9 +163,10 @@
 		height: 50px;
 
 		cursor: pointer;
+
+		color: #404040;
 		background: rgb(255,255,255);
         background: rgba(255,255,255, 0.9);
-		color: #404040;
 
 		&.mPrev {
 			.box-shadow(4px 0 3px -2px #cecece);
@@ -187,9 +191,11 @@
 
 	.bArrow {
 		display: block;
+
 		width: 6px;
 		height: 10px;
 		margin: 20px auto 0;
+
 		background-repeat: no-repeat;
 	}
 }
