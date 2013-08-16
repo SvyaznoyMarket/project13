@@ -18,6 +18,8 @@ $isCorporative = $user->getEntity() ? $user->getEntity()->getIsCorporative() : f
 // TODO: доделать
 $isCredit = (bool)$creditData;
 $isOrderAnalytics = isset($isOrderAnalytics) ? $isOrderAnalytics : true;
+
+if (!isset($paymentUrl)) $paymentUrl = null;
 ?>
 
 <!-- Header -->
