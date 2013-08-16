@@ -69,10 +69,6 @@ class CouponAction {
     public function delete(\Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
-        if (!$request->isXmlHttpRequest()) {
-            throw new \Exception\NotFoundException('Request is not xml http request');
-        }
-
         try {
             \App::user()->getCart()->clearCoupons();
 
@@ -91,6 +87,6 @@ class CouponAction {
             }
         }
 
-        return new \Http\JsonResponse($result);
+        return $request->isXmlHttpRequest() ? new \Http\JsonResponse($result) : new \Http\RedirectResponse($request->headers->get('referer') ?: \App::router()->generate('cart'));
     }
 }
