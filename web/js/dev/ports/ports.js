@@ -165,19 +165,21 @@ window.ANALYTICS = {
              * popup_bind(elem)  связывает событие  subscribing_friend()  с элементом (elem)
              * subscribing_friend()  проверяет емейл/телефон и вызывает  popup_open()
              *
-             * flk - сокращение от flacktory
+             * flk - сокращение от flocktory
              */
+            name : '',
+            mail : '',
 
-            subscribing_friend : function( ) {
+            popup_prepare : function () {
                 var flk_mail = $('.flocktory_email'); // Проверим эти элементы
                 if ( !flk_mail.length ) flk_mail = $('.subscribe-form__email');
                 if ( !flk_mail.length ) flk_mail = $('#recipientEmail');
                 flk_mail = flk_mail.val();
 
                 var flk_name = $('input.bFastInner__eInput').val(); // используем имя пользователя, если существует
-                if ( !flk_name.length && flk_mail.length ) flk_name = flk_mail;
+                if (flk_name && !flk_name.length && flk_mail && flk_mail.length ) flk_name = flk_mail;
 
-                if ( !flk_mail.length ) {
+                if ( flk_mail && !flk_mail.length ) {
                     // если нет емейла, глянем телефон и передадим его вместо мейла
                     var flk_tlf = $('#phonemask').val().replace(' ','');
                     //flk_mail = $('.flocktory_tlf').val() + '@email.tlf';
@@ -186,9 +188,28 @@ window.ANALYTICS = {
                 }
 
                 if ( flk_mail.search('@') !== -1 ) {
-                    if (!flk_name.length) flk_name = 'Покупатель';
-                    Flocktory.popup_open( flk_mail, flk_name );
+                    if (!flk_name || !flk_name.length) flk_name = 'Покупатель';
+                    window.Flocktory.name = flk_name;
+                    window.Flocktory.mail = flk_mail;
+                    return true;
                 }
+                return false;
+            },
+
+            subscribing_friend: function () {
+                if ( Flocktory.popup_prepare() ) {
+                    return Flocktory.popup_subscribe(Flocktory.mail, Flocktory.name);
+                }
+                return false;
+            },
+
+            popup_opder : function ( toFLK_order )  {
+                if ( Flocktory.popup_prepare() ) {
+                    toFLK_order.email = Flocktory.mail;
+                    toFLK_order.name = Flocktory.name;
+                    return Flocktory.popup(toFLK_order);
+                }
+                return false;
             },
 
             popup_bind : function( jq_el ) { // передаётся элемент вида — $('.jquery_elem')
@@ -206,15 +227,18 @@ window.ANALYTICS = {
                 Flocktory.popup_bind( $('.subscribe-form__btn') );
             },
 
-            popup_open : function ( flk_mail, flk_name ) {
+            popup: function (toFLK) {
+                var _fl = window._flocktory = _flocktory || [];
+                return _fl.push(toFLK);
+            },
+
+            popup_subscribe : function ( flk_mail, flk_name ) {
                 //flk_mail = 'hello@flocktory.com'; // tmp, for debug
                 flk_name = flk_name || flk_mail;
                 var date = new Date();
-                var date_str = date.getFullYear() + '' + date.getMonth() + '' + date.getDay() + '' + date.getHours() + '' + date.getMinutes() + '' + date.getSeconds() + '' + date.getMilliseconds() + '' + Math.floor(Math.random() * 1000000);
-                var _fl = window._flocktory = _flocktory || [];
 
-                return _fl.push({
-                    "order_id": date_str,
+                var toFLK = {
+                    "order_id": date.getFullYear() + '' + date.getMonth() + '' + date.getDay() + '' + date.getHours() + '' + date.getMinutes() + '' + date.getSeconds() + '' + date.getMilliseconds() + '' + Math.floor(Math.random() * 1000000),
                     "email": flk_mail,
                     "name": flk_name,
                     "price": 0,
@@ -226,7 +250,9 @@ window.ANALYTICS = {
                         "image": "",
                         "count":  1
                     }]
-                });
+                };
+
+                return Flocktory.popup(toFLK);
             }
 
         } // end of window.Flocktory object
