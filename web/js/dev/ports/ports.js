@@ -179,7 +179,7 @@ window.ANALYTICS = {
                 var flk_name = $('input.bFastInner__eInput').val(); // используем имя пользователя, если существует
                 if (flk_name && !flk_name.length && flk_mail && flk_mail.length ) flk_name = flk_mail;
 
-                if ( flk_mail && !flk_mail.length ) {
+                if ( !flk_mail || !flk_mail.length ) {
                     // если нет емейла, глянем телефон и передадим его вместо мейла
                     var flk_tlf = $('#phonemask').val().replace(' ','');
                     //flk_mail = $('.flocktory_tlf').val() + '@email.tlf';
@@ -188,7 +188,8 @@ window.ANALYTICS = {
                 }
 
                 if ( flk_mail.search('@') !== -1 ) {
-                    if (!flk_name || !flk_name.length) flk_name = 'Покупатель';
+                    //if (!flk_name || !flk_name.length) flk_name = 'Покупатель';
+                    if (!flk_name || !flk_name.length) flk_name = flk_mail;
                     window.Flocktory.name = flk_name;
                     window.Flocktory.mail = flk_mail;
                     return true;
