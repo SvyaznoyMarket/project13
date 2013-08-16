@@ -135,7 +135,7 @@ foreach (array_reverse($productsById) as $product) {
 					<!-- /Celendar -->
 
 					<div class="bDeliveryDate">
-						<span data-bind="text: box.deliveryName+' '+box.choosenDate().name"></span>, <span data-bind="text: box.choosenNameOfWeek"></span> <span data-bind="visible: !hasPointDelivery">*</span>
+						<span data-bind="text: box.deliveryName"></span> <strong data-bind="text:box.choosenDate().name"></strong>, <span data-bind="text: box.choosenNameOfWeek"></span> <span data-bind="visible: !hasPointDelivery">*</span>
 					</div>
 
 					<div class="bSelectWrap mFastInpSmall">
