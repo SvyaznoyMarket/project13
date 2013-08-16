@@ -2258,11 +2258,19 @@ FormValidator.prototype._validateField = function( field ) {
 	return error;
 };
 
+FormValidator.prototype._unmarkFieldError = function( fieldNode ) {
+	console.info('Снимаем маркировку');
+
+	fieldNode.removeClass(this.config.errorClass);
+	fieldNode.parent().find('.bErrorText').remove();
+};
+
 FormValidator.prototype._markFieldError = function( fieldNode, errorMsg ) {
 	console.info('маркируем');
 	console.log(errorMsg);
 	
 	fieldNode.addClass(this.config.errorClass);
+	fieldNode.after('<div class="bErrorText"><div class="bErrorText__eInner">'+errorMsg+'</div></div>');
 };
 
 /**
@@ -2311,7 +2319,7 @@ FormValidator.prototype._enableHandlers = function() {
 		},
 
 		clearError = function clearError() {
-			$(this).removeClass(self.config.errorClass);
+			self._unmarkFieldError($(this));
 		};
 	// end of functions
 
@@ -2399,7 +2407,7 @@ FormValidator.prototype.validate = function( callbacks ) {
 			});
 		}
 		else {
-			fields[i].fieldNode.removeClass(self.config.errorClass);
+			self._unmarkFieldError(fields[i].fieldNode);
 		}
 	}
 

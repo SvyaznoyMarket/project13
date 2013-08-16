@@ -329,8 +329,6 @@ foreach (array_reverse($productsById) as $product) {
 				<label for="" class="bBuyingLine__eLeft">Имя получателя*</label>
 				<div class="bBuyingLine__eRight">
 					<input type="text" id="order_recipient_first_name" class="bBuyingLine__eText mInputLong" name="order[recipient_first_name]" value="" />
-
-					<div class="bErrorText"><div class="bErrorText__eInner">Укажите имя</div></div>
 				</div>
 
 				<label for="" class="bBuyingLine__eLeft">Фамилия получателя*</label>
@@ -367,23 +365,17 @@ foreach (array_reverse($productsById) as $product) {
 						<input type="text" class="bBuyingLine__eText mInputLong ui-autocomplete-input" id="order_address_metro" title="Метро" aria-haspopup="true" aria-autocomplete="list" role="textbox" autocomplete="off" name="order[address_metro]" />
 						<div id="metrostations" data-name="<?= $page->json(array_map(function(\Model\Subway\Entity $subway) { return ['val' => $subway->getId(), 'label' => $subway->getName()]; }, $subways)) ?>"></div>
 						<input type="hidden" id="order_subway_id" name="order[subway_id]" value="" />
-
-						<div class="bErrorText"><div class="bErrorText__eInner">Укажите метро</div></div>
 					</div>
 	                <? endif ?>
 					
 					<div class="bInputAddress">
 						<label class="bPlaceholder">Улица*</label>
-						<input type="text" id="order_address_street" class="bBuyingLine__eText mInputLong mInputStreet" name="order[address_street]" value="" />
-						
-						<div class="bErrorText"><div class="bErrorText__eInner">Укажите улицу</div></div>
+						<input type="text" id="order_address_street" class="bBuyingLine__eText mInputLong mInputStreet" name="order[address_street]" value="" />						
 					</div>
 
 					<div class="bInputAddress">
 						<label class="bPlaceholder">Дом*</label>
-						<input type="text" id="order_address_building" class="bBuyingLine__eText mInputShort mInputBuild" name="order[address_building]" value="" />
-					
-						<div class="bErrorText"><div class="bErrorText__eInner">Заполните поле</div></div>
+						<input type="text" id="order_address_building" class="bBuyingLine__eText mInputShort mInputBuild" name="order[address_building]" value="" />					
 					</div>
 
 					<div class="bInputAddress">
