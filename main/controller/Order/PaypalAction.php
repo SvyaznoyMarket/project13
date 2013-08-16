@@ -19,26 +19,30 @@ class PaypalAction {
                 throw new \Exception\NotFoundException('Не передан параметр PayerID');
             }
 
-            $result = null;
-            $client->addQuery(
+            $result = $client->query(
                 'payment/paypal-get-info',
                 [
                     'token'   => $token,
                     'PayerID' => $payerId,
                 ],
-                [],
-                function($data) use (&$result) { $result = $data; },
-                function(\Exception $e) use (&$result) { $result = $e; }
+                []
             );
-            $client->execute();
+            \App::logger()->info(['action' => __METHOD__, 'core.response' => $result], ['order', 'paypal']);
 
-            if ($result instanceof \Exception) {
-                throw $result;
+            if (!isset($result['order']) || !is_array($result['order'])) {
+                throw new \Exception('Не получена информация о заказе');
             }
+
+            $order = new \Model\Order\CreatedEntity($result['order']);
+
+            $orders = [
+                $order,
+            ];
 
             \App::debug()->add('core.response', json_encode($result, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 200, \Debug\Collector::TYPE_INFO);
 
-            $page = new \View\Order\PaymentSuccessPage();
+            $page = new \View\Order\PaypalSuccessPage();
+            $page->setParam('orders', $orders);
         } catch(\Exception $e) {
             \App::debug()->add('core.response', $e, 200, \Debug\Collector::TYPE_ERROR);
 
