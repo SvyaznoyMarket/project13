@@ -421,10 +421,11 @@ foreach (array_reverse($productsById) as $product) {
 			<div class="bBuyingLine">
 				<div class="bBuyingLine__eLeft"></div>
 
-				<div class="bBuyingLine__eRight bInputList">
+				<div class="bBuyingLine__eRight bInputList mRules">
 
 					<!-- Privacy and policy -->
 					<input class="jsCustomRadio bCustomInput mCustomCheckBig" type="checkbox" name="order[agreed]" hidden id="order_agreed"/>
+
 					<label class="bCustomLabel mCustomLabelBig" for="order_agreed">
 						Я ознакомлен и согласен с «<a href="<?= $isCorporative ? '/corp-terms' : '/terms' ?>" target="_blank">Условиями продажи</a>» и «<a href="/legal" target="_blank">Правовой информацией</a>»*
 					</label>

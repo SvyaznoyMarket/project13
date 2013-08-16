@@ -283,7 +283,7 @@ FormValidator.prototype._markFieldError = function( fieldNode, errorMsg ) {
 	console.log(errorMsg);
 	
 	fieldNode.addClass(this.config.errorClass);
-	fieldNode.after('<div class="bErrorText"><div class="bErrorText__eInner">'+errorMsg+'</div></div>');
+	fieldNode.before('<div class="bErrorText"><div class="bErrorText__eInner">'+errorMsg+'</div></div>');
 };
 
 /**
