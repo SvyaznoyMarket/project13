@@ -94,8 +94,10 @@ foreach (array_reverse($productsById) as $product) {
 			<div class="bBuyingLine">
 				<div class="bBuyingLine__eLeft">
 					<h2 class="bBuyingSteps__eTitle">
-						<span data-bind="text: box.deliveryName+' '+box.choosenDate().name"></span><span data-bind="visible: !hasPointDelivery">*</span>
+						<span data-bind="text: box.deliveryName"></span>
 					</h2>
+
+					<div class="bDeliverySelf"><span data-bind="visible: box.hasPointDelivery, text: box.choosenPoint().name"></span></div>
 
 					<!-- кнопка сменить магазин -->
 					<a class="bBigOrangeButton mSelectShop" href="#" data-bind="visible: box.hasPointDelivery,
@@ -133,7 +135,7 @@ foreach (array_reverse($productsById) as $product) {
 					<!-- /Celendar -->
 
 					<div class="bDeliveryDate">
-						1 августа, четверг<em class="bStar">*</em>
+						<span data-bind="text: box.deliveryName+' '+box.choosenDate().name"></span>, день недели <span data-bind="visible: !hasPointDelivery">*</span>
 					</div>
 
 					<div class="bSelectWrap mFastInpSmall">
@@ -154,7 +156,7 @@ foreach (array_reverse($productsById) as $product) {
 						<div class="bBuyingLine__eRight">
 							<div class="bOrderItems">
 								<div class="bItemsRow mItemImg">
-									<img data-bind="attr: { src: product.productImg }" />
+									<img class="bItemsRow__eImgProd" data-bind="attr: { src: product.productImg }" />
 								</div>
 
 								<div class="bItemsRow mItemInfo">
@@ -204,8 +206,6 @@ foreach (array_reverse($productsById) as $product) {
 						<span data-bind="text: box.deliveryPrice === 0 ? 'Бесплатно' : box.deliveryPrice"></span>
 						<span class="rubl" data-bind="visible: box.deliveryPrice">p</span>
 					</span>
-
-					<span class="bDelivery" data-bind="visible: box.hasPointDelivery, text: box.choosenPoint().name"></span>
 				</li>
 
 				<li class="bSumOrderInfo__eLine">

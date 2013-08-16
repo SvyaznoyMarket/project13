@@ -7,9 +7,9 @@ return function (
 
 ?>
 <script type="text/html" id="processBlock">
-    <div class="process">
-        <div class="img <%=typeNum%>"></div>
-        <p><%=text%></p>
+    <div class="process bProcess">
+        <div class="img bProcess__eImg <%=typeNum%>"></div>
+        <p class="bProcess__eText"><%=text%></p>
         <div class="clear"></div>
     </div>
 </script>
