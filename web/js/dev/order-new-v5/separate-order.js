@@ -175,6 +175,7 @@
 	 * === ORDER MODEL ===
 	 */
 	global.OrderModel = {
+		updateUrl: $('#jsOrderDelivery').data('url'),
 		/**
 		 * Флаг завершения обработки данных
 		 */
@@ -245,7 +246,7 @@
 		/**
 		 * URL по которому нужно проверять карту
 		 */
-		couponUrl: ko.observable(),
+		couponUrl: ko.observable($('.bSaleData .jsCustomRadio').eq(0).val()),
 
 		/**
 		 * Ошибки сертификата

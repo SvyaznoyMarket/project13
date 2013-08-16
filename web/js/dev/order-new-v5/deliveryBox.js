@@ -38,6 +38,8 @@ function DeliveryBox( products, state, choosenPointForBox, createdBox, OrderMode
 
 	// Выбранная дата доставки
 	self.choosenDate = ko.observable();
+
+	self.choosenNameOfWeek = ko.observable();
 	// Выбранная точка доставки
 	self.choosenPoint = ko.observable({id:choosenPointForBox});
 	// Выбранный интервал доставки
@@ -258,13 +260,25 @@ DeliveryBox.prototype.addProductGroup = function( products ) {
 };
 
 /**
- * Получение человекочитаемого названия дня недели
+ * Получение сокращенного человекочитаемого названия дня недели
  * 
  * @param	{Number}	dateFromModel	Номер дня недели
  * @return	{String}					Человекочитаемый день недели
  */
 DeliveryBox.prototype._getNameDayOfWeek = function( dayOfWeek ) {
 	var days = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
+
+	return days[dayOfWeek];
+};
+
+/**
+ * Получение полного человекочитаемого названия дня недели
+ * 
+ * @param	{Number}	dateFromModel	Номер дня недели
+ * @return	{String}					Человекочитаемый день недели
+ */
+DeliveryBox.prototype._getFullNameDayOfWeek = function( dayOfWeek ) {
+	var days = ['воскресение', 'понедельник', 'вторник', 'среда', 'четверг', 'пятница', 'суббота'];
 
 	return days[dayOfWeek];
 };
@@ -331,6 +345,7 @@ DeliveryBox.prototype.clickCalendarDay = function( data ) {
 		return false;
 	}
 
+	self.choosenNameOfWeek(self._getFullNameDayOfWeek(data.dayOfWeek));
 	self.choosenDate(data);
 };
 
@@ -374,6 +389,7 @@ DeliveryBox.prototype.calculateDate = function() {
 
 	// выбираем ближайшую доступную дату
 	self.choosenDate( self.allDatesForBlock()[0] );
+	self.choosenNameOfWeek( self._getFullNameDayOfWeek(self.allDatesForBlock()[0].dayOfWeek) );
 	// выбираем первый интервал
 	self.choosenInterval( self.choosenDate().intervals[0] );
 
@@ -443,7 +459,7 @@ DeliveryBox.prototype.calendarLeftBtn = function() {
 		nowLeft = parseInt(self.calendarSliderLeft(), 10);
 	// end of vars
 	
-	nowLeft += 365;
+	nowLeft += 380;
 	self.calendarSliderLeft(nowLeft);
 };
 
@@ -452,7 +468,7 @@ DeliveryBox.prototype.calendarRightBtn = function() {
 		nowLeft = parseInt(self.calendarSliderLeft(), 10);
 	// end of vars
 	
-	nowLeft -= 365;
+	nowLeft -= 380;
 	self.calendarSliderLeft(nowLeft);
 };
 
@@ -469,14 +485,14 @@ ko.bindingHandlers.calendarSlider = {
 		slider.width(dateItem.length * dateItemW);
 
 		if ( nowLeft > 0 ) {
-			nowLeft -= 365;
+			nowLeft -= 380;
 			bindingContext.box.calendarSliderLeft(nowLeft);
 
 			return;
 		}
 
 		if ( nowLeft < -slider.width() ) {
-			nowLeft += 365;
+			nowLeft += 380;
 			bindingContext.box.calendarSliderLeft(nowLeft);
 
 			return;

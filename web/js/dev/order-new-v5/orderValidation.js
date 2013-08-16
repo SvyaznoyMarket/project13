@@ -237,7 +237,8 @@
 					orderValidator.setValidate( subwayField , {
 						fieldNode: subwayField,
 						customErr: 'Не выбрана станция метро',
-						require: true
+						require: true,
+						validateOnChange: true
 					});
 				}
 			}
