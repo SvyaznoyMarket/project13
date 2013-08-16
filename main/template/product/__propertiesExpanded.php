@@ -14,10 +14,14 @@ return function (
         <div class="bSpecifications">
 
             <? if (count($properties) > 0) { ?>
-                <dl class="bSpecifications__eList clearfix">
+                <dl class="bSpecificationsList clearfix">
                     <? foreach ($properties as $property): ?>
-                        <dd><span><?= $property->getName() ?></span></dd>
-                        <dt><span><?= $property->getStringValue() ?></span></dt>
+                        <dd class="bSpecificationsList__eName">
+                            <span class="bName"><?= $property->getName() ?></span>
+                        </dd>
+                        <dt class="bSpecificationsList__eValue">
+                            <span><?= $property->getStringValue() ?></span>
+                        </dt>
                     <? endforeach; ?>
                 </dl>
             <? } ?>
