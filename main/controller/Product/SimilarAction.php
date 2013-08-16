@@ -23,44 +23,39 @@ class SimilarAction {
                 throw new \Exception(sprintf('Товар #%s не найден', $productId));
             }
 
-            $config = \App::config()->abtest['test'];
-            $abtest_arr = reset($config);
-            $method = 'smartengine';
-            $submethod = '';
+            $ABtestOption = \App::abTest()->getOption('test');
+            $ABtest = reset($ABtestOption); /* @var $ABtest \Model\Abtest\Entity */
 
 
-            if ( isset( $abtest_arr ) ) { /// if
+            if ( !empty( $ABtest ) ) { /// if
 
-                $title = $abtest_arr['name'];
-                $ab_method = $abtest_arr['key'];
-                if ( isset( $abtest_arr['subkey'] ) ) $submethod = $abtest_arr['subkey'];
+                $title = $ABtest->getName();
+                $key = $ABtest->getKey();
 
-                if (is_string( $ab_method )) {
-                    $method = $ab_method;
-                } /*elseif (is_array($ab_method)) {
-                    reset($method);
-                    $method = next( $ab_method );
-                    $submethod = next( $ab_method );
-                }*/
+                if ( 'smartengine' == $key ) {
+                    $products = $this->smartengineClient($product, $request);
+                } elseif ( 'retailrocket' == $key ) {
+                    $submethod = $ABtest->getSubkey;
+                    $products = $this->retailrocketClient($product, $request, $submethod);
+                }
 
-                $method = $method . 'Client';
-
-                if (method_exists($this, $method)) {
-                    $products = $this->$method($product, $request, $submethod);
-
+                if ( !isset($products) || !is_array($products) ) {
                     return new \Http\JsonResponse([
-                        'success' => true,
-                        'content' => \App::closureTemplating()->render('product/__slider', [
-                            'title'    => $title,
-                            'products' => $products,
-                        ]),
+                        'success' => false,
+                        'error' => ['code' => '404', 'message' => 'Not found products data in response'],
                     ]);
-                } /// if (method_exists)
+                }
+
+
+                return new \Http\JsonResponse([
+                    'success' => true,
+                    'content' => \App::closureTemplating()->render('product/__slider', [
+                        'title' => $title,
+                        'products' => $products,
+                    ]),
+                ]);
 
             }/// if
-
-            //return $this->smartengineClient($product, $request);
-            //return $this->retailrocketClient($product, $request);
 
             return new \Http\JsonResponse([
                 'success' => false,
