@@ -21,6 +21,10 @@
     </p>
     <p class="font19">Номер заказа: <?= $order->getNumber() ?></p>
 
+    <? if ($order->getDeliveredAt() instanceof \DateTime): ?>
+        <p class="font16">Дата доставки: <?= $order->getDeliveredAt()->format('d.m.Y') ?></p>
+    <? endif ?>
+
     <!--<p class="font16">Сумма заказа: <span class="mBold"><?//= $page->helper->formatPrice($order->getSum()) ?></span> <span class="rubl">p</span></p>-->
     <p class="font16">Сумма оплаты: <span class="mBold" id="paymentWithCard"><?= $page->helper->formatPrice($order->getPaySum()) ?></span> <span class="rubl">p</span></p>
     <p class="font16">Способ оплаты: <span class="mBold">PayPal</span></p>
