@@ -36,7 +36,7 @@ class PaypalAction {
                 throw $result;
             }
 
-            \App::debug()->add('core.response', $result, 200, \Debug\Collector::TYPE_INFO);
+            \App::debug()->add('core.response', json_encode($result, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 200, \Debug\Collector::TYPE_INFO);
 
             $page = new \View\Order\PaymentSuccessPage();
         } catch(\Exception $e) {
@@ -48,7 +48,15 @@ class PaypalAction {
         return new \Http\Response($page->show());
     }
 
+    /**
+     * @param \Http\Request $request
+     * @return \Http\Response
+     */
     public function fail(\Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
+
+        $page = new \View\Order\PaymentFailPage();
+
+        return new \Http\Response($page->show());
     }
 }
