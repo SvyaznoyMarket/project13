@@ -11497,7 +11497,13 @@
   .mPayMethods .mCustomRadioBig ~ .bPayMethodAction {
     display: none;
   }
+  .mPayMethods .mCustomRadioBig ~ .bProcess {
+    display: none;
+  }
   .mPayMethods .mCustomRadioBig:checked ~ .bPayMethodAction {
+    display: block;
+  }
+  .mPayMethods .mCustomRadioBig:checked ~ .bProcess {
     display: block;
   }
   .mPayMethods .bBankWrap {
