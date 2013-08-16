@@ -6,7 +6,7 @@ namespace RetailRocket;
 class Client
 {
 
-    CONST NAME = 'RetailRocket';
+    CONST NAME = 'retailrocket';
 
     public function __construct(array $config, \Logger\LoggerInterface $logger = null)
     {

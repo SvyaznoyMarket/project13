@@ -53,6 +53,12 @@ class Manager {
                             );
                             break;
                         }
+                        case \RetailRocket\Client::NAME: {
+                            \App::user()->setRecommendedProductByParams(
+                                $sender[1], \RetailRocket\Client::NAME, 'viewed_at', time()
+                            );
+                            break;
+                        }
                     }
                 }
             }
