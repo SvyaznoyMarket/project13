@@ -243,44 +243,42 @@ foreach (array_reverse($productsById) as $product) {
 
 	                <ul class="bSaleList bInputList clearfix">
 	                    <li class="bSaleList__eItem">
-	                        <input value="<?= $page->url('cart.coupon.apply') ?>" class="jsCustomRadio bCustomInput mCustomRadioBig" type="radio" id="svz_club" name="add_sale" hidden data-bind="checked: sertificateUrl" />
+	                        <input value="<?= $page->url('cart.coupon.apply') ?>" class="jsCustomRadio bCustomInput mCustomRadioBig" type="radio" id="svz_club" name="add_sale" hidden data-bind="checked: couponUrl" />
 	                        <label class="bCustomLabel mCustomLabelRadioBig" for="svz_club">Купон</label>
 	                    </li>
 
 	                    <li class="bSaleList__eItem mEnterSpa">
-	                        <input value="<?= $page->url('cart.blackcard.apply') ?>" class="jsCustomRadio bCustomInput mCustomRadioBig" type="radio" id="black_card" name="add_sale" hidden data-bind="checked: sertificateUrl" />
+	                        <input value="<?= $page->url('cart.blackcard.apply') ?>" class="jsCustomRadio bCustomInput mCustomRadioBig" type="radio" id="black_card" name="add_sale" hidden data-bind="checked: couponUrl" />
 	                        <label class="bCustomLabel mCustomLabelRadioBig" for="black_card">Enter Spa</label>
 	                    </li>
 	                </ul>
 
-	                <input class="bBuyingLine__eText mSaleInput" type="text" id="" data-bind="value: sertificateNumber, valueUpdate: 'afterkeydown' " />
+	                <input class="bBuyingLine__eText mSaleInput" type="text" id="" data-bind="value: couponNumber, valueUpdate: 'afterkeydown' " />
 
-	                <button class="bBigOrangeButton mSaleBtn" data-bind="click: checkSertificate">Применить</button>
+	                <button class="bBigOrangeButton mSaleBtn" data-bind="click: checkCoupon">Применить</button>
 
-	                <p class="bSaleError" data-bind="text: sertificateError"></p>
+	                <p class="bSaleError" data-bind="text: couponError"></p>
 	            </div>
 
 	            <div class="bSaleCheck"></div>
 
-	             <!-- Products -->
-				<!-- <div class="bBuyingLine mProductsLine">
+	             <!-- Coupons -->
+            	<div class="bBuyingLine mProductsLine" data-bind="foreach: { data: couponsBox(), as: 'coupon' }">
 					<div class="bOrderItems">
-						<div class="bItemsRow mItemImg"></div>
+						<div class="bItemsRow mItemImg" data-bind="css: { mError: coupon.error }"></div>
 
-						<div class="bItemsRow mItemInfo">
-							Для заказа действует скидка «КЦ 300»
-						</div>
+						<div class="bItemsRow mItemInfo" data-bind="text: coupon.name"></div>
 
 						<div class="bItemsRow mCountItem"></div>
 
 						<div class="bItemsRow mDelItem">
-							<a class="bDelItem" href="">удалить</a>
+							<a class="bDelItem" data-bind="attr: { href: coupon.deleteUrl }">удалить</a>
 						</div>
 
-						<div class="bItemsRow mItemRight"> -300 <span class="rubl">p</span></div>
+						<div class="bItemsRow mItemRight"><span data-bind="text: coupon.sum"></span> <span class="rubl">p</span></div>
 					</div>
-				</div> -->
-				<!-- /Products -->
+				</div>
+	            <!-- /Coupons -->
 	        </div>
 
 	        <!-- Sum -->
