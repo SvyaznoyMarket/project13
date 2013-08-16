@@ -403,7 +403,7 @@
 				if ( !$('#3dImgContainer').length ) {
 					var AnimFramePlayer = new DAnimFramePlayer(document.getElementById('3dModelImg'), host);
 					AnimFramePlayer.DoLoadModel(data);
-					$('.bPhotoActionOtherAction__eGrad360.3dimg').bind('click', furniture3dPopupShow);
+					$('.mGrad360.3dimg').bind('click', furniture3dPopupShow);
 				}
 			}
 			catch ( err ) {
@@ -673,10 +673,7 @@
 		};
 
 		var lowPriceNitiferSubmit = function(){
-			if (submitBtn.hasClass('mDisabled')){
-				error.show().html('Неправильный email');
-				return false;
-			}
+
 
 			var submitUrl = submitBtn.data('url');
 			submitUrl += encodeURI('?email='+input.val());
@@ -699,15 +696,7 @@
 			return false;
 		};
 
-		input.placeholder().emailValidate({
-			onValid: function(){
-				submitBtn.removeClass('mDisabled');
-				error.hide();
-			},
-			onInvalid: function(){
-				submitBtn.addClass('mDisabled');
-			}
-		});
+		
 		submitBtn.bind('click', lowPriceNitiferSubmit);
 		notiferButton.bind('click', lowPriceNitiferShow);
 	};
