@@ -1,12 +1,4 @@
 @orderSprite-url:"@{base-url}/order/img/orderSprite.png";
-.bErrorText {
-  height: 0;
-  font-size: 11px;
-  color: #ec434f;
-  padding: 0px 0 0 10px;
-  line-height: 16px;
-}
-
 .bBuyingHead {
   margin-bottom: 20px;
   padding: 25px 0px 10px;
@@ -335,5 +327,25 @@
     vertical-align: middle;
 
     *display: inline;
+  }
+}
+
+.mError{
+  border-color: #ec434f;
+} 
+.bErrorText {
+  height: 0;
+  font-size: 11px;
+  color: #ec434f;
+  padding: 0px 0 0 10px;
+  line-height: 16px;
+  position: absolute;
+
+  &__eInner {
+    position: relative;
+    top: -42px;
+    z-index: 999;
+    background: #fff;
+    padding: 0 5px; 
   }
 }
