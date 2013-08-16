@@ -212,6 +212,7 @@ class AppConfig {
     public $productCategory = [
         'url'             => [],
         'jewelController' => null,
+        'newShow'         => null,
     ];
     /** @var array */
     public $service = [
