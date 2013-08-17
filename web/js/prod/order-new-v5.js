@@ -52,7 +52,7 @@ function DeliveryBox( products, state, choosenPointForBox, createdBox, OrderMode
 	// Массив всех доступных дат для блока
 	self.allDatesForBlock = ko.observableArray([]);
 	// Массив всех точек доставок
-	self.pointList = ko.observableArray([]);
+	self.pointList = [];
 
 	if ( self.hasPointDelivery ) {
 		// Доставка в выбранный пункт
@@ -151,13 +151,13 @@ DeliveryBox.prototype.changePoint = function( ) {
 	var self = this;
 
 	// запонимаем токен бокса которому она принадлежит
-	for ( var i = self.pointList().length - 1; i >= 0; i-- ) {
-		self.pointList()[i].parentBoxToken = self.token;
+	for ( var i = self.pointList.length - 1; i >= 0; i-- ) {
+		self.pointList[i].parentBoxToken = self.token;
 	}
 	
 	self.OrderModel.popupWithPoints({
 		header: 'Выберите точку доставки',
-		points: self.pointList()
+		points: self.pointList
 	});
 
 	self.OrderModel.showPopupWithPoints(true);
@@ -651,17 +651,18 @@ OrderDictionary.prototype.hasPointDelivery = function( state ) {
  * 
  * @param	{String}	state		Метод доставки
  * @param	{String}	pointId		Идентификатор точки достаки
- * @return	{Object}				Данные о точке доставки
+ * @return	{Array}				Данные о точке доставки
  */
 OrderDictionary.prototype.getPointByStateAndId = function( state, pointId ) {
-	var points = this.getAllPointsByState(state);
+	var points = this.getAllPointsByState(state),
+		findedPoint = null;
 	// end of vars
 	
 	pointId = pointId+'';
 
-	for (var i = points.length - 1; i >= 0; i--) {
+	for ( var i = points.length - 1; i >= 0; i-- ) {
 		if ( points[i].id === pointId ) {
-			return points[i];
+			return window.cloneObject(points[i]);
 		}
 	}
 };

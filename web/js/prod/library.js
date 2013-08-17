@@ -1,3 +1,24 @@
+;(function ( global ) {
+	global.cloneObject = function cloneObject( obj ) {
+		if  ( obj == null || typeof( obj ) !== 'object' ) {
+			return obj;
+		}
+		var temp = {};
+
+		for ( var key in obj ) {
+			temp[key] = cloneObject(obj[key]);
+		}
+
+		return temp;
+	}
+}(this));
+ 
+ 
+/** 
+ * NEW FILE!!! 
+ */
+ 
+ 
 /*
 	http://www.JSON.org/json2.js
 	2011-10-19
