@@ -195,14 +195,14 @@ foreach (array_reverse($productsById) as $product) {
 			</div>
 			<!-- /Points popup -->
 
-			<div class="bFootnote">* Дату доставки уточнит специалист Контакт-сENTER</div>
+			<div class="bFootnote" data-bind="visible: !hasPointDelivery">* Дату доставки уточнит специалист Контакт-сENTER</div>
 
 			<!-- Sum -->
 			<ul class="bSumOrderInfo">
-				<li class="bSumOrderInfo__eLine">
+				<li class="bSumOrderInfo__eLine" data-bind="visible: !hasPointDelivery">
 					Доставка:&nbsp;&nbsp;
 					
-					<span class="bDelivery" data-bind="visible: !hasPointDelivery">
+					<span class="bDelivery">
 						<span data-bind="text: box.deliveryPrice === 0 ? 'Бесплатно' : box.deliveryPrice"></span>
 						<span class="rubl" data-bind="visible: box.deliveryPrice">p</span>
 					</span>
