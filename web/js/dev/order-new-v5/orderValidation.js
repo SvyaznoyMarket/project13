@@ -75,50 +75,25 @@
 	
 	orderValidator = new FormValidator(validationConfig);
 	
-		/**
-		 * Блокер экрана
-		 *
-		 * @param	{Object}		noti		Объект jQuery блокера экрана
-		 * @param	{Function}		block		Функция блокировки экрана. На вход принимает текст который нужно отобразить в окошке блокера
-		 * @param	{Function}		unblock		Функция разблокировки экрана. Объект окна блокера удаляется.
-		 */
-	var blockScreen = {
-			noti: null,
-			block: function( text ) {
-				console.warn('block screen');
-
-				if ( this.noti ) {
-					this.unblock();
-				}
-
-				this.noti = $('<div>').addClass('noti').html('<div><img src="/images/ajaxnoti.gif" /></br></br> '+ text +'</div>');
-				this.noti.appendTo('body');
-
-				this.noti.lightbox_me({
-					centered:true,
-					closeClick:false,
-					closeEsc:false
-				});
-			},
-
-			unblock: function() {
-				console.warn('unblock screen');
-
-				this.noti.trigger('close');
-				this.noti.remove();
-			}
-		},
 
 		/**
 		 * Обработка ответа от сервера
 		 *
 		 * @param	{Object}	res		Ответ сервера
 		 */
-		processingResponse = function processingResponse( res ) {
+	var processingResponse = function processingResponse( res ) {
 			console.info('данные отправлены. получен ответ от сервера');
 			console.log(res);
 
-			blockScreen.unblock();
+			if ( !res.success ) {
+				console.log('ошибка оформления заказа');
+
+				return false;
+			}
+
+			global.OrderModel.blockScreen.unblock();
+
+			document.location.href = res.redirect;
 		},
 
 		/**
@@ -133,7 +108,7 @@
 				orderForm = $('#order-form');
 			// end of vars
 			
-			blockScreen.block('Ваш заказ оформляется');
+			global.OrderModel.blockScreen.block('Ваш заказ оформляется');
 
 			/**
 			 * Перебираем блоки доставки

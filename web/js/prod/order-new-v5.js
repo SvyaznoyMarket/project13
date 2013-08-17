@@ -720,12 +720,6 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 		urlCheck = fieldsWrap.attr('data-url');
 	// end of vars
 
-	console.log(sertificateWrap)
-	console.log(code)
-	console.log(pin)
-	console.log(fieldsWrap)
-	console.log(urlCheck)
-
 
 	var SertificateCard = (function() {
 
@@ -928,50 +922,25 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 	
 	orderValidator = new FormValidator(validationConfig);
 	
-		/**
-		 * Блокер экрана
-		 *
-		 * @param	{Object}		noti		Объект jQuery блокера экрана
-		 * @param	{Function}		block		Функция блокировки экрана. На вход принимает текст который нужно отобразить в окошке блокера
-		 * @param	{Function}		unblock		Функция разблокировки экрана. Объект окна блокера удаляется.
-		 */
-	var blockScreen = {
-			noti: null,
-			block: function( text ) {
-				console.warn('block screen');
-
-				if ( this.noti ) {
-					this.unblock();
-				}
-
-				this.noti = $('<div>').addClass('noti').html('<div><img src="/images/ajaxnoti.gif" /></br></br> '+ text +'</div>');
-				this.noti.appendTo('body');
-
-				this.noti.lightbox_me({
-					centered:true,
-					closeClick:false,
-					closeEsc:false
-				});
-			},
-
-			unblock: function() {
-				console.warn('unblock screen');
-
-				this.noti.trigger('close');
-				this.noti.remove();
-			}
-		},
 
 		/**
 		 * Обработка ответа от сервера
 		 *
 		 * @param	{Object}	res		Ответ сервера
 		 */
-		processingResponse = function processingResponse( res ) {
+	var processingResponse = function processingResponse( res ) {
 			console.info('данные отправлены. получен ответ от сервера');
 			console.log(res);
 
-			blockScreen.unblock();
+			if ( !res.success ) {
+				console.log('ошибка оформления заказа');
+
+				return false;
+			}
+
+			global.OrderModel.blockScreen.unblock();
+
+			document.location.href = res.redirect;
 		},
 
 		/**
@@ -986,7 +955,7 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 				orderForm = $('#order-form');
 			// end of vars
 			
-			blockScreen.block('Ваш заказ оформляется');
+			global.OrderModel.blockScreen.block('Ваш заказ оформляется');
 
 			/**
 			 * Перебираем блоки доставки
@@ -1227,7 +1196,7 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 		global.OrderModel.deliveryBoxes.removeAll();
 
 		// Маркируем выбранный способ доставки
-		global.OrderModel.deliveryTypesButton.attr('checked','checked');
+		$('#'+global.OrderModel.deliveryTypesButton).attr('checked','checked');
 			
 		// Обнуляем общую стоимость заказа
 		global.OrderModel.totalSum(0);
@@ -1438,9 +1407,45 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 		couponsBox: ko.observableArray([]),
 
 		/**
+		 * Блокер экрана
+		 *
+		 * @param	{Object}		noti		Объект jQuery блокера экрана
+		 * @param	{Function}		block		Функция блокировки экрана. На вход принимает текст который нужно отобразить в окошке блокера
+		 * @param	{Function}		unblock		Функция разблокировки экрана. Объект окна блокера удаляется.
+		 */
+		blockScreen: {
+			noti: null,
+			block: function( text ) {
+				console.warn('block screen');
+
+				if ( this.noti ) {
+					this.unblock();
+				}
+
+				this.noti = $('<div>').addClass('noti').html('<div><img src="/images/ajaxnoti.gif" /></br></br> '+ text +'</div>');
+				this.noti.appendTo('body');
+
+				this.noti.lightbox_me({
+					centered:true,
+					closeClick:false,
+					closeEsc:false
+				});
+			},
+
+			unblock: function() {
+				console.warn('unblock screen');
+
+				this.noti.trigger('close');
+				this.noti.remove();
+			}
+		},
+
+		/**
 		 * Проверка сертификата
 		 */
 		checkCoupon: function() {
+			console.info('проверяем купон');
+
 			var dataToSend = {
 					number: global.OrderModel.couponNumber(),
 				},
@@ -1448,17 +1453,30 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 			// end of vars
 
 			var couponResponceHandler = function couponResponceHandler( res ) {
+				global.OrderModel.blockScreen.block('Применяем купон');
+
 				if ( !res.success ) {
 					global.OrderModel.couponError(res.error.message);
+					global.OrderModel.blockScreen.unblock();
 
 					return;
 				}
+
+				global.OrderModel.modelUpdate();
 			};
 
 			global.OrderModel.couponError('');
 
 			if ( url === undefined ) {
+				console.warn('Не выбран тип сертификата');
 				global.OrderModel.couponError('Не выбран тип сертификата');
+
+				return;
+			}
+
+			if ( dataToSend.number === undefined || !dataToSend.number.length ) {
+				console.warn('Не введен номер сертификата');
+				global.OrderModel.couponError('Не введен номер сертификата');
 
 				return;
 			}
@@ -1509,18 +1527,18 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 		 * @param	{Array}		data.states		Варианты типов доставки подходящих к этому методу
 		 *
 		 * @param	{String}	priorityState	Приоритетный метод доставки из массива
-		 * @param	{Object}	checkedInput	Ссылка на элемент input по которому кликнули
+		 * @param	{Object}	checkedInputId	Ссылка на элемент input по которому кликнули
 		 */
 		chooseDeliveryTypes: function( data, event ) {
 			var priorityState = data.states[0],
-				checkedInput = $('#'+event.target.htmlFor);
+				checkedInputId = event.target.htmlFor;
 			// end of vars
 
-			if ( checkedInput.attr('checked') ) {
+			if ( $('#'+checkedInputId).attr('checked') ) {
 				return false;
 			}
 
-			global.OrderModel.deliveryTypesButton = checkedInput;
+			global.OrderModel.deliveryTypesButton = checkedInputId;
 			global.OrderModel.tmpStatesPriority = data.states;
 			global.OrderModel.choosenDeliveryTypeId = data.id;
 
@@ -1544,6 +1562,59 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 
 			// Разбиваем на подзаказы
 			separateOrder( global.OrderModel.statesPriority );
+
+			return false;
+		},
+
+		/**
+		 * Обновление данных
+		 */
+		modelUpdate: function() {
+			console.info('обновление данных с сервера');
+			
+			var updateResponceHandler = function updateResponceHandler( res ) {
+				renderOrderData(res);
+				separateOrder( global.OrderModel.statesPriority );
+				global.OrderModel.blockScreen.unblock();
+			};
+
+			$.ajax({
+				type: 'GET',
+				url: global.OrderModel.updateUrl,
+				success: updateResponceHandler
+			});
+		},
+
+		/**
+		 * Удаление товара
+		 * 
+		 * @param  {[type]} data  [description]
+		 * @param  {[type]} event [description]
+		 */
+		deleteItem: function( data, event ) {
+			console.info('удаление товара');
+
+			global.OrderModel.blockScreen.block('Удаляем товар');
+
+			var deleteItemResponceHandler = function deleteItemResponceHandler( res ) {
+				console.log( res );
+				if ( !res.success ) {
+					console.warn('не удалось удалить товар');
+					global.OrderModel.blockScreen.unblock();
+
+					return false;
+				}
+
+				global.OrderModel.modelUpdate();
+			};
+
+			console.log(data.deleteUrl);
+
+			$.ajax({
+				type: 'GET',
+				url: data.deleteUrl,
+				success: deleteItemResponceHandler
+			});
 
 			return false;
 		}

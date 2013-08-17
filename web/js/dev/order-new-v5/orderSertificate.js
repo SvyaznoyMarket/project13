@@ -13,12 +13,6 @@
 		urlCheck = fieldsWrap.attr('data-url');
 	// end of vars
 
-	console.log(sertificateWrap)
-	console.log(code)
-	console.log(pin)
-	console.log(fieldsWrap)
-	console.log(urlCheck)
-
 
 	var SertificateCard = (function() {
 

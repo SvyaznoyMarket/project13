@@ -168,7 +168,7 @@ foreach (array_reverse($productsById) as $product) {
 								</div>
 
 								<div class="bItemsRow mDelItem">
-									<a class="bDelItem" data-bind="attr: { href: product.deleteUrl }, text: 'удалить'"></a>
+									<a class="bDelItem" data-bind="attr: { href: product.deleteUrl }, text: 'удалить', click: $root.deleteItem"></a>
 								</div>
 
 								<div class="bItemsRow mItemRight"> <span data-bind="text: window.printPrice(product.price)"></span> <span class="rubl">p</span></div>
