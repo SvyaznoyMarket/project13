@@ -11,7 +11,6 @@
  * @param	{String}		state				Текущий метод доставки для блока
  * @param	{Number}		choosenPointForBox	Выбранная точка доставки
  * 
- * @param	{Object}		createdBox			Объект со созданными блоками доставки
  * @param	{Object}		OrderModel			Модель оформления заказа
  * 
  * @constructor
@@ -22,7 +21,7 @@ function DeliveryBox( products, state, choosenPointForBox, createdBox, OrderMode
 	var self = this;
 
 	self.OrderModel = OrderModel;
-	self.createdBox = createdBox;
+	// self.createdBox = self.OrderModel.createdBox;
 	self.token = state+'_'+choosenPointForBox;
 
 	// Продукты в блоке
@@ -80,13 +79,14 @@ function DeliveryBox( products, state, choosenPointForBox, createdBox, OrderMode
  */
 DeliveryBox.prototype._makePointList = function() {
 	var self = this,
-		res = true;
+		res = true,
+		tmpPoint = null;
 	// end of vars
 
 	/**
 	 * Перебираем точки доставки для первого товара
 	 */
-	for (var point in self.products[0].deliveries ) {
+	for ( var point in self.products[0].deliveries ) {
 
 		/**
 		 * Перебираем все товары в блоке, проверяя доступна ли данная точка доставки для них
@@ -101,7 +101,8 @@ DeliveryBox.prototype._makePointList = function() {
 
 		if ( res ) {
 			// Точка достаки доступна для всех товаров в блоке
-			self.pointList.push( self.OrderModel.orderDictionary.getPointByStateAndId(self.state, point) );
+			tmpPoint = self.OrderModel.orderDictionary.getPointByStateAndId(self.state, point);
+			self.pointList.push( tmpPoint );
 		}
 	}
 };
@@ -119,20 +120,24 @@ DeliveryBox.prototype.selectPoint = function( data ) {
 	var self = this,
 		newToken = self.state+'_'+data.id;
 
-	if ( self.createdBox[newToken] !== undefined ) {
-		self.createdBox[newToken].addProductGroup(self.products);
+	if ( self.OrderModel.createdBox[newToken] !== undefined ) {
+		self.OrderModel.createdBox[newToken].addProductGroup(self.products);
 
-		delete self.createdBox[self.token];
+		delete self.OrderModel.createdBox[self.token];
 	}
 	else {
-		self.createdBox[newToken] = self.createdBox[self.token];
-		delete self.createdBox[self.token];
+		console.info('удаляем старый блок');
+		console.log('старый токен '+self.token);
+		console.log('новый токен '+newToken);
+		self.OrderModel.createdBox[newToken] = self.OrderModel.createdBox[self.token];
+		delete self.OrderModel.createdBox[self.token];
 
 		self.token = newToken;
-		self.choosenPoint(data);
+		self.choosenPoint(self.OrderModel.orderDictionary.getPointByStateAndId(self.state, data.id));
+		console.log(self.OrderModel.createdBox)
 	}
 
-	self.showPopupWithPoints(false);
+	self.OrderModel.showPopupWithPoints(false);
 
 	return false;
 };
@@ -145,7 +150,17 @@ DeliveryBox.prototype.selectPoint = function( data ) {
 DeliveryBox.prototype.changePoint = function( ) {
 	var self = this;
 
-	self.showPopupWithPoints(true);
+	// запонимаем токен бокса которому она принадлежит
+	for ( var i = self.pointList().length - 1; i >= 0; i-- ) {
+		self.pointList()[i].parentBoxToken = self.token;
+	}
+	
+	self.OrderModel.popupWithPoints({
+		header: 'Выберите точку доставки',
+		points: self.pointList()
+	});
+
+	self.OrderModel.showPopupWithPoints(true);
 
 	return false;
 };
@@ -192,13 +207,13 @@ DeliveryBox.prototype._addProduct = function( product ) {
 
 		tempProductArray.push(product);
 
-		if ( self.createdBox[token] !== undefined ) {
+		if ( self.OrderModel.createdBox[token] !== undefined ) {
 			// Блок для этого типа доставки в этот пункт уже существует. Добавляем продукт в блок
-			self.createdBox[token].addProductGroup( product );
+			self.OrderModel.createdBox[token].addProductGroup( product );
 		}
 		else {
 			// Блока для этого типа доставки в этот пункт еще существует
-			self.createdBox[token] = new DeliveryBox( tempProductArray, self.state, firstAvaliblePoint, self.createdBox, self.OrderModel );
+			self.OrderModel.createdBox[token] = new DeliveryBox( tempProductArray, self.state, firstAvaliblePoint, self.OrderModel.createdBox, self.OrderModel );
 		}
 
 		return;
@@ -1214,12 +1229,6 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 	console.info('Логика разбиения заказа для оформления заказа v.5');
 
 	/**
-	 * Хранилище блоков доставки
-	 * @type {Object}
-	 */
-	var createdBox = {};
-
-	/**
 	 * Логика разбиения заказа на подзаказы
 	 * Берутся states из выбранного способа доставки в порядке приоритета.
 	 * Каждый новый states - новый подзаказ.
@@ -1249,7 +1258,7 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 
 
 		// очищаем объект созданых блоков, удаляем блоки из модели
-		createdBox = {};
+		global.OrderModel.createdBox = {};
 		global.OrderModel.deliveryBoxes.removeAll();
 
 		// Маркируем выбранный способ доставки
@@ -1308,19 +1317,19 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 
 				token = nowState+'_'+choosenPointForBox;
 
-				if ( createdBox[token] !== undefined ) {
+				if ( global.OrderModel.createdBox[token] !== undefined ) {
 					// Блок для этого типа доставки в этот пункт уже существует
-					createdBox[token].addProductGroup( productsToNewBox );
+					global.OrderModel.createdBox[token].addProductGroup( productsToNewBox );
 				}
 				else {
 					// Блока для этого типа доставки в этот пункт еще существует
-					createdBox[token] = new DeliveryBox( productsToNewBox, nowState, choosenPointForBox, createdBox, global.OrderModel );
+					global.OrderModel.createdBox[token] = new DeliveryBox( productsToNewBox, nowState, choosenPointForBox, global.OrderModel.createdBox, global.OrderModel );
 				}
 			}
 		}
 
 		console.info('Созданные блоки:');
-		console.log(createdBox);
+		console.log(global.OrderModel.createdBox);
 
 		if ( preparedProducts.length !== global.OrderModel.orderDictionary.orderData.products.length ) {
 			console.warn('не все товары были обработаны');
@@ -1334,10 +1343,14 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 	ko.bindingHandlers.popupShower = {
 		update: function( element, valueAccessor ) {
 			var val = valueAccessor(),
-				unwrapVal = ko.utils.unwrapObservable(val);
+				unwrapVal = ko.utils.unwrapObservable(val),
+				map = null;
 			// end of vars
 
 			if ( unwrapVal ) {
+				// create map
+				map = new CreateMap('pointPopupMap', global.OrderModel.popupWithPoints().points, $('#mapInfoBlock'));
+
 				$(element).lightbox_me({
 					centered: true,
 					onClose: function() {
@@ -1347,6 +1360,7 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 				});
 			}
 			else {
+				$('#pointPopupMap').empty();
 				$(element).trigger('close');
 			}
 		}
@@ -1432,6 +1446,11 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 		 * Массив блоков доставок
 		 */
 		deliveryBoxes: ko.observableArray([]),
+
+		/**
+		 * Хранилище блоков доставки
+		 */
+		createdBox: {},
 
 		/**
 		 * Объект данных для отображения окна с пунктами доставок
@@ -1559,6 +1578,14 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 		 */
 		selectPoint: function( data ) {
 			console.info('point selected...');
+			console.log(data.parentBoxToken)
+
+			if ( data.parentBoxToken ) {
+				console.log(global.OrderModel.createdBox[data.parentBoxToken]);
+				global.OrderModel.createdBox[data.parentBoxToken].selectPoint.apply(global.OrderModel.createdBox[data.parentBoxToken],[data]);
+
+				return false;
+			}
 
 			// Сохраняем приоритет методов доставок
 			global.OrderModel.statesPriority = global.OrderModel.tmpStatesPriority;
@@ -1628,7 +1655,7 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 		 */
 		modelUpdate: function() {
 			console.info('обновление данных с сервера');
-			
+
 			var updateResponceHandler = function updateResponceHandler( res ) {
 				renderOrderData(res);
 				separateOrder( global.OrderModel.statesPriority );
@@ -1827,9 +1854,26 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 
 			global.OrderModel.deliveryTypes(res.deliveryTypes);
 			global.OrderModel.prepareData(true);
+		},
+
+		selectPointOnBaloon = function( event ) {
+			console.log('selectPointOnBaloon');
+			console.log(event);
+
+			console.log($(this).data('pointid'));
+			console.log($(this).data('parentbox'));
+
+			global.OrderModel.selectPoint({
+				id: $(this).data('pointid'),
+				parentBoxToken: $(this).data('parentbox')				
+			});
+
+			return false;
 		};
 	// end of functions
-	
+
+	$('body').on('click', '.shopchoose', selectPointOnBaloon);
+
 
 	renderOrderData($('#jsOrderDelivery').data('value'));
 }(this));

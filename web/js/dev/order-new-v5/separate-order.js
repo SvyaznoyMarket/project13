@@ -9,12 +9,6 @@
 	console.info('Логика разбиения заказа для оформления заказа v.5');
 
 	/**
-	 * Хранилище блоков доставки
-	 * @type {Object}
-	 */
-	var createdBox = {};
-
-	/**
 	 * Логика разбиения заказа на подзаказы
 	 * Берутся states из выбранного способа доставки в порядке приоритета.
 	 * Каждый новый states - новый подзаказ.
@@ -44,7 +38,7 @@
 
 
 		// очищаем объект созданых блоков, удаляем блоки из модели
-		createdBox = {};
+		global.OrderModel.createdBox = {};
 		global.OrderModel.deliveryBoxes.removeAll();
 
 		// Маркируем выбранный способ доставки
@@ -103,19 +97,19 @@
 
 				token = nowState+'_'+choosenPointForBox;
 
-				if ( createdBox[token] !== undefined ) {
+				if ( global.OrderModel.createdBox[token] !== undefined ) {
 					// Блок для этого типа доставки в этот пункт уже существует
-					createdBox[token].addProductGroup( productsToNewBox );
+					global.OrderModel.createdBox[token].addProductGroup( productsToNewBox );
 				}
 				else {
 					// Блока для этого типа доставки в этот пункт еще существует
-					createdBox[token] = new DeliveryBox( productsToNewBox, nowState, choosenPointForBox, createdBox, global.OrderModel );
+					global.OrderModel.createdBox[token] = new DeliveryBox( productsToNewBox, nowState, choosenPointForBox, global.OrderModel.createdBox, global.OrderModel );
 				}
 			}
 		}
 
 		console.info('Созданные блоки:');
-		console.log(createdBox);
+		console.log(global.OrderModel.createdBox);
 
 		if ( preparedProducts.length !== global.OrderModel.orderDictionary.orderData.products.length ) {
 			console.warn('не все товары были обработаны');
@@ -129,10 +123,14 @@
 	ko.bindingHandlers.popupShower = {
 		update: function( element, valueAccessor ) {
 			var val = valueAccessor(),
-				unwrapVal = ko.utils.unwrapObservable(val);
+				unwrapVal = ko.utils.unwrapObservable(val),
+				map = null;
 			// end of vars
 
 			if ( unwrapVal ) {
+				// create map
+				map = new CreateMap('pointPopupMap', global.OrderModel.popupWithPoints().points, $('#mapInfoBlock'));
+
 				$(element).lightbox_me({
 					centered: true,
 					onClose: function() {
@@ -142,6 +140,7 @@
 				});
 			}
 			else {
+				$('#pointPopupMap').empty();
 				$(element).trigger('close');
 			}
 		}
@@ -227,6 +226,11 @@
 		 * Массив блоков доставок
 		 */
 		deliveryBoxes: ko.observableArray([]),
+
+		/**
+		 * Хранилище блоков доставки
+		 */
+		createdBox: {},
 
 		/**
 		 * Объект данных для отображения окна с пунктами доставок
@@ -354,6 +358,14 @@
 		 */
 		selectPoint: function( data ) {
 			console.info('point selected...');
+			console.log(data.parentBoxToken)
+
+			if ( data.parentBoxToken ) {
+				console.log(global.OrderModel.createdBox[data.parentBoxToken]);
+				global.OrderModel.createdBox[data.parentBoxToken].selectPoint.apply(global.OrderModel.createdBox[data.parentBoxToken],[data]);
+
+				return false;
+			}
 
 			// Сохраняем приоритет методов доставок
 			global.OrderModel.statesPriority = global.OrderModel.tmpStatesPriority;
@@ -423,7 +435,7 @@
 		 */
 		modelUpdate: function() {
 			console.info('обновление данных с сервера');
-			
+
 			var updateResponceHandler = function updateResponceHandler( res ) {
 				renderOrderData(res);
 				separateOrder( global.OrderModel.statesPriority );
@@ -622,9 +634,26 @@
 
 			global.OrderModel.deliveryTypes(res.deliveryTypes);
 			global.OrderModel.prepareData(true);
+		},
+
+		selectPointOnBaloon = function( event ) {
+			console.log('selectPointOnBaloon');
+			console.log(event);
+
+			console.log($(this).data('pointid'));
+			console.log($(this).data('parentbox'));
+
+			global.OrderModel.selectPoint({
+				id: $(this).data('pointid'),
+				parentBoxToken: $(this).data('parentbox')				
+			});
+
+			return false;
 		};
 	// end of functions
-	
+
+	$('body').on('click', '.shopchoose', selectPointOnBaloon);
+
 
 	renderOrderData($('#jsOrderDelivery').data('value'));
 }(this));

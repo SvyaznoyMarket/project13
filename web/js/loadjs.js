@@ -178,7 +178,7 @@
 			break;
 		case 'order.new': 
 			$LAB
-			.queueScript( (mapVendor==='yandex') ? 'http://api-maps.yandex.ru/2.0/?load=package.full&lang=ru-RU' : 'http://maps.google.com/maps/api/js?sensor=false')
+			.queueScript( 'http://api-maps.yandex.ru/2.0-stable/?load=package.standard&lang=ru-RU' )
 			.queueScript('http://ajax.aspnetcdn.com/ajax/knockout/knockout-2.2.1.js')
 			.queueWait( function() {
 				$LAB

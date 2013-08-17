@@ -211,7 +211,7 @@ class DeliveryAction {
                     'id'         => $shopId,
                     'name'       => $shopItem['name'],
                     'address'    => $shopItem['address'],
-                    'regime'     => $shopItem['working_time'],
+                    'regtime'     => $shopItem['working_time'],
                     'latitude'   => (float)$shopItem['coord_lat'],
                     'longitude'  => (float)$shopItem['coord_long'],
                     'products'   => isset($productIdsByShop[$shopId]) ? $productIdsByShop[$shopId] : [],
