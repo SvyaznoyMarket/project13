@@ -74,7 +74,64 @@
 	// end of vars
 	
 	orderValidator = new FormValidator(validationConfig);
+
+	var showError = function showError( msg ) {
+		var content = '<div class="popupbox width290">' +
+				'<div class="font18 pb18"> '+msg+'</div>'+
+				'</div>' +
+				'<p style="text-align:center"><a href="#" class="closePopup bBigOrangeButton">OK</a></p>',
+			block = $('<div>').addClass('popup').html(content);
+		// end of vars
+		
+		block.appendTo('body');
+
+		var errorPopupCloser = function() {
+			block.trigger('close');
+			block.remove();
+
+			return false;
+		};
+
+		block.lightbox_me({
+			centered:true,
+			onClose: errorPopupCloser
+		});
+
+		block.find('.closePopup').bind('click', errorPopupCloser);
+	};
+
+	var formErrorHandler = function formErrorHandler( formError ) {
+		console.warn('Ошибка в поле');
+		var field = $('[name="order['+formError.field+']"]');
+
+		orderValidator.setValidate( field, {
+			require: true,
+			customErr: formError.message,
+			validateOnChange: true
+		});
+
+		orderValidator._markFieldError(field, formError.message);
+	};
 	
+	var serverErrorHandler = {
+		0: function( res ) {
+			var formError = null;
+
+			showError(res.error.message);
+
+			for ( var i = res.form.error.length - 1; i >= 0; i-- ) {
+				formError = res.form.error[i];
+				console.warn(formError);
+				formErrorHandler(formError);
+			}
+
+			$.scrollTo($('.mError').eq(0), 500, {offset:-15});
+		},
+		
+		743: function( res ) {
+			showError(res.error.message);
+		}
+	};
 
 		/**
 		 * Обработка ответа от сервера
@@ -83,15 +140,15 @@
 		 */
 	var processingResponse = function processingResponse( res ) {
 			console.info('данные отправлены. получен ответ от сервера');
+			global.OrderModel.blockScreen.unblock();
 			console.log(res);
 
 			if ( !res.success ) {
 				console.log('ошибка оформления заказа');
+				serverErrorHandler[res.error.code](res);
 
 				return false;
 			}
-
-			global.OrderModel.blockScreen.unblock();
 
 			document.location.href = res.redirect;
 		},
@@ -130,7 +187,7 @@
 					products : []
 				};
 
-				for (var j = currentDeliveryBox.products.length - 1; j >= 0; j--) {
+				for ( var j = currentDeliveryBox.products.length - 1; j >= 0; j-- ) {
 					tmpPart.products.push(currentDeliveryBox.products[j].id);
 				}
 
@@ -176,7 +233,7 @@
 		 * Проверка корректности заполнения поля
 		 */
 		subwayChange = function subwayChange() {
-			for (var i = subwayArray.length - 1; i >= 0; i--) {
+			for ( var i = subwayArray.length - 1; i >= 0; i-- ) {
 				if ( subwayField.val() === subwayArray[i].label ) {
 					return;
 				}
