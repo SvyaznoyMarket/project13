@@ -15,13 +15,12 @@
  * 
  * @constructor
  */
-function DeliveryBox( products, state, choosenPointForBox, createdBox, OrderModel ) {
+function DeliveryBox( products, state, choosenPointForBox, OrderModel ) {
 	console.info('Cоздание блока доставки '+state+' для '+choosenPointForBox);
 
 	var self = this;
 
 	self.OrderModel = OrderModel;
-	// self.createdBox = self.OrderModel.createdBox;
 	self.token = state+'_'+choosenPointForBox;
 
 	// Продукты в блоке
@@ -134,7 +133,7 @@ DeliveryBox.prototype.selectPoint = function( data ) {
 
 		self.token = newToken;
 		self.choosenPoint(self.OrderModel.orderDictionary.getPointByStateAndId(self.state, data.id));
-		console.log(self.OrderModel.createdBox)
+		console.log(self.OrderModel.createdBox);
 	}
 
 	self.OrderModel.showPopupWithPoints(false);
@@ -930,7 +929,7 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 			source: subwayArray,
 			appendTo: '#metrostations',
 			minLength: 2,
-			select : function(event, ui ) {
+			select : function( event, ui ) {
 				metroIdFiled.val(ui.item.val);
 			}
 		};
@@ -1324,7 +1323,7 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 				}
 				else {
 					// Блока для этого типа доставки в этот пункт еще существует
-					global.OrderModel.createdBox[token] = new DeliveryBox( productsToNewBox, nowState, choosenPointForBox, global.OrderModel.createdBox, global.OrderModel );
+					global.OrderModel.createdBox[token] = new DeliveryBox( productsToNewBox, nowState, choosenPointForBox, global.OrderModel );
 				}
 			}
 		}
@@ -1579,7 +1578,7 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 		 */
 		selectPoint: function( data ) {
 			console.info('point selected...');
-			console.log(data.parentBoxToken)
+			console.log(data.parentBoxToken);
 
 			if ( data.parentBoxToken ) {
 				console.log(global.OrderModel.createdBox[data.parentBoxToken]);
@@ -1676,7 +1675,7 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 		 * @param  {[type]} data  [description]
 		 * @param  {[type]} event [description]
 		 */
-		deleteItem: function( data, event ) {
+		deleteItem: function( data ) {
 			console.info('удаление товара');
 
 			global.OrderModel.blockScreen.block('Удаляем товар');

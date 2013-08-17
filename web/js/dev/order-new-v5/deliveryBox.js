@@ -15,13 +15,12 @@
  * 
  * @constructor
  */
-function DeliveryBox( products, state, choosenPointForBox, createdBox, OrderModel ) {
+function DeliveryBox( products, state, choosenPointForBox, OrderModel ) {
 	console.info('Cоздание блока доставки '+state+' для '+choosenPointForBox);
 
 	var self = this;
 
 	self.OrderModel = OrderModel;
-	// self.createdBox = self.OrderModel.createdBox;
 	self.token = state+'_'+choosenPointForBox;
 
 	// Продукты в блоке
@@ -134,7 +133,7 @@ DeliveryBox.prototype.selectPoint = function( data ) {
 
 		self.token = newToken;
 		self.choosenPoint(self.OrderModel.orderDictionary.getPointByStateAndId(self.state, data.id));
-		console.log(self.OrderModel.createdBox)
+		console.log(self.OrderModel.createdBox);
 	}
 
 	self.OrderModel.showPopupWithPoints(false);

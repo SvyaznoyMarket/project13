@@ -67,7 +67,7 @@
 			source: subwayArray,
 			appendTo: '#metrostations',
 			minLength: 2,
-			select : function(event, ui ) {
+			select : function( event, ui ) {
 				metroIdFiled.val(ui.item.val);
 			}
 		};

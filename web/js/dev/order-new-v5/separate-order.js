@@ -103,7 +103,7 @@
 				}
 				else {
 					// Блока для этого типа доставки в этот пункт еще существует
-					global.OrderModel.createdBox[token] = new DeliveryBox( productsToNewBox, nowState, choosenPointForBox, global.OrderModel.createdBox, global.OrderModel );
+					global.OrderModel.createdBox[token] = new DeliveryBox( productsToNewBox, nowState, choosenPointForBox, global.OrderModel );
 				}
 			}
 		}
@@ -358,7 +358,7 @@
 		 */
 		selectPoint: function( data ) {
 			console.info('point selected...');
-			console.log(data.parentBoxToken)
+			console.log(data.parentBoxToken);
 
 			if ( data.parentBoxToken ) {
 				console.log(global.OrderModel.createdBox[data.parentBoxToken]);
@@ -455,7 +455,7 @@
 		 * @param  {[type]} data  [description]
 		 * @param  {[type]} event [description]
 		 */
-		deleteItem: function( data, event ) {
+		deleteItem: function( data ) {
 			console.info('удаление товара');
 
 			global.OrderModel.blockScreen.block('Удаляем товар');
