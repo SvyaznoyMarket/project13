@@ -117,7 +117,7 @@ class SimilarAction {
                 ? [$r['recommendeditems']['item']['id']]
                 : array_map(function($item) { return $item['id']; }, isset($r['recommendeditems']['item']) ? $r['recommendeditems']['item'] : []);
 
-            $products = $this->getProducts($ids);
+            $products = $this->prepareProducts($ids, $client::NAME);
 
             return $products;
 
@@ -146,7 +146,7 @@ class SimilarAction {
 
             $ids = $client->query('Recomendation/' . $method, $productId);
 
-            $products = $this->getProducts($ids);
+            $products = $this->prepareProducts($ids, $client::NAME);
 
             return $products;
 
@@ -176,26 +176,37 @@ class SimilarAction {
 
     /**
      * @param   array()                         $ids
+     * @param   string                          $senderName
      * @return  \Model\Product\Entity[]         $products
      * @throws  \Exception
      */
-    private function getProducts($ids) {
+    private function prepareProducts($ids, $senderName) {
         if (!(bool)$ids) {
             throw new \Exception('Рекомендации не получены');
         }
 
         $products = \RepositoryManager::product()->getCollectionById($ids);
+
+        $return = [];
         foreach ($products as $i => $product) {
-            if (!$product->getIsBuyable()) {
-                unset($products[$i]);
-            }
+            if (!$product->getIsBuyable()) continue;
+
+            $return[] = [
+                'id'     => $product->getId(),
+                'name'   => $product->getName(),
+                'image'  => $product->getImageUrl(),
+                'rating' => $product->getRating(),
+                'link'   => $product->getLink() . (false === strpos($product->getLink(), '?') ? '?' : '&') . 'sender=' . $senderName . '|' . $product->getId(),
+                'price'  => $product->getPrice(),
+                'data'   => \Kissmetrics\Manager::getProductEvent($product, $i+1, 'Similar'),
+            ];
         }
 
-        if (!(bool)$products) {
+        if (!(bool)$return) {
             throw new \Exception('Нет товаров');
         }
 
-        return $products;
+        return $return;
     }
 
 
