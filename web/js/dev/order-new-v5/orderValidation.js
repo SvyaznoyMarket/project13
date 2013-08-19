@@ -22,6 +22,12 @@
 		// complete button
 		orderCompleteBtn = $('#completeOrder'),
 
+
+		// analytics data
+		ajaxStart = null,
+		ajaxStop = null,
+		ajaxDelta = null,
+
 		/**
 		 * Конфигурация валидатора
 		 * @type {Object}
@@ -71,71 +77,106 @@
 	
 	orderValidator = new FormValidator(validationConfig);
 
+
+		/**
+		 * Показ сообщений об ошибках при оформлении заказа
+		 * 
+		 * @param	{String}	msg		Сообщение которое необходимо показать пользователю
+		 */
 	var showError = function showError( msg ) {
-		var content = '<div class="popupbox width290">' +
-				'<div class="font18 pb18"> '+msg+'</div>'+
-				'</div>' +
-				'<p style="text-align:center"><a href="#" class="closePopup bBigOrangeButton">OK</a></p>',
-			block = $('<div>').addClass('popup').html(content);
-		// end of vars
-		
-		block.appendTo('body');
+			var content = '<div class="popupbox width290">' +
+					'<div class="font18 pb18"> '+msg+'</div>'+
+					'</div>' +
+					'<p style="text-align:center"><a href="#" class="closePopup bBigOrangeButton">OK</a></p>',
+				block = $('<div>').addClass('popup').html(content);
+			// end of vars
+			
+			block.appendTo('body');
 
-		var errorPopupCloser = function() {
-			block.trigger('close');
-			block.remove();
+			var errorPopupCloser = function() {
+				block.trigger('close');
+				block.remove();
 
-			return false;
-		};
+				return false;
+			};
 
-		block.lightbox_me({
-			centered:true,
-			onClose: errorPopupCloser
-		});
+			block.lightbox_me({
+				centered:true,
+				onClose: errorPopupCloser
+			});
 
-		block.find('.closePopup').bind('click', errorPopupCloser);
-	};
+			block.find('.closePopup').bind('click', errorPopupCloser);
+		},
 
-	var formErrorHandler = function formErrorHandler( formError ) {
-		console.warn('Ошибка в поле');
-		var field = $('[name="order['+formError.field+']"]');
+		/**
+		 * Обработка ошибок формы
+		 * 
+		 * @param	{Object}	formError	Объект с полем содержащим ошибки
+		 */
+		formErrorHandler = function formErrorHandler( formError ) {
+			console.warn('Ошибка в поле');
+			var field = $('[name="order['+formError.field+']"]');
 
-		orderValidator.setValidate( field, {
-			require: true,
-			customErr: formError.message,
-			validateOnChange: true
-		});
+			orderValidator.setValidate( field, {
+				require: true,
+				customErr: formError.message,
+				validateOnChange: true
+			});
 
-		orderValidator._markFieldError(field, formError.message);
-	};
+			orderValidator._markFieldError(field, formError.message);
+		},
 	
-	var serverErrorHandler = {
-		0: function( res ) {
-			var formError = null;
+		/**
+		 * Обработка ошибок из ответа сервера
+		 */
+		serverErrorHandler = {
+			0: function( res ) {
+				var formError = null;
 
-			showError(res.error.message);
+				showError(res.error.message);
 
-			for ( var i = res.form.error.length - 1; i >= 0; i-- ) {
-				formError = res.form.error[i];
-				console.warn(formError);
-				formErrorHandler(formError);
+				for ( var i = res.form.error.length - 1; i >= 0; i-- ) {
+					formError = res.form.error[i];
+					console.warn(formError);
+					formErrorHandler(formError);
+				}
+
+				$.scrollTo($('.mError').eq(0), 500, {offset:-15});
+			},
+			
+			743: function( res ) {
+				showError(res.error.message);
+			}
+		},
+
+		/**
+		 * Аналитика завершения заказа
+		 */
+		completeAnalytics = function completeAnalytics() {
+			if ( typeof _gaq !== 'undefined') {
+				for ( var i in global.OrderModel.createdBox ) {
+					_gaq.push(['_trackEvent', 'Order card', 'Completed', 'выбрана '+global.OrderModel.choosenDeliveryTypeId+' доставят '+global.OrderModel.createdBox[i].state]);
+				}
+
+				_gaq.push(['_trackEvent', 'Order complete', global.OrderModel.createdBox.length, global.OrderModel.orderDictionary.products.length]);
+				_gaq.push(['_trackTiming', 'Order complete', 'DB response', ajaxDelta]);
 			}
 
-			$.scrollTo($('.mError').eq(0), 500, {offset:-15});
+			if ( typeof yaCounter10503055 !== 'undefined' ) {
+				yaCounter10503055.reachGoal('\orders\complete');
+			}
 		},
-		
-		743: function( res ) {
-			showError(res.error.message);
-		}
-	};
 
 		/**
 		 * Обработка ответа от сервера
 		 *
 		 * @param	{Object}	res		Ответ сервера
 		 */
-	var processingResponse = function processingResponse( res ) {
+		processingResponse = function processingResponse( res ) {
 			console.info('данные отправлены. получен ответ от сервера');
+			ajaxStop = new Date().getTime();
+			ajaxDelta = ajaxStop - ajaxStart;
+
 			global.OrderModel.blockScreen.unblock();
 			console.log(res);
 
@@ -145,6 +186,8 @@
 
 				return false;
 			}
+
+			completeAnalytics();
 
 			document.location.href = res.redirect;
 		},
@@ -167,9 +210,9 @@
 			 * Перебираем блоки доставки
 			 */
 			console.info('Перебираем блоки доставки');
-			for (var i = global.OrderModel.deliveryBoxes().length - 1; i >= 0; i--) {
+			for ( var i in global.OrderModel.createdBox ) {
 				tmpPart = {};
-				currentDeliveryBox = global.OrderModel.deliveryBoxes()[i];
+				currentDeliveryBox = global.OrderModel.createdBox[i];
 				console.log(currentDeliveryBox);
 
 				tmpPart = {
@@ -195,6 +238,8 @@
 			dataToSend.push({ name: 'order[part]', value: JSON.stringify(parts) });
 
 			console.log(dataToSend);
+
+			ajaxStart = new Date().getTime();
 
 			$.ajax({
 				url: orderForm.attr('action'),

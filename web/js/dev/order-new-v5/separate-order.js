@@ -2,11 +2,14 @@
  * Получение данных с сервера
  * Разбиение заказа
  * Модель knockout
+ * Аналитика
  *
  * @author	Zaytsev Alexandr
  */
 ;(function( global ) {
 	console.info('Логика разбиения заказа для оформления заказа v.5');
+
+	var serverData = $('#jsOrderDelivery').data('value');
 
 	/**
 	 * Логика разбиения заказа на подзаказы
@@ -461,21 +464,59 @@
 		 * @param  {[type]} event [description]
 		 */
 		deleteItem: function( data ) {
-			console.info('удаление товара');
+			console.info('удаление');
 
-			global.OrderModel.blockScreen.block('Удаляем товар');
+			global.OrderModel.blockScreen.block('Удаляем');
 
-			var deleteItemResponceHandler = function deleteItemResponceHandler( res ) {
-				console.log( res );
-				if ( !res.success ) {
-					console.warn('не удалось удалить товар');
-					global.OrderModel.blockScreen.unblock();
+			var itemDeleteAnalytics = function itemDeleteAnalytics() {
+					var products = global.OrderModel.orderDictionary.products;
+						totalPrice = 0,
+						totalQuan = 0,
 
-					return false;
-				}
+						toKISS = {};
+					// end of vars
 
-				global.OrderModel.modelUpdate();
-			};
+					if ( !data.product ) {
+						return false;
+					}
+
+					for ( var product in products ) {
+						totalPrice += product[product].price;
+						totalQuan += product[product].quantity;
+					}
+
+					toKISS = {
+						'Checkout Step 1 SKU Quantity': totalQuan,
+						'Checkout Step 1 SKU Total': totalPrice,
+					};
+
+					if ( typeof _kmq !== 'undefined' ) {
+						_kmq.push(['set', toKISS]);
+					}
+
+					if ( typeof _gaq !== 'undefined' ) {
+						_gaq.push(['_trackEvent', 'Order card', 'Item deleted']);
+					}
+				},
+
+				deleteItemResponceHandler = function deleteItemResponceHandler( res ) {
+					console.log( res );
+					if ( !res.success ) {
+						console.warn('не удалось удалить товар');
+						global.OrderModel.blockScreen.unblock();
+
+						return false;
+					}
+
+					// обновление модели
+					global.OrderModel.modelUpdate();
+
+					// запуск аналитики
+					if ( typeof _gaq !== 'undefined' || typeof _kmq !== 'undefined' ) {
+						itemDeleteAnalytics();
+					}
+				};
+			// end of functions
 
 			console.log(data.deleteUrl);
 
@@ -641,7 +682,7 @@
 			global.OrderModel.prepareData(true);
 		},
 
-		selectPointOnBaloon = function( event ) {
+		selectPointOnBaloon = function selectPointOnBaloon( event ) {
 			console.log('selectPointOnBaloon');
 			console.log(event);
 
@@ -654,11 +695,48 @@
 			});
 
 			return false;
+		},
+
+		/**
+		 * Аналитика загрузки страницы orders/new
+		 * 
+		 * @param	{Object}	orderData		Данные о заказе
+		 */
+		analyticsStep_1 = function analyticsStep1( orderData ) {
+			var totalPrice = 0,
+				totalQuan = 0,
+
+				toKISS = {};
+			// end of vars
+
+			for ( var product in orderData.products ) {
+				totalPrice += product[product].price;
+				totalQuan += product[product].quantity;
+			}
+
+			toKISS = {
+				'Checkout Step 1 SKU Quantity': totalQuan,
+				'Checkout Step 1 SKU Total': totalPrice,
+				'Checkout Step 1 Order Type': 'cart order'
+			};
+
+			if ( typeof _gaq !== 'undefined' ) {
+				_gaq.push(['_trackEvent', 'New order', 'Items', totalQuan]);
+			}
+
+			if ( typeof _kmq !== 'undefined' ) {
+				_kmq.push(['record', 'Checkout Step 1', toKISS]);
+			}
 		};
 	// end of functions
 
 	$('body').on('click', '.shopchoose', selectPointOnBaloon);
 
 
-	renderOrderData($('#jsOrderDelivery').data('value'));
+	renderOrderData( serverData );
+
+	// запуск аналитики
+	if ( typeof _gaq !== 'undefined' || typeof _kmq !== 'undefined' ) {
+		analyticsStep_1( serverData );
+	}
 }(this));
