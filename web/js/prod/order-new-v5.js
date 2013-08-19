@@ -212,7 +212,7 @@ DeliveryBox.prototype._addProduct = function( product ) {
 		}
 		else {
 			// Блока для этого типа доставки в этот пункт еще существует
-			self.OrderModel.createdBox[token] = new DeliveryBox( tempProductArray, self.state, firstAvaliblePoint, self.OrderModel.createdBox, self.OrderModel );
+			self.OrderModel.createdBox[token] = new DeliveryBox( tempProductArray, self.state, firstAvaliblePoint, self.OrderModel );
 		}
 
 		return;
