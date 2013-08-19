@@ -324,7 +324,7 @@ $c->abtest['cookieName'] = 'switch';
 $c->abtest['enabled']    = true;
 $c->abtest['bestBefore'] = '2013-08-20';
 
-$similarABtests = [
+$c->abtest['test']       = [
     // SimilarAction::smartengine
     [
         'traffic'  => '50',
@@ -348,11 +348,6 @@ $similarABtests = [
         'name'     => "С этим товаром также смотрят",
         'ga_event' => 'RetailRocket',
     ],
-];
-
-$c->abtest['test']       = [
-    $similarABtests[ rand(0, count($similarABtests) - 1) ]
-    //$similarABtests[ 2 ] // for debug
 ];
 
 return $c;
