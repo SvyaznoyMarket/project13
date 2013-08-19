@@ -53,11 +53,21 @@ function DeliveryBox( products, state, choosenPointForBox, OrderModel ) {
 	// Массив всех точек доставок
 	self.pointList = [];
 
-	if ( self.hasPointDelivery ) {
+	if ( self.hasPointDelivery && !self.OrderModel.orderDictionary.getPointByStateAndId(self.state, choosenPointForBox) ) {
 		// Доставка в выбранный пункт
+		console.info('есть точки доставки для выбранного метода доставки, но выбранная точка не доступна для этого метода доставки. Берем первую точку для выбранного метода доставки');
+
+		self.choosenPoint( self.OrderModel.orderDictionary.getFirstPointByState(self.state) );
+	}
+	else if ( self.hasPointDelivery ) {
+		// Доставка в первый пункт для данного метода доставки
+		console.info('есть точки доставки для выбранного метода доставки, и выбранная точка доступна для этого метода доставки');
+
 		self.choosenPoint( self.OrderModel.orderDictionary.getPointByStateAndId(self.state, choosenPointForBox) );
 	}
 	else {
+		console.info('для выбранного метода доставки не нужна точка доставки');
+
 		// Передаем в модель, что есть блок с доставкой домой и генерируем событие об этом
 		self.OrderModel.hasHomeDelivery(true);
 		$('body').trigger('orderdeliverychange',[true]);
@@ -657,8 +667,8 @@ OrderDictionary.prototype.hasPointDelivery = function( state ) {
  * @this	{OrderDictionary}
  * 
  * @param	{String}	state		Метод доставки
- * @param	{String}	pointId		Идентификатор точки достаки
- * @return	{Array}				Данные о точке доставки
+ * @param	{String}	pointId		Идентификатор точки доставки
+ * @return	{Object}				Данные о точке доставки
  */
 OrderDictionary.prototype.getPointByStateAndId = function( state, pointId ) {
 	var points = this.getAllPointsByState(state),
@@ -672,6 +682,24 @@ OrderDictionary.prototype.getPointByStateAndId = function( state, pointId ) {
 			return window.cloneObject(points[i]);
 		}
 	}
+
+	return false;
+};
+
+/**
+ * Получение первой точки доставки для метода доставки
+ *
+ * @this	{OrderDictionary}
+ * 
+ * @param	{String}	state		Метод доставки
+ * @return	{Object}				Данные о точке доставки
+ */
+OrderDictionary.prototype.getFirstPointByState = function( state ) {
+	var points = this.getAllPointsByState(state),
+		findedPoint = null;
+	// end of vars
+
+	return window.cloneObject(points[0]);
 };
 
 /**

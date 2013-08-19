@@ -79,8 +79,8 @@ OrderDictionary.prototype.hasPointDelivery = function( state ) {
  * @this	{OrderDictionary}
  * 
  * @param	{String}	state		Метод доставки
- * @param	{String}	pointId		Идентификатор точки достаки
- * @return	{Array}				Данные о точке доставки
+ * @param	{String}	pointId		Идентификатор точки доставки
+ * @return	{Object}				Данные о точке доставки
  */
 OrderDictionary.prototype.getPointByStateAndId = function( state, pointId ) {
 	var points = this.getAllPointsByState(state),
@@ -94,6 +94,24 @@ OrderDictionary.prototype.getPointByStateAndId = function( state, pointId ) {
 			return window.cloneObject(points[i]);
 		}
 	}
+
+	return false;
+};
+
+/**
+ * Получение первой точки доставки для метода доставки
+ *
+ * @this	{OrderDictionary}
+ * 
+ * @param	{String}	state		Метод доставки
+ * @return	{Object}				Данные о точке доставки
+ */
+OrderDictionary.prototype.getFirstPointByState = function( state ) {
+	var points = this.getAllPointsByState(state),
+		findedPoint = null;
+	// end of vars
+
+	return window.cloneObject(points[0]);
 };
 
 /**
