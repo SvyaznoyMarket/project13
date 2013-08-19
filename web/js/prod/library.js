@@ -1778,6 +1778,8 @@ function CreateMap( nodeId, points, baloonTemplate ) {
 		zoom: 10
 	});
 
+	this.mapWS.controls.add('zoomControl');
+
 	this._showMarkers();
 }
 
