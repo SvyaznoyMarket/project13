@@ -481,12 +481,12 @@ return [
         'action' => ['Jewel\Product\RecommendedAction', 'execute'],
         'require' => ['productId' => '\d+'],
     ],
-    'product.similar' => [
+    'product.similar' => [ /// executed SmartEngine or RetailRocker
         'pattern' => '/ajax/product-similar/{productId}',
         'action' => ['Product\SimilarAction', 'execute'],
         'require' => ['productId' => '\d+'],
     ],
-    'product.alsoViewed' => [
+    'product.alsoViewed' => [ /// executed SmartEngine or RetailRocker
         'pattern' => '/ajax/product-also-viewed/{productId}',
         'action' => ['Product\AlsoViewedAction', 'execute'],
         'require' => ['productId' => '\d+'],

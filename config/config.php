@@ -325,7 +325,7 @@ $c->abtest['enabled']    = true;
 $c->abtest['bestBefore'] = '2013-08-20';
 
 $c->abtest['test']       = [
-    // SimilarAction::smartengine
+    // SmartEngine
     [
         'traffic'  => '50',
         'key'      => 'smartengine',
@@ -334,16 +334,16 @@ $c->abtest['test']       = [
     ],
 
     // SimilarAction::retailrocket/ItemToItems
-    [
+    /*[
         'traffic'  => '25',
         'key'      => 'retailrocketItemToItems',
         'name'     => "С этим товаром также смотрят",
         'ga_event' => 'RetailRocket/ItemToItems',
-    ],
+    ],*/
 
-    // SimilarAction::retailrocket
+    // RetailRocket
     [
-        'traffic'  => '25',
+        'traffic'  => '50',
         'key'      => 'retailrocket',
         'name'     => "С этим товаром также смотрят",
         'ga_event' => 'RetailRocket',
