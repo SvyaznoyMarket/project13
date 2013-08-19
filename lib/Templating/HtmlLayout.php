@@ -227,6 +227,8 @@ class HtmlLayout {
      * @throws \InvalidArgumentException
      */
     public function addMeta($name, $content) {
+        if (null === $content) return;
+
         if (is_scalar($content)) {
             $this->metas[$name] = (string)$content;
         } else {
