@@ -84,6 +84,12 @@ class Client
         }
 
         return $connection;
+
+
+        /*$curlClient = new \Curl\Client(\App::logger());
+        $resp = $curlClient->guery($query, [], $this->config['timeout']);
+        return $resp;*/
+
     }
 
 
