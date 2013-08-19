@@ -43,7 +43,7 @@ class SimilarAction {
                 if ( !isset($products) || !is_array($products) ) {
                     return new \Http\JsonResponse([
                         'success' => false,
-                        'error' => ['code' => '404', 'message' => 'Not found products data in response'],
+                        'error' => ['code' => '404', 'message' => 'Not found products data in response. Method: ' . $key],
                     ]);
                 }
 
@@ -111,7 +111,7 @@ class SimilarAction {
             return $products;
 
         } catch (\Exception $e) {
-            \App::logger()->error($e, ['smartengine']);
+            \App::logger()->error($e, ['SmartEngine']);
             return $this->error($e);
         }
     }
@@ -134,32 +134,10 @@ class SimilarAction {
 
             $ids = $client->query('Recomendation/' . $method, $productId);
 
-            //if (!count($ids)) throw new \Exception(sprintf('Не получено товаров методом %1$s для товара #%2$s', $method, $productId));
-
             $products = $this->getProducts($ids);
 
             return $products;
 
-            /*
-            $return = [];
-            foreach ($products as $i => $product) {
-                if (!$product->getIsBuyable()) continue;
-
-                $return[] = [
-                    'id' => $product->getId(),
-                    'name' => $product->getName(),
-                    'image' => $product->getImageUrl(),
-                    'rating' => $product->getRating(),
-                    'link' => $product->getLink() . (false === strpos($product->getLink(), '?') ? '?' : '&') . 'sender=' . \RetailRocket\Client::NAME . '|' . $product->getId(),
-                    'price' => $product->getPrice(),
-                    'data' => \Kissmetrics\Manager::getProductEvent($product, $i + 1, 'Similar'),
-                ];
-            }
-
-            if (!count($return)) throw new \Exception(sprintf('Нечего возвращать. Метод %1$s для товара #%2$s', $method, $productId));
-
-            return new \Http\JsonResponse($return);
-            */
 
         } catch (\Exception $e) {
             \App::logger()->error($e, ['RetailRocket']);
