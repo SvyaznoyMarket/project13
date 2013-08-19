@@ -27,49 +27,6 @@ foreach (array_reverse($productsById) as $product) {
 }
 ?>
 
-
-	<!-- temp styles -->
-	<style type="text/css">
-		.bPointPopup {
-
-			width: 950px;
-
-			height: 580px;
-
-			text-align: left;
-
-			z-index: 10000;
-		}
-
-		.bBuyingDatesList{
-			position: relative;
-		}
-		.bPointList {
-			height: 520px;
-			overflow: auto;
-			width: 275px;
-			float: left;
-		}
-		#pointPopupMap {
-			background: #e6e6e6;
-			float: right;
-			height: 520px;
-			width: 675px;
-		}
-		.bPointInPopup {
-			cursor: pointer;
-			display: block;
-			padding: 5px 15px 5px 5px;
-			width: 240px;
-		}
-		.bPointInPopup:hover {
-			background: #fff1d8;
-		}
-		.bPointInPopup__eName {
-			font-size: 14px;
-		}
-	</style>
-
 <!-- Header -->
 <div class="bBuyingHead clearfix">
 	<a class="bBuyingHead__eLogo" href="<?= $page->url('homepage') ?>"></a>
@@ -80,8 +37,6 @@ foreach (array_reverse($productsById) as $product) {
 	</div>
 </div>
 <!-- /Header -->
-
-
 
 <!-- loader -->
 <div class="mLoader" data-bind="visible: !prepareData()"></div>
@@ -476,7 +431,7 @@ foreach (array_reverse($productsById) as $product) {
 				<span data-bind="text: $data.regtime"></span>
 			</li>
 		</ul>
-		<div id="pointPopupMap"></div>
+		<div class="bPointPopupMap" id="pointPopupMap"></div>
 	</div>
 	<!-- /Point popup -->
 

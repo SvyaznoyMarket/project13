@@ -11553,7 +11553,7 @@
   }
   .bBuyingDatesList {
     float: left;
-    width: 10000px;
+    position: relative;
     padding: 0 1px;
     font-size: 0px;
   }
@@ -11766,6 +11766,38 @@
   }
   .bSaleError {
     color: #ec434f;
+  }
+}
+@media all {
+  .bPointPopup {
+    z-index: 10000;
+    width: 950px;
+    height: 580px;
+    text-align: left;
+  }
+  .bPointInPopup {
+    display: block;
+    width: 240px;
+    padding: 5px 15px 5px 5px;
+    cursor: pointer;
+  }
+  .bPointInPopup:hover {
+    background: #fff1d8;
+  }
+  .bPointInPopup__eName {
+    font-size: 14px;
+  }
+  .bPointList {
+    float: left;
+    overflow: auto;
+    width: 275px;
+    height: 520px;
+  }
+  .bPointPopupMap {
+    float: right;
+    width: 675px;
+    height: 520px;
+    background: #e6e6e6;
   }
 }
 /*---END---СТИЛИ ОФОРМЛЕНИЕ ЗАКАЗА---*/
