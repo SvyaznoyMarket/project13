@@ -369,7 +369,7 @@ foreach (array_reverse($productsById) as $product) {
 				<label class="bBuyingLine__eLeft" data-bind="visible: hasHomeDelivery()">Адрес доставки*</label>
 				<div class="bBuyingLine__eRight" style="width: 640px;" data-bind="visible: hasHomeDelivery()">
 					<div class="bSelectedCity">
-						<strong><?= $region->getName() ?></strong> (<a id="jsregion" href="<?= $page->url('region.change', ['regionId' => $region->getId()]) ?>">изменить</a>)
+						<strong><?= $region->getName() ?></strong> (<a class="jsChangeRegion" href="<?= $page->url('region.change', ['regionId' => $region->getId()]) ?>">изменить</a>)
 					</div>
 
 					<? if ((bool)$subways): ?>
@@ -415,7 +415,7 @@ foreach (array_reverse($productsById) as $product) {
 				<div class="<? if ($isCorporative): ?> hidden<? endif ?>">
 					<div class="bBuyingLine__eLeft">Если у вас есть карта &laquo;Связной-Клуб&raquo;, вы можете указать ее номер</div>
 					<div class="bBuyingLine__eRight mSClub">
-						<input type="text" class="bBuyingLine__eText" name="" />
+						<input id="sclub-number" type="text" class="bBuyingLine__eText" name="" />
 						<div class="bText">Чтобы получить 1% от суммы заказа<br/>плюсами на карту, введите ее номер,<br/>расположенный на обороте под штрихкодом</div>
 					</div>
 				</div>
@@ -468,7 +468,7 @@ foreach (array_reverse($productsById) as $product) {
 	<div class="bPointPopup popup" data-bind="popupShower: showPopupWithPoints">
 		<i class="close" title="Закрыть">Закрыть</i>
 		<h2 data-bind="text: popupWithPoints().header"></h2>
-        <div>Регион <strong><?= $user->getRegion()->getName() ?></strong> (<a id="jsregion" href="<?= $page->url('region.change', ['regionId' => $region->getId()]) ?>">изменить</a>)</div>
+        <div>Регион <strong><?= $user->getRegion()->getName() ?></strong> (<a class="jsChangeRegion" href="<?= $page->url('region.change', ['regionId' => $region->getId()]) ?>">изменить</a>)</div>
 		<ul class="bPointList" data-bind="foreach: { data: popupWithPoints().points }">
 			<li class="bPointInPopup" data-bind="click: $root.selectPoint">
 				<div class="bMapShops__eListNum"><img alt="" src="/images/shop.png"></div>
