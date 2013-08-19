@@ -11,18 +11,16 @@
  * @param	{String}		state				Текущий метод доставки для блока
  * @param	{Number}		choosenPointForBox	Выбранная точка доставки
  * 
- * @param	{Object}		createdBox			Объект со созданными блоками доставки
  * @param	{Object}		OrderModel			Модель оформления заказа
  * 
  * @constructor
  */
-function DeliveryBox( products, state, choosenPointForBox, createdBox, OrderModel ) {
+function DeliveryBox( products, state, choosenPointForBox, OrderModel ) {
 	console.info('Cоздание блока доставки '+state+' для '+choosenPointForBox);
 
 	var self = this;
 
 	self.OrderModel = OrderModel;
-	self.createdBox = createdBox;
 	self.token = state+'_'+choosenPointForBox;
 
 	// Продукты в блоке
@@ -38,6 +36,8 @@ function DeliveryBox( products, state, choosenPointForBox, createdBox, OrderMode
 
 	// Выбранная дата доставки
 	self.choosenDate = ko.observable();
+
+	self.choosenNameOfWeek = ko.observable();
 	// Выбранная точка доставки
 	self.choosenPoint = ko.observable({id:choosenPointForBox});
 	// Выбранный интервал доставки
@@ -51,7 +51,7 @@ function DeliveryBox( products, state, choosenPointForBox, createdBox, OrderMode
 	// Массив всех доступных дат для блока
 	self.allDatesForBlock = ko.observableArray([]);
 	// Массив всех точек доставок
-	self.pointList = ko.observableArray([]);
+	self.pointList = [];
 
 	if ( self.hasPointDelivery ) {
 		// Доставка в выбранный пункт
@@ -78,13 +78,14 @@ function DeliveryBox( products, state, choosenPointForBox, createdBox, OrderMode
  */
 DeliveryBox.prototype._makePointList = function() {
 	var self = this,
-		res = true;
+		res = true,
+		tmpPoint = null;
 	// end of vars
 
 	/**
 	 * Перебираем точки доставки для первого товара
 	 */
-	for (var point in self.products[0].deliveries ) {
+	for ( var point in self.products[0].deliveries ) {
 
 		/**
 		 * Перебираем все товары в блоке, проверяя доступна ли данная точка доставки для них
@@ -99,7 +100,8 @@ DeliveryBox.prototype._makePointList = function() {
 
 		if ( res ) {
 			// Точка достаки доступна для всех товаров в блоке
-			self.pointList.push( self.OrderModel.orderDictionary.getPointByStateAndId(self.state, point) );
+			tmpPoint = self.OrderModel.orderDictionary.getPointByStateAndId(self.state, point);
+			self.pointList.push( tmpPoint );
 		}
 	}
 };
@@ -117,20 +119,24 @@ DeliveryBox.prototype.selectPoint = function( data ) {
 	var self = this,
 		newToken = self.state+'_'+data.id;
 
-	if ( self.createdBox[newToken] !== undefined ) {
-		self.createdBox[newToken].addProductGroup(self.products);
+	if ( self.OrderModel.createdBox[newToken] !== undefined ) {
+		self.OrderModel.createdBox[newToken].addProductGroup(self.products);
 
-		delete self.createdBox[self.token];
+		delete self.OrderModel.createdBox[self.token];
 	}
 	else {
-		self.createdBox[newToken] = self.createdBox[self.token];
-		delete self.createdBox[self.token];
+		console.info('удаляем старый блок');
+		console.log('старый токен '+self.token);
+		console.log('новый токен '+newToken);
+		self.OrderModel.createdBox[newToken] = self.OrderModel.createdBox[self.token];
+		delete self.OrderModel.createdBox[self.token];
 
 		self.token = newToken;
-		self.choosenPoint(data);
+		self.choosenPoint(self.OrderModel.orderDictionary.getPointByStateAndId(self.state, data.id));
+		console.log(self.OrderModel.createdBox);
 	}
 
-	self.showPopupWithPoints(false);
+	self.OrderModel.showPopupWithPoints(false);
 
 	return false;
 };
@@ -143,7 +149,17 @@ DeliveryBox.prototype.selectPoint = function( data ) {
 DeliveryBox.prototype.changePoint = function( ) {
 	var self = this;
 
-	self.showPopupWithPoints(true);
+	// запонимаем токен бокса которому она принадлежит
+	for ( var i = self.pointList.length - 1; i >= 0; i-- ) {
+		self.pointList[i].parentBoxToken = self.token;
+	}
+	
+	self.OrderModel.popupWithPoints({
+		header: 'Выберите точку доставки',
+		points: self.pointList
+	});
+
+	self.OrderModel.showPopupWithPoints(true);
 
 	return false;
 };
@@ -190,13 +206,13 @@ DeliveryBox.prototype._addProduct = function( product ) {
 
 		tempProductArray.push(product);
 
-		if ( self.createdBox[token] !== undefined ) {
+		if ( self.OrderModel.createdBox[token] !== undefined ) {
 			// Блок для этого типа доставки в этот пункт уже существует. Добавляем продукт в блок
-			self.createdBox[token].addProductGroup( product );
+			self.OrderModel.createdBox[token].addProductGroup( product );
 		}
 		else {
 			// Блока для этого типа доставки в этот пункт еще существует
-			self.createdBox[token] = new DeliveryBox( tempProductArray, self.state, firstAvaliblePoint, self.createdBox, self.OrderModel );
+			self.OrderModel.createdBox[token] = new DeliveryBox( tempProductArray, self.state, firstAvaliblePoint, self.OrderModel.createdBox, self.OrderModel );
 		}
 
 		return;
@@ -258,13 +274,25 @@ DeliveryBox.prototype.addProductGroup = function( products ) {
 };
 
 /**
- * Получение человекочитаемого названия дня недели
+ * Получение сокращенного человекочитаемого названия дня недели
  * 
  * @param	{Number}	dateFromModel	Номер дня недели
  * @return	{String}					Человекочитаемый день недели
  */
 DeliveryBox.prototype._getNameDayOfWeek = function( dayOfWeek ) {
 	var days = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
+
+	return days[dayOfWeek];
+};
+
+/**
+ * Получение полного человекочитаемого названия дня недели
+ * 
+ * @param	{Number}	dateFromModel	Номер дня недели
+ * @return	{String}					Человекочитаемый день недели
+ */
+DeliveryBox.prototype._getFullNameDayOfWeek = function( dayOfWeek ) {
+	var days = ['воскресение', 'понедельник', 'вторник', 'среда', 'четверг', 'пятница', 'суббота'];
 
 	return days[dayOfWeek];
 };
@@ -331,6 +359,7 @@ DeliveryBox.prototype.clickCalendarDay = function( data ) {
 		return false;
 	}
 
+	self.choosenNameOfWeek(self._getFullNameDayOfWeek(data.dayOfWeek));
 	self.choosenDate(data);
 };
 
@@ -374,6 +403,7 @@ DeliveryBox.prototype.calculateDate = function() {
 
 	// выбираем ближайшую доступную дату
 	self.choosenDate( self.allDatesForBlock()[0] );
+	self.choosenNameOfWeek( self._getFullNameDayOfWeek(self.allDatesForBlock()[0].dayOfWeek) );
 	// выбираем первый интервал
 	self.choosenInterval( self.choosenDate().intervals[0] );
 
@@ -443,7 +473,7 @@ DeliveryBox.prototype.calendarLeftBtn = function() {
 		nowLeft = parseInt(self.calendarSliderLeft(), 10);
 	// end of vars
 	
-	nowLeft += 365;
+	nowLeft += 380;
 	self.calendarSliderLeft(nowLeft);
 };
 
@@ -452,7 +482,7 @@ DeliveryBox.prototype.calendarRightBtn = function() {
 		nowLeft = parseInt(self.calendarSliderLeft(), 10);
 	// end of vars
 	
-	nowLeft -= 365;
+	nowLeft -= 380;
 	self.calendarSliderLeft(nowLeft);
 };
 
@@ -469,14 +499,14 @@ ko.bindingHandlers.calendarSlider = {
 		slider.width(dateItem.length * dateItemW);
 
 		if ( nowLeft > 0 ) {
-			nowLeft -= 365;
+			nowLeft -= 380;
 			bindingContext.box.calendarSliderLeft(nowLeft);
 
 			return;
 		}
 
 		if ( nowLeft < -slider.width() ) {
-			nowLeft += 365;
+			nowLeft += 380;
 			bindingContext.box.calendarSliderLeft(nowLeft);
 
 			return;

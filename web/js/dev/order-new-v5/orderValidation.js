@@ -67,58 +67,90 @@
 			source: subwayArray,
 			appendTo: '#metrostations',
 			minLength: 2,
-			select : function(event, ui ) {
+			select : function( event, ui ) {
 				metroIdFiled.val(ui.item.val);
 			}
 		};
 	// end of vars
 	
 	orderValidator = new FormValidator(validationConfig);
+
+	var showError = function showError( msg ) {
+		var content = '<div class="popupbox width290">' +
+				'<div class="font18 pb18"> '+msg+'</div>'+
+				'</div>' +
+				'<p style="text-align:center"><a href="#" class="closePopup bBigOrangeButton">OK</a></p>',
+			block = $('<div>').addClass('popup').html(content);
+		// end of vars
+		
+		block.appendTo('body');
+
+		var errorPopupCloser = function() {
+			block.trigger('close');
+			block.remove();
+
+			return false;
+		};
+
+		block.lightbox_me({
+			centered:true,
+			onClose: errorPopupCloser
+		});
+
+		block.find('.closePopup').bind('click', errorPopupCloser);
+	};
+
+	var formErrorHandler = function formErrorHandler( formError ) {
+		console.warn('Ошибка в поле');
+		var field = $('[name="order['+formError.field+']"]');
+
+		orderValidator.setValidate( field, {
+			require: true,
+			customErr: formError.message,
+			validateOnChange: true
+		});
+
+		orderValidator._markFieldError(field, formError.message);
+	};
 	
-		/**
-		 * Блокер экрана
-		 *
-		 * @param	{Object}		noti		Объект jQuery блокера экрана
-		 * @param	{Function}		block		Функция блокировки экрана. На вход принимает текст который нужно отобразить в окошке блокера
-		 * @param	{Function}		unblock		Функция разблокировки экрана. Объект окна блокера удаляется.
-		 */
-	var blockScreen = {
-			noti: null,
-			block: function( text ) {
-				console.warn('block screen');
+	var serverErrorHandler = {
+		0: function( res ) {
+			var formError = null;
 
-				if ( this.noti ) {
-					this.unblock();
-				}
+			showError(res.error.message);
 
-				this.noti = $('<div>').addClass('noti').html('<div><img src="/images/ajaxnoti.gif" /></br></br> '+ text +'</div>');
-				this.noti.appendTo('body');
-
-				this.noti.lightbox_me({
-					centered:true,
-					closeClick:false,
-					closeEsc:false
-				});
-			},
-
-			unblock: function() {
-				console.warn('unblock screen');
-
-				this.noti.trigger('close');
-				this.noti.remove();
+			for ( var i = res.form.error.length - 1; i >= 0; i-- ) {
+				formError = res.form.error[i];
+				console.warn(formError);
+				formErrorHandler(formError);
 			}
+
+			$.scrollTo($('.mError').eq(0), 500, {offset:-15});
 		},
+		
+		743: function( res ) {
+			showError(res.error.message);
+		}
+	};
 
 		/**
 		 * Обработка ответа от сервера
 		 *
 		 * @param	{Object}	res		Ответ сервера
 		 */
-		processingResponse = function processingResponse( res ) {
+	var processingResponse = function processingResponse( res ) {
 			console.info('данные отправлены. получен ответ от сервера');
+			global.OrderModel.blockScreen.unblock();
 			console.log(res);
 
-			blockScreen.unblock();
+			if ( !res.success ) {
+				console.log('ошибка оформления заказа');
+				serverErrorHandler[res.error.code](res);
+
+				return false;
+			}
+
+			document.location.href = res.redirect;
 		},
 
 		/**
@@ -133,7 +165,7 @@
 				orderForm = $('#order-form');
 			// end of vars
 			
-			blockScreen.block('Ваш заказ оформляется');
+			global.OrderModel.blockScreen.block('Ваш заказ оформляется');
 
 			/**
 			 * Перебираем блоки доставки
@@ -155,7 +187,7 @@
 					products : []
 				};
 
-				for (var j = currentDeliveryBox.products.length - 1; j >= 0; j--) {
+				for ( var j = currentDeliveryBox.products.length - 1; j >= 0; j-- ) {
 					tmpPart.products.push(currentDeliveryBox.products[j].id);
 				}
 
@@ -201,7 +233,7 @@
 		 * Проверка корректности заполнения поля
 		 */
 		subwayChange = function subwayChange() {
-			for (var i = subwayArray.length - 1; i >= 0; i--) {
+			for ( var i = subwayArray.length - 1; i >= 0; i-- ) {
 				if ( subwayField.val() === subwayArray[i].label ) {
 					return;
 				}
@@ -237,7 +269,8 @@
 					orderValidator.setValidate( subwayField , {
 						fieldNode: subwayField,
 						customErr: 'Не выбрана станция метро',
-						require: true
+						require: true,
+						validateOnChange: true
 					});
 				}
 			}

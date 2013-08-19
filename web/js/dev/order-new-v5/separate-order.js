@@ -9,12 +9,6 @@
 	console.info('Логика разбиения заказа для оформления заказа v.5');
 
 	/**
-	 * Хранилище блоков доставки
-	 * @type {Object}
-	 */
-	var createdBox = {};
-
-	/**
 	 * Логика разбиения заказа на подзаказы
 	 * Берутся states из выбранного способа доставки в порядке приоритета.
 	 * Каждый новый states - новый подзаказ.
@@ -44,11 +38,11 @@
 
 
 		// очищаем объект созданых блоков, удаляем блоки из модели
-		createdBox = {};
+		global.OrderModel.createdBox = {};
 		global.OrderModel.deliveryBoxes.removeAll();
 
 		// Маркируем выбранный способ доставки
-		global.OrderModel.deliveryTypesButton.attr('checked','checked');
+		$('#'+global.OrderModel.deliveryTypesButton).attr('checked','checked');
 			
 		// Обнуляем общую стоимость заказа
 		global.OrderModel.totalSum(0);
@@ -103,19 +97,19 @@
 
 				token = nowState+'_'+choosenPointForBox;
 
-				if ( createdBox[token] !== undefined ) {
+				if ( global.OrderModel.createdBox[token] !== undefined ) {
 					// Блок для этого типа доставки в этот пункт уже существует
-					createdBox[token].addProductGroup( productsToNewBox );
+					global.OrderModel.createdBox[token].addProductGroup( productsToNewBox );
 				}
 				else {
 					// Блока для этого типа доставки в этот пункт еще существует
-					createdBox[token] = new DeliveryBox( productsToNewBox, nowState, choosenPointForBox, createdBox, global.OrderModel );
+					global.OrderModel.createdBox[token] = new DeliveryBox( productsToNewBox, nowState, choosenPointForBox, global.OrderModel );
 				}
 			}
 		}
 
 		console.info('Созданные блоки:');
-		console.log(createdBox);
+		console.log(global.OrderModel.createdBox);
 
 		if ( preparedProducts.length !== global.OrderModel.orderDictionary.orderData.products.length ) {
 			console.warn('не все товары были обработаны');
@@ -129,10 +123,14 @@
 	ko.bindingHandlers.popupShower = {
 		update: function( element, valueAccessor ) {
 			var val = valueAccessor(),
-				unwrapVal = ko.utils.unwrapObservable(val);
+				unwrapVal = ko.utils.unwrapObservable(val),
+				map = null;
 			// end of vars
 
 			if ( unwrapVal ) {
+				// create map
+				map = new CreateMap('pointPopupMap', global.OrderModel.popupWithPoints().points, $('#mapInfoBlock'));
+
 				$(element).lightbox_me({
 					centered: true,
 					onClose: function() {
@@ -142,6 +140,7 @@
 				});
 			}
 			else {
+				$('#pointPopupMap').empty();
 				$(element).trigger('close');
 			}
 		}
@@ -175,6 +174,7 @@
 	 * === ORDER MODEL ===
 	 */
 	global.OrderModel = {
+		updateUrl: $('#jsOrderDelivery').data('url'),
 		/**
 		 * Флаг завершения обработки данных
 		 */
@@ -228,6 +228,11 @@
 		deliveryBoxes: ko.observableArray([]),
 
 		/**
+		 * Хранилище блоков доставки
+		 */
+		createdBox: {},
+
+		/**
 		 * Объект данных для отображения окна с пунктами доставок
 		 */
 		popupWithPoints: ko.observable({}),
@@ -245,7 +250,7 @@
 		/**
 		 * URL по которому нужно проверять карту
 		 */
-		couponUrl: ko.observable(),
+		couponUrl: ko.observable($('.bSaleData .jsCustomRadio').eq(0).val()),
 
 		/**
 		 * Ошибки сертификата
@@ -258,9 +263,45 @@
 		couponsBox: ko.observableArray([]),
 
 		/**
+		 * Блокер экрана
+		 *
+		 * @param	{Object}		noti		Объект jQuery блокера экрана
+		 * @param	{Function}		block		Функция блокировки экрана. На вход принимает текст который нужно отобразить в окошке блокера
+		 * @param	{Function}		unblock		Функция разблокировки экрана. Объект окна блокера удаляется.
+		 */
+		blockScreen: {
+			noti: null,
+			block: function( text ) {
+				console.warn('block screen');
+
+				if ( this.noti ) {
+					this.unblock();
+				}
+
+				this.noti = $('<div>').addClass('noti').html('<div><img src="/images/ajaxnoti.gif" /></br></br> '+ text +'</div>');
+				this.noti.appendTo('body');
+
+				this.noti.lightbox_me({
+					centered:true,
+					closeClick:false,
+					closeEsc:false
+				});
+			},
+
+			unblock: function() {
+				console.warn('unblock screen');
+
+				this.noti.trigger('close');
+				this.noti.remove();
+			}
+		},
+
+		/**
 		 * Проверка сертификата
 		 */
 		checkCoupon: function() {
+			console.info('проверяем купон');
+
 			var dataToSend = {
 					number: global.OrderModel.couponNumber(),
 				},
@@ -268,17 +309,30 @@
 			// end of vars
 
 			var couponResponceHandler = function couponResponceHandler( res ) {
+				global.OrderModel.blockScreen.block('Применяем купон');
+
 				if ( !res.success ) {
 					global.OrderModel.couponError(res.error.message);
+					global.OrderModel.blockScreen.unblock();
 
 					return;
 				}
+
+				global.OrderModel.modelUpdate();
 			};
 
 			global.OrderModel.couponError('');
 
 			if ( url === undefined ) {
+				console.warn('Не выбран тип сертификата');
 				global.OrderModel.couponError('Не выбран тип сертификата');
+
+				return;
+			}
+
+			if ( dataToSend.number === undefined || !dataToSend.number.length ) {
+				console.warn('Не введен номер сертификата');
+				global.OrderModel.couponError('Не введен номер сертификата');
 
 				return;
 			}
@@ -304,6 +358,14 @@
 		 */
 		selectPoint: function( data ) {
 			console.info('point selected...');
+			console.log(data.parentBoxToken);
+
+			if ( data.parentBoxToken ) {
+				console.log(global.OrderModel.createdBox[data.parentBoxToken]);
+				global.OrderModel.createdBox[data.parentBoxToken].selectPoint.apply(global.OrderModel.createdBox[data.parentBoxToken],[data]);
+
+				return false;
+			}
 
 			// Сохраняем приоритет методов доставок
 			global.OrderModel.statesPriority = global.OrderModel.tmpStatesPriority;
@@ -329,18 +391,18 @@
 		 * @param	{Array}		data.states		Варианты типов доставки подходящих к этому методу
 		 *
 		 * @param	{String}	priorityState	Приоритетный метод доставки из массива
-		 * @param	{Object}	checkedInput	Ссылка на элемент input по которому кликнули
+		 * @param	{Object}	checkedInputId	Ссылка на элемент input по которому кликнули
 		 */
 		chooseDeliveryTypes: function( data, event ) {
 			var priorityState = data.states[0],
-				checkedInput = $('#'+event.target.htmlFor);
+				checkedInputId = event.target.htmlFor;
 			// end of vars
 
-			if ( checkedInput.attr('checked') ) {
+			if ( $('#'+checkedInputId).attr('checked') ) {
 				return false;
 			}
 
-			global.OrderModel.deliveryTypesButton = checkedInput;
+			global.OrderModel.deliveryTypesButton = checkedInputId;
 			global.OrderModel.tmpStatesPriority = data.states;
 			global.OrderModel.choosenDeliveryTypeId = data.id;
 
@@ -364,6 +426,59 @@
 
 			// Разбиваем на подзаказы
 			separateOrder( global.OrderModel.statesPriority );
+
+			return false;
+		},
+
+		/**
+		 * Обновление данных
+		 */
+		modelUpdate: function() {
+			console.info('обновление данных с сервера');
+
+			var updateResponceHandler = function updateResponceHandler( res ) {
+				renderOrderData(res);
+				separateOrder( global.OrderModel.statesPriority );
+				global.OrderModel.blockScreen.unblock();
+			};
+
+			$.ajax({
+				type: 'GET',
+				url: global.OrderModel.updateUrl,
+				success: updateResponceHandler
+			});
+		},
+
+		/**
+		 * Удаление товара
+		 * 
+		 * @param  {[type]} data  [description]
+		 * @param  {[type]} event [description]
+		 */
+		deleteItem: function( data ) {
+			console.info('удаление товара');
+
+			global.OrderModel.blockScreen.block('Удаляем товар');
+
+			var deleteItemResponceHandler = function deleteItemResponceHandler( res ) {
+				console.log( res );
+				if ( !res.success ) {
+					console.warn('не удалось удалить товар');
+					global.OrderModel.blockScreen.unblock();
+
+					return false;
+				}
+
+				global.OrderModel.modelUpdate();
+			};
+
+			console.log(data.deleteUrl);
+
+			$.ajax({
+				type: 'GET',
+				url: data.deleteUrl,
+				success: deleteItemResponceHandler
+			});
 
 			return false;
 		}
@@ -519,9 +634,26 @@
 
 			global.OrderModel.deliveryTypes(res.deliveryTypes);
 			global.OrderModel.prepareData(true);
+		},
+
+		selectPointOnBaloon = function( event ) {
+			console.log('selectPointOnBaloon');
+			console.log(event);
+
+			console.log($(this).data('pointid'));
+			console.log($(this).data('parentbox'));
+
+			global.OrderModel.selectPoint({
+				id: $(this).data('pointid'),
+				parentBoxToken: $(this).data('parentbox')				
+			});
+
+			return false;
 		};
 	// end of functions
-	
+
+	$('body').on('click', '.shopchoose', selectPointOnBaloon);
+
 
 	renderOrderData($('#jsOrderDelivery').data('value'));
 }(this));

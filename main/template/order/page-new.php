@@ -19,11 +19,11 @@ $isCorporative = $user->getEntity() && $user->getEntity()->getIsCorporative();
 
 $backLink = $page->url('cart');
 foreach (array_reverse($productsById) as $product) {
-    /** @var $product \Model\Product\Entity */
-    if ($product->getParentCategory() instanceof \Model\Product\Category\Entity) {
-        $backLink = $product->getParentCategory()->getLink();
-        break;
-    }
+	/** @var $product \Model\Product\Entity */
+	if ($product->getParentCategory() instanceof \Model\Product\Category\Entity) {
+		$backLink = $product->getParentCategory()->getLink();
+		break;
+	}
 }
 ?>
 
@@ -32,9 +32,9 @@ foreach (array_reverse($productsById) as $product) {
 	<style type="text/css">
 		.bPointPopup {
 
-			width: 600px;
+			width: 950px;
 
-			height: 400px;
+			height: 580px;
 
 			text-align: left;
 
@@ -43,6 +43,30 @@ foreach (array_reverse($productsById) as $product) {
 
 		.bBuyingDatesList{
 			position: relative;
+		}
+		.bPointList {
+			height: 520px;
+			overflow: auto;
+			width: 275px;
+			float: left;
+		}
+		#pointPopupMap {
+			background: #e6e6e6;
+			float: right;
+			height: 520px;
+			width: 675px;
+		}
+		.bPointInPopup {
+			cursor: pointer;
+			display: block;
+			padding: 5px 15px 5px 5px;
+			width: 240px;
+		}
+		.bPointInPopup:hover {
+			background: #fff1d8;
+		}
+		.bPointInPopup__eName {
+			font-size: 14px;
 		}
 	</style>
 
@@ -94,8 +118,10 @@ foreach (array_reverse($productsById) as $product) {
 			<div class="bBuyingLine">
 				<div class="bBuyingLine__eLeft">
 					<h2 class="bBuyingSteps__eTitle">
-						<span data-bind="text: box.deliveryName+' '+box.choosenDate().name"></span><span data-bind="visible: !hasPointDelivery">*</span>
+						<span data-bind="text: box.deliveryName"></span>
 					</h2>
+
+					<div class="bDeliverySelf"><span data-bind="visible: box.hasPointDelivery, text: box.choosenPoint().name"></span></div>
 
 					<!-- кнопка сменить магазин -->
 					<a class="bBigOrangeButton mSelectShop" href="#" data-bind="visible: box.hasPointDelivery,
@@ -133,7 +159,7 @@ foreach (array_reverse($productsById) as $product) {
 					<!-- /Celendar -->
 
 					<div class="bDeliveryDate">
-						1 августа, четверг<em class="bStar">*</em>
+						<span data-bind="text: box.deliveryName"></span> <strong data-bind="text:box.choosenDate().name"></strong>, <span data-bind="text: box.choosenNameOfWeek"></span> <span data-bind="visible: !hasPointDelivery">*</span>
 					</div>
 
 					<div class="bSelectWrap mFastInpSmall">
@@ -154,7 +180,7 @@ foreach (array_reverse($productsById) as $product) {
 						<div class="bBuyingLine__eRight">
 							<div class="bOrderItems">
 								<div class="bItemsRow mItemImg">
-									<img data-bind="attr: { src: product.productImg }" />
+									<img class="bItemsRow__eImgProd" data-bind="attr: { src: product.productImg }" />
 								</div>
 
 								<div class="bItemsRow mItemInfo">
@@ -166,7 +192,7 @@ foreach (array_reverse($productsById) as $product) {
 								</div>
 
 								<div class="bItemsRow mDelItem">
-									<a class="bDelItem" data-bind="attr: { href: product.deleteUrl }, text: 'удалить'"></a>
+									<a class="bDelItem" data-bind="attr: { href: product.deleteUrl }, text: 'удалить', click: $root.deleteItem"></a>
 								</div>
 
 								<div class="bItemsRow mItemRight"> <span data-bind="text: window.printPrice(product.price)"></span> <span class="rubl">p</span></div>
@@ -178,34 +204,17 @@ foreach (array_reverse($productsById) as $product) {
 				</div>
 			</div>
 
-			<!-- Points popup -->
-			<div class="bPointPopup popup" data-bind="popupShower: box.showPopupWithPoints">
-				<i class="close" title="Закрыть">Закрыть</i>
-				<ul data-bind="foreach: { data: box.pointList, as: 'point'}">
-					<li>
-						<a data-bind="text: point.name,
-									click: function(data) {
-										box.selectPoint(data);
-									}"></a>
-						<span data-bind="text: point.regime"></span>
-					</li>
-				</ul>
-			</div>
-			<!-- /Points popup -->
-
-			<div class="bFootnote">* Дату доставки уточнит специалист Контакт-сENTER</div>
+			<div class="bFootnote" data-bind="visible: !hasPointDelivery">* Дату доставки уточнит специалист Контакт-сENTER</div>
 
 			<!-- Sum -->
 			<ul class="bSumOrderInfo">
-				<li class="bSumOrderInfo__eLine">
+				<li class="bSumOrderInfo__eLine" data-bind="visible: !hasPointDelivery">
 					Доставка:&nbsp;&nbsp;
 					
-					<span class="bDelivery" data-bind="visible: !hasPointDelivery">
+					<span class="bDelivery">
 						<span data-bind="text: box.deliveryPrice === 0 ? 'Бесплатно' : box.deliveryPrice"></span>
 						<span class="rubl" data-bind="visible: box.deliveryPrice">p</span>
 					</span>
-
-					<span class="bDelivery" data-bind="visible: box.hasPointDelivery, text: box.choosenPoint().name"></span>
 				</li>
 
 				<li class="bSumOrderInfo__eLine">
@@ -222,48 +231,48 @@ foreach (array_reverse($productsById) as $product) {
 	</div>
 	<!-- /Delivery boxes -->
 
-    <!-- Sale section -->
-    <div class="bBuyingLineWrap  bBuyingSale clearfix" data-bind="visible: deliveryBoxes().length">
-	    <div class="bBuyingLine">
-	        <div class="bBuyingLine__eLeft">
-	        	<h2 class="bBuyingSteps__eTitle">
+	<!-- Sale section -->
+	<div class="bBuyingLineWrap  bBuyingSale clearfix" data-bind="visible: deliveryBoxes().length">
+		<div class="bBuyingLine">
+			<div class="bBuyingLine__eLeft">
+				<h2 class="bBuyingSteps__eTitle">
 					Скидки
 				</h2>
 
-	            Если у вас есть карта<br/>
+				Если у вас есть карта<br/>
 				Enter SPA или купон,<br/>
 				укажите номер и получите<br/>
 				скидку.
-	        </div>
+			</div>
 
-	        <div class="bBuyingLine__eRight">
-	            <div class="bSaleData">
+			<div class="bBuyingLine__eRight">
+				<div class="bSaleData">
 
-	                <div class="bTitle">Вид скидки:</div>
+					<div class="bTitle">Вид скидки:</div>
 
-	                <ul class="bSaleList bInputList clearfix">
-	                    <li class="bSaleList__eItem">
-	                        <input value="<?= $page->url('cart.coupon.apply') ?>" class="jsCustomRadio bCustomInput mCustomRadioBig" type="radio" id="svz_club" name="add_sale" hidden data-bind="checked: couponUrl" />
-	                        <label class="bCustomLabel mCustomLabelRadioBig" for="svz_club">Купон</label>
-	                    </li>
+					<ul class="bSaleList bInputList clearfix">
+						<li class="bSaleList__eItem">
+							<input value="<?= $page->url('cart.coupon.apply') ?>" class="jsCustomRadio bCustomInput mCustomRadioBig" type="radio" id="svz_club" name="add_sale" hidden data-bind="checked: couponUrl" />
+							<label class="bCustomLabel mCustomLabelRadioBig" for="svz_club">Купон</label>
+						</li>
 
-	                    <li class="bSaleList__eItem mEnterSpa">
-	                        <input value="<?= $page->url('cart.blackcard.apply') ?>" class="jsCustomRadio bCustomInput mCustomRadioBig" type="radio" id="black_card" name="add_sale" hidden data-bind="checked: couponUrl" />
-	                        <label class="bCustomLabel mCustomLabelRadioBig" for="black_card">Enter Spa</label>
-	                    </li>
-	                </ul>
+						<li class="bSaleList__eItem mEnterSpa">
+							<input value="<?= $page->url('cart.blackcard.apply') ?>" class="jsCustomRadio bCustomInput mCustomRadioBig" type="radio" id="black_card" name="add_sale" hidden data-bind="checked: couponUrl" />
+							<label class="bCustomLabel mCustomLabelRadioBig" for="black_card">Enter Spa</label>
+						</li>
+					</ul>
 
-	                <input class="bBuyingLine__eText mSaleInput" type="text" id="" data-bind="value: couponNumber, valueUpdate: 'afterkeydown' " />
+					<input class="bBuyingLine__eText mSaleInput" type="text" id="" data-bind="value: couponNumber, valueUpdate: 'afterkeydown' " />
 
-	                <button class="bBigOrangeButton mSaleBtn" data-bind="click: checkCoupon">Применить</button>
+					<button class="bBigOrangeButton mSaleBtn" data-bind="click: checkCoupon">Применить</button>
 
-	                <p class="bSaleError" data-bind="text: couponError"></p>
-	            </div>
+					<p class="bSaleError" data-bind="text: couponError"></p>
+				</div>
 
-	            <div class="bSaleCheck"></div>
+				<div class="bSaleCheck"></div>
 
-	             <!-- Coupons -->
-            	<div class="bBuyingLine mProductsLine" data-bind="foreach: { data: couponsBox(), as: 'coupon' }">
+				 <!-- Coupons -->
+				<div class="bBuyingLine mProductsLine" data-bind="foreach: { data: couponsBox(), as: 'coupon' }">
 					<div class="bOrderItems">
 						<div class="bItemsRow mItemImg" data-bind="css: { mError: coupon.error }"></div>
 
@@ -278,10 +287,10 @@ foreach (array_reverse($productsById) as $product) {
 						<div class="bItemsRow mItemRight"><span data-bind="text: coupon.sum"></span> <span class="rubl">p</span></div>
 					</div>
 				</div>
-	            <!-- /Coupons -->
-	        </div>
+				<!-- /Coupons -->
+			</div>
 
-	        <!-- Sum -->
+			<!-- Sum -->
 			<!-- <ul class="bSumOrderInfo">
 				<li class="bSumOrderInfo__eLine">
 					<span class="bDelivery  mOldPrice">
@@ -300,7 +309,7 @@ foreach (array_reverse($productsById) as $product) {
 				</li>
 			</ul> -->
 			<!-- /Sum -->
-	    </div>
+		</div>
 	</div>
 	<!-- /Sale section -->
 
@@ -359,14 +368,14 @@ foreach (array_reverse($productsById) as $product) {
 						<strong><?= $region->getName() ?></strong> ( <a id="jsregion" href="<?= $page->url('region.change', ['regionId' => $region->getId()]) ?>">изменить</a> )
 					</div>
 
-	                <? if ((bool)$subways): ?>
+					<? if ((bool)$subways): ?>
 					<div class="bInputAddress ui-css">
 						<label class="bPlaceholder">Метро*</label>
 						<input type="text" class="bBuyingLine__eText mInputLong ui-autocomplete-input" id="order_address_metro" title="Метро" aria-haspopup="true" aria-autocomplete="list" role="textbox" autocomplete="off" name="order[address_metro]" />
 						<div id="metrostations" data-name="<?= $page->json(array_map(function(\Model\Subway\Entity $subway) { return ['val' => $subway->getId(), 'label' => $subway->getName()]; }, $subways)) ?>"></div>
 						<input type="hidden" id="order_subway_id" name="order[subway_id]" value="" />
 					</div>
-	                <? endif ?>
+					<? endif ?>
 					
 					<div class="bInputAddress">
 						<label class="bPlaceholder">Улица*</label>
@@ -399,13 +408,13 @@ foreach (array_reverse($productsById) as $product) {
 					<textarea id="order_extra" class="bBuyingLine__eTextarea" name="order[extra]" cols="30" rows="4"></textarea>
 				</div>
 
-                <div class="<? if ($isCorporative): ?> hidden<? endif ?>">
-                    <div class="bBuyingLine__eLeft">Если у вас есть карта &laquo;Связной-Клуб&raquo;, вы можете указать ее номер</div>
-                    <div class="bBuyingLine__eRight mSClub">
-                        <input type="text" class="bBuyingLine__eText" name="" />
-                        <div class="bText">Чтобы получить 1% от суммы заказа<br/>плюсами на карту, введите ее номер,<br/>расположенный на обороте под штрихкодом</div>
-                    </div>
-                </div>
+				<div class="<? if ($isCorporative): ?> hidden<? endif ?>">
+					<div class="bBuyingLine__eLeft">Если у вас есть карта &laquo;Связной-Клуб&raquo;, вы можете указать ее номер</div>
+					<div class="bBuyingLine__eRight mSClub">
+						<input type="text" class="bBuyingLine__eText" name="" />
+						<div class="bText">Чтобы получить 1% от суммы заказа<br/>плюсами на карту, введите ее номер,<br/>расположенный на обороте под штрихкодом</div>
+					</div>
+				</div>
 			</div>
 
 			<!-- Methods of payment -->
@@ -414,7 +423,7 @@ foreach (array_reverse($productsById) as $product) {
 			<div class="bBuyingLine mPayMethods">
 				<div class="bBuyingLine__eLeft"></div>
 				<div class="bBuyingLine__eRight bInputList">
-	                <?= $helper->render('order/newForm/__paymentMethod', ['form' => $form, 'paymentMethods' => $paymentMethods, 'banks' => $banks, 'creditData' => $creditData]) ?>
+					<?= $helper->render('order/newForm/__paymentMethod', ['form' => $form, 'paymentMethods' => $paymentMethods, 'banks' => $banks, 'creditData' => $creditData]) ?>
 				</div>
 			</div>
 
@@ -441,18 +450,28 @@ foreach (array_reverse($productsById) as $product) {
 	</div>
 	<!-- /Форма заказа -->
 	
-
+	<div id="mapInfoBlock" style="display: none;">
+		<div class="bMapShops__ePopupRel">
+			<h3>$[properties.name]</h3>
+			<span>Работает </span>
+			<span>$[properties.regtime]</span>
+			<br/>
+			<a class="bGrayButton shopchoose" href="#" data-pointid="$[properties.id]" data-parentbox="$[properties.parentBoxToken]">Забрать из этого магазина</a>
+		</div>
+	</div>
 
 	<!-- Point popup -->
 	<div class="bPointPopup popup" data-bind="popupShower: showPopupWithPoints">
 		<i class="close" title="Закрыть">Закрыть</i>
 		<h2 data-bind="text: popupWithPoints().header"></h2>
-		<ul data-bind="foreach: { data: popupWithPoints().points }">
-			<li>
-				<a data-bind="text: $data.name, click: $root.selectPoint"></a>
-				<span data-bind="text: $data.regime"></span>
+		<ul class="bPointList" data-bind="foreach: { data: popupWithPoints().points }">
+			<li class="bPointInPopup" data-bind="click: $root.selectPoint">
+				<div class="bMapShops__eListNum"><img alt="" src="/images/shop.png"></div>
+				<div class="bPointInPopup__eName" data-bind="text: $data.name"></div>
+				<span data-bind="text: $data.regtime"></span>
 			</li>
 		</ul>
+		<div id="pointPopupMap"></div>
 	</div>
 	<!-- /Point popup -->
 
@@ -461,24 +480,24 @@ foreach (array_reverse($productsById) as $product) {
 
 <div id="jsOrderDelivery" data-url="<?= $page->url('order.delivery') ?>" data-value="<?= $page->json($deliveryData) ?>"></div>
 <div id="jsForm" data-value="<?= $page->json([
-    'order[recipient_first_name]'   => $form->getFirstName(),
-    'order[recipient_last_name]'    => $form->getLastName(),
-    'order[recipient_email]'        => $form->getEmail(),
-    'order[recipient_phonenumbers]' => substr($form->getMobilePhone(), -10),
-    'order[subway_id]'              => $form->getSubwayId(),
-    'order[address_street]'         => $form->getAddressStreet(),
-    'order[address_number]'         => $form->getAddressNumber(),
-    'order[address_building]'       => $form->getAddressBuilding(),
-    'order[address_floor]'          => $form->getAddressFloor(),
-    'order[address_apartment]'      => $form->getAddressApartment(),
-    'order[payment_method_id]'      => $form->getPaymentMethodId(),
+	'order[recipient_first_name]'   => $form->getFirstName(),
+	'order[recipient_last_name]'    => $form->getLastName(),
+	'order[recipient_email]'        => $form->getEmail(),
+	'order[recipient_phonenumbers]' => substr($form->getMobilePhone(), -10),
+	'order[subway_id]'              => $form->getSubwayId(),
+	'order[address_street]'         => $form->getAddressStreet(),
+	'order[address_number]'         => $form->getAddressNumber(),
+	'order[address_building]'       => $form->getAddressBuilding(),
+	'order[address_floor]'          => $form->getAddressFloor(),
+	'order[address_apartment]'      => $form->getAddressApartment(),
+	'order[payment_method_id]'      => $form->getPaymentMethodId(),
 ]) ?>"></div>
 
 <?php if (\App::config()->analytics['enabled']): ?>
-    <div id="marketgidOrder" class="jsanalytics"></div>
-    <?= $page->tryRender('order/_kissmetrics-create') ?>
+	<div id="marketgidOrder" class="jsanalytics"></div>
+	<?= $page->tryRender('order/_kissmetrics-create') ?>
 
-    <?= $page->tryRender('order/partner-counter/_cityads-create') ?>
-    <?= $page->tryRender('order/partner-counter/_reactive-create') ?>
-    <?= $page->tryRender('order/partner-counter/_ad4u-create') ?>
+	<?= $page->tryRender('order/partner-counter/_cityads-create') ?>
+	<?= $page->tryRender('order/partner-counter/_reactive-create') ?>
+	<?= $page->tryRender('order/partner-counter/_ad4u-create') ?>
 <?php endif ?>
