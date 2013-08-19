@@ -336,7 +336,7 @@ $similarABtests = [
     // SimilarAction::retailrocket/ItemToItems
     [
         'traffic'  => '50',
-        'key'      => 'retailrocket/ItemToItems',
+        'key'      => 'retailrocketItemToItems',
         'name'     => "С этим товаром также смотрят",
         'ga_event' => 'RetailRocket/ItemToItems',
     ],

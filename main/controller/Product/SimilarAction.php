@@ -39,10 +39,16 @@ class SimilarAction {
 
                 if ( 'smartengine' == $key ) {
                     $products = $this->getProductsFromSmartengine($product, $request);
-                } elseif ( 'retailrocket' == $key ) {
-                    $products = $this->getProductsFromRetailrocket($product, $request);
-                } elseif ( 'retailrocket/ItemToItems' == $key) {
-                    $products = $this->getProductsFromRetailrocket($product, $request, 'ItemToItems');
+                } else {
+                    $rkey = substr($key,0,12);
+                    $rsubkey = substr($key,12);
+                    if ( 'retailrocket' == $rkey ) {
+                        if ( 'ItemToItems' == $rsubkey) {
+                            $products = $this->getProductsFromRetailrocket($product, $request, 'ItemToItems');
+                        }else {
+                            $products = $this->getProductsFromRetailrocket($product, $request);
+                        }
+                    }
                 }
 
                 if ( !isset($products) || !is_array($products) ) {
