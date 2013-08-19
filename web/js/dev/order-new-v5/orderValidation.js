@@ -14,7 +14,9 @@
 		metroIdFiled = $('#order_subway_id'),
 		streetField = $('#order_address_street'),
 		buildingField = $('#order_address_building'),
+		sclub = $('#sclub-number'),
 		paymentRadio = $('.jsCustomRadio[name="order[payment_method_id]"]'),
+		qiwiPhone = $('#qiwi-phone'),
 		orderAgreed = $('#order_agreed'),
 
 		// complete button
@@ -30,12 +32,6 @@
 					fieldNode: firstNameField,
 					require: true,
 					customErr: 'Введите имя получателя',
-					validateOnChange: true
-				},
-				{
-					fieldNode: lastNameField,
-					require: true,
-					customErr: 'Введите фамилию получателя',
 					validateOnChange: true
 				},
 				{
@@ -298,7 +294,8 @@
 		};
 	// end of functions
 	
-
+	sclub.mask("* ****** ******", { placeholder: "*" } );
+	qiwiPhone.mask("(999) 999-99-99");
 	phoneField.mask("(999) 999-99-99");
 
 	/**

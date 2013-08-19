@@ -212,7 +212,7 @@ DeliveryBox.prototype._addProduct = function( product ) {
 		}
 		else {
 			// Блока для этого типа доставки в этот пункт еще существует
-			self.OrderModel.createdBox[token] = new DeliveryBox( tempProductArray, self.state, firstAvaliblePoint, self.OrderModel.createdBox, self.OrderModel );
+			self.OrderModel.createdBox[token] = new DeliveryBox( tempProductArray, self.state, firstAvaliblePoint, self.OrderModel );
 		}
 
 		return;
@@ -876,7 +876,9 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 		metroIdFiled = $('#order_subway_id'),
 		streetField = $('#order_address_street'),
 		buildingField = $('#order_address_building'),
+		sclub = $('#sclub-number'),
 		paymentRadio = $('.jsCustomRadio[name="order[payment_method_id]"]'),
+		qiwiPhone = $('#qiwi-phone'),
 		orderAgreed = $('#order_agreed'),
 
 		// complete button
@@ -892,12 +894,6 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 					fieldNode: firstNameField,
 					require: true,
 					customErr: 'Введите имя получателя',
-					validateOnChange: true
-				},
-				{
-					fieldNode: lastNameField,
-					require: true,
-					customErr: 'Введите фамилию получателя',
 					validateOnChange: true
 				},
 				{
@@ -1160,7 +1156,8 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 		};
 	// end of functions
 	
-
+	sclub.mask("* ****** ******", { placeholder: "*" } );
+	qiwiPhone.mask("(999) 999-99-99");
 	phoneField.mask("(999) 999-99-99");
 
 	/**
