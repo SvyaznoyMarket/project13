@@ -4,6 +4,11 @@ namespace Controller\Product;
 
 class SimilarAction {
 
+    static public $recomendedPartners = [
+        \Smartengine\Client::NAME,
+        \RetailRocket\Client::NAME,
+    ];
+
 
     /**
      * Разводящий метод: запускает либо smartengineClient , либо retailrocketClient
@@ -33,11 +38,17 @@ class SimilarAction {
                 $key = $ABtest->getKey();
 
                 if ( 'smartengine' == $key ) {
-                    $products = $this->smartengineClient($product, $request);
-                } elseif ( 'retailrocket' == $key ) {
-                    $products = $this->retailrocketClient($product, $request);
-                } elseif ( 'retailrocket/ItemToItems' == $key) {
-                    $products = $this->retailrocketClient($product, $request, 'ItemToItems');
+                    $products = $this->getProductsFromSmartengine($product, $request);
+                } else {
+                    $rkey = substr($key,0,12);
+                    $rsubkey = substr($key,12);
+                    if ( 'retailrocket' == $rkey ) {
+                        if ( 'ItemToItems' == $rsubkey) {
+                            $products = $this->getProductsFromRetailrocket($product, $request, 'ItemToItems');
+                        }else{
+                            $products = $this->getProductsFromRetailrocket($product, $request, 'UpSellItemToItems');
+                        }
+                    }
                 }
 
                 if ( !isset($products) || !is_array($products) ) {
@@ -78,7 +89,7 @@ class SimilarAction {
      * @return \Http\RedirectResponse|\Http\Response
      * @throws \Exception\NotFoundException
      */
-    public function smartengineClient($product, \Http\Request $request)
+    public function getProductsFromSmartengine($product, \Http\Request $request)
     {
         \App::logger()->debug('Exec ' . __METHOD__);
 
@@ -106,7 +117,7 @@ class SimilarAction {
                 ? [$r['recommendeditems']['item']['id']]
                 : array_map(function($item) { return $item['id']; }, isset($r['recommendeditems']['item']) ? $r['recommendeditems']['item'] : []);
 
-            $products = $this->getProducts($ids);
+            $products = $this->prepareProducts($ids, $client::NAME);
 
             return $products;
 
@@ -123,8 +134,9 @@ class SimilarAction {
      * @param \Http\Request             $request
      * @param string                    $method
      * @return \Http\JsonResponse|\Model\Product\Entity[]
+     * @throws \Exception\NotFoundException
      */
-    public function retailrocketClient( $product, \Http\Request $request, $method = 'UpSellItemToItems' ) {
+    public function getProductsFromRetailrocket( $product, \Http\Request $request, $method = 'UpSellItemToItems' ) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
         try {
@@ -134,7 +146,7 @@ class SimilarAction {
 
             $ids = $client->query('Recomendation/' . $method, $productId);
 
-            $products = $this->getProducts($ids);
+            $products = $this->prepareProducts($ids, $client::NAME);
 
             return $products;
 
@@ -164,19 +176,41 @@ class SimilarAction {
 
     /**
      * @param   array()                         $ids
+     * @param   string                          $senderName
      * @return  \Model\Product\Entity[]         $products
      * @throws  \Exception
      */
-    private function getProducts($ids) {
+    private function prepareProducts($ids, $senderName) {
         if (!(bool)$ids) {
             throw new \Exception('Рекомендации не получены');
         }
 
         $products = \RepositoryManager::product()->getCollectionById($ids);
+
         foreach ($products as $i => $product) {
-            if (!$product->getIsBuyable()) {
+            /* @var product Model\Product\Entity */
+
+            //if (!$product->getIsBuyable()) continue;
+            if (!$product->getIsBuyable())  {
                 unset($products[$i]);
+                continue;
             }
+
+            $link = $product->getLink();
+            $link = $link . (false === strpos($link, '?') ? '?' : '&') . 'sender=' . $senderName . '|' . $product->getId();
+            $product->setLink($link);
+
+            /*
+            $return[] = [
+                'id'     => $product->getId(),
+                'name'   => $product->getName(),
+                'image'  => $product->getImageUrl(),
+                'rating' => $product->getRating(),
+                'link'   => $product->getLink() . (false === strpos($product->getLink(), '?') ? '?' : '&') . 'sender=' . $senderName . '|' . $product->getId(),
+                'price'  => $product->getPrice(),
+                'data'   => \Kissmetrics\Manager::getProductEvent($product, $i+1, 'Similar'),
+            ];
+            */
         }
 
         if (!(bool)$products) {
