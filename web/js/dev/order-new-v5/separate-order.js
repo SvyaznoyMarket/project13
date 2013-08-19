@@ -272,19 +272,24 @@
 		blockScreen: {
 			noti: null,
 			block: function( text ) {
+				var self = this;
+
 				console.warn('block screen');
 
-				if ( this.noti ) {
-					this.unblock();
+				if ( self.noti ) {
+					self.unblock();
 				}
 
-				this.noti = $('<div>').addClass('noti').html('<div><img src="/images/ajaxnoti.gif" /></br></br> '+ text +'</div>');
-				this.noti.appendTo('body');
+				self.noti = $('<div>').addClass('noti').html('<div><img src="/images/ajaxnoti.gif" /></br></br> '+ text +'</div>');
+				self.noti.appendTo('body');
 
-				this.noti.lightbox_me({
+				self.noti.lightbox_me({
 					centered:true,
 					closeClick:false,
-					closeEsc:false
+					closeEsc:false,
+					onClose: function() {
+						self.noti.remove();
+					}
 				});
 			},
 
@@ -292,7 +297,6 @@
 				console.warn('unblock screen');
 
 				this.noti.trigger('close');
-				this.noti.remove();
 			}
 		},
 
@@ -439,7 +443,7 @@
 			var updateResponceHandler = function updateResponceHandler( res ) {
 				renderOrderData(res);
 				global.OrderModel.blockScreen.unblock();
-				
+
 				separateOrder( global.OrderModel.statesPriority );
 			};
 

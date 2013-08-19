@@ -53,11 +53,21 @@ function DeliveryBox( products, state, choosenPointForBox, OrderModel ) {
 	// Массив всех точек доставок
 	self.pointList = [];
 
-	if ( self.hasPointDelivery ) {
+	if ( self.hasPointDelivery && !self.OrderModel.orderDictionary.getPointByStateAndId(self.state, choosenPointForBox) ) {
 		// Доставка в выбранный пункт
+		console.info('есть точки доставки для выбранного метода доставки, но выбранная точка не доступна для этого метода доставки. Берем первую точку для выбранного метода доставки');
+
+		self.choosenPoint( self.OrderModel.orderDictionary.getFirstPointByState(self.state) );
+	}
+	else if ( self.hasPointDelivery ) {
+		// Доставка в первый пункт для данного метода доставки
+		console.info('есть точки доставки для выбранного метода доставки, и выбранная точка доступна для этого метода доставки');
+
 		self.choosenPoint( self.OrderModel.orderDictionary.getPointByStateAndId(self.state, choosenPointForBox) );
 	}
 	else {
+		console.info('для выбранного метода доставки не нужна точка доставки');
+
 		// Передаем в модель, что есть блок с доставкой домой и генерируем событие об этом
 		self.OrderModel.hasHomeDelivery(true);
 		$('body').trigger('orderdeliverychange',[true]);
