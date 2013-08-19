@@ -31,6 +31,7 @@ function OrderDictionary( orderData ) {
 OrderDictionary.prototype.getNameOfState = function( state ) {
 	if ( !this.hasDeliveryState(state) ) {
 		console.warn('Не найден метод доставки '+state);
+		
 		return false;
 	}
 
@@ -79,17 +80,18 @@ OrderDictionary.prototype.hasPointDelivery = function( state ) {
  * 
  * @param	{String}	state		Метод доставки
  * @param	{String}	pointId		Идентификатор точки достаки
- * @return	{Object}				Данные о точке доставки
+ * @return	{Array}				Данные о точке доставки
  */
 OrderDictionary.prototype.getPointByStateAndId = function( state, pointId ) {
-	var points = this.getAllPointsByState(state);
+	var points = this.getAllPointsByState(state),
+		findedPoint = null;
 	// end of vars
 	
 	pointId = pointId+'';
 
-	for (var i = points.length - 1; i >= 0; i--) {
+	for ( var i = points.length - 1; i >= 0; i-- ) {
 		if ( points[i].id === pointId ) {
-			return points[i];
+			return window.cloneObject(points[i]);
 		}
 	}
 };
@@ -117,6 +119,7 @@ OrderDictionary.prototype.getAllPointsByState = function( state ) {
 OrderDictionary.prototype.getProductFromState = function( state ) {
 	if ( !this.hasDeliveryState(state) ) {
 		console.warn('Не найден метод доставки '+state);
+
 		return false;
 	}
 
@@ -134,6 +137,7 @@ OrderDictionary.prototype.getProductFromState = function( state ) {
 OrderDictionary.prototype.getProductById = function( productId ) {
 	if ( !this.products.hasOwnProperty(productId) ) {
 		console.warn('Такого продукта не найдено');
+
 		return false;
 	}
 

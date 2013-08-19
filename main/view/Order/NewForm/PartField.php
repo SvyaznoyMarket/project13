@@ -3,16 +3,8 @@
 namespace View\Order\NewForm;
 
 class PartField {
-    /**
-     * Ид типа доставки
-     * @var int
-     */
-    private $deliveryTypeId;
-    /**
-     * Токен типа доставки (на всякий случай)
-     * @var string
-     */
-    private $deliveryTypeToken;
+    /** @var string */
+    private $deliveryMethod_token;
     /**
      * Дата получения заказа, например, 2013-08-23
      * @var \DateTime
@@ -27,7 +19,7 @@ class PartField {
      * Ид магазина
      * @var int
      */
-    private $shopId;
+    private $pointId;
     /**
      * Массив ид товаров
      * @var int[]
@@ -38,18 +30,18 @@ class PartField {
      * @param array $data
      */
     public function __construct(array $data = []) {
-        if (array_key_exists('deliveryType_id', $data)) $this->setDeliveryTypeId($data['deliveryType_id']);
-        if (array_key_exists('deliveryType_token', $data)) $this->setDeliveryTypeToken($data['deliveryType_token']);
+        if (array_key_exists('deliveryMethod_token', $data)) $this->setDeliveryMethodToken($data['deliveryMethod_token']);
         if (array_key_exists('date', $data)) {
+            $date = date('Y-m-d', $data['date'] / 1000);
             try {
-                $this->setDate(new \DateTime($data['date']));
+                $this->setDate(new \DateTime($date));
             } catch(\Exception $e) {
                 $this->setDate(new \DateTime());
-                \App::logger()->error(sprintf('Неверная дата %s', json_encode($data['date'], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)), ['order']);
+                \App::logger()->error(['action' => __METHOD__, 'date' => $data], ['order']);
             }
         }
         if (array_key_exists('interval', $data)) $this->setInterval(new IntervalField((array)$data['interval']));
-        if (array_key_exists('shop_id', $data)) $this->setShopId($data['shop_id']);
+        if (array_key_exists('point_id', $data)) $this->setPointId($data['point_id']);
         if (array_key_exists('products', $data)) $this->setProductIds((array)$data['products']);
     }
 
@@ -68,31 +60,17 @@ class PartField {
     }
 
     /**
-     * @param int $deliveryTypeId
+     * @param string $deliveryMethod_token
      */
-    public function setDeliveryTypeId($deliveryTypeId) {
-        $this->deliveryTypeId = (int)$deliveryTypeId;
-    }
-
-    /**
-     * @return int
-     */
-    public function getDeliveryTypeId() {
-        return $this->deliveryTypeId;
-    }
-
-    /**
-     * @param string $deliveryTypeToken
-     */
-    public function setDeliveryTypeToken($deliveryTypeToken) {
-        $this->deliveryTypeToken = (string)$deliveryTypeToken;
+    public function setDeliveryMethodToken($deliveryMethod_token) {
+        $this->deliveryMethod_token = (string)$deliveryMethod_token;
     }
 
     /**
      * @return string
      */
-    public function getDeliveryTypeToken() {
-        return $this->deliveryTypeToken;
+    public function getDeliveryMethodToken() {
+        return $this->deliveryMethod_token;
     }
 
     /**
@@ -126,14 +104,14 @@ class PartField {
     /**
      * @param int $shopId
      */
-    public function setShopId($shopId) {
-        $this->shopId = (int)$shopId;
+    public function setPointId($shopId) {
+        $this->pointId = (int)$shopId;
     }
 
     /**
      * @return int
      */
-    public function getShopId() {
-        return $this->shopId;
+    public function getPointId() {
+        return $this->pointId;
     }
 }

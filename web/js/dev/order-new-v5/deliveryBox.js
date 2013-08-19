@@ -11,18 +11,16 @@
  * @param	{String}		state				Текущий метод доставки для блока
  * @param	{Number}		choosenPointForBox	Выбранная точка доставки
  * 
- * @param	{Object}		createdBox			Объект со созданными блоками доставки
  * @param	{Object}		OrderModel			Модель оформления заказа
  * 
  * @constructor
  */
-function DeliveryBox( products, state, choosenPointForBox, createdBox, OrderModel ) {
+function DeliveryBox( products, state, choosenPointForBox, OrderModel ) {
 	console.info('Cоздание блока доставки '+state+' для '+choosenPointForBox);
 
 	var self = this;
 
 	self.OrderModel = OrderModel;
-	self.createdBox = createdBox;
 	self.token = state+'_'+choosenPointForBox;
 
 	// Продукты в блоке
@@ -38,6 +36,8 @@ function DeliveryBox( products, state, choosenPointForBox, createdBox, OrderMode
 
 	// Выбранная дата доставки
 	self.choosenDate = ko.observable();
+
+	self.choosenNameOfWeek = ko.observable();
 	// Выбранная точка доставки
 	self.choosenPoint = ko.observable({id:choosenPointForBox});
 	// Выбранный интервал доставки
@@ -51,11 +51,20 @@ function DeliveryBox( products, state, choosenPointForBox, createdBox, OrderMode
 	// Массив всех доступных дат для блока
 	self.allDatesForBlock = ko.observableArray([]);
 	// Массив всех точек доставок
-	self.pointList = ko.observableArray([]);
+	self.pointList = [];
 
 	if ( self.hasPointDelivery ) {
+		// Доставка в выбранный пункт
 		self.choosenPoint( self.OrderModel.orderDictionary.getPointByStateAndId(self.state, choosenPointForBox) );
 	}
+	else {
+		// Передаем в модель, что есть блок с доставкой домой и генерируем событие об этом
+		self.OrderModel.hasHomeDelivery(true);
+		$('body').trigger('orderdeliverychange',[true]);
+	}
+
+	// Отступ слайдера дат
+	self.calendarSliderLeft = ko.observable(0);
 
 	self.addProductGroup(products);
 
@@ -69,13 +78,14 @@ function DeliveryBox( products, state, choosenPointForBox, createdBox, OrderMode
  */
 DeliveryBox.prototype._makePointList = function() {
 	var self = this,
-		res = true;
+		res = true,
+		tmpPoint = null;
 	// end of vars
 
 	/**
 	 * Перебираем точки доставки для первого товара
 	 */
-	for (var point in self.products[0].deliveries ) {
+	for ( var point in self.products[0].deliveries ) {
 
 		/**
 		 * Перебираем все товары в блоке, проверяя доступна ли данная точка доставки для них
@@ -90,7 +100,8 @@ DeliveryBox.prototype._makePointList = function() {
 
 		if ( res ) {
 			// Точка достаки доступна для всех товаров в блоке
-			self.pointList.push( self.OrderModel.orderDictionary.getPointByStateAndId(self.state, point) );
+			tmpPoint = self.OrderModel.orderDictionary.getPointByStateAndId(self.state, point);
+			self.pointList.push( tmpPoint );
 		}
 	}
 };
@@ -108,20 +119,24 @@ DeliveryBox.prototype.selectPoint = function( data ) {
 	var self = this,
 		newToken = self.state+'_'+data.id;
 
-	if ( self.createdBox[newToken] !== undefined ) {
-		self.createdBox[newToken].addProductGroup(self.products);
+	if ( self.OrderModel.createdBox[newToken] !== undefined ) {
+		self.OrderModel.createdBox[newToken].addProductGroup(self.products);
 
-		delete self.createdBox[self.token];
+		delete self.OrderModel.createdBox[self.token];
 	}
 	else {
-		self.createdBox[newToken] = self.createdBox[self.token];
-		delete self.createdBox[self.token];
+		console.info('удаляем старый блок');
+		console.log('старый токен '+self.token);
+		console.log('новый токен '+newToken);
+		self.OrderModel.createdBox[newToken] = self.OrderModel.createdBox[self.token];
+		delete self.OrderModel.createdBox[self.token];
 
 		self.token = newToken;
-		self.choosenPoint(data);
+		self.choosenPoint(self.OrderModel.orderDictionary.getPointByStateAndId(self.state, data.id));
+		console.log(self.OrderModel.createdBox);
 	}
 
-	self.showPopupWithPoints(false);
+	self.OrderModel.showPopupWithPoints(false);
 
 	return false;
 };
@@ -134,7 +149,17 @@ DeliveryBox.prototype.selectPoint = function( data ) {
 DeliveryBox.prototype.changePoint = function( ) {
 	var self = this;
 
-	self.showPopupWithPoints(true);
+	// запонимаем токен бокса которому она принадлежит
+	for ( var i = self.pointList.length - 1; i >= 0; i-- ) {
+		self.pointList[i].parentBoxToken = self.token;
+	}
+	
+	self.OrderModel.popupWithPoints({
+		header: 'Выберите точку доставки',
+		points: self.pointList
+	});
+
+	self.OrderModel.showPopupWithPoints(true);
 
 	return false;
 };
@@ -181,13 +206,13 @@ DeliveryBox.prototype._addProduct = function( product ) {
 
 		tempProductArray.push(product);
 
-		if ( self.createdBox[token] !== undefined ) {
+		if ( self.OrderModel.createdBox[token] !== undefined ) {
 			// Блок для этого типа доставки в этот пункт уже существует. Добавляем продукт в блок
-			self.createdBox[token].addProductGroup( product );
+			self.OrderModel.createdBox[token].addProductGroup( product );
 		}
 		else {
 			// Блока для этого типа доставки в этот пункт еще существует
-			self.createdBox[token] = new DeliveryBox( tempProductArray, self.state, firstAvaliblePoint, self.createdBox, self.OrderModel );
+			self.OrderModel.createdBox[token] = new DeliveryBox( tempProductArray, self.state, firstAvaliblePoint, self.OrderModel.createdBox, self.OrderModel );
 		}
 
 		return;
@@ -201,6 +226,7 @@ DeliveryBox.prototype._addProduct = function( product ) {
 	self.fullPrice += product.sum;
 
 	self.products.push({
+		id: product.id,
 		name: product.name,
 		price: product.sum,
 		quantity: product.quantity,
@@ -209,6 +235,18 @@ DeliveryBox.prototype._addProduct = function( product ) {
 		productImg: product.image,
 		deliveries: product.deliveries[self.state]
 	});
+};
+
+/**
+ * Перерасчет общей стоимости заказа
+ */
+DeliveryBox.prototype.updateTotalPrice = function() {
+	var self = this,
+		nowTotalSum = self.OrderModel.totalSum();
+	// end of vars
+
+	nowTotalSum += self.fullPrice + self.deliveryPrice;
+	self.OrderModel.totalSum(nowTotalSum);
 };
 
 /**
@@ -227,7 +265,8 @@ DeliveryBox.prototype.addProductGroup = function( products ) {
 		self._addProduct(products[i]);
 	}
 
-	this.calculateDate();
+	self.calculateDate();
+	self.updateTotalPrice();
 
 	if ( self.hasPointDelivery ) {
 		self._makePointList();
@@ -235,13 +274,25 @@ DeliveryBox.prototype.addProductGroup = function( products ) {
 };
 
 /**
- * Получение человекочитаемого названия дня недели
+ * Получение сокращенного человекочитаемого названия дня недели
  * 
  * @param	{Number}	dateFromModel	Номер дня недели
  * @return	{String}					Человекочитаемый день недели
  */
 DeliveryBox.prototype._getNameDayOfWeek = function( dayOfWeek ) {
 	var days = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
+
+	return days[dayOfWeek];
+};
+
+/**
+ * Получение полного человекочитаемого названия дня недели
+ * 
+ * @param	{Number}	dateFromModel	Номер дня недели
+ * @return	{String}					Человекочитаемый день недели
+ */
+DeliveryBox.prototype._getFullNameDayOfWeek = function( dayOfWeek ) {
+	var days = ['воскресение', 'понедельник', 'вторник', 'среда', 'четверг', 'пятница', 'суббота'];
 
 	return days[dayOfWeek];
 };
@@ -293,6 +344,25 @@ DeliveryBox.prototype._hasDateInAllProducts = function( checkTS ) {
 	return res;
 };
 
+
+/**
+ * Выбор новой даты в календаре
+ *
+ * @this	{DeliveryBox}
+ *
+ * @param	{Object}	data		Данные о новой дате
+ */
+DeliveryBox.prototype.clickCalendarDay = function( data ) {
+	var self = this;
+	
+	if ( !data.avalible ) {
+		return false;
+	}
+
+	self.choosenNameOfWeek(self._getFullNameDayOfWeek(data.dayOfWeek));
+	self.choosenDate(data);
+};
+
 /**
  * Получение общей ближайшей даты доставки
  * Заполнение массива общих дат
@@ -326,8 +396,6 @@ DeliveryBox.prototype.calculateDate = function() {
 		if ( self._hasDateInAllProducts(nowTS) && nowTS >= todayTS ) {
 			nowProductDates[i].avalible = true;
 			nowProductDates[i].humanDayOfWeek = self._getNameDayOfWeek(nowProductDates[i].dayOfWeek);
-			nowProductDates[i].selectDay = self.selectDay;
-
 
 			self.allDatesForBlock.push(nowProductDates[i]);
 		}
@@ -335,6 +403,7 @@ DeliveryBox.prototype.calculateDate = function() {
 
 	// выбираем ближайшую доступную дату
 	self.choosenDate( self.allDatesForBlock()[0] );
+	self.choosenNameOfWeek( self._getFullNameDayOfWeek(self.allDatesForBlock()[0].dayOfWeek) );
 	// выбираем первый интервал
 	self.choosenInterval( self.choosenDate().intervals[0] );
 
@@ -350,20 +419,25 @@ DeliveryBox.prototype.makeCalendar = function() {
 	var self = this,
 		addCountDays = 0,
 		dayOfWeek = null,
-		tmpDay = {};
+		tmpDay = {},
+		tmpVal = null,
+
+		ONE_DAY = 24*60*60*1000;
 	// end of vars
 
 	if ( self.allDatesForBlock()[0].dayOfWeek !== 1 ) {
 		addCountDays = ( self.allDatesForBlock()[0].dayOfWeek === 0 ) ? 6 : self.allDatesForBlock()[0].dayOfWeek - 1;
+		tmpVal = self.allDatesForBlock()[0].value;
 
 		for ( var i = addCountDays; i > 0; i-- ) {
 			dayOfWeek = self.allDatesForBlock()[0].dayOfWeek - 1;
-			
+			tmpVal -= ONE_DAY;
+
 			tmpDay = {
 				avalible: false,
 				humanDayOfWeek: self._getNameDayOfWeek(dayOfWeek),
 				dayOfWeek: dayOfWeek,
-				day: 0
+				day: new Date(tmpVal).getDate()
 			};
 
 			self.allDatesForBlock.unshift(tmpDay);
@@ -372,18 +446,72 @@ DeliveryBox.prototype.makeCalendar = function() {
 
 	if ( self.allDatesForBlock()[self.allDatesForBlock().length - 1].dayOfWeek !== 0 ) {
 		addCountDays = 7 - self.allDatesForBlock()[self.allDatesForBlock().length - 1].dayOfWeek;
+		tmpVal = self.allDatesForBlock()[self.allDatesForBlock().length - 1].value;
 
 		for ( var j = addCountDays; j > 0; j-- ) {
 			dayOfWeek = ( self.allDatesForBlock()[self.allDatesForBlock().length - 1].dayOfWeek + 1 === 7 ) ? 0 : self.allDatesForBlock()[self.allDatesForBlock().length - 1].dayOfWeek + 1;
-			
+			tmpVal += ONE_DAY;
+
 			tmpDay = {
 				avalible: false,
 				humanDayOfWeek: self._getNameDayOfWeek(dayOfWeek),
 				dayOfWeek: dayOfWeek,
-				day: 0
+				day: new Date(tmpVal).getDate()
 			};
 
 			self.allDatesForBlock.push(tmpDay);
 		}
+	}
+};
+
+
+/**
+ * =========== CALENDAR SLIDER ===================
+ */
+DeliveryBox.prototype.calendarLeftBtn = function() {
+	var self = this,
+		nowLeft = parseInt(self.calendarSliderLeft(), 10);
+	// end of vars
+	
+	nowLeft += 380;
+	self.calendarSliderLeft(nowLeft);
+};
+
+DeliveryBox.prototype.calendarRightBtn = function() {
+	var self = this,
+		nowLeft = parseInt(self.calendarSliderLeft(), 10);
+	// end of vars
+	
+	nowLeft -= 380;
+	self.calendarSliderLeft(nowLeft);
+};
+
+
+ko.bindingHandlers.calendarSlider = {
+	update: function( element, valueAccessor, allBindingsAccessor, viewModel, bindingContext ) {
+		var slider = $(element),
+			nowLeft = valueAccessor(),
+
+			dateItem = slider.find('.bBuyingDatesItem'),
+			dateItemW = dateItem.width() + parseInt(dateItem.css('marginRight'), 10) + parseInt(dateItem.css('marginLeft'), 10);
+		// end of vars
+
+		slider.width(dateItem.length * dateItemW);
+
+		if ( nowLeft > 0 ) {
+			nowLeft -= 380;
+			bindingContext.box.calendarSliderLeft(nowLeft);
+
+			return;
+		}
+
+		if ( nowLeft < -slider.width() ) {
+			nowLeft += 380;
+			bindingContext.box.calendarSliderLeft(nowLeft);
+
+			return;
+		}
+
+		slider.animate({'left': nowLeft});
 	}
 };

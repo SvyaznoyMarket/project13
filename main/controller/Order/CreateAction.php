@@ -6,6 +6,7 @@ use View\Order\NewForm\Form as Form;
 
 class CreateAction {
     use ResponseDataTrait;
+    use FormTrait;
 
     /**
      * @param \Http\Request $request
@@ -62,6 +63,13 @@ class CreateAction {
                 ];
             }
 
+            // TODO: прибавить к cartSum стоимость доставки
+            $cartSum = $user->getCart()->getSum();
+            if ($form->getPaymentMethodId() && ($cartSum > \App::config()->order['maxSumOnline']) && in_array($form->getPaymentMethodId(), [\Model\PaymentMethod\Entity::QIWI_ID, \Model\PaymentMethod\Entity::WEBMONEY_ID])) {
+                $paymentMethod = \RepositoryManager::paymentMethod()->getEntityById($form->getPaymentMethodId());
+                throw new \Exception(sprintf('Невозможно оформить заказ на %d рублей с выбранным способом оплаты %s', $cartSum, $paymentMethod ? $paymentMethod->getName() : ''));
+            }
+
             // создание заказов в ядре
             $createdOrders = $this->saveOrders($form);
 
@@ -97,7 +105,7 @@ class CreateAction {
                     'address_floor'          => $form->getAddressFloor(),
                     'subway_id'              => $form->getSubwayId(),
                 ];
-                $cookies[] = new \Http\Cookie(self::ORDER_COOKIE_NAME, strtr(base64_encode(serialize($cookieValue)), '+/', '-_'), strtotime('+1 year' ));
+                $cookies[] = new \Http\Cookie(\App::config()->order['cookieName'] ?: 'last_order', strtr(base64_encode(serialize($cookieValue)), '+/', '-_'), strtotime('+1 year' ));
 
                 // удаление флага "Беру в кредит"
                 $cookies[] = new \Http\Cookie('credit_on', '', time() - 3600);
@@ -108,24 +116,24 @@ class CreateAction {
                 \App::logger()->error($e, ['order']);
             }
         } catch(\Exception $e) {
-            $formErrors = [];
-            foreach ($form->getErrors() as $fieldName => $errorMessage) {
-                $formErrors[] = ['code' => 'invalid', 'message' => $errorMessage, 'field' => $fieldName];
-            }
-
             switch ($e->getCode()) {
                 case 735:
                     \App::exception()->remove($e);
-                    $formErrors[] = ['code' => 'invalid', 'message' => 'Неверный код карты Связной-Клуб', 'field' => 'sclub_card_number'];
+                    $form->setError('sclub_card_number', 'Неверный код карты Связной-Клуб');
                     break;
                 case 742:
                     \App::exception()->remove($e);
-                    $formErrors[] = ['code' => 'invalid', 'message' => 'Неверный пин-код подарочного сертификата', 'field' => 'cardpin'];
+                    $form->setError('cardpin', 'Неверный пин-код подарочного сертификата');
                     break;
                 case 743:
                     \App::exception()->remove($e);
-                    $formErrors[] = ['code' => 'invalid', 'message' => 'Подарочный сертификат не найден', 'field' => 'cardnumber'];
+                    $form->setError('cardnumber', 'Подарочный сертификат не найден');
                     break;
+            }
+
+            $formErrors = [];
+            foreach ($form->getErrors() as $fieldName => $errorMessage) {
+                $formErrors[] = ['code' => 'invalid', 'message' => $errorMessage, 'field' => $fieldName];
             }
 
             $responseData['form'] = [
@@ -134,7 +142,25 @@ class CreateAction {
 
             $this->failResponseData($e, $responseData);
 
-            \App::logger()->error(['action' => __METHOD__, 'request.data' => $request->request->all(), 'error' => $e, 'formError' => $formErrors], ['order']);
+            \App::logger()->error([
+                'action'         => __METHOD__,
+                'error'          => $e,
+                'form'           => $form,
+                'request.server' => array_map(function($name) use (&$request) { return $request->server->get($name); }, [
+                    'HTTP_USER_AGENT',
+                    'HTTP_ACCEPT',
+                    'HTTP_ACCEPT_LANGUAGE',
+                    'HTTP_ACCEPT_ENCODING',
+                    'HTTP_X_REQUESTED_WITH',
+                    'HTTP_REFERER',
+                    'HTTP_COOKIE',
+                    'REQUEST_METHOD',
+                    'QUERY_STRING',
+                    'REQUEST_TIME_FLOAT',
+                ]),
+                'request.data'   => $request->request->all(),
+                'session'        => \App::session()->all()
+            ], ['order']);
         }
 
         // JsonResponse
@@ -165,12 +191,6 @@ class CreateAction {
             throw new \Exception('Невалидная форма заказа %s');
         }
 
-        /** @var $deliveryTypesById \Model\DeliveryType\Entity[] */
-        $deliveryTypesById = [];
-        foreach (\RepositoryManager::deliveryType()->getCollection() as $deliveryType) {
-            $deliveryTypesById[$deliveryType->getId()] = $deliveryType;
-        }
-
         /** @var $deliveryTypesById \Model\Shop\Entity[] */
         $shopsById = [];
         foreach (\RepositoryManager::shop()->getCollectionByRegion($user->getRegion()) as $shop) {
@@ -185,9 +205,9 @@ class CreateAction {
         $bMeta = false;
         foreach ($form->getPart() as $orderPart) {
             /** @var $deliveryType \Model\DeliveryType\Entity|null */
-            $deliveryType = isset($deliveryTypesById[$orderPart->getDeliveryTypeId()]) ? $deliveryTypesById[$orderPart->getDeliveryTypeId()] : null;
+            $deliveryType = \RepositoryManager::deliveryType()->getEntityByMethodToken($orderPart->getDeliveryMethodToken());
             if (!$deliveryType) {
-                \App::logger()->error(sprintf('Неизвестный тип доставки {#%s @%s}', json_encode($orderPart->getDeliveryTypeId(), $orderPart->getDeliveryTypeToken(), JSON_UNESCAPED_UNICODE)), ['order']);
+                \App::logger()->error(['action' => __METHOD__, 'message' => sprintf('Неизвестный метод доставки %s', $orderPart->getDeliveryMethodToken())], ['order']);
                 continue;
             }
 
@@ -211,8 +231,8 @@ class CreateAction {
                 'extra'                     => $form->getComment(),
                 'svyaznoy_club_card_number' => $form->getSclubCardnumber(),
                 'delivery_type_id'          => $deliveryType->getId(),
-                'delivery_period'           => !empty($deliveryItem['interval']) ? explode(',', $deliveryItem['interval']) : null,
-                'delivery_date'             => !empty($deliveryItem['date']) ? $deliveryItem['date'] : null,
+                'delivery_period'           => $orderPart->getInterval(),
+                'delivery_date'             => $orderPart->getDate() instanceof \DateTime ? $orderPart->getDate()->format('Y-m-d') : null,
                 'ip'                        => $request->getClientIp(),
                 'product'                   => [],
                 'service'                   => [],
@@ -228,14 +248,15 @@ class CreateAction {
 
             // данные для самовывоза [self, now]
             if (in_array($deliveryType->getToken(), [\Model\DeliveryType\Entity::TYPE_SELF, \Model\DeliveryType\Entity::TYPE_NOW])) {
-                if ($orderPart->getShopId() && array_key_exists($orderPart->getShopId(), $shopsById)) {
-                    $orderData['shop_id'] = $orderPart->getShopId();
+                if ($orderPart->getPointId() && array_key_exists($orderPart->getPointId(), $shopsById)) {
+                    $orderData['shop_id'] = $orderPart->getPointId();
                     $orderData['subway_id'] = null;
                 } else {
-                    \App::logger()->error(sprintf('Неизвестный магазин %s', $orderPart->getShopId()), ['order']);
+                    \App::logger()->error(sprintf('Неизвестный магазин %s', $orderPart->getPointId()), ['order']);
                 }
-
             }
+
+            // TODO: pickpoint
 
             // подарочный сертификат
             if (1 == count($form->getPart()) && $form->getPaymentMethodId() == \Model\PaymentMethod\Entity::CERTIFICATE_ID) {
@@ -361,120 +382,6 @@ class CreateAction {
         }
 
         return $createdOrders;
-    }
-
-    /**
-     * @return Form
-     */
-    private function getForm() {
-        $region = \App::user()->getRegion();
-        $request = \App::request();
-        $form = new Form();
-
-        // если пользователь авторизован
-        if ($userEntity = \App::user()->getEntity()) {
-            $form->setFirstName($userEntity->getFirstName());
-            $form->setLastName($userEntity->getLastName());
-            $form->setMobilePhone((strlen($userEntity->getMobilePhone()) > 10)
-                    ? substr($userEntity->getMobilePhone(), -10)
-                    : $userEntity->getMobilePhone()
-            );
-            $form->setEmail($userEntity->getEmail());
-            // иначе, если пользователь неавторизован, то вытащить из куки значения для формы
-        } else {
-            $cookieValue = $request->cookies->get(\App::config()->order['cookieName'], 'last_order');
-            if (!empty($cookieValue)) {
-                try {
-                    $cookieValue = (array)unserialize(base64_decode(strtr($cookieValue, '-_', '+/')));
-                } catch (\Exception $e) {
-                    \App::logger()->error($e, ['order']);
-                    $cookieValue = [];
-                }
-                $data = [];
-                foreach ([
-                    'recipient_first_name',
-                    'recipient_last_name',
-                    'recipient_phonenumbers',
-                    'recipient_email',
-                    'address_street',
-                    'address_number',
-                    'address_building',
-                    'address_apartment',
-                    'address_floor',
-                    'subway_id',
-                ] as $k) {
-                    if (array_key_exists($k, $cookieValue)) {
-                        if (('subway_id' == $k) && !$region->getHasSubway()) {
-                            continue;
-                        }
-                        if (('recipient_phonenumbers' == $k) && (strlen($cookieValue[$k])) > 10) {
-                            $cookieValue[$k] = substr($cookieValue[$k], -10);
-                        }
-                        $data[$k] = $cookieValue[$k];
-                    }
-                }
-                $form->fromArray($data);
-            }
-        }
-
-        return $form;
-    }
-
-    /**
-     * @param Form $form
-     */
-    private function validateForm(Form $form) {
-        // мобильный телефон
-        if (!$form->getMobilePhone()) {
-            $form->setError('recipient_phonenumbers', 'Не указан мобильный телефон');
-        } else if (11 != strlen($form->getMobilePhone())) {
-            $form->setError('recipient_phonenumbers', 'Номер мобильного телефона должен содержать 11 цифр');
-        }
-
-        // email
-        if (\App::abTest()->getCase()->getKey() == 'emails' && !$form->getOneClick()) {
-            $email = $form->getEmail();
-            $emailValidator = new \Validator\Email();
-            if (!$emailValidator->isValid($email)) {
-                $form->setError('recipient_email', 'Укажите ваш e-mail');
-            }
-        }
-
-        // способ доставки
-        if (!$form->getDeliveryTypeId()) {
-            $form->setError('delivery_type_id', 'Не указан способ получения заказа');
-        } else if ($form->getDeliveryTypeId()) {
-            $deliveryType = \RepositoryManager::deliveryType()->getEntityById($form->getDeliveryTypeId());
-            if (!$deliveryType) {
-                $form->setError('delivery_type_id', 'Способ получения заказа недоступен');
-            } else if (\Model\DeliveryType\Entity::TYPE_STANDART == $deliveryType->getToken()) {
-                if (!$form->getAddressStreet()) {
-                    $form->setError('address_street', 'Укажите улицу');
-                }
-                if (!$form->getAddressBuilding()) {
-                    $form->setError('address_building', 'Укажите дом');
-                }
-            }
-        }
-
-        // метод оплаты
-        if (!$form->getPaymentMethodId()) {
-            $form->setError('payment_method_id', 'Не указан способ оплаты');
-        } else if ($form->getPaymentMethodId() && (\Model\PaymentMethod\Entity::CERTIFICATE_ID == $form->getPaymentMethodId())) {
-            if (!$form->getCertificateCardnumber()) {
-                $form->setError('cardnumber', 'Укажите номер карты');
-            }
-            if (!$form->getCertificatePin()) {
-                $form->setError('cardpin', 'Укажите пин карты');
-            }
-        } else if ($form->getPaymentMethodId() && (\Model\PaymentMethod\Entity::QIWI_ID == $form->getPaymentMethodId())) {
-            // номер телефона qiwi
-            if (!$form->getQiwiPhone()) {
-                $form->setError('qiwi_phone', 'Не указан мобильный телефон');
-            } else if (11 != strlen($form->getQiwiPhone())) {
-                $form->setError('qiwi_phone', 'Номер мобильного телефона должен содержать 11 цифр');
-            }
-        }
     }
 
     /**

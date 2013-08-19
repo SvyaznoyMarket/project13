@@ -9,6 +9,7 @@ class Entity {
 
     const TYPE_NOW = 0;
     const TYPE_ON_RECEIPT = 1;
+    const TYPE_ALL = 2;
 
     /** @var int */
     private $id;

@@ -178,14 +178,16 @@
 			break;
 		case 'order.new': 
 			$LAB
-			.queueScript( (mapVendor==='yandex') ? 'http://api-maps.yandex.ru/2.0/?load=package.full&lang=ru-RU' : 'http://maps.google.com/maps/api/js?sensor=false')
+			.queueScript( 'http://api-maps.yandex.ru/2.0-stable/?load=package.standard&lang=ru-RU' )
 			.queueScript('http://ajax.aspnetcdn.com/ajax/knockout/knockout-2.2.1.js')
 			.queueWait( function() {
 				$LAB
 				.script('jquery-plugins.min.js')
 				.script( 'JsHttpRequest.min.js' )
-				.script( getWithVersion('library.js') )             
+				.script( getWithVersion('library.js') )
 				.script( 'http://direct-credit.ru/widget/api_script_utf.js' )
+				.wait()
+				.script(getWithVersion('common.js'))
 				.wait()
 				.script( getWithVersion('order-new-v5.js') )
 			}).runQueue();
