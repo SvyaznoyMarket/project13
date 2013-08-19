@@ -18,6 +18,10 @@ class NewAction {
         $region = $user->getRegion();
         $cart = $user->getCart();
 
+        if ($cart->isEmpty()) {
+            return new \Http\RedirectResponse(\App::router()->generate('cart'));
+        }
+
         $form = $this->getForm();
 
         /** @var $productsById \Model\Product\Entity[] */
