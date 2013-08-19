@@ -12,13 +12,18 @@
  * @var $shopStates        \Model\Product\ShopState\Entity[]
  * @var $creditData        array
  */
-?>
 
+$showLinkToProperties = true;
+$countModels = count($product->getModel());
+$countProperties = count($product->getProperty());
+$is_showed = [];
+
+
+?>
 <div id="jsProductCard" data-value="<?= $page->json($productData) ?>"></div>
 
 <div class="bProductSectionLeftCol">
-
-        <?= $helper->render('product/__photo', ['product' => $product, 'productVideos' => $productVideos]) ?>
+    <?= $helper->render('product/__photo', ['product' => $product, 'productVideos' => $productVideos, 'useLens' => $useLens]) ?>
 
         <div class="bProductDesc">
             <?= $helper->render('product/__state', ['product' => $product]) // Есть в наличии ?>
@@ -29,11 +34,50 @@
 
             <?= $helper->render('product/__credit', ['product' => $product, 'creditData' => $creditData]) // Беру в кредит ?>
 
+            <? /* // Old Card Properties
             <div class="bProductDescText">
                 <?= $product->getTagline() ?>
 
                 <?= $helper->render('product/__property', ['product' => $product]) // Характеристики ?>
             </div>
+            */ ?>
+
+            <?
+            // new Card Properties Begin {
+            if ( $product->getTagline() ) {
+                ?>
+                <div class="bProductDescShop__eText">
+                    <?= $product->getTagline() ?>
+                    <? /* <div class="bTextMore"><a class="jsGoToId" data-goto="productspecification" href="">Характеристики</a></div> */ ?>
+                </div>
+            <?
+            } elseif (
+                (!$countModels) &&
+                ( !isset($product->getDescription) || (isset($product->getDescription) && !$product->getDescription) ) &&
+                ($countProperties < 16)
+            ) {
+                // Выводим все характеристики товара в центральном блоке первого экрана карточки
+                echo $helper->render('product/__groupedProperty', ['product' => $product]);
+                $is_showed[] = 'groupedProperty';
+                $showLinkToProperties = false;
+            }
+
+            if ( $countProperties < 8 and empty($is_showed) ) {
+                // выводим все характеристики в первом экране, сразу под отзывами.
+                echo $helper->render('product/__property', ['product' => $product]);
+                $is_showed[] = 'groupedProperty'; /* считаем, что сгруппированные характеристики показаны,
+                                                        т.к. ещё раз показывать их нет смысла */
+                $is_showed[] = 'property';
+                $showLinkToProperties = false;
+            }
+
+            if (!in_array('groupedProperty', $is_showed)) { // Если ранее не были показаны характеристики все,
+                // (во всех остальных случаях) выводим главные характеристики (productExpanded)
+                echo $helper->render('product/__propertiesExpanded', ['productExpanded' => $productExpanded, 'showLinkToProperties' => $showLinkToProperties]);
+                $is_showed[] = 'propertiesExpanded';
+            }
+            // } /end of new Card Properties
+            ?>
 
             <?= $helper->render('product/__reviewCount', ['product' => $product, 'reviewsData' => $reviewsData]) ?>
 
@@ -88,6 +132,13 @@
         ]) ?>
     <? endif ?>
 
+    <?
+    if (!in_array('groupedProperty', $is_showed)) {
+        // показываем все характеристики (сгруппированые), если ранее они не были показаны
+        echo $helper->render('product/__groupedProperty', ['product' => $product]); // Характеристики
+    }
+    ?>
+
     <div class="bReviews">
         <? if (\App::config()->product['reviewEnabled'] && $reviewsPresent): ?>
         <h3 class="bHeadSection" id="bHeadSectionReviews">Обзоры и отзывы</h3>
@@ -96,8 +147,8 @@
             <?= $page->render('product/_reviewsSummary', ['reviewsData' => $reviewsData, 'reviewsDataPro' => $reviewsDataPro, 'reviewsDataSummary' => $reviewsDataSummary]) ?>
         </div>
 
-    <? if (!empty($reviewsData['review_list'])) { ?>
-        <div class="bReviewsWrapper" data-product-id="<?= $product->getId() ?>" data-page-count="<?= $reviewsData['page_count'] ?>" data-container="reviewsUser" data-reviews-type="user">
+    	    <? if (!empty($reviewsData['review_list'])) { ?>
+	        <div class="bReviewsWrapper" data-product-id="<?= $product->getId() ?>" data-page-count="<?= $reviewsData['page_count'] ?>" data-container="reviewsUser" data-reviews-type="user">
             <? } elseif(!empty($reviewsDataPro['review_list'])) { ?>
             <div class="bReviewsWrapper" data-product-id="<?= $product->getId() ?>" data-page-count="<?= $reviewsDataPro['page_count'] ?>" data-container="reviewsPro" data-reviews-type="pro">
                 <? } ?>
