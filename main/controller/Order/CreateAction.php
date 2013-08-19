@@ -323,11 +323,13 @@ class CreateAction {
                             if (\Partner\Counter\MyThings::isTracking()) {
                                 $partners[] = \Partner\Counter\MyThings::NAME;
                             }
-                            if ($viewedAt = \App::user()->getRecommendedProductByParams($product->getId(), \Smartengine\Client::NAME, 'viewed_at')) {
-                                if ((time() - $viewedAt) <= 30 * 24 * 60 * 60) { // 30days
-                                    $partners[] = \Smartengine\Client::NAME;
-                                } else {
-                                    \App::user()->deleteRecommendedProductByParams($product->getId(), \Smartengine\Client::NAME, 'viewed_at');
+                            foreach (\Controller\Product\SimilarAction::$recomendedPartners as $recomPartnerName) {
+                                if ($viewedAt = \App::user()->getRecommendedProductByParams($product->getId(), $recomPartnerName, 'viewed_at')) {
+                                    if ((time() - $viewedAt) <= 30 * 24 * 60 * 60) { // 30days
+                                        $partners[] = $recomPartnerName;
+                                    } else {
+                                        \App::user()->deleteRecommendedProductByParams($product->getId(), $recomPartnerName, 'viewed_at');
+                                    }
                                 }
                             }
                             $orderData['meta_data'] = \App::partner()->fabricateCompleteMeta(
