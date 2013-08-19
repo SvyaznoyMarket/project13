@@ -45,7 +45,7 @@ class SimilarAction {
                     if ( 'retailrocket' == $rkey ) {
                         if ( 'ItemToItems' == $rsubkey) {
                             $products = $this->getProductsFromRetailrocket($product, $request, 'ItemToItems');
-                        }elseif ('UpSellItemToItems' == $rsubkey) {
+                        }else{
                             $products = $this->getProductsFromRetailrocket($product, $request, 'UpSellItemToItems');
                         }
                     }
@@ -187,10 +187,20 @@ class SimilarAction {
 
         $products = \RepositoryManager::product()->getCollectionById($ids);
 
-        $return = [];
         foreach ($products as $i => $product) {
-            if (!$product->getIsBuyable()) continue;
+            /* @var product Model\Product\Entity */
 
+            //if (!$product->getIsBuyable()) continue;
+            if (!$product->getIsBuyable())  {
+                unset($products[$i]);
+                continue;
+            }
+
+            $link = $product->getLink();
+            $link = $link . (false === strpos($link, '?') ? '?' : '&') . 'sender=' . $senderName . '|' . $product->getId();
+            $product->setLink($link);
+
+            /*
             $return[] = [
                 'id'     => $product->getId(),
                 'name'   => $product->getName(),
@@ -200,13 +210,14 @@ class SimilarAction {
                 'price'  => $product->getPrice(),
                 'data'   => \Kissmetrics\Manager::getProductEvent($product, $i+1, 'Similar'),
             ];
+            */
         }
 
-        if (!(bool)$return) {
+        if (!(bool)$products) {
             throw new \Exception('Нет товаров');
         }
 
-        return $return;
+        return $products;
     }
 
 

@@ -352,6 +352,7 @@ $similarABtests = [
 
 $c->abtest['test']       = [
     $similarABtests[ rand(0, count($similarABtests) - 1) ]
+    //$similarABtests[ 2 ] // for debug
 ];
 
 return $c;
