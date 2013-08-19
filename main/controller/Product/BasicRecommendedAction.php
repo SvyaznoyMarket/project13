@@ -22,7 +22,7 @@ class BasicRecommendedAction {
      *
      * @param string        $productId
      * @param \Http\Request $request
-     * @return \Http\RedirectResponse|\Http\Respons|\Http\JsonResponse
+     * @return \Http\JsonResponse
      * @throws \Exception\NotFoundException
      */
     public function execute($productId, \Http\Request $request)
@@ -65,7 +65,7 @@ class BasicRecommendedAction {
 
                 } elseif ($products instanceof \Exception) {
 
-                    $this->error($products); // it is error
+                    return $this->error($products); // it is error
 
                 } elseif (is_array($products)) {
 
@@ -83,7 +83,7 @@ class BasicRecommendedAction {
 
             }/// if
 
-            return new \Http\JsonResponse([
+            return new \Http\JsonResponse([ // it is error
                 'success' => false,
                 'error' => $ifError,
             ]);
@@ -148,11 +148,13 @@ class BasicRecommendedAction {
 
 
 
+
     /**
-     * @param \Model\Product\Entity         $product
-     * @param \Http\Request                 $request
-     * @return \Http\RedirectResponse|\Http\Response
-     * @throws \Exception\NotFoundException
+     * @param $product
+     * @param \Http\Request $request
+     * @param string $method
+     * @return \Http\JsonResponse|\Model\Product\Entity[]
+     * @throws \Exception
      */
     protected function getProductsFromSmartengine($product, \Http\Request $request, $method = 'relateditems')
     {
@@ -203,6 +205,7 @@ class BasicRecommendedAction {
 
 
 
+
     /**
      * @param \Model\Product\Entity     $product
      * @param \Http\Request             $request
@@ -244,8 +247,6 @@ class BasicRecommendedAction {
             'error'   => ['code' => $e->getCode(), 'message' => $e->getMessage()],
         ]);
     }
-
-
 
 
 }
