@@ -483,14 +483,14 @@ return [
     ],
     'product.similar' => [ /// executed SmartEngine or RetailRocker
         'pattern' => '/ajax/product-similar/{productId}',
-        //'action' => ['Product\SimilarAction', 'execute'],
-        'action' => ['Product\SimilarAction', 'debug'], // just for debug
+        'action' => ['Product\SimilarAction', 'execute'],
+        //'action' => ['Product\SimilarAction', 'debug'], // just for debug
         'require' => ['productId' => '\d+'],
     ],
     'product.alsoViewed' => [ /// executed SmartEngine or RetailRocker
         'pattern' => '/ajax/product-also-viewed/{productId}',
-        //'action' => ['Product\AlsoViewedAction', 'execute'],
-        'action' => ['Product\AlsoViewedAction', 'debug'], // just for debug
+        'action' => ['Product\AlsoViewedAction', 'execute'],
+        //'action' => ['Product\AlsoViewedAction', 'debug'], // just for debug
         'require' => ['productId' => '\d+'],
     ],
     /*

@@ -4,12 +4,99 @@ namespace Controller\Product;
 
 class BasicRecommendedAction {
 
-    use _DebugTestTrait;
+    //use _DebugTestTrait; // for debug
+
+    protected $retailrocketMethodName;
+    protected $smartengineMethodName;
+    protected $actionType;
+    protected $actionTitle;
 
     static public $recomendedPartners = [
         \Smartengine\Client::NAME,
         \RetailRocket\Client::NAME,
     ];
+
+
+    /**
+     * Разводящий метод: запускает либо smartengineClient , либо retailrocketClient
+     *
+     * @param string        $productId
+     * @param \Http\Request $request
+     * @return \Http\RedirectResponse|\Http\Respons|\Http\JsonResponse
+     * @throws \Exception\NotFoundException
+     */
+    public function execute($productId, \Http\Request $request)
+    {
+        \App::logger()->debug('Exec ' . __METHOD__);
+        $ifError = [
+            'code' => 404,
+            'message' => 'Not found data in config'
+        ];
+
+        try {
+            if (\App::config()->crossss['enabled']) {
+                (new \Controller\Crossss\ProductAction())->recommended($request, $productId);
+            }
+
+            $product = \RepositoryManager::product()->getEntityById($productId);
+            if (!$product) {
+                throw new \Exception(sprintf('Товар #%s не найден', $productId));
+            }
+
+            $ABtestOption = \App::abTest()->getOption('test');
+            $ABtest = reset($ABtestOption); /* @var $ABtest \Model\Abtest\Entity */
+
+            if ( !empty( $ABtest ) ) { /// if
+
+                //$title = $ABtest->getName();
+                $key = $ABtest->getKey();
+
+                if ('retailrocket' == $key) {
+                    $products = $this->getProductsFromRetailrocket($product, $request, $this->retailrocketMethodName);
+                } else {
+                    $products = $this->getProductsFromSmartengine($product, $request, $this->smartengineMethodName);
+                }
+
+
+                if ($products instanceof \Http\JsonResponse) {
+
+                    $response = $products->getContent();
+                    return new \Http\JsonResponse( json_decode($response) ); // it is error
+
+                } elseif ($products instanceof \Exception) {
+
+                    $this->error($products); // it is error
+
+                } elseif (is_array($products)) {
+
+                    return new \Http\JsonResponse([ // it is SUCCESS!
+                        'success' => true,
+                        'content' => \App::closureTemplating()->render('product/__slider', [
+                            'title' => $this->actionTitle,
+                            'products' => $products,
+                        ]),
+                    ]);
+
+                }
+
+                $ifError['message'] = 'Unknown error. Not found products data in response. ActionType: ' . $this->actionType;
+
+            }/// if
+
+            return new \Http\JsonResponse([
+                'success' => false,
+                'error' => $ifError,
+            ]);
+
+        } catch (\Exception $e) {
+            \App::logger()->error($e, [$this->actionType]);
+            return $this->error($e);
+        }
+
+    }
+
+
+
 
 
     /**
