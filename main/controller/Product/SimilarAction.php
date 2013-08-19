@@ -38,11 +38,11 @@ class SimilarAction {
                 $key = $ABtest->getKey();
 
                 if ( 'smartengine' == $key ) {
-                    $products = $this->smartengineClient($product, $request);
+                    $products = $this->getProductsFromSmartengine($product, $request);
                 } elseif ( 'retailrocket' == $key ) {
-                    $products = $this->retailrocketClient($product, $request);
+                    $products = $this->getProductsFromRetailrocket($product, $request);
                 } elseif ( 'retailrocket/ItemToItems' == $key) {
-                    $products = $this->retailrocketClient($product, $request, 'ItemToItems');
+                    $products = $this->getProductsFromRetailrocket($product, $request, 'ItemToItems');
                 }
 
                 if ( !isset($products) || !is_array($products) ) {
@@ -83,7 +83,7 @@ class SimilarAction {
      * @return \Http\RedirectResponse|\Http\Response
      * @throws \Exception\NotFoundException
      */
-    public function smartengineClient($product, \Http\Request $request)
+    public function getProductsFromSmartengine($product, \Http\Request $request)
     {
         \App::logger()->debug('Exec ' . __METHOD__);
 
@@ -128,8 +128,9 @@ class SimilarAction {
      * @param \Http\Request             $request
      * @param string                    $method
      * @return \Http\JsonResponse|\Model\Product\Entity[]
+     * @throws \Exception\NotFoundException
      */
-    public function retailrocketClient( $product, \Http\Request $request, $method = 'UpSellItemToItems' ) {
+    public function getProductsFromRetailrocket( $product, \Http\Request $request, $method = 'UpSellItemToItems' ) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
         try {
