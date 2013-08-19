@@ -42,7 +42,7 @@ class Manager {
 
             $sender = $request->get('sender');
 
-            //SmartEngine & SmartAssistant
+            //(SmartEngine & SmartAssistant) & RetailRocket
             if ((bool)$sender) {
                 $sender = explode('|', $sender); // ?sender=SmartEngine|product_id
                 if ((bool)$sender[0] && (bool)$sender[1]) {

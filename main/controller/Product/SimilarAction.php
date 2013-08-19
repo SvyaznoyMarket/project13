@@ -4,6 +4,11 @@ namespace Controller\Product;
 
 class SimilarAction {
 
+    static public $recomendedPartners = [
+        \Smartengine\Client::NAME,
+        \RetailRocket\Client::NAME,
+    ];
+
 
     /**
      * Разводящий метод: запускает либо smartengineClient , либо retailrocketClient
