@@ -2,16 +2,18 @@
 
 namespace Controller\Product;
 
-class AlsoViewedAction {
+class AlsoViewedAction extends BasicRecommendedAction {
+
     /**
+     * Разводящий метод: запускает либо smartengineClient , либо retailrocketClient
+     *
      * @param string        $productId
      * @param \Http\Request $request
      * @return \Http\RedirectResponse|\Http\Response
      * @throws \Exception\NotFoundException
      */
-    public function execute($productId, \Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
-
+    public function execute($productId, \Http\Request $request)
+    {
         \App::logger()->debug('Exec ' . __METHOD__);
 
         try {
@@ -24,67 +26,55 @@ class AlsoViewedAction {
                 throw new \Exception(sprintf('Товар #%s не найден', $productId));
             }
 
-            $client = \App::smartengineClient();
-            $user = \App::user()->getEntity();
+            $ABtestOption = \App::abTest()->getOption('test');
+            $ABtest = reset($ABtestOption); /* @var $ABtest \Model\Abtest\Entity */
 
-            $params = [
-                'sessionid' => session_id(),
-                'itemid'    => $product->getId(),
-            ];
-            if ($user) {
-                $params['userid'] = $user->getId();
-            }
-            $params['itemtype'] = $product->getMainCategory() ? $product->getMainCategory()->getId() : null;
-            $params['requesteditemtype'] = $product->getMainCategory() ? $product->getMainCategory()->getId() : null;
+            if ( !empty( $ABtest ) ) { /// if
 
-            $r = $client->query('otherusersalsoviewed', $params);
+                $title = $ABtest->getName();
+                $key = $ABtest->getKey();
 
-            if (isset($r['error'])) {
-                if (isset($r['error'])) {
-                    throw new \Exception($r['error']['@message'] . ': '. json_encode($r, JSON_UNESCAPED_UNICODE), (int)$r['error']['@code']);
+                if ('retailrocket' == $key) {
+                    $products = $this->getProductsFromRetailrocket($product, $request, 'UpSellItemToItems');
+                } else {
+                    $products = $this->getProductsFromSmartengine($product, $request, 'otherusersalsoviewed');
                 }
-            }
 
-            $ids = (is_array($r['recommendeditems']) && array_key_exists('id', $r['recommendeditems']['item']))
-                ? [$r['recommendeditems']['item']['id']]
-                : array_map(function($item) { return $item['id']; }, isset($r['recommendeditems']['item']) ? $r['recommendeditems']['item'] : []);
-            if (!count($ids)) {
-                throw new \Exception('Рекомендации не получены');
-            }
+                if ($products instanceof \Http\JsonResponse) { // it is error
+                    $response = $products->getContent();
+                    return new \Http\JsonResponse([
+                        //$response
+                        json_decode($response)
+                    ]);
+                }
 
-            $products = \RepositoryManager::product()->getCollectionById($ids);
-            foreach ($products as $i => $product) {
-                if (!$product->getIsBuyable()) unset($products[$i]);
-            }
+                if ( !isset($products) || !is_array($products) ) { // it is error
+                    return new \Http\JsonResponse([
+                        'success' => false,
+                        'error' => ['code' => '404', 'message' => 'Not found products data in response. Method: ' . $key],
+                    ]);
+                }
 
-            if (!(bool)$products) {
-                throw new \Exception('Нет товаров');
-            }
-            $additionalData = [];
-            foreach ($products as $i => $product) {
-                $additionalData[$product->getId()] = \Kissmetrics\Manager::getProductEvent($product, $i+1, 'Also Viewed');
-            }
+                return new \Http\JsonResponse([ // it is SUCCESS!
+                    'success' => true,
+                    'content' => \App::closureTemplating()->render('product/__slider', [
+                        'title' => $title,
+                        'products' => $products,
+                    ]),
+                ]);
 
-            $categoryClass = empty($data['categoryClass']) ? '' : $data['categoryClass'] . '/';
-
-            $layout = new \Templating\HtmlLayout();
-            $layout->setGlobalParam('sender', \Smartengine\Client::NAME);
-
-            return new \Http\JsonResponse([
-                'success' => true,
-                'content' => \App::closureTemplating()->render('product/__slider', [
-                    'title'    => 'С этим товаром также смотрят',
-                    'products' => $products,
-                ]),
-            ]);
-
-        } catch (\Exception $e) {
-            \App::logger()->error($e, ['smartengine']);
+            }/// if
 
             return new \Http\JsonResponse([
                 'success' => false,
-                'error'   => ['code' => $e->getCode(), 'message' => $e->getMessage()],
+                'error' => ['code' => '404', 'message' => 'Not found data in config'],
             ]);
+
+        } catch (\Exception $e) {
+            \App::logger()->error($e, ['AlsoViewedAction']);
+            return $this->error($e);
         }
+
     }
+
 }
