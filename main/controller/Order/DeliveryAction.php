@@ -189,6 +189,15 @@ class DeliveryAction {
                     ];
                 }
 
+                if (!(bool)$deliveryData) {
+                    $e = new \Curl\Exception('Товар недоступен для продажи', 800);
+                    $e->setContent(['product_error_list' => [
+                        ['code' => $e->getCode(), 'message' => $e->getMessage(), 'id' => $productId],
+                    ]]);
+
+                    throw $e;
+                }
+
                 $responseData['products'][$productId] = [
                     'id'         => $productId,
                     'name'       => $productItem['name'],

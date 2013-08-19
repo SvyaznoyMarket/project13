@@ -39,6 +39,12 @@ trait ResponseDataTrait {
 
             $quantitiesByProduct = [];
             foreach ($errorData as $errorItem) {
+                if (!is_array($errorItem)) {
+                    \App::logger()->error(['action' => __METHOD__, 'message' => 'Неверный формат ошибки', 'error.item' => $errorItem], ['order']);
+                    continue;
+                }
+                $errorItem = array_merge(['code' => 0, 'message' => 'Неизвестная ошибка', 'id' => null], $errorItem);
+
                 switch ($errorItem['code']) {
                     case 708:
                         $quantity = isset($errorItem['quantity_available']) ? $errorItem['quantity_available'] : 0;
