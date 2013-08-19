@@ -335,7 +335,7 @@ $c->abtest['test']       = [
 
     // SimilarAction::retailrocket/ItemToItems
     [
-        'traffic'  => '50',
+        'traffic'  => '25',
         'key'      => 'retailrocketItemToItems',
         'name'     => "С этим товаром также смотрят",
         'ga_event' => 'RetailRocket/ItemToItems',
@@ -343,7 +343,7 @@ $c->abtest['test']       = [
 
     // SimilarAction::retailrocket
     [
-        'traffic'  => '50',
+        'traffic'  => '25',
         'key'      => 'retailrocket',
         'name'     => "С этим товаром также смотрят",
         'ga_event' => 'RetailRocket',

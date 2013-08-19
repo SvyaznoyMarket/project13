@@ -37,18 +37,12 @@ class SimilarAction {
                 $title = $ABtest->getName();
                 $key = $ABtest->getKey();
 
-                if ( 'smartengine' == $key ) {
+                if ('smartengine' == $key) {
                     $products = $this->getProductsFromSmartengine($product, $request);
-                } else {
-                    $rkey = substr($key,0,12);
-                    $rsubkey = substr($key,12);
-                    if ( 'retailrocket' == $rkey ) {
-                        if ( 'ItemToItems' == $rsubkey) {
-                            $products = $this->getProductsFromRetailrocket($product, $request, 'ItemToItems');
-                        }else{
-                            $products = $this->getProductsFromRetailrocket($product, $request, 'UpSellItemToItems');
-                        }
-                    }
+                } elseif ('retailrocketItemToItems' == $key) {
+                    $products = $this->getProductsFromRetailrocket($product, $request, 'ItemToItems');
+                } elseif ('retailrocket' == $key || 'retailrocketUpSellItemToItems' == $key) {
+                    $products = $this->getProductsFromRetailrocket($product, $request, 'UpSellItemToItems');
                 }
 
                 if ( !isset($products) || !is_array($products) ) {
