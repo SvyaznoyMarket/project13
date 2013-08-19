@@ -45,8 +45,8 @@ class SimilarAction {
                     if ( 'retailrocket' == $rkey ) {
                         if ( 'ItemToItems' == $rsubkey) {
                             $products = $this->getProductsFromRetailrocket($product, $request, 'ItemToItems');
-                        }else {
-                            $products = $this->getProductsFromRetailrocket($product, $request);
+                        }elseif ('UpSellItemToItems' == $rsubkey) {
+                            $products = $this->getProductsFromRetailrocket($product, $request, 'UpSellItemToItems');
                         }
                     }
                 }
