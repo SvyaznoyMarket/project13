@@ -117,6 +117,7 @@ $c->yandexMetrika['enabled'] = true;
 // TODO: Вынести сюда же настройки для sociomantic and get4click
 $c->partners['criteo']['enabled'] = true;
 $c->partners['criteo']['account'] = 10442;
+$c->partners['RetailRocket']['account'] = '519c7f3c0d422d0fe0ee9775';
 
 $c->adFox['enabled'] = true;
 $c->myThings['feeByCategory'] = [
@@ -295,35 +296,6 @@ $c->queue['pidFile'] = (sys_get_temp_dir() ?: '/tmp').'/enter-queue.pid';
 $c->queue['workerLimit'] = 10;
 $c->queue['maxLockTime'] = 600;
 
-$c->abtest['cookieName'] = 'switch';
-$c->abtest['enabled']    = true;
-$c->abtest['bestBefore'] = '2013-08-20';
-$c->abtest['test']       = [
-    [
-        'traffic'  => '50',
-        'key'      => 'emails',
-        'name'     => "Обязательные e-mail'ы",
-        'ga_event' => 'MandatoryEmail',
-    ],
-];
-/*
-$c->abtest['bestBefore'] = '2013-04-23';
-$c->abtest['test']       = [
-    [
-        'traffic'  => '40',
-        'key'      => 'upsell',
-        'name'     => 'Страница tocart',
-        'ga_event' => 'tocart',
-    ],
-    [
-        'traffic'  => '40',
-        'key'      => 'order2cart',
-        'name'     => 'Страница cart',
-        'ga_event' => 'cart',
-    ],
-];
-*/
-
 $c->subscribe['enabled'] = true;
 $c->subscribe['cookieName'] = 'subscribed';
 
@@ -347,5 +319,37 @@ $c->tag['numSidebarCategoriesShown'] = 3;
 
 $c->sphinx['showFacets'] = false;
 $c->sphinx['showListingSearchBar'] = false;
+
+$c->abtest['cookieName'] = 'switch';
+$c->abtest['enabled']    = true;
+$c->abtest['bestBefore'] = '2013-08-20';
+$c->abtest['test']       = [
+    [
+        'traffic'  => '50',
+        'key'      => 'smartengine',
+        'name'     => "Похожие товары",
+        'ga_event' => 'SmartEngine',
+    ],
+
+    /*
+    // SimilarAction::retailrocket/ItemToItems,
+    [
+        'traffic'  => '50',
+        'key'      => 'retailrocket/ItemToItems',
+        'name'     => "С этим товаром также смотрят",
+        'ga_event' => 'RetailRocket/ItemToItems',
+    ],
+    */
+
+    /*
+    // SimilarAction::retailrocket,
+    [
+        'traffic'  => '50',
+        'key'      => 'retailrocket',
+        'name'     => "С этим товаром также смотрят",
+        'ga_event' => 'RetailRocket',
+    ],
+    */
+];
 
 return $c;

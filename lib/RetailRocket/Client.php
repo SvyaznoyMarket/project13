@@ -1,0 +1,96 @@
+<?php
+
+namespace RetailRocket;
+
+
+class Client
+{
+
+    CONST NAME = 'retailrocket';
+
+    public function __construct(array $config, \Logger\LoggerInterface $logger = null)
+    {
+        $this->config = array_merge([
+            'apiUrl' => 'http://retailrocket.ru/api/',
+            'account' => \App::config()->partners['RetailRocket']['account'],
+            'timeout' => 0.6, //в секундах
+            'logEnabled' => false,
+            'logDataEnabled' => false,
+        ], $config);
+
+        $this->logger = $logger;
+    }
+
+
+    public function query($action, $item_id)
+    {
+        \Debug\Timer::start('RetailRocket');
+
+        $connection = $this->createResource($action, $item_id);
+        $response = curl_exec($connection);
+        try {
+            if (curl_errno($connection) > 0) {
+                throw new \RetailRocket\Exception(curl_error($connection), curl_errno($connection));
+            }
+            $info = curl_getinfo($connection);
+
+            $this->logger->debug('RetailRocket response resource: ' . $connection, ['RetailRocket']);
+            //$this->logger->debug('RetailRocket response info: ' . $this->encodeInfo($info), ['RetailRocket']);
+
+            \Util\RequestLogger::getInstance()->addLog($info['url'], '', $info['total_time'], 'RetailRocket');
+
+            if ($this->config['logEnabled']) {
+                $this->logger->info('Response ' . $connection . ' : ' . (is_array($info) ? json_encode($info, JSON_UNESCAPED_UNICODE) : $info), ['RetailRocket']);
+            }
+
+            if ($info['http_code'] >= 300) {
+                throw new \RetailRocket\Exception(sprintf("Invalid http code: %d, \nResponse: %s", $info['http_code'], $response));
+            }
+
+            $responseDecoded = json_decode($response);
+            curl_close($connection);
+
+            $spend = \Debug\Timer::stop('RetailRocket');
+            \App::logger()->info('End RetailRocket ' . $action . ' in ' . $spend, ['RetailRocket']);
+
+            return $responseDecoded;
+
+        } catch (\RetailRocket\Exception $e) {
+            curl_close($connection);
+            $spend = \Debug\Timer::stop('RetailRocket');
+            \App::logger()->error('End RetailRocket ' . $action . ' in ' . $spend . ' get: ' . json_encode(['action '=> $action, $item_id => $item_id], JSON_UNESCAPED_UNICODE) . ' response: ' . json_encode($response, JSON_UNESCAPED_UNICODE) . ' with ' . $e, ['RetailRocket']);
+            $this->logger->error($e, ['RetailRocket']);
+            throw $e;
+        }
+    }
+
+
+
+    public function createResource($action, $item_id)
+    {
+        $query = $this->config['apiUrl'] . $action . '/' . $this->config['account'] . '/' . $item_id;
+
+        \App::logger()->info('Start RetailRocket ' . $action . ' query: ' . $query, ['RetailRocket']);
+
+        $connection = curl_init();
+        curl_setopt($connection, CURLOPT_HEADER, 0);
+        curl_setopt($connection, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($connection, CURLOPT_NOSIGNAL, 1);
+        curl_setopt($connection, CURLOPT_TIMEOUT_MS, $this->config['timeout'] * 1000);
+        curl_setopt($connection, CURLOPT_URL, $query);
+
+        if ($this->config['logEnabled']) {
+            $this->logger->info('Send RetailRocket request ' . $connection, ['RetailRocket']);
+        }
+
+        return $connection;
+
+
+        /*$curlClient = new \Curl\Client(\App::logger());
+        $resp = $curlClient->guery($query, [], $this->config['timeout']);
+        return $resp;*/
+
+    }
+
+
+}
