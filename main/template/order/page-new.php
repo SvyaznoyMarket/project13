@@ -365,7 +365,7 @@ foreach (array_reverse($productsById) as $product) {
 				<label class="bBuyingLine__eLeft" data-bind="visible: hasHomeDelivery()">Адрес доставки*</label>
 				<div class="bBuyingLine__eRight" style="width: 640px;" data-bind="visible: hasHomeDelivery()">
 					<div class="bSelectedCity">
-						<strong><?= $region->getName() ?></strong> ( <a id="jsregion" href="<?= $page->url('region.change', ['regionId' => $region->getId()]) ?>">изменить</a> )
+						<strong><?= $region->getName() ?></strong> (<a id="jsregion" href="<?= $page->url('region.change', ['regionId' => $region->getId()]) ?>">изменить</a>)
 					</div>
 
 					<? if ((bool)$subways): ?>
@@ -464,6 +464,7 @@ foreach (array_reverse($productsById) as $product) {
 	<div class="bPointPopup popup" data-bind="popupShower: showPopupWithPoints">
 		<i class="close" title="Закрыть">Закрыть</i>
 		<h2 data-bind="text: popupWithPoints().header"></h2>
+        <div>Регион <strong><?= $user->getRegion()->getName() ?></strong> (<a id="jsregion" href="<?= $page->url('region.change', ['regionId' => $region->getId()]) ?>">изменить</a>)</div>
 		<ul class="bPointList" data-bind="foreach: { data: popupWithPoints().points }">
 			<li class="bPointInPopup" data-bind="click: $root.selectPoint">
 				<div class="bMapShops__eListNum"><img alt="" src="/images/shop.png"></div>
