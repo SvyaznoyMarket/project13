@@ -11902,3 +11902,55 @@
   }
 }
 /*---END---СТИЛИ ОПРОСА---*/
+/*------СТИЛИ РУТОВОГО КАТАЛОГА------*/
+@media all {
+  .bTitlePage {
+    margin: 0 0 35px;
+    font-family: Tahoma;
+    font-size: 25px;
+  }
+  .bCatalogRoot {
+    margin: 0 0 15px;
+  }
+  .bCatalogRoot__eItem {
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    position: relative;
+    float: left;
+    width: 198px;
+    height: 258px;
+    margin: 0 20px 20px 0;
+    padding: 10px;
+    border: 1px solid #e6e6e6;
+    background: #f6f6f6;
+  }
+  .bCatalogRoot__eItem.mLast {
+    margin-right: 0;
+  }
+  .bCatalogRoot__eImgLink {
+    display: inline-block;
+    width: 200px;
+    height: 200px;
+    margin: 0 auto 10px;
+    text-align: center;
+    vertical-align: middle;
+    background: #ffffff;
+  }
+  .bCatalogRoot__eImg {
+    display: inline-block;
+    width: 180px;
+    max-height: 180px;
+    vertical-align: middle;
+  }
+  .bCatalogRoot__eNameLink {
+    font-size: 14px;
+  }
+  .bCatalogRoot__eCount {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    line-height: 1;
+  }
+}
+/*---END---СТИЛИ РУТОВОГО КАТАЛОГА---*/

@@ -1,0 +1,63 @@
+.bTitlePage {
+	margin: 0 0 35px;
+
+	font-family: Tahoma;
+	font-size: 25px;
+}
+
+.bCatalogRoot {
+	margin: 0 0 15px;
+
+	&__eItem {
+		.rounded(4px);
+		position: relative;
+
+		float: left;
+
+		width: 198px;
+		height: 258px;
+		margin: 0 20px 20px 0;
+		padding: 10px;
+
+		border: 1px solid @typLightGray;
+		background: #f6f6f6;
+
+		&.mLast {
+			margin-right: 0;
+		}
+	}
+
+	&__eImgLink {
+		display: inline-block;
+
+		width: 200px;
+		height: 200px;
+		margin: 0 auto 10px;
+
+		text-align: center;
+		vertical-align: middle;
+
+		background: @white;
+	}
+
+	&__eImg {
+		display: inline-block;
+
+		width: 180px;
+		max-height: 180px;
+
+		vertical-align: middle;
+	}
+
+	&__eNameLink {
+		font-size: 14px;
+	}
+
+	&__eCount {
+		position: absolute;
+		right: 10px;
+		bottom: 10px;
+
+		line-height: 1;
+	}
+}
