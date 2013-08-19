@@ -251,15 +251,19 @@ foreach (array_reverse($productsById) as $product) {
 					<div class="bTitle">Вид скидки:</div>
 
 					<ul class="bSaleList bInputList clearfix">
+                        <? if (\App::config()->coupon['enabled']): ?>
 						<li class="bSaleList__eItem">
 							<input value="<?= $page->url('cart.coupon.apply') ?>" class="jsCustomRadio bCustomInput mCustomRadioBig" type="radio" id="svz_club" name="add_sale" hidden data-bind="checked: couponUrl" />
 							<label class="bCustomLabel mCustomLabelRadioBig" for="svz_club">Купон</label>
 						</li>
+                        <? endif ?>
 
+                        <? if (\App::config()->blackcard['enabled']): ?>
 						<li class="bSaleList__eItem mEnterSpa">
 							<input value="<?= $page->url('cart.blackcard.apply') ?>" class="jsCustomRadio bCustomInput mCustomRadioBig" type="radio" id="black_card" name="add_sale" hidden data-bind="checked: couponUrl" />
 							<label class="bCustomLabel mCustomLabelRadioBig" for="black_card">Enter Spa</label>
 						</li>
+                        <? endif ?>
 					</ul>
 
 					<input class="bBuyingLine__eText mSaleInput" type="text" id="" data-bind="value: couponNumber, valueUpdate: 'afterkeydown' " />
