@@ -438,8 +438,9 @@
 
 			var updateResponceHandler = function updateResponceHandler( res ) {
 				renderOrderData(res);
-				separateOrder( global.OrderModel.statesPriority );
 				global.OrderModel.blockScreen.unblock();
+				
+				separateOrder( global.OrderModel.statesPriority );
 			};
 
 			$.ajax({

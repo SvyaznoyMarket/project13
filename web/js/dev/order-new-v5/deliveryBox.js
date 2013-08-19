@@ -68,6 +68,13 @@ function DeliveryBox( products, state, choosenPointForBox, OrderModel ) {
 
 	self.addProductGroup(products);
 
+	if ( !self.products.length ) {
+		// если после распределения в блоке не осталось товаров
+		console.warn('в блоке '+self.token+' неосталось товаров');
+
+		return;
+	}
+
 	self.OrderModel.deliveryBoxes.push(self);
 }
 
@@ -265,6 +272,13 @@ DeliveryBox.prototype.addProductGroup = function( products ) {
 		self._addProduct(products[i]);
 	}
 
+	if ( !self.products.length ) {
+		console.warn('в блоке '+self.token+' нет товаров');
+
+		return;
+	}
+
+
 	self.calculateDate();
 	self.updateTotalPrice();
 
@@ -378,12 +392,6 @@ DeliveryBox.prototype.calculateDate = function() {
 		nowTS = null;
 
 	console.log('Сегодняшняя дата с сервера '+todayTS);
-
-	if ( !self.products.length ) {
-		console.warn('в блоке нет товаров');
-
-		return;
-	}
 
 	/**
 	 * Перебираем даты в первом товаре
