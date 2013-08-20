@@ -33,7 +33,6 @@ class CouponAction {
 
             $cart->setCoupon($coupon);
 
-            die(var_dump($cart->getCoupons()));
             foreach ($cart->getCoupons() as $coupon) {
                 if ($number === $coupon->getNumber()) {
                     if ($coupon->getError() instanceof \Exception) {
