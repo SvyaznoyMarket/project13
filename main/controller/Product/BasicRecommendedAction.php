@@ -28,10 +28,8 @@ class BasicRecommendedAction {
     public function execute($productId, \Http\Request $request)
     {
         \App::logger()->debug('Exec ' . __METHOD__);
-        $ifError = [
-            'code' => 404,
-            'message' => 'Not found data in config'
-        ];
+
+        $responseData = [];
 
         try {
             if (\App::config()->crossss['enabled']) {
@@ -46,52 +44,41 @@ class BasicRecommendedAction {
             $ABtestOption = \App::abTest()->getOption('test');
             $ABtest = reset($ABtestOption); /* @var $ABtest \Model\Abtest\Entity */
 
-            if ( !empty( $ABtest ) ) { /// if
+            if ( empty( $ABtest ) ) {
+                throw new \Exception('Not found data in config');
+            }
 
-                //$title = $ABtest->getName();
-                $key = $ABtest->getKey();
+            //$title = $ABtest->getName();
+            $key = $ABtest->getKey();
 
-                if ('retailrocket' == $key) {
-                    $products = $this->getProductsFromRetailrocket($product, $request, $this->retailrocketMethodName);
-                } else {
-                    $products = $this->getProductsFromSmartengine($product, $request, $this->smartengineMethodName);
-                }
+            if ('retailrocket' == $key) {
+                $products = $this->getProductsFromRetailrocket($product, $request, $this->retailrocketMethodName);
+            } else {
+                $products = $this->getProductsFromSmartengine($product, $request, $this->smartengineMethodName);
+            }
 
+            if ( !is_array($products) ) {
+                throw new \Exception(sprintf('Not found products data in response. ActionType: %s', $this->actionType));
+            }
 
-                if ($products instanceof \Http\JsonResponse) {
+            $responseData = [
+                'success' => true,
+                'content' => \App::closureTemplating()->render('product/__slider', [
+                    'title' => $this->actionTitle,
+                    'products' => $products,
+                ]),
+            ];
 
-                    $response = $products->getContent();
-                    return new \Http\JsonResponse( json_decode($response) ); // it is error
-
-                } elseif ($products instanceof \Exception) {
-
-                    return $this->error($products); // it is error
-
-                } elseif (is_array($products)) {
-
-                    return new \Http\JsonResponse([ // it is SUCCESS!
-                        'success' => true,
-                        'content' => \App::closureTemplating()->render('product/__slider', [
-                            'title' => $this->actionTitle,
-                            'products' => $products,
-                        ]),
-                    ]);
-
-                }
-
-                $ifError['message'] = 'Unknown error. Not found products data in response. ActionType: ' . $this->actionType;
-
-            }/// if
-
-            return new \Http\JsonResponse([ // it is error
-                'success' => false,
-                'error' => $ifError,
-            ]);
 
         } catch (\Exception $e) {
             \App::logger()->error($e, [$this->actionType]);
-            return $this->error($e);
+            return new \Http\JsonResponse([
+                'success' => false,
+                'error'   => ['code' => $e->getCode(), 'message' => $e->getMessage()],
+            ]);
         }
+
+        return new \Http\JsonResponse($responseData);
 
     }
 
@@ -150,57 +137,54 @@ class BasicRecommendedAction {
 
 
     /**
-     * @param $product
-     * @param \Http\Request $request
-     * @param string $method
-     * @return \Http\JsonResponse|\Model\Product\Entity[]
+     * @param \Model\Product\Entity     $product
+     * @param \Http\Request             $request
+     * @param string                    $method
+     * @return \Model\Product\Entity[]  $products
      * @throws \Exception
      */
     protected function getProductsFromSmartengine($product, \Http\Request $request, $method = 'relateditems')
     {
         \App::logger()->debug('Exec ' . __METHOD__);
 
-        try {
-            $client = \App::smartengineClient();
-            $user = \App::user()->getEntity();
+        $client = \App::smartengineClient();
+        $user = \App::user()->getEntity();
 
+        $params = [
+            'sessionid' => session_id(),
+            'itemid' => $product->getId(),
+        ];
 
-            $params = [
-                'sessionid'       => session_id(),
-                'itemid'          => $product->getId(),
-            ];
-            if ($method == 'relateditems') {
-                $params['assoctype'] = 'IS_SIMILAR';
-                $params['numberOfResults'] = 15;
-            }
-            if ($user) $params['userid'] = $user->getId();
-
-            $params['itemtype'] = $product->getMainCategory() ? $product->getMainCategory()->getId() : null;
-
-            if ($method == 'otherusersalsoviewed') {
-                $params['requesteditemtype'] = $product->getMainCategory() ? $product->getMainCategory()->getId() : null;
-            }
-
-
-            $r = $client->query($method, $params);
-
-            if (isset($r['error'])) {
-                throw new \Exception($r['error']['@message'] . ': '. json_encode($r, JSON_UNESCAPED_UNICODE), (int)$r['error']['@code']);
-            }
-
-
-            $ids = (is_array($r['recommendeditems']) && array_key_exists('id', $r['recommendeditems']['item']))
-                ? [$r['recommendeditems']['item']['id']]
-                : array_map(function($item) { return $item['id']; }, isset($r['recommendeditems']['item']) ? $r['recommendeditems']['item'] : []);
-
-            $products = $this->prepareProducts($ids, $client::NAME);
-
-            return $products;
-
-        } catch (\Exception $e) {
-            \App::logger()->error($e, ['SmartEngine']);
-            return $this->error($e);
+        if ($method == 'relateditems') {
+            $params['assoctype'] = 'IS_SIMILAR';
+            $params['numberOfResults'] = 15;
         }
+        if ($user) $params['userid'] = $user->getId();
+
+        $params['itemtype'] = $product->getMainCategory() ? $product->getMainCategory()->getId() : null;
+
+        if ($method == 'otherusersalsoviewed') {
+            $params['requesteditemtype'] = $product->getMainCategory() ? $product->getMainCategory()->getId() : null;
+        }
+
+
+        $r = $client->query($method, $params);
+
+        if (isset($r['error'])) {
+            throw new \Exception($r['error']['@message'] . ': ' . json_encode($r, JSON_UNESCAPED_UNICODE), (int)$r['error']['@code']);
+        }
+
+
+        $ids = (is_array($r['recommendeditems']) && array_key_exists('id', $r['recommendeditems']['item']))
+            ? [$r['recommendeditems']['item']['id']]
+            : array_map(function ($item) {
+                return $item['id'];
+            }, isset($r['recommendeditems']['item']) ? $r['recommendeditems']['item'] : []);
+
+        $products = $this->prepareProducts($ids, $client::NAME);
+
+        return $products;
+
     }
 
 
@@ -210,42 +194,22 @@ class BasicRecommendedAction {
      * @param \Model\Product\Entity     $product
      * @param \Http\Request             $request
      * @param string                    $method
-     * @return \Http\JsonResponse|\Model\Product\Entity[]
-     * @throws \Exception\NotFoundException
+     * @return \Model\Product\Entity[]  $products
+     * @throws \Exception\
      */
     protected function getProductsFromRetailrocket( $product, \Http\Request $request, $method = 'UpSellItemToItems' ) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
-        try {
-            $client = \App::retailrocketClient();
+        $client = \App::retailrocketClient();
 
-            $productId = $product->getId();
+        $productId = $product->getId();
 
-            $ids = $client->query('Recomendation/' . $method, $productId);
+        $ids = $client->query('Recomendation/' . $method, $productId);
 
-            $products = $this->prepareProducts($ids, $client::NAME);
+        $products = $this->prepareProducts($ids, $client::NAME);
 
-            return $products;
+        return $products;
 
-        } catch (\Exception $e) {
-            \App::logger()->error($e, ['RetailRocket']);
-            return $this->error($e);
-        }
-
-    }
-
-
-
-    /**
-     * @param \Exception $e
-     * @return \Http\JsonResponse
-     */
-    protected function error(\Exception $e)
-    {
-        return new \Http\JsonResponse([
-            'success' => false,
-            'error'   => ['code' => $e->getCode(), 'message' => $e->getMessage()],
-        ]);
     }
 
 
