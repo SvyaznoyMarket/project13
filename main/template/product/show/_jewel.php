@@ -92,6 +92,15 @@ $is_showed = [];
         <?= $product->getDescription() ?>
     </div>
 
+    <div class="clear"></div>
+
+    <? if ( $mainProduct && count($mainProduct->getKit()) ): ?>
+        <?= $helper->render('product/__slider', [
+            'title'     => 'Состав набора &laquo;' . $line->getName() . '&raquo;',
+            'products'  => $parts,
+        ]) ?>
+    <? endif ?>
+
     <? if ((bool)$accessories && \App::config()->product['showAccessories']): ?>
         <?= $helper->render('product/__slider', [
             'type'           => 'accessorize',
