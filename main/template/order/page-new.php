@@ -235,7 +235,7 @@ foreach (array_reverse($productsById) as $product) {
 					<div class="bOrderItems">
 						<div class="bItemsRow mItemImg" data-bind="css: { mError: coupon.error }"></div>
 
-						<div class="bItemsRow mItemInfo" data-bind="text: coupon.name"></div>
+						<div class="bItemsRow mItemInfo" data-bind="text: coupon.error.message || coupon.name"></div>
 
 						<div class="bItemsRow mCountItem"></div>
 
@@ -243,7 +243,7 @@ foreach (array_reverse($productsById) as $product) {
 							<a class="bDelItem" data-bind="attr: { href: coupon.deleteUrl }, click: $root.deleteItem">удалить</a>
 						</div>
 
-						<div class="bItemsRow mItemRight"><span data-bind="text: coupon.sum"></span> <span class="rubl">p</span></div>
+						<div class="bItemsRow mItemRight" data-bind="visible: !coupon.error"><span data-bind="text: coupon.sum"></span> <span class="rubl">p</span></div>
 					</div>
 				</div>
 				<!-- /Coupons -->
