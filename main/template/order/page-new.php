@@ -186,6 +186,7 @@ foreach (array_reverse($productsById) as $product) {
 	</div>
 	<!-- /Delivery boxes -->
 
+    <? if (\App::config()->coupon['enabled'] || \App::config()->blackcard['enabled']): ?>
 	<!-- Sale section -->
 	<div class="bBuyingLineWrap bBuyingSale clearfix" data-bind="visible: deliveryBoxes().length">
 		<div class="bBuyingLine">
@@ -194,10 +195,11 @@ foreach (array_reverse($productsById) as $product) {
 					Скидки
 				</h2>
 
-				Если у вас есть карта<br/>
-				Enter SPA или купон,<br/>
-				укажите номер и получите<br/>
-				скидку.
+				Если у вас есть
+                <? if (\App::config()->blackcard['enabled']): ?> карта Enter SPA <? endif ?>
+                <? if (\App::config()->coupon['enabled'] && \App::config()->blackcard['enabled']): ?> или<? endif ?>
+                <? if (\App::config()->coupon['enabled']): ?> купон, <? endif ?>
+				укажите номер и получите скидку.
 			</div>
 
 			<div class="bBuyingLine__eRight">
@@ -235,7 +237,7 @@ foreach (array_reverse($productsById) as $product) {
 					<div class="bOrderItems">
 						<div class="bItemsRow mItemImg" data-bind="css: { mError: coupon.error }"></div>
 
-						<div class="bItemsRow mItemInfo" data-bind="text: coupon.error.message || coupon.name"></div>
+						<div class="bItemsRow mItemInfo" data-bind="text: (coupon.error && coupon.error.message) || coupon.name"></div>
 
 						<div class="bItemsRow mCountItem"></div>
 
@@ -271,6 +273,7 @@ foreach (array_reverse($productsById) as $product) {
 		</div>
 	</div>
 	<!-- /Sale section -->
+    <? endif ?>
 
 	<div class="bBuyingLine mSumm clearfix" data-bind="visible: deliveryBoxes().length">
 		<a href="<?= $page->url('cart') ?>" class="bBackCart mOrdeRead">&lt; Редактировать товары</a>
