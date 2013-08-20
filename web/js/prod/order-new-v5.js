@@ -1056,7 +1056,7 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 					_gaq.push(['_trackEvent', 'Order card', 'Completed', 'выбрана '+global.OrderModel.choosenDeliveryTypeId+' доставят '+global.OrderModel.createdBox[i].state]);
 				}
 
-				_gaq.push(['_trackEvent', 'Order complete', global.OrderModel.createdBox.length, global.OrderModel.orderDictionary.products.length]);
+				_gaq.push(['_trackEvent', 'Order complete', global.getKeysLength(global.OrderModel.createdBox), global.OrderModel.orderDictionary.products.length]);
 				_gaq.push(['_trackTiming', 'Order complete', 'DB response', ajaxDelta]);
 			}
 
