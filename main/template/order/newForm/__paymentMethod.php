@@ -36,6 +36,7 @@ return function (
         $type = isset($typeById[$typeId]) ? $typeById[$typeId] : null;
         if (!$type) continue;
     ?>
+    <div>
         <? if (isset($type['name'])): ?>
             <h2 class="bTitle"><?= $type['name'] ?></h2>
         <? endif ?>
@@ -45,6 +46,7 @@ return function (
             $elementId = sprintf('paymentMethod-%s', $paymentMethod->getId());
         ?>
             <div class="bPayMethod<? if (\Model\PaymentMethod\Entity::TYPE_ALL == $typeId): ?> mMethodOption<? endif ?>"
+                <? if ($paymentMethod->onlySingleOrder()): ?> data-bind="visible: !createdBox.length > 1"<? endif ?>
                  data-value="<?= $helper->json([
                      'max-sum' => in_array($paymentMethod->getId(), [\Model\PaymentMethod\Entity::QIWI_ID, \Model\PaymentMethod\Entity::WEBMONEY_ID]) ? App::config()->order['maxSumOnline'] : null,
                  ]) ?>"
@@ -56,7 +58,6 @@ return function (
                     name="order[payment_method_id]"
                     value="<?= $paymentMethod->getId() ?>"
                     hidden
-                    <? if ($paymentMethod->onlySingleOrder()): ?> data-bind="visible: !createdBox.length > 1"<? endif ?>
                 />
 
                 <label for="<?= $elementId ?>" class="bCustomLabel mCustomLabelRadioBig"><?= $paymentMethod->getName() ?></label>
@@ -74,7 +75,7 @@ return function (
                 <? endif ?>
             </div>
         <? endforeach ?>
-
+    </div>
     <? endforeach ?>
 
 <? };
