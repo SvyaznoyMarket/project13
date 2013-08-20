@@ -128,7 +128,7 @@ class DeliveryAction {
                     }
 
                     $return[] = [
-                        'name'      => str_replace(date('Y') . ' г.', '', $helper->dateToRu(date('Y-m-d', $time)) . ' г.'),
+                        'name'      => str_replace(' ' . date('Y') . ' г.', '', $helper->dateToRu(date('Y-m-d', $time)) . ' г.'),
                         'value'     => strtotime($dateItem['date'], 0) * 1000,
                         'day'       => (int)date('j', $time),
                         'dayOfWeek' => (int)date('w', $time),
@@ -232,7 +232,7 @@ class DeliveryAction {
                 $responseData['discounts'][] = [
                     'name'      => $coupon->getName(),
                     'sum'       => $coupon->getDiscountSum(),
-                    'error'     => $coupon->getError() ? ['code' => $coupon->getError()->getCode(), 'message' => \Model\Cart\Coupon\Entity::getErrorMessage($coupon->getError()->getCode()) ?: 'Неудалось активировать купон'] : null,
+                    'error'     => $coupon->getError() ? ['code' => $coupon->getError()->getCode(), 'message' => \Model\Cart\Coupon\Entity::getErrorMessage($coupon->getError()->getCode()) ?: 'Неудалось активировать купон'] : [],
                     'deleteUrl' => $router->generate('cart.coupon.delete'),
                 ];
             }
@@ -242,7 +242,7 @@ class DeliveryAction {
                 $responseData['discounts'][] = [
                     'name'      => $blackcard->getName(),
                     'sum'       => $blackcard->getDiscountSum(),
-                    'error'     => $blackcard->getError() ? ['code' => $blackcard->getError()->getCode(), 'message' => \Model\Cart\Blackcard\Entity::getErrorMessage($blackcard->getError()->getCode()) ?: 'Неудалось активировать карту'] : null,
+                    'error'     => $blackcard->getError() ? ['code' => $blackcard->getError()->getCode(), 'message' => \Model\Cart\Blackcard\Entity::getErrorMessage($blackcard->getError()->getCode()) ?: 'Неудалось активировать карту'] : [],
                     'deleteUrl' => $router->generate('cart.blackcard.delete'),
                 ];
             }
