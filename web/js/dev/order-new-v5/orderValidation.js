@@ -83,7 +83,7 @@
 		 * 
 		 * @param	{String}	msg		Сообщение которое необходимо показать пользователю
 		 */
-	var showError = function showError( msg ) {
+	var showError = function showError( msg, callback ) {
 			var content = '<div class="popupbox width290">' +
 					'<div class="font18 pb18"> '+msg+'</div>'+
 					'</div>' +
@@ -96,6 +96,10 @@
 			var errorPopupCloser = function() {
 				block.trigger('close');
 				block.remove();
+
+				if ( callback !== undefined ) {
+					callback();
+				}
 
 				return false;
 			};
@@ -115,15 +119,15 @@
 		 */
 		formErrorHandler = function formErrorHandler( formError ) {
 			console.warn('Ошибка в поле');
+			
 			var field = $('[name="order['+formError.field+']"]');
 
-			orderValidator.setValidate( field, {
-				require: true,
-				customErr: formError.message,
-				validateOnChange: true
-			});
+			var clearError = function clearError() {
+				orderValidator._unmarkFieldError($(this));
+			};
 
 			orderValidator._markFieldError(field, formError.message);
+			field.bind('focus', clearError);
 		},
 	
 		/**
@@ -132,6 +136,14 @@
 		serverErrorHandler = {
 			0: function( res ) {
 				var formError = null;
+
+				if ( res.redirect ) {
+					showError(res.error.message, function(){
+						document.location.href = res.redirect;
+					});
+
+					return;
+				}
 
 				showError(res.error.message);
 
@@ -246,7 +258,17 @@
 				timeout: 120000,
 				type: "POST",
 				data: dataToSend,
-				success: processingResponse
+				success: processingResponse,
+				statusCode: {
+					500: function() {
+						console.log(this.statusCode)
+						showError('Неудалось создать заказ. Попробуйте позднее.');
+					},
+					504: function() {
+						console.log(this.statusCode)
+						showError('Неудалось создать заказ. Попробуйте позднее.');
+					}
+				}
 			});
 		},
 
