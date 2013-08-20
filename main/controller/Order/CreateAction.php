@@ -323,7 +323,7 @@ class CreateAction {
                             if (\Partner\Counter\MyThings::isTracking()) {
                                 $partners[] = \Partner\Counter\MyThings::NAME;
                             }
-                            foreach (\Controller\Product\SimilarAction::$recomendedPartners as $recomPartnerName) {
+                            foreach (\Controller\Product\BasicRecommendedAction::$recomendedPartners as $recomPartnerName) {
                                 if ($viewedAt = \App::user()->getRecommendedProductByParams($product->getId(), $recomPartnerName, 'viewed_at')) {
                                     if ((time() - $viewedAt) <= 30 * 24 * 60 * 60) { // 30days
                                         $partners[] = $recomPartnerName;
