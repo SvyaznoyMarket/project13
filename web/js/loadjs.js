@@ -27,8 +27,9 @@
 ;(function( global ) {
 	global.startTime = new Date().getTime();
 	// console.log('start'+startTime);
-
-	var _gaq = global._gaq || [];
+	 
+	var _gaq = global._gaq || [],
+		knockoutUrl = '';
 
 	global.onerror = function(msg, url, line) {
 		var preventErrorAlert = true;
@@ -40,6 +41,8 @@
 	if ( document.body.getAttribute('data-debug') == 'true') {
 		debug = true;
 	}
+
+	knockoutUrl = ( debug ) ? 'http://knockoutjs.com/downloads/knockout-2.2.1.debug.js' : 'http://ajax.aspnetcdn.com/ajax/knockout/knockout-2.2.1.js';
 
 	// page load log
 	if ( $('#page-config').data('value').jsonLog ) {
@@ -159,7 +162,7 @@
 		case 'order':
 			$LAB
 			.queueScript( (mapVendor==='yandex') ? 'http://api-maps.yandex.ru/2.0/?load=package.full&lang=ru-RU' : 'http://maps.google.com/maps/api/js?sensor=false')
-			.queueScript('http://ajax.aspnetcdn.com/ajax/knockout/knockout-2.2.1.js')
+			.queueScript(knockoutUrl)
 			.queueWait( function() {
 				$LAB
 				.script('jquery-plugins.min.js')
@@ -179,7 +182,7 @@
 		case 'order.new': 
 			$LAB
 			.queueScript( 'http://api-maps.yandex.ru/2.0-stable/?load=package.standard&lang=ru-RU' )
-			.queueScript('http://ajax.aspnetcdn.com/ajax/knockout/knockout-2.2.1.js')
+			.queueScript(knockoutUrl)
 			.queueWait( function() {
 				$LAB
 				.script('jquery-plugins.min.js')
@@ -235,7 +238,7 @@
 			}).runQueue();
 			break;
 		case 'product_card':
-			$LAB.queueScript('http://ajax.aspnetcdn.com/ajax/knockout/knockout-2.2.1.js')
+			$LAB.queueScript(knockoutUrl)
 			.queueScript( (mapVendor==='yandex') ? 'http://api-maps.yandex.ru/2.0/?load=package.full&lang=ru-RU' : 'http://maps.google.com/maps/api/js?sensor=false' )
 			.queueWait( function() {
 				$LAB
@@ -290,7 +293,7 @@
 		case 'product_stock':
 			$LAB
 			.queueScript( (mapVendor==='yandex') ? 'http://api-maps.yandex.ru/2.0/?load=package.full&lang=ru-RU' : 'http://maps.google.com/maps/api/js?sensor=false' )
-			.queueScript('http://ajax.aspnetcdn.com/ajax/knockout/knockout-2.2.1.js')
+			.queueScript(knockoutUrl)
 			.queueWait( function() {
 				$LAB
 				.script('jquery-plugins.min.js')

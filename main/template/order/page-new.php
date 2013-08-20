@@ -55,12 +55,12 @@ foreach (array_reverse($productsById) as $product) {
 		<div class="bBuyingLine__eLeft">Выберите предпочтительный способ</div>
 
 		<div class="bBuyingLine__eRight bInputList" data-bind="foreach: { data: deliveryTypes }">
-			<input class="jsCustomRadio bCustomInput mCustomCheckBig" type="radio" name="radio" hidden data-bind="attr: { id: 'method_'+$data.id }" />
+			<input class="jsCustomRadio bCustomInput mCustomCheckBig" type="radio" name="radio" hidden data-bind="attr: { 'id': 'method_'+$data.id }" />
 			<label class="bCustomLabel mCustomLabelBig mLabelStrong" data-bind="
 									text: $data.name,
 									states: $data.states,
 									click: $root.chooseDeliveryTypes,
-									attr: { for: 'method_'+$data.id }">
+									attr: { 'for': 'method_'+$data.id }">
 			</label>
 			<p class="bBuyingLine__eDesc" data-bind="text: $data.description"></p>
 		</div>
@@ -242,7 +242,7 @@ foreach (array_reverse($productsById) as $product) {
 						<div class="bItemsRow mCountItem"></div>
 
 						<div class="bItemsRow mDelItem">
-							<a class="bDelItem" data-bind="attr: { href: coupon.deleteUrl }, click: $root.deleteItem">удалить</a>
+							<a class="bDelItem" data-bind="attr: { 'href': coupon.deleteUrl }, click: $root.deleteItem">удалить</a>
 						</div>
 
 						<div class="bItemsRow mItemRight" data-bind="visible: !coupon.error"><span data-bind="text: coupon.sum"></span> <span class="rubl">p</span></div>
