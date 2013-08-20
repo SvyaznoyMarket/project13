@@ -57,9 +57,6 @@ class CouponAction {
                 'success' => false,
                 'error'   => ['code' => $e->getCode(), 'message' => $message],
             ];
-            if (\App::config()->debug) {
-                $responseData['error'] = $e;
-            }
         }
 
         return new \Http\JsonResponse($responseData);
