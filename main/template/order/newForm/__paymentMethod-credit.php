@@ -36,7 +36,7 @@ return function (
     </div>
 
     <div id="jsCreditBank" data-value="<?= $helper->json($creditData) ?>"></div>
-    <input id="selectedBank" hidden name="order[credit_bank_id]">
+    <input class="hiddenCheckbox" id="selectedBank" hidden name="order[credit_bank_id]">
 </div>
 
 

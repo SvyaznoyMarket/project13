@@ -503,6 +503,7 @@ class Cart {
         $data['certificateList'][] = [
             'number' => $certificate->getNumber(),
         ];
+        $this->certificates[] = $certificate;
 
         $this->fill();
 
@@ -542,6 +543,7 @@ class Cart {
         $data['couponList'][] = [
             'number' => $coupon->getNumber(),
         ];
+        $this->coupons[] = $coupon;
 
         $this->fill();
 
@@ -581,6 +583,7 @@ class Cart {
         $data['blackcardList'][] = [
             'number' => $blackcard->getNumber(),
         ];
+        $this->blackcards[] = $blackcard;
 
         $this->fill();
 
