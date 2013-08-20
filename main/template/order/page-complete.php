@@ -126,3 +126,5 @@ if (!isset($paymentUrl)) $paymentUrl = null;
     'productsById' => $productsById,
 ]) ?>
 
+
+<?= $helper->render('order/__analyticsData', ['orders' => $orders, 'productsById' => $productsById]) ?>
