@@ -11,6 +11,9 @@
  * @var $additionalData    array
  * @var $shopStates        \Model\Product\ShopState\Entity[]
  * @var $creditData        array
+ * @var $parts             \Model\Product\CompactEntity[]
+ * @var $mainProduct       \Model\Product\Entity
+ * @var $line              \Model\Line\Entity
  */
 
 $showLinkToProperties = true;
@@ -83,6 +86,15 @@ $is_showed = [];
     <div class="bDescriptionProduct">
         <?= $product->getDescription() ?>
     </div>
+
+    <div class="clear"></div>
+
+    <? if ( $mainProduct && count($mainProduct->getKit()) ): ?>
+        <?= $helper->render('product/__slider', [
+            'title'     => 'Состав набора &laquo;' . $line->getName() . '&raquo;',
+            'products'  => $parts,
+        ]) ?>
+    <? endif ?>
 
     <? if ((bool)$accessories && \App::config()->product['showAccessories']): ?>
         <?= $helper->render('product/__slider', [
