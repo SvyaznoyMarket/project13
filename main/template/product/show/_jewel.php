@@ -88,10 +88,6 @@ $is_showed = [];
 
     <?= $helper->render('product/__likeButtons', [] ); // Insert LikeButtons (www.addthis.com) ?>
 
-    <div class="bDescriptionProduct">
-        <?= $product->getDescription() ?>
-    </div>
-
     <? if ((bool)$accessories && \App::config()->product['showAccessories']): ?>
         <?= $helper->render('product/__slider', [
             'type'           => 'accessorize',
@@ -106,6 +102,10 @@ $is_showed = [];
             'additionalData' => $additionalData,
         ]) ?>
     <? endif ?>
+
+    <div class="bDescriptionProduct">
+        <?= $product->getDescription() ?>
+    </div>
 
     <? if (\App::config()->smartengine['pull']): ?>
         <?= $helper->render('product/__slider', [
