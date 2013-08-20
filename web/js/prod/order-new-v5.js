@@ -1468,7 +1468,7 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 				$(element).show();
 			}
 		}
-	}; 
+	};
 
 
 	/**

@@ -163,8 +163,8 @@ foreach (array_reverse($productsById) as $product) {
 
 			<!-- Sum -->
 			<ul class="bSumOrderInfo">
-				<li class="bSumOrderInfo__eLine" data-bind="visible: !hasPointDelivery">
-					Доставка:&nbsp;&nbsp;
+				<li class="bSumOrderInfo__eLine">
+					<span data-bind="text: hasPointDelivery ? 'Самовывоз:&nbsp;&nbsp;': 'Доставка:&nbsp;&nbsp;' "></span>
 					
 					<span class="bDelivery">
 						<span data-bind="text: box.deliveryPrice === 0 ? 'Бесплатно' : box.deliveryPrice"></span>

@@ -33,6 +33,7 @@ module.exports = function(grunt) {
 	 */
 	var libraryFiles = [
 		jsDevPath+'library/cloneObject.js',
+		jsDevPath+'library/getKeysLength.js',
 		jsDevPath+'library/JSON.js',
 		jsDevPath+'library/pubSub.js',
 		jsDevPath+'library/isTrueEmail.js',
