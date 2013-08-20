@@ -161,7 +161,7 @@ class OldDeliveryAction {
             });
             \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['forever'], \App::config()->coreV2['retryCount']);
 
-            $productData = $response['product_list'];
+            $productData = (array)$response['product_list'];
             $productData = array_pop($productData);
             $shopData = $response['shop_list'];
             $regionData = [];
