@@ -3,6 +3,8 @@
 namespace Model\PaymentMethod;
 
 class Entity {
+    const CASH_ID = 1;
+    const CARD_ID = 2;
     const CERTIFICATE_ID = 10;
     const WEBMONEY_ID = 11;
     const QIWI_ID = 12;
@@ -159,4 +161,10 @@ class Entity {
         return $this->payOnReceipt;
     }
 
+    /**
+     * @return bool
+     */
+    public function onlySingleOrder() {
+        return !in_array($this->id, [self::CASH_ID, self::CARD_ID]);
+    }
 }

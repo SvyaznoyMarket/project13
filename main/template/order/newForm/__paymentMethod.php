@@ -56,6 +56,7 @@ return function (
                     name="order[payment_method_id]"
                     value="<?= $paymentMethod->getId() ?>"
                     hidden
+                    <? if ($paymentMethod->onlySingleOrder()): ?> data-bind="visible: !createdBox.length > 1"<? endif ?>
                 />
 
                 <label for="<?= $elementId ?>" class="bCustomLabel mCustomLabelRadioBig"><?= $paymentMethod->getName() ?></label>
