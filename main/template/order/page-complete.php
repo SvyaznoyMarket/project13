@@ -13,7 +13,9 @@
  */
 ?>
 
-<?php
+<?
+$helper = new \Helper\TemplateHelper();
+
 $isCorporative = $user->getEntity() ? $user->getEntity()->getIsCorporative() : false;
 // TODO: доделать
 $isCredit = (bool)$creditData;
