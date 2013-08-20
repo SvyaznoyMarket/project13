@@ -188,8 +188,8 @@ class Action {
             }
 
             if (!$deliveryCalcResult) {
-                $e = new \Exception('Калькулятор доставки вернул пустой результат', ['order']);
-                \App::logger()->error($e->getMessage());
+                $e = new \Exception('Калькулятор доставки вернул пустой результат');
+                \App::logger()->error($e->getMessage(), ['order']);
 
                 throw $e;
             }
