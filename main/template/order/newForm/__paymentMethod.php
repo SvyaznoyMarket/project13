@@ -36,7 +36,7 @@ return function (
         $type = isset($typeById[$typeId]) ? $typeById[$typeId] : null;
         if (!$type) continue;
     ?>
-    <div>
+    <div <? if (\Model\PaymentMethod\Entity::TYPE_ON_RECEIPT !== $typeId): ?>data-bind="style: { display: deliveryBoxes().length == 1 ? 'block' : 'none' }"<? endif ?>>
         <? if (isset($type['name'])): ?>
             <h2 class="bTitle"><?= $type['name'] ?></h2>
         <? endif ?>
@@ -46,7 +46,6 @@ return function (
             $elementId = sprintf('paymentMethod-%s', $paymentMethod->getId());
         ?>
             <div class="bPayMethod<? if (\Model\PaymentMethod\Entity::TYPE_ALL == $typeId): ?> mMethodOption<? endif ?>"
-                <? if ($paymentMethod->onlySingleOrder()): ?> data-bind="visible: !createdBox.length > 1"<? endif ?>
                  data-value="<?= $helper->json([
                      'max-sum' => in_array($paymentMethod->getId(), [\Model\PaymentMethod\Entity::QIWI_ID, \Model\PaymentMethod\Entity::WEBMONEY_ID]) ? App::config()->order['maxSumOnline'] : null,
                  ]) ?>"
