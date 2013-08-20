@@ -28,35 +28,23 @@ class CertificateAction {
 
             $cart->clearCertificates();
 
-            /*
-            $data = $client->query('cart/check-card-f1', ['number' => $number]);
-            if (true !== $data) {
-                throw new \Exception\ActionException('Неправильный номер карты');
-            }
-            */
-
             $certificate = new \Model\Cart\Certificate\Entity();
             $certificate->setNumber($number);
 
             $cart->setCertificate($certificate);
 
-            $result = [
-                'success' => true,
-            ];
+            $responseData['success'] = true;
 
         } catch (\Exception $e) {
             \App::exception()->remove($e);
 
-            $result = [
+            $responseData = [
                 'success' => false,
-                'error'   => $e instanceof \Exception\ActionException ? $e->getMessage() : 'Неудалось активировать карту',
+                'error'   => ['code' => $e->getCode(), 'message' => 'Неудалось активировать карту'],
             ];
-            if (\App::config()->debug) {
-                $result['error'] = $e;
-            }
         }
 
-        return new \Http\JsonResponse($result);
+        return new \Http\JsonResponse($responseData);
     }
 
     /**
@@ -71,24 +59,20 @@ class CertificateAction {
             throw new \Exception\NotFoundException('Request is not xml http request');
         }
 
+        $responseData = [];
         try {
             \App::user()->getCart()->clearCertificates();
 
-            $result = [
-                'success' => true,
-            ];
+            $responseData['success'] = true;
         } catch (\Exception\ActionException $e) {
             \App::exception()->remove($e);
 
-            $result = [
+            $responseData = [
                 'success' => false,
-                'error'   => $e instanceof \Exception\ActionException ? $e->getMessage() : 'Неудалось удалить карту',
+                'error'   => ['code' => $e->getCode(), 'message' => 'Неудалось удалить карту'],
             ];
-            if (\App::config()->debug) {
-                $result['error'] = $e;
-            }
         }
 
-        return new \Http\JsonResponse($result);
+        return new \Http\JsonResponse($responseData);
     }
 }

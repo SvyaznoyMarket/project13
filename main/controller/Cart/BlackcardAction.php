@@ -5,7 +5,7 @@ namespace Controller\Cart;
 class BlackcardAction {
     /**
      * @param \Http\Request $request
-     * @throws \Exception\ActionException
+     * @throws \Exception|null
      * @throws \Exception\NotFoundException
      * @return \Http\Response
      */
@@ -16,11 +16,11 @@ class BlackcardAction {
             throw new \Exception\NotFoundException('Request is not xml http request');
         }
 
-        $client = \App::coreClientV2();
         $cart = \App::user()->getCart();
 
         $number = trim((string)$request->get('number'));
 
+        $responseData = [];
         try {
             if (!$number) {
                 throw new \Exception\ActionException('Не передан номер карты');
@@ -28,34 +28,35 @@ class BlackcardAction {
 
             $cart->clearBlackcards();
 
-            /*
-            $client->query();
-            */
-
             $blackcard = new \Model\Cart\Blackcard\Entity();
             $blackcard->setNumber($number);
 
             $cart->setBlackcard($blackcard);
 
-            $result = [
-                'success' => true,
-            ];
+            foreach ($cart->getBlackcards() as $blackcard) {
+                if ($number === $blackcard->getNumber()) {
+                    if ($blackcard->getError() instanceof \Exception) {
+                        throw $blackcard->getError();
+                    }
+                }
+            }
 
+            $responseData['success'] = true;
         } catch (\Exception $e) {
             \App::exception()->remove($e);
 
             $message = \Model\Cart\Blackcard\Entity::getErrorMessage($e->getCode()) ?: 'Неудалось активировать карту';
 
-            $result = [
+            $responseData = [
                 'success' => false,
-                'error'   => (\App::config()->debug ? sprintf('Ошибка #%s: ', $e->getCode()) : '') . $message,
+                'error'   => ['code' => $e->getCode(), 'message' => $message],
             ];
             if (\App::config()->debug) {
-                $result['error'] = $e;
+                $responseData['error'] = $e;
             }
         }
 
-        return new \Http\JsonResponse($result);
+        return new \Http\JsonResponse($responseData);
     }
 
     /**
@@ -66,24 +67,20 @@ class BlackcardAction {
     public function delete(\Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
+        $responseData = [];
         try {
             \App::user()->getCart()->clearBlackcards();
 
-            $result = [
-                'success' => true,
-            ];
+            $responseData['success'] = true;
         } catch (\Exception\ActionException $e) {
             \App::exception()->remove($e);
 
-            $result = [
+            $responseData = [
                 'success' => false,
-                'error'   => $e instanceof \Exception\ActionException ? $e->getMessage() : 'Неудалось удалить карту',
+                'error'   => ['code' => $e->getCode(), 'message' => 'Неудалось удалить карту'],
             ];
-            if (\App::config()->debug) {
-                $result['error'] = $e;
-            }
         }
 
-        return $request->isXmlHttpRequest() ? new \Http\JsonResponse($result) : new \Http\RedirectResponse($request->headers->get('referer') ?: \App::router()->generate('cart'));
+        return $request->isXmlHttpRequest() ? new \Http\JsonResponse($responseData) : new \Http\RedirectResponse($request->headers->get('referer') ?: \App::router()->generate('cart'));
     }
 }
