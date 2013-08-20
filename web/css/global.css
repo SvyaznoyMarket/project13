@@ -12087,6 +12087,9 @@
   .bFilterCont {
     background: #f6f6f6;
   }
+  .bFilterCont .bBtnPick {
+    float: right;
+  }
   .bFilterParams {
     width: 160px;
     display: inline-block;
@@ -12143,6 +12146,23 @@
   .bFilterValues .mChecked {
     background: url("/css/customInput/img/bCustomCheckbox.png") no-repeat 5px -19px #fbebd2;
     border: 1px solid #c7c7c7;
+  }
+  .mBtnGrey {
+    background: #e5e5e5;
+    background: -moz-linear-gradient(top, #ffffff 0%, #e3e3e3 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffffff), color-stop(100%, #e3e3e3));
+    background: -webkit-linear-gradient(top, #ffffff 0%, #e3e3e3 100%);
+    background: -o-linear-gradient(top, #ffffff 0%, #e3e3e3 100%);
+    background: -ms-linear-gradient(top, #ffffff 0%, #e3e3e3 100%);
+    background: linear-gradient(to bottom, #ffffff 0%, #e3e3e3 100%);
+    filter: progid:dximagetransform.microsoft.gradient(startColorstr='#ffffff', endColorstr='#e3e3e3', GradientType=0);
+    border: #c7c7c7;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    -webkit-box-shadow: 1px 1px 3px #c7c7c7;
+    -moz-box-shadow: 1px 1px 3px #c7c7c7;
+    box-shadow: 1px 1px 3px #c7c7c7;
   }
 }
 /*---END---СТИЛИ РУТОВОГО КАТАЛОГА---*/

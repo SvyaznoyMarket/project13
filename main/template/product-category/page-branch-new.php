@@ -168,9 +168,10 @@
 							Ahava
 						</label>
 					</div>
-
 				</div>
 			</div>
+
+			<div class="bBtnPick mBtnGrey "><a href="">Подобрать</a></div>
 		</div>
 	</div>
 </div>
