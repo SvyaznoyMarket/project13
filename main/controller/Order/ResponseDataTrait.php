@@ -10,32 +10,20 @@ trait ResponseDataTrait {
      *     'code'    => ['code' => $e->getCode(), 'message' => $e->getMessage()],
      * ]
      *
-     * @param \Exception $e
+     * @param \Exception $exception
      * @param $responseData
      */
-    protected function failResponseData(\Exception $e, array &$responseData) {
+    protected function failResponseData(\Exception $exception, array &$responseData) {
         $router = \App::router();
         $cart = \App::user()->getCart();
         $region = \App::user()->getRegion();
 
-        $productDataById = [];
-        if ($e instanceof \Curl\Exception) {
-            $errorData = (array)$e->getContent();
-            $errorData = isset($errorData['product_error_list']) ? (array)$errorData['product_error_list'] : [];
-            if ((bool)$errorData) {
-                \App::exception()->remove($e);
+        \App::exception()->remove($exception);
 
-                // приукрашиваем сообщение об ошибке
-                switch ($e->getCode()) {
-                    case 770:
-                        $message = 'Невозможно расчитать доставку';
-                        break;
-                    default:
-                        $message = 'Невозможно расчитать доставку';
-                        break;
-                }
-                $e = new \Exception($message, $e->getCode());
-            }
+        $productDataById = [];
+        if ($exception instanceof \Curl\Exception) {
+            $errorData = (array)$exception->getContent();
+            $errorData = isset($errorData['product_error_list']) ? (array)$errorData['product_error_list'] : [];
 
             $quantitiesByProduct = [];
             foreach ($errorData as $errorItem) {
@@ -111,7 +99,21 @@ trait ResponseDataTrait {
             }
         }
 
+        // приукрашиваем сообщение об ошибке
+        switch ($exception->getCode()) {
+            case 705:
+                $message = 'Одного или нескольких товаров нет в наличии';
+                break;
+            case 770:
+                $message = 'Невозможно расчитать доставку';
+                break;
+            default:
+                $message = 'Ошибка формирования заказа';
+                break;
+        }
+        $exception = new \Exception($message, $exception->getCode());
+
         $responseData['success'] = false;
-        $responseData['error'] = ['code' => $e->getCode(), 'message' => $e->getMessage()];
+        $responseData['error'] = ['code' => $exception->getCode(), 'message' => $exception->getMessage()];
     }
 }

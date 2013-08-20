@@ -45,7 +45,7 @@ class CreateAction {
             }
 
             // обновление формы из параметров запроса
-            $form->fromArray($request->request->get('order'));
+            $form->fromArray($request->get('order'));
             // валидация формы
             $this->validateForm($form);
             if (!$form->isValid()) {
