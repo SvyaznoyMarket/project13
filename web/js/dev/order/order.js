@@ -35,7 +35,7 @@
             for ( j = orderData[i].products.length - 1; j >= 0; j-- ) {
                 global.sonar_basket.products.push({
                     identifier: orderData[i].products[j].article+'_'+window.docCookies.getItem('geoshop'),
-                    amount: orderData[i].products[j].price,
+                    amount: parseInt(orderData[i].products[j].price, 10),
                     currency: 'RUB',
                     quantity: orderData[i].products[j].quantity
                 });
@@ -59,11 +59,10 @@
                 'Checkout Complete Order ID': orderData[i].number,
                 'Checkout Complete SKU Quantity': orderData[i].products.length,
                 'Checkout Complete SKU Total': orderData[i].sum,
-                'Checkout Complete Order Subtotal': orderData[i].sum,
-                // 'Checkout Complete Delivery Total': ,
-                // 'Checkout Complete Order Total': ,
+                'Checkout Complete Delivery Total': orderData[i].delivery[0].price,
+                'Checkout Complete Order Total': orderData[i].sum,
                 'Checkout Complete Order Type': 'cart order',
-                'Checkout Complete Delivery': orderData[i].delivery.id,
+                'Checkout Complete Delivery': orderData[i].delivery[0].typeId,
                 'Checkout Complete Payment': orderData[i].paymentMethod.id
             };
 
@@ -77,7 +76,7 @@
                 toKISS_productInfo =  {
                     'Checkout Complete SKU': orderData[i].products[j].article,
                     'Checkout Complete SKU Quantity': orderData[i].products[j].quantity,
-                    'Checkout Complete SKU Price': orderData[i].products[j].price,
+                    'Checkout Complete SKU Price': parseInt(orderData[i].products[j].price, 10),
                     'Checkout Complete Parent category': orderData[i].products[j].category[orderData[i].products[j].category.length - 1].id,
                     'Checkout Complete Category name': orderData[i].products[j].category[0].id,
                     '_t':KM.ts() + j + i,
