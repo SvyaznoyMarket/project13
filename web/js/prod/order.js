@@ -2,13 +2,16 @@
         
     /**
      * Новая аналитика для оформления заказа
-     * @return {[type]} [description]
      */
     var newOrderAnalytics = function newOrderAnalytics() {
         var orderData = $('#jsOrder').data('value'),
 
             toKISS_orderInfo = {},
             toKISS_productInfo = {},
+
+            toSociomatic_products = [],
+
+            i, j,
 
             sociomanticUrl = ( 'https:' === document.location.protocol ? 'https://' : 'http://' )+'eu-sonar.sociomantic.com/js/2010-07-01/adpan/enter-ru';
         // end of vars
@@ -21,13 +24,27 @@
          *
          * https://jira.enter.ru/browse/SITE-1475
          */
-        // window.sonar_basket = {
-        //     products: [],
-        //     transaction: data.orderNumber,
-        //     amount: MVM.totalSum(),
-        //     currency:'RUB'
-        // };
-        // $LAB.script( sociomanticUrl );
+        global.sonar_basket = {
+            products: [],
+            transaction: orderData[0].number,
+            amount: 0,
+            currency:'RUB'
+        };
+
+        for ( i = orderData.length - 1; i >= 0; i-- ) {
+            for ( j = orderData[i].products.length - 1; j >= 0; j-- ) {
+                global.sonar_basket.products.push({
+                    identifier: orderData[i].products[j].article+'_'+window.docCookies.getItem('geoshop'),
+                    amount: orderData[i].products[j].price,
+                    currency: 'RUB',
+                    quantity: orderData[i].products[j].quantity
+                });
+
+                global.sonar_basket.amount += parseInt(orderData[i].products[j].price, 10);
+            }
+        }
+
+        $LAB.script( sociomanticUrl );
         
 
         /**
@@ -35,7 +52,7 @@
          *
          * https://wiki.enter.ru/display/PRODUCT/KISSmetrics+tracking
          */
-        for ( var i = orderData.length - 1; i >= 0; i-- ) {
+        for ( i = orderData.length - 1; i >= 0; i-- ) {
             toKISS_orderInfo = {};
 
             toKISS_orderInfo = {
@@ -50,7 +67,7 @@
                 'Checkout Complete Payment': orderData[i].paymentMethod.id
             };
 
-            for ( var j = orderData[i].products.length - 1; j >= 0; j-- ) {
+            for ( j = orderData[i].products.length - 1; j >= 0; j-- ) {
                 if ( (typeof _kmq == 'undefined') || (KM == 'undefined') ) {
                     continue;
                 }
@@ -75,9 +92,9 @@
             console.log(toKISS_orderInfo);
 
             if ( (typeof _kmq !== 'undefined') && (KM !== 'undefined') ) {
-                _kmq.push(['alias', phoneNumber, KM.i()]);
-                _kmq.push(['alias', emailVal, KM.i()]);
-                _kmq.push(['identify', phoneNumber]);
+                _kmq.push(['alias', orderData[0].phonenumber, KM.i()]);
+                // _kmq.push(['alias', emailVal, KM.i()]);
+                _kmq.push(['identify', orderData[0].phonenumber]);
                 _kmq.push(['record', 'Checkout Complete', toKISS_orderInfo]);
             }
         }
