@@ -218,11 +218,6 @@ FormValidator.prototype._validateField = function( field ) {
 
 	elementType = ( fieldNode.tagName === 'TEXTAREA') ? 'textarea' : ( fieldNode.tagName === 'SELECT') ? 'select' : fieldNode.attr('type') ; // если тэг элемента TEXTAREA то тип проверки TEXTAREA, если SELECT - то SELECT, иначе берем из атрибута type
 
-
-	if ( !fieldNode.is(':visible') ) {
-		return false;
-	}
-
 	/**
 	 * Проверка обязательно ли поле для заполенения
 	 */

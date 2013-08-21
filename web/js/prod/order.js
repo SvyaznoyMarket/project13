@@ -1,7 +1,93 @@
-(function(){
-    
+;(function( global ){
+        
+    /**
+     * Новая аналитика для оформления заказа
+     * @return {[type]} [description]
+     */
+    var newOrderAnalytics = function newOrderAnalytics() {
+        var orderData = $('#jsOrder').data('value'),
+
+            toKISS_orderInfo = {},
+            toKISS_productInfo = {},
+
+            sociomanticUrl = ( 'https:' === document.location.protocol ? 'https://' : 'http://' )+'eu-sonar.sociomantic.com/js/2010-07-01/adpan/enter-ru';
+        // end of vars
+
+        console.info('newOrderAnalytics');
+        console.log(orderData);
+
+        /**
+         * Sociomantic
+         *
+         * https://jira.enter.ru/browse/SITE-1475
+         */
+        // window.sonar_basket = {
+        //     products: [],
+        //     transaction: data.orderNumber,
+        //     amount: MVM.totalSum(),
+        //     currency:'RUB'
+        // };
+        // $LAB.script( sociomanticUrl );
+        
+
+        /**
+         * KISS
+         *
+         * https://wiki.enter.ru/display/PRODUCT/KISSmetrics+tracking
+         */
+        for ( var i = orderData.length - 1; i >= 0; i-- ) {
+            toKISS_orderInfo = {};
+
+            toKISS_orderInfo = {
+                'Checkout Complete Order ID': orderData[i].number,
+                'Checkout Complete SKU Quantity': orderData[i].products.length,
+                'Checkout Complete SKU Total': orderData[i].sum,
+                'Checkout Complete Order Subtotal': orderData[i].sum,
+                // 'Checkout Complete Delivery Total': ,
+                // 'Checkout Complete Order Total': ,
+                'Checkout Complete Order Type': 'cart order',
+                'Checkout Complete Delivery': orderData[i].delivery.id,
+                'Checkout Complete Payment': orderData[i].paymentMethod.id
+            };
+
+            for ( var j = orderData[i].products.length - 1; j >= 0; j-- ) {
+                if ( (typeof _kmq == 'undefined') || (KM == 'undefined') ) {
+                    continue;
+                }
+
+                toKISS_productInfo = {};
+
+                toKISS_productInfo =  {
+                    'Checkout Complete SKU': orderData[i].products[j].article,
+                    'Checkout Complete SKU Quantity': orderData[i].products[j].quantity,
+                    'Checkout Complete SKU Price': orderData[i].products[j].price,
+                    'Checkout Complete Parent category': orderData[i].products[j].category[orderData[i].products[j].category.length - 1].id,
+                    'Checkout Complete Category name': orderData[i].products[j].category[0].id,
+                    '_t':KM.ts() + j + i,
+                    '_d':1
+                };
+
+                console.log(toKISS_productInfo);
+
+                _kmq.push(['set', toKISS_pr]);
+            }
+
+            console.log(toKISS_orderInfo);
+
+            if ( (typeof _kmq !== 'undefined') && (KM !== 'undefined') ) {
+                _kmq.push(['alias', phoneNumber, KM.i()]);
+                _kmq.push(['alias', emailVal, KM.i()]);
+                _kmq.push(['identify', phoneNumber]);
+                _kmq.push(['record', 'Checkout Complete', toKISS_orderInfo]);
+            }
+        }
+
+
+    };
 
     $(document).ready(function () {
+        newOrderAnalytics();
+
         /* order final analytics*/
         if (($('body').attr('data-template')=='order_complete')&&(typeof(orderAnalyticsRun) !== 'undefined')){
             orderAnalyticsRun()
@@ -456,4 +542,4 @@
         }
     });
 
-}());
+}(this));

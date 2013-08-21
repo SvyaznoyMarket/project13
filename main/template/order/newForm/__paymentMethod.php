@@ -36,6 +36,7 @@ return function (
         $type = isset($typeById[$typeId]) ? $typeById[$typeId] : null;
         if (!$type) continue;
     ?>
+    <div <? if (\Model\PaymentMethod\Entity::TYPE_ON_RECEIPT !== $typeId): ?>data-bind="style: { display: deliveryBoxes().length == 1 ? 'block' : 'none' }"<? endif ?>>
         <? if (isset($type['name'])): ?>
             <h2 class="bTitle"><?= $type['name'] ?></h2>
         <? endif ?>
@@ -56,7 +57,6 @@ return function (
                     name="order[payment_method_id]"
                     value="<?= $paymentMethod->getId() ?>"
                     hidden
-                    <? if ($paymentMethod->onlySingleOrder()): ?> data-bind="visible: !createdBox.length > 1"<? endif ?>
                 />
 
                 <label for="<?= $elementId ?>" class="bCustomLabel mCustomLabelRadioBig"><?= $paymentMethod->getName() ?></label>
@@ -74,7 +74,7 @@ return function (
                 <? endif ?>
             </div>
         <? endforeach ?>
-
+    </div>
     <? endforeach ?>
 
 <? };

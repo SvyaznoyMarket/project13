@@ -981,7 +981,7 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 		 * 
 		 * @param	{String}	msg		Сообщение которое необходимо показать пользователю
 		 */
-	var showError = function showError( msg ) {
+	var showError = function showError( msg, callback ) {
 			var content = '<div class="popupbox width290">' +
 					'<div class="font18 pb18"> '+msg+'</div>'+
 					'</div>' +
@@ -994,6 +994,10 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 			var errorPopupCloser = function() {
 				block.trigger('close');
 				block.remove();
+
+				if ( callback !== undefined ) {
+					callback();
+				}
 
 				return false;
 			};
@@ -1013,15 +1017,15 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 		 */
 		formErrorHandler = function formErrorHandler( formError ) {
 			console.warn('Ошибка в поле');
+			
 			var field = $('[name="order['+formError.field+']"]');
 
-			orderValidator.setValidate( field, {
-				require: true,
-				customErr: formError.message,
-				validateOnChange: true
-			});
+			var clearError = function clearError() {
+				orderValidator._unmarkFieldError($(this));
+			};
 
 			orderValidator._markFieldError(field, formError.message);
+			field.bind('focus', clearError);
 		},
 	
 		/**
@@ -1030,6 +1034,14 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 		serverErrorHandler = {
 			0: function( res ) {
 				var formError = null;
+
+				if ( res.redirect ) {
+					showError(res.error.message, function(){
+						document.location.href = res.redirect;
+					});
+
+					return;
+				}
 
 				showError(res.error.message);
 
@@ -1056,7 +1068,7 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 					_gaq.push(['_trackEvent', 'Order card', 'Completed', 'выбрана '+global.OrderModel.choosenDeliveryTypeId+' доставят '+global.OrderModel.createdBox[i].state]);
 				}
 
-				_gaq.push(['_trackEvent', 'Order complete', global.OrderModel.createdBox.length, global.OrderModel.orderDictionary.products.length]);
+				_gaq.push(['_trackEvent', 'Order complete', global.getKeysLength(global.OrderModel.createdBox), global.OrderModel.orderDictionary.products.length]);
 				_gaq.push(['_trackTiming', 'Order complete', 'DB response', ajaxDelta]);
 			}
 
@@ -1144,7 +1156,17 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 				timeout: 120000,
 				type: "POST",
 				data: dataToSend,
-				success: processingResponse
+				success: processingResponse,
+				statusCode: {
+					500: function() {
+						console.log(this.statusCode)
+						showError('Неудалось создать заказ. Попробуйте позднее.');
+					},
+					504: function() {
+						console.log(this.statusCode)
+						showError('Неудалось создать заказ. Попробуйте позднее.');
+					}
+				}
 			});
 		},
 
@@ -1468,7 +1490,7 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 				$(element).show();
 			}
 		}
-	}; 
+	};
 
 
 	/**

@@ -19,6 +19,31 @@
  */
  
  
+/**
+ * Получение количества свойств объекта
+ */
+;(function ( global ) {
+	global.getKeysLength = function getKeysLength( obj ) {
+		var len = 0;
+		
+		for ( var i in obj ) {
+			if ( !obj.hasOwnProperty(i) ){
+				continue;
+			}
+			
+			len++;
+		}
+		
+		return len;
+	}
+}(this));
+ 
+ 
+/** 
+ * NEW FILE!!! 
+ */
+ 
+ 
 /*
 	http://www.JSON.org/json2.js
 	2011-10-19
@@ -2329,11 +2354,6 @@ FormValidator.prototype._validateField = function( field ) {
 	customErr = field.customErr;
 
 	elementType = ( fieldNode.tagName === 'TEXTAREA') ? 'textarea' : ( fieldNode.tagName === 'SELECT') ? 'select' : fieldNode.attr('type') ; // если тэг элемента TEXTAREA то тип проверки TEXTAREA, если SELECT - то SELECT, иначе берем из атрибута type
-
-
-	if ( !fieldNode.is(':visible') ) {
-		return false;
-	}
 
 	/**
 	 * Проверка обязательно ли поле для заполенения

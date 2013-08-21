@@ -43,24 +43,24 @@ foreach (array_reverse($productsById) as $product) {
 <!-- /loader -->
 
 <!-- Общая обертка оформления заказа -->
-<div class="bBuyingSteps" style="display:none" data-bind="style: { display: prepareData() ? 'block' : 'none'}">
+<div class="bBuyingSteps clearfix" style="display:none" data-bind="style: { display: prepareData() ? 'block' : 'none'}">
 
 	<div class="bBuyingLine"><a class="bBackCart" href="<?= $backLink ?>">&lt; Вернуться к покупкам</a></div>
 
 
 	 <!-- Order Method -->
-	<div class="bBuyingLine mOrderMethod">
+	<div class="bBuyingLine clearfix mOrderMethod">
 		<h2 class="bBuyingSteps__eTitle">Информация о заказе</h2>
 
 		<div class="bBuyingLine__eLeft">Выберите предпочтительный способ</div>
 
 		<div class="bBuyingLine__eRight bInputList" data-bind="foreach: { data: deliveryTypes }">
-			<input class="jsCustomRadio bCustomInput mCustomCheckBig" type="radio" name="radio" hidden data-bind="attr: { id: 'method_'+$data.id }" />
+			<input class="jsCustomRadio bCustomInput mCustomCheckBig" type="radio" name="radio" hidden data-bind="attr: { 'id': 'method_'+$data.id }" />
 			<label class="bCustomLabel mCustomLabelBig mLabelStrong" data-bind="
 									text: $data.name,
 									states: $data.states,
 									click: $root.chooseDeliveryTypes,
-									attr: { for: 'method_'+$data.id }">
+									attr: { 'for': 'method_'+$data.id }">
 			</label>
 			<p class="bBuyingLine__eDesc" data-bind="text: $data.description"></p>
 		</div>
@@ -70,7 +70,7 @@ foreach (array_reverse($productsById) as $product) {
 	<!-- Delivery boxes -->
 	<div data-bind="foreach: { data: deliveryBoxes, as: 'box' }">
 		<div class="bBuyingLineWrap clearfix">
-			<div class="bBuyingLine">
+			<div class="bBuyingLine clearfix">
 				<div class="bBuyingLine__eLeft">
 					<h2 class="bBuyingSteps__eTitle">
 						<span data-bind="text: box.deliveryName"></span>
@@ -163,8 +163,8 @@ foreach (array_reverse($productsById) as $product) {
 
 			<!-- Sum -->
 			<ul class="bSumOrderInfo">
-				<li class="bSumOrderInfo__eLine" data-bind="visible: !hasPointDelivery">
-					Доставка:&nbsp;&nbsp;
+				<li class="bSumOrderInfo__eLine">
+					<span data-bind="text: hasPointDelivery ? 'Самовывоз:&nbsp;&nbsp;': 'Доставка:&nbsp;&nbsp;' "></span>
 					
 					<span class="bDelivery">
 						<span data-bind="text: box.deliveryPrice === 0 ? 'Бесплатно' : box.deliveryPrice"></span>
@@ -186,18 +186,20 @@ foreach (array_reverse($productsById) as $product) {
 	</div>
 	<!-- /Delivery boxes -->
 
+    <? if (\App::config()->coupon['enabled'] || \App::config()->blackcard['enabled']): ?>
 	<!-- Sale section -->
-	<div class="bBuyingLineWrap  bBuyingSale clearfix" data-bind="visible: deliveryBoxes().length">
+	<div class="bBuyingLineWrap bBuyingSale clearfix" data-bind="visible: deliveryBoxes().length">
 		<div class="bBuyingLine">
 			<div class="bBuyingLine__eLeft">
 				<h2 class="bBuyingSteps__eTitle">
 					Скидки
 				</h2>
 
-				Если у вас есть карта<br/>
-				Enter SPA или купон,<br/>
-				укажите номер и получите<br/>
-				скидку.
+				Если у вас есть
+                <? if (\App::config()->blackcard['enabled']): ?> карта Enter SPA <? endif ?>
+                <? if (\App::config()->coupon['enabled'] && \App::config()->blackcard['enabled']): ?> или<? endif ?>
+                <? if (\App::config()->coupon['enabled']): ?> купон, <? endif ?>
+				укажите номер и получите скидку.
 			</div>
 
 			<div class="bBuyingLine__eRight">
@@ -235,15 +237,15 @@ foreach (array_reverse($productsById) as $product) {
 					<div class="bOrderItems">
 						<div class="bItemsRow mItemImg" data-bind="css: { mError: coupon.error }"></div>
 
-						<div class="bItemsRow mItemInfo" data-bind="text: coupon.name"></div>
+						<div class="bItemsRow mItemInfo" data-bind="text: (coupon.error && coupon.error.message) || coupon.name"></div>
 
 						<div class="bItemsRow mCountItem"></div>
 
 						<div class="bItemsRow mDelItem">
-							<a class="bDelItem" data-bind="attr: { href: coupon.deleteUrl }, click: $root.deleteItem">удалить</a>
+							<a class="bDelItem" data-bind="attr: { 'href': coupon.deleteUrl }, click: $root.deleteItem">удалить</a>
 						</div>
 
-						<div class="bItemsRow mItemRight"><span data-bind="text: coupon.sum"></span> <span class="rubl">p</span></div>
+						<div class="bItemsRow mItemRight" data-bind="visible: !coupon.error"><span data-bind="text: coupon.sum"></span> <span class="rubl">p</span></div>
 					</div>
 				</div>
 				<!-- /Coupons -->
@@ -271,6 +273,7 @@ foreach (array_reverse($productsById) as $product) {
 		</div>
 	</div>
 	<!-- /Sale section -->
+    <? endif ?>
 
 	<div class="bBuyingLine mSumm clearfix" data-bind="visible: deliveryBoxes().length">
 		<a href="<?= $page->url('cart') ?>" class="bBackCart mOrdeRead">&lt; Редактировать товары</a>
@@ -308,7 +311,7 @@ foreach (array_reverse($productsById) as $product) {
 				<div class="bBuyingLine__eRight">
 					<input type="text" id="order_recipient_email" class="bBuyingLine__eText mInputLong mInput265" name="order[recipient_email]" value="" />
 
-					<div class="bSubscibeCheck bInputList" style="visibility:visible;">
+					<div class="bSubscibeCheck bInputList">
 						<input type="checkbox" name="subscribe" id="subscribe" class="jsCustomRadio bCustomInput mCustomCheckBig" checked hidden />
 						<label class="bCustomLabel mCustomLabelBig" for="subscribe">Хочу знать об интересных<br/>предложениях</label>                 
 					</div>
@@ -321,8 +324,8 @@ foreach (array_reverse($productsById) as $product) {
 				</div>
 
 				<!-- Address customer -->
-				<label class="bBuyingLine__eLeft" data-bind="visible: hasHomeDelivery()">Адрес доставки*</label>
-				<div class="bBuyingLine__eRight" style="width: 640px;" data-bind="visible: hasHomeDelivery()">
+				<label class="bBuyingLine__eLeft" style="min-height: 10px;" data-bind="style: { display: hasHomeDelivery() ? 'block' : 'none'}">Адрес доставки*</label>
+				<div class="bBuyingLine__eRight" style="width: 640px;" data-bind="style: { display: hasHomeDelivery() ? 'block' : 'none'}">
 					<div class="bSelectedCity">
 						<strong><?= $region->getName() ?></strong> (<a class="jsChangeRegion" href="<?= $page->url('region.change', ['regionId' => $region->getId()]) ?>">изменить</a>)
 					</div>
@@ -379,14 +382,14 @@ foreach (array_reverse($productsById) as $product) {
 			<!-- Methods of payment -->
 			<h2 class="bBuyingSteps__eTitle">Оплата</h2>
 
-			<div class="bBuyingLine mPayMethods">
+			<div class="bBuyingLine clearfix mPayMethods">
 				<div class="bBuyingLine__eLeft"></div>
 				<div class="bBuyingLine__eRight bInputList">
 					<?= $helper->render('order/newForm/__paymentMethod', ['form' => $form, 'paymentMethods' => $paymentMethods, 'banks' => $banks, 'creditData' => $creditData]) ?>
 				</div>
 			</div>
 
-			<div class="bBuyingLine">
+			<div class="bBuyingLine clearfix">
 				<div class="bBuyingLine__eLeft"></div>
 
 				<div class="bBuyingLine__eRight bInputList mRules">

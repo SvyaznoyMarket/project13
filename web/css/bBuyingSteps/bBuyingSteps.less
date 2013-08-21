@@ -113,17 +113,15 @@
   margin: 20px 0px;
 
    &__eLeft {
-    display: inline-block;
-    zoom: 1;
+    display: block;
+    float: left;
 
     width: 255px;
-    margin-right: 10px;
-
-    vertical-align: top;
+    margin-right: 14px;
 
     font-size: 14px;
 
-    *display: inline;
+    min-height: 20px;
   }
 
   .bDeliverySelf {
@@ -132,14 +130,10 @@
   }
 
   &__eRight {
-    display: inline-block;
-    zoom: 1;
+    display: block;
+    float: left;
 
     width: 639px;
-
-    vertical-align: top;
-
-    *display: inline;
   }
 
   &.mOrderMethod {
@@ -150,6 +144,7 @@
 
     .bBuyingLine__eLeft {
       margin: 2px 10px 20px 0;
+      overflow:auto;
     }
 
     .bBuyingLine__eRight {
@@ -392,6 +387,6 @@
   }
 
   .mOrange {
-    background: none;
+    background: url("@{base-url}/leftNav/img/leftNavSprite.png") no-repeat -38px 0;
   }
 }

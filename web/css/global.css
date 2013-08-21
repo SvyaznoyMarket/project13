@@ -11209,30 +11209,28 @@
     margin: 20px 0px;
   }
   .bBuyingLine__eLeft {
-    display: inline-block;
-    zoom: 1;
+    display: block;
+    float: left;
     width: 255px;
-    margin-right: 10px;
-    vertical-align: top;
+    margin-right: 14px;
     font-size: 14px;
-    *display: inline;
+    min-height: 20px;
   }
   .bBuyingLine .bDeliverySelf {
     margin: 32px 0 20px;
     font-size: 14px;
   }
   .bBuyingLine__eRight {
-    display: inline-block;
-    zoom: 1;
+    display: block;
+    float: left;
     width: 639px;
-    vertical-align: top;
-    *display: inline;
   }
   .bBuyingLine.mOrderMethod {
     padding: 0 15px;
   }
   .bBuyingLine.mBuyingFields .bBuyingLine__eLeft {
     margin: 2px 10px 20px 0;
+    overflow: auto;
   }
   .bBuyingLine.mBuyingFields .bBuyingLine__eRight {
     width: 655px;
@@ -11418,7 +11416,7 @@
     background-position: 0 -35px;
   }
   .bProcess .mOrange {
-    background: none;
+    background: url("/css/leftNav/img/leftNavSprite.png") no-repeat -38px 0;
   }
 }
 @media all {

@@ -160,11 +160,4 @@ class Entity {
     public function getPayOnReceipt() {
         return $this->payOnReceipt;
     }
-
-    /**
-     * @return bool
-     */
-    public function onlySingleOrder() {
-        return !in_array($this->id, [self::CASH_ID, self::CARD_ID]);
-    }
 }
