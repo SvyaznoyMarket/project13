@@ -41,15 +41,15 @@ class BasicRecommendedAction {
                 throw new \Exception(sprintf('Товар #%s не найден', $productId));
             }
 
-            $ABtestOption = \App::abTest()->getOption('test');
-            $ABtest = reset($ABtestOption); /* @var $ABtest \Model\Abtest\Entity */
+            $abTestOption = \App::abTest()->getOption('test');
+            $abTest = reset($abTestOption); /* @var $abTest \Model\Abtest\Entity */
 
-            if ( empty( $ABtest ) ) {
+            if ( empty( $abTest ) ) {
                 throw new \Exception('Not found data in config');
             }
 
             //$title = $ABtest->getName();
-            $key = $ABtest->getKey();
+            $key = $abTest->getKey();
 
             if ('retailrocket' == $key) {
                 $products = $this->getProductsFromRetailrocket($product, $request, $this->retailrocketMethodName);

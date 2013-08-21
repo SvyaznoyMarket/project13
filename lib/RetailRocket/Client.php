@@ -13,7 +13,7 @@ class Client
         $this->config = array_merge([
             'apiUrl' => 'http://retailrocket.ru/api/',
             'account' => \App::config()->partners['RetailRocket']['account'],
-            'timeout' => 0.6, //в секундах
+            'timeout' => 0.5, //в секундах
             'logEnabled' => false,
             'logDataEnabled' => false,
         ], $config);

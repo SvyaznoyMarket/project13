@@ -322,28 +322,19 @@ $c->sphinx['showListingSearchBar'] = false;
 
 $c->abtest['cookieName'] = 'switch';
 $c->abtest['enabled']    = true;
-$c->abtest['bestBefore'] = '2013-08-20';
+$c->abtest['bestBefore'] = '2013-09-23';
 
 $c->abtest['test']       = [
-    // SmartEngine
+    // smartengine
     [
-        'traffic'  => '50',
+        'traffic'  => 50,
         'key'      => 'smartengine',
         'name'     => "Похожие товары",
         'ga_event' => 'SmartEngine',
     ],
-
-    // SimilarAction::retailrocket/ItemToItems
-    /*[
-        'traffic'  => '25',
-        'key'      => 'retailrocketItemToItems',
-        'name'     => "С этим товаром также смотрят",
-        'ga_event' => 'RetailRocket/ItemToItems',
-    ],*/
-
-    // RetailRocket
+    // retailrocket
     [
-        'traffic'  => '50',
+        'traffic'  => 50,
         'key'      => 'retailrocket',
         'name'     => "С этим товаром также смотрят",
         'ga_event' => 'RetailRocket',
