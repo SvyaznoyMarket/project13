@@ -206,6 +206,8 @@ foreach (array_reverse($productsById) as $product) {
 				<div class="bSaleData" data-bind="couponsVisible: couponsBox()">
 
 					<div class="bTitle">Вид скидки:</div>
+					
+					<div class="bSaleData__eEmptyBlock">Скидок больше нет</div>
 
 					<ul class="bSaleList bInputList clearfix">
                         <? if (\App::config()->coupon['enabled']): ?>

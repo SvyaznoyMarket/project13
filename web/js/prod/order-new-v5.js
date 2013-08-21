@@ -1513,7 +1513,9 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 				node = $(element),
 				fieldNode = node.find('.mSaleInput'),
 				buttonNode = node.find('.mSaleBtn'),
-				titleNode = node.find('.bTitle');
+				titleNode = node.find('.bTitle'),
+
+				emptyBlock = node.find('.bSaleData__eEmptyBlock');
 			// end of vars
 
 			$('.bSaleList__eItem').removeClass('hidden');
@@ -1525,15 +1527,12 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 			if ( !$('.bSaleList__eItem.hidden').length ) {
 				fieldNode.removeAttr('disabled');
 				buttonNode.removeAttr('disabled').removeClass('mDisabled');
-				node.find('.mEmptyBlock').remove();
-				// titleNode.show();
+				emptyBlock.hide();
 			}
 			else {
 				fieldNode.attr('disabled', 'disabled');
 				buttonNode.attr('disabled', 'disabled').addClass('mDisabled');
-				tmpBlock = $('<div>').addClass('mEmptyBlock').html('Скидок больше нет');
-				titleNode.after(tmpBlock);
-				// titleNode.hide();
+				emptyBlock.show();
 			}
 		}
 	};
