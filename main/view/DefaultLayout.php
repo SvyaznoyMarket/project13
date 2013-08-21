@@ -367,6 +367,10 @@ class DefaultLayout extends Layout {
 
             $product = $this->getParam('product');
             $rrData = $rrObj->product($product);
+        } elseif ($routeName == 'product.category') {
+
+           $category = $this->getParam('category');
+           $rrData = $rrObj->category($category);
 
         } elseif ($routeName == 'order.complete') {
 
