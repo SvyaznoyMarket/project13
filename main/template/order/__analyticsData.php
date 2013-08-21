@@ -23,9 +23,11 @@ return function(
             ],
             'deliveredAt'  => $order->getDeliveredAt() instanceof \DateTime ? $order->getDeliveredAt()->format('Y-m-d') : null,
             'createdAt'    => $order->getCreatedAt() instanceof \DateTime ? $order->getCreatedAt()->format('Y-m-d') : null,
-            'delivery'     => [
-                'id' => $order->getDeliveryTypeId(),
-            ],
+            'delivery'     => array_map(function(\Model\Order\Delivery\Entity $delivery) { return [
+                'id'     => $delivery->getId(),
+                'typeId' => $delivery->getTypeId(),
+                'price'  => $delivery->getPrice(),
+            ];  }, $order->getDelivery()),
             //'firstName'    => $order->getFirstName(),
             //'lastName'     => $order->getLastName(),
             'interval'     => $order->getInterval() ? [

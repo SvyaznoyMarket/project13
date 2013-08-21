@@ -442,7 +442,7 @@ foreach (array_reverse($productsById) as $product) {
 <!-- /Общая обертка оформления заказа -->
 
 <div id="jsOrderDelivery" data-url="<?= $page->url('order.delivery') ?>" data-value="<?= $page->json($deliveryData) ?>"></div>
-<div id="jsForm" data-value="<?= $page->json([
+<div id="jsOrderForm" data-value="<?= $page->json([
 	'order[recipient_first_name]'   => $form->getFirstName(),
 	'order[recipient_last_name]'    => $form->getLastName(),
 	'order[recipient_email]'        => $form->getEmail(),
