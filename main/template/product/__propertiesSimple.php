@@ -23,7 +23,7 @@ return function (
 
     ?>
     <div class="jewel mb15">
-        <div class="bSpecifications">
+        <div class="bSpecifications mSimpleProperty">
 
             <? if (count($properties) > 0) { ?>
                 <dl class="bSpecificationsList clearfix">

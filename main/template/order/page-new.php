@@ -233,7 +233,7 @@ foreach (array_reverse($productsById) as $product) {
 				<div class="bSaleCheck"></div>
 
 				 <!-- Coupons -->
-				<div class="bBuyingLine mProductsLine" data-bind="foreach: { data: couponsBox(), as: 'coupon' }">
+				<div class="bBuyingLine mCouponsLine" data-bind="foreach: { data: couponsBox(), as: 'coupon' }">
 					<div class="bOrderItems">
 						<div class="bItemsRow mItemImg" data-bind="css: { mError: coupon.error }"></div>
 

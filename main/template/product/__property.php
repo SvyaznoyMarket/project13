@@ -6,7 +6,7 @@ return function(
 ) { ?>
 
 <? $groupedProperties = $product->getGroupedProperties() ?>
-<div class="bSpecifications">
+<div class="bSpecifications mSimpleProperty">
     <dl class="bSpecificationsList clearfix">
     <? foreach ($groupedProperties as $group): ?>
         <? if (!(bool)$group['properties']) continue ?>
