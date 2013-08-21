@@ -51,6 +51,8 @@ class BasicRecommendedAction {
             //$title = $ABtest->getName();
             $key = $abTest->getKey();
 
+            \App::logger()->info(sprintf('ab тест %s', $key));
+
             if ('retailrocket' == $key) {
                 $products = $this->getProductsFromRetailrocket($product, $request, $this->retailrocketMethodName);
             } else {
