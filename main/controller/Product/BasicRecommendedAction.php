@@ -4,7 +4,7 @@ namespace Controller\Product;
 
 class BasicRecommendedAction {
 
-    use _DebugTestTrait; // for debug
+    //use _DebugTestTrait; // for debug
 
     protected $retailrocketMethodName;
     protected $smartengineMethodName;
