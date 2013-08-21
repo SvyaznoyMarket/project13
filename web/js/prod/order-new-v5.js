@@ -1294,19 +1294,31 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 				console.log('для поля есть значение '+fields[field]);
 				fieldNode = $('input[name="'+field+'"]');
 
-				// поле текстовое	
-				if ( fieldNode.attr('type') === 'text' ) {
-					fieldNode.val( fields[field] );
-				}
-
 				// радио кнопка
 				if ( fieldNode.attr('type') === 'radio' ) {
 					fieldNode.filter('[value="'+fields[field]+'"]').attr('checked', 'checked');
+
+					continue;
 				}
+
+				// поле текстовое	
+				fieldNode.val( fields[field] );
 			}
 		}
 	};
 	defaultValueToField($('#jsOrderForm').data('value'));
+
+
+	/**
+	 * Подстановка станции метро по id
+	 */
+	for ( var i = subwayArray.length - 1; i >= 0; i-- ) {
+		if ( parseInt(metroIdFiled.val(), 10) === subwayArray[i].val ) {
+			subwayField.val(subwayArray[i].label);
+
+			return;
+		}
+	}
 
 	$('body').bind('orderdeliverychange', orderDeliveryChangeHandler);
 	orderCompleteBtn.bind('click', orderCompleteBtnHandler);
@@ -1497,7 +1509,11 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 		update: function( element, valueAccessor ) {
 			var val = valueAccessor(),
 				unwrapVal = ko.utils.unwrapObservable(val),
-				node = $(element);
+
+				node = $(element),
+				fieldNode = node.find('.mSaleInput'),
+				buttonNode = node.find('.mSaleBtn'),
+				titleNode = node.find('.bTitle');
 			// end of vars
 
 			$('.bSaleList__eItem').removeClass('hidden');
@@ -1507,10 +1523,17 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 			}
 
 			if ( !$('.bSaleList__eItem.hidden').length ) {
-				node.show();
+				fieldNode.removeAttr('disabled');
+				buttonNode.removeAttr('disabled').removeClass('mDisabled');
+				node.find('.mEmptyBlock').remove();
+				// titleNode.show();
 			}
 			else {
-				node.hide();
+				fieldNode.attr('disabled', 'disabled');
+				buttonNode.attr('disabled', 'disabled').addClass('mDisabled');
+				tmpBlock = $('<div>').addClass('mEmptyBlock').html('Скидок больше нет');
+				titleNode.after(tmpBlock);
+				// titleNode.hide();
 			}
 		}
 	};

@@ -177,7 +177,11 @@
 		update: function( element, valueAccessor ) {
 			var val = valueAccessor(),
 				unwrapVal = ko.utils.unwrapObservable(val),
-				node = $(element);
+
+				node = $(element),
+				fieldNode = node.find('.mSaleInput'),
+				buttonNode = node.find('.mSaleBtn'),
+				titleNode = node.find('.bTitle');
 			// end of vars
 
 			$('.bSaleList__eItem').removeClass('hidden');
@@ -187,10 +191,17 @@
 			}
 
 			if ( !$('.bSaleList__eItem.hidden').length ) {
-				node.show();
+				fieldNode.removeAttr('disabled');
+				buttonNode.removeAttr('disabled').removeClass('mDisabled');
+				node.find('.mEmptyBlock').remove();
+				// titleNode.show();
 			}
 			else {
-				node.hide();
+				fieldNode.attr('disabled', 'disabled');
+				buttonNode.attr('disabled', 'disabled').addClass('mDisabled');
+				tmpBlock = $('<div>').addClass('mEmptyBlock').html('Скидок больше нет');
+				titleNode.after(tmpBlock);
+				// titleNode.hide();
 			}
 		}
 	};

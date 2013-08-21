@@ -396,19 +396,31 @@
 				console.log('для поля есть значение '+fields[field]);
 				fieldNode = $('input[name="'+field+'"]');
 
-				// поле текстовое	
-				if ( fieldNode.attr('type') === 'text' ) {
-					fieldNode.val( fields[field] );
-				}
-
 				// радио кнопка
 				if ( fieldNode.attr('type') === 'radio' ) {
 					fieldNode.filter('[value="'+fields[field]+'"]').attr('checked', 'checked');
+
+					continue;
 				}
+
+				// поле текстовое	
+				fieldNode.val( fields[field] );
 			}
 		}
 	};
 	defaultValueToField($('#jsOrderForm').data('value'));
+
+
+	/**
+	 * Подстановка станции метро по id
+	 */
+	for ( var i = subwayArray.length - 1; i >= 0; i-- ) {
+		if ( parseInt(metroIdFiled.val(), 10) === subwayArray[i].val ) {
+			subwayField.val(subwayArray[i].label);
+
+			return;
+		}
+	}
 
 	$('body').bind('orderdeliverychange', orderDeliveryChangeHandler);
 	orderCompleteBtn.bind('click', orderCompleteBtnHandler);
