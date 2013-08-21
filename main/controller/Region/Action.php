@@ -80,7 +80,7 @@ class Action {
             throw new \Exception\NotFoundException('Request is not xml http request');
         }
 
-        $limit = 8;
+        $limit = 10;
         $keyword = mb_strtolower($request->get('q'));
         $keyword = strtr($keyword, [
             'q'=>'й', 'w'=>'ц', 'e'=>'у', 'r'=>'к', 't'=>'е', 'y'=>'н', 'u'=>'г', 'i'=>'ш', 'o'=>'щ', 'p'=>'з', '['=>'х', ']'=>'ъ', 'a'=>'ф', 's'=>'ы', 'd'=>'в', 'f'=>'а', 'g'=>'п', 'h'=>'р', 'j'=>'о', 'k'=>'л', 'l'=>'д', ';'=>'ж', "'"=>'э', 'z'=>'я', 'x'=>'ч', 'c'=>'с', 'v'=>'м', 'b'=>'и', 'n'=>'т', 'm'=>'ь', ','=>'б', '.'=>'ю', '`'=>'ё', 'Q'=>'Й', 'W'=>'Ц', 'E'=>'У', 'R'=>'К', 'T'=>'Е', 'Y'=>'Н', 'U'=>'Г', 'I'=>'Ш', 'O'=>'Щ', 'P'=>'З', '{'=>'Х', '}'=>'Ъ', 'A'=>'Ф', 'S'=>'Ы', 'D'=>'В', 'F'=>'А', 'G'=>'П', 'H'=>'Р', 'J'=>'О', 'K'=>'Л', 'L'=>'Д', ':'=>'Ж', '"'=>'Э', 'Z'=>'Я', 'X'=>'Ч', 'C'=>'С', 'V'=>'М', 'B'=>'И', 'N'=>'Т', 'M'=>'Ь', '<'=>'Б', '>'=>'Ю', '~'=>'Ё',
@@ -90,18 +90,21 @@ class Action {
 
         $data = [];
         if (mb_strlen($keyword) >= 3) {
-            \App::coreClientV2()->addQuery('geo/autocomplete', ['letters' => $keyword], [], function($result) use(&$data, $limit, $router){
-                $i = 0;
-                foreach ($result as $item) {
-                    if ($i >= $limit) break;
+            \App::coreClientV2()->addQuery('geo/autocomplete', ['letters' => $keyword], [],
+                function($result) use(&$data, $limit, $router){
+                    $i = 0;
+                    foreach ($result as $item) {
+                        if ($i >= $limit) break;
 
-                    $data[] = [
-                        'name'  => $item['name'] . ((!empty($item['region']['name']) && ($item['name'] != $item['region']['name'])) ? (" ({$item['region']['name']})") : ''),
-                        'url'   => $router->generate('region.change', ['regionId' => $item['id']]),
-                    ];
-                    $i++;
+                        $data[] = [
+                            'name'  => $item['name'] . ((!empty($item['region']['name']) && ($item['name'] != $item['region']['name'])) ? (" ({$item['region']['name']})") : ''),
+                            'url'   => $router->generate('region.change', ['regionId' => $item['id']]),
+                        ];
+                        $i++;
+                        if ($i>1) sort($data);
+                    }
                 }
-            });
+            );
             \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['short'], \App::config()->coreV2['retryCount']);
         }
 
