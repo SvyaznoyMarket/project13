@@ -230,9 +230,10 @@ class DeliveryAction {
             // купоны
             foreach ($cart->getCoupons() as $coupon) {
                 $responseData['discounts'][] = [
+                    'type'      => 'coupon',
                     'name'      => $coupon->getName(),
                     'sum'       => $coupon->getDiscountSum(),
-                    'error'     => $coupon->getError() ? ['code' => $coupon->getError()->getCode(), 'message' => \Model\Cart\Coupon\Entity::getErrorMessage($coupon->getError()->getCode()) ?: 'Неудалось активировать купон'] : [],
+                    'error'     => $coupon->getError() ? ['code' => $coupon->getError()->getCode(), 'message' => \Model\Cart\Coupon\Entity::getErrorMessage($coupon->getError()->getCode()) ?: 'Неудалось активировать купон'] : null,
                     'deleteUrl' => $router->generate('cart.coupon.delete'),
                 ];
             }
@@ -240,9 +241,10 @@ class DeliveryAction {
             // черные карты
             foreach ($cart->getBlackcards() as $blackcard) {
                 $responseData['discounts'][] = [
+                    'type'      => 'blackcard',
                     'name'      => $blackcard->getName(),
                     'sum'       => $blackcard->getDiscountSum(),
-                    'error'     => $blackcard->getError() ? ['code' => $blackcard->getError()->getCode(), 'message' => \Model\Cart\Blackcard\Entity::getErrorMessage($blackcard->getError()->getCode()) ?: 'Неудалось активировать карту'] : [],
+                    'error'     => $blackcard->getError() ? ['code' => $blackcard->getError()->getCode(), 'message' => \Model\Cart\Blackcard\Entity::getErrorMessage($blackcard->getError()->getCode()) ?: 'Неудалось активировать карту'] : null,
                     'deleteUrl' => $router->generate('cart.blackcard.delete'),
                 ];
             }

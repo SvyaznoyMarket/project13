@@ -9341,15 +9341,18 @@
   }
   .bSpecifications .bSpecificationsList__eName .bName {
     position: relative;
-    bottom: -3px;
     padding-right: 5px;
     background: #ffffff;
+    top: 4px;
   }
   .bSpecifications .bSpecificationsList__eValue {
     float: right;
     width: 425px;
     margin: 5px 0;
-    padding: 3px 0 0;
+    padding: 4px 0 0;
+  }
+  .mSimpleProperty .bSpecificationsList__eName .bName {
+    top: 0;
   }
 }
 @media all {
