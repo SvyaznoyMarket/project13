@@ -156,6 +156,7 @@
 		update: function( element, valueAccessor ) {
 			var val = valueAccessor(),
 				unwrapVal = ko.utils.unwrapObservable(val),
+				node = $(element),
 				maxSum = parseInt($(element).data('value')['max-sum'], 10);
 			// end of vars
 
@@ -164,10 +165,32 @@
 			}
 
 			if ( maxSum < unwrapVal ) {
-				$(element).hide();
+				node.hide();
 			}
 			else {
-				$(element).show();
+				node.show();
+			}
+		}
+	};
+
+	ko.bindingHandlers.couponsVisible = {
+		update: function( element, valueAccessor ) {
+			var val = valueAccessor(),
+				unwrapVal = ko.utils.unwrapObservable(val),
+				node = $(element);
+			// end of vars
+
+			$('.bSaleList__eItem').removeClass('hidden');
+
+			for ( var i = unwrapVal.length - 1; i >= 0; i-- ) {
+				node.find('.bSaleList__eItem[data-type="'+unwrapVal[i].type+'"]').addClass('hidden');
+			}
+
+			if ( !$('.bSaleList__eItem.hidden').length ) {
+				node.show();
+			}
+			else {
+				node.hide();
 			}
 		}
 	};

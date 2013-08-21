@@ -203,7 +203,7 @@ foreach (array_reverse($productsById) as $product) {
 			</div>
 
 			<div class="bBuyingLine__eRight">
-				<div class="bSaleData">
+				<div class="bSaleData" data-bind="couponsVisible: couponsBox()">
 
 					<div class="bTitle">Вид скидки:</div>
 
