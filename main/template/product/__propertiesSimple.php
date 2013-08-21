@@ -3,11 +3,23 @@
 
 return function (
     \Helper\TemplateHelper $helper,
-    \Model\Product\ExpandedEntity $productExpanded,
+    $product,
     $showLinkToProperties = true
 ) {
 
-    $properties = $productExpanded->getProperty();
+    if (
+        $product instanceof \Model\Product\ExpandedEntity ||
+        $product instanceof \Model\Product\Entity
+    ) {
+
+        $properties = $product->getProperty();
+
+    }else{
+
+        return '';
+
+    }
+
 
     ?>
     <div class="jewel mb15">

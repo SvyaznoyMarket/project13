@@ -49,24 +49,23 @@ $is_showed = [];
                 ($countProperties < 16)
             ) {
                 // Выводим все характеристики товара в центральном блоке первого экрана карточки
-                echo $helper->render('product/__groupedProperty', ['product' => $product]);
-                $is_showed[] = 'groupedProperty';
                 $showLinkToProperties = false;
+                echo $helper->render('product/__propertiesSimple', ['product' => $product, 'showLinkToProperties' => $showLinkToProperties]);
+                $is_showed[] = 'all_properties';
             }
 
             if ( $countProperties < 8 and empty($is_showed) ) {
                 // выводим все характеристики в первом экране, сразу под отзывами.
-                echo $helper->render('product/__property', ['product' => $product]);
-                $is_showed[] = 'groupedProperty'; /* считаем, что сгруппированные характеристики показаны,
-                                                        т.к. ещё раз показывать их нет смысла */
-                $is_showed[] = 'property';
                 $showLinkToProperties = false;
+                echo $helper->render('product/__propertiesSimple', ['product' => $product, 'showLinkToProperties' => $showLinkToProperties]);
+                $is_showed[] = 'all_properties';
+
             }
 
-            if (!in_array('groupedProperty', $is_showed)) { // Если ранее не были показаны характеристики все,
+            if (!in_array('all_properties', $is_showed)) { // Если ранее не были показаны характеристики все,
                 // (во всех остальных случаях) выводим главные характеристики (productExpanded)
-                echo $helper->render('product/__propertiesExpanded', ['productExpanded' => $productExpanded, 'showLinkToProperties' => $showLinkToProperties]);
-                $is_showed[] = 'propertiesExpanded';
+                echo $helper->render('product/__propertiesSimple', ['product' => $productExpanded, 'showLinkToProperties' => $showLinkToProperties]);
+                $is_showed[] = 'all_properties';
             }
             // } /end of new Card Properties
             ?>
@@ -125,7 +124,7 @@ $is_showed = [];
     <? endif ?>
 
     <?
-    if (!in_array('groupedProperty', $is_showed)) {
+    if (!in_array('all_properties', $is_showed)) {
         // показываем все характеристики (сгруппированые), если ранее они не были показаны
         echo $helper->render('product/__groupedProperty', ['product' => $product]); // Характеристики
     }
