@@ -29,10 +29,20 @@ return function (
                 <dl class="bSpecificationsList clearfix">
                     <? foreach ($properties as $property): ?>
                         <dd class="bSpecificationsList__eName">
-                            <span class="bName"><?= $property->getName() ?></span>
+                            <span class="bName">
+                                <?= $property->getName() ?>
+                                <? if ($property->getHint()): ?>
+                                    <?= $helper->render('__hint', ['name' => $property->getName(), 'value' => $property->getHint()]) ?>
+                                <? endif ?>
+                            </span>
                         </dd>
                         <dt class="bSpecificationsList__eValue">
-                            <span><?= $property->getStringValue() ?></span>
+                            <span>
+                                <?= $property->getStringValue() ?>
+                                <? if ($property->getValueHint()): ?>
+                                    <?= $helper->render('__hint', ['name' => $property->getStringValue(), 'value' => $property->getValueHint()]) ?>
+                                <? endif ?>
+                            </span>
                         </dt>
                     <? endforeach; ?>
                 </dl>
