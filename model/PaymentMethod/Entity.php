@@ -3,12 +3,15 @@
 namespace Model\PaymentMethod;
 
 class Entity {
+    const CASH_ID = 1;
+    const CARD_ID = 2;
     const CERTIFICATE_ID = 10;
     const WEBMONEY_ID = 11;
     const QIWI_ID = 12;
 
     const TYPE_NOW = 0;
     const TYPE_ON_RECEIPT = 1;
+    const TYPE_ALL = 2;
 
     /** @var int */
     private $id;
@@ -157,5 +160,4 @@ class Entity {
     public function getPayOnReceipt() {
         return $this->payOnReceipt;
     }
-
 }

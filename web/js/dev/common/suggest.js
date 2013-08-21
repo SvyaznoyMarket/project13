@@ -13,7 +13,8 @@
  * @param	{Number}	suggestLen			Количество результатов поиска
  */
 ;(function() {
-	var searchInput = $('.searchbox .searchtext'),
+	var searchForm = $('div.searchbox form'),
+        searchInput = searchForm.find('input.searchtext'),
 		suggestWrapper = $('#searchAutocomplete'),
 		suggestItem = $('.bSearchSuggest__eRes'),
 
@@ -160,7 +161,7 @@
 		},
 
 		searchSubmit = function searchSubmit() {
-			var text = $('.searchbox .searchtext').attr('value');
+			var text = searchInput.attr('value');
 
 			if ( text.length === 0 ) {
 				return false;
@@ -200,8 +201,8 @@
 		searchInput.bind('keyup', suggestKeyUp);
 
 		searchInput.bind('focus', searchInputFocusin);
-		searchInput.bind('submit', searchSubmit);
-		
+        searchForm.bind('submit', searchSubmit);
+
 		searchInput.placeholder();
 
 		$('body').bind('click', suggestCloser);

@@ -255,7 +255,7 @@ class Action {
         });
 
         // выполнение 3-го пакета запросов
-        $client->execute(\App::config()->coreV2['retryTimeout']['tiny']);
+        $client->execute();
 
         // получаем catalog json для категории (например, тип раскладки)
         $catalogJson = \RepositoryManager::productCategory()->getCatalogJson($category);

@@ -386,6 +386,14 @@ return [
         'pattern' => '/cart/coupon/delete',
         'action'  => ['Cart\CouponAction', 'delete'],
     ],
+    'cart.blackcard.apply' => [
+        'pattern' => '/cart/blackcard',
+        'action'  => ['Cart\BlackcardAction', 'apply'],
+    ],
+    'cart.blackcard.delete' => [
+        'pattern' => '/cart/blackcard/delete',
+        'action'  => ['Cart\BlackcardAction', 'delete'],
+    ],
     'cart.sum' => [
         'pattern' => '/cart/sum',
         'action'  => ['Cart\SumAction', 'execute'],
@@ -473,14 +481,16 @@ return [
         'action' => ['Jewel\Product\RecommendedAction', 'execute'],
         'require' => ['productId' => '\d+'],
     ],
-    'product.similar' => [
+    'product.similar' => [ /// executed SmartEngine or RetailRocker
         'pattern' => '/ajax/product-similar/{productId}',
         'action' => ['Product\SimilarAction', 'execute'],
+        //'action' => ['Product\SimilarAction', 'debug'], // just for debug
         'require' => ['productId' => '\d+'],
     ],
-    'product.alsoViewed' => [
+    'product.alsoViewed' => [ /// executed SmartEngine or RetailRocker
         'pattern' => '/ajax/product-also-viewed/{productId}',
         'action' => ['Product\AlsoViewedAction', 'execute'],
+        //'action' => ['Product\AlsoViewedAction', 'debug'], // just for debug
         'require' => ['productId' => '\d+'],
     ],
     /*

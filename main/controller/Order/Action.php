@@ -188,8 +188,8 @@ class Action {
             }
 
             if (!$deliveryCalcResult) {
-                $e = new \Exception('Калькулятор доставки вернул пустой результат', ['order']);
-                \App::logger()->error($e->getMessage());
+                $e = new \Exception('Калькулятор доставки вернул пустой результат');
+                \App::logger()->error($e->getMessage(), ['order']);
 
                 throw $e;
             }
@@ -890,11 +890,14 @@ class Action {
                             if (\Partner\Counter\MyThings::isTracking()) {
                                 $partners[] = \Partner\Counter\MyThings::NAME;
                             }
-                            if ($viewedAt = \App::user()->getRecommendedProductByParams($product->getId(), \Smartengine\Client::NAME, 'viewed_at')) {
-                                if ((time() - $viewedAt) <= 30 * 24 * 60 * 60) { //30days
-                                    $partners[] = \Smartengine\Client::NAME;
-                                } else {
-                                    \App::user()->deleteRecommendedProductByParams($product->getId(), \Smartengine\Client::NAME, 'viewed_at');
+
+                            foreach ( \Controller\Product\BasicRecommendedAction::$recomendedPartners as $recomPartnerName) {
+                                if ($viewedAt = \App::user()->getRecommendedProductByParams($product->getId(), $recomPartnerName, 'viewed_at')) {
+                                    if ((time() - $viewedAt) <= 30 * 24 * 60 * 60) { //30days
+                                        $partners[] = $recomPartnerName;
+                                    } else {
+                                        \App::user()->deleteRecommendedProductByParams($product->getId(), $recomPartnerName, 'viewed_at');
+                                    }
                                 }
                             }
                             $orderData['meta_data'] =  \App::partner()->fabricateCompleteMeta(
@@ -1429,7 +1432,6 @@ class Action {
         $orderData = array_map(function ($orderItem) {
             return array_merge(['number' => null, 'phone' => null], $orderItem);
         }, (array)\App::session()->get(self::ORDER_SESSION_NAME));
-        //$orderData = array(array('number' => 'XX013863', 'phone' => '80000000000'));
 
         /** @var $orders \Model\Order\Entity[] */
         $orders = [];
@@ -1445,6 +1447,8 @@ class Action {
                 \App::logger()->error(sprintf('Заказ из сессии не найден %s', json_encode($orderItem, JSON_UNESCAPED_UNICODE)), ['order']);
                 continue;
             }
+            // TODO: осторожно, хак
+            $order->setMobilePhone($orderItem['phone']);
 
             $orders[] = $order;
         }

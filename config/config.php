@@ -117,6 +117,7 @@ $c->yandexMetrika['enabled'] = true;
 // TODO: Вынести сюда же настройки для sociomantic and get4click
 $c->partners['criteo']['enabled'] = true;
 $c->partners['criteo']['account'] = 10442;
+$c->partners['RetailRocket']['account'] = '519c7f3c0d422d0fe0ee9775';
 
 $c->adFox['enabled'] = true;
 $c->myThings['feeByCategory'] = [
@@ -278,6 +279,7 @@ $c->crossss['apiKey']  = '5a0bb0cb92a94f7db8a9bf4bfacdbe39';
 $c->warranty['enabled'] = true;
 $c->f1Certificate['enabled'] = true;
 $c->coupon['enabled'] = true;
+$c->blackcard['enabled'] = false;
 
 $c->user['corporateRegister'] = true;
 
@@ -294,35 +296,6 @@ $c->queue['pidFile'] = (sys_get_temp_dir() ?: '/tmp').'/enter-queue.pid';
 $c->queue['workerLimit'] = 10;
 $c->queue['maxLockTime'] = 600;
 
-$c->abtest['cookieName'] = 'switch';
-$c->abtest['enabled']    = true;
-$c->abtest['bestBefore'] = '2013-08-20';
-$c->abtest['test']       = [
-    [
-        'traffic'  => '50',
-        'key'      => 'emails',
-        'name'     => "Обязательные e-mail'ы",
-        'ga_event' => 'MandatoryEmail',
-    ],
-];
-/*
-$c->abtest['bestBefore'] = '2013-04-23';
-$c->abtest['test']       = [
-    [
-        'traffic'  => '40',
-        'key'      => 'upsell',
-        'name'     => 'Страница tocart',
-        'ga_event' => 'tocart',
-    ],
-    [
-        'traffic'  => '40',
-        'key'      => 'order2cart',
-        'name'     => 'Страница cart',
-        'ga_event' => 'cart',
-    ],
-];
-*/
-
 $c->subscribe['enabled'] = true;
 $c->subscribe['cookieName'] = 'subscribed';
 
@@ -333,8 +306,8 @@ $c->mobileModify['enabled'] = true;
 $c->order['cookieName'] = 'last_order';
 $c->order['sessionName'] = 'lastOrder';
 $c->order['enableMetaTag'] = true;
-$c->order['newCreate'] = false;
 $c->order['maxSumOnline'] = 15000;
+$c->order['newCreate'] = true;
 
 $c->maybe3d['xmlUrl']     = 'http://hq.maybe3d.com/MappingService.svc/GetMappings?customerId=';
 $c->maybe3d['customerId'] = 'BE2016EF-32D8-41E6-976F-A8D32EB20ACF';
@@ -346,5 +319,33 @@ $c->tag['numSidebarCategoriesShown'] = 3;
 
 $c->sphinx['showFacets'] = false;
 $c->sphinx['showListingSearchBar'] = false;
+
+$c->abtest['cookieName'] = 'switch';
+$c->abtest['enabled']    = true;
+$c->abtest['bestBefore'] = '2013-09-23';
+
+$c->abtest['test']       = [
+    // smartengine
+    [
+        'traffic'  => 33,
+        'key'      => 'smartengine',
+        'name'     => "Похожие товары от SmartEngine",
+        'ga_event' => 'SmartEngine',
+    ],
+    // retailrocket
+    [
+        'traffic'  => 33,
+        'key'      => 'retailrocket',
+        'name'     => "С этим товаром также смотрят от RetailRocket",
+        'ga_event' => 'RetailRocket',
+    ],
+    // hybrid
+    [
+        'traffic'  => 33,
+        'key'      => 'hybrid',
+        'name'     => "С этим товаром также смотрят - от RetailRocket, Похожие товары - от SmartEngine",
+        'ga_event' => 'Hybrid',
+    ],
+];
 
 return $c;

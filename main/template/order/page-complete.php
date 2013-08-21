@@ -13,7 +13,9 @@
  */
 ?>
 
-<?php
+<?
+$helper = new \Helper\TemplateHelper();
+
 $isCorporative = $user->getEntity() ? $user->getEntity()->getIsCorporative() : false;
 // TODO: доделать
 $isCredit = (bool)$creditData;
@@ -23,10 +25,13 @@ if (!isset($paymentUrl)) $paymentUrl = null;
 ?>
 
 <!-- Header -->
-<div class='bBuyingHead'>
-    <a href="<?= $page->url('homepage') ?>"></a>
-    <i>Оформление заказа</i><br>
-    <span><?= $isCredit ? 'Покупка в кредит' : 'Ваш заказ принят, спасибо!' ?></span>
+<div class='bBuyingHead clearfix'>
+    <a class="bBuyingHead__eLogo" href="<?= $page->url('homepage') ?>"></a>
+
+    <div class="bBuyingHead__eTitle">
+        <span class="bSubTitle">Оформление заказа</span><br>
+        <span class="bTitle"><?= $isCredit ? 'Покупка в кредит' : 'Ваш заказ принят, спасибо!' ?></span>
+    </div>
 </div>
 <!-- /Header -->
 
@@ -121,3 +126,5 @@ if (!isset($paymentUrl)) $paymentUrl = null;
     'productsById' => $productsById,
 ]) ?>
 
+
+<?= $helper->render('order/__analyticsData', ['orders' => $orders, 'productsById' => $productsById]) ?>

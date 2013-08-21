@@ -493,7 +493,20 @@ $(document).ready(function() {
 							return;
 						}
 
-                        if ( typeof(Flocktory) !== 'undefined' )  Flocktory.subscribing_friend();
+                        if ( typeof(Flocktory) !== 'undefined' )  {
+                            toFLK_order = {
+                                "order_id": data.data.orderNumber,
+                                "price": self.price * self.quantity() * 1 + self.chosenDlvr().price * 1,
+                                "items": [{
+                                    "id": self.shortcut,
+                                    "title": self.title,
+                                    "price":  self.price,
+                                    "image": self.icon,
+                                    "count":  self.quantity()
+                                }]
+                            };
+                            Flocktory.popup_opder(toFLK_order);
+                        }
 						
 						// ANALITICS
 						var phoneNumber = '8' + $('#phonemask').val().replace(/\D/g, "");
