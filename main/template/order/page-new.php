@@ -209,14 +209,14 @@ foreach (array_reverse($productsById) as $product) {
 
 					<ul class="bSaleList bInputList clearfix">
                         <? if (\App::config()->coupon['enabled']): ?>
-						<li class="bSaleList__eItem">
+						<li class="bSaleList__eItem" data-type="coupon">
 							<input value="<?= $page->url('cart.coupon.apply') ?>" class="jsCustomRadio bCustomInput mCustomRadioBig" type="radio" id="svz_club" name="add_sale" hidden data-bind="checked: couponUrl" />
 							<label class="bCustomLabel mCustomLabelRadioBig" for="svz_club">Купон</label>
 						</li>
                         <? endif ?>
 
                         <? if (\App::config()->blackcard['enabled']): ?>
-						<li class="bSaleList__eItem mEnterSpa">
+						<li class="bSaleList__eItem mEnterSpa" data-type="blackcard">
 							<input value="<?= $page->url('cart.blackcard.apply') ?>" class="jsCustomRadio bCustomInput mCustomRadioBig" type="radio" id="black_card" name="add_sale" hidden data-bind="checked: couponUrl" />
 							<label class="bCustomLabel mCustomLabelRadioBig" for="black_card">Enter Spa</label>
 						</li>
