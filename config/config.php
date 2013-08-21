@@ -327,17 +327,24 @@ $c->abtest['bestBefore'] = '2013-09-23';
 $c->abtest['test']       = [
     // smartengine
     [
-        'traffic'  => 50,
+        'traffic'  => 33,
         'key'      => 'smartengine',
-        'name'     => "Похожие товары",
+        'name'     => "Похожие товары от SmartEngine",
         'ga_event' => 'SmartEngine',
     ],
     // retailrocket
     [
-        'traffic'  => 50,
+        'traffic'  => 33,
         'key'      => 'retailrocket',
-        'name'     => "С этим товаром также смотрят",
+        'name'     => "С этим товаром также смотрят от RetailRocket",
         'ga_event' => 'RetailRocket',
+    ],
+    // hybrid
+    [
+        'traffic'  => 33,
+        'key'      => 'hybrid',
+        'name'     => "С этим товаром также смотрят - от RetailRocket, Похожие товары - от SmartEngine",
+        'ga_event' => 'Hybrid',
     ],
 ];
 
