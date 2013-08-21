@@ -92,9 +92,9 @@
             console.log(toKISS_orderInfo);
 
             if ( (typeof _kmq !== 'undefined') && (KM !== 'undefined') ) {
-                _kmq.push(['alias', phoneNumber, KM.i()]);
-                _kmq.push(['alias', emailVal, KM.i()]);
-                _kmq.push(['identify', phoneNumber]);
+                _kmq.push(['alias', orderData[0].phonenumber, KM.i()]);
+                // _kmq.push(['alias', emailVal, KM.i()]);
+                _kmq.push(['identify', orderData[0].phonenumber]);
                 _kmq.push(['record', 'Checkout Complete', toKISS_orderInfo]);
             }
         }
