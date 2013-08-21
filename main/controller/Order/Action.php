@@ -1432,7 +1432,6 @@ class Action {
         $orderData = array_map(function ($orderItem) {
             return array_merge(['number' => null, 'phone' => null], $orderItem);
         }, (array)\App::session()->get(self::ORDER_SESSION_NAME));
-        //$orderData = array(array('number' => 'XX013863', 'phone' => '80000000000'));
 
         /** @var $orders \Model\Order\Entity[] */
         $orders = [];
@@ -1448,6 +1447,8 @@ class Action {
                 \App::logger()->error(sprintf('Заказ из сессии не найден %s', json_encode($orderItem, JSON_UNESCAPED_UNICODE)), ['order']);
                 continue;
             }
+            // TODO: осторожно, хак
+            $order->setMobilePhone($orderItem['phone']);
 
             $orders[] = $order;
         }
