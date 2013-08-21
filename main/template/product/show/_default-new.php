@@ -63,9 +63,10 @@ $is_showed = [];
             }
 
             if (!in_array('all_properties', $is_showed)) { // Если ранее не были показаны характеристики все,
+                echo '###';
                 // (во всех остальных случаях) выводим главные характеристики (productExpanded)
                 echo $helper->render('product/__propertiesSimple', ['product' => $productExpanded, 'showLinkToProperties' => $showLinkToProperties]);
-                $is_showed[] = 'all_properties';
+                $is_showed[] = 'main_properties';
             }
             // } /end of new Card Properties
             ?>
