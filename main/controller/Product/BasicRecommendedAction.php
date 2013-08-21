@@ -4,7 +4,7 @@ namespace Controller\Product;
 
 class BasicRecommendedAction {
 
-    //use _DebugTestTrait; // for debug
+    use _DebugTestTrait; // for debug
 
     protected $retailrocketMethodName;
     protected $smartengineMethodName;
@@ -48,15 +48,7 @@ class BasicRecommendedAction {
             if ('retailrocket' == $key) {
                 $products = $this->getProductsFromRetailrocket($product, $request, $this->retailrocketMethodName);
             } elseif ('hybrid' == $key) {
-
-                if ( $this->actionType == 'AlsoViewedAction' ) { // if AlsoViewedAction
-                    // С этим товаром также смотрят - ВСЕГДА от RetailRocket,
-                    $products = $this->getProductsFromRetailrocket($product, $request, 'UpSellItemToItems');
-                } else { // if SimilarAction
-                    // Похожие товары - ВСЕГДА  от SmartEngine
-                    $products = $this->getProductsFromSmartengine($product, $request, 'relateditems');
-                }
-
+                $products = $this->getProductsHybrid($product, $request, $this->retailrocketMethodName);
             } else {
                 $products = $this->getProductsFromSmartengine($product, $request, $this->smartengineMethodName);
             }
@@ -217,13 +209,30 @@ class BasicRecommendedAction {
     }
 
 
-    private function getHybridMethodName($hybridName) {
-        if ( $this->actionType = 'AlsoViewedAction' ) {
-            $methodName = '';
-            return $methodName;
-        }else{
+
+    /**
+     * @param \Model\Product\Entity     $product
+     * @param \Http\Request             $request
+     * @param string                    $method
+     * @return \Model\Product\Entity[]  $products
+     */
+    private function getProductsHybrid( $product, \Http\Request $request, $method = 'UpSellItemToItems' ) {
+
+        if ( $this->actionType == 'AlsoViewedAction' ) { // if AlsoViewedAction
+
+            // С этим товаром также смотрят - ВСЕГДА от RetailRocket,
+            $products = $this->getProductsFromRetailrocket($product, $request, 'UpSellItemToItems');
+
+        } else { // if SimilarAction
+
+            // Похожие товары - ВСЕГДА  от SmartEngine
+            $products = $this->getProductsFromSmartengine($product, $request, 'relateditems');
 
         }
+
+        return $products;
+
     }
+
 
 }
