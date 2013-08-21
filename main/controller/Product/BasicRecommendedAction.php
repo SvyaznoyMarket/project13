@@ -52,6 +52,7 @@ class BasicRecommendedAction {
             $key = $abTest->getKey();
 
             \App::logger()->info(sprintf('ab тест %s', $key));
+            \App::logger()->info(sprintf('кука switch %s', $request->cookies->get('switch')));
 
             if ('retailrocket' == $key) {
                 $products = $this->getProductsFromRetailrocket($product, $request, $this->retailrocketMethodName);
