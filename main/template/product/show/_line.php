@@ -10,7 +10,7 @@
 
 <?php
 $isHidden = isset($isHidden) && $isHidden;
-$url = $page->url('product.line', array('lineToken' => $product->getLine()->getToken()));
+$url = $product->getLine() ? $page->url('product.line', ['lineToken' => $product->getLine()->getToken()]) : null;
 $addInfo = isset($addInfo)?$addInfo:[];
 ?>
 

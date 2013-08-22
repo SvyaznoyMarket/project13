@@ -1,240 +1,247 @@
 /**
- * Создает блок доставки.
- * Если для товара недоступна выбранная точка доставки, создается новый блок
- * Стоимость блока расчитывается из суммы всех товаров.
- * Стоимость доставки считается минимальная из стоимостей доставок всех товаров в блоке
+ * Получение данных с сервера
+ * Разбиение заказа
+ * Модель knockout
+ * Аналитика
  *
  * @author	Zaytsev Alexandr
- * @this	{DeliveryBox}
- * 
- * @param	{Array}			products			Массив продуктов которые необходимо добавить в блок
- * @param	{String}		state				Текущий метод доставки для блока
- * @param	{Number}		choosenPointForBox	Выбранная точка доставки
- * 
- * @param	{Object}		createdBox			Объект со созданными блоками доставки
- * @param	{Object}		OrderModel			Модель оформления заказа
- * 
- * @constructor
  */
-function DeliveryBox( products, state, choosenPointForBox, createdBox, OrderModel ) {
-	console.info('Cоздание блока доставки '+state+' для '+choosenPointForBox);
-
-	var self = this;
-
-	self.OrderModel = OrderModel; // создаем ссылку на OrderModel
-	self.createdBox = createdBox; // создаем ссылку на createdBox
-
-	self.deliveryPoint = choosenPointForBox;
-	self.products = [];
-	self.fullPrice = 0;
-	self.state = state;
-	self.deliveryPrice = Number.POSITIVE_INFINITY; // берем максимально возможное значение, чтобы сравнивая с ним находить минимальное
-	self.showMessage = null;
-	self.choosenDate = null;
-
-	self.addProductGroup(products);
-
-	self.OrderModel.deliveryBoxes.push(self);
-}
-
-/**
- * Получить имя первого свойства объекта
- * 
- * @param 	{Object}	obj		Объект у которого необходимо получить первое свойство
- * @return	{Object}			Возвращает свойство объекта
- */
-DeliveryBox.prototype._getFirstPropertyName = function( obj ) {
-	for ( var i in obj ) {
-		return i;
-	}
-};
-
-/**
- * Добавление продукта в блок доставки
- *
- * @this	{DeliveryBox}
- * @param	{Object}		product		Продукт который нужно добавить
- */
-DeliveryBox.prototype.addProduct = function( product ) {
-	var self = this,
-		productDeliveryPrice = null,
-		token = null,
-		firstAvaliblePoint = null,
-		tempProductArray = [];
-	// end of vars
-
-
-	/**
-	 * Если для продукта нет доставки в выбранный пункт доставки, то нужно создать новый блок доставки
-	 */
-	if ( !product.deliveries[self.state].hasOwnProperty(self.deliveryPoint) ) {
-		console.warn('Для товара '+product.id+' нет пункта доставки '+self.deliveryPoint+'. Необходимо создать новый блок');
-
-		firstAvaliblePoint = self._getFirstPropertyName(product.deliveries[self.state]);
-		token = self.state+'_'+firstAvaliblePoint;
-
-		if ( self.createdBox[token] !== undefined ) {
-			// Блок для этого типа доставки в этот пункт уже существует. Добавляем продукт в блок
-			self.createdBox[token].addProduct( product );
-		}
-		else {
-			// Блока для этого типа доставки в этот пункт еще существует
-			tempProductArray.push(product);
-			self.createdBox[token] = new DeliveryBox( tempProductArray, self.state, firstAvaliblePoint, self.createdBox, self.OrderModel );
-		}
-
-		return;
-	}
-
-	// Определение стоимости доставки. Если стоимость доставки данного товара ниже стоимости доставки блока, то стоимость доставки блока становится равной стоимости доставки данного товара
-	productDeliveryPrice = parseInt(product.deliveries[self.state][self.deliveryPoint].price, 10);
-	self.deliveryPrice = ( self.deliveryPrice > productDeliveryPrice ) ? productDeliveryPrice : self.deliveryPrice;
-
-	// Добавляем стоимость продукта к общей стоимости блока доставки
-	self.fullPrice += product.sum;
-
-	self.products.push({
-		name: product.name,
-		price: product.sum,
-		quantity: product.quantity,
-		deleteUrl: product.deleteUrl,
-		productUrl: product.url,
-		productImg: product.image
-	});
-};
-
-/**
- * Добавление нескольких товаров в блок доставки
- * 
- * @this	{DeliveryBox}
- * @param	{Array}			products	Продукты которые нужно добавить
- */
-DeliveryBox.prototype.addProductGroup = function( products ) {
-	// добавляем товары в блок
-	for ( var i = products.length - 1; i >= 0; i-- ) {
-		this.addProduct(products[i]);
-	}
-};
-
-
-
-
-
-;(function(){
+;(function( global ) {
 	console.info('Логика разбиения заказа для оформления заказа v.5');
 
-	var getDataUrl = '/ajax/order-delivery', // HARDCODE
-		orderData = {},
-		choosenDeliveryType = null,
-		choosenPoint = null,
-
-		createdBox = {};
-	// end of vars
-	
+	var serverData = $('#jsOrderDelivery').data('value');
 
 	/**
 	 * Логика разбиения заказа на подзаказы
 	 * Берутся states из выбранного способа доставки в порядке приоритета.
 	 * Каждый новый states - новый подзаказ.
 	 *
-	 * @param	{Array}		statesPriority	Приоритет методов доставки
+	 * @param	{Array}		statesPriority		Приоритет методов доставки
+	 * 
+	 * @param	{Object}	preparedProducts	Уже обработанные продукты, которые попали в какой-либо блок доставки
+	 * @param	{Array}		productInState		Массив продуктов, которые есть в данном способе доставки
+	 * @param	{Array}		productsToNewBox	Массив продуктов, которые должны попасть в новый блок доставки
+	 * @param	{Number}	choosenPointForBox	Точка доставки для блока самовывоза
+	 * @param	{String}	token				Временное имя для создаваемого блока
+	 * @param	{String}	nowState			Текущий тип доставки который находится в обработке
+	 * @param	{String}	nowProduct			Текущий id продукта который находится в обработке
 	 */
 	var separateOrder = function separateOrder( statesPriority ) {
-			/**
-			 * Уже обработанные продукты, которые попали в какой-либо блок доставки
-			 * @type {Object}
-			 */
+
 		var preparedProducts = {},
-
-			/**
-			 * Массив продуктов, которые есть в данном способе доставки
-			 * @type {Array}
-			 */
 			productInState = [],
-
-			/**
-			 * Массив продуктов которые должны попасть в новый блок доставки
-			 * @type {Array}
-			 */
 			productsToNewBox = [],
-
-			/**
-			 * Точка доставки для блока самовывоза
-			 * @type {Number}
-			 */
 			choosenPointForBox = null,
+			token = null,
+			nowState = null,
+			nowProduct = null,
 
-			/**
-			 * Временное имя для создаваемого блока
-			 * @type {String}
-			 */
-			token = null;
+			discounts = global.OrderModel.orderDictionary.orderData.discounts;
 		// end of vars
+
+
+		// очищаем объект созданых блоков, удаляем блоки из модели
+		global.OrderModel.createdBox = {};
+		global.OrderModel.deliveryBoxes.removeAll();
+
+		// Маркируем выбранный способ доставки
+		$('#'+global.OrderModel.deliveryTypesButton).attr('checked','checked');
+			
+		// Обнуляем общую стоимость заказа
+		global.OrderModel.totalSum(0);
+
+		// Обнуляем блоки с доставкой на дом и генерируем событие об этом
+		global.OrderModel.hasHomeDelivery(false);
+		$('body').trigger('orderdeliverychange',[false]);
+
+		// Добавляем купоны
+		global.OrderModel.couponsBox(discounts);
 
 
 		/**
 		 * Перебор states в выбранном способе доставки в порядке приоритета
 		 */
 		for ( var i = 0, len = statesPriority.length; i < len; i++ ) {
-			console.info('перебирем метод '+statesPriority[i]);
+			nowState = statesPriority[i];
+
+			console.info('перебирем метод '+nowState);
 
 			productsToNewBox = [];
 
-			if ( !orderData.deliveryStates.hasOwnProperty(statesPriority[i]) ) {
-				console.warn('для метода '+statesPriority[i]+' нет товаров')
+			if ( !global.OrderModel.orderDictionary.hasDeliveryState(nowState) ) {
+				console.info('для метода '+nowState+' нет товаров');
+
 				continue;
 			}
 
-			productInState = orderData.deliveryStates[statesPriority[i]].products;
+			productInState = global.OrderModel.orderDictionary.getProductFromState(nowState);
 			
 			/**
 			 * Перебор продуктов в текущем deliveryStates
 			 */
 			for ( var j = productInState.length - 1; j >= 0; j-- ) {
+				nowProduct = productInState[j];
 
-				if ( preparedProducts[productInState[j]] ) {
+				if ( preparedProducts[nowProduct] ) {
 					// если этот товар уже находили
-					console.log('товар '+productInState[j]+' уже определялся к блоку');
+					console.log('товар '+nowProduct+' уже определялся к блоку');
 
 					continue;
 				}
 				
-				console.log('добавляем товар '+productInState[j]+' в блок для метода '+statesPriority[i]);
+				console.log('добавляем товар '+nowProduct+' в блок для метода '+nowState);
 
-				preparedProducts[productInState[j]] = true;
-				productsToNewBox.push( orderData.products[productInState[j]] );
+				preparedProducts[nowProduct] = true;
+				productsToNewBox.push( global.OrderModel.orderDictionary.getProductById(nowProduct) );
 			}
 
 			if ( productsToNewBox.length ) {
-				choosenPointForBox = ( orderData.pointsByDelivery[statesPriority[i]] ) ? choosenPoint : 0;
+				choosenPointForBox = ( global.OrderModel.orderDictionary.hasPointDelivery(nowState) ) ? global.OrderModel.choosenPoint() : 0;
 
-				token = statesPriority[i]+'_'+choosenPointForBox;
+				token = nowState+'_'+choosenPointForBox;
 
-				if ( createdBox[token] !== undefined ) {
+				if ( global.OrderModel.createdBox[token] !== undefined ) {
 					// Блок для этого типа доставки в этот пункт уже существует
-					createdBox[token].addProductGroup( productsToNewBox );
+					global.OrderModel.createdBox[token].addProductGroup( productsToNewBox );
 				}
 				else {
 					// Блока для этого типа доставки в этот пункт еще существует
-					createdBox[token] = new DeliveryBox( productsToNewBox, statesPriority[i], choosenPointForBox, createdBox, OrderModel );
+					global.OrderModel.createdBox[token] = new DeliveryBox( productsToNewBox, nowState, choosenPointForBox, global.OrderModel );
 				}
 			}
 		}
 
 		console.info('Созданные блоки:');
-		console.log(createdBox);
+		console.log(global.OrderModel.createdBox);
 
-		if ( preparedProducts.length !== orderData.products.length ) {
+		if ( preparedProducts.length !== global.OrderModel.orderDictionary.orderData.products.length ) {
 			console.warn('не все товары были обработаны');
 		}
 	};
 
 
 	/**
-	 * ORDER MODEL
+	 * Кастомный бинд для открытия окна магазинов
 	 */
-	var OrderModel = {
+	ko.bindingHandlers.popupShower = {
+		update: function( element, valueAccessor ) {
+			var val = valueAccessor(),
+				unwrapVal = ko.utils.unwrapObservable(val),
+				map = null;
+			// end of vars
+
+			if ( unwrapVal ) {
+				// create map
+				map = new CreateMap('pointPopupMap', global.OrderModel.popupWithPoints().points, $('#mapInfoBlock'));
+
+				$(element).lightbox_me({
+					centered: true,
+					onClose: function() {
+						console.info('закрываем');
+						val(false);
+					}
+				});
+			}
+			else {
+				$('#pointPopupMap').empty();
+				$(element).trigger('close');
+			}
+		}
+	};
+
+	/**
+	 * Кастомный бинд отображения методов оплаты
+	 */
+	ko.bindingHandlers.paymentMethodVisible = {
+		update: function( element, valueAccessor ) {
+			var val = valueAccessor(),
+				unwrapVal = ko.utils.unwrapObservable(val),
+				node = $(element),
+				maxSum = parseInt($(element).data('value')['max-sum'], 10);
+			// end of vars
+
+			if ( isNaN(maxSum) ) {
+				return;
+			}
+
+			if ( maxSum < unwrapVal ) {
+				node.hide();
+			}
+			else {
+				node.show();
+			}
+		}
+	};
+
+	ko.bindingHandlers.couponsVisible = {
+		update: function( element, valueAccessor ) {
+			var val = valueAccessor(),
+				unwrapVal = ko.utils.unwrapObservable(val),
+				node = $(element);
+			// end of vars
+
+			$('.bSaleList__eItem').removeClass('hidden');
+
+			for ( var i = unwrapVal.length - 1; i >= 0; i-- ) {
+				node.find('.bSaleList__eItem[data-type="'+unwrapVal[i].type+'"]').addClass('hidden');
+			}
+
+			if ( !$('.bSaleList__eItem.hidden').length ) {
+				node.show();
+			}
+			else {
+				node.hide();
+			}
+		}
+	};
+
+
+	/**
+	 * === ORDER MODEL ===
+	 */
+	global.OrderModel = {
+		updateUrl: $('#jsOrderDelivery').data('url'),
+		/**
+		 * Флаг завершения обработки данных
+		 */
 		prepareData: ko.observable(false),
+
+		/**
+		 * Флаг открытия окна с выбором точек доставки
+		 */
+		showPopupWithPoints: ko.observable(false),
+
+		/**
+		 * Ссылка на элемент input который соответствует выбранному методу доставки
+		 */
+		deliveryTypesButton: null,
+
+		/**
+		 * Приоритет методов доставок на время выбора точек доставки
+		 * Если пункт доставки не был выбран - не используется
+		 */
+		tmpStatesPriority: null,
+
+		/**
+		 * Реальный приоритет методов доставок
+		 * Сохраняется при выборе пункта доставки или методе доставки не имеющем пунктов доставки
+		 */
+		statesPriority: null,
+
+		/**
+		 * Ссылка на словарь
+		 */
+		orderDictionary: null,
+
+		/**
+		 * Идетификатор приоритетного пункта доставки выбранного пользователем
+		 */
+		choosenPoint: ko.observable(),
+
+		/**
+		 * Есть ли хотя бы один блок доставки на дом
+		 */
+		hasHomeDelivery: ko.observable(false),
 
 		/**
 		 * Массив способов доставок доступных пользователю
@@ -247,77 +254,512 @@ DeliveryBox.prototype.addProductGroup = function( products ) {
 		deliveryBoxes: ko.observableArray([]),
 
 		/**
-		 * Выбор типа доставки. Обработчик созданных кнопок из deliveryTypes
+		 * Хранилище блоков доставки
+		 */
+		createdBox: {},
+
+		/**
+		 * Объект данных для отображения окна с пунктами доставок
+		 */
+		popupWithPoints: ko.observable({}),
+
+		/**
+		 * Общая сумма заказа
+		 */
+		totalSum: ko.observable(0),
+
+		/**
+		 * Номер введенного сертификата
+		 */
+		couponNumber: ko.observable(),
+
+		/**
+		 * URL по которому нужно проверять карту
+		 */
+		couponUrl: ko.observable($('.bSaleData .jsCustomRadio').eq(0).val()),
+
+		/**
+		 * Ошибки сертификата
+		 */
+		couponError: ko.observable(),
+
+		/**
+		 * Массив примененных купонов
+		 */
+		couponsBox: ko.observableArray([]),
+
+		/**
+		 * Блокер экрана
+		 *
+		 * @param	{Object}		noti		Объект jQuery блокера экрана
+		 * @param	{Function}		block		Функция блокировки экрана. На вход принимает текст который нужно отобразить в окошке блокера
+		 * @param	{Function}		unblock		Функция разблокировки экрана. Объект окна блокера удаляется.
+		 */
+		blockScreen: {
+			noti: null,
+			block: function( text ) {
+				var self = this;
+
+				console.warn('block screen');
+
+				if ( self.noti ) {
+					self.unblock();
+				}
+
+				self.noti = $('<div>').addClass('noti').html('<div><img src="/images/ajaxnoti.gif" /></br></br> '+ text +'</div>');
+				self.noti.appendTo('body');
+
+				self.noti.lightbox_me({
+					centered:true,
+					closeClick:false,
+					closeEsc:false,
+					onClose: function() {
+						self.noti.remove();
+					}
+				});
+			},
+
+			unblock: function() {
+				console.warn('unblock screen');
+
+				this.noti.trigger('close');
+			}
+		},
+
+		/**
+		 * Проверка сертификата
+		 */
+		checkCoupon: function() {
+			console.info('проверяем купон');
+
+			var dataToSend = {
+					number: global.OrderModel.couponNumber(),
+				},
+				url = global.OrderModel.couponUrl();
+			// end of vars
+
+			var couponResponceHandler = function couponResponceHandler( res ) {
+				global.OrderModel.blockScreen.block('Применяем купон');
+
+				if ( !res.success ) {
+					global.OrderModel.couponError(res.error.message);
+					global.OrderModel.blockScreen.unblock();
+
+					return;
+				}
+
+				global.OrderModel.modelUpdate();
+			};
+
+			global.OrderModel.couponError('');
+
+			if ( url === undefined ) {
+				console.warn('Не выбран тип сертификата');
+				global.OrderModel.couponError('Не выбран тип сертификата');
+
+				return;
+			}
+
+			if ( dataToSend.number === undefined || !dataToSend.number.length ) {
+				console.warn('Не введен номер сертификата');
+				global.OrderModel.couponError('Не введен номер сертификата');
+
+				return;
+			}
+
+			$.ajax({
+				type: 'POST',
+				url: url,
+				data: dataToSend,
+				success: couponResponceHandler
+			});
+		},
+
+		/**
+		 * Обработка выбора пункта доставки
+		 * 
+		 * @param	{String}	id				Идентификатор
+		 * @param	{String}	address			Адрес
+		 * @param	{Number}	latitude		Широта
+		 * @param	{Number}	longitude		Долгота
+		 * @param	{String}	name			Полное имя
+		 * @param	{String}	regime			Время работы
+		 * @param	{Array}		products		Массив идентификаторов продуктов доступных в данном пункте
+		 */
+		selectPoint: function( data ) {
+			console.info('point selected...');
+			console.log(data.parentBoxToken);
+
+			if ( data.parentBoxToken ) {
+				console.log(global.OrderModel.createdBox[data.parentBoxToken]);
+				global.OrderModel.createdBox[data.parentBoxToken].selectPoint.apply(global.OrderModel.createdBox[data.parentBoxToken],[data]);
+
+				return false;
+			}
+
+			// Сохраняем приоритет методов доставок
+			global.OrderModel.statesPriority = global.OrderModel.tmpStatesPriority;
+
+			// Сохраняем выбранную приоритетную точку доставки
+			global.OrderModel.choosenPoint(data.id);
+
+			// Скрываем окно с выбором точек доставок
+			global.OrderModel.showPopupWithPoints(false);
+
+			// Разбиваем на подзаказы
+			separateOrder( global.OrderModel.statesPriority );
+
+			return false;
+		},
+
+		/**
+		 * Выбор метода доставки
 		 * 
 		 * @param	{Object}	data			Данные о типе доставки
 		 * @param	{String}	data.token		Выбранный способ доставки
 		 * @param	{String}	data.name		Имя выбранного способа доставки
 		 * @param	{Array}		data.states		Варианты типов доставки подходящих к этому методу
 		 *
-		 * @param	{Array}		statesPriority	Массив методов доставок в порядке приоритета
 		 * @param	{String}	priorityState	Приоритетный метод доставки из массива
-		 * 
+		 * @param	{Object}	checkedInputId	Ссылка на элемент input по которому кликнули
 		 */
-		chooseDeliveryTypes: function( data ) {
-			var statesPriority = data.states,
-				priorityState = statesPriority[0];
+		chooseDeliveryTypes: function( data, event ) {
+			var priorityState = data.states[0],
+				checkedInputId = event.target.htmlFor;
 			// end of vars
 
-			// очищаем объект созданых блоков, удаляем блоки из модели
-			createdBox = {};
-			OrderModel.deliveryBoxes.removeAll();
-
-			// запоминаем выбранный способ доставки
-			choosenDeliveryType = data.token;
-
-			// если для приоритетного state существуют точки доставки, то пользователь необходимо выбрать точку доставки, если нет точек доставки, то приравниваем точку к 0
-			if ( orderData.pointsByDelivery[priorityState] ) {
-				console.log('есть точки доставки из которых нужно выбрать');
-				// здесь необходимо реализовать логику выбора магазина
-				choosenPoint = 13; // HARDCODE
-			}
-			else {
-				console.log('для выбранного метода доставки нет точек доставки');
-
-				choosenPoint = 0;
+			if ( $('#'+checkedInputId).attr('checked') ) {
+				return false;
 			}
 
-			console.log('выбранный метод доставки '+choosenDeliveryType);
-			console.log('выбранное место доставки '+choosenPoint);
+			global.OrderModel.deliveryTypesButton = checkedInputId;
+			global.OrderModel.tmpStatesPriority = data.states;
+			global.OrderModel.choosenDeliveryTypeId = data.id;
 
-			separateOrder( statesPriority );
-		}
-	}
+			// если для приоритетного метода доставки существуют пункты доставки, то пользователю необходимо выбрать пункт доставки, если нет - то приравниваем идентификатор пункта доставки к 0
+			if ( global.OrderModel.orderDictionary.hasPointDelivery(priorityState) ) {
+				global.OrderModel.popupWithPoints({
+					header: data.description,
+					points: global.OrderModel.orderDictionary.getAllPointsByState(priorityState)
+				});
 
-	
-	ko.applyBindings(OrderModel);
+				global.OrderModel.showPopupWithPoints(true);
 
-	/**
-	 * Обработка полученных с сервера данных
-	 * 
-	 * @param	{Object}	res		Данные о заказе
-	 */
-	var renderOrderData = function renderOrderData( res ) {
-		if ( !res.success ) {
-			// TODO: написать обработчки ошибок
-			console.warn('произошла ошибка при получении данных с сервера');
-			console.log(res.error);
+				return false;
+			}
+
+			// Сохраняем приоритет методов доставок
+			global.OrderModel.statesPriority = global.OrderModel.tmpStatesPriority;
+
+			// Сохраняем выбранную приоритетную точку доставки (для доставки домой = 0)
+			global.OrderModel.choosenPoint(0);
+
+			// Разбиваем на подзаказы
+			separateOrder( global.OrderModel.statesPriority );
+
+			return false;
+		},
+
+		/**
+		 * Обновление данных
+		 */
+		modelUpdate: function() {
+			console.info('обновление данных с сервера');
+
+			var updateResponceHandler = function updateResponceHandler( res ) {
+				renderOrderData(res);
+				global.OrderModel.blockScreen.unblock();
+
+				separateOrder( global.OrderModel.statesPriority );
+			};
+
+			$.ajax({
+				type: 'GET',
+				url: global.OrderModel.updateUrl,
+				success: updateResponceHandler
+			});
+		},
+
+		/**
+		 * Удаление товара
+		 * 
+		 * @param  {[type]} data  [description]
+		 * @param  {[type]} event [description]
+		 */
+		deleteItem: function( data ) {
+			console.info('удаление');
+
+			global.OrderModel.blockScreen.block('Удаляем');
+
+			var itemDeleteAnalytics = function itemDeleteAnalytics() {
+					var products = global.OrderModel.orderDictionary.products;
+						totalPrice = 0,
+						totalQuan = 0,
+
+						toKISS = {};
+					// end of vars
+
+					if ( !data.product ) {
+						return false;
+					}
+
+					for ( var product in products ) {
+						totalPrice += product[product].price;
+						totalQuan += product[product].quantity;
+					}
+
+					toKISS = {
+						'Checkout Step 1 SKU Quantity': totalQuan,
+						'Checkout Step 1 SKU Total': totalPrice,
+					};
+
+					if ( typeof _kmq !== 'undefined' ) {
+						_kmq.push(['set', toKISS]);
+					}
+
+					if ( typeof _gaq !== 'undefined' ) {
+						_gaq.push(['_trackEvent', 'Order card', 'Item deleted']);
+					}
+				},
+
+				deleteItemResponceHandler = function deleteItemResponceHandler( res ) {
+					console.log( res );
+					if ( !res.success ) {
+						console.warn('не удалось удалить товар');
+						global.OrderModel.blockScreen.unblock();
+
+						return false;
+					}
+
+					// обновление модели
+					global.OrderModel.modelUpdate();
+
+					// запуск аналитики
+					if ( typeof _gaq !== 'undefined' || typeof _kmq !== 'undefined' ) {
+						itemDeleteAnalytics();
+					}
+				};
+			// end of functions
+
+			console.log(data.deleteUrl);
+
+			$.ajax({
+				type: 'GET',
+				url: data.deleteUrl,
+				success: deleteItemResponceHandler
+			});
 
 			return false;
 		}
-
-
-		console.log('Данные с сервера получены');
-
-		orderData = res;
-
-		OrderModel.deliveryTypes(res.deliveryTypes);
-		OrderModel.prepareData(true);		
 	};
 
-	$.ajax({
-		type: 'GET',
-		url: getDataUrl,
-		success: renderOrderData
-	});
-}());
+	ko.applyBindings(global.OrderModel);
+	/**
+	 * ===  END ORDER MODEL ===
+	 */
+
+		/**
+		 * Показ сообщений об ошибках
+		 * 
+		 * @param	{String}	msg		Сообщение об ошибке
+		 * @return	{Object}			Deferred объект
+		 */
+	var showError = function showError( msg ) {
+			var content = '<div class="popupbox width290">' +
+					'<div class="font18 pb18"> '+msg+'</div>'+
+					'</div>' +
+					'<p style="text-align:center"><a href="#" class="closePopup bBigOrangeButton">OK</a></p>',
+				block = $('<div>').addClass('popup').html(content),
+
+				popupIsClose = $.Deferred();
+			// end of vars
+			
+			block.appendTo('body');
+
+			var errorPopupCloser = function() {
+				block.trigger('close');
+				block.remove();
+
+				popupIsClose.resolve();
+			};
+
+			block.lightbox_me({
+				centered:true,
+				closeClick:false,
+				closeEsc:false
+			});
+
+			block.find('.closePopup').bind('click', errorPopupCloser);
+
+			return popupIsClose.promise();
+		},
+
+		/**
+		 * Обработка ошибок в продуктах
+		 */
+		productError = {
+			// Товар недоступен для продажи
+			800: function( product ) {
+				var msg = 'Товар '+product.name+' недоступен для продажи.',
+
+					productErrorIsResolve = $.Deferred();
+				// end of vars
+
+				$.when(showError(msg)).then(function() {
+					$.ajax({
+						type:'GET',
+						url: product.deleteUrl
+					}).then(productErrorIsResolve.resolve);
+				});
+
+				return productErrorIsResolve.promise();
+
+			},
+
+			// Нет необходимого количества товара
+			708: function( product ) {
+				var msg = 'Вы заказали товар '+product.name+' в количестве '+product.quantity+' шт. <br/ >'+product.error.message,
+
+					productErrorIsResolve = $.Deferred();
+				// end of vars
+
+				$.when(showError(msg)).then(function() {
+					$.ajax({
+						type:'GET',
+						url: product.setUrl
+					}).then(productErrorIsResolve.resolve);
+				});
+
+				return productErrorIsResolve.promise();
+			}
+		},
+
+		/**
+		 * Обработка ошибок в данных
+		 *
+		 * @param	{Object}	res		Данные о заказе
+		 * 
+		 * @param	{Object}	product	Данные о продукте
+		 * @param	{Number}	code	Код ошибки
+		 */
+		allErrorHandler = function allErrorHandler( res ) {
+			var product = null,
+
+				productsWithError = [];
+			// end of vars
+
+			// Cоздаем массив продуктов содержащих ошибки
+			for ( product in res.products ) {
+				if ( res.products[product].error.code ) {
+					productsWithError.push(res.products[product]);
+				}
+			}
+
+			// Обрабатываем ошибки продуктов по очереди
+			var errorCatcher = function errorCatcher( i, callback ) {
+				var code = null;
+
+				if ( i < 0 ) {
+					console.warn('return');
+
+					callback();
+					return;
+				}
+
+				code = productsWithError[i].error.code;
+
+				$.when( productError[code](productsWithError[i]) ).then(function() {
+					var newI = i - 1;
+
+					errorCatcher( newI, callback );
+				});
+			};
+
+			errorCatcher(productsWithError.length - 1, function() {
+				console.warn('1 этап закончен');
+				document.location.href = res.redirect;
+			});
+		},
+
+		/**
+		 * Обработка полученных данных
+		 * Создание словаря
+		 * 
+		 * @param	{Object}	res		Данные о заказе
+		 */
+		renderOrderData = function renderOrderData( res ) {
+			if ( !res.success ) {
+				// TODO: написать обработчки ошибок
+				console.warn('Данные содержат ошибки');
+				console.log(res.error);
+				allErrorHandler(res);
+
+				return false;
+			}
+
+			console.info('Данные с сервера получены');
+
+			global.OrderModel.orderDictionary = new OrderDictionary(res);
+
+			global.OrderModel.deliveryTypes(res.deliveryTypes);
+			global.OrderModel.prepareData(true);
+		},
+
+		selectPointOnBaloon = function selectPointOnBaloon( event ) {
+			console.log('selectPointOnBaloon');
+			console.log(event);
+
+			console.log($(this).data('pointid'));
+			console.log($(this).data('parentbox'));
+
+			global.OrderModel.selectPoint({
+				id: $(this).data('pointid'),
+				parentBoxToken: $(this).data('parentbox')				
+			});
+
+			return false;
+		},
+
+		/**
+		 * Аналитика загрузки страницы orders/new
+		 * 
+		 * @param	{Object}	orderData		Данные о заказе
+		 */
+		analyticsStep_1 = function analyticsStep1( orderData ) {
+			var totalPrice = 0,
+				totalQuan = 0,
+
+				toKISS = {};
+			// end of vars
+
+			for ( var product in orderData.products ) {
+				totalPrice += product[product].price;
+				totalQuan += product[product].quantity;
+			}
+
+			toKISS = {
+				'Checkout Step 1 SKU Quantity': totalQuan,
+				'Checkout Step 1 SKU Total': totalPrice,
+				'Checkout Step 1 Order Type': 'cart order'
+			};
+
+			if ( typeof _gaq !== 'undefined' ) {
+				_gaq.push(['_trackEvent', 'New order', 'Items', totalQuan]);
+			}
+
+			if ( typeof _kmq !== 'undefined' ) {
+				_kmq.push(['record', 'Checkout Step 1', toKISS]);
+			}
+		};
+	// end of functions
+
+	$('body').on('click', '.shopchoose', selectPointOnBaloon);
+
+
+	renderOrderData( serverData );
+
+	// запуск аналитики
+	if ( typeof _gaq !== 'undefined' || typeof _kmq !== 'undefined' ) {
+		analyticsStep_1( serverData );
+	}
+}(this));

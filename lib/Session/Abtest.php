@@ -71,10 +71,12 @@ class Abtest {
         return null;
     }
 
-    public function setCookie(\Http\Response $response = null) {
-        if (null === $response) {
+    public function setCookie($response = null) {
+        if (null === $response || !$response instanceof \Http\Response ) {
             return;
         }
+
+        /* @var $response \Http\Response */
 
         if (strtotime($this->config['bestBefore']) <= strtotime('now') || !(bool)$this->config['enabled'])
         {

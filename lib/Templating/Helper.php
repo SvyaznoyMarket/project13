@@ -187,18 +187,18 @@ class Helper {
      */
     public function dateToRu($date) {
         $monthsEnRu = [
-            'January' => 'января',
-            'February' => 'февраля',
-            'March' => 'марта',
-            'April' => 'апреля',
-            'May' => 'мая',
-            'June' => 'июня',
-            'July' => 'июля',
-            'August' => 'августа',
+            'January'   => 'января',
+            'February'  => 'февраля',
+            'March'     => 'марта',
+            'April'     => 'апреля',
+            'May'       => 'мая',
+            'June'      => 'июня',
+            'July'      => 'июля',
+            'August'    => 'августа',
             'September' => 'сентября',
-            'October' => 'октября',
-            'November' => 'ноября',
-            'December' => 'декабря',
+            'October'   => 'октября',
+            'November'  => 'ноября',
+            'December'  => 'декабря',
         ];
         $dateEn = (new \DateTime($date))->format('j F Y');
         $dateRu = $dateEn;

@@ -16,7 +16,7 @@
 
 <div id="jsProductCard" data-value="<?= $page->json($productData) ?>"></div>
 
-<div class="bProductSection__eLeft">
+<div class="bProductSectionLeftCol">
         <div id="planner3D" class="bPlanner3D fl" data-cart-sum-url="<?= $page->url('cart.sum') ?>" data-product="<?= $page->json(['id' => $product->getId()]) ?>"></div>
 
         <?= $helper->render('product/__likeButtons', [] ); // Insert LikeButtons (www.addthis.com) ?>
@@ -98,7 +98,7 @@
             <? endif ?>
 </div><!--/left section -->
 
-<div class="bProductSection__eRight">
+<div class="bProductSectionRightCol">
     <div class="bWidgetBuy mWidget">
         <div class="bStoreDesc">
             <?= $helper->render('product/__state', ['product' => $product]) // Есть в наличии ?>

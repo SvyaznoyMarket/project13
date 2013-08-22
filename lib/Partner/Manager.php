@@ -42,7 +42,7 @@ class Manager {
 
             $sender = $request->get('sender');
 
-            //SmartEngine & SmartAssistant
+            //(SmartEngine & SmartAssistant) & RetailRocket
             if ((bool)$sender) {
                 $sender = explode('|', $sender); // ?sender=SmartEngine|product_id
                 if ((bool)$sender[0] && (bool)$sender[1]) {
@@ -50,6 +50,12 @@ class Manager {
                         case \Smartengine\Client::NAME: {
                             \App::user()->setRecommendedProductByParams(
                                 $sender[1], \Smartengine\Client::NAME, 'viewed_at', time()
+                            );
+                            break;
+                        }
+                        case \RetailRocket\Client::NAME: {
+                            \App::user()->setRecommendedProductByParams(
+                                $sender[1], \RetailRocket\Client::NAME, 'viewed_at', time()
                             );
                             break;
                         }

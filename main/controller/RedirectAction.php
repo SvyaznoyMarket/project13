@@ -16,6 +16,10 @@ class RedirectAction {
         if ('/' == $uri) {
             return;
         }
+        // если ajax-запрос, то игнорируем
+        if ($request->isXmlHttpRequest()) {
+            return;
+        }
 
         $redirectUrl = null;
         \App::dataStoreClient()->addQuery('301.json', [], function($data) use(&$uri, &$redirectUrl) {
