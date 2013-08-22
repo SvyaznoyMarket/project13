@@ -149,6 +149,7 @@
 			},
 
 			0: function( res ) {
+                console.warn('обработка ошибок формы')
 				var formError = null;
 
 				if ( res.redirect ) {
@@ -211,7 +212,7 @@
 
 				global.OrderModel.blockScreen.unblock();
 
-				if ( serverErrorHandler.hasOwnProperty[res.error.code] ) {
+				if ( serverErrorHandler.hasOwnProperty(res.error.code) ) {
 					console.log('есть обработчик')
 					serverErrorHandler[res.error.code](res);
 				}

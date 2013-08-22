@@ -1047,6 +1047,7 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 			},
 
 			0: function( res ) {
+                console.warn('обработка ошибок формы')
 				var formError = null;
 
 				if ( res.redirect ) {
@@ -1109,7 +1110,7 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 
 				global.OrderModel.blockScreen.unblock();
 
-				if ( serverErrorHandler.hasOwnProperty[res.error.code] ) {
+				if ( serverErrorHandler.hasOwnProperty(res.error.code) ) {
 					console.log('есть обработчик')
 					serverErrorHandler[res.error.code](res);
 				}

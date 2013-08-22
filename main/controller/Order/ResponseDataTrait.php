@@ -111,7 +111,13 @@ trait ResponseDataTrait {
                 $message = 'Ошибка формирования заказа';
                 break;
         }
-        $exception = new \Exception($message, $exception->getCode());
+
+        if (isset($responseData['form']['error']) && (bool)$responseData['form']['error']) {
+            $exception = new \Exception('Форма заполнена неверно', 0);
+            unset($responseData['redirect']);
+        } else {
+            $exception = new \Exception($message, $exception->getCode());
+        }
 
         $responseData['success'] = false;
         $responseData['error'] = ['code' => $exception->getCode(), 'message' => $exception->getMessage()];
