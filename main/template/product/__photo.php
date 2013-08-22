@@ -9,6 +9,8 @@ return function(
     /** @var  $productVideo \Model\Product\Video\Entity|null */
     $productVideo = reset($productVideos);
 
+    // TODO: SITE-1822
+    $useLens = true;
 
     /** @var string $model3dExternalUrl */
     $model3dExternalUrl = ($productVideo instanceof \Model\Product\Video\Entity) ? $productVideo->getMaybe3d() : null;

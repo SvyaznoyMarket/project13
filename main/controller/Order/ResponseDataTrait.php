@@ -93,7 +93,7 @@ trait ResponseDataTrait {
                     $cartProduct = reset($cartProducts);
                     $product = $cartProduct ? \RepositoryManager::product()->getEntityById($cartProduct->getId()) : null;
                     if ($product) {
-                        $responseData['redirect'] = $product->getLink() . '#one-click';
+                        $responseData['redirect'] = $product->getLink() . '#oneclick';
                     }
                 }
             }
