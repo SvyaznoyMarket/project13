@@ -1032,6 +1032,20 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 		 * Обработка ошибок из ответа сервера
 		 */
 		serverErrorHandler = {
+			default: function( res ) {
+				console.log('обработчик ошибки');
+
+				if ( res.error && res.error.message ) {
+					showError(res.error.message, function() {
+						document.location.href = res.redirect;
+					});
+
+					return;
+				}
+
+				document.location.href = res.redirect;
+			},
+
 			0: function( res ) {
 				var formError = null;
 
@@ -1053,7 +1067,7 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 
 				$.scrollTo($('.mError').eq(0), 500, {offset:-15});
 			},
-			
+
 			743: function( res ) {
 				showError(res.error.message);
 			}
@@ -1094,7 +1108,15 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 				console.log('ошибка оформления заказа');
 
 				global.OrderModel.blockScreen.unblock();
-				serverErrorHandler[res.error.code](res);
+
+				if ( serverErrorHandler.hasOwnProperty[res.error.code] ) {
+					console.log('есть обработчик')
+					serverErrorHandler[res.error.code](res);
+				}
+				else {
+					console.log('дефолтный обработчик')
+					serverErrorHandler['default'](res);
+				}
 
 				return false;
 			}
