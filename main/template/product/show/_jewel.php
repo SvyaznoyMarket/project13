@@ -15,7 +15,15 @@
 
 $showLinkToProperties = true;
 $countModels = count($product->getModel());
-$countProperties = count($product->getProperty());
+//$countProperties = count($product->getProperty());
+$countProperties = 0;
+foreach ($product->getGroupedProperties() as $group) {
+    if (!(bool)$group['properties']) continue;
+    foreach ($group['properties'] as $property) {
+        $countProperties++;
+    }
+}
+
 $is_showed = [];
 
 
