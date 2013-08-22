@@ -126,7 +126,6 @@
 
 <div class="bBottomBuy clearfix">
     <div class="bBottomBuy__eHead">
-        <div class="bBottomBuy__eSubtitle"><?= $product->getType()->getName() ?></div>
         <h1 class="bBottomBuy__eTitle"><?= $title ?></h1>
     </div>
 
