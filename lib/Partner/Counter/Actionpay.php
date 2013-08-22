@@ -27,7 +27,6 @@ class Actionpay {
 
             $orderSum = 0;
             foreach ($orders as $order) {
-                $orderSum = 0;
                 foreach ($order->getProduct() as $orderProduct) {
                     /** @var $product \Model\Product\Entity */
                     $product = isset($productsById[$orderProduct->getId()]) ? $productsById[$orderProduct->getId()] : null;
