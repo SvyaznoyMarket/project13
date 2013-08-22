@@ -1084,14 +1084,16 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 		 */
 		processingResponse = function processingResponse( res ) {
 			console.info('данные отправлены. получен ответ от сервера');
+			
 			ajaxStop = new Date().getTime();
 			ajaxDelta = ajaxStop - ajaxStart;
 
-			global.OrderModel.blockScreen.unblock();
 			console.log(res);
 
 			if ( !res.success ) {
 				console.log('ошибка оформления заказа');
+
+				global.OrderModel.blockScreen.unblock();
 				serverErrorHandler[res.error.code](res);
 
 				return false;
