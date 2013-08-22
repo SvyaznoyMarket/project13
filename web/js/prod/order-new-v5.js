@@ -1316,7 +1316,7 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 		if ( parseInt(metroIdFiled.val(), 10) === subwayArray[i].val ) {
 			subwayField.val(subwayArray[i].label);
 
-			return;
+            break;
 		}
 	}
 
