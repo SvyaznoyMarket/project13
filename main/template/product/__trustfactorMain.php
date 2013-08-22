@@ -4,6 +4,8 @@ return function(
 ) {
 ?>
 
-  <?= empty($trustfactorMain) ? '' : $trustfactorMain ?>
+  <div class="trustfactorMain">
+    <?= empty($trustfactorMain) ? '' : $trustfactorMain ?>
+  </div>
 
 <? };
