@@ -120,6 +120,8 @@
     </div><!--/widget delivery -->
 
     <?= $helper->render('product/__adfox', ['product' => $product]) // Баннер Adfox ?>
+
+    <?= $helper->render('product/__trustfactorRight', ['trustfactorRight' => $trustfactorRight]) ?>
 </div><!--/right section -->
 
 <div class="bBottomBuy clearfix">

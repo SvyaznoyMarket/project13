@@ -179,6 +179,7 @@ $is_showed = [];
     <?//= $helper->render('product/__warranty', ['product' => $product]) ?>
     <?//= $helper->render('product/__service', ['product' => $product]) ?>
 
+    <?= $helper->render('product/__trustfactorRight', ['trustfactorRight' => $trustfactorRight]) ?>
 </div><!--/right section -->
 
 <div class="bBottomBuy clearfix">
