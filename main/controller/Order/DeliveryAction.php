@@ -44,6 +44,22 @@ class DeliveryAction {
                 throw new \Exception('Корзина пустая');
             }
 
+            // купоны
+            $coupons = $cart->getCoupons();
+            $couponData = (\App::config()->coupon['enabled'] && ($coupon = reset($coupons)))
+                ? [
+                    ['number' => $coupon->getNumber()],
+                ]
+                : [];
+
+            // черные карты
+            $blackcards = $cart->getBlackcards();
+            $blackcardData = (\App::config()->blackcard['enabled'] && ($blackcard = reset($blackcards)))
+                ? [
+                    ['number' => $blackcard->getNumber()],
+                ]
+                : [];
+
             $result = null;
             $exception = null;
             $client->addQuery(
@@ -52,8 +68,10 @@ class DeliveryAction {
                     'geo_id'  => $region->getId(),
                 ],
                 [
-                    'product' => $cart->getProductData(),
-                    'service' => $cart->getServiceData(),
+                    'product'        => $cart->getProductData(),
+                    'service'        => $cart->getServiceData(),
+                    'coupon_list'    => $couponData,
+                    'blackcard_list' => $blackcardData,
                 ],
                 function($data) use (&$result, &$shops) {
                     $result = $data;

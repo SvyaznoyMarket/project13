@@ -99,6 +99,8 @@ trait ResponseDataTrait {
             }
         }
 
+        \App::logger()->error(['error' => $exception], ['order']);
+
         // приукрашиваем сообщение об ошибке
         switch ($exception->getCode()) {
             case 705:
@@ -121,5 +123,7 @@ trait ResponseDataTrait {
 
         $responseData['success'] = false;
         $responseData['error'] = ['code' => $exception->getCode(), 'message' => $exception->getMessage()];
+
+        \App::logger()->error(['site.response' => $responseData], ['order']);
     }
 }
