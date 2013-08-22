@@ -312,53 +312,43 @@ window.ANALYTICS = {
 
     AdmitadJS : function() {
         window._ad = window._ad || [];
-
-        //console.log('inint');
         var ad_data = $('#AdmitadJS').data('value');
-        //console.log(ad_data);
+
         if (ad_data) {
 
-            console.log(ad_data);
-
             if (ad_data.ad_data) {
-                //console.log('###');
-                //console.log(ad_data.ad_data);
-            }
 
-            /*
-            if (ad_data.routeName == 'product.category') {
-                var ad_category = "Category_ID"; // required
-            }else if (ad_data.routeName == 'product') {
-                var ad_product = {
-                    "id": "", // required
-                    "vendor": "",
-                    "price": "",
-                    "url": "",
-                    "picture": "",
-                    "name": "",
-                    "category": ""
-                };
-            } else if (ad_data.routeName == 'order.complete') {
-                RetailRocket.transaction(ad_data.sendData)
-            } else if (ad_data.routeName == 'cart') {
-                var ad_products = [
-                    {
-                        "id": "", // required
-                        "number": ""
-                    }
-                    // other products
-                ];
-            } else if (ad_data.routeName == 'order.complete') {
-                var ad_order = ""; // required
-                var ad_amount = "";
-                var ad_products = [
-                    {
-                        "id": "",
-                        "number": ""
-                    }
-                    // other products
-                ];
-            }*/
+                if (ad_data.ad_data.ad_category) {
+                    var ad_category = ad_data.ad_data.ad_category;
+                    console.log('### ad_category');
+                    console.log(ad_category);
+                }
+
+                if (ad_data.ad_data.ad_product) {
+                    var ad_product = ad_data.ad_data.ad_product;
+                    console.log('### ad_product');
+                    console.log(ad_product);
+                }
+
+                if (ad_data.ad_data.ad_products) {
+                    var ad_products = ad_data.ad_data.ad_products;
+                    console.log('### ad_products');
+                    console.log(ad_products);
+                }
+
+                if (ad_data.ad_data.ad_order) {
+                    var ad_order = ad_data.ad_data.ad_order;
+                    console.log('### ad_order');
+                    console.log(ad_order);
+                }
+
+                if (ad_data.ad_data.ad_amount) {
+                    var ad_amount = ad_data.ad_data.ad_amount;
+                    console.log('### ad_amount');
+                    console.log(ad_amount);
+                }
+
+            }
 
             if (ad_data.pushData) {
                 window._ad.push(ad_data.sendData);

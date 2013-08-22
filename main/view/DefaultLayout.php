@@ -414,9 +414,9 @@ class DefaultLayout extends Layout {
 
             } else if ($routeName == 'cart') {
 
-                $products = $this->getParam('products');
+                //$products = $this->getParam('products');
                 $cartProductsById = $this->getParam('cartProductsById');
-                $adData = $adObj->cart($products, $cartProductsById);
+                $adData = $adObj->cart($cartProductsById);
 
             } elseif ($routeName == 'order.complete') {
 
@@ -425,7 +425,7 @@ class DefaultLayout extends Layout {
 
             } elseif ($routeName == 'homepage') {
 
-                $adData = $adObj->execute($routeName);
+                $adData = $adObj->toSend($routeName);
 
             }
 
